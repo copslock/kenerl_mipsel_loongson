@@ -1,71 +1,61 @@
-Received: from sgi.com (sgi.SGI.COM [192.48.153.1])
-	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id MAA23617
-	for <pstadt@stud.fh-heilbronn.de>; Mon, 23 Aug 1999 12:26:09 +0200
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
+Received: from pneumatic-tube.sgi.com (pneumatic-tube.sgi.com [204.94.214.22])
+	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id QAA08342
+	for <pstadt@stud.fh-heilbronn.de>; Mon, 23 Aug 1999 16:42:22 +0200
+Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id HAA01084; Mon, 23 Aug 1999 07:39:25 -0700 (PDT)
+	mail_from (owner-linux@cthulhu.engr.sgi.com)
+Received: (from majordomo-owner@localhost)
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	id HAA52859
+	for linux-list;
+	Mon, 23 Aug 1999 07:30:34 -0700 (PDT)
+	mail_from (owner-linux@relay.engr.sgi.com)
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	via ESMTP id HAA45984
+	for <linux@engr.sgi.com>;
+	Mon, 23 Aug 1999 07:30:30 -0700 (PDT)
+	mail_from (aj@arthur.rhein-neckar.de)
+Received: from news-ma.rhein-neckar.de (news-ma.rhein-neckar.de [193.197.90.3]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id DAA04778; Mon, 23 Aug 1999 03:23:28 -0700 (PDT)
-	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id DAA30571
-	for linux-list;
-	Mon, 23 Aug 1999 03:12:13 -0700 (PDT)
-	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from soyuz.wellington.sgi.com (soyuz.wellington.sgi.com [134.14.64.194])
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id DAA73756
-	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 23 Aug 1999 03:12:08 -0700 (PDT)
-	mail_from (alambie@csd.sgi.com)
-Received: from csd.sgi.com by soyuz.wellington.sgi.com via ESMTP (980427.SGI.8.8.8/940406.SGI)
-	 id WAA26842; Mon, 23 Aug 1999 22:11:40 +1200 (NZT)
-Message-ID: <37C11F26.D2AB4969@csd.sgi.com>
-Date: Mon, 23 Aug 1999 22:15:02 +1200
-From: Alistair Lambie <alambie@relay.csd.sgi.com>
-X-Mailer: Mozilla 4.6C-SGI [en] (X11; I; IRIX 6.5 IP32)
-X-Accept-Language: en
+	via ESMTP id HAA02126
+	for <linux@engr.sgi.com>; Mon, 23 Aug 1999 07:30:27 -0700 (PDT)
+	mail_from (aj@arthur.rhein-neckar.de)
+Received: from arthur.rhein-neckar.de (uucp@localhost)
+	by news-ma.rhein-neckar.de (8.8.8/8.8.8) with bsmtp id QAA01123;
+	Mon, 23 Aug 1999 16:29:34 +0200 (CEST)
+	(envelope-from aj@arthur.rhein-neckar.de)
+Received: from aj by arthur.rhein-neckar.de with local (Exim 3.02 #1)
+	id 11Iv5k-0005Xr-00; Mon, 23 Aug 1999 16:28:56 +0200
+To: Ralf Baechle <ralf@uni-koblenz.de>
+Cc: linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
+        linux-mips@vger.rutgers.edu
+Subject: Re: MIPS64
+References: <19990822141504.A15701@uni-koblenz.de>
+From: Andreas Jaeger <aj@arthur.rhein-neckar.de>
+Date: 23 Aug 1999 16:28:54 +0200
+In-Reply-To: Ralf Baechle's message of "Sun, 22 Aug 1999 14:15:04 +0200"
+Message-ID: <u87lmmd109.fsf@arthur.rhein-neckar.de>
+User-Agent: Gnus/5.070095 (Pterodactyl Gnus v0.95) XEmacs/21.1 (Arches)
 MIME-Version: 1.0
-To: Pete Young <pete@alien.bt.co.uk>
-CC: linux@cthulhu.engr.sgi.com
-Subject: Re: Root Password
-References: <m11Iq4u-001kxeC@mail.alien.bt.co.uk>
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
-Content-Transfer-Encoding: 7bit
 
-Pete Young wrote:
-> 
-> > hehe... well, that will work to, I guess... :-)
-> 
-> Well, it did for me with an Indy running 5.3 .
-> 
-> As an aside, Irix as shipped has to be the most simple unix variant to
-> break that I've ever come across. Why on earth does all that stuff have
-> to run setuid root? Never thought I'd be advocating a switch to Linux
-> on security grounds, but there you go!
-> 
+>>>>> Ralf Baechle writes:
 
-I think that may be a bit unfair.  Irix 5.3 is real old (Nov 17, 1994)
-and while it had many security issues I think a lot of other vendors
-probably did as well in that time frame.  There are a lot of security
-patches available for Irix 5.3 and I'm guessing they are probably not
-loaded on the machine you are using.  These patches are made available
-to everyone regardless of whether you have a support contract or not. 
-You can find information at
-http://www.sgi.com/Support/security/security.html  If you find something
-that is not fixed you can report it at that site as well.  
+ > Hi,
+ > as those who are tracking the CVS archive or the commit mailing list
+ > probably already have seen I've got started to work on a 64-bit kernel.
+ > I'm also using the chance to do a major overhaul of various code which
+ > over the years had turned into a major uglyness.
+Could anybody provide me with infos about the commit mailing list?  I
+couldn't find the information myself:-(.
 
-Cheers, Alistair
-
+Thanks,
+Andreas
 -- 
-Alistair Lambie                                alambie@csd.sgi.com
-SGI Global Product Support            SGI Voicemail/VNET: 234-1455
-Level 5, Cigna House,                                M/S: INZ-3780
-PO Box 24 093,                                  Ph: +64-4-494 6325
-40 Mercer St, Wellington,                      Fax: +64-4-494 6321
-New Zealand                                 Mobile: +64-21-635 262
+ Andreas Jaeger   aj@arthur.rhein-neckar.de    jaeger@informatik.uni-kl.de
+  for pgp-key finger ajaeger@aixd1.rhrk.uni-kl.de

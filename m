@@ -1,94 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Jan 2005 10:11:26 +0000 (GMT)
-Received: from host181-209-dsl.dols.net.pk ([IPv6:::ffff:202.147.181.209]:9387
-	"EHLO 1aurora.enabtech") by linux-mips.org with ESMTP
-	id <S8225212AbVAJKLR>; Mon, 10 Jan 2005 10:11:17 +0000
-Received: by 1aurora.enabtech with Internet Mail Service (5.5.2448.0)
-	id <C459AN21>; Mon, 10 Jan 2005 15:01:18 +0500
-Message-ID: <1B701004057AF74FAFF851560087B1610646A1@1aurora.enabtech>
-From: Mudeem Iqbal <mudeem@Quartics.com>
-To: 'Thiemo Seufer' <ica2_ts@csv.ica.uni-stuttgart.de>
-Cc: "'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
-Subject: RE: mipsel-linux-ld:arch/mips/kernel/vmlinux.lds:6: parse error
-Date: Mon, 10 Jan 2005 15:01:16 +0500
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Jan 2005 11:10:26 +0000 (GMT)
+Received: from smtp4.wanadoo.fr ([IPv6:::ffff:193.252.22.27]:47027 "EHLO
+	smtp4.wanadoo.fr") by linux-mips.org with ESMTP id <S8225305AbVAJLKV>;
+	Mon, 10 Jan 2005 11:10:21 +0000
+Received: from me-wanadoo.net (localhost [127.0.0.1])
+	by mwinf0406.wanadoo.fr (SMTP Server) with ESMTP id 4BF791C00620
+	for <linux-mips@linux-mips.org>; Mon, 10 Jan 2005 12:10:15 +0100 (CET)
+Received: from smtp.innova-card.com (AMarseille-206-1-6-143.w80-14.abo.wanadoo.fr [80.14.198.143])
+	by mwinf0406.wanadoo.fr (SMTP Server) with ESMTP id 24FA61C000FC
+	for <linux-mips@linux-mips.org>; Mon, 10 Jan 2005 12:10:15 +0100 (CET)
+Received: from [192.168.0.24] (spoutnik.innova-card.com [192.168.0.24])
+	by smtp.innova-card.com (Postfix) with ESMTP id 2318D38023
+	for <linux-mips@linux-mips.org>; Mon, 10 Jan 2005 12:10:09 +0100 (CET)
+Message-ID: <41E26267.2090300@innova-card.com>
+Date: Mon, 10 Jan 2005 12:09:27 +0100
+From: Franck Bui-Huu <franck.bui-huu@innova-card.com>
+Reply-To: franck.bui-huu@innova-card.com
+Organization: Innova Card
+User-Agent: Mozilla Thunderbird 0.9 (X11/20041127)
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2448.0)
-Content-Type: text/plain
-Return-Path: <mudeem@Quartics.com>
+To: linux-mips@linux-mips.org
+Subject: CPHYSADDR in setup.c
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <franck.bui-huu@innova-card.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6854
+X-archive-position: 6855
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mudeem@Quartics.com
+X-original-sender: franck.bui-huu@innova-card.com
 Precedence: bulk
 X-list: linux-mips
 
-I ran
+Hi
 
-#make ARCh=mips CROSS_COMPILE=mipsel-linux- clean
+I have noticed that someone has comitted some changes because
+of 64 bits proc and specially added CPHYSADDR macro in
+resource_init function. Is it really needed to add specific code
+in setup.c ? Couldn't we modify "virt_to_phys" or "__pa"
+instead of ?
 
-this removed vmlinux.lds and then I again ran make by
+I think we should get ride of this CPHYSADDR macro if
+it's possible.
 
-#make ARCh=mips CROSS_COMPILE=mipsel-linux-
+Thanks for your answers.
 
-but again same error. could there be something wrong in vmlinux.lds.S that
-vmlinux.lds is not being generated properly
-
-Mudeem
-
------Original Message-----
-From: Thiemo Seufer [mailto:ica2_ts@csv.ica.uni-stuttgart.de]
-Sent: Monday, January 10, 2005 2:09 PM
-To: Mudeem Iqbal
-Cc: 'linux-mips@linux-mips.org'
-Subject: Re: mipsel-linux-ld:arch/mips/kernel/vmlinux.lds:6: parse error
-
-
-Mudeem Iqbal wrote:
-> hi,
-> 
-> I have built a toolchain using the following combination
-> 
-> binutils-2.15.94.0.2
-> gcc-3.4.3
-> glibc-2.3.3
-> linux-2.6.9	(from linux-mips.org)
-> 
-> I am cross compiling linux kernel for mips. I think the toolchain has been
-> successfully built. But when cross compiling the kernel I get the
-following
-> error
-> 
-> LD	init/built-in.o
-> LD .tmp_vmlinux1
-> mipsel-linux-ld:arch/mips/kernel/vmlinux.lds:6: parse error
-> make: ***[.tmp_vmlinux1] Error 1
-> 
-> The vmlinux.lds is as follows
-> 
-> 1) OUPUT_ARH(mips)
-> 2) Entry(kernel_entry)
-> 3) jiffies = jiffies_64;
-> 4) SECTION
-> 5) {
-> 6)	. = ;
-> 7)	/* rea-only */
-> 8)	_text = .; /* Text and read only data *
-> 	..................................
-> }
-
-This linker script is completely garbled and unusable.
-
-> The line indicated by the error is . = ; Any ideas
-
-This line has to read
-
-	. = .;
-
-Regenerate the script from the vmlinux.lds.S file (by removing
-it and running make).
-
-
-Thiemo
+    Franck

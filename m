@@ -1,105 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Feb 2005 14:05:49 +0000 (GMT)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:61197 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225373AbVBWOFd>; Wed, 23 Feb 2005 14:05:33 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 320ABF5978; Wed, 23 Feb 2005 15:05:24 +0100 (CET)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 00898-04; Wed, 23 Feb 2005 15:05:24 +0100 (CET)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id E0E3AE1CB4; Wed, 23 Feb 2005 15:05:23 +0100 (CET)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.1/8.13.1) with ESMTP id j1NE5MQW018863;
-	Wed, 23 Feb 2005 15:05:22 +0100
-Date:	Wed, 23 Feb 2005 14:05:28 +0000 (GMT)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	David Daney <ddaney@avtrex.com>, libc-alpha@sources.redhat.com
-Cc:	Jim Gifford <maillist@jg555.com>, linux-mips@linux-mips.org
-Subject: Re: Building GLIBC 2.3.4 on MIPS
-In-Reply-To: <421BD616.4030101@avtrex.com>
-Message-ID: <Pine.LNX.4.61L.0502231300200.11922@blysk.ds.pg.gda.pl>
-References: <421BCF34.90308@jg555.com> <421BD616.4030101@avtrex.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.80/700/Fri Feb  4 00:33:15 2005
-	clamav-milter version 0.80j
-	on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Feb 2005 15:03:34 +0000 (GMT)
+Received: from embeddededge.com ([IPv6:::ffff:209.113.146.155]:24850 "EHLO
+	penguin.netx4.com") by linux-mips.org with ESMTP
+	id <S8225395AbVBWPDT>; Wed, 23 Feb 2005 15:03:19 +0000
+Received: from [192.168.2.27] (h69-21-252-132.69-21.unk.tds.net [69.21.252.132])
+	by penguin.netx4.com (8.12.8/8.12.9) with ESMTP id j1N3f1Hi009272;
+	Tue, 22 Feb 2005 22:41:01 -0500
+In-Reply-To: <1109160313.16445.20.camel@localhost.localdomain>
+References: <1109157737.16445.6.camel@localhost.localdomain> <000301c5199d$3154ad40$0300a8c0@Exterity.local> <1109160313.16445.20.camel@localhost.localdomain>
+Mime-Version: 1.0 (Apple Message framework v619.2)
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Message-Id: <cb80abe539fa80effd786cacc1340de7@embeddededge.com>
+Content-Transfer-Encoding: 7bit
+Cc:	linux-mips@linux-mips.org
+From:	Dan Malek <dan@embeddededge.com>
+Subject: Re: Big Endian au1550
+Date:	Wed, 23 Feb 2005 10:03:01 -0500
+To:	JP Foster <jp.foster@exterity.co.uk>
+X-Mailer: Apple Mail (2.619.2)
+Return-Path: <dan@embeddededge.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7323
+X-archive-position: 7324
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: dan@embeddededge.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 22 Feb 2005, David Daney wrote:
 
-> > I'm trying to build the current glibc with my RaQ2, everything builds ok,
-> > until I start compiling strace.
-> > 
-> > syscall.c: In function `dumpio':
-> > syscall.c:449: error: `SYS_read' undeclared (first use in this function)
-> > syscall.c:449: error: (Each undeclared identifier is reported only once
-> > syscall.c:449: error: for each function it appears in.)
-> > syscall.c:465: error: `SYS_write' undeclared (first use in this function)
-> > syscall.c: In function `syscall_fixup':
-> > syscall.c:1265: warning: unused variable `pid'
-> > syscall.c: In function `trace_syscall':
-> > syscall.c:2481: error: `SYS_exit' undeclared (first use in this function)
-> > make[1]: *** [syscall.o] Error 1
-> > make[1]: Leaving directory `/usr/src/strace-4.5.9'
-> > make: *** [all] Error 2
-> > 
-> > Which leads me to check syscall.h, then I noticed a big difference from
-> > my x86 version to this version, all the SYS_ entries are missing.  Did I
-> > build it wrong or is this a glibc issue, due to the addition of the
-> > mips32 and mips64 directories.
-> > 
-> > Here is my bug report with the glibc folks for everyone's reference.
-> > http://sources.redhat.com/bugzilla/show_bug.cgi?id=758
-> > 
-> 
-> 
-> It seems that you might need some (but not all) of the patch I posted here:
-> 
-> http://www.linux-mips.org/archives/linux-mips/2004-10/msg00068.html
-> 
-> Specifically I think you will need at least the parts that add
-> 
-> #include <sgidefs.h>
-> 
-> To many of the .h files.  Basically any file that uses the symbol _MIPS_SIM
-> and friends needs to either directly or indirectly include sgidefs.h
-> 
-> You may also need:
-> 
-> http://www.linux-mips.org/archives/linux-mips/2004-10/msg00142.html
-> 
-> And something like this:
-> 
-> http://sources.redhat.com/ml/libc-alpha/2004-11/msg00165.html
+On Feb 23, 2005, at 7:05 AM, JP Foster wrote:
 
- The culprit is elsewhere.  The glibc's syscall number translator script 
-doesn't work with asm-mips/unistd.h as of Linux 2.6 (you could have 
-probably used 2.4 headers instead; I'm not sure if that is compatible with 
-"--enable-kernel=2.6.0", though).  A correct fix has been prepared and 
-proposed by Richard Sandiford and is available here: 
-"http://sourceware.org/ml/libc-alpha/2004-11/msg00097.html".  I would 
-expect this patch to have been applied before 2.3.4, but apparently this 
-hasn't happened.  That's regrettable and I fear it's the result of glibc 
-being somewhat inadequately maintained for MIPS/Linux these days, sigh...
+> Fair enough. Has anyone got big-endian au1xxx working ever?
 
- I'm not sure what the maintenance plan is for the 2.3 branch of glibc, 
-but if 2.3.5 is ever going to happen, the Richard's patch is one of the 
-must-have additions.
+The only issues with big endian Au1xxx is the USB and potentially
+PCI.  There have been recent patches posted for USB that could
+fix this.  The PCI problem is with the read/write/in/out macros.
+They were never written properly and I haven't checked to see
+if this was corrected in 2.6.
 
-  Maciej
+That aside, I have worked on several big endian Au1xxx projects
+that are successful.  I never found a way, aside from #ifdefs for
+byte sex in generic files, to make the same source compile in
+either mode.  It's a fairly low priority on my list of other Au1xxx 
+projects :-)
+
+The Linux sources have worked, and if they currently don't we
+should fix them.
+
+
+	-- Dan

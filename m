@@ -1,66 +1,69 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id KAA15847 for <linux-archive@neteng.engr.sgi.com>; Thu, 27 Aug 1998 10:24:24 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id KAA21352 for <linux-archive@neteng.engr.sgi.com>; Thu, 27 Aug 1998 10:06:32 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id KAA25558
+	id KAA49897
 	for linux-list;
-	Thu, 27 Aug 1998 10:23:37 -0700 (PDT)
+	Thu, 27 Aug 1998 10:06:23 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id KAA91057
-	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 27 Aug 1998 10:23:35 -0700 (PDT)
-	mail_from (adevries@engsoc.carleton.ca)
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) 
+	via ESMTP id KAA53491
+	for <linux@engr.sgi.com>;
+	Thu, 27 Aug 1998 10:06:22 -0700 (PDT)
+	mail_from (Arnaud.Le.Neel@cyceron.fr)
+Received: from cyceron.fr (ns2.cyceron.fr [192.93.44.1]) 
 	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id KAA06071
-	for <linux@cthulhu.engr.sgi.com>; Thu, 27 Aug 1998 10:23:36 -0700 (PDT)
-	mail_from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id NAA19838;
-	Thu, 27 Aug 1998 13:25:04 -0400
-X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
-Date: Thu, 27 Aug 1998 13:25:04 -0400 (EDT)
-From: Alex deVries <adevries@engsoc.carleton.ca>
-To: Mike Hill <mikehill@hgeng.com>
-cc: linux@cthulhu.engr.sgi.com
-Subject: Re: Installing Rough Hat in South Simcoe County
-In-Reply-To: <60222E63C9F4D011915F00A02435011C126379@BART>
-Message-ID: <Pine.LNX.3.96.980827131913.10299C-100000@lager.engsoc.carleton.ca>
+	via ESMTP id KAA25000
+	for <linux@engr.sgi.com>; Thu, 27 Aug 1998 10:06:21 -0700 (PDT)
+	mail_from (Arnaud.Le.Neel@cyceron.fr)
+Received: from cyceron.fr (indigo1.cyceron.fr [192.93.44.9])
+	by cyceron.fr (8.8.8/8.8.8) with ESMTP id SAA01821
+	for <linux@engr.sgi.com>; Thu, 27 Aug 1998 18:04:43 GMT
+Message-ID: <35E59FBA.96A1900C@cyceron.fr>
+Date: Thu, 27 Aug 1998 19:04:42 +0100
+From: Arnaud Le Neel <Arnaud.Le.Neel@cyceron.fr>
+Reply-To: Arnaud.Le.Neel@cyceron.fr
+Organization: Cyceron PET Center
+X-Mailer: Mozilla 4.05 [en] (X11; I; IRIX 6.2 IP20)
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To: linux@cthulhu.engr.sgi.com
+Subject: boot problem for Indy
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+Hi,
 
-Mike,
+I'm quite newbie on SGI/Linux, even if i know Linux and Unix. I'm
+trying to boot with HardHat 5.1 (Manhattan) on an Indy (see below)
+via a i686/Linux and here is what happens:
 
-	First off, help is no longer really that far away, as I'll be
-moving to Toronto this coming Sunday (near Yonge and Shepherd for the
-month of Sept, then Queen's Quay and Yonge thereafter). Finally!
+>> boot -f bootp()linux.cyceron.fr:vmlinux
+Setting $netaddr to 192.93.44.35 (for server server.cyceron.fr)
+Obtaining vmlinux from server.cyceron.fr
 
+Cannot reload bootp()server.cyceron.fr:vmlinux
+Illegal f_magik number 0x7f45, expected MIPSELMAGIC or MIPSEBMAGIC
+Unable to load bootp()server.cyceron.fr:vmlinux: execute format error
 
-On Thu, 27 Aug 1998, Mike Hill wrote:
-> Finally[1] I've got my Indy connected to a Debian 2.0 pentium that has
-> the tarball of the dist formerly known as Hard Hat.
-> The kernel boots locally *and* with bootp, putting me into the installer
-> in either case.  According to the pc's syslog, the Indy successfully
-> nfsmounts the installfs directory.  After mounting /dev/sdb1 (without
-> checking), the installer fails with this:
-> 	Fatal error opening RPM database (I pick "Ok")
-> 	install exited abnormally...received signal 11
+Did anyone ever seen this message, and what is the solution, if there
+is one ?
 
-Some questions to help guide us to the right solution:
-- when you log the files beign accessed on the PC's NFS, do you see it
-opening anything in /RedHat/base ?  Can you check and see this?
-- if you'd like, I can just mail you this CD with Rough Cuts on it, thus
-preventing the situation where you're missing a couple of files, etc.
-You're also welcome to pick it up.
+Thanks for your help
+arno
 
-God, I should really revisit the installer and fix it.
+PS: Here is the description of the Indy i want to boot Linux:
+	IP22 100MHz R4000 with FPU
+	Memory size 48 Mb
 
-- Alex
+-- 
+       Arnaud Le Néel			Cyceron PET Research Center
+Systems and Network administrator	  Bd Becquerel - BP 5229
+mailto:Arnaud.Le.Neel@cyceron.fr	   F-14074 Caen - CEDEX
+       	ICQ #8852927			Tel :	(+33) (0)231 470 203
+  http://www.cyceron.fr/~arno		Fax :	(+33) (0)231 470 222

@@ -1,73 +1,140 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Aug 2004 09:51:51 +0100 (BST)
-Received: from bay15-f25.bay15.hotmail.com ([IPv6:::ffff:65.54.185.25]:16908
-	"EHLO hotmail.com") by linux-mips.org with ESMTP
-	id <S8224791AbUHTIvr>; Fri, 20 Aug 2004 09:51:47 +0100
-Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
-	 Fri, 20 Aug 2004 01:51:39 -0700
-Received: from 220.247.240.49 by by15fd.bay15.hotmail.msn.com with HTTP;
-	Fri, 20 Aug 2004 08:51:39 GMT
-X-Originating-IP: [220.247.240.49]
-X-Originating-Email: [safiudeen@hotmail.com]
-X-Sender: safiudeen@hotmail.com
-From: "safiudeen Ts" <safiudeen@hotmail.com>
-To: michael.stickel@4g-systems.biz, linux-mips@linux-mips.org
-Subject: Re: PCMCIA genric sreail or modem support for db1100 bord
-Date: Fri, 20 Aug 2004 08:51:39 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Aug 2004 11:47:40 +0100 (BST)
+Received: from luonnotar.infodrom.org ([IPv6:::ffff:195.124.48.78]:24078 "EHLO
+	luonnotar.infodrom.org") by linux-mips.org with ESMTP
+	id <S8224911AbUHTKrg>; Fri, 20 Aug 2004 11:47:36 +0100
+Received: by luonnotar.infodrom.org (Postfix, from userid 10)
+	id 22E95366B8C; Fri, 20 Aug 2004 12:47:34 +0200 (CEST)
+Received: at Infodrom Oldenburg (/\##/\ Smail-3.2.0.102 1998-Aug-2 #2)
+	from infodrom.org by finlandia.Infodrom.North.DE
+	via smail from stdin
+	id <m1By6nG-000olzC@finlandia.Infodrom.North.DE>
+	for linux-mips@linux-mips.org; Fri, 20 Aug 2004 12:38:46 +0200 (CEST) 
+Date: Fri, 20 Aug 2004 12:38:46 +0200
+From: Martin Schulze <joey@infodrom.org>
+To: Linux for m68k <linux-m68k@phil.uni-sb.de>,
+	Linux for MIPS <linux-mips@linux-mips.org>,
+	Linux for PA-RISC <parisc-linux@lists.parisc-linux.org>,
+	Linux for Powerpc <linuxppc-dev@lists.linuxppc.org>,
+	Debian M68k Development <debian-68k@lists.debian.org>,
+	Debian MIPS Development <debian-mips@lists.debian.org>,
+	Debian PA-RISC Development <debian-hppa@lists.debian.org>,
+	Debian Powerpc Development <debian-powerpc@lists.debian.org>,
+	Debian ARM Development <debian-arm@lists.debian.org>
+Subject: Invitation to the Oldenburg Linux Developers Meeting #9
+Message-ID: <20040820103846.GZ1784@finlandia.infodrom.north.de>
 Mime-Version: 1.0
-Content-Type: text/plain; format=flowed
-Message-ID: <BAY15-F253abTd9QkTD0002f560@hotmail.com>
-X-OriginalArrivalTime: 20 Aug 2004 08:51:39.0980 (UTC) FILETIME=[E8A6A8C0:01C48692]
-Return-Path: <safiudeen@hotmail.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+User-Agent: Mutt/1.5.6+20040803i
+Return-Path: <joey@infodrom.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5695
+X-archive-position: 5696
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: safiudeen@hotmail.com
+X-original-sender: joey@infodrom.org
 Precedence: bulk
 X-list: linux-mips
 
-built in serial ports are working fine in DB1100 with linux-2.4.20 kernel
-When we use a pcmcia serial card or modem, for most of the card, cardmaneger 
-load serial_cs.o (actualy it uses the serial.o  fetures for registering the 
-module).
-This method work fine in my laptop.
-same think hepens in db1100 bord also. I gues serial.o in bord db110 does'nt 
-support well for serial_cs
-.
-If there is a stand alon serial_cs.o module for this board It may work 
-without any problem.
-if it is os where  can I get the seria_cs or any generic serial pcmcia 
-driver for db1100 bord, or  otherwise is any serial.c available for db1100 
-that can support pcmcia and inbuild serial as it works in labtop.
+Moin!
 
-There is important think, when we connected in the laptop this pcmcia serial 
-card detect is detected as 65550A but in the board it detected as 65550. I 
-checked the serial.c code of db1100 there is no entry for this 65550A.
+       Invitation to the Oldenburg Linux Developers Meeting #9
+       -------------------------------------------------------
 
-if any one worked with this DB1100 please help me to solve this problem
+Executive summary:
+
+URL:   http://oldenburger.linuxtage.de/Oldenburg2004/
+What:  Oldenburg Linux Developers Meeting #9
+Who:   Every developer interested in Linux on non-i386 platforms
+       Every developer interested in developing the debian-installer
+When:  September, 22nd to 26th (Wednesday noon to Sunday afternoon)
+Where: University of Oldenburg, science building in Oldenburg Wechloy
+Orga:  ffis e.V., Martin 'Joey' Schulze
 
 
-thanx
-safiudeen
+Keeping the tradition alive we will organise another Linux developers
+meeting in Oldenburg this year at the last weekend of September.  This
+year, however, we will be able to use the facility from Wednesday to
+Sunday, hence, one day longer than before.
 
-&gt;From: Michael Stickel &lt;michael.stickel@4g-systems.biz&gt;
-&gt;To: &quot;safiudeen Ts&quot; &lt;safiudeen@hotmail.com&gt;
-&gt;Subject: Re: PCMCIA genric sreail or modem support for db1100 bord
-&gt;Date: Fri, 20 Aug 2004 10:07:40 +0200
-&gt;
-&gt;
-&gt;Do you use the buildin serial ports?
-&gt;
-&gt;My last information is that the au1x00-serial module does not work
-&gt;in parallel with the serial module because au1x00-serial.c is just a
-&gt;modified copy of serial.c.
-&gt;
-&gt;Michael
-&gt;
+There were loud complaints last year about the meeting being too
+short, so it will be extended by one day this time.  The meeting will
+take place at the University of Oldenburg in the scientific building
+in Oldenburg Wechloy.
 
-_________________________________________________________________
-Add photos to your messages with MSN 8. Get 2 months FREE*. 
-http://join.msn.com/?page=features/featuredemail
+the goal of this developers meeting is to provide developers a means
+to work in common on the non-i386 Linux ports and related topics and
+to further the exchange of ideas and discussion about the several
+ports.
+
+We will have dedicated working and sleeping rooms as before.  We
+should be able to use three more rooms during the nights in case the
+number of attending developers is too high for the two dedicated
+sleeping rooms.  We will be able to use the shower facility of the
+sports department nearby.
+
+This year Debian developers will join us again for work on the new
+debian-installer.  They will probably want to test the installer on
+some "obscure" hardware they don't normally have access to, so don't
+worry if you should receive such a request.
+
+We will have dinner together in a restaurant in the evening.  A
+preliminary plan is on the web already, but the restaurants and the
+order may still change.  We will have a barbecue on Friday for this is
+the tenth developers meeting already.
+
+As usual we will have a never-ending breakfast in the large working
+room.  I will get rolls each morning and ensure that there will be
+butter, cheese, saussages, jam, Nutella and stuff.  I'll also take
+care of non-alcoholic fluids.
+
+Attendance is free of cost including food and beverage in the working
+rooms (although we are always thankful for donations, EUR 10-20 per
+person should cover the expenses).  However, for the barbecue on
+Friday instead of a restaurant we would be thankful if you could take
+a stake in the expenses, EUR 5-10 should cover the costs.
+
+Beside machines, equipment and documentation you'll need to take with
+you a sleeping bag, maybe a camping mat or cot, towels, shower suff,
+personal toilett stuff, maybe medicine, clothes, mug and plate are
+optional but helpful.
+
+You'll find routing information on the website mentioned above.
+
+If you would like to attend the meeting, please send back the
+following form, so that we can calculate space, power and food.
+
+Name ................:
+
+Date of arrival .....: ( ) Wednesday, Sep, 22nd
+                       ( ) Thursday, Sep, 23rd
+                       ( ) Friday, Sep, 24th 
+                       ( ) Saturday, Sep, 25th
+
+Date of departure ...: ( ) Friday, Sep. 24th
+                       ( ) Saturday, Sep. 25th
+                       ( ) Sunday, Sep. 26th
+
+[ ] Vegetarian (only needed for the barbecue)
+
+___ usable seats in my car, once arrived (only if you come by car)
+
+Special requirements for food: ______________________
+
+If you come by train/plane and want me to pick up up in Bremen or
+Oldenburg, please drop me the exact arrival and departure times as
+well.
+
+If you have any further questions, please don't hesitate to ask me.
+
+Regards,
+
+	Joey
+
+-- 
+A mathematician is a machine for converting coffee into theorems.   Paul Erdös
+
+Please always Cc to me when replying to me on the lists.

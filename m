@@ -1,47 +1,39 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f3NII0L04928
-	for linux-mips-outgoing; Mon, 23 Apr 2001 11:18:00 -0700
-Received: from fileserv2.Cologne.DE ([62.145.23.107])
-	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f3NIHwM04921
-	for <linux-mips@oss.sgi.com>; Mon, 23 Apr 2001 11:17:59 -0700
-Received: from localhost (1584 bytes) by fileserv2.Cologne.DE
-	via rmail with P:stdio/R:bind/T:smtp
-	(sender: <excalibur.cologne.de!karsten>) (ident <excalibur.cologne.de!karsten> using unix)
-	id <m14rku8-0007jZC@fileserv2.Cologne.DE>
-	for <linux-mips@oss.sgi.com>; Mon, 23 Apr 2001 20:17:44 +0200 (CEST)
-	(Smail-3.2.0.101 1997-Dec-17 #5 built 1998-Jan-19)
-Received: (from karsten@localhost)
-	by excalibur.cologne.de (8.9.3/8.8.7) id UAA01109;
-	Mon, 23 Apr 2001 20:14:28 +0200
-Date: Mon, 23 Apr 2001 20:14:28 +0200
-From: Karsten Merker <karsten@excalibur.cologne.de>
-To: linux-mips@oss.sgi.com, debian-mips@lists.debian.org
-Subject: Re: ls from fileutils-4.0.43 segfaults
-Message-ID: <20010423201428.A1020@excalibur.cologne.de>
-Mail-Followup-To: linux-mips@oss.sgi.com, debian-mips@lists.debian.org
-References: <20010422224018.A9017@excalibur.cologne.de> <20010422174313.A1342@nevyn.them.org>
+	by oss.sgi.com (8.11.3/8.11.3) id f3NK3OQ08750
+	for linux-mips-outgoing; Mon, 23 Apr 2001 13:03:24 -0700
+Received: from dea.waldorf-gmbh.de (IDENT:root@localhost [127.0.0.1])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3NK3MM08747
+	for <linux-mips@oss.sgi.com>; Mon, 23 Apr 2001 13:03:22 -0700
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f3NK32i05855;
+	Mon, 23 Apr 2001 17:03:02 -0300
+Date: Mon, 23 Apr 2001 17:03:02 -0300
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Michael Shmulevich <michaels@jungo.com>
+Cc: Linux/MIPS <linux-mips@oss.sgi.com>, FR Linux/MIPS <linux-mips@fnet.fr>
+Subject: Re: ld.so-1.9.x for mips
+Message-ID: <20010423170302.E4623@bacchus.dhis.org>
+References: <3AE44D0A.9080003@jungo.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <20010422174313.A1342@nevyn.them.org>; from dan@debian.org on Sun, Apr 22, 2001 at 05:43:13PM -0400
-X-No-Archive: yes
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3AE44D0A.9080003@jungo.com>; from michaels@jungo.com on Mon, Apr 23, 2001 at 06:40:58PM +0300
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sun, Apr 22, 2001 at 05:43:13PM -0400, Daniel Jacobowitz wrote:
+On Mon, Apr 23, 2001 at 06:40:58PM +0300, Michael Shmulevich wrote:
 
-> Most likely you have a kernel with the sysmips() bug discussed on
-> linux-mips over the past month and a half or so; the archives have
-> Florian's workaround and other discussion.
+> I have seen a compiled version of ld.so-1.9.11_mips on ftp.rfc882.com 
+> site.I am searching for its sources.
+> 
+> Where can I find them, please?
 
-Oops - I should stop working in parallel with different kernel trees when
-I am tired... You are right, I had built the kernel from a source tree
-without the patch; after applying the patch, ls works.
+While this package surprisingly compiles for MIPS it shouldn't be used
+ever for anything on Linux/MIPS as we don't have libc4 / libc 5.  The
+equivalent for libc6 aka glibc 2 is part of glibc.
 
-Thanks,
-Karsten
--- 
-#include <standard_disclaimer>
-Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der Nutzung
-oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die Markt- oder
-Meinungsforschung.
+Florian, can you remove this package from Debian/MIPS?
+
+  Ralf

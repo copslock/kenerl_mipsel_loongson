@@ -1,74 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Dec 2004 03:49:40 +0000 (GMT)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:55814
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8225435AbULDDte>; Sat, 4 Dec 2004 03:49:34 +0000
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp
-	id 1CaQvI-0002HQ-00; Sat, 04 Dec 2004 04:49:28 +0100
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 1CaQvG-0006we-00; Sat, 04 Dec 2004 04:49:26 +0100
-Date: Sat, 4 Dec 2004 04:49:26 +0100
-To: Kaj-Michael Lang <milang@tal.org>
-Cc: linux-mips <linux-mips@linux-mips.org>
-Subject: Re: arcboot initrd+iso9660+shell patch
-Message-ID: <20041204034926.GJ8714@rembrandt.csv.ica.uni-stuttgart.de>
-References: <001301c4d960$382122c0$54dc10c3@amos>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Dec 2004 21:27:30 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:58352 "EHLO
+	prometheus.mvista.com") by linux-mips.org with ESMTP
+	id <S8224989AbULFV1X>; Mon, 6 Dec 2004 21:27:23 +0000
+Received: from prometheus.mvista.com (localhost.localdomain [127.0.0.1])
+	by prometheus.mvista.com (8.12.8/8.12.8) with ESMTP id iB6LRLdh011398
+	for <linux-mips@linux-mips.org>; Mon, 6 Dec 2004 13:27:21 -0800
+Received: (from mlachwani@localhost)
+	by prometheus.mvista.com (8.12.8/8.12.8/Submit) id iB6LRKIY011396
+	for linux-mips@linux-mips.org; Mon, 6 Dec 2004 13:27:20 -0800
+Date: Mon, 6 Dec 2004 13:27:20 -0800
+From: Manish Lachwani <mlachwani@mvista.com>
+To: linux-mips@linux-mips.org
+Subject: [PATCH] Ocelot-3 supports 256 MB memory
+Message-ID: <20041206212720.GA11390@prometheus.mvista.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/mixed; boundary="d6Gm4EdcadzBjdND"
 Content-Disposition: inline
-In-Reply-To: <001301c4d960$382122c0$54dc10c3@amos>
-User-Agent: Mutt/1.5.6i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+User-Agent: Mutt/1.4.1i
+Return-Path: <mlachwani@prometheus.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6564
+X-archive-position: 6565
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: mlachwani@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Kaj-Michael Lang wrote:
-> Hi
-> 
-> The patch is kinda large so I won't send it to the list, unless
-> it's ok? It is about 73k.
-> 
-> The patch does:
-> - Add initrd support (arcboot.conf: initrd=/ramdisk.gz)
-> - Add interactive/shell mode
->   - Load kernel
->   - Load ramdisk
->   - Edit kernel cmdline arguments
->   - ls
->   - help for list of commands
-> - Add working iso9660 support
-> - Unfinished romfs support
-> - It's probably a mess
-> - Probably has many bugs here and there
-> - To start interactive mode boot with -i as parameter:
->   "arcboot -i"
-> - Tested on IP32 only (and patch changes default to IP32 :)
-> 
-> http://home.tal.org/~milang/o2/patches/arcboot_onion_iso_shell_initrd-1.patch
 
-Great! A few comments, though:
+--d6Gm4EdcadzBjdND
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
- - About CFLAGS: Using -g is almost always a good idea, even if you strip
-   the binaries afterwards. Using -march=mips3 is a bad idea if we ever
-   want to support Indigo1 etc. It also breaks build with older compilers,
-   and doesn't provide any relevant performance gain.
- - _PARM_LIMIT was 32 to match the kernel param limit. If you change it to
-   allow more for arcboot, make sure it complains if more than 32 params
-   are passed to the kernel.
- - ARC_CDROM/ARC_DISK shouldn't have a leading pci(0) for ip22, PROMPT
-   should be arcboot@ip22 in that case.
- - Default SUBARCH should remain ip22. Better: Build both unconditionally
-   unless overridden by a SUBARCH setting.
- - The tip22 stuff is broken (at least: doesn't match what's in CVS).
+Hi Ralf,
+
+Small patch for Ocelot-3 to support 256 MB memory. Please apply ...
+
+Thanks
+Manish Lachwani
 
 
-Thiemo
+--d6Gm4EdcadzBjdND
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline; filename=patch-ocelot3-mem
+
+--- arch/mips/momentum/ocelot_3/setup.c.orig	2004-12-06 13:18:44.000000000 -0800
++++ arch/mips/momentum/ocelot_3/setup.c	2004-12-06 13:18:57.000000000 -0800
+@@ -390,8 +390,8 @@
+ 	printk("  - Boot flash write jumper: %s\n", (tmpword&0x40)?"installed":"absent");
+ 	printk("  - L3 cache size: %d MB\n", (1<<((tmpword&12) >> 2))&~1);
+ 
+-	/* Support for 128 MB memory */
+-	add_memory_region(0x0, 0x08000000, BOOT_MEM_RAM);
++	/* Support for 256 MB memory */
++	add_memory_region(0x0, 0x10000000, BOOT_MEM_RAM);
+ 
+ 	return 0;
+ }
+
+--d6Gm4EdcadzBjdND--

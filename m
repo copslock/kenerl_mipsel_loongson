@@ -1,62 +1,70 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id SAA26585 for <linux-archive@neteng.engr.sgi.com>; Sat, 18 Jul 1998 18:06:04 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id CAA43815 for <linux-archive@neteng.engr.sgi.com>; Sun, 19 Jul 1998 02:12:48 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id SAA26980
+	id CAA36153
 	for linux-list;
-	Sat, 18 Jul 1998 18:05:32 -0700 (PDT)
+	Sun, 19 Jul 1998 02:12:01 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id SAA30196
+	via ESMTP id CAA48545
 	for <linux@cthulhu.engr.sgi.com>;
-	Sat, 18 Jul 1998 18:05:30 -0700 (PDT)
-	mail_from (ralf@uni-koblenz.de)
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) 
+	Sun, 19 Jul 1998 02:11:58 -0700 (PDT)
+	mail_from (sgi.sgi.com!rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
+Received: from rachael.franken.de (rachael.franken.de [193.175.24.38]) 
 	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id SAA14584
-	for <linux@cthulhu.engr.sgi.com>; Sat, 18 Jul 1998 18:05:25 -0700 (PDT)
-	mail_from (ralf@uni-koblenz.de)
-From: ralf@uni-koblenz.de
-Received: from uni-koblenz.de (ralf@pmport-13.uni-koblenz.de [141.26.249.13])
-	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id DAA20037
-	for <linux@cthulhu.engr.sgi.com>; Sun, 19 Jul 1998 03:05:21 +0200 (MEST)
-Received: (from ralf@localhost)
-	by uni-koblenz.de (8.8.7/8.8.7) id DAA00658;
-	Sun, 19 Jul 1998 03:05:06 +0200
-Message-ID: <19980719030505.B489@uni-koblenz.de>
-Date: Sun, 19 Jul 1998 03:05:05 +0200
-To: Andi Kleen <ak@muc.de>
-Cc: linux@cthulhu.engr.sgi.com, lm@bitmover.com
-Subject: Re: [lm@bitmover.com: Linux performance vs IRIX performance]
-References: <19980718052722.H378@uni-koblenz.de> <k21zrjqh9q.fsf@zero.aec.at>
+	via ESMTP id CAA24913
+	for <linux@cthulhu.engr.sgi.com>; Sun, 19 Jul 1998 02:11:56 -0700 (PDT)
+	mail_from (rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
+Received: from hub-fue by rachael.franken.de
+	via rmail with uucp
+	id <m0yxpVa-0027qTC@rachael.franken.de>
+	for cthulhu.engr.sgi.com!linux; Sun, 19 Jul 1998 11:11:54 +0200 (MET DST)
+	(Smail-3.2 1996-Jul-4 #4 built DST-Sep-8)
+Received: by hub-fue.franken.de (Smail3.1.29.1 #35)
+	id m0yxpVS-002OmBC; Sun, 19 Jul 98 11:11 MET DST
+Received: (from tsbogend@localhost)
+	by alpha.franken.de (8.8.7/8.8.5) id LAA00785;
+	Sun, 19 Jul 1998 11:00:32 +0200
+Message-ID: <19980719110032.00526@alpha.franken.de>
+Date: Sun, 19 Jul 1998 11:00:32 +0200
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To: ralf@uni-koblenz.de
+Cc: Michael Engel <engel@numerik.math.uni-siegen.de>, linux-mips@fnet.fr,
+        linux@cthulhu.engr.sgi.com
+Subject: Re: ext2fs corruptions and other things ...
+References: <199807182253.AAA10366@jordan.numerik> <19980719023421.A489@uni-koblenz.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.91.1
-In-Reply-To: <k21zrjqh9q.fsf@zero.aec.at>; from Andi Kleen on Sat, Jul 18, 1998 at 06:02:25PM +0200
+X-Mailer: Mutt 0.85
+In-Reply-To: <19980719023421.A489@uni-koblenz.de>; from ralf@uni-koblenz.de on Sun, Jul 19, 1998 at 02:34:21AM +0200
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Sat, Jul 18, 1998 at 06:02:25PM +0200, Andi Kleen wrote:
+On Sun, Jul 19, 1998 at 02:34:21AM +0200, ralf@uni-koblenz.de wrote:
+> On Sun, Jul 19, 1998 at 12:53:14AM +0200, Michael Engel wrote:
+> Quite some time Thomas commited a patch to arch/mips/kernel/irc.c which was
+> actually supposed to fix the probing problem, maybe he can comment.
 
-> ralf@uni-koblenz.de writes:
-> 
-> > A factor of 4.4 difference.  It's not fair to actually expect that good of
-> > a result - the SGI OS is an SMP OS that scales up to approximately 128 
-> > processors, has all sorts of useful and not so useful features that Linux
-> > doesn't have, etc, etc.  None the less, it is likely that Linux on the same
-> > hardware would be about 3 times faster than IRIX.  
-> 
-> Larry did not say what kind of FS he used on the Irix box (XFS or EFS), but
-> for me it looks like a typical sync metadata/async metadata comparison.
+I couldn't even remember, that I did something in that area:-) I've looked
+up in CVS, what I did there, and as far as I remeber it fixed autoprobing
+for me (my NE2000 gets the interrupt via autoprobing). Maybe it's time
+to check whether it still works.
 
-Whatever - the impact of the dcache on the performance is sometimes really
-amazing.  As long as Linux doesn't hit the disk on an Indy it is _much_
-faster than IRIX.  For the normal case XFS and ext2 aren't too far from
-each other.  Finally when Linux hits the disk it looses badly, the current
-wd33c93 driver performs pretty badly.
+> We actually had more reports about problems with filesystems on /dev/sdx
+> on Indys.  There seems to be a clear pattern of a bug, but for now I
+> classify that one as lower priority.
 
-  Ralf
+I've never got any filesystem corruption on my Olli. And I've crashed it
+pretty often, when doing the XF68_FBDev stuff.
+
+Thomas.
+
+-- 
+See, you not only have to be a good coder to create a system like Linux,
+you have to be a sneaky bastard too ;-)
+                   [Linus Torvalds in <4rikft$7g5@linux.cs.Helsinki.FI>]

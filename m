@@ -1,56 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jan 2005 18:14:03 +0000 (GMT)
-Received: from fw.osdl.org ([IPv6:::ffff:65.172.181.6]:44463 "EHLO
-	mail.osdl.org") by linux-mips.org with ESMTP id <S8225274AbVATSN4>;
-	Thu, 20 Jan 2005 18:13:56 +0000
-Received: from build.pdx.osdl.net (build.pdx.osdl.net [172.20.1.2])
-	by mail.osdl.org (8.11.6/8.11.6) with ESMTP id j0KIDpl09021;
-	Thu, 20 Jan 2005 10:13:51 -0800
-Received: (from chrisw@localhost)
-	by build.pdx.osdl.net (8.11.6/8.11.6) id j0KIDp716721;
-	Thu, 20 Jan 2005 10:13:51 -0800
-Date:	Thu, 20 Jan 2005 10:13:51 -0800
-From:	Chris Wright <chrisw@osdl.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Chris Wright <chrisw@osdl.org>, akpm@osdl.org, torvalds@osdl.org,
-	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] mips default mlock limit fix
-Message-ID: <20050120101351.J24171@build.pdx.osdl.net>
-References: <20050119175945.K469@build.pdx.osdl.net> <20050120160005.GA5672@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jan 2005 19:54:27 +0000 (GMT)
+Received: from orb.pobox.com ([IPv6:::ffff:207.8.226.5]:38104 "EHLO
+	orb.pobox.com") by linux-mips.org with ESMTP id <S8225285AbVATTyW>;
+	Thu, 20 Jan 2005 19:54:22 +0000
+Received: from orb (localhost [127.0.0.1])
+	by orb.pobox.com (Postfix) with ESMTP id 4E43A2FB563
+	for <linux-mips@linux-mips.org>; Thu, 20 Jan 2005 14:54:20 -0500 (EST)
+Received: from troglodyte.asianpear (c-24-21-141-200.client.comcast.net [24.21.141.200])
+	(using SSLv3 with cipher RC4-MD5 (128/128 bits))
+	(No client certificate requested)
+	by orb.sasl.smtp.pobox.com (Postfix) with ESMTP id F33742FB50E
+	for <linux-mips@linux-mips.org>; Thu, 20 Jan 2005 14:54:19 -0500 (EST)
+Subject: usb gadget on Au1xxx (was: Re: Au1000 Big Endian USB OHCI)
+From:	Kevin Turner <kevin.m.turner@pobox.com>
+To:	linux-mips@linux-mips.org
+In-Reply-To: <6C5A79C6-6B06-11D9-AA59-003065F9B7DC@embeddededge.com>
+References: <1106238575.8838.9.camel@kronenbourg.scs.ch>
+	 <6C5A79C6-6B06-11D9-AA59-003065F9B7DC@embeddededge.com>
+Content-Type: text/plain
+Date:	Thu, 20 Jan 2005 11:54:17 -0800
+Message-Id: <1106250857.26283.31.camel@troglodyte.asianpear>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20050120160005.GA5672@linux-mips.org>; from ralf@linux-mips.org on Thu, Jan 20, 2005 at 05:00:05PM +0100
-Return-Path: <chrisw@osdl.org>
+X-Mailer: Evolution 2.0.3 
+Content-Transfer-Encoding: 7bit
+Return-Path: <kevin.m.turner@pobox.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6969
+X-archive-position: 6970
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chrisw@osdl.org
+X-original-sender: kevin.m.turner@pobox.com
 Precedence: bulk
 X-list: linux-mips
 
-* Ralf Baechle (ralf@linux-mips.org) wrote:
-> On Wed, Jan 19, 2005 at 05:59:45PM -0800, Chris Wright wrote:
+On Thu, 2005-01-20 at 09:12 -0800, Dan Malek wrote:
+> On Jan 20, 2005, at 8:29 AM, Thomas Sailer wrote:
 > 
-> > Mips RLIMIT_MEMLOCK incorrectly defaults to unlimited, it was confused
-> > with RLIMIT_NPROC.  Found while consolidating resource.h headers.
-> 
-> Thanks, I applied a recent change off by one line.  To avoid this I've
-> changed the code to use named initializers, see
-> 
-> http://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-cvs-patches&i=95f18dfc8e770c9885b796a676935677%40NO-ID-FOUND.mhonarc.org
+> > Furthermore, is there any news about the porting of the usb device
+> > driver to the usb gadget stack?
+[...]
+> I'll be better about posting progress, good or bad, as I make it.  :-)
 
-That works too.  I made a similar change in the consolidation patch.  This
-was just meant to be a very simple stop gap fix, while the consolidation
-bits bake in -mm before they go to Linus.  I prefer to leave it as is,
-only so I don't have to respin the patches, but it's not that big a deal.
-Either way, Linus should pick up one of the mips fixes.
+I also have an interest in a USB gadget driver for the Au1500; I'd be
+happy to see any notes on its status.  Also let me know if you need
+someone to test your code.  I don't have my board here yet, but once it
+arrives I can put it to use.
 
-thanks,
--chris
+Thanks,
+
+ - Kevin T.
+
 -- 
-Linux Security Modules     http://lsm.immunix.org     http://lsm.bkbits.net
+The moon is waxing gibbous, 79.4% illuminated, 10.3 days old.

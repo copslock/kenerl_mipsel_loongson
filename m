@@ -1,44 +1,51 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id HAA02418; Fri, 20 Jun 1997 07:18:59 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA04429; Fri, 20 Jun 1997 08:23:11 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id HAA13015 for linux-list; Fri, 20 Jun 1997 07:18:32 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id HAA13008 for <linux@relay.engr.SGI.COM>; Fri, 20 Jun 1997 07:18:29 -0700
-Received: from alles.intern.julia.de (loehnberg1.core.julia.de [194.221.49.2]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id HAA10451
-	for <linux@relay.engr.SGI.COM>; Fri, 20 Jun 1997 07:17:46 -0700
-	env-from (ralf@Julia.DE)
-Received: from kernel.panic.julia.de (kernel.panic.julia.de [194.221.49.153])
-	by alles.intern.julia.de (8.8.5/8.8.5) with ESMTP id PAA24018;
-	Fri, 20 Jun 1997 15:07:49 +0200
-From: Ralf Baechle <ralf@Julia.DE>
-Received: (from ralf@localhost)
-          by kernel.panic.julia.de (8.8.4/8.8.4)
-	  id QAA28016; Fri, 20 Jun 1997 16:07:36 +0200
-Message-Id: <199706201407.QAA28016@kernel.panic.julia.de>
-Subject: Re: Getting X on Linux/SGI
-To: todds@ontko.com (Todd Shrider)
-Date: Fri, 20 Jun 1997 16:07:36 +0200 (MET DST)
-Cc: linux@cthulhu.engr.sgi.com
-In-Reply-To: <Pine.LNX.3.95q.970620082252.15269C-100000@shire.ontko.com> from "Todd Shrider" at Jun 20, 97 08:42:47 am
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id IAA25253 for linux-list; Fri, 20 Jun 1997 08:22:47 -0700
+Received: from sgiger.munich.sgi.com (sgiger.munich.sgi.com [144.253.192.2]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA25210 for <linux@cthulhu.engr.sgi.com>; Fri, 20 Jun 1997 08:22:43 -0700
+Received: from knobi.munich.sgi.com by sgiger.munich.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1502/940406.SGI)
+	 id RAA17955; Fri, 20 Jun 1997 17:22:25 +0200
+Received: from knobi (localhost [127.0.0.1]) by knobi.munich.sgi.com (950413.SGI.8.6.12/951220.SGI.AUTOCF.knobi) via SMTP id RAA20084; Fri, 20 Jun 1997 17:22:20 +0200
+Message-ID: <33AAA02C.446B@munich.sgi.com>
+Date: Fri, 20 Jun 1997 17:22:20 +0200
+From: Martin Knoblauch <knobi@munich.sgi.com>
+Organization: Silicon Graphics GmbH, Am-Hochacker 3, D-85630 Grasbrunn
+X-Mailer: Mozilla 3.01SC-SGI (X11; I; IRIX 6.3 IP22)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+To: Steve Alexander <sca@refugee.engr.sgi.com>
+CC: "David S. Miller" <davem@jenolan.rutgers.edu>, lm@neteng.engr.sgi.com,
+        carlson@heaven.newport.sgi.com, linux@cthulhu.engr.sgi.com
+Subject: Re: Getting X on Linux/SGI
+References: <199706200839.BAA09420@refugee.engr.sgi.com>
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi,
-
-> that can hook up to the network, via cable or phone or whatever, browse
-> the web, ineract with the tv video feeds, receive and send mail (even if
-> only operating as a pop-client), browse news feeds, maybe even run
-> someting like Point-Cast as your "TV Screen Saver". 
+Steve Alexander wrote:
 > 
-> When I think of systems, runnig chips like the 4300i, that can do things
-> like this, I think a pared down Linux is a very justified choice to run
-> them with. I'd rather it than Windows CE! If your still thinking of Linux
+> 
+> Personally, I wouldn't buy an O2 to run Linux.
+> 
 
-The Algorithmics P4032 which I recently mentioned I'm also running Linux
-on has a R4300i.  The patches are too dirty and still based on 2.1.14,
-so they're not in the CVS tree ...
+  I personally would not buy an O2 to run IRIX either. If I
+buy one, then for running some "cool" apps that let me do
+my job (better), or have let me have some real fun. The OS
+finally involved is pretty much irrelevant (OK, this statement
+is not true for NT, or is it).
 
-I'd love to see one of the MIPS based palmtop class machines to run Linux ...
+ Which just means that whatever OS gives me more "cool" apps
+will be more useful for me.
 
-  Ralf
+ OK. Enough marketing speak.
+
+Martin
+-- 
++---------------------------------+-----------------------------------+
+|Martin Knoblauch                 | Silicon Graphics GmbH             |
+|Manager Technical Marketing      | Am Hochacker 3 - Technopark       |
+|Silicon Graphics Computer Systems| D-85630 Grasbrunn-Neukeferloh, FRG|
+|---------------------------------| Phone: (+int) 89 46108-179 or -0  |
+|http://reality.sgi.com/knobi     | Fax:   (+int) 89 46107-179        |
++---------------------------------+-----------------------------------+
+|e-mail: <knobi@munich.sgi.com>   | VM: 6-333-8197 | M/S: IDE-3150    |
++---------------------------------------------------------------------+

@@ -1,92 +1,98 @@
-Received:  by oss.sgi.com id <S305162AbQA3VR3>;
-	Sun, 30 Jan 2000 13:17:29 -0800
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:28231 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S305160AbQA3VRI>; Sun, 30 Jan 2000 13:17:08 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id NAA00333; Sun, 30 Jan 2000 13:22:34 -0800 (PST)
+Received:  by oss.sgi.com id <S305162AbQA3WgI>;
+	Sun, 30 Jan 2000 14:36:08 -0800
+Received: from deliverator.sgi.com ([204.94.214.10]:25153 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305160AbQA3Wfo>;
+	Sun, 30 Jan 2000 14:35:44 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id OAA13162; Sun, 30 Jan 2000 14:33:59 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id NAA21808
+	id OAA69675
 	for linux-list;
-	Sun, 30 Jan 2000 13:00:43 -0800 (PST)
+	Sun, 30 Jan 2000 14:24:23 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id NAA30729
+	via ESMTP id OAA75628
 	for <linux@cthulhu.engr.sgi.com>;
-	Sun, 30 Jan 2000 13:00:40 -0800 (PST)
-	mail_from (bpielock@ulink.net)
-Received: from mta1.snfc21.pbi.net (mta1.snfc21.pbi.net [206.13.28.122]) 
+	Sun, 30 Jan 2000 14:24:17 -0800 (PST)
+	mail_from (sp@is2-isnot.com)
+Received: from weck.brokersys.com (weck.brokersys.com [206.180.156.130]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id NAA04194
-	for <linux@cthulhu.engr.sgi.com>; Sun, 30 Jan 2000 13:00:40 -0800 (PST)
-	mail_from (bpielock@ulink.net)
-Received: from fay ([207.212.133.25])
- by mta1.snfc21.pbi.net (Sun Internet Mail Server sims.3.5.1999.09.16.21.57.p8)
- with SMTP id <0FP600K9S220HJ@mta1.snfc21.pbi.net> for
- linux@cthulhu.engr.sgi.com; Sun, 30 Jan 2000 12:54:03 -0800 (PST)
-Date:   Sun, 30 Jan 2000 12:52:39 -0800
-From:   Bob Pielock <bpielock@ulink.net>
-Subject: Open GL Full Release
-To:     linux@cthulhu.engr.sgi.com
-Message-id: <00c001bf6b64$76cb4d80$1985d4cf@pacbell.net>
-MIME-version: 1.0
-X-Mailer: Microsoft Outlook Express 5.00.2615.200
-Content-type: multipart/alternative;
- boundary="----=_NextPart_000_00B4_01BF6B20.E3B552E0"
-X-MSMail-Priority: Normal
-X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2615.200
-X-Priority: 3
+	via ESMTP id OAA06022
+	for <linux@cthulhu.engr.sgi.com>; Sun, 30 Jan 2000 14:24:15 -0800 (PST)
+	mail_from (sp@is2-isnot.com)
+Received: from devpc (bert-42.brokersys.com [206.180.156.106])
+	by weck.brokersys.com (8.9.3/8.9.3) with ESMTP id QAA28868;
+	Sun, 30 Jan 2000 16:24:07 -0600
+Message-Id: <4.2.2.20000130162319.00d7f6b0@mail.brokersys.com>
+X-Sender: sp@mail.brokersys.com
+X-Mailer: QUALCOMM Windows Eudora Pro Version 4.2.2 
+Date:   Sun, 30 Jan 2000 16:24:17 -0600
+To:     Bob Pielock <bpielock@ulink.net>, linux@cthulhu.engr.sgi.com
+From:   Steve Poole <sp@is2-isnot.com>
+Subject: Re: Open GL Full Release
+In-Reply-To: <00c001bf6b64$76cb4d80$1985d4cf@pacbell.net>
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="=====================_158911087==_.ALT"
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-This is a multi-part message in MIME format.
+--=====================_158911087==_.ALT
+Content-Type: text/plain; charset="us-ascii"; format=flowed
 
-------=_NextPart_000_00B4_01BF6B20.E3B552E0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+You can go to oss.sgi.com/projects/ogl-sample. You can even go to 
+www.sgi.com and  the OpenGL sample issue is front page.
 
-I hear SGI has Open Sourced all of Open GL. Can anyone confirm this? If =
-so what will this mean to SGI Linux????
-Also, at this stage what sgi system would be most compatible / easy to =
-setup to run linux on? I had an Indigo 2 IP22 system with 128megs of =
-ram, but It just wouldn't work.
+Steve...
 
--Bob
+At 12:52 PM 01/30/2000 -0800, Bob Pielock wrote:
+>I hear SGI has Open Sourced all of Open GL. Can anyone confirm this? If so 
+>what will this mean to SGI Linux????
+>Also, at this stage what sgi system would be most compatible / easy to 
+>setup to run linux on? I had an Indigo 2 IP22 system with 128megs of ram, 
+>but It just wouldn't work.
+>
+>-Bob
+>
+>
 
+Steve Poole
+Technical Therapist
+Phone 713.468.4305
+Fax   713.465.7146
 
+--=====================_158911087==_.ALT
+Content-Type: text/html; charset="us-ascii"
 
-------=_NextPart_000_00B4_01BF6B20.E3B552E0
-Content-Type: text/html;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+<html>
+You can go to oss.sgi.com/projects/ogl-sample. You can even go to
+<a href="http://www.sgi.com/" eudora="autourl">www.sgi.com</a> and&nbsp;
+the OpenGL sample issue is front page.<br>
+<br>
+Steve...<br>
+<br>
+At 12:52 PM 01/30/2000 -0800, Bob Pielock wrote:<br>
+<font size=2><blockquote type=cite cite>I hear SGI has Open Sourced all
+of Open GL. Can anyone confirm this? If so what will this mean to SGI
+Linux????</font><br>
+Also, at this stage what sgi system would be most compatible / easy to
+setup to run linux on? I had an Indigo 2 IP22 system with 128megs of ram,
+but It just wouldn't work.<br>
+&nbsp;<br>
+<font size=2>-Bob</font><br>
+&nbsp;<br>
+&nbsp;</blockquote><br>
+<div>Steve Poole</div>
+<div>Technical Therapist</div>
+<div>Phone 713.468.4305</div>
+<div>Fax&nbsp;&nbsp; 713.465.7146</div>
+</html>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD>
-<META content=3D"text/html; charset=3Diso-8859-1" =
-http-equiv=3DContent-Type>
-<META content=3D"MSHTML 5.00.2722.2800" name=3DGENERATOR>
-<STYLE></STYLE>
-</HEAD>
-<BODY bgColor=3D#ffffff>
-<DIV><FONT size=3D2>I hear SGI has Open Sourced all of Open GL. Can =
-anyone confirm=20
-this? If so what will this mean to SGI Linux????</FONT></DIV>
-<DIV><FONT size=3D2>Also, at this stage what sgi system would be most =
-compatible /=20
-easy to setup to run linux on? I had an Indigo 2 IP22 system with =
-128megs of=20
-ram, but It just wouldn't work.</FONT></DIV>
-<DIV>&nbsp;</DIV>
-<DIV><FONT size=3D2>-Bob</FONT></DIV>
-<DIV>&nbsp;</DIV>
-<DIV>&nbsp;</DIV></BODY></HTML>
-
-------=_NextPart_000_00B4_01BF6B20.E3B552E0--
+--=====================_158911087==_.ALT--

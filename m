@@ -1,67 +1,32 @@
-Received:  by oss.sgi.com id <S553798AbQJMSUn>;
-	Fri, 13 Oct 2000 11:20:43 -0700
-Received: from woody.ichilton.co.uk ([216.29.174.40]:18694 "HELO
-        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553795AbQJMSUb>;
-	Fri, 13 Oct 2000 11:20:31 -0700
-Received: by woody.ichilton.co.uk (Postfix, from userid 0)
-	id B67B97C75; Fri, 13 Oct 2000 19:20:29 +0100 (BST)
-Date:   Fri, 13 Oct 2000 19:20:29 +0100
-From:   Ian Chilton <mailinglist@ichilton.co.uk>
-To:     linux-mips@oss.sgi.com
-Subject: 2.4 Kernel Problem on Indy
-Message-ID: <20001013192029.A27003@woody.ichilton.co.uk>
+Received:  by oss.sgi.com id <S553802AbQJMT2n>;
+	Fri, 13 Oct 2000 12:28:43 -0700
+Received: from hq.fsmlabs.com ([209.155.42.197]:25864 "EHLO hq.fsmlabs.com")
+	by oss.sgi.com with ESMTP id <S553799AbQJMT23>;
+	Fri, 13 Oct 2000 12:28:29 -0700
+Received: (from cort@localhost)
+	by hq.fsmlabs.com (8.9.3/8.9.3) id NAA27923;
+	Fri, 13 Oct 2000 13:25:27 -0600
+Date:   Fri, 13 Oct 2000 13:25:27 -0600
+From:   Cort Dougan <cort@fsmlabs.com>
+To:     Ralf Baechle <ralf@oss.sgi.com>
+Cc:     Keith Owens <kaos@melbourne.sgi.com>, linux-mips@oss.sgi.com,
+        linux-mips@fnet.fr
+Subject: Re: modutils bug? 'if' clause executes incorrectly
+Message-ID: <20001013132527.D27350@hq.fsmlabs.com>
+References: <20001013135731.A30919@bacchus.dhis.org> <18457.971451839@ocs3.ocs-net> <20001013194031.D31641@bacchus.dhis.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.9i
+X-Mailer: Mutt 0.95.4us
+In-Reply-To: <20001013194031.D31641@bacchus.dhis.org>; from Ralf Baechle on Fri, Oct 13, 2000 at 07:40:31PM +0200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hello,
+} Now that explains the deja vue I had when I found this one ...
+} 
+} I'm not using modules at all which why I still have such vintage modutils
+} around ...
 
-Just compiled the CVS 2.4 kernel from this morning, with egcs 1.0.3a, glibc 2.0.6 and binutils 2.8.1 (compiled nativly)
-
-When I try to boot, it says this...something I have done wrong, or a kernel bug?
-(the cvs 2.2 one I did at the same time works though :))
-
->> boot bootp():/vmlinux root=/dev/sda5             
-130768+22320+3184+341792+48560d+4604+6816 entry: 0x8afa60d0
-Obtaining /vmlinux from server slinky                      
-  -                                  
-Exception: <vector=UTLB Miss>
-Status register: 0x10004802<CU0,IM7,IM4,IPL=???,MODE=KERNEL,EXL>
-Cause register: 0x8008<CE=0,IP8,EXC=RMISS>                      
-Exception PC: 0x88026f88, Exception RA: 0x8802a698
-exception, bad address: 0xfffffffc                
-Local I/O interrupt register 1: 0x80 <VR/GIO2>
-  Saved user regs in hex (&gpda 0xa8740e48, &_regs 0xa8741048):
-  arg: 88193f40 21 88009e24 3c                                 
-  tmp: 4800 ffff00ff a 0 881a377e fffffff7 ffffffff 88009dbc
-  sve: 881a3763 881a3763 0 0 88193f44 10004801 21 0         
-  t8 a t9 0 at 10004800 v0 fffffff8 v1 0 k1 bad11bad
-  gp 88008000 fp 88009d98 sp 88009d98 ra 8802a698   
-                                                 
-PANIC: Unexpected exception
-
-[Press reset or ENTER to restart.]
-
-
-Any ideas?
- 
-
-Thanks!
-
-
-Bye for Now,
-
-Ian
-
-
-                     \|||/ 
-                     (o o)
- /----------------ooO-(_)-Ooo----------------\
- |  Ian Chilton                              |
- |  E-Mail : ian@ichilton.co.uk              |
- \-------------------------------------------/
+Can someone send me a fixed version of the BE modutils binary?  I can give
+it a try and see if the trouble goes away.

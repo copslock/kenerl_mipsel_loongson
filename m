@@ -1,88 +1,66 @@
-Received:  by oss.sgi.com id <S305171AbQDFVcH>;
-	Thu, 6 Apr 2000 14:32:07 -0700
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:60430 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S305167AbQDFVbx>; Thu, 6 Apr 2000 14:31:53 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id OAA02664; Thu, 6 Apr 2000 14:35:40 -0700 (PDT)
+Received:  by oss.sgi.com id <S305177AbQDFXIS>;
+	Thu, 6 Apr 2000 16:08:18 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:42573 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305167AbQDFXHy>;
+	Thu, 6 Apr 2000 16:07:54 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id QAA27194; Thu, 6 Apr 2000 16:03:12 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id OAA09404
+	id QAA42702
 	for linux-list;
-	Thu, 6 Apr 2000 14:19:23 -0700 (PDT)
+	Thu, 6 Apr 2000 16:01:02 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from sgigate.sgi.com (sgigate.sgi.com [198.29.75.75])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id OAA09586
+	via ESMTP id QAA42868
 	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 6 Apr 2000 14:18:46 -0700 (PDT)
-	mail_from (flo@rfc822.org)
-Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id OAA01962
-	for <linux@cthulhu.engr.sgi.com>; Thu, 6 Apr 2000 14:18:09 -0700 (PDT)
-	mail_from (flo@rfc822.org)
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 740537FC; Thu,  6 Apr 2000 23:18:06 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 583918FC3; Thu,  6 Apr 2000 23:05:05 +0200 (CEST)
-Date:   Thu, 6 Apr 2000 23:05:05 +0200
-From:   Florian Lohoff <flo@rfc822.org>
-To:     Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
+	Thu, 6 Apr 2000 16:01:01 -0700 (PDT)
+	mail_from (ralf@oss.sgi.com)
+Received:  by lappi.waldorf-gmbh.de id <S407785AbQDFWhl>;
+	Thu, 6 Apr 2000 15:37:41 -0700
+Date:   Thu, 6 Apr 2000 15:37:41 -0700
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Florian Lohoff <flo@rfc822.org>
 Cc:     linux@cthulhu.engr.sgi.com
-Subject: Re: cause of early indigo2 crash
-Message-ID: <20000406230505.E13727@paradigm.rfc822.org>
-References: <20000405223413.B996@paradigm.rfc822.org> <Pine.GSO.4.10.10004061050160.28032-100000@dandelion.sonytel.be>
+Subject: Re: DMA memory on IP22 unavailable ?
+Message-ID: <20000406153741.C801@uni-koblenz.de>
+References: <20000406215014.E5141@paradigm.rfc822.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.3i
-In-Reply-To: <Pine.GSO.4.10.10004061050160.28032-100000@dandelion.sonytel.be>; from Geert Uytterhoeven on Thu, Apr 06, 2000 at 10:51:17AM +0200
-Organization: rfc822 - pure communication
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <20000406215014.E5141@paradigm.rfc822.org>; from flo@rfc822.org on Thu, Apr 06, 2000 at 09:50:16PM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On Thu, Apr 06, 2000 at 10:51:17AM +0200, Geert Uytterhoeven wrote:
-> What's here? Usually it tells the function where it crashes.
+On Thu, Apr 06, 2000 at 09:50:16PM +0200, Florian Lohoff wrote:
+
+> i have fixed the original problem with the bootmem initialization 
+> for ARC which didnt reserve the kernel pages as unallocatable - This
+> is already committed to CVS for the ones trying on IP22. Now i have
+> a different problems - The kernel halts on further boot with
+> no memory for SCSI DMA.
 > 
-> > Thats it - Might the first area be DMA bounce buffer only which have to
-> > be initialized in the memory controller ?
+> This is due to my indigo2 having physical memory from
+> 0x08002000 - 0x08740000
+> 0x08200000 - 0x0ff85000
 > 
-> I see these panics sometimes as well. Where does the crash happen? Please
-> lookup in System.map.
+> Now the official DMA able memory from include/asm/dma.h is
+> 
+> #define MAX_DMA_ADDRESS         (PAGE_OFFSET + 0x01000000)
+> 
+> which is 0x81000000 which is completely out of range for
+> the SGI. I now just changed this to 8f000000 but what
+> is the correct way to solve this and what is the correct
+> dma able memory (I suppose all memory is dma-able).
 
-Its in drivers/scsi/scsi_dma.c 
+This change is not acceptable for the IP22 because the Indigo2 has EISA
+slots.
 
-It happens due to no available scsi dma buffers which is caused by
-the fact that MAX_DMA_ADDRESS is below the lowest free memory segment
-(Kernel overlaps). If i increase the MAX_DMA_ADDRESS include/asm/dma.h.
+When only using the builtin SCSI hostadapter nothing should use GFP_DMA;
+on IP22 the entire memory is DMA-able.
 
-As most of the drivers dont use the MAX_DMA_ADDRESS (zone allocator should
-have made it obsolete) i suggest leaving it like it is and changing
-arch/mips/mm/init.c to:
-
-#if defined(CONFIG_ISA) || defined(CONFIG_PCI)
-        if (low < max_dma)
-                zones_size[ZONE_DMA] = low;
-        else {
-                zones_size[ZONE_DMA] = max_dma;
-                zones_size[ZONE_NORMAL] = low - max_dma;
-        }
-#else
-        zones_size[ZONE_DMA] = low;
-#endif
-
-as the dma.h comment says that this only applies to standard PC 
-dma controllers.
-
-If no one objects ill commit this.
-
-Flo
--- 
-Florian Lohoff		flo@rfc822.org		      	+49-subject-2-change
-"Technology is a constant battle between manufacturers producing bigger and
-more idiot-proof systems and nature producing bigger and better idiots."
+  Ralf

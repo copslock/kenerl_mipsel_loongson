@@ -1,40 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jan 2004 21:51:49 +0000 (GMT)
-Received: from p014.as-l005.contactel.cz ([IPv6:::ffff:212.65.198.14]:43268
-	"EHLO kopretinka") by linux-mips.org with ESMTP id <S8225269AbUASVvt>;
-	Mon, 19 Jan 2004 21:51:49 +0000
-Received: from ladis by kopretinka with local (Exim 3.36 #1 (Debian))
-	id 1AihJ6-0007n8-00; Mon, 19 Jan 2004 22:51:40 +0100
-Date: Mon, 19 Jan 2004 22:51:38 +0100
-To: Heiko Ronsdorf <hero@tango.eidologic.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jan 2004 22:33:43 +0000 (GMT)
+Received: from diamond.demon.co.uk ([IPv6:::ffff:158.152.18.76]:62188 "EHLO
+	basil.diamond.local") by linux-mips.org with ESMTP
+	id <S8224914AbUASWdm>; Mon, 19 Jan 2004 22:33:42 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by basil.diamond.local (8.12.10/8.12.10/SuSE Linux 0.7) with ESMTP id i0JMd2tO013397;
+	Mon, 19 Jan 2004 22:39:04 GMT
+From: Bob Lees <bob@diamond.demon.co.uk>
+Organization: Diamond Consulting Services Ltd
+To: Pete Popov <ppopov@mvista.com>
+Subject: Re: au1100 usb support
+Date: Mon, 19 Jan 2004 22:39:02 +0000
+User-Agent: KMail/1.5.4
 Cc: linux-mips@linux-mips.org
-Subject: Re: [PATCH][2.4.24] Indy IP22 compile fixes
-Message-ID: <20040119215138.GA29907@kopretinka>
-References: <20040119213154.A30538@tango.eidologic.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+References: <200401191806.27381.bob@diamond.demon.co.uk> <400BB003.8000605@mvista.com>
+In-Reply-To: <400BB003.8000605@mvista.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <20040119213154.A30538@tango.eidologic.de>
-User-Agent: Mutt/1.5.4i
-From: Ladislav Michl <ladis@linux-mips.org>
-Return-Path: <ladis@linux-mips.org>
+Message-Id: <200401192239.02283.bob@diamond.demon.co.uk>
+Return-Path: <bob@diamond.demon.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4048
+X-archive-position: 4049
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ladis@linux-mips.org
+X-original-sender: bob@diamond.demon.co.uk
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jan 19, 2004 at 09:31:54PM +0100, Heiko Ronsdorf wrote:
-> Hi list,
-> 
-> I was not able to compile 2.4.24 vanilla for my Indy IP22 without
-> these modifications. Please apply.
+Correct assumption.  Thank you for the pointer, unfortunately both the usb 
+non-pci and zboot patches for 2.4.24 are only rw by the owner, there is no 
+world read access.  Can this be changed, pretty please:)
 
-There's no need to apply this patch. Please wait until mips port will
-be synced again.
+Thanks
 
-	ladis
+Bob
+On Monday 19 January 2004 10:22, Pete Popov wrote:
+> Bob Lees wrote:
+> >OK I'm missing something somewhere
+> >
+> >I am trying to get the usb host controller to work on an AU1100 board (the
+> >Aurora board from DSP Design) and it isn't initialising the host
+> > controller.
+>
+> From looking at the usb host code it appears that the only interface
+> supported
+>
+> >is via pci, but this processor/board doesn't have pci.
+> >
+> >A previous kernel based on 2.4.17 had the concept of
+> > CONFIG_USB_NON_PCI_OHCI which appears to have disappeared.  This
+> > generated a pseudo pci interface.
+> >
+> >Help, any idea where I should be looking.
+>
+> I assume you're working with the linux-mips.org kernel?  Take a look at
+> the readme at ftp.linux-mips.org:/pub/linux/mips/people/ppopov.  You're
+> missing the usb non-pci patch.
+>
+> Pete
+
+-- 
+Bob Lees
+Diamond Consulting Services Ltd
+Aylesbury, Bucks, HP17 8UG
+Phone: +44 (0) 1296 747667
+Fax: +44 (0) 1296 747557
+email: bob@diamond.demon.co.uk

@@ -1,44 +1,57 @@
-Received:  by oss.sgi.com id <S553695AbRBGSNz>;
-	Wed, 7 Feb 2001 10:13:55 -0800
-Received: from sovereign.org ([209.180.91.170]:19084 "EHLO lux.homenet")
-	by oss.sgi.com with ESMTP id <S553659AbRBGSNd>;
-	Wed, 7 Feb 2001 10:13:33 -0800
-Received: (from jfree@localhost)
-	by lux.homenet (8.11.2/8.11.2/Debian 8.11.2-1) id f17IDg027176
-	for linux-mips@oss.sgi.com; Wed, 7 Feb 2001 11:13:42 -0700
-From:   Jim Freeman <jfree@sovereign.org>
-Date:   Wed, 7 Feb 2001 11:13:42 -0700
-To:     linux-mips@oss.sgi.com
-Subject: merges into stock kernel tree
-Message-ID: <20010207111342.A27046@sovereign.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.12i
+Received:  by oss.sgi.com id <S553692AbRBGSWQ>;
+	Wed, 7 Feb 2001 10:22:16 -0800
+Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:43668 "EHLO
+        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553671AbRBGSVz>;
+	Wed, 7 Feb 2001 10:21:55 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id TAA07258;
+	Wed, 7 Feb 2001 19:19:46 +0100 (MET)
+Date:   Wed, 7 Feb 2001 19:19:45 +0100 (MET)
+From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To:     Florian Lohoff <flo@rfc822.org>
+cc:     linux-mips@oss.sgi.com
+Subject: Re: NON FPU cpus - way to go
+In-Reply-To: <20010207175935.J26479@paradigm.rfc822.org>
+Message-ID: <Pine.GSO.3.96.1010207190614.1418F-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-I'm trying to get a broad sense of where mips/CVS is with respect to
-the stock upstream kernels, and what drives the merges of mips snapshots
-into the upstream kernel.
+On Wed, 7 Feb 2001, Florian Lohoff wrote:
 
-As best I can tell from the mail archives, CVS logs, and the stock
-source tree, the most recent mips merge into the main kernel was
-about June 2000, with perhaps some later mips patchlets going in
-here and there not ncessarily related to mips/CVS.
-  [ Is this at all acccurate ? ]
+> The problem with not compiling in the FPU Emulator at all means some
+> of your FPU instructions (even on FPU hardware) will fail as on some
+> specific operators the hardware decides to handle it in software. So
+> usually you would need an FPU Emulator even on FPU enabled CPUs.
 
+ I mean a full emulator.  I know that for simplicity certain actions
+required by the IEEE spec are handled in software (Alpha does it as well). 
+These bits have to be always included, of course.  I would like to save
+wasted bits for hardware that always has an FPU, though.
 
-Not having a variety of mips hw to play with, what is the functional
-status of mips as shipped in the mainstream kernel?
+> This isnt true if you decide to compile your complete userland with
+> fpu emulation.
 
-How does that status compare to the functional status of the
-current mips in cvs?
+ I'm not sure if that approach has any advantages when using an operating
+system such as Linux.  It might certainly be beneficial for firmware or
+similar dedicated software.
 
-What's on the todo list prior to another merge into the upstream?
+> I dont know if this is a generic way to go - I saw complete "full-stops"
+> on an R3912 using the ctc/cfc instructions - I'll try the autodection
+> when i come home.
 
+ We might work around pathological cases as usual -- such a behaviour
+should count as a bug (I hope IDT did have a clue here -- is there any
+original MIPS statement on how to handle FPU presence detection?).  You
+might use the i386 setup code for a reference as a large mine of bug
+workarounds. 
 
-Thanks for any info [I'll summarize any non-list replies],
-...jfree
+ Maciej
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

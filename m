@@ -1,23 +1,22 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1FAnDX13176
-	for linux-mips-outgoing; Fri, 15 Feb 2002 02:49:13 -0800
+	by oss.sgi.com (8.11.2/8.11.3) id g1FAtfr13393
+	for linux-mips-outgoing; Fri, 15 Feb 2002 02:55:41 -0800
 Received: from mx.mips.com (mx.mips.com [206.31.31.226])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1FAnA913170
-	for <linux-mips@oss.sgi.com>; Fri, 15 Feb 2002 02:49:10 -0800
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1FAtX913378;
+	Fri, 15 Feb 2002 02:55:33 -0800
 Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id BAA09499;
-	Fri, 15 Feb 2002 01:49:05 -0800 (PST)
-Received: from Ulysses (ulysses [192.168.236.13])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id BAA08013;
-	Fri, 15 Feb 2002 01:48:52 -0800 (PST)
-Message-ID: <006e01c1b606$27b1b060$0deca8c0@Ulysses>
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id BAA09559;
+	Fri, 15 Feb 2002 01:55:27 -0800 (PST)
+Received: from grendel (grendel [192.168.236.16])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id BAA08131;
+	Fri, 15 Feb 2002 01:55:22 -0800 (PST)
+Message-ID: <002b01c1b607$6afbd5c0$10eca8c0@grendel>
 From: "Kevin D. Kissell" <kevink@mips.com>
-To: "Atsushi Nemoto" <nemoto@toshiba-tops.co.jp>
-Cc: <macro@ds2.pg.gda.pl>, <mdharm@momenco.com>, <ralf@uni-koblenz.de>,
-   <linux-mips@fnet.fr>, <linux-mips@oss.sgi.com>
-References: <Pine.GSO.3.96.1020212123901.17858B-100000@delta.ds2.pg.gda.pl><010601c1b3bd$1da618e0$0deca8c0@Ulysses><20020213.102805.74755945.nemoto@toshiba-tops.co.jp> <20020215.123124.70226832.nemoto@toshiba-tops.co.jp>
-Subject: Re: [patch] linux 2.4.17: The second mb() rework (final)
-Date: Fri, 15 Feb 2002 09:30:45 +0100
+To: "Jun Sun" <jsun@mvista.com>, "Ralf Baechle" <ralf@oss.sgi.com>
+Cc: <linux-mips@oss.sgi.com>
+References: <3C6C6ACF.CAD2FFC@mvista.com> <20020215031118.B21011@dea.linux-mips.net> <20020214232030.A3601@mvista.com> <20020215003037.A3670@mvista.com>
+Subject: Re: FPU emulator unsafe for SMP?
+Date: Fri, 15 Feb 2002 10:59:09 +0100
 MIME-Version: 1.0
 Content-Type: text/plain;
 	charset="iso-8859-1"
@@ -29,21 +28,27 @@ X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4807.1700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-From: "Atsushi Nemoto" <nemoto@toshiba-tops.co.jp>:
-> Note that SYNC on TX39/H and TX39/H2 does not flush a write buffer.
-> Some operation (for example, bc0f loop) are required to flush a write
-> buffer.
+> > > > I have been chasing a FPU register corruption problem on a SMP box.  The
+> > > > curruption seems to be caused by FPU emulator code.  Is that code SMP safe? 
+> > > > If not, what are the volunerable spots?
+> > > 
+> > > In theory the fp emulation code should be MP safe as the full emulation
+> > > is only accessing it's context in the fp register set of struct
+> > > task_struct.  The 32-bit kernel's fp register switching is entirely broken
+> > > (read: close to non-existant).  Lots of brownie points for somebody to
+> > > backport that from the 64-bit kernel to the 32-bit kernel and forward
+> > > port all the FPU emu bits to the 64-bit kernel ...
+> > > 
+> > 
+> > Brownie sounds good. :-)  So what is the "fp register switching" you are 
+> > referring to?  There is set of code related to lazy fpu context switch,
+> > which seems to be working fine now.
+> >
+> 
+> Hmm, I see. The lazy fpu context switch code is not SMP safe.
+> I see fishy things like "last_task_used_math" etc...
 
-That is, I would say, a bug in the TX39 implementation of SYNC.
-The specification is states that all stores prior to the SYNC must 
-complete before any memory ops after the sync, and that the 
-definition of a store completing is that all stored values be 
-"visible to every other processor in the system", which pretty 
-clearly implies that the write buffers must be flushed.
+What, you mean "last_task_used_math" isn't allocated in a
+processor-specific page of kseg3???    ;-)
 
-So I think that the Linux code was perfectly correct in considering
-the TX39 to be without SYNC, just as a Vr4101 must be
-consdered to be without LL/SC.  They decode the instructions,
-but they don't actually implement them as specified.
-
-            Kevin K. 
+            Kevin K.

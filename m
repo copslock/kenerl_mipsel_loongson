@@ -1,49 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Dec 2002 02:39:41 +0000 (GMT)
-Received: from p508B7C81.dip.t-dialin.net ([80.139.124.129]:51111 "EHLO
-	dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225260AbSLLCjk>; Thu, 12 Dec 2002 02:39:40 +0000
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id gBC2X7B29165;
-	Thu, 12 Dec 2002 03:33:07 +0100
-Date: Thu, 12 Dec 2002 03:33:07 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Alan Cox <alan@lxorguk.ukuu.org.uk>
-Cc: Vivien Chappelier <vivienc@nerim.net>, linux-mips@linux-mips.org,
-	Ilya Volynets <ilya@theIlya.com>
-Subject: Re: [PATCH 2.5] SGI O2 framebuffer driver
-Message-ID: <20021212033307.C22987@linux-mips.org>
-References: <Pine.LNX.4.21.0212120004330.2300-100000@melkor> <1039656676.18587.63.camel@irongate.swansea.linux.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Dec 2002 02:57:02 +0000 (GMT)
+Received: from zok.SGI.COM ([204.94.215.101]:52196 "EHLO zok.sgi.com")
+	by linux-mips.org with ESMTP id <S8225260AbSLLC5B>;
+	Thu, 12 Dec 2002 02:57:01 +0000
+Received: from larry.melbourne.sgi.com (larry.melbourne.sgi.com [134.14.52.130])
+	by zok.sgi.com (8.12.2/8.12.2/linux-outbound_gateway-1.2) with SMTP id gBC21RKp022782;
+	Wed, 11 Dec 2002 18:01:31 -0800
+Received: from kao2.melbourne.sgi.com (kao2.melbourne.sgi.com [134.14.55.180]) by larry.melbourne.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id NAA25081; Thu, 12 Dec 2002 13:56:46 +1100
+Received: by kao2.melbourne.sgi.com (Postfix, from userid 16331)
+	id D22FD300087; Thu, 12 Dec 2002 13:56:43 +1100 (EST)
+Received: from kao2.melbourne.sgi.com (localhost [127.0.0.1])
+	by kao2.melbourne.sgi.com (Postfix) with ESMTP
+	id 48E4B85; Thu, 12 Dec 2002 13:56:43 +1100 (EST)
+X-Mailer: exmh version 2.4 06/23/2000 with nmh-1.0.4
+From: Keith Owens <kaos@ocs.com.au>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Jun Sun <jsun@mvista.com>, linux-mips@linux-mips.org
+Subject: Re: IDE module problem 
+In-reply-to: Your message of "Wed, 11 Dec 2002 18:20:30 BST."
+             <Pine.GSO.3.96.1021211181032.22157L-100000@delta.ds2.pg.gda.pl> 
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <1039656676.18587.63.camel@irongate.swansea.linux.org.uk>; from alan@lxorguk.ukuu.org.uk on Thu, Dec 12, 2002 at 01:31:16AM +0000
-Return-Path: <ralf@linux-mips.org>
+Date: Thu, 12 Dec 2002 13:56:37 +1100
+Message-ID: <25550.1039661797@kao2.melbourne.sgi.com>
+Return-Path: <kaos@ocs.com.au>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 876
+X-archive-position: 877
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: kaos@ocs.com.au
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Dec 12, 2002 at 01:31:16AM +0000, Alan Cox wrote:
+On Wed, 11 Dec 2002 18:20:30 +0100 (MET), 
+"Maciej W. Rozycki" <macro@ds2.pg.gda.pl> wrote:
+>On Wed, 11 Dec 2002, Jun Sun wrote:
+>
+>> > > This is because arch/mips/lib/Makefile says:
+>> > > 
+>> > > obj-$(CONFIG_IDE)               += ide-std.o ide-no.o
+>> > [...]
+>> > > 3) use some smart trick in Makefile so that we include those
+>> > > two files only if CONFIG_IDE is 'y' or 'm'.  (How?)
+>> > 
+>> >  obj-$(CONFIG_IDE_MODULE)
+>> 
+>> This does not work.  Apparently, CONFIG_IDE_MODULE is not created 
+>> for makefile part.
+>
+> Indeed -- my fault.  Variables such as $(CONFIG_IDE) are four-state and
+>for the module case they are simply set to "m".  But then you can use
+>"ifeq ($(CONFIG_IDE),m)".  Another approach is to invent an additional
+>variable automatically set to "y" whenever CONFIG_IDE is enabled. 
 
-> On Wed, 2002-12-11 at 23:41, Vivien Chappelier wrote:
-> > linear framebuffer (up to 8MB with 64kB granularity). I'm then remapping
-> > all those pages to one virtual region obtained from get_vm_area so that
-> > 1. caching attributes can be set to cacheable write-through no WA
-> 
-> Ick. The framebuffer can't handle cached and write barriers ?
+obj-$(subst m,y,$(CONFIG_IDE)) += ide-std.o ide-no.o
 
-The O2 is non-cache coherent.  So with the fairly large write-back second
-level caches enabled frame buffer write could potencially be delayed
-indefinately but in any case quite long.  Frame buffers are usually only
-written to, so the cache mode "uncached accelerated" seems preferable
-but only the R10000 provides this mode, so for the R5000 write-though no
-write allocation is the next best solution.
-
-  Ralf
+ide-std.o ide-no.o are built in if CONFIG_IDE is m or y.

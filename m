@@ -1,64 +1,48 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f57JSBO08800
-	for linux-mips-outgoing; Thu, 7 Jun 2001 12:28:11 -0700
-Received: from sgi.com (sgi.SGI.COM [192.48.153.1])
-	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f57JSAh08796
-	for <linux-mips@oss.sgi.com>; Thu, 7 Jun 2001 12:28:10 -0700
-Received: from nevyn.them.org (gateway-1237.mvista.com [12.44.186.158]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id MAA04848
-	for <linux-mips@oss.sgi.com>; Thu, 7 Jun 2001 12:28:09 -0700 (PDT)
-	mail_from (drow@nevyn.them.org)
-Received: from drow by nevyn.them.org with local (Exim 3.22 #1 (Debian))
-	id 1585Hp-0006Hp-00; Thu, 07 Jun 2001 12:17:41 -0700
-Date: Thu, 7 Jun 2001 12:17:41 -0700
-From: Daniel Jacobowitz <dan@debian.org>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: "H . J . Lu" <hjl@lucon.org>, linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.3/8.11.3) id f57JbSU10405
+	for linux-mips-outgoing; Thu, 7 Jun 2001 12:37:28 -0700
+Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f57JbIh10381
+	for <linux-mips@oss.sgi.com>; Thu, 7 Jun 2001 12:37:26 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id VAA23773;
+	Thu, 7 Jun 2001 21:35:57 +0200 (MET DST)
+Date: Thu, 7 Jun 2001 21:35:57 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Daniel Jacobowitz <dan@debian.org>
+cc: "H . J . Lu" <hjl@lucon.org>, linux-mips@oss.sgi.com
 Subject: Re: New toolchain for Linux/mips
-Message-ID: <20010607121741.A24155@nevyn.them.org>
-References: <20010606132402.A27901@nevyn.them.org> <Pine.GSO.3.96.1010607123246.4624B-100000@delta.ds2.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.16i
-In-Reply-To: <Pine.GSO.3.96.1010607123246.4624B-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Thu, Jun 07, 2001 at 12:37:27PM +0200
+In-Reply-To: <20010607121741.A24155@nevyn.them.org>
+Message-ID: <Pine.GSO.3.96.1010607213008.16852F-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, Jun 07, 2001 at 12:37:27PM +0200, Maciej W. Rozycki wrote:
-> On Wed, 6 Jun 2001, Daniel Jacobowitz wrote:
+On Thu, 7 Jun 2001, Daniel Jacobowitz wrote:
+
+> >  This happened to me once.  Otherwise, it looks like gdb doesn't recognize
+> > a breakpoint for some reason -- possibly it places it at a wrong address. 
+> > It shouldn't be difficult to debug -- you get information of the address
+> > the trap happened. 
 > 
-> > >  Make sure your kernel is flushing the icache right. 
-> > 
-> > Hmm, thanks, I'll check.  I don't think that's it, though.
+> Wouldn't you hope?  No such luck.
 > 
->  This happened to me once.  Otherwise, it looks like gdb doesn't recognize
-> a breakpoint for some reason -- possibly it places it at a wrong address. 
-> It shouldn't be difficult to debug -- you get information of the address
-> the trap happened. 
+> Program received signal SIGTRAP, Trace/breakpoint trap.
+> [Switching to Thread 1024 (LWP 89)]
+> 0x00000000 in ?? ()
 
-Wouldn't you hope?  No such luck.
+ Then patch your kernel to display the address.  It's trivial.  See
+do_bp() in arch/mips/kernel/traps.c. 
 
-Program received signal SIGTRAP, Trace/breakpoint trap.
-[Switching to Thread 1024 (LWP 89)]
-0x00000000 in ?? ()
+> I blame the threads handling, which I'm only about half through
+> debugging.
 
-I blame the threads handling, which I'm only about half through
-debugging.
-
-> > Nope.  It's based mostly on the same 4.17 patch from David Miller, and
-> > some bits from Ralf, all marked as assigned to the FSF (though I'm not
-> > sure if that ever actually happened); I'll straighten out copyright
-> > once I've got the whole thing done.
-> 
->  You need to contact David, then.
-
-Yep, I'm going to do that.
+ Ah, threads...  They might be completely non-fuctional on MIPS/Linux. 
+I've never run threaded programs on MIPS/Linux, but such trivial users as
+ls appear to work.
 
 -- 
-Daniel Jacobowitz                           Debian GNU/Linux Developer
-Monta Vista Software                              Debian Security Team
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

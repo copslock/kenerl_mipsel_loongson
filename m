@@ -1,43 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jul 2003 12:17:06 +0100 (BST)
-Received: from mail2.sonytel.be ([IPv6:::ffff:195.0.45.172]:19658 "EHLO
-	witte.sonytel.be") by linux-mips.org with ESMTP id <S8225201AbTGQLRD>;
-	Thu, 17 Jul 2003 12:17:03 +0100
-Received: from vervain.sonytel.be (localhost [127.0.0.1])
-	by witte.sonytel.be (8.12.9/8.12.9) with ESMTP id h6HBGv1W026447;
-	Thu, 17 Jul 2003 13:16:57 +0200 (MEST)
-Date: Thu, 17 Jul 2003 13:16:57 +0200 (MEST)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: Liam Girdwood <liam.girdwood@wolfsonmicro.com>
-cc: linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] 2.4 Alchemy Power management.
-In-Reply-To: <1058439479.10765.1661.camel@caernarfon>
-Message-ID: <Pine.GSO.4.21.0307171316420.10372-100000@vervain.sonytel.be>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <Geert.Uytterhoeven@sonycom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jul 2003 13:03:29 +0100 (BST)
+Received: from mail.convergence.de ([IPv6:::ffff:212.84.236.4]:62907 "EHLO
+	mail.convergence.de") by linux-mips.org with ESMTP
+	id <S8225201AbTGQMD1>; Thu, 17 Jul 2003 13:03:27 +0100
+Received: from [10.1.1.146] (helo=heck)
+	by mail.convergence.de with esmtp (TLSv1:DES-CBC3-SHA:168)
+	(Exim 4.14)
+	id 19d7Tq-0001Vu-8p
+	for linux-mips@linux-mips.org; Thu, 17 Jul 2003 14:03:26 +0200
+Received: from js by heck with local (Exim 3.35 #1 (Debian))
+	id 19d7Tn-0001qV-00
+	for <linux-mips@linux-mips.org>; Thu, 17 Jul 2003 14:03:23 +0200
+Date: Thu, 17 Jul 2003 14:03:22 +0200
+From: Johannes Stezenbach <js@convergence.de>
+To: linux-mips@linux-mips.org
+Subject: 2.4: typo in system.h / __save_and_sti
+Message-ID: <20030717120322.GA6113@convergence.de>
+Mail-Followup-To: Johannes Stezenbach <js@convergence.de>,
+	linux-mips@linux-mips.org
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.4i
+Return-Path: <js@convergence.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2816
+X-archive-position: 2817
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: js@convergence.de
 Precedence: bulk
 X-list: linux-mips
 
-On 17 Jul 2003, Liam Girdwood wrote:
-> This patch fixes some link errors with alchemy power management.
+Hi,
 
-Can you please use `diff -u' in the future? Thx!
+I noticed a typo in the (apparently unused) __save_and_sti() macro:
 
-Gr{oetje,eeting}s,
+include/asm/system.h (both mips and mips64, linux_2_4 branch):
 
-						Geert
+#define __save_and_sti(x)                                               \
+__asm__ __volatile__(                                                   \
+        "__save_and_cli\t%0"                                            \
+                    ^^^
+        : "=r" (x)                                                      \
+        : /* no inputs */                                               \
+        : "memory")
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+Johannes

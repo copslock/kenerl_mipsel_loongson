@@ -1,41 +1,64 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBJAeZW05220
-	for linux-mips-outgoing; Wed, 19 Dec 2001 02:40:35 -0800
+	by oss.sgi.com (8.11.2/8.11.3) id fBJAxhd05753
+	for linux-mips-outgoing; Wed, 19 Dec 2001 02:59:43 -0800
 Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBJAeSo05217;
-	Wed, 19 Dec 2001 02:40:28 -0800
-Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.27])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id KAA12872;
-	Wed, 19 Dec 2001 10:40:07 +0100 (MET)
-Date: Wed, 19 Dec 2001 10:40:07 +0100 (MET)
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBJAxbo05750
+	for <linux-mips@oss.sgi.com>; Wed, 19 Dec 2001 02:59:37 -0800
+Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.26])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id KAA13835;
+	Wed, 19 Dec 2001 10:52:47 +0100 (MET)
+Date: Wed, 19 Dec 2001 10:52:47 +0100 (MET)
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: Jun Sun <jsun@mvista.com>
-cc: jim@jtan.com, Ralf Baechle <ralf@oss.sgi.com>,
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+cc: Jun Sun <jsun@mvista.com>, jim@jtan.com,
    Linux/MIPS Development <linux-mips@oss.sgi.com>
-Subject: Re: [ppopov@mvista.com: Re: [Linux-mips-kernel]ioremap & ISA]
-In-Reply-To: <3C1F868C.492E155B@mvista.com>
-Message-ID: <Pine.GSO.4.21.0112191034450.28694-100000@vervain.sonytel.be>
+Subject: Re: ISA
+In-Reply-To: <Pine.GSO.3.96.1011219031430.16267D-100000@delta.ds2.pg.gda.pl>
+Message-ID: <Pine.GSO.4.21.0112191046380.28694-100000@vervain.sonytel.be>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, 18 Dec 2001, Jun Sun wrote:
-> It has nothing to isa_slot_offset here.  I don't know about the history of
-> isa_slot_offset, but it appears to be faint effort to allow the access to what
-> is called "ISA memory" space on PC.  This region, if it ever exists, should
-> never be a separate region on a MIPS machine.  It should just be the beginning
-> part of PCI Memory space.
+On Wed, 19 Dec 2001, Maciej W. Rozycki wrote:
+> On Tue, 18 Dec 2001, Jun Sun wrote:
+> > Overall, I still feel using isa_xxx() macros in the driver seems like a
+> > cleaner solution.  That essentially treats ISA memory space as a separate
+> 
+>  It depends on what you want to do.  For one isa_xxx() functions/macros
+> do not permit to control caching.
+> 
+> > space.  The ioremap/readb/writeb approach tries to lump ISA memory and PCI
+> > memory space together but in fact we still have treat them differently (based
+> > on whether the address is greater than 16MB, which is a little hackish.)
 
-It's indeed the beginning of PCI memory space, but only when viewed from the
-viewpoint of the PCI bus itself, not necessarily from the viewpoint of the CPU.
+You must _not_ use readb()/writeb() and friends with ISA memory space!
+You must use isa_readb()/isa_writeb() and friends!
 
-On ia32 PCs it is, but not on many PPC boxes. And I guess on some MIPS boxes as
-well.
+>  The problem is a lone address doesn't really tell us what bus is it
+> expected to come from.  And practically there are few systems having
+> unrelated I/O buses implemented.  I don't know if any of them is supported
+> by Linux.  PCI and ISA are historically related, i.e. ISA is usually
+> accessed via a PCI-ISA bridge with a hardwired address mapping.  I don't
+> know any system doing it differently -- even Alphas do it this way.
+> 
+>  The *_resource() functions might help as you may refer to particular
+> resources with them, but I don't think a generic way for a multi-bus
+> system was defined.  Maybe the problem needs to be discussed at
+> linux-kernel.  It's generic after all. 
 
-> Ralf, we should just delete isa_slot_offset to avoid any further confusions.
+The problem is that ISA memory space is only half-assed considered separate:
+you have seperate isa_readb()/isa_writeb() and friends, but not the
+corresponding isa_io{re,un}map() and isa_{request,release}_mem_region().
 
-Ugh...
+So while isa_readb()/isa_writeb() and friends can add isa_slot_offset (or
+how-is-it-called on your random architecture), io{re,un}map() and
+{request,release}_mem_region() can't.
+
+For I/O accesses (inb() and friends), there's no problem, since ISA I/O is a
+real subset of PCI I/O.
+
+But for memory accesses, ISA memory space is not necessarily at `address 0'.
 
 Gr{oetje,eeting}s,
 

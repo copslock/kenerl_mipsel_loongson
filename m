@@ -1,72 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Oct 2003 01:26:20 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:33011 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8225531AbTJVA0R>;
-	Wed, 22 Oct 2003 01:26:17 +0100
-Received: from zeus.mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id RAA15707;
-	Tue, 21 Oct 2003 17:22:14 -0700
-Subject: Re: Au1500 kernel?
-From: Pete Popov <ppopov@mvista.com>
-To: Greg Herlein <gherlein@herlein.com>
-Cc: Linux MIPS mailing list <linux-mips@linux-mips.org>
-In-Reply-To: <Pine.LNX.4.44.0310211348290.3164-200000@io.herlein.com>
-References: <Pine.LNX.4.44.0310211348290.3164-200000@io.herlein.com>
-Content-Type: text/plain
-Organization: MontaVista Software
-Message-Id: <1066782264.21027.164.camel@zeus.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Oct 2003 02:13:39 +0100 (BST)
+Received: from p508B7013.dip.t-dialin.net ([IPv6:::ffff:80.139.112.19]:5796
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225531AbTJVBNh>; Wed, 22 Oct 2003 02:13:37 +0100
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h9M1DSNK005469;
+	Wed, 22 Oct 2003 03:13:28 +0200
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h9M1DOrI005462;
+	Wed, 22 Oct 2003 03:13:24 +0200
+Date: Wed, 22 Oct 2003 03:13:24 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Matthew Wilcox <willy@debian.org>
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Jeff Dike <jdike@karaya.com>, linux-mips@linux-mips.org,
+	user-mode-linux-devel@lists.sourceforge.net
+Subject: Re: asm/smplock.h is dead
+Message-ID: <20031022011324.GC2609@linux-mips.org>
+References: <20031021230932.GM18370@parcelfarce.linux.theplanet.co.uk>
 Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.2.4 
-Date: 21 Oct 2003 17:24:24 -0700
-Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@mvista.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20031021230932.GM18370@parcelfarce.linux.theplanet.co.uk>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3473
+X-archive-position: 3474
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@mvista.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 2003-10-21 at 14:53, Greg Herlein wrote:
-> I grabbed the latest CVS code from linux-mips.org (2.6.0-test8) 
-> and tried to compile it with my cross-comiler environment - which 
-> is the toolchain that came with my Pb1500 development board that 
-> uses the Au1500 SOC chip.  My gcc is:
-> 
-> [gherlein@io linux]$ 
-> /usr/local/comp/mips-elf/gcc-3.2/bin/mips-elf-gcc -v
-> Reading specs from 
-> /usr/local/comp/mips-elf/gcc-3.2/lib/gcc-lib/mips-elf/3.2/specs
-> Configured with: ../gcc-3.2/configure --target=mips-elf 
-> --with-gnu-as --with-gnu-ld --with-newlib 
-> --prefix=/usr/local/comp/mips-elf/gcc-3.2 
-> --enable-languages=c,c++
-> Thread model: single
-> gcc version 3.2
-> 
-> But the lernel is failing at:
-> 
->   CC      arch/mips/kernel/offset.s
-> In file included from include/linux/signal.h:7,
->                  from include/linux/sched.h:25,
->                  from arch/mips/kernel/offset.c:13:
-> include/asm/siginfo.h:83: flexible array member not at end of 
-> struct
-> make[1]: *** [arch/mips/kernel/offset.s] Error 1
-> make: *** [arch/mips/kernel/offset.s] Error 2
-> 
-> which smells like some new gcc'ism that is causing the issue.  Is 
-> anyone else seeing this?  Is there something I am doing wrong? 
-> Advice?  Suggestions?
+On Wed, Oct 22, 2003 at 12:09:32AM +0100, Matthew Wilcox wrote:
 
-I think I had the same problem, if I remember correctly, so I used the
-2.95 compiler on linux-mips.org.
+> Can you delete next time you merge?  Thanks.
+> 
+> $ find -type f |xargs grep smplock.h      
+> ./arch/mips/sibyte/sb1250/bcm1250_tbprof.c:#include <asm/smplock.h>
+> ./include/asm-h8300/smplock.h: * <asm/smplock.h>
+> ./include/asm-um/smplock.h:#include "asm/arch/smplock.h"
+> $ find -name smplock.h
+> ./include/asm-h8300/smplock.h
+> ./include/asm-mips/smplock.h
+> ./include/asm-um/smplock.h
+> 
+> (the sibyte driver can just lose this line.  it doesn't do any SMP locking)
 
-BTW, only serial console, ethernet, and MTD have been updated in 2.6. I
-haven't had time for anything else yet, including the 36 bit address
-support.
+Thanks, zapped on MIPS.
 
-Pete
+  Ralf

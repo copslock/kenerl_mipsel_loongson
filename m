@@ -1,49 +1,59 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1L6ajA10190
-	for linux-mips-outgoing; Wed, 20 Feb 2002 22:36:45 -0800
-Received: from orion.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1L6ad910186;
-	Wed, 20 Feb 2002 22:36:39 -0800
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.9.3/8.9.3) id VAA08957;
-	Wed, 20 Feb 2002 21:35:57 -0800
-Date: Wed, 20 Feb 2002 21:35:57 -0800
-From: Jun Sun <jsun@mvista.com>
-To: Matthew Dharm <mdharm@momenco.com>
-Cc: Ralf Baechle <ralf@oss.sgi.com>, Linux-MIPS <linux-mips@oss.sgi.com>
-Subject: Re: set_io_port_base()?
-Message-ID: <20020220213557.A8883@mvista.com>
-References: <3C745B0B.84203D3F@mvista.com> <NEBBLJGMNKKEEMNLHGAIKEKFCFAA.mdharm@momenco.com>
+	by oss.sgi.com (8.11.2/8.11.3) id g1LCb3825969
+	for linux-mips-outgoing; Thu, 21 Feb 2002 04:37:03 -0800
+Received: from topsns.toshiba-tops.co.jp (topsns.toshiba-tops.co.jp [202.230.225.5])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1LCaw925940
+	for <linux-mips@oss.sgi.com>; Thu, 21 Feb 2002 04:36:58 -0800
+Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 21 Feb 2002 11:36:58 UT
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP
+	id 6087BB46B; Thu, 21 Feb 2002 20:36:56 +0900 (JST)
+Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
+	id UAA70710; Thu, 21 Feb 2002 20:36:56 +0900 (JST)
+Date: Thu, 21 Feb 2002 20:41:20 +0900 (JST)
+Message-Id: <20020221.204120.102764790.nemoto@toshiba-tops.co.jp>
+To: macro@ds2.pg.gda.pl
+Cc: kevink@mips.com, mdharm@momenco.com, ralf@uni-koblenz.de,
+   linux-mips@fnet.fr, linux-mips@oss.sgi.com
+Subject: Re: [patch] linux 2.4.17: The second mb() rework (final)
+From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
+In-Reply-To: <Pine.GSO.3.96.1020215125744.29773B-100000@delta.ds2.pg.gda.pl>
+References: <20020215.123124.70226832.nemoto@toshiba-tops.co.jp>
+	<Pine.GSO.3.96.1020215125744.29773B-100000@delta.ds2.pg.gda.pl>
+X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
+X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
+Organization: TOSHIBA Personal Computer System Corporation
+X-Mailer: Mew version 2.1 on Emacs 20.7 / Mule 4.1 (AOI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <NEBBLJGMNKKEEMNLHGAIKEKFCFAA.mdharm@momenco.com>; from mdharm@momenco.com on Wed, Feb 20, 2002 at 06:48:50PM -0800
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, Feb 20, 2002 at 06:48:50PM -0800, Matthew Dharm wrote:
-> But isn't that what all the complicated logic in ioremap() is for?  
+>>>>> On Fri, 15 Feb 2002 13:08:20 +0100 (MET), "Maciej W. Rozycki" <macro@ds2.pg.gda.pl> said:
+macro> IOW, two consecutive writes separated by a "sync" need not
+macro> imply a write-back, but as soon as a read happens a preceding
+macro> write-back is a must.
 
-Not exactly.
+TX39 satisfy this on uncached load/store.  "sync" does not flush a
+write buffer, but any uncached load are executed AFTER completion of
+pending uncached store.  On combination of cached and uncached
+operation, TX39 does not satisfy this order.
 
-Here is the whole picture:
+macro>  It sounds weird: it looks like "sync" is useless and basically
+macro> a "nop".
 
-drivers do inb(delta)/outb(delta)
-  -> translated to an virtual address (mips_io_port_base + delta)
-     -> mapped into (GT_IO_BASE + delta) physical addr
-	-> Bingo! you got the devices.
+TX39 has a function called "non-blocking load".  This function is
+described on chapter 4.4 of TX39/H2 manual.  "sync" operation is
+meaningful with this function.
 
-Here your goal is to make the drivers that do inb()/outb() happy (i.e.,
-be able to reuse them without modification)  If you only use drivers
-that directly access memory (such as drivers/net/nec_korva.c on 
-linux-mips.sf.net), then you don't even have to set mips_io_port_base at all.
+macro> If this is the case the processors need their own wbflush()
+macro> implementation.  Can you point to specific chapters of
+macro> specifications that document it?
 
-The ioremap() comes into place because by default you can not
-set a mips_io_port_base value in kseg1 range on ocelot (it is at 0x20000000
-in physical addr space).  Therefore you do a ioremap(), blah blah as explained
-above.
+Chapter 4.9.4 in TX39/H2 Japanese manual describes write buffer.  But
+I could not find it in the English manual...
 
-Someday I should finish the PCI chapter on my porting guide ...
-
-Jun
+---
+Atsushi Nemoto

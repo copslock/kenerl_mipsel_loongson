@@ -1,135 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Oct 2004 09:47:38 +0100 (BST)
-Received: from lug-owl.de ([IPv6:::ffff:195.71.106.12]:17066 "EHLO lug-owl.de")
-	by linux-mips.org with ESMTP id <S8225073AbUJUIrb>;
-	Thu, 21 Oct 2004 09:47:31 +0100
-Received: by lug-owl.de (Postfix, from userid 1001)
-	id 47C794AB5E; Thu, 21 Oct 2004 10:47:29 +0200 (CEST)
-Date: Thu, 21 Oct 2004 10:47:29 +0200
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To: "David S. Miller" <davem@davemloft.net>
-Cc: Andi Kleen <ak@suse.de>, dhowells@redhat.com, torvalds@osdl.org,
-	akpm@osdl.org, linux-kernel@vger.kernel.org, discuss@x86-64.org,
-	sparclinux@vger.kernel.org, linuxppc64-dev@ozlabs.org,
-	linux-m68k@vger.kernel.org, linux-sh@m17n.org,
-	linux-arm-kernel@lists.arm.linux.org.uk,
-	parisc-linux@parisc-linux.org, linux-ia64@vger.kernel.org,
-	linux-390@vm.marist.edu, linux-mips@linux-mips.org
-Subject: Re: [discuss] Re: [PATCH] Add key management syscalls to non-i386 archs
-Message-ID: <20041021084728.GA5033@lug-owl.de>
-Mail-Followup-To: "David S. Miller" <davem@davemloft.net>,
-	Andi Kleen <ak@suse.de>, dhowells@redhat.com, torvalds@osdl.org,
-	akpm@osdl.org, linux-kernel@vger.kernel.org, discuss@x86-64.org,
-	sparclinux@vger.kernel.org, linuxppc64-dev@ozlabs.org,
-	linux-m68k@vger.kernel.org, linux-sh@m17n.org,
-	linux-arm-kernel@lists.arm.linux.org.uk,
-	parisc-linux@parisc-linux.org, linux-ia64@vger.kernel.org,
-	linux-390@vm.marist.edu, linux-mips@linux-mips.org
-References: <3506.1098283455@redhat.com> <20041020150149.7be06d6d.davem@davemloft.net> <20041020225625.GD995@wotan.suse.de> <20041020160450.0914270b.davem@davemloft.net>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="bpnyAEUPSyO7P1Gm"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Oct 2004 10:15:59 +0100 (BST)
+Received: from [IPv6:::ffff:145.253.187.134] ([IPv6:::ffff:145.253.187.134]:14806
+	"EHLO mail01.baslerweb.com") by linux-mips.org with ESMTP
+	id <S8225200AbUJUJPy>; Thu, 21 Oct 2004 10:15:54 +0100
+Received: from mail01.baslerweb.com (localhost.localdomain [127.0.0.1])
+	by localhost.domain.tld (Basler) with ESMTP
+	id 2C59513402B; Thu, 21 Oct 2004 11:15:11 +0200 (CEST)
+Received: from comm1.baslerweb.com (unknown [172.16.13.2])
+	by mail01.baslerweb.com (Basler) with ESMTP
+	id 2850313402A; Thu, 21 Oct 2004 11:15:11 +0200 (CEST)
+Received: from vclinux-1.basler.corp (localhost [172.16.13.253]) by comm1.baslerweb.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2657.72)
+	id 4YRPNKHP; Thu, 21 Oct 2004 11:15:51 +0200
+From: Thomas Koeller <thomas.koeller@baslerweb.com>
+Organization: Basler AG
+To: linux-mips@linux-mips.org
+Subject: Re: CVS Update@-mips.org: linux
+Date: Thu, 21 Oct 2004 11:19:50 +0200
+User-Agent: KMail/1.6.2
+Cc: Ralf Baechle <ralf@linux-mips.org>
+References: <20041020023431Z98555-1751+175@linux-mips.org> <200410201858.40582.thomas.koeller@baslerweb.com>
+In-Reply-To: <200410201858.40582.thomas.koeller@baslerweb.com>
+MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20041020160450.0914270b.davem@davemloft.net>
-X-Operating-System: Linux mail 2.6.8-rc4 
-X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
-X-gpg-key: wwwkeys.de.pgp.net
-User-Agent: Mutt/1.5.6i
-Return-Path: <jbglaw@lug-owl.de>
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+Message-Id: <200410211119.50747.thomas.koeller@baslerweb.com>
+Return-Path: <thomas.koeller@baslerweb.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6159
+X-archive-position: 6160
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jbglaw@lug-owl.de
+X-original-sender: thomas.koeller@baslerweb.com
 Precedence: bulk
 X-list: linux-mips
 
+I have been consulting with PMC-Sierra and received confirmation that
+the problems described under errata items 2.15 and 2.16 still exist
+with rev. 1.2 silicon.
 
---bpnyAEUPSyO7P1Gm
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thomas
 
-On Wed, 2004-10-20 16:04:50 -0700, David S. Miller <davem@davemloft.net>
-wrote in message <20041020160450.0914270b.davem@davemloft.net>:
-> On Thu, 21 Oct 2004 00:56:25 +0200
-> Andi Kleen <ak@suse.de> wrote:
 
-*VAX hacker's hat on*
 
-> I disagree quite strongly.  One major frustration for users of
-> non-x86 platforms is that functionality is often missing for some
-> time that we can make trivial to keep in sync.
+On Wednesday 20 October 2004 18:58, Thomas Koeller wrote:
+> On Wednesday 20 October 2004 04:34, ralf@linux-mips.org wrote:
+> > CVSROOT:	/home/cvs
+> > Module name:	linux
+> > Changes by:	ralf@ftp.linux-mips.org	04/10/20 03:34:25
+> >
+> > Modified files:
+> > 	include/asm-mips: pgtable-bits.h
+> >
+> > Log message:
+> > 	Switch RM9000 to caching mode 5.  Note this requires silicon revision
+> > 	1.2 of `Titan'.  Unless somebody really needs backwards compatibility
+> > 	with older versions and yells really loud I won't support backward
+> > 	compatibility.
+>
+> Are you referring to items 2.15 and 2.16 described in the
+> RM9x2x Silicon Revision Errata 1.1? In case you are, these are still
+> present in the errata sheet for rev. 1.2. Could you please clarify this
+> point, otherwise I cannot decide whether I need backwards compatibility or
+> not.
+>
+> thanks,
+> Thomas
 
-Full ACK.
+-- 
+--------------------------------------------------
 
-> Simply put, if you're not watching the tree in painstaking detail
-> every day, you miss all of these enhancements.
+Thomas Koeller, Software Development
+Basler Vision Technologies
 
-Right; and these missing enhancements will cause extra-pain when they're
-used some time later from core code. That is, you missed the feature
-while it was discusses/accepted and need to put it in place later on. So
-you've got to do extra searching etc.
+thomas dot koeller at baslerweb dot com
+http://www.baslerweb.com
 
-> The knowledge should come from the person putting the changes into
-> the tree, therefore it gets done once and this makes it so that
-> the other platform maintainers will find out about it automatically
-> next time they update their tree.
-
-Here's my proposal:
-
-$ mkdir ./Documentation/new_enhancements_to_implement
-$ cat ./Documentation/new_enhancements_to_implement/new_key_syscalls << EOF
-> Dear Architecture Maintailers,
->=20
-> please add these four new cryptographic key functions to your syscall
-> table. It's quite easy; just extend the ./include/arch-xxx/unistd.h
-> for four new defines and then add them to your ./arch/xxx/kernel/entry.S
-> file. For reference, here's my i386 patch doing this:
->=20
-> diff -Nurp
-> --- path-old/to/file/one
-> +++ path-new/to/file/one
->  text
-> -del
-> +add
->  more text
->=20
->=20
-> Thanks, your keychain hacker:-)
-> EOF
-$
-
-This way, all arch maintainers just *see* what needs to be done and
-get a small introduction on how to do that. I'd *really* like to see
-that! That would particularly help those that cannot do full-time
-hacking on their port (like us VAX hackers:-)
-
-MfG, JBG
-
---=20
-Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481             =
-_ O _
-"Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg  =
-_ _ O
- fuer einen Freien Staat voll Freier B=FCrger" | im Internet! |   im Irak! =
-  O O O
-ret =3D do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM | TCPA)=
-);
-
---bpnyAEUPSyO7P1Gm
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.5 (GNU/Linux)
-
-iD8DBQFBd3egHb1edYOZ4bsRAjiYAKCGSC9V5w2kdxwg0IEMdrNz/AtYggCdFNim
-HrmvljvO83mhAXd2vnQzg5w=
-=kfus
------END PGP SIGNATURE-----
-
---bpnyAEUPSyO7P1Gm--
+==============================

@@ -1,57 +1,42 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA22308; Fri, 30 May 1997 14:01:32 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA14329; Fri, 30 May 1997 10:20:57 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id IAA13994 for linux-list; Fri, 30 May 1997 08:20:29 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA13722 for <linux@relay.engr.SGI.COM>; Fri, 30 May 1997 08:18:25 -0700
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id IAA05371
-	for <linux@relay.engr.SGI.COM>; Fri, 30 May 1997 08:18:03 -0700
-	env-from (ralf@informatik.uni-koblenz.de)
-Received: from thoma (ralf@thoma.uni-koblenz.de [141.26.4.61]) by informatik.uni-koblenz.de (8.8.5/8.6.9) with SMTP id RAA23721; Fri, 30 May 1997 17:13:55 +0200 (MEST)
-From: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
-Message-Id: <199705301513.RAA23721@informatik.uni-koblenz.de>
-Received: by thoma (SMI-8.6/KO-2.0)
-	id RAA17406; Fri, 30 May 1997 17:13:53 +0200
-Subject: Re: userland cometh
-To: adevries@engsoc.carleton.ca (Alex deVries)
-Date: Fri, 30 May 1997 17:13:52 +0200 (MET DST)
-Cc: shaver@neon.ingenia.ca, ralf@mailhost.uni-koblenz.de,
-        linux@cthulhu.engr.sgi.com
-In-Reply-To: <Pine.LNX.3.95.970530105637.10806A-100000@lager.engsoc.carleton.ca> from "Alex deVries" at May 30, 97 11:02:49 am
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id KAA09235 for linux-list; Fri, 30 May 1997 10:20:38 -0700
+Received: from odin.corp.sgi.com (odin.corp.sgi.com [192.26.51.194]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA09148 for <linux@engr.sgi.com>; Fri, 30 May 1997 10:20:29 -0700
+Received: from sgi.sgi.com by odin.corp.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1502/951211.SGI)
+	for <linux@engr.sgi.com> id IAA27163; Fri, 30 May 1997 08:31:57 -0700
+Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id IAA08234
+	for <linux@engr.sgi.com>; Fri, 30 May 1997 08:31:55 -0700
+	env-from (shaver@neon.ingenia.ca)
+Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id LAA13588 for linux@engr.sgi.com; Fri, 30 May 1997 11:17:00 -0400
+From: Mike Shaver <shaver@neon.ingenia.ca>
+Message-Id: <199705301517.LAA13588@neon.ingenia.ca>
+Subject: ah...
+To: linux@cthulhu.engr.sgi.com
+Date: Fri, 30 May 1997 11:17:00 -0400 (EDT)
+X-Mailer: ELM [version 2.4ME+ PL28 (25)]
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi,
+I think something's a bit wonky here.
 
-> > Actually, I think it'll be my cohort Alex who'll be building most of
-> > them.  He likes RPM in a way that's a little frightening (hi, Alex!). =)
-> 
-> I am, yes, sitting on the edge of my seat for Mike to get the network
-> working so I can have access to the machine.  Mike's working on the
-> network now to stop my endless pestering.
-> 
-> The priority will be getting rpm itself to compile properly, although I
-> don't anticipate any huge problems.  I just need to tell it that
-> Linux/mips exists, I suspect.
+  if ((fd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0) {
+    perror("nothingserv: socket");
+    return -1;
+  }
+# ./bind-indy 2000
+nothingserv: socket: Socket type not supported
+#
 
-This and another one or two minor patches were required to make rpm
-build on my machine.
+Perhaps I'll try building a new kernel...
 
-> There's a large lump of joy in knowing that gcc/libc etc work properly.
-> The rest is easy.
+Mike
 
-Trying to build and use a distribution will help us alot to find the bugs.
-
-> > I can imagine.  I'm not looking to be a distribution (yet). =)
-> 
-> I suspect if we do a good enough job of porting the bulk of the RPMS that
-> RedHat will take the effort seriously.  There'll be a lot of RPMs to port,
-> though... 
-
-Most of the changes we need to do are already covered by some other patch
-files in the SRPMs.  For example many packages already contain GNU libc
-patches; in some packages the GNU libc patches are disguised as Alpha
-patches.  And GNU libc patches are 90% of what we need to patch.
-
-  Ralf
+-- 
+#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
+#>              Commando Developer - Whatever It Takes
+#>                                                                     
+#> "See, you not only have to be a good coder to create a system like
+#>    Linux, you have to be a sneaky bastard too." - Linus Torvalds

@@ -1,41 +1,65 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4UL7cnC002754
-	for <linux-mips-outgoing@oss.sgi.com>; Thu, 30 May 2002 14:07:38 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4ULB0nC002847
+	for <linux-mips-outgoing@oss.sgi.com>; Thu, 30 May 2002 14:11:00 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4UL7cxX002753
-	for linux-mips-outgoing; Thu, 30 May 2002 14:07:38 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4ULAx1L002846
+	for linux-mips-outgoing; Thu, 30 May 2002 14:10:59 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from pop3.inreach.com (pop3.inreach.com [209.142.2.35])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4UL7anC002750
-	for <linux-mips@oss.sgi.com>; Thu, 30 May 2002 14:07:36 -0700
-Received: (qmail 11721 invoked from network); 30 May 2002 21:09:05 -0000
-Received: from unknown (HELO w2k30g) (209.142.39.228)
-  by pop3.inreach.com with SMTP; 30 May 2002 21:09:05 -0000
-Message-ID: <00b001c2081e$55245240$0b01a8c0@w2k30g>
-From: "David Christensen" <dpchrist@holgerdanske.com>
-To: <linux-mips@oss.sgi.com>
-Cc: "Hartvig Ekner" <hartvige@mips.com>
-Subject: Re: cross-compiler for MIPS_RedHat7.1_Release-01.00 on Atlas/4Kc using RH7.3-i386 host
-Date: Thu, 30 May 2002 14:09:21 -0700
+Received: from mx2.mips.com (ftp.mips.com [206.31.31.227])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4ULAtnC002843
+	for <linux-mips@oss.sgi.com>; Thu, 30 May 2002 14:10:55 -0700
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.9.3/8.9.0) with ESMTP id OAA19029;
+	Thu, 30 May 2002 14:12:21 -0700 (PDT)
+Received: from grendel (grendel [192.168.236.16])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id OAA11959;
+	Thu, 30 May 2002 14:12:19 -0700 (PDT)
+Message-ID: <023001c2081f$95a397d0$10eca8c0@grendel>
+From: "Kevin D. Kissell" <kevink@mips.com>
+To: "Daniel Jacobowitz" <dan@debian.org>,
+   "Justin Carlson" <justinca@cs.cmu.edu>
+Cc: <linux-mips@oss.sgi.com>
+References: <1022787167.14210.472.camel@ldt-sj3-022.sj.broadcom.com> <20020530195052.GA10587@branoic.them.org>
+Subject: Re: Function pointers and #defines
+Date: Thu, 30 May 2002 23:18:44 +0200
 MIME-Version: 1.0
 Content-Type: text/plain;
 	charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
 X-Priority: 3
 X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+X-Mailer: Microsoft Outlook Express 5.50.4807.1700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4807.1700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-linux-mips@oss.sgi.com & Hartvig:
+From: "Daniel Jacobowitz" <dan@debian.org>
+> On Thu, May 30, 2002 at 12:32:47PM -0700, Justin Carlson wrote:
+> > A fair number of places in the headers, we have stuff like this:
+> > 
+> > void (*_some_fn)(int arg1, int arg2);
+> > #define some_fn(arg1, arg2) _some_fn(arg1, arg2)
+> > 
+> > Why do we do this, as opposed to:
+> > 
+> > void (*some_fn)(int arg1, int arg2);
+> > 
+> > Both syntaxes result in being able to say
+> > 
+> > some_fn(1, 2);
+> > 
+> > but the latter is both clearer and shorter.  Is there some deep,
+> > mystical C reason that we use the former, or did someone do it that way
+> > a long time ago and no one has changed it?
+> 
+> At a guess, this prevents taking the address of the function
+> unintentionally...
 
->>        binutils-mipsel-linux-2.9.5-3
->>        egcs-mipsel-linux-1.1.2-4
-> I'll try what I've already installed and see what happens.
+More likely, some ancient early version of the code was
+written with a single global function, some_fn(), and it
+was easier to override it with a pointer indirection in
+the header than to hunt down and change all invocations.
+Sometimes that's good software engineering.  Sometimes
+it's just laziness...
 
-It works!  :-)
-
-
-David Christensen
-dpchrist@holgerdanske.com
+            Kevin K.

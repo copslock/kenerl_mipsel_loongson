@@ -1,58 +1,101 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Sep 2004 10:11:53 +0100 (BST)
-Received: from futarque.com ([IPv6:::ffff:212.242.80.58]:60563 "HELO
-	mail.futarque.com") by linux-mips.org with SMTP id <S8224918AbUI1JLs>;
-	Tue, 28 Sep 2004 10:11:48 +0100
-Received: (qmail 883 invoked by uid 64014); 28 Sep 2004 09:11:40 -0000
-Received: from smm@futarque.com by mail by uid 64011 with qmail-scanner-1.16 
- (uvscan: v4.1.60/v4278. spamassassin: 2.63.   Clear:. 
- Processed in 0.23807 secs); 28 Sep 2004 09:11:40 -0000
-Received: from excalibur.futarque.com (192.168.2.15)
-  by mail.futarque.com with SMTP; 28 Sep 2004 09:11:40 -0000
-Subject: Problem debugging multi-threaded app
-From: Steffen Malmgaard Mortensen <smm@futarque.com>
-To: linux-mips@linux-mips.org
-Content-Type: text/plain
-Message-Id: <1096362700.5227.19.camel@localhost>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Sep 2004 11:08:42 +0100 (BST)
+Received: from the-doors.enix.org ([IPv6:::ffff:62.210.169.120]:54428 "EHLO
+	the-doors.enix.org") by linux-mips.org with ESMTP
+	id <S8224921AbUI1KIh>; Tue, 28 Sep 2004 11:08:37 +0100
+Received: by the-doors.enix.org (Postfix, from userid 1105)
+	id E6A501EFE4; Tue, 28 Sep 2004 12:08:31 +0200 (CEST)
+Date: Tue, 28 Sep 2004 12:08:31 +0200
+From: Thomas Petazzoni <thomas.petazzoni@enix.org>
+To: linux-kernel@vger.kernel.org
+Cc: linux-mips@linux-mips.org, mentre@tcl.ite.mee.com
+Subject: How to handle a specific DMA configuration ?
+Message-ID: <20040928100831.GI27756@enix.org>
 Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.4.6 
-Date: Tue, 28 Sep 2004 11:11:40 +0200
-Content-Transfer-Encoding: 7bit
-Return-Path: <smm@futarque.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.4i
+Return-Path: <thomas@the-doors.enix.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5908
+X-archive-position: 5909
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: smm@futarque.com
+X-original-sender: thomas.petazzoni@enix.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi all,
+Hello,
 
-I'm trying to debug a multi-threaded app using gdbserver/gdb. I see the
-same problems as described in
-http://www.linux-mips.org/archives/linux-mips/2002-09/msg00155.html -
-the program receives SIG32, but gdb doesn't associate that with thread
-creation. The solution back in 2002 was to upgrade the tool-chain, but
-I'm not sure what versions I should use today (and what patches). I'm
-currently using:
+[As I'm not subscribed the list, please include me in Cc: for answers]
 
-CPU: Ati X225 (mips4kc - little endian)
-kernel: linux 2.4.18 + vendor patches
+I am currently porting 2.6 to a home-made MIPS-based platform using
+the MIPS RM9000 processor and the Marvell memory/uart/ethernet
+controller.
 
-glibc: 2.3.2
-gcc: 3.3.2
-binutils: 2.14
-(the three above from crosstool 0.27)
+My physical memory mapping is a bit special : I have 384 MB of
+memory. The first 256MB are directly connected to the RM9000, while
+the last 128MB are connected to the Marvell controller. _Only_ the
+last 128MB are usable for DMA (especially for network traffic). For
+the moment, Linux only takes care of the first 256MB, but I can change
+it to take care of the complete physical memory space (384 MB).
 
-gdb/gdbserver: 6.2
+My problem is the allocation of skbuff. They are allocated using
+alloc_skb() in net/core/skbuff.c, and uses the "normal" kmalloc()
+allocator. kmalloc() will allocate memory somewhere in the physical
+memory space : even if a I allow Linux to allocate memory between
+256MB and 384MB, I cannot be sure that it will use memory in this
+space to allocate skbuff. If skbuff are not allocated in this space,
+then I can't use DMA to transfer the buffers.
 
-According to strace gdbserver loads libthread_db as it should, but gdb
-on my host doesn't load libthread_db.
+As I understand the ZONE_DMA thing, it allows to tell Linux that a
+physical memory region located between 0 and some value (16 MB on PCs
+for old ISA cards compatibility) is the only area usable for DMA. How
+could I declare my 256MB-384MB physical memory reagion to be the only
+area usable for DMA ? How can I tell the skbuff functions to allocate
+_only_ DMA-able memory ? Moreover, can I make assumptions on the
+alignement of final data at the bottom of the network stack (my DMA
+controller doesn't like the 2 byte-aligned things).
 
-Any help/suggestions will be greatly appriciated...
+At the moment, I see only three solutions. The two first aren't not
+very satisfying, the third might be a solution, but not perfect
+neither (and not sure it would work).
 
-Best regards,
-Steffen
+ 1) Implement a home-made memory allocator dedicated to the allocation
+    of DMA buffers inside the 256MB-384MB space. Then modify the
+    net/core/skbuff.c functions to use this allocator to allocate/free
+    the contents (skb->data) of the skbuffs. I'm not sure that it will
+    work, but at least, it involves the modification of
+    architecture-independent code for an architecture-dependent
+    reason. 
+
+ 2) Modify the Marvell Ethernet driver (drivers/net/mv64340_eth.c) to
+    change the calls to pci_map_single() and
+    pci_unmap_single(). The pci_map_single() would allocate (through a
+    dedicated home-made allocator) a DMA buffer, and copy the contents
+    of the skbuf to the DMA buffer. The pci_unmap_single() would copy
+    the contents of the DMA buffer back to the skb->data buffer. I'm
+    quite sure this would work (this is how the 2.4 port that I have
+    for this platform work), but it involves the modification of the
+    Ethernet driver, and above all, a performance hit.
+
+ 3) Modify net/core/skbuf.c to make sure all kmalloc()'ed areas (for
+    skbuff contents) are allocated with the GFP_DMA flag. Then, modify
+    the arch/mips/mm/init.c file to make sure the first 256MB physical
+    pages don't have the DMA bit, and that the next 128MB will have it
+    (not sure on how complex it is).
+
+Are there any other solutions available ? If not, which of the
+proposed solutions is the best ?
+
+If my problem is unclear, don't hesitate to ask for further details,
+
+Thanks,
+
+Thomas
+-- 
+PETAZZONI Thomas - thomas.petazzoni@enix.org 
+http://thomas.enix.org - Jabber: kos_tom@sourcecode.de
+KOS: http://kos.enix.org/ - Lolut: http://lolut.utbm.info
+Fingerprint : 0BE1 4CF3 CEA4 AC9D CC6E  1624 F653 CB30 98D3 F7A7

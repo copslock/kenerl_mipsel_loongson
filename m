@@ -1,39 +1,50 @@
-Received:  by oss.sgi.com id <S553897AbQJ3WQw>;
-	Mon, 30 Oct 2000 14:16:52 -0800
-Received: from u-180.karlsruhe.ipdial.viaginterkom.de ([62.180.21.180]:13067
-        "EHLO u-180.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S553891AbQJ3WQi>; Mon, 30 Oct 2000 14:16:38 -0800
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S869077AbQJ3VOz>;
-        Mon, 30 Oct 2000 22:14:55 +0100
-Date:   Mon, 30 Oct 2000 22:14:55 +0100
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Klaus Naumann <spock@mgnet.de>
-Cc:     Linux/MIPS list <linux-mips@oss.sgi.com>
-Subject: Re: atomic.h changes fixed bug Was: CVS Update@oss.sgi.com: linux
-Message-ID: <20001030221455.B24185@bacchus.dhis.org>
-References: <20001030021741.B20700@bacchus.dhis.org> <Pine.LNX.4.21.0010300734380.2528-100000@spock.mgnet.de>
-Mime-Version: 1.0
+Received:  by oss.sgi.com id <S553896AbQJ3WSW>;
+	Mon, 30 Oct 2000 14:18:22 -0800
+Received: from gateway-490.mvista.com ([63.192.220.206]:27891 "EHLO
+        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553891AbQJ3WSH>;
+	Mon, 30 Oct 2000 14:18:07 -0800
+Received: from mvista.com (IDENT:ppopov@zeus.mvista.com [10.0.0.112])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id e9UMGM317669;
+	Mon, 30 Oct 2000 14:16:22 -0800
+Message-ID: <39FDF26A.196F5D1B@mvista.com>
+Date:   Mon, 30 Oct 2000 14:12:58 -0800
+From:   Pete Popov <ppopov@mvista.com>
+Organization: Monta Vista Software
+X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.12-20b i586)
+X-Accept-Language: en
+MIME-Version: 1.0
+To:     Ralf Baechle <ralf@oss.sgi.com>
+CC:     "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Re: FATAL: cannot determine library version
+References: <39F9B924.97AF7A4@mvista.com> <20001028151809.A7138@bacchus.dhis.org>
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <Pine.LNX.4.21.0010300734380.2528-100000@spock.mgnet.de>; from spock@mgnet.de on Mon, Oct 30, 2000 at 07:35:52AM +0100
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Mon, Oct 30, 2000 at 07:35:52AM +0100, Klaus Naumann wrote:
-
-> > > So it seems there is still some problem in some i/o stuff concerning
-> > > the different disk ...
-> > 
-> > I only get those corruption reports from Indy users but from no other
-> > platform.
+Ralf Baechle wrote:
 > 
-> That's not correct - I have been reporting that I see these problems on my
-> Indigo2 several months ago.
+> On Fri, Oct 27, 2000 at 10:19:32AM -0700, Pete Popov wrote:
+> 
+> > I've got a big endian kernel running for a new embedded board, and it
+> > mounts the root fs over nfs.  I'm using the simple-0.2b packages as the
+> > root fs.  At some point after /bin/sh is loaded, I get the following
+> > error:
+> >
+> > FATAL: cannot determine library version
+> >
+> > The same root file system is fine on my Indigo2.
+> 
+> Seems your kernel is foobared.  On startup libc is trying to determine
+> the kernel version but both using uname and /proc/sys/kernel/osrelease
+> fail for some reason.
 
-Which essentially is a Indy as far as of interest for this problem.  IP22
-would have been more exact, I admit.
+Thanks, that helped.
 
-  Ralf
+uname wasn't called at all -- only /proc/sys/kernel/osrelease was being
+opened. However, I did not have CONFIG_SYSCTL enabled in my .config
+file. 
+
+Pete

@@ -1,59 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jan 2004 10:35:59 +0000 (GMT)
-Received: from jaguar.mkp.net ([IPv6:::ffff:192.139.46.146]:33419 "EHLO
-	jaguar.mkp.net") by linux-mips.org with ESMTP id <S8225309AbUA2Kf7>;
-	Thu, 29 Jan 2004 10:35:59 +0000
-Received: from jes by jaguar.mkp.net with local (Exim 3.35 #1)
-	id 1Am9WV-0001YN-00; Thu, 29 Jan 2004 05:35:47 -0500
-To: Ladislav Michl <ladis@linux-mips.org>
-Cc: Kevin Paul Herbert <kph@cisco.com>, linux-mips@linux-mips.org
-Subject: Re: Removal of ____raw_readq() and ____raw_writeq() from asm-mips/io.h
-References: <1075255111.8744.4.camel@shakedown>
-	<20040128094032.GB900@kopretinka> <yq07jzcz6sp.fsf@wildopensource.com>
-	<20040128150828.A19525@linux-mips.org>
-From: Jes Sorensen <jes@wildopensource.com>
-Date: 29 Jan 2004 05:35:47 -0500
-In-Reply-To: <20040128150828.A19525@linux-mips.org>
-Message-ID: <yq0znc79h4s.fsf@wildopensource.com>
-User-Agent: Gnus/5.09 (Gnus v5.9.0) Emacs/21.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jan 2004 10:38:27 +0000 (GMT)
+Received: from sccrmhc12.comcast.net ([IPv6:::ffff:204.127.202.56]:56316 "EHLO
+	sccrmhc12.comcast.net") by linux-mips.org with ESMTP
+	id <S8225309AbUA2Ki1>; Thu, 29 Jan 2004 10:38:27 +0000
+Received: from gentoo.org (pcp04939029pcs.waldrf01.md.comcast.net[68.48.72.58])
+          by comcast.net (sccrmhc12) with SMTP
+          id <20040129103821012002d3h6e>
+          (Authid: kumba12345);
+          Thu, 29 Jan 2004 10:38:21 +0000
+Message-ID: <4018E322.9030801@gentoo.org>
+Date: Thu, 29 Jan 2004 05:40:34 -0500
+From: Kumba <kumba@gentoo.org>
+Reply-To: kumba@gentoo.org
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.5) Gecko/20031007
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <jes@trained-monkey.org>
+To: linux-mips@linux-mips.org
+Subject: Re: linux 2.4 and Indy
+References: <20040129102215.GC17760@ballina>
+In-Reply-To: <20040129102215.GC17760@ballina>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4185
+X-archive-position: 4186
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jes@wildopensource.com
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
->>>>> "Ladislav" == Ladislav Michl <ladis@linux-mips.org> writes:
+Jorik Jonker wrote:
+> Hi,
+> 
+> I'm having big trouble getting linux 2.4.* to work on my SGI Indy. I want to
+> use my indycam, and thus compile a kernel with support for that. The problem
+> is that all the kernels I built do boot, but freeze some moments after
+> starting the init process. The only kernels that do not have this problem are 
+> 2.4.16 and 2.4.17, but they do not have proper VINO support (they lack the
+> i2c algo-sgi part).
+> Is there some patch flying around to fix this, or do I just have bad luck?
 
-Ladislav> On Wed, Jan 28, 2004 at 05:49:58AM -0500, Jes Sorensen
-Ladislav> wrote:
->> If you are accessing memory mapped registers or memory on a PCI
->> device, ie. likely on a 1250, you *must* use the readX/__raw_readX
->> macros. Anybody just doing *reg = val on a PCI device should be
->> banned from writing code for life!
+Check out a cvs tree no later than 12/11/2003, a change in CVS after 
+that date seems to have nuked r4k kernels.  It is believed the change in 
+question is:
 
-Ladislav> eh? I said nothing about PCI device. These ____raw_writeq
-Ladislav> are used in board specific code. Anyway, defining struct
-Ladislav> sb_registers and ioremaping it would be nice solution (I
-Ladislav> didn't read code too carefully, so maybye not in this
-Ladislav> particular case where registers are 64bit width, but I
-Ladislav> definitely prefer it in board specific code over
-Ladislav> read[bwl]/write[bwl]). Also readq/writeq seems mips
-Ladislav> specific, so rants about portability doesn't apply.
+http://www.linux-mips.org/archives/linux-cvs/2003-12/msg00031.html
 
-Very wrong!
+I've not yet been able to find a 'clean' way to remove the changes to 
+those specific files in that commit while keeping all the changes made 
+afterwards intact to test this idea.
 
-the readX/writeX macro names are for PCI and busses with similar
-properties. One should never access anything through readX/writeX
-without ioremaping it first.
 
-readq/writeq are not mips specific, they are available on all/most 64
-bit architectures, so portability rants do apply.
+--Kumba
 
-Jes
+-- 
+"Such is oft the course of deeds that move the wheels of the world: 
+small hands do them because they must, while the eyes of the great are 
+elsewhere."  --Elrond

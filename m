@@ -1,64 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Jan 2005 09:25:29 +0000 (GMT)
-Received: from gw.voda.cz ([IPv6:::ffff:212.24.154.90]:2505 "EHLO
-	kojot.voda.cz") by linux-mips.org with ESMTP id <S8224901AbVASJZX>;
-	Wed, 19 Jan 2005 09:25:23 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by kojot.voda.cz (Postfix) with ESMTP id 218D84CB41
-	for <linux-mips@ftp.linux-mips.org>; Wed, 19 Jan 2005 10:25:22 +0100 (CET)
-Received: from kojot.voda.cz ([127.0.0.1])
- by localhost (kojot [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 10027-03 for <linux-mips@ftp.linux-mips.org>;
- Wed, 19 Jan 2005 10:25:20 +0100 (CET)
-Received: from [10.1.1.77] (unknown [10.1.1.77])
-	by kojot.voda.cz (Postfix) with ESMTP id D0D674BE8D
-	for <linux-mips@ftp.linux-mips.org>; Wed, 19 Jan 2005 10:25:19 +0100 (CET)
-Message-ID: <41EE277F.5090002@voda.cz>
-Date: Wed, 19 Jan 2005 10:25:19 +0100
-From: =?ISO-8859-2?Q?Tom_Vr=E1na?= <tom@voda.cz>
-Organization: VODA IT consulting
-User-Agent: Mozilla Thunderbird 0.6 (X11/20040502)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: linux-mips@ftp.linux-mips.org
-Subject: porting to ADM5120
-Content-Type: text/plain; charset=ISO-8859-2; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: by amavisd-new at voda.cz
-Return-Path: <tom@voda.cz>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Jan 2005 13:43:14 +0000 (GMT)
+Received: from sorrow.cyrius.com ([IPv6:::ffff:65.19.161.204]:55567 "EHLO
+	sorrow.cyrius.com") by linux-mips.org with ESMTP
+	id <S8225221AbVASNnJ>; Wed, 19 Jan 2005 13:43:09 +0000
+Received: by sorrow.cyrius.com (Postfix, from userid 10)
+	id B1FC264D44; Wed, 19 Jan 2005 13:43:03 +0000 (UTC)
+Received: by deprecation.cyrius.com (Postfix, from userid 1000)
+	id 402FB4EE4D; Wed, 19 Jan 2005 13:42:49 +0000 (GMT)
+Date: Wed, 19 Jan 2005 13:42:49 +0000
+From: Martin Michlmayr <tbm@cyrius.com>
+To: linux-mips@linux-mips.org
+Subject: MIPS contributions have "All rights reserved"?
+Message-ID: <20050119134249.GA9175@deprecation.cyrius.com>
+References: <20050119024536Z8225221-1340+1568@linux-mips.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20050119024536Z8225221-1340+1568@linux-mips.org>
+User-Agent: Mutt/1.5.6+20040907i
+Return-Path: <tbm@cyrius.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@ftp.linux-mips.org
-Original-Recipient: rfc822;linux-mips@ftp.linux-mips.org
-X-archive-position: 6948
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 6949
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tom@voda.cz
+X-original-sender: tbm@cyrius.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+* macro@linux-mips.org <macro@linux-mips.org> [2005-01-19 02:45]:
+> - * Copyright (C) 2000, 2004  MIPS Technologies, Inc.  All rights reserved.
+> + * Copyright (C) 2000, 2004, 2005  MIPS Technologies, Inc.
+> + *	All rights reserved.
 
-I am working on solution using ADM5120 SoC (a 4kc MIPS). I as well have 
-docs for the SoC and patched kernel 2.4.18 sources that I am able to 
-compile, make image anf run on the system. The problem is that I need to 
-have some more recent kernel, eg. 2.4.27. I have diffing out all the 
-relevant changes from the old version and include them in cvs check-out 
-version 2.4.27. After some cleanup, I got it to compile, but the image 
-just doesn't do anything when run on the SoC. It says jump to linux 
-code... and dies. I have checked just about everything that I can ( and 
-at least a bit understand) including the early printk patch. Not a 
-single byte of output on the serial console.
-
-The question is, whether there is someone, who could possibly help to 
-look into this, as assembly code level is really not my skill, but I 
-really need to get the kernel running and I feel like I'm out of 
-options.  Any help will be greatly appreciated.
-
-                                     TIA, Tom
-
+Does this "All rights reserved" statement make sense in a kernel which
+is GPL?
 -- 
- Tomas Vrana  <tom@voda.cz>
- --------------------------
- VODA IT consulting, Borkovany 48, 691 75
- http://www.voda.cz/
- phone: +420 519 419 416 mobile: +420 603 469 305 UIN: 105142752
+Martin Michlmayr
+http://www.cyrius.com/

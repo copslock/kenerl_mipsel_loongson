@@ -1,117 +1,45 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA13863; Mon, 24 Jun 1996 15:44:56 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id SAA18378; Mon, 24 Jun 1996 18:35:45 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id WAA29789 for linux-list; Mon, 24 Jun 1996 22:44:50 GMT
-Received: from yon.engr.sgi.com (yon.engr.sgi.com [150.166.61.32]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA29784 for <linux@cthulhu.engr.sgi.com>; Mon, 24 Jun 1996 15:44:49 -0700
-Received: (from ariel@localhost) by yon.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA24773 for linux; Mon, 24 Jun 1996 15:43:51 -0700
-From: ariel@yon.engr.sgi.com (Ariel Faigon)
-Message-Id: <199606242243.PAA24773@yon.engr.sgi.com>
-Subject: External Linux/MIPS list
-To: linux@yon.engr.sgi.com
-Date: Mon, 24 Jun 1996 15:43:51 -0700 (PDT)
-Reply-To: ariel@cthulhu.engr.sgi.com
-Organization: Silicon Graphics Inc.
-X-Mailer: ELM [version 2.4 PL24 ME5a]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id BAA00738 for linux-list; Tue, 25 Jun 1996 01:35:40 GMT
+Received: from soyuz.wellington.sgi.com (soyuz.wellington.sgi.com [155.11.228.1]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id SAA00723 for <linux@engr.sgi.com>; Mon, 24 Jun 1996 18:35:37 -0700
+Received: from windy.wellington.sgi.com by soyuz.wellington.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1042/940406.SGI)
+	for <linux@engr> id NAA03612; Tue, 25 Jun 1996 13:35:34 +1200
+Received: (alambie@localhost) by windy.wellington.sgi.com (950413.SGI.8.6.12/8.6.9) id NAA02028 for linux@engr; Tue, 25 Jun 1996 13:35:33 +1200
+From: "Alistair Lambie" <alambie@wellington.sgi.com>
+Message-Id: <9606251335.ZM2026@windy.wellington.sgi.com>
+Date: Tue, 25 Jun 1996 13:35:33 +0000
+X-Mailer: Z-Mail (3.2.3 08feb96 MediaMail)
+To: linux@cthulhu.engr.sgi.com
+Subject: Userland binaries
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-In order to prevent confidential data leaks (like random mentions
-of Speedracer or Lego), and in order to build critical-mass support
-to the Linux port outside SGI. I have created a separate linux mailing list
-for non-SGI interested parties. It seems that there is a lot of interest
-outside SGI from people who may be important assets for the Linux/MIPS
-effort in the future. People who sell Linux CDROMs, talented developers,
-etc.
+Being miles away in New Zealand it is kind of hard to know who is doing what!
 
-I enclose the welcome message for your reference.
-if you feel you know someone nice outside who you think should be
-on this list (and they agree) just subscribe them by mailing to:
+I have been playing around with cross compiling userland binaries.  But before
+I get carried away here are some questions:
 
-	external-majordomo@postofc.corp.sgi.com
+1. Is anyone already doing this?
 
-with body:
-	subscribe linuxmips  their@email.address
+2. Should we set up a repository so we don't all spend our time doing the same
+   thing?
 
+3. I have used the the cross compiler from ftp.fnet.fr.  The libc I have used
+is
+   the gnu one that has just appeared on ftp.fnet.fr in the last week.  Are
+   these the right ones to be using (they only allow static linking)?
 
-Once we have enough people on that list, I will send a short summary
-of the current status to them.
+4. If several people are doing this maybe we should coordinate the effort so
+   we don't all do the same packages.
 
-Please:
-	1) Don't mix between
+That should be enough questions for this week :-)
 
-		linux@engr	(our internal list)
+Cheers, Alistair
 
-			and
-
-		linuxmips@corp	(free for all)
-
-	   [The list-names are different on purpose.]
-
-	2) Feel free to Cc linuxmips@corp  on any message that doesn't
-	   contain SGI confidential data.
-
-
---
-Peace, Ariel
-
-
------ Forwarded message from MAILMAN@palladium.corp.sgi.com -----
-
->From owner-linuxmips-outgoing@palladium.corp.sgi.com  Mon Jun 24 15:25:28 1996
-Date: Mon, 24 Jun 1996 15:26:21 -0700
-Message-Id: <199606242226.PAA11036@palladium.corp.sgi.com>
-To: linuxmips@palladium.corp.sgi.com
-Subject: Welcome to linuxmips
-From: MAILMAN@palladium.corp.sgi.com
-Sender: owner-linuxmips@palladium.corp.sgi.com
-Precedence: bulk
-Reply-To: MAILMAN@palladium.corp.sgi.com
-
-
-
-Welcome to the linuxmips mailing list!
-
-
-To unsubscribe from this list send email to: 
-
-    external-majordomo@postofc.corp.sgi.com
-
-with the following line in the _body_ of the message:
-
-    unsubscribe linuxmips _your_email_address_here_
-
-
-
-To post a message to this mailing list use this address:
-
-        linuxmips@postofc.corp.sgi.com
-
-
-
-Here's some general information for the linuxmips mailing list:
-
-Welcome to the linuxmips mailing list !
-
-	linuxmips@corp.sgi.com
-
-linuxmips will be used to update interested parties
-not affiliated with SGI on the status of the ongoing
-Linux/MIPS port within SGI.
-
-Thanks to the Linux/MIPS effort going on in Germany
-(thanks guys!) and to David Miller's summer's internship at SGI
-we expect Linux soon to be running on many SGI platforms and be
-able to run IRIX binaries.
-
-We intend to release the port under the GPL as a part
-of mainstream Linux and hope that other Linux/MIPS
-enthusiasts will join the effort once the first step
-is done and released to the net.
-
-Feel free to tell your friends about this list.
-
--- Ariel (ariel@sgi.com)
-
------ End of forwarded message from MAILMAN@palladium.corp.sgi.com -----
+-- 
+Alistair Lambie					    alambie@wellington.sgi.com
+Silicon Graphics New Zealand				  SGI Voicemail: 56791
+Level 5, Walsh Wrightson Tower,				    Ph: +64-4-802 1455
+94-96 Dixon St, Wellington, NZ			  	   Fax: +64-4-802 1459

@@ -1,59 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Apr 2003 12:40:30 +0100 (BST)
-Received: from mail2.sonytel.be ([IPv6:::ffff:195.0.45.172]:19380 "EHLO
-	mail.sonytel.be") by linux-mips.org with ESMTP id <S8225196AbTDVLk3>;
-	Tue, 22 Apr 2003 12:40:29 +0100
-Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.27])
-	by mail.sonytel.be (8.9.0p/8.8.6) with ESMTP id NAA27285;
-	Tue, 22 Apr 2003 13:40:20 +0200 (MET DST)
-Date: Tue, 22 Apr 2003 13:40:19 +0200 (MEST)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: Ralf Baechle <ralf@linux-mips.org>
-cc: Juan Quintela <quintela@mandrakesoft.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Apr 2003 13:00:18 +0100 (BST)
+Received: from p508B5EC1.dip.t-dialin.net ([IPv6:::ffff:80.139.94.193]:20403
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225204AbTDVMAS>; Tue, 22 Apr 2003 13:00:18 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id h3MC07Z18450;
+	Tue, 22 Apr 2003 14:00:07 +0200
+Date: Tue, 22 Apr 2003 14:00:07 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Juan Quintela <quintela@mandrakesoft.com>,
 	Yoichi Yuasa <yuasa@hh.iij4u.or.jp>,
 	Linux/MIPS Development <linux-mips@linux-mips.org>
 Subject: Re: [patch] TANBAC TB0226(NEC VR4131) for v2.5
-In-Reply-To: <20030422133642.A15285@linux-mips.org>
-Message-ID: <Pine.GSO.4.21.0304221338360.16017-100000@vervain.sonytel.be>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <Geert.Uytterhoeven@sonycom.com>
+Message-ID: <20030422140007.C15285@linux-mips.org>
+References: <20030422133642.A15285@linux-mips.org> <Pine.GSO.4.21.0304221338360.16017-100000@vervain.sonytel.be>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <Pine.GSO.4.21.0304221338360.16017-100000@vervain.sonytel.be>; from geert@linux-m68k.org on Tue, Apr 22, 2003 at 01:40:19PM +0200
+Return-Path: <ralf@linux-mips.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2125
+X-archive-position: 2126
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 22 Apr 2003, Ralf Baechle wrote:
-> On Tue, Apr 22, 2003 at 01:17:21PM +0200, Juan Quintela wrote:
-> > yoichi> +static struct resource vr41xx_pci_mem_resource = {
-> > yoichi> +	"PCI memory space",
-> > yoichi> +	VR41XX_PCI_MEM_START,
-> > yoichi> +	VR41XX_PCI_MEM_END,
-> > yoichi> +	IORESOURCE_MEM
-> > yoichi> +};
-> > 
-> > Please, use C99 named initializers in the whole file.
+On Tue, Apr 22, 2003 at 01:40:19PM +0200, Geert Uytterhoeven wrote:
+
+> > I don't think there's much point in using ISO style initializers everywhere.
+> > So far the convention is only to replace the GNU-style inializer.
+> > We unfortunately have a few places where the code got inflated by at least
+> > the factor of 3 because now some code uses the ISO initializers for
+> > everything - for no good reason.
 > 
-> I don't think there's much point in using ISO style initializers everywhere.
-> So far the convention is only to replace the GNU-style inializer.
-> We unfortunately have a few places where the code got inflated by at least
-> the factor of 3 because now some code uses the ISO initializers for
-> everything - for no good reason.
+> What if someone will change struct resource in the future?
 
-What if someone will change struct resource in the future?
+For the generic case that concern may be true - but I don't think struct
+resource will change any time soon.  Imagine fixing all the drivers ...
 
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+  Ralf

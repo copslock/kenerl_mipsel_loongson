@@ -1,28 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Jul 2004 12:23:50 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:29700 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Jul 2004 12:56:55 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:30476 "EHLO
 	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8224934AbUGZLXo>; Mon, 26 Jul 2004 12:23:44 +0100
+	id <S8224948AbUGZL4u>; Mon, 26 Jul 2004 12:56:50 +0100
 Received: from localhost (localhost [127.0.0.1])
 	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id ECCBFE1CA6; Mon, 26 Jul 2004 13:23:38 +0200 (CEST)
+	id E60C3E1CA6; Mon, 26 Jul 2004 13:56:45 +0200 (CEST)
 Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
  by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 04727-02; Mon, 26 Jul 2004 13:23:38 +0200 (CEST)
+ id 16700-04; Mon, 26 Jul 2004 13:56:45 +0200 (CEST)
 Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
 	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id A6A45E1CA4; Mon, 26 Jul 2004 13:23:38 +0200 (CEST)
+	id 984F5E1CA4; Mon, 26 Jul 2004 13:56:45 +0200 (CEST)
 Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.12.11/8.11.4) with ESMTP id i6QBNkhQ027169;
-	Mon, 26 Jul 2004 13:23:46 +0200
-Date: Mon, 26 Jul 2004 13:23:41 +0200 (CEST)
+	by piorun.ds.pg.gda.pl (8.12.11/8.11.4) with ESMTP id i6QBurjQ028588;
+	Mon, 26 Jul 2004 13:56:53 +0200
+Date: Mon, 26 Jul 2004 13:56:47 +0200 (CEST)
 From: "Maciej W. Rozycki" <macro@linux-mips.org>
 To: Ralf Baechle <ralf@linux-mips.org>
-Cc: Srinivas Kommu <kommu@hotmail.com>, linux-mips@linux-mips.org
-Subject: Re: mips32 kernel memory mapping
-In-Reply-To: <20040723202439.GA3711@linux-mips.org>
-Message-ID: <Pine.LNX.4.58L.0407261258010.3873@blysk.ds.pg.gda.pl>
-References: <BAY1-F25sCR6nWqNG2Y00092cf9@hotmail.com>
- <Pine.LNX.4.58L.0407231348580.5644@blysk.ds.pg.gda.pl> <20040723202439.GA3711@linux-mips.org>
+Cc: Richard Henderson <rth@redhat.com>,
+	Richard Sandiford <rsandifo@redhat.com>,
+	gcc-patches@gcc.gnu.org, linux-mips@linux-mips.org
+Subject: Re: [patch] MIPS/gcc: Revert removal of DImode shifts for 32-bit
+ targets
+In-Reply-To: <20040723211232.GB5138@linux-mips.org>
+Message-ID: <Pine.LNX.4.58L.0407261325470.3873@blysk.ds.pg.gda.pl>
+References: <Pine.LNX.4.55.0407191648451.3667@jurand.ds.pg.gda.pl>
+ <87hds49bmo.fsf@redhat.com> <Pine.LNX.4.55.0407191907300.3667@jurand.ds.pg.gda.pl>
+ <20040719213801.GD14931@redhat.com> <Pine.LNX.4.55.0407201505330.14824@jurand.ds.pg.gda.pl>
+ <20040723202703.GB30931@redhat.com> <20040723211232.GB5138@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
@@ -30,7 +35,7 @@ Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5555
+X-archive-position: 5556
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,34 +45,26 @@ X-list: linux-mips
 
 On Fri, 23 Jul 2004, Ralf Baechle wrote:
 
-> There is a general perception among Linux users that 64-bit is new an
-> not really needed which in part I blame on the bs Intel is spreading to
-> hide the fact that for a long time they simply had no 64-bit roadmap at
-> all.
+> With a bit of hand waiving because haven't done benchmarks I guess Richard
+> might be right.  The subroutine calling overhead on modern processors is
+> rather low and smaller code means better cache hit rates ...
 
- Huh?  How's Intel's policy related to 64-bit Linux?  Especially for other
-processors, like MIPS.
+ Well, I just worry the call may itself include at least the same number
+of instructions as the callee if inlined.  There would be no way for it to
+be faster.
 
- Linux has supported 64-bit operation since ~1995 and around 1998 when I
-had an opportunity to use it on DEC Alpha, it (2.0.x) was already stable
-enough for regular use.  That is the generic core and the Alpha bits, of
-course -- the maturity of other processor support may vary, but for MIPS
-it's not worse than the 32-bit support.
+ That may happen for a leaf function -- the call itself, plus $ra
+saving/restoration is already four instructions.  Now it's sufficient for
+two statics to be needed to preserve temporaries across such a call and
+the size of the caller is already the same.  With three statics, you lose
+even for a non-leaf function.  That's for a function containing a single
+call to such a shift -- if there are more, then you may win (but is it
+common?).
 
-> There are still improvments to be made for BCM1250 support.  Somebody
-> thought scattering the first 1GB of memory through the lowest 4GB of
-> physical address space like a three year old his toys over the floor
-> was a good thing ...  The resulting holes in the memory map are wasting
-> significant amounts of memory for unused memory; the worst case number
-> that is reached for 64-bit kernel on a system with > 1GB of RAM is 96MB!
-
- Well, there are some resons given in the manual.  Anyway, memory seems to
-be remappable to 0x100000000 in the DRAM controller.  Still we probably
-have to keep low 256MB mapped and registered within Linux at 0 for bounce
-buffers for broken PCI hardware ("hidden" mapping for exception handlers 
-and kernel segments would be easier).
-
- With only 256MB installed in my system it would be tough for me to code
-anything interesting, though.  Perhaps another time.
+ So not only it may not be faster, but the resulting code may be bigger as
+well.  That said, the current GCC's implementation of these operations is
+not exactly optimal for current MIPS processors.  That's trivial to deal
+with in Linux, but would it be possible to pick a different implementation
+from libgcc based on the "-march=" setting, too?
 
   Maciej

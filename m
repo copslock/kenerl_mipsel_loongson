@@ -1,319 +1,118 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Jan 2003 10:07:13 +0000 (GMT)
-Received: from eau.irisa.fr ([IPv6:::ffff:131.254.60.97]:4534 "EHLO
-	eau.irisa.fr") by linux-mips.org with ESMTP id <S8226275AbTAMKHM>;
-	Mon, 13 Jan 2003 10:07:12 +0000
-Received: from irisa.fr (traezhenn.irisa.fr [131.254.41.15])
-	by eau.irisa.fr (8.11.4/8.11.4) with ESMTP id h0DA6Zi26740;
-	Mon, 13 Jan 2003 11:06:35 +0100 (MET)
-Message-ID: <3E228FAB.5010004@irisa.fr>
-Date: Mon, 13 Jan 2003 11:06:35 +0100
-From: Vivien Chappelier <vchappel@irisa.fr>
-Reply-To: Vivien Chappelier <vivienc@nerim.net>
-User-Agent: Mozilla/5.0 (X11; U; SunOS sun4u; en-US; rv:1.0.1) Gecko/20020920 Netscape/7.0
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Jan 2003 16:13:24 +0000 (GMT)
+Received: from mail2.sonytel.be ([IPv6:::ffff:195.0.45.172]:8423 "EHLO
+	mail.sonytel.be") by linux-mips.org with ESMTP id <S8226347AbTAMQNX>;
+	Mon, 13 Jan 2003 16:13:23 +0000
+Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.26])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id RAA19806
+	for <linux-mips@linux-mips.org>; Mon, 13 Jan 2003 17:13:17 +0100 (MET)
+Date: Mon, 13 Jan 2003 17:13:17 +0100 (MET)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: unaligned load in branch delay slot
+Message-ID: <Pine.GSO.4.21.0301131704080.21279-100000@vervain.sonytel.be>
 MIME-Version: 1.0
-To: Ralf Baechle <ralf@oss.sgi.com>
-CC: linux-mips <linux-mips@linux-mips.org>
-Subject: [2.5 PATCH] signal handling
-Content-Type: multipart/mixed;
- boundary="------------090906020704070304070501"
-X-MailScanner: Found to be clean
-Return-Path: <vchappel@irisa.fr>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <Geert.Uytterhoeven@sonycom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1142
+X-archive-position: 1143
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vchappel@irisa.fr
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
---------------090906020704070304070501
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
 
-Hello,
+I'm seeing a crash in 2.4.20 in emulate_load_store_insn(), when accepting a TCP
+connection (exact line number influenced by debug code):
 
-         This patch fixes various bugs in the 2.5 signal code (native and
-mips64 32bit compatibility code):
-         - revert changes to ucontext.h to match the arguments of
-setup_sigcontext and restore_sigcontext (which need a sigcontext struct,
-not mcontext struct)
-         - fix swapped arguments in the call to do_signal in
-do_notify_resume
-         - cleanup and fix 32 bit compatibility code for mips64, 
-including making sigset_t32 and sigset_t size match.
+Unhandled kernel unaligned access or invalid instruction in unaligned.c::emulate_load_store_insn, line 492:
+$0 : 00000000 10008400 30000000 00000000 83c2a380 83d9f80e 838941c0 00000001
+$8 : 00000016 c0a80002 c0a80001 00000016 83f326a4 83f326a8 83f326a0 00000000
+$16: 83c2a43c 811af440 00000000 83c2a380 803da18c 00000000 00000000 00000000
+$24: 00000000 2ac41330                   8039a000 8039baf8 a38415b4 8033eea4
+Hi : 00000000
+Lo : 00000140
+epc  : 80346448    Not tainted
+Status: 10008403
+Cause : 00000010
+Process swapper (pid: 0, stackpage=8039a000)
+Stack:    00000000 00000000 00000000 00000000 00000000 00000000 00000000
+ 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+ 00000000 00000000 00000000 00000000 00000000 00000000 00000000 8039a000
+ 00000001 810d0060 802dd370 00000000 00000000 8039bb70 00000000 8041a690
+ 803d2000 810c5de0 8041a620 810d0060 802dd370 80213fa4 810c41a0 8039bbc8
+ 8020ad50 ...
+Call Trace:   [<802dd370>] [<802dd370>] [<80213fa4>] [<8020ad50>] [<802ea344>]
+ [<802ea2fc>] [<80307e08>] [<802378f8>] [<8020a0d4>] [<8020a0d4>] [<802061d8>]
+ [<802061d8>] [<8020a0d4>] [<8033eea4>] [<80346fbc>] [<80347060>] [<8034716c>]
+ [<803476f4>] [<80329a50>] [<80326648>] [<8032952c>] [<80329ddc>] [<80329d98>]
+ [<80329ddc>] [<8031700c>] [<80329790>] [<8031700c>] [<80316bb4>] [<803172b8>]
+ [<802df95c>] [<8021bf30>] [<80317500>] [<80316ecc>] [<8021b810>] [<80379278>]
+ [<8020ad50>] [<8020aeb0>] [<8020ae84>] [<80379228>] [<80204250>] ...
 
-Vivien.
+Code: 8cc30064  3c023000  00621824 <14600012> 8cb50010  8c840238  8c820004  90830000  00621007 
+Kernel panic: Aiee, killing interrupt handler!
+In interrupt handler - not syncing
 
---------------090906020704070304070501
-Content-Type: text/plain;
- name="linux-mips-signal.diff"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="linux-mips-signal.diff"
+803463f8 <tcp_v4_conn_request>:
+803463f8:	27bdfe20 	addiu	sp,sp,-480
+803463fc:	afb601d8 	sw	s6,472(sp)
+80346400:	afb301cc 	sw	s3,460(sp)
+80346404:	afb101c4 	sw	s1,452(sp)
+80346408:	afbf01dc 	sw	ra,476(sp)
+8034640c:	afb501d4 	sw	s5,468(sp)
+80346410:	afb401d0 	sw	s4,464(sp)
+80346414:	afb201c8 	sw	s2,456(sp)
+80346418:	afb001c0 	sw	s0,448(sp)
+8034641c:	00a08821 	move	s1,a1
+80346420:	8ca50020 	lw	a1,32(a1)
+80346424:	8e260028 	lw	a2,40(s1)
+80346428:	8e320044 	lw	s2,68(s1)
+8034642c:	8ca2000c 	lw	v0,12(a1)
+80346430:	00809821 	move	s3,a0
+80346434:	0000b021 	move	s6,zero
+80346438:	afa201b8 	sw	v0,440(sp)
+8034643c:	8cc30064 	lw	v1,100(a2)
+80346440:	3c023000 	lui	v0,0x3000
+80346444:	00621824 	and	v1,v1,v0
+80346448:	14600012 	bnez	v1,80346494 <tcp_v4_conn_request+0x9c>
+8034644c:	8cb50010 	lw	s5,16(a1)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+80346450:	8c840238 	lw	a0,568(a0)
+80346454:	8c820004 	lw	v0,4(a0)
+80346458:	90830000 	lbu	v1,0(a0)
+8034645c:	00621007 	srav	v0,v0,v1
 
---- include/asm-mips/ucontext.h	2002-10-09 23:12:56.000000000 +0200
-+++ include/asm-mips/ucontext.h	2003-01-10 23:36:16.000000000 +0100
-@@ -10,33 +10,12 @@
- #ifndef _ASM_UCONTEXT_H
- #define _ASM_UCONTEXT_H
- 
--typedef unsigned int greg_t;
--
--#define NGREG 36
--
--typedef greg_t gregset_t[NGREG];
--
--typedef struct fpregset {
--	union {
--		double		fp_dregs[16];
--		float		fp_fregs [32];
--		unsigned int	fp_regs[32];
--	} fp_r;
--	unsigned int fp_csr;
--	unsigned int fp_pad;
--} fpregset_t;
--
--typedef struct {
--	gregset_t gregs;
--	fpregset_t fpregs;
--} mcontext_t;
--
- struct ucontext {
--	unsigned long	uc_flags;
--	struct ucontext	*uc_link;
--	stack_t		uc_stack;
--	mcontext_t	uc_mcontext;
--	sigset_t	uc_sigmask;	/* mask last for extensibility */
-+	unsigned long	  uc_flags;
-+	struct ucontext  *uc_link;
-+	stack_t		  uc_stack;
-+	struct sigcontext uc_mcontext;
-+	sigset_t	  uc_sigmask;	/* mask last for extensibility */
- };
- 
- #endif /* _ASM_UCONTEXT_H */
---- include/asm-mips64/ucontext.h	2002-10-09 23:12:58.000000000 +0200
-+++ include/asm-mips64/ucontext.h	2003-01-10 23:35:06.000000000 +0100
-@@ -10,33 +10,12 @@
- #ifndef _ASM_UCONTEXT_H
- #define _ASM_UCONTEXT_H
- 
--typedef unsigned int greg_t;
--
--#define NGREG 36
--
--typedef greg_t gregset_t[NGREG];
--
--typedef struct fpregset {
--	union {
--		double		fp_dregs[32];
--		float		fp_fregs [32];
--		unsigned long	fp_regs[32];
--	} fp_r;
--	unsigned int fp_csr;
--	unsigned int fp_pad;
--} fpregset_t;
--
--typedef struct {
--	gregset_t gregs;
--	fpregset_t fpregs;
--} mcontext_t;
--
- struct ucontext {
--	unsigned long	uc_flags;
--	struct ucontext	*uc_link;
--	stack_t		uc_stack;
--	mcontext_t	uc_mcontext;
--	sigset_t	uc_sigmask;	/* mask last for extensibility */
-+	unsigned long	  uc_flags;
-+	struct ucontext  *uc_link;
-+	stack_t		  uc_stack;
-+	struct sigcontext uc_mcontext;
-+	sigset_t	  uc_sigmask;	/* mask last for extensibility */
- };
- 
- #endif /* _ASM_UCONTEXT_H */
---- include/asm-mips64/signal.h	2002-11-09 16:16:54.000000000 +0100
-+++ include/asm-mips64/signal.h	2003-01-11 00:57:26.000000000 +0100
-@@ -11,25 +11,47 @@
- 
- #include <linux/types.h>
- 
--#define _NSIG		64
-+#define _NSIG		128
- #define _NSIG_BPW	64
- #define _NSIG_WORDS	(_NSIG / _NSIG_BPW)
- 
- typedef struct {
--	long sig[_NSIG_WORDS];
-+	unsigned long sig[_NSIG_WORDS];
- } sigset_t;
- 
-+typedef unsigned long old_sigset_t;		/* at least 32 bits */
-+
-+#ifdef __KERNEL__
-+
- #define _NSIG32		128
- #define _NSIG_BPW32	32
- #define _NSIG_WORDS32	(_NSIG32 / _NSIG_BPW32)
- 
- typedef struct {
--	long sig[_NSIG_WORDS32];
-+	unsigned int sig[_NSIG_WORDS32];
- } sigset_t32;
- 
--typedef unsigned long old_sigset_t;		/* at least 32 bits */
- typedef unsigned int old_sigset_t32;
- 
-+typedef unsigned int __sighandler_t32;
-+
-+struct sigaction32 {
-+	unsigned int		sa_flags;
-+	__sighandler_t32	sa_handler;
-+	sigset_t32		sa_mask;
-+	unsigned int		sa_restorer;
-+	unsigned int		sa_resv[1];     /* reserved */
-+};
-+
-+/* IRIX compatible stack_t  */
-+typedef struct sigaltstack32 {
-+	unsigned int ss_sp;
-+	__kernel_size_t32 ss_size;
-+	int ss_flags;
-+} stack32_t;
-+
-+#endif /* __KERNEL__ */
-+
- #define SIGHUP		 1	/* Hangup (POSIX).  */
- #define SIGINT		 2	/* Interrupt (ANSI).  */
- #define SIGQUIT		 3	/* Quit (POSIX).  */
---- arch/mips/kernel/signal.c	2002-11-09 16:10:08.000000000 +0100
-+++ arch/mips/kernel/signal.c	2003-01-10 21:26:35.000000000 +0100
-@@ -580,6 +580,6 @@
- 			return;
- 		}
- #endif
--		do_signal(regs,oldset);
-+		do_signal(oldset, regs);
- 	}
- }
---- arch/mips64/kernel/signal.c	2002-11-09 16:10:14.000000000 +0100
-+++ arch/mips64/kernel/signal.c	2003-01-10 22:40:25.000000000 +0100
-@@ -411,6 +411,6 @@
- 			return;
- 		}
- #endif
--		do_signal(regs,oldset);
-+		do_signal(oldset, regs);
- 	}
- }
---- arch/mips64/kernel/signal32.c	2002-11-09 16:10:14.000000000 +0100
-+++ arch/mips64/kernel/signal32.c	2003-01-11 01:39:50.000000000 +0100
-@@ -35,37 +35,10 @@
- 
- extern asmlinkage void do_syscall_trace(void);
- 
--/* 32-bit compatibility types */
--
--#define _NSIG32_BPW	32
--#define _NSIG32_WORDS	(_NSIG / _NSIG32_BPW)
--
--typedef struct {
--	unsigned int sig[_NSIG32_WORDS];
--} sigset32_t;
--
--typedef unsigned int __sighandler32_t;
--typedef void (*vfptr_t)(void);
--
--struct sigaction32 {
--	unsigned int		sa_flags;
--	__sighandler32_t	sa_handler;
--	sigset32_t		sa_mask;
--	unsigned int		sa_restorer;
--	int			sa_resv[1];     /* reserved */
--};
--
--/* IRIX compatible stack_t  */
--typedef struct sigaltstack32 {
--	s32 ss_sp;
--	__kernel_size_t32 ss_size;
--	int ss_flags;
--} stack32_t;
--
- extern void __put_sigset_unknown_nsig(void);
- extern void __get_sigset_unknown_nsig(void);
- 
--static inline int put_sigset(const sigset_t *kbuf, sigset32_t *ubuf)
-+static inline int put_sigset(const sigset_t *kbuf, sigset_t32 *ubuf)
- {
- 	int err = 0;
- 
-@@ -86,7 +59,7 @@
- 	return err;
- }
- 
--static inline int get_sigset(sigset_t *kbuf, const sigset32_t *ubuf)
-+static inline int get_sigset(sigset_t *kbuf, const sigset_t32 *ubuf)
- {
- 	int err = 0;
- 	unsigned long sig[4];
-@@ -115,11 +88,11 @@
-  */
- asmlinkage inline int sys32_sigsuspend(abi64_no_regargs, struct pt_regs regs)
- {
--	sigset32_t *uset;
-+	sigset_t32 *uset;
- 	sigset_t newset, saveset;
- 
- 	save_static(&regs);
--	uset = (sigset32_t *) regs.regs[4];
-+	uset = (sigset_t32 *) regs.regs[4];
- 	if (get_sigset(&newset, uset))
- 		return -EFAULT;
- 	sigdelsetmask(&newset, ~_BLOCKABLE);
-@@ -142,17 +115,17 @@
- 
- asmlinkage int sys32_rt_sigsuspend(abi64_no_regargs, struct pt_regs regs)
- {
--	sigset32_t *uset;
-+	sigset_t32 *uset;
- 	sigset_t newset, saveset;
-         size_t sigsetsize;
- 
- 	save_static(&regs);
- 	/* XXX Don't preclude handling different sized sigset_t's.  */
- 	sigsetsize = regs.regs[5];
--	if (sigsetsize != sizeof(sigset32_t))
-+	if (sigsetsize != sizeof(sigset_t32))
- 		return -EINVAL;
- 
--	uset = (sigset32_t *) regs.regs[4];
-+	uset = (sigset_t32 *) regs.regs[4];
- 	if (get_sigset(&newset, uset))
- 		return -EFAULT;
- 	sigdelsetmask(&newset, ~_BLOCKABLE);
-@@ -795,7 +768,7 @@
- asmlinkage long sys_rt_sigprocmask(int how, sigset_t *set, sigset_t *oset,
- 				   size_t sigsetsize);
- 
--asmlinkage int sys32_rt_sigprocmask(int how, sigset32_t *set, sigset32_t *oset,
-+asmlinkage int sys32_rt_sigprocmask(int how, sigset_t32 *set, sigset_t32 *oset,
- 				    unsigned int sigsetsize)
- {
- 	sigset_t old_set, new_set;
-@@ -818,7 +791,7 @@
- 
- asmlinkage long sys_rt_sigpending(sigset_t *set, size_t sigsetsize);
- 
--asmlinkage int sys32_rt_sigpending(sigset32_t *uset, unsigned int sigsetsize)
-+asmlinkage int sys32_rt_sigpending(sigset_t32 *uset, unsigned int sigsetsize)
- {
- 	int ret;
- 	sigset_t set;
+If I print the parameters at label `sigill' in emulate_load_store_insn(), I
+get:
 
---------------090906020704070304070501--
+    pc 0x80346448 addr 0x83d9f81e ins 0x14600012
+
+And emulate_load_store_insn() gets confused because 0x14600012 is not a
+load/store. 0x14600012 is the branch instruction before the load, not the load
+after the branch instruction! Note that bit 31 of cause (CAUSEF_BD) is not set.
+Some more investigations showed that the branch is indeed not taken.
+
+Apparently if an unaligned access happens right after a branch which is not
+taking, epc points to the branch instruction, and CAUSEF_BD is not set
+(technically speaking, this is not a branch delay, since the branch is not
+taken :-). Is this expected behavior? The CPU is a VR4120A core.
+
+As a workaround, I assume I can just test whether pc points to a branch
+instruction, and increment pc if that's the case?
+
+Thanks!
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

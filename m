@@ -1,45 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 26 Oct 2002 05:18:56 +0200 (CEST)
-Received: from p508B5F86.dip.t-dialin.net ([80.139.95.134]:56737 "EHLO
-	dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S1123891AbSJZDS4>; Sat, 26 Oct 2002 05:18:56 +0200
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id g9Q3IjZ08645;
-	Sat, 26 Oct 2002 05:18:45 +0200
-Date: Sat, 26 Oct 2002 05:18:44 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Dennis Newbold <dennisn@pe.net>
-Cc: linux-mips@linux-mips.org
-Subject: Re: GCC generating wrong assembly code?
-Message-ID: <20021026051844.B9509@linux-mips.org>
-References: <Pine.GSO.3.96.1021025110042.28181A-101000@shell1>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 26 Oct 2002 06:47:40 +0200 (CEST)
+Received: from crack.them.org ([65.125.64.184]:55058 "EHLO crack.them.org")
+	by linux-mips.org with ESMTP id <S1123891AbSJZErk>;
+	Sat, 26 Oct 2002 06:47:40 +0200
+Received: from nevyn.them.org ([66.93.61.169] ident=mail)
+	by crack.them.org with asmtp (Exim 3.12 #1 (Debian))
+	id 185Jkk-0003nv-00; Sat, 26 Oct 2002 00:44:54 -0500
+Received: from drow by nevyn.them.org with local (Exim 3.36 #1 (Debian))
+	id 185IpZ-00044j-00; Sat, 26 Oct 2002 00:45:49 -0400
+Date: Sat, 26 Oct 2002 00:45:49 -0400
+From: Daniel Jacobowitz <dan@debian.org>
+To: "H. J. Lu" <hjl@lucon.org>
+Cc: Roland McGrath <roland@redhat.com>,
+	GNU C Library <libc-alpha@sources.redhat.com>,
+	linux-mips@linux-mips.org
+Subject: Re: PATCH: Fix errlist for mips
+Message-ID: <20021026044549.GA15461@nevyn.them.org>
+Mail-Followup-To: "H. J. Lu" <hjl@lucon.org>,
+	Roland McGrath <roland@redhat.com>,
+	GNU C Library <libc-alpha@sources.redhat.com>,
+	linux-mips@linux-mips.org
+References: <20021020172331.A26834@lucon.org> <200210252336.g9PNaww03056@magilla.sf.frob.com> <20021025164132.A23230@lucon.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <Pine.GSO.3.96.1021025110042.28181A-101000@shell1>; from dennisn@pe.net on Fri, Oct 25, 2002 at 11:30:36AM -0700
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20021025164132.A23230@lucon.org>
+User-Agent: Mutt/1.5.1i
+Return-Path: <drow@false.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 519
+X-archive-position: 520
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Oct 25, 2002 at 11:30:36AM -0700, Dennis Newbold wrote:
+On Fri, Oct 25, 2002 at 04:41:32PM -0700, H. J. Lu wrote:
+> On Fri, Oct 25, 2002 at 04:36:58PM -0700, Roland McGrath wrote:
+> > You know better than I what existing mips libc.so.6 ABIs have for the size
+> > of sys_errlist.  But for the current version, 123 omits many of the errno
+> > values I see in asm-mips/errno.h, and EDQUOT really is 1133.  So I don't
+> > see how your change can be right.
+> 
+> That is what was in glibc 2.0 for mips. However, glibc 2.2 is the first
+> glibc version I worked on. I don't have any mips binaries compiled
+> against glibc 2.0. As far as I know, none of glibc prior to the one
+> with all my mips patches applied ever worked 100% correct on mips.
 
->      I'm trying to build gcj (GNU Java ahead-of-time compiler) from
-> the sources.  It ran for quite awhile, and then on a particular file,
-> it got about 20 "Error: branch out of range" errors from the gas
-> assembler.  I'm hoping that someone on this list that understands gcc
+Not everyone uses your MIPS patches; I have a completely functional
+MIPS system with:
+0019df30 l     O .data  000011b8              _new_sys_errlist
+0019df30 l     O .data  000001ec              _old_sys_errlist
 
-This is supposedly fixed in the very latest versions.
+(That's 1134*4 in the new one and 123*4 in the older one).  There's a
+lot of these beasts deployed and I'd hate to see an incompatible change
+now!
 
-As a temporary workaround that works for most files enable optimization
--O or even -O2 for those files affected by this problem.  -fno-inline
-or -Os may also help - basically everything that reduces the code size.
-
-  Ralf
+-- 
+Daniel Jacobowitz
+MontaVista Software                         Debian GNU/Linux Developer

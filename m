@@ -1,109 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Sep 2002 12:49:53 +0200 (CEST)
-Received: from mx2.mips.com ([206.31.31.227]:42999 "EHLO mx2.mips.com")
-	by linux-mips.org with ESMTP id <S1122961AbSIMKtw>;
-	Fri, 13 Sep 2002 12:49:52 +0200
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id g8DAnhUD022386;
-	Fri, 13 Sep 2002 03:49:43 -0700 (PDT)
-Received: from grendel (grendel [192.168.236.16])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id DAA14637;
-	Fri, 13 Sep 2002 03:49:48 -0700 (PDT)
-Message-ID: <00ca01c25b13$92c7f780$10eca8c0@grendel>
-From: "Kevin D. Kissell" <kevink@mips.com>
-To: "Matthew Dharm" <mdharm@momenco.com>,
-	"Linux-MIPS" <linux-mips@linux-mips.org>
-References: <NEBBLJGMNKKEEMNLHGAIMEPBCIAA.mdharm@momenco.com>
-Subject: Re: When to #ifdef on CPUs?
-Date: Fri, 13 Sep 2002 12:51:41 +0200
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4807.1700
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4910.0300
-Return-Path: <kevink@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Sep 2002 15:51:16 +0200 (CEST)
+Received: from crack.them.org ([65.125.64.184]:16902 "EHLO crack.them.org")
+	by linux-mips.org with ESMTP id <S1122961AbSIMNvQ>;
+	Fri, 13 Sep 2002 15:51:16 +0200
+Received: from nevyn.them.org ([66.93.61.169] ident=mail)
+	by crack.them.org with asmtp (Exim 3.12 #1 (Debian))
+	id 17prmd-0001ra-00; Fri, 13 Sep 2002 09:50:59 -0500
+Received: from drow by nevyn.them.org with local (Exim 3.35 #1 (Debian))
+	id 17pqqn-0002or-00; Fri, 13 Sep 2002 09:51:13 -0400
+Date: Fri, 13 Sep 2002 09:51:13 -0400
+From: Daniel Jacobowitz <dan@debian.org>
+To: Stuart Hughes <seh@zee2.com>
+Cc: Linux-MIPS <linux-mips@linux-mips.org>
+Subject: Re: cannot debug multi-threaded programs with gdb
+Message-ID: <20020913135113.GA10721@nevyn.them.org>
+References: <3D81B8D3.1609CD69@zee2.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3D81B8D3.1609CD69@zee2.com>
+User-Agent: Mutt/1.5.1i
+Return-Path: <drow@false.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 172
+X-archive-position: 173
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@mips.com
+X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-From: "Matthew Dharm" <mdharm@momenco.com>
-> I'm basically done with my task of porting linux to our SR71000-based
-> board.  I'm getting ready to start feeding patches to Ralf, and
-> something occured to me....
+On Fri, Sep 13, 2002 at 11:07:15AM +0100, Stuart Hughes wrote:
+> Hi,
 > 
-> Sometimes, in some places, we use CONFIG_ options to select the
-> apropriate CPU.  Other places, we probe for the CPU based on the PRID
-> register.
+> I've been trying to debug a simple multi-threaded test program using
+> gdb, and it always fails as follows:
 > 
-> In some places, the reason for the choice is clear -- it's just much
-> easier to select the cache library based on a CONFIG_ option in a
-> Makefile than trying to do run-time assignment of many function
-> pointers.
+> [New Thread 1024 (LWP
+> 39)]                                                      
+>                                                                                 
+> Program received signal SIGTRAP, Trace/breakpoint
+> trap.                         
+> [Switching to Thread 1024 (LWP
+> 39)]                                             
+> warning: Warning: GDB can't find the start of the function at
+> 0xffffffff.       
 > 
-> However, is some places, the choice is not clear.  In cpu-probe.c, for
-> example, several of the CPU identification routines are wrapped in
-> #ifdef's -- odd, since the wrong 'case' of the switch statements
-> should never get executed, even if compiled in....
+> I've tried various different compilers, gdb, glibc version but the
+> problem is the same.  Note that I can debug non-threaded c/c++ programs
+> without any problem.  My environment is as follows:
+> 
+> CPU:		NEC VR5432
+> kernel: 	linux-2.4.10 + patches
+> glibc:		2.2.3 + patches
 
-There is a big discontinuity between the R3000 privileged resource 
-model and that of the R4000 and later CPUs. So it would not surprise 
-me if the MIPS/Linux kernel retained some R3000/non-R3000 
-conditional code for a while longer.  Much of rest of what you're 
-seeing, particularly in cpu-probe.c, is just slop - expedient hacks 
-that somehow became permanent.  
+Not enough patches I'd bet.  Glibc 2.2.3 had an incorrect size listed
+for elf_gregset_t, and it was fixed in 2.2.5.  That would cause this
+problem.
 
-But the ambivalence between run-time and build-time binding
-to CPUs probably also reflects the two poles of use of
-MIPS/Linux.  The folks who use it on old SGI and DEC
-workstations have platforms like the SGI Indy where the
-same relatively RAM-rich platform configuration can support 
-a number of different CPUs .  That tends to lead to run-time
-binding of the CPU-specific routines and parameters.
-The folks who use it for embedded apps tend to have
-system and peripheral setups that are anyway pretty 
-application-specific, and since memory isn't entirely free,
-there's no advantage, and some slight disadvantage, 
-in including code to support other CPUs in the OS image.
-So we have an environment where boot-time CPU
-binding works OK across the set of CPUs used in
-Indys, and not necessarily for others.
+> gdb:		5.2/3 from CVS
+> gcc:		3.1 (also tried 3.0.1)
+> binutils:	Version 2.11.90.0.25
+> 
+> Does anyone have any idea what is wrong and how to fix it. 
+> 
+> Regards, Stuart
+> 
+> 
 
-And there are, alas, cases where the designers failed 
-to  provide a correctly unique PrID register value, such 
-as is apparently the case with the NEC Vr4111 and VR4181.  
-I'd be willing to bet that there is *some* way to distinguish 
-those two parts at run-time if one really wanted to, though.
-
-> So, what's the rule here?  When do I used #ifdef and when do I just
-> let the PRID stuff work it's magic?
-
-I don't know that there's a rule as such, but I would strongly
-recommend using the PrID and Config registers to generate a 
-kernel CPU ID and a set of mips_cpu.options bits, and that
-information abstracted into the mips_cpu structure should be
-used in preference to comparing against CPU ID's.  It may
-require a little more thought up-front, but it leaves the rest
-of the code a lot easier to maintain.  You should have seen
-what the kernel looked like before we introduced the
-mips_cpu structure!
-
-Fortunately, the standardization of the privileged resource 
-architecture in the MIPS32 and MIPS64 specs means that
-the problem shouldn't get much worse - newer parts should
-just work with a MIPS32 kernel.
-
-> I mean, heck... it might be nice to put a check to see if the detected
-> CPU matches what the kernel was compiled for...
-
-If it doesn't, that's a bug.
-
-            Kevin K.
+-- 
+Daniel Jacobowitz
+MontaVista Software                         Debian GNU/Linux Developer

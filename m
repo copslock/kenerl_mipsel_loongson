@@ -1,56 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jul 2004 01:39:19 +0100 (BST)
-Received: from p508B68D1.dip.t-dialin.net ([IPv6:::ffff:80.139.104.209]:35443
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225766AbUGOAjP>; Thu, 15 Jul 2004 01:39:15 +0100
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i6F0dEk0025682;
-	Thu, 15 Jul 2004 02:39:14 +0200
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i6F0dEQI025681;
-	Thu, 15 Jul 2004 02:39:14 +0200
-Date: Thu, 15 Jul 2004 02:39:14 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: "Kevin D. Kissell" <kevink@mips.com>
-Cc: a.voropay@vmb-service.ru, linux-mips@linux-mips.org
-Subject: Re: MS VC++ compiler / MIPS
-Message-ID: <20040715003914.GB25279@linux-mips.org>
-References: <07d301c469a9$e708f550$0200000a@ALEC> <003001c469b4$3b5ae960$10eca8c0@grendel>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jul 2004 02:34:44 +0100 (BST)
+Received: from [IPv6:::ffff:202.230.225.5] ([IPv6:::ffff:202.230.225.5]:61725
+	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
+	id <S8225766AbUGOBei>; Thu, 15 Jul 2004 02:34:38 +0100
+Received: from newms.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 15 Jul 2004 01:34:37 UT
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by newms.toshiba-tops.co.jp (Postfix) with ESMTP
+	id 721E1239E50; Thu, 15 Jul 2004 10:36:39 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id i6F1YSwB080186;
+	Thu, 15 Jul 2004 10:34:28 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date: Thu, 15 Jul 2004 10:34:44 +0900 (JST)
+Message-Id: <20040715.103444.70224080.nemoto@toshiba-tops.co.jp>
+To: dom@mips.com
+Cc: ralf@linux-mips.org, KevinK@mips.com, theansweriz42@hotmail.com,
+	linux-mips@linux-mips.org
+Subject: Re: Strange, strange occurence
+From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <16629.24775.778491.754688@arsenal.mips.com>
+References: <00ba01c46823$3729b200$0deca8c0@Ulysses>
+	<20040713003317.GA26715@linux-mips.org>
+	<16629.24775.778491.754688@arsenal.mips.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+Organization: TOSHIBA Personal Computer System Corporation
+X-Mailer: Mew version 3.3 on Emacs 21.2 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <003001c469b4$3b5ae960$10eca8c0@grendel>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5481
+X-archive-position: 5482
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Jul 14, 2004 at 05:07:06PM +0200, Kevin D. Kissell wrote:
+>>>>> On Wed, 14 Jul 2004 17:35:19 +0100, Dominic Sweetman <dom@mips.com> said:
+dom> 2. Arrange to skip those indexes when zapping the cache, then do
+dom> something weird to invalidate that handful of lines.  You could
+dom> do that by running uncached, but you could also do it just by
+dom> using some auxiliary routine which is known to be more than a
+dom> cache line but much less than a whole I-cache span distant, so
+dom> can't possibly alias to the same thing...
 
-> If I recall correctly, the MS compiler uses a subltly different
-> calling convention/ABI than the "o32" gcc conventions assumed
-> by MIPS Linux, and certainly the assembler directives will be
-> different from those assumed by the Linux sources.  It *might*
-> be possible to hack up a MIPS Linux kernel source tree to
-> build with the MS tool kit, but it would be a lot of work, 
-> some of it subtle.
+dom> This is fiddly, but not terribly difficult and should have a
+dom> negligible performance impact.
 
-A few years ago we got SGI's IA-64 kernel to compile with their Pro64
-compiler.  Despite the usually rather dramatic superiority of Pro64's
-code generation compared to the gcc of that time - half the time to
-generate twice as fast application code was common - the huge effort
-it took was essentially wasted time to achieve a hard to meassure amount
-of extra performance.  Most of the kernel code is well optimized, was
-written with being compiled by gcc in mind and performance is more
-limited by the hardware and kernel algorithms than by the compiler's
-code generation.  So I wouldn't invest any time into trying to get the
-kernel working on yet another non-gcc compiler ...
+Yes.  The cache routines for TX49XX surely do it (2 phase
+invalidating).  Please look at tx49_blast_icache32() in c-r4k.c.
 
-  Ralf
+---
+Atsushi Nemoto

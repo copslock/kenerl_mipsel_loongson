@@ -1,65 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Aug 2004 02:05:14 +0100 (BST)
-Received: from sccrmhc11.comcast.net ([IPv6:::ffff:204.127.202.55]:58558 "EHLO
-	sccrmhc11.comcast.net") by linux-mips.org with ESMTP
-	id <S8225214AbUHEBFK>; Thu, 5 Aug 2004 02:05:10 +0100
-Received: from gentoo.org (pcp04939029pcs.waldrf01.md.comcast.net[68.48.72.58])
-          by comcast.net (sccrmhc11) with ESMTP
-          id <20040805010503011000d9a5e>
-          (Authid: kumba12345);
-          Thu, 5 Aug 2004 01:05:03 +0000
-Message-ID: <411188A8.9040607@gentoo.org>
-Date: Wed, 04 Aug 2004 21:08:56 -0400
-From: Kumba <kumba@gentoo.org>
-Reply-To: kumba@gentoo.org
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.6) Gecko/20040113
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Aug 2004 14:07:01 +0100 (BST)
+Received: from nwd2mail2.analog.com ([IPv6:::ffff:137.71.25.51]:21900 "EHLO
+	nwd2mail2.analog.com") by linux-mips.org with ESMTP
+	id <S8225230AbUHENG5>; Thu, 5 Aug 2004 14:06:57 +0100
+Received: from nwd2mhb2.analog.com (nwd2mhb2.analog.com [137.71.6.12])
+	by nwd2mail2.analog.com (8.12.10/8.12.10) with ESMTP id i75D6sfT026934
+	for <linux-mips@ftp.linux-mips.org>; Thu, 5 Aug 2004 09:06:54 -0400
+Received: from jasmine.cpgindia.analog.com ([10.121.13.30])
+	by nwd2mhb2.analog.com (8.9.3 (PHNE_28810+JAGae91741)/8.9.3) with ESMTP id JAA18049
+	for <linux-mips@ftp.linux-mips.org>; Thu, 5 Aug 2004 09:06:55 -0400 (EDT)
+Received: from asingh2d01 ([10.121.13.93])
+	by jasmine.cpgindia.analog.com (8.9.1/8.9.1) with SMTP id SAA13722
+	for <linux-mips@ftp.linux-mips.org>; Thu, 5 Aug 2004 18:36:50 +0530 (IST)
+From: "akshay" <akshay.singh@analog.com>
+To: <linux-mips@ftp.linux-mips.org>
+Subject: RE: pthread uClibc
+Date: Thu, 5 Aug 2004 18:48:48 +0530
+Message-ID: <005601c47aee$beb7faf0$5d0d790a@asingh2d01>
 MIME-Version: 1.0
-To: linux-mips@linux-mips.org
-Subject: Re: anybody tried NPTL?
-References: <20040804152936.D6269@mvista.com>
-In-Reply-To: <20040804152936.D6269@mvista.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain;
+	charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Return-Path: <kumba@gentoo.org>
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook CWS, Build 9.0.2416 (9.0.2911.0)
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1409
+X-Scanned-By: MIMEDefang 2.41
+Return-Path: <akshay.singh@analog.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5598
+X-Orcpt: rfc822;linux-mips@ftp.linux-mips.org
+Original-Recipient: rfc822;linux-mips@ftp.linux-mips.org
+X-archive-position: 5599
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: akshay.singh@analog.com
 Precedence: bulk
 X-list: linux-mips
 
-Jun Sun wrote:
 
-> I am looking into porting NPTL to MIPS.  Just curious if
-> anybody has tried this before.
-> 
-> I notice there was a discussion about the ABI extension
-> for TLS (thread local storage) support.  Before that support
-> becomes a reality it seems one can still use NPTL with 
-> the help of additional system calls.
-> 
-> A rough search of latest glibc source shows there is
-> zero MIPS code for nptl.  A couple of other arches
-> are missing as well (such as ARM)
-> 
-> Jun
+Hi,
 
-All I've heard about this is that some kernel changes are (still?) 
-needed, then just the glibc support along w/ TLS (Maybe compiler support?).
+I am trying to use pthread on mips based platform.
 
-I believe I heard reports that the glibc people were looking to 
-deprecate linuxthreads within a another release or two (but don't know 
-specifics or anything), so it sounds like NPTL should be something to 
-get working.
+I have simple program to just create pthreads and when I run my program, it
+goes does not come back and when I hit enter on screen, I see following
+message on console.
+
+pt: assertion failed in manager.c:154.
+
+pt: assertion failed in manager.c:193.
+
+Can someone plz help me here .
 
 
---Kumba
-
--- 
-"Such is oft the course of deeds that move the wheels of the world: 
-small hands do them because they must, while the eyes of the great are 
-elsewhere."  --Elrond
+Thanks,
+Akshay

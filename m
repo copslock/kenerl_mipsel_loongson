@@ -1,47 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Feb 2005 22:21:12 +0000 (GMT)
-Received: from mail2.dataflo.net ([IPv6:::ffff:207.252.248.127]:56847 "EHLO
-	mail2.dataflo.net") by linux-mips.org with ESMTP
-	id <S8225208AbVBVWU5> convert rfc822-to-8bit; Tue, 22 Feb 2005 22:20:57 +0000
-Received: (qmail 66210 invoked by uid 1009); 22 Feb 2005 16:20:54 -0600
-Received: from elk-righthand-router.dataflo.net (HELO server1.RightHand.righthandtech.com) (207.252.249.22)
-  by mail2.dataflo.net with SMTP; 22 Feb 2005 16:20:54 -0600
-content-class: urn:content-classes:message
-Subject: RE: swapon failure with au1550
-Date:	Tue, 22 Feb 2005 16:20:28 -0600
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Feb 2005 00:33:28 +0000 (GMT)
+Received: from 64-30-195-78.dsl.linkline.com ([IPv6:::ffff:64.30.195.78]:36526
+	"EHLO jg555.com") by linux-mips.org with ESMTP id <S8225302AbVBWAdM>;
+	Wed, 23 Feb 2005 00:33:12 +0000
+Received: from [172.16.0.150] (w2rz8l4s02.jg555.com [::ffff:172.16.0.150])
+  (AUTH: PLAIN jim, SSL: TLSv1/SSLv3,256bits,AES256-SHA)
+  by jg555.com with esmtp; Tue, 22 Feb 2005 16:33:10 -0800
+  id 00008479.421BCF46.00000289
+Message-ID: <421BCF34.90308@jg555.com>
+Date:	Tue, 22 Feb 2005 16:32:52 -0800
+From:	Jim Gifford <maillist@jg555.com>
+User-Agent: Mozilla Thunderbird 0.9 (Windows/20041103)
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Message-ID: <B482D8AA59BF244F99AFE7520D74BF9609D4F2@server1.RightHand.righthandtech.com>
-X-MimeOLE: Produced By Microsoft Exchange V6.0.4417.0
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: swapon failure with au1550
-Thread-Index: AcUZLLaERrIB9opzSlWlu0VPWdsF7g==
-From:	"Bob Breuer" <bbreuer@righthandtech.com>
-To:	<linux-mips@linux-mips.org>
-Return-Path: <bbreuer@righthandtech.com>
+To:	linux-mips@linux-mips.org
+Subject: Building GLIBC 2.3.4 on MIPS
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <maillist@jg555.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7310
+X-archive-position: 7311
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bbreuer@righthandtech.com
+X-original-sender: maillist@jg555.com
 Precedence: bulk
 X-list: linux-mips
 
-The bitmask in a pte for swap type is 0x0000_1f00.  In the CPU_MIPS32 &&
-64BIT_PHYS_ADDR case, _PAGE_FILE is 0x0000_0400.  Since _PAGE_FILE is
-set in the maxed out swap type, it triggers a BUG().
+I'm trying to build the current glibc with my RaQ2, everything builds 
+ok, until I start compiling strace.
 
-If I move the swap type field like this:
-  #define __swp_type(x)  (((x).val >> 2) & 0x0f)
-then it works for me.  This makes use of the _PAGE_DIRTY and _CACHE_MASK
-bits which were being used in the !64BIT_PHYS_ADDR case.
+syscall.c: In function `dumpio':
+syscall.c:449: error: `SYS_read' undeclared (first use in this function)
+syscall.c:449: error: (Each undeclared identifier is reported only once
+syscall.c:449: error: for each function it appears in.)
+syscall.c:465: error: `SYS_write' undeclared (first use in this function)
+syscall.c: In function `syscall_fixup':
+syscall.c:1265: warning: unused variable `pid'
+syscall.c: In function `trace_syscall':
+syscall.c:2481: error: `SYS_exit' undeclared (first use in this function)
+make[1]: *** [syscall.o] Error 1
+make[1]: Leaving directory `/usr/src/strace-4.5.9'
+make: *** [all] Error 2
 
-Is this a reasonable solution, or should a different grouping of bits be
-used?
+Which leads me to check syscall.h, then I noticed a big difference from 
+my x86 version to this version, all the SYS_ entries are missing.  Did I 
+build it wrong or is this a glibc issue, due to the addition of the 
+mips32 and mips64 directories.
 
-Bob Breuer
+Here is my bug report with the glibc folks for everyone's reference.
+http://sources.redhat.com/bugzilla/show_bug.cgi?id=758
+
+-- 
+----
+Jim Gifford
+maillist@jg555.com

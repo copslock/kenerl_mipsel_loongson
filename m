@@ -1,47 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Apr 2003 08:25:37 +0100 (BST)
-Received: from 12-234-18-241.client.attbi.com ([IPv6:::ffff:12.234.18.241]:20357
-	"EHLO localhost.localdomain") by linux-mips.org with ESMTP
-	id <S8225073AbTD3HZf>; Wed, 30 Apr 2003 08:25:35 +0100
-Received: from localhost.localdomain (greglaptop [127.0.0.1])
-	by localhost.localdomain (8.12.8/8.12.5) with ESMTP id h3U7OpEh002749
-	for <linux-mips@linux-mips.org>; Wed, 30 Apr 2003 00:25:25 -0700
-Received: (from lindahl@localhost)
-	by localhost.localdomain (8.12.8/8.12.8/Submit) id h3U7Oo1P002747
-	for linux-mips@linux-mips.org; Wed, 30 Apr 2003 00:24:50 -0700
-X-Authentication-Warning: localhost.localdomain: lindahl set sender to lindahl@keyresearch.com using -f
-Date: Wed, 30 Apr 2003 00:24:50 -0700
-From: Greg Lindahl <lindahl@keyresearch.com>
-To: linux-mips@linux-mips.org
-Subject: Re: Linux for MIPS Atlas 4Kc board
-Message-ID: <20030430072450.GA2741@greglaptop.attbi.com>
-Mail-Followup-To: linux-mips@linux-mips.org
-References: <BAY1-F93dHd6z6BJ8Qi0001d2c1@hotmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <BAY1-F93dHd6z6BJ8Qi0001d2c1@hotmail.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <lindahl@keyresearch.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Apr 2003 09:54:29 +0100 (BST)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:44190 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225203AbTD3Iy1>; Wed, 30 Apr 2003 09:54:27 +0100
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id KAA01144;
+	Wed, 30 Apr 2003 10:55:10 +0200 (MET DST)
+Date: Wed, 30 Apr 2003 10:55:09 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: ralf@linux-mips.org
+cc: linux-mips@linux-mips.org
+Subject: Re: CVS Update@-mips.org: linux 
+In-Reply-To: <20030427233451Z8225245-1272+1630@linux-mips.org>
+Message-ID: <Pine.GSO.3.96.1030430105326.1016A-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
 X-Spam-Checker-Version: SpamAssassin 2.50 (1.173-2003-02-20-exp)
-X-archive-position: 2235
+X-archive-position: 2236
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lindahl@keyresearch.com
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Apr 30, 2003 at 12:13:08AM -0700, Michael Anburaj wrote:
+On Mon, 28 Apr 2003 ralf@linux-mips.org wrote:
 
-> I guess it's something to do with the FPU option ( not sure).. Please help 
-> me with this. I wonder why its still refering to files from arch/i386
+> Log message:
+> 	Somhow those ll/sc counters in their current form are rather useless as
+> 	they're only per system, not per thread so for now I'm removing them.
+> 	Yell if somebody minds - I just don't think they're really useful in
+> 	their current form ...
 
-That's hiding in your dependency files. Are you sure that "make dep" worked?
+ One use is to check if the emulation is used at all.
 
-"make mrproper" will return your kernel tree to a pretty clean state. Then
-you'll have to start over with configuration, make dep, make.
-
-greg
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

@@ -1,42 +1,42 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6OGV5223853
-	for linux-mips-outgoing; Tue, 24 Jul 2001 09:31:05 -0700
-Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6OGUvO23846;
-	Tue, 24 Jul 2001 09:30:57 -0700
-Received: by ocean.lucon.org (Postfix, from userid 1000)
-	id 6AD44125BA; Tue, 24 Jul 2001 09:30:56 -0700 (PDT)
-Date: Tue, 24 Jul 2001 09:30:56 -0700
-From: "H . J . Lu" <hjl@lucon.org>
-To: Ralf Baechle <ralf@oss.sgi.com>
-Cc: Andre.Messerschmidt@infineon.com, linux-mips@oss.sgi.com
-Subject: Re: GCC and Modules
-Message-ID: <20010724093056.A21216@lucon.org>
-References: <86048F07C015D311864100902760F1DDFF000E@dlfw003a.dus.infineon.com> <20010724084005.A20319@lucon.org> <20010724182057.D27225@bacchus.dhis.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20010724182057.D27225@bacchus.dhis.org>; from ralf@oss.sgi.com on Tue, Jul 24, 2001 at 06:20:57PM +0200
+	by oss.sgi.com (8.11.2/8.11.3) id f6OGWs323950
+	for linux-mips-outgoing; Tue, 24 Jul 2001 09:32:54 -0700
+Received: from highland.isltd.insignia.com (highland.isltd.insignia.com [195.217.222.20])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6OGWpO23945;
+	Tue, 24 Jul 2001 09:32:51 -0700
+Received: from wolf.isltd.insignia.com (wolf.isltd.insignia.com [172.16.1.3])
+	by highland.isltd.insignia.com (8.11.3/8.11.3/check_local4.2) with ESMTP id f6OGWm439704;
+	Tue, 24 Jul 2001 17:32:48 +0100 (BST)
+Received: from snow (snow.isltd.insignia.com [172.16.17.209])
+	by wolf.isltd.insignia.com (8.9.3/8.9.3) with SMTP id RAA24279;
+	Tue, 24 Jul 2001 17:32:47 +0100 (BST)
+Message-ID: <017201c1145e$463feb40$d11110ac@snow.isltd.insignia.com>
+From: "Andrew Thornton" <andrew.thornton@insignia.com>
+To: "Ralf Baechle" <ralf@oss.sgi.com>
+Cc: "James Simmons" <jsimmons@transvirtual.com>,
+   "Linux-MIPS" <linux-mips@oss.sgi.com>
+Subject: Re: ATI Victoria on Malta
+Date: Tue, 24 Jul 2001 17:32:47 +0100
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 4.72.3110.5
+X-MimeOLE: Produced By Microsoft MimeOLE V4.72.3110.3
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Jul 24, 2001 at 06:20:57PM +0200, Ralf Baechle wrote:
-> On Tue, Jul 24, 2001 at 08:40:05AM -0700, H . J . Lu wrote:
-> 
-> > > As I understand the current stable release of binutils and gcc is not able
-> > > to compile functional modules. 
-> > 
-> > What are you talking about? My mips toolchain is as stable/good as the
-> > x86 version for RedHat 7.1.
-> 
-> He's refering to the last official release of binutils which indeed wasn't
-> usable for modutils.
+Ralf,
 
-What official release of binutils? Are we talking about the FSF
-official release? Since when did Linux use those? They won't even
-work right on Linux/x86. You should either use the Linux binutils
-or try your luck with CVS.
+>> What I've got is linux-2.4.3.mips-src-01.00.tar.gz (from ftp.mips.com)
+>> patched to make the FPU emulator work reliably (taken from the mail
+list),
+>
+>Sorry to destroy your illusions but we've got still a bunch of rather
+>tricky bugs in the fp emulation code.
 
+OK then, patched to make the FPU emulator work more reliably.
 
-H.J.
+Andrew Thornton

@@ -1,28 +1,23 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via SMTP id NAA110302 for <linux-archive@neteng.engr.sgi.com>; Sat, 28 Feb 1998 13:05:42 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via SMTP id OAA113140 for <linux-archive@neteng.engr.sgi.com>; Sat, 28 Feb 1998 14:47:35 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id NAA20736 for linux-list; Sat, 28 Feb 1998 13:05:10 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA20731 for <linux@cthulhu.engr.sgi.com>; Sat, 28 Feb 1998 13:05:09 -0800
-Received: from hp817.speedware.com (hp817.speedware.com [192.197.116.3]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id NAA12328
-	for <linux@cthulhu.engr.sgi.com>; Sat, 28 Feb 1998 13:05:04 -0800
-	env-from (chrisr@hp817.speedware.com)
-Received: (from chrisr@localhost)
-	by hp817.speedware.com (8.8.5/8.8.5) id QAA17293
-	for linux@cthulhu.engr.sgi.com; Sat, 28 Feb 1998 16:04:59 -0500 (EST)
-From: "Chris. Rupnik" <chrisr@hp817.speedware.com>
-Message-Id: <199802282104.QAA17293@hp817.speedware.com>
-Subject: Net Booting a MAGNUM pc-50
-To: linux@cthulhu.engr.sgi.com
-Date: Sat, 28 Feb 98 16:04:59 EST
-Mailer: Elm [revision: 70.85.2.1]
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id OAA29921 for linux-list; Sat, 28 Feb 1998 14:47:07 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA29892 for <linux@cthulhu.engr.sgi.com>; Sat, 28 Feb 1998 14:47:06 -0800
+Received: from seaside2.varberg.se (mail.varberg.se [193.13.151.101]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id OAA27837
+	for <linux@cthulhu.engr.sgi.com>; Sat, 28 Feb 1998 14:47:04 -0800
+	env-from (grimsy@seaside.se)
+Received: from calypso.saturn (grimsy@dialup90-3-40.swipnet.se [130.244.90.168]) by seaside2.varberg.se (8.8.5/8.6.9) with SMTP id WAA06869 for <linux@cthulhu.engr.sgi.com>; Sat, 28 Feb 1998 22:47:16 GMT
+Date: Sat, 28 Feb 1998 23:48:57 +0100 (CET)
+From: Ulf Carlsson <grimsy@varberg.se>
+X-Sender: grimsy@calypso.saturn
+To: SGI/Linux mailing list <linux@cthulhu.engr.sgi.com>
+Subject: SGI/Linux vs. Linux/MIPS
+In-Reply-To: <199802280128.RAA31568@oz.engr.sgi.com>
+Message-ID: <Pine.LNX.3.96.980228234632.10491A-100000@calypso.saturn>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi
- I am attempting to netboot a mips machine. I have compiled
- and installed the BFSD server, and now it appears that i am 
- looking for a 'sash'. Can someone please point me in the right
- direction for this booter?
+Are SGI/Linux and Linux/MIPS two different projects?
 
- Thanks
-
- Chris
+- grimsy

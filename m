@@ -1,51 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Dec 2004 08:57:11 +0000 (GMT)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:1893
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8224914AbULXI5G>; Fri, 24 Dec 2004 08:57:06 +0000
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp
-	id 1ChlFe-0007uF-00; Fri, 24 Dec 2004 09:56:46 +0100
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 1ChlFd-0002Hh-00; Fri, 24 Dec 2004 09:56:45 +0100
-Date: Fri, 24 Dec 2004 09:56:45 +0100
-To: Manish Lachwani <m_lachwani@yahoo.com>
-Cc: Martin Michlmayr <tbm@cyrius.com>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] Further TLB handler optimizations
-Message-ID: <20041224085645.GJ3539@rembrandt.csv.ica.uni-stuttgart.de>
-References: <20041223202526.GA2254@deprecation.cyrius.com> <20041224040051.93587.qmail@web52806.mail.yahoo.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20041224040051.93587.qmail@web52806.mail.yahoo.com>
-User-Agent: Mutt/1.5.6+20040907i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Dec 2004 17:25:01 +0000 (GMT)
+Received: from coderock.org ([IPv6:::ffff:193.77.147.115]:62172 "EHLO
+	trashy.coderock.org") by linux-mips.org with ESMTP
+	id <S8225244AbULYRY4>; Sat, 25 Dec 2004 17:24:56 +0000
+Received: by trashy.coderock.org (Postfix, from userid 780)
+	id 6F9011EA0F; Sat, 25 Dec 2004 18:24:43 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by trashy.coderock.org (Postfix) with ESMTP id 7AA171ED41;
+	Sat, 25 Dec 2004 18:24:42 +0100 (CET)
+Received: from localhost.localdomain (localhost [127.0.0.1])
+	by trashy.coderock.org (Postfix) with ESMTP id 370061EA0F;
+	Sat, 25 Dec 2004 18:24:40 +0100 (CET)
+Subject: [patch 1/9] delete unused file
+To: ralf@linux-mips.org
+Cc: linux-mips@linux-mips.org, domen@coderock.org
+From: domen@coderock.org
+Date: Sat, 25 Dec 2004 18:24:50 +0100
+Message-Id: <20041225172440.370061EA0F@trashy.coderock.org>
+Return-Path: <domen@coderock.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6753
+X-archive-position: 6754
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: domen@coderock.org
 Precedence: bulk
 X-list: linux-mips
 
-Manish Lachwani wrote:
-> Hello !
-> 
-> In what way does it break? Can you please provide more
-> details. Also, does it break on UP or SMP?
 
-Userland starts to fail for simple tasks like 'ls -la'. The test was
-done with 64bit SMP on a board which needs the m3 workaround. The
-current CVS version works.
+Remove nowhere referenced file. (egrep "filename\." didn't find anything)
 
-I guess the failure is caused by some missing bits for the m3
-workaround which only show up for the optimized handlers in 64bit mode.
-
-I have tested my patch on a SGI O2 R5000 in the meanwhile, also with
-good results.
+Signed-off-by: Domen Puncer <domen@coderock.org>
+---
 
 
-Thiemo
+ kj/arch/mips/arc/salone.c |   24 ------------------------
+ 1 files changed, 24 deletions(-)
+
+diff -L arch/mips/arc/salone.c -puN arch/mips/arc/salone.c~remove_file-arch_mips_arc_salone.c /dev/null
+--- kj/arch/mips/arc/salone.c
++++ /dev/null	2004-12-24 01:21:08.000000000 +0100
+@@ -1,24 +0,0 @@
+-/*
+- * Routines to load into memory and execute stand-along program images using
+- * ARCS PROM firmware.
+- *
+- * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)
+- */
+-#include <linux/init.h>
+-#include <asm/sgialib.h>
+-
+-LONG __init ArcLoad(CHAR *Path, ULONG TopAddr, ULONG *ExecAddr, ULONG *LowAddr)
+-{
+-	return ARC_CALL4(load, Path, TopAddr, ExecAddr, LowAddr);
+-}
+-
+-LONG __init ArcInvoke(ULONG ExecAddr, ULONG StackAddr, ULONG Argc, CHAR *Argv[],
+-	CHAR *Envp[])
+-{
+-	return ARC_CALL5(invoke, ExecAddr, StackAddr, Argc, Argv, Envp);
+-}
+-
+-LONG __init ArcExecute(CHAR *Path, LONG Argc, CHAR *Argv[], CHAR *Envp[])
+-{
+-	return ARC_CALL4(exec, Path, Argc, Argv, Envp);
+-}
+_

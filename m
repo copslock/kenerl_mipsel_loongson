@@ -1,150 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 May 2003 00:43:43 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:49395 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8225239AbTEHXnl>;
-	Fri, 9 May 2003 00:43:41 +0100
-Received: from zeus.mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id QAA21570;
-	Thu, 8 May 2003 16:43:35 -0700
-Subject: Re: USB OHCI device port on Alchemy
-From: Pete Popov <ppopov@mvista.com>
-To: baitisj@evolution.com
-Cc: Steve Longerbeam <stevel@mvista.com>,
-	Yasushi SHOJI <yashi@atmark-techno.com>,
-	Linux MIPS mailing list <linux-mips@linux-mips.org>
-In-Reply-To: <20030508164134.C30468@luca.pas.lab>
-References: <20030507203127.U30468@luca.pas.lab>
-	 <20030508065335.294643E4CC@dns1.atmark-techno.com>
-	 <20030508141457.V30468@luca.pas.lab> <3EBACCA4.8030803@mvista.com>
-	 <20030508164134.C30468@luca.pas.lab>
-Content-Type: text/plain
-Organization: MontaVista Software
-Message-Id: <1052437426.558.119.camel@zeus.mvista.com>
-Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.2.4 
-Date: 08 May 2003 16:43:46 -0700
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 May 2003 03:05:05 +0100 (BST)
+Received: from [IPv6:::ffff:202.145.53.89] ([IPv6:::ffff:202.145.53.89]:29374
+	"EHLO miao.coventive.com") by linux-mips.org with ESMTP
+	id <S8225254AbTEICEx>; Fri, 9 May 2003 03:04:53 +0100
+Received: from pc208 (PC208.ia.kh.coventive.com [192.168.23.208] (may be forged))
+	by miao.coventive.com (8.11.6/8.11.6) with SMTP id h4924ex21902;
+	Fri, 9 May 2003 10:04:43 +0800
+Message-ID: <000a01c315cf$8171ac70$d017a8c0@pc208>
+From: "smills_ho" <smills_ho@coventive.com>
+To: "Linux/MIPS Development" <linux-mips@linux-mips.org>
+Cc: <gcc@gcc.gnu.org>
+References: <3EB0B329.9030603@ict.ac.cn> <16048.55936.346808.522687@cuddles.redhat.com> <3EB0DDC6.5080108@ict.ac.cn> <16048.57054.224964.883062@cuddles.redhat.com> <20030501085018.GA1885@greglaptop.attbi.com>
+Subject: Problem of cross-mipsel-compiler GLIBC-2.3.X
+Date: Fri, 9 May 2003 10:05:43 +0800
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@mvista.com>
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2800.1106
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1106
+Return-Path: <smills_ho@coventive.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2308
+X-archive-position: 2309
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@mvista.com
+X-original-sender: smills_ho@coventive.com
 Precedence: bulk
 X-list: linux-mips
 
+Dear All,
+    I want to make a cross-compilered glibc-2.3.x and I get the source from
+ftp.gun.org. GCC version is 3.2.3, binutils is 2.13.2.1. The step is as
+following:
 
-I'll check it in later.
+1. Try to build binutils
+2. Try to make static GCC
+3. Try to make glibc -----> Then it is failed
 
-Pete
+Is there anybody know what's going on or somebody had successfully to build
+the crossed glibc-2.3.x?
 
-On Thu, 2003-05-08 at 16:41, Jeff Baitis wrote:
-> All:
-> 
-> Steve's patch includes some configuration options that I missed. Make sure you
-> use his, not mine.
-> 
-> Sorry to cause confusion. I put his down below.
-> 
-> Thanks!
-> 
-> -Jeff
-> 
-> > Index: arch/mips/config.in
-> > ===================================================================
-> > RCS file: /cvsdev/mvl-kernel/linux/arch/mips/config.in,v
-> > retrieving revision 1.20.2.15
-> > diff -u -r1.20.2.15 config.in
-> > --- arch/mips/config.in	19 Feb 2003 11:34:46 -0000	1.20.2.15
-> > +++ arch/mips/config.in	29 Apr 2003 21:56:12 -0000
-> > @@ -391,7 +391,6 @@
-> >     define_bool CONFIG_NONCOHERENT_IO y
-> >     define_bool CONFIG_PC_KEYB y
-> >     define_bool CONFIG_SWAP_IO_SPACE y
-> > -   define_bool CONFIG_AU1000_USB_DEVICE y
-> >  fi
-> >  if [ "$CONFIG_MIPS_PB1500" = "y" ]; then
-> >     define_bool CONFIG_MIPS_AU1000 y
-> > Index: drivers/char/Config.in
-> > ===================================================================
-> > RCS file: /cvsdev/mvl-kernel/linux/drivers/char/Config.in,v
-> > retrieving revision 1.14.4.11
-> > diff -u -r1.14.4.11 Config.in
-> > --- drivers/char/Config.in	26 Mar 2003 03:51:58 -0000	1.14.4.11
-> > +++ drivers/char/Config.in	29 Apr 2003 21:56:23 -0000
-> > @@ -71,9 +71,13 @@
-> >       if [ "$CONFIG_AU1000_UART" = "y" ]; then
-> >           bool '        Enable Au1000 serial console' CONFIG_AU1000_SERIAL_CONSOLE
-> >       fi
-> > -     dep_tristate '  Au1000 USB TTY Device support' CONFIG_AU1000_USB_TTY $CONFIG_AU1000_USB_DEVICE
-> > +     dep_tristate '  Au1000 USB TTY Device support' CONFIG_AU1000_USB_TTY $CONFIG_MIPS_AU1000
-> >       if [ "$CONFIG_AU1000_USB_TTY" != "y" ]; then
-> > -        dep_tristate '  Au1000 USB Raw Device support' CONFIG_AU1000_USB_RAW $CONFIG_AU1000_USB_DEVICE
-> > +        dep_tristate '  Au1000 USB Raw Device support' CONFIG_AU1000_USB_RAW $CONFIG_MIPS_AU1000
-> > +     fi
-> > +     if [ "$CONFIG_AU1000_USB_TTY" != "n" -o \
-> > +          "$CONFIG_AU1000_USB_RAW" != "n" ]; then
-> > +	define_bool CONFIG_AU1000_USB_DEVICE y
-> >       fi
-> >       bool 'TXx927 SIO support' CONFIG_TXX927_SERIAL 
-> >       if [ "$CONFIG_TXX927_SERIAL" = "y" ]; then
-> On Thu, May 08, 2003 at 02:31:16PM -0700, Steve Longerbeam wrote:
-> > 
-> > 
-> > Jeff Baitis wrote:
-> > 
-> > >Ah, thanks Yashi, I didn't notice this since I was looking in the USB driver
-> > >directories ;)
-> > >
-> > >Steve:
-> > >
-> > >The option seems to be inactive in the kernel config; maybe this patch should
-> > >be applied? Or is there a reason why this option is inaccessible?
-> > >
-> > 
-> > Jeff, Yashi:
-> > 
-> > I wrote a similar patch to Yashi's. I've attached it.
-> > 
-> > Pete: have you applied this to linux-mips yet?
-> > 
-> > 
-> > >
-> > >On Thu, May 08, 2003 at 03:53:34PM +0900, Yasushi SHOJI wrote:
-> > >  
-> > >
-> > >>At Wed, 7 May 2003 20:31:27 -0700,
-> > >>Jeff Baitis wrote:
-> > >>    
-> > >>
-> > >>>Has anyone played with the AU1X00 USB device port yet? If not, what would you
-> > >>>guys suggest that the AU1X00 appear as? USB over Ethernet? Or maybe a simple
-> > >>>dummy device that will perform bulk transfers?
-> > >>>      
-> > >>>
-> > >>there are au1000_usbraw.c and au1000_usbtty.c in linux-mips.org's CVS
-> > >>under drivers/char.
-> > >>
-> > >>I'd be excited to see usb storage driver for usb device.
-> > >>
-> > >>as a related topic, does anyone know how usb gadget api is coming? I'm
-> > >>assuming that once usb gadget stabilized and people start using it,
-> > >>we'll be converting au1's usb dev driver to gadget api, no?
-> > >>
-> > 
-> > This is the first time I've heard of the gadget api, but I'd love to 
-> > port the
-> > au1x00 usb dev driver to a full-featured device-side protocol stack, as soon
-> > as the community agrees on one.
-> > 
-> > When I wrote this driver, I implemented my own, very limited, device and
-> > function api, as there still wasn't an accepted device-side api. But 
-> > sounds like
-> > maybe that will finally happen.
-> > 
-> > Steve
-> > 
-> 
-> 
+Thanks and best regs,

@@ -1,25 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Oct 2002 10:40:36 +0200 (CEST)
-Received: from h24-83-212-10.vc.shawcable.net ([24.83.212.10]:12539 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Oct 2002 10:50:20 +0200 (CEST)
+Received: from h24-83-212-10.vc.shawcable.net ([24.83.212.10]:12795 "EHLO
 	bard.illuminatus.org") by linux-mips.org with ESMTP
-	id <S1122978AbSJAIkf>; Tue, 1 Oct 2002 10:40:35 +0200
+	id <S1122978AbSJAIuU>; Tue, 1 Oct 2002 10:50:20 +0200
 Received: from templar ([10.0.0.2])
 	by bard.illuminatus.org with esmtp (Exim 3.35 #1 (Debian))
-	id 17wHnS-0003hp-00
-	for <linux-mips@linux-mips.org>; Tue, 01 Oct 2002 00:50:22 -0700
-Subject: pckbd_rate
+	id 17wHww-0003ik-00
+	for <linux-mips@linux-mips.org>; Tue, 01 Oct 2002 01:00:10 -0700
+Subject: scatterlist.h
 From: Mike Nugent <mips@illuminatus.org>
 To: linux-mips@linux-mips.org
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 X-Mailer: Ximian Evolution 1.0.3 (1.0.3-6) 
-Date: 01 Oct 2002 01:38:50 -0700
-Message-Id: <1033461530.13264.86.camel@templar>
+Date: 01 Oct 2002 01:48:38 -0700
+Message-Id: <1033462118.13267.97.camel@templar>
 Mime-Version: 1.0
 Return-Path: <mips@illuminatus.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 317
+X-archive-position: 318
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -28,43 +28,42 @@ Precedence: bulk
 X-list: linux-mips
 
 
+Next problem  ( I know you all love my by now :)
 
-I was compiling 2.4.18 and I ran into this (this was all done after the
-symbolic links were set up to the mips directories):
+in drivers/scsi/scsi_merge.c
 
-When compiling /usr/src/kernel-source-2.4.18/drivers/char/keyboard.c:
+scsi_merge.c:939: structure has no member named `page'
 
-Included in this order
-#include <asm/keyboard.h>
-...stuff...
-#include <linux/vt_kern.h>
+line 939: sgpnt[count - 1].page = NULL;
 
-/usr/src/kernel-source-2.4.18/include/linux/vt_kern.h:35: `pckbd_rate'
-redeclared as different kind of symbol
-/usr/src/kernel-source-2.4.18/include/asm/keyboard.h:30: previous
-declaration of `pckbd_rate'
+(struct scatterlist *sgpnt;  included from scsi.h, which includes
+asm/scatterlist.h)
 
-in asm/keyboard.h
-extern int pckbd_rate(struct kbd_repeat *rep);
-#define kbd_rate                pckbd_rate
 
-In that order, but, as I understand, the preprocessor will make a pass
-and substitution before the c compiler is called so effectively
-extern int kbd_rate(struct kbd_repeat *rep);
+struct scatterlist {
+    char *  address;    /* Location data is to be transferred to */
+    unsigned int length;
 
-and in linux/vt_kern.h
+    __u32 dvma_address;
+};
 
-extern int (*kbd_rate)(struct kbd_repeat *rep);
+Yes!  It's right!  No member page!
 
-As you can see, the first is the variable and the second is a pointer. 
-Which is right?
+From 2.4.16:
 
-I commented out the pointer, chosen at random and crashed a bit later at
-pc_keyb.c.  So I went back and commented out the first one.  Crashed in
-the same place.  So I grabbed my keyboard.h from my 2.4.16 kernel and
-copied it in.  It works fine.
+struct scatterlist {
+	char * address;		/* Location data is to be transferred to */
+	struct page * page;	/* Location for highmem page, if any */
+	unsigned int length;
+	__u32 dvma_address;
+};
 
-Is this just me?
+I suggest we put that variable back into the structure.
+
+There's more to come, but it's almost 2 am and it's bedtime.  I'll send
+the next one out tomorrow if no one writes me back to tell me I'm
+nuts/not using the right code/can't reproduce the error/etc.
+
 
 -- 
 Mike Nugent

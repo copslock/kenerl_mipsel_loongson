@@ -1,44 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Sep 2002 19:21:49 +0200 (CEST)
-Received: from [129.21.60.9] ([129.21.60.9]:20460 "EHLO mcp.csh.rit.edu")
-	by linux-mips.org with ESMTP id <S1122958AbSIDRVs>;
-	Wed, 4 Sep 2002 19:21:48 +0200
-Received: from csh.rit.edu (unknown [129.21.61.133])
-	by mcp.csh.rit.edu (Postfix) with ESMTP
-	id 4B31A4376; Wed,  4 Sep 2002 13:21:28 -0400 (EDT)
-Message-ID: <3D7678C8.3020505@csh.rit.edu>
-Date: Wed, 04 Sep 2002 17:19:04 -0400
-From: George Gensure <werkt@csh.rit.edu>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.0rc2) Gecko/20020510
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Sep 2002 19:44:10 +0200 (CEST)
+Received: from gateway-1237.mvista.com ([12.44.186.158]:50935 "EHLO
+	av.mvista.com") by linux-mips.org with ESMTP id <S1122958AbSIDRoK>;
+	Wed, 4 Sep 2002 19:44:10 +0200
+Received: from mvista.com (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id KAA23039;
+	Wed, 4 Sep 2002 10:44:01 -0700
+Message-ID: <3D7643BA.6090807@mvista.com>
+Date: Wed, 04 Sep 2002 10:32:42 -0700
+From: Jun Sun <jsun@mvista.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.9) Gecko/20020408
 X-Accept-Language: en-us, en
 MIME-Version: 1.0
-To: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>,
+To: Ralf Baechle <ralf@linux-mips.org>
+CC: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
 	linux-mips@linux-mips.org
-Subject: Re: root-nfs hang and error
-References: <Pine.SOL.4.31.0209021634320.24635-100000@fury.csh.rit.edu>	<20020903.163711.104027127.nemoto@toshiba-tops.co.jp>	<3D752698.5040907@csh.rit.edu> <20020904.103601.74754748.nemoto@toshiba-tops.co.jp>
+Subject: Re: 64-bit and N32 kernel interfaces
+References: <20020904155645.A31893@linux-mips.org> <Pine.GSO.3.96.1020904160219.10619G-100000@delta.ds2.pg.gda.pl> <20020904163101.C32519@linux-mips.org>
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <werkt@csh.rit.edu>
+Return-Path: <jsun@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 83
+X-archive-position: 84
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: werkt@csh.rit.edu
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
->
->
->So "ip=" and "nfsroot=" options may be
->required on diskless boot.
->
-I'm actually good for that, I'm using nfsroot=<server ip>:<path> and the 
-errors that come back correspond to the right host.  I know the ramdisk 
-is used on the install, but I'm wondering if your nolock solution 
-corresponds to the problem with the kernel mounting the nfsroot (i.e. it 
-doesn't use it).  BTW, the root mounted flawlessly onto target, thanks 
-for the nolock option.
 
--George
+
+Ralf Baechle wrote:
+> On Wed, Sep 04, 2002 at 04:14:13PM +0200, Maciej W. Rozycki wrote:
+> 
+> The primary problem is the differnet calling sequence for o32 and N64.
+> As it looks we'll be able to use either the o32 function or the native
+> syscall to implement all of the necessary N32 syscalls.
+
+For 64bit kernel, do we intend to have one syscall table that support o32, n32 
+and n64 altogether?  Or we will have multiple tables for them?
+
+> 
+> The question is if we want to reserve another 1000 entries in our already
+> huge syscall table for N32 or if we got a better solution ...
+>
+
+It seems n32 can be naturally implemented through n64 syscalls, although I am 
+sure there are some nasty details to work out.
+
+Where can I find n32/n64 spec?
+
+Jun

@@ -1,18 +1,17 @@
-Received:  by oss.sgi.com id <S553832AbRA2PGA>;
-	Mon, 29 Jan 2001 07:06:00 -0800
-Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:53140 "EHLO
-        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553829AbRA2PFa>;
-	Mon, 29 Jan 2001 07:05:30 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id QAA22559;
-	Mon, 29 Jan 2001 16:03:48 +0100 (MET)
-Date:   Mon, 29 Jan 2001 16:03:46 +0100 (MET)
+Received:  by oss.sgi.com id <S553850AbRA2Pfa>;
+	Mon, 29 Jan 2001 07:35:30 -0800
+Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:25237 "EHLO
+        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553834AbRA2PfD>;
+	Mon, 29 Jan 2001 07:35:03 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id QAA24005;
+	Mon, 29 Jan 2001 16:23:37 +0100 (MET)
+Date:   Mon, 29 Jan 2001 16:23:36 +0100 (MET)
 From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To:     Ralf Baechle <ralf@oss.sgi.com>
-cc:     Joe deBlaquiere <jadb@redhat.com>, Florian Lohoff <flo@rfc822.org>,
-        linux-mips@oss.sgi.com
-Subject: Re: [FIX] sysmips(MIPS_ATMIC_SET, ...) ret_from_sys_call vs. o32_ret_from_sys_call
-In-Reply-To: <20010127114211.L867@bacchus.dhis.org>
-Message-ID: <Pine.GSO.3.96.1010129155334.20889A-100000@delta.ds2.pg.gda.pl>
+To:     Mike McDonald <mikemac@mikemac.com>
+cc:     Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com
+Subject: Re: Cross compiling RPMs 
+In-Reply-To: <200101281745.JAA25600@saturn.mikemac.com>
+Message-ID: <Pine.GSO.3.96.1010129160803.20889B-100000@delta.ds2.pg.gda.pl>
 Organization: Technical University of Gdansk
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
@@ -21,21 +20,26 @@ Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Sat, 27 Jan 2001, Ralf Baechle wrote:
+On Sun, 28 Jan 2001, Mike McDonald wrote:
 
-> Sorry, the specs is code and docs I have access to here inside SGI and which
-> I cannot pass on ...
+>   I want to do just the opposite. I want to start with the minimum set
+> of installed binaries and build a complete binary distribution from
+> its sources. (That means finding the root of the dependency graph and
+> starting there, assuming there actually is one. It isn't necessarily a
+> single rpm. People like to make circular dependancies!)
 
- Hmm, weird -- I thought a manual page would be available somewhere, as
-it's practised in Unix.  Error conditions is what would be most
-interesting.
+ If you have another working Linux system, you may see what I have at
+ftp://ftp.ds2.pg.gda.pl/pub/macro/.  I built my mipsel-linux (not complete
+yet, e.g. no perl nor X11) system from scratch, i.e. having no MIPS
+binaries at all using my i386-linux build system.  All RPM packages have
+spec files with explicit "BuildRequires"  dependencies -- you may find
+from these what else is needed to build a particular package.
 
-> We have an IRIX 5 emulation and if I remember right for IRIX 5
-> MIPS_ATOMIC_SET is still supported, so we need to also.  So I fear we'll
-> have to keep sysmips.  Which still doesn't mean we should come up with
-> something better.
-
- OK, then, but still we should do it properly, even for MIPS1.
+ Only for binutils, gcc and glibc you would need: autoconf, automake,
+bash, binutils, bzip2, diffutils, fileutils, findutils, flex, gawk, gcc,
+gettext, glibc, grep, gzip, m4, make, patch, perl, rpm, sed, sh-utils,
+texinfo, textutils.  You may need additional software to compile some of
+these. ;-)
 
 -- 
 +  Maciej W. Rozycki, Technical University of Gdansk, Poland   +

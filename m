@@ -1,75 +1,64 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id MAA67933 for <linux-archive@neteng.engr.sgi.com>; Tue, 13 Apr 1999 12:25:58 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id LAA57213 for <linux-archive@neteng.engr.sgi.com>; Tue, 13 Apr 1999 11:23:29 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id MAA73210
+	id LAA00948
 	for linux-list;
-	Tue, 13 Apr 1999 12:23:54 -0700 (PDT)
+	Tue, 13 Apr 1999 11:22:18 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id MAA37366
+	via ESMTP id LAA11210
 	for <linux@cthulhu.engr.sgi.com>;
-	Tue, 13 Apr 1999 12:23:47 -0700 (PDT)
-	mail_from (ulfc@bun.falkenberg.se)
-Received: from bun.falkenberg.se (dialup89-6-10.swipnet.se [130.244.89.90]) 
+	Tue, 13 Apr 1999 11:22:16 -0700 (PDT)
+	mail_from (tnik@hol.gr)
+Received: from mail.hol.gr (mail.hol.gr [194.30.192.21]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id MAA07177
-	for <linux@cthulhu.engr.sgi.com>; Tue, 13 Apr 1999 12:23:45 -0700 (PDT)
-	mail_from (ulfc@bun.falkenberg.se)
-Received: (from ulfc@localhost)
-	by bun.falkenberg.se (8.8.7/8.8.7) id VAA26056;
-	Tue, 13 Apr 1999 21:23:14 +0200
-Date: Tue, 13 Apr 1999 21:23:13 +0200
-From: Ulf Carlsson <ulfc@bun.falkenberg.se>
-To: Alan Cox <alan@lxorguk.ukuu.org.uk>
-Cc: Andrew Isaacson <adisaacs@mtu.edu>, linux@cthulhu.engr.sgi.com
-Subject: Re: Resources in X11 port
-Message-ID: <19990413212313.A26025@bun.falkenberg.se>
-Mail-Followup-To: Alan Cox <alan@lxorguk.ukuu.org.uk>,
-	Andrew Isaacson <adisaacs@mtu.edu>, linux@cthulhu.engr.sgi.com
-References: <19990413125254.A20170@mtu.edu> <m10X8aD-0007TvC@the-village.bc.nu>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.4i
-In-Reply-To: <m10X8aD-0007TvC@the-village.bc.nu>; from Alan Cox on Tue, Apr 13, 1999 at 08:10:52PM +0100
+	via SMTP id LAA02539
+	for <linux@cthulhu.engr.sgi.com>; Tue, 13 Apr 1999 11:22:14 -0700 (PDT)
+	mail_from (tnik@hol.gr)
+Received: (qmail 1094 invoked from network); 13 Apr 1999 18:21:53 -0000
+Received: from vdp032.ath01.cas.hol.gr (HELO hol.gr) (firewall-user@195.97.0.32)
+  by mail.hol.gr with SMTP; 13 Apr 1999 18:21:53 -0000
+Message-ID: <3713A71F.D5C11A7E@hol.gr>
+Date: Tue, 13 Apr 1999 23:20:48 +0300
+From: Theodoros Nikitopoulos <tnik@hol.gr>
+X-Mailer: Mozilla 4.05 [en] (X11; I; Linux 2.1.24 ppc)
+MIME-Version: 1.0
+To: Ulf Carlsson <ulfc@bun.falkenberg.se>
+CC: linux@cthulhu.engr.sgi.com
+Subject: Resources in X11 port #2
+References: <199904130857.OAA23664@bhairavi.newdelhi.sgi.com> <19990413122357.A16312@ruvild.bun.falkenberg.se> <371371D7.A8187D38@hol.gr> <19990413192157.A25858@bun.falkenberg.se>
+Content-Type: text/plain; charset=iso-8859-7
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Tue, Apr 13, 1999 at 08:10:52PM +0100, Alan Cox wrote:
-> > If you (the porters) are willing to wait until June to have publicly
-> > distributable code, you should develop for the 4.0 branch rather than
-> > the 3.3 branch.  There are a lot of useful new features in the new
-> > code base, and the new design is quite a bit easier to code for than
-> > the old.
-> 
-> Actually I wonder if it will be.
+It seems I should make more clear some things concerning the page.
+First of all, it doesn't reflect the way the port will be done..  This
+will be decided by the developers (Ulf Carlsson and whoever else..)
+I would be very glad if I could help too, but for the time being it's not
+possible. The scope of the page is mainly to provide some resources
+I've found and thought they could help :-)
 
-I got an email from the X team today which told me that pulic release date for
-a beta snapshot of 4.0 still is set to June.
+About why recommending starting with a 6.3 tree and patching up to
+XFree86 3.3.3 well it's a personal taste of how I would probably work
+on it. Why someone should worry with the differences of his docume-
+ntation and his actual sources?  Just make the port and then add the
+patches. Anyways, the above seems to me a minor issue. The problem
+exists in porting the device-dependent parts.
 
-> Not having seen the code because of the silly XFree about beta releases its
-> hard to be sure. The X folks I talked to all pointed me at the 8514 driver -
-> which is very similar in many ways to the SGI cards - both are designed for
-> X11, both have no direct frame buffer access and they have fairly similar
-> concepts.
+By the way, I haven't found any ASCII version of the documentation, but
+in case anyone is interested there exists a converter utility pstotext,
+available at:
 
-That 8514 driver is certainly a good driver to look at while writing a driver
-for the SGI cards, but it's generally a bad idea to just rip the code off. I
-have at least not had much luck doing success hacks.
+  http://www.research.digital.com/SRC/virtualpaper/pstotext.html
 
-The 8514 driver is also a quite old driver and it's not using the new interfaces
-in for Xserver.
+However, the output of it might be vague.
 
-> I would urge btw that anyone working on an XFree SGI driver releases it under
-> a license like the NPL so that the XFree people can't hide it in a locked away
-> beta release in future.
 
-The copyright still remains to the person who wrote the code, and even if the
-code is locked away in a beta release, it's possible for the writer himself to
-make his own code public (i think).
-
-- Ulf
+Regards,
+Theodore.

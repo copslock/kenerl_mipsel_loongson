@@ -1,66 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Dec 2004 06:20:52 +0000 (GMT)
-Received: from adsl-67-116-42-149.dsl.sntc01.pacbell.net ([IPv6:::ffff:67.116.42.149]:59492
-	"EHLO avtrex.com") by linux-mips.org with ESMTP id <S8224989AbULCGUn>;
-	Fri, 3 Dec 2004 06:20:43 +0000
-Content-class: urn:content-classes:message
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
-X-MimeOLE: Produced By Microsoft Exchange V6.0.6487.1
-Subject: RE: [Patch] make 2.4 compile with GCC-3.4.3...
-Date: Thu, 2 Dec 2004 22:20:35 -0800
-Message-ID: <69397FFCADEFD94F8D5A0FC0FDBCBBDEF4FA@avtrex-server.hq.avtrex.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: [Patch] make 2.4 compile with GCC-3.4.3...
-Thread-Index: AcTY9GF1P2Gkgu4tQBCZOA+wwGQoOwACgaBK
-From: "David Daney" <ddaney@avtrex.com>
-To: "Thiemo Seufer" <ica2_ts@csv.ica.uni-stuttgart.de>
-Cc: <linux-mips@linux-mips.org>
-Return-Path: <ddaney@avtrex.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Dec 2004 06:40:26 +0000 (GMT)
+Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:44403
+	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
+	id <S8225005AbULCGkV>; Fri, 3 Dec 2004 06:40:21 +0000
+Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
+	by iris1.csv.ica.uni-stuttgart.de with esmtp
+	id 1Ca775-0007mH-00; Fri, 03 Dec 2004 07:40:19 +0100
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
+	id 1Ca773-0003bx-00; Fri, 03 Dec 2004 07:40:17 +0100
+Date: Fri, 3 Dec 2004 07:40:17 +0100
+To: David Daney <ddaney@avtrex.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: [Patch] make 2.4 compile with GCC-3.4.3...
+Message-ID: <20041203064017.GE8714@rembrandt.csv.ica.uni-stuttgart.de>
+References: <69397FFCADEFD94F8D5A0FC0FDBCBBDEF4FA@avtrex-server.hq.avtrex.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <69397FFCADEFD94F8D5A0FC0FDBCBBDEF4FA@avtrex-server.hq.avtrex.com>
+User-Agent: Mutt/1.5.6i
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6558
+X-archive-position: 6559
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
 Precedence: bulk
 X-list: linux-mips
 
-VGhpZW1vIFNldWZlciB3cm90ZToNCj5EYXZpZCBEYW5leSB3cm90ZToNCj5bc25pcF0NCj4+ICoq
-KiBrZXJuZWwvTWFrZWZpbGUgICAyIERlYyAyMDA0IDE5OjUwOjA1IC0wMDAwICAgICAgIDEuMg0K
-Pj4gLS0tIGtlcm5lbC9NYWtlZmlsZSAgIDMgRGVjIDIwMDQgMDM6MDA6NDQgLTAwMDANCj4+ICoq
-KioqKioqKioqKioqKiBvYmoteSAgICAgICAgICs9IGJyYW5jaC5vIGNwdS1wcm9iZS5vIGlycS5v
-IHBybw0KPj4gKioqIDE4LDIzICoqKioNCj4+IC0tLSAxOCwyNyAtLS0tDQo+PiAgICAgICAgICAg
-ICAgICAgIHRyYXBzLm8gcHRyYWNlLm8gcmVzZXQubyBzZW1hcGhvcmUubyBzZXR1cC5vIHN5c2Nh
-bGwubyBcDQo+PiAgICAgICAgICAgICAgICAgIHN5c21pcHMubyBpcGMubyBzY2FsbF9vMzIubyB0
-aW1lLm8gdW5hbGlnbmVkLm8NCj4+ICANCj4+ICsgY2hlY2tfZ2NjID0gJChzaGVsbCBpZiAkKEND
-KSAkKDEpIC1TIC1vIC9kZXYvbnVsbCAteGMgL2Rldi9udWxsID4gL2Rldi9udWxsIDI+JjE7IHRo
-ZW4gZWNobyAiJCgxKSI7IGVsc2UgZWNobyAiJCgyKSI7IGZpKQ0KPj4gKw0KPj4gKyBzeXNjYWxs
-Lm8gc2lnbmFsLm8gOiBvdmVycmlkZSBDRkxBR1MgKz0gJChjYWxsIGNoZWNrX2djYywgLWZuby11
-bml0LWF0LWEtdGltZSwpDQo+DQo+V2hhdCBkaWZmZXJlbmNlIGRvZXMgdGhpcyBjYXVzZT8NCg0K
-SXQgY2F1c2VzIC1mbm8tdW5pdC1hdC1hLXRpbWUgdG8gYmUgYWRkZWQgdG8gQ0ZMQUdTIHdoZW4g
-Y29tcGlsaW5nDQpzeXNjYWxsLmMgYW5kIHNpZ25hbC5jLiAgQWxsIG90aGVyIGZpbGVzIGFyZSBj
-b21waWxlZCB3aXRoIHRoZSAibm9ybWFsIiBDRkxBR1MuDQogDQotZm5vLXVuaXQtYXQtYS10aW1l
-IHByZXZlbnRzIEdDQyBmcm9tIHJlYXJyYW5naW5nIHRoaW5ncyBpbiBpdHMgb3V0cHV0IHRodXMg
-cHJldmVudGluZw0KdGhlIHNhdmVfc3RhdGljX2Z1bmN0aW9uKCkgZnJvbSBiZWluZyBzZXBhcmF0
-ZWQgZnJvbSBpdHMgY29tcGFuaW9uLiAgQXMgZmFyIGFzIEkgY291bGQgdGVsbA0Kb25seSBzeXNj
-YWxsLmMgYW5kIHNpZ25hbC5jIG5lZWQgdGhpcy4NCiANCk9uZSBzbWFsbCBpc3N1ZSBpcyB0aGF0
-IHRoZXNlIHR3byBmaWxlcyBub3cgc2VlbSB0byBnZXQgcmVjb21waWxlZCB3aXRoIGVhY2gNCm1h
-a2UgaW52b2NhdGlvbi4gIEJ1dCB0aGF0IGlzIGJldHRlciB0aGFuIGJlaW5nIG1pc2NvbXBpbGVk
-Lg0KIA0KSSBhbSBub3Qgc3VyZSBpZiBjaGVja19nY2MgaXMgaW5oZXJpdGVkIGZyb20gdGhlIGhp
-Z2hlciBsZXZlbCBtYWtlZmlsZSBzbyBJIHB1dCBpdCBpbiB0aGlzIG9uZQ0KYXMgd2VsbC4gIElm
-IHlvdSB0aGluayBpdCBpcyBhIGdvb2QgYXBwcm9hY2ggSSB3aWxsIHRyeSB0byBzaW1wbGlmeSB0
-aGUgcGF0Y2ggYSBsaXR0bGUuDQoNCj5bc25pcF0NCj4+IC0tLSA3Nyw4NCAtLS0tDQo+PiAgICAq
-IEF0b21pY2FsbHkgc3dhcCBpbiB0aGUgbmV3IHNpZ25hbCBtYXNrLCBhbmQgd2FpdCBmb3IgYSBz
-aWduYWwuDQo+PiAgICAqLw0KPj4gICBzYXZlX3N0YXRpY19mdW5jdGlvbihzeXNfc2lnc3VzcGVu
-ZCk7DQo+PiAhIF9fYXR0cmlidXRlX3VzZWRfXyBzdGF0aWMgaW50DQo+PiAhIF9zeXNfc2lnc3Vz
-cGVuZChzdHJ1Y3QgcHRfcmVncyByZWdzKQ0KPg0KPlRoZXNlIHNob3VsZCBhbHNvIHVzZSAibm9p
-bmxpbmUiLCBsaWtlIDIuNi4NCg0Kbm9pbmxpbmUgd2FzIG5vdCBkZWZpbmVkIGZvciBtZSA6KCBz
-byBJIHJlbW92ZWQgaXQuICBJdCBzZWVtcyB0aGF0IGluIDIuNiBpdCBpcw0KanVzdCAjZGVmaW5l
-ZCB0byBiZSBub3RoaW5nLiAgVGhlIGFsdGVybmF0aXZlIGlzIHRvIGFkZDoNCiANCiNpZm5kZWYg
-bm9pbmxpbmUNCiNkZWZpbmUgbm9pbmxpbmUNCiNlbmRpZg0KIA0KdG8gY29tcGlsZXIuaCBhcyBp
-cyBkb25lIGluIDIuNg0KIA0KRGF2aWQgRGFuZXkuDQo=
+David Daney wrote:
+[snip]
+> -fno-unit-at-a-time prevents GCC from rearranging things in its output thus preventing
+> the save_static_function() from being separated from its companion.  As far as I could tell
+> only syscall.c and signal.c need this.
+
+Ah, I missed that. It's probably better to use the same way as in 2.6,
+that is, to add a jump at the end of save_static_function().
+
+> noinline was not defined for me :( so I removed it.  It seems that in 2.6 it is
+> just #defined to be nothing.  The alternative is to add:
+>  
+> #ifndef noinline
+> #define noinline
+> #endif
+>  
+> to compiler.h as is done in 2.6
+
+Yes, that's the better idea. gcc-4.0 ff may need it.
+
+
+Thiemo

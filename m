@@ -1,66 +1,52 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4A9VhwJ004946
-	for <linux-mips-outgoing@oss.sgi.com>; Fri, 10 May 2002 02:31:43 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4AIa6wJ013345
+	for <linux-mips-outgoing@oss.sgi.com>; Fri, 10 May 2002 11:36:06 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4A9VhWP004945
-	for linux-mips-outgoing; Fri, 10 May 2002 02:31:43 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4AIa6kV013344
+	for linux-mips-outgoing; Fri, 10 May 2002 11:36:06 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4A9VbwJ004942
-	for <linux-mips@oss.sgi.com>; Fri, 10 May 2002 02:31:38 -0700
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id D0972859; Fri, 10 May 2002 11:33:10 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 1B66D3711E; Fri, 10 May 2002 11:32:32 +0200 (CEST)
-Date: Fri, 10 May 2002 11:32:32 +0200
-From: Florian Lohoff <flo@rfc822.org>
-To: Robert Rusek <rrusek@teknuts.com>
+Received: from gandalf.physik.uni-konstanz.de (gandalf.physik.uni-konstanz.de [134.34.144.69])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4AIa2wJ013341
+	for <linux-mips@oss.sgi.com>; Fri, 10 May 2002 11:36:02 -0700
+Received: by gandalf.physik.uni-konstanz.de (Postfix, from userid 501)
+	id 67ABB8D35; Fri, 10 May 2002 20:37:37 +0200 (CEST)
+Date: Fri, 10 May 2002 20:37:37 +0200
+From: Guido Guenther <agx@sigxcpu.org>
+To: Florian Lohoff <flo@rfc822.org>
 Cc: linux-mips@oss.sgi.com
-Subject: Re: Indy SCSI Errors
-Message-ID: <20020510093232.GD26862@paradigm.rfc822.org>
-References: <20020509154327.GB6197@paradigm.rfc822.org> <C0F41630CD8B9C4680F2412914C1CF070164C2@WH-EXCHANGE1.AD.WEIDERPUB.COM>
+Subject: Re: howto pass ramdisk loaddress to kernel
+Message-ID: <20020510203737.A5410@gandalf.physik.uni-konstanz.de>
+Mail-Followup-To: Florian Lohoff <flo@rfc822.org>, linux-mips@oss.sgi.com
+References: <20020507123249.A9827@gandalf.physik.uni-konstanz.de> <20020507104538.GB795@paradigm.rfc822.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="BRE3mIcgqKzpedwo"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <C0F41630CD8B9C4680F2412914C1CF070164C2@WH-EXCHANGE1.AD.WEIDERPUB.COM>
-User-Agent: Mutt/1.3.28i
-Organization: rfc822 - pure communication
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20020507104538.GB795@paradigm.rfc822.org>; from flo@rfc822.org on Tue, May 07, 2002 at 12:45:38PM +0200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-
---BRE3mIcgqKzpedwo
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, May 09, 2002 at 09:31:01AM -0700, Robert Rusek wrote:
-> I am familiar with the error that you are referring to.  I just fixed it
-> by upgrading to kernel 2.4.17.  The error that I am describing, should I
-> just ignore it and just do a fsck on my main drive every month?  I have
-> three drives sda1, sdb1, and sdc1 and it only seems to happened on the
-> sda1.  My sda2 is the swap drive, would that be affecting my sda1 ?
-
-If its not the error i fixed a couple of months ago i would
-suspect bad hardware - Either ram or disk. I wouldnt ignore it.
-
-Flo
---=20
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-                        Heisenberg may have been here.
-
---BRE3mIcgqKzpedwo
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iD8DBQE825OvUaz2rXW+gJcRAiUIAKCWJg5nyKpgCrjPUPx4oMhQiZSzJQCg0LWh
-+rzaob3+WxoLITCs9ckoBPU=
-=kNpc
------END PGP SIGNATURE-----
-
---BRE3mIcgqKzpedwo--
+Hi,
+On Tue, May 07, 2002 at 12:45:38PM +0200, Florian Lohoff wrote:
+> On Tue, May 07, 2002 at 12:32:49PM +0200, Guido Guenther wrote:
+> > My question is now: how do i properly pass the initrd's memory address
+> > to the kernel? Choices are:
+> > 1) on the commandline: rd_start=0x...
+> > 2) a bootparameter block like on i386 or sparc in head.S
+> > 3) rely on the kernel to identify if a radisk has
+> >   been loaded by a magic number
+> > 
+> > I'd prefer (1) but it seems none of the other arches does this. Is there
+> > a reason for that? If not could we just introduce a new kernel
+> > commandline parameter rd_start which has a memory address as a
+> > parameter. Ralf, would you let this into the kernel?
+> 
+> I would do 1+3 - Give the address on the command line and let the ramdisk
+> have a magic + length in the first 2 __u32.
+I implemented (1) only since the kernel checks for a proper fs/gzip
+magic anyway. I added this to the kernels at:
+ http://honk.physik.uni-konstanz.de/linux-mips/kernels/
+Patch is at:
+ http://honk.physik.uni-konstanz.de/linux-mips/kernel-patches/ramdisk-cmdline-2002-05-09.diff
+Regards,
+ -- Guido

@@ -1,76 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Dec 2004 09:17:50 +0000 (GMT)
-Received: from lug-owl.de ([IPv6:::ffff:195.71.106.12]:28036 "EHLO lug-owl.de")
-	by linux-mips.org with ESMTP id <S8224990AbULGJRq>;
-	Tue, 7 Dec 2004 09:17:46 +0000
-Received: by lug-owl.de (Postfix, from userid 1001)
-	id 8ACB9190254; Tue,  7 Dec 2004 10:17:44 +0100 (CET)
-Date: Tue, 7 Dec 2004 10:17:44 +0100
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To: Hdei Nunoe <nunoe@co-nss.co.jp>
-Cc: linux-mips@linux-mips.org
-Subject: Re: HIGHMEM
-Message-ID: <20041207091744.GN16958@lug-owl.de>
-Mail-Followup-To: Hdei Nunoe <nunoe@co-nss.co.jp>,
-	linux-mips@linux-mips.org
-References: <001101c4dbf9$1da02270$3ca06096@NUNOE>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Dec 2004 09:21:43 +0000 (GMT)
+Received: from the-doors.enix.org ([IPv6:::ffff:62.210.169.120]:16107 "EHLO
+	the-doors.enix.org") by linux-mips.org with ESMTP
+	id <S8224990AbULGJVj>; Tue, 7 Dec 2004 09:21:39 +0000
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	by the-doors.enix.org (Postfix) with ESMTP id 2F1BE1ED37
+	for <linux-mips@linux-mips.org>; Tue,  7 Dec 2004 10:21:33 +0100 (CET)
+Message-ID: <41B5766C.6010801@enix.org>
+Date: Tue, 07 Dec 2004 10:22:52 +0100
+From: Thomas Petazzoni <thomas.petazzoni@enix.org>
+User-Agent: Mozilla Thunderbird 0.8 (X11/20040926)
+X-Accept-Language: fr, en
+MIME-Version: 1.0
+To: linux-mips@linux-mips.org
+Subject: Wiki contents license
+X-Enigmail-Version: 0.86.1.0
+X-Enigmail-Supports: pgp-inline, pgp-mime
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="dngyMJhgXGAL5Gb8"
-Content-Disposition: inline
-In-Reply-To: <001101c4dbf9$1da02270$3ca06096@NUNOE>
-X-Operating-System: Linux mail 2.6.10-rc2-bk5lug-owl 
-X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
-X-gpg-key: wwwkeys.de.pgp.net
-User-Agent: Mutt/1.5.6+20040907i
-Return-Path: <jbglaw@lug-owl.de>
+ protocol="application/pgp-signature";
+ boundary="------------enig02923C71794173EB5F6BE9EB"
+Return-Path: <thomas.petazzoni@enix.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6571
+X-archive-position: 6572
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jbglaw@lug-owl.de
+X-original-sender: thomas.petazzoni@enix.org
 Precedence: bulk
 X-list: linux-mips
 
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--------------enig02923C71794173EB5F6BE9EB
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 
---dngyMJhgXGAL5Gb8
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hello,
 
-On Tue, 2004-12-07 10:07:26 +0900, Hdei Nunoe <nunoe@co-nss.co.jp>
-wrote in message <001101c4dbf9$1da02270$3ca06096@NUNOE>:
+I would like to know if the contents of Linux MIPS Wiki are under a 
+certain license. I would like to use parts of it for the french 
+Wikipedia (after translation).
 
-> Has anyone succeeded the HIGHMEM with discontiguous physical memory?
-> I am using kernel 2.4.18 on TX4937 with two chunks of 256Mbyte memory.
+Is it possible ?
 
-2.4.18 is obsolete...
+Thomas
+-- 
+PETAZZONI Thomas - thomas.petazzoni@enix.org
+http://thomas.enix.org - Jabber: thomas.petazzoni@jabber.dk
+http://kos.enix.org, http://sos.enix.org
+Fingerprint : 0BE1 4CF3 CEA4 AC9D CC6E  1624 F653 CB30 98D3 F7A7
 
-MfG, JBG
-
---=20
-Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481             =
-_ O _
-"Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg  =
-_ _ O
- fuer einen Freien Staat voll Freier B=C3=BCrger" | im Internet! |   im Ira=
-k!   O O O
-ret =3D do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM | TCPA)=
-);
-
---dngyMJhgXGAL5Gb8
+--------------enig02923C71794173EB5F6BE9EB
 Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.5 (GNU/Linux)
+Version: GnuPG v1.2.4 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://enigmail.mozdev.org
 
-iD8DBQFBtXU4Hb1edYOZ4bsRAjoVAJ45cfaKbAOlx3uD1ID7lAS7iFlVEgCZAdMh
-APbI1hvnshk8Hj670fv9Fqw=
-=+70p
+iD8DBQFBtXZs9lPLMJjT96cRAu6VAJ4gS2WLgd0sSwlmWtrVtrf5/mbKkgCgm0cB
+z2TmneLX63Bbyvn+8EsuOwo=
+=ZGOS
 -----END PGP SIGNATURE-----
 
---dngyMJhgXGAL5Gb8--
+--------------enig02923C71794173EB5F6BE9EB--

@@ -1,60 +1,65 @@
-Received:  by oss.sgi.com id <S553720AbQKRSUh>;
-	Sat, 18 Nov 2000 10:20:37 -0800
-Received: from pobox.sibyte.com ([208.12.96.20]:57870 "HELO pobox.sibyte.com")
-	by oss.sgi.com with SMTP id <S553671AbQKRSU1>;
-	Sat, 18 Nov 2000 10:20:27 -0800
-Received: from baton.sibyte.com (moat.sibyte.com [208.12.96.21])
-	by pobox.sibyte.com (Postfix) with SMTP
-	id E2AD0205FA; Sat, 18 Nov 2000 10:20:06 -0800 (PST)
-Received: from SMTP agent by mail gateway 
- Sat, 18 Nov 2000 10:16:13 -0800
-Received: by baton.sibyte.com (Postfix, from userid 1017)
-	id 71ECE56FF; Sat, 18 Nov 2000 10:20:06 -0800 (PST)
-From:   Justin Carlson <carlson@sibyte.com>
-Reply-To: carlson@sibyte.com
-Organization: Sibyte
-To:     Ralf Baechle <ralf@oss.sgi.com>
-Subject: Re: CVS Update@oss.sgi.com: linux
-Date:   Sat, 18 Nov 2000 10:13:34 -0800
-X-Mailer: KMail [version 1.0.28]
-Content-Type: text/plain
-Cc:     linux-cvs@oss.sgi.com, linux-mips@oss.sgi.com, linux-mips@fnet.fr
+Received:  by oss.sgi.com id <S553748AbQKRSdr>;
+	Sat, 18 Nov 2000 10:33:47 -0800
+Received: from mx.mips.com ([206.31.31.226]:9091 "EHLO mx.mips.com")
+	by oss.sgi.com with ESMTP id <S553671AbQKRSdl>;
+	Sat, 18 Nov 2000 10:33:41 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id KAA01017;
+	Sat, 18 Nov 2000 10:33:10 -0800 (PST)
+Received: from Ulysses (ulysses [192.168.236.13])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id KAA06647;
+	Sat, 18 Nov 2000 10:33:30 -0800 (PST)
+Message-ID: <00d201c0518e$87060b20$0deca8c0@Ulysses>
+From:   "Kevin D. Kissell" <kevink@mips.com>
+To:     "Ralf Baechle" <ralf@oss.sgi.com>,
+        "Harald Koerfgen" <Harald.Koerfgen@home.ivm.de>
+Cc:     <linux-cvs@oss.sgi.com>, <linux-mips@oss.sgi.com>,
+        <linux-mips@fnet.fr>
 References: <20001118132233Z553804-494+838@oss.sgi.com> <XFMail.001118180639.Harald.Koerfgen@home.ivm.de> <20001118182114.A19710@bacchus.dhis.org>
-In-Reply-To: <20001118182114.A19710@bacchus.dhis.org>
+Subject: Re: CVS Update@oss.sgi.com: linux
+Date:   Sat, 18 Nov 2000 19:36:41 +0100
 MIME-Version: 1.0
-Message-Id: <0011181020063F.11653@baton.sibyte.com>
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4133.2400
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Sat, 18 Nov 2000, Ralf Baechle wrote:
-> > Log message:
-> >       New configuration option CONFIG_MIPS_UNCACHED.  Not yet selectable due
-> >       to the manuals documenting ll/sc operation as undefined for uncached
-> >       memory.
-> 
+> > > Log message:
+> > >       New configuration option CONFIG_MIPS_UNCACHED.  Not yet
+selectable due
+> > >       to the manuals documenting ll/sc operation as undefined for
+uncached
+> > >       memory.
+> >
 > > Wouldn't it make sense then to disable CONFIG_CPU_HAS_LLSC as well?
-> 
+>
 > I'm waiting for authoritative answer from silicon guys before I deciede.
 > In the past I ran kernel entirely uncached and they seemed to work even
 > though the documentation made me assume the opposite.
-> 
 
-I'd be very, VERY surprised if ll-sc were guaranteed to work in uncached space,
-for any implementation.  It certainly wouldn't in the SB1.
+We've been discussing this at MIPS, and it's a bit tricky.
+LL/SC is almost guaranteed not to work uncached in a
+multiprocessor configuration.  In the uniprocessor case,
+it's not documented to work, but probably would in most
+"natural" implementations.
 
-The easiest way to implement the ops on a cache-coherent system is to keep track
-of whether or not you've lost a line in the cache between  the ll and the sc. 
-Then, in the sc, you convert the line to dirty (if necessary), do the write,
-and go on your merry way.  Or, if you've lost the line at some point between the
-ll and the sc, you fail the sc.
+The whole operation hinges on an invisible flip-flop which
+is set by an LL and cleared by one of a set of events,
+which include cache interventions by other CPUs,
+memory ops by the same CPU, ERETs, etc.  So long
+as the LL flop is set by the LL even uncached, and cleared
+on ERET regardless of caching, the desired behaviour will
+be obtained in an uncached uniprocessor.  But that's outside
+the scope of the ISA spec and any MIPS ISA validation suites,
+and a legal MIPS II/III/IV/V implementation could do otherwise.
 
-I've never heard of anyone implementing it in a significantly different manner,
-on MIPS or on Alpha.  To keep track of who's written what in an uncached space
-would be nightmarish at best, in hardware. 
+            Regards,
 
-Doesn't mean someone hasn't done it, but it would certainly be news to me.
-
--Justin
+            Kevin K.

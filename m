@@ -1,61 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jan 2004 10:22:28 +0000 (GMT)
-Received: from netlx050.vf.utwente.nl ([IPv6:::ffff:192.87.17.19]:62160 "EHLO
-	netlx050.vf.utwente.nl") by linux-mips.org with ESMTP
-	id <S8225550AbUA2KW2>; Thu, 29 Jan 2004 10:22:28 +0000
-Received: from ringbreak.dnd.utwente.nl (ringbreak.dnd.utwente.nl [130.89.175.240])
-          by netlx050.vf.utwente.nl (8.11.7/HKD) with ESMTP id i0TAMF001087
-          for <linux-mips@linux-mips.org>; Thu, 29 Jan 2004 11:22:15 +0100
-Received: from jorik by ringbreak.dnd.utwente.nl with local (Exim 3.35 #1 (Debian))
-	id 1Am9JP-0004h8-00
-	for <linux-mips@linux-mips.org>; Thu, 29 Jan 2004 11:22:15 +0100
-Date: Thu, 29 Jan 2004 11:22:15 +0100
-From: Jorik Jonker <linux-mips@boeventronie.net>
-To: linux-mips@linux-mips.org
-Subject: linux 2.4 and Indy
-Message-ID: <20040129102215.GC17760@ballina>
-Mail-Followup-To: linux-mips@linux-mips.org
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jan 2004 10:35:59 +0000 (GMT)
+Received: from jaguar.mkp.net ([IPv6:::ffff:192.139.46.146]:33419 "EHLO
+	jaguar.mkp.net") by linux-mips.org with ESMTP id <S8225309AbUA2Kf7>;
+	Thu, 29 Jan 2004 10:35:59 +0000
+Received: from jes by jaguar.mkp.net with local (Exim 3.35 #1)
+	id 1Am9WV-0001YN-00; Thu, 29 Jan 2004 05:35:47 -0500
+To: Ladislav Michl <ladis@linux-mips.org>
+Cc: Kevin Paul Herbert <kph@cisco.com>, linux-mips@linux-mips.org
+Subject: Re: Removal of ____raw_readq() and ____raw_writeq() from asm-mips/io.h
+References: <1075255111.8744.4.camel@shakedown>
+	<20040128094032.GB900@kopretinka> <yq07jzcz6sp.fsf@wildopensource.com>
+	<20040128150828.A19525@linux-mips.org>
+From: Jes Sorensen <jes@wildopensource.com>
+Date: 29 Jan 2004 05:35:47 -0500
+In-Reply-To: <20040128150828.A19525@linux-mips.org>
+Message-ID: <yq0znc79h4s.fsf@wildopensource.com>
+User-Agent: Gnus/5.09 (Gnus v5.9.0) Emacs/21.2
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.28i
-X-UTwente-MailScanner-Information: Scanned by MailScanner. Contact helpdesk@ITBE.utwente.nl for more information.
-X-UTwente-MailScanner: Found to be clean
-Return-Path: <jorik@dnd.utwente.nl>
+Return-Path: <jes@trained-monkey.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4184
+X-archive-position: 4185
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux-mips@boeventronie.net
+X-original-sender: jes@wildopensource.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+>>>>> "Ladislav" == Ladislav Michl <ladis@linux-mips.org> writes:
 
-I'm having big trouble getting linux 2.4.* to work on my SGI Indy. I want to
-use my indycam, and thus compile a kernel with support for that. The problem
-is that all the kernels I built do boot, but freeze some moments after
-starting the init process. The only kernels that do not have this problem are 
-2.4.16 and 2.4.17, but they do not have proper VINO support (they lack the
-i2c algo-sgi part).
-Is there some patch flying around to fix this, or do I just have bad luck?
+Ladislav> On Wed, Jan 28, 2004 at 05:49:58AM -0500, Jes Sorensen
+Ladislav> wrote:
+>> If you are accessing memory mapped registers or memory on a PCI
+>> device, ie. likely on a 1250, you *must* use the readX/__raw_readX
+>> macros. Anybody just doing *reg = val on a PCI device should be
+>> banned from writing code for life!
 
-/proc/cpuinfo:
-system type             : SGI Indy
-processor               : 0
-cpu model               : R4600 V1.0  FPU V0.0
-BogoMIPS                : 99.73
-byteorder               : big endian
-wait instruction        : yes
-microsecond timers      : yes
-extra interrupt vector  : no
-hardware watchpoint     : no
-VCED exceptions         : not available
-VCEI exceptions         : not available
+Ladislav> eh? I said nothing about PCI device. These ____raw_writeq
+Ladislav> are used in board specific code. Anyway, defining struct
+Ladislav> sb_registers and ioremaping it would be nice solution (I
+Ladislav> didn't read code too carefully, so maybye not in this
+Ladislav> particular case where registers are 64bit width, but I
+Ladislav> definitely prefer it in board specific code over
+Ladislav> read[bwl]/write[bwl]). Also readq/writeq seems mips
+Ladislav> specific, so rants about portability doesn't apply.
 
-cheers,
--- 
-Jorik Jonker
-http://boeventronie.net/
+Very wrong!
+
+the readX/writeX macro names are for PCI and busses with similar
+properties. One should never access anything through readX/writeX
+without ioremaping it first.
+
+readq/writeq are not mips specific, they are available on all/most 64
+bit architectures, so portability rants do apply.
+
+Jes

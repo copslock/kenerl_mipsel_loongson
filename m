@@ -1,46 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 May 2003 23:17:46 +0100 (BST)
-Received: from cm19173.red.mundo-r.com ([IPv6:::ffff:213.60.19.173]:22116 "EHLO
-	trasno.mitica") by linux-mips.org with ESMTP id <S8225227AbTEGWRo>;
-	Wed, 7 May 2003 23:17:44 +0100
-Received: by trasno.mitica (Postfix, from userid 1001)
-	id 51AEA7DC; Thu,  8 May 2003 00:17:18 +0200 (CEST)
-To: Ladislav Michl <ladis@linux-mips.org>
-Cc: linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH] sc-ip22.c cleanup
-X-Url: http://people.mandrakesoft.com/~quintela
-From: Juan Quintela <quintela@mandrakesoft.com>
-In-Reply-To: <20030507202229.GA627@kopretinka> (Ladislav Michl's message of
- "Wed, 7 May 2003 22:22:29 +0200")
-References: <20030507202229.GA627@kopretinka>
-Date: Thu, 08 May 2003 00:17:18 +0200
-Message-ID: <8665oml7v5.fsf@trasno.mitica>
-User-Agent: Gnus/5.090015 (Oort Gnus v0.15) Emacs/21.2.93
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 May 2003 04:31:36 +0100 (BST)
+Received: from il-la.la.idealab.com ([IPv6:::ffff:63.251.211.5]:49366 "HELO
+	idealab.com") by linux-mips.org with SMTP id <S8225192AbTEHDbb>;
+	Thu, 8 May 2003 04:31:31 +0100
+Received: (qmail 3351 invoked by uid 6180); 8 May 2003 03:31:27 -0000
+Date: Wed, 7 May 2003 20:31:27 -0700
+From: Jeff Baitis <baitisj@evolution.com>
+To: linux-mips@linux-mips.org
+Subject: USB OHCI device port on Alchemy
+Message-ID: <20030507203127.U30468@luca.pas.lab>
+Reply-To: baitisj@evolution.com
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Return-Path: <quintela@mandrakesoft.com>
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+Return-Path: <baitisj@idealab.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2287
+X-archive-position: 2288
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: quintela@mandrakesoft.com
+X-original-sender: baitisj@evolution.com
 Precedence: bulk
 X-list: linux-mips
 
->>>>> "ladis" == Ladislav Michl <ladis@linux-mips.org> writes:
+Out of curiousity:
 
-Hi
+Has anyone played with the AU1X00 USB device port yet? If not, what would you
+guys suggest that the AU1X00 appear as? USB over Ethernet? Or maybe a simple
+dummy device that will perform bulk transfers?
 
-ladis> +	unsigned long size = ip22_eeprom_read(&sgimc->eeprom, 17);
+Thanks!
 
-Defining somewhere what 17 mean could be a good idea :)
+-Jeff
 
-Except for that looks like a good gain, you remove a lot fo code :)
-
-Later, Juan.
 
 -- 
-In theory, practice and theory are the same, but in practice they 
-are different -- Larry McVoy
+         Jeffrey Baitis - Associate Software Engineer
+
+                    Evolution Robotics, Inc.
+                     130 West Union Street
+                       Pasadena CA 91103
+
+ tel: 626.535.2776  |  fax: 626.535.2777  |  baitisj@evolution.com 

@@ -1,28 +1,32 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fA6E85Q18699
-	for linux-mips-outgoing; Tue, 6 Nov 2001 06:08:05 -0800
-Received: from web12302.mail.yahoo.com (web12302.mail.yahoo.com [216.136.173.100])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA6E81018694
-	for <linux-mips@oss.sgi.com>; Tue, 6 Nov 2001 06:08:01 -0800
-Message-ID: <20011106140801.54737.qmail@web12302.mail.yahoo.com>
-Received: from [192.35.17.233] by web12302.mail.yahoo.com via HTTP; Tue, 06 Nov 2001 06:08:01 PST
-Date: Tue, 6 Nov 2001 06:08:01 -0800 (PST)
-From: amit lubovsky <amit_lubovsky@yahoo.com>
-Subject: boot Linux kernel on MIPS 5kc - Malta board
-To: linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.2/8.11.3) id fA6GHFa24600
+	for linux-mips-outgoing; Tue, 6 Nov 2001 08:17:15 -0800
+Received: from delta.ds2.pg.gda.pl (macro@delta.ds.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA6GHC024594
+	for <linux-mips@oss.sgi.com>; Tue, 6 Nov 2001 08:17:12 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id RAA03037;
+	Tue, 6 Nov 2001 17:14:40 +0100 (MET)
+Date: Tue, 6 Nov 2001 17:14:39 +0100 (MET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Jun Sun <jsun@mvista.com>
+cc: Scott A McConnell <samcconn@cotw.com>, linux-mips@oss.sgi.com
+Subject: Re: [Fwd: Kernel panic: Caught reserved exception - should not happen.]
+In-Reply-To: <3BE1D1C0.E32905BA@mvista.com>
+Message-ID: <Pine.GSO.3.96.1011106171112.24538A-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi,
-I work with the MIPS5kc on the Malta board and looking
-for information on how to boot the kernel (2.4.2) from
-the on board flash???
-Any help will be welcomed.
-Amit.
+On Thu, 1 Nov 2001, Jun Sun wrote:
 
-__________________________________________________
-Do You Yahoo!?
-Find a job, post your resume.
-http://careers.yahoo.com
+> *sigh* We need another ugly #ifdef in the head.S file.
+
+ A better approach would be to define a macro in a header file and only
+expand it in head.S.
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

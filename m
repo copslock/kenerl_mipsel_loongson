@@ -1,79 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Jan 2005 06:52:17 +0000 (GMT)
-Received: from host181-209-dsl.dols.net.pk ([IPv6:::ffff:202.147.181.209]:15259
-	"EHLO 1aurora.enabtech") by linux-mips.org with ESMTP
-	id <S8225195AbVAGGwL>; Fri, 7 Jan 2005 06:52:11 +0000
-Received: by 1aurora.enabtech with Internet Mail Service (5.5.2448.0)
-	id <ZYJ972J0>; Fri, 7 Jan 2005 11:42:30 +0500
-Message-ID: <1B701004057AF74FAFF851560087B16106469E@1aurora.enabtech>
-From: Mudeem Iqbal <mudeem@Quartics.com>
-To: 'Thiemo Seufer' <ica2_ts@csv.ica.uni-stuttgart.de>
-Cc: "'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
-Subject: RE: mipes-linux-ld: final link failed: Bad value
-Date: Fri, 7 Jan 2005 11:42:29 +0500 
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2448.0)
-Content-Type: text/plain
-Return-Path: <mudeem@Quartics.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Jan 2005 07:24:30 +0000 (GMT)
+Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:4384
+	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
+	id <S8224833AbVAGHYZ>; Fri, 7 Jan 2005 07:24:25 +0000
+Received: from newms.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 7 Jan 2005 07:24:24 UT
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by newms.toshiba-tops.co.jp (Postfix) with ESMTP
+	id 66A1C239E1D; Fri,  7 Jan 2005 16:24:22 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id j077OLRm012403;
+	Fri, 7 Jan 2005 16:24:21 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date: Fri, 07 Jan 2005 16:24:21 +0900 (JST)
+Message-Id: <20050107.162421.104029430.nemoto@toshiba-tops.co.jp>
+To: mudeem@Quartics.com
+Cc: linux-mips@linux-mips.org
+Subject: Re: mipes-linux-ld: final link failed: Bad value
+From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <1B701004057AF74FAFF851560087B16106469D@1aurora.enabtech>
+References: <1B701004057AF74FAFF851560087B16106469D@1aurora.enabtech>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6829
+X-archive-position: 6830
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mudeem@Quartics.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
->does it miss the '-c' somehow?
-I don't think -c is being missed because I changed the mm/Makefile from 
+>>>>> On Thu, 6 Jan 2005 18:47:11 +0500 , Mudeem Iqbal <mudeem@Quartics.com> said:
+mudeem> I have built a toolchain using the following combination
 
-mmu-$(CONFIG_MMU)	:= fremap.o highmem.o madvise.o memory.o mincore.o \
-			   mlock.o mmap.o mprotect.o mremap.o msync.o rmap.o
-\
-			   vmalloc.o
+mudeem> binutils-2.15
+mudeem> gcc-3.4.3
 
-to
+As I reported on 06 Nov 2004 ("failed to merge string constant?"),
+binutils-2.15 + gcc-3.4.x (at least gcc 3.4.2) will produce broken
+output.  binutils-2.15.92.0.2 or later will be OK with gcc 3.4.
 
-mmu-$(CONFIG_MMU)	:= highmem.o madvise.o memory.o mincore.o \
-			   mlock.o mmap.o mprotect.o mremap.o msync.o rmap.o
-\
-			   vmalloc.o fremap.o
-
-All the other files are compiled and I persume linked successfully. The
-problem only comes in fremap.o
-
-Mudeem
-
------Original Message-----
-From: Thiemo Seufer [mailto:ica2_ts@csv.ica.uni-stuttgart.de]
-Sent: Thursday, January 06, 2005 7:51 PM
-To: Mudeem Iqbal
-Cc: 'linux-mips@linux-mips.org'
-Subject: Re: mipes-linux-ld: final link failed: Bad value
-
-
-Mudeem Iqbal wrote:
-> hi,
-> 
-> I have built a toolchain using the following combination
-> 
-> binutils-2.15
-> gcc-3.4.3
-> glibc-2.3.3
-> linux-2.6.9	(from linux-mips.org)
-> 
-> I am cross compiling linux kernel for mips. I think the toolchain has been
-> successfully built. But when cross compiling the kernel I get the
-following
-> error
-> 
->   CC      mm/fremap.o
-> mipsel-linux-ld: final link failed: Bad value
-> make[1]: *** [mm/fremap.o] Error 1
-
-A _final_ link for mm/fremap.o sounds like a broken cc invocation
-in mm/Makefile (does it miss the '-c' somehow?).
-
-
-Thiemo
+---
+Atsushi Nemoto

@@ -1,36 +1,68 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id GAA485733 for <linux-archive@neteng.engr.sgi.com>; Sat, 6 Dec 1997 06:32:59 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id EAA528893 for <linux-archive@neteng.engr.sgi.com>; Sat, 6 Dec 1997 04:45:29 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id GAA18207 for linux-list; Sat, 6 Dec 1997 06:27:30 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id GAA18191 for <linux@cthulhu.engr.sgi.com>; Sat, 6 Dec 1997 06:27:19 -0800
-Received: from kyle.neuffer.org (dialin125.zdv.Uni-Mainz.DE [134.93.174.125]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id GAA15314
-	for <linux@cthulhu.engr.sgi.com>; Sat, 6 Dec 1997 06:27:17 -0800
-	env-from (neuffer@trudi.zdv.Uni-Mainz.DE)
-Received: from localhost (neuffer@localhost)
-	by kyle.neuffer.org (8.8.5/8.8.5) with SMTP id KAA00579;
-	Sat, 6 Dec 1997 10:35:44 +0100
-Date: Sat, 6 Dec 1997 10:35:44 +0100 (CET)
-From: Michael Neuffer <neuffer@trudi.zdv.Uni-Mainz.DE>
-Reply-To: neuffer@trudi.zdv.Uni-Mainz.DE
-To: Alan Cox <alan@lxorguk.ukuu.org.uk>
-cc: Mike Acar <mike@contract.kent.edu>, linux@cthulhu.engr.sgi.com
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id EAA11242 for linux-list; Sat, 6 Dec 1997 04:42:43 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id EAA11234 for <linux@cthulhu.engr.sgi.com>; Sat, 6 Dec 1997 04:42:37 -0800
+Received: from carpediem.com ([208.197.194.3]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id EAA03805
+	for <linux@cthulhu.engr.sgi.com>; Sat, 6 Dec 1997 04:42:35 -0800
+	env-from (ligeh@carpediem.com)
+Received: from twix.carpediem.com by carpediem.com (SMI-8.6/SMI-SVR4)
+	id HAA05301; Sat, 6 Dec 1997 07:38:28 -0500
+Received: from barramunda by twix.carpediem.com (SMI-8.6/SMI-SVR4)
+	id HAA03398; Sat, 6 Dec 1997 07:40:02 -0500
+Date: Sat, 6 Dec 1997 07:42:27 -0500 (EST)
+From: Lige Hensley <ligeh@carpediem.com>
+X-Sender: ligeh@barramunda
+To: mito@aparima.com
+cc: SGI/Linux mailing list <linux@cthulhu.engr.sgi.com>
 Subject: Re: M$ 's strategy against Linux: nightmare scenario
-In-Reply-To: <m0xe6T1-0005FsC@lightning.swansea.linux.org.uk>
-Message-ID: <Pine.LNX.3.96.971206103123.274F-100000@kyle.neuffer.org>
+In-Reply-To: <199712051827.KAA54904@oz.engr.sgi.com>
+Message-ID: <Pine.SGI.3.96.971206073610.3686A-100000@barramunda>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Fri, 5 Dec 1997, Alan Cox wrote:
-> I2O is in hand, most I2O vendors I've talked to are very determined to see
-> the spec become open and the general public vendors are taking from all
-> sides - including where it counts with the "We wont buy i2o boxes as it ties
-> us to unsuitable OS's". The SIG may also move in that way given time. If not
-> we'll just break it. The fact they erroneously published the spec helps a lot
+On Fri, 5 Dec 1997, Ariel Faigon wrote:
 
-Unfortunately the spec got updated to 2.0 and from my sources I hear
-that it is not exactly upwards compatible. 
+> [One of my filters just hit this on  comp.os.linux.misc
+>  I think the guy has a point and I thought it was interesting]
+> 
+>   Subject: M$'s strategy against Linux: nightmare scenario 
+>   From: mito@aparima.com (Louis-David Mitterrand) 
+>   Date: 4 Dec 1997 19:06:27 GMT 
+>   Message-ID: <slrn68dvpj.s84.mito@shell4.ba.best.com> 
+>   Organization: Aparima inc. 
+>   Newsgroups: comp.os.linux.misc  , comp.os.linux.advocacy  
+> 
+>   OK, now what's next? Linux means business, *is* business. The coming of
+>   age is very real: RedHat 5.0 is winning rave reviews for its ease-of-use
+>   and idiot-proof installation "even easier than NT", the  Wine project
+>   (windows emulator) is starting to make serious progress and some major
+>   win32 apps are beginning to work. It won't take much more than another
+>   year to see comprehensive support for Win95/NT apps under Linux. Next
+>   thing, people will ask "why shell out $800 for NT Server, when I can get
+>   the same more reliable services from a $50 RedHat CD? These MS support
+>   people never answer the phone anyway, and I can run Office97 with Wine."
 
-We will surely be able to break it given time, since somene somewhere
-will surly leak it at some point, but time is unfortunately also all that
-Billy Boy needs to gain an unfair advantage.
+Even more important than Linux being easier to install than NT is 
+reliability.  I am in the middle of a project to remove about $200,000
+worth of NT servers and replace them with Linux boxes.  Of the servers
+installed thus far, we've seen our incidence of problems go from about 2
+a week to zero (and peformance boasts out the wazoo).
+
+I'm currently working on an article for LJ about our project and how to do
+it yourself.  The possibly of Linux as an NT replacement is not only real,
+it's happening. 
+
+
+-lige
+
+"Live Free Or Die"
+
+----------------------------------------------------------------
+Slam Foot Neck!  Ride the wave.  Touch Touch Touch.  I'm cereal.
+e-mail: lige.hensley@carpediem.com 
+www: http://www.iusd.iupui.edu/~henslelf
+  o__            
+  ,>/'        Network Coordinator.  Compression, Inc.
+ (_)\(_)  	http://www.carpediem.com	

@@ -1,47 +1,48 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g64Bb0Rw002994
-	for <linux-mips-outgoing@oss.sgi.com>; Thu, 4 Jul 2002 04:37:00 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g64DJARw006807
+	for <linux-mips-outgoing@oss.sgi.com>; Thu, 4 Jul 2002 06:19:10 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g64Bb079002993
-	for linux-mips-outgoing; Thu, 4 Jul 2002 04:37:00 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g64DJANP006806
+	for linux-mips-outgoing; Thu, 4 Jul 2002 06:19:10 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from dea.linux-mips.net (dialinpool.tiscali.de [62.246.28.123] (may be forged))
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g64BasRw002984
-	for <linux-mips@oss.sgi.com>; Thu, 4 Jul 2002 04:36:55 -0700
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id g64BewK27138;
-	Thu, 4 Jul 2002 13:40:58 +0200
-Date: Thu, 4 Jul 2002 13:40:58 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Vivien Chappelier <vivien.chappelier@enst-bretagne.fr>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: [PATCH] Re: [PATCH] r4k icache flushing for mips64 CVS HEAD
-Message-ID: <20020704134058.A27135@dea.linux-mips.net>
-References: <20020702004542.B32068@dea.linux-mips.net> <Pine.LNX.4.21.0207041328550.1601-200000@melkor>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <Pine.LNX.4.21.0207041328550.1601-200000@melkor>; from vivien.chappelier@enst-bretagne.fr on Thu, Jul 04, 2002 at 01:33:15PM +0200
-X-Accept-Language: de,en,fr
-X-Spam-Status: No, hits=-3.1 required=5.0 tests=IN_REP_TO,MAY_BE_FORGED version=2.20
+Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g64DIuRw006795;
+	Thu, 4 Jul 2002 06:18:57 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA18393;
+	Thu, 4 Jul 2002 15:23:29 +0200 (MET DST)
+Date: Thu, 4 Jul 2002 15:23:28 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Ralf Baechle <ralf@oss.sgi.com>
+cc: Vivien Chappelier <vivien.chappelier@enst-bretagne.fr>,
+   linux-mips@oss.sgi.com
+Subject: Re: [PATCH] CVS HEAD mips64 assembler options
+In-Reply-To: <20020704133251.A27007@dea.linux-mips.net>
+Message-ID: <Pine.GSO.3.96.1020704151822.11369G-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, Jul 04, 2002 at 01:33:15PM +0200, Vivien Chappelier wrote:
+On Thu, 4 Jul 2002, Ralf Baechle wrote:
 
-> > > 	This fixes icache flushing for the r4xx0 processor in the current
-> > > (CVS HEAD) 2.5.1 tree. The flush_cache_all function does nothing there,
-> > > that's why I moved it to flush_cache_l1.
-> > 
-> > Not right, I checked in a variation of it ...
+> > 	There's been some rework on the Makefile for the mips64 target,
+> > however the line for the assembler options was forgotten, causing
+> > assembly source code to be wronly compiled, and crashing the linker
+> > afterwards. This patch fixes it, and also removes a few warnings about
+> > structures declared in parameter list.
 > 
-> Ok, but you forgot some things. The following patch adds the declaration
-> of _flush_cache_all in loadmmu.c and pgtables.h
-> 
-> I guess 3 patches is enough for today ;) More coming later ;)
+> I know those warnings and I simply take them as the proof that our
+> header are too spaghettiish, so I'm not taking the easy way out ...
 
-Looks right, applied to 2.5 only.
+ But the Makefile part is right -- I am responsible for the breakage, but
+since I use non-crippled tools, I haven't got a chance to verify this bit. 
+I am checking in the fix, with minor spacing updates (and adjusting 2.4
+for consistency). 
 
-  Ralf
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

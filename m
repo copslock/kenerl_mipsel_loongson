@@ -1,71 +1,73 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fA7CTt308808
-	for linux-mips-outgoing; Wed, 7 Nov 2001 04:29:55 -0800
-Received: from gandalf.physik.uni-konstanz.de (gandalf.physik.uni-konstanz.de [134.34.144.69])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA7CTn008805;
-	Wed, 7 Nov 2001 04:29:49 -0800
-Received: from agx by gandalf.physik.uni-konstanz.de with local (Exim 3.12 #1 (Debian))
-	id 161Rpz-0001PR-00; Wed, 07 Nov 2001 13:29:47 +0100
-Date: Wed, 7 Nov 2001 13:29:47 +0100
-From: Guido Guenther <agx@sigxcpu.org>
-To: Ralf Baechle <ralf@oss.sgi.com>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: arcboot patches
-Message-ID: <20011107132947.A5058@gandalf.physik.uni-konstanz.de>
-Mail-Followup-To: Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com
-References: <20011104233218.A15847@bogon.ms20.nix> <20011106113517.F1524@dea.linux-mips.net>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20011106113517.F1524@dea.linux-mips.net>; from ralf@oss.sgi.com on Tue, Nov 06, 2001 at 11:35:18AM -0800
+	by oss.sgi.com (8.11.2/8.11.3) id fA7MJXi14261
+	for linux-mips-outgoing; Wed, 7 Nov 2001 14:19:33 -0800
+Received: from host099.momenco.com (IDENT:root@host099.momenco.com [64.169.228.99])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA7MJS014258
+	for <linux-mips@oss.sgi.com>; Wed, 7 Nov 2001 14:19:29 -0800
+Received: from beagle (beagle.internal.momenco.com [192.168.0.115])
+	by host099.momenco.com (8.11.6/8.11.0) with SMTP id fA7MJQi24443;
+	Wed, 7 Nov 2001 14:19:26 -0800
+From: "Matthew Dharm" <mdharm@momenco.com>
+To: "Carsten Langgaard" <carstenl@mips.com>, <linux-mips@oss.sgi.com>
+Subject: RE: RedHat7.1
+Date: Wed, 7 Nov 2001 14:19:26 -0800
+Message-ID: <NEBBLJGMNKKEEMNLHGAIGEPNCDAA.mdharm@momenco.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
+In-Reply-To: <3BE7D256.8E763AC3@mips.com>
+Importance: Normal
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Nov 06, 2001 at 11:35:18AM -0800, Ralf Baechle wrote:
-> On Sun, Nov 04, 2001 at 11:32:19PM +0100, Guido Guenther wrote:
-> 
-> >  typedef struct {
-> > +#ifdef __MIPSEL__
-> >  	ULONG LowPart;
-> > +	*LONG HighPart;
-> > +#else /* !(__MIPSEL__) */
-> >  	LONG HighPart;
-> > +	ULONG LowPart;
-> > +#endif
-> >  } LARGEINTEGER;
-> 
-> Why not simply defining LARGEINTEGER as long long?
-I'm giving the question back to you, since you checked the original
-version into oss's cvs and started to adapt it for mips I assume. I just
-added the __MIPSEL__ clobber.
-> 
-> > Index: arclib/spb.h
-> > ===================================================================
-> > RCS file: /cvs/arcboot/arclib/spb.h,v
-> > retrieving revision 1.2
-> > diff -u -u -r1.2 spb.h
-> > --- arclib/spb.h	2001/03/20 02:55:56	1.2
-> > +++ arclib/spb.h	2001/11/04 22:06:28
-> > @@ -90,7 +90,7 @@
-> >  	ADAPTER Adapters[1];
-> >  } SPB;
-> >  
-> > -#define SystemParameterBlock	((SPB *) 0x1000)
-> > +#define SystemParameterBlock	((SPB *) 0xA0001000UL) 
-> 
-> That should be 0x80001000UL I think.
-Both refer to the same physical address. Since I don't want to get into
-the way of any caches I used the former one(as does the kernel).
+I would be interested in creating similar images for our MIPS-based
+board.  Would you be willing to share your knowledge on how to
+accomplish this?
 
-> > -EXT2LIB = /usr/lib/libext2fs.a
-> > +#EXT2LIB = /usr/lib/libext2fs.a
-> > +EXT2LIB = ../../e2fslib/e2fsprogs-1.25/lib/libext2fs.a
-> 
-> That needs to be a non-pic library which nobody has installed on his
-> system so I suggest we just put a copy of libext2fs into the arcboot
-> sources.  That would alos make arcboot selfcontained and eleminate
-> build problems.
-Someone has to rip the libext2fs specific part out of e2fsutils then.
-I'll do so, when I have the kernel booting.
- -- Guido
+Matt
+
+--
+Matthew D. Dharm                            Senior Software Designer
+Momentum Computer Inc.                      1815 Aston Ave.  Suite 107
+(760) 431-8663 X-115                        Carlsbad, CA 92008-7310
+Momentum Works For You                      www.momenco.com
+
+> -----Original Message-----
+> From: owner-linux-mips@oss.sgi.com
+> [mailto:owner-linux-mips@oss.sgi.com]On Behalf Of Carsten Langgaard
+> Sent: Tuesday, November 06, 2001 4:07 AM
+> To: linux-mips@oss.sgi.com
+> Subject: RedHat7.1
+>
+>
+> I have made a CD-ROM images for easy CD-ROM installation of
+> a RedHat7.1
+> distribution on a MIPS Atlas or Malta board.
+> The image contains both a little and bigendian distribution.
+>
+> You can download the images from the FTP site:
+> ftp://ftp.mips.com/pub/linux/mips/installation/
+> Burn the image to a CD-ROM and follow the INSTALL guide for
+> installation
+> on a harddisk attached to either a Atlas or Malta board.
+>
+> You can also download the tar-ball for NFS installation.
+>
+> Hope that people with a Atlas or a Malta board find it useful.
+> /Carsten
+>
+>
+> --
+> _    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+> |\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+> | \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+>   TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+>                    Denmark             http://www.mips.com
+>
+>
+>

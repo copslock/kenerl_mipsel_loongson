@@ -1,60 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Nov 2004 22:54:43 +0000 (GMT)
-Received: from mail.gmx.net ([IPv6:::ffff:213.165.64.20]:36561 "HELO
-	mail.gmx.net") by linux-mips.org with SMTP id <S8225218AbUKXWyi>;
-	Wed, 24 Nov 2004 22:54:38 +0000
-Received: (qmail 5524 invoked by uid 65534); 24 Nov 2004 22:54:32 -0000
-Received: from c209182.adsl.hansenet.de (EHLO [192.168.0.1]) (213.39.209.182)
-  by mail.gmx.net (mp002) with SMTP; 24 Nov 2004 23:54:32 +0100
-X-Authenticated: #947741
-Message-ID: <41A512A3.8000203@gmx.net>
-Date: Thu, 25 Nov 2004 00:00:51 +0100
-From: TheNop <TheNop@gmx.net>
-User-Agent: Mozilla Thunderbird 0.7.3 (Windows/20040803)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: linux-mips@linux-mips.org
-Subject: Re: Cross tool chain based on gcc-3.4.x
-References: <41A3CE25.7040406@gmx.net> <41A46CE6.7040000@enix.org>
-In-Reply-To: <41A46CE6.7040000@enix.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <TheNop@gmx.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Nov 2004 22:55:15 +0000 (GMT)
+Received: from pD9562327.dip.t-dialin.net ([IPv6:::ffff:217.86.35.39]:13102
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225219AbUKXWyj>; Wed, 24 Nov 2004 22:54:39 +0000
+Received: from fluff.linux-mips.net (localhost [127.0.0.1])
+	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id iAOMscsT025548;
+	Wed, 24 Nov 2004 23:54:38 +0100
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.13.1/8.13.1/Submit) id iAOMsba2025547;
+	Wed, 24 Nov 2004 23:54:37 +0100
+Date: Wed, 24 Nov 2004 23:54:37 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: "Maciej W. Rozycki" <macro@linux-mips.org>
+Cc: "Kapoor, Pankaj" <pkapoor@ti.com>, linux-mips@linux-mips.org
+Subject: Re: Cache Question
+Message-ID: <20041124225437.GE22439@linux-mips.org>
+References: <C4D23DECD6CD714BBFB38B0AE8D25A3A24FF66@dlee2k03.ent.ti.com> <20041124223211.GB22439@linux-mips.org> <Pine.LNX.4.58L.0411242241130.843@blysk.ds.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.58L.0411242241130.843@blysk.ds.pg.gda.pl>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6452
+X-archive-position: 6453
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: TheNop@gmx.net
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Thomas Petazzoni wrote:
+On Wed, Nov 24, 2004 at 10:42:45PM +0000, Maciej W. Rozycki wrote:
 
-> Hello,
->
-> TheNop a écrit :
->
->> Is anyone using a cross compiler base on  gcc-3.4.x for a mips big 
->> endian target?
->
->
-> Yes. Using buildroot (the tool provided by uclibc guys), I 
-> successfully generated tool chains for MIPS Big Endian with both Gcc 
-> 3.3.x et Gcc 3.4.x. C and C++ programs, dynamically linked with uclibc 
-> work fine. However, with Gcc 3.4.x, my version of the Linux MIPS 
-> kernel (a more than one month old CVS checkout, heavily tuned for my 
-> platform) doesn't compile.
->
-> Thomas
+> > That interrupt disabling in some cache flushes dates back further than
+> > CVS history.  Seems once uppon a time there was some CPU which didn't
+> > like cache flushes with interrupts enabled.  This is rather bad for
+> > latencies so unless somebody else on this list recalls a good reason
+> > I'd like to remove this.
+> 
+>  Some R4600 (v1.1?) errata workaround?  Or was it elsewhere?
 
-Hi Thomas,
+V1.7 you mean - it identifies as 1.0 in c0_prid though.  I don't have
+my erratas for this one anymore.  I've checked erratum #3 of V2.0 with
+one of the R4600 designers already a while ago and he said disabling
+interrupts isn't necessary.
 
-I tried the current cvs version of toolchain provide by www.uclibc.org 
-without success.
-I will try buildroot tomorrow.
-Hopefully I have luck than with crosstools.
+The ancient Linux code I was refering to used to disable interrupts
+for all CPUs.  Supported CPUs back then were R4000, R4400, R4600 only,
+so it must have been one of those.
 
-Best regards
-TheNop
+  Ralf

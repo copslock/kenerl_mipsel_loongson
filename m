@@ -1,70 +1,58 @@
-Received:  by oss.sgi.com id <S305177AbQCVNUe>;
-	Wed, 22 Mar 2000 05:20:34 -0800
-Received: from deliverator.sgi.com ([204.94.214.10]:13674 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305174AbQCVNUM>;
-	Wed, 22 Mar 2000 05:20:12 -0800
-Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id FAA00385; Wed, 22 Mar 2000 05:15:32 -0800 (PST)
+Received:  by oss.sgi.com id <S305179AbQCVQCy>;
+	Wed, 22 Mar 2000 08:02:54 -0800
+Received: from deliverator.sgi.com ([204.94.214.10]:52782 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305174AbQCVQCc>;
+	Wed, 22 Mar 2000 08:02:32 -0800
+Received: from nodin.corp.sgi.com (fddi-nodin.corp.sgi.com [198.29.75.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id HAA19851; Wed, 22 Mar 2000 07:57:52 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id IAA47806; Wed, 22 Mar 2000 08:02:30 -0800 (PST)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id FAA46095
+	id HAA06365
 	for linux-list;
-	Wed, 22 Mar 2000 05:00:30 -0800 (PST)
+	Wed, 22 Mar 2000 07:24:29 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id FAA37456
+	via ESMTP id HAA32831
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 22 Mar 2000 05:00:27 -0800 (PST)
-	mail_from (richardh@penguin.nl)
-Received: from smtpf.casema.net (smtpf.casema.net [195.96.96.173]) 
+	Wed, 22 Mar 2000 07:24:25 -0800 (PST)
+	mail_from (natorro@adem.fciencias.unam.mx)
+Received: from adem.fciencias.unam.mx (adem.fciencias.unam.mx [132.248.28.57]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via SMTP id FAA02973
-	for <linux@cthulhu.engr.sgi.com>; Wed, 22 Mar 2000 05:00:26 -0800 (PST)
-	mail_from (richardh@penguin.nl)
-Received: (qmail 28990 invoked by uid 0); 22 Mar 2000 13:00:18 -0000
-Received: from unknown (HELO penguin.nl) (195.96.116.192)
-  by smtpf.casema.net with SMTP; 22 Mar 2000 13:00:18 -0000
-Message-ID: <38D8C418.FAA1CC71@penguin.nl>
-Date:   Wed, 22 Mar 2000 14:01:13 +0100
-From:   Richard <richardh@penguin.nl>
-X-Mailer: Mozilla 4.6 [en] (X11; I; Linux 2.2.9 i686)
-X-Accept-Language: en
+	via ESMTP id HAA02827
+	for <linux@cthulhu.engr.sgi.com>; Wed, 22 Mar 2000 07:23:56 -0800 (PST)
+	mail_from (natorro@adem.fciencias.unam.mx)
+From:   natorro@adem.fciencias.unam.mx
+Received: from localhost (natorro@localhost)
+	by adem.fciencias.unam.mx (8.8.7/8.8.7) with SMTP id JAA08020
+	for <linux@cthulhu.engr.sgi.com>; Wed, 22 Mar 2000 09:17:12 -0600
+Date:   Wed, 22 Mar 2000 09:17:11 -0600 (CST)
+To:     linux@cthulhu.engr.sgi.com
+Subject: Installing GNU Pascal Compiler
+In-Reply-To: <Pine.LNX.3.96.1000317152030.821A-100000@adem.fciencias.unam.mx>
+Message-ID: <Pine.LNX.3.96.1000322091118.8003A-100000@adem.fciencias.unam.mx>
 MIME-Version: 1.0
-To:     "linux@cthulhu.engr.sgi.com" <linux@cthulhu.engr.sgi.com>
-Subject: homemade kernel
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-Hi,
+Hi, I have just installed the Hard Hat distribution and now
+I really need to install a Pascal Compiler, I downloaded the
+source and the sources of GCC version 2.8.1 I tried to install it
+doing all the stuff it says, but when I do "make LANGUAGES=pascal"
+it complains about some flags, I took the flags out from the Makefile
+and after it it complains more, I don't really undestand what it says,
+does anyone here has installed this compiler sucessfully???
+I typed "gcc --version" and it prints version 2.7.2 
+I haven't installed any packages apart from the rpm's that came
+with the distribution.
 
-Why is it, that with the latest repository sources,  i still get this:
-
-  Exception: <vector=UTLB Miss>
-   Status register: 0x300004803<CU1,CU0,IM4,IPL=???,MODE=KERNEL,EXL,IE>
-   Cause register: 0x8008<CE=0,IP8,EXC=RMISS>
-   Exception PC: 0x881385cc, Exception RA: 0x88002614
-   exception, bad address: 0x47c4
-   Local I/O interrupt register 1: 0x80 <VR/GIO2>
-   Saved user regs in hex (&gpda 0xa8740e48, &_regs 0xa8741048):
-     arg: 7 8bfff938 8bfffc4d 880025dc
-     tmp: 8818c14c 8818c14c 10 881510c4 14 8bfad9e0 0 48
-     sve: 8bfdf3e8 8bfffc40 8bfb2720 8bfff938 a8747420 9fc56394 0
-9fc56394
-     t8 48 t9 8bfffee66 at 1 v0 0 v1 8bfff890 k1 bad11bad
-     gp 881dfd90 fp 9fc4be88 sp 8bfff8b8 ra 88002614
-
-   PANIC: Unexpected exception
-
-
-I checked the arch/mips/Makefile for the linkflags, but there's no -N
-there. Has it gone to some other place ?
-
-Richard
+Any help will be greatly appreciated, thanks a lot.
+Cheers
+natorro

@@ -1,60 +1,61 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.9.3/8.9.3) id OAA23078
-	for linuxmips-outgoing; Fri, 22 Oct 1999 14:02:47 -0700
+	by oss.sgi.com (8.9.3/8.9.3) id WAA29917
+	for linuxmips-outgoing; Sat, 23 Oct 1999 22:12:33 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linuxmips@oss.sgi.com using -f
-Received: from sgi.com (sgi.SGI.COM [192.48.153.1])
-	by oss.sgi.com (8.9.3/8.9.3) with ESMTP id OAA23075
-	for <linuxmips@oss.sgi.com>; Fri, 22 Oct 1999 14:02:46 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
-	by sgi.com (980305.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id OAA2935044
-	for <linuxmips@oss.sgi.com>; Fri, 22 Oct 1999 14:06:18 -0700 (PDT)
+Received: from pneumatic-tube.sgi.com (pneumatic-tube.sgi.com [204.94.214.22])
+	by oss.sgi.com (8.9.3/8.9.3) with ESMTP id WAA29914
+	for <linuxmips@oss.sgi.com>; Sat, 23 Oct 1999 22:12:32 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id WAA08506
+	for <linuxmips@oss.sgi.com>; Sat, 23 Oct 1999 22:17:03 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id NAA08081
+	id VAA62926
 	for linux-list;
-	Fri, 22 Oct 1999 13:45:04 -0700 (PDT)
+	Sat, 23 Oct 1999 21:46:14 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id NAA11250
+	via ESMTP id VAA94344
 	for <linux@engr.sgi.com>;
-	Fri, 22 Oct 1999 13:45:01 -0700 (PDT)
-	mail_from (cochran@vancouver.wsu.edu)
-Received: from sulfur.vancouver.wsu.edu (sulfur.vancouver.wsu.edu [199.237.80.13]) 
+	Sat, 23 Oct 1999 21:46:09 -0700 (PDT)
+	mail_from (four@bway.net)
+Received: from nico.bway.net (mail.bway.net [205.198.116.1]) 
 	by sgi.com (980305.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id NAA3053981
-	for <linux@engr.sgi.com>; Fri, 22 Oct 1999 13:44:59 -0700 (PDT)
-	mail_from (cochran@vancouver.wsu.edu)
-Received: from vancouver.wsu.edu (localhost [127.0.0.1])
-	by sulfur.vancouver.wsu.edu (8.9.3/8.9.3) with ESMTP id NAA12187
-	for <linux@engr.sgi.com>; Fri, 22 Oct 1999 13:46:40 -0700
-Message-ID: <3810CD30.C6A9B561@vancouver.wsu.edu>
-Date: Fri, 22 Oct 1999 13:46:40 -0700
-From: "Wayne O. Cochran" <cochran@vancouver.wsu.edu>
-Organization: WSU Vancouver
-X-Mailer: Mozilla 4.7 [en] (X11; U; Linux 2.2.12 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
+	via ESMTP id VAA3334786
+	for <linux@engr.sgi.com>; Sat, 23 Oct 1999 21:46:07 -0700 (PDT)
+	mail_from (four@bway.net)
+Received: from [216.220.110.50] (port036.violet.dialup.bway.net [216.220.110.50])
+	by nico.bway.net (8.8.5/8.8.5) with ESMTP id AAA21504;
+	Sun, 24 Oct 1999 00:45:19 -0400 (EDT)
+X-Sender: four@mail.bway.net
+Message-Id: <l03020901b43818ad81dc@[216.220.110.150]>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Date: Sun, 24 Oct 1999 00:45:02 -0400
 To: linux@cthulhu.engr.sgi.com
-Subject: linux on Challenge L (4 x 150) Cpu
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+From: Four Hewes <four@bway.net>
+Subject: Linux on SGI O2
+Cc: four@bway.net
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 
-We may be receiving a large donation of older SGI's machines that
-are Challenge L [(4 x 150) Cpu] models. I think they will come
-with Irix 5.3 installed. Will Linux run on these models?
+Just wanna make sure I got it right:
 
--- wayne
-Wayne O. Cochran
-Assistant Professor, Computer Science, WSU Vancouver
-cochran@vancouver.wsu.edu   (360) 546-9463
+Judging from " Linux/MIPS HOWTO:3.2 Processor types: R4000 and R5000
+family, R10000," there in not presently a version on Linux that runs on the
+SGI O2, right?
+
+Thanx,
+
+4
+
+--
+Four Hewes
+
+Voice: (212) 946-4477
+Fax: (810) 815-2898
+four@bway.net

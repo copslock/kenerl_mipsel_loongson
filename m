@@ -1,74 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Feb 2004 20:11:53 +0000 (GMT)
-Received: from web41510.mail.yahoo.com ([IPv6:::ffff:66.218.93.93]:47964 "HELO
-	web41510.mail.yahoo.com") by linux-mips.org with SMTP
-	id <S8225603AbUBWULt>; Mon, 23 Feb 2004 20:11:49 +0000
-Message-ID: <20040223201134.72649.qmail@web41510.mail.yahoo.com>
-Received: from [209.172.118.142] by web41510.mail.yahoo.com via HTTP; Mon, 23 Feb 2004 12:11:34 PST
-Date:	Mon, 23 Feb 2004 12:11:34 -0800 (PST)
-From:	Krishna Kondaka <kkondaka@yahoo.com>
-Subject: Re: MIPS SMP Linux
-To:	dwalton+mips@ddtsm.com
-Cc:	linux-mips@linux-mips.org
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <kkondaka@yahoo.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Feb 2004 20:46:59 +0000 (GMT)
+Received: from NAT.office.mind.be ([IPv6:::ffff:62.166.230.82]:55940 "EHLO
+	codecarver.intern.mind.be") by linux-mips.org with ESMTP
+	id <S8225340AbUBWUq4>; Mon, 23 Feb 2004 20:46:56 +0000
+Received: from p2 by codecarver with local (Exim 3.36 #1 (Debian))
+	id 1AvMyY-0000Ss-00; Mon, 23 Feb 2004 21:46:50 +0100
+Date:	Mon, 23 Feb 2004 21:46:50 +0100
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Joost <Joost@stack.nl>, linux-mips@linux-mips.org
+Subject: Re: fore atm card in indy?
+Message-ID: <20040223204649.GF1046@mind.be>
+Mail-Followup-To: peter.de.schrijver@mind.be,
+	Ralf Baechle <ralf@linux-mips.org>, Joost <Joost@stack.nl>,
+	linux-mips@linux-mips.org
+References: <Pine.LNX.4.58.0402181631050.30510@brilsmurf.chem.tue.nl> <20040220142138.GD23404@linux-mips.org>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="SxgehGEc6vB0cZwN"
+Content-Disposition: inline
+In-Reply-To: <20040220142138.GD23404@linux-mips.org>
+X-Answer: 42
+X-Operating-system: Debian GNU/Linux
+X-Message-Flag:	Get yourself a real email client. http://www.mutt.org/
+X-mate:	Mate, man gewoehnt sich an alles
+User-Agent: Mutt/1.5.5.1+cvs20040105i
+From:	Peter 'p2' De Schrijver <p2@mind.be>
+Return-Path: <p2@mind.be>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4414
+X-archive-position: 4415
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kkondaka@yahoo.com
+X-original-sender: p2@mind.be
 Precedence: bulk
 X-list: linux-mips
 
-Thanks for the reply daniel,
 
+--SxgehGEc6vB0cZwN
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->> I would like to know if any one is using MIPS SMP
->> Linux in the realworld(i.e., more than just for
-mips
->> SMP linux development work)? I am specifically
->> interested in broadcom BCM12500s running SMP Linux.
+On Fri, Feb 20, 2004 at 03:21:38PM +0100, Ralf Baechle wrote:
+> On Wed, Feb 18, 2004 at 04:35:31PM +0100, Joost wrote:
+>=20
+> > My indy seems to be equipped with a Fore ATM device (GIA-200).
+> > Would someone know if there is a way to get it back into action?
+>=20
+> You'll not like this answer ...  but write a driver :-)
+>=20
+> It seems many GIO cards are based on already Linux-supported PCI chips,
+> so there's a certain chance this won't even be hard.
+>=20
 
->We have been using it on commercially deployed telco
->grade products
->for 18 months or more. If you have been talking with
->Broadcom they can
->probably provide references for you. I believe a
->large proportion of
->their designs are Linux based now.
+There is already a driver for the PCI and SBUS versions of this card. It
+lives in drivers/atm/fore200e*. You 'only' need to add code for the
+GIO32 specifics.
 
+Cheers,
 
->> If yes, I would like to know their experience in
-terms
->> of stability and performance.
+Peter.
 
->It's stability is fine with SMP. You application code
->will (should?)
->crash much more than the kernel will :-)
+--SxgehGEc6vB0cZwN
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
 
-Applications are crashing due to kernel bugs? or due
-to application bugs? Are the applications crashing
-more often when run on SMP than on UP kernel?
-I would appreciate if you could provide more details
-on what you mean by applications crashing.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.4 (GNU/Linux)
 
-Thanks
-Krishna
+iD8DBQFAOma5KLKVw/RurbsRAkpVAJwP3byUqlKkb9jxIbUT8LhwSA3dUACfeeNX
+Sz4h7iVf0ZpWbG5FB94lL5M=
+=00w0
+-----END PGP SIGNATURE-----
 
->Performance is relative to a lot of factors (board
->space/power/thermal
->budget available). It's hard to beat the
->size/performance offered by
->the 1250. 
-
-Daniel
-
-
-
-__________________________________
-Do you Yahoo!?
-Yahoo! Mail SpamGuard - Read only the mail you want.
-http://antispam.yahoo.com/tools
+--SxgehGEc6vB0cZwN--

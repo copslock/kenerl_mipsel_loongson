@@ -1,92 +1,89 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Sep 2002 01:09:12 +0200 (CEST)
-Received: from p508B6B85.dip.t-dialin.net ([80.139.107.133]:61059 "EHLO
-	dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S1122962AbSIOXJL>; Mon, 16 Sep 2002 01:09:11 +0200
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id g8FN8vh27166;
-	Mon, 16 Sep 2002 01:08:57 +0200
-Date: Mon, 16 Sep 2002 01:08:57 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Ryan Murray <rmurray@debian.org>, linux-mips@linux-mips.org,
-	libc-alpha@sources.redhat.com
-Subject: Re: [patch] userspace mcontext_t doesn't match what kernel returns
-Message-ID: <20020916010857.B24588@linux-mips.org>
-References: <20020911032832.GA1500@cyberhqz.com> <20020915210601.A24588@linux-mips.org> <20020915191613.GA21794@nevyn.them.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Sep 2002 11:02:54 +0200 (CEST)
+Received: from fw-cam.cambridge.arm.com ([193.131.176.3]:411 "EHLO
+	fw-cam.cambridge.arm.com") by linux-mips.org with ESMTP
+	id <S1122962AbSIPJCx>; Mon, 16 Sep 2002 11:02:53 +0200
+Received: by fw-cam.cambridge.arm.com; id KAA07872; Mon, 16 Sep 2002 10:02:41 +0100 (BST)
+Received: from unknown(172.16.9.107) by fw-cam.cambridge.arm.com via smap (V5.5)
+	id xma007623; Mon, 16 Sep 02 10:02:22 +0100
+Date: Mon, 16 Sep 2002 10:02:25 +0100
+From: Gareth <g.c.bransby-99@student.lboro.ac.uk>
+To: Richard Hodges <rh@matriplex.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: Cycle counter
+Message-Id: <20020916100225.01903423.g.c.bransby-99@student.lboro.ac.uk>
+In-Reply-To: <Pine.BSF.4.10.10209130937060.47912-100000@mail.matriplex.com>
+References: <20020913172824.5c7ed0a4.g.c.bransby-99@student.lboro.ac.uk>
+	<Pine.BSF.4.10.10209130937060.47912-100000@mail.matriplex.com>
+X-Mailer: Sylpheed version 0.8.1 (GTK+ 1.2.10; i686-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <20020915191613.GA21794@nevyn.them.org>; from dan@debian.org on Sun, Sep 15, 2002 at 03:16:13PM -0400
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <g.c.bransby-99@student.lboro.ac.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 183
+X-archive-position: 184
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: g.c.bransby-99@student.lboro.ac.uk
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, Sep 15, 2002 at 03:16:13PM -0400, Daniel Jacobowitz wrote:
+Thanks for the help. This program is not running in linux, it is running as a
+single application on the core. The processor is a 4kc. I tried your code and it
+works fine. I just deleted your do_something() so the timer starts and stops
+immediatly. I get 21 ticks now rather than the 8000 or so I was getting with my
+code which is much more realistic.
 
-> > I choose to fix the kernel instead which will keep as closer to the MIPS
-> > ABI and also prevent having to recompile zillions of user apps.  Below my
-> > working version of <asm/ucontext.h>.
+
+
+
+
+On Fri, 13 Sep 2002 09:41:27 -0700 (PDT)
+Richard Hodges <rh@matriplex.com> wrote:
+
+> On Fri, 13 Sep 2002, Gareth wrote:
 > 
-> What are the gregset_t/fpregset_t types in your working tree?  There
-> aren't any definitions of them in the only copy of the MIPS code that I
-> have here, and they've had various bad definitions in glibc until
-> recently.  They also recently changed...
-
-By the time I sent my previous mail I didn't yet have any.  Below the
-changes I've made to libc but the kernel changes are identical.
-
-> [Although I think your kernel change is the right way to go, here. 
-> Just being cautious.]
-
-I'm not yet finished.  The libc definitions for gregset_t and fpregset_t
-are not what they're expected to be (coincidentally I got a related bug
-report just a few days ago, so that issue is also itching a bit ...) and
-I'd like to change them to as below.
-
-This is a binary incompatible change but since so far just one person has
-complained about the non-matching definitions of struct ucontext, it seems
-there are very few users of the affected data type?
-
-/* Type for general register.  */
-typedef unsigned long int greg_t;
-
-/* Number of general registers.  */
-#define NGREG	36
-
-typedef greg_t gregset_t[NGREG];
-
-/* Container for all FPU registers.  */
-typedef struct fpregset {
-	union {
-		double		fp_dregs[16];
-		float		fp_fregs[32];
-		unsigned int	fp_regs[32];
-	} fp_r;
-	unsigned int	fp_csr;
-	unsigned int	fp_pad;
-} fpregset_t;
-
-/* Context to describe whole processor state.  */
-typedef struct
-  {
-    gregset_t gregs;
-    fpregset_t fpregs;
-  } mcontext_t;
-
-/* Userlevel context.  */
-typedef struct ucontext
-  {
-    unsigned long int uc_flags;
-    struct ucontext *uc_link;
-    stack_t uc_stack;
-    mcontext_t uc_mcontext;
-    __sigset_t uc_sigmask;
-  } ucontext_t;
+> > Another question reagarding the mips malta board. I am wanting to be
+> > able to find out how many cycles a certain loop takes to execute. I
+> > understand there is a cycle counter built into the processor that I
+> > want to use for this. I have a bit of inline assembly to do the job
+> > but the results I am getting are not consistent so i think there is
+> > probably something wrong with my attempt at the inline assembly. Here
+> > is the code :
+> 
+> >   void al_signal_start(void)
+> >   {
+> > 	  int zero,temp;
+> > 	  __asm__("move $2, $zero");
+> > 	  __asm__("nop");
+> >           __asm__("mtc0 $2, $9" :  : "r" (temp));
+> 
+> Is this from user space?  If so, this may fail from user space.  (I sure
+> hope it does!)
+>  
+> > As you can see, main just starts and stops the counter with no
+> > instructions in between. I expexcted the cycle count to be zero or
+> > close to it because of the instructions required to get the count but
+> > this is not the case. I am getting numbers like 8499. Is there just
+> > something wrong with my assembly or is there something else I am
+> > missing?
+> 
+> Try something like this:
+> 
+> #define GET_CLOCK(var){__asm__ volatile("mfc0 %0,$9":"=r"(var));}
+> {
+> 	unsigned int clock1, clock2;
+> 
+> 	GET_CLOCK(clock1);
+> 	do_something();
+> 	GET_CLOCK(clock2);
+> 
+> 	printf("ticks = %d\n", clock2 - clock1);
+> }
+> 
+> -Richard
+> 
+> 
+> 

@@ -1,65 +1,54 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1K5Xm803350
-	for linux-mips-outgoing; Tue, 19 Feb 2002 21:33:48 -0800
-Received: from nevyn.them.org (mail@NEVYN.RES.CMU.EDU [128.2.145.6])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1K5Xg903347
-	for <linux-mips@oss.sgi.com>; Tue, 19 Feb 2002 21:33:42 -0800
-Received: from drow by nevyn.them.org with local (Exim 3.34 #1 (Debian))
-	id 16dORn-0005n4-00; Tue, 19 Feb 2002 23:33:39 -0500
-Date: Tue, 19 Feb 2002 23:33:39 -0500
-From: Daniel Jacobowitz <dan@debian.org>
-To: Robert Rusek <robru@teknuts.com>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: Error Compiling 2.4.3 kernel on SGI IP22...
-Message-ID: <20020219233339.B22099@nevyn.them.org>
-References: <000901c1b9b0$51cdd0b0$0f1610ac@delllaptop>
+	by oss.sgi.com (8.11.2/8.11.3) id g1K5mHV03489
+	for linux-mips-outgoing; Tue, 19 Feb 2002 21:48:17 -0800
+Received: from nixon.xkey.com (nixon.xkey.com [209.245.148.124])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1K5mD903486
+	for <linux-mips@oss.sgi.com>; Tue, 19 Feb 2002 21:48:13 -0800
+Received: (qmail 11470 invoked from network); 20 Feb 2002 04:48:13 -0000
+Received: from localhost (HELO localhost.conservativecomputer.com) (127.0.0.1)
+  by localhost with SMTP; 20 Feb 2002 04:48:13 -0000
+Received: (from lindahl@localhost)
+	by localhost.conservativecomputer.com (8.11.6/8.11.0) id g1K4m8C04590
+	for linux-mips@oss.sgi.com; Tue, 19 Feb 2002 23:48:08 -0500
+X-Authentication-Warning: localhost.hpti.com: lindahl set sender to lindahl@conservativecomputer.com using -f
+Date: Tue, 19 Feb 2002 23:48:08 -0500
+From: Greg Lindahl <lindahl@conservativecomputer.com>
+To: linux-mips@oss.sgi.com
+Subject: Re: FPU emulator unsafe for SMP?
+Message-ID: <20020219234808.A4475@wumpus.skymv.com>
+Mail-Followup-To: linux-mips@oss.sgi.com
+References: <3C6C6ACF.CAD2FFC@mvista.com> <20020215031118.B21011@dea.linux-mips.net> <20020214232030.A3601@mvista.com> <20020215003037.A3670@mvista.com> <002b01c1b607$6afbd5c0$10eca8c0@grendel> <20020219140514.C25739@mvista.com> <00af01c1b9a2$c0d6d5f0$10eca8c0@grendel> <20020219171238.E25739@mvista.com> <20020219222835.A4195@wumpus.skymv.com> <20020219202434.F25739@mvista.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <000901c1b9b0$51cdd0b0$0f1610ac@delllaptop>
-User-Agent: Mutt/1.3.23i
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20020219202434.F25739@mvista.com>; from jsun@mvista.com on Tue, Feb 19, 2002 at 08:24:34PM -0800
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Feb 19, 2002 at 05:45:46PM -0800, Robert Rusek wrote:
-> Initially I got errors telling me that mips-linux-gcc, mips-linux-ld,
-> and mips-linux-ar did not exists.  I simply made a link for:
-> 
-> mips-linux-gcc	-> gcc 
-> mips-linux-ld	-> ld
-> mips-linux-ar	-> ar
+On Tue, Feb 19, 2002 at 08:24:34PM -0800, Jun Sun wrote:
 
-No, set CROSS_COMPILE=mips-linux-
+> I think the comment might be an execuse. :-)  Never heard of gcc
+> generating unnecessary floating point code.
 
+I don't really remember, but I think the Alpha calling standards
+encourages using some of the fp registers as scratch all the time. The
+price is that you have to always save them, but you get more registers,
+which helps you avoid spills, which speeds up all kinds of code.
 
-> mips-linux-ld -static -G 0 -T arch/mips/ld.script
-> arch/mips/kernel/head.o arch/m
-> ips/kernel/init_task.o init/main.o init/version.o \
->         --start-group \
->         arch/mips/kernel/kernel.o arch/mips/mm/mm.o kernel/kernel.o
-> mm/mm.o fs/f
-> s.o ipc/ipc.o arch/mips/math-emu/fpu_emulator.o
-> arch/mips/sgi/kernel/ip22-kern.o
->  \
->         drivers/block/block.o drivers/char/char.o drivers/misc/misc.o
-> drivers/ne
-> t/net.o drivers/media/media.o  drivers/scsi/scsidrv.o
-> drivers/cdrom/driver.o dri
-> vers/sgi/sgi.a drivers/video/video.o \
->         net/network.o \
->         arch/mips/lib/lib.a /usr/src/linux-2.4.3/lib/lib.a
-> arch/mips/arc/arclib.
-> a \
->         --end-group \
->         -o vmlinux
-> mips-linux-ld: target elf32-bigmips not found
-> make: *** [vmlinux] Error 1
+> If you do use floating point, I think it is pretty common to have
+> only process that uses fpu and runs for very long.  In that case,
+> leaving FPU owned by the process also saves quite a bit.
 
-2.4.3 is too old for your tools.
+You're assuming, I guess, that there are a lot of interrupts. OK, so
+how much CPU time is saved? You can't compare the cost if you don't
+know the number.
 
-I recommend you use a newer kernel.  Otherwise, just changing that to
-elf32-tradbigmips should work.
+> In this case, proc that uses fpu gets about 50% of one cpu, i.e.,
+> 25% of total load, while the other two integer math proces split the
+> rest 75%, which gives 37.5% each.  Not too bad in my opinion.
 
--- 
-Daniel Jacobowitz                           Carnegie Mellon University
-MontaVista Software                         Debian GNU/Linux Developer
+One man's "not too bad" can be another man's "oh my God, that's
+horrible!"
+
+-- greg

@@ -1,32 +1,56 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fADAGhK00526
-	for linux-mips-outgoing; Tue, 13 Nov 2001 02:16:43 -0800
-Received: from prozac.medialincs.com ([210.126.9.67])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fADAGf000523
-	for <linux-mips@oss.sgi.com>; Tue, 13 Nov 2001 02:16:41 -0800
-Received: from joey.medialincs.com (joey.medialincs.com [210.126.9.86])
-	by prozac.medialincs.com (8.11.6/8.11.2) with ESMTP id fAD9Lc806490
-	for <linux-mips@oss.sgi.com>; Tue, 13 Nov 2001 18:21:38 +0900
-Received: by joey.medialincs.com (Postfix, from userid 500)
-	id D97B0E65F; Tue, 13 Nov 2001 18:21:19 +0900 (KST)
-Date: Tue, 13 Nov 2001 18:21:19 +0900
-From: "Joe Y." <joey@medialincs.com>
-To: linux-mips@oss.sgi.com
-Subject: gt-64120 bootloader??
-Message-ID: <20011113092119.GA7142@medialincs.com>
+	by oss.sgi.com (8.11.2/8.11.3) id fADEAsY13558
+	for linux-mips-outgoing; Tue, 13 Nov 2001 06:10:54 -0800
+Received: from faui02.informatik.uni-erlangen.de (root@faui02.informatik.uni-erlangen.de [131.188.30.102])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fADEAo013554
+	for <linux-mips@oss.sgi.com>; Tue, 13 Nov 2001 06:10:51 -0800
+Received: from rz.de (root@faui02b.informatik.uni-erlangen.de [131.188.30.151])
+	by faui02.informatik.uni-erlangen.de (8.9.1/8.1.16-FAU) with ESMTP id PAA07216; Tue, 13 Nov 2001 15:10:32 +0100 (MET)
+Received: (from rz@localhost)
+	by rz.de (8.8.8/8.8.8) id OAA00775;
+	Tue, 13 Nov 2001 14:42:40 +0100
+Date: Tue, 13 Nov 2001 14:42:40 +0100
+From: Richard Zidlicky <rz@linux-m68k.org>
+To: Roman Zippel <zippel@linux-m68k.org>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>, Jun Sun <jsun@mvista.com>,
+   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+   Linux/MIPS Development <linux-mips@oss.sgi.com>,
+   Linux/m68k <linux-m68k@lists.linux-m68k.org>,
+   Linux/PPC Development <linuxppc-dev@lists.linuxppc.org>
+Subject: Re: [RFC] generic MIPS RTC driver
+Message-ID: <20011113144240.B669@linux-m68k.org>
+References: <Pine.GSO.4.21.0111122055010.10720-100000@mullein.sonytel.be> <3BF0371F.8040575B@linux-m68k.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=euc-kr
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.3.23.1i
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3BF0371F.8040575B@linux-m68k.org>; from zippel@linux-m68k.org on Mon, Nov 12, 2001 at 09:54:55PM +0100
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-anyone know bootloader for the galileo 64120 board ?
+On Mon, Nov 12, 2001 at 09:54:55PM +0100, Roman Zippel wrote:
+> Hi,
+> 
+> Geert Uytterhoeven wrote:
+> 
+> > > Geert, what is the abstraction they used?
+> > 
+> > At first sight, we only use get_rtc_time() and mach_hwclk().
+> 
+> Over the weekend I changed it into set_rtc_time()/get_rtc_time(), which
+> are now defined in <asm/rtc.h>, so mach_hwclk() is gone in the generic
+> part.
+> Another feature is the emulation of the timer interrupt, although I have
+> no idea which program is using this.
 
-PMON or redboot is not support gt-64120.. 
+hwclock and a bunch of less known porgrams like chrony. 
+Where the interrupt can be generated its a clear win, otherwise
+it might be more reasonable to return EINVAL instead of trying
+to emulate it - presumably hwclock can use some fallback method.
 
-I looking for having ability to load linux. 
+Btw the interrupt need not to be hardware, for the Q40 I test 
+a rtc register once per jiffie and generate a "soft interrupt".
+It could be done generic at least for m68k.
 
-if you have any experience, inform to me.
-
-thanks.
+Bye
+Richard

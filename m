@@ -1,40 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Dec 2003 23:03:36 +0000 (GMT)
-Received: from bay1-f80.bay1.hotmail.com ([IPv6:::ffff:65.54.245.80]:23056
-	"EHLO hotmail.com") by linux-mips.org with ESMTP
-	id <S8225371AbTLLXDf>; Fri, 12 Dec 2003 23:03:35 +0000
-Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
-	 Fri, 12 Dec 2003 15:03:29 -0800
-Received: from 128.107.253.38 by by1fd.bay1.hotmail.msn.com with HTTP;
-	Fri, 12 Dec 2003 23:03:28 GMT
-X-Originating-IP: [128.107.253.38]
-X-Originating-Email: [michaelanburaj@hotmail.com]
-X-Sender: michaelanburaj@hotmail.com
-From: "Michael Anburaj" <michaelanburaj@hotmail.com>
-To: linux-mips@linux-mips.org
-Subject: Core cards for MIPS Atlas board
-Date: Fri, 12 Dec 2003 15:03:28 -0800
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Dec 2003 01:10:41 +0000 (GMT)
+Received: from p508B5CF9.dip.t-dialin.net ([IPv6:::ffff:80.139.92.249]:63937
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225412AbTLMBKk>; Sat, 13 Dec 2003 01:10:40 +0000
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id hBD1AMoK023569;
+	Sat, 13 Dec 2003 02:10:22 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id hBD1AH8h023568;
+	Sat, 13 Dec 2003 02:10:17 +0100
+Date: Sat, 13 Dec 2003 02:10:17 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Alan Cox <alan@lxorguk.ukuu.org.uk>,
+	"Steven J. Hill" <sjhill@realitydiluted.com>,
+	durai <durai@isofttech.com>,
+	uclinux-dev <uclinux-dev@uclinux.org>,
+	mips <linux-mips@linux-mips.org>
+Subject: Re: Network problem in mips
+Message-ID: <20031213011017.GB22448@linux-mips.org>
+References: <008f01c3bff7$252e3b40$0a05a8c0@DURAI> <3FD88C4D.6010700@realitydiluted.com> <1071184052.19738.12.camel@dhcp23.swansea.linux.org.uk> <20031211233058.GB20373@linux-mips.org> <Pine.LNX.4.55.0312120037480.23228@jurand.ds.pg.gda.pl>
 Mime-Version: 1.0
-Content-Type: text/plain; format=flowed
-Message-ID: <BAY1-F80RCswdGamzLk000295bc@hotmail.com>
-X-OriginalArrivalTime: 12 Dec 2003 23:03:29.0210 (UTC) FILETIME=[280741A0:01C3C104]
-Return-Path: <michaelanburaj@hotmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.55.0312120037480.23228@jurand.ds.pg.gda.pl>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3751
+X-archive-position: 3752
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: michaelanburaj@hotmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Does anyone have a used or new MIPS Core card with a QED RM5261 or 5Kc 
-CoreLV card for sale to go along with a Atlas board?
+On Fri, Dec 12, 2003 at 12:46:23AM +0100, Maciej W. Rozycki wrote:
 
-Thanks,
--Mike.
+> > > Seems a little out of order. Not everyone immediately understands you
+> > > need the ksyms to interpret a trace
+> > 
+> > Guess that should be mentioned in the FAQ - anybody got a pointer to a
+> > little how to for writing useful bug reports?
+> 
+>  Well, REPORTING-BUGS in the Linux source seems pretty good for a start.  
+> README provides a few hints as well, although with a little bias towards
+> i386.
 
-_________________________________________________________________
-Don’t worry if your Inbox will max out while you are enjoying the holidays.  
-Get MSN Extra Storage!  http://join.msn.com/?PAGE=features/es
+Indeed.  So close I already forgot about this file's existence ...
+
+I added a short section about bug reporting to the FAQ.  Less than perfect
+but at least it's a start.
+
+  Ralf

@@ -1,52 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Nov 2002 15:31:47 +0100 (CET)
-Received: from delta.ds2.pg.gda.pl ([213.192.72.1]:56238 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S1122123AbSKUObq>; Thu, 21 Nov 2002 15:31:46 +0100
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA27620;
-	Thu, 21 Nov 2002 15:32:04 +0100 (MET)
-Date: Thu, 21 Nov 2002 15:32:04 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-cc: Linux/MIPS Development <linux-mips@linux-mips.org>,
-	Linux/m68k <linux-m68k@lists.linux-m68k.org>
-Subject: Re: [RFT] DEC SCSI driver clean-up
-In-Reply-To: <Pine.GSO.4.21.0211211422360.18129-100000@vervain.sonytel.be>
-Message-ID: <Pine.GSO.3.96.1021121152229.24541C-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Nov 2002 15:35:27 +0100 (CET)
+Received: from p508B591D.dip.t-dialin.net ([80.139.89.29]:21941 "EHLO
+	dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S1122123AbSKUOf0>; Thu, 21 Nov 2002 15:35:26 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id gALEZ1t27567;
+	Thu, 21 Nov 2002 15:35:01 +0100
+Date: Thu, 21 Nov 2002 15:35:01 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: atul srivastava <atulsrivastava9@rediffmail.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: mysterious page fault in _syscall3..
+Message-ID: <20021121153501.B26919@linux-mips.org>
+References: <20021121133307.10571.qmail@webmail35.rediffmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <20021121133307.10571.qmail@webmail35.rediffmail.com>; from atulsrivastava9@rediffmail.com on Thu, Nov 21, 2002 at 01:33:07PM -0000
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 685
+X-archive-position: 686
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 21 Nov 2002, Geert Uytterhoeven wrote:
+On Thu, Nov 21, 2002 at 01:33:07PM -0000, atul srivastava wrote:
 
-> On Thu, 21 Nov 2002, Maciej W. Rozycki wrote:
-> >  Following is a patch that removes SCp.have_data_in references -- the
-> > member is initialized by the NCR53C9x.c core and by the dec_esp.c
-> > front-end, but used by neither.  I believe it's some leftover cruft from
-> > the days there were no front-ends -- it's actually used by esp.c.  There
-> > are a few less significant clean-ups here and there as well. 
-> 
-> BTW, it's also used by jazz_esp, oktagon_esp, and sun3_exp (the last 2 are
-> m68k).
+> 2.but immediately after sys_execve returns the value, i get a 
+> sudden page fault producing a imposible register dump ( epc status 
+> and cause all zero)
 
- Yes, I know.  Of these jazz_esp.c and sun3x_esp.c actually make use of
-SCp.have_data_in and properly initialize it.  OTOH, oktagon_esp.c
-initializes the field similarly to the NCR53C9x.c core, but it doesn't use
-it afterwards at all and should be fixed similarly.
+Check the cache and TLB code for your architecture.  Read it 10 times if
+necessary because bugs in that code can have extremly subtle effects.
 
-  Maciej
+> though i haven't read fully the gcc info page and acquanited with 
+> nasty  asm code of _syscall3 in unistd.h , but does execve enters 
+> sys_execve directly by macro expansion in _syscall3 ..or there are 
+> relevant steps in between.?
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+I recommend to not use the _syscall macros in userspace _at_all.  They've
+been written for use by kernelspace; getting them bullet proof for
+userspace as well has been a big pain over the years.  I know, you're
+doing this for testing only but even then you're not safe ...
+
+In general the use of all kernel header files for userspace applications
+is a dangerous idea ...
+
+> what kind of problem i am facing ?
+> is this problem with saving & restoring , corruption
+> or in _syscall3..?
+
+_syscallX() is pure userspace stuff.  Any bugs in that area should only
+result in your process but not the entire system crashing.
+
+> any possibility of write buffer and pipeline hazard..?
+
+Write buffer stuff is only relevant for dealing with external agents that
+is SMP or I/O which doesn't seem related to your case.
+
+Double check the cache code for your CPU.  There are lots of creative
+implementations of caches out there that need special treatment in the
+kernel.
+
+(That was the political correct version of speaking about those cache
+designs.  My prefered wording about this issue can't be posted in any
+public forum ;-)
+
+> I have tried with interrupts disabled in sys_execve just for 
+> checking prupose..
+> would taking support of BDI2000 kind of debuggers will be 
+> helpful?
+
+The Linux/MIPS kernel has been ported and debugged entirely using printk
+and even more important by just look at the source.
+
+  Ralf

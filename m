@@ -1,37 +1,81 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f71BRCO01173
-	for linux-mips-outgoing; Wed, 1 Aug 2001 04:27:12 -0700
-Received: from fe070.worldonline.dk (fe070.worldonline.dk [212.54.64.208])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f71BRBV01170
-	for <linux-mips@oss.sgi.com>; Wed, 1 Aug 2001 04:27:11 -0700
-Received: (qmail 30967 invoked by uid 0); 1 Aug 2001 11:22:36 -0000
-Received: from unknown (HELO tuxedo.skovlyporten.dk) (213.237.49.98)
-  by fe070.worldonline.dk with SMTP; 1 Aug 2001 11:22:36 -0000
-Received: by tuxedo.skovlyporten.dk (Postfix, from userid 501)
-	id 51A09C438; Wed,  1 Aug 2001 13:22:33 +0200 (CEST)
-Date: Wed, 1 Aug 2001 13:22:33 +0200
-From: Lars Munch Christensen <c948114@student.dtu.dk>
-To: linux-mips@oss.sgi.com
-Subject: Remote debug Malta
-Message-ID: <20010801132233.A12343@tuxedo.skovlyporten.dk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
+	by oss.sgi.com (8.11.2/8.11.3) id f71CPQw01947
+	for linux-mips-outgoing; Wed, 1 Aug 2001 05:25:26 -0700
+Received: from emma.patton.com (emma.patton.com [209.49.110.2])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f71CPPV01944
+	for <linux-mips@oss.sgi.com>; Wed, 1 Aug 2001 05:25:25 -0700
+Received: from patton.com (decpc.patton.com [209.49.110.83])
+	by emma.patton.com (8.9.0/8.9.0) with ESMTP id IAA28096;
+	Wed, 1 Aug 2001 08:25:30 -0400 (EDT)
+Message-ID: <3B67F510.A0CFB4E7@patton.com>
+Date: Wed, 01 Aug 2001 08:24:48 -0400
+From: Paul Kasper <paul@patton.com>
+Reply-To: paul@patton.com
+X-Mailer: Mozilla 4.77 [en] (X11; U; Linux 2.2.19 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: James Simmons <jsimmons@transvirtual.com>
+CC: Jun Sun <jsun@mvista.com>, linux-mips@oss.sgi.com,
+   linux-mips-kernel@lists.sourceforge.net
+Subject: Re: sys_mips problems
+References: <Pine.LNX.4.10.10107311435110.28897-100000@transvirtual.com>
+Content-Type: multipart/mixed;
+ boundary="------------111494A63E67E90551881BCC"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi all
+This is a multi-part message in MIME format.
+--------------111494A63E67E90551881BCC
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-As I have mentioned previously on this list, I'm writing
-a small mips64 microkernel for the malta board. The malta
-has a remote gdb interface in YAMON, but I have not succeeded
-in remote debugging my kernel yet. Is there a recommended
-gdb version that I should use to debug mips64 code?
+James Simmons wrote:
+> 
+> > > Since I was having problems with everything sefaulting due to the sys_mips
+> > > bug I tried the patch floating around. It fixed the segfault problem but
+> > > instead I get this error. Anyone knows why?
+> > >
+> > > : error while loading shared libraries: libc.so.6: cannot stat shared
+> > > object: Error 14
+> >
+> > Which patch did you use?
+> 
+> The fast_sysmips one.
+> 
+> > Does your CPU have ll/sc instructions?
+> 
+> I have a cobalt cube which has a MIPS Nevada chip which is a R52xx chip. I
+> don't know if it does. By default I have ll/sc and lld/scd instructions
+> enabled.
 
-I have got it as far as downloading the kernel and jumping to the
-kernel entry, but from there I'm only able to execute the
-program, but not single step or anything else. 
+I don't know which R52xx chip you have, but my QED RM5261 has ll/sc but
+no mention of lld/scd instructions.
 
-Thanks
--- Lars Munch
+-- 
+ /"\ . . . . . . . . . . . . . . . /"\
+ \ /   ASCII Ribbon Campaign       \ /     Paul R. Kasper
+  X    - NO HTML/RTF in e-mail      X      Patton Electronics Co.
+ / \   - NO MSWord docs in e-mail  / \     301-975-1000 x173
+--------------111494A63E67E90551881BCC
+Content-Type: text/x-vcard; charset=us-ascii;
+ name="paul.vcf"
+Content-Transfer-Encoding: 7bit
+Content-Description: Card for Paul Kasper
+Content-Disposition: attachment;
+ filename="paul.vcf"
+
+begin:vcard 
+n:Kasper;Paul
+tel;fax:301-869-9293
+tel;work:301-975-1000 x173
+x-mozilla-html:FALSE
+url:www.patton.com
+org:Patton Electronics Co.;Central Office Products
+adr:;;7622 Rickenbacker Drive;Gaithersburg;MD;20879;USA
+version:2.1
+email;internet:paul@patton.com
+x-mozilla-cpt:;10912
+fn:Paul Kasper
+end:vcard
+
+--------------111494A63E67E90551881BCC--

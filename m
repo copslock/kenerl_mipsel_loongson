@@ -1,36 +1,51 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g2H3PrM19180
-	for linux-mips-outgoing; Sat, 16 Mar 2002 19:25:53 -0800
-Received: from smtp.livedoor.com (13.131.104.203.livedoor.com [203.104.131.13])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2H3Po919174
-	for <linux-mips@oss.sgi.com>; Sat, 16 Mar 2002 19:25:51 -0800
-Received: (qmail 19120 invoked from network); 17 Mar 2002 12:27:07 +0900
-Received: from unknown (HELO jobin.livedoor.com) (61.198.8.90)
-  by prx6.livedoor.com with SMTP; 17 Mar 2002 12:27:07 +0900
-Message-Id: <5.0.2.5.2.20020317113440.00c74650@pop3.livedoor.com>
-X-Sender: job21@pop3.livedoor.com (Unverified)
-X-Mailer: QUALCOMM Windows Eudora Version 5.0.2-J
-Date: Sun, 17 Mar 2002 11:34:51 +0900
-To: (Recipient list suppressed)
-From: info <job21@livedoor.com>
-Subject: =?ISO-2022-JP?B?GyRCISo5LTlwISpFPj8mJTUhPCVTJTkhSkw1TkEbKEI=?=
- =?ISO-2022-JP?B?GyRCIUsbKEI=?=
-Mime-Version: 1.0
-Content-Type: text/plain; charset="ISO-2022-JP"; format=flowed
+	by oss.sgi.com (8.11.2/8.11.3) id g2H92LJ24935
+	for linux-mips-outgoing; Sun, 17 Mar 2002 01:02:21 -0800
+Received: from pandora.research.kpn.com (IDENT:root@pandora.research.kpn.com [139.63.192.11])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2H92H924932
+	for <linux-mips@oss.sgi.com>; Sun, 17 Mar 2002 01:02:17 -0800
+Received: from sparta.research.kpn.com (sparta.research.kpn.com [139.63.192.6])
+	by pandora.research.kpn.com (8.11.6/8.9.3) with ESMTP id g2H93ip21618;
+	Sun, 17 Mar 2002 10:03:44 +0100
+Received: (from karel@localhost)
+	by sparta.research.kpn.com (8.8.8+Sun/8.8.8) id KAA13373;
+	Sun, 17 Mar 2002 10:03:44 +0100 (MET)
+From: Karel van Houten <vhouten@kpn.com>
+Message-Id: <200203170903.KAA13373@sparta.research.kpn.com>
+Subject: Re: DECStation kernel boot failure
+To: jbglaw@lug-owl.de (Jan-Benedict Glaw)
+Date: Sun, 17 Mar 2002 10:03:44 +0100 (MET)
+Cc: linux-mips@oss.sgi.com
+In-Reply-To: <20020316221346.GE25044@lug-owl.de> from "Jan-Benedict Glaw" at Mar 16, 2002 11:13:46 PM
+X-Url: http://www-lsdm.research.kpn.com/~karel
+X-Mailer: ELM [version 2.5 PL2]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-（広告）
-全国の人材バンクへ転職の
-一括エントリー登録受付け！
-http://all.at/topseed
 
-※特定商取引法には該当しない
-完全なる"無償サービス"です。
-費用などは一切かかりません。
+> > Does the copy on my website still work ?
+> > 
+> > http://www.skynet.ie/~airlied/mips/declance_2_3_48.c
+> > 
+> > It was never merged as to do it properly required a re-write of the
+> > driver, which I never got around to, and I only had a DS5000/200, I still
+> > have one, but no build system at the moment ...
+> 
+> When I looked at that driver, the diff was quite small and only
+> included changes to in-driver code parts. So I _think_ it could
+> even run these days. I started to work on it some year ago, but
+> my changes are lost now - my laptop was stolen this week.
 
-※解除は下記へ空メール
-   をお送りください。
-career@jsc.getmyip.com
-ジョブ・サービス 
+It does still work with 2.4.16 / 2.4.17. It's included in
+my precompiled DS5000/200 kernels at my website.
+
+-- 
+Karel van Houten
+
+----------------------------------------------------------
+The box said "Requires Windows 95 or better."
+I can't understand why it won't work on my Linux computer. 
+----------------------------------------------------------

@@ -1,45 +1,64 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBLJjP523236
-	for linux-mips-outgoing; Fri, 21 Dec 2001 11:45:25 -0800
-Received: from neurosis.mit.edu (NEUROSIS.MIT.EDU [18.243.0.82])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBLJjLX23233
-	for <linux-mips@oss.sgi.com>; Fri, 21 Dec 2001 11:45:21 -0800
-Received: (from jim@localhost)
-	by neurosis.mit.edu (8.11.4/8.11.4) id fBLIiqr21627;
-	Fri, 21 Dec 2001 13:44:52 -0500
-Date: Fri, 21 Dec 2001 13:44:52 -0500
-From: Jim Paris <jim@jtan.com>
-To: Alan Cox <alan@lxorguk.ukuu.org.uk>
-Cc: Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>,
-   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>, Jun Sun <jsun@mvista.com>,
-   Linux/MIPS Development <linux-mips@oss.sgi.com>
-Subject: Re: ISA
-Message-ID: <20011221134452.A21586@neurosis.mit.edu>
-Reply-To: jim@jtan.com
-References: <Pine.GSO.4.21.0112191456410.28777-100000@vervain.sonytel.be> <E16HSHp-0000ay-00@the-village.bc.nu>
+	by oss.sgi.com (8.11.2/8.11.3) id fBMLlFi11965
+	for linux-mips-outgoing; Sat, 22 Dec 2001 13:47:15 -0800
+Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBMLl9X11962
+	for <linux-mips@oss.sgi.com>; Sat, 22 Dec 2001 13:47:10 -0800
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 54EE983C; Sat, 22 Dec 2001 21:46:56 +0100 (CET)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id A22C945DF; Fri, 21 Dec 2001 00:23:07 +0100 (CET)
+Date: Fri, 21 Dec 2001 00:23:07 +0100
+From: Florian Lohoff <flo@rfc822.org>
+To: linux-mips@oss.sgi.com
+Subject: sgiseeq.c
+Message-ID: <20011220232307.GA22055@paradigm.rfc822.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="yrj/dFKFPuw6o+aM"
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <E16HSHp-0000ay-00@the-village.bc.nu>; from alan@lxorguk.ukuu.org.uk on Fri, Dec 21, 2001 at 04:12:40PM +0000
+User-Agent: Mutt/1.3.24i
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-> Interesting - I'd not considered that. Is ISA and non ISA space seperate on
-> MIPS or is it all rather ambiguous ?
 
-On my particular machine, system RAM is at 0x00000000, and ISA I/O
-memory is at 0x10000000.  The driver I'm currently trying to work with
-calls check_mem_region with ISA addresses, which of course breaks when
-ISA memory isn't at zero.  One suggestion was to patch the driver to
-use something like
+--yrj/dFKFPuw6o+aM
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-    check_mem_region(virt_to_phys(ioremap(ISA_address)), ...)
 
-which might be the best way for now?  I think a more generic way to
-abstract away a bus (and support multiple types and numbers of I/O
-busses) is really necessary though.  Some way to register a bus with
-the kernel, and bind particular busses to particular instances of
-drivers, or something.
+Hi,
+did anyone have a look at the sgiseeq.c driver ? It seems it is
+very suboptimal to what the hardware is capable to do. From just a quick
+glance we are copying the packets payload from the skb to KSEG1
+preallocated tx-rings and then run the dma instead of just dmaing from
+the skbuff we just got handed (After a dma_cache_wback_inv for the
+skbuf).=20
+On receive we basically do the same the other way round. We copy the
+packets from KSEG1 to the "final" skb.=20
 
--jim
+=46rom my perspective this is ok when you only have "cache_flush_all"=20
+but with the finer granularity of dma_cache_wback_inv or dma_cache_inv
+we would be more happy to just dma from the skbuff shouldnt we ?
+
+Flo
+--=20
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+Nine nineth on september the 9th              Welcome to the new billenium
+
+--yrj/dFKFPuw6o+aM
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.6 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iD8DBQE8InLbUaz2rXW+gJcRAu8AAKCTkqxSga2nJyslnxMppEaCDRufJACg57iu
+Sq+4lykpbzHIn0NULWK6KfE=
+=JfmE
+-----END PGP SIGNATURE-----
+
+--yrj/dFKFPuw6o+aM--

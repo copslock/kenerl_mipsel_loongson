@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Dec 2004 17:27:56 +0000 (GMT)
-Received: from coderock.org ([IPv6:::ffff:193.77.147.115]:3037 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Dec 2004 17:28:30 +0000 (GMT)
+Received: from coderock.org ([IPv6:::ffff:193.77.147.115]:3293 "EHLO
 	trashy.coderock.org") by linux-mips.org with ESMTP
-	id <S8225265AbULYRZU>; Sat, 25 Dec 2004 17:25:20 +0000
+	id <S8225266AbULYRZU>; Sat, 25 Dec 2004 17:25:20 +0000
 Received: by trashy.coderock.org (Postfix, from userid 780)
-	id A683D1F12A; Sat, 25 Dec 2004 18:25:08 +0100 (CET)
+	id 5ADE71F126; Sat, 25 Dec 2004 18:25:09 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
-	by trashy.coderock.org (Postfix) with ESMTP id 498601F125;
-	Sat, 25 Dec 2004 18:25:06 +0100 (CET)
+	by trashy.coderock.org (Postfix) with ESMTP id 200711ED41;
+	Sat, 25 Dec 2004 18:25:07 +0100 (CET)
 Received: from localhost.localdomain (localhost [127.0.0.1])
-	by trashy.coderock.org (Postfix) with ESMTP id 0F3151ED41;
-	Sat, 25 Dec 2004 18:24:52 +0100 (CET)
-Subject: [patch 5/9] delete unused file
+	by trashy.coderock.org (Postfix) with ESMTP id 1B1FB1EA0F;
+	Sat, 25 Dec 2004 18:24:58 +0100 (CET)
+Subject: [patch 7/9] delete unused file
 To: ralf@linux-mips.org
 Cc: linux-mips@linux-mips.org, domen@coderock.org
 From: domen@coderock.org
-Date: Sat, 25 Dec 2004 18:25:02 +0100
-Message-Id: <20041225172452.0F3151ED41@trashy.coderock.org>
+Date: Sat, 25 Dec 2004 18:25:08 +0100
+Message-Id: <20041225172458.1B1FB1EA0F@trashy.coderock.org>
 Return-Path: <domen@coderock.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6759
+X-archive-position: 6760
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,216 +35,66 @@ Signed-off-by: Domen Puncer <domen@coderock.org>
 ---
 
 
- kj/include/asm-mips/mach-au1x00/au1100_mmc.h |  205 ---------------------------
- 1 files changed, 205 deletions(-)
+ kj/include/asm-mips/ng1.h |   55 ----------------------------------------------
+ 1 files changed, 55 deletions(-)
 
-diff -L include/asm-mips/mach-au1x00/au1100_mmc.h -puN include/asm-mips/mach-au1x00/au1100_mmc.h~remove_file-include_asm_mips_mach_au1x00_au1100_mmc.h /dev/null
---- kj/include/asm-mips/mach-au1x00/au1100_mmc.h
+diff -L include/asm-mips/ng1.h -puN include/asm-mips/ng1.h~remove_file-include_asm_mips_ng1.h /dev/null
+--- kj/include/asm-mips/ng1.h
 +++ /dev/null	2004-12-24 01:21:08.000000000 +0100
-@@ -1,205 +0,0 @@
+@@ -1,55 +0,0 @@
 -/*
-- * BRIEF MODULE DESCRIPTION
-- *	Defines for using the MMC/SD controllers on the
-- *      Alchemy Au1100 mips processor.
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
 - *
-- * Copyright (c) 2003 Embedded Edge, LLC.
-- * Author: Embedded Edge, LLC.
-- *         	dan@embeddededge.com or tim@embeddededge.com
-- *
-- *  This program is free software; you can redistribute  it and/or modify it
-- *  under  the terms of  the GNU General  Public License as published by the
-- *  Free Software Foundation;  either version 2 of the  License, or (at your
-- *  option) any later version.
-- *
-- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
-- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
-- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
-- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
-- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
-- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
-- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-- *
-- *  You should have received a copy of the  GNU General Public License along
-- *  with this program; if not, write  to the Free Software Foundation, Inc.,
-- *  675 Mass Ave, Cambridge, MA 02139, USA.
-- *
+- * SGI/Newport video card ioctl definitions
 - */
--/*
-- * AU1100 MMC/SD definitions.
-- *
-- * From "AMD Alchemy Solutions Au1100 Processor Data Book - Preliminary"
-- *    June, 2003
-- */
+-#ifndef _ASM_NG1_H
+-#define _ASM_NG1_H
 -
--#ifndef __ASM_AU1100_MMC_H
--#define __ASM_AU1100_MMC_H
+-typedef struct {
+-        int flags;
+-        __u16 w, h;
+-        __u16 fields_sec;
+-} ng1_vof_info_t;
 -
+-struct ng1_info {
+-	struct gfx_info gfx_info;
+-	__u8 boardrev;
+-        __u8 rex3rev;
+-        __u8 vc2rev;
+-        __u8 monitortype;
+-        __u8 videoinstalled;
+-        __u8 mcrev;
+-        __u8 bitplanes;
+-        __u8 xmap9rev;
+-        __u8 cmaprev;
+-        ng1_vof_info_t ng1_vof_info;
+-        __u8 bt445rev;
+-        __u8 paneltype;
+-};
 -
--#define NUM_AU1100_MMC_CONTROLLERS	2
+-#define GFX_NAME_NEWPORT "NG1"
 -
+-/* ioctls */
+-#define NG1_SET_CURSOR_HOTSPOT 21001
+-struct ng1_set_cursor_hotspot {
+-	unsigned short xhot;
+-        unsigned short yhot;
+-};
 -
--#define AU1100_SD_IRQ	2
+-#define NG1_SETDISPLAYMODE     21006
+-struct ng1_setdisplaymode_args {
+-        int wid;
+-        unsigned int mode;
+-};
 -
+-#define NG1_SETGAMMARAMP0      21007
+-struct ng1_setgammaramp_args {
+-        unsigned char red   [256];
+-        unsigned char green [256];
+-        unsigned char blue  [256];
+-};
 -
--#define SD0_BASE	0xB0600000
--#define SD1_BASE	0xB0680000
--
--
--/*
-- *  Register offsets.
-- */
--#define SD_TXPORT	(0x0000)
--#define SD_RXPORT	(0x0004)
--#define SD_CONFIG	(0x0008)
--#define SD_ENABLE	(0x000C)
--#define SD_CONFIG2	(0x0010)
--#define SD_BLKSIZE	(0x0014)
--#define SD_STATUS	(0x0018)
--#define SD_DEBUG	(0x001C)
--#define SD_CMD		(0x0020)
--#define SD_CMDARG	(0x0024)
--#define SD_RESP3	(0x0028)
--#define SD_RESP2	(0x002C)
--#define SD_RESP1	(0x0030)
--#define SD_RESP0	(0x0034)
--#define SD_TIMEOUT	(0x0038)
--
--
--/*
-- *  SD_TXPORT bit definitions.
-- */
--#define SD_TXPORT_TXD	(0x000000ff)
--
--
--/*
-- *  SD_RXPORT bit definitions.
-- */
--#define SD_RXPORT_RXD	(0x000000ff)
--
--
--/*
-- *  SD_CONFIG bit definitions.
-- */
--#define SD_CONFIG_DIV	(0x000001ff)
--#define SD_CONFIG_DE	(0x00000200)
--#define SD_CONFIG_NE	(0x00000400)
--#define SD_CONFIG_TU	(0x00000800)
--#define SD_CONFIG_TO	(0x00001000)
--#define SD_CONFIG_RU	(0x00002000)
--#define SD_CONFIG_RO	(0x00004000)
--#define SD_CONFIG_I	(0x00008000)
--#define SD_CONFIG_CR	(0x00010000)
--#define SD_CONFIG_RAT	(0x00020000)
--#define SD_CONFIG_DD	(0x00040000)
--#define SD_CONFIG_DT	(0x00080000)
--#define SD_CONFIG_SC	(0x00100000)
--#define SD_CONFIG_RC	(0x00200000)
--#define SD_CONFIG_WC	(0x00400000)
--#define SD_CONFIG_xxx	(0x00800000)
--#define SD_CONFIG_TH	(0x01000000)
--#define SD_CONFIG_TE	(0x02000000)
--#define SD_CONFIG_TA	(0x04000000)
--#define SD_CONFIG_RH	(0x08000000)
--#define SD_CONFIG_RA	(0x10000000)
--#define SD_CONFIG_RF	(0x20000000)
--#define SD_CONFIG_CD	(0x40000000)
--#define SD_CONFIG_SI	(0x80000000)
--
--
--/*
-- *  SD_ENABLE bit definitions.
-- */
--#define SD_ENABLE_CE	(0x00000001)
--#define SD_ENABLE_R	(0x00000002)
--
--
--/*
-- *  SD_CONFIG2 bit definitions.
-- */
--#define SD_CONFIG2_EN	(0x00000001)
--#define SD_CONFIG2_FF	(0x00000002)
--#define SD_CONFIG2_xx1	(0x00000004)
--#define SD_CONFIG2_DF	(0x00000008)
--#define SD_CONFIG2_DC	(0x00000010)
--#define SD_CONFIG2_xx2	(0x000000e0)
--#define SD_CONFIG2_WB	(0x00000100)
--#define SD_CONFIG2_RW	(0x00000200)
--
--
--/*
-- *  SD_BLKSIZE bit definitions.
-- */
--#define SD_BLKSIZE_BS	(0x000007ff)
--#define SD_BLKSIZE_BS_SHIFT	 (0)
--#define SD_BLKSIZE_BC	(0x01ff0000)
--#define SD_BLKSIZE_BC_SHIFT	(16)
--
--
--/*
-- *  SD_STATUS bit definitions.
-- */
--#define SD_STATUS_DCRCW	(0x00000007)
--#define SD_STATUS_xx1	(0x00000008)
--#define SD_STATUS_CB	(0x00000010)
--#define SD_STATUS_DB	(0x00000020)
--#define SD_STATUS_CF	(0x00000040)
--#define SD_STATUS_D3	(0x00000080)
--#define SD_STATUS_xx2	(0x00000300)
--#define SD_STATUS_NE	(0x00000400)
--#define SD_STATUS_TU	(0x00000800)
--#define SD_STATUS_TO	(0x00001000)
--#define SD_STATUS_RU	(0x00002000)
--#define SD_STATUS_RO	(0x00004000)
--#define SD_STATUS_I	(0x00008000)
--#define SD_STATUS_CR	(0x00010000)
--#define SD_STATUS_RAT	(0x00020000)
--#define SD_STATUS_DD	(0x00040000)
--#define SD_STATUS_DT	(0x00080000)
--#define SD_STATUS_SC	(0x00100000)
--#define SD_STATUS_RC	(0x00200000)
--#define SD_STATUS_WC	(0x00400000)
--#define SD_STATUS_xx3	(0x00800000)
--#define SD_STATUS_TH	(0x01000000)
--#define SD_STATUS_TE	(0x02000000)
--#define SD_STATUS_TA	(0x04000000)
--#define SD_STATUS_RH	(0x08000000)
--#define SD_STATUS_RA	(0x10000000)
--#define SD_STATUS_RF	(0x20000000)
--#define SD_STATUS_CD	(0x40000000)
--#define SD_STATUS_SI	(0x80000000)
--
--
--/*
-- *  SD_CMD bit definitions.
-- */
--#define SD_CMD_GO	(0x00000001)
--#define SD_CMD_RY	(0x00000002)
--#define SD_CMD_xx1	(0x0000000c)
--#define SD_CMD_CT_MASK	(0x000000f0)
--#define SD_CMD_CT_0	(0x00000000)
--#define SD_CMD_CT_1	(0x00000010)
--#define SD_CMD_CT_2	(0x00000020)
--#define SD_CMD_CT_3	(0x00000030)
--#define SD_CMD_CT_4	(0x00000040)
--#define SD_CMD_CT_5	(0x00000050)
--#define SD_CMD_CT_6	(0x00000060)
--#define SD_CMD_CT_7	(0x00000070)
--#define SD_CMD_CI	(0x0000ff00)
--#define SD_CMD_CI_SHIFT		(8)
--#define SD_CMD_RT_MASK	(0x00ff0000)
--#define SD_CMD_RT_0	(0x00000000)
--#define SD_CMD_RT_1	(0x00010000)
--#define SD_CMD_RT_2	(0x00020000)
--#define SD_CMD_RT_3	(0x00030000)
--#define SD_CMD_RT_4	(0x00040000)
--#define SD_CMD_RT_5	(0x00050000)
--#define SD_CMD_RT_6	(0x00060000)
--#define SD_CMD_RT_1B	(0x00810000)
--
--
--#endif /* __ASM_AU1100_MMC_H */
--
+-#endif /* _ASM_NG1_H */
 _

@@ -1,70 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jul 2003 22:37:50 +0100 (BST)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:23687 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225230AbTGVVhs>; Tue, 22 Jul 2003 22:37:48 +0100
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id XAA10512;
-	Tue, 22 Jul 2003 23:37:45 +0200 (MET DST)
-X-Authentication-Warning: delta.ds2.pg.gda.pl: macro owned process doing -bs
-Date: Tue, 22 Jul 2003 23:37:44 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Ralf Baechle <ralf@linux-mips.org>
-cc: Keith M Wesolowski <wesolows@foobazco.org>,
-	"Kevin D. Kissell" <kevink@mips.com>, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jul 2003 22:48:04 +0100 (BST)
+Received: from mail2.sonytel.be ([IPv6:::ffff:195.0.45.172]:3024 "EHLO
+	witte.sonytel.be") by linux-mips.org with ESMTP id <S8225230AbTGVVsC>;
+	Tue, 22 Jul 2003 22:48:02 +0100
+Received: from vervain.sonytel.be (localhost [127.0.0.1])
+	by witte.sonytel.be (8.12.9/8.12.9) with ESMTP id h6MLlh1W019226;
+	Tue, 22 Jul 2003 23:47:43 +0200 (MEST)
+Date: Tue, 22 Jul 2003 23:47:43 +0200 (MEST)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+cc: Ralf Baechle <ralf@linux-mips.org>,
+	Keith M Wesolowski <wesolows@foobazco.org>,
+	"Kevin D. Kissell" <kevink@mips.com>,
+	Linux/MIPS Development <linux-mips@linux-mips.org>
 Subject: Re: CVS Update@-mips.org: linux
-In-Reply-To: <20030722212117.GB1660@linux-mips.org>
-Message-ID: <Pine.GSO.3.96.1030722232705.607L-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+In-Reply-To: <Pine.GSO.3.96.1030722232705.607L-100000@delta.ds2.pg.gda.pl>
+Message-ID: <Pine.GSO.4.21.0307222346260.27629-100000@vervain.sonytel.be>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Return-Path: <Geert.Uytterhoeven@sonycom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2865
+X-archive-position: 2866
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 22 Jul 2003, Ralf Baechle wrote:
-
-> And yes, the R6000 is different.  With that in mind R2000 and R4000 look
-> like enzygotic twins ...
-
- ;-)
-
-> > 2. A better visual existence of the 64-bit port; not really a technical
-> > advantage, but more a psychological one.  It stops any newcomer wondering
-> > whether we support 64-bit systems natively or not. 
+On Tue, 22 Jul 2003, Maciej W. Rozycki wrote:
+> On Tue, 22 Jul 2003, Ralf Baechle wrote:
+> > I was thinking about that also.  arch/mips64 and include/asm-mips64 will
+> > go away but on the other side there will be an option to configure a
+> > 64-bit kernel in the menus - which will hopefully be more visible than
+> > just two subdirectories.
 > 
-> I was thinking about that also.  arch/mips64 and include/asm-mips64 will
-> go away but on the other side there will be an option to configure a
-> 64-bit kernel in the menus - which will hopefully be more visible than
-> just two subdirectories.
+>  Well, as long as one get that far to run a configuration script (BTW,
+> what menus are you referring to? -- I haven't seen any).  Right now that's
 
- Well, as long as one get that far to run a configuration script (BTW,
-what menus are you referring to? -- I haven't seen any).  Right now that's
-easily visible straight in the archive which is now even browsable in the
-Internet here and there -- Q: "What architectures are supported?" A: "See
-the subdirectories of arch/." 
+It will flash up on your retina and stay there for a while, waiting for your
+response, if you run `make oldconfig' :-)
 
-> Btw, an old experience repeats - some of the code was identical except
-> inline assembler using addu etc. for 32-bit and daddu etc. for 64-bit.
-> I rewrote that stuff to use C for this arithmetic.  The result - less
-> inline assembler, more readable code and a file that's identical for
-> both 32-bit and 64-bit.
+Gr{oetje,eeting}s,
 
- Well, whatever is plain C code (or should be such) should be identical,
-indeed, but macros will differ as will low-level assembly.  Then add
-64-bit specific options and you get yet more complication. 
+						Geert
 
- I hope `uname -m' will continue to report the correct architecture and
-that ARCH will be correctly handled (i.e. "mips" selecting a 32-bit build
-and "mips64" a 64-bit one) -- have you considered this?
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

@@ -1,37 +1,43 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5LLFZnC014670
-	for <linux-mips-outgoing@oss.sgi.com>; Fri, 21 Jun 2002 14:15:35 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5LLqknC030069
+	for <linux-mips-outgoing@oss.sgi.com>; Fri, 21 Jun 2002 14:52:46 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5LLFZsm014669
-	for linux-mips-outgoing; Fri, 21 Jun 2002 14:15:35 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5LLqkSI030068
+	for linux-mips-outgoing; Fri, 21 Jun 2002 14:52:46 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5LLFWnC014641
-	for <linux-mips@oss.sgi.com>; Fri, 21 Jun 2002 14:15:33 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id XAA04786;
-	Fri, 21 Jun 2002 23:18:48 +0200 (MET DST)
-Date: Fri, 21 Jun 2002 23:18:48 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: "Smith, Todd" <Todd.Smith@camc.org>
-cc: "''linux-mips@oss.sgi.com' '" <linux-mips@oss.sgi.com>
+Received: from mail2.camcare.com ([206.193.125.77])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5LLqgnC030065
+	for <linux-mips@oss.sgi.com>; Fri, 21 Jun 2002 14:52:42 -0700
+Received: from KES.camcare.com (IS~KES [10.10.95.4]) by mail2.camcare.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2650.21)
+	id NAXGJ8WD; Fri, 21 Jun 2002 18:07:33 -0400
+Received: by KES.camcare.com with Internet Mail Service (5.5.2650.21)
+	id <HXGSH41Z>; Fri, 21 Jun 2002 17:55:34 -0400
+Message-ID: <490E0430C3C72046ACF7F18B7CD76A2A568B9E@KES.camcare.com>
+From: "Smith, Todd" <Todd.Smith@camc.org>
+To: "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
 Subject: RE: DECstation
-In-Reply-To: <490E0430C3C72046ACF7F18B7CD76A2A568B99@KES.camcare.com>
-Message-ID: <Pine.GSO.3.96.1020621230633.2531C-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Date: Fri, 21 Jun 2002 17:55:33 -0400
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Mailer: Internet Mail Service (5.5.2650.21)
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, 21 Jun 2002, Smith, Todd wrote:
+Thank you for your information.  I was unsure since the website that I was
+reading for information was very much out of date.
 
-> The http://decstation.unix-ag.org is the site that I was refering to.  The
-> sother site that you mentioned, I get a 404 on it.
+Keep up the good work!
 
- Well, I've copied and pasted the URL as is from my web client.  You may
-get to the page from 'http://decstation.unix-ag.org/people/' as well. 
+Todd Smith
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+-----Original Message-----
+From: Maciej W. Rozycki [mailto:macro@ds2.pg.gda.pl]
+
+ The system should be fine -- basically all I/O ASIC based systems should
+work, though not all devices have been supplied with drivers yet. 
+
+ You should be able to use X11 with an XF86_FBDev Xserver on a PMAG-B (CX) 
+or a PMAGB-B (HX) display adapter (I wasn't able to try myself so far
+though).  For other display adapters, the answer is either "not yet" or
+"no way". 

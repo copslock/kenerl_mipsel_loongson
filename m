@@ -1,60 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Oct 2002 15:35:47 +0200 (CEST)
-Received: from pc1-cwma1-5-cust51.swa.cable.ntl.com ([80.5.120.51]:36856 "EHLO
-	irongate.swansea.linux.org.uk") by linux-mips.org with ESMTP
-	id <S1123397AbSJDNfr>; Fri, 4 Oct 2002 15:35:47 +0200
-Received: from irongate.swansea.linux.org.uk (localhost [127.0.0.1])
-	by irongate.swansea.linux.org.uk (8.12.5/8.12.5) with ESMTP id g94Di8bg032222;
-	Fri, 4 Oct 2002 14:44:09 +0100
-Received: (from alan@localhost)
-	by irongate.swansea.linux.org.uk (8.12.5/8.12.5/Submit) id g94Di7GQ032220;
-	Fri, 4 Oct 2002 14:44:07 +0100
-X-Authentication-Warning: irongate.swansea.linux.org.uk: alan set sender to alan@lxorguk.ukuu.org.uk using -f
-Subject: Re: Promblem with PREF (prefetching) in memcpy
-From: Alan Cox <alan@lxorguk.ukuu.org.uk>
-To: "Kevin D. Kissell" <kevink@mips.com>
-Cc: Carsten Langgaard <carstenl@mips.com>,
-	Dominic Sweetman <dom@algor.co.uk>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Oct 2002 15:45:44 +0200 (CEST)
+Received: from delta.ds2.pg.gda.pl ([213.192.72.1]:31889 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S1123397AbSJDNpo>; Fri, 4 Oct 2002 15:45:44 +0200
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA09075;
+	Fri, 4 Oct 2002 15:46:06 +0200 (MET DST)
+Date: Fri, 4 Oct 2002 15:46:06 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Dominic Sweetman <dom@algor.co.uk>
+cc: Carsten Langgaard <carstenl@mips.com>,
 	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-In-Reply-To: <010e01c26ba8$2c9400d0$10eca8c0@grendel>
-References: <3D9D484B.4C149BD8@mips.com><200210041153.MAA12052@mudchute.algor.co.uk>
-	<3D9D855B.12128FA2@mips.com><1033734968.31839.5.camel@irongate.swansea.linux
-	 .org.uk> <00fe01c26ba6$04943480$10eca8c0@grendel>
-	<1033737330.31861.30.camel@irongate.swansea.linux.org.uk> 
-	<010e01c26ba8$2c9400d0$10eca8c0@grendel>
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Mailer: Ximian Evolution 1.0.8 (1.0.8-10) 
-Date: 04 Oct 2002 14:44:06 +0100
-Message-Id: <1033739046.31861.35.camel@irongate.swansea.linux.org.uk>
-Mime-Version: 1.0
-Return-Path: <alan@lxorguk.ukuu.org.uk>
+Subject: Re: Promblem with PREF (prefetching) in memcpy
+In-Reply-To: <200210041329.OAA12180@mudchute.algor.co.uk>
+Message-ID: <Pine.GSO.3.96.1021004153416.6208F-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 372
+X-archive-position: 373
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alan@lxorguk.ukuu.org.uk
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 2002-10-04 at 14:15, Kevin D. Kissell wrote:
-> Which is excatly the point that Carsten was raising when he started this thread!
+On Fri, 4 Oct 2002, Dominic Sweetman wrote:
+
+> > You can also configure you system, so you get a external interrupt
+> > from you system controller in case of a bus error, there is no way
+> > the CPU can relate this interrupt to the prefetching.
 > 
-> The question is how, i.e. throttle memcpy or thow away a "guard band" of RAM?
+> Yes, that's true; interrupts on bus errors are vaguely useful for
+> post-mortem diagnosis, but useless for recovery.
 
+ Why do you think so?  Bus errors on reads are synchronous, so if the
+handler can judge the error is recoverable (e.g. it was a correctable ECC
+error), you can just restart.
 
-The x86 code basically says
+ Bus errors on writes are asynchronous, but you may record the necessary
+details (the cycle type, the address and the data involved) in chipset
+registers and if the handler judges the conditions are recoverable, it may
+fix up the error -- e.g. mark the page of physical memory as bad and
+substitute another one, copying all other valid data plus the bits that
+caused the failure. 
 
-	while(over 320 bytes left)
-	{
-		prefetch ahead
-		copy bits
-	}
-	while(bytes left)
-		copy bits
+ A system has to be designed to handle such cases, though.  And obviously
+if you get one of these errors as a result of a severe hardware damage,
+you may not be able to recover, anyway.
 
-You also have to watch the prefetching in the tcp checksum code. We hit
-an x86 bug there also very recently. That one is new but shows up with
-the zero copy tcp nfs
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

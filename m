@@ -1,70 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Aug 2003 13:50:34 +0100 (BST)
-Received: from honk1.physik.uni-konstanz.de ([IPv6:::ffff:134.34.140.224]:56249
-	"EHLO honk1.physik.uni-konstanz.de") by linux-mips.org with ESMTP
-	id <S8225310AbTHHMua>; Fri, 8 Aug 2003 13:50:30 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP
-	id CD64E2BC3C; Fri,  8 Aug 2003 14:50:28 +0200 (CEST)
-Received: from honk1.physik.uni-konstanz.de ([127.0.0.1])
- by localhost (honk [127.0.0.1:10024]) (amavisd-new) with ESMTP id 12490-04;
- Fri,  8 Aug 2003 14:50:24 +0200 (CEST)
-Received: from bogon.sigxcpu.org (kons-d9bb55ca.pool.mediaWays.net [217.187.85.202])
-	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP
-	id 9B2C52BC42; Fri,  8 Aug 2003 14:50:18 +0200 (CEST)
-Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
-	id 9B0D7173AC; Thu,  7 Aug 2003 20:37:55 +0200 (CEST)
-Date: Thu, 7 Aug 2003 20:37:55 +0200
-From: Guido Guenther <agx@sigxcpu.org>
-To: Michael Pruznick <michael_pruznick@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Aug 2003 15:53:04 +0100 (BST)
+Received: from mba.ocn.ne.jp ([IPv6:::ffff:210.190.142.172]:29400 "HELO
+	smtp.mba.ocn.ne.jp") by linux-mips.org with SMTP
+	id <S8224802AbTHHOxA>; Fri, 8 Aug 2003 15:53:00 +0100
+Received: from localhost (p4124-ip02funabasi.chiba.ocn.ne.jp [61.112.102.124])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id A25B12E9D; Fri,  8 Aug 2003 23:52:56 +0900 (JST)
+Date: Sat, 09 Aug 2003 00:06:03 +0900 (JST)
+Message-Id: <20030809.000603.74756723.anemo@mba.ocn.ne.jp>
+To: ica2_ts@csv.ica.uni-stuttgart.de
 Cc: linux-mips@linux-mips.org
-Subject: Re: PATCH:2.4:CONFIG_BINFMT_IRIX
-Message-ID: <20030807183755.GA9874@bogon.ms20.nix>
-Mail-Followup-To: Guido Guenther <agx@sigxcpu.org>,
-	Michael Pruznick <michael_pruznick@mvista.com>,
-	linux-mips@linux-mips.org
-References: <3F2FF67D.8B0C2DFB@mvista.com> <3F329421.D86566A9@mvista.com>
+Subject: Re: load/store address overflow on binutils 2.14
+From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20030808030705.GJ3759@rembrandt.csv.ica.uni-stuttgart.de>
+References: <20030807231518.GH3759@rembrandt.csv.ica.uni-stuttgart.de>
+	<20030808.101102.71082885.nemoto@toshiba-tops.co.jp>
+	<20030808030705.GJ3759@rembrandt.csv.ica.uni-stuttgart.de>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 2.2 on Emacs 20.7 / Mule 4.0 (HANANOEN)
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="PEIAKu/WMn1b1Hv9"
-Content-Disposition: inline
-In-Reply-To: <3F329421.D86566A9@mvista.com>
-User-Agent: Mutt/1.5.4i
-X-Virus-Scanned: by amavisd-new-20021227-p2 (Debian)
-Return-Path: <agx@sigxcpu.org>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3008
+X-archive-position: 3009
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: agx@sigxcpu.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
+>>>>> On Fri, 8 Aug 2003 05:07:05 +0200, Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de> said:
+>> The b.S is just one line "lw $2, 0x80000000".
+Thiemo> Using 0xffffffff80000000 is a really ugly workaround for it.
+Thiemo> Seems like the constant isn't properly sign-extended inernally
+Thiemo> by the assembler.
 
---PEIAKu/WMn1b1Hv9
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Thu, Aug 07, 2003 at 12:02:09PM -0600, Michael Pruznick wrote:
-> This seams to be a better way to eliminate the irix
-> stuff from being automatically included when switching
-> a board from le to be.
-What about leaving Irix compatibility off by default anyway. I don't
-think it matters much these days.
- -- Guido
-
---PEIAKu/WMn1b1Hv9
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.2 (GNU/Linux)
-
-iD8DBQE/MpyDn88szT8+ZCYRAtmlAKCBuPoGt2znMdfDMRznFuFsR+m4zQCfZ+jl
-fGDONGHREN0TLrVyEuc+M+k=
-=xV32
------END PGP SIGNATURE-----
-
---PEIAKu/WMn1b1Hv9--
+Yes the workaround works.  But I modified binutils (just remove the
+checking code) instead of changing many constant definitions in my
+programs.  For now it is enough for me.  Thank you.
+---
+Atsushi Nemoto

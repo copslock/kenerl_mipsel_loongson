@@ -1,55 +1,54 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id FAA05966 for <linux-archive@neteng.engr.sgi.com>; Sun, 12 Jul 1998 05:56:17 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id GAA19624 for <linux-archive@neteng.engr.sgi.com>; Sun, 12 Jul 1998 06:11:00 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id FAA26085
+	id GAA27387
 	for linux-list;
-	Sun, 12 Jul 1998 05:55:43 -0700 (PDT)
+	Sun, 12 Jul 1998 06:10:29 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id FAA09516
+	via ESMTP id GAA85457
 	for <linux@cthulhu.engr.sgi.com>;
-	Sun, 12 Jul 1998 05:55:41 -0700 (PDT)
+	Sun, 12 Jul 1998 06:10:27 -0700 (PDT)
 	mail_from (sgi.sgi.com!rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
 Received: from rachael.franken.de (rachael.franken.de [193.175.24.38]) 
 	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id FAA29530
-	for <linux@cthulhu.engr.sgi.com>; Sun, 12 Jul 1998 05:55:40 -0700 (PDT)
+	via ESMTP id GAA02029
+	for <linux@cthulhu.engr.sgi.com>; Sun, 12 Jul 1998 06:10:26 -0700 (PDT)
 	mail_from (rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
 Received: from hub-fue by rachael.franken.de
 	via rmail with uucp
-	id <m0yvLfE-0027sFC@rachael.franken.de>
-	for cthulhu.engr.sgi.com!linux; Sun, 12 Jul 1998 14:55:36 +0200 (MET DST)
+	id <m0yvLtY-0027pkC@rachael.franken.de>
+	for cthulhu.engr.sgi.com!linux; Sun, 12 Jul 1998 15:10:24 +0200 (MET DST)
 	(Smail-3.2 1996-Jul-4 #4 built DST-Sep-8)
 Received: by hub-fue.franken.de (Smail3.1.29.1 #35)
-	id m0yvLf5-002OyXC; Sun, 12 Jul 98 14:55 MET DST
+	id m0yvLtT-002P16C; Sun, 12 Jul 98 15:10 MET DST
 Received: (from tsbogend@localhost)
-	by alpha.franken.de (8.8.7/8.8.5) id OAA01434;
-	Sun, 12 Jul 1998 14:53:25 +0200
-Message-ID: <19980712145324.03216@alpha.franken.de>
-Date: Sun, 12 Jul 1998 14:53:24 +0200
+	by alpha.franken.de (8.8.7/8.8.5) id PAA01746;
+	Sun, 12 Jul 1998 15:08:07 +0200
+Message-ID: <19980712150807.54121@alpha.franken.de>
+Date: Sun, 12 Jul 1998 15:08:07 +0200
 From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 To: linux@cthulhu.engr.sgi.com
-Subject: Indy serial ports
+Subject: Re: Indy serial ports
+References: <19980712145324.03216@alpha.franken.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 X-Mailer: Mutt 0.85
+In-Reply-To: <19980712145324.03216@alpha.franken.de>; from Thomas Bogendoerfer on Sun, Jul 12, 1998 at 02:53:24PM +0200
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi,
+On Sun, Jul 12, 1998 at 02:53:24PM +0200, Thomas Bogendoerfer wrote:
+> As I don't have an converter I need the pinout of the PS/2 connectors
+> to build my own one. Any hints where I can find a description of that
+> ports ?
 
-I'm about to start converting the SGI console to a abscon style console.
-To make debugging easier I'm planning to use a serial console. But my
-Indy doesn't have any "normal" serial connector. I guess the two serial
-ports are those PS/2 connectors near the mouse and keyboard connectors.
-As I don't have an converter I need the pinout of the PS/2 connectors
-to build my own one. Any hints where I can find a description of that
-ports ?
+I've found it in one of IRIX Admin online books.
 
 Thomas.
 

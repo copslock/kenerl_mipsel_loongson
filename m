@@ -1,59 +1,41 @@
-Received:  by oss.sgi.com id <S554042AbRAQN4W>;
-	Wed, 17 Jan 2001 05:56:22 -0800
-Received: from woody.ichilton.co.uk ([216.29.174.40]:48905 "HELO
-        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S554038AbRAQN4G>;
-	Wed, 17 Jan 2001 05:56:06 -0800
-Received: by woody.ichilton.co.uk (Postfix, from userid 1000)
-	id 1A7817D12; Wed, 17 Jan 2001 13:56:05 +0000 (GMT)
-Date:   Wed, 17 Jan 2001 13:56:04 +0000
-From:   Ian Chilton <ian@ichilton.co.uk>
+Received:  by oss.sgi.com id <S554044AbRAQN6l>;
+	Wed, 17 Jan 2001 05:58:41 -0800
+Received: from [193.74.243.200] ([193.74.243.200]:54178 "EHLO mail.sonytel.be")
+	by oss.sgi.com with ESMTP id <S554041AbRAQN6c>;
+	Wed, 17 Jan 2001 05:58:32 -0800
+Received: from escobaria.sonytel.be (escobaria.sonytel.be [10.34.80.3])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id OAA14934;
+	Wed, 17 Jan 2001 14:57:12 +0100 (MET)
+Date:   Wed, 17 Jan 2001 14:57:12 +0100 (MET)
+From:   Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
 To:     Florian Lohoff <flo@rfc822.org>
-Cc:     linux-mips@oss.sgi.com, ralf@oss.sgi.com
+cc:     Ian Chilton <ian@ichilton.co.uk>, linux-mips@oss.sgi.com
 Subject: Re: 2.4.0 Kernel - Summary
-Message-ID: <20010117135604.A29542@woody.ichilton.co.uk>
-Reply-To: Ian Chilton <ian@ichilton.co.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=unknown-8bit
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-User-Agent: Mutt/1.3.12i
+In-Reply-To: <20010117145034.B2517@paradigm.rfc822.org>
+Message-ID: <Pine.GSO.4.10.10101171455070.739-100000@escobaria.sonytel.be>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hello,
+On Wed, 17 Jan 2001, Florian Lohoff wrote:
+> Its probably a problem with console and tty output getting mixed.
+> Definitly a bigger issue as one should merge driver/sbus/zs.c and
+> driver/sgi/char/sgiserial.c to one driver. (And probably even
+> the Decstation one)
 
-> I can reboot - but with "reboot -f" which is - Immediate reset
-> which is not good(tm) for your filesystems. The bug is definitly
-> a sgiserial.c problem as it doesnt happen on newport console.
+And a zillion other SCC drivers, like e.g. drivers/char/vme_scc.c...
 
-I have only tried the once, because it's not easy with the machine
-being remote...but I typed: shutdown -r now. It said:
+Currently there's one-size-fits-all(?) driver for 16550 (serial.c) and a
+collection of SCC drivers spread across the whole tree.
 
-Changing to Runlevel 0
-£^T%&%£^$%&^%$£
-£%$&£%^££"%$"£$"£
-$"£*$%£"$%£"^%£"$&
-etc...
+Gr{oetje,eeting}s,
 
-and that was it  :(
+						Geert
 
-
-Both this and swap worked fine on 001027 (test9)
-
-
-Bye for Now,
-
-Ian
-
-
-                                \|||/ 
-                                (o o)
- /---------------------------ooO-(_)-Ooo---------------------------\
- |  Ian Chilton        (IRC Nick - GadgetMan)     ICQ #: 16007717  |
- |-----------------------------------------------------------------|
- |  E-Mail: ian@ichilton.co.uk     Web: http://www.ichilton.co.uk  |
- |-----------------------------------------------------------------|
- |         Budget: A method for going broke methodically.          |
- \-----------------------------------------------------------------/
+--
+Geert Uytterhoeven ------------- Sony Software Development Center Europe (SDCE)
+Geert.Uytterhoeven@sonycom.com ------------------- Sint-Stevens-Woluwestraat 55
+Voice +32-2-7248626 Fax +32-2-7262686 ---------------- B-1130 Brussels, Belgium

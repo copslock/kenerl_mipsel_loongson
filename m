@@ -1,86 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Mar 2005 23:06:57 +0100 (BST)
-Received: from 202-47-55-78.adsl.gil.com.au ([IPv6:::ffff:202.47.55.78]:52258
-	"EHLO longlandclan.hopto.org") by linux-mips.org with ESMTP
-	id <S8226068AbVCaWGl>; Thu, 31 Mar 2005 23:06:41 +0100
-Received: (qmail 6050 invoked by uid 210); 1 Apr 2005 08:06:30 +1000
-Received: from 10.0.0.194 by www (envelope-from <stuartl@longlandclan.hopto.org>, uid 201) with qmail-scanner-1.25st 
- (spamassassin: 3.0.2. perlscan: 1.25st.  
- Clear:RC:1(10.0.0.194):. 
- Processed in 0.095803 secs); 31 Mar 2005 22:06:30 -0000
-Received: from unknown (HELO ?10.0.0.194?) (10.0.0.194)
-  by 192.168.5.1 with SMTP; 1 Apr 2005 08:06:29 +1000
-Message-ID: <424C745F.6030204@longlandclan.hopto.org>
-Date:	Fri, 01 Apr 2005 08:06:23 +1000
-From:	Stuart Longland <stuartl@longlandclan.hopto.org>
-User-Agent: Mozilla Thunderbird 1.0 (X11/20041206)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Apr 2005 01:30:21 +0100 (BST)
+Received: from mailout08.sul.t-online.com ([IPv6:::ffff:194.25.134.20]:61656
+	"EHLO mailout08.sul.t-online.com") by linux-mips.org with ESMTP
+	id <S8226064AbVDAAaG>; Fri, 1 Apr 2005 01:30:06 +0100
+Received: from fwd34.aul.t-online.de 
+	by mailout08.sul.t-online.com with smtp 
+	id 1DHA32-0002dK-01; Fri, 01 Apr 2005 02:30:04 +0200
+Received: from denx.de (rIHcdiZFQeT1kfTcfYpqOApzGeaO7YV5W-QWJmFNr7t3ewELuUDyQZ@[84.150.111.124]) by fwd34.sul.t-online.de
+	with esmtp id 1DHA2z-1M5OEa0; Fri, 1 Apr 2005 02:30:01 +0200
+Received: from atlas.denx.de (atlas.denx.de [10.0.0.14])
+	by denx.de (Postfix) with ESMTP
+	id 62E3D42CBC; Fri,  1 Apr 2005 02:30:00 +0200 (MEST)
+Received: by atlas.denx.de (Postfix, from userid 15)
+	id 282DDC108D; Fri,  1 Apr 2005 02:30:00 +0200 (MEST)
+Received: from atlas.denx.de (localhost [127.0.0.1])
+	by atlas.denx.de (Postfix) with ESMTP
+	id 26E2113D94A; Fri,  1 Apr 2005 02:30:00 +0200 (MEST)
 To:	dfsd df <tomcs163@yahoo.com.cn>
-CC:	linux-mips@linux-mips.org
-Subject: Re: Some questions about kernel tailoring
-References: <20050331094116.66254.qmail@web15805.mail.cnb.yahoo.com>
-In-Reply-To: <20050331094116.66254.qmail@web15805.mail.cnb.yahoo.com>
-X-Enigmail-Version: 0.91.0.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="------------enigEA83943D8C5FD892853D2CCB"
-Return-Path: <stuartl@longlandclan.hopto.org>
+Cc:	linux-mips@linux-mips.org
+From:	Wolfgang Denk <wd@denx.de>
+Subject: Re: Some questions about kernel tailoring 
+Mime-version: 1.0
+Content-type: text/plain; charset=ISO-8859-1
+Content-transfer-encoding: 8bit
+In-reply-to: Your message of "Thu, 31 Mar 2005 17:41:15 +0800."
+             <20050331094116.66254.qmail@web15805.mail.cnb.yahoo.com> 
+Date:	Fri, 01 Apr 2005 02:29:55 +0200
+Message-Id: <20050401003000.282DDC108D@atlas.denx.de>
+X-ID:	rIHcdiZFQeT1kfTcfYpqOApzGeaO7YV5W-QWJmFNr7t3ewELuUDyQZ@t-dialin.net
+X-TOI-MSGID: eba8126e-db7e-484c-b9cb-17350d24cfbf
+Return-Path: <wd@denx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7556
+X-archive-position: 7557
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: stuartl@longlandclan.hopto.org
+X-original-sender: wd@denx.de
 Precedence: bulk
 X-list: linux-mips
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---------------enigEA83943D8C5FD892853D2CCB
-Content-Type: text/plain; charset=GB2312
-Content-Transfer-Encoding: 7bit
+In message <20050331094116.66254.qmail@web15805.mail.cnb.yahoo.com> you wrote:
+>  
+> So I want to write a very simple bootloader and make a self-decompressed kernel.
 
-dfsd df wrote:
-> Thanks again!
+Don't re-invent the wheel. Consider using (porting) U-Boot.
 
-BTW: Your mail client has just switched back to its fixation on HTML.
-Could you please have a close look at the settings and disable HTML mail
-composition?  (at least for this email address/domain)
+Best regards,
 
-> Because of the limitation of memory, I don't want to use YAMON.
-> Using gzip -9, I can get a kernel more small than the kernel made by
-> "make zImage".
-> So I want to write a very simple bootloader and make a self-decompressed
-> kernel.
+Wolfgang Denk
 
-AFAIK the bootloader is only resident during the initial bootup, and is
-normally gone by the time userland kicks in.  (Think about it -- what's
- the point in it sticking around, its job is done ;-)
-
-If you've got at least 8MB RAM you should be okay.  (And lets face it --
-Linux on 4MB *IS NOT PRETTY* -- Been there, done that)  How much RAM are
-you working with?
 -- 
-+-------------------------------------------------------------+
-| Stuart Longland -oOo- http://stuartl.longlandclan.hopto.org |
-| Atomic Linux Project     -oOo-    http://atomicl.berlios.de |
-| - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
-| I haven't lost my mind - it's backed up on a tape somewhere |
-+-------------------------------------------------------------+
-
---------------enigEA83943D8C5FD892853D2CCB
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.1 (GNU/Linux)
-Comment: Using GnuPG with Thunderbird - http://enigmail.mozdev.org
-
-iD8DBQFCTHRnuarJ1mMmSrkRAi0wAJ4jGdtolWtp9OlNyDjThvEh+Tre9QCeL9Bb
-s0CA4iVeozHsZcNMkuKH+ms=
-=pw8G
------END PGP SIGNATURE-----
-
---------------enigEA83943D8C5FD892853D2CCB--
+Software Engineering:  Embedded and Realtime Systems,  Embedded Linux
+Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email: wd@denx.de
+A supercomputer is a machine that runs an endless loop in 2 seconds.

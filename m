@@ -1,50 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Feb 2003 10:18:23 +0000 (GMT)
-Received: from webmail14.rediffmail.com ([IPv6:::ffff:203.199.83.24]:3030 "HELO
-	rediffmail.com") by linux-mips.org with SMTP id <S8224939AbTBYKSW>;
-	Tue, 25 Feb 2003 10:18:22 +0000
-Received: (qmail 9290 invoked by uid 510); 25 Feb 2003 10:17:31 -0000
-Date: 25 Feb 2003 10:17:31 -0000
-Message-ID: <20030225101731.9289.qmail@webmail14.rediffmail.com>
-Received: from unknown (194.175.117.86) by rediffmail.com via HTTP; 25 feb 2003 10:17:31 -0000
-MIME-Version: 1.0
-From: "Santosh " <ipv6_san@rediffmail.com>
-Reply-To: "Santosh " <ipv6_san@rediffmail.com>
-To: yoshfuji@wide.ad.jp
-Cc: usagi-users@linux-ipv6.org, netdev@oss.sgi.com,
-	linux-mips@linux-mips.org
-Subject: USAGI Kernel for MIPS based device
-Content-type: text/plain;
-	format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Feb 2003 10:30:39 +0000 (GMT)
+Received: from netlx010.civ.utwente.nl ([IPv6:::ffff:130.89.1.92]:3544 "EHLO
+	netlx010.civ.utwente.nl") by linux-mips.org with ESMTP
+	id <S8224939AbTBYKai>; Tue, 25 Feb 2003 10:30:38 +0000
+Received: from ringbreak.dnd.utwente.nl (ringbreak.dnd.utwente.nl [130.89.175.240])
+          by netlx010.civ.utwente.nl (8.11.4/HKD) with ESMTP id h1PAUab18044
+          for <linux-mips@linux-mips.org>; Tue, 25 Feb 2003 11:30:36 +0100
+Received: from jorik by ringbreak.dnd.utwente.nl with local (Exim 3.35 #1 (Debian))
+	id 18ncM8-0003hD-00
+	for <linux-mips@linux-mips.org>; Tue, 25 Feb 2003 11:30:36 +0100
+Date: Tue, 25 Feb 2003 11:30:36 +0100
+From: Jorik Jonker <jorik@boeventronie.net>
+To: linux-mips@linux-mips.org
+Subject: Port to SGI Onyx
+Message-ID: <20030225103036.GA14084@ringbreak.dnd.utwente.nl>
+Mail-Followup-To: linux-mips@linux-mips.org
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Return-Path: <ipv6_san@rediffmail.com>
+User-Agent: Mutt/1.3.28i
+X-UTwente-MailScanner: Found to be clean
+Return-Path: <jorik@dnd.utwente.nl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1547
+X-archive-position: 1548
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ipv6_san@rediffmail.com
+X-original-sender: jorik@boeventronie.net
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+Hi,
 
-I have a MIPS processor based device, currently running with
-Linux-2.4.5-pre1.
-I have a BSP for my device from Lineo Inc., which incorporates
-Linux-2.4.5-pre1 source code.
+I recently got a (free) SGI Onyx, and I was interested in running something
+different on it than IRIX. I wondered if anybody ever attemped to run linux
+on this beast, and if not, who would like to anticipate in porting linux to
+it.
+My Onyx:
+- quad R4400 100MHz IP19 MIPS (each 1Mb cache)
+- 256Mb RAM
+- RealityEngine2 Graphics
+- 2 Raster Manager units
 
-Now i want to port latest USAGI kernel code onto my device.
+(for those who are interested in pictures of this thing:
+http://boeventronie.net/images/hardware/sgi/onyx/ )
 
-How to step further ??
-Is the USAGI code, platform independent ??
-Do i need to make any changes in the kernel source code ??
-Need to change any configuration files ??
-
-
--San
----------------------------------------------------------------------
-This is Linux Country.  On a quiet night, you can hear Windows 
-reboot.
----------------------------------------------------------------------
+regards,
+-- 
+Jorik Jonker
+http://boeventronie.net/

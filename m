@@ -1,44 +1,42 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f3N4XJa04674
-	for linux-mips-outgoing; Sun, 22 Apr 2001 21:33:19 -0700
-Received: from mail.foobazco.org (snowman.foobazco.org [198.144.194.230])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3N4XIM04671
-	for <linux-mips@oss.sgi.com>; Sun, 22 Apr 2001 21:33:18 -0700
-Received: from galt.foobazco.org (galt.foobazco.org [198.144.194.227])
-	by mail.foobazco.org (Postfix) with ESMTP
-	id 9964BF1A9; Sun, 22 Apr 2001 21:32:35 -0700 (PDT)
-Received: by galt.foobazco.org (Postfix, from userid 1014)
-	id D43DF1F42A; Sun, 22 Apr 2001 21:33:05 -0700 (PDT)
-Date: Sun, 22 Apr 2001 21:33:05 -0700
-From: Keith M Wesolowski <wesolows@foobazco.org>
-To: Karsten Merker <karsten@excalibur.cologne.de>
-Cc: linux-mips@oss.sgi.com, debian-mips@lists.debian.org
-Subject: Re: ls from fileutils-4.0.43 segfaults
-Message-ID: <20010422213305.C6180@foobazco.org>
-References: <20010422224018.A9017@excalibur.cologne.de>
+	by oss.sgi.com (8.11.3/8.11.3) id f3N4YUQ04899
+	for linux-mips-outgoing; Sun, 22 Apr 2001 21:34:30 -0700
+Received: from nevyn.them.org (mail@NEVYN.RES.CMU.EDU [128.2.145.225])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3N4YSM04895
+	for <linux-mips@oss.sgi.com>; Sun, 22 Apr 2001 21:34:29 -0700
+Received: from drow by nevyn.them.org with local (Exim 3.22 #1 (Debian))
+	id 14rY3c-0005yw-00; Mon, 23 Apr 2001 00:34:40 -0400
+Date: Mon, 23 Apr 2001 00:34:40 -0400
+From: Daniel Jacobowitz <dan@debian.org>
+To: Keith M Wesolowski <wesolows@foobazco.org>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Question on the binutils tradlittlemips patch
+Message-ID: <20010423003440.A20179@nevyn.them.org>
+References: <20010418141959.A24473@nevyn.them.org> <3ADDFD6A.AD0DDE4A@cotw.com> <20010418163727.A29531@nevyn.them.org> <20010422180718.A6180@foobazco.org> <20010422221953.A9097@nevyn.them.org> <20010422212301.B6180@foobazco.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20010422224018.A9017@excalibur.cologne.de>; from karsten@excalibur.cologne.de on Sun, Apr 22, 2001 at 10:40:18PM +0200
+User-Agent: Mutt/1.3.16i
+In-Reply-To: <20010422212301.B6180@foobazco.org>; from wesolows@foobazco.org on Sun, Apr 22, 2001 at 09:23:01PM -0700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sun, Apr 22, 2001 at 10:40:18PM +0200, Karsten Merker wrote:
+On Sun, Apr 22, 2001 at 09:23:01PM -0700, Keith M Wesolowski wrote:
+> On Sun, Apr 22, 2001 at 10:19:53PM -0400, Daniel Jacobowitz wrote:
+> 
+> > I have them working in the case I care about - no backwards
+> > compatibility at all.  We (Monta Vista) can get away with this :)
+> > I've attached the patches.
+> 
+> This looks like what I have come up with as well.  I don't care about
+> backward compatibility either.  If someone else wants to support
+> broken crap that's their problem; in an age where we have scripts and
+> makefiles to rebuild entire systems from source I can't see the point
+> of binary compatibility.
 
-> I have tried to install fileutils_4.0.43-1_mipsel.deb from
-> source.rfc822.org and found that "ls" segfaults, the other binaries seem
-> to be ok. So I have tried compiling it myself against glibc-2.2.2 on
-> repeat.rfc822.org and also on my DECstation, but the effect stays the
-> same.
-
-As others have pointed out, you may be afflicted with the dreaded
-sysmips bug.  I can confirm that my new toolchain builds a working ls,
-among other wonders.  I'll be releasing a new make-cross-based package
-very soon for all to enjoy.
+Don't you wish?  My other hat is Debian, which can't just ditch
+existing MIPS installations like that.
 
 -- 
-Keith M Wesolowski <wesolows@foobazco.org> http://foobazco.org/~wesolows
-------(( Project Foobazco Coordinator and Network Administrator ))------
-	"Nothing motivates a man more than to see his boss put
-	 in an honest day's work." -- The fortune file
+Daniel Jacobowitz                           Debian GNU/Linux Developer
+Monta Vista Software                              Debian Security Team

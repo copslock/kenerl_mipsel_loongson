@@ -1,144 +1,88 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6BC7BRw025994
-	for <linux-mips-outgoing@oss.sgi.com>; Thu, 11 Jul 2002 05:07:11 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6BD8aRw030015
+	for <linux-mips-outgoing@oss.sgi.com>; Thu, 11 Jul 2002 06:08:36 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6BC7B4Y025993
-	for linux-mips-outgoing; Thu, 11 Jul 2002 05:07:11 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6BD8anM030014
+	for linux-mips-outgoing; Thu, 11 Jul 2002 06:08:36 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from columba.www.eur.3com.com (ip-161-71-171-238.corp-eur.3com.com [161.71.171.238])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6BC6qRw025983;
-	Thu, 11 Jul 2002 05:06:53 -0700
-Received: from toucana.eur.3com.com (toucana.EUR.3Com.COM [140.204.220.50])
-	by columba.www.eur.3com.com  with ESMTP id g6BCCvE18002;
-	Thu, 11 Jul 2002 13:12:57 +0100 (BST)
-Received: from notesmta.eur.3com.com (eurmta1.EUR.3Com.COM [140.204.220.206])
-	by toucana.eur.3com.com  with SMTP id g6BCBmR06363;
-	Thu, 11 Jul 2002 13:11:48 +0100 (BST)
-Received: by notesmta.eur.3com.com(Lotus SMTP MTA v4.6.3  (733.2 10-16-1998))  id 80256BF3.00435429 ; Thu, 11 Jul 2002 13:15:24 +0100
-X-Lotus-FromDomain: 3COM
-From: "Jon Burgess" <Jon_Burgess@eur.3com.com>
-To: Carsten Langgaard <carstenl@mips.com>
-cc: "Gleb O. Raiko" <raiko@niisi.msk.ru>, Ralf Baechle <ralf@oss.sgi.com>,
-   linux-mips@oss.sgi.com
-Message-ID: <80256BF3.00435388.00@notesmta.eur.3com.com>
-Date: Thu, 11 Jul 2002 13:11:02 +0100
+Received: from t111.niisi.ras.ru (t111.niisi.ras.ru [193.232.173.111])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6BD8ORw030005
+	for <linux-mips@oss.sgi.com>; Thu, 11 Jul 2002 06:08:25 -0700
+Received: from t06.niisi.ras.ru (t06.niisi.ras.ru [193.232.173.6])
+	by t111.niisi.ras.ru (8.9.1/8.9.1) with ESMTP id RAA06424;
+	Thu, 11 Jul 2002 17:12:46 +0400
+Received: (from uucp@localhost) by t06.niisi.ras.ru (8.7.6/8.7.3) with UUCP id RAA25914; Thu, 11 Jul 2002 17:10:51 +0400
+Received: from niisi.msk.ru (t34 [193.232.173.34]) by niisi.msk.ru (8.8.8/8.8.8) with ESMTP id RAA23766; Thu, 11 Jul 2002 17:06:52 +0400 (MSK)
+Message-ID: <3D2D83FF.A2FAAB38@niisi.msk.ru>
+Date: Thu, 11 Jul 2002 17:11:27 +0400
+From: "Gleb O. Raiko" <raiko@niisi.msk.ru>
+Organization: NIISI RAN
+X-Mailer: Mozilla 4.79 [en] (WinNT; U)
+X-Accept-Language: en,ru
+MIME-Version: 1.0
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+CC: linux-mips@oss.sgi.com
 Subject: Re: mips32_flush_cache routine corrupts CP0_STATUS with gcc-2.96
-Mime-Version: 1.0
-Content-type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <Pine.GSO.3.96.1020711130202.7876C-100000@delta.ds2.pg.gda.pl>
+Content-Type: text/plain; charset=x-user-defined
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, hits=0.0 required=5.0 tests= version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+"Maciej W. Rozycki" wrote:
+> 
+> On Thu, 11 Jul 2002, Gleb O. Raiko wrote:
+> > I don't wonder if other IDT CPUs also require this, including those that
+> > conform MIPS32.
+> 
+>  Well, for r3k it may seem somewhat justified as cache flushing requires
+> cache isolation.  But the IDT manual for their whole family of processors
+> claims the D-cache can function as an I-cache (when swapped; doesn't
+> apply when not, obviously) and cache flushing can run from KSEG0.
+> 
+>  See "IDT MIPS Microprocessor Family Software Reference Manual", chapter 5
+> "Cache Management", section "Invalidation":
+> 
+>  "To invalidate the cache in the R30xx:
+> [...]
+>  The invalidate routine is normally executed with its instructions
+> cacheable.  This sounds like a lot of trouble; but in fact shouldnt
+> require any extra steps to run cached. An invalidation routine in uncached
+> space will run 4-10 times slower."
+> 
 
+Aha, you also stepped on this rake. :-) The problem with IDT manuals
+that they frequently contradict itself. You're right, SW manual allows
+cached flushes, but hardware manuals for the family prohibit this and
+state that flashes must be uncahed.
+(a hw manual on family, the same chapter, the same section :-) )
 
->> I don't wonder if other IDT CPUs also require this, including those that
->> conform MIPS32.
->> Basically, requirement of uncached run makes hadrware logic much simpler
->> and allows  to save silicon a bit.
->
->That could be true, but then again I suggest making specific cache routines for
-those
->CPUs.
->It would be a real performance hit for the rest of us, if we have to operate
-from
->uncached space.
+It's not only the place where IDT manuals are wrong. For example, their
+wbflush example suggests *(int*)KSEG0 instead *(int*)KSEG1.
 
-I pulled together the relevant code to generate a module to test this problem
-and it looks like the CPU always misses 1 instruction following the end of the
-cache loop. If I add some nop's to change the alignment of the code it doesn't
-seem to make any difference. The same thing seems to happen even if I change the
-cache flush to a 'Hit_invalidate' of some completely different memory region.
-One thing I thought might happen is the CPU ending the loop early as soon as it
-invalidates the cacheline containing the current instructions, but this doesn't
-seem to be the case, the 'end' address is always correct. Perhaps this really is
-a hardware problem.
+> > Basically, requirement of uncached run makes hadrware logic much simpler
+> > and allows  to save silicon a bit.
+> 
+>  Why?  I see no dependency.  What's the problem with interleaving cache
+> fills and invalidations?
 
-The test module below does a blast_icache then a few well known instructions and
-signifies if anything has been missed. I typically get the following on our
-board.
-     Cacheop skipped 1 instructions, end = 0x80004000
+There're two possible optimization:
+1. (Requires only the instruction that swaps caches must run uncached)
+	CPU may skip implementation of double check of cache hit on loads.
+	Scenario: mtc0 with cache swapping with ensuring next instructions are
+in cache
+	(pipelining here!); swap occurs; must check again the instructions are
+in 
+	the cache because the same cacheline in the data cache may have valid
+bit set
+	and CPU will get data instead of code.
+2. (Requires the whole routine must run uncached)
+	CPU may skip check of cache hit on loads from an isolated cache. 
 
-The end address is correct, so the cache flush completes, but 1 instruction is
-missed.
+i don't know what optimization IDT made, perhaps, number 3. But, 1. is
+really worth to implement.
 
-I would be interested to know if someone can test this on another mips32
-processor since I don't have any others available.
-
-Simply adding an extra nop after the cache loop might be a good workaround for
-this board.
-
-Module compiled with:
-/tmp/crossdev/mips/bin/mips-linux-gcc -G 0 -mips2 -mno-abicalls -fno-pic
--mlong-calls -fno-common -O2 -fno-strict-aliasing  -I/usr/src/linux/include
--Wall -DMODULE -D__KERNEL__ -fno-common -c -o  test_tmp.o test.c
-/tmp/crossdev/mips/bin/mips-linux-ld -r -G0 -o test.o test_tmp.o
-
-
-#include <linux/module.h>
-#include <linux/init.h>
-#include <linux/sysctl.h>
-#include <asm/cacheops.h>
-
-#include <asm/bootinfo.h>
-#include <asm/cpu.h>
-#include <asm/bcache.h>
-#include <asm/page.h>
-#include <asm/system.h>
-#include <asm/addrspace.h>
-
-#define icache_size (16 * 1024)
-#define ic_lsize (16)
-
-#define cache_unroll(base,op)                   \
-        __asm__ __volatile__("                  \
-                .set noreorder;                 \
-                .set mips3;                     \
-                cache %1, (%0);                 \
-                .set mips0;                     \
-                .set reorder"                   \
-                :                               \
-                : "r" (base),                   \
-                  "i" (op));
-
-static inline unsigned test_blast_icache(void)
-{
-     unsigned long start = KSEG0;
-     unsigned long end = (start + icache_size);
-
-     while(start < end) {
-          cache_unroll(start,Index_Invalidate_I);
-          start += ic_lsize;
-     }
-     return start;
-}
-
-static int __init init(void)
-{
-     int i = 4;
-     unsigned int end;
-
-     end = test_blast_icache();
-
-     __asm__(
-          ".set push        \n"
-          ".set noreorder   \n"
-          "   addu %0,-1   \n"
-          "   addu %0,-1   \n"
-          "   addu %0,-1   \n"
-          "   addu %0,-1   \n"
-          ".set pop         \n"
-          : "=r" (i)
-          : "r" (i));
-
-     printk("Cacheop skipped %u instructions, end = 0x%x\n", i, end);
-     return 0;
-}
-
-static void __exit fini(void)
-{
-}
-
-module_init(init);
-module_exit(fini);
+Regards,
+Gleb.

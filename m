@@ -1,71 +1,130 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g2KHbJU04340
-	for linux-mips-outgoing; Wed, 20 Mar 2002 09:37:19 -0800
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id g2KHbE904337
-	for <linux-mips@oss.sgi.com>; Wed, 20 Mar 2002 09:37:14 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.1) id g2KHcgf07579;
-	Wed, 20 Mar 2002 09:38:42 -0800
-Date: Wed, 20 Mar 2002 09:38:42 -0800
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: David Christensen <dpchrist@holgerdanske.com>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: Fw: hello
-Message-ID: <20020320093842.B7190@dea.linux-mips.net>
-References: <017701c1cf99$a7d9a890$0b01a8c0@w2k30g>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <017701c1cf99$a7d9a890$0b01a8c0@w2k30g>; from dpchrist@holgerdanske.com on Tue, Mar 19, 2002 at 02:55:22PM -0800
-X-Accept-Language: de,en,fr
+	by oss.sgi.com (8.11.2/8.11.3) id g2KN51k13375
+	for linux-mips-outgoing; Wed, 20 Mar 2002 15:05:01 -0800
+Received: from granite.he.net (granite.he.net [216.218.226.66])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2KN4n913367
+	for <linux-mips@oss.sgi.com>; Wed, 20 Mar 2002 15:04:49 -0800
+Received: from w2k30g (209-142-39-228.stk.inreach.net [209.142.39.228]) by granite.he.net (8.8.6/8.8.2) with SMTP id PAA26908 for <linux-mips@oss.sgi.com>; Wed, 20 Mar 2002 15:06:17 -0800
+Message-ID: <029001c1d063$b5886880$0b01a8c0@w2k30g>
+From: "David Christensen" <dpchrist@holgerdanske.com>
+To: <linux-mips@oss.sgi.com>
+Subject: Fw: Fw: hello
+Date: Wed, 20 Mar 2002 15:04:51 -0800
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Mar 19, 2002 at 02:55:22PM -0800, David Christensen wrote:
+linux-mips@oss.sgi.com:
 
-> As an aside, is anybody using a VMware virtual machine for their
-> development host?
+Thank you all for your replies.  :-)
 
-While it can be done there is not much point in doing so unless you hate
-performance ;)
 
-> > and native compile for apps.
-> 
-> OK  that sounds like a safe bet.
+Ralf Baechle <ralf@oss.sgi.com> wrote:
+>> As an aside, is anybody using a VMware virtual machine for their
+>> development host?
+> While it can be done there is not much point in doing so unless you
+> hate performance ;)
 
-Which is the primary reason for native compiles.
+I have three boxes (RH7.1 firewall, SuSE 7.3 server, and W2k
+workstation) and a shelf of OS's.  My needs seem to be constantly
+changing.  VMware allows me to build a virtual machine that is
+configured specifically for one purpose (such as linux-mips development)
+without having to sacrifice any hardware (and associated functionality).
+I am willing to trade a large gain in flexibility for a small loss in
+performance.
 
-> >> 3.  What is the preferred toolchain...
-> > This is what we use for cross Kernel compiles (toolchain from oss):
-> >
-> > /home/hartvige> gcc -v
-> > Reading specs from /usr/lib/gcc-lib/i386-redhat-linux/2.96/specs
-> > gcc version 2.96 20000731 (Red Hat Linux 7.1 2.96-85)
-> 
-> Hmmm.  That looks like a native i386 compiler.  I'm surprised its not
-> something like "mips-elf-gcc".
+For those of you who haven't tried VMware, they offer a 30-day
+evaluation:
 
-Yes, that's his native compiler.  mips-elf-gcc however should not be used,
-there are subtle differences between the various ELF/MIPS targets that
-would turn your life into hell ...
+    http://www.vmware.com/
 
-> I'll assume the cross-compile toolchain was built per
-> http://oss.sgi.com/mips/mips-howto.html section 10.
+> mips-elf-gcc however should not be used, there are subtle differences
+> between the various ELF/MIPS targets that would turn your life into
+> hell ...
 
-That's roughly the procedure, though the procedure described is not 100%
-suitable for the recommended compiler version.  So I recommend downloading
-the binary rpms.
+OK  It appears that people are pulling in source and/or binary pieces
+from various places -- MIPS (cross) compiler, linux-mips kernel,
+linux-mips root filesystem, linux userland filesystem, etc..  Mismatches
+between tools are definitely going to cause grief.
 
-> 
-> Leo Przybylski <leop@engr.arizona.edu> wrote:
-> > Well, all Linux/MIPS stuff on on oss.sgi.com is maintained largely by
-> > Ralf Baechle who is also contributor to numerous Linux/MIPS projects
-> > on sourceforge. As far as I know he is also a huge part of the
-> > sourceforge Linux/MIPS. You may have noticed that Bradley D. LaRonde
-> > is also a huge contributor.
+It would be nice if a person could start with a blank host, install the
+host OS, download the MIPS cross compiler source, build the MIPS (cross)
+compiler, download the linux-mips kernel, rootfs, userland, etc.,
+sources, and build those using their (cross) compiler.  Can this be one
+an x86 host using a commercial Linux distribution (my situation)?  Is
+there one HOWTO or README that describes such?
 
-No.  I don't touch or follow the Sourceforge project at all.
 
-  Ralf
+Hartvig Ekner <hartvige@mips.com> wrote:
+>>>> 2.  What is the preferred host OS...
+>>> We use Linux/x86 for kernel compiles,
+>> Which Linux distribution does MIPS use?  Since I'm going to be
+>> working on an Atlas board using software from MIPS, I would like to
+>> match things up exactly.
+> Internally for development we use H.J's RedHat 7.1/MIPS miniport.
+> Ready-to-go kernel images and installation instructions (via NFS or
+> CDROM) for Atlas and Malta boards can be found on ftp.mips.com.
+
+Hmmm.  I guess I was assuming that you were doing MIPS Linux cross
+development on x86 hosts using a commercial Linux distribution such as
+Red Hat 7.1.  So, let me be more specific.  What host hardware
+platform(s) and host operating system(s) does MIPS use to build their
+MIPS Linux distribution as found on ftp://ftp.mips.com/pub/linux/mips/?
+
+> For kernel cross compilation we use the following binary RPM's (LE
+> shown only):
+>
+> binutils-mipsel-linux-2.9.5-3
+> egcs-mipsel-linux-1.1.2-4
+>
+> They can be found on:
+>
+> ftp://oss.sgi.com/pub/linux/mips/crossdev/i386-linux/mipsel-linux/
+
+OK  Thanks for the link!
+
+
+Karsten Merker <karsten@excalibur.cologne.de> wrote:
+>> Which Linux distribution does MIPS use?  Since I'm going to be
+>> working on an Atlas board using software from MIPS, I would like to
+>> match things up exactly.
+> Several different - there is a Debian port (big and little endian),
+> H.J. Lu's RedHat mini-port (big endian AFAIK), Karel van Houten's
+> RedHat-based rootfs (little endian), Keith M. Wesolwski's Simple
+> Linux (big-endian). I think the most complete of all is Debian.
+
+Please see my comment to Hartvig (above).
+
+>> As an aside, is anybody using a VMware virtual machine for their
+>> development host?
+> Why should we? VMware emulates i386 on i386, so it would be of no
+> help for mips development.
+
+Please see my comment to Ralf (above).
+
+>> 3.  What is the preferred toolchain...
+> I always build natively:
+> gcc version 2.95.4 20011002 (Debian prerelease)
+> GNU ld version 2.11.93.0.2 20020207 Debian/GNU Linux
+
+>>> Yep - The Debian autobuilder run native on little and big endian.
+>> Hmmm.  Do you mean GNU autoconf running natively on MIPS, or
+>> something running on a Debian x86 host, or something else?
+> The autobuilder is a system that checks for new Debian packages which
+> are not yet built for mips/mipsel and automatically builds and uploads
+> them into the Debian archive. It runs natively (in our case on a
+> Lasat Masquerade Pro for little endian and on an SGI Indigo2 for big
+> endian).
+
+OK  It looks like you've got a build farm with MIPS/Debian boxes --
+nice.
+
+
+David

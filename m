@@ -1,69 +1,65 @@
 Received: from deliverator.sgi.com (deliverator.sgi.com [204.94.214.10])
-	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id BAA15565
-	for <pstadt@stud.fh-heilbronn.de>; Mon, 26 Jul 1999 01:00:12 +0200
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id PAA22449; Sun, 25 Jul 1999 15:56:05 -0700 (PDT)
+	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id PAA05004
+	for <pstadt@stud.fh-heilbronn.de>; Mon, 26 Jul 1999 15:08:47 +0200
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id FAA15045; Mon, 26 Jul 1999 05:59:36 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id PAA21392
+	id FAA84447
 	for linux-list;
-	Sun, 25 Jul 1999 15:52:03 -0700 (PDT)
+	Mon, 26 Jul 1999 05:39:20 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id PAA57486
-	for <linux@engr.sgi.com>;
-	Sun, 25 Jul 1999 15:51:59 -0700 (PDT)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
+	via ESMTP id FAA15385
+	for <linux@cthulhu.engr.sgi.com>;
+	Mon, 26 Jul 1999 05:39:08 -0700 (PDT)
+	mail_from (mikehill@hgeng.com)
+Received: from calvin.tor.onramp.ca (calvin.tor.onramp.ca [204.225.88.15]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id PAA02002
-	for <linux@engr.sgi.com>; Sun, 25 Jul 1999 15:51:56 -0700 (PDT)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from lappi.waldorf-gmbh.de (cacc-21.uni-koblenz.de [141.26.131.21])
-	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id AAA15114
-	for <linux@engr.sgi.com>; Mon, 26 Jul 1999 00:51:53 +0200 (MET DST)
-Received: (from ralf@localhost)
-	by lappi.waldorf-gmbh.de (8.9.3/8.9.3) id AAA02782;
-	Mon, 26 Jul 1999 00:51:26 +0200
-Date: Mon, 26 Jul 1999 00:51:26 +0200
-From: Ralf Baechle <ralf@uni-koblenz.de>
-To: Mat Kovach <mkovach@alpha.theshagster.com>
-Cc: linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
-        linux-mips@vger.rutgers.edu
-Subject: Re: Unimplemented Exception for insn 4620a0a4
-Message-ID: <19990726005126.E31878@uni-koblenz.de>
-References: <19990721103205.A25219@mini.gt.owl.de> <19990722005000.J14367@uni-koblenz.de> <19990722134126.J29846@mini.gt.owl.de> <19990723011059.W14367@uni-koblenz.de> <19990723141127.K15510@mini.gt.owl.de> <19990725150204.C31878@uni-koblenz.de> <19990725181727.A15348@mini.gt.owl.de> <19990725225305.D31878@uni-koblenz.de> <20190725125741.A1122@mkovach.nacs.net>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.4us
-In-Reply-To: <20190725125741.A1122@mkovach.nacs.net>; from Mat Kovach on Thu, Jul 25, 2019 at 12:57:41PM -0400
-X-Accept-Language: de,en,fr
+	via SMTP id FAA08225
+	for <linux@cthulhu.engr.sgi.com>; Mon, 26 Jul 1999 05:39:03 -0700 (PDT)
+	mail_from (mikehill@hgeng.com)
+Received: (qmail 28613 invoked from network); 26 Jul 1999 12:38:58 -0000
+Received: from imail.hgeng.com (HELO bart.hgeng.com) (199.246.72.233)
+  by mail.onramp.ca with SMTP; 26 Jul 1999 12:38:58 -0000
+Received: by BART with Internet Mail Service (5.5.2232.9)
+	id <PNPT48PJ>; Mon, 26 Jul 1999 08:24:53 -0400
+Message-ID: <E138DB347D10D3119C630008C79F5DEC07EB1C@BART>
+From: Mike Hill <mikehill@hgeng.com>
+To: "'Rob Dueckman'" <duke@heloc.com>, linux@cthulhu.engr.sgi.com
+Subject: RE: RedHat 6.0 (SMP) on 540
+Date: Mon, 26 Jul 1999 08:24:51 -0400
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2232.9)
+Content-Type: text/plain
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Thu, Jul 25, 2019 at 12:57:41PM -0400, Mat Kovach wrote:
+Hey Rob, won't they let you have an Indy?
 
-> sh Configure -des -Dprefix=/usr -Darchname=${RPM_ARCH}-linux -Dd_dosuid \
->         -Ud_setresuid -Ud_setresgid -Dd_semctl_semun
-> make
-> 
-> strip perl
-> strip suidperl
-> strip x2p/a2p
-> 
-> %install
-> rm -rf $RPM_BUILD_ROOT
-> mkdir -p $RPM_BUILD_ROOT
-> make install
-> 
-> So, it appears that RedHat doesn't run make test when it builds perl ...
 
-Hmm...  Looking over the kernel source I just spotted a kernel bug which
-affects both 2.2 and 2.3.  It will however only affect buggy software.
-No C code will for example ever be hit.
-
-  Ralf
+> -----Original Message-----
+> From:	Rob Dueckman [SMTP:duke@heloc.com]
+> Sent:	July 22, 1999 9:01 PM
+> To:	linux@cthulhu.engr.sgi.com
+> Subject:	RedHat 6.0 (SMP) on 540
+> 
+> I've got this new box here at the office which I've installed RedHat 6.0.
+> It
+> is a VisWis 540 with 4 processors.
+> 
+> After downloading  the 2.2.10 kernel, applying the patches and installing
+> the
+> new kernel, Linux only sees 2 of the 4 processors...
+> 
+> I havn't spent a huge amount of time looking at the source, but is there a
+> flag
+> during the build that tells now many processors to support?  If not, is
+> this a
+> bug?
+> 
+> Thanks.

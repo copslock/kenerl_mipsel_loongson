@@ -1,95 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Jan 2004 20:58:05 +0000 (GMT)
-Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:21135 "EHLO
-	witte.sonytel.be") by linux-mips.org with ESMTP id <S8224954AbUAFU6C>;
-	Tue, 6 Jan 2004 20:58:02 +0000
-Received: from teasel.sonytel.be (localhost [127.0.0.1])
-	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id i06KvwQF006888;
-	Tue, 6 Jan 2004 21:57:58 +0100 (MET)
-Received: (from dimitri@localhost)
-	by teasel.sonytel.be (8.9.3+Sun/8.9.3) id VAA19546;
-	Tue, 6 Jan 2004 21:57:59 +0100 (MET)
-Date: Tue, 6 Jan 2004 21:57:59 +0100
-From: Dimitri Torfs <dimitri@sonycom.com>
-To: ralf@linux-mips.org
-Cc: linux-mips@linux-mips.org
-Subject: [PATCH][2.6] Fix Makefiles for CONFIG_EMBEDDED_RAMDISK
-Message-ID: <20040106205758.GA19525@sonycom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Jan 2004 03:55:18 +0000 (GMT)
+Received: from mo02.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:63983 "EHLO
+	mo02.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225367AbUAGDzP>;
+	Wed, 7 Jan 2004 03:55:15 +0000
+Received: from mdo00.iij4u.or.jp (mdo00.iij4u.or.jp [210.130.0.170])
+	by mo02.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id MAA26448;
+	Wed, 7 Jan 2004 12:55:10 +0900 (JST)
+Received: 4UMDO00 id i073tAr07336; Wed, 7 Jan 2004 12:55:10 +0900 (JST)
+Received: 4UMRO00 id i073t9a18785; Wed, 7 Jan 2004 12:55:09 +0900 (JST)
+	from rally.montavista.co.jp (sonicwall.montavista.co.jp [202.232.97.131]) (authenticated)
+Date: Wed, 7 Jan 2004 12:55:09 +0900
+From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH][2.6] add smp.h in processor.h
+Message-Id: <20040107125509.34cfa9db.yuasa@hh.iij4u.or.jp>
+X-Mailer: Sylpheed version 0.9.8a (GTK+ 1.2.10; i686-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.4.1i
-Return-Path: <dimitri@sonycom.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3874
+X-archive-position: 3875
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dimitri@sonycom.com
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+Hello Ralf,
 
-  here are patches that fix the arch/mips/Makefile and
-  arch/mips/ramdisk/Makefile when an embedded ramdisk image needs to
-  be included through the CONFIG_EMBEDDED_RAMDISK option.
+I made a patch for header file of 2.6.
 
+smp_processor_id() is defined in smp.h.
+We need adding #include <linux/smp.h> in processor.h.
 
---- linux-mips-2.6.orig/arch/mips/Makefile	2004-01-06 21:17:57.000000000 +0100
-+++ linux.work/arch/mips/Makefile	2004-01-06 21:43:33.000000000 +0100
-@@ -187,13 +187,11 @@
+Please apply this patch.
+
+Yoichi
+
+diff -urN -X dontdiff linux-orig/include/asm-mips/processor.h linux/include/asm-mips/processor.h
+--- linux-orig/include/asm-mips/processor.h	2003-12-04 10:52:06.000000000 +0900
++++ linux/include/asm-mips/processor.h	2004-01-07 12:24:25.000000000 +0900
+@@ -13,6 +13,7 @@
  
- #
- # ramdisk/initrd support
--# You need a compressed ramdisk image, named ramdisk.gz in
--# arch/mips/ramdisk
-+# You need a compressed ramdisk image, named
-+# CONFIG_EMBEDDED_RAMDISK_IMAGE. Relative pathnames 
-+# are relative to arch/mips/ramdisk/.
- #
--ifdef CONFIG_EMBEDDED_RAMDISK
--CORE_FILES	+= arch/mips/ramdisk/ramdisk.o
--SUBDIRS		+= arch/mips/ramdisk
--endif
-+core-$(CONFIG_EMBEDDED_RAMDISK)	+= arch/mips/ramdisk/
+ #include <linux/config.h>
+ #include <linux/cache.h>
++#include <linux/smp.h>
+ #include <linux/threads.h>
  
- #
- # Firmware support
-
-
-
---- linux-mips-2.6.orig/arch/mips/ramdisk/Makefile	2003-07-29 16:26:23.000000000 +0200
-+++ linux.work/arch/mips/ramdisk/Makefile	2004-01-06 21:40:50.000000000 +0100
-@@ -2,8 +2,19 @@
- # Makefile for a ramdisk image
- #
- 
-+obj-y += ramdisk.o
-+
-+
- O_FORMAT = $(shell $(OBJDUMP) -i | head -n 2 | grep elf32)
--img = $(CONFIG_EMBEDDED_RAMDISK_IMAGE)
--ramdisk.o: $(subst ",,$(img)) ld.script
--	echo "O_FORMAT:  " $(O_FORMAT)
--	$(LD) -T ld.script -b binary --oformat $(O_FORMAT) -o $@ $(img)
-+img := $(subst ",,$(CONFIG_EMBEDDED_RAMDISK_IMAGE))
-+# add $(src) when $(img) is relative
-+img := $(subst $(src)//,/,$(src)/$(img))
-+
-+quiet_cmd_ramdisk = LD      $@
-+define cmd_ramdisk
-+	$(LD) -T $(src)/ld.script -b binary --oformat $(O_FORMAT) -o $@ $(img)
-+endef
-+
-+$(obj)/ramdisk.o: $(img) $(src)/ld.script
-+	$(call cmd,ramdisk)
-+
-
-
--- 
-Dimitri Torfs             |  NSCE 
-dimitri.torfs@sonycom.com |  Sint Stevens Woluwestraat 55
-tel: +32 2 2908451        |  1130 Brussel
-fax: +32 2 7262686        |  Belgium
+ #include <asm/cachectl.h>

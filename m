@@ -1,55 +1,79 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA15595 for <linux-archive@neteng.engr.sgi.com>; Fri, 7 Aug 1998 14:29:33 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id GAA34543 for <linux-archive@neteng.engr.sgi.com>; Sun, 9 Aug 1998 06:35:32 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id OAA72878
+	id GAA42957
 	for linux-list;
-	Fri, 7 Aug 1998 14:28:56 -0700 (PDT)
+	Sun, 9 Aug 1998 06:34:58 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id OAA71802
+	via ESMTP id GAA16426
 	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 7 Aug 1998 14:28:54 -0700 (PDT)
-	mail_from (ehlert@anatu.uni-tuebingen.de)
-Received: from mx02.uni-tuebingen.de (mx02.uni-tuebingen.de [134.2.3.12]) 
+	Sun, 9 Aug 1998 06:34:55 -0700 (PDT)
+	mail_from (sgi.sgi.com!rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
+Received: from rachael.franken.de (rachael.franken.de [193.175.24.38]) 
 	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id OAA13712
-	for <linux@cthulhu.engr.sgi.com>; Fri, 7 Aug 1998 14:28:51 -0700 (PDT)
-	mail_from (ehlert@anatu.uni-tuebingen.de)
-Received: from mail.anatom.uni-tuebingen.de (root@mail.anatom.uni-tuebingen.de [134.2.135.146])
-	by mx02.uni-tuebingen.de (8.8.8/8.8.8) with ESMTP id XAA31130
-	for <linux@cthulhu.engr.sgi.com>; Fri, 7 Aug 1998 23:28:50 +0200
-Received: from localhost by mail.anatom.uni-tuebingen.de
-	 with smtp id m0z4u4S-00077WC
-	(Debian Smail-3.2 1996-Jul-4 #2); Fri, 7 Aug 1998 23:29:08 +0200 (MET DST)
-Date: Fri, 7 Aug 1998 23:29:07 +0200 (MET DST)
-From: Alexander Ehlert <ehlert@anatu.uni-tuebingen.de>
-X-Sender: ehlert@mail.anatom.uni-tuebingen.de
-To: linux@cthulhu.engr.sgi.com
-Subject: Install does not work
-Message-ID: <Pine.LNX.3.95.980807232026.787D-100000@mail.anatom.uni-tuebingen.de>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	via ESMTP id GAA26091
+	for <linux@cthulhu.engr.sgi.com>; Sun, 9 Aug 1998 06:34:51 -0700 (PDT)
+	mail_from (rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
+Received: from hub-fue by rachael.franken.de
+	via rmail with uucp
+	id <m0z5VcX-0027wCC@rachael.franken.de>
+	for cthulhu.engr.sgi.com!linux; Sun, 9 Aug 1998 15:34:49 +0200 (MET DST)
+	(Smail-3.2 1996-Jul-4 #4 built DST-Sep-8)
+Received: by hub-fue.franken.de (Smail3.1.29.1 #35)
+	id m0z5VcP-002OmBC; Sun, 9 Aug 98 15:34 MET DST
+Received: (from tsbogend@localhost)
+	by alpha.franken.de (8.8.7/8.8.5) id PAA01603;
+	Sun, 9 Aug 1998 15:27:15 +0200
+Message-ID: <19980809152715.19085@alpha.franken.de>
+Date: Sun, 9 Aug 1998 15:27:15 +0200
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To: linux-mips@fnet.fr, linux@cthulhu.engr.sgi.com
+Subject: binutils 2.9.1.0.4 considered harmful
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.85
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
 Hi,
 
-today I downloaded a hardhat for my Indy. After a few hours of trouble
-with tftpd i got the sgi up with linux. But the install program exits
-after "Fatal error opening RPM Database" with install exited abnormally -
-recieving signal 11.
+look what gas from binutils-2.9.1.0.4 produces, when building _eh.o
+(libgcc.a).
 
-I partioned the harddisk with fx under irix. The install script is showing
-me three partitions. I choose the first one with mountpoint /. Afterwards
-I formatted the partition /dev/sdb1 with the install script, changed
-nothing in the package selection menu and hoped that everything would run
-fine :)
+RELOCATION RECORDS FOR [.eh_frame]:
+OFFSET   TYPE              VALUE 
+0000001c R_MIPS_32         .text
+00000038 R_MIPS_32         .text
+00000054 R_MIPS_32         .text
+00000074 R_MIPS_32         .text
+00000084 R_MIPS_32         .text
+00000094 R_MIPS_32         .text
+000000e4 R_MIPS_32         .text
+00000134 R_MIPS_32         .text
+00000144 R_MIPS_32         .text
+00000160 R_MIPS_32         .text
+0000017c R_MIPS_32         .text
+00000198 R_MIPS_32         .text
 
-Is there anything I can do ?
+000001b5 R_MIPS_32         .text
+     ^^^
 
-Alex.
+This bug is most likely responsible for my problems with libstdc++ on
+my little endian box (SIGBUS in ld.so.1, when a program is linked against
+libstc++). On the Indy I've build egcs with patched binutils 2.8.1 and there 
+libstdc++ works, while on my Olli it doesn't (build with binutils 2.9.1.0.4).
+Right now I'm rebuilding egcs to see, whether all of my libcstdc++ problems
+are gone.
+
+Thomas.
+
+-- 
+See, you not only have to be a good coder to create a system like Linux,
+you have to be a sneaky bastard too ;-)
+                   [Linus Torvalds in <4rikft$7g5@linux.cs.Helsinki.FI>]

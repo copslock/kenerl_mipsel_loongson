@@ -1,57 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jan 2004 01:40:16 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:57595 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225278AbUAOBkP>;
-	Thu, 15 Jan 2004 01:40:15 +0000
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id i0F1eCe16920;
-	Wed, 14 Jan 2004 17:40:12 -0800
-Date: Wed, 14 Jan 2004 17:40:12 -0800
-From: Jun Sun <jsun@mvista.com>
-To: Andrew Morton <akpm@osdl.org>
-Cc: linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-	rmk@arm.linux.org.uk, jsun@mvista.com
-Subject: Re: [BUG] 2.6.1/MIPS - missing cache flushing when user program returns pages to kernel
-Message-ID: <20040114174012.H13471@mvista.com>
-References: <20040114163920.E13471@mvista.com> <20040114171252.4d873c51.akpm@osdl.org> <20040114172946.03e54706.akpm@osdl.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20040114172946.03e54706.akpm@osdl.org>; from akpm@osdl.org on Wed, Jan 14, 2004 at 05:29:46PM -0800
-Return-Path: <jsun@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jan 2004 03:39:26 +0000 (GMT)
+Received: from mail.e-smith.com ([IPv6:::ffff:216.191.234.126]:1296 "HELO
+	nssg.mitel.com") by linux-mips.org with SMTP id <S8225460AbUAODjR>;
+	Thu, 15 Jan 2004 03:39:17 +0000
+Received: (qmail 6811 invoked by uid 404); 15 Jan 2004 03:39:09 -0000
+Received: from charlieb-linux-mips@e-smith.com by tripe.nssg.mitel.com with qmail-scanner; 14 Jan 2004 22:39:09 -0000
+Received: from allspice-core.nssg.mitel.com (HELO e-smith.com) (10.33.16.12)
+  by tripe.nssg.mitel.com (10.33.17.11) with SMTP; 15 Jan 2004 03:39:09 -0000
+Received: (qmail 22142 invoked by uid 5008); 15 Jan 2004 03:39:09 -0000
+Received: from localhost (sendmail-bs@127.0.0.1)
+  by localhost with SMTP; 15 Jan 2004 03:39:09 -0000
+Date: Wed, 14 Jan 2004 22:39:09 -0500 (EST)
+From: Charlie Brady <charlieb-linux-mips@e-smith.com>
+X-X-Sender: charlieb@allspice.nssg.mitel.com
+To: Jun Sun <jsun@mvista.com>
+cc: linux-mips@linux-mips.org
+Subject: Re: Broadcom 4702?
+In-Reply-To: <20040114170355.G13471@mvista.com>
+Message-ID: <Pine.LNX.4.44.0401142235300.17500-100000@allspice.nssg.mitel.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <charlieb-linux-mips@e-smith.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3965
+X-archive-position: 3966
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: charlieb-linux-mips@e-smith.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Jan 14, 2004 at 05:29:46PM -0800, Andrew Morton wrote:
-> Andrew Morton <akpm@osdl.org> wrote:
-> >
-> > I think that's wrong, really.  We've discussed this before and decided that
-> > these flushing operations should be open-coded in the main .c file rather
-> > than embedded in arch functions which happen to undocumentedly do other
-> > stuff.
-> 
-> err, OK, I give up.  Lots of architectures do the cache flush in
-> tlb_start_vma().  I guess mips may as well do the same.
-> 
 
-Looking at my tree (which is from linux-mips.org), it appears
-arm, sparc, sparc64, and sh have tlb_start_vma() defined to call
-cache flushing.
+On Wed, 14 Jan 2004, Jun Sun wrote:
 
-What exactly does tlb_start_vma()/tlb_end_vma() mean?  There is
-only one invocation instance, which is significant enough to infer
-the meaning.  :)
- 
-BTW, either my original hack or putting a cache flush in tlb_start_vma()
-solves my problem.  They are really doing the same thing, just at
-different places. 
+> Since we are on this subject, I am curious if I buy a Cisco's router
+> whether it is considered that Cisco distributs the binaries to me
+> and whether I can demand for the source code if they are GPL'ed software.
 
-Jun
+You don't need to demand the source code to Cisco/linksys's linux based 
+wireless routers. It's available for download from the URL I provided at 
+the start of the thread.
+
+> I can see arguments go either way.  Do open source community and
+> industry have some concensus on this issue?
+
+Please read the various licenses (GPL and other), and consult your lawyer.
+And if you want a definitive answer (in your jurisdiction) get the license 
+tested in Court (and subsequent Appeals Courts). :-)
+
+--
+Charlie

@@ -1,12 +1,12 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Apr 2004 10:11:21 +0100 (BST)
-Received: from web17015.mail.tpe.yahoo.com ([IPv6:::ffff:202.1.236.166]:58788
-	"HELO web17015.mail.tpe.yahoo.com") by linux-mips.org with SMTP
-	id <S8226025AbUD0JLT>; Tue, 27 Apr 2004 10:11:19 +0100
-Message-ID: <20040427091110.53701.qmail@web17015.mail.tpe.yahoo.com>
-Received: from [210.243.228.66] by web17015.mail.tpe.yahoo.com via HTTP; Tue, 27 Apr 2004 17:11:10 CST
-Date: Tue, 27 Apr 2004 17:11:10 +0800 (CST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Apr 2004 10:46:30 +0100 (BST)
+Received: from web17001.mail.tpe.yahoo.com ([IPv6:::ffff:202.1.236.222]:7027
+	"HELO web17001.mail.tpe.yahoo.com") by linux-mips.org with SMTP
+	id <S8226025AbUD0Jq2>; Tue, 27 Apr 2004 10:46:28 +0100
+Message-ID: <20040427094618.39988.qmail@web17001.mail.tpe.yahoo.com>
+Received: from [210.243.228.66] by web17001.mail.tpe.yahoo.com via HTTP; Tue, 27 Apr 2004 17:46:18 CST
+Date: Tue, 27 Apr 2004 17:46:18 +0800 (CST)
 From: "=?big5?q?aluba1231.tw?=" <aluba1231.tw@yahoo.com.tw>
-Subject: nfs server on mips platform?
+Subject: nfs server on mips platform? 
 To: linux-mips@linux-mips.org
 MIME-Version: 1.0
 Content-Type: text/plain; charset=big5
@@ -15,7 +15,7 @@ Return-Path: <aluba1231.tw@yahoo.com.tw>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4907
+X-archive-position: 4908
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -23,6 +23,18 @@ X-original-sender: aluba1231.tw@yahoo.com.tw
 Precedence: bulk
 X-list: linux-mips
 
+Hi All,
+ I am trying to set up a nfs server on the mipsel
+platform. I got the nfs-utils package and did
+configure/make  with cross compiling by
+mipsel-uclibc-gcc, but It failed while making. Because
+the tools rpcgen is also built to mips format. I tried
+to revise the Makefile to build rpcgen in x86 format,
+but it caused functions undefined reference problem.
+Below is the meessage of making.
+ 
+Thanks,
+Michael
 
 ading cache ./config.cache
 checking for gcc... (cached) mipsel-uclibc-gcc
@@ -249,6 +261,8 @@ make[3]: *** [mountd] Error 1
 make[2]: *** [all] Error 2
 make[1]: *** [all] Error 2
 
+
+ 
 
 
 -----------------------------------------------------------------

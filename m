@@ -1,66 +1,69 @@
-Received:  by oss.sgi.com id <S553729AbQKHS5u>;
-	Wed, 8 Nov 2000 10:57:50 -0800
-Received: from woody.ichilton.co.uk ([216.29.174.40]:29453 "HELO
-        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553706AbQKHS5Y>;
-	Wed, 8 Nov 2000 10:57:24 -0800
-Received: by woody.ichilton.co.uk (Postfix, from userid 0)
-	id BF0FA7CF1; Wed,  8 Nov 2000 18:57:11 +0000 (GMT)
-Date:   Wed, 8 Nov 2000 18:57:11 +0000
-From:   Ian Chilton <ian@ichilton.co.uk>
-To:     pete <pete@blackhammer.com>
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: MIPS linux
-Message-ID: <20001108185711.A10689@woody.ichilton.co.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.11i
+Received:  by oss.sgi.com id <S553770AbQKHTZA>;
+	Wed, 8 Nov 2000 11:25:00 -0800
+Received: from router.isratech.ro ([193.226.114.69]:20243 "EHLO
+        router.isratech.ro") by oss.sgi.com with ESMTP id <S553715AbQKHTYn>;
+	Wed, 8 Nov 2000 11:24:43 -0800
+Received: from isratech.ro (calin.cs.tuiasi.ro [193.231.15.163])
+	by router.isratech.ro (8.10.2/8.10.2) with ESMTP id eA8FKpM32556
+	for <linux-mips@oss.sgi.com>; Wed, 8 Nov 2000 17:20:52 +0200
+Message-ID: <3A09DE18.E55FA70F@isratech.ro>
+Date:   Wed, 08 Nov 2000 18:13:28 -0500
+From:   Nicu Popovici <octavp@isratech.ro>
+X-Mailer: Mozilla 4.74 [en] (X11; U; Linux 2.2.15-2.5.0 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To:     linux-mips@oss.sgi.com
+Subject: Cross_compiler!
+Content-Type: multipart/mixed;
+ boundary="------------61302E31229AB9F02790A356"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hello,
+This is a multi-part message in MIME format.
+--------------61302E31229AB9F02790A356
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-> and noticed that you do not recommend using the hardhat distro based on
+Hello  you all,
 
-You can use it, but it is old and broken. It will get you booted into Linux, but IIRC you can not even compile a kernel  :(
+I have a development board ( ATLAS + QED 5261 processor ).
 
-I am currently putting together some base systems, which you can net-boot and/or copy to a HD. Also, will write an installation guide. Hoping to upload these after the weekend. I started with a Hardhat install, then used the Redhat 6.0 packages from ftp://oss.sgi.com/pub/linux/mips/redhat/test-6.0, but that was not an easy procedure  :)
+Does anyone from you did cross compiled a kernel for mips on a i686
+machine ? I am struggling for three weeks now to do that and nothing
+works. Mr. Weselows said  some days ago  to get the Linux_2_2 form CVS
+and indeed I could cross compile that kernel  but after that I found out
+that  the kernel  does not have support for ATLAS board.
 
-Ralf is currently working on a Redhat 7.0 port, and Flo (lolo) has started uploading packages to debian.org
+I tried the following kernel versions
+1. linux.2.2.12 from the Atlas board CD
+2. linux 2.2.13 from lineo.com
+3. linux 2.2.14 from oss.sgi.com( linux2_2 from CVS site )
+4. linux 2.2.17
 
-Then there is Simple Linux/MIPS, byt Keith...that is available from oss.sgi.com now...
+Best Regards,
+Nicu
 
-So, there is lots in the pipeline, but not a lot to actually go on for end-users right now, more hackers :)
+--------------61302E31229AB9F02790A356
+Content-Type: text/x-vcard; charset=us-ascii;
+ name="octavp.vcf"
+Content-Transfer-Encoding: 7bit
+Content-Description: Card for Nicu Popovici
+Content-Disposition: attachment;
+ filename="octavp.vcf"
 
-All the links should be on the links page at our site... (or the news page).
+begin:vcard 
+n:POPOVICI;Nicolae Octavian 
+tel;cell:+40 93 605020
+x-mozilla-html:FALSE
+org:SC Silicon Service SRL;Software
+adr:;;;;;;
+version:2.1
+email;internet:octavp@isratech.ro
+title:Software engineer
+x-mozilla-cpt:;0
+fn:Nicolae Octavian POPOVICI
+end:vcard
 
-There are pointers to some installation guides..
-
-In the redhat dir on oss, there is a file called instructions, which is the guide I used when I first started out...It describes setting up the network boot server etc...
-
-As I say though, I am currently working on an installation guide for my bases (hoping to release a glibc 2.0.6/kernel 2.2.14 one and a kernel 2.4 / glibc 2.2 one, but the 2.2 is still being worked on  :)
-
-So, i'd say, you can get in there and try some of the stuff downloadable, but if you are in no hurry, hang on for a bit, because there are developments happening...
-
-
-If you are on IRC, join us on irc.openprojects.net, channel #mipslinux (I am GadgetMan), and definatly subscribe to the linux-mips mailinglist on oss.sgi.com
-
-Hope this helps a bit!
-
-
-Bye for Now,
-
-Ian
-
-
-                                \|||/ 
-                                (o o)
- /---------------------------ooO-(_)-Ooo---------------------------\
- |  Ian Chilton     (IRC Nick - GadgetMan)     ian@ichilton.co.uk  |
- |-----------------------------------------------------------------|
- |  Web Site      -->  http://www.ichilton.co.uk                   |
- |-----------------------------------------------------------------|
- |  "Unix is user friendly - it's just picky about it's friends."  |
- \-----------------------------------------------------------------/
+--------------61302E31229AB9F02790A356--

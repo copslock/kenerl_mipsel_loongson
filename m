@@ -1,58 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Apr 2003 11:56:48 +0100 (BST)
-Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:41484 "EHLO
-	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8225202AbTDOK4q>;
-	Tue, 15 Apr 2003 11:56:46 +0100
-Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
-	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
-	id 195OC3-0007Cw-00; Tue, 15 Apr 2003 12:01:39 +0100
-Received: from gladsmuir.algor.co.uk ([172.20.192.66] helo=gladsmuir.mips.com)
-	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
-	id 195O6T-0007BP-00; Tue, 15 Apr 2003 11:55:53 +0100
-From: Dominic Sweetman <dom@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Apr 2003 13:52:20 +0100 (BST)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:24527 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225202AbTDOMwU>; Tue, 15 Apr 2003 13:52:20 +0100
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA14698;
+	Tue, 15 Apr 2003 14:52:54 +0200 (MET DST)
+Date: Tue, 15 Apr 2003 14:52:53 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Ladislav Michl <ladis@linux-mips.org>
+cc: Brian Murphy <brian@murphy.dk>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: Re: rtc_[gs]et_time()
+In-Reply-To: <20030415101238.C29593@ftp.linux-mips.org>
+Message-ID: <Pine.GSO.3.96.1030415143703.13254D-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-ID: <16027.58679.576152.853200@gladsmuir.mips.com>
-Date: Tue, 15 Apr 2003 11:55:51 +0100
-To: Dennis Castleman <DennisCastleman@oaktech.com>
-Cc: "'Ralf Baechle'" <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-	Gus Fernandez <GusFernandez@oaktech.com>
-Subject: Re: Soft floating point on 5K
-In-Reply-To: <56BEF0DBC8B9D611BFDB00508B5E2634102F07@TLEXMAIL>
-References: <56BEF0DBC8B9D611BFDB00508B5E2634102F07@TLEXMAIL>
-X-Mailer: VM 6.92 under 21.1 (patch 14) "Cuyahoga Valley" XEmacs Lucid
-X-MTUK-Scanner: Found to be clean
-X-MTUK-SpamCheck: not spam, SpamAssassin (score=-2, required 4.5, AWL,
-	EMAIL_ATTRIBUTION, IN_REP_TO, QUOTED_EMAIL_TEXT, REFERENCES,
-	SPAM_PHRASE_00_01)
-Return-Path: <dom@mips.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2050
+X-archive-position: 2051
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dom@mips.com
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
+On Tue, 15 Apr 2003, Ladislav Michl wrote:
 
-Dennis Castleman (DennisCastleman@oaktech.com) writes:
+> > >This makes it more complex to make drivers/char/genrtc.c work on MIPS, since 
+> > >usually the date and time have to be converted twice: once from struct rtc_time
+> > >to seconds in <asm/rtc.h>, and once from seconds to struct rtc_time in each RTC
+> > >driver.
+> > >
+> > >Is it OK to make rtc_[gs]et_time() always use struct rtc_time?
+> > >
+> > I quite like it the way it is ;-)
+> 
+> While I would like to see rtc_[gs]et_time() always use struct rtc_time ;)
 
-> I'm trying to run soft-floating point functions on a r5000 core with
-> a FPU. Without having to take the overhead of using a trap.  Using
-> the files fp-bit.c and dp-bit.c from the gcc source as a floating
-> point lib.  This implementation lack in accuracy in the least
-> signeficant bit multiplication in division operations.
+ Note that the system time is always a monotonic count of seconds (plus a
+fractional part), but the format stored in RTC chips varies.  So I think
+it should be passed unchanged and the convertion left up to specific
+drivers, possibly with an aid for ones that closely match 'struct
+rtc_time' by means of library or inline helper functions. 
 
-There's an IEEE-compatible set of software floating point routines in
-the Linux kernel, invoked by the trap handler.  The routines were
-donated by Algorithmics (now part of MIPS Technologies).
+ E.g. one of the yet unsupported DECstations uses a 32bit register
+counting 10ms intervals as its RTC (or actually TOY).  So maybe it's
+'struct timespec' that should really be passed... 
 
-If you wrapped them in the appropriate GCC skins, they should give you
-a soft-float library which works better.
-
---
-Dominic Sweetman
-dom@mips.com
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

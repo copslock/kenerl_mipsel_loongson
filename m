@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Feb 2005 14:54:58 +0000 (GMT)
-Received: from schenk.ISAR.de ([IPv6:::ffff:212.14.78.13]:55337 "EHLO
-	schenk.isar.de") by linux-mips.org with ESMTP id <S8224929AbVBJOyi>;
-	Thu, 10 Feb 2005 14:54:38 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Feb 2005 15:11:00 +0000 (GMT)
+Received: from schenk.ISAR.de ([IPv6:::ffff:212.14.78.13]:59177 "EHLO
+	schenk.isar.de") by linux-mips.org with ESMTP id <S8225211AbVBJPKo>;
+	Thu, 10 Feb 2005 15:10:44 +0000
 Received: from gwhaus.rt.schenk (gwhaus.rt.schenk [172.22.0.4])
-	by schenk.isar.de (8.11.6/8.11.6/SuSE Linux 0.5) with ESMTP id j1AEsaH20913;
-	Thu, 10 Feb 2005 15:54:36 +0100
+	by schenk.isar.de (8.11.6/8.11.6/SuSE Linux 0.5) with ESMTP id j1AFAVH21047;
+	Thu, 10 Feb 2005 16:10:31 +0100
 Received: from [172.22.10.24] (pcimr4.rt.schenk [172.22.10.24])
-	by gwhaus.rt.schenk (8.11.6/8.11.6/SuSE Linux 0.5) with ESMTP id j1AEsac32205;
-	Thu, 10 Feb 2005 15:54:36 +0100
-Message-ID: <420B75AC.4080209@schenk.isar.de>
-Date:	Thu, 10 Feb 2005 15:54:36 +0100
+	by gwhaus.rt.schenk (8.11.6/8.11.6/SuSE Linux 0.5) with ESMTP id j1AFAVc32286;
+	Thu, 10 Feb 2005 16:10:31 +0100
+Message-ID: <420B7967.4020105@schenk.isar.de>
+Date:	Thu, 10 Feb 2005 16:10:31 +0100
 From:	Rojhalat Ibrahim <ibrahim@schenk.isar.de>
 User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7) Gecko/20040617
 X-Accept-Language: en-us, en
@@ -27,7 +27,7 @@ Return-Path: <ibrahim@schenk.isar.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7224
+X-archive-position: 7225
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,15 +49,11 @@ Ralf Baechle wrote:
 > a severe bug on SMP.
 > 
 
-I did a CVS update, which apparently includes this
-patch, and I get this:
-
-   LD      .tmp_vmlinux1
-arch/mips/mm/built-in.o(.init.text+0x98): In function `fixrange_init':
-: undefined reference to `__pud_offset'
-make: *** [.tmp_vmlinux1] Error 1
-
-What's __pud_offset?
+Also tried it on this morning's source (without the
+most recent patches). Doesn't make a difference.
+Still works with 512 MB and crashes with 1 GB.
+The problem is not SMP related anyway. It appears
+the same with an UP kernel.
 
 Thanks
 Rojhalat Ibrahim

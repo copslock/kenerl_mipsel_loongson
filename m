@@ -1,85 +1,59 @@
-Received:  by oss.sgi.com id <S305218AbQD0Ku3>;
-	Thu, 27 Apr 2000 03:50:29 -0700
-Received: from deliverator.sgi.com ([204.94.214.10]:20782 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305212AbQD0KuH>;
-	Thu, 27 Apr 2000 03:50:07 -0700
-Received: from nodin.corp.sgi.com (fddi-nodin.corp.sgi.com [198.29.75.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id DAA26651; Thu, 27 Apr 2000 03:45:20 -0700 (PDT)
+Received:  by oss.sgi.com id <S305220AbQD0NH7>;
+	Thu, 27 Apr 2000 06:07:59 -0700
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:13119 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S305187AbQD0NHw>; Thu, 27 Apr 2000 06:07:52 -0700
+Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id GAA08320; Thu, 27 Apr 2000 06:12:02 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id DAA35209; Thu, 27 Apr 2000 03:48:21 -0700 (PDT)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id DAA52389
+	id FAA21866
 	for linux-list;
-	Thu, 27 Apr 2000 03:36:54 -0700 (PDT)
+	Thu, 27 Apr 2000 05:57:56 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id DAA53251
+	via ESMTP id FAA77532
 	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 27 Apr 2000 03:36:51 -0700 (PDT)
-	mail_from (jbglaw@ev-stift-gymn.guetersloh.de)
-Received: from belgarath.esg-guetersloh.mediapoint.de (belgarath.esg-guetersloh.mediapoint.de [193.189.251.50]) 
+	Thu, 27 Apr 2000 05:57:54 -0700 (PDT)
+	mail_from (kevink@mips.com)
+Received: from mx.mips.com (mx.mips.com [206.31.31.226]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id DAA05365
-	for <linux@cthulhu.engr.sgi.com>; Thu, 27 Apr 2000 03:36:47 -0700 (PDT)
-	mail_from (jbglaw@ev-stift-gymn.guetersloh.de)
-Received: by belgarath.esg-guetersloh.mediapoint.de (Postfix, from userid 1000)
-	id 922365131B; Thu, 27 Apr 2000 12:36:44 +0200 (CEST)
-Date:   Thu, 27 Apr 2000 12:36:44 +0200
-From:   Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To:     linux@cthulhu.engr.sgi.com
+	via ESMTP id FAA06169
+	for <linux@cthulhu.engr.sgi.com>; Thu, 27 Apr 2000 05:57:53 -0700 (PDT)
+	mail_from (kevink@mips.com)
+Received: from newman.mips.com (newman [206.31.31.8])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id FAA16881;
+	Thu, 27 Apr 2000 05:57:54 -0700 (PDT)
+Received: from Ulysses (uk4-tgn-lmr-vty4.as.wcom.net [195.232.18.4])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id FAA22385;
+	Thu, 27 Apr 2000 05:57:44 -0700 (PDT)
+Message-ID: <001b01bfb048$85ab6780$0412e8c3@Ulysses>
+From:   "Kevin D. Kissell" <kevink@mips.com>
+To:     "maxence Lange" <maxence@manipura.com>,
+        <linux@cthulhu.engr.sgi.com>
 Subject: Re: Just a little question ..
-Message-ID: <20000427123644.G11298@lug-owl.de>
-Reply-To: jbglaw@lug-owl.de
-Mail-Followup-To: linux@cthulhu.engr.sgi.com
-References: <20000427125836.B14257@manipura.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-md5;
-	protocol="application/pgp-signature"; boundary="Ns7jmDPpOpCD+GE/"
-X-Mailer: Mutt 1.0i
-In-Reply-To: <20000427125836.B14257@manipura.com>; from maxence@manipura.com on Thu, Apr 27, 2000 at 12:58:36PM +0200
-X-Operating-System: Linux belgarath.esg-guetersloh.mediapoint.de 2.0.35 
+Date:   Thu, 27 Apr 2000 14:59:59 +0200
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 4.72.3110.1
+X-MimeOLE: Produced By Microsoft MimeOLE V4.72.3110.3
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
+>could we hope to see linux on Indigi r3000 one day ?!? :)
 
---Ns7jmDPpOpCD+GE/
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 27, 2000 at 12:58:36PM +0200, maxence Lange wrote:
->=20
-> could we hope to see linux on Indigi r3000 one day ?!? :)
+If and when someone finds a lost time-capsule of Indigo
+HW design information.   It ain't the CPU that's the problem...
 
-Right now: No success;( SOme days ago somebody asked for docs but I
-haven't heared that here are *any* docs at all;( Some days ago, we tested
-to boot a kernel, but this stopped immediately with an exception right
-after tftp'ing the kernel;(
-
-MfG, JBG
-
---=20
-Fehler eingestehen, Gr=F6=DFe zeigen: Nehmt die Rechtschreibreform zur=FCck=
-!!!
-/* Jan-Benedict Glaw <jbglaw@lug-owl.de> -- +49-177-5601720 */
-keyID=3D0x8399E1BB fingerprint=3D250D 3BCF 7127 0D8C A444 A961 1DBD 5E75 83=
-99 E1BB
-
---Ns7jmDPpOpCD+GE/
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.1 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iEYEAREBAAYFAjkIGDsACgkQHb1edYOZ4buHxwCcC/VyEZM0+oAZ31m1rtlWf2wm
-fRUAnjCXG5nBbZKavgxYpuONnZo/fbe9
-=/Lnu
------END PGP SIGNATURE-----
-
---Ns7jmDPpOpCD+GE/--
+            Kevin K.

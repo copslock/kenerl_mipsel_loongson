@@ -1,47 +1,42 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id RAA548840 for <linux-archive@neteng.engr.sgi.com>; Fri, 26 Sep 1997 17:36:54 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id TAA552061 for <linux-archive@neteng.engr.sgi.com>; Fri, 26 Sep 1997 19:24:51 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id RAA05453 for linux-list; Fri, 26 Sep 1997 17:36:37 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id RAA05449; Fri, 26 Sep 1997 17:36:35 -0700
-Received: from dns.cobaltmicro.com ([209.19.61.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id RAA04775; Fri, 26 Sep 1997 17:36:25 -0700
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id TAA17129 for linux-list; Fri, 26 Sep 1997 19:24:34 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id TAA17124 for <linux@engr.sgi.com>; Fri, 26 Sep 1997 19:24:32 -0700
+Received: from dns.cobaltmicro.com ([209.19.61.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id TAA24091
+	for <linux@engr.sgi.com>; Fri, 26 Sep 1997 19:24:30 -0700
 	env-from (ralf@dns.cobaltmicro.com)
 Received: (from ralf@localhost)
-	by dns.cobaltmicro.com (8.8.5/8.8.5) id RAA02682;
-	Fri, 26 Sep 1997 17:36:25 -0700
+	by dns.cobaltmicro.com (8.8.5/8.8.5) id TAA03105;
+	Fri, 26 Sep 1997 19:24:36 -0700
 From: Ralf Baechle <ralf@cobaltmicro.com>
-Message-Id: <199709270036.RAA02682@dns.cobaltmicro.com>
-Subject: Re: R3000 SGI machines
-To: wje@fir.engr.sgi.com (William J. Earl)
-Date: Fri, 26 Sep 1997 17:36:25 -0700 (PDT)
-Cc: imp@village.org, ralf@cobaltmicro.com, linux@cthulhu.engr.sgi.com,
-        ab@ivm.net
-In-Reply-To: <199709261558.IAA10949@fir.engr.sgi.com> from "William J. Earl" at Sep 26, 97 08:58:19 am
+Message-Id: <199709270224.TAA03105@dns.cobaltmicro.com>
+Subject: Re: MIPS R2k/3k machines....
+To: linux-mips@fnet.fr, linux@cthulhu.engr.sgi.com
+Date: Fri, 26 Sep 1997 19:24:35 -0700 (PDT)
+In-Reply-To: <Pine.GSO.3.96.970927024945.6430C-100000@tardis.tardis.ed.ac.uk> from "Lucien Murray-Pitts" at Sep 27, 97 02:55:42 am
 Content-Type: text
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> Warner Losh writes:
->  > In message <199709260639.XAA09959@dull.cobaltmicro.com> Ralf Baechle writes:
->  > : I receive an increasing number of emails asking for Linux as replacement
->  > : operating system for older R3000 SGI machines as well as Mips Inc.
->  > : machines.  Is there still documentation available for these systems
->  > : that would make a port possible?
->  > 
->  > I'll have to search my email archive (which would take some doing),
->  > but someone at SGI offered to get me the sources to RISCos, or at
->  > least the device drivers.  They were donated to berkeley, who didn't
->  > integrate them into their 4.4 or 4.4lite release, was the story I was
->  > told.  Might be worth looking into.  Wouldn't help with some of the
->  > older SGI machines, but would help with the MIPS co boxes.
+Hi,
+
+> 	I too, like the several other people, want to help port Linux to
+> the older 2k and 3k systems BUT like all the others I am hindered by a
+> total LACK of documentation.  I did manage to find one nice chap who gave
+> me some docco. but unfortuantely it was for the R4Ks, however...
+
+I assume you only refer to the system documentation.  The CPU documentation
+is available for free from {sgigate,www}.sgi.com and a couple of
+Mips silicon manufacturers like {ftp,www}.idt.com and others more.
+
+> 	Does ANYONE have ANY technical INFORMATION which might be of use
+> to all of us port of linux.
 > 
->      The RISCos driver source was supplied with every system, and we
-> did donate the source to Berkeley.  Most of the VME controllers were
-> common to MIPS and SGI VME systems, so most of the drivers, other than
-> graphics, would be covered.
+> 	No matter how small, silly or whatever I'd like to hear about it.
 
-I think I can still get access to RISC/os 5.x system, maybe also old
-RISC/os 4.51 tapes.  What files should I try to look for?
-
-Andy, I think you still have Resi in use, don't you?  Any driver sources
-included?
+I asked some people at SGI and they'll try to dig out what still
+exists.  Somebody came up with a quite nice link for owners of
+historic SGI machines.  Check out the site, there is a link to it
+on www.linux.sgi.com.
 
   Ralf

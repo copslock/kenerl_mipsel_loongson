@@ -1,54 +1,55 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA56057 for <linux-archive@neteng.engr.sgi.com>; Sat, 13 Mar 1999 16:11:02 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA66423 for <linux-archive@neteng.engr.sgi.com>; Sun, 14 Mar 1999 15:04:43 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id QAA50429
+	id PAA98344
 	for linux-list;
-	Sat, 13 Mar 1999 16:10:20 -0800 (PST)
+	Sun, 14 Mar 1999 15:03:58 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id QAA04825
-	for <linux@engr.sgi.com>;
-	Sat, 13 Mar 1999 16:10:11 -0800 (PST)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
+	via ESMTP id PAA40559
+	for <linux@cthulhu.engr.sgi.com>;
+	Sun, 14 Mar 1999 15:03:55 -0800 (PST)
+	mail_from (richard@infopact.nl)
+Received: from perron-null.patser.net (9dyn12.breda.casema.net [195.96.116.12]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id QAA01646
-	for <linux@engr.sgi.com>; Sat, 13 Mar 1999 16:10:09 -0800 (PST)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from lappi.waldorf-gmbh.de (cacc-28.uni-koblenz.de [141.26.131.28])
-	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id BAA04767
-	for <linux@engr.sgi.com>; Sun, 14 Mar 1999 01:10:03 +0100 (MET)
-Received: (from ralf@localhost)
-	by lappi.waldorf-gmbh.de (8.8.7/8.8.7) id BAA03859;
-	Sun, 14 Mar 1999 01:08:42 +0100
-Message-ID: <19990314010841.A3815@uni-koblenz.de>
-Date: Sun, 14 Mar 1999 01:08:41 +0100
-From: ralf@uni-koblenz.de
-To: linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
-        linux-mips@vger.rutgers.edu
-Subject: FAQ
-Mime-Version: 1.0
+	via ESMTP id PAA06723
+	for <linux@cthulhu.engr.sgi.com>; Sun, 14 Mar 1999 15:03:52 -0800 (PST)
+	mail_from (richard@infopact.nl)
+Received: from infopact.nl (indigo2.patser.net [192.168.6.40])
+	by perron-null.patser.net (8.9.0/8.9.0) with ESMTP id XAA08147;
+	Sun, 14 Mar 1999 23:47:20 +0100
+Message-ID: <36EC41C5.4D1A81F5@infopact.nl>
+Date: Mon, 15 Mar 1999 00:09:57 +0100
+From: Richard Hartensveld <richard@infopact.nl>
+X-Mailer: Mozilla 4.05C-SGI [en] (X11; I; IRIX 6.5 IP22)
+MIME-Version: 1.0
+To: "Andrew R. Baker" <andrewb@uab.edu>
+CC: darkaeon@cubicsky.com, linux@cthulhu.engr.sgi.com
+Subject: Re: Indigo2 & Linux
+References: <Pine.LNX.3.96.990312095443.14950B-100000@mdk187.tucc.uab.edu>
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.93.2
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi,
+> Just as a quick note, to where I am on the Indigo2.  I have gotten it to
+> boot the kernel off of the network and start initializing devices.  It
+> will even send out packets over ethernet, but I do not have working
+> interrupts yet so it doesn't ever see any response.  For the most part, it
+> dies on "Trying to mount root filesystem".  I should have something
+> working not too long after I get some docs.
+>
+>
 
-I've just put my rewrite of the Linux/MIPS FAQ under CVS control on
-linus.linux.sgi.com in the module FAQ.   I want to invite people to
-contribute by proofreading, spellchecking and commenting.
+Is there some place where i can get your kernel (source) from? have you got
+some kind of CVS tree running?
 
-The FAQ rewrite is using the Linux SGML-Tools package to generate
-FAQ versions in various data formats.  When I find the time I'll
-arrange that the websites will automatically be updated by the
-most current version; but somebody else will want to do that?
-(hint, hint)
+I've got an indigo2 with Extreme video here on which i'd like to try your
+kernel and see what happens.
 
-  Ralf
+Richard

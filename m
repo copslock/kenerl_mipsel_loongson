@@ -1,112 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Jul 2004 09:09:29 +0100 (BST)
-Received: from [IPv6:::ffff:211.155.249.251] ([IPv6:::ffff:211.155.249.251]:57804
-	"EHLO nnt.neonetech.com") by linux-mips.org with ESMTP
-	id <S8224863AbUG3IJZ>; Fri, 30 Jul 2004 09:09:25 +0100
-Received: from wbar1 ([221.219.32.2]) by nnt.neonetech.com with Microsoft SMTPSVC(5.0.2195.6713);
-	 Fri, 30 Jul 2004 16:12:47 +0800
-Date: Fri, 30 Jul 2004 16:09:25 +0800
-From: "xuhaoz" <xuhaoz@neonetech.com>
-To: "linux-mips" <linux-mips@linux-mips.org>
-Subject: cflags -mips1 error
-X-mailer: Foxmail 5.0 [cn]
-Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="gb2312"
-Content-Transfer-Encoding: base64
-Message-ID: <NNTsTmIClmpcQABZTW5000001ef@nnt.neonetech.com>
-X-OriginalArrivalTime: 30 Jul 2004 08:12:48.0015 (UTC) FILETIME=[000449F0:01C4760D]
-Return-Path: <xuhaoz@neonetech.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Jul 2004 10:48:39 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:29967 "EHLO
+	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8224863AbUG3Jsf>; Fri, 30 Jul 2004 10:48:35 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 1051BE1CB5; Fri, 30 Jul 2004 11:48:31 +0200 (CEST)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 17811-05; Fri, 30 Jul 2004 11:48:30 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id DB497E1C94; Fri, 30 Jul 2004 11:48:30 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.12.11/8.11.4) with ESMTP id i6U9mbge008500;
+	Fri, 30 Jul 2004 11:48:37 +0200
+Date: Fri, 30 Jul 2004 11:48:31 +0200 (CEST)
+From: "Maciej W. Rozycki" <macro@linux-mips.org>
+To: Richard Sandiford <rsandifo@redhat.com>
+Cc: greg.roelofs@philips.com, linux-mips@linux-mips.org
+Subject: Re: apparent math-emu hang on movf instruction
+In-Reply-To: <871xivuwjf.fsf@redhat.com>
+Message-ID: <Pine.LNX.4.58L.0407301143260.23489@blysk.ds.pg.gda.pl>
+References: <OFFE4A0198.56A3A2A2-ON88256EDF.006D0D9F@philips.com>
+ <876587uwud.fsf@redhat.com> <871xivuwjf.fsf@redhat.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5569
+X-archive-position: 5570
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: xuhaoz@neonetech.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-aGVsbG8NCiAgbXkgY3B1IGlzIG1pcHMxLCBhbmQgaSB1c2UgdWNsaW51eC1kaXN0XGxpbnV4Mi40
-LngNCg0Kd2hlbiBpIHJ1biBtYWtlIGluIHRoZSB1Y2xpbnV4LWRpc3RcIHdpdGggLW1pcHMxICwg
-dGhlcmUgaXMgYW4gZXJyb3IgbGlrZSB0aGlzOg0KDQoNCiA+DQo+cm9vdEB4dWhhb3ogdUNsaW51
-eC1kaXN0XSMgbWFrZQ0KPm1ha2UgQVJDSD1taXBzIENST1NTX0NPTVBJTEU9bWlwc2VsLWxpbnV4
-LSAtQyBsaW51eC0yLjQueCAgfHwgZXhpdCAxDQo+bWFrZVsxXTogRW50ZXJpbmcgZGlyZWN0b3J5
-IGAvdXNyL3NyYy91Q2xpbnV4LWRpc3QvbGludXgtMi40LngnDQo+LiBzY3JpcHRzL21rdmVyc2lv
-biA+IC50bXB2ZXJzaW9uDQo+bWlwc2VsLWxpbnV4LWdjYyAtRF9fS0VSTkVMX18gLUkvdXNyL3Ny
-Yy91Q2xpbnV4LWRpc3QvbGludXgtMi40LngvaW5jbHVkZQ0KPi1XYWxsDQo+LVdzdHJpY3QtcHJv
-dG90eXBlcyAtV25vLXRyaWdyYXBocyAtbWlwczEgLU8yIC1mbm8tc3RyaWN0LWFsaWFzaW5nIC1m
-bm8tY29tbW9uDQo+LWZvbWl0LWZyYW1lLXBvaW50ZXIgLUkgL3Vzci9zcmMvdUNsaW51eC1kaXN0
-L2xpbnV4LTIuNC54L2luY2x1ZGUvYXNtL2djYyAtRyAwDQo+LW1uby1hYmljYWxscyAtZm5vLXBp
-YyAtcGlwZSAgIC1EVVRTX01BQ0hJTkU9JyJtaXBzIicNCj4tREtCVUlMRF9CQVNFTkFNRT12ZXJz
-aW9uIC1jIC1vIGluaXQvdmVyc2lvbi5vIGluaXQvdmVyc2lvbi5jDQo+bWFrZSBDRkxBR1M9Ii1E
-X19LRVJORUxfXyAtSS91c3Ivc3JjL3VDbGludXgtZGlzdC9saW51eC0yLjQueC9pbmNsdWRlIC1X
-YWxsDQo+LVdzdHJpY3QtcHJvdG90eXBlcyAtV25vLXRyaWdyYXBocyAtbWlwczEgLU8yIC1mbm8t
-c3RyaWN0LWFsaWFzaW5nIC1mbm8tY29tbW9uDQo+LWZvbWl0LWZyYW1lLXBvaW50ZXIgLUkgL3Vz
-ci9zcmMvdUNsaW51eC1kaXN0L2xpbnV4LTIuNC54L2luY2x1ZGUvYXNtL2djYyAtRyAwDQo+LW1u
-by1hYmljYWxscyAtZm5vLXBpYyAtcGlwZSAgIiAtQyAgYXJjaC9taXBzL3Rvb2xzDQo+bWFrZVsy
-XTogRW50ZXJpbmcgZGlyZWN0b3J5DQo+YC91c3Ivc3JjL3VDbGludXgtZGlzdC9saW51eC0yLjQu
-eC9hcmNoL21pcHMvdG9vbHMnDQo+Y21wIC1zIG9mZnNldC5oIC91c3Ivc3JjL3VDbGludXgtZGlz
-dC9saW51eC0yLjQueC9pbmNsdWRlL2FzbS1taXBzL29mZnNldC5oIHx8DQo+KGNwIG9mZnNldC5o
-IC91c3Ivc3JjL3VDbGludXgtZGlzdC9saW51eC0yLjQueC9pbmNsdWRlL2FzbS1taXBzL29mZnNl
-dC5oLm5ldw0KPiYmIG12IC91c3Ivc3JjL3VDbGludXgtZGlzdC9saW51eC0yLjQueC9pbmNsdWRl
-L2FzbS1taXBzL29mZnNldC5oLm5ldw0KPi91c3Ivc3JjL3VDbGludXgtZGlzdC9saW51eC0yLjQu
-eC9pbmNsdWRlL2FzbS1taXBzL29mZnNldC5oKQ0KPm1ha2VbMl06IExlYXZpbmcgZGlyZWN0b3J5
-IGAvdXNyL3NyYy91Q2xpbnV4LWRpc3QvbGludXgtMi40LngvYXJjaC9taXBzL3Rvb2xzJw0KPm1h
-a2UgQ0ZMQUdTPSItRF9fS0VSTkVMX18gLUkvdXNyL3NyYy91Q2xpbnV4LWRpc3QvbGludXgtMi40
-LngvaW5jbHVkZSAtV2FsbA0KPi1Xc3RyaWN0LXByb3RvdHlwZXMgLVduby10cmlncmFwaHMgLW1p
-cHMxIC1PMiAtZm5vLXN0cmljdC1hbGlhc2luZyAtZm5vLWNvbW1vbg0KPi1mb21pdC1mcmFtZS1w
-b2ludGVyIC1JIC91c3Ivc3JjL3VDbGludXgtZGlzdC9saW51eC0yLjQueC9pbmNsdWRlL2FzbS9n
-Y2MgLUcgMA0KPi1tbm8tYWJpY2FsbHMgLWZuby1waWMgLXBpcGUgICIgLUMgIGtlcm5lbA0KPm1h
-a2VbMl06IEVudGVyaW5nIGRpcmVjdG9yeSBgL3Vzci9zcmMvdUNsaW51eC1kaXN0L2xpbnV4LTIu
-NC54L2tlcm5lbCcNCj5tYWtlIGFsbF90YXJnZXRzDQo+bWFrZVszXTogRW50ZXJpbmcgZGlyZWN0
-b3J5IGAvdXNyL3NyYy91Q2xpbnV4LWRpc3QvbGludXgtMi40Lngva2VybmVsJw0KPm1pcHNlbC1s
-aW51eC1nY2MgLURfX0tFUk5FTF9fIC1JL3Vzci9zcmMvdUNsaW51eC1kaXN0L2xpbnV4LTIuNC54
-L2luY2x1ZGUNCj4tV2FsbA0KPi1Xc3RyaWN0LXByb3RvdHlwZXMgLVduby10cmlncmFwaHMgLW1p
-cHMxIC1PMiAtZm5vLXN0cmljdC1hbGlhc2luZyAtZm5vLWNvbW1vbg0KPi1mb21pdC1mcmFtZS1w
-b2ludGVyIC1JIC91c3Ivc3JjL3VDbGludXgtZGlzdC9saW51eC0yLjQueC9pbmNsdWRlL2FzbS9n
-Y2MgLUcgMA0KPi1tbm8tYWJpY2FsbHMgLWZuby1waWMgLXBpcGUgICAgLW5vc3RkaW5jIC1pd2l0
-aHByZWZpeCBpbmNsdWRlDQo+LURLQlVJTERfQkFTRU5BTUU9c2NoZWQgIC1mbm8tb21pdC1mcmFt
-ZS1wb2ludGVyIC1jIC1vIHNjaGVkLm8gc2NoZWQuYw0KPntzdGFuZGFyZCBpbnB1dH06IEFzc2Vt
-YmxlciBtZXNzYWdlczoNCj57c3RhbmRhcmQgaW5wdXR9OjczMjogRXJyb3I6IG9wY29kZSBub3Qg
-c3VwcG9ydGVkIG9uIHRoaXMgcHJvY2Vzc29yOiBSMzAwMA0KPihNSVBTMSkgYGxsICQzLDAoJDIp
-Jw0KPntzdGFuZGFyZCBpbnB1dH06NzM0OiBFcnJvcjogb3Bjb2RlIG5vdCBzdXBwb3J0ZWQgb24g
-dGhpcyBwcm9jZXNzb3I6IFIzMDAwDQo+KE1JUFMxKSBgc2MgJDMsMCgkMiknDQo+e3N0YW5kYXJk
-IGlucHV0fTo4MTM6IEVycm9yOiBvcGNvZGUgbm90IHN1cHBvcnRlZCBvbiB0aGlzIHByb2Nlc3Nv
-cjogUjMwMDANCj4oTUlQUzEpIGBsbCAkNiwwKCQ0KScNCj57c3RhbmRhcmQgaW5wdXR9OjgxNTog
-RXJyb3I6IG9wY29kZSBub3Qgc3VwcG9ydGVkIG9uIHRoaXMgcHJvY2Vzc29yOiBSMzAwMA0KPihN
-SVBTMSkgYHNjICQ2LDAoJDQpJw0KPntzdGFuZGFyZCBpbnB1dH06ODIyOiBFcnJvcjogb3Bjb2Rl
-IG5vdCBzdXBwb3J0ZWQgb24gdGhpcyBwcm9jZXNzb3I6IFIzMDAwDQo+KE1JUFMxKSBgbGwgJDIs
-MCgkMyknDQo+e3N0YW5kYXJkIGlucHV0fTo4MjQ6IEVycm9yOiBvcGNvZGUgbm90IHN1cHBvcnRl
-ZCBvbiB0aGlzIHByb2Nlc3NvcjogUjMwMDANCj4oTUlQUzEpIGBzYyAkMiwwKCQzKScNCj57c3Rh
-bmRhcmQgaW5wdXR9Ojg0NDogRXJyb3I6IG9wY29kZSBub3Qgc3VwcG9ydGVkIG9uIHRoaXMgcHJv
-Y2Vzc29yOiBSMzAwMA0KPihNSVBTMSkgYGxsICQ1LDAoJDIpJw0KPntzdGFuZGFyZCBpbnB1dH06
-ODQ2OiBFcnJvcjogb3Bjb2RlIG5vdCBzdXBwb3J0ZWQgb24gdGhpcyBwcm9jZXNzb3I6IFIzMDAw
-DQo+KE1JUFMxKSBgc2MgJDQsMCgkMiknDQo+e3N0YW5kYXJkIGlucHV0fTo4NDk6IEVycm9yOiBv
-cGNvZGUgbm90IHN1cHBvcnRlZCBvbiB0aGlzIHByb2Nlc3NvcjogUjMwMDANCj4oTUlQUzEpIGBz
-eW5jICcNCj57c3RhbmRhcmQgaW5wdXR9OjMyMzE6IEVycm9yOiBvcGNvZGUgbm90IHN1cHBvcnRl
-ZCBvbiB0aGlzIHByb2Nlc3NvcjogUjMwMDANCj4oTUlQUzEpIGBsbCAkMywwKCQyKScNCj57c3Rh
-bmRhcmQgaW5wdXR9OjMyMzM6IEVycm9yOiBvcGNvZGUgbm90IHN1cHBvcnRlZCBvbiB0aGlzIHBy
-b2Nlc3NvcjogUjMwMDANCj4oTUlQUzEpIGBzYyAkMywwKCQyKScNCj57c3RhbmRhcmQgaW5wdXR9
-OjMyNDk6IEVycm9yOiBvcGNvZGUgbm90IHN1cHBvcnRlZCBvbiB0aGlzIHByb2Nlc3NvcjogUjMw
-MDANCj4oTUlQUzEpIGBsbCAkMywwKCQyKScNCj57c3RhbmRhcmQgaW5wdXR9OjMyNTE6IEVycm9y
-OiBvcGNvZGUgbm90IHN1cHBvcnRlZCBvbiB0aGlzIHByb2Nlc3NvcjogUjMwMDANCj4oTUlQUzEp
-IGBzYyAkMywwKCQyKScNCj57c3RhbmRhcmQgaW5wdXR9OjMzMzY6IEVycm9yOiBvcGNvZGUgbm90
-IHN1cHBvcnRlZCBvbiB0aGlzIHByb2Nlc3NvcjogUjMwMDANCj4oTUlQUzEpIGBsbCAkNCx3YWl0
-X2luaXRfaWRsZSgkMyknDQo+e3N0YW5kYXJkIGlucHV0fTozMzM4OiBFcnJvcjogb3Bjb2RlIG5v
-dCBzdXBwb3J0ZWQgb24gdGhpcyBwcm9jZXNzb3I6IFIzMDAwDQo+KE1JUFMxKSBgc2MgJDQsd2Fp
-dF9pbml0X2lkbGUoJDMpJw0KPntzdGFuZGFyZCBpbnB1dH06MzQwNzogRXJyb3I6IG9wY29kZSBu
-b3Qgc3VwcG9ydGVkIG9uIHRoaXMgcHJvY2Vzc29yOiBSMzAwMA0KPihNSVBTMSkgYGxsICQ0LDAo
-JDIpJw0KPntzdGFuZGFyZCBpbnB1dH06MzQwOTogRXJyb3I6IG9wY29kZSBub3Qgc3VwcG9ydGVk
-IG9uIHRoaXMgcHJvY2Vzc29yOiBSMzAwMA0KPihNSVBTMSkgYHNjICQ0LDAoJDIpJw0KPm1ha2Vb
-M106ICoqKiBbc2NoZWQub10gRXJyb3IgMQ0KPm1ha2VbM106IExlYXZpbmcgZGlyZWN0b3J5IGAv
-dXNyL3NyYy91Q2xpbnV4LWRpc3QvbGludXgtMi40Lngva2VybmVsJw0KPm1ha2VbMl06ICoqKiBb
-Zmlyc3RfcnVsZV0gRXJyb3IgMg0KPm1ha2VbMl06IExlYXZpbmcgZGlyZWN0b3J5IGAvdXNyL3Ny
-Yy91Q2xpbnV4LWRpc3QvbGludXgtMi40Lngva2VybmVsJw0KPm1ha2VbMV06ICoqKiBbX2Rpcl9r
-ZXJuZWxdIEVycm9yIDINCj5tYWtlWzFdOiBMZWF2aW5nIGRpcmVjdG9yeSBgL3Vzci9zcmMvdUNs
-aW51eC1kaXN0L2xpbnV4LTIuNC54Jw0KPm1ha2U6ICoqKiBbbGludXhdIEVycm9yIDENCj4NCj4g
-ICAgIGluIHRoZSAidUNsaW51eC1kaXN0XGxpbnV4Mi40LnhcTWFrZWZpbGUiICxpIGFkZGVkICBh
-IGxpbmUgOiBDUk9TUy1DT01QSUxFPW1pcHNlbC1saW51eC1nY2MNCj4JCQkJCQkJCQkJCQkJCQkJ
-CSBBUkNIID0gbWlwcw0KPg0KPiAJDQogIGlzIHRoZXJlIGFueW9uZSBjYW4gaGVscCBtZSA/DQoN
-Cg0KoaGhoaGhoaGhoaGhoaGhoXh1aGFveg0KoaGhoaGhoaGhoaGhoaGhoXh1aGFvekBuZW9uZXRl
-Y2guY29tDQqhoaGhoaGhoaGhoaGhoaGhoaGhoTIwMDQtMDctMzANCg==
+On Thu, 29 Jul 2004, Richard Sandiford wrote:
+
+> Oops!  Serves me right for dabbling in new code.  Only the first
+> hunk is correct.
+
+ Thanks Richard for working on this.  I've verified your patch on my
+system and as it is obviously correct, I've applied it with a trivial
+formatting change to our CVS, both to the head and to the 2.4 branch; with
+appropriate literal name changes for the latter.
+
+  Maciej

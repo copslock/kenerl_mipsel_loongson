@@ -1,19 +1,24 @@
-Received:  by oss.sgi.com id <S553751AbRCGTPI>;
-	Wed, 7 Mar 2001 11:15:08 -0800
-Received: from ns.snowman.net ([63.80.4.34]:24585 "EHLO ns.snowman.net")
-	by oss.sgi.com with ESMTP id <S553726AbRCGTPB>;
-	Wed, 7 Mar 2001 11:15:01 -0800
-Received: from localhost (nick@localhost)
-	by ns.snowman.net (8.9.3/8.9.3/Debian 8.9.3-21) with ESMTP id OAA05183;
-	Wed, 7 Mar 2001 14:14:51 -0500
-Date:   Wed, 7 Mar 2001 14:14:51 -0500 (EST)
-From:   <nick@snowman.net>
-X-Sender: nick@ns
-To:     Rafal Boni <rafal.boni@eDial.com>
-cc:     linux-mips@oss.sgi.com
-Subject: Re: Problem makeing an O2 run bootp 
-In-Reply-To: <200103071911.OAA15309@ninigret.metatel.office>
-Message-ID: <Pine.LNX.4.21.0103071414220.2408-100000@ns>
+Received:  by oss.sgi.com id <S553770AbRCGUDi>;
+	Wed, 7 Mar 2001 12:03:38 -0800
+Received: from FORT-POINT-STATION.MIT.EDU ([18.72.0.53]:61847 "EHLO
+        fort-point-station.mit.edu") by oss.sgi.com with ESMTP
+	id <S553755AbRCGUDM>; Wed, 7 Mar 2001 12:03:12 -0800
+Received: from grand-central-station.mit.edu (GRAND-CENTRAL-STATION.MIT.EDU [18.7.21.82])
+	by fort-point-station.mit.edu (8.9.2/8.9.2) with ESMTP id PAA06855
+	for <linux-mips@oss.sgi.com>; Wed, 7 Mar 2001 15:03:04 -0500 (EST)
+Received: from melbourne-city-street.MIT.EDU (MELBOURNE-CITY-STREET.MIT.EDU [18.69.0.45])
+	by grand-central-station.mit.edu (8.9.2/8.9.2) with ESMTP id PAA04770
+	for <linux-mips@oss.sgi.com>; Wed, 7 Mar 2001 15:03:04 -0500 (EST)
+Received: from scrubbing-bubbles.mit.edu (SCRUBBING-BUBBLES.MIT.EDU [18.184.0.32])
+	by melbourne-city-street.MIT.EDU (8.9.3/8.9.2) with ESMTP id PAA19532
+	for <linux-mips@oss.sgi.com>; Wed, 7 Mar 2001 15:03:04 -0500 (EST)
+Received: from localhost (kbarr@localhost) by scrubbing-bubbles.mit.edu (8.9.3) with ESMTP
+	id PAA06611; Wed, 7 Mar 2001 15:03:03 -0500 (EST)
+Date:   Wed, 7 Mar 2001 15:03:03 -0500 (EST)
+From:   Kenneth C Barr <kbarr@MIT.EDU>
+To:     <linux-mips@oss.sgi.com>
+Subject: oops on shutdown
+Message-ID: <Pine.GSO.4.30L.0103071457170.9228-100000@scrubbing-bubbles.mit.edu>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
@@ -21,45 +26,32 @@ Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Thanks much.  I'll try that.  It has also been suggested that O2s probably
-refuse all packets with DF set, so I will attempt to fix that as well.
-	Nick
+I receive this error any time I try to "reboot" or "shutdown" my Indy
+running a snapshot of 2.4.1.
 
-On Wed, 7 Mar 2001, Rafal Boni wrote:
+Is this normal or experienced by anyone else?
 
-> -----BEGIN PGP SIGNED MESSAGE-----
-> Hash: SHA1
-> 
-> Content-Type: text/plain; charset=us-ascii
-> 
-> In message <Pine.LNX.4.21.0103062231010.23542-100000@ns>, you write: 
-> 
-> - -> I've got an o2 that I'm trying to make netboot, and it seems to work,
-> - -> however the o2 never acks the tftp packets.  The tcpdump is attached.  If
-> - -> anyone has suggestions/ideas I'd love to hear them.  I booted the o2 and
-> - -> ran "bootp():" from the arc prompt.
-> 
-> I had issues with my Indigo2 where the PROM rejected all TFTP packets 
-> from ports > 32767 (but that's with a stone-age PROM, I imagine O2's 
-> would have a somewhat more modern PROM).  
-> 
-> Also, try 'setenv DEBUG 1' (dunno if that does or doesn't work on the
-> O2, it does on the Indigo2) in the PROM and see if it gives any tell-
-> tale output.
-> 
-> - --rafal
-> 
-> - ----
-> Rafal Boni                                              rafal.boni@eDial.com
->  PGP key C7D3024C, print EA49 160D F5E4 C46A 9E91  524E 11E0 7133 C7D3 024C
->     Need to get a hold of me?  http://800.edial.com/rafal.boni@eDial.com
-> 
-> -----BEGIN PGP SIGNATURE-----
-> Version: GnuPG v1.0.0 (GNU/Linux)
-> Comment: Exmh version 2.1.1 10/15/1999
-> 
-> iD8DBQE6pofVEeBxM8fTAkwRAmNfAKDsC3yF1WmIZUK9i7Pu+VCR/iy3DACfQjIq
-> NlO8XXf87pp0cJkVDTw/tAY=
-> =gc8M
-> -----END PGP SIGNATURE-----
-> 
+Easy solution would be never to turn off the machine, but I want to make
+sure this isn't indicative of a larger problem.  (eg, broken paging?)
+
+
+shutdown: couldn't unmount /dev/sda1
+
+Unable to handle kernel paging request at virtual address 00000000, epc
+== 00008
+Oops in fault.c:do_page_fault, line 172:
+regs:
+
+...
+
+epc     00000000
+Status  1000fc03
+Cause   00000008
+Process reboot (pid:39, stackpage=8bc8e000)
+Stack:
+
+...
+
+Call trace: [<88031a6c>]  [<88031a64>] [<8813f734>] [<880b9a5c>]
+[<88058714>]
+Code: (Bad address in epc)

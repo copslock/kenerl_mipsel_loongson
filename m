@@ -1,45 +1,49 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g03Mq4e30465
-	for linux-mips-outgoing; Thu, 3 Jan 2002 14:52:04 -0800
-Received: from laposte.enst-bretagne.fr (laposte.enst-bretagne.fr [192.108.115.3])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g03Mq0g30462;
-	Thu, 3 Jan 2002 14:52:00 -0800
-Received: from resel.enst-bretagne.fr (user51609@maisel-gw.enst-bretagne.fr [192.44.76.8])
-	by laposte.enst-bretagne.fr (8.11.6/8.11.6) with ESMTP id g03Lppb12256;
-	Thu, 3 Jan 2002 22:51:51 +0100
-Received: from melkor (mail@melkor.maisel.enst-bretagne.fr [172.16.20.65])
-	by resel.enst-bretagne.fr (8.9.3/8.9.3/Debian 8.9.3-21) with ESMTP id WAA21133;
-	Thu, 3 Jan 2002 22:51:51 +0100
-X-Authentication-Warning: maisel-gw.enst-bretagne.fr: Host mail@melkor.maisel.enst-bretagne.fr [172.16.20.65] claimed to be melkor
-Received: from glaurung (helo=localhost)
-	by melkor with local-esmtp (Exim 3.33 #1 (Debian))
-	id 16MFmB-0002Mx-00; Thu, 03 Jan 2002 22:51:51 +0100
-Date: Thu, 3 Jan 2002 22:51:51 +0100 (CET)
-From: Vivien Chappelier <vivien.chappelier@enst-bretagne.fr>
-X-Sender: glaurung@melkor
-To: Alan Cox <alan@lxorguk.ukuu.org.uk>
-cc: Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com
-Subject: Re: aic7xxx (O2 scsi) DMA coherency
-In-Reply-To: <E16MFrP-00018Z-00@the-village.bc.nu>
-Message-ID: <Pine.LNX.4.21.0201032247490.9064-100000@melkor>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: by amavisd-milter (http://amavis.org/) at enst-bretagne.fr
+	by oss.sgi.com (8.11.2/8.11.3) id g03Mrg830552
+	for linux-mips-outgoing; Thu, 3 Jan 2002 14:53:42 -0800
+Received: from ocean.lucon.org (12-234-19-19.client.attbi.com [12.234.19.19])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g03Mrbg30546;
+	Thu, 3 Jan 2002 14:53:37 -0800
+Received: by ocean.lucon.org (Postfix, from userid 1000)
+	id 53DF0125C8; Thu,  3 Jan 2002 13:53:34 -0800 (PST)
+Date: Thu, 3 Jan 2002 13:53:34 -0800
+From: "H . J . Lu" <hjl@lucon.org>
+To: Vivien Chappelier <vivien.chappelier@enst-bretagne.fr>
+Cc: Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com
+Subject: Re: binutils bug workaround
+Message-ID: <20020103135334.A3978@lucon.org>
+References: <Pine.LNX.4.21.0201032241030.8906-200000@melkor>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.LNX.4.21.0201032241030.8906-200000@melkor>; from vivien.chappelier@enst-bretagne.fr on Thu, Jan 03, 2002 at 10:44:30PM +0100
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, 3 Jan 2002, Alan Cox wrote:
-
-> > 	This tells the aic7xxx to use DMA safe memory for I/O.
+On Thu, Jan 03, 2002 at 10:44:30PM +0100, Vivien Chappelier wrote:
+> Hi,
 > 
-> That seems totally inappropriate. The unchecked dma option is for
-> ancient ISA DMA controllers that didnt do the 16Mb check. If you
-> find you need it debug your pci remapper
+> 	There is a binutils bug (as) which produces bad addresses when
+> getting the address of a struct member for initializing the same struct,
+> and when there is data or static functions declared before:
+> int test = 0xdeadbeef;
+> 
+> struct {
+>         int dummy;
+>         void *ptr;
+> } bug =
+> {
+>   ptr:  &bug.ptr
+> };
+> 
+> will produce bad value for bug.ptr.
+> 
+> 	This patch move the declaration of kswapd_wait as a workaround to
+> this compiler bug. This probably affects all mips64 kernels.
+> 
 
-This is used when scaning for devices (drivers/scsi/scsi_scan.c) . When
-this flag is not set, the code uses memory from the stack (unsigned char
-scsi_result0[256]; in scan_scsis) instead of kmallocating it DMA safe as
-it should on non-coherent systems. Maybe this is the thing to change?
+Shouldn't you fix the assmbler instead?
 
-regards,
-Vivien Chappelier.
+
+H.J.

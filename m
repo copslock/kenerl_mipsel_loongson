@@ -1,44 +1,37 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7AI5lE18951
-	for linux-mips-outgoing; Fri, 10 Aug 2001 11:05:47 -0700
-Received: from gateway.total-knowledge.com (c1213523-b.smateo1.sfba.home.com [24.1.66.97])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7AI5kV18946
-	for <linux-mips@oss.sgi.com>; Fri, 10 Aug 2001 11:05:46 -0700
-Received: (qmail 13247 invoked by uid 502); 10 Aug 2001 18:05:45 -0000
-Content-Type: text/plain;
-  charset="iso-8859-1"
-From: Ilya Volynets <ilya@theIlya.com>
-Reply-To: ilya@theIlya.com
-Organization: Total knowledge
-To: Alan Cox <alan@lxorguk.ukuu.org.uk>, wqb123@yahoo.com (Barry Wu)
+	by oss.sgi.com (8.11.2/8.11.3) id f7AIObC19309
+	for linux-mips-outgoing; Fri, 10 Aug 2001 11:24:37 -0700
+Received: from dea.waldorf-gmbh.de (u-118-10.karlsruhe.ipdial.viaginterkom.de [62.180.10.118])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7AIOZV19306
+	for <linux-mips@oss.sgi.com>; Fri, 10 Aug 2001 11:24:35 -0700
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f7AINGU25772;
+	Fri, 10 Aug 2001 20:23:16 +0200
+Date: Fri, 10 Aug 2001 20:23:16 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Ilya Volynets <ilya@theIlya.com>
+Cc: Alan Cox <alan@lxorguk.ukuu.org.uk>, Barry Wu <wqb123@yahoo.com>,
+   linux-mips@oss.sgi.com, boards@mips.com
 Subject: Re: about mips IDE DMA disk problem
-Date: Fri, 10 Aug 2001 11:05:39 -0700
-X-Mailer: KMail [version 1.2]
-Cc: linux-mips@oss.sgi.com, boards@mips.com
-References: <E15VEgt-0001Di-00@the-village.bc.nu>
-In-Reply-To: <E15VEgt-0001Di-00@the-village.bc.nu>
-MIME-Version: 1.0
-Message-Id: <01081011053902.07543@gateway>
-Content-Transfer-Encoding: 8bit
+Message-ID: <20010810202316.A25714@bacchus.dhis.org>
+References: <E15VEgt-0001Di-00@the-village.bc.nu> <01081011053902.07543@gateway>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <01081011053902.07543@gateway>; from ilya@theIlya.com on Fri, Aug 10, 2001 at 11:05:39AM -0700
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA1
+On Fri, Aug 10, 2001 at 11:05:39AM -0700, Ilya Volynets wrote:
 
-On Friday 10 August 2001 08:59, Alan Cox wrote:
-> > We port linux-2.2.12 to our mipsel evaluation board.
->
-> 2.2.12 is ancient including remotely exploitable security holes. If you
-> update to a vaguely recent 2.2 kernel you'll also find there are ali1535
-> drivers although I dont think anyone has verified them on mips
-Perhaps somebody should tell MIPS, Inc. people that 2.2.12 on their
-site is little bit out of date.
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.4 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
+> > 2.2.12 is ancient including remotely exploitable security holes. If you
+> > update to a vaguely recent 2.2 kernel you'll also find there are ali1535
+> > drivers although I dont think anyone has verified them on mips
+> Perhaps somebody should tell MIPS, Inc. people that 2.2.12 on their
+> site is little bit out of date.
 
-iEYEARECAAYFAjt0InkACgkQtKh84cA8u2lxcwCdEM8mRkj63kpxnfaRU2tS9D86
-QS8AnjVTo67VGpbgcgnn+nkuHVJW/DQN
-=4ngI
------END PGP SIGNATURE-----
+They're well aware of that - and working on 2.4
+
+  Ralf

@@ -1,52 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Apr 2003 10:02:30 +0100 (BST)
-Received: from mail2.sonytel.be ([IPv6:::ffff:195.0.45.172]:60577 "EHLO
-	mail.sonytel.be") by linux-mips.org with ESMTP id <S8225202AbTDOJC3>;
-	Tue, 15 Apr 2003 10:02:29 +0100
-Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.26])
-	by mail.sonytel.be (8.9.0p/8.8.6) with ESMTP id LAA09144
-	for <linux-mips@linux-mips.org>; Tue, 15 Apr 2003 11:02:23 +0200 (MET DST)
-Date: Tue, 15 Apr 2003 11:02:35 +0200 (MEST)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: rtc_[gs]et_time()
-Message-ID: <Pine.GSO.4.21.0304151021320.26578-100000@vervain.sonytel.be>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Apr 2003 10:09:56 +0100 (BST)
+Received: from port48.ds1-vbr.adsl.cybercity.dk ([IPv6:::ffff:212.242.58.113]:9256
+	"EHLO valis.localnet") by linux-mips.org with ESMTP
+	id <S8225202AbTDOJJz>; Tue, 15 Apr 2003 10:09:55 +0100
+Received: from murphy.dk (brm@brian.localnet [10.0.0.2])
+	by valis.localnet (8.12.7/8.12.7/Debian-2) with ESMTP id h3F99har010521;
+	Tue, 15 Apr 2003 11:09:43 +0200
+Message-ID: <3E9BCC57.5070809@murphy.dk>
+Date: Tue, 15 Apr 2003 11:09:43 +0200
+From: Brian Murphy <brian@murphy.dk>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.0.0) Gecko/20020623 Debian/1.0.0-0.woody.1
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <geert@linux-m68k.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+CC: Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: Re: rtc_[gs]et_time()
+References: <Pine.GSO.4.21.0304151021320.26578-100000@vervain.sonytel.be>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <brian@murphy.dk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2047
+X-archive-position: 2048
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: brian@murphy.dk
 Precedence: bulk
 X-list: linux-mips
 
-	Hi,
+Geert Uytterhoeven wrote:
 
-Is there any specific reason why the function pointers rtc_[gs]et_time() use
-seconds instead of struct rtc_time? Most RTCs store the date and time in a
-format similar to struct rtc_time, so they have to convert from seconds to
-struct rtc_time again. I found only 2 exceptions, namely the vr4181 RTC and the
-Lasat ds1630 RTC (BTW, I found no RTC driver for vr41xx, since
-vr41xx_rtc_get_time() is nowhere defined).
+>This makes it more complex to make drivers/char/genrtc.c work on MIPS, since 
+>usually the date and time have to be converted twice: once from struct rtc_time
+>to seconds in <asm/rtc.h>, and once from seconds to struct rtc_time in each RTC
+>driver.
+>
+>Is it OK to make rtc_[gs]et_time() always use struct rtc_time?
+>
+>  
+>
+I quite like it the way it is ;-).
 
-This makes it more complex to make drivers/char/genrtc.c work on MIPS, since 
-usually the date and time have to be converted twice: once from struct rtc_time
-to seconds in <asm/rtc.h>, and once from seconds to struct rtc_time in each RTC
-driver.
+/Brian
 
-Is it OK to make rtc_[gs]et_time() always use struct rtc_time?
-
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+LASAT port maintainer.

@@ -1,41 +1,120 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f5UNXNk27809
-	for linux-mips-outgoing; Sat, 30 Jun 2001 16:33:23 -0700
-Received: from web13903.mail.yahoo.com (web13903.mail.yahoo.com [216.136.175.29])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5UNXNV27806
-	for <linux-mips@oss.sgi.com>; Sat, 30 Jun 2001 16:33:23 -0700
-Message-ID: <20010630233322.81749.qmail@web13903.mail.yahoo.com>
-Received: from [61.187.63.244] by web13903.mail.yahoo.com; Sat, 30 Jun 2001 16:33:22 PDT
-Date: Sat, 30 Jun 2001 16:33:22 -0700 (PDT)
-From: Barry Wu <wqb123@yahoo.com>
-Subject: about IDE0 interrupt
-To: linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.2/8.11.3) id f620j0N29082
+	for linux-mips-outgoing; Sun, 1 Jul 2001 17:45:00 -0700
+Received: from dsic.co.kr ([210.221.126.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f620isV29070
+	for <linux-mips@oss.sgi.com>; Sun, 1 Jul 2001 17:44:55 -0700
+Received: from astonlinux.com [192.168.2.173] by dsic.co.kr [210.221.126.1]
+	with SMTP (MDaemon.v3.5.6.R)
+	for <linux-mips@oss.sgi.com>; Mon, 02 Jul 2001 09:43:07 +0900
+Message-ID: <3B407B8C.C18C839C@astonlinux.com>
+Date: Mon, 02 Jul 2001 09:47:56 -0400
+From: =?EUC-KR?B?sK29xbHU?= <cosmos@astonlinux.com>
+Organization: astonlinux
+X-Mailer: Mozilla 4.75 [ko] (X11; U; Linux 2.2.16-21hl i686)
+X-Accept-Language: ko
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+To: Ralph Metzler <rjkm@convergence.de>
+CC: linux-mips@fnet.fr, linux-mips@oss.sgi.com
+Subject: Re: Help me.
+References: <3B3B9C29.6898DC59@astonlinux.com> <15163.24240.316758.268911@valen.metzler>
+Content-Type: text/plain; charset=EUC-KR
+Content-Transfer-Encoding: 7bit
+X-MDRemoteIP: 192.168.2.173
+X-Return-Path: cosmos@astonlinux.com
+X-MDaemon-Deliver-To: linux-mips@oss.sgi.com
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
 
-Hi, all,
 
-I am porting linux to our mipsel system. 
-I make a ext2fs system on my intel system, then
-copy root file system to this hard disk. Finally
-I attach this disk to our mipsel system. Our
-system use Acer Lab Ali1535D south bridge. When
-linux kernel start, it can report disk volume
-information and partition information, and root
-file system is mounted. But the time is very long,
-and I could not get any ide0 interrupt. The time
-is wasted on schedule(), but if I use ramdisk, the
-system is running fast. I think the problem is my
-IDE controller driver or hardware problem. Does some
-one know the reason? If so, please help me.
-Thanks!
+Ralph Metzler wrote:
 
-Barry
+> Hi,
+>
+> =?EUC-KR?B?sK29xbHU?= writes:
+>  > I am trying to port a linux 2.4 to R3000 based system (LSI LOGIC
+>  > SC2000).
+>  > SC2000 have caches. one is Two-way set associative or direct mapped
+>  > Instruction cache (16K) and another is Direct-mapped data cache(8K).
+>
+> I also spent one or two weeks with Linux on an SC2000 a while ago
+> but had to stop due to other more important projects. I also ran
+> into problems with the caching. Without caching I got it to boot
+> via NFS. Anyway, at least one mistake is in this part:
+>
+>  > ---------------lsi-cache.S--------------------------------
+>  >
+>  > /* void flush_icache(void) */
+>  > LEAF(flush_icache)
+>  >         .set    noreorder
+>  >
+>  >         la      a3, icache_size     # 8Kbyte
+>  >         lw      t4, 0(a3)
+>  >
+>  >         mfc0    t7, CP0_STATUS          # save SR
+>  >         nop
+>  >         nop
+>  >
+>  >         and     t0, t7, ~ST0_IEC        # disable interrupts
+>  >         mtc0    t0, CP0_STATUS
+>  >         nop
+>  >         nop
+>  >
+>  >         li      t3, CBSYS             # BBCC configuration register
+>  >         lw      t8, 0(t3)               # save config. register
+>  >         nop
+>  >
+>  >         li      t0, KSEG0
+>  >         or      t4, t4, t0              # end of I-cache
+>  >
+>  >         move    t5, t0
+>  >
+>  > 2:        la      t0, 3f                  # switch to Kseg1
+>  >         or      t0, KSEG1
+>  >         jr      t0
+>  >         nop
+>  >
+>  > #
+>  > # flush I-cache set 0
+>  > #
+>  > 3:
+>  >         li      t0, (CFG_DCEN | CFG_ICEN)
+>  >         or      t0, CFG_CMODE_ITEST     # I-cache set1 enable
+>  >                                         # D-cache enable, I-cache set0
+>  > enable
+>  >                                         # I-cache software test
+>  >         sw      t0, 0(t3)
+>  >         lw      zero, 0(t3)
+>  >         addi    zero, zero, 1
+>  >
+>  >         move    t0, t5
+>  > 4:      sw      zero, (t0)
+>  >         nop
+>  >         lw      zero, (t0)
+>  >         addu    t0, t6
+>  >         bltu    t0, t4, 4b
+>  >         nop
+>
+> Where does t6 get set?
+> This bug already is in the LSI sample code.
+> I think they just copied the loop code from the cache invalidation
+> functions (where they actually do determine t6 from the cache
+> line size) and forgot to adjust it.
+>
+> Best regards,
+> Ralph
+>
+> --
+> /--------------------------------------------------------------------\
+> | Dr. Ralph J.K. Metzler         | Convergence integrated media      |
+> |--------------------------------|-----------------------------------|
+> | rjkm@convergence.de            | http://www.convergence.de/        |
+> \--------------------------------------------------------------------/
 
-__________________________________________________
-Do You Yahoo!?
-Get personalized email addresses from Yahoo! Mail
-http://personal.mail.yahoo.com/
+Thank you.
+
+I modified the bug. but problem is same.
+
+Regards,
+Shinkyu.

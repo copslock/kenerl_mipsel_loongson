@@ -1,64 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Apr 2005 12:20:36 +0100 (BST)
-Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:34455 "EHLO
-	witte.sonytel.be") by linux-mips.org with ESMTP id <S8226016AbVDDLUU>;
-	Mon, 4 Apr 2005 12:20:20 +0100
-Received: from numbat.sonytel.be (mail.sonytel.be [43.221.60.197])
-	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id j34BKIGU005292;
-	Mon, 4 Apr 2005 13:20:18 +0200 (MEST)
-Date:	Mon, 4 Apr 2005 13:20:15 +0200 (CEST)
-From:	Geert Uytterhoeven <geert@linux-m68k.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-cc:	Ulrich Eckhardt <eckhardt@satorlaser.com>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: conflicting declaration of prom_getcmdline()
-In-Reply-To: <20050404062105.GA4975@linux-mips.org>
-Message-ID: <Pine.LNX.4.62.0504041318590.14107@numbat.sonytel.be>
-References: <200504011028.04244.eckhardt@satorlaser.com>
- <20050404062105.GA4975@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Apr 2005 12:27:04 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:35334 "EHLO
+	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8226016AbVDDL0p>; Mon, 4 Apr 2005 12:26:45 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 4DEB2E1C95; Mon,  4 Apr 2005 13:26:30 +0200 (CEST)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 24609-07; Mon,  4 Apr 2005 13:26:30 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id F0FCBE1C88; Mon,  4 Apr 2005 13:26:29 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.1/8.13.1) with ESMTP id j34BQWHf016682;
+	Mon, 4 Apr 2005 13:26:32 +0200
+Date:	Mon, 4 Apr 2005 12:26:38 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Thiemo Seufer <ths@networkno.de>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: CVS Update@linux-mips.org: linux
+In-Reply-To: <20050402101135.GB1641@hattusa.textio>
+Message-ID: <Pine.LNX.4.61L.0504041214570.20089@blysk.ds.pg.gda.pl>
+References: <20050401175340Z8226142-1340+5040@linux-mips.org>
+ <20050402101135.GB1641@hattusa.textio>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <geert@linux-m68k.org>
+X-Virus-Scanned: ClamAV 0.83/804/Mon Apr  4 16:38:58 2005 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7578
+X-archive-position: 7579
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 4 Apr 2005, Ralf Baechle wrote:
-> On Fri, Apr 01, 2005 at 10:28:04AM +0200, Ulrich Eckhardt wrote:
-> > I just stumbled over arch/mips/au1000/common/prom.c, which contains a function 
-> > defined like this:
-> >   char* prom_getcmdline(void);
-> >   EXPORT_SYMBOL(prom_getcmdline);
-> > while there are implementations that define the function as
-> >   char* __init prom_getcmdline();
-> > Further, there are several declarations throughout sourcefiles and in 
-> > include/asm-mips/mips-boards/prom.h and include/asm-mips/sgialib.h. Just grep 
-> > for it and you'll see the mess.
-> > 
-> > If anyone tells me which one is right and cares to explain why I hereby 
-> > volunteer to create a patch. ;)
+On Sat, 2 Apr 2005, Thiemo Seufer wrote:
+
+> > Log message:
+> > 	Remove useless casts.  Fix formatting.
 > 
-> __init was introduced long after prom_getcmdline() and not all definitions
-> ever got updated.  For prototypes where __init doesn't server any useful
-> purpose other than for the human reader so we generally don't use it.
+> This patch leads for 64bit kernels to:
+> 
+>   CC      arch/mips/mm/pg-sb1.o
+> arch/mips/mm/pg-sb1.c: In function `sb1_dma_init':
+> arch/mips/mm/pg-sb1.c:220: warning: cast from pointer to integer of different size
+> arch/mips/mm/pg-sb1.c:225: warning: passing arg 2 of `__raw_writeq' discards qualifiers from pointer target type
+> arch/mips/mm/pg-sb1.c:226: warning: passing arg 2 of `__raw_writeq' discards qualifiers from pointer target type
+> arch/mips/mm/pg-sb1.c:227: warning: passing arg 2 of `__raw_writeq' discards qualifiers from pointer target type
 
-IIRC, there are architectures (alpha?) where __init does matter for prototypes
-because a different jump type is used depending on the sections of the caller
-and callee.
+ Thanks for pointing this out.  That "const" shouldn't be on "base_reg" 
+there, of course.  I'm committing a fix right now.  My apologies for 
+inadequate testing.
 
-Gr{oetje,eeting}s,
+> arch/mips/mm/pg-sb1.c: In function `clear_page':
+> arch/mips/mm/pg-sb1.c:233: warning: cast from pointer to integer of different size
+> arch/mips/mm/pg-sb1.c:237: warning: cast from pointer to integer of different size
+> arch/mips/mm/pg-sb1.c: In function `copy_page':
+> arch/mips/mm/pg-sb1.c:257: warning: cast from pointer to integer of different size
+> arch/mips/mm/pg-sb1.c:258: warning: cast from pointer to integer of different size
+> arch/mips/mm/pg-sb1.c:262: warning: cast from pointer to integer of different size
+> arch/mips/mm/pg-sb1.c:263: warning: cast from pointer to integer of different size
 
-						Geert
+ These are unrelated.  Essentially "CPHYSADDR(foo)" expands to 
+"(int)(foo)" (that is, after having removed some unrelated bits) and it's 
+not going to work in a portable way if "foo" is a pointer...  Thanks for 
+your report though -- this code needs a rewrite for a proper 64-bit 
+support and I'll try to have a look at it.
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+  Maciej

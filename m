@@ -1,77 +1,94 @@
-Received:  by oss.sgi.com id <S305160AbQDTQ23>;
-	Thu, 20 Apr 2000 09:28:29 -0700
-Received: from deliverator.sgi.com ([204.94.214.10]:65291 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305157AbQDTQ2X>;
-	Thu, 20 Apr 2000 09:28:23 -0700
-Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id JAA06463; Thu, 20 Apr 2000 09:23:38 -0700 (PDT)
+Received:  by oss.sgi.com id <S305160AbQDTQka>;
+	Thu, 20 Apr 2000 09:40:30 -0700
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:2605 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S305157AbQDTQkK>; Thu, 20 Apr 2000 09:40:10 -0700
+Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id JAA07241; Thu, 20 Apr 2000 09:44:13 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id JAA48799
+	id JAA33965
 	for linux-list;
-	Thu, 20 Apr 2000 09:19:33 -0700 (PDT)
+	Thu, 20 Apr 2000 09:30:46 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id JAA70630
+	via ESMTP id JAA08181
 	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 20 Apr 2000 09:19:29 -0700 (PDT)
+	Thu, 20 Apr 2000 09:30:44 -0700 (PDT)
 	mail_from (flo@rfc822.org)
 Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id JAA08462
-	for <linux@cthulhu.engr.sgi.com>; Thu, 20 Apr 2000 09:19:15 -0700 (PDT)
+	via ESMTP id JAA02630
+	for <linux@cthulhu.engr.sgi.com>; Thu, 20 Apr 2000 09:30:41 -0700 (PDT)
 	mail_from (flo@rfc822.org)
 Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id D54A1808; Thu, 20 Apr 2000 18:19:14 +0200 (CEST)
+	id 94254808; Thu, 20 Apr 2000 18:30:43 +0200 (CEST)
 Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 4487B8FC4; Thu, 20 Apr 2000 18:13:52 +0200 (CEST)
-Date:   Thu, 20 Apr 2000 18:13:52 +0200
+	id 759EE8FC4; Thu, 20 Apr 2000 18:25:22 +0200 (CEST)
+Date:   Thu, 20 Apr 2000 18:25:22 +0200
 From:   Florian Lohoff <flo@rfc822.org>
-To:     "Kevin D. Kissell" <kevink@mips.com>
-Cc:     linux@cthulhu.engr.sgi.com
-Subject: Re: Should send SIGFPE to .*
-Message-ID: <20000420181352.A7304@paradigm.rfc822.org>
-References: <00bf01bfaad1$fc42b460$0ceca8c0@satanas.mips.com>
+To:     linux@cthulhu.engr.sgi.com
+Subject: bug in get_wchan ... 
+Message-ID: <20000420182522.B7304@paradigm.rfc822.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 X-Mailer: Mutt 0.95.3i
-In-Reply-To: <00bf01bfaad1$fc42b460$0ceca8c0@satanas.mips.com>; from Kevin D. Kissell on Thu, Apr 20, 2000 at 04:08:58PM +0200
 Organization: rfc822 - pure communication
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On Thu, Apr 20, 2000 at 04:08:58PM +0200, Kevin D. Kissell wrote:
 
-> If, having tried that trick, the trap handler gets invoked again,
-> things are more serious, and the limited emulator is invoked.
+Hi,
+i had some loops on the annoying "bug in get_wchan" and after i hopefully
+understood whats going on 
 
-I understood that aftersome loops over the code :)
+arch/mips/kernel/process.c
 
-> if it was actually a problem), and as such the force_sig() should
-> use the value returned by compute_return_epc() as the signal
+    196 unsigned long get_wchan(struct task_struct *p)
+    197 {
+    198         unsigned long schedule_frame;
+    199         unsigned long pc;
+    200 
+    201         if (!p || p == current || p->state == TASK_RUNNING)
+    202                 return 0;
+    203 
+    204         pc = thread_saved_pc(&p->thread);
+    205         if (pc == (unsigned long) interruptible_sleep_on
+    206             || pc == (unsigned long) sleep_on) {
+    207                 schedule_frame = ((unsigned long *)p->thread.reg30)[9];
+    208                 return ((unsigned long *)schedule_frame)[15];
+    209         }
+    210         if (pc == (unsigned long) interruptible_sleep_on_timeout
+    211             || pc == (unsigned long) sleep_on_timeout) {
+    212                 schedule_frame = ((unsigned long *)p->thread.reg30)[9];
+    213                 return ((unsigned long *)schedule_frame)[16];
+    214         }
+    215         if (pc >= first_sched && pc < last_sched) {
+    216                 printk(KERN_DEBUG "Bug in %s\n", __FUNCTION__);
+    217         }
+    218 
+    219         return pc;
+    220 }
 
-I dont think compute_return_epc returns a signal value.
+What does "thread_saved_pc(&p->thread);" return ? Does it really
+return the exact address of the schedule functions as assumed in
+205-214 ?
 
-> number, and not SIGFPE, and the signal should really be
-> sent to the process, not just noted as a signal wannabe.
+Most other architectures search the stack page for the calling function
+but it seems their asmlinkage is more strict in the means of 
+location of the return address on the stack.
 
-I think this was due to a annoyed user whos process died
-always when the fpu instruction got emulated :)
-
-> I was going to make another cleanup pass over traps.c this
-> week, so it looks like you've found me another nit to excise.
-> (Although we've got the full-blown Algorithmics emulator
-> in our source base - coming soon to a repository near you -
-> we kept the old stuff around for people wanting to build for
-> a minimal footprint).
-
-How much is the full emulator as binary ?
+The current implementation is buggy not only in the means of 
+the printk but also in the wchan - Most of the output
+is "schedule" itself which means none of the statements above
+had been true but when extending the printk with the pc
+it never exactly matches &schedule so a == schedule wont help.
 
 Flo
 -- 

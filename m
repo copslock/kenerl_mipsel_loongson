@@ -1,52 +1,32 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id XAA07673; Sun, 1 Jun 1997 23:44:17 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA09255; Mon, 2 Jun 1997 00:17:49 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id XAA28615 for linux-list; Sun, 1 Jun 1997 23:44:08 -0700
-Received: from yon.engr.sgi.com (yon.engr.sgi.com [150.166.61.32]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id XAA28606 for <linux@cthulhu.engr.sgi.com>; Sun, 1 Jun 1997 23:44:07 -0700
-Received: from sgiger.munich.sgi.com (sgiger.munich.sgi.com [144.253.192.2]) by yon.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id XAA27389 for <linux@yon.engr.sgi.com>; Sun, 1 Jun 1997 23:44:05 -0700
-Received: from knobi.munich.sgi.com by sgiger.munich.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1502/940406.SGI)
-	 id IAA20897; Mon, 2 Jun 1997 08:44:02 +0200
-Received: from knobi (localhost [127.0.0.1]) by knobi.munich.sgi.com (950413.SGI.8.6.12/951220.SGI.AUTOCF.knobi) via SMTP id IAA12918; Mon, 2 Jun 1997 08:44:00 +0200
-Message-ID: <33926BB0.167E@munich.sgi.com>
-Date: Mon, 02 Jun 1997 08:44:00 +0200
-From: Martin Knoblauch <knobi@munich.sgi.com>
-Organization: Silicon Graphics GmbH, Am-Hochacker 3, D-85630 Grasbrunn
-X-Mailer: Mozilla 3.01SC-SGI (X11; I; IRIX 6.3 IP22)
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id AAA02866 for linux-list; Mon, 2 Jun 1997 00:17:29 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA02854 for <linux@engr.sgi.com>; Mon, 2 Jun 1997 00:17:22 -0700
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id AAA10372
+	for <linux@engr.sgi.com>; Mon, 2 Jun 1997 00:16:28 -0700
+	env-from (ralf@informatik.uni-koblenz.de)
+Received: from zaphod (ralf@zaphod.uni-koblenz.de [141.26.4.13]) by informatik.uni-koblenz.de (8.8.5/8.6.9) with SMTP id JAA07078 for <linux@engr.sgi.com>; Mon, 2 Jun 1997 09:12:24 +0200 (MEST)
+From: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
+Message-Id: <199706020712.JAA07078@informatik.uni-koblenz.de>
+Received: by zaphod (SMI-8.6/KO-2.0)
+	id JAA07340; Mon, 2 Jun 1997 09:12:22 +0200
+Subject: More FP stuff ...
+To: linux@cthulhu.engr.sgi.com
+Date: Mon, 2 Jun 1997 09:12:22 +0200 (MET DST)
 MIME-Version: 1.0
-To: Larry McVoy <lm@neteng.engr.sgi.com>
-CC: "David S. Miller" <davem@jenolan.rutgers.edu>, ariel@sgi.com,
-        linux@yon.engr.sgi.com
-Subject: Re: Name the external domain
-References: <199705302244.PAA11945@neteng.engr.sgi.com>
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Larry McVoy wrote:
-> 
-> OK, I got a better idea.  Make the top level domain linux.sgi.com and
-> the machine[s] stuff like
-> 
->         linus.linux.sgi.com     # because we like him (alias)
->         ftp.linux.sgi.com       # because people will remember it (alias)
->         www.linux.sgi.com       # alias
->         linux.linux.sgi.com     # real machine
-> 
-> Watcha all think?
+Hi all,
 
+I was finally fed up with the side effects of not having the proper FP
+support in the kernel and started to write all the stuff.  Someone else
+who has a MIPS IV machine should add the MIPS IV bits.  Software FP,
+C64 strikes back ;-)
 
- excellent.
+Can anybody recommend a floating point test suite or applications that
+are suitable for verfication of the stuff?
 
-Martin
--- 
-Check out the DevForum 97  !!!! (http://www.sgi.com/Forum97/)
-  If you miss it, you'll never forgive yourself. Neither will I :-)
-+---------------------------------+-----------------------------------+
-|Martin Knoblauch                 | Silicon Graphics GmbH             |
-|Manager Technical Marketing      | Am Hochacker 3 - Technopark       |
-|Silicon Graphics Computer Systems| D-85630 Grasbrunn-Neukeferloh, FRG|
-|---------------------------------| Phone: (+int) 89 46108-179 or -0  |
-|http://reality.sgi.com/knobi     | Fax:   (+int) 89 46107-179        |
-+---------------------------------+-----------------------------------+
-|e-mail: <knobi@munich.sgi.com>   | VM: 6-333-8197 | M/S: IDE-3150    |
-+---------------------------------------------------------------------+
+  Ralf

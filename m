@@ -1,61 +1,54 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8HGca408116
-	for linux-mips-outgoing; Mon, 17 Sep 2001 09:38:36 -0700
-Received: from fenris.scrooge.dk (213.237.12.36.adsl.ynoe.worldonline.dk [213.237.12.36])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8HGcWe08113
-	for <linux-mips@oss.sgi.com>; Mon, 17 Sep 2001 09:38:32 -0700
-Received: from athlon-800 (athlon-pc [10.0.0.2])
-	by fenris.scrooge.dk (8.11.5/8.8.7) with ESMTP id f8HGdOm22913;
-	Mon, 17 Sep 2001 18:39:24 +0200
-From: "Soeren Laursen" <soeren.laursen@scrooge.dk>
-To: George Gensure <werkt@csh.rit.edu>
-Date: Mon, 17 Sep 2001 18:39:30 +0200
-MIME-Version: 1.0
-Content-type: text/plain; charset=ISO-8859-1
-Subject: Re: openssh probs
-Reply-to: soeren.laursen@scrooge.dk
-CC: <linux-mips@oss.sgi.com>
-Message-ID: <3BA64362.29627.225041C@localhost>
-References: <3BA63E02.20088.2100546@localhost>
-In-reply-to: <Pine.SOL.4.31.0109171218020.15630-100000@fury.csh.rit.edu>
-X-mailer: Pegasus Mail for Win32 (v3.12c)
-Content-Transfer-Encoding: 8bit
-X-MIME-Autoconverted: from Quoted-printable to 8bit by oss.sgi.com id f8HGcXe08114
+	by oss.sgi.com (8.11.2/8.11.3) id f8HH59c08518
+	for linux-mips-outgoing; Mon, 17 Sep 2001 10:05:09 -0700
+Received: from dea.linux-mips.net (u-68-19.karlsruhe.ipdial.viaginterkom.de [62.180.19.68])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8HH50e08515
+	for <linux-mips@oss.sgi.com>; Mon, 17 Sep 2001 10:05:01 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id f8HE1qX27118;
+	Mon, 17 Sep 2001 16:01:52 +0200
+Date: Mon, 17 Sep 2001 16:01:52 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Eugenio Diaz <getnito@yahoo.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Origin 200
+Message-ID: <20010917160152.C26631@dea.linux-mips.net>
+References: <Pine.LNX.4.33.0109161018030.27130-100000@mercury.shreve.net> <20010917075345.52314.qmail@web14007.mail.yahoo.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20010917075345.52314.qmail@web14007.mail.yahoo.com>; from getnito@yahoo.com on Mon, Sep 17, 2001 at 12:53:45AM -0700
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-> Yeah, should've mentioned the version.  I'm already running 2.9p2.  The
-> ssh server I'm testing on, I KNOW works.  I connect to it from my i686 box
-> all the time.  I looked at the packet dump, and it doesn't look like the
-> MAC is getting sent correctly.  I wasn't able to find the string anywhere
-> in there (assuming it gets sent unencrypted, of course).
+On Mon, Sep 17, 2001 at 12:53:45AM -0700, Eugenio Diaz wrote:
 
-Running
-OpenSSH_2.9p2, SSH protocols 1.5/2.0, 
+> > Its the rackmount version..............I will search for some
+> > benchmarks to see how this system ranks compared to some
+> > PIII and other systems.
+> > 
+> > Are there any graphics options available for these, or just console?
+> > 
+> > I realize the origin is more of a "server", used for serving files
+> > and web pages, than a workstation.
+> 
+> I used to work for an SGI VAR, and we sold expensive (he, he) but SGI approved
+> third party PCI video cards; I don't remember what manufacturer tough. I
+> remember one particular customer (an NT shop) who was not comfortable with
+> head-less servers, and required us to put a head on it :-)
 
-On a:
-cpu                     : MIPS
-cpu model               : R4000SC V5.0
-system type             : SGI Indy
-BogoMIPS                : 74.75
-byteorder               : big endian
-unaligned accesses      : 0
-wait instruction        : no
-microsecond timers      : yes
-extra interrupt vector  : no
-hardware watchpoint     : yes
-VCED exceptions         : 27900
-VCEI exceptions         : 135012
+Head-less users ;-)
 
-It is a 2.4.3 kernel.
+With the firmware not supporting video that is just a halfbreed headless
+system anyway ...
 
-Nothing special running on it.
+> However, I think that if Linux is currently handling the PCI Bus (I think it's
+> a 64-bit) on that architecture, you can use any PCI video card supported by
+> Linux ... am I right?
 
-Just installed a upgrade 2.9p6
-OpenSSH_2.9p2, SSH protocols 1.5/2.0, OpenSSL 0x0090602f
+Yes.  In theory.  The usual problem with video card initialization through
+the BIOS applies.  Aside of this PCI video cards should work fine.
 
-And it work just as great as the first version.
-
-Best regards,
-
-Søren,
+  Ralf

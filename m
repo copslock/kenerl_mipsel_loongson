@@ -1,54 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Apr 2004 06:09:22 +0100 (BST)
-Received: from rwcrmhc12.comcast.net ([IPv6:::ffff:216.148.227.85]:57529 "EHLO
-	rwcrmhc12.comcast.net") by linux-mips.org with ESMTP
-	id <S8224898AbUDQFJV>; Sat, 17 Apr 2004 06:09:21 +0100
-Received: from gentoo.org (pcp04939029pcs.waldrf01.md.comcast.net[68.48.72.58])
-          by comcast.net (rwcrmhc12) with ESMTP
-          id <20040417050913014001co09e>
-          (Authid: kumba12345);
-          Sat, 17 Apr 2004 05:09:14 +0000
-Message-ID: <4080BC39.5030401@gentoo.org>
-Date: Sat, 17 Apr 2004 01:10:17 -0400
-From: Kumba <kumba@gentoo.org>
-Reply-To: kumba@gentoo.org
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.6) Gecko/20040113
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Apr 2004 07:30:56 +0100 (BST)
+Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:48837 "EHLO
+	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8224898AbUDQGax>; Sat, 17 Apr 2004 07:30:53 +0100
+Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
+	id E0E4247A40; Sat, 17 Apr 2004 08:30:44 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by jurand.ds.pg.gda.pl (Postfix) with ESMTP
+	id CA45E47745; Sat, 17 Apr 2004 08:30:44 +0200 (CEST)
+Date: Sat, 17 Apr 2004 08:30:44 +0200 (CEST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
+Cc: linux-mips@linux-mips.org
+Subject: Re: IP30 goes relatively far now
+In-Reply-To: <Pine.GSO.4.10.10404170612440.10514-100000@helios.et.put.poznan.pl>
+Message-ID: <Pine.LNX.4.55.0404170817260.24278@jurand.ds.pg.gda.pl>
+References: <Pine.GSO.4.10.10404170612440.10514-100000@helios.et.put.poznan.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-To: linux-mips@linux-mips.org
-Subject: Re: IP30 goes relatively far now (photos)
-References: <Pine.GSO.4.10.10404170649270.12038-100000@helios.et.put.poznan.pl>
-In-Reply-To: <Pine.GSO.4.10.10404170649270.12038-100000@helios.et.put.poznan.pl>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <kumba@gentoo.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4802
+X-archive-position: 4803
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-Stanislaw Skowronek wrote:
-> For the little unbeliever in all of us:
-> 
-> http://www.et.put.poznan.pl/~sskowron/ip30/
-> 
-> Stanislaw Skowronek
+On Sat, 17 Apr 2004, Stanislaw Skowronek wrote:
 
-All I'll say is that SGI Logo in the background of the console is 
-*awesome* :)
+> because the last '.set *reorder' before is in 'nmi_handler', and it is a
+> '.set noreorder'. I will get a newer kernel (I did 2.6.1 because it worked
 
-Think the driver for the Octane console is gonna be usable for the 
-Impact cards on the Indigo2?
+ Ouch -- there used to be such a bug in the past, but it was fixed on Aug
+6th, 2003.  Please update indeed -- your snapshot is severly old and there
+have been plenty updates since then, so chances are you may struggle with
+problems that have been dealt with elsewhere, too.  Please use the CVS, of
+course.
 
+> for me, and 2.6.3 crashed on my PC with astonishing frequency, so I didn't
+> want to take a chance) and check.
 
---Kumba
+ Well, the stability of the i386 and the MIPS port for a given version is
+sometimes unrelated. ;-)
+
+> Anyway, the procedure is 'handle_daddi_ov' and not 'handle_daddi_ov_int'
+> in my genex.S, and it's substantially longer than your code. Do you have
+> the SAVE_ALL there? I don't see it.
+
+ I've stripped the preceding unrelated entry code.  The "_int" alternate
+entry points to exception handlers were merged from 2.4 on Jan 3th (only
+handle_fpe_int is actually needed, for R3k-class CPUs, as they handle the
+FP error as an ordinary interrupt).
+
+  Maciej
 
 -- 
-"Such is oft the course of deeds that move the wheels of the world: 
-small hands do them because they must, while the eyes of the great are 
-elsewhere."  --Elrond
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

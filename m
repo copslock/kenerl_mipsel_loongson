@@ -1,84 +1,115 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Oct 2004 01:18:32 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:57849 "EHLO
-	hermes.mvista.com") by linux-mips.org with ESMTP
-	id <S8225240AbUJUAS1>; Thu, 21 Oct 2004 01:18:27 +0100
-Received: from prometheus.mvista.com (prometheus.mvista.com [10.0.0.139])
-	by hermes.mvista.com (Postfix) with ESMTP
-	id 3B50618363; Wed, 20 Oct 2004 17:18:26 -0700 (PDT)
-Subject: [PATCH]Check for Hypertransport Link Initialization on PMC-Sierra
-	Titan before configuring the interface
-From: Manish Lachwani <mlachwani@mvista.com>
-To: linux-mips@linux-mips.org
-Cc: ralf@linux-mips.org
-Content-Type: text/plain
-Organization: 
-Message-Id: <1098317905.4266.18.camel@prometheus.mvista.com>
-Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.2.2 (1.2.2-5) 
-Date: 20 Oct 2004 17:18:26 -0700
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Oct 2004 01:35:28 +0100 (BST)
+Received: from h015.c009.snv.cp.net ([IPv6:::ffff:209.228.34.128]:55782 "HELO
+	c009.snv.cp.net") by linux-mips.org with SMTP id <S8225228AbUJUAfX>;
+	Thu, 21 Oct 2004 01:35:23 +0100
+Received: (cpmta 11596 invoked from network); 20 Oct 2004 17:35:17 -0700
+Received: from 209.228.34.126 (HELO mail.canada.com.criticalpath.net)
+  by smtp.canada.com (209.228.34.128) with SMTP; 20 Oct 2004 17:35:17 -0700
+X-Sent: 21 Oct 2004 00:35:17 GMT
+Received: from [69.193.111.169] by mail.canada.com with HTTP;
+    Wed, 20 Oct 2004 17:35:16 -0700 (PDT)
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 7bit
-Return-Path: <mlachwani@mvista.com>
+MIME-Version: 1.0
+To: geert@linux-m68k.org
+Cc: linux-mips@linux-mips.org
+From: thomas_blattmann@canada.com
+Subject: Re: crt1.o missing
+X-Sent-From: thomas_blattmann@canada.com
+Date: Wed, 20 Oct 2004 17:35:16 -0700 (PDT)
+X-Mailer: Web Mail 5.6.4-0
+Message-Id: <20041020173517.2756.h013.c009.wm@mail.canada.com.criticalpath.net>
+Return-Path: <thomas_blattmann@canada.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6148
+X-archive-position: 6149
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mlachwani@mvista.com
+X-original-sender: thomas_blattmann@canada.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello Ralf
 
-Attached patch checks for the Hypertransport Link Initialization before
-configuring the interface. Assuming PMON did try to do link
-initialization and there were no errors (like CRC etc.), the Link
-register will indicate it.
+> That's the host-libc6. You need a target-libc6.
+> 
+> tpkg-install-libc can do that for you. You need to
+> install dpkg-cross and
+> toolchain-source first.  More information about this
+> can be found in
+> /usr/share/doc/toolchain-source/ (toolchain-source is
+> the Debian-recommended
+> way to build cross-compilers).
+> 
+> But since you're compiler is installed in /usr/local/
+> and dpkg-cross will
+> install libc6 in /usr, you'll have to add some
+symbolic
+> links from (possibly
+> some parts under) /usr/local/mipsel-linux/ to
+> /usr/lib/mipsel-linux/.
+> 
+> Gr{oetje,eeting}s,
+> 
+> 						Geert
+> 
+> --
+> Geert Uytterhoeven -- There's lots of Linux beyond
+ia32
+> -- geert@linux-m68k.org
+> 
+> In personal conversations with technical people, I
+call
+> myself a hacker. But
+> when I'm talking to journalists I just say
+"programmer"
+> or something like that.
+> 							    -- Linus 
 
-Thanks
-Manish Lachwani
+I tired 'tpkg-install-libc mipsel' and mipsel-linux. It
+failed with the error message
 
---- arch/mips/pmc-sierra/yosemite/setup.c.orig	2004-10-20
-16:51:24.000000000 -0700
-+++ arch/mips/pmc-sierra/yosemite/setup.c	2004-10-20 16:58:56.000000000
--0700
-@@ -191,6 +191,8 @@
- static int __init pmc_yosemite_setup(void)
- {
- 	extern void pmon_smp_bootstrap(void);
-+	/* Hypertransport Link initialization register */
-+	unsigned long val = OCD_READ(RM9000x2_OCD_HTLINK);
- 
- 	board_time_init = yosemite_time_init;
- 	late_time_init = py_map_ocd;
-@@ -198,14 +200,21 @@
- 	/* Add memory regions */
- 	add_memory_region(0x00000000, 0x10000000, BOOT_MEM_RAM);
- 
--#if 0 /* XXX Crash ...  */
--	OCD_WRITE(RM9000x2_OCD_HTSC,
--	          OCD_READ(RM9000x2_OCD_HTSC) | HYPERTRANSPORT_ENABLE);
--
--	/* Set the BAR. Shifted mode */
--	OCD_WRITE(RM9000x2_OCD_HTBAR0, HYPERTRANSPORT_BAR0_ADDR);
--	OCD_WRITE(RM9000x2_OCD_HTMASK0, HYPERTRANSPORT_SIZE0);
--#endif
-+	if (val & 0x00000020) {
-+		/*
-+		 * If Hypertransport is enabled and no device is connected on
-+		 * the Hypertranport interface, dont scan the interface.
-+		 * Check the Link initialization register first. If the Link
-+		 * is enabled, then initialize and scan the HT interface
-+		 */
-+		OCD_WRITE(RM9000x2_OCD_HTSC,
-+		          OCD_READ(RM9000x2_OCD_HTSC) | HYPERTRANSPORT_ENABLE);
-+
-+		/* Set the BAR. Shifted mode */
-+		OCD_WRITE(RM9000x2_OCD_HTBAR0, HYPERTRANSPORT_BAR0_ADDR);
-+		OCD_WRITE(RM9000x2_OCD_HTMASK0, HYPERTRANSPORT_SIZE0);
-+		OCD_WRITE(RM9000x2_OCD_HTBAA30, 0x01); /* Supports byte swap */
-+	}
- 
- 	return 0;
- }
+Building libc6-mipsel-cross_2.3.2.ds1-18_all.deb
+Unpacking libc6-mipsel-cross
+dpkg: dependency problems prevent configuration of
+libc6-mipsel-cross:
+ libc6-mipsel-cross depends on
+libdb1-compat-mipsel-cross; however:
+  Package libdb1-compat-mipsel-cross is not installed.
+dpkg: error processing libc6-mipsel-cross (--install):
+ dependency problems - leaving unconfigured
+Errors were encountered while processing:
+ libc6-mipsel-cross
+dpkg -i failed.
+
+
+...and I can't find this package
+libdb1-compat-mipsel-cross.
+
+I also tried dpgk-make mipsel - got the two
+directories, debuild and debi worked well with
+binutils-gcc-mipsel-2.15 - debuild failes however in
+gcc-mipsel-3.0.4 withdh_testdir
+dh_testroot
+dh_installdocs
+dh_installman
+dh_installinfo
+dh_undocumented
+dh_installchangelogs 
+dh_link
+dh_strip
+strip: Unable to recognise the format of the input file
+_m16subsf3.o
+dh_strip: command returned error code
+make: *** [binary-arch] Error 1
+debuild: fatal error at line 456:
+dpkg-buildpackage failed!
+
+All I need is to compile hello world to get it run on a
+mips ;) Any ideas ?
+
+thx
+
+Thomas

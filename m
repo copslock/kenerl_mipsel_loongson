@@ -1,59 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Dec 2003 13:36:47 +0000 (GMT)
-Received: from mail.mpc-ogw.co.uk ([IPv6:::ffff:81.2.99.170]:44872 "EHLO
-	burton.mpc-data.co.uk") by linux-mips.org with ESMTP
-	id <S8225323AbTLINgq>; Tue, 9 Dec 2003 13:36:46 +0000
-Received: from lion.mpc-data.co.uk (IDENT:root@lion.mpc-data.co.uk [192.150.92.1])
-	by burton.mpc-data.co.uk (8.12.8/8.12.7) with ESMTP id hB9DaLpc027020
-	for <linux-mips@linux-mips.org>; Tue, 9 Dec 2003 13:36:23 GMT
-Received: from [192.150.92.72] (duvel.mpc-data.co.uk [192.150.92.72])
-	by lion.mpc-data.co.uk (8.9.3/8.8.5) with ESMTP id NAA06500
-	for <linux-mips@linux-mips.org>; Tue, 9 Dec 2003 13:36:23 GMT
-Mime-Version: 1.0 (Apple Message framework v606)
-Content-Transfer-Encoding: 7bit
-Message-Id: <E3E525EC-2A4C-11D8-AC44-000A959E1510@mpc-data.co.uk>
-Content-Type: text/plain; charset=US-ASCII; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Dec 2003 16:54:34 +0000 (GMT)
+Received: from no-dns-yet.demon.co.uk ([IPv6:::ffff:80.176.203.50]:12036 "EHLO
+	pangolin.localnet") by linux-mips.org with ESMTP
+	id <S8225388AbTLIQyd>; Tue, 9 Dec 2003 16:54:33 +0000
+Received: from spiral.localnet ([192.168.1.11] helo=bitbox.co.uk)
+	by pangolin.localnet with esmtp (Exim 3.35 #1 (Debian))
+	id 1ATl7z-0004hd-00
+	for <linux-mips@linux-mips.org>; Tue, 09 Dec 2003 16:54:27 +0000
+Message-ID: <3FD5FE41.8040909@bitbox.co.uk>
+Date: Tue, 09 Dec 2003 16:54:25 +0000
+From: Peter Horton <phorton@bitbox.co.uk>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.6b) Gecko/20031205 Thunderbird/0.4
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
 To: linux-mips@linux-mips.org
-From: James Cope <jcope@mpc-data.co.uk>
-Subject: PCMCIA on AMD Alchemy Au1100 boards
-Date: Tue, 9 Dec 2003 13:37:53 +0000
-X-Mailer: Apple Mail (2.606)
-Return-Path: <jcope@mpc-data.co.uk>
+Subject: Kernel 2.4.23 on Cobalt Qube2
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <phorton@bitbox.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3716
+X-archive-position: 3717
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jcope@mpc-data.co.uk
+X-original-sender: phorton@bitbox.co.uk
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+Hi.
 
-I was wondering if anyone here can help. I am trying to get PCMCIA 
-support working on a board that is very much like the AMD DB1100. Can 
-anyone confirm if PCMCIA works on the DB1100? I do not have access to 
-one at the moment.
+Has anyone got a 2.4.23 kernel running on the Cobalt Qube 2 ?
 
-I am using the linux_2_4 tagged kernel from CVS with the
-pcmcia-cs-3.1.22 card services package. I have applied the 64bit_pcmcia 
-patch to both the kernel and card services code and I have part of the 
-PCMCIA system running. I can use the `cardctl' utility to detect the 
-presence of PCMCIA cards successfully, however the `cardmgr' daemon 
-fails to bind to a socket.
+I've cross compiled the latest kernel from CVS (using the default Cobalt 
+config in the tree) on a PC using gcc 2.95.4 and binutils 2.12.90.0.1 
+(both from Debian sources).
 
-I have a SanDisk Compact Flash card that I'm trying to access. cardmgr 
-correctly detects this as an ATA/IDE Fixed Disk and calls `modprobe 
-ide_cs.o' which is loading okay. cardmgr then reports the error ``get 
-dev info on socket 0 failed: Transport endpoint is not connected'' 
-(ENOTCONN).
+The kernel boots okay from the HD, but I get strange segmentation faults 
+and other errors whilst running Debian's "dpkg" to install packages. If 
+I repeat the installation from scratch I get exactly the same errors in 
+exactly the same places :-(
 
-I can supply more detailed logging and status information if needed, 
-but for now I'm wondering if this path has been trodden before? I have 
-searched through the linux-mips mail archive, but I have only been able 
-to confirm the state of Au1500 PCMCIA support.
+I've changed both the memory SIMMs for new ones and the problem is still 
+the same. I've done the same Debian install on an Au1100 board with no 
+problems at all.
 
-Regards,
+Neither of the on-board ethernet ports work correctly with new kernel 
+either. The primary port seems to work fine pinging single packets back 
+and forth, but seems to stall for periods of approx 20 seconds when 
+performing bulk transfers. I've been using an RTL8139 card in the PCI 
+slot for network access.
 
-James Cope
+TIA,
+
+    P.

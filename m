@@ -1,65 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jan 2004 14:17:42 +0000 (GMT)
-Received: from mx5.Informatik.Uni-Tuebingen.De ([IPv6:::ffff:134.2.12.32]:403
-	"EHLO mx5.informatik.uni-tuebingen.de") by linux-mips.org with ESMTP
-	id <S8225474AbUATORm>; Tue, 20 Jan 2004 14:17:42 +0000
-Received: from localhost (loopback [127.0.0.1])
-	by mx5.informatik.uni-tuebingen.de (Postfix) with ESMTP
-	id C7AEE123; Tue, 20 Jan 2004 15:17:33 +0100 (NFT)
-Received: from mx5.informatik.uni-tuebingen.de ([127.0.0.1])
- by localhost (mx5 [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 22818-05; Tue, 20 Jan 2004 15:17:32 +0100 (NFT)
-Received: from dual (semeai.Informatik.Uni-Tuebingen.De [134.2.15.66])
-	by mx5.informatik.uni-tuebingen.de (Postfix) with ESMTP
-	id D941B113; Tue, 20 Jan 2004 15:17:31 +0100 (NFT)
-Received: from mrvn by dual with local (Exim 3.36 #1 (Debian))
-	id 1Aiwh8-00014B-00; Tue, 20 Jan 2004 15:17:30 +0100
-To: linux-mips@linux-mips.org
-Cc: debian-mips@lists.debian.org
-Subject: Need .config files for Debians kernel-image-2.4.24-mips(el)
-From: Goswin von Brederlow <brederlo@informatik.uni-tuebingen.de>
-Date: 20 Jan 2004 15:17:30 +0100
-Message-ID: <878yk21z7p.fsf@mrvn.homelinux.org>
-User-Agent: Gnus/5.0808 (Gnus v5.8.8) XEmacs/21.4 (Reasonable Discussion)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Virus-Scanned: by amavisd-new (McAfee AntiVirus) at informatik.uni-tuebingen.de
-Return-Path: <brederlo@informatik.uni-tuebingen.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jan 2004 14:43:15 +0000 (GMT)
+Received: from honk1.physik.uni-konstanz.de ([IPv6:::ffff:134.34.140.224]:58847
+	"EHLO honk1.physik.uni-konstanz.de") by linux-mips.org with ESMTP
+	id <S8225474AbUATOnP>; Tue, 20 Jan 2004 14:43:15 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP
+	id 7FA372BC42; Tue, 20 Jan 2004 15:43:13 +0100 (CET)
+Received: from honk1.physik.uni-konstanz.de ([127.0.0.1])
+ by localhost (honk [127.0.0.1:10024]) (amavisd-new) with ESMTP id 23859-08;
+ Tue, 20 Jan 2004 15:42:51 +0100 (CET)
+Received: from bogon.sigxcpu.org (bogon.physik.uni-konstanz.de [134.34.147.122])
+	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP
+	id 2CDDE2BC3C; Tue, 20 Jan 2004 15:42:51 +0100 (CET)
+Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
+	id 0D30A4198; Tue, 20 Jan 2004 15:42:13 +0100 (CET)
+Date: Tue, 20 Jan 2004 15:42:12 +0100
+From: Guido Guenther <agx@debian.org>
+To: Goswin von Brederlow <brederlo@informatik.uni-tuebingen.de>
+Cc: linux-mips@linux-mips.org, debian-mips@lists.debian.org
+Subject: Re: Need .config files for Debians kernel-image-2.4.24-mips(el)
+Message-ID: <20040120144212.GA7046@bogon.ms20.nix>
+Mail-Followup-To: Guido Guenther <agx@debian.org>,
+	Goswin von Brederlow <brederlo@informatik.uni-tuebingen.de>,
+	linux-mips@linux-mips.org, debian-mips@lists.debian.org
+References: <878yk21z7p.fsf@mrvn.homelinux.org>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="45Z9DzgjV8m4Oswq"
+Content-Disposition: inline
+In-Reply-To: <878yk21z7p.fsf@mrvn.homelinux.org>
+User-Agent: Mutt/1.5.5.1+cvs20040105i
+X-Virus-Scanned: by amavisd-new-20021227-p2 (Debian)
+Return-Path: <agx@sigxcpu.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4065
+X-archive-position: 4066
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: brederlo@informatik.uni-tuebingen.de
+X-original-sender: agx@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
 
-I'm putting together a kernel image package for debian mips and
-mipsel.
+--45Z9DzgjV8m4Oswq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-To build actual usefull images I need to know what hardware the
-different subarchitectures have by default and which they can have.
+On Tue, Jan 20, 2004 at 03:17:30PM +0100, Goswin von Brederlow wrote:
+> I'm putting together a kernel image package for debian mips and
+> mipsel.
+We already have that (we're at 2.4.22 currently, look for
+kernel-patch-2.4.X-mips). Please don't add new packages, you're welcome
+to take over the current packages however.
+ -- Guido
 
-Example:
+--45Z9DzgjV8m4Oswq
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
 
-My XXS1500 has onboard ethernet, sound, usb, flash card, smart card.
-The usualy boot method would be from flash or nfs-root. My .config has
-support for the flash, ethernet, initrd and nfs-root buildin but the
-sound and usb as modules.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.4 (GNU/Linux)
 
-The .config should have only boot devices buildin and everything
-supported for the subarch as modules. That way everyone can boot but
-the memory footprint is kept reasonably low.
+iD8DBQFADT5En88szT8+ZCYRAsGBAJ9OqXX/D2t1JlJqrm29hnveR8ctFQCfabIy
+SrepEH47ZVhtc1aNQtbdR9c=
+=+S0a
+-----END PGP SIGNATURE-----
 
-
-
-If you are unsure about what all is supported on your subarch or if
-you only have a .config specialised to your needs send me that anyway
-with a little note saying so. I can compare different .configs and
-merge them or fix things when another user complains.
-
-MfG
-        Goswin
+--45Z9DzgjV8m4Oswq--

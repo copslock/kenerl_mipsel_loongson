@@ -1,121 +1,76 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g3UAFhwJ003513
-	for <linux-mips-outgoing@oss.sgi.com>; Tue, 30 Apr 2002 03:15:43 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g3UI3XwJ025548
+	for <linux-mips-outgoing@oss.sgi.com>; Tue, 30 Apr 2002 11:03:33 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g3UAFh6U003512
-	for linux-mips-outgoing; Tue, 30 Apr 2002 03:15:43 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g3UI3Xeh025547
+	for linux-mips-outgoing; Tue, 30 Apr 2002 11:03:33 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from oval.algor.co.uk (root@oval.algor.co.uk [62.254.210.250])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g3UAFUwJ003506
-	for <linux-mips@oss.sgi.com>; Tue, 30 Apr 2002 03:15:32 -0700
-Received: from gladsmuir.algor.co.uk.algor.co.uk (IDENT:dom@gladsmuir.algor.co.uk [192.168.5.75])
-	by oval.algor.co.uk (8.11.6/8.10.1) with ESMTP id g3UAGH211139;
-	Tue, 30 Apr 2002 11:16:18 +0100 (BST)
-From: Dominic Sweetman <dom@algor.co.uk>
+Received: from av.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g3UI3QwJ025544
+	for <linux-mips@oss.sgi.com>; Tue, 30 Apr 2002 11:03:27 -0700
+Received: from mvista.com (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id LAA32743;
+	Tue, 30 Apr 2002 11:03:03 -0700
+Message-ID: <3CCEDC94.B668649E@mvista.com>
+Date: Tue, 30 Apr 2002 12:04:04 -0600
+From: Michael Pruznick <michael_pruznick@mvista.com>
+Reply-To: michael_pruznick@mvista.com
+Organization: MontaVista
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.20 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Message-ID: <15566.28397.770794.272735@gladsmuir.algor.co.uk>
-Date: Tue, 30 Apr 2002 11:16:13 +0100
-To: Johannes Stezenbach <js@convergence.de>,
-   Eric Christopher <echristo@redhat.com>
-cc: gcc@gcc.gnu.org, linux-mips@oss.sgi.com
-Cc: dom@algor.co.uk, sde@algor.co.uk
-Subject: Re: [Fwd: Current state of MIPS16 support?]
-In-Reply-To: <3CBFEAA9.9070707@algor.co.uk>
-References: <3CBFEAA9.9070707@algor.co.uk>
-X-Mailer: VM 6.89 under 21.1 (patch 14) "Cuyahoga Valley" XEmacs Lucid
-User-Agent: SEMI/1.13.7 (Awazu) CLIME/1.13.6 (=?ISO-2022-JP?B?GyRCQ2YbKEI=?=
- =?ISO-2022-JP?B?GyRCJU4+MRsoQg==?=) MULE XEmacs/21.1 (patch 14) (Cuyahoga
- Valley) (i386-redhat-linux)
-Content-Type: text/plain; charset=US-ASCII
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+CC: linux-mips@oss.sgi.com
+Subject: Re: ps2 keyboard -- no key down events
+References: <Pine.GSO.3.96.1020424194125.23744D-100000@delta.ds2.pg.gda.pl>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+"Maciej W. Rozycki" wrote:
+> 
+> On Wed, 24 Apr 2002, Michael Pruznick wrote:
+> 
+> > I'm working on this mips board with a smsc 90e66 south bridge and
+> > fdc37m812 super io.  I'm using the standard pc_keyb.c driver.  I only
+> > see keyboard interrupts and KBD_STAT_OBF set in response to "key up"
+> > events.  I never see them in response to "key down" events.  Thus, the
+> > shell running on the vga console never gets my input (since it is the
+> > "key down" events that pass the character typed to the shell).
+> >
+> > At this point, I'm thinking that the standard driver needs some mods
+> > to work with the super io's ps2 controller.  The smsc doc only covers
+> > programming the plug and play registers and doesn't give any info about
+> > programming the ps2 controller.
+> 
+>  An 8042-compatible microcontroller (actually the firmware it runs) may
+> need to be programmed to a PC/AT-compatible mode.  On an i386 it is
+> typically done by the BIOS.  Try dumping configuration data from your chip
+> and compare it with what is set up in an i386 system.  You can dump 32
+> bytes of configuration data with the 0x20 command of the 8042 (5 low-order
+> bits of a command byte specify an address).  Writing can be performed
+> using the 0x60 command (the same semantics).
+> 
+>  Some data is available in the Ralf Brown's interrupt list (look for
+> "inter60*.zip" files on a SimTel DOS collection's mirror).  I have an old
+> Intel hardcopy document somewhere that describes to some extent the
+> IBM-defined locations of the configuration data -- I may try to dig it out
+> and see if I could help you.  Anyway, you should probably contact the
+> chip's manufacturer.
+Thanks, that seams to be the issue or at least part of it.  I dumped
+offset 0x20-0x3f on several systems.  All gave different results.
+Some helped, some did not.  In the case of the ones that helped, all
+the keys I tried (alpha,num,symbol) worked, until I pressed a shift,
+control, or alt key, in which case the keyboard was stuck sending
+the shifted value of all keys.  I sent a message to the chip
+manufacturer, waiting for their response.  In all cases, the mouse
+doesn't work and enabling the mouse via "gpm -t ps2 -m /dev/mouse"
+or "od -tx1 -w1 /dev/mouse" causes the keyboard to stop sending
+scancodes (on key up or key down).
 
-On 17th April (yes, I know that's a long time) Johannes wrote:
 
-> I quickly discovered that mips16 support in gcc-2.95 is broken.
-> ...
-> gcc-3.1 does seem to generate correct code for my tiny
-> test programs, but lacks mips16 support routines in
-> libgcc.a when configured for target mips-linux.
-> ...
-> Dominic Sweetman from Algorithmics mentioned in a posting
-> to the linux-mips list (http://oss.sgi.com/mips/mail.html)
-> that they have numerous patches against an old gcc version.
-> Has someone had a look at the Algorithmics gcc, or even
-> attempted to incorporate thier patches into gcc-3.x?
-
-I really owe you guys a reply, so I'll go for a cross-post.
-
-Eric replied:
-
-> mips16 support was broken for quite some time. Recently a lot of bug
-> fixes have gone into making it quite usable, though fairly unstable...
-
-Sounds fair.
-
-> I have not looked at the Algorithmics code because I don't have
-> copyright on it...
-
-We do publish our sources on our web server.  Not only are they GPL
-but we have a copyright assignment to the FSF in place (which I know
-was sent to Jim Wilson of Cygnus, albeit in 1993...)
-
-We're operating from a baseline which was a Cygnus/RedHat "2.96"
-release made to MIPS Technologies in late 2000.  A snapshot from a
-contract which had run into some kind of dissension, it had some new
-MIPS16 support but it was very buggy (the regular 32-bit MIPS code
-generator, too).  It has some nice features, though, like the "Haifa"
-scheduler and the DFA extensions to machine descriptions for
-superscalar CPUs.
-
-It's true we have not contributed patches lately.  We don't really
-have the resouces; our success rate used to be very low, and since
-we're not working around the developing 3.x sources the prospects seem
-even dimmer.
-
-We're working (with funding from MIPS Technologies) on building a
-toolchain which:
-
-o Can build Linux kernel, libraries and applications alike;
-
-o Is substantially more efficient than other GCC versions when
-  producing MIPS application ("MIPS/ABI", PIC) code;
-
-o Will produce ugly-but-correct PIC code for MIPS16 functions, so
-  MIPS16 can be tested in a standard Linux environment;
-
-o Operates to a known and documented ABI (even the forgotten details,
-  like gprof...)
-
-(The modesty of those ambitions should be measured against the reality
-of today's Linux/MIPS...)
-
-We should be done in 6 weeks or so.  Our intention is to provide this
-port as both source and binary RPMs for free download, and to
-encourage its widespread use.
-
-We appreciate it would be great if this work was converged into a
-robust 3.x compiler (though the change in C++ code conventions means,
-I think, that it will be a long time before such a compiler can be
-used by a majority of substantial embedded projects).  We're
-canvassing anyone we can think of with the funds or influence to help
-make it happen.
-
-It would be even more valuable if we could ensure that MIPS becomes a
-"first-class" architecture for the evolving GCC - but the latter
-surely is a big commitment for the core GCC group.
-
-It's a pity that the different priorities of various funders and
-developers mean that there is no baseline toolkit for Linux/MIPS, so
-that such resources as are available are frequently used to re-invent
-the wheel.
-
-Anyone got any ideas how to make it better?
-
---
-Dominic Sweetman
-Algorithmics Ltd
-The Fruit Farm, Ely Road, Chittering, CAMBS CB5 9PH, ENGLAND
-phone +44 1223 706200/fax +44 1223 706250/direct +44 1223 706205
-http://www.algor.co.uk
+-- 
+Michael Pruznick, michael_pruznick@mvista.com, www.mvista.com
+MontaVista Software, 1237 East Arques Ave, Sunnyvale, CA 94085
+direct voice/fax:970-266-1108, main office:408-328-9200

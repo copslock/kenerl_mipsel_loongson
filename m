@@ -1,69 +1,63 @@
-Received:  by oss.sgi.com id <S553939AbRAYDRU>;
-	Wed, 24 Jan 2001 19:17:20 -0800
-Received: from pobox.sibyte.com ([208.12.96.20]:16144 "HELO pobox.sibyte.com")
-	by oss.sgi.com with SMTP id <S553813AbRAYDRO>;
-	Wed, 24 Jan 2001 19:17:14 -0800
-Received: from postal.sibyte.com (moat.sibyte.com [208.12.96.21])
-	by pobox.sibyte.com (Postfix) with SMTP
-	id 9DD36205FA; Wed, 24 Jan 2001 19:17:08 -0800 (PST)
-Received: from SMTP agent by mail gateway 
- Wed, 24 Jan 2001 19:11:26 -0800
-Received: from plugh.sibyte.com (plugh.sibyte.com [10.21.64.158])
-	by postal.sibyte.com (Postfix) with ESMTP
-	id 08DBE1595F; Wed, 24 Jan 2001 19:17:09 -0800 (PST)
-Received: by plugh.sibyte.com (Postfix, from userid 61017)
-	id 7C3F7686D; Wed, 24 Jan 2001 19:17:34 -0800 (PST)
-From:   Justin Carlson <carlson@sibyte.com>
-Reply-To: carlson@sibyte.com
-Organization: Sibyte
-To:     Pete Popov <ppopov@mvista.com>
-Subject: Re: floating point on Nevada cpu
-Date:   Wed, 24 Jan 2001 19:16:04 -0800
-X-Mailer: KMail [version 1.0.29]
-Content-Type: text/plain
-Cc:     "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-References: <3A6F8F66.6258801@mvista.com> <0101241833281Q.00834@plugh.sibyte.com> <3A6F9814.3E39027@mvista.com>
-In-Reply-To: <3A6F9814.3E39027@mvista.com>
-MIME-Version: 1.0
-Message-Id: <0101241917341S.00834@plugh.sibyte.com>
-Content-Transfer-Encoding: 8bit
+Received:  by oss.sgi.com id <S553835AbRAYMnY>;
+	Thu, 25 Jan 2001 04:43:24 -0800
+Received: from noose.gt.owl.de ([62.52.19.4]:26643 "HELO noose.gt.owl.de")
+	by oss.sgi.com with SMTP id <S553842AbRAYMnG>;
+	Thu, 25 Jan 2001 04:43:06 -0800
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id D9057800; Thu, 25 Jan 2001 13:42:59 +0100 (CET)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 8D8C8EE9C; Thu, 25 Jan 2001 13:43:31 +0100 (CET)
+Date:   Thu, 25 Jan 2001 13:43:31 +0100
+From:   Florian Lohoff <flo@rfc822.org>
+To:     linux-mips@oss.sgi.com
+Subject: Re: OOps - very obscure
+Message-ID: <20010125134331.A11489@paradigm.rfc822.org>
+References: <20010124163048.B15348@paradigm.rfc822.org> <20010124165919.C15348@paradigm.rfc822.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20010124165919.C15348@paradigm.rfc822.org>; from flo@rfc822.org on Wed, Jan 24, 2001 at 04:59:19PM +0100
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, 24 Jan 2001, Pete Popov wrote:
+On Wed, Jan 24, 2001 at 04:59:19PM +0100, Florian Lohoff wrote:
 
-> Looks like there's something more basic that fails here.  This:
-> 
-> #include <stdio.h>
-> int main()
-> {
->     float x1,x2,x3,x4,x5;
-> 
->     x1 = 7.5;
->     x2 = 2.0;
->     x3 = x1/x2;
->     x4 = x1*x2;
->     x5 = x1-x2;
->     printf("x1 %f x2 %f x3 %f x4 %f x5 %f\n", x1, x2, x3, x4, x5);
-> }
-> 
-> 
-> produces this:
-> 
-> sh-2.03# ./fl 
-> x1 0.000000 x2 0.000000 x3 0.000000 x4 0.000000 x5 0.000000
-> 
+> Decoded this is:
 
-Try this:
+> >>RA;  00000000 Before first symbol
+> >>PC;  00000000 Before first symbol
+> Trace; 88028344 <sys_nanosleep+190/24c>
+> Trace; 8800fa88 <stack_done+1c/38>
 
-int main()
-{
-	printf("%f\n", (float)3.14159);
-}
+I am trying to track this down a bit more:
 
-If *that* fails, check your libraries and make sure the calling conventions,
-etc. match what you think they should be...
+with strace (very old version) 
 
--Justin
+rt_sigaction(34, {SIG_DFL}, NULL, 16)   = 0
+rt_sigprocmask(SIG_BLOCK, [], NULL, 16) = 0
+sysmips(0x7d1, 0x2ac95d24, 0x1, 0)      = 4149
+sched_yield(0x7d1, 0x2ac95d24, 0x1, 0, 0x2acfad50) = 0
+sysmips(0x7d1, 0x2ac95d24, 0x1, 0)      = 4149
+sched_yield(0x7d1, 0x2ac95d24, 0x1, 0, 0x2acfad50) = 0
+sysmips(0x7d1, 0x2ac95d24, 0x1, 0)      = 4149
+sched_yield(0x7d1, 0x2ac95d24, 0x1, 0, 0x2acfad50) = 0
+sysmips(0x7d1, 0x2ac95d24, 0x1, 0)      = 4149
+sched_yield(0x7d1, 0x2ac95d24, 0x1, 0, 0x2acfad50) = 0
+sysmips(0x7d1, 0x2ac95d24, 0x1, 0)      = 4149
+[... repeated this 2 lines ...]
+
+Every 1000 lines or something:
+
+nanosleep({0, 2000001}, NULL)           = 0
+
+But with strace it doesnt crash it seems at least not within 10 Minutes
+i let it run ...
+
+Flo
+-- 
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+     Why is it called "common sense" when nobody seems to have any?

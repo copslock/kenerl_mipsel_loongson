@@ -1,52 +1,47 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id MAA140136; Sat, 9 Aug 1997 12:01:39 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id LAA138177; Sat, 9 Aug 1997 11:36:47 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id MAA02994 for linux-list; Sat, 9 Aug 1997 12:01:21 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA02970; Sat, 9 Aug 1997 12:01:16 -0700
-Received: from athena.nuclecu.unam.mx (athena.nuclecu.unam.mx [132.248.29.9]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id MAA03571; Sat, 9 Aug 1997 12:01:15 -0700
-	env-from (miguel@athena.nuclecu.unam.mx)
-Received: (from miguel@localhost)
-	by athena.nuclecu.unam.mx (8.8.5/8.8.5) id OAA14144;
-	Sat, 9 Aug 1997 14:00:08 -0500
-Date: Sat, 9 Aug 1997 14:00:08 -0500
-Message-Id: <199708091900.OAA14144@athena.nuclecu.unam.mx>
-From: Miguel de Icaza <miguel@nuclecu.unam.mx>
-To: jwiede@blammo.engr.sgi.com
-CC: linux@cthulhu.engr.sgi.com, ralf@mailhost.uni-koblenz.de
-In-reply-to: <9708081540.ZM26801@blammo.engr.sgi.com>
-	(jwiede@blammo.engr.sgi.com)
-Subject: Re: Linux GGI and Linux/SGI
-X-Mexico: Este es un pais de orates, un pais amateur.
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA29157 for linux-list; Sat, 9 Aug 1997 11:36:30 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA29140 for <linux@engr.sgi.com>; Sat, 9 Aug 1997 11:36:27 -0700
+Received: from odin.waw.com (ns1.waw.com [194.51.88.250]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id LAA00622
+	for <linux@engr.sgi.com>; Sat, 9 Aug 1997 11:36:25 -0700
+	env-from (vincent@waw.com)
+Received: from odin.waw.com (vincent@mail.waw.com [194.51.88.252]) by odin.waw.com (8.7.3/8.7.3/waw) with SMTP id UAA27158; Sat, 9 Aug 1997 20:40:06 +0100
+Date: Sat, 9 Aug 1997 20:40:06 +0100 (GMT+0100)
+From: Vincent Renardias <vincent@waw.com>
+To: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
+cc: linux@cthulhu.engr.sgi.com
+Subject: Re: your mail
+In-Reply-To: <199708091741.TAA09294@informatik.uni-koblenz.de>
+Message-ID: <Pine.LNX.3.95.970809195755.24185B-100000@odin.waw.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
 
-> I'm not so attached to the notion of GGI as much as for gfx
-> having an in-kernel-space presence in Linux (Linux/SGI is
-> going to need this, as I suspect is any Linux that attempts
-> hardware acceleration of OpenGL or other similar APIs).
+On Sat, 9 Aug 1997, Ralf Baechle wrote:
 
-What does 'gfx' mean in this context?
+> > 2/ While using the crossdev gcc, several times I got complains about a
+> > file 'sgidefs.h' missing (from
+> > /usr/local/lib/gcc-lib/mips-linux/2.7.2/include/va-mips.h, line 41). 
+> > Commenting the '#include' file made the compile work, but I not sure it's
+> > the right fix. 
+> 
+> Not the right thing, but won't hurt.  I shows that your libc is
+> not installed correctly.
 
-Linux/SGI currently supports direct rendering (modulo the fact that I
-have not written the code to context switch the card state, which
-should be trivial to do).
+I just installed the binutils/gcc crossdev packages from
+ftp.linux.sgi.com. Should i also install the glibc-2.0.4-1.tar.gz package
+from /pub/mips-linux? In case it matters my native libc is glibc-2.0.4
+(i386).
 
-With direct rendering you do not need any graphics acceleration code
-in the kernel, you just need to implement the smart tricks the SGI
-graphics people came up with and implement some small kernel support
-for making the direct rendering applications and the X server work
-together. 
+[Thanx for the explanation on endianess ;]
 
-Check the www.linux.sgi.com page for a pointer to Mark's paper on this
-matter, but the idea is that we let any application that needs to talk
-directly to the hardware to map the video card registers into his
-address space.  We already have the code that implements the lazy
-context switches for the video card [1] and bits of the resource
-manager.
+	Cordialement,
 
-The code we will have on Linux/SGI is far better for the SGI case than
-what the GGI people have now and as a side beneffit it will let us run
-stock Irix Xsgi server.
-
-[1] the mmu code, not the actual switch, I will do that next, as I
-mentioned before, 
+--
+-     ** Linux **         +-------------------+             ** WAW **     -
+-  vincent@debian.org     | RENARDIAS Vincent |          vincent@waw.com  -
+-  Debian/GNU Linux       +-------------------+      http://www.waw.com/  -
+-  http://www.debian.org/           |            WAW  (33) 4 91 81 21 45  -
+---------------------------------------------------------------------------

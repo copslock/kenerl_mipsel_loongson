@@ -1,54 +1,84 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6B0BfRw025243
-	for <linux-mips-outgoing@oss.sgi.com>; Wed, 10 Jul 2002 17:11:41 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6B1QHRw030096
+	for <linux-mips-outgoing@oss.sgi.com>; Wed, 10 Jul 2002 18:26:17 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6B0Bfof025242
-	for linux-mips-outgoing; Wed, 10 Jul 2002 17:11:41 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6B1QHMI030094
+	for linux-mips-outgoing; Wed, 10 Jul 2002 18:26:17 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from dea.linux-mips.net (shaft16-f88.dialo.tiscali.de [62.246.16.88])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6B0BXRw025232
-	for <linux-mips@oss.sgi.com>; Wed, 10 Jul 2002 17:11:35 -0700
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id g6B0Fs407501;
-	Thu, 11 Jul 2002 02:15:54 +0200
-Date: Thu, 11 Jul 2002 02:15:54 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Jon Burgess <Jon_Burgess@eur.3com.com>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: mips32_flush_cache routine corrupts CP0_STATUS with gcc-2.96
-Message-ID: <20020711021554.A3207@dea.linux-mips.net>
-References: <80256BF2.004ECBE6.00@notesmta.eur.3com.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <80256BF2.004ECBE6.00@notesmta.eur.3com.com>; from Jon_Burgess@eur.3com.com on Wed, Jul 10, 2002 at 03:16:21PM +0100
-X-Accept-Language: de,en,fr
-X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
+Received: from deliverator.sgi.com (deliverator.SGI.COM [204.94.214.10] (may be forged))
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6B1Q6Rw030067;
+	Wed, 10 Jul 2002 18:26:07 -0700
+Received: from av.mvista.com (gateway-1237.mvista.com [12.44.186.158]) 
+	by deliverator.sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id SAA00424; Wed, 10 Jul 2002 18:30:37 -0700 (PDT)
+	mail_from (jsun@mvista.com)
+Received: from mvista.com (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id SAA26657;
+	Wed, 10 Jul 2002 18:25:31 -0700
+Message-ID: <3D2CDCD0.7040704@mvista.com>
+Date: Wed, 10 Jul 2002 18:18:08 -0700
+From: Jun Sun <jsun@mvista.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.2.1) Gecko/20010901
+X-Accept-Language: en-us
+MIME-Version: 1.0
+To: "H. J. Lu" <hjl@lucon.org>, Ralf Baechle <ralf@oss.sgi.com>
+CC: linux-mips@oss.sgi.com
+Subject: Re: Malta crashes on the latest 2.4 kernel
+References: <3D2CBF73.50001@mvista.com> <20020710164900.A28911@lucon.org>
+Content-Type: multipart/mixed;
+ boundary="------------090008060701090105000000"
+X-Spam-Status: No, hits=-3.7 required=5.0 tests=MAY_BE_FORGED,UNIFIED_PATCH version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, Jul 10, 2002 at 03:16:21PM +0100, Jon Burgess wrote:
 
-> This may be caused by the cache routines running from the a cached kseg0, it
-> looks like it can be fixed by making sure that the are always called via
-> KSEG1ADDR(fn) which looks like it could be done with a bit of fiddling of the
-> setup_cache_funcs code. I have included a patch below which starts this, but I
-> haven't caught all combinations of how the routines are called.
+This is a multi-part message in MIME format.
+--------------090008060701090105000000
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 
-While that could be done it's not a good idea; running code in KSEG1 is
-very slow.
+H. J. Lu wrote:
 
-> Alternatively it could be a CP0 pipeline interaction of the cache instruction
-> and mfc0 but I can't find anything detailed about it. I thought this was the
-> problem initially and have included a patch below which adds an extra nop.
+> On Wed, Jul 10, 2002 at 04:12:51PM -0700, Jun Sun wrote:
+> 
+>>See the crash scene.  Anybody knows the cause?  It is strange to see the 
+>>reserved exception.
+>>
+>>
+> 
+> The 2.4 kernel checked out around Jul  4 09:28 PDT works fine on Malta.
+> 
 
-Running uncached is so slow that the pipeline will slip and stall basically
-every cycle which should get you around the hazard.  Anyway, there's no
-hazard for mfc0 documented in the MIPS32 spec so this smells like a silicon
-bug.
 
-Which particular CPU and revision are you using?
+Ralf,
 
-  Ralf
+Apparently this is a well-known problem.  So *please* apply this patch or give 
+  some constructive advice if the patch cannot be applied as it is.
+
+Jun
+
+
+--------------090008060701090105000000
+Content-Type: text/plain;
+ name="junk"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="junk"
+
+diff -Nru arch/mips/mm/tlb-r4k.c.orig arch/mips/mm/tlb-r4k.c
+--- arch/mips/mm/tlb-r4k.c.orig	Thu Jun 27 14:12:40 2002
++++ arch/mips/mm/tlb-r4k.c	Wed Jul 10 18:06:34 2002
+@@ -125,6 +125,7 @@
+ 				BARRIER;
+ 				/* Make sure all entries differ. */
+ 				set_entryhi(KSEG0+idx*0x2000);
++				BARRIER;
+ 				tlb_write_indexed();
+ 				BARRIER;
+ 			}
+
+--------------090008060701090105000000--

@@ -1,70 +1,66 @@
-Received:  by oss.sgi.com id <S553954AbQKHQhk>;
-	Wed, 8 Nov 2000 08:37:40 -0800
-Received: from [194.98.116.10] ([194.98.116.10]:33796 "EHLO hermes.epita.fr")
-	by oss.sgi.com with ESMTP id <S553940AbQKHQhX>;
-	Wed, 8 Nov 2000 08:37:23 -0800
-Received: from purple42.epx.epita.fr (purple42.epx.epita.fr [10.225.7.1])
-	by hermes.epita.fr id RAA20741 for <linux-mips@oss.sgi.com> 
-	EPITA Paris France Wed, 8 Nov 2000 17:36:22 GMT
-Received: by purple42.epx.epita.fr (Postfix, from userid 501)
-	id 789622294; Wed,  8 Nov 2000 17:35:53 +0100 (CET)
-Date:   Wed, 8 Nov 2000 17:35:53 +0100
-From:   Thomas Poindessous <poinde_t@epita.fr>
-To:     linux-mips@oss.sgi.com
-Subject: Re: Decstation 5000/200
-Message-ID: <20001108173553.A1305@purple42.epx.epita.fr>
-References: <20001107162653.A31659@purple42.epx.epita.fr> <20001107213708.G1930@paradigm.rfc822.org>
+Received:  by oss.sgi.com id <S553729AbQKHS5u>;
+	Wed, 8 Nov 2000 10:57:50 -0800
+Received: from woody.ichilton.co.uk ([216.29.174.40]:29453 "HELO
+        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553706AbQKHS5Y>;
+	Wed, 8 Nov 2000 10:57:24 -0800
+Received: by woody.ichilton.co.uk (Postfix, from userid 0)
+	id BF0FA7CF1; Wed,  8 Nov 2000 18:57:11 +0000 (GMT)
+Date:   Wed, 8 Nov 2000 18:57:11 +0000
+From:   Ian Chilton <ian@ichilton.co.uk>
+To:     pete <pete@blackhammer.com>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: MIPS linux
+Message-ID: <20001108185711.A10689@woody.ichilton.co.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <20001107213708.G1930@paradigm.rfc822.org>; from flo@rfc822.org on Tue, Nov 07, 2000 at 09:37:08PM +0100
+Content-Disposition: inline
+User-Agent: Mutt/1.3.11i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, Nov 07, 2000 at 09:37:08PM +0100, Florian Lohoff wrote:
-> On Tue, Nov 07, 2000 at 04:26:53PM +0100, Thomas Poindessous wrote:
-> > Hi,
-> > I have one IBM Decstation 5000/200 (PowerServer). 
-> > I have minicom it but nothing, no garbage, nada.
+Hello,
 
-First sorry for the wrong description.
-It's a digital Decstation 5000/200.
+> and noticed that you do not recommend using the hardhat distro based on
 
-> Are you sure you are not on the wrong serial ? 
-> Do you have a Framebuffer and Keyboard attached ?
+You can use it, but it is old and broken. It will get you booted into Linux, but IIRC you can not even compile a kernel  :(
 
-I connect my laplink to serial port #3
-The keyboard is unplugged, and I hav test with and without the framebuffer
-and the scsi controller. This box has three set of ram but no hard drive,
-is it a problem ?
+I am currently putting together some base systems, which you can net-boot and/or copy to a HD. Also, will write an installation guide. Hoping to upload these after the weekend. I started with a Hardhat install, then used the Redhat 6.0 packages from ftp://oss.sgi.com/pub/linux/mips/redhat/test-6.0, but that was not an easy procedure  :)
 
-> > Where can I find these errors code ?
-> 
-> They are in the Decstation Hardware Reference Manual
-> delivered with the Decstation - I havent got them
-> handy right now but probably someone could copy
-> them to a digital form and put it into the 
-> Mips HOWTO.
+Ralf is currently working on a Redhat 7.0 port, and Flo (lolo) has started uploading packages to debian.org
 
-It would be great.
+Then there is Simple Linux/MIPS, byt Keith...that is available from oss.sgi.com now...
 
-> > BTW, is there a port for Mips Magnum R4000 (Big endian) ?
-> 
-> Hmm - From memory: yes - But i dont think it'll work out of the box
-> as the have been a lot of kernel changes and nobody cared on the 
-> Mips Magnum Port.
+So, there is lots in the pipeline, but not a lot to actually go on for end-users right now, more hackers :)
 
-Ok, I will test.
+All the links should be on the links page at our site... (or the news page).
 
-> Flo
-> -- 
-> Florian Lohoff                  flo@rfc822.org             +49-5201-669912
->      Why is it called "common sense" when nobody seems to have any?
-> 
+There are pointers to some installation guides..
 
--- 
-Thomas Poindessous
-EpX asso GNU/Linux de l'Epita
-epx@epita.fr && http://www.epita.fr/~epx
+In the redhat dir on oss, there is a file called instructions, which is the guide I used when I first started out...It describes setting up the network boot server etc...
+
+As I say though, I am currently working on an installation guide for my bases (hoping to release a glibc 2.0.6/kernel 2.2.14 one and a kernel 2.4 / glibc 2.2 one, but the 2.2 is still being worked on  :)
+
+So, i'd say, you can get in there and try some of the stuff downloadable, but if you are in no hurry, hang on for a bit, because there are developments happening...
+
+
+If you are on IRC, join us on irc.openprojects.net, channel #mipslinux (I am GadgetMan), and definatly subscribe to the linux-mips mailinglist on oss.sgi.com
+
+Hope this helps a bit!
+
+
+Bye for Now,
+
+Ian
+
+
+                                \|||/ 
+                                (o o)
+ /---------------------------ooO-(_)-Ooo---------------------------\
+ |  Ian Chilton     (IRC Nick - GadgetMan)     ian@ichilton.co.uk  |
+ |-----------------------------------------------------------------|
+ |  Web Site      -->  http://www.ichilton.co.uk                   |
+ |-----------------------------------------------------------------|
+ |  "Unix is user friendly - it's just picky about it's friends."  |
+ \-----------------------------------------------------------------/

@@ -1,42 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 Sep 2002 20:28:05 +0200 (CEST)
-Received: from [64.238.111.99] ([64.238.111.99]:64015 "EHLO mail.ivivity.com")
-	by linux-mips.org with ESMTP id <S1122978AbSIUS2E>;
-	Sat, 21 Sep 2002 20:28:04 +0200
-Received: by ATLOPS with Internet Mail Service (5.5.2653.19)
-	id <S7YA830K>; Sat, 21 Sep 2002 14:27:55 -0400
-Message-ID: <AEC4671C8179D61194DE0002B328BDD2070C3F@ATLOPS>
-From: Dinesh Nagpure <dinesh_nagpure@ivivity.com>
-To: linux-mips@linux-mips.org
-Subject: RM5231A: problems in timer using COUNT/COMPARE register.
-Date: Sat, 21 Sep 2002 14:27:55 -0400
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Sep 2002 09:49:24 +0200 (CEST)
+Received: from mx2.mips.com ([206.31.31.227]:49797 "EHLO mx2.mips.com")
+	by linux-mips.org with ESMTP id <S1123899AbSIXHtX>;
+	Tue, 24 Sep 2002 09:49:23 +0200
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id g8O7n7rZ001883
+	for <linux-mips@linux-mips.org>; Tue, 24 Sep 2002 00:49:07 -0700 (PDT)
+Received: from grendel (grendel [192.168.236.16])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id AAA07450
+	for <linux-mips@linux-mips.org>; Tue, 24 Sep 2002 00:49:27 -0700 (PDT)
+Message-ID: <008801c2639f$385b1b80$10eca8c0@grendel>
+From: "Kevin D. Kissell" <kevink@mips.com>
+To: <linux-mips@linux-mips.org>
+Subject: FCSR Management
+Date: Tue, 24 Sep 2002 09:51:18 +0200
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2653.19)
 Content-Type: text/plain;
 	charset="iso-8859-1"
-Return-Path: <dinesh_nagpure@ivivity.com>
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4807.1700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4910.0300
+Return-Path: <kevink@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 260
+X-archive-position: 261
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dinesh_nagpure@ivivity.com
+X-original-sender: kevink@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+In looking at some anomalous behavior on another software
+platform, I checked the current MIPS/Linux kernel sources
+and I wonder if we don't have yet another FP context problem
+lurking under the surface.
 
-I am in the process of porting Linux to our FPGA platform using RM5231A
-processor. The COUNT/COMPARE register timer is acting funny with me. When I
-set the compare register value to something like 0x0100_0000 or less I get
-timer interrupt as expected but if I set the COMPARE register to a greater
-value timer interrupt never happens. I have verified this using our boot
-loader also and the results are the same. I am waiting for a reply from PMC
-but would also like to know if there is anyone out there who faced similar
-problems with RM5231A. From data sheets and user manual I know the count
-register is 32 bit but apparently there is some hitch somewhere that I need
-to discover. 
+On most, if not all, MIPS CPUs with integrated FPUs,
+the act of writing a value to the FP CSR (Control and
+Status Register, fcr31) which has the "E" bit, or any matching
+pair of Enable/Cause bits for the V/Z/O/U/I IEEE exceptions
+set will trigger a floating point exception.  In the case of
+the Unimplemented Operation exception (the "E" bit),
+the emulator is invoked and all of the Cause bits are cleared
+in the context before user execution is resumed.  In the
+case of other FP exceptions, the default behavior is to
+dump core, so the user never executes again.  But *if*
+the user has registered a handler for SIGFPE, and one
+of the IEEE exceptions occurs, I don't see where the
+associated Cause bit is being cleared, and I would think
+that the consequence would be that the process would
+get into an endless loop of trapping, posting the signal,
+restoring the FCSR from the context with the bits set,
+and trapping again, whether or not the PC is modified
+to avoid re-executing the faulting instruction.
 
-Dinesh
-iVivity
+Am I missing something, or is this a problem?
+
+            Regards,
+
+            Kevin K.

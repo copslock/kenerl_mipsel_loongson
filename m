@@ -1,66 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Oct 2004 14:35:04 +0100 (BST)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:32874
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8225311AbUJNNe7>; Thu, 14 Oct 2004 14:34:59 +0100
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp
-	id 1CI5kv-0005XW-00; Thu, 14 Oct 2004 15:34:57 +0200
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 1CI5kv-0007gH-00; Thu, 14 Oct 2004 15:34:57 +0200
-Date: Thu, 14 Oct 2004 15:34:57 +0200
-To: "Kevin D. Kissell" <kevink@mips.com>
-Cc: Nigel Stephens <nigel@mips.com>, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Oct 2004 14:43:04 +0100 (BST)
+Received: from embeddededge.com ([IPv6:::ffff:209.113.146.155]:56589 "EHLO
+	penguin.netx4.com") by linux-mips.org with ESMTP
+	id <S8225311AbUJNNm6>; Thu, 14 Oct 2004 14:42:58 +0100
+Received: from [192.168.2.27] (x1000-57.tellink.net [63.161.110.249])
+	by penguin.netx4.com (8.12.8/8.12.9) with ESMTP id i9EDZkb0028399;
+	Thu, 14 Oct 2004 09:35:47 -0400
+In-Reply-To: <20041014115304.3edbe141.toch@dfpost.ru>
+References: <20041014115304.3edbe141.toch@dfpost.ru>
+Mime-Version: 1.0 (Apple Message framework v619)
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Message-Id: <447121BB-1DE7-11D9-8FE5-003065F9B7DC@embeddededge.com>
+Content-Transfer-Encoding: 7bit
+Cc: linux-mips@linux-mips.org
+From: Dan Malek <dan@embeddededge.com>
 Subject: Re: Strange instruction
-Message-ID: <20041014133457.GC1398@rembrandt.csv.ica.uni-stuttgart.de>
-References: <20041014115304.3edbe141.toch@dfpost.ru> <01d901c4b1c8$996b7b30$10eca8c0@grendel> <20041014121242.GA1398@rembrandt.csv.ica.uni-stuttgart.de> <416E6E32.5080009@mips.com> <20041014123615.GB1398@rembrandt.csv.ica.uni-stuttgart.de> <00ae01c4b1ef$6ca4b450$10eca8c0@grendel>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <00ae01c4b1ef$6ca4b450$10eca8c0@grendel>
-User-Agent: Mutt/1.5.6i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+Date: Thu, 14 Oct 2004 09:45:10 -0400
+To: Dmitriy Tochansky <toch@dfpost.ru>
+X-Mailer: Apple Mail (2.619)
+Return-Path: <dan@embeddededge.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6037
+X-archive-position: 6038
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: dan@embeddededge.com
 Precedence: bulk
 X-list: linux-mips
 
-Kevin D. Kissell wrote:
-> > Nigel Stephens wrote:
-> > > Thiemo Seufer wrote:
-> > > >GNU as has "move" as builtin macro which is expanded differently for
-> > > >32 and 64 bit mode. This simplifies the task of writing code for both
-> > > >models. Unfortunately the expansion was broken for a while and
-> > > >generated always the 64 bit version if the toolchain was 64bit
-> > > >_capable_. IIRC this was fixed in the early 2.14 timeframe.
-> > > 
-> > > Wouldn't it be safer, as Kevin suggests, for the "move" macro to 
-> > > generate "or $rd,$0,$rs", since that will work correctly in either mode?
-> > 
-> > For CPUs with two adders the instruction scheduling is a bit better.
-> 
-> For CPUs with two adders, only one of which can do ORs, you mean.
 
-Yes.
+On Oct 14, 2004, at 7:53 AM, Dmitriy Tochansky wrote:
 
-> Isn't that a pretty small population of MIPS CPUs?
+> Hello!
+>
+> When starts kernel for my au1500 board reseting board. After 
+> disassembling I found instruction
+> which reseting board. Here is few strings of "mipsel-linux-objdump -D 
+> vmlinux" output:
+>
+> ---
+>
+> a0000650:       07400003        bltz    k0,a0000660 <nmi_handler+0x1c>
+> a0000654:       03a0d82d        0x3a0d82d
+> a0000658:       3c1ba020        lui     k1,0xa020
 
-Sure, but there's little reason to deny this optimization.
-
-> > Ther are also many other macros which are expanded in dependence of
-> > the 32/64 bit address/register size, a different "move" macro
-> > expansion won't help much if the assembler invocation was wrong.
-> 
-> Perhaps, but it strikes me as being only prudent to remove unnecessarily
-> fragile artifacts like this.
-
-It was an assembler bug.
+The Au1xxx is schizophrenic about the way it handles endianness.
+The core starts up big endian mode, the bus interface depends upon
+configuration options.  When you want to run the processor in
+little endian mode (as is the case with this board), there are still
+times during initialization that it is running big endian.  For these 
+code
+sequences, the instructions have to be byte swapped because the
+bus interface is running little endian.  You are also using little 
+endian
+tools, so you will have to also byte swap these before disassembly
+to get the proper instructions.
 
 
-Thiemo
+	-- Dan

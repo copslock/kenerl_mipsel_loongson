@@ -1,49 +1,44 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6MB7g113501
-	for linux-mips-outgoing; Sun, 22 Jul 2001 04:07:42 -0700
-Received: from post.webmailer.de (natpost.webmailer.de [192.67.198.65])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6MB7dV13495
-	for <linux-mips@oss.sgi.com>; Sun, 22 Jul 2001 04:07:40 -0700
-Received: from scotty.mgnet.de (pD957B5B4.dip.t-dialin.net [217.87.181.180])
-	by post.webmailer.de (8.9.3/8.8.7) with SMTP id NAA27005
-	for <linux-mips@oss.sgi.com>; Sun, 22 Jul 2001 13:07:37 +0200 (MET DST)
-Received: (qmail 24496 invoked from network); 22 Jul 2001 11:07:36 -0000
-Received: from spock.mgnet.de (192.168.1.4)
-  by scotty.mgnet.de with SMTP; 22 Jul 2001 11:07:36 -0000
-Date: Sun, 22 Jul 2001 13:07:29 +0200 (CEST)
-From: Klaus Naumann <spock@mgnet.de>
-To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-cc: linux-mips@oss.sgi.com
-Subject: Re: I2 R10K status?
-In-Reply-To: <20010722043347.J16278@rembrandt.csv.ica.uni-stuttgart.de>
-Message-ID: <Pine.LNX.4.21.0107221305590.24307-100000@spock.mgnet.de>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.2/8.11.3) id f6MBFSx14057
+	for linux-mips-outgoing; Sun, 22 Jul 2001 04:15:28 -0700
+Received: from iris1.csv.ica.uni-stuttgart.de (iris1.csv.ica.uni-stuttgart.de [129.69.118.2])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6MBFRV14051
+	for <linux-mips@oss.sgi.com>; Sun, 22 Jul 2001 04:15:27 -0700
+Received: from rembrandt.csv.ica.uni-stuttgart.de (rembrandt.csv.ica.uni-stuttgart.de [129.69.118.42])
+	by iris1.csv.ica.uni-stuttgart.de (8.9.3/8.9.3) with ESMTP id NAA30828
+	for <linux-mips@oss.sgi.com>; Sun, 22 Jul 2001 13:15:25 +0200 (MDT)
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.22 #1 (Debian))
+	id 15OHCn-0005mZ-00
+	for <linux-mips@oss.sgi.com>; Sun, 22 Jul 2001 13:15:25 +0200
+Date: Sun, 22 Jul 2001 13:15:25 +0200
+To: linux-mips@oss.sgi.com
+Subject: Re: mips64 linker bug?
+Message-ID: <20010722131525.L16278@rembrandt.csv.ica.uni-stuttgart.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <007301c1129d$cdf908e0$0deca8c0@Ulysses>
+User-Agent: Mutt/1.3.18i
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sun, 22 Jul 2001, Thiemo Seufer wrote:
-
-> Florian Lohoff wrote:
-> > On Fri, Jul 20, 2001 at 10:01:55PM +0200, Thiemo Seufer wrote:
-> > > processes crash due to unaligned access/illegal instruction in
-> > > kernel space. The serial console drops characters on high
-> > > throughput.
+Kevin D. Kissell wrote:
+[snip]
+> > An Kernel with 64bit addresses is less compact and likely to run slower.
+> > OTOH, a 64bit Kernel has certainly some hack value. :-)
 > 
-> I've tested the serial console now with 38400 baud also,
-> the characteristics of the dropouts didn't change.
+> Note that the 5Kc is one of the new generation of MIPS64 parts
+> that can enable 64-bit integer and floating point instructions without
+> requiring that 64-bit addressing also be enabled in the kernel.
 
-ok - when I have time next week I'll read through sgiserial.c 
-and clean it up a bit ... maybe I find the bug ...
+Sorry, but I can't see what's new here. AFAICS this possibility existed
+already in MIPS III.
 
-> Well, then it's at least not a bug of mine. :-)
+> Making Linux kernel support for this capability available is
+> one of the things that we're working on.  But it's not there yet.
 
-No. :-)
+I know. :-)
 
 
-
--- 
-Full Name   : Klaus Naumann     | (http://www.mgnet.de/) (Germany)
-Nickname    : Spock             | Org.: Mad Guys Network
-Phone / FAX : ++49/177/7862964  | E-Mail: (spock@mgnet.de)
-PGP Key     : www.mgnet.de/keys/key_spock.txt
+Thiemo

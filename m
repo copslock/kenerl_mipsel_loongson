@@ -1,47 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jul 2003 17:09:56 +0100 (BST)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:12418 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225212AbTG2QJy>; Tue, 29 Jul 2003 17:09:54 +0100
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id SAA09375;
-	Tue, 29 Jul 2003 18:09:45 +0200 (MET DST)
-X-Authentication-Warning: delta.ds2.pg.gda.pl: macro owned process doing -bs
-Date: Tue, 29 Jul 2003 18:09:43 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Jun Sun <jsun@mvista.com>
-cc: Teresa Tao <Teresat@tridentmicro.com>, linux-mips@linux-mips.org
-Subject: Re: mmap'ed memory cacheable or uncheable
-In-Reply-To: <20030728142401.K25784@mvista.com>
-Message-ID: <Pine.GSO.3.96.1030729180353.9217B-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jul 2003 02:30:27 +0100 (BST)
+Received: from p508B6063.dip.t-dialin.net ([IPv6:::ffff:80.139.96.99]:55508
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225213AbTG3BaW>; Wed, 30 Jul 2003 02:30:22 +0100
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h6U1UKx6008307;
+	Wed, 30 Jul 2003 03:30:20 +0200
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h6U1UKJS008306;
+	Wed, 30 Jul 2003 03:30:20 +0200
+Date: Wed, 30 Jul 2003 03:30:20 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Louis Hamilton <hamilton@redhat.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: [patch] Mips64 Ocelot-C and Jaguar ATX platform support
+Message-ID: <20030730013019.GA7366@linux-mips.org>
+References: <3F1F0BDC.8040609@redhat.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3F1F0BDC.8040609@redhat.com>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2923
+X-archive-position: 2924
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 28 Jul 2003, Jun Sun wrote:
+On Wed, Jul 23, 2003 at 05:27:40PM -0500, Louis Hamilton wrote:
 
-> > How about if I specify the following flags in my mmap routine just like what the pgprot_noncached micro did.
-> > 	pgprot_val(vma->vm_page_prot) &= ~_CACHE_MASK;
-> > 	pgprot_val(vma->vm_page_prot) |= _CACHE_UNCACHED;
-> > 
-> > Will this have kernel make the mmap'd memory non-cacheable? Or is there a mmap non-cacheable patch?
+> Notes the board support lives under arch/mips/momentum.
+> Also, CONFIG_BOARD_SCACHE and CONFIG_RM7000_CPU_SCACHE are utilized and
+> integrated into each platform's default configuration files.
+> As in the first patch, drivers/net/mv64340_eth.{c,h} is added to provide 
+> ethernet support.
 > 
-> I think this might work.  Did you try it?  The performance will be bad
-> though as mmap() is used widely by userland.
+> If it looks ok, please check changes into the tree.
 
- See mmap_mem() for how to select between cached and uncached mmap()ing
-cleanly. 
+Ehhh, sorry.  This CONFIG_JAGUAR_DMALOW thing just isn't the way to go.
+I know the Jaguar's DMA architecture is unpleassant to say the least but
+still, cluttering generic code with ifdefs isn't the way to go.  Declare
+all memory above the DMA limit high-memory and put the rest into ZONE_DMA
+rsp. ZONE_NORMAL, as appropriate for the Jaguar.  Then provide a dummy
+implementation of kmap, kunmap etc. (unless you have "real" highmem of
+course) that does the same thing as if highmem was disabled, see
+<linux/highmem.h>.
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+  Ralf

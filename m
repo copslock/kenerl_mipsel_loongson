@@ -1,67 +1,94 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5F0BVnC027860
-	for <linux-mips-outgoing@oss.sgi.com>; Fri, 14 Jun 2002 17:11:31 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5F0DmnC028294
+	for <linux-mips-outgoing@oss.sgi.com>; Fri, 14 Jun 2002 17:13:48 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5F0BVJG027859
-	for linux-mips-outgoing; Fri, 14 Jun 2002 17:11:31 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5F0Dm39028293
+	for linux-mips-outgoing; Fri, 14 Jun 2002 17:13:48 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
 Received: from dea.linux-mips.net (c-180-196-6.ka.dial.de.ignite.net [62.180.196.6])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5F0BPnC027849
-	for <linux-mips@oss.sgi.com>; Fri, 14 Jun 2002 17:11:26 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5F0DjnC028251
+	for <linux-mips@oss.sgi.com>; Fri, 14 Jun 2002 17:13:46 -0700
 Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id g5F0CEc22491
-	for linux-mips@oss.sgi.com; Sat, 15 Jun 2002 02:12:14 +0200
-Received: from smtp.inreach.com (smtp.inreach.com [209.142.2.34])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5EIClnC022138
-	for <linux-mips@oss.sgi.com>; Fri, 14 Jun 2002 11:12:47 -0700
-Received: (qmail 11332 invoked by uid 512); 14 Jun 2002 18:15:23 -0000
-Received: from dpchrist@holgerdanske.com by smtp.inreach.com by uid 509 with qmail-scanner-1.11 (perlscanner 1.11: clear; processed in 0.04974 secs); 14 Jun 2002 18:15:23 -0000
-Received: from unknown (HELO w2k30g) (209.142.39.228)
-  by smtp.inreach.com with SMTP; 14 Jun 2002 18:15:23 -0000
-Message-ID: <00a601c213cf$8bf56b30$0b01a8c0@w2k30g>
-From: "David Christensen" <dpchrist@holgerdanske.com>
+	by dea.linux-mips.net (8.11.6/8.11.6) id g5F0EYv22541
+	for linux-mips@oss.sgi.com; Sat, 15 Jun 2002 02:14:34 +0200
+Received: from msr.hinet.net (msr4.hinet.net [168.95.4.104])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5D9llnC026376
+	for <linux-mips@oss.sgi.com>; Thu, 13 Jun 2002 02:47:47 -0700
+Received: from sam (61-220-89-134.HINET-IP.hinet.net [61.220.89.134])
+	by msr.hinet.net (8.9.3/8.9.3) with SMTP id RAA18744
+	for <linux-mips@oss.sgi.com>; Thu, 13 Jun 2002 17:50:17 +0800 (CST)
+Message-ID: <01b701c212bf$b1394850$780411ac@sam>
+From: "Sam" <iskoo@ms45.hinet.net>
 To: <linux-mips@oss.sgi.com>
-Cc: "Domcan Sami" <domca_psg@email.com>
-References: <20020614115049.16384.qmail@email.com>
-Subject: Re: Kernel - arch support(mips)
-Date: Fri, 14 Jun 2002 11:15:35 -0700
+Subject: # CrossCompiler (Big Endian)
+Date: Thu, 13 Jun 2002 17:50:02 +0800
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_01B4_01C21302.BE4042E0"
 X-Priority: 3
 X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+X-Mailer: Microsoft Outlook Express 5.00.2919.6700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-linux-mips@oss.sgi.com:
+This is a multi-part message in MIME format.
 
-Domcan Sami <domca_psg@email.com> wrote:
-> I am trying to compile a program using a MIPS-LINUX cross compiler
-> (gcc). I've set up a connection between my i386 Linux machine and a
-> MIPS(RM7000) processor. This is again connected to a WinNT Terminal
-> where there should be an output from the MIPS processor.
->
-> I have 2 kernels in my Linux machine under the directories:
-> 1) /usr/src/linux - kernel version 2.2.14
-> 2) /root/kernels/linux - kernel version 2.4.14
->
-> I am using a boot image generated from the older kernel for booting.
-> The problem is the older kernel doesn't support MIPS architecture.
-> What should I do to upgrade my kernel so that it supports MIPS
-> architecture & that I'll be able to cross-compile my programs
-> properly.
+------=_NextPart_000_01B4_01C21302.BE4042E0
+Content-Type: text/plain;
+	charset="big5"
+Content-Transfer-Encoding: quoted-printable
 
-Please provide more information:
+Hi everybody,
 
-1.  What is your target platform -- e.g. make of model of the board or
-    computer that has the RM7000 processor on/in it?
+    I got some information to build Little Endian CrossCompiler for mips
+    even precompiled binary files, and work well.....
 
-2.  Does the target support Linux, does it have a ROM monitor, or is it
-    a raw embedded target (e.g. requires crt0)?
+    However, I have to build a Big Endian's one
+    Should I get the binutil and glibc for big endian firstly?
 
+    Is there any homepage for reference on web?
+    any sample?
 
-David Christensen
-dpchrist@holgerdanske.com
+    thanks all!
+
+--Sam
+
+------=_NextPart_000_01B4_01C21302.BE4042E0
+Content-Type: text/html;
+	charset="big5"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META content=3D"text/html; charset=3Dbig5" http-equiv=3DContent-Type>
+<META content=3D"MSHTML 5.00.2920.0" name=3DGENERATOR>
+<STYLE></STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV><FONT size=3D2>Hi everybody,</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT size=3D2>&nbsp;&nbsp;&nbsp; I got some information to build =
+Little=20
+Endian CrossCompiler for mips</FONT></DIV>
+<DIV><FONT size=3D2>&nbsp;&nbsp;&nbsp; even precompiled binary files, =
+and work=20
+well.....</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT size=3D2>&nbsp;&nbsp;&nbsp; However, I have to build a Big =
+Endian's=20
+one</FONT></DIV>
+<DIV><FONT size=3D2>&nbsp;&nbsp;&nbsp; Should I get the binutil and =
+glibc for big=20
+endian firstly?</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT size=3D2>&nbsp;&nbsp;&nbsp; Is there any homepage for =
+reference on=20
+web?</FONT></DIV>
+<DIV><FONT size=3D2>&nbsp;&nbsp;&nbsp; any sample?</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT size=3D2>&nbsp;&nbsp;&nbsp; thanks all!</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT size=3D2>--Sam</FONT></DIV></BODY></HTML>
+
+------=_NextPart_000_01B4_01C21302.BE4042E0--

@@ -1,71 +1,102 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Apr 2003 03:09:54 +0100 (BST)
-Received: from p508B5B2E.dip.t-dialin.net ([IPv6:::ffff:80.139.91.46]:64740
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225197AbTDCCJx>; Thu, 3 Apr 2003 03:09:53 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id h3329mi22419;
-	Thu, 3 Apr 2003 04:09:48 +0200
-Date: Thu, 3 Apr 2003 04:09:47 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: "Mike K." <linux_linux_2003@hotmail.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: __asm__  C code in mips-Linux
-Message-ID: <20030403040947.A21764@linux-mips.org>
-References: <BAY2-F148jSQU0d0uub000985dc@hotmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <BAY2-F148jSQU0d0uub000985dc@hotmail.com>; from linux_linux_2003@hotmail.com on Wed, Apr 02, 2003 at 05:02:08PM -0800
-Return-Path: <ralf@linux-mips.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Apr 2003 06:55:36 +0100 (BST)
+Received: from ftp-xb.sasken.com ([IPv6:::ffff:164.164.56.3]:43710 "EHLO
+	sandesha.sasken.com") by linux-mips.org with ESMTP
+	id <S8225197AbTDCFzf>; Thu, 3 Apr 2003 06:55:35 +0100
+Received: from sunsv2.sasken.com (localhost [127.0.0.1])
+	by sandesha.sasken.com (8.12.8/8.12.8) with ESMTP id h335tJNw021816
+	for <linux-mips@linux-mips.org>; Thu, 3 Apr 2003 11:25:19 +0530 (IST)
+Received: from pcz-madhavis.sasken.com (IDENT:madhavis@pcz-madhavis.sasken.com [10.1.64.210])
+	by sunsv2.sasken.com (8.11.6/8.11.6) with ESMTP id h335tSY28475
+	for <linux-mips@linux-mips.org>; Thu, 3 Apr 2003 11:25:28 +0530 (IST)
+Date: Thu, 3 Apr 2003 11:25:28 +0530 (IST)
+From: Madhavi <madhavis@sasken.com>
+To: <linux-mips@linux-mips.org>
+Subject: Relocation overflow problem with MIPS
+Message-ID: <Pine.LNX.4.33.0304031124100.24014-100000@pcz-madhavis.sasken.com>
+MIME-Version: 1.0
+Content-type: multipart/mixed; boundary="=_IS_MIME_Boundary"
+Return-Path: <madhavis@sasken.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1905
+X-archive-position: 1906
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: madhavis@sasken.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Apr 02, 2003 at 05:02:08PM -0800, Mike K. wrote:
+--=_IS_MIME_Boundary
+Content-Type: TEXT/PLAIN; CHARSET=US-ASCII
+Content-ID: <Pine.LNX.4.33.0304031124102.24014@pcz-madhavis.sasken.com>
 
-> extern __inline__ void atomic_add(int i, atomic_t * v)
-> {
-> 	unsigned long temp;
-> 
-> 	__asm__ __volatile__(
-> 		"1:   ll      %0, %1      # atomic_add\n"
-> 		"     addu    %0, %2                  \n"
-> 		"     sc      %0, %1                  \n"
-> 		"     beqz    %0, 1b                  \n"
-> 		: "=&r" (temp), "=m" (v->counter)
-> 		: "Ir" (i), "m" (v->counter));
-> }
-> 
-> 
-> Beginner questions on the above code:
-> 1. what is %0 %1 %2?
-> 2. what is the details meaning of the last two line of the above code?
 
-%0 stands for the 0th operand of the asm statement, that is the temp
-variable, %1 for the first that is v->counter, %2 for the second that is
-the variable i.  In the strings like "=&r" the = means that the argument
-will be assigned to, r means the argument / result is to be passed in a
-register (%0 will then be replaced by gcc with that register) and m
-means some memory location, gcc will then replace %1 with that memory
-location.  "Ir" means gcc can pass the variable i in either a register
-(that's the r) or as a 16-bit constant (the I).  Again %3 will be
-replaced with whatever gcc deciedes to pass here.  All the output
-operands are listed after the first colon - and be marked with a = sign;
-the input operands are listed after the second colon.  After a third
-colon all registers that get destroyed by a piece of inline assembly
-can be listed like :"$5","$6" but we don't need that here.
+Hi
 
-> 3. Very thanksful if you can comment each line with detail description  for 
-> me, thanks a lot!
+I am working on a device driver software for linux kernel version 2.4.19.
+My driver is a loadable module and the size of the module executable is
+approximately 1.4MB.
 
-Your basic spinlock described in the R4000 manual from 10 years ago :-)
+When I tried to load this module on x86, I didn't have any problems while
+installing it. On MIPS (R5432) CPU, this is giving the following problems:
 
-  Ralf
+edge_mod.o: Relocation overflow of type 4 for printk
+edge_mod.o: Relocation overflow of type 4 for printk
+edge_mod.o: Relocation overflow of type 4 for printk
+edge_mod.o: Relocation overflow of type 4 for alloc_etherdev
+edge_mod.o: Relocation overflow of type 4 for printk
+edge_mod.o: Relocation overflow of type 4 for printk
+edge_mod.o: Relocation overflow of type 4 for pci_enable_device
+edge_mod.o: Relocation overflow of type 4 for pci_set_dma_mask
+edge_mod.o: Relocation overflow of type 4 for printk
+edge_mod.o: Relocation overflow of type 4 for pci_find_capability
+.........................
+
+Could anyone tell me what this problem could be? What is relocation
+overflow of type 4? Where can I find the list of all the possible
+relocation overflow types and their descriptions?
+
+My module is not compiled using the options -fPIC. Would it make any
+difference if I enable this option?
+
+I have seen this following comment in modutils-2.4.12/obj/obj_mips.c
+
+/* _gp_disp is a magic symbol for PIC which is not supported for
+   the kernel and loadable modules.  */
+
+So, I was thinking that -fPIC wouldn't help much. Am I right?
+
+Any help in this regard would be greatly appreciated.
+
+Thank you in advance.
+
+regards
+Madhavi.
+
+Madhavi Suram
+Software Engineer
+Customer Delivery / Networks
+Sasken Communication Technologies Limited
+139/25, Ring Road, Domlur
+Bangalore - 560071 India
+Email: madhavis@sasken.com
+Tel: + 91 80 5355501 Extn: 8062
+Fax: + 91 80 5351133
+URL: www.sasken.com
+
+
+--=_IS_MIME_Boundary
+Content-Type: text/plain;charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+************************************************************************
+
+Sasken Business Disclaimer
+
+This  message may  contain  confidential,  proprietary  or  legally privileged  information. In  case  you are not the original intended recipient of the message, you must not, directly or indirectly, use,  disclose,  distribute,  print,  or copy  any  part of  this  message and you are requested to delete it and inform the sender. Any views  expressed in this message are those of the individual sender unless otherwise stated. Nothing contained in this message shall be construed as an offer or acceptance of any offer by Sasken Communication Technologies Limited ("Sasken") unless sent with that express intent and with due authority of Sasken. Sasken accepts no liability for any loss or damage, which may be caused by viruses.
+
+***********************************************************************
+
+--=_IS_MIME_Boundary--

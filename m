@@ -1,51 +1,44 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id NAA12273; Thu, 17 Jul 1997 13:56:38 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com ([192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id WAA41524; Thu, 17 Jul 1997 22:08:46 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id NAA21983 for linux-list; Thu, 17 Jul 1997 13:55:51 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA21932 for <linux@engr.sgi.com>; Thu, 17 Jul 1997 13:55:45 -0700
-Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id NAA06073
-	for <linux@engr.sgi.com>; Thu, 17 Jul 1997 13:55:44 -0700
-	env-from (shaver@neon.ingenia.ca)
-Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id QAA11880 for linux@engr.sgi.com; Thu, 17 Jul 1997 16:50:54 -0400
-From: Mike Shaver <shaver@neon.ingenia.ca>
-Message-Id: <199707172050.QAA11880@neon.ingenia.ca>
-Subject: strace 'LOOP' for MIPS
-To: linux@cthulhu.engr.sgi.com (Linux/SGI list)
-Date: Thu, 17 Jul 1997 16:50:54 -0400 (EDT)
-X-Mailer: ELM [version 2.4ME+ PL28 (25)]
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id WAA00569 for linux-list; Thu, 17 Jul 1997 22:08:33 -0700
+Received: from motown.detroit.sgi.com (motown.detroit.sgi.com [169.238.128.3]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id WAA00557 for <linux@cthulhu.engr.sgi.com>; Thu, 17 Jul 1997 22:08:30 -0700
+Received: from cx1 by motown.detroit.sgi.com via ESMTP (950413.SGI.8.6.12/930416.SGI)
+	 id BAA10576; Fri, 18 Jul 1997 01:08:26 -0400
+Message-ID: <33CEF9F7.7ECEE92D@cx1.detroit.sgi.com>
+Date: Fri, 18 Jul 1997 01:07:03 -0400
+From: Eric Kimminau <eak@cx1.detroit.sgi.com>
+Reply-To: eak@detroit.sgi.com
+Organization: Silicon Graphics, Inc
+X-Mailer: Mozilla 4.01b6C [en] (X11; I; IRIX 6.2 IP22)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+To: Ariel Faigon <ariel@sgi.com>
+CC: SGI/Linux mailing list <linux@cthulhu.engr.sgi.com>
+Subject: Re: Wellcome, Alan
+X-Priority: 3 (Normal)
+References: <199707162206.PAA08262@oz.engr.sgi.com>
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
->From strace/util.c:
-#ifdef I386
-#define LOOP	0x0000feeb
-#else /* !I386 */
-#ifdef M68K
-#define LOOP	0x60fe0000
-#else /* !M68K */
-#ifdef ALPHA
-#define LOOP    0xc3ffffff
-#endif /* ALPHA */
-#endif /* !M68K */
-#endif /* !I386 */
+Wellcome Alan!
 
-What should LOOP be for the MIPS?
-It appears to be the address of the breakpoint handler, but I'm not
-sure:
-	ptrace(PTRACE_POKETEXT, tcp->pid, (char *) tcp->baddr, LOOP);
-	if (errno) {
-		perror("setbpt: ptrace(PTRACE_POKETEXT, ...)");
-		return -1;
-	}
+Ariel Faigon wrote:
+> 
+> Hi All,
+> 
+> I'd like to wellcome (note the spelling) Alan Cox to the linux
+> mailing list.  To those who don't know Alan, he is almost as
+> famous as Linus himself in the Linux community :-)
 
-Mike
 
 -- 
-#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
-#>                   Welcome to the technocracy.
-#>                                                                     
-#> "you'd be so disappointed
-#>              to find out that the magic was not
-#>                          really meant for you" - OLP
+Eric Kimminau                             System Engineer
+eak@detroit.sgi.com                       Silicon Graphics, Inc
+Vox:(810) 848-4455                        39001 West 12mile Road
+Fax:(810)848-5600                         Farmington, MI 48331-2903
+            "I speak my mind and no one else's."
+    http://www.dcs.ex.ac.uk/~aba/rsa/perl-rsa-sig.html
+
+-----END PGP PUBLIC KEY BLOCK-----
+http://bs.mit.edu:11371/pks/lookup?op=vindex&search=Eric+A.+Kimminau&fingerprint=on

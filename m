@@ -1,61 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Dec 2004 04:56:11 +0000 (GMT)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:52338
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8224988AbULCEz7>; Fri, 3 Dec 2004 04:55:59 +0000
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp
-	id 1Ca5U5-0006xP-00; Fri, 03 Dec 2004 05:55:57 +0100
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 1Ca5U4-0003GD-00; Fri, 03 Dec 2004 05:55:56 +0100
-Date: Fri, 3 Dec 2004 05:55:56 +0100
-To: David Daney <ddaney@avtrex.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: [Patch] make 2.4 compile with GCC-3.4.3...
-Message-ID: <20041203045556.GB8714@rembrandt.csv.ica.uni-stuttgart.de>
-References: <41AFDA18.2010906@avtrex.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <41AFDA18.2010906@avtrex.com>
-User-Agent: Mutt/1.5.6i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Dec 2004 06:20:52 +0000 (GMT)
+Received: from adsl-67-116-42-149.dsl.sntc01.pacbell.net ([IPv6:::ffff:67.116.42.149]:59492
+	"EHLO avtrex.com") by linux-mips.org with ESMTP id <S8224989AbULCGUn>;
+	Fri, 3 Dec 2004 06:20:43 +0000
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6487.1
+Subject: RE: [Patch] make 2.4 compile with GCC-3.4.3...
+Date: Thu, 2 Dec 2004 22:20:35 -0800
+Message-ID: <69397FFCADEFD94F8D5A0FC0FDBCBBDEF4FA@avtrex-server.hq.avtrex.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: [Patch] make 2.4 compile with GCC-3.4.3...
+Thread-Index: AcTY9GF1P2Gkgu4tQBCZOA+wwGQoOwACgaBK
+From: "David Daney" <ddaney@avtrex.com>
+To: "Thiemo Seufer" <ica2_ts@csv.ica.uni-stuttgart.de>
+Cc: <linux-mips@linux-mips.org>
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6557
+X-archive-position: 6558
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-David Daney wrote:
-[snip]
-> *** kernel/Makefile	2 Dec 2004 19:50:05 -0000	1.2
-> --- kernel/Makefile	3 Dec 2004 03:00:44 -0000
-> *************** obj-y		+= branch.o cpu-probe.o irq.o pro
-> *** 18,23 ****
-> --- 18,27 ----
->   		   traps.o ptrace.o reset.o semaphore.o setup.o syscall.o \
->   		   sysmips.o ipc.o scall_o32.o time.o unaligned.o
->   
-> + check_gcc = $(shell if $(CC) $(1) -S -o /dev/null -xc /dev/null > /dev/null 2>&1; then echo "$(1)"; else echo "$(2)"; fi)
-> + 
-> + syscall.o signal.o : override CFLAGS += $(call check_gcc, -fno-unit-at-a-time,)
-
-What difference does this cause?
-
-[snip]
-> --- 77,84 ----
->    * Atomically swap in the new signal mask, and wait for a signal.
->    */
->   save_static_function(sys_sigsuspend);
-> ! __attribute_used__ static int
-> ! _sys_sigsuspend(struct pt_regs regs)
-
-These should also use "noinline", like 2.6.
-
-
-Thiemo
+VGhpZW1vIFNldWZlciB3cm90ZToNCj5EYXZpZCBEYW5leSB3cm90ZToNCj5bc25pcF0NCj4+ICoq
+KiBrZXJuZWwvTWFrZWZpbGUgICAyIERlYyAyMDA0IDE5OjUwOjA1IC0wMDAwICAgICAgIDEuMg0K
+Pj4gLS0tIGtlcm5lbC9NYWtlZmlsZSAgIDMgRGVjIDIwMDQgMDM6MDA6NDQgLTAwMDANCj4+ICoq
+KioqKioqKioqKioqKiBvYmoteSAgICAgICAgICs9IGJyYW5jaC5vIGNwdS1wcm9iZS5vIGlycS5v
+IHBybw0KPj4gKioqIDE4LDIzICoqKioNCj4+IC0tLSAxOCwyNyAtLS0tDQo+PiAgICAgICAgICAg
+ICAgICAgIHRyYXBzLm8gcHRyYWNlLm8gcmVzZXQubyBzZW1hcGhvcmUubyBzZXR1cC5vIHN5c2Nh
+bGwubyBcDQo+PiAgICAgICAgICAgICAgICAgIHN5c21pcHMubyBpcGMubyBzY2FsbF9vMzIubyB0
+aW1lLm8gdW5hbGlnbmVkLm8NCj4+ICANCj4+ICsgY2hlY2tfZ2NjID0gJChzaGVsbCBpZiAkKEND
+KSAkKDEpIC1TIC1vIC9kZXYvbnVsbCAteGMgL2Rldi9udWxsID4gL2Rldi9udWxsIDI+JjE7IHRo
+ZW4gZWNobyAiJCgxKSI7IGVsc2UgZWNobyAiJCgyKSI7IGZpKQ0KPj4gKw0KPj4gKyBzeXNjYWxs
+Lm8gc2lnbmFsLm8gOiBvdmVycmlkZSBDRkxBR1MgKz0gJChjYWxsIGNoZWNrX2djYywgLWZuby11
+bml0LWF0LWEtdGltZSwpDQo+DQo+V2hhdCBkaWZmZXJlbmNlIGRvZXMgdGhpcyBjYXVzZT8NCg0K
+SXQgY2F1c2VzIC1mbm8tdW5pdC1hdC1hLXRpbWUgdG8gYmUgYWRkZWQgdG8gQ0ZMQUdTIHdoZW4g
+Y29tcGlsaW5nDQpzeXNjYWxsLmMgYW5kIHNpZ25hbC5jLiAgQWxsIG90aGVyIGZpbGVzIGFyZSBj
+b21waWxlZCB3aXRoIHRoZSAibm9ybWFsIiBDRkxBR1MuDQogDQotZm5vLXVuaXQtYXQtYS10aW1l
+IHByZXZlbnRzIEdDQyBmcm9tIHJlYXJyYW5naW5nIHRoaW5ncyBpbiBpdHMgb3V0cHV0IHRodXMg
+cHJldmVudGluZw0KdGhlIHNhdmVfc3RhdGljX2Z1bmN0aW9uKCkgZnJvbSBiZWluZyBzZXBhcmF0
+ZWQgZnJvbSBpdHMgY29tcGFuaW9uLiAgQXMgZmFyIGFzIEkgY291bGQgdGVsbA0Kb25seSBzeXNj
+YWxsLmMgYW5kIHNpZ25hbC5jIG5lZWQgdGhpcy4NCiANCk9uZSBzbWFsbCBpc3N1ZSBpcyB0aGF0
+IHRoZXNlIHR3byBmaWxlcyBub3cgc2VlbSB0byBnZXQgcmVjb21waWxlZCB3aXRoIGVhY2gNCm1h
+a2UgaW52b2NhdGlvbi4gIEJ1dCB0aGF0IGlzIGJldHRlciB0aGFuIGJlaW5nIG1pc2NvbXBpbGVk
+Lg0KIA0KSSBhbSBub3Qgc3VyZSBpZiBjaGVja19nY2MgaXMgaW5oZXJpdGVkIGZyb20gdGhlIGhp
+Z2hlciBsZXZlbCBtYWtlZmlsZSBzbyBJIHB1dCBpdCBpbiB0aGlzIG9uZQ0KYXMgd2VsbC4gIElm
+IHlvdSB0aGluayBpdCBpcyBhIGdvb2QgYXBwcm9hY2ggSSB3aWxsIHRyeSB0byBzaW1wbGlmeSB0
+aGUgcGF0Y2ggYSBsaXR0bGUuDQoNCj5bc25pcF0NCj4+IC0tLSA3Nyw4NCAtLS0tDQo+PiAgICAq
+IEF0b21pY2FsbHkgc3dhcCBpbiB0aGUgbmV3IHNpZ25hbCBtYXNrLCBhbmQgd2FpdCBmb3IgYSBz
+aWduYWwuDQo+PiAgICAqLw0KPj4gICBzYXZlX3N0YXRpY19mdW5jdGlvbihzeXNfc2lnc3VzcGVu
+ZCk7DQo+PiAhIF9fYXR0cmlidXRlX3VzZWRfXyBzdGF0aWMgaW50DQo+PiAhIF9zeXNfc2lnc3Vz
+cGVuZChzdHJ1Y3QgcHRfcmVncyByZWdzKQ0KPg0KPlRoZXNlIHNob3VsZCBhbHNvIHVzZSAibm9p
+bmxpbmUiLCBsaWtlIDIuNi4NCg0Kbm9pbmxpbmUgd2FzIG5vdCBkZWZpbmVkIGZvciBtZSA6KCBz
+byBJIHJlbW92ZWQgaXQuICBJdCBzZWVtcyB0aGF0IGluIDIuNiBpdCBpcw0KanVzdCAjZGVmaW5l
+ZCB0byBiZSBub3RoaW5nLiAgVGhlIGFsdGVybmF0aXZlIGlzIHRvIGFkZDoNCiANCiNpZm5kZWYg
+bm9pbmxpbmUNCiNkZWZpbmUgbm9pbmxpbmUNCiNlbmRpZg0KIA0KdG8gY29tcGlsZXIuaCBhcyBp
+cyBkb25lIGluIDIuNg0KIA0KRGF2aWQgRGFuZXkuDQo=

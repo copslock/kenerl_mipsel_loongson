@@ -1,51 +1,31 @@
-Received:  by oss.sgi.com id <S553802AbQJYO7A>;
-	Wed, 25 Oct 2000 07:59:00 -0700
-Received: from spider.nlr.nl ([137.17.80.200]:50529 "EHLO smtp-server.nlr.nl")
-	by oss.sgi.com with ESMTP id <S553798AbQJYO6z>;
-	Wed, 25 Oct 2000 07:58:55 -0700
-Received: from hatch.nlr.nl (hatch.nlr.nl [137.17.197.5])
-        by smtp-server.nlr.nl (8.10.1/8.10.1/NLR 29/03/2000) with ESMTP id e9PEwmf3585821; 
-        Wed, 25 Oct 2000 16:58:48 +0200 (CDT)
-Disclaimer: "The National Aerospace Laboratory NLR DOES NOT ACCEPT ANY FINANCIAL COMMITMENT derived from this message."
-Received: (from smant@localhost)
-	by hatch.nlr.nl (8.9.3/8.9.3) id QAA15253
-	for linux-mips@oss.sgi.com; Wed, 25 Oct 2000 16:58:48 +0200
-From:   Geert Albert Smant <smant@nlr.nl>
-Message-Id: <200010251458.QAA15253@hatch.nlr.nl>
-Subject: HELP: Linux on Indy + graphics
-To:     linux-mips@oss.sgi.com
-Date:   Wed, 25 Oct 2000 16:58:48 +0200 (CEST)
-Reply-to: smant@nlr.nl
-X-Mailer: ELM [version 2.4ME+ PL82 (25)]
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset=US-ASCII
+Received:  by oss.sgi.com id <S553804AbQJYPAA>;
+	Wed, 25 Oct 2000 08:00:00 -0700
+Received: from gandalf1.physik.uni-konstanz.de ([134.34.144.69]:26887 "EHLO
+        gandalf.physik.uni-konstanz.de") by oss.sgi.com with ESMTP
+	id <S553801AbQJYO7s>; Wed, 25 Oct 2000 07:59:48 -0700
+Received: from agx by gandalf.physik.uni-konstanz.de with local (Exim 3.12 #1 (Debian))
+	id 13oS1m-0007pa-00; Wed, 25 Oct 2000 16:59:42 +0200
+Date:   Wed, 25 Oct 2000 16:59:42 +0200
+From:   Guido Guenther <guido.guenther@gmx.net>
+To:     wdmgds@xs4all.nl
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: indy gr3-xz support
+Message-ID: <20001025165942.C29999@gandalf.physik.uni-konstanz.de>
+References: <Pine.BSI.4.10.10010251535430.15635-100000@xs4.xs4all.nl> <20001025165158.A29999@gandalf.physik.uni-konstanz.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+User-Agent: Mutt/1.0.1i
+In-Reply-To: <20001025165158.A29999@gandalf.physik.uni-konstanz.de>; from guido.guenther@gmx.net on Wed, Oct 25, 2000 at 04:51:58PM +0200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-HELP!
-
-Does somebody have a sort of a 'cookbook' on how to install
-Linux (HardHat 5.1??) on an Indy and also information on
-how to get the X-server (4.0.1??) running on an Indy?
-
-I have installed the oss.sgi.com HardHat 5.1 distribution
-on an Indy R4K system with basic graphics (8-bit), but
-I cannot seem to get the X-server working...
-
-There must be someone who has an Indy -with- an Xserver
-(at least the person who ported the X-server to the Indy
-I guess.... :)
-
-Any help appreciated!
-
-Regards,
-Geert-Albert
-
---
-------------------------------------------------------------------
-Geert Albert Smant                       /    email: smant@nlr.nl
-National Aerospace Laboratory NLR, IC  (NLR)  phone: +31 527248418
-Voorsterweg 31, 8316 PR Marknesse, NL    /    fax:   +31 527248210
+On Wed, Oct 25, 2000 at 04:51:58PM +0200, Guido Guenther wrote:
+> On Wed, Oct 25, 2000 at 03:37:05PM +0200, wdmgds@xs4all.nl wrote:
+> > 
+> > Is the Gr3-XZ supported (24bp / opengl) under mips-linux?
+> There's no support for the XZ board since there's no documentation for
+> it available. The XL boards work both in 8 & 24 bit.
+Correction: 8 & 24bit XL boards work both in 8 bit mode only(silly me).
+ -- Guido

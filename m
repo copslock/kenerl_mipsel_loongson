@@ -1,36 +1,48 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f3QH6jx18265
-	for linux-mips-outgoing; Thu, 26 Apr 2001 10:06:45 -0700
-Received: from techunix.technion.ac.il (techunix.technion.ac.il [132.68.1.28])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3QH6iM18262
-	for <linux-mips@oss.sgi.com>; Thu, 26 Apr 2001 10:06:45 -0700
-Received: from jungo.com (csrover3-p4.cs.technion.ac.il [132.68.38.194])
-	by techunix.technion.ac.il (Postfix) with ESMTP
-	id CC65615423; Thu, 26 Apr 2001 20:06:42 +0300 (IDT)
-Message-ID: <3AE864BD.4106010A@jungo.com>
-Date: Thu, 26 Apr 2001 20:11:10 +0200
-From: Michael Shmulevich <michaels@jungo.com>
-X-Mailer: Mozilla 4.7 [en] (Win98; I)
+	by oss.sgi.com (8.11.3/8.11.3) id f3QH9Yt18407
+	for linux-mips-outgoing; Thu, 26 Apr 2001 10:09:34 -0700
+Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3QH9YM18404
+	for <linux-mips@oss.sgi.com>; Thu, 26 Apr 2001 10:09:34 -0700
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f3QH4g005710;
+	Thu, 26 Apr 2001 10:04:42 -0700
+Message-ID: <3AE854D2.FA0316B0@mvista.com>
+Date: Thu, 26 Apr 2001 10:03:14 -0700
+From: Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
 X-Accept-Language: en
 MIME-Version: 1.0
-To: "uclibc@opensource.lineo.com" <uclibc@opensource.lineo.com>,
-   "busybox@opensource.lineo.com" <busybox@opensource.lineo.com>,
-   Linux/MIPS <linux-mips@oss.sgi.com>
-Subject: Double-posting
+To: Michael Shmulevich <michaels@jungo.com>
+CC: Ian Soanes <ians@lineo.com>, Linux/MIPS <linux-mips@oss.sgi.com>
+Subject: Re: usermode gdb / remote gdb
+References: <3AE67CBA.4060606@jungo.com> <3AE69AAA.76A20F08@lineo.com> <3AE6A795.1080004@jungo.com> <3AE6B14F.B5844932@lineo.com> <3AE70BBA.2BD8B387@mvista.com> <3AE86354.117899E@jungo.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hello all,
+Michael Shmulevich wrote:
+> 
+> Jun,
+> 
+> Jun Sun wrote:
+> 
+> >
+> > Hmm, I added linux-mips target for gdbserver in gdb 4.17.  And I thought Ralf
+> > sent the patch back to FSF (as I had to fill out some copyright forms).
+> > Perhaps it is lost somewhere?
+> >
+> > Anyhow, here is the patch that I submitted.  Hopefully it helps.
+> >
+> > Jun
+> >
+> 
+> From the patch you've sent I see most of changes were made for mipsel.
+> Could I use similar updates
+> for mips(EB)?
 
-I apologise before the audience for double-posting of my last several
-messages.
-My mail server seemingly confused me, saying that during last few hours
-the mail was not sent.
-I blindly re-posted messages, and later on accepted a confirmation about
-my previous posting.
+Sure.  Go ahead!
 
-Sorry again,
 
-Michael.
+Jun

@@ -1,49 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Nov 2002 17:41:12 +0100 (CET)
-Received: from p508B66C1.dip.t-dialin.net ([80.139.102.193]:15033 "EHLO
-	p508B66C1.dip.t-dialin.net") by linux-mips.org with ESMTP
-	id <S1122121AbSKEQlM>; Tue, 5 Nov 2002 17:41:12 +0100
-Received: (ralf@3ffe:8260:2020:2::20) by ralf.linux-mips.org
-	id <S867025AbSKEQlC>; Tue, 5 Nov 2002 17:41:02 +0100
-Date: Tue, 5 Nov 2002 17:41:02 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: "Kevin D. Kissell" <kevink@mips.com>
-Cc: Carsten Langgaard <carstenl@mips.com>, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Nov 2002 18:04:18 +0100 (CET)
+Received: from pc1-cwma1-5-cust42.swa.cable.ntl.com ([80.5.120.42]:28053 "EHLO
+	irongate.swansea.linux.org.uk") by linux-mips.org with ESMTP
+	id <S1122121AbSKERER>; Tue, 5 Nov 2002 18:04:17 +0100
+Received: from irongate.swansea.linux.org.uk (localhost [127.0.0.1])
+	by irongate.swansea.linux.org.uk (8.12.5/8.12.5) with ESMTP id gA5HQDbc006315;
+	Tue, 5 Nov 2002 17:26:14 GMT
+Received: (from alan@localhost)
+	by irongate.swansea.linux.org.uk (8.12.5/8.12.5/Submit) id gA5HQBB2006313;
+	Tue, 5 Nov 2002 17:26:11 GMT
+X-Authentication-Warning: irongate.swansea.linux.org.uk: alan set sender to alan@lxorguk.ukuu.org.uk using -f
 Subject: Re: Prefetches in memcpy
-Message-ID: <20021105174102.A14909@bacchus.dhis.org>
-References: <3DC7CB8B.E2C1D4E5@mips.com> <20021105163806.A24996@bacchus.dhis.org> <00fb01c284e6$5b7bf4f0$10eca8c0@grendel>
+From: Alan Cox <alan@lxorguk.ukuu.org.uk>
+To: "Kevin D. Kissell" <kevink@mips.com>
+Cc: Ralf Baechle <ralf@uni-koblenz.de>,
+	Carsten Langgaard <carstenl@mips.com>,
+	linux-mips@linux-mips.org
+In-Reply-To: <00fb01c284e6$5b7bf4f0$10eca8c0@grendel>
+References: <3DC7CB8B.E2C1D4E5@mips.com>
+	<20021105163806.A24996@bacchus.dhis.org> 
+	<00fb01c284e6$5b7bf4f0$10eca8c0@grendel>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Mailer: Ximian Evolution 1.0.8 (1.0.8-10) 
+Date: 05 Nov 2002 17:26:11 +0000
+Message-Id: <1036517171.5012.100.camel@irongate.swansea.linux.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <00fb01c284e6$5b7bf4f0$10eca8c0@grendel>; from kevink@mips.com on Tue, Nov 05, 2002 at 05:13:48PM +0100
-X-Accept-Language: de,en,fr
-Return-Path: <ralf@linux-mips.org>
+Return-Path: <alan@lxorguk.ukuu.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 570
+X-archive-position: 571
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: alan@lxorguk.ukuu.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Nov 05, 2002 at 05:13:48PM +0100, Kevin D. Kissell wrote:
-
-> >  - Avoid prefetching beyond the end of the copy area in memcpy and memmove.
-> >  - Introduce a second variant of memcpy that never does prefetching.  This
-> >    one will be safe to use in KSEG1 / uncached XKPHYS also and will be used
-> >    for memcpy_fromio, memcpy_toio and friends.
-> 
+On Tue, 2002-11-05 at 16:13, Kevin D. Kissell wrote:
 > Assuming we had a version that prefetched exactly to the end
 > of the source memory block and no further, why would we need
 > the second variant?
 
-Uh...  Maybe missread your mail the first time.  We're also prefechting
-the destination area, of course with a different hint.  The question is
-what the hints for destination are actually doing, the specs are fairly
-vague on that and seem to leave the decission to the implementor.  Do
-we really want to try ...
-
-  Ralf
+memcpy_to/from_io needs to do strictly ordered fetches on some devices
+which fake a memory range with a fifo for performance (pci bursting
+dirty tricks)

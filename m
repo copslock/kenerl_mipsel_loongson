@@ -1,43 +1,34 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fA9KLKA17081
-	for linux-mips-outgoing; Fri, 9 Nov 2001 12:21:20 -0800
-Received: from smtp.psdc.com (smtp.psdc.com [209.125.203.83])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA9KLI017078
-	for <linux-mips@oss.sgi.com>; Fri, 9 Nov 2001 12:21:18 -0800
-Received: (from ex2k [172.19.1.1])
- by smtp.psdc.com (NAVGW 2.5.1.13) with SMTP id M2001110912214208218
- for <linux-mips@oss.sgi.com>; Fri, 09 Nov 2001 12:21:42 -0800
-content-class: urn:content-classes:message
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Subject: Which usrland packages should be built for swapon, hostname,and grep?
-X-MimeOLE: Produced By Microsoft Exchange V6.0.4712.0
-Date: Fri, 9 Nov 2001 12:16:11 -0800
-Message-ID: <84CE342693F11946B9F54B18C1AB837B14AE21@ex2k.pcs.psdc.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: Which usrland packages should be built for swapon, hostname,and grep?
-Thread-Index: AcFpW17mJ6c/Rd3lS5uAjvpYG3akJg==
-From: "Steven Liu" <stevenliu@psdc.com>
-To: <linux-mips@oss.sgi.com>
-Content-Transfer-Encoding: 8bit
-X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id fA9KLI017079
+	by oss.sgi.com (8.11.2/8.11.3) id fA9KPYQ17235
+	for linux-mips-outgoing; Fri, 9 Nov 2001 12:25:34 -0800
+Received: from dvmwest.gt.owl.de (dvmwest.gt.owl.de [62.52.24.140])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA9KPW017229
+	for <linux-mips@oss.sgi.com>; Fri, 9 Nov 2001 12:25:32 -0800
+Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
+	id BA58D9F26; Fri,  9 Nov 2001 21:25:27 +0100 (CET)
+Date: Fri, 9 Nov 2001 21:25:21 +0100
+From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+To: linux-mips@oss.sgi.com
+Subject: Linux on RM600
+Message-ID: <20011109212516.D16534@lug-owl.de>
+Mail-Followup-To: linux-mips@oss.sgi.com
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.3.23i
+X-Operating-System: Linux mail 2.4.5 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi All:
+Hi!
 
-I am porting linux to mips r3000 now and need to build the following
-files for the target board:
-    /sbin/swapon,
-   /bin/hostname,
-   /bin/mount,
-   /bin/grep.
-Which usrland packages should I use for the above files?
+The howto states that there's currently no linux running on the RM600.
+Is this information up-to-date? ...or has already some work be done? I
+could get one of those boxes, but I don't want to only use it as a
+letter weight...
 
-Any help should be greatly appreciated.
+MfG, JBG
 
-Thank you.
-
-Steven Liu
+-- 
+Jan-Benedict Glaw   .   jbglaw@lug-owl.de   .   +49-172-7608481
+	http://lug-owl.de/~jbglaw/software/snapshot2cvs/

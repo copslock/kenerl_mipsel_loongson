@@ -1,347 +1,199 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5IH4onC024075
-	for <linux-mips-outgoing@oss.sgi.com>; Tue, 18 Jun 2002 10:04:50 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5IHninC025577
+	for <linux-mips-outgoing@oss.sgi.com>; Tue, 18 Jun 2002 10:49:44 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5IH4oww024074
-	for linux-mips-outgoing; Tue, 18 Jun 2002 10:04:50 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5IHni1p025576
+	for linux-mips-outgoing; Tue, 18 Jun 2002 10:49:44 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from ayrnetworks.com (64-166-72-141.ayrnetworks.com [64.166.72.141])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5IH4BnC024069
-	for <linux-mips@oss.sgi.com>; Tue, 18 Jun 2002 10:04:11 -0700
-Received: (from wjhun@localhost)
-	by  ayrnetworks.com (8.11.2/8.11.2) id g5IH3l601409
-	for "linux-mips@oss.sgi.com"; Tue, 18 Jun 2002 10:03:47 -0700
-Date: Tue, 18 Jun 2002 10:03:47 -0700
-From: William Jhun <wjhun@ayrnetworks.com>
-To: "linux-mips@oss.sgi.com"@ayrnetworks.com
-Subject: [PATCH] dma_cache_wback, pci DMA cache coherency changes
-Message-ID: <20020618100347.A1361@ayrnetworks.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
+Received: from av.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5IHnNnC025572
+	for <linux-mips@oss.sgi.com>; Tue, 18 Jun 2002 10:49:23 -0700
+Received: from mvista.com (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id KAA02555;
+	Tue, 18 Jun 2002 10:52:02 -0700
+Message-ID: <3D0F7213.6000002@mvista.com>
+Date: Tue, 18 Jun 2002 10:46:59 -0700
+From: Jun Sun <jsun@mvista.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.2.1) Gecko/20010901
+X-Accept-Language: en-us
+MIME-Version: 1.0
+To: Carsten Langgaard <carstenl@mips.com>
+CC: Louis Hamilton <hamilton@redhat.com>, linux-mips@oss.sgi.com,
+   sandcraft-elinux-project@redhat.com
+Subject: Re: Bug in Linux?  fcr31 not being saved-restored
+References: <3D0BD42E.20602@redhat.com> <3D0D7F98.566B3176@mips.com> <3D0E38E8.10804@mvista.com> <3D0EEA5A.1B5DAA23@mips.com>
+Content-Type: text/plain; charset=ISO-8859-15; format=flowed
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-This is a re-hash of patches I sent out a while ago which do a more
-optimal cache-flushing for pci_map_*() and pci_dma_sync_*(). It
-basically does an invalidate for PCI_DMA_FROMDEVICE operations and a
-writeback for PCI_DMA_TODEVICE pci_map_* (or writeback/invalidate if
-PCI_DMA_BIDIRECTIONAL). This is similar to the ARM implementation.
 
-Additionally, I filled in the _dma_cache_wback calls in the
-arch/mips/c-*.c to call *_dma_cache_wback_inv* instead of calling
-panic(). Some architectures could probably do a real writeback instead
-of just wback_inv, but this will at least allow code that can use
-writeback-only if available.
+Your first chunk is not clear as to where it applies.  Maybe you are using a 
+different code base.
 
-Note: I'm not familiar with a lot of these CPUs, but the change should
-be innocuous. Could someone validate/improve these?
+The second chunck is not necessary.  Although the FPU values in thread struct 
+for the new thread are stale, the new program cannot assume the fpu register 
+values and cannot use them without initialization anyway.
 
-Thanks,
-William
+I don't see such a code in x86's code.  Current call to start_thread() is ok 
+with or without this change.  I am afraid future use of start_thread() may 
+give undesired effect after we make this change.
 
-Index: include/asm/pci.h
-===================================================================
-RCS file: /cvs/linux/include/asm-mips/pci.h,v
-retrieving revision 1.24.2.1
-diff -u -r1.24.2.1 pci.h
---- include/asm/pci.h	2002/02/26 06:00:25	1.24.2.1
-+++ include/asm/pci.h	2002/06/18 16:51:30
-@@ -79,7 +79,40 @@
- extern void pci_free_consistent(struct pci_dev *hwdev, size_t size,
- 				void *vaddr, dma_addr_t dma_handle);
- 
-+#ifdef CONFIG_NONCOHERENT_IO
-+/*
-+ * Prepare buffer for DMA transfer
-+ */
-+static inline void prep_buffer(void *ptr, size_t size, int direction)
-+{
-+        switch(direction) {
-+        case PCI_DMA_TODEVICE:
-+                dma_cache_wback((unsigned long)ptr, size);
-+                break;
-+        case PCI_DMA_FROMDEVICE:
-+                dma_cache_inv((unsigned long)ptr, size);
-+                break;
-+        case PCI_DMA_BIDIRECTIONAL:
-+                dma_cache_wback_inv((unsigned long)ptr, size);
-+                break;
-+        }
-+}
-+
- /*
-+ * Prepare buffer for CPU access after DMA transfer
-+ */
-+static inline void sync_buffer(void *ptr, size_t size, int direction)
-+{
-+        switch(direction) {
-+        case PCI_DMA_FROMDEVICE:
-+        case PCI_DMA_BIDIRECTIONAL:
-+                dma_cache_inv((unsigned long)ptr, size);
-+                break;
-+        }
-+}
-+#endif
-+
-+/*
-  * Map a single buffer of the indicated size for DMA in streaming mode.
-  * The 32-bit bus address to use is returned.
-  *
-@@ -93,7 +126,7 @@
- 		BUG();
- 
- #ifdef CONFIG_NONCOHERENT_IO
--	dma_cache_wback_inv((unsigned long)ptr, size);
-+	prep_buffer(ptr, size, direction);
- #endif
- 
- 	return virt_to_bus(ptr);
-@@ -132,7 +165,7 @@
- 	addr = (unsigned long) page_address(page);
- 	addr += offset;
- #ifdef CONFIG_NONCOHERENT_IO
--	dma_cache_wback_inv(addr, size);
-+	prep_buffer((void*)addr, size, direction);
- #endif
- 
- 	return virt_to_bus((void *)addr);
-@@ -183,7 +216,7 @@
- #ifdef CONFIG_NONCOHERENT_IO
- 	/* Make sure that gcc doesn't leave the empty loop body.  */
- 	for (i = 0; i < nents; i++, sg++)
--		dma_cache_wback_inv((unsigned long)sg->address, sg->length);
-+		prep_buffer(sg->address, sg->length, direction);
- #endif
- 
- 	return nents;
-@@ -221,7 +254,7 @@
- 		BUG();
- 
- #ifdef CONFIG_NONCOHERENT_IO
--	dma_cache_wback_inv((unsigned long)bus_to_virt(dma_handle), size);
-+	sync_buffer(bus_to_virt(dma_handle), size, direction);
- #endif
- }
- 
-@@ -246,8 +279,9 @@
- 	/* Make sure that gcc doesn't leave the empty loop body.  */
- #ifdef CONFIG_NONCOHERENT_IO
- 	for (i = 0; i < nelems; i++, sg++)
--		dma_cache_wback_inv((unsigned long)sg->address, sg->length);
-+		sync_buffer(sg->address, sg->length, direction);
- #endif
-+
- }
- 
- /* Return whether the given PCI device DMA address mask can
+As for the new fpu context switch code, I wrote a experiemental patch after 
+much discussion with Ralf and Kevin.  It is at
 
-Index: arch/mips/mm/c-mips32.c
-===================================================================
-RCS file: /cvs/linux/arch/mips/mm/c-mips32.c,v
-retrieving revision 1.3.2.4
-diff -u -r1.3.2.4 c-mips32.c
---- arch/mips/mm/c-mips32.c	2002/05/29 03:03:17	1.3.2.4
-+++ arch/mips/mm/c-mips32.c	2002/06/18 16:52:21
-@@ -393,12 +393,6 @@
- 	}
- }
- 
--static void
--mips32_dma_cache_wback(unsigned long addr, unsigned long size)
--{
--	panic("mips32_dma_cache called - should not happen.");
--}
--
- /*
-  * While we're protected against bad userland addresses we don't care
-  * very much about what happens in that case.  Usually a segmentation
-@@ -603,7 +597,7 @@
- 	_flush_icache_page = mips32_flush_icache_page;
- 
- 	_dma_cache_wback_inv = mips32_dma_cache_wback_inv_pc;
--	_dma_cache_wback = mips32_dma_cache_wback;
-+	_dma_cache_wback = mips32_dma_cache_wback_inv_pc;
- 	_dma_cache_inv = mips32_dma_cache_inv_pc;
- }
- 
-@@ -621,7 +615,7 @@
- 	_flush_icache_page = mips32_flush_icache_page_s;
- 
- 	_dma_cache_wback_inv = mips32_dma_cache_wback_inv_sc;
--	_dma_cache_wback = mips32_dma_cache_wback;
-+	_dma_cache_wback = mips32_dma_cache_wback_inv_sc;
- 	_dma_cache_inv = mips32_dma_cache_inv_sc;
- }
- 
-Index: arch/mips/mm/c-r3k.c
-===================================================================
-RCS file: /cvs/linux/arch/mips/mm/c-r3k.c,v
-retrieving revision 1.4.2.1
-diff -u -r1.4.2.1 c-r3k.c
---- arch/mips/mm/c-r3k.c	2002/02/18 15:22:30	1.4.2.1
-+++ arch/mips/mm/c-r3k.c	2002/06/18 16:52:21
-@@ -337,7 +337,9 @@
- 	_flush_icache_page = r3k_flush_icache_page;
- 	_flush_icache_range = r3k_flush_icache_range;
- 
-+	_dma_cache_inv = r3k_dma_cache_wback_inv;
- 	_dma_cache_wback_inv = r3k_dma_cache_wback_inv;
-+	_dma_cache_wback = r3k_dma_cache_wback_inv;
- 
- 	printk("Primary instruction cache %dkb, linesize %d bytes\n",
- 		(int) (icache_size >> 10), (int) icache_lsize);
-Index: arch/mips/mm/c-r4k.c
-===================================================================
-RCS file: /cvs/linux/arch/mips/mm/c-r4k.c,v
-retrieving revision 1.3.2.3
-diff -u -r1.3.2.3 c-r4k.c
---- arch/mips/mm/c-r4k.c	2002/05/29 03:03:17	1.3.2.3
-+++ arch/mips/mm/c-r4k.c	2002/06/18 16:52:21
-@@ -1150,12 +1150,6 @@
- 	}
- }
- 
--static void
--r4k_dma_cache_wback(unsigned long addr, unsigned long size)
--{
--	panic("r4k_dma_cache called - should not happen.");
--}
--
- /*
-  * While we're protected against bad userland addresses we don't care
-  * very much about what happens in that case.  Usually a segmentation
-@@ -1358,7 +1352,7 @@
- 	_flush_icache_page = r4k_flush_icache_page_p;
- 
- 	_dma_cache_wback_inv = r4k_dma_cache_wback_inv_pc;
--	_dma_cache_wback = r4k_dma_cache_wback;
-+	_dma_cache_wback = r4k_dma_cache_wback_inv_pc;
- 	_dma_cache_inv = r4k_dma_cache_inv_pc;
- }
- 
-@@ -1441,7 +1435,7 @@
- 	___flush_cache_all = _flush_cache_all;
- 	_flush_icache_page = r4k_flush_icache_page_s;
- 	_dma_cache_wback_inv = r4k_dma_cache_wback_inv_sc;
--	_dma_cache_wback = r4k_dma_cache_wback;
-+	_dma_cache_wback = r4k_dma_cache_wback_inv_sc;
- 	_dma_cache_inv = r4k_dma_cache_inv_sc;
- }
- 
-Index: arch/mips/mm/c-r5432.c
-===================================================================
-RCS file: /cvs/linux/arch/mips/mm/c-r5432.c,v
-retrieving revision 1.4
-diff -u -r1.4 c-r5432.c
---- arch/mips/mm/c-r5432.c	2001/11/30 13:28:06	1.4
-+++ arch/mips/mm/c-r5432.c	2002/06/18 16:52:21
-@@ -414,12 +414,6 @@
- 	bc_inv(addr, size);
- }
- 
--static void
--r5432_dma_cache_wback(unsigned long addr, unsigned long size)
--{
--	panic("r5432_dma_cache called - should not happen.");
--}
--
- /*
-  * While we're protected against bad userland addresses we don't care
-  * very much about what happens in that case.  Usually a segmentation
-@@ -470,7 +464,7 @@
- 	_flush_cache_page = r5432_flush_cache_page_d32i32;
- 	_flush_icache_page = r5432_flush_icache_page_i32;
- 	_dma_cache_wback_inv = r5432_dma_cache_wback_inv_pc;
--	_dma_cache_wback = r5432_dma_cache_wback;
-+	_dma_cache_wback = r5432_dma_cache_wback_inv_pc;
- 	_dma_cache_inv = r5432_dma_cache_inv_pc;
- 
- 	_flush_cache_sigtramp = r5432_flush_cache_sigtramp;
-Index: arch/mips/mm/c-rm7k.c
-===================================================================
-RCS file: /cvs/linux/arch/mips/mm/c-rm7k.c,v
-retrieving revision 1.4.2.2
-diff -u -r1.4.2.2 c-rm7k.c
---- arch/mips/mm/c-rm7k.c	2002/05/29 03:03:17	1.4.2.2
-+++ arch/mips/mm/c-rm7k.c	2002/06/18 16:52:21
-@@ -177,12 +177,6 @@
- 	}
- }
- 
--static void
--rm7k_dma_cache_wback(unsigned long addr, unsigned long size)
--{
--	panic("rm7k_dma_cache_wback called - should not happen.");
--}
--
- /*
-  * While we're protected against bad userland addresses we don't care
-  * very much about what happens in that case.  Usually a segmentation
-@@ -342,7 +336,7 @@
- 	_flush_icache_page = rm7k_flush_icache_page;
- 
- 	_dma_cache_wback_inv = rm7k_dma_cache_wback_inv;
--	_dma_cache_wback = rm7k_dma_cache_wback;
-+	_dma_cache_wback = rm7k_dma_cache_wback_inv;
- 	_dma_cache_inv = rm7k_dma_cache_inv;
- 
- 	__flush_cache_all_d32i32();
-Index: arch/mips/mm/c-tx39.c
-===================================================================
-RCS file: /cvs/linux/arch/mips/mm/c-tx39.c,v
-retrieving revision 1.4
-diff -u -r1.4 c-tx39.c
---- arch/mips/mm/c-tx39.c	2001/11/30 13:28:06	1.4
-+++ arch/mips/mm/c-tx39.c	2002/06/18 16:52:21
-@@ -225,11 +225,6 @@
- 	}
- }
- 
--static void tx39_dma_cache_wback(unsigned long addr, unsigned long size)
--{
--	panic("tx39_dma_cache called - should not happen.");
--}
--
- static void tx39_flush_cache_sigtramp(unsigned long addr)
- {
- 	unsigned long config;
-@@ -317,7 +312,7 @@
- 		_flush_icache_range = tx39_flush_icache_range;
- 
- 		_dma_cache_wback_inv = tx39_dma_cache_wback_inv;
--		_dma_cache_wback = tx39_dma_cache_wback;
-+		_dma_cache_wback = tx39_dma_cache_wback_inv;
- 		_dma_cache_inv = tx39_dma_cache_inv;
- 
- 		break;
-Index: arch/mips/mm/c-tx49.c
-===================================================================
-RCS file: /cvs/linux/arch/mips/mm/c-tx49.c,v
-retrieving revision 1.3.2.1
-diff -u -r1.3.2.1 c-tx49.c
---- arch/mips/mm/c-tx49.c	2002/05/29 03:03:17	1.3.2.1
-+++ arch/mips/mm/c-tx49.c	2002/06/18 16:52:21
-@@ -343,12 +343,6 @@
- 	}
- }
- 
--static void
--r4k_dma_cache_wback(unsigned long addr, unsigned long size)
--{
--	panic("r4k_dma_cache called - should not happen.");
--}
--
- /*
-  * While we're protected against bad userland addresses we don't care
-  * very much about what happens in that case.  Usually a segmentation
-@@ -429,7 +423,7 @@
- 	_flush_icache_page = r4k_flush_icache_page;
- 
- 	_dma_cache_wback_inv = r4k_dma_cache_wback_inv;
--	_dma_cache_wback = r4k_dma_cache_wback;
-+	_dma_cache_wback = r4k_dma_cache_wback_inv;
- 	_dma_cache_inv = r4k_dma_cache_inv;
- 
- 	_flush_cache_sigtramp = r4k_flush_cache_sigtramp;
+http://linux.junsun.net/patches/oss.sgi.com/experimental/020304-half-fpu-context-switch
+
+I also did some performance study of this patch.  Did not get much feedbacks 
+when I asked last time. :-(
+
+Jun
+
+Carsten Langgaard wrote:
+
+> I believe this is the patch that solve the problem.
+> The lazy fpu stuff has cause so many problems, that we have decided (together
+> with Ralf) to get rid of it, and do the FPU context save and restore a little bit
+> differently.
+> We now have a solution here locally and we are testing it at the moment.
+> 
+> /Carsten
+> 
+> 
+> Index: arch/mips/kernel/traps.c
+> ===================================================================
+> RCS file: /cvs/linux/arch/mips/kernel/traps.c,v
+> retrieving revision 1.99.2.14
+> diff -u -r1.99.2.14 traps.c
+> --- arch/mips/kernel/traps.c    2002/05/28 06:33:13     1.99.2.14
+> +++ arch/mips/kernel/traps.c    2002/06/18 07:53:47
+> +               {
+> +                       __enable_fpu();
+>                         save_fp(last_task_used_math);
+> +                       /* last_task_used_math loose fpu */
+> +                       ((struct pt_regs *)(__KSTK_TOS(last_task_used_math) -
+> +                                           sizeof(struct pt_regs)))->
+> +                               cp0_status &= ~ST0_CU1;
+> +               }
+> 
+> Index: include/asm-mips/processor.h
+> ===================================================================
+> RCS file: /cvs/linux/include/asm-mips/processor.h,v
+> retrieving revision 1.43.2.2
+> diff -u -r1.43.2.2 processor.h
+> --- include/asm-mips/processor.h        2002/05/28 06:11:56     1.43.2.2
+> +++ include/asm-mips/processor.h        2002/06/18 07:56:58
+> @@ -215,6 +215,7 @@
+>         regs->cp0_epc = new_pc;                                         \
+>         regs->regs[29] = new_sp;                                        \
+>         current->thread.current_ds = USER_DS;                           \
+> +       current->used_math = 0;                                         \
+>  } while (0)
+> 
+>  unsigned long get_wchan(struct task_struct *p);
+> 
+> 
+> 
+> Jun Sun wrote:
+> 
+> 
+>>Carsten Langgaard wrote:
+>>
+>>
+>>>This is one of the bugs, among others, we have fixed.
+>>>I'm not sure, if Ralf have integrated the patches we send him yet.
+>>>
+>>>
+>>Carsten,
+>>
+>>Do you remember the cause and the fix?  It appears to me the first ctc1
+>>instruction should trap into kernel and mark current process as fpu owner, and
+>>should not cause fcr31 corruption.
+>>
+>>Or somehow the ctc1 does not trap into kernel?
+>>
+>>Jun
+>>
+>>
+>>>/Carsten
+>>>
+>>>Louis Hamilton wrote:
+>>>
+>>>
+>>>
+>>>>We have a customer here testing a 2.4.16 mips kernel on an embedded
+>>>>Linux RM7000/SR71000 based system who has written a test that they
+>>>>believe has uncovered a bug in Linux.  The FPU control register appears
+>>>>to not get saved and restored.  I've reproduced the problem described
+>>>>below and find the results consistent with their description.  The
+>>>>problem occurs on both the RM7000 and SR71000 cpus.
+>>>>
+>>>>It looks like save_fp_context and restore_fp_context are not being
+>>>>called since the kernel save-restore logic thinks the process is not
+>>>>using floating point math.  If you do some fp math before calling the
+>>>>test routine below, it seems to works fine.
+>>>>
+>>>>Is this a known caveat?  A true bug?  Or a contorted corner case
+>>>>unlikely to be seen under typical end-user usage (see customer's
+>>>>last paragraph :-) ?   If true bug, recommended remedy?
+>>>>
+>>>>TIA,
+>>>>Louis
+>>>>
+>>>>Louis Hamilton
+>>>>hamilton@redhat.com
+>>>>
+>>>>------ customer reports the following: ---------
+>>>>We found a bug in Linux.  A ^C (control-C) typed into a shell (or a
+>>>>running program, it doesn't matter), causes the FCR (floating-point
+>>>>control register) to be corrupted in another, unrelated process.  This
+>>>>is repeatable behavior.
+>>>>
+>>>>This can be reproduced with the following short assembly language
+>>>>program that loops forever, waiting for the FCR to change.
+>>>>
+>>>>       .align 2
+>>>>       .globl mips_float_debug_loop
+>>>>mips_float_debug_loop:
+>>>>       li      $9, 0xF000F02F
+>>>>       ctc1    $9, $31         # set FCR to some non-zero value
+>>>>       nop
+>>>>1:      cfc1    $8, $31         # get FCR
+>>>>       beq     $8, $9, 1b      # spin, waiting for FCR to change
+>>>>       nop
+>>>>       or      $2, $0, $8
+>>>>       jr    $31
+>>>>       nop
+>>>>
+>>>>You can call this function from a short C program and the return value
+>>>>is the (corrupted) FCR, which turns out to alwyas be: 0x00000002.
+>>>>
+>>>>Run the above loop in one window (connected to the board using telnet)
+>>>>and then in another window (connected to the same board) type ^C.
+>>>>
+>>>>I'm surprised this bug hasn't been encountered by other MIPS vendors.
+>>>>
+>>>><end>
+>>>>
+>>>--
+>>>_    _ ____  ___   Carsten Langgaard  Mailto:carstenl@mips.com
+>>>|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+>>>| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+>>>  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+>>>                   Denmark            http://www.mips.com
+>>>
+>>>
+>>>
+>>>
+>>>
+> 
+> --
+> _    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+> |\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+> | \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+>   TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+>                    Denmark             http://www.mips.com
+> 
+> 
+> 
+> 

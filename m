@@ -1,39 +1,38 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f42DgH603449
-	for linux-mips-outgoing; Wed, 2 May 2001 06:42:17 -0700
-Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f42DeJF03397;
-	Wed, 2 May 2001 06:40:35 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA25652;
-	Wed, 2 May 2001 15:21:11 +0200 (MET DST)
-Date: Wed, 2 May 2001 15:21:11 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Ralf Baechle <ralf@oss.sgi.com>
-cc: Florian Lohoff <flo@rfc822.org>, Pete Popov <ppopov@mvista.com>,
-   linux-mips@oss.sgi.com
-Subject: Re: Illegal instruction - a workaround or fix ?
-In-Reply-To: <20010430172419.B30998@bacchus.dhis.org>
-Message-ID: <Pine.GSO.3.96.1010502151446.25334B-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.3/8.11.3) id f42DsTj04582
+	for linux-mips-outgoing; Wed, 2 May 2001 06:54:29 -0700
+Received: from gandalf.physik.uni-konstanz.de (gandalf.physik.uni-konstanz.de [134.34.144.69])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f42DsQF04579
+	for <linux-mips@oss.sgi.com>; Wed, 2 May 2001 06:54:26 -0700
+Received: from bilbo.physik.uni-konstanz.de [134.34.144.81] (8)
+	by gandalf.physik.uni-konstanz.de with esmtp (Exim 3.12 #1 (Debian))
+	id 14ux5E-00042U-00; Wed, 02 May 2001 15:54:24 +0200
+Received: from agx by bilbo.physik.uni-konstanz.de with local (Exim 3.12 #1 (Debian))
+	id 14ux5E-0002Po-00; Wed, 02 May 2001 15:54:24 +0200
+Date: Wed, 2 May 2001 15:54:24 +0200
+From: Guido Guenther <guido.guenther@gmx.net>
+To: linux-mips@oss.sgi.com
+Subject: Re: NFS -13 error
+Message-ID: <20010502155424.A9256@bilbo.physik.uni-konstanz.de>
+Mail-Followup-To: linux-mips@oss.sgi.com
+References: <Pine.GSO.4.31.0105011618380.25388-100000@myth1.Stanford.EDU>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.GSO.4.31.0105011618380.25388-100000@myth1.Stanford.EDU>; from johnd@Stanford.EDU on Tue, May 01, 2001 at 04:29:18PM -0700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, 30 Apr 2001, Ralf Baechle wrote:
-
-> >  It could be doable with __builtin_frame_address().  Haven't investigated
-> > it further, though. 
+On Tue, May 01, 2001 at 04:29:18PM -0700, John D. Davis wrote:
 > 
-> MIPS ABI doesn't define that ra gets stored at a constant offset in
-> the stackframe, so that won't work.
-
- Hmm, I think we check look how gcc gets __builtin_return_address() 
-(specifically for levels greater than 0) and use the same way.  We don't
-need to stick to the ABI in the kernel (building non-PIC we already
-violate it anyway) and we can assume the code is to be built by gcc. 
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+> I am having a problem installing linux on a 4400 indy.  I downloaded a
+> "fixed" version from: honk.physik.uni-konstanz,de/linux-mips/install
+> and downloaded :
+> root-be-0.04.cpio
+This one is *very* outdated. Don't use it. It's there for purely
+"historic reasons".
+See
+  ftp://ftp.uni-mainz.de/pub/Linux/debian-local/mips/
+for an up to date root image.
+ -- Guido

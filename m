@@ -1,69 +1,51 @@
-Received:  by oss.sgi.com id <S553736AbQKOUcK>;
-	Wed, 15 Nov 2000 12:32:10 -0800
-Received: from serv1.is1.u-net.net ([195.102.240.129]:23759 "EHLO
-        serv1.is1.u-net.net") by oss.sgi.com with ESMTP id <S553766AbQKOUcG>;
-	Wed, 15 Nov 2000 12:32:06 -0800
-Received: from [213.48.88.191] (helo=zurg)
-	by serv1.is1.u-net.net with smtp (Exim 3.12 #1)
-	id 13w9Dt-0006H9-00; Wed, 15 Nov 2000 20:32:02 +0000
-From:   "Ian Chilton" <ian@ichilton.co.uk>
-To:     "Brady Brown" <bbrown@ti.com>
-Cc:     "Linux-MIPS Mailing List" <linux-mips@oss.sgi.com>
-Subject: RE: egcs 1.0.3a build error?
-Date:   Wed, 15 Nov 2000 20:33:41 -0000
-Message-ID: <NAENLMKGGBDKLPONCDDOAEMGDCAA.ian@ichilton.co.uk>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
-In-Reply-To: <3A12F036.40753275@ti.com>
-Importance: Normal
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
+Received:  by oss.sgi.com id <S553806AbQKPANA>;
+	Wed, 15 Nov 2000 16:13:00 -0800
+Received: from u-6.karlsruhe.ipdial.viaginterkom.de ([62.180.20.6]:46597 "EHLO
+        u-6.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com with ESMTP
+	id <S553717AbQKPAMx>; Wed, 15 Nov 2000 16:12:53 -0800
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S870082AbQKOHwp>;
+        Wed, 15 Nov 2000 08:52:45 +0100
+Date:   Wed, 15 Nov 2000 08:52:45 +0100
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc:     Ian Chilton <ian@ichilton.co.uk>, linux-mips@oss.sgi.com,
+        lfs-discuss@linuxfromscratch.org, Andreas Jaeger <aj@suse.de>
+Subject: Re: User/Group Problem
+Message-ID: <20001115085244.A5153@bacchus.dhis.org>
+References: <20001113231949.B16012@bacchus.dhis.org> <Pine.GSO.3.96.1001114150916.17140A-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <Pine.GSO.3.96.1001114150916.17140A-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Tue, Nov 14, 2000 at 03:19:11PM +0100
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hello,
+On Tue, Nov 14, 2000 at 03:19:11PM +0100, Maciej W. Rozycki wrote:
 
-> Thank you, I tried that and had the same result?? Maybe there are other
-> CFLAGS that I need to specify?
+> > There is second interpretation of this problem - the address passed to
+> > mmap is bogus, so this computation needs to be fixed.
+> 
+>  Where is it written mmap() is allowed to fail when a bogus VM address is
+> passed but MAP_FIXED is not set?  I believe mmap() should choose a
+> different VM address in this case, as long as much enough contiguous VM
+> space is available anywhere to satisfy the requested length.
 
-Don't think so...it worked for me, but this was CVS GCC, not 1.0.3a. I have
-had no such problems with 1.0.3a.
+No argument about that, I do agree.
 
-> CFLAGS=-O1
+>  Surely, map_segment() (see dl-load.c) might call mmap(0, ...) after
+> mmap(<some_address>, ...) fails when MAP_FIXED is not set but wouldn't
+> that be a dirty hack?  We'd better fix the kernel. 
 
-humm...I used CFLAGS="-O1"
-donno what difference the quotes make, if any...
+Ld.so isn't linked to the same base address as all other libraries for
+obscure reasons.  Right now dl-machine.h use the constant value of 0x5ffe0000
+as the base address which it assumes all libraries to be linked to - and that
+makes us calculate the wrong base address which we're passing to mmap.
 
+So we've got two bugs, not just one.  I knew about the ld.so part since
+Linux/MIPS has shared libs.  It's just that this is the first time this bug
+bites us.
 
-> --enable-languages=c c++
-
-I use c,c++
-
-You could also try just --enable-languages=c  then using that to compile one
-with c,c++ I have done that in the past too!
-
-
-> Have you been successful in getting Egcs-1.0.3a-2 to build natively on a
-> MIPS little endian system?
-
-No, big endian. Have compiled on an Indy and an I2 loads of times...
-
-
-Bye for Now,
-
-Ian
-
-
-                                \|||/
-                                (o o)
- /---------------------------ooO-(_)-Ooo---------------------------\
- |  Ian Chilton        (IRC Nick - GadgetMan)     ICQ #: 16007717  |
- |-----------------------------------------------------------------|
- |  E-Mail: ian@ichilton.co.uk     Web: http://www.ichilton.co.uk  |
- \-----------------------------------------------------------------/
+  Ralf

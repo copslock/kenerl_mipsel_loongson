@@ -1,47 +1,108 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Nov 2004 18:05:14 +0000 (GMT)
-Received: from verein.lst.de ([IPv6:::ffff:213.95.11.210]:45455 "EHLO
-	mail.lst.de") by linux-mips.org with ESMTP id <S8224939AbUKOSFJ>;
-	Mon, 15 Nov 2004 18:05:09 +0000
-Received: from verein.lst.de (localhost [127.0.0.1])
-	by mail.lst.de (8.12.3/8.12.3/Debian-6.6) with ESMTP id iAFI57la024012
-	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
-	Mon, 15 Nov 2004 19:05:07 +0100
-Received: (from hch@localhost)
-	by verein.lst.de (8.12.3/8.12.3/Debian-6.6) id iAFI57nE024010;
-	Mon, 15 Nov 2004 19:05:07 +0100
-Date: Mon, 15 Nov 2004 19:05:07 +0100
-From: Christoph Hellwig <hch@lst.de>
-To: Kumba <kumba@gentoo.org>
-Cc: linux-mips@linux-mips.org
-Subject: Re: [PATCH]: Rewrite of arch/mips/ramdisk/
-Message-ID: <20041115180507.GA23952@lst.de>
-References: <4196FE7C.9040309@gentoo.org> <20041114085202.GA30480@lst.de> <419794FB.6020104@gentoo.org> <4197B286.4060503@gentoo.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4197B286.4060503@gentoo.org>
-User-Agent: Mutt/1.3.28i
-X-Spam-Score: -4.901 () BAYES_00
-X-Scanned-By: MIMEDefang 2.39
-Return-Path: <hch@lst.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Nov 2004 22:47:05 +0000 (GMT)
+Received: from mail.alphastar.de ([IPv6:::ffff:194.59.236.179]:2058 "EHLO
+	mail.alphastar.de") by linux-mips.org with ESMTP
+	id <S8224954AbUKOWrA> convert rfc822-to-8bit; Mon, 15 Nov 2004 22:47:00 +0000
+Received: from SNaIlmail.Peter (217.249.200.252)
+          by mail.alphastar.de with MERCUR Mailserver (v4.02.28 MTIxLTIxODAtNjY2OA==)
+          for <linux-mips@linux-mips.org>; Mon, 15 Nov 2004 23:45:17 +0100
+Received: from Opal.Peter (pf@Opal.Peter [192.168.1.1])
+	by SNaIlmail.Peter (8.12.6/8.12.6/Sendmail/Linux 2.0.32) with ESMTP id iAFMiEbr000547;
+	Mon, 15 Nov 2004 23:44:15 +0100
+Received: from localhost (pf@localhost)
+	by Opal.Peter (8.9.3/8.9.3/Sendmail/Linux 2.2.5-15) with ESMTP id XAA01128;
+	Mon, 15 Nov 2004 23:43:40 +0100
+Date: Mon, 15 Nov 2004 23:43:40 +0100 (CET)
+From: peter fuerst <pf@net.alphadv.de>
+To: macrohat <emblinux@macrohat.com>
+cc: linux-mips <linux-mips@linux-mips.org>
+Subject: On Sat, 13 Nov 2004, macrohat wrote...
+In-Reply-To: <20041113134735Z8224907-1751+1490@linux-mips.org>
+Message-ID: <Pine.LNX.4.21.0411152319310.990-100000@Opal.Peter>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=iso-8859-1
+Content-Transfer-Encoding: 8BIT
+Reply-To: pf@net.alphadv.de
+Return-Path: <pf@net.alphadv.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6336
+X-archive-position: 6337
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hch@lst.de
+X-original-sender: pf@net.alphadv.de
 Precedence: bulk
 X-list: linux-mips
 
-> It looks like this option, which afaict, doesn't seem to have an entry 
-> anywhere in Kconfig, specifies a list of files for inclusion in a cpio 
-> archive that's bundled into the kernel.  My question then is, can a 
-> lookback-mountable filesystem image be included in this list, and the 
-> kernel, given /dev/ram0 as root, know to mount and use the loopback image?
 
-You could include a loop-back mountable filesystem image.  But that's
-not even nessecary.  The kernel will call /init of the files in the
-initramfs, and you could just store everything you'd store in the
-loopback filesystem directly in the initramfs image.
+
+Hello !
+
+BogoMips is most useful as a benchmark, if the main purpose of your
+machine is to calculate BogoMips' ... (see BogoMips Mini-HOWTO :))
+However - since there seems to be such a strong desire to see large
+BogoMips values - here is some help:
+
+Your BogoMips factor of 0.66, instead of the usual 0.99..., indicates
+that the delay loop is misaligned, i.e. there's a instruction-cache-block
+boundary inmidst the loop. (Recently i managed somehow to achieve this on
+a R10000 :)
+A ".align 3\n\t" at the begin of __delay() will keep the branch and its
+delay-slot together.
+
+You should even be able to double the BogoMips value (factor 1.99...) by
+unrolling the delay loop (at least on R10k):
+
+  static __inline__ void
+  __delay(unsigned long loops)
+  {
+      loops |= 1;
+      __asm__ __volatile__ (
+          ".align 4\n\t"  /* only the paranoid survive. */
+          ".set\tnoreorder\n"
+          "1:\n\t"
+          "dsubu\t%0,1\n\t"
+          "bnez\t%0,1b\n\t"
+          "dsubu\t%0,1\n\t"
+          ".set\treorder"
+          :"=r" (loops)
+            :"0" (loops));
+  }
+
+Nevertheless, despite all this trickery, your machine will run exactly
+as fast (slow), as it did before.
+
+with kind regards
+
+pf
+
+
+
+  "I have been a happy man ever since January 1, 1990, when I no longer
+  had an email address. ..."
+
+                                                        Donald E. Knuth
+                  (http://www-cs-faculty.stanford.edu/~knuth/email.html)
+
+
+On Sat, 13 Nov 2004, macrohat wrote:
+
+> Date: Sat, 13 Nov 2004 21:47:02 +0800
+> From: macrohat <emblinux@macrohat.com>
+> To: linux-mips <linux-mips@linux-mips.org>
+> Cc: linux-cvs <linux-cvs@linux-mips.org>
+> 
+> Hello linux-mips:
+> 
+> I have a question to ask you: why BCM1250 CPU Bogomips is so much lower than CPU clock frequency,such as:
+> CPU 700MHz - 465.30 Bogomips, CPU 800MHZ - 532.48 BogoMIPS.And i find out that CPU Bogomips is a fixed value regardless L2 cache open or closed,
+> 
+> Enclosed is the log from the console
+> 
+> Regards!
+>  				
+> 
+> 　　　　　　　　macrohat
+> 　　　　　　　　emblinux@macrohat.com
+> 　　　　　　　　　　2004-11-13
+> 

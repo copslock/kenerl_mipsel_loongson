@@ -1,61 +1,57 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f42KmOr29338
-	for linux-mips-outgoing; Wed, 2 May 2001 13:48:24 -0700
-Received: from boco.fee.vutbr.cz (boco.fee.vutbr.cz [147.229.9.11])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f42KmMF29320
-	for <linux-mips@oss.sgi.com>; Wed, 2 May 2001 13:48:22 -0700
-Received: from fest.stud.fee.vutbr.cz (fest.stud.fee.vutbr.cz [147.229.9.16])
-	by boco.fee.vutbr.cz (8.11.3/8.11.3) with ESMTP id f42KmJc67694
-	(using TLSv1/SSLv3 with cipher EDH-RSA-DES-CBC3-SHA (168 bits) verified OK)
-	for <linux-mips@oss.sgi.com>; Wed, 2 May 2001 22:48:20 +0200 (CEST)
-Received: (from xmichl03@localhost)
-	by fest.stud.fee.vutbr.cz (8.11.2/8.11.2) id f42KmJa91989;
-	Wed, 2 May 2001 22:48:19 +0200 (CEST)
-From: Michl Ladislav <xmichl03@stud.fee.vutbr.cz>
-Date: Wed, 2 May 2001 22:48:19 +0200 (CEST)
-X-processed: pine.send
-To: <linux-mips@oss.sgi.com>
-Subject: VINO - enabling DMA
-Message-ID: <Pine.BSF.4.33.0105022139370.85671-100000@fest.stud.fee.vutbr.cz>
+	by oss.sgi.com (8.11.3/8.11.3) id f42KsKP31465
+	for linux-mips-outgoing; Wed, 2 May 2001 13:54:20 -0700
+Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f42KsKF31461
+	for <linux-mips@oss.sgi.com>; Wed, 2 May 2001 13:54:20 -0700
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f42KrV032684;
+	Wed, 2 May 2001 13:53:31 -0700
+Message-ID: <3AF0724B.D74D9AF9@mvista.com>
+Date: Wed, 02 May 2001 13:47:07 -0700
+From: Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To: nick@snowman.net
+CC: Matthew Dharm <mdharm@momenco.com>, Linux-MIPS <linux-mips@oss.sgi.com>
+Subject: Re: Endianness...
+References: <Pine.LNX.4.21.0105021603030.22170-100000@ns>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-when writing Linux VINO driver i followed documentation found at:
-ftp://oss.sgi.com/pub/linux/mips/doc/indy/vino/vino.ps
+nick@snowman.net wrote:
+> 
+> To the best of my knowledge Big endian is generally the way to run.
+>         Nick
+> 
 
-shortly (if someone is interested, i can send whole code):
-/* array of allocated pages */
-unsigned long *pages;
-/* same as above, but contains physical addresses */
-unsigned long *buf_desc;
+BE is better known perhaps because all SGI workstations are BE.  Generally I
+found networking systems tend to use BE while consumer electronic devices tend
+to use LE (which means there are probably more MIPS CPUs running in LE.)
 
-/* i hope page starts at 4k boundary ;) */
-/* i also know that GFP_DMA is useless for MIPS */
-buf_desc = (unsigned long *) __get_free_pages(GFP_KERNEL | GFP_DMA, 0);
-pages = (unsigned long*) kmalloc(npage *
-         sizeof(unsigned long), GFP_KERNEL));
-for (i = 0; i < npage; i++) {
-	pages[i] = __get_free_pages(GFP_KERNEL | GFP_DMA, 0);
-	/* fill with something to see if vino writes data */
-	memset((void *) pages[i], i, PAGE_SIZE);
-	/* virt_to_bus returns PHYSADDR */
-	buf_desc[i] = virt_to_bus((void *)pages[i]);
-	mem_map_reserve(virt_to_page(pages[i]));
-}
-buf_desc[npage] = VINO_DESC_STOP;
-/* here set all things according doc (page_index to zero and so on...)
-...
-/* write descriptor table pointer to vino */
-vino_reg_write(virt_to_bus(buf_desc), VINO_A_DESC_TLB_PTR);
-vino_reg_write(virt_to_bus(buf_desc), VINO_A_DESC_PTR);
-/* and now start DMA */
-vino_reg_or(VINO_CTRL_A_DMA_ENBL, VINO_CTRL);
+So far I have not found much difference in terms of endianess, although
+occassionaly you have to IO swap in drivers for BE machine.
 
-after that memory stays untouched, no data are trasferred. any ideas how
-to make DMA working? or better where to get more complete vino
-documentation?
+Jun
 
-regards,
-ladislav michl
+> On Wed, 2 May 2001, Matthew Dharm wrote:
+> 
+> > What's the preferred endianness for Linux-MIPS?  I can't really go
+> > into why I'm asking (sensitive NDA information), but I'm basically
+> > faced with a group that wants to work in LE.  However, my
+> > understanding was that Linux-MIPS generally ran BE.
+> >
+> > Or can it be built either way?  I know OpenBSD runs LE.... not like
+> > that means anything to this group, tho.
+> >
+> > Matt Dharm
+> >
+> > --
+> > Matthew D. Dharm                            Senior Software Designer
+> > Momentum Computer Inc.                      1815 Aston Ave.  Suite 107
+> > (760) 431-8663 X-115                        Carlsbad, CA 92008-7310
+> > Momentum Works For You                      www.momenco.com
+> >

@@ -1,48 +1,86 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6BGv5Rw008756
-	for <linux-mips-outgoing@oss.sgi.com>; Thu, 11 Jul 2002 09:57:05 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6BGvRRw008831
+	for <linux-mips-outgoing@oss.sgi.com>; Thu, 11 Jul 2002 09:57:27 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6BGv5RH008755
-	for linux-mips-outgoing; Thu, 11 Jul 2002 09:57:05 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6BGvR1p008830
+	for linux-mips-outgoing; Thu, 11 Jul 2002 09:57:27 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6BGuvRw008746;
-	Thu, 11 Jul 2002 09:56:58 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id TAA15221;
-	Thu, 11 Jul 2002 19:01:58 +0200 (MET DST)
-Date: Thu, 11 Jul 2002 19:01:57 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Ralf Baechle <ralf@oss.sgi.com>
-cc: "Gleb O. Raiko" <raiko@niisi.msk.ru>,
-   Carsten Langgaard <carstenl@mips.com>,
-   Jon Burgess <Jon_Burgess@eur.3com.com>, linux-mips@oss.sgi.com
-Subject: Re: mips32_flush_cache routine corrupts CP0_STATUS with gcc-2.96
-In-Reply-To: <20020711131247.A11700@dea.linux-mips.net>
-Message-ID: <Pine.GSO.3.96.1020711185642.7876I-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received: from av.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6BGvGRw008790;
+	Thu, 11 Jul 2002 09:57:17 -0700
+Received: from mvista.com (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id KAA11090;
+	Thu, 11 Jul 2002 10:01:25 -0700
+Message-ID: <3D2DB826.6000208@mvista.com>
+Date: Thu, 11 Jul 2002 09:53:58 -0700
+From: Jun Sun <jsun@mvista.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.2.1) Gecko/20010901
+X-Accept-Language: en-us
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
+To: Jon Burgess <Jon_Burgess@eur.3com.com>
+CC: Carsten Langgaard <carstenl@mips.com>,
+   "Gleb O. Raiko" <raiko@niisi.msk.ru>, Ralf Baechle <ralf@oss.sgi.com>,
+   linux-mips@oss.sgi.com
+Subject: Re: mips32_flush_cache routine corrupts CP0_STATUS with gcc-2.96
+References: <80256BF3.00435388.00@notesmta.eur.3com.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, hits=0.0 required=5.0 tests= version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, 11 Jul 2002, Ralf Baechle wrote:
+Jon Burgess wrote:
 
-> The R3000 cache manipulation mechanism is implemented by giving magic
-> meaning to store instruction while the isolate cache and swap cache bits
-> are in use.  By their very implementation they're both incompatible with
-> normal operation of caches and therefore can only be used from uncached
-> space.
+> 
+>>>I don't wonder if other IDT CPUs also require this, including those that
+>>>conform MIPS32.
+>>>Basically, requirement of uncached run makes hadrware logic much simpler
+>>>and allows  to save silicon a bit.
+>>>
+>>That could be true, but then again I suggest making specific cache routines for
+>>
+> those
+> 
+>>CPUs.
+>>It would be a real performance hit for the rest of us, if we have to operate
+>>
+> from
+> 
+>>uncached space.
+>>
+> 
+> I pulled together the relevant code to generate a module to test this problem
+> and it looks like the CPU always misses 1 instruction following the end of the
+> cache loop. If I add some nop's to change the alignment of the code it doesn't
+> seem to make any difference. The same thing seems to happen even if I change the
+> cache flush to a 'Hit_invalidate' of some completely different memory region.
+> One thing I thought might happen is the CPU ending the loop early as soon as it
+> invalidates the cacheline containing the current instructions, but this doesn't
+> seem to be the case, the 'end' address is always correct. Perhaps this really is
+> a hardware problem.
+> 
+> The test module below does a blast_icache then a few well known instructions and
+> signifies if anything has been missed. I typically get the following on our
+> board.
+>      Cacheop skipped 1 instructions, end = 0x80004000
 
- Well, docs state only the cache that acts as the D-cache gets isolated
-and the one that acts as the I-cache always functions normally (and the
-real D-cache has all the logic needed to pretend it's an I-cache
-successfully).  Thus running from an uncached space is not needed.  I
-haven't checked it explicitly, but the flushing functions would fail
-(hang) quite soon otherwise and they don't.
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+
+Here is the test results from Malta 4kc
+
+Cacheop skipped 0 instructions, end = 0x80004000
+
+root@10.0.18.6:~# cat /proc/cpuinfo
+processor               : 0
+cpu model               : MIPS 4Kc V0.1
+BogoMIPS                : 79.66
+wait instruction        : no
+microsecond timers      : yes
+extra interrupt vector  : yes
+hardware watchpoint     : yes
+VCED exceptions         : not available
+VCEI exceptions         : not available
+
+
+Jun

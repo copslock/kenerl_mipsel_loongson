@@ -1,52 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 Feb 2005 01:02:15 +0000 (GMT)
-Received: from embeddededge.com ([IPv6:::ffff:209.113.146.155]:29445 "EHLO
-	penguin.netx4.com") by linux-mips.org with ESMTP
-	id <S8225267AbVBFBCA>; Sun, 6 Feb 2005 01:02:00 +0000
-Received: from [192.168.2.27] (h69-21-252-132.69-21.unk.tds.net [69.21.252.132])
-	by penguin.netx4.com (8.12.8/8.12.9) with ESMTP id j160gU4s014347;
-	Sat, 5 Feb 2005 19:42:30 -0500
-In-Reply-To: <20050205203333.CD4DBC108D@atlas.denx.de>
-References: <20050205203333.CD4DBC108D@atlas.denx.de>
-Mime-Version: 1.0 (Apple Message framework v619.2)
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Message-Id: <efcfca49cf2c4494a661ba916f2e1546@embeddededge.com>
-Content-Transfer-Encoding: 7bit
-Cc:	linux-mips <linux-mips@linux-mips.org>,
-	Robert Michel <news@robertmichel.de>
-From:	Dan Malek <dan@embeddededge.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 Feb 2005 09:29:46 +0000 (GMT)
+Received: from mailout03.sul.t-online.com ([IPv6:::ffff:194.25.134.81]:2232
+	"EHLO mailout03.sul.t-online.com") by linux-mips.org with ESMTP
+	id <S8224918AbVBFJ33>; Sun, 6 Feb 2005 09:29:29 +0000
+Received: from fwd10.aul.t-online.de 
+	by mailout03.sul.t-online.com with smtp 
+	id 1CxijM-0004zW-02; Sun, 06 Feb 2005 10:29:24 +0100
+Received: from denx.de (VauefuZcZe2LSVt6Ppheo+t0rS1Y142q6WcgyZwyYIVsXAUuch0Dgh@[62.158.200.195]) by fmrl10.sul.t-online.com
+	with esmtp id 1CxijH-1hzWmu0; Sun, 6 Feb 2005 10:29:19 +0100
+Received: from atlas.denx.de (atlas.denx.de [10.0.0.14])
+	by denx.de (Postfix) with ESMTP
+	id 04D6D42306; Sun,  6 Feb 2005 10:29:13 +0100 (MET)
+Received: by atlas.denx.de (Postfix, from userid 15)
+	id 4537AC108D; Sun,  6 Feb 2005 10:29:05 +0100 (MET)
+Received: from atlas.denx.de (localhost [127.0.0.1])
+	by atlas.denx.de (Postfix) with ESMTP
+	id 42E6F13D6DB; Sun,  6 Feb 2005 10:29:05 +0100 (MET)
+To:	Dan Malek <dan@embeddededge.com>
+Cc:	linux-mips <linux-mips@linux-mips.org>
+From:	Wolfgang Denk <wd@denx.de>
 Subject: Re: patch like kexec for MIPS possible? 
-Date:	Sat, 5 Feb 2005 20:01:46 -0500
-To:	Wolfgang Denk <wd@denx.de>
-X-Mailer: Apple Mail (2.619.2)
-Return-Path: <dan@embeddededge.com>
+Mime-version: 1.0
+Content-type: text/plain; charset=ISO-8859-1
+Content-transfer-encoding: 8bit
+In-reply-to: Your message of "Sat, 05 Feb 2005 20:01:46 EST."
+             <efcfca49cf2c4494a661ba916f2e1546@embeddededge.com> 
+Date:	Sun, 06 Feb 2005 10:29:00 +0100
+Message-Id: <20050206092905.4537AC108D@atlas.denx.de>
+X-ID:	VauefuZcZe2LSVt6Ppheo+t0rS1Y142q6WcgyZwyYIVsXAUuch0Dgh@t-dialin.net
+X-TOI-MSGID: 4be76432-8cd3-40d0-b73f-1ddeaec6ff9b
+Return-Path: <wd@denx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7167
+X-archive-position: 7168
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@embeddededge.com
+X-original-sender: wd@denx.de
 Precedence: bulk
 X-list: linux-mips
 
+In message <efcfca49cf2c4494a661ba916f2e1546@embeddededge.com> you wrote:
+> 
+> some software doesn't like this.   I suspect main reason for
+> kexec is the horrible x86 bios and nothing that can be done
+> about it.
 
-On Feb 5, 2005, at 3:33 PM, Wolfgang Denk wrote:
+Ummm.. some people got U-Boot running on x86 systems, too.  But  this
+is off topic here :-)
 
-> .....   but  I cannot see many situations where
-> kexec is actually better or more powerful than  a  decent  bootloader
-> line U-Boot. OK, I'm obviously biased.
+Best regards,
 
-I agree.  I've played with booting kernels from kernels
-in both PowerPC and MIPS in the past, and the problem
-I always run into is drivers or kernel functions that assume
-a particular power up state.  When rebooting from another
-kernel you don't have the same state as from power up, and
-some software doesn't like this.   I suspect main reason for
-kexec is the horrible x86 bios and nothing that can be done
-about it.
+Wolfgang Denk
 
-Oh, and I agree with your assessment, not that you are biased :-)
-
-
-	-- Dan
+-- 
+Software Engineering:  Embedded and Realtime Systems,  Embedded Linux
+Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email: wd@denx.de
+Hindsight is an exact science.

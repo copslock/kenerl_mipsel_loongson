@@ -1,93 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Jan 2004 09:27:44 +0000 (GMT)
-Received: from web10105.mail.yahoo.com ([IPv6:::ffff:216.136.130.55]:52827
-	"HELO web10105.mail.yahoo.com") by linux-mips.org with SMTP
-	id <S8225254AbUAVJ1n>; Thu, 22 Jan 2004 09:27:43 +0000
-Message-ID: <20040122092738.52844.qmail@web10105.mail.yahoo.com>
-Received: from [128.107.253.43] by web10105.mail.yahoo.com via HTTP; Thu, 22 Jan 2004 09:27:38 GMT
-Date: Thu, 22 Jan 2004 09:27:38 +0000 (GMT)
-From: =?iso-8859-1?q?karthikeyan=20natarajan?= <karthik_96cse@yahoo.com>
-Subject: Re: Doubt in timer interrupt
-To: Dominic Sweetman <dom@mips.com>
-Cc: linux-mips@linux-mips.org
-In-Reply-To: <16399.36167.575161.386963@doms-laptop.algor.co.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Jan 2004 09:53:02 +0000 (GMT)
+Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:14992 "EHLO
+	witte.sonytel.be") by linux-mips.org with ESMTP id <S8225254AbUAVJxB>;
+	Thu, 22 Jan 2004 09:53:01 +0000
+Received: from waterleaf.sonytel.be (localhost [127.0.0.1])
+	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id i0M9qxw2011386;
+	Thu, 22 Jan 2004 10:53:00 +0100 (MET)
+Date: Thu, 22 Jan 2004 10:52:59 +0100 (MET)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: Jun Sun <jsun@mvista.com>
+cc: Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 2.6] set up conswitchp when CONFIG_VT is set
+In-Reply-To: <20040121162032.F29705@mvista.com>
+Message-ID: <Pine.GSO.4.58.0401221052100.1408@waterleaf.sonytel.be>
+References: <20040121162032.F29705@mvista.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Return-Path: <karthik_96cse@yahoo.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4100
+X-archive-position: 4101
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: karthik_96cse@yahoo.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Dominic Sweetman,
+On Wed, 21 Jan 2004, Jun Sun wrote:
+> conswitchp needs to be set whenever CONFIG_VT is selected.
+> Currently this job is done individually by each board in its setup
+> routine, often in a wrong way.
+>
+> The right thing to do is to set the pointer in the common code
+> and remove almost two dozens of duplicated and often wrong settings.
+>
+> The attached patch is for illustration only.  The removal of board settings
+> is not complete.
+>
+> Comments?  Objections and cheers are equally welcome. :)
 
-    Thanks much for your inputs..
+| --- linux/arch/mips/kernel/setup.c.orig	Tue Nov 18 10:01:24 2003
+| +++ linux/arch/mips/kernel/setup.c	Wed Jan 21 16:00:47 2004
+| @@ -471,6 +472,15 @@
+|  	set_c0_status(ST0_CU0|ST0_KX|ST0_SX|ST0_FR);
+|  #endif
+|
+| +#ifdef CONFIG_VT
+| +#if defined(CONFIG_VGA_CONSOLE)
+| +        conswitchp = &vga_con;
+| +#elif defined(CONFIG_DUMMY_CONSOLE)
+| +        conswitchp = &dummy_con;
+| +#endif
+| +#endif
 
-> >   In R4000 & descendent processors, interrupt
-> number 7
-> > is being used for internal timer interrupt. From
-> this
-> > i understand that the timer interrupt is also
-> maskable
-> > when the IE bit in status register is cleared. If 
-> > somebody mask this interrupt for a long time 
-> > erroneously, then won't there be a problem in 
-> > maintaining the system time?
-> 
-> Yes, there may be a long delay.  So the standard way
-> of using the
-> onchip counter to generate a periodic interrupt is
-> that the counter
-> itself is allowed to free-run, keeping accurate
-> time.
-> 
-> The 'Compare' register is then incremented by a
-> fixed amount.
-> 
-> So long as the interrupt is not delayed by a whole
-> tick, this keeps
-> perfect time.
-> 
-> I'm sure this is described in "See MIPS Run" - do
-> you have a copy?
+Isn't the #ifdef CONFIG_VT superfluous?
 
-    Yes, i have a copy. Have just started reading
-this book.. I yet to get into the deep waters of the
-MIPS..
+Gr{oetje,eeting}s,
 
-    May i know the purpose of the NMI interrupt and
-in what way it differ from the timer interrupt.
+						Geert
 
-Thanks much,
--karthi
- 
-> --
-> Dominic Sweetman
-> MIPS Technologies Inc
-> 
-> 
->  
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-=====
-The expert at anything was once a beginner
-                  ______________________________
-                 /                              \
-             O  /      Karthikeyan.N             \
-           O   |       Chennai, India.            |
-    `\|||/'     \    Mobile: +919884104346       /
-     (o o)       \                              /
-_ ooO (_) Ooo____________________________________
-_____|_____|_____|_____|_____|_____|_____|_____|_
-__|_____|_____|_____|_____|_____|_____|_____|____
-_____|_____|_____|_____|_____|_____|_____|_____|_
-
-________________________________________________________________________
-Yahoo! Messenger - Communicate instantly..."Ping" 
-your friends today! Download Messenger Now 
-http://uk.messenger.yahoo.com/download/index.html
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

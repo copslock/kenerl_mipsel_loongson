@@ -1,51 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Apr 2003 18:55:21 +0100 (BST)
-Received: from pasmtp.tele.dk ([IPv6:::ffff:193.162.159.95]:37133 "EHLO
-	pasmtp.tele.dk") by linux-mips.org with ESMTP id <S8225199AbTDKRzS>;
-	Fri, 11 Apr 2003 18:55:18 +0100
-Received: from ekner.info (0x83a4a968.virnxx10.adsl-dhcp.tele.dk [131.164.169.104])
-	by pasmtp.tele.dk (Postfix) with ESMTP id F38B1B4DB
-	for <linux-mips@linux-mips.org>; Fri, 11 Apr 2003 19:55:05 +0200 (CEST)
-Message-ID: <3E97018B.3435D14C@ekner.info>
-Date: Fri, 11 Apr 2003 19:55:23 +0200
-From: Hartvig Ekner <hartvig@ekner.info>
-X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.18-19.7.x i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: Linux MIPS mailing list <linux-mips@linux-mips.org>
-Subject: ext3 problem solved
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Apr 2003 19:15:14 +0100 (BST)
+Received: from p508B7FA0.dip.t-dialin.net ([IPv6:::ffff:80.139.127.160]:954
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225199AbTDKSPN>; Fri, 11 Apr 2003 19:15:13 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id h3BIF5m30291;
+	Fri, 11 Apr 2003 20:15:05 +0200
+Date: Fri, 11 Apr 2003 20:15:05 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: "Erik J. Green" <erik@greendragon.org>
+Cc: linux-mips@linux-mips.org
+Subject: Re: Kernel build on Irix w/gcc-fw, Irix as/ld?
+Message-ID: <20030411201504.A24855@linux-mips.org>
+References: <1050079328.3e96f060dd3cd@my.visi.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <hartvig@ekner.info>
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <1050079328.3e96f060dd3cd@my.visi.com>; from erik@greendragon.org on Fri, Apr 11, 2003 at 04:42:08PM +0000
+Return-Path: <ralf@linux-mips.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1998
+X-archive-position: 1999
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hartvig@ekner.info
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-I found out (sort of) what the problem was and found a fix.
+On Fri, Apr 11, 2003 at 04:42:08PM +0000, Erik J. Green wrote:
 
-Apparantly there is something wrong with e2fsprogs 1.27, since it was unable to repair
-the problem I had in the filesystem (just kept repairing the same thing again and again).
+> Has anyone successfully built a kernel under Irix, using the freeware GCC and
+> the standard Irix as/ld tools?  Just wondering off the top of my head, I would
+> think the Irix tools would have less bugs for 64 bit code than the current
+> binutils are reputed to have.  I have a set of licensed compilers coming for
+> another project so I could possibly use those too.
 
-I took the disk and attached it to a x86 PC, and ran fsck.ext3 there (an older version, 1.26).
-It found exactly the same errors as the MIPS system, but actually fixed them so that
-subsequent runs with "-f" reported no errors. I then put the disk back on the MIPS
-system - voila, no more filesystem problems. Then did another unclean shutdown,
-and the same problem reappeared, and once again fsck (on MIPS) was unable to fix
-it.
+<mode=prayer_wheel>
+Use gcc and binutils in a Linux/MIPS configuration or give up.
+</mode>
 
-Then I downloaded e2fsprogs-1.32-6.mipsel.rpm from redhat 9, and installed that on my
-MIPS system. And that removed the problem for good.
-
-So the conclusion must be: The e2fsprogs-1.27 package which is part of the MIPS 7.3
-RedHat distribution (CDROM and FTP) is broken. Don't leave home without a newer
-e2fsprogs RPM just in case!
-
-Thanks to everybody who replied!
-
-/Hartvig
+  Ralf

@@ -1,76 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Apr 2003 00:17:12 +0100 (BST)
-Received: from jeeves.momenco.com ([IPv6:::ffff:64.169.228.99]:29966 "EHLO 
-	host099.momenco.com") by linux-mips.org with ESMTP
-	id <S8225204AbTDVXRL>; Wed, 23 Apr 2003 00:17:11 +0100
-Received: from beagle (natbox.momenco.com [64.169.228.98])
-	by  host099.momenco.com (8.11.6/8.11.6) with SMTP id h3MNH7l18548;
-	Tue, 22 Apr 2003 16:17:07 -0700
-From: "Matthew Dharm" <mdharm@momenco.com>
-To: "Ralf Baechle" <ralf@linux-mips.org>, "Jun Sun" <jsun@mvista.com>
-Cc: "Jeff Baitis" <baitisj@evolution.com>,
-	"Pete Popov" <ppopov@mvista.com>, <linux-mips@linux-mips.org>
-Subject: RE: Improperly handled case in arch/mips/au1000/common/time.c
-Date: Tue, 22 Apr 2003 16:17:06 -0700
-Message-ID: <NEBBLJGMNKKEEMNLHGAIMEAMDAAA.mdharm@momenco.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Apr 2003 00:18:15 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:16120 "EHLO
+	av.mvista.com") by linux-mips.org with ESMTP id <S8225204AbTDVXSO>;
+	Wed, 23 Apr 2003 00:18:14 +0100
+Received: from zeus.mvista.com (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id QAA08293;
+	Tue, 22 Apr 2003 16:18:12 -0700
+Subject: Re: Improperly handled case in arch/mips/au1000/common/time.c
+From: Pete Popov <ppopov@mvista.com>
+To: Jun Sun <jsun@mvista.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>,
+	Jeff Baitis <baitisj@evolution.com>,
+	Linux MIPS mailing list <linux-mips@linux-mips.org>,
+	Matthew Dharm <mdharm@momenco.com>
+In-Reply-To: <20030422161338.H28544@mvista.com>
+References: <20030422125450.E10148@luca.pas.lab>
+	 <20030422155625.E28544@mvista.com> <20030423010727.A8410@linux-mips.org>
+	 <20030422161338.H28544@mvista.com>
+Content-Type: text/plain
+Organization: MontaVista Software
+Message-Id: <1051053519.511.355.camel@zeus.mvista.com>
+Mime-Version: 1.0
+X-Mailer: Ximian Evolution 1.2.3 
+Date: 22 Apr 2003 16:18:40 -0700
 Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
-In-Reply-To: <20030423010727.A8410@linux-mips.org>
-Importance: Normal
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
-Return-Path: <mdharm@momenco.com>
+Return-Path: <ppopov@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2144
+X-archive-position: 2145
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mdharm@momenco.com
+X-original-sender: ppopov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Umm... I might have some time in a few weeks.  Right now it's not much
-of a priority for us (as a corporation).  I just have to hijack the
-code from some of our other boards which already implements the new
-system.
+On Tue, 2003-04-22 at 16:13, Jun Sun wrote:
+> On Wed, Apr 23, 2003 at 01:07:27AM +0200, Ralf Baechle wrote:
+> > On Tue, Apr 22, 2003 at 03:56:25PM -0700, Jun Sun wrote:
+> > 
+> > > I think this is a good example to show benefit of code sharing.
+> > > There is no good reason for au1x00 boards of not using new time.c.
+> > > You get to write less board code, fewer bugs and future proof.
+> > 
+> > There are just three configurations left using CONFIG_OLD_TIME_C:
+> > 
+> >  - EV64120 which I guess can be considered abandonded
+> >  - Momenco Ocelot (Matthew, feel like you have time to take care of
+> >    this?)
+> >  - RM200  (semi-maintained, my turn to fix it ...)
+> > 
+> > Seems like it's time to get rid of CONFIG_OLD_TIME_C.
+> >
+> 
+> If we were going to get rid of CONFIG_OLD_TIME_C, I propose
+> to make CONFIG_NEW_TIME_C as the default and therefore removed as well.
+> And make other boards using private time_init() functions to use 
+> CONFIG_HAVE_PRIVATE_TIME. 
+> 
+> ... in the spirit of encouraging code sharing. :)
 
-Matt
+How about just extending the time api so that "have private time" can
+just override some functions instead?  That way even then you'll have
+some code sharing, even if it's not 100%.
 
---
-Matthew D. Dharm                            Senior Software Designer
-Momentum Computer Inc.                      1815 Aston Ave.  Suite 107
-(760) 431-8663 X-115                        Carlsbad, CA 92008-7310
-Momentum Works For You                      www.momenco.com
-
-> -----Original Message-----
-> From: Ralf Baechle [mailto:ralf@linux-mips.org]
-> Sent: Tuesday, April 22, 2003 4:07 PM
-> To: Jun Sun
-> Cc: Jeff Baitis; Pete Popov; linux-mips@linux-mips.org;
-> Matthew Dharm
-> Subject: Re: Improperly handled case in
-> arch/mips/au1000/common/time.c
->
->
-> On Tue, Apr 22, 2003 at 03:56:25PM -0700, Jun Sun wrote:
->
-> > I think this is a good example to show benefit of code sharing.
-> > There is no good reason for au1x00 boards of not using new time.c.
-> > You get to write less board code, fewer bugs and future proof.
->
-> There are just three configurations left using CONFIG_OLD_TIME_C:
->
->  - EV64120 which I guess can be considered abandonded
->  - Momenco Ocelot (Matthew, feel like you have time to take care of
->    this?)
->  - RM200  (semi-maintained, my turn to fix it ...)
->
-> Seems like it's time to get rid of CONFIG_OLD_TIME_C.
->
->   Ralf
->
+Pete

@@ -1,94 +1,90 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1K2p2v01367
-	for linux-mips-outgoing; Tue, 19 Feb 2002 18:51:02 -0800
-Received: from dtla2.teknuts.com (adsl-66-125-62-110.dsl.lsan03.pacbell.net [66.125.62.110])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1K2os901361
-	for <linux-mips@oss.sgi.com>; Tue, 19 Feb 2002 18:50:54 -0800
-Received: from delllaptop (whnat1.weiderpub.com [65.115.104.67])
-	(authenticated)
-	by dtla2.teknuts.com (8.11.3/8.10.1) with ESMTP id g1K1orZ03517
-	for <linux-mips@oss.sgi.com>; Tue, 19 Feb 2002 17:50:53 -0800
-From: "Robert Rusek" <robru@teknuts.com>
-To: <linux-mips@oss.sgi.com>
-Subject: Error Compiling 2.4.3 kernel on SGI IP22...
-Date: Tue, 19 Feb 2002 17:45:46 -0800
-Message-ID: <000901c1b9b0$51cdd0b0$0f1610ac@delllaptop>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook, Build 10.0.3416
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Importance: Normal
+	by oss.sgi.com (8.11.2/8.11.3) id g1K2xAN01523
+	for linux-mips-outgoing; Tue, 19 Feb 2002 18:59:10 -0800
+Received: from mail.ict.ac.cn ([159.226.39.4])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1K2x2901518
+	for <linux-mips@oss.sgi.com>; Tue, 19 Feb 2002 18:59:02 -0800
+Message-Id: <200202200259.g1K2x2901518@oss.sgi.com>
+Received: (qmail 1554 invoked from network); 20 Feb 2002 02:02:00 -0000
+Received: from unknown (HELO foxsen) (@159.226.40.150)
+  by 159.226.39.4 with SMTP; 20 Feb 2002 02:02:00 -0000
+Date: Wed, 20 Feb 2002 9:56:28 +0800
+From: Zhang Fuxin <fxzhang@ict.ac.cn>
+To: Hartvig Ekner <hartvige@mips.com>
+CC: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Re: Your problem #2
+X-mailer: FoxMail 3.11 Release [cn]
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="=====_Dragon277531244025_====="
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Initially I got errors telling me that mips-linux-gcc, mips-linux-ld,
-and mips-linux-ar did not exists.  I simply made a link for:
+This is a multi-part message in MIME format.
 
-mips-linux-gcc	-> gcc 
-mips-linux-ld	-> ld
-mips-linux-ar	-> ar
+--=====_Dragon277531244025_=====
+Content-Type: text/plain; charset="GB2312"
+Content-Transfer-Encoding: quoted-printable
 
-Once doing so I got make to complete except for the last part when it
-goes to make the vmlinux file.  I included the last few lines before it
-errors out.  Any help would be greatly appreciated.
+hi,
+  My way is to extract code from glibc source,math code is=
+ related independent
+so it is not so hard.
+ 
+  But anyway for your convenience i have adapted a little program=
+ for you.
+gcc t-expf.c -lm
+gcc -O2 t-expf.c -lm
+should give different output.
 
----
-make[1]: Entering directory `/usr/src/linux-2.4.3/arch/mips/kernel'
-make[1]: Nothing to be done for `all'.
-make[1]: Leaving directory `/usr/src/linux-2.4.3/arch/mips/kernel'
-make CFLAGS="-I /usr/src/linux-2.4.3/include/asm/gcc -D__KERNEL__
--I/usr/src/lin
-ux-2.4.3/include -Wall -Wstrict-prototypes -O2 -fomit-frame-pointer
--fno-strict-
-aliasing -G 0 -mno-abicalls -fno-pic -mcpu=r5000 -mips2 -Wa,--trap -pipe
-" -C  a
-rch/mips/mm
-make[1]: Entering directory `/usr/src/linux-2.4.3/arch/mips/mm'
-make all_targets
-make[2]: Entering directory `/usr/src/linux-2.4.3/arch/mips/mm'
-make[2]: Nothing to be done for `all_targets'.
-make[2]: Leaving directory `/usr/src/linux-2.4.3/arch/mips/mm'
-make[1]: Leaving directory `/usr/src/linux-2.4.3/arch/mips/mm'
-make CFLAGS="-I /usr/src/linux-2.4.3/include/asm/gcc -D__KERNEL__
--I/usr/src/lin
-ux-2.4.3/include -Wall -Wstrict-prototypes -O2 -fomit-frame-pointer
--fno-strict-
-aliasing -G 0 -mno-abicalls -fno-pic -mcpu=r5000 -mips2 -Wa,--trap -pipe
-" -C  a
-rch/mips/lib
-make[1]: Entering directory `/usr/src/linux-2.4.3/arch/mips/lib'
-make all_targets
-make[2]: Entering directory `/usr/src/linux-2.4.3/arch/mips/lib'
-make[2]: Nothing to be done for `all_targets'.
-make[2]: Leaving directory `/usr/src/linux-2.4.3/arch/mips/lib'
-make[1]: Leaving directory `/usr/src/linux-2.4.3/arch/mips/lib'
-mips-linux-ld -static -G 0 -T arch/mips/ld.script
-arch/mips/kernel/head.o arch/m
-ips/kernel/init_task.o init/main.o init/version.o \
-        --start-group \
-        arch/mips/kernel/kernel.o arch/mips/mm/mm.o kernel/kernel.o
-mm/mm.o fs/f
-s.o ipc/ipc.o arch/mips/math-emu/fpu_emulator.o
-arch/mips/sgi/kernel/ip22-kern.o
- \
-        drivers/block/block.o drivers/char/char.o drivers/misc/misc.o
-drivers/ne
-t/net.o drivers/media/media.o  drivers/scsi/scsidrv.o
-drivers/cdrom/driver.o dri
-vers/sgi/sgi.a drivers/video/video.o \
-        net/network.o \
-        arch/mips/lib/lib.a /usr/src/linux-2.4.3/lib/lib.a
-arch/mips/arc/arclib.
-a \
-        --end-group \
-        -o vmlinux
-mips-linux-ld: target elf32-bigmips not found
-make: *** [vmlinux] Error 1
----
 
---
-Robert Rusek
+=D4=DA 2002-02-19 22:09:00 you wrote=A3=BA
+>Hi Zhang,
+>
+>I have verified your problem #3 to exist on the SDE compiler as=
+ well,
+>and it has been reported.
+>
+>Regarding your problem #2, do you have a self-contained example
+>(similar to your small program in #3) which exhibits the error?=
+ I don't
+>want to spend time installing glibc and dealing with getting=
+ that compile
+>to run in order to check whether this issue also exists on SDE.
+>
+>(This is similar to my request on sample failing code for=
+ problem #1 you
+>reported).
+>
+>/Hartvig
+
+Regards
+            Zhang Fuxin
+            fxzhang@ict.ac.cn
+
+--=====_Dragon277531244025_=====
+Content-Type: application/octet-stream; name="t-expf.c"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="t-expf.c"
+
+I2luY2x1ZGUgPG1hdGguaD4KI2luY2x1ZGUgPGZlbnYuaD4KCnZvaWQgcHJpbnRfcm91bmQoKQp7
+CglpbnQgcjsKCglyPWZlZ2V0cm91bmQoKTsKCWlmIChyPT1GRV9UT05FQVJFU1QpIHsKCQlwcmlu
+dGYoInJvdW5kaW5nIGlzIFRPTkVBUkVTVFxuIik7IAoJfWVsc2UgaWYgKHI9PUZFX0RPV05XQVJE
+KSB7CgkJcHJpbnRmKCJyb3VuZGluZyBpcyBET1dOV0FSRFxuIik7IAoJfWVsc2UgaWYgKHI9PUZF
+X1VQV0FSRCkgewoJCXByaW50Zigicm91bmRpbmcgaXMgVVBXQVJEXG4iKTsgCgl9ZWxzZSB7CgkJ
+cHJpbnRmKCJyb3VuZGluZyBpcyBUT1dBUkRaRVJPXG4iKTsgCgl9Cn0KCnZvaWQgcHJpbnRfZXhj
+ZXB0aW9uKCkKewoJcHJpbnRmKCJmbGFnczoiKTsKCWlmIChmZXRlc3RleGNlcHQoRkVfSU5WQUxJ
+RCkpIHByaW50ZigiaSIpOwoJaWYgKGZldGVzdGV4Y2VwdChGRV9ESVZCWVpFUk8pKSBwcmludGYo
+IjAiKTsKCWlmIChmZXRlc3RleGNlcHQoRkVfT1ZFUkZMT1cpKSBwcmludGYoIk8iKTsKCWlmIChm
+ZXRlc3RleGNlcHQoRkVfVU5ERVJGTE9XKSkgcHJpbnRmKCJVIik7CglpZiAoZmV0ZXN0ZXhjZXB0
+KEZFX0lORVhBQ1QpKSBwcmludGYoIlgiKTsKCXByaW50ZigiXG4iKTsKfQoKc3RhdGljIGNvbnN0
+IGZsb2F0Cm9fdGhyZXNob2xkPSAgOC44NzIxNjc5Njg4ZSswMSwgIC8qIDB4NDJiMTcxODAgKi8K
+dV90aHJlc2hvbGQ9IC0xLjAzOTcyMDg0MDVlKzAyOyAgLyogMHhjMmNmZjFiNSAqLwoKZmxvYXQg
+bXlleHBmKGZsb2F0IHgpCnsKCWZsb2F0IHo7Cgl1bnNpZ25lZCBpbnQgaHg7CglpZiAoX0xJQl9W
+RVJTSU9OID09IF9JRUVFXykgcmV0dXJuIHo7CglpZihmaW5pdGVmKHgpKSB7CgkgICAgaWYoeD5v
+X3RocmVzaG9sZCkKCQlyZXR1cm4gMS4wOwoJICAgIGVsc2UgaWYoeDx1X3RocmVzaG9sZCkKCQly
+ZXR1cm4gMi4wOwoJfSAKfQoKaW50IG1haW4oaW50IGFyZ2MsY2hhciAqKmFyZ3YpCnsKCWZsb2F0
+IHgsemVybz0wLjA7CgoJeCA9IHplcm8vemVybzsKCWZlY2xlYXJleGNlcHQoRkVfQUxMX0VYQ0VQ
+VCk7CglwcmludF9leGNlcHRpb24oKTsKCXggPSBteWV4cGYoeCk7CglwcmludF9leGNlcHRpb24o
+KTsKCXJldHVybiAwOwp9Cgo=
+
+--=====_Dragon277531244025_=====--

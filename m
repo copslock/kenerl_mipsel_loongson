@@ -1,69 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Aug 2003 21:59:05 +0100 (BST)
-Received: from mail2.sonytel.be ([IPv6:::ffff:195.0.45.172]:30949 "EHLO
-	witte.sonytel.be") by linux-mips.org with ESMTP id <S8225202AbTHKU64>;
-	Mon, 11 Aug 2003 21:58:56 +0100
-Received: from vervain.sonytel.be (localhost [127.0.0.1])
-	by witte.sonytel.be (8.12.9/8.12.9) with ESMTP id h7BKwDlW013978;
-	Mon, 11 Aug 2003 22:58:13 +0200 (MEST)
-Date: Mon, 11 Aug 2003 22:58:13 +0200 (MEST)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-cc: Chip Coldwell <coldwell@frank.harvard.edu>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Aug 2003 00:10:26 +0100 (BST)
+Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:2908
+	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
+	id <S8225218AbTHKXKY>; Tue, 12 Aug 2003 00:10:24 +0100
+Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
+	by iris1.csv.ica.uni-stuttgart.de with esmtp (Exim 3.35 #1)
+	id 19mLnw-00053W-00; Tue, 12 Aug 2003 01:10:20 +0200
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
+	id 19mLnv-00067G-00; Tue, 12 Aug 2003 01:10:19 +0200
+Date: Tue, 12 Aug 2003 01:10:19 +0200
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: linux-mips@linux-mips.org
 Subject: Re: load/store address overflow on binutils 2.14
-In-Reply-To: <20030810145425.GE22977@rembrandt.csv.ica.uni-stuttgart.de>
-Message-ID: <Pine.GSO.4.21.0308112257180.20421-100000@vervain.sonytel.be>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <Geert.Uytterhoeven@sonycom.com>
+Message-ID: <20030811231019.GA23104@rembrandt.csv.ica.uni-stuttgart.de>
+References: <20030810145425.GE22977@rembrandt.csv.ica.uni-stuttgart.de> <Pine.GSO.3.96.1030811125208.18443A-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.GSO.3.96.1030811125208.18443A-100000@delta.ds2.pg.gda.pl>
+User-Agent: Mutt/1.5.4i
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3020
+X-archive-position: 3021
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, 10 Aug 2003, Thiemo Seufer wrote:
-> Chip Coldwell wrote:
-> [snip]
-> > >         printf("%016x\n", ~a);
-> > > 
-> > >         return 0;
-> > > }
-> > > 
-> > > outputs
-> > > 
-> > > 00000000ffffffff
-> > > 
-> > > on my i386-linux system.
-> > 
-> > Strangely, this is actually "correct" behavior.  Arguments on
-> > variable-length argument lists are implicitly "promoted" to unsigned
-> > int at the widest.  See K&R 2nd ed. A6.1 and A7.3.2.
+Maciej W. Rozycki wrote:
+> On Sun, 10 Aug 2003, Thiemo Seufer wrote:
 > 
-> Ugh. Thanks for pointing this out. I wasn't aware of it.
+> > Produces the expected output. So it is actually an implementation
+> > bug in binutils, which isn't fixable for 2.14 and earlier, because
+> > those have to remain at K&R C level. The K&R requirement was only
+> > recenly loosened.
 > 
-> 	printf("%016Lx\n", ~a);
-> 
-> Produces the expected output. So it is actually an implementation
-> bug in binutils, which isn't fixable for 2.14 and earlier, because
-> those have to remain at K&R C level. The K&R requirement was only
-> recenly loosened.
+>  Strangely enough, the Atsushi's code builds just fine with 2.13.2.1.
 
-How can it print the correct output if ~a is `promoted' to unsigned int, while
-you specify %Lx in the format string?
+The test in binutils it stumbled over was added later.
 
-Gr{oetje,eeting}s,
 
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+Thiemo

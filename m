@@ -1,54 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Sep 2003 20:01:27 +0100 (BST)
-Received: from mx2.mips.com ([IPv6:::ffff:206.31.31.227]:48820 "EHLO
-	mx2.mips.com") by linux-mips.org with ESMTP id <S8225468AbTI2TAz>;
-	Mon, 29 Sep 2003 20:00:55 +0100
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id h8TIwLYY009021;
-	Mon, 29 Sep 2003 11:58:22 -0700 (PDT)
-Received: from uhler-linux.mips.com (uhler-linux [192.168.65.120])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id MAA25600;
-	Mon, 29 Sep 2003 12:01:53 -0700 (PDT)
-Subject: Re: 64 bit operations w/32 bit kernel
-From: Michael Uhler <uhler@mips.com>
-To: "Finney, Steve" <Steve.Finney@spirentcom.com>
-Cc: linux-mips@linux-mips.org
-In-Reply-To: <DC1BF43A8FAE654DA6B3FB7836DD3A56DEB75C@iris.adtech-inc.com>
-References: <DC1BF43A8FAE654DA6B3FB7836DD3A56DEB75C@iris.adtech-inc.com>
-Content-Type: text/plain
-Organization: MIPS Technologies, Inc.
-Message-Id: <1064862114.11818.21.camel@uhler-linux.mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Sep 2003 22:05:22 +0100 (BST)
+Received: from p508B7C78.dip.t-dialin.net ([IPv6:::ffff:80.139.124.120]:57282
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225437AbTI2VFR>; Mon, 29 Sep 2003 22:05:17 +0100
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h8TL53NK026325;
+	Mon, 29 Sep 2003 23:05:04 +0200
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h8TL51lg026324;
+	Mon, 29 Sep 2003 23:05:01 +0200
+Date: Mon, 29 Sep 2003 23:05:01 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Adeel Malik <AdeelM@avaznet.com>
+Cc: Steffen Malmgaard Mortensen <smm@futarque.com>,
+	linux-mips@linux-mips.org
+Subject: Re: How to increase download speed for UART
+Message-ID: <20030929210501.GA4231@linux-mips.org>
+References: <10C6C1971DA00C4BB87AC0206E3CA38264ED84@1aurora.enabtech>
 Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.4.0 
-Date: 29 Sep 2003 12:01:54 -0700
-Content-Transfer-Encoding: 7bit
-Return-Path: <uhler@mips.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <10C6C1971DA00C4BB87AC0206E3CA38264ED84@1aurora.enabtech>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3320
+X-archive-position: 3321
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: uhler@mips.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 2003-09-29 at 10:31, Finney, Steve wrote:
-> What would be the downside to enabling 64 bit operations in user space on a 32 bit kernel (setting the PX bit in the status register?). The particular issue is that I want to access 64 bit-memory mapped registers, and I really need to do it as an atomic operation. I tried borrowing sibyte/64bit.h from the kernel, but I get an illegal instruction on the double ops.
-> 
-The most glaring problem is you violate the rule that the 64-bit GPRs
-are sign-extended when running a 32-bit binary.  There are all kinds
-of assumptions in the hardware and software that depend on the
-GPRs being sign-extended, and to violate this will risk some
-serious instability of the software.
+On Mon, Sep 29, 2003 at 12:41:02PM +0500, Adeel Malik wrote:
 
-> Also, assuming this isn't a horrible idea, is there any obvious single place where "default" values in the CP0 status register get set?
+>     The terminal emulator that you specified supports the max. baud rate of
+> 115.2 kbps. And it is taking about 7 minutes to download the Kernel Image of
+> 4.3 MB. Do you know some other Terminal Emulator that can support a higher
+> baud rate ?.
 > 
-> Thanks,
-> sf
--- 
+> The UART of the target processor supports the max. baud rate of 406 kbps. So
+> I can use the terminal emulator that supports for example, 406kbps, then my
+> download time may be further reduced.
 
-Michael Uhler, Chief Technology Officer
-MIPS Technologies, Inc.  Email: uhler@mips.com  Pager:uhler_p@mips.com
-1225 Charleston Road     Voice:  (650)567-5025  FAX:   (650)567-5225
-Mountain View, CA 94043  Mobile: (650)868-6870  Admin: (650)567-5085
+115,200 bps is frequently the maximum supported rate of serial interfaces,
+so it may be time to find some faster medium.  You may also want to
+experiment with compressed kernels.
+
+  Ralf

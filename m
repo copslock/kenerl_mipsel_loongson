@@ -1,66 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jul 2003 17:21:46 +0100 (BST)
-Received: from [IPv6:::ffff:194.217.161.2] ([IPv6:::ffff:194.217.161.2]:36577
-	"EHLO wolfsonmicro.com") by linux-mips.org with ESMTP
-	id <S8225072AbTGPQVo>; Wed, 16 Jul 2003 17:21:44 +0100
-Received: from campbeltown.wolfson.co.uk (campbeltown [192.168.0.166])
-	by wolfsonmicro.com (8.11.3/8.11.3) with ESMTP id h6GGLWe24010
-	for <linux-mips@linux-mips.org>; Wed, 16 Jul 2003 17:21:32 +0100 (BST)
-Received: from caernarfon (unverified) by campbeltown.wolfson.co.uk
- (Content Technologies SMTPRS 4.2.5) with ESMTP id <T63788b7491c0a800a6414@campbeltown.wolfson.co.uk> for <linux-mips@linux-mips.org>;
- Wed, 16 Jul 2003 17:22:47 +0100
-Subject: [PATCH][2.6.0-test1] Pb1500 PCI - Makefile rule typo
-From: Liam Girdwood <liam.girdwood@wolfsonmicro.com>
-To: linux-mips <linux-mips@linux-mips.org>
-Content-Type: text/plain
-Message-Id: <1058372493.10765.1600.camel@caernarfon>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jul 2003 19:49:45 +0100 (BST)
+Received: from p0064.as-l042.contactel.cz ([IPv6:::ffff:194.108.237.64]:64004
+	"EHLO kopretinka") by linux-mips.org with ESMTP id <S8225072AbTGPStn>;
+	Wed, 16 Jul 2003 19:49:43 +0100
+Received: from ladis by kopretinka with local (Exim 3.35 #1 (Debian))
+	id 19crHU-0001jU-00; Wed, 16 Jul 2003 20:45:36 +0200
+Date: Wed, 16 Jul 2003 20:45:15 +0200
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Florian Lohoff <flo@rfc822.org>, linux-mips@linux-mips.org
+Subject: Re: sudo oops on mips64 linux_2_4
+Message-ID: <20030716184515.GA971@kopretinka>
+References: <20030716142136.GA13810@paradigm.rfc822.org> <Pine.GSO.3.96.1030716165657.25959C-100000@delta.ds2.pg.gda.pl>
 Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.4.3 
-Date: 16 Jul 2003 17:21:33 +0100
-Content-Transfer-Encoding: 7bit
-Return-Path: <liam.girdwood@wolfsonmicro.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.GSO.3.96.1030716165657.25959C-100000@delta.ds2.pg.gda.pl>
+User-Agent: Mutt/1.3.28i
+From: Ladislav Michl <ladis@linux-mips.org>
+Return-Path: <ladis@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2808
+X-archive-position: 2809
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: liam.girdwood@wolfsonmicro.com
+X-original-sender: ladis@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Wed, Jul 16, 2003 at 05:21:20PM +0200, Maciej W. Rozycki wrote:
+> On Wed, 16 Jul 2003, Florian Lohoff wrote:
+> 
+> > >  Please pass it through ksymoops for more details.  Version 2.4.9 should
+> > > work just fine for mips64.
+> > 
+> > This looks still broken - Giving the vmlinux file to ksymoops makes it
+> > even worse - tons or errors.
+> > 
+> > ksymoops 2.4.8 on mips 2.4.19-r5k-ip22.  Options used
+> >      -v /dev/null (specified)
+> >      -k /dev/null (specified)
+> >      -l /dev/null (specified)
+> >      -o /dev/null (specified)
+> >      -m /home/flo/System.map (specified)
+> 
+>  Hmm, I would use "-V -K -L -O -m /home/flo/System.map" instead. ;-)  And
+> also "-t elf64-tradbigmips -a mips:5000" as you really want 64-bit
+> addresses and opcodes beyond R3k (and your ksymoops isn't configured to
+> use a 64-bit target by default).  Using vmlinux might give additional
+> information beyond what System.map can provide and it should work just
+> fine once right options are passed to ksymoops -- I used to get correct
+> output with no warnings at all. 
+> 
+>  At least we know the error is in drivers/video/fbmem.c:fbmem_read_proc() 
 
-Please find attached a small patch that fixes a typo in the PCI makefile
-for mips PCI.
+and at least we know there is something wrong. why is fbmem compiled in
+at all?
 
-Index: arch/mips/pci/Makefile
-===================================================================
-RCS file: /home/cvs/linux/arch/mips/pci/Makefile,v
-retrieving revision 1.2
-diff -r1.2 Makefile
-22c22
-< obj-$(CONFIG_MIPS_PB1500)	+= fixups-au1000.o ops-au1000.o
----
-> obj-$(CONFIG_MIPS_PB1500)	+= fixup-au1000.o ops-au1000.o
+> because of buf being null.  But please retry with the above options to get
+> some addresses decoded.
 
-
-Liam
-
--- 
-Liam Girdwood <liam.girdwood@wolfsonmicro.com>
-
-
-
-Wolfson Microelectronics plc
-http://www.wolfsonmicro.com
-t: +44 131 272-7000
-f: +44 131 272-7001
-Registered in Scotland 89839
-
-This message may contain confidential or proprietary information. If you receive this message in error, please
-immediately delete it, destroy all copies of it and notify the sender. Any views expressed in this message are those of the individual sender,
-except where the message states otherwise. We take reasonable precautions to ensure our Emails are virus free.
-However, we cannot accept responsibility for any virus transmitted by us
-and recommend that you subject any incoming Email to your own virus
-checking procedures.
+	ladis

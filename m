@@ -1,46 +1,54 @@
-Received:  by oss.sgi.com id <S42410AbQFEQGw>;
-	Mon, 5 Jun 2000 09:06:52 -0700
-Received: from noose.gt.owl.de ([62.52.19.4]:11787 "HELO noose.gt.owl.de")
-	by oss.sgi.com with SMTP id <S42292AbQFEQGd>;
-	Mon, 5 Jun 2000 09:06:33 -0700
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id C011C81D; Mon,  5 Jun 2000 19:06:26 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id B08098FA7; Mon,  5 Jun 2000 19:05:59 +0200 (CEST)
-Date:   Mon, 5 Jun 2000 19:05:59 +0200
-From:   Florian Lohoff <flo@rfc822.org>
-To:     Ian Chilton <mailinglist@ichilton.co.uk>
-Cc:     Linux-MIPS Mailing List <linux-mips@oss.sgi.com>
-Subject: Re: Compile speed on SGI/Linux (like Indy)
-Message-ID: <20000605190559.B6172@paradigm.rfc822.org>
-References: <20000605163233.E3774@paradigm.rfc822.org> <NAENLMKGGBDKLPONCDDOCEJLCLAA.mailinglist@ichilton.co.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-User-Agent: Mutt/1.0.1i
-In-Reply-To: <NAENLMKGGBDKLPONCDDOCEJLCLAA.mailinglist@ichilton.co.uk>; from mailinglist@ichilton.co.uk on Mon, Jun 05, 2000 at 05:32:55PM +0100
-Organization: rfc822 - pure communication
+Received:  by oss.sgi.com id <S42411AbQFEQpW>;
+	Mon, 5 Jun 2000 09:45:22 -0700
+Received: from mta01-svc.ntlworld.com ([62.253.162.41]:63892 "EHLO
+        mta01-svc.server.ntlworld.com") by oss.sgi.com with ESMTP
+	id <S42292AbQFEQpD>; Mon, 5 Jun 2000 09:45:03 -0700
+Received: from icserver.ichilton.co.uk ([62.252.238.55])
+          by mta01-svc.server.ntlworld.com
+          (InterMail vM.4.01.02.27 201-229-119-110) with ESMTP
+          id <20000605174457.RYMB381.mta01-svc.server.ntlworld.com@icserver.ichilton.co.uk>;
+          Mon, 5 Jun 2000 18:44:57 +0100
+Received: from ian (ian.ichilton.local [192.168.0.8])
+	by icserver.ichilton.co.uk (8.10.1/8.10.1) with SMTP id e55HfQc06324;
+	Mon, 5 Jun 2000 18:41:26 +0100
+From:   "Ian Chilton" <mailinglist@ichilton.co.uk>
+To:     <flo@rfc822.org>
+Cc:     "Linux-MIPS Mailing List" <linux-mips@oss.sgi.com>
+Subject: RE: Compile speed on SGI/Linux (like Indy)
+Date:   Mon, 5 Jun 2000 18:41:28 +0100
+Message-ID: <NAENLMKGGBDKLPONCDDOCEJMCLAA.mailinglist@ichilton.co.uk>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4132.2800
+In-Reply-To: <20000605190559.B6172@paradigm.rfc822.org>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Mon, Jun 05, 2000 at 05:32:55PM +0100, Ian Chilton wrote:
-> Hello,
-> 
-> > There will be debian-mips and debian-mipsel "Real Soon"
-> 
-> Please could you explain a little more..?
-> 
-> What is the difference between these 2?
+Hello,
 
-The Endianess - debian-mips is Big Endian - Like
-the SGI Indy and Indigo2
+> The Endianess - debian-mips is Big Endian - Like
+> the SGI Indy and Indigo2
 
-mipsel is Little Endian like the Digital Decstation and
-a handful others.
 
-Flo
--- 
-Florian Lohoff		flo@rfc822.org		      	+49-waiting-4-telekom
-"Technology is a constant battle between manufacturers producing bigger and
-more idiot-proof systems and nature producing bigger and better idiots."
+Is there any documentation on how to install this then?
+
+
+Thanks!
+
+Ian
+
+
+                     \|||/ 
+                     (o o)
+ /----------------ooO-(_)-Ooo----------------\
+ |  Ian Chilton                              |
+ |  E-Mail : ian@ichilton.co.uk              |
+ \-------------------------------------------/

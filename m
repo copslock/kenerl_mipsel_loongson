@@ -1,54 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Oct 2004 11:32:44 +0100 (BST)
-Received: from verein.lst.de ([IPv6:::ffff:213.95.11.210]:21194 "EHLO
-	mail.lst.de") by linux-mips.org with ESMTP id <S8224924AbUJKKcj>;
-	Mon, 11 Oct 2004 11:32:39 +0100
-Received: from verein.lst.de (localhost [127.0.0.1])
-	by mail.lst.de (8.12.3/8.12.3/Debian-6.6) with ESMTP id i9BAWWla020030
-	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
-	Mon, 11 Oct 2004 12:32:32 +0200
-Received: (from hch@localhost)
-	by verein.lst.de (8.12.3/8.12.3/Debian-6.6) id i9BAWWEd020028;
-	Mon, 11 Oct 2004 12:32:32 +0200
-Date: Mon, 11 Oct 2004 12:32:32 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Pete Popov <ppopov@embeddedalley.com>
-Cc: "Maciej W. Rozycki" <macro@linux-mips.org>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Oct 2004 14:52:25 +0100 (BST)
+Received: from mba.ocn.ne.jp ([IPv6:::ffff:210.190.142.172]:38397 "HELO
+	smtp.mba.ocn.ne.jp") by linux-mips.org with SMTP
+	id <S8224907AbUJKNwU>; Mon, 11 Oct 2004 14:52:20 +0100
+Received: from localhost (p5148-ipad02funabasi.chiba.ocn.ne.jp [61.207.152.148])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 5B4DC6F61; Mon, 11 Oct 2004 22:52:16 +0900 (JST)
+Date: Mon, 11 Oct 2004 22:53:41 +0900 (JST)
+Message-Id: <20041011.225341.59463723.anemo@mba.ocn.ne.jp>
+To: ppopov@embeddedalley.com
+Cc: macro@linux-mips.org, ralf@linux-mips.org,
+	linux-mips@linux-mips.org
 Subject: Re: PATCH
-Message-ID: <20041011103231.GA19949@lst.de>
-References: <1097452888.4627.25.camel@localhost.localdomain> <Pine.LNX.4.58L.0410110126120.4217@blysk.ds.pg.gda.pl> <1097481328.27818.10.camel@localhost.localdomain>
+From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <4169D818.5020802@embeddedalley.com>
+	<1097481328.27818.10.camel@localhost.localdomain>
+References: <1097452888.4627.25.camel@localhost.localdomain>
+	<Pine.LNX.4.58L.0410110126120.4217@blysk.ds.pg.gda.pl>
+	<4169D818.5020802@embeddedalley.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 20.7 / Mule 4.0 (HANANOEN)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1097481328.27818.10.camel@localhost.localdomain>
-User-Agent: Mutt/1.3.28i
-X-Spam-Score: -4.901 () BAYES_00
-X-Scanned-By: MIMEDefang 2.39
-Return-Path: <hch@lst.de>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6012
+X-archive-position: 6013
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hch@lst.de
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-> ===================================================================
-> RCS file: arch/mips/mm/remap.c
-> diff -N arch/mips/mm/remap.c
-> --- /dev/null	1 Jan 1970 00:00:00 -0000
-> +++ arch/mips/mm/remap.c	19 Sep 2004 22:51:21 -0000
-> @@ -0,0 +1,115 @@
-> +/*
-> + *  arch/mips/mm/remap.c
-> + *
-> + *  A copy of mm/memory.c, with mods for 64 bit physical I/O addresses on
-> + *  32 bit native word platforms.
+>>>>> On Sun, 10 Oct 2004 17:47:20 -0700, Pete Popov <ppopov@embeddedalley.com> said:
 
-This is horrible.  Please submit any modifications you'll need over
-remap_page_pfn (as in -mm) that you still need and ensure they're
-portable.
+ppopov> Clearly a buglet, carried over from 2.4. That section of the
+ppopov> code wouldn't even be compiled, since CONFIG_MIPS64 is not
+ppopov> defined. I'll remove that and send a new patch. Anything else
+ppopov> you see that's suspicious :)?
+
+Hi.  I wonder why following change is needed.
+
+> --- include/asm-mips/page.h	20 Aug 2004 12:02:18 -0000	1.44
+> +++ include/asm-mips/page.h	19 Sep 2004 22:51:29 -0000
+> @@ -32,7 +32,7 @@
+>  #ifdef CONFIG_PAGE_SIZE_64KB
+>  #define PAGE_SHIFT	16
+>  #endif
+> -#define PAGE_SIZE	(1UL << PAGE_SHIFT)
+> +#define PAGE_SIZE	(1L << PAGE_SHIFT)
+>  #define PAGE_MASK	(~(PAGE_SIZE-1))
+> 
+>  #ifdef __KERNEL__
+
+---
+Atsushi Nemoto

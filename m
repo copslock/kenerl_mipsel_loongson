@@ -1,79 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 Aug 2003 17:48:40 +0100 (BST)
-Received: from honk1.physik.uni-konstanz.de ([IPv6:::ffff:134.34.140.224]:36283
-	"EHLO honk1.physik.uni-konstanz.de") by linux-mips.org with ESMTP
-	id <S8225361AbTHaQsH>; Sun, 31 Aug 2003 17:48:07 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP
-	id 5AD8F2BC3C; Sun, 31 Aug 2003 18:48:05 +0200 (CEST)
-Received: from honk1.physik.uni-konstanz.de ([127.0.0.1])
- by localhost (honk [127.0.0.1:10024]) (amavisd-new) with ESMTP id 25499-09;
- Sun, 31 Aug 2003 18:48:03 +0200 (CEST)
-Received: from bogon.sigxcpu.org (kons-d9bb5586.pool.mediaWays.net [217.187.85.134])
-	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP
-	id 561962BC39; Sun, 31 Aug 2003 18:48:03 +0200 (CEST)
-Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
-	id 1E0E34099; Sun, 31 Aug 2003 18:48:12 +0200 (CEST)
-Date: Sun, 31 Aug 2003 18:48:12 +0200
-From: Guido Guenther <agx@sigxcpu.org>
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: Ulrich Drepper <drepper@redhat.com>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] Fix sigevent_t stuff
-Message-ID: <20030831164812.GB766@bogon.ms20.nix>
-Mail-Followup-To: Guido Guenther <agx@sigxcpu.org>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	Ulrich Drepper <drepper@redhat.com>, linux-mips@linux-mips.org
-References: <20030831145854.GB23189@linux-mips.org> <20030831161217.GA10286@linux-mips.org>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="yNb1oOkm5a9FJOVX"
-Content-Disposition: inline
-In-Reply-To: <20030831161217.GA10286@linux-mips.org>
-User-Agent: Mutt/1.5.4i
-X-Virus-Scanned: by amavisd-new-20021227-p2 (Debian)
-Return-Path: <agx@sigxcpu.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Sep 2003 22:10:13 +0100 (BST)
+Received: from altrade.nijmegen.internl.net ([IPv6:::ffff:217.149.192.18]:62949
+	"EHLO altrade.nijmegen.internl.net") by linux-mips.org with ESMTP
+	id <S8225193AbTIBVJl>; Tue, 2 Sep 2003 22:09:41 +0100
+Received: from whale.dutch.mountain by altrade.nijmegen.internl.net
+	via 1Cust209.tnt41.rtm1.nld.da.uu.net [213.117.0.209] with ESMTP for <linux-mips@linux-mips.org>
+	id h82L9dFC027626 (8.12.9/2.04); Tue, 2 Sep 2003 23:09:39 +0200 (MET DST)
+Received: from (locally authorised broken client using invalid hostname!) localhost (really [127.0.0.1]) by whale.dutch.mountain
+	via in.smtpd with esmtp (ident ravdberg using rfc1413)
+	id <m19uIGa-000HHJC@whale.dutch.mountain> (Debian Smail3.2.0.114)
+	Tue, 2 Sep 2003 23:00:44 +0200 (CEST) 
+Date: Tue, 2 Sep 2003 23:00:44 +0200 (CEST)
+From: Richard van den Berg <ravdberg@inter.NL.net>
+X-Sender: ravdberg@whale.dutch.mountain
+To: linux-mips@linux-mips.org
+Subject: hwclock error on DECstation 5000/133 with 2.4.22
+Message-ID: <Pine.LNX.4.21.0309022258540.17245-100000@whale.dutch.mountain>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <ravdberg@inter.NL.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3116
+X-archive-position: 3119
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: agx@sigxcpu.org
+X-original-sender: ravdberg@inter.NL.net
 Precedence: bulk
 X-list: linux-mips
 
+Hello,
 
---yNb1oOkm5a9FJOVX
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Kernel 2.4.17 (Debian kernel-source package) didn't give following error: 
+fortuna:~# hwclock
+hwclock: ioctl() to /dev/rtc to turn on update interrupts failed unexpectedly, errno=25: Inappropriate ioctl for device.
+fortuna:~# hwclock -v
+hwclock 2.4c/util-linux-2.11n
+fortuna:~# uname -a
+Linux fortuna 2.4.22 #1 Thu Aug 28 06:51:00 CEST 2003 mips unknown
 
-Hi Ralf,
-On Sun, Aug 31, 2003 at 06:12:17PM +0200, Ralf Baechle wrote:
-> On Sun, Aug 31, 2003 at 04:58:54PM +0200, Ralf Baechle wrote:
->=20
-> > below patch fixes a mismatch between glibc and the kernel header's
-> > definition on MIPS.  Please apply.
->=20
-> Please ignore this patch.  Digging through the history of the missmatch
-> I came to the conclusion that this fix isn't the right one; I'll send
-> an updated patch.
-Could you please post these patches to libc-alpha in the future?  Only
-very few people will see patches on libc-hacker since subscription is
-restricted.
+2.4.22 checked out august 27th, system time gets set, don't know if above
+message has other effects. With this kernel recognizes the LK401 keyboard,
+2.4.17 gave id 186.
+
 Regards,
- -- Guido
-
---yNb1oOkm5a9FJOVX
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.3 (GNU/Linux)
-
-iD8DBQE/UibLn88szT8+ZCYRAqcCAJ9DCwVXYRJSRWENR4Ipdq+z+SNlcgCfZNOY
-ibkbAI6yhM32rn2U/kxiWgg=
-=+A8f
------END PGP SIGNATURE-----
-
---yNb1oOkm5a9FJOVX--
+Richard

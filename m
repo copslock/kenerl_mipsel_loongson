@@ -1,55 +1,45 @@
-Received:  by oss.sgi.com id <S553781AbQLSRJG>;
-	Tue, 19 Dec 2000 09:09:06 -0800
-Received: from mail.ivm.net ([62.204.1.4]:41513 "EHLO mail.ivm.net")
-	by oss.sgi.com with ESMTP id <S553712AbQLSRIz>;
-	Tue, 19 Dec 2000 09:08:55 -0800
-Received: from franz.no.dom (port53.duesseldorf.ivm.de [195.247.65.53])
-	by mail.ivm.net (8.8.8/8.8.8) with ESMTP id SAA21041;
-	Tue, 19 Dec 2000 18:02:55 +0100
-X-To:   linux-mips@oss.sgi.com
-Message-ID: <XFMail.001219180301.Harald.Koerfgen@home.ivm.de>
-X-Mailer: XFMail 1.4.0 on Linux
-X-Priority: 3 (Normal)
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 8bit
-MIME-Version: 1.0
-In-Reply-To: <Pine.GSO.3.96.1001219140739.10024F-100000@delta.ds2.pg.gda.pl>
-Date:   Tue, 19 Dec 2000 18:03:01 +0100 (CET)
-Reply-To: Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
-Organization: none
-From:   Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
-To:     "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Subject: Re: MIPS_ATOMIC_SET in sys_sysmips()
-Cc:     linux-mips@oss.sgi.com, Ralf Baechle <ralf@uni-koblenz.de>,
-        Jun Sun <jsun@mvista.com>
+Received:  by oss.sgi.com id <S553785AbQLSRJg>;
+	Tue, 19 Dec 2000 09:09:36 -0800
+Received: from hermes.research.kpn.com ([139.63.192.8]:6404 "EHLO
+        hermes.research.kpn.com") by oss.sgi.com with ESMTP
+	id <S553770AbQLSRJa>; Tue, 19 Dec 2000 09:09:30 -0800
+Received: from sparta.research.kpn.com (sparta.research.kpn.com [139.63.192.6])
+ by research.kpn.com (PMDF V5.2-31 #42699)
+ with ESMTP id <01JXWBSOTPKI0015S2@research.kpn.com> for
+ linux-mips@oss.sgi.com; Tue, 19 Dec 2000 18:09:26 +0100
+Received: (from karel@localhost)	by sparta.research.kpn.com (8.8.8+Sun/8.8.8)
+ id SAA18908; Tue, 19 Dec 2000 18:09:25 +0100 (MET)
+X-URL:  http://www-lsdm.research.kpn.com/~karel
+Date:   Tue, 19 Dec 2000 18:09:25 +0100 (MET)
+From:   Karel van Houten <K.H.C.vanHouten@research.kpn.com>
+Subject: Re: Kernel Oops when booting on DECstation
+In-reply-to: <XFMail.001219180300.Harald.Koerfgen@home.ivm.de>
+To:     Harald.Koerfgen@home.ivm.de
+Cc:     tbm@cyrius.com (Martin Michlmayr), linux-mips@oss.sgi.com,
+        flo@rfc822.org (Florian Lohoff)
+Message-id: <200012191709.SAA18908@sparta.research.kpn.com>
+MIME-version: 1.0
+X-Mailer: ELM [version 2.5 PL2]
+Content-type: text/plain; charset=us-ascii
+Content-transfer-encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-
-On 19-Dec-00 Maciej W. Rozycki wrote:
-> On Mon, 18 Dec 2000, Jun Sun wrote:
->> What do we offer to machines without ll/sc?
+Harald wrote:
 > 
->  I asked Ralf for a clarification of the sysmips(MIPS_ATOMIC_SET, ...) 
-> call before I write better code.  No response so far.  I'm now really
-> cosidering implementing the Ultrix atomic_op() syscall -- at least it has
-> a well-known defined behaviour. 
+> Is anybody else successfully using the NetBSD bootloader with a Linux kernel?
+> 
 
-Another possibility would be to rely on the userland ll/sc emulation in the
-kernel. The one in the linux-vr tree seems to be working well and can easily be
-backported to Linux/MIPS.
-
-Advantage: userland binary compatibility.
-Disadvantage: possibility for a lot of context switches for userland atomic
-operations.
- 
-Having a sysmips(MIPS_ATOMIC_SET, ...) or atomic_op() solution would probably a
-lot faster.
-
-Maybe we should implement both :)
+I used to use the NetBSD bootloader just fine, but switched to delo
+recently, which is easier to use because UFS read-write support
+is not stable in the current kernels.
 
 -- 
-Regards,
-Harald
+Karel van Houten
+
+----------------------------------------------------------
+The box said "Requires Windows 95 or better."
+I can't understand why it won't work on my Linux computer. 
+----------------------------------------------------------

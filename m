@@ -1,52 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Nov 2003 00:59:45 +0000 (GMT)
-Received: from p508B62C3.dip.t-dialin.net ([IPv6:::ffff:80.139.98.195]:12491
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225402AbTKDA7d>; Tue, 4 Nov 2003 00:59:33 +0000
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id hA40xWsY031897;
-	Tue, 4 Nov 2003 01:59:32 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id hA40xVIW031896;
-	Tue, 4 Nov 2003 01:59:31 +0100
-Date: Tue, 4 Nov 2003 01:59:31 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Dennis Castleman <Dennis.Castleman@zoran.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: MIPS 4KCE Core
-Message-ID: <20031104005931.GB27415@linux-mips.org>
-References: <56BEF0DBC8B9D611BFDB00508B5E263410313F@tlexmail.teralogic-inc.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Nov 2003 02:13:54 +0000 (GMT)
+Received: from smtp016.mail.yahoo.com ([IPv6:::ffff:216.136.174.113]:32875
+	"HELO smtp016.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S8225402AbTKDCNn>; Tue, 4 Nov 2003 02:13:43 +0000
+Received: from unknown (HELO wzf) (yikok9@61.149.150.135 with login)
+  by smtp.mail.vip.sc5.yahoo.com with SMTP; 4 Nov 2003 02:12:55 -0000
+Date: Tue, 4 Nov 2003 10:13:09 +0800
+From: "Wang Zaifang" <yikok9@yahoo.com.cn>
+Reply-To: yikok9@yahoo.com.cn
+To: "linux-mips" <linux-mips@linux-mips.org>
+Subject: boot pb1500 from flash through 16-bit data bus?
+X-mailer: Foxmail 5.0 beta1 [cn]
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <56BEF0DBC8B9D611BFDB00508B5E263410313F@tlexmail.teralogic-inc.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain;
+	charset="gb2312"
+Content-Transfer-Encoding: base64
+Message-Id: <20031104021343Z8225402-1272+8745@linux-mips.org>
+Return-Path: <yikok9@yahoo.com.cn>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3570
+X-archive-position: 3572
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: yikok9@yahoo.com.cn
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Nov 03, 2003 at 01:56:54PM -0800, Dennis Castleman wrote:
-
-> Any body know if MIPS 4KEm is supported.
-> 
-> The 4KEm provides a simpler scheme (less expansive) for virtual to physical
-> address translation. It is based on FMT (Fixed map translation) that
-> provides a direct address translation that is not configurable.
-> 
-> Question is whether a 16 dual entries FMT as described above would be
-> sufficient in order to run linux.   
-
-Linux 2.6 supports something like if CONFIG_MMU is disabled which looks
-like it could suit your particular type of application.  So far nobody
-has made any attempt to get this to run on MIPS but doesn't look too hard.
-This of course will have serious impact on userspace applications -
-the ABI necessarily has to change if the MMU is gone.
-
-  Ralf
+aGksIA0KICBEb2VzIGFueW9uZSBoYXZlIGV4cGVyaWVuY2Ugb24gd3JpdGluZyAxNi1iaXQgYm9v
+dGluZyBjb2RlIGZvciBQQjE1MDA/DQogIEknbSB3b3JraW5nIG9uIGEgY3VzdG9taXplZCBhdTE1
+MDAgYm9hcmQgdGhhdCBoYXMgcHV6emxlZCB1cyBmb3Igc2VydmVyYWwgZGF5cywgOi0oIFRoZSBi
+b2FyZCBpcyBkZXNpZ25lZCB0byBib290IGZyb20gZmxhc2ggdXNpbmcgMTYtYml0IGRhdGEgYnVz
+LCBob3dldmVyIGl0IHNlZW1lZCB0aGF0IHRoZSBjb2RlIHdlIHN0b3JlZCBpbiB0aGUgZmxhc2gg
+ZG9lcyBub3QgcnVuIGF0IGFsbC4gVGhlcmUgbWlnaHQgYmUgc29tZSBlcnJvcnMgaW4gb3VyIGRl
+c2lnbiwgc28gd2UgdHVybiB0byB0aGUgUEIxNTAwIGV2YWwtYm9hcmQuDQogIEkgd3JvdGUgYSBw
+aWVjZSBvZiB0ZXN0aW5nIGNvZGUgdGhhdCBzZW5kcyAwMTAxMDEuLi4gc2VyaWVzIHRvIEdQSU9b
+MF0gY29udGludW91c2VseSBhZnRlciByZXNldC4gVGhlIGNvZGUgcnVucyB3ZWxsIHdoZW4gdGhl
+IFNSQU0gZGF0YSBidXMgaXMgc2V0IHRvIDMyLWJpdCB3aWR0aCwgaS5lLiBhIHNxdWFyZSB3YXZl
+Zm9ybSBhcHBlYXJzIG9uIEdQSU9bMF0uIFRoZW4gSSBidXJuIHRoZSBjb2RlIGludG8gZmxhc2gg
+dGhyb3VnaCBZQU1PTiwgYXNzdXJpbmcgdGhlIGNvZGUgb25seSByZXNpZGUgaW4gb25lIGZsYXNo
+IGNoaXAgb2YgdGhlIHR3by4gQ29udGVudCBvZiB0aGUgZmxhc2ggbG9va3MgbGlrZSB0aGlzIGlu
+IFlBTU9OOg0KDQpZQU1PTj4gZHVtcCBiZGMwMDAwMA0KDQpCREMwMDAwMDogOTAgQjEgMDAgMDAg
+MDggM0MgMDAgMDAgODAgODAgMDAgMDAgMDkgMzQgMDAgMDAgIC6hwC4uLjwuLi4uLi4uNC4uDQpC
+REMwMDAxMDogMkMgMDAgMDAgMDAgMDkgQUQgMDAgMDAgRkYgRkYgMDAgMDAgMDkgMzQgMDAgMDAg
+ICwuLi4uLS4uLi4uLi40Li4NCkJEQzAwMDIwOiAwMCAwMSAwMCAwMCAwOSBBRCAwMCAwMCAwMCAw
+MCAwMCAwMCAwOSAyNCAwMCAwMCAgLi4uLi4tLi4uLi4uLiQuLg0KLi4uDQoNCiAgRWFjaCBpbnN0
+cnVjdGlvbiB3b3JkIGlzIHNwbGl0IGludG8gdHdvIGhhbGYtd29yZHMsIGFuZCBwdXQgaW50byBs
+b3dlciAxNi1iaXRzIG9mIHR3byB3b3Jkcy4gVGhlbiBJIHJlc2V0IHRoZSBQQjE1MDAgYm9hcmQs
+IHN3aXRjaCBTMTUgdG8gc2V0IHRoZSBTUkFNIGRhdGEgYnVzIHRvIDE2LWJpdCBtb2RlLCBzd2l0
+Y2ggUzEzIHRvIGJvb3QgZnJvbSB0aGUgc3BlY2lmaWVkIGZsYXNoIGNoaXAuIEJ1dCB0aGUgY29k
+ZSB3aWxsIG5vdCBydW4sIGV2ZW4gYWZ0ZXIgSSBzd2FwIHRoZSBieXRlLW9yZGVyIGFuZCB0aGUg
+aGFsZndvcmQtb3JkZXIuDQoNCiAgQW55IGFkdmljZSB3aWxsIGJlIGFwcHJlY2lhdGVkLCA6LSkN
+Cg0KoaGhoaGhoaGhoaGhoaGhoVdhbmcgWmFpZmFuZw0KoaGhoaGhoaGhoaGhoaGhoXlpa29rOUB5
+YWhvby5jb20uY24NCqGhoaGhoaGhoaGhoaGhoaGhoaGhMjAwMy0xMS0wNA0K

@@ -1,67 +1,95 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f2S7Cnv28089
-	for linux-mips-outgoing; Tue, 27 Mar 2001 23:12:49 -0800
-Received: from mx.mips.com (mx.mips.com [206.31.31.226])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f2S7CmM28086
-	for <linux-mips@oss.sgi.com>; Tue, 27 Mar 2001 23:12:48 -0800
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id XAA06430;
-	Tue, 27 Mar 2001 23:07:34 -0800 (PST)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id XAA15408;
-	Tue, 27 Mar 2001 23:07:31 -0800 (PST)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id JAA27891;
-	Wed, 28 Mar 2001 09:06:49 +0200 (MEST)
-Message-ID: <3AC18D89.A2A4386A@mips.com>
-Date: Wed, 28 Mar 2001 09:06:49 +0200
-From: Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-CC: Keith M Wesolowski <wesolows@foobazco.org>, David Jez <dave.jez@seznam.cz>,
+	by oss.sgi.com (8.11.3/8.11.3) id f2SEEPw04473
+	for linux-mips-outgoing; Wed, 28 Mar 2001 06:14:25 -0800
+Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f2SE9PM04360
+	for <linux-mips@oss.sgi.com>; Wed, 28 Mar 2001 06:09:38 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA25740;
+	Wed, 28 Mar 2001 15:50:34 +0200 (MET DST)
+Date: Wed, 28 Mar 2001 15:50:34 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Carsten Langgaard <carstenl@mips.com>
+cc: Keith M Wesolowski <wesolows@foobazco.org>, David Jez <dave.jez@seznam.cz>,
    Karel van Houten <K.H.C.vanHouten@kpn.com>, linux-mips@oss.sgi.com
 Subject: Re: rpm crashing on RH 7.0 indy
-References: <Pine.GSO.3.96.1010327201744.17103A-100000@delta.ds2.pg.gda.pl>
-Content-Type: text/plain; charset=iso-8859-15
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <3AC18D89.A2A4386A@mips.com>
+Message-ID: <Pine.GSO.3.96.1010328154420.24847A-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-"Maciej W. Rozycki" wrote:
+On Wed, 28 Mar 2001, Carsten Langgaard wrote:
 
-> On Sat, 17 Mar 2001, Keith M Wesolowski wrote:
->
-> > That's not the problem.  The problem is that static binaries which use
-> > libdl used to be (and perhaps still are) broken.  The reason it's
-> > using libdl is that the nss libraries are never truly static, unless
-> > you compile glibc with a special non-recommended option.  I have
-> > indications that this may be fixed in glibc 2.2.2 using my current
-> > toolchain, but my information is not complete.
->
->  Glibc is fine; it's the kernel that needs a fix (I've sent it here
-> already once or twice).  We might possibly consider putting a workaround
-> into glibc as well.
+> Have the kernel fix made it into the CVS.
+> If not, could you please resent it.
 
-Have the kernel fix made it into the CVS.
-If not, could you please resent it.
+ I do not consider it clean enough for inclusion into the official kernel
+at this stage.  It works, though.
 
->
->
->  The problem is mmap() fails if a non-zero preferred address is given but
-> the space is already occupied and no space *above* is available (space
-> below is not taken into account).  A glibc workaround might be to call
-> mmap() again with no preferred address specified this time.
->
-> --
-> +  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-> +--------------------------------------------------------------+
-> +        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+ When appropriately cleaned up, I'll submit it to Linus as it's not
+MIPS-specific and affects all systems -- mmap() fails equally badly on an
+i386, for example.  No time to work on the patch at the moment, sorry.
 
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+
+patch-2.4.0-test4-mmap-3
+diff -u --recursive --new-file linux-2.4.0-test4.macro/mm/mmap.c linux-2.4.0-test4/mm/mmap.c
+--- linux-2.4.0-test4.macro/mm/mmap.c	Sun Jul 16 22:27:29 2000
++++ linux-2.4.0-test4/mm/mmap.c	Tue Jul 25 05:06:21 2000
+@@ -175,7 +175,7 @@
+ 	if ((len = PAGE_ALIGN(len)) == 0)
+ 		return addr;
+ 
+-	if (len > TASK_SIZE || addr > TASK_SIZE-len)
++	if (len > TASK_SIZE || ((flags & MAP_FIXED) && (addr > TASK_SIZE - len)))
+ 		return -EINVAL;
+ 
+ 	/* offset overflow? */
+@@ -356,20 +356,31 @@
+ unsigned long get_unmapped_area(unsigned long addr, unsigned long len)
+ {
+ 	struct vm_area_struct * vmm;
++	int pass = 0;
+ 
+ 	if (len > TASK_SIZE)
+ 		return 0;
+-	if (!addr)
+-		addr = TASK_UNMAPPED_BASE;
+-	addr = PAGE_ALIGN(addr);
+-
+-	for (vmm = find_vma(current->mm, addr); ; vmm = vmm->vm_next) {
+-		/* At this point:  (!vmm || addr < vmm->vm_end). */
+-		if (TASK_SIZE - len < addr)
+-			return 0;
+-		if (!vmm || addr + len <= vmm->vm_start)
+-			return addr;
+-		addr = vmm->vm_end;
++
++	while (1) {
++		if (!addr)
++			addr = TASK_UNMAPPED_BASE;
++		addr = PAGE_ALIGN(addr);
++
++		for (vmm = find_vma(current->mm, addr); ; vmm = vmm->vm_next) {
++			/* At this point:  (!vmm || addr < vmm->vm_end). */
++			if (TASK_SIZE - len < addr) {
++				if (pass > 0)
++					return 0;
++				else {
++					pass = 1;
++					addr = 0;
++					break;
++				}
++			}
++			if (!vmm || addr + len <= vmm->vm_start)
++				return addr;
++			addr = vmm->vm_end;
++		}
+ 	}
+ }
+ #endif

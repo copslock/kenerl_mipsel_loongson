@@ -1,47 +1,35 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0FL8IY32244
-	for linux-mips-outgoing; Tue, 15 Jan 2002 13:08:18 -0800
-Received: from scsoftware.sc-software.com (mipsdev@[206.40.202.198])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0FL82P32235;
-	Tue, 15 Jan 2002 13:08:02 -0800
-Received: from localhost (mipsdev@localhost) by scsoftware.sc-software.com (8.8.3/8.8.3) with SMTP id MAA11508; Tue, 15 Jan 2002 12:00:13 -0800
-Date: Tue, 15 Jan 2002 12:00:12 -0800 (PST)
-From: John Heil <mipsdev@scsoftware.sc-software.com>
-To: Ralf Baechle <ralf@oss.sgi.com>
-cc: Jason Gunthorpe <jgg@debian.org>, Matthew Dharm <mdharm@momenco.com>,
+	by oss.sgi.com (8.11.2/8.11.3) id g0FLtGg03806
+	for linux-mips-outgoing; Tue, 15 Jan 2002 13:55:16 -0800
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id g0FLtEP03802
+	for <linux-mips@oss.sgi.com>; Tue, 15 Jan 2002 13:55:14 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id g0FKtBO01964;
+	Tue, 15 Jan 2002 12:55:11 -0800
+Date: Tue, 15 Jan 2002 12:55:11 -0800
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: John Heil <mipsdev@scsoftware.sc-software.com>
+Cc: Jason Gunthorpe <jgg@debian.org>, Matthew Dharm <mdharm@momenco.com>,
    linux-mips@oss.sgi.com
 Subject: Re: MIPS64 status?
-In-Reply-To: <20020114150751.B29242@dea.linux-mips.net>
-Message-ID: <Pine.LNX.3.95.1020115115824.6855A-100000@scsoftware.sc-software.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Message-ID: <20020115125511.A1832@dea.linux-mips.net>
+References: <20020114150751.B29242@dea.linux-mips.net> <Pine.LNX.3.95.1020115115824.6855A-100000@scsoftware.sc-software.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.LNX.3.95.1020115115824.6855A-100000@scsoftware.sc-software.com>; from mipsdev@scsoftware.sc-software.com on Tue, Jan 15, 2002 at 12:00:12PM -0800
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, 14 Jan 2002, Ralf Baechle wrote:
+On Tue, Jan 15, 2002 at 12:00:12PM -0800, John Heil wrote:
 
-> Date: Mon, 14 Jan 2002 15:07:51 -0800
-> From: Ralf Baechle <ralf@oss.sgi.com>
-> To: Jason Gunthorpe <jgg@debian.org>
-> Cc: Matthew Dharm <mdharm@momenco.com>, linux-mips@oss.sgi.com
-> Subject: Re: MIPS64 status?
-> 
-> On Mon, Jan 14, 2002 at 01:42:22PM -0700, Jason Gunthorpe wrote:
-> 
-> > I have such hardware myself. IMHO the best option is the mips64 kernel and
-> > I hope to try it someday. But in practice I'd guess that Ralf's highmem
-> > patch is more likely to be usuable first (?). 
-> 
-> Depends if you can live with the problems of the current mips64 kernel.
-> If you can then it's highmem-free memory managment is certainly the way
-> to go.  It's also not limited to peanuts numbers of gigabytes but can
-> support as much memory as your can tack on a MIPS.
-> 
->   Ralf
-> 
-Who, if anyone, has a MIPS64 reference design board available ?
-...With >4G memory capacity ?
+> Who, if anyone, has a MIPS64 reference design board available ?
+> ...With >4G memory capacity ?
 
+I think such boards are currently quite rare.  2gb using latest memory
+modules seems to be as much as you can get right now.
 
-Thanx
-Johnh
+  Ralf

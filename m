@@ -1,53 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Oct 2002 14:27:56 +0200 (CEST)
-Received: from pc1-cwma1-5-cust51.swa.cable.ntl.com ([80.5.120.51]:9719 "EHLO
-	irongate.swansea.linux.org.uk") by linux-mips.org with ESMTP
-	id <S1123253AbSJDM1z>; Fri, 4 Oct 2002 14:27:55 +0200
-Received: from irongate.swansea.linux.org.uk (localhost [127.0.0.1])
-	by irongate.swansea.linux.org.uk (8.12.5/8.12.5) with ESMTP id g94CaBbg031901;
-	Fri, 4 Oct 2002 13:36:11 +0100
-Received: (from alan@localhost)
-	by irongate.swansea.linux.org.uk (8.12.5/8.12.5/Submit) id g94Ca9JW031899;
-	Fri, 4 Oct 2002 13:36:09 +0100
-X-Authentication-Warning: irongate.swansea.linux.org.uk: alan set sender to alan@lxorguk.ukuu.org.uk using -f
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Oct 2002 14:34:14 +0200 (CEST)
+Received: from ftp.mips.com ([206.31.31.227]:46590 "EHLO mx2.mips.com")
+	by linux-mips.org with ESMTP id <S1123253AbSJDMeN>;
+	Fri, 4 Oct 2002 14:34:13 +0200
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id g94CXrNf016262;
+	Fri, 4 Oct 2002 05:33:53 -0700 (PDT)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id FAA29752;
+	Fri, 4 Oct 2002 05:34:23 -0700 (PDT)
+Received: (from hartvige@localhost)
+	by copfs01.mips.com (8.11.4/8.9.0) id g94CXrQ29071;
+	Fri, 4 Oct 2002 14:33:53 +0200 (MEST)
+From: Hartvig Ekner <hartvige@mips.com>
+Message-Id: <200210041233.g94CXrQ29071@copfs01.mips.com>
 Subject: Re: Promblem with PREF (prefetching) in memcpy
-From: Alan Cox <alan@lxorguk.ukuu.org.uk>
-To: Carsten Langgaard <carstenl@mips.com>
-Cc: Dominic Sweetman <dom@algor.co.uk>,
-	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-In-Reply-To: <3D9D855B.12128FA2@mips.com>
-References: <3D9D484B.4C149BD8@mips.com>
-	<200210041153.MAA12052@mudchute.algor.co.uk>  <3D9D855B.12128FA2@mips.com>
-Content-Type: text/plain
+To: dom@algor.co.uk (Dominic Sweetman)
+Date: Fri, 4 Oct 2002 14:33:53 +0200 (MEST)
+Cc: carstenl@mips.com (Carsten Langgaard),
+	ralf@linux-mips.org (Ralf Baechle), linux-mips@linux-mips.org
+In-Reply-To: <200210041153.MAA12052@mudchute.algor.co.uk> from "Dominic Sweetman" at Oct 04, 2002 12:53:22 PM
+X-Mailer: ELM [version 2.5 PL1]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Mailer: Ximian Evolution 1.0.8 (1.0.8-10) 
-Date: 04 Oct 2002 13:36:08 +0100
-Message-Id: <1033734968.31839.5.camel@irongate.swansea.linux.org.uk>
-Mime-Version: 1.0
-Return-Path: <alan@lxorguk.ukuu.org.uk>
+Return-Path: <hartvige@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 355
+X-archive-position: 356
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alan@lxorguk.ukuu.org.uk
+X-original-sender: hartvige@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 2002-10-04 at 13:11, Carsten Langgaard wrote:
-> Is a bus error exception an address related exception ?
-> I'm afraid some implementation think it's not.
+Hi Dom,
+
+this problem occurs in kernel space (kseg0), not user space. In user space
+there is no problem due to the TLB "protection" of PREFs going outside the
+process working set, but that doesn't help in kernel mode.
+
+/Hartvig
+
+Dominic Sweetman writes:
 > 
-
-So you need an option for broken systems, no new news 8)
-
-> What about an UART RX register, we might loose a character ?
-> You can also configure you system, so you get a external interrupt from you
-> system controller in case of a bus error, there is no way the CPU can
-> relate this interrupt to the prefetching.
-
-The use of memcpy for I/O space isnt permitted in Linux, thats why we
-have memcpy_*_io stuff. Thus prefetches should never touch 'special'
-spaces. (On x86 the older Athlons corrupt their cache if you do this so
-its not a mips specific matter)
+> 
+> Carsten Langgaard (carstenl@mips.com) writes:
+> 
+> > I think we have a problem with the PREF instructions spread out in the
+> > memcpy function.
+> 
+> Not really.  The MIPS32 manual (for example):
+> 
+>  "PREF does not cause addressing-related exceptions. If it does happen
+>   to raise an exception condition, the exception condition is
+>   ignored. If an addressing-related exception condition is raised and
+>   ignored, no data movement occurs."
+>   
+>   PREF never generates a memory operation for a location with an
+>   uncached memory access type."
+> 
+> For a Linux user program, at least, memory pages are "memory-like":
+> reads are guaranteed to be side-effect free, so any outlying
+> prefetches are harmless.  It's hard to see any circumstance where an
+> accessible cacheable location would lead to bad side-effects on read.
+> 
+> -- 
+> Dominic Sweetman, 
+> MIPS Technologies (UK) - formerly Algorithmics
+> The Fruit Farm, Ely Road, Chittering, CAMBS CB5 9PH, ENGLAND
+> phone: +44 1223 706200 / fax: +44 1223 706250 / direct: +44 1223 706205
+> http://www.algor.co.uk

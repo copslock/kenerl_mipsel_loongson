@@ -1,43 +1,113 @@
-Received:  by oss.sgi.com id <S554084AbQKMPFb>;
-	Mon, 13 Nov 2000 07:05:31 -0800
-Received: from rotor.chem.unr.edu ([134.197.32.176]:13832 "EHLO
-        rotor.chem.unr.edu") by oss.sgi.com with ESMTP id <S553991AbQKMPFQ>;
-	Mon, 13 Nov 2000 07:05:16 -0800
-Received: (from wesolows@localhost)
-	by rotor.chem.unr.edu (8.9.3/8.9.3) id HAA19918;
-	Mon, 13 Nov 2000 07:04:02 -0800
-Date:   Mon, 13 Nov 2000 07:04:02 -0800
-From:   Keith M Wesolowski <wesolows@chem.unr.edu>
-To:     flaws@bawue.de
-Cc:     bjzheng@ict.ac.cn, linux-mips@oss.sgi.com
-Subject: Re: Can you help me?
-Message-ID: <20001113070402.A19583@chem.unr.edu>
-References: <20001113092014.54D9D1F10E@helena.bawue.de>
-Mime-Version: 1.0
+Received:  by oss.sgi.com id <S553886AbQKMP2A>;
+	Mon, 13 Nov 2000 07:28:00 -0800
+Received: from mx.mips.com ([206.31.31.226]:55222 "EHLO mx.mips.com")
+	by oss.sgi.com with ESMTP id <S553844AbQKMP1g>;
+	Mon, 13 Nov 2000 07:27:36 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id HAA05493
+	for <linux-mips@oss.sgi.com>; Mon, 13 Nov 2000 07:27:11 -0800 (PST)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id HAA27952
+	for <linux-mips@oss.sgi.com>; Mon, 13 Nov 2000 07:27:31 -0800 (PST)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id OAA29370
+	for <linux-mips@oss.sgi.com>; Mon, 13 Nov 2000 14:20:54 +0100 (MET)
+Message-ID: <3A0FEAB6.7117CC3C@mips.com>
+Date:   Mon, 13 Nov 2000 14:20:54 +0100
+From:   Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
+X-Accept-Language: en
+MIME-Version: 1.0
+To:     linux-mips@oss.sgi.com
+Subject: The do_fast_gettimeoffset function
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2i
-In-Reply-To: <20001113092014.54D9D1F10E@helena.bawue.de>; from flaws@bawue.de on Mon, Nov 13, 2000 at 10:20:14AM +0100
-X-Complaints-To: postmaster@chem.unr.edu
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Mon, Nov 13, 2000 at 10:20:14AM +0100, flaws@bawue.de wrote:
+The do_fast_gettimeoffset function below (taken from
+arch/mips/kernel/time.c) can only be used on 64-bit processors.
+I would like to be able to use this on a 32-bit processor. As I'm not
+completely sure what this function does, can someone who does please
+help me out ?
 
-> AFAIK Onyx is pretty much the same as an Origin, except for the graphics
-> hardware. Since Ralf is working on an Origin port, which is in quite a good
-> state, I guess, Onyx should be supported, too.
-> Without graphics, of course.
+/Carsten
 
-You're confusing Onyx with Onyx2.  The Onyx2 is Origin-like and
-probably works.  The Onyx is sort of a multiprocessor version of the
-Crimson (or, alternately, a graphics-heavy version of a Challenge D).
-There were also Power Onyxen, with R8000 CPUs; I can't remember
-whether there were r10k versions.
 
--- 
-Keith M Wesolowski			wesolows@chem.unr.edu
-University of Nevada			http://www.chem.unr.edu
-Chemistry Department Systems and Network Administrator
+static unsigned long do_fast_gettimeoffset(void)
+{
+ u32 count;
+ unsigned long res, tmp;
+
+ /* Last jiffy when do_fast_gettimeoffset() was called. */
+ static unsigned long last_jiffies=0;
+ unsigned long quotient;
+
+ /*
+  * Cached "1/(clocks per usec)*2^32" value.
+  * It has to be recalculated once each jiffy.
+  */
+ static unsigned long cached_quotient=0;
+
+ tmp = jiffies;
+
+ quotient = cached_quotient;
+
+ if (tmp && last_jiffies != tmp) {
+  last_jiffies = tmp;
+  __asm__(".set\tnoreorder\n\t"
+   ".set\tnoat\n\t"
+   ".set\tmips3\n\t"
+   "lwu\t%0,%2\n\t"
+   "dsll32\t$1,%1,0\n\t"
+   "or\t$1,$1,%0\n\t"
+   "ddivu\t$0,$1,%3\n\t"
+   "mflo\t$1\n\t"
+   "dsll32\t%0,%4,0\n\t"
+   "nop\n\t"
+   "ddivu\t$0,%0,$1\n\t"
+   "mflo\t%0\n\t"
+   ".set\tmips0\n\t"
+   ".set\tat\n\t"
+   ".set\treorder"
+   :"=&r" (quotient)
+   :"r" (timerhi),
+    "m" (timerlo),
+    "r" (tmp),
+    "r" (USECS_PER_JIFFY)
+   :"$1");
+  cached_quotient = quotient;
+ }
+
+ /* Get last timer tick in absolute kernel time */
+ count = read_32bit_cp0_register(CP0_COUNT);
+
+ /* .. relative to previous jiffy (32 bits is enough) */
+ count -= timerlo;
+
+ __asm__("multu\t%1,%2\n\t"
+  "mfhi\t%0"
+  :"=r" (res)
+  :"r" (count),
+   "r" (quotient));
+
+ /*
+   * Due to possible jiffies inconsistencies, we need to check
+  * the result so that we'll get a timer that is monotonic.
+  */
+ if (res >= USECS_PER_JIFFY)
+  res = USECS_PER_JIFFY-1;
+
+ return res;
+}
+
+
+
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

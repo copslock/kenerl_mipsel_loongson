@@ -1,52 +1,108 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Jul 2004 22:57:06 +0100 (BST)
-Received: from p508B6BD7.dip.t-dialin.net ([IPv6:::ffff:80.139.107.215]:28974
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225321AbUGIV5C>; Fri, 9 Jul 2004 22:57:02 +0100
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i69Lv1mr010291;
-	Fri, 9 Jul 2004 23:57:01 +0200
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i69Lv0Y9010290;
-	Fri, 9 Jul 2004 23:57:00 +0200
-Date: Fri, 9 Jul 2004 23:57:00 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Song Wang <wsonguci@yahoo.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Jul 2004 08:34:20 +0100 (BST)
+Received: from [IPv6:::ffff:213.189.19.80] ([IPv6:::ffff:213.189.19.80]:55558
+	"EHLO mail.kpsws.com") by linux-mips.org with ESMTP
+	id <S8225319AbUGJHeP>; Sat, 10 Jul 2004 08:34:15 +0100
+Received: (qmail 46330 invoked by uid 89); 10 Jul 2004 07:33:57 -0000
+Received: from unknown (HELO mail.kpsws.com) (127.0.0.1)
+  by localhost with SMTP; 10 Jul 2004 07:33:57 -0000
+Received: from 80.56.56.210
+        (SquirrelMail authenticated user pulsar@kpsws.com)
+        by mail.kpsws.com with HTTP;
+        Sat, 10 Jul 2004 09:33:57 +0200 (CEST)
+Message-ID: <1557.80.56.56.210.1089444837.squirrel@mail.kpsws.com>
+In-Reply-To: <BAY2-F21njXXBARdkfw0003b0c8@hotmail.com>
+References: <BAY2-F21njXXBARdkfw0003b0c8@hotmail.com>
+Date: Sat, 10 Jul 2004 09:33:57 +0200 (CEST)
+Subject: Re: Strange, strange occurence
+From: "Niels Sterrenburg" <niels.sterrenburg@philips.com>
+To: "S C" <theansweriz42@hotmail.com>
 Cc: linux-mips@linux-mips.org
-Subject: Re: kbuild support to build one module with multiple separate components?
-Message-ID: <20040709215700.GB4316@linux-mips.org>
-References: <20040706230050.53313.qmail@web40006.mail.yahoo.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20040706230050.53313.qmail@web40006.mail.yahoo.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Reply-To: niels.sterrenburg@philips.com
+User-Agent: SquirrelMail/1.4.0
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+X-Priority: 3
+Importance: Normal
+Return-Path: <niels.sterrenburg@philips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5440
+X-archive-position: 5441
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: niels.sterrenburg@philips.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Jul 06, 2004 at 04:00:50PM -0700, Song Wang wrote:
+Hi Steve,
 
-> This is wrong, because kbuild will treat A as
-> independent module. All I want is to treat
-> A as component of the only module mymodule.o. It
-> should be linked to mymodule.o
-> 
-> Any idea on how to write a kbuild Makefile to
-> support such kind of single module produced
-> by linking multiple components and each component
-> is located in separate directory? Thanks.
+When you set a breakpoint with the ice and step through,
+for each step the ICE set's a breakpoint on the next instruction:
+e.g.:
+- modifies next instruction in memory (via CPU !!!)
+  with a breakpoint instruction,
+- and update the cache so that the breakpoint instruction is really in
+memory and that i-cache is invalid.
+(or something like that)
 
-That's a limitation in the current kbuild system.  You either have to put
-all files into a single directory or if you don't want that split your
-module into several independant modules.  What I haven't tried is using
-.a libraries but they're generally deprecated in kbuild.
+So indead you have a cache problem which is explanable solved/disapeared
+by steppig through with the ICE.
 
-  Ralf
+Maybe a stupid question from me but why flushing an icache ?:
+r4k_flush_icache_range
+
+regards,
+
+Niels
+
+> Well I'm hoping it isn't so strange to some of you folks and you'll be
+> able
+> to tell what's going on :)
+>
+> Here's my problem:
+>
+> Using MontaVista Linux 3.1 on a Toshiba RBTx4938 board. Using YAMON, when
+> I
+> download the kernel via the debug ethernet port it runs fine. If I
+> download
+> the kernel via the Tx4938 inbuilt ethernet controller, it crashes!
+>
+> Memory checksumming and a quick manual memory dump inspection reveals that
+> the kernel download went perfectly ok, and the image is completely and
+> correctly downloaded to RAM.
+>
+> The crash is occuring inside the function r4k_flush_icache_range().
+>
+> I tried 'flush -i' and 'flush -d' on YAMON after the download but before
+> the
+> 'go', but that didn't help. I also tried completely disabling caches and
+> loading/running uncached, but it gave the same error.
+>
+> Now, the final twist! Using an ICE, I set a breakpoint at the
+> r4k_flush_icache_range function. Then I loaded the kernel as usual, ran it
+> with the ICE, stepped through a few instructions inside the
+> r4k_flush_icache_range function and then did a 'cont'. The kernel now
+> booted
+> fine!
+>
+> If I don't set the breakpoint inside that function though, and just try to
+> run with the ICE the same
+> error (Inst fetch/Load error) occurs.
+>
+> I'm at a loss trying to figure out what's going on. I suspect it has
+> something to do with caches perhaps (duh!), but have no clue what!
+> Anybody
+> out there face a similar kind of a situation before?
+>
+> Thanks in advance for any help offered.
+>
+> Regards,
+> -Steve
+>
+> _________________________________________________________________
+> MSN 9 Dial-up Internet Access helps fight spam and pop-ups – now 2 months
+> FREE! http://join.msn.click-url.com/go/onm00200361ave/direct/01/
+>
+>
+>

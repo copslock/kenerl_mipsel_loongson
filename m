@@ -1,69 +1,67 @@
-Received:  by oss.sgi.com id <S553770AbQKHTZA>;
-	Wed, 8 Nov 2000 11:25:00 -0800
-Received: from router.isratech.ro ([193.226.114.69]:20243 "EHLO
-        router.isratech.ro") by oss.sgi.com with ESMTP id <S553715AbQKHTYn>;
-	Wed, 8 Nov 2000 11:24:43 -0800
-Received: from isratech.ro (calin.cs.tuiasi.ro [193.231.15.163])
-	by router.isratech.ro (8.10.2/8.10.2) with ESMTP id eA8FKpM32556
-	for <linux-mips@oss.sgi.com>; Wed, 8 Nov 2000 17:20:52 +0200
-Message-ID: <3A09DE18.E55FA70F@isratech.ro>
-Date:   Wed, 08 Nov 2000 18:13:28 -0500
-From:   Nicu Popovici <octavp@isratech.ro>
-X-Mailer: Mozilla 4.74 [en] (X11; U; Linux 2.2.15-2.5.0 i686)
+Received:  by oss.sgi.com id <S553927AbQKHTru>;
+	Wed, 8 Nov 2000 11:47:50 -0800
+Received: from gateway-490.mvista.com ([63.192.220.206]:43769 "EHLO
+        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553715AbQKHTrk>;
+	Wed, 8 Nov 2000 11:47:40 -0800
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id eA8JjP322263;
+	Wed, 8 Nov 2000 11:45:25 -0800
+Message-ID: <3A09ADDB.EA2A6246@mvista.com>
+Date:   Wed, 08 Nov 2000 11:47:39 -0800
+From:   Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-5.0 i586)
 X-Accept-Language: en
 MIME-Version: 1.0
-To:     linux-mips@oss.sgi.com
-Subject: Cross_compiler!
-Content-Type: multipart/mixed;
- boundary="------------61302E31229AB9F02790A356"
+To:     Nicu Popovici <octavp@isratech.ro>
+CC:     linux-mips@oss.sgi.com
+Subject: Re: Cross_compiler!
+References: <3A09DE18.E55FA70F@isratech.ro>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-This is a multi-part message in MIME format.
---------------61302E31229AB9F02790A356
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Nicu Popovici wrote:
+> 
+> Hello  you all,
+> 
+> I have a development board ( ATLAS + QED 5261 processor ).
+> 
+> Does anyone from you did cross compiled a kernel for mips on a i686
+> machine ? I am struggling for three weeks now to do that and nothing
+> works. Mr. Weselows said  some days ago  to get the Linux_2_2 form CVS
+> and indeed I could cross compile that kernel  but after that I found out
+> that  the kernel  does not have support for ATLAS board.
+> 
+> I tried the following kernel versions
+> 1. linux.2.2.12 from the Atlas board CD
+> 2. linux 2.2.13 from lineo.com
+> 3. linux 2.2.14 from oss.sgi.com( linux2_2 from CVS site )
+> 4. linux 2.2.17
+> 
+> Best Regards,
+> Nicu
 
-Hello  you all,
+Nicu,
 
-I have a development board ( ATLAS + QED 5261 processor ).
+You can get the cross-compile tool chains from the monta vista ftp
+site.  These tools are considered stable and recommeded - at least
+before Ralf shows his latest toys. :-0
 
-Does anyone from you did cross compiled a kernel for mips on a i686
-machine ? I am struggling for three weeks now to do that and nothing
-works. Mr. Weselows said  some days ago  to get the Linux_2_2 form CVS
-and indeed I could cross compile that kernel  but after that I found out
-that  the kernel  does not have support for ATLAS board.
+1. binutils 2.8.1
+2. egcs 1.0.3a
+3. glibc 2.0.6
 
-I tried the following kernel versions
-1. linux.2.2.12 from the Atlas board CD
-2. linux 2.2.13 from lineo.com
-3. linux 2.2.14 from oss.sgi.com( linux2_2 from CVS site )
-4. linux 2.2.17
+The ftp site is 
 
-Best Regards,
-Nicu
+ftp.mvsiat.com:/pub/Area51/ddb-5476/
 
---------------61302E31229AB9F02790A356
-Content-Type: text/x-vcard; charset=us-ascii;
- name="octavp.vcf"
-Content-Transfer-Encoding: 7bit
-Content-Description: Card for Nicu Popovici
-Content-Disposition: attachment;
- filename="octavp.vcf"
+Hopefully before the end of this weekend, there will a little more
+updated release with a new name prefix, some bug fixes and for both
+little endiand and big endian.  The current one is for little endian. 
+If you know how to use rpm, you can create your own big-endian tools
+pretty easily.
 
-begin:vcard 
-n:POPOVICI;Nicolae Octavian 
-tel;cell:+40 93 605020
-x-mozilla-html:FALSE
-org:SC Silicon Service SRL;Software
-adr:;;;;;;
-version:2.1
-email;internet:octavp@isratech.ro
-title:Software engineer
-x-mozilla-cpt:;0
-fn:Nicolae Octavian POPOVICI
-end:vcard
-
---------------61302E31229AB9F02790A356--
+Jun

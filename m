@@ -1,50 +1,66 @@
-Received:  by oss.sgi.com id <S554028AbQLBByE>;
-	Fri, 1 Dec 2000 17:54:04 -0800
-Received: from u-183-19.karlsruhe.ipdial.viaginterkom.de ([62.180.19.183]:59145
+Received:  by oss.sgi.com id <S554036AbQLBEDo>;
+	Fri, 1 Dec 2000 20:03:44 -0800
+Received: from u-183-19.karlsruhe.ipdial.viaginterkom.de ([62.180.19.183]:64009
         "EHLO u-183-19.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S554022AbQLBBxn>; Fri, 1 Dec 2000 17:53:43 -0800
-Received: (ralf@lappi) by bacchus.dhis.org id <S869503AbQLBBxR>;
-	Sat, 2 Dec 2000 02:53:17 +0100
-Date:	Sat, 2 Dec 2000 02:53:17 +0100
+	with ESMTP id <S553763AbQLBEDW>; Fri, 1 Dec 2000 20:03:22 -0800
+Received: (ralf@lappi) by bacchus.dhis.org id <S869519AbQLBEDG>;
+	Sat, 2 Dec 2000 05:03:06 +0100
+Date:	Sat, 2 Dec 2000 05:03:06 +0100
 From:	Ralf Baechle <ralf@oss.sgi.com>
-To:	Gordon McNutt <gmcnutt@ridgerun.com>
-Cc:	linux-mips@oss.sgi.com
-Subject: Re: console knowledge
-Message-ID: <20001202025317.A4718@bacchus.dhis.org>
-References: <001901c05b67$8c88ab60$0deca8c0@Ulysses> <XFMail.001201163348.Harald.Koerfgen@home.ivm.de> <20001201185321.A3211@bacchus.dhis.org> <3A27EAD6.83E03DFB@ridgerun.com>
+To:	linux-mips@oss.sgi.com, linux-mips@fnet.fr
+Subject: Support for smaller glibc
+Message-ID: <20001202050306.A12319@bacchus.dhis.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 X-Mailer: Mutt 1.0.1i
-In-Reply-To: <3A27EAD6.83E03DFB@ridgerun.com>; from gmcnutt@ridgerun.com on Fri, Dec 01, 2000 at 11:15:50AM -0700
 X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Fri, Dec 01, 2000 at 11:15:50AM -0700, Gordon McNutt wrote:
+For the information of the embedded community.
 
-> > /dev/console (as chardev 5/1) differs from another device in some important
-> > ways:
-> >
-> >  - When opened by a process without controlling tty it will not become a
-> >    CTTY even if the NOCTTY flag is not set.
+  Ralf
+
+----- Forwarded message from "H . J . Lu" <hjl@valinux.com> -----
+
+Date: Fri, 1 Dec 2000 09:12:35 -0800
+From: "H . J . Lu" <hjl@valinux.com>
+To: Ralf Baechle <ralf@uni-koblenz.de>
+Cc: sglibc@external-lists.valinux.com
+Subject: Re: Support for smaller glibc
+
+On Fri, Dec 01, 2000 at 02:14:14PM +0100, Ralf Baechle wrote:
+> On Tue, Nov 28, 2000 at 04:24:29PM -0800, H . J . Lu wrote:
 > 
-> What do you mean by "controlling tty"?
-> output, but perhaps you can clarify.
+> > The current glibc 2.2 has many features. But some of them are not
+> > needed in some cases. I am wondering if there is an interest to
+> > make those features configurabled at the build time. The ones I am
+> > thinging now are intl, iconv, iconvdata, locale, localedata, wcsmbs,
+> > wctype and wide char IO. They will be enabled by default. But you
+> > can disable them at the build time. It will make glibc much smaller.
+> > Any comments?
+> 
+> The MIPS community is shifting more and more into the embedded area; one
+> of the increasing pains is glibc's increasing size which makes various
+> people continue to maintain glibc 2.0, the oldest and smallest libc for
+> MIPS.  So your suggestion is very interesting indeed.
+> 
+> I just have acknowledge Uli's concerns in this thread; they need to be
+> solved.  But forking a smaller libc of standard glibc is nothing but the
+> St. Florian's principle ...
+> 
 
-Controlling terminal is a fundamental UNIX term; you should check a good
-UNIX book about it.  The glibc info pages also have some words about it.
+Ulrich is refusing to do anything with it. Do you have any suggestions?
+I will do my best to do it right. But I am afraid I cannot do it alone.
 
-> And why is the distinction noted above important? I assume it has something
-> to do with keyboard input/screen
+BTW, please discuss it on sglibc@external-lists.valinux.com.
 
-Reread my posting, it describes some of the differences in the behaviour
-of for example /dev/console and /dev/ttyS0 even though both refer to the
-same device.
 
-That could be different.  The classic UNIX setup is sending /dev/console to
-the printer on one serial and having the system's console terminal on
-another.  Any arbitrary device combination would be possible.
+-- 
+H.J. Lu (hjl@valinux.com)
+
+----- End forwarded message -----
 
   Ralf

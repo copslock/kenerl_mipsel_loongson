@@ -1,68 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jun 2003 03:02:03 +0100 (BST)
-Received: from [IPv6:::ffff:159.226.39.4] ([IPv6:::ffff:159.226.39.4]:28070
-	"HELO mail.ict.ac.cn") by linux-mips.org with SMTP
-	id <S8225239AbTFYCCB>; Wed, 25 Jun 2003 03:02:01 +0100
-Received: (qmail 15178 invoked from network); 25 Jun 2003 01:26:43 -0000
-Received: from unknown (HELO ict.ac.cn) (159.226.40.150)
-  by 159.226.39.4 with SMTP; 25 Jun 2003 01:26:43 -0000
-Message-ID: <3EF90275.2050903@ict.ac.cn>
-Date: Wed, 25 Jun 2003 10:01:25 +0800
-From: Fuxin Zhang <fxzhang@ict.ac.cn>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.2.1) Gecko/20030206
-X-Accept-Language: zh-cn, en-us, en
-MIME-Version: 1.0
-To: ik@cyberspace.org
-CC: kernelnewbies@nl.linux.org, linux-mips@linux-mips.org
-Subject: Re: is there any docs/manuals for linker scripts symbols
-References: <Pine.SUN.3.96.1030624055005.4605A-100000@grex.cyberspace.org>
-In-Reply-To: <Pine.SUN.3.96.1030624055005.4605A-100000@grex.cyberspace.org>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <fxzhang@ict.ac.cn>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jun 2003 05:59:22 +0100 (BST)
+Received: from p508B6A7B.dip.t-dialin.net ([IPv6:::ffff:80.139.106.123]:25802
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225205AbTFYE7U>; Wed, 25 Jun 2003 05:59:20 +0100
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h5P4xIML029426;
+	Wed, 25 Jun 2003 06:59:19 +0200
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h5P4xG4Y029425;
+	Wed, 25 Jun 2003 06:59:16 +0200
+Date: Wed, 25 Jun 2003 06:59:16 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Joseph Chiu <joseph@omnilux.net>
+Cc: Pete Popov <ppopov@mvista.com>,
+	Linux MIPS mailing list <linux-mips@linux-mips.org>
+Subject: Re: wired tlb entry?
+Message-ID: <20030625045916.GA28556@linux-mips.org>
+References: <1055873800.4383.220.camel@zeus.mvista.com> <BPEELMGAINDCONKDGDNCMEGADMAA.joseph@omnilux.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <BPEELMGAINDCONKDGDNCMEGADMAA.joseph@omnilux.net>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2700
+X-archive-position: 2701
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fxzhang@ict.ac.cn
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-info ld give much more information than man ld.
+On Tue, Jun 17, 2003 at 11:51:13AM -0700, Joseph Chiu wrote:
 
-for those symbols,you need to learn something about ELF file format
-(its concept of sections)
+> Michael Guo suggested add_wired_entry -- I'm giving that a try now.  I'm
+> trying to stick to "the kernel that we trust" (from the perspective here)
+> because I'm worried about what I end up breaking trying to take a new
+> kernel.
+> 
+> I am behind the time, though, so I'll try to test out 2.4.21-pre4 when I get
+> back (I'm not available to run the tests during the rest of this week).
 
-ik@cyberspace.org wrote:
+Usual warning - wired entries are almost always a bad idea.  TLB entries
+are a scarce resource and wiring will reduce the number available for
+random replacement even further raising the amount of CPU burned in the
+TLB reload handler.
 
->Hi All,
->
->Is there any documentation for the symbols in the ld.script linker
->scripts for the linux kernel. 
->
->I'm porting Linux kernel to a mips board for which I need to understand
->the various symbols used in the kernel.
->
->For example what is the use of the following symbols
->`__init_begin'
->`__init_end'
->`__initcall_start
->`__initcall_end'
->`_ftext'
->`__setup_start'
->`__setup_end'
->
->I'm not good in these linker scripts... any help pointers would be of
->great help to me ! (I'm referrring gnu ld  manual pages ... still have a
->long way to go :(
->
->Thanks in advance !
->Indu
->
->
->
->
->  
->
+  Ralf

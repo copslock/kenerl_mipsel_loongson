@@ -1,108 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Nov 2004 22:47:05 +0000 (GMT)
-Received: from mail.alphastar.de ([IPv6:::ffff:194.59.236.179]:2058 "EHLO
-	mail.alphastar.de") by linux-mips.org with ESMTP
-	id <S8224954AbUKOWrA> convert rfc822-to-8bit; Mon, 15 Nov 2004 22:47:00 +0000
-Received: from SNaIlmail.Peter (217.249.200.252)
-          by mail.alphastar.de with MERCUR Mailserver (v4.02.28 MTIxLTIxODAtNjY2OA==)
-          for <linux-mips@linux-mips.org>; Mon, 15 Nov 2004 23:45:17 +0100
-Received: from Opal.Peter (pf@Opal.Peter [192.168.1.1])
-	by SNaIlmail.Peter (8.12.6/8.12.6/Sendmail/Linux 2.0.32) with ESMTP id iAFMiEbr000547;
-	Mon, 15 Nov 2004 23:44:15 +0100
-Received: from localhost (pf@localhost)
-	by Opal.Peter (8.9.3/8.9.3/Sendmail/Linux 2.2.5-15) with ESMTP id XAA01128;
-	Mon, 15 Nov 2004 23:43:40 +0100
-Date: Mon, 15 Nov 2004 23:43:40 +0100 (CET)
-From: peter fuerst <pf@net.alphadv.de>
-To: macrohat <emblinux@macrohat.com>
-cc: linux-mips <linux-mips@linux-mips.org>
-Subject: On Sat, 13 Nov 2004, macrohat wrote...
-In-Reply-To: <20041113134735Z8224907-1751+1490@linux-mips.org>
-Message-ID: <Pine.LNX.4.21.0411152319310.990-100000@Opal.Peter>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=iso-8859-1
-Content-Transfer-Encoding: 8BIT
-Reply-To: pf@net.alphadv.de
-Return-Path: <pf@net.alphadv.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Nov 2004 00:22:36 +0000 (GMT)
+Received: from embeddededge.com ([IPv6:::ffff:209.113.146.155]:35085 "EHLO
+	penguin.netx4.com") by linux-mips.org with ESMTP
+	id <S8224903AbUKPAWa>; Tue, 16 Nov 2004 00:22:30 +0000
+Received: from [192.168.2.27] (x1000-57.tellink.net [63.161.110.249])
+	by penguin.netx4.com (8.12.8/8.12.9) with ESMTP id iAG0BjB4004633;
+	Mon, 15 Nov 2004 19:11:46 -0500
+In-Reply-To: <0a2201c4ca62$25d37f80$a701a8c0@lan>
+References: <20041112181335.13362.qmail@web81008.mail.yahoo.com> <09ac01c4ca24$e68a6740$a701a8c0@lan> <0a2201c4ca62$25d37f80$a701a8c0@lan>
+Mime-Version: 1.0 (Apple Message framework v619)
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Message-Id: <FA00299D-3765-11D9-A70B-003065F9B7DC@embeddededge.com>
+Content-Transfer-Encoding: 7bit
+Cc: <linux-mips@linux-mips.org>
+From: Dan Malek <dan@embeddededge.com>
+Subject: Re: GPIO on the Au1500
+Date: Mon, 15 Nov 2004 19:25:10 -0500
+To: "Gilad Rom" <gilad@romat.com>
+X-Mailer: Apple Mail (2.619)
+Return-Path: <dan@embeddededge.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6337
+X-archive-position: 6338
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pf@net.alphadv.de
+X-original-sender: dan@embeddededge.com
 Precedence: bulk
 X-list: linux-mips
 
 
+On Nov 14, 2004, at 10:53 AM, Gilad Rom wrote:
 
-Hello !
+> For some reason, I keep getting that magical value, 0x10000001 for 
+> EVERY address I try to read, be it SYS_BASE (0xB1900000) or every 
+> other address.
 
-BogoMips is most useful as a benchmark, if the main purpose of your
-machine is to calculate BogoMips' ... (see BogoMips Mini-HOWTO :))
-However - since there seems to be such a strong desire to see large
-BogoMips values - here is some help:
+It's not working because that is not the address of the device(s).
+The 0xB1900000 is the Kernel Virtual address of these devices, the real
+physical address, and the one you have to use with mmap() is the
+system control block address 0x11900000.
 
-Your BogoMips factor of 0.66, instead of the usual 0.99..., indicates
-that the delay loop is misaligned, i.e. there's a instruction-cache-block
-boundary inmidst the loop. (Recently i managed somehow to achieve this on
-a R10000 :)
-A ".align 3\n\t" at the begin of __delay() will keep the branch and its
-delay-slot together.
+Just be very, very careful with user space access of any IO using this
+method.  The kernel can ensure atomic updates using various methods,
+but user applications can't and may cause system failures.  This is why
+a GPIO driver is a much better approach.
 
-You should even be able to double the BogoMips value (factor 1.99...) by
-unrolling the delay loop (at least on R10k):
-
-  static __inline__ void
-  __delay(unsigned long loops)
-  {
-      loops |= 1;
-      __asm__ __volatile__ (
-          ".align 4\n\t"  /* only the paranoid survive. */
-          ".set\tnoreorder\n"
-          "1:\n\t"
-          "dsubu\t%0,1\n\t"
-          "bnez\t%0,1b\n\t"
-          "dsubu\t%0,1\n\t"
-          ".set\treorder"
-          :"=r" (loops)
-            :"0" (loops));
-  }
-
-Nevertheless, despite all this trickery, your machine will run exactly
-as fast (slow), as it did before.
-
-with kind regards
-
-pf
-
-
-
-  "I have been a happy man ever since January 1, 1990, when I no longer
-  had an email address. ..."
-
-                                                        Donald E. Knuth
-                  (http://www-cs-faculty.stanford.edu/~knuth/email.html)
-
-
-On Sat, 13 Nov 2004, macrohat wrote:
-
-> Date: Sat, 13 Nov 2004 21:47:02 +0800
-> From: macrohat <emblinux@macrohat.com>
-> To: linux-mips <linux-mips@linux-mips.org>
-> Cc: linux-cvs <linux-cvs@linux-mips.org>
-> 
-> Hello linux-mips:
-> 
-> I have a question to ask you: why BCM1250 CPU Bogomips is so much lower than CPU clock frequency,such as:
-> CPU 700MHz - 465.30 Bogomips, CPU 800MHZ - 532.48 BogoMIPS.And i find out that CPU Bogomips is a fixed value regardless L2 cache open or closed,
-> 
-> Enclosed is the log from the console
-> 
-> Regards!
->  				
-> 
-> 　　　　　　　　macrohat
-> 　　　　　　　　emblinux@macrohat.com
-> 　　　　　　　　　　2004-11-13
-> 
+	-- Dan

@@ -1,50 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Oct 2004 16:42:05 +0100 (BST)
-Received: from p508B7FD9.dip.t-dialin.net ([IPv6:::ffff:80.139.127.217]:62
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225281AbUJXPmB>; Sun, 24 Oct 2004 16:42:01 +0100
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i9OFfx4o013590;
-	Sun, 24 Oct 2004 17:41:59 +0200
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i9OFfnDr013572;
-	Sun, 24 Oct 2004 17:41:49 +0200
-Date: Sun, 24 Oct 2004 17:41:49 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc: mlachwani@mvista.com, linux-mips@linux-mips.org
-Subject: Re: [PATCH]Preemption patch for 2.6
-Message-ID: <20041024154149.GC30735@linux-mips.org>
-References: <1098468403.4266.42.camel@prometheus.mvista.com> <20041025.002850.74755987.anemo@mba.ocn.ne.jp>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20041025.002850.74755987.anemo@mba.ocn.ne.jp>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Oct 2004 23:25:07 +0100 (BST)
+Received: from mailout11.sul.t-online.com ([IPv6:::ffff:194.25.134.85]:8631
+	"EHLO mailout11.sul.t-online.com") by linux-mips.org with ESMTP
+	id <S8225074AbUJXWZC>; Sun, 24 Oct 2004 23:25:02 +0100
+Received: from fwd06.aul.t-online.de 
+	by mailout11.sul.t-online.com with smtp 
+	id 1CLqnL-0001rp-01; Mon, 25 Oct 2004 00:24:59 +0200
+Received: from router.pain-net.home (S81GDiZlrePt5QDnhT+NRBTKVOqtmRCLeFmUPrZV3R8hg0WRcSXec5@[84.133.29.216]) by fmrl06.sul.t-online.com
+	with esmtp id 1CLqnK-0sT3dA0; Mon, 25 Oct 2004 00:24:58 +0200
+Received: from [127.0.0.1] (neuromancer.pain-net.home [192.168.1.2])
+	by router.pain-net.home (Postfix) with ESMTP id B6EE618016A1
+	for <linux-mips@linux-mips.org>; Mon, 25 Oct 2004 00:14:30 +0200 (CEST)
+Message-ID: <417C2BB1.9030105@pain-net.home>
+Date: Mon, 25 Oct 2004 00:24:49 +0200
+From: Stefan Deling <stefan.deling@web.de>
+User-Agent: Thunderbird 0.7.2 (Windows/20040707)
+X-Accept-Language: de-DE, de, en-us, en
+MIME-Version: 1.0
+To: linux-mips@linux-mips.org
+Subject: Kernel conversion problem ELF -> ECOFF
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ID: S81GDiZlrePt5QDnhT+NRBTKVOqtmRCLeFmUPrZV3R8hg0WRcSXec5@t-dialin.net
+X-TOI-MSGID: 8d87e201-f843-4ea0-b60f-42a46427b42d
+Return-Path: <stefan.deling@web.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6195
+X-archive-position: 6196
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: stefan.deling@web.de
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Oct 25, 2004 at 12:28:50AM +0900, Atsushi Nemoto wrote:
+Hi there!
 
-> mlachwani> The attached patch incorporates preemption enable/disable
-> mlachwani> in some parts of the kernel. I have tested this on the
-> mlachwani> Broadcom Sibyte. Please review ...
-> 
-> 1. You add preempt_disable/preempt_enable to c-sb1.c and tlb-sb1.c.
->    Those are SB1 specific issue?  If not, please fix other c-*.c and
->    tlb-*.c same way.
+I´ve just tried to compile the latest linux-mips 2.4.x kernel a few 
+dayas ago.It ended up with the following problem. elf2ecoof told me:
+"programm header type 3 1694766464 can´t be converted!"
+I got the same problem while compiling the gentoo-mips-sources kernel.
+I was not able to find a solution in the archives.
+Has anyone got a solution for this problem??
 
-This an SMP issue and only affects the SB1 code.
+Any help is appreciated.
 
-The other CPU for which CVS supports SMP is the R10000 family; thanks to
-having nice caches it's immune mostly immune to this kind of issue.
+regards
 
-  Ralf
+Stefan Deling

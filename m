@@ -1,31 +1,27 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1BG8U411929
-	for linux-mips-outgoing; Mon, 11 Feb 2002 08:08:30 -0800
-Received: from aretha.informatik.uni-siegen.de (aretha.informatik.Uni-Siegen.DE [141.99.92.8])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1BG87911925
-	for <linux-mips@oss.sgi.com>; Mon, 11 Feb 2002 08:08:23 -0800
-Received: (from engel@localhost) by aretha.informatik.uni-siegen.de (Mailhost) id QAA214284; Mon, 11 Feb 2002 16:07:15 +0100 (MET)
-Date: Mon, 11 Feb 2002 16:07:15 +0100
-From: Michael Engel <engel@informatik.uni-siegen.de>
+	by oss.sgi.com (8.11.2/8.11.3) id g1BG8s611944
+	for linux-mips-outgoing; Mon, 11 Feb 2002 08:08:54 -0800
+Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1BG8l911941
+	for <linux-mips@oss.sgi.com>; Mon, 11 Feb 2002 08:08:48 -0800
+Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.26])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id QAA21003;
+	Mon, 11 Feb 2002 16:07:00 +0100 (MET)
+Date: Mon, 11 Feb 2002 16:07:00 +0100 (MET)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
 To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: Karsten Merker <karsten@excalibur.cologne.de>, linux-mips@oss.sgi.com
+cc: Karsten Merker <karsten@excalibur.cologne.de>,
+   Linux/MIPS Development <linux-mips@oss.sgi.com>
 Subject: Re: DECstation keyboard mappings and XFree
-Message-ID: <20020211160715.A214199@aretha.informatik.uni-siegen.de>
-References: <20020211152621.A14342@excalibur.cologne.de> <Pine.GSO.3.96.1020211152428.18917D-100000@delta.ds2.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.2i
-In-Reply-To: <Pine.GSO.3.96.1020211152428.18917D-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Mon, Feb 11, 2002 at 03:49:19PM +0100
+In-Reply-To: <Pine.GSO.3.96.1020211152428.18917D-100000@delta.ds2.pg.gda.pl>
+Message-ID: <Pine.GSO.4.21.0202111604400.13432-100000@vervain.sonytel.be>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-
-Hi,
-
-On Mon, Feb 11, 2002 at 03:49:19PM +0100, Maciej W. Rozycki wrote:
+On Mon, 11 Feb 2002, Maciej W. Rozycki wrote:
 > On Mon, 11 Feb 2002, Karsten Merker wrote:
-> 
 > > >  Hmm, why do you need (sh*tty) PC-compatible keycodes for a keaboard that
 > > > barely resembles a PC keyboard?  AFAIK, XFree86 has appropriate LK201
 > > > keymaps -- see "/usr/X11R6/lib/X11/xkb/*/digital/*". 
@@ -38,12 +34,7 @@ On Mon, Feb 11, 2002 at 03:49:19PM +0100, Maciej W. Rozycki wrote:
 > 
 >  This may be reasonable for the pc_keyb.c driver, but we don't use it, do
 > we?
-
-Unfortunately, handle_scancode still uses the 0x80 bit internally 
-to indicate key up transisitions (see drivers/char/keyboard.c).
-So IMHO only keycodes <= 0x7f are usable. Same problem with Access.Bus
-LK501 keyboards, btw.
-
+> 
 > > This means that the XFree LK201 mapping did not work, and if we have
 > > to remap keycodes anyway into the range 0x01-0x7f, using a PC-compatible 
 > > keymap seemed the best solution to me.
@@ -53,9 +44,21 @@ LK501 keyboards, btw.
 > my to-do list (to be resolved soon, hopefully, together with the annoying
 > indefinite timeout when no keyboard is attached). 
 
-Hmmm, this change would probably affect a lot of the console
-infrastructure. I'm still waiting for the promised rewritten console
-code in 2.5 ;-).
+The keyboard mid-layer assumes keycodes are in the range 1-127 (with some minor
+hack 0 can be made to work, cfr. Amiga keboards). Bit 7 is used to
+differentiate between up and down events. This means you cannot get keyboards
+with more than 128 keys to work (e.g. some specialized keyboards for old
+workstations).
 
-regards,
-	Michael
+Perhaps it's different in the new input layer. I don't know.
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

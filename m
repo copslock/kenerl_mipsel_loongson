@@ -1,49 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Apr 2003 17:47:32 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:40946 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225199AbTDKQrb>;
-	Fri, 11 Apr 2003 17:47:31 +0100
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id h3BGlM303349;
-	Fri, 11 Apr 2003 09:47:22 -0700
-Date: Fri, 11 Apr 2003 09:47:22 -0700
-From: Jun Sun <jsun@mvista.com>
-To: Michael Anburaj <michaelanburaj@hotmail.com>
-Cc: ralf@linux-mips.org, linux-mips@linux-mips.org, jsun@mvista.com
-Subject: Re: Linux for MIPS Atlas 4Kc board
-Message-ID: <20030411094722.C3245@mvista.com>
-References: <BAY1-F107mJbJo9n2Lg00011ad3@hotmail.com>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Apr 2003 18:55:21 +0100 (BST)
+Received: from pasmtp.tele.dk ([IPv6:::ffff:193.162.159.95]:37133 "EHLO
+	pasmtp.tele.dk") by linux-mips.org with ESMTP id <S8225199AbTDKRzS>;
+	Fri, 11 Apr 2003 18:55:18 +0100
+Received: from ekner.info (0x83a4a968.virnxx10.adsl-dhcp.tele.dk [131.164.169.104])
+	by pasmtp.tele.dk (Postfix) with ESMTP id F38B1B4DB
+	for <linux-mips@linux-mips.org>; Fri, 11 Apr 2003 19:55:05 +0200 (CEST)
+Message-ID: <3E97018B.3435D14C@ekner.info>
+Date: Fri, 11 Apr 2003 19:55:23 +0200
+From: Hartvig Ekner <hartvig@ekner.info>
+X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.18-19.7.x i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: Linux MIPS mailing list <linux-mips@linux-mips.org>
+Subject: ext3 problem solved
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <BAY1-F107mJbJo9n2Lg00011ad3@hotmail.com>; from michaelanburaj@hotmail.com on Fri, Apr 11, 2003 at 02:24:36AM -0700
-Return-Path: <jsun@mvista.com>
+Content-Transfer-Encoding: 7bit
+Return-Path: <hartvig@ekner.info>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1997
+X-archive-position: 1998
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: hartvig@ekner.info
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Apr 11, 2003 at 02:24:36AM -0700, Michael Anburaj wrote:
-> Hi,
-> 
-> Thanks Ralf.
-> 
-> I want this question to be answered.
-> 
-> Can I build linux on my Win98 machine for MIPS 4Kc Atlas board using 
-> mipsisa32-elf-gcc & make?
-> 
-> Please respondwith atmost details.
->
+I found out (sort of) what the problem was and found a fix.
 
-Some people here in mvista have successfully setup a cross development
-for MIPS and other arches.  Sorry, I don't know the details.  Just
-a data point that it is doable.
+Apparantly there is something wrong with e2fsprogs 1.27, since it was unable to repair
+the problem I had in the filesystem (just kept repairing the same thing again and again).
 
-Jun
+I took the disk and attached it to a x86 PC, and ran fsck.ext3 there (an older version, 1.26).
+It found exactly the same errors as the MIPS system, but actually fixed them so that
+subsequent runs with "-f" reported no errors. I then put the disk back on the MIPS
+system - voila, no more filesystem problems. Then did another unclean shutdown,
+and the same problem reappeared, and once again fsck (on MIPS) was unable to fix
+it.
+
+Then I downloaded e2fsprogs-1.32-6.mipsel.rpm from redhat 9, and installed that on my
+MIPS system. And that removed the problem for good.
+
+So the conclusion must be: The e2fsprogs-1.27 package which is part of the MIPS 7.3
+RedHat distribution (CDROM and FTP) is broken. Don't leave home without a newer
+e2fsprogs RPM just in case!
+
+Thanks to everybody who replied!
+
+/Hartvig

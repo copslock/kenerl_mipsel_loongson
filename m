@@ -1,50 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 May 2003 01:34:51 +0100 (BST)
-Received: (from localhost user: 'ralf' uid#501 fake: STDIN
-	(ralf@sirjeppe-pt.tunnel.tserv1.fmt.ipv6.he.net)) by linux-mips.org
-	id <S8225196AbTEUAet>; Wed, 21 May 2003 01:34:49 +0100
-Date: Wed, 21 May 2003 01:34:49 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: "Kevin D. Kissell" <kevink@mips.com>
-Cc: Gilad Benjamini <yaelgilad@myrealbox.com>,
-	linux-mips@linux-mips.org
-Subject: Re: lwl-lwr
-Message-ID: <20030521013449.A16378@linux-mips.org>
-References: <1053455551.996c4860yaelgilad@myrealbox.com> <025401c31f03$0e993370$10eca8c0@grendel>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 May 2003 02:10:04 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:57071 "EHLO
+	av.mvista.com") by linux-mips.org with ESMTP id <S8225232AbTEUBDv>;
+	Wed, 21 May 2003 02:03:51 +0100
+Received: from zeus.mvista.com (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id SAA02426;
+	Tue, 20 May 2003 18:03:49 -0700
+Subject: Re: patch: change config options for au1x00 usb device
+From: Pete Popov <ppopov@mvista.com>
+To: Steve Longerbeam <stevel@mvista.com>
+Cc: Linux MIPS mailing list <linux-mips@linux-mips.org>,
+	Jun Sun <jsun@mvista.com>
+In-Reply-To: <3EAF17A8.8050805@mvista.com>
+References: <3EAF17A8.8050805@mvista.com>
+Content-Type: text/plain
+Organization: MontaVista Software
+Message-Id: <1053479105.1247.18.camel@zeus.mvista.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <025401c31f03$0e993370$10eca8c0@grendel>; from kevink@mips.com on Tue, May 20, 2003 at 09:07:26PM +0200
-Return-Path: <ralf@linux-mips.org>
+X-Mailer: Ximian Evolution 1.2.4 
+Date: 20 May 2003 18:05:05 -0700
+Content-Transfer-Encoding: 7bit
+Return-Path: <ppopov@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2422
+X-archive-position: 2423
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ppopov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, May 20, 2003 at 09:07:26PM +0200, Kevin D. Kissell wrote:
 
-> I don't remember the discussion in question, but it's a question
-> which comes up from time to time, due to the existence of 
-> MIPS-like CPUs which lack the (patented) lwl/lwr mechanism
-> for dealing with unaligned data.  The Lexra cores, for example.
-> 
-> There's really no such thing as "disabling" lwl/lwr.  They are part 
-> of the base MIPS instruction set.  If one wants to live without them, 
-> one can either rig a compiler to emit multi-instruction sequences instead 
-> of lwr/lwl to do the appropriate shifts and masks (which is slower on all 
-> targets), or you can rig the OS to emulate them, and hope that the processors 
-> lacking support will take clean reserved instruction traps, where the function 
-> can be emulated (which is "free" for code running  on CPUs with lwl/lwr, 
-> but *really* slow for the guys doing emulation).
+On Tue, 2003-04-29 at 17:24, Steve Longerbeam wrote:
+> Attached patch fixes CONFIG_AU1000_USB_DEVICE, which
+> had to be defined manually for each au1x00-based board in
+> arch/mips/config.in. The patch defines it automatically if one of
+> the au1x00 usb function drivers have been enabled.
 
-Technically you're right ...  In reality lwl/lwr are covered by US patent
-4,814,976 which would also cover a software implementation.  So unless MIPS
-grants a license for the purpose of emulation in the Linux kernel ...
+I finally got to this patch but it doesn't look like the patch was
+against the linux-mips tree, so I manually patched it.
 
-  Ralf
+Pete

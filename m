@@ -1,58 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Mar 2004 16:55:20 +0000 (GMT)
-Received: from x1000-57.tellink.net ([IPv6:::ffff:63.161.110.249]:48627 "EHLO
-	tibook.netx4.com") by linux-mips.org with ESMTP id <S8225315AbUCDQzT>;
-	Thu, 4 Mar 2004 16:55:19 +0000
-Received: from embeddededge.com (IDENT:dan@localhost.localdomain [127.0.0.1])
-	by tibook.netx4.com (8.11.1/8.11.1) with ESMTP id i24GuQn01252;
-	Thu, 4 Mar 2004 11:56:26 -0500
-Message-ID: <40475FB9.10701@embeddededge.com>
-Date: Thu, 04 Mar 2004 11:56:25 -0500
-From: Dan Malek <dan@embeddededge.com>
-Organization: Embedded Edge, LLC.
-User-Agent: Mozilla/5.0 (X11; U; Linux ppc; en-US; rv:0.9.9) Gecko/20020411
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Mar 2004 17:03:11 +0000 (GMT)
+Received: from [IPv6:::ffff:138.238.147.152] ([IPv6:::ffff:138.238.147.152]:58887
+	"EHLO davis.howard.edu") by linux-mips.org with ESMTP
+	id <S8225315AbUCDRDK>; Thu, 4 Mar 2004 17:03:10 +0000
+Received: by davis.howard.edu with Internet Mail Service (5.5.2657.72)
+	id <FD6NJM8T>; Thu, 4 Mar 2004 12:03:00 -0500
+Message-ID: <012CF7B248DA774B8F93F0F6DBC4AB112B0362@davis.howard.edu>
+From: "Williams, Eric A" <eawilliams@howard.edu>
+To: "'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
+Subject: DHCP/TFTP PROM error (F_magic 0x5330)
+Date: Thu, 4 Mar 2004 12:02:58 -0500 
 MIME-Version: 1.0
-To: Ralf Baechle <ralf@linux-mips.org>
-CC: sathis kanna <sathiskanna@yahoo.com>, linux-mips@linux-mips.org
-Subject: Re: physical memory Limitation
-References: <20040303153505.2825.qmail@web14913.mail.yahoo.com> <20040304075906.GB23688@linux-mips.org>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <dan@embeddededge.com>
+X-Mailer: Internet Mail Service (5.5.2657.72)
+Content-Type: text/plain
+Return-Path: <eawilliams@howard.edu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4474
+X-archive-position: 4475
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@embeddededge.com
+X-original-sender: eawilliams@howard.edu
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
+Anyone can give me insight as to what the error means.
 
-> We currently don't support compressed kernels.
+Illegal F_magic number 0x5330, expected MIPSELMAGIC or MIPSEBMAGIC
 
-For AMD/Alchemy boards we do, they work very well, and there
-isn't any reason it can't be supported on others.  If you
-use boot code like u-boot, you would also get some pretty
-nice compressed kernel and initrd support (but the MIPS kernel
-doesn't have a very flexible implementation of initrd support).
-These features are very useful for embedded systems to maximize
-resource utilization, to provide field upgrade, and fallback
-recovery methods.
+Exception: (vector=Normal)......and so.
 
-> But if we were supporting it the limitation would depend on size of
-> available memory and how it's used at boot time, that is the limit would
-> depend on the exact system.
+My PROM version is: 
+PROM Monitor SGI Version 5.3 Rev B10 R4X00/R5000 IP24 Feb 12, 1996 (BE).
 
-That's true.  For just a compressed kernel, size is no problem.
-For initrd support, it's a little more of a challenge.  I have a
-board with 128M of SDRAM and we regulary use 64M initrd images
-for software install and upgrade.
-
-Thanks.
-
-
-	-- Dan
+Eric

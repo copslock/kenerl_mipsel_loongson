@@ -1,56 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Mar 2004 18:51:44 +0000 (GMT)
-Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:15540 "EHLO
-	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225308AbUCQSvn>; Wed, 17 Mar 2004 18:51:43 +0000
-Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
-	id 1E79E4B05E; Wed, 17 Mar 2004 19:51:36 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by jurand.ds.pg.gda.pl (Postfix) with ESMTP
-	id D28FF4ADFC; Wed, 17 Mar 2004 19:51:36 +0100 (CET)
-Date: Wed, 17 Mar 2004 19:51:36 +0100 (CET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Cc: linux-mips@linux-mips.org
-Subject: Re: 2.4 kernels + >=binutils-2.14.90.0.8
-In-Reply-To: <20040309023737.GJ16163@rembrandt.csv.ica.uni-stuttgart.de>
-Message-ID: <Pine.LNX.4.55.0403171829130.14525@jurand.ds.pg.gda.pl>
-References: <404D0132.3020202@gentoo.org> <20040308234450.GF16163@rembrandt.csv.ica.uni-stuttgart.de>
- <404D0A18.6050802@gentoo.org> <20040309003447.GH16163@rembrandt.csv.ica.uni-stuttgart.de>
- <404D1909.1020005@gentoo.org> <20040309013841.GI16163@rembrandt.csv.ica.uni-stuttgart.de>
- <404D28B1.4010608@gentoo.org> <20040309023737.GJ16163@rembrandt.csv.ica.uni-stuttgart.de>
-Organization: Technical University of Gdansk
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Mar 2004 21:00:46 +0000 (GMT)
+Received: from sccrmhc12.comcast.net ([IPv6:::ffff:204.127.202.56]:2285 "EHLO
+	sccrmhc12.comcast.net") by linux-mips.org with ESMTP
+	id <S8225315AbUCQVAo>; Wed, 17 Mar 2004 21:00:44 +0000
+Received: from gentoo.org (pcp04939029pcs.waldrf01.md.comcast.net[68.48.72.58])
+          by comcast.net (sccrmhc12) with ESMTP
+          id <2004031721003701200nb8spe>
+          (Authid: kumba12345);
+          Wed, 17 Mar 2004 21:00:37 +0000
+Message-ID: <4058BC76.9020204@gentoo.org>
+Date: Wed, 17 Mar 2004 16:00:38 -0500
+From: Kumba <kumba@gentoo.org>
+Reply-To: kumba@gentoo.org
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.6) Gecko/20040113
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+To: linux-mips@linux-mips.org
+Subject: Re: 2.4 kernels + >=binutils-2.14.90.0.8
+References: <404D0132.3020202@gentoo.org> <20040308234450.GF16163@rembrandt.csv.ica.uni-stuttgart.de> <404D0A18.6050802@gentoo.org> <20040309003447.GH16163@rembrandt.csv.ica.uni-stuttgart.de> <404D1909.1020005@gentoo.org> <20040309013841.GI16163@rembrandt.csv.ica.uni-stuttgart.de> <404D28B1.4010608@gentoo.org> <20040309023737.GJ16163@rembrandt.csv.ica.uni-stuttgart.de> <Pine.LNX.4.55.0403171829130.14525@jurand.ds.pg.gda.pl>
+In-Reply-To: <Pine.LNX.4.55.0403171829130.14525@jurand.ds.pg.gda.pl>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4563
+X-archive-position: 4564
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 9 Mar 2004, Thiemo Seufer wrote:
+Maciej W. Rozycki wrote:
 
-> >From the different alignment, this _might_ be related to Maciej's
-> binutils patch for PAGE_SIZE != 4k.
-> http://sources.redhat.com/ml/binutils/2003-12/msg00380.html
-> 
-> [snip]
-> > >> boot -f 2425x1
-> > 
-> > Cannot load scsi(0)disk(4)rdisk(0)partition(8)/2425x1.
-> > Text start 0x8000000, size 0x194400 doesn't fit in a FreeMemory area.
-> 
-> The text start should be at 0x8002000 or higher, else it will fail.
+>  It looks like a bug somewhere in binutils, probably BFD.  The segment's
+> start address should be rounded up to 0x8010000, not down to 0x8000000.
 
- It looks like a bug somewhere in binutils, probably BFD.  The segment's
-start address should be rounded up to 0x8010000, not down to 0x8000000.
+Well, I did test removing the patch Thiemo mentioned 
+(http://sources.redhat.com/ml/binutils/2003-12/msg00380.html), and 
+rebuilding a kernel, and now they boot.  I tested a 2.4.25 on an Indy, 
+and 2.6.4 on an O2.  Perhaps a bug in this specific patch?
+
+
+--Kumba
 
 -- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+"Such is oft the course of deeds that move the wheels of the world: 
+small hands do them because they must, while the eyes of the great are 
+elsewhere."  --Elrond

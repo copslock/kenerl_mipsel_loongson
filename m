@@ -1,47 +1,57 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id VAA99717 for <linux-archive@neteng.engr.sgi.com>; Thu, 29 Apr 1999 21:51:15 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id BAA12138 for <linux-archive@neteng.engr.sgi.com>; Fri, 30 Apr 1999 01:54:14 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id VAA73644
+	id BAA11455
 	for linux-list;
-	Thu, 29 Apr 1999 21:48:17 -0700 (PDT)
+	Fri, 30 Apr 1999 01:52:53 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id VAA32446
+	via ESMTP id BAA86269
 	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 29 Apr 1999 21:48:15 -0700 (PDT)
-	mail_from (clepple@foo.tho.org)
-Received: from foo.tho.org (pr250.pheasantrun.net [208.140.225.250]) 
+	Fri, 30 Apr 1999 01:52:49 -0700 (PDT)
+	mail_from (Harald.Koerfgen@home.ivm.de)
+Received: from aw.ivm.net (mail.ivm.net [195.78.161.2] (may be forged)) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id AAA03382
-	for <linux@cthulhu.engr.sgi.com>; Fri, 30 Apr 1999 00:48:09 -0400 (EDT)
-	mail_from (clepple@foo.tho.org)
-Received: from foo.tho.org (clepple@sprocket.foo.tho.org [206.223.45.3])
-	by foo.tho.org (8.8.7/8.8.7) with ESMTP id AAA26228
-	for <linux@cthulhu.engr.sgi.com>; Fri, 30 Apr 1999 00:48:08 -0400
-Message-ID: <37293607.392B2C56@foo.tho.org>
-Date: Fri, 30 Apr 1999 04:48:07 +0000
-From: Charles Lepple <clepple@foo.tho.org>
-X-Mailer: Mozilla 4.5 [en] (X11; U; Linux 2.0.36 i586)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: Linux/SGI <linux@cthulhu.engr.sgi.com>
-Subject: Indigo2 port status?
+	via ESMTP id EAA08802
+	for <linux@cthulhu.engr.sgi.com>; Fri, 30 Apr 1999 04:52:48 -0400 (EDT)
+	mail_from (Harald.Koerfgen@home.ivm.de)
+Received: from franz.no.dom (port22.koeln.ivm.de [195.247.239.22])
+	by aw.ivm.net (8.8.8/8.8.8) with ESMTP id KAA10718;
+	Fri, 30 Apr 1999 10:52:38 +0200
+X-To: linux@cthulhu.engr.sgi.com
+Message-ID: <XFMail.990430105522.Harald.Koerfgen@home.ivm.de>
+X-Mailer: XFMail 1.3 [p0] on Linux
+X-Priority: 3 (Normal)
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+Date: Fri, 30 Apr 1999 10:55:22 +0200 (MEST)
+Reply-To: "Harald Koerfgen" <Harald.Koerfgen@home.ivm.de>
+Organization: none
+From: Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
+To: linux-mips@fnet.fr, SGI Linux <linux@cthulhu.engr.sgi.com>
+Subject: CP0_STATUS interrupt mask patch
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Ok, so does anyone know what happened to the Indigo2 porting project? I
-tried to get in touch with someone at UAB but to no avail.
+Hi Gang,
 
-Sorry to bother the rest of you...
+two weeks ago I asked for comments on a patch which is essential for Linux
+on DECstations but may trigger undiscovered bugs on other machines.
 
--- 
-Charles Lepple
-System Administrator, Virginia Tech EE Workstation Labs
-clepple@ee.vt.edu || http://www.foo.tho.org/charles/
+Well, I haven't got any feedback :-(
+
+On the other hand, nobody said "don't do this!" :-)
+
+If nobody stops me I am going to commit the patch I posted two weeks ago
+and see what happens B)
+---
+Regards,
+Harald
+
+P.S.: Yes, I *do* have my asbestos suit within reach.

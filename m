@@ -1,23 +1,42 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id LAA53037 for <linux-archive@neteng.engr.sgi.com>; Thu, 15 Jan 1998 11:43:43 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id QAA135138 for <linux-archive@neteng.engr.sgi.com>; Thu, 15 Jan 1998 16:02:44 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA09237 for linux-list; Thu, 15 Jan 1998 11:41:28 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA09171 for <linux@cthulhu.engr.sgi.com>; Thu, 15 Jan 1998 11:41:16 -0800
-Received: from snowcrash.cymru.net (snowcrash.cymru.net [163.164.160.3]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id LAA18341
-	for <linux@cthulhu.engr.sgi.com>; Thu, 15 Jan 1998 11:41:13 -0800
-	env-from (alan@lxorguk.ukuu.org.uk)
-Received: from lightning.swansea.linux.org.uk (the-village.bc.nu [163.164.160.21]) by snowcrash.cymru.net (8.8.7/8.7.1) with SMTP id TAA16134; Thu, 15 Jan 1998 19:40:50 GMT
-Received: by lightning.swansea.linux.org.uk (Smail3.1.29.1 #2)
-	id m0xsvZ4-0005FsC; Thu, 15 Jan 98 20:06 GMT
-Message-Id: <m0xsvZ4-0005FsC@lightning.swansea.linux.org.uk>
-From: alan@lxorguk.ukuu.org.uk (Alan Cox)
-Subject: Reminds me: XV
-To: alan@lxorguk.ukuu.org.uk (Alan Cox)
-Date: Thu, 15 Jan 1998 20:06:58 +0000 (GMT)
-Cc: shaver@neon.ingenia.ca, mdhill@interlog.com, linux@cthulhu.engr.sgi.com
-In-Reply-To: <m0xsv66-0005FsC@lightning.swansea.linux.org.uk> from "Alan Cox" at Jan 15, 98 07:37:01 pm
-Content-Type: text
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA29892 for linux-list; Thu, 15 Jan 1998 15:59:36 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA29882 for <linux@cthulhu.engr.sgi.com>; Thu, 15 Jan 1998 15:59:34 -0800
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id PAA09042
+	for <linux@cthulhu.engr.sgi.com>; Thu, 15 Jan 1998 15:59:33 -0800
+	env-from (ralf@uni-koblenz.de)
+From: ralf@uni-koblenz.de
+Received: from uni-koblenz.de (pmport-21.uni-koblenz.de [141.26.249.21])
+	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id AAA11525
+	for <linux@cthulhu.engr.sgi.com>; Fri, 16 Jan 1998 00:59:31 +0100 (MET)
+Received: (from ralf@localhost)
+	by uni-koblenz.de (8.8.7/8.8.7) id AAA07873;
+	Fri, 16 Jan 1998 00:42:36 +0100
+Message-ID: <19980116004236.53486@uni-koblenz.de>
+Date: Fri, 16 Jan 1998 00:42:36 +0100
+To: Miguel de Icaza <miguel@nuclecu.unam.mx>
+Cc: tsbogend@alpha.franken.de, linux@cthulhu.engr.sgi.com
+Subject: Re: The world's worst RPM
+References: <19980114215847.36294@alpha.franken.de> <199801142359.RAA07990@athena.nuclecu.unam.mx>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.85e
+In-Reply-To: <199801142359.RAA07990@athena.nuclecu.unam.mx>; from Miguel de Icaza on Wed, Jan 14, 1998 at 05:59:27PM -0600
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-I uploaded an xv rpm today - its a nother -D_USE_POSIX because it uses 
-signal masks
+On Wed, Jan 14, 1998 at 05:59:27PM -0600, Miguel de Icaza wrote:
+
+> > hmm, to do this with only one src.rpm, we need a little support from
+> > rpm. At the moment mips is defined for mipsel and mipseb. I would suggest,
+> > that for .spec execution mips is defined for bot mipsel and mipseb, because 
+> > there are changes, which work for both and we only need to seperate changes 
+> > like that needed by ncompress.  Comments ? Does anybody how to do this ?
+> 
+> The code should be fixed to autoconfigure itself by using the
+> __LITTLE_ENDIAN and __BIG_ENDIAN macros that are defined somewhere in
+> /usr/include.  And ship the patch with this.
+
+I actually have some patch ... somewhere on a disk ...
+
+  Ralf

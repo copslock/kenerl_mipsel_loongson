@@ -1,50 +1,44 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f4AINU109917
-	for linux-mips-outgoing; Thu, 10 May 2001 11:23:30 -0700
-Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f4AINQF09912;
-	Thu, 10 May 2001 11:23:26 -0700
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f4AIBQ016225;
-	Thu, 10 May 2001 11:11:26 -0700
-Message-ID: <3AFAD9E8.EC4D6D80@mvista.com>
-Date: Thu, 10 May 2001 11:11:53 -0700
-From: Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
-X-Accept-Language: en
+	by oss.sgi.com (8.11.3/8.11.3) id f4AITvb10250
+	for linux-mips-outgoing; Thu, 10 May 2001 11:29:57 -0700
+Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f4AITtF10247
+	for <linux-mips@oss.sgi.com>; Thu, 10 May 2001 11:29:56 -0700
+Received: from rose.sonytel.be (rose.sonytel.be [10.17.0.5])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id UAA05139;
+	Thu, 10 May 2001 20:24:23 +0200 (MET DST)
+Date: Thu, 10 May 2001 20:23:41 +0200 (MET DST)
+From: Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
+To: Wayne Gowcher <wgowcher@yahoo.com>
+cc: Pete Popov <ppopov@mvista.com>, linux-mips@oss.sgi.com
+Subject: Re: Configuration of PCI Video card on a BIOS-less board
+In-Reply-To: <20010510175339.83183.qmail@web11904.mail.yahoo.com>
+Message-ID: <Pine.GSO.4.10.10105102021160.14224-100000@rose.sonytel.be>
 MIME-Version: 1.0
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-CC: Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com
-Subject: Re: lift the ioport_resource limit ...
-References: <Pine.GSO.3.96.1010510111734.10485A-100000@delta.ds2.pg.gda.pl>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-"Maciej W. Rozycki" wrote:
-> 
-> On Wed, 9 May 2001, Jun Sun wrote:
-> 
-> > The PCI IO space essentially extends the ISA bus, which effectively removes
-> > the 0xffff limits.
-> 
->  Note that while there is usually no problem with using addresses beyond
-> 64kB in the PCI I/O space, certain PCI-to-PCI bridges may not pass such
-> accesses across.  So it's best to avoid assigning and using them.  That's
-> why Linux remaps "high" I/O space resources on Alpha, which get set up for
-> some systems by the SRM console (firmware), e.g. in the system I was using
-> a few years ago, SRM used to assign addresses around 0x11000 and 0x12000
-> for the onboard network and SCSI devices, IIRC.
-> 
+On Thu, 10 May 2001, Wayne Gowcher wrote:
+> The original card i had a problem had an ATI Rage
+> chip. I am now experimenting with a VGA card with a
+> Cirrus Logic chip. I've got this card to accept the
+> programmed base address and am in teh process of
+> studying clgenfb.c to see if I can modify it to my
+> needs. 
+> On first inspection clgenfb.c is written for the
+> Amiga??? and so I am trying to weed out the
+> dependencies. If anyone knows of a more generic driver
+> it would be much appreciated.
 
-I would not normally assign IO space above 0xffff either.  But recently I
-found multiple PCI buses, especially dual PCI buses, are getting popular, as
-examplified by two Gallelio chips and the new NEC Vrc5477 chips.  
+Clgenfb supports both Amiga Zorro cards with a Cirrus Logic chip and PCI cards.
+Note that it may depend on some chip initialisation already been done.
 
-Since all drivers share the same mips_io_port_base, - even though the devices
-may be on different PCI buses - we need to assign the PCI IO windows
-contiguously so that drivers can share the same base address.  In most such
-setups, you will get more than 0xffff IO ranges.
+Gr{oetje,eeting}s,
 
-Jun
+						Geert
+
+--
+Geert Uytterhoeven ------------- Sony Software Development Center Europe (SDCE)
+Geert.Uytterhoeven@sonycom.com ------------------- Sint-Stevens-Woluwestraat 55
+Voice +32-2-7248626 Fax +32-2-7262686 ---------------- B-1130 Brussels, Belgium

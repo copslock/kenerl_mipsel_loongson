@@ -1,67 +1,75 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6CIvhRw011395
-	for <linux-mips-outgoing@oss.sgi.com>; Fri, 12 Jul 2002 11:57:43 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6DBBXRw026926
+	for <linux-mips-outgoing@oss.sgi.com>; Sat, 13 Jul 2002 04:11:33 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6CIvhhi011394
-	for linux-mips-outgoing; Fri, 12 Jul 2002 11:57:43 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6DBBX8p026925
+	for linux-mips-outgoing; Sat, 13 Jul 2002 04:11:33 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6CIvZRw011385
-	for <linux-mips@oss.sgi.com>; Fri, 12 Jul 2002 11:57:36 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id VAA11662;
-	Fri, 12 Jul 2002 21:02:42 +0200 (MET DST)
-Date: Fri, 12 Jul 2002 21:02:41 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: "Gleb O. Raiko" <raiko@niisi.msk.ru>
-cc: linux-mips@oss.sgi.com
-Subject: Re: mips32_flush_cache routine corrupts CP0_STATUS with gcc-2.96
-In-Reply-To: <3D2EAEF2.C06AFD05@niisi.msk.ru>
-Message-ID: <Pine.GSO.3.96.1020712204324.7646H-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received: from mx2.mips.com (mx2.mips.com [206.31.31.227])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6DBBQRw026914
+	for <linux-mips@oss.sgi.com>; Sat, 13 Jul 2002 04:11:26 -0700
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id g6DBG1Xb018992
+	for <linux-mips@oss.sgi.com>; Sat, 13 Jul 2002 04:16:01 -0700 (PDT)
+Received: from grendel (grendel [192.168.236.16])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id EAA24873
+	for <linux-mips@oss.sgi.com>; Sat, 13 Jul 2002 04:15:59 -0700 (PDT)
+Message-ID: <023e01c22a5e$c013f120$10eca8c0@grendel>
+From: "Kevin D. Kissell" <kevink@mips.com>
+To: <linux-mips@oss.sgi.com>
+Subject: Gcc v2.96 versus Trolltech QtEmbedded Window System
+Date: Sat, 13 Jul 2002 13:15:54 +0200
+Organization: MIPS Technologies, Inc.
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4807.1700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4910.0300
+X-Spam-Status: No, hits=0.0 required=5.0 tests= version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, 12 Jul 2002, Gleb O. Raiko wrote:
+I am trying to build the GPL version of the Trolltech
+QT embedded windowing system on my Malta, using
+what I believe to be H.J. Lu's most recent tool chain:
 
-> >  Well, you issue an instruction word read from the cache.  The answer is
-> > either a hit, providing a word at the data bus at the same time (so you
-> > can't get a hit from one cache and data from the other) or a miss with no
-> > valid data -- you have to stall in this case, waiting for a refill.  
-> 
-> Let it be miss and stall.
-> 
-> >Then
-> > when data from the main memory arrives, it is latched in the cache (it
-> > doesn't really matter, which one now -- if it's the wrong one, then
-> > another refill will happen next time the memory address is dereferenced)
-> > and provided to the CPU at the same time.
-> 
-> At this time, CPU continues the execution of previous stalled
+[root@localhost release-emb-generic]# g++ -v
+Reading specs from /usr/lib/gcc-lib/mipsel-redhat-linux-gnu/2.96/specs
+gcc version 2.96 20000731 (Red Hat Linux 7.3 2.96-110.1)
 
- We don't care of previous instructions.  The pipeline is stalled at the
-intruction word fetch stage.  Previously fetched instructions continue
-being processed until they leave the pipeline. 
+The QT build process is a little unusual - the configure
+script causes a fairly huge (640KB) C++ source file
+to be generated, which is then thrown at the compiler.
+I would expect that to take a while, but after about 
+20 hours with zero output passed to the assembler
+stage (it runs with -pipe) and the gradual accretion
+of about 90MB of virtual memory (on my poor 32MB
+system) I concluded that it was probably trapped in
+an infinite loop.  As I have seen this sort of thing occur
+in the past in optimizer stages, I hacked the makefile
+to replace -O2 with -O0.  It hasn't run for 20 hours
+at -O0 yet, but after a couple of hours the memory 
+allocation dynamic looks to be the same, only faster
+(72MB after only a couple of hours), so I'm not
+optimistic.
 
-> instruction. CPU knows the stalled instruction is in I-cache, but,
-> unfortunately, caches have been swapped already. The same cacheline in
-> the D-cache was valid bit set. CPU get data instead of code.
+My questions to the assembled panel of experts are:
 
- Well, I certainly understand what you mean, from the beginning, actually,
-but I still can't see why this would happen for a real implementation. 
-When a cache miss happens an instruction word is read directly from the
-main memory to the pipeline and a cache fill happens "accidentally".
+Are there known problems with gcc 2.96.110.1 in
+this regard?
 
- What you describe, would require a CPU to query a cache status somehow
-during a fill (what if another fill is in progress? -- a cache controller
-may perform a fill of additional lines itself as it happens in certain
-implementations) and then issue a second read when the fill completes. 
-That looks weird to me -- why would you design it this way? 
+Is there a native toolchain that would be more 
+likely to be able to handle the build of QT?
+I'm considering trying the 2.95 set on Maciej's
+site out of desperation.
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Has anyone succeeded in building QT Embedded
+for mips(el) Linux, either native or using cross-tools?
+
+            Regards,
+
+            Kevin K.

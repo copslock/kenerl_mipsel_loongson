@@ -1,75 +1,92 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4SHI5nC026623
-	for <linux-mips-outgoing@oss.sgi.com>; Tue, 28 May 2002 10:18:05 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4SHaRnC026892
+	for <linux-mips-outgoing@oss.sgi.com>; Tue, 28 May 2002 10:36:27 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4SHI5LR026622
-	for linux-mips-outgoing; Tue, 28 May 2002 10:18:05 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4SHaRgS026891
+	for linux-mips-outgoing; Tue, 28 May 2002 10:36:27 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from av.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4SHHxnC026619
-	for <linux-mips@oss.sgi.com>; Tue, 28 May 2002 10:17:59 -0700
-Received: from mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id KAA30133;
-	Tue, 28 May 2002 10:17:40 -0700
-Message-ID: <3CF3BB4B.504@mvista.com>
-Date: Tue, 28 May 2002 10:15:55 -0700
-From: Jun Sun <jsun@mvista.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.2.1) Gecko/20010901
-X-Accept-Language: en-us
+Received: from mx2.mips.com (ftp.mips.com [206.31.31.227])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4SHaJnC026888
+	for <linux-mips@oss.sgi.com>; Tue, 28 May 2002 10:36:19 -0700
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.9.3/8.9.0) with ESMTP id KAA07893;
+	Tue, 28 May 2002 10:37:33 -0700 (PDT)
+Received: from grendel (grendel [192.168.236.16])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id KAA16685;
+	Tue, 28 May 2002 10:37:33 -0700 (PDT)
+Message-ID: <01da01c2066f$3ed63f40$10eca8c0@grendel>
+From: "Kevin D. Kissell" <kevink@mips.com>
+To: "Jun Sun" <jsun@mvista.com>, "Geert Uytterhoeven" <geert@linux-m68k.org>
+Cc: "Steven J. Hill" <sjhill@realitydiluted.com>,
+   "Linux/MIPS Development" <linux-mips@oss.sgi.com>
+References: <Pine.GSO.4.21.0205271534430.15706-100000@vervain.sonytel.be> <3CF3B72B.4020600@mvista.com>
+Subject: Re: PCI Graphics/Video Card for Malta Board?
+Date: Tue, 28 May 2002 19:43:55 +0200
 MIME-Version: 1.0
-To: Alexandr Andreev <andreev@niisi.msk.ru>
-CC: linux-mips@oss.sgi.com
-Subject: Re: 3 questions about linux-2.4.18 and R3000
-References: <3CEEBBA9.5070809@niisi.msk.ru> <3CEEAC5F.6010802@mvista.com> <3CF2A17D.6050207@niisi.msk.ru>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4807.1700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4807.1700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Alexandr Andreev wrote:
-
-> Jun Sun wrote:
+From: "Jun Sun" <jsun@mvista.com>
+> Geert Uytterhoeven wrote:
 > 
->> I took a look of the arch_get_unmapped_area(),  and it looks fine to me.
->>
->> Can you try the following changes and let me know what happens?
->>
->> 1) change COLOUR_ALIGN
->> #define COLOUR_ALIGN(addr,pgoff)     addr
+> > On Mon, 27 May 2002, Steven J. Hill wrote:
+> > 
+> >>Kevin D. Kissell wrote:
+> >>
+> >>>I'd like to get a video-capable graphics card up
+> >>>and running on a MIPS Malta board (therefore
+> >>>PCI), ideally something mainstream like ATI.
+> >>>Does anyone on the list have any positive or
+> >>>negative recommendations in terms of cards
+> >>>and particularly in terms of the degree to which
+> >>>the drivers (and PCI set-up) have been ported
+> >>>to MIPS/Linux?  I'll do what I must, but I hate
+> >>>re-inventing the wheel.
+> >>>
+> >>>
+> >>I can think of two things. First, a lot of graphics cards
+> >>rely on BIOS calls to be set up before the operating system
+> >>even boots. Second, I would stick to graphics cards that
+> >>have framebuffer support in the kernel as you stand at least
+> >>half a chance that those cards don't rely so heavily on a
+> >>peecee bios. Just my $.02.
+> >>
+> > 
+> > Even then, most frame buffer device drivers rely on the firmware (PC BIOS or
+> > SPARC/PPC Open Firmware) having set up the video card.
+> > 
+> > One of the exceptions is matroxfb, 
 > 
 > 
-> OK, It works for me.
+> Steve Longerbeam has a fb driver with BIOS init for ATI Xpert98 card, which 
+> you can still buy.
+
+Yeah, but it's a pretty wimpy card (8MB) and has no TV output.
+  
+> Dan Malek also wrote a driver for MQ200.  
+
+Which is essentially a handheld/webphone graphics chip,
+for which the documentation is only available under NDA.
+Not terribly useful for me, thanks.
+
+> If you ask  around, I am sure you can the patch somewhere.
+
+I *am* asking around - that's why I started this thread.
+
 > 
+> For a while, I also had 3dfx voodoo3 working.  Not sure about its status now. 
+>   You can find the patch at http://www.medex.hu/~danthe/tdfx/.
 
+3dfx, in case you hadn't heard, folded some time ago.
 
-That indicate the logic of function works.
+So it sounds like the Matrox G450 PCI is really the only
+game in town...
 
-So the problems might lie on something else:
-
-1) some caller pass in non-zero addr but does not check the return addr and 
-assume the addr remains the same.
-
-2) given the reported toolchain, I will double-check to see if COLOUR_ALIGN() 
-is compiled correctly.  It is mildly complex.
-
-
-I would be also interested to know if removing filp condition would solve your 
-problem.  Nobody has explained why this condition is needed for doing 
-COLOUR_ALIGN().
-
-
->>
->> We have been using gcc 2.9.5 and binutils 2.10.x for R3000 CPUs for 
->> quite a  while with no problems.  It seems newer gcc and binutiles are 
->> fine too.
->>
-> I understand, but is there any __official__ recommended versions of these
-> utils? http://oss.sgi.com/mips/mips-howto.html is out-of-date :(
-> 
-
-
-Who are the "officiers" to decide on __official__ versions? :-)  If you are 
-really uncomfortable with non-official stuff, you might want to consider 
-paying some vendor and I am sure you will be given an "official" version.
-
-Jun
+            Kevin K.

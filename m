@@ -1,51 +1,49 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id MAA2692167 for <linux-archive@neteng.engr.sgi.com>; Thu, 2 Apr 1998 12:57:03 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA2677449 for <linux-archive@neteng.engr.sgi.com>; Thu, 2 Apr 1998 14:40:30 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id MAA7050586
+	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id OAA7096179
 	for linux-list;
-	Thu, 2 Apr 1998 12:55:21 -0800 (PST)
+	Thu, 2 Apr 1998 14:39:12 -0800 (PST)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id MAA7054593
+	via ESMTP id OAA7061898
 	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 2 Apr 1998 12:55:14 -0800 (PST)
-Received: from dirtpan.npiww.com (dirtpan.networkprograms.com [207.113.23.2]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via SMTP id MAA23243
-	for <linux@cthulhu.engr.sgi.com>; Thu, 2 Apr 1998 12:55:05 -0800 (PST)
-	mail_from (dliu@npiww.com)
-Received: from mailhub.networkprograms.com [192.9.202.51] by dirtpan.npiww.com (8.6.9/8.6.9) with ESMTP id QAA02569; Thu, 2 Apr 1998 16:03:27 -0500
-Date: Thu, 2 Apr 1998 16:10:06 -0500
-Message-Id: <199804022110.QAA11632@pluto.npiww.com>
-From: Dong Liu <dliu@npiww.com>
-To: ralf@uni-koblenz.de
+	Thu, 2 Apr 1998 14:39:02 -0800 (PST)
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id OAA08098
+	for <linux@cthulhu.engr.sgi.com>; Thu, 2 Apr 1998 14:38:58 -0800 (PST)
+	mail_from (ralf@uni-koblenz.de)
+From: ralf@uni-koblenz.de
+Received: from uni-koblenz.de (pmport-14.uni-koblenz.de [141.26.249.14])
+	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id AAA09790
+	for <linux@cthulhu.engr.sgi.com>; Fri, 3 Apr 1998 00:38:56 +0200 (MEST)
+Received: (from ralf@localhost)
+	by uni-koblenz.de (8.8.7/8.8.7) id XAA01858;
+	Thu, 2 Apr 1998 23:35:33 +0200
+Message-ID: <19980402233532.10932@uni-koblenz.de>
+Date: Thu, 2 Apr 1998 23:35:32 +0200
+To: Dong Liu <dliu@npiww.com>
 Cc: linux@cthulhu.engr.sgi.com
-Subject: Re: kernel panic
-In-Reply-To: <19980402223738.08008@uni-koblenz.de>
-References: <199804021731.TAA00404@calypso.saturn>
-	<199804021855.NAA08562@pluto.npiww.com>
-	<19980402204738.29605@uni-koblenz.de>
-	<199804021922.OAA09268@pluto.npiww.com>
-	<19980402223738.08008@uni-koblenz.de>
+Subject: Re: serial console
+References: <199804021731.TAA00404@calypso.saturn> <199804021855.NAA08562@pluto.npiww.com> <19980402204738.29605@uni-koblenz.de> <199804022006.PAA10227@pluto.npiww.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.85e
+In-Reply-To: <199804022006.PAA10227@pluto.npiww.com>; from Dong Liu on Thu, Apr 02, 1998 at 03:06:21PM -0500
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-ralf@uni-koblenz.de writes:
- > On Thu, Apr 02, 1998 at 02:22:46PM -0500, Dong Liu wrote:
- > 
- > > ralf@uni-koblenz.de writes:
- > >  > 
- > >  > Surprise, the support for the serial console does not compile :-)
- > > 
- > > I know, but look at drivers/char/console.c, you don't need
- > > CONFIG_SERIAL_CONSOLE to be defined, it will always call
- > > rs_cons_hook() if CONFIG_SGI or CONFIG_SUN_SERIAL is set, and
- > > in arch/mips/sgi/setup.c serial_console is set if
- > > prom_getenv("console") returns "d" or "d2".
- > > 
- > > Maybe it should be changed to be use CONFIG_SUN_SERIAL and implement 
- > > function serial_console_init().
- > 
- > For shure not CONFIG_STUN_SERIAL :-)
- > 
-Sorry, I meant CONFIG_SERIAL_CONSOLE, victim of emacs' dabbrev-expand :=).
+On Thu, Apr 02, 1998 at 03:06:21PM -0500, Dong Liu wrote:
 
-Dong
+> Ok, I got a serial cable , connect it, type "nvram console d", now I
+> can boot irix from a serial terminal, but for linux, the message
+> didn't come out, maybe all the serial parameters are not set right.
+
+Linux doesn't accept the value ``dd'' for the console variable.  If you
+try, Linux should complain about the setting and enter the interactive
+firmware mode again.  Could you try setting console to either d1 or d2
+according to the serial line you're using?
+
+Thanks for testing this; having working serial consoles is on of the
+missing parts in supporting the Challenge S.
+
+  Ralf

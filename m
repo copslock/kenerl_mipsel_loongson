@@ -1,117 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Feb 2003 09:36:43 +0000 (GMT)
-Received: from modemcable092.130-200-24.mtl.mc.videotron.ca ([IPv6:::ffff:24.200.130.92]:65363
-	"EHLO montezuma.mastecende.com") by linux-mips.org with ESMTP
-	id <S8225200AbTBNJgm>; Fri, 14 Feb 2003 09:36:42 +0000
-Received: from localhost.localdomain (montezuma.commfireservices.com [192.168.0.6])
-	by montezuma.mastecende.com (8.12.5/8.12.5) with ESMTP id h1E9ZQrf020267;
-	Fri, 14 Feb 2003 04:35:27 -0500
-Date: Fri, 14 Feb 2003 04:35:26 -0500 (EST)
-From: Zwane Mwaikambo <zwane@zwane.ca>
-X-X-Sender: zwane@montezuma.mastecende.com
-To: Linux Kernel <linux-kernel@vger.kernel.org>
-cc: Linus Torvalds <torvalds@transmeta.com>,
-	"" <linux-mips@linux-mips.org>
-Subject: [PATCH][2.5][5/14] smp_call_function_on_cpu - MIPS64
-Message-ID: <Pine.LNX.4.50.0302140358120.3518-100000@montezuma.mastecende.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Feb 2003 09:41:42 +0000 (GMT)
+Received: from mta4-svc.business.ntl.com ([IPv6:::ffff:62.253.164.44]:29641
+	"EHLO mta4-svc.business.ntl.com") by linux-mips.org with ESMTP
+	id <S8225200AbTBNJll>; Fri, 14 Feb 2003 09:41:41 +0000
+Received: from metrowerks.com ([80.1.9.105]) by mta4-svc.business.ntl.com
+          (InterMail vM.4.01.03.27 201-229-121-127-20010626) with ESMTP
+          id <20030214094139.MIYL29609.mta4-svc.business.ntl.com@metrowerks.com>;
+          Fri, 14 Feb 2003 09:41:39 +0000
+Message-ID: <3E4CABAA.EB496387@metrowerks.com>
+Date: Fri, 14 Feb 2003 08:41:14 +0000
+From: Stuart Hughes <shughes@metrowerks.com>
+Organization: MetroWerks
+X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.18 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <zwane@zwane.ca>
+To: sseeger@stellartec.com
+CC: 'Jun Sun' <jsun@mvista.com>, linux-mips@linux-mips.org
+Subject: Re: NEC VR4181A
+References: <02c101c2d362$f9e2eed0$3501a8c0@wssseeger>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <shughes@metrowerks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1420
+X-archive-position: 1421
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zwane@zwane.ca
+X-original-sender: shughes@metrowerks.com
 Precedence: bulk
 X-list: linux-mips
 
- smp.c |   51 ++++++++++++++++++++++++++++++++++++++++-----------
- 1 files changed, 40 insertions(+), 11 deletions(-)
+Steven Seeger wrote:
+> 
+> >Osprey uses Vr4181, which is a different chip from vr4181a.
+> 
+[snip]
+> >Interesting.  I was trying to get RT-Linux working at one time
+> >but aborted that effort in the middle.
+> 
+> Getting RTAI working wasn't easy. Took over a week and it was supposedly
+> already "ported." One of these days I really must find the time to check in
+> my changes to that project. It works very well and is quite stable. I think
+> 46 us worst-case interrupt response off one of the VR4181's interrupts from
+> an external source is very good.
+> 
 
-Index: linux-2.5.60/arch/mips64/kernel/smp.c
-===================================================================
-RCS file: /build/cvsroot/linux-2.5.60/arch/mips64/kernel/smp.c,v
-retrieving revision 1.1.1.1
-diff -u -r1.1.1.1 smp.c
---- linux-2.5.60/arch/mips64/kernel/smp.c	10 Feb 2003 22:15:44 -0000	1.1.1.1
-+++ linux-2.5.60/arch/mips64/kernel/smp.c	14 Feb 2003 06:11:21 -0000
-@@ -131,16 +131,35 @@
- 	int wait;
- } *call_data;
- 
--int smp_call_function (void (*func) (void *info), void *info, int retry, 
--								int wait)
-+/*
-+ * smp_call_function_on_cpu - Runs func on all processors in the mask
-+ *
-+ * @func: The function to run. This must be fast and non-blocking.
-+ * @info: An arbitrary pointer to pass to the function.
-+ * @wait: If true, wait (atomically) until function has completed on other CPUs.
-+ * @mask The bitmask of CPUs to call the function
-+ * 
-+ * Returns 0 on success, else a negative status code. Does not return until
-+ * remote CPUs are nearly ready to execute func or have executed it.
-+ *
-+ * You must not call this function with disabled interrupts or from a
-+ * hardware interrupt handler or from a bottom half handler.
-+ */
-+
-+int smp_call_function_on_cpu (void (*func) (void *info), void *info,
-+				int wait, unsigned long mask)
- {
- 	struct call_data_struct data;
--	int i, cpus = smp_num_cpus-1;
-+	int i, cpu, num_cpus;
- 	static spinlock_t lock = SPIN_LOCK_UNLOCKED;
- 
--	if (cpus == 0)
--		return 0;
--
-+	cpu = get_cpu();
-+	mask &= ~(1UL << cpu);
-+	num_cpus = hweight64(mask);
-+	if (num_cpus == 0) {
-+		put_cpu_no_resched();	
-+		return -EINVAL;
-+	}
- 	data.func = func;
- 	data.info = info;
- 	atomic_set(&data.started, 0);
-@@ -151,20 +170,30 @@
- 	spin_lock_bh(&lock);
- 	call_data = &data;
- 	/* Send a message to all other CPUs and wait for them to respond */
--	for (i = 0; i < smp_num_cpus; i++)
--		if (smp_processor_id() != i)
-+	for (i = 0; i < NR_CPUS; i++) {
-+		if (!cpu_online(i))
-+			continue;
-+
-+		if ((1UL << i) & mask)
- 			sendintr(i, DOCALL);
-+	}
- 
- 	/* Wait for response */
--	/* FIXME: lock-up detection, backtrace on lock-up */
--	while (atomic_read(&data.started) != cpus)
-+	while (atomic_read(&data.started) != num_cpus)
- 		barrier();
- 
- 	if (wait)
--		while (atomic_read(&data.finished) != cpus)
-+		while (atomic_read(&data.finished) != num_cpus)
- 			barrier();
- 	spin_unlock_bh(&lock);
-+	put_cpu_no_resched();
- 	return 0;
-+}
-+
-+int smp_call_function (void (*func) (void *info), void *info, int retry, 
-+								int wait)
-+{
-+	return smp_call_function_on_cpu(func, info, wait, cpu_online_map);
- }
- 
- extern void smp_call_function_interrupt(int irq, void *d, struct pt_regs *r)
+Hi Steve,
+
+Can you send what you have (or a patch) to Paolo at the rtai mailing
+list, then he can merge this in with the existing mips stuff that's in
+there.
+
+Regards, Stuart

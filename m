@@ -1,65 +1,41 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7A1xAI00999
-	for linux-mips-outgoing; Thu, 9 Aug 2001 18:59:10 -0700
-Received: from thor ([207.246.91.243])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7A1x8V00996
-	for <linux-mips@oss.sgi.com>; Thu, 9 Aug 2001 18:59:08 -0700
-Received: from localhost (localhost [127.0.0.1]) by thor (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id VAA29136; Thu, 9 Aug 2001 21:58:30 -0400
-Date: Thu, 9 Aug 2001 21:58:30 -0400
-From: "J. Scott Kasten" <jsk@tetracon-eng.net>
-To: Mike McDonald <mikemac@mikemac.com>
-cc: <linux-mips@oss.sgi.com>
-Subject: Re: R10K I2 Solid Impact
-In-Reply-To: <200108100018.RAA29996@saturn.mikemac.com>
-Message-ID: <Pine.SGI.4.33.0108092126050.29075-100000@thor.tetracon-eng.net>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.2/8.11.3) id f7A4tPY02281
+	for linux-mips-outgoing; Thu, 9 Aug 2001 21:55:25 -0700
+Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7A4tOV02278
+	for <linux-mips@oss.sgi.com>; Thu, 9 Aug 2001 21:55:24 -0700
+Received: from lucon.org (lake.in.lucon.org [192.168.0.2])
+	by ocean.lucon.org (Postfix) with ESMTP
+	id 87CAC125C3; Thu,  9 Aug 2001 21:55:23 -0700 (PDT)
+Received: by lucon.org (Postfix, from userid 1000)
+	id EFCF2EFB6; Thu,  9 Aug 2001 21:55:22 -0700 (PDT)
+Date: Thu, 9 Aug 2001 21:55:22 -0700
+From: "H . J . Lu" <hjl@lucon.org>
+To: Wayne Gowcher <wgowcher@yahoo.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Problems mounting RedHat 7.0 or 7.1 from oss.sgi site
+Message-ID: <20010809215522.A1958@lucon.org>
+References: <20010809175131.D30160@paradigm.rfc822.org> <20010810002937.56073.qmail@web11902.mail.yahoo.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20010810002937.56073.qmail@web11902.mail.yahoo.com>; from wgowcher@yahoo.com on Thu, Aug 09, 2001 at 05:29:37PM -0700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Thu, Aug 09, 2001 at 05:29:37PM -0700, Wayne Gowcher wrote:
+> I have tried unsuccessfully to use the root
+> filesystems
+> mipselroot-rh7-20010606.tar.bz2
+> and H.J.Lu's RedHat 7.1 install from the sgi ftp site.
+> 
+> Both give me warnings immeadiately about the files
+> they are trying to access :
+> 
 
-The site www.reputable.com is for a used equipment dealer (no affiliation,
-but I bought my I2 from them), they have lots of really good links.  In
-particular there is a multi-page SGI FAQ that will answer 70% of your
-questions.  If I'm not mistaken the serial is RS-422 like on the older
-Macs.  I'm not sure if the pinout is identical or not, but you can get a
-matching connector in the Mac section of CompUSA and re-wire the other end
-if you have too.  The audio connectors are like a standard PC.  The
-keyboard and mouse appear to be standard PS/2 variety.  Amazingly, I even
-had a QueCat and hacked Linux driver for it working under Irix when I
-played with that durring its ten minutes of fame.  Mine is an extreeme,
-but I suspect your Impact uses the same identical 13W3 connector, DB25
-shell with 3 mini coax inserted with a dozen or so regular pins.  The
-video will be sync on green.  There's some comments on the reputable site
-on what it takes to get some monitors to use that.  There's a small
-flat connector near the audio that has lots of really tiny pins in it.
-That is the external SCSI.
+Your kernel is very old. You have to have kernel 2.4.3 or above to use
+mine stuff.
 
-This should get you started.  If you have any other general questions,
-email me off list and I'll point you in the right direction.
 
---
-
-J. Scott Kasten
-Email: jsk AT tetracon-eng DOT net
-
-"Nearly all men can stand adversity,
- but if you want to test a man's
- charater, give him power. - A Lincoln"
-
-On Thu, 9 Aug 2001, Mike McDonald wrote:
-
->
->   I just got a R10K I2 Solid Impact that I'm going to attempt to play
-> with linux on. But first I need to find some more basic info. Does
-> anyone know where the connectors are documented? In particular, the
-> video connectors on the Solid Impact. The SGI search engine just tells
-> be they don't refurbish Indigos anymore. The serial port pinouts would
-> be useful too. (Wasn't it 'man serial' once I get it running?)
->
->   It's been a while since I've played with an SGI, so any helpful
-> information will be greatly appreciated.
->
->   Mike McDonald
->   mikemac@mikemac.com
->
+H.J.

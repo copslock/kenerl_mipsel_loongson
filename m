@@ -1,64 +1,43 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g2E5RDt25537
-	for linux-mips-outgoing; Wed, 13 Mar 2002 21:27:13 -0800
-Received: from mms1.broadcom.com (mms1.broadcom.com [63.70.210.58])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2E5R9925533
-	for <linux-mips@oss.sgi.com>; Wed, 13 Mar 2002 21:27:09 -0800
-Received: from 63.70.210.1 by mms1.broadcom.com with ESMTP (Broadcom
- MMS-1 SMTP Relay (MMS v4.7)); Wed, 13 Mar 2002 21:28:16 -0800
-X-Server-Uuid: 1e1caf3a-b686-11d4-a6a3-00508bfc9ae5
-Received: from mail-sj1-1.sj.broadcom.com (mail-sj1-1.sj.broadcom.com
- [10.16.128.231]) by mon-irva-11.broadcom.com (8.9.1/8.9.1) with ESMTP
- id VAA06989 for <linux-mips@oss.sgi.com>; Wed, 13 Mar 2002 21:28:37
- -0800 (PST)
-Received: from broadcom.com (kwalker@dt-sj3-158 [10.21.64.158]) by
- mail-sj1-1.sj.broadcom.com (8.8.8/8.8.8/MS01) with ESMTP id VAA00169
- for <linux-mips@oss.sgi.com>; Wed, 13 Mar 2002 21:28:37 -0800 (PST)
-Message-ID: <3C903505.36BE8BCC@broadcom.com>
-Date: Wed, 13 Mar 2002 21:28:37 -0800
-From: "Kip Walker" <kwalker@broadcom.com>
-Organization: Broadcom Corp. BPBU
-X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.5-beta4va3.20 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
+	by oss.sgi.com (8.11.2/8.11.3) id g2EAMxi32269
+	for linux-mips-outgoing; Thu, 14 Mar 2002 02:22:59 -0800
+Received: from mail2.infineon.com (mail2.infineon.com [192.35.17.230])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2EAMu932266
+	for <linux-mips@oss.sgi.com>; Thu, 14 Mar 2002 02:22:56 -0800
+X-Envelope-Sender-Is: Andre.Messerschmidt@infineon.com (at relayer mail2.infineon.com)
+Received: from mchb0b1w.muc.infineon.com ([172.31.102.53])
+	by mail2.infineon.com (8.11.1/8.11.1) with ESMTP id g2EAONn07762
+	for <linux-mips@oss.sgi.com>; Thu, 14 Mar 2002 11:24:23 +0100 (MET)
+Received: from mchb0b5w.muc.infineon.com ([172.31.102.49]) by mchb0b1w.muc.infineon.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2653.13)
+	id G6LN4G2K; Thu, 14 Mar 2002 11:24:22 +0100
+Received: from 172.29.128.3 by mchb0b5w.muc.infineon.com (InterScan E-Mail VirusWall NT); Thu, 14 Mar 2002 11:24:22 +0100
+Received: by dlfw003a.dus.infineon.com with Internet Mail Service (5.5.2653.19)
+	id <D4M0V1DP>; Thu, 14 Mar 2002 11:24:18 +0100
+Message-ID: <86048F07C015D311864100902760F1DD01B5E7BA@dlfw003a.dus.infineon.com>
+From: Andre.Messerschmidt@infineon.com
 To: linux-mips@oss.sgi.com
-Subject: HIGHMEM bug
-X-WSS-ID: 108EEB7A4083630-01-01
-Content-Type: text/plain; 
- charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Subject: More on serial console problem
+Date: Thu, 14 Mar 2002 11:24:17 +0100
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-After several days of hunting, I found a bug in the MIPS highmem code. 
-A comparison of arch/mips/mm/init.c to arch/i386/mm/init.c supports my
-claim.
+Hi.
 
-The PGD entry for the fixed mapping virtual addresses is never
-allocated.  So what happens is that the fixed mapping pte's get stuffed
-into the invalid_pte_table!  Then, subsequent accesses that ought to
-fault might alias into these PTE's and get satisfied with somebody
-else's physical page.
+I have digged through my problem with the serial console and it seems that
+the TTY layer is calling the tty_driver.write function with parameter
+count=0x00 although the buffer contains a 0x0a. 
+If I check for this 0x0a, send it to the serial port and return 1 (for on
+char sent) it works. But I don't why count is 0x00. It does not make sense
+and I have not found such a special check in any other driver. 
 
-The following patch seems to help a great deal:
+Does anybody have an idea what might go wrong here?
 
-Index: arch/mips/mm/init.c
-===================================================================
-RCS file: /cvs/linux/arch/mips/mm/init.c,v
-retrieving revision 1.38.2.4
-diff -u -r1.38.2.4 init.c
---- arch/mips/mm/init.c 2002/02/06 18:29:15     1.38.2.4
-+++ arch/mips/mm/init.c 2002/03/14 05:25:12
-@@ -206,6 +206,12 @@
- 
- #ifdef CONFIG_HIGHMEM
-        /*
-+        * Fixed mappings:
-+        */
-+       vaddr = __fix_to_virt(__end_of_fixed_addresses - 1) & PMD_MASK;
-+       fixrange_init(vaddr, 0, pgd_base);
-+
-+       /*
-         * Permanent kmaps:
-         */
-        vaddr = PKMAP_BASE;
+best regards
+--
+Andre Messerschmidt
+
+Application Engineer
+Infineon Technologies AG

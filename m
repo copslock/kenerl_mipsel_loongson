@@ -1,39 +1,32 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7M2VxB05245
-	for linux-mips-outgoing; Tue, 21 Aug 2001 19:31:59 -0700
-Received: from smtp.huawei.com (61.144.GD.CN [61.144.161.21] (may be forged))
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7M2Vv905240
-	for <linux-mips@oss.sgi.com>; Tue, 21 Aug 2001 19:31:57 -0700
-Received: from hechendong11752 ([10.105.33.128]) by
-          smtp.huawei.com (Netscape Messaging Server 4.15) with SMTP id
-          GIG6XP00.R4L for <linux-mips@oss.sgi.com>; Wed, 22 Aug 2001
-          10:29:49 +0800 
-Message-ID: <001201c12ab2$c7c4e700$8021690a@huawei.com>
-From: "machael thailer" <dony.he@huawei.com>
-To: <linux-mips@oss.sgi.com>
-Subject: question about syscall and interrupts......
-Date: Wed, 22 Aug 2001 10:33:08 +0800
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4522.1200
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4522.1200
+	by oss.sgi.com (8.11.2/8.11.3) id f7M3B4914944
+	for linux-mips-outgoing; Tue, 21 Aug 2001 20:11:04 -0700
+Received: from dea.linux-mips.net (u-84-10.karlsruhe.ipdial.viaginterkom.de [62.180.10.84])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7M3B2914941
+	for <linux-mips@oss.sgi.com>; Tue, 21 Aug 2001 20:11:02 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id f7M38RP13069;
+	Wed, 22 Aug 2001 05:08:27 +0200
+Date: Wed, 22 Aug 2001 05:08:27 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: tim@to11.org
+Cc: linux-mips@oss.sgi.com
+Subject: Re: serial console bug?
+Message-ID: <20010822050827.A3358@dea.linux-mips.net>
+References: <3B830249.4060708@oss.sgi.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3B830249.4060708@oss.sgi.com>; from linux-mips@oss.sgi.com on Tue, Aug 21, 2001 at 05:52:25PM -0700
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hello,
-    I find that in handle_sys() of scall_o32.S, it calls:
-        SAVE_SOME
-    But in the various board interrupt handlers entry(int-handler.S), it
-calls:
-        SAVE_ALL
+On Tue, Aug 21, 2001 at 05:52:25PM -0700, Tim Moss wrote:
 
-    So before entering syscall and interrupt handler entry, why do they need
-save different registers? and interrupt need save more things than syscalls?
+> From: Tim Moss <linux-mips@oss.sgi.com>
 
-Thank you very much.
+Stop forging from addresses or be treated like every spammer.
 
-machael thailer
+  Ralf

@@ -1,117 +1,183 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Mar 2004 16:48:27 +0000 (GMT)
-Received: from p508B7B8E.dip.t-dialin.net ([IPv6:::ffff:80.139.123.142]:45626
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8224771AbUCIQs0>; Tue, 9 Mar 2004 16:48:26 +0000
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i29GmOex002514;
-	Tue, 9 Mar 2004 17:48:24 +0100
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i29GmMld002513;
-	Tue, 9 Mar 2004 17:48:22 +0100
-Date: Tue, 9 Mar 2004 17:48:22 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Tiago Assump??o <module@whatever.org.ar>
-Cc: linux-mips@linux-mips.org
-Subject: Re: 2.4 kernels + >=binutils-2.14.90.0.8
-Message-ID: <20040309164822.GD14262@linux-mips.org>
-References: <404D0132.3020202@gentoo.org> <20040308234450.GF16163@rembrandt.csv.ica.uni-stuttgart.de> <404D0A18.6050802@gentoo.org> <20040309003447.GH16163@rembrandt.csv.ica.uni-stuttgart.de> <404D1909.1020005@gentoo.org> <20040309040919.GA11345@linux-mips.org> <6.0.0.22.0.20040309121104.01c25d30@whatever.org.ar>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Mar 2004 02:15:53 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:25841 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225300AbUCJCPw>;
+	Wed, 10 Mar 2004 02:15:52 +0000
+Received: from orion.mvista.com (localhost.localdomain [127.0.0.1])
+	by orion.mvista.com (8.12.8/8.12.8) with ESMTP id i2A2Fpx6013522;
+	Tue, 9 Mar 2004 18:15:51 -0800
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.12.8/8.12.8/Submit) id i2A2FpVK013520;
+	Tue, 9 Mar 2004 18:15:51 -0800
+Date: Tue, 9 Mar 2004 18:15:50 -0800
+From: Jun Sun <jsun@mvista.com>
+To: linux-mips@linux-mips.org
+Cc: jsun@mvista.com
+Subject: [PATCH 2.6] make swarm compile and run again
+Message-ID: <20040310021550.GT31326@mvista.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/mixed; boundary="HWvPVVuAAfuRc6SZ"
 Content-Disposition: inline
-In-Reply-To: <6.0.0.22.0.20040309121104.01c25d30@whatever.org.ar>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+User-Agent: Mutt/1.4i
+Return-Path: <jsun@orion.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4517
+X-archive-position: 4518
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Mar 09, 2004 at 12:12:53PM -0300, Tiago Assump??o wrote:
 
-> Yes, MIPS has no execution control flag in page-level.
-> And agreed, yet I nor PaX team see a way to make MIPS fully supported by PaX
-> -- if I'm not wrong, at the moment MIPS boards are only supported by ASLR.
-> 
-> I see that MIPS has split TLB's, which can not be distinguished by software
-> level in another hand. Thus when a page-fault occours I don't see how a 
-> piece of (non-microcoded) exception handler can get aware whether the
-> I-Fetch is being done in original ``code area'' or as an attempt to execute
-> injected payload in a memory area supposed to carry only readable/writeable
-> data.
+--HWvPVVuAAfuRc6SZ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-In a TLB reload handler you can distinguish betwen instruction and TLB
-fault by comparing the fault address in badvaddr with the EPC value.  That
-gives you non-exec protection for anything that doesn't already reside in
-the TLB.  There is still one spare bit in the pagetables which you can use
-as the exec permission bit.  So if I-fetch && !exec_bit -> SIGILL or
-something like that.
 
-The usual warning applies - any modification to the TLB code is going to
-have extreme performance impact (a nop in the TLB reload handler will cost
-about 0.5% of some benchmarks) and any attempts to execute code that is
-already mapped will be missed.
+Ralf,
 
-Another better-than-nothing idea would be poisoning the I-cache by
-pre-loading it.  Exploits probably don't flush the cache first so the
-resulting I-cache non-coherence may crash the process instead.  Like
-the previous idea this is performance intrusive and also a very dirty
-solution.
+This patch makes swarm compile and run again on 2.6.
 
-> Plus situations like kseg0 and kseg1 unmaped translations, which would 
-> occour
-> outside of any TLB (having virtual address subtracted by 0x80000000 and
-> 0xA0000000 respectively to get physiscal locations) making, as you 
-> mentioned,
-> only split uTLB's (not counting kseg2 special case). But PaX wants to take 
-> care of
-> kernel level security too.
-> Even MIPS split cache unities (which can be probed separately by software) 
-> wouldn't
-> make the approach possible since if you have a piece of data previously 
-> cached in
-> D-Cache (load/store) the cache line would need to suffer an invalidation 
-> and the
-> context to be saved in the I-Cache before the I-Fetch pipe stage succeeds.
+I had to introduce a global function pointer, board_pcibios_init.
+This setup needs ioremap() which is too early for any other
+board setup hooks.
 
-Okay, this paragraph was somewhat hard to understand so my comment may be
-a bit off ...  All that's required is writing back data to memory or in
-cache of Alchemy processors or uncached area not even that.  So chances
-that exploit code actually works without having performed a cacheflush
-are actually fairly good.
+I think other boards will need this hookup too (e.g., NEC vr7701)
 
-> Indeed, execution protection (in a general way) does not require split TLB.
-> Other solutions designed and implemented by PaX are SEGMEXEC (using specific
-> segmentation features of x86 basead core's) and MPROTECT. The last one uses
-> vm_flags to control every memory mapping's state, ensuring that these never 
-> hold
-> VM_WRITE | VM_MAYWRITE together with VM_EXEC | VM_MAYEXEC. But as the
-> solution becomes more complex it also tends to gain more issues. First of 
-> all, this
+Does the patch look ok?
 
-> wouldn't be as simple and ``automatic'' as per page control. Another point 
-> is that this
+Jun
 
-In the end anything less than per-page control is pretty inflexible.
 
-> solution wouldn't prevent kernel level attacks so, among others, any 
-> compromise in this level could lead to direct manipulation of a task's
-> mappings flags. At the end a known problem is an attacker who is able to
-> write to the filesystem and > to request this file to be mapped in
-> memory as PROT_EXEC. In other words: yes it is  possible to achieve
-> execution protection in other ways, but not as precise as page-level.
+--HWvPVVuAAfuRc6SZ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename="swarm.patch"
 
-Okay, but that's outside the scope of what no-exec should attempt to do.
+diff -Nru linux/arch/mips/pci/pci.c.orig linux/arch/mips/pci/pci.c
+--- linux/arch/mips/pci/pci.c.orig	2004-03-09 17:40:10.000000000 -0800
++++ linux/arch/mips/pci/pci.c	2004-03-09 17:43:23.000000000 -0800
+@@ -28,6 +28,8 @@
+ 
+ unsigned int pci_probe = PCI_ASSIGN_ALL_BUSSES;
+ 
++void (*board_pcibios_init)(void) __initdata;
++
+ /*
+  * The PCI controller list.
+  */
+@@ -118,6 +120,9 @@
+ 	int next_busno;
+ 	int need_domain_info = 0;
+ 
++	if (board_pcibios_init)
++		board_pcibios_init();
++
+ 	/* Scan all of the recorded PCI controllers.  */
+ 	for (next_busno = 0, hose = hose_head; hose; hose = hose->next) {
+ 
+diff -Nru linux/arch/mips/pci/pci-sb1250.c.orig linux/arch/mips/pci/pci-sb1250.c
+--- linux/arch/mips/pci/pci-sb1250.c.orig	2004-03-09 16:38:36.000000000 -0800
++++ linux/arch/mips/pci/pci-sb1250.c	2004-03-09 17:39:55.000000000 -0800
+@@ -84,6 +84,11 @@
+ 	*(u32 *) (cfg_space + (addr & ~3)) = data;
+ }
+ 
++int pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
++{
++	return dev->irq;
++}
++
+ /*
+  * Some checks before doing config cycles:
+  * In PCI Device Mode, hide everything on bus 0 except the LDT host
+@@ -194,10 +199,18 @@
+ 	.io_resource	= &sb1250_io_resource
+ };
+ 
+-int __init pcibios_init(void)	xxx This needs to be called somehow ...
++int __init sb1250_pcibios_init(void)
+ {
+ 	uint32_t cmdreg;
+ 	uint64_t reg;
++	extern int pci_probe_only;
++
++	/* CFE will assign PCI resources */
++	pci_probe_only = 1;
++
++	/* fake resource limit to avoid errors */
++	iomem_resource.end = 0xffffffff;
++	ioport_resource.end = 0xffffffff;
+ 
+ 	cfg_space =
+ 	    ioremap(A_PHYS_LDTPCI_CFG_MATCH_BITS, 16 * 1024 * 1024);
+diff -Nru linux/arch/mips/sibyte/swarm/setup.c.orig linux/arch/mips/sibyte/swarm/setup.c
+--- linux/arch/mips/sibyte/swarm/setup.c.orig	2004-03-09 16:40:21.000000000 -0800
++++ linux/arch/mips/sibyte/swarm/setup.c	2004-03-09 17:52:42.000000000 -0800
+@@ -34,12 +34,14 @@
+ #include <asm/reboot.h>
+ #include <asm/time.h>
+ #include <asm/traps.h>
++#include <asm/pci_channel.h>
+ #include <asm/sibyte/sb1250.h>
+ #include <asm/sibyte/sb1250_regs.h>
+ #include <asm/sibyte/sb1250_genbus.h>
+ #include <asm/sibyte/board.h>
+ 
+ extern void sb1250_setup(void);
++extern void sb1250_pcibios_init(void);
+ 
+ extern int xicor_probe(void);
+ extern int xicor_set_time(unsigned long);
+@@ -80,7 +82,7 @@
+ 	return (is_fixup ? MIPS_BE_FIXUP : MIPS_BE_FATAL);
+ }
+ 
+-static void __init swarm_setup(void)
++static int __init swarm_setup(void)
+ {
+ 	extern int panic_timeout;
+ 
+@@ -131,6 +133,12 @@
+        };
+        /* XXXKW for CFE, get lines/cols from environment */
+ #endif
++
++#ifdef CONFIG_SIBYTE_HAS_PCI
++	board_pcibios_init = sb1250_pcibios_init;
++#endif
++
++	return 0;
+ }
+ 
+ early_initcall(swarm_setup);
+diff -Nru linux/drivers/net/sb1250-mac.c.orig linux/drivers/net/sb1250-mac.c
+diff -Nru linux/include/asm-mips/sibyte/board.h.orig linux/include/asm-mips/sibyte/board.h
+--- linux/include/asm-mips/sibyte/board.h.orig	2004-01-05 10:48:39.000000000 -0800
++++ linux/include/asm-mips/sibyte/board.h	2004-03-09 17:52:17.000000000 -0800
+@@ -56,8 +56,6 @@
+ 
+ #else
+ 
+-void swarm_setup(void);
+-
+ #ifdef LEDS_PHYS
+ extern void setleds(char *str);
+ #else
+diff -Nru linux/include/asm-mips/pci_channel.h.orig linux/include/asm-mips/pci_channel.h
+--- linux/include/asm-mips/pci_channel.h.orig	2003-11-13 18:35:35.000000000 -0800
++++ linux/include/asm-mips/pci_channel.h	2004-03-09 17:38:54.000000000 -0800
+@@ -43,4 +43,10 @@
+  */
+ extern int pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin);
+ 
++/*
++ * board pci initialization routine.  If set, it is called at the beginning
++ * of pcibios_init().
++ */
++extern void (*board_pcibios_init)(void);
++
+ #endif  /* __ASM_PCI_CHANNEL_H */
 
-> If anybody has an idea of how to design and implement such solution on MIPS 
-> computers
-
-You could try to run the mapped kernel in supervisor mode.  Again lots
-of performance implications.
-
-  Ralf
+--HWvPVVuAAfuRc6SZ--

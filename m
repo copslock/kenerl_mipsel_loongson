@@ -1,79 +1,70 @@
-Received:  by oss.sgi.com id <S42348AbQEZQ53>;
+Received:  by oss.sgi.com id <S42315AbQEZQ53>;
 	Fri, 26 May 2000 09:57:29 -0700
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:4460 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S42328AbQEZQYB>; Fri, 26 May 2000 09:24:01 -0700
-Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id VAA08707; Thu, 25 May 2000 21:29:10 -0700 (PDT)
+Received: from deliverator.sgi.com ([204.94.214.10]:25379 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42331AbQEZQiF>;
+	Fri, 26 May 2000 09:38:05 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id KAA00890; Fri, 26 May 2000 10:33:12 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id VAA31789; Thu, 25 May 2000 21:23:58 -0700 (PDT)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id VAA66320
+	id KAA59678
 	for linux-list;
-	Thu, 25 May 2000 21:14:14 -0700 (PDT)
+	Fri, 26 May 2000 10:30:17 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id VAA73781
+	via ESMTP id KAA29904
 	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 25 May 2000 21:14:10 -0700 (PDT)
-	mail_from (soren@gnyf.wheel.dk)
-Received: from gnyf.wheel.dk (gnyf.wheel.dk [193.162.159.104]) 
+	Fri, 26 May 2000 10:30:15 -0700 (PDT)
+	mail_from (neuroinc@unidial.com)
+Received: from unidial.com (unidial.com [206.112.0.9]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id VAA04159
-	for <linux@cthulhu.engr.sgi.com>; Thu, 25 May 2000 21:14:09 -0700 (PDT)
-	mail_from (soren@gnyf.wheel.dk)
-Received: (from soren@localhost)
-	by gnyf.wheel.dk (8.9.1/8.9.1) id GAA03511;
-	Fri, 26 May 2000 06:14:04 +0200 (CEST)
-Date:   Fri, 26 May 2000 06:14:04 +0200
-From:   "Soren S. Jorvang" <soren@wheel.dk>
-To:     Keith M Wesolowski <wesolows@chem.unr.edu>
-Cc:     Eric Watkins <watkinse@attens.com>,
-        Philippe Chauvat <philippe.chauvat@exfo.com>,
-        Linux Mips <linux@cthulhu.engr.sgi.com>
-Subject: Re: [DHCP]
-Message-ID: <20000526061404.A3481@gnyf.wheel.dk>
-References: <392D4F76.9B06C235@exfo.com> <001801bfc665$feabed20$540ed7c0@hq.sd.cerf.net> <20000525094735.A30683@chem.unr.edu>
-Mime-Version: 1.0
+	via ESMTP id KAA01276
+	for <linux@cthulhu.engr.sgi.com>; Fri, 26 May 2000 10:30:14 -0700 (PDT)
+	mail_from (neuroinc@unidial.com)
+Received: from unidial.com (IDENT:root@1Cust20.tnt14.chi5.da.uu.net [63.22.172.20])
+	by unidial.com (8.9.3/8.9.3) with ESMTP id NAA01800;
+	Fri, 26 May 2000 13:26:27 -0400 (EDT)
+Message-ID: <392EB5F0.2464DF60@unidial.com>
+Date:   Fri, 26 May 2000 12:35:44 -0500
+From:   Alan Hoyt <neuroinc@unidial.com>
+X-Mailer: Mozilla 4.7 [en] (X11; I; Linux 2.2.14 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To:     jimix@watson.ibm.com
+CC:     linux@cthulhu.engr.sgi.com
+Subject: Re: MIPS64 ABI
+References: <14638.32072.31754.98294@kitch0.watson.ibm.com>
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <20000525094735.A30683@chem.unr.edu>; from wesolows@chem.unr.edu on Thu, May 25, 2000 at 09:47:36AM -0700
+Content-Transfer-Encoding: 7bit
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On Thu, May 25, 2000 at 09:47:36AM -0700, Keith M Wesolowski wrote:
-> I also had difficulty using ISC dhcpd to boot SGIs until I did an
-> unsetenv netaddr before booting. I don't yet know why this works.
+At one time, I thought I saw a copy somewhere on oss.sgi.com - but I
+don't remember which version.  I checked my archives and found a copy of
+System V ABI MIPS supplement 3.0 in PDF (approx. 463K), 3.1 (approx.
+651K) and the processor conformace guide 1.2.2 (approx 282k).    I can
+email you a copy if you would like.
 
-Ted fixed dhcpd for SGI some time ago. I am not sure if it has
-made into 3.0.
-
---- server/bootp.c.orig	Fri Apr  9 19:55:02 1999
-+++ server/bootp.c	Wed Dec  8 00:23:16 1999
-@@ -348,6 +348,16 @@
- 					      from, &to, &hto);
- 			return;
- 		}
-+
-+	/* If it comes from a client that already knows its address
-+	   and is not requesting a broadcast response, and we can
-+	   unicast to a client without using the ARP protocol, sent it
-+	   directly to that client. */
-+	} else if (!(raw.flags & htons (BOOTP_BROADCAST)) &&
-+		   can_unicast_without_arp()) {
-+		to.sin_addr = raw.yiaddr;
-+		to.sin_port = remote_port;
-+
- 	/* Otherwise, broadcast it on the local network. */
- 	} else {
- 		to.sin_addr.s_addr = INADDR_BROADCAST;
+ - Alan Hoyt -
 
 
--- 
-Soren
+
+Jimi X wrote:
+
+> I used to get the MIPS 64-bit ABI from
+>   http://www.mipsabi.org/Tech/Specifications.html
+>
+> But sadly there seems to be no www.mipsabi.org anymore.
+>
+> Even more sadly I removed my copy knowing I could get it again easily
+> (afterall the net is really just one really big hard drive :])
+>
+> Anyone know where I can get it now?
+>
+> -Jimi X

@@ -1,42 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 May 2003 20:36:44 +0100 (BST)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:19098
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8225290AbTEJTgm>; Sat, 10 May 2003 20:36:42 +0100
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp (Exim 3.36 #2)
-	id 19Ea99-00195U-00; Sat, 10 May 2003 21:36:39 +0200
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 19Ea98-0002g0-00; Sat, 10 May 2003 21:36:38 +0200
-Date: Sat, 10 May 2003 21:36:38 +0200
-To: Muthukumar Ratty <muthu@iqmail.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 May 2003 20:44:01 +0100 (BST)
+Received: from crack.them.org ([IPv6:::ffff:146.82.138.56]:3310 "EHLO
+	crack.them.org") by linux-mips.org with ESMTP id <S8225290AbTEJTn7>;
+	Sat, 10 May 2003 20:43:59 +0100
+Received: from nevyn.them.org ([66.93.61.169] ident=mail)
+	by crack.them.org with asmtp (Exim 3.12 #1 (Debian))
+	id 19EaGZ-0006P6-00; Sat, 10 May 2003 14:44:20 -0500
+Received: from drow by nevyn.them.org with local (Exim 3.36 #1 (Debian))
+	id 19EaG7-00048j-00; Sat, 10 May 2003 15:43:51 -0400
+Date: Sat, 10 May 2003 15:43:51 -0400
+From: Daniel Jacobowitz <dan@debian.org>
+To: menkuec@auto-intern.com
 Cc: linux-mips@linux-mips.org
-Subject: Re: MIPS specific ELF doc? (Re: OpenSSL/Binutils Issues)
-Message-ID: <20030510193638.GA10445@rembrandt.csv.ica.uni-stuttgart.de>
-References: <20030510141959.GB18697@rembrandt.csv.ica.uni-stuttgart.de> <Pine.LNX.4.33.0305101159250.13866-100000@Muruga.localdomain>
+Subject: Re: compiling glibc
+Message-ID: <20030510194351.GA15891@nevyn.them.org>
+References: <200305092145.43690.benmen@gmx.de> <20030510042535.GA2336@nevyn.them.org> <200305101156.08254.benmen@gmx.de> <200305101321.21232.benmen@gmx.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.33.0305101159250.13866-100000@Muruga.localdomain>
-User-Agent: Mutt/1.4i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <200305101321.21232.benmen@gmx.de>
+User-Agent: Mutt/1.5.1i
+Return-Path: <drow@false.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2343
+X-archive-position: 2344
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-Muthukumar Ratty wrote:
+On Sat, May 10, 2003 at 01:21:21PM +0200, Benjamin Menküc wrote:
+> Okay, I fixed this problem by adding --disable-profile:
 > 
-> Hi,
-> Where can I get MIPS processor specific ELF document (if there is any?)
+> [benmen@linuxpc1 mipsel-glibc] LD_LIBRARY_PATH="" CFLAGS="-O2 -g 
+> -finline-limit=10000" CC="mipsel-linux-gcc" AS="mipsel-linux-as" 
+> ../glibc-2.3.2/configure --build=i686-linux --host=mipsel-linux 
+> --enable-add-ons --prefix=/home/benmen/mipsel 
+> --with-headers=/home/benmen/mips/kernel/mips-2.4.20/include --disable-profile
+> 
+> ...
+> 
+> Now I can compile until this comes:
 
-http://www.caldera.com/developers/devspecs/
+Try glibc from CVS instead of 2.3.2.  Known bug.
 
-
-Thiemo
+-- 
+Daniel Jacobowitz
+MontaVista Software                         Debian GNU/Linux Developer

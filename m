@@ -1,78 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jul 2003 09:33:04 +0100 (BST)
-Received: from dvmwest.gt.owl.de ([IPv6:::ffff:62.52.24.140]:37392 "EHLO
-	dvmwest.gt.owl.de") by linux-mips.org with ESMTP
-	id <S8224821AbTGVIdC>; Tue, 22 Jul 2003 09:33:02 +0100
-Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
-	id A03C34A86D; Tue, 22 Jul 2003 10:32:55 +0200 (CEST)
-Date: Tue, 22 Jul 2003 10:32:55 +0200
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jul 2003 11:04:53 +0100 (BST)
+Received: from p508B5B34.dip.t-dialin.net ([IPv6:::ffff:80.139.91.52]:50885
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8224821AbTGVKEv>; Tue, 22 Jul 2003 11:04:51 +0100
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h6MA4jDB011658;
+	Tue, 22 Jul 2003 12:04:45 +0200
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h6MA4iBA011657;
+	Tue, 22 Jul 2003 12:04:44 +0200
+Date: Tue, 22 Jul 2003 12:04:44 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>,
+	linux-mips@linux-mips.org
 Subject: Re: [patch] Generic time fixes
-Message-ID: <20030722083255.GQ7452@lug-owl.de>
-Mail-Followup-To: linux-mips@linux-mips.org
+Message-ID: <20030722100444.GA4148@linux-mips.org>
 References: <Pine.GSO.3.96.1030722093500.607A-100000@delta.ds2.pg.gda.pl>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="xiprIVX1FSGBv8kC"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <Pine.GSO.3.96.1030722093500.607A-100000@delta.ds2.pg.gda.pl>
-X-Operating-System: Linux mail 2.4.18 
-X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
-X-gpg-key: wwwkeys.de.pgp.net
-User-Agent: Mutt/1.5.4i
-Return-Path: <jbglaw@dvmwest.gt.owl.de>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2847
+X-archive-position: 2848
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jbglaw@lug-owl.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Tue, Jul 22, 2003 at 09:58:46AM +0200, Maciej W. Rozycki wrote:
 
---xiprIVX1FSGBv8kC
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+>  Before I proceed further I need to get an aswer to the following
+> question: why do we use rtc_set_time() for NTP RTC updates instead of
+> rtc_set_mmss() like most other architectures do?  Traditionally Linux only
+> updated minutes and seconds in this context and I don't think we need to
+> do anything more.  And setting minutes and seconds only is way, way
+> faster. Which might not matter that much every 11 minutes, except doing
+> things slowly here incurs a disruption in the latency of the timer
+> interrupt, which NTP might not like and the slow calculation of the RTC
+> time causes less precise time being stored in the RTC chip. 
+> 
+>  It's already questionable whether the update should be done at all (this
+> was discussed zillion of times at the NTP group) and it disrupts
+> timekeeping of the DECstation severely, but given the current choice, I'd
+> prefer to make it as lightweight as possible.
 
-On Tue, 2003-07-22 09:58:46 +0200, Maciej W. Rozycki <macro@ds2.pg.gda.pl>
-wrote in message <Pine.GSO.3.96.1030722093500.607A-100000@delta.ds2.pg.gda.=
-pl>:
-> Hello,
->=20
->  In preparation to merging DECstation's time support with the generic
-> version I did the following clean-ups to generic time support.  Most of
-> these are coding style fixes (which might have already been fixed by
-> someone else during past two days -- I haven't been able to study the
-> changes), but there are a few code changes (detailed below) as well.
+It's a common case to have a system boot up with the RTC date being
+completly off, then syncing via ntpdate and xntp to the accurate time.
+If in that situation we only update the time the RTC will stay way far
+from reality.  Another case would be updates of the time near midnight
+where the RTC and NTP date happen to just differ.
 
-Nice to see you working on the DECstations again! Mine are not yet set
-up in my cellar, but I'm slowly reaching there. Yesterday we had some
-harsh thunderstorms (incl lightnings...) and I'm still recovering...
-Maybe my assurance need to step in:(
+I share your dislike of updating the RTC for performance reasons; these
+chips are impressive performance pigs.  So how about updating the RTC
+date only when
 
-MfG, JBG
+ - write the time to the RTC for the first time after NTP synchronizes
+ - write the time to the RTC if xtime.tv_sec <= last_rtc_update + 660
 
---=20
-   Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481
-   "Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg
-    fuer einen Freien Staat voll Freier B=FCrger" | im Internet! |   im Ira=
-k!
-      ret =3D do_actions((curr | FREE_SPEECH) & ~(IRAQ_WAR_2 | DRM | TCPA));
+?
 
---xiprIVX1FSGBv8kC
-Content-Type: application/pgp-signature
-Content-Disposition: inline
+> 3. local_timer_interrupt() is called with arguments passed from the above
+> instead of fake ones (although "irq" and "dev_id" could be completely
+> removed here; in the next iteration, I suppose). 
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.2 (GNU/Linux)
+Agreed.  I can't imagine any use for dev_id in the timer interrupt and
+the interrupt number seems only marginally more useful.
 
-iD8DBQE/HPa3Hb1edYOZ4bsRAlRWAJ9cJ7TEyVuyztWYu9y4wRmS6OvHmgCfZY1M
-HQZKMrQR+60Yjy3DY6/1m+E=
-=zP15
------END PGP SIGNATURE-----
+> 5. Leap years are handled properly.
 
---xiprIVX1FSGBv8kC--
+Good thing.  People at times do run their systems with clocks set wrongly,
+even intensionally.  So I blame (year % 4) == 0 for being a too trivial
+view of the world.
+
+> 6. Missing "extern" qualifiers for function declarations are added.
+> 
+>  OK to apply?
+
+Yes.
+
+  Ralf

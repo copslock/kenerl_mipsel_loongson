@@ -1,63 +1,61 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4GB0nnC016873
-	for <linux-mips-outgoing@oss.sgi.com>; Thu, 16 May 2002 04:00:49 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4GCVbnC020174
+	for <linux-mips-outgoing@oss.sgi.com>; Thu, 16 May 2002 05:31:37 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4GB0nZU016872
-	for linux-mips-outgoing; Thu, 16 May 2002 04:00:49 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4GCVbsL020173
+	for linux-mips-outgoing; Thu, 16 May 2002 05:31:37 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4GB0hnC016869
-	for <linux-mips@oss.sgi.com>; Thu, 16 May 2002 04:00:43 -0700
-Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.27])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id MAA22725;
-	Thu, 16 May 2002 12:57:41 +0200 (MET DST)
-Date: Thu, 16 May 2002 12:57:41 +0200 (MEST)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: Carsten Langgaard <carstenl@mips.com>
-cc: Ken Aaker <kenaaker@silverbacksystems.com>,
-   Linux/MIPS Development <linux-mips@oss.sgi.com>
-Subject: Re: Mangled struct hd_driveid with MIPSEB.
-In-Reply-To: <3CE384AD.8DE96FEF@mips.com>
-Message-ID: <Pine.GSO.4.21.0205161256080.14918-100000@vervain.sonytel.be>
+Received: from sgi.com (sgi-too.SGI.COM [204.94.211.39])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4GCVXnC020169
+	for <linux-mips@oss.sgi.com>; Thu, 16 May 2002 05:31:33 -0700
+Received: from mail.avanticore.com (firewall.i-data.com [195.24.22.194]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id FAA05956
+	for <linux-mips@oss.sgi.com>; Thu, 16 May 2002 05:31:48 -0700 (PDT)
+	mail_from (tch@avanticore.com)
+Received: from avanticore.com ([172.17.159.1]) by mail.avanticore.com with Microsoft SMTPSVC(5.0.2195.2966);
+	 Thu, 16 May 2002 14:28:43 +0200
+Message-ID: <3CE3A675.486BC12A@avanticore.com>
+Date: Thu, 16 May 2002 14:30:45 +0200
+From: "Tommy S. Christensen" <tch@avanticore.com>
+X-Mailer: Mozilla 4.78 [en] (X11; U; Linux 2.4.7-10 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To: Venkata Rajesh Bikkina <rajeshbv@intotoinc.com>
+CC: linux-mips@oss.sgi.com
+Subject: Re: RAMDISK problem on 79s334A board.
+References: <Pine.LNX.4.10.10205161551090.1409-100000@brahma.intotoind.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 16 May 2002 12:28:44.0055 (UTC) FILETIME=[37FB8A70:01C1FCD5]
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, 16 May 2002, Carsten Langgaard wrote:
-> Geert Uytterhoeven wrote:
-> > On Thu, 16 May 2002, Carsten Langgaard wrote:
-> > > I send Ralf a fix a couple of weeks ago, which introduced the byteswapping,
-> > > which really is necessary.
-> > > This fix is probably only necessary for bigendian systems with large IDE
-> > > disks (>8GB), which support LBA mode.
-> > > I send this patch over a year ago. I discovered that when I ran on a disk,
-> > > which was larger than 8GB, it was only treated as 8GB.
-> > > The problem with the fix is, it is not backward compatible. After the fix
-> > > I needed to reinstall my bigendian system.
-> > > As I told Ralf, this fix will be a pain for everyone, but I guess we need
-> > > the fix eventually.
-> >
-> > Why would you have to reinstall the system?
-> > Isn't this just a problem with ide_fix_driveid() (new field for disks larger
-> > than 8 GiB, which we don't byteswap yet)?
+Venkata Rajesh Bikkina wrote:
 > 
-> I'm trying to do things like other bigendian architectures. I can see your mail
-> address is linux-m68k and the fix is more or less stolen from the m68k part.
+> Hi Tommy,
+> 
+> I am using 2.4.3 code and in that linux/mm/vmallo.c contains the following
+> code which is slightly different from the patch you gave.
+> 
+>         } while (address && (address < end));
+>         unlock_kernel();
+>         flush_tlb_all();
+>         return ret;
+> 
+> Can you please suggest how to modify this.
+> 
+> Regards,
+> --Rajesh
+> 
 
-However, I'm not sure anyone ever used a +8 GiB disk on Linux/m68k.
+2.4.3 is quite old, so upgrading the kernel would clearly be a good idea.
 
-IIRC, LBA uses an extra field in the drive info struct, which was initially not
-byteswapped. You can compare the MIPS/m68k ide_fix_driveid() with the version
-on PPC, which most probably works correctly with +8 GiB disks.
+Anyway, if you want to try this fix then you should remove the call to
+flush_cache_all() at the top of vmalloc_area_pages() and change the line
+flush_tlb_all() to flush_cache_all().
 
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+ -Tommy

@@ -1,38 +1,62 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id MAA463071 for <linux-archive@neteng.engr.sgi.com>; Tue, 6 Jan 1998 12:49:33 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id NAA448755 for <linux-archive@neteng.engr.sgi.com>; Tue, 6 Jan 1998 13:40:38 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id MAA28464 for linux-list; Tue, 6 Jan 1998 12:48:27 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA28454; Tue, 6 Jan 1998 12:48:24 -0800
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id MAA14067; Tue, 6 Jan 1998 12:48:20 -0800
-	env-from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id PAA25492;
-	Tue, 6 Jan 1998 15:48:57 -0500
-Date: Tue, 6 Jan 1998 15:48:57 -0500 (EST)
-From: Alex deVries <adevries@engsoc.carleton.ca>
-To: Alan Cox <alan@lxorguk.ukuu.org.uk>
-cc: ariel@cthulhu.engr.sgi.com, wje@fir.engr.sgi.com, miguel@nuclecu.unam.mx,
-        linux@cthulhu.engr.sgi.com
-Subject: Re: Indy power supply problems.
-In-Reply-To: <m0xpfnT-0005FsC@lightning.swansea.linux.org.uk>
-Message-ID: <Pine.LNX.3.95.980106153755.23910A-100000@lager.engsoc.carleton.ca>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id NAA12036 for linux-list; Tue, 6 Jan 1998 13:39:37 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA12018 for <linux@cthulhu.engr.sgi.com>; Tue, 6 Jan 1998 13:39:35 -0800
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id NAA29714
+	for <linux@cthulhu.engr.sgi.com>; Tue, 6 Jan 1998 13:39:32 -0800
+	env-from (ralf@uni-koblenz.de)
+From: ralf@uni-koblenz.de
+Received: from uni-koblenz.de (pmport-27.uni-koblenz.de [141.26.249.27])
+	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id WAA23157
+	for <linux@cthulhu.engr.sgi.com>; Tue, 6 Jan 1998 22:39:29 +0100 (MET)
+Received: (from ralf@localhost)
+	by uni-koblenz.de (8.8.7/8.8.7) id WAA05095;
+	Tue, 6 Jan 1998 22:36:08 +0100
+Message-ID: <19980106223608.05738@uni-koblenz.de>
+Date: Tue, 6 Jan 1998 22:36:08 +0100
+To: Conrad Parker <conradp@cse.unsw.edu.au>
+Cc: linux@cthulhu.engr.sgi.com,
+        "Andrew John O'Brien" <andrewo@cse.unsw.edu.au>
+Subject: Re: i386 crosscompile problems
+References: <Pine.GSO.3.95.980106234535.24128T-100000@bell07.orchestra.cse.unsw.EDU.AU>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.85e
+In-Reply-To: <Pine.GSO.3.95.980106234535.24128T-100000@bell07.orchestra.cse.unsw.EDU.AU>; from Conrad Parker on Wed, Jan 07, 1998 at 12:10:33AM +1100
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Tue, 6 Jan 1998, Alan Cox wrote:
-> Yes - it did take a bit of confusion and untangling but once they 
-> figured out what they were doing it was all very efficient
+On Wed, Jan 07, 1998 at 12:10:33AM +1100, Conrad Parker wrote:
 
-Hm. I got a call over the Christmas holidays from a Mr. Hu (I think) from
-SGI telling me that my machine is no longer under a service agreement.
-This comes as a contradiction from what I'd been told by several people at
-SGI. 
+> we're attempting to cross-compile a bootstrap kernel for an r4600 indy
+> with no L2 cache, from an i386-linux box. We have had most success so far
+> with kernel snapshot 971208 from ftp.linux.sgi.com, patched to work with
+> no L2 cache. We have built binutils-2.8.1.0.15 patched with the
+> binutils-2.8.1-1 patch, and using the gcc cross compiler 2.7.2-3 binary
+> release (rpm).
+> 
+> When compiling the kernel, we get lots of mips-linux-ld warnings along the
+> lines of:
+> 
+> mips-linux-ld: Warning: type of symbol 'prom_imode' changed from 1 to 2 in
+> misc.o
 
-If this is true, it's not the end of the world; a smack at the back of my
-monitor seems to do the trick for now.  I worry abit, though, if something
-like my power supply bites the dust.
+Post 2.8.1 binutils do harder typechecking.  Those messages should actually
+be harmless warnings.  Could you mail them to me so that I can fix them,
+please?
 
-Can someone like Ariel or David set the record straight? 
+> for lots of symbols in lots of object files...
+> Everything seems to compile fine, without excessive other warnings from
+> gcc and the native mips code passes through without a hitch.
+> 
+> When the resulting kernel is used from bootp, we get the following dump
+> immediately:
 
-- A
+> ouch. We expect the problem is with our configuration of binutils and/or
+> gcc. Can anyone help?
+
+ - apply the patch to the FSF version of binutils 2.8.1 (available from
+   ftp.linux.sgi.com or prep.ai.mit.edu).
+ - if the problem persists try removing the -N linker flag from -N
+
+  Ralf

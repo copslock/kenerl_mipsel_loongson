@@ -1,37 +1,38 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fAL7EJ404616
-	for linux-mips-outgoing; Tue, 20 Nov 2001 23:14:19 -0800
-Received: from topsns.toshiba-tops.co.jp (topsns.toshiba-tops.co.jp [202.230.225.5])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAL7E6o04613;
-	Tue, 20 Nov 2001 23:14:08 -0800
-Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 21 Nov 2001 06:14:05 UT
-Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP
-	id D5E47B46B; Wed, 21 Nov 2001 15:14:03 +0900 (JST)
-Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
-	id PAA04964; Wed, 21 Nov 2001 15:14:03 +0900 (JST)
-Date: Wed, 21 Nov 2001 15:18:48 +0900 (JST)
-Message-Id: <20011121.151848.18315322.nemoto@toshiba-tops.co.jp>
-To: linux-mips@oss.sgi.com
-Cc: ralf@oss.sgi.com
-Subject: latest checksum.h
-From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
-X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
-X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
-Organization: TOSHIBA Personal Computer System Corporation
-X-Mailer: Mew version 2.1 on Emacs 20.7 / Mule 4.1 (AOI)
+	by oss.sgi.com (8.11.2/8.11.3) id fAL8E7i07410
+	for linux-mips-outgoing; Wed, 21 Nov 2001 00:14:07 -0800
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id fAL8E4o07407
+	for <linux-mips@oss.sgi.com>; Wed, 21 Nov 2001 00:14:04 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id fAL7Dxt12954;
+	Wed, 21 Nov 2001 18:13:59 +1100
+Date: Wed, 21 Nov 2001 18:13:59 +1100
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: latest checksum.h
+Message-ID: <20011121181359.A12936@dea.linux-mips.net>
+References: <20011121.151848.18315322.nemoto@toshiba-tops.co.jp>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20011121.151848.18315322.nemoto@toshiba-tops.co.jp>; from nemoto@toshiba-tops.co.jp on Wed, Nov 21, 2001 at 03:18:48PM +0900
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Is it something wrong in latest checksum.h?
+On Wed, Nov 21, 2001 at 03:18:48PM +0900, Atsushi Nemoto wrote:
 
-a __asm__ statement in csum_fold() has two "r" operands but there are
-no "%1" in the assembler template.  Is this OK?
+> Is it something wrong in latest checksum.h?
+> 
+> a __asm__ statement in csum_fold() has two "r" operands but there are
+> no "%1" in the assembler template.  Is this OK?
+> 
+> # No patch because I'm not a __asm__ hacker :-)
 
-# No patch because I'm not a __asm__ hacker :-)
----
-Atsushi Nemoto
+One of the famous quick fixes that just happens to work because it was
+my lucky day ...  Fix in cvs.
+
+  Ralf

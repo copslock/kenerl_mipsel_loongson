@@ -1,97 +1,201 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Jan 2005 02:41:42 +0000 (GMT)
-Received: from sccrmhc13.comcast.net ([IPv6:::ffff:204.127.202.64]:39585 "EHLO
-	sccrmhc13.comcast.net") by linux-mips.org with ESMTP
-	id <S8225370AbVAVClg>; Sat, 22 Jan 2005 02:41:36 +0000
-Received: from [192.168.1.4] (pcp05077810pcs.waldrf01.md.comcast.net[68.54.246.193])
-          by comcast.net (sccrmhc13) with ESMTP
-          id <2005012202412901600ha7q4e>; Sat, 22 Jan 2005 02:41:29 +0000
-Message-ID: <41F1BE9E.8070109@gentoo.org>
-Date:	Fri, 21 Jan 2005 21:46:54 -0500
-From:	Kumba <kumba@gentoo.org>
-User-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Jan 2005 02:52:03 +0000 (GMT)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:5901 "EHLO
+	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225370AbVAVCv5>; Sat, 22 Jan 2005 02:51:57 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 03F4EE1CB3; Sat, 22 Jan 2005 03:51:44 +0100 (CET)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 21860-09; Sat, 22 Jan 2005 03:51:43 +0100 (CET)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id A333BE1CAC; Sat, 22 Jan 2005 03:51:43 +0100 (CET)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.1/8.13.1) with ESMTP id j0M2pV9j023219;
+	Sat, 22 Jan 2005 03:51:45 +0100
+Date:	Sat, 22 Jan 2005 02:51:47 +0000 (GMT)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	macro@mips.com, Richard Sandiford <rsandifo@redhat.com>,
+	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] I/O helpers rework
+In-Reply-To: <20050122.015040.108744446.anemo@mba.ocn.ne.jp>
+Message-ID: <Pine.LNX.4.61L.0501211739410.16576@blysk.ds.pg.gda.pl>
+References: <Pine.LNX.4.61.0501131824350.21179@perivale.mips.com>
+ <87k6qh2e6j.fsf@redhat.com> <Pine.LNX.4.61.0501141956520.21179@perivale.mips.com>
+ <20050122.015040.108744446.anemo@mba.ocn.ne.jp>
 MIME-Version: 1.0
-To:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
-CC:	linux-mips@linux-mips.org
-Subject: Re: O2 and 128Mb
-References: <1105602134.10493.23.camel@localhost>	 <41E627F8.3010004@total-knowledge.com>	 <1105605285.10490.52.camel@localhost>	 <41E6CB5B.6080303@total-knowledge.com> <1106338775.4760.17.camel@localhost>	  <41F168DA.60301@total-knowledge.com> <1106342715.4757.27.camel@localhost>
-In-Reply-To: <1106342715.4757.27.camel@localhost>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <kumba@gentoo.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.80/661/Tue Jan 11 02:44:13 2005
+	clamav-milter version 0.80j
+	on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6990
+X-archive-position: 6991
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Giuseppe Sacco wrote:
+On Sat, 22 Jan 2005, Atsushi Nemoto wrote:
+
+> Revised.
 > 
-> I think my O2 just blowed up :-(
-> Actually it doesn't switch on. Even unplugging and plugging again the
-> power cord, it stay off.
+> 1. How about using 'const void *' for outs*()/reads*() ?  This will
+>    remove some compiler warnings too.  Also, it seems 'volatile' for
+>    memory buffer are unneeded.
+> 
+> 2. In *in*()/*out*(), it would be better to call __swizzle_addr*()
+>    AFTER adding mips_io_port_base.  This unifies the meaning of the
+>    argument of __swizzle_addr*() (always virtual address).  Then,
+>    mach-specific __swizzle_addr*() can to every evil thing based on
+>    the argument.
+> 
+> 3. How about Moving generic ioswab*() to mangle-port.h ?  Also how
+>    about passing virtual address to *ioswab*() ?  Then we can provide
+>    mach-specific ioswab*() and can do every evil thing based on its
+>    argument.  It is usefull on machines which have regions with
+>    different endian conversion scheme.
 
-Pull the mainboard out, find the flash-clear jumper, cover it with a nearby 
-jumper cap (this jumper and cap should be near the RTC, a Dallas chip).  Pop 
-the board back into the system, and see if it powers on.  If it does, power 
-back off, remove the jumper cap, and then power back up, and it should power 
-up fine.
+ Thanks for your insight -- your comments are not lost and I am working on 
+taking them into account.  But meanwhile a confusion around the semantics 
+of these operations arose (there is no documentation on them and some 
+drivers expect some of these functions to swap, while others expect them 
+not to) and changes were made to the tree that invalidated some of the 
+fixes.  That needs to be addressed first and I expect another update to 
+the file.  Here's a patch I'm going to start with.  Functions it adds have 
+been named dma_* to indicate they are meant to preserve memory byte 
+ordering.
 
-If nothing happens, you probably cooked the power supply.  O2's are apparently 
-  known for blowing power supplies, though.  Replacements can be easily found 
-on eBay.
+  Maciej
 
-
-> Fortunately, I have a second machine that I may use for tests, while
-> I'll find the problem with the first one. The second machine is the same
-> model of the first one. I just swapped disks and cable and made your
-> test: nothing changed.
-
-Drop minicom, I get nothing but trouble with it.  Use "xc", a small, simple 
-dial program.  If it's not on your system, you'll have to install it via 
-whatever means your working distro provides, then do this:
-
-xc -l/dev/ttyS0
-
- > set bps <O2 baud rate>
- > t
-
-After typing 't' and pressing enter, you'll be dropped to terminal mode.  Try 
-powering on the O2 at this point, and see if you get any output.  If not, you 
-may have the O2 rigged to still boot the graphical console.  To fix this, you 
-will need to hook up a monitor, mouse, and keyboard, get into the PROM, and:
-
- > setenv console d1
- > setenv dbaud <desired baud rate>
-
-Then poweroff, and remove the keyboard, mouse, and monitor (if the O2 PROM 
-detects these as being attached, it may still boot graphical), and try to 
-reboot again to see if you get anything on xc's terminal.
-
-To boot the kernel, make sure you pass "console=ttyS0,<baud rate>" to it, 
-cause for me, w/o it, the kernel will sometimes not pick up the serial port, 
-and thus you won't see any output (but the kernel will still boot (or attempt 
-to)).
-
-If all else fails, replace the serial cable.  Sometimes they just don't work 
-for whatever reason.
-
-
-> Actually it is still blocked there: blinking the red led, while showing
-> the "Starting 32-bit kernel" on the screen. How do I reset an O2?
-
-The flashing red LED is implying the kernel booted, then paniced suddenly. 
-Until you get the console working in whatever fashion, you won't know why.
-
-
---Kumba
-
--- 
-"Such is oft the course of deeds that move the wheels of the world: small 
-hands do them because they must, while the eyes of the great are elsewhere." 
---Elrond
+patch-mips-2.6.11-rc1-20050120-mips-io-0
+--- linux-mips-2.6.11-rc1-20050120.macro/include/asm-mips/io.h	19 Jan 2005 17:00:32 -0000	1.81
++++ linux-mips-2.6.11-rc1-20050120/include/asm-mips/io.h	20 Jan 2005 01:44:07 -0000
+@@ -34,7 +34,7 @@
+ #undef CONF_SLOWDOWN_IO
+ 
+ /*
+- * Raw operations are never swapped in software.  Otoh values that raw
++ * Raw operations are never swapped in software.  OTOH values that raw
+  * operations are working on may or may not have been swapped by the bus
+  * hardware.  An example use would be for flash memory that's used for
+  * execute in place.
+@@ -43,6 +43,7 @@
+ # define __raw_ioswabw(x)	(x)
+ # define __raw_ioswabl(x)	(x)
+ # define __raw_ioswabq(x)	(x)
++# define ____raw_ioswabq(x)	(x)
+ 
+ /*
+  * Sane hardware offers swapping of PCI/ISA I/O space accesses in hardware;
+@@ -51,37 +52,36 @@
+ #if defined(CONFIG_SWAP_IO_SPACE)
+ 
+ # define ioswabb(x)		(x)
++# define dma_ioswabb(x)		(x)
+ # ifdef CONFIG_SGI_IP22
+ /*
+  * IP22 seems braindead enough to swap 16bits values in hardware, but
+  * not 32bits.  Go figure... Can't tell without documentation.
+  */
+ #  define ioswabw(x)		(x)
++#  define dma_ioswabw(x)	le16_to_cpu(x)
+ # else
+ #  define ioswabw(x)		le16_to_cpu(x)
++#  define dma_ioswabw(x)	(x)
+ # endif
+ # define ioswabl(x)		le32_to_cpu(x)
++# define dma_ioswabl(x)		(x)
+ # define ioswabq(x)		le64_to_cpu(x)
++# define dma_ioswabq(x)		(x)
+ 
+ #else
+ 
+ # define ioswabb(x)		(x)
++# define dma_ioswabb(x)		(x)
+ # define ioswabw(x)		(x)
++# define dma_ioswabw(x)		cpu_to_le16(x)
+ # define ioswabl(x)		(x)
++# define dma_ioswabl(x)		cpu_to_le32(x)
+ # define ioswabq(x)		(x)
++# define dma_ioswabq(x)		cpu_to_le32(x)
+ 
+ #endif
+ 
+-/*
+- * Native bus accesses never swapped.
+- */
+-#define bus_ioswabb(x)		(x)
+-#define bus_ioswabw(x)		(x)
+-#define bus_ioswabl(x)		(x)
+-#define bus_ioswabq(x)		(x)
+-
+-#define __bus_ioswabq		bus_ioswabq
+-
+ #define IO_SPACE_LIMIT 0xffff
+ 
+ /*
+@@ -386,15 +386,15 @@ __BUILD_IOPORT_SINGLE(bus, bwlq, type, _
+ 
+ #define BUILDIO(bwlq, type)						\
+ 									\
+-__BUILD_MEMORY_PFX(, bwlq, type)					\
+ __BUILD_MEMORY_PFX(__raw_, bwlq, type)					\
+-__BUILD_MEMORY_PFX(bus_, bwlq, type)					\
++__BUILD_MEMORY_PFX(, bwlq, type)					\
++__BUILD_MEMORY_PFX(dma_, bwlq, type)					\
+ __BUILD_IOPORT_PFX(, bwlq, type)					\
+-__BUILD_IOPORT_PFX(__raw_, bwlq, type)
++__BUILD_IOPORT_PFX(dma_, bwlq, type)
+ 
+ #define __BUILDIO(bwlq, type)						\
+ 									\
+-__BUILD_MEMORY_SINGLE(__bus_, bwlq, type, 0)
++__BUILD_MEMORY_SINGLE(____raw_, bwlq, type, 0)
+ 
+ BUILDIO(b, u8)
+ BUILDIO(w, u16)
+@@ -422,7 +422,7 @@ static inline void writes##bwlq(volatile
+ 	volatile type *__addr = addr;					\
+ 									\
+ 	while (count--) {						\
+-		__raw_write##bwlq(*__addr, mem);			\
++		dma_write##bwlq(*__addr, mem);				\
+ 		__addr++;						\
+ 	}								\
+ }									\
+@@ -433,7 +433,7 @@ static inline void reads##bwlq(volatile 
+ 	volatile type *__addr = addr;					\
+ 									\
+ 	while (count--) {						\
+-		*__addr = __raw_read##bwlq(mem);			\
++		*__addr = dma_read##bwlq(mem);				\
+ 		__addr++;						\
+ 	}								\
+ }
+@@ -446,7 +446,7 @@ static inline void outs##bwlq(unsigned l
+ 	volatile type *__addr = addr;					\
+ 									\
+ 	while (count--) {						\
+-		__raw_out##bwlq(*__addr, port);				\
++		dma_out##bwlq(*__addr, port);				\
+ 		__addr++;						\
+ 	}								\
+ }									\
+@@ -457,7 +457,7 @@ static inline void ins##bwlq(unsigned lo
+ 	volatile type *__addr = addr;					\
+ 									\
+ 	while (count--) {						\
+-		*__addr = __raw_in##bwlq(port);				\
++		*__addr = dma_in##bwlq(port);				\
+ 		__addr++;						\
+ 	}								\
+ }

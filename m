@@ -1,58 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Oct 2003 17:50:13 +0100 (BST)
-Received: from smtp120.tiscali.dk ([IPv6:::ffff:62.79.79.111]:31229 "EHLO
-	smtp120.tiscali.dk") by linux-mips.org with ESMTP
-	id <S8225548AbTJHQtl>; Wed, 8 Oct 2003 17:49:41 +0100
-Received: from cpmail.dk.tiscali.com (mail.tiscali.dk [212.54.64.159])
-	by smtp120.tiscali.dk (8.12.6p3/8.12.6) with ESMTP id h98Gnexs021345
-	for <linux-mips@linux-mips.org>; Wed, 8 Oct 2003 18:49:40 +0200 (CEST)
-	(envelope-from jh@hansen-telecom.dk)
-Received: from jorg (62.79.30.226) by cpmail.dk.tiscali.com (6.7.018)
-        id 3F79565D000DFECE for linux-mips@linux-mips.org; Wed, 8 Oct 2003 18:49:40 +0200
-From: =?iso-8859-1?Q?J=F8rg_Ulrich_Hansen?= <jh@hansen-telecom.dk>
-To: "Linux-Mips" <linux-mips@linux-mips.org>
-Subject: What toolchain for vr4181
-Date: Wed, 8 Oct 2003 18:49:32 +0200
-Message-ID: <EIEHIDHKGJLNEPLOGOPOAEIGCFAA.jh@hansen-telecom.dk>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
-Importance: Normal
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1165
-Return-Path: <jh@hansen-telecom.dk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Oct 2003 18:33:23 +0100 (BST)
+Received: from natsmtp00.rzone.de ([IPv6:::ffff:81.169.145.165]:59887 "EHLO
+	natsmtp00.webmailer.de") by linux-mips.org with ESMTP
+	id <S8225548AbTJHRcv>; Wed, 8 Oct 2003 18:32:51 +0100
+Received: from excalibur.cologne.de (pD951111A.dip.t-dialin.net [217.81.17.26])
+	by post.webmailer.de (8.12.10/8.12.10) with ESMTP id h98HWjHi006108;
+	Wed, 8 Oct 2003 19:32:45 +0200 (MEST)
+Received: from karsten by excalibur.cologne.de with local (Exim 3.35 #1 (Debian))
+	id 1A7IEH-0000NX-00; Wed, 08 Oct 2003 19:36:05 +0200
+Date: Wed, 8 Oct 2003 19:36:05 +0200
+From: Karsten Merker <karsten@excalibur.cologne.de>
+To: debian-mips@lists.debian.org, linux-mips@linux-mips.org
+Subject: Re: Question about use of PMAD-AA ethernet adapter on Decstation
+Message-ID: <20031008173605.GA1359@excalibur.cologne.de>
+Mail-Followup-To: Karsten Merker <karsten@excalibur.cologne.de>,
+	debian-mips@lists.debian.org, linux-mips@linux-mips.org
+References: <20031008142337.GI12409@rembrandt.csv.ica.uni-stuttgart.de> <Pine.GSO.3.96.1031008162829.26799D-100000@delta.ds2.pg.gda.pl> <20031008161017.GL12409@rembrandt.csv.ica.uni-stuttgart.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20031008161017.GL12409@rembrandt.csv.ica.uni-stuttgart.de>
+User-Agent: Mutt/1.3.28i
+X-No-Archive: yes
+Return-Path: <karsten@excalibur.cologne.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3382
+X-archive-position: 3383
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jh@hansen-telecom.dk
+X-original-sender: karsten@excalibur.cologne.de
 Precedence: bulk
 X-list: linux-mips
 
-Hi
+On Wed, Oct 08, 2003 at 06:10:17PM +0200, Thiemo Seufer wrote:
+> Maciej W. Rozycki wrote:
 
-I am about to start porting Linux to my hardware with an vr4181 processor.
-The hardware is very close to the osprey architecture. Now my problem is
-what toolchain to use.
-I could do with an up to date opinion.
+> > There is a patch that converts the stock driver
+> > into one working for the PMAD-A (but it doesn't work for the others than)
+> > and I'm told Debian uses thus modified code as a separate driver.  The
+> > patch is based on work by Dave Airlie and is available here:
+> > 'ftp://ftp.ds2.pg.gda.pl/pub/macro/drivers/pmad-a/patch-mips-2.4.20-pre6-20021222-declance-pmad-12.gz' 
+> > -- it applies cleanly to the current version of declance.c.
+> 
+> Debian calls this specific driver pmadaa.c. I looked only at declance.c,
+> which seems to be the same as te linux-mips CVS version.
 
-? gcc-2.95.3
-? gcc-2.95.4
-? egcs-1.1.2
-? gcc-3.2
-? binutils 2.13
-? glibc 2.2.5
-? Any patches
-? http://www.ltc.com/~brad/mips/mips-cross-toolchain/index.html
-? http://kegel.com/crosstool/
+The pmadaa.c in the Debian kernel is basically the original work of
+Dave Airlie with just very slight adjustments to make it compile
+with 2.4.19.
 
-Where is a good starting point for a toolchain that will build and work?
-I would prefere to build it my self because at a later state I might build
-it under cygwin. But a prebuild does also have interest.
-
-Kind regards Jorg
+Regards,
+Karsten
+-- 
+#include <standard_disclaimer>
+Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der Nutzung
+oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die Markt- oder
+Meinungsforschung.

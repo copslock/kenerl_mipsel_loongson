@@ -1,35 +1,53 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6OFe7v20821
-	for linux-mips-outgoing; Tue, 24 Jul 2001 08:40:07 -0700
-Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6OFe6O20818
-	for <linux-mips@oss.sgi.com>; Tue, 24 Jul 2001 08:40:06 -0700
-Received: by ocean.lucon.org (Postfix, from userid 1000)
-	id 568BA125BA; Tue, 24 Jul 2001 08:40:05 -0700 (PDT)
-Date: Tue, 24 Jul 2001 08:40:05 -0700
-From: "H . J . Lu" <hjl@lucon.org>
-To: Andre.Messerschmidt@infineon.com
-Cc: linux-mips@oss.sgi.com
-Subject: Re: GCC and Modules
-Message-ID: <20010724084005.A20319@lucon.org>
-References: <86048F07C015D311864100902760F1DDFF000E@dlfw003a.dus.infineon.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <86048F07C015D311864100902760F1DDFF000E@dlfw003a.dus.infineon.com>; from Andre.Messerschmidt@infineon.com on Tue, Jul 24, 2001 at 01:14:42PM +0200
+	by oss.sgi.com (8.11.2/8.11.3) id f6OFpIc21732
+	for linux-mips-outgoing; Tue, 24 Jul 2001 08:51:18 -0700
+Received: from highland.isltd.insignia.com (highland.isltd.insignia.com [195.217.222.20])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6OFpHO21727
+	for <linux-mips@oss.sgi.com>; Tue, 24 Jul 2001 08:51:17 -0700
+Received: from wolf.isltd.insignia.com (wolf.isltd.insignia.com [172.16.1.3])
+	by highland.isltd.insignia.com (8.11.3/8.11.3/check_local4.2) with ESMTP id f6OFpF439191;
+	Tue, 24 Jul 2001 16:51:15 +0100 (BST)
+Received: from snow (snow.isltd.insignia.com [172.16.17.209])
+	by wolf.isltd.insignia.com (8.9.3/8.9.3) with SMTP id QAA23185;
+	Tue, 24 Jul 2001 16:51:14 +0100 (BST)
+Message-ID: <013401c11458$7813b6c0$d11110ac@snow.isltd.insignia.com>
+From: "Andrew Thornton" <andrew.thornton@insignia.com>
+To: "Geert Uytterhoeven" <Geert.Uytterhoeven@sonycom.com>
+Cc: "James Simmons" <jsimmons@transvirtual.com>,
+   "Linux-MIPS" <linux-mips@oss.sgi.com>
+Subject: Re: ATI Victoria on Malta
+Date: Tue, 24 Jul 2001 16:51:14 +0100
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 4.72.3110.5
+X-MimeOLE: Produced By Microsoft MimeOLE V4.72.3110.3
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Jul 24, 2001 at 01:14:42PM +0200, Andre.Messerschmidt@infineon.com wrote:
-> Hi.
-> 
-> As I understand the current stable release of binutils and gcc is not able
-> to compile functional modules. 
+Geert,
 
-What are you talking about? My mips toolchain is as stable/good as the
-x86 version for RedHat 7.1.
+>Using `atydebug' (from tools in CVS module atyfb at
+>http://www.sourceforge.net/projects/linux-fbdev/), the PLL debug values
+mean:
+>
+>| tux$ ./atydebug ac ac 24 df f6 04 00 fd 8e 9e 65 05 00 00 00 00
+>| PLL rate = 417.901480 MHz (guessed)
+>| bad MCLK post divider 5
+>| VCLK0 = 414.623821 MHz
+>| VCLK1 = 232.713765 MHz
+>| VCLK2 = 86.311678 MHz
+>| VCLK3 = 165.521763 MHz
+>| tux$
+>
+>Which looks a bit odd. The same for the 512 K SGRAM.
+>
+>So I guess the Malta firmware hasn't initialized the RAGE XL yet. And atyfb
+>requires an initialized chip.
 
+I guess this is not surprising because the Malta firmware isn't a PC BIOS.
 
-
-H.J.
+Andrew Thornton

@@ -1,76 +1,89 @@
-Received:  by oss.sgi.com id <S553681AbQJXPOe>;
-	Tue, 24 Oct 2000 08:14:34 -0700
-Received: from u-117.karlsruhe.ipdial.viaginterkom.de ([62.180.10.117]:51204
-        "EHLO u-117.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S553742AbQJXPOL>; Tue, 24 Oct 2000 08:14:11 -0700
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S870348AbQJXPJj>;
-        Tue, 24 Oct 2000 17:09:39 +0200
-Date:   Tue, 24 Oct 2000 17:09:39 +0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     K.H.C.vanHouten@kpn.com
+Received:  by oss.sgi.com id <S553765AbQJXR5p>;
+	Tue, 24 Oct 2000 10:57:45 -0700
+Received: from fileserv2.cologne.de ([195.227.25.6]:35673 "HELO
+        fileserv2.Cologne.DE") by oss.sgi.com with SMTP id <S553714AbQJXR5X>;
+	Tue, 24 Oct 2000 10:57:23 -0700
+Received: from localhost (3405 bytes) by fileserv2.Cologne.DE
+	via rmail with P:stdio/R:bind/T:smtp
+	(sender: <excalibur.cologne.de!karsten>) (ident <excalibur.cologne.de!karsten> using unix)
+	id <m13o8K5-0006w7C@fileserv2.Cologne.DE>
+	for <ralf@oss.sgi.com>; Tue, 24 Oct 2000 19:57:17 +0200 (CEST)
+	(Smail-3.2.0.101 1997-Dec-17 #5 built 1998-Jan-19)
+Received: (from karsten@localhost)
+	by excalibur.cologne.de (8.9.3/8.8.7) id TAA04519;
+	Tue, 24 Oct 2000 19:55:55 +0200
+Message-ID: <20001024195555.A4469@excalibur.cologne.de>
+Date:   Tue, 24 Oct 2000 19:55:55 +0200
+From:   Karsten Merker <karsten@excalibur.cologne.de>
+To:     Ralf Baechle <ralf@oss.sgi.com>
 Cc:     linux-mips@fnet.fr, linux-mips@oss.sgi.com
 Subject: Re: process lockups
-Message-ID: <20001024170939.C7342@bacchus.dhis.org>
-References: <20001024044736.B3397@bacchus.dhis.org> <200010240551.HAA02069@sparta.research.kpn.com>
+Mail-Followup-To: Ralf Baechle <ralf@oss.sgi.com>, linux-mips@fnet.fr,
+	linux-mips@oss.sgi.com
+References: <20001024044736.B3397@bacchus.dhis.org> <200010240551.HAA02069@sparta.research.kpn.com> <20001024163843.A7342@bacchus.dhis.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <200010240551.HAA02069@sparta.research.kpn.com>; from K.H.C.vanHouten@research.kpn.com on Tue, Oct 24, 2000 at 07:51:42AM +0200
-X-Accept-Language: de,en,fr
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.91i
+In-Reply-To: <20001024163843.A7342@bacchus.dhis.org>; from Ralf Baechle on Tue, Oct 24, 2000 at 04:38:43PM +0200
+X-No-Archive: yes
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, Oct 24, 2000 at 07:51:42AM +0200, Houten K.H.C. van (Karel) wrote:
+On Tue, Oct 24, 2000 at 04:38:43PM +0200, Ralf Baechle wrote:
 
-> Aside from this I stil get 'bug in get_wchan' messages, but everything
-> seems to run fine. I hope to test my current kernels on a 5000/150 and
-> a 3100.
+> Which is a problem - I need exactly the WCHAN information to debug this
+> problem.
 
-Try this untested fix for get_wchan.  The values in the ps axl column should
-now be numbers that make sense as addresses.  Unless the `n' option is
-also used ps will try to translate the address back into a symbol.  Cite
-from ps(1):
+Here we go...
 
-[...]
-       To  produce  the  WCHAN  field,  ps needs to read the Sys­
-       tem.map file created when  the  kernel  is  compiled.  The
-       search path is:
-              $PS_SYSTEM_MAP
-              /boot/System.map-`uname -r`
-              /boot/System.map
-              /lib/modules/`uname -r`/System.map
-              /usr/src/linux/System.map
-              /System.map
-[...]
+Two major processes are running: a tar zxvf (PIDs 212 and 213) and a
+dpkg-buildpackage. Both together should consume all CPU time available,
+but they do not, they just sit idle. Interesting is that here there is no
+process in state "D" as I had before. This seems to be reproducible.
 
-If that's working as planned please send me the WCHAN of any stuck process.
-I need to know where they're stuck.
+These logs were created from a fresh cvs-checkout (already including your
+patch).
 
-  Ralf
+root# ps -laww
+  F S   UID   PID  PPID  C PRI  NI ADDR SZ WCHAN  TTY          TIME CMD
+100 S     0   189   168  0  60   0 -  1000 pause  ttyp0    00:00:00 screen
+100 S     0   212   191  1  60   0 -   579 ?      ttya0    00:00:00 tar
+000 S     0   213   212  0  60   0 -   394 pipe_w ttya0    00:00:00 gzip
+100 S     0   220   197  0  60   0 -   873 wait4  ttya2    00:00:00 dpkg-buildpacka
+100 S     0   272   220  0  60   0 -  1563 wait4  ttya2    00:00:02 dpkg-source
+000 S     0   277   272  0  60   0 -   394 pipe_w ttya2    00:00:00 gunzip
+100 S     0   278   272  0  60   0 -   536 ?      ttya2    00:00:00 cpio
+000 S     0   279   278  0  60   0 -   864 wait4  ttya2    00:00:00 sh
+000 S     0   280   279  0  60   0 -   333 pipe_w ttya2    00:00:00 egrep
+000 R     0   283   196  0  60   0 -   800 -      ttya1    00:00:00 ps
 
---- arch/mips/kernel/process.c	2000/10/05 01:18:43	1.21
-+++ arch/mips/kernel/process.c	2000/10/24 14:54:29
-@@ -203,18 +203,9 @@
- 		return 0;
+While this happens, top tells:
+
+27 processes: 26 sleeping, 1 running, 0 zombie, 0 stopped
+CPU states:  10.5% user,   9.5% system,   0.0% nice,  79.9% idle
+Mem:  127056K av,  22064K used, 104992K free,      0K shrd,    488K buff
+Swap:      0K av,      0K used,      0K free                 10952K cached
  
- 	pc = thread_saved_pc(&p->thread);
--	if (pc == (unsigned long) interruptible_sleep_on
--	    || pc == (unsigned long) sleep_on) {
--		schedule_frame = ((unsigned long *)p->thread.reg30)[9];
--		return ((unsigned long *)schedule_frame)[15];
--	}
--	if (pc == (unsigned long) interruptible_sleep_on_timeout
--	    || pc == (unsigned long) sleep_on_timeout) {
--		schedule_frame = ((unsigned long *)p->thread.reg30)[9];
--		return ((unsigned long *)schedule_frame)[16];
--	}
- 	if (pc >= first_sched && pc < last_sched) {
--		printk(KERN_DEBUG "Bug in %s\n", __FUNCTION__);
-+		schedule_frame = ((unsigned long *)p->thread.reg30)[9];
-+		return ((unsigned long *)schedule_frame)[11];
- 	}
- 
- 	return pc;
+  PID USER     PRI  NI  SIZE  RSS SHARE STAT  LIB %CPU %MEM   TIME COMMAND
+  284 root       0   0  1048 1048   684 R       0 12.9  0.8   0:00 top
+  190 root       0   0  1204 1204   984 S       0  0.8  0.9   0:02 screen
+    1 root       0   0   484  484   408 S       0  0.0  0.3   0:02 init
+[...]
+Any further processes have 0% CPU.
+
+
+After some time the tar zxvf suddenly starts running and decompresses the
+archive in one step.
+
+Hope this description is helpful, if you need further information, just
+mail me.
+
+Greetings,
+Karsten
+-- 
+#include <standard_disclaimer>
+Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der Nutzung
+oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die Markt- oder
+Meinungsforschung.

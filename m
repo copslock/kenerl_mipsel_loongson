@@ -1,46 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Apr 2003 17:34:27 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:31219 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225211AbTDXQe0>;
-	Thu, 24 Apr 2003 17:34:26 +0100
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id h3OGYKa28380;
-	Thu, 24 Apr 2003 09:34:20 -0700
-Date: Thu, 24 Apr 2003 09:34:20 -0700
-From: Jun Sun <jsun@mvista.com>
-To: Steven Seeger <sseeger@stellartec.com>
-Cc: linux-mips@linux-mips.org, jsun@mvista.com
-Subject: Re: [patch] wait instruction on vr4181
-Message-ID: <20030424093420.C28275@mvista.com>
-References: <20030424141217.A23893@linux-mips.org> <076701c30a6b$429b0560$3501a8c0@wssseeger>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <076701c30a6b$429b0560$3501a8c0@wssseeger>; from sseeger@stellartec.com on Thu, Apr 24, 2003 at 07:10:28AM -0700
-Return-Path: <jsun@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Apr 2003 17:52:25 +0100 (BST)
+Received: from mail.stellartec.com ([IPv6:::ffff:65.107.16.99]:9477 "EHLO
+	nt_server.stellartec.com") by linux-mips.org with ESMTP
+	id <S8225211AbTDXQwW>; Thu, 24 Apr 2003 17:52:22 +0100
+Received: from wssseeger ([192.168.1.53]) by nt_server.stellartec.com
+          (Post.Office MTA v3.1.2 release (PO205-101c)
+          ID# 568-43562U100L2S100) with SMTP id AAA130;
+          Thu, 24 Apr 2003 09:52:14 -0700
+Reply-To: <sseeger@stellartec.com>
+From: sseeger@stellartec.com (Steven Seeger)
+To: "'Jun Sun'" <jsun@mvista.com>,
+	"'Steven Seeger'" <sseeger@stellartec.com>
+Cc: <linux-mips@linux-mips.org>
+Subject: RE: [patch] wait instruction on vr4181
+Date: Thu, 24 Apr 2003 09:58:09 -0700
+Message-ID: <078201c30a82$af7989b0$3501a8c0@wssseeger>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook CWS, Build 9.0.2416 (9.0.2911.0)
+In-Reply-To: <20030424093420.C28275@mvista.com>
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Importance: Normal
+Return-Path: <sseeger@stellartec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2165
+X-archive-position: 2166
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: sseeger@stellartec.com
 Precedence: bulk
 X-list: linux-mips
 
+Oops. I guess I'm tired today. We should use "standby" for our wait
+instruction.
 
-On Thu, Apr 24, 2003 at 07:10:28AM -0700, Steven Seeger wrote:
-> The VR4181 does work with the wait instruction. This is a patch for that.
-> (arch/mips/cpu-probe.c)
-> 
-> Steve
-> 
+I will make a new patch.
 
-The CPU mannual (v1.1 draft) I have for Vr4181 does not say about "wait"
-instruction.  How do you know it has "wait"?
+Steve
 
-I will ask NEC for confirmation.
-
-
-Jun
+>-----Original Message-----
+>From: Jun Sun [mailto:jsun@mvista.com]
+>Sent: Thursday, April 24, 2003 9:34 AM
+>To: Steven Seeger
+>Cc: linux-mips@linux-mips.org; jsun@mvista.com
+>Subject: Re: [patch] wait instruction on vr4181
+>
+>
+>
+>On Thu, Apr 24, 2003 at 07:10:28AM -0700, Steven Seeger wrote:
+>> The VR4181 does work with the wait instruction. This is a
+>patch for that.
+>> (arch/mips/cpu-probe.c)
+>>
+>> Steve
+>>
+>
+>The CPU mannual (v1.1 draft) I have for Vr4181 does not say
+>about "wait"
+>instruction.  How do you know it has "wait"?
+>
+>I will ask NEC for confirmation.
+>
+>
+>Jun
+>

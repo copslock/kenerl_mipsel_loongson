@@ -1,73 +1,65 @@
-Received:  by oss.sgi.com id <S305195AbQDRVft>;
-	Tue, 18 Apr 2000 14:35:49 -0700
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:14957 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S305188AbQDRVfW>; Tue, 18 Apr 2000 14:35:22 -0700
-Received: from nodin.corp.sgi.com (fddi-nodin.corp.sgi.com [198.29.75.193]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id OAA04474; Tue, 18 Apr 2000 14:39:21 -0700 (PDT)
+Received:  by oss.sgi.com id <S305195AbQDRVvJ>;
+	Tue, 18 Apr 2000 14:51:09 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:53287 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305188AbQDRVuu>;
+	Tue, 18 Apr 2000 14:50:50 -0700
+Received: from nodin.corp.sgi.com (fddi-nodin.corp.sgi.com [198.29.75.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id OAA02743; Tue, 18 Apr 2000 14:46:05 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id OAA99182; Tue, 18 Apr 2000 14:34:50 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id OAA04324; Tue, 18 Apr 2000 14:50:18 -0700 (PDT)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id OAA93827
+	id OAA97594
 	for linux-list;
-	Tue, 18 Apr 2000 14:21:18 -0700 (PDT)
+	Tue, 18 Apr 2000 14:36:09 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id OAA89950
+	via ESMTP id OAA99897
 	for <linux@cthulhu.engr.sgi.com>;
-	Tue, 18 Apr 2000 14:21:16 -0700 (PDT)
-	mail_from (flo@rfc822.org)
-Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4]) 
+	Tue, 18 Apr 2000 14:36:07 -0700 (PDT)
+	mail_from (geert@linux-m68k.org)
+Received: from styx.cs.kuleuven.ac.be (styx.cs.kuleuven.ac.be [134.58.40.3]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id OAA06150
-	for <linux@cthulhu.engr.sgi.com>; Tue, 18 Apr 2000 14:21:15 -0700 (PDT)
-	mail_from (flo@rfc822.org)
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 7EC2F7DD; Tue, 18 Apr 2000 23:21:16 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 1D2DE8FC4; Tue, 18 Apr 2000 23:16:52 +0200 (CEST)
-Date:   Tue, 18 Apr 2000 23:16:52 +0200
-From:   Florian Lohoff <flo@rfc822.org>
+	via ESMTP id OAA02606
+	for <linux@cthulhu.engr.sgi.com>; Tue, 18 Apr 2000 14:36:05 -0700 (PDT)
+	mail_from (geert@linux-m68k.org)
+Received: from cassiopeia.home (root@dialup006.cs.kuleuven.ac.be [134.58.47.135])
+	by styx.cs.kuleuven.ac.be (8.9.3/8.9.3) with ESMTP id XAA10273;
+	Tue, 18 Apr 2000 23:35:20 +0200 (MET DST)
+Received: from localhost (geert@localhost)
+	by cassiopeia.home (8.9.3/8.9.3/Debian/GNU) with ESMTP id RAA00630;
+	Tue, 18 Apr 2000 17:13:48 +0200
+X-Authentication-Warning: cassiopeia.home: geert owned process doing -bs
+Date:   Tue, 18 Apr 2000 17:13:48 +0200 (CEST)
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
 To:     Ralf Baechle <ralf@oss.sgi.com>
-Cc:     Harald Koerfgen <Harald.Koerfgen@home.ivm.de>,
-        Mike Klar <mfklar@ponymail.com>, linux-mips@fnet.fr,
-        linux@cthulhu.engr.sgi.com
-Subject: Re: Unaligned address handling, and the cause of that login prob
-Message-ID: <20000418231652.A866@paradigm.rfc822.org>
-References: <NDBBIDGAOKMNJNDAHDDMAEGGCJAA.mfklar@ponymail.com> <XFMail.000417183334.Harald.Koerfgen@home.ivm.de> <20000418105348.A1247@paradigm.rfc822.org> <20000418140410.A6271@uni-koblenz.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.3i
-In-Reply-To: <20000418140410.A6271@uni-koblenz.de>; from Ralf Baechle on Tue, Apr 18, 2000 at 02:04:10PM -0700
-Organization: rfc822 - pure communication
+cc:     Mike Klar <mfklar@ponymail.com>, linux@cthulhu.engr.sgi.com,
+        linux-mips@fnet.fr
+Subject: Re: Unaligned address handling, and the cause of that login problem
+In-Reply-To: <20000417164333.B3123@uni-koblenz.de>
+Message-ID: <Pine.LNX.4.10.10004181713250.562-100000@cassiopeia.home>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On Tue, Apr 18, 2000 at 02:04:10PM -0700, Ralf Baechle wrote:
-> On Tue, Apr 18, 2000 at 10:53:48AM +0200, Florian Lohoff wrote:
-> 
-> > But the (kernel) fix from Ralph concerning the sleep? syscalls seems
-> > to be incorrect or buggy - When calling top the display refreshes
-> > multiple times a second without a sleep and on the console i get
-> > an.
-> > 
-> > Setting flush to zero for top.
-> > schedule_timeout: wrong timeout value fffbd0b2 from 800942b8 
-> 
-> I'm fairly sure that my patch is not buggy - I haven't made any :-)
+On Mon, 17 Apr 2000, Ralf Baechle wrote:
+> I'll put __attribute__ ((aligned(64))) to the structure which will fix this.
+                                   ^^
+8, I suppose?
 
-Hasnt been there somethign with a missing syscall you wanted to add
-again to all kernels ? I remembered dark but couldnt find anything
-in the cvs. :)
+Gr{oetje,eeting}s,
 
-Flo
--- 
-Florian Lohoff		flo@rfc822.org		      	+49-subject-2-change
-"Technology is a constant battle between manufacturers producing bigger and
-more idiot-proof systems and nature producing bigger and better idiots."
+						Geert
+
+--
+Geert Uytterhoeven -- Linux/{m68k~Amiga,PPC~CHRP} -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

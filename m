@@ -1,51 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Mar 2005 01:42:12 +0000 (GMT)
-Received: from adsl-67-116-42-149.dsl.sntc01.pacbell.net ([IPv6:::ffff:67.116.42.149]:17607
-	"EHLO avtrex.com") by linux-mips.org with ESMTP id <S8225250AbVCVBl6>;
-	Tue, 22 Mar 2005 01:41:58 +0000
-Received: from [192.168.0.35] ([192.168.0.35] unverified) by avtrex.com with Microsoft SMTPSVC(5.0.2195.6713);
-	 Mon, 21 Mar 2005 17:41:54 -0800
-Message-ID: <423F77DF.2060808@avtrex.com>
-Date:	Mon, 21 Mar 2005 17:41:51 -0800
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Mozilla Thunderbird 1.0 (X11/20041206)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	Kumba <kumba@gentoo.org>
-CC:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Mar 2005 03:22:12 +0000 (GMT)
+Received: from nevyn.them.org ([IPv6:::ffff:66.93.172.17]:8360 "EHLO
+	nevyn.them.org") by linux-mips.org with ESMTP id <S8225972AbVCVDV4>;
+	Tue, 22 Mar 2005 03:21:56 +0000
+Received: from drow by nevyn.them.org with local (Exim 4.50 #1 (Debian))
+	id 1DDZxu-0006Iy-38; Mon, 21 Mar 2005 22:21:58 -0500
+Date:	Mon, 21 Mar 2005 22:21:58 -0500
+From:	Daniel Jacobowitz <dan@debian.org>
+To:	David Daney <ddaney@avtrex.com>
+Cc:	Kumba <kumba@gentoo.org>, linux-mips@linux-mips.org
 Subject: Re: NPTL support for the kernel
-References: <20050316141151.GA23225@nevyn.them.org> <20050321203445.GA7082@nevyn.them.org> <423F7305.2030908@gentoo.org>
-In-Reply-To: <423F7305.2030908@gentoo.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 22 Mar 2005 01:41:54.0184 (UTC) FILETIME=[5384F080:01C52E80]
-Return-Path: <ddaney@avtrex.com>
+Message-ID: <20050322032158.GA24188@nevyn.them.org>
+References: <20050316141151.GA23225@nevyn.them.org> <20050321203445.GA7082@nevyn.them.org> <423F7305.2030908@gentoo.org> <423F77DF.2060808@avtrex.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <423F77DF.2060808@avtrex.com>
+User-Agent: Mutt/1.5.6+20040907i
+Return-Path: <drow@nevyn.them.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7496
+X-archive-position: 7497
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-Kumba wrote:
-> Daniel Jacobowitz wrote:
-> 
->>
->> Ping?
->>
-> 
-> Doesn't this need the glibc side of things to be effective?, or is it 
-> testable  w/o that component?
+On Mon, Mar 21, 2005 at 05:41:51PM -0800, David Daney wrote:
+> Kumba wrote:
+> >Daniel Jacobowitz wrote:
+> >
+> >>
+> >>Ping?
+> >>
+> >
+> >Doesn't this need the glibc side of things to be effective?, or is it 
+> >testable  w/o that component?
 
-I think the main point is that it should not break existing code.
+It is testable independently.  Also, I posted the glibc bits last week.
 
-We need NPTL support in all three of GCC, Linux kernel and glibc before 
-it can be tested.  If it doesn't break existing code, I think it should 
-go in the kernel so that we have something on which to test gcc and glibc.
+> I think the main point is that it should not break existing code.
 
-Just my $0.02
+Of course.  It doesn't.  The only thing it could possibly break would
+be four-argument clone (it's supposed to be five argument, and the
+missing argument conventionally goes in the middle... oops).  But
+I strongly believe nothing is yet using the four-argument form so I
+synced MIPS with the rest of the world.
 
-David Daney.
+> We need NPTL support in all three of GCC, Linux kernel and glibc before 
+> it can be tested.  If it doesn't break existing code, I think it should 
+> go in the kernel so that we have something on which to test gcc and glibc.
+
+GCC support was committed two weeks ago, BTW.
+
+-- 
+Daniel Jacobowitz
+CodeSourcery, LLC

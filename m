@@ -1,20 +1,23 @@
-Received:  by oss.sgi.com id <S553870AbRAPR0z>;
-	Tue, 16 Jan 2001 09:26:55 -0800
-Received: from woody.ichilton.co.uk ([216.29.174.40]:10761 "HELO
-        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553855AbRAPR0e>;
-	Tue, 16 Jan 2001 09:26:34 -0800
+Received:  by oss.sgi.com id <S553884AbRAPSJg>;
+	Tue, 16 Jan 2001 10:09:36 -0800
+Received: from woody.ichilton.co.uk ([216.29.174.40]:13065 "HELO
+        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553882AbRAPSJQ>;
+	Tue, 16 Jan 2001 10:09:16 -0800
 Received: by woody.ichilton.co.uk (Postfix, from userid 1000)
-	id 541737D0E; Tue, 16 Jan 2001 17:26:33 +0000 (GMT)
-Date:   Tue, 16 Jan 2001 17:26:33 +0000
-From:   Ian Chilton <mailinglist@ichilton.co.uk>
-To:     linux-mips@oss.sgi.com
-Subject: 2.4.0 Kernel Snapshot Available
-Message-ID: <20010116172633.A26461@woody.ichilton.co.uk>
+	id E7F7F7D10; Tue, 16 Jan 2001 18:09:14 +0000 (GMT)
+Date:   Tue, 16 Jan 2001 18:09:14 +0000
+From:   Ian Chilton <ian@ichilton.co.uk>
+To:     David Keen <dkeen@bellsouth.net>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: Debian Base for MIPS Available
+Message-ID: <20010116180914.A26581@woody.ichilton.co.uk>
 Reply-To: Ian Chilton <ian@ichilton.co.uk>
+References: <20010116165015.A26345@woody.ichilton.co.uk> <3A64887A.27920A7A@bellsouth.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.3.12i
+In-Reply-To: <3A64887A.27920A7A@bellsouth.net>; from dkeen@bellsouth.net on Tue, Jan 16, 2001 at 11:44:26AM -0600
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
@@ -22,33 +25,73 @@ X-Orcpt: rfc822;linux-mips-outgoing
 
 Hello,
 
-http://linuxmips.ichilton.co.uk/news.php4
+> Mr. Chilton,
+
+Call me Ian!   (or GadgetMan if you use IRC and come to #mipslinux !)
 
 
-I have uploaded a snapshot of the current CVS kernel to the following
-URL's for those who don't use CVS. I will also upload a snapshot of the
-current 2.2.14 from CVS into the same dirctory.
+> Is this tarball a good starting point for me to net boot to my indy?
+
+I have not tried that base yet and I won't be able to before the
+weekend. My I2 is 60 miles away and I have a remote session, but am
+compiling my own new system...my Indy is in the same place but turned
+off..
+
+But yes, it should be OK..
+
+There is also ICLinux v1, but this uses older stuff...you are probably
+better using the new base...
+
+I am working on ICLinux v2 now..
 
 
-The 2.4.0 is @:
+Problem is, the port is still in a very developent stage, so there is
+little documentation, and you have to be prepared to do a little
+hacking around to get things working..
 
-http://download.ichilton.co.uk/linux-mips/kernelsrc/linux-010116.tar.gz
 
+You should have a look round the documents and links at
+http://linuxmips.ichilton.co.uk and you could also have a look at the
+install guide for IClinux v1 at:
+
+http://download.ichilton.co.uk/linux-mips/iclinux/INSTALL
+
+again, this is out of date and needs updating.
+
+
+Don't know if you are familiar with network booting, but it is
+mentioned in there...also notes on booting an Indy/I2 in the I2-HOWTO
+which is on the Documentation page on http://linuxmips.ichilton.co.uk
+
+
+
+The other problem is finding a working kernel. At the moment, the CVS
+tree is broken...it is being worked on..
+
+I have a working but old kernel for the Indy/I2 which will get you
+going, and you can update later:
+http://download.ichilton.co.uk/linux-mips/kernels/vmlinux-001027-test9-r4x00.gz
 or
+ftp://download.ichilton.co.uk/pub/ichilton/linux-mips/kernels/vmlinux-001027-test9-r4x00.gz
 
-ftp://download.ichilton.co.uk/pub/linux-mips/kernelsrc/linux-010116.tar.gz 
+(there is also a non-gzip'd version at the same place without the .gz)
+
+
+
+Hope this helps a bit...
 
 
 Bye for Now,
 
 Ian
 
-                                \|||/
+
+                                \|||/ 
                                 (o o)
  /---------------------------ooO-(_)-Ooo---------------------------\
  |  Ian Chilton        (IRC Nick - GadgetMan)     ICQ #: 16007717  |
  |-----------------------------------------------------------------|
  |  E-Mail: ian@ichilton.co.uk     Web: http://www.ichilton.co.uk  |
  |-----------------------------------------------------------------|
- |        Proofread carefully to see if you any words out.         |
+ |         Budget: A method for going broke methodically.          |
  \-----------------------------------------------------------------/

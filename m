@@ -1,41 +1,47 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0GIh6G03945
-	for linux-mips-outgoing; Wed, 16 Jan 2002 10:43:06 -0800
-Received: from ocean.lucon.org (12-234-19-19.client.attbi.com [12.234.19.19])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0GIgxP03938
-	for <linux-mips@oss.sgi.com>; Wed, 16 Jan 2002 10:43:01 -0800
-Received: by ocean.lucon.org (Postfix, from userid 1000)
-	id DC364125C1; Wed, 16 Jan 2002 09:42:55 -0800 (PST)
-Date: Wed, 16 Jan 2002 09:42:55 -0800
-From: "H . J . Lu" <hjl@lucon.org>
-To: Carsten Langgaard <carstenl@mips.com>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: fsck fails on latest 2.4 kernel
-Message-ID: <20020116094255.A10704@lucon.org>
-References: <3C454D61.ACF98623@mips.com> <3C459383.5C8A6C8B@mips.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <3C459383.5C8A6C8B@mips.com>; from carstenl@mips.com on Wed, Jan 16, 2002 at 03:51:47PM +0100
+	by oss.sgi.com (8.11.2/8.11.3) id g0GK5cw15934
+	for linux-mips-outgoing; Wed, 16 Jan 2002 12:05:38 -0800
+Received: from galileo5.galileo.co.il (pop3.galileo.co.il [199.203.130.130])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0GK5WP15926
+	for <linux-mips@oss.sgi.com>; Wed, 16 Jan 2002 12:05:33 -0800
+Received: from galileo.co.il (linux2.galileo.co.il [10.2.40.2])
+	by galileo.co.il (8.8.5/8.8.5) with ESMTP id VAA22281
+	for <linux-mips@oss.sgi.com>; Wed, 16 Jan 2002 21:04:34 +0200 (GMT-2)
+Message-ID: <3C45CE3B.6080507@galileo.co.il>
+Date: Wed, 16 Jan 2002 21:02:19 +0200
+From: Rabeeh Khoury <rabeeh@galileo.co.il>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.7) Gecko/20011221
+X-Accept-Language: en-us
+MIME-Version: 1.0
+To: linux-mips@oss.sgi.com
+Subject: Compilers question
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, Jan 16, 2002 at 03:51:47PM +0100, Carsten Langgaard wrote:
-> The problem turned out to be a compiler/binutils bug.
-> 
-> I'm using
-> ftp://oss.sgi.com/pub/linux/mips/crossdev/i386-linux/mipsel-linux/binutils-mipsel-linux-2.9.5-3.i386.rpm
-> and
->  ftp://oss.sgi.com/pub/linux/mips/crossdev/i386-linux/mipsel-linux/egcs-mipsel-linux-1.1.2-4.i386.rpm
-> , which seems to be the latest on the SGI FTP server.
+Hi All,
 
-I won't use them myself. They are known to be broken.
+This is not MIPS Linux issue, but I couldn't find out a better place to 
+post it :)
 
-> 
-> What are the recommended toolchain ?
+I have an application I'v compiled with certain toolchain (for MIPS and 
+other targets), and I want to distribute the application in binary (no 
+loadable modules or dynamic linked libraries, just plain C files with 
+headers files that gives out certain API - sort of a low level driver 
+for hardware access only).
 
-The toolchain from my RedHat 7.1 mips port is in reasonably good shape.
+What I need to know, is how I can make sure that when another person 
+gets my binaries he can link them with his application and work well ?
 
+The factors that I can identify till now are two -
+1.. Distribute the binary in ELF format (are there any compilers that
+don't support ELF ? )
+2.. Compile the binary that it is ABI compliant
 
-H.J.
+Please add more factors that should be checked, or even suggest another 
+approach to overcome this problem (other than I get the other person 
+tool chain and compile the sources myself).
+
+Thank you a lot,
+Rabeeh

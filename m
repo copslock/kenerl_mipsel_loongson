@@ -1,61 +1,75 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9U2Q5T30428
-	for linux-mips-outgoing; Mon, 29 Oct 2001 18:26:05 -0800
+	by oss.sgi.com (8.11.2/8.11.3) id f9U2SLJ30528
+	for linux-mips-outgoing; Mon, 29 Oct 2001 18:28:21 -0800
+Received: from dea.linux-mips.net (a1as03-p77.stg.tli.de [195.252.186.77])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9U2SG030524
+	for <linux-mips@oss.sgi.com>; Mon, 29 Oct 2001 18:28:17 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id f9U2SDA07769
+	for linux-mips@oss.sgi.com; Tue, 30 Oct 2001 03:28:13 +0100
 Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9U2Pv030425;
-	Mon, 29 Oct 2001 18:25:57 -0800
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9U1kb029778
+	for <linux-mips@oss.sgi.com>; Mon, 29 Oct 2001 17:46:37 -0800
 Received: from mvista.com (IDENT:ahennessy@penelope.mvista.com [10.0.0.122])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f9U2RkB18788;
-	Mon, 29 Oct 2001 18:27:46 -0800
-Message-ID: <3BDE0FAF.1E3556A9@mvista.com>
-Date: Mon, 29 Oct 2001 18:25:51 -0800
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f9U1mNB16946;
+	Mon, 29 Oct 2001 17:48:24 -0800
+Message-ID: <3BDE0673.20F5C29D@mvista.com>
+Date: Mon, 29 Oct 2001 17:46:27 -0800
 From: Alice Hennessy <ahennessy@mvista.com>
 X-Mailer: Mozilla 4.7 [en] (X11; I; Linux 2.2.12-20b i686)
 X-Accept-Language: en
 MIME-Version: 1.0
-To: Ralf Baechle <ralf@oss.sgi.com>
-CC: Carsten Langgaard <carstenl@mips.com>,
-   Atsushi Nemoto <nemoto@toshiba-tops.co.jp>, ajob4me@21cn.com,
-   linux-mips@oss.sgi.com
-Subject: Re: Toshiba TX3927 board boot problem.
-References: <20011026095319.1C4BBB474@topsms.toshiba-tops.co.jp> <20011026.225806.63990588.nemoto@toshiba-tops.co.jp> <20011029.160225.59648095.nemoto@toshiba-tops.co.jp> <3BDD140E.432D795B@mips.com> <3BDDF193.B6405A7F@mvista.com> <20011030013223.B6614@dea.linux-mips.net>
+To: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
+CC: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>,
+   "carstenl@mips.com" <carstenl@mips.com>, ahennessy@mvista.com,
+   ajob4me@21cn.com
+Subject: Re: other info about Toshiba TX3927 board boot problem.
+References: <200110290956.f9T9uc028676@oss.sgi.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Ralf Baechle wrote:
+8route wrote:
 
-> On Mon, Oct 29, 2001 at 04:17:23PM -0800, Alice Hennessy wrote:
+> Dear Atsushi:
+>   Hi!
+>   I found the reset switch on the TX3927 board can work if you switch it
+> against the PCI interface when
+> ==================================
+>   VFS: Mounted root (NFS filesystem).
+>   Freeing unused kernel memory: 44k freed
+> ========================================
+> ,usually I switch it towards the PCI interface.
 >
-> > > This doesn't look right, you still need to enable the CU1 bit in the
-> > > status register to let the FP emulator kick-in.  FPU-less CPUs should
-> > > take a coprocessor unusable exception on any floating-point instructions.
-> > > I have been running this on several FPU-less CPUs, and it works fine for
-> > me.
+>   And I have fixed the source code of process.c as you said.
+> >For TX3927, you must skip those two lines in exit_thread() and
+> >flush_thread().
 > >
-> > Maybe the FPU-less CPUs you have been using define the CU1 bit as reserved
-> > or is unused (ignore on write, zero on read)? The TX3927 actually allows
-> > the setting of the CU1 bit.  Have you seen a case where you need to set
-> > the CU1 bit for the emulation to kick-in?   I would think that the CU1
-> > bit should never be set to one for FPU-less CPUs.
+> >               set_cp0_status(ST0_CU1, ST0_CU1);
+> >               __asm__ __volatile__("cfc1\t$0,$31");
+> >
+> >
+> But the problem still exists.The serial console output will stop at
+> ==================================
+>   VFS: Mounted root (NFS filesystem).
+>   Freeing unused kernel memory: 44k freed
+> ========================================
 >
-> There are subtle differences in how CUx bits for unimplemented coprocessors
-> are handled in the various processors.  MIPS32 and MIPS64 specifies the
-> behaviour as 0 on read, writes ignored; previous processors such as the
-> R4000 handled this differently and as a consequence a fp instruction on
-> a fpu-less r4000 class cpu may either throw a CU or a reserved instruction
-> exception.  To make things easier for everybody this is documented in the
-> R10000 user's manual ...
+>   I think that maybe the Linux system has booted up OK,but there is
+> something wrong with the serial console because serial ports are integrated
+> with TX3927.Do you agree?Please consider it in your latest patch.
+> >By the way, now I'm planning to send patches for TX CPU boards
+> >(including JMR3927) to oss.sgi.com.  If you can wait a while, you can
+> >try it.
+> Thank you very much.
 >
->   Ralf
+> 8route
+> ajob4me@21cn.com
+> 10/29/2001
 
-So,  we should not set CU1 generically for FPU-less CPUs especially since a
-known problem exists
-for the tx3927?  Ie, qualify all setting of CU1 as follows:
-
-if (mips_cpu.options & MIPS_CPU_FPU)
-                   set_cp0_status(ST0_CU1);
-
+I have already submitted a patch to Ralf for the JMR3927 and am waiting for
+his reply.
+We should coordinate to make sure we don't overwrite each other.
 
 Alice

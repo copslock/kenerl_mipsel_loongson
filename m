@@ -1,69 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Feb 2005 00:54:45 +0000 (GMT)
-Received: from rwcrmhc13.comcast.net ([IPv6:::ffff:204.127.198.39]:3529 "EHLO
-	rwcrmhc13.comcast.net") by linux-mips.org with ESMTP
-	id <S8225352AbVBLAy3>; Sat, 12 Feb 2005 00:54:29 +0000
-Received: from [192.168.1.4] (pcp05077810pcs.waldrf01.md.comcast.net[68.54.246.193])
-          by comcast.net (rwcrmhc13) with ESMTP
-          id <2005021200541601500e6t10e>; Sat, 12 Feb 2005 00:54:20 +0000
-Message-ID: <420D5374.4000006@gentoo.org>
-Date:	Fri, 11 Feb 2005 19:53:08 -0500
-From:	Kumba <kumba@gentoo.org>
-User-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Feb 2005 01:54:34 +0000 (GMT)
+Received: from p3EE2BC3E.dip.t-dialin.net ([IPv6:::ffff:62.226.188.62]:13632
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225352AbVBLByL>; Sat, 12 Feb 2005 01:54:11 +0000
+Received: from fluff.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id j1C1s62u012433;
+	Sat, 12 Feb 2005 02:54:06 +0100
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.13.1/8.13.1/Submit) id j1C1s0Jp012432;
+	Sat, 12 Feb 2005 02:54:00 +0100
+Date:	Sat, 12 Feb 2005 02:54:00 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	"Stephen P. Becker" <geoman@gentoo.org>
+Cc:	Frederic TEMPORELLI - astek <ftemporelli@astek.fr>,
+	linux-mips@linux-mips.org
 Subject: Re: IP32 - issues with last CVS snapshoot
-References: <420CEE7F.3080201@astek.fr> <420CF611.5030705@gentoo.org> <Pine.LNX.4.61L.0502111825300.30117@blysk.ds.pg.gda.pl> <420D006E.3000107@total-knowledge.com> <Pine.LNX.4.61L.0502111915510.30117@blysk.ds.pg.gda.pl>
-In-Reply-To: <Pine.LNX.4.61L.0502111915510.30117@blysk.ds.pg.gda.pl>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <kumba@gentoo.org>
+Message-ID: <20050212015400.GA26873@linux-mips.org>
+References: <420CEE7F.3080201@astek.fr> <420CF611.5030705@gentoo.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <420CF611.5030705@gentoo.org>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7236
+X-archive-position: 7237
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Maciej W. Rozycki wrote:
-> On Fri, 11 Feb 2005, Ilya A. Volynets-Evenbakh wrote:
+On Fri, Feb 11, 2005 at 01:14:41PM -0500, Stephen P. Becker wrote:
+
+> >First, there's something wrong with "make ip32_defconfig" which generate 
+> >config file with "Kernel code model = 64-bit kernel" (MIPS64=y) but 
+> >doesn't preselect  "Use 64-bit ELF format for building" (BUILD_ELF64=n)
+> >doing so, "make" quickly generates an error:
 > 
-> 
->>O64 may not be supported ABI, but it provides us with a feature that is really
->>usefull:
->>specifically, it generates 32 bit symbol addresses instead of 64 bit ones.
->>This cuts
->>down on code size considerably. If this feature was implemented in toolchain
->>as separate
->>switch, O64 hack could go away.
-> 
-> 
->  Well, the topic has been beaten to death here, so you don't really need 
-> to illuminate me -- it's only due to this popular request I've implemented 
-> the ability to do 32-bit builds for 64-bit kernel.  I just wonder why 
-> people insisting on such a setup don't actually contribute some code to do 
-> that cleanly and keep switching between hacks as they stop working one by 
-> one...
-> 
+> O2 doesn't use 64-bit ELF format.  You have to use o64.  See the 
+> arch/mips/Makefile portion of http://dev.gentoo.org/~geoman/cvs.diff for 
+> the proper changes.  I'm willing to bet a lot of your problems will go 
+> away if you stop using ELF64.  Such a kernel will boot, but it never 
+> quite works right.  Not only that, but 64-bit kernels have had some 
+> major problems in 2.6.11 so far that I'm not sure Ralf has completely 
+> fixed just yet.  Last I knew swap still didn't work, so I bet that is 
+> where your swap problem is coming from.
 
-I believe it was mentioned at some point in time by someone that using "n32" 
-inplace of "o64" might have a similar affect of "o64", but I can't recall what 
-the outcome of that actually was (or whether or not it ever worked).
+I fixed that also but it's still not stable.  As a test I did rebuild
+e2fsutils and it did panic after a while.  So midnight oil to the rescue ...
 
-As if I could be any more vague.
-
-
---Kumba
-
---
-
-
-
--- 
-"Such is oft the course of deeds that move the wheels of the world: small 
-hands do them because they must, while the eyes of the great are elsewhere." 
---Elrond
+  Ralf

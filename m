@@ -1,187 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jan 2004 07:00:02 +0000 (GMT)
-Received: from [IPv6:::ffff:202.138.125.47] ([IPv6:::ffff:202.138.125.47]:38058
-	"HELO vscrn4.securesynergyonline.com") by linux-mips.org with SMTP
-	id <S8224985AbUA2HAB>; Thu, 29 Jan 2004 07:00:01 +0000
-Received: from mail.soc-soft.com (202.56.254.199) by vscrn4.securesynergyonline.com (202.138.125.47), id <1075358884906.53258282.vscrn4.securesynergyonline.com>
-	for <linux-mips@linux-mips.org>;
-	Thu, 29 Jan 2004 12:18:04 +0530
-content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jan 2004 07:26:58 +0000 (GMT)
+Received: from [IPv6:::ffff:65.205.244.70] ([IPv6:::ffff:65.205.244.70]:19330
+	"EHLO envy.pioneer-pra.com") by linux-mips.org with ESMTP
+	id <S8224985AbUA2H05>; Thu, 29 Jan 2004 07:26:57 +0000
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by envy.pioneer-pra.com (Postfix) with ESMTP id D168A3778C
+	for <linux-mips@linux-mips.org>; Wed, 28 Jan 2004 23:26:30 -0800 (PST)
+Received: from envy.pioneer-pra.com ([127.0.0.1])
+ by localhost (envy.pioneer-pra.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 14536-01 for <linux-mips@linux-mips.org>;
+ Wed, 28 Jan 2004 23:26:29 -0800 (PST)
+Received: from pioneer-pra.com (host-186.int.pioneer-pra.com [10.0.2.186])
+	by envy.pioneer-pra.com (Postfix) with ESMTP id 8EAA03775A
+	for <linux-mips@linux-mips.org>; Wed, 28 Jan 2004 23:26:29 -0800 (PST)
+Message-ID: <4018B5C6.6080109@pioneer-pra.com>
+Date: Wed, 28 Jan 2004 23:27:02 -0800
+From: Russell Berkoff <rberkoff@pioneer-pra.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.0.1) Gecko/20020830
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="----_=_NextPart_001_01C3E635.7C891FB8"
-Subject: Testing of Ethernet controller
-X-MimeOLE: Produced By Microsoft Exchange V6.0.6487.1
-Date: Thu, 29 Jan 2004 12:29:49 +0530
-Message-ID: <E519BE9E8DAC6A4B89DA4AD1D2A155B76751A8@soc-mail.soc-soft.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: Testing of Ethernet controller
-Thread-Index: AcPmNXwrp75GyvSvRCqnc2HUZtsjfg==
-From: "Nitin P Mahajan" <Nitin@soc-soft.com>
-To: <linux-mips@linux-mips.org>
-Return-Path: <Nitin@soc-soft.com>
+To: linux-mips@linux-mips.org
+Subject: /proc/net/softnet_stat
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: by amavisd-new at pioneer-pra.com
+Return-Path: <rberkoff@pioneer-pra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4182
+X-archive-position: 4183
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Nitin@soc-soft.com
+X-original-sender: rberkoff@pioneer-pra.com
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
+Hi,
 
-------_=_NextPart_001_01C3E635.7C891FB8
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+netdev_rx_stat[...].total++; in net/core/dev.c.
 
-Hi All!
+Appears to be redundant increment in: netif_rx() and netif_receive_skb().
 
-            I am new to the list.
-
-I am writing a driver for a on-chip MAC controller exactly similar to
-TC35815 chip. Can anyone please tell me that how can I test it
-thoroughly.
-
- Mainly I have to design the test bed keeping in view the following
-points.
-
-=20
-
-a.	Throughput of 10/100 Mbps
-b.	Interrupt and polling modes.
-c.	And functional test
-
-Thanking u in advance
-
-=20
-
-Regards
-
-=20
-
-Nitin
-
-
-------_=_NextPart_001_01C3E635.7C891FB8
-Content-Type: text/html;
-	charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-
-<html>
-
-<head>
-<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
-charset=3Dus-ascii">
-
-
-<meta name=3DGenerator content=3D"Microsoft Word 10 (filtered)">
-
-<style>
-<!--
- /* Style Definitions */
- p.MsoNormal, li.MsoNormal, div.MsoNormal
-	{margin:0in;
-	margin-bottom:.0001pt;
-	font-size:12.0pt;
-	font-family:"Times New Roman";}
-a:link, span.MsoHyperlink
-	{color:blue;
-	text-decoration:underline;}
-a:visited, span.MsoHyperlinkFollowed
-	{color:purple;
-	text-decoration:underline;}
-span.EmailStyle17
-	{font-family:Arial;
-	color:windowtext;}
-@page Section1
-	{size:8.5in 11.0in;
-	margin:1.0in 1.25in 1.0in 1.25in;}
-div.Section1
-	{page:Section1;}
- /* List Definitions */
- ol
-	{margin-bottom:0in;}
-ul
-	{margin-bottom:0in;}
--->
-</style>
-
-</head>
-
-<body lang=3DEN-US link=3Dblue vlink=3Dpurple>
-
-<div class=3DSection1>
-
-<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
-style=3D'font-size:10.0pt;
-font-family:Arial'>Hi All!</span></font></p>
-
-<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
-style=3D'font-size:10.0pt;
-font-family:Arial'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp; I
-am new to the list.</span></font></p>
-
-<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
-style=3D'font-size:10.0pt;
-font-family:Arial'>I am writing a driver for a on-chip MAC controller =
-exactly
-similar to TC35815 chip. Can anyone please tell me that how can I test =
-it
-thoroughly.</span></font></p>
-
-<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
-style=3D'font-size:10.0pt;
-font-family:Arial'>&nbsp;Mainly I have to design the test bed keeping in =
-view
-the following points.</span></font></p>
-
-<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
-style=3D'font-size:10.0pt;
-font-family:Arial'>&nbsp;</span></font></p>
-
-<ol start=3D1 type=3Da>
- <li class=3DMsoNormal><font size=3D2 face=3DArial><span =
-style=3D'font-size:10.0pt;
-     font-family:Arial'>Throughput of 10/100 Mbps</span></font></li>
- <li class=3DMsoNormal><font size=3D2 face=3DArial><span =
-style=3D'font-size:10.0pt;
-     font-family:Arial'>Interrupt and polling modes.</span></font></li>
- <li class=3DMsoNormal><font size=3D2 face=3DArial><span =
-style=3D'font-size:10.0pt;
-     font-family:Arial'>And functional test</span></font></li>
-</ol>
-
-<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
-style=3D'font-size:10.0pt;
-font-family:Arial'>Thanking u in advance</span></font></p>
-
-<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
-style=3D'font-size:10.0pt;
-font-family:Arial'>&nbsp;</span></font></p>
-
-<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
-style=3D'font-size:10.0pt;
-font-family:Arial'>Regards</span></font></p>
-
-<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
-style=3D'font-size:10.0pt;
-font-family:Arial'>&nbsp;</span></font></p>
-
-<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
-style=3D'font-size:10.0pt;
-font-family:Arial'>Nitin</span></font></p>
-
-</div>
-
-</body>
-
-</html>
-
-------_=_NextPart_001_01C3E635.7C891FB8--
-Scanned by SecureSynergy VirusScreen Service. 
-For more information log on to : http://www.securesynergyonline.com or http://www.securesynergy.com
+Regards,
+rb

@@ -1,39 +1,58 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0PHEKX08403
-	for linux-mips-outgoing; Fri, 25 Jan 2002 09:14:20 -0800
-Received: from river-bank.demon.co.uk (river-bank.demon.co.uk [193.237.18.135])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0PHEHP08391
-	for <linux-mips@oss.sgi.com>; Fri, 25 Jan 2002 09:14:17 -0800
-Received: from river-bank.demon.co.uk(ratty.river-bank.demon.co.uk[192.168.0.4]) (1024 bytes) by river-bank.demon.co.uk
-	via smtpd with P:smtp/R:bind_hosts/T:inet_zone_bind_smtp
-	(sender: <phil@river-bank.demon.co.uk>) 
-	id <m16U8zV-000SVAC@river-bank.demon.co.uk>
-	for <linux-mips@oss.sgi.com>; Fri, 25 Jan 2002 16:14:13 +0000 (GMT)
-	(Smail-3.2.0.111 2000-Feb-17 #1 built 2001-Jan-12)
-Message-ID: <3C51838A.174F8712@river-bank.demon.co.uk>
-Date: Fri, 25 Jan 2002 16:10:50 +0000
-From: Phil Thompson <phil@river-bank.demon.co.uk>
-Organization: At Home
-X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.17 i686)
-X-Accept-Language: en
+	by oss.sgi.com (8.11.2/8.11.3) id g0PICwJ19306
+	for linux-mips-outgoing; Fri, 25 Jan 2002 10:12:58 -0800
+Received: from mx.mips.com (mx.mips.com [206.31.31.226])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0PICpP19285;
+	Fri, 25 Jan 2002 10:12:51 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id JAA24804;
+	Fri, 25 Jan 2002 09:12:41 -0800 (PST)
+Received: from grendel (grendel [192.168.236.16])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id JAA02330;
+	Fri, 25 Jan 2002 09:12:30 -0800 (PST)
+Message-ID: <002b01c1a5c3$f1b71d80$10eca8c0@grendel>
+From: "Kevin D. Kissell" <kevink@mips.com>
+To: "Ralf Baechle" <ralf@oss.sgi.com>, "Girish Gulawani" <girishvg@yahoo.com>
+Cc: "MIPS/Linux List \(SGI\)" <linux-mips@oss.sgi.com>
+References: <3C505900.9685DDE3@cotw.com> <003901c1a532$d01576e0$de920dd3@gol.com> <20020124174521.B8860@dea.linux-mips.net>
+Subject: Re: MIPS/Linux NonSGI
+Date: Fri, 25 Jan 2002 18:15:36 +0100
 MIME-Version: 1.0
-To: linux-mips@oss.sgi.com
-Subject: Generic DISCONTIGMEM Support on 32bit MIPS
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4807.1700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4807.1700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I'm working on a port of 32bit MIPS to a board with several large holes
-in the memory map. So I need to re-implement paging_init() and
-mem_init().
+> On Fri, Jan 25, 2002 at 08:41:10AM +0900, Girish Gulawani wrote:
+>
+> > i'm trying to bringup linux 2.4.[2|9] on our board based on LSI mips r4k
+> > core.
 
-The first question is: has anybody already done this? Particularly as,
-once you've identified where the holes are, the code isn't board
-specific.
+[snip]
 
-If not then I'll try to work out what needed from the corresponding
-mips64 and ip27 code, but I'd appreciate any pointers.
+> Seems pretty obvious that cacheflushing for your system is broken.
 
-Thanks,
-Phil
+Sure sounds like it.
+
+> Verify that arch/mips/mm/c-r4k.c knows how to handle your system.
+>
+>   Ralf
+
+LSI has done a number of R3K and R4K-like designs under
+their MIPS architecture license which have features
+that differ from the main stream of MIPS CPUs where the OS
+is concerned.  Cache manipulation is a case in point.
+If it's not obvious to you from the cache management
+code, compare the relevant sections of your CPU manual
+with the MIPS32 spec (which I think is on the web somewhere
+at www.mips.com) or a copy of the R4000 manual if you
+can find one kicking around somewhere.
+
+            Regards,
+
+            Kevin K.

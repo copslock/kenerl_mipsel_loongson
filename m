@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Sep 2002 12:50:13 +0200 (CEST)
-Received: from delta.ds2.pg.gda.pl ([213.192.72.1]:44437 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Sep 2002 14:58:10 +0200 (CEST)
+Received: from delta.ds2.pg.gda.pl ([213.192.72.1]:47512 "EHLO
 	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S1122958AbSIDKuM>; Wed, 4 Sep 2002 12:50:12 +0200
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id MAA10803;
-	Wed, 4 Sep 2002 12:50:26 +0200 (MET DST)
-Date: Wed, 4 Sep 2002 12:50:25 +0200 (MET DST)
+	id <S1122958AbSIDM6K>; Wed, 4 Sep 2002 14:58:10 +0200
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA12867;
+	Wed, 4 Sep 2002 14:58:27 +0200 (MET DST)
+Date: Wed, 4 Sep 2002 14:58:26 +0200 (MET DST)
 From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Jun Sun <jsun@mvista.com>
-cc: Ralf Baechle <ralf@linux-mips.org>,
-	Matthew Dharm <mdharm@momenco.com>,
+Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Dominic Sweetman <dom@algor.co.uk>
+cc: Matthew Dharm <mdharm@momenco.com>, Jun Sun <jsun@mvista.com>,
 	Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Re: time.c CP0_COMPARE (and SMP IPI rambling) 
-In-Reply-To: <3D74EA66.6020906@mvista.com>
-Message-ID: <Pine.GSO.3.96.1020904124439.10619B-100000@delta.ds2.pg.gda.pl>
+Subject: RE: Interrupt handling....
+In-Reply-To: <200209040953.KAA17466@mudchute.algor.co.uk>
+Message-ID: <Pine.GSO.3.96.1020904144630.10619F-100000@delta.ds2.pg.gda.pl>
 Organization: Technical University of Gdansk
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
@@ -20,7 +20,7 @@ Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 73
+X-archive-position: 74
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -28,25 +28,31 @@ X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 3 Sep 2002, Jun Sun wrote:
+On Wed, 4 Sep 2002, Dominic Sweetman wrote:
 
-> Right now setting per-cpu timers is totally left to the board-dependent code. 
->   Once we see more SMP boxes using this approach, I think it starts to be 
-> interesting to make some abstraction and support it in a systematic way, 
-> including support for using CPU counter as the per-cpu timer interrupt.
+> > Which, as you can see, attempts to access address 0xfc00000c.
 > 
-> Using local_timer_emulation sounds like an attractive alternative to me, as we 
-> only need to set up one system-wide timer interrupt.  Conceptually it probably 
-> takes a little longer to run through timer_interrupt (due to IPI calls).  But 
-> if the hit on performance is very negligible, the simplicity might make it 
-> worthwile.
+> But that address is in the MIPS CPU's 'kseg2' region.  Addresses there
+> are always translated by the TLB, and you haven't got an entry.
+> 
+> Registers from things like the 2nd level interrupt controller are
+> memory mapped I/O locations, and you need to do an uncached access to
+> the appropriate physical address.
 
- Well, the i386 approach (with a grain of salt, of course, but it's about
-the most mature, anyway) seems reasonable.  A per-CPU local timer for
-scheduling (no need to stability or high precision) and an external timer
-interrupt for timekeeping (this one precise) that's delivered to a single
-CPU at a time.  I hope there are no MIPS SMP systems that lack an external
-timer IRQ source. 
+ As I understand 0xfc00000c is the physical address.  Thus you cannot
+reach it via KSEG0/1 (although you may use XKPHYS to get there in the
+64-bit mode).  Still ioremap() already handles the case mapping the area
+requested in the KSEG2 space, so it should work just fine. 
+
+> Most MIPS hardware has registers mapped between 0-512Mbyte
+> (0-0x1fff.ffff) physical, because a MIPS CPU can do uncached accesses
+> to that using the 'kseg1' window, which occupies the 
+> 
+>   0xa000.0000-0xbfff.ffff  (CPU virtual address)
+>   0x0000.0000-0x1fff.ffff  (physical address).
+
+ As I understand this is an exception.  Possibly the system supports more
+than 512MB of RAM and the designers wanted to avoid holes. 
 
 -- 
 +  Maciej W. Rozycki, Technical University of Gdansk, Poland   +

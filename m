@@ -1,65 +1,44 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0IMP2m11996
-	for linux-mips-outgoing; Fri, 18 Jan 2002 14:25:02 -0800
-Received: from ux3.sp.cs.cmu.edu (UX3.SP.CS.CMU.EDU [128.2.198.103])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0IMOuP11992
-	for <linux-mips@oss.sgi.com>; Fri, 18 Jan 2002 14:24:56 -0800
-Received: from GS256.SP.CS.CMU.EDU by ux3.sp.cs.cmu.edu id aa04181;
-          18 Jan 2002 16:24 EST
-Subject: Re: thread-ready ABIs
-From: Justin Carlson <justincarlson@cmu.edu>
-To: drepper@redhat.com
+	by oss.sgi.com (8.11.2/8.11.3) id g0IMWBA12189
+	for linux-mips-outgoing; Fri, 18 Jan 2002 14:32:11 -0800
+Received: from cygnus.com (runyon.sfbay.redhat.com [205.180.230.5] (may be forged))
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0IMW8P12186
+	for <linux-mips@oss.sgi.com>; Fri, 18 Jan 2002 14:32:09 -0800
+Received: from myware.mynet (fiendish.sfbay.redhat.com [205.180.231.146])
+	by runyon.cygnus.com (8.8.7-cygnus/8.8.7) with ESMTP id NAA03905;
+	Fri, 18 Jan 2002 13:32:01 -0800 (PST)
+Received: (from drepper@localhost)
+	by myware.mynet (8.11.6/8.11.6) id g0ILVxE13939;
+	Fri, 18 Jan 2002 13:31:59 -0800
+X-Authentication-Warning: myware.mynet: drepper set sender to drepper@redhat.com using -f
+To: Justin Carlson <justincarlson@cmu.edu>
 Cc: linux-mips@oss.sgi.com
-Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature";
-	boundary="=-2fAJiySWyIN6gBSOSi2M"
-X-Mailer: Evolution/0.99.2 (Preview Release)
-Date: 18 Jan 2002 16:24:45 -0500
-Message-Id: <1011389085.7765.69.camel@gs256.sp.cs.cmu.edu>
-Mime-Version: 1.0
+Subject: Re: thread-ready ABIs
+References: <1011389085.7765.69.camel@gs256.sp.cs.cmu.edu>
+Reply-To: drepper@redhat.com (Ulrich Drepper)
+X-fingerprint: BE 3B 21 04 BC 77 AC F0  61 92 E4 CB AC DD B9 5A
+X-fingerprint: e6:49:07:36:9a:0d:b7:ba:b5:e9:06:f3:e7:e7:08:4a
+From: Ulrich Drepper <drepper@redhat.com>
+Date: 18 Jan 2002 13:31:59 -0800
+In-Reply-To: <1011389085.7765.69.camel@gs256.sp.cs.cmu.edu>
+Message-ID: <m34rlj2vn4.fsf@myware.mynet>
+User-Agent: Gnus/5.0808 (Gnus v5.8.8) XEmacs/21.5 (asparagus)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+Justin Carlson <justincarlson@cmu.edu> writes:
 
---=-2fAJiySWyIN6gBSOSi2M
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+> _Why_ do we need a general register which is read-only to userland?  Are
+> you trying to store thread-context information in a fast way?  Why does
+> this need to happen?
 
-For those of us who are slightly behind, could you give some brief
-summary of what this thread register hullabaloo is about?  I hadn't been
-following this thread, but a search of the archives makes it look like
-it hasn't really been explained yet.
+Read-only is no requirement.  It is possible to live with this
+arrangement is all I said.  If it's a normal register, fine, this is
+how it works on most platforms.
 
-_Why_ do we need a general register which is read-only to userland?  Are
-you trying to store thread-context information in a fast way?  Why does
-this need to happen?
-
-Depending on what the exact requirements are, I could see several ways
-to free up a register:
-
-We could, theoretically, free up k1 or k0 (but not both) at the expense
-of some time in the stackframe setup at the userland/kernel boundary and
-some time in the fast TLB handler.  This wouldn't be read-only from
-userland, though, but is that really a hard requirement? =20
-
-There is precedent for hijacking some CP0 registers for purposes other
-than originally intended, e.g., the WATCH registers for holding the
-kernel stack pointer.  I don't have a mips spec in front of me, though,
-so I don't know if any CP0 registers are readable from userland: I seem
-to remember that all mfc0 ops are priveleged at the instruction level,
-not the register level, though.
-
--Justin
-
---=-2fAJiySWyIN6gBSOSi2M
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iD8DBQA8SJKd47Lg4cGgb74RAvf6AKDAd7EKEAQIHYuguF68sEcX/0j4cwCgyRwh
-HNEZEcjWNgS4q9VIZKgRQJc=
-=3T0G
------END PGP SIGNATURE-----
-
---=-2fAJiySWyIN6gBSOSi2M--
+-- 
+---------------.                          ,-.   1325 Chesapeake Terrace
+Ulrich Drepper  \    ,-------------------'   \  Sunnyvale, CA 94089 USA
+Red Hat          `--' drepper at redhat.com   `------------------------

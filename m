@@ -1,50 +1,56 @@
-Received:  by oss.sgi.com id <S42316AbQI0FFH>;
-	Tue, 26 Sep 2000 22:05:07 -0700
-Received: from fte036.mc2.chalmers.se ([129.16.41.199]:45574 "EHLO
-        fte036.mc2.chalmers.se") by oss.sgi.com with ESMTP
-	id <S42310AbQI0FEm>; Tue, 26 Sep 2000 22:04:42 -0700
-Received: from fte004 (fte004.mc2.chalmers.se [129.16.41.163])
-	by fte036.mc2.chalmers.se (8.9.3 (PHNE_18979)/8.9.3) with SMTP id HAA28917;
-	Wed, 27 Sep 2000 07:10:48 +0200 (METDST)
-Message-ID: <000e01c02840$8285f910$a3291081@mc2.chalmers.se>
-From:   "Erik Aderstedt" <erik@ic.chalmers.se>
-To:     "Keith M Wesolowski" <wesolows@chem.unr.edu>
-Cc:     <linux-mips@oss.sgi.com>
-References: <D1E34549DAC3D311A05D0020940F00FF62D460@exchmail.velocityenterprises.net> <20000926103313.B15401@chem.unr.edu>
-Subject: Re: Getting started
-Date:   Wed, 27 Sep 2000 07:05:09 +0200
-Organization: Solid State Electronics Laboratory
+Received:  by oss.sgi.com id <S42310AbQI0KIN>;
+	Wed, 27 Sep 2000 03:08:13 -0700
+Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:58531 "EHLO
+        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S42278AbQI0KHn>;
+	Wed, 27 Sep 2000 03:07:43 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id MAA26405;
+	Wed, 27 Sep 2000 12:06:32 +0200 (MET DST)
+Date:   Wed, 27 Sep 2000 12:06:31 +0200 (MET DST)
+From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To:     Jun Sun <jsun@mvista.com>
+cc:     "Kevin D. Kissell" <kevink@mips.com>, ralf@oss.sgi.com,
+        Dominic Sweetman <dom@algor.co.uk>, linux-mips@oss.sgi.com,
+        linux-mips@fnet.fr
+Subject: Re: load_unaligned() and "uld" instruction
+In-Reply-To: <39D0E51C.79A0BE50@mvista.com>
+Message-ID: <Pine.GSO.3.96.1000927112232.25150A-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.00.2014.211
-X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2014.211
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Keith M Wesolowski wesolows@chem.unr.edu wrote:
-> There are several distributions of varying non-production quality
-> available. Start with the HOWTO at
-> http://oss.sgi.com/mips/mips-howto.html. For some reason, my distro
-> isn't included in that document even though I wrote a piece for it
-> (Ralf?), so see also http://foobazco.org/~wesolows/Install-HOWTO.html
-> - note that 0.2b is out but already getting fairly old. I know for a
-> fact that you can install it without Irix because that's what I did
-> from day one.
->
+On Tue, 26 Sep 2000, Jun Sun wrote:
 
-I'd really like to try out your distribution (I want to use a diskless Indy
-as an X terminal) but the latest version I can find at your FTP site is 0.2a
-and there are messages all over the place saying "0.2a is broken, don't use
-it!". What gives?
+> --- linux/include/asm-mips/unaligned.h.orig     Mon Sep 25 14:02:52 2000
+> +++ linux/include/asm-mips/unaligned.h  Tue Sep 26 10:53:31 2000
+> @@ -19,7 +19,7 @@
+>  {
+>         unsigned long long __res;
+>  
+> -       __asm__("uld\t%0,(%1)"
+> +       __asm__(".set\tmips3\n\tuld\t%0,(%1)"
+>                 :"=&r" (__res)
+>                 :"r" (__addr));
+>  
+[etc.]
 
-Erik
-------
-Erik Aderstedt erik@ic.chalmers.se
-Chalmers University of Technology
-Solid State Electronics Laboratory
+ Please don't.  Gcc already has means to generate proper unaligned
+accesses.  See include/asm-alpha/unaligned.h for how to achieve them in a
+portable way (i.e. using packed structs) without the problematic inline
+asm.
+
+ And please use ".set mips0" (or ".set push" and ".set pop",
+appropriately) after using any ".set mips*" directive (or any other ".set"
+directive to that matter) not to adversly affect any other code.  Improper
+coding of such constructs bites R3K people badly.
+
+ Better yet, configure your compiler appropriately and avoid switching ISA
+levels in the code if at all possible.
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

@@ -1,60 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Feb 2003 22:01:28 +0000 (GMT)
-Received: from smtp-102.nerim.net ([IPv6:::ffff:62.4.16.102]:28427 "EHLO
-	kraid.nerim.net") by linux-mips.org with ESMTP id <S8225199AbTBPWB1>;
-	Sun, 16 Feb 2003 22:01:27 +0000
-Received: from melkor (vivienc.net1.nerim.net [213.41.134.233])
-	by kraid.nerim.net (Postfix) with ESMTP id D095140E2A
-	for <linux-mips@linux-mips.org>; Sun, 16 Feb 2003 23:01:23 +0100 (CET)
-Received: from glaurung (helo=localhost)
-	by melkor with local-esmtp (Exim 3.36 #1 (Debian))
-	id 18kWqi-00067b-00
-	for <linux-mips@linux-mips.org>; Sun, 16 Feb 2003 23:01:24 +0100
-Date: Sun, 16 Feb 2003 23:01:24 +0100 (CET)
-From: Vivien Chappelier <vivienc@nerim.net>
-X-Sender: glaurung@melkor
-To: linux-mips@linux-mips.org
-Subject: IDT RC5000 ll/lld bug on 64-bit address?
-Message-ID: <Pine.LNX.4.21.0302162221580.23174-100000@melkor>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <vivienc@nerim.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Feb 2003 23:23:11 +0000 (GMT)
+Received: from rj.SGI.COM ([IPv6:::ffff:192.82.208.96]:43672 "EHLO rj.sgi.com")
+	by linux-mips.org with ESMTP id <S8225192AbTBPXXK>;
+	Sun, 16 Feb 2003 23:23:10 +0000
+Received: from larry.melbourne.sgi.com (larry.melbourne.sgi.com [134.14.52.130])
+	by rj.sgi.com (8.12.2/8.12.2/linux-outbound_gateway-1.2) with SMTP id h1GNN6G8003535
+	for <@external-mail-relay.sgi.com:linux-mips@linux-mips.org>; Sun, 16 Feb 2003 15:23:07 -0800
+Received: from pureza.melbourne.sgi.com (pureza.melbourne.sgi.com [134.14.55.244]) by larry.melbourne.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id KAA26502 for <linux-mips@linux-mips.org>; Mon, 17 Feb 2003 10:23:05 +1100
+Received: from pureza.melbourne.sgi.com (localhost.localdomain [127.0.0.1])
+	by pureza.melbourne.sgi.com (8.12.5/8.12.5) with ESMTP id h1GNN18G028430
+	for <linux-mips@linux-mips.org>; Mon, 17 Feb 2003 10:23:01 +1100
+Received: (from clausen@localhost)
+	by pureza.melbourne.sgi.com (8.12.5/8.12.5/Submit) id h1GNN08B028428
+	for linux-mips@linux-mips.org; Mon, 17 Feb 2003 10:23:00 +1100
+Date: Mon, 17 Feb 2003 10:23:00 +1100
+From: Andrew Clausen <clausen@melbourne.sgi.com>
+To: Linux-MIPS <linux-mips@linux-mips.org>
+Subject: bug in ip27 PROM
+Message-ID: <20030216232300.GN8408@pureza.melbourne.sgi.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4i
+Return-Path: <clausen@pureza.melbourne.sgi.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1437
+X-archive-position: 1438
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vivienc@nerim.net
+X-original-sender: clausen@melbourne.sgi.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+Hi all,
 
-	I think I'm facing an hardware bug with the IDT RV5000 CPU of the
-SGI O2 (prid = 0x2321), and would like to know if someone else has faced
-it or knows about it. When executing a load linked on a 64-bit address
-(XKPHYS cache mode 3 in tested case), it seems the data is loaded directly
-in secondary cache/system memory instead of the D-cache. Executing a
-standard load operation on the same address loads the correct data, i.e.
-lld %0, 0(%1) ; load the old content at address %1 in %0
-ld %0, 0(%1)  ; load the correct content at address %1 in %0 
-If I execute a writeback on the cache line before accessing it with the
-ll/lld instruction, the data read is correct. ll/lld work correctly on
-KSEG0 addresses though (in cache mode 3 too). I've also checked ll/lld
-work correcly on the O2 R10000.
+I haven't been able to boot a kernel (neither IRIX nor Linux) directly
+from the volume header on the ip27 (Origin 200).  I can only load
+it from XFS partitions.
 
-I'm actually hitting the bug while booting the kernel, in free_bootmem_core
-(linux-2.5.47, mm/bootmem.c:125). test_and_clear_bit  
-(include/asm-mips64/bitops.h:220) returns false, meaning the bit was
-already cleared whereas it is not. All bdata->node_bootmem_map is
-initialized to 0xff in init_bootmem_core (mm/bootmem.c:63), but the lld in
-test_and_clear bit loads a 0 instead.
+I've looked at the PROM source, and figured out that the XFS loader
+loads in 64k chunks, but the volume header's loader loads in one
+big read.  So, it's either failing due to a low timeout (old crappy
+hard disks!), or the "large" buffer size isn't supported.
 
-The processor errata (http://www.idt.com/docs/RC5000_ER_99398.pdf) only
-speak of a bug with LLaddr being loaded with the virtual address instead
-of the physical one, which doesn't seem related to my problem.
+Anyone else experiencing this?
 
-Sounds familiar to someone?
+Anyway, the end result of this is it makes Flo's hack for embedding
+a volume header on an ISO more Interesting.  I'll try making
+a partition inside the ISO file system (overlapping with a file)
+which contains an XFS file system containing kernels...
 
-Vivien.
+Cheers,
+Andrew

@@ -1,65 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Oct 2004 02:46:04 +0100 (BST)
-Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:25104
-	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
-	id <S8225288AbUJZBp7>; Tue, 26 Oct 2004 02:45:59 +0100
-Received: from newms.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 26 Oct 2004 01:45:57 UT
-Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
-	by newms.toshiba-tops.co.jp (Postfix) with ESMTP
-	id A6930239E2B; Tue, 26 Oct 2004 10:13:36 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id i9Q1Da3i063310;
-	Tue, 26 Oct 2004 10:13:36 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date: Tue, 26 Oct 2004 10:12:26 +0900 (JST)
-Message-Id: <20041026.101226.70226592.nemoto@toshiba-tops.co.jp>
-To: linux-mips@linux-mips.org
-Cc: ralf@linux-mips.org
-Subject: socket.h patch (SOCK_XXX break glibc build)
-From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.2 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Oct 2004 02:50:52 +0100 (BST)
+Received: from pD956226F.dip.t-dialin.net ([IPv6:::ffff:217.86.34.111]:91 "EHLO
+	mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225285AbUJZBur>; Tue, 26 Oct 2004 02:50:47 +0100
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i9Q1okpf026850;
+	Tue, 26 Oct 2004 03:50:46 +0200
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i9Q1oaGP026849;
+	Tue, 26 Oct 2004 03:50:36 +0200
+Date: Tue, 26 Oct 2004 03:50:36 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc: linux-mips@linux-mips.org
+Subject: Re: socket.h patch (SOCK_XXX break glibc build)
+Message-ID: <20041026015036.GA26841@linux-mips.org>
+References: <20041026.101226.70226592.nemoto@toshiba-tops.co.jp>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20041026.101226.70226592.nemoto@toshiba-tops.co.jp>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6203
+X-archive-position: 6204
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On 2.6.9, SOCK_DGRAM, etc. in asm-mips/socket.h are visible from
-userland.  It will break glibc build.  For other archs,
-include/linux/net.h uses "#ifdef __KERNEL__" for SOCK_XXX definitions,
-so asm-mips/socket.h should use "#ifdef __KERNEL__" too?
+On Tue, Oct 26, 2004 at 10:12:26AM +0900, Atsushi Nemoto wrote:
 
+> On 2.6.9, SOCK_DGRAM, etc. in asm-mips/socket.h are visible from
+> userland.  It will break glibc build.  For other archs,
+> include/linux/net.h uses "#ifdef __KERNEL__" for SOCK_XXX definitions,
+> so asm-mips/socket.h should use "#ifdef __KERNEL__" too?
 
-diff -u linux-mips/include/asm-mips/socket.h linux/include/asm-mips/
---- linux-mips/include/asm-mips/socket.h	Thu Oct 21 09:39:03 2004
-+++ linux/include/asm-mips/socket.h	Mon Oct 25 22:06:43 2004
-@@ -68,6 +68,8 @@
- 
- #define SO_PEERSEC		30
- 
-+#ifdef __KERNEL__
-+:
- /** sock_type - Socket types
-  *
-  * Please notice that for binary compat reasons MIPS has to
-@@ -95,4 +97,6 @@
- 
- #define ARCH_HAS_SOCKET_TYPES 1
- 
-+#endif /* __KERNEL__ */
-+
- #endif /* _ASM_SOCKET_H */
+Ok ...
 
----
-Atsushi Nemoto
+   Ralf

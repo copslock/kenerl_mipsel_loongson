@@ -1,65 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Sep 2002 22:04:37 +0200 (CEST)
-Received: from jeeves.momenco.com ([64.169.228.99]:12810 "EHLO
-	host099.momenco.com") by linux-mips.org with ESMTP
-	id <S1122958AbSIFUEg>; Fri, 6 Sep 2002 22:04:36 +0200
-Received: from beagle (natbox.momenco.com [64.169.228.98])
-	by host099.momenco.com (8.11.6/8.11.6) with SMTP id g86K4S617264
-	for <linux-mips@linux-mips.org>; Fri, 6 Sep 2002 13:04:28 -0700
-From: "Matthew Dharm" <mdharm@momenco.com>
-To: "Linux-MIPS" <linux-mips@linux-mips.org>
-Subject: LOADADDR and low physical addresses?
-Date: Fri, 6 Sep 2002 13:04:28 -0700
-Message-ID: <NEBBLJGMNKKEEMNLHGAIAENHCIAA.mdharm@momenco.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
-Importance: Normal
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
-Return-Path: <mdharm@momenco.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Sep 2002 23:05:08 +0200 (CEST)
+Received: from gateway-1237.mvista.com ([12.44.186.158]:31225 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S1122958AbSIFVFH>;
+	Fri, 6 Sep 2002 23:05:07 +0200
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.11.6/8.11.6) id g86KrO601586;
+	Fri, 6 Sep 2002 13:53:24 -0700
+Date: Fri, 6 Sep 2002 13:53:24 -0700
+From: Jun Sun <jsun@mvista.com>
+To: Matthew Dharm <mdharm@momenco.com>
+Cc: Linux-MIPS <linux-mips@linux-mips.org>, jsun@mvista.com
+Subject: Re: LOADADDR and low physical addresses?
+Message-ID: <20020906135324.D1382@mvista.com>
+References: <NEBBLJGMNKKEEMNLHGAIAENHCIAA.mdharm@momenco.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <NEBBLJGMNKKEEMNLHGAIAENHCIAA.mdharm@momenco.com>; from mdharm@momenco.com on Fri, Sep 06, 2002 at 01:04:28PM -0700
+Return-Path: <jsun@orion.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 137
+X-archive-position: 138
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mdharm@momenco.com
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-So, I've got an interesting problem... which has forced me to look at
-the use of the LOADADDR variable in the Makefile, and try (quickly) to
-brush up on my linker scripting...
+On Fri, Sep 06, 2002 at 01:04:28PM -0700, Matthew Dharm wrote:
+> So, I've got an interesting problem... which has forced me to look at
+> the use of the LOADADDR variable in the Makefile, and try (quickly) to
+> brush up on my linker scripting...
+> 
+> Basically I've got a processor with on-chip registers that need to be
+> located in the first 512MByte of _physical_ address.  To make things
+> difficult, they cannot be re-located once placed (configuration is
+> done by a hardware config stream at reset).  It's only 16KBytes of
+> address, but since I recall that linux on mips can't (well, probably
+> can't) handle discontiguous memory maps (we discussed this about a
+> year ago, I think), I was looking for a good place to put them.
+> 
+> Now, I think my problems are solved if the LOADADDR variable works the
+> way I think it does -- that the kernel loads at that address, and only
+> uses memory from that point upwards.  So, if my LOADADDR is
+> 0x80100000, then the first 0x100000 won't get used.  Of course, the
+> exception vectors are there, but that doesn't take up that much space.
+> So there should be a chunk of address space I can use for other
+> things, like this register bank.
+> 
+> Yes? No?  Is my understanding even close?
+> 
 
-Basically I've got a processor with on-chip registers that need to be
-located in the first 512MByte of _physical_ address.  To make things
-difficult, they cannot be re-located once placed (configuration is
-done by a hardware config stream at reset).  It's only 16KBytes of
-address, but since I recall that linux on mips can't (well, probably
-can't) handle discontiguous memory maps (we discussed this about a
-year ago, I think), I was looking for a good place to put them.
+That is right.
 
-Now, I think my problems are solved if the LOADADDR variable works the
-way I think it does -- that the kernel loads at that address, and only
-uses memory from that point upwards.  So, if my LOADADDR is
-0x80100000, then the first 0x100000 won't get used.  Of course, the
-exception vectors are there, but that doesn't take up that much space.
-So there should be a chunk of address space I can use for other
-things, like this register bank.
+The only catch is that if you make LOADADDR very high (as in the case
+system ram starts at a high address), the kernel page
+table will be very high too.  It starts from phys address 0.
 
-Yes? No?  Is my understanding even close?
+Also if you map your control registers at near-zero phy address, don't you 
+also have system RAM there too?  Normally it is not ok to have two
+devices decoded at the same phys address.
 
-Matt
+> P.S. Of course, if this is right, then I need to figure out the
+> proper/best way to use the add_memory_region() function....
 
-P.S. Of course, if this is right, then I need to figure out the
-proper/best way to use the add_memory_region() function....
+Unless I misunderstand something here, I don't think you need 
+to mess with add_memory_region().
 
---
-Matthew D. Dharm                            Senior Software Designer
-Momentum Computer Inc.                      1815 Aston Ave.  Suite 107
-(760) 431-8663 X-115                        Carlsbad, CA 92008-7310
-Momentum Works For You                      www.momenco.com
+Jun

@@ -1,39 +1,47 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g2M1MbM28660
-	for linux-mips-outgoing; Thu, 21 Mar 2002 17:22:37 -0800
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id g2M1MYq28657
-	for <linux-mips@oss.sgi.com>; Thu, 21 Mar 2002 17:22:35 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.1) id g2M1OwV15459;
-	Thu, 21 Mar 2002 17:24:58 -0800
-Date: Thu, 21 Mar 2002 17:24:58 -0800
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Andre.Messerschmidt@infineon.com
-Cc: linux-mips@oss.sgi.com
-Subject: Re: Kernel compile with -O0
-Message-ID: <20020321172457.A15031@dea.linux-mips.net>
-References: <86048F07C015D311864100902760F1DD01B5E828@dlfw003a.dus.infineon.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <86048F07C015D311864100902760F1DD01B5E828@dlfw003a.dus.infineon.com>; from Andre.Messerschmidt@infineon.com on Thu, Mar 21, 2002 at 07:36:06PM +0100
-X-Accept-Language: de,en,fr
+	by oss.sgi.com (8.11.2/8.11.3) id g2M5NjA07184
+	for linux-mips-outgoing; Thu, 21 Mar 2002 21:23:45 -0800
+Received: from granite.he.net (granite.he.net [216.218.226.66])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2M5Ngq07181
+	for <linux-mips@oss.sgi.com>; Thu, 21 Mar 2002 21:23:42 -0800
+Received: from w2k30g (209-142-39-228.stk.inreach.net [209.142.39.228]) by granite.he.net (8.8.6/8.8.2) with SMTP id VAA08085 for <linux-mips@oss.sgi.com>; Thu, 21 Mar 2002 21:26:05 -0800
+Message-ID: <001401c1d161$eef48640$0b01a8c0@w2k30g>
+From: "David Christensen" <dpchrist@holgerdanske.com>
+To: <linux-mips@oss.sgi.com>
+Subject: Fw: Fw: Fw: hello
+Date: Thu, 21 Mar 2002 21:24:37 -0800
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, Mar 21, 2002 at 07:36:06PM +0100, Andre.Messerschmidt@infineon.com wrote:
+linux-mips@oss.sgi.com:
 
-> When I try to compile my 2.4.3 Kernel with -O0 I get a lot of undefined
-> references to functions like __cli, clear_bit etc. during linking. With -O1
-> it works.
-> 
-> Do I have to provide some special compile option to make this work?
+Hartvig Ekner <hartvige@mips.com> wrote:
+>> What host hardware platform(s) and host operating system(s) does MIPS
+>> use to build their MIPS Linux distribution as found on
+>> ftp://ftp.mips.com/pub/linux/mips/?
+>
+> We use commercial Redhat x86/Linux hosts with the cross compiler link
+> I sent for kernel compiles. All the binary RPM's are directly from
+> H.J.s miniport (which I believe is mostly crosscompiled), and then we
+> added some of the nfs/cdrom installation scripts around all this. We
+> only rebuild parts of userland (most often native) from the SRPMS when
+> necessary for internal debug etc, but this is purely for debug, not
+> re-distribution.
+>
+> All of H.J's binary RPMs for the userland and the corresponding source
+> RPMs we used can be found at:
+>
+> ftp://oss.sgi.com/pub/linux/mips/redhat/7
 
-Stupid answer: Yes, -O.
+Great!  Thanks for all the help.  :-)
 
-Less stupid answer - -O1 and higher imply function inlining which is
-required to build the kernel.
 
-  Ralf
+David

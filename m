@@ -1,30 +1,39 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id HAA06438; Fri, 27 Jun 1997 07:32:12 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA09242; Fri, 27 Jun 1997 09:42:13 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id HAA17076 for linux-list; Fri, 27 Jun 1997 07:31:53 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id HAA17059 for <linux@engr.sgi.com>; Fri, 27 Jun 1997 07:31:51 -0700
-Received: from alles.intern.julia.de (loehnberg1.core.julia.de [194.221.49.2]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id HAA28530
-	for <linux@engr.sgi.com>; Fri, 27 Jun 1997 07:31:32 -0700
-	env-from (ralf@Julia.DE)
-Received: from kernel.panic.julia.de (kernel.panic.julia.de [194.221.49.153])
-	by alles.intern.julia.de (8.8.5/8.8.5) with ESMTP id PAA06654
-	for <linux@engr.sgi.com>; Fri, 27 Jun 1997 15:19:22 +0200
-From: Ralf Baechle <ralf@Julia.DE>
-Received: (from ralf@localhost)
-          by kernel.panic.julia.de (8.8.4/8.8.4)
-	  id QAA12191 for linux@engr.sgi.com; Fri, 27 Jun 1997 16:19:55 +0200
-Message-Id: <199706271419.QAA12191@kernel.panic.julia.de>
-Subject: Crypto software
-To: linux@cthulhu.engr.sgi.com
-Date: Fri, 27 Jun 1997 16:19:54 +0200 (MET DST)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id JAA09741 for linux-list; Fri, 27 Jun 1997 09:41:51 -0700
+Received: from odin.corp.sgi.com (odin.corp.sgi.com [192.26.51.194]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA09715; Fri, 27 Jun 1997 09:41:49 -0700
+Received: from fir.engr.sgi.com by odin.corp.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1502/951211.SGI)
+	 id JAA06533; Fri, 27 Jun 1997 09:06:08 -0700
+Received: (from wje@localhost) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id JAA29443; Fri, 27 Jun 1997 09:06:08 -0700
+Date: Fri, 27 Jun 1997 09:06:08 -0700
+Message-Id: <199706271606.JAA29443@fir.engr.sgi.com>
+From: "William J. Earl" <wje@fir.engr.sgi.com>
+To: Miguel de Icaza <miguel@nuclecu.unam.mx>
+Cc: sca@refugee.engr.sgi.com, linux@cthulhu.engr.sgi.com
+Subject: Re: Keyboard/Mouse drivers on SGI
+In-Reply-To: <199706270132.UAA11076@athena.nuclecu.unam.mx>
+References: <199706241904.MAA25297@fir.engr.sgi.com>
+	<199706270132.UAA11076@athena.nuclecu.unam.mx>
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-While mirroring kernel.panic to linus I noticed that I have crypto software
-(mipsel-linux binaries of ssh-1.2.17) on it.  So the question is now how we
-handle this.  Should we not make these binaries available at all on
-linus or is adding a banner "Don't download this if ..." sufficient?
+Miguel de Icaza writes:
+ > 
+ > >     For the time being, I recommend that you go with the usual linux
+ > > driver for PC keyboard/mouse controller, which the Indy hardware 
+ > > emulates.
+ > 
+ > I may probably go with a SunOS-like mode of this, since it may be the
+ > easier to hack on the X server I am using right now (X11R6.1, and I
+ > plan to move to X11R6.3 once I have the thing demoable).
+ > 
+ > Later I could sit down and write the emulation mode for a couple of
+ > the STREAMS ioctls.
 
-  Ralf
+     The streams ioctl's don't do much in themselves, except in the sense
+that they turn on other behavior by pushing streams modules.  The latter
+have more complex behavior.  You could hack I_PUSH of a given name to
+enable specific behavior, and then implement that behavior.  The pushed
+streams module is responsible for controlling the device (keyboard, mouse,
+tablet, and so on), whereas the driver is mostly responsible for
+managing the link controller or serial port to which the device is attached.

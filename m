@@ -1,51 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Feb 2003 18:30:00 +0000 (GMT)
-Received: from mms1.broadcom.com ([IPv6:::ffff:63.70.210.58]:63249 "EHLO
-	mms1.broadcom.com") by linux-mips.org with ESMTP
-	id <S8225205AbTBNS37>; Fri, 14 Feb 2003 18:29:59 +0000
-Received: from 63.70.210.1 by mms1.broadcom.com with ESMTP (Broadcom
- MMS1 SMTP Relay (MMS v5.5.0)); Fri, 14 Feb 2003 10:29:36 -0700
-Received: from mail-sj1-5.sj.broadcom.com (mail-sj1-5.sj.broadcom.com
- [10.16.128.236]) by mon-irva-11.broadcom.com (8.9.1/8.9.1) with ESMTP
- id KAA19738; Fri, 14 Feb 2003 10:29:45 -0800 (PST)
-Received: from dt-sj3-158.sj.broadcom.com (dt-sj3-158 [10.21.64.158]) by
- mail-sj1-5.sj.broadcom.com (8.12.4/8.12.4/SSF) with ESMTP id
- h1EITqER009680; Fri, 14 Feb 2003 10:29:52 -0800 (PST)
-Received: from broadcom.com (IDENT:kwalker@localhost [127.0.0.1]) by
- dt-sj3-158.sj.broadcom.com (8.9.3/8.9.3) with ESMTP id KAA12577; Fri,
- 14 Feb 2003 10:29:52 -0800
-Message-ID: <3E4D35A0.7BCC13C4@broadcom.com>
-Date: Fri, 14 Feb 2003 10:29:52 -0800
-From: "Kip Walker" <kwalker@broadcom.com>
-Organization: Broadcom Corp. BPBU
-X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.5-beta4va3.20 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: shenminshi@netscape.net
-cc: linux-mips@linux-mips.org
-Subject: Re: when does "init" become usermode process
-References: <6105D94A.6A2BDDA3.10683EB2@netscape.net>
-X-WSS-ID: 1253EA1A796604-01-01
-Content-Type: text/plain;
- charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <kwalker@broadcom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Feb 2003 19:23:15 +0000 (GMT)
+Received: from f103.law10.hotmail.com ([IPv6:::ffff:64.4.15.103]:30726 "EHLO
+	hotmail.com") by linux-mips.org with ESMTP id <S8225205AbTBNTXO>;
+	Fri, 14 Feb 2003 19:23:14 +0000
+Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
+	 Fri, 14 Feb 2003 11:23:02 -0800
+Received: from 63.121.54.5 by lw10fd.law10.hotmail.msn.com with HTTP;
+	Fri, 14 Feb 2003 19:23:02 GMT
+X-Originating-IP: [63.121.54.5]
+From: "Mark and Janice Juszczec" <juszczec@hotmail.com>
+To: linux-mips@linux-mips.org
+Subject: R3000 stack docs
+Date: Fri, 14 Feb 2003 19:23:02 +0000
+Mime-Version: 1.0
+Content-Type: text/plain; format=flowed
+Message-ID: <F103oqFXfyY0QUUBPcZ00009516@hotmail.com>
+X-OriginalArrivalTime: 14 Feb 2003 19:23:02.0827 (UTC) FILETIME=[7E269FB0:01C2D45E]
+Return-Path: <juszczec@hotmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1428
+X-archive-position: 1429
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kwalker@broadcom.com
+X-original-sender: juszczec@hotmail.com
 Precedence: bulk
 X-list: linux-mips
 
-shenminshi@netscape.net wrote:
-> 
-> My question is when and how does init turn itself into usermode.
 
-Look at 'start_thread' in arch/mips/kernel/process.c, which is called
-from load_elf_binary in fs/binfmt_elf.c (as a result of the execve
-syscall).
+Hi folks
 
-Kip
+I'm trying to compile uClibc fur use on my Helio pda.  There is some kind of 
+problem with the stack layout.  The one uClibc expects isn't what my kernel 
+is putting together.
+
+I'm trying to find out the stack layout for the
+Toshiba TMPR3912AU, 75 MHz., 32-bit RISC processor so I can figure out what 
+I'm getting out of the kernel.
+
+There is one in ftp://www.linux-mips.org/pub/linux/mips/doc/ABI/mipsabi.pdf
+
+Does this refer to the stack the kernel loads in binfmt_elf.c and is it the 
+correct place to start?
+
+Thanks
+
+Mark
+
+Thanks
+
+Mark
+
+
+
+_________________________________________________________________
+MSN 8 with e-mail virus protection service: 2 months FREE*  
+http://join.msn.com/?page=features/virus

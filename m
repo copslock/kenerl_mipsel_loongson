@@ -1,41 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Feb 2005 19:58:23 +0000 (GMT)
-Received: from athena.et.put.poznan.pl ([IPv6:::ffff:150.254.29.137]:36745
-	"EHLO athena.et.put.poznan.pl") by linux-mips.org with ESMTP
-	id <S8225244AbVBET6H>; Sat, 5 Feb 2005 19:58:07 +0000
-Received: from athena (athena.et.put.poznan.pl [150.254.29.137])
-	by athena.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id j15Jw6u18810
-	for <linux-mips@linux-mips.org>; Sat, 5 Feb 2005 20:58:06 +0100 (MET)
-Received: from helios.et.put.poznan.pl ([150.254.29.65])
-	by athena.et.put.poznan.pl (MailMonitor for SMTP v1.2.2 ) ;
-	Sat, 5 Feb 2005 20:58:05 +0100 (MET)
-Received: from localhost (sskowron@localhost)
-	by helios.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id j15JQ6601701
-	for <linux-mips@linux-mips.org>; Sat, 5 Feb 2005 20:26:06 +0100 (MET)
-X-Authentication-Warning: helios.et.put.poznan.pl: sskowron owned process doing -bs
-Date:	Sat, 5 Feb 2005 20:26:04 +0100 (MET)
-From:	Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
-To:	linux-mips@linux-mips.org
-Subject: Re: patch like kexec for MIPS possible?
-In-Reply-To: <20050205174150.GU28252@rembrandt.csv.ica.uni-stuttgart.de>
-Message-ID: <Pine.GSO.4.10.10502052025001.1535-100000@helios.et.put.poznan.pl>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <sskowron@ET.PUT.Poznan.PL>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Feb 2005 20:34:07 +0000 (GMT)
+Received: from mailout06.sul.t-online.com ([IPv6:::ffff:194.25.134.19]:17849
+	"EHLO mailout06.sul.t-online.com") by linux-mips.org with ESMTP
+	id <S8225244AbVBEUdv>; Sat, 5 Feb 2005 20:33:51 +0000
+Received: from fwd06.aul.t-online.de 
+	by mailout06.sul.t-online.com with smtp 
+	id 1CxWco-0000o3-00; Sat, 05 Feb 2005 21:33:50 +0100
+Received: from denx.de (XRxHPiZXQeVbs0ia1-DSctoPgyZY1OMRzfBfhTeIrBl42VWI1iQa0L@[62.158.200.222]) by fmrl06.sul.t-online.com
+	with esmtp id 1CxWcZ-0zYkpk0; Sat, 5 Feb 2005 21:33:35 +0100
+Received: from atlas.denx.de (atlas.denx.de [10.0.0.14])
+	by denx.de (Postfix) with ESMTP
+	id 463B942F9E; Sat,  5 Feb 2005 21:33:34 +0100 (MET)
+Received: by atlas.denx.de (Postfix, from userid 15)
+	id CD4DBC108D; Sat,  5 Feb 2005 21:33:33 +0100 (MET)
+Received: from atlas.denx.de (localhost [127.0.0.1])
+	by atlas.denx.de (Postfix) with ESMTP
+	id CAC2A13D6DB; Sat,  5 Feb 2005 21:33:33 +0100 (MET)
+To:	Robert Michel <news@robertmichel.de>
+Cc:	linux-mips <linux-mips@linux-mips.org>
+From:	Wolfgang Denk <wd@denx.de>
+Subject: Re: patch like kexec for MIPS possible? 
+Mime-version: 1.0
+Content-type: text/plain; charset=ISO-8859-1
+Content-transfer-encoding: 8bit
+In-reply-to: Your message of "Sat, 05 Feb 2005 20:11:10 +0100."
+             <20050205191110.GD3071@mail.robertmichel.de> 
+Date:	Sat, 05 Feb 2005 21:33:28 +0100
+Message-Id: <20050205203333.CD4DBC108D@atlas.denx.de>
+X-ID:	XRxHPiZXQeVbs0ia1-DSctoPgyZY1OMRzfBfhTeIrBl42VWI1iQa0L@t-dialin.net
+X-TOI-MSGID: 50e230f1-10c5-4941-b350-ca80a19c5b8d
+Return-Path: <wd@denx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7163
+X-archive-position: 7164
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sskowron@ET.PUT.Poznan.PL
+X-original-sender: wd@denx.de
 Precedence: bulk
 X-list: linux-mips
 
-> Frankly, I don't see what kexec is good for. Who else besides
-> kernel developers would need to reboot a machine continuously?
+In message <20050205191110.GD3071@mail.robertmichel.de> you wrote:
+> 
+> Kexec is written for x86 (yet) - but the (my) question is if
+> this would be possible with MIPS, too.
 
-Yeah. And, speaking from experience, it is often caused by the hardware
-entering such an invalid state that requires a hard reset anyway.
+Other, smilar solutions exist for other  architectures,  like  Magnus
+Damm's  "relf"  tool for PowerPC and x86 (relf - reload elf: a driver
+to load and start a new elf file from within  Linux).  Adaptions  for
+other processors are more or less trivial.
 
-Stanislaw Skowronek
+> Does GRUB run on MIPS? Does GRUB support SSH2? Does most MIPS
+> bootlaoders support USB-sticks or booting via VPNs?
+
+Use U-Boot :-)
+
+> LinuxBios is a "nice" project, but for most boards/boxes Linuxer
+> could be happy to be able to boot it - to develop a nice boadloader
+> is depended from the hard/firmware of the systems.
+
+Use U-Boot :-)
+
+> A kernel with a kexec like patch could be used into the bootchain
+> for several reasons:
+...
+> - booting from original not supported devices (usb, network)
+...
+> - for upgrades lower downtimes (Router, Firewalls....)
+
+These are IMHO the only valid reasons for such an approach.
+
+> IMHO would be the most powerfull and flexible way 
+> to boot a linux kernel,
+> to boot it just from an other linux kernel.
+
+We've been using "relf" in some projects (x86 - where we  were  stuck
+with  really  dumb  BIOSes),  but  I cannot see many situations where
+kexec is actually better or more powerful than  a  decent  bootloader
+line U-Boot. OK, I'm obviously biased.
+
+Best regards,
+
+Wolfgang Denk
+
+-- 
+Software Engineering:  Embedded and Realtime Systems,  Embedded Linux
+Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email: wd@denx.de
+In an organization, each person rises to the level of his own  incom-
+petency                                         - The Peter Principle

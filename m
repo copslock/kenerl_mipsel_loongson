@@ -1,59 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jul 2004 01:46:13 +0100 (BST)
-Received: from sirius.livecd.pl ([IPv6:::ffff:83.243.111.250]:5380 "EHLO
-	sirius.livecd.pl") by linux-mips.org with ESMTP id <S8225209AbUGTAqJ> convert rfc822-to-8bit;
-	Tue, 20 Jul 2004 01:46:09 +0100
-Received: from localhost ([127.0.0.1] ident=havner)
-	by sirius.livecd.pl with esmtp (Exim 4.32)
-	id 1BminC-0001ZB-Ki
-	for linux-mips@linux-mips.org; Tue, 20 Jul 2004 02:47:38 +0200
-From: havner <havner@pld-linux.org>
-To: linux-mips@linux-mips.org
-Subject: Re: DECstation 5000/20
-Date: Tue, 20 Jul 2004 02:47:36 +0200
-User-Agent: KMail/1.6.2
-References: <200407192102.15261.havner@pld-linux.org> <200407200202.08636.havner@pld-linux.org> <20040720000909.GA20267@deprecation.cyrius.com>
-In-Reply-To: <20040720000909.GA20267@deprecation.cyrius.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jul 2004 15:14:04 +0100 (BST)
+Received: from smtp.vmb-service.ru ([IPv6:::ffff:80.73.198.33]:25039 "EHLO
+	smtp.vmb-service.ru") by linux-mips.org with ESMTP
+	id <S8225219AbUGTON7>; Tue, 20 Jul 2004 15:13:59 +0100
+Received: from office.vmb-service.ru ([80.73.192.47]:21771 "EHLO ALEC")
+	by Altair with ESMTP id <S1158818AbUGTONr>;
+	Tue, 20 Jul 2004 18:13:47 +0400
+Reply-To: <a.voropay@vmb-service.ru>
+From: "Alexander Voropay" <a.voropay@vmb-service.ru>
+To: "'Ralf Baechle'" <ralf@linux-mips.org>
+Cc: <linux-mips@linux-mips.org>
+Subject: RE: Howto run Linux on ACER PICA 61
+Date: Tue, 20 Jul 2004 18:15:04 +0400
+Organization: VMB-Service
+Message-ID: <0aa601c46e63$f3ddbef0$0200000a@ALEC>
 MIME-Version: 1.0
-Content-Disposition: inline
-Content-Type: Text/Plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-Message-Id: <200407200247.37881.havner@pld-linux.org>
-Return-Path: <havner@pld-linux.org>
+Content-Type: text/plain;
+	charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook, Build 10.0.4024
+In-Reply-To: <20040622193839.GA7082@linux-mips.org>
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4927.1200
+Importance: Normal
+Return-Path: <a.voropay@vmb-service.ru>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5519
+X-archive-position: 5520
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: havner@pld-linux.org
+X-original-sender: a.voropay@vmb-service.ru
 Precedence: bulk
 X-list: linux-mips
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA1
+Hi!
 
-On Tuesday 20 July 2004 02:09, you wrote:
-> * havner <havner@pld-linux.org> [2004-07-20 02:02]:
-> > The only debian image I've managed to find was 2.4.17 and it freezes the
-> > same way like 2.4.18 quoted previously :-(
->
-> http://ftp.debian.org/debian/pool/main/k/kernel-patch-2.4.26-mips/kernel-im
->age-2.4.26-r3k-kn02_2.4.26-0.040505.1_mipsel.deb
+>Linux has code for this system but it's suffering from severe bitrot.
+>I still have the documents here so I could help you a bit if you were
+willing to
+>resurrect the kernel - which should be relativly easy, also due to the
+>system's similarity to another, somewhat better supported system,
+>the Olivetti M700-10.
 
-It almost works properly. I get oopses all the time (mainly with modules 
-operations, but not only). Maybe to old modutils and rest of the system. I'll 
-check it tommorrow. Thank for help. I must have a look at debian patches too.
+  I'm trying to cross-compile a kernel from the linux-mips CVS.
 
-- -- 
-Regards       Havner                          http://livecd.pld-linux.org
-GG: 2846839                             jid,mail: havner(at)pld-linux.org
-          "We live as we dream, alone"   - Joseph Conrad
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.4 (GNU/Linux)
+  Unfortunately, the build script does not provide a selection for the
+SCSI driver for the ACER PICA  (/linux/drivers/scsi/NCR53C9x.h ??)
+and SONIC DP83932 Ethernet controller.
 
-iD8DBQFA/GuogvS01FGjsR8RAtXhAKCOdGG8Vr+eikIiPCY9oP57Tbd3WgCfVyEQ
-8WbsDKHhAi20jyM47m1R844=
-=KFzw
------END PGP SIGNATURE-----
+
+--
+-=AV=-

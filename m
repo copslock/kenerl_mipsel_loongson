@@ -1,55 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jun 2003 11:47:33 +0100 (BST)
-Received: from pc2-cwma1-4-cust86.swan.cable.ntl.com ([IPv6:::ffff:213.105.254.86]:50310
-	"EHLO lxorguk.ukuu.org.uk") by linux-mips.org with ESMTP
-	id <S8225241AbTFEKra>; Thu, 5 Jun 2003 11:47:30 +0100
-Received: from dhcp22.swansea.linux.org.uk (dhcp22.swansea.linux.org.uk [127.0.0.1])
-	by lxorguk.ukuu.org.uk (8.12.8/8.12.5) with ESMTP id h55Aj6RQ015388;
-	Thu, 5 Jun 2003 11:45:07 +0100
-Received: (from alan@localhost)
-	by dhcp22.swansea.linux.org.uk (8.12.8/8.12.8/Submit) id h55Aj4bE015386;
-	Thu, 5 Jun 2003 11:45:04 +0100
-X-Authentication-Warning: dhcp22.swansea.linux.org.uk: alan set sender to alan@lxorguk.ukuu.org.uk using -f
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jun 2003 12:07:39 +0100 (BST)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:33996 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225241AbTFELHh>; Thu, 5 Jun 2003 12:07:37 +0100
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id NAA06283;
+	Thu, 5 Jun 2003 13:08:20 +0200 (MET DST)
+X-Authentication-Warning: delta.ds2.pg.gda.pl: macro owned process doing -bs
+Date: Thu, 5 Jun 2003 13:08:19 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: "Kevin D. Kissell" <kevink@mips.com>
+cc: Jun Sun <jsun@mvista.com>, Ralf Baechle <ralf@linux-mips.org>,
+	linux-mips@linux-mips.org
 Subject: Re: [RFC] synchronized CPU count registers on SMP machines
-From: Alan Cox <alan@lxorguk.ukuu.org.uk>
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: Jun Sun <jsun@mvista.com>, linux-mips@linux-mips.org
-In-Reply-To: <20030605001232.GA5626@linux-mips.org>
-References: <20030604153930.H19122@mvista.com>
-	 <20030604231547.GA22410@linux-mips.org> <20030604164652.J19122@mvista.com>
-	 <20030605001232.GA5626@linux-mips.org>
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-Organization: 
-Message-Id: <1054809902.15275.11.camel@dhcp22.swansea.linux.org.uk>
-Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.2.2 (1.2.2-5) 
-Date: 05 Jun 2003 11:45:03 +0100
-Return-Path: <alan@lxorguk.ukuu.org.uk>
+In-Reply-To: <019201c32b40$2d54cf60$10eca8c0@grendel>
+Message-ID: <Pine.GSO.3.96.1030605124326.5828D-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2538
+X-archive-position: 2539
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alan@lxorguk.ukuu.org.uk
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-On Iau, 2003-06-05 at 01:12, Ralf Baechle wrote:
-> You loose.  The reasons why SGI did construct their systems that way are
-> still valid.  It can be quite tricky to distribute the clock in large
-> systems - even for a moderate definition of large.  And for ccNUMAs which
-> are going to show up on the embedded market sooner or later it's easy
-> for the lazy designer to use several clock sources anyway.  Note our
-> current time code for will not work properly if clocks diverge on the
-> slightest bit - among other things the standards mandate time to
-> monotonically increase.
+On Thu, 5 Jun 2003, Kevin D. Kissell wrote:
 
-Actually the standards are suprisingly lax. I had the same assumptions
-but people who went and read the spec in detail found Posix is a lot
-more relaxed (except about CLOCK_MONOTONIC).
+> > > > 1) clocks on different CPUs don't have the same frequency
+> > > > 2) clocks on different CPUs drift to each other
+> > > > 2) some fancy power saving feature such as frequency scaling
+> > > > 
+> > > > But I think for a foreseeable future most MIPS SMP machines
+> > > > don't have the above issues (true?).  And it is probably worthwile
+> > > > to synchronize count registers for them.
+> > > 
+> > > 1) and 2) affect most SGI systems.
+> > >
+> > 
+> > Assuming SGI systems represent the past of MIPS, we are still ok
+> > future-wise. :)
+> 
+> I personally think it would be foolish to assume that future MIPS 
+> MP systems will not be subject to one or more such constraint.
 
-What seems to be happening in the PC and Sparc worlds is vendors are
-running a seperate lower accuracy global clock source (eg the HPET on
-AMD64)
+ Depending on the system in use it may be easier to get a suitable
+external clock reference, e.g. a chipset timer.  If an access to it would
+be slow, it could be cached on timer interrupts and extended with
+processors' timers.
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

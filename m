@@ -1,42 +1,37 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6VLh9p12833
-	for linux-mips-outgoing; Tue, 31 Jul 2001 14:43:09 -0700
-Received: from www.transvirtual.com (root@www.transvirtual.com [206.14.214.140])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6VLh8V12830
-	for <linux-mips@oss.sgi.com>; Tue, 31 Jul 2001 14:43:08 -0700
-Received: from www.transvirtual.com (jsimmons@localhost [127.0.0.1])
-        by localhost (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f6VLh1Tv002150;
-	Tue, 31 Jul 2001 14:43:01 -0700
-Received: from localhost (jsimmons@localhost)
-        by www.transvirtual.com (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f6VLh1db002146;
-	Tue, 31 Jul 2001 14:43:01 -0700
-X-Authentication-Warning: www.transvirtual.com: jsimmons owned process doing -bs
-Date: Tue, 31 Jul 2001 14:43:01 -0700 (PDT)
-From: James Simmons <jsimmons@transvirtual.com>
-To: Jun Sun <jsun@mvista.com>
-cc: linux-mips@oss.sgi.com, linux-mips-kernel@lists.sourceforge.net
-Subject: Re: sys_mips problems
-In-Reply-To: <3B671DFC.3999437D@mvista.com>
-Message-ID: <Pine.LNX.4.10.10107311435110.28897-100000@transvirtual.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.2/8.11.3) id f71BRCO01173
+	for linux-mips-outgoing; Wed, 1 Aug 2001 04:27:12 -0700
+Received: from fe070.worldonline.dk (fe070.worldonline.dk [212.54.64.208])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f71BRBV01170
+	for <linux-mips@oss.sgi.com>; Wed, 1 Aug 2001 04:27:11 -0700
+Received: (qmail 30967 invoked by uid 0); 1 Aug 2001 11:22:36 -0000
+Received: from unknown (HELO tuxedo.skovlyporten.dk) (213.237.49.98)
+  by fe070.worldonline.dk with SMTP; 1 Aug 2001 11:22:36 -0000
+Received: by tuxedo.skovlyporten.dk (Postfix, from userid 501)
+	id 51A09C438; Wed,  1 Aug 2001 13:22:33 +0200 (CEST)
+Date: Wed, 1 Aug 2001 13:22:33 +0200
+From: Lars Munch Christensen <c948114@student.dtu.dk>
+To: linux-mips@oss.sgi.com
+Subject: Remote debug Malta
+Message-ID: <20010801132233.A12343@tuxedo.skovlyporten.dk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+Hi all
 
-> > Since I was having problems with everything sefaulting due to the sys_mips
-> > bug I tried the patch floating around. It fixed the segfault problem but
-> > instead I get this error. Anyone knows why?
-> > 
-> > : error while loading shared libraries: libc.so.6: cannot stat shared
-> > object: Error 14
-> 
-> Which patch did you use?  
+As I have mentioned previously on this list, I'm writing
+a small mips64 microkernel for the malta board. The malta
+has a remote gdb interface in YAMON, but I have not succeeded
+in remote debugging my kernel yet. Is there a recommended
+gdb version that I should use to debug mips64 code?
 
-The fast_sysmips one. 
+I have got it as far as downloading the kernel and jumping to the
+kernel entry, but from there I'm only able to execute the
+program, but not single step or anything else. 
 
-> Does your CPU have ll/sc instructions?
-
-I have a cobalt cube which has a MIPS Nevada chip which is a R52xx chip. I
-don't know if it does. By default I have ll/sc and lld/scd instructions
-enabled.
+Thanks
+-- Lars Munch

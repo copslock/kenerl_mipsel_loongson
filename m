@@ -1,65 +1,86 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4ULB0nC002847
-	for <linux-mips-outgoing@oss.sgi.com>; Thu, 30 May 2002 14:11:00 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4ULC6nC002950
+	for <linux-mips-outgoing@oss.sgi.com>; Thu, 30 May 2002 14:12:06 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4ULAx1L002846
-	for linux-mips-outgoing; Thu, 30 May 2002 14:10:59 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4ULC65x002949
+	for linux-mips-outgoing; Thu, 30 May 2002 14:12:06 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from mx2.mips.com (ftp.mips.com [206.31.31.227])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4ULAtnC002843
-	for <linux-mips@oss.sgi.com>; Thu, 30 May 2002 14:10:55 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.9.3/8.9.0) with ESMTP id OAA19029;
-	Thu, 30 May 2002 14:12:21 -0700 (PDT)
-Received: from grendel (grendel [192.168.236.16])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id OAA11959;
-	Thu, 30 May 2002 14:12:19 -0700 (PDT)
-Message-ID: <023001c2081f$95a397d0$10eca8c0@grendel>
-From: "Kevin D. Kissell" <kevink@mips.com>
-To: "Daniel Jacobowitz" <dan@debian.org>,
-   "Justin Carlson" <justinca@cs.cmu.edu>
-Cc: <linux-mips@oss.sgi.com>
-References: <1022787167.14210.472.camel@ldt-sj3-022.sj.broadcom.com> <20020530195052.GA10587@branoic.them.org>
-Subject: Re: Function pointers and #defines
-Date: Thu, 30 May 2002 23:18:44 +0200
+Received: from pimout2-int.prodigy.net (pimout2-ext.prodigy.net [207.115.63.101])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4ULBwnC002898
+	for <linux-mips@oss.sgi.com>; Thu, 30 May 2002 14:11:58 -0700
+Received: from Muruga.localdomain (adsl-63-199-30-114.dsl.snfc21.pacbell.net [63.199.30.114])
+	by pimout2-int.prodigy.net (8.11.0/8.11.0) with ESMTP id g4ULDN2115254;
+	Thu, 30 May 2002 17:13:23 -0400
+Received: from localhost (muthu@localhost)
+	by Muruga.localdomain (8.11.2/8.11.2) with ESMTP id g4UL5HX04791;
+	Thu, 30 May 2002 14:05:17 -0700
+X-Authentication-Warning: Muruga.localdomain: muthu owned process doing -bs
+Date: Thu, 30 May 2002 14:05:17 -0700 (PDT)
+From: Muthukumar Ratty <muthu5@sbcglobal.net>
+X-X-Sender:  <muthu@Muruga.localdomain>
+To: David Christensen <dpchrist@holgerdanske.com>
+cc: <linux-mips@oss.sgi.com>, Hartvig Ekner <hartvige@mips.com>
+Subject: Re: cross-compiler for MIPS_RedHat7.1_Release-01.00 on Atlas/4Kc
+ using RH7.3-i386 host
+In-Reply-To: <007401c20817$f2277f60$0b01a8c0@w2k30g>
+Message-ID: <Pine.LNX.4.33.0205301346530.4760-100000@Muruga.localdomain>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4807.1700
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4807.1700
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-From: "Daniel Jacobowitz" <dan@debian.org>
-> On Thu, May 30, 2002 at 12:32:47PM -0700, Justin Carlson wrote:
-> > A fair number of places in the headers, we have stuff like this:
-> > 
-> > void (*_some_fn)(int arg1, int arg2);
-> > #define some_fn(arg1, arg2) _some_fn(arg1, arg2)
-> > 
-> > Why do we do this, as opposed to:
-> > 
-> > void (*some_fn)(int arg1, int arg2);
-> > 
-> > Both syntaxes result in being able to say
-> > 
-> > some_fn(1, 2);
-> > 
-> > but the latter is both clearer and shorter.  Is there some deep,
-> > mystical C reason that we use the former, or did someone do it that way
-> > a long time ago and no one has changed it?
-> 
-> At a guess, this prevents taking the address of the function
-> unintentionally...
+On Thu, 30 May 2002, David Christensen wrote:
 
-More likely, some ancient early version of the code was
-written with a single global function, some_fn(), and it
-was easier to override it with a pointer indirection in
-the header than to hunt down and change all invocations.
-Sometimes that's good software engineering.  Sometimes
-it's just laziness...
+> linux-mips@oss.sgi.com & Hartvig:
+>
+> Hartvig Ekner wrote:
+> > from H.J.) as well on an Atlas, you'll just have to use the 2.4.3
+> > install kernel from the 01.00 CD image you downloaded, and everything
+> > else from the new release.
 
-            Kevin K.
+Is there any latest kernel (2.5.xx) available for MIPS/Atlas?
+
+>
+> >
+> >        binutils-mipsel-linux-2.9.5-3
+> >        egcs-mipsel-linux-1.1.2-4
+>
+
+I played around with some cross-compilers and what I understood is
+
+1. Algorithmics sde4 is not matured enough to compile 2.4.xx kernels (As
+Dominic Sweetman mentioned in his reply to my help mail). He said sde5
+will do but I dint get a chance to try this. Any update from anyone used it?
+
+2. I followed BradLaRondes write up - Building a Modern Mips Tool chain (I
+dont have the link irght now, but you can google it). It compiles the
+kernel and Applications. But it requires kernel header lying around from previous
+builds. So if you are just starting, then you may wanna grab the header
+from somewhere. But the problem with this toolchain is: I was not able to
+build Yamon SREC using this.
+
+3. I also tried Steve Hills toolchain located at
+ftp://ftp.cotw.com/Linux/MIPS/toolchain/experimental
+It is complete and I can build kernel and applications with it. Again I
+couldnt build Yamon SREC with it.
+
+BTW you may need to do slight changes, like changing target from
+little-mips to tradlittle-mips etc. Its simple but if you get stuck, post
+it here and someone will help you.
+
+All the best,
+Muthu
+
+> I'll try what I've already installed and see what happens.  If it fails,
+> I'll upgrade binutils and try again.
+>
+>
+> Thank you for your help.  :-)
+>
+>
+> David
+>
+>
+>
+>
+>

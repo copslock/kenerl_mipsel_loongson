@@ -1,51 +1,37 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9QHt6130386
-	for linux-mips-outgoing; Fri, 26 Oct 2001 10:55:06 -0700
-Received: from mcp.csh.rit.edu (mcp.csh.rit.edu [129.21.60.9])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9QHt3030382
-	for <linux-mips@oss.sgi.com>; Fri, 26 Oct 2001 10:55:03 -0700
-Received: from fury.csh.rit.edu (fury.csh.rit.edu [129.21.60.5])
-	by mcp.csh.rit.edu (Postfix) with ESMTP
-	id CF104D4E; Fri, 26 Oct 2001 13:55:01 -0400 (EDT)
-Date: Fri, 26 Oct 2001 13:54:59 -0400 (EDT)
-From: George Gensure <werkt@csh.rit.edu>
-To: han han <piggie111000@yahoo.com>
+	by oss.sgi.com (8.11.2/8.11.3) id f9QI5Sb32192
+	for linux-mips-outgoing; Fri, 26 Oct 2001 11:05:28 -0700
+Received: from mx.mips.com (mx.mips.com [206.31.31.226])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9QI5R032189
+	for <linux-mips@oss.sgi.com>; Fri, 26 Oct 2001 11:05:27 -0700
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id LAA12305;
+	Fri, 26 Oct 2001 11:05:17 -0700 (PDT)
+Received: from Ulysses (ulysses [192.168.236.13])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id LAA14561;
+	Fri, 26 Oct 2001 11:05:17 -0700 (PDT)
+Message-ID: <039901c15e48$d45856e0$0deca8c0@Ulysses>
+From: "Kevin D. Kissell" <kevink@mips.com>
+To: "George Gensure" <werkt@csh.rit.edu>, "han han" <piggie111000@yahoo.com>
 Cc: <linux-mips@oss.sgi.com>
+References: <Pine.SOL.4.31.0110261354370.27585-100000@fury.csh.rit.edu>
 Subject: Re: MIPS 32bit and 64bit mode
-In-Reply-To: <20011026173004.78642.qmail@web10802.mail.yahoo.com>
-Message-ID: <Pine.SOL.4.31.0110261354370.27585-100000@fury.csh.rit.edu>
+Date: Fri, 26 Oct 2001 20:05:40 +0200
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4807.1700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4807.1700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-is the 5kc the same processor as the r5k?
+> is the 5kc the same processor as the r5k?
 
-George
+If by "r5k" you mean the R5000(tm), no it isn't.
+The MIPS 5Kc(tm) is a newer syntesizable 64-bit 
+MIPS CPU core from MIPS Technologies.
 
-On Fri, 26 Oct 2001, han han wrote:
-
-> Hi all,
->
-> Does Anybody help me to clear some concepts about MIPS
-> 5kc?
-> How to detect and set a MIPS 5kc chip working in 32bit
-> or 64bit mode? or the chip can automatically enter
-> proper mode when it fetchs an MIPS 32/64 instruction?
->
-> Also, does MIPS 5kc have some 64bit instructions?
->
-> Thanks a lot in advance,
->
-> --Han
->
-> __________________________________________________
-> Do You Yahoo!?
-> Make a great connection at Yahoo! Personals.
-> http://personals.yahoo.com
->
-
--- 
-George R. Gensure       Computer Science House Member
-werkt@csh.rit.edu       Sophomore, Rochester Institute of Technology
-Computer Science
+            Kevin K.

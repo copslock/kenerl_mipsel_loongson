@@ -1,148 +1,84 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f55DMd009532
-	for linux-mips-outgoing; Tue, 5 Jun 2001 06:22:39 -0700
-Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f55DL0h09297
-	for <linux-mips@oss.sgi.com>; Tue, 5 Jun 2001 06:21:02 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA20513;
-	Tue, 5 Jun 2001 14:58:53 +0200 (MET DST)
-Date: Tue, 5 Jun 2001 14:58:52 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Andreas Jaeger <aj@suse.de>
-cc: linux-mips@fnet.fr, linux-mips@oss.sgi.com,
-   Ralf Baechle <ralf@uni-koblenz.de>, Jun Sun <jsun@mvista.com>
-Subject: Re: [patch] RFC: A sys__test_and_set() implementation, 2nd iteration
-In-Reply-To: <howv6w5sr0.fsf@gee.suse.de>
-Message-ID: <Pine.GSO.3.96.1010605134626.12987D-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+	by oss.sgi.com (8.11.3/8.11.3) id f55M8os10567
+	for linux-mips-outgoing; Tue, 5 Jun 2001 15:08:50 -0700
+Received: from op.teknuts.com (139.muba.lsan.lsancass.dsl.att.net [12.98.69.139])
+	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f55M8nh10563
+	for <linux-mips@oss.sgi.com>; Tue, 5 Jun 2001 15:08:49 -0700
+Received: from rjrtower (2093182197.weiderpub.com [209.3.182.197] (may be forged))
+	(authenticated)
+	by op.teknuts.com (8.11.3/8.10.1) with ESMTP id f55M8iU03673
+	for <linux-mips@oss.sgi.com>; Tue, 5 Jun 2001 15:08:44 -0700
+Message-ID: <002e01c0ee0c$1572fed0$031010ac@rjrtower>
+From: "Robert Rusek" <robru@teknuts.com>
+To: <linux-mips@oss.sgi.com>
+Subject: Newbie Question, Please help
+Date: Tue, 5 Jun 2001 15:08:42 -0700
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_002B_01C0EDD1.68B40570"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4522.1200
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4522.1200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi,
+This is a multi-part message in MIME format.
 
- This version should be better.
+------=_NextPart_000_002B_01C0EDD1.68B40570
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-  Maciej
+I just got a SGI Challenge S.  I need advice on which flavor of Linux I =
+should install, RedHat or Debian.  Which is the better choice.  I also =
+need to find out how to install this.  I already attempted and failed to =
+install the RedHat 5.1.  I am using a RedHat 7.0 box to do the install =
+(bootp/tftp/nfs) but I am not even able to get the setup to run.  I am =
+using the latest version of DHCP/BOOTP (ics 2.0) to try to boot.  It =
+gets the address then claims it is sending the vmlinux file via tftp.  =
+On the SGI it just times out.
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Any advice, pointers, etc would be greatly appreciated.
 
-glibc-2.2.3-mips-tas.patch
-diff -up --recursive --new-file glibc-2.2.3.macro/sysdeps/unix/sysv/linux/kernel-features.h glibc-2.2.3/sysdeps/unix/sysv/linux/kernel-features.h
---- glibc-2.2.3.macro/sysdeps/unix/sysv/linux/kernel-features.h	Wed Apr 25 21:51:14 2001
-+++ glibc-2.2.3/sysdeps/unix/sysv/linux/kernel-features.h	Thu May 31 15:54:59 2001
-@@ -182,3 +182,8 @@
- # define __ASSUME_FCNTL64		1
- # define __ASSUME_GETDENTS64_SYSCALL	1
- #endif
-+
-+/* The _test_and_set syscall is available on MIPS since 2.?.?.  */
-+#if 0 && defined __mips__
-+# define __ASSUME__TEST_AND_SET		1
-+#endif
-diff -up --recursive --new-file glibc-2.2.3.macro/sysdeps/unix/sysv/linux/mips/_test_and_set.c glibc-2.2.3/sysdeps/unix/sysv/linux/mips/_test_and_set.c
---- glibc-2.2.3.macro/sysdeps/unix/sysv/linux/mips/_test_and_set.c	Fri Jul 28 13:37:25 2000
-+++ glibc-2.2.3/sysdeps/unix/sysv/linux/mips/_test_and_set.c	Sat Jun  2 13:04:35 2001
-@@ -1,4 +1,4 @@
--/* Copyright (C) 2000 Free Software Foundation, Inc.
-+/* Copyright (C) 2000, 2001 Free Software Foundation, Inc.
-    This file is part of the GNU C Library.
-    Contributed by Maciej W. Rozycki <macro@ds2.pg.gda.pl>, 2000.
- 
-@@ -21,6 +21,12 @@
-    defined in sys/tas.h  */
- 
- #include <features.h>
-+#include <sgidefs.h>
-+#include <unistd.h>
-+#include <sysdep.h>
-+#include <sys/sysmips.h>
-+
-+#include "kernel-features.h"
- 
- #define _EXTERN_INLINE
- #ifndef __USE_EXTERN_INLINES
-@@ -28,3 +34,45 @@
- #endif
- 
- #include "sys/tas.h"
-+
-+#if (_MIPS_ISA < _MIPS_ISA_MIPS2)
-+
-+#if defined __NR__test_and_set && __ASSUME__TEST_AND_SET == 0
-+static int __have_no__test_and_set;
-+#endif
-+
-+int _test_and_set (int *p, int v)
-+{
-+#ifdef __NR__test_and_set
-+# if __ASSUME__TEST_AND_SET == 0
-+  if (!__builtin_expect(__have_no__test_and_set, 0))
-+# endif
-+    {
-+      register int *__p asm ("$4") = p;
-+      register int __v asm ("$5") = v;
-+      register int __n asm ("$2") = SYS_ify (_test_and_set);
-+      register int __e asm ("$7");
-+      register int __r asm ("$3");
-+
-+      asm ("syscall"
-+	   : "=r" (__r), "=r" (__e)
-+	   : "r" (__p), "r" (__v), "r" (__n)
-+	   : "$2",
-+	     "$8", "$9", "$10", "$11", "$12", "$13", "$14", "$15", "$24",
-+	     "memory");
-+# if __ASSUME__TEST_AND_SET > 0
-+      return __r;
-+# else
-+      if (!__builtin_expect(__e, 0))
-+	return __r;
-+
-+      __have_no__test_and_set = 1;
-+# endif
-+    }
-+#endif /* __NR__test_and_set */
-+#if !defined __NR__test_and_set || __ASSUME__TEST_AND_SET == 0
-+    return sysmips (MIPS_ATOMIC_SET, (int) p, v, 0);
-+#endif
-+}
-+
-+#endif /* _MIPS_ISA < _MIPS_ISA_MIPS2 */
-diff -up --recursive --new-file glibc-2.2.3.macro/sysdeps/unix/sysv/linux/mips/sys/tas.h glibc-2.2.3/sysdeps/unix/sysv/linux/mips/sys/tas.h
---- glibc-2.2.3.macro/sysdeps/unix/sysv/linux/mips/sys/tas.h	Sun Jan  7 04:35:41 2001
-+++ glibc-2.2.3/sysdeps/unix/sysv/linux/mips/sys/tas.h	Sat Jun  2 13:44:12 2001
-@@ -1,4 +1,4 @@
--/* Copyright (C) 2000 Free Software Foundation, Inc.
-+/* Copyright (C) 2000, 2001 Free Software Foundation, Inc.
-    This file is part of the GNU C Library.
-    Contributed by Maciej W. Rozycki <macro@ds2.pg.gda.pl>, 2000.
- 
-@@ -22,7 +22,6 @@
- 
- #include <features.h>
- #include <sgidefs.h>
--#include <sys/sysmips.h>
- 
- __BEGIN_DECLS
- 
-@@ -59,15 +58,7 @@ _test_and_set (int *p, int v) __THROW
-   return r;
- }
- 
--# else /* !(_MIPS_ISA >= _MIPS_ISA_MIPS2) */
--
--_EXTERN_INLINE int
--_test_and_set (int *p, int v) __THROW
--{
--  return sysmips (MIPS_ATOMIC_SET, (int) p, v, 0);
--}
--
--# endif /* !(_MIPS_ISA >= _MIPS_ISA_MIPS2) */
-+# endif /* (_MIPS_ISA >= _MIPS_ISA_MIPS2) */
- 
- #endif /* __USE_EXTERN_INLINES */
- 
+Thanks in advance,
+Robert Ruserk
+
+------=_NextPart_000_002B_01C0EDD1.68B40570
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Diso-8859-1">
+<META content=3D"MSHTML 5.50.4611.1300" name=3DGENERATOR>
+<STYLE></STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV><FONT face=3DArial size=3D2>I just got a SGI Challenge S.&nbsp; I =
+need advice=20
+on which flavor of Linux I should install, RedHat or Debian.&nbsp; Which =
+is the=20
+better choice.&nbsp; I also need to find out how to install this.&nbsp; =
+I=20
+already attempted and failed to install the RedHat 5.1.&nbsp; I am using =
+a=20
+RedHat 7.0 box to do the install (bootp/tftp/nfs) but I am not even able =
+to get=20
+the setup to run.&nbsp; I am using the latest version of DHCP/BOOTP (ics =
+2.0) to=20
+try to boot.&nbsp; It gets the address then claims it is sending the =
+vmlinux=20
+file via tftp.&nbsp; On the SGI it just times out.</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>Any advice, pointers, etc would be =
+greatly=20
+appreciated.</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>Thanks in advance,</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>Robert =
+Ruserk</FONT></DIV></BODY></HTML>
+
+------=_NextPart_000_002B_01C0EDD1.68B40570--

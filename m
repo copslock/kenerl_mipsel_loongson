@@ -1,48 +1,85 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g48Cg9wJ028396
-	for <linux-mips-outgoing@oss.sgi.com>; Wed, 8 May 2002 05:42:09 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g48D71wJ028779
+	for <linux-mips-outgoing@oss.sgi.com>; Wed, 8 May 2002 06:07:01 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g48Cg8bj028395
-	for linux-mips-outgoing; Wed, 8 May 2002 05:42:08 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g48D71Oo028778
+	for linux-mips-outgoing; Wed, 8 May 2002 06:07:01 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from tarzan.ugyvitelszolgaltato.hu ([213.163.26.102])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g48Cg2wJ028391
-	for <linux-mips@oss.sgi.com>; Wed, 8 May 2002 05:42:04 -0700
-Received: from atti.ugyvitelszolgaltato.hu (atti.ugyvitelszolgaltato.hu [193.80.82.9])
-	by tarzan.ugyvitelszolgaltato.hu (8.9.3/8.9.3/Debian 8.9.3-21) with ESMTP id PAA09359
-	for <linux-mips@oss.sgi.com>; Wed, 8 May 2002 15:09:08 +0200
-Received: from root by atti.ugyvitelszolgaltato.hu with local (Exim 3.12 #1 (Debian))
-	id 175QmO-0000aB-00
-	for <linux-mips@oss.sgi.com>; Wed, 08 May 2002 14:42:48 +0200
-Date: Wed, 8 May 2002 14:42:47 +0200
-From: Szabo Attila <trial@ugyvitelszolgaltato.hu>
-To: linux-mips@oss.sgi.com
-Subject: indy scsi
-Message-ID: <20020508144247.A2023@ugyvitelszolgaltato.hu>
-Mail-Followup-To: linux-mips@oss.sgi.com
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-Organization: Ugyvitelszolgaltato Kft.
-X-OS: Linux 2.4.17, Debian 2.2
-X-Sys: MSI K7TM Pro, AMD Tbird 850MHz, 256MB RAM, Gef2 MX, 10GB Hdd
-X-WM: Blackbox 0.61
+Received: from sgi.com (sgi-too.SGI.COM [204.94.211.39])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g48D6rwJ028775
+	for <linux-mips@oss.sgi.com>; Wed, 8 May 2002 06:06:53 -0700
+Received: from server3.toshibatv.com (mail.toshibatv.com [67.32.37.75]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id GAA03124
+	for <linux-mips@oss.sgi.com>; Wed, 8 May 2002 06:08:09 -0700 (PDT)
+	mail_from (keith_siders@toshibatv.com)
+Received: by SERVER3 with Internet Mail Service (5.5.2653.19)
+	id <26NPQHHT>; Wed, 8 May 2002 08:06:47 -0500
+Message-ID: <7DF7BFDC95ECD411B4010090278A44CA379AA4@ATVX>
+From: "Siders, Keith" <keith_siders@toshibatv.com>
+To: "Linux-Mips (E-mail)" <linux-mips@oss.sgi.com>
+Cc: "'Daniel Jacobowitz'" <dan@debian.org>, Geoffrey Espin <espin@idiom.com>
+Subject: RE: Debugging of embedded target applications
+Date: Wed, 8 May 2002 08:05:43 -0500 
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain;
+	charset="windows-1252"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-2002, May 08 -> Florian Lohoff wrote :
-> Probably no - 1.7MB/s sound not too bad - Remember - That machine
-> is 10 Years old and was produced at times a i386 was modern which
-> had 1MB/s memory bandwidth.
+Thanks for the lively discussion and input. It's now clear to me that I'll
+be tracking (not tracing) the kernel with the h/w debugger through its kgdb
+shell. We're still working on some drivers, so control over the kernel is a
+must. I'll have to set up the server to autoload when a connection on a
+particular port is attempted from another gdb shell, and shut down on
+disconnection.
 
-Yes, I know all of that, and I've expected only max 3-5 MB/sec but not
-1.7.
-The scsi bandwith on indy is 10MB/s, the disk is above 10 MB/s.
-Maybe I expect too much
+Keith
 
-Thanks
---
-------------------------------------------------------
-A t t i l a | trial@ugyvitelszolgaltato.hu | S z a b o
-------------------------------------------------------
+-> -----Original Message-----
+-> From: Daniel Jacobowitz [mailto:dan@debian.org]
+-> Sent: Tuesday, May 07, 2002 9:33 PM
+-> To: Geoffrey Espin
+-> Cc: Siders, Keith; Linux-Mips (E-mail)
+-> Subject: Re: Debugging of embedded target applications
+-> 
+-> 
+-> On Tue, May 07, 2002 at 07:25:23PM -0700, Geoffrey Espin wrote:
+-> > On Tue, May 07, 2002 at 09:43:14PM -0400, Daniel Jacobowitz wrote:
+-> > > > Does work it for kernel type debugging over *Ethernet*?
+-> > > > I see some docs saying "TCP/IP" connection... but does that
+-> > > > mean a special kind of network driver?  Or a gdbstub/agent
+-> > > > outside the kernel in a special monitor?
+-> > > What do you mean by kernel type debugging?  It's not a 
+-> kernel stub.  It
+-> > > can debug user programs over TCP/IP or a serial line.
+-> > 
+-> > In traditional embedded RTOS land, "system-level debugging".
+-> > In the olden days one had to have BDM/JTAG hardware assist
+-> > to step thru truly arbitary bits of code, like interrupt handlers,
+-> > scheduler.
+-> > 
+-> > The original question was about using using a hardware debugger.
+-> > Clearly using gdb/gdbserver is for apps only, AFAIK.  Does one
+-> > bother with a h/w debugger for apps?  Using kgdb with some kind
+-> 
+-> Actually, yes, you can.  I believe at least the Abatron BDI can do
+-> this.  Could be wrong, though.
+-> 
+-> > of remote debug-agent would be a "system level debugger", a s/w
+-> > solution to a traditional hardware only debug aid.  At this time
+-> > kind of pointless, as its painful to setup and JTAG debuggers
+-> > are so cheap (for mainline CPUs).
+-> 
+-> Depends on your platform.
+-> 
+-> -- 
+-> Daniel Jacobowitz                           Carnegie Mellon 
+-> University
+-> MontaVista Software                         Debian GNU/Linux 
+-> Developer
+-> 

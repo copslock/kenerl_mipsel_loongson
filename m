@@ -1,60 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Mar 2005 03:22:12 +0000 (GMT)
-Received: from nevyn.them.org ([IPv6:::ffff:66.93.172.17]:8360 "EHLO
-	nevyn.them.org") by linux-mips.org with ESMTP id <S8225972AbVCVDV4>;
-	Tue, 22 Mar 2005 03:21:56 +0000
-Received: from drow by nevyn.them.org with local (Exim 4.50 #1 (Debian))
-	id 1DDZxu-0006Iy-38; Mon, 21 Mar 2005 22:21:58 -0500
-Date:	Mon, 21 Mar 2005 22:21:58 -0500
-From:	Daniel Jacobowitz <dan@debian.org>
-To:	David Daney <ddaney@avtrex.com>
-Cc:	Kumba <kumba@gentoo.org>, linux-mips@linux-mips.org
-Subject: Re: NPTL support for the kernel
-Message-ID: <20050322032158.GA24188@nevyn.them.org>
-References: <20050316141151.GA23225@nevyn.them.org> <20050321203445.GA7082@nevyn.them.org> <423F7305.2030908@gentoo.org> <423F77DF.2060808@avtrex.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <423F77DF.2060808@avtrex.com>
-User-Agent: Mutt/1.5.6+20040907i
-Return-Path: <drow@nevyn.them.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Mar 2005 08:01:37 +0000 (GMT)
+Received: from d062149.adsl.hansenet.de ([IPv6:::ffff:80.171.62.149]:16901
+	"EHLO gruft.cubic.org") by linux-mips.org with ESMTP
+	id <S8226333AbVCVIBV>; Tue, 22 Mar 2005 08:01:21 +0000
+Received: from cubic.org (starbase [192.168.10.1])
+	by gruft.cubic.org (8.12.2/8.12.2) with ESMTP id j2M81Hm9030651
+	for <linux-mips@linux-mips.org>; Tue, 22 Mar 2005 09:01:18 +0100
+Message-ID: <423FC900.4010108@cubic.org>
+Date:	Tue, 22 Mar 2005 08:28:00 +0100
+From:	Michael Stickel <michael@cubic.org>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.2.1) Gecko/20030225
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	linux-mips@linux-mips.org
+Subject: Re: Bitrotting serial drivers
+References: <20050319172101.C23907@flint.arm.linux.org.uk> <200503212151.22059.eckhardt@satorlaser.com> <423F3528.4060907@embeddedalley.com> <200503212307.18304.eckhardt@satorlaser.com>
+In-Reply-To: <200503212307.18304.eckhardt@satorlaser.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <michael@cubic.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7497
+X-archive-position: 7498
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@debian.org
+X-original-sender: michael@cubic.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Mar 21, 2005 at 05:41:51PM -0800, David Daney wrote:
-> Kumba wrote:
-> >Daniel Jacobowitz wrote:
-> >
-> >>
-> >>Ping?
-> >>
-> >
-> >Doesn't this need the glibc side of things to be effective?, or is it 
-> >testable  w/o that component?
+Ulrich Eckhardt wrote:
 
-It is testable independently.  Also, I posted the glibc bits last week.
+>On Monday 21 March 2005 21:57, Pete Popov wrote:
+>  
+>
+>>Ulrich Eckhardt wrote:
+>>    
+>>
+>>>I'd give more details, but I'm neither at work nor did I investigate the
+>>>situation properly. What I remember trying is to add 'console=/dev/ttyS0'
+>>>or somesuch to the commandline, but couldn't get it to work there.
+>>>
+Did you try console=ttyS0,*
+I also had some problems with the 2.6 release and the serial console.
 
-> I think the main point is that it should not break existing code.
-
-Of course.  It doesn't.  The only thing it could possibly break would
-be four-argument clone (it's supposed to be five argument, and the
-missing argument conventionally goes in the middle... oops).  But
-I strongly believe nothing is yet using the four-argument form so I
-synced MIPS with the rest of the world.
-
-> We need NPTL support in all three of GCC, Linux kernel and glibc before 
-> it can be tested.  If it doesn't break existing code, I think it should 
-> go in the kernel so that we have something on which to test gcc and glibc.
-
-GCC support was committed two weeks ago, BTW.
-
--- 
-Daniel Jacobowitz
-CodeSourcery, LLC
+Michael

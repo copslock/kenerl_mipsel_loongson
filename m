@@ -1,67 +1,61 @@
-Received:  by oss.sgi.com id <S305176AbQEQUE3>;
-	Wed, 17 May 2000 20:04:29 +0000
-Received: from deliverator.sgi.com ([204.94.214.10]:48966 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305154AbQEQUEC>;
-	Wed, 17 May 2000 20:04:02 +0000
-Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id MAA13089; Wed, 17 May 2000 12:59:11 -0700 (PDT)
+Received:  by oss.sgi.com id <S305159AbQERJ3b>;
+	Thu, 18 May 2000 09:29:31 +0000
+Received: from deliverator.sgi.com ([204.94.214.10]:27479 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305154AbQERJ3O>;
+	Thu, 18 May 2000 09:29:14 +0000
+Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id CAA29167; Thu, 18 May 2000 02:24:23 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id NAA48323; Wed, 17 May 2000 13:03:31 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id CAA79324; Thu, 18 May 2000 02:27:27 -0700 (PDT)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id MAA84517
+	id CAA93673
 	for linux-list;
-	Wed, 17 May 2000 12:53:44 -0700 (PDT)
+	Thu, 18 May 2000 02:12:31 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id MAA62600
+	via ESMTP id CAA99058
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 17 May 2000 12:53:41 -0700 (PDT)
-	mail_from (ralf@oss.sgi.com)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
+	Thu, 18 May 2000 02:12:28 -0700 (PDT)
+	mail_from (flo@rfc822.org)
+Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id MAA08677
-	for <linux@cthulhu.engr.sgi.com>; Wed, 17 May 2000 12:53:40 -0700 (PDT)
-	mail_from (ralf@oss.sgi.com)
-Received: from cacc-29.uni-koblenz.de (cacc-29.uni-koblenz.de [141.26.131.29])
-	by mailhost.uni-koblenz.de (8.9.3/8.9.3) with ESMTP id VAA12703;
-	Wed, 17 May 2000 21:53:38 +0200 (MET DST)
-Received:  by lappi.waldorf-gmbh.de id <S1403827AbQEQTxL>;
-	Wed, 17 May 2000 21:53:11 +0200
-Date:   Wed, 17 May 2000 21:53:11 +0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     "Soren S. Jorvang" <soren@wheel.dk>
-Cc:     linux@cthulhu.engr.sgi.com
+	via ESMTP id CAA08612
+	for <linux@cthulhu.engr.sgi.com>; Thu, 18 May 2000 02:12:27 -0700 (PDT)
+	mail_from (flo@rfc822.org)
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 053E17F4; Thu, 18 May 2000 11:12:29 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 58C218FA7; Thu, 18 May 2000 01:16:56 +0200 (CEST)
+Date:   Thu, 18 May 2000 01:16:56 +0200
+From:   Florian Lohoff <flo@rfc822.org>
+To:     Ralf Baechle <ralf@oss.sgi.com>
+Cc:     "Soren S. Jorvang" <soren@wheel.dk>, linux@cthulhu.engr.sgi.com
 Subject: Re: O2 ARCS
-Message-ID: <20000517215310.F779@uni-koblenz.de>
-References: <20000517051524.A21067@gnyf.wheel.dk>
+Message-ID: <20000518011656.A721@paradigm.rfc822.org>
+References: <20000517051524.A21067@gnyf.wheel.dk> <20000517215310.F779@uni-koblenz.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <20000517051524.A21067@gnyf.wheel.dk>; from soren@wheel.dk on Wed, May 17, 2000 at 05:15:24AM +0200
-X-Accept-Language: de,en,fr
+User-Agent: Mutt/1.0.1i
+In-Reply-To: <20000517215310.F779@uni-koblenz.de>; from ralf@oss.sgi.com on Wed, May 17, 2000 at 09:53:11PM +0200
+Organization: rfc822 - pure communication
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On Wed, May 17, 2000 at 05:15:24AM +0200, Soren S. Jorvang wrote:
+On Wed, May 17, 2000 at 09:53:11PM +0200, Ralf Baechle wrote:
+> The ARCS firmware isn't the big deal but the R10000 support for this
+> system or any other non-cachecoherent system.  Harald Koerfgen has
+> started poking at an O2 port and he's got first success.
 
-> I seem to remember some dire warnings about the O2 ARCS PROM
-> needing special care and feeding to even do basic stuff. Am I
-> on crack?
-> 
-> FWIW, as a system console it works just for me as the Indy, at
-> least well enough to do PCI enumeration and play with NetBSD DDB.
-> 
-> Of course, there still isn't really any hardware documentation
-> beyond sys/mace.h and friends..
+BTW: Is there any Documentation for the ARC Firmware of the SGIs ?
 
-The ARCS firmware isn't the big deal but the R10000 support for this
-system or any other non-cachecoherent system.  Harald Koerfgen has
-started poking at an O2 port and he's got first success.
-
-  Ralf
+Flo
+-- 
+Florian Lohoff		flo@rfc822.org		      	+49-subject-2-change
+"Technology is a constant battle between manufacturers producing bigger and
+more idiot-proof systems and nature producing bigger and better idiots."

@@ -1,137 +1,189 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Mar 2003 07:53:59 +0000 (GMT)
-Received: from sonicwall.montavista.co.jp ([IPv6:::ffff:202.232.97.131]:45651
-	"EHLO yuubin.montavista.co.jp") by linux-mips.org with ESMTP
-	id <S8224847AbTCFHx6>; Thu, 6 Mar 2003 07:53:58 +0000
-Received: from pudding.montavista.co.jp ([10.200.0.40])
-	by yuubin.montavista.co.jp (8.12.5/8.12.5) with SMTP id h2682e44027035;
-	Thu, 6 Mar 2003 17:02:41 +0900
-Date: Thu, 6 Mar 2003 16:53:51 +0900
-From: Yoichi Yuasa <yoichi_yuasa@montavista.co.jp>
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: yoichi_yuasa@montavista.co.jp, linux-mips@linux-mips.org,
-	jsun@mvista.com
-Subject: Re: [patch] simulate_ll and simulate_sc(resend)
-Message-Id: <20030306165351.35ffbaa7.yoichi_yuasa@montavista.co.jp>
-In-Reply-To: <20030304213605.A17855@linux-mips.org>
-References: <20030303192137.34d21352.yoichi_yuasa@montavista.co.jp>
-	<20030304213605.A17855@linux-mips.org>
-Organization: MontaVista Software Japan, Inc.
-X-Mailer: Sylpheed version 0.8.10 (GTK+ 1.2.10; i686-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@montavista.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Mar 2003 09:32:26 +0000 (GMT)
+Received: from ip-227-82-56-61.rev.dyxnet.com ([IPv6:::ffff:61.56.82.227]:27402
+	"EHLO mf2.realtek.com.tw") by linux-mips.org with ESMTP
+	id <S8224847AbTCFJcZ>; Thu, 6 Mar 2003 09:32:25 +0000
+Received: from msx.realtek.com.tw (unverified [203.69.112.4]) by mf2.realtek.com.tw
+ (Content Technologies SMTPRS 4.3.6) with ESMTP id <T60d094adc4cb45701f374@mf2.realtek.com.tw> for <linux-mips@linux-mips.org>;
+ Thu, 6 Mar 2003 16:31:05 +0800
+Received: from jackson ([172.19.31.122])
+          by msx.realtek.com.tw (Lotus Domino Release 5.0.8)
+          with ESMTP id 2003030616322149:42751 ;
+          Thu, 6 Mar 2003 16:32:21 +0800 
+Message-ID: <001a01c2e3ba$dd490e90$7405a8c0@realtek.com.tw>
+From: "jackson" <jackson@realtek.com.tw>
+To: <linux-mips@linux-mips.org>
+Subject: gnu tool-chain support for mips16?
+Date: Thu, 6 Mar 2003 16:32:02 +0800
+MIME-Version: 1.0
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.2919.6700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6700
+X-MIMETrack: Itemize by SMTP Server on msx/Realtek(Release 5.0.8 |June 18, 2001) at 03/06/2003
+ 04:32:21 PM,
+	Serialize by Router on msx/Realtek(Release 5.0.8 |June 18, 2001) at 03/06/2003
+ 04:32:23 PM,
+	Serialize complete at 03/06/2003 04:32:23 PM
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_0017_01C2E3FD.EAFC4EB0"
+Return-Path: <jackson@realtek.com.tw>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1634
+X-archive-position: 1635
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@montavista.co.jp
+X-original-sender: jackson@realtek.com.tw
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
+This is a multi-part message in MIME format.
 
-On Tue, 4 Mar 2003 21:36:05 +0100
-Ralf Baechle <ralf@linux-mips.org> wrote:
-
-> On Mon, Mar 03, 2003 at 07:21:37PM +0900, Yoichi Yuasa wrote:
-> 
-> > I found a bug in simulate_ll and simulate_sc.
-> > The board that uses ll/sc emulation is not started.
-> > 
-> > When send_sig in these, in order not to operate the value of EPC correctly,
-> > simulate_* happens continuously.
-> > 
-> > The previous patches were not perfect, I changed more.
-> > Please apply these patches to CVS tree.
-> 
-> As previously mentioned there were some problems with your fix, so I
-> wrote an alternative fix which is attached below.  It's untested because
-> I don't have any ll/sc-less test platform.
-
-I tested ll/sc simulate.
-Furthermore, the following patch is also needed.
-
-Thanks,
-
-Yoichi
-
-diff -aruN --exclude=CVS --exclude=.cvsignore linux.orig/arch/mips/kernel/traps.c linux/arch/mips/kernel/traps.c
---- linux.orig/arch/mips/kernel/traps.c Wed Mar  5 12:05:00 2003
-+++ linux/arch/mips/kernel/traps.c      Thu Mar  6 16:37:40 2003
-@@ -173,6 +173,7 @@
-        }
-        if (ll_bit == 0 || ll_task != current) {
-                regs->regs[reg] = 0;
-+               compute_return_epc(regs);
-                return;
-        }
+------=_NextPart_000_0017_01C2E3FD.EAFC4EB0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset="big5"
 
 
 
-> 
->   Ralf
-> 
-> Index: arch/mips/kernel/traps.c
-> ===================================================================
-> RCS file: /home/cvs/linux/arch/mips/kernel/traps.c,v
-> retrieving revision 1.99.2.41
-> diff -u -r1.99.2.41 traps.c
-> --- arch/mips/kernel/traps.c	10 Feb 2003 22:50:48 -0000	1.99.2.41
-> +++ arch/mips/kernel/traps.c	4 Mar 2003 20:32:10 -0000
-> @@ -134,13 +134,14 @@
->  		ll_bit = 0;
->  	}
->  	ll_task = current;
-> +
->  	regs->regs[(opcode & RT) >> 16] = value;
->  
->  	compute_return_epc(regs);
->  	return;
->  
->  sig:
-> -	send_sig(signal, current, 1);
-> +	force_sig(signal, current);
->  }
->  
->  static inline void simulate_sc(struct pt_regs *regs, unsigned int opcode)
-> @@ -172,19 +173,21 @@
->  	}
->  	if (ll_bit == 0 || ll_task != current) {
->  		regs->regs[reg] = 0;
-> -		goto sig;
-> +		return;
->  	}
->  
-> -	if (put_user(regs->regs[reg], vaddr))
-> +	if (put_user(regs->regs[reg], vaddr)) {
->  		signal = SIGSEGV;
-> -	else
-> -		regs->regs[reg] = 1;
-> +		goto sig;
-> +	}
-> +
-> +	regs->regs[reg] = 1;
->  
->  	compute_return_epc(regs);
->  	return;
->  
->  sig:
-> -	send_sig(signal, current, 1);
-> +	force_sig(signal, current);
->  }
->  
->  /*
-> 
-> 
+Dear all:
+
+I follow rules on http://www.ltc.com/~brad/mips/mips-cross-toolchain/
+to build gnu tool-cahin.=20
+It works pefect for me to build linux/glibc/ulibc, and perform excellent =
+on my Demo Board.
+
+However, it report some bug messags as following when I compile a test.c =
+
+like:
+int test()
+{
+    return 0;
+}
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+mips-linux-gcc -c -mips16 -o test test.c
+/tmp/ccjnCwV7.s: Assembler messages:
+/tmp/ccjnCwV7.s:14: Internal error!
+Assertion failure in macro_build_lui at ../../gas/config/tc-mips.c line =
+3107.
+Please report this bug.
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+my mips-linux-gcc info:
+Reading specs from /usr/local/lib/gcc-lib/mips-linux/3.0.3/specs
+Configured with: ../configure --target=3Dmips-linux =
+--enable-languages=3Dc --disable-shared =
+--with-headers=3D/usr/local/include --with-newlib
+Thread model: single
+gcc version 3.0.3
+ /usr/local/lib/gcc-lib/mips-linux/3.0.3/cpp0 -lang-c -v -D__GNUC__=3D3 =
+-D__GNUC_MINOR__=3D0 -D__GNUC_PATCHLEVEL__=3D3 -DMIPSEB -D_MIPSEB -Dunix =
+-Dmips -D_mips -DR3000 -D_R3000 -Dlinux -D__ELF__ -D__PIC__ -D__pic__ =
+-D__MIPSEB__ -D_MIPSEB -D__unix__ -D__mips__ -D__mips__ -D__R3000__ =
+-D_R3000 -D__linux__ -D__ELF__ -D__PIC__ -D__pic__ -D__MIPSEB -D__unix =
+-D__mips -D__mips -D__R3000 -D__linux -Asystem=3Dposix -Acpu=3Dmips =
+-Amachine=3Dmips -D__NO_INLINE__ -D__STDC_HOSTED__=3D1 -D__LANGUAGE_C =
+-D_LANGUAGE_C -DLANGUAGE_C -D__SIZE_TYPE__=3Dunsigned int =
+-D__PTRDIFF_TYPE__=3Dint -D_MIPS_FPSET=3D32 =
+-D_MIPS_ISA=3D_MIPS_ISA_MIPS1 -D_MIPS_SIM=3D_MIPS_SIM_ABI32 =
+-D_MIPS_SZINT=3D32 -D_MIPS_SZLONG=3D32 -D_MIPS_SZPTR=3D32 -U__mips =
+-D__mips -U__mips64 -
+GNU CPP version 3.0.3 (cpplib) (MIPS GNU/Linux with ELF)
+#include "..." search starts here:
+#include <...> search starts here:
+ /usr/local/lib/gcc-lib/mips-linux/3.0.3/include
+ /usr/local/mips-linux/sys-include
+ /usr/local/mips-linux/include
+End of search list.
 
 
--- 
-Yoichi Yuasa
-Montavista Software Japan, Inc.
-e-mail: yoichi_yuasa@montavista.co.jp
-http://www.montavista.co.jp
-PHONE: 03-5469-8840 FAX: 03-5469-8841
+Can you kindly give me some help in this?=20
+Thank you very much.
+=20
+
+------=_NextPart_000_0017_01C2E3FD.EAFC4EB0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html;
+	charset="big5"
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META content=3D"text/html; charset=3Dbig5" http-equiv=3DContent-Type>
+<META content=3D"MSHTML 5.00.2920.0" name=3DGENERATOR>
+<STYLE></STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV>&nbsp;</DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT size=3D2>Dear all:</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT size=3D2>I follow rules on <A=20
+href=3D"http://www.ltc.com/~brad/mips/mips-cross-toolchain/">http://www.l=
+tc.com/~brad/mips/mips-cross-toolchain/</A></FONT></DIV>
+<DIV><FONT size=3D2>to build gnu tool-cahin. </FONT></DIV>
+<DIV><FONT size=3D2>It works pefect for me to build linux/glibc/ulibc, =
+and perform=20
+excellent on my Demo Board.</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT size=3D2>However, it report some bug messags as following =
+when I=20
+compile a test.c </FONT></DIV>
+<DIV><FONT size=3D2>like:</FONT></DIV>
+<DIV><FONT size=3D2>int test()</FONT></DIV>
+<DIV><FONT size=3D2>{</FONT></DIV>
+<DIV><FONT size=3D2>&nbsp;&nbsp;&nbsp; return 0;</FONT></DIV>
+<DIV><FONT size=3D2>}</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT =
+size=3D2>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D</FONT>=
+</DIV>
+<DIV><FONT size=3D2>mips-linux-gcc -c -mips16 -o test =
+test.c<BR>/tmp/ccjnCwV7.s:=20
+Assembler messages:<BR>/tmp/ccjnCwV7.s:14: Internal error!<BR>Assertion =
+failure=20
+in macro_build_lui at ../../gas/config/tc-mips.c line 3107.<BR>Please =
+report=20
+this =
+bug.<BR>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D</=
+FONT></DIV>
+<DIV><FONT size=3D2>my mips-linux-gcc info:</FONT></DIV>
+<DIV><FONT size=3D2>Reading specs from=20
+/usr/local/lib/gcc-lib/mips-linux/3.0.3/specs<BR>Configured with: =
+../configure=20
+--target=3Dmips-linux --enable-languages=3Dc --disable-shared=20
+--with-headers=3D/usr/local/include --with-newlib<BR>Thread model: =
+single<BR>gcc=20
+version 3.0.3<BR>&nbsp;/usr/local/lib/gcc-lib/mips-linux/3.0.3/cpp0 =
+-lang-c -v=20
+-D__GNUC__=3D3 -D__GNUC_MINOR__=3D0 -D__GNUC_PATCHLEVEL__=3D3 -DMIPSEB =
+-D_MIPSEB=20
+-Dunix -Dmips -D_mips -DR3000 -D_R3000 -Dlinux -D__ELF__ -D__PIC__ =
+-D__pic__=20
+-D__MIPSEB__ -D_MIPSEB -D__unix__ -D__mips__ -D__mips__ -D__R3000__ =
+-D_R3000=20
+-D__linux__ -D__ELF__ -D__PIC__ -D__pic__ -D__MIPSEB -D__unix -D__mips =
+-D__mips=20
+-D__R3000 -D__linux -Asystem=3Dposix -Acpu=3Dmips -Amachine=3Dmips =
+-D__NO_INLINE__=20
+-D__STDC_HOSTED__=3D1 -D__LANGUAGE_C -D_LANGUAGE_C -DLANGUAGE_C=20
+-D__SIZE_TYPE__=3Dunsigned int -D__PTRDIFF_TYPE__=3Dint =
+-D_MIPS_FPSET=3D32=20
+-D_MIPS_ISA=3D_MIPS_ISA_MIPS1 -D_MIPS_SIM=3D_MIPS_SIM_ABI32 =
+-D_MIPS_SZINT=3D32=20
+-D_MIPS_SZLONG=3D32 -D_MIPS_SZPTR=3D32 -U__mips -D__mips -U__mips64 =
+-<BR>GNU CPP=20
+version 3.0.3 (cpplib) (MIPS GNU/Linux with ELF)<BR>#include "..." =
+search starts=20
+here:<BR>#include &lt;...&gt; search starts=20
+here:<BR>&nbsp;/usr/local/lib/gcc-lib/mips-linux/3.0.3/include<BR>&nbsp;/=
+usr/local/mips-linux/sys-include<BR>&nbsp;/usr/local/mips-linux/include<B=
+R>End=20
+of search list.<BR></FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT size=3D2>Can you kindly give me some help&nbsp;in=20
+this?&nbsp;</FONT></DIV>
+<DIV><FONT size=3D2>Thank you very much.</FONT></DIV>
+<DIV>&nbsp;</DIV></BODY></HTML>
+
+------=_NextPart_000_0017_01C2E3FD.EAFC4EB0--

@@ -1,54 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Dec 2004 07:34:11 +0000 (GMT)
-Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:49445
-	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
-	id <S8224914AbULXHeF>; Fri, 24 Dec 2004 07:34:05 +0000
-Received: from newms.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 24 Dec 2004 07:34:04 UT
-Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
-	by newms.toshiba-tops.co.jp (Postfix) with ESMTP
-	id 7674B239E3C; Fri, 24 Dec 2004 16:33:50 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id iBO7XoMc029105;
-	Fri, 24 Dec 2004 16:33:50 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date: Fri, 24 Dec 2004 16:33:48 +0900 (JST)
-Message-Id: <20041224.163348.69212321.nemoto@toshiba-tops.co.jp>
-To: nunoe@co-nss.co.jp
-Cc: linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: MIPS32 -> MIPS64
-From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <000601c4e7b8$0f043830$3ca06096@NUNOE>
-References: <20041215141613.GB29222@linux-mips.org>
-	<20041221.233324.41626824.anemo@mba.ocn.ne.jp>
-	<000601c4e7b8$0f043830$3ca06096@NUNOE>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Dec 2004 08:57:11 +0000 (GMT)
+Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:1893
+	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
+	id <S8224914AbULXI5G>; Fri, 24 Dec 2004 08:57:06 +0000
+Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
+	by iris1.csv.ica.uni-stuttgart.de with esmtp
+	id 1ChlFe-0007uF-00; Fri, 24 Dec 2004 09:56:46 +0100
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
+	id 1ChlFd-0002Hh-00; Fri, 24 Dec 2004 09:56:45 +0100
+Date: Fri, 24 Dec 2004 09:56:45 +0100
+To: Manish Lachwani <m_lachwani@yahoo.com>
+Cc: Martin Michlmayr <tbm@cyrius.com>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] Further TLB handler optimizations
+Message-ID: <20041224085645.GJ3539@rembrandt.csv.ica.uni-stuttgart.de>
+References: <20041223202526.GA2254@deprecation.cyrius.com> <20041224040051.93587.qmail@web52806.mail.yahoo.com>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20041224040051.93587.qmail@web52806.mail.yahoo.com>
+User-Agent: Mutt/1.5.6+20040907i
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6752
+X-archive-position: 6753
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Wed, 22 Dec 2004 08:51:58 +0900, "Hdei Nunoe" <nunoe@co-nss.co.jp> said:
-nunoe> Could anyone tell how significant the migration from MIPS32 to
-nunoe> MIPS64 is?  Is it just re-building with the MIPS64 toolchain?
-nunoe> Or is it like another architecture porting?
+Manish Lachwani wrote:
+> Hello !
+> 
+> In what way does it break? Can you please provide more
+> details. Also, does it break on UP or SMP?
 
-Just rebuilding will not be enough, but the migration will not be so
-hard.
+Userland starts to fail for simple tasks like 'ls -la'. The test was
+done with 64bit SMP on a board which needs the m3 workaround. The
+current CVS version works.
 
-Most of you have to do is using correct integer data types ('long' is
-64bit and 'int' is 32bit in mips64 kernel).
+I guess the failure is caused by some missing bits for the m3
+workaround which only show up for the optimized handlers in 64bit mode.
 
----
-Atsushi Nemoto
+I have tested my patch on a SGI O2 R5000 in the meanwhile, also with
+good results.
+
+
+Thiemo

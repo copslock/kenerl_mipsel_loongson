@@ -1,78 +1,60 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBELPrM09758
-	for linux-mips-outgoing; Fri, 14 Dec 2001 13:25:53 -0800
-Received: from mail.ivivity.com (user-vc8ftn3.biz.mindspring.com [216.135.246.227])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBELPlo09748
-	for <linux-mips@oss.sgi.com>; Fri, 14 Dec 2001 13:25:47 -0800
-Received: by ATLOPS with Internet Mail Service (5.5.2448.0)
-	id <QMJC3G1G>; Fri, 14 Dec 2001 15:25:40 -0500
-Message-ID: <25369470B6F0D41194820002B328BDD21423ED@ATLOPS>
-From: Dinesh Nagpure <dinesh_nagpure@ivivity.com>
-To: "'Justin Carlson '" <justincarlson@cmu.edu>,
-   Dinesh Nagpure
-	 <dinesh_nagpure@ivivity.com>
-Cc: "'linux-mips@oss.sgi.com '" <linux-mips@oss.sgi.com>
+	by oss.sgi.com (8.11.2/8.11.3) id fBELpGX10441
+	for linux-mips-outgoing; Fri, 14 Dec 2001 13:51:16 -0800
+Received: from ux3.sp.cs.cmu.edu (UX3.SP.CS.CMU.EDU [128.2.198.103])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBELpBo10438
+	for <linux-mips@oss.sgi.com>; Fri, 14 Dec 2001 13:51:11 -0800
+Received: from GS256.SP.CS.CMU.EDU by ux3.sp.cs.cmu.edu id aa14219;
+          14 Dec 2001 15:50 EST
 Subject: RE: 2.4.16 on mips-malta, networking fails...
-Date: Fri, 14 Dec 2001 15:25:40 -0500
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2448.0)
-Content-Type: text/plain;
-	charset="iso-8859-1"
+From: Justin Carlson <justincarlson@cmu.edu>
+To: Dinesh Nagpure <dinesh_nagpure@ivivity.com>
+Cc: linux-mips@oss.sgi.com
+In-Reply-To: <25369470B6F0D41194820002B328BDD21423ED@ATLOPS>
+References: <25369470B6F0D41194820002B328BDD21423ED@ATLOPS>
+Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature";
+	boundary="=-vVCztX+7j+sZuOihht9R"
+X-Mailer: Evolution/0.99.2 (Preview Release)
+Date: 14 Dec 2001 15:50:27 -0500
+Message-Id: <1008363027.19225.20.camel@gs256.sp.cs.cmu.edu>
+Mime-Version: 1.0
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Boot time msgs are :
 
- PCI: Probing PCI hardware on host bus 0.
- Linux NET4.0 for Linux 2.4
- Based upon Swansea University Computer Society NET3.039
- Starting kswapd         
- pty: 256 Unix98 ptys configured 
- Serial driver version 5.05c (2001-07-08) with MANY_PORTS SHARE_IRQ
-SERIAL_PCI edttyS00 at 0x03f8 (irq = 4) is a 16550A 
-ttyS01 at 0x02f8 (irq = 3) is a 16550A  
-block: 128 slots per queue, batch=32 
-RAMDISK driver initialized: 16 RAM disks of 30720K size 1024 blocksize
-loop: loaded (max 8 devices)
+--=-vVCztX+7j+sZuOihht9R
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-pcnet32_probe_pci: found device 0x001022.0x002000
-ioaddr=0x001200  resource_flags=0x000101
+On Fri, 2001-12-14 at 15:25, Dinesh Nagpure wrote:
 
-eth0: PCnet/FAST III 79C973 at 0x1200, 00 d0 a0 00 01 29
+> Apparently the device is being detected.
+> I am using ramdisk root which i created using busybox v0.60.1 and dont ha=
+ve
+> ifconfig or route built into it.
+>=20
 
-pcnet32: pcnet32_private lp=a7f9b000 lp_dma_addr=0x7f9b000 assigned IRQ 10.
-pcnet32.c:v1.25kf 26.9.1999 tsbogend@alpha.franken.de
+How are you setting the IP information for the NIC, then?  Are you
+compiling a kernel with IP autoconfiguration and using a DHCP server? =20
 
-
-Apparently the device is being detected.
-I am using ramdisk root which i created using busybox v0.60.1 and dont have
-ifconfig or route built into it.
-
-Dinesh
-                                                   
------Original Message-----
-From: Justin Carlson
-To: Dinesh Nagpure
-Cc: linux-mips@oss.sgi.com
-Sent: 12/14/01 3:03 PM
-Subject: Re: 2.4.16 on mips-malta, networking fails...
-
-On Fri, 2001-12-14 at 14:52, Dinesh Nagpure wrote:
-> Hello,
-> I am trying kernel v2.4.16 on mips-malta, but networking does not seem
-to be
-> working for me.
-> ping errors out saying sendto: Network is unreachable.
-> I have AMD PCNet32 PCI support enabled under Network device
-support-Ethernet
-> (10 or 100)- EISA, VLB, PCI and onboard controllers. 
-> Any ideas?
-> 
-
-Is the network device being detected by the driver, e.g. do you see
-any status messages from the driver on bootup?
-
-What commands are you using to initialize the interface?  What
-does ifconfig say?  How about route -n?
+If you're not configuring the NIC, then the OS doesn't consider it to be
+a valid source/target of IP information, so when you try to ping from
+the machine, Linux is telling you "I don't have any valid place to put
+an ICMP packet to get to the place you want it to go". =20
 
 -Justin
+
+
+--=-vVCztX+7j+sZuOihht9R
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.6 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iD8DBQA8GmYT47Lg4cGgb74RAma4AJ9CvmN81lXMlycv3kkg5X7B3lqF2wCeI2+k
+tASQV8qIYF9L6lyZd11zW2s=
+=VQKT
+-----END PGP SIGNATURE-----
+
+--=-vVCztX+7j+sZuOihht9R--

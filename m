@@ -1,28 +1,28 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f4LMST821945
-	for linux-mips-outgoing; Mon, 21 May 2001 15:28:29 -0700
-Received: from chmls20.mediaone.net (chmls20.mediaone.net [24.147.1.156])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f4LMSTF21941
-	for <linux-mips@oss.sgi.com>; Mon, 21 May 2001 15:28:29 -0700
-Received: from [192.168.1.3] (h00104b670a0d.ne.mediaone.net [65.96.137.220])
-	by chmls20.mediaone.net (8.11.1/8.11.1) with ESMTP id f4LMSR613462
-	for <linux-mips@oss.sgi.com>; Mon, 21 May 2001 18:28:27 -0400 (EDT)
-Mime-Version: 1.0
-X-Sender: mjpento@pop.ne.mediaone.net
-Message-Id: <p05001901b72f47224dcd@[192.168.1.3]>
-Date: Mon, 21 May 2001 18:30:01 -0400
+	by oss.sgi.com (8.11.3/8.11.3) id f4LMiKP22502
+	for linux-mips-outgoing; Mon, 21 May 2001 15:44:20 -0700
+Received: from mcp.csh.rit.edu (mcp.csh.rit.edu [129.21.60.9])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f4LMiKF22498
+	for <linux-mips@oss.sgi.com>; Mon, 21 May 2001 15:44:20 -0700
+Received: from csh.rit.edu (anna.csh.rit.edu [129.21.60.133])
+	by mcp.csh.rit.edu (Postfix) with ESMTP id 85F961165
+	for <linux-mips@oss.sgi.com>; Mon, 21 May 2001 18:44:18 -0400 (EDT)
+Message-ID: <3B099A91.5030300@csh.rit.edu>
+Date: Mon, 21 May 2001 18:45:37 -0400
+From: George Gensure <werkt@csh.rit.edu>
+User-Agent: Mozilla/5.0 (X11; U; Linux 2.4.5-pre3 i686; en-US; rv:0.9) Gecko/20010505
+X-Accept-Language: en
+MIME-Version: 1.0
 To: linux-mips@oss.sgi.com
-From: mjpento <mjpento@mediaone.net>
-Subject: Elan in R3000???
-Content-Type: text/plain; charset="us-ascii" ; format="flowed"
+Subject: newest kernel
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi Folks,
+I build the 2.4.3 #5 kernel from the CVS source, and have had some 
+trouble with specific programs.  I get illegal instruction errors on 
+find and tar.  Is there anything I can do to correct this?
 
-	My apologies if this is off topic a bit. Does anyone know if 
-an Elan graphics subsystem will work in an Indigo R3000? Or is that 
-something for the R4000 only?
-
-Thanks,
-Mike
+George
+werkt@csh.rit.edu

@@ -1,66 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Dec 2003 04:55:41 +0000 (GMT)
-Received: from dallas.texasconnect.net ([IPv6:::ffff:208.232.232.3]:26643 "EHLO
-	dallas.texasconnect.net") by linux-mips.org with ESMTP
-	id <S8225323AbTLREzk>; Thu, 18 Dec 2003 04:55:40 +0000
-Received: from dallas.texasconnect.net (dallas.texasconnect.net [208.232.232.3])
-	by dallas.texasconnect.net (8.12.9/8.12.9) with ESMTP id hBI4tbcq009747;
-	Wed, 17 Dec 2003 22:55:37 -0600
-Date: Wed, 17 Dec 2003 22:55:37 -0600 (CST)
-From: Ed Okerson <eokerson@texasconnect.net>
-To: He Jin <thesistarball@yahoo.com.cn>
-cc: linux-mips <linux-mips@linux-mips.org>
-Subject: Re: AutoNegotiation could not complete in PB1500 platform
-In-Reply-To: <20031218033717Z8225373-16706+1429@linux-mips.org>
-Message-ID: <Pine.LNX.4.44.0312172253330.1654-100000@dallas.texasconnect.net>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <eokerson@texasconnect.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Dec 2003 14:28:56 +0000 (GMT)
+Received: from bay7-f37.bay7.hotmail.com ([IPv6:::ffff:64.4.11.37]:39689 "EHLO
+	hotmail.com") by linux-mips.org with ESMTP id <S8225205AbTLRO2r>;
+	Thu, 18 Dec 2003 14:28:47 +0000
+Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
+	 Thu, 18 Dec 2003 06:28:37 -0800
+Received: from 203.196.146.243 by by7fd.bay7.hotmail.msn.com with HTTP;
+	Thu, 18 Dec 2003 14:28:36 GMT
+X-Originating-IP: [203.196.146.243]
+X-Originating-Email: [samavarthy@hotmail.com]
+X-Sender: samavarthy@hotmail.com
+From: "samavarthy c" <samavarthy@hotmail.com>
+To: linux-mips@linux-mips.org
+Subject: USB on MIPS
+Date: Thu, 18 Dec 2003 19:58:36 +0530
+Mime-Version: 1.0
+Content-Type: text/plain; format=flowed
+Message-ID: <BAY7-F37p6I65awhyxk00043bd8@hotmail.com>
+X-OriginalArrivalTime: 18 Dec 2003 14:28:37.0071 (UTC) FILETIME=[395B6DF0:01C3C573]
+Return-Path: <samavarthy@hotmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3790
+X-archive-position: 3791
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: eokerson@texasconnect.net
+X-original-sender: samavarthy@hotmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Did you set the EM bit in the mac_control register to match the endian
-mode you are running the CPU in?
+Hi,
 
-Ed Okerson
+I am working on a PDA based board which has a NEC MIPS VR4131
+processor.
+The board has a companion chip MediaQ 1132 which has OHCI support
+builtin.
+The kernel used is MontaVista HardHat 2.4.18. I am trying to configure
+MQ1132 for USB Host support. It looks like the Host controller
+(MQ1132) is initialized properly but not sure. When I plug in a USB
+stick on to the USB port, I get the following messages.
+-----------------------------------------------------------------
+hub.c: USB new device connect on bus1/1, assigned device number 2
+usb-ohci.c: unlink URB timeout
+usb.c: USB device not accepting new address=2 (error=-145)
 
-On Thu, 18 Dec 2003, He Jin wrote:
+hub.c: USB new device connect on bus1/1, assigned device number 3
+usb_control/bulk_msg: timeout
+usb-ohci.c: unlink URB timeout
+usb.c: USB device not accepting new address=3 (error=-145)
+-------------------------------------------------------------------
+Has anyone experienced the same out there. Could any one suggest how
+to debug this error. What could be the problem?.
 
-> Hi, Dear all,
->
-> I'm porting my own firmware code to PB1500, however some troubles ocurred with the Au1x NIC and LSI PHY. The dump of PHY register (the NIC initialization code is borrowed from the driver inside YAMON) is as follow:
->
-> ////////////////////////////////////
->  MII status: Link is up
->  1th 0x3000
->  2th 0x7809			=> should be 0x7829
-> 		^^^^^^^^^^
->  3th 0x16
->  4th 0xf840
->  5th 0x1e1
->  6th 0x 0 			=> should be 0x45e1
-> 		^^^^^^^^^^
-> 17th 0x22
-> 18th 0xffc0
-> ////////////////////////////////////
->
-> It shows the MII interface couldn't finish the AutoNegotiation process. The values I think right is the output of some small probe programs using YAMON to boot the board and running those small probe programs . Besides, the LED in NIC interface could flash normally and we observed the LSI PHY chips should have been reset sucessfully in our firmware code using oscillograph device to probe the 'reset' pin in the PHY chips.
->
-> If I use YAMON, everything OK. Could somebody tell me why ?
->
-> Thanks a lot !
->
->
->
->
->
->
->
->
+Thanks in advance.
+
+Regards,
+aks
+
+_________________________________________________________________
+Add glamour to your desktop. Let your screen sizzle. 
+http://server1.msn.co.in/msnchannels/Entertainment/wallpaperhome.asp 
+Download the hottest wallpapers.

@@ -1,71 +1,90 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fB52Ft000760
-	for linux-mips-outgoing; Tue, 4 Dec 2001 18:15:55 -0800
-Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fB52Foo00745
-	for <linux-mips@oss.sgi.com>; Tue, 4 Dec 2001 18:15:50 -0800
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 627968AC; Wed,  5 Dec 2001 02:15:41 +0100 (CET)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 992F042AD; Wed,  5 Dec 2001 02:10:51 +0100 (CET)
-Date: Wed, 5 Dec 2001 02:10:51 +0100
-From: Florian Lohoff <flo@rfc822.org>
-To: Ladislav Michl <ladislav.michl@hlubocky.del.cz>
-Cc: Ian Chilton <ian@ichilton.co.uk>, linux-mips@oss.sgi.com
-Subject: Re: 2.4.16 success on Indy (was Re: 2.4.16 success on Decstation 5000/150)
-Message-ID: <20011205021051.A1882@paradigm.rfc822.org>
-References: <20011204095951.A27343@paradigm.rfc822.org> <Pine.LNX.4.21.0112041008090.12262-100000@hlubocky.del.cz>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="82I3+IH0IqGh5yIs"
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.21.0112041008090.12262-100000@hlubocky.del.cz>
-User-Agent: Mutt/1.3.23i
-Organization: rfc822 - pure communication
+	by oss.sgi.com (8.11.2/8.11.3) id fB58Js423828
+	for linux-mips-outgoing; Wed, 5 Dec 2001 00:19:54 -0800
+Received: from mangalore.zipworld.com.au (leeloo.zip.com.au [203.12.97.48])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fB58Jko23825
+	for <linux-mips@oss.sgi.com>; Wed, 5 Dec 2001 00:19:46 -0800
+Received: from zip.com.au (root@zipperii.zip.com.au [61.8.0.87])
+	by mangalore.zipworld.com.au (8.9.3/8.9.3) with ESMTP id SAA04488;
+	Wed, 5 Dec 2001 18:17:36 +1100
+Message-ID: <3C0DCA07.AD302D7D@zip.com.au>
+Date: Tue, 04 Dec 2001 23:17:27 -0800
+From: Andrew Morton <akpm@zip.com.au>
+X-Mailer: Mozilla 4.77 [en] (X11; U; Linux 2.4.17-pre1 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: todd_m_roy@vermontel.net
+CC: bregor@anusf.anu.edu.au, Kenneth Albanowski <kjahds@kjahds.com>,
+   Mat Hostetter <mat@lcs.mit.edu>,
+   Andy Dougherty <doughera@lafcol.lafayette.edu>,
+   Warner Losh <imp@village.org>, linux-mips@oss.sgi.com,
+   Ron Guilmette <rfg@monkeys.com>,
+   "Polstra; John" <linux-binutils-in@polstra.com>,
+   "Hazelwood; Galen" <galenh@micron.net>,
+   Ralf Baechle <ralf@mailhost.uni-koblenz.de>,
+   Linas Vepstas <linas@linas.org>, Feher Janos <aries@hal2000.terra.vein.hu>,
+   Leonard Zubkoff <lnz@dandelion.com>, "Steven J. Hill" <sjhill@cotw.com>,
+   linux-gcc@vger.kernel.org, GNU C Library <libc-alpha@sourceware.cygnus.com>,
+   gcc@gcc.gnu.org
+Subject: Re: Problem with binutils 2.11.92.0.12 and ..12.3
+References: <3C085FA1.CCDC7100@vermontel.net>,
+		<3C085FA1.CCDC7100@vermontel.net>; from salteroy@vermontel.net on Fri, Nov 30, 2001 at 11:42:09PM -0500 <20011201094659.A9044@lucon.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+"H . J . Lu" wrote:
+> 
+> On Fri, Nov 30, 2001 at 11:42:09PM -0500, Todd Roy, Wanda Salter and Alice Salter-Roy wrote:
+> > Hi,
+> >   I had a linux kernel linking problem with 2.11.92.0.12 and
+> > 2.11.92.0.12.3
+> ...
+> >
+> > I reverted to 2.11.92.0.10 and all is well again.
+> >
+> 
+> I updated the release note for 2.11.92.0.12.3. Please read it carefully.
+> 
+> ...
+> --- linux/arch/alpha/vmlinux.lds.in.discard     Thu Nov 22 00:30:16 2001
+> +++ linux/arch/alpha/vmlinux.lds.in     Thu Nov 22 00:30:47 2001
+> @@ -92,5 +92,5 @@ SECTIONS
+>    .debug_typenames 0 : { *(.debug_typenames) }
+>    .debug_varnames  0 : { *(.debug_varnames) }
+> 
+> -  /DISCARD/ : { *(.text.exit) *(.data.exit) }
+> +  /DISCARD/ : { *(.text.exit) *(.data.exit) *(.exitcall.exit) }
+>  }
+> --- linux/drivers/char/serial.c.discard Thu Nov 22 00:37:14 2001
+> +++ linux/drivers/char/serial.c Thu Nov 22 10:54:54 2001
+> @@ -4887,7 +4887,9 @@ static char serial_pci_driver_name[] = "
+>  static struct pci_driver serial_pci_driver = {
+>         name:           serial_pci_driver_name,
+>         probe:          serial_init_one,
+> +#ifdef MODULE
+>         remove:        serial_remove_one,
+> +#endif
+>         id_table:       serial_pci_tbl,
+>  };
+> 
 
---82I3+IH0IqGh5yIs
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This is not sufficient.  If CONFIG_HOTPLUG is defined,
+__devinit sections are still included in vmlinux.  This
+is because those functions are required for hot-unplugging.
 
-On Tue, Dec 04, 2001 at 10:18:45AM +0100, Ladislav Michl wrote:
-> look to the drivers/sgi/Config.in instead
->=20
-> comment 'SGI devices'
-> bool 'SGI Zilog85C30 serial support' CONFIG_SGI_SERIAL
-> if [ "$CONFIG_SGI_SERIAL" =3D "y" ]; then
->    bool '  Support for console on serial port' CONFIG_SERIAL_CONSOLE
-> fi
-> bool 'SGI DS1286  RTC support' CONFIG_SGI_DS1286
+This patch will cause hot-unplug for statically linked drivers
+to not work correctly, because the ->remove() method isn't
+available (it has a null pointer).
 
-I know that - I had that enabled too ...
+The ifdef needs to be:
 
-> i know... we have special driver for SGI, special driver for some ARM
-> based boards, for some ...(a lot of clocks to list :-)). but, that's
-> living ;-) search linux-mips archives, there was long debate about this
-> month ago. personaly i don't like way how it works now, but i haven't time
-> nor knowledges to change it without breaking anything, so i'm happy that
-> it works somehow.
+#if defined(MODULE) || defined(CONFIG_HOTPLUG)
 
-Flo
---=20
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-Nine nineth on september the 9th              Welcome to the new billenium
+I've just send a patch, which alters 59 kernel files to
+the kernel list.  It's for 2.4.17-pre2 and will hopefully
+appear in 2.4.17-pre3.
 
---82I3+IH0IqGh5yIs
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iD8DBQE8DXQbUaz2rXW+gJcRAm/AAKCDraeSv6Sfcp1FCONNTnlcrcHCgACfVvNw
-UkSYWh2XVx3HyFma8h18L8k=
-=07Py
------END PGP SIGNATURE-----
-
---82I3+IH0IqGh5yIs--
+The easiest fix for earlier kernels is to edit arch/i386/vmlinux.lds.in
+and delete the entire /DISCARD/ section.

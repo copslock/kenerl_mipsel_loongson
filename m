@@ -1,42 +1,45 @@
-Received:  by oss.sgi.com id <S553962AbRAaOVK>;
-	Wed, 31 Jan 2001 06:21:10 -0800
-Received: from mx.mips.com ([206.31.31.226]:49859 "EHLO mx.mips.com")
-	by oss.sgi.com with ESMTP id <S553953AbRAaOUw>;
-	Wed, 31 Jan 2001 06:20:52 -0800
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id GAA18322
-	for <linux-mips@oss.sgi.com>; Wed, 31 Jan 2001 06:20:48 -0800 (PST)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id GAA26348
-	for <linux-mips@oss.sgi.com>; Wed, 31 Jan 2001 06:20:47 -0800 (PST)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id PAA27188
-	for <linux-mips@oss.sgi.com>; Wed, 31 Jan 2001 15:20:36 +0100 (MET)
-Message-ID: <3A781F33.6B28D19C@mips.com>
-Date:   Wed, 31 Jan 2001 15:20:35 +0100
-From:   Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     linux-mips@oss.sgi.com
-Subject: Filesystem corruption
-Content-Type: text/plain; charset=iso-8859-15
-Content-Transfer-Encoding: 7bit
+Received:  by oss.sgi.com id <S553972AbRAaQDb>;
+	Wed, 31 Jan 2001 08:03:31 -0800
+Received: from noose.gt.owl.de ([62.52.19.4]:5392 "HELO noose.gt.owl.de")
+	by oss.sgi.com with SMTP id <S553682AbRAaQDX>;
+	Wed, 31 Jan 2001 08:03:23 -0800
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 0C3797F9; Wed, 31 Jan 2001 17:03:11 +0100 (CET)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 27560EE9C; Wed, 31 Jan 2001 16:52:46 +0100 (CET)
+Date:   Wed, 31 Jan 2001 16:52:46 +0100
+From:   Florian Lohoff <flo@rfc822.org>
+To:     Carsten Langgaard <carstenl@mips.com>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: Filesystem corruption
+Message-ID: <20010131165246.B32399@paradigm.rfc822.org>
+References: <3A781F33.6B28D19C@mips.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3A781F33.6B28D19C@mips.com>; from carstenl@mips.com on Wed, Jan 31, 2001 at 03:20:35PM +0100
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Has anyone seen problems with fsck on the latest 2.4.0 kernel ?
-My filesystem gets corrupted from time to time when I use the latest
-2.4.0 kernel.
+On Wed, Jan 31, 2001 at 03:20:35PM +0100, Carsten Langgaard wrote:
+> 
+> Has anyone seen problems with fsck on the latest 2.4.0 kernel ?
+> My filesystem gets corrupted from time to time when I use the latest
+> 2.4.0 kernel.
+> 
 
-/Carsten
+Hmm - nope - 2.4.0 Bigendian here 
 
+resume:~# uptime
+ 3:50pm  up 6 days, 10 min,  1 user,  load average: 0.00, 0.00, 0.00
+resume:~# uname -a
+Linux resume.rfc822.org 2.4.0 #3 Thu Jan 25 16:25:23 CET 2001 mips unknown
 
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+Flo
+-- 
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+     Why is it called "common sense" when nobody seems to have any?

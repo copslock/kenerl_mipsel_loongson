@@ -1,56 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Apr 2004 14:21:56 +0100 (BST)
-Received: from caramon.arm.linux.org.uk ([IPv6:::ffff:212.18.232.186]:15630
-	"EHLO caramon.arm.linux.org.uk") by linux-mips.org with ESMTP
-	id <S8225197AbUDSNVy>; Mon, 19 Apr 2004 14:21:54 +0100
-Received: from [2002:d412:e8ba:1:201:80ff:fe4b:1778] (helo=dyn-67.arm.linux.org.uk)
-	by caramon.arm.linux.org.uk with asmtp (TLSv1:DES-CBC3-SHA:168)
-	(Exim 4.32)
-	id 1BFYia-0005hd-Eh; Mon, 19 Apr 2004 14:21:48 +0100
-Received: from rmk by dyn-67.arm.linux.org.uk with local (Exim 4.32)
-	id 1BFYiZ-000564-Vs; Mon, 19 Apr 2004 14:21:47 +0100
-From: Russell King <rmk+lkml@arm.linux.org.uk>
-To: Linux Kernel List <linux-kernel@vger.kernel.org>, ralf@gnu.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Apr 2004 17:37:03 +0100 (BST)
+Received: from p508B6729.dip.t-dialin.net ([IPv6:::ffff:80.139.103.41]:64018
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225215AbUDSQhB>; Mon, 19 Apr 2004 17:37:01 +0100
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i3JGanxT018088;
+	Mon, 19 Apr 2004 18:36:49 +0200
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i3JGam0N018087;
+	Mon, 19 Apr 2004 18:36:48 +0200
+Date: Mon, 19 Apr 2004 18:36:48 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Russell King <rmk+lkml@arm.linux.org.uk>
+Cc: Linux Kernel List <linux-kernel@vger.kernel.org>,
 	linux-mips@linux-mips.org
 Subject: Re: [PATCH] Clean up asm/pgalloc.h include (mips)
-In-Reply-To: <20040418232314.A2045@flint.arm.linux.org.uk>; from rmk+lkml@arm.linux.org.uk on Sun, Apr 18, 2004 at 11:23:14PM +0100
-References: <20040418231720.C12222@flint.arm.linux.org.uk> <20040418232314.A2045@flint.arm.linux.org.uk>
-Message-Id: <E1BFYiZ-000564-Vs@dyn-67.arm.linux.org.uk>
-Date: Mon, 19 Apr 2004 14:21:47 +0100
-Return-Path: <rmk+linux-mips=linux-mips.org@arm.linux.org.uk>
+Message-ID: <20040419163648.GA24745@linux-mips.org>
+References: <20040418231720.C12222@flint.arm.linux.org.uk> <20040418232314.A2045@flint.arm.linux.org.uk> <E1BFYiZ-000564-Vs@dyn-67.arm.linux.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <E1BFYiZ-000564-Vs@dyn-67.arm.linux.org.uk>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4808
+X-archive-position: 4809
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rmk+lkml@arm.linux.org.uk
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-This patch cleans up needless includes of asm/pgalloc.h from the
-arch/mips/ subtree.  This has not been compile tested, so
-needs the architecture maintainers (or willing volunteers) to
-test.
+On Mon, Apr 19, 2004 at 02:21:47PM +0100, Russell King wrote:
 
-Please ensure that at least the first two patches have already
-been applied to your tree; they can be found at:
+> This patch cleans up needless includes of asm/pgalloc.h from the
+> arch/mips/ subtree.  This has not been compile tested, so
+> needs the architecture maintainers (or willing volunteers) to
+> test.
+> 
+> Please ensure that at least the first two patches have already
+> been applied to your tree; they can be found at:
+> 
+> 	http://lkml.org/lkml/2004/4/18/86
+> 	http://lkml.org/lkml/2004/4/18/87
+> 
+> This patch is part of a larger patch aiming towards getting the
+> include of asm/pgtable.h out of linux/mm.h, so that asm/pgtable.h
+> can sanely get at things like mm_struct and friends.
+> 
+> In the event that any of these files fails to build, chances are
+> you need to include some other header file rather than pgalloc.h.
+> Normally this is either asm/pgtable.h (unlikely), asm/cacheflush.h
+> or asm/tlbflush.h.
 
-	http://lkml.org/lkml/2004/4/18/86
-	http://lkml.org/lkml/2004/4/18/87
+It needed a little fixing for one because of recent changed to the IP27
+code and to keep things building.  The updated patch against linux-mips.org's
+cvs which I'm about to checkin, is below.
 
-This patch is part of a larger patch aiming towards getting the
-include of asm/pgtable.h out of linux/mm.h, so that asm/pgtable.h
-can sanely get at things like mm_struct and friends.
+  Ralf
 
-In the event that any of these files fails to build, chances are
-you need to include some other header file rather than pgalloc.h.
-Normally this is either asm/pgtable.h (unlikely), asm/cacheflush.h
-or asm/tlbflush.h.
-
-===== arch/mips/baget/baget.c 1.2 vs edited =====
---- 1.2/arch/mips/baget/baget.c	Tue Apr 15 04:10:11 2003
-+++ edited/arch/mips/baget/baget.c	Mon Apr 19 13:38:40 2004
+Index: arch/mips/baget/baget.c
+===================================================================
+RCS file: /home/cvs/linux/arch/mips/baget/baget.c,v
+retrieving revision 1.4
+diff -u -r1.4 baget.c
+--- arch/mips/baget/baget.c	6 Aug 2002 00:08:53 -0000	1.4
++++ arch/mips/baget/baget.c	19 Apr 2004 16:28:55 -0000
 @@ -12,7 +12,6 @@
  #include <asm/bootinfo.h>
  #include <asm/mipsregs.h>
@@ -59,9 +76,13 @@ or asm/tlbflush.h.
  
  #include <asm/baget/baget.h>
  
-===== arch/mips/kernel/irixelf.c 1.9 vs edited =====
---- 1.9/arch/mips/kernel/irixelf.c	Mon Apr 12 18:54:53 2004
-+++ edited/arch/mips/kernel/irixelf.c	Mon Apr 19 13:38:40 2004
+Index: arch/mips/kernel/irixelf.c
+===================================================================
+RCS file: /home/cvs/linux/arch/mips/kernel/irixelf.c,v
+retrieving revision 1.54
+diff -u -r1.54 irixelf.c
+--- arch/mips/kernel/irixelf.c	19 Oct 2003 00:50:08 -0000	1.54
++++ arch/mips/kernel/irixelf.c	19 Apr 2004 16:28:58 -0000
 @@ -31,7 +31,6 @@
  #include <linux/smp_lock.h>
  
@@ -70,9 +91,13 @@ or asm/tlbflush.h.
  #include <asm/mipsregs.h>
  #include <asm/prctl.h>
  
-===== arch/mips/kernel/signal32.c 1.15 vs edited =====
---- 1.15/arch/mips/kernel/signal32.c	Sat Apr 17 19:19:30 2004
-+++ edited/arch/mips/kernel/signal32.c	Mon Apr 19 13:38:40 2004
+Index: arch/mips/kernel/signal32.c
+===================================================================
+RCS file: /home/cvs/linux/arch/mips/kernel/signal32.c,v
+retrieving revision 1.10
+diff -u -r1.10 signal32.c
+--- arch/mips/kernel/signal32.c	11 Mar 2004 16:46:43 -0000	1.10
++++ arch/mips/kernel/signal32.c	19 Apr 2004 16:28:58 -0000
 @@ -21,7 +21,6 @@
  
  #include <asm/asm.h>
@@ -81,9 +106,13 @@ or asm/tlbflush.h.
  #include <asm/sim.h>
  #include <asm/uaccess.h>
  #include <asm/ucontext.h>
-===== arch/mips/kernel/signal_n32.c 1.2 vs edited =====
---- 1.2/arch/mips/kernel/signal_n32.c	Thu Feb 19 20:53:00 2004
-+++ edited/arch/mips/kernel/signal_n32.c	Mon Apr 19 13:38:40 2004
+Index: arch/mips/kernel/signal_n32.c
+===================================================================
+RCS file: /home/cvs/linux/arch/mips/kernel/signal_n32.c,v
+retrieving revision 1.4
+diff -u -r1.4 signal_n32.c
+--- arch/mips/kernel/signal_n32.c	3 Mar 2004 12:54:20 -0000	1.4
++++ arch/mips/kernel/signal_n32.c	19 Apr 2004 16:28:58 -0000
 @@ -29,7 +29,6 @@
  
  #include <asm/asm.h>
@@ -92,9 +121,13 @@ or asm/tlbflush.h.
  #include <asm/sim.h>
  #include <asm/uaccess.h>
  #include <asm/ucontext.h>
-===== arch/mips/kernel/sysirix.c 1.23 vs edited =====
---- 1.23/arch/mips/kernel/sysirix.c	Wed Mar 31 14:31:23 2004
-+++ edited/arch/mips/kernel/sysirix.c	Mon Apr 19 13:38:40 2004
+Index: arch/mips/kernel/sysirix.c
+===================================================================
+RCS file: /home/cvs/linux/arch/mips/kernel/sysirix.c,v
+retrieving revision 1.58
+diff -u -r1.58 sysirix.c
+--- arch/mips/kernel/sysirix.c	12 Apr 2004 20:23:24 -0000	1.58
++++ arch/mips/kernel/sysirix.c	19 Apr 2004 16:28:58 -0000
 @@ -33,7 +33,6 @@
  
  #include <asm/ptrace.h>
@@ -103,9 +136,13 @@ or asm/tlbflush.h.
  #include <asm/uaccess.h>
  #include <asm/inventory.h>
  
-===== arch/mips/mm/fault.c 1.9 vs edited =====
---- 1.9/arch/mips/mm/fault.c	Thu Feb 19 20:53:00 2004
-+++ edited/arch/mips/mm/fault.c	Mon Apr 19 13:38:40 2004
+Index: arch/mips/mm/fault.c
+===================================================================
+RCS file: /home/cvs/linux/arch/mips/mm/fault.c,v
+retrieving revision 1.52
+diff -u -r1.52 fault.c
+--- arch/mips/mm/fault.c	18 Dec 2003 21:52:33 -0000	1.52
++++ arch/mips/mm/fault.c	19 Apr 2004 16:28:58 -0000
 @@ -22,7 +22,6 @@
  
  #include <asm/branch.h>
@@ -114,20 +151,32 @@ or asm/tlbflush.h.
  #include <asm/mmu_context.h>
  #include <asm/system.h>
  #include <asm/uaccess.h>
-===== arch/mips/mm/init.c 1.1 vs edited =====
---- 1.1/arch/mips/mm/init.c	Sat Feb 21 01:33:01 2004
-+++ edited/arch/mips/mm/init.c	Mon Apr 19 13:38:40 2004
-@@ -29,7 +29,6 @@
+Index: arch/mips/mm/init.c
+===================================================================
+RCS file: /home/cvs/linux/arch/mips/mm/init.c,v
+retrieving revision 1.67
+diff -u -r1.67 init.c
+--- arch/mips/mm/init.c	19 Mar 2004 01:26:10 -0000	1.67
++++ arch/mips/mm/init.c	19 Apr 2004 16:28:58 -0000
+@@ -29,9 +29,10 @@
  #include <asm/cachectl.h>
  #include <asm/cpu.h>
  #include <asm/dma.h>
 -#include <asm/pgalloc.h>
  #include <asm/mmu_context.h>
  #include <asm/sections.h>
++#include <asm/pgtable.h>
++#include <asm/pgalloc.h>
  #include <asm/tlb.h>
-===== arch/mips/mm/ioremap.c 1.5 vs edited =====
---- 1.5/arch/mips/mm/ioremap.c	Thu Oct  2 08:11:59 2003
-+++ edited/arch/mips/mm/ioremap.c	Mon Apr 19 13:38:40 2004
+ 
+ DEFINE_PER_CPU(struct mmu_gather, mmu_gathers);
+Index: arch/mips/mm/ioremap.c
+===================================================================
+RCS file: /home/cvs/linux/arch/mips/mm/ioremap.c,v
+retrieving revision 1.18
+diff -u -r1.18 ioremap.c
+--- arch/mips/mm/ioremap.c	25 Feb 2004 22:09:29 -0000	1.18
++++ arch/mips/mm/ioremap.c	19 Apr 2004 16:28:58 -0000
 @@ -13,7 +13,6 @@
  #include <linux/vmalloc.h>
  #include <asm/cacheflush.h>
@@ -136,9 +185,13 @@ or asm/tlbflush.h.
  #include <asm/tlbflush.h>
  
  static inline void remap_area_pte(pte_t * pte, unsigned long address,
-===== arch/mips/mm/pgtable-64.c 1.2 vs edited =====
---- 1.2/arch/mips/mm/pgtable-64.c	Thu Feb 19 20:53:00 2004
-+++ edited/arch/mips/mm/pgtable-64.c	Mon Apr 19 13:38:40 2004
+Index: arch/mips/mm/pgtable-64.c
+===================================================================
+RCS file: /home/cvs/linux/arch/mips/mm/pgtable-64.c,v
+retrieving revision 1.3
+diff -u -r1.3 pgtable-64.c
+--- arch/mips/mm/pgtable-64.c	27 Aug 2003 17:10:00 -0000	1.3
++++ arch/mips/mm/pgtable-64.c	19 Apr 2004 16:28:58 -0000
 @@ -9,7 +9,6 @@
  #include <linux/init.h>
  #include <linux/mm.h>
@@ -147,25 +200,56 @@ or asm/tlbflush.h.
  
  void pgd_init(unsigned long page)
  {
-===== arch/mips/sgi-ip27/ip27-init.c 1.10 vs edited =====
---- 1.10/arch/mips/sgi-ip27/ip27-init.c	Thu Feb 19 20:53:02 2004
-+++ edited/arch/mips/sgi-ip27/ip27-init.c	Mon Apr 19 13:38:40 2004
-@@ -14,7 +14,6 @@
- #include <linux/mm.h>
+Index: arch/mips/sgi-ip27/ip27-init.c
+===================================================================
+RCS file: /home/cvs/linux/arch/mips/sgi-ip27/ip27-init.c,v
+retrieving revision 1.58
+diff -u -r1.58 ip27-init.c
+--- arch/mips/sgi-ip27/ip27-init.c	12 Apr 2004 20:23:25 -0000	1.58
++++ arch/mips/sgi-ip27/ip27-init.c	19 Apr 2004 16:29:00 -0000
+@@ -15,7 +15,6 @@
  #include <linux/cpumask.h>
  #include <asm/cpu.h>
+ #include <asm/io.h>
 -#include <asm/pgalloc.h>
  #include <asm/pgtable.h>
+ #include <asm/time.h>
  #include <asm/sn/types.h>
- #include <asm/sn/sn0/addrs.h>
-===== arch/mips/sgi-ip27/ip27-memory.c 1.8 vs edited =====
---- 1.8/arch/mips/sgi-ip27/ip27-memory.c	Thu Feb 19 20:53:02 2004
-+++ edited/arch/mips/sgi-ip27/ip27-memory.c	Mon Apr 19 13:38:40 2004
-@@ -20,7 +20,6 @@
- #include <asm/bootinfo.h>
- #include <asm/addrspace.h>
- #include <asm/pgtable.h>
--#include <asm/pgalloc.h>
- #include <asm/sn/types.h>
- #include <asm/sn/addrs.h>
- #include <asm/sn/hub.h>
+Index: include/asm-mips/pgalloc.h
+===================================================================
+RCS file: /home/cvs/linux/include/asm-mips/pgalloc.h,v
+retrieving revision 1.30
+diff -u -r1.30 pgalloc.h
+--- include/asm-mips/pgalloc.h	14 Aug 2003 15:54:42 -0000	1.30
++++ include/asm-mips/pgalloc.h	19 Apr 2004 16:29:02 -0000
+@@ -122,12 +122,6 @@
+ 
+ #endif
+ 
+-/*
+- * Used for the b0rked handling of kernel pagetables on the 64-bit kernel.
+- */
+-extern pte_t kptbl[(PAGE_SIZE << PGD_ORDER)/sizeof(pte_t)];
+-extern pmd_t kpmdtbl[PTRS_PER_PMD];
+-
+ #define check_pgt_cache()	do { } while (0)
+ 
+ #endif /* _ASM_PGALLOC_H */
+Index: include/asm-mips/pgtable-64.h
+===================================================================
+RCS file: /home/cvs/linux/include/asm-mips/pgtable-64.h,v
+retrieving revision 1.11
+diff -u -r1.11 pgtable-64.h
+--- include/asm-mips/pgtable-64.h	5 Jan 2004 23:29:13 -0000	1.11
++++ include/asm-mips/pgtable-64.h	19 Apr 2004 16:29:02 -0000
+@@ -216,4 +216,10 @@
+ 
+ typedef pte_t *pte_addr_t;
+ 
++/*
++ * Used for the b0rked handling of kernel pagetables on the 64-bit kernel.
++ */
++extern pte_t kptbl[(PAGE_SIZE << PGD_ORDER)/sizeof(pte_t)];
++extern pmd_t kpmdtbl[PTRS_PER_PMD];
++
+ #endif /* _ASM_PGTABLE_64_H */

@@ -1,71 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Sep 2002 19:44:41 +0200 (CEST)
-Received: from iris1.csv.ica.uni-stuttgart.de ([129.69.118.2]:47388 "EHLO
-	iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S1122958AbSIERok>; Thu, 5 Sep 2002 19:44:40 +0200
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp (Exim 3.36 #2)
-	id 17n0bF-002Q4d-00; Thu, 05 Sep 2002 19:39:25 +0200
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 17n0g7-0006LS-00; Thu, 05 Sep 2002 19:44:27 +0200
-Date: Thu, 5 Sep 2002 19:44:27 +0200
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: Daniel Jacobowitz <dan@debian.org>,
-	"Kevin D. Kissell" <kevink@mips.com>,
-	Tor Arntsen <tor@spacetec.no>,
-	Carsten Langgaard <carstenl@mips.com>,
-	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Sep 2002 20:08:24 +0200 (CEST)
+Received: from mx2.mips.com ([206.31.31.227]:51195 "EHLO mx2.mips.com")
+	by linux-mips.org with ESMTP id <S1122958AbSIESIY>;
+	Thu, 5 Sep 2002 20:08:24 +0200
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id g85I78Xb015794;
+	Thu, 5 Sep 2002 11:07:08 -0700 (PDT)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id LAA05080;
+	Thu, 5 Sep 2002 11:07:04 -0700 (PDT)
+Received: from coplin09.mips.com (IDENT:root@coplin09 [192.168.205.79])
+	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g85I73b11054;
+	Thu, 5 Sep 2002 20:07:03 +0200 (MEST)
+Received: (from hartvige@localhost)
+	by coplin09.mips.com (8.11.6/8.11.6) id g85I73W06904;
+	Thu, 5 Sep 2002 20:07:03 +0200
+From: Hartvig Ekner <hartvige@mips.com>
+Message-Id: <200209051807.g85I73W06904@coplin09.mips.com>
 Subject: Re: 64-bit and N32 kernel interfaces
-Message-ID: <20020905174427.GU4194@rembrandt.csv.ica.uni-stuttgart.de>
-References: <20020905163051.GT4194@rembrandt.csv.ica.uni-stuttgart.de> <Pine.GSO.3.96.1020905183617.7444J-100000@delta.ds2.pg.gda.pl>
-Mime-Version: 1.0
+To: macro@ds2.pg.gda.pl (Maciej W. Rozycki)
+Date: Thu, 5 Sep 2002 20:07:03 +0200 (CEST)
+Cc: dan@debian.org (Daniel Jacobowitz),
+	hartvige@mips.com (Hartvig Ekner),
+	kevink@mips.com (Kevin D. Kissell),
+	tor@spacetec.no (Tor Arntsen),
+	carstenl@mips.com (Carsten Langgaard),
+	ralf@linux-mips.org (Ralf Baechle), linux-mips@linux-mips.org
+In-Reply-To: <Pine.GSO.3.96.1020905170830.7444E-100000@delta.ds2.pg.gda.pl> from "Maciej W. Rozycki" at Sep 05, 2002 05:10:51 
+X-Mailer: ELM [version 2.5 PL5]
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.GSO.3.96.1020905183617.7444J-100000@delta.ds2.pg.gda.pl>
-User-Agent: Mutt/1.4i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+Content-Transfer-Encoding: 7bit
+Return-Path: <hartvige@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 128
+X-archive-position: 129
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: hartvige@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-Maciej W. Rozycki wrote:
-[snip]
-> > So the linux n64 would be incompatible to SGI's, too? (It would be
-> > weird if the n64 long long was smaller than the n32 one).
+Maciej W. Rozycki writes:
 > 
->  Why would anyone care?  Do you want to run IRIX binaries on Linux?  And
-> at the source level, you have autoconf or <stdint.h> as you can't
-> arbitrarily assume any type sizes for any portable code. 
-
-Not everyone uses autoconf, and if you call "long long" a recent
-addition then the use of <stdint.h> isn't safe, too.
-
-Using the same data types allows at least to choose the appropriate
-typedefs without caring about the underlying OS.
-
-> > It would mean to create two new ABIs, gaining little benefit but
-> > being incompatible from a (C-)programmers POV. And we already have
-> > too many MIPS ABIs.
+> On Thu, 5 Sep 2002, Daniel Jacobowitz wrote:
 > 
->  What programmer's POV?  Does a programmer write a program for MIPS?  No,
-> unless he writes a kernel or a libc.  A normal programmer just codes a
-> program in C for a *nix-type system and if he wants any portability, he
-> needs to follow universal guidelines.
+> > No - the point is that all data types have the same size in N32.  It
+> > was created explicitly as a transitional sop for people who didn't want
+> > to fix their code, but wanted a performance increase from their 64-bit
+> > hardware.
+> 
+>  Well, what's the performance increase of n32 over o32?  The increased
+> number of argument registers?  I doubt it's noticeable in most cases.
 
-World isn't as perfect as you claim. And for non-broken code it's
-nearly irrelevant if the 64 bit integer type is called "long" or
-"long long".
+The technical benefits of n32 over o32 are:
 
-About 128 bit integers: Most OS'es use "long long" already for
-64 bit integers, which means there will be something like
-"quad long" for 128 bit integers (if these are needed).
+* More argument registers => less memory traffic, less D-cache use,
+	=> faster code
 
+* 64-bit datapath of CPU can be utilized with big impact on certain
+  applications
 
-Thiemo
+* 32 floating point registers instead of 16 (and more efficient
+  parameter passing as well)
+
+/Hartvig

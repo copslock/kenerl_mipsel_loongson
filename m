@@ -1,53 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Sep 2004 16:00:31 +0100 (BST)
-Received: from lennier.cc.vt.edu ([IPv6:::ffff:198.82.162.213]:53266 "EHLO
-	lennier.cc.vt.edu") by linux-mips.org with ESMTP
-	id <S8224931AbUIWPA1>; Thu, 23 Sep 2004 16:00:27 +0100
-Received: from dagger.cc.vt.edu (IDENT:mirapoint@evil-dagger [10.1.1.11])
-	by lennier.cc.vt.edu (8.12.8/8.12.8) with ESMTP id i8NF0Pol261709;
-	Thu, 23 Sep 2004 11:00:25 -0400 (EDT)
-Received: from [128.173.184.75] (gs75.geol.vt.edu [128.173.184.75])
-	by dagger.cc.vt.edu (MOS 3.4.8-GR)
-	with ESMTP id BQW64953;
-	Thu, 23 Sep 2004 11:00:21 -0400 (EDT)
-Message-ID: <4152E4FC.8000408@gentoo.org>
-Date: Thu, 23 Sep 2004 11:00:12 -0400
-From: "Stephen P. Becker" <geoman@gentoo.org>
-User-Agent: Mozilla Thunderbird 0.8 (X11/20040916)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Sep 2004 16:24:53 +0100 (BST)
+Received: from RT-soft-2.Moscow.itn.ru ([IPv6:::ffff:80.240.96.70]:64697 "HELO
+	mail.dev.rtsoft.ru") by linux-mips.org with SMTP
+	id <S8224931AbUIWPYt>; Thu, 23 Sep 2004 16:24:49 +0100
+Received: (qmail 6355 invoked from network); 23 Sep 2004 15:08:50 -0000
+Received: from unknown (HELO dev.rtsoft.ru) (192.168.1.199)
+  by mail.dev.rtsoft.ru with SMTP; 23 Sep 2004 15:08:50 -0000
+Message-ID: <4152EABF.1020007@dev.rtsoft.ru>
+Date: Thu, 23 Sep 2004 19:24:47 +0400
+From: Pavel Kiryukhin <savl@dev.rtsoft.ru>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4) Gecko/20030624
 X-Accept-Language: en-us, en
 MIME-Version: 1.0
-To: Stuart Longland <stuartl@longlandclan.hopto.org>
-CC: linux-mips@linux-mips.org
-Subject: Re: Kernel 2.6 for R4600 Indy
-References: <4152D58B.608@longlandclan.hopto.org>
-In-Reply-To: <4152D58B.608@longlandclan.hopto.org>
-X-Enigmail-Version: 0.86.0.0
-X-Enigmail-Supports: pgp-inline, pgp-mime
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <geoman@gentoo.org>
+To: linux-mips@linux-mips.org
+CC: Pavel Kiryukhin <savl@dev.rtsoft.ru>
+Subject: __stq_u parameter
+Content-Type: multipart/mixed;
+ boundary="------------070607060309060102000009"
+Return-Path: <savl@dev.rtsoft.ru>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5870
+X-archive-position: 5871
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geoman@gentoo.org
+X-original-sender: savl@dev.rtsoft.ru
 Precedence: bulk
 X-list: linux-mips
 
-> 	Using a MIPS64 config (built using gas-abi=o32 as suggested by Kumba),
-> it doesn't even get that far:
+This is a multi-part message in MIME format.
+--------------070607060309060102000009
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 
-This is certainly wrong.  What you really want is gas-abi=o64.  Take a 
-look at the O2 minimum patchset at http://www.total-knowledge.com, as 
-the arch/mips/Makefile changes are what you need.  Using a 64-bit kernel 
-on your indy is pointless unless you want to run n32 userland anyhow.
+Sorry,
+ does this make sense for 2.4.x kernels?
+----
+Regards,
+Pavel Kiryukhin
 
-As of this moment (may change in the future), 2.4 kernels are much 
-better for ip22 anyhow.  Serial console, indycam, and sound all work 
-properly in 2.4.  In 2.6, serial console is broken, there is no indycam 
-support, and I'm running into some issues with sound where the cpu usage 
-runs way up.
+--------------070607060309060102000009
+Content-Type: text/plain;
+ name="unaligned.diff"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="unaligned.diff"
 
-Steve
+--- linux/include/asm-mips/unaligned.h_org	2004-09-23 15:54:37.000000000 +0400
++++ linux/include/asm-mips/unaligned.h	2004-09-23 18:32:48.000000000 +0400
+@@ -61,7 +61,7 @@
+ /*
+  * Store doubleword ununaligned.
+  */
+-static inline void __stq_u(unsigned long __val, unsigned long long * __addr)
++static inline void __stq_u(unsigned long long __val, unsigned long long * __addr)
+ {
+ 	__asm__("usw\t%1, %0\n\t"
+ 		"usw\t%D1, 4+%0"
+
+--------------070607060309060102000009--

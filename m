@@ -1,48 +1,73 @@
-Received:  by oss.sgi.com id <S553722AbQJRJUo>;
-	Wed, 18 Oct 2000 02:20:44 -0700
-Received: from noose.gt.owl.de ([62.52.19.4]:45581 "HELO noose.gt.owl.de")
-	by oss.sgi.com with SMTP id <S553702AbQJRJUg>;
-	Wed, 18 Oct 2000 02:20:36 -0700
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 14A99A42; Wed, 18 Oct 2000 11:20:34 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 440F7900C; Wed, 18 Oct 2000 11:19:28 +0200 (CEST)
-Date:   Wed, 18 Oct 2000 11:19:28 +0200
-From:   Florian Lohoff <flo@rfc822.org>
-To:     debian-mips@lists.debian.org, linux-mips@oss.sgi.com
-Subject: Re: delo 0.7
-Message-ID: <20001018111928.B1514@paradigm.rfc822.org>
-References: <20001018024532.B2130@paradigm.rfc822.org> <20001018033940.C2259@paradigm.rfc822.org> <20001018094307.B30050@lug-owl.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-User-Agent: Mutt/1.0.1i
-In-Reply-To: <20001018094307.B30050@lug-owl.de>; from jbglaw@lug-owl.de on Wed, Oct 18, 2000 at 09:43:07AM +0200
-Organization: rfc822 - pure communication
+Received:  by oss.sgi.com id <S553720AbQJRMbf>;
+	Wed, 18 Oct 2000 05:31:35 -0700
+Received: from router.isratech.ro ([193.226.114.69]:22276 "EHLO
+        router.isratech.ro") by oss.sgi.com with ESMTP id <S553712AbQJRMbO>;
+	Wed, 18 Oct 2000 05:31:14 -0700
+Received: from isratech.ro (calin.cs.tuiasi.ro [193.231.15.163])
+	by router.isratech.ro (8.10.2/8.10.2) with ESMTP id e9ICUiZ18340
+	for <linux-mips@oss.sgi.com>; Wed, 18 Oct 2000 10:30:46 -0200
+Message-ID: <39ED962F.3230FDEE@isratech.ro>
+Date:   Wed, 18 Oct 2000 15:23:11 +0300
+From:   Nicu Popovici <octavp@isratech.ro>
+X-Mailer: Mozilla 4.74 [en] (X11; U; Linux 2.2.16 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To:     linux-mips@oss.sgi.com
+Subject: CrossGcc Kernel fail.
+Content-Type: multipart/mixed;
+ boundary="------------211CCA9BDFF832D2DFF474DC"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, Oct 18, 2000 at 09:43:07AM +0200, Jan-Benedict Glaw wrote:
-> On Wed, Oct 18, 2000 at 03:39:40AM +0200, Florian Lohoff wrote:
-> > On Wed, Oct 18, 2000 at 02:45:32AM +0200, Florian Lohoff wrote:
-> > > Hi,
-> > > new "delo" release - It seems that i might call it "everyday use" release.
-> 
-> > > I only tried on /260 so far but i guess itl work on any REX machine.
-> > > There is currentl no "NON-REX" support but someday ....
-> > 
-> > Ok - I tried again on a /133 and a /120 which both worked 
-> 
-> Would you mind to build a .deb of it? I'm not yet so skilled to
-> build "proper" packages (keeping to learn that as well;)
-> 
-> I'd like to include it in my base.tgz...
+This is a multi-part message in MIME format.
+--------------211CCA9BDFF832D2DFF474DC
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-Ill do that - Some things missing but it will be available this week
-somewhen ...
+Hello once again,
 
-Flo
--- 
-Florian Lohoff		flo@rfc822.org		      	+49-5201-669912
-      "Write only memory - Oops. Time for my medication again ..."
+In all the documentation found on the web it says that after building
+binutils and gcc I should be able to compile the MIPS Kernel sources. Or
+my problem is that I can not compile the sources. Any ideas why ?
+The compilation gives me the following error:
+
+cc1: warnings being treated as errors.
+
+I used binutils 2.8.1 with the patch and egcs 1.0.3a along with add-ons
+( crypt and linuxthreads ).
+
+Another question : in all the docs that I found says apply patch
+binutils-<version>-mips.patch, gcc-<version>-mips.patch and the same for
+glibc. I did a search for binutils-2.8.1-mips.patch and I did not find
+anything. Can anyone tell me where to find those patches ?
+
+Regards,
+Nicu
+
+
+
+
+--------------211CCA9BDFF832D2DFF474DC
+Content-Type: text/x-vcard; charset=us-ascii;
+ name="octavp.vcf"
+Content-Transfer-Encoding: 7bit
+Content-Description: Card for Nicu Popovici
+Content-Disposition: attachment;
+ filename="octavp.vcf"
+
+begin:vcard 
+n:Popovici;Nicu
+tel;cell:+40 93 605020
+x-mozilla-html:FALSE
+org:SC Silicon Service SRL;software 
+adr:;;;IASI;IASI;6600;ROMANIA
+version:2.1
+email;internet:octavp@isratech.ro
+title:software engineer
+x-mozilla-cpt:;0
+fn:Nicu Popovici
+end:vcard
+
+--------------211CCA9BDFF832D2DFF474DC--

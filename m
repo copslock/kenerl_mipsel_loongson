@@ -1,58 +1,66 @@
-Received:  by oss.sgi.com id <S305156AbQAQEcy>;
-	Sun, 16 Jan 2000 20:32:54 -0800
-Received: from deliverator.sgi.com ([204.94.214.10]:21550 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305155AbQAQEc2>;
-	Sun, 16 Jan 2000 20:32:28 -0800
-Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id UAA26915; Sun, 16 Jan 2000 20:29:46 -0800 (PST)
-	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id UAA79940
-	for linux-list;
-	Sun, 16 Jan 2000 20:14:47 -0800 (PST)
-	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id UAA56649
-	for <linux@cthulhu.engr.sgi.com>;
-	Sun, 16 Jan 2000 20:14:41 -0800 (PST)
-	mail_from (ralf@oss.sgi.com)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
+Received:  by oss.sgi.com id <S305157AbQAQXGY>;
+	Mon, 17 Jan 2000 15:06:24 -0800
+Received: from sgi.SGI.COM ([192.48.153.1]:35599 "EHLO sgi.com")
+	by oss.sgi.com with ESMTP id <S305155AbQAQXGG>;
+	Mon, 17 Jan 2000 15:06:06 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id UAA05041
-	for <linux@cthulhu.engr.sgi.com>; Sun, 16 Jan 2000 20:14:38 -0800 (PST)
-	mail_from (ralf@oss.sgi.com)
-Received: from cacc-25.uni-koblenz.de (cacc-25.uni-koblenz.de [141.26.131.25])
-	by mailhost.uni-koblenz.de (8.9.3/8.9.3) with ESMTP id FAA06745;
-	Mon, 17 Jan 2000 05:14:34 +0100 (MET)
-Received:  by lappi.waldorf-gmbh.de id <S407891AbQAQEGC>;
-	Mon, 17 Jan 2000 05:06:02 +0100
-Date:   Mon, 17 Jan 2000 05:06:02 +0100
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Jeff Harrell <jharrell@ti.com>
-Cc:     Conrad Parker <conradp@cse.unsw.edu.au>, linux@cthulhu.engr.sgi.com
-Subject: Re: question concerning serial console setup
-Message-ID: <20000117050602.C16920@uni-koblenz.de>
-References: <386A5F9B.50B4AFEF@ti.com> <19991230114736.C18261@cse.unsw.edu.au> <38828F72.F0FA585@ti.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0pre3us
-In-Reply-To: <38828F72.F0FA585@ti.com>
-X-Accept-Language: de,en,fr
+	via ESMTP id PAA09517; Mon, 17 Jan 2000 15:07:50 -0800 (PST)
+	mail_from (owner-linux@cthulhu.engr.sgi.com)
+Received: (from majordomo-owner@localhost)
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	id MAA59305
+	for linux-list;
+	Mon, 17 Jan 2000 12:15:09 -0800 (PST)
+	mail_from (owner-linux@relay.engr.sgi.com)
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	via ESMTP id MAA45437
+	for <linux@engr.sgi.com>;
+	Mon, 17 Jan 2000 12:15:05 -0800 (PST)
+	mail_from (geert@linux-m68k.org)
+Received: from hood.tvd.be (hood.tvd.be [195.162.196.21]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id MAA06057
+	for <linux@engr.sgi.com>; Mon, 17 Jan 2000 12:14:32 -0800 (PST)
+	mail_from (geert@linux-m68k.org)
+Received: from callisto.of.borg (cable-195-162-216-83.customer.chello.be [195.162.216.83])
+	by hood.tvd.be (8.9.3/8.9.3/RELAY-1.1) with ESMTP id VAA09095
+	for <linux@engr.sgi.com>; Mon, 17 Jan 2000 21:14:24 +0100 (MET)
+Received: from localhost (geert@localhost)
+	by callisto.of.borg (8.9.3/8.9.3/Debian/GNU) with ESMTP id VAA13212
+	for <linux@engr.sgi.com>; Mon, 17 Jan 2000 21:14:23 +0100
+X-Authentication-Warning: callisto.of.borg: geert owned process doing -bs
+Date:   Mon, 17 Jan 2000 21:14:23 +0100 (CET)
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Linux/MIPS <linux@cthulhu.engr.sgi.com>
+Subject: Debian mipsel?
+Message-ID: <Pine.LNX.4.05.10001172109430.12257-100000@callisto.of.borg>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On Sun, Jan 16, 2000 at 08:41:38PM -0700, Jeff Harrell wrote:
 
-> Unfortunately I am working on an embedded platform, only using this code
-> as a starting point for our design.  If possible I would like to initialize
-> the console w/o the use of command line parameters.
+Anyone who knows whether Debian for mipsel is already usable? Or is the MIPS
+port of Debian meant for big endian SGI boxes only?
 
-A simple solution is to hardwire the commmand line in arch/mips/kernel/setup.c.
+If not, I'll have to say goodbye to apt-get and install a RH-based distro...
 
-  Ralf
+Thx!
+
+Gr{oetje,eeting}s,
+--
+Geert Uytterhoeven -- Linux/{m68k~Amiga,PPC~CHRP} -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

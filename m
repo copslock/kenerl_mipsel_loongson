@@ -1,58 +1,50 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6OFtli22141
-	for linux-mips-outgoing; Tue, 24 Jul 2001 08:55:47 -0700
-Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6OFtiO22136
-	for <linux-mips@oss.sgi.com>; Tue, 24 Jul 2001 08:55:45 -0700
-Received: from mullein.sonytel.be (mullein.sonytel.be [10.34.64.30])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id RAA01480;
-	Tue, 24 Jul 2001 17:55:34 +0200 (MET DST)
-Date: Tue, 24 Jul 2001 17:55:34 +0200 (MEST)
-From: Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
-To: Andrew Thornton <andrew.thornton@insignia.com>
-cc: James Simmons <jsimmons@transvirtual.com>,
-   Linux-MIPS <linux-mips@oss.sgi.com>
+	by oss.sgi.com (8.11.2/8.11.3) id f6OGFl223175
+	for linux-mips-outgoing; Tue, 24 Jul 2001 09:15:47 -0700
+Received: from highland.isltd.insignia.com (highland.isltd.insignia.com [195.217.222.20])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6OGFkO23171
+	for <linux-mips@oss.sgi.com>; Tue, 24 Jul 2001 09:15:46 -0700
+Received: from wolf.isltd.insignia.com (wolf.isltd.insignia.com [172.16.1.3])
+	by highland.isltd.insignia.com (8.11.3/8.11.3/check_local4.2) with ESMTP id f6OGFi439494;
+	Tue, 24 Jul 2001 17:15:44 +0100 (BST)
+Received: from snow (snow.isltd.insignia.com [172.16.17.209])
+	by wolf.isltd.insignia.com (8.9.3/8.9.3) with SMTP id RAA23814;
+	Tue, 24 Jul 2001 17:15:44 +0100 (BST)
+Message-ID: <013f01c1145b$e41dc420$d11110ac@snow.isltd.insignia.com>
+From: "Andrew Thornton" <andrew.thornton@insignia.com>
+To: "Geert Uytterhoeven" <Geert.Uytterhoeven@sonycom.com>
+Cc: "James Simmons" <jsimmons@transvirtual.com>,
+   "Linux-MIPS" <linux-mips@oss.sgi.com>
 Subject: Re: ATI Victoria on Malta
-In-Reply-To: <013401c11458$7813b6c0$d11110ac@snow.isltd.insignia.com>
-Message-ID: <Pine.GSO.4.21.0107241753310.3373-100000@mullein.sonytel.be>
+Date: Tue, 24 Jul 2001 17:15:44 +0100
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 4.72.3110.5
+X-MimeOLE: Produced By Microsoft MimeOLE V4.72.3110.3
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, 24 Jul 2001, Andrew Thornton wrote:
-> >Using `atydebug' (from tools in CVS module atyfb at
-> >http://www.sourceforge.net/projects/linux-fbdev/), the PLL debug values
-> mean:
-> >
-> >| tux$ ./atydebug ac ac 24 df f6 04 00 fd 8e 9e 65 05 00 00 00 00
-> >| PLL rate = 417.901480 MHz (guessed)
-> >| bad MCLK post divider 5
-> >| VCLK0 = 414.623821 MHz
-> >| VCLK1 = 232.713765 MHz
-> >| VCLK2 = 86.311678 MHz
-> >| VCLK3 = 165.521763 MHz
-> >| tux$
-> >
-> >Which looks a bit odd. The same for the 512 K SGRAM.
-> >
-> >So I guess the Malta firmware hasn't initialized the RAGE XL yet. And atyfb
-> >requires an initialized chip.
-> 
-> I guess this is not surprising because the Malta firmware isn't a PC BIOS.
+Geert,
 
-If the RAGE XL is the officially supported video board for the Malta, I
-wouldn't have been surprised if its firmware would have contained code to
-initialize the RAGE XL. But unfortunately this doesn't seem to be the case.
+>> I guess this is not surprising because the Malta firmware isn't a PC
+BIOS.
+>
+>If the RAGE XL is the officially supported video board for the Malta, I
+>wouldn't have been surprised if its firmware would have contained code to
+>initialize the RAGE XL. But unfortunately this doesn't seem to be the case.
 
-Next question: is there sample code available (e.g. with the `supported' OS for
-the Malta) to initialize the RAGE XL?
+I don't know if YAMON supports anything other than a serial terminal for its
+console.
 
-Gr{oetje,eeting}s,
+>Next question: is there sample code available (e.g. with the `supported' OS
+for
+>the Malta) to initialize the RAGE XL?
 
-						Geert
+It has been pointed out to me that there is some source code, but this
+originates from a non-suitable source for use in Linux. Need I say more?
 
---
-Geert Uytterhoeven ------------- Sony Software Development Center Europe (SDCE)
-Geert.Uytterhoeven@sonycom.com ------------------- Sint-Stevens-Woluwestraat 55
-Voice +32-2-7248626 Fax +32-2-7262686 ---------------- B-1130 Brussels, Belgium
+Andrew Thornton

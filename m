@@ -1,73 +1,94 @@
-Received:  by oss.sgi.com id <S42235AbQGDLwo>;
-	Tue, 4 Jul 2000 04:52:44 -0700
-Received: from Cantor.suse.de ([194.112.123.193]:29958 "HELO Cantor.suse.de")
-	by oss.sgi.com with SMTP id <S42203AbQGDLwW>;
-	Tue, 4 Jul 2000 04:52:22 -0700
-Received: from Hermes.suse.de (Hermes.suse.de [194.112.123.136])
-	by Cantor.suse.de (Postfix) with ESMTP
-	id 6A0EA1E0C2; Tue,  4 Jul 2000 13:52:21 +0200 (MEST)
-Received: from arthur.inka.de (Maclaurin.suse.de [10.10.1.130])
-	by Hermes.suse.de (Postfix) with ESMTP
-	id E259E10A028; Tue,  4 Jul 2000 13:52:17 +0200 (MEST)
-Received: from gromit.rhein-neckar.de ([192.168.27.3] ident=postfix)
-	by arthur.inka.de with esmtp (Exim 3.14 #1)
-	id 139R2g-0006FH-00; Tue, 04 Jul 2000 13:39:06 +0200
-Received: by gromit.rhein-neckar.de (Postfix, from userid 207)
-	id 2461A1822; Tue,  4 Jul 2000 13:39:04 +0200 (CEST)
-Mail-Copies-To: never
-To:     Ralf Baechle <ralf@oss.sgi.com>
-Cc:     linux-mips@fnet.fr, linux-mips@oss.sgi.com
-Subject: Re: FPU Control Word: Initial Value looks wrong
-References: <u8sntrm88t.fsf@gromit.rhein-neckar.de>
-	<20000704003232.A2112@bacchus.dhis.org>
-From:   Andreas Jaeger <aj@suse.de>
-Date:   04 Jul 2000 13:39:04 +0200
-In-Reply-To: Ralf Baechle's message of "Tue, 4 Jul 2000 00:32:32 +0200"
-Message-ID: <u8g0pqjfaf.fsf@gromit.rhein-neckar.de>
-User-Agent: Gnus/5.0808 (Gnus v5.8.8) XEmacs/21.1 (Capitol Reef)
+Received:  by oss.sgi.com id <S42218AbQGDSWz>;
+	Tue, 4 Jul 2000 11:22:55 -0700
+Received: from mx1.hcvlny.cv.net ([167.206.112.76]:45777 "EHLO
+        mx1.hcvlny.cv.net") by oss.sgi.com with ESMTP id <S42207AbQGDSWa>;
+	Tue, 4 Jul 2000 11:22:30 -0700
+Received: from s1.optonline.net (s1.optonline.net [167.206.112.6])
+	by mx1.hcvlny.cv.net (8.9.3/8.9.3) with ESMTP id OAA09010;
+	Tue, 4 Jul 2000 14:22:00 -0400 (EDT)
+Received: from hel-inc.com (d150-198.hmtmnj.optonline.net [24.189.150.198])
+	by s1.optonline.net (8.9.1/8.9.3) with ESMTP id OAA27633;
+	Tue, 4 Jul 2000 14:21:38 -0400 (EDT)
+Message-ID: <39622B31.23124622@hel-inc.com>
+Date:   Tue, 04 Jul 2000 14:21:37 -0400
+From:   Robert Current <current@hel-inc.com>
+X-Mailer: Mozilla 4.73 [en] (X11; U; Linux 2.2.16-9mdk i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+To:     Jay Carlson <nop@nop.com>
+CC:     Ian Chilton <mailinglist@ichilton.co.uk>,
+        "Linux-Mips Mailing List (Old)" <linux-mips@fnet.fr>,
+        Linux-MIPS Mailing List <linux-mips@oss.sgi.com>,
+        richardh@penguin.nl, watkinse@attens.com,
+        Jay Carlson <nop@place.org>, Ralf <ralf@gnu.org>
+Subject: Re: Status reports?
+References: <NAENLMKGGBDKLPONCDDOEEOGCOAA.mailinglist@ichilton.co.uk> <0c0801bfe3b3$62fde200$0a00000a@decoy>
+Content-Type: text/plain; charset=koi8-r
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
->>>>> Ralf Baechle writes:
+http://www.acheron-design.com/windowmaker.org-new/  <--that's the kind
+of thing I was thinking largo could do for ya, just set it up, and let
+you guys update it via web/php admin...
 
-Ralf> On Mon, Jul 03, 2000 at 07:30:42PM +0200, Andreas Jaeger wrote:
->> Porting glibc to MIPS I noticed that the initial contents of the fpu
->> control word doesn't seem to be right (at least on the machines I've
->> tried - one with a normal MIPS 2.2.13 and one with 2.2.15 and the
->> MIPS/Algorithmics patches (including FPU emulator).
+So you have a good idea what he can do...
+http://www.acheron-design.com/leninmaker/  <--joke windowmaker one.
 
->> The appended small test program should return a 0 (that's the desired
->> value by glibc for full ISO C99 support) - but it seems to be set to
->> 0x600.
->> 
->> Could the kernel folks fix this, please?  I grepped through the sources
->> and didn't find a place where the FPU gets initialised.:-(
+http://wm.current.nu/
+his site.
 
-Ralf> Surprise - the kernel initializes this to zero and the libc should do
-Ralf> the same afair.  Did this change?
+If you want him to do a layout for the linux-mips page, just let me or
+him (largo@current.nu) know, and we can get it set up (layout and
+graphics), and all you will have to do is provide some content and
+update the news and such through web interface.
 
-No, that's correct - but I don't get a zero.
 
-Ralf> I tried your program on a Indy running 2.4.0-test2 + glibc 2.2 and it was
-Ralf> printing ``0 0''.
-
-Did you try it with a shared program?  Static programs always
-initialize the FPU.  Could you run the program on other machines also?
-
-Ralf> Could you check the source of your kernel for the value it's writing to
-Ralf> fcr31?  That's the constant FPU_DEFAULT defined in arch/mips/kernel/
-Ralf> r4k_switch.S.  Some quite old kernel were using a different value but I
-Ralf> was actually assuming those versions have already died out.
-
-The kernels I used have 0 as FPU_DEFAULT - but nevertheless the
-returned value is wrong.  When is FPU_DEFAULT written to the FPU?
-
-Andreas
--- 
- Andreas Jaeger
-  SuSE Labs aj@suse.de
-   private aj@arthur.inka.de
+Jay Carlson wrote:
+> 
+> "Ian Chilton" <mailinglist@ichilton.co.uk> writes:
+> 
+> > * Not everything that happens on IRC is appropriate for the mailing list,
+> > otherwise it would be a very high volume list.
+> 
+> Yeah.
+> 
+> > * The problem is, most of the people on the port and in #mipslinux are
+> > developers, who are working on the ports, but have no time for
+> > documentation.  Which is best, a port that is dead with loads of
+> > documentation, or an active / up-to-date / working port with little
+> > documentation.
+> 
+> There's a need for high quality documentation, but I think there's a greater
+> need for just little status reports.  Writing good documents is *hard*, but
+> just little one-paragraph summaries, like a project diary, would be a
+> wonderful service to the community.
+> 
+> OTOH, although the current situation annoys me a little, it would annoy me a
+> lot more if upstream work on mipslinux stopped.  :-)  So please don't take
+> anything this list says about this as a demand.
+> 
+> > I agree that the documentation is sparce, and see the above issues. That
+> is
+> > why, I am *thinking* of and suggesting to some of the guys that I, at
+> least
+> > for now, maintain a site with
+> > * News from #mipslinux
+> > * Links to current resources
+> > * Possibly some documentation
+> 
+> Doesn't have to be very heavyweight to be successful.
+> 
+> > If you have any chance at all, I suggest you stop by #mipslinux at
+> > times....all you need is an internet connection and one of the many IRC
+> > clients...
+> >
+> > Details are:
+> > /server irc.openprojects.net         (port 6667)
+> > /join #mipslinux
+> 
+> I'll drop by soon.
+> 
+> Jay

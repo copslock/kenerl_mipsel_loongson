@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Mar 2005 17:13:35 +0000 (GMT)
-Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:61725 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Mar 2005 20:24:38 +0000 (GMT)
+Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:60176 "EHLO
 	mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225934AbVCDRNU>; Fri, 4 Mar 2005 17:13:20 +0000
+	id <S8225957AbVCDUYU>; Fri, 4 Mar 2005 20:24:20 +0000
 Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id j24HCsuP025890;
-	Fri, 4 Mar 2005 17:12:54 GMT
+	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id j24KNd1R014299;
+	Fri, 4 Mar 2005 20:23:39 GMT
 Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j24HCrZV025878;
-	Fri, 4 Mar 2005 17:12:53 GMT
-Date:	Fri, 4 Mar 2005 17:12:53 +0000
+	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j24KNcQn014298;
+	Fri, 4 Mar 2005 20:23:38 GMT
+Date:	Fri, 4 Mar 2005 20:23:38 +0000
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Christophe Jelger <Christophe.Jelger@unibas.ch>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Newbie : Cross-compiling module for wrt54g
-Message-ID: <20050304171253.GB12169@linux-mips.org>
-References: <42272589.7000802@unibas.ch> <1109867344.9625.74.camel@localhost.localdomain> <4228916F.9070600@unibas.ch>
+To:	Dan Malek <dan@embeddededge.com>
+Cc:	JP Foster <jp.foster@exterity.co.uk>, linux-mips@linux-mips.org
+Subject: Re: Big Endian au1550
+Message-ID: <20050304202338.GA14128@linux-mips.org>
+References: <1109157737.16445.6.camel@localhost.localdomain> <000301c5199d$3154ad40$0300a8c0@Exterity.local> <1109160313.16445.20.camel@localhost.localdomain> <cb80abe539fa80effd786cacc1340de7@embeddededge.com> <20050223150617.GA18290@linux-mips.org> <b230ff2324d488cc6e240cee05ca3af0@embeddededge.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4228916F.9070600@unibas.ch>
+In-Reply-To: <b230ff2324d488cc6e240cee05ca3af0@embeddededge.com>
 User-Agent: Mutt/1.4.1i
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7370
+X-archive-position: 7371
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,24 +32,16 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Mar 04, 2005 at 05:48:47PM +0100, Christophe Jelger wrote:
+On Wed, Feb 23, 2005 at 12:02:47PM -0500, Dan Malek wrote:
 
-> Thanks to people who replied ... I will spend some time trying to build 
-> the module and see what happens !
+> >So I guess this would apply to all Alchemy-based platforms and thus I
+> >should offer big endian on all of them again?
 > 
-> JP, I don't know if you meant compiling a standard (or a mips ?) 2.4 
-> kernel with gcc 3.4.1, but I know it works with gcc 3.3.5 for the 
-> standard kernel.
+> Yes, big endian should be an option.  If it doesn't work, it
+> should get fixed :-)
 
-Compiling 2.4 with gcc 3.4 will fail for certain configurations.  Even
-where it successfully builds there is always the danger that a more
-modern that is aggressive optimizer will do unexpected things to code -
-and OS code is very fragile in that aspect.  Thus I recommend to use only
-2.95.3 ... 3.3 for Linux 2.4.
-
-For 2.6 anything between 2.95.3 ... 4.0 has been tested - but 4.0 is still
-a bit on the daring side while 3.4 has been tested well on many platforms.
-
-Of course you may always be lucky - or have too much time on your hands ;-)
+Okay.  I don't know which of the Alchemy systems are capable of supporting
+big endian at all - some might not due to unavailable firmware for example.
+So I guess I'll leave cooking a patch to you or Pete.
 
   Ralf

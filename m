@@ -1,67 +1,68 @@
-Received:  by oss.sgi.com id <S553716AbQJXBHS>;
-	Mon, 23 Oct 2000 18:07:18 -0700
-Received: from gateway-490.mvista.com ([63.192.220.206]:57840 "EHLO
-        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553679AbQJXBHL>;
-	Mon, 23 Oct 2000 18:07:11 -0700
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id e9O15f302417;
-	Mon, 23 Oct 2000 18:05:41 -0700
-Message-ID: <39F4E113.6BC85A5C@mvista.com>
-Date:   Mon, 23 Oct 2000 18:08:35 -0700
-From:   Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-5.0 i586)
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     Ralf Baechle <ralf@oss.sgi.com>
-CC:     Keith Owens <kaos@melbourne.sgi.com>, linux-mips@oss.sgi.com
+Received:  by oss.sgi.com id <S553712AbQJXBTh>;
+	Mon, 23 Oct 2000 18:19:37 -0700
+Received: from u-50.karlsruhe.ipdial.viaginterkom.de ([62.180.19.50]:23300
+        "EHLO u-50.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
+	with ESMTP id <S553686AbQJXBTS>; Mon, 23 Oct 2000 18:19:18 -0700
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S870343AbQJXBS2>;
+        Tue, 24 Oct 2000 03:18:28 +0200
+Date:   Tue, 24 Oct 2000 03:18:28 +0200
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Jun Sun <jsun@mvista.com>
+Cc:     Keith Owens <kaos@melbourne.sgi.com>, linux-mips@oss.sgi.com
 Subject: Re: problems with insmod ...
-References: <39F48742.933941B8@mvista.com> <7690.972340323@ocs3.ocs-net> <20001024024040.D1009@bacchus.dhis.org>
+Message-ID: <20001024031828.A2816@bacchus.dhis.org>
+References: <39F48742.933941B8@mvista.com> <7690.972340323@ocs3.ocs-net> <20001024024040.D1009@bacchus.dhis.org> <39F4E113.6BC85A5C@mvista.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <39F4E113.6BC85A5C@mvista.com>; from jsun@mvista.com on Mon, Oct 23, 2000 at 06:08:35PM -0700
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Ralf Baechle wrote:
-> 
-> On Tue, Oct 24, 2000 at 09:32:03AM +1100, Keith Owens wrote:
-> 
-> > On Mon, 23 Oct 2000 11:45:22 -0700,
-> > Jun Sun <jsun@mvista.com> wrote:
-> > >I tried with 2.3.19, and now I am having problem with out of bound index
-> > >in symbol table.  See the output below.
+On Mon, Oct 23, 2000 at 06:08:35PM -0700, Jun Sun wrote:
+
+> > > Jun Sun <jsun@mvista.com> wrote:
+> > > >I tried with 2.3.19, and now I am having problem with out of bound index
+> > > >in symbol table.  See the output below.
+> > > >
+> > > >---------
+> > > >sh-2.03# insmod hello.o
+> > > >hello.o: local symbol gcc2_compiled. with index 10 exceeds
+> > > >local_symtab_size 10
+> > > >hello.o: local symbol __gnu_compiled_c with index 11 exceeds
+> > > >local_symtab_size 10
+> > > >---------
 > > >
-> > >---------
-> > >sh-2.03# insmod hello.o
-> > >hello.o: local symbol gcc2_compiled. with index 10 exceeds
-> > >local_symtab_size 10
-> > >hello.o: local symbol __gnu_compiled_c with index 11 exceeds
-> > >local_symtab_size 10
-> > >---------
-> >
-> > It is a toolchain bug, I think it is in the assembler.  I have a dim
-> > distant memory from about a month ago that somebody on linux-mips found
-> > the problem.  Ask the toolchain experts.
+> > > It is a toolchain bug, I think it is in the assembler.  I have a dim
+> > > distant memory from about a month ago that somebody on linux-mips found
+> > > the problem.  Ask the toolchain experts.
+> > 
+> > It's a bug bug in ld, one in BFD and a sillyness in IRIX ELF which the linker
+> > uses.  IRIX ELF uses different sorting rules for the symbol table, see
+> > mips_elf_sym_is_global in bfd/elf32-mips.c.
+> > 
+> >  - Bug one: ld generated output should follow the same rules as assembler
+> >    generated output.
+> >  - Bug two is more a design flaw - why does Linux/MIPS and most other
+> >    MIPS ELF configurations use IRIX and not ABI ELF?
+> >  - Bug three is that mips_elf_sym_is_global applies these IRIX ELF sorting
+> >    rules even to ABI ELF.
+> > 
+> >   Ralf
 > 
-> It's a bug bug in ld, one in BFD and a sillyness in IRIX ELF which the linker
-> uses.  IRIX ELF uses different sorting rules for the symbol table, see
-> mips_elf_sym_is_global in bfd/elf32-mips.c.
+> This sounds like a serious problem to me.  So here are the questions : 
 > 
->  - Bug one: ld generated output should follow the same rules as assembler
->    generated output.
->  - Bug two is more a design flaw - why does Linux/MIPS and most other
->    MIPS ELF configurations use IRIX and not ABI ELF?
->  - Bug three is that mips_elf_sym_is_global applies these IRIX ELF sorting
->    rules even to ABI ELF.
-> 
->   Ralf
+> 1) is it fixed in the latest binutils?
 
-This sounds like a serious problem to me.  So here are the questions : 
+No, all binutils ever are affected.
 
-1) is it fixed in the latest binutils?
-2) is it worth fixed for binutil v2.8.1?
+> 2) is it worth fixed for binutil v2.8.1?
 
-I might be able to fix this problem, but I surely need some fill-ins.
+Probably not.  I believe modulo some testing current CVS binutils are ready
+for more serious use than just binutils fixing.  In any case fixing should
+be easy.
 
-Jun
+  Ralf

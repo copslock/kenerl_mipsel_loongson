@@ -1,103 +1,96 @@
-Received:  by oss.sgi.com id <S553698AbRANRaS>;
-	Sun, 14 Jan 2001 09:30:18 -0800
-Received: from blackdog.wirespeed.com ([208.170.106.25]:37638 "EHLO
-        blackdog.wirespeed.com") by oss.sgi.com with ESMTP
-	id <S553690AbRANR3v>; Sun, 14 Jan 2001 09:29:51 -0800
-Received: from redhat.com (IDENT:joe@dhcp-250.wirespeed.com [172.16.17.250] (may be forged))
-	by blackdog.wirespeed.com (8.9.3/8.9.3) with ESMTP id LAA22728;
-	Sun, 14 Jan 2001 11:25:37 -0600
-Message-ID: <3A61E2A3.3040600@redhat.com>
-Date:   Sun, 14 Jan 2001 11:32:19 -0600
-From:   Joe deBlaquiere <jadb@redhat.com>
-Organization: Red Hat, Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux 2.2.16-22 i686; en-US; m18) Gecko/20001107 Netscape6/6.0
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     Nicu Popovici <octavp@isratech.ro>
+Received:  by oss.sgi.com id <S553798AbRAOGUz>;
+	Sun, 14 Jan 2001 22:20:55 -0800
+Received: from ns4.Sony.CO.JP ([202.238.80.4]:17926 "EHLO ns4.sony.co.jp")
+	by oss.sgi.com with ESMTP id <S553793AbRAOGUq>;
+	Sun, 14 Jan 2001 22:20:46 -0800
+Received: from mail3.sony.co.jp (gatekeeper10.Sony.CO.JP [202.238.80.24])
+	by ns4.sony.co.jp (R8) with ESMTP id PAA74200;
+	Mon, 15 Jan 2001 15:20:43 +0900 (JST)
+Received: from mail3.sony.co.jp (localhost [127.0.0.1])
+	by mail3.sony.co.jp (R8) with ESMTP id f0F6Kho25039;
+	Mon, 15 Jan 2001 15:20:43 +0900 (JST)
+Received: from smail1.sm.sony.co.jp (smail1.sm.sony.co.jp [43.11.253.1])
+	by mail3.sony.co.jp (R8) with ESMTP id f0F6KhS25035;
+	Mon, 15 Jan 2001 15:20:43 +0900 (JST)
+Received: from imail.sm.sony.co.jp (imail.sm.sony.co.jp [43.27.209.5]) by smail1.sm.sony.co.jp (8.8.8/3.6W) with ESMTP id PAA10741; Mon, 15 Jan 2001 15:21:23 +0900 (JST)
+Received: from mach0.sm.sony.co.jp (mach0.sm.sony.co.jp [43.27.210.135]) by imail.sm.sony.co.jp (8.8.8/3.7W) with ESMTP id PAA24013; Mon, 15 Jan 2001 15:20:12 +0900 (JST)
+Received: from localhost by mach0.sm.sony.co.jp (8.8.8/FreeBSD) with ESMTP id PAA19005; Mon, 15 Jan 2001 15:20:11 +0900 (JST)
+To:     aj@suse.de
 CC:     linux-mips@oss.sgi.com
-Subject: Re: Glibc-error.
-References: <3A611CFF.FD28766@isratech.ro>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Subject: pthread_sighander() of glibc-2.2 breaks stack
+X-Mailer: Mew version 1.94.1 on Emacs 19.34 / Mule 2.3 (SUETSUMUHANA)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
+Message-Id: <20010115152011L.machida@sm.sony.co.jp>
+Date:   Mon, 15 Jan 2001 15:20:11 +0900
+From:   Hiroyuki Machida <machida@sm.sony.co.jp>
+X-Dispatcher: imput version 990905(IM130)
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-I would think the 2.1.95 version of glibc from sgi would be much closer 
-to 2.1.3 than the 2.0.6/7 versions are.
 
-Nicu Popovici wrote:
+Hello Andreas,
 
-> Hello ,
-> 
-> I am struggling to get glibc 2.1.3 working for mips. I have to do this
-> so please not redirect me to another glibc. I did a diff between glibc
-> 2.0.6 for mips and glibc 2.1.3 and now I applied the patch obtained on
-> glibc 2.1.3 . At make I get the following error and I don't know what to
-> do. Maybe someone will help me.
-> 
-> Here is the error
-> 
-> =====================================================================
->  (libs='libpthread.so.0 libpthread.so.0 libm.so.6 libc.so.6 ld.so.1
-> libdl.so.2 libutil.so.1 libresolv.so.2 libnss_files.so.2 libnss
-> _dns.so.2 libnss_db.so.2 libnss_compat.so.2 libnss_nis.so.2
-> libnss_nisplus.so.2 libnss_ldap.so.2 libnss_hesiod.so.2 libnsl.so.1 lib
-> db.so.3 libdb1.so.2 libcrypt.so.1 libBrokenLocale.so.1 librt.so.1';\
->   for l in $libs; do \
->                'ABCDEFGHIJKLMNOPQRSTUVWXYZ_'`; \
->     echo "#define       ${upname}_SO    \"$l\""; \
->   done;) | sort; \
->  echo; \
->  echo '#endif   /* gnu/lib-names.h */';) >
-> /home/nicu/JUNGO/work/glibc2.1.3-the_rest/glibc_build/gnu/lib-names.T
-> /bin/sh ../scripts/move-if-change
-> /home/nicu/JUNGO/work/glibc2.1.3-the_rest/glibc_build/gnu/lib-names.T
-> /home/nicu/JUNGO/work/glibc2.1.3-the_rest/glibc_build/gnu/lib-names.h
-> touch
-> /home/nicu/JUNGO/work/glibc2.1.3-the_rest/glibc_build/gnu/lib-names.stmp
-> 
-> ..././scripts/mkinstalldirs
-> /home/nicu/JUNGO/work/glibc2.1.3-the_rest/glibc_build/csu
-> rm -f
-> /home/nicu/JUNGO/work/glibc2.1.3-the_rest/glibc_build/csu/abi-tag.h.new
-> sed -e 's/#.*$//' -e '/^[       ]*$/d' ../abi-tags | \
-> while read conf tag; do \
->   test `expr 'mips-mips-linux-gnu' \
->              : "$conf"` != 0 || continue; \
->   echo "$tag" | \
->   sed -e 's/[^0-9xXa-fA-F]/ /g' -e 's/ *$//' \
->       -e 's/ /,/g' -e 's/^ */#define ABI_TAG /' >
-> /home/nicu/JUNGO/work/glibc2.1.3-the_rest/glibc_build/csu/abi-tag.h.new;
-> \
-> done
-> if test -r
-> /home/nicu/JUNGO/work/glibc2.1.3-the_rest/glibc_build/csu/abi-tag.h.new;
-> then mv -f
-> /home/nicu/JUNGO/work/glibc2.1.3-the_rest/glibc_build/csu/abi-tag.h.new
-> /home/nicu/JUNGO/work/glibc2.1.3-the_rest/glibc_build/csu/abi-tag.h; \
-> else echo >&2 'This configuration not matched in ../abi-tags'; exit 1;
-> fi
-> make[2]: *** No rule to make target `../posix/posix1_lim.h', needed by
-> `/home/nicu/JUNGO/work/glibc2.1.3-the_rest/glibc_build/mk-stdiolim'.
-> Stop.
-> make[2]: Leaving directory
-> `/home/nicu/JUNGO/work/glibc2.1.3-the_rest/glibc-2.1.3/csu'
-> make[1]: *** [csu/subdir_lib] Error 2
-> make[1]: Leaving directory
-> `/home/nicu/JUNGO/work/glibc2.1.3-the_rest/glibc-2.1.3'
-> make: *** [all] Error 2
-> 
-> =======================================================================
-> 
-> Nicu
+I had a experience that pthread_sighander() of current glibc-2.2 
+breaks stack. I tracked down the problem, and finally found the
+mismatch  between kenrel and glibc-2.2. 
+
+Current kernel pass following args to the signal handler for the 
+case of not SA_SIGINFO specified.
+	a0	signal number
+	a1	0 (cause code?)
+	a2	pointer to sigcontext struct
+
+But, the pthread_sighander() of glibc-2.2 expects;
+	1st arg.	signal number
+	2nd arg.	sigcontext struct itself (not pointer)
+
+Patches attached below. Please apply.
+
+Thanks.
+
+---
+Hiroyuki Machida
+Creative Station		SCE Inc.
 
 
--- 
-Joe deBlaquiere
-Red Hat, Inc.
-307 Wynn Drive
-Huntsville AL, 35805
-voice : (256)-704-9200
-fax   : (256)-837-3839
+=== ChangeLog entry.
+
+   * sysdeps/unix/sysv/linux/mips/register-dump.h (REGISTER_DUMP):
+    Change type of CTX to (struct sigcontext *).
+
+   * sysdeps/unix/sysv/linux/mips/sigcontextinfo.h (GET_PC): Likewise.
+    (GET_FRAME): Likewise (GET_STACK): Likewise.
+    (SIGCONTEXT): Likewise. Add 2nd arg _CODE.
+    (SIGCONTEXT_EXTRA_ARGS): Add 2nd arg _CODE.
+
+
+===================================================================
+--- sysdeps/unix/sysv/linux/mips/register-dump.h.ORG	2000/10/25 05:00:53	1.1
++++ sysdeps/unix/sysv/linux/mips/register-dump.h	2001/01/12 13:03:30	1.2
+@@ -105,4 +105,4 @@ register_dump (int fd, struct sigcontext
+ }
+ 
+ 
+-#define REGISTER_DUMP register_dump (fd, &ctx)
++#define REGISTER_DUMP register_dump (fd, ctx)
+===================================================================
+--- sysdeps/unix/sysv/linux/mips/sigcontextinfo.h.ORG	2000/10/25 05:00:53	1.1
++++ sysdeps/unix/sysv/linux/mips/sigcontextinfo.h	2001/01/12 13:03:31	1.2
+@@ -18,8 +18,8 @@
+    Boston, MA 02111-1307, USA.  */
+ 
+ 
+-#define SIGCONTEXT struct sigcontext
+-#define SIGCONTEXT_EXTRA_ARGS
+-#define GET_PC(ctx)	((void *) ctx.sc_pc)
+-#define GET_FRAME(ctx)	((void *) ctx.sc_regs[30])
+-#define GET_STACK(ctx)	((void *) ctx.sc_regs[29])
++#define SIGCONTEXT unsigned long _code, struct sigcontext *
++#define SIGCONTEXT_EXTRA_ARGS _code,
++#define GET_PC(ctx)	((void *) ctx->sc_pc)
++#define GET_FRAME(ctx)	((void *) ctx->sc_regs[30])
++#define GET_STACK(ctx)	((void *) ctx->sc_regs[29])

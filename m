@@ -1,51 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Jan 2005 19:24:44 +0000 (GMT)
-Received: from alg138.algor.co.uk ([IPv6:::ffff:62.254.210.138]:7325 "EHLO
-	mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225254AbVAVTYk>; Sat, 22 Jan 2005 19:24:40 +0000
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id j0MJLuwA001866;
-	Sat, 22 Jan 2005 19:21:57 GMT
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j0MJLtSe001865;
-	Sat, 22 Jan 2005 19:21:55 GMT
-Date:	Sat, 22 Jan 2005 19:21:55 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Alan Cox <alan@lxorguk.ukuu.org.uk>
-Cc:	Martin Michlmayr <tbm@cyrius.com>, linux-mips@linux-mips.org
-Subject: Re: MIPS contributions have "All rights reserved"?
-Message-ID: <20050122192155.GA1004@linux-mips.org>
-References: <20050119024536Z8225221-1340+1568@linux-mips.org> <20050119134249.GA9175@deprecation.cyrius.com> <1106159183.3341.4.camel@localhost.localdomain>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1106159183.3341.4.camel@localhost.localdomain>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Jan 2005 19:47:11 +0000 (GMT)
+Received: from vsmtp14.tin.it ([IPv6:::ffff:212.216.176.118]:47241 "EHLO
+	vsmtp14.tin.it") by linux-mips.org with ESMTP id <S8225254AbVAVTrG>;
+	Sat, 22 Jan 2005 19:47:06 +0000
+Received: from eppesuigoccas.homedns.org (80.180.159.168) by vsmtp14.tin.it (7.0.027) (authenticated as giuseppe.sacco17@tin.it)
+        id 41EFD0C20012C04C for linux-mips@linux-mips.org; Sat, 22 Jan 2005 20:46:59 +0100
+Received: from localhost ([127.0.0.1] ident=giuseppe)
+	by eppesuigoccas.homedns.org with asmtp (Exim 3.35 #1 (Debian))
+	id 1CsRDl-0000u5-00
+	for <linux-mips@linux-mips.org>; Sat, 22 Jan 2005 20:46:57 +0100
+Message-ID: <41F2ADB0.8020200@eppesuigoccas.homedns.org>
+Date:	Sat, 22 Jan 2005 20:46:56 +0100
+From:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.5) Gecko/20050105 Debian/1.7.5-1
+X-Accept-Language: en
+MIME-Version: 1.0
+To:	linux-mips@linux-mips.org
+Subject: Re: O2 and 128Mb
+References: <1105602134.10493.23.camel@localhost>	 <41E627F8.3010004@total-knowledge.com>	 <1105605285.10490.52.camel@localhost>	 <41E6CB5B.6080303@total-knowledge.com> <1106338775.4760.17.camel@localhost>	  <41F168DA.60301@total-knowledge.com> <1106342715.4757.27.camel@localhost> <41F1BE9E.8070109@gentoo.org>
+In-Reply-To: <41F1BE9E.8070109@gentoo.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <giuseppe@eppesuigoccas.homedns.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7002
+X-archive-position: 7003
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: giuseppe@eppesuigoccas.homedns.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Jan 19, 2005 at 10:39:59PM +0000, Alan Cox wrote:
+Kumba wrote:
 
-> > > - * Copyright (C) 2000, 2004  MIPS Technologies, Inc.  All rights reserved.
-> > > + * Copyright (C) 2000, 2004, 2005  MIPS Technologies, Inc.
-> > > + *	All rights reserved.
-> > 
-> > Does this "All rights reserved" statement make sense in a kernel which
-> > is GPL?
-> 
-> Providing it also says its GPL licensed why not. You reserve all your
-> rights then license some.
+> Giuseppe Sacco wrote:
+>
+>> I think my O2 just blowed up :-(
+>> Actually it doesn't switch on. Even unplugging and plugging again the
+>> power cord, it stay off.
+>
+> Pull the mainboard out, find the flash-clear jumper, cover it with a 
+> nearby jumper cap (this jumper and cap should be near the RTC, a 
+> Dallas chip).  Pop the board back into the system, and see if it 
+> powers on.  If it does, power back off, remove the jumper cap, and 
+> then power back up, and it should power up fine.
 
-It's been a repeated cause of confusion and the MIPS port had them in 120
-files, so with permission I removed the "All rights reserved." of 40 of
-them.  The remaining 80 will probably stay as they are.
 
-  Ralf
+Thank you very much: this solved the problem and the O2 is now back again.
+
+[...]
+
+> Drop minicom, I get nothing but trouble with it.  Use "xc", a small, 
+> simple dial program.  If it's not on your system, you'll have to 
+> install it via whatever means your working distro provides, then do this:
+
+
+Now I tried using minicom, cu and xc. All of them gave me the same 
+result: nothing.
+Please note that, using the same configuration, I may see the console 
+output if I use the actual kernel.
+
+The kernel that isn't working is almost any kernel compiled from about 
+start of december. (Prior to this I never managed to compile a kernel 
+from CVS sources.)
+
+In order to compile the kernel, I cd /usr/local/src/linux and type:
+ > make-kpkg --revision $(date +%Y%m%d) --rootcmd sudo kernel-image
+
+Any other idea?
+Giuseppe
+
+P.S. When compiling I always get this error:
+  SHIPPED scripts/kconfig/lex.zconf.c
+  HOSTCC  scripts/kconfig/zconf.tab.o
+  HOSTLD  scripts/kconfig/conf
+scripts/kconfig/conf -o arch/mips/Kconfig
+arch/mips/Kconfig:1598: can't open file "arch/mips/oprofile/Kconfig"
+make[2]: *** [oldconfig] Error 1
+make[1]: *** [oldconfig] Error 2

@@ -1,38 +1,49 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1L4UnB08120
-	for linux-mips-outgoing; Wed, 20 Feb 2002 20:30:49 -0800
-Received: from dea.linux-mips.net (a1as20-p220.stg.tli.de [195.252.194.220])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1L4Uj908116
-	for <linux-mips@oss.sgi.com>; Wed, 20 Feb 2002 20:30:46 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.1) id g1L3UY227199;
-	Thu, 21 Feb 2002 04:30:34 +0100
-Date: Thu, 21 Feb 2002 04:30:33 +0100
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Jun Sun <jsun@mvista.com>
-Cc: Matthew Dharm <mdharm@momenco.com>, Linux-MIPS <linux-mips@oss.sgi.com>
+	by oss.sgi.com (8.11.2/8.11.3) id g1L6ajA10190
+	for linux-mips-outgoing; Wed, 20 Feb 2002 22:36:45 -0800
+Received: from orion.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1L6ad910186;
+	Wed, 20 Feb 2002 22:36:39 -0800
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.9.3/8.9.3) id VAA08957;
+	Wed, 20 Feb 2002 21:35:57 -0800
+Date: Wed, 20 Feb 2002 21:35:57 -0800
+From: Jun Sun <jsun@mvista.com>
+To: Matthew Dharm <mdharm@momenco.com>
+Cc: Ralf Baechle <ralf@oss.sgi.com>, Linux-MIPS <linux-mips@oss.sgi.com>
 Subject: Re: set_io_port_base()?
-Message-ID: <20020221043033.A1430@dea.linux-mips.net>
-References: <20020221025755.B29466@dea.linux-mips.net> <NEBBLJGMNKKEEMNLHGAIEEKDCFAA.mdharm@momenco.com> <20020221031338.A31129@dea.linux-mips.net> <3C745B0B.84203D3F@mvista.com>
+Message-ID: <20020220213557.A8883@mvista.com>
+References: <3C745B0B.84203D3F@mvista.com> <NEBBLJGMNKKEEMNLHGAIKEKFCFAA.mdharm@momenco.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <3C745B0B.84203D3F@mvista.com>; from jsun@mvista.com on Wed, Feb 20, 2002 at 06:27:23PM -0800
-X-Accept-Language: de,en,fr
+In-Reply-To: <NEBBLJGMNKKEEMNLHGAIKEKFCFAA.mdharm@momenco.com>; from mdharm@momenco.com on Wed, Feb 20, 2002 at 06:48:50PM -0800
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, Feb 20, 2002 at 06:27:23PM -0800, Jun Sun wrote:
+On Wed, Feb 20, 2002 at 06:48:50PM -0800, Matthew Dharm wrote:
+> But isn't that what all the complicated logic in ioremap() is for?  
 
-> This is actually right.  This way if you pass an virtual at
-> (mips_io_port_base + delta), you will get a physical address
-> (GT_PCI_IO_BASE + delta), the desired place.
-> 
-> Most boards don't need this funky ioremap() and base addr substraction trick,
-> but ocelot has the IO address placed beyond normal kseg1 addressing range.
+Not exactly.
 
-If you ever think about the value of the the address you're making
-something wrong ...
+Here is the whole picture:
 
-  Ralf
+drivers do inb(delta)/outb(delta)
+  -> translated to an virtual address (mips_io_port_base + delta)
+     -> mapped into (GT_IO_BASE + delta) physical addr
+	-> Bingo! you got the devices.
+
+Here your goal is to make the drivers that do inb()/outb() happy (i.e.,
+be able to reuse them without modification)  If you only use drivers
+that directly access memory (such as drivers/net/nec_korva.c on 
+linux-mips.sf.net), then you don't even have to set mips_io_port_base at all.
+
+The ioremap() comes into place because by default you can not
+set a mips_io_port_base value in kseg1 range on ocelot (it is at 0x20000000
+in physical addr space).  Therefore you do a ioremap(), blah blah as explained
+above.
+
+Someday I should finish the PCI chapter on my porting guide ...
+
+Jun

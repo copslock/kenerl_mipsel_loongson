@@ -1,40 +1,59 @@
-Received:  by oss.sgi.com id <S554056AbRAQOcM>;
-	Wed, 17 Jan 2001 06:32:12 -0800
-Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:20964 "EHLO
-        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S554053AbRAQOcI>;
-	Wed, 17 Jan 2001 06:32:08 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA01388;
-	Wed, 17 Jan 2001 15:26:04 +0100 (MET)
-Date:   Wed, 17 Jan 2001 15:26:03 +0100 (MET)
-From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To:     Florian Lohoff <flo@rfc822.org>
-cc:     Ian Chilton <ian@ichilton.co.uk>, linux-mips@oss.sgi.com
-Subject: Re: 2.4.0 Kernel - Summary
-In-Reply-To: <20010117145034.B2517@paradigm.rfc822.org>
-Message-ID: <Pine.GSO.3.96.1010117151644.29693C-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received:  by oss.sgi.com id <S554068AbRAQOtb>;
+	Wed, 17 Jan 2001 06:49:31 -0800
+Received: from noose.gt.owl.de ([62.52.19.4]:40717 "HELO noose.gt.owl.de")
+	by oss.sgi.com with SMTP id <S554063AbRAQOtM>;
+	Wed, 17 Jan 2001 06:49:12 -0800
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id C76347FC; Wed, 17 Jan 2001 15:49:02 +0100 (CET)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 75FD9F597; Wed, 17 Jan 2001 15:49:37 +0100 (CET)
+Date:   Wed, 17 Jan 2001 15:49:37 +0100
+From:   Florian Lohoff <flo@rfc822.org>
+To:     Guido Guenther <guido.guenther@gmx.net>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: patches for dvhtool
+Message-ID: <20010117154937.C2517@paradigm.rfc822.org>
+References: <20001015021522.B3106@bilbo.physik.uni-konstanz.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20001015021522.B3106@bilbo.physik.uni-konstanz.de>; from guido.guenther@gmx.net on Sun, Oct 15, 2000 at 02:15:23AM +0200
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, 17 Jan 2001, Florian Lohoff wrote:
+On Sun, Oct 15, 2000 at 02:15:23AM +0200, Guido Guenther wrote:
+> Hi,
+> with the following two patches (first against dvhtool, second against
+> current cvs kernel) it's possible to boot the Indy from a local harddisk
+> without the need of IRIX to install it in the volume header. Set 
+> setenv OSLoader linux 
+> and 
+> setenv OSLoadPartition /dev/sd(whatever)
+> in the boot-prom and do a: 
+> dvhtool -d /dev/sda(whatever) --unix-to-vh (your_favorite_ecoff_kernel) linux
 
-> Its probably a problem with console and tty output getting mixed.
-> Definitly a bigger issue as one should merge driver/sbus/zs.c and
-> driver/sgi/char/sgiserial.c to one driver. (And probably even
-> the Decstation one)
+I just retried to put the stuff into the volume header wich worked:
 
- It's actually deep on my to do list.  We also miss zs DMA support on
-DECstation (no idea if it's possible on other platforms) for decent
-synchronous support.  DEC claims /240 can do up to 208kbps synchronous --
-I wonder if we can achieve this one day.  HDLC support might be
-problematic, though, as there is a Z8530 erratum that supposedly turns
-this unreliable.
+I set this in the prom:
 
+OSLoadFilename=vmlinux
+OSLoadPartition=/dev/sda1
+OSLoader=vmlinux
+SystemPartition=scsi(1)disk(4)rdisk(0)partition(0)
+
+when now typing "boot" i get
+
+Unable to load scsi(1)disk(4)rdisk(0)partition(0)/vmlinux: no recognizable
+file system on device.
+
+Whereas this is correct - scsi(1) is the extern SCSI Bus on the Indigo2
+and disk(4) is therefor /dev/sde
+
+Flo
 -- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+     Why is it called "common sense" when nobody seems to have any?

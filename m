@@ -1,97 +1,66 @@
-Received:  by oss.sgi.com id <S305195AbQD1Mtk>;
-	Fri, 28 Apr 2000 05:49:40 -0700
-Received: from deliverator.sgi.com ([204.94.214.10]:59909 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305175AbQD1Mtf>;
-	Fri, 28 Apr 2000 05:49:35 -0700
-Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id FAA02707; Fri, 28 Apr 2000 05:44:48 -0700 (PDT)
+Received:  by oss.sgi.com id <S305195AbQD1MuV>;
+	Fri, 28 Apr 2000 05:50:21 -0700
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:36405 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S305175AbQD1MuK>; Fri, 28 Apr 2000 05:50:10 -0700
+Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id FAA06899; Fri, 28 Apr 2000 05:54:21 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id FAA87576
+	id FAA94075
 	for linux-list;
-	Fri, 28 Apr 2000 05:35:12 -0700 (PDT)
+	Fri, 28 Apr 2000 05:43:51 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id FAA59989
-	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 28 Apr 2000 05:35:10 -0700 (PDT)
-	mail_from (jbglaw@ev-stift-gymn.guetersloh.de)
-Received: from belgarath.esg-guetersloh.mediapoint.de (belgarath.esg-guetersloh.mediapoint.de [193.189.251.50]) 
+	via ESMTP id FAA63170;
+	Fri, 28 Apr 2000 05:43:31 -0700 (PDT)
+	mail_from (nop@nop.com)
+Received: from chmls05.mediaone.net (ne.mediaone.net [24.128.1.70]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id FAA00025
-	for <linux@cthulhu.engr.sgi.com>; Fri, 28 Apr 2000 05:34:54 -0700 (PDT)
-	mail_from (jbglaw@ev-stift-gymn.guetersloh.de)
-Received: by belgarath.esg-guetersloh.mediapoint.de (Postfix, from userid 1000)
-	id B30EF51315; Fri, 28 Apr 2000 14:34:55 +0200 (CEST)
-Date:   Fri, 28 Apr 2000 14:34:55 +0200
-From:   Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To:     linux@cthulhu.engr.sgi.com
-Subject: Re: Just a little question ..
-Message-ID: <20000428143455.C25322@lug-owl.de>
-Reply-To: jbglaw@lug-owl.de
-Mail-Followup-To: linux@cthulhu.engr.sgi.com
-References: <20000427125836.B14257@manipura.com> <20000427162359.A6362@uni-koblenz.de>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-md5;
-	protocol="application/pgp-signature"; boundary="SO98HVl1bnMOfKZd"
-X-Mailer: Mutt 1.0i
-In-Reply-To: <20000427162359.A6362@uni-koblenz.de>; from ralf@oss.sgi.com on Thu, Apr 27, 2000 at 04:23:59PM -0700
-X-Operating-System: Linux belgarath.esg-guetersloh.mediapoint.de 2.0.35 
+	via ESMTP id FAA07681; Fri, 28 Apr 2000 05:43:17 -0700 (PDT)
+	mail_from (nop@nop.com)
+Received: from decoy (h00a0cc39f081.ne.mediaone.net [24.218.252.183])
+	by chmls05.mediaone.net (8.8.7/8.8.7) with SMTP id IAA10786;
+	Fri, 28 Apr 2000 08:43:05 -0400 (EDT)
+Message-ID: <22a801bfb10f$5d7c5b80$0a00000a@decoy>
+From:   "Jay Carlson" <nop@nop.com>
+To:     "Jay Carlson" <nop@place.org>, "Ralf Baechle" <ralf@oss.sgi.com>,
+        "Andreas Jaeger" <aj@suse.de>
+Cc:     "Jun Sun" <jsun@mvista.com>,
+        "Ulf Carlsson" <ulfc@calypso.engr.sgi.com>,
+        <linux@cthulhu.engr.sgi.com>, <linux-mips@fnet.fr>
+References: <Pine.LNX.4.21.0004241837420.1735-100000@calypso.engr.sgi.com> <3904ED75.209AFD22@mvista.com> <u8og6xi6p9.fsf@gromit.rhein-neckar.de> <20000426130603.E757@uni-koblenz.de> <228c01bfb107$fb22c2f0$0a00000a@decoy>
+Subject: Re: failed to compile glibc 2.1.2 - BFD_RELOC_16_PCREL_S2 problem
+Date:   Fri, 28 Apr 2000 08:43:33 -0400
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.2919.6700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6700
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
+I wrote:
 
---SO98HVl1bnMOfKZd
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
+> 2.0 may still be the better choice on very space-constrained platforms
+until
+> there are good options for reducing the size of 2.2.  I mean, 2.2 is not
+> huge, but on devices with 2M non-volatile store *total*, it's an obvious
+> target.
 
-On Thu, Apr 27, 2000 at 04:23:59PM -0700, Ralf Baechle wrote:
-> On Thu, Apr 27, 2000 at 12:58:36PM +0200, maxence Lange wrote:
->=20
-> > could we hope to see linux on Indigi r3000 one day ?!? :)
->=20
-> Chances that we'll ever support this machine are quite low.  Most of the
-> documentation is lost or scattered somewhere over zillions of backup
-> tapes somewhere here at SGI ...
+To which I should add: I am very grateful for the work on 2.2.  It needs to
+be done.  Many people will benefit from it, including me.  Great thanks to
+Andreas!
 
-I would help searching as I've got such a box and want to run Linux on it
-(instead of IRIX 5.2;)
+The problems with code size are not Andreas's fault... :-)
 
-Btw, my box has a card added which has transceivers vor glass cables. Does
-anybody know what this is (FDDI or 10MBit ethernet...)?
-Transmitter:	AMP 269011-1, 125MBit/s, @1300nm
-Receiver:	AMP 269011-1, 125MBit/s, @1300nm
-The board is connected on top of the CPU board and labeled with "SILICON
-GRAPHICS INC. ASSY NO. 030-0246-006 REV A  MADE IN U.S.A 1992". Next to
-transmitter/receiver, there's a crystal oscillator with 25MHz. That card al=
-so
-has an own "processor", a AMD Am29030, build 1991.
-
-MfG, JBG
-
---=20
-Fehler eingestehen, Gr=F6=DFe zeigen: Nehmt die Rechtschreibreform zur=FCck=
-!!!
-/* Jan-Benedict Glaw <jbglaw@lug-owl.de> -- +49-177-5601720 */
-keyID=3D0x8399E1BB fingerprint=3D250D 3BCF 7127 0D8C A444 A961 1DBD 5E75 83=
-99 E1BB
-
---SO98HVl1bnMOfKZd
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.1 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iEUEAREBAAYFAjkJhW8ACgkQHb1edYOZ4buEUgCXWcczlM/g5AbFM1mXd59WQo7b
-lgCcDLRMlMxkTImK1veSOE+yhWkzw+Q=
-=FgPW
------END PGP SIGNATURE-----
-
---SO98HVl1bnMOfKZd--
+Jay

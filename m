@@ -1,63 +1,67 @@
+Received: from dns1.rz.fh-heilbronn.de (dns1.rz.fh-heilbronn.de [141.7.1.18])
+	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id BAA11681
+	for <pstadt@stud.fh-heilbronn.de>; Thu, 30 Sep 1999 01:42:06 +0200
 Received: from pneumatic-tube.sgi.com (pneumatic-tube.sgi.com [204.94.214.22])
-	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id CAA11341
-	for <pstadt@stud.fh-heilbronn.de>; Wed, 29 Sep 1999 02:27:19 +0200
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id RAA01741; Tue, 28 Sep 1999 17:24:14 -0700 (PDT)
+	by dns1.rz.fh-heilbronn.de (8.8.8/8.8.5) with ESMTP id SAA22173
+	for <pstadt@stud.fh-heilbronn.de>; Wed, 29 Sep 1999 18:27:53 +0200 (MET DST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id JAA08195; Wed, 29 Sep 1999 09:22:17 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id RAA32875
+	id JAA65687
 	for linux-list;
-	Tue, 28 Sep 1999 17:18:31 -0700 (PDT)
+	Wed, 29 Sep 1999 09:10:36 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from liveoak.engr.sgi.com (liveoak.engr.sgi.com [150.166.40.92])
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id RAA32755;
-	Tue, 28 Sep 1999 17:18:28 -0700 (PDT)
-	mail_from (wje@liveoak.engr.sgi.com)
-Received: (from wje@localhost)
-	by liveoak.engr.sgi.com (8.9.3/8.8.7) id RAA23870;
-	Tue, 28 Sep 1999 17:18:28 -0700
-X-Authentication-Warning: liveoak.engr.sgi.com: wje set sender to wje@liveoak.engr.sgi.com using -f
-From: "William J. Earl" <wje@cthulhu.engr.sgi.com>
+	via ESMTP id JAA49268
+	for <linux@cthulhu.engr.sgi.com>;
+	Wed, 29 Sep 1999 09:10:33 -0700 (PDT)
+	mail_from (pete@alien.bt.co.uk)
+Received: from mail.alien.bt.co.uk ([132.146.196.84]) 
+	by sgi.com (980305.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via SMTP id JAA3860904
+	for <linux@cthulhu.engr.sgi.com>; Wed, 29 Sep 1999 09:10:13 -0700 (PDT)
+	mail_from (pete@alien.bt.co.uk)
+Received: from cornfed(really [132.146.196.81]) by mail.alien.bt.co.uk
+	via sendmail with smtp
+	id <m11WMIK-001kxeC@mail.alien.bt.co.uk>
+	for <linux@cthulhu.engr.sgi.com>; Wed, 29 Sep 1999 17:09:28 +0100 (BST)
+	(Smail-3.2 1996-Jul-4 #3 built 1998-May-29)
+Message-Id: <m11WMIK-001kxeC@mail.alien.bt.co.uk>
+Date: Wed, 29 Sep 1999 17:07:21 +0100 (BST)
+From: Pete Young <pete@alien.bt.co.uk>
+Reply-To: Pete Young <pete@alien.bt.co.uk>
+Subject: Latest versions of kernel, other tools
+To: linux@cthulhu.engr.sgi.com
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-ID: <14321.23251.949521.794817@liveoak.engr.sgi.com>
-Date: Tue, 28 Sep 1999 17:18:27 -0700 (PDT)
-To: Alan Hoyt <neuroinc@unidial.com>
-Cc: SGI Mips <linux@cthulhu.engr.sgi.com>
-Subject: Re: Linux->Indy->O2
-In-Reply-To: <37F14445.866DE7F1@unidial.com>
-References: <v04220602b415257a1e03@[216.63.49.245]>
-	<37F1169E.B816C35E@unidial.com>
-	<14321.9939.647579.563478@liveoak.engr.sgi.com>
-	<37F14445.866DE7F1@unidial.com>
-X-Mailer: VM 6.74 under Emacs 20.3.1
+Content-Type: TEXT/plain; charset=us-ascii
+Content-MD5: uwtS43qRHiDkTtW/yIL6dw==
+X-Mailer: dtmail 1.2.0 CDE Version 1.2 SunOS 5.6 i86pc i386 
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
-Content-Transfer-Encoding: 7bit
 
-Alan Hoyt writes:
- > "William J. Earl" wrote:
- > 
- > >       REX3 is "Newport", AKA "XL", graphics, which was the default on
- > > Indy and a lower-cost option on Indigo2.  Most Indigo2 and some Indy
- > > systems have more complex graphics adapters ("Elan", "Extreme", "XZ", "Impact").
- > 
- > Sorry, thought everyone knew - here is an excerpt from the SGI Hardware FAQ for those who are curious:
- > 
- >   Indy: IP22:
- >   Express (XZ ["GR3-Elan": 24, Z, 4 GE7, 1 RE3.1]),
- >   Newport (XL ["NG1": 8|24, soft Z, NG1, REX3])
- > 
- >   Indigo2: IP22:
- >   Express (XZ ["GR3-Elan": 24, Z, 4 GE7, 1 RE3.1]),
- >   Newport (XL ["NG1": 8|24, soft Z, NG1, REX3]),
- >   Newpress (Extreme+XL ["GU1-Extreme": 32 Z]),
- >   Ultra (Extreme ["GU1-Extreme", 32 Z])
- > 
- > What was the most prevalent graphics configuration on the Indigo2s?
+Dear gurus,
 
-      XZ was probably the most common, until Impact was released.  On
-the Indigo2 R10000, Impact (not on the above list) is probably the
-most common.
+I have an Indy which I set up back in May, running kernel version
+2.2.1 (29th March 1999) . Hardhat Release 5.1 distribution.
+
+I've just been looking around on ftp://ftp.linux.sgi.com/pub/ for
+a newer version with no success. Can someone tell me where I should
+be looking for updates, and also whether there are any packages which
+I should also update?  I seem to recall a message about binutils
+being significantly improved, is there anything else?
+
+The latest version of the mailing list archive stops on July 25: if there
+have been any announcements after then, my memory has not been up to the job!
+
+Regards
+
+Pete
+
+  ____________________________________________________________________
+  Pete Young          pete@alien.bt.co.uk        Phone +44 1473 642740
+      "Just another crouton, floating on the bouillabaisse of life"

@@ -1,72 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jan 2003 08:59:20 +0000 (GMT)
-Received: from [IPv6:::ffff:203.145.184.221] ([IPv6:::ffff:203.145.184.221]:53765
-	"EHLO naturesoft.net") by linux-mips.org with ESMTP
-	id <S8225211AbTAUHAU> convert rfc822-to-8bit; Tue, 21 Jan 2003 07:00:20 +0000
-Received: from [192.168.0.15] (helo=krishna.royalchallenge.com)
-	by naturesoft.net with esmtp (Exim 3.35 #1)
-	id 18asMm-0007BD-00; Tue, 21 Jan 2003 12:28:36 +0530
-Content-Type: text/plain;
-  charset="iso-8859-1"
-From: "Krishnakumar. R" <krishnakumar@naturesoft.net>
-Reply-To: krishnakumar@naturesoft.net
-To: "santosh kumar gowda" <ipv6_san@rediffmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jan 2003 12:03:56 +0000 (GMT)
+Received: from mail2.sonytel.be ([IPv6:::ffff:195.0.45.172]:47517 "EHLO
+	mail.sonytel.be") by linux-mips.org with ESMTP id <S8225211AbTAUKtt>;
+	Tue, 21 Jan 2003 10:49:49 +0000
+Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.27])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id LAA01279;
+	Tue, 21 Jan 2003 11:45:16 +0100 (MET)
+Date: Tue, 21 Jan 2003 11:45:17 +0100 (MET)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: "Krishnakumar. R" <krishnakumar@naturesoft.net>
+cc: santosh kumar gowda <ipv6_san@rediffmail.com>,
+	Linux/MIPS Development <linux-mips@linux-mips.org>
 Subject: Re: Linux kernel for MIPS architecture
-Date: Tue, 21 Jan 2003 12:28:47 +0530
-User-Agent: KMail/1.4.1
-References: <20030121043050.13493.qmail@webmail28.rediffmail.com>
-In-Reply-To: <20030121043050.13493.qmail@webmail28.rediffmail.com>
-Cc: linux-mips@linux-mips.org
+In-Reply-To: <200301211228.47766.krishnakumar@naturesoft.net>
+Message-ID: <Pine.GSO.4.21.0301211143430.24563-100000@vervain.sonytel.be>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Message-Id: <200301211228.47766.krishnakumar@naturesoft.net>
-Return-Path: <krishnakumar@naturesoft.net>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <Geert.Uytterhoeven@sonycom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1195
+X-archive-position: 1196
 X-Approved-By: ralf@linux-mips.org
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: krishnakumar@naturesoft.net
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Tue, 21 Jan 2003, Krishnakumar. R wrote:
+> Change the following in the top level makefile
+> 
+> CROSS_COMPILE=mipsel-linux-
+> ARCH=mips
 
-Change the following in the top level makefile
+Or always say `make CROSS_COMPILE=mipsel-linux- ARCH=mips' instead of `make'.
 
-CROSS_COMPILE=mipsel-linux-
-ARCH=mips
+> And change the link 
+> include/asm
+> of the top directory to point to
+> the asm-mips there.
 
+Changing the link is not necessay. `make config' will do that for you.
 
-And change the link 
-include/asm
-of the top directory to point to
-the asm-mips there.
+> Then try configuring and compiling the kernel
+> as usual.
 
+> On Tuesday 21 January 2003 10:00 am, you wrote:
+> > I want to compile the entire Linux Kernel 2.4.20
+> > for MIPS architecture.
 
-Then try configuring and compiling the kernel
-as usual.
+And most probably you'll want to use the kernel source tree from Linux/MIPS
+CVS, not the one on ftp.kernel.org.
 
-Hope this helps
-Regards
-KK
+Gr{oetje,eeting}s,
 
+						Geert
 
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-
-
-
-
-
-On Tuesday 21 January 2003 10:00 am, you wrote:
-> Hi,
-> I want to compile the entire Linux Kernel 2.4.20
-> for MIPS architecture.
-> I have mipsel-linux-gcc cross compiler.
-> Is this cross compiler enough or i need something else..??
-> Can any one suggest me from where to start with...??
-> What changes to be made in the Makefile..???
->
-> -San
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

@@ -1,42 +1,49 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id RAA1133405 for <linux-archive@neteng.engr.sgi.com>; Thu, 11 Dec 1997 17:27:42 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id TAA1169637 for <linux-archive@neteng.engr.sgi.com>; Thu, 11 Dec 1997 19:10:18 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id RAA13066 for linux-list; Thu, 11 Dec 1997 17:24:31 -0800
-Received: from meteor.nsg.sgi.com (meteor.nsg.sgi.com [134.14.162.53]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id RAA12479 for <linux@cthulhu.engr.sgi.com>; Thu, 11 Dec 1997 17:22:02 -0800
-Received: (from hakamada@localhost) by meteor.nsg.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id KAA05559; Fri, 12 Dec 1997 10:16:53 +0900
-Message-Id: <199712120116.KAA05559@meteor.nsg.sgi.com>
-To: alan@lxorguk.ukuu.org.uk
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id TAA11054 for linux-list; Thu, 11 Dec 1997 19:09:10 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id TAA11033 for <linux@cthulhu.engr.sgi.com>; Thu, 11 Dec 1997 19:09:08 -0800
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id TAA21955
+	for <linux@cthulhu.engr.sgi.com>; Thu, 11 Dec 1997 19:09:05 -0800
+	env-from (ralf@uni-koblenz.de)
+From: ralf@uni-koblenz.de
+Received: from uni-koblenz.de (pmport-09.uni-koblenz.de [141.26.249.9])
+	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id EAA24067
+	for <linux@cthulhu.engr.sgi.com>; Fri, 12 Dec 1997 04:08:34 +0100 (MET)
+Received: (from ralf@localhost)
+	by uni-koblenz.de (8.8.7/8.8.7) id CAA03326;
+	Fri, 12 Dec 1997 02:42:09 +0100
+Message-ID: <19971212024209.20676@uni-koblenz.de>
+Date: Fri, 12 Dec 1997 02:42:09 +0100
+To: karo@artcom.net, mike@mdhill.interlog.com
 Cc: linux@cthulhu.engr.sgi.com
-Subject: Re: Mount ext2 filesystem.
-In-Reply-To: Your message of "Fri, 12 Dec 1997 01:11:51 +0000 (GMT)"
-References: <m0xgJdw-0005FsC@lightning.swansea.linux.org.uk>
-X-Mailer: Mew version 1.70 on XEmacs 20.2
+Subject: Re: Uploads ...
+References: <19971208150602.52582@brian.uni-koblenz.de> <ralf@uni-koblenz.de> <9712091934.ZM3116@mdhill.interlog.com> <19971210040210.27443@uni-koblenz.de> <34906346.C1FB7311@artcom.net>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Date: Fri, 12 Dec 1997 10:16:53 +0900
-From: Takeshi Hakamada <hakamada@meteor.nsg.sgi.com>
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.85e
+In-Reply-To: <34906346.C1FB7311@artcom.net>; from Benjamin Pannier on Thu, Dec 11, 1997 at 11:03:50PM +0100
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+On Thu, Dec 11, 1997 at 11:03:50PM +0100, Benjamin Pannier wrote:
 
-> > Thank you. I've converted rpm to cpio and I could have installed rpm binary.
-> > But, I can't boot from local disk yet. If I can boot from local disk, I'd
-> > like to update faq on the www.linux.sgi.com. How do you think about it?
-> 
-> In irix, shutdown, restart hit the maintenance button to get to the arc
-> menu, hit command line and do I think its
-> 
-> boot /whatever/efs/vmlinux root=/dev/sdb1
-> 
-> (first partition disk 2 as root)
+> tty01 at 0xbfbd9830 (irq = 21) is Zilog8530
+> loop: registered device at major 7
+> Got a bus error IRQ, shouldn't ...
 
-I know this method, my want to boot from local disk is, I've not installed
-all rpm packages on the second disk. I'll do this until tomorrow.
-Do you think anyone wants my installation howto?
+Bad, the two register dumps you and Mike mailed don't make very much
+sense; the epc register is pointer to completly different routines.
+What both reports have in common is that the kernel dies after the
+initialisation of the loop device.  The loop driver is actually
+``harmless'' as it has no SGI specific code.  The next driver to
+be initialized would be the SCSI driver, so the problem is there.
+This and the useless epc values might indicate a problem with the
+hpc dma.
 
---
-Takeshi Hakamada                  
-Nihon Silicon Graphics Cray
-E-mail: hakamada@nsg.sgi.com, URL: http://reality.sgi.com/hakamada_nsg/
-Phone: +81-45-682-3712, Fax: +81-45-682-0856
-Voice mail: (internal)822-1300, (external)+81-3-5488-1863-1300
+I wonder if the DMA engine in the HPC might still be active?
+
+I'm going to try to solve the problem by starring at the source.  If
+this doesn't help, could you guys please run a special debug kernel
+that I'll make for you?
+
+  Ralf

@@ -1,48 +1,74 @@
-Received:  by oss.sgi.com id <S553767AbQJPBdN>;
-	Sun, 15 Oct 2000 18:33:13 -0700
-Received: from short.adgrafix.com ([63.79.128.2]:64187 "EHLO
-        short.adgrafix.com") by oss.sgi.com with ESMTP id <S553761AbQJPBdD>;
-	Sun, 15 Oct 2000 18:33:03 -0700
-Received: from ppan2 (c534317-a.stcla1.sfba.home.com [24.20.134.153])
-	by short.adgrafix.com (8.9.3/8.9.3) with SMTP id VAA01115;
-	Sun, 15 Oct 2000 21:27:05 -0400 (EDT)
-From:   "Mike Klar" <mfklar@ponymail.com>
-To:     "Ralf Baechle" <ralf@oss.sgi.com>
-Cc:     "Jay Carlson" <nop@nop.com>, <linux-mips@fnet.fr>,
-        <linux-mips@oss.sgi.com>
-Subject: RE: stable binutils, gcc, glibc ...
-Date:   Sun, 15 Oct 2000 18:33:42 -0700
-Message-ID: <NDBBIDGAOKMNJNDAHDDMAENPCMAA.mfklar@ponymail.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
-In-Reply-To: <20001016023523.D15377@bacchus.dhis.org>
-Importance: Normal
-X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2314.1300
+Received:  by oss.sgi.com id <S553770AbQJPCdy>;
+	Sun, 15 Oct 2000 19:33:54 -0700
+Received: from air.lug-owl.de ([62.52.24.190]:50703 "HELO air.lug-owl.de")
+	by oss.sgi.com with SMTP id <S553765AbQJPCdu>;
+	Sun, 15 Oct 2000 19:33:50 -0700
+Received: by air.lug-owl.de (Postfix, from userid 1000)
+	id B7A89803F; Mon, 16 Oct 2000 04:33:47 +0200 (CEST)
+Date:   Mon, 16 Oct 2000 04:33:47 +0200
+From:   Jan-Benedict Glaw <jbglaw@lug-owl.de>
+To:     linux-mips@oss.sgi.com
+Subject: base.tgz
+Message-ID: <20001016043346.A6656@lug-owl.de>
+Reply-To: jbglaw@lug-owl.de
+Mail-Followup-To: linux-mips@oss.sgi.com
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="rwEMma7ioTxnRzrJ"
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+X-Operating-System: Linux air 2.4.0-test8-pre1 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Ralf Baechle wrote:
 
-> Have the other tools - in particular binutils and gcc actually
-> been modified
-> except maybe changing defaults?
+--rwEMma7ioTxnRzrJ
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-binutils we use unmodified from the cross- SRPM on ftp://oss.sgi.com.
-egcs-1.0.3a did require a small patch, which Jay has at:
-ftp://ftp.place.org/pub/nop/linuxce/egcs-1.0.3a-mips-softfloat.patch
-I've reworked it slightly to patch cleanly against the latest Linux-MIPS
-egcs-1.0.3a release, but the server that's on is a bit whacked at the moment
-(the patch conflict was pretty trivial, though...).
+Hi!
 
-We actually did not change the compiler default from hard-float, to compile
-soft-float, the flag -msoft-float still has to be used.  Jay's patch just
-makes -msoft-float work (with glibc), at least that's my understanding.
+Flo gave me a DECStation some days (2 weeks or so?) ago. I now
+finally got it running so far. My compiler is quite a bit old
+(gcc version egcs-2.90.29 980515 (egcs-1.0.3 release), from SRPMS),
+but it con compile actual CVS.
 
-Mike Klar
+For first tests I used a kernel Flo compiled (R3k-240-test8-pre1
+from ftp.rfc822.org:/pub/local/...), but with that one there was
+no great chance to even copy some files. Actual CVS is quite
+more stable (well, it doesn't survive a nmap scan, but I con
+copy tenth of megabytes without any favourite segfaults/bus errors/
+core dumps/ ...)
+
+My next goal is to cleanly build something like base.tgz. Maybe
+we can get a smooth debian installation in some days;)
+
+So, and now I'll go to bed...
+
+MfG, JBG
+
+--=20
+Fehler eingestehen, Gr=F6=DFe zeigen: Nehmt die Rechtschreibreform zur=FCck=
+!!!
+/* Jan-Benedict Glaw <jbglaw@lug-owl.de> -- +49-177-5601720 */
+keyID=3D0x8399E1BB fingerprint=3D250D 3BCF 7127 0D8C A444 A961 1DBD 5E75 83=
+99 E1BB
+     "insmod vi.o and there we go..." (Alexander Viro on linux-kernel)
+
+--rwEMma7ioTxnRzrJ
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.2 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iEYEARECAAYFAjnqaQoACgkQHb1edYOZ4bsriwCeJo6T4wXBr2vanYQpheb35w+Z
+xLIAnR584HxfXHgYAb2L8h6caIuwpIw/
+=vWU6
+-----END PGP SIGNATURE-----
+
+--rwEMma7ioTxnRzrJ--

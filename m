@@ -1,87 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 May 2004 15:04:02 +0100 (BST)
-Received: from nevyn.them.org ([IPv6:::ffff:66.93.172.17]:23953 "EHLO
-	nevyn.them.org") by linux-mips.org with ESMTP id <S8225794AbUEKOEB>;
-	Tue, 11 May 2004 15:04:01 +0100
-Received: from drow by nevyn.them.org with local (Exim 4.33 #1 (Debian))
-	id 1BNXrL-0003U6-IY; Tue, 11 May 2004 10:03:51 -0400
-Date: Tue, 11 May 2004 10:03:51 -0400
-From: Daniel Jacobowitz <dan@debian.org>
-To: "Bradley D. LaRonde" <brad@laronde.org>
-Cc: Richard Sandiford <rsandifo@redhat.com>, uclibc@uclibc.org,
-	linux-mips@linux-mips.org
-Subject: Re: uclibc mips ld.so and undefined symbols with nonzero symbol table entry st_value
-Message-ID: <20040511140351.GA13367@nevyn.them.org>
-References: <01a901c436ce$7029d890$8d01010a@prefect> <87oeowkoa6.fsf@redhat.com> <02fd01c43709$981a24a0$8d01010a@prefect>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 May 2004 15:05:15 +0100 (BST)
+Received: from p508B5C3F.dip.t-dialin.net ([IPv6:::ffff:80.139.92.63]:38498
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225794AbUEKOFP>; Tue, 11 May 2004 15:05:15 +0100
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i4BE59xT006683;
+	Tue, 11 May 2004 16:05:09 +0200
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i4BE57ki006682;
+	Tue, 11 May 2004 16:05:07 +0200
+Date: Tue, 11 May 2004 16:05:07 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc: geert@linux-m68k.org, jsun@mvista.com, linux-mips@linux-mips.org
+Subject: Re: semaphore woes in 2.6, 32bit
+Message-ID: <20040511140507.GA32577@linux-mips.org>
+References: <20040509164835.GA28011@linux-mips.org> <20040510.222845.78701815.anemo@mba.ocn.ne.jp> <20040510140606.GA9312@linux-mips.org> <20040511.225305.55510293.anemo@mba.ocn.ne.jp>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <02fd01c43709$981a24a0$8d01010a@prefect>
-User-Agent: Mutt/1.5.5.1+cvs20040105i
-Return-Path: <drow@crack.them.org>
+In-Reply-To: <20040511.225305.55510293.anemo@mba.ocn.ne.jp>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4977
+X-archive-position: 4978
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@debian.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, May 10, 2004 at 11:39:41PM -0400, Bradley D. LaRonde wrote:
-> ----- Original Message ----- 
-> From: "Richard Sandiford" <rsandifo@redhat.com>
-> To: "Bradley D. LaRonde" <brad@laronde.org>
-> Cc: <uclibc@uclibc.org>; <linux-mips@linux-mips.org>
-> Sent: Monday, May 10, 2004 4:41 PM
-> Subject: Re: uclibc mips ld.so and undefined symbols with nonzero symbol
-> table entry st_value
-> 
-> 
-> > "Bradley D. LaRonde" <brad@laronde.org> writes:
-> > > I read this in the spec:
-> > >
-> > >     All externally visible symbols, both defined and undefined,
-> > >     must be hashed into the hash table.
-> > >
-> > > Should libpthread's malloc stub be added to the hash table?
-> >
-> > Yes.
-> >
-> > > I guess not, but I think that might be happening (haven't verified),
-> > > and libdl finding it in there and thinking it is the real deal, not
-> > > realizing it is just a stub.
-> >
-> > If you have an undefined function symbol with st_value != 0, then
-> > that st_value must be for a stub.  That's how the loader can (and is
-> > supposed to) tell the difference.
-> >
-> > It's probably a good idea to look at how glibc handles this.
-> 
-> uClibc/ldso/ldso/mips/elfinterp.c around line 288 looks like this:
-> 
-> 
->     /* Relocate the global GOT entries for the object */
->     while(i--) {
->       if (sym->st_shndx == SHN_UNDEF) {
->         if (ELF32_ST_TYPE(sym->st_info) == STT_FUNC && sym->st_value)
->           *got_entry = sym->st_value + (unsigned long) tpnt->loadaddr;
->         else {
->           *got_entry = (unsigned long) _dl_find_hash(strtab +
->              sym->st_name, tpnt->symbol_scope, ELF_RTYPE_CLASS_COPY);
->         }
->      }
-> 
-> 
-> If I change that ELF_RTYPE_CLASS_COPY to ELF_RTYPE_CLASS_PLT to tell
-> _dl_find_hash to ignore stubs when resolving undefined functions without
-> stubs, the dlopen tests all pass.  dlopen gets a pointer to the libc.so
-> malloc instead of a pointer to the libpthread malloc stub.  Yay!  :-)
-> 
-> Does that look like the correct fix?
+On Tue, May 11, 2004 at 10:53:05PM +0900, Atsushi Nemoto wrote:
 
-Probably, since MIPS doesn't have a copy reloc.
+> >> I see.  Thank you for pointing out it.  I must learn 2.6 DMA API
+> >> quickly ...
+> 
+> ralf> This also applies to the 2.4 PCI DMA API.
+> 
+> But 2.4 PCI DMA API does not have dma_get_cache_alignment() (or
+> equivalent), or am I missing something?
 
--- 
-Daniel Jacobowitz
+No, you don't; that was a problem in the 2.4 DMA API which got fixed
+in 2.5.  For 2.4 using L1_CACHE_BYTES from <asm/cache.h> is a reasonable
+alternative.
+
+  Ralf

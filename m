@@ -1,48 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 May 2003 20:29:58 +0100 (BST)
-Received: from p508B56B7.dip.t-dialin.net ([IPv6:::ffff:80.139.86.183]:37101
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225206AbTENT34>; Wed, 14 May 2003 20:29:56 +0100
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h4EJUZ4P029078;
-	Wed, 14 May 2003 21:30:35 +0200
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h4EJUWO1029077;
-	Wed, 14 May 2003 21:30:32 +0200
-Date: Wed, 14 May 2003 21:30:32 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Guido Guenther <agx@sigxcpu.org>, linux-mips@linux-mips.org
-Subject: Re: r4k Indigo 1 (was Re: Branch relocation fixing at Kernel-compiling with Debian-toolchain)
-Message-ID: <20030514193032.GA26327@linux-mips.org>
-References: <20030514123144.52da1d81.achim.hensel@ruhr-uni-bochum.de> <20030514110227.GA8503@falcon.cita.utoronto.ca> <20030514180034.GA13328@linux-mips.org> <20030514183218.GE3889@bogon.ms20.nix> <20030514184224.GA3152@bogon.ms20.nix>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20030514184224.GA3152@bogon.ms20.nix>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 May 2003 20:55:57 +0100 (BST)
+Received: from father.pmc-sierra.com ([IPv6:::ffff:216.241.224.13]:25578 "HELO
+	father.pmc-sierra.bc.ca") by linux-mips.org with SMTP
+	id <S8225206AbTENTzx>; Wed, 14 May 2003 20:55:53 +0100
+Received: (qmail 12183 invoked by uid 104); 14 May 2003 19:55:45 -0000
+Received: from Manoj_Ekbote@pmc-sierra.com by father by uid 101 with qmail-scanner-1.15 
+ (uvscan: v4.1.40/v4263.  Clear:. 
+ Processed in 0.492987 secs); 14 May 2003 19:55:45 -0000
+Received: from unknown (HELO hymir.pmc-sierra.bc.ca) (134.87.114.120)
+  by father.pmc-sierra.com with SMTP; 14 May 2003 19:55:44 -0000
+Received: from bby1exi01.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
+	by hymir.pmc-sierra.bc.ca (jason/8.11.6) with ESMTP id h4EJtij24295
+	for <linux-mips@linux-mips.org>; Wed, 14 May 2003 12:55:44 -0700 (PDT)
+Received: by bby1exi01 with Internet Mail Service (5.5.2656.59)
+	id <H6VDXK2K>; Wed, 14 May 2003 12:55:43 -0700
+Message-ID: <9DFF23E1E33391449FDC324526D1F2590172ECC6@SJC1EXM02>
+From: Manoj Ekbote <Manoj_Ekbote@pmc-sierra.com>
+To: "Linux-Mips (E-mail)" <linux-mips@linux-mips.org>
+Subject: mips toolchain for solaris
+Date: Wed, 14 May 2003 12:55:42 -0700
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2656.59)
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Return-Path: <Manoj_Ekbote@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2380
+X-archive-position: 2381
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: Manoj_Ekbote@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, May 14, 2003 at 08:42:24PM +0200, Guido Guenther wrote:
+I don't know if this is the right place for this question but...
+Is there a place where I could find the latest mips cross-toolchain for the Solaris platform?
 
-> > > Little; however it's know that the machine is relativly similar to the
-> > > Indy for example so it seems doable for somebody with enough time.
-> > Maybe I'm stating the obvious but good look into Irix's /usr/include
-> > helps a lot. It seems to have almost everything in it to get the Indigo
-> > going (without serial consoel of course).
-> _without_ fb and _with_ serial console only is what I wanted to say.
->  -- Guido
-
-Thta still leaves alot of details open - but yes, it's certainly a step
-into the right direction.  And there's always the hope once there is a
-start somebody at SGI will throw real docs into our direction ...
-
-  Ralf
+thanks,
+- Manoj

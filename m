@@ -1,45 +1,62 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0LN09D16859
-	for linux-mips-outgoing; Mon, 21 Jan 2002 15:00:09 -0800
-Received: from ns.snowman.net (ns.snowman.net [63.80.4.34])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0LN05P16856
-	for <linux-mips@oss.sgi.com>; Mon, 21 Jan 2002 15:00:05 -0800
-Received: from localhost (nick@localhost)
-	by ns.snowman.net (8.9.3/8.9.3/Debian 8.9.3-21) with ESMTP id QAA13962;
-	Mon, 21 Jan 2002 16:59:56 -0500
-Date: Mon, 21 Jan 2002 16:59:56 -0500 (EST)
-From: <nick@snowman.net>
-X-Sender: nick@ns
-To: Jeff Utter <funk@softhome.net>
-cc: linux-mips@oss.sgi.com
-Subject: Re: linux on o2
-In-Reply-To: <1011650057.2261.7.camel@funk>
-Message-ID: <Pine.LNX.4.21.0201211658570.28028-100000@ns>
+	by oss.sgi.com (8.11.2/8.11.3) id g0LN2MU17001
+	for linux-mips-outgoing; Mon, 21 Jan 2002 15:02:22 -0800
+Received: from banff.ayrnetworks.com (64-166-72-137.ayrnetworks.com [64.166.72.137])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0LN2IP16998
+	for <linux-mips@oss.sgi.com>; Mon, 21 Jan 2002 15:02:18 -0800
+Received: from ayrnetworks.com (IDENT:chua@localhost.localdomain [127.0.0.1])
+	by banff.ayrnetworks.com (8.11.2/8.11.2) with ESMTP id g0LM2B221276
+	for <linux-mips@oss.sgi.com>; Mon, 21 Jan 2002 14:02:11 -0800
+Message-ID: <3C4C8FE2.9090800@ayrnetworks.com>
+Date: Mon, 21 Jan 2002 14:02:10 -0800
+From: Bryan Chua <chua@ayrnetworks.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.7) Gecko/20011221
+X-Accept-Language: en-us
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To: linux-mips@oss.sgi.com
+Subject: arch/mips/setup.c
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I need a DRI guy.  Badly.  FB should be compleate or at least sorta
-working by the 29th, MACE ethernet is working, sound and AV support has
-yet to be started.  The pci slot is questionable, and right now the scsi
-support seems to have some issues.
-	Nick
+I recall a bunch of disussion about changing arch/mips/setup.c to 
+simplify adding vendor-specific platform code in setup_arch, but to date 
+nothing has come of it.  So while this is a dramatic oversimplification 
+of the various proposals, how about this for now --
 
-On 21 Jan 2002, Jeff Utter wrote:
+just a vendor-defined function "platform_setup (void)" and it is up to 
+the vendor to figure out what to do from there.
 
-> Wow, nifty. i hope your able to get that working... Also, i know that
-> it's not completed yet but what's the status on X for the o2?
-> 
-> > It's starting to shape up.  I'm hopeing to put out an install CD image by
-> > the 29th of this month, but that may be hopelessly optimistic.
-> > 	Nick
-> > 
-> > On 21 Jan 2002, Jeff Utter wrote:
-> > 
-> > > Hey, i was just wondering the status of linux being ported to the 02? is
-> > > there any success yet?
-> > > 
-> > 
-> 
-> 
+-- bryan
+
+
+Index: arch/mips/kernel/setup.c
+===================================================================
+RCS file: /cvs/linux/arch/mips/kernel/setup.c,v
+retrieving revision 1.96.2.3
+diff -u -r1.96.2.3 setup.c
+--- arch/mips/kernel/setup.c	2001/12/26 23:27:02	1.96.2.3
++++ arch/mips/kernel/setup.c	2002/01/21 22:55:35
+@@ -666,6 +666,7 @@
+   	void it8172_setup(void);
+  	void swarm_setup(void);
+  	void hp_setup(void);
++ 
+void platform_setup (void);
+
+  	unsigned long bootmap_size;
+  	unsigned long start_pfn, max_pfn, first_usable_pfn;
+@@ -793,7 +794,8 @@
+                  break;
+  #endif
+  	default:
+- 
+	panic("Unsupported architecture");
++ 
+         platform_setup ();
++ 
+	break;
+  	}
+
+  	strncpy(command_line, arcs_cmdline, sizeof command_line);

@@ -1,82 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Dec 2002 19:31:59 +0000 (GMT)
-Received: from [IPv6:::ffff:67.104.121.121] ([IPv6:::ffff:67.104.121.121]:21510
-	"EHLO dtla2.teknuts.com") by linux-mips.org with ESMTP
-	id <S8225604AbSLWTb6>; Mon, 23 Dec 2002 19:31:58 +0000
-Received: from sohotower (adsl-66.218.38.74.dslextreme.com [66.218.38.74])
-	(authenticated)
-	by dtla2.teknuts.com (8.11.3/8.10.1) with ESMTP id gBNJVsE02783
-	for <linux-mips@linux-mips.org>; Mon, 23 Dec 2002 11:31:55 -0800
-From: "Robert Rusek" <robru@teknuts.com>
-To: <linux-mips@linux-mips.org>
-Subject: MIPS_RedHat7.3_Release-01.00 On SGI Indy, r5k IP22?
-Date: Mon, 23 Dec 2002 11:31:54 -0800
-Message-ID: <000701c2aab9$f3552370$0a01a8c0@sohotower>
-MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="----=_NextPart_000_0008_01C2AA76.E531E370"
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook, Build 10.0.4024
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1106
-Importance: Normal
-Return-Path: <robru@teknuts.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Dec 2002 19:49:23 +0000 (GMT)
+Received: from p508B4FAF.dip.t-dialin.net ([IPv6:::ffff:80.139.79.175]:38551
+	"EHLO p508B4FAF.dip.t-dialin.net") by linux-mips.org with ESMTP
+	id <S8225608AbSLWTtX>; Mon, 23 Dec 2002 19:49:23 +0000
+Received: from honk1.physik.uni-konstanz.de ([IPv6:::ffff:134.34.144.71]:2688
+	"EHLO honk1.physik.uni-konstanz.de") by ralf.linux-mips.org
+	with ESMTP id <S868139AbSLWTtV>; Mon, 23 Dec 2002 20:49:21 +0100
+Received: from bogon.sigxcpu.org (unknown [134.34.147.122])
+	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP id 3D3CF2BC2D
+	for <linux-mips@linux-mips.org>; Mon, 23 Dec 2002 20:45:50 +0100 (CET)
+Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
+	id 42C774ACCC; Mon, 23 Dec 2002 20:45:27 +0100 (CET)
+Date: Mon, 23 Dec 2002 20:45:27 +0100
+From: Guido Guenther <agx@sigxcpu.org>
+To: linux-mips@linux-mips.org
+Subject: Re: SGI Indy and sound
+Message-ID: <20021223194527.GB3302@bogon.ms20.nix>
+References: <23720.1040668079@myrtle.ukc.ac.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <23720.1040668079@myrtle.ukc.ac.uk>
+User-Agent: Mutt/1.4i
+Return-Path: <agx@sigxcpu.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1051
+X-archive-position: 1052
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robru@teknuts.com
+X-original-sender: agx@sigxcpu.org
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
-
-------=_NextPart_000_0008_01C2AA76.E531E370
-Content-Type: text/plain;
-	charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-
-Does anyone know if he MIPS_RedHat7.3_Release-01.00 will run on the SGI
-Indy, r5k IP22?  It is the release from mips.com that is made for the
-malta and atlas boards.  I am already running their 7.0 release but am
-not sure if the 7.3 v1.0 will run big edian?
- 
-Thanks. 
---
-Robert Rusek
- 
-
-------=_NextPart_000_0008_01C2AA76.E531E370
-Content-Type: text/html;
-	charset="US-ASCII"
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD>
-<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
-charset=3Dus-ascii">
-<TITLE>Message</TITLE>
-
-<META content=3D"MSHTML 6.00.2800.1106" name=3DGENERATOR></HEAD>
-<BODY>
-<DIV><FONT face=3DArial size=3D2><SPAN class=3D463462819-23122002>Does =
-anyone know if=20
-he MIPS_RedHat7.3_Release-01.00 will run on the&nbsp;SGI Indy, r5k =
-IP22?&nbsp;=20
-It is the release from mips.com that is made for the malta and atlas=20
-boards.&nbsp; I am already running their 7.0 release but am not sure if =
-the 7.3=20
-v1.0 will run big edian?</SPAN></FONT></DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN=20
-class=3D463462819-23122002></SPAN></FONT>&nbsp;</DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN=20
-class=3D463462819-23122002>Thanks.</SPAN></FONT><SPAN=20
-class=3D463462819-23122002><FONT face=3DArial =
-size=3D2>&nbsp;</FONT></SPAN></DIV>
-<DIV align=3Dleft><FONT face=3DArial size=3D2>--</FONT></DIV>
-<DIV align=3Dleft><FONT face=3DArial size=3D2>Robert Rusek</FONT></DIV>
-<DIV>&nbsp;</DIV></BODY></HTML>
-
-------=_NextPart_000_0008_01C2AA76.E531E370--
+On Mon, Dec 23, 2002 at 06:27:59PM +0000, Fred Barnes wrote:
+> Is anyone currently working on this ? I had a quick search for
+> information a while ago, but unlike the VINO spec, sound interface
+> documentation is proving illusive.
+modprobe hal2
+ -- Guido

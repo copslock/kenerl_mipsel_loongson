@@ -1,66 +1,80 @@
-Received:  by oss.sgi.com id <S42219AbQFINke>;
-	Fri, 9 Jun 2000 06:40:34 -0700
-Received: from mta02-svc.ntlworld.com ([62.253.162.42]:20943 "EHLO
-        mta02-svc.server.ntlworld.com") by oss.sgi.com with ESMTP
-	id <S42199AbQFINkJ>; Fri, 9 Jun 2000 06:40:09 -0700
-Received: from icserver.ichilton.co.uk ([62.252.236.211])
-          by mta02-svc.server.ntlworld.com
-          (InterMail vM.4.01.02.27 201-229-119-110) with ESMTP
-          id <20000609143943.BLQE10065.mta02-svc.server.ntlworld.com@icserver.ichilton.co.uk>;
-          Fri, 9 Jun 2000 14:39:43 +0000
-Received: from ian (ian.ichilton.local [192.168.0.8])
-	by icserver.ichilton.co.uk (8.10.2/8.10.1) with SMTP id e59DdIN01351;
-	Fri, 9 Jun 2000 14:39:22 +0100
-From:   "Ian Chilton" <mailinglist@ichilton.co.uk>
-To:     "Guido Guenther" <agx@bert.physik.uni-konstanz.de>,
-        "Ralf Baechle" <ralf@uni-koblenz.de>
-Cc:     "Linux-MIPS Mailing List" <linux-mips@oss.sgi.com>
-Subject: Linux on Indy
-Date:   Fri, 9 Jun 2000 14:39:20 +0100
-Message-ID: <NAENLMKGGBDKLPONCDDOGEBOCMAA.mailinglist@ichilton.co.uk>
+Received:  by oss.sgi.com id <S42223AbQFIOim>;
+	Fri, 9 Jun 2000 07:38:42 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:3144 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42199AbQFIOij>;
+	Fri, 9 Jun 2000 07:38:39 -0700
+Received: from thor ([207.246.91.243]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via SMTP id HAA24144
+	for <linux-mips@oss.sgi.com>; Fri, 9 Jun 2000 07:33:41 -0700 (PDT)
+	mail_from (jsk@tetracon-eng.net)
+Received: from localhost (localhost [127.0.0.1]) by thor (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id KAA01171; Fri, 9 Jun 2000 10:31:05 -0300
+Date:   Fri, 9 Jun 2000 10:31:05 -0300
+From:   "J. Scott Kasten" <jsk@tetracon-eng.net>
+To:     Ian Chilton <mailinglist@ichilton.co.uk>
+cc:     Linux-MIPS Mailing List <linux-mips@oss.sgi.com>
+Subject: Re: Linux on Indy
+In-Reply-To: <NAENLMKGGBDKLPONCDDOGEBOCMAA.mailinglist@ichilton.co.uk>
+Message-ID: <Pine.SGI.4.10.10006091025370.1120-100000@thor.tetracon-eng.net>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
-In-Reply-To: <20000527134830.A4057@bert.physik.uni-konstanz.de>
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4132.2800
-Importance: Normal
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hello,
 
-OK...I now have a 2nd disk in my Indy. I have read the MIPS/HOWTO, the
-SGI/Linux mini-HOWTO (by: Raju) and the Hard Hat 5.1 installation
-instructions, but I still haven't got a clue how to do this....
+Let's try and keep this discussion on the list as I'm going to be trying
+the same thing in a few weeks.
 
-I have an SGI Indy running Irix 6.5.8m (now with a 2nd hard disk).
-I also have a PC running Win98 and another running SuSE Linux.
+>From what I have observed, the 5.1 tarball has under the mipseb directory
+a minimal root file system with etc, sbin, lib, etc. in addition to the
+RedHat/RPMS directory.  I suspect that you will need to get that minimal
+root file system mounted, and then use that to run the install and explode
+the RPMS to the disk.  I'm further going to speculate that you will
+probably netboot the thing the first time and do an NFS mounted root to
+make that happen.  But again, this is pure speculation...
 
-I have got the hardhat-sgi-5.1tar.gz file...can't I just copy this to the
-Indy while running IRIX, and unpack from there?
+-S-
 
-Please could someone explain how I do this?
-(incl partitioning this new disk for Linux...I ran fx, but didn't have a
-clue how to use it...)
+--
 
+J. Scott Kasten
+Email: jsk AT tetracon-eng DOT net
 
-Thanks!
+"The only future you have is the one
+ you choose to make for yourself..."
 
+On Fri, 9 Jun 2000, Ian Chilton wrote:
 
-Bye for Now,
-
-Ian
-
-
-                     \|||/
-                     (o o)
- /----------------ooO-(_)-Ooo----------------\
- |  Ian Chilton                              |
- |  E-Mail : ian@ichilton.co.uk              |
- \-------------------------------------------/
+> Hello,
+> 
+> OK...I now have a 2nd disk in my Indy. I have read the MIPS/HOWTO, the
+> SGI/Linux mini-HOWTO (by: Raju) and the Hard Hat 5.1 installation
+> instructions, but I still haven't got a clue how to do this....
+> 
+> I have an SGI Indy running Irix 6.5.8m (now with a 2nd hard disk).
+> I also have a PC running Win98 and another running SuSE Linux.
+> 
+> I have got the hardhat-sgi-5.1tar.gz file...can't I just copy this to the
+> Indy while running IRIX, and unpack from there?
+> 
+> Please could someone explain how I do this?
+> (incl partitioning this new disk for Linux...I ran fx, but didn't have a
+> clue how to use it...)
+> 
+> 
+> Thanks!
+> 
+> 
+> Bye for Now,
+> 
+> Ian
+> 
+> 
+>                      \|||/
+>                      (o o)
+>  /----------------ooO-(_)-Ooo----------------\
+>  |  Ian Chilton                              |
+>  |  E-Mail : ian@ichilton.co.uk              |
+>  \-------------------------------------------/
+> 
+> 

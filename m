@@ -1,55 +1,96 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 Jan 2005 01:59:10 +0000 (GMT)
-Received: from rwcrmhc13.comcast.net ([IPv6:::ffff:204.127.198.39]:50834 "EHLO
-	rwcrmhc13.comcast.net") by linux-mips.org with ESMTP
-	id <S8225558AbVAOB7F>; Sat, 15 Jan 2005 01:59:05 +0000
-Received: from [192.168.1.4] (pcp05077810pcs.waldrf01.md.comcast.net[68.54.246.193])
-          by comcast.net (rwcrmhc13) with ESMTP
-          id <2005011501585801500d6264e>; Sat, 15 Jan 2005 01:58:59 +0000
-Message-ID: <41E87A18.8090807@gentoo.org>
-Date: Fri, 14 Jan 2005 21:04:08 -0500
-From: Kumba <kumba@gentoo.org>
-User-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 Jan 2005 18:42:37 +0000 (GMT)
+Received: from gw.voda.cz ([IPv6:::ffff:212.24.154.90]:21182 "EHLO
+	kojot.voda.cz") by linux-mips.org with ESMTP id <S8224839AbVAOSm3>;
+	Sat, 15 Jan 2005 18:42:29 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by kojot.voda.cz (Postfix) with ESMTP id 382B74C8E2
+	for <linux-mips@ftp.linux-mips.org>; Sat, 15 Jan 2005 19:42:28 +0100 (CET)
+Received: from kojot.voda.cz ([127.0.0.1])
+ by localhost (kojot [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 08440-10 for <linux-mips@ftp.linux-mips.org>;
+ Sat, 15 Jan 2005 19:42:26 +0100 (CET)
+Received: from [10.1.1.77] (unknown [10.1.1.77])
+	by kojot.voda.cz (Postfix) with ESMTP id EDD594B973
+	for <linux-mips@ftp.linux-mips.org>; Sat, 15 Jan 2005 19:42:25 +0100 (CET)
+Message-ID: <41E96411.90305@voda.cz>
+Date: Sat, 15 Jan 2005 19:42:25 +0100
+From: =?ISO-8859-2?Q?Tom_Vr=E1na?= <tom@voda.cz>
+Organization: VODA IT consulting
+User-Agent: Mozilla Thunderbird 0.6 (X11/20040502)
 X-Accept-Language: en-us, en
 MIME-Version: 1.0
-To: linux-mips@linux-mips.org
-CC: moreau francis <francis_moreau2000@yahoo.fr>
-Subject: Re: initrd support.
-References: <20050114091715.47318.qmail@web25107.mail.ukl.yahoo.com> <20050114154147.GM31149@rembrandt.csv.ica.uni-stuttgart.de>
-In-Reply-To: <20050114154147.GM31149@rembrandt.csv.ica.uni-stuttgart.de>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+To: linux-mips@ftp.linux-mips.org
+Subject: crosscompiling and 
+Content-Type: text/plain; charset=ISO-8859-2; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <kumba@gentoo.org>
+X-Virus-Scanned: by amavisd-new at voda.cz
+Return-Path: <tom@voda.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6922
+X-Orcpt: rfc822;linux-mips@ftp.linux-mips.org
+Original-Recipient: rfc822;linux-mips@ftp.linux-mips.org
+X-archive-position: 6923
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: tom@voda.cz
 Precedence: bulk
 X-list: linux-mips
 
-Thiemo Seufer wrote:
-> 
-> Actually, there are three:
-> - the generic initramfs method for compiled in initrds
+Hi,
 
-Is there any docs for this floating around outside of the blurb on the LMO wiki?
-
-Doing a few tests with this, I was unable to get a kernel to see the ramdisk. 
-  Despite there being an initramfs built into the kernel, there were no 
-"RAMDISK: Compressed ramdisk found at block 0" messages, or no "checking if 
-image is initramfs...it isn't (no cpio magic); looks like an initrd" messages 
-that I've commonly seen with built-in ramdisks.
-
-I figure in the end, either the problem is PEBKAC, invalid kernel command line 
-params (root=/dev/ram0?), or broken code.
+I'm just hopelesly stuck, trying to make a kernel 2.4.27 for mips SoC 
+ADM5120 (MIPS 4Kc). I have the code in a 2.4.18 kernel that I'm able to 
+compile. With the code merged in 2.4.27 most of the stuff works, but I 
+get the following assembler errors. Like if it doesn't recognize what's 
+C and what assembler code ? I am using gcc3.3 toolchain built with 
+uclibc with 2.4.27 kernel headers. and I do appreciate any help....
+   
+          Tom
 
 
---Kumba
+mipsel-linux-uclibc-gcc  -D__KERNEL__ 
+-I/store/devel/adm/linux-2.4.27-mipscvs-20050114/include  -c -o 
+mipsIRQ.o mipsIRQ.S
+/store/devel/adm/linux-2.4.27-mipscvs-20050114/include/asm/mipsregs.h: 
+Assembler messages:
+/store/devel/adm/linux-2.4.27-mipscvs-20050114/include/asm/mipsregs.h:875: 
+Error: unrecognized opcode `static inline void tlb_probe(void)'
+/store/devel/adm/linux-2.4.27-mipscvs-20050114/include/asm/mipsregs.h:876: 
+Warning: rest of line ignored; first ignored character is `{'
+/store/devel/adm/linux-2.4.27-mipscvs-20050114/include/asm/mipsregs.h:877: 
+Error: unrecognized opcode `do {}while(0)'
+/store/devel/adm/linux-2.4.27-mipscvs-20050114/include/asm/mipsregs.h:878: 
+Error: unrecognized opcode `__asm__ __volatile__('
+/store/devel/adm/linux-2.4.27-mipscvs-20050114/include/asm/mipsregs.h:879: 
+Warning: rest of line ignored; first ignored character is `"'
+/store/devel/adm/linux-2.4.27-mipscvs-20050114/include/asm/mipsregs.h:880: 
+Warning: rest of line ignored; first ignored character is `"'
+/store/devel/adm/linux-2.4.27-mipscvs-20050114/include/asm/mipsregs.h:881: 
+Warning: rest of line ignored; first ignored character is `"'
+/store/devel/adm/linux-2.4.27-mipscvs-20050114/include/asm/mipsregs.h:882: 
+Error: unrecognized opcode `do {}while(0)'
+/store/devel/adm/linux-2.4.27-mipscvs-20050114/include/asm/mipsregs.h:883: 
+Warning: rest of line ignored; first ignored character is `}'
+/store/devel/adm/linux-2.4.27-mipscvs-20050114/include/asm/mipsregs.h:885: 
+Error: unrecognized opcode `static inline void tlb_read(void)'
+/store/devel/adm/linux-2.4.27-mipscvs-20050114/include/asm/mipsregs.h:886: 
+Warning: rest of line ignored; first ignored character is `{'
+/store/devel/adm/linux-2.4.27-mipscvs-20050114/include/asm/mipsregs.h:887: 
+Error: unrecognized opcode `do {}while(0)'
+/store/devel/adm/linux-2.4.27-mipscvs-20050114/include/asm/mipsregs.h:888: 
+Error: unrecognized opcode `__asm__ __volatile__('
+/store/devel/adm/linux-2.4.27-mipscvs-20050114/include/asm/mipsregs.h:889: 
+Warning: rest of line ignored; first ignored character is `"'
+/store/devel/adm/linux-2.4.27-mipscvs-20050114/include/asm/mipsregs.h:890: 
+Warning: rest of line ignored; first ignored character is `"'
+/store/devel/adm/linux-2.4.27-mipscvs-20050114/include/asm/mipsregs.h:891: 
+Warning: rest of line ignored; first ignored character is `"'
+---- SNIP ---- (few hundred more complaints from other included header 
+files)
 
 -- 
-"Such is oft the course of deeds that move the wheels of the world: small 
-hands do them because they must, while the eyes of the great are elsewhere." 
---Elrond
+ Tomas Vrana  <tom@voda.cz>
+ --------------------------
+ VODA IT consulting, Borkovany 48, 691 75
+ http://www.voda.cz/
+ phone: +420 519 419 416 mobile: +420 603 469 305 UIN: 105142752

@@ -1,123 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Dec 2003 09:15:41 +0000 (GMT)
-Received: from moutng.kundenserver.de ([IPv6:::ffff:212.227.126.184]:18631
-	"EHLO moutng.kundenserver.de") by linux-mips.org with ESMTP
-	id <S8225363AbTLQJPj>; Wed, 17 Dec 2003 09:15:39 +0000
-Received: from [212.227.126.208] (helo=mrelayng.kundenserver.de)
-	by moutng.kundenserver.de with esmtp (Exim 3.35 #1)
-	id 1AWXmL-000142-00
-	for linux-mips@linux-mips.org; Wed, 17 Dec 2003 10:15:37 +0100
-Received: from [80.129.135.60] (helo=create.4g)
-	by mrelayng.kundenserver.de with asmtp (Exim 3.35 #1)
-	id 1AWXmL-0002wr-00
-	for linux-mips@linux-mips.org; Wed, 17 Dec 2003 10:15:37 +0100
-Received: from [62.254.210.162] (helo=ftp.linux-mips.org)
-	by mxng05.kundenserver.de with esmtp (Exim 3.35 #1)
-	id 1AOyml-0005vv-00
-	for bruno.randolf@4g-systems.biz; Wed, 26 Nov 2003 13:28:47 +0100
-Received: from localhost.localdomain ([IPv6:::ffff:127.0.0.1]:17289 "EHLO
-	ftp.linux-mips.org") by linux-mips.org with ESMTP
-	id <S8225346AbTKZM2p>; Wed, 26 Nov 2003 12:28:45 +0000
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Nov 2003 12:28:25 +0000 (GMT)
-Received: from moutng.kundenserver.de ([IPv6:::ffff:212.227.126.186]:37325
-	"EHLO moutng.kundenserver.de") by linux-mips.org with ESMTP
-	id <S8225339AbTKZM2N>; Wed, 26 Nov 2003 12:28:13 +0000
-Received: from [212.227.126.208] (helo=mrelayng.kundenserver.de)
-	by moutng.kundenserver.de with esmtp (Exim 3.35 #1)
-	id 1AOymB-0007NM-00
-	for linux-mips@linux-mips.org; Wed, 26 Nov 2003 13:28:11 +0100
-Received: from [80.129.142.67] (helo=create.4g)
-	by mrelayng.kundenserver.de with asmtp (Exim 3.35 #1)
-	id 1AOymB-0004ZP-00
-	for linux-mips@linux-mips.org; Wed, 26 Nov 2003 13:28:11 +0100
-From: Bruno Randolf <bruno.randolf@4g-systems.biz>
-Organization: 4G Mobile Systeme
-To: linux-mips@linux-mips.org
-Subject: au1000_eth LEDs for mtx-1
-Date: Wed, 17 Dec 2003 10:15:37 +0100
-User-Agent: KMail/1.5.3
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Dec 2003 09:54:39 +0000 (GMT)
+Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:53900 "EHLO
+	witte.sonytel.be") by linux-mips.org with ESMTP id <S8225363AbTLQJyi>;
+	Wed, 17 Dec 2003 09:54:38 +0000
+Received: from waterleaf.sonytel.be (localhost [127.0.0.1])
+	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id hBH9sVQG009987;
+	Wed, 17 Dec 2003 10:54:34 +0100 (MET)
+Date: Wed, 17 Dec 2003 10:54:32 +0100 (MET)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: Bruno Randolf <bruno.randolf@4g-systems.biz>
+cc: Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: Re: au1000/mtx-1 patch
+In-Reply-To: <200312171014.51677.bruno.randolf@4g-systems.biz>
+Message-ID: <Pine.GSO.4.58.0312171053590.24864@waterleaf.sonytel.be>
+References: <200312171014.51677.bruno.randolf@4g-systems.biz>
 MIME-Version: 1.0
-X-Provags-ID: kundenserver.de abuse@kundenserver.de auth:d41044fba7cf33548d8f98fdbdd6d515
-X-archive-position: 3678
-X-ecartis-version: Ecartis v1.0.0
-X-original-sender: bruno.randolf@4g-systems.biz
-Precedence: bulk
-X-list: linux-mips
-Content-Type: Multipart/Mixed;
-  boundary="Boundary-00=_56B4/0b+CRI6XUW"
-Message-Id: <200312171015.37345.bruno.randolf@4g-systems.biz>
-X-Provags-ID: kundenserver.de abuse@kundenserver.de auth:d41044fba7cf33548d8f98fdbdd6d515
-Return-Path: <bruno.randolf@4g-systems.biz>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3784
+X-archive-position: 3785
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bruno.randolf@4g-systems.biz
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
+On Wed, 17 Dec 2003, Bruno Randolf wrote:
+> i send this a second time since my last request from a month ago was ignored.
+> it would be really good if this quite trivial but important (whithout it our
+> board wont work correctly) patch would make it into the final 2.4 kernel.
+>
+> could someone please apply the attached patch to the linux_2_4 branch. it
+> fixes the board initialization for the mtx-1 board, makes the naming more
+> consistent and changes my e-mail address.
 
---Boundary-00=_56B4/0b+CRI6XUW
-Content-Type: Text/Plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Content-Description: clearsigned data
-Content-Disposition: inline
+Always make sure Ralf's address is in the `To:' header.
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA1
+Gr{oetje,eeting}s,
 
-this is also a patch i sent in a month ago:
+						Geert
 
-hi again!
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-please also consider this small patch for enabling the traffic indication LEDs
-of au1000_eth for the mtx-1 board.
-
-thanks!
-
-bruno
-
-- --
-4G Systeme GmbH
-Am Sandtorkai 71
-20457 Hamburg
-fon: +49 (0)40 / 48 40 33 28
-fax: +49 (0)40 / 48 40 33 30
-mail: bruno.randolf@4g-systems.biz
-
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.3 (GNU/Linux)
-
-iD8DBQE/4B65fg2jtUL97G4RAskLAJ4o7vjuJ30wV/xnYCqebkwWqmPZpQCfc/+c
-zOVkCWZMQK7LMTWKgozboH0=
-=eKJn
------END PGP SIGNATURE-----
-
---Boundary-00=_56B4/0b+CRI6XUW
-Content-Type: text/x-diff;
-  charset="us-ascii";
-  name="au1000_mtx_led.diff"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: attachment;
-	filename="au1000_mtx_led.diff"
-
---- /data/kernel/mips-2.4.23-rc5/drivers/net/au1000_eth.c	2003-11-26 10:51:55.000000000 +0100
-+++ drivers/net/au1000_eth.c	2003-11-26 13:16:26.000000000 +0100
-@@ -241,7 +241,11 @@
- 	mdelay(1);
- 
- 	/* set up LEDs to correct display */
-+#ifdef CONFIG_MIPS_MTX1
-+	mdio_write(dev, phy_addr, 17, 0xff80);
-+#else
- 	mdio_write(dev, phy_addr, 17, 0xffc0);
-+#endif
- 
- 	if (au1000_debug > 4)
- 		dump_mii(dev, phy_addr);
-
---Boundary-00=_56B4/0b+CRI6XUW--
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

@@ -1,74 +1,111 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Dec 2003 08:58:15 +0000 (GMT)
-Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:50575 "EHLO
-	witte.sonytel.be") by linux-mips.org with ESMTP id <S8225405AbTLTI6G>;
-	Sat, 20 Dec 2003 08:58:06 +0000
-Received: from teasel.sonytel.be (localhost [127.0.0.1])
-	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id hBK8vxQF026221;
-	Sat, 20 Dec 2003 09:57:59 +0100 (MET)
-Received: (from dimitri@localhost)
-	by teasel.sonytel.be (8.9.3+Sun/8.9.3) id JAA29180;
-	Sat, 20 Dec 2003 09:58:00 +0100 (MET)
-Date: Sat, 20 Dec 2003 09:58:00 +0100
-From: Dimitri Torfs <dimitri@sonycom.com>
-To: samavarthy c <samavarthy@hotmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Dec 2003 09:53:15 +0000 (GMT)
+Received: from web10104.mail.yahoo.com ([IPv6:::ffff:216.136.130.54]:29096
+	"HELO web10104.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S8225405AbTLTJxO>; Sat, 20 Dec 2003 09:53:14 +0000
+Message-ID: <20031220095312.38822.qmail@web10104.mail.yahoo.com>
+Received: from [128.107.253.43] by web10104.mail.yahoo.com via HTTP; Sat, 20 Dec 2003 09:53:12 GMT
+Date: Sat, 20 Dec 2003 09:53:12 +0000 (GMT)
+From: =?iso-8859-1?q?karthikeyan=20natarajan?= <karthik_96cse@yahoo.com>
+Subject: Re: Regarding branch delay instructions in R4000
+To: Michael Uhler <uhler@mips.com>
 Cc: linux-mips@linux-mips.org
-Subject: Re: USB on MIPS
-Message-ID: <20031220085800.GA29155@sonycom.com>
-References: <BAY7-F118dxVHYEuZFk0002aaf6@hotmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <BAY7-F118dxVHYEuZFk0002aaf6@hotmail.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <dimitri@sonycom.com>
+In-Reply-To: <1071816092.30316.8.camel@gmu-linux>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <karthik_96cse@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3804
+X-archive-position: 3805
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dimitri@sonycom.com
+X-original-sender: karthik_96cse@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Dec 20, 2003 at 12:52:49PM +0530, samavarthy c wrote:
-> The MediaQ controller chip does not sit on the pci bus. The specification 
-> says that the chip address space ranges from xxx00000h to xxx80000h.
+Hi gmu,
+
+    Have got a one more doubt...
+MIPS stands for Microprocessor without Interlocked
+Pipeline Stages.
+    But, in the "R4400_Uman_book_Ed2.pdf" doc, it is
+mentioned that the CPU general registers are 
+interlocked. I am bit confused after reading this doc.
+    Would be great if you clarify this doubt too...
+
+Thanks much,
+-karthi
+
+> The MIPS architecture specifies a single delay slot
+> after a branch
+> or jump.  The fact that the R4000 implementation
+> (and pretty much
+> any of the ones following) had a pipeline in which
+> more instructions
+> had already entered the pipe before the branch is
+> resolved is not
+> relevant to the architecture specification.  In the
+> case you
+> mention, a single instruction is executed after the
+> branch, as
+> architecturally required, and any subsequent
+> instructions in the
+> pipe are killed.
 > 
-> This address space is broken into three regions.
+> /gmu
 > 
-> 1. The lower 256 Kbyte region (xxx00000h to xxx40000h) maps to the 256 
-> Kbyte internal SRAM and contains the graphics frame buffer.
-> 2. The next region (xxx40000h to xxx42000h) is the 8 Kbyte register space, 
-> which is located just above the frame buffer.
-> 3. The third region, (xxx42000h to xxx80000h) consisting of the remaining 
-> 248 Kbyte of address space is also mapped to the upper 248 Kbyte of 
-> internal SRAM. This address space is used to access non-graphics frame 
-> buffer memory such as buffers for USB.
+> On Thu, 2003-12-18 at 22:01, karthikeyan natarajan
+> wrote:
+> > Hi All,
+> > 
+> >     If this is not a right forum to ask this
+> Question,
+> > 
+> > please redirect me to the appropriate one...
+> >     Since R4000 is using the 8 stage pipeline,
+> three
+> > instructions are already entered into the pipeline
+> > when the branch instruction is executed. Out of
+> these
+> > three instructions, the first instruction will be 
+> > executed for sure.
+> > 
+> > My question is:
+> >     What happens to the other two instruction that
+> are
+> > in the delay slots? are they nullified?
+> >     Could anyone please shed some light on this.
+> > 
+> > Thanks much,
+> > -karthi
+> > 
+> > =====
+> > The expert at anything was once a beginner
+> > 
+> >
+>
+________________________________________________________________________
+> > Yahoo! Messenger - Communicate instantly..."Ping" 
+> > your friends today! Download Messenger Now 
+> > http://uk.messenger.yahoo.com/download/index.html
+> > 
+> -- 
+> Michael Uhler, Chief Technology Officer
+> MIPS Technologies, Inc.  Email: uhler@mips.com 
+> Pager: uhler_p@mips.com
+> 1225 Charleston Road     Voice:  (650)567-5025  FAX:
+>   (650)567-5225
+> Mountain View, CA 94043  Mobile: (650)868-6870 
+> Admin: (650)567-5085
 > 
-> So The MediaQ is supposed to use the third region for storing the TD's and 
-> ED's basically its HCCA area. On MIPS VR4131 the start address of the third 
-> region would be 0xAA042000h. This is what I think I am supposed to fill in 
-> the HCCA register. Am I right?
+>  
 
-Are you saying that this USB OHCI chip can only access its internal
-SRAM ? In that case not only the HCCA area but all the TDs, EDs and
-the data pointed to by the descriptors should be allocated there
-(basically all data that would be normally accessed by the OHCI chip
-as pci master).
+=====
+The expert at anything was once a beginner
 
-> error "controller already in use". The ohci_base value passed was 
-> 0xAA040500 which is where the Host controllers registers of MediaQ are 
-> mapped.
-
-Did you check the mapped address is correct (e.g. by reading the
-revision field of the ohci_regs) ?
-
-Dimitri
-
--- 
-Dimitri Torfs             |  NSCE 
-dimitri.torfs@sonycom.com |  Sint Stevens Woluwestraat 55
-tel: +32 2 2908451        |  1130 Brussel
-fax: +32 2 7262686        |  Belgium
+________________________________________________________________________
+Yahoo! Messenger - Communicate instantly..."Ping" 
+your friends today! Download Messenger Now 
+http://uk.messenger.yahoo.com/download/index.html

@@ -1,41 +1,61 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f76HR9I18284
-	for linux-mips-outgoing; Mon, 6 Aug 2001 10:27:09 -0700
-Received: from dea.waldorf-gmbh.de (u-145-10.karlsruhe.ipdial.viaginterkom.de [62.180.10.145])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f76HR7V18278
-	for <linux-mips@oss.sgi.com>; Mon, 6 Aug 2001 10:27:07 -0700
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f76HPvu21492;
-	Mon, 6 Aug 2001 19:25:57 +0200
-Date: Mon, 6 Aug 2001 19:25:57 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Gabriel Dos_Reis <gdosreis@sophia.inria.fr>
-Cc: Andreas Jaeger <aj@suse.de>, "H . J . Lu" <hjl@lucon.org>,
-   Eric Christopher <echristo@redhat.com>, gcc@gcc.gnu.org,
-   linux-mips@oss.sgi.com, GNU C Library <libc-alpha@sourceware.cygnus.com>
-Subject: Re: Changing WCHAR_TYPE from "long int" to "int"?
-Message-ID: <20010806192557.A21485@bacchus.dhis.org>
-References: <20010805094806.A3146@lucon.org> <20010806115913.B17179@bacchus.dhis.org> <hoofptjy6k.fsf@gee.suse.de> <20010806182050.A21142@bacchus.dhis.org> <15214.52694.346958.536105@perceval.inria.fr>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <15214.52694.346958.536105@perceval.inria.fr>; from gdosreis@sophia.inria.fr on Mon, Aug 06, 2001 at 07:04:36PM +0200
-X-Accept-Language: de,en,fr
+	by oss.sgi.com (8.11.2/8.11.3) id f76I6bN19586
+	for linux-mips-outgoing; Mon, 6 Aug 2001 11:06:37 -0700
+Received: from ex2k.pcs.psdc.com ([209.125.203.85])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f76I6ZV19582
+	for <linux-mips@oss.sgi.com>; Mon, 6 Aug 2001 11:06:36 -0700
+content-class: urn:content-classes:message
+Subject: set_bit() function.
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Date: Mon, 6 Aug 2001 11:04:38 -0700
+X-MimeOLE: Produced By Microsoft Exchange V6.0.4418.65
+Message-ID: <84CE342693F11946B9F54B18C1AB837B0A21EB@ex2k.pcs.psdc.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: set_bit() function.
+Thread-Index: AcEeokFaRAkLCp4hQ8eLxQFGPnYOJw==
+From: "Steven Liu" <stevenliu@psdc.com>
+To: <linux-mips@oss.sgi.com>
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id f76I6aV19583
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Aug 06, 2001 at 07:04:36PM +0200, Gabriel Dos_Reis wrote:
+Hi, ALL:
 
-> | > I'm confused.  The ABI defines it to be long - and he should change it
-> | > nevertheless?
-> | 
-> | It's defined as a "long", not "long int" so we're obviously off by a tiny
-> | bit.
-> 
-> As far as far C++ is concerned, there is no pedantic difference
-> between "long" and "long int" and "signed long int".
+I have a question regarding the function set_bit() in
+linux/include/asm-mips/bitops.h for MIPS 1(R3000).
 
-Guess why I said a tiny bit :-)
+extern __inline__ void set_bit(int nr, void * addr)
+{
+	int	mask;
+	int	*a = addr;
+	__bi_flags;
 
-  Ralf
+	a += nr >> 5;                        // <---- why shits right 5
+bits? 
+	mask = 1 << (nr & 0x1f);
+	__bi_save_flags(flags);
+	__bi_cli();
+	*a |= mask;
+	__bi_restore_flags(flags);
+}
+
+In
+
+extern __inline__ int test_bit(int nr, const void *addr)
+{
+	return ((1UL << (nr & 31)) & (((const unsigned int *) addr)[nr
+>> 5])) != 0;
+}
+
+addr is always passed in as a pointer to an integer. Why does it use
+array [nr >>5]?
+
+Any help is greatly appreciated.
+
+Thanks.
+
+Steven Liu

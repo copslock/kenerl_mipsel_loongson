@@ -1,72 +1,80 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA12432; Thu, 16 May 1996 00:05:53 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id CAA17152; Thu, 16 May 1996 02:21:25 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id HAA22857 for linux-list; Thu, 16 May 1996 07:04:27 GMT
-Received: from neteng.engr.sgi.com (neteng.engr.sgi.com [192.26.80.10]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA22842 for <linux@cthulhu.engr.sgi.com>; Thu, 16 May 1996 00:04:24 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA12382 for <lmlinux@neteng.engr.sgi.com>; Thu, 16 May 1996 00:04:23 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [150.166.76.30]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA22827; Thu, 16 May 1996 00:04:21 -0700
-Received: from caipfs.rutgers.edu by sgi.sgi.com via ESMTP (950405.SGI.8.6.12/910110.SGI)
-	 id AAA15579; Thu, 16 May 1996 00:04:19 -0700
-Received: from huahaga.rutgers.edu (huahaga.rutgers.edu [128.6.155.53]) by caipfs.rutgers.edu (8.6.9+bestmx+oldruq+newsunq+grosshack/8.6.9) with ESMTP id CAA22273; Thu, 16 May 1996 02:53:50 -0400
-Received: (davem@localhost) by huahaga.rutgers.edu (8.6.9+bestmx+oldruq+newsunq+grosshack/8.6.9) id CAA12098; Thu, 16 May 1996 02:53:50 -0400
-Date: Thu, 16 May 1996 02:53:50 -0400
-Message-Id: <199605160653.CAA12098@huahaga.rutgers.edu>
-From: "David S. Miller" <davem@caip.rutgers.edu>
-To: lmlinux@neteng.engr.sgi.com
-CC: torvalds@cs.helsinki.fi, sparclinux-cvs@caipfs.rutgers.edu, alan@cymru.net
-Subject: lmbench with new checksum code...
+Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id JAA01804 for linux-list; Thu, 16 May 1996 09:20:00 GMT
+Received: from neteng.engr.sgi.com (neteng.engr.sgi.com [192.26.80.10]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id CAA01794 for <linux@cthulhu.engr.sgi.com>; Thu, 16 May 1996 02:19:57 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id CAA17105 for <linux@neteng.engr.sgi.com>; Thu, 16 May 1996 02:19:57 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [150.166.76.30]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id CAA01784; Thu, 16 May 1996 02:19:54 -0700
+Received: from snowcrash.cymru.net by sgi.sgi.com via ESMTP (950405.SGI.8.6.12/910110.SGI)
+	 id CAA21099; Thu, 16 May 1996 02:19:50 -0700
+Received: (from alan@localhost) by snowcrash.cymru.net (8.7.1/8.7.1) id KAA08950; Thu, 16 May 1996 10:09:19 +0100
+From: Alan Cox <alan@cymru.net>
+Message-Id: <199605160909.KAA08950@snowcrash.cymru.net>
+Subject: Re: mpp kernel interface
+To: lm@gate1-neteng.engr.sgi.com (Larry McVoy)
+Date: Thu, 16 May 1996 10:09:17 +0100 (BST)
+Cc: tridge@cs.anu.edu.au, linux-mc@arvidsjaur.anu.edu.au,
+        Linus.Torvalds@cs.Helsinki.FI, linux@neteng.engr.sgi.com,
+        alan@cymru.net
+In-Reply-To: <199605152243.PAA19394@neteng.engr.sgi.com> from "Larry McVoy" at May 15, 96 03:43:19 pm
+X-Mailer: ELM [version 2.4 PL24]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+> : With 30 people now on this list there must be someone else who wants
+> : to say something ...
 
-It's not as hot as I wanted it to be, ho hum... Just for flavor I've
-included numbers for my 115MHZ hypersparc running SunOS so no none
-forgets that this is all running on a shitty SparcClassic. ;-)
+I've not actually seen anything from the list (should be going to ukuu)
 
-I'm probably stalling the chip stupidly in my code or not touching the
-cache lines in the correct order, ugh this is pissing me off, I'll
-check it out some more tomorrow when my head doesn't hurt so much...
-I doubt I can get 2mb/s more out of my code to beat solaris, sigh,
-where the heck could all this overhead possibly be???
+> 	SMP vs cluster?
 
-                    L M B E N C H  1 . 0   S U M M A R Y
-                    ------------------------------------
+Why vs, why not AND. An SMP box is just a couple of well connected nodes.
 
-            Processor, Processes - times in microseconds
-            --------------------------------------------
-Host                 OS  Mhz    Null    Null  Simple /bin/sh Mmap 2-proc 8-proc
-                             Syscall Process Process Process  lat  ctxsw  ctxsw
---------- ------------- ---- ------- ------- ------- ------- ---- ------ ------
-trombetas  Linux 1.99.3   50      15    8.8K   40.9K     75K  350     83    100
-geneva.ru     SunOS 5.5   50      31   33.7K  148.2K    274K  596    174    205
-negro.rut SunOS 4.1.3_U   49     124   18.3K   63.9K    110K  470    152    262
-huahaga.r   SunOS 4.1.4  115      32   10.4K   34.3K     59K  169     96    104
+> The hard one is sockets.  I've never seen a good solution to that.
+> I'll come back to that.  First, I want to go through the other ones and
+> offer suggestions.
 
-            *Local* Communication latencies in microseconds
-            -----------------------------------------------
-Host                 OS  Pipe       UDP    RPC/     TCP    RPC/
-                                            UDP             TCP
---------- ------------- ------- ------- ------- ------- -------
-trombetas  Linux 1.99.3     295    1016    1756    1408    2564
-geneva.ru     SunOS 5.5     530    1563    2080    1354    2398
-negro.rut SunOS 4.1.3_U     890    1375    2287    1573    2804
-huahaga.r   SunOS 4.1.4     306     616     956     667    1161
+There are several approaches to this. One is to treat it like a device so
+you open a socket on a given machine and it like the device doesnt walk. The
+other is to bend IP mobile to the needs. That would probably want something
+like an old 486 as a network FEP.
 
-            *Local* Communication bandwidths in megabytes/second
-            ----------------------------------------------------
-Host                 OS Pipe  TCP  File   Mmap  Bcopy  Bcopy  Mem   Mem
-                                  reread reread (libc) (hand) read write
---------- ------------- ---- ---- ------ ------ ------ ------ ---- -----
-trombetas  Linux 1.99.3    8  4.8   25.0   17.4     18     24   41    36
-geneva.ru     SunOS 5.5    8  7.0   12.6   19.5     18     18   40    36
-negro.rut SunOS 4.1.3_U    4  2.0   19.5    8.2     18     24   41    36
-huahaga.r   SunOS 4.1.4   14  5.3   30.2   19.9     20     22   48    37
+> do remote processes.  For the PID name space, make pid_t a 32 bit int,
+> make the top 16 bits the host part, and the bottom 16 bits the pid part.
+> (We need to come back to the host part when we discuss process migration.)
+> A host part of "0" means "this host".  So a "kill -HUP 1" will always
+> restart init.
 
-            Memory latencies in nanoseconds
-            (WARNING - may not be correct, check graphs)
-            --------------------------------------------
-Host                 OS   Mhz  L1 $   L2 $    Main mem    TLB    Guesses
---------- -------------   ---  ----   ----    --------    ---    -------
-trombetas  Linux 1.99.3    50    20    170         180    600    No L2 cache?
-geneva.ru     SunOS 5.5    49     -      -           -      -    Bad mhz?
-negro.rut SunOS 4.1.3_U    49    20    175         183    659    No L2 cache?
-huahaga.r   SunOS 4.1.4   115    17     17         510    842    No L1 cache?
+We can also do this for devices so you can mknod a printer on a different 
+node.
+
+> Devices I sort of punt on.  For device access, I would just use the 
+> remote mag tape protocol (or something very, very similar) so that all
+> of the locking, etc., still works - since you ship all the requests to
+> the system w/ the device, that kernel can implement the locks.  Any
+> issues here?
+
+The vfs issues fairly controlled requests to the FS layer, and the device
+layer also is fairly clean. The MOSIX project intercepted stuff at this
+level --- so a remote device turns the request into a message. The system
+also accounted messages so a process like a find would migrate across cpus
+as it changed the disk it was searching.
+
+> we have the talent right here on this list to do it.  So I'll bow out of
+> commenting on it, other than to say make sure mmap works right.
+
+mmap is foul. SYS5 shared memory is just as bad too. 
+
+> Sockets.  This is a hard problem.  Some people think that a socket
+> should stick around after the CPU that created the socket has crashed.
+
+If you are having a single apparent IP address this is true for TCP, you can
+on spotting a down host just send an RST and go into TIME_WAIT to preserve
+the corruption protection properties of TCP.
+
+> is a big performance win.  Coming from a network cluster, you'll get that
+> without having to work for it - the other way frequently is harder.
+
+It also means more people can play

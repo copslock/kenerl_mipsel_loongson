@@ -1,48 +1,57 @@
 Received: from deliverator.sgi.com (deliverator.sgi.com [204.94.214.10])
-	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id CAA09898
-	for <pstadt@stud.fh-heilbronn.de>; Sun, 22 Aug 1999 02:42:30 +0200
-Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id RAA10151; Sat, 21 Aug 1999 17:38:55 -0700 (PDT)
+	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id EAA22266
+	for <pstadt@stud.fh-heilbronn.de>; Sun, 22 Aug 1999 04:03:23 +0200
+Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id SAA14977; Sat, 21 Aug 1999 18:59:00 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id RAA54477
+	id SAA43338
 	for linux-list;
-	Sat, 21 Aug 1999 17:35:43 -0700 (PDT)
+	Sat, 21 Aug 1999 18:52:48 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from sgindia.newdelhi.sgi.com (newdelhi.sgi.com [134.14.90.2])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id RAA59443
+	via ESMTP id SAA48082
 	for <linux@cthulhu.engr.sgi.com>;
-	Sat, 21 Aug 1999 17:35:40 -0700 (PDT)
-	mail_from (mrbill@feeding.frenzy.com)
-Received: from feeding.frenzy.com (feeding.frenzy.com [209.198.142.194]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id RAA06643
-	for <linux@cthulhu.engr.sgi.com>; Sat, 21 Aug 1999 17:35:38 -0700 (PDT)
-	mail_from (mrbill@feeding.frenzy.com)
-Received: (from mrbill@localhost)
-	by feeding.frenzy.com (8.8.8/8.8.7) id TAA19195;
-	Sat, 21 Aug 1999 19:35:37 -0500 (CDT)
-Message-ID: <19990821193536.A16860@frenzy.com>
-Date: Sat, 21 Aug 1999 19:35:36 -0500
-From: Bill Bradford <mrbill@frenzy.com>
-To: linux@cthulhu.engr.sgi.com
-Subject: Indigo2 status?
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.91.1i
+	Sat, 21 Aug 1999 18:52:41 -0700 (PDT)
+	mail_from (raju@bhairavi.newdelhi.sgi.com)
+Received: from bhairavi.newdelhi.sgi.com (bhairavi.newdelhi.sgi.com [134.14.90.52]) by sgindia.newdelhi.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id HAA64294 for <linux@cthulhu.engr.sgi.com>; Sun, 22 Aug 1999 07:07:54 +0530 (IST)
+Received: (from raju@localhost)
+	by bhairavi.newdelhi.sgi.com (8.9.3/8.9.3) id HAA23977;
+	Sun, 22 Aug 1999 07:34:20 +0530 (IST)
+Date: Sun, 22 Aug 1999 07:34:20 +0530 (IST)
+Message-Id: <199908220204.HAA23977@bhairavi.newdelhi.sgi.com>
+From: Raj Mathur <raju@sgi.com>
+To: "Linux" <linux@cthulhu.engr.sgi.com>
+Subject: Root Password
+In-Reply-To: <001401beebfc$4eab7ce0$a5fab3d1@billholmes>
+References: <001401beebfc$4eab7ce0$a5fab3d1@billholmes>
+X-Mailer: VM 6.31 under 20.2 XEmacs Lucid
+Reply-To: raju@sgi.com
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Has anyone heard anything about the status of SGI Linux on an Indigo2?
-I've got this box here with 128mb and Extreme graphics, and am wishing
-I could fire up Linux on it....
+I normally wouldn't reply to an HTML message, but this is a special
+case.
 
--- 
-Bill Bradford * mrbill@sunhelp.org * http://www.sunhelp.org
-------------------------------------------------------------
->From a Sun Microsystems bug report (#4102680):
-"Workaround: don't pound on the mouse like a wild monkey."
+Run the attached exploit to get a root shell, set TERM and edit
+/etc/passwd or /etc/shadow and remove the password.
+
+[Exploit suppresed]
+
+Regards,
+
+-- Raju
+
+>>>>> "William" == William Holmes <palsoft@earthlink.net> writes:
+
+    William> [1 <text/plain; iso-8859-1 (quoted-printable)>] I just
+    William> got a O2 system and the root password is set and I have
+    William> no idea what it is. System runnig fine with IRIX 6.3 but
+    William> no CD'S. I know this doesn't have any thing to do with
+    William> LINUX but can some one help?
+
+    William> Thanks In Advance
+
+    William> William Holmes [2 <text/html; iso-8859-1
+    William> (quoted-printable)>]

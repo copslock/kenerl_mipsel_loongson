@@ -1,88 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Aug 2003 23:50:23 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:1522 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8225281AbTHFWuV>;
-	Wed, 6 Aug 2003 23:50:21 +0100
-Received: from mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id PAA21379
-	for <linux-mips@linux-mips.org>; Wed, 6 Aug 2003 15:50:19 -0700
-Message-ID: <3F31862A.F2162035@mvista.com>
-Date: Wed, 06 Aug 2003 16:50:18 -0600
-From: Michael Pruznick <michael_pruznick@mvista.com>
-Reply-To: michael_pruznick@mvista.com
-Organization: MontaVista
-X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.20 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Aug 2003 02:44:41 +0100 (BST)
+Received: from law15-f97.law15.hotmail.com ([IPv6:::ffff:64.4.23.97]:45578
+	"EHLO hotmail.com") by linux-mips.org with ESMTP
+	id <S8225281AbTHGBoj>; Thu, 7 Aug 2003 02:44:39 +0100
+Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
+	 Wed, 6 Aug 2003 18:44:30 -0700
+Received: from 202.145.53.89 by lw15fd.law15.hotmail.msn.com with HTTP;
+	Thu, 07 Aug 2003 01:44:30 GMT
+X-Originating-IP: [202.145.53.89]
+X-Originating-Email: [jefflinux@hotmail.com]
+From: "Palm Palm" <jefflinux@hotmail.com>
 To: linux-mips@linux-mips.org
-Subject: PATCH:2.6:makefile/vmlinux.srec
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <michael_pruznick@mvista.com>
+Subject: kernel 2.4.21 for VR4181A
+Date: Thu, 07 Aug 2003 01:44:30 +0000
+Mime-Version: 1.0
+Content-Type: text/plain; charset=big5; format=flowed
+Message-ID: <Law15-F979BekWo76Ua00033a5d@hotmail.com>
+X-OriginalArrivalTime: 07 Aug 2003 01:44:30.0846 (UTC) FILETIME=[71EFE9E0:01C35C85]
+Return-Path: <jefflinux@hotmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2999
+X-archive-position: 3000
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: michael_pruznick@mvista.com
+X-original-sender: jefflinux@hotmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Jun Sun wrote:
-> the make srec patch looks good to me.  I will take care of it.
-> Also, please post patches for both branches whenever possible.
+Dear All,
+    Is there anyone try Kernel 2.4.21 for VR4181A ?
+We try to port VR4181A from 2.4.2 to 2.4.21 but it always failed after 
+kernel mount the root.
+We try to use ramdisk, jffs2-root, cramfs-root, they are all failed after 
+mount.
 
-Here is the 2.6 version of the 2.4 srec build patch:
+PalmPalm
 
-cvs diff -uN arch/mips/Makefile arch/mips/boot/Makefile
-Index: arch/mips/Makefile
-===================================================================
-RCS file: /home/cvs/linux/arch/mips/Makefile,v
-retrieving revision 1.131
-diff -u -r1.131 Makefile
---- arch/mips/Makefile  30 Jul 2003 12:32:17 -0000      1.131
-+++ arch/mips/Makefile  4 Aug 2003 23:59:12 -0000
-@@ -531,6 +531,9 @@
- vmlinux.ecoff vmlinux.rm200: vmlinux
-        +@$(call makeboot,$@)
- 
-+vmlinux.srec: vmlinux
-+       +@$(call makeboot,$@)
-+
- CLEAN_FILES += vmlinux.ecoff \
-               vmlinux.rm200.tmp \
-               vmlinux.rm200
-Index: arch/mips/boot/Makefile
-===================================================================
-RCS file: /home/cvs/linux/arch/mips/boot/Makefile,v
-retrieving revision 1.22
-diff -u -r1.22 Makefile
---- arch/mips/boot/Makefile     9 Mar 2003 13:58:13 -0000       1.22
-+++ arch/mips/boot/Makefile     4 Aug 2003 23:59:12 -0000
-@@ -22,7 +22,7 @@
- drop-sections  = .reginfo .mdebug .comment .note
- strip-flags    = $(addprefix --remove-section=,$(drop-sections))
- 
--all: vmlinux.ecoff addinitrd
-+all: vmlinux.ecoff vmlinux.srec addinitrd
- 
- vmlinux.rm200: vmlinux
-        $(OBJCOPY) \
-@@ -37,6 +37,9 @@
- $(obj)/elf2ecoff: $(obj)/elf2ecoff.c
-        $(HOSTCC) -o $@ $^
- 
-+vmlinux.srec:  vmlinux
-+       $(OBJCOPY) -S -O srec $(strip-flags) vmlinux $(obj)/vmlinux.srec
-+
- $(obj)/addinitrd: $(obj)/addinitrd.c
-        $(HOSTCC) -o $@ $^
- 
-@@ -47,5 +50,6 @@
-               elf2ecoff \
-               vmlinux.ecoff \
-               vmlinux.rm200 \
-+              vmlinux.srec \
-               zImage.tmp \
-               zImage
+_________________________________________________________________
+想戀愛？交朋友？<br>MSN 線上交友：由 Match.com 提供，全世界最受歡迎的線上交
+友服務 http://match.msn.com.tw 

@@ -1,63 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Mar 2004 14:50:22 +0000 (GMT)
-Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:3595 "EHLO
-	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8225193AbUCVOuT>;
-	Mon, 22 Mar 2004 14:50:19 +0000
-Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
-	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
-	id 1B5Qdv-0003i0-00; Mon, 22 Mar 2004 14:43:07 +0000
-Received: from gladsmuir.algor.co.uk ([172.20.192.66] helo=gladsmuir.mips.com)
-	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
-	id 1B5QkT-0004W3-00; Mon, 22 Mar 2004 14:49:53 +0000
-From: Dominic Sweetman <dom@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Mar 2004 15:15:52 +0000 (GMT)
+Received: from [IPv6:::ffff:202.56.254.201] ([IPv6:::ffff:202.56.254.201]:49151
+	"EHLO mail.soc-soft.com") by linux-mips.org with ESMTP
+	id <S8225232AbUCVPPv> convert rfc822-to-8bit; Mon, 22 Mar 2004 15:15:51 +0000
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6487.1
+content-class: urn:content-classes:message
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-ID: <16478.64784.641483.359197@gladsmuir.mips.com>
-Date: Mon, 22 Mar 2004 14:49:52 +0000
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: Dominic Sweetman <dom@mips.com>,
-	Eric Christopher <echristo@redhat.com>,
-	Long Li <long21st@yahoo.com>, linux-mips@linux-mips.org,
-	David Ung <davidu@mips.com>, Nigel Stephens <nigel@mips.com>
-Subject: Re: gcc support of mips32 release 2
-In-Reply-To: <Pine.LNX.4.55.0403221153280.6539@jurand.ds.pg.gda.pl>
-References: <20040305075517.42647.qmail@web40404.mail.yahoo.com>
-	<1078478086.4308.14.camel@dzur.sfbay.redhat.com>
-	<16456.21112.570245.1011@arsenal.mips.com>
-	<Pine.LNX.4.55.0403181404210.5750@jurand.ds.pg.gda.pl>
-	<16473.44507.935886.271157@arsenal.mips.com>
-	<Pine.LNX.4.55.0403181528130.5750@jurand.ds.pg.gda.pl>
-	<16478.46344.410904.489262@doms-laptop.algor.co.uk>
-	<Pine.LNX.4.55.0403221153280.6539@jurand.ds.pg.gda.pl>
-X-Mailer: VM 6.92 under 21.1 (patch 14) "Cuyahoga Valley" XEmacs Lucid
-X-MTUK-Scanner: Found to be clean
-X-MTUK-SpamCheck: not spam, SpamAssassin (score=-4.848, required 4, AWL,
-	BAYES_00)
-Return-Path: <dom@mips.com>
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: Non recoverabe Abort
+Date: Mon, 22 Mar 2004 20:45:44 +0530
+Message-ID: <E519BE9E8DAC6A4B89DA4AD1D2A155B783B561@soc-mail.soc-soft.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Non recoverabe Abort
+Thread-Index: AcQQIIuuFN5FE3GcQ2ev+aN7lIF2+Q==
+From: "Nitin P Mahajan" <Nitin@soc-soft.com>
+To: <linux-mips@linux-mips.org>
+Cc: <linux-net@vger.kernel.org>
+Return-Path: <Nitin@soc-soft.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4609
+X-archive-position: 4610
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dom@mips.com
+X-original-sender: Nitin@soc-soft.com
 Precedence: bulk
 X-list: linux-mips
 
+Hi!
 
-Maciej,
+	I am writing a driver for the on-chip Ethernet controller
+(Exactly Similar to TC35815) on TX4938.
 
-> > The 'di' is there to be atomic...
-> 
->  Hmm, is the remaining minority of the OSes, that can't manage the
-> sequence, important enough to add such an instruction?
+I am facing one problem for a long time. I am getting the following two
+interrupts but not the transmit interrupt when I attempt to transmit. 1.
+Non-recoverable Abort. 2. Master Abort Reception.
 
-Perhaps not.  The case I always suggest is that of a serial port
-transmit interrupt handler, which often wants to disable the TxReady
-interrupt when it finds there's no more data to send.  There's almost
-always a way to do that without changing the SR interrupt mask, of
-course... 
+I have just created one transmit descriptor and attached a small data
+buffer to it. Through the MAC loop back I want to test this basic
+transmission. I am not getting the TxComp interrupt. I am giving the
+physical address of the descriptor to the DMA controller and assigning
+the physical address of the data buffer into the DataBuff field in the
+descriptor. Is it possible to get the transmit and receive interrupts in
+the MAC loopback condition.
 
---
-Dominic
+Could anyone please tell me what can be the reason of these interrupts
+(1. Non-recoverable Abort, 2. Master Abort Reception) and how can I
+overcome it.
+
+Thanking u in advance,
+
+Regards
+
+-Nitin Mahajan

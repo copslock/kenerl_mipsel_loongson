@@ -1,50 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Oct 2004 18:16:50 +0100 (BST)
-Received: from fed1rmmtao12.cox.net ([IPv6:::ffff:68.230.241.27]:13042 "EHLO
-	fed1rmmtao12.cox.net") by linux-mips.org with ESMTP
-	id <S8225228AbUJTRQp>; Wed, 20 Oct 2004 18:16:45 +0100
-Received: from opus ([68.107.143.141]) by fed1rmmtao12.cox.net
-          (InterMail vM.6.01.03.04 201-2131-111-106-20040729) with ESMTP
-          id <20041020171627.FPQW9689.fed1rmmtao12.cox.net@opus>
-          for <linux-mips@linux-mips.org>; Wed, 20 Oct 2004 13:16:27 -0400
-Date: Wed, 20 Oct 2004 10:16:26 -0700
-From: Tom Rini <trini@kernel.crashing.org>
-To: linux-mips@linux-mips.org
-Subject: [PATCH 2.6.9] Export phys_cpu_present_map
-Message-ID: <20041020171626.GG12544@smtp.west.cox.net>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Oct 2004 18:48:45 +0100 (BST)
+Received: from [IPv6:::ffff:145.253.187.134] ([IPv6:::ffff:145.253.187.134]:933
+	"EHLO mail01.baslerweb.com") by linux-mips.org with ESMTP
+	id <S8225228AbUJTRsk>; Wed, 20 Oct 2004 18:48:40 +0100
+Received: from mail01.baslerweb.com (localhost.localdomain [127.0.0.1])
+	by localhost.domain.tld (Basler) with ESMTP
+	id 5E6BC13402D; Wed, 20 Oct 2004 19:47:52 +0200 (CEST)
+Received: from comm1.baslerweb.com (unknown [172.16.13.2])
+	by mail01.baslerweb.com (Basler) with ESMTP
+	id 5BCA513402C; Wed, 20 Oct 2004 19:47:52 +0200 (CEST)
+Received: from vclinux-1.basler.corp (localhost [172.16.13.253]) by comm1.baslerweb.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2657.72)
+	id 4YRPMXKB; Wed, 20 Oct 2004 19:48:29 +0200
+From: Thomas Koeller <thomas.koeller@baslerweb.com>
+Organization: Basler AG
+To: Manish Lachwani <mlachwani@mvista.com>
+Subject: yosemite interrupt setup
+Date: Wed, 20 Oct 2004 19:52:29 +0200
+User-Agent: KMail/1.6.2
+Cc: linux-mips@linux-mips.org
+MIME-Version: 1.0
 Content-Disposition: inline
-User-Agent: Mutt/1.5.6+20040907i
-Return-Path: <trini@kernel.crashing.org>
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Message-Id: <200410201952.29205.thomas.koeller@baslerweb.com>
+Return-Path: <thomas.koeller@baslerweb.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6130
+X-archive-position: 6131
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: trini@kernel.crashing.org
+X-original-sender: thomas.koeller@baslerweb.com
 Precedence: bulk
 X-list: linux-mips
 
-In net/ipv6/icmp.c::icmpv6_init() there is a call to cpu_possible()
-which preprocesses down to "test_bit(((i)), (phys_cpu_present_map).bits)"
-If ipv6 is a module, phys_cpu_present_map (or cpu_possible_map which is
-defined t phys_cpu_present_map) needs to be exported.
+Hi Manish,
 
-Signed-off-by: Tom Rini <trini@kernel.crashing.org>
+may I ask you to help me with this:
 
---- linux-2.6.9.orig/arch/mips/kernel/smp.c
-+++ linux-2.6.9/arch/mips/kernel/smp.c
-@@ -44,6 +44,7 @@ cpumask_t cpu_online_map;		/* Bitmask of
- int __cpu_number_map[NR_CPUS];		/* Map physical to logical */
- int __cpu_logical_map[NR_CPUS];		/* Map logical to physical */
- 
-+EXPORT_SYMBOL(phys_cpu_present_map);
- EXPORT_SYMBOL(cpu_online_map);
- 
- cycles_t cacheflush_time;
+I am currently analyzing the yosemite interrupt handling
+code. So far I have not been able to find the point
+where the association between a particular external or
+message interrupt and its vector is established. It seems
+that the corresponding OCD address definitions from
+asm-mips/titan_dep.h, such as RM9000x2_OCD_INTPIN0, are
+not used anywhere in the code. I guess the kernel does
+not rely on PMON having set up this before, or does it?
+
+thanks,
+Thomas
 
 -- 
-Tom Rini
-http://gate.crashing.org/~trini/
+--------------------------------------------------
+
+Thomas Koeller, Software Development
+Basler Vision Technologies
+
+thomas dot koeller at baslerweb dot com
+http://www.baslerweb.com
+
+==============================

@@ -1,32 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Nov 2002 15:55:23 +0100 (MET)
-Received: from mcp.csh.rit.edu ([IPv6:::ffff:129.21.60.9]:31619 "EHLO
-	mcp.csh.rit.edu") by ralf.linux-mips.org with ESMTP
-	id <S868907AbSKZWZQ>; Tue, 26 Nov 2002 23:25:16 +0100
-Received: from fury.csh.rit.edu (fury.csh.rit.edu [129.21.60.5])
-	by mcp.csh.rit.edu (Postfix) with ESMTP id C3634A113
-	for <linux-mips@linux-mips.org>; Tue, 26 Nov 2002 17:30:30 -0500 (EST)
-Date: Tue, 26 Nov 2002 17:30:29 -0500 (EST)
-From: George Gensure <werkt@csh.rit.edu>
-To: <linux-mips@linux-mips.org>
-Subject: O2 Patches
-Message-ID: <Pine.SOL.4.31.0211261728560.19456-100000@fury.csh.rit.edu>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Nov 2002 15:56:06 +0100 (MET)
+Received: from webmail34.rediffmail.com ([IPv6:::ffff:203.199.83.247]:23211
+	"HELO mailweb34.rediffmail.com") by ralf.linux-mips.org with SMTP
+	id <S868825AbSKZMMk>; Tue, 26 Nov 2002 13:12:40 +0100
+Received: (qmail 3797 invoked by uid 510); 26 Nov 2002 12:17:33 -0000
+Date: 26 Nov 2002 12:17:33 -0000
+Message-ID: <20021126121733.3796.qmail@mailweb34.rediffmail.com>
+Received: from unknown (203.200.7.44) by rediffmail.com via HTTP; 26 nov 2002 12:17:33 -0000
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <werkt@csh.rit.edu>
+From: "atul srivastava" <atulsrivastava9@rediffmail.com>
+Reply-To: "atul srivastava" <atulsrivastava9@rediffmail.com>
+To: linux-mips@linux-mips.org
+Subject: quick question for CONFIG_MIPS_UNCACHED...
+Content-type: text/plain;
+	format=flowed
+Content-Disposition: inline
+Return-Path: <atulsrivastava9@rediffmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 727
+X-archive-position: 728
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: werkt@csh.rit.edu
+X-original-sender: atulsrivastava9@rediffmail.com
 Precedence: bulk
 X-list: linux-mips
 
-What happened to Glaurung's O2 patches (to say nothing of his page in
-general) from the linux-mips site?  That was the only place I could ever
-find anything regarding the O2 port.
+Hello,
+In order to confirm a cache problem is it sufficient to set
+"CONFIG_MIPS_UNCACHED" , as in so many places functions to
+operate on cache are called directly while they should under
+"#ifdef CONFIg_MIPS_UNCACHED" if not technically then atleast
+for consistent coding practice.
 
--George Gensure
-werkt@csh.rit.edu
+I am setting uncached opertion by,
+change_cp0_config(CONF_CM_CMASK, CONF_CM_UNCACHED);
+now should the dump_tlb_all() show the "page coherency 
+atributes"
+for all entries "UNCACHED" anywhere in 4GB space..is it true ?
+why in my case for some entries it is still showing "Cacheable, 
+noncoherent, write-through, no write allocate" ?
+
+Best Regards,
+Atul

@@ -1,57 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Jul 2004 17:16:02 +0100 (BST)
-Received: from dfpost.ru ([IPv6:::ffff:194.85.103.225]:51099 "EHLO
-	mail.postwin.ru") by linux-mips.org with ESMTP id <S8225230AbUGZQP5>;
-	Mon, 26 Jul 2004 17:15:57 +0100
-Received: by mail.postwin.ru (Postfix, from userid 7896)
-	id E95D8844F8; Mon, 26 Jul 2004 20:13:41 +0400 (MSD)
-Received: from [192.168.9.60] (unknown [192.168.9.60])
-	by mail.postwin.ru (Postfix) with ESMTP id D6AC9844F5
-	for <linux-mips@linux-mips.org>; Mon, 26 Jul 2004 20:13:41 +0400 (MSD)
-Message-ID: <41056663.6000304@dfpost.ru>
-Date: Mon, 26 Jul 2004 20:15:31 +0000
-From: Dmitriy Tochansky <toch@dfpost.ru>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.1) Gecko/20040723
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Jul 2004 09:56:34 +0100 (BST)
+Received: from [IPv6:::ffff:145.253.187.130] ([IPv6:::ffff:145.253.187.130]:48136
+	"EHLO proxy.baslerweb.com") by linux-mips.org with ESMTP
+	id <S8224774AbUG0I4a>; Tue, 27 Jul 2004 09:56:30 +0100
+Received: from comm1.baslerweb.com (proxy.baslerweb.com [172.16.13.2])
+          by proxy.baslerweb.com (Post.Office MTA v3.5.3 release 223
+          ID# 0-0U10L2S100V35) with ESMTP id com
+          for <linux-mips@linux-mips.org>; Tue, 27 Jul 2004 10:55:57 +0200
+Received: from [172.16.13.253] (localhost [172.16.13.253]) by comm1.baslerweb.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2657.72)
+	id PLG5NBQP; Tue, 27 Jul 2004 10:56:25 +0200
+From: Thomas Koeller <thomas.koeller@baslerweb.com>
+Organization: Basler AG
 To: linux-mips@linux-mips.org
-Subject: assembler problem
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Subject: ABI question
+Date: Tue, 27 Jul 2004 10:57:52 +0200
+User-Agent: KMail/1.6.2
+MIME-Version: 1.0
+Content-Disposition: inline
+Content-Type: text/plain;
+  charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Return-Path: <toch@dfpost.ru>
+Message-Id: <200407271057.53237.thomas.koeller@baslerweb.com>
+Return-Path: <thomas.koeller@baslerweb.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5557
+X-archive-position: 5558
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: toch@dfpost.ru
+X-original-sender: thomas.koeller@baslerweb.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello!
-I have some problem with assembling my program.
+Hi,
 
-Here is a string from source:
-*//*/ jal             sdram_memory_test/
+for 2.6 kernels, arch/mips/Makefile contains the following lines:
 
-in .lst file I got:
+ifdef CONFIG_MIPS64
+gcc-abi			= 64
+gas-abi			= 32
+tool-prefix		= $(64bit-tool-prefix)
+UTS_MACHINE		:= mips64
+endif
 
-/101 00c8 7600000C              jal             sdram_memory_test/
+Is it intentional that gcc-abi and gas-abi are different? This
+results in '-Wa,-32' appearing on gcc's command line, causing
+the asembler to complain:
 
-Looking for sdram_memory_test below....
+Error: -mgp64 used with a 32-bit ABI
 
-/295 01d8 0000083C              la      ADDR, _etext            /* Start 
-addr of test *//
+If I change gas-abi to 64, this error goes away.
 
-Hm...
+tk
+-- 
+--------------------------------------------------
 
-Upload test2.bin in 0xbfc00000 on flash. Starting. Debugging....
+Thomas Koeller, Software Development
+Basler Vision Technologies
 
-Everything goes fine but when become time to jump on sdram_memory_test 
-it jumps at 0xb00001d8
-but I think it must jump to 0xbfc001d8 where real sdram_test is.
+thomas dot koeller at baslerweb dot com
+http://www.baslerweb.com
 
-Where is the problem?
-
-Dmitriy
+==============================

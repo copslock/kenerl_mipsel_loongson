@@ -1,45 +1,34 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f2JFxro01724
-	for linux-mips-outgoing; Mon, 19 Mar 2001 07:59:53 -0800
+	by oss.sgi.com (8.11.3/8.11.3) id f2JGDfo02086
+	for linux-mips-outgoing; Mon, 19 Mar 2001 08:13:41 -0800
 Received: from mx.mips.com (mx.mips.com [206.31.31.226])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f2JFxqM01721
-	for <linux-mips@oss.sgi.com>; Mon, 19 Mar 2001 07:59:52 -0800
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f2JGDeM02083
+	for <linux-mips@oss.sgi.com>; Mon, 19 Mar 2001 08:13:40 -0800
 Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id HAA06507
-	for <linux-mips@oss.sgi.com>; Mon, 19 Mar 2001 07:59:52 -0800 (PST)
-Received: from Ulysses (ulysses [192.168.236.13])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id HAA03322
-	for <linux-mips@oss.sgi.com>; Mon, 19 Mar 2001 07:59:50 -0800 (PST)
-Message-ID: <00f901c0b08e$3099bc00$0deca8c0@Ulysses>
-From: "Kevin D. Kissell" <kevink@mips.com>
-To: <linux-mips@oss.sgi.com>
-References: <3AB61293.5652407C@mips.com> <00e901c0b08b$50bed400$0deca8c0@Ulysses>
-Subject: Re: Bug in the _save_fp_context.
-Date: Mon, 19 Mar 2001 17:03:49 +0100
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id IAA06666
+	for <linux-mips@oss.sgi.com>; Mon, 19 Mar 2001 08:13:40 -0800 (PST)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id IAA03736;
+	Mon, 19 Mar 2001 08:13:38 -0800 (PST)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id RAA09554;
+	Mon, 19 Mar 2001 17:13:07 +0100 (MET)
+Message-ID: <3AB63012.B2DF9CD6@mips.com>
+Date: Mon, 19 Mar 2001 17:13:06 +0100
+From: Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-15"
+To: "Kevin D. Kissell" <kevink@mips.com>
+CC: linux-mips@oss.sgi.com
+Subject: Re: Bug in the _save_fp_context.
+References: <3AB61293.5652407C@mips.com> <00e901c0b08b$50bed400$0deca8c0@Ulysses>
+Content-Type: text/plain; charset=iso-8859-15
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4133.2400
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Oops!  I hadn't noticed that Carsten had copied the
-Linux-MIPS mailing list on this, so I treated it as a
-point-to-point communication.  The rest of you can
-ignore my last paragraph!
-
-            Kevin K.
-
------ Original Message -----
-From: "Kevin D. Kissell" <kevink@mips.com>
-To: "Carsten Langgaard" <carstenl@mips.com>; <linux-mips@oss.sgi.com>
-Sent: Monday, March 19, 2001 4:43 PM
-Subject: Re: Bug in the _save_fp_context.
-
+"Kevin D. Kissell" wrote:
 
 > > I think there is a bug in the _save_fp_context function in
 > > arch/mips/kernel/r4k_fpu.S
@@ -81,6 +70,19 @@ Subject: Re: Bug in the _save_fp_context.
 > Just looking at the source, I have the impression
 > that the "sw t0,..." instruction should be in the delay
 > slot, followed by the __ex_table.
+
+The problem is that the address of the delay slot is put in the __ex_table
+and then we take a page fault EPC is pointing at the jr instruction and not
+the delay slot.
+This result in a miss match when we try to lookup in __ex_table, resulting in
+a kernel crash.
+
+The faulting situation look like this:
+EPC = address of delay slot
+entry in __ex_table = address of delay slot - 4
+
+Hopes that clarify it a bit more.
+
 >
 > On another topic, now that I've patched the kernel to
 > turn off the stupid stuck interrupt on my Malta board,
@@ -97,4 +99,10 @@ Subject: Re: Bug in the _save_fp_context.
 >             Regards,
 >
 >             Kevin K.
->
+
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

@@ -1,38 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 26 Oct 2002 03:52:13 +0200 (CEST)
-Received: from delta.ds2.pg.gda.pl ([213.192.72.1]:25854 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S1124126AbSJZBwM>; Sat, 26 Oct 2002 03:52:12 +0200
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id DAA10303
-	for <linux-mips@linux-mips.org>; Sat, 26 Oct 2002 03:52:38 +0200 (MET DST)
-Date: Sat, 26 Oct 2002 03:52:37 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: linux-mips@linux-mips.org
-Subject: Re: CVS Update@ftp.linux-mips.org: linux
-In-Reply-To: <20021026014147Z1124126-9213+559@linux-mips.org>
-Message-ID: <Pine.GSO.3.96.1021026035016.1121J-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 26 Oct 2002 05:18:56 +0200 (CEST)
+Received: from p508B5F86.dip.t-dialin.net ([80.139.95.134]:56737 "EHLO
+	dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S1123891AbSJZDS4>; Sat, 26 Oct 2002 05:18:56 +0200
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id g9Q3IjZ08645;
+	Sat, 26 Oct 2002 05:18:45 +0200
+Date: Sat, 26 Oct 2002 05:18:44 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Dennis Newbold <dennisn@pe.net>
+Cc: linux-mips@linux-mips.org
+Subject: Re: GCC generating wrong assembly code?
+Message-ID: <20021026051844.B9509@linux-mips.org>
+References: <Pine.GSO.3.96.1021025110042.28181A-101000@shell1>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <Pine.GSO.3.96.1021025110042.28181A-101000@shell1>; from dennisn@pe.net on Fri, Oct 25, 2002 at 11:30:36AM -0700
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 518
+X-archive-position: 519
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 26 Oct 2002 ralf@linux-mips.org wrote:
+On Fri, Oct 25, 2002 at 11:30:36AM -0700, Dennis Newbold wrote:
 
-> Log message:
-> 	N32 ...
+>      I'm trying to build gcj (GNU Java ahead-of-time compiler) from
+> the sources.  It ran for quite awhile, and then on a particular file,
+> it got about 20 "Error: branch out of range" errors from the gas
+> assembler.  I'm hoping that someone on this list that understands gcc
 
- Do you really think it's the way to go???
+This is supposedly fixed in the very latest versions.
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+As a temporary workaround that works for most files enable optimization
+-O or even -O2 for those files affected by this problem.  -fno-inline
+or -Os may also help - basically everything that reduces the code size.
+
+  Ralf

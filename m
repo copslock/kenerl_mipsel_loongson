@@ -1,56 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Aug 2004 05:02:24 +0100 (BST)
-Received: from avtrex.com ([IPv6:::ffff:216.102.217.178]:17275 "EHLO
-	avtrex.com") by linux-mips.org with ESMTP id <S8224842AbUHRECT>;
-	Wed, 18 Aug 2004 05:02:19 +0100
-content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Aug 2004 06:51:10 +0100 (BST)
+Received: from mx1.tusur.ru ([IPv6:::ffff:212.192.163.19]:15885 "EHLO tusur.ru")
+	by linux-mips.org with ESMTP id <S8224912AbUHRFvG>;
+	Wed, 18 Aug 2004 06:51:06 +0100
+Received: from localhost (localhost.tusur.ru [127.0.0.1])
+	by tusur.ru (Postfix) with SMTP id E02B4B87B6;
+	Wed, 18 Aug 2004 12:46:28 +0700 (TSD)
+X-AV-Checked: Wed Aug 18 12:46:28 2004 Ok
+Received: from roman (unknown [211.189.34.20])
+	by tusur.ru (Postfix) with ESMTP id CCDF0B87A9;
+	Wed, 18 Aug 2004 12:46:26 +0700 (TSD)
+Message-ID: <002601c484e7$4ea38e70$1422bdd3@roman>
+From: "Roman Mashak" <mrv@tusur.ru>
+To: "Chris Dearman" <chris@mips.com>, <linux-mips@linux-mips.org>
+References: <001601c483fd$9e3ae180$1422bdd3@roman> <4121E1DF.9020801@mips.com>
+Subject: Re: Yamon compiling and linking
+Date: Wed, 18 Aug 2004 14:50:41 +0900
 MIME-Version: 1.0
 Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
-X-MimeOLE: Produced By Microsoft Exchange V6.0.6487.1
-Subject: RE: MIPS Malta board linux problem
-Date: Tue, 17 Aug 2004 20:59:17 -0700
-Message-ID: <69397FFCADEFD94F8D5A0FC0FDBCBBDEF499@avtrex-server.hq.avtrex.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: MIPS Malta board linux problem 
-Thread-Index: AcSEvwjAx9L3ac1MQsOavH98LAD1lQAGJx0z
-From: "David Daney" <ddaney@avtrex.com>
-To: "usha davuluri" <ranidavuluri@yahoo.com>,
-	<linux-mips@linux-mips.org>
-Return-Path: <ddaney@avtrex.com>
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2800.1081
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1081
+FL-Build: Fidolook 2002 (SL) 6.0.2800.85 - 28/1/2003 19:07:30
+X-Spam-DCC: : 
+Return-Path: <mrv@tusur.ru>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5664
+X-archive-position: 5665
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: mrv@tusur.ru
 Precedence: bulk
 X-list: linux-mips
 
-SXQgaGFzIHRvIGJlIHdvcmxkIHJlYWRhYmxlLiAgT3RoZXJ3aXNlIHRmdHBkIHdpbGwgbm90IHNl
-cnZlIGl0IHVwLg0KIA0KRGF2aWQgRGFuZXkuDQoNCgktLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0t
-LSANCglGcm9tOiBsaW51eC1taXBzLWJvdW5jZUBsaW51eC1taXBzLm9yZyBvbiBiZWhhbGYgb2Yg
-dXNoYSBkYXZ1bHVyaSANCglTZW50OiBUdWUgOC8xNy8yMDA0IDY6MDQgUE0gDQoJVG86IGxpbnV4
-LW1pcHNAbGludXgtbWlwcy5vcmcgDQoJQ2M6IA0KCVN1YmplY3Q6IE1JUFMgTWFsdGEgYm9hcmQg
-bGludXggcHJvYmxlbSANCgkNCgkNCg0KCUhpLA0KCSBJIGFtIHRyeWluZyB0byBicmluZyB1cCB0
-aGUgTWFsdGEgYm9hcmQgd2l0aCB0aGUNCglwcmVidWlscyBrZXJuZWwuIEkgYW0gdXNpbmcgVEZU
-UCBzZXJ2ZXIgZm9yIHRoYXQuIEkgYW0NCglwcmV0dHkgbXVjaCBzdXJlIHRoYXQgVEZUUCBzZXJ2
-ZXIgaXMgdXAgb24gbXkgaG9zdA0KCVJlZGhhdCBsaW51eCBsYXB0b3AuIFNvbWUgaG93IEkgYW0g
-bm90IGFibGUgdG8gbG9hZA0KCXRoZSBpbW1hZ2Ugb24gdG8gdGhlIGJvYXJkLiBQbGVhc2UgYW55
-IG9uZSBjYW4gaGVscCBtZQ0KCXRvIHNvbHZlIHRoaXMgcHJvYmxlbS4NCglJIHRlc3RlZCB0aGUg
-dGZ0cCB3aXRoIHRoZSAkOnhpbmV0ZCAtZCBjb21tYW5kLiBUaGUNCglvdXQgcHV0IGNhbWUgd2Vs
-bCggVEZUUCBpcyBydW5uaW5nKS4gRm9sbG93aW5nIGVycm9yDQoJbWVzc2FnZXMgSSBhbSBnZXR0
-aW5nIHdoZW4gSSB0cnkgdG8gbG9hZCB0aGUgbGludXgNCglrZXJuZWwgdXNpbmcgdGZ0cC4NCgkN
-Cglsb2FkDQoJdGZ0cDovLzE5Mi4xNjguMC4xMTUvL3ZtbGludXgtMi40LjMubWFsdGEuaW5zdGFs
-bC5lbC0wMS4wMi5zcmVjDQoJQWJvdXQgdG8gbG9hZA0KCXRmdHA6Ly8xOTIuMTY4LjAuMTE1Ly92
-bWxpbnV4LTIuNC4zLm1hbHRhLmluc3RhbGwuZWwtMDEuMDIuc3JlYw0KCVByZXNzIEN0cmwtQyB0
-byBicmVhaw0KCUVycm9yIDogVEZUUCBSRUFELVJFUSBFUlJPUg0KCURpYWcgIDogSG9zdCByZXR1
-cm5lZDogRXJyb3JDb2RlID0gMiwgRXJyb3JNc2cgPQ0KCUFjY2VzcyB2aW9sYXRpb24NCglIaW50
-ICA6IENoZWNrIFRGVFAtc2VydmVyOiBmaWxlLWV4aXN0ZW5jZSwNCglkaXJlY3RvcnkvZmlsZS1h
-dHRyaWJ1dGVzDQoJVGhhbmsgeW91LA0KCVVzaGEuDQoJDQoJDQoJICAgICAgICAgICAgICAgDQoJ
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXw0KCURvIHlvdSBZYWhvbyE/DQoJWSEg
-TWVzc2VuZ2VyIC0gQ29tbXVuaWNhdGUgaW4gcmVhbCB0aW1lLiBEb3dubG9hZCBub3cuDQoJaHR0
-cDovL21lc3Nlbmdlci55YWhvby5jb20NCgkNCgkNCg0K
+Hello, Chris!
+You wrote to "Roman Mashak" <mrv@tusur.ru> on Tue, 17 Aug 2004 11:45:51
++0100:
+
+ CD>    I think you are using modified YAMON sources... I can tell you how
+ CD> the build process works for the distributed version of YAMON:
+
+   Sorry, i didn't mention that  I'm using YAMON source code supplied with
+AMD Alchemy  AU1550 dev. board. But I've already sent my questions to AMD
+support, and didn't get reply for 3 days, that's why I asked here.
+ CD>    Invoking make in the  yamon/bin directory build two YAMON images
+ CD> (one big-endian & one little-endian) in the EB & EL subdirectories.  In
+    Yes, absolutely correct
+ CD> addition some endianess independent reset code (reset.o) is built in
+ CD> yamon/bin. These three images are combined together to make a single
+ CD> yamon-02.xx.rec image that can run in either endianess.
+    In my case - NOT. So, if I invoke 'make srec_el' to build little-endian
+only image I get only LE image located in the bin/EL directory and nothing
+in the upper directory.
+ CD>    If you're only interested in running little-endian you should be
+ CD> able to simply combine the reset-02.xx.rec and EL/yamon-02.xx_el.rec
+ CD> images.
+    So, I have to compile reset code seperately and combine it with LE
+according to your device.
+
+With best regards, Roman Mashak.  E-mail: mrv@tusur.ru

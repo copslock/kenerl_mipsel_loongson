@@ -1,47 +1,45 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g77F2lRw004914
-	for <linux-mips-outgoing@oss.sgi.com>; Wed, 7 Aug 2002 08:02:48 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g77FE9Rw005234
+	for <linux-mips-outgoing@oss.sgi.com>; Wed, 7 Aug 2002 08:14:10 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g77F2lqi004913
-	for linux-mips-outgoing; Wed, 7 Aug 2002 08:02:47 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g77FE890005233
+	for linux-mips-outgoing; Wed, 7 Aug 2002 08:14:08 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from sbrodie.cam.pace.co.uk (host-33-223.pace.co.uk [136.170.33.223])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g77F2gRw004901
-	for <linux-mips@oss.sgi.com>; Wed, 7 Aug 2002 08:02:43 -0700
-Received: from loopback ([127.0.0.1]) by sbrodie.cam.pace.co.uk with SMTP; Wed, 07 Aug 2002 15:04:42 GMT
-Date: Wed, 07 Aug 2002 16:04:16 +0100
-From: Stewart Brodie <stewart.brodie@pace.co.uk>
-To: linux-mips@oss.sgi.com
-Message-ID: <0de052624b.sbrodie@sbrodie.cam.pace.co.uk>
-X-Organization: Pace Micro Technology plc
-User-Agent: Messenger-Pro/2.59beta2 (Newsbase/0.61b) (RISC-OS/4.00-Ursula002f)
-Subject: CONFIG_MIPS32 implies CONFIG_CPU_HAS_PREFETCH
-X-Editor: Zap, using ZapEmail 0.22 (27 Nov 1998) patch-3
-MIME-Version: 1.0
+Received: from dea.linux-mips.net (shaft19-f76.dialo.tiscali.de [62.246.19.76])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g77FDKRw005215
+	for <linux-mips@oss.sgi.com>; Wed, 7 Aug 2002 08:13:47 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id g77FDF916652;
+	Wed, 7 Aug 2002 17:13:15 +0200
+Date: Wed, 7 Aug 2002 17:13:15 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Carsten Langgaard <carstenl@mips.com>, linux-mips@oss.sgi.com
+Subject: Re: IPC syscall fixup (o32 conversion layer)
+Message-ID: <20020807171315.A16633@dea.linux-mips.net>
+References: <3D5131C7.17F9E00@mips.com> <Pine.GSO.3.96.1020807165108.18037F-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Posting-Agent: RISC OS Newsbase 0.61b
-X-Spam-Status: No, hits=0.0 required=5.0 tests= version=2.20
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <Pine.GSO.3.96.1020807165108.18037F-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Wed, Aug 07, 2002 at 04:58:32PM +0200
+X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-linux_2_4 branch question: In config-shared.in, and previously in config.in,
-whether or not the CPU has prefetch instructions seems to be dependent only
-on whether CONFIG_MIPS32 is y.  However, this causes our kernel builds to die
-when compiling memcpy.S because the compiler is objecting to the pref/prefx
-instructions.  The gcc 2.96 compiler options we are using are -mtune=r4600
-and -mips2.
+On Wed, Aug 07, 2002 at 04:58:32PM +0200, Maciej W. Rozycki wrote:
 
-Is it simply the case that the processors on all the boards supported in the
-MIPS builds all support prefetch?  At the moment, I've just put a specific
-check in for our particular processor to stop CONFIG_CPU_HAS_PREFETCH from
-being set to y and that stops the problem.  In earlier (2.4.17 pre-release)
-kernels, whether or not to define PREF/PREFX as pref/prefx or the empty
-string was determined on a stricter set of criteria based around actual CPU
-types rather than a blanket check on being a 32-bit MIPS.
+>  Sending patches within a mail's body would ease commenting them, BTW.  I
+> had to copy and paste the line above manually -- with gpm it's not a big
+> problem for a single line, but it gets tedious for larger chunks and gpm
+> is not everywhere. 
 
--- 
-Stewart Brodie, Senior Software Engineer
-Pace Micro Technology PLC
-645 Newmarket Road
-Cambridge, CB5 8PB, United Kingdom         WWW: http://www.pacemicro.com/
+Carsten is using Mozilla which garbles patches, so he's forced to use
+attachments.
+
+(Doesn't change the fact that imho Mozilla is a horribly slow mailer
+that needs forces to use of the mouse for more than activating the
+window - but that's his choice :-)
+
+  Ralf

@@ -1,44 +1,42 @@
-Received:  by oss.sgi.com id <S554001AbQLASQV>;
-	Fri, 1 Dec 2000 10:16:21 -0800
-Received: from [206.207.108.63] ([206.207.108.63]:12661 "HELO
-        ridgerun-lx.ridgerun.cxm") by oss.sgi.com with SMTP
-	id <S553995AbQLASQB>; Fri, 1 Dec 2000 10:16:01 -0800
-Received: (qmail 21981 invoked from network); 1 Dec 2000 11:15:50 -0700
-Received: from gmcnutt-lx.ridgerun.cxm (HELO ridgerun.com) (gmcnutt@192.168.1.17)
-  by ridgerun-lx.ridgerun.cxm with SMTP; 1 Dec 2000 11:15:50 -0700
-Message-ID: <3A27EAD6.83E03DFB@ridgerun.com>
-Date:   Fri, 01 Dec 2000 11:15:50 -0700
-From:   Gordon McNutt <gmcnutt@ridgerun.com>
-X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.16 i686)
-X-Accept-Language: en
+Received:  by oss.sgi.com id <S553990AbQLASlB>;
+	Fri, 1 Dec 2000 10:41:01 -0800
+Received: from srvntsxconn3.toc.ixl.com ([216.99.0.139]:11022 "HELO
+        srvntsxconn3.toc.ixl.com") by oss.sgi.com with SMTP
+	id <S553775AbQLASkc>; Fri, 1 Dec 2000 10:40:32 -0800
+Received: from 216.99.0.139 by srvntsxconn3.toc.ixl.com (InterScan E-Mail VirusWall NT); Fri, 01 Dec 2000 13:39:42 -0500 (Eastern Standard Time)
+Received: by srvntsxconn3.toc.ixl.com with Internet Mail Service (5.5.2650.21)
+	id <W6VA27NZ>; Fri, 1 Dec 2000 13:39:42 -0500
+Message-ID: <0A5319EEAF65D411825E00805FBBD8A1209E4B@exchange.clt.ixl.com>
+From:   tmaloney@ixl.com
+To:     linux-mips@oss.sgi.com
+Subject: FW: SGI Indy R4600-133 
+Date:   Fri, 1 Dec 2000 13:00:36 -0500 
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@oss.sgi.com>
-CC:     linux-mips@oss.sgi.com
-Subject: console knowledge
-References: <001901c05b67$8c88ab60$0deca8c0@Ulysses> <XFMail.001201163348.Harald.Koerfgen@home.ivm.de> <20001201185321.A3211@bacchus.dhis.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-Mailer: Internet Mail Service (5.5.2650.21)
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-This is a little off-topic, so if people complain I can take it offline. But
-since this doesn't seem to be (very) common knowledge maybe others would like to
-see it, as well.
 
-Ralf Baechle wrote:
+http://cgi.ebay.com/aw-cgi/eBayISAPI.dll?ViewItem&item=1200182133
 
-> /dev/console (as chardev 5/1) differs from another device in some important
-> ways:
->
->  - When opened by a process without controlling tty it will not become a
->    CTTY even if the NOCTTY flag is not set.
+please respond off list with any replies. i thank the list for it's
+indulgence, but i have purchased another Indy with more options, and i don't
+need two, so i'm selling the first one i bought.
 
-What do you mean by "controlling tty"? And why is the distinction noted above
-important? I assume it has something to do with keyboard input/screen output, but
-perhaps you can clarify.
+it's a nice machine and boots into what ever that first screen is called
+after making the horn music.
 
-Thanks,
+there is no Irix installed. I haven't gotten any software cds from ebay yet.
 
---Gordon
+Tim Maloney
+Senior Developer
+iXL, Inc.
+1930 Camden Road, Suite 2070
+Charlotte, NC 28203
+704 943-7193 phone
+tmaloney@ixl.com
+www.ixl.com

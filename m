@@ -1,48 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Apr 2003 22:56:26 +0100 (BST)
-Received: from pc2-cwma1-4-cust86.swan.cable.ntl.com ([IPv6:::ffff:213.105.254.86]:26244
-	"EHLO lxorguk.ukuu.org.uk") by linux-mips.org with ESMTP
-	id <S8225208AbTDXV40>; Thu, 24 Apr 2003 22:56:26 +0100
-Received: from dhcp22.swansea.linux.org.uk (dhcp22.swansea.linux.org.uk [127.0.0.1])
-	by lxorguk.ukuu.org.uk (8.12.8/8.12.5) with ESMTP id h3OKvb46004385;
-	Thu, 24 Apr 2003 21:57:37 +0100
-Received: (from alan@localhost)
-	by dhcp22.swansea.linux.org.uk (8.12.8/8.12.8/Submit) id h3OKvZH0004383;
-	Thu, 24 Apr 2003 21:57:35 +0100
-X-Authentication-Warning: dhcp22.swansea.linux.org.uk: alan set sender to alan@lxorguk.ukuu.org.uk using -f
-Subject: Re: NCD900 port?
-From: Alan Cox <alan@lxorguk.ukuu.org.uk>
-To: Chip Coldwell <coldwell@frank.harvard.edu>
-Cc: linux-mips@linux-mips.org
-In-Reply-To: <Pine.LNX.4.44.0304241613190.18155-100000@frank.harvard.edu>
-References: <Pine.LNX.4.44.0304241613190.18155-100000@frank.harvard.edu>
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-Organization: 
-Message-Id: <1051217854.4004.43.camel@dhcp22.swansea.linux.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Apr 2003 23:23:45 +0100 (BST)
+Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:42852
+	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
+	id <S8225208AbTDXWXk>; Thu, 24 Apr 2003 23:23:40 +0100
+Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
+	by iris1.csv.ica.uni-stuttgart.de with esmtp (Exim 3.36 #2)
+	id 198p7x-000jYk-00
+	for linux-mips@linux-mips.org; Fri, 25 Apr 2003 00:23:37 +0200
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
+	id 198p7x-00074d-00
+	for <linux-mips@linux-mips.org>; Fri, 25 Apr 2003 00:23:37 +0200
+Date: Fri, 25 Apr 2003 00:23:37 +0200
+To: linux-mips@linux-mips.org
+Subject: Re: [patch] new wait instruction for vr4181
+Message-ID: <20030424222337.GD19131@rembrandt.csv.ica.uni-stuttgart.de>
+References: <20030424112711.E28275@mvista.com> <079701c30aa8$7de13300$3501a8c0@wssseeger>
 Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.2.2 (1.2.2-5) 
-Date: 24 Apr 2003 21:57:35 +0100
-Return-Path: <alan@lxorguk.ukuu.org.uk>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <079701c30aa8$7de13300$3501a8c0@wssseeger>
+User-Agent: Mutt/1.4i
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2183
+X-archive-position: 2184
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alan@lxorguk.ukuu.org.uk
+X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
 Precedence: bulk
 X-list: linux-mips
 
-On Iau, 2003-04-24 at 21:20, Chip Coldwell wrote:
-> I'm facing a ~$1K site license charge for NCD's NCBridge software for
-> their NC948 X Terminals, and since my site consists of exactly three
-> of these things that I bought for less than $250 each I'm balking a
-> bit
+Steven Seeger wrote:
+> I think I figured this out. Could someone look at this and tell me if I did
+> it right?
+> 
+> Thanks.
+> 
+> -Steve
+> 
 
-I would think it is perfectly doable given specifications. I'd bet NCD
-are a pain about them. NCD also seem to use signed images and if their
-bootloader uses signed images the challenge may be rather harder.
+> --- /root/vr/new/linux-2.4.21.orig/arch/mips/kernel/cpu-probe.c	2003-04-24 05:32:21.000000000 -0700
+> +++ ./cpu-probe.c	2003-04-24 14:16:35.000000000 -0700
+> @@ -34,6 +34,16 @@
+>  		".set\tmips0");
+>  }
+>  
+> +#ifdef CONFIG_VR4181
+> +static void vr4181_wait(void)
 
-Next time buy thin client PC's 8), a diskless, fanless EPIA will
-set you back about the same with display.
+The GAS source claims all vr41xx have 'standby', so you may probably
+rename the function and enable it for all CONFIG_VR41*.
+
+> +{
+> +   __asm__(".set\tnoreorder\n"
+
+A \t at the end like
+__asm__(".set\tnoreorder\n\t"
+gives better formatting, and the last line doesn't need a \n.
+
+> +	   ".int 0x42000021\n"
+
+.word is probably more usual.
+
+
+Thiemo

@@ -1,42 +1,50 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA2828667 for <linux-archive@neteng.engr.sgi.com>; Fri, 3 Apr 1998 14:08:47 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA2826671 for <linux-archive@neteng.engr.sgi.com>; Fri, 3 Apr 1998 14:12:24 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id OAA7532777
+	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id OAA7534204
 	for linux-list;
-	Fri, 3 Apr 1998 14:07:59 -0800 (PST)
-Received: from fir.engr.sgi.com (fir.engr.sgi.com [150.166.49.183])
+	Fri, 3 Apr 1998 14:12:15 -0800 (PST)
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF)
-	via SMTP id OAA7530199;
-	Fri, 3 Apr 1998 14:07:55 -0800 (PST)
-Received: (from wje@localhost) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id OAA21512; Fri, 3 Apr 1998 14:07:50 -0800
-Date: Fri, 3 Apr 1998 14:07:50 -0800
-Message-Id: <199804032207.OAA21512@fir.engr.sgi.com>
-From: "William J. Earl" <wje@fir.engr.sgi.com>
-To: ralf@uni-koblenz.de
-Cc: "William J. Earl" <wje@fir.engr.sgi.com>, linux@cthulhu.engr.sgi.com,
-        linux-kernel@vger.rutgers.edu
-Subject: Re: VCE exceptions
-In-Reply-To: <19980403232741.05512@uni-koblenz.de>
-References: <19980402225314.63238@uni-koblenz.de>
-	<199804022141.NAA01565@fir.engr.sgi.com>
-	<19980403003623.50122@uni-koblenz.de>
-	<199804022315.PAA01986@fir.engr.sgi.com>
-	<19980403135245.23593@uni-koblenz.de>
-	<199804031911.LAA21028@fir.engr.sgi.com>
-	<19980403232741.05512@uni-koblenz.de>
+	via ESMTP id OAA7524585
+	for <linux@engr.sgi.com>;
+	Fri, 3 Apr 1998 14:12:13 -0800 (PST)
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id OAA05098
+	for <linux@engr.sgi.com>; Fri, 3 Apr 1998 14:12:12 -0800 (PST)
+	mail_from (ralf@uni-koblenz.de)
+From: ralf@uni-koblenz.de
+Received: from uni-koblenz.de (pmport-18.uni-koblenz.de [141.26.249.18])
+	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id AAA01524
+	for <linux@engr.sgi.com>; Sat, 4 Apr 1998 00:12:10 +0200 (MEST)
+Received: (from ralf@localhost)
+	by uni-koblenz.de (8.8.7/8.8.7) id AAA00624;
+	Sat, 4 Apr 1998 00:11:56 +0200
+Message-ID: <19980404001154.23809@uni-koblenz.de>
+Date: Sat, 4 Apr 1998 00:11:54 +0200
+To: linux@cthulhu.engr.sgi.com
+Subject: fwd: Andreessen Sees Mozilla-Linux Upset Of Windows
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.85e
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-ralf@uni-koblenz.de writes:
-...
- > Anyway, we have to deal with the problem and I'm going to hope the people
- > that actually have machines with SC/MC CPUs were the hardware detects the
- > problem for us will help me by running test kernels.
-...
+Thought I should forward that one.  Maybe it changes some suits' thinking
+about Linux ...
 
-     They can help by having the hardware show some of the cases where
-the software is doing the wrong thing, but a reliable system will require
-a solution which works on an R5000 or R4600, where there is no hardware detection.
-That is, in most cases where an R4000SC would give you a VCE, an R5000 will
-give you corrupted data (in general, not every time).  The solution needs
-to be correct by construction, not by testing.
+  Ralf
+
+ ------------------------------------------------------------------------------
+
+From: Billy Harvey <Billy.Harvey@thrillseeker.net>
+
+Fellow Linux Enthusiasts,
+
+FYI:
+
+
+Netscape source code and the Linux operating system could be the
+combination that unseats Windows, said Marc Andreessen, Netscape's CEO,
+Wednesday.
+
+http://www.techweb.com/news/story/TWB19980402S0013

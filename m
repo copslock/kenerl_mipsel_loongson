@@ -1,35 +1,67 @@
-Received:  by oss.sgi.com id <S42272AbQILEvZ>;
-	Mon, 11 Sep 2000 21:51:25 -0700
-Received: from kayak.mcgary.org ([63.227.80.137]:57870 "EHLO kayak.mcgary.org")
-	by oss.sgi.com with ESMTP id <S42268AbQILEvF>;
-	Mon, 11 Sep 2000 21:51:05 -0700
-Received: (from gkm@localhost)
-	by kayak.mcgary.org (8.9.3/8.9.3) id VAA32409;
-	Mon, 11 Sep 2000 21:50:54 -0700
-X-Authentication-Warning: kayak.mcgary.org: gkm set sender to greg using -f
-To:     linux-mips@oss.sgi.com
-Subject: Re: do_page_fault crash on Indigo2
-References: <200009120107.SAA31731@kayak.mcgary.org>
-From:   Greg McGary <greg@mcgary.org>
-Date:   11 Sep 2000 21:50:54 -0700
-In-Reply-To: Greg McGary's message of "Mon, 11 Sep 2000 18:07:17 -0700"
-Message-ID: <msk8ci1adt.fsf@mcgary.org>
-X-Mailer: Gnus v5.7/Emacs 20.7
+Received:  by oss.sgi.com id <S42212AbQILQPW>;
+	Tue, 12 Sep 2000 09:15:22 -0700
+Received: from Cantor.suse.de ([194.112.123.193]:25861 "HELO Cantor.suse.de")
+	by oss.sgi.com with SMTP id <S42209AbQILQPK>;
+	Tue, 12 Sep 2000 09:15:10 -0700
+Received: from Hermes.suse.de (Hermes.suse.de [194.112.123.136])
+	by Cantor.suse.de (Postfix) with ESMTP
+	id 8CA671E3CE; Tue, 12 Sep 2000 18:15:08 +0200 (MEST)
+Received: from arthur.inka.de (Galois.suse.de [10.0.0.1])
+	by Hermes.suse.de (Postfix) with ESMTP
+	id DFE5410A02A; Tue, 12 Sep 2000 18:15:02 +0200 (MEST)
+Received: from gromit.rhein-neckar.de ([192.168.27.3] ident=postfix)
+	by arthur.inka.de with esmtp (Exim 3.14 #1)
+	id 13YshE-0006Wt-00; Tue, 12 Sep 2000 18:14:08 +0200
+Received: by gromit.rhein-neckar.de (Postfix, from userid 207)
+	id 9BD581822; Tue, 12 Sep 2000 18:14:07 +0200 (CEST)
+Mail-Copies-To: never
+To:     Ralf Baechle <ralf@oss.sgi.com>
+Cc:     Ulf Carlsson <ulfc@engr.sgi.com>,
+        Keith M Wesolowski <wesolows@foobazco.org>,
+        "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>, linux-mips@oss.sgi.com,
+        linux-mips@fnet.fr
+Subject: Re: One more gcc patch
+References: <20000908205810.A11920@bacchus.dhis.org>
+From:   Andreas Jaeger <aj@suse.de>
+Date:   12 Sep 2000 18:14:07 +0200
+In-Reply-To: Ralf Baechle's message of "Fri, 8 Sep 2000 20:58:11 +0200"
+Message-ID: <u8ya0xbnao.fsf@gromit.rhein-neckar.de>
+User-Agent: Gnus/5.0808 (Gnus v5.8.8) XEmacs/21.1 (Channel Islands)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Greg McGary <greg@mcgary.org> writes:
+>>>>> Ralf Baechle writes:
 
-> Oops in fault.c:do_page_fault, line 158:
+ > Ooops, this fixes a bug in the previous patch for gcc-current.  So this
+ > patch does:
 
-I'll send cross-ksymoops output when I it running.
+ >  - fix constructors which were not run for shared libs
+ >  - fix warnings when building the compiler itself
+ >  - Keith's gcse patch
+ >  - gcc was generating code which was calling __main from the beginning of
+ >    main which is wrong for Linux
 
-> Clues?
+Did you run the testsuite?
 
-As a fallback, can someone give me a date, or better yet a CVS tag,
-for which an indigo2 kernel is known to work.
+It doesn't seem to fix C++:
 
-Thanks,
-Greg
+                === libstdc++ Summary ===
+
+# of expected passes            9
+# of unexpected failures        10
+# of expected failures          11
+
+The number for g++ are even worse, I stopped the check
+
+Any idea how to get C++ working?
+
+Andreas
+-- 
+ Andreas Jaeger
+  SuSE Labs aj@suse.de
+   private aj@arthur.inka.de
+    http://www.suse.de/~aj

@@ -1,65 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jul 2003 19:15:12 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:50927 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225207AbTGaSPK>;
-	Thu, 31 Jul 2003 19:15:10 +0100
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id h6VIF6Z07582;
-	Thu, 31 Jul 2003 11:15:06 -0700
-Date: Thu, 31 Jul 2003 11:15:06 -0700
-From: Jun Sun <jsun@mvista.com>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: linux-mips@linux-mips.org, jsun@mvista.com
-Subject: Re: Malta + USB on 2.4, anyone?
-Message-ID: <20030731111506.F14914@mvista.com>
-References: <20030730191219.A14914@mvista.com> <Pine.GSO.3.96.1030731121705.17497D-100000@delta.ds2.pg.gda.pl> <20030731103629.D14914@mvista.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20030731103629.D14914@mvista.com>; from jsun@mvista.com on Thu, Jul 31, 2003 at 10:36:29AM -0700
-Return-Path: <jsun@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jul 2003 19:22:55 +0100 (BST)
+Received: from 66-152-54-2.ded.btitelecom.net ([IPv6:::ffff:66.152.54.2]:24110
+	"EHLO mmc.atmel.com") by linux-mips.org with ESMTP
+	id <S8225207AbTGaSWw>; Thu, 31 Jul 2003 19:22:52 +0100
+Received: from ares.mmc.atmel.com (ares.mmc.atmel.com [10.127.240.37])
+	by mmc.atmel.com (8.9.3/8.9.3) with ESMTP id OAA28612;
+	Thu, 31 Jul 2003 14:22:46 -0400 (EDT)
+Received: from localhost (dkesselr@localhost)
+	by ares.mmc.atmel.com (8.9.3/8.9.3) with ESMTP id OAA07037;
+	Thu, 31 Jul 2003 14:22:45 -0400 (EDT)
+X-Authentication-Warning: ares.mmc.atmel.com: dkesselr owned process doing -bs
+Date: Thu, 31 Jul 2003 14:22:45 -0400 (EDT)
+From: David Kesselring <dkesselr@mmc.atmel.com>
+To: Ralf Baechle <ralf@linux-mips.org>
+cc: linux-mips@linux-mips.org
+Subject: Re: mips64/setup.c
+In-Reply-To: <20030731165225.GA9566@linux-mips.org>
+Message-ID: <Pine.GSO.4.44.0307311421110.6891-100000@ares.mmc.atmel.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <dkesselr@mmc.atmel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2945
+X-archive-position: 2946
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: dkesselr@mmc.atmel.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jul 31, 2003 at 10:36:29AM -0700, Jun Sun wrote:
-> On Thu, Jul 31, 2003 at 12:26:44PM +0200, Maciej W. Rozycki wrote:
-> > On Wed, 30 Jul 2003, Jun Sun wrote:
-> > 
-> > > Has anybody tried USB on malta with 2.4 kernel?  I just found that
-> > > I got 0xff IRQ number and kernel panics.
-> > 
-> >  Possibly IRQ routing is broken -- the PIIX4 uses INTD for its USB
-> > controller's interrupt.  For the Malta it should be routed to the IRQ11
-> > input of the PIIX4's internal dual-8259A PIC.  What does `/sbin/lspci -vv
-> > -s 00:0a.2' print?
-> >
-> 
-> The output seems to say the same thing:
-> 
-> root@10.0.18.6:~# lspci -vv -s 00:0a.2                                          
-> 00:0a.2 USB Controller: Intel Corporation 82371AB PIIX4 USB (rev 01) (prog-if 00
->  [UHCI])                                                                        
->         Control: I/O+ Mem- BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Step
-> ping- SERR- FastB2B-                                                            
->         Status: Cap- 66Mhz- UDF- FastB2B+ ParErr- DEVSEL=medium >TAbort- <TAbort
-> - <MAbort- >SERR- <PERR-                                                        
->         Latency: 32                                                             
->         Interrupt: pin D routed to IRQ 11                                       
->         Region 4: I/O ports at 1220 [size=32]                                   
-> 
+On Thu, 31 Jul 2003, Ralf Baechle wrote:
 
-Using the alternative JE driver sovles the problem.  
-
-I suspect the main UHCI driver does not get cache flushing
-or bus/virt address right.
+> On Thu, Jul 31, 2003 at 11:54:15AM -0400, David Kesselring wrote:
+>
+> > Is the file mips64/setup.c used? I believe that I see two problems in it;
+> > 1) The Ocelot options in setup_arch have case statements without a switch.
+>
+> Ocelot 64-bit kernel is currently work in progress.  A first cut of
+> the patch was posted to this mailing list a few days ago.
+>
+> > 2) There is no option for Sead but the mips64 build for sead compiles
+> >    fine.
+>
+> The fun of when two almost identical files go out of sync.
+Then do you know what is happening when 64bit sead is configured? Why
+doesn't the compile fail?
 
 
-Jun
+
+>
+> > Is this some leftovers from some merging that has been talked about?
+>
+> No.  The big merge thing did only happen in 2.6.  It's way to intrusive
+> for 2.4.
+>
+>   Ralf
+>
+>
+
+David Kesselring
+Atmel MMC
+dkesselr@mmc.atmel.com
+919-462-6587

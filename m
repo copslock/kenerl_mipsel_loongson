@@ -1,48 +1,57 @@
-Received:  by oss.sgi.com id <S42189AbQFOWvf>;
-	Thu, 15 Jun 2000 15:51:35 -0700
-Received: from ha1.rdc1.az.home.com ([24.1.240.66]:52198 "EHLO
-        mail.rdc1.az.home.com") by oss.sgi.com with ESMTP id <S42181AbQFOWvP>;
-	Thu, 15 Jun 2000 15:51:15 -0700
-Received: from CX579290-B ([24.9.123.15]) by mail.rdc1.az.home.com
-          (InterMail vM.4.01.02.00 201-229-116) with SMTP
-          id <20000615225115.GMWW11091.mail.rdc1.az.home.com@CX579290-B>
-          for <linux-mips@oss.sgi.com>; Thu, 15 Jun 2000 15:51:15 -0700
-From:   Pete Buechler <peterb@suse.com>
-Reply-To: Pete Buechler <peterb@suse.com>
-Organization: home
+Received:  by oss.sgi.com id <S42227AbQFQDbD>;
+	Fri, 16 Jun 2000 20:31:03 -0700
+Received: from filer2.isc.rit.edu ([129.21.2.226]:12047 "EHLO
+        filer2.isc.rit.edu") by oss.sgi.com with ESMTP id <S42218AbQFQDae>;
+	Fri, 16 Jun 2000 20:30:34 -0700
+Received: from hork ("port 1025"@[129.21.10.76])
+ by osfmail.isc.rit.edu (PMDF V5.2-33 #41785)
+ with ESMTP id <0FWA000464DYAN@osfmail.isc.rit.edu> for linux-mips@oss.sgi.com;
+ Fri, 16 Jun 2000 23:30:00 -0400 (EDT)
+Received: from molotov (helo=localhost)
+	by hork with local-esmtp (Exim 3.12 #1 (Debian))	id 1339JQ-000056-00; Fri,
+ 16 Jun 2000 23:30:24 -0400
+Date:   Fri, 16 Jun 2000 23:30:24 -0400 (EDT)
+From:   Chris Ruvolo <csr6702@osfmail.isc.rit.edu>
+Subject: TFTP Problem Resolved!
+X-Sender: molotov@hork
 To:     linux-mips@oss.sgi.com
-Subject: Maintainer for MIPS version of gcc?
-Date:   Thu, 15 Jun 2000 15:49:15 -0700
-X-Mailer: KMail [version 1.0.29.1]
-Content-Type: text/plain
-MIME-Version: 1.0
-Message-Id: <00061515510204.02475@CX579290-B>
-Content-Transfer-Encoding: 8bit
+Cc:     jbglaw@lug-owl.de, florian@void.s.bawue.de
+Message-id: <Pine.LNX.4.21.0006162228001.504-100000@hork>
+MIME-version: 1.0
+Content-type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Dear folks -
+Those of you maintaing FAQs or installation instructions might want to
+make note of this.
 
-While using a version of gcc which I downloaded from CVS  on 09 June 2000, to
-compile Linux-VR which I downloaded on 07 June 2000, the compiler complains
-that it has hit an internal error and to please file a bug report. I used the
-web interface to GNATS to file one early in the day on Tuesday. It told
-me that I would get e-mail telling me which developer it went to. I have not
-heard back, so I am starting to wonder if I did something wrong or if the
-interface is broken.
+When using bootp/tftp to boot, some of us have been running into
+trouble.  We are able to get an IP with bootp, but when it came to
+tftping a kernel, the client would issue a request, the server would
+respond, but the response would be ignored.
 
-So, could you tell me who would be interested in looking at an internal gcc
-compiler error which is encountered when compiling Linux-VR? If I can find out
-who that person is, I will mail them my command, its output, and the
-pre-processed source file.
+Apparently, this is because the "Don't Fragment" flag is being set on the
+TFTP UDP data packets.  This is set by default on kernels >= 2.3.x due to
+path MTU discovery!
 
-I looked at the pre-processed code, it has some really funky C and in-line
-assembly.
+To correct for this, either boot your tftp server with a 2.2.x kernel, or
+"echo 1 > /proc/sys/net/ipv4/ip_no_pmtu_disc" before you boot the remote
+machine.
 
- -- 
-Pete Buechler	: SuSE Linux Developer
-Work e-mail	: peterb@suse.com
-Work web page	: http://www.suse.com/~peterb
-Personal e-mail	: peter.buechler@home.com
+Thanks to the guys on #mipslinux on irc.openprojects.net for their help
+figuring this problem out and testing this solution.  Ralf Baechle
+informed us about the /proc configuration.
+
+This (mis)behavior has been observed on my Indy and another machine
+(Siemens?) that belongs to flawed on #mipslinux.
+
+For clarification, this affects TFTP servers running linux 2.3.x.
+
+Thanks for everyone's help in getting this resolved.
+
+-Chris
+
+PS: Yea!  My Indy works!  I've been so frustrated, I've been considering
+just getting rid of it and selling it on Ebay. :)  Now I'm glad I didn't.

@@ -1,42 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 29 Jan 2005 00:03:51 +0000 (GMT)
-Received: from p3EE07947.dip.t-dialin.net ([IPv6:::ffff:62.224.121.71]:27239
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8224948AbVA2ADL>; Sat, 29 Jan 2005 00:03:11 +0000
-Received: from fluff.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id j0T038mL011813;
-	Sat, 29 Jan 2005 01:03:08 +0100
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.13.1/8.13.1/Submit) id j0T038IY011812;
-	Sat, 29 Jan 2005 01:03:08 +0100
-Date:	Sat, 29 Jan 2005 01:03:08 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	zhan rongkai <zhanrk@gmail.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Why does MIPS/Linux always reserve 32 bytes in the top of each process's kernel stack space
-Message-ID: <20050129000308.GB11602@linux-mips.org>
-References: <73e62045050127185929c3bdf7@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 29 Jan 2005 10:04:33 +0000 (GMT)
+Received: from moutng.kundenserver.de ([IPv6:::ffff:212.227.126.185]:46571
+	"EHLO moutng.kundenserver.de") by linux-mips.org with ESMTP
+	id <S8224932AbVA2KER>; Sat, 29 Jan 2005 10:04:17 +0000
+Received: from [212.227.126.207] (helo=mrelayng.kundenserver.de)
+	by moutng.kundenserver.de with esmtp (Exim 3.35 #1)
+	id 1CupSi-0000ju-00
+	for linux-mips@linux-mips.org; Sat, 29 Jan 2005 11:04:16 +0100
+Received: from [213.39.178.184] (helo=c178184.adsl.hansenet.de)
+	by mrelayng.kundenserver.de with asmtp (TLSv1:RC4-MD5:128)
+	(Exim 3.35 #1)
+	id 1CupSi-0002t0-00
+	for linux-mips@linux-mips.org; Sat, 29 Jan 2005 11:04:16 +0100
+From:	Ulrich Eckhardt <eckhardt@satorlaser.com>
+To:	linux-mips@linux-mips.org
+Subject: Re: bitrot in drivers/net/au1000_eth.c
+Date:	Sat, 29 Jan 2005 11:04:48 +0100
+User-Agent: KMail/1.7.1
+References: <200501281501.19162.eckhardt@satorlaser.com> <41FA6FF0.4060302@embeddedalley.com> <20050128102056.A9216@cox.net>
+In-Reply-To: <20050128102056.A9216@cox.net>
+Organization: Sator Laser GmbH
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <73e62045050127185929c3bdf7@mail.gmail.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Message-Id: <200501291104.48853.eckhardt@satorlaser.com>
+X-Provags-ID: kundenserver.de abuse@kundenserver.de auth:e35cee35a663f5c944b9750a965814ae
+Return-Path: <eckhardt@satorlaser.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7066
+X-archive-position: 7067
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: eckhardt@satorlaser.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Jan 28, 2005 at 10:59:26AM +0800, zhan rongkai wrote:
+On Friday 28 January 2005 18:20, Matt Porter wrote:
+> I suggest everyone take a look at the effort posted to netdev:
+>
+> http://oss.sgi.com/archives/netdev/2004-12/msg00643.html
+>
+> It's an attempt at a phy abstraction layer that goes the next
+> logical step after the minimal support provided in mii.h.
 
-> Why does MIPS/Linux always reserve 32 bytes in the top of each
-> process's kernel stack space.
+Ok, this is a major enhancement to the current ad-hoc MII handling and 
+probably the way to go in the future. My main concern is if/when this patch 
+will be applied to the kernel, but until then I'll probably stick with the 
+current code, keeping it alive as good as possible.
 
-Paranoia.
+Is anyone aware of the acceptance/state of that patch or have further info?
 
-  Ralf
+Uli

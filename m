@@ -1,54 +1,62 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.9.3/8.9.3) id UAA18515
-	for linuxmips-outgoing; Sun, 17 Oct 1999 20:39:40 -0700
+	by oss.sgi.com (8.9.3/8.9.3) id DAA20386
+	for linuxmips-outgoing; Mon, 18 Oct 1999 03:26:23 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linuxmips@oss.sgi.com using -f
 Received: from pneumatic-tube.sgi.com (pneumatic-tube.sgi.com [204.94.214.22])
-	by oss.sgi.com (8.9.3/8.9.3) with ESMTP id UAA18512
-	for <linuxmips@oss.sgi.com>; Sun, 17 Oct 1999 20:39:39 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id UAA03340
-	for <linuxmips@oss.sgi.com>; Sun, 17 Oct 1999 20:43:34 -0700 (PDT)
+	by oss.sgi.com (8.9.3/8.9.3) with ESMTP id DAA20383
+	for <linuxmips@oss.sgi.com>; Mon, 18 Oct 1999 03:26:21 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id DAA06116
+	for <linuxmips@oss.sgi.com>; Mon, 18 Oct 1999 03:30:18 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id UAA81753
+	id DAA80325
 	for linux-list;
-	Sun, 17 Oct 1999 20:12:13 -0700 (PDT)
+	Mon, 18 Oct 1999 03:06:41 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from oz.engr.sgi.com (oz.engr.sgi.com [150.166.42.13])
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id UAA86255;
-	Sun, 17 Oct 1999 20:12:09 -0700 (PDT)
-	mail_from (ariel@oz.engr.sgi.com)
-Received: (from ariel@localhost) by oz.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) id UAA98843; Sun, 17 Oct 1999 20:12:08 -0700 (PDT)
-From: ariel@oz.engr.sgi.com (Ariel Faigon)
-Message-Id: <199910180312.UAA98843@oz.engr.sgi.com>
+	via ESMTP id DAA65301;
+	Mon, 18 Oct 1999 03:06:37 -0700 (PDT)
+	mail_from (gorgo@sztaki.hu)
+Received: from lutra.sztaki.hu (ns2.sztaki.hu [193.225.86.1]) 
+	by sgi.com (980305.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id DAA1361827; Mon, 18 Oct 1999 03:06:34 -0700 (PDT)
+	mail_from (gorgo@sztaki.hu)
+Received: from localhost by sztaki.hu (PMDF V5.2-32 #35728)
+ with ESMTP id <0FJS00301MQWRA@sztaki.hu>; Mon,
+ 18 Oct 1999 12:06:32 +0200 (MET DST)
+Date: Mon, 18 Oct 1999 12:06:32 +0200 (MET DST)
+From: Gergely Madarasz <gorgo@sztaki.hu>
 Subject: Re: current information about linux/sgi ?
-To: gorgo@sztaki.hu (Gergely Madarasz)
-Date: Sun, 17 Oct 1999 20:12:08 -0700 (PDT)
+In-reply-to: <199910180312.UAA98843@oz.engr.sgi.com>
+To: Ariel Faigon <ariel@cthulhu.engr.sgi.com>
 Cc: linux@cthulhu.engr.sgi.com
-Reply-To: ariel@cthulhu.engr.sgi.com (Ariel Faigon)
-In-Reply-To: <Pine.GSO.4.10.9910172334460.5329-100000@lutra.sztaki.hu> from "Gergely Madarasz" at Oct 17, 99 11:44:09 pm
-Organization: Silicon Graphics Inc.
-X-Mailer: ELM [version 2.4 PL25]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Message-id: <Pine.GSO.4.10.9910181204450.5329-100000@lutra.sztaki.hu>
+MIME-version: 1.0
+Content-type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 
-:Btw is the list archived somewhere else perhaps? I followed the link from
-:www.linux.sgi.com, the latest messages there are dated June 25.
-:And can someone summarize the current status of linux on different
-:workstation models ?
-:
-I'm fixing this as we speak. There are several old links
-to fix :-(
+On Sun, 17 Oct 1999, Ariel Faigon wrote:
 
-The up-to-date archives can be found at:
+> :Btw is the list archived somewhere else perhaps? I followed the link from
+> :www.linux.sgi.com, the latest messages there are dated June 25.
+> :And can someone summarize the current status of linux on different
+> :workstation models ?
+> :
+> I'm fixing this as we speak. There are several old links
+> to fix :-(
+> 
+> The up-to-date archives can be found at:
+> 
+> 	http://oss.sgi.com/projects/linuxmips/archive/
 
-	http://oss.sgi.com/projects/linuxmips/archive/
+The archives of the messages beginning with June 25th are still missing.
+This mail of yours is the first in the linuxmips.9910 archive,
+linuxmips.1999 ends at June 25th. :(
 
-They should be updated automatically.
-
---
-Peace, Ariel
+Greg

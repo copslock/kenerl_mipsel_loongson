@@ -1,49 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jan 2004 06:08:16 +0000 (GMT)
-Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:36262 "EHLO
-	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8224858AbUAMGIO>; Tue, 13 Jan 2004 06:08:14 +0000
-Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
-	id CFAE54C3A9; Mon, 12 Jan 2004 13:51:55 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by jurand.ds.pg.gda.pl (Postfix) with ESMTP
-	id BF42847B90; Mon, 12 Jan 2004 13:51:55 +0100 (CET)
-Date: Mon, 12 Jan 2004 13:51:55 +0100 (CET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: =?iso-8859-1?q?karthikeyan=20natarajan?= <karthik_96cse@yahoo.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: How to configure the cache size in r4000
-In-Reply-To: <20040111124828.71884.qmail@web10103.mail.yahoo.com>
-Message-ID: <Pine.LNX.4.55.0401121345490.21851@jurand.ds.pg.gda.pl>
-References: <20040111124828.71884.qmail@web10103.mail.yahoo.com>
-Organization: Technical University of Gdansk
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jan 2004 11:28:51 +0000 (GMT)
+Received: from mx5.Informatik.Uni-Tuebingen.De ([IPv6:::ffff:134.2.12.32]:4038
+	"EHLO mx5.informatik.uni-tuebingen.de") by linux-mips.org with ESMTP
+	id <S8225294AbUAML2u>; Tue, 13 Jan 2004 11:28:50 +0000
+Received: from localhost (loopback [127.0.0.1])
+	by mx5.informatik.uni-tuebingen.de (Postfix) with ESMTP id C418F133
+	for <linux-mips@linux-mips.org>; Tue, 13 Jan 2004 12:28:44 +0100 (NFT)
+Received: from mx5.informatik.uni-tuebingen.de ([127.0.0.1])
+ by localhost (mx5 [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 29886-05 for <linux-mips@linux-mips.org>;
+ Tue, 13 Jan 2004 12:28:43 +0100 (NFT)
+Received: from dual (semeai.Informatik.Uni-Tuebingen.De [134.2.15.66])
+	by mx5.informatik.uni-tuebingen.de (Postfix) with ESMTP id D7C33121
+	for <linux-mips@linux-mips.org>; Tue, 13 Jan 2004 12:28:42 +0100 (NFT)
+Received: from mrvn by dual with local (Exim 3.36 #1 (Debian))
+	id 1AgMio-0005UW-00
+	for <linux-mips@linux-mips.org>; Tue, 13 Jan 2004 12:28:34 +0100
+To: linux-mips@linux-mips.org
+Subject: Patch for MyCable XXS1500 for 2.4.24-pre1
+From: Goswin von Brederlow <brederlo@informatik.uni-tuebingen.de>
+Date: 13 Jan 2004 12:28:34 +0100
+Message-ID: <878ykcm6jh.fsf@mrvn.homelinux.org>
+User-Agent: Gnus/5.0808 (Gnus v5.8.8) XEmacs/21.4 (Reasonable Discussion)
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Content-Type: text/plain; charset=us-ascii
+X-Virus-Scanned: by amavisd-new (McAfee AntiVirus) at informatik.uni-tuebingen.de
+Return-Path: <brederlo@informatik.uni-tuebingen.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3907
+X-archive-position: 3909
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: brederlo@informatik.uni-tuebingen.de
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, 11 Jan 2004, [iso-8859-1] karthikeyan natarajan wrote:
+Hi,
 
->     The cache size is modified by setting the IC/DC
-> bits in the 'config' register. Seems they are set only
-> by the hardware during the processor reset. And also,
-> those bits are mentioned as read only bits..
+I found a minor flaw in 2.4.24-pre1 for my X-Mas present.
+In 2.4.21 there where two more boards present then in
+2.4.24-pre1:
+#define MACH_XXS1500            6       /* Au1500-based eval board */
+#define MACH_MTX1               7       /* 4G MTX-1 Au1500-based board */
 
- You cannot modify the size of the primary caches -- the values are
-hardwired to the amount of cache available in the processor (8kB+8kB for
-the original R4000).  However, if you take appropriate precautions, you
-can alter the line sizes of the caches by modifying appropriate bits of
-cp0.config.
+I have an XXS1500 and can confirm that the kernel compiles and works
+with the patch below.
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+MfG
+        Goswin
+----------------------------------------------------------------------
+mips:/usr/src# diff -Nurd linux-2.4.24-pre1-cvs/include/asm/bootinfo.h.old linux-2.4.24-pre1-cvs/include/asm/bootinfo.h
+--- linux-2.4.24-pre1-cvs/include/asm/bootinfo.h.old    Tue Jan 13 12:24:27 2004
++++ linux-2.4.24-pre1-cvs/include/asm/bootinfo.h        Tue Jan 13 12:24:44 2004
+@@ -176,6 +176,7 @@
+ #define MACH_DB1000            3       /* Au1000-based eval board */
+ #define MACH_DB1100            4       /* Au1100-based eval board */
+ #define MACH_DB1500            5       /* Au1500-based eval board */
++#define MACH_XXS1500            6       /* MyCable XSS1500 board */
+ 
+ /*
+  * Valid machtype for group NEC_VR41XX

@@ -1,66 +1,105 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jul 2004 16:38:22 +0100 (BST)
-Received: from 209-232-97-206.ded.pacbell.net ([IPv6:::ffff:209.232.97.206]:25277
-	"EHLO dns0.mips.com") by linux-mips.org with ESMTP
-	id <S8225561AbUGMPiS>; Tue, 13 Jul 2004 16:38:18 +0100
-Received: from mercury.mips.com (sbcns-dmz [209.232.97.193])
-	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id i6DFYFjd003365;
-	Tue, 13 Jul 2004 08:34:15 -0700 (PDT)
-Received: from Ulysses (ulysses [192.168.236.13])
-	by mercury.mips.com (8.12.11/8.12.11) with SMTP id i6DFYDv0011781;
-	Tue, 13 Jul 2004 08:34:13 -0700 (PDT)
-Message-ID: <003301c468ee$80c5fa60$0deca8c0@Ulysses>
-From: "Kevin D. Kissell" <KevinK@mips.com>
-To: "Ralf Baechle" <ralf@linux-mips.org>
-Cc: "S C" <theansweriz42@hotmail.com>, <linux-mips@linux-mips.org>
-References: <BAY2-F21njXXBARdkfw0003b0c8@hotmail.com> <20040710100412.GA23624@linux-mips.org> <00ba01c46823$3729b200$0deca8c0@Ulysses> <20040713003317.GA26715@linux-mips.org>
-Subject: Re: Strange, strange occurence
-Date: Tue, 13 Jul 2004 17:31:42 +0200
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4927.1200
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4927.1200
-X-Scanned-By: MIMEDefang 2.39
-Return-Path: <KevinK@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jul 2004 20:30:58 +0100 (BST)
+Received: from p508B6087.dip.t-dialin.net ([IPv6:::ffff:80.139.96.135]:5474
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225735AbUGMTax>; Tue, 13 Jul 2004 20:30:53 +0100
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i6DJTOik018348;
+	Tue, 13 Jul 2004 21:29:24 +0200
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i6DJTNHD018347;
+	Tue, 13 Jul 2004 21:29:23 +0200
+Date: Tue, 13 Jul 2004 21:29:23 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Vadivelan Mani <daff_vadi@hotmail.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: pci_alloc_consistent() usage
+Message-ID: <20040713192923.GA17250@linux-mips.org>
+References: <BAY15-F223KfTpfpYea00005ca9@hotmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <BAY15-F223KfTpfpYea00005ca9@hotmail.com>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5463
+X-archive-position: 5464
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: KevinK@mips.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-> > A truly safe and general I-cache flush routine should itself run uncached,
-> > but a cursory glance at the linux-mips.org sources makes me think
-> > that we do not take that precaution by default - the flush_icache_range
-> > pointer looks to be set to the address of r4k_flush_icache_range()
-> > function, rather than its (uncacheable) alias in kseg1.  Is this something
-> > that's fixed in a linker script, or are we just living dangerously?
+On Tue, Jul 13, 2004 at 06:31:01PM +0530, Vadivelan Mani wrote:
+
+>   I'm writing a wireless driver which requires 8 transmit and 8 receive 
+> buffers each of size 3KB approx.
+
+I hope this device isn't really as simplistic as you make it sound ...
+
+> These buffers should be in dma capable space.
 > 
-> That's a new restriction in MIPS32 v2.0 and you're right, we're not trying
-> to deal with it yet except for the TX49xx.
+> I've allocated them using pci_alloc_consistent().
+> 
+> I've allocated 128KBytes just to make more space. I've got few doubts.
+> 
+>   1. Can pci_alloc_consistent() be used to allocate memory upto 128KBytes?
 
-I'm pretty sure that restriction is not new to MIPS32 v2.0.  In any
-case, there are pre-MIPS32/MIPS64 chips in current mass production
-and use, under Linux among other OSes, which specify in their user
-manuals that one should not invalidate the Icache line from which one
-is currently executing.  The clause about unpredictable behavior in
-that case went into the MIPS32 spec because it was known that such
-parts existed, and we wanted to make it as easy as possible for such 
-designs to be made compliant
+Yes.  For MIPS MAX_ORDER defaults to 11 so you even do alloc_page (which
+is the underlying allocator of pci_alloc_consistent) upto 2^11 page that
+is 8MB.  Downside - memory allocation is making such large allocations
+unreliable; the more unreliable the larger the allocation.  In general
+try to stick to allocations of order 0 that is PAGE_SIZE which atm is
+4k on MIPS.  They're ok for permanent allocations such as rx/tx rings
+which only happen rarely.
 
-Invalidating the entire Icache with a routine executing out of the Icache
-is a Bad Idea, and will almost certainly cause problems some of the time
-on some MIPS processors.  Reasonable people could disagree on whether
-we want to handle that in the generic code, or create a variant icache flush 
-routine which gets plugged in only for those parts that really need it.
+> 2.)   I would also like to know the exact use of this allocated space to 
+> transmit or receive a packet.
 
-            Regards,
+pci_alloc_consistent() is meant to be used for permanent allocations
+such as rx/tx rings.  It's not suitable for allocating skbufs; there are
+other mechanisms available for that.
 
-            Kevin K.
+> During transmission i do the following. Plz correct me if i'm wrong because 
+> i'm new to driver writing.
+> 
+> The device has a register which should be loaded with the transmit buffers 
+> starting address.
+> 
+> I copy the packet coming from the Kernel in the form of sk_buff structure 
+> into one of the transmit buffers that i've allocated using memcpy().
+
+That's usually an idea only for very small packets.  pci_alloc_consistent
+allocates uncached memory on a system withour hardware coherency so this
+copy operation would be very slow.  In any case you should experiment to
+find the breakeven point.
+
+For larger packets you should use pci_map_single() in the start_xmit()
+method of the driver, then pci_unmap_single() later when cleaning that is
+typically in an interrupt handler.  Reception of packets would work
+fairly similar.
+
+> And i set the register in the device to initiate transmission of the packet.
+> 
+> Where does the dma transfer concept come in this?
+> There is no mention of the direction of data transfer in 
+> pci_alloc_consistent().
+
+pci_alloc_consistent will allocate consistent memory that is it's suitable
+for transfers in both directions.  On the typical MIPS processor which
+doesn't maintain coherency in hardware this means it will return
+uncached memory.  Obviously that will work for any direction of transfer.
+But: uncached memory is slow - so avoid copying packets there.
+
+> I also assumed that allocating buffer in dma capable space was itself 
+> enough to start dma transfers.
+
+No.  DMA capable space means some memory that can be accessed somehow by
+a DMA engine.  You still have to tell the device to start the operation.
+
+> Since i do not have the device now i'm not able to test the code. But i 
+> would like to write the code before i get the device.
+
+  Ralf

@@ -1,90 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Oct 2004 17:38:22 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:57333 "EHLO
-	hermes.mvista.com") by linux-mips.org with ESMTP
-	id <S8225202AbUJUQiQ>; Thu, 21 Oct 2004 17:38:16 +0100
-Received: from mvista.com (prometheus.mvista.com [10.0.0.139])
-	by hermes.mvista.com (Postfix) with ESMTP
-	id D1B03185D3; Thu, 21 Oct 2004 09:38:14 -0700 (PDT)
-Message-ID: <4177E5F6.3010100@mvista.com>
-Date: Thu, 21 Oct 2004 09:38:14 -0700
-From: Manish Lachwani <mlachwani@mvista.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.2) Gecko/20040308
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: Thomas Koeller <thomas.koeller@baslerweb.com>
-Cc: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Oct 2004 18:54:35 +0100 (BST)
+Received: from [IPv6:::ffff:145.253.187.134] ([IPv6:::ffff:145.253.187.134]:51644
+	"EHLO mail01.baslerweb.com") by linux-mips.org with ESMTP
+	id <S8225204AbUJURy2>; Thu, 21 Oct 2004 18:54:28 +0100
+Received: from mail01.baslerweb.com (localhost.localdomain [127.0.0.1])
+	by localhost.domain.tld (Basler) with ESMTP
+	id 47C3A134032; Thu, 21 Oct 2004 19:53:42 +0200 (CEST)
+Received: from comm1.baslerweb.com (unknown [172.16.13.2])
+	by mail01.baslerweb.com (Basler) with ESMTP
+	id 454A7134029; Thu, 21 Oct 2004 19:53:42 +0200 (CEST)
+Received: from vclinux-1.basler.corp (localhost [172.16.13.253]) by comm1.baslerweb.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2657.72)
+	id 4YRPNV5L; Thu, 21 Oct 2004 19:54:23 +0200
+From: Thomas Koeller <thomas.koeller@baslerweb.com>
+Organization: Basler AG
+To: Manish Lachwani <mlachwani@mvista.com>
 Subject: Re: yosemite interrupt setup
-References: <200410201952.29205.thomas.koeller@baslerweb.com> <4176A855.1000907@mvista.com> <4176AACA.3000206@mvista.com> <200410211149.35300.thomas.koeller@baslerweb.com>
-In-Reply-To: <200410211149.35300.thomas.koeller@baslerweb.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Date: Thu, 21 Oct 2004 19:58:24 +0200
+User-Agent: KMail/1.6.2
+Cc: linux-mips@linux-mips.org
+References: <200410201952.29205.thomas.koeller@baslerweb.com> <200410211149.35300.thomas.koeller@baslerweb.com> <4177E5F6.3010100@mvista.com>
+In-Reply-To: <4177E5F6.3010100@mvista.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+Content-Type: text/plain;
+  charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-Return-Path: <mlachwani@mvista.com>
+Message-Id: <200410211958.24269.thomas.koeller@baslerweb.com>
+Return-Path: <thomas.koeller@baslerweb.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6165
+X-archive-position: 6166
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mlachwani@mvista.com
+X-original-sender: thomas.koeller@baslerweb.com
 Precedence: bulk
 X-list: linux-mips
 
-Thomas Koeller wrote:
-> On Wednesday 20 October 2004 20:13, Manish Lachwani wrote:
-> 
-> 
->>        TITAN_GE_WRITE(0x0024, 0x04000024);    /* IRQ vector */
->>        TITAN_GE_WRITE(0x0020, 0x000fb000);    /* INTMSG base */
-> 
-> 
-> Hi Manish,
-> 
-> it was the location of these two lines that I was asking for. So they
-> are in the ethernet driver. Wouldn't you agree that they should go
-> into the platform instead? The interrrupt is shared with
-> other devices, the DUART to name just one example, and if I want to
-> write a driver for these, then that driver would depend on the
-> ethernet driver, if that does the interrupt setup.
-> 
-> So this covers the message interrupts, but I also have not been
-> able so far to spot the location where the corresponding setup
-> is done for the external interrupt lines, that is, setting up
-> the INTPINx registers. Any hints?
-> 
-> thank you,
-> Thomas
-> 
+On Thursday 21 October 2004 18:38, Manish Lachwani wrote:
+> Hi Thomas
+>
+> No, these should remain in the Ethernet driver. Thats because no other
+> driver depends on these. Those registers are MAC subsystem registers
+> only. The ethernet driver does not do any interrupt setup for other
+> devices.
 
-Hi Thomas
+Hi Manish,
 
-No, these should remain in the Ethernet driver. Thats because no other 
-driver depends on these. Those registers are MAC subsystem registers 
-only. The ethernet driver does not do any interrupt setup for other 
-devices. Lets take these registers one by one:
+first of all, forget about the yosemite, as I am no longer using it. I
+am currently working on our own platform port.
 
-TITAN_GE_WRITE(0x0024, 0x04000024);    /* IRQ vector */
+All the components of the Ethernet/GPI subsystem interrupt the CPU
+through the interrupt vector established by writing to the CPCFG0 and
+CPCFG1 registers. So if I want to write a driver that uses one of
+the GPIs, or the DUART, or a watchdog counter, or the two-bit interface,
+or any other component of the subsystem, then this driver will be
+dependent of the ethernet driver. Have a look at the manual if
+you do not believe me. The titan ethernet driver is the only one to
+use this interrupt _on_the_yosemite_, but this is only because all the
+other components are not used at all.
 
-This register is to tell the MAC subsystem what IRQ vectors to use. If 
-you dont configure this register, only the MAC subsystem cannot send 
-interrupts to the processor. But, thats abt it.
+The interrupt setup should definitly be in the platform - please reconsider
+your position.
 
-TITAN_GE_WRITE(0x0020, 0x000fb000);    /* INTMSG base */
+thanks,
+Thomas
 
-This register tells the MAC subsystem only where the INTMSG base is. So, 
-if the MAC subsystem needs to send an interrupt, it can write the IRQ 
-vector to the INTMSG register and uses this register to find the base of 
-the INTMSG register. Thats all. If you dont configure this register, 
-then only the MAC subsystem cannot send interrupts.
+-- 
+--------------------------------------------------
 
-As far as external interrupts go, I think include/asm-mips/serial.h 
-should indicate the serial interrupt used and 
-arch/mips/pmc-sierra/yosemite/pci-irq.c should indicate the IRQ line 
-that PCI uses. HT and MAC are based off message interrupts. If you are 
-using Titan native UART, it is also based off message interrupts. And 
-the interrupt config is done in arch/mips/pmc-sierra/yosemite/irq.c.
+Thomas Koeller, Software Development
+Basler Vision Technologies
 
-Is this what you wanted to know abt setting up the external interrupt lines?
+thomas dot koeller at baslerweb dot com
+http://www.baslerweb.com
 
-Thanks
-Manish Lachwani
+==============================

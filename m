@@ -1,64 +1,60 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id LAA15497 for <linux-archive@neteng.engr.sgi.com>; Fri, 11 Sep 1998 11:14:17 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id RAA33580 for <linux-archive@neteng.engr.sgi.com>; Fri, 11 Sep 1998 17:27:57 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id LAA03554
+	id RAA57229
 	for linux-list;
-	Fri, 11 Sep 1998 11:13:24 -0700 (PDT)
+	Fri, 11 Sep 1998 17:26:50 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from jibe.engr.sgi.com (jibe.engr.sgi.com [150.166.37.45])
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id LAA72330;
-	Fri, 11 Sep 1998 11:13:22 -0700 (PDT)
-	mail_from (kyriazis@jibe.engr.sgi.com)
-Received: (from kyriazis@localhost) by jibe.engr.sgi.com (980427.SGI.8.8.8/960327.SGI.AUTOCF) id LAA01299; Fri, 11 Sep 1998 11:13:21 -0700 (PDT)
-From: kyriazis@jibe.engr.sgi.com (George Kyriazis)
-Message-Id: <199809111813.LAA01299@jibe.engr.sgi.com>
+	via ESMTP id RAA61747
+	for <linux@cthulhu.engr.sgi.com>;
+	Fri, 11 Sep 1998 17:26:48 -0700 (PDT)
+	mail_from (sgi.sgi.com!rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
+Received: from rachael.franken.de (rachael.franken.de [193.175.24.38]) 
+	by sgi.sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id RAA06891
+	for <linux@cthulhu.engr.sgi.com>; Fri, 11 Sep 1998 17:26:47 -0700 (PDT)
+	mail_from (rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
+Received: from hub-fue by rachael.franken.de
+	via rmail with uucp
+	id <m0zHdWX-0027pXC@rachael.franken.de>
+	for cthulhu.engr.sgi.com!linux; Sat, 12 Sep 1998 02:26:45 +0200 (MET DST)
+	(Smail-3.2 1996-Jul-4 #4 built DST-Sep-8)
+Received: by hub-fue.franken.de (Smail3.1.29.1 #35)
+	id m0zHdWO-002PMMC; Sat, 12 Sep 98 02:26 MET DST
+Received: (from tsbogend@localhost)
+	by alpha.franken.de (8.8.7/8.8.5) id CAA03943;
+	Sat, 12 Sep 1998 02:12:34 +0200
+Message-ID: <19980912021234.21248@alpha.franken.de>
+Date: Sat, 12 Sep 1998 02:12:34 +0200
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To: George Kyriazis <kyriazis@jibe.engr.sgi.com>
+Cc: Alex deVries <adevries@engsoc.carleton.ca>, linux@cthulhu.engr.sgi.com
 Subject: Re: newport questions...
-In-Reply-To: <Pine.LNX.3.96.980911135113.372B-100000@lager.engsoc.carleton.ca> from Alex deVries at "Sep 11, 98 01:56:16 pm"
-To: adevries@engsoc.carleton.ca (Alex deVries)
-Date: Fri, 11 Sep 1998 11:13:21 -0700 (PDT)
-Cc: linux@cthulhu.engr.sgi.com
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <Pine.LNX.3.96.980911135113.372B-100000@lager.engsoc.carleton.ca> <199809111813.LAA01299@jibe.engr.sgi.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.85
+In-Reply-To: <199809111813.LAA01299@jibe.engr.sgi.com>; from George Kyriazis on Fri, Sep 11, 1998 at 11:13:21AM -0700
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+On Fri, Sep 11, 1998 at 11:13:21AM -0700, George Kyriazis wrote:
+> If you have more REX3 specific questions, feel free to contact me directly
+> so we don't clog the group.
 
-> - What is a span, and how does it differ from a line?
-> 
-A span is a horizontal row of pixels.  The idea is that you specify only
-one Y, and two X's.  
+either leave it on the list or put me on CC. I still want to know
+what I did, when I programed the new console driver:-) And maybe I find
+something, which I can tune.
 
-Sometimes you don't specify a second X, but iterate writing 32-bit
-dither patterns till you are done.  Note that you can do the same thing
-with lines, but you have to specify all of x0,y0,x1,y1.
+Thomas.
 
-> - is the usable area *really* 5439x5120 pixels?  this strikes me as
-> incredibly fine ( from page 26)
-> 
-No.  The address of the last pixel that corresponds to memory is that
-(more or less).  Top left is 4096,4096.  Add 1280,1024 to it you get:
-5376,5120.  Add 85 pixels of extra memory to the right of 5376 and you
-get 5461.  So the last addressable pixel is 5460,5120 (my version of
-the doc has 5460 not 5439).
-
-The usable screen is really only between 4096,4096 and 5376,5120.
-
-> - can someone give me a moron's guide to what an iterator is?
-> 
-You start from x0,y0.  Eventually you have to get to x1,y1.  The iterators
-add a dx,dy to each x,y (starting from x0,y0) that eventually gets you to 
-x1,y1.  Each clock tick of the iterator produces a new x,y and therefore a
-new pixel.
-
-If you have more REX3 specific questions, feel free to contact me directly
-so we don't clog the group.
-
-  --george
 -- 
------------------------------------------------------------------------------
-George Kyriazis  | Silicon Graphics, Inc., 8U-590 |  kyriazis@sgi.com
-     KF6QKG      | 2011 N. Shoreline Blvd.        |  650-933-2828
-                 | Mt. View, CA 94043             | 
+See, you not only have to be a good coder to create a system like Linux,
+you have to be a sneaky bastard too ;-)
+                   [Linus Torvalds in <4rikft$7g5@linux.cs.Helsinki.FI>]

@@ -1,61 +1,59 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA31648 for <linux-archive@neteng.engr.sgi.com>; Thu, 17 Dec 1998 14:25:33 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id EAA07899 for <linux-archive@neteng.engr.sgi.com>; Fri, 18 Dec 1998 04:38:06 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id OAA38697
+	id EAA58698
 	for linux-list;
-	Thu, 17 Dec 1998 14:24:15 -0800 (PST)
+	Fri, 18 Dec 1998 04:37:25 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id OAA39485
+	via ESMTP id EAA58443
 	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 17 Dec 1998 14:24:13 -0800 (PST)
-	mail_from (shaver@netscape.com)
-Received: from netscape.com (h-205-217-237-47.netscape.com [205.217.237.47]) 
+	Fri, 18 Dec 1998 04:37:23 -0800 (PST)
+	mail_from (richard@infopact.nl)
+Received: from smtp1.casema.net (sun4000.casema.net [195.96.96.97]) 
 	by sgi.sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id OAA08953
-	for <linux@cthulhu.engr.sgi.com>; Thu, 17 Dec 1998 14:24:12 -0800 (PST)
-	mail_from (shaver@netscape.com)
-Received: from tintin.mcom.com (tintin.mcom.com [205.217.233.42])
-	by netscape.com (8.8.5/8.8.5) with ESMTP id OAA11536
-	for <linux@cthulhu.engr.sgi.com>; Thu, 17 Dec 1998 14:24:09 -0800 (PST)
-Received: from netscape.com ([205.217.243.67]) by
-          tintin.mcom.com (Netscape Messaging Server 4.0) with ESMTP id
-          F44RK800.DX0; Thu, 17 Dec 1998 14:24:08 -0800 
-Message-ID: <367984B8.62A40F40@netscape.com>
-Date: Thu, 17 Dec 1998 17:24:56 -0500
-From: Mike Shaver <shaver@netscape.com>
-Organization: Just Another Snake Cult
-X-Mailer: Mozilla 4.51 [en] (X11; I; Linux 2.1.131 i686)
-X-Accept-Language: en
+	via ESMTP id EAA02788
+	for <linux@cthulhu.engr.sgi.com>; Fri, 18 Dec 1998 04:37:22 -0800 (PST)
+	mail_from (richard@infopact.nl)
+Received: from infopact.nl (9dyn35.breda.casema.net [195.96.116.35]) by smtp1.casema.net (8.9.1/CASEMA) with ESMTP id NAA00878; Fri, 18 Dec 1998 13:36:41 +0100 (MET)
+Posted-Date: Fri, 18 Dec 1998 13:36:41 +0100 (MET)
+Message-ID: <367A4D40.81E7F946@infopact.nl>
+Date: Fri, 18 Dec 1998 04:40:33 -0800
+From: Richard Hartensveld <richard@infopact.nl>
+X-Mailer: Mozilla 4.05C-SGI [en] (X11; I; IRIX 6.5 IP22)
 MIME-Version: 1.0
-To: Richard Hartensveld <richard@infopact.nl>
+To: Mike Shaver <shaver@netscape.com>
 CC: "linux@cthulhu.engr.sgi.com" <linux@cthulhu.engr.sgi.com>
 Subject: Re: console on serial
-References: <3678F801.C399874F@infopact.nl>
+References: <3678F801.C399874F@infopact.nl> <367984B8.62A40F40@netscape.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Richard Hartensveld wrote:
-> I'm trying to get linux installed on a challenge S, which has no video
-> board, all goes pretty
-> well until i get into userland and the kernel wants to open
-> /dev/console, which i would
-> like to be a terminal on the serial port, is this possible?
+Mike Shaver wrote:
 
-Yeah, that's how I boot my Indy when I need to capture early-on kernel
-dumps.
-Make sure that /dev/console is a symlink to /dev/ttyS0.
+> Richard Hartensveld wrote:
+> > I'm trying to get linux installed on a challenge S, which has no video
+> > board, all goes pretty
+> > well until i get into userland and the kernel wants to open
+> > /dev/console, which i would
+> > like to be a terminal on the serial port, is this possible?
+>
+> Yeah, that's how I boot my Indy when I need to capture early-on kernel
+> dumps.
+> Make sure that /dev/console is a symlink to /dev/ttyS0.
 
-I assume the prom is set correctly, because you're getting this far.
+I made a ttyS0 on the nfs-root filesystem and linked /dev/console to it, i
+no longer get the
+message 'can't open console' but no message at all :). i made the ttyS0
+device using mknod ttyS0 c 4 64.
 
-Mike
+I seem to be forgetting something, anyone who can fill me in here ?
 
--- 
-24926.91 21925.54
+Richard

@@ -1,60 +1,42 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f44CYaZ07636
-	for linux-mips-outgoing; Fri, 4 May 2001 05:34:36 -0700
-Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f44CYYF07633
-	for <linux-mips@oss.sgi.com>; Fri, 4 May 2001 05:34:34 -0700
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 6EAA27F9; Fri,  4 May 2001 14:34:32 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 6D02AF38C; Fri,  4 May 2001 14:34:10 +0200 (CEST)
-Date: Fri, 4 May 2001 14:34:10 +0200
-From: Florian Lohoff <flo@rfc822.org>
-To: linux-mips@oss.sgi.com
-Subject: Patch tx3912 - inb/outb definition
-Message-ID: <20010504143410.A10487@paradigm.rfc822.org>
+	by oss.sgi.com (8.11.3/8.11.3) id f44ClrQ08310
+	for linux-mips-outgoing; Fri, 4 May 2001 05:47:53 -0700
+Received: from dea.waldorf-gmbh.de (IDENT:root@localhost [127.0.0.1])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f44ClpF08306
+	for <linux-mips@oss.sgi.com>; Fri, 4 May 2001 05:47:51 -0700
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f44CkYY01667;
+	Fri, 4 May 2001 09:46:34 -0300
+Date: Fri, 4 May 2001 09:46:34 -0300
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Jun Sun <jsun@mvista.com>
+Cc: nick@snowman.net, Matthew Dharm <mdharm@momenco.com>,
+   Linux-MIPS <linux-mips@oss.sgi.com>
+Subject: Re: Endianness...
+Message-ID: <20010504094634.B1257@bacchus.dhis.org>
+References: <Pine.LNX.4.21.0105021603030.22170-100000@ns> <3AF0724B.D74D9AF9@mvista.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.3.15i
-Organization: rfc822 - pure communication
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3AF0724B.D74D9AF9@mvista.com>; from jsun@mvista.com on Wed, May 02, 2001 at 01:47:07PM -0700
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Wed, May 02, 2001 at 01:47:07PM -0700, Jun Sun wrote:
 
+> BE is better known perhaps because all SGI workstations are BE.  Generally I
+> found networking systems tend to use BE while consumer electronic devices tend
+> to use LE (which means there are probably more MIPS CPUs running in LE.)
+> 
+> So far I have not found much difference in terms of endianess, although
+> occassionaly you have to IO swap in drivers for BE machine.
 
-Hi,
-there are incompatible definitions of inb/outb in the tx3912 header
-which clash the io.h definitions
+The difference is mostly of religious nature even though I've been told
+that various embedded apps can show noticable performance difference due
+to byteswapping.  In general I prefer big endian because it tends to
+trigger certain bugs in software more than little endian, such as accessing
+a memory object with different sizes.
 
-
-Index: include/asm-mips/tx3912.h
-===================================================================
-RCS file: /cvs/linux/include/asm-mips/tx3912.h,v
-retrieving revision 1.1
-diff -u -r1.1 tx3912.h
---- include/asm-mips/tx3912.h	2001/04/01 03:28:23	1.1
-+++ include/asm-mips/tx3912.h	2001/05/04 12:33:00
-@@ -14,14 +14,6 @@
- 
- #include <asm/addrspace.h>
- 
--#define inb(addr)	(*(volatile unsigned char *)(addr))
--#define inw(addr)	(*(volatile unsigned short *)(addr))
--#define inl(addr)	(*(volatile unsigned int *)(addr))
--#define outb(b,addr)	(*(volatile unsigned char *)(addr)) = (b)
--#define outw(b,addr)	(*(volatile unsigned short *)(addr)) = (b)
--#define outl(b,addr)	(*(volatile unsigned int *)(addr)) = (b)
--
-- 
- /******************************************************************************
- *
- * 	01  General macro definitions
-
-
-So i guess this is correct
-
-Flo
--- 
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-     Why is it called "common sense" when nobody seems to have any?
+  Ralf

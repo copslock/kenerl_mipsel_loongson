@@ -1,60 +1,69 @@
-Received:  by oss.sgi.com id <S553982AbQLAPea>;
-	Fri, 1 Dec 2000 07:34:30 -0800
-Received: from mail.ivm.net ([62.204.1.4]:52777 "EHLO mail.ivm.net")
-	by oss.sgi.com with ESMTP id <S553705AbQLAPeF>;
-	Fri, 1 Dec 2000 07:34:05 -0800
-Received: from franz.no.dom (port46.duesseldorf.ivm.de [195.247.65.46])
-	by mail.ivm.net (8.8.8/8.8.8) with ESMTP id QAA13814;
-	Fri, 1 Dec 2000 16:33:46 +0100
-X-To:   ralf@oss.sgi.com
-Message-ID: <XFMail.001201163348.Harald.Koerfgen@home.ivm.de>
-X-Mailer: XFMail 1.4.0 on Linux
-X-Priority: 3 (Normal)
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 8bit
-MIME-Version: 1.0
-In-Reply-To: <001901c05b67$8c88ab60$0deca8c0@Ulysses>
-Date:   Fri, 01 Dec 2000 16:33:48 +0100 (CET)
-Reply-To: Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
-Organization: none
-From:   Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
-To:     "Kevin D. Kissell" <kevink@mips.com>
+Received:  by oss.sgi.com id <S553991AbQLARzB>;
+	Fri, 1 Dec 2000 09:55:01 -0800
+Received: from u-207-10.karlsruhe.ipdial.viaginterkom.de ([62.180.10.207]:48905
+        "EHLO u-207-10.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
+	with ESMTP id <S553988AbQLARyx>; Fri, 1 Dec 2000 09:54:53 -0800
+Received: (ralf@lappi) by bacchus.dhis.org id <S869503AbQLARxV>;
+	Fri, 1 Dec 2000 18:53:21 +0100
+Date:	Fri, 1 Dec 2000 18:53:21 +0100
+From:	Ralf Baechle <ralf@oss.sgi.com>
+To:	Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
+Cc:	"Kevin D. Kissell" <kevink@mips.com>, linux-mips@oss.sgi.com,
+        Klaus Naumann <spock@mgnet.de>,
+        Jesse Dyson <jesse@winston-salem.com>
 Subject: Re: Indigo2 Kernel Boots!!!
-Cc:     linux-mips@oss.sgi.com, Klaus Naumann <spock@mgnet.de>,
-        Jesse Dyson <jesse@winston-salem.com>,
-        Ralf Baechle <ralf@oss.sgi.com>
+Message-ID: <20001201185321.A3211@bacchus.dhis.org>
+References: <001901c05b67$8c88ab60$0deca8c0@Ulysses> <XFMail.001201163348.Harald.Koerfgen@home.ivm.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <XFMail.001201163348.Harald.Koerfgen@home.ivm.de>; from Harald.Koerfgen@home.ivm.de on Fri, Dec 01, 2000 at 04:33:48PM +0100
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+On Fri, Dec 01, 2000 at 04:33:48PM +0100, Harald Koerfgen wrote:
 
-On 01-Dec-00 Kevin D. Kissell wrote:
+> > Having been through the exercise a dozen or more times with
+> > the SGI 2.2 kernel distributions for the Indy, I would be fascinated
+> > to know what bug I was painting over, and where the correct
+> > procedure was documented.
 > 
->> > When the init process fires up, it opens /dev/console as the
->> > console output device.  A default SGI workstation installation
->> > file system will have /dev/console bound to the major/minor device
->> > node of the graphics display console.  If you want to run with a serial
->> > console, you must therefore change this to bind /dev/console
->> > to the serial port.  You can do this by doing an explicit mknod,
->> > or by linking to the appropriate serial port device node,
->> > which is usually /dev/ttyS0.
->>
->> Which both are wrong.  /dev/console should be a char device major 5, minor
-> 1.
->> There is no need to change this ever except for very old kernels.  With
-> 2.2
->> or 2.4 whenever people change /dev/console's major/minor it's usually
-> painting
->> over some bug.
-> 
-> Having been through the exercise a dozen or more times with
-> the SGI 2.2 kernel distributions for the Indy, I would be fascinated
-> to know what bug I was painting over, and where the correct
-> procedure was documented.
+> linux/Documentation/serial-console.txt
 
-linux/Documentation/serial-console.txt
+In addition let me add some word about what the term console actually is,
+this commonly seems to cause confusition because the word is used with two
+different meanings:
 
--- 
-Regards,
-Harald
+ 1) The device on which you login in single user mode, that's usually some
+    kind of serial device at ttyS0 or a virtual console, that is with keyboard
+    and some kind of text terminal.
+ 2) The second is the device which the kernel prints all the printk messages
+    and data sent to /dev/console to.  The two often often but not always
+    refer to the same actual device.
+
+/dev/console (as chardev 5/1) differs from another device in some important
+ways:
+
+ - When opened by a process without controlling tty it will not become a
+   CTTY even if the NOCTTY flag is not set.
+ - It will never block but rather loose data.  This may sound like a
+   disadvantage but it's actually very important for proper operation.  For
+   example, if /dev/console'd block due to a serial console with hardware
+   handshaking enabled (DON'T) syslogd writing to it may also block for an
+   unbounded time and thus as soon as /dev/log is full all services trying to
+   log via syslog(3) will also freeze.
+
+   Syslogd actually tries to be clever about avoiding this from happening
+   but fails to handle one case correctly, so this is a real world scenario.
+
+ - It uses different routines to access the console device than normal
+   write access to i.e. ttyS0.
+
+The most common problem is that CONFIG_SERIAL_CONSOLE wasn't configured;
+some drivers are simply buggy and don't properly register the console
+on startup.  Dunno what the problem was in your case, Kevin.
+
+  Ralf

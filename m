@@ -1,65 +1,44 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA13717; Wed, 18 Jun 1997 14:00:18 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA15105; Wed, 18 Jun 1997 14:56:06 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id NAA07991 for linux-list; Wed, 18 Jun 1997 13:59:38 -0700
-Received: from dist.engr.sgi.com (dist.engr.sgi.com [192.26.80.118]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA07972 for <linux@cthulhu.engr.sgi.com>; Wed, 18 Jun 1997 13:59:36 -0700
-Received: from dataserv.detroit.sgi.com by dist.engr.sgi.com via ESMTP (950413.SGI.8.6.12/940406.SGI.AUTO)
-	 id NAA27056; Wed, 18 Jun 1997 13:59:31 -0700
-Received: from cygnus.detroit.sgi.com by dataserv.detroit.sgi.com via ESMTP (940816.SGI.8.6.9/930416.SGI)
-	 id QAA08563; Wed, 18 Jun 1997 16:59:21 -0400
-Received: from cygnus (localhost [127.0.0.1]) by cygnus.detroit.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id QAA06344; Wed, 18 Jun 1997 16:59:00 -0400
-Message-ID: <33A84C14.DAD8AA3E@cygnus.detroit.sgi.com>
-Date: Wed, 18 Jun 1997 16:59:00 -0400
-From: Eric Kimminau <eak@cygnus.detroit.sgi.com>
-Reply-To: eak@detroit.sgi.com
-Organization: Silicon Graphics, Inc
-X-Mailer: Mozilla 4.0b5C (X11; I; IRIX 6.3 IP32)
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id OAA24647 for linux-list; Wed, 18 Jun 1997 14:55:48 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA24624 for <linux@relay.engr.SGI.COM>; Wed, 18 Jun 1997 14:55:46 -0700
+Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id OAA01686
+	for <linux@relay.engr.SGI.COM>; Wed, 18 Jun 1997 14:55:42 -0700
+	env-from (adevries@engsoc.carleton.ca)
+Received: from localhost (adevries@localhost)
+          by lager.engsoc.carleton.ca (8.8.5/8.8.4) with SMTP
+	  id RAA09285 for <linux@relay.engr.SGI.COM>; Wed, 18 Jun 1997 17:34:14 -0400
+Date: Wed, 18 Jun 1997 17:34:14 -0400 (EDT)
+From: Alex deVries <adevries@engsoc.carleton.ca>
+Reply-To: Alex deVries <adevries@engsoc.carleton.ca>
+To: linux@cthulhu.engr.sgi.com
+Subject: http://www.linux.sgi.com?
+In-Reply-To: <Pine.LNX.3.95.970618161248.20293T-100000@lager.engsoc.carleton.ca>
+Message-ID: <Pine.LNX.3.95.970618170905.20293Z-100000@lager.engsoc.carleton.ca>
 MIME-Version: 1.0
-To: linux@dist.engr.sgi.com, linux-progress@dist.engr.sgi.com,
-        landman@detroit.sgi.com, stevenp@dearborn.sgi.com
-CC: miguel@nuclecu.unam.mx, ralf@Julia.DE
-Subject: Linux on R4k or R5k Indy
-X-Priority: 3 (Normal)
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Howdy!
 
-Ive seen http://info.engr.sgi.com/linux/status.html and
-http://bogomips.ingenia.com/ . We are hosting a Linux user's group in
-our facility next week and I would love to have an Indy up and running
-with it if at all possible. Could someone point me towards an
-installation site where I could mirror stuff locally for the
-installation? If it will run on an R3k or R4k Indigo (the only machine I
-really have as a 100% spare) Ill keep it up to date and running on the
-internal net all the time. I have 15-20 Indy's coming in on trade in
-about a month (R4400) which I hope to be able to grab one of as well.
+I've had a few bits of email from people asking me about SGI-Linux.  I'm
+thinking as we start to get things off the ground that it would be a good
+idea to publish something at www.linux.sgi.com. As this will reflect on
+SGI, does anyone want to write anything there?
 
-Ive looked on ftp://vger.rutgers.edu/pub/linux/MIPS (which was empty),
-ftp.fnet.fr (which appeared to be down) and on
-ftp://kernel.panic.julia.de/pub/linux/mips/(which appears to have
-everything). Before I go and try to mirror this site across our T-1 and
-through the SGI firewall, Id really prefer finding somewhere within SGI
-that may have this already.
+Also, have the folks at SGI considered a press release announcing that
+SGI-Linux is being officially sponsored by SGI? This would be _very_
+impressive news to the Linux community, I think.  Certainly mklinux gave
+me a much better view of Apple.
 
-Can anyone point me in the right direction and to a MIPS installation
-HOWTO?
+I'm thinking it would be a good idea to start writing some documentation
+on where we're at, how to get started, what equipment it runs on, etc. I'd
+be happy to start writing an SGI-Linux FAQ and/or HOWTO, if there are no
+objections. I'm well aware that I don't speak on behalf of SGI, so if
+there's someone over there who'd prefer to write it, I understand. 
 
-Thanks in Advance!
- 
-                    Eric.
+- Alex
 
-
--- 
-Eric Kimminau                           System Engineer
-eak@detroit.sgi.com                     Silicon Graphics, Inc
-Voice: (248) 848-4455                   39001 West 12 Mile Rd.
-Fax:   (248) 848-5600                   Farmington, MI 48331-2903
-
-                 VNet Extension - 6-327-4455
-              "I speak my mind and no one else's."
-       http://www.dcs.ex.ac.uk/~aba/rsa/perl-rsa-sig.html
-
-    When confronted by a difficult problem, solve it by reducing 
-    it to the question, "How would the Lone Ranger handle this?"
+      Alex deVries           "Alex can cut a mean rug."
+  System Administrator       - M. Dittberner <shabby@engsoc.carleton.ca>
+   The EngSoc Project     

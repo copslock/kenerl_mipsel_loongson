@@ -1,42 +1,38 @@
-Received:  by oss.sgi.com id <S553802AbQLHXdT>;
-	Fri, 8 Dec 2000 15:33:19 -0800
-Received: from wn42-146.sdc.org ([209.155.42.146]:34800 "EHLO lappi")
-	by oss.sgi.com with ESMTP id <S553798AbQLHXcp>;
-	Fri, 8 Dec 2000 15:32:45 -0800
-Received: (ralf@lappi) by bacchus.dhis.org id <S869705AbQLHXcX>;
-	Sat, 9 Dec 2000 00:32:23 +0100
-Date:	Sat, 9 Dec 2000 00:32:23 +0100
-From:	Ralf Baechle <ralf@oss.sgi.com>
-To:	Jun Sun <jsun@mvista.com>
-Cc:	linux-mips@oss.sgi.com
+Received:  by oss.sgi.com id <S553824AbQLKLzz>;
+	Mon, 11 Dec 2000 03:55:55 -0800
+Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:21394 "EHLO
+        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553855AbQLKLzb>;
+	Mon, 11 Dec 2000 03:55:31 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id MAA20895;
+	Mon, 11 Dec 2000 12:28:19 +0100 (MET)
+Date:   Mon, 11 Dec 2000 12:28:19 +0100 (MET)
+From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To:     Ralf Baechle <ralf@oss.sgi.com>
+cc:     Jun Sun <jsun@mvista.com>, linux-mips@oss.sgi.com
 Subject: Re: Should /dev/kmem support above 0x80000000 area?
-Message-ID: <20001209003222.A10669@bacchus.dhis.org>
-References: <3A3051C1.DCFC749B@mvista.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <3A3051C1.DCFC749B@mvista.com>; from jsun@mvista.com on Thu, Dec 07, 2000 at 07:13:05PM -0800
-X-Accept-Language: de,en,fr
+In-Reply-To: <20001209003222.A10669@bacchus.dhis.org>
+Message-ID: <Pine.GSO.3.96.1001211122115.18945B-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Thu, Dec 07, 2000 at 07:13:05PM -0800, Jun Sun wrote:
+On Sat, 9 Dec 2000, Ralf Baechle wrote:
 
-> Currently one cannot read memory area above 0x80000000 throught /dev/kmem.  In
-> fact, an earlier bug would put the process into an infinite loop if you try to
-> do that.  That seems to be fixed now.
-> 
-> It seems to be very useful if we do allow that access.  What do you think?
+> Actually there is almost nothing left that uses /dev/{mem,kmem} these days.
 
-Actually there is almost nothing left that uses /dev/{mem,kmem} these days.
-Nevertheless it's a supported interface, so we have to get it right.
+ Last time I checked /dev/mem worked as expected.  For Alpha /dev/mem is
+used to emulate PCI/ISA I/O space accesses (ioperm(), inb/outb() and
+friends) by glibc.  At least XFree86 and SVGATextMode make use of these
+features.  I suppose it's the same for MIPS (I haven't checked, though). 
 
-> Ralf, if we do want to enable it - which is pretty simple to do -, should I
-> give you the patch or shuld I submit it to somebody else who is maintaining
-> /dev/kmem?
+ In general /dev/mem is useful for poking at hardware from user space.  On
+the other hand, /dev/kmem is not very useful anymore, indeed. 
 
-Send me the patch and I'll comment.
-
-  Ralf
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

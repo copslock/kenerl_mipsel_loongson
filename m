@@ -1,46 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jan 2003 13:28:38 +0000 (GMT)
-Received: from web14805.mail.yahoo.com ([IPv6:::ffff:216.136.224.221]:35332
-	"HELO web14805.mail.yahoo.com") by linux-mips.org with SMTP
-	id <S8224939AbTANN2g>; Tue, 14 Jan 2003 13:28:36 +0000
-Message-ID: <20030114132824.75177.qmail@web14805.mail.yahoo.com>
-Received: from [192.114.47.51] by web14805.mail.yahoo.com via HTTP; Tue, 14 Jan 2003 05:28:24 PST
-Date: Tue, 14 Jan 2003 05:28:24 -0800 (PST)
-From: amit lubovsky <amit_lubovsky@yahoo.com>
-Subject: malta-5kc
-To: mips-linux <linux-mips@linux-mips.org>
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jan 2003 17:06:03 +0000 (GMT)
+Received: from p508B634D.dip.t-dialin.net ([IPv6:::ffff:80.139.99.77]:41611
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8224939AbTANRGC>; Tue, 14 Jan 2003 17:06:02 +0000
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id h0EH5q923779;
+	Tue, 14 Jan 2003 18:05:52 +0100
+Date: Tue, 14 Jan 2003 18:05:52 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Gilad Benjamini <gilad@riverhead.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: insmod failure: "Unhandled relocation" errors
+Message-ID: <20030114180551.A23742@linux-mips.org>
+References: <001801c2bbb4$a6177de0$7100000a@riverhead.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Return-Path: <amit_lubovsky@yahoo.com>
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <001801c2bbb4$a6177de0$7100000a@riverhead.com>; from gilad@riverhead.com on Tue, Jan 14, 2003 at 12:06:46PM +0200
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1149
+X-archive-position: 1150
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: amit_lubovsky@yahoo.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
-I try to load a linux image to a malta-5kc board with
-a hw debugger.
+On Tue, Jan 14, 2003 at 12:06:46PM +0200, Gilad Benjamini wrote:
 
-Before I load the image I load YAMON in order to
-initialize the board.
+> I've built,compiled and ran successfully a 64 bit kernel on my 
+> mips64 platform. Kernel was compiled with support for 32 bit binaries.
+> 
+> I am now trying to insert a module, a standard module from
+> the kernel tree, and get lots of errors such as:
+> "Unhandled relocation of type 18 for"
+> or
+> "Unhandled relocation of type 18 for <function_name>"
+> 
+> How can this be resolved ?
 
-This doesn't work and I have understood that I have to
-set up some of the cpu registers to certain values
-(like for command line parameters, etc.)
+Modules are not supported on 64-bit kernel yet.
 
-Could anyone help me with that?, which registers and
-to what values?
-
-Thanks,
-Amit.
-
-
-__________________________________________________
-Do you Yahoo!?
-Yahoo! Mail Plus - Powerful. Affordable. Sign up now.
-http://mailplus.yahoo.com
+  Ralf

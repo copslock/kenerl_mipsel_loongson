@@ -1,43 +1,50 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980327.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA3186098 for <linux-archive@neteng.engr.sgi.com>; Wed, 29 Apr 1998 15:47:54 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980327.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA2643036 for <linux-archive@neteng.engr.sgi.com>; Wed, 29 Apr 1998 15:48:22 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF)
-	id PAA15427139
+	id PAA17441764
 	for linux-list;
-	Wed, 29 Apr 1998 15:46:08 -0700 (PDT)
+	Wed, 29 Apr 1998 15:47:57 -0700 (PDT)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id PAA18016467
+	via ESMTP id PAA17215129
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 29 Apr 1998 15:46:06 -0700 (PDT)
-Received: from lorraine.loria.fr (lorraine.loria.fr [152.81.1.17]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id PAA18305
-	for <linux@cthulhu.engr.sgi.com>; Wed, 29 Apr 1998 15:46:04 -0700 (PDT)
-	mail_from (Olivier.Galibert@loria.fr)
-Received: from renaissance.loria.fr (renaissance.loria.fr [152.81.4.102])
-	by lorraine.loria.fr (8.8.7/8.8.7/8.8.7/JCG) with ESMTP id AAA18235
-	for <linux@cthulhu.engr.sgi.com>; Thu, 30 Apr 1998 00:45:04 +0200 (MET DST)
-Received: (from galibert@localhost) by renaissance.loria.fr (8.8.2/8.8.2) id AAA16199; Thu, 30 Apr 1998 00:45:02 +0200 (MET DST)
-Message-ID: <19980430004501.A16187@loria.fr>
-Date: Thu, 30 Apr 1998 00:45:02 +0200
-From: Olivier Galibert <galibert@pobox.com>
-To: SGI Linux <linux@cthulhu.engr.sgi.com>
-Subject: Re: Rex and the Newport.
-Mail-Followup-To: SGI Linux <linux@cthulhu.engr.sgi.com>
-References: <Pine.LNX.3.95.980429143146.16310H-100000@lager.engsoc.carleton.ca> <19980430003404.02686@uni-koblenz.de>
+	Wed, 29 Apr 1998 15:47:54 -0700 (PDT)
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id PAA19097
+	for <linux@cthulhu.engr.sgi.com>; Wed, 29 Apr 1998 15:47:53 -0700 (PDT)
+	mail_from (ralf@mailhost.uni-koblenz.de)
+Received: from thoma (ralf@thoma.uni-koblenz.de [141.26.4.61])
+	by informatik.uni-koblenz.de (8.8.8/8.8.8) with SMTP id AAA11199;
+	Thu, 30 Apr 1998 00:47:44 +0200 (MEST)
+Received: by thoma (SMI-8.6/KO-2.0)
+	id AAA03590; Thu, 30 Apr 1998 00:47:40 +0200
+Message-ID: <19980430004740.61845@uni-koblenz.de>
+Date: Thu, 30 Apr 1998 00:47:40 +0200
+From: ralf@uni-koblenz.de
+To: Alan Cox <alan@lxorguk.ukuu.org.uk>
+Cc: linux-kernel@vger.rutgers.edu, adevries@engsoc.carleton.ca,
+        linux@cthulhu.engr.sgi.com
+Subject: Re: Could mounting sdc instead of sdc1 have solved my panics?
+References: <19980430002810.03127@uni-koblenz.de> <m0yUfJq-000aNhC@the-village.bc.nu>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.91.1i
-In-Reply-To: <19980430003404.02686@uni-koblenz.de>; from ralf@uni-koblenz.de on Thu, Apr 30, 1998 at 12:34:04AM +0200
+X-Mailer: Mutt 0.84e
+In-Reply-To: <m0yUfJq-000aNhC@the-village.bc.nu>; from Alan Cox on Wed, Apr 29, 1998 at 11:27:13PM +0100
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Thu, Apr 30, 1998 at 12:34:04AM +0200, ralf@uni-koblenz.de wrote:
-> Btw, whe really should switch all MIPS machines to fbcon or will never
-> have a kernel with reasonable fast console and support for multiple
-> GFX types in kernel binary.
+On Wed, Apr 29, 1998 at 11:27:13PM +0100, Alan Cox wrote:
 
-Why not KGI ?
+> > I don't see any reason why the kernel should crash when using sdc instead of
+> > a partition.  So I forward this to linux-kernel in the hope anybody knows.
+> 
+> My Indy has always been on /dev/sdb - anyone who has met the SGI command
+> line disk partitioner can probably guess why. So far its worked ;)
 
-<dodging the fireballs>
+Fact is that two kernels, the one Alex built from linux-cvs and the one
+which I built yesterday for myself, both significantly different and both
+2.1.91 derived, crashed.  Each time disassembling showed that somehow a NULL
+pointer ended up in the SCSI scatter-gather lists which where passed to
+dma_setup in the sgiwd93.  No idea why; I've never seen that bug myself.
 
-  OG.
+  Ralf

@@ -1,83 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Nov 2004 10:31:37 +0000 (GMT)
-Received: from mail.baslerweb.com ([IPv6:::ffff:145.253.187.130]:38759 "EHLO
-	mail.baslerweb.com") by linux-mips.org with ESMTP
-	id <S8225245AbUKDKbc>; Thu, 4 Nov 2004 10:31:32 +0000
-Received: (from mail@localhost)
-	by mail.baslerweb.com (8.12.10/8.12.10) id iA4AUjUc003659
-	for <linux-mips@linux-mips.org>; Thu, 4 Nov 2004 11:30:45 +0100
-Received: from unknown by gateway id /var/KryptoWall/smtpp/kwWlIwvP; Thu Nov 04 11:30:32 2004
-Received: from vclinux-1.basler.corp (localhost [172.16.13.253]) by comm1.baslerweb.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2657.72)
-	id WHM6N9CA; Thu, 4 Nov 2004 11:31:18 +0100
-From: Thomas Koeller <thomas.koeller@baslerweb.com>
-Organization: Basler AG
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Nov 2004 11:20:16 +0000 (GMT)
+Received: from pop.gmx.de ([IPv6:::ffff:213.165.64.20]:7308 "HELO mail.gmx.net")
+	by linux-mips.org with SMTP id <S8225245AbUKDLUL>;
+	Thu, 4 Nov 2004 11:20:11 +0000
+Received: (qmail 15068 invoked by uid 0); 4 Nov 2004 11:20:05 -0000
+Received: from 134.108.33.122 by www38.gmx.net with HTTP;
+	Thu, 4 Nov 2004 12:20:05 +0100 (MET)
+Date: Thu, 4 Nov 2004 12:20:05 +0100 (MET)
+From: "Hannes Bischof" <vergiss-es@gmx.de>
 To: linux-mips@linux-mips.org
-Subject: [PATCH] The compiler's revenge
-Date: Thu, 4 Nov 2004 11:35:31 +0100
-User-Agent: KMail/1.6.2
 MIME-Version: 1.0
-Message-Id: <200411041135.31503.thomas.koeller@baslerweb.com>
-Content-Disposition: inline
-Content-Type: text/plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Return-Path: <thomas.koeller@baslerweb.com>
+Subject: Compile Mips-Architecture on an i386?
+X-Priority: 3 (Normal)
+X-Authenticated: #5350918
+Message-ID: <20244.1099567205@www38.gmx.net>
+X-Mailer: WWW-Mail 1.6 (Global Message Exchange)
+X-Flags: 0001
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+Return-Path: <vergiss-es@gmx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6259
+X-archive-position: 6260
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas.koeller@baslerweb.com
+X-original-sender: vergiss-es@gmx.de
 Precedence: bulk
 X-list: linux-mips
 
-... for lying to it is to produce code that does unexpected things.
+Hello!
 
-In include/asm-mips/io.h, mips_io_port_base is declared to be const,
-but can actually be modified using set_io_port_base(). The compiler
-believes the const declaration and uses the uninitialized value if
-an in(b|w|l) or out(b|w|l) is used right after set_io_port_base().
+Ok i´ll describe first my hardware. It´s a small DSL-Router with
+the following hardware:
 
+Its a variant of the AR7-Variante TNETD7300(A)GDW 
+in it is a MIPS 4KEc Processor
+communicationsprocessor (TI DSP) for ADSL interface
+USB slave interface
+GPIO-Ports and Ethernet
+also a 4MB flash memory and a 32MB SDRAM module
 
-Signed-off-by: Thomas Koeller <thomas.koeller@baslerweb.com>
+OK now the problem:
+on the router is a small BusyBox linux and I don´t want to change that now.
+But I would like to compile some files like a small webserver or an ftp
+programm for the router. Now my question, is it possible to compile a
+programm for the router by example on an normal PC(i386)???
+What do I need to compile the software so that it runs under the linux
+system of the router??
 
+Many questions but I hope some one could help me.
 
+Greets
 
---- linux-mips-cvs/include/asm-mips/io.h	2004-10-25 11:16:42.000000000 +0200
-+++ linux-mips-basler/include/asm-mips/io.h	2004-11-04 10:40:57.796646368 +0100
-@@ -67,10 +67,9 @@
-  * instruction, so the lower 16 bits must be zero.  Should be true on
-  * on any sane architecture; generic code does not use this assumption.
-  */
--extern const unsigned long mips_io_port_base;
-+extern unsigned long mips_io_port_base;
- 
--#define set_io_port_base(base)	\
--	do { * (unsigned long *) &mips_io_port_base = (base); } while (0)
-+#define set_io_port_base(base) mips_io_port_base = (base)
- 
- /*
-  * Thanks to James van Artsdalen for a better timing-fix than
---- linux-mips-cvs/arch/mips/kernel/setup.c	2004-07-14 16:21:29.000000000 +0200
-+++ linux-mips-basler/arch/mips/kernel/setup.c	2004-11-04 10:39:45.359658464 +0100
-@@ -78,7 +78,7 @@
-  * mips_io_port_base is the begin of the address space to which x86 style
-  * I/O ports are mapped.
-  */
--const unsigned long mips_io_port_base = -1;
-+unsigned long mips_io_port_base = -1;
- EXPORT_SYMBOL(mips_io_port_base);
- 
- /*
+Maruu
 
 -- 
---------------------------------------------------
-
-Thomas Koeller, Software Development
-Basler Vision Technologies
-
-thomas dot koeller at baslerweb dot com
-http://www.baslerweb.com
-
-==============================
+NEU +++ DSL Komplett von GMX +++ http://www.gmx.net/de/go/dsl
+GMX DSL-Netzanschluss + Tarif zum supergünstigen Komplett-Preis!

@@ -1,62 +1,99 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA1967149 for <linux-archive@neteng.engr.sgi.com>; Thu, 26 Mar 1998 15:07:43 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA1966710 for <linux-archive@neteng.engr.sgi.com>; Thu, 26 Mar 1998 15:14:43 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id PAA4249180
+	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id PAA4243488
 	for linux-list;
-	Thu, 26 Mar 1998 15:06:54 -0800 (PST)
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
+	Thu, 26 Mar 1998 15:13:46 -0800 (PST)
+Received: from dist.engr.sgi.com (dist.engr.sgi.com [192.26.80.118])
 	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id PAA4287093
+	via ESMTP id PAA4155246
 	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 26 Mar 1998 15:06:52 -0800 (PST)
-Received: from rachael.franken.de (rachael.franken.de [193.175.24.38]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id PAA16539
-	for <linux@cthulhu.engr.sgi.com>; Thu, 26 Mar 1998 15:06:49 -0800 (PST)
-	mail_from (rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
-Received: from hub-fue by rachael.franken.de
-	via rmail with uucp
-	id <m0yILj5-0027mNC@rachael.franken.de>
-	for cthulhu.engr.sgi.com!linux; Fri, 27 Mar 1998 00:06:23 +0100 (MET)
-	(Smail-3.2 1996-Jul-4 #4 built DST-Sep-8)
-Received: by hub-fue.franken.de (Smail3.1.29.1 #35)
-	id m0yILiy-002OoxC; Fri, 27 Mar 98 00:06 MET
-Received: (from tsbogend@localhost)
-	by alpha.franken.de (8.8.7/8.8.5) id AAA02028;
-	Fri, 27 Mar 1998 00:04:26 +0100
-Message-ID: <19980327000426.03461@alpha.franken.de>
-Date: Fri, 27 Mar 1998 00:04:26 +0100
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To: ralf@uni-koblenz.de
-Cc: linux@cthulhu.engr.sgi.com, David A Willmore <willmore@cig.mot.com>
-Subject: Re: MIPS 2.1.89 now in CVS
-References: <19980317234843.10411@uni-koblenz.de> <9803242106.ZM28226@whelk> <19980325042742.20917@uni-koblenz.de>
-Mime-Version: 1.0
+	Thu, 26 Mar 1998 15:13:44 -0800 (PST)
+Received: from dataserv.detroit.sgi.com (dataserv.detroit.sgi.com [169.238.128.2]) by dist.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via SMTP id PAA77764341 for <linux@dist.engr.sgi.com>; Thu, 26 Mar 1998 15:13:41 -0800 (PST)
+Received: from cygnus.detroit.sgi.com by dataserv.detroit.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1502/930416.SGI)
+	 id SAA12479; Thu, 26 Mar 1998 18:13:33 -0500
+Received: from detroit.sgi.com (cx1.detroit.sgi.com [169.238.130.4]) by cygnus.detroit.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id SAA07510; Thu, 26 Mar 1998 18:13:29 -0500 (EST)
+Message-ID: <351AE010.8C6359F2@detroit.sgi.com>
+Date: Thu, 26 Mar 1998 18:09:04 -0500
+From: Eric Kimminau <eak@detroit.sgi.com>
+Reply-To: eak@detroit.sgi.com
+Organization: Silicon Graphics, Inc
+X-Mailer: Mozilla 4.05C-SGI [en] (X11; I; IRIX 6.2 IP22)
+MIME-Version: 1.0
+To: Ulf Carlsson <grimsy@zigzegv.ml.org>
+CC: ralf@uni-koblenz.de, linux@dist.engr.sgi.com
+Subject: Re: Linux for Nintendo 64
+References: <Pine.LNX.3.96.980326230415.4360B-100000@calypso.saturn>
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.85
-In-Reply-To: <19980325042742.20917@uni-koblenz.de>; from ralf@uni-koblenz.de on Wed, Mar 25, 1998 at 04:27:42AM +0100
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Wed, Mar 25, 1998 at 04:27:42AM +0100, ralf@uni-koblenz.de wrote:
-> On Tue, Mar 24, 1998 at 09:06:06PM -0600, David A Willmore wrote:
-> > Hey! :)  I've got a 53c90 card for the ISA bus that I would like to use on a
-> > x86 machine.  Any idea how easy it would be to modify this driver to work with
-> > a very generic card like that?  Funny that I didn't find any of this code in
-> > the normal 2.1.90.  I take it your code isn't merged in?
+Ulf. Re-read my original message:
+
+> On Thu, 26 Mar 1998, Eric Kimminau wrote:
+> I thought some of you might find this interesting. Note the date of 
+> the article.
+>
+> http://www.ix.de/ix/artikel/E/1997/04/036/
+
+"Note the date of the article"
+
+I apologize if you got suckered.
+
+Ulf Carlsson wrote:
 > 
-> Actually adding the necessary changes shouldn't be difficult.  Check out
-> the files drivers/scsi/{sparc,jazz}esp.[ch] in one of the snapshots on
-> ftp.linux.sgi.com.  You'll have to provide a similar machine / bus specific
-> backend like for these two architectures.  Actually an ISA specific backend
-> should be easier to implement than these two.
-
-depends on the DMA engine used on the board. When the card uses the normal
-PC DMA controller it will be dead slow and a horror to implement (welcome
-to world of 64K segments). If the board has it's own DMA engine, you need
-documentation for it. And without DMA you will need a new driver.
-
-Thomas.
+> On Thu, 26 Mar 1998 ralf@uni-koblenz.de wrote:
+> 
+> > On Thu, Mar 26, 1998 at 09:26:21AM -0500, Eric Kimminau wrote:
+> >
+> > > Santeri Paavolainen wrote:
+> > > >
+> > > > On Thu, 26 Mar 1998, Eric Kimminau wrote:
+> > > > > I thought some of you might find this interesting. Note the date of the
+> > > > > article.
+> > > > >
+> > > > > http://www.ix.de/ix/artikel/E/1997/04/036/
+> > > >
+> > > > I'd guess that the iX magazine hits the newsstands in Germany on 1st of
+> > > > April..
+> > > >
+> > > > Here's a quote from the text which should alert any reader:
+> > > >
+> > > >   "According to their speaker, Luciano Aprilia, the Italian developers,
+> > > >   are going to make the software available under the GPL, so it can be
+> > > >   used free of charge."
+> > > >
+> > > > The article was very entertaining, though :-)
+> > > >
+> > > > --
+> > > > santtu@iki.fi                    I have become death, destroyer of the worlds.
+> > >
+> > > Agreed and implied - Thats why I said to be sure and look at the date.
+> >
+> > Sigh...  Quite a lot of people apparently don't know the special meaning
+> > of the 1st of April and mailed me about Linux for Nitendo.  Some of them
+> > became very agressive and insulting when I told them the article'd be
+> > just hoax ...
+> >
+> >   Ralf
+> 
+> When did the 25th or March become the 1st of April?
+> 
+> - Ulf
 
 -- 
-See, you not only have to be a good coder to create a system like Linux,
-you have to be a sneaky bastard too ;-)
-                   [Linus Torvalds in <4rikft$7g5@linux.cs.Helsinki.FI>]
+---------1---------2---------3---------4---------5---------6---------7
+Eric Kimminau                           RTA/RSA
+eak@detroit.sgi.com                     Silicon Graphics, Inc
+Voice: (248) 848-4455                   39001 West 12 Mile Rd.
+Fax:   (248) 848-5600                   Farmington, MI 48331-2903
+
+                 VNet Extension - 6-327-4455
+              "I speak my mind and no one else's."
+       http://www.dcs.ex.ac.uk/~aba/rsa/perl-rsa-sig.html
+
+    When confronted by a difficult problem, solve it by reducing 
+    it to the question, "How would the Lone Ranger handle this?"
+	
+         "I am the great supportfolio, do you have http?"

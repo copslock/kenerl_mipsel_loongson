@@ -1,78 +1,86 @@
 Received: from deliverator.sgi.com (deliverator.sgi.com [204.94.214.10])
-	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id AAA04274
-	for <pstadt@stud.fh-heilbronn.de>; Sun, 22 Aug 1999 00:10:23 +0200
-Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id PAA01834; Sat, 21 Aug 1999 15:06:53 -0700 (PDT)
+	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id CAA24952
+	for <pstadt@stud.fh-heilbronn.de>; Sun, 22 Aug 1999 02:09:51 +0200
+Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id RAA08144; Sat, 21 Aug 1999 17:06:11 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id PAA43363
+	id RAA82267
 	for linux-list;
-	Sat, 21 Aug 1999 15:02:40 -0700 (PDT)
+	Sat, 21 Aug 1999 17:02:29 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id PAA41265
+	via ESMTP id RAA43607
 	for <linux@cthulhu.engr.sgi.com>;
-	Sat, 21 Aug 1999 15:02:34 -0700 (PDT)
-	mail_from (brett@madhouse.org)
-Received: from caligula.madhouse.org ([216.160.90.69]) 
+	Sat, 21 Aug 1999 17:02:26 -0700 (PDT)
+	mail_from (cory@real-time.com)
+Received: from paladin.real-time.com (paladin.real-time.com [206.10.252.2]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via SMTP id PAA09586
-	for <linux@cthulhu.engr.sgi.com>; Sat, 21 Aug 1999 15:02:33 -0700 (PDT)
-	mail_from (brett@madhouse.org)
-Received: (qmail 20175 invoked by uid 509); 21 Aug 1999 22:09:26 -0000
-Received: from localhost (sendmail-bs@127.0.0.1)
-  by localhost with SMTP; 21 Aug 1999 22:09:26 -0000
-Date: Sat, 21 Aug 1999 15:09:26 -0700 (PDT)
-From: brett <brett@madhouse.org>
-To: "Todd M. Shrider" <tshrider@kascope.com>
-cc: William Holmes <palsoft@earthlink.net>, Linux <linux@cthulhu.engr.sgi.com>
-Subject: Re: Root Password
-In-Reply-To: <Pine.LNX.4.10.9908211617010.1110-100000@vertigo.gndn.org>
-Message-ID: <Pine.LNX.3.96.990821150833.20173A-100000@caligula.madhouse.org>
+	via ESMTP id RAA07269
+	for <linux@cthulhu.engr.sgi.com>; Sat, 21 Aug 1999 17:02:24 -0700 (PDT)
+	mail_from (cory@real-time.com)
+Received: from real-time.com (mondas.dalekchess.org [206.147.104.202])
+	by paladin.real-time.com (8.8.8/8.8.8) with ESMTP id TAA21539
+	for <linux@cthulhu.engr.sgi.com>; Sat, 21 Aug 1999 19:02:23 -0500 (CDT)
+Message-ID: <37BF3CFF.ABB1A32B@real-time.com>
+Date: Sat, 21 Aug 1999 18:57:51 -0500
+From: Cory Jon Hollingsworth <cory@real-time.com>
+X-Mailer: Mozilla 4.6 [en] (X11; I; Linux 2.2.9 i586)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To: linux@cthulhu.engr.sgi.com
+Subject: Tandem and Hard Hat, the Saga continues
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
+Content-Transfer-Encoding: 7bit
 
-not having a system cd for an old Indigo I went over to rootshell.com and
-got a root exploit for the system.
+   It boots and runs!!!!
 
-b
+    I've spent most of today installing (through trial and error) Hard
+Hat on the the Tandem.  And It looks like I have been successful!
 
+Check it out:
 
+[root@Terminus /proc]# cat cpuinfo
+cpu                     : MIPS
+cpu model               : R4000SC V5.0
+system type             : SGI Indy
+BogoMIPS                : 74.96
+byteorder               : big endian
+unaligned accesses      : 0
+wait instruction        : no
+microsecond timers      : no
+extra interrupt vector  : no
+hardware watchpoint     : yes
+VCED exceptions         : 10718
+VCEI exceptions         : 31543
+[root@Terminus /proc]# dmesg |head
+ARCH: SGI-IP22
+PROMLIB: SGI ARCS firmware Version 1 Revision 10
+PROMLIB: Total free ram 265719808 bytes (259492K,253MB)
+CPU: MIPS-R4400 FPU<MIPS-R4400FPC> ICACHE DCACHE SCACHE
+Loading R4000 MMU routines.
+CPU revision is: 00000450
+Primary instruction cache 16kb, linesize 16 bytes)
+Primary data cache 16kb, linesize 16 bytes)
+Secondary cache sized at 1024K linesize 128
+Linux version 2.2.1 (tsbogend@james.franken.de) (gcc version 2.7.2.3)
+#519 Mon Mar 29 01:24:17 MEST 1999
 
-On Sat, 21 Aug 1999, Todd M. Shrider wrote:
+    The installation process certainly wasn't what I would call smooth,
+but it was worth it.
 
-> 
-> You'll need the system cd's, or at least the first cd, to reset the root
-> passwd. When the system starts, press escape to go into the maintenance
-> menu and then choose install system software. (Were not actually going to
-> install the system software). At the meno choose Administration (opetion
-> 13 I believe) and then type chroot
-> 
-> This will put you at a prompt so you can type passwd and give a new root
-> passwd. As far as I know this is the only way to change things...
-> 
-> 
-> --
-> Todd M. Shrider			Coder Emeritus
-> Kaleidoscope Inc.		The Diner Inc.
-> tshrider@kascope.com		(317)581-6378
-> 
->        I degaussed my girlfriend and I'm 
->        just not attracted to her anymore. 
-> 
-> On Sat, 21 Aug 1999, William Holmes wrote:
-> 
-> > I just got a O2 system and the root password is set and I have no idea what it is. System runnig fine with IRIX 6.3 but no CD'S. I know this doesn't have any thing to do with LINUX but can some one help?
-> > 
-> > Thanks In Advance
-> > 
-> > William Holmes
-> > 
-> 
-> 
+    Thanks to everyone who provided me hints on identifying this
+machine.  I have never had access to an Indy/Indigo/Challenge S before,
+so identifying this machine on my own would have been a total guess
+without the resources of this list and its archive.
+
+    Now the fun begins.
+
+    Thanks again.

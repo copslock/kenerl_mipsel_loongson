@@ -1,41 +1,44 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6J31dE25041
-	for linux-mips-outgoing; Wed, 18 Jul 2001 20:01:39 -0700
-Received: from web13905.mail.yahoo.com (web13905.mail.yahoo.com [216.136.175.68])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6J31bV25033
-	for <linux-mips@oss.sgi.com>; Wed, 18 Jul 2001 20:01:37 -0700
-Message-ID: <20010719030136.63012.qmail@web13905.mail.yahoo.com>
-Received: from [61.133.136.72] by web13905.mail.yahoo.com via HTTP; Wed, 18 Jul 2001 20:01:36 PDT
-Date: Wed, 18 Jul 2001 20:01:36 -0700 (PDT)
-From: Barry Wu <wqb123@yahoo.com>
-Subject: about mipsel linux thread problem
-To: linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.2/8.11.3) id f6J49uf28203
+	for linux-mips-outgoing; Wed, 18 Jul 2001 21:09:56 -0700
+Received: from b0rked.dhs.org (postfix@b0rked.dhs.org [216.99.196.11])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6J49sV28199
+	for <linux-mips@oss.sgi.com>; Wed, 18 Jul 2001 21:09:54 -0700
+Received: by b0rked.dhs.org (Postfix, from userid 500)
+	id 7B9EF21EE; Wed, 18 Jul 2001 21:09:42 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+	by b0rked.dhs.org (Postfix) with ESMTP
+	id 7759621ED; Wed, 18 Jul 2001 21:09:42 -0700 (PDT)
+Date: Wed, 18 Jul 2001 21:09:42 -0700 (PDT)
+From: Chris Vandomelen <chrisv@b0rked.dhs.org>
+To: <linux-mips@oss.sgi.com>, <linux-mips-kernel@lists.sourceforge.net>
+Subject: Patches to support 48M IBM Workpad z50?
+Message-ID: <Pine.LNX.4.31.0107182100140.9246-100000@b0rked.dhs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+Since I can't seem to find any information about this anywhere else, I
+figured this would be the appropriate place to ask.
 
+I'm using a moderately hacked 2.4.0-test9 kernel from the linux-vr
+repository (the only complete kernel, excluding NetBSD, that I've found
+which runs on CE devices at the moment), and it doesn't want to recognize
+all 48M of RAM in the device, only the 1st 16. The memory is mapped as
+such:
 
-Hi, all,
+0M  - 16M:	On-board memory
+16M - 32M:	Unmapped region
+32M - 64M:	Memory expansion card
 
-I just port mipsel linux 2.2.12 to our mips evaluation
-board, and I use glibc-2.0.6-5l and linuxthread 0.7.
-But when I run linuxthread application on it.
-The application reports "Bus error".
-I add some print information in linuxthreads source
-code, and find that when call
-linuxthreads/restart.h  suspend() function, the
-application will Bus error.
-I do not know which glibc and linuxthreads version
-can support mips linux well. And I do not know what
-the problem I meet is.
-If someone knows, please help me!
-Thanks!
+When the first 16M is checked, the memory immediately after that is found
+to be non-existant.
 
-Barry
+Does anyone have a patch (other than the hack I tossed together to turn
+the 32M-64M chunk into an MTD device) that would be useful to work past
+the memory hole?
 
-__________________________________________________
-Do You Yahoo!?
-Get personalized email addresses from Yahoo! Mail
-http://personal.mail.yahoo.com/
+TIA
+
+Chris

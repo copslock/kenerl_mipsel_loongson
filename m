@@ -1,48 +1,25 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA11072; Wed, 5 Jun 1996 00:00:13 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA11479; Wed, 5 Jun 1996 00:12:52 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id GAA03336 for linux-list; Wed, 5 Jun 1996 06:59:38 GMT
-Received: from neteng.engr.sgi.com (neteng.engr.sgi.com [192.26.80.10]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id XAA03324 for <linux@cthulhu.engr.sgi.com>; Tue, 4 Jun 1996 23:59:37 -0700
-Received: (from dm@localhost) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id XAA11058; Tue, 4 Jun 1996 23:59:36 -0700
-Date: Tue, 4 Jun 1996 23:59:36 -0700
-Message-Id: <199606050659.XAA11058@neteng.engr.sgi.com>
+Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id HAA05405 for linux-list; Wed, 5 Jun 1996 07:12:18 GMT
+Received: from neteng.engr.sgi.com (neteng.engr.sgi.com [192.26.80.10]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA05400 for <linux@cthulhu.engr.sgi.com>; Wed, 5 Jun 1996 00:12:16 -0700
+Received: (from dm@localhost) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id AAA11472; Wed, 5 Jun 1996 00:12:16 -0700
+Date: Wed, 5 Jun 1996 00:12:16 -0700
+Message-Id: <199606050712.AAA11472@neteng.engr.sgi.com>
 From: "David S. Miller" <dm@neteng.engr.sgi.com>
 To: linux@cthulhu.engr.sgi.com
-Subject: [ariel@yon: linux-progress is allive]
+Subject: netbooting
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-------- Start of forwarded message -------
-From: ariel@yon (Ariel Faigon)
-Subject: linux-progress is allive
-To: dm@yon (David S. Miller)
-Date: Tue, 4 Jun 1996 23:53:38 -0700 (PDT)
-Reply-To: ariel@engr.sgi.com
-Organization: Silicon Graphics Inc.
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Content-Length: 545       
 
-David, could you forward this to 'linux'
+How much pain is involved in netbooting a kernel from an INDY?  Can I
+just setup a /tftpboot area with the appropriate files and setup a
+place to place the kernels for the bootloader to find and it'll work?
+If so, can someone tell me what the necessary magic is that needs to
+be done?
 
-Majordomo@engr  doesn't seem to like me, it keeps bouncing back
-when I mail this to linux...
+This would speed up my development tremendously ;)
 
-- ----- Forwarded message from owner-linux@cthulhu -----
-
-The linux-progress list is now set up.
-My list descriptions somehow evaporated, but this is not important.
-Feel free to subscribe.
-
-	To: majordomo@engr.sgi.com
-	subscribe linux-progress
-
-David: you may point your CVS commit automailer to it:
-
-	linux-progress@engr.sgi.com
-
-- -- 
-Peace, Ariel
-
-- ----- End of forwarded message from owner-linux@cthulhu -----
-------- End of forwarded message -------
+Later,
+David S. Miller
+dm@engr.sgi.com

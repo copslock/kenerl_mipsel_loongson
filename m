@@ -1,56 +1,111 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Jan 2005 18:04:46 +0000 (GMT)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:28687
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8225284AbVAKSEl>; Tue, 11 Jan 2005 18:04:41 +0000
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp
-	id 1CoQNk-0006Ii-00; Tue, 11 Jan 2005 19:04:40 +0100
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 1CoQNk-0002fY-00; Tue, 11 Jan 2005 19:04:40 +0100
-Date: Tue, 11 Jan 2005 19:04:40 +0100
-To: Rojhalat Ibrahim <ibrahim@schenk.isar.de>
-Cc: linux-mips@linux-mips.org
-Subject: Re: [PATCH] Further TLB handler optimizations
-Message-ID: <20050111180440.GB31149@rembrandt.csv.ica.uni-stuttgart.de>
-References: <20041224085645.GJ3539@rembrandt.csv.ica.uni-stuttgart.de> <20050107190605.GG31335@rembrandt.csv.ica.uni-stuttgart.de> <41E27A6A.5060204@schenk.isar.de> <20050110140429.GC15344@rembrandt.csv.ica.uni-stuttgart.de> <41E29DF5.6040800@schenk.isar.de> <20050110154246.GH15344@rembrandt.csv.ica.uni-stuttgart.de> <41E38A0A.1010507@schenk.isar.de> <41E394A0.30205@schenk.isar.de> <20050111162646.GA31149@rembrandt.csv.ica.uni-stuttgart.de> <41E40E8D.60600@schenk.isar.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Jan 2005 09:45:07 +0000 (GMT)
+Received: from host51-186.pool80204.interbusiness.it ([IPv6:::ffff:80.204.186.51]:421
+	"EHLO gate.exadron.com") by linux-mips.org with ESMTP
+	id <S8225216AbVALJpC>; Wed, 12 Jan 2005 09:45:02 +0000
+Received: from 10.0.10.57 ([10.0.10.57])
+	by gate.exadron.com (8.12.7/8.12.7) with ESMTP id j0CA7pMM018499
+	(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NO)
+	for <linux-mips@linux-mips.org>; Wed, 12 Jan 2005 11:07:52 +0100
+Subject: [PATCH] au1x00 pm
+From: Christian <c.pellegrin@exadron.com>
+To: linux-mips@linux-mips.org
+Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature"; boundary="=-t+Exg8cnrip8AsVkFe11"
+Date: Wed, 12 Jan 2005 10:40:39 +0100
+Message-Id: <1105522839.5654.16.camel@absolute.ascensit.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <41E40E8D.60600@schenk.isar.de>
-User-Agent: Mutt/1.5.6+20040907i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+X-Mailer: Evolution 2.0.2 (2.0.2-3) 
+Return-Path: <c.pellegrin@exadron.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6888
+X-archive-position: 6889
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: c.pellegrin@exadron.com
 Precedence: bulk
 X-list: linux-mips
 
-Rojhalat Ibrahim wrote:
-[snip]
-> >>Well, at least for a 32-bit kernel. If I compile a 64-bit
-> >>kernel it still stops when it should start init. Any ideas?
-> >
-> >Is this really related to my TLB exception handler patch? The 64bit
-> >versions of it are pretty well tested now, so it would be most likely
-> >some flaw specific to your CPU. The 64bit kernel had no optimized TLB
-> >handlers before.
-> 
-> Don't know. It's just that it worked before. But I might just
-> have been lucky then. I just checked again and found that without
-> SMP enabled 64 bit is working too. So the problem might indeed
-> not be related to your patch.
 
-The pte updates for SMP are tricky but the same for 32 and 64 bit.
-The old 32bit SMP code simply ignored the race condition, the 64bit SMP
-version had no optimization but called always do_fage_fault.
-
-64bit SMP systems known to work so far are SGI IP27 and Broadcom SB1250.
+--=-t+Exg8cnrip8AsVkFe11
+Content-Type: multipart/mixed; boundary="=-yIwcPyenP3TuQxz4PcNi"
 
 
-Thiemo
+--=-yIwcPyenP3TuQxz4PcNi
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+
+
+Hi,
+
+I'm working on a custom embedded board with the Alchemy au1100. I saw
+that some code in the thunk is not up-to-date so I'm sending the patches
+that I needed to make the kernel compile and work. Since this is my
+first contribution please tell me if there's something wrong.=20
+
+This patch fixes some compilation problems and reenables PM. Frequency
+change and sleep is ok, need to work on bootloader to make suspend
+work. =20
+
+--=20
+Christian <c.pellegrin@exadron.com>
+
+--=-yIwcPyenP3TuQxz4PcNi
+Content-Disposition: attachment; filename=pm1
+Content-Type: text/x-patch; name=pm1; charset=UTF-8
+Content-Transfer-Encoding: base64
+
+SW5kZXg6IGFyY2gvbWlwcy9LY29uZmlnDQo9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09DQpSQ1MgZmlsZTogL2hvbWUvY3Zz
+L2xpbnV4L2FyY2gvbWlwcy9LY29uZmlnLHYNCnJldHJpZXZpbmcgcmV2aXNpb24gMS4xMjcNCmRp
+ZmYgLXUgLXIxLjEyNyBLY29uZmlnDQotLS0gYXJjaC9taXBzL0tjb25maWcJMTIgSmFuIDIwMDUg
+MDA6MTA6NDIgLTAwMDAJMS4xMjcNCisrKyBhcmNoL21pcHMvS2NvbmZpZwkxMiBKYW4gMjAwNSAw
+OTowNDowMiAtMDAwMA0KQEAgLTk3MCw2ICs5NzAsOSBAQA0KIGNvbmZpZyBNSVBTX0RJU0FCTEVf
+T0JTT0xFVEVfSURFDQogCWJvb2wNCiANCitjb25maWcgV1dQQw0KKwlib29sICJTdXBwb3J0IGZv
+ciBXV1BDIg0KKw0KIGNvbmZpZyBDUFVfTElUVExFX0VORElBTg0KIAlib29sICJHZW5lcmF0ZSBs
+aXR0bGUgZW5kaWFuIGNvZGUiDQogCWRlZmF1bHQgeSBpZiBBQ0VSX1BJQ0FfNjEgfHwgQ0FTSU9f
+RTU1IHx8IEREQjUwNzQgfHwgRERCNTQ3NiB8fCBEREI1NDc3IHx8IE1BQ0hfREVDU1RBVElPTiB8
+fCBJQk1fV09SS1BBRCB8fCBMQVNBVCB8fCBNSVBTX0NPQkFMVCB8fCBNSVBTX0lURTgxNzIgfHwg
+TUlQU19JVlIgfHwgU09DX0FVMVgwMCB8fCBORUNfT1NQUkVZIHx8IE9MSVZFVFRJX003MDAgfHwg
+U05JX1JNMjAwX1BDSSB8fCBWSUNUT1JfTVBDMzBYIHx8IFpBT19DQVBDRUxMQQ0KQEAgLTE1ODMs
+NyArMTU4Niw3IEBADQogDQogY29uZmlnIFBNDQogCWJvb2wgIlBvd2VyIE1hbmFnZW1lbnQgc3Vw
+cG9ydCAoRVhQRVJJTUVOVEFMKSINCi0JZGVwZW5kcyBvbiBFWFBFUklNRU5UQUwgJiYgTUFDSF9B
+VTFYMDANCisJZGVwZW5kcyBvbiBFWFBFUklNRU5UQUwgJiYgU09DX0FVMVgwMA0KIA0KIGVuZG1l
+bnUNCiANCkluZGV4OiBhcmNoL21pcHMvYXUxMDAwL2NvbW1vbi9wb3dlci5jDQo9PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+DQpSQ1MgZmlsZTogL2hvbWUvY3ZzL2xpbnV4L2FyY2gvbWlwcy9hdTEwMDAvY29tbW9uL3Bvd2Vy
+LmMsdg0KcmV0cmlldmluZyByZXZpc2lvbiAxLjE1DQpkaWZmIC11IC1yMS4xNSBwb3dlci5jDQot
+LS0gYXJjaC9taXBzL2F1MTAwMC9jb21tb24vcG93ZXIuYwkyMCBBcHIgMjAwNCAxNTo1Mjo1MSAt
+MDAwMAkxLjE1DQorKysgYXJjaC9taXBzL2F1MTAwMC9jb21tb24vcG93ZXIuYwkxMiBKYW4gMjAw
+NSAwOTowNDo0OCAtMDAwMA0KQEAgLTM0LDYgKzM0LDcgQEANCiAjaW5jbHVkZSA8bGludXgvcG0u
+aD4NCiAjaW5jbHVkZSA8bGludXgvc2xhYi5oPg0KICNpbmNsdWRlIDxsaW51eC9zeXNjdGwuaD4N
+CisjaW5jbHVkZSA8bGludXgvamlmZmllcy5oPg0KIA0KICNpbmNsdWRlIDxhc20vc3RyaW5nLmg+
+DQogI2luY2x1ZGUgPGFzbS91YWNjZXNzLmg+DQpJbmRleDogYXJjaC9taXBzL2F1MTAwMC9jb21t
+b24vdGltZS5jDQo9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09DQpSQ1MgZmlsZTogL2hvbWUvY3ZzL2xpbnV4L2FyY2gvbWlw
+cy9hdTEwMDAvY29tbW9uL3RpbWUuYyx2DQpyZXRyaWV2aW5nIHJldmlzaW9uIDEuMzENCmRpZmYg
+LXUgLXIxLjMxIHRpbWUuYw0KLS0tIGFyY2gvbWlwcy9hdTEwMDAvY29tbW9uL3RpbWUuYwkxMCBK
+YW4gMjAwNSAxMDoyMzozNiAtMDAwMAkxLjMxDQorKysgYXJjaC9taXBzL2F1MTAwMC9jb21tb24v
+dGltZS5jCTEyIEphbiAyMDA1IDA5OjA0OjU0IC0wMDAwDQpAQCAtMTIzLDcgKzEyMyw3IEBADQog
+CWludCB0aW1lX2VsYXBzZWQ7DQogCXN0YXRpYyBpbnQgamlmZmllX2RyaWZ0ID0gMDsNCiANCi0J
+a3N0YXQuaXJxc1swXVtpcnFdKys7DQorCWtzdGF0X3RoaXNfY3B1LmlycXNbaXJxXSsrOw0KIAlp
+ZiAoYXVfcmVhZGwoU1lTX0NPVU5URVJfQ05UUkwpICYgU1lTX0NOVFJMX00yMCkgew0KIAkJLyog
+c2hvdWxkIG5ldmVyIGhhcHBlbiEgKi8NCiAJCXByaW50ayhLRVJOX1dBUk5JTkcgImNvdW50ZXIg
+MCB3IHN0YXR1cyBlcm9yXG4iKTsNCg==
+
+
+--=-yIwcPyenP3TuQxz4PcNi--
+
+--=-t+Exg8cnrip8AsVkFe11
+Content-Type: application/pgp-signature; name=signature.asc
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.6 (GNU/Linux)
+
+iD8DBQBB5PCXq26xP1xKlLcRAlZ7AKCLvl8XdK+f7RjsSHQHdks7xnZAYACgk1dA
+xE53k9MCK/mv1H+z+wfLL9s=
+=Aywb
+-----END PGP SIGNATURE-----
+
+--=-t+Exg8cnrip8AsVkFe11--

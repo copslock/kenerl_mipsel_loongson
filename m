@@ -1,61 +1,65 @@
-Received:  by oss.sgi.com id <S554242AbRBZPqT>;
-	Mon, 26 Feb 2001 07:46:19 -0800
-Received: from mx.mips.com ([206.31.31.226]:49569 "EHLO mx.mips.com")
-	by oss.sgi.com with ESMTP id <S553782AbRBZPqH>;
-	Mon, 26 Feb 2001 07:46:07 -0800
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id HAA23218;
-	Mon, 26 Feb 2001 07:46:02 -0800 (PST)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id HAA02350;
-	Mon, 26 Feb 2001 07:46:00 -0800 (PST)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id QAA12834;
-	Mon, 26 Feb 2001 16:45:38 +0100 (MET)
-Message-ID: <3A9A7A21.F6CE24CB@mips.com>
-Date:   Mon, 26 Feb 2001 16:45:37 +0100
-From:   Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
+Received:  by oss.sgi.com id <S554261AbRBZSDl>;
+	Mon, 26 Feb 2001 10:03:41 -0800
+Received: from gatekeep.ti.com ([192.94.94.61]:43455 "EHLO gatekeep.ti.com")
+	by oss.sgi.com with ESMTP id <S554258AbRBZSDc>;
+	Mon, 26 Feb 2001 10:03:32 -0800
+Received: from dlep8.itg.ti.com ([157.170.134.88])
+	by gatekeep.ti.com (8.11.1/8.11.1) with ESMTP id f1QI3Pr00090;
+	Mon, 26 Feb 2001 12:03:25 -0600 (CST)
+Received: from dlep8.itg.ti.com (localhost [127.0.0.1])
+	by dlep8.itg.ti.com (8.9.3/8.9.3) with ESMTP id MAA04640;
+	Mon, 26 Feb 2001 12:03:25 -0600 (CST)
+Received: from dlep3.itg.ti.com (dlep3-maint.itg.ti.com [157.170.133.16])
+	by dlep8.itg.ti.com (8.9.3/8.9.3) with ESMTP id MAA04622;
+	Mon, 26 Feb 2001 12:03:24 -0600 (CST)
+Received: from ti.com (IDENT:bbrown@bbrowndt.sc.ti.com [158.218.100.126])
+	by dlep3.itg.ti.com (8.9.3/8.9.3) with ESMTP id MAA06449;
+	Mon, 26 Feb 2001 12:03:24 -0600 (CST)
+Message-ID: <3A9A9B52.C990A581@ti.com>
+Date:   Mon, 26 Feb 2001 11:07:15 -0700
+From:   Brady Brown <bbrown@ti.com>
+Organization: Texas Instruments
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-5.0 i686)
 X-Accept-Language: en
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@oss.sgi.com>
+To:     Tom Appermont <tea@sonycom.com>
 CC:     linux-mips@oss.sgi.com
-Subject: Re: RedHat 7.0 ?
-References: <3A71B011.4B82F6C3@mips.com> <20010127105409.E867@bacchus.dhis.org>
-Content-Type: text/plain; charset=iso-8859-15
+Subject: Re: ELF header kernel module wrong?
+References: <20010223151355.A9091@ginger.sonytel.be>
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Ralf Baechle wrote:
+Tom Appermont wrote:
 
-> On Fri, Jan 26, 2001 at 06:12:49PM +0100, Carsten Langgaard wrote:
-> > Date:   Fri, 26 Jan 2001 18:12:49 +0100
-> > From: Carsten Langgaard <carstenl@mips.com>
-> > To: linux-mips@oss.sgi.com
-> > Subject: RedHat 7.0 ?
-> >
-> > Has anyone put together an easy-to-install tar file, similar to the old
-> > hard-hat 5.1 tarfile, where you could install everything though an
-> > install program running on a nfs server ?
-> > I really like the old hard-hat approach, it was easy to install and
-> > everything seems to work, but it would be nice to have a newer release.
-> > The old hard-hat install program doesn't work with the new 2.4.0 kernel.
+> Greetings,
 >
-> At this time we don't have an easy installer for it.  I intend to strip
-> down an RH 7.0 installation which I'm running on an Origin here and put
-> it up for ftp somewhen soon.
-
-Any progress on the RH7.0 easy installer ?
-
+> I'm trying to get modules to work on my R5000 little endian
+> target, linux 2.4.1 + modutils 2.4.2 .
 >
->   Ralf
+> When I insmod a module, I get error messages like:
+>
+> [root@192 /]# insmod dummy.o
+> dummy.o: local symbol gcc2_compiled. with index 10 exceeds local_symtab_size 10
+> dummy.o: local symbol __gnu_compiled_c with index 11 exceeds local_symtab_size 10
+> dummy.o: local symbol __module_kernel_version with index 12 exceeds local_symtab_size 10
+> dummy.o: local symbol set_multicast_list with index 13 exceeds local_symtab_size 10
+> dummy.o: local symbol dummy_init with index 14 exceeds local_symtab_size 10
+> dummy.o: local symbol dummy_xmit with index 15 exceeds local_symtab_size 10
+> dummy.o: local symbol dummy_get_stats with index 18 exceeds local_symtab_size 10
+> dummy.o: local symbol dummy_init_module with index 21 exceeds local_symtab_size 10
+> dummy.o: local symbol dev_dummy with index 22 exceeds local_symtab_size 10
+> dummy.o: local symbol dummy_cleanup_module with index 26 exceeds local_symtab_size 10
+> [root@192 /]#
+
+I think the final conclusion on this problem in the old thread was that the assembler is generating ELF files that are IRIX flavored with respect to the symbol table ordering and index. I discovered by playing around that the linker was creating
+correct ELF symbol tables, so as a temporary work around until the assembler is tweaked I started to incrementally link my modules with the linker `ld -r <filename>` . This eliminated the immediate problem for me.
 
 --
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Brady Brown (bbrown@ti.com)       Work:(801)619-6103
+Texas Instruments: Broadband Access Group
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -1,53 +1,44 @@
-Received:  by oss.sgi.com id <S553700AbQJUUai>;
-	Sat, 21 Oct 2000 13:30:38 -0700
-Received: from noose.gt.owl.de ([62.52.19.4]:37135 "HELO noose.gt.owl.de")
-	by oss.sgi.com with SMTP id <S553663AbQJUUaP>;
-	Sat, 21 Oct 2000 13:30:15 -0700
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 6C1297D9; Sat, 21 Oct 2000 22:30:13 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id BCF1F900C; Sat, 21 Oct 2000 22:29:04 +0200 (CEST)
-Date:   Sat, 21 Oct 2000 22:29:04 +0200
-From:   Florian Lohoff <flo@rfc822.org>
-To:     "Kevin D. Kissell" <kevink@mips.com>
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: oops in lance initialization / diskboot
-Message-ID: <20001021222904.C4004@paradigm.rfc822.org>
-References: <20001021212318.C3619@paradigm.rfc822.org> <00d301c03b9b$d5ce2340$0deca8c0@Ulysses>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-User-Agent: Mutt/1.0.1i
-In-Reply-To: <00d301c03b9b$d5ce2340$0deca8c0@Ulysses>; from kevink@mips.com on Sat, Oct 21, 2000 at 10:16:43PM +0200
-Organization: rfc822 - pure communication
+Received:  by oss.sgi.com id <S553735AbQJUWZi>;
+	Sat, 21 Oct 2000 15:25:38 -0700
+Received: from ns0.uklinux.net ([212.1.130.10]:42507 "EHLO www.uklinux.net")
+	by oss.sgi.com with ESMTP id <S553720AbQJUWZ0>;
+	Sat, 21 Oct 2000 15:25:26 -0700
+Received: from rincewind (ppp-1-61.cvx6.telinco.net [212.1.156.61])
+	by www.uklinux.net (8.9.3/8.8.7) with SMTP id XAA31725
+	for <linux-mips@oss.sgi.com>; Sat, 21 Oct 2000 23:25:23 +0100
+Reply-To: <budgester@budgester.com>
+From:   "Budgester" <budgester@budgester.com>
+To:     "Linux-Mips (E-mail)" <linux-mips@oss.sgi.com>
+Subject: Installing Linux on an Indy
+Date:   Sat, 21 Oct 2000 23:18:19 +0100
+Message-ID: <000601c03bac$d24a43f0$0300000a@budgester.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook CWS, Build 9.0.2416 (9.0.2910.0)
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2314.1300
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Sat, Oct 21, 2000 at 10:16:43PM +0200, Kevin D. Kissell wrote:
-> I've seen this sort of problem on other platforms with
-> other bootloaders, but I'll bet good money that the
-> reason is the same - if the boot monitor listens to
-> the ethernet, it will have set up some number of
-> buffer descriptors in memory.   There's a class of
-> loader bug whereing it launches the application,
-> in this case the Linux kernel, without shutting down
-> the LAN controller.  The first broadcast packet that
-> comes across the wire then corrupts some hunk of
-> memory that Linux thought it had control over.   Note
-> that your "address" is a fragment of an ASCII string.
-> The only 100% solution is to fix the bootloader.  Can
-> you shut off the Lance in delo?
+Hi,
 
-Probably - The problem is that i cant with the PROM. So i 
-have to copy the lance init/search thing from the kernel
-if i wanted to ...
+I am trying to Install Linux on an INDY, but due to lack of knowledge and me
+being a bit of a newbie I am having problems.
 
-But from the source i see that the driver assumes the Lance
-is inactive and starts with setting up DMA instead of first
-resetting the Card. I'll try that first.
+I have a i386 server setup and as much documentation as I can find,
 
-Flo
--- 
-Florian Lohoff		flo@rfc822.org		      	+49-5201-669912
-      "Write only memory - Oops. Time for my medication again ..."
+I am using the foobazco docs at the moment.
+
+Could anyone point me in the right direction to solve the following problem.
+
+Where do I find base.tar.gz ?
+
+Thanks
+
+Budgester

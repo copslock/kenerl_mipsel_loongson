@@ -1,34 +1,40 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g2I2RZc12829
-	for linux-mips-outgoing; Sun, 17 Mar 2002 18:27:35 -0800
-Received: from neurosis.mit.edu (NEUROSIS.MIT.EDU [18.243.0.82])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2I2RV912825
-	for <linux-mips@oss.sgi.com>; Sun, 17 Mar 2002 18:27:31 -0800
-Received: (from jim@localhost)
-	by neurosis.mit.edu (8.11.4/8.11.4) id g2I2Skt06558;
-	Sun, 17 Mar 2002 21:28:46 -0500
-Date: Sun, 17 Mar 2002 21:28:46 -0500
-From: Jim Paris <jim@jtan.com>
-To: jeff <jeff_lee@coventive.com>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: Linux VR-41xx Linux kernel support
-Message-ID: <20020317212846.A6528@neurosis.mit.edu>
-Reply-To: jim@jtan.com
-References: <LPECIADMAHLPOFOIEEFNGEENCEAA.jeff_lee@coventive.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <LPECIADMAHLPOFOIEEFNGEENCEAA.jeff_lee@coventive.com>; from jeff_lee@coventive.com on Mon, Mar 18, 2002 at 10:22:17AM +0800
+	by oss.sgi.com (8.11.2/8.11.3) id g2IFCZv31067
+	for linux-mips-outgoing; Mon, 18 Mar 2002 07:12:35 -0800
+Received: from smtp016.mail.yahoo.com (smtp016.mail.yahoo.com [216.136.174.113])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2IFCW931064
+	for <linux-mips@oss.sgi.com>; Mon, 18 Mar 2002 07:12:32 -0800
+Received: from girishvg (AUTH login) at g054124.ppp.asahi-net.or.jp (HELO nazneen) (girishvg@211.132.54.124)
+  by smtp.mail.vip.sc5.yahoo.com with SMTP; 18 Mar 2002 15:13:58 -0000
+Message-ID: <033401c1ce8f$cbec7100$ebcc7d3d@gol.com>
+From: "Girish Gulawani" <girishvg@yahoo.com>
+To: "MIPS/Linux List \(SGI\)" <linux-mips@oss.sgi.com>
+Subject: PCI VGA Card Initilization (SIS6326 / PT80)
+Date: Tue, 19 Mar 2002 00:15:51 +0900
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4133.2400
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
->     I found in mips VR serial (vr4121,vr4131,etc...), the kernel
-> source just maintains up to 2.4.0-test9.  Is there any one get the
-> higher kernel version ? Like 2.4.2 something......
+hello, all.
+i have a PCI/VGA card PT80 with SIS6326 chipset. i am using MILO BIOS source
+code. but i am not able to access the internal buffer which is typically at
+0xA0000. even the BIOS ROM (0xC0000) read fails to show default value
+0xA5A5. the expansion ROM is enabled in PCI by setting D0 bit to 1. however
+IO seems okay because the monitor actually switches from power down mode to
+normal mode. i have tried using both vgaraw1.c and vgaraw2.c files, but no
+success. could anybody help me to solve this problem.
+many thanks.
+girish.
 
-The SourceForge linux-mips tree (http://linux-mips.sourceforge.net/)
-has VR41xx support (among other things) added.  It's still a ways from
-the old Linux-VR tree, unfortunately, but it's slowly getting better.
 
--jim
+
+_________________________________________________________
+Do You Yahoo!?
+Get your free @yahoo.com address at http://mail.yahoo.com

@@ -1,57 +1,108 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Apr 2003 15:43:35 +0100 (BST)
-Received: from mms2.broadcom.com ([IPv6:::ffff:63.70.210.59]:53001 "EHLO
-	mms2.broadcom.com") by linux-mips.org with ESMTP
-	id <S8225072AbTD1Ond>; Mon, 28 Apr 2003 15:43:33 +0100
-Received: from 63.70.210.1 by mms2.broadcom.com with ESMTP (Broadcom
- SMTP Relay (MMS v5.5.2)); Mon, 28 Apr 2003 07:40:15 -0700
-Received: from mail-sj1-5.sj.broadcom.com (mail-sj1-5.sj.broadcom.com
- [10.16.128.236]) by mon-irva-11.broadcom.com (8.9.1/8.9.1) with ESMTP
- id HAA05398; Mon, 28 Apr 2003 07:43:02 -0700 (PDT)
-Received: from dt-sj3-158.sj.broadcom.com (dt-sj3-158 [10.21.64.158]) by
- mail-sj1-5.sj.broadcom.com (8.12.9/8.12.9/SSF) with ESMTP id
- h3SEhKov013845; Mon, 28 Apr 2003 07:43:20 -0700 (PDT)
-Received: from broadcom.com (IDENT:kwalker@localhost [127.0.0.1]) by
- dt-sj3-158.sj.broadcom.com (8.9.3/8.9.3) with ESMTP id HAA00925; Mon,
- 28 Apr 2003 07:43:20 -0700
-Message-ID: <3EAD3E07.C5651D44@broadcom.com>
-Date: Mon, 28 Apr 2003 07:43:19 -0700
-From: "Kip Walker" <kwalker@broadcom.com>
-Organization: Broadcom Corp. BPBU
-X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.5-beta4va3.20 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: "Ralf Baechle" <ralf@linux-mips.org>
-cc: linux-mips@linux-mips.org
-Subject: Re: [PATCH]: load_mmu for SMP systems
-References: <3EA97D54.6910D49E@broadcom.com>
- <20030428025639.A20753@linux-mips.org>
-X-WSS-ID: 12B3E2C51870289-01-01
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Apr 2003 17:17:33 +0100 (BST)
+Received: from c08.tateyama.hu ([IPv6:::ffff:152.66.119.136]:13329 "HELO
+	server.tateyama.hu") by linux-mips.org with SMTP
+	id <S8225072AbTD1QRa> convert rfc822-to-8bit; Mon, 28 Apr 2003 17:17:30 +0100
+Received: (qmail 13980 invoked from network); 28 Apr 2003 16:17:29 -0000
+Received: from c22.tateyama.hu (HELO enterprise) (root@152.66.119.150)
+  by c01.tateyama.hu with SMTP; 28 Apr 2003 16:17:29 -0000
 Content-Type: text/plain;
- charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <kwalker@broadcom.com>
+  charset="us-ascii"
+From: Gabor Kerenyi <wom@tateyama.hu>
+Organization: Tateyama Ltd
+To: linux-mips@linux-mips.org
+Subject: crosscompile doesn't work :(
+Date: Mon, 28 Apr 2003 18:25:09 +0200
+User-Agent: KMail/1.4.3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8BIT
+Message-Id: <200304281825.09697.wom@tateyama.hu>
+Return-Path: <wom@tateyama.hu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
 X-Spam-Checker-Version: SpamAssassin 2.50 (1.173-2003-02-20-exp)
-X-archive-position: 2220
+X-archive-position: 2221
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kwalker@broadcom.com
+X-original-sender: wom@tateyama.hu
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
-> 
-> > TLB flush routines that have loops running up to tlbsize will lose if
-> > it's not set properly on all CPUs!
-> 
-> Yeah, they're going to be sort of slow.  There must be a reason for all
-> those GHz processors ;-)
+hi!
 
-Um, it was worse than that if (for example) a complete TLB flush has a
-"for (i=0; i<0; i++)" loop around it.  My board was experiencing
-occasional userland segfaults thanks to bogus TLB flushing.
+I'm totally new to MIPS and the bigger trouble that I'm also
+new to cross compiling.
+I will get a little MIPS board with PCMCIA, USB, serial,
+Ethernet, 4Mb flash memory. I have to build a linux for it
+from scratch but I have never done cross compiling before.
 
-Kip
+I use debian (Woody) and I installed the toolchain package,
+configured for mipsel-linux, I built the binutils and gcc,
+(binutils 2.12, gcc 3.2.3)
+
+I did:
+tpkg-make mipsel-linux
+cd binutils
+debuild
+debi
+
+tpkg-install-libc mipsel-linux
+
+cd ../gcc-3.2.3
+debuild
+debi
+
+I can compile a simple c code, but I can't compile the kernel.
+I tried to compile 2.4.19 and I ran into trouble at the beginning:
+
+the 'as' said that -mcpu option is not recognized. OK, I removed
+this option. Then everything seemed to be fine but when the 
+compilation arrived to the arch/mips directiory than I got the
+following error messages:
+
+make[1]: Leaving directory `/usr/src/linux/arch/mips/math-emu'
+make CFLAGS="-D__KERNEL__ -I/usr/src/linux/include -Wall 
+-Wstrict-prototypes -Wno-trigraphs -O2 -fno-strict-aliasing 
+-fno-common -fomit-frame-pointer -I /usr/src/linux/include/asm/gcc -G 
+0 -mno-abicalls -fno-pic -pipe -mips2 -Wa,--trap " -C  arch/mips/sni
+make[1]: Entering directory `/usr/src/linux/arch/mips/sni'
+mipsel-linux-gcc -D__KERNEL__ -I/usr/src/linux/include -Wall 
+-Wstrict-prototypes -Wno-trigraphs -O2 -fno-strict-aliasing 
+-fno-common -fomit-frame-pointer -I /usr/src/linux/include/asm/gcc -G 
+0 -mno-abicalls -fno-pic -pipe -mips2 -Wa,--trap  -c int-handler.S -o 
+int-handler.o
+/usr/src/linux/include/asm/mipsregs.h: Assembler messages:
+/usr/src/linux/include/asm/mipsregs.h:562: Error: unrecognized opcode 
+`static inline void tlb_probe(void)'
+/usr/src/linux/include/asm/mipsregs.h:563: Warning: rest of line 
+ignored; first ignored character is `{'
+/usr/src/linux/include/asm/mipsregs.h:564: Error: unrecognized opcode 
+`__asm__ __volatile__('
+/usr/src/linux/include/asm/mipsregs.h:565: Warning: rest of line 
+ignored; first ignored character is `"'
+/usr/src/linux/include/asm/mipsregs.h:566: Warning: rest of line 
+ignored; first ignored character is `"'
+/usr/src/linux/include/asm/mipsregs.h:567: Warning: rest of line 
+ignored; first ignored character is `"'
+/usr/src/linux/include/asm/mipsregs.h:568: Warning: rest of line 
+ignored; first ignored character is `"'
+/usr/src/linux/include/asm/mipsregs.h:569: Warning: rest of line 
+ignored; first ignored character is `}'
+
+The board chose was only a test bacause I don't know anything about
+the board I'm going to use. There is a nice Japanese page about it,
+but I can't read it.
+
+http://www.tcs-8000.info/products/
+
+Can anyone help? I have to bulid a complete little system in 4Mb 
+within a month.
+
+I also tried to build the cross compile environment from the sources
+directly not using toolchain but I got much less success. it didn't
+compile at all (gcc).
+
+Thanks a lot,
+
+Gabor

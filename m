@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 May 2004 16:55:20 +0100 (BST)
-Received: from mo02.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:52716 "EHLO
-	mo02.iij4u.or.jp") by linux-mips.org with ESMTP id <S8226042AbUEZPwM>;
-	Wed, 26 May 2004 16:52:12 +0100
-Received: from mdo01.iij4u.or.jp (mdo01.iij4u.or.jp [210.130.0.171])
-	by mo02.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id AAA02549;
-	Thu, 27 May 2004 00:52:09 +0900 (JST)
-Received: 4UMDO01 id i4QFq9u09123; Thu, 27 May 2004 00:52:09 +0900 (JST)
-Received: 4UMRO00 id i4QFq8V28817; Thu, 27 May 2004 00:52:08 +0900 (JST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 May 2004 16:55:47 +0100 (BST)
+Received: from mo03.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:5826 "EHLO
+	mo03.iij4u.or.jp") by linux-mips.org with ESMTP id <S8226043AbUEZPwU>;
+	Wed, 26 May 2004 16:52:20 +0100
+Received: from mdo00.iij4u.or.jp (mdo00.iij4u.or.jp [210.130.0.170])
+	by mo03.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id AAA14660;
+	Thu, 27 May 2004 00:52:17 +0900 (JST)
+Received: 4UMDO00 id i4QFqHQ29971; Thu, 27 May 2004 00:52:17 +0900 (JST)
+Received: 4UMRO00 id i4QFqGV28830; Thu, 27 May 2004 00:52:16 +0900 (JST)
 	from stratos.frog (64.43.138.210.xn.2iij.net [210.138.43.64]) (authenticated)
-Date: Thu, 27 May 2004 00:52:06 +0900
+Date: Thu, 27 May 2004 00:52:14 +0900
 From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
 To: Ralf Baechle <ralf@linux-mips.org>
 Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH][11/14] vr41xx: update setup.c for ZAO Networks Capcella
-Message-Id: <20040527005206.6e8ecb18.yuasa@hh.iij4u.or.jp>
+Subject: [PATCH][12/14] vr41xx: update setup.c for Victor MP-C30x
+Message-Id: <20040527005214.64ddfa46.yuasa@hh.iij4u.or.jp>
 X-Mailer: Sylpheed version 0.9.10 (GTK+ 1.2.10; i686-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -22,7 +22,7 @@ Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5176
+X-archive-position: 5177
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,15 +32,15 @@ X-list: linux-mips
 
 Hi Ralf,
 
-setup.c for ZAO Networks Capcella was updated.
+setup.c for Victor MP-C30x was updated.
 
 Please apply to v2.6 CVS tree.
 
 Yoichi
 
-diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/zao-capcella/setup.c linux/arch/mips/vr41xx/zao-capcella/setup.c
---- linux-orig/arch/mips/vr41xx/zao-capcella/setup.c	Thu Apr 29 10:42:49 2004
-+++ linux/arch/mips/vr41xx/zao-capcella/setup.c	Fri May 14 00:08:36 2004
+diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/victor-mpc30x/setup.c linux/arch/mips/vr41xx/victor-mpc30x/setup.c
+--- linux-orig/arch/mips/vr41xx/victor-mpc30x/setup.c	Thu Apr 29 10:42:49 2004
++++ linux/arch/mips/vr41xx/victor-mpc30x/setup.c	Fri May 14 00:16:15 2004
 @@ -18,59 +18,8 @@
   *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
   */
@@ -49,7 +49,7 @@ diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/zao-capcella/setup.c linux/arc
  
 -#include <asm/io.h>
 -#include <asm/pci_channel.h>
--#include <asm/vr41xx/capcella.h>
+-#include <asm/vr41xx/mpc30x.h>
 -
 -#ifdef CONFIG_PCI
 -static struct resource vr41xx_pci_io_resource = {
@@ -68,7 +68,7 @@ diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/zao-capcella/setup.c linux/arc
 -
 -extern struct pci_ops vr41xx_pci_ops;
 -
--struct pci_controller vr41xx_controller = {
+-struct pci_controller vr41xx_controller[] = {
 -	.pci_ops	= &vr41xx_pci_ops,
 -	.io_resource	= &vr41xx_pci_io_resource,
 -	.mem_resource	= &vr41xx_pci_mem_resource,
@@ -102,9 +102,9 @@ diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/zao-capcella/setup.c linux/arc
  
  const char *get_system_type(void)
  {
-@@ -79,18 +28,10 @@
+@@ -79,17 +28,9 @@
  
- static int zao_capcella_setup(void)
+ static int victor_mpc30x_setup(void)
  {
 -	set_io_port_base(IO_PORT_BASE);
 -	ioport_resource.start = IO_PORT_RESOURCE_START;
@@ -113,7 +113,6 @@ diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/zao-capcella/setup.c linux/arc
  #ifdef CONFIG_SERIAL_8250
  	vr41xx_select_siu_interface(SIU_RS232C, IRDA_NONE);
  	vr41xx_siu_init();
- 	vr41xx_dsiu_init();
 -#endif
 -
 -#ifdef CONFIG_PCI
@@ -121,17 +120,17 @@ diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/zao-capcella/setup.c linux/arc
  #endif
  
  	return 0;
-diff -urN -X dontdiff linux-orig/include/asm-mips/vr41xx/capcella.h linux/include/asm-mips/vr41xx/capcella.h
---- linux-orig/include/asm-mips/vr41xx/capcella.h	Mon Mar 24 00:01:42 2003
-+++ linux/include/asm-mips/vr41xx/capcella.h	Fri May 14 00:08:36 2004
+diff -urN -X dontdiff linux-orig/include/asm-mips/vr41xx/mpc30x.h linux/include/asm-mips/vr41xx/mpc30x.h
+--- linux-orig/include/asm-mips/vr41xx/mpc30x.h	Tue Nov 18 12:34:50 2003
++++ linux/include/asm-mips/vr41xx/mpc30x.h	Fri May 14 00:16:15 2004
 @@ -1,52 +1,26 @@
  /*
 - * FILE NAME
-- *	include/asm-mips/vr41xx/capcella.h
-+ *  capcella.h, Include file for ZAO Networks Capcella.
+- *	include/asm-mips/vr41xx/mpc30x.h
++ *  mpc30x.h, Include file for Victor MP-C303/304.
   *
 - * BRIEF MODULE DESCRIPTION
-- *	Include file for ZAO Networks Capcella.
+- *	Include file for Victor MP-C303/304.
 + *  Copyright (C) 2002-2004  Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
   *
 - * Copyright 2002,2003 Yoichi Yuasa
@@ -154,8 +153,8 @@ diff -urN -X dontdiff linux-orig/include/asm-mips/vr41xx/capcella.h linux/includ
 + *  along with this program; if not, write to the Free Software
 + *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
   */
- #ifndef __ZAO_CAPCELLA_H
- #define __ZAO_CAPCELLA_H
+ #ifndef __VICTOR_MPC30X_H
+ #define __VICTOR_MPC30X_H
  
 -#include <asm/addrspace.h>
  #include <asm/vr41xx/vr41xx.h>

@@ -1,85 +1,50 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id VAA95704 for <linux-archive@neteng.engr.sgi.com>; Sun, 3 Jan 1999 21:37:44 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id IAA54129 for <linux-archive@neteng.engr.sgi.com>; Mon, 4 Jan 1999 08:41:15 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id VAA84674
+	id IAA79638
 	for linux-list;
-	Sun, 3 Jan 1999 21:36:42 -0800 (PST)
+	Mon, 4 Jan 1999 08:39:41 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from oz.engr.sgi.com (oz.engr.sgi.com [150.166.42.13])
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id VAA45850
+	via ESMTP id IAA69149
 	for <linux@engr.sgi.com>;
-	Sun, 3 Jan 1999 21:36:40 -0800 (PST)
-	mail_from (ariel@oz.engr.sgi.com)
-Received: (from ariel@localhost) by oz.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) id VAA52870 for linux@engr.sgi.com; Sun, 3 Jan 1999 21:36:40 -0800 (PST)
-From: ariel@oz.engr.sgi.com (Ariel Faigon)
-Message-Id: <199901040536.VAA52870@oz.engr.sgi.com>
-Subject: [fwd] Re: SGI Linux HardHat 5.1 Install problems
-To: linux@cthulhu.engr.sgi.com (SGI/Linux mailing list)
-Date: Sun, 3 Jan 1999 21:36:39 -0800 (PST)
-Reply-To: ariel@cthulhu.engr.sgi.com (Ariel Faigon)
-Organization: Silicon Graphics Inc.
-X-Mailer: ELM [version 2.4 PL25]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	Mon, 4 Jan 1999 08:39:38 -0800 (PST)
+	mail_from (ralf@uni-koblenz.de)
+Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
+	by sgi.sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id IAA01166
+	for <linux@engr.sgi.com>; Mon, 4 Jan 1999 08:39:27 -0800 (PST)
+	mail_from (ralf@uni-koblenz.de)
+From: ralf@uni-koblenz.de
+Received: from eddie (ralf@eddie.uni-koblenz.de [141.26.4.17])
+	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with SMTP id RAA08905;
+	Mon, 4 Jan 1999 17:39:12 +0100 (MET)
+Received: by eddie (SMI-8.6/KO-2.0)
+	id RAA15300; Mon, 4 Jan 1999 17:39:08 +0100
+Message-ID: <19990104173908.37809@uni-koblenz.de>
+Date: Mon, 4 Jan 1999 17:39:08 +0100
+To: linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
+        linux-mips@vger.rutgers.edu
+Subject: CVS commit of 2.1.131/MIPS
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.84e
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-[Forwarding bounced message from: "[Eazy|E]" <sniper@kibla.org>
- which isn't apparently subscribed with this exact address.]
+I had a CVS-crash during my yesterday attempt of commiting Linux patches upto
+2.1.131 into the CVS.  As a result both my working copy and the CVS archive
+ended up in an ``interesting'' state.  This should be fixed by now;
+everobody who did a checkout / upgrade during the last about 24h should now
+run a ``cvs update -d -P''.  Sorry for the hazzle.
 
+The G364 driver for the Magnum 4000 will need an update as the low level
+interface for frame buffer drivers has changed, so at this time the ports
+for Olivetti M700 / Magnum 4000 is broken.
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA1
-
-
-> Alright.  The first thing is that it can't possibly be an R3000 CPU, it's
-> an R4x00 or R5000.
-Oppps, my bad, it's:
-
-System : IP22
-Processor: 100 Mhz R4600 with FPU
-> 
-> The 'unable to open console' means that the kernel doesn't have access to
-> a root filesystem; that's likely a problem with your NFS server. 
-> 
-> How do you have your root install fs exported?
-
-/etc/exports looks that way :
-
-/usr/SGILinux   192.168.1.2 (no_root_squash, rw)
-
-And this is what dir /usr/SGILinux contains:
-[SU-root@sniper:/usr/SGILinux]# ls
-COPYING    RedHat     doc        lib        modules    usr
-CREDITS    TRANS.TBL  dosutils   linuxrc    proc       var
-PGP_KEY    bin        etc        misc       sbin       vmlinux
-README     dev        images     mnt        tmp
-[SU-root@sniper:/usr/SGILinux]#
-
-
-I dunno, it prolly wants to run linuxrc which is simb. linked to
-sbin/initrd, but why doesnt it work ?
-
-Thanks in advance, Later.
-
-- --
- .---|=====| [eD-EPiC]&[eD] |======|---.
- |  [Eazy|E] @ IRCNET,EFNET,TAIN       |  |=| WoRD of ThE DaY -> [eD] <- |=|
- |  e-mail: sniper@kibla.org           |     ||   ->SpREAD ThE WoRD<-   ||
- `---|=====|   Rogue Core   |======|---'
-
------BEGIN PGP SIGNATURE-----
-Version: PGPfreeware 5.0i for non-commercial use
-Charset: noconv
-
-iQA/AwUBNpARNK6mKYH+3vCKEQLMmwCdFm1GswcPEz1WTuzBmUSSdy0s+xQAn1wF
-yPm2w5QqyHACzCakJdAKufkM
-=zOwV
------END PGP SIGNATURE-----
-
-
--- 
-Peace, Ariel
+  Ralf

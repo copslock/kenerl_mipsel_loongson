@@ -1,78 +1,61 @@
-Received:  by oss.sgi.com id <S42267AbQISFxg>;
-	Mon, 18 Sep 2000 22:53:36 -0700
-Received: from fwgate.toshiba-tops.co.jp ([202.230.225.20]:43273 "HELO
-        fwgate.toshiba-tops.co.jp") by oss.sgi.com with SMTP
-	id <S42234AbQISFxX>; Mon, 18 Sep 2000 22:53:23 -0700
-Received: from [172.16.4.3] by fwgate.toshiba-tops.co.jp
-          via smtpd (for oss.sgi.com [216.32.174.190]) with SMTP; 19 Sep 2000 05:53:21 UT
-Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
-	by topsms.toshiba-tops.co.jp (8.9.3/3.7W-MailExchenger) with ESMTP id OAA55237;
-	Tue, 19 Sep 2000 14:52:09 +0900 (JST)
-Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
-	id OAA42998; Tue, 19 Sep 2000 14:52:09 +0900 (JST)
-To:     linux-mips@oss.sgi.com, linux-mips@fnet.fr
-Subject: FPU context management problem
-From:   Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
-X-Mailer: Mew version 1.94.1 on Emacs 20.5 / Mule 4.0 (HANANOEN)
-X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
-X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
-Organization: TOSHIBA Personal Computer System Corporation
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received:  by oss.sgi.com id <S42336AbQITAAf>;
+	Tue, 19 Sep 2000 17:00:35 -0700
+Received: from gatekeep.ti.com ([192.94.94.61]:58111 "EHLO gatekeep.ti.com")
+	by oss.sgi.com with ESMTP id <S42234AbQITAAV>;
+	Tue, 19 Sep 2000 17:00:21 -0700
+Received: from dlep6.itg.ti.com ([157.170.188.9])
+	by gatekeep.ti.com (8.11.0/8.11.0) with ESMTP id e8K00FT17947
+	for <linux-mips@oss.sgi.com>; Tue, 19 Sep 2000 19:00:15 -0500 (CDT)
+Received: from dlep6.itg.ti.com (localhost [127.0.0.1])
+	by dlep6.itg.ti.com (8.9.3/8.9.3) with ESMTP id TAA29292
+	for <linux-mips@oss.sgi.com>; Tue, 19 Sep 2000 19:00:10 -0500 (CDT)
+Received: from dlep3.itg.ti.com (dlep3.itg.ti.com [157.170.188.62])
+	by dlep6.itg.ti.com (8.9.3/8.9.3) with ESMTP id TAA29288
+	for <linux-mips@oss.sgi.com>; Tue, 19 Sep 2000 19:00:10 -0500 (CDT)
+Received: from ti.com (IDENT:bbrown@bbrowndt.sc.ti.com [158.218.100.180])
+	by dlep3.itg.ti.com (8.9.3/8.9.3) with ESMTP id TAA04155
+	for <linux-mips@oss.sgi.com>; Tue, 19 Sep 2000 19:00:14 -0500 (CDT)
+Message-ID: <39C7FEBC.5DB355A2@ti.com>
+Date:   Tue, 19 Sep 2000 18:03:08 -0600
+From:   Brady Brown <bbrown@ti.com>
+Organization: Texas Instruments
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-5.0 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To:     SGI news group <linux-mips@oss.sgi.com>
+Subject: ELF/Modutils problem
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Message-Id: <20000919145207Q.nemoto@toshiba-tops.co.jp>
-Date:   Tue, 19 Sep 2000 14:52:07 +0900
-X-Dispatcher: imput version 990905(IM130)
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-I'm running kernel 2.2.14 (based on linux-2.2.14-000715.tar.gz) and
-found a floating point calculation sometimes results an incorrect
-value.
+I'm having trouble getting modutils 2.3.10 to work on a little endian
+MIPS box running a 2.4.0-test3 kernel. I am cross compiling the kernel
+and modules on an i386 using egcs1.0.3a-2 and binutils2.8.1-1. It
+appears that the symbol table format in the ELF file created by
+mipsel-linux-gcc during a module build is incorrect.
 
-I think the problem is last 'if' statement in setup_sigcontext().
+As I read the ELF 1.1 spec - all symbols with STB_LOCAL bindings should
+precede all other symbols (weak and global) in the symbol table. Then
+the symbol table section's sh_info section header member holds the
+symbol table index for the first non-local symbol (and thus can then be
+used to determine the number of local symbols). Using the readelf
+utility on a generated module shows that the local symbols are not
+grouped together before all other symbols but are intermixed though out
+the symbol table, and the sh_info field in the header is not set to the
+first non-local symbol index.
 
-	owned_fp = (current == last_task_used_math);
-	err |= __put_user(owned_fp, &sc->sc_ownedfp);
+When insmod runs it malloc's memory equal to the sh_info field and then
+begins to populate the local symbols into it. Because of the bad symbol
+ordering and incorrect value in sh_info, the malloc'd memory is far to
+small to hold all of the local symbols so memory gets blasted and the
+module fails to load correctly.
 
-	if (current->used_math) {	/* fp is active.  */
-		set_cp0_status(ST0_CU1, ST0_CU1);
-		err |= save_fp_context(sc);
-		last_task_used_math = NULL;
-		regs->cp0_status &= ~ST0_CU1;
-		current->used_math = 0;
-	}
-
-This code can discard other task's FPU context in certain situations.
-The scenario is:
-
-(-2) Task_A executes FP insns.
-(-1) Task_B executes FP insns.
-(0) Task_C executes FP insns.
-# save Task_B's FPU context.
-# init Task_C's FPU context.
-(1) Context switch (Task_C to Task_A).
-(2) Task_A catch a signal.
-    setup_sigcontext() and restore_sigcontext() is called.
-# Task_A's used_math was 1 and owned_fp was 0,
-# so last_task_used_math becomes NULL.
-(3) Context switch (Task_A to Task_B).
-(4) Task_B executes FP insns.
-# restore Task_B's FPU context. (discard Task_C's FPU context)
-(5) Context switch (Task_B to Task_C).
-(6) Task_C execute FP insns.  (with Task_B's FPU context!)
-
-
-I modified the 'if' statement as follows and the problem seems to be
-fixed.
-
-	if (owned_fp) {	/* fp is active.  */
-		...
-	}
-
-Is this the right fix?
-
----
-Atsushi Nemoto
+As a side test I tried to incrementally link the module.o file using
+mipsel-linux-ld -r module.o -o module. Viewing the ELF output from this
+stage showed a correct symbol ordering and sh_info field so it appears
+that the linker is generating the correct format for the symbol table
+(problem with gcc only?). Has this problem been addressed/resolved? Any
+suggestions?

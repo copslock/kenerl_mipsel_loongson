@@ -1,54 +1,171 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Apr 2004 12:50:26 +0100 (BST)
-Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:23230 "EHLO
-	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8224991AbUDSLuZ>; Mon, 19 Apr 2004 12:50:25 +0100
-Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
-	id C516A4AD2E; Mon, 19 Apr 2004 13:50:13 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by jurand.ds.pg.gda.pl (Postfix) with ESMTP
-	id B157047855; Mon, 19 Apr 2004 13:50:13 +0200 (CEST)
-Date: Mon, 19 Apr 2004 13:50:13 +0200 (CEST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: "Steven J. Hill" <sjhill@realitydiluted.com>
-Cc: "Bradley D. LaRonde" <brad@laronde.org>, linux-mips@linux-mips.org,
-	Eric Christopher <echristo@redhat.com>,
-	Daniel Jacobowitz <dan@debian.org>
-Subject: Re: [PATCH] gcc 3.4 drops "accum" clobber, replace with "hi" intime.c
-In-Reply-To: <4081EA5F.5000802@realitydiluted.com>
-Message-ID: <Pine.LNX.4.55.0404191344520.23098@jurand.ds.pg.gda.pl>
-References: <Pine.GSO.4.10.10404122244110.8735-100000@helios.et.put.poznan.pl>
- <20040412231309.GA702@linux-mips.org> <03f301c420e7$d8de2d70$8d01010a@prefect>
- <048e01c420f1$ad4ae3b0$8d01010a@prefect> <1081818125.19719.14.camel@dzur.sfbay.redhat.com>
- <04d501c420f3$6c836a30$8d01010a@prefect> <20040413010732.GA7560@nevyn.them.org>
- <04f501c420f4$5563f620$8d01010a@prefect> <053c01c420f5$ec230190$8d01010a@prefect>
- <Pine.LNX.4.55.0404131451200.15949@jurand.ds.pg.gda.pl>
- <4081EA5F.5000802@realitydiluted.com>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Apr 2004 14:21:56 +0100 (BST)
+Received: from caramon.arm.linux.org.uk ([IPv6:::ffff:212.18.232.186]:15630
+	"EHLO caramon.arm.linux.org.uk") by linux-mips.org with ESMTP
+	id <S8225197AbUDSNVy>; Mon, 19 Apr 2004 14:21:54 +0100
+Received: from [2002:d412:e8ba:1:201:80ff:fe4b:1778] (helo=dyn-67.arm.linux.org.uk)
+	by caramon.arm.linux.org.uk with asmtp (TLSv1:DES-CBC3-SHA:168)
+	(Exim 4.32)
+	id 1BFYia-0005hd-Eh; Mon, 19 Apr 2004 14:21:48 +0100
+Received: from rmk by dyn-67.arm.linux.org.uk with local (Exim 4.32)
+	id 1BFYiZ-000564-Vs; Mon, 19 Apr 2004 14:21:47 +0100
+From: Russell King <rmk+lkml@arm.linux.org.uk>
+To: Linux Kernel List <linux-kernel@vger.kernel.org>, ralf@gnu.org,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH] Clean up asm/pgalloc.h include (mips)
+In-Reply-To: <20040418232314.A2045@flint.arm.linux.org.uk>; from rmk+lkml@arm.linux.org.uk on Sun, Apr 18, 2004 at 11:23:14PM +0100
+References: <20040418231720.C12222@flint.arm.linux.org.uk> <20040418232314.A2045@flint.arm.linux.org.uk>
+Message-Id: <E1BFYiZ-000564-Vs@dyn-67.arm.linux.org.uk>
+Date: Mon, 19 Apr 2004 14:21:47 +0100
+Return-Path: <rmk+linux-mips=linux-mips.org@arm.linux.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4807
+X-archive-position: 4808
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: rmk+lkml@arm.linux.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 17 Apr 2004, Steven J. Hill wrote:
+This patch cleans up needless includes of asm/pgalloc.h from the
+arch/mips/ subtree.  This has not been compile tested, so
+needs the architecture maintainers (or willing volunteers) to
+test.
 
-> Works fine for gcc-3.1.1 and my Swarm board boots just fine with this
-> change and it seems stable. I vote for you to go ahead and commit the
-> fixes to CVS. Thanks Maciej.
+Please ensure that at least the first two patches have already
+been applied to your tree; they can be found at:
 
- I'm worried more about 2.95.  And even if it works now, it may stop after
-some changes, if the compiler decides it's safe to keep something in
-"accum" across the asm.
+	http://lkml.org/lkml/2004/4/18/86
+	http://lkml.org/lkml/2004/4/18/87
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+This patch is part of a larger patch aiming towards getting the
+include of asm/pgtable.h out of linux/mm.h, so that asm/pgtable.h
+can sanely get at things like mm_struct and friends.
+
+In the event that any of these files fails to build, chances are
+you need to include some other header file rather than pgalloc.h.
+Normally this is either asm/pgtable.h (unlikely), asm/cacheflush.h
+or asm/tlbflush.h.
+
+===== arch/mips/baget/baget.c 1.2 vs edited =====
+--- 1.2/arch/mips/baget/baget.c	Tue Apr 15 04:10:11 2003
++++ edited/arch/mips/baget/baget.c	Mon Apr 19 13:38:40 2004
+@@ -12,7 +12,6 @@
+ #include <asm/bootinfo.h>
+ #include <asm/mipsregs.h>
+ #include <asm/pgtable.h>
+-#include <asm/pgalloc.h>
+ 
+ #include <asm/baget/baget.h>
+ 
+===== arch/mips/kernel/irixelf.c 1.9 vs edited =====
+--- 1.9/arch/mips/kernel/irixelf.c	Mon Apr 12 18:54:53 2004
++++ edited/arch/mips/kernel/irixelf.c	Mon Apr 19 13:38:40 2004
+@@ -31,7 +31,6 @@
+ #include <linux/smp_lock.h>
+ 
+ #include <asm/uaccess.h>
+-#include <asm/pgalloc.h>
+ #include <asm/mipsregs.h>
+ #include <asm/prctl.h>
+ 
+===== arch/mips/kernel/signal32.c 1.15 vs edited =====
+--- 1.15/arch/mips/kernel/signal32.c	Sat Apr 17 19:19:30 2004
++++ edited/arch/mips/kernel/signal32.c	Mon Apr 19 13:38:40 2004
+@@ -21,7 +21,6 @@
+ 
+ #include <asm/asm.h>
+ #include <asm/bitops.h>
+-#include <asm/pgalloc.h>
+ #include <asm/sim.h>
+ #include <asm/uaccess.h>
+ #include <asm/ucontext.h>
+===== arch/mips/kernel/signal_n32.c 1.2 vs edited =====
+--- 1.2/arch/mips/kernel/signal_n32.c	Thu Feb 19 20:53:00 2004
++++ edited/arch/mips/kernel/signal_n32.c	Mon Apr 19 13:38:40 2004
+@@ -29,7 +29,6 @@
+ 
+ #include <asm/asm.h>
+ #include <asm/bitops.h>
+-#include <asm/pgalloc.h>
+ #include <asm/sim.h>
+ #include <asm/uaccess.h>
+ #include <asm/ucontext.h>
+===== arch/mips/kernel/sysirix.c 1.23 vs edited =====
+--- 1.23/arch/mips/kernel/sysirix.c	Wed Mar 31 14:31:23 2004
++++ edited/arch/mips/kernel/sysirix.c	Mon Apr 19 13:38:40 2004
+@@ -33,7 +33,6 @@
+ 
+ #include <asm/ptrace.h>
+ #include <asm/page.h>
+-#include <asm/pgalloc.h>
+ #include <asm/uaccess.h>
+ #include <asm/inventory.h>
+ 
+===== arch/mips/mm/fault.c 1.9 vs edited =====
+--- 1.9/arch/mips/mm/fault.c	Thu Feb 19 20:53:00 2004
++++ edited/arch/mips/mm/fault.c	Mon Apr 19 13:38:40 2004
+@@ -22,7 +22,6 @@
+ 
+ #include <asm/branch.h>
+ #include <asm/hardirq.h>
+-#include <asm/pgalloc.h>
+ #include <asm/mmu_context.h>
+ #include <asm/system.h>
+ #include <asm/uaccess.h>
+===== arch/mips/mm/init.c 1.1 vs edited =====
+--- 1.1/arch/mips/mm/init.c	Sat Feb 21 01:33:01 2004
++++ edited/arch/mips/mm/init.c	Mon Apr 19 13:38:40 2004
+@@ -29,7 +29,6 @@
+ #include <asm/cachectl.h>
+ #include <asm/cpu.h>
+ #include <asm/dma.h>
+-#include <asm/pgalloc.h>
+ #include <asm/mmu_context.h>
+ #include <asm/sections.h>
+ #include <asm/tlb.h>
+===== arch/mips/mm/ioremap.c 1.5 vs edited =====
+--- 1.5/arch/mips/mm/ioremap.c	Thu Oct  2 08:11:59 2003
++++ edited/arch/mips/mm/ioremap.c	Mon Apr 19 13:38:40 2004
+@@ -13,7 +13,6 @@
+ #include <linux/vmalloc.h>
+ #include <asm/cacheflush.h>
+ #include <asm/io.h>
+-#include <asm/pgalloc.h>
+ #include <asm/tlbflush.h>
+ 
+ static inline void remap_area_pte(pte_t * pte, unsigned long address,
+===== arch/mips/mm/pgtable-64.c 1.2 vs edited =====
+--- 1.2/arch/mips/mm/pgtable-64.c	Thu Feb 19 20:53:00 2004
++++ edited/arch/mips/mm/pgtable-64.c	Mon Apr 19 13:38:40 2004
+@@ -9,7 +9,6 @@
+ #include <linux/init.h>
+ #include <linux/mm.h>
+ #include <asm/pgtable.h>
+-#include <asm/pgalloc.h>
+ 
+ void pgd_init(unsigned long page)
+ {
+===== arch/mips/sgi-ip27/ip27-init.c 1.10 vs edited =====
+--- 1.10/arch/mips/sgi-ip27/ip27-init.c	Thu Feb 19 20:53:02 2004
++++ edited/arch/mips/sgi-ip27/ip27-init.c	Mon Apr 19 13:38:40 2004
+@@ -14,7 +14,6 @@
+ #include <linux/mm.h>
+ #include <linux/cpumask.h>
+ #include <asm/cpu.h>
+-#include <asm/pgalloc.h>
+ #include <asm/pgtable.h>
+ #include <asm/sn/types.h>
+ #include <asm/sn/sn0/addrs.h>
+===== arch/mips/sgi-ip27/ip27-memory.c 1.8 vs edited =====
+--- 1.8/arch/mips/sgi-ip27/ip27-memory.c	Thu Feb 19 20:53:02 2004
++++ edited/arch/mips/sgi-ip27/ip27-memory.c	Mon Apr 19 13:38:40 2004
+@@ -20,7 +20,6 @@
+ #include <asm/bootinfo.h>
+ #include <asm/addrspace.h>
+ #include <asm/pgtable.h>
+-#include <asm/pgalloc.h>
+ #include <asm/sn/types.h>
+ #include <asm/sn/addrs.h>
+ #include <asm/sn/hub.h>

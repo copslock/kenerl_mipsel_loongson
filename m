@@ -1,42 +1,49 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0I799p12627
-	for linux-mips-outgoing; Thu, 17 Jan 2002 23:09:09 -0800
-Received: from hlubocky.del.cz (hlubocky.del.cz [212.27.221.67])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0I795P12624
-	for <linux-mips@oss.sgi.com>; Thu, 17 Jan 2002 23:09:05 -0800
-Received: from ladis (helo=localhost)
-	by hlubocky.del.cz with local-esmtp (Exim 3.12 #1 (Debian))
-	id 16RSCN-0002Qj-00; Fri, 18 Jan 2002 07:08:23 +0100
-Date: Fri, 18 Jan 2002 07:08:23 +0100 (CET)
-From: Ladislav Michl <ladislav.michl@hlubocky.del.cz>
-To: James Mclean <james@adam.com.au>
-cc: linux-mips@oss.sgi.com
-Subject: Re: IndyCam software
-In-Reply-To: <1011332340.3c47b4f4a4416@thunder.adam.com.au>
-Message-ID: <Pine.LNX.4.21.0201180655520.8504-100000@hlubocky.del.cz>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.2/8.11.3) id g0I7ivR13063
+	for linux-mips-outgoing; Thu, 17 Jan 2002 23:44:57 -0800
+Received: from pandora.research.kpn.com (IDENT:root@pandora.research.kpn.com [139.63.192.11])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0I7irP13057
+	for <linux-mips@oss.sgi.com>; Thu, 17 Jan 2002 23:44:53 -0800
+Received: from sparta.research.kpn.com (sparta.research.kpn.com [139.63.192.6])
+	by pandora.research.kpn.com (8.11.6/8.9.3) with ESMTP id g0I6io518621;
+	Fri, 18 Jan 2002 07:44:50 +0100
+Received: from sparta.research.kpn.com (sparta.research.kpn.com [139.63.192.6])
+	by sparta.research.kpn.com (8.8.8+Sun/8.8.8) with ESMTP id HAA14358;
+	Fri, 18 Jan 2002 07:44:49 +0100 (MET)
+Message-Id: <200201180644.HAA14358@sparta.research.kpn.com>
+X-Mailer: exmh version 1.6.5 12/11/95
+To: Karsten Merker <karsten@excalibur.cologne.de>
+cc: "Houten K.H.C. van (Karel)" <vhouten@kpn.com>, linux-mips@oss.sgi.com,
+   karel@sparta.research.kpn.com
+Subject: Re: DECStation debian CD's 
+In-reply-to: Your message of "Thu, 17 Jan 2002 19:14:50 +0100."
+             <20020117191450.A253@excalibur.cologne.de> 
+Reply-to: vhouten@kpn.com
+X-Face: ";:TzQQC{mTp~$W,'m4@Lu1Lu$rtG_~5kvYO~F:C'KExk9o1X"iRz[0%{bq?6Aj#>VhSD?v
+ 1W9`.Qsf+P&*iQEL8&y,RDj&U.]!(R-?c-h5h%Iw%r$|%6+Jc>GTJe!_1&A0o'lC[`I#={2BzOXT1P
+ q366I$WL=;[+SDo1RoIT+a}_y68Y:jQ^xp4=*4-ryiymi>hy
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Date: Fri, 18 Jan 2002 07:44:49 +0100
+From: "Houten K.H.C. van (Karel)" <vhouten@kpn.com>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, 18 Jan 2002, James Mclean wrote:
 
-> I am interested in dual booting with Irix also, but first would like to 
-> establish if there is any preliminary support for the IndyCam before installing 
-> linux-mips.
+Hi Karsten,
 
-hi James,
+> 
+> Thanks for testing the installer. Do you have a list of the particular
+> problems you had with it?
 
-you should follow these steps:
-* install linux anyway :)
-* get linux kernel from cvs
-* download stuff from ftp.psi.cz/pub/ladis/vino/ and see README
-* happy hacking ;)
+I'll see if I can find some time this weekend to redo the installation,
+and make some more notes.
 
-note for those who are waiting for vino support: yes, i'll start to work
-on driver again. i wrote audio driver meanwhile and learned many usefull
-things (many thanks to dwmw2 for patience), now i know that vino driver
-have to be rewritten and i'll do so when audio driver appears in cvs.
+Regards,
+-- 
+Karel van Houten
 
-regards,
-ladis
+----------------------------------------------------------
+The box said "Requires Windows 95 or better."
+I can't understand why it won't work on my Linux computer. 
+----------------------------------------------------------

@@ -1,39 +1,36 @@
-Received:  by oss.sgi.com id <S553696AbQJRBfc>;
-	Tue, 17 Oct 2000 18:35:32 -0700
-Received: from noose.gt.owl.de ([62.52.19.4]:58373 "HELO noose.gt.owl.de")
-	by oss.sgi.com with SMTP id <S553688AbQJRBfT>;
-	Tue, 17 Oct 2000 18:35:19 -0700
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 5F4759F1; Wed, 18 Oct 2000 03:35:16 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 7AB96900C; Wed, 18 Oct 2000 03:30:31 +0200 (CEST)
-Date:   Wed, 18 Oct 2000 03:30:31 +0200
-From:   Florian Lohoff <flo@rfc822.org>
-To:     linux-mips@oss.sgi.com
-Subject: Re: base.tgz
-Message-ID: <20001018033031.A2259@paradigm.rfc822.org>
-References: <20001016043346.A6656@lug-owl.de> <20001017041449.A17546@lug-owl.de> <20001017162724.H4890@paradigm.rfc822.org> <20001017173525.C22796@lug-owl.de>
+Received:  by oss.sgi.com id <S553709AbQJRBic>;
+	Tue, 17 Oct 2000 18:38:32 -0700
+Received: from u-237.karlsruhe.ipdial.viaginterkom.de ([62.180.18.237]:45069
+        "EHLO u-237.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
+	with ESMTP id <S553700AbQJRBiW>; Tue, 17 Oct 2000 18:38:22 -0700
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S868617AbQJRBiE>;
+        Wed, 18 Oct 2000 03:38:04 +0200
+Date:   Wed, 18 Oct 2000 03:38:04 +0200
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Jun Sun <jsun@mvista.com>, linux-mips@oss.sgi.com
+Subject: Re: 16K page size?
+Message-ID: <20001018033804.E7865@bacchus.dhis.org>
+References: <39ED40B4.EEB5F444@mvista.com> <20001018033002.D7865@bacchus.dhis.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-User-Agent: Mutt/1.0.1i
-In-Reply-To: <20001017173525.C22796@lug-owl.de>; from jbglaw@lug-owl.de on Tue, Oct 17, 2000 at 05:35:25PM +0200
-Organization: rfc822 - pure communication
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <20001018033002.D7865@bacchus.dhis.org>; from ralf@oss.sgi.com on Wed, Oct 18, 2000 at 03:30:02AM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, Oct 17, 2000 at 05:35:25PM +0200, Jan-Benedict Glaw wrote:
-> On Tue, Oct 17, 2000 at 04:27:24PM +0200, Florian Lohoff wrote:
-> > On Tue, Oct 17, 2000 at 04:14:50AM +0200, Jan-Benedict Glaw wrote:
+On Wed, Oct 18, 2000 at 03:30:02AM +0200, Ralf Baechle wrote:
+
+> Most applications probably use the getpagesize() function, so they should
+> be fine.  libc itself should also be clean.
 > 
-> Will see what I can do;) First of all, I'll combine all the .deb's
-> I've currently fetched up. Btw, Geert asked for pciutils. Are there
-> MIPSel machines with PCI bus(ses)?
+> In the kernel we don't handle this properly yet.  There are also some
+> optimizations which are possible for larger page sizes.  IA64 already
+> has a larger pagesize than Intel, so I hope they have already solve
+                             ^^^^^
+                             i386
+> most of the problems for us.
 
-RM200C i guess 
-
-Flo
--- 
-Florian Lohoff		flo@rfc822.org		      	+49-5201-669912
-      "Write only memory - Oops. Time for my medication again ..."
+  Ralf

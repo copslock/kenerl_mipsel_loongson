@@ -1,59 +1,58 @@
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: from deliverator.sgi.com (deliverator.sgi.com [204.94.214.10])
-	by lara.stud.fh-heilbronn.de (8.9.3/8.9.3) with ESMTP id BAA23959
-	for <pstadt@stud.fh-heilbronn.de>; Thu, 7 Oct 1999 01:24:45 +0200
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id QAA26336; Wed, 6 Oct 1999 16:20:35 -0700 (PDT)
+	by lara.stud.fh-heilbronn.de (8.9.3/8.9.3) with ESMTP id EAA08723
+	for <pstadt@stud.fh-heilbronn.de>; Sun, 10 Oct 1999 04:32:53 +0200
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id TAA20130; Sat, 9 Oct 1999 19:28:42 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id QAA59421
+	id TAA05154
 	for linux-list;
-	Wed, 6 Oct 1999 16:05:28 -0700 (PDT)
+	Sat, 9 Oct 1999 19:20:35 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id QAA55324
-	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 6 Oct 1999 16:05:23 -0700 (PDT)
+	via ESMTP id TAA65852
+	for <linux@engr.sgi.com>;
+	Sat, 9 Oct 1999 19:19:06 -0700 (PDT)
 	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1] (may be forged)) 
+Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
 	by sgi.com (980305.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id QAA1172625
-	for <linux@cthulhu.engr.sgi.com>; Wed, 6 Oct 1999 16:05:20 -0700 (PDT)
+	via ESMTP id TAA653543
+	for <linux@engr.sgi.com>; Sat, 9 Oct 1999 19:17:43 -0700 (PDT)
 	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from lappi.waldorf-gmbh.de (cacc-14.uni-koblenz.de [141.26.131.14])
-	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id BAA27671
-	for <linux@cthulhu.engr.sgi.com>; Thu, 7 Oct 1999 01:05:17 +0200 (MET DST)
+Received: from lappi.waldorf-gmbh.de (cacc-20.uni-koblenz.de [141.26.131.20])
+	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id EAA17049
+	for <linux@engr.sgi.com>; Sun, 10 Oct 1999 04:17:39 +0200 (MET DST)
 Received: (from ralf@localhost)
-	by lappi.waldorf-gmbh.de (8.9.3/8.9.3) id BAA24067;
-	Thu, 7 Oct 1999 01:04:57 +0200
-Date: Thu, 7 Oct 1999 01:04:57 +0200
+	by lappi.waldorf-gmbh.de (8.9.3/8.9.3) id EAA00416;
+	Sun, 10 Oct 1999 04:13:47 +0200
+Date: Sun, 10 Oct 1999 04:13:47 +0200
 From: Ralf Baechle <ralf@uni-koblenz.de>
-To: "J.K. Hill" <kenh@knoxville.sgi.com>
-Cc: linux@cthulhu.engr.sgi.com
-Subject: Re: IS THIS LIST DEAD ?
-Message-ID: <19991007010457.A24007@uni-koblenz.de>
-References: <9910061103.ZM30182@enigma.knoxville.sgi.com>
+To: Ludek Finstrle <xfinstrl@informatics.muni.cz>
+Cc: sgi@linux.cz, linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
+        linux-mips@vger.rutgers.edu
+Subject: Re: MIPS64
+Message-ID: <19991010041347.A413@uni-koblenz.de>
+References: <19990822141504.A15701@uni-koblenz.de> <19990928163615.H25202@anxur.fi.muni.cz> <19990929160211.B21646@uni-koblenz.de> <19991005132552.K18469@gryf.fi.muni.cz> <19991006000724.B18573@uni-koblenz.de> <19991007142022.O18469@gryf.fi.muni.cz>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 X-Mailer: Mutt 0.95.4us
-In-Reply-To: <9910061103.ZM30182@enigma.knoxville.sgi.com>; from J.K. Hill on Wed, Oct 06, 1999 at 11:03:54AM -0400
+In-Reply-To: <19991007142022.O18469@gryf.fi.muni.cz>; from Ludek Finstrle on Thu, Oct 07, 1999 at 02:20:22PM +0200
 X-Accept-Language: de,en,fr
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Wed, Oct 06, 1999 at 11:03:54AM -0400, J.K. Hill wrote:
+On Thu, Oct 07, 1999 at 02:20:22PM +0200, Ludek Finstrle wrote:
 
-> If its not - where can I get info about porting Linux to an O2 ?
-> 
-> Is there a status of (a) port ? The last thing that I have heard is that the
-> O200 runs it (but only w/ a modified prom).
+> Oh, where is online? I can't see it anywhere :o(
 
-That's complete bull - the is no port yet.
-
-If you actually subscribe to this list it doesn't seem as dead ...
+oss.sgi.com:/pub/pub/linux/mips/src/binutils-19990825.tar.bz2 are the
+sources for the binutils which I'm using.  Fate doesn't like me, I
+lost connection to oss when I tried to upload the egcs 1.1.2 patch
+for MIPS64.  I'll put it into that directory tomorrow.
 
   Ralf

@@ -1,60 +1,38 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f5DF7oY07999
-	for linux-mips-outgoing; Wed, 13 Jun 2001 08:07:50 -0700
-Received: from mail.minus-9.com (IDENT:postfix@minus-9.com [195.26.32.62])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5DF7mP07990
-	for <linux-mips@oss.sgi.com>; Wed, 13 Jun 2001 08:07:48 -0700
-Received: by mail.minus-9.com (Postfix, from userid 500)
-	id 353E4BBD2; Wed, 13 Jun 2001 16:07:45 +0100 (BST)
-Date: Wed, 13 Jun 2001 16:07:45 +0100
-From: Mat Withers <mat@minus-9.com>
-To: linux-mips@oss.sgi.com
-Subject: Re: Newbie question...
-Message-ID: <20010613160745.I2024@minus-9.com>
-References: <3B2771BE.4030401@infopark.de>
+	by oss.sgi.com (8.11.2/8.11.3) id f5DF8Uh08117
+	for linux-mips-outgoing; Wed, 13 Jun 2001 08:08:30 -0700
+Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5DF8TP08114
+	for <linux-mips@oss.sgi.com>; Wed, 13 Jun 2001 08:08:30 -0700
+Received: by ocean.lucon.org (Postfix, from userid 1000)
+	id 54FE3125BA; Wed, 13 Jun 2001 08:08:29 -0700 (PDT)
+Date: Wed, 13 Jun 2001 08:08:29 -0700
+From: "H . J . Lu" <hjl@lucon.org>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: A new mips toolchain is available
+Message-ID: <20010613080829.A9739@lucon.org>
+References: <20010611210311.A8768@lucon.org> <Pine.GSO.3.96.1010613094949.9854A-100000@delta.ds2.pg.gda.pl>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <3B2771BE.4030401@infopark.de>; from bartosch.pixa@infopark.de on Wed, Jun 13, 2001 at 03:59:26PM +0200
+In-Reply-To: <Pine.GSO.3.96.1010613094949.9854A-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Wed, Jun 13, 2001 at 09:57:52AM +0200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Bartosch Pixa (bartosch.pixa@infopark.de) wrote:
-> Hi
+On Wed, Jun 13, 2001 at 09:57:52AM +0200, Maciej W. Rozycki wrote:
+> On Mon, 11 Jun 2001, H . J . Lu wrote:
 > 
-> i'm quite new to the mips architecture so sorry if i ask dumb/useless
-> questions. i just bought a used Octane (IP30 R10K ...) and now i'm 
-> curious if it's possible to get linux on it ;)
-> Any help/hints apreciated
+> > don't know abour the IRIX ABI DSOs. Also my glibc is compiled with
+> > -mmips2 since kernel cannot handle mips I glibc.
 > 
-> 
-> Thx in advance
-> 
-> Bartosch Pixa
-> 
-> -- 
-> Bartosch Pixa, bartosch.pixa@infopark.de
-> Infopark AG
-> Kitzingstr. 15, D-12277 Berlin, Germany
-> Tel +49(0)-30-747.993.0, Fax +49(0)-30-747.993.93
-> http://www.infopark.de/
-> 
-> 
+>  What's the problem with the kernel?  It works fine for my R3400A
+> DECstation.  Glibc is 2.2.3 as released.  If there is something wrong, I
+> definitely want to know. 
 > 
 
-I'm also quite interested in mips linux - I've got an Indigo 2 R4400SC with 128 Mb RAM sitting under my desk at home doing nothing.  Is this a reasonable platform to run ? I understand that I would have to use a serial console at the moment - are there any plans to support a text console on the Indigo 2 gfx hardware (I don't really care about X). How easy is the install ? 
+It has something to do with the atomic emulation in kernel for mips I.
 
-Any info would be gratefully received
 
-Cheers
-
-Mat
-
--- 
-
-Mat Withers
-mat@minus-9.com
-http://minus-9.com
-phone: +44 7092 019849
-"a sarcasm detector, *that's* a real useful invention."
+H.J.

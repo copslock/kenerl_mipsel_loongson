@@ -1,60 +1,92 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Mar 2003 19:26:15 +0000 (GMT)
-Received: from p508B7656.dip.t-dialin.net ([IPv6:::ffff:80.139.118.86]:2539
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225202AbTCNT0P>; Fri, 14 Mar 2003 19:26:15 +0000
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id h2EJQ9q04333;
-	Fri, 14 Mar 2003 20:26:09 +0100
-Date: Fri, 14 Mar 2003 20:26:09 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Wayne Gowcher <wgowcher@yahoo.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: Tips on inspecting / debuging cache
-Message-ID: <20030314202609.A3670@linux-mips.org>
-References: <20030314021308.60082.qmail@web11905.mail.yahoo.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Mar 2003 20:23:57 +0000 (GMT)
+Received: from il-la.la.idealab.com ([IPv6:::ffff:63.251.211.5]:24540 "HELO
+	idealab.com") by linux-mips.org with SMTP id <S8225202AbTCNUX4>;
+	Fri, 14 Mar 2003 20:23:56 +0000
+Received: (qmail 5876 invoked by uid 6180); 14 Mar 2003 20:23:52 -0000
+Date: Fri, 14 Mar 2003 12:23:52 -0800
+From: Jeff Baitis <baitisj@evolution.com>
+To: Pete Popov <ppopov@mvista.com>
+Cc: Linux MIPS mailing list <linux-mips@linux-mips.org>
+Subject: Success! Full CardBus/EXCA on PCI->Cardbus Bridge + DbAU1500
+Message-ID: <20030314122352.F20129@luca.pas.lab>
+Reply-To: baitisj@evolution.com
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <20030314021308.60082.qmail@web11905.mail.yahoo.com>; from wgowcher@yahoo.com on Thu, Mar 13, 2003 at 06:13:08PM -0800
-Return-Path: <ralf@linux-mips.net>
+User-Agent: Mutt/1.2.5i
+Return-Path: <baitisj@idealab.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1751
+X-archive-position: 1752
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: baitisj@evolution.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Mar 13, 2003 at 06:13:08PM -0800, Wayne Gowcher wrote:
+Everyone:
 
-> I am wondering if someone could point me towards
-> articles / source code that would give me a little
-> insight into how to debug cache problems in mips.
-> 
-> For example , how do I inspect the contents of the
-> cache ? Are there routines to dump out the contents of
-> the cache ?
+Thank you very much for helping this green hand get up to speed on the MIPS
+platform.  I have successfully configured card services to work with the
+current linux_2_4 CVS, in conjunction with a TI PCI1510 PCI->CardBus bridge.
 
-Frankly, such code isn't to useful.  The problems in the cache code can
-be fairly subtle.  The only thing that has worked halfway well is reading
-the code 1,000 times more after having read it 1,000 times.  And because
-it's such a nice job, read it another 1000 times when finished.
+There are a few card services options that you will need, in order to replicate
+my work:
 
-If you're refering to the current round of cache problems introduced about
-three days ago when I eleminated flush_page_to_ram() and replace it
-with flush_dcache_page() - the untested quickfix is changing the
-definitions of clear_user_page() and copy_user_page() in <asm/page.h> to
-flush the data cache after the operation, for example by invoking
-flush_cache_all().  This particular problem affects all processors with
-virtually indexed data caches except the R4000 and R4000 SC and MC
-versions and the R10000 family.
+1. The pcmcia_core cis_speed needs to be set to a fairly low value.
+   I have successfully used `modprobe pcmcia_core cis_speed=10` and 
+   `modprobe pcmcia_core cis_speed=1.`
 
-And everybody's favorite question, was this necessary that late in 2.4?
-Yes, it was.  The new mechanism deals is not only more efficient it also
-deals better with aliases between the pagecache and userspace mappings.
+2. The PCMCIA memory window must map into the memory window assigned
+   by the PCI device autoconfiguration. Since my `lspci -v` shows:
 
-  Ralf
+   00:0d.0 CardBus bridge: Texas Instruments: Unknown device ac56
+       Subsystem: Unknown device 5678:1234
+       Flags: bus master, medium devsel, latency 168, IRQ 1
+       Memory at 40000000 (32-bit, non-prefetchable) [size=4K]
+       Bus: primary=00, secondary=05, subordinate=00, sec-latency=176
+       Memory window 0: 40001000-40002000 (prefetchable)
+       Memory window 1: 40400000-407ff000
+       I/O window 0: 00004000-000040ff
+       I/O window 1: 00004400-000044ff
+       16-bit legacy interface ports at 0001
+ 
+   I configured /etc/pcmcia/config.opts as follows:
+
+       #
+       # Local PCMCIA Configuration File
+       #
+       #----------------------------------------------------------------------
+       
+       # System resources available for PCMCIA devices
+       # remember to modprobe pcmcia_core cis_speed=10
+       
+       include port 0x100-0x4ff, port 0xc00-0xcff
+       include memory 0x40000000-0x40ffffff
+
+       #-------------------------- eof 
+
+
+Special thanks to Pete for answering so many of my questions.
+
+
+I hope you find this information useful!
+
+
+
+Best regards,
+
+Jeff
+
+
+
+-- 
+         Jeffrey Baitis - Associate Software Engineer
+
+                    Evolution Robotics, Inc.
+                     130 West Union Street
+                       Pasadena CA 91103
+
+ tel: 626.535.2776  |  fax: 626.535.2777  |  baitisj@evolution.com 

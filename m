@@ -1,46 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 26 Mar 2005 09:13:05 +0000 (GMT)
-Received: from i-83-67-53-76.freedom2surf.net ([IPv6:::ffff:83.67.53.76]:60309
-	"EHLO skeleton-jack.localnet") by linux-mips.org with ESMTP
-	id <S8225552AbVCZJMu>; Sat, 26 Mar 2005 09:12:50 +0000
-Received: from pdh by skeleton-jack.localnet with local (Exim 3.36 #1 (Debian))
-	id 1DF7L8-0000fF-00; Sat, 26 Mar 2005 09:12:18 +0000
-Date:	Sat, 26 Mar 2005 09:12:18 +0000
-To:	Jim Gifford <maillist@jg555.com>
-Cc:	Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: Build 64bit on RaQ2
-Message-ID: <20050326091218.GA2471@skeleton-jack>
-References: <42449F47.8010002@jg555.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 26 Mar 2005 13:01:37 +0000 (GMT)
+Received: from moutng.kundenserver.de ([IPv6:::ffff:212.227.126.183]:18685
+	"EHLO moutng.kundenserver.de") by linux-mips.org with ESMTP
+	id <S8229623AbVCZNBX> convert rfc822-to-8bit; Sat, 26 Mar 2005 13:01:23 +0000
+Received: from [212.227.126.161] (helo=mrelayng.kundenserver.de)
+	by moutng.kundenserver.de with esmtp (Exim 3.35 #1)
+	id 1DFAuo-0008Vw-00
+	for linux-mips@linux-mips.org; Sat, 26 Mar 2005 14:01:22 +0100
+Received: from [80.171.18.129] (helo=d018129.adsl.hansenet.de)
+	by mrelayng.kundenserver.de with asmtp (TLSv1:RC4-MD5:128)
+	(Exim 3.35 #1)
+	id 1DFAun-00045P-00
+	for linux-mips@linux-mips.org; Sat, 26 Mar 2005 14:01:21 +0100
+From:	Ulrich Eckhardt <eckhardt@satorlaser.com>
+To:	linux-mips@linux-mips.org
+Subject: board configuration and status registers (BCSR)
+User-Agent: KMail/1.7.1
+MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <42449F47.8010002@jg555.com>
-User-Agent: Mutt/1.5.6+20040907i
-From:	Peter Horton <pdh@colonel-panic.org>
-Return-Path: <pdh@colonel-panic.org>
+Organization: Sator Laser GmbH
+Date:	Sat, 26 Mar 2005 13:59:10 +0100
+Content-Type: text/plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 8BIT
+Message-Id: <200503261359.10332.eckhardt@satorlaser.com>
+X-Provags-ID: kundenserver.de abuse@kundenserver.de auth:e35cee35a663f5c944b9750a965814ae
+Return-Path: <eckhardt@satorlaser.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7533
+X-archive-position: 7534
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pdh@colonel-panic.org
+X-original-sender: eckhardt@satorlaser.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Mar 25, 2005 at 03:31:19PM -0800, Jim Gifford wrote:
->   Has anyone had any luck compiling a 64 bit version on the RaQ2. I can 
-> get it to compile but, it locks up during boot up.
-> 
-> elf64: 00080000 - 0042fd3f (ffffffff,803e6000) (ffffffff,8000000)
-> elf64: ffffffff,80080000 (8008000) 3731589t + 134331t
-> 
-> That's all I got during bootup, no error messages or anything.
-> 
+Hi!
 
-As a starting point you need to ensure the "cpu_has_llsc" is false for
-64-bit Cobalt kernels. LLD/SCD is broken on RM5230/5231. There is an
-experimental patch for 2.6.9 on
-http://www.colonel-panic.org/cobalt-mips.
+From what I could tell, all the Alchemy based boards have those BCSR, but I 
+wonder where I could find more info about those. The Au1100 programming 
+manual is totally silent on that matter but in the attached hardware itself I 
+couldn't find anything that corresponds to that - or am I just not looking 
+hard enough? Could anybody point me to some docs on that?
 
-P.
+cheers
+
+Uli

@@ -1,37 +1,41 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f2RHtZB03701
-	for linux-mips-outgoing; Tue, 27 Mar 2001 09:55:35 -0800
+	by oss.sgi.com (8.11.3/8.11.3) id f2RHsUP03589
+	for linux-mips-outgoing; Tue, 27 Mar 2001 09:54:30 -0800
 Received: from woody.ichilton.co.uk (woody.ichilton.co.uk [216.29.174.40])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f2RHtZM03697
-	for <linux-mips@oss.sgi.com>; Tue, 27 Mar 2001 09:55:35 -0800
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f2RHsPM03584
+	for <linux-mips@oss.sgi.com>; Tue, 27 Mar 2001 09:54:25 -0800
 Received: by woody.ichilton.co.uk (Postfix, from userid 1000)
-	id D26DA8030; Tue, 27 Mar 2001 18:55:34 +0100 (BST)
-Date: Tue, 27 Mar 2001 18:55:34 +0100
+	id DDDFF8030; Tue, 27 Mar 2001 18:54:23 +0100 (BST)
+Date: Tue, 27 Mar 2001 18:54:23 +0100
 From: Ian Chilton <mailinglist@ichilton.co.uk>
-To: linux-mips@oss.sgi.com
+To: David Jez <dave.jez@seznam.cz>
+Cc: linux-mips@oss.sgi.com, guido.guenther@gmx.net
 Subject: Re: indy's hardware watchdog
-Message-ID: <20010327185534.C3617@woody.ichilton.co.uk>
+Message-ID: <20010327185423.B3617@woody.ichilton.co.uk>
 Reply-To: Ian Chilton <ian@ichilton.co.uk>
-References: <20010326184613.A20198@bilbo.physik.uni-konstanz.de>
+References: <20010326184613.A20198@bilbo.physik.uni-konstanz.de> <20010327073809.B55390@stud.fee.vutbr.cz>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.3.13i
-In-Reply-To: <20010326184613.A20198@bilbo.physik.uni-konstanz.de>; from guido.guenther@gmx.net on Mon, Mar 26, 2001 at 06:46:13PM +0200
+In-Reply-To: <20010327073809.B55390@stud.fee.vutbr.cz>; from dave.jez@seznam.cz on Tue, Mar 27, 2001 at 07:38:09AM +0200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
 Hello,
 
-> I've written a small module to support the Indy's hardware watchdog.
+> Btw. do you know if video input on indy is supported?
 
-Great, well done Guido!
+No, it isn't.
 
-I'll put a link to this on the Linux/MIPS site.
+But, Ulf (grimsy) did start writing a driver for it, but never
+finished.
+
+If you look in any kernel tree, under drivers/char/ you will find
+vino.c and vino.h
 
 
-Shame it doesn't help when kernel debugging and the machine hangs at
-the PROM  :-(
+We just need someone to finish it  :)
 
 
 Bye for Now,

@@ -1,72 +1,56 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id KAA48640 for <linux-archive@neteng.engr.sgi.com>; Tue, 2 Feb 1999 10:23:20 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id KAA44145 for <linux-archive@neteng.engr.sgi.com>; Tue, 2 Feb 1999 10:20:05 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id KAA63346
+	id KAA64235
 	for linux-list;
-	Tue, 2 Feb 1999 10:22:45 -0800 (PST)
+	Tue, 2 Feb 1999 10:19:04 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgidal.dallas.sgi.com (sgidal.dallas.sgi.com [169.238.80.130])
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via SMTP id KAA93340
+	via ESMTP id KAA92417
 	for <linux@cthulhu.engr.sgi.com>;
-	Tue, 2 Feb 1999 10:22:43 -0800 (PST)
-	mail_from (chad@roctane.dallas.sgi.com)
-Received: from roctane.dallas.sgi.com by sgidal.dallas.sgi.com via ESMTP (950413.SGI.8.6.12/911001.SGI)
-	 id MAA02105; Tue, 2 Feb 1999 12:20:54 -0600
-Received: from roctane.dallas.sgi.com (localhost [127.0.0.1]) by roctane.dallas.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id KAA17250; Tue, 2 Feb 1999 10:20:54 -0800 (PST)
-Message-ID: <36B74206.8E63A799@roctane.dallas.sgi.com>
-Date: Tue, 02 Feb 1999 12:20:54 -0600
-From: Chad Carlin <chad@roctane.dallas.sgi.com>
-Reply-To: chad@sgi.com
-Organization: Silicon Graphics Inc.
-X-Mailer: Mozilla 4.5C-SGI [en] (X11; I; IRIX64 6.5 IP30)
-X-Accept-Language: en
-MIME-Version: 1.0
+	Tue, 2 Feb 1999 10:19:02 -0800 (PST)
+	mail_from (adevries@engsoc.carleton.ca)
+Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id KAA01999
+	for <linux@cthulhu.engr.sgi.com>; Tue, 2 Feb 1999 10:19:00 -0800 (PST)
+	mail_from (adevries@engsoc.carleton.ca)
+Received: from localhost (adevries@localhost)
+	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id NAA09032;
+	Tue, 2 Feb 1999 13:21:08 -0500
+X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
+Date: Tue, 2 Feb 1999 13:21:08 -0500 (EST)
+From: Alex deVries <adevries@engsoc.carleton.ca>
 To: Alexander Graefe <nachtfalke@usa.net>
-CC: linux@cthulhu.engr.sgi.com
+cc: linux@cthulhu.engr.sgi.com
 Subject: Re: What kernel to use to install RH on a R4400 ?
-References: <19990202155147.A1565@ganymede>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <19990202155147.A1565@ganymede>
+Message-ID: <Pine.LNX.3.96.990202131924.8932B-100000@lager.engsoc.carleton.ca>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Alexander,
 
-I'm having similar problems with my R4400. I was trying to boot from
-another Indy. Now I went and got a PC and loaded linux on it. This
-should put my config as much like everyone elses as I can make it.
-Will try the boot later tonight.
-
-I've asked this list for anyone else running linux on an R4400. I've
-gotten no responses. You and I may be the only ones.
-
-Chad
-
-Alexander Graefe wrote:
-
-> Hi.
->
+On Tue, 2 Feb 1999, Alexander Graefe wrote:
 > I got as far as booting Linux via bootp on my Indy, but after the
 > remote root-fs is mounted, the kernel dies with an "Aieee" and
 > something about irq request handler.
->
 > I tried booting with the 2.1.131-Kernel from ftp.linux.sgi.com, but
 > that one doesn't try to mount the root-fs via NFS.
->
-> What kernel should I use to actually see a prompt on my Indy ?
->
-> Bye,
->         LeX, determined to get Linux on there :)
-> --
-> Quidquid latine dictum sit, altum viditur.
 
---
-           -----------------------------------------------------
-            Chad Carlin                          Special Systems
-            Silicon Graphics Inc.                   972.205.5911
-            Pager 888.754.1597          VMail 800.414.7994 X5344
-            chad@sgi.com             http://reality.sgi.com/chad
-           -----------------------------------------------------
-        "flying through hyper space ain't like dusting crops, boy"
+I should rebuild that kernel to have root nfs in it, although my kernel
+tree's currently wrapped up with gross graphics.o modularization stuff.
+
+I'll see what I can do.
+
+- Alex
+
+-- 
+Alex deVries, puffin on LinuxNet.
+I know exactly what I want in life.

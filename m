@@ -1,46 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Jun 2004 17:27:18 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:5884 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8225313AbUFIQ1O>;
-	Wed, 9 Jun 2004 17:27:14 +0100
-Received: from [10.2.2.68] (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id JAA12600;
-	Wed, 9 Jun 2004 09:27:01 -0700
-Subject: Re: HD Boot on Pb1500 Kernel 2.4.26
-From: Pete Popov <ppopov@mvista.com>
-To: "r.zilli" <r.zilli@ingredium.it>
-Cc: linux-mips@linux-mips.org
-In-Reply-To: <20040609143837.1848.qmail@pop.ingredium.it>
-References: <20040609143837.1848.qmail@pop.ingredium.it>
-Content-Type: text/plain
-Organization: 
-Message-Id: <1086798549.15514.37.camel@thinkpad>
-Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.2.2 (1.2.2-4) 
-Date: 09 Jun 2004 09:29:09 -0700
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Jun 2004 20:14:15 +0100 (BST)
+Received: from avtrex.com ([IPv6:::ffff:216.102.217.178]:17367 "EHLO
+	avtrex.com") by linux-mips.org with ESMTP id <S8225769AbUFJTOK>;
+	Thu, 10 Jun 2004 20:14:10 +0100
+Received: from avtrex.com ([192.168.0.111] RDNS failed) by avtrex.com with Microsoft SMTPSVC(5.0.2195.6713);
+	 Thu, 10 Jun 2004 12:11:56 -0700
+Message-ID: <40C8B29B.3090501@avtrex.com>
+Date: Thu, 10 Jun 2004 12:12:27 -0700
+From: David Daney <ddaney@avtrex.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.1) Gecko/20031030
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: gcc@gcc.gnu.org, linux-mips@linux-mips.org
+CC: java@gcc.gnu.org
+Subject: [RFC] MIPS division by zero and libgcj...
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@mvista.com>
+X-OriginalArrivalTime: 10 Jun 2004 19:11:56.0741 (UTC) FILETIME=[CC3D7750:01C44F1E]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5272
+X-archive-position: 5273
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@mvista.com
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 2004-06-09 at 07:38, r.zilli wrote:
-> Hi, list 
-> 
-> i've successful patched the 2.4.26 with v4l support to get the saa7134 
-> driver support on Alchemy Pb1500. The driver for the HPT370 is ok but the 
-> ide channels are not scanned and hard disk are not recognized. 
-> 
-> Thanks for any help 
+It appears that gcc configured for mipsel-linux will execute a "break 7" 
+instruction on integer division by zero.
 
-2.4.25 was fine. I haven't tried 2.4.26 yet to see if anything broke
-during the merge. You're just using the ide controller on the Pb1500,
-not an external PCI controller, right?
+This causes the kernel (I am using 2.4.25) to send SIGTRAP.
 
-Pete
+Gcj when configured for this platform uses the -f-use-divide-subroutine 
+option, causing it to never generate inline division instructions (nor 
+the accompanying break 7), but instead call a runtime function that 
+properly handles throwing ArithmeticException.
+
+Q1:  Is this behavior (use of break 7 and SIGTRAP) part of some ABI 
+specification?  I'll admit a bit of ignorance in this area.
+
+Q2: Does anyone see any reason that libgcj should not be configured to 
+handle the SIGTRAP and throw the ArithmeticException from the signal 
+handler (similar to what is done on i386).
+
+Q3: Will using SIGTRAP in this manner make debugging programs that 
+divide things by zero very difficult to debug under gdb?
+
+Q4: I appears that on the i386, a divide overflow causes SIGFPE.  Why 
+doesn't the mips-linux kernel sent SIGFPE on "break 7"
+
+Q5: prims.cc in libgcj implies that we should be handling SIGFPE to do 
+all this.  If I make these changes, won't it be a little confusing that 
+all references to SIGFPE are really SIGTRAP?
+
+
+David Daney

@@ -1,44 +1,35 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6PH10a17484
-	for linux-mips-outgoing; Wed, 25 Jul 2001 10:01:00 -0700
-Received: from dea.waldorf-gmbh.de (u-46-20.karlsruhe.ipdial.viaginterkom.de [62.180.20.46])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6PH0vO17481
-	for <linux-mips@oss.sgi.com>; Wed, 25 Jul 2001 10:00:57 -0700
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f6PH0kN01574;
-	Wed, 25 Jul 2001 19:00:46 +0200
-Date: Wed, 25 Jul 2001 19:00:46 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Ian Soanes <ians@lineo.com>
-Cc: Andre.Messerschmidt@infineon.com, linux-mips@oss.sgi.com
-Subject: Re: AW: GCC and Modules
-Message-ID: <20010725190046.A1391@bacchus.dhis.org>
-References: <86048F07C015D311864100902760F1DDFF0016@dlfw003a.dus.infineon.com> <3B5ED17F.6D50331F@lineo.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <3B5ED17F.6D50331F@lineo.com>; from ians@lineo.com on Wed, Jul 25, 2001 at 03:02:39PM +0100
-X-Accept-Language: de,en,fr
+	by oss.sgi.com (8.11.2/8.11.3) id f6PKcSx27196
+	for linux-mips-outgoing; Wed, 25 Jul 2001 13:38:28 -0700
+Received: from www.transvirtual.com (root@www.transvirtual.com [206.14.214.140])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6PKcSO27192
+	for <linux-mips@oss.sgi.com>; Wed, 25 Jul 2001 13:38:28 -0700
+Received: from www.transvirtual.com (jsimmons@localhost [127.0.0.1])
+        by localhost (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f6PKbnc1018077;
+	Wed, 25 Jul 2001 13:37:49 -0700
+Received: from localhost (jsimmons@localhost)
+        by www.transvirtual.com (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f6PKbild018073;
+	Wed, 25 Jul 2001 13:37:45 -0700
+X-Authentication-Warning: www.transvirtual.com: jsimmons owned process doing -bs
+Date: Wed, 25 Jul 2001 13:37:44 -0700 (PDT)
+From: James Simmons <jsimmons@transvirtual.com>
+To: Carsten Langgaard <carstenl@mips.com>
+cc: Andrew Thornton <andrew.thornton@insignia.com>,
+   Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>,
+   Linux-MIPS <linux-mips@oss.sgi.com>
+Subject: Re: ATI Victoria on Malta
+In-Reply-To: <3B5E78DB.70F7D97F@mips.com>
+Message-ID: <Pine.LNX.4.10.10107251337160.14177-100000@transvirtual.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, Jul 25, 2001 at 03:02:39PM +0100, Ian Soanes wrote:
 
-> This may be a little out of date, but compiling with the module with
-> -mlong-calls worked for me when I had similar problems loading modules a
-> while back. Relinking the module with 'ld -r -o new_mod.o orig_mod.o'
-> was useful too ...it worked around some 'exceeds local_symtab_size'
-> messages.
+> > It has been pointed out to me that there is some source code, but this
+> > originates from a non-suitable source for use in Linux. Need I say more?
+> 
+> I'm afraid we can't provide you with the sources, you need to contact the
+> OS vendor yourself.
 
-The local_symtab_size symtab is caused by the fine differences between
-IRIX ELF and ABI ELF.  More recent binutils versions switched to ABI ELF
-as the default.
-
-Not using -mlong-calls results in ``Relocation overflow'' messages.  That's
-not the case here, so this option probably was used.
-
-Error messages about _gp_disp proof that the module contains PIC code that
-is has not been built using -mno-abicalls -fno-pic.
-
-  Ralf
+I really wish ATI would open up about intializing their cards.

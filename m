@@ -1,82 +1,84 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4GHGTnC004291
-	for <linux-mips-outgoing@oss.sgi.com>; Thu, 16 May 2002 10:16:29 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4HCelnC032702
+	for <linux-mips-outgoing@oss.sgi.com>; Fri, 17 May 2002 05:40:47 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4GHGTQv004290
-	for linux-mips-outgoing; Thu, 16 May 2002 10:16:29 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4HCelpE032701
+	for linux-mips-outgoing; Fri, 17 May 2002 05:40:47 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from av.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4GHGMnC004287
-	for <linux-mips@oss.sgi.com>; Thu, 16 May 2002 10:16:23 -0700
-Received: from mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id KAA22517;
-	Thu, 16 May 2002 10:15:08 -0700
-Message-ID: <3CE3E8BA.8080002@mvista.com>
-Date: Thu, 16 May 2002 10:13:30 -0700
-From: Jun Sun <jsun@mvista.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.2.1) Gecko/20010901
-X-Accept-Language: en-us
+Received: from mx2.mips.com (mx2.mips.com [206.31.31.227])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4HCeenC032698
+	for <linux-mips@oss.sgi.com>; Fri, 17 May 2002 05:40:40 -0700
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.9.3/8.9.0) with ESMTP id FAA25524
+	for <linux-mips@oss.sgi.com>; Fri, 17 May 2002 05:40:52 -0700 (PDT)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id EAA18961
+	for <linux-mips@oss.sgi.com>; Fri, 17 May 2002 04:50:32 -0700 (PDT)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g4HBoVb00900
+	for <linux-mips@oss.sgi.com>; Fri, 17 May 2002 13:50:31 +0200 (MEST)
+Message-ID: <3CE4EE87.EF515C92@mips.com>
+Date: Fri, 17 May 2002 13:50:31 +0200
+From: Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.77 [en] (X11; U; SunOS 5.7 sun4u)
+X-Accept-Language: en
 MIME-Version: 1.0
-To: "Kevin D. Kissell" <kevink@mips.com>
-CC: Daniel Jacobowitz <dan@debian.org>, Matthew Dharm <mdharm@momenco.com>,
-   Linux-MIPS <linux-mips@oss.sgi.com>
-Subject: Re: MIPS 64?
-References: <NEBBLJGMNKKEEMNLHGAIOEPPCGAA.mdharm@momenco.com> <20020515214818.GA1991@nevyn.them.org> <3CE2DA46.3070402@mvista.com> <007a01c1fca9$86e14f70$10eca8c0@grendel>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
+To: linux-mips@oss.sgi.com
+Subject: Hazard problem in tlb-r4k.c
+Content-Type: multipart/mixed;
+ boundary="------------8694013FE14C5535C2FAF4F3"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Kevin D. Kissell wrote:
+This is a multi-part message in MIME format.
+--------------8694013FE14C5535C2FAF4F3
+Content-Type: text/plain; charset=iso-8859-15
+Content-Transfer-Encoding: 7bit
 
-> Jun Sun wrote:
-> 
->>Daniel Jacobowitz wrote:
->>
->>
->>>On Wed, May 15, 2002 at 02:34:47PM -0700, Matthew Dharm wrote:
->>>
->>>
->>>>So... I'm looking at porting Linux to a system with 1.5GiB of RAM.
->>>>That kinda blows the 32-bit MIPS port option right out of the water...
->>>>
->>>>
->>>Not unless you count bits differently than I do... 32-bit is 4 GiB.  Is
->>>there any reason MIPS has special problems in this area?
->>>
->>>
->>
->>MIPS has lower 2GB fixed for user space.  Then you have kseg0, .5GB for cached 
->>physical address 0-0.5GB, and kseg1, 0.5GB uncached mapping of the same area. 
->>  You can map another 1GB of RAM into kseg2/3, but you will then have no space 
->>left for IO.
->>
->>So you really can't do 1.5GB on 32 bit kernel.
->>
-> 
-> Is this to say that Linux cannot function unless all physical memory
-> on the system is mapped at all times into kernel space? I would
-> have thought that (a) all that really needs to be mapped is all
-> memory used by the kernel itself, plus that of the currently active
-> process (which is mapped in the 2GB kuseg), and that (b) one 
-> could anyway manage kseg2 or 3 dynamically to provide a window 
-> into a larger physical memory, and that this window could be
-> used for any functions that need to do arbitrary phys-to-phys
-> copies.
-> 
+There seems to be a hazard problem in the local_flush_tlb_range function
+in tlb-r4k.c, which the patch below will fix.
+It could hit anyone, but it probably only a problem on CPUs, which
+doesn't allow matching entries in the TLB.
+
+/Carsten
 
 
-You are right - my above statement is a grossly simplified way of saying "You 
-can't really have 1.5GB system RAM accessible to kernel at the same time on a 
-32bit MIPS kernel".
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com
 
-There is nothing preventing you from having more physical RAM and use 
-dynamically by using HIGHMEM support.
 
-BTW, I have been under the impression that demand for larger system RAM mainly 
-comes from large router/switches to store routing table.  Does anybody know on 
-such systems whether the routing code runs in kernel or user space and whether 
-  it requires all the memory space accessible at the same time or can live 
-with dynamically managed memory space?
 
-Jun
+--------------8694013FE14C5535C2FAF4F3
+Content-Type: text/plain; charset=iso-8859-15;
+ name="tlb-r4k.c.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="tlb-r4k.c.patch"
+
+Index: arch/mips/mm/tlb-r4k.c
+===================================================================
+RCS file: /cvs/linux/arch/mips/mm/tlb-r4k.c,v
+retrieving revision 1.6.2.3
+diff -u -r1.6.2.3 tlb-r4k.c
+--- arch/mips/mm/tlb-r4k.c	2002/01/18 03:16:24	1.6.2.3
++++ arch/mips/mm/tlb-r4k.c	2002/05/17 11:36:58
+@@ -119,12 +119,11 @@
+ 				idx = get_index();
+ 				set_entrylo0(0);
+ 				set_entrylo1(0);
+-				set_entryhi(KSEG0);
+ 				if (idx < 0)
+ 					continue;
+-				BARRIER;
+ 				/* Make sure all entries differ. */
+ 				set_entryhi(KSEG0+idx*0x2000);
++				BARRIER;
+ 				tlb_write_indexed();
+ 				BARRIER;
+ 			}
+
+--------------8694013FE14C5535C2FAF4F3--

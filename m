@@ -1,59 +1,52 @@
-Received:  by oss.sgi.com id <S554016AbQLDQ02>;
-	Mon, 4 Dec 2000 08:26:28 -0800
-Received: from jester.ti.com ([192.94.94.1]:65211 "EHLO jester.ti.com")
-	by oss.sgi.com with ESMTP id <S553866AbQLDQ0T>;
-	Mon, 4 Dec 2000 08:26:19 -0800
-Received: from dlep7.itg.ti.com ([157.170.134.103])
-	by jester.ti.com (8.11.1/8.11.1) with ESMTP id eB4GQD508983;
-	Mon, 4 Dec 2000 10:26:13 -0600 (CST)
-Received: from dlep7.itg.ti.com (localhost [127.0.0.1])
-	by dlep7.itg.ti.com (8.9.3/8.9.3) with ESMTP id KAA28421;
-	Mon, 4 Dec 2000 10:26:12 -0600 (CST)
-Received: from dlep3.itg.ti.com (dlep3-maint.itg.ti.com [157.170.133.16])
-	by dlep7.itg.ti.com (8.9.3/8.9.3) with ESMTP id KAA28405;
-	Mon, 4 Dec 2000 10:26:12 -0600 (CST)
-Received: from ti.com (IDENT:bbrown@bbrowndt.sc.ti.com [158.218.100.180])
-	by dlep3.itg.ti.com (8.9.3/8.9.3) with ESMTP id KAA06285;
-	Mon, 4 Dec 2000 10:26:11 -0600 (CST)
-Message-ID: <3A2BC5DB.AA1E1E77@ti.com>
-Date:   Mon, 04 Dec 2000 09:27:07 -0700
-From:   Brady Brown <bbrown@ti.com>
-Organization: Texas Instruments
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-5.0 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     Mike Mattice <mike@milliways.cx>
-CC:     linux-mips@oss.sgi.com
-Subject: Re: egcs 1.1.2 build with 1.0.2
-References: <20001204094231.A6622@milliways.cx>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Received:  by oss.sgi.com id <S554023AbQLDSOk>;
+	Mon, 4 Dec 2000 10:14:40 -0800
+Received: from hermes.research.kpn.com ([139.63.192.8]:6918 "EHLO
+        hermes.research.kpn.com") by oss.sgi.com with ESMTP
+	id <S554019AbQLDSOf>; Mon, 4 Dec 2000 10:14:35 -0800
+Received: from sparta.research.kpn.com (sparta.research.kpn.com [139.63.192.6])
+ by research.kpn.com (PMDF V5.2-31 #42699)
+ with ESMTP id <01JXBFP7MBKQ0014XM@research.kpn.com> for
+ linux-mips@oss.sgi.com; Mon, 4 Dec 2000 19:14:32 +0100
+Received: from sparta.research.kpn.com (sparta.research.kpn.com [139.63.192.6])
+	by sparta.research.kpn.com (8.8.8+Sun/8.8.8) with ESMTP id TAA06250; Mon,
+ 04 Dec 2000 19:14:30 +0100 (MET)
+Date:   Mon, 04 Dec 2000 19:14:30 +0100
+From:   "Houten K.H.C. van (Karel)" <K.H.C.vanHouten@research.kpn.com>
+X-Face: ";:TzQQC{mTp~$W,'m4@Lu1Lu$rtG_~5kvYO~F:C'KExk9o1X"iRz[0%{bq?6Aj#>VhSD?v
+ 1W9`.Qsf+P&*iQEL8&y,RDj&U.]!(R-?c-h5h%Iw%r$|%6+Jc>GTJe!_1&A0o'lC[`I#={2BzOXT1P
+ q366I$WL=;[+SDo1RoIT+a}_y68Y:jQ^xp4=*4-ryiymi>hy
+Subject: Re: [SUCCESS] 2.4.0-test11 on Decstation 5000/150 (R4000)
+In-reply-to: "Your message of Sun, 03 Dec 2000 17:04:30 +0100."
+ <20001203170430.A1504@paradigm.rfc822.org>
+To:     Florian Lohoff <flo@rfc822.org>
+Cc:     linux-mips@oss.sgi.com, K.H.C.vanHouten@research.kpn.com
+Reply-to: K.H.C.vanHouten@kpn.com
+Message-id: <200012041814.TAA06250@sparta.research.kpn.com>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Mike Mattice wrote:
 
-> I'm trying to build this on a cobalt.
-> Quick and dirty summary:
->
-> /tmp/ccl2C8g8.s: Assembler messages:
-> /tmp/ccl2C8g8.s:182: Internal error!
-> Assertion failure in mips_emit_delays at ./config/tc-mips.c line 2231.
-> Please report this bug.
->
-> gcc -v reports:
-> Reading specs from /usr/lib/gcc-lib/mipsel-redhat-linux/egcs-2.90.27/specs
-> gcc version egcs-2.90.27 980315 (egcs-1.0.2 release)
 
-I ran into this same problem about a month ago (Although I was building 1.0.3
-from 1.0.2 on different hardware). I spent about 2 weeks working on it and
-found no resolution. There were a couple of suggestions posted to mips-linux
-which you might try (search for mips_emit_delays). If you find a solution
-I would be very interested.
---
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Brady Brown (bbrown@ti.com)       Work:(801)619-6103
-Texas Instruments: Broadband Access Group
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Florian Lohoff writes:
+>
+>Hi,
+>here is the short output - We needed to change ethernet, scsi
+>initialization and the vmalloc bug ...
+>
+> ... successfull decstation boot of linux 2.4-test11
+
+I did try some kernel compiles with my new toolchain on my decstation,
+with the following result:
+
+egcs-1.0.3a-1 / binutils-2.10.91-1lm : Userland compiles fine,
+				       Kernel compile fails
+egcs-1.0.2-9 / binutils-2.8.1-2D1 : Kernel compiles OK.
+
+Florian, do you compile native? and with which compiler / binutils?
+
+Has anyone else a working toolchain for native building on mipsel ?
+
+Regards,
+Karel.

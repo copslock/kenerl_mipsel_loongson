@@ -1,35 +1,44 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA05988; Mon, 14 Apr 1997 15:30:06 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id TAA00076; Mon, 14 Apr 1997 19:30:01 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA17938 for linux-list; Mon, 14 Apr 1997 15:29:10 -0700
-Received: from refugee.engr.sgi.com (fddi-refugee.engr.sgi.com [192.26.75.26]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA17893 for <linux@cthulhu.engr.sgi.com>; Mon, 14 Apr 1997 15:29:08 -0700
-Received: from refugee.engr.sgi.com (localhost [127.0.0.1]) by refugee.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id PAA07659; Mon, 14 Apr 1997 15:28:40 -0700
-Message-Id: <199704142228.PAA07659@refugee.engr.sgi.com>
-X-Mailer: exmh version 2.0gamma 1/27/96
-To: lm@neteng.engr.sgi.com (Larry McVoy)
-Cc: "Christopher W. Carlson" <carlson@heaven.newport.sgi.com>,
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id TAA10928 for linux-list; Mon, 14 Apr 1997 19:29:09 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id TAA10914; Mon, 14 Apr 1997 19:29:05 -0700
+Received: from caipfs.rutgers.edu (caipfs.rutgers.edu [128.6.91.100]) by sgi.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id TAA18962; Mon, 14 Apr 1997 19:28:37 -0700
+Received: from jenolan.caipgeneral (jenolan.rutgers.edu [128.6.111.5])
+	by caipfs.rutgers.edu (8.8.5/8.8.5) with SMTP id WAA08847;
+	Mon, 14 Apr 1997 22:10:29 -0400 (EDT)
+Received: by jenolan.caipgeneral (SMI-8.6/SMI-SVR4)
+	id WAA00938; Mon, 14 Apr 1997 22:09:11 -0400
+Date: Mon, 14 Apr 1997 22:09:11 -0400
+Message-Id: <199704150209.WAA00938@jenolan.caipgeneral>
+From: "David S. Miller" <davem@jenolan.rutgers.edu>
+To: wje@fir.engr.sgi.com
+CC: knobi@munich.sgi.com, alambie@wellington.sgi.com, shaver@neon.ingenia.ca,
         linux@cthulhu.engr.sgi.com
-Subject: Re: EFS and XFS file systems support 
-In-reply-to: Message from lm@neteng of 14 Apr 1997 13:47:42 PDT
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Date: Mon, 14 Apr 1997 15:28:40 -0700
-From: Steve Alexander <sca@refugee.engr.sgi.com>
+In-reply-to: <199704141805.LAA10353@fir.engr.sgi.com> (wje@fir.engr.sgi.com)
+Subject: Re: init=/bin/sh and serial devices
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-lm@neteng (Larry McVoy) writes:
->: I thought that there was a program available for Linux that would read EFS
->: file systems, although I can't for the life of me remember the name.
->
->Nope.
+   Date: Mon, 14 Apr 1997 11:05:52 -0700
+   From: "William J. Earl" <wje@fir.engr.sgi.com>
 
-OK, I went and looked...
+	Does the textport driver run in color-index mode?  If so, it
+   will probably work on the 8-bit card.  The cards are largely
+   identical, except for the depth of the frame buffer.
 
-Subject:   -65- How can I read an IRIX (EFS) CD-ROM on a machine which
-                doesn't use EFS?
-Date: 18 Jun 1995 00:00:01 EST
+If memory serves, I left the chip in the exact mode the firmware has
+set it to.  So if the firmware sets up the card to use color-index
+mode, then I do as well in the driver.  (I think I did this so I did
+not have to deal with monitor frequencies, and resolutions, and that
+sort of thing)
 
-  You want 'efslook', at
-  ftp://viz.tamu.edu/pub/sgi/software/efslook.tar.gz.
+But my text rendering code may make assumptions about frame buffer
+depth, I draw them using the various simpler raster operation commands
+the Newport has, so someone who knows would have to look at my code.
 
--- Steve
+---------------------------------------------////
+Yow! 11.26 MB/s remote host TCP bandwidth & ////
+199 usec remote TCP latency over 100Mb/s   ////
+ethernet.  Beat that!                     ////
+-----------------------------------------////__________  o
+David S. Miller, davem@caip.rutgers.edu /_____________/ / // /_/ ><

@@ -1,46 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Feb 2005 11:45:19 +0000 (GMT)
-Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:24328 "EHLO
-	mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225362AbVBWLpE>; Wed, 23 Feb 2005 11:45:04 +0000
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id j1NBcHiv008981;
-	Wed, 23 Feb 2005 11:38:17 GMT
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j1NBcG1s008980;
-	Wed, 23 Feb 2005 11:38:16 GMT
-Date:	Wed, 23 Feb 2005 11:38:16 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	David Daney <ddaney@avtrex.com>
-Cc:	Jim Gifford <maillist@jg555.com>, linux-mips@linux-mips.org
-Subject: Referencing the online list archive, was Re: Building GLIBC 2.3.4 on MIPS
-Message-ID: <20050223113816.GA8369@linux-mips.org>
-References: <421BCF34.90308@jg555.com> <421BD616.4030101@avtrex.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Feb 2005 12:05:34 +0000 (GMT)
+Received: from no-dns-yet.demon.co.uk ([IPv6:::ffff:83.104.11.251]:38301 "EHLO
+	exterity.co.uk") by linux-mips.org with ESMTP id <S8225370AbVBWMFR>;
+	Wed, 23 Feb 2005 12:05:17 +0000
+Received: from [192.168.0.85] ([192.168.0.85]) by exterity.co.uk with Microsoft SMTPSVC(6.0.3790.211);
+	 Wed, 23 Feb 2005 12:06:35 +0000
+Subject: Re: Big Endian au1550
+From:	JP Foster <jp.foster@exterity.co.uk>
+To:	linux-mips@linux-mips.org
+In-Reply-To: <000301c5199d$3154ad40$0300a8c0@Exterity.local>
+References: <1109157737.16445.6.camel@localhost.localdomain>
+	 <000301c5199d$3154ad40$0300a8c0@Exterity.local>
+Content-Type: text/plain
+Date:	Wed, 23 Feb 2005 12:05:13 +0000
+Message-Id: <1109160313.16445.20.camel@localhost.localdomain>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <421BD616.4030101@avtrex.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+X-Mailer: Evolution 2.1.5 
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 23 Feb 2005 12:06:35.0500 (UTC) FILETIME=[1EF8A2C0:01C519A0]
+Return-Path: <jpfoster@exterity.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7320
+X-archive-position: 7321
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: jp.foster@exterity.co.uk
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Feb 22, 2005 at 05:02:14PM -0800, David Daney wrote:
+Fair enough. Has anyone got big-endian au1xxx working ever?
+I'm reasonably flexible to use mipsel, since this is a new board,
+although all our other products are mipseb.
 
-> http://www.linux-mips.org/archives/linux-mips/2004-10/msg00068.html
+Since big doesn't work as far as I can see. This must a regression
+as I'm sure I had built a running kernel a month or two back.
+Currently building a pre-christmas linux-mips snapshot to see if that
+works.
 
-A little request - when posting references to mailing list postings
-or otherwise referecing them, please use the address that can be obtained
-by clicking at the "Permanent Link" neary the upper right of the posting.
-The resulting URL may be quite ugly but at least it won't change unlike
-the .../msg<somenumber>.html links that may change if I occasinally
-remove a posting from the archive such as spam.
+If that doesn't work I'll just start using a mipsel version as I would
+be wary of using big endian if no one else is.
 
-  Ralf
+JP
+
+
+On Wed, 2005-02-23 at 11:45 +0000, Ralf Baechle wrote:
+>
+>I recently rewrote the endianes selection in the Kconfig menus.  The
+>individual platforms will now have to explicitly select
+>SYS_SUPPORTS_LITTLE_ENDIAN rsp. SYS_SUPPORTS_BIG_ENDIAN to indicate
+>which endianess they support.  I know that Alchemy supports big endian
+>operation in hardware but no idea if all the Linux code is working
+>properly, so I've been conservative and choose to limit the system
+>to little endian until somebody reports big endianess support to be
+>actually working.
+>
+>  Ralf

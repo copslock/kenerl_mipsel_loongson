@@ -1,68 +1,135 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Oct 2004 09:03:35 +0100 (BST)
-Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:48067 "EHLO
-	witte.sonytel.be") by linux-mips.org with ESMTP id <S8225073AbUJUIDa>;
-	Thu, 21 Oct 2004 09:03:30 +0100
-Received: from waterleaf.sonytel.be (mail.sonytel.be [43.221.60.197])
-	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id i9L83QMp025787;
-	Thu, 21 Oct 2004 10:03:26 +0200 (MEST)
-Date: Thu, 21 Oct 2004 10:03:25 +0200 (MEST)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Oct 2004 09:47:38 +0100 (BST)
+Received: from lug-owl.de ([IPv6:::ffff:195.71.106.12]:17066 "EHLO lug-owl.de")
+	by linux-mips.org with ESMTP id <S8225073AbUJUIrb>;
+	Thu, 21 Oct 2004 09:47:31 +0100
+Received: by lug-owl.de (Postfix, from userid 1001)
+	id 47C794AB5E; Thu, 21 Oct 2004 10:47:29 +0200 (CEST)
+Date: Thu, 21 Oct 2004 10:47:29 +0200
+From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
 To: "David S. Miller" <davem@davemloft.net>
-cc: Andi Kleen <ak@suse.de>, dhowells@redhat.com,
-	Linus Torvalds <torvalds@osdl.org>,
-	Andrew Morton <akpm@osdl.org>,
-	Linux Kernel Development <linux-kernel@vger.kernel.org>,
-	discuss@x86-64.org, sparclinux@vger.kernel.org,
-	linuxppc64-dev@ozlabs.org, linux-m68k@vger.kernel.org,
-	linux-sh@m17n.org, linux-arm-kernel@lists.arm.linux.org.uk,
+Cc: Andi Kleen <ak@suse.de>, dhowells@redhat.com, torvalds@osdl.org,
+	akpm@osdl.org, linux-kernel@vger.kernel.org, discuss@x86-64.org,
+	sparclinux@vger.kernel.org, linuxppc64-dev@ozlabs.org,
+	linux-m68k@vger.kernel.org, linux-sh@m17n.org,
+	linux-arm-kernel@lists.arm.linux.org.uk,
 	parisc-linux@parisc-linux.org, linux-ia64@vger.kernel.org,
-	linux-390@vm.marist.edu,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: [discuss] Re: [PATCH] Add key management syscalls to non-i386
- archs
-In-Reply-To: <20041020164144.3457eafe.davem@davemloft.net>
-Message-ID: <Pine.GSO.4.61.0410211002020.614@waterleaf.sonytel.be>
-References: <3506.1098283455@redhat.com> <20041020150149.7be06d6d.davem@davemloft.net>
- <20041020225625.GD995@wotan.suse.de> <20041020160450.0914270b.davem@davemloft.net>
- <20041020232509.GF995@wotan.suse.de> <20041020164144.3457eafe.davem@davemloft.net>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <geert@linux-m68k.org>
+	linux-390@vm.marist.edu, linux-mips@linux-mips.org
+Subject: Re: [discuss] Re: [PATCH] Add key management syscalls to non-i386 archs
+Message-ID: <20041021084728.GA5033@lug-owl.de>
+Mail-Followup-To: "David S. Miller" <davem@davemloft.net>,
+	Andi Kleen <ak@suse.de>, dhowells@redhat.com, torvalds@osdl.org,
+	akpm@osdl.org, linux-kernel@vger.kernel.org, discuss@x86-64.org,
+	sparclinux@vger.kernel.org, linuxppc64-dev@ozlabs.org,
+	linux-m68k@vger.kernel.org, linux-sh@m17n.org,
+	linux-arm-kernel@lists.arm.linux.org.uk,
+	parisc-linux@parisc-linux.org, linux-ia64@vger.kernel.org,
+	linux-390@vm.marist.edu, linux-mips@linux-mips.org
+References: <3506.1098283455@redhat.com> <20041020150149.7be06d6d.davem@davemloft.net> <20041020225625.GD995@wotan.suse.de> <20041020160450.0914270b.davem@davemloft.net>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="bpnyAEUPSyO7P1Gm"
+Content-Disposition: inline
+In-Reply-To: <20041020160450.0914270b.davem@davemloft.net>
+X-Operating-System: Linux mail 2.6.8-rc4 
+X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
+X-gpg-key: wwwkeys.de.pgp.net
+User-Agent: Mutt/1.5.6i
+Return-Path: <jbglaw@lug-owl.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6158
+X-archive-position: 6159
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: jbglaw@lug-owl.de
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 20 Oct 2004, David S. Miller wrote:
-> On Thu, 21 Oct 2004 01:25:09 +0200
+
+--bpnyAEUPSyO7P1Gm
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, 2004-10-20 16:04:50 -0700, David S. Miller <davem@davemloft.net>
+wrote in message <20041020160450.0914270b.davem@davemloft.net>:
+> On Thu, 21 Oct 2004 00:56:25 +0200
 > Andi Kleen <ak@suse.de> wrote:
-> 
-> > IMHO breaking the build unnecessarily is extremly bad because
-> > it will prevent all testing. And would you really want to hold
-> > up the whole linux testing machinery just for some obscure 
-> > system call? IMHO not a good tradeoff.
-> 
-> Then change the unistd.h cookie from "#error" to a "#warning".  It
-> accomplishes both of our goals.
 
-Please do so! And not only for syscalls, but also for other things.
+*VAX hacker's hat on*
 
-That way we can procmail all mails sent to lkml or bk-commits-head that
-add #warnings to arch/<arch>/ or include/asm-<arch>/.
+> I disagree quite strongly.  One major frustration for users of
+> non-x86 platforms is that functionality is often missing for some
+> time that we can make trivial to keep in sync.
 
-Gr{oetje,eeting}s,
+Full ACK.
 
-						Geert
+> Simply put, if you're not watching the tree in painstaking detail
+> every day, you miss all of these enhancements.
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Right; and these missing enhancements will cause extra-pain when they're
+used some time later from core code. That is, you missed the feature
+while it was discusses/accepted and need to put it in place later on. So
+you've got to do extra searching etc.
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+> The knowledge should come from the person putting the changes into
+> the tree, therefore it gets done once and this makes it so that
+> the other platform maintainers will find out about it automatically
+> next time they update their tree.
+
+Here's my proposal:
+
+$ mkdir ./Documentation/new_enhancements_to_implement
+$ cat ./Documentation/new_enhancements_to_implement/new_key_syscalls << EOF
+> Dear Architecture Maintailers,
+>=20
+> please add these four new cryptographic key functions to your syscall
+> table. It's quite easy; just extend the ./include/arch-xxx/unistd.h
+> for four new defines and then add them to your ./arch/xxx/kernel/entry.S
+> file. For reference, here's my i386 patch doing this:
+>=20
+> diff -Nurp
+> --- path-old/to/file/one
+> +++ path-new/to/file/one
+>  text
+> -del
+> +add
+>  more text
+>=20
+>=20
+> Thanks, your keychain hacker:-)
+> EOF
+$
+
+This way, all arch maintainers just *see* what needs to be done and
+get a small introduction on how to do that. I'd *really* like to see
+that! That would particularly help those that cannot do full-time
+hacking on their port (like us VAX hackers:-)
+
+MfG, JBG
+
+--=20
+Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481             =
+_ O _
+"Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg  =
+_ _ O
+ fuer einen Freien Staat voll Freier B=FCrger" | im Internet! |   im Irak! =
+  O O O
+ret =3D do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM | TCPA)=
+);
+
+--bpnyAEUPSyO7P1Gm
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.5 (GNU/Linux)
+
+iD8DBQFBd3egHb1edYOZ4bsRAjiYAKCGSC9V5w2kdxwg0IEMdrNz/AtYggCdFNim
+HrmvljvO83mhAXd2vnQzg5w=
+=kfus
+-----END PGP SIGNATURE-----
+
+--bpnyAEUPSyO7P1Gm--

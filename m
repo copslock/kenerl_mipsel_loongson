@@ -1,39 +1,65 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0UJiwo18690
-	for linux-mips-outgoing; Wed, 30 Jan 2002 11:44:58 -0800
-Received: from idiom.com (espin@idiom.com [216.240.32.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0UJitd18686
-	for <linux-mips@oss.sgi.com>; Wed, 30 Jan 2002 11:44:55 -0800
-Received: (from espin@localhost)
-	by idiom.com (8.9.3/8.9.3) id KAA54812;
-	Wed, 30 Jan 2002 10:44:51 -0800 (PST)
-Date: Wed, 30 Jan 2002 10:44:51 -0800
-From: Geoffrey Espin <espin@idiom.com>
-To: James Simmons <jsimmons@transvirtual.com>
-Cc: "Steven J. Hill" <sjhill@cotw.com>, linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.2/8.11.3) id g0UJkTc18786
+	for linux-mips-outgoing; Wed, 30 Jan 2002 11:46:29 -0800
+Received: from ns1.ltc.com (vsat-148-63-243-254.c3.sb4.mrt.starband.net [148.63.243.254])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0UJkKd18782
+	for <linux-mips@oss.sgi.com>; Wed, 30 Jan 2002 11:46:21 -0800
+Received: from prefect (unknown [10.1.1.86])
+	by ns1.ltc.com (Postfix) with SMTP
+	id AB315590AB; Wed, 30 Jan 2002 13:38:48 -0500 (EST)
+Message-ID: <082201c1a9be$81198be0$5601010a@prefect>
+From: "Bradley D. LaRonde" <brad@ltc.com>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+   "Geoffrey Espin" <espin@idiom.com>
+Cc: "Steven J. Hill" <sjhill@cotw.com>, <linux-mips@oss.sgi.com>
+References: <Pine.GSO.3.96.1020130193233.8443D-100000@delta.ds2.pg.gda.pl>
 Subject: Re: [PATCH] Compiler warnings and remove unused code....
-Message-ID: <20020130104450.B49140@idiom.com>
-References: <20020130102340.A37609@idiom.com> <Pine.LNX.4.10.10201301039050.7609-100000@www.transvirtual.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.1i
-In-Reply-To: <Pine.LNX.4.10.10201301039050.7609-100000@www.transvirtual.com>; from James Simmons on Wed, Jan 30, 2002 at 10:39:27AM -0800
+Date: Wed, 30 Jan 2002 13:46:58 -0500
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-James,
+I think --noinhibit-exec worked for me as a temporary measure until I
+upgraded the kernel.
 
+Regards,
+Brad
+
+----- Original Message -----
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: "Geoffrey Espin" <espin@idiom.com>
+Cc: "Steven J. Hill" <sjhill@cotw.com>; <linux-mips@oss.sgi.com>
+Sent: Wednesday, January 30, 2002 1:35 PM
+Subject: Re: [PATCH] Compiler warnings and remove unused code....
+
+
+> On Wed, 30 Jan 2002, Geoffrey Espin wrote:
+>
+> > drivers/char/char.o(.data+0x3958): undefined reference to `local symbols
+in discarded section .text.exit'
+> > drivers/net/net.o(.data+0x17c): undefined reference to `local symbols in
+discarded section .text.exit'
+> > drivers/usb/usbdrv.o(.data+0x4b0): undefined reference to `local symbols
+in discarded section .text.exit'
+> > make: *** [vmlinux] Error 1
+> >
+> >
 > > This is linux.2.4.16 + sourceforge/mipslinux (a few weeks old).
-> I'm glad you tried it. I was tempted to apply it to CVS. 
-
-??? apparently it should work for you at 2.4.17.
-
-Not sure what you mean by "apply it to CVS".
-
-It would be nice to have a newer "recommended/suggested" GCC.
-Though to be honest I've never had any problem with HJ Lu's rh71.
-Just thought I do the favour of "tester", for Steve.
-
-Geoff
--- 
-espin@idiom.com
+>
+>  These errors are not MIPS-specific.  They were introduced by a stricter
+> symbol checking in recent binutils.  Many of them (but possibly not all)
+> are removed in Linux 2.4.17.  Please try the current version and see if
+> they persist.
+>
+> --
+> +  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
+> +--------------------------------------------------------------+
+> +        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+>

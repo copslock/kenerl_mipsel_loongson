@@ -1,45 +1,61 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9O0i0Z20365
-	for linux-mips-outgoing; Tue, 23 Oct 2001 17:44:00 -0700
-Received: from dea.linux-mips.net (a1as04-p137.stg.tli.de [195.252.186.137])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9O0huD20358
-	for <linux-mips@oss.sgi.com>; Tue, 23 Oct 2001 17:43:57 -0700
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id f9O0h9421492;
-	Wed, 24 Oct 2001 02:43:09 +0200
-Date: Wed, 24 Oct 2001 02:43:08 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Petko Manolov <pmanolov@Lnxw.COM>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: Malta probs
-Message-ID: <20011024024308.A21460@dea.linux-mips.net>
-References: <200110230102.f9N12kb20443@oss.sgi.com> <3BD5D236.8D0CE33C@lnxw.com> <20011023224718.A6283@dea.linux-mips.net> <3BD5E193.BB41A907@lnxw.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <3BD5E193.BB41A907@lnxw.com>; from pmanolov@Lnxw.COM on Tue, Oct 23, 2001 at 02:30:59PM -0700
-X-Accept-Language: de,en,fr
+	by oss.sgi.com (8.11.2/8.11.3) id f9O6hgP28869
+	for linux-mips-outgoing; Tue, 23 Oct 2001 23:43:42 -0700
+Received: from post.webmailer.de (natpost.webmailer.de [192.67.198.65])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9O6hbD28864
+	for <linux-mips@oss.sgi.com>; Tue, 23 Oct 2001 23:43:37 -0700
+Received: from scotty.mgnet.de (pD90247CB.dip.t-dialin.net [217.2.71.203])
+	by post.webmailer.de (8.9.3/8.8.7) with SMTP id IAA14898
+	for <linux-mips@oss.sgi.com>; Wed, 24 Oct 2001 08:43:35 +0200 (MET DST)
+Received: (qmail 11718 invoked from network); 24 Oct 2001 06:43:34 -0000
+Received: from spock.mgnet.de (192.168.1.4)
+  by scotty.mgnet.de with SMTP; 24 Oct 2001 06:43:34 -0000
+Date: Wed, 24 Oct 2001 08:43:35 +0200 (CEST)
+From: Klaus Naumann <spock@mgnet.de>
+To: Ralf Baechle <ralf@oss.sgi.com>
+cc: "H . J . Lu" <hjl@lucon.org>, linux-mips@oss.sgi.com,
+   binutils@sourceware.cygnus.com
+Subject: Re: The Linux binutils 2.11.92.0.7 is released.
+In-Reply-To: <20011023171823.B3644@dea.linux-mips.net>
+Message-ID: <Pine.LNX.4.21.0110240842170.2349-100000@spock.mgnet.de>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Oct 23, 2001 at 02:30:59PM -0700, Petko Manolov wrote:
+On Tue, 23 Oct 2001, Ralf Baechle wrote:
 
-> > What CPU are you using; can you send me your .config file?
+> On Tue, Oct 23, 2001 at 02:41:33PM +0200, Klaus Naumann wrote:
 > 
-> I am using R4Kc core on Malta board; here is the .config file.
+> > > > > 1. You don't compile shared libraries with -fpic/-fPIC.
+> > > > > 2. Even if you do, you may overflow GOT table.
+> > > > 
+> > > > Well, even adding -fpic doesn't help a whole lot.
+> > > > What is a GOT table ? And do you see any fix for the problem ?
+> > > 
+> > > -fpic is default on Linux/MIPS and as such adding that option won't have any
+> > > effect.
+> > 
+> > I also tried -fPIC . -Wa,-xgot is also the default. -G X doesn't
+> > change anything ...
 > 
-> BTW the kernel silently hang after executing execve("/sbin/init")
-> in init/main.c file. I suspect some of the tlb handling code
-> which was recently changed is causing the crash. Not having any
-> register dump also increase the entropy :-)
+> -G is not supported with PIC and unless somebody really had his crack
+> bucketwise or otherwise hates performance -Wa,-xgot isn't default.  ATM
 
-It wasn't really changed, the whole lump of arch/mips/mm/ was just
-restructured in a way that allows adding of new CPU types and - even
-more important - get the code maintainable again.  As it is right now
-we had a bunch of almost identical copies of the TLB flushing code,
-some even buggy.  Now way I'd continue to deal with that.  So now let's
-fix the breakage asap.  As there were no functional changes any bugs
-are of rather trivial nature.
+No,
 
-  Ralf
+I meant it's default in the mozilla Makefile. Not really default
+in binutils.
+
+So to ask again, there is no other solution than -xgot ?
+And if that's the only solution, what are the issues ? Only
+bigger code ?
+
+	Thx, Klaus
+
+
+-- 
+Full Name   : Klaus Naumann     | (http://www.mgnet.de/) (Germany)
+Nickname    : Spock             | Org.: Mad Guys Network
+Phone / FAX : ++49/177/7862964  | E-Mail: (spock@mgnet.de)
+PGP Key     : www.mgnet.de/keys/key_spock.txt

@@ -1,46 +1,45 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBILUV416190
-	for linux-mips-outgoing; Tue, 18 Dec 2001 13:30:31 -0800
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id fBILURo16187
-	for <linux-mips@oss.sgi.com>; Tue, 18 Dec 2001 13:30:27 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id fBIKUPg15856;
-	Tue, 18 Dec 2001 18:30:25 -0200
-Date: Tue, 18 Dec 2001 18:30:25 -0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: "P.S.Santhosh" <ps.santhosh@gda.tech.co.in.sgi.com>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: SiByte SB1250 or Broadcom SBC12500
-Message-ID: <20011218183025.A14945@dea.linux-mips.net>
-References: <01121813364603.01162@gda_Santhosh>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <01121813364603.01162@gda_Santhosh>; from ps.santhosh@gda.tech.co.in.sgi.com on Tue, Dec 18, 2001 at 01:36:46PM +0530
-X-Accept-Language: de,en,fr
+	by oss.sgi.com (8.11.2/8.11.3) id fBILV4D16256
+	for linux-mips-outgoing; Tue, 18 Dec 2001 13:31:04 -0800
+Received: from sgi.com (sgi.SGI.COM [192.48.153.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBILUxo16253;
+	Tue, 18 Dec 2001 13:31:00 -0800
+Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id MAB07240; Tue, 18 Dec 2001 12:29:08 -0800 (PST)
+	mail_from (macro@ds2.pg.gda.pl)
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id VAA09794;
+	Tue, 18 Dec 2001 21:22:50 +0100 (MET)
+Date: Tue, 18 Dec 2001 21:22:50 +0100 (MET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Jun Sun <jsun@mvista.com>
+cc: Ralf Baechle <ralf@oss.sgi.com>, Jim Paris <jim@jtan.com>,
+   linux-mips@oss.sgi.com
+Subject: Re: [ppopov@mvista.com: Re: [Linux-mips-kernel]ioremap & ISA]
+In-Reply-To: <3C1F9AD2.1269192E@mvista.com>
+Message-ID: <Pine.GSO.3.96.1011218211601.5786C-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Dec 18, 2001 at 01:36:46PM +0530, P.S.Santhosh wrote:
-> From: "P.S.Santhosh" <ps.santhosh@gda.tech.co.in.sgi.com>
-                                    ^^^^^^^^^^^^^^^^^^^^^^
+On Tue, 18 Dec 2001, Jun Sun wrote:
 
-And once you fix your nameserver you actually have chances of receiving
-mail.
+> I was thinking most ISA dirvers should simply use inb/outb to access ioports.
+> Don't really any ISA devices have their own memory space.  But, anyway, who
+> can still remember those dark ages?
 
->   Hai..
-> 
->   My name santhosh I doing one embedded project..
-> shall I get
-> 
->   1.Linux 64 bit Kernel
->   2. MIPS Kernel
->   3. Boot code for SiByte
+ The so called "shared memory" (mapped in the ISA space; usually below
+1MB) for frame storage existed on a few models of better ISA Ethernet
+boards.  And, of course, VGA boards have memory mapped in the ISA space.
+Certain implementations occupy up to 4MB of ISA space when used in a SVGA
+mode.
 
-The 64-bit kernel code for the Sibyte is still in it's early stages.  At
-this time it seems better to try to get away with the 32-bit kernel
-despite the ridiculous small 32-bit address space.
-
-  Ralf
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

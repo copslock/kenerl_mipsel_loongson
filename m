@@ -1,43 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Oct 2003 17:44:39 +0100 (BST)
-Received: from [IPv6:::ffff:66.121.16.190] ([IPv6:::ffff:66.121.16.190]:185
-	"EHLO trid-mail1.tridentmicro.com") by linux-mips.org with ESMTP
-	id <S8225407AbTJYQoh> convert rfc822-to-8bit; Sat, 25 Oct 2003 17:44:37 +0100
-content-class: urn:content-classes:message
-Subject: need help on bus error problem
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Oct 2003 13:55:38 +0000 (GMT)
+Received: from 66-152-54-2.ded.btitelecom.net ([IPv6:::ffff:66.152.54.2]:46179
+	"EHLO mmc.atmel.com") by linux-mips.org with ESMTP
+	id <S8225344AbTJ0Nzc>; Mon, 27 Oct 2003 13:55:32 +0000
+Received: from ares.mmc.atmel.com (ares.mmc.atmel.com [10.127.240.37])
+	by mmc.atmel.com (8.9.3/8.9.3) with ESMTP id IAA17745
+	for <linux-mips@linux-mips.org>; Mon, 27 Oct 2003 08:55:20 -0500 (EST)
+Received: from localhost (dkesselr@localhost)
+	by ares.mmc.atmel.com (8.9.3/8.9.3) with ESMTP id IAA19653
+	for <linux-mips@linux-mips.org>; Mon, 27 Oct 2003 08:55:19 -0500 (EST)
+X-Authentication-Warning: ares.mmc.atmel.com: dkesselr owned process doing -bs
+Date: Mon, 27 Oct 2003 08:55:19 -0500 (EST)
+From: David Kesselring <dkesselr@mmc.atmel.com>
+To: linux-mips@linux-mips.org
+Subject: Relocation errors
+Message-ID: <Pine.GSO.4.44.0310270852380.19642-100000@ares.mmc.atmel.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="big5"
-Content-Transfer-Encoding: 8BIT
-Date: Sat, 25 Oct 2003 09:44:35 -0700
-Message-ID: <92F2591F460F684C9C309EB0D33256FA01B54329@trid-mail1.tridentmicro.com>
-X-MimeOLE: Produced By Microsoft Exchange V6.0.6249.0
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: need help on bus error problem
-Thread-Index: AcObF0X0mItjLbcfQ4OzPzvO8C2f1w==
-From: "Teresa Tao" <TERESAT@TTI-DM.COM>
-To: <linux-mips@linux-mips.org>
-Return-Path: <TERESAT@TTI-DM.COM>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <dkesselr@mmc.atmel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3512
+X-archive-position: 3513
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: TERESAT@TTI-DM.COM
+X-original-sender: dkesselr@mmc.atmel.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi there,
+I'm getting the error "Unhandled relocation of type xx" on insmod. Are the
+"types" documented somewhere? I am I correct that these "types" are
+architecture specific?
 
-I am working on an real time video playback applicaion on a mips cpu. But after my video application play a while like 5 to 10 minutes, a bus error happened.
-
-We add some debug meesage in the kernel, so we know that after the do_ade function inside the unalign.c, the bus error happens for the opcode lw or sw. So my guess is that I have an unaligned memory pointer(not in 4 byte boundary).
-But my puzzle is that if I have an unaligned memory pointer, it should happen at the first loop I playback, how come it happens after it plays several loops?
-Is there a possibility that my application's stack being trashed after a while? but I don't have recursive calls inside my application.
-
-
-Thanks in advance!
-
-Teresa
+David Kesselring
+Atmel MMC
+dkesselr@mmc.atmel.com
+919-462-6587

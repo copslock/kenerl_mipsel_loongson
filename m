@@ -1,64 +1,62 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id XAA44863 for <linux-archive@neteng.engr.sgi.com>; Sun, 14 Mar 1999 23:18:44 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA21510 for <linux-archive@neteng.engr.sgi.com>; Mon, 15 Mar 1999 15:08:52 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id XAA10530
+	id PAA88439
 	for linux-list;
-	Sun, 14 Mar 1999 23:17:58 -0800 (PST)
+	Mon, 15 Mar 1999 15:06:59 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from deliverator.sgi.com (deliverator.sgi.com [150.166.91.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id XAA92612
+	via ESMTP id PAA38911
 	for <linux@cthulhu.engr.sgi.com>;
-	Sun, 14 Mar 1999 23:17:56 -0800 (PST)
-	mail_from (torbjorn.gannholm@fra.se)
-Received: from x.fra.se (x.fra.se [193.12.220.1]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via SMTP id XAA06121
-	for <linux@cthulhu.engr.sgi.com>; Sun, 14 Mar 1999 23:17:50 -0800 (PST)
-	mail_from (torbjorn.gannholm@fra.se)
-Received: from fra.se by x.fra.se via ESMTP (940816.SGI.8.6.9/940406.SGI.AUTO)
-	 id IAA03920; Mon, 15 Mar 1999 08:23:54 +0100
-Message-ID: <36ECB588.F39BF967@fra.se>
-Date: Mon, 15 Mar 1999 08:23:53 +0100
-From: Torbjorn Gannholm <torbjorn.gannholm@fra.se>
-X-Mailer: Mozilla 4.05 [en] (X11; I; IRIX 5.3 IP12)
-MIME-Version: 1.0
-To: ralf@uni-koblenz.de
-CC: linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
-        linux-mips@vger.rutgers.edu
-Subject: Re: FAQ
-References: <19990314010841.A3815@uni-koblenz.de>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
+	Mon, 15 Mar 1999 15:06:57 -0800 (PST)
+	mail_from (deliverator.sgi.com!rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
+Received: from rachael.franken.de (rachael.franken.de [193.175.24.38]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id PAA04909
+	for <linux@cthulhu.engr.sgi.com>; Mon, 15 Mar 1999 15:06:41 -0800 (PST)
+	mail_from (rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
+Received: from hub-fue by rachael.franken.de
+	via rmail with uucp
+	id <m10MejN-0027TUC@rachael.franken.de>
+	for cthulhu.engr.sgi.com!linux; Mon, 15 Mar 1999 22:17:01 +0100 (MET)
+	(Smail-3.2 1996-Jul-4 #4 built DST-Sep-8)
+Received: by hub-fue.franken.de (Smail3.1.29.1 #35)
+	id m10MejG-002OuWC; Mon, 15 Mar 99 22:16 MET
+Received: (from tsbogend@localhost)
+	by alpha.franken.de (8.8.7/8.8.5) id WAA02363
+	for linux@cthulhu.engr.sgi.com; Mon, 15 Mar 1999 22:03:41 +0100
+Message-ID: <19990315220341.C2301@alpha.franken.de>
+Date: Mon, 15 Mar 1999 22:03:41 +0100
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To: linux@cthulhu.engr.sgi.com
+Subject: newport console problems, some hardware questions
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.93.2
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-ralf@uni-koblenz.de wrote:
+Ok, I finally found the reason for the video corruptions with the new
+newport console some reported to me. It happens only, when there are
+less than 1024 scanlines on the screen. My fix is to enable the
+faster scrolling only with 1024 scanline screen modes. This slows
+down scrolling, and I hope there is a better solution (but I doubt it).
 
-> Hi,
->
-> I've just put my rewrite of the Linux/MIPS FAQ under CVS control on
-> linus.linux.sgi.com in the module FAQ.   I want to invite people to
-> contribute by proofreading, spellchecking and commenting.
->
-> The FAQ rewrite is using the Linux SGML-Tools package to generate
-> FAQ versions in various data formats.  When I find the time I'll
-> arrange that the websites will automatically be updated by the
-> most current version; but somebody else will want to do that?
-> (hint, hint)
->
->   Ralf
+It looks like video rams get only refreshed, when they are displayed. 
+Is this true ? I've tried enabling the vram refresh in the config
+register, but that didn't change anything. Is there are a way to avoid
+losing the content of offscreen scanlines ?
 
- There is a proofreading-group collected by the FSF. Mail requests to
-proofread@gnu.org. You will probably get lots of answers, so you might
-need to organize the work so as to limit the mail volume.
+Another question:
 
---
-/Torbjörn
+As the newport problem is mostly solved, I'll try to get the scsi fixed.
+I'm now able to reproduce a complete lockup with my DAT drive. While
+looking for the reason, I've got GIO fifo full interrupts (INT2 local
+interrupt 0). Can someone explain, when these interrupts occur ?
 
-This message is a personal message from Torbjörn Gannholm
-and does not necessarily represent the opinion of my employer.
+Thomas.
+
+-- 
+   This device has completely bogus header. Compaq scores again :-|
+It's a host bridge, but it should be called ghost bridge instead ;^)
+                                        [Martin `MJ' Mares on linux-kernel]

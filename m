@@ -1,66 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Mar 2003 00:54:22 +0000 (GMT)
-Received: from toclean2.bellnexxia.net ([IPv6:::ffff:209.226.175.37]:7388 "EHLO
-	toclean2-srv.bellnexxia.net") by linux-mips.org with ESMTP
-	id <S8225207AbTCVAyU>; Sat, 22 Mar 2003 00:54:20 +0000
-Received: from buoy.thelemkes.ca ([64.229.251.113])
-          by tomts23-srv.bellnexxia.net
-          (InterMail vM.5.01.04.19 201-253-122-122-119-20020516) with ESMTP
-          id <20030321200043.SFYN24451.tomts23-srv.bellnexxia.net@buoy.thelemkes.ca>;
-          Fri, 21 Mar 2003 15:00:43 -0500
-Received: from mast.thelemkes.ca (mast.thelemkes.ca [192.168.62.70])
-	by buoy.thelemkes.ca (Postfix) with ESMTP
-	id 338F11FF3; Fri, 21 Mar 2003 15:00:43 -0500 (EST)
-Subject: Re: Running on R4k/R3k Indigo
-From: James Lemke <jim@thelemkes.ca>
-To: Achim Hensel <achim.hensel@ruhr-uni-bochum.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Mar 2003 21:23:22 +0000 (GMT)
+Received: from honk1.physik.uni-konstanz.de ([IPv6:::ffff:134.34.140.224]:29421
+	"EHLO honk1.physik.uni-konstanz.de") by linux-mips.org with ESMTP
+	id <S8225207AbTCVVXV>; Sat, 22 Mar 2003 21:23:21 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP
+	id E6B212BC31; Sat, 22 Mar 2003 22:23:18 +0100 (CET)
+Received: from honk1.physik.uni-konstanz.de ([127.0.0.1])
+ by localhost (honk [127.0.0.1:10024]) (amavisd-new) with ESMTP id 15044-06;
+ Sat, 22 Mar 2003 22:23:17 +0100 (CET)
+Received: from bogon.sigxcpu.org (kons-d9bb5455.pool.mediaWays.net [217.187.84.85])
+	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP
+	id 9EC772BC2D; Sat, 22 Mar 2003 22:23:16 +0100 (CET)
+Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
+	id 440031735C; Sat, 22 Mar 2003 22:20:40 +0100 (CET)
+Date: Sat, 22 Mar 2003 22:20:39 +0100
+From: Guido Guenther <agx@sigxcpu.org>
+To: ralf@linux-mips.org
 Cc: linux-mips@linux-mips.org
-In-Reply-To: <20030318234844.2e465609.achim.hensel@ruhr-uni-bochum.de>
-References: <20030318234844.2e465609.achim.hensel@ruhr-uni-bochum.de>
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Mailer: Ximian Evolution 1.0.8 (1.0.8-10) 
-Date: 21 Mar 2003 15:00:52 -0500
-Message-Id: <1048276852.32056.25.camel@mast.thelemkes.ca>
+Subject: [PATCH 2.5]: move do_signal32 declaration upwards
+Message-ID: <20030322212039.GA19984@bogon.ms20.nix>
+Mail-Followup-To: Guido Guenther <agx@sigxcpu.org>,
+	ralf@linux-mips.org, linux-mips@linux-mips.org
 Mime-Version: 1.0
-Return-Path: <jim@thelemkes.ca>
+Content-Type: multipart/mixed; boundary="7JfCtLOvnd9MIVvH"
+Content-Disposition: inline
+User-Agent: Mutt/1.4i
+Return-Path: <agx@sigxcpu.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1792
+X-archive-position: 1793
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jim@thelemkes.ca
+X-original-sender: agx@sigxcpu.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 2003-03-18 at 17:48, Achim Hensel wrote:
-> Hello, folks (of both lists)
-> 
-> I recently got both an R4k and an R3k SGI Indigo. 
-> 
-> I know, none of them is supported at the moment.
-> So, I want to try to change that.
-> 
-> I hadn't started yet, but every help is appreciated.
-> 
-> CU,
-> 	Achim
-> 
-> P.S.: This was posted to both lists, as I don't know, which OS 
-> has the better starting point for my computers.
-Hi Achim,
-I'm also thinking about porting Linux to an R3K Indigo.
-So I'm curious --
-Did you get any response to your post on linux-mips@linux-mips.org or
-port-sgimips@netbsd.org?
-Have you made any progress yet?
 
-Cheers,
-Jim.
+--7JfCtLOvnd9MIVvH
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
--- 
-Jim Lemke   jim@TheLemkes.ca   Barrie, Ontario
-1986 Concours, COG #2637    1992 ST1100, STOC #3750
-Those who dance are considered insane
-by those who can't hear the music.  George Carlin
+Hi,
+do_signal32 is needed in do_signal but declared after that function
+which makes this an implicit declaration. Moving the declaration upward
+fixes the warning. Patch attached, please apply.
+ -- Guido
+
+--7JfCtLOvnd9MIVvH
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename="do_signal32.diff"
+
+Index: arch/mips64/kernel/signal.c
+===================================================================
+RCS file: /home/cvs/linux/arch/mips64/kernel/signal.c,v
+retrieving revision 1.37
+diff -u -p -r1.37 signal.c
+--- arch/mips64/kernel/signal.c	6 Mar 2003 21:30:48 -0000	1.37
++++ arch/mips64/kernel/signal.c	22 Mar 2003 21:18:45 -0000
+@@ -341,6 +341,10 @@ static inline void handle_signal(unsigne
+ 	}
+ }
+ 
++
++extern int do_signal32(sigset_t *oldset, struct pt_regs *regs);
++extern int do_irix_signal(sigset_t *oldset, struct pt_regs *regs);
++
+ asmlinkage int do_signal(sigset_t *oldset, struct pt_regs *regs)
+ {
+ 	siginfo_t info;
+@@ -377,8 +381,6 @@ asmlinkage int do_signal(sigset_t *oldse
+ 	return 0;
+ }
+ 
+-extern int do_irix_signal(sigset_t *oldset, struct pt_regs *regs);
+-extern int do_signal32(sigset_t *oldset, struct pt_regs *regs);
+ 
+ /*
+  * notification of userspace execution resumption
+
+--7JfCtLOvnd9MIVvH--

@@ -1,60 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Dec 2004 23:35:13 +0000 (GMT)
-Received: from pimout3-ext.prodigy.net ([IPv6:::ffff:207.115.63.102]:15025
-	"EHLO pimout3-ext.prodigy.net") by linux-mips.org with ESMTP
-	id <S8225346AbULHXfG>; Wed, 8 Dec 2004 23:35:06 +0000
-Received: from 127.0.0.1 (adsl-68-124-224-225.dsl.snfc21.pacbell.net [68.124.224.225])
-	by pimout3-ext.prodigy.net (8.12.10 milter /8.12.10) with ESMTP id iB8NZ1mu380132
-	for <linux-mips@linux-mips.org>; Wed, 8 Dec 2004 18:35:02 -0500
-Received: from  [63.194.214.47] by 127.0.0.1
-  (ArGoSoft Mail Server Pro for WinNT/2000/XP, Version 1.8 (1.8.6.7)); Wed, 8 Dec 2004 15:36:52 -0800
-Message-ID: <41B78F83.9010001@embeddedalley.com>
-Date: Wed, 08 Dec 2004 15:34:27 -0800
-From: Pete Popov <ppopov@embeddedalley.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.3) Gecko/20040913
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Dec 2004 01:05:56 +0000 (GMT)
+Received: from smtp105.rog.mail.re2.yahoo.com ([IPv6:::ffff:206.190.36.83]:5244
+	"HELO smtp105.rog.mail.re2.yahoo.com") by linux-mips.org with SMTP
+	id <S8225346AbULIBFu>; Thu, 9 Dec 2004 01:05:50 +0000
+Received: from unknown (HELO ?192.168.1.100?) (charles.eidsness@rogers.com@24.157.59.167 with plain)
+  by smtp105.rog.mail.re2.yahoo.com with SMTP; 9 Dec 2004 01:05:43 -0000
+Message-ID: <41B7A4CF.7090203@ieee.org>
+Date: Wed, 08 Dec 2004 20:05:19 -0500
+From: Charles Eidsness <charles.eidsness@ieee.org>
+Reply-To: charles.eidsness@ieee.org
+User-Agent: Mozilla Thunderbird 0.9 (Windows/20041103)
 X-Accept-Language: en-us, en
 MIME-Version: 1.0
-To: charles.eidsness@ieee.org
+To: ppopov@embeddedalley.com
 CC: linux-mips@linux-mips.org
 Subject: Re: Au1000 Ethernet Driver using NAPI
-References: <41B764AB.5070201@ieee.org>
-In-Reply-To: <41B764AB.5070201@ieee.org>
-X-Enigmail-Version: 0.86.1.0
-X-Enigmail-Supports: pgp-inline, pgp-mime
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ArGoMail-Authenticated: ppopov@embeddedalley.com
-Return-Path: <ppopov@embeddedalley.com>
+Return-Path: <charles.eidsness@ieee.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6610
+X-archive-position: 6611
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@embeddedalley.com
+X-original-sender: charles.eidsness@ieee.org
 Precedence: bulk
 X-list: linux-mips
 
+Pete Popov wrote:
+ >
+ >Very cool, thanks. Is the patch for 2.4 or 2.6?
+ >
+ >Pete
 
-Very cool, thanks. Is the patch for 2.4 or 2.6?
+Hi Pete,
 
-Pete
+It's for 2.6, I'm not sure if it will work on 2.4.
+
+There are a couple of possible issues with this method that I probably 
+should have mentioned in my first email. Since the Au1000 shares an 
+interrupt for the TX and RX streams I had to lump the two together and 
+as a result there may be an increase in TX latency. Also, the MAC's DMA 
+can only queue up a maximum of 4 packets at a time so depending on how 
+long the processor spends clearing out the queue there may be some 
+buffer overruns. I've experienced neither of these issues but my testing 
+so far has been pretty application specific.
+
+Cheers,
+Charles
 
 Charles Eidsness wrote:
-> Hi All,
-> 
-> I was having a problem running a streaming audio application on my 
-> Au1000 processor when the Ethernet port was being bombarded with 
-> packets. All of the interrupt servicing was hogging my precious 
-> processing power and there was nothing left for my app. There's a new 
-> method for writing Ethernet drivers called NAPI which resolves this 
-> issue (somewhat). I converted the au1000's Ethernet driver to use this 
-> method. If you're interested you can find a patch that applys my changes 
-> to the most recent kernel here:
-> 
-> http://members.rogers.com/charles.eidsness/linux-au1000_eth.napi.patch
-> 
-> Cheers,
-> Charles
-> 
-> 
+ > Hi All,
+ >
+ > I was having a problem running a streaming audio application on my
+ > Au1000 processor when the Ethernet port was being bombarded with
+ > packets. All of the interrupt servicing was hogging my precious
+ > processing power and there was nothing left for my app. There's a new
+ > method for writing Ethernet drivers called NAPI which resolves this
+ > issue (somewhat). I converted the au1000's Ethernet driver to use
+this
+ > method. If you're interested you can find a patch that applys my
+changes
+ > to the most recent kernel here:
+ >
+ >
+http://members.rogers.com/charles.eidsness/linux-au1000_eth.napi.patch
+ >
+ > Cheers,
+ > Charles
+ >
+ >

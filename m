@@ -1,48 +1,44 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fAGDqi028468
-	for linux-mips-outgoing; Fri, 16 Nov 2001 05:52:44 -0800
-Received: from hlubocky.del.cz (hlubocky.del.cz [212.27.221.67])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAGDqeg28465
-	for <linux-mips@oss.sgi.com>; Fri, 16 Nov 2001 05:52:40 -0800
-Received: from ladis (helo=localhost)
-	by hlubocky.del.cz with local-esmtp (Exim 3.12 #1 (Debian))
-	id 164jPW-000786-00; Fri, 16 Nov 2001 14:52:02 +0100
-Date: Fri, 16 Nov 2001 14:52:01 +0100 (CET)
-From: Ladislav Michl <ladislav.michl@hlubocky.del.cz>
-To: Guido Guenther <agx@sigxcpu.org>
-cc: linux-mips@oss.sgi.com
-Subject: Re: [PATCH] indy_int clenaup
-In-Reply-To: <20011116142143.A23733@galadriel.physik.uni-konstanz.de>
-Message-ID: <Pine.LNX.4.21.0111161427220.26728-100000@hlubocky.del.cz>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.2/8.11.3) id fAJA5lN14178
+	for linux-mips-outgoing; Mon, 19 Nov 2001 02:05:47 -0800
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id fAJA5hW14171
+	for <linux-mips@oss.sgi.com>; Mon, 19 Nov 2001 02:05:43 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id fAJ95Ff27568;
+	Mon, 19 Nov 2001 20:05:15 +1100
+Date: Mon, 19 Nov 2001 20:05:15 +1100
+From: Ralf Baechle <ralf@uni-koblenz.de>
+To: renc stone <renwei@huawei.com>
+Cc: linux-mips@oss.sgi.com, linux-mips@fnet.fr
+Subject: Re: ld error " linking PIC files with non-PIC files "
+Message-ID: <20011119200514.A26473@dea.linux-mips.net>
+References: <20011026161259.54925.qmail@web11908.mail.yahoo.com> <20011113200948.75977.qmail@web11908.mail.yahoo.com> <20011114111834.B10410@dea.linux-mips.net> <000a01c170d0$e8662000$101d690a@huawei.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <000a01c170d0$e8662000$101d690a@huawei.com>; from renwei@huawei.com on Mon, Nov 19, 2001 at 04:05:09PM +0800
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, 16 Nov 2001, Guido Guenther wrote:
+On Mon, Nov 19, 2001 at 04:05:09PM +0800, renc stone wrote:
 
-> On Fri, Nov 16, 2001 at 01:49:22PM +0100, Ladislav Michl wrote:
-> > note for those, who are waiting for VINO driver: at the beginning I was
-> > unable to start DMA transfer. now i'm unable to stop it... so to bring my
-> > ego from dust, i decided to write HAL2 driver, which needs HPC interupts.
-> > this patch is HAL2 driver by-product...
-> I've done some work on porting Ulf's old ALSA HAL2 codebase to a more recent
-> (0.9) version of alsa, could that be of any use to you? 
+> That's the same problem as mine.
+> I try to use 64bit long long div& mod in one module,
+> and find I miss some _divdi3 and something like that.
+> 
+> when I try to link my module with libgcc.a, in my mipsel-glibc 2.95.3,
+> the ld report the same thing.
+> 
+> Does it mean I can't use 64bit div in module? How to get rid of this error?
 
-wow, so many people working on HAL2 :-) Klaus?
+Again, it's a grave mistake to mix pic and non-pic libraries.
 
-this is not useful for me, moreover i reworked HPC buffers handling (so
-maybye, it will be usefull for you :-)). OSS kernel driver is working now.
-it need some testing and cleanup, but it is mostly finished. i want to
-listen music, so i implemented pcm playback and mixer only.
+To solve this you must either supply your own non-pic versions of the
+routines in question or - and better - try to avoid them.  In your case
+take a look at <asm/div64.h> which supplies a 64-bit by 32-bit division
+routine.
 
-my plan is:
-1. convience Ralf to include indy_int patch to cvs :-)
-2. write and send CONFIG_NEW_TIME_C patch for Indy
-3. once these will be included, send HAL2 driver.
-
-btw, if anyone wants to look at vino driver here it is:
-ftp://ftp.psi.cz/pub/ladis/vino/
-
-regards,
-ladis
+  Ralf

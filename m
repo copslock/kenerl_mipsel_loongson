@@ -1,52 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jan 2003 23:34:44 +0000 (GMT)
-Received: from rj.sgi.com ([IPv6:::ffff:192.82.208.96]:58815 "EHLO rj.sgi.com")
-	by linux-mips.org with ESMTP id <S8225198AbTANXeo>;
-	Tue, 14 Jan 2003 23:34:44 +0000
-Received: from larry.melbourne.sgi.com (larry.melbourne.sgi.com [134.14.52.130])
-	by rj.sgi.com (8.12.2/8.12.2/linux-outbound_gateway-1.2) with SMTP id h0ELYnG8008633;
-	Tue, 14 Jan 2003 13:34:49 -0800
-Received: from kao2.melbourne.sgi.com (kao2.melbourne.sgi.com [134.14.55.180]) by larry.melbourne.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id KAA14792; Wed, 15 Jan 2003 10:34:39 +1100
-Received: by kao2.melbourne.sgi.com (Postfix, from userid 16331)
-	id 71CA83000B8; Wed, 15 Jan 2003 10:34:38 +1100 (EST)
-Received: from kao2.melbourne.sgi.com (localhost [127.0.0.1])
-	by kao2.melbourne.sgi.com (Postfix) with ESMTP
-	id 60D7585; Wed, 15 Jan 2003 10:34:38 +1100 (EST)
-X-Mailer: exmh version 2.4 06/23/2000 with nmh-1.0.4
-From: Keith Owens <kaos@ocs.com.au>
-To: "Gilad Benjamini" <gilad@riverhead.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: insmod failure: "Unhandled relocation" errors 
-In-reply-to: Your message of "Tue, 14 Jan 2003 12:06:46 +0200."
-             <001801c2bbb4$a6177de0$7100000a@riverhead.com> 
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jan 2003 01:02:48 +0000 (GMT)
+Received: from cpe-24-221-190-179.ca.sprintbbd.net ([IPv6:::ffff:24.221.190.179]:45762
+	"EHLO myware.akkadia.org") by linux-mips.org with ESMTP
+	id <S8225198AbTAOBCr>; Wed, 15 Jan 2003 01:02:47 +0000
+Received: from redhat.com (myware.akkadia.org [192.168.7.70])
+	(authenticated bits=0)
+	by myware.akkadia.org (8.12.5/8.12.5) with ESMTP id h0F131YA009042;
+	Tue, 14 Jan 2003 17:03:02 -0800
+Message-ID: <3E24B345.3000408@redhat.com>
+Date: Tue, 14 Jan 2003 17:03:01 -0800
+From: Ulrich Drepper <drepper@redhat.com>
+Organization: Red Hat, Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.3b) Gecko/20030111
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: Guido Guenther <agx@sigxcpu.org>
+CC: libc-alpha@sources.redhat.com, linux-mips@linux-mips.org
+Subject: Re: [PATCH] INTERNAL_SYSCALL for linux-mips
+References: <20030114230607.GH27645@bogon.ms20.nix>
+In-Reply-To: <20030114230607.GH27645@bogon.ms20.nix>
+X-Enigmail-Version: 0.72.0.0
+X-Enigmail-Supports: pgp-inline, pgp-mime
 Content-Type: text/plain; charset=us-ascii
-Date: Wed, 15 Jan 2003 10:34:33 +1100
-Message-ID: <9030.1042587273@kao2.melbourne.sgi.com>
-Return-Path: <kaos@ocs.com.au>
+Content-Transfer-Encoding: 7bit
+Return-Path: <drepper@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1154
+X-archive-position: 1155
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kaos@ocs.com.au
+X-original-sender: drepper@redhat.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 14 Jan 2003 12:06:46 +0200, 
-"Gilad Benjamini" <gilad@riverhead.com> wrote:
->I've built,compiled and ran successfully a 64 bit kernel on my 
->mips64 platform. Kernel was compiled with support for 32 bit binaries.
->
->I am now trying to insert a module, a standard module from
->the kernel tree, and get lots of errors such as:
->"Unhandled relocation of type 18 for"
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
 
-Type 18 is R_MIPS_64.  modutils does not support 64 bit mips
-at all, nobody has sent me any code to handle this architecture.
+Guido Guenther wrote:
+> the attached patch brings mips up to date concerning the
+> {INTERNAL,INLINE}_SYSCALL macros.
 
-modutils needs obj/obj_mips64.c.  The config and makefiles have to be
-tweaked to handle mips64, including combined 32/64 bit code, as for
-sparc32/sparc64.  Does anybody who knows mips64 feel like contributing
-the modutils code?
+I've applied the patch.  Thanks,
+
+- -- 
+- --------------.                        ,-.            444 Castro Street
+Ulrich Drepper \    ,-----------------'   \ Mountain View, CA 94041 USA
+Red Hat         `--' drepper at redhat.com `---------------------------
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.1 (GNU/Linux)
+
+iD8DBQE+JLNF2ijCOnn/RHQRAnPxAKCTNJyDBtLmvZtP7Eq5Zf4d9F2GaQCglf3+
+EX9+rGlNZUpvkcIR7aBl14U=
+=OVjY
+-----END PGP SIGNATURE-----

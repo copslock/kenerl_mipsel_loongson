@@ -1,54 +1,51 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6D0s8g03398
-	for linux-mips-outgoing; Thu, 12 Jul 2001 17:54:08 -0700
+	by oss.sgi.com (8.11.2/8.11.3) id f6D17uu04627
+	for linux-mips-outgoing; Thu, 12 Jul 2001 18:07:56 -0700
 Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6D0s6V03393
-	for <linux-mips@oss.sgi.com>; Thu, 12 Jul 2001 17:54:06 -0700
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6D17oV04609;
+	Thu, 12 Jul 2001 18:07:50 -0700
 Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f6CNs0W27406;
-	Thu, 12 Jul 2001 16:54:00 -0700
-Message-ID: <3B4E45D9.8DBE84E7@mvista.com>
-Date: Thu, 12 Jul 2001 17:50:33 -0700
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f6D07iW28283;
+	Thu, 12 Jul 2001 17:07:44 -0700
+Message-ID: <3B4E4911.25616E3@mvista.com>
+Date: Thu, 12 Jul 2001 18:04:17 -0700
 From: Jun Sun <jsun@mvista.com>
 X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
 X-Accept-Language: en
 MIME-Version: 1.0
-To: linux-mips@oss.sgi.com
-Subject: RFC: run-time defining serial ports
+To: Ralf Baechle <ralf@oss.sgi.com>
+CC: Phil Thompson <Phil.Thompson@pace.co.uk>,
+   "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
+Subject: Re: Moving from old-irq.c
+References: <54045BFDAD47D5118A850002A5095CC30AC548@exchange1.cam.pace.co.uk> <20010713013054.A24695@bacchus.dhis.org> <3B4E38EF.3D3FF73E@mvista.com> <20010713024108.A26493@bacchus.dhis.org>
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+Ralf Baechle wrote:
+> 
+> On Thu, Jul 12, 2001 at 04:55:27PM -0700, Jun Sun wrote:
+> 
+> > Ralf, I think we should have a common init_IRQ() in arch/mips/kernel, which
+> > will then call (*setup_irq)().  This way it is easier to build a kernel for
+> > multiple boards.  It is also more compatible with the current arrangment.
+> > What do you think?
+> 
+> Well, do you actually build kernels for multiple boards that need this?  
 
-As more and more boards are added to Linux-mips tree, many places are getting
-crowdier and uglier, including serial.h.  The same thing is true for PPC and
-other architectures.
+The answer is actually yes.  
 
-It turns out an easy solution is to let every board sets the serial port
-definitions at run-time through calling early_serial_setup() routine.
+What is happening in embedded world is people often derive their boards from
+another board (probably reference board).  Sometimes the difference between
+those two boards are very small (but still have difference such as in
+interrupt routing).  It will then become interesting to share most of the code
+and leave some other code hookable.
 
-An easy fix for now is to give a default table size when no serial definition
-is given, which at least reserves some slots in the rs_table array.  See the
-patch below.
+Another scenario is sometimes vendors builds a base board which can plug in
+multiple different daughter boards.  In many cases it is desirable to build
+one kernel for the same "base board".
 
-A better solution is probably to provide a config option to define the serial
-table size.
-
-A by-product of this arrangement is that you can configure a kernel for
-multiple machines.
-
-What do you think?
+That is the need I have seen so far. 
 
 Jun
-
-diff -Nru include/asm-mips/serial.h.orig include/asm-mips/serial.h
---- include/asm-mips/serial.h.orig      Wed May 16 15:58:29 2001
-+++ include/asm-mips/serial.h   Thu Jul 12 17:06:05 2001
-@@ -271,3 +271,6 @@
-        AU1000_SERIAL_PORT_DEFNS        \
-        DDB5477_SERIAL_PORT_DEFNS
- 
-+#ifnef SERIAL_PORT_DFNS
-+#define RS_TABLE_SIZE          4
-+#endif

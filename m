@@ -1,40 +1,40 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4KJ59nC013104
-	for <linux-mips-outgoing@oss.sgi.com>; Mon, 20 May 2002 12:05:09 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4KJNfnC016600
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 20 May 2002 12:23:41 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4KJ58vP013100
-	for linux-mips-outgoing; Mon, 20 May 2002 12:05:08 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4KJNfsm016596
+	for linux-mips-outgoing; Mon, 20 May 2002 12:23:41 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4KJ55nC013088
-	for <linux-mips@oss.sgi.com>; Mon, 20 May 2002 12:05:05 -0700
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.1) id g4KJ5qE14959;
-	Mon, 20 May 2002 12:05:52 -0700
-Date: Mon, 20 May 2002 12:05:52 -0700
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: Jun Sun <jsun@mvista.com>, Daniel Jacobowitz <dan@debian.org>,
-   Matthew Dharm <mdharm@momenco.com>, Linux-MIPS <linux-mips@oss.sgi.com>
-Subject: Re: MIPS 64?
-Message-ID: <20020520120552.C14066@dea.linux-mips.net>
-References: <20020519123059.E20670@dea.linux-mips.net> <Pine.GSO.3.96.1020520120546.19733B-100000@delta.ds2.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <Pine.GSO.3.96.1020520120546.19733B-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Mon, May 20, 2002 at 12:06:45PM +0200
-X-Accept-Language: de,en,fr
+Received: from sentinel.sanera.net (ns1.sanera.net [208.253.254.10])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4KJNdnC016542
+	for <linux-mips@oss.sgi.com>; Mon, 20 May 2002 12:23:39 -0700
+Received: from icarus.sanera.net (icarus [192.168.254.11])
+	by sentinel.sanera.net (8.11.2/8.11.2) with ESMTP id g4KJONM15472
+	for <linux-mips@oss.sgi.com>; Mon, 20 May 2002 12:24:23 -0700
+Received: from exceed1.sanera.net (exceed1.sanera.net [172.16.2.31])
+	by icarus.sanera.net (8.11.6/8.11.6) with SMTP id g4KJOI910711
+	for <linux-mips@oss.sgi.com>; Mon, 20 May 2002 12:24:18 -0700
+Message-Id: <200205201924.g4KJOI910711@icarus.sanera.net>
+Date: Mon, 20 May 2002 12:24:18 -0700 (PDT)
+From: Krishna Kondaka <krishna@Sanera.net>
+Reply-To: Krishna Kondaka <krishna@Sanera.net>
+Subject: Mailing list archive
+To: linux-mips@oss.sgi.com
+MIME-Version: 1.0
+Content-Type: TEXT/plain; charset=us-ascii
+Content-MD5: 3LOQPCLlRC4yyTnytM65vw==
+X-Mailer: dtmail 1.3.0 @(#)CDE Version 1.4.2 SunOS 5.8 sun4u sparc 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, May 20, 2002 at 12:06:45PM +0200, Maciej W. Rozycki wrote:
+Hi,
+	When I try to look at this mailing list archive at
+	http://oss.sgi.com/mips/archive, I am getting "You don't have
+	permission to access /mips/archive on this server" error. I
+	was previously able to access this archive and only recently I
+	am getting this error. Is there any other place where I can
+	access the archive?
 
-> > Int vs. long was a very small issue as I discovered during porting for the
-> > first 64-bit machines, the IP22 and IP27.
-> 
->  Well, the surprise is going to happen in drivers, I'm afraid...
-
-That depends on how much people were thinking ahead when writing drivers.
-
-  Ralf
+Thanks
+Krishna Kondaka
+Sanera Systems

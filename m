@@ -1,52 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 May 2003 11:52:55 +0100 (BST)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:4555 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8224861AbTENKwx>; Wed, 14 May 2003 11:52:53 +0100
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id MAA26330;
-	Wed, 14 May 2003 12:53:33 +0200 (MET DST)
-Date: Wed, 14 May 2003 12:53:32 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Guido Guenther <agx@sigxcpu.org>
-cc: linux-mips@linux-mips.org
-Subject: Re: -mcpu vs. binutils 2.13.90.0.18
-In-Reply-To: <20030513222215.GA440@bogon.ms20.nix>
-Message-ID: <Pine.GSO.3.96.1030514124924.26213A-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 May 2003 12:02:32 +0100 (BST)
+Received: from rail.cita.utoronto.ca ([IPv6:::ffff:128.100.76.4]:58029 "EHLO
+	rail.cita.utoronto.ca") by linux-mips.org with ESMTP
+	id <S8224861AbTENLC3>; Wed, 14 May 2003 12:02:29 +0100
+Received: from [128.100.76.51] (falcon.cita.utoronto.ca) by rail.cita.utoronto.ca id 20621; Wed, 14 May 2003 07:02:28
+Received: from falcon.cita.utoronto.ca (localhost [127.0.0.1])
+	by cita.utoronto.ca (8.12.8/8.12.5) with ESMTP id h4EB2SVk008615;
+	Wed, 14 May 2003 07:02:28 -0400
+Received: (from rjh@localhost)
+	by falcon.cita.utoronto.ca (8.12.8/8.12.8/Submit) id h4EB2SOa008613;
+	Wed, 14 May 2003 07:02:28 -0400
+Date: Wed, 14 May 2003 07:02:27 -0400
+From: Robin Humble <rjh@cita.utoronto.ca>
+To: Achim Hensel <achim.hensel@ruhr-uni-bochum.de>
+Cc: linux-mips@linux-mips.org
+Subject: r4k Indigo 1 (was Re: Branch relocation fixing at Kernel-compiling with Debian-toolchain)
+Message-ID: <20030514110227.GA8503@falcon.cita.utoronto.ca>
+References: <20030514123144.52da1d81.achim.hensel@ruhr-uni-bochum.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20030514123144.52da1d81.achim.hensel@ruhr-uni-bochum.de>
+User-Agent: Mutt/1.4.1i
+Return-Path: <rjh@cita.utoronto.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2370
+X-archive-position: 2371
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: rjh@cita.utoronto.ca
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 14 May 2003, Guido Guenther wrote:
+On Wed, May 14, 2003 at 12:31:44PM +0200, Achim Hensel wrote:
+>[I try to build Linux for a R4k Indigo1. I'm using as and ld of the
 
-> Looking at gcc-3.3:
-> 
-> #define ABI_32  0
-> #define ABI_N32 1
-> #define ABI_64  2
-> #define ABI_EABI 3
-> #define ABI_O64  4
-> 
-> The naming is very "unfortunate", though. We have (n32,64) and (32,o64).
-> Wouldn't it help to at least allow for n64 and o32 commandline options?
-> -mabi=32 and -mabi=64 will have to be kept for Irix compatibility
-> though, I think.
+Please let me know how you go with this... I'd like to try it too.
+Are you compiling a generic r4k kernel? Is there much chipset
+documentation available?
 
- Why unfortunate?  You use "32" and "64" for normal stuff, and the rest
-for special cases ("n32" isn't really 32-bit and "o64" isn't really 64-bit
--- both lie in the middle).  Additional aliases of the "n64" and "o32"
-form would make more confusion, IMHO. 
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+cheers,
+robin

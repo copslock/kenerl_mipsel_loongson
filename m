@@ -1,36 +1,47 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6DApTd08360
-	for linux-mips-outgoing; Fri, 13 Jul 2001 03:51:29 -0700
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6DApKV08350;
-	Fri, 13 Jul 2001 03:51:21 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id MAA03973;
-	Fri, 13 Jul 2001 12:52:56 +0200 (MET DST)
-Date: Fri, 13 Jul 2001 12:52:55 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Ralf Baechle <ralf@oss.sgi.com>
-cc: Jan-Benedict Glaw <jbglaw@lug-owl.de>, linux-mips@oss.sgi.com,
-   linux-mips@fnet.fr
-Subject: Re: ll/sc emulation patch
-In-Reply-To: <20010712224520.C23062@bacchus.dhis.org>
-Message-ID: <Pine.GSO.3.96.1010713124802.3193B-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.2/8.11.3) id f6DD13W12428
+	for linux-mips-outgoing; Fri, 13 Jul 2001 06:01:03 -0700
+Received: from dea.waldorf-gmbh.de (u-18-19.karlsruhe.ipdial.viaginterkom.de [62.180.19.18])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6DD10V12424
+	for <linux-mips@oss.sgi.com>; Fri, 13 Jul 2001 06:01:01 -0700
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f6DBZIO01441;
+	Fri, 13 Jul 2001 13:35:18 +0200
+Date: Fri, 13 Jul 2001 13:35:18 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>, linux-mips@oss.sgi.com
+Subject: Re: sti() does not work.
+Message-ID: <20010713133517.C1378@bacchus.dhis.org>
+References: <20010704152619.E3829@bacchus.dhis.org> <Pine.GSO.3.96.1010705132623.11517D-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.GSO.3.96.1010705132623.11517D-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Thu, Jul 05, 2001 at 01:35:11PM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, 12 Jul 2001, Ralf Baechle wrote:
+On Thu, Jul 05, 2001 at 01:35:11PM +0200, Maciej W. Rozycki wrote:
 
-> There is a bunch of patches for ll/sc and MIPS_ATOMIC_SET floating around.
-> I came to the conclusion that I don't like any of them so I'm just working
-> on fixing the thing once and for all.
+> > > (why is noreorder used here?).
+> > 
+> > Without the .set noreorder the assembler would be free to do arbitrary
+> > reordering of the object code generated.  Gas doesn't do that but there
+> > are other assemblers that do flow analysis and may generate object code
+> > that doesn't look very much like the source they were fed with.
+> 
+>  Hmm, I would consider that a bug in such an assembler.  The mtc0 and
+> possibly the mfc0 opcode should be treated as reordering barriers as they
+> may involve side effects an assembler might not be aware of. 
 
- What about the _test_and_set syscall?  Having it implemented we could get
-rid of the MIPS_ATOMIC_SET hack for post-2.4.  Glibc may be made ready for
-the transition any time now.
+Assembler is the art of using sideeffects so things are fairly explicit.
+Optimizations are controlled using
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+  .set noreorder / reorder
+  .set volatile / novolatile
+  .set nomove / nomove
+  .set nobopt / bopt
+
+  Ralf

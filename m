@@ -1,42 +1,81 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0S3dMK30640
-	for linux-mips-outgoing; Sun, 27 Jan 2002 19:39:22 -0800
-Received: from cast-ext.ab.videon.ca (cast-ext.ab.videon.ca [206.75.216.34])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0S3dKP30637
-	for <linux-mips@oss.sgi.com>; Sun, 27 Jan 2002 19:39:20 -0800
-Received: (qmail 7234 invoked from network); 28 Jan 2002 02:39:19 -0000
-Received: from unknown (HELO wakko.deltatee.com) ([24.86.210.128]) (envelope-sender <jgg@debian.org>)
-          by cast-ext.ab.videon.ca (qmail-ldap-1.03) with SMTP
-          for <mdharm@momenco.com>; 28 Jan 2002 02:39:19 -0000
-Received: from localhost
-	([127.0.0.1] helo=wakko.deltatee.com ident=jgg)
-	by wakko.deltatee.com with smtp (Exim 3.16 #1 (Debian))
-	id 16V1hV-0006rN-00; Sun, 27 Jan 2002 19:39:17 -0700
-Date: Sun, 27 Jan 2002 19:39:17 -0700 (MST)
-From: Jason Gunthorpe <jgg@debian.org>
-X-Sender: jgg@wakko.deltatee.com
-Reply-To: Jason Gunthorpe <jgg@debian.org>
-To: Matthew Dharm <mdharm@momenco.com>
-cc: linux-mips@oss.sgi.com
-Subject: Re: Help with OOPSes, anyone?
-In-Reply-To: <20020127142657.C18041@momenco.com>
-Message-ID: <Pine.LNX.3.96.1020127163608.6344C-100000@wakko.deltatee.com>
+	by oss.sgi.com (8.11.2/8.11.3) id g0S9lsK04171
+	for linux-mips-outgoing; Mon, 28 Jan 2002 01:47:54 -0800
+Received: from mx.mips.com (mx.mips.com [206.31.31.226])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0S9lkP04151;
+	Mon, 28 Jan 2002 01:47:46 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id AAA26530;
+	Mon, 28 Jan 2002 00:47:33 -0800 (PST)
+Received: from grendel (grendel [192.168.236.16])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id AAA02439;
+	Mon, 28 Jan 2002 00:47:29 -0800 (PST)
+Message-ID: <002f01c1a7d8$e49bb9f0$10eca8c0@grendel>
+From: "Kevin D. Kissell" <kevink@mips.com>
+To: "Daniel Jacobowitz" <dan@debian.org>,
+   "Alan Cox" <alan@lxorguk.ukuu.org.uk>
+Cc: "Dominic Sweetman" <dom@algor.co.uk>, "Ralf Baechle" <ralf@oss.sgi.com>,
+   "Ulrich Drepper" <drepper@redhat.com>, "Mike Uhler" <uhler@mips.com>,
+   "\"MIPS/Linux List \(SGI\)\"" <linux-mips@oss.sgi.com>,
+   "H . J . Lu" <hjl@lucon.org>
+References: <E16Uvqu-0002X7-00@the-village.bc.nu>
+Subject: Re: thread-ready ABIs
+Date: Mon, 28 Jan 2002 09:50:35 +0100
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4807.1700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4807.1700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+> > Which it is.  Fork shares no memory regions; vfork/clone share all
+> > memory regions.  AFAIK there is no share-heap-but-not-stack option in
+> > Linux.
+> 
+> Thats a design decision. At the point you don't have identical mappings for
+> both threads you need two sets of page tables and you take all the
+> performance hits that go with changing current tables on a schedule.
+> 
+> Its a lot cheaper to use a different %esp for each thread
 
-On Sun, 27 Jan 2002, Matthew Dharm wrote:
+That's a point of view that reflects the PC-centric origins of
+Linux.  Large-scale parallel systems, such as the current
+high-end server offerings from Sun, IBM/Sequent, and SGI,
+have a non-uniform memory access (NUMA) model on which
+insisting on maintining identical page tables for all threads of
+a parallel program can result in an intollerable level of remote
+memory accesses.  The usual technique employed on such
+systems is a dynamic replication of frequently accessed
+pages.  This of course implies greater OS overhead for all 
+operations on virtual memory maps, and additional overhead
+to synchronize the copies, but that can be more than
+compensated for by reducing the average memory latency
+seen by the CPUs.  An even more extrememe case, though
+one that is perhaps less relevant to mainstream parallel 
+servers, is that of the emulation of shared memory ("virtual
+shared memory" or VSM as we used to call it) on message
+based highly-parallel machines, which likewise depends on
+having distinctly set-up and managed page tables for different
+threads/processes within a parallel program.
 
-> Interesting... did you try the 2.4.17 that's in the SGI CVS?  That's what
-> I'm using....
+There's nothing wrong with having an OS design that allows
+common page tables to be used across the threads of a
+parallel program running on a simple, small-scale SMP
+platform like a dual or quad CPU PC.  But making that
+the *only* way that thread parallelism is supported
+is, in my opinion, a design error that will have to be fixed
+one of these days.  And the longer the existing model
+is enhanced and maintained, the harder it will be to fix.
 
-Hmm. Woops. Wrong CVS tag.
+All that having been said, please note that this issue is
+orthogonal to the question of whether one should have
+a single "process image" across all threads of a parallel
+program.
 
-Right, 2.4.17 out of CVS w/ my patch set is working OK, at least it
-compiles ncftp, and runs my usual gamut of things.
+            Regards,
 
-I'll send you my modified cache code..
-
-Jason
+            Kevin K.

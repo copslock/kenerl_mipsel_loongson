@@ -1,34 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Feb 2005 01:56:10 +0000 (GMT)
-Received: from noon.org ([IPv6:::ffff:192.220.74.114]:36874 "EHLO noon.org")
-	by linux-mips.org with ESMTP id <S8224930AbVBPBzy>;
-	Wed, 16 Feb 2005 01:55:54 +0000
-Received: (qmail 4582 invoked by uid 19058); 16 Feb 2005 01:55:51 -0000
-Received: from unknown (HELO SJC-FNOON2) ([192.220.74.114])
-          (envelope-sender <fcn@noon.org>)
-          by 192.220.74.114 (qmail-ldap-1.03) with SMTP
-          for <blind-copy@noon.org>; 16 Feb 2005 01:55:51 -0000
-To:	<linux-mips@linux-mips.org>
-Subject: kernel for custom MV64341 board?
-X-Attribution: Fredrik
-X-URL:	<http://www.noon.org>
-X-Request-PGP: http://noon.org/keys/pgpkey.txt
-From:	Fredrik <fcn-sub@noon.org>
-Date:	Tue, 15 Feb 2005 17:55:50 -0800
-Message-ID: <ubrale09l.fsf@noon.org>
-User-Agent: Gnus/5.090024 (Oort Gnus v0.24) Emacs/21.2 (windows-nt)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Feb 2005 05:05:51 +0000 (GMT)
+Received: from mother.pmc-sierra.com ([IPv6:::ffff:216.241.224.12]:62203 "HELO
+	mother.pmc-sierra.bc.ca") by linux-mips.org with SMTP
+	id <S8224807AbVBPFFf>; Wed, 16 Feb 2005 05:05:35 +0000
+Received: (qmail 6952 invoked by uid 101); 16 Feb 2005 05:05:27 -0000
+Received: from unknown (HELO ogmios.pmc-sierra.bc.ca) (216.241.226.59)
+  by mother.pmc-sierra.com with SMTP; 16 Feb 2005 05:05:27 -0000
+Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
+	by ogmios.pmc-sierra.bc.ca (8.12.9/8.12.7) with ESMTP id j1G55LAt027566;
+	Tue, 15 Feb 2005 21:05:22 -0800
+Received: by bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca with Internet Mail Service (5.5.2656.59)
+	id <CPW14K6S>; Tue, 15 Feb 2005 21:05:21 -0800
+Message-ID: <04781D450CFF604A9628C8107A62FCCF013DDCA0@sjc1exm01.pmc_nt.nt.pmc-sierra.bc.ca>
+From:	Brad Larson <Brad_Larson@pmc-sierra.com>
+To:	"'Fredrik'" <fcn-sub@noon.org>, linux-mips@linux-mips.org
+Subject: RE: kernel for custom MV64341 board?
+Date:	Tue, 15 Feb 2005 21:05:19 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <fcn@noon.org>
+X-Mailer: Internet Mail Service (5.5.2656.59)
+Content-Type: text/plain
+Return-Path: <Brad_Larson@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7262
+X-archive-position: 7263
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fcn-sub@noon.org
+X-original-sender: Brad_Larson@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
+
+Fredrik,
+
+MontaVista completed a 2.4 port to Ocelot-III with RM7900 (or RM7000C) and Discovery-3 (MV64440).  Ocelot-III is ATX form factor while previous Ocelot, Ocelot-C and Ocelot-G were CPCI.  This is probably close to the board you are describing.  Any board dependent changes should have been committed to linux-mips.org by now.
+
+--Brad
+
+-----Original Message-----
+From: linux-mips-bounce@linux-mips.org
+[mailto:linux-mips-bounce@linux-mips.org]On Behalf Of Fredrik
+Sent: Tuesday, February 15, 2005 5:56 PM
+To: linux-mips@linux-mips.org
+Subject: kernel for custom MV64341 board?
+
 
 Howdy,
 

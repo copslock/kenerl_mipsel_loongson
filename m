@@ -1,90 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Jul 2004 05:50:06 +0100 (BST)
-Received: from smtp105.mail.sc5.yahoo.com ([IPv6:::ffff:66.163.169.225]:14240
-	"HELO smtp105.mail.sc5.yahoo.com") by linux-mips.org with SMTP
-	id <S8224929AbUGVBu0>; Thu, 22 Jul 2004 02:50:26 +0100
-Received: from unknown (HELO ime?ty) (taoyong2002cncq@202.202.6.143 with login)
-  by smtp105.mail.sc5.yahoo.com with SMTP; 22 Jul 2004 01:50:23 -0000
-Date: Thu, 22 Jul 2004 09:50:47 +0800
-From: "taoyong" <taoyong2002cncq@yahoo.com.cn>
-Reply-To: taoyong2002cncq@yahoo.com.cn
-To: "linux-mips" <linux-mips@linux-mips.org>
-Subject: boot "hell world " and linux on CSB350
-Organization: cqu-swcims
-X-mailer: Foxmail 5.0 beta2 [cn]
-Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="gb2312"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20040722015026Z8224929-1530+7145@linux-mips.org>
-Return-Path: <taoyong2002cncq@yahoo.com.cn>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Jul 2004 16:56:04 +0100 (BST)
+Received: from drum.kom.e-technik.tu-darmstadt.de ([IPv6:::ffff:130.83.139.190]:31720
+	"EHLO mailserver.KOM.e-technik.tu-darmstadt.de") by linux-mips.org
+	with ESMTP id <S8224943AbUGVPz7>; Thu, 22 Jul 2004 16:55:59 +0100
+Received: from KOM.tu-darmstadt.de by mailserver.KOM.e-technik.tu-darmstadt.de (8.7.5/8.7.5) with ESMTP id RAA02189; Thu, 22 Jul 2004 17:55:54 +0200 (MEST)
+Date: Thu, 22 Jul 2004 17:56:19 +0200 (CEST)
+From: Ralf Ackermann <rac@KOM.tu-darmstadt.de>
+X-X-Sender: rac@shofar.kom.e-technik.tu-darmstadt.de
+To: linux-mips@linux-mips.org
+cc: Ralf Ackermann <rac@KOM.tu-darmstadt.de>
+Subject: Q: (cross)compiling for the Meshcube  (fwd)
+Message-ID: <Pine.LNX.4.58.0407221756020.4845@shofar.kom.e-technik.tu-darmstadt.de>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <Ralf.Ackermann@KOM.tu-darmstadt.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5537
-X-Approved-By: ralf@linux-mips.org
+X-archive-position: 5538
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: taoyong2002cncq@yahoo.com.cn
+X-original-sender: rac@KOM.tu-darmstadt.de
 Precedence: bulk
 X-list: linux-mips
 
-Hi linux-mips,
-    
-       We have AMD PB1000 and openpda platform and the hardhat linux keranl. csb350 is a new board,and we want to port the hardhat kernal to the csb350. But after we download the "hello world" ,which is comopiled with the mips-elf-gcc,to the ram 0xa0300000,then "call 0xa0300000",we got "Returned: -2147239488 (0x8003b9c0)" . we tftped the kernal image to the RAM 0xa0300000,then call it ,got the same result "Returned: -2147239488 (0x8003b9c0)" or it stopped there.
 
+Hello,
 
+I'm trying to (cross)compile some more modules/applications for the 
+meshcube - but failed so far.
 
-uMON>tftp 192.168.100.251 get /tftpboot/hello.bin 0xa0300000
-Retrieving /tftpboot/hello.bin from 192.168.100.251...TFTP transfer complete.
- 1504 bytes
-uMON>call 0xa0300000
-Returned: -2147239488 (0x8003b9c0)
-uMON>dm 0xa0300000
-a0300000: 14 a0 1d 3c 00 ff bd 27   11 a0 1c 3c d0 85 9c 27   ...<...'...<...'
-a0300010: 04 00 bf af 54 01 04 0c   00 00 00 00 00 00 00 00   ....T...........
-a0300020: 04 00 bf 8f 08 00 e0 03   00 00 00 00 00 00 00 00   ................
-a0300030: 08 00 e0 03 00 00 00 00   00 00 00 00 00 00 00 00   ................
-a0300040: 21 40 00 00 05 00 a0 14   21 48 80 00 30 00 02 24   !@......!H..0..$
-a0300050: 00 00 22 a1 08 00 e0 03   01 00 02 24 1b 00 a6 00   .."........$....
-a0300060: 12 28 00 00 21 20 28 01   10 10 00 00 01 00 c0 50   .(..! (........P
-a0300070: 0d 00 07 00 21 10 e2 00   00 00 43 90 01 00 08 25   ....!.....C....%
+I installed (on an i386 system):
+	binutils-mipsel-linux-2.13.2.1-3.i386.rpm
+	gcc-mipsel-linux-2.95.4-1.i386.rpm
+(from ftp://ftp.linux-mips.org/pub/linux/mips/crossdev/)
 
-uMON>tftp 192.168.100.251 get /tftpboot/vmlinux.bin 0xa0600000
-Retrieving /tftpboot/vmlinux.bin from 192.168.100.251...TFTP transfer complete.
- 1548288 bytes
-uMON>call 0xa0600000
-Returned: -2147239488 (0x8003b9c0)
+Making a hello world program fails with:
+	mipsel-linux-gcc hello.c -o hello
+	/usr/mipsel-linux/bin/ld: cannot open crt1.o: No such file or directory
+	collect2: ld returned 1 exit status
 
-uMON>tftp 192.168.100.251 get /tftpboot/vmlinux.bin 0xa0300000
-Retrieving /tftpboot/vmlinux.bin from 192.168.100.251...TFTP transfer complete.
- 1548288 bytes
-uMON>dm 0xa0300000                                            
-a0300000: 00 00 00 00 00 00 00 00   00 00 00 00 00 00 00 00   ................
-a0300010: 00 00 00 00 00 00 00 00   00 00 00 00 00 00 00 00   ................
-a0300020: 00 00 00 00 00 00 00 00   00 00 00 00 00 00 00 00   ................
-a0300030: 00 00 00 00 00 00 00 00   00 00 00 00 00 00 00 00   ................
-a0300040: 00 00 00 00 00 00 00 00   00 00 00 00 00 00 00 00   ................
-a0300050: 00 00 00 00 00 00 00 00   00 00 00 00 00 00 00 00   ................
-a0300060: 00 00 00 00 00 00 00 00   00 00 00 00 00 00 00 00   ................
-a0300070: 00 00 00 00 00 00 00 00   00 00 00 00 00 00 00 00   ................
-uMON>call 0xa0300000
+My questions:
+ - Are there any specific hints for the cross-compile environment
+	(or: "What are you using ... and would therefore suggest ?)
+ - Is there any chance to use a native gcc on the cube itself?
+	(could this e.g. been done by chrooting into a (which?)
+	existing MIPS Linux distribution that is mounted via NFS)
+
+Any hints are highly appreciated (I have worked with crosscompile/native 
+environments for ARM so far, but these are my first experiences in the 
+MIPS world).
+
+regards
+ Ralf
  
-it stopped here and we have to reset the csb350. what's the reason?
-
-
-
-
-
-
-
-
-Best regards,
-
-> Yong Tao 
-> Insitute of Manufacture Engineering of Chongqing University,
-> Chongqing,
-> China 
-> 400030
-> tel:(+8623)65111224-108
->     (+86)13752931429
+---------------------------------------------------------------
+Dr. Ralf Ackermann            _         rac@KOM.tu-darmstadt.de
+Multimedia Communications |/ | | |\/|           Merckstrasse 25
+                          |\ |_| |  |  64283 Darmstadt, Germany
+Tel.: (+49) 6151 16-6138                Fax: (+49) 6151 16-6152
+---------------------------------------------------------------
+             http://www.kom.tu-darmstadt.de/~rac
+---------------------------------------------------------------

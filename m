@@ -1,52 +1,52 @@
-Received:  by oss.sgi.com id <S553830AbQKROOF>;
-	Sat, 18 Nov 2000 06:14:05 -0800
-Received: from u-71.karlsruhe.ipdial.viaginterkom.de ([62.180.19.71]:2312 "EHLO
-        u-71.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com with ESMTP
-	id <S553826AbQKRONn>; Sat, 18 Nov 2000 06:13:43 -0800
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S870463AbQKRON3>;
-        Sat, 18 Nov 2000 15:13:29 +0100
-Date:   Sat, 18 Nov 2000 15:13:28 +0100
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Keith Owens <kaos@melbourne.sgi.com>
-Cc:     linux-mips@oss.sgi.com, linux-mips@fnet.fr
-Subject: Re: sysmips syscall
-Message-ID: <20001118151328.B17046@bacchus.dhis.org>
-References: <20001118115909.D8672@bacchus.dhis.org> <23098.974555179@ocs3.ocs-net>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <23098.974555179@ocs3.ocs-net>; from kaos@melbourne.sgi.com on Sun, Nov 19, 2000 at 12:46:19AM +1100
-X-Accept-Language: de,en,fr
+Received:  by oss.sgi.com id <S553673AbQKRO4f>;
+	Sat, 18 Nov 2000 06:56:35 -0800
+Received: from [210.200.192.151] ([210.200.192.151]:33811 "HELO
+        cyber.dreamer.com.tw") by oss.sgi.com with SMTP id <S553647AbQKRO42>;
+	Sat, 18 Nov 2000 06:56:28 -0800
+Received: from 63.52.248.235 (unverified [63.52.248.235]) by cyber.dreamer.com.tw
+ (EMWAC SMTPRS 0.83) with SMTP id <B0000205355@cyber.dreamer.com.tw>;
+ Sat, 18 Nov 2000 11:14:38 +0800
+Message-ID: <0000004e4d37$00005be7$000004a8@63.52.248.235>
+To:     <McLean@d10.de>
+From:   McLean@d10.de
+Subject: Brand New FREE Satellite System
+Date:   Fri, 17 Nov 2000 22:17:27 -0400
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="Windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Sun, Nov 19, 2000 at 12:46:19AM +1100, Keith Owens wrote:
+FREE Satellite T.V. System and FREE Installation
 
-> On Sat, 18 Nov 2000 11:59:09 +0100, 
-> Ralf Baechle <ralf@oss.sgi.com> wrote:
-> >You can base a spinlock implementation on the fact that the register k0
-> >will be left at a value != zero after any exception, also including context
-> >switches.
-> >
-> >Problem: this solution breaks silently on multiproessor systems.
-> 
-> Use Dekker's algorithm between systems.  It requires cache coherent
-> memory but does not need any inter cpu locking mechanisms.
-> 
-> http://www.cs.wvu.edu/~jdm/classes/cs356/notes/mutex/Dekker.html
-> describes the algorithm for the two cpu case.  It assumes no preemption
-> on each cpu so it has to be modified to handle interrupts.  Add a local
-> lock so you are the only code on this processor trying to use Dekker
-> between processors.
+For a limited time we'll give you this top of the line Digital
+Satellite System for FREE!  We'll even include Free installation.
 
-We're talking about a algorithem to implement atomic operations only in
-userspace.  There is Dekker and few improved variants of it.  They all
-got in common that they're performing badly for an increasing number of
-threads even for the no-contention case.  And non-constant memory
-requirements which would require further changes to glibc.  So I consider
-this whole family of algorithems to be a entirely theoretical construct.
-Which is why we're thinking about those crude hacks.
+Enjoy over 500 Channels of crystal clear digital picture and
+cd stereo sound on your FREE Satellite TV System.  Why pay
+for these items in a retail store, when we're giving you the
+same satellite package for free.
 
-  Ralf
+
+Call 888-514-6881 to be Guaranteed Your FREE Satellite Today
+
+
+This Innovative 20" Satellite includes a stereo receiver and
+an infrared remote.  With this FREE offer you will have both
+Interactive Television Capability and an On Screen Program Guide.
+
+This limited time FREE offer is much less than the monthly cost
+of cable tv. All you have to do is call us to arrange delivery.   
+If you call today, we'll throw in a second receiver for your
+second T.V. free.
+
+
+Call 888-514-6881 to Begin Surfing through 500 Channels Today!
+
+
+To be removed send email to tcaiom@yahoo.com

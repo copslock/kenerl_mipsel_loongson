@@ -1,69 +1,44 @@
-Received:  by oss.sgi.com id <S553991AbQLARzB>;
-	Fri, 1 Dec 2000 09:55:01 -0800
-Received: from u-207-10.karlsruhe.ipdial.viaginterkom.de ([62.180.10.207]:48905
-        "EHLO u-207-10.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S553988AbQLARyx>; Fri, 1 Dec 2000 09:54:53 -0800
-Received: (ralf@lappi) by bacchus.dhis.org id <S869503AbQLARxV>;
-	Fri, 1 Dec 2000 18:53:21 +0100
-Date:	Fri, 1 Dec 2000 18:53:21 +0100
-From:	Ralf Baechle <ralf@oss.sgi.com>
-To:	Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
-Cc:	"Kevin D. Kissell" <kevink@mips.com>, linux-mips@oss.sgi.com,
-        Klaus Naumann <spock@mgnet.de>,
-        Jesse Dyson <jesse@winston-salem.com>
-Subject: Re: Indigo2 Kernel Boots!!!
-Message-ID: <20001201185321.A3211@bacchus.dhis.org>
-References: <001901c05b67$8c88ab60$0deca8c0@Ulysses> <XFMail.001201163348.Harald.Koerfgen@home.ivm.de>
-Mime-Version: 1.0
+Received:  by oss.sgi.com id <S554001AbQLASQV>;
+	Fri, 1 Dec 2000 10:16:21 -0800
+Received: from [206.207.108.63] ([206.207.108.63]:12661 "HELO
+        ridgerun-lx.ridgerun.cxm") by oss.sgi.com with SMTP
+	id <S553995AbQLASQB>; Fri, 1 Dec 2000 10:16:01 -0800
+Received: (qmail 21981 invoked from network); 1 Dec 2000 11:15:50 -0700
+Received: from gmcnutt-lx.ridgerun.cxm (HELO ridgerun.com) (gmcnutt@192.168.1.17)
+  by ridgerun-lx.ridgerun.cxm with SMTP; 1 Dec 2000 11:15:50 -0700
+Message-ID: <3A27EAD6.83E03DFB@ridgerun.com>
+Date:   Fri, 01 Dec 2000 11:15:50 -0700
+From:   Gordon McNutt <gmcnutt@ridgerun.com>
+X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.16 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To:     Ralf Baechle <ralf@oss.sgi.com>
+CC:     linux-mips@oss.sgi.com
+Subject: console knowledge
+References: <001901c05b67$8c88ab60$0deca8c0@Ulysses> <XFMail.001201163348.Harald.Koerfgen@home.ivm.de> <20001201185321.A3211@bacchus.dhis.org>
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <XFMail.001201163348.Harald.Koerfgen@home.ivm.de>; from Harald.Koerfgen@home.ivm.de on Fri, Dec 01, 2000 at 04:33:48PM +0100
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Fri, Dec 01, 2000 at 04:33:48PM +0100, Harald Koerfgen wrote:
+This is a little off-topic, so if people complain I can take it offline. But
+since this doesn't seem to be (very) common knowledge maybe others would like to
+see it, as well.
 
-> > Having been through the exercise a dozen or more times with
-> > the SGI 2.2 kernel distributions for the Indy, I would be fascinated
-> > to know what bug I was painting over, and where the correct
-> > procedure was documented.
-> 
-> linux/Documentation/serial-console.txt
+Ralf Baechle wrote:
 
-In addition let me add some word about what the term console actually is,
-this commonly seems to cause confusition because the word is used with two
-different meanings:
+> /dev/console (as chardev 5/1) differs from another device in some important
+> ways:
+>
+>  - When opened by a process without controlling tty it will not become a
+>    CTTY even if the NOCTTY flag is not set.
 
- 1) The device on which you login in single user mode, that's usually some
-    kind of serial device at ttyS0 or a virtual console, that is with keyboard
-    and some kind of text terminal.
- 2) The second is the device which the kernel prints all the printk messages
-    and data sent to /dev/console to.  The two often often but not always
-    refer to the same actual device.
+What do you mean by "controlling tty"? And why is the distinction noted above
+important? I assume it has something to do with keyboard input/screen output, but
+perhaps you can clarify.
 
-/dev/console (as chardev 5/1) differs from another device in some important
-ways:
+Thanks,
 
- - When opened by a process without controlling tty it will not become a
-   CTTY even if the NOCTTY flag is not set.
- - It will never block but rather loose data.  This may sound like a
-   disadvantage but it's actually very important for proper operation.  For
-   example, if /dev/console'd block due to a serial console with hardware
-   handshaking enabled (DON'T) syslogd writing to it may also block for an
-   unbounded time and thus as soon as /dev/log is full all services trying to
-   log via syslog(3) will also freeze.
-
-   Syslogd actually tries to be clever about avoiding this from happening
-   but fails to handle one case correctly, so this is a real world scenario.
-
- - It uses different routines to access the console device than normal
-   write access to i.e. ttyS0.
-
-The most common problem is that CONFIG_SERIAL_CONSOLE wasn't configured;
-some drivers are simply buggy and don't properly register the console
-on startup.  Dunno what the problem was in your case, Kevin.
-
-  Ralf
+--Gordon

@@ -1,36 +1,36 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA12370; Fri, 4 Jul 1997 12:55:23 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA02981; Sat, 5 Jul 1997 14:18:32 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id MAA05002 for linux-list; Fri, 4 Jul 1997 12:55:08 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA04989 for <linux@engr.sgi.com>; Fri, 4 Jul 1997 12:55:04 -0700
-Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id MAA18289
-	for <linux@engr.sgi.com>; Fri, 4 Jul 1997 12:55:00 -0700
-	env-from (shaver@neon.ingenia.ca)
-Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id PAA24276; Fri, 4 Jul 1997 15:52:46 -0400
-From: Mike Shaver <shaver@neon.ingenia.ca>
-Message-Id: <199707041952.PAA24276@neon.ingenia.ca>
-Subject: Native!
-To: adevries@neon.ingenia.ca (Alex deVries)
-Date: Fri, 4 Jul 1997 15:52:45 -0400 (EDT)
-Cc: linux@cthulhu.engr.sgi.com
-X-Mailer: ELM [version 2.4ME+ PL28 (25)]
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id OAA23570 for linux-list; Sat, 5 Jul 1997 14:09:48 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA23564 for <linux@engr.sgi.com>; Sat, 5 Jul 1997 14:09:45 -0700
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id OAA10872
+	for <linux@engr.sgi.com>; Sat, 5 Jul 1997 14:09:35 -0700
+	env-from (ralf@informatik.uni-koblenz.de)
+Received: from flake (ralf@flake.uni-koblenz.de [141.26.4.37]) by informatik.uni-koblenz.de (8.8.5/8.6.9) with SMTP id XAA12388; Sat, 5 Jul 1997 23:09:28 +0200 (MEST)
+From: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
+Message-Id: <199707052109.XAA12388@informatik.uni-koblenz.de>
+Received: by flake (SMI-8.6/KO-2.0)
+	id XAA04475; Sat, 5 Jul 1997 23:09:22 +0200
+Subject: GCC bug
+Date: Sat, 5 Jul 1997 23:09:21 +0200 (MET DST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
+Apparently-To: <linux@cthulhu.engr.sgi.com>
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-I've grabbed Ralf's cpio'd super-root and now I have a native
-compiler.
+Hi,
 
-Some day, I'll figure you what was wrong with mine.  In the meantime,
-I'm going to try to get the Indy booting off local disk, because the
-NFS stuff is a little sloooooooow.
+the most current GCC package installs the header file assert.h although
+it shouldn't.  The problem is that the GCC version of assert.h will
+not include <gnu/stubs.h> but autoconf generated configure scripts
+rely on that.  If you ever wondered why loading programs caused warnings
+like 'the function lchown is not implemented and will always fail', this
+is caused by the wrong assert.h.
 
-Mike
+Quick fix: rm <prefix>/<target>/include/assert.h, for example.
+rm /usr/local/mipsel-linux/include/assert.h.  Note that this applies
+to both native and crosscompilers.  None of them will install the
+assert.h file in /usr/include/.
 
--- 
-#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
-#>              Commando Developer - Whatever It Takes
-#>                                                                     
-#> "See, you not only have to be a good coder to create a system like
-#>    Linux, you have to be a sneaky bastard too." - Linus Torvalds
+  Ralf

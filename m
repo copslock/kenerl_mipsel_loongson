@@ -1,40 +1,44 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8G2sD829764
-	for linux-mips-outgoing; Sat, 15 Sep 2001 19:54:13 -0700
-Received: from sgi.com (sgi.SGI.COM [192.48.153.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8G2sBe29761
-	for <linux-mips@oss.sgi.com>; Sat, 15 Sep 2001 19:54:11 -0700
-Received: from aol.com (www.wiedza.icu.pl [157.25.130.16]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via SMTP id TAA00977
-	for <linux-mips@oss.sgi.com>; Sat, 15 Sep 2001 19:54:08 -0700 (PDT)
-	mail_from (mueller@aol.com)
-Message-Id: <200109160254.TAA00977@sgi.com>
-From: "Mueller" <mueller@aol.com>
-To: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Did we forget we bombed these people?
-Mime-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Date: Sun, 16 Sep 2001 04:55:51 +0200
-Reply-To: "Mueller" <mueller@yahoo.com>
-Content-Transfer-Encoding: 8bit
+	by oss.sgi.com (8.11.2/8.11.3) id f8G4LSs30909
+	for linux-mips-outgoing; Sat, 15 Sep 2001 21:21:28 -0700
+Received: from mercury.shreve.net (IDENT:root@mercury.shreve.net [208.206.76.23])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8G4LPe30906
+	for <linux-mips@oss.sgi.com>; Sat, 15 Sep 2001 21:21:26 -0700
+Received: from mercury.shreve.net (IDENT:signal@mercury.shreve.net [208.206.76.23])
+	by mercury.shreve.net (8.11.6/8.9.3) with ESMTP id f8G4LO713936
+	for <linux-mips@oss.sgi.com>; Sat, 15 Sep 2001 23:21:24 -0500
+Date: Sat, 15 Sep 2001 23:21:24 -0500 (CDT)
+From: Brian <signal@shreve.net>
+To: <linux-mips@oss.sgi.com>
+Subject: Origin 200
+Message-ID: <Pine.LNX.4.33.0109152319100.13085-100000@mercury.shreve.net>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-11 September 1973 was Allende assassinated....
 
-How many children from Vietnam, Irak, Iran, Belgrad...died?
+I have an Origin 200 coming in for my use
+configured as:
 
-Nobody cried, no minute of silence....
+Origin 200 (rackmount)
+4x10k MIPS
+1GB mem
+4x5GB SCSI
+Craylink
 
-Are USA GOOD and the other ones BAD?
+Will I be able to run the MIPs linux on this?
+What is the best most current and active
+distribution to install?  Any vendor sponsoring
+one (like redhat?).
 
-Who can say something like that?
+Also, if anyone know the estimated current value
+for my system, please advise.  Thanks,
 
-We are just in Power and Oil interested, maybe letting these countries in
-peace will help much more than a new war....
+Brian
 
-Send thid message further.
+
+-----------------------------------------------
+Brian Feeny, CCIE #8036	email:signal@shreve.net
+Network Engineer	phone:318.222.2638x109
+ShreveNet Inc.		fax:  318.221.6612

@@ -1,46 +1,47 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBF9l9n17505
-	for linux-mips-outgoing; Sat, 15 Dec 2001 01:47:09 -0800
-Received: from post.webmailer.de (natpost.webmailer.de [192.67.198.65])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBF9l5o17502
-	for <linux-mips@oss.sgi.com>; Sat, 15 Dec 2001 01:47:05 -0800
-Received: from excalibur.cologne.de (pD95119D2.dip.t-dialin.net [217.81.25.210])
-	by post.webmailer.de (8.9.3/8.8.7) with ESMTP id JAA26132
-	for <linux-mips@oss.sgi.com>; Sat, 15 Dec 2001 09:47:01 +0100 (MET)
-Received: from karsten by excalibur.cologne.de with local (Exim 3.12 #1 (Debian))
-	id 16FADl-00008T-00
-	for <linux-mips@oss.sgi.com>; Sat, 15 Dec 2001 09:31:01 +0100
-Date: Sat, 15 Dec 2001 09:31:01 +0100
-From: Karsten Merker <karsten@excalibur.cologne.de>
-To: linux-mips@oss.sgi.com
-Subject: Re: No bzImage target for MIPS
-Message-ID: <20011215093101.A256@excalibur.cologne.de>
-Mail-Followup-To: Karsten Merker <karsten@excalibur.cologne.de>,
-	linux-mips@oss.sgi.com
-References: <200112140047.fBE0l9n02204@icarus.sanera.net> <1008292240.27799.134.camel@zeus> <20011213192846.A36207@idiom.com> <1008353149.27799.144.camel@zeus> <20011214105257.A15033@idiom.com>
+	by oss.sgi.com (8.11.2/8.11.3) id fBFAFI617866
+	for linux-mips-outgoing; Sat, 15 Dec 2001 02:15:18 -0800
+Received: from mail.ocs.com.au (mail.ocs.com.au [203.34.97.2])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBFAFDo17863
+	for <linux-mips@oss.sgi.com>; Sat, 15 Dec 2001 02:15:14 -0800
+Received: (qmail 1941 invoked from network); 15 Dec 2001 09:15:09 -0000
+Received: from ocs3.intra.ocs.com.au (192.168.255.3)
+  by mail.ocs.com.au with SMTP; 15 Dec 2001 09:15:09 -0000
+Received: by ocs3.intra.ocs.com.au (Postfix, from userid 16331)
+	id 06747300095; Sat, 15 Dec 2001 20:15:05 +1100 (EST)
+Received: from ocs3.intra.ocs.com.au (localhost [127.0.0.1])
+	by ocs3.intra.ocs.com.au (Postfix) with ESMTP
+	id 8C0DE96; Sat, 15 Dec 2001 20:15:05 +1100 (EST)
+X-Mailer: exmh version 2.2 06/23/2000 with nmh-1.0.4
+From: Keith Owens <kaos@melbourne.sgi.com>
+To: Karsten Merker <karsten@excalibur.cologne.de>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: No bzImage target for MIPS 
+In-reply-to: Your message of "Sat, 15 Dec 2001 09:31:01 BST."
+             <20011215093101.A256@excalibur.cologne.de> 
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20011214105257.A15033@idiom.com>; from espin@idiom.com on Fri, Dec 14, 2001 at 10:52:57AM -0800
-X-No-Archive: yes
+Date: Sat, 15 Dec 2001 20:14:59 +1100
+Message-ID: <20472.1008407699@ocs3.intra.ocs.com.au>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, Dec 14, 2001 at 10:52:57AM -0800, Geoffrey Espin wrote:
+On Sat, 15 Dec 2001 09:31:01 +0100, 
+Karsten Merker <karsten@excalibur.cologne.de> wrote:
+>On Fri, Dec 14, 2001 at 10:52:57AM -0800, Geoffrey Espin wrote:
+>> BTW, does any actually build 'vmlinux.ecoff'?
+>
+>Yes, it is (among other uses) the default target for DECstations,
+>the DECstation firmware cannot tftp-boot anything else.
 
->     all: vmlinux.ecoff addinitrd
->     ...
-> 
-> BTW, does any actually build 'vmlinux.ecoff'?
+I am standardizing the list of supported formats for linux boot, as
+part of the kbuild 2.5 rewrite, I will add vmlinux.ecoff to the master
+list.
 
-Yes, it is (among other uses) the default target for DECstations,
-the DECstation firmware cannot tftp-boot anything else.
-
-Greetings,
-Karsten
--- 
-#include <standard_disclaimer>
-Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der Nutzung
-oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die Markt- oder
-Meinungsforschung.
+AFAICT ecoff is only used on mips but, since ecoff is not an arch
+specific object format, it makes sense to make it a generic kbuild
+target, like elf, srec and bin.  To that end, I looked at moving
+elf2ecoff and addinitrd to an arch independent directory so everybody
+could use those tools, alas both contain mips specific code.  Any idea
+how much work is required to make elf2ecoff and addinitrd into generic
+utilities?  Is it worth the effort or should they stay as mips only?

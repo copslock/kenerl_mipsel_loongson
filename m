@@ -1,56 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Oct 2003 17:33:54 +0100 (BST)
-Received: from p508B6021.dip.t-dialin.net ([IPv6:::ffff:80.139.96.33]:34491
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225365AbTJWQds>; Thu, 23 Oct 2003 17:33:48 +0100
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h9NGXdNK014277;
-	Thu, 23 Oct 2003 18:33:39 +0200
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h9NGXV1b014276;
-	Thu, 23 Oct 2003 18:33:31 +0200
-Date: Thu, 23 Oct 2003 18:33:31 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Ralf R?sch <ralf.roesch@rw-gmbh.de>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: Compiler Problems in tlbex-r4k.S
-Message-ID: <20031023163331.GA27437@linux-mips.org>
-References: <NHBBLBCCGMJFJIKAMKLHOEIJCBAA.ralf.roesch@rw-gmbh.de> <Pine.GSO.4.21.0310231142250.27218-100000@waterleaf.sonytel.be>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.GSO.4.21.0310231142250.27218-100000@waterleaf.sonytel.be>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Oct 2003 18:40:02 +0100 (BST)
+Received: from real.realitydiluted.com ([IPv6:::ffff:208.242.241.164]:15039
+	"EHLO real.realitydiluted.com") by linux-mips.org with ESMTP
+	id <S8225365AbTJWRjt>; Thu, 23 Oct 2003 18:39:49 +0100
+Received: from localhost ([127.0.0.1] helo=realitydiluted.com)
+	by real.realitydiluted.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1ACjQi-0003cT-00; Thu, 23 Oct 2003 12:39:24 -0500
+Message-ID: <3F981241.5030703@realitydiluted.com>
+Date: Thu, 23 Oct 2003 13:39:13 -0400
+From: "Steven J. Hill" <sjhill@realitydiluted.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4) Gecko/20031010 Debian/1.4-6
+X-Accept-Language: en
+MIME-Version: 1.0
+To: "Gleb O. Raiko" <raiko@niisi.msk.ru>
+CC: linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: Packages for RH 7.3/mips
+References: <3F964D7E.DF3EB883@niisi.msk.ru> <20031022145956.GA16117@lucon.org> <3F97983C.57A34617@niisi.msk.ru>
+In-Reply-To: <3F97983C.57A34617@niisi.msk.ru>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sjhill@realitydiluted.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3497
+X-archive-position: 3498
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: sjhill@realitydiluted.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Oct 23, 2003 at 11:43:27AM +0200, Geert Uytterhoeven wrote:
-
-> > If I change the line 43 from:
-> > #define PTE_PAGE_SIZE	(1L << PTE_PAGE_SHIFT)
-> > to
-> > #define PTE_PAGE_SIZE	(1 << PTE_PAGE_SHIFT)
-> > the compiling is o.k.
-
-The fix for this went into CVS yesterday.
-
-> That's a programming error. The assembler doesn't know 1L, it needs plain 1.
+Gleb O. Raiko wrote:
 > 
-> Yes, it makes life hard, if you want to share your definitions between the
-> C compiler and the assembler.
+> Well, does anybody in the list have an interest in?
+> 
+> Basically, I would like to follow GPL rules and put the packages for the
+> public access.
+>
+Well, it's good to have the stuff available. I would ask
+Ralf if he would be willing to add your packages onto the
+main ftp.linux-mips.org FTP site. Ralf?
 
-It's a PITA that gas doesn't accept constants in the same syntax as C
-does.  It means we have to extract many constants into offset.h before
-they can be used in assembler code.  One of the small things on my
-wishlist for x-mas ;-)
-
-  Ralf
+-Steve

@@ -1,82 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Aug 2004 14:46:43 +0100 (BST)
-Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:36625 "EHLO
-	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8224911AbUHTNqj>;
-	Fri, 20 Aug 2004 14:46:39 +0100
-Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
-	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
-	id 1By9tj-0003MH-00; Fri, 20 Aug 2004 14:57:39 +0100
-Received: from arsenal.mips.com ([192.168.192.197])
-	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
-	id 1By9ie-0001B8-00; Fri, 20 Aug 2004 14:46:12 +0100
-Received: from dom by arsenal.mips.com with local (Exim 3.35 #1 (Debian))
-	id 1By9ie-0002nS-00; Fri, 20 Aug 2004 14:46:12 +0100
-From: Dominic Sweetman <dom@mips.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Aug 2004 15:17:59 +0100 (BST)
+Received: from mo03.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:47077 "EHLO
+	mo03.iij4u.or.jp") by linux-mips.org with ESMTP id <S8224911AbUHTORy>;
+	Fri, 20 Aug 2004 15:17:54 +0100
+Received: from mdo01.iij4u.or.jp (mdo01.iij4u.or.jp [210.130.0.171])
+	by mo03.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id XAA01789;
+	Fri, 20 Aug 2004 23:17:49 +0900 (JST)
+Received: 4UMDO01 id i7KEHms28677; Fri, 20 Aug 2004 23:17:49 +0900 (JST)
+Received: 4UMRO00 id i7KEHkX3002417; Fri, 20 Aug 2004 23:17:47 +0900 (JST)
+	from stratos (localhost [127.0.0.1]) (authenticated)
+Date: Fri, 20 Aug 2004 23:17:32 +0900
+From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH] vr41xx: arch_init_irq
+Message-Id: <20040820231732.5cf3c099.yuasa@hh.iij4u.or.jp>
+X-Mailer: Sylpheed version 0.9.12 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-ID: <16678.163.774841.111369@arsenal.mips.com>
-Date: Fri, 20 Aug 2004 14:46:11 +0100
-To: Jun Sun <jsun@mvista.com>
-Cc: Dominic Sweetman <dom@mips.com>, linux-mips@linux-mips.org
-Subject: Re: anybody tried NPTL?
-In-Reply-To: <20040819221646.GC8737@mvista.com>
-References: <20040804152936.D6269@mvista.com>
-	<16676.46694.564448.344602@arsenal.mips.com>
-	<20040819221646.GC8737@mvista.com>
-X-Mailer: VM 7.03 under 21.4 (patch 6) "Common Lisp" XEmacs Lucid
-X-MTUK-Scanner: Found to be clean
-X-MTUK-SpamCheck: not spam, SpamAssassin (score=-4.848, required 4, AWL,
-	BAYES_00)
-Return-Path: <dom@mips.com>
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5701
+X-archive-position: 5702
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dom@mips.com
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
+Hi Ralf,
 
-Jun Sun (jsun@mvista.com) writes:
+The following line isn't needed in arch_init_irq().
+Please apply this patch to v2.6 CVS tree.
 
-> > [large expanse of new ABI stuff omitted]
->
-> What is the motivation of other changes?  Taking this chance to make
-> things all right in one shot?
+Yoichi
 
-Yes, and I did kind of cover this in the large expanse of stuff:
-
-> > As you said, this motivates a revision of the ABI.  Any
-> > incompatible change to the ABI is painful, since everything has to
-> > be recompiled; so our reasoning at the moment is that we might as
-> > well be radical...
-
-o32 puts only four arguments in registers, which is less than optimal,
-and continually reloads the GOT pointer (which is not defined as a
-saved register in o32).
-
-n32 (despite its name) runs exclusively on 64-bit CPUs.
-
-So yes, we have strong reasons for making a larger change to the ABI,
-and knowing how difficult it is...
-
-> However, from NPTL implementation point of view I really just care
-> about the per-thread register.
-
-I guess our main message was that we felt it would be a mistake just
-to add a thread register to o32 (which produces a substantially
-incompatible new ABI anyway).
-
-Until that all works, what we had in mind is that we'd do NPTL over
-o32 by defining a system call to return a per-thread ID which is or
-can be converted into a per-thread data pointer.  We suspected that
-NPTL's per-thread-data model allows the use of cunning macros or
-library functions to make that look OK.
-
-Ought we to go further and see exactly how that can be done?
-
---
-Dominic
+diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/common/icu.c linux/arch/mips/vr41xx/common/icu.c
+--- linux-orig/arch/mips/vr41xx/common/icu.c	Fri Aug 20 21:10:27 2004
++++ linux/arch/mips/vr41xx/common/icu.c	Fri Aug 20 22:57:35 2004
+@@ -699,8 +699,6 @@
+ 
+ void __init arch_init_irq(void)
+ {
+-	memset(irq_desc, 0, sizeof(irq_desc));
+-
+ 	mips_cpu_irq_init(MIPS_CPU_IRQ_BASE);
+ 	init_vr41xx_icu_irq();
+ 	init_vr41xx_giuint_irq();

@@ -1,34 +1,51 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f72KP3g06094
-	for linux-mips-outgoing; Thu, 2 Aug 2001 13:25:03 -0700
-Received: from bagpuss.swansea.linux.org.uk (pc1-cwbl2-0-cust80.cdf.cable.ntl.com [62.252.63.80])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f72KP1V06085
-	for <linux-mips@oss.sgi.com>; Thu, 2 Aug 2001 13:25:02 -0700
-Received: (from alan@localhost)
-	by bagpuss.swansea.linux.org.uk (8.11.2/8.11.2) id f6TLQ7m01578;
-	Sun, 29 Jul 2001 17:26:07 -0400
-From: Alan Cox <alan@bagpuss.swansea.linux.org.uk>
-Message-Id: <200107292126.f6TLQ7m01578@bagpuss.swansea.linux.org.uk>
-Subject: Re: [long] Lance on DS5k/200
-To: jbglaw@lug-owl.de (Jan-Benedict Glaw)
-Date: Sun, 29 Jul 2001 17:26:06 -0400 (EDT)
-Cc: macro@ds2.pg.gda.pl (Maciej W. Rozycki), airlied@csn.ul.ie (Dave Airlie),
-   linux-mips@oss.sgi.com (SGI MIPS list),
-   debian-mips@lists.debian.org (Debian MIPS list), engel@unix-ag.org
-In-Reply-To: <20010731004556.C19713@lug-owl.de> from "Jan-Benedict Glaw" at Jul 31, 2001 12:45:56 AM
-X-Mailer: ELM [version 2.5 PL3]
-MIME-Version: 1.0
+	by oss.sgi.com (8.11.2/8.11.3) id f730kLe19601
+	for linux-mips-outgoing; Thu, 2 Aug 2001 17:46:21 -0700
+Received: from dea.waldorf-gmbh.de (u-227-18.karlsruhe.ipdial.viaginterkom.de [62.180.18.227])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f730kIV19595
+	for <linux-mips@oss.sgi.com>; Thu, 2 Aug 2001 17:46:19 -0700
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f730j1q28023;
+	Fri, 3 Aug 2001 02:45:01 +0200
+Date: Fri, 3 Aug 2001 02:45:01 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Bryan Chua <chua@ayrnetworks.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: xtime declaration
+Message-ID: <20010803024501.A27708@bacchus.dhis.org>
+References: <3B699126.E1B5F5E0@ayrnetworks.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3B699126.E1B5F5E0@ayrnetworks.com>; from chua@ayrnetworks.com on Thu, Aug 02, 2001 at 10:43:02AM -0700
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-> >  Z8530 is on my to-do list.  Our driver really sucks: neither DMA (the I/O
-> > ASIC again) nor sychronous mode, just basic asynchronous support.  I'm
-> > going to look at LANCE one day, too, but it's lower on the list.
-> 
-> You you facing towards all those Z8530 implementation or only to
-> "ours"?
+On Thu, Aug 02, 2001 at 10:43:02AM -0700, Bryan Chua wrote:
 
-All the 8530 sync support is in my Z85230 driver. Its written so
-someone can add async support to it.
+> Has anyone else come across a compile error:
+> 
+> mips-linux-gcc -I /local/chua/public/linux-mips-latest/include/asm/gcc
+> -D__KERNEL__ -I/local/chua/public/linux-mips-latest/include -Wall
+> -Wstrict-prototypes -O2 -fomit-frame-pointer -fno-strict-aliasing -G 0
+> -mno-abicalls -fno-pic -mcpu=r5000 -mips2 -Wa,--trap -pipe    -c -o
+> timer.o timer.c
+> timer.c:35: conflicting types for `xtime'
+> /local/chua/public/linux-mips-latest/include/linux/sched.h:540: previous
+> declaration of `xtime'
+> 
+> in include/linux/sched.h:
+> extern struct timeval xtime;
+> 
+> int timer.c:
+> volatile struct timeval xtime __attribute__ ((aligned (16)));
+> 
+> I am using gcc 3.0 and binutils 2.11.2, both of the released versions.
+> I do not know if my kernel actually runs yet with this toolchain...
+
+That's a bug which got fixed in the latest kernels by removing the
+volatile from the sched.h declaration.
+
+  Ralf

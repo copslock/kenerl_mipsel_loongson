@@ -1,43 +1,36 @@
-Received:  by oss.sgi.com id <S554086AbQLDS6K>;
-	Mon, 4 Dec 2000 10:58:10 -0800
-Received: from u-49-20.karlsruhe.ipdial.viaginterkom.de ([62.180.20.49]:62734
-        "EHLO u-49-20.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S553667AbQLDS55>; Mon, 4 Dec 2000 10:57:57 -0800
-Received: (ralf@lappi) by bacchus.dhis.org id <S869702AbQLDS5p>;
-	Mon, 4 Dec 2000 19:57:45 +0100
-Date:	Mon, 4 Dec 2000 19:57:45 +0100
-From:	Ralf Baechle <ralf@oss.sgi.com>
-To:	K.H.C.vanHouten@kpn.com
-Cc:	Florian Lohoff <flo@rfc822.org>, linux-mips@oss.sgi.com,
-        K.H.C.vanHouten@research.kpn.com
-Subject: Re: [SUCCESS] 2.4.0-test11 on Decstation 5000/150 (R4000)
-Message-ID: <20001204195745.E12738@bacchus.dhis.org>
-References: <20001203170430.A1504@paradigm.rfc822.org> <200012041814.TAA06250@sparta.research.kpn.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <200012041814.TAA06250@sparta.research.kpn.com>; from K.H.C.vanHouten@research.kpn.com on Mon, Dec 04, 2000 at 07:14:30PM +0100
-X-Accept-Language: de,en,fr
+Received:  by oss.sgi.com id <S553959AbQLEJ2f>;
+	Tue, 5 Dec 2000 01:28:35 -0800
+Received: from deliverator.sgi.com ([204.94.214.10]:45391 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S553700AbQLEJ2O>;
+	Tue, 5 Dec 2000 01:28:14 -0800
+Received: from sgisgp.singapore.sgi.com (sgisgp.singapore.sgi.com [134.14.84.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via SMTP id BAA09785
+	for <linux-mips@oss.sgi.com>; Tue, 5 Dec 2000 01:28:06 -0800 (PST)
+	mail_from (calvine@sgi.com)
+Received: from sgp-apsa001e--n.singapore.sgi.com by sgisgp.singapore.sgi.com via ESMTP (950413.SGI.8.6.12/930416.SGI)
+	for <linux-mips@oss.sgi.com> id RAA10706; Tue, 5 Dec 2000 17:37:49 +0800
+Received: by sgp-apsa001e--n.singapore.sgi.com with Internet Mail Service (5.5.2650.21)
+	id <XQ01WPLW>; Tue, 5 Dec 2000 17:31:35 +0800
+Message-ID: <43FECA7CDC4CD411A4A3009027999112267CC3@sgp-apsa001e--n.singapore.sgi.com>
+From:   Calvine Chew <calvine@sgi.com>
+To:     "'linux-mips'" <linux-mips@oss.sgi.com>
+Subject: oss ftp server down?
+Date:   Tue, 5 Dec 2000 17:31:27 +0800 
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2650.21)
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Mon, Dec 04, 2000 at 07:14:30PM +0100, Houten K.H.C. van (Karel) wrote:
+Is it down? I can't access it...
 
-> >here is the short output - We needed to change ethernet, scsi
-> >initialization and the vmalloc bug ...
-> >
-> > ... successfull decstation boot of linux 2.4-test11
-> 
-> I did try some kernel compiles with my new toolchain on my decstation,
-> with the following result:
-> 
-> egcs-1.0.3a-1 / binutils-2.10.91-1lm : Userland compiles fine,
-> 				       Kernel compile fails
-> egcs-1.0.2-9 / binutils-2.8.1-2D1 : Kernel compiles OK.
-
-egcs 1.0.x will misscompile kernels; therefore from test10 on the kernel
-refuses to compile.
-
-  Ralf
+--
+Calvine Chew, Technical Consultant
+Technology & Industry Consulting Group (Asia South), SGI.
+***************************************************************
+Inter spem curamque, timores inter et iras, omnem crede diem tibi
+diluxisse supremum: grata superveniet quae sperabitur hora.
+http://www.cyberjunkie.com/arcana
+***************************************************************

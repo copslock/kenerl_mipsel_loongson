@@ -1,35 +1,42 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA12433; Tue, 3 Jun 1997 15:26:45 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id RAA16865; Tue, 3 Jun 1997 17:04:11 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA18532 for linux-list; Tue, 3 Jun 1997 15:26:33 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA18524 for <linux@relay.engr.SGI.COM>; Tue, 3 Jun 1997 15:26:29 -0700
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id PAA11111
-	for <linux@relay.engr.SGI.COM>; Tue, 3 Jun 1997 15:26:28 -0700
-	env-from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-          by lager.engsoc.carleton.ca (8.8.5/8.8.4) with SMTP
-	  id SAA15747; Tue, 3 Jun 1997 18:24:15 -0400
-Date: Tue, 3 Jun 1997 18:24:15 -0400 (EDT)
-From: Alex deVries <adevries@engsoc.carleton.ca>
-To: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
-cc: Mike Shaver <shaver@neon.ingenia.ca>, linux@cthulhu.engr.sgi.com
-Subject: Re: The Plan For Userland(tm)
-In-Reply-To: <Pine.LNX.3.95.970603180712.25914M-100000@lager.engsoc.carleton.ca>
-Message-ID: <Pine.LNX.3.95.970603182330.25914P-100000@lager.engsoc.carleton.ca>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id RAA20848 for linux-list; Tue, 3 Jun 1997 17:03:33 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id RAA20828 for <linux@relay.engr.SGI.COM>; Tue, 3 Jun 1997 17:03:26 -0700
+Received: from caipfs.rutgers.edu (caipfs.rutgers.edu [128.6.155.100]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id RAA02782
+	for <linux@relay.engr.SGI.COM>; Tue, 3 Jun 1997 17:03:25 -0700
+	env-from (davem@caipfs.rutgers.edu)
+Received: from jenolan.caipgeneral (jenolan.rutgers.edu [128.6.111.5])
+	by caipfs.rutgers.edu (8.8.5/8.8.5) with SMTP id TAA25626;
+	Tue, 3 Jun 1997 19:59:38 -0400 (EDT)
+Received: by jenolan.caipgeneral (SMI-8.6/SMI-SVR4)
+	id TAA02050; Tue, 3 Jun 1997 19:57:33 -0400
+Date: Tue, 3 Jun 1997 19:57:33 -0400
+Message-Id: <199706032357.TAA02050@jenolan.caipgeneral>
+From: "David S. Miller" <davem@jenolan.rutgers.edu>
+To: shaver@neon.ingenia.ca
+CC: linux@cthulhu.engr.sgi.com
+In-reply-to: <199706031918.PAA27231@neon.ingenia.ca> (message from Mike Shaver
+	on Tue, 3 Jun 1997 15:18:34 -0400 (EDT))
+Subject: Re: http://bogomips.ingenia.com
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+   From: Mike Shaver <shaver@neon.ingenia.ca>
+   Date: Tue, 3 Jun 1997 15:18:34 -0400 (EDT)
 
-On Tue, 3 Jun 1997, Alex deVries wrote:
-> Ralph, can you give us (Mike or I) a copy of your SSH's?  We will in turn
-    ^^^^
+   Once I figured out why it wasn't arping and didn't want to let me
+   set routes, it got much easier... =)
 
-Ish.  I'm very, very sorry.  I meant 'Ralf'.
+Scheisse...
 
-- Alex
+Linux version 2.0.12 (dm@neteng) (gcc version 2.7.2) #2 Mon Aug 12 04:43:30 PDT 1996
 
+I built that two days before stepping on the plane last summer to
+leave my internship ;-)
 
-      Alex deVries           "Alex can cut a mean rug."
-  System Administrator       - M. Dittberner <shabby@engsoc.carleton.ca>
-   The EngSoc Project     
+---------------------------------------------////
+Yow! 11.26 MB/s remote host TCP bandwidth & ////
+199 usec remote TCP latency over 100Mb/s   ////
+ethernet.  Beat that!                     ////
+-----------------------------------------////__________  o
+David S. Miller, davem@caip.rutgers.edu /_____________/ / // /_/ ><

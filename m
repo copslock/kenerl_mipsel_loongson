@@ -1,63 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Apr 2003 16:32:08 +0100 (BST)
-Received: from p508B74BA.dip.t-dialin.net ([IPv6:::ffff:80.139.116.186]:29336
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225268AbTDOPcH>; Tue, 15 Apr 2003 16:32:07 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id h3FFJJE09957;
-	Tue, 15 Apr 2003 17:19:19 +0200
-Date: Tue, 15 Apr 2003 17:19:19 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc: nemoto@toshiba-tops.co.jp, linux-mips@linux-mips.org
-Subject: Re: End c-tx49.c's misserable existence
-Message-ID: <20030415171919.A9902@linux-mips.org>
-References: <20030414055038.A29923@linux-mips.org> <20030414.152903.41628304.nemoto@toshiba-tops.co.jp> <20030414174825.A9808@linux-mips.org> <20030416.001509.59462441.anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Apr 2003 16:49:59 +0100 (BST)
+Received: from UX3.SP.CS.CMU.EDU ([IPv6:::ffff:128.2.198.103]:46209 "HELO
+	ux3.sp.cs.cmu.edu") by linux-mips.org with SMTP id <S8225268AbTDOPt6>;
+	Tue, 15 Apr 2003 16:49:58 +0100
+Received: from GS256.SP.CS.CMU.EDU ([128.2.199.27]) by ux3.sp.cs.cmu.edu
+          id aa01769; 15 Apr 2003 11:49 EDT
+Subject: Re: Soft floating point on 5K
+From: Justin Carlson <justinca@cs.cmu.edu>
+To: Dennis Castleman <DennisCastleman@oaktech.com>
+Cc: linux-mips@linux-mips.org
+In-Reply-To: <16027.58679.576152.853200@gladsmuir.mips.com>
+References: <56BEF0DBC8B9D611BFDB00508B5E2634102F07@TLEXMAIL>
+	 <16027.58679.576152.853200@gladsmuir.mips.com>
+Content-Type: text/plain
+Organization: 
+Message-Id: <1050421778.1988.23.camel@gs256.sp.cs.cmu.edu>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <20030416.001509.59462441.anemo@mba.ocn.ne.jp>; from anemo@mba.ocn.ne.jp on Wed, Apr 16, 2003 at 12:15:09AM +0900
-Return-Path: <ralf@linux-mips.net>
+X-Mailer: Ximian Evolution 1.2.3 
+Date: 15 Apr 2003 11:49:38 -0400
+Content-Transfer-Encoding: 7bit
+Return-Path: <justinca@cs.cmu.edu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2061
+X-archive-position: 2062
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: justinca@cs.cmu.edu
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Apr 16, 2003 at 12:15:09AM +0900, Atsushi Nemoto wrote:
-> Date:	Wed, 16 Apr 2003 00:15:09 +0900 (JST)
-> To:	ralf@linux-mips.org
-> Cc:	nemoto@toshiba-tops.co.jp, linux-mips@linux-mips.org
-> Subject: Re: End c-tx49.c's misserable existence
-> From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-> Content-Type: Text/Plain; charset=us-ascii
+On Tue, 2003-04-15 at 06:55, Dominic Sweetman wrote:
+> Dennis Castleman (DennisCastleman@oaktech.com) writes:
 > 
-> >>>>> On Mon, 14 Apr 2003 17:48:25 +0200, Ralf Baechle <ralf@linux-mips.org> said:
+> > I'm trying to run soft-floating point functions on a r5000 core with
+> > a FPU. Without having to take the overhead of using a trap.  Using
+> > the files fp-bit.c and dp-bit.c from the gcc source as a floating
+> > point lib.  This implementation lack in accuracy in the least
+> > signeficant bit multiplication in division operations.
 > 
-> >> One more request.  Please enclose R4600_V1_HIT_CACHEOP_WAR and
-> >> R4600_V2_HIT_CACHEOP_WAR with appropriate CONFIG_CPU_XXX.  I do not
-> >> know what CPUs need this workaround... (at least TX49 does not need
-> >> this)
+> There's an IEEE-compatible set of software floating point routines in
+> the Linux kernel, invoked by the trap handler.  The routines were
+> donated by Algorithmics (now part of MIPS Technologies).
+>
+> If you wrapped them in the appropriate GCC skins, they should give you
+> a soft-float library which works better.
 > 
-> ralf> I'll leave it unconditionally enabled for now because the
-> ralf> Makefiles could behave in undefined ways if multiple
-> ralf> CONFIG_CPU_* options are selected and quite a few systems
-> ralf> support both the R4600 and other processors like the Indy.
-> ralf> Another day.
-> 
-> I have been misunderstood that people who needs the workaround always
-> select CONFIG_CPU_R4X00.  But it is not true.  Now I understand.
-> 
-> But recent reorganization increased a number of c-r4k.c users
-> somewhat.  How about introducing new config macros such as
-> CONFIG_R4600_V1_WORKAROUNDS ?
 
-That's all part of the Great Plan.  For now you can control many of the
-workarounds in <asm/war.h>.
+I've found John Hauser's softfloat package to be an excellent resource
+for such applications.  It's under a BSD licence, and can be found here:
 
-  Ralf
+http://www.jhauser.us/arithmetic/SoftFloat.html
+
+I've been very happy with it in a couple of projects.  
+
+-Justin

@@ -1,83 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Sep 2002 22:21:25 +0200 (CEST)
-Received: from noose.gt.owl.de ([62.52.19.4]:40971 "HELO noose.gt.owl.de")
-	by linux-mips.org with SMTP id <S1121744AbSI1UVZ>;
-	Sat, 28 Sep 2002 22:21:25 +0200
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 8C010873; Sat, 28 Sep 2002 22:21:17 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 5B8D93717F; Sat, 28 Sep 2002 22:19:58 +0200 (CEST)
-Date: Sat, 28 Sep 2002 22:19:58 +0200
-From: Florian Lohoff <flo@rfc822.org>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: Karsten Merker <karsten@excalibur.cologne.de>,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH] dec_esp.c repair mmu_sglist breakage
-Message-ID: <20020928201958.GE18156@paradigm.rfc822.org>
-References: <20020928103840.GA23300@linuxtag.org> <Pine.GSO.3.96.1020928203950.10698B-100000@delta.ds2.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="uxuisgdDHaNETlh8"
-Content-Disposition: inline
-In-Reply-To: <Pine.GSO.3.96.1020928203950.10698B-100000@delta.ds2.pg.gda.pl>
-User-Agent: Mutt/1.3.28i
-Organization: rfc822 - pure communication
-Return-Path: <flo@rfc822.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Sep 2002 22:31:09 +0200 (CEST)
+Received: from mail.scram.de ([195.226.127.117]:2503 "EHLO mail.scram.de")
+	by linux-mips.org with ESMTP id <S1121744AbSI1UbJ>;
+	Sat, 28 Sep 2002 22:31:09 +0200
+Received: from alpha.bocc.de (p5080D5A5.dip.t-dialin.net [80.128.213.165])
+	(authenticated)
+	by mail.scram.de (8.11.6+3.4W/8.11.0) with ESMTP id g8SKV2A28090
+	for <linux-mips@linux-mips.org>; Sat, 28 Sep 2002 22:31:02 +0200 (CEST)
+Date: Sat, 28 Sep 2002 22:30:56 +0200 (CEST)
+From: Jochen Friedrich <jochen@scram.de>
+X-X-Sender: jochen@alpha.bocc.de
+To: linux-mips@linux-mips.org
+Subject: R4600 status?
+Message-ID: <Pine.LNX.4.44.0209282228160.30409-100000@alpha.bocc.de>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <jochen@scram.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 304
+X-archive-position: 305
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: flo@rfc822.org
+X-original-sender: jochen@scram.de
 Precedence: bulk
 X-list: linux-mips
 
+Hi,
 
---uxuisgdDHaNETlh8
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+i tried to boot the current (unstable) Debian kernel (2.4.18-r4k-ip22) and
+get the infamous hangs on my Indy at various stages, but very early,
+during boot.
 
-On Sat, Sep 28, 2002 at 08:49:52PM +0200, Maciej W. Rozycki wrote:
-> On Sat, 28 Sep 2002, Karsten Merker wrote:
->=20
-> > > through the whole issue of the mmu_sglist confusion and the broken
-> > > reimplantation of mmu_sglist the dec_esp broke. Here is a fix
-> > > to really remove the mmu_sglist and use scatterlist instead. With
-> > > this the Decstation on this desk at least finds its partitions
-> > > again and does not crash.
-> >=20
-> > I tested the patch on my DS 5000/150 and it works there, too.
->=20
->  Thanks for the report -- since I have no means to test the SCSI driver I
-> was going to ask people for testing to have another confirmation.  I'm not
-> sure why it got broken (I'll check the details to find out) as the changes
-> were to revert to the original behaviour, but since struct mmu_sglist got
+ARCH: SGI-IP22
+PROMLIB: ARC firmware Version 1 Revision 10
+CPU: MIPS-R4600 FPU<MIPS-R4600FPC> ICACHE DCACHE
+CPU revision is: 00002010
+FPU revision is: 00002000
+Primary instruction cache 16kb, linesize 32 bytes.
+Primary data cache 16kb, linesize 32 bytes.
+Linux version 2.4.17-r4k-ip22 (root@nocontrol) (gcc version 2.95.4
+20011002 (Deb
+ian prerelease)) #1 Mon Apr 29 12:10:32 CEST 2002
+MC: SGI memory controller Revision 3
 
-It wasnt reverted - The problem was that the original Framework NCR53C9x
-and dec_esp.c used the different structs which were not the same (Order
-changed) after the change so it broke.
+Does this machine suffer from the V1.7 problems, as well? Where can i find
+the current patch?
 
-> deprecated, I'm happy to see an update to struct scatterlist.  Since the
-> change works for both of you, I'm checking it in now.=20
-
-Flo
---=20
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-                        Heisenberg may have been here.
-
---uxuisgdDHaNETlh8
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iD8DBQE9lg7uUaz2rXW+gJcRAuYAAKDaguL51/GneWibJ9gemWZLGVuFhACfdaOs
-IYmUroXaQn4YYeyK+spo3JE=
-=7shc
------END PGP SIGNATURE-----
-
---uxuisgdDHaNETlh8--
+Thanks,
+--jochen

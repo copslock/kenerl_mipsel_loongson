@@ -1,48 +1,69 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id EAA1052144 for <linux-archive@neteng.engr.sgi.com>; Thu, 11 Dec 1997 04:24:23 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id HAA1084951 for <linux-archive@neteng.engr.sgi.com>; Thu, 11 Dec 1997 07:57:50 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id EAA14069 for linux-list; Thu, 11 Dec 1997 04:22:41 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id EAA14059 for <linux@engr.sgi.com>; Thu, 11 Dec 1997 04:22:37 -0800
-Received: from hawkweed.bri.st.com (hawkweed.bri.st.com [192.26.234.4]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via SMTP id EAA02897
-	for <linux@engr.sgi.com>; Thu, 11 Dec 1997 04:22:35 -0800
-	env-from (rji@bristol.st.com)
-Received: from thistle.inmos.co.uk [138.198.1.7] 
-	by hawkweed.bri.st.com with smtp (Exim 1.62 #2)
-	id 0xg7c4-0005I5-00; Thu, 11 Dec 1997 12:21:08 +0000
-Received: from panther [138.198.35.30] 
-	by thistle.inmos.co.uk with smtp (Exim 1.73 #1)
-	id 0xg7cY-00061x-00; Thu, 11 Dec 1997 12:21:38 +0000
-Received: from rji by panther with local (Exim 1.62 #1)
-	id 0xg7cY-00061p-00; Thu, 11 Dec 1997 12:21:38 +0000
-From: Richard Ingram <rji@bristol.st.com>
-Message-Id: <9712111221.ZM23175@bristol.st.com>
-Date: Thu, 11 Dec 1997 12:21:37 +0000
-X-Mailer: Z-Mail (3.2.1 10apr95)
-To: linux-mips@fnet.fr, linux@cthulhu.engr.sgi.com
-Subject: Monitor for Mips 4000PC
-Mime-Version: 1.0
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id HAA19148 for linux-list; Thu, 11 Dec 1997 07:56:47 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id HAA19132 for <linux@engr.sgi.com>; Thu, 11 Dec 1997 07:56:43 -0800
+Received: from comsoon.login.net ([192.219.254.5]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id HAA14430
+	for <linux@engr.sgi.com>; Thu, 11 Dec 1997 07:56:40 -0800
+	env-from (jalonso@linguini.kaydara.com)
+Received: (uucp@localhost) by comsoon.login.net (8.6.12/8.6.5) with UUCP id KAA08392; Thu, 11 Dec 1997 10:12:33 -0500
+Received: from capellini-ii (capellini.kaydara.com [192.0.2.25]) by linguini.kaydara.com (950413.SGI.8.6.12/8.6.9) with SMTP id KAA26651; Thu, 11 Dec 1997 10:07:45 -0500
+Message-ID: <348FFDBF.EE8@kaydara.com>
+Date: Thu, 11 Dec 1997 09:50:39 -0500
+From: Joe Alonso <jalonso@kaydara.com>
+Reply-To: jalonso@kaydara.com
+Organization: Kaydara
+X-Mailer: Mozilla 3.0 (Win95; I)
+MIME-Version: 1.0
+To: linux-mips@fnet.fr, linux@cthulhu.engr.sgi.com, ewt@redhat.com,
+        linux-mips@vger.rutgers.edu
+Subject: Re: Announce: New uploads
+References: <19971210151448.23359@thoma.uni-koblenz.de>
 Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi,
+Pardon my ignorance, but...
+I have a couple of questions;  
+is there a how-to document that outlines how to load linux on an sgi?
+is the Indigo Elan (r4000) supported?
 
-Over Xmas I want to fire up my Mips 4000PC with the standard graphics card, I
-have a Sun/Sony Trinitron 19" colour fixed freq monitor with the 13w3 connector
-on it, can this be used with the Mips graphics card ? Or will I have to use my
-14" multisync ?
+I'm not sure how to initialize a loading of linux on the sgi.
+Here's what I've assumed:
+- bring over the src's to the sgi
+- compile a basic system (under irix)
+- copy over the original irix kernel with the new linux kernel
+- re-boot
 
-Also for instally NT what do I need ? I have the NT CD-Rom and that is it, do I
-need to make a boot floppy ? If so what do I put on it ?
+The begging questions:
+The FS are not compatible, therefore a new mkfs has to be done on the
+(root) partitions.
+This just doesn't "sound" right to me. 
+What am I overlooking?
 
-After NT is up and running I hope to get Linux/Mips on the box, I have just
-ordered RH5 for my Dual PPro box to act as my crossdev platform.
+ja
 
-Also the Mips box power supply does not seem to have a Switch for 110-220Volt,
-does that mean it is a hardwired 110 power supply or auto sensing (I need
-220v)? Or is it just that the switch is hidden away in the chassis ?
 
-Thanks for any info
-
-Richard.
-
--- 
+Ralf Baechle wrote:
+> 
+> -----BEGIN PGP SIGNED MESSAGE-----
+> 
+> Hi all,
+> 
+> ok, here are the toys I promised to upload to ftp.linux.sgi.com:
+> 
+>  - tons of srpms some of which have been modified compared to RedHat's
+>    original versions for the ``Mustang'' release and  big endian binaries.
+>  - tarballs of libc binaries.
+>  - srpms and both big and little endian binaries of an updated binutils
+>    package.
+>  - a tarball with big endian binaries of XFree 3.3.1.
+>  - kernel binaries for the Indy and RM200.  The RM200 kernel has the support
+>    for a couple of other little endian machines in it but I didn't test.
+> 
+> All in all this is around 350mb.
+> 
+> Have fun leeching,
+> 
+>   Ralf
+>

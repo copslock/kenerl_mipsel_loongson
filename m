@@ -1,49 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Feb 2004 16:03:32 +0000 (GMT)
-Received: from brilsmurf.chem.tue.nl ([IPv6:::ffff:131.155.84.68]:15530 "EHLO
-	brilsmurf.chem.tue.nl") by linux-mips.org with ESMTP
-	id <S8225220AbUBXQDU>; Tue, 24 Feb 2004 16:03:20 +0000
-Received: from brilsmurf.chem.tue.nl (localhost [127.0.0.1])
-	by brilsmurf.chem.tue.nl (8.12.3/8.12.3/Debian-6.6) with ESMTP id i1OG3JvI030497
-	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO)
-	for <linux-mips@linux-mips.org>; Tue, 24 Feb 2004 17:03:20 +0100
-Received: from localhost (joost@localhost)
-	by brilsmurf.chem.tue.nl (8.12.3/8.12.3/Debian-6.6) with ESMTP id i1OG3JSA030959
-	for <linux-mips@linux-mips.org>; Tue, 24 Feb 2004 17:03:19 +0100
-X-Authentication-Warning: brilsmurf.chem.tue.nl: joost owned process doing -bs
-Date:	Tue, 24 Feb 2004 17:03:19 +0100 (CET)
-From:	Joost <Joost@stack.nl>
-X-X-Sender: joost@brilsmurf.chem.tue.nl
-To:	linux-mips@linux-mips.org
-Subject: Re: fore atm card in indy?
-In-Reply-To: <20040223204649.GF1046@mind.be>
-Message-ID: <Pine.LNX.4.58.0402241658390.21389@brilsmurf.chem.tue.nl>
-References: <Pine.LNX.4.58.0402181631050.30510@brilsmurf.chem.tue.nl>
- <20040220142138.GD23404@linux-mips.org> <20040223204649.GF1046@mind.be>
-ReplyTo: Joost@stack.nl
-User-Agent: 007
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <Joost@stack.nl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Feb 2004 22:13:28 +0000 (GMT)
+Received: from cpc1-cwma1-5-0-cust4.swan.cable.ntl.com ([IPv6:::ffff:80.5.120.4]:17315
+	"EHLO dhcp23.swansea.linux.org.uk") by linux-mips.org with ESMTP
+	id <S8225594AbUBXWNZ>; Tue, 24 Feb 2004 22:13:25 +0000
+Received: from dhcp23.swansea.linux.org.uk (localhost.localdomain [127.0.0.1])
+	by dhcp23.swansea.linux.org.uk (8.12.10/8.12.10) with ESMTP id i1OM9s0r023025;
+	Tue, 24 Feb 2004 22:09:54 GMT
+Received: (from alan@localhost)
+	by dhcp23.swansea.linux.org.uk (8.12.10/8.12.10/Submit) id i1OM9qXU023023;
+	Tue, 24 Feb 2004 22:09:52 GMT
+X-Authentication-Warning: dhcp23.swansea.linux.org.uk: alan set sender to alan@lxorguk.ukuu.org.uk using -f
+Subject: Re: IDE driver problem
+From:	Alan Cox <alan@lxorguk.ukuu.org.uk>
+To:	"Liu Hongming (Alan)" <alanliu@trident.com.cn>
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <15F9E1AE3207D6119CEA00D0B7DD5F680219C648@TMTMS>
+References: <15F9E1AE3207D6119CEA00D0B7DD5F680219C648@TMTMS>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Message-Id: <1077660589.22906.7.camel@dhcp23.swansea.linux.org.uk>
+Mime-Version: 1.0
+X-Mailer: Ximian Evolution 1.4.5 (1.4.5-7) 
+Date:	Tue, 24 Feb 2004 22:09:50 +0000
+Return-Path: <alan@lxorguk.ukuu.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4429
+X-archive-position: 4435
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Joost@stack.nl
+X-original-sender: alan@lxorguk.ukuu.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-> > You'll not like this answer ...  but write a driver :-)
-> > It seems many GIO cards are based on already Linux-supported PCI chips,
-> > so there's a certain chance this won't even be hard.
-> There is already a driver for the PCI and SBUS versions of this card. It
-> lives in drivers/atm/fore200e*. You 'only' need to add code for the
-> GIO32 specifics.
+On Maw, 2004-02-24 at 05:09, Liu Hongming (Alan) wrote:
+> Hi All,
+> 
+> I am porting IDE drivers(Since my hardware has endian issue),
+> and now it could work,however it has some abnormal problems:
 
-Thank you both for your answer. I've only taken a quick
-peek, and got rather scared :-) Maybe I'll try again
-when I have more time (exams coming up).
-
-Thanks again!
+Sounds like your partition data reading is wrong. Print out the
+partition table bases and see if they are all zero

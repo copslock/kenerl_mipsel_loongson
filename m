@@ -1,60 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Aug 2004 14:08:06 +0100 (BST)
-Received: from nwd2mail2.analog.com ([IPv6:::ffff:137.71.25.51]:37772 "EHLO
-	nwd2mail2.analog.com") by linux-mips.org with ESMTP
-	id <S8225230AbUHENIC>; Thu, 5 Aug 2004 14:08:02 +0100
-Received: from nwd2mhb2.analog.com (nwd2mhb2.analog.com [137.71.6.12])
-	by nwd2mail2.analog.com (8.12.10/8.12.10) with ESMTP id i75D80fT027638
-	for <linux-mips@linux-mips.org>; Thu, 5 Aug 2004 09:08:00 -0400
-Received: from jasmine.cpgindia.analog.com ([10.121.13.30])
-	by nwd2mhb2.analog.com (8.9.3 (PHNE_28810+JAGae91741)/8.9.3) with ESMTP id JAA18438
-	for <linux-mips@linux-mips.org>; Thu, 5 Aug 2004 09:08:00 -0400 (EDT)
-Received: from asingh2d01 ([10.121.13.93])
-	by jasmine.cpgindia.analog.com (8.9.1/8.9.1) with SMTP id SAA13917
-	for <linux-mips@linux-mips.org>; Thu, 5 Aug 2004 18:37:56 +0530 (IST)
-From: "akshay" <akshay.singh@analog.com>
-To: <linux-mips@linux-mips.org>
-Subject: RE: pthread uClibc
-Date: Thu, 5 Aug 2004 18:49:52 +0530
-Message-ID: <005701c47aee$e62424b0$5d0d790a@asingh2d01>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook CWS, Build 9.0.2416 (9.0.2911.0)
-Importance: Normal
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1409
-X-Scanned-By: MIMEDefang 2.41
-Return-Path: <akshay.singh@analog.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Aug 2004 18:14:59 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:30201 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225238AbUHEROz>;
+	Thu, 5 Aug 2004 18:14:55 +0100
+Received: from orion.mvista.com (localhost.localdomain [127.0.0.1])
+	by orion.mvista.com (8.12.8/8.12.8) with ESMTP id i75HEqar028373;
+	Thu, 5 Aug 2004 10:14:52 -0700
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.12.8/8.12.8/Submit) id i75HEp2S028372;
+	Thu, 5 Aug 2004 10:14:51 -0700
+Date: Thu, 5 Aug 2004 10:14:51 -0700
+From: Jun Sun <jsun@mvista.com>
+To: Kumba <kumba@gentoo.org>
+Cc: linux-mips@linux-mips.org, jsun@mvista.com
+Subject: Re: anybody tried NPTL?
+Message-ID: <20040805101451.A28337@mvista.com>
+References: <20040804152936.D6269@mvista.com> <411188A8.9040607@gentoo.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <411188A8.9040607@gentoo.org>; from kumba@gentoo.org on Wed, Aug 04, 2004 at 09:08:56PM -0400
+Return-Path: <jsun@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5600
+X-archive-position: 5601
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: akshay.singh@analog.com
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
+On Wed, Aug 04, 2004 at 09:08:56PM -0400, Kumba wrote:
+> Jun Sun wrote:
+> 
+> > I am looking into porting NPTL to MIPS.  Just curious if
+> > anybody has tried this before.
+> > 
+> > I notice there was a discussion about the ABI extension
+> > for TLS (thread local storage) support.  Before that support
+> > becomes a reality it seems one can still use NPTL with 
+> > the help of additional system calls.
+> > 
+> > A rough search of latest glibc source shows there is
+> > zero MIPS code for nptl.  A couple of other arches
+> > are missing as well (such as ARM)
+> > 
+> > Jun
+> 
+> All I've heard about this is that some kernel changes are (still?) 
+> needed, then just the glibc support along w/ TLS (Maybe compiler support?).
+> 
 
+TLS support requires ABI change, which involves work in gcc and binutils.
+At current stage I think only a few arches have added TLS support.
+MIPS is definitely not one of them.  Does anybody know about the current
+status, for MIPS and other arches?
 
+I think the ABI change and TLS support might take a long time to 
+be ready.  It appears meanwhile NPTL can run without TLS, but would
+need a couple of additional system calls that get and set thread
+local area.
 
-Hi,
+> I believe I heard reports that the glibc people were looking to 
+> deprecate linuxthreads within a another release or two (but don't know 
+> specifics or anything), so it sounds like NPTL should be something to 
+> get working.
+> 
 
-I am trying to use pthread on mips based platform.
+That surely puts some urgency on this matter. :)
 
-I have simple program to just create pthreads and when I run my program, it
-goes does not come back and when I hit enter on screen, I see following
-message on console.
-
-pt: assertion failed in manager.c:154.
-
-pt: assertion failed in manager.c:193.
-
-Can someone plz help me here .
-
-
-Thanks,
-Akshay
+Jun

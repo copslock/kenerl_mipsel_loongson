@@ -1,27 +1,31 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id GAA08087 for <linux-archive@neteng.engr.sgi.com>; Wed, 14 Jan 1998 06:46:06 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id IAA01613 for <linux-archive@neteng.engr.sgi.com>; Wed, 14 Jan 1998 08:15:54 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id GAA23456 for linux-list; Wed, 14 Jan 1998 06:42:47 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id GAA23450 for <linux@cthulhu.engr.sgi.com>; Wed, 14 Jan 1998 06:42:42 -0800
-Received: from snowcrash.cymru.net (snowcrash.cymru.net [163.164.160.3]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id GAA29979
-	for <linux@cthulhu.engr.sgi.com>; Wed, 14 Jan 1998 06:42:40 -0800
-	env-from (alan@lxorguk.ukuu.org.uk)
-Received: from lightning.swansea.linux.org.uk (the-village.bc.nu [163.164.160.21]) by snowcrash.cymru.net (8.8.7/8.7.1) with SMTP id OAA17833; Wed, 14 Jan 1998 14:42:01 GMT
-Received: by lightning.swansea.linux.org.uk (Smail3.1.29.1 #2)
-	id m0xsUPg-0005FsC; Wed, 14 Jan 98 15:07 GMT
-Message-Id: <m0xsUPg-0005FsC@lightning.swansea.linux.org.uk>
-From: alan@lxorguk.ukuu.org.uk (Alan Cox)
-Subject: Re: The world's worst RPM
-To: ralf@uni-koblenz.de
-Date: Wed, 14 Jan 1998 15:07:27 +0000 (GMT)
-Cc: alan@lxorguk.ukuu.org.uk, oliver@aec.at, adevries@engsoc.carleton.ca,
-        linux@cthulhu.engr.sgi.com
-In-Reply-To: <19980114152935.14483@uni-koblenz.de> from "ralf@uni-koblenz.de" at Jan 14, 98 03:29:35 pm
-Content-Type: text
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id IAA09651 for linux-list; Wed, 14 Jan 1998 08:13:04 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA09641 for <linux@cthulhu.engr.sgi.com>; Wed, 14 Jan 1998 08:12:59 -0800
+Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id IAA24094
+	for <linux@cthulhu.engr.sgi.com>; Wed, 14 Jan 1998 08:12:53 -0800
+	env-from (adevries@engsoc.carleton.ca)
+Received: from localhost (adevries@localhost)
+	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id LAA06582
+	for <linux@cthulhu.engr.sgi.com>; Wed, 14 Jan 1998 11:15:40 -0500
+Date: Wed, 14 Jan 1998 11:15:40 -0500 (EST)
+From: Alex deVries <adevries@engsoc.carleton.ca>
+To: SGI Linux <linux@cthulhu.engr.sgi.com>
+Subject: 2.1.72 precompiled on Linus...
+Message-ID: <Pine.LNX.3.95.980114111306.2369C-100000@lager.engsoc.carleton.ca>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> Have you taken care of the fact that ncompress makes assumptions about
-> the byteorder of the machine it's running on?  For MIPS it's broken, but
-> I don't remember if it was on big or little endian ...
 
-Its passed in the spec file. I've even port mipsel in as well for you ;)
+ftp://ftp.linux.sgi.com/pub/test/vmlinux-indy-2.1.72.tar.gz
+is available for your usage and testing.  If there are no complaints I'll
+archive 2.1.67.
+
+- A
+
+-- 
+      Alex deVries          Run Linux on everything,
+  System Administrator      run everything on Linux.
+   The EngSoc Project       Send spam to spam@engsoc.carleton.ca.

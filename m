@@ -1,54 +1,59 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f336ckT23147
-	for linux-mips-outgoing; Mon, 2 Apr 2001 23:38:46 -0700
-Received: from mx.mips.com (mx.mips.com [206.31.31.226])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f336chM23143;
-	Mon, 2 Apr 2001 23:38:43 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id XAA29728;
-	Mon, 2 Apr 2001 23:38:45 -0700 (PDT)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id XAA04937;
-	Mon, 2 Apr 2001 23:38:44 -0700 (PDT)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id IAA23156;
-	Tue, 3 Apr 2001 08:38:06 +0200 (MEST)
-Message-ID: <3AC96FCE.D004D515@mips.com>
-Date: Tue, 03 Apr 2001 08:38:06 +0200
-From: Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
-X-Accept-Language: en
+	by oss.sgi.com (8.11.3/8.11.3) id f339qXx28608
+	for linux-mips-outgoing; Tue, 3 Apr 2001 02:52:33 -0700
+Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f339qQM28605
+	for <linux-mips@oss.sgi.com>; Tue, 3 Apr 2001 02:52:28 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id LAA26603;
+	Tue, 3 Apr 2001 11:50:48 +0200 (MET DST)
+Date: Tue, 3 Apr 2001 11:50:48 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Florian Lohoff <flo@rfc822.org>
+cc: "Kevin D. Kissell" <kevink@mips.com>,
+   "MIPS/Linux List (SGI)" <linux-mips@oss.sgi.com>
+Subject: Re: Dumb Question on Cross-Development
+In-Reply-To: <20010403003059.E25228@paradigm.rfc822.org>
+Message-ID: <Pine.GSO.3.96.1010403112625.25523C-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-To: Ralf Baechle <ralf@oss.sgi.com>
-CC: linux-mips@oss.sgi.com
-Subject: Re: RedHat7.0
-References: <3AC884AA.A0B2C595@mips.com> <20010402201538.A23535@bacchus.dhis.org>
-Content-Type: text/plain; charset=iso-8859-15
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Ralf Baechle wrote:
+On Tue, 3 Apr 2001, Florian Lohoff wrote:
 
-> On Mon, Apr 02, 2001 at 03:54:51PM +0200, Carsten Langgaard wrote:
->
-> > Ralf, which compiler and tools did you use to compile the RedHat7.0
-> > source RPMs ?
->
-> The binutils are included in redhat 7 as on oss are not the original
-> binutils from Redhat 7.0 but a CVS snapshot with MIPS patches.  This
-> distribution does not contain a gcc rpm because I haven't yet built a
-> package from it.  I can however upload a tar ball of my build directory
-> so you can install my gcc with just ``make install'', if you want.
+> A major problem get the thing in which the configure try to 
+> begin to build executables and guess on the behaviour of the
+> OS to run on. This ends to be a hack and reminds me on
+> "pre gnu configure" times where one had to deal
+> with hundrets of "config.h" or "os.h" files. 
 
-That would be great, please do.
+ But autoconf supports it properly.  It doesn't try to make and run an
+executable in the case of cross-compiling and also prints a unambiguous
+warning in the case no cross-compilation default (usually the worst case
+assumption) was provided.
 
->
->   Ralf
+> If you are going to use anything like a package format
+> might it be "rpm" or "deb" the dependencies tend to be
+> utterly broken as the dependcies are guessed by stuff like
+> "ldd" output and friends.
 
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+ Well, my rpm binaries find dependencies correctly (go, figure! -- all
+binary packages I make available have correct dependencies).  Using ldd
+for this purpose is broken, indeed.  What I do is using readelf, if
+available, and falling back to objdump, if not (as in the case of old
+binutils).  Readelf is better as it's host-independent.  Objdump might not
+work if a host is of different "bitness" than a target.  It might even not
+work at all if a host is non-ELF.  Ldd is used as well, I admit, but only
+for a.out binaries -- I don't know of any other way for finding a.out
+shared library dependencies.  It doesn't really matter here, though. 
+
+ Check my rpm packages for a patch -- I haven't submitted it yet, because
+rpm 3.0 was already obsolete when I created it.  I'll check if it applies
+to 4.0 cleanly.  If so, I'll submit it ASAP, otherwise don't hold your
+breath. 
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

@@ -1,52 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Mar 2003 13:07:36 +0000 (GMT)
-Received: from p508B7812.dip.t-dialin.net ([IPv6:::ffff:80.139.120.18]:40092
-	"EHLO p508B7812.dip.t-dialin.net") by linux-mips.org with ESMTP
-	id <S8225247AbTCJNHf>; Mon, 10 Mar 2003 13:07:35 +0000
-Received: from onda.linux-mips.net ([IPv6:::ffff:192.168.169.2]:19847 "EHLO
-	dea.linux-mips.net") by ralf.linux-mips.org with ESMTP
-	id <S869610AbTCJNCH>; Mon, 10 Mar 2003 14:02:07 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id h2ACtVL26908;
-	Mon, 10 Mar 2003 13:55:31 +0100
-Date: Mon, 10 Mar 2003 13:55:31 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Jun Sun <jsun@mvista.com>
-Cc: Kip Walker <kwalker@broadcom.com>, linux-mips@linux-mips.org
-Subject: Re: [pathch] kernel/sched.c bogon?
-Message-ID: <20030310135531.B2206@linux-mips.org>
-References: <3E67EF64.152CFC6C@broadcom.com> <20030306174001.K26071@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Mar 2003 13:42:58 +0000 (GMT)
+Received: from ip-161-71-171-238.corp-eur.3com.com ([IPv6:::ffff:161.71.171.238]:19617
+	"EHLO columba.www.eur.3com.com") by linux-mips.org with ESMTP
+	id <S8225206AbTCJNm5>; Mon, 10 Mar 2003 13:42:57 +0000
+Received: from toucana.eur.3com.com (toucana.EUR.3Com.COM [140.204.220.50])
+	by columba.www.eur.3com.com  with ESMTP id h2ADiT4J025494;
+	Mon, 10 Mar 2003 13:44:30 GMT
+Received: from notesmta.eur.3com.com (eurmta1.EUR.3Com.COM [140.204.220.206])
+	by toucana.eur.3com.com  with SMTP id h2ADiXw01314;
+	Mon, 10 Mar 2003 13:44:33 GMT
+Received: by notesmta.eur.3com.com(Lotus SMTP MTA v4.6.3  (733.2 10-16-1998))  id 80256CE5.003944AF ; Mon, 10 Mar 2003 10:25:31 +0000
+X-Lotus-FromDomain: 3COM
+From: "Jon Burgess" <Jon_Burgess@eur.3com.com>
+To: Ralf Baechle <ralf@linux-mips.org>
+cc: linux-mips@linux-mips.org
+Message-ID: <80256CE5.00390ADA.00@notesmta.eur.3com.com>
+Date: Mon, 10 Mar 2003 10:22:56 +0000
+Subject: Re: Struct sigaction cleanup
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <20030306174001.K26071@mvista.com>; from jsun@mvista.com on Thu, Mar 06, 2003 at 05:40:01PM -0800
-Return-Path: <ralf@linux-mips.net>
+Return-Path: <Jon_Burgess@eur.3com.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1680
+X-archive-position: 1681
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: Jon_Burgess@eur.3com.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Mar 06, 2003 at 05:40:01PM -0800, Jun Sun wrote:
 
-> I reported this bug last May.  Apparently it is still not
-> taken up-stream.   Ralf, why don't we fix it here and push
-> it up from you?
-> 
-> BTW, this bug actually has effect on real-time performance under
-> preemptible kernel.
 
-< = 2.4.x preemptible kernel is OPP.
+Ralf Wrote:
+> Further no known libc implementation making use of sa_restorer.
 
->  It can delay the execution of the highest
-> priority real-time process from execution up to 1 jiffy.
+I don't know if this is relevant, but Linus recently tried
+changing the sa_restorer behaviour in the linux-2.5 kernel and
+later had to back out the change. The following lines are from
+recent changelogs:
 
-Quite a number of users get_cycles() in the kernel assume it to return a
-64-bit number.  I guess we'll have to fake a 64-bit counter in software ...
+http://www.uwsg.iu.edu/hypermail/linux/kernel/0301.1/0344.html
+Linux-2.5.55:
+Move x86 signal handler return stub to the vsyscall page, and stop
+    honoring the SA_RESTORER information.
 
-  Ralf
+http://www.uwsg.iu.edu/hypermail/linux/kernel/0301.1/1884.html
+Linux-2.5.57:
+Re-instate the SA_RESTORER functionality, since it seems that some
+    programs still depend on it and in fact do install a different
+    signal restorer than the standard kernel version.
+
+
+     Jon

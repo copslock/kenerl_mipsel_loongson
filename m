@@ -1,59 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Mar 2004 08:45:12 +0100 (BST)
-Received: from shosh.galileo.co.il ([IPv6:::ffff:199.203.130.250]:59718 "EHLO
-	gravity8.il.marvell.com") by linux-mips.org with ESMTP
-	id <S8225238AbUC3HpL>; Tue, 30 Mar 2004 08:45:11 +0100
-Received: from il.marvell.com ([10.2.1.99])
-	by gravity8.il.marvell.com (8.12.10/8.12.10) with ESMTP id i2U7hksJ024623
-	for <linux-mips@linux-mips.org>; Tue, 30 Mar 2004 09:43:46 +0200 (IST)
-Message-ID: <40692540.9090800@il.marvell.com>
-Date: Tue, 30 Mar 2004 09:44:00 +0200
-From: Ronen Shitrit <rshitrit@il.marvell.com>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.0.2) Gecko/20030208 Netscape/7.02
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Mar 2004 10:49:25 +0100 (BST)
+Received: from no-dns-yet.demon.co.uk ([IPv6:::ffff:80.176.203.50]:24035 "EHLO
+	pangolin.localnet") by linux-mips.org with ESMTP
+	id <S8225215AbUC3JtY>; Tue, 30 Mar 2004 10:49:24 +0100
+Received: from sprocket.localnet ([192.168.1.27] helo=bitbox.co.uk)
+	by pangolin.localnet with esmtp (Exim 3.35 #1 (Debian))
+	id 1B8FrQ-0003ot-00; Tue, 30 Mar 2004 10:48:44 +0100
+Message-ID: <4069427A.9000400@bitbox.co.uk>
+Date: Tue, 30 Mar 2004 10:48:42 +0100
+From: Peter Horton <phorton@bitbox.co.uk>
+User-Agent: Mozilla Thunderbird 0.5 (Windows/20040207)
 X-Accept-Language: en-us, en
 MIME-Version: 1.0
-To: linux-mips@linux-mips.org
-Subject: mips-linux cross-compiler
+To: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+CC: pdh@colonel-panic.org, linux-mips@linux-mips.org
+Subject: Re: missing flush_dcache_page call in 2.4 kernel
+References: <20040326184317.GA3661@skeleton-jack>	<20040327.224952.74755860.anemo@mba.ocn.ne.jp>	<20040328130400.GA28177@skeleton-jack> <20040330.153842.48794669.nemoto@toshiba-tops.co.jp>
+In-Reply-To: <20040330.153842.48794669.nemoto@toshiba-tops.co.jp>
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <rshitrit@il.marvell.com>
+Return-Path: <phorton@bitbox.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4690
+X-archive-position: 4691
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rshitrit@il.marvell.com
+X-original-sender: phorton@bitbox.co.uk
 Precedence: bulk
 X-list: linux-mips
 
-Hi
+Atsushi Nemoto wrote:
 
-I have a mips-linux cross compiler on i686 host, which is using gcc 2.95.3 .
-This compiler doesn't support the MIPS 4 Instruction Set,
-So I'm trying to build a new mips-linux cross compiler using any gcc 3.3/2.*
-but without any luck,
-Did anyone succeed to build such a cross compiler??
-which gcc and binutils version did you use??
-what are the configure flags you used??
-Did you used any special steps?? (except for configure ... , make, make 
-install )
+>>>>>>On Sun, 28 Mar 2004 14:04:00 +0100, Peter Horton <pdh@colonel-panic.org> said:
+>>>>>>            
+>>>>>>
+>pdh> I've ditched the original Cobalt hack in c-r4k.c, and am using
+>pdh> the patch below instead. Seems to work okay ...
+>
+>+	for (; addr < (void *) end; addr += PAGE_SIZE)
+>+		flush_data_cache_page((unsigned long) addr);
+>
+>dma_cache_wback() will be more efficient ?
+>  
+>
+Well technically it should be dma_cache_wback_inv(), though they equate 
+to the same function currently.
 
-Thanks a lot
+It would be more efficient, but the dma_cache_*() functions are only 
+available under CONFIG_DMA_NONCOHERENT, and our problem has nothing to 
+do with DMA coherency at all.
 
--- 
-Ronen Shitrit
+All we really need to do is add a flush_dcache_range(from,to) function. 
+I'm working on this at the moment.
 
-M.S.I.L
-D.N. Misgav  20184
-Tel:   +972-4-9951000
-Fax:   +972-4-9951001
-Email: mailto: ronen.shitrit@il.marvell.com
-_____________________________________________________________
-This message may contain confidential, proprietary or legally privileged 
-information. The information is intended only for the use of the individual 
-or entity named above. If the reader of this message is not the intended 
-recipient, you are hereby notified that any dissemination, distribution 
-or copying of this communication is strictly prohibited. If you have 
-received this communication in error, please notify us immediately by 
-telephone, or by e-mail and delete the message from your computer.
+>Also, I personally think replacing all insb/insw/insl is a bit
+>overkill.  I'd prefer redefine insb/insw/insl in asm-mips/ide.h, but
+>I'm not sure it is enough. (really all ins[bwl] should take care of
+>the cache inconsistency?)
+>
+>  
+>
+There maybe other block drivers (SCSI?) that use insb/insw/insl that 
+would also cause us grief, but we could provide both versions of the 
+functions and select them as necessary.
+
+P.

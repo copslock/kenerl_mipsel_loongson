@@ -1,49 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Apr 2003 14:28:27 +0100 (BST)
-Received: from natsmtp01.webmailer.de ([IPv6:::ffff:192.67.198.81]:42702 "EHLO
-	post.webmailer.de") by linux-mips.org with ESMTP
-	id <S8225209AbTDKN21>; Fri, 11 Apr 2003 14:28:27 +0100
-Received: from excalibur.cologne.de (pD95119F9.dip.t-dialin.net [217.81.25.249])
-	by post.webmailer.de (8.12.8/8.8.7) with ESMTP id h3BDSQYx025942
-	for <linux-mips@linux-mips.org>; Fri, 11 Apr 2003 15:28:26 +0200 (MEST)
-Received: from karsten by excalibur.cologne.de with local (Exim 3.35 #1 (Debian))
-	id 193yhj-0000E0-00
-	for <linux-mips@linux-mips.org>; Fri, 11 Apr 2003 15:36:31 +0200
-Date: Fri, 11 Apr 2003 15:36:31 +0200
-From: Karsten Merker <karsten@excalibur.cologne.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Apr 2003 17:42:17 +0100 (BST)
+Received: from kauket.visi.com ([IPv6:::ffff:209.98.98.22]:56812 "HELO
+	mail-out.visi.com") by linux-mips.org with SMTP id <S8225199AbTDKQmP>;
+	Fri, 11 Apr 2003 17:42:15 +0100
+Received: from mahes.visi.com (mahes.visi.com [209.98.98.96])
+	by mail-out.visi.com (Postfix) with ESMTP id 16A6F36CD
+	for <linux-mips@linux-mips.org>; Fri, 11 Apr 2003 11:42:10 -0500 (CDT)
+Received: from mahes.visi.com (localhost [127.0.0.1])
+	by mahes.visi.com (8.12.9/8.12.5) with ESMTP id h3BGg99R040762
+	for <linux-mips@linux-mips.org>; Fri, 11 Apr 2003 11:42:09 -0500 (CDT)
+	(envelope-from erik@greendragon.org)
+Received: (from www@localhost)
+	by mahes.visi.com (8.12.9/8.12.5/Submit) id h3BGg8Ao040761
+	for linux-mips@linux-mips.org; Fri, 11 Apr 2003 16:42:08 GMT
+X-Authentication-Warning: mahes.visi.com: www set sender to erik@greendragon.org using -f
+Received: from temns.guidant.com (temns.guidant.com [12.145.46.162]) 
+	by my.visi.com (IMP) with HTTP 
+	for <longshot@imap.visi.com>; Fri, 11 Apr 2003 16:42:08 +0000
+Message-ID: <1050079328.3e96f060dd3cd@my.visi.com>
+Date: Fri, 11 Apr 2003 16:42:08 +0000
+From: "Erik J. Green" <erik@greendragon.org>
 To: linux-mips@linux-mips.org
-Subject: Re: ext3 under MIPS?
-Message-ID: <20030411133631.GC418@excalibur.cologne.de>
-Mail-Followup-To: Karsten Merker <karsten@excalibur.cologne.de>,
-	linux-mips@linux-mips.org
-References: <3E954651.C7AECB90@ekner.info> <20030410154050.GI5242@lug-owl.de> <3E95D16D.1671BA5A@ekner.info> <3E9673BF.2050808@murphy.dk> <006001c30004$5ef3c8d0$10eca8c0@grendel>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Subject: Kernel build on Irix w/gcc-fw, Irix as/ld?
+MIME-Version: 1.0
+Content-Type: text/plain
 Content-Disposition: inline
-In-Reply-To: <006001c30004$5ef3c8d0$10eca8c0@grendel>
-User-Agent: Mutt/1.3.28i
-X-No-Archive: yes
-Return-Path: <karsten@excalibur.cologne.de>
+Content-Transfer-Encoding: 7bit
+User-Agent: Internet Messaging Program (IMP) 4.0-cvs
+X-Originating-IP: 12.145.46.162
+Return-Path: <erik@greendragon.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1995
+X-archive-position: 1996
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: karsten@excalibur.cologne.de
+X-original-sender: erik@greendragon.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Apr 11, 2003 at 10:28:31AM +0200, Kevin D. Kissell wrote:
-> Could you guys please specify which endianness you're running?
-> This is just the sort of situation where that can end up being an issue.
 
-Little endian.
 
-Regards,
-Karsten
+Hi all;
+
+Has anyone successfully built a kernel under Irix, using the freeware GCC and
+the standard Irix as/ld tools?  Just wondering off the top of my head, I would
+think the Irix tools would have less bugs for 64 bit code than the current
+binutils are reputed to have.  I have a set of licensed compilers coming for
+another project so I could possibly use those too.
+
+Just curious,
+
+Erik
+
+
+
+
 -- 
-#include <standard_disclaimer>
-Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der Nutzung
-oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die Markt- oder
-Meinungsforschung.
+Erik J. Green
+erik@greendragon.org

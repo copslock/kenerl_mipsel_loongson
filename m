@@ -1,101 +1,114 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Oct 2004 11:13:17 +0100 (BST)
-Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:32784
-	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
-	id <S8224919AbUJLKNM>; Tue, 12 Oct 2004 11:13:12 +0100
-Received: from newms.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 12 Oct 2004 10:13:10 UT
-Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
-	by newms.toshiba-tops.co.jp (Postfix) with ESMTP
-	id EF4EB239E3B; Tue, 12 Oct 2004 19:12:59 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id i9CACx3i003479;
-	Tue, 12 Oct 2004 19:12:59 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date: Tue, 12 Oct 2004 19:11:54 +0900 (JST)
-Message-Id: <20041012.191154.90115222.nemoto@toshiba-tops.co.jp>
-To: jsun@junsun.net
-Cc: linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: fpu_emulator can lose fpu on get_user/put_user
-From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20041011165424.GA28667@gateway.junsun.net>
-References: <20041008194514.GB31533@gateway.junsun.net>
-	<20041009.233810.74756865.anemo@mba.ocn.ne.jp>
-	<20041011165424.GA28667@gateway.junsun.net>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.2 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Oct 2004 12:50:18 +0100 (BST)
+Received: from mailhub.fokus.fraunhofer.de ([IPv6:::ffff:193.174.154.14]:18106
+	"EHLO mailhub.fokus.fraunhofer.de") by linux-mips.org with ESMTP
+	id <S8224919AbUJLLuN>; Tue, 12 Oct 2004 12:50:13 +0100
+Received: from [193.175.133.84] (aquin [193.175.133.84])
+	by mailhub.fokus.fraunhofer.de (8.11.6p2/8.11.6) with ESMTP id i9CBnjD02277;
+	Tue, 12 Oct 2004 13:49:46 +0200 (MEST)
+Message-ID: <416BC4D9.2060904@fokus.fraunhofer.de>
+Date: Tue, 12 Oct 2004 13:49:45 +0200
+From: Bjoern Riemer <riemer@fokus.fraunhofer.de>
+User-Agent: Mozilla Thunderbird 0.7.3 (X11/20040803)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: ppopov@embeddedalley.com, linux-mips@linux-mips.org
+Subject: meshcube patch for au1000 network driver
+Content-Type: multipart/mixed;
+ boundary="------------060404000700030408000807"
+Return-Path: <riemer@fokus.fraunhofer.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6021
+X-archive-position: 6022
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: riemer@fokus.fraunhofer.de
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Mon, 11 Oct 2004 09:54:24 -0700, Jun Sun <jsun@junsun.net> said:
-jsun> I actually don't see which approach is more "simple and robust".
+This is a multi-part message in MIME format.
+--------------060404000700030408000807
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 
-jsun> In terms of being simple, allowing kernel mode FPU trap is
-jsun> definitely simpler.
+hi
+i fixed the ioctl support in the net driver to support link detection by
+   ifplugd ond maybe netplugd(not tested)
+here my patch for
+drivers/net/au1000.c
 
-jsun> If you can't find any pitfalls of this approach it is actually
-jsun> robust.  The new FPU code is already greatly simplified.  It is
-jsun> possible kernel FPU trap is not that evil anymore (assuming
-jsun> kernel continues voluntarily not using FPU).
-
-Hmm... OK, I agree enabling FPU trap in kernel seems simple.  I tried
-it today but it did not work unfortunately.  Just modifying a
-following line in traps.c was not enough.
-
-	die_if_kernel("do_cpu invoked from kernel context!", regs);
-
-One point I found is do_cpu() must enable CU1 bit in pt_regs also.
-Another problem is that resume(), own_fpu() and lose_fpu() manipulate
-CU1 bit in only first level kernel stack (KSTK_STATUS(current)).
-current->thread.cp0_status may be manipulated also.  Modifying
-resume() looks too dangerous to me.
-
-Anyway, in math-emu case, we should call lose_fpu() BEFORE running the
-emulator.  Since the emulator never use real FPU, we naturally call
-own_fpu() AFTER the returning from the emulator.  It's simple.
-Enabling kernel FPU trap is not needed.
+bjoern riemer
 
 
->> It is safe?  get_user/put_user will fail if preempt disabled.  Excerpt
->> from do_page_fault:
->> 
->> 	/*
->> 	 * If we're in an interrupt or have no user
->> 	 * context, we must not take the fault..
->> 	 */
->> 	if (in_atomic() || !mm)
->> 		goto bad_area_nosemaphore;
+--------------060404000700030408000807
+Content-Type: text/x-patch;
+ name="au1000.c.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="au1000.c.patch"
 
-jsun> It should be safe.  This might be a bug in kernel.  I bet
-jsun> in_atomic() is "in_interrupt()" in older version of the code,
-jsun> which seems to be the correct code.  When you diable preemption
-jsun> you still have a process context.
-
-But many archs have above check in do_page_fault() long time (since
-2.5.32 at i386).  Are these all broken?
-
-
-jsun> BTW, have you thought about possibly the third approach, which
-jsun> is to somehow isolate the code segment where get_user/put_user
-jsun> could cause page faults and then make sure all FPU manipulations
-jsun> will succeed?
-
-I took this approach to fix sigcontext problem.  Please look at
-signal.c in my patch.
-
-Thank you for quick comments.
-
+9,11c9
+<  *         Bjoern Riemer 2004
+<  *           riemer@fokus.fraunhofer.de or riemer@riemer-nt.de
+<  *             // fixed the link beat detection with ioctls (SIOCGMIIPHY)
 ---
-Atsushi Nemoto
+>  *
+120c118
+<     "au1000eth.c:1.5 ppopov@mvista.com\n";
+---
+>     "au1000eth.c:1.4 ppopov@mvista.com\n";
+1388,1391d1385
+< 	/*riemer: fix for startup without cable */
+< 	if (!link) 
+< 		dev->flags &= ~IFF_RUNNING;
+< 
+1448d1441
+< 
+1846,1856c1839
+< /*
+< // This structure is used in all SIOCxMIIxxx ioctl calls 
+< struct mii_ioctl_data {
+<  0      u16             phy_id;
+<  1      u16             reg_num;
+<  2      u16             val_in;
+<  3      u16             val_out;
+< };*/
+< 	u16 *data = (u16 *)&rq->ifr_data;
+< 	struct au1000_private *aup = (struct au1000_private *) dev->priv;
+< 	//struct mii_ioctl_data *data = (struct mii_ioctl_data *) & rq->ifr_data;
+---
+> 	//u16 *data = (u16 *)&rq->ifr_data;
+1859d1841
+< 
+1862,1865c1844
+< 		case SIOCGMIIPHY:
+< 		        if (!netif_running(dev))
+<                 		return -EINVAL;
+< 			data[0] = aup->phy_addr;
+---
+> 		//data[0] = PHY_ADDRESS;
+1867,1870c1846,1847
+< 		case SIOCGMIIREG:
+< 			data[3] =  mdio_read(dev, data[0], data[1]); 
+< 			//data->val_out = mdio_read(dev,data->phy_id,data->reg_num);
+< 			return 0;
+---
+> 		//data[3] = mdio_read(ioaddr, data[0], data[1]); 
+> 		return 0;
+1872,1876c1849,1850
+< 		case SIOCSMIIREG: 
+< 			if (!capable(CAP_NET_ADMIN))
+< 				return -EPERM;
+< 			mdio_write(dev, data[0], data[1],data[2]);
+< 			return 0;
+---
+> 		//mdio_write(ioaddr, data[0], data[1], data[2]);
+> 		return 0;
+1878c1852
+< 			return -EOPNOTSUPP;
+---
+> 		return -EOPNOTSUPP;
+
+
+--------------060404000700030408000807--

@@ -1,135 +1,46 @@
-Received:  by oss.sgi.com id <S42464AbQJCKfk>;
-	Tue, 3 Oct 2000 03:35:40 -0700
-Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:28128 "EHLO
-        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S42201AbQJCKfV>;
-	Tue, 3 Oct 2000 03:35:21 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id MAA09851;
-	Tue, 3 Oct 2000 12:34:15 +0200 (MET DST)
-Date:   Tue, 3 Oct 2000 12:34:14 +0200 (MET DST)
-From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To:     Ralf Baechle <ralf@oss.sgi.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-cc:     Florian Lohoff <flo@rfc822.org>, linux-mips@oss.sgi.com
-Subject: Re: Decstation broken Was: CVS Update@oss.sgi.com: linux
-In-Reply-To: <Pine.LNX.4.10.10010011140080.377-100000@cassiopeia.home>
-Message-ID: <Pine.GSO.3.96.1001003123227.8359F-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received:  by oss.sgi.com id <S42276AbQJCSXV>;
+	Tue, 3 Oct 2000 11:23:21 -0700
+Received: from mail.ivm.net ([62.204.1.4]:5746 "EHLO mail.ivm.net")
+	by oss.sgi.com with ESMTP id <S42249AbQJCSXG>;
+	Tue, 3 Oct 2000 11:23:06 -0700
+Received: from franz.no.dom (port111.duesseldorf.ivm.de [195.247.65.111])
+	by mail.ivm.net (8.8.8/8.8.8) with ESMTP id UAA06382;
+	Tue, 3 Oct 2000 20:21:59 +0200
+X-To:   linux-mips@oss.sgi.com
+Message-ID: <XFMail.001003202125.Harald.Koerfgen@home.ivm.de>
+X-Mailer: XFMail 1.4.0 on Linux
+X-Priority: 3 (Normal)
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+In-Reply-To: <Pine.GSO.3.96.1001003120240.8359A-100000@delta.ds2.pg.gda.pl>
+Date:   Tue, 03 Oct 2000 20:21:25 +0200 (CEST)
+Reply-To: Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
+Organization: none
+From:   Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
+To:     "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Subject: RE: Decstation broken Was: CVS Update@oss.sgi.com: linux
+Cc:     linux-mips@oss.sgi.com
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Sun, 1 Oct 2000, Geert Uytterhoeven wrote:
 
-> > tty00 at 0xbf900001 (irq = 4) is a Z85C30 SCC
-> > tty01 at 0xbf900009 (irq = 4) is a Z85C30 SCC
-> > tty02 at 0xbf980001 (irq = 4) is a Z85C30 SCC
-> > tty03 at 0xbf980009 (irq = 4) is a Z85C30 SCC
+On 03-Oct-00 Maciej W. Rozycki wrote:
+> On Tue, 3 Oct 2000, Harald Koerfgen wrote:
 > 
-> Shouldn't these be reported as ttyS0[0-3]?
+>> > since this commit my machines are all broken (5000/260, 5000/150 
+>> > and 5000/125) - They all hang in the "Calibrating delay loop ...".
+>> 
+>> Fixed.
+> 
+>  Thanks -- I've found the typo yesterday evening, too.  I knew it must
+> have been a stupid error.
 
- Ralf, could you please apply?  Thanks.
+Exactly this type of error is often enough difficult to find. At least for the
+one who wrote it :)
 
 -- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
-
-diff -u --recursive --new-file linux-mips-2.4.0-test7-20000829.macro/drivers/char/dz.c linux-mips-2.4.0-test7-20000829/drivers/char/dz.c
---- linux-mips-2.4.0-test7-20000829.macro/drivers/char/dz.c	Fri Jun 30 04:26:16 2000
-+++ linux-mips-2.4.0-test7-20000829/drivers/char/dz.c	Mon Oct  2 22:27:38 2000
-@@ -1047,7 +1047,7 @@
-   }
- 
-   if (--info->count < 0) {
--    printk("ds_close: bad serial port count for ttys%d: %d\n",
-+    printk("ds_close: bad serial port count for ttyS%02d: %d\n",
- 	   info->line, info->count);
-     info->count = 0;
-   }
-@@ -1379,7 +1379,7 @@
-     if (! info->port)
-       return 0;
- 
--    printk("ttyS%02d at 0x%04x (irq = %d)\n", info->line, info->port, SERIAL);
-+    printk("ttyS%02d at 0x%08x (irq = %d)\n", info->line, info->port, SERIAL);
-   }
- 
-   /* reset the chip */
-diff -u --recursive --new-file linux-mips-2.4.0-test7-20000829.macro/drivers/tc/zs.c linux-mips-2.4.0-test7-20000829/drivers/tc/zs.c
---- linux-mips-2.4.0-test7-20000829.macro/drivers/tc/zs.c	Fri Aug 11 04:26:34 2000
-+++ linux-mips-2.4.0-test7-20000829/drivers/tc/zs.c	Mon Oct  2 22:25:15 2000
-@@ -623,7 +623,7 @@
- 	save_flags(flags); cli();
- 
- #ifdef SERIAL_DEBUG_OPEN
--	printk("starting up ttyS%d (irq %d)...", info->line, info->irq);
-+	printk("starting up ttyS%02d (irq %d)...", info->line, info->irq);
- #endif
- 
- 	/*
-@@ -1258,7 +1258,7 @@
- 	}
- 	
- #ifdef SERIAL_DEBUG_OPEN
--	printk("rs_close ttys%d, count = %d\n", info->line, info->count);
-+	printk("rs_close ttyS%02d, count = %d\n", info->line, info->count);
- #endif
- 	if ((tty->count == 1) && (info->count != 1)) {
- 		/*
-@@ -1273,7 +1273,7 @@
- 		info->count = 1;
- 	}
- 	if (--info->count < 0) {
--		printk("rs_close: bad serial port count for ttys%d: %d\n",
-+		printk("rs_close: bad serial port count for ttyS%02d: %d\n",
- 		       info->line, info->count);
- 		info->count = 0;
- 	}
-@@ -1463,7 +1463,7 @@
- 	retval = 0;
- 	add_wait_queue(&info->open_wait, &wait);
- #ifdef SERIAL_DEBUG_OPEN
--	printk("block_til_ready before block: ttys%d, count = %d\n",
-+	printk("block_til_ready before block: ttyS%02d, count = %d\n",
- 	       info->line, info->count);
- #endif
- 	cli();
-@@ -1499,7 +1499,7 @@
- 			break;
- 		}
- #ifdef SERIAL_DEBUG_OPEN
--		printk("block_til_ready blocking: ttys%d, count = %d\n",
-+		printk("block_til_ready blocking: ttyS%02d, count = %d\n",
- 		       info->line, info->count);
- #endif
- 		schedule();
-@@ -1510,7 +1510,7 @@
- 		info->count++;
- 	info->blocked_open--;
- #ifdef SERIAL_DEBUG_OPEN
--	printk("block_til_ready after blocking: ttys%d, count = %d\n",
-+	printk("block_til_ready after blocking: ttyS%02d, count = %d\n",
- 	       info->line, info->count);
- #endif
- 	if (retval)
-@@ -1600,7 +1600,7 @@
- 	info->pgrp = current->pgrp;
- 
- #ifdef SERIAL_DEBUG_OPEN
--	printk("rs_open ttys%d successful...", info->line);
-+	printk("rs_open ttyS%02d successful...", info->line);
- #endif
- /* tty->low_latency = 1; */
- 	return 0;
-@@ -1817,7 +1817,7 @@
- 		info->normal_termios = serial_driver.init_termios;
- 		init_waitqueue_head(&info->open_wait);
- 		init_waitqueue_head(&info->close_wait);
--		printk("tty%02d at 0x%08x (irq = %d)", info->line, 
-+		printk("ttyS%02d at 0x%08x (irq = %d)", info->line, 
- 		       info->port, info->irq);
- 		printk(" is a Z85C30 SCC\n");
- 	}
+Regards,
+Harald

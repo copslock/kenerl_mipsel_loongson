@@ -1,38 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Mar 2004 16:42:10 +0100 (BST)
-Received: from rwcrmhc12.comcast.net ([IPv6:::ffff:216.148.227.85]:2242 "EHLO
-	rwcrmhc12.comcast.net") by linux-mips.org with ESMTP
-	id <S8225204AbUC1PmJ>; Sun, 28 Mar 2004 16:42:09 +0100
-Received: from 204.127.197.114 ([204.127.197.114])
-          by comcast.net (rwcrmhc12) with SMTP
-          id <2004032815415801400793mve>; Sun, 28 Mar 2004 15:41:58 +0000
-Received: from [24.61.90.61] by 204.127.197.114;
-	Sun, 28 Mar 2004 15:41:57 +0000
-From: larryhl@comcast.net
-To: linux-mips@linux-mips.org
-Subject: gcc 3.4 and kernel 2.6 for 64bit on sb1250
-Date: Sun, 28 Mar 2004 15:41:57 +0000
-Message-Id: <032820041541.18245.4066F2450005255E000047452200750330FF9397868D8D9E@comcast.net>
-X-Mailer: AT&T Message Center Version 1 (Mar 22 2004)
-X-Authenticated-Sender: bGFycnlobEBjb21jYXN0Lm5ldA==
-Return-Path: <larryhl@comcast.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Mar 2004 20:28:26 +0100 (BST)
+Received: from dvmwest.gt.owl.de ([IPv6:::ffff:62.52.24.140]:21145 "EHLO
+	dvmwest.gt.owl.de") by linux-mips.org with ESMTP
+	id <S8225208AbUC1T2Y>; Sun, 28 Mar 2004 20:28:24 +0100
+Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
+	id 599324B640; Sun, 28 Mar 2004 21:28:21 +0200 (CEST)
+Date: Sun, 28 Mar 2004 21:28:21 +0200
+From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+To: linux-mips@linux-mips.org,
+	Debian MIPS list <debian-mips@lists.debian.org>
+Subject: [OT] Turbochannel Alpha on ebay
+Message-ID: <20040328192820.GK27362@lug-owl.de>
+Mail-Followup-To: linux-mips@linux-mips.org,
+	Debian MIPS list <debian-mips@lists.debian.org>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="vbzKE9fGfpHIBC6T"
+Content-Disposition: inline
+X-Operating-System: Linux mail 2.4.18
+X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
+X-gpg-key: wwwkeys.de.pgp.net
+User-Agent: Mutt/1.5.5.1+cvs20040105i
+Return-Path: <jbglaw@dvmwest.gt.owl.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4672
+X-archive-position: 4673
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: larryhl@comcast.net
+X-original-sender: jbglaw@lug-owl.de
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
 
-I am wondering where gcc 3.4 cross-compiler for mips with little-endian hosted on red-hat/intel could be downloaded. I tried to build them by myself,
-but the compilation always failed because of pthread.h missing.
+--vbzKE9fGfpHIBC6T
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Also, did anybody successfully use kernel 2.6 with 64bit/smp on sb1250? 
+Hi!
 
-Thanks.
+Someone on #mipslinux was interested in getting a 3000 T.
 
-Larry.
+http://cgi.ebay.de/ws/eBayISAPI.dll?ViewItem&category=3D8101&item=3D2797177=
+715
+
+- 64MB RAM
+- No HDDs
+
+MfG, JBG
+
+--=20
+   Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481
+   "Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg
+    fuer einen Freien Staat voll Freier B=FCrger" | im Internet! |   im Ira=
+k!
+   ret =3D do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM | TC=
+PA));
+
+--vbzKE9fGfpHIBC6T
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.4 (GNU/Linux)
+
+iD8DBQFAZydUHb1edYOZ4bsRAq/MAJsERI9QLmOfpLmNawvSLRLck79kbACfSUCV
+nZ0q4q24n1ba0wzDLBgYKi4=
+=BHXF
+-----END PGP SIGNATURE-----
+
+--vbzKE9fGfpHIBC6T--

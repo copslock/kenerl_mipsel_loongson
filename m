@@ -1,31 +1,34 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id TAA337552 for <linux-archive@neteng.engr.sgi.com>; Thu, 4 Dec 1997 19:28:44 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id BAA388212 for <linux-archive@neteng.engr.sgi.com>; Fri, 5 Dec 1997 01:06:47 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id TAA01010 for linux-list; Thu, 4 Dec 1997 19:27:03 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id TAA00996 for <linux@cthulhu.engr.sgi.com>; Thu, 4 Dec 1997 19:27:00 -0800
-Received: from falcon.cc.ukans.edu (falcon.cc.ukans.edu [129.237.34.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id TAA03905
-	for <linux@cthulhu.engr.sgi.com>; Thu, 4 Dec 1997 19:25:34 -0800
-	env-from (campbell@ukans.edu)
-Received: from dv123s34.lawrence.ks.us by falcon.cc.ukans.edu (8.8.7/1.1.8.2/12Jan95-0207PM)
-	id VAA0000006980; Thu, 4 Dec 1997 21:25:14 -0600 (CST)
-Date: Thu, 4 Dec 1997 21:25:47 -0600 (CST)
-From: Chad Campbell <campbell@ukans.edu>
-X-Sender: campbell@dv123s34.lawrence.ks.us
-To: ralf@uni-koblenz.de
-cc: linux@cthulhu.engr.sgi.com
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id BAA14995 for linux-list; Fri, 5 Dec 1997 01:04:59 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id BAA14976; Fri, 5 Dec 1997 01:04:52 -0800
+Received: from snowcrash.cymru.net (snowcrash.cymru.net [163.164.160.3]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id BAA03331; Fri, 5 Dec 1997 01:03:27 -0800
+	env-from (alan@lxorguk.ukuu.org.uk)
+Received: from lightning.swansea.linux.org.uk (the-village.bc.nu [163.164.160.21]) by snowcrash.cymru.net (8.8.7/8.7.1) with SMTP id JAA12483; Fri, 5 Dec 1997 09:03:22 GMT
+Received: by lightning.swansea.linux.org.uk (Smail3.1.29.1 #2)
+	id m0xdtip-0005FsC; Fri, 5 Dec 97 09:06 GMT
+Message-Id: <m0xdtip-0005FsC@lightning.swansea.linux.org.uk>
+From: alan@lxorguk.ukuu.org.uk (Alan Cox)
 Subject: Re: Linux on the O2
-In-Reply-To: <19971205023316.12386@uni-koblenz.de>
-Message-ID: <Pine.LNX.3.95.971204212123.6501B-100000@dv123s34.lawrence.ks.us>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To: ralf@uni-koblenz.de
+Date: Fri, 5 Dec 1997 09:06:55 +0000 (GMT)
+Cc: alan@lxorguk.ukuu.org.uk, greg@xtp.engr.sgi.com,
+        chatz@omen.melbourne.sgi.com, ligeh@carpediem.com, cwcarlson@home.com,
+        linux@cthulhu.engr.sgi.com
+In-Reply-To: <19971205011745.03995@uni-koblenz.de> from "ralf@uni-koblenz.de" at Dec 5, 97 01:17:45 am
+Content-Type: text
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-This is my second to last semester, and I'm now in the OS class.  I have a
-question about page miss resolution.  Does the kernel use a global or 
-local strategy to determine which pages get swapped out?  My teacher,
-Victor Wallace, has done research on using global resolution strategies,
-and has found it to be supperior, but he didn't know of any OS that
-actually uses it.
+> > If that is SGI's attitude to the thing then theres an Indy on my desk waiting
+> > for someone to ship it back.
 
-Chad Campbell
-Web Manager, University of Kansas Natural History Museum
+Ok before this goes too far let me point of that there were a certain number
+of invisible humour/sarcasm tags on that comment as a lead in to the monitor
+info.
+
+To start with if Dave can figure out an ultrasparc and we can crack the 
+Macintosh 68K nobody in SGI could stop us 8)
+
+
+Alan

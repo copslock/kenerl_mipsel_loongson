@@ -1,81 +1,57 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id BAA66688 for <linux-archive@neteng.engr.sgi.com>; Mon, 10 Aug 1998 01:27:35 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id RAA37014 for <linux-archive@neteng.engr.sgi.com>; Tue, 11 Aug 1998 17:25:44 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id BAA92349
+	id RAA54266
 	for linux-list;
-	Mon, 10 Aug 1998 01:27:03 -0700 (PDT)
+	Tue, 11 Aug 1998 17:24:56 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgitokyo.nsg.sgi.com (sgitokyo.nsg.sgi.com [134.14.128.2])
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id BAA96719
-	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 10 Aug 1998 01:27:00 -0700 (PDT)
-	mail_from (hakamada@nsg.sgi.com)
-Received: from meteor.nsg.sgi.com (meteor.nsg.sgi.com [134.14.162.53])
-	by sgitokyo.nsg.sgi.com (8.8.8/3.6W-98051410)
-	id RAA19098;
-	Mon, 10 Aug 1998 17:26:55 +0900 (JST)
-Received: from localhost (localhost [127.0.0.1]) by meteor.nsg.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id RAA89841; Mon, 10 Aug 1998 17:26:54 +0900 (JST)
-To: tsbogend@alpha.franken.de
-Cc: linux@cthulhu.engr.sgi.com
-Subject: Re: Compiling kernel on HardHat
-In-Reply-To: Your message of "Thu, 6 Aug 1998 21:25:51 +0200"
-	<19980806212551.61171@alpha.franken.de>
-References: <19980806212551.61171@alpha.franken.de>
-X-Face: >$%-E_%BaR5YR&eW,GS3:]Cxv7ANEn%~'H!9L+1r[D<9qG/,WD4]L%#;`Nqb#^xc_*gG#o7
- j.@E>?09*)XTd}W5}^F*0K^suO|]f{'gAsluG~0(S-BSM96Ev@N9Rmf"{(0=7&ivn9n<-LS,sWB7W/
- H\[
-X-Mailer: Mew version 1.92.4 on XEmacs 20.4 (Emerald)
+	via ESMTP id RAA38832
+	for <linux@engr.sgi.com>;
+	Tue, 11 Aug 1998 17:24:54 -0700 (PDT)
+	mail_from (ralf@uni-koblenz.de)
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) 
+	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id RAA05138
+	for <linux@engr.sgi.com>; Tue, 11 Aug 1998 17:24:46 -0700 (PDT)
+	mail_from (ralf@uni-koblenz.de)
+From: ralf@uni-koblenz.de
+Received: from uni-koblenz.de (pmport-18.uni-koblenz.de [141.26.249.18])
+	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id CAA20014
+	for <linux@engr.sgi.com>; Wed, 12 Aug 1998 02:24:43 +0200 (MEST)
+Received: (from ralf@localhost)
+	by uni-koblenz.de (8.8.7/8.8.7) id NAA00533;
+	Tue, 11 Aug 1998 13:14:58 +0200
+Message-ID: <19980811131458.C480@uni-koblenz.de>
+Date: Tue, 11 Aug 1998 13:14:58 +0200
+To: Eric Jorgensen <alhaz@xmission.com>, linux-mips@fnet.fr,
+        linux@cthulhu.engr.sgi.com
+Subject: R4000 PROTOTYPE
+References: <35CD2CFC.32CACC90@mail.com> <19980809171312.U938@uni-koblenz.de> <35CDF934.293BB67@xmission.com>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-Id: <19980810172654Q.hakamada@nsg.sgi.com>
-Date: Mon, 10 Aug 1998 17:26:54 +0900 (JST)
-From: Takeshi Hakamada <hakamada@nsg.sgi.com>
-X-Dispatcher: imput version 971024
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.91.1
+In-Reply-To: <35CDF934.293BB67@xmission.com>; from Eric Jorgensen on Sun, Aug 09, 1998 at 01:32:04PM -0600
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+On Sun, Aug 09, 1998 at 01:32:04PM -0600, Eric Jorgensen wrote:
 
-I can successfully compile kernel after removing #include.
+>     On a completely unrelated note - out of curiosity I pulled the heatsink
+> off the cpu in my system - Never seen a mips 4k processor before. Anyway, I
+> was surprised to find the word "PROTOTYPE" emblazoned acrost the chip. Is
+> this common? Or do I have something really cool/funky here? if anybody
+> wants to see, I have a digital camera here.
 
-BTW, I brought SGI Linux Indy to TLUG(Tokyo Linux Users Group, mainly
-consists of English speaking people who lives in Japan) meeting
-and show them HardHat. They are very interested in SGI Linux project.
+Maybe some long time MIPSer can tell something about this chip?  Is this
+the CPU version which identifies itself as version 2.2 which is the oldest
+I've ever seen?
 
-Cheers,
-Takeshi
+Thanks,
 
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Message-ID: <19980806212551.61171@alpha.franken.de>
-> On Thu, Aug 06, 1998 at 04:13:25PM +0900, Takeshi Hakamada wrote:
-> > I tried to compile kernel on HardHat using RPM kernel(2.1.100) source,
-> > I can't build kernel due to following error.
-> > In arch/mips/sgi/kernel/setup.c, 
-> > 
-> > setup.c:18: asm/vector.h: No such file or directory
-> 
-> that's already fixed in the CVS repository. You just have to remove
-> the #include in setup.c.
-> 
-> > Error message shows that I need to have include/asm/vector.h.
-> > How can I get vector.h? Do I have to get latest kernel source from
-> > ftp.linux.sgi.com?
-> 
-> As this should be the only change, you don't need to.
-> 
-> Thomas.
-> 
-> -- 
-> See, you not only have to be a good coder to create a system like Linux,
-> you have to be a sneaky bastard too ;-)
->                    [Linus Torvalds in <4rikft$7g5@linux.cs.Helsinki.FI>]
-
---
-Takeshi Hakamada                  
-Nihon Silicon Graphics
-E-mail: hakamada@nsg.sgi.com, URL: http://reality.sgi.com/hakamada_nsg/
-Phone: +81-45-682-3712, Fax: +81-45-682-0856
-Voice mail: (internal)822-1300, (external)+81-3-5488-1863-1300
-	
+  Ralf

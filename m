@@ -1,32 +1,70 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980327.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id LAA2132231 for <linux-archive@neteng.engr.sgi.com>; Tue, 21 Apr 1998 11:18:40 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980327.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA2187225 for <linux-archive@neteng.engr.sgi.com>; Wed, 22 Apr 1998 14:14:53 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id LAA14682401
+	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id OAA15319094
 	for linux-list;
-	Tue, 21 Apr 1998 11:16:28 -0700 (PDT)
+	Wed, 22 Apr 1998 14:13:25 -0700 (PDT)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id LAA14738672
+	via ESMTP id OAA15203844
 	for <linux@cthulhu.engr.sgi.com>;
-	Tue, 21 Apr 1998 11:16:25 -0700 (PDT)
-Received: from dirtpan.npiww.com (dirtpan.networkprograms.com [207.113.23.2]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via SMTP id LAA09982
-	for <linux@cthulhu.engr.sgi.com>; Tue, 21 Apr 1998 11:16:23 -0700 (PDT)
-	mail_from (dliu@npiww.com)
-Received: from mailhub.networkprograms.com [192.9.202.51] by dirtpan.npiww.com (8.6.9/8.6.9) with ESMTP id KAA10217 for <linux@cthulhu.engr.sgi.com>; Tue, 21 Apr 1998 10:22:11 -0400
-Date: Tue, 21 Apr 1998 14:32:15 -0400
-Message-Id: <199804211832.OAA15153@pluto.npiww.com>
-From: Dong Liu <dliu@npiww.com>
-To: SGI Linux <linux@cthulhu.engr.sgi.com>
-Subject: missing rpms
+	Wed, 22 Apr 1998 14:13:23 -0700 (PDT)
+Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id OAA05265
+	for <linux@cthulhu.engr.sgi.com>; Wed, 22 Apr 1998 14:13:22 -0700 (PDT)
+	mail_from (adevries@engsoc.carleton.ca)
+Received: from localhost (adevries@localhost)
+	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id RAA03599;
+	Wed, 22 Apr 1998 17:13:06 -0400
+X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
+Date: Wed, 22 Apr 1998 17:13:06 -0400 (EDT)
+From: Alex deVries <adevries@engsoc.carleton.ca>
+To: Dong Liu <dliu@npiww.com>
+cc: linux@cthulhu.engr.sgi.com
+Subject: Re: glibc problem
+In-Reply-To: <199804222119.RAA20883@pluto.npiww.com>
+Message-ID: <Pine.LNX.3.95.980422171156.31583B-100000@lager.engsoc.carleton.ca>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-I found out these packages are missing from 
-ftp://ftp.linux.sgi.com/pub/RedHat/redhat-5.0/RPMS
 
-syslog, binutils, glibc, ldconfig and X libs. Should I be able to just
-take the source from redhat and compiled myself?
+You can get a functional glibc RPM from the mustang directory (4.9.1 IIRC)
+on ftp.linux.sgi.com.
 
-Thanks.
+Now, in return, can you point me to a tarball or RPM of a natively built
+gcc and binutils?
 
-Dong
+- a
+
+-- 
+Alex deVries
+http://www.engsoc.carleton.ca/~adevries/ .
+EngSoc, US National Headquarters
+
+On Wed, 22 Apr 1998, Dong Liu wrote:
+
+> Date: Wed, 22 Apr 1998 17:19:13 -0400
+> From: Dong Liu <dliu@npiww.com>
+> To: linux@cthulhu.engr.sgi.com
+> Subject: glibc problem
+> 
+> Hi,
+> 
+> I want to try some pthread program on sgi-linux, this is what I got
+> 
+> /usr/lib/libpthread.so: undefined reference to `__libc_accept'
+> /usr/lib/libpthread.so: undefined reference to `__libc_send'
+> /usr/lib/libpthread.so: undefined reference to `__libc_recvfrom'
+> /usr/lib/libpthread.so: undefined reference to `__libc_recvmsg'
+> /usr/lib/libpthread.so: undefined reference to `__libc_sendmsg'
+> /usr/lib/libpthread.so: undefined reference to `__libc_recv'
+> /usr/lib/libpthread.so: undefined reference to `__libc_sendto'
+> /usr/lib/libpthread.so: undefined reference to `__libc_connect'
+> 
+> my glibc is glibc-2.0.6-1, so I went ftp.redhat.com downloaded
+> glibc-2.0.7, but I can't build it. Where can I found sgi-linux
+> specific patches for glibc.
+> 
+> Dong.
+> 

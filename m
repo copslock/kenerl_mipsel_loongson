@@ -1,53 +1,49 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f4A5tDI21988
-	for linux-mips-outgoing; Wed, 9 May 2001 22:55:13 -0700
-Received: from web11902.mail.yahoo.com (web11902.mail.yahoo.com [216.136.172.186])
-	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f4A5tCF21985
-	for <linux-mips@oss.sgi.com>; Wed, 9 May 2001 22:55:12 -0700
-Message-ID: <20010510055512.96321.qmail@web11902.mail.yahoo.com>
-Received: from [209.243.184.191] by web11902.mail.yahoo.com; Wed, 09 May 2001 22:55:12 PDT
-Date: Wed, 9 May 2001 22:55:12 -0700 (PDT)
-From: Wayne Gowcher <wgowcher@yahoo.com>
-Subject: Configuration of PCI Video card on a BIOS-less board
-To: linux-mips@oss.sgi.com
-MIME-Version: 1.0
+	by oss.sgi.com (8.11.3/8.11.3) id f4A62SS22364
+	for linux-mips-outgoing; Wed, 9 May 2001 23:02:28 -0700
+Received: from mail.foobazco.org (snowman.foobazco.org [198.144.194.230])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f4A62RF22361
+	for <linux-mips@oss.sgi.com>; Wed, 9 May 2001 23:02:27 -0700
+Received: from galt.foobazco.org (galt.foobazco.org [198.144.194.227])
+	by mail.foobazco.org (Postfix) with ESMTP
+	id 684FCF1A9; Wed,  9 May 2001 23:01:24 -0700 (PDT)
+Received: by galt.foobazco.org (Postfix, from userid 1014)
+	id 3D2291F42A; Wed,  9 May 2001 23:01:54 -0700 (PDT)
+Date: Wed, 9 May 2001 23:01:54 -0700
+From: Keith M Wesolowski <wesolows@foobazco.org>
+To: Wayne Gowcher <wgowcher@yahoo.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Configuration of PCI Video card on a BIOS-less board
+Message-ID: <20010509230154.E15089@foobazco.org>
+References: <20010510055512.96321.qmail@web11902.mail.yahoo.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20010510055512.96321.qmail@web11902.mail.yahoo.com>; from wgowcher@yahoo.com on Wed, May 09, 2001 at 10:55:12PM -0700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Dear All,
+On Wed, May 09, 2001 at 10:55:12PM -0700, Wayne Gowcher wrote:
 
-I was wondering if anyone has any experience in
-configuring the PCI registers in a PCI Video Card on a
-MIPS board that has no BIOS like in a PC.
+> I can probe the Base Address Register successfully,
+> determine the cards memory requirement and that it is
+> memory rather than mapped IO. But when I try to write
+> the address I have allocated to the PCI card ( eg
+> 0xC000 0000 ) the address will not latch in the base
+> address register.
 
-At the moment when I have some "home grown" PCI
-probing routines based on my best interpretation of
-the PCI spec. But it's not working.
+Is that a valid bus address on your system?
 
-I can probe the Base Address Register successfully,
-determine the cards memory requirement and that it is
-memory rather than mapped IO. But when I try to write
-the address I have allocated to the PCI card ( eg
-0xC000 0000 ) the address will not latch in the base
-address register.
+> Does anyone know of any code that carries out PCI
+> probing similar to that found on x86 PC's ?
 
-The card is designed for x86 PCs and when the PC bios
-configures the card, the base address register has the
-value 0xF200 0000.
+Look in drivers/pci - that can scan the bus and such - it's generic
+code used on many architectures.  Many systems lack "bios" and work
+fine in linux.
 
-Any comments from anybody with any insight into what
-is happening here / or how I might fix my probelm,
-would be greatly appreciated.
-
-Does anyone know of any code that carries out PCI
-probing similar to that found on x86 PC's ?
-
-TIA 
-
-Wayne
-
-__________________________________________________
-Do You Yahoo!?
-Yahoo! Auctions - buy the things you want at great prices
-http://auctions.yahoo.com/
+-- 
+Keith M Wesolowski <wesolows@foobazco.org> http://foobazco.org/~wesolows
+------(( Project Foobazco Coordinator and Network Administrator ))------
+	"Nothing motivates a man more than to see his boss put
+	 in an honest day's work." -- The fortune file

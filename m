@@ -1,55 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 May 2003 12:51:07 +0100 (BST)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:36267
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8225206AbTEOLvE>; Thu, 15 May 2003 12:51:04 +0100
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp (Exim 3.36 #2)
-	id 19GHFp-001Gc1-00; Thu, 15 May 2003 13:50:33 +0200
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 19GHFo-0004PX-00; Thu, 15 May 2003 13:50:32 +0200
-Date: Thu, 15 May 2003 13:50:32 +0200
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 May 2003 13:38:01 +0100 (BST)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:56467 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225206AbTEOMh7>; Thu, 15 May 2003 13:37:59 +0100
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA16816;
+	Thu, 15 May 2003 14:38:46 +0200 (MET DST)
+Date: Thu, 15 May 2003 14:38:45 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+cc: linux-mips@linux-mips.org
 Subject: Re: -mcpu vs. binutils 2.13.90.0.18
-Message-ID: <20030515115032.GP8833@rembrandt.csv.ica.uni-stuttgart.de>
-References: <20030514184256.GE8833@rembrandt.csv.ica.uni-stuttgart.de> <Pine.GSO.3.96.1030515133141.16026A-100000@delta.ds2.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.GSO.3.96.1030515133141.16026A-100000@delta.ds2.pg.gda.pl>
-User-Agent: Mutt/1.4i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+In-Reply-To: <20030515115032.GP8833@rembrandt.csv.ica.uni-stuttgart.de>
+Message-ID: <Pine.GSO.3.96.1030515142409.16026D-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2393
+X-archive-position: 2394
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-Maciej W. Rozycki wrote:
-> On Wed, 14 May 2003, Thiemo Seufer wrote:
+On Thu, 15 May 2003, Thiemo Seufer wrote:
+
+> >  Hmm, I would assume "mipsn32*-linux" defaults to n32 and "mips64*-linux" 
+> > -- to (n)64.  It isn't the case, indeed.
 > 
-> > >  Of course the choice of the default should be configurable (for binutils
-> > > it probably already is
-> > 
-> > It isn't, and probably will never be. Of course you could introduce
-> > just another configuration, with the bfd vector of your choice as
-> > default.
+> IMHO it's not particularily useful to have both of these. I assume a n64
+> capable system will always implement n32 also, for better performance
+> and less memory consumption, and the majority of applications will run
+> as n32. IOW, there's little need for a n64-defaulting configuration.
 > 
->  Hmm, I would assume "mipsn32*-linux" defaults to n32 and "mips64*-linux" 
-> -- to (n)64.  It isn't the case, indeed.
+> But IIRC we disagree about this point.
 
-IMHO it's not particularily useful to have both of these. I assume a n64
-capable system will always implement n32 also, for better performance
-and less memory consumption, and the majority of applications will run
-as n32. IOW, there's little need for a n64-defaulting configuration.
+ It's not about whether we agree or not -- it's about letting a user make
+a choice what suits him better.  We need not force anyone to accept our
+points of view -- it's one of the main advantages of free software. 
 
-But IIRC we disagree about this point.
+ Also I would like to allow glibc to be configured without n32 and won't
+object disallowing (n)64 alternatively.  I already run kernels that
+support o32 and (n)64 only (o32 is temporary, of course, until glibc
+supports (n)64), so it's not true an (n)64-capable system always supports
+n32. 
 
+ BTW, you may want a program to be built as (n)64 whenever it uses mmap() 
+and can operate on the so called "large files".  So there may be
+significantly more programs requiring the (n)64 format than it may seem at
+the first thought. 
 
-Thiemo
+  Maciej
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

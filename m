@@ -1,25 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Apr 2004 21:05:25 +0100 (BST)
-Received: from host-212-158-214-243.bulldogdsl.com ([IPv6:::ffff:212.158.214.243]:46858
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Apr 2004 21:52:35 +0100 (BST)
+Received: from host-212-158-214-243.bulldogdsl.com ([IPv6:::ffff:212.158.214.243]:49674
 	"EHLO megablaster5.clown-smart.co.uk") by linux-mips.org with ESMTP
-	id <S8226002AbUDZUFY>; Mon, 26 Apr 2004 21:05:24 +0100
+	id <S8226002AbUDZUwc>; Mon, 26 Apr 2004 21:52:32 +0100
 Received: from [127.0.0.1] (host-212-158-214-244.bulldogdsl.com [212.158.214.244])
-	by megablaster5.clown-smart.co.uk (Postfix) with ESMTP id EBCEA45F11
-	for <linux-mips@linux-mips.org>; Mon, 26 Apr 2004 21:16:39 +0100 (BST)
-Message-ID: <408D6BFC.6030902@clown-fish.com>
-Date: Mon, 26 Apr 2004 21:07:24 +0100
+	by megablaster5.clown-smart.co.uk (Postfix) with ESMTP id 5D9C442273
+	for <linux-mips@linux-mips.org>; Mon, 26 Apr 2004 22:03:49 +0100 (BST)
+Message-ID: <408D7709.6060600@clown-fish.com>
+Date: Mon, 26 Apr 2004 21:54:33 +0100
 From: Damian Presswell <damian@clown-fish.com>
 User-Agent: Mozilla Thunderbird 0.5 (Windows/20040426)
 X-Accept-Language: en
 MIME-Version: 1.0
 To: linux-mips@linux-mips.org
-Subject: Linux Mips SGI O2 R5000 IP32 INSTALL
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Subject: [Fwd: Linux Mips SGI O2 R5000 IP32 INSTALL]
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
 Return-Path: <damian@clown-fish.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4902
+X-archive-position: 4903
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

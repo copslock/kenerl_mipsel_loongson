@@ -1,46 +1,40 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f5IINCE18281
-	for linux-mips-outgoing; Mon, 18 Jun 2001 11:23:12 -0700
-Received: from dea.waldorf-gmbh.de (u-95-18.karlsruhe.ipdial.viaginterkom.de [62.180.18.95])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5IIN9V18271
-	for <linux-mips@oss.sgi.com>; Mon, 18 Jun 2001 11:23:10 -0700
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f5IIMdN26761;
-	Mon, 18 Jun 2001 20:22:39 +0200
-Date: Mon, 18 Jun 2001 20:22:39 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Brian Murphy <brian@murphy.dk>
-Cc: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+	by oss.sgi.com (8.11.2/8.11.3) id f5IIodl20228
+	for linux-mips-outgoing; Mon, 18 Jun 2001 11:50:39 -0700
+Received: from ubik.localnet (port48.ds1-vbr.adsl.cybercity.dk [212.242.58.113])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5IIobV20225
+	for <linux-mips@oss.sgi.com>; Mon, 18 Jun 2001 11:50:38 -0700
+Received: from murphy.dk (brian.localnet [10.0.0.2])
+        by ubik.localnet (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f5IIoTq6013216
+        for <linux-mips@oss.sgi.com>; Mon, 18 Jun 2001 20:50:31 +0200
+Message-ID: <3B2E4D74.27E3D7FE@murphy.dk>
+Date: Mon, 18 Jun 2001 20:50:28 +0200
+From: Brian Murphy <brian@murphy.dk>
+X-Mailer: Mozilla 4.77 [en] (X11; U; Linux 2.4.4 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
 Subject: Re: Problems with mips2 compiled libc and linux 2.4.3
-Message-ID: <20010618202239.C25814@bacchus.dhis.org>
-References: <3B2E4458.1637A08A@murphy.dk>
-Mime-Version: 1.0
+References: <3B2E4458.1637A08A@murphy.dk> <20010618202239.C25814@bacchus.dhis.org>
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <3B2E4458.1637A08A@murphy.dk>; from brian@murphy.dk on Mon, Jun 18, 2001 at 08:11:36PM +0200
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Jun 18, 2001 at 08:11:36PM +0200, Brian Murphy wrote:
+Ralf Baechle wrote:
 
->         if (__h->e_flags & EF_MIPS_ARCH)
-> \
->                 __res = 0;
+> On Mon, Jun 18, 2001 at 08:11:36PM +0200, Brian Murphy wrote:
+>
+> >         if (__h->e_flags & EF_MIPS_ARCH)
+> > \
+> >                 __res = 0;
+>
+>
 
-> which is called in fs/binfmt_elf.c causes the loading of init to fail if
-> it is linked with a glibc compiled with -mips2. It is the second if test
-> which fails if any of the high 4 bits in the flags are set. According to
-> the specs these are set for the various mipsx (x != 1) flavors - this seems
-> to mean that we do no allow anything higher than mips1 run on linux -
-> can this be
-> true? If so, why?
+Will this be removed from the cvs version then?
 
-Older binutils didn't use to set these flags but SGI's ld did so this was
-a heuristc to reject IRIX binaries which are handled by irixelf.c.  The
-fix is simple, just remove above test.
+With all the talk of ll/sc and mips 1 and 2  in the last few months
+how has anyone tested/run with a mips2 libc if this test existed in
+their kernel?
 
-Time to come up with some other plan to detec IRIX binaries ...
-
-  Ralf
+/Brian

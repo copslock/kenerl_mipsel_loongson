@@ -1,86 +1,77 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4I6aLnC026863
-	for <linux-mips-outgoing@oss.sgi.com>; Fri, 17 May 2002 23:36:21 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4I8J9nC031236
+	for <linux-mips-outgoing@oss.sgi.com>; Sat, 18 May 2002 01:19:09 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4I6aLuI026862
-	for linux-mips-outgoing; Fri, 17 May 2002 23:36:21 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4I8J9Nr031235
+	for linux-mips-outgoing; Sat, 18 May 2002 01:19:09 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from kraid.nerim.net (kraid.nerim.net [62.4.16.95])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4I6aDnC026859
-	for <linux-mips@oss.sgi.com>; Fri, 17 May 2002 23:36:13 -0700
-Received: from free.fr (aboukir-101-1-18-ericleboeuf.adsl.nerim.net [62.212.106.189])
-	by kraid.nerim.net (Postfix) with ESMTP id AF71540EF3
-	for <linux-mips@oss.sgi.com>; Fri, 17 May 2002 22:09:18 +0200 (CEST)
-Message-ID: <3CE5649A.5080206@free.fr>
-Date: Fri, 17 May 2002 22:14:18 +0200
-From: Eric LEBOEUF <eric.leboeuf@free.fr>
-Reply-To: eric.leboeuf@free.fr
-Organization: MDS Forever
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.9) Gecko/20020408
-X-Accept-Language: French [fr],en
-MIME-Version: 1.0
-To: linux-mips@oss.sgi.com
-Subject: Kernel snapshot ?
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4I8J2nC031227
+	for <linux-mips@oss.sgi.com>; Sat, 18 May 2002 01:19:03 -0700
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id C717883C; Sat, 18 May 2002 10:19:39 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id DAD9637115; Sat, 18 May 2002 10:18:55 +0200 (CEST)
+Date: Sat, 18 May 2002 10:18:55 +0200
+From: Florian Lohoff <flo@rfc822.org>
+To: Eric LEBOEUF <eric.leboeuf@free.fr>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Kernel snapshot ?
+Message-ID: <20020518081855.GA11227@paradigm.rfc822.org>
+References: <3CE5649A.5080206@free.fr>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="CE+1k2dSO48ffgeK"
+Content-Disposition: inline
+In-Reply-To: <3CE5649A.5080206@free.fr>
+User-Agent: Mutt/1.3.28i
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hello everybody,
 
-I'm trying to get my indy to boot linux, but I've got some problem.
+--CE+1k2dSO48ffgeK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-When I do compile my own kernel, it crash with this message:
+On Fri, May 17, 2002 at 10:14:18PM +0200, Eric LEBOEUF wrote:
+> Hello everybody,
+>=20
+> I'm trying to get my indy to boot linux, but I've got some problem.
+> When I do compile my own kernel, it crash with this message:
 
-----------------------------------------------------------------------
+I guess you compiled HEAD from the oss.sgi.com cvs ? This is something
+in the 2.5 area and not "ready to run(tm)" as at least the scsi driver
+is broken and is known to oops on boot.
 
-sda:<1>Unable to handle kernel paging request at virtual address 
-00000000, epc == 880e7f3c, ra == 880e8120
-Oops in fault.c:do_page_fault, line 205:
-$0 : 00000000 1004cc00 bfbc0007 0000000b bfbc0003 bfbc0007 00000025 00000019
-$8 : 88674a00 88596c80 00000001 886c25a0 00001000 00000001 00000050 00000000
-$16: 00000000 bfbc0007 00000400 00000001 00000049 0000003a 1004cc00 88596c00
-$24: 00000004 88596e18                   881a2000 881a3c88 00000001 880e8120
-Hi : 00000000
-Lo : 00000500
-epc  : 880e7f3c    Not tainted
-Status: 1004cc02
-Cause : 0000000c
-Proccess swapper (pid: 0, stackpage=881a2000)
-Stack: bfbc0003 bfbc0007 00000001 88019c74 bfbc0003 bfbc0007 4748494a 
-4b4c4d4e
-        bfbc0003 bfbc0007 00000be0 0000003e bfbc0003 bfbc0007 881d654a 
-00000002
-        bfbc0007 88674a00 88596c80 00000001 880e8120 880e80f0 bfbc0003 
-bfbc0007
-        0000000c 0000003e 00000001 88596c80 bfbc0003 bfbc0007 88596c80 
-00000080
-        00000016 00000060 1004cc00 88596c80 00000001 8800b114 00000000 
-00000000
-        bfbc0003 ...
-Call Trace: [<88019c74>] [<880e8120>] [<880e80f0>] [<8800b114>] 
-[<880dee54>] [<880e86a4>]
-[<880e9584>] [<8802386c>] [<880ddfe8>] [<880e7150>] [<880df1b4>] 
-[<880def28>]
-[<88018c90>] [<8800a48c>] [<88000d30>] [<880bd6fc>] [<8800b810>] 
-[<880be218>]
-[<880be200>] [<8800c024>] [<88005208>] [<880051dc>] [<8800280c>] 
-[<88165480>]
-[<88166dac>] [<880027d8>]
+[ ... oops ... ]
 
-Code 00000000 0fa20034 90430000 <a2030000> 26100001 30c20080 1040ffe9 
-8fbf0050 0a039ff8
-Kernel panic: Aiee, killing interrupt handler!
-In interrupt handler - not syncing
+> I did get a 2.4.1 kernel, which works, but do not have good support for=
+=20
+> scsi disks. How can I do to compile my how kernel ?
 
------------------------------------------------------------------------
+You need to get the linux_2_4 branch from the cvs - That one should
+work.
 
-I did get a 2.4.1 kernel, which works, but do not have good support for 
-scsi disks. How can I do to compile my how kernel ?
+Flo
+PS: When sending in oopses please make shure you parse them through
+    ksymoops with the correct System.map.
+--=20
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+                        Heisenberg may have been here.
 
-I've got the toolchain-20020423-1.i386.rpm on a RedHat 7.3
+--CE+1k2dSO48ffgeK
+Content-Type: application/pgp-signature
+Content-Disposition: inline
 
-Thanks a lot !
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.6 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
 
+iD8DBQE85g5vUaz2rXW+gJcRAkC8AJ0dlYI+qqyUis2nx2pp2a8mnMRTTQCgzg6k
+5v/RZgmT0hJXZJpknfIxiaE=
+=ZLS7
+-----END PGP SIGNATURE-----
 
-Eric LEBOEUF
+--CE+1k2dSO48ffgeK--

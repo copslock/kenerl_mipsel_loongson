@@ -1,56 +1,75 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA60974 for <linux-archive@neteng.engr.sgi.com>; Fri, 28 Aug 1998 15:22:24 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id HAA25207 for <linux-archive@neteng.engr.sgi.com>; Fri, 28 Aug 1998 07:20:43 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id PAA32619
+	id HAA31695
 	for linux-list;
-	Fri, 28 Aug 1998 15:20:49 -0700 (PDT)
+	Fri, 28 Aug 1998 07:20:03 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id PAA61617
+	via ESMTP id HAA92449
 	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 28 Aug 1998 15:19:16 -0700 (PDT)
-	mail_from (ralf@uni-koblenz.de)
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) 
+	Fri, 28 Aug 1998 07:20:00 -0700 (PDT)
+	mail_from (adevries@engsoc.carleton.ca)
+Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) 
 	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id PAA10845
-	for <linux@cthulhu.engr.sgi.com>; Fri, 28 Aug 1998 15:19:15 -0700 (PDT)
-	mail_from (ralf@uni-koblenz.de)
-From: ralf@uni-koblenz.de
-Received: from uni-koblenz.de (pmport-12.uni-koblenz.de [141.26.249.12])
-	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id AAA06280
-	for <linux@cthulhu.engr.sgi.com>; Sat, 29 Aug 1998 00:19:00 +0200 (MEST)
-Received: (from ralf@localhost)
-	by uni-koblenz.de (8.8.7/8.8.7) id MAA05167;
-	Fri, 28 Aug 1998 12:31:55 +0200
-Message-ID: <19980828123154.B358@uni-koblenz.de>
-Date: Fri, 28 Aug 1998 12:31:54 +0200
-To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: linux-mips@fnet.fr, linux@cthulhu.engr.sgi.com
-Subject: Re: Emacs problem
-References: <19980823223647.12724@alpha.franken.de> <19980824121930.00186@uni-koblenz.de> <19980825225603.43888@alpha.franken.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.91.1
-In-Reply-To: <19980825225603.43888@alpha.franken.de>; from Thomas Bogendoerfer on Tue, Aug 25, 1998 at 10:56:03PM +0200
+	via ESMTP id HAA11048
+	for <linux@cthulhu.engr.sgi.com>; Fri, 28 Aug 1998 07:20:09 -0700 (PDT)
+	mail_from (adevries@engsoc.carleton.ca)
+Received: from localhost (adevries@localhost)
+	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id KAA24954;
+	Fri, 28 Aug 1998 10:21:33 -0400
+X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
+Date: Fri, 28 Aug 1998 10:21:33 -0400 (EDT)
+From: Alex deVries <adevries@engsoc.carleton.ca>
+To: "Gleb O. Rajko" <rajko@mech.math.msu.su>,
+        SGI Linux <linux@cthulhu.engr.sgi.com>
+Subject: Re: MIPS RedHad SRPMSes
+In-Reply-To: <Pine.SV4.3.91.980828135844.13854D-100000@mech>
+Message-ID: <Pine.LNX.3.96.980828101843.23230A-100000@lager.engsoc.carleton.ca>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Tue, Aug 25, 1998 at 10:56:03PM +0200, Thomas Bogendoerfer wrote:
 
-> Another questione does gcc/egcs produce .sdata, .lit4 or .li8 sections
-> on Linux/MIPS ?
+Alright.  First, I'm very sorry for not having done this, I know violating
+the GPL is probably a REALLY BAD IDEA.  It wasn't intentional, I've just
+been short on brain and network bandwidth.
 
-These sections are mostly being used for code using global pointer
-optimization.  .lit8 is also being used for fp code when assembling li.d
-macros.
+In any case, the SRPMs for all of hardhat/rough cuts are on
+ftp://ftp.linux.sgi.com/pub/hardhat/SRPMS .  They're uploading now; I'm on
+XFree86-3.3.2-8.src.rpm at this point; I expect it'll run all day.
 
-For kernel code global pointer optimization is incompatible
-with our current use of $gp as the current pointer; in userland gp
-optimization is incompatible with PIC code.
+Again, sorry.  It's something I should have done long ago.  All I'm doing,
+actually, is just uploading everythign that's on the CDROM.
 
-  Ralf
+- Alex
+
+-- 
+Alex deVries, puffin on LinuxNet.
+http://www.engsoc.carleton.ca/~adevries/ .
+
+
+
+On Fri, 28 Aug 1998, Gleb O. Rajko wrote:
+
+> Date: Fri, 28 Aug 1998 14:05:43 +0400 (MSD)
+> From: "Gleb O. Rajko" <rajko@mech.math.msu.su>
+> To: adevries@engsoc.carleton.ca
+> Subject: MIPS RedHad SRPMSes
+> 
+> 
+> Alex,
+> 
+> You promised to put source RPMSes on ftp.linux.sgi.com. Could you put 
+> them or point me at exact location ? I've got problems with some binaries 
+> and would like to recompile and debug them.
+> 
+> Regards,
+> Gleb Raiko.
+> 

@@ -1,35 +1,40 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id HAA01389; Wed, 28 May 1997 07:29:40 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id HAA01931; Wed, 28 May 1997 07:44:55 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id HAA00021 for linux-list; Wed, 28 May 1997 07:29:24 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id HAA29999 for <linux@engr.sgi.com>; Wed, 28 May 1997 07:29:21 -0700
-Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id HAA04295
-	for <linux@engr.sgi.com>; Wed, 28 May 1997 07:29:20 -0700
-	env-from (shaver@neon.ingenia.ca)
-Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id KAA28006 for linux@engr.sgi.com; Wed, 28 May 1997 10:04:46 -0400
-From: Mike Shaver <shaver@neon.ingenia.ca>
-Message-Id: <199705281404.KAA28006@neon.ingenia.ca>
-Subject: gmake?
-To: linux@cthulhu.engr.sgi.com
-Date: Wed, 28 May 1997 10:04:46 -0400 (EDT)
-X-Mailer: ELM [version 2.4ME+ PL28 (25)]
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id HAA03500 for linux-list; Wed, 28 May 1997 07:44:07 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id HAA03483 for <linux@relay.engr.SGI.COM>; Wed, 28 May 1997 07:44:04 -0700
+Received: from alles.intern.julia.de (loehnberg1.core.julia.de [194.221.49.2]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id HAA09130
+	for <linux@relay.engr.SGI.COM>; Wed, 28 May 1997 07:44:01 -0700
+	env-from (ralf@Julia.DE)
+Received: from kernel.panic.julia.de (kernel.panic.julia.de [194.221.49.153])
+	by alles.intern.julia.de (8.8.5/8.8.5) with ESMTP id PAA05241;
+	Wed, 28 May 1997 15:39:40 +0200
+From: Ralf Baechle <ralf@Julia.DE>
+Received: (from ralf@localhost)
+          by kernel.panic.julia.de (8.8.4/8.8.4)
+	  id QAA31633; Wed, 28 May 1997 16:36:54 +0200
+Message-Id: <199705281436.QAA31633@kernel.panic.julia.de>
+Subject: Re: gmake?
+To: shaver@neon.ingenia.ca (Mike Shaver)
+Date: Wed, 28 May 1997 16:36:53 +0200 (MET DST)
+Cc: linux@cthulhu.engr.sgi.com
+In-Reply-To: <199705281404.KAA28006@neon.ingenia.ca> from "Mike Shaver" at May 28, 97 10:04:46 am
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Anyone got a GNU make binary floating around?
+> Anyone got a GNU make binary floating around?
+> 
+> I've been unable to find one on /private/dm, /ariel/freeware or
+> billh's anon ftp list.
+> 
+> If no-one else has one, I'll build it and stick it somewhere visible.
 
-I've been unable to find one on /private/dm, /ariel/freeware or
-billh's anon ftp list.
+GNU make builds out of the box for IRIX 6.2.  I don't have my Indy here,
+but I can make the binaries available if anyone needs them.  Just tell
+me.
 
-If no-one else has one, I'll build it and stick it somewhere visible.
+Looks you're just about to try to compile the kernel or libc :-)
 
-Mike
-
--- 
-#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
-#>      Chief System Architect -- will tame sendmail(8) for food       
-#>                                                                     
-#> "You are a very perverse individual, and I think I'd like to get to 
-#>  know you better." --- eric@reference.com                           
+  Ralf

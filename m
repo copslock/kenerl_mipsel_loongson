@@ -1,41 +1,43 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1KF03D13368
-	for linux-mips-outgoing; Wed, 20 Feb 2002 07:00:03 -0800
+	by oss.sgi.com (8.11.2/8.11.3) id g1KF1rW13757
+	for linux-mips-outgoing; Wed, 20 Feb 2002 07:01:53 -0800
 Received: from dea.linux-mips.net (a1as06-p249.stg.tli.de [195.252.187.249])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1KExm913344
-	for <linux-mips@oss.sgi.com>; Wed, 20 Feb 2002 06:59:51 -0800
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1KF1m913754
+	for <linux-mips@oss.sgi.com>; Wed, 20 Feb 2002 07:01:49 -0800
 Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.1) id g1KDIfO16279;
-	Wed, 20 Feb 2002 14:18:41 +0100
-Date: Wed, 20 Feb 2002 14:18:41 +0100
+	by dea.linux-mips.net (8.11.6/8.11.1) id g1KCNm615858;
+	Wed, 20 Feb 2002 13:23:48 +0100
+Date: Wed, 20 Feb 2002 13:23:48 +0100
 From: Ralf Baechle <ralf@oss.sgi.com>
-To: Jun Sun <jsun@mvista.com>
-Cc: Greg Lindahl <lindahl@conservativecomputer.com>, linux-mips@oss.sgi.com
-Subject: Re: FPU emulator unsafe for SMP?
-Message-ID: <20020220141841.E15588@dea.linux-mips.net>
-References: <3C6C6ACF.CAD2FFC@mvista.com> <20020215031118.B21011@dea.linux-mips.net> <20020214232030.A3601@mvista.com> <20020215003037.A3670@mvista.com> <002b01c1b607$6afbd5c0$10eca8c0@grendel> <20020219140514.C25739@mvista.com> <00af01c1b9a2$c0d6d5f0$10eca8c0@grendel> <20020219171238.E25739@mvista.com> <20020219222835.A4195@wumpus.skymv.com> <20020219202434.F25739@mvista.com>
+To: santhosh <ps.santhosh@gdatech.co.in>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: MIPS64 Kernel SB1250
+Message-ID: <20020220132348.A15588@dea.linux-mips.net>
+References: <3C73DE53.1D7D1930@gdatech.co.in>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <20020219202434.F25739@mvista.com>; from jsun@mvista.com on Tue, Feb 19, 2002 at 08:24:34PM -0800
+In-Reply-To: <3C73DE53.1D7D1930@gdatech.co.in>; from ps.santhosh@gdatech.co.in on Wed, Feb 20, 2002 at 11:05:15PM +0530
 X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id g1KF1o913755
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Feb 19, 2002 at 08:24:34PM -0800, Jun Sun wrote:
+On Wed, Feb 20, 2002 at 11:05:15PM +0530, santhosh wrote:
 
-> > What you propose, locking the fpu owner to the current cpu, will not
-> > result in a fair solution. Imagine a 2 cpu machine with 2 processes
-> > using integer math and 1 using floating point... how much cpu time
-> > will each process get? 
+To: santhosh <ps.santhosh@gdatech.co.in>
+              ^^
+(Your from address has a control-C character embedded.  That will make
+many mailsystems drop your email!)
+
+>         I am working one MIPS64 type processor(SB1250  Sibyte family)
+>  I  need MIPS64 kernel to porting  my project board(SB1250)..
 > 
-> In this case, proc that uses fpu gets about 50% of one cpu, i.e., 25% of
-> total load, while the other two integer math proces split the rest 75%,
-> which gives 37.5% each.  Not too bad in my opinion.
+>   shall I get it?? or tell  where can i go to collect.....
 
-Certainly not good either.  Still not having checked the x86 solution
-I currently favor the approach of only always storing the fp context
-but lazily restoring it.
+Ask Sibyte / Broadcom for their latest kernel.  Unfortunately recently
+they changed the server's name so I don't know it offhand.
 
   Ralf

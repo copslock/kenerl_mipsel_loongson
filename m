@@ -1,71 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Dec 2004 16:30:29 +0000 (GMT)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:46418
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8225296AbULaQaW>; Fri, 31 Dec 2004 16:30:22 +0000
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp
-	id 1CkPfG-0005MQ-00; Fri, 31 Dec 2004 17:30:10 +0100
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 1CkPfF-0001tX-00; Fri, 31 Dec 2004 17:30:09 +0100
-Date: Fri, 31 Dec 2004 17:30:09 +0100
-To: pf@net.alphadv.de
-Cc: linux-mips@linux-mips.org
-Subject: Re: Confused assembler
-Message-ID: <20041231163009.GB6495@rembrandt.csv.ica.uni-stuttgart.de>
-References: <20041225172449.1063A1F123@trashy.coderock.org> <20041227124435.GC26100@linux-mips.org> <Pine.LNX.4.58.0412310201350.455@Indigo2.Peter>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.58.0412310201350.455@Indigo2.Peter>
-User-Agent: Mutt/1.5.6+20040907i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Jan 2005 13:41:01 +0000 (GMT)
+Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:15353 "EHLO
+	witte.sonytel.be") by linux-mips.org with ESMTP id <S8224926AbVAANk4>;
+	Sat, 1 Jan 2005 13:40:56 +0000
+Received: from waterleaf.sonytel.be (mail.sonytel.be [43.221.60.197])
+	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id j01DeiGU029669;
+	Sat, 1 Jan 2005 14:40:45 +0100 (MET)
+Date: Sat, 1 Jan 2005 14:40:44 +0100 (MET)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: Ralf Baechle <ralf@linux-mips.org>
+cc: Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: Re: CVS Update@linux-mips.org: linux
+In-Reply-To: <20041228080623Z8224908-1340+368@linux-mips.org>
+Message-ID: <Pine.GSO.4.61.0501011440070.27452@waterleaf.sonytel.be>
+References: <20041228080623Z8224908-1340+368@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6794
+X-archive-position: 6795
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-Peter Fuerst wrote:
+On Tue, 28 Dec 2004 ralf@linux-mips.org wrote:
+> Added files:
+> 	lib/reed_solomon: .cvsignore 
+> 	drivers/input/joystick/iforce: .cvsignore 
+> 	drivers/input/touchscreen: .cvsignore 
+> 	drivers/scsi/aacraid: .cvsignore 
+> 	drivers/isdn/hardware/eicon: .cvsignore 
+> 	drivers/char/ipmi: .cvsignore 
+> 	drivers/mmc    : .cvsignore 
+> 	drivers/media/video/ovcamchip: .cvsignore 
+> 	net/bluetooth/cmtp: .cvsignore 
+> 	net/bluetooth/bnep: .cvsignore 
+> 	net/bluetooth/hidp: .cvsignore 
+> 	net/bluetooth/rfcomm: .cvsignore 
+> 	sound/mips     : .cvsignore 
+> 	security/selinux/ss: .cvsignore 
+> 	security/selinux: .cvsignore 
+> 	fs/hfsplus     : .cvsignore 
 > 
-> 
-> Hello !
-> 
-> 
-> When building 2.6.10, the assembler (2.13.2.1) gets confused by a "b target2"
-> (compiler generated) immediately following a "beqzl target1" (inline assembly
-> macro), and reorders these instructions (with wrong address calculation too)
-> to an infinite loop.
-[snip]
-> Was this behaviour already observed elsewhere ?  Is it fixed in some newer
-> assembler version ?
+> Log message:
+> 	Ignore much much more generated crapola ...
 
-Fixed in current binutils CVS, IIRC both 2.15 branch and trunk. The
-older binutils tarball at linux-mips.org was also fixed.
+Don't we all use `make O=' these days? ;-)
 
-> Or should i just be content with it and work around
-> with appropriate "nop"s in the concerned inline-assembly macros ? ... ?
+Gr{oetje,eeting}s,
 
-You should upgrade to something newer than 2.13. :-)
+						Geert
 
-> as -EB -G 0 -mips4 -O2 -g0 -64 -mcpu=r8000 -v -64 -non_shared -64 -march=r8000 -mips4 --trap -o kernel/.tmp_fork.o
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-Note that those arguments are partially contradicting each other.
-
--mips4 -64 -mcpu=r8000 -64 -64 -march=r8000 -mips4
-
-is (with 2.15 gas) better expressed as
-
--mabi=64 -march=mips4
-
-or, more suitable for r10000, with
-
--mabi=64 -march=r10000
-
-
-Thiemo
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

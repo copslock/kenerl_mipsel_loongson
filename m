@@ -1,59 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Jan 2005 18:15:51 +0000 (GMT)
-Received: from mail.chipsandsystems.com ([IPv6:::ffff:64.164.196.27]:23214
-	"EHLO mail.chipsag.com") by linux-mips.org with ESMTP
-	id <S8225429AbVA1SPg>; Fri, 28 Jan 2005 18:15:36 +0000
-Received: from [10.1.100.35] ([10.1.100.35]) by mail.chipsag.com with Microsoft SMTPSVC(6.0.3790.0);
-	 Fri, 28 Jan 2005 10:18:07 -0800
-Message-ID: <41FA8146.20803@embeddedalley.com>
-Date:	Fri, 28 Jan 2005 10:15:34 -0800
-From:	Pete Popov <ppopov@embeddedalley.com>
-Reply-To:  ppopov@embeddedalley.com
-Organization: Embedded Alley Solutions, Inc
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.3) Gecko/20040913
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	Matt Porter <mporter@kernel.crashing.org>
-CC:	Ulrich Eckhardt <eckhardt@satorlaser.com>,
-	linux-mips@linux-mips.org
-Subject: Re: bitrot in drivers/net/au1000_eth.c
-References: <200501281501.19162.eckhardt@satorlaser.com> <41FA6FF0.4060302@embeddedalley.com> <20050128102056.A9216@cox.net>
-In-Reply-To: <20050128102056.A9216@cox.net>
-X-Enigmail-Version: 0.86.1.0
-X-Enigmail-Supports: pgp-inline, pgp-mime
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 28 Jan 2005 18:18:07.0994 (UTC) FILETIME=[B797C5A0:01C50565]
-Return-Path: <ppopov@embeddedalley.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 29 Jan 2005 00:03:07 +0000 (GMT)
+Received: from p3EE07947.dip.t-dialin.net ([IPv6:::ffff:62.224.121.71]:26215
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8224923AbVA2ACw>; Sat, 29 Jan 2005 00:02:52 +0000
+Received: from fluff.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id j0T02jE5011800;
+	Sat, 29 Jan 2005 01:02:45 +0100
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.13.1/8.13.1/Submit) id j0T02Zpi011799;
+	Sat, 29 Jan 2005 01:02:35 +0100
+Date:	Sat, 29 Jan 2005 01:02:35 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	David Daney <ddaney@avtrex.com>
+Cc:	zhan rongkai <zhanrk@gmail.com>, linux-mips@linux-mips.org
+Subject: Re: Why does MIPS/Linux always reserve 32 bytes in the top of each process's kernel stack space
+Message-ID: <20050129000235.GA11602@linux-mips.org>
+References: <69397FFCADEFD94F8D5A0FC0FDBCBBDEF53B@avtrex-server.hq.avtrex.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <69397FFCADEFD94F8D5A0FC0FDBCBBDEF53B@avtrex-server.hq.avtrex.com>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7064
+X-archive-position: 7065
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@embeddedalley.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Thu, Jan 27, 2005 at 08:54:48PM -0800, David Daney wrote:
 
-> I suggest everyone take a look at the effort posted to netdev:
+> >Why does MIPS/Linux always reserve 32 bytes in the top of each
+> >process's kernel stack space.
 > 
-> http://oss.sgi.com/archives/netdev/2004-12/msg00643.html
+> Perhaps because the  kernel's ABI requires it?   I beleive that o64 requires stack space for a0 - a3 to be stored there.
 
-That's the work Dan told me about. Now we just have to update the 
-au1x driver :)
+Except we don't use o64.
 
-Pete
-
-
-> It's an attempt at a phy abstraction layer that goes the next
-> logical step after the minimal support provided in mii.h.
-> 
-> It's evolved out of the in-driver abstraction that is currently
-> used in the sungem, ibm_emac, and gianfar drivers in 2.6. It
-> was just a matter of time before somebody got tired of copying
-> the same PHY mgmt bits into every driver. :)
-> 
-> -Matt
-> 
-> 
+  Ralf

@@ -1,67 +1,53 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id EAA79631 for <linux-archive@neteng.engr.sgi.com>; Sun, 7 Feb 1999 04:30:50 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id IAA53225 for <linux-archive@neteng.engr.sgi.com>; Sun, 7 Feb 1999 08:53:44 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id EAA85369
+	id IAA04556
 	for linux-list;
-	Sun, 7 Feb 1999 04:30:09 -0800 (PST)
+	Sun, 7 Feb 1999 08:52:56 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id EAA95945
+	via ESMTP id IAA04550
 	for <linux@cthulhu.engr.sgi.com>;
-	Sun, 7 Feb 1999 04:30:06 -0800 (PST)
-	mail_from (adelton@informatics.muni.cz)
-Received: from aragorn.ics.muni.cz (aragorn.ics.muni.cz [147.251.4.33]) 
+	Sun, 7 Feb 1999 08:52:54 -0800 (PST)
+	mail_from (asnmaz01@asc.edu)
+Received: from vera.dpo.uab.edu (Vera.dpo.uab.edu [138.26.1.12]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id EAA08292
-	for <linux@cthulhu.engr.sgi.com>; Sun, 7 Feb 1999 04:30:04 -0800 (PST)
-	mail_from (adelton@informatics.muni.cz)
-Received: from anxur.fi.muni.cz (0@anxur.fi.muni.cz [147.251.48.3])
-	by aragorn.ics.muni.cz (8.8.5/8.8.5) with ESMTP id NAA07534;
-	Sun, 7 Feb 1999 13:29:58 +0100 (MET)
-Received: from aisa.fi.muni.cz (aisa [147.251.48.1])
-	by anxur.fi.muni.cz (8.8.5/8.8.5) with ESMTP id NAA11535;
-	Sun, 7 Feb 1999 13:29:57 +0100 (MET)
-Received: (from adelton@localhost)
-	by aisa.fi.muni.cz (8.8.5/8.8.5) id NAA17843;
-	Sun, 7 Feb 1999 13:29:54 +0100 (MET)
-Message-ID: <19990207132954.B16519@aisa.fi.muni.cz>
-Date: Sun, 7 Feb 1999 13:29:54 +0100
-From: Honza Pazdziora <adelton@informatics.muni.cz>
-To: Victor Kuhns <kuhns@abbatech.com>, linux@cthulhu.engr.sgi.com,
-        "Michael W. Folsom" <mwfolsom@aptec.com>
-Cc: andrewb@uab.edu
-Subject: Re: Indigo R4K and Linux?
-References: <36B8D0B9.41C6@abbatech.com>
-Mime-Version: 1.0
+	via ESMTP id IAA06488
+	for <linux@cthulhu.engr.sgi.com>; Sun, 7 Feb 1999 08:52:53 -0800 (PST)
+	mail_from (asnmaz01@asc.edu)
+Received: from asc.edu (138.26.15.137) by vera.dpo.uab.edu (LSMTP for Windows NT v1.1a) with SMTP id <0.02391D80@vera.dpo.uab.edu>; 7 Feb 1999 10:52:51 -0600
+Message-ID: <36BDC583.8DBF4FBD@asc.edu>
+Date: Sun, 07 Feb 1999 10:55:31 -0600
+From: "Mark A. Zottola" <asnmaz01@asc.edu>
+X-Mailer: Mozilla 4.5 [en] (Win95; I)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: SGI Linux Group <linux@cthulhu.engr.sgi.com>
+Subject: 100Mb Ethernet for Indigo2
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.93.2i
-In-Reply-To: <36B8D0B9.41C6@abbatech.com>; from Victor Kuhns on Wed, Feb 03, 1999 at 04:42:01PM -0600
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> 
-> 	Running Linux on a Indigo R4K.  Has anybody done it?  Our indigo just
-> locks up when we try to boot off our machine running RH 5.0.  I have an
-> Indy R4k...but have about 10 Indigo R4k's sitting around.  Would be nice
-> to get the Indigo working:)
+This is slightly off-topic, so I apologize in advance. As we are porting
+LINUX to the Indigo2 to build a Beowulf cluster - we would like to use
+100Mb ethernet cards instead of the standard 10Mb. In contacting SGI
+about this, we were pointed to Qualix - a company which manufactures
+these cards. But the price for this is rather steep - between $700 -
+$800 per card! Does anyone on this list know where there might be a
+cheaper source for these cards? I can live with 10Mb if I have to, but
+it sure would be nice to have that 100Mb communication!
 
-Victor, Michael,
-
-Andrew R. Baker <andrewb@uab.edu> posted an announcement on January 21
-about an project of porting Linux to Indigo2. You might want to get in
-touch with them.
-
-Andrew, if you have a contact URL or e-mail we could put on
-www.linux.sgi.com, that would be nice.
-
-Yours,
-
-------------------------------------------------------------------------
- Honza Pazdziora | adelton@fi.muni.cz | http://www.fi.muni.cz/~adelton/
- I just got back from vacation and started to clean my mailbox -- sorry
- if you had to wait for this email.
+Again, my apologies if this is too off-topic for this group.
+--
+*********
+Mark A. Zottola                       Alabama Research and Education
+Network
+119 Rust Research Center              Nichols Research Corporation
+University of Alabama-Birmingham      VOICE:  (205) 934-3893
+Birmingham, AL  35294                 EMAIL:  asnmaz01@csimail.asc.edu

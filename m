@@ -1,41 +1,41 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6NKVUt02177
-	for linux-mips-outgoing; Mon, 23 Jul 2001 13:31:30 -0700
-Received: from sgi.com (sgi.SGI.COM [192.48.153.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6NKVTX02174
-	for <linux-mips@oss.sgi.com>; Mon, 23 Jul 2001 13:31:29 -0700
-Received: from gandalf.physik.uni-konstanz.de (gandalf.physik.uni-konstanz.de [134.34.144.69]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id KAA06919
-	for <linux-mips@oss.sgi.com>; Mon, 23 Jul 2001 10:48:23 -0700 (PDT)
-	mail_from (agx@gandalf.physik.uni-konstanz.de)
-Received: from galadriel.physik.uni-konstanz.de [134.34.144.79] (8)
-	by gandalf.physik.uni-konstanz.de with esmtp (Exim 3.12 #1 (Debian))
-	id 15Ojok-0001z5-00; Mon, 23 Jul 2001 19:48:30 +0200
-Received: from agx by galadriel.physik.uni-konstanz.de with local (Exim 3.12 #1 (Debian))
-	id 15Ojok-0002M9-00; Mon, 23 Jul 2001 19:48:30 +0200
-Date: Mon, 23 Jul 2001 19:48:30 +0200
-From: Guido Guenther <guido.guenther@gmx.net>
+	by oss.sgi.com (8.11.2/8.11.3) id f6NN42J21680
+	for linux-mips-outgoing; Mon, 23 Jul 2001 16:04:02 -0700
+Received: from kuolema.infodrom.north.de (postfix@kuolema.infodrom.north.de [217.89.86.35])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6NN3wO21670
+	for <linux-mips@oss.sgi.com>; Mon, 23 Jul 2001 16:03:59 -0700
+Received: from finlandia.infodrom.north.de (finlandia.Infodrom.North.DE [217.89.86.34])
+	by kuolema.infodrom.north.de (Postfix) with ESMTP id 3AFC84D73E
+	for <linux-mips@oss.sgi.com>; Tue, 24 Jul 2001 01:03:47 +0200 (CEST)
+Received: by finlandia.infodrom.north.de (Postfix, from userid 501)
+	id 2C88A109D3; Tue, 24 Jul 2001 01:03:43 +0200 (CEST)
+Date: Tue, 24 Jul 2001 01:03:43 +0200
+From: Martin Schulze <joey@finlandia.infodrom.north.de>
 To: linux-mips@oss.sgi.com
-Subject: Segfaults on r4600
-Message-ID: <20010723194830.A9033@galadriel.physik.uni-konstanz.de>
-Mail-Followup-To: linux-mips@oss.sgi.com
+Subject: Question about ioctls.h
+Message-ID: <20010724010342.R31470@finlandia.infodrom.north.de>
+Reply-To: Martin Schulze <joey@infodrom.north.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
+User-Agent: Mutt/1.3.12i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I'm seeing various segfaults especially with perl on an R4600 Indy.
-R4000 I2 with identical debian packages works fine though. I have tried
-various kernels (cvs head as from two days ago(natively and
-crosscompiled) and 2.4.3-r4k-ip22 from rfc822.org. Interesting enough
-the segfaults disappear when using "strace -o/dev/null
-segfaulting_binary". I also tried to investigate the core file but gdb
-dies when loading it(gdb is 5.0-3 debian package).
-Any ideas,
- -- Guido
+Quoting <asm/ioctls.h>:
+
+> #if defined(__USE_MISC) || defined (__KERNEL__)
+> #define tIOC            ('t' << 8)
+> #endif
+
+Could somebody try to explain this to me?  I'm especially interested
+in the #if part.  Why isn't tIOC defined normally?  It is used later.
+in the file - and it is used externally by rp-pppoe for example.
+
+Regards,
+
+	Joey
+
+-- 
+All language designers are arrogant.  Goes with the territory...
+	-- Larry Wall

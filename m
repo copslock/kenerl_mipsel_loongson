@@ -1,38 +1,75 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f3TI0kI09269
-	for linux-mips-outgoing; Sun, 29 Apr 2001 11:00:46 -0700
-Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3TI0jM09266
-	for <linux-mips@oss.sgi.com>; Sun, 29 Apr 2001 11:00:46 -0700
-Received: from lucon.org (lake.in.lucon.org [192.168.0.2])
-	by ocean.lucon.org (Postfix) with ESMTP
-	id D9D2C125B3; Sun, 29 Apr 2001 11:00:48 -0700 (PDT)
-Received: by lucon.org (Postfix, from userid 1000)
-	id 7F1EBEC17; Sun, 29 Apr 2001 11:00:41 -0700 (PDT)
-Date: Sun, 29 Apr 2001 11:00:41 -0700
-From: "H . J . Lu" <hjl@lucon.org>
-To: Keith M Wesolowski <wesolows@foobazco.org>
-Cc: linux-mips@oss.sgi.com, binutils@sources.redhat.com
-Subject: Re: Obvious patch for mips64
-Message-ID: <20010429110041.A7690@lucon.org>
-References: <20010428174634.A833@foobazco.org>
+	by oss.sgi.com (8.11.3/8.11.3) id f3TJ65C11414
+	for linux-mips-outgoing; Sun, 29 Apr 2001 12:06:05 -0700
+Received: from gandalf.physik.uni-konstanz.de (gandalf.physik.uni-konstanz.de [134.34.144.69])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3TJ63M11411
+	for <linux-mips@oss.sgi.com>; Sun, 29 Apr 2001 12:06:04 -0700
+Received: from bilbo.physik.uni-konstanz.de [134.34.144.81] (8)
+	by gandalf.physik.uni-konstanz.de with esmtp (Exim 3.12 #1 (Debian))
+	id 14twWA-0005W8-00; Sun, 29 Apr 2001 21:06:02 +0200
+Received: from agx by bilbo.physik.uni-konstanz.de with local (Exim 3.12 #1 (Debian))
+	id 14twW9-0004LI-00; Sun, 29 Apr 2001 21:06:01 +0200
+Date: Sun, 29 Apr 2001 21:06:01 +0200
+From: Guido Guenther <guido.guenther@gmx.net>
+To: linux-mips@oss.sgi.com
+Cc: Ralf Baechle <ralf@uni-koblenz.de>
+Subject: shm ipc broken 
+Message-ID: <20010429210601.A16687@bilbo.physik.uni-konstanz.de>
+Mail-Followup-To: linux-mips@oss.sgi.com,
+	Ralf Baechle <ralf@uni-koblenz.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/mixed; boundary="RnlQjJ0d97Da+TV1"
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <20010428174634.A833@foobazco.org>; from wesolows@foobazco.org on Sat, Apr 28, 2001 at 05:46:34PM -0700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sat, Apr 28, 2001 at 05:46:34PM -0700, Keith M Wesolowski wrote:
-> I need the following trivial patch to build 64-bit binaries with gas.
-> 
 
-I checked it in. Please provide ChangeLog entry next time. 
+--RnlQjJ0d97Da+TV1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-BTW, please test it on MIPS to make sure nothing is broken.
+The attached patch fixes a problem with shm ipc. The structs ipc_perm in
+/u/i/bits/ipc.h and ipc64_perm in include/asm/ipcbuf.h had different sizes
+and so caused the copy_shminfo_to_user in ipc/shm.c to corrupt user space(the
+kernel structure was 8 bytes larger). This is probably not the correct fix,
+since the other arches have this padding, so maybe glibc must be fixed.
+There's still a small problem since shm_nattch is a short in glibc and a long
+in the kernel, so the attach-numbers are wrong(which I'm also not sure where
+it has to be fixed).  
+ -- Guido
 
-Thanks.
+P.S.: this fixes the X server crashes some people were seeing.
 
+--RnlQjJ0d97Da+TV1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename="shm_fix-2001-04-29.diff"
 
-H.J.
+--- include/asm-mips/ipcbuf.h.orig	Sun Apr 29 19:55:41 2001
++++ include/asm-mips/ipcbuf.h	Sun Apr 29 20:23:00 2001
+@@ -2,13 +2,12 @@
+ #define _ASM_IPCBUF_H
+ 
+ /* 
+- * The ipc64_perm structure for alpha architecture.
++ * The ipc64_perm structure for mips architecture.
+  * Note extra padding because this structure is passed back and forth
+  * between kernel and user space.
+  *
+  * Pad space is left for:
+  * - 32-bit seq
+- * - 2 miscellaneous 64-bit values
+  */
+ 
+ struct ipc64_perm
+@@ -21,8 +20,6 @@
+ 	__kernel_mode_t	mode; 
+ 	unsigned short	seq;
+ 	unsigned short	__pad1;
+-	unsigned long	__unused1;
+-	unsigned long	__unused2;
+ };
+ 
+ #endif /* _ASM_IPCBUF_H */
+
+--RnlQjJ0d97Da+TV1--

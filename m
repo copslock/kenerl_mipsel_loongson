@@ -1,90 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Nov 2004 01:34:41 +0000 (GMT)
-Received: from lennier.cc.vt.edu ([IPv6:::ffff:198.82.162.213]:57255 "EHLO
-	lennier.cc.vt.edu") by linux-mips.org with ESMTP
-	id <S8225008AbUKYBeh>; Thu, 25 Nov 2004 01:34:37 +0000
-Received: from dagger.cc.vt.edu (IDENT:mirapoint@evil-dagger.cc.vt.edu [10.1.1.11])
-	by lennier.cc.vt.edu (8.12.11/8.12.11) with ESMTP id iAP1WFFP004622;
-	Wed, 24 Nov 2004 20:32:15 -0500
-Received: from [192.168.1.2] (68-232-97-125.chvlva.adelphia.net [68.232.97.125])
-	by dagger.cc.vt.edu (MOS 3.4.8-GR)
-	with ESMTP id CCH25483 (AUTH spbecker);
-	Wed, 24 Nov 2004 20:34:28 -0500 (EST)
-Message-ID: <41A536A5.5050508@gentoo.org>
-Date: Wed, 24 Nov 2004 20:34:29 -0500
-From: "Stephen P. Becker" <geoman@gentoo.org>
-User-Agent: Mozilla Thunderbird 0.9 (X11/20041119)
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Nov 2004 07:12:48 +0000 (GMT)
+Received: from mail.romat.com ([IPv6:::ffff:212.143.245.3]:30986 "EHLO
+	mail.romat.com") by linux-mips.org with ESMTP id <S8224929AbUKYHMj> convert rfc822-to-8bit;
+	Thu, 25 Nov 2004 07:12:39 +0000
+Received: from localhost (localhost.lan [127.0.0.1])
+	by mail.romat.com (Postfix) with ESMTP id ECB5AEB2D9;
+	Thu, 25 Nov 2004 09:12:32 +0200 (IST)
+Received: from mail.romat.com ([127.0.0.1])
+ by localhost (mail.romat.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 32991-06; Thu, 25 Nov 2004 09:12:25 +0200 (IST)
+Received: from gilad (unknown [192.168.1.167])
+	by mail.romat.com (Postfix) with ESMTP id ADA1AEB2D0;
+	Thu, 25 Nov 2004 09:12:25 +0200 (IST)
+From: "Gilad Rom" <gilad@romat.com>
+To: "'Pete Popov'" <ppopov@embeddedalley.com>
+Cc: <linux-mips@linux-mips.org>
+Subject: =?windows-1255?B?+vnl4eQ6IEF1MTUwMCBDaGlwIFNlbGVjdA==?=
+Date: Thu, 25 Nov 2004 09:12:44 +0200
+Organization: Romat Telecom
 MIME-Version: 1.0
-To: TheNop <TheNop@gmx.net>
-CC: linux-mips@linux-mips.org
-Subject: Re: Cross tool chain based on gcc-3.4.x
-References: <41A3CE25.7040406@gmx.net> <41A3E3E7.7020701@gentoo.org> <41A510DE.8030004@gmx.net>
-In-Reply-To: <41A510DE.8030004@gmx.net>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <geoman@gentoo.org>
+Content-Type: text/plain;
+	charset="windows-1255"
+Content-Transfer-Encoding: 8BIT
+X-Mailer: Microsoft Office Outlook, Build 11.0.5510
+In-Reply-To: <41A4CB92.7070403@embeddedalley.com>
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
+Thread-Index: AcTSTzsocQOiwDNCTCaq1/6finhmfQAboTng
+Message-Id: <20041125071225.ADA1AEB2D0@mail.romat.com>
+X-Virus-Scanned: by amavisd-new at romat.com
+Return-Path: <gilad@romat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6460
+X-archive-position: 6461
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geoman@gentoo.org
+X-original-sender: gilad@romat.com
 Precedence: bulk
 X-list: linux-mips
 
-TheNop wrote:
-> Stephen P. Becker wrote:
-> 
->> TheNop wrote:
->>
->>> Hello,
->>>
->>> I try to get a cross compiler based on
->>> gcc-3.4.2
->>> glibc-2.3.2
->>> binutils-2.15
->>> working;  without success.
->>>
->>> Is anyone using a cross compiler base on  gcc-3.4.x for a mips big 
->>> endian target?
->>>
->>> Best regarts
->>> TheNop
->>>
->>
->> I've got a very recent i686->mips-unknown-linux-gnu cross-toolchain 
->> available 
->> at:http://dev.gentoo.org/~geoman/mips-glibc-crosstools.tar.bz2 if you 
->> are too frustrated with building your own.
->>
->> It includes gcc-3.4.3, glibc-2.3.4 (20041102), and binutils 2.15.91.0.2.
->>
->> Steve
->>
->>
-> Hi Steve,
-> 
-> thanx a lot.
-> This tool chain works perfectly for me. Now I can build 2.6.x kernel.
-> In the past I tried to build a cross tool chain using crosstools. I 
-> don`t get any combination of gcc-3.4.x/glibc-2.x.x working. Only the 
-> gcc-3.4.x-glibc-2.3.3 combination I could compile without errors, but I 
-> couldn't compile a 2.6.x kernel.
-> 
-> Could you please tell me, how you compile the tool chain?
-> It would be great, if you can provide me a script or a list of patches 
-> you applied for building.
-> 
-> Best regards
-> TheNop
-> 
-> 
+Well, what I did so far was setup mem_stcfg1/mem_staddr1. 
+What I'm having trouble with is, what values do I need to 
+Set in mem_staddr1, and then, how do I access 
+That memory (mmap? Driver?).
 
-Actually, if you just wanted to build kernels, you don't need glibc at 
-all.  Just build binutils and then a bootstrap gcc compiler, and you are 
-set.  The only reason I messed with a full toolchain at all is so that I 
-can use c++ through distcc.
+Thanks.
+Gilad.
 
-Steve
+-----הודעה מקורית-----
+מאת: linux-mips-bounce@linux-mips.org
+[mailto:linux-mips-bounce@linux-mips.org] בשם Pete Popov
+נשלח: Wednesday, November 24, 2004 7:58 PM
+אל: Gilad Rom
+עותק: linux-mips@linux-mips.org
+נושא: Re: Au1500 Chip Select
+
+Gilad Rom wrote:
+
+> Hello,
+> 
+> I am trying to implement a simple program which Will be used to 
+> communicate with an I/O peripheral Over CS1 (Chip select 1) of the 
+> au1500.
+
+I'm not sure I understand what you're trying to do. The chip select is setup
+by the boot loader or kernel, and you don't touch it anymore. The CS will
+get asserted/deasserted based on the addresses you're trying to access.
+
+> Has anyone ever attempted this? Could someone Point me to some sample 
+> code, perhaps? I am grepping Through the kernel, yet having trouble 
+> locating Chip-select specific code for reference.
+
+Again, what sort of an example are you looking for?  Setting up a chip
+select on the Au1x is nothing more than writing the appropriate values to
+the 3 chip select registers. Then you're done.
+
+Pete

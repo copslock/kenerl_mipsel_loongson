@@ -1,72 +1,55 @@
-Received:  by oss.sgi.com id <S553722AbQJRMjy>;
-	Wed, 18 Oct 2000 05:39:54 -0700
-Received: from air.lug-owl.de ([62.52.24.190]:45063 "HELO air.lug-owl.de")
-	by oss.sgi.com with SMTP id <S553706AbQJRMjg>;
-	Wed, 18 Oct 2000 05:39:36 -0700
-Received: by air.lug-owl.de (Postfix, from userid 1000)
-	id 6C5A485D5; Wed, 18 Oct 2000 14:39:34 +0200 (CEST)
-Date:   Wed, 18 Oct 2000 14:39:34 +0200
-From:   Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To:     linux-mips@oss.sgi.com
-Subject: Re: CrossGcc Kernel fail.
-Message-ID: <20001018143933.A32077@lug-owl.de>
-Reply-To: jbglaw@lug-owl.de
-Mail-Followup-To: linux-mips@oss.sgi.com
-References: <39ED962F.3230FDEE@isratech.ro>
+Received:  by oss.sgi.com id <S553726AbQJRMqZ>;
+	Wed, 18 Oct 2000 05:46:25 -0700
+Received: from noose.gt.owl.de ([62.52.19.4]:14340 "HELO noose.gt.owl.de")
+	by oss.sgi.com with SMTP id <S553717AbQJRMqF>;
+	Wed, 18 Oct 2000 05:46:05 -0700
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id A6C9AA72; Wed, 18 Oct 2000 14:46:02 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 6B37B900C; Wed, 18 Oct 2000 14:30:03 +0200 (CEST)
+Date:   Wed, 18 Oct 2000 14:30:03 +0200
+From:   Florian Lohoff <flo@rfc822.org>
+To:     Ralf Baechle <ralf@oss.sgi.com>
+Cc:     Jun Sun <jsun@mvista.com>, linux-mips@fnet.fr,
+        linux-mips@oss.sgi.com
+Subject: Re: The initial results (Re: stable binutils, gcc, glibc ...
+Message-ID: <20001018143003.C2354@paradigm.rfc822.org>
+References: <39E7EB73.9206D0DB@mvista.com> <39ED2166.9B5F970@mvista.com> <20001018035719.F7865@bacchus.dhis.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="ew6BAiZeqk4r7MaW"
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <39ED962F.3230FDEE@isratech.ro>; from octavp@isratech.ro on Wed, Oct 18, 2000 at 03:23:11PM +0300
-X-Operating-System: Linux air 2.4.0-test8-pre1 
+Content-Type: text/plain; charset=us-ascii
+User-Agent: Mutt/1.0.1i
+In-Reply-To: <20001018035719.F7865@bacchus.dhis.org>; from ralf@oss.sgi.com on Wed, Oct 18, 2000 at 03:57:19AM +0200
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+On Wed, Oct 18, 2000 at 03:57:19AM +0200, Ralf Baechle wrote:
+> 
+> loop:
+> 	[...]
+> 	beq	r1, r2, loop
+> 
+> should be turned into:
+> 
+> loop:
+> 	[...]
+> 	bnez	r1, r2, 1f
+> 	j	loop
+> 1:
+> 
+> but of course only if the branch destination is outside the 16-bit range.
+> Thanks to the ever increasing code size there are now several realworld
+> examples which run into this problem.  Volunteers?
 
---ew6BAiZeqk4r7MaW
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+By thinking about this without any knowledge of the binutils code generation.
 
-On Wed, Oct 18, 2000 at 03:23:11PM +0300, Nicu Popovici wrote:
-> Hello once again,
->=20
-> cc1: warnings being treated as errors.
+How does this work if loop is only an external symbol ? The distance
+will than be relevant when linking but then the code will already be there
+and one would need to insert an instruction.
 
-Linus once made errors of all warnings, but that's ages ago... What
-kernel do you try to compile? Anything else than current CVS tree?
-
-> Another question : in all the docs that I found says apply patch
-> binutils-<version>-mips.patch, gcc-<version>-mips.patch and the same for
-> glibc. I did a search for binutils-2.8.1-mips.patch and I did not find
-> anything. Can anyone tell me where to find those patches ?
-
-What's wrong with ftp://oss.sgi.com/pub/linux/mips/crossdev/srpms/* ?
-
-MfG, JBG
-
---=20
-Fehler eingestehen, Gr=F6=DFe zeigen: Nehmt die Rechtschreibreform zur=FCck=
-!!!
-/* Jan-Benedict Glaw <jbglaw@lug-owl.de> -- +49-177-5601720 */
-keyID=3D0x8399E1BB fingerprint=3D250D 3BCF 7127 0D8C A444 A961 1DBD 5E75 83=
-99 E1BB
-     "insmod vi.o and there we go..." (Alexander Viro on linux-kernel)
-
---ew6BAiZeqk4r7MaW
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.2 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iEYEARECAAYFAjntmgUACgkQHb1edYOZ4bumLgCePiSme081jB5l1onF0LLw9qiT
-35wAn0FAUwgTajo3gIOXkqSOyAfYK5bg
-=srx2
------END PGP SIGNATURE-----
-
---ew6BAiZeqk4r7MaW--
+Flo
+-- 
+Florian Lohoff		flo@rfc822.org		      	+49-5201-669912
+      "Write only memory - Oops. Time for my medication again ..."

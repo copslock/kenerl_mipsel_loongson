@@ -1,62 +1,86 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g2JA9iY23056
-	for linux-mips-outgoing; Tue, 19 Mar 2002 02:09:44 -0800
-Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2JA9c923053
-	for <linux-mips@oss.sgi.com>; Tue, 19 Mar 2002 02:09:38 -0800
-Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.26])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id LAA29924;
-	Tue, 19 Mar 2002 11:10:16 +0100 (MET)
-Date: Tue, 19 Mar 2002 11:10:16 +0100 (MET)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: Girish Gulawani <girishvg@yahoo.com>
-cc: "MIPS/Linux List (SGI)" <linux-mips@oss.sgi.com>
-Subject: Re: PCI VGA Card Initilization (SIS6326 / PT80)
-In-Reply-To: <005101c1ced7$262a9560$b8900dd3@gol.com>
-Message-ID: <Pine.GSO.4.21.0203191108030.29351-100000@vervain.sonytel.be>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.2/8.11.3) id g2JCAF927109
+	for linux-mips-outgoing; Tue, 19 Mar 2002 04:10:15 -0800
+Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2JCA7927106
+	for <linux-mips@oss.sgi.com>; Tue, 19 Mar 2002 04:10:08 -0800
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 2415B849; Tue, 19 Mar 2002 13:11:34 +0100 (CET)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 5A72D37047; Tue, 19 Mar 2002 13:11:14 +0100 (CET)
+Date: Tue, 19 Mar 2002 13:11:14 +0100
+From: Florian Lohoff <flo@rfc822.org>
+To: David Christensen <dpchrist@holgerdanske.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: hello
+Message-ID: <20020319121114.GB18733@paradigm.rfc822.org>
+References: <00f601c1ced8$63586600$0b01a8c0@w2k30g>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="VrqPEDrXMn8OVzN4"
+Content-Disposition: inline
+In-Reply-To: <00f601c1ced8$63586600$0b01a8c0@w2k30g>
+User-Agent: Mutt/1.3.27i
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, 19 Mar 2002, Girish Gulawani wrote:
-> > > i have a PCI/VGA card PT80 with SIS6326 chipset. i am using MILO BIOS
-> source
-> > > code. but i am not able to access the internal buffer which is typically
-> at
-> > > 0xA0000. even the BIOS ROM (0xC0000) read fails to show default value
-> > > 0xA5A5. the expansion ROM is enabled in PCI by setting D0 bit to 1.
-> however
-> > > IO seems okay because the monitor actually switches from power down mode
-> to
-> > > normal mode. i have tried using both vgaraw1.c and vgaraw2.c files, but
-> no
-> > > success. could anybody help me to solve this problem.
-> > > many thanks.
-> >
-> > Are you using isa_readb() and friends to access ISA memory space?
-> > Did you set up isa_slot_offset correctly with the start address of ISA
-> memory
-> > space on your MIPS box?
-> no i am not using isa_readb() etc. infact i am accessing this area 0xA_0000
-> as Memory/IO in memory mode. i have seen the pci bus transactions, its
-> generating memory read and memory write commands. but due to some reason
-> that is still *unknown* to me generates master abort. i always get master
-> received master abort. could you tell me what could be the reason?
 
-Plain memory I/O can work, but is not portable.  You should use isa_readb() and
-friends, though, after setting up isa_slot_offset.
+--VrqPEDrXMn8OVzN4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-It looks like you have access to some PCI bus analyzer? Do you see memory read
-and write commands for the correct PCI bus addresses (e.g. 0xa0000)?
+On Mon, Mar 18, 2002 at 03:55:00PM -0800, David Christensen wrote:
+> linux-mips@oss.sgi.com:
+>=20
+> Hello!  I have the opportunity to work on MIPS Linux using a MIPS Atlas
+> (4Kc) board.
+>=20
+> 1.  Is there a reason why SourceForge isn't being used for the MIPS
+>     Linux project?
 
-Gr{oetje,eeting}s,
+The Linux-mips project is much older than sourceforge and looking at the
+history of hyped venture capital companys does not really give a good
+feeling about using sourceforge. Personally spoken i dont like
+sourceforge - For most cases its just too bloated and working for ISPs
+its not a problem to get some public accesible ftp/web/cvs space.
 
-						Geert
+> 4.  Is MIPS Linux self-hosted?
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Definitly
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+> 5.  Can you do native development on MIPS Linux?
+
+Yep - The Debian autobuilder run native on little and big endian.
+
+> 6.  Does MIPS Linux support sound (oss or alsa) on any platform?  Does
+>     it support sound on MIPS Atlas?
+
+Some rumors about Indy/Indigo2 HAL support have been heard.
+
+The problem with some sourceforge trees and thesplit up information is=20
+that like you already experienced is a real problem for Linux-mips
+as there is no "source of the only wisdom". I dont like that
+tree-forking etc. Either build your stuff clean - ready for inclusion -=20
+or just drop the tree under the table as a big bad ugly hack.
+
+Flo
+--=20
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+Nine nineth on september the 9th              Welcome to the new billenium
+
+--VrqPEDrXMn8OVzN4
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.6 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iD8DBQE8lyriUaz2rXW+gJcRAk6JAJ9VOE/CYT4FKczzBjhH6JYLH8wqkQCg3u2G
+swXJvWI65kvpzL949cYdShw=
+=L10y
+-----END PGP SIGNATURE-----
+
+--VrqPEDrXMn8OVzN4--

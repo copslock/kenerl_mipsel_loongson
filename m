@@ -1,39 +1,26 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id KAA106018 for <linux-archive@neteng.engr.sgi.com>; Wed, 3 Dec 1997 10:06:23 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id KAA109294 for <linux-archive@neteng.engr.sgi.com>; Wed, 3 Dec 1997 10:42:13 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id KAA28143 for linux-list; Wed, 3 Dec 1997 10:04:23 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA28084 for <linux@cthulhu.engr.sgi.com>; Wed, 3 Dec 1997 10:04:15 -0800
-Received: from vertigo.cs.indiana.edu (vertigo.cs.indiana.edu [129.79.243.150]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id KAA29341
-	for <linux@cthulhu.engr.sgi.com>; Wed, 3 Dec 1997 10:04:12 -0800
-	env-from (cypher@vertigo.cs.indiana.edu)
-Received: from localhost (cypher@localhost)
-	by vertigo.cs.indiana.edu (8.8.5/8.8.5) with SMTP id NAA15201;
-	Wed, 3 Dec 1997 13:32:46 -0500
-Date: Wed, 3 Dec 1997 13:32:45 -0500 (EST)
-From: cypher <cypher@vertigo.cs.indiana.edu>
-To: Brendan Black <ratfink@xtra.co.nz>
-cc: linux@cthulhu.engr.sgi.com
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id KAA10636 for linux-list; Wed, 3 Dec 1997 10:39:04 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA10628; Wed, 3 Dec 1997 10:39:02 -0800
+Received: from snowcrash.cymru.net (snowcrash.cymru.net [163.164.160.3]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id KAA10790; Wed, 3 Dec 1997 10:37:37 -0800
+	env-from (alan@lxorguk.ukuu.org.uk)
+Received: from lightning.swansea.linux.org.uk (the-village.bc.nu [163.164.160.21]) by snowcrash.cymru.net (8.8.7/8.7.1) with SMTP id SAA00497; Wed, 3 Dec 1997 18:36:53 GMT
+Received: by lightning.swansea.linux.org.uk (Smail3.1.29.1 #2)
+	id m0xdJhv-0005FsC; Wed, 3 Dec 97 18:39 GMT
+Message-Id: <m0xdJhv-0005FsC@lightning.swansea.linux.org.uk>
+From: alan@lxorguk.ukuu.org.uk (Alan Cox)
 Subject: Re: Linux on the O2
-In-Reply-To: <3484C528.4DDB2A53@xtra.co.nz>
-Message-ID: <Pine.LNX.3.95.971203133153.15095C-100000@vertigo.cs.indiana.edu>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To: delznic@acm.org (Douglas F. Elznic)
+Date: Wed, 3 Dec 1997 18:39:35 +0000 (GMT)
+Cc: cypher@vertigo.cs.indiana.edu, ariel@cthulhu.engr.sgi.com,
+        ralf@uni-koblenz.de, linux@cthulhu.engr.sgi.com
+In-Reply-To: <3.0.2.32.19971203130453.006e8f68@192.168.4.20> from "Douglas F. Elznic" at Dec 3, 97 01:04:53 pm
+Content-Type: text
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+> What are the specs on Sun's javastation? They can not be a whole lot
+> greater that the N64.
 
-On Wed, 3 Dec 1997, Brendan Black wrote:
-> I can imagine all sorts of 'uses' for something like this (linux on the
-> N64) - but one thing crops
-> up, I thought there WAS an N64 port.
-> 
-> I seem to remember something, may have been an article on IX magazine...
-
-
-I think if you take another look at that magazine you will notice that it
-was published on April, 1st. I've read the same article...
-
----
-Todd M. Shrider                         Unix Workstation Support Group
-(812)855-2627                           2711 E. 10th Street
-tshrider@indiana.edu                    Indiana University,
-http://www.uwsg.indiana.edu/            Bloomington, IN 47408-2671
+The existing one is a Sun4 box with funny keyboard and other oddments. DaveM
+has one if someone knows how to create time by magic ;)

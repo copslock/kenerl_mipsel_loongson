@@ -1,62 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 Feb 2005 18:09:32 +0000 (GMT)
-Received: from alg138.algor.co.uk ([IPv6:::ffff:62.254.210.138]:63429 "EHLO
-	mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225296AbVBFSI5>; Sun, 6 Feb 2005 18:08:57 +0000
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id j16I4A9t006955
-	for <linux-mips@linux-mips.org>; Sun, 6 Feb 2005 18:04:10 GMT
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j16I49Me006954
-	for linux-mips@linux-mips.org; Sun, 6 Feb 2005 18:04:09 GMT
-Resent-Message-Id: <200502061804.j16I49Me006954@dea.linux-mips.net>
-Date:	Sun, 6 Feb 2005 18:03:08 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Paul Mundt <lethal@linux-sh.org>, Sam Ravnborg <sam@ravnborg.org>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Add as-option to top-level Makefile
-Message-ID: <20050206180308.GA21172@linux-mips.org>
-References: <20050206170347.GB27853@linux-sh.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20050206170347.GB27853@linux-sh.org>
-User-Agent: Mutt/1.4.1i
-Resent-From: ralf@linux-mips.org
-Resent-Date: Sun, 6 Feb 2005 18:04:09 +0000
-Resent-To: linux-mips@linux-mips.org
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Feb 2005 07:44:41 +0000 (GMT)
+Received: from schenk.ISAR.de ([IPv6:::ffff:212.14.78.13]:35099 "EHLO
+	schenk.isar.de") by linux-mips.org with ESMTP id <S8224845AbVBGHo0>;
+	Mon, 7 Feb 2005 07:44:26 +0000
+Received: from gwhaus.rt.schenk (gwhaus.rt.schenk [172.22.0.4])
+	by schenk.isar.de (8.11.6/8.11.6/SuSE Linux 0.5) with ESMTP id j177hjH24018;
+	Mon, 7 Feb 2005 08:43:45 +0100
+Received: from [172.22.10.24] (pcimr4.rt.schenk [172.22.10.24])
+	by gwhaus.rt.schenk (8.11.6/8.11.6/SuSE Linux 0.5) with ESMTP id j177hbc04309;
+	Mon, 7 Feb 2005 08:43:44 +0100
+Message-ID: <42071C29.3030507@schenk.isar.de>
+Date:	Mon, 07 Feb 2005 08:43:37 +0100
+From:	Rojhalat Ibrahim <ibrahim@schenk.isar.de>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7) Gecko/20040617
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	Manish Lachwani <mlachwani@mvista.com>
+CC:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: Titan ethernet and little endian
+References: <42023C54.7060801@schenk.isar.de> <420269C1.6050701@mvista.com>
+In-Reply-To: <420269C1.6050701@mvista.com>
+X-Enigmail-Version: 0.84.1.0
+X-Enigmail-Supports: pgp-inline, pgp-mime
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ibrahim@schenk.isar.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7173
+X-archive-position: 7174
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ibrahim@schenk.isar.de
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, Feb 06, 2005 at 07:03:47PM +0200, Paul Mundt wrote:
-
-> cc-option can presently not be used for checking as flags. It seems like
-> MIPS ran into this already and added their own as-option (which at this
-> point seems to be completely unused on MIPS, so perhaps it's worth
-> removing entirely from there).
+Manish Lachwani wrote:
+> Hi !
 > 
-> This patch moves the definition to the top-level Makefile so that others
-> can make use of it (sh wants this with newer binutils that allow for ISA
-> tuning, for instance).
+> So, have you got the titan to work in the LE mode? Are you using the 
+> Yosemite board? Does this patch break BE?
 > 
-> Additionally, it may make more sense to move the -Wa$(comma) stuff into
-> as-option directly so it doesn't get repeated all over the place (though
-> it seems unlikely that there will be enough users that actually care
-> about this).
+> Please do let us know.
+> 
+> Thanks
+> Manish Lachwani
+> 
+> 
 
-For MIPS as-option became unused when old binutils versions finally had to
-be retired.  Patch looks good to me but since it's sort of a no-op patch I
-won't merge it into linux-mips.org but if accepted rather wait until it
-comes to me vi Linus's patches, as usual.
+Hi!
 
-Thanks,
+Yes I have got the titan work in LE mode. And yes I am using the
+Yosemite board. And no this patch does not break BE. I haven't
+actually tested that but all the changes I made are between
+#ifdef LITTLE_ENDIAN and #endif.
 
-  Ralf
+Thanks
+Rojhalat Ibrahim

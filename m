@@ -1,56 +1,44 @@
-Received:  by oss.sgi.com id <S553949AbRBMSvr>;
-	Tue, 13 Feb 2001 10:51:47 -0800
-Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:29588 "EHLO
-        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553948AbRBMSvn>;
-	Tue, 13 Feb 2001 10:51:43 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id TAA00039;
-	Tue, 13 Feb 2001 19:31:11 +0100 (MET)
-Date:   Tue, 13 Feb 2001 19:31:11 +0100 (MET)
-From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To:     Jun Sun <jsun@mvista.com>
-cc:     "Kevin D. Kissell" <kevink@mips.com>, linux-mips@oss.sgi.com
-Subject: Re: config option vs. run-time detection (the debate continues ...)
-In-Reply-To: <3A8829B9.17B7F691@mvista.com>
-Message-ID: <Pine.GSO.3.96.1010213192415.20214H-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received:  by oss.sgi.com id <S553991AbRBNAls>;
+	Tue, 13 Feb 2001 16:41:48 -0800
+Received: from sgigate.SGI.COM ([204.94.209.1]:4920 "EHLO dea.waldorf-gmbh.de")
+	by oss.sgi.com with ESMTP id <S553987AbRBNAli>;
+	Tue, 13 Feb 2001 16:41:38 -0800
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f1D6IP806517;
+	Mon, 12 Feb 2001 22:18:25 -0800
+Date:   Mon, 12 Feb 2001 22:18:25 -0800
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Pete Popov <ppopov@mvista.com>
+Cc:     carlson@sibyte.com,
+        "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Re: irq.c
+Message-ID: <20010212221825.B2239@bacchus.dhis.org>
+References: <3A843C2D.525643E7@mvista.com> <0102091101190P.01909@plugh.sibyte.com> <3A84400E.82CEA4B@mvista.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3A84400E.82CEA4B@mvista.com>; from ppopov@mvista.com on Fri, Feb 09, 2001 at 11:07:58AM -0800
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Mon, 12 Feb 2001, Jun Sun wrote:
+On Fri, Feb 09, 2001 at 11:07:58AM -0800, Pete Popov wrote:
 
-> >  I don't have an FPU-less system and I can't check such code.  I need to
-> > depend on others (I couldn't test all possible configurations anyway).
-> 
-> However, with CONFIG_HAS_FPU approach I know for sure it will work for any
-> MIPS CPU, as long as the programmer specifies it correctly. :-)
+> Thanks for pointing that out.  If all architectures will move to
+> kernel/irq.c, then it probably makes sense to wait.  At first glance,
+> mips/kernel/irq.c seems pretty close to i386/kernel/irq.c -- certainly a
+> lot closer than many of the other copies.  
 
- Tha latter being a BIG if.
+It was derived from a fairly recent copy of the x86 irq.c; running out of
+time I never completed the rewrite.  The idea is to implement some kind
+of modular interrupt mechanism which allows us to have a single piece of
+code in the MIPS kernel that knows how to handle i8259 interrupt, a single
+piece of code to handle GT64120 interrupts etc.  Not like the current mess
+which duplicates code ad infinitum.
 
-> > If
-> > we have a chance to get an exception we have to catch it, of course
-> > (that's trivial to handle in Linux).
-> > 
-> 
-> No effort (as in CONFIG_HAS_FPU approach) is still better than trivial or
-> small effort ( as in run-time detection).  :-)
+Aside it's also going to make the RTLinux fraction happy.
 
- Regardless of the CONFIG_HAS_FPU option you still need to check if a FPU
-is present.
-
-> I am very curious what makes you object to the CONFIG_HAS_FPU approach,
-> especially you said earlier it was not about the inability to support both FPU
-> and FPU-less CPUs with the same kernel image.
-
- That's pretty orthogonal -- I do not object the CONFIG_HAS_FPU option (I
-even favor it, if it could save us unneeded bits), but whether having it
-or not, we still have to properly detect FP hardware.  A silent crash or
-an obscure oops is not an option in case of a config error.
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+  Ralf

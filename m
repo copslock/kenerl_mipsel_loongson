@@ -1,76 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jan 2003 20:48:06 +0000 (GMT)
-Received: from prahad-5-64.dialup.vol.cz ([IPv6:::ffff:212.20.121.196]:260
-	"EHLO kopretinka") by linux-mips.org with ESMTP id <S8226179AbTAJUsF>;
-	Fri, 10 Jan 2003 20:48:05 +0000
-Received: from ladis by kopretinka with local (Exim 3.35 #1 (Debian))
-	id 18X5zl-0000Bm-00; Fri, 10 Jan 2003 21:43:13 +0100
-Date: Fri, 10 Jan 2003 21:43:13 +0100
-To: linux-mips@linux-mips.org
-Cc: Ralf Baechle <ralf@linux-mips.org>,
-	Ulf Karlsson <md1ulfc@mdstud.chalmers.se>
-Subject: [PATCH] HAL2: fix LE stream playback
-Message-ID: <20030110204313.GA712@kopretinka>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.28i
-From: Ladislav Michl <ladis@psi.cz>
-Return-Path: <ladis@psi.cz>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Jan 2003 18:55:17 +0000 (GMT)
+Received: from p508B688C.dip.t-dialin.net ([IPv6:::ffff:80.139.104.140]:2951
+	"EHLO p508B688C.dip.t-dialin.net") by linux-mips.org with ESMTP
+	id <S8225701AbTAKSzQ>; Sat, 11 Jan 2003 18:55:16 +0000
+Received: from smtp-101.noc.nerim.net ([IPv6:::ffff:62.4.17.101]:8718 "EHLO
+	mallaury.noc.nerim.net") by ralf.linux-mips.org with ESMTP
+	id <S869811AbTAKSzO>; Sat, 11 Jan 2003 19:55:14 +0100
+Received: from melkor (vivienc.net1.nerim.net [213.41.134.233])
+	by mallaury.noc.nerim.net (Postfix) with ESMTP
+	id 0855062E1B; Sat, 11 Jan 2003 19:55:02 +0100 (CET)
+Received: from glaurung (helo=localhost)
+	by melkor with local-esmtp (Exim 3.36 #1 (Debian))
+	id 18XQmb-0002FI-00; Sat, 11 Jan 2003 19:55:01 +0100
+Date: Sat, 11 Jan 2003 19:55:00 +0100 (CET)
+From: Vivien Chappelier <vivienc@nerim.net>
+X-Sender: glaurung@melkor
+To: Ralf Baechle <ralf@oss.sgi.com>
+Cc: linux-mips@linux-mips.org
+Subject: [PATCH 2.5] udelay
+Message-ID: <Pine.LNX.4.21.0301111951300.7511-100000@melkor>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <vivienc@nerim.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1131
+X-archive-position: 1132
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ladis@psi.cz
+X-original-sender: vivienc@nerim.net
 Precedence: bulk
 X-list: linux-mips
 
 Hi,
 
-several people complained about it on IRC, so here is a patch against
-linux_2_4 branch. Please apply.
+	The HZ constant has been changed in 2.5 and this breaks
+udelay(). Here is a patch to fix this. Note that the first multiply in
+udelay is still optimized out by the compiler if the delay is constant, as
+in current implementation.
 
-Side note: recording still doesn't work. while ago i tried to play with
-PBUS configuration and found following (refer to hpc3.ps):
-1) writing 0x08248844 (ie. 16bit DMA stream) into pbus_dmacfgs produces
-   noise at output.
-2) writing 0x082c8844 (ie. 16bit with EVEN_HIGH bit set) make playback
-   two times faster.
-3) writing 0x08248844 (ie. 8 bit stream) works as expected. That is
-   strange, because I still believe that HAL2 is 16bit device. I'd guess
-   that there are two bugs in driver which neutralizes each other.
-In all cases DMA stream wasn't started for recording.
+Vivien.
 
-
---- XXX/drivers/sound/hal2.c	Mon Aug  5 19:40:50 2002
-+++ linux/drivers/sound/hal2.c	Fri Jan 10 21:06:27 2003
-@@ -1,6 +1,6 @@
- /*
-  *  Driver for HAL2 sound processors
-- *  Copyright (c) 2001, 2002 Ladislav Michl <ladis@psi.cz>
-+ *  Copyright (c) 2001-2003 Ladislav Michl <ladis@linux-mips.org>
-  *  
-  *  Based on Ulf Carlsson's code.
-  *
-@@ -394,7 +394,8 @@
- 	fifobeg = 0;				/* playback is first */
- 	fifoend = (sample_size * 4) >> 3;	/* doublewords */
- 	pbus->ctrl = HPC3_PDMACTRL_RT | HPC3_PDMACTRL_LD |
--		     (highwater << 8) | (fifobeg << 16) | (fifoend << 24);
-+		     (highwater << 8) | (fifobeg << 16) | (fifoend << 24) |
-+		     (hal2->dac.format & AFMT_S16_LE ? HPC3_PDMACTRL_SEL : 0);
- 	/* We disable everything before we do anything at all */
- 	pbus->pbus->pbdma_ctrl = HPC3_PDMACTRL_LD;
- 	hal2_i_clearbit16(hal2, H2I_DMA_PORT_EN, H2I_DMA_PORT_EN_CODECTX);
-@@ -420,7 +421,8 @@
- 	fifobeg = (4 * 4) >> 3;				/* record is second */
- 	fifoend = (4 * 4 + sample_size * 4) >> 3;	/* doublewords */
- 	pbus->ctrl = HPC3_PDMACTRL_RT | HPC3_PDMACTRL_RCV | HPC3_PDMACTRL_LD | 
--		     (highwater << 8) | (fifobeg << 16) | (fifoend << 24);
-+		     (highwater << 8) | (fifobeg << 16) | (fifoend << 24) |
-+		     (hal2->adc.format & AFMT_S16_LE ? HPC3_PDMACTRL_SEL : 0);
- 	pbus->pbus->pbdma_ctrl = HPC3_PDMACTRL_LD;
- 	hal2_i_clearbit16(hal2, H2I_DMA_PORT_EN, H2I_DMA_PORT_EN_CODECR);
- 	hal2_i_clearbit16(hal2, H2I_DMA_DRV, (1 << pbus->pbusnr));
+--- include/asm-mips64/delay.h	2002-12-11 20:44:20.000000000 +0100
++++ include/asm-mips64/delay.h	2003-01-07 20:36:37.000000000 +0100
+@@ -41,11 +41,11 @@
+ {
+ 	unsigned long lo;
+ 
+-#if (HZ == 100)
+-	usecs *= 0x00068db8bac710cbUL;		/* 2**64 / (1000000 / HZ) */
+-#elif (HZ == 128)
+-	usecs *= 0x0008637bd05af6c6UL;		/* 2**64 / (1000000 / HZ) */
+-#endif
++/* HZ * 2**64 / 1000000 */
++#define __UDELAY_FIXED64_HZ_1000000 (0x8000000000000000UL / (500000 / HZ)) 
++
++	usecs *= __UDELAY_FIXED64_HZ_1000000;
++
+ 	__asm__("dmultu\t%2,%3"
+ 		:"=h" (usecs), "=l" (lo)
+ 		:"r" (usecs),"r" (lpj));
+--- include/asm-mips/delay.h	2002-12-11 20:44:18.000000000 +0100
++++ include/asm-mips/delay.h	2003-01-08 19:25:17.000000000 +0100
+@@ -40,11 +40,10 @@
+ {
+ 	unsigned long lo;
+ 
+-#if (HZ == 100)
+-	usecs *= 0x00068db8;		/* 2**32 / (1000000 / HZ) */
+-#elif (HZ == 128)
+-	usecs *= 0x0008637b;		/* 2**32 / (1000000 / HZ) */
+-#endif
++/* HZ * 2**32 / 1000000 */
++#define __UDELAY_FIXED32_HZ_1000000 (0x80000000UL / (500000 / HZ)) 
++
++	usecs *= __UDELAY_FIXED32_HZ_1000000;
+ 	__asm__("multu\t%2,%3"
+ 		:"=h" (usecs), "=l" (lo)
+ 		:"r" (usecs),"r" (lpj));

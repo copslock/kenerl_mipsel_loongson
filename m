@@ -1,52 +1,38 @@
-Received:  by oss.sgi.com id <S42199AbQFHXVT>;
-	Thu, 8 Jun 2000 16:21:19 -0700
-Received: from mailhost.uni-koblenz.de ([141.26.64.1]:30629 "EHLO
-        mailhost.uni-koblenz.de") by oss.sgi.com with ESMTP
-	id <S42198AbQFHXVC>; Thu, 8 Jun 2000 16:21:02 -0700
-Received: from cacc-23.uni-koblenz.de (cacc-23.uni-koblenz.de [141.26.131.23])
-	by mailhost.uni-koblenz.de (8.9.3/8.9.3) with ESMTP id BAA07040;
-	Fri, 9 Jun 2000 01:20:57 +0200 (MET DST)
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S1403827AbQFHXU3>;
-        Fri, 9 Jun 2000 01:20:29 +0200
-Date:   Fri, 9 Jun 2000 01:20:29 +0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     "J. Scott Kasten" <jsk@tetracon-eng.net>
-Cc:     linux-mips@oss.sgi.com
+Received:  by oss.sgi.com id <S42201AbQFIAJa>;
+	Thu, 8 Jun 2000 17:09:30 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:3412 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42200AbQFIAJI>;
+	Thu, 8 Jun 2000 17:09:08 -0700
+Received: from thor ([207.246.91.243]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via SMTP id RAA16149; Thu, 8 Jun 2000 17:04:11 -0700 (PDT)
+	mail_from (jsk@tetracon-eng.net)
+Received: from localhost (localhost [127.0.0.1]) by thor (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id UAA29031; Thu, 8 Jun 2000 20:01:55 -0300
+Date:   Thu, 8 Jun 2000 20:01:55 -0300
+From:   "J. Scott Kasten" <jsk@tetracon-eng.net>
+To:     Ralf Baechle <ralf@oss.sgi.com>
+cc:     linux-mips@oss.sgi.com
 Subject: Re: Linux on Indy w/ XL question.
-Message-ID: <20000609012029.B19237@uni-koblenz.de>
-References: <Pine.SGI.4.10.10006081616200.28739-100000@thor.tetracon-eng.net>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <Pine.SGI.4.10.10006081616200.28739-100000@thor.tetracon-eng.net>; from jsk@tetracon-eng.net on Thu, Jun 08, 2000 at 04:23:26PM -0300
-X-Accept-Language: de,en,fr
+In-Reply-To: <20000609012029.B19237@uni-koblenz.de>
+Message-ID: <Pine.SGI.4.10.10006081954470.29012-100000@thor.tetracon-eng.net>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Thu, Jun 08, 2000 at 04:23:26PM -0300, J. Scott Kasten wrote:
 
-> I need to puchase an Indy and install Linux on it as a
-> development/reference platform for some embedded MIPS development I'm
-> involved with.  I've read the FAQ, HOWTO, etc... and need one minor
-> clarification.
+
+On Fri, 9 Jun 2000, Ralf Baechle wrote:
+
+> On Thu, Jun 08, 2000 at 04:23:26PM -0300, J. Scott Kasten wrote:
+> > In the documentation it claims support for XL video only.  That's fine,
+> > however, do I want the 8 bit or the 24 bit variety?  Do they both work?
 > 
-> In the documentation it claims support for XL video only.  That's fine,
-> however, do I want the 8 bit or the 24 bit variety?  Do they both work?
+> For text console, yes.
+> 
 
-For text console, yes.
+Thanks for your responce.  The info about the Xfree 4.0 derivative is
+useful.  Now, I take your "yes" responce to the above to mean that both
+varieties work for text.
 
-> If I understand correctly, emulation is in place to the extent that the
-> IRIX Xsgi can be used under Linux to provide an X display as well?  X is
-> not critical to my needs, but would of course be a definite advantage.
-
-Nobody has worked on the binary compatibility for X in a long, long time
-so everything I can guarantee is that it compiles.  It's never reached
-the point where Xsgi was running properly.
-
-There is now another X server based on XFree 4.0.  It's just the first
-public release but you may want to try it anyway, it's available from
-oss.sgi.com in /pub/linux/mips/mips-linux/X.
-
-  Ralf
+-S-

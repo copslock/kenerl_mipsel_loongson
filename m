@@ -1,60 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Feb 2003 03:46:01 +0000 (GMT)
-Received: from zok.sgi.com ([IPv6:::ffff:204.94.215.101]:5771 "EHLO
-	zok.sgi.com") by linux-mips.org with ESMTP id <S8225195AbTBJDqB>;
-	Mon, 10 Feb 2003 03:46:01 +0000
-Received: from larry.melbourne.sgi.com (larry.melbourne.sgi.com [134.14.52.130])
-	by zok.sgi.com (8.12.2/8.12.2/linux-outbound_gateway-1.2) with SMTP id h1A2r5Kp003942;
-	Sun, 9 Feb 2003 18:53:06 -0800
-Received: from pureza.melbourne.sgi.com (pureza.melbourne.sgi.com [134.14.55.244]) by larry.melbourne.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id OAA16613; Mon, 10 Feb 2003 14:45:52 +1100
-Received: from pureza.melbourne.sgi.com (localhost.localdomain [127.0.0.1])
-	by pureza.melbourne.sgi.com (8.12.5/8.12.5) with ESMTP id h1A3jp8G023226;
-	Mon, 10 Feb 2003 14:45:52 +1100
-Received: (from clausen@localhost)
-	by pureza.melbourne.sgi.com (8.12.5/8.12.5/Submit) id h1A3jnGc023224;
-	Mon, 10 Feb 2003 14:45:49 +1100
-Date: Mon, 10 Feb 2003 14:45:49 +1100
-From: Andrew Clausen <clausen@melbourne.sgi.com>
-To: Linux-MIPS <linux-mips@linux-mips.org>
-Cc: Guido Guenther <agx@sigxcpu.org>
-Subject: porting arcboot
-Message-ID: <20030210034549.GA8408@pureza.melbourne.sgi.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Feb 2003 10:03:33 +0000 (GMT)
+Received: from gandalf.physik.uni-konstanz.de ([IPv6:::ffff:134.34.144.69]:11180
+	"EHLO gandalf.physik.uni-konstanz.de") by linux-mips.org with ESMTP
+	id <S8225196AbTBJKDc>; Mon, 10 Feb 2003 10:03:32 +0000
+Received: from merry.physik.uni-konstanz.de (merry.physik.uni-konstanz.de [134.34.144.91])
+	by gandalf.physik.uni-konstanz.de (Postfix) with ESMTP
+	id ADFB793; Mon, 10 Feb 2003 11:03:19 +0100 (CET)
+Received: from agx by merry.physik.uni-konstanz.de with local (Exim 3.35 #1 (Debian))
+	id 18iAmV-00080b-00; Mon, 10 Feb 2003 11:03:19 +0100
+Date: Mon, 10 Feb 2003 11:03:19 +0100
+From: Guido Guenther <agx@gandalf.physik.uni-konstanz.de>
+To: Andrew Clausen <clausen@melbourne.sgi.com>
+Cc: Linux-MIPS <linux-mips@linux-mips.org>
+Subject: Re: porting arcboot
+Message-ID: <20030210100319.GA30624@merry>
+References: <20030210034549.GA8408@pureza.melbourne.sgi.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.4i
-Return-Path: <clausen@pureza.melbourne.sgi.com>
+In-Reply-To: <20030210034549.GA8408@pureza.melbourne.sgi.com>
+User-Agent: Mutt/1.3.28i
+Return-Path: <agx@mittelerde.physik.uni-konstanz.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1371
+X-archive-position: 1372
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: clausen@melbourne.sgi.com
+X-original-sender: agx@gandalf.physik.uni-konstanz.de
 Precedence: bulk
 X-list: linux-mips
 
-Hi all,
+Hi,
+On Mon, Feb 10, 2003 at 02:45:49PM +1100, Andrew Clausen wrote:
+>  * I'll be cross-compiling (using the mips64-linux-gcc & friends that
+> are provided on ftp.linux-mips.org), which means some makefile hacking...
+There hopefully shouldn't be any trouble with that outside of e2fslib.
 
-I'm planning to try porting arcboot to ip27 (mips64).
+>  * the e2fs stuff... how is this being maintained?  It uses libc
+> headers a bit... can I kill them?  Or will this make it hard to update
+> to new upstream e2fsprogs releases?
+E2fslib will move out of arcboot with the next release and arcboot will
+link against the non pic version in the debian archive. I'd really like
+to keep e2fslib out of arcboot (at least for the debian version which is
+quiet different from the oss.sgi.com version). There should't be many
+libc header dependencies left then. If there are still any I'd be happy
+to kill them.
 
-I plan to do this by cross-compiling... this is actually the only
-option since there's no 64 bit userland yet.
-
-Some issues:
-
- * I'll be cross-compiling (using the mips64-linux-gcc & friends that
-are provided on ftp.linux-mips.org), which means some makefile hacking...
-
- * there's no mips64-linux glibc, which means no libc headers are
-available.  So I need to either cut&paste libc headers, or remove
-dependencies on them.  This affects lots of code.
-
- * the e2fs stuff... how is this being maintained?  It uses libc
-headers a bit... can I kill them?  Or will this make it hard to update
-to new upstream e2fsprogs releases?
-
-Anything else?
-
-Cheers,
-ANdrew
+> Anything else?
+Except for the above change I was working on a better command line
+handling among other things which I never got around to finish. Maybe
+this beats me to it.
+Regards,
+ -- Guido

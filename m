@@ -1,112 +1,99 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7G3qP210295
-	for linux-mips-outgoing; Wed, 15 Aug 2001 20:52:25 -0700
+	by oss.sgi.com (8.11.2/8.11.3) id f7G4GDm11112
+	for linux-mips-outgoing; Wed, 15 Aug 2001 21:16:13 -0700
 Received: from topsns.toshiba-tops.co.jp (topsns.toshiba-tops.co.jp [202.230.225.5])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7G3qLj10292
-	for <linux-mips@oss.sgi.com>; Wed, 15 Aug 2001 20:52:22 -0700
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7G4GAj11109
+	for <linux-mips@oss.sgi.com>; Wed, 15 Aug 2001 21:16:10 -0700
 Received: from no.name.available by topsns.toshiba-tops.co.jp
-          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 16 Aug 2001 03:52:21 UT
+          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 16 Aug 2001 04:16:10 UT
 Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
 	by topsms2.toshiba-tops.co.jp (Postfix) with ESMTP
-	id CC24954C0E; Thu, 16 Aug 2001 12:52:19 +0900 (JST)
+	id F341954C11; Thu, 16 Aug 2001 13:16:08 +0900 (JST)
 Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
-	id MAA69632; Thu, 16 Aug 2001 12:52:19 +0900 (JST)
-To: wgowcher@yahoo.com
-Cc: linux-mips@oss.sgi.com
-Subject: Re: Benchmark performance
+	id NAA69673; Thu, 16 Aug 2001 13:16:08 +0900 (JST)
+To: dan@debian.org
+Cc: carstenl@mips.com, linux-mips@oss.sgi.com
+Subject: Re: FP emulator patch
 From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
-In-Reply-To: <20010813173446.61234.qmail@web11901.mail.yahoo.com>
-References: <20010809215522.A1958@lucon.org>
-	<20010813173446.61234.qmail@web11901.mail.yahoo.com>
+In-Reply-To: <20010815110634.A19305@nevyn.them.org>
+References: <3B7A70B8.ED92FE4@mips.com>
+	<20010815110634.A19305@nevyn.them.org>
 X-Mailer: Mew version 1.94.2 on Emacs 20.7 / Mule 4.1 (AOI)
 X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
 X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
 Organization: TOSHIBA Personal Computer System Corporation
 Mime-Version: 1.0
 Content-Type: Multipart/Mixed;
- boundary="--Next_Part(Thu_Aug_16_12:56:02_2001_518)--"
+ boundary="--Next_Part(Thu_Aug_16_13:19:40_2001_179)--"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20010816125652N.nemoto@toshiba-tops.co.jp>
-Date: Thu, 16 Aug 2001 12:56:52 +0900
+Message-Id: <20010816132042T.nemoto@toshiba-tops.co.jp>
+Date: Thu, 16 Aug 2001 13:20:42 +0900
 X-Dispatcher: imput version 20000228(IM140)
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-----Next_Part(Thu_Aug_16_12:56:02_2001_518)--
+----Next_Part(Thu_Aug_16_13:19:40_2001_179)--
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 
->>>>> On Mon, 13 Aug 2001 10:34:46 -0700 (PDT), Wayne Gowcher <wgowcher@yahoo.com> said:
-wgowcher> a 23 % reduction in the Floating Point Index benchmark
+>>>>> On Wed, 15 Aug 2001 11:06:34 -0700, Daniel Jacobowitz <dan@debian.org> said:
+>> Index: linux/arch/mips/kernel/signal.c
+>
+>> @@ -353,12 +355,11 @@
+>>  	owned_fp = (current == last_task_used_math);
+>>  	err |= __put_user(owned_fp, &sc->sc_ownedfp);
+>>  
+>> -	if (current->used_math) {	/* fp is active.  */
+>> +	if (owned_fp) { /* fp is active.  */
+>>  		set_cp0_status(ST0_CU1);
+>>  		err |= save_fp_context(sc);
+>>  		last_task_used_math = NULL;
+>>  		regs->cp0_status &= ~ST0_CU1;
+>> -		current->used_math = 0;
+>>  	}
+>>  
+>>  	return err;
 
-Current CVS kernel uses FPU emulator unconditionally.  If one floating
-point intruction causes a 'Unimplemented' exception (denormalized
-result, etc.) following floating point instructions are also handle by
-FPU emulator (not only the instruction which raise the exception).
+dan> This is absolutely not right.  It's righter than the status quo.
+dan> If we don't own the FP, you don't save the FP.  Then we can use
+dan> FP in the signal handler, corrupting the process's original
+dan> floating point context.
 
-I do not know this is really desired behavior, but here is a patch to
-change this.  If Unimplemented exception had been occured during the
-benchmark, aplying this patch may result better performance.
+I also am trying to fix this problem.  How about my patch?
+
+restore_sigcontext() can be more optimized, but I think this is a
+smallest patch to fix the problem.
 
 ---
 Atsushi Nemoto
 
-----Next_Part(Thu_Aug_16_12:56:02_2001_518)--
+----Next_Part(Thu_Aug_16_13:19:40_2001_179)--
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Content-Disposition: attachment; filename="fpu_emu.patch"
+Content-Disposition: attachment; filename="signal.c.patch"
 
-diff -ur linux.sgi/arch/mips/kernel/traps.c linux/arch/mips/kernel/traps.c
---- linux.sgi/arch/mips/kernel/traps.c	Sun Aug  5 23:39:20 2001
-+++ linux/arch/mips/kernel/traps.c	Thu Aug 16 12:20:23 2001
-@@ -60,7 +60,7 @@
- extern asmlinkage void handle_mcheck(void);
- extern asmlinkage void handle_reserved(void);
+diff -ur linux.sgi/arch/mips/kernel/signal.c linux/arch/mips/kernel/signal.c
+--- linux.sgi/arch/mips/kernel/signal.c	Mon Jun 25 22:56:56 2001
++++ linux/arch/mips/kernel/signal.c	Thu Aug 16 13:09:28 2001
+@@ -350,11 +350,18 @@
+ 	err |= __put_user(regs->cp0_cause, &sc->sc_cause);
+ 	err |= __put_user(regs->cp0_badvaddr, &sc->sc_badvaddr);
  
--extern int fpu_emulator_cop1Handler(struct pt_regs *);
-+extern int fpu_emulator_cop1Handler(struct pt_regs *, int);
+-	owned_fp = (current == last_task_used_math);
++	/* restore_sigcontext must restore the fp context even if this
++	   process was not last_task_used_math. */
++	owned_fp = current->used_math;
+ 	err |= __put_user(owned_fp, &sc->sc_ownedfp);
  
- char watch_available = 0;
- 
-@@ -306,7 +306,8 @@
- 		save_fp(current);
- 	
- 		/* Run the emulator */
--		sig = fpu_emulator_cop1Handler(regs);
-+		/* Emulate only one insn if we have FPU. */
-+		sig = fpu_emulator_cop1Handler(regs, 1);
- 
- 		/* 
- 		 * We can't allow the emulated instruction to leave the
-@@ -605,7 +606,7 @@
- 			current->used_math = 1;
- 		}
- 	}
--	sig = fpu_emulator_cop1Handler(regs);
-+	sig = fpu_emulator_cop1Handler(regs, 0);
- 	last_task_used_math = current;
- 	if (sig)
- 		force_sig(sig, current);
-diff -ur linux.sgi/arch/mips/math-emu/cp1emu.c linux/arch/mips/math-emu/cp1emu.c
---- linux.sgi/arch/mips/math-emu/cp1emu.c	Sun Aug  5 23:39:27 2001
-+++ linux/arch/mips/math-emu/cp1emu.c	Thu Aug 16 12:21:07 2001
-@@ -1662,7 +1662,7 @@
-  * hit a non-fp instruction, or a backward branch.  This cuts down dramatically
-  * on the per instruction exception overhead.
-  */
--int fpu_emulator_cop1Handler(struct pt_regs *xcp)
-+int fpu_emulator_cop1Handler(struct pt_regs *xcp, int maxcount)
- {
- 	struct mips_fpu_soft_struct *ctx = &current->thread.fpu.soft;
- 	unsigned long oldepc, prevepc;
-@@ -1682,6 +1682,8 @@
- 			sig = cop1Emulate(xcp, ctx);
- 		else
- 			xcp->cp0_epc += 4;	/* skip nops */
-+		if (maxcount && --maxcount <= 0)
-+			break;
- 	} while (xcp->cp0_epc > prevepc && sig == 0);
- 
- 	/* SIGILL indicates a non-fpu instruction */
+ 	if (current->used_math) {	/* fp is active.  */
++#if 0
++		/* Do not set CU1 here.  If this process does not
++		   owned fp, save_fp_context causes lazy_fpu_switch
++		   (and fp-owner's context will saved). */
+ 		set_cp0_status(ST0_CU1);
++#endif
+ 		err |= save_fp_context(sc);
+ 		last_task_used_math = NULL;
+ 		regs->cp0_status &= ~ST0_CU1;
 
-----Next_Part(Thu_Aug_16_12:56:02_2001_518)----
+----Next_Part(Thu_Aug_16_13:19:40_2001_179)----

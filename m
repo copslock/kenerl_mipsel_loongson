@@ -1,86 +1,61 @@
-Received:  by oss.sgi.com id <S42305AbQEZQ51>;
-	Fri, 26 May 2000 09:57:27 -0700
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:18970 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S42252AbQEYThy>; Thu, 25 May 2000 12:37:54 -0700
-Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id NAA02804; Thu, 25 May 2000 13:42:04 -0700 (PDT)
+Received:  by oss.sgi.com id <S42308AbQEZQ53>;
+	Fri, 26 May 2000 09:57:29 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:44060 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42326AbQEZQU1>;
+	Fri, 26 May 2000 09:20:27 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id GAA00071; Fri, 26 May 2000 06:37:34 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id NAA54441; Thu, 25 May 2000 13:36:53 -0700 (PDT)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id NAA87135
+	id GAA01606
 	for linux-list;
-	Thu, 25 May 2000 13:22:48 -0700 (PDT)
+	Fri, 26 May 2000 06:34:08 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from deliverator.sgi.com (deliverator.sgi.com [150.166.91.37])
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id NAA58268
+	via ESMTP id GAA96400
 	for <linux@engr.sgi.com>;
-	Thu, 25 May 2000 13:22:47 -0700 (PDT)
-	mail_from (mailinglist@ichilton.co.uk)
-Received: from mta03-svc.ntlworld.com (mta03-svc.ntlworld.com [62.253.162.43]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id NAA22810
-	for <linux@engr.sgi.com>; Thu, 25 May 2000 13:17:38 -0700 (PDT)
-	mail_from (mailinglist@ichilton.co.uk)
-Received: from icserver.ichilton.co.uk ([62.252.236.142])
-          by mta03-svc.ntlworld.com
-          (InterMail vM.4.01.02.27 201-229-119-110) with ESMTP
-          id <20000525201906.TQZN290.mta03-svc.ntlworld.com@icserver.ichilton.co.uk>;
-          Thu, 25 May 2000 21:19:06 +0100
-Received: from ian (Ian [192.168.0.8])
-	by icserver.ichilton.co.uk (8.10.1/8.10.1) with SMTP id e4PKIDU12488;
-	Thu, 25 May 2000 21:18:13 +0100
-From:   "Ian Chilton" <mailinglist@ichilton.co.uk>
-To:     <linux@cthulhu.engr.sgi.com>, <linux-mips@fnet.fr>
-Subject: Linux on SGI Indy ?
-Date:   Thu, 25 May 2000 21:18:14 +0100
-Message-ID: <NAENLMKGGBDKLPONCDDOIELOCKAA.mailinglist@ichilton.co.uk>
+	Fri, 26 May 2000 06:34:06 -0700 (PDT)
+	mail_from (jimix@watson.ibm.com)
+Received: from igw8.watson.ibm.com (igw8.watson.ibm.com [198.81.209.20]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id GAA05418
+	for <linux@engr.sgi.com>; Fri, 26 May 2000 06:34:05 -0700 (PDT)
+	mail_from (jimix@watson.ibm.com)
+Received: from sp1n189at0.watson.ibm.com (sp1n189at0.watson.ibm.com [9.2.104.62])
+	by igw8.watson.ibm.com (8.9.3/8.9.3/05-14-1999) with ESMTP id JAA17656
+	for <linux@engr.sgi.com>; Fri, 26 May 2000 09:34:01 -0400
+Received: from kitch0.watson.ibm.com (kitch0.watson.ibm.com [9.2.229.13]) by sp1n189at0.watson.ibm.com (8.9.3/Feb-20-98) with ESMTP id JAA18768 for <linux@engr.sgi.com>; Fri, 26 May 2000 09:34:00 -0400
+Received: (from jimix@localhost)
+	by kitch0.watson.ibm.com (AIX4.3/8.9.3/8.9.3/01-10-2000) id JAA30016;
+	Fri, 26 May 2000 09:34:00 -0400
+From:   jimix@pobox.com (Jimi X)
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
-Importance: Normal
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4132.2800
+Message-ID: <14638.32072.31754.98294@kitch0.watson.ibm.com>
+Date:   Fri, 26 May 2000 09:34:00 -0400 (EDT)
+To:     linux@cthulhu.engr.sgi.com
+Subject: MIPS64 ABI
+X-Mailer: VM 6.75 under 20.4 "Emerald" XEmacs  Lucid
+Reply-To: jimix@watson.ibm.com
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-Hello,
 
-I have just purchased a 2nd hand SGI Indy (100Mhz MIPS with 48MB RAM).
+I used to get the MIPS 64-bit ABI from
+  http://www.mipsabi.org/Tech/Specifications.html
 
-This is the first time I have seen/used IRIX, but I have been running Linux
-for years.
+But sadly there seems to be no www.mipsabi.org anymore.
 
-My questions are:
+Even more sadly I removed my copy knowing I could get it again easily
+(afterall the net is really just one really big hard drive :])
 
-* Can I run Linux on this machine?
-* If so, where can I download it?
-* Is anyone running Linux on an Indy, if so, i'd appreciate your comments
-etc..
+Anyone know where I can get it now?
 
-
-Thanks!
-
-
-Bye for Now,
-
-Ian
-
-
-                                \|||/
-                                (o o)
- /---------------------------ooO-(_)-Ooo---------------------------\
- |  Ian Chilton     (IRC Nick - GadgetMan)     ian@ichilton.co.uk  |
- |-----------------------------------------------------------------|
- |  Backup E-Mail -->  ian@ichilton.dhis.org      ICQ #: 16007717  |
- |  Mobile Phone (MAX 150 Chars!) -->  ianchilton@sms.genie.co.uk  |
- |-----------------------------------------------------------------|
- |  http://www.ianchilton.co.uk  --> Main Page                     |
- |  http://www.ichilton.co.uk    --> Own Web Server (When Online)  |
- |-----------------------------------------------------------------|
- |  "Unix is user friendly - it's just picky about it's friends."  |
- \-----------------------------------------------------------------/
+-Jimi X

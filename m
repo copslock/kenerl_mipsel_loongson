@@ -1,56 +1,66 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA62242 for <linux-archive@neteng.engr.sgi.com>; Tue, 19 Jan 1999 15:27:15 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id RAA84922 for <linux-archive@neteng.engr.sgi.com>; Tue, 19 Jan 1999 17:32:20 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id PAA97991
+	id RAA71505
 	for linux-list;
-	Tue, 19 Jan 1999 15:25:04 -0800 (PST)
+	Tue, 19 Jan 1999 17:31:00 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from sgidal.dallas.sgi.com (sgidal.dallas.sgi.com [169.238.80.130])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id PAA97537
+	via SMTP id RAA48743
 	for <linux@cthulhu.engr.sgi.com>;
-	Tue, 19 Jan 1999 15:25:02 -0800 (PST)
-	mail_from (dmerchan@hiwaay.net)
-Received: from mail.HiWAAY.net (fly.HiWAAY.net [208.147.154.56]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id PAB05853
-	for <linux@cthulhu.engr.sgi.com>; Tue, 19 Jan 1999 15:24:56 -0800 (PST)
-	mail_from (dmerchan@hiwaay.net)
-Received: from hiwaay.net (tnt2-140.HiWAAY.net [208.147.148.140])
-	by mail.HiWAAY.net (8.9.1a/8.9.0) with ESMTP id RAA25518
-	for <linux@cthulhu.engr.sgi.com>; Tue, 19 Jan 1999 17:24:30 -0600 (CST)
-Message-ID: <36A51517.A24C2BEB@hiwaay.net>
-Date: Tue, 19 Jan 1999 17:28:23 -0600
-From: dmanddmer <dmerchan@hiwaay.net>
-X-Mailer: Mozilla 4.04 [en] (WinNT; I)
+	Tue, 19 Jan 1999 17:30:58 -0800 (PST)
+	mail_from (chad@sgi.com)
+Received: from roctane.dallas.sgi.com by sgidal.dallas.sgi.com via ESMTP (950413.SGI.8.6.12/911001.SGI)
+	 id TAA01399; Tue, 19 Jan 1999 19:29:17 -0600
+Received: from localhost (localhost [127.0.0.1]) by roctane.dallas.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via SMTP id RAA07069; Tue, 19 Jan 1999 17:29:16 -0800 (PST)
+Date: Tue, 19 Jan 1999 19:29:16 -0600 (CST)
+From: Chad Carlin <chad@sgi.com>
+X-Sender: chad@roctane.dallas.sgi.com
+To: dmanddmer <dmerchan@hiwaay.net>
+cc: linux@cthulhu.engr.sgi.com
+Subject: Re: [Fwd: linus.linux.sgi.com]
+In-Reply-To: <36A51517.A24C2BEB@hiwaay.net>
+Message-ID: <Pine.SGI.3.94.990119192805.7049B-110000@roctane.dallas.sgi.com>
 MIME-Version: 1.0
-To: linux@cthulhu.engr.sgi.com
-Subject: [Fwd: linus.linux.sgi.com]
-Content-Type: multipart/mixed; boundary="------------0BD0375297667C7067B8BD23"
+Content-Type: MULTIPART/MIXED; BOUNDARY=------------0BD0375297667C7067B8BD23
+Content-ID: <Pine.SGI.3.94.990119192805.7049C@roctane.dallas.sgi.com>
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-This is a multi-part message in MIME format.
---------------0BD0375297667C7067B8BD23
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+  Send mail to mime@docserver.cac.washington.edu for more info.
 
-Btw, I heard a rumor that the memory in the VPC is custom or unique
-memory.  Is this true?  How much of the VPC, besides the obvious, is not
-industry standard?  If SGI is attempting solely to require customers to
-be able to buy any upgrades ONLY from SGI, then SGI has shot itself in
-the foot again.  It did not work for Apple, it didn't work for Unisys,
-it didn't work for Intergraph.  In short, it hasn't worked for anyone.
-
-David M.
 --------------0BD0375297667C7067B8BD23
-Content-Type: message/rfc822
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Content-Type: TEXT/PLAIN; CHARSET=us-ascii
+Content-ID: <Pine.SGI.3.94.990119192805.7049D@roctane.dallas.sgi.com>
+
+The current mainstream memory offering is 70n/s and we are at 50n/s.  The memory is not proprietary - any manufacturer could buy it if their system could drive it fast enough! 
+
+            Chad Carlin                 
+            Silicon Graphics Inc.	  	
+            chad@sgi.com 
+	    http://reality.sgi.com/chad
+
+ 
+
+On Tue, 19 Jan 1999, dmanddmer wrote:
+
+->Btw, I heard a rumor that the memory in the VPC is custom or unique
+->memory.  Is this true?  How much of the VPC, besides the obvious, is not
+->industry standard?  If SGI is attempting solely to require customers to
+->be able to buy any upgrades ONLY from SGI, then SGI has shot itself in
+->the foot again.  It did not work for Apple, it didn't work for Unisys,
+->it didn't work for Intergraph.  In short, it hasn't worked for anyone.
+->
+->David M.
+
+--------------0BD0375297667C7067B8BD23
+Content-Type: MESSAGE/RFC822
+Content-ID: <Pine.SGI.3.94.990119192805.7049E@roctane.dallas.sgi.com>
+Content-Description: 
 
 Received: from sgi.com (SGI.COM [192.48.153.1])
 	by mail.HiWAAY.net (8.9.1a/8.9.0) with ESMTP id JAA28325

@@ -1,38 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Feb 2003 20:55:33 +0000 (GMT)
-Received: from p508B62DE.dip.t-dialin.net ([IPv6:::ffff:80.139.98.222]:27360
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8224939AbTBVUzc>; Sat, 22 Feb 2003 20:55:32 +0000
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id h1MKtNU18769;
-	Sat, 22 Feb 2003 21:55:23 +0100
-Date: Sat, 22 Feb 2003 21:55:23 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Prasad V Nuli <pnuli@attbi.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: Any Linux port for NEC Image RISC Station
-Message-ID: <20030222215523.A18743@linux-mips.org>
-References: <ILEIIKPOCEKMENCAPIAKGENLCAAA.pnuli@attbi.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <ILEIIKPOCEKMENCAPIAKGENLCAAA.pnuli@attbi.com>; from pnuli@attbi.com on Sat, Feb 22, 2003 at 02:45:21PM -0500
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 23 Feb 2003 09:20:11 +0000 (GMT)
+Received: from mail2.sonytel.be ([IPv6:::ffff:195.0.45.172]:49044 "EHLO
+	mail.sonytel.be") by linux-mips.org with ESMTP id <S8224939AbTBWJUK>;
+	Sun, 23 Feb 2003 09:20:10 +0000
+Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.26])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id KAA03622;
+	Sun, 23 Feb 2003 10:19:17 +0100 (MET)
+Date: Sun, 23 Feb 2003 10:19:23 +0100 (MET)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: Jeff Baitis <baitisj@evolution.com>
+cc: Dan Malek <dan@embeddededge.com>, ppopov@mvista.com,
+	Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: Re: fixup_bigphys_addr and DBAu1500 dev board
+In-Reply-To: <20030221195031.I20129@luca.pas.lab>
+Message-ID: <Pine.GSO.4.21.0302231016050.28469-100000@vervain.sonytel.be>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <Geert.Uytterhoeven@sonycom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1525
+X-archive-position: 1526
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Feb 22, 2003 at 02:45:21PM -0500, Prasad V Nuli wrote:
+On Fri, 21 Feb 2003, Jeff Baitis wrote:
+> -#define outw_p(val,port)                                               \
+> -do {                                                                   \
+> -       *(volatile u16 *)(mips_io_port_base + __swizzle_addr_w(port)) = \
+> -               __ioswab16(val);                                        \
+> -       SLOW_DOWN_IO;                                                   \
+> -} while(0)
+> +/* baitisj */
+> +static inline u16 outw_p(u16 val, unsigned long port)
+> +{
+> +    register u16 retval;
+> +    do {
+> +        retval = *(volatile u16 *)(mips_io_port_base + __swizzle_addr_w(port)) =
+> +            __ioswab16(val);
+> +        SLOW_DOWN_IO;
+> +    } while(0);
+> +    return retval;
+> +}
 
->  Is there any Linux port available for NEC Image RISC Station MIPS machine ?
+You don't need the `do { ... } while (0)' construct in an inline function.
 
-Unmaintained since several years.  You're welcome to hack on it :-)
+Gr{oetje,eeting}s,
 
-  Ralf
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

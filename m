@@ -1,54 +1,49 @@
-Received:  by oss.sgi.com id <S553891AbRAZHxn>;
-	Thu, 25 Jan 2001 23:53:43 -0800
-Received: from mx.mips.com ([206.31.31.226]:48610 "EHLO mx.mips.com")
-	by oss.sgi.com with ESMTP id <S553842AbRAZHxh>;
-	Thu, 25 Jan 2001 23:53:37 -0800
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id XAA03904;
-	Thu, 25 Jan 2001 23:53:33 -0800 (PST)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id XAA03884;
-	Thu, 25 Jan 2001 23:53:31 -0800 (PST)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id IAA00535;
-	Fri, 26 Jan 2001 08:53:25 +0100 (MET)
-Message-ID: <3A712CF5.D783B18C@mips.com>
-Date:   Fri, 26 Jan 2001 08:53:25 +0100
-From:   Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
+Received:  by oss.sgi.com id <S553914AbRAZH4d>;
+	Thu, 25 Jan 2001 23:56:33 -0800
+Received: from [194.90.113.98] ([194.90.113.98]:7442 "EHLO
+        yes.home.krftech.com") by oss.sgi.com with ESMTP id <S553854AbRAZH4O>;
+	Thu, 25 Jan 2001 23:56:14 -0800
+Received: from jungo.com (kobie.home.krftech.com [199.204.71.69])
+	by yes.home.krftech.com (8.8.7/8.8.7) with ESMTP id JAA32045
+	for <linux-mips@oss.sgi.com>; Fri, 26 Jan 2001 09:55:20 +0200
+Message-ID: <3A712D90.3CC9EBAF@jungo.com>
+Date:   Fri, 26 Jan 2001 09:56:00 +0200
+From:   Michael Shmulevich <michaels@jungo.com>
+Organization: Jungo LTD
+X-Mailer: Mozilla 4.76 [en] (X11; U; Linux 2.2.17-21mdk i686)
 X-Accept-Language: en
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@oss.sgi.com>
-CC:     Pete Popov <ppopov@mvista.com>,
-        "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: floating point on Nevada cpu
-References: <3A6F8F66.6258801@mvista.com> <20010125141231.A2311@bacchus.dhis.org>
-Content-Type: text/plain; charset=iso-8859-15
+CC:     "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Re: MIPS/linux compatible PCI network cards
+References: <3A70A356.F3CA71F1@jungo.com> <3A70A718.F0628BBB@mvista.com>
+Content-Type: text/plain; charset=koi8-r
 Content-Transfer-Encoding: 7bit
+To:     unlisted-recipients:; (no To-header on input)
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-I have been run on a QED RM5261 for quite some time now.
-Notice that even it got a FPU, you need to enable the FP emulator to be
-fully IEEE compliant.
+Pete Popov wrote:
+> 
+> 
+> Another one is the RTL8139.  It's quite cheap (I think less than $20).
+> 
+> Pete
 
-/Carsten
+Surprisingly enough, Realtek's driver is quite x86-oriented. It uses
+some ugly outb() functtions without any ioremap()'ping.
 
-Ralf Baechle wrote:
+We tried to modify it to work for MIPS, but failed. There are some
+hard-to-detect situations, when driver just cannot talk to the hardware,
+probably due to transmit/receive buffer synchronization. But after some
+period the connection is restored (reset?). 
 
-> On Wed, Jan 24, 2001 at 06:28:54PM -0800, Pete Popov wrote:
->
-> > Has anyone else used floating point with 52xx processors?
->
-> Cobalt Qube since '97.  It's working :-)
->
->   Ralf
-
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+Michael Shmulevich
+______________________________________
+Software Developer
+Jungo - R&D 
+email: michaels@jungo.com
+web: http://www.jungo.com
+Phone: 1-877-514-0537(USA)  +972-9-8859365(Worldwide) ext. 233
+Fax:   1-877-514-0538(USA)  +972-9-8859366(Worldwide)

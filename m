@@ -1,60 +1,58 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id VAA28203 for <linux-archive@neteng.engr.sgi.com>; Sat, 1 Aug 1998 21:40:28 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id WAA28823 for <linux-archive@neteng.engr.sgi.com>; Sat, 1 Aug 1998 22:18:00 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id VAA95695
+	id WAA72189
 	for linux-list;
-	Sat, 1 Aug 1998 21:39:51 -0700 (PDT)
+	Sat, 1 Aug 1998 22:17:26 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id VAA13966
-	for <linux@cthulhu.engr.sgi.com>;
-	Sat, 1 Aug 1998 21:39:49 -0700 (PDT)
-	mail_from (adevries@engsoc.carleton.ca)
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) 
+	via ESMTP id WAA14259
+	for <linux@engr.sgi.com>;
+	Sat, 1 Aug 1998 22:17:23 -0700 (PDT)
+	mail_from (mike911@clark.net)
+Received: from loas.clark.net (loas.clark.net [168.143.0.13]) 
 	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id VAA26793
-	for <linux@cthulhu.engr.sgi.com>; Sat, 1 Aug 1998 21:39:48 -0700 (PDT)
-	mail_from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id AAA18477;
-	Sun, 2 Aug 1998 00:39:37 -0400
-X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
-Date: Sun, 2 Aug 1998 00:39:37 -0400 (EDT)
-From: Alex deVries <adevries@engsoc.carleton.ca>
-To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-cc: linux@cthulhu.engr.sgi.com
-Subject: Re: FYI newport abscon
-In-Reply-To: <19980802022907.05519@alpha.franken.de>
-Message-ID: <Pine.LNX.3.95.980802003721.4859A-100000@lager.engsoc.carleton.ca>
+	via ESMTP id WAA02850
+	for <linux@engr.sgi.com>; Sat, 1 Aug 1998 22:17:22 -0700 (PDT)
+	mail_from (mike911@clark.net)
+Received: from shell.clark.net (mike911@clark.net [168.143.0.8])
+	by loas.clark.net (8.8.8/8.8.8) with ESMTP id BAA27983
+	for <linux@engr.sgi.com>; Sun, 2 Aug 1998 01:18:35 -0400 (EDT)
+Received: from localhost (mike911@localhost) by shell.clark.net (8.8.8/8.8.8) with SMTP id BAA13922 for <linux@engr.sgi.com>; Sun, 2 Aug 1998 01:17:21 -0400 (EDT)
+X-Authentication-Warning: shell.clark.net: mike911 owned process doing -bs
+Date: Sun, 2 Aug 1998 01:17:20 -0400 (EDT)
+From: Justin Maurer <mike911@clark.net>
+Reply-To: justin@openprojects.net
+To: linux@cthulhu.engr.sgi.com
+Subject: Considering working on Indigo R3000
+Message-ID: <Pine.GSO.4.00.9808020109370.7597-100000@shell.clark.net>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
 
-On Sun, 2 Aug 1998, Thomas Bogendoerfer wrote:
-> yesterday I managed to bring up my Indy with the new console code riped
-> out from 2.1.109. Today I've implemented new scrolling stuff for newport
-> abscon, which will give us a really fast console. 
+I have someone willing to loan me one for a year - and let me keep it if
+i get some real work(tm) done. Specifically, it is an indigo r3000 with an
+LG1 graphics card, and irix on cd (and ido) with a bootable cd rom drive.
+(yes, i know it's 32-bit =(
 
-This is very, very cool, and much needed to go on with 2.1.x kernel
-development.  
+i'd like to take him up on his offer, and am curious as to what work would
+need be done. i know hardhat linux doesn't support it, but it looks as if
+i'm going into kernel-land and the likes before i even get to
+dist-specific work.
 
-> My simple test program, 
-> which does 1000 printf("\n") in a loop, gives me about 62000 lines/second
-> on a 160x64 sized console. I also tried that program on my Dual P-233
-> with a Matrox Millenium and got about 260000 lines/s on a 80x25 sized
-> console (which is less than 1/5 the size of the Indy console).
-> 
+my big question is this: i'd really like to know what i'd need to do, just
+so i don't jump TOO far over my head ;) i'd assume some major driver work.
 
-Well, this is very cool.  What kind of use is this?  aalib... man, that'll
-be neat.  To hell with X when you have aalib.
+how hard would it be to boot a kernel and get at least some sort of
+development enviornment going?
 
-Huge congratulations on the abscon stuff, Thomas.  
-
-- Alex
+thanks,
+justin
+http://slashdot.org/

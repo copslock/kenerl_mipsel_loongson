@@ -1,35 +1,38 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f3NK4jh08872
-	for linux-mips-outgoing; Mon, 23 Apr 2001 13:04:45 -0700
-Received: from dea.waldorf-gmbh.de (IDENT:root@localhost [127.0.0.1])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3NK4gM08868
-	for <linux-mips@oss.sgi.com>; Mon, 23 Apr 2001 13:04:43 -0700
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f3NK4Pn05866;
-	Mon, 23 Apr 2001 17:04:25 -0300
-Date: Mon, 23 Apr 2001 17:04:25 -0300
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Fabrice Bellard <bellard@email.enst.fr>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: gdb single step ?
-Message-ID: <20010423170425.F4623@bacchus.dhis.org>
-References: <3AE44D0A.9080003@jungo.com> <Pine.GSO.4.02.10104231829020.19846-100000@chimene.enst.fr>
-Mime-Version: 1.0
+	by oss.sgi.com (8.11.3/8.11.3) id f3NLIpu12579
+	for linux-mips-outgoing; Mon, 23 Apr 2001 14:18:51 -0700
+Received: from cvsftp.cotw.com (cvsftp.cotw.com [208.242.241.39])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3NLIlM12566;
+	Mon, 23 Apr 2001 14:18:47 -0700
+Received: from cotw.com (ptecdev3.inter.net [192.168.10.5])
+	by cvsftp.cotw.com (8.9.3/8.9.3) with ESMTP id QAA03796;
+	Mon, 23 Apr 2001 16:18:46 -0500
+Message-ID: <3AE4B902.C81AB2B9@cotw.com>
+Date: Mon, 23 Apr 2001 16:21:38 -0700
+From: Scott A McConnell <samcconn@cotw.com>
+X-Mailer: Mozilla 4.76 [en] (X11; U; Linux 2.2.16-3 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: Ralf Baechle <ralf@oss.sgi.com>
+CC: linux-mips@oss.sgi.com
+Subject: Re: IRQ questions
+References: <3AE081E3.434E9126@cotw.com> <20010420190017.B7282@bacchus.dhis.org>
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.GSO.4.02.10104231829020.19846-100000@chimene.enst.fr>; from bellard@email.enst.fr on Mon, Apr 23, 2001 at 06:31:20PM +0200
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Apr 23, 2001 at 06:31:20PM +0200, Fabrice Bellard wrote:
+Ralf Baechle wrote:
 
-> Did someone make a patch so that gdb can do single step on mips-linux ? If
-> not, do you prefer a patch to gdb or a patch in the kernel to support the
-> PTRACE_SINGLESTEP command ?
+> > I have a 2.4.3 kernel booting. I copied the old  arch/mips/kernel/irq.c
+> > to my target directory and changed
+>
+> One valid solution ...  Still.  We want to eleminate all this code
+> duplication for no good reason.
 
-Last I used GDB single stepping has been working fine for me, so I wonder
-what is broken?
+Would Rotten_IRQ have done the same thing?
 
-  Ralf
+Could you name an arch in the cvs distribution that uses the new style IRQ's
+
+Thanks,
+Scott

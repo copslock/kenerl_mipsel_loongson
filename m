@@ -1,36 +1,49 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fANKgVM11465
-	for linux-mips-outgoing; Fri, 23 Nov 2001 12:42:31 -0800
-Received: from snfc21.pbi.net (mta5.snfc21.pbi.net [206.13.28.241])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fANKgTo11454
-	for <linux-mips@oss.sgi.com>; Fri, 23 Nov 2001 12:42:29 -0800
-Received: from adsl.pacbell.net ([63.194.214.47])
- by mta5.snfc21.pbi.net (iPlanet Messaging Server 5.1 (built May  7 2001))
- with ESMTP id <0GN9000B9QQSG7@mta5.snfc21.pbi.net> for linux-mips@oss.sgi.com;
- Fri, 23 Nov 2001 11:42:28 -0800 (PST)
-Date: Fri, 23 Nov 2001 11:41:17 -0800
-From: Pete Popov <ppopov@pacbell.net>
-Subject: Re: emebedded ramdisk vs initrd
-In-reply-to: <20011123142210.A32765@galadriel.physik.uni-konstanz.de>
-To: Guido Guenther <agx@sigxcpu.org>
-Cc: linux-mips@oss.sgi.com
-Message-id: <1006544477.1578.5.camel@adsl.pacbell.net>
-MIME-version: 1.0
-X-Mailer: Evolution/0.16.100+cvs.2001.11.01.03.27 (Preview Release)
-Content-type: text/plain
-Content-transfer-encoding: 7bit
-References: <20011123135518.A12210@gandalf.physik.uni-konstanz.de>
- <20011123142210.A32765@galadriel.physik.uni-konstanz.de>
+	by oss.sgi.com (8.11.2/8.11.3) id fAO1RSB26972
+	for linux-mips-outgoing; Fri, 23 Nov 2001 17:27:28 -0800
+Received: from holomorphy (mail@holomorphy.com [216.36.33.161])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAO1RPo26968
+	for <linux-mips@oss.sgi.com>; Fri, 23 Nov 2001 17:27:25 -0800
+Received: from wli by holomorphy with local (Exim 3.31 #1 (Debian))
+	id 167Qf0-0003BM-00
+	for <linux-mips@oss.sgi.com>; Fri, 23 Nov 2001 16:27:10 -0800
+Date: Fri, 23 Nov 2001 16:27:10 -0800
+From: William Lee Irwin III <wli@holomorphy.com>
+To: linux-mips@oss.sgi.com
+Subject: advice on dz.c
+Message-ID: <20011123162710.D1048@holomorphy.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Description: brief message
+Content-Disposition: inline
+User-Agent: Mutt/1.3.17i
+Organization: The Domain of Holomorphy
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, 2001-11-23 at 05:22, Guido Guenther wrote:
-> On Fri, Nov 23, 2001 at 01:55:18PM +0100, Guido Guenther wrote:
-> > Trying to link in arch/mips/ramdisk/ramdisk.o whenever
-> > CONFIG_BLK_DEV_INITRD is defined is a bad idea, since there are other
-> ...and therefore makes the compilation fail, I should add.
+startup() in the 2.4.14 dz.c appears to either not terminate or to
+bring down the kernel on a DecStation 5000/200. The 2.4.5 dz.c when
+put it in its place appears to work properly, modulo some strangeness
+in terminal emulation at runtime.
 
-You need a ramdisk.gz in arch/mips/ramdisk. It shouldn't fail then. I
-think you're right about the CONFIG_EMBEDDED_RAMDISK though.
+Unfortunately, attempts to isolate what difference creates the problem
+failed to reveal the true cause of this. The kernel appears to die
+immediately after restore_flags(). This appears unusual to me as the
+changes are largely cosmetic.
 
-Pete
+I also tried extending the extent of the code over which interrupts
+are disabled, to no avail. After extending it to what apparently was
+the entire extent of the driver's ->open code the kernel died somewhere
+between enabling interrupts again and the printk immediately after
+the return to tty_open(). It did not appear that the driver was
+re-entered at this point, as printk's for the other entry points
+failed to trigger.
+
+
+I am interested in suggestions as to what code changes I should make
+in order to bring this driver into a more robust state so that I myself
+can repair the code for use on one of my own personal machines.
+
+
+Thanks,
+Bill

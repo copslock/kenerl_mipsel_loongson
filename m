@@ -1,45 +1,88 @@
-Received:  by oss.sgi.com id <S554120AbRAZVUh>;
-	Fri, 26 Jan 2001 13:20:37 -0800
-Received: from sgi.SGI.COM ([192.48.153.1]:10364 "EHLO sgi.com")
-	by oss.sgi.com with ESMTP id <S554116AbRAZVU2>;
-	Fri, 26 Jan 2001 13:20:28 -0800
-Received: from dhcp-163-154-5-240.engr.sgi.com ([163.154.5.240]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id NAA03796
-	for <linux-mips@oss.sgi.com>; Fri, 26 Jan 2001 13:20:27 -0800 (PST)
-	mail_from (ralf@oss.sgi.com)
-Received: (ralf@lappi.waldorf-gmbh.de) by bacchus.dhis.org
-	id <S869667AbRAZVQ7>; Fri, 26 Jan 2001 13:16:59 -0800
-Date: 	Fri, 26 Jan 2001 13:16:59 -0800
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Joe deBlaquiere <jadb@redhat.com>
-Cc:     "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-        Florian Lohoff <flo@rfc822.org>, linux-mips@oss.sgi.com
-Subject: Re: [FIX] sysmips(MIPS_ATMIC_SET, ...) ret_from_sys_call vs. o32_ret_from_sys_call
-Message-ID: <20010126131659.I869@bacchus.dhis.org>
-References: <Pine.GSO.3.96.1010126111156.8903B-100000@delta.ds2.pg.gda.pl> <3A719ABD.5030206@redhat.com>
-Mime-Version: 1.0
+Received:  by oss.sgi.com id <S554126AbRA0Ab3>;
+	Fri, 26 Jan 2001 16:31:29 -0800
+Received: from gateway-1237.mvista.com ([12.44.186.158]:12798 "EHLO
+        hermes.mvista.com") by oss.sgi.com with ESMTP id <S554123AbRA0AbJ>;
+	Fri, 26 Jan 2001 16:31:09 -0800
+Received: from mvista.com (IDENT:ppopov@zeus.mvista.com [10.0.0.112])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f0R0RsI09876;
+	Fri, 26 Jan 2001 16:27:54 -0800
+Message-ID: <3A7216DC.98EF9C1C@mvista.com>
+Date:   Fri, 26 Jan 2001 16:31:24 -0800
+From:   Pete Popov <ppopov@mvista.com>
+Organization: Monta Vista Software
+X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.17 i586)
+X-Accept-Language: bg, en
+MIME-Version: 1.0
+To:     Mike McDonald <mikemac@mikemac.com>
+CC:     linux-mips@oss.sgi.com
+Subject: Re: Cross compiling RPMs
+References: <200101262111.NAA13006@saturn.mikemac.com>
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <3A719ABD.5030206@redhat.com>; from jadb@redhat.com on Fri, Jan 26, 2001 at 09:41:49AM -0600
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Fri, Jan 26, 2001 at 09:41:49AM -0600, Joe deBlaquiere wrote:
+Mike,
 
-> 		sys_munlock(p,sizeof(*p));
-
+> >The "noarch" means the installed target is arch-independent.  The
+> >standard setup in mvista CDK is to let target boot from NFS root fs,
+> >where NFS host can be linux/i386, Linux/ppc and Sun/Sparc (perhaps
+> >Win/i386 as well, I am not sure).  Those packages are meant to be
+> >installed to all those hosts, and therefore "noarch" :-0.
 > 
-> comments anyone?
+>  Hmm, I would have thought they should be designated for the type of
+> system they were instead to run on. The fast you're installing them
+> into an NFS root on some other machine shouldn't change that. Can't
+> any ole rpm be forced to install on some random NFS server? Then by
+> your reasoning, all rpms would be noarch, wouldn't they?
+> 
+> >Native compiling is easy.  Cross-compiling is cool. :-)
+> >
+> >Well, not exactly.  When you are dealing with head-less, disk-less
+> >memory-scarce embedded devices with ad hoc run-time environments,
+> >cross-compiling is your only choice.
+> >
+> >Jun
+> 
+>   Precisely! In our case, we get drops from various contractors who
+> are doing developement/porting to a wide variety of platforms. (So far
+> we have i386, mipsel, arm, and sh3. No alpha or sparc yet.) We'll get
+> multiple drops from the contractors over time. We need to be able to
+> 1) rebuild the binaries from the supplied sources (some vendors have
+> delivered binaries that did NOT come from the sources they claimed!),
+> 2) build a test suite for that drop and 3) build an initial ramdisk,
+> bootable CD, or NFS root dir to test the drop. Building the test
+> environment will include some subset (usually a real small subset) of
+> the whole drop but we still need to be able to rebuild everything.
+> Most of these systems we're dealing with have no native compiling
+> capability, so cross compiling is the only choice.
 
-Mlock(2) doesn't nest.  So if the page was mlocked before, you just unlocked
-it.
+Here's the recipe for rebuilding all packages from our (MontaVista)
+SRPMs:
 
-  Ralf
+from ftp.mvista.com:
+
+* download
+/pub/CDK/1.2/Latest/MIPS/common/hhl-rpmconfig-0.16-1.noarch.rpm
+
+Install that package. It will go in /opt/hardhat/xxxx
+
+Read carefully /opt/hardhat/config/rpm/README.  That README has all the
+info you need to:
+
+* setup your macros files
+* download all the tools and SRPMS from the ftp site
+* rebuild all of the packages we support, including glibc (glibc is the
+only one you have to rebuild as root user)
+
+You can rebuild any package for any of the architectures we support by
+doing something like this:
+
+rpm -ba --target=mips_fp_le-linux hhl-glibc.spec
+
+You should be able to setup the environment and start rebuilding
+packages within a couple of hours. 
+
+Pete

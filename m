@@ -1,30 +1,38 @@
-Received:  by oss.sgi.com id <S553728AbRALAUX>;
-	Thu, 11 Jan 2001 16:20:23 -0800
-Received: from adsl-64-163-211-122.dsl.snfc21.pacbell.net ([64.163.211.122]:52749
-        "EHLO guardian.agile.tv") by oss.sgi.com with ESMTP
-	id <S553711AbRALAUO>; Thu, 11 Jan 2001 16:20:14 -0800
-Received: from guardian.agile.tv (IDENT:ed@localhost.agile.tv [127.0.0.1])
-	by guardian.agile.tv (8.9.3/8.8.7) with ESMTP id RAA25914
-	for <linux-mips@oss.sgi.com>; Thu, 11 Jan 2001 17:19:45 -0800
-Message-Id: <200101120119.RAA25914@guardian.agile.tv>
-To:     linux-mips@oss.sgi.com
-Subject: Status of Linux 2.4 on Cobalt
-X-Organization: Left Wing Computing
-X-Face: "LX60V1[A=EN[jjZKY=&,"HB8ahM8?VoL;=Y8oj4%JV\F"4sfgV*;8GgAk!3]}5OmF$/Njv
- jvRHqNwtZa7yO^g]9+<)e)'EL0?oPqczWF/"+d:XldxB"aLI.D_\|^e4F<W.6zm-3+G4E@npnf,MoY
- `5T8|J+Pxw27hjrXC2T!nd]47"<_S&H(g1f+P-1NEIlz~,*Z<j-N8~abo,0R-GCx%jmf60\7?zjOqq
- $kE2B]q:U*u+=)~<0
-Date:   Thu, 11 Jan 2001 17:19:45 -0800
-From:   Ed Gould <ed@agile.tv>
+Received:  by oss.sgi.com id <S553734AbRALApo>;
+	Thu, 11 Jan 2001 16:45:44 -0800
+Received: from web1.lanscape.net ([64.240.156.194]:51723 "EHLO
+        web1.lanscape.net") by oss.sgi.com with ESMTP id <S553717AbRALApT>;
+	Thu, 11 Jan 2001 16:45:19 -0800
+Received: from fisch.cyrius.com (IDENT:root@web1.lanscape.net [64.240.156.194])
+	by web1.lanscape.net (8.9.3/8.9.3) with ESMTP id SAA18554;
+	Thu, 11 Jan 2001 18:44:54 -0600
+Received: by fisch.cyrius.com (Postfix, from userid 1000)
+	id 70352231F9; Fri, 12 Jan 2001 00:44:52 +0000 (GMT)
+Date:   Fri, 12 Jan 2001 00:44:52 +0000
+From:   Martin Michlmayr <tbm@cyrius.com>
+To:     Ed Gould <ed@agile.tv>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: Status of Linux 2.4 on Cobalt
+Message-ID: <20010112004452.A27573@sumpf.cyrius.com>
+References: <200101120119.RAA25914@guardian.agile.tv>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <200101120119.RAA25914@guardian.agile.tv>; from ed@agile.tv on Thu, Jan 11, 2001 at 05:19:45PM -0800
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-What is the current status of building and running a 2.4 kernel on the
-Cobalt RaQ2?  Is anyone working on this?
+* Ed Gould <ed@agile.tv> [20010111 17:19]:
+> What is the current status of building and running a 2.4 kernel on the
+> Cobalt RaQ2?  Is anyone working on this?
 
---
-Ed Gould	AgileTV Corporation
-ed@agile.tv	333 Ravenswood Avenue, Bldg. 202
-		Menlo Park, CA  94025
+Cobalt support was removed from CVS because it wouldn't even compile.
+
+Mathew Edward Kovach <mkovach@alal.com> used to work on 2.4 support
+again, but I haven't heard from him for quite a while...
+-- 
+Martin Michlmayr
+tbm@cyrius.com

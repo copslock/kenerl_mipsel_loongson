@@ -1,57 +1,36 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (8.7.6/960327.SGI.AUTOCF) via ESMTP id KAA21516; Mon, 9 Sep 1996 10:42:25 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (8.7.6/960327.SGI.AUTOCF) via ESMTP id KAA21880; Mon, 9 Sep 1996 10:49:50 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from daemon@localhost) by cthulhu.engr.sgi.com (8.7.6/960327.SGI.AUTOCF) id RAA24460 for linux-list; Mon, 9 Sep 1996 17:42:13 GMT
-Received: from heaven.newport.sgi.com (heaven.newport.sgi.com [169.238.102.134]) by cthulhu.engr.sgi.com (8.7.6/960327.SGI.AUTOCF) via SMTP id KAA24449 for <linux@cthulhu.engr.sgi.com>; Mon, 9 Sep 1996 10:42:10 -0700 (PDT)
-Received: by heaven.newport.sgi.com (940816.SGI.8.6.9/940406.SGI)
-	 id KAA29701; Mon, 9 Sep 1996 10:42:05 -0700
-From: "Christopher W. Carlson" <carlson@heaven.newport.sgi.com>
-Message-Id: <9609091042.ZM29699@heaven.newport.sgi.com>
-Date: Mon, 9 Sep 1996 10:42:05 -0700
-In-Reply-To: "David S. Miller" <davem@caip.rutgers.edu>
-        "favor" (Sep  8,  6:38pm)
-References: <199609082238.SAA00729@acappella.rutgers.edu>
-X-Mailer: Z-Mail-SGI (3.2S.2 10apr95 MediaMail)
-To: "David S. Miller" <davem@caip.rutgers.edu>
+Received: (from daemon@localhost) by cthulhu.engr.sgi.com (8.7.6/960327.SGI.AUTOCF) id RAA26715 for linux-list; Mon, 9 Sep 1996 17:49:44 GMT
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (8.7.6/960327.SGI.AUTOCF) via SMTP id KAA26706 for <linux@relay.engr.SGI.COM>; Mon, 9 Sep 1996 10:49:42 -0700 (PDT)
+Received: from caipfs.rutgers.edu (caipfs.rutgers.edu [128.6.19.100]) by sgi.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id KAA23712 for <linux@relay.engr.SGI.COM>; Mon, 9 Sep 1996 10:49:39 -0700
+Received: from acappella.rutgers.edu (acappella.rutgers.edu [128.6.111.22]) by caipfs.rutgers.edu (8.6.9+bestmx+oldruq+newsunq+grosshack/8.6.9) with ESMTP id NAA24530; Mon, 9 Sep 1996 13:45:51 -0400
+Received: (davem@localhost) by acappella.rutgers.edu (8.6.12+CAIPFS_MAIL/8.6.9) id NAA02053; Mon, 9 Sep 1996 13:45:50 -0400
+Date: Mon, 9 Sep 1996 13:45:50 -0400
+Message-Id: <199609091745.NAA02053@acappella.rutgers.edu>
+From: "David S. Miller" <davem@caip.rutgers.edu>
+To: carlson@heaven.newport.sgi.com
+CC: linux@cthulhu.engr.sgi.com
+In-reply-to: <9609091042.ZM29699@heaven.newport.sgi.com>
+	(carlson@heaven.newport.sgi.com)
 Subject: Re: favor
-Cc: linux@cthulhu.engr.sgi.com
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Sep 8,  6:38pm, David S. Miller wrote:
-> Subject: favor
->
-> If any of you can get a copy of todays San Jose Mercury News, and
-> FedEx it to me, I'd be extremely grateful.
->
-> It contains an articile on computing inHelsinki, Finland and an
-> interview with Linus Torvalds plus some other things on Linux in
-> general.
->
-> Thanks.
->
-> Later,
-> David S. Miller
-> davem@caip.rutgers.edu
->-- End of excerpt from David S. Miller
+   From: "Christopher W. Carlson" <carlson@heaven.newport.sgi.com>
+   Date: Mon, 9 Sep 1996 10:42:05 -0700
 
+   Did you know that the article is online?  You can get it through
+   the www.sjmercury.com home page.  I found it by clicking on
+   "Finland" on the front page.
 
-David,
+I realize this, my desire was to have the article hard copy.
 
-Did you know that the article is online?  You can get it through the
-www.sjmercury.com home page.  I found it by clicking on "Finland" on
-the front page.
+   If you want, I'll forward the text to you (presuming you have no or
+   bad WWW access).
 
-If you want, I'll forward the text to you (presuming you have no or
-bad WWW access).
+No need, as I posted later in the evening yesterday, someone has
+already sent the article, hardcopy, to me.
 
--- 
-
-		Chris Carlson
-
-	+------------------------------------------------------+
-	| Also, carlson@sgi.com                                |
-	|   Work:       (714) 756-5976     SGI vmail:  x5-8095 |
-	|   FAX:        (714) 833-9503                         |
-	+------------------------------------------------------+
+Later,
+David S. Miller
+davem@caip.rutgers.edu

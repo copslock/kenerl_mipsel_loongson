@@ -1,64 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Dec 2003 16:27:42 +0000 (GMT)
-Received: from law10-f105.law10.hotmail.com ([IPv6:::ffff:64.4.15.105]:53007
-	"EHLO hotmail.com") by linux-mips.org with ESMTP
-	id <S8224934AbTL2Q1k>; Mon, 29 Dec 2003 16:27:40 +0000
-Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
-	 Mon, 29 Dec 2003 08:27:32 -0800
-Received: from 63.121.54.5 by lw10fd.law10.hotmail.msn.com with HTTP;
-	Mon, 29 Dec 2003 16:27:32 GMT
-X-Originating-IP: [63.121.54.5]
-X-Originating-Email: [juszczec@hotmail.com]
-X-Sender: juszczec@hotmail.com
-From: "Mark and Janice Juszczec" <juszczec@hotmail.com>
-To: dan@debian.org
-Cc: kevink@mips.com, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Dec 2003 18:11:48 +0000 (GMT)
+Received: from p508B5A82.dip.t-dialin.net ([IPv6:::ffff:80.139.90.130]:46571
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225240AbTL2SLr>; Mon, 29 Dec 2003 18:11:47 +0000
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id hBTIBha5006179;
+	Mon, 29 Dec 2003 19:11:43 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id hBTIBdjU006178;
+	Mon, 29 Dec 2003 19:11:39 +0100
+Date: Mon, 29 Dec 2003 19:11:39 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: "Kevin D. Kissell" <kevink@mips.com>
+Cc: Mark and Janice Juszczec <juszczec@hotmail.com>,
+	linux-mips@linux-mips.org
 Subject: Re: gdbserver and Re: hardware questions
-Date: Mon, 29 Dec 2003 16:27:32 +0000
+Message-ID: <20031229181139.GA5946@linux-mips.org>
+References: <Law10-F1098NvzHr4sR00062b5c@hotmail.com> <002401c3ce16$b44b1e10$10eca8c0@grendel>
 Mime-Version: 1.0
-Content-Type: text/plain; format=flowed
-Message-ID: <Law10-F10555qtVdTVv000632af@hotmail.com>
-X-OriginalArrivalTime: 29 Dec 2003 16:27:32.0941 (UTC) FILETIME=[A93607D0:01C3CE28]
-Return-Path: <juszczec@hotmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <002401c3ce16$b44b1e10$10eca8c0@grendel>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3849
+X-archive-position: 3850
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: juszczec@hotmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Mon, Dec 29, 2003 at 03:18:58PM +0100, Kevin D. Kissell wrote:
 
-Daniel et al
+> If you want more of a "large format" mipsel platform
+> to experiment with, you might be able to find an old
+> "RISC PC" from Siemens or NEC with an R4000
+> configured little-endian to run NT.  Maybe Ralf has
+> one in his attic he'd care to sell you. ;o)
 
+Unfortunately no.  Since Thomas Bogendoerfer stopped maintaining the Olivetti
+support the support for MIPS Magnum 4000, MIPS Millenium, Olivetti M700-10
+and Acer PICA is rotting away ...
 
->
->Try changing /etc/inittab to disable the getty, and starting gdbserver
->from the system startup scripts in /etc/rc*.
+> I've never used gdbserver myself.  I did manage to get
+> some use out of the old 2.2-style kernel gdb hooks.
+> I don't know that it's the root of your problem, but
+> you should definitely get getty/shells off of whatever
+> serial port you're trying to use for debug.  In theory,
+> there are protocols to multiplex serial ports between
+> gdb streams and other stuff, but I've never had any
+> luck with them.   You may also need to make sure that
+> you're starting gdb and gdbserver in the right order.
+> Certainly, that was the case when booting with kgdb.
 
-I'm using busybox since, at the time, it was easier than figuring out what 
-goes on in /etc/rc*
-I'll check if there's a way to disable the busybox init or at least tell it 
-not to start a shell on the serial port.  I suppose I could hack busybox to 
-start gdbserver.    Hmmmmm
+We have a special GDB console kernel option which is meant to support
+exactly that kind of gdb + console multiplexing.
 
->I'm assuming you have
->some other way than that shell on ttyS0 to modify the filesystem :)
->
-
-Yes.  I flash a filesystem image to the pda.  I generate the image from 
-files on my laptop.  The problem is squeezing everything into 2mb of flash.  
-I wonder if I can shove stuff in the 8Mb of ram somehow.
-
-Mark
-
-
->--
->Daniel Jacobowitz
->MontaVista Software                         Debian GNU/Linux Developer
-
-_________________________________________________________________
-Working moms: Find helpful tips here on managing kids, home, work —  and 
-yourself.   http://special.msn.com/msnbc/workingmom.armx
+  Ralf

@@ -1,47 +1,54 @@
-Received:  by oss.sgi.com id <S42199AbQGJUal>;
-	Mon, 10 Jul 2000 13:30:41 -0700
-Received: from u-113.karlsruhe.ipdial.viaginterkom.de ([62.180.18.113]:46598
-        "EHLO u-113.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S42185AbQGJUa0>; Mon, 10 Jul 2000 13:30:26 -0700
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S640084AbQGJR3T>;
-        Mon, 10 Jul 2000 19:29:19 +0200
-Date:   Mon, 10 Jul 2000 19:29:18 +0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Florian Lohoff <flo@rfc822.org>
-Cc:     linux-mips@oss.sgi.com, linux-mips@fnet.fr,
-        linux-mips@vger.rutgers.edu
-Subject: Re: current cvs binutils and mipsel-linux kernel
-Message-ID: <20000710192918.A5900@bacchus.dhis.org>
-References: <20000710011846.A1275@paradigm.rfc822.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <20000710011846.A1275@paradigm.rfc822.org>; from flo@rfc822.org on Mon, Jul 10, 2000 at 01:18:46AM +0200
-X-Accept-Language: de,en,fr
+Received:  by oss.sgi.com id <S42185AbQGJUob>;
+	Mon, 10 Jul 2000 13:44:31 -0700
+Received: from styx.cs.kuleuven.ac.be ([134.58.40.3]:44182 "EHLO
+        styx.cs.kuleuven.ac.be") by oss.sgi.com with ESMTP
+	id <S42188AbQGJUoQ>; Mon, 10 Jul 2000 13:44:16 -0700
+Received: from cassiopeia.home (root@dialup006.cs.kuleuven.ac.be [134.58.47.135])
+	by styx.cs.kuleuven.ac.be (8.10.1/8.10.1) with ESMTP id e6AKhrA08806;
+	Mon, 10 Jul 2000 22:43:54 +0200 (MET DST)
+Received: from localhost (geert@localhost)
+	by cassiopeia.home (8.9.3/8.9.3/Debian/GNU) with ESMTP id NAA00567;
+	Mon, 10 Jul 2000 13:46:17 +0200
+X-Authentication-Warning: cassiopeia.home: geert owned process doing -bs
+Date:   Mon, 10 Jul 2000 13:46:17 +0200 (CEST)
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Jason Mesker <jasonm@tool.net>
+cc:     Ralf Baechle <ralf@uni-koblenz.de>,
+        "debian-mips@lists.debian.org" <debian-mips@lists.debian.org>,
+        "linux-mips@fnet.fr" <linux-mips@fnet.fr>,
+        "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>,
+        "linux-mips@vger.rutgers.edu" <linux-mips@vger.rutgers.edu>
+Subject: Re: R5000 oops
+In-Reply-To: <396978F7.A309E715@tool.net>
+Message-ID: <Pine.LNX.4.10.10007101343480.441-100000@cassiopeia.home>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Mon, Jul 10, 2000 at 01:18:46AM +0200, Florian Lohoff wrote:
-
-> it seems there is a problem in the binutils from current cvs ...
+On Mon, 10 Jul 2000, Jason Mesker wrote:
+> I am running kernel version: 2.4.0 test 3 pre 2.  I am useing wesolows vmlinux-0704b kernel.
 > 
-> mipsel-linux-gcc -D__KERNEL__ -I/home/flo/mips/dec/src/linux-2.4.0-test3/include -Wall -Wstrict-prototypes -O2 -fomit-frame-pointer  -G 0 -mno-abicalls -fno-pic -mcpu=r4600 -mips2 -pipe -fno-strict-aliasing -c softfp.S -o softfp.o
-> softfp.S: Assembler messages:
-> softfp.S:225: Error: illegal operands `la'
-> softfp.S:225: Error: unrecognized opcode `cvt'
-> softfp.S:225: Error: Rest of line ignored. First ignored character is `.'.
-> make[1]: *** [softfp.o] Error 1
-> make[1]: Leaving directory `/home/flo/mips/dec/src/linux-2.4.0-test3/arch/mips/kernel'
-> make: *** [_dir_arch/mips/kernel] Error 2
+> I think I have found the problem though.  I was running the system without swap and with 64Megs of RAM.  I added around 20 megs of swap space and did the
+> configure again and it worked fine.  I am actually compiling now and will let the status be known if it completes or not.  As of right now everything looks
+> like it is working fine with the swap enabled.
 
-You're probably also using a very recent gcc.  Recent gcc had preprocessor
-changes to make it more stricly comply to ISO.  This breaks a number of
-files in the Linux kernel which for readability have extra space around
-the ## C preprocessor paste.  I've already commited the necessary fixes
-for softfp.S which is the only affected MIPS file to CVS.  There is still
-a large number of other files which aren't ISO C89 compliant.   Keith
-Wesolowski has made a patch for those which I'll send to Linus.
+I suspect that's not the problem, though. 64 MB of RAM should not be exhausted
+that fast.
 
-  Ralf
+I saw lots of similar oopses on the NEC DDB Vrc-5074 with various 2.3.x
+kernels. Other people reported similar oopses with other machines. And the
+common factor is the R5000.
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- Linux/{m68k~Amiga,PPC~CHRP} -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

@@ -1,73 +1,74 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id NAA17546; Wed, 13 Aug 1997 13:45:08 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id PAA59820; Wed, 13 Aug 1997 15:10:06 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id NAA23529 for linux-list; Wed, 13 Aug 1997 13:44:43 -0700
-Received: from dataserv.detroit.sgi.com (dataserv.detroit.sgi.com [169.238.128.2]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA23511 for <linux@cthulhu.engr.sgi.com>; Wed, 13 Aug 1997 13:44:40 -0700
-Received: from cygnus.detroit.sgi.com by dataserv.detroit.sgi.com via ESMTP (940816.SGI.8.6.9/930416.SGI)
-	 id QAA19531; Wed, 13 Aug 1997 16:44:34 -0400
-Message-ID: <33F21CB2.7464B074@cygnus.detroit.sgi.com>
-Date: Wed, 13 Aug 1997 16:44:34 -0400
-From: Eric Kimminau <eak@cygnus.detroit.sgi.com>
-Reply-To: eak@detroit.sgi.com
-Organization: Silicon Graphics, Inc
-X-Mailer: Mozilla 4.02 [en] (X11; I; IRIX 6.3 IP32)
-MIME-Version: 1.0
-To: Ariel Faigon <ariel@sgi.com>
-CC: SGI/Linux mailing list <linux@cthulhu.engr.sgi.com>,
-        comm-tech@rock.csd.sgi.com
-Subject: Re: linus accessible from within SGI
-References: <199708132022.NAA27369@oz.engr.sgi.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA23089 for linux-list; Wed, 13 Aug 1997 15:09:44 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA23083 for <linux@cthulhu.engr.sgi.com>; Wed, 13 Aug 1997 15:09:42 -0700
+Received: from gatekeeper.qms.com (gatekeeper.qms.com [161.33.3.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via SMTP id PAA06378
+	for <linux@cthulhu.engr.sgi.com>; Wed, 13 Aug 1997 15:09:39 -0700
+	env-from (marks@sun470.sun470.rd.qms.com)
+Received: from sun470.rd.qms.com (sun470.qms.com) by gatekeeper.qms.com (4.1/SMI-4.1)
+	id AA02346; Wed, 13 Aug 97 17:09:34 CDT
+Received: from speedy.rd.qms.com by sun470.rd.qms.com (4.1/SMI-4.1)
+	id AA23850; Wed, 13 Aug 97 17:09:32 CDT
+Received: by speedy.rd.qms.com (8.8.2) id RAA31518; Wed, 13 Aug 1997 17:09:32 -0500
+Date: Wed, 13 Aug 1997 17:09:32 -0500
+Message-Id: <199708132209.RAA31518@speedy.rd.qms.com>
+From: Mark Salter <marks@sun470.sun470.rd.qms.com>
+To: linux@cthulhu.engr.sgi.com
+Subject: clock skew and ethernet timeouts
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Ariel Faigon wrote:
-> 
-> Good news:
-> 
-> Looks like the routing problem that prevented many outside .engr
-> to access linus is now fixed.
-> 
-> guest@sgigate 3% traceroute linus.linux.sgi.com
-> traceroute to linus.linux.sgi.com (192.48.153.197), 30 hops max, 40 byte packets
->  1  purgatory.SGI.COM (204.94.209.2)  2 ms  5 ms  3 ms
->  2  forbidden (204.94.211.38)  4 ms  14 ms  7 ms
->  3  paloalto-cr6.bbnplanet.net (131.119.26.57)  90 ms  105 ms  63 ms
->  4  paloalto-cr4.bbnplanet.net (131.119.0.148)  684 ms  113 ms  75 ms
->  5  paloalto-cr34.bbnplanet.net (131.119.0.109)  11 ms  15 ms  22 ms
->  6  sgi.bbnplanet.net (131.119.16.6)  27 ms  16 ms  24 ms
->  7  linus.linux.sgi.com (192.48.153.197)  16 ms  18 ms  18 ms
-> 
-> Roundabout, but working.
-> 
-> --
-> Peace, Ariel
 
-Ive been able to rftp to it, and Ive now surf'ed to it but Im still
-having a hard time getting mirror to work to it.
+I've been taking a look at the problem with frequent ethernet
+transmit timeouts. In addition to the timeouts, I've also seen
+an occasional duplicate packet being sent in response to pings
+coming from another machine. I'm debugging somewhat in the dark
+because I don't have documentation on the indy's DMA controller
+although the sgihpc.h file has been helpful.
 
-Has anyone been able to get "mirror" work via socks through our
-firewall?
+I also noticed that the linux time of day clock falls behind
+real time whenever these timeouts occur. I decided to take a
+look at this side of the problem and discovered that interrupts
+are being turned off for extended periods of time. I modified
+the timer interrupt handler to print a message if it detects
+a missed system tick. Sure enough, every ethernet timeout is
+accompanied by a message coming from the timer interrupt. The
+message indicates that the timer interrupt was held off for
+as much as 45ms!
 
-I would like to mirror linus.linux on an internal SGI, linux.detroit,
-which is currntly up and running.
 
--- 
-Eric Kimminau                           System Engineer/RSA
-eak@detroit.sgi.com                     Silicon Graphics, Inc
-Voice: (248) 848-4455                   39001 West 12 Mile Rd.
-Fax:   (248) 848-5600                   Farmington, MI 48331-2903
+Here's the change I made to indy_timer_interrupt() in indy_timers.c:
 
-                 VNet Extension - 6-327-4455
-              "I speak my mind and no one else's."
-       http://www.dcs.ex.ac.uk/~aba/rsa/perl-rsa-sig.html
+	/* Ack timer and compute new compare. */
+#if 0
+	r4k_cur = (read_32bit_cp0_register(CP0_COUNT) + r4k_offset);
+#else
+	count = read_32bit_cp0_register(CP0_COUNT);
+	if ((count - r4k_cur) >= r4k_offset) {
+		printk("missed heartbeat: r4k_cur[0x%x] count[0x%x]\n",
+		       r4k_cur, count);
+		r4k_cur = count + r4k_offset;
+	}
+	else
+	    r4k_cur += r4k_offset;
+#endif
 
-    When confronted by a difficult problem, solve it by reducing 
-    it to the question, "How would the Lone Ranger handle this?"
 
-Windows 95: n.
-    32 bit extensions and a graphical shell for a 16 bit patch to an
-    8 bit operating system originally coded for a 4 bit microprocessor,
-    written by a 2 bit company that can't stand 1 bit of competition.
+The original code which calculates the next value for the CP0_COMPARE
+register introduces skew by basing it on the current value of the 
+CP0_COUNT register rather than the previous CP0_COMPARE value. But as
+it turns out, that little bit of skew is preferable to the large 
+skew that would result whenever the timer interrupt is held off too
+long.
 
-    Author unknown.
+Anyway, I'm going to be away from the office until 19 August, so I'll
+pick it up then unless someone else finds it first. It seems likely
+that the enet timeouts are the result of interrupts being turned off
+too long, but if that's not the case, can someone point me to some
+documentation for the indy's dma controller? I have some suspicions
+of race conditions when setting up new DMA buffers, but I'd like to
+have a document before I try various fixes.
+
+--
+Mark Salter
+marks@sun470.rd.qms.com

@@ -1,50 +1,40 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA2826671 for <linux-archive@neteng.engr.sgi.com>; Fri, 3 Apr 1998 14:12:24 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA2838150 for <linux-archive@neteng.engr.sgi.com>; Fri, 3 Apr 1998 15:14:47 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id OAA7534204
+	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id PAA7559715
 	for linux-list;
-	Fri, 3 Apr 1998 14:12:15 -0800 (PST)
+	Fri, 3 Apr 1998 15:14:03 -0800 (PST)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id OAA7524585
-	for <linux@engr.sgi.com>;
-	Fri, 3 Apr 1998 14:12:13 -0800 (PST)
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id OAA05098
-	for <linux@engr.sgi.com>; Fri, 3 Apr 1998 14:12:12 -0800 (PST)
-	mail_from (ralf@uni-koblenz.de)
-From: ralf@uni-koblenz.de
-Received: from uni-koblenz.de (pmport-18.uni-koblenz.de [141.26.249.18])
-	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id AAA01524
-	for <linux@engr.sgi.com>; Sat, 4 Apr 1998 00:12:10 +0200 (MEST)
-Received: (from ralf@localhost)
-	by uni-koblenz.de (8.8.7/8.8.7) id AAA00624;
-	Sat, 4 Apr 1998 00:11:56 +0200
-Message-ID: <19980404001154.23809@uni-koblenz.de>
-Date: Sat, 4 Apr 1998 00:11:54 +0200
+	via ESMTP id PAA7589115
+	for <linux@cthulhu.engr.sgi.com>;
+	Fri, 3 Apr 1998 15:14:01 -0800 (PST)
+Received: from lorraine.loria.fr (lorraine.loria.fr [152.81.1.17]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id PAA29027
+	for <linux@cthulhu.engr.sgi.com>; Fri, 3 Apr 1998 15:13:58 -0800 (PST)
+	mail_from (Olivier.Galibert@loria.fr)
+Received: from renaissance.loria.fr (renaissance.loria.fr [152.81.4.102])
+	by lorraine.loria.fr (8.8.7/8.8.7/8.8.7/JCG) with ESMTP id BAA28743
+	for <linux@cthulhu.engr.sgi.com>; Sat, 4 Apr 1998 01:13:33 +0200 (MET DST)
+Received: (from galibert@localhost) by renaissance.loria.fr (8.8.2/8.8.2) id BAA25899; Sat, 4 Apr 1998 01:13:32 +0200 (MET DST)
+Message-ID: <19980404011332.15427@loria.fr>
+Date: Sat, 4 Apr 1998 01:13:32 +0200
+From: Olivier Galibert <galibert@pobox.com>
 To: linux@cthulhu.engr.sgi.com
-Subject: fwd: Andreessen Sees Mozilla-Linux Upset Of Windows
+Subject: Re: VCE exceptions
+Mail-Followup-To: linux@cthulhu.engr.sgi.com
+References: <199804031911.LAA21028@fir.engr.sgi.com> <m0yLByA-000aNnC@the-village.bc.nu>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.85e
+X-Mailer: Mutt 0.88.14i
+In-Reply-To: <m0yLByA-000aNnC@the-village.bc.nu>; from Alan Cox on Fri, Apr 03, 1998 at 08:17:41PM +0100
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Thought I should forward that one.  Maybe it changes some suits' thinking
-about Linux ...
+On Fri, Apr 03, 1998 at 08:17:41PM +0100, Alan Cox wrote:
+> Colouring in Linux isnt going to work without ripping the godawful buddy
+> allocator out of it.[...]
 
-  Ralf
+Can someone point me  to a good documentation/book/whatever explaining
+what cache colouring is ?
 
- ------------------------------------------------------------------------------
-
-From: Billy Harvey <Billy.Harvey@thrillseeker.net>
-
-Fellow Linux Enthusiasts,
-
-FYI:
-
-
-Netscape source code and the Linux operating system could be the
-combination that unseats Windows, said Marc Andreessen, Netscape's CEO,
-Wednesday.
-
-http://www.techweb.com/news/story/TWB19980402S0013
+  OG.

@@ -1,73 +1,52 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f77HlVI05346
-	for linux-mips-outgoing; Tue, 7 Aug 2001 10:47:31 -0700
-Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f77HlTV05343
-	for <linux-mips@oss.sgi.com>; Tue, 7 Aug 2001 10:47:29 -0700
-Received: from pacbell.net (zeus.mvista.com [10.0.0.112])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f77HqRA26776;
-	Tue, 7 Aug 2001 10:52:33 -0700
-Message-ID: <3B702A28.5020002@pacbell.net>
-Date: Tue, 07 Aug 2001 10:49:28 -0700
-From: Pete Popov <ppopov@pacbell.net>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.3) Gecko/20010801
-X-Accept-Language: en-us
+	by oss.sgi.com (8.11.2/8.11.3) id f77JRpi09901
+	for linux-mips-outgoing; Tue, 7 Aug 2001 12:27:51 -0700
+Received: from tennyson.netexpress.net (IDENT:root@tennyson.netexpress.net [64.22.192.12])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f77JRoV09893
+	for <linux-mips@oss.sgi.com>; Tue, 7 Aug 2001 12:27:50 -0700
+Received: from localhost (vorlon@localhost)
+	by tennyson.netexpress.net (8.9.3/8.9.3) with ESMTP id OAA00981;
+	Tue, 7 Aug 2001 14:27:44 -0500
+X-Authentication-Warning: tennyson.netexpress.net: vorlon owned process doing -bs
+Date: Tue, 7 Aug 2001 14:27:44 -0500 (CDT)
+From: Steve Langasek <vorlon@netexpress.net>
+To: "Bradley D. LaRonde" <brad@ltc.com>
+cc: <linux-mips@oss.sgi.com>
+Subject: Re: cross-mipsel-linux-ld --prefix library path
+In-Reply-To: <094d01c11f55$31969d40$3501010a@ltc.com>
+Message-ID: <Pine.LNX.4.30.0108071420150.32641-100000@tennyson.netexpress.net>
 MIME-Version: 1.0
-To: Steven Liu <stevenliu@psdc.com>
-CC: linux-mips@oss.sgi.com
-Subject: Re: Could not find the source code for "/sbin/init".
-References: <84CE342693F11946B9F54B18C1AB837B0A2257@ex2k.pcs.psdc.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Steven Liu wrote:
-> Hi ALL:
-> 
-> As we know, the function init( ) in main.c is 
-> 
-> static int init(void * unused)
-> {
-> 	lock_kernel();
-> 	do_basic_setup();
-> 	free_initmem();
-> 	unlock_kernel();
-> 
-> 	if (open("/dev/console", O_RDWR, 0) < 0)
-> 		printk("Warning: unable to open an initial console.\n");
-> 
-> 	(void) dup(0);
-> 	(void) dup(0);
-> 	
-> 
-> 	if (execute_command)
-> 		execve(execute_command,argv_init,envp_init);
-> 
-> 	execve("/sbin/init",argv_init,envp_init);    //<--- problem
-> 
-> 	execve("/etc/init",argv_init,envp_init);
-> 	execve("/bin/init",argv_init,envp_init);
-> 	execve("/bin/sh",argv_init,envp_init);
-> 	panic("No init found.  Try passing init= option to kernel.");
-> } 
-> 
-> The system call execve("/sbin/init",argv_init,envp_init) will start a
-> background process.
-> In my case, it could not start the process, that is, system hangs there
-> and 
-> execve("/etc/init",argv_init,envp_init) could not be executed.
-> 
-> 
-> Could you tell me where could I find the source code for the executable
-> /sbin/init? 
-> 
-> Thank you very much for your help.
+On Tue, 7 Aug 2001, Bradley D. LaRonde wrote:
 
-/sbin/init is part of the SysVInit package.
+> OK, so say I leave off --prefix entirely, and the binutils get installed in
+> /usr/bin and /usr/mipsel-linux/bin.  Now, I suppose that mipsel-linux-ld
+> will look for libs in /usr/mipsel-linux/lib, which is cool.  But, how to I
+> convince the cross-built glibc that's where his libraries belong?
+>  Just --prefix=/usr/mipsel-linux to glibc's configure?
 
-Your problem is most likely NOT with /sbin/init itself. I would start by loading 
-sash first; if that works, try a static bash; if that works, try a dynamically 
-linked bash.
+That should be enough to force glibc to use /usr/mipsel-linux, but I don't
+think it's correct to use that as a /configure/ option.  Effectively,
+libraries used for cross-building should be identical to the native libraries
+in every way[1], only installed in a different place on the system.  You would
+never /run/ glibc-based applications against /usr/mipsel-linux on a native
+system.
 
-Pete
+On Debian, I find that dpkg-cross is a very useful utility.  You can pass it
+the filename of a package from another architecture, as well as the
+architecture it belongs to, and it will reconstruct an Architecture: all
+package that places the libraries under /usr/<arch>-linux.  This seems a bit
+easier than trying to worry about install directories for glibc at compile
+time.
+
+HTH,
+Steve Langasek
+postmodern programmer
+
+[1] ok, with the exception of /usr/lib/libc.so, which is not a library at all,
+    but rather a GNU linker script.  dpkg-cross also takes care of rewriting
+    this script, which I found rather impressive the first time I saw it
+    happen.

@@ -1,93 +1,69 @@
-Received:  by oss.sgi.com id <S553791AbRAAOZ1>;
-	Mon, 1 Jan 2001 06:25:27 -0800
-Received: from blackdog.wirespeed.com ([208.170.106.25]:18451 "EHLO
-        blackdog.wirespeed.com") by oss.sgi.com with ESMTP
-	id <S553788AbRAAOZH>; Mon, 1 Jan 2001 06:25:07 -0800
-Received: from redhat.com (IDENT:joe@dhcp-252.wirespeed.com [172.16.17.252] (may be forged))
-	by blackdog.wirespeed.com (8.9.3/8.9.3) with ESMTP id IAA23957;
-	Mon, 1 Jan 2001 08:17:23 -0600
-Message-ID: <3A5092A7.1060304@redhat.com>
-Date:   Mon, 01 Jan 2001 08:22:31 -0600
-From:   Joe deBlaquiere <jadb@redhat.com>
-Organization: Red Hat, Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux 2.2.16-22 i686; en-US; m18) Gecko/20001107 Netscape6/6.0
-X-Accept-Language: en
+Received:  by oss.sgi.com id <S553786AbRABSYP>;
+	Tue, 2 Jan 2001 10:24:15 -0800
+Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:18322 "EHLO
+        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553780AbRABSYE>;
+	Tue, 2 Jan 2001 10:24:04 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id TAA24269;
+	Tue, 2 Jan 2001 19:12:58 +0100 (MET)
+Date:   Tue, 2 Jan 2001 19:12:57 +0100 (MET)
+From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To:     Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
+cc:     ralf@uni-koblenz.de, linux-mips@fnet.fr, linux-mips@oss.sgi.com
+Subject: Re: SGI/ARCS related fixes
+In-Reply-To: <XFMail.001231124111.Harald.Koerfgen@home.ivm.de>
+Message-ID: <Pine.GSO.3.96.1010102190251.22443B-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-To:     "Steven J. Hill" <sjhill@cotw.com>
-CC:     linux-mips@oss.sgi.com
-Subject: Re: Simple problem with second stage MIPS GCC compiler...
-References: <3A2FB3CB.3566F805@mips.com> <3A5018A0.6B43960B@cotw.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-The problem you have is that gcc doesn't know where the glibc headers 
-are. You probably need to pass 
-"--with-includes=/usr/local/mips/mipsel-linux-include" or alternatively 
-put the headers in {prefix}/sys-include .
+On Sun, 31 Dec 2000, Harald Koerfgen wrote:
 
-There is also another list for cross compiling with gcc 
-(crossgcc@sources.redhat.com) which might give more informative answers 
-than the simple one I have...
+> wanting to bring my O2 patches up to date I stumbled over some minor hickups.
+[...]
+> --- /nfs/cvs/linux-2.3/linux/arch/mips/arc/memory.c     Mon Dec 11 18:07:34 2000
+> +++ linux/arch/mips/arc/memory.c        Sat Dec 30 21:49:32 2000
+> @@ -124,7 +124,7 @@
+>                 size = p->pages << PAGE_SHIFT;
+>                 type = prom_memtype_classify(p->type);
+>  
+> -               add_memory_region(base, pages, type);
+> +               add_memory_region(base, size, type);
+>         }
+>  }
+>  
 
-good luck with it!
+ That is fine.  I actually included the fix in my set of memory map
+patches (patch-mips-2.4.0-test11-20001212-mem_map-37) I sent Ralf a few
+days ago.  They still appear to wait to be applied.
 
-Steven J. Hill wrote:
+> @@ -143,12 +143,13 @@
+>                 addr = boot_mem_map.map[i].addr;
+>                 while (addr < boot_mem_map.map[i].addr
+>                               + boot_mem_map.map[i].size) {
+> -                       ClearPageReserved(virt_to_page(__va(addr)));
+> -                       set_page_count(virt_to_page(__va(addr)), 1);
+> -                       free_page(__va(addr));
+> +                       ClearPageReserved(virt_to_page(addr));
+> +                       set_page_count(virt_to_page(addr), 1);
+> +                       free_page(addr);
+>                         addr += PAGE_SIZE;
+>                         freed += PAGE_SIZE;
+>                 }
+>         }
+>         printk("Freeing prom memory: %ldkb freed\n", freed >> 10);
+>  }
+> +
 
-> Well, I almost have a complete toolchain. I succesfully got binutils,
-> first stage GCC-2.95.2 and GLIBC-2.2 installed just fine. I am having
-> problems with rebuilding GCC. Below is the configuration and make
-> directives that I am currently using along with the output. I have
-> verified that the header files are in /usr/local/mips/mipsel-linux-include.
-> Any help or thoughts are need and appreciated. Yes, I read the mailing
-> list archives. TIA.
-> 
-> -Steve
-> 
-> *************************************************************
-> AR=mipsel-linux-ar RANLIB=mipsel-linux-ranlib ../gcc-2.95.2/configure
-> --prefix=/usr/local/mips --target=mipsel-linux i686-pc-linux-gnu --enable-shared
-> --enable-threads --enable-languages=c
-> 
-> make LANGUAGES=c ALL_TARGET_MODULES= CONFIGURE_TARGET_MODULES=
-> INSTALL_TARGET_MODULES= SUBDIRS="libiberty gcc"
-> 
-> *************************************************************
-> make[2]: Leaving directory `/data/mips-stuff/build-gcc2/gcc/intl'
-> rm -f tmplibgcc2.a
-> for name in _muldi3 _divdi3 _moddi3 _udivdi3 _umoddi3 _negdi2 _lshrdi3 _ashldi3
-> _ashrdi3 _ffsdi2 _udiv_w_sdiv _udivmoddi4 _cmpdi2 _ucmpdi2 _floatdidf _floatdisf
-> _fixunsdfsi _fixunssfsi _fixunsdfdi _fixdfdi _fixunssfdi _fixsfdi _fixxfdi
-> _fixunsxfdi _floatdixf _fixunsxfsi _fixtfdi _fixunstfdi _floatditf __gcc_bcmp
-> _varargs __dummy _eprintf _bb _shtab _clear_cache _trampoline __main _exit
-> _ctors _pure; \
-> do \
->   echo ${name}; \
->   /data/mips-stuff/build-gcc2/gcc/xgcc -B/data/mips-stuff/build-gcc2/gcc/
-> -B/usr/local/mips/mipsel-linux/bin/ -I/usr/local/mips/mipsel-linux/include -O2 
-> -DCROSS_COMPILE -DIN_GCC     -g -O2 -I./include  -fPIC -g1 -DHAVE_GTHR_DEFAULT
-> -DIN_LIBGCC2 -D__GCC_FLOAT_NOT_NEEDED   -I. -I../../gcc-2.95.2/gcc
-> -I../../gcc-2.95.2/gcc/config -I../../gcc-2.95.2/gcc/../include -c -DL${name} \
->        ../../gcc-2.95.2/gcc/libgcc2.c -o ${name}.o; \
->   if [ $? -eq 0 ] ; then true; else exit 1; fi; \
->   mipsel-linux-ar rc tmplibgcc2.a ${name}.o; \
->   rm -f ${name}.o; \
-> done
-> _muldi3
-> .../../gcc-2.95.2/gcc/libgcc2.c:41: stdlib.h: No such file or directory
-> .../../gcc-2.95.2/gcc/libgcc2.c:42: unistd.h: No such file or directory
-> make[1]: *** [libgcc2.a] Error 1
-> make[1]: Leaving directory `/data/mips-stuff/build-gcc2/gcc'
-> make: *** [all-gcc] Error 2
+ That's probably incorrect.  These functions expect a virtual address
+while "addr" is a physical address.
 
+  Maciej
 
 -- 
-Joe deBlaquiere
-Red Hat, Inc.
-307 Wynn Drive
-Huntsville AL, 35805
-voice : (256)-704-9200
-fax   : (256)-837-3839
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

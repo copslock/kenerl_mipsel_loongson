@@ -1,64 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Oct 2003 02:24:10 +0100 (BST)
-Received: from mcjekyll.mcdata.com ([IPv6:::ffff:144.49.6.25]:15003 "EHLO
-	380GATE01out.mcdata.com") by linux-mips.org with ESMTP
-	id <S8225423AbTJTBYH> convert rfc822-to-8bit; Mon, 20 Oct 2003 02:24:07 +0100
-Received: from 380GATE01.mcdata.com ([172.18.1.72]) by 380GATE01out.mcdata.com with Microsoft SMTPSVC(5.0.2195.6713);
-	 Sun, 19 Oct 2003 19:23:55 -0600
-Received: from MC4EXCH03.mcdata.com ([172.16.11.122]) by 380GATE01 with InterScan Messaging Security Suite; Sun, 19 Oct 2003 19:23:54 -0600
-Received: from SNEXCH01.mcdata.com ([172.19.161.13]) by MC4EXCH03.mcdata.com with Microsoft SMTPSVC(5.0.2195.5329);
-	 Sun, 19 Oct 2003 19:23:54 -0600
-X-MimeOLE: Produced By Microsoft Exchange V6.0.6249.0
-Content-Class: urn:content-classes:message
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-Subject: gcov and gprof 
-Date: Sun, 19 Oct 2003 18:23:52 -0700
-Message-ID: <501EA67E9359C645A10C42EB5B52480D2AB2D9@SNEXCH01.mcdata.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: MIPS addressing limits, Was: Re: CVS Update@-mips.org: linux
-Thread-Index: AcOWfafdUl8faX3JTTSh/11qTkakDwAKbkeQ
-From: "Krishna Kondaka" <Krishna.Kondaka@MCDATA.com>
-To: <linux-mips@linux-mips.org>
-X-OriginalArrivalTime: 20 Oct 2003 01:23:54.0361 (UTC) FILETIME=[D380C690:01C396A8]
-Return-Path: <Krishna.Kondaka@MCDATA.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Oct 2003 05:25:16 +0100 (BST)
+Received: from [IPv6:::ffff:61.72.80.34] ([IPv6:::ffff:61.72.80.34]:33796 "HELO
+	noble21.co.kr") by linux-mips.org with SMTP id <S8225310AbTJTEZO>;
+	Mon, 20 Oct 2003 05:25:14 +0100
+From: =?ks_c_5601-1987?B?sMewrcDMutK4tsau?= <webmaster@noble21.co.kr>
+To: "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: =?ks_c_5601-1987?B?W7GksO1dx8e3zsfPvcq0z7HuPyDAzMGoIMbtvsjI9yDB1rmrvcOw7SC788Tox9EgvsbEp8C7ILjC
+Message-Id: <20031020042514Z8225310-1272+8144@linux-mips.org>
+Date: Mon, 20 Oct 2003 05:25:14 +0100
+Return-Path: <webmaster@noble21.co.kr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3455
+X-archive-position: 3456
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Krishna.Kondaka@MCDATA.com
+X-original-sender: webmaster@noble21.co.kr
 Precedence: bulk
 X-list: linux-mips
 
+wLi8vL/k?=
+Date: Mon, 20 Oct 2003 13:25:53 +0900
+MIME-Version: 1.0
+Content-Type: text/html;
+	charset="ks_c_5601-1987"
+Content-Transfer-Encoding: 8bit
 
 
-Hi,
+<html>
 
-I would like to know if gcov and gprof are available on MIPS Linux. If yes, which version of library/utils are these available?
+<head>
+<title>본 메일은 발신전용입니다. 각종 문의사항은 문의메일을 이용해 주세요. </title>
+<meta name="generator" content="ahgh">
+</head>
 
-Thanks in advance
-Krishna
+<body text="black" link="blue" vlink="purple" alink="red" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" bgcolor="#F3F3F3">
+<table border="0" cellpadding="0" cellspacing="0" width="1096">
+    <tr>
+        <td width="7">
+            <p>&nbsp;</p>
+        </td>
+        <td width="1089"><table cellpadding="0" cellspacing="0" width="654" style="border-collapse:collapse;">
+    <tr>
+        <td width="1092" style="border-top-width:1; border-right-width:1; border-bottom-width:0; border-left-width:1; border-top-color:gray; border-right-color:gray; border-left-color:gray; border-style:solid;">
+            <p><img src="http://www.noble21.co.kr/mailling/2003.05.13/img_1.jpg" width="654" height="924" border="0" usemap="#ImageMap1"></p>
+        </td>
+    </tr>
+    <tr>
+        <td width="1092" style="border-top-width:0; border-right-width:1; border-bottom-width:1; border-left-width:1; border-right-color:gray; border-bottom-color:gray; border-left-color:gray; border-style:solid;">
+            <table style="border-collapse:collapse;" cellpadding="0" cellspacing="0" width="654" bgcolor="#999999" bordercolordark="white" bordercolorlight="white">
+                <tr>
+                    <td width="644" style="border-width:1; border-color:white; border-top-style:none; border-right-style:solid; border-bottom-style:solid; border-left-style:solid;">
+                        <p align="center"><FONT color="white" face="굴림"><span style="font-size:9pt;"><BR></span></FONT><span style="font-size:9pt;"><font face="굴림" color="white">Tel : (代) 02-2605-1836&nbsp;&nbsp;&nbsp;&nbsp;Fax : 02-2694-0413&nbsp;&nbsp;&nbsp;&nbsp;E-mail : </font></span><A 
+href="mailto:webmaster@noble21.co.kr"><FONT 
+color="white" face="굴림"><span style="font-size:9pt;">webmaster@noble21.co.kr</span></FONT></A><span style="font-size:9pt;"><font face="굴림" color="white">&nbsp;&nbsp;&nbsp;&nbsp;<BR>본사 : 157-010 서울시 강서구 화곡본동 24-233 노블21(주) 건강이불마트&nbsp;&nbsp;&nbsp;&nbsp;<br>사업자등록번호 : 
+109-81-76636ㆍ통신판매업신고 제 16-299호<br>Copyright ⓒ </font></span><FONT 
+color="white" face="굴림"><span style="font-size:9pt;">noble21</span></FONT><span style="font-size:9pt;"><font face="굴림" color="white"> All rights reserved.</font><font face="굴림"><BR><BR></font></span></p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+        </td>
+    </tr>
+</table>
+<map name="ImageMap1">
+<area shape="rect" coords="242, 19, 305, 45" href="http://www.noble21.co.kr/shop/category.php?classid=1" target="_blank">
+<area shape="rect" coords="306, 20, 373, 44" href="http://www.noble21.co.kr/shop/category.php?classid=2" target="_blank">
+<area shape="rect" coords="375, 19, 452, 44" href="http://www.noble21.co.kr/shop/category.php?classid=3" target="_blank">
+<area shape="rect" coords="452, 20, 521, 44" href="http://www.noble21.co.kr/shop/category.php?classid=4" target="_blank">
+<area shape="rect" coords="523, 20, 574, 44" href="http://www.noble21.co.kr/shop/category.php?classid=5" target="_blank">
+<area shape="rect" coords="573, 19, 652, 46" href="http://www.noble21.co.kr/shop/category.php?classid=9" target="_blank">
+<area shape="rect" coords="9, 8, 123, 39" href="http://www.noble21.co.kr/" target="_blank">
+<area shape="rect" coords="438, 559, 609, 603" href="http://www.noble21.co.kr/" target="_blank">
+<area shape="rect" coords="57, 669, 231, 821" href="http://www.noble21.co.kr/drqueen/drqueen01_1.php" target="_blank">
+<area shape="rect" coords="240, 669, 413, 820" href="http://www.noble21.co.kr/drqueen/drqueen02_1.php" target="_blank">
+<area shape="rect" coords="423, 669, 595, 820" href="http://www.noble21.co.kr/drqueen/drqueen03_1.php" target="_blank">
+</map><br><table width="100%"><td bgcolor="#FFFFFF"><hr>
+<font color="#808080" face="굴림"><span style="FONT-SIZE:9pt">귀하의 이메일주소는 인터넷<a href="http://cvs.handhelds.org/cgi-bin/viewcvs.cgi/linux/kernel26/maintainers?rev=1.7&content-type=text/vnd.viewcvs-markup">서핑중</a>알게되었으며, 메일주소이외의 어떠한 정보도 가지고 있지 않습니다. 메일수신을 원하지 않을경우 <a href="mailto:webmaster@noble21.co.kr?subject=REMOVE&body=본인의 이메일주소 linux-mips@linux-mips.org를 리스트에서 삭제해 주세요...">[수신거부]</a>를 눌러주십시요.. 감사 합니다. 
+</span></font><font face="Arial" size="2"><font color="#808000">If you feel that this information is not what you want, please click <a href="mailto:webmaster@noble21.co.kr?subject=REMOVE&body=Pls remove my email linux-mips@linux-mips.org from your list..">[HERE]</a> requesting to be removed. Thank you, and we apologize for any inconvenience.</font><hr></td></table><br></body>
 
-SPECIAL NOTICE 
+</html>
 
-All information transmitted hereby is intended only for the use of the 
-addressee(s) named  above and may contain confidential and privileged 
-information. Any unauthorized  review, use, disclosure or distribution
-of confidential and privileged information is prohibited. If the reader of
-this message is not the intended recipient(s) or the employee or agent 
-responsible for delivering the message to the intended recipient, you
-are herby notified that you must not read this transmission and that
-disclosure, copying, printing, distribution or use of any of the
-information contained in or attached to this transmission is STRICTLY 
-PROHIBITED.
-
-Anyone who receives confidential and privileged information in error should 
-notify us immediately by telephone and mail the original message to us at the
-above address and destroy all copies.  To the extent any portion of this
-communication contains public information, no such restrictions 
-apply to that information. (gate01)
+G7dL>UQ:3>'gM0(9h22 h5

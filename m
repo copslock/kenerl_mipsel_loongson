@@ -1,74 +1,95 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9T6vq424656
-	for linux-mips-outgoing; Sun, 28 Oct 2001 22:57:52 -0800
-Received: from topsns.toshiba-tops.co.jp (topsns.toshiba-tops.co.jp [202.230.225.5])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9T6vf024652;
-	Sun, 28 Oct 2001 22:57:41 -0800
-Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for [216.32.174.27]) with SMTP; 29 Oct 2001 06:57:41 UT
-Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP
-	id 7D737B478; Mon, 29 Oct 2001 15:57:36 +0900 (JST)
-Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
-	id PAA33211; Mon, 29 Oct 2001 15:57:36 +0900 (JST)
-Date: Mon, 29 Oct 2001 16:02:25 +0900 (JST)
-Message-Id: <20011029.160225.59648095.nemoto@toshiba-tops.co.jp>
-To: ralf@oss.sgi.com
-Cc: ajob4me@21cn.com, linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.2/8.11.3) id f9T8Wgt26479
+	for linux-mips-outgoing; Mon, 29 Oct 2001 00:32:42 -0800
+Received: from mx.mips.com (mx.mips.com [206.31.31.226])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9T8WW026472;
+	Mon, 29 Oct 2001 00:32:32 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id AAA02467;
+	Mon, 29 Oct 2001 00:32:20 -0800 (PST)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id AAA02278;
+	Mon, 29 Oct 2001 00:32:16 -0800 (PST)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id f9T8WEa13888;
+	Mon, 29 Oct 2001 09:32:16 +0100 (MET)
+Message-ID: <3BDD140E.432D795B@mips.com>
+Date: Mon, 29 Oct 2001 09:32:14 +0100
+From: Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
+CC: ralf@oss.sgi.com, ajob4me@21cn.com, linux-mips@oss.sgi.com
 Subject: Re: Toshiba TX3927 board boot problem.
-From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
-In-Reply-To: <20011026.225806.63990588.nemoto@toshiba-tops.co.jp>
 References: <20011026095319.1C4BBB474@topsms.toshiba-tops.co.jp>
-	<20011026.225806.63990588.nemoto@toshiba-tops.co.jp>
-X-Mailer: Mew version 2.0 on Emacs 20.7 / Mule 4.1 (AOI)
-X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
-X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
-Organization: TOSHIBA Personal Computer System Corporation
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+		<20011026.225806.63990588.nemoto@toshiba-tops.co.jp> <20011029.160225.59648095.nemoto@toshiba-tops.co.jp>
+Content-Type: text/plain; charset=iso-8859-15
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
->>>>> On Fri, 26 Oct 2001 22:58:06 +0900 (JST), Atsushi Nemoto <nemoto@toshiba-tops.co.jp> said:
-nemoto> I have seen TX39 dead on "cfc1" insturuction if STATUS.CU1 bit
-nemoto> enabled.  Such codes were in arch/mips/kernel/process.c.
+This doesn't look right, you still need to enable the CU1 bit in the status register to let the FP
+emulator kick-in.
+FPU-less CPUs should take a coprocessor unusable exception on any floating-point instructions.
+I have been running this on several FPU-less CPUs, and it works fine for me.
 
-So, please apply this patch to CVS for TX39XX support.
+Actually there is a problem with this code on CPUs, which have a FPU. The problem is that a lot of
+CPUs have a CP0 hazard of 4 nops, between setting the CU1 bit in the status register and executing
+the first floating point instruction thereafter. It probably only a performance issue, because if
+the setting of CU1 hasn't taken effect yet, then we get a coprocessor unusable exception and the
+the exception handler will also set the CU1 bit.
 
-I use CONFIG_CPU_TX39XX in this patch, but I suppose other FPU-less
-CPUs may need this also.
+/Carsten
 
-Does anybody know how about on other CPUs?
+Atsushi Nemoto wrote:
 
-diff -u linux-sgi-cvs/arch/mips/kernel/process.c linux.new/arch/mips/kernel/
---- linux-sgi-cvs/arch/mips/kernel/process.c	Mon Oct 22 10:29:56 2001
-+++ linux.new/arch/mips/kernel/process.c	Mon Oct 29 15:49:37 2001
-@@ -57,6 +57,12 @@
- {
- 	/* Forget lazy fpu state */
- 	if (last_task_used_math == current) {
-+#ifdef CONFIG_CPU_TX39XX
-+		if (!(mips_cpu.options & MIPS_CPU_FPU)) {
-+			last_task_used_math = NULL;
-+			return;
-+		}
-+#endif
- 		set_cp0_status(ST0_CU1);
- 		__asm__ __volatile__("cfc1\t$0,$31");
- 		last_task_used_math = NULL;
-@@ -67,6 +73,12 @@
- {
- 	/* Forget lazy fpu state */
- 	if (last_task_used_math == current) {
-+#ifdef CONFIG_CPU_TX39XX
-+		if (!(mips_cpu.options & MIPS_CPU_FPU)) {
-+			last_task_used_math = NULL;
-+			return;
-+		}
-+#endif
- 		set_cp0_status(ST0_CU1);
- 		__asm__ __volatile__("cfc1\t$0,$31");
- 		last_task_used_math = NULL;
----
-Atsushi Nemoto
+> >>>>> On Fri, 26 Oct 2001 22:58:06 +0900 (JST), Atsushi Nemoto <nemoto@toshiba-tops.co.jp> said:
+> nemoto> I have seen TX39 dead on "cfc1" insturuction if STATUS.CU1 bit
+> nemoto> enabled.  Such codes were in arch/mips/kernel/process.c.
+>
+> So, please apply this patch to CVS for TX39XX support.
+>
+> I use CONFIG_CPU_TX39XX in this patch, but I suppose other FPU-less
+> CPUs may need this also.
+>
+> Does anybody know how about on other CPUs?
+>
+> diff -u linux-sgi-cvs/arch/mips/kernel/process.c linux.new/arch/mips/kernel/
+> --- linux-sgi-cvs/arch/mips/kernel/process.c    Mon Oct 22 10:29:56 2001
+> +++ linux.new/arch/mips/kernel/process.c        Mon Oct 29 15:49:37 2001
+> @@ -57,6 +57,12 @@
+>  {
+>         /* Forget lazy fpu state */
+>         if (last_task_used_math == current) {
+> +#ifdef CONFIG_CPU_TX39XX
+> +               if (!(mips_cpu.options & MIPS_CPU_FPU)) {
+> +                       last_task_used_math = NULL;
+> +                       return;
+> +               }
+> +#endif
+>                 set_cp0_status(ST0_CU1);
+>                 __asm__ __volatile__("cfc1\t$0,$31");
+>                 last_task_used_math = NULL;
+> @@ -67,6 +73,12 @@
+>  {
+>         /* Forget lazy fpu state */
+>         if (last_task_used_math == current) {
+> +#ifdef CONFIG_CPU_TX39XX
+> +               if (!(mips_cpu.options & MIPS_CPU_FPU)) {
+> +                       last_task_used_math = NULL;
+> +                       return;
+> +               }
+> +#endif
+>                 set_cp0_status(ST0_CU1);
+>                 __asm__ __volatile__("cfc1\t$0,$31");
+>                 last_task_used_math = NULL;
+> ---
+> Atsushi Nemoto
+
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

@@ -1,29 +1,36 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id WAA90859; Wed, 13 Aug 1997 22:19:23 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id GAA188564; Thu, 14 Aug 1997 06:16:09 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id WAA25432 for linux-list; Wed, 13 Aug 1997 22:17:56 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id WAA25426 for <linux@cthulhu.engr.sgi.com>; Wed, 13 Aug 1997 22:17:53 -0700
-Received: from athena.nuclecu.unam.mx (athena.nuclecu.unam.mx [132.248.29.9]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id WAA22129
-	for <linux@cthulhu.engr.sgi.com>; Wed, 13 Aug 1997 22:17:52 -0700
-	env-from (miguel@athena.nuclecu.unam.mx)
-Received: (from miguel@localhost)
-	by athena.nuclecu.unam.mx (8.8.5/8.8.5) id AAA19695;
-	Thu, 14 Aug 1997 00:15:43 -0500
-Date: Thu, 14 Aug 1997 00:15:43 -0500
-Message-Id: <199708140515.AAA19695@athena.nuclecu.unam.mx>
-From: Miguel de Icaza <miguel@nuclecu.unam.mx>
-To: alambie@sgi.com
-CC: linux@cthulhu.engr.sgi.com
-In-reply-to: <33F246E3.701B6269@sgi.com> (message from Alistair Lambie on Thu,
-	14 Aug 1997 11:44:35 +1200)
-Subject: Re: Modification dates on web page
-X-Home: is where the cat is
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id GAA13967 for linux-list; Thu, 14 Aug 1997 06:15:39 -0700
+Received: from dataserv.detroit.sgi.com (dataserv.detroit.sgi.com [169.238.128.2]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id GAA13950 for <linux@cthulhu.engr.sgi.com>; Thu, 14 Aug 1997 06:15:36 -0700
+Received: from dormammu.detroit.sgi.com by dataserv.detroit.sgi.com via ESMTP (940816.SGI.8.6.9/930416.SGI)
+	 id JAA26962; Thu, 14 Aug 1997 09:15:32 -0400
+Received: (from mjo@localhost) by dormammu.detroit.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id JAA20926; Thu, 14 Aug 1997 09:15:30 -0400
+Message-Id: <199708141315.JAA20926@dormammu.detroit.sgi.com>
+Subject: Re: linus accessible from within SGI
+To: eak@detroit.sgi.com
+Date: Thu, 14 Aug 1997 09:15:30 -0400 (EDT)
+Cc: ariel@sgi.com, linux@cthulhu.engr.sgi.com, comm-tech@rock.csd.sgi.com
+In-Reply-To: <33F21CB2.7464B074@cygnus.detroit.sgi.com> from "Eric Kimminau" at Aug 13, 97 04:44:34 pm
+From: mjo@sgi.com (Michael O'Connor)
+X-Organization: Silicon Graphics/Cray Research
+Content-Type: text
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
 
-> If no one has any violent objections I will change the enumerated list
-> in /src/web/status-update to English abbreviations.
+|Has anyone been able to get "mirror" work via socks through our
+|firewall?
 
-Please, do so.  My mistake.
+By 'mirror', I take it you mean the perl mirror program.  :)
 
-Miguel.
+The more general question is:  How do you get perl TCP/IP programs
+to work over SOCKS?  It appears that Simon Cooper, sc@sgi.com, is
+working on a perl module to do that.  Suggest you talk with him, or
+use something else to mirror -- some of the nouveau FTP clients
+do this, and could probably be easily SOCKSified.  
+
+-- 
+ Michael J. O'Connor   |  Phone:    +1 (248) 848-4481  |    "Do, or do not.
+ 39001 W. 12 Mile Rd   |  Fax:      +1 (248) 848-5600  |  There is no try."
+ Farmington Hills, MI  |  Internet:       mjo@sgi.com  |
+ 48331-2903  DMR-225   |  http://reality.sgi.com/mjo/  |              -Yoda

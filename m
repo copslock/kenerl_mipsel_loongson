@@ -1,47 +1,57 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id NAA37592 for <linux-archive@neteng.engr.sgi.com>; Thu, 8 Oct 1998 13:33:14 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA49080 for <linux-archive@neteng.engr.sgi.com>; Fri, 9 Oct 1998 16:18:18 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id NAA78988
+	id QAA07334
 	for linux-list;
-	Thu, 8 Oct 1998 13:31:49 -0700 (PDT)
+	Fri, 9 Oct 1998 16:17:26 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from fir.engr.sgi.com (fir.engr.sgi.com [150.166.49.183])
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via SMTP id NAA36707;
-	Thu, 8 Oct 1998 13:31:47 -0700 (PDT)
-	mail_from (wje@fir.engr.sgi.com)
-Received: (from wje@localhost) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id NAA04597; Thu, 8 Oct 1998 13:30:36 -0700
-Date: Thu, 8 Oct 1998 13:30:36 -0700
-Message-Id: <199810082030.NAA04597@fir.engr.sgi.com>
-From: "William J. Earl" <wje@fir.engr.sgi.com>
-To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: ralf@uni-koblenz.de, linux-mips@fnet.fr, linux-mips@vger.rutgers.edu,
-        linux@cthulhu.engr.sgi.com
-Subject: Re: Tags are dead alias Milo is dead part II
-In-Reply-To: <19981008215834.51243@alpha.franken.de>
-References: <19981007002547.44731@alpha.franken.de>
-	<19981008170335.H4058@uni-koblenz.de>
-	<19981008215834.51243@alpha.franken.de>
+	via ESMTP id QAA32352
+	for <linux@cthulhu.engr.sgi.com>;
+	Fri, 9 Oct 1998 16:17:21 -0700 (PDT)
+	mail_from (jwelling@engin.umich.edu)
+Received: from azure.engin.umich.edu (azure.engin.umich.edu [141.212.78.14]) 
+	by sgi.sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id QAA08458
+	for <linux@cthulhu.engr.sgi.com>; Fri, 9 Oct 1998 16:17:20 -0700 (PDT)
+	mail_from (jwelling@engin.umich.edu)
+Received: from localhost (jwelling@localhost [127.0.0.1])
+	by azure.engin.umich.edu (8.9.1a/8.9.1) with SMTP id TAA04932
+	for <linux@cthulhu.engr.sgi.com>; Fri, 9 Oct 1998 19:17:17 -0400 (EDT)
+Date: Fri, 9 Oct 1998 19:17:16 -0400 (EDT)
+From: Jeremy John Welling <jwelling@engin.umich.edu>
+To: linux@cthulhu.engr.sgi.com
+Subject: Re: R4600PC upgrade
+In-Reply-To: <199810081815.LAA04238@fir.engr.sgi.com>
+Message-ID: <Pine.SOL.4.02.9810091910310.4499-100000@azure.engin.umich.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Thomas Bogendoerfer writes:
- > On Thu, Oct 08, 1998 at 05:03:35PM +0200, ralf@uni-koblenz.de wrote:
- > > Applied to the G364 drivers (which as of now is still MIPS specific anyway)
- > > this means that we'll avoid TLB trashing in the case of scrolling and have
- > > the full TLB available for userland.
- > 
- > I don't believe this will buy us anything. When we add a temporary TLB we need
- > do clear one TLB, which might be used by the userland. So we end up loading
- > our wired entry, killing it, and later the user process has to reload the 
- > TLB again. This way we force TLB trashing, with one wired entry more we
- > _might_ get a little bit more TLB trashing.
- > 
- > As you might know, I'm using three wired entries for the Magnum, and I don't 
- > think doing the same trick for the other entries is a real good idea. When 
- > we make them temporary, we have to mess with TLBs on every interrupt.
+I agree.  I got a message almost exactly like this when I went from 4400
+to 5000.  I have still have my 4400 prom if you need it.  Just let me know
+where to send it.
 
-     You could do what IRIX does in some cases, which is to save and restore
-the TLB entry you replace.  Beware of doing this, however, if your code could
-take a page fault.
+Jeremy Welling
+
+On Thu, 8 Oct 1998, William J. Earl wrote:
+
+> Ulf Carlsson writes:
+>  > Hi,
+>  > 
+>  > I received a R4600PC today (thanks Lukas), and I happily went to my Indy
+>  > and plugged it in instead of my R4000SC. It failed on the diagnostics test
+>  > though. 
+> ...
+>      If your machine is an early R4000SC machine, you may well need a new
+> PROM to go with the newer processor.  The final PROM, supplied with all
+> R5000 systems, works with all processors, but a given older PROM generally
+> does not work with newer processors.  The error message looks like the
+> result of using an obsolete PROM.
+> 

@@ -1,53 +1,46 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6G6dRv03855
-	for linux-mips-outgoing; Sun, 15 Jul 2001 23:39:27 -0700
-Received: from cygnus.com (runyon.cygnus.com [205.180.230.5])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6G6dGV03828;
-	Sun, 15 Jul 2001 23:39:16 -0700
-Received: from otr.mynet (fiendish.cygnus.com [205.180.231.146])
-	by runyon.cygnus.com (8.8.7-cygnus/8.8.7) with ESMTP id XAA06808;
-	Sun, 15 Jul 2001 23:39:12 -0700 (PDT)
-Received: (from drepper@localhost)
-	by otr.mynet (8.11.2/8.11.2) id f6G6Z5k20997;
-	Sun, 15 Jul 2001 23:35:05 -0700
-X-Authentication-Warning: otr.mynet: drepper set sender to drepper@redhat.com using -f
-To: "H . J . Lu" <hjl@lucon.org>
-Cc: Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com,
-   GNU C Library <libc-alpha@sourceware.cygnus.com>
-Subject: Re: Clean up the mips dynamic linker
-References: <20010712182402.A10768@lucon.org>
-	<20010713112635.A32010@bacchus.dhis.org> <m3lmlsu82u.fsf@otr.mynet>
-	<20010713111010.A25902@lucon.org>
-Reply-To: drepper@cygnus.com (Ulrich Drepper)
-X-fingerprint: BE 3B 21 04 BC 77 AC F0  61 92 E4 CB AC DD B9 5A
-X-fingerprint: e6:49:07:36:9a:0d:b7:ba:b5:e9:06:f3:e7:e7:08:4a
-From: Ulrich Drepper <drepper@redhat.com>
-Date: 15 Jul 2001 23:35:04 -0700
-In-Reply-To: "H . J . Lu"'s message of "Fri, 13 Jul 2001 11:10:10 -0700"
-Message-ID: <m38zhps7on.fsf@otr.mynet>
-User-Agent: Gnus/5.0807 (Gnus v5.8.7) XEmacs/21.2 (Thelxepeia)
+	by oss.sgi.com (8.11.2/8.11.3) id f6GAMD218552
+	for linux-mips-outgoing; Mon, 16 Jul 2001 03:22:13 -0700
+Received: from laxmls03.socal.rr.com (laxmls03.socal.rr.com [24.30.163.17])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6GAM7V18546
+	for <linux-mips@oss.sgi.com>; Mon, 16 Jul 2001 03:22:08 -0700
+Received: from compiler (sc-66-74-235-241.socal.rr.com [66.74.235.241])
+	by laxmls03.socal.rr.com (8.11.2/8.11.1) with SMTP id f6GALZV14520;
+	Mon, 16 Jul 2001 03:21:37 -0700 (PDT)
+Content-Type: text/plain;
+  charset="iso-8859-1"
+From: Shane Nay <shane@minirl.com>
+To: James Simmons <jsimmons@transvirtual.com>, Pavel Machek <pavel@suse.cz>
+Subject: Re: [ANNOUNCE] Secondary mips tree.
+Date: Mon, 16 Jul 2001 03:22:40 -0700
+X-Mailer: KMail [version 1.2]
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+   linux-mips@oss.sgi.com, linux-mips-kernel@lists.sourceforge.net
+References: <Pine.LNX.4.10.10107130800230.30223-100000@transvirtual.com>
+In-Reply-To: <Pine.LNX.4.10.10107130800230.30223-100000@transvirtual.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Message-Id: <0107160322400A.02677@compiler>
+Content-Transfer-Encoding: 8bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-"H . J . Lu" <hjl@lucon.org> writes:
+On Friday 13 July 2001 08:01, James Simmons wrote:
+> > Good. I should definitely take a look. [Do you care about vr4130 or about
+> > tx3912, too?]
+>
+> Yes. If you want to work on it no problem.
 
-> 2001-07-13  H.J. Lu <hjl@gnu.org>
-> 
-> 	* sysdeps/mips/dl-machine.h (MAP_BASE_ADDR): Removed.
-> 	(elf_machine_got_rel): Defined only if RTLD_BOOTSTRAP is not
-> 	defined.
-> 	(RESOLVE_GOTSYM): Rewrite to use RESOLVE.
-> 
-> 	* sysdeps/mips/rtld-ldscript.in: Removed.
-> 	* sysdeps/mips/rtld-parms: Likewise.
-> 	* sysdeps/mips/mips64/rtld-parms: Likewise.
-> 	* sysdeps/mips/mipsel/rtld-parms: Likewise.
+Huh, Very Cool.  I was getting ready to queue up a huge IRDA forward port in 
+linux-vr to the 2.4.6 version.  (Still el-crashola on me right now)  The one 
+in the present repository likes to overwrite userspace applications pretty 
+much at randomn.
 
-Is this the complete patch?  Nothing needed from the other patches?
+Maybe after things simmer down I'll port the Agenda hardware platform over to 
+your repository, and Agenda can switch to using that.  linux-vr has been 
+really really stale since we froze at our present version for toolchain 
+reasons.  Those toolchain problems were fixed ages ago, but Mike & Brad who 
+had been responsible for forward porting the kernel stopped doing that work 
+for the most part.
 
--- 
----------------.                          ,-.   1325 Chesapeake Terrace
-Ulrich Drepper  \    ,-------------------'   \  Sunnyvale, CA 94089 USA
-Red Hat          `--' drepper at redhat.com   `------------------------
+Thanks,
+Shane Nay.

@@ -1,49 +1,77 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8E2Bxb19665
-	for linux-mips-outgoing; Thu, 13 Sep 2001 19:11:59 -0700
-Received: from topsns.toshiba-tops.co.jp (topsns.toshiba-tops.co.jp [202.230.225.5])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8E2Bre19662;
-	Thu, 13 Sep 2001 19:11:54 -0700
-Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 14 Sep 2001 02:11:53 UT
-Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP
-	id 1ACF1B460; Fri, 14 Sep 2001 11:11:51 +0900 (JST)
-Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
-	id LAA84657; Fri, 14 Sep 2001 11:11:47 +0900 (JST)
-Date: Fri, 14 Sep 2001 11:16:32 +0900 (JST)
-Message-Id: <20010914.111632.41627160.nemoto@toshiba-tops.co.jp>
-To: ralf@oss.sgi.com
-Cc: linux-mips@oss.sgi.com
-Subject: Re: setup_frame() failure
-From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
-In-Reply-To: <20010913031119.B27168@dea.linux-mips.net>
-References: <20010910.114402.41626914.nemoto@toshiba-tops.co.jp>
-	<20010912.130914.112630116.nemoto@toshiba-tops.co.jp>
-	<20010913031119.B27168@dea.linux-mips.net>
-X-Mailer: Mew version 2.0 on Emacs 20.7 / Mule 4.1 (AOI)
-X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
-X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
-Organization: TOSHIBA Personal Computer System Corporation
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+	by oss.sgi.com (8.11.2/8.11.3) id f8E2hJh20145
+	for linux-mips-outgoing; Thu, 13 Sep 2001 19:43:19 -0700
+Received: from real.realitydiluted.com (real.realitydiluted.com [208.242.241.164])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8E2hFe20141
+	for <linux-mips@oss.sgi.com>; Thu, 13 Sep 2001 19:43:15 -0700
+Received: from localhost.localdomain ([127.0.0.1] helo=cotw.com)
+	by real.realitydiluted.com with esmtp (Exim 3.22 #1 (Red Hat Linux))
+	id 15hiwe-0002CI-00; Thu, 13 Sep 2001 21:43:08 -0500
+Message-ID: <3BA16CAA.6B4DF4A1@cotw.com>
+Date: Thu, 13 Sep 2001 21:34:18 -0500
+From: "Steven J. Hill" <sjhill@cotw.com>
+Reply-To: sjhill@cotw.com
+X-Mailer: Mozilla 4.77 [en] (X11; U; Linux 2.4.9-xfs i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: binutils@sources.redhat.com, gdb@sourceware.cygnus.com,
+   linux-mips@oss.sgi.com
+Subject: Continued MIPS kernel debugging symbols problem...
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
->>>>> On Thu, 13 Sep 2001 03:11:19 +0200, Ralf Baechle <ralf@oss.sgi.com> said:
-ralf> The actual fix should be skipping over the faulting instruction
-ralf> when returning from the signal handler.
+Greetings.
 
-Since the signal handler may want to know the faulting instruction,
-the "skipping" should be done AFTER the returning from the handler.
-On the other hand, the handler may do the "skipping" by itself...
+I have tried everything I can to get Linux kernel debugging
+symbols to work properly. I apologize for posting to so
+many lists too, but I really need to get this working. I
+traded a few emails with HJ Lu and he referred me to the
+following messages/threads:
 
-The symptom I reported first ("the process can not be killd by
-SIGKILL") does not occur if the signal handler executed successfully
-because do_signal() will be called when returning from sys_sygreturn.
-The symptom occur if setup_frame() failed.  So I still think there is
-a point to check a failure of setup_frame().
+   http://sources.redhat.com/ml/gdb/2001-08/msg00053.html
+   http://sources.redhat.com/ml/gdb/2001-08/msg00079.html
+   http://sources.redhat.com/ml/gdb/2001-08/msg00084.html
 
----
-Atsushi Nemoto
+I did read them a few times and it appears that all the
+necessary changes are in the current gdb and insight CVS
+repositories. I checked out the latest sources a half
+hour ago and compiled both gdb and insight using the
+configuration line:
+
+    configure --prefix=/opt/tools --target=mipsel-linux-elf
+
+since my target is a NEC 5432 running in LE mode. I had
+also tried 'mips-linux-elf' targets earlier in the day
+with no difference. I am still getting the following
+mismatch in symbols:
+
+--------------------------------------------------------------------
+(gdb) target remote /dev/ttyS1
+Remote debugging using /dev/ttyS1
+0x80012828 in breakinst () at af_packet.c:1879
+1879            sock_unregister(PF_PACKET);
+(gdb) bt
+#0  0x80012828 in breakinst () at af_packet.c:1879
+#1  0x8001a0d4 in sys_create_module (name_user=0x10001dc8 "cfi_probe",
+    size=8176) at module.c:305
+(gdb) c
+Continuing.
+--------------------------------------------------------------------
+
+I compiled my kernel with a toolchain that used the following
+versions of tools:
+
+    binutils-2.11.90.0.31 (HJLu patches applied)
+    gcc-3.0.1 (stock)
+    glibc-2.2.3 (minor build patches)
+
+Things are still not working and I would greatly appreciate some
+direction. I've blown a whole day this and am a bit frazzled.
+Thanks a bunch in advance.
+
+-Steve
+
+-- 
+ Steven J. Hill - Embedded SW Engineer

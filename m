@@ -1,61 +1,54 @@
-Received:  by oss.sgi.com id <S553867AbRAPRRZ>;
-	Tue, 16 Jan 2001 09:17:25 -0800
-Received: from noose.gt.owl.de ([62.52.19.4]:28939 "HELO noose.gt.owl.de")
-	by oss.sgi.com with SMTP id <S553839AbRAPRRS>;
-	Tue, 16 Jan 2001 09:17:18 -0800
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 4B2A37FE; Tue, 16 Jan 2001 18:17:13 +0100 (CET)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id CBB5BF597; Tue, 16 Jan 2001 18:17:52 +0100 (CET)
-Date:   Tue, 16 Jan 2001 18:17:52 +0100
-From:   Florian Lohoff <flo@rfc822.org>
+Received:  by oss.sgi.com id <S553870AbRAPR0z>;
+	Tue, 16 Jan 2001 09:26:55 -0800
+Received: from woody.ichilton.co.uk ([216.29.174.40]:10761 "HELO
+        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553855AbRAPR0e>;
+	Tue, 16 Jan 2001 09:26:34 -0800
+Received: by woody.ichilton.co.uk (Postfix, from userid 1000)
+	id 541737D0E; Tue, 16 Jan 2001 17:26:33 +0000 (GMT)
+Date:   Tue, 16 Jan 2001 17:26:33 +0000
+From:   Ian Chilton <mailinglist@ichilton.co.uk>
 To:     linux-mips@oss.sgi.com
-Subject: 2.4.0 on SGI I2 - obscure stuff ....
-Message-ID: <20010116181752.E7327@paradigm.rfc822.org>
+Subject: 2.4.0 Kernel Snapshot Available
+Message-ID: <20010116172633.A26461@woody.ichilton.co.uk>
+Reply-To: Ian Chilton <ian@ichilton.co.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-Organization: rfc822 - pure communication
+User-Agent: Mutt/1.3.12i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+Hello,
 
->> bootp():vmlinux-ip22 console=ttyS0 root=/dev/sda1 mem=0x07800000@0x08800000
-Setting $netaddr to 195.71.99.220 (from server watchdog)
-Obtaining vmlinux-ip22 from server watchdog
-ARCH: SGI-IP22
-PROMLIB: ARC firmware Version 1 Revision 10
-CPU: MIPS-R4400 FPU<MIPS-R4400FPC> ICACHE DCACHE SCACHE
-Loading R4000 MMU routines.
-CPU revision is: 00000460
-Primary instruction cache 16kb, linesize 16 bytes.
-Primary data cache 16kb, linesize 16 bytes.
-[...]
+http://linuxmips.ichilton.co.uk/news.php4
 
 
-resume:~# uname -a
-Linux resume.rfc822.org 2.4.0 #4 Tue Jan 16 17:41:04 CET 2001 mips unknown
-resume:~# cat /proc/cpuinfo 
-cpu			: MIPS
-cpu model		: R4000SC V6.0
-system type		: SGI Indigo2
-BogoMIPS		: 0.00
-byteorder		: big endian
-unaligned accesses	: 0
-wait instruction	: no
-microsecond timers	: yes
-extra interrupt vector	: no
-hardware watchpoint	: yes
-VCED exceptions		: not available
-VCEI exceptions		: not available
+I have uploaded a snapshot of the current CVS kernel to the following
+URL's for those who don't use CVS. I will also upload a snapshot of the
+current 2.2.14 from CVS into the same dirctory.
 
-Bogomips = 0.00
-VCED/VCEI not available ?
 
-Flo
--- 
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-     Why is it called "common sense" when nobody seems to have any?
+The 2.4.0 is @:
+
+http://download.ichilton.co.uk/linux-mips/kernelsrc/linux-010116.tar.gz
+
+or
+
+ftp://download.ichilton.co.uk/pub/linux-mips/kernelsrc/linux-010116.tar.gz 
+
+
+Bye for Now,
+
+Ian
+
+                                \|||/
+                                (o o)
+ /---------------------------ooO-(_)-Ooo---------------------------\
+ |  Ian Chilton        (IRC Nick - GadgetMan)     ICQ #: 16007717  |
+ |-----------------------------------------------------------------|
+ |  E-Mail: ian@ichilton.co.uk     Web: http://www.ichilton.co.uk  |
+ |-----------------------------------------------------------------|
+ |        Proofread carefully to see if you any words out.         |
+ \-----------------------------------------------------------------/

@@ -1,45 +1,78 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6GDaXRw031029
-	for <linux-mips-outgoing@oss.sgi.com>; Tue, 16 Jul 2002 06:36:33 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6GDrPRw031327
+	for <linux-mips-outgoing@oss.sgi.com>; Tue, 16 Jul 2002 06:53:26 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6GDaX1c031028
-	for linux-mips-outgoing; Tue, 16 Jul 2002 06:36:33 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6GDrPFf031326
+	for linux-mips-outgoing; Tue, 16 Jul 2002 06:53:25 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6GDaSRw031019
-	for <linux-mips@oss.sgi.com>; Tue, 16 Jul 2002 06:36:29 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA27241;
-	Tue, 16 Jul 2002 15:41:53 +0200 (MET DST)
-Date: Tue, 16 Jul 2002 15:41:53 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: "Houten K.H.C. van (Karel)" <vhouten@kpn.com>
-cc: linux-mips@oss.sgi.com
-Subject: Re: DECStation: Support for PMAZ-AA TC SCSI card?
-In-Reply-To: <200207150940.LAA24361@sparta.research.kpn.com>
-Message-ID: <Pine.GSO.3.96.1020716153355.20654M-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received: from mx2.mips.com (mx2.mips.com [206.31.31.227])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6GDrFRw031316;
+	Tue, 16 Jul 2002 06:53:15 -0700
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id g6GDvVXb027628;
+	Tue, 16 Jul 2002 06:57:31 -0700 (PDT)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id GAA26548;
+	Tue, 16 Jul 2002 06:57:31 -0700 (PDT)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g6GDvUb05899;
+	Tue, 16 Jul 2002 15:57:31 +0200 (MEST)
+Message-ID: <3D34264A.7845DFDC@mips.com>
+Date: Tue, 16 Jul 2002 15:57:30 +0200
+From: Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.77 [en] (X11; U; SunOS 5.8 sun4u)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Spam-Status: No, hits=-4.5 required=5.0 tests=IN_REP_TO,SUBJ_ENDS_IN_Q_MARK version=2.20
+To: Daniel Jacobowitz <dan@debian.org>
+CC: Ralf Baechle <ralf@oss.sgi.com>, "H. J. Lu" <hjl@lucon.org>,
+   linux-mips@oss.sgi.com
+Subject: Re: Personality
+References: <3D33DAB2.353A4399@mips.com> <20020716134014.GA19350@nevyn.them.org>
+Content-Type: text/plain; charset=iso-8859-15
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, hits=0.0 required=5.0 tests= version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, 15 Jul 2002, Houten K.H.C. van (Karel) wrote:
+Daniel Jacobowitz wrote:
 
-> I'm currently experimenting with software raid support on my decstation,
-> and it looks fine! But I would love to use more than one SCSI chain
-> for my raid disks. My DECStation contains a Turbochannel PMAZ-AA
-> SCSI card, which WAS once supported in the driver, but isn't anymore. :-(
+> On Tue, Jul 16, 2002 at 10:34:58AM +0200, Carsten Langgaard wrote:
+> > The include/linux/personality.h file has changed between the 2.4.3 and
+> > the 2.4.18 kernel.
+> > Now there is a define of personality (#define personality(pers) (pers &
+> > PER_MASK), but that breaks things for the users, if they include this
+> > file.
+> > The user wishes to call the glibc personality function (which do the
+> > syscall), and not use the above definition.
+> >
+> > So I guess we need a "#ifdef __KERNEL__" around some of the code in
+> > include/linux/personality.h (at least around the define of personality),
+> > which then has to go into the glibc kernel header files.
+> >
+> > Any comments ?
+>
+> Why is the user program including <linux/personality.h> in the first
+> place?
+>
 
- That's basically the same as the /200's onboard SCSI.  If that works, why
-wouldn't an additional card (yup, I know the SCSI driver is a mess...)?
+It need some personality type defines.
 
- [Looking at the sources...]  The driver seems to have all necessary bits
-to support additional HBAs.  What do you mean by "not supported anymore?" 
-What does it report for PMAZ-AA cards?
+>
+> The right thing to do here is to provide the necessary bits in a glibc
+> header, probably in bits/personality.h or so.
+>
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Agree, that is probably the right way to do it.
+
+>
+> --
+> Daniel Jacobowitz                           Carnegie Mellon University
+> MontaVista Software                         Debian GNU/Linux Developer
+
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

@@ -1,93 +1,68 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8JIAfm01260
-	for linux-mips-outgoing; Wed, 19 Sep 2001 11:10:41 -0700
+	by oss.sgi.com (8.11.2/8.11.3) id f8JJl5l03282
+	for linux-mips-outgoing; Wed, 19 Sep 2001 12:47:05 -0700
 Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8JIAZe01253
-	for <linux-mips@oss.sgi.com>; Wed, 19 Sep 2001 11:10:35 -0700
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8JJl2e03279
+	for <linux-mips@oss.sgi.com>; Wed, 19 Sep 2001 12:47:02 -0700
 Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f8JICAA31314;
-	Wed, 19 Sep 2001 11:12:10 -0700
-Message-ID: <3BA8DD59.C780FE46@mvista.com>
-Date: Wed, 19 Sep 2001 11:00:57 -0700
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f8JJoNA03779;
+	Wed, 19 Sep 2001 12:50:23 -0700
+Message-ID: <3BA8F45D.21347CD@mvista.com>
+Date: Wed, 19 Sep 2001 12:39:09 -0700
 From: Jun Sun <jsun@mvista.com>
 X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
 X-Accept-Language: en
 MIME-Version: 1.0
-To: "Gleb O. Raiko" <raiko@niisi.msk.ru>
+To: Zhang Fuxin <fxzhang@ict.ac.cn>
 CC: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: arch/mips/pci* stuff
-References: <3B862487.EF22D143@niisi.msk.ru> <3B869596.CBDBC20D@mvista.com> <3B8B7ED8.D2DD9E86@niisi.msk.ru> <3B9E63A9.F2B5703C@mvista.com> <3BA5DCAC.F4E8E236@niisi.msk.ru> <3BA67B2D.604D95E5@mvista.com> <3BA855FF.1CCD4F9@niisi.msk.ru>
+Subject: Re: 8259 spurious interrupt (IRQ1,IRQ7,IRQ12..)
+References: <200109190838.f8J8cIe21408@oss.sgi.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-"Gleb O. Raiko" wrote:
+Zhang Fuxin wrote:
 > 
-> Jun Sun wrote:
-> > > You may control pci_scan_bridge by pcibios_assign_all_busses, just
-> > > return 0 from the latter and the code in pci_scan_bridge assigns all
-> > > numbers itself.
-> >
-> > Do you mean that we call pci_scan_brige first before scaning other devices?
-> >
+>  My irq dispatching code is very simple,it just read the IRR,count the first
+> irq number and call do_IRQ.
+>   /*
+>  * the first level int-handler will jump here if it is a 8259A irq
+>  */
+> asmlinkage void i8259A_irqdispatch(struct pt_regs *regs)
+> {
+>         int isr, irq;
 > 
-> Yes I do. Look at drivers/pci/pci.c. The code does
+>         isr = inb(0x20);
 > 
-> for each bus (by recursion)
->         scan devices on this bus
->         for each bridge on this bus
->                 scan bridge
->                 scan bus behind bridge
+>         irq = ffz (~isr);
 > 
-> The flow is pci_do_scan_bus -> pci_scan_bridge -> pci_do_scan_bus
+>         if (irq == 2) {
+>                 isr = inb(0xa0);
+>                 irq = 8 + ffz(~isr);
+>         }
 > 
-> > > You definitely can't mix device discovering and assignment of resources
-> > > in one pass a on a multi-board cPCI system.
-> > >
-> >
-> > I have not given enough thought on 3), but it is certainly desirable.
-> 
-> Well, your previous example works here. You perform scanning of devices
-> and assignments in one pass. You find new device unassigned by
-> firmware/another CPU in cPCI system, then you need find a room in a PCI
-> space. You can't do that, because you don't know yet what rooms
-> firmware/another CPU has allocated, so you don't know what rooms are
-> free.
+>         do_IRQ(irq,regs);
+> }
 > 
 
-You can if you throw away all the previous assignement done by BIOS, like
-pci_auto.c approach.
+OK, so the problem is not what I was thinking.
 
-> > Like I said before, this is the old style of doing things.  There are many
-> > drawbacks in this approach.  Among them, one is to require lots of knowledge
-> > about PCI and how the following hookup functions are called.  Not every
-> > porting engineer is willing to dive into that.  There are some other problems
-> > too.
+I don't have much clue here.  I remember old i8259As have some timing issues
+on fast cpus.  Hopefully all the bridge chips are set up correctly ...
+
+> >It is typically much easier to modify PCI device BARS so that they do coincide
+> >with the same physical address.   You can control that by using the correct
+> >starting address for PCI MEM space in pci_auto.c resource assignment.
+> It seems a good way to solve the ioremap problem and X problem.But virt_to_bus
+> & bus_to_virt problem remains?
 > 
-> Sorry, your reason doesn't convince me. I believe, a porting engineer
-> must know hardware and operating system internals very well irrespective
-> of what his wishes are.
-> 
-> Could you explain other problems, please ?
 
-I am not actively working on PCI right now.  A couple of problems I remembered
-are related to the fixup mechnisms.  If you rely on BIOS assignment, than you
-cannot do fixup on a per-PCI-device basis, then you have to do fixup based on
-per-device/BIOS-combo basis.
+What is the virt_to_bus() problem?  Is the address beyond 512MB (phy addr)? 
+If PCI mem (BUS) address is identical to phy addr, you should not have problem
+unless the address is beyond 512MB.
 
-I think a couple of days ago, there was a question about the restriction of
-PCI memory space being the same as CPU physical address space.  Using pci_auto
-allows you to control the PCI memory region you use and deal with the
-restriction more easily.
-
-BTW, your objection seems to stem from the objection against pci_auto.  But so
-far I have not seen any good reasons for not using pci_auto.  Did I miss
-anything?  If pci_auto does make porting easier, is there any good reason to
-go to a more difficult route?
-
-If you compare code size, PCI auto is much much smaller than the
-pci_assign_unassigned_resources().  I really don't understand what is the
-complain here.
+BTW, virt_to_bus()/bus_to_virt() are deprecicated.  See
+Documentation/DMA-mapping.txt.
 
 Jun

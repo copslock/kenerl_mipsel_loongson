@@ -1,49 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Jan 2005 08:11:06 +0000 (GMT)
-Received: from schenk.ISAR.de ([IPv6:::ffff:212.14.78.13]:61483 "EHLO
-	schenk.isar.de") by linux-mips.org with ESMTP id <S8225221AbVAKIKy>;
-	Tue, 11 Jan 2005 08:10:54 +0000
-Received: from gwhaus.rt.schenk (gwhaus.rt.schenk [172.22.0.4])
-	by schenk.isar.de (8.11.6/8.11.6/SuSE Linux 0.5) with ESMTP id j0B8Ap422267;
-	Tue, 11 Jan 2005 09:10:51 +0100
-Received: from [172.22.10.24] (pcimr4.rt.schenk [172.22.10.24])
-	by gwhaus.rt.schenk (8.11.6/8.11.6/SuSE Linux 0.5) with ESMTP id j0B8Aoi15902;
-	Tue, 11 Jan 2005 09:10:50 +0100
-Message-ID: <41E38A0A.1010507@schenk.isar.de>
-Date: Tue, 11 Jan 2005 09:10:50 +0100
-From: Rojhalat Ibrahim <ibrahim@schenk.isar.de>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7) Gecko/20040617
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Jan 2005 08:23:49 +0000 (GMT)
+Received: from smtp2.wanadoo.fr ([IPv6:::ffff:193.252.22.29]:50410 "EHLO
+	smtp2.wanadoo.fr") by linux-mips.org with ESMTP id <S8225221AbVAKIXo>;
+	Tue, 11 Jan 2005 08:23:44 +0000
+Received: from me-wanadoo.net (unknown [127.0.0.1])
+	by mwinf0207.wanadoo.fr (SMTP Server) with ESMTP id 77A8B1C003E1
+	for <linux-mips@linux-mips.org>; Tue, 11 Jan 2005 09:23:38 +0100 (CET)
+Received: from smtp.innova-card.com (AMarseille-206-1-6-143.w80-14.abo.wanadoo.fr [80.14.198.143])
+	by mwinf0207.wanadoo.fr (SMTP Server) with ESMTP id 52B1F1C00352
+	for <linux-mips@linux-mips.org>; Tue, 11 Jan 2005 09:23:38 +0100 (CET)
+Received: from [192.168.0.24] (spoutnik.innova-card.com [192.168.0.24])
+	by smtp.innova-card.com (Postfix) with ESMTP id 68B1E3800C
+	for <linux-mips@linux-mips.org>; Tue, 11 Jan 2005 09:23:32 +0100 (CET)
+Message-ID: <41E38CDA.0@innova-card.com>
+Date: Tue, 11 Jan 2005 09:22:50 +0100
+From: Franck Bui-Huu <franck.bui-huu@innova-card.com>
+Reply-To: franck.bui-huu@innova-card.com
+Organization: Innova Card
+User-Agent: Mozilla Thunderbird 0.9 (X11/20041127)
 X-Accept-Language: en-us, en
 MIME-Version: 1.0
-To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-CC: linux-mips@linux-mips.org
-Subject: Re: [PATCH] Further TLB handler optimizations
-References: <20041223202526.GA2254@deprecation.cyrius.com> <20041224040051.93587.qmail@web52806.mail.yahoo.com> <20041224085645.GJ3539@rembrandt.csv.ica.uni-stuttgart.de> <20050107190605.GG31335@rembrandt.csv.ica.uni-stuttgart.de> <41E27A6A.5060204@schenk.isar.de> <20050110140429.GC15344@rembrandt.csv.ica.uni-stuttgart.de> <41E29DF5.6040800@schenk.isar.de> <20050110154246.GH15344@rembrandt.csv.ica.uni-stuttgart.de>
-In-Reply-To: <20050110154246.GH15344@rembrandt.csv.ica.uni-stuttgart.de>
-X-Enigmail-Version: 0.84.1.0
-X-Enigmail-Supports: pgp-inline, pgp-mime
-Content-Type: text/plain; charset=us-ascii; format=flowed
+To: linux-mips@linux-mips.org
+Subject: [PATCH] setup.c (clean up only)
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <ibrahim@schenk.isar.de>
+Return-Path: <franck.bui-huu@innova-card.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6877
+X-archive-position: 6878
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ibrahim@schenk.isar.de
+X-original-sender: franck.bui-huu@innova-card.com
 Precedence: bulk
 X-list: linux-mips
 
-Thiemo Seufer wrote:
-> 
-> 
-> This would be a different bug then. It should be relatively easy to
-> catch, there aren't that many places where cpu_has_64bit_gp_regs is
-> used.
-> 
-> 
+Hi,
 
-I see you already fixed it. Works fine now. Thanks a lot.
+Here is a patch that contains some clean up for bootmem_init()
+function. It should be (...well I hope so :-) ) a little bit more
+readable than previous versions.
 
-Rojhalat Ibrahim
+Now IP27's specific code could be easly moved into its boot
+memory init. Look for FIXME pattern...
+
+    Franck.

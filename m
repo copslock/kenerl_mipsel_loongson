@@ -1,60 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Dec 2003 09:04:34 +0000 (GMT)
-Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:2052 "EHLO
-	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8225349AbTLOJEe>;
-	Mon, 15 Dec 2003 09:04:34 +0000
-Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
-	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
-	id 1AVoaz-0005s1-00; Mon, 15 Dec 2003 09:00:53 +0000
-Received: from olympia.mips.com ([192.168.192.128] helo=doms-laptop.algor.co.uk)
-	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
-	id 1AVoeA-0005x2-00; Mon, 15 Dec 2003 09:04:11 +0000
-From: Dominic Sweetman <dom@mips.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Dec 2003 17:03:13 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:30458 "EHLO
+	av.mvista.com") by linux-mips.org with ESMTP id <S8225316AbTLORDN>;
+	Mon, 15 Dec 2003 17:03:13 +0000
+Received: from zeus.mvista.com (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id JAA26188;
+	Mon, 15 Dec 2003 09:03:05 -0800
+Subject: Re: PCMCIA on AMD Alchemy Au1100 boards
+From: Pete Popov <ppopov@mvista.com>
+To: James Cope <jcope@mpc-data.co.uk>
+Cc: Linux MIPS mailing list <linux-mips@linux-mips.org>
+In-Reply-To: <E3E525EC-2A4C-11D8-AC44-000A959E1510@mpc-data.co.uk>
+References: <E3E525EC-2A4C-11D8-AC44-000A959E1510@mpc-data.co.uk>
+Content-Type: text/plain
+Organization: MontaVista Software
+Message-Id: <1071507785.25858.55.camel@zeus.mvista.com>
+Mime-Version: 1.0
+X-Mailer: Ximian Evolution 1.2.4 
+Date: 15 Dec 2003 09:03:05 -0800
 Content-Transfer-Encoding: 7bit
-Message-ID: <16349.31025.637084.624143@doms-laptop.algor.co.uk>
-Date: Mon, 15 Dec 2003 09:04:49 +0000
-To: Peter Horton <pdh@colonel-panic.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: Instability / caching problems on Qube 2 - solved ?
-In-Reply-To: <20031215083236.GA1164@skeleton-jack>
-References: <20031214162605.GA18357@skeleton-jack>
-	<20031215022717.GA16560@linux-mips.org>
-	<20031215083236.GA1164@skeleton-jack>
-X-Mailer: VM 7.07 under 21.4 (patch 10) "Military Intelligence (RC5 Windows)" XEmacs Lucid
-X-MTUK-Scanner: Found to be clean
-X-MTUK-SpamCheck: not spam, SpamAssassin (score=-3.079, required 4, AWL,
-	BAYES_00)
-Return-Path: <dom@mips.com>
+Return-Path: <ppopov@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3775
+X-archive-position: 3776
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dom@mips.com
+X-original-sender: ppopov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
+On Tue, 2003-12-09 at 05:37, James Cope wrote:
+> Hello,
+> 
+> I was wondering if anyone here can help. I am trying to get PCMCIA 
+> support working on a board that is very much like the AMD DB1100. Can 
+> anyone confirm if PCMCIA works on the DB1100? I do not have access to 
+> one at the moment.
+> 
+> I am using the linux_2_4 tagged kernel from CVS with the
+> pcmcia-cs-3.1.22 card services package. I have applied the 64bit_pcmcia 
+> patch to both the kernel and card services code and I have part of the 
+> PCMCIA system running. I can use the `cardctl' utility to detect the 
+> presence of PCMCIA cards successfully, however the `cardmgr' daemon 
+> fails to bind to a socket.
+> 
+> I have a SanDisk Compact Flash card that I'm trying to access. cardmgr 
+> correctly detects this as an ATA/IDE Fixed Disk and calls `modprobe 
+> ide_cs.o' which is loading okay. 
 
-My prejudices are showing but...
+If you get the latest 2.4 kernel, the driver is in drivers/ide/legacy
+and it's called "ide-cs", not "ide_cs". What version of 2.4 are you
+running?
 
-o Shouldn't the kernel should have a zero-tolerance policy towards cache
-  aliases?  That is, no D-cache alias should ever be permitted to
-  happen, not even in data you reasonably hope might be read-only?
-  
-  Aliases only appeared by a kind of mistake when the R4000 was
-  opportunistically repackaged without the secondary cache (the L2
-  cache tags used to keep track of the virtually-indexed L1s, and you
-  got an exception if you created an L1-alias).
+> cardmgr then reports the error ``get 
+> dev info on socket 0 failed: Transport endpoint is not connected'' 
+> (ENOTCONN).
 
-  They really aren't a feature to be tolerated in the hope you can
-  clean up before disaster strikes.
+Sounds familiar, I think. Sounds like mismatch in the driver name and
+the pcmcia config file. If your driver is named ide_cs, the "devinfo"
+inside the driver is set to "ide_cs" and that string won't match an
+"ide-cs", which is probably what your pcmcia config file has... I'm
+guessing.
 
-o And I could never get my brains round cache maintenance if I used
-  the same word ("flush") both for invalidate and write-back.
+Pete
 
---
-Dominic Sweetman
-MIPS Technologies.
+> I can supply more detailed logging and status information if needed, 
+> but for now I'm wondering if this path has been trodden before? I have 
+> searched through the linux-mips mail archive, but I have only been able 
+> to confirm the state of Au1500 PCMCIA support.
+> 
+> Regards,
+> 
+> James Cope
+> 
+> 
+> 

@@ -1,43 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Jan 2003 12:55:22 +0000 (GMT)
-Received: from [IPv6:::ffff:198.149.18.6] ([IPv6:::ffff:198.149.18.6]:3255
-	"EHLO tolkor.sgi.com") by linux-mips.org with ESMTP
-	id <S8225229AbTAVMzV>; Wed, 22 Jan 2003 12:55:21 +0000
-Received: from ledzep.americas.sgi.com (ledzep.americas.sgi.com [192.48.203.134])
-	by tolkor.sgi.com (8.12.2/8.12.2/linux-outbound_gateway-1.2) with ESMTP id h0MD3Ckq026605;
-	Wed, 22 Jan 2003 07:03:12 -0600
-Received: from daisy-e236.americas.sgi.com (daisy-e236.americas.sgi.com [128.162.236.214]) by ledzep.americas.sgi.com (SGI-8.9.3/americas-smart-nospam1.1) with ESMTP id GAA51502; Wed, 22 Jan 2003 06:55:13 -0600 (CST)
-Received: from taclab54.munich.sgi.com (taclab54.munich.sgi.com [144.253.195.54]) by daisy-e236.americas.sgi.com (SGI-8.9.3/SGI-server-1.8) with ESMTP id GAA03246; Wed, 22 Jan 2003 06:55:11 -0600 (CST)
-Received: (from hch@localhost)
-	by taclab54.munich.sgi.com (8.11.6/8.11.6) id h0MK9Jn32216;
-	Wed, 22 Jan 2003 15:09:19 -0500
-Date: Wed, 22 Jan 2003 15:09:19 -0500
-From: Christoph Hellwig <hch@sgi.com>
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: Christoph Hellwig <hch@sgi.com>,
-	Andrew Clausen <clausen@melbourne.sgi.com>,
-	linux-mips@linux-mips.org, gnb@melbourne.sgi.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Jan 2003 21:41:22 +0000 (GMT)
+Received: from 66-122-194-201.ded.pacbell.net ([IPv6:::ffff:66.122.194.201]:19328
+	"EHLO localhost.localdomain") by linux-mips.org with ESMTP
+	id <S8225240AbTAVVlV>; Wed, 22 Jan 2003 21:41:21 +0000
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by localhost.localdomain (8.12.5/8.12.5) with ESMTP id h0MLlbQE001119
+	for <linux-mips@linux-mips.org>; Wed, 22 Jan 2003 13:47:38 -0800
+Received: (from lindahl@localhost)
+	by localhost.localdomain (8.12.5/8.12.5/Submit) id h0MLlbgM001117
+	for linux-mips@linux-mips.org; Wed, 22 Jan 2003 13:47:37 -0800
+X-Authentication-Warning: localhost.localdomain: lindahl set sender to lindahl@keyresearch.com using -f
+Date: Wed, 22 Jan 2003 13:47:36 -0800
+From: Greg Lindahl <lindahl@keyresearch.com>
+To: linux-mips@linux-mips.org
 Subject: Re: debian's mips userland on mips64
-Message-ID: <20030122150919.A32202@sgi.com>
-References: <20030122073006.GF6262@pureza.melbourne.sgi.com> <20030122124540.A31505@sgi.com> <20030122134506.A12847@linux-mips.org>
+Message-ID: <20030122214736.GA1094@wumpus.internal.keyresearch.com>
+Mail-Followup-To: linux-mips@linux-mips.org
+References: <20030122073006.GF6262@pureza.melbourne.sgi.com> <20030122124540.A31505@sgi.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <20030122134506.A12847@linux-mips.org>; from ralf@linux-mips.org on Wed, Jan 22, 2003 at 01:45:06PM +0100
-Return-Path: <hch@taclab54.munich.sgi.com>
+In-Reply-To: <20030122124540.A31505@sgi.com>
+User-Agent: Mutt/1.4i
+Return-Path: <lindahl@keyresearch.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1205
+X-archive-position: 1206
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hch@sgi.com
+X-original-sender: lindahl@keyresearch.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Jan 22, 2003 at 01:45:06PM +0100, Ralf Baechle wrote:
-> There is a 32-bit ptrace compatibility syscall already and last I tried
-> it was working quite well for strace.
+On Wed, Jan 22, 2003 at 12:45:40PM -0500, Christoph Hellwig wrote:
 
-Indeed.  Didn't even check whether mips64 has it already implemented..
+> I don't think so.  You should rather implement a sys32_ptrace and
+> reference it in the 32bit syscall vector.  Look at the version in
+> arch/ia64/ia32/sys_ia32.c for an example.
+
+This works as long as you aren't doing n32 - at some point we'll have
+a mature enough toolchain to do that, and we're going to need to hack
+up sys32_ptrace to do the right thing with the bigger fp register file...
+
+-- greg

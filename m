@@ -1,66 +1,79 @@
-Received:  by oss.sgi.com id <S305187AbQAEQ7Q>;
-	Wed, 5 Jan 2000 08:59:16 -0800
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:45637 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S305166AbQAEQ7M>; Wed, 5 Jan 2000 08:59:12 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id JAA02758; Wed, 5 Jan 2000 09:02:06 -0800 (PST)
-	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id IAA96980
-	for linux-list;
-	Wed, 5 Jan 2000 08:49:36 -0800 (PST)
-	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id IAA56884
-	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 5 Jan 2000 08:49:32 -0800 (PST)
-	mail_from (adisaacs@mr-happy.com)
-Received: from brainguy.tc.mtu.edu (brainguy.tc.mtu.edu [141.219.5.85]) 
+Received:  by oss.sgi.com id <S305188AbQAEUBv>;
+	Wed, 5 Jan 2000 12:01:51 -0800
+Received: from sgi.SGI.COM ([192.48.153.1]:4718 "EHLO sgi.com")
+	by oss.sgi.com with ESMTP id <S305186AbQAEUBb>;
+	Wed, 5 Jan 2000 12:01:31 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id IAA09224
-	for <linux@cthulhu.engr.sgi.com>; Wed, 5 Jan 2000 08:49:25 -0800 (PST)
-	mail_from (adisaacs@mr-happy.com)
-Received: from crow.mr-happy.com (crow.mr-happy.com [172.19.3.81])
-	by brainguy.tc.mtu.edu (8.8.8/8.8.7/mtumailer-1.2) with ESMTP id LAA29439
-	for <linux@cthulhu.engr.sgi.com>; Wed, 5 Jan 2000 11:49:23 -0500 (EST)
-Received: (from adisaacs@localhost)
-	by crow.mr-happy.com (8.9.1b+Sun/HappyClient) id LAA24676
-	for linux@cthulhu.engr.sgi.com; Wed, 5 Jan 2000 11:49:22 -0500 (EST)
-Date:   Wed, 5 Jan 2000 11:49:22 -0500
-From:   Andy Isaacson <adisaacs@mr-happy.com>
-To:     linux@cthulhu.engr.sgi.com
-Subject: Re: XFree86-FBDev and /dev/fb0
-Message-ID: <20000105114922.B20983@mr-happy.com>
-References: <38726C8D.D912DF94@detroit.sgi.com> <00010516082202.01432@pingu.kastner.net>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-In-Reply-To: <00010516082202.01432@pingu.kastner.net>
-X-PGP-Fingerprint: 48 01 21 E2 D4 E4 68 D1  B8 DF 39 B2 AF A3 16 B9
-X-PGP-Key-URL: http://web.mr-happy.com/~adisaacs/pgp.txt
+	via ESMTP id MAA09736; Wed, 5 Jan 2000 12:01:25 -0800 (PST)
+	mail_from (owner-linux@cthulhu.engr.sgi.com)
+Received: (from majordomo-owner@localhost)
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	id LAA27411
+	for linux-list;
+	Wed, 5 Jan 2000 11:25:34 -0800 (PST)
+	mail_from (owner-linux@relay.engr.sgi.com)
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	via ESMTP id LAA09856
+	for <linux@cthulhu.engr.sgi.com>;
+	Wed, 5 Jan 2000 11:25:32 -0800 (PST)
+	mail_from (lsmith@systemdynamix.com)
+Received: from pcnet1.pcnet.com (pcnet1.pcnet.com [204.213.232.3]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id LAA06253
+	for <linux@cthulhu.engr.sgi.com>; Wed, 5 Jan 2000 11:25:25 -0800 (PST)
+	mail_from (lsmith@systemdynamix.com)
+Received: from sgi320 (pm3-pt26.pcnet.net [206.105.29.100])
+	by pcnet1.pcnet.com (8.8.7/PCNet) with SMTP id OAA20072
+	for <linux@cthulhu.engr.sgi.com>; Wed, 5 Jan 2000 14:23:56 -0500 (EST)
+From:   "Len Smith" <lsmith@systemdynamix.com>
+To:     <linux@cthulhu.engr.sgi.com>
+Subject: SGI320/Linux - Zip Drive and COM port.
+Date:   Wed, 5 Jan 2000 14:25:07 -0500
+Message-ID: <LOBBKIACINGIEBKLGDKHMEIKCEAA.lsmith@systemdynamix.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2314.1300
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On Wed, Jan 05, 2000 at 04:06:24PM +0100, Jiri Kastner jr. wrote:
-> Dne Ut, 04 jan 2000 jste napsal(a):
->  
-> > You have to enable it in your kernel. 
-> 
-> I have kernel with framebuffer (when I boot, I see linux-sgi.logo - 2.2.1)
-> 
-> I have no /dev/fb0.
+I am attempting to deal with several issues with RH 6.0 Linux (2.2.10) on
+the SGI Visual Workstation that I am unable to resolve.  I am sure that the
+resolutions are quite simple, but I have tried the HOWTO route and asked
+others without success.  Normally I am reluctant to seek help, opting to
+work the problem out for myself, but I seem unable to do so in this case.
 
-You probably need to create the device node, then.  Look at the man
-page for mknod, and Documentation/devices.txt in your kernel source
-tree, for further info.
+First, I recently installed an SGI supplied IOMEGA ZIP-100 into floppy bay
+#2 on the VWS.  It installed easily and it works correctly under NT.  It is
+recognized by Linux as "hdd" on the third probe during boot.  I am unable to
+mount the device.  The HOWTOs reference SCSI drives (this is an IDE, I
+believe) or parallel-attached devices.  So I can't find support assistance
+for internal drives.  Do you have any guidance in this area?
 
--andy
--- 
-Andy Isaacson  http://web.mr-happy.com/~adisaacs/   Fight Spam, join CAUCE:
-adi@acm.org adisaacs@mr-happy.com isaacson@cs.umn.edu   www.cauce.org
+Also, I am having difficulty accessing COM1 on the VWS.  I get an error on
+"setserial -g /dev/ttys0" or "/dev/cua0" under root.  Both devices are
+present and seem to be correct.  The port works correctly under NT.  If I
+try "setserial auto_irq skip_test autoconfig" I receive a "device not found"
+error.  If you have guidance here I would be grateful as well.
+
+I thank your for your time.
+
+Regards,
+
+Len Smith
+lsmith@systemdynamix.com

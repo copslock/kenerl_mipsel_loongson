@@ -1,68 +1,39 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBDI7Wd14693
-	for linux-mips-outgoing; Thu, 13 Dec 2001 10:07:32 -0800
-Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBDI7Ro14682
-	for <linux-mips@oss.sgi.com>; Thu, 13 Dec 2001 10:07:27 -0800
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id F32E584A; Thu, 13 Dec 2001 18:07:16 +0100 (CET)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 04FAF44AF; Thu, 13 Dec 2001 18:05:22 +0100 (CET)
-Date: Thu, 13 Dec 2001 18:05:22 +0100
-From: Florian Lohoff <flo@rfc822.org>
-To: "Bradley D. LaRonde" <brad@ltc.com>
+	by oss.sgi.com (8.11.2/8.11.3) id fBDIAlD14840
+	for linux-mips-outgoing; Thu, 13 Dec 2001 10:10:47 -0800
+Received: from buzz.ichilton.co.uk (pc3-stoc4-0-cust138.mid.cable.ntl.com [213.107.175.138])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBDIAio14837
+	for <linux-mips@oss.sgi.com>; Thu, 13 Dec 2001 10:10:45 -0800
+Received: by buzz.ichilton.co.uk (Postfix, from userid 100)
+	id 4879E1CE5C7; Thu, 13 Dec 2001 17:10:41 +0000 (GMT)
+Date: Thu, 13 Dec 2001 17:10:41 +0000
+From: Ian Chilton <mailinglist@ichilton.co.uk>
+To: Florian Lohoff <flo@rfc822.org>
 Cc: linux-mips@oss.sgi.com
-Subject: Re: [PATCH] /proc/cpuinfo endianess (autoconf dependencie)
-Message-ID: <20011213170522.GC25296@paradigm.rfc822.org>
-References: <20011213163953.GB23023@paradigm.rfc822.org> <06c701c183f7$d23eb410$5601010a@prefect>
+Subject: Re: Current CVS on Indigo2 fail
+Message-ID: <20011213171041.A25225@buzz.ichilton.local>
+Reply-To: Ian Chilton <ian@ichilton.co.uk>
+References: <20011213123522.GA32232@paradigm.rfc822.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="FsscpQKzF/jJk6ya"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <06c701c183f7$d23eb410$5601010a@prefect>
-User-Agent: Mutt/1.3.24i
-Organization: rfc822 - pure communication
+In-Reply-To: <20011213123522.GA32232@paradigm.rfc822.org>
+User-Agent: Mutt/1.3.23i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+Hello,
 
---FsscpQKzF/jJk6ya
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> i just tried to boot the current cvs as of a couple minutes old
+> on an Indigo2 - It seemt the stuff crashes before its even able to
+> print something on the screen.
 
-On Thu, Dec 13, 2001 at 12:01:34PM -0500, Bradley D. LaRonde wrote:
-> For autoconf?  Why need to ask the kernel?  Aren't there other very simple
-> ways of determining build endianness in userspace?
->=20
+> Anyone else ?
 
-Ah - Here is the responsible autoconf bit from config.guess:
 
-   mips:Linux:*:*)
-       case `sed -n '/^byte/s/^.*: \(.*\) endian/\1/p' < /proc/cpuinfo` in
-         big)    echo mips-unknown-linux-gnu && exit 0 ;;
-         little) echo mipsel-unknown-linux-gnu && exit 0 ;;
-       esac
+Me - I told you about it in #mipslinux the other day, remember?
 
-This has already been discussed and probably even fixed in autoconf
-upstream ...
 
-Flo
---=20
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-Nine nineth on september the 9th              Welcome to the new billenium
+Thanks
 
---FsscpQKzF/jJk6ya
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iD8DBQE8GN/SUaz2rXW+gJcRAmwCAKCGBSI6bvsVsTFbB+PA5CUl3D2SeQCg0IhQ
-Ic/7lJheJPfoVXBaRf6LQHA=
-=gZC0
------END PGP SIGNATURE-----
-
---FsscpQKzF/jJk6ya--
+Ian

@@ -1,65 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jul 2003 04:23:56 +0100 (BST)
-Received: from p508B60E0.dip.t-dialin.net ([IPv6:::ffff:80.139.96.224]:39643
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8224802AbTG3DXy>; Wed, 30 Jul 2003 04:23:54 +0100
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h6U3GWx6015647;
-	Wed, 30 Jul 2003 05:16:32 +0200
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h6U3GWgM015646;
-	Wed, 30 Jul 2003 05:16:32 +0200
-Date: Wed, 30 Jul 2003 05:16:31 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: Keith M Wesolowski <wesolows@foobazco.org>,
-	"Kevin D. Kissell" <kevink@mips.com>, linux-mips@linux-mips.org
-Subject: Re: CVS Update@-mips.org: linux
-Message-ID: <20030730031631.GD7366@linux-mips.org>
-References: <20030722212117.GB1660@linux-mips.org> <Pine.GSO.3.96.1030722232705.607L-100000@delta.ds2.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.GSO.3.96.1030722232705.607L-100000@delta.ds2.pg.gda.pl>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jul 2003 06:54:34 +0100 (BST)
+Received: from mailgate5.cinetic.de ([IPv6:::ffff:217.72.192.165]:33713 "EHLO
+	mailgate5.cinetic.de") by linux-mips.org with ESMTP
+	id <S8225253AbTG3Fyc>; Wed, 30 Jul 2003 06:54:32 +0100
+Received: from web.de (fmomail03.dlan.cinetic.de [172.20.1.236])
+	by mailgate5.cinetic.de (8.11.6p2/8.11.2/SuSE Linux 8.11.0-0.4) with SMTP id h6U5sOQ11794;
+	Wed, 30 Jul 2003 07:54:25 +0200
+Date: Wed, 30 Jul 2003 07:54:25 +0200
+Message-Id: <200307300554.h6U5sOQ11794@mailgate5.cinetic.de>
+MIME-Version: 1.0
+Organization: http://freemail.web.de/
+From: =?iso-8859-1?Q? "Frank=20F=F6rstemann" ?= <foerstemann@web.de>
+To: ralf@linux-mips.org
+Cc: linux-mips@linux-mips.org
+Subject: Re: No mouse support for Indy in 2.5.75 ?
+Precedence: fm-user
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+Return-Path: <foerstemann@web.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2926
+X-archive-position: 2927
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: foerstemann@web.de
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Jul 22, 2003 at 11:37:44PM +0200, Maciej W. Rozycki wrote:
+Hi Ralf.
 
-> > Btw, an old experience repeats - some of the code was identical except
-> > inline assembler using addu etc. for 32-bit and daddu etc. for 64-bit.
-> > I rewrote that stuff to use C for this arithmetic.  The result - less
-> > inline assembler, more readable code and a file that's identical for
-> > both 32-bit and 64-bit.
+Is there any additional information I can collect on these issues ?
+
+Frank
+
+Am Die, 2003-07-29 um 13.49 schrieb Ralf Baechle:
+> On Fri, Jul 25, 2003 at 11:37:06PM +0200, =?iso-8859-1?Q? Frank=20F=F6rstemann ?= wrote:
 > 
->  Well, whatever is plain C code (or should be such) should be identical,
-> indeed, but macros will differ as will low-level assembly.  Then add
-> 64-bit specific options and you get yet more complication. 
+> > I tried kernel version 2.5.75 on my Indy. It works fine with the
+> > exception that the mouse in XFree86 does not move. The devices are 
+> > available, but event debugging shows no mouse events at all. Are there
+> > any special configuration options for the Indy mouse except the ones in
+> > the 'input' section ? Dmesg output and kernel configuration are
+> > attached.
+> 
+> We knew there was something wrong in that area; the probe for kbd and mouse
+> also takes very long on the Indy.  What worries me more are those
+> kernel messages from your log:
+> 
+> mount: Exception at [<88113a38>] (88113bf0)
+> mount: Exception at [<88113a38>] (88113bf0)
+> mount: Exception at [<88113a38>] (88113bf0)
+> 
+>   Ralf
 
-You're right, we've got a good bit of assembler code that should just be
-C.  So I rewrote some of the code to C.
-
->  I hope `uname -m' will continue to report the correct architecture and
-> that ARCH will be correctly handled (i.e. "mips" selecting a 32-bit build
-> and "mips64" a 64-bit one) -- have you considered this?
-
-Not intend to change the behaviour of uname.  It actually changed in CVS,
-for now consider that a bug ...
-
-We should consider changing the behaviour though.  A machine type of
-mips64 broke lots of software.  Of course that was all 32-bit softare but
-it raises the question if returning mips64 is really a good idea?
-
-As for choosing a 32-bit vs. 64-bit kernel, that's now a menu point and can
-be choosen like every other config option.
-
-  Ralf
+______________________________________________________________________________
+ComputerBild (15-03) empfiehlt: Der beste Spam-Schutz ist bei
+WEB.DE FreeMail - Deutschlands beste E-Mail - http://s.web.de/?mc=021124

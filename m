@@ -1,99 +1,40 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBH29mC03826
-	for linux-mips-outgoing; Sun, 16 Dec 2001 18:09:48 -0800
-Received: from woody.ichilton.co.uk (woody.ichilton.co.uk [216.28.122.60])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBH29ao03823;
-	Sun, 16 Dec 2001 18:09:37 -0800
-Received: by woody.ichilton.co.uk (Postfix, from userid 1000)
-	id 2725B7CF5; Mon, 17 Dec 2001 01:09:26 +0000 (GMT)
-Date: Mon, 17 Dec 2001 01:09:26 +0000
-From: Ian Chilton <ian@ichilton.co.uk>
-To: linux-mips@oss.sgi.com
-Cc: ralf@oss.sgi.com
-Subject: Kernel Wont Boot on I2 - Not the kernel!
-Message-ID: <20011217010926.H6423@woody.ichilton.co.uk>
-Reply-To: Ian Chilton <ian@ichilton.co.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.13i
+	by oss.sgi.com (8.11.2/8.11.3) id fBHEDdO12775
+	for linux-mips-outgoing; Mon, 17 Dec 2001 06:13:39 -0800
+Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBHEDXo12762
+	for <linux-mips@oss.sgi.com>; Mon, 17 Dec 2001 06:13:34 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA19984;
+	Mon, 17 Dec 2001 14:12:44 +0100 (MET)
+Date: Mon, 17 Dec 2001 14:12:44 +0100 (MET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Keith Owens <kaos@melbourne.sgi.com>
+cc: Karsten Merker <karsten@excalibur.cologne.de>, linux-mips@oss.sgi.com
+Subject: Re: No bzImage target for MIPS 
+In-Reply-To: <20472.1008407699@ocs3.intra.ocs.com.au>
+Message-ID: <Pine.GSO.3.96.1011217140621.19523A-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hello,
+On Sat, 15 Dec 2001, Keith Owens wrote:
 
-Just been looking into the problem more.
+> AFAICT ecoff is only used on mips but, since ecoff is not an arch
+> specific object format, it makes sense to make it a generic kbuild
+> target, like elf, srec and bin.  To that end, I looked at moving
+> elf2ecoff and addinitrd to an arch independent directory so everybody
+> could use those tools, alas both contain mips specific code.  Any idea
+> how much work is required to make elf2ecoff and addinitrd into generic
+> utilities?  Is it worth the effort or should they stay as mips only?
 
-My Indy and Sparc boxes netboot fine, so server seems ok
+ Elf2ecoff is probably going not to be used one day anymore, i.e. once
+binutils are fixed.  Right now there is a problem in marking ELF
+executables impure (non-paged).  Ultimately either objcopy or even ld
+directly is going to be used for ECOFF binary creation. 
 
-My I2 boots an old 2.4.0-test9 kernel fine
-
-But try to boot a new kernel on the I2, get this:
-
->> bootp():/vmlinux                 
-Setting $netaddr to 192.168.0.13 (from server )
-Obtaining /vmlinux from server                 
-  /                           
-[and stops there]
-
-I thought this was the kernel, but I just tried Flo's (lolo) working
-I2 kernel and it does exactly the same!!
-
-
-Server is showing this:
-
-Dec 17 01:54:48 slinky dhcpd: BOOTREQUEST from 08:00:69:08:9d:ec via
-eth0
-Dec 17 01:54:48 slinky dhcpd: BOOTREPLY for 192.168.0.13 to dale
-(08:00:69:08:9d:ec) via eth0
-Dec 17 01:54:48 slinky in.tftpd[5858]: connect from dale.ichilton.local
-Dec 17 01:54:48 slinky tftpd[5859]: tftpd: trying to get file:
-vmlinux-dale 
-Dec 17 01:54:48 slinky tftpd[5859]: tftpd: serving file from
-/export/tftpboot 
-[root@slinky:/export/tftpboot]# ls -la vmlinux-dale 
-lrwxrwxrwx    1 root     root           19 Dec 17 01:51 vmlinux-dale ->
-mips/vmlinux-2.4.16
-
-
-End of tcpdump is:
-
-02:01:09.797242 dale.ichilton.local.15677 > slinky.ichilton.local.2052:
-udp 6
-02:01:09.797289 slinky.ichilton.local.2052 > dale.ichilton.local.15677:
-udp 516
-02:01:09.798218 dale.ichilton.local.15677 > slinky.ichilton.local.2052:
-udp 6
-02:01:09.798265 slinky.ichilton.local.2052 > dale.ichilton.local.15677:
-udp 516
-02:01:09.799190 dale.ichilton.local.15677 > slinky.ichilton.local.2052:
-udp 6
-02:01:09.799235 slinky.ichilton.local.2052 > dale.ichilton.local.15677:
-udp 516
-02:01:09.800168 dale.ichilton.local.15677 > slinky.ichilton.local.2052:
-udp 6
-02:01:09.800213 slinky.ichilton.local.2052 > dale.ichilton.local.15677:
-udp 516
-02:01:09.860624 dale.ichilton.local.15677 > slinky.ichilton.local.2052:
-udp 6
-02:01:11.574420 arp who-has dale.ichilton.local tell
-slinky.ichilton.local
-02:01:12.574416 arp who-has dale.ichilton.local tell
-slinky.ichilton.local
-02:01:13.574414 arp who-has dale.ichilton.local tell
-slinky.ichilton.local
-02:01:14.574427 arp who-has dale.ichilton.local tell
-slinky.ichilton.local
-02:01:15.574423 arp who-has dale.ichilton.local tell
-slinky.ichilton.local
-02:01:16.574414 arp who-has dale.ichilton.local tell
-slinky.ichilton.local
-
-
-
-Anyone any ideas?
-
-
-Thanks
-
-Ian
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

@@ -1,57 +1,39 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id XAA96342 for <linux-archive@neteng.engr.sgi.com>; Sat, 20 Jun 1998 23:05:56 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id JAA98027 for <linux-archive@neteng.engr.sgi.com>; Sun, 21 Jun 1998 09:01:50 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id XAA91022
+	id JAA72547
 	for linux-list;
-	Sat, 20 Jun 1998 23:05:20 -0700 (PDT)
+	Sun, 21 Jun 1998 09:01:09 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from oz.engr.sgi.com (oz.engr.sgi.com [150.166.42.13])
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id XAA37857;
-	Sat, 20 Jun 1998 23:05:17 -0700 (PDT)
-	mail_from (ariel@oz.engr.sgi.com)
-Received: (from ariel@localhost) by oz.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) id XAA05652; Sat, 20 Jun 1998 23:05:17 -0700 (PDT)
-From: ariel@oz.engr.sgi.com (Ariel Faigon)
-Message-Id: <199806210605.XAA05652@oz.engr.sgi.com>
-Subject: Re: RedHat reveals some secrets
-To: alan@lxorguk.ukuu.org.uk (Alan Cox)
-Date: Sat, 20 Jun 1998 23:05:16 -0700 (PDT)
-Cc: linux@cthulhu.engr.sgi.com (SGI/Linux mailing list)
-In-Reply-To: <m0ynYV0-000aOnC@the-village.bc.nu> from "Alan Cox" at Jun 21, 98 02:00:49 am
-Reply-To: ariel@cthulhu.engr.sgi.com (Ariel Faigon)
-Organization: Silicon Graphics Inc.
-X-Mailer: ELM [version 2.4 PL24 ME5a]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	via ESMTP id JAA94540
+	for <linux@engr.sgi.com>;
+	Sun, 21 Jun 1998 09:01:02 -0700 (PDT)
+	mail_from (ralf@mailhost.uni-koblenz.de)
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam: SGI does not authorize the use of its proprietary systems or networks for unsolicited or bulk email from the Internet.) via ESMTP id JAA11240
+	for <linux@engr.sgi.com>; Sun, 21 Jun 1998 09:01:01 -0700 (PDT)
+	mail_from (ralf@mailhost.uni-koblenz.de)
+Received: from thoma (ralf@thoma.uni-koblenz.de [141.26.4.61])
+	by informatik.uni-koblenz.de (8.8.8/8.8.8) with SMTP id SAA08073
+	for <linux@engr.sgi.com>; Sun, 21 Jun 1998 18:00:59 +0200 (MEST)
+Received: by thoma (SMI-8.6/KO-2.0)
+	id SAA16460; Sun, 21 Jun 1998 18:00:57 +0200
+Message-ID: <19980621180056.41345@uni-koblenz.de>
+Date: Sun, 21 Jun 1998 18:00:56 +0200
+From: ralf@uni-koblenz.de
+To: linux@cthulhu.engr.sgi.com
+Subject: Joe
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.84e
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-:
-:> by IDC and was estimated at 6.8% of the server operating system
-:> market, after NT, Novell NetWare, and "Unix" :-)
-:
-:Quick glue all the unixen together before they come too low ;)
-:
-:More seriously do you have a URL to the IDC one ?
-:
-It is not yet on the site (so it appears) but it was in the
-last page of today's Newspaper.
+I've fixed the editor Joe.  The problem was that it was written using
+assumptions about what exactly is contained in struct sigaction.
+Obviously everybody, even on Intel machines, ignored the warnings caused
+by this.
 
-The numbers were:
-	36.0%: Windows NT
-	26.4%: Netware (Novell)
-	20.0%: Unix
-	6.8%:  Linux
-	6.3%:  OS/2
-	3.8%:  Other
-
-(It adds to 99.3% probably due to last digit rounding)
-
-What's no less important, I feel, is that Linux is the _only_
-alternative OS to MS that actually _grew_, all the rest lost
-market share to Microsoft.
-
--- 
-Peace, Ariel
+  Ralf

@@ -1,47 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Jun 2004 04:16:52 +0100 (BST)
-Received: from eth13.com-link.com ([IPv6:::ffff:208.242.241.164]:65446 "EHLO
-	real.realitydiluted.com") by linux-mips.org with ESMTP
-	id <S8224773AbUFADQs>; Tue, 1 Jun 2004 04:16:48 +0100
-Received: from localhost ([127.0.0.1] helo=realitydiluted.com)
-	by real.realitydiluted.com with esmtp (Exim 3.36 #1 (Debian))
-	id 1BUzlS-0005BN-00; Mon, 31 May 2004 22:16:34 -0500
-Message-ID: <40BBF555.6000600@realitydiluted.com>
-Date: Mon, 31 May 2004 22:17:41 -0500
-From: "Steven J. Hill" <sjhill@realitydiluted.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.6) Gecko/20040528 Debian/1.6-7
-X-Accept-Language: en
-MIME-Version: 1.0
-To: Guido Guenther <agx@sigxcpu.org>
-CC: linux-mips@linux-mips.org, debian-toolchain@lists.debian.org
-Subject: Re: TLS register
-References: <20040531230524.GB2785@bogon.ms20.nix>
-In-Reply-To: <20040531230524.GB2785@bogon.ms20.nix>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Jun 2004 04:25:00 +0100 (BST)
+Received: from fw.osdl.org ([IPv6:::ffff:65.172.181.6]:3240 "EHLO
+	mail.osdl.org") by linux-mips.org with ESMTP id <S8224930AbUFADYz>;
+	Tue, 1 Jun 2004 04:24:55 +0100
+Received: from midway.verizon.net (build.pdx.osdl.net [172.20.1.2])
+	by mail.osdl.org (8.11.6/8.11.6) with SMTP id i513Opr15187;
+	Mon, 31 May 2004 20:24:52 -0700
+Date: Mon, 31 May 2004 20:21:01 -0700
+From: "Randy.Dunlap" <rddunlap@osdl.org>
+To: linux-mips@linux-mips.org
+Cc: ralf@gnu.org, rddunlap <rddunlap@osdl.org>
+Subject: [PATCH] MIPS getdomainname() off by 1;
+Message-Id: <20040531202101.4ace5e95.rddunlap@osdl.org>
+Organization: OSDL
+X-Mailer: Sylpheed version 0.9.8a (GTK+ 1.2.10; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <sjhill@realitydiluted.com>
+Return-Path: <rddunlap@osdl.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5227
+X-archive-position: 5228
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sjhill@realitydiluted.com
+X-original-sender: rddunlap@osdl.org
 Precedence: bulk
 X-list: linux-mips
 
-Guido Guenther wrote:
->
-> He suggested $24 (t8) another discussed possibility would be $27 (k1)
-> which is already abused by the PS/2 folks for ll/sc emulation.
-> Another possibility would be to reserve such a register only in the
-> n32/n64 ABIs and let o32 stay without __thread and TLS forever.
-> Any feedback welcome.
->
-I vote for $24 (t8). LL/SC emulation is an issue and I believe some of
-the exception vectors, if not all of them indirectly depend on k1. It
-would take a lot of work (and testing) to rewrite the exceptions to not
-utilize k1 and it would probably be a nasty performance hit in many
-cases. I agree with "Screw o32" and let's move forward.
 
--Steve
+irix_getdomainname() max size appears to be off by 1;
+other similar code in kernel uses __NEW_UTS_LEN as the max size,
+and <domainname> includes an extra byte for the terminating
+null character.
+
+Does sysirix.c need to limit <len> to 63 instead of 64 for some
+reason?
+
+
+diffstat:=
+ arch/mips/kernel/sysirix.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+
+diff -Naurp ./arch/mips/kernel/sysirix.c~uts_len_off1 ./arch/mips/kernel/sysirix.c
+--- ./arch/mips/kernel/sysirix.c~uts_len_off1	2004-05-31 13:58:24.000000000 -0700
++++ ./arch/mips/kernel/sysirix.c	2004-05-31 20:11:42.000000000 -0700
+@@ -913,8 +913,8 @@ asmlinkage int irix_getdomainname(char *
+ 		return error;
+ 
+ 	down_read(&uts_sem);
+-	if(len > (__NEW_UTS_LEN - 1))
+-		len = __NEW_UTS_LEN - 1;
++	if (len > __NEW_UTS_LEN)
++		len = __NEW_UTS_LEN;
+ 	error = 0;
+ 	if (copy_to_user(name, system_utsname.domainname, len))
+ 		error = -EFAULT;
+
+--
+~Randy

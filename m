@@ -1,63 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Oct 2004 02:17:17 +0100 (BST)
-Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:64798
-	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
-	id <S8225305AbUJGBRM>; Thu, 7 Oct 2004 02:17:12 +0100
-Received: from newms.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 7 Oct 2004 01:17:11 UT
-Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
-	by newms.toshiba-tops.co.jp (Postfix) with ESMTP
-	id 7AB78239E23; Thu,  7 Oct 2004 10:19:49 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id i971H28G029005;
-	Thu, 7 Oct 2004 10:17:03 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date: Thu, 07 Oct 2004 10:15:58 +0900 (JST)
-Message-Id: <20041007.101558.126571743.nemoto@toshiba-tops.co.jp>
-To: jsun@junsun.net
-Cc: linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: fpu_emulator can lose fpu on get_user/put_user
-From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20041006220936.GA21135@gateway.junsun.net>
-References: <20041006.101920.126571873.nemoto@toshiba-tops.co.jp>
-	<20041006220936.GA21135@gateway.junsun.net>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.2 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Oct 2004 04:46:07 +0100 (BST)
+Received: from wip-ec-wd.wipro.com ([IPv6:::ffff:203.101.113.39]:31130 "EHLO
+	wip-ec-wd.wipro.com") by linux-mips.org with ESMTP
+	id <S8224839AbUJGDqD> convert rfc822-to-8bit; Thu, 7 Oct 2004 04:46:03 +0100
+Received: from wip-ec-wd.wipro.com (localhost.wipro.com [127.0.0.1])
+	by localhost (Postfix) with ESMTP id BE7ED20571;
+	Thu,  7 Oct 2004 09:12:37 +0530 (IST)
+Received: from blr-ec-bh3.wipro.com (unknown [10.200.50.93])
+	by wip-ec-wd.wipro.com (Postfix) with ESMTP id 9969B20530;
+	Thu,  7 Oct 2004 09:12:37 +0530 (IST)
+Received: from chn-snr-bh1.wipro.com ([10.145.50.91]) by blr-ec-bh3.wipro.com with Microsoft SMTPSVC(5.0.2195.6713);
+	 Thu, 7 Oct 2004 09:15:53 +0530
+Received: from chn-snr-msg.wipro.com ([10.145.50.99]) by chn-snr-bh1.wipro.com with Microsoft SMTPSVC(5.0.2195.6713);
+	 Thu, 7 Oct 2004 09:15:54 +0530
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6603.0
+Content-Class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="US-ASCII"
+Content-Transfer-Encoding: 8BIT
+Subject: RE: __up, __down_trylock & __down_interruptible for MIPS
+Date: Thu, 7 Oct 2004 09:15:53 +0530
+Message-ID: <6BF015B686198842A1C8F84F4B7E6D2601276ADE@chn-snr-msg.wipro.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: __up, __down_trylock & __down_interruptible for MIPS
+thread-index: AcSrrpN2Q1ugNcKBS8GUkD4TjOIpugAa/zog
+From: <priya.mani@wipro.com>
+To: <ralf@linux-mips.org>
+Cc: <linux-mips@linux-mips.org>
+X-OriginalArrivalTime: 07 Oct 2004 03:45:54.0062 (UTC) FILETIME=[2575BAE0:01C4AC20]
+Return-Path: <priya.mani@wipro.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5965
+X-archive-position: 5966
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: priya.mani@wipro.com
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Wed, 6 Oct 2004 15:09:36 -0700, Jun Sun <jsun@junsun.net> said:
->> I found a potential problem in math emulation.  The math-emu uses
->> put_user/get_user to fetch the instruction or to emulate load/store
->> fp-regs.  The put_user/get_user can sleep then we can lose fpu
->> ownership on it.  It it happened, subsequent restore_fp will cause
->> CpU exception which not allowed in kernel.
+Hi Ralf
 
-jsun> I don't feel good about this patch.  If emulator loses FPU
-jsun> ownership it should get it back, not the caller of emulator.
+I too doubted that the kernel which I am using is not in proper shape.
+Please could you point me to a proper link where I can download it from.
+I am in need of a proper working kernel version 2.4.25 or above.
 
-Hmm... Inserting following 2 lines after each get_user, put_user (and
-do_dsemulret, mips_dsemul, cond_resched) in cp1emu.c is better?
+Hope you can lead me to a proper link for this!
 
-	if (!is_fpu_owner())
-		own_fpu();
+Thanks
+Priya
 
-Actually, FPU might be lost in get_user, so get_user should get it
-back?  I don't think so.  Similarly, getting it back by the caller of
-emulator is not so bad, I think.  Maintenance of FPU ownership is not
-emulator's work, isn't it?
+-----Original Message-----
+From: linux-mips-bounce@linux-mips.org
+[mailto:linux-mips-bounce@linux-mips.org] On Behalf Of Ralf Baechle
+Sent: Wednesday, October 06, 2004 7:40 PM
+To: Priya Balasubramanian (WT01 - EMBEDDED & PRODUCT ENGINEERING
+SOLUTIONS)
+Cc: linux-mips@linux-mips.org
+Subject: Re: __up, __down_trylock & __down_interruptible for MIPS
 
----
-Atsushi Nemoto
+
+On Wed, Oct 06, 2004 at 04:55:10PM +0530, priya.mani@wipro.com wrote:
+
+> If I try to use the functions from the latest CVS files in the
+mips-org
+> site it gives other compilation errors.
+> 
+> Please can you tell me how do I go about this problem. Have the above
+> functions been obsoleted? Is there any patch available for them? Or is
+> there any doc explaining this? I am using Kernel version 2.4.22.
+
+This was working in 2.4.22 so it seems you're using a broken tree.
+Where
+did you get it from?
+
+  Ralf

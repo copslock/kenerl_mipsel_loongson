@@ -1,105 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Oct 2004 01:14:44 +0100 (BST)
-Received: from fed1rmmtao12.cox.net ([IPv6:::ffff:68.230.241.27]:20152 "EHLO
-	fed1rmmtao12.cox.net") by linux-mips.org with ESMTP
-	id <S8225240AbUJUAOj>; Thu, 21 Oct 2004 01:14:39 +0100
-Received: from opus ([68.107.143.141]) by fed1rmmtao12.cox.net
-          (InterMail vM.6.01.03.04 201-2131-111-106-20040729) with ESMTP
-          id <20041021001430.MUIG9689.fed1rmmtao12.cox.net@opus>
-          for <linux-mips@linux-mips.org>; Wed, 20 Oct 2004 20:14:30 -0400
-Date: Wed, 20 Oct 2004 17:14:27 -0700
-From: Tom Rini <trini@kernel.crashing.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Oct 2004 01:18:32 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:57849 "EHLO
+	hermes.mvista.com") by linux-mips.org with ESMTP
+	id <S8225240AbUJUAS1>; Thu, 21 Oct 2004 01:18:27 +0100
+Received: from prometheus.mvista.com (prometheus.mvista.com [10.0.0.139])
+	by hermes.mvista.com (Postfix) with ESMTP
+	id 3B50618363; Wed, 20 Oct 2004 17:18:26 -0700 (PDT)
+Subject: [PATCH]Check for Hypertransport Link Initialization on PMC-Sierra
+	Titan before configuring the interface
+From: Manish Lachwani <mlachwani@mvista.com>
 To: linux-mips@linux-mips.org
-Subject: [PATCH 2.6.9] KSEG/CKSEG fixes
-Message-ID: <20041021001427.GA25441@smtp.west.cox.net>
+Cc: ralf@linux-mips.org
+Content-Type: text/plain
+Organization: 
+Message-Id: <1098317905.4266.18.camel@prometheus.mvista.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.6+20040907i
-Return-Path: <trini@kernel.crashing.org>
+X-Mailer: Ximian Evolution 1.2.2 (1.2.2-5) 
+Date: 20 Oct 2004 17:18:26 -0700
+Content-Transfer-Encoding: 7bit
+Return-Path: <mlachwani@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6147
+X-archive-position: 6148
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: trini@kernel.crashing.org
+X-original-sender: mlachwani@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-The following is needed to get an SB1250 to compile & boot in 64bit
-mode (briefly tested).
+Hello Ralf
 
-Signed-off-by: Tom Rini <trini@kernel.crashing.org>
+Attached patch checks for the Hypertransport Link Initialization before
+configuring the interface. Assuming PMON did try to do link
+initialization and there were no errors (like CRC etc.), the Link
+register will indicate it.
 
---- linux-2.6.9.orig/arch/mips/sibyte/sb1250/irq_handler.S
-+++ linux-2.6.9/arch/mips/sibyte/sb1250/irq_handler.S
-@@ -121,9 +121,14 @@
- 	/*
- 	 * Default...we've hit an IP[2] interrupt, which means we've got to
- 	 * check the 1250 interrupt registers to figure out what to do
--	 * Need to detect which CPU we're on, now that smp_affinity is supported.
-+	 * Need to detect which CPU we're on, now that smp_affinity is
-+	 * supported.
- 	 */
-+#ifdef CONFIG_MIPS64
-+	PTR_LA	v0, CKSEG1 + A_IMR_CPU0_BASE
-+#else
- 	PTR_LA	v0, KSEG1 + A_IMR_CPU0_BASE
-+#endif
- #ifdef CONFIG_SMP
- 	lw	t1, TI_CPU($28)
- 	sll	t1, IMR_REGISTER_SPACING_SHIFT
---- linux-2.6.9.orig/arch/mips/mm/c-sb1.c
-+++ linux-2.6.9/arch/mips/mm/c-sb1.c
-@@ -488,7 +488,11 @@ void ld_mmu_sb1(void)
- 	/* Special cache error handler for SB1 */
- 	memcpy((void *)(CAC_BASE   + 0x100), &except_vec2_sb1, 0x80);
- 	memcpy((void *)(UNCAC_BASE + 0x100), &except_vec2_sb1, 0x80);
-+#ifdef CONFIG_MIPS64
-+	memcpy((void *)CKSEG1ADDR(&handle_vec2_sb1), &handle_vec2_sb1, 0x80);
-+#else
- 	memcpy((void *)KSEG1ADDR(&handle_vec2_sb1), &handle_vec2_sb1, 0x80);
-+#endif
- 
- 	probe_cache_sizes();
- 
---- linux-2.6.9.orig/drivers/net/sb1250-mac.c
-+++ linux-2.6.9/drivers/net/sb1250-mac.c
-@@ -2879,8 +2879,13 @@ sbmac_init_module(void)
- 		dev->mem_end = 0;
- 		if (sbmac_init(dev, idx)) {
- 			port = A_MAC_CHANNEL_BASE(idx);
-+#ifdef CONFIG_MIPS64
-+			SBMAC_WRITECSR(CKSEG1ADDR(port+R_MAC_ETHERNET_ADDR),
-+					sbmac_orig_hwaddr[idx] );
-+#else
- 			SBMAC_WRITECSR(KSEG1ADDR(port+R_MAC_ETHERNET_ADDR),
- 					sbmac_orig_hwaddr[idx] );
-+#endif
- 			free_netdev(dev);
- 			continue;
- 		}
---- linux-2.6.9.orig/arch/mips/mm/tlb-sb1.c
-+++ linux-2.6.9/arch/mips/mm/tlb-sb1.c
-@@ -26,14 +26,14 @@
- #ifdef CONFIG_MIPS32
- extern void except_vec0_sb1(void);
- extern void except_vec1_generic(void);
-+#define UNIQUE_ENTRYHI(idx) (KSEG0 + ((idx) << (PAGE_SHIFT + 1)))
- #endif
- #ifdef CONFIG_MIPS64
- extern void except_vec0_generic(void);
- extern void except_vec1_sb1(void);
-+#define UNIQUE_ENTRYHI(idx) (CKSEG0 + ((idx) << (PAGE_SHIFT + 1)))
- #endif
- 
--#define UNIQUE_ENTRYHI(idx) (KSEG0 + ((idx) << (PAGE_SHIFT + 1)))
--
- /* Dump the current entry* and pagemask registers */
- static inline void dump_cur_tlb_regs(void)
+Thanks
+Manish Lachwani
+
+--- arch/mips/pmc-sierra/yosemite/setup.c.orig	2004-10-20
+16:51:24.000000000 -0700
++++ arch/mips/pmc-sierra/yosemite/setup.c	2004-10-20 16:58:56.000000000
+-0700
+@@ -191,6 +191,8 @@
+ static int __init pmc_yosemite_setup(void)
  {
-
--- 
-Tom Rini
-http://gate.crashing.org/~trini/
+ 	extern void pmon_smp_bootstrap(void);
++	/* Hypertransport Link initialization register */
++	unsigned long val = OCD_READ(RM9000x2_OCD_HTLINK);
+ 
+ 	board_time_init = yosemite_time_init;
+ 	late_time_init = py_map_ocd;
+@@ -198,14 +200,21 @@
+ 	/* Add memory regions */
+ 	add_memory_region(0x00000000, 0x10000000, BOOT_MEM_RAM);
+ 
+-#if 0 /* XXX Crash ...  */
+-	OCD_WRITE(RM9000x2_OCD_HTSC,
+-	          OCD_READ(RM9000x2_OCD_HTSC) | HYPERTRANSPORT_ENABLE);
+-
+-	/* Set the BAR. Shifted mode */
+-	OCD_WRITE(RM9000x2_OCD_HTBAR0, HYPERTRANSPORT_BAR0_ADDR);
+-	OCD_WRITE(RM9000x2_OCD_HTMASK0, HYPERTRANSPORT_SIZE0);
+-#endif
++	if (val & 0x00000020) {
++		/*
++		 * If Hypertransport is enabled and no device is connected on
++		 * the Hypertranport interface, dont scan the interface.
++		 * Check the Link initialization register first. If the Link
++		 * is enabled, then initialize and scan the HT interface
++		 */
++		OCD_WRITE(RM9000x2_OCD_HTSC,
++		          OCD_READ(RM9000x2_OCD_HTSC) | HYPERTRANSPORT_ENABLE);
++
++		/* Set the BAR. Shifted mode */
++		OCD_WRITE(RM9000x2_OCD_HTBAR0, HYPERTRANSPORT_BAR0_ADDR);
++		OCD_WRITE(RM9000x2_OCD_HTMASK0, HYPERTRANSPORT_SIZE0);
++		OCD_WRITE(RM9000x2_OCD_HTBAA30, 0x01); /* Supports byte swap */
++	}
+ 
+ 	return 0;
+ }

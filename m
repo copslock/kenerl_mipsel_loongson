@@ -1,16 +1,16 @@
-Received:  by oss.sgi.com id <S553673AbQKRO4f>;
-	Sat, 18 Nov 2000 06:56:35 -0800
-Received: from [210.200.192.151] ([210.200.192.151]:33811 "HELO
-        cyber.dreamer.com.tw") by oss.sgi.com with SMTP id <S553647AbQKRO42>;
-	Sat, 18 Nov 2000 06:56:28 -0800
-Received: from 63.52.248.235 (unverified [63.52.248.235]) by cyber.dreamer.com.tw
- (EMWAC SMTPRS 0.83) with SMTP id <B0000205355@cyber.dreamer.com.tw>;
- Sat, 18 Nov 2000 11:14:38 +0800
+Received:  by oss.sgi.com id <S553673AbQKRQmh>;
+	Sat, 18 Nov 2000 08:42:37 -0800
+Received: from [210.59.227.242] ([210.59.227.242]:19722 "HELO
+        smtp02.yuanta.com.tw") by oss.sgi.com with SMTP id <S553647AbQKRQmT>;
+	Sat, 18 Nov 2000 08:42:19 -0800
+Received: from 63.52.248.235 (unverified [63.52.248.235]) by smtp02.yuanta.com.tw
+ (EMWAC SMTPRS 0.83) with SMTP id <B0008562733@smtp02.yuanta.com.tw>;
+ Sat, 18 Nov 2000 11:22:00 +0800
 Message-ID: <0000004e4d37$00005be7$000004a8@63.52.248.235>
 To:     <McLean@d10.de>
 From:   McLean@d10.de
 Subject: Brand New FREE Satellite System
-Date:   Fri, 17 Nov 2000 22:17:27 -0400
+Date:   Fri, 17 Nov 2000 22:17:50 -0400
 MIME-Version: 1.0
 Content-Type: text/plain;
 	charset="Windows-1252"
@@ -21,6 +21,7 @@ Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
+Message-ID: <20001118021750.ZXFABnAq82_28JuBdgk1jEzdpuOqt2O8-fLjVaalvmk@z>
 
 FREE Satellite T.V. System and FREE Installation
 

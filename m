@@ -1,51 +1,64 @@
-Received:  by oss.sgi.com id <S553704AbQLVHyf>;
-	Thu, 21 Dec 2000 23:54:35 -0800
-Received: from [210.241.238.126] ([210.241.238.126]:46344 "EHLO
-        viditec-netmedia.com.tw") by oss.sgi.com with ESMTP
-	id <S553669AbQLVHyY>; Thu, 21 Dec 2000 23:54:24 -0800
-Received: from kjlin ([210.241.238.122])
-	by viditec-netmedia.com.tw (8.9.3/8.8.7) with SMTP id QAA02694;
-	Fri, 22 Dec 2000 16:01:23 +0800
-Message-ID: <062f01c06be1$d1ca8ce0$056aaac0@kjlin>
-From:   "kjlin" <kj.lin@viditec-netmedia.com.tw>
-To:     "Keith M Wesolowski" <wesolows@chem.unr.edu>
-Cc:     <linux-mips@oss.sgi.com>
-References: <053601c06a6c$ee66ca60$056aaac0@kjlin> <20001220183938.A20077@chem.unr.edu>
-Subject: Re: Run the cross-compiled program.
-Date:   Fri, 22 Dec 2000 14:38:38 +0800
+Received:  by oss.sgi.com id <S553724AbQLVKrH>;
+	Fri, 22 Dec 2000 02:47:07 -0800
+Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:59594 "EHLO
+        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553695AbQLVKqu>;
+	Fri, 22 Dec 2000 02:46:50 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id LAA25883;
+	Fri, 22 Dec 2000 11:44:33 +0100 (MET)
+Date:   Fri, 22 Dec 2000 11:44:32 +0100 (MET)
+From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To:     Martin Michlmayr <tbm@cyrius.com>
+cc:     Florian Lohoff <flo@rfc822.org>, linux-mips@oss.sgi.com
+Subject: Re: Kernel Oops when booting on DECstation
+In-Reply-To: <20001219134828.A361@katze.cyrius.com>
+Message-ID: <Pine.GSO.3.96.1001222114052.24791E-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.00.2919.6600
-X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6600
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+On Tue, 19 Dec 2000, Martin Michlmayr wrote:
 
------ Original Message -----
-> I guess I don't quite understand why you would want to use kernel 2.2
-> with glibc 2.2.  For embedded purposes, glibc 2.0 will save you a lot
-> of space; if you just want the newest stuff unconditionally, use
-> kernel 2.4.  The specific libc you are using is rather dated anyway.
-> While it worked for most purposes it is hardly bug-free.  Consider
-> using CVS glibc, or the glibc from Florian's Debian build environment.
->
-> --
-The original system of my embedded mips board is the kernel 2.2 with the
-libc-2.0.4.
-But the libc-2.0.4 seems not to support POSIX 1003.1c, which cause my
-program to fail.
-That's the reasion why i want to upgrade the library.
-In fact, i prefer to upgrade to libc-2.0.6, but i am not sure whether it
-supports POSIX 1003.1c.
-On the other hand, i can not find the cross-usable libc-2.0.6 source and
-patches or binary tarball for my cross-compiler.
-Any suggestions ?
+> Unable to handle kernel paging request at virtual address 00000004, epc == 8005a16c, ra == 8005a124
+> Oops in fault.c:do_page_fault, line 172:
+> $0 : 00000000 10002000 80720410 00000000 80720410 00000000 81088460 10002000
+> $8 : 00000000 00000000 00000000 00000000 00bc8000 fffffff7 ffffffff 8021f180
+> $16: 00010f00 8021c000 00000000 80048000 30464354 a0002f88 fffffff4 00010f00
+> $24: 00000001 0000000a                   80720000 80720f58 80721090 8005a124
+> epc  : 8005a16c
+> Status: 10002004
+> Cause : 30000008
+> Process  (pid: 0, stackpage=80720000)
+> Stack: 80061d94 00000001 000000c0 80061a58 801e0eec 800f82fc 00000000 00000000
+>        00000000 80720f7c 80720f7c 00000023 00000000 00000000 00000000 80720f7c
+>        80720f7c 00000023 00010f00 00010000 00000000 80048000 30464354 a0002f88
+>        bfc00cbc a000f404 40208a0a 8004e1a8 00000000 00000020 80720fe0 00000000
+>        8004b46c 00002617 00010f00 00000000 80721090 00002617 00bc8000 fffffff7
+>        00000000 ...
+> Call Trace: [<80061d94>] [<80061a58>] [<800f82fc>] [<80048000>] [<8004e1a8>] [<8004b46c>]
+> Code: 24630010  8e2501d4  8e230218 <8ca20004> 00000000  0043102b  10400431  2416fff5  40046000
+> 
+> sym2call says:
+> 
+> Address		Function
+> 
+> 80061d94	tasklet_hi_action
+> 80061a58	do_softirq
+> 800f82fc	do_IRQ
+> 80048000	init
+> 8004e1a8	_sys_clone
+> 8004b46c	stack_done
 
-Thanks,
-KJ
+ Could you please decode your oops with ksymoops or, better yet, send me
+the object (*.o) file the oops is happening?  I tried to match the code
+above with my kernel binary but I failed.
+
+  Maciej
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

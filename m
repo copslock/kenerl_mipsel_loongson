@@ -1,72 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Sep 2004 08:40:38 +0100 (BST)
-Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:9508
-	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
-	id <S8224841AbUIXHkd>; Fri, 24 Sep 2004 08:40:33 +0100
-Received: from newms.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 24 Sep 2004 07:40:31 UT
-Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
-	by newms.toshiba-tops.co.jp (Postfix) with ESMTP
-	id 25763239E1D; Fri, 24 Sep 2004 16:43:05 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id i8O7eN8G073799;
-	Fri, 24 Sep 2004 16:40:24 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date: Fri, 24 Sep 2004 16:39:23 +0900 (JST)
-Message-Id: <20040924.163923.98854911.nemoto@toshiba-tops.co.jp>
-To: ralf@linux-mips.org
-Cc: linux-mips@linux-mips.org
-Subject: Re: gcc 3.3.4/3.4.1 and get_user
-From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20040920171021.GA25371@linux-mips.org>
-References: <87656yqsmz.fsf@redhat.com>
-	<20040920154042.GB5150@linux-mips.org>
-	<20040920171021.GA25371@linux-mips.org>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.2 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Sep 2004 09:21:42 +0100 (BST)
+Received: from grey.subnet.at ([IPv6:::ffff:193.170.141.20]:18448 "EHLO
+	grey.subnet.at") by linux-mips.org with ESMTP id <S8224841AbUIXIVi>;
+	Fri, 24 Sep 2004 09:21:38 +0100
+Received: from ip6-localhost ([193.170.141.4]) by grey.subnet.at ; Fri, 24 Sep 2004 10:21:23 +0200
+From: Bruno Randolf <bruno.randolf@4g-systems.biz>
+To: Dominik Brodowski <linux@dominikbrodowski.de>
+Subject: Re: CPU frequency scaling on MIPS (au1000/common/power.c)
+Date: Fri, 24 Sep 2004 10:15:57 +0200
+User-Agent: KMail/1.7
+Cc: ralf@linux-mips.org, linux-mips@linux-mips.org,
+	cpufreq@www.linux.org.uk
+References: <20040923194829.GA32270@dominikbrodowski.de>
+In-Reply-To: <20040923194829.GA32270@dominikbrodowski.de>
+Organization: 4G Systems
+MIME-Version: 1.0
+Content-Type: multipart/signed;
+  boundary="nextPart5505897.fSDApoSRUS";
+  protocol="application/pgp-signature";
+  micalg=pgp-sha1
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Message-Id: <200409241016.05381.bruno.randolf@4g-systems.biz>
+Return-Path: <bruno.randolf@4g-systems.biz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5878
+X-archive-position: 5879
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: bruno.randolf@4g-systems.biz
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Mon, 20 Sep 2004 19:10:21 +0200, Ralf Baechle <ralf@linux-mips.org> said:
-ralf> And here the same for 2.4.  Actually this is a straight backport
-ralf> of the 2.6 uaccess.h to 2.4 so with this patch
-ralf> include/asm-mips/uaccess.h and include/asm-mips64/uaccess.h are
-ralf> going to be identical.
+--nextPart5505897.fSDApoSRUS
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 
-This also fixes long standing bug in 2.4 mips64 __ua_size macro.  Thank you.
+On Thursday 23 September 2004 21:48, Dominik Brodowski wrote:
 
-There is still an another problem in 64-bit __access_ok (both 2.4 and
-2.6).
+> As I don't have MIPS hardware [well, I do, inside a WRT54G router, but
+> that's besides the point], don't have and don't want to have a
+> cross-compiling infrastructure here, I can neither compile-test nor
+> real-life-test any patches I submit. Nonetheless I'd be willing to write
+> a "suggestion" on how to update arch/mips/au1000/common/power.c, and
+> somebody with compiler and hardware could test it then.
 
-The __access_ok for 64-bit kernel returns 0 if 'addr' + 'size' ==
-TASK_SIZE (which should be OK).
+i would be happy to cross-compile & test them on a meshcube (mtx-1), but i'=
+m=20
+afraid i cant help too much with coding.
 
-#define __access_ok(addr, size, mask)					\
-	(((signed long)((mask) & ((addr) | ((addr) + (size)) | __ua_size(size)))) == 0)
+bruno
 
-I think this should be:
+--nextPart5505897.fSDApoSRUS
+Content-Type: application/pgp-signature
 
-#define __access_ok(addr, size, mask)					\
-	(((signed long)((mask) & ((addr) | ((addr) + (size) - 1) | __ua_size(size)))) == 0)
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.4 (GNU/Linux)
 
-This fix is needed for 64-bit native mount syscall (which try to read
-variable length string parameters from user stack.  See
-fs/namespace.c:copy_mount_options).
+iD8DBQBBU9fFfg2jtUL97G4RAsduAJ9NVhGINZaEdlt+JeB2xuI9i6y9ugCePfBN
+kWxQkGJesskpU44MuZgqllk=
+=WmWE
+-----END PGP SIGNATURE-----
 
-This fix also makes __access_ok(0, 0, __access_mask) return 0, but
-pointer 0 is invalid anyway.
-
----
-Atsushi Nemoto
+--nextPart5505897.fSDApoSRUS--

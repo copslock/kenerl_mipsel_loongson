@@ -1,54 +1,69 @@
-Received:  by oss.sgi.com id <S42325AbQJFVml>;
-	Fri, 6 Oct 2000 14:42:41 -0700
-Received: from woody.ichilton.co.uk ([216.29.174.40]:8721 "HELO
-        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S42343AbQJFVm2>;
-	Fri, 6 Oct 2000 14:42:28 -0700
-Received: by woody.ichilton.co.uk (Postfix, from userid 0)
-	id E74687C6D; Fri,  6 Oct 2000 19:00:41 +0100 (BST)
-Date:   Fri, 6 Oct 2000 19:00:41 +0100
-From:   Ian Chilton <ian@ichilton.co.uk>
-To:     Daniel Leeds <cosmos@hepcat.org>
-Subject: Re: IRIS INDIGO & LINUX
-Message-ID: <20001006190041.B12129@woody.ichilton.co.uk>
-References: <20001006100340.A11049@woody.ichilton.co.uk> <Pine.SGI.4.10.10010060752140.9488-100000@valentino.hepcat.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.9i
-In-Reply-To: <Pine.SGI.4.10.10010060752140.9488-100000@valentino.hepcat.org>; from cosmos@hepcat.org on Fri, Oct 06, 2000 at 07:54:46AM -0700
+Received:  by oss.sgi.com id <S42349AbQJFV5L>;
+	Fri, 6 Oct 2000 14:57:11 -0700
+Received: from saturn.mikemac.com ([216.99.199.88]:65294 "EHLO
+        saturn.mikemac.com") by oss.sgi.com with ESMTP id <S42347AbQJFV5B>;
+	Fri, 6 Oct 2000 14:57:01 -0700
+Received: from Saturn (localhost [127.0.0.1])
+	by saturn.mikemac.com (8.9.3/8.9.3) with ESMTP id IAA31261;
+	Fri, 6 Oct 2000 08:29:35 -0700
+Message-Id: <200010061529.IAA31261@saturn.mikemac.com>
+To:     Hiroshi Kawashima <kei@sm.sony.co.jp>
+cc:     linux-mips@oss.sgi.com
+Subject: Re: Linux-VR test7 hangs when execing init 
+In-Reply-To: Your message of "Fri, 06 Oct 2000 17:00:41 +0900."
+             <200010060755.QAA00127@email.sm.sony.co.jp> 
+Date:   Fri, 06 Oct 2000 08:29:35 -0700
+From:   Mike McDonald <mikemac@mikemac.com>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hello,
 
-> you seriously consider that something worth smiling about?  Linux is
-> pathetic, those ports are half ass.  And most of all, if you are buying
-> SGI equipment to run Linux you are a sorry motherfucker.
+>To: Mike McDonald <mikemac@mikemac.com>
+>Subject: Re: Linux-VR test7 hangs when execing init 
+>Date: Fri, 06 Oct 2000 17:00:41 +0900
+>From: Hiroshi Kawashima <kei@sm.sony.co.jp>
+>
+>Hi.
+>
+>>   Recently the Linux-VR tree synced up with the SGI tree at test7
+>> (from test4). As a result of this updating of the Linux-VR tree, my
+>> kernels either hang or Oops while execing init. A minimal kernel will
+>> hang and a normally config'd kernel will Oops. Does anyone know of any
+>> changes in the ELF code or the ext2 filesystem that might be the cause
+>> fo this? Any other ideas as to the cause or how to go about tracking
+>> it down?
+>
+>It should be problem around PCMCIA is broken on test7.
+>Some are working for fixing this (on linuxce list), but not
+>completed yet.
 
+  PCMCIA is not configured in my minimal kernel, so that shouldn't be
+it.
 
-uhm..I don't think there is any need for language like that!
+  Mike McDonald
+  mikemac@mikemac.com
 
-This guy obviously wanted to run Linux on his SGI, so I answered his question.
-
-If you don't want to run Linux on an SGI, then that is fine...you can use IRIX...no problem...
-
-But, if someone wants to run/port Linux, then that is his/her choice, so there is no need for criticism....
-
-Let me remind you that Linux is now a very popular operating system, but that was brought about by a small group of hackers who were interested....
-
-I happen to be activly working on the Linux/MIPS port, and have IRIX and Linux on my Indy and that is my decision...so there is no need for you to go sending mail like that...if you don't like it, don't use it and keep quiet!
-
-
-Bye for Now,
-
-Ian
-
-
-                     \|||/ 
-                     (o o)
- /----------------ooO-(_)-Ooo----------------\
- |  Ian Chilton                              |
- |  E-Mail : ian@ichilton.co.uk              |
- \-------------------------------------------/
+------------------
+Uranus=>fgrep "=y" .config | sort 
+CONFIG_BINFMT_ELF=y
+CONFIG_BLK_DEV_INITRD=y
+CONFIG_BLK_DEV_RAM=y
+CONFIG_CLASS_DESKTOP=y
+CONFIG_CPU_LITTLE_ENDIAN=y
+CONFIG_CPU_NO_FPU=y
+CONFIG_CPU_VR4122=y
+CONFIG_CPU_VR41XX=y
+CONFIG_CROSSCOMPILE=y
+CONFIG_ELF_KERNEL=y
+CONFIG_EXPERIMENTAL=y
+CONFIG_EXT2_FS=y
+CONFIG_HAVE_IO_PORTS=y
+CONFIG_KCORE_ELF=y
+CONFIG_MIPS_FPU_EMULATOR=y
+CONFIG_MSDOS_PARTITION=y
+CONFIG_NEC_HARRIER=y
+CONFIG_PROC_FS=y
+CONFIG_SERIAL=y
+CONFIG_SERIAL_CONSOLE=y

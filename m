@@ -1,76 +1,67 @@
-Received:  by oss.sgi.com id <S305171AbQEQRLs>;
-	Wed, 17 May 2000 17:11:48 +0000
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:40547 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S305154AbQEQRL3>; Wed, 17 May 2000 17:11:29 +0000
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id KAA06683; Wed, 17 May 2000 10:16:00 -0700 (PDT)
+Received:  by oss.sgi.com id <S305176AbQEQUE3>;
+	Wed, 17 May 2000 20:04:29 +0000
+Received: from deliverator.sgi.com ([204.94.214.10]:48966 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305154AbQEQUEC>;
+	Wed, 17 May 2000 20:04:02 +0000
+Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id MAA13089; Wed, 17 May 2000 12:59:11 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id NAA48323; Wed, 17 May 2000 13:03:31 -0700 (PDT)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id KAA27923
+	id MAA84517
 	for linux-list;
-	Wed, 17 May 2000 10:01:29 -0700 (PDT)
+	Wed, 17 May 2000 12:53:44 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id KAA10979
+	via ESMTP id MAA62600
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 17 May 2000 10:01:27 -0700 (PDT)
-	mail_from (agx@bert.physik.uni-konstanz.de)
-Received: from gandalf.physik.uni-konstanz.de (gandalf.physik.uni-konstanz.de [134.34.144.30]) 
+	Wed, 17 May 2000 12:53:41 -0700 (PDT)
+	mail_from (ralf@oss.sgi.com)
+Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id KAA00591
-	for <linux@cthulhu.engr.sgi.com>; Wed, 17 May 2000 10:01:26 -0700 (PDT)
-	mail_from (agx@bert.physik.uni-konstanz.de)
-Received: from bert.physik.uni-konstanz.de [134.34.144.20] 
-	by gandalf.physik.uni-konstanz.de with smtp (Exim 2.05 #1 (Debian))
-	id 12s7Bc-0006jJ-00; Wed, 17 May 2000 19:00:44 +0200
-Received: by bert.physik.uni-konstanz.de (sSMTP sendmail emulation); Wed, 17 May 2000 18:59:26 +0200
-Date:   Wed, 17 May 2000 18:59:26 +0200
-From:   Guido Guenther <agx@bert.physik.uni-konstanz.de>
-To:     Gabriel Nava Vazquez <gnava@sirio.tecmor.mx>
-Cc:     linux-mips@fnet.fr, linux@cthulhu.engr.sgi.com
-Subject: Re: xfree86 on an indy
-Message-ID: <20000517185925.B27936@bert.physik.uni-konstanz.de>
-Mail-Followup-To: Guido Guenther <guido.guenther@uni-konstanz.de>,
-	Gabriel Nava Vazquez <gnava@sirio.tecmor.mx>, linux-mips@fnet.fr,
-	linux@cthulhu.engr.sgi.com
-References: <20000513162907.A16713@bert.physik.uni-konstanz.de> <Pine.LNX.4.10.10005171103100.14173-100000@sirio.tecmor.mx>
+	via ESMTP id MAA08677
+	for <linux@cthulhu.engr.sgi.com>; Wed, 17 May 2000 12:53:40 -0700 (PDT)
+	mail_from (ralf@oss.sgi.com)
+Received: from cacc-29.uni-koblenz.de (cacc-29.uni-koblenz.de [141.26.131.29])
+	by mailhost.uni-koblenz.de (8.9.3/8.9.3) with ESMTP id VAA12703;
+	Wed, 17 May 2000 21:53:38 +0200 (MET DST)
+Received:  by lappi.waldorf-gmbh.de id <S1403827AbQEQTxL>;
+	Wed, 17 May 2000 21:53:11 +0200
+Date:   Wed, 17 May 2000 21:53:11 +0200
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     "Soren S. Jorvang" <soren@wheel.dk>
+Cc:     linux@cthulhu.engr.sgi.com
+Subject: Re: O2 ARCS
+Message-ID: <20000517215310.F779@uni-koblenz.de>
+References: <20000517051524.A21067@gnyf.wheel.dk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.1.9i
-In-Reply-To: <Pine.LNX.4.10.10005171103100.14173-100000@sirio.tecmor.mx>; from gnava@sirio.tecmor.mx on Wed, May 17, 2000 at 11:04:05AM -0500
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <20000517051524.A21067@gnyf.wheel.dk>; from soren@wheel.dk on Wed, May 17, 2000 at 05:15:24AM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-Fetch the X400src-1.tgz from any xfree86 mirror near you and apply the
-latest patch found at http://honk.physik.uni-konstanz.de/~agx/mipslinux/x.
-Then follow the instructions in xc/INSTALL.TXT. 
-I'm using a self compiled kernel from the snapshot:
-ftp://ftp.linux.sgi.com/pub/linux/mips/test/linux-2.2.13-20000211.tar.bz2
-since I had little luck with later versions from cvs.
-Note that the xserver is currently of little use since the mouse is not
-working(SIGIO problem).
-Regards,
- -- Guido
+On Wed, May 17, 2000 at 05:15:24AM +0200, Soren S. Jorvang wrote:
 
-On Wed, May 17, 2000 at 11:04:05AM -0500, Gabriel Nava Vazquez wrote:
-> How can i run xfree86 on my indy box?  Which version do i need, and which
-> kernel?
+> I seem to remember some dire warnings about the O2 ARCS PROM
+> needing special care and feeding to even do basic stuff. Am I
+> on crack?
 > 
-> thanks
+> FWIW, as a system console it works just for me as the Indy, at
+> least well enough to do PCI enumeration and play with NetBSD DDB.
 > 
-> Ing. Gabriel Nava Vazquez
-> Instituto Tecnologico de Morelia
-> Mexico
-> 
-> 
+> Of course, there still isn't really any hardware documentation
+> beyond sys/mace.h and friends..
 
--- 
-GPG-Public Key: http://honk.physik.uni-konstanz.de/~agx/guenther.gpg.asc
+The ARCS firmware isn't the big deal but the R10000 support for this
+system or any other non-cachecoherent system.  Harald Koerfgen has
+started poking at an O2 port and he's got first success.
+
+  Ralf

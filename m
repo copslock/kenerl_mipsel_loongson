@@ -1,79 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Apr 2003 21:52:18 +0100 (BST)
-Received: from p508B62A5.dip.t-dialin.net ([IPv6:::ffff:80.139.98.165]:21672
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225205AbTDJUwS>; Thu, 10 Apr 2003 21:52:18 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id h3AKqCU03734;
-	Thu, 10 Apr 2003 22:52:12 +0200
-Date: Thu, 10 Apr 2003 22:52:12 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Mike Uhler <uhler@mips.com>
-Cc: Jun Sun <jsun@mvista.com>, linux-mips@linux-mips.org
-Subject: Re: way selection bit for multi-way cache
-Message-ID: <20030410225212.A3294@linux-mips.org>
-References: <20030410220906.B519@linux-mips.org> <200304102028.h3AKSf211575@uhler-linux.mips.com>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Apr 2003 07:33:26 +0100 (BST)
+Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:3084 "EHLO
+	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8225196AbTDKGdX>;
+	Fri, 11 Apr 2003 07:33:23 +0100
+Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
+	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
+	id 193sBQ-0006Dv-00; Fri, 11 Apr 2003 07:38:44 +0100
+Received: from gladsmuir.algor.co.uk ([172.20.192.66] helo=gladsmuir.mips.com)
+	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
+	id 193s5x-0002XR-00; Fri, 11 Apr 2003 07:33:05 +0100
+From: Dominic Sweetman <dom@mips.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <200304102028.h3AKSf211575@uhler-linux.mips.com>; from uhler@mips.com on Thu, Apr 10, 2003 at 01:28:41PM -0700
-Return-Path: <ralf@linux-mips.net>
+Content-Transfer-Encoding: 7bit
+Message-ID: <16022.24992.314581.716649@gladsmuir.mips.com>
+Date: Fri, 11 Apr 2003 07:33:04 +0100
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: Mike Uhler <uhler@mips.com>, Jun Sun <jsun@mvista.com>,
+	linux-mips@linux-mips.org
+Subject: Re: way selection bit for multi-way cache
+In-Reply-To: <20030410225212.A3294@linux-mips.org>
+References: <20030410220906.B519@linux-mips.org>
+	<200304102028.h3AKSf211575@uhler-linux.mips.com>
+	<20030410225212.A3294@linux-mips.org>
+X-Mailer: VM 6.92 under 21.1 (patch 14) "Cuyahoga Valley" XEmacs Lucid
+X-MTUK-Scanner: Found to be clean
+X-MTUK-SpamCheck: not spam, SpamAssassin (score=-1, required 4.5, AWL,
+	IN_REP_TO, QUOTED_EMAIL_TEXT, REFERENCES, SPAM_PHRASE_03_05)
+Return-Path: <dom@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1979
+X-archive-position: 1980
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: dom@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Apr 10, 2003 at 01:28:41PM -0700, Mike Uhler wrote:
 
-> > Yep, of the existing variations that was certainly the nicest.  Only a
-> > single function had to be taught about multi-way caches and that only
-> > because it's a bit hard to flush caches for another process due to the
-> > TLB translation required for the hit cacheops.  Alternative schemes need
-> > more support by the code.
-> 
-> I'm not sure what you mean by TLB translations required for hit cacheops.
-> If you mean the Index Writeback or Index Invalidate functions, note that
-> you can (and should) use a kseg0 address to do this.  This bypasses
-> the TLB, while still giving you the index that you want.  We simply
-> OR the kseg0 base address into the index that we've calculated and
-> use that as the argument to the CACHE instruction.  There's actually
-> words to this effect in the MIPS32/MIPS64 spec, but it is, perhaps,
-> not clear enough.
+Mike wrote:
 
-Linux has a flush_cache_page() cache operation which is used to invalidate
-a page given by a virtual user-space address.  That page might be the
-page of a current processor which is the easy case - it might also belong
-to another process.  In the later case the TLB would miss-translate
-the virtual address because the translation in the TLB is actually for
-the current process.  So this is what we're doing then:
+> > I'm not sure what you mean by TLB translations required for hit
+> > cacheops.  If you mean the Index Writeback or Index Invalidate
+> > functions, note that you can (and should) use a kseg0 address to
+> > do this.
 
-[...]
-        /*
-         * Do indexed flush, too much work to get the (possible) TLB refills
-         * to work correctly.
-	 *
-	 * Note: page is the physical address of the page to invalidate.
-         */
-        page = (KSEG0 + (page & (dcache_size - 1)));
-	/*
-	 * The following two flush operations have to flush the page from
-	 * all cache ways!
-	 */
-        blast_dcache_page_indexed(page);
-        if (exec)
-                blast_icache_page_indexed(page);
-[...]
+Mike was proposing a kseg0 address translating to the right physical
+address, and used with a hit-type cacheop.  I believe Ralf (and Linux)
+are just assuming that's no good because it doesn't work if you have
+cacheable memory above 512Mbytes physical address.
 
-This can be a rather expensive operation in particular for caches with
-a high degree of associativity.  The worst case would be something like
-a page containing code for a processor with a 32k 8-way associative
-caches where we'd have to flush the entire cache - costly overkill and
-the refills might be even slower ...
+I wonder whether anything really bad would happen if you temporarily
+changed the (machine) ASID to that of the address space you wanted to
+invalidate?
 
-  Ralf
+--
+Dominic

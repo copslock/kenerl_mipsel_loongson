@@ -1,43 +1,39 @@
-Received:  by oss.sgi.com id <S553912AbRCHQu7>;
-	Thu, 8 Mar 2001 08:50:59 -0800
-Received: from mx.mips.com ([206.31.31.226]:43233 "EHLO mx.mips.com")
-	by oss.sgi.com with ESMTP id <S553845AbRCHQus>;
-	Thu, 8 Mar 2001 08:50:48 -0800
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id IAA05178;
-	Thu, 8 Mar 2001 08:50:47 -0800 (PST)
-Received: from Ulysses (ulysses [192.168.236.13])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id IAA29098;
-	Thu, 8 Mar 2001 08:50:44 -0800 (PST)
-Message-ID: <01b701c0a7f0$79260ba0$0deca8c0@Ulysses>
-From:   "Kevin D. Kissell" <kevink@mips.com>
-To:     "Ralf Baechle" <ralf@oss.sgi.com>, <heinold@physik.tu-cottbus.de>,
-        <linux-mips@oss.sgi.com>
-References: <3AA7B13F.F918E1F8@ti.com> <20010308173003.A17217@physik.tu-cottbus.de> <20010308174044.B11107@bacchus.dhis.org>
-Subject: Re: Question concerning Assembler error
-Date:   Thu, 8 Mar 2001 17:54:29 +0100
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+Received:  by oss.sgi.com id <S553721AbRCHSpk>;
+	Thu, 8 Mar 2001 10:45:40 -0800
+Received: from [216.163.184.10] ([216.163.184.10]:40478 "EHLO
+        c1mailgw01.prontomail.com") by oss.sgi.com with ESMTP
+	id <S553715AbRCHSpP>; Thu, 8 Mar 2001 10:45:15 -0800
+Received: from c1web108 (216.163.184.10) by c1mailgw01.prontomail.com (NPlex 5.1.050)
+        id 3AA76C0500006995 for linux-mips@oss.sgi.com; Thu, 8 Mar 2001 10:45:08 -0800
+X-Version: tutopia 6.3.2073.11
+From:   "Hector Lara Gongora" <helago@tutopia.com>
+Message-Id: <486229A00F315D115A660005B8CC4FF0@helago.tutopia.com>
+Date:   Thu, 8 Mar 2001 12:46:52 -0600
+X-Priority: Normal
+Content-Type: text/plain; charset=iso-8859-1
+To:     linux-mips@oss.sgi.com
+Subject: Indy R5000
+X-Mailer: Web Based Pronto
+Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4133.2400
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-> > Hm sorry cant help with the assembler problem, but which machine
-> > has a 4600 Prozessor and run mipsel on it?
-> 
-> RM200C.
+To Anyone who can help me:
 
-Actually, It's far more likely that Jeff is working with a
-MIPS 4KC or 5KC CPU core.  -mcpu=r4600 ends up
-being the closest fit to the MIPS32 ISA and pipeline
-among the options available for the Linux-capable
-gcc compilers.
+I just get an Indy R5000, but the hard disk has been erased, so I 
+don't have Irix either.
 
-            Kevin K.
+I have used TurboLinux in a pc-based machine and now I want to use 
+Linux in my Indy, but I don't know what download and how install it.
+
+Can anybody help me????
+
+Thanks.
+
+Hector Lara
+
+______________________________________________________________
+E-mail y acceso a la Internet en http://www.Tutopia.com

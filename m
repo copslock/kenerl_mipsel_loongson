@@ -1,55 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Oct 2002 11:42:05 +0200 (CEST)
-Received: from web10908.mail.yahoo.com ([216.136.131.44]:52266 "HELO
-	web10908.mail.yahoo.com") by linux-mips.org with SMTP
-	id <S1122978AbSJOJmE>; Tue, 15 Oct 2002 11:42:04 +0200
-Message-ID: <20021015094153.19319.qmail@web10908.mail.yahoo.com>
-Received: from [192.114.47.50] by web10908.mail.yahoo.com via HTTP; Tue, 15 Oct 2002 02:41:53 PDT
-Date: Tue, 15 Oct 2002 02:41:53 -0700 (PDT)
-From: amit lubovsky <lubovskyamit@yahoo.com>
-Subject: threads problems
-To: linux-mips@linux-mips.org
-MIME-Version: 1.0
-Content-Type: multipart/alternative; boundary="0-1963388454-1034674913=:18525"
-Return-Path: <lubovskyamit@yahoo.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Oct 2002 13:13:46 +0200 (CEST)
+Received: from p508B724A.dip.t-dialin.net ([80.139.114.74]:14764 "EHLO
+	dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S1122978AbSJOLNp>; Tue, 15 Oct 2002 13:13:45 +0200
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id g9FBDIn03565;
+	Tue, 15 Oct 2002 13:13:18 +0200
+Date: Tue, 15 Oct 2002 13:13:17 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Mike Nugent <mips@illuminatus.org>
+Cc: "Matthew H. Ray" <matthewhray@yahoo.com>, linux-mips@linux-mips.org
+Subject: Re: Indigo2 GUI1-Extreme Documentation
+Message-ID: <20021015131317.A3307@linux-mips.org>
+References: <20021007233953.66195.qmail@web21003.mail.yahoo.com> <20021008052152.B8115@linux-mips.org> <1034664955.12679.3.camel@templar>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <1034664955.12679.3.camel@templar>; from mips@illuminatus.org on Mon, Oct 14, 2002 at 11:55:54PM -0700
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 434
+X-archive-position: 435
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lubovskyamit@yahoo.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
---0-1963388454-1034674913=:18525
-Content-Type: text/plain; charset=us-ascii
+On Mon, Oct 14, 2002 at 11:55:54PM -0700, Mike Nugent wrote:
 
+> How would these be accessible then?  I was told that there are no specs
+> for the Extreme card anywhere.  If we have something on this archived
+> somewhere, I'd love to take a peek.
 
-Hi,
+I was thinking about setting up a nice web archive but for the moment I've
+just put the mbox list archives as they're kept by majordomo into
+ftp.linux-mips.org:/pub/linux/mips/archives/linux-mips.org/.
 
-I have encountered problems to run applications with threads on mips-5kc with gcc-2.95.3 and gcc-3.0.1.
+But don't waste your time digging for non-XL graphics documentation in
+the archive.  There's none.
 
-Is this a well known problem with therse compilers?, any suggestion?
-
-Thanks.
-
-Amit.
-
-
-
----------------------------------
-Do you Yahoo!?
-Faith Hill - Exclusive Performances, Videos, & more
-faith.yahoo.com
---0-1963388454-1034674913=:18525
-Content-Type: text/html; charset=us-ascii
-
-<P>Hi,</P>
-<P>I have encountered problems to run applications with threads on mips-5kc with gcc-2.95.3 and gcc-3.0.1.</P>
-<P>Is this a well known problem with therse compilers?, any suggestion?</P>
-<P>Thanks.</P>
-<P>Amit.<FONT size=2></P></FONT><p><br><hr size=1>Do you Yahoo!?<br>
-<a href="http://faith.yahoo.com">Faith Hill</a> - Exclusive Performances, Videos, & more<br>
-<a href="http://faith.yahoo.com">faith.yahoo.com</a>
---0-1963388454-1034674913=:18525--
+  Ralf

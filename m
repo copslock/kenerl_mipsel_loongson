@@ -1,57 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 May 2003 14:48:01 +0100 (BST)
-Received: from pc2-cwma1-4-cust86.swan.cable.ntl.com ([IPv6:::ffff:213.105.254.86]:60861
-	"EHLO lxorguk.ukuu.org.uk") by linux-mips.org with ESMTP
-	id <S8225193AbTEUNr7>; Wed, 21 May 2003 14:47:59 +0100
-Received: from dhcp22.swansea.linux.org.uk (dhcp22.swansea.linux.org.uk [127.0.0.1])
-	by lxorguk.ukuu.org.uk (8.12.8/8.12.5) with ESMTP id h4LCnnRQ000966;
-	Wed, 21 May 2003 13:49:50 +0100
-Received: (from alan@localhost)
-	by dhcp22.swansea.linux.org.uk (8.12.8/8.12.8/Submit) id h4LCnjTk000964;
-	Wed, 21 May 2003 13:49:46 +0100
-X-Authentication-Warning: dhcp22.swansea.linux.org.uk: alan set sender to alan@lxorguk.ukuu.org.uk using -f
-Subject: Re: lwl-lwr
-From: Alan Cox <alan@lxorguk.ukuu.org.uk>
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: "Kevin D. Kissell" <kevink@mips.com>,
-	Gilad Benjamini <yaelgilad@myrealbox.com>,
-	linux-mips@linux-mips.org
-In-Reply-To: <20030521013449.A16378@linux-mips.org>
-References: <1053455551.996c4860yaelgilad@myrealbox.com>
-	 <025401c31f03$0e993370$10eca8c0@grendel>
-	 <20030521013449.A16378@linux-mips.org>
-Content-Type: text/plain
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 May 2003 22:51:26 +0100 (BST)
+Received: from ws1.transfinity.com ([IPv6:::ffff:63.99.219.193]:15014 "EHLO
+	ws1.transfinity.com") by linux-mips.org with ESMTP
+	id <S8225205AbTEUVuy>; Wed, 21 May 2003 22:50:54 +0100
+Received: from transfinity.com (adsl-216-61-82-33.dsl.rcsntx.swbell.net [216.61.82.33])
+	by ws1.transfinity.com (Postfix) with ESMTP id 197F0681A1
+	for <linux-mips@linux-mips.org>; Wed, 21 May 2003 16:50:53 -0500 (CDT)
+Message-ID: <3ECBF4BC.24E5FFE6@transfinity.com>
+Date: Wed, 21 May 2003 16:50:52 -0500
+From: Bob Dempsey <bdempsey@transfinity.com>
+X-Mailer: Mozilla 4.8 [en] (X11; U; Linux 2.4.18-27.7.x i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: linux-mips@linux-mips.org
+Subject: Cobalt RAQ 2 woes
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Organization: 
-Message-Id: <1053521383.32700.21.camel@dhcp22.swansea.linux.org.uk>
-Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.2.2 (1.2.2-5) 
-Date: 21 May 2003 13:49:45 +0100
-Return-Path: <alan@lxorguk.ukuu.org.uk>
+Return-Path: <bdempsey@transfinity.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2428
+X-archive-position: 2429
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alan@lxorguk.ukuu.org.uk
+X-original-sender: bdempsey@transfinity.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mer, 2003-05-21 at 01:34, Ralf Baechle wrote:
-> > of the base MIPS instruction set.  If one wants to live without them, 
-> > one can either rig a compiler to emit multi-instruction sequences instead 
-> > of lwr/lwl to do the appropriate shifts and masks (which is slower on all 
+Okay, I've been trying on and off for weeks now to get ANY 2.4 kernel to run on my Cobalt RAQ 2 recently aquired on EBay for $250. It runs Cobalt's 2.0 kernel just fine, and I've managed to upgrade gcc and binutils to 2.95.4 and 2.13.2.1 respectively. I can build the 2.5.47 kernel out of cvs cleanly, but when it boots I get swap errors like:
 
-This would seem the sane approach. 
+swap_dup: Bad swap file entry 4081004e
 
-> Technically you're right ...  In reality lwl/lwr are covered by US patent
-> 4,814,976 which would also cover a software implementation.  So unless MIPS
-> grants a license for the purpose of emulation in the Linux kernel ...
+over and over and over.
 
-They would need to grant a license for general GPL use, the GPL itself
-does not intend to allow other restrictions that would make the code non
-free. There are a billion examples of prior art for software fixing up
-of exceptions and software emulation of alignment fixups however.
+The latest 2.4 kernel source from cvs also compiles cleanly, but just hangs.
 
-Maybe MIPS can clarify their position officially.
+Both of these kernels die in the execve() call at the end of init/main.c.
+
+My debugging has lead me to believe there is some problem with the tlb, but I could certainly be wrong. Any suggestions?
+
+--
+------------------------------------------------------------------------
+Bob Dempsey                                     972-866-9199x104(V)
+Vice President R&D                              972-866-0179(F)
+Transfinity Corp                                bdempsey@transfinity.com
+4851 LBJ Freeway                                Dallas, TX 75244

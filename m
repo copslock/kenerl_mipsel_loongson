@@ -1,61 +1,54 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f450Ysl30298
-	for linux-mips-outgoing; Fri, 4 May 2001 17:34:54 -0700
-Received: from dea.waldorf-gmbh.de (IDENT:root@localhost [127.0.0.1])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f450YpF30291
-	for <linux-mips@oss.sgi.com>; Fri, 4 May 2001 17:34:52 -0700
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f450Xj320572;
-	Fri, 4 May 2001 21:33:45 -0300
-Date: Fri, 4 May 2001 21:33:45 -0300
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Justin Carlson <carlson@sibyte.com>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: mips64 linux glibc compilation broken?
-Message-ID: <20010504213345.B20515@bacchus.dhis.org>
-References: <0104301108411I.31854@plugh.sibyte.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <0104301108411I.31854@plugh.sibyte.com>; from carlson@sibyte.com on Mon, Apr 30, 2001 at 11:07:33AM -0700
-X-Accept-Language: de,en,fr
+	by oss.sgi.com (8.11.3/8.11.3) id f452YO200785
+	for linux-mips-outgoing; Fri, 4 May 2001 19:34:24 -0700
+Received: from sierra.seas.upenn.edu (root@sierra.seas.upenn.edu [158.130.64.180])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f452YNF00782
+	for <linux-mips@oss.sgi.com>; Fri, 4 May 2001 19:34:23 -0700
+Received: from serendipity (GRT-215-45.RESNET.UPENN.EDU [130.91.215.45])
+	by sierra.seas.upenn.edu (8.9.3/8.9.3) with SMTP id WAA14857
+	for <linux-mips@oss.sgi.com>; Fri, 4 May 2001 22:34:21 -0400 (EDT)
+Message-ID: <019801c0d50c$32024fb0$2dd75b82@serendipity>
+From: "Patrick Fisher" <pbfisher@seas.upenn.edu>
+To: <linux-mips@oss.sgi.com>
+Subject: Executing Programs from initrd
+Date: Fri, 4 May 2001 22:36:31 -0400
+Organization: University of Pennsylvania
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2462.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2462.0000
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Apr 30, 2001 at 11:07:33AM -0700, Justin Carlson wrote:
 
-> I could swear I saw this topic go by before, but searching my archives,
-> I don't see it.
-> 
-> glibc fresh out of redhat cvs doesn't compile for mips64-linux; it fails
-> with quite a bit of stuff like this:
-> 
-> ---
-> In file included from dynamic-link.h:21,
-> from dl-load.c:32:
-> ../sysdeps/mips/mips64/dl-machine.h: In function `elf_machine_got_rel':
-> ../sysdeps/mips/mips64/dl-machine.h:178: warning: passing arg 2 of `_dl_lookup_symbol' from incompatible pointer type
-> ../sysdeps/mips/mips64/dl-machine.h:178: warning: passing arg 3 of `_dl_lookup_symbol' from incompatible pointer type
-> ../sysdeps/mips/mips64/dl-machine.h:178: warning: passing arg 4 of `_dl_lookup_symbol' from incompatible pointer type
-> ../sysdeps/mips/mips64/dl-machine.h:178: too few arguments to function `_dl_lookup_symbol'
-> ../sysdeps/mips/mips64/dl-machine.h:181: warning: passing arg 2 of `_dl_lookup_symbol' from incompatible pointer type
-> ../sysdeps/mips/mips64/dl-machine.h:181: warning: passing arg 3 of `_dl_lookup_symbol' from incompatible pointer type
-> ../sysdeps/mips/mips64/dl-machine.h:181: warning: passing arg 4 of `_dl_lookup_symbol' from incompatible pointer type
-> ---
-> 
-> It looks like this is something that has been fixed for mips, but not mips64. 
-> I'm sure I can fix the immediate compile problems, but am not familiar enough
-> with glibc to be confident of doing the Right Thing overall.
-> 
-> Are there any patches for mips64 linux that haven't made it into the mainline
-> cvs yet?
+I'm plodding along working with Linux/MIPS (and Linux-VR) on a Philips Nino.
+I can boot linux, and fool around with the stand alone shell.  I can also
+execute a program included on Steven Hill's Nino ramdisk - a simple Hello
+World program, in assembly, which I compiled with my mipsel-linux toolchain
+(well, also from Steven Hill, but it was compiled locally on my own
+machine).  That program runs fine.
 
-I already answered this before in private email - mips64 is not support
-in glibc nor was it ever working properly.  And won't until somebody fixed
-the assembler and ld first ...
+    However, I can't run any binaries other than this one and the shell.  I
+wrote an additional Hello World program in C, compiled it for mipsel, and
+put it in the ramdisk.  The executable is definitely there when I boot on
+the nino - I can send it all to the serial console and see that it exists.
+However, any attempt to execute it returns "No such file or directory".
+It's got all the right permissions, and this occurs when I'm positive I'm
+giving it the whole path.  It simply can't see the file.  I also copied "ls"
+from a root image for a mipsel decstation, and got the same problem.  I
+downloaded the GNU fileutils source, set it for a mipsel target, compiled,
+put a few binaries on the ramdisk, and again, it can't find the file (but
+it's there, and I can see the contents).
+This occurs on a ~650k ramdisk with ~30k free, and a 2MB ramdisk with ~1.5MB
+free, using either the SGI Linux/MIPS sources or the Linux-VR project's
+sources.
 
-All software mips64 systems are currently running is 32-bit stuff running
-in the binary compatibility mode.
 
-  Ralf
+Any ideas?
+
+Thanks,
+Patrick

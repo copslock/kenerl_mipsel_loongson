@@ -1,43 +1,41 @@
-Received:  by oss.sgi.com id <S554267AbRASUge>;
-	Fri, 19 Jan 2001 12:36:34 -0800
-Received: from iris1.csv.ica.uni-stuttgart.de ([129.69.118.2]:32611 "EHLO
-        iris1.csv.ica.uni-stuttgart.de") by oss.sgi.com with ESMTP
-	id <S553721AbRASUgH>; Fri, 19 Jan 2001 12:36:07 -0800
-Received: from rembrandt (rembrandt.csv.ica.uni-stuttgart.de [129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de (8.9.3/8.9.3) with SMTP id VAA422530
-	for <linux-mips@oss.sgi.com>; Fri, 19 Jan 2001 21:36:04 +0100 (MET)
-Message-ID: <002001c08257$7186d000$2a764581@rembrandt.csv.ica.uni-stuttgart.de>
-From:   "Thiemo Seufer" <seufer@csv.ica.uni-stuttgart.de>
-To:     <linux-mips@oss.sgi.com>
-Subject: Re: Current CVS (010116) Boots OK
-Date:   Fri, 19 Jan 2001 21:36:04 +0100
+Received:  by oss.sgi.com id <S554287AbRASWfn>;
+	Fri, 19 Jan 2001 14:35:43 -0800
+Received: from mx.mips.com ([206.31.31.226]:61435 "EHLO mx.mips.com")
+	by oss.sgi.com with ESMTP id <S554284AbRASWfe>;
+	Fri, 19 Jan 2001 14:35:34 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id OAA04487;
+	Fri, 19 Jan 2001 14:35:29 -0800 (PST)
+Received: from Ulysses (ulysses [192.168.236.13])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id OAA27212;
+	Fri, 19 Jan 2001 14:35:27 -0800 (PST)
+Message-ID: <01c701c08268$a4965860$0deca8c0@Ulysses>
+From:   "Kevin D. Kissell" <kevink@mips.com>
+To:     <carlson@sibyte.com>, <linux-mips@oss.sgi.com>
+References: <0101191014100B.01043@plugh.sibyte.com>
+Subject: Re: R[45]KC PRiD fields?
+Date:   Fri, 19 Jan 2001 23:39:09 +0100
 MIME-Version: 1.0
 Content-Type: text/plain;
 	charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
 X-Priority: 3
 X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 4.72.3612.1700
-X-MimeOLE: Produced By Microsoft MimeOLE V4.72.3612.1700
+X-Mailer: Microsoft Outlook Express 5.50.4133.2400
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Maciej W. Rozycki wrote:
-[snip]
-> It's possible.  I'm actually using `cu' and it works fine wrt wrapping
->but it requires hw flow control (it sets "-clocal" and "crtscts" 
->explicitly) unfortunately, which is why it cannot be used for the
->DECstation's REX console I/O (which uses DTR/DSR flow control due to
->serial interface limitations on certain DEC hardware).  I'm going to
->modify `cu' at one time but since I don't really work with REX that much
->I'm just using `cat' for this purpose for now.
+> Does anyone happen to know what the R4Kc anc R5KC use for the company ID
+of the
+> PrID register (bits 23-16)?  I'm assuming it's 1, which is reserved for
+MTI,
+> but bits 15-8 seem to be carefully chosen not to conflict with previous
+> processors in the non-MIPS32/MIPS64 PRiD space.
 
-You might try 'screen'. I don't know if it requires Hardware
-flow control, but it works for me via
+The MIPS 4KC has a PrID of 0x000180xx
+The MIPS 5KC has a PrID of 0x000181xx
 
-screen screen /dev/ttyS1
-
-
-Thiemo
+            Kevin K.

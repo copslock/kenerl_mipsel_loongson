@@ -1,43 +1,50 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0PLiZt28123
-	for linux-mips-outgoing; Fri, 25 Jan 2002 13:44:35 -0800
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id g0PLiXP28117
-	for <linux-mips@oss.sgi.com>; Fri, 25 Jan 2002 13:44:33 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id g0PKiT201623;
-	Fri, 25 Jan 2002 12:44:29 -0800
-Date: Fri, 25 Jan 2002 12:44:29 -0800
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Phil Thompson <phil@river-bank.demon.co.uk>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: Generic DISCONTIGMEM Support on 32bit MIPS
-Message-ID: <20020125124429.A961@dea.linux-mips.net>
-References: <3C51838A.174F8712@river-bank.demon.co.uk>
-Mime-Version: 1.0
+	by oss.sgi.com (8.11.2/8.11.3) id g0PLkp428640
+	for linux-mips-outgoing; Fri, 25 Jan 2002 13:46:51 -0800
+Received: from real.realitydiluted.com (real.realitydiluted.com [208.242.241.164])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0PLklP28619
+	for <linux-mips@oss.sgi.com>; Fri, 25 Jan 2002 13:46:47 -0800
+Received: from localhost.localdomain ([127.0.0.1] helo=cotw.com)
+	by real.realitydiluted.com with esmtp (Exim 3.22 #1 (Red Hat Linux))
+	id 16UDF6-0003SW-00; Fri, 25 Jan 2002 14:46:36 -0600
+Message-ID: <3C51C427.392B40E4@cotw.com>
+Date: Fri, 25 Jan 2002 14:46:31 -0600
+From: "Steven J. Hill" <sjhill@cotw.com>
+Reply-To: sjhill@cotw.com
+X-Mailer: Mozilla 4.77 [en] (X11; U; Linux 2.4.17-xfs i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: libc-alpha@sources.redhat.com, linux-mips@oss.sgi.com
+Subject: New MIPS cross toolchain using glibc-2.2.5pre1....
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <3C51838A.174F8712@river-bank.demon.co.uk>; from phil@river-bank.demon.co.uk on Fri, Jan 25, 2002 at 04:10:50PM +0000
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, Jan 25, 2002 at 04:10:50PM +0000, Phil Thompson wrote:
+Greetings.
 
-> I'm working on a port of 32bit MIPS to a board with several large holes
-> in the memory map. So I need to re-implement paging_init() and
-> mem_init().
-> 
-> The first question is: has anybody already done this? Particularly as,
-> once you've identified where the holes are, the code isn't board
-> specific.
-> 
-> If not then I'll try to work out what needed from the corresponding
-> mips64 and ip27 code, but I'd appreciate any pointers.
+First I want to thank HJ Lu for his patience as I traded quite
+a few emails with him trying to get this up and working. I was
+successful with building a new MIPS toolchain using the following:
 
-Great, I was already planning to do this next.  Discontiguous memory is a
-common problem on MIPS systems; it's almost standard for systems that
-have more than 256mb of memory.
+    binutils-cvs-LATEST
+    gcc-cvs-LATEST (gcc-3.1)
+    glibc-2.2.5pre1
 
-  Ralf
+It compiles kernels and user apps with no problems. I have made
+everything available here:
+
+    ftp://ftp.cotw.com/Linux/MIPS/toolchain/experimental
+
+Most important is the patch required to glibc-2.2.5pre1 in order
+for a MIPS toolchain to even build. The other important item is
+that it is absolutely necessary to specify the '--enable-kernel=2.4.X'
+option when configuring glibc, or you will have problems with
+undefined versioned symbols related to GLIBC_2.1. There is also
+a shell script in the 'sources' directory that shows the exact steps
+that I used. Hopefully this will be of some use to someone. Cheers.
+
+-Steve
+
+-- 
+ Steven J. Hill - Embedded SW Engineer

@@ -1,66 +1,45 @@
-Received:  by oss.sgi.com id <S553761AbQJQObD>;
-	Tue, 17 Oct 2000 07:31:03 -0700
-Received: from [206.207.108.63] ([206.207.108.63]:29021 "HELO
-        ridgerun-lx.ridgerun.cxm") by oss.sgi.com with SMTP
-	id <S553756AbQJQOas>; Tue, 17 Oct 2000 07:30:48 -0700
-Received: (qmail 8417 invoked from network); 17 Oct 2000 08:30:37 -0600
-Received: from skranz-lx.ridgerun.cxm (HELO ridgerun.com) (skranz@192.168.1.15)
-  by ridgerun-lx.ridgerun.cxm with SMTP; 17 Oct 2000 08:30:37 -0600
-Message-ID: <39EC628D.43431069@ridgerun.com>
-Date:   Tue, 17 Oct 2000 08:30:37 -0600
-From:   Steve Kranz <skranz@ridgerun.com>
-X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.16 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     Nicu Popovici <octavp@isratech.ro>
-CC:     linux-mips@oss.sgi.com
+Received:  by oss.sgi.com id <S553691AbQJQPVE>;
+	Tue, 17 Oct 2000 08:21:04 -0700
+Received: from rotor.chem.unr.edu ([134.197.32.176]:8710 "EHLO
+        rotor.chem.unr.edu") by oss.sgi.com with ESMTP id <S553651AbQJQPUl>;
+	Tue, 17 Oct 2000 08:20:41 -0700
+Received: (from wesolows@localhost)
+	by rotor.chem.unr.edu (8.9.3/8.9.3) id IAA19493;
+	Tue, 17 Oct 2000 08:20:08 -0700
+Date:   Tue, 17 Oct 2000 08:20:08 -0700
+From:   Keith M Wesolowski <wesolows@chem.unr.edu>
+To:     Steve Kranz <skranz@ridgerun.com>
+Cc:     Nicu Popovici <octavp@isratech.ro>, linux-mips@oss.sgi.com
 Subject: Re: CrossCompiler.
-References: <39EC5A4A.DFE3EAD7@isratech.ro>
+Message-ID: <20001017082008.A19317@chem.unr.edu>
+References: <39EC5A4A.DFE3EAD7@isratech.ro> <39EC628D.43431069@ridgerun.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+User-Agent: Mutt/1.2i
+In-Reply-To: <39EC628D.43431069@ridgerun.com>; from skranz@ridgerun.com on Tue, Oct 17, 2000 at 08:30:37AM -0600
+X-Complaints-To: postmaster@chem.unr.edu
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Try downloading the make-cross... package located at the
-following site:
+On Tue, Oct 17, 2000 at 08:30:37AM -0600, Steve Kranz wrote:
 
-  ftp://oss.sgi.com/pub/linux/mips/mips-linux/simple
+> Try downloading the make-cross... package located at the
+> following site:
 
-The README file pertaining to that package states
-the following:
+>   "This is the "standard" toolchain. It may not be
+>   perfect, but it at least builds a working kernel and
+>   some userland packages. It will be updated as major
 
-  "This is the "standard" toolchain. It may not be
-  perfect, but it at least builds a working kernel and
-  some userland packages. It will be updated as major
-  bugs are fixed or every 4-6 weeks or so. If you are
-  doing development with Simple and/or glibc 2.2, you
-  should be using these versions.
-  make-cross.sh can be used to build a full cross
-  toolchain in one shot."
+Unfortunately the standard toolchain itself is out of date. I would
+recommend instead getting current CVS binutils and gcc, and patching
+appropriately. With any luck we'll soon have a new standard toolchain.
+make-cross, otoh, is still 100% useful; I use it all the time and it
+works with arbitrary versions.
 
-Steve Kranz
-RidgeRun Inc.
-
-=============================
-
-Nicu Popovici wrote:
-
-> Hello you all,
->
->   I am new in this field so if I will make mistakes please be patient
-> and I will try to not repeat myself.
->
-> So my task is to setup a gcc crosscompiler which will make code for a
-> mips machine. The crosscompiler will run on a i686-pc-linux machine. I
-> downloaded the latest stuff from oss.sgi.com ( I read the foozbar
-> project which was to setup a crosscompiler on a Indy machine also for
-> mips ) but I got an error  .
-> Something  with signal 11. Can any of you have any ideea of what to do
-> to setupsuch a crosscompiler ?
->
-> Thanks for all the help that I will get from you .
->
-> Regards,
-> Nicu
+-- 
+Keith M Wesolowski			wesolows@chem.unr.edu
+University of Nevada			http://www.chem.unr.edu
+Chemistry Department Systems and Network Administrator

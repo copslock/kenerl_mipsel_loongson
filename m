@@ -1,75 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 May 2003 16:56:11 +0100 (BST)
-Received: from bay1-f3.bay1.hotmail.com ([IPv6:::ffff:65.54.245.3]:65029 "EHLO
-	hotmail.com") by linux-mips.org with ESMTP id <S8225278AbTEJP4J>;
-	Sat, 10 May 2003 16:56:09 +0100
-Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
-	 Sat, 10 May 2003 08:56:01 -0700
-Received: from 4.35.224.219 by by1fd.bay1.hotmail.msn.com with HTTP;
-	Sat, 10 May 2003 15:56:01 GMT
-X-Originating-IP: [4.35.224.219]
-X-Originating-Email: [michaelanburaj@hotmail.com]
-From: "Michael Anburaj" <michaelanburaj@hotmail.com>
-To: jbglaw@lug-owl.de, linux-mips@linux-mips.org
-Subject: Re: Linux for MIPS Atlas 4Kc board
-Date: Sat, 10 May 2003 08:56:01 -0700
-Mime-Version: 1.0
-Content-Type: text/plain; format=flowed
-Message-ID: <BAY1-F3AmEaJswFCHOz0000b1d9@hotmail.com>
-X-OriginalArrivalTime: 10 May 2003 15:56:01.0357 (UTC) FILETIME=[A77D77D0:01C3170C]
-Return-Path: <michaelanburaj@hotmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 May 2003 20:25:55 +0100 (BST)
+Received: from vopmail.sfo.interquest.net ([IPv6:::ffff:66.135.128.69]:47889
+	"EHLO micaiah.rwc.iqcicom.com") by linux-mips.org with ESMTP
+	id <S8225290AbTEJTZx>; Sat, 10 May 2003 20:25:53 +0100
+Received: from Muruga.localdomain (unverified [66.135.134.124]) by micaiah.rwc.iqcicom.com
+ (Vircom SMTPRS 2.0.244) with ESMTP id <B0006382563@micaiah.rwc.iqcicom.com>;
+ Sat, 10 May 2003 12:25:51 -0700
+Received: from localhost (muthu@localhost)
+	by Muruga.localdomain (8.11.6/8.11.2) with ESMTP id h4AJ48d13881;
+	Sat, 10 May 2003 12:04:08 -0700
+Date: Sat, 10 May 2003 12:04:08 -0700 (PDT)
+From: Muthukumar Ratty <muthu@iqmail.net>
+To: <linux-mips@linux-mips.org>
+cc: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Subject: MIPS specific ELF doc? (Re: OpenSSL/Binutils Issues)
+In-Reply-To: <20030510141959.GB18697@rembrandt.csv.ica.uni-stuttgart.de>
+Message-ID: <Pine.LNX.4.33.0305101159250.13866-100000@Muruga.localdomain>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <muthu@iqmail.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2340
+X-archive-position: 2341
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: michaelanburaj@hotmail.com
+X-original-sender: muthu@iqmail.net
 Precedence: bulk
 X-list: linux-mips
 
+
 Hi,
-
->"init" is another thing. Your NFS root should include a /sbin/init or
->or /etc/init or /bin/init or /bin/sh. If none of those exists, you
->loose.
-
-
-For setting up the NFS, I did the following:
-1. exported the /export/RedHat7.1
-2. downloaded MIPS_RedHat7.1_Release-02.00.tar from 
-ftp://ftp.mips.com/pub/linux/mips/installation/redhat7.1/02.00
-
-this tar file has the following:
-
-linux\installation\RedHat7.1\RPMS\mips\ <contains a lot of rpms>
-linux\installation\RedHat7.1\RPMS\mipsel\ <contains a lot of rpms>
-linux\installation\RedHat7.1\RPMS\noarch\ <contains a lot of rpms>
-linux\installation\RedHat7.1\install\ <contains a Makefile, install.list, 
-install.script>
-linux\installation\RedHat7.1\install\root\etc\ <contains inittab, securetty>
-linux\installation\RedHat7.1\install\root\etc\sysconfig\ <contains network>
-linux\installation\RedHat7.1\install\root\etc\xinetd.d\ <contains telnet, 
-rlogin, rsh,rexec, hosts>
-
-& some more files.
-
-Now tell me what should be extracted to my NFS export /export/RedHat7.1 
-(along with their relative path info.).
-
-Also let me know what path to be passed on to the kernel as parameter to 
-nfsroot=
-Is it simply /export/Redhat7.1?
-
-Another question: I don't see a init file in the tar. or is inittab similar? 
-Is this "MIPS_RedHat7.1_Release-02.00.tar" tar file the right file & the 
-only file that is needed for now; that has the right stuff in it? Or do I 
-need to get the right file from a different tar file?
-
-
-Thanks,
--Mike.
-
-_________________________________________________________________
-Add photos to your e-mail with MSN 8. Get 2 months FREE*.  
-http://join.msn.com/?page=features/featuredemail
+Where can I get MIPS processor specific ELF document (if there is any?)
+Thanks
+Muthu.

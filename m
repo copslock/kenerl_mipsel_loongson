@@ -1,39 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Feb 2003 09:25:58 +0000 (GMT)
-Received: from honk1.physik.uni-konstanz.de ([IPv6:::ffff:134.34.144.71]:1239
-	"EHLO honk1.physik.uni-konstanz.de") by linux-mips.org with ESMTP
-	id <S8225223AbTBDJZ5>; Tue, 4 Feb 2003 09:25:57 +0000
-Received: from bogon.sigxcpu.org (unknown [134.34.147.122])
-	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP id 9BD9C2BC2D
-	for <linux-mips@linux-mips.org>; Tue,  4 Feb 2003 10:25:54 +0100 (CET)
-Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
-	id 781844AF4C; Tue,  4 Feb 2003 10:24:17 +0100 (CET)
-Date: Tue, 4 Feb 2003 10:24:17 +0100
-From: Guido Guenther <agx@sigxcpu.org>
-To: Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Re: [patch] cmdline.c rewrite
-Message-ID: <20030204092417.GR16674@bogon.ms20.nix>
-Mail-Followup-To: Guido Guenther <agx@sigxcpu.org>,
-	Linux-MIPS <linux-mips@linux-mips.org>
-References: <20030204061323.GA27302@pureza.melbourne.sgi.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Feb 2003 12:44:14 +0000 (GMT)
+Received: from p508B4EE8.dip.t-dialin.net ([IPv6:::ffff:80.139.78.232]:43711
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225236AbTBDMoN>; Tue, 4 Feb 2003 12:44:13 +0000
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id h14Ci7m29640;
+	Tue, 4 Feb 2003 13:44:07 +0100
+Date: Tue, 4 Feb 2003 13:44:06 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Yoichi Yuasa <yoichi_yuasa@montavista.co.jp>
+Cc: linux-mips@linux-mips.org
+Subject: Re: [patch] TANBAC TB0226(NEC VR4131)
+Message-ID: <20030204134406.A29585@linux-mips.org>
+References: <20030204154025.340fdf40.yoichi_yuasa@montavista.co.jp>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20030204061323.GA27302@pureza.melbourne.sgi.com>
-User-Agent: Mutt/1.4i
-Return-Path: <agx@sigxcpu.org>
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <20030204154025.340fdf40.yoichi_yuasa@montavista.co.jp>; from yoichi_yuasa@montavista.co.jp on Tue, Feb 04, 2003 at 03:40:25PM +0900
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1304
+X-archive-position: 1305
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: agx@sigxcpu.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Feb 04, 2003 at 05:13:23PM +1100, Andrew Clausen wrote:
-> Some kernel parameters are auto-generated.   eg: root= (always has been
-> broken).  Anyway, the old version of cmdline.c added these auto-generated
-Can you explain in what way root= was broken?
- -- Guido
+On Tue, Feb 04, 2003 at 03:40:25PM +0900, Yoichi Yuasa wrote:
+
+> This patch is based on linux_2_4 tag cvs tree on ftp.linux-mips.org
+> Would you apply this patch to CVS on ftp.linux-mips.org?
+
+Could you also make a patch against 2.5?  It's a huge PITA when 2.4 and
+2.5 trees are diverging so I'd really like to have a patch for 2.5 also.
+
+Patch applied,
+
+  Ralf

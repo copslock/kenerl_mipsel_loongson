@@ -1,54 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Feb 2003 08:12:32 +0000 (GMT)
-Received: from [IPv6:::ffff:202.145.53.89] ([IPv6:::ffff:202.145.53.89]:28577
-	"EHLO miao.coventive.com") by linux-mips.org with ESMTP
-	id <S8224939AbTBYIMb>; Tue, 25 Feb 2003 08:12:31 +0000
-Received: from jefflee (PC193.ia.kh.coventive.com [192.168.23.193] (may be forged))
-	by miao.coventive.com (8.11.6/8.11.6) with SMTP id h1P8CDx20607;
-	Tue, 25 Feb 2003 16:12:15 +0800
-From: "jeff" <jeff_lee@coventive.com>
-To: "Thiemo Seufer" <ica2_ts@csv.ica.uni-stuttgart.de>
-Cc: <linux-mips@linux-mips.org>
-Subject: RE: Kernel 2.4.20
-Date: Tue, 25 Feb 2003 16:17:53 +0800
-Message-ID: <LPECIADMAHLPOFOIEEFNEEMACNAA.jeff_lee@coventive.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="US-ASCII"
-Content-Transfer-Encoding: base64
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
-In-Reply-To: <20030225080327.GC25303@rembrandt.csv.ica.uni-stuttgart.de>
-X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6700
-Importance: Normal
-Return-Path: <jeff_lee@coventive.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Feb 2003 08:33:30 +0000 (GMT)
+Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:16515
+	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
+	id <S8224939AbTBYId3>; Tue, 25 Feb 2003 08:33:29 +0000
+Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
+	by iris1.csv.ica.uni-stuttgart.de with esmtp (Exim 3.36 #2)
+	id 18naWf-001Tfh-00; Tue, 25 Feb 2003 09:33:21 +0100
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
+	id 18naWf-0000ub-00; Tue, 25 Feb 2003 09:33:21 +0100
+Date: Tue, 25 Feb 2003 09:33:21 +0100
+To: jeff <jeff_lee@coventive.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: Kernel 2.4.20
+Message-ID: <20030225083321.GD25303@rembrandt.csv.ica.uni-stuttgart.de>
+References: <20030225080327.GC25303@rembrandt.csv.ica.uni-stuttgart.de> <LPECIADMAHLPOFOIEEFNEEMACNAA.jeff_lee@coventive.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <LPECIADMAHLPOFOIEEFNEEMACNAA.jeff_lee@coventive.com>
+User-Agent: Mutt/1.4i
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1543
+X-archive-position: 1544
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jeff_lee@coventive.com
+X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
 Precedence: bulk
 X-list: linux-mips
 
-RGVhciBUaGllbW8sDQogICAgVGhhbmtzIGZvciB5b3VyIHF1aWNrbHkgcmVzcG9uc2UuDQpJIHRy
-eSB0byBtb2RpZnkgdGhlIC9hcmNoL21pcHMvbGQuc2NyaXB0LmluIG9yIC9hcmNoL21pcHMva2Vy
-bmVsL2hlYWQuUw0KYnV0IHN0aWxsIGNhbid0IHdvcmsgKGVudHJ5IGlzIGNoYW5nZWQgYnV0IGtl
-cm5lbCBjYW4ndCB3b3JrKS4gRG8gSSBtYWtlDQphbnkgbWlzdGFrZT8NCg0KVGhhbmtzDQoNCkpl
-ZmYgQCBDb3ZlbnRpdmUNCg0KLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCkZyb206IFRoaWVt
-byBTZXVmZXIgW21haWx0bzppY2EyX3RzQGNzdi5pY2EudW5pLXN0dXR0Z2FydC5kZV0NClNlbnQ6
-IFR1ZXNkYXksIEZlYnJ1YXJ5IDI1LCAyMDAzIDQ6MDMgUE0NClRvOiBqZWZmDQpDYzogbGludXgt
-bWlwc0BsaW51eC1taXBzLm9yZw0KU3ViamVjdDogUmU6IEtlcm5lbCAyLjQuMjANCg0KDQpqZWZm
-IHdyb3RlOg0KPiBEZWFyIEFsbCwNCj4gICAgIEkgYW0gdHJ5aW5nIHRvIHBvcnRpbmcgTkVDIFZy
-NDEzMSBwbGF0Zm9ybSBmcm9tIDIuNC4xNiB0byAyLjQuMjAgYnV0IEkgZm91bmQgc29tZSBwcm9i
-bGVtLg0KPiBJbiBrZXJuZWwgMi40LjE2LCB0aGUga2VybmVsIGVudHJ5IGlzIDB4ODAwMDI0NzAg
-YnV0IHRoZSBrZXJuZWwgZW50cnkgaW4gMi40LjIwIGlzIDB4ODAxeHh4eHgNCg0KVGhhdCdzIGp1
-c3Qgbm9ybWFsLCB0aGUgZW50cnkgaXMgdmFyaWFibGUuDQoNCj4gU28gbXkgcHJvYmxlbSBpcyBo
-b3cgdG8gY2hhbmdlIHRoZSBrZXJuZWwgZW50cnkgZnJvbSAweDgwMXh4eHh4IHRvIGJlIDB4ODAw
-MHh4eHg/IG9yIGhvdyANCj4gdG8gdGVzdCB0aGlzIGtlcm5lbCB3aGVuIHRoZSBrZXJuZWwgZW50
-cnkgaXMgMHg4MDF4eHh4eD8NCg0KVGhlIGVudHJ5IGFkZHJlc3MgaXMgZW5jb2RlZCBpbiB0aGUg
-RUxGIGhlYWRlciBhdCB0aGUgYmVnaW5uaW5nIG9mIHZtbGludXgNCihhcyBpdCBpcyBmb3IgYWxs
-IG90aGVyIEVMRiBleGVjdXRhYmxlcykuIFRoZSBoZWFkZXIncyBsYXlvdXQgY2FuIGJlIGZvdW5k
-DQplLmcuIGluIGxpbnV4L2luY2x1ZGUvbGludXgvZWxmLmguDQoNCg0KVGhpZW1v
+jeff wrote:
+> Dear Thiemo,
+>     Thanks for your quickly response.
+> I try to modify the /arch/mips/ld.script.in or /arch/mips/kernel/head.S
+
+This won't help. The entry address is where the linker happens to
+place the entry function. It may vary even for slight differences
+in Kernel compilation.
+
+> but still can't work (entry is changed but kernel can't work).
+
+What does "can't work" mean? What happens exactly?
+
+What sort of bootloader are you using? Normally it is able to
+handle ELF properly, which makes this thing work automatically.
+
+> Do I make any mistake?
+
+Sounds so.
+
+
+Thiemo

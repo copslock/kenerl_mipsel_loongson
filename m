@@ -1,100 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Feb 2004 17:00:40 +0000 (GMT)
-Received: from mxsf26.cluster1.charter.net ([IPv6:::ffff:209.225.28.226]:24595
-	"EHLO mxsf26.cluster1.charter.net") by linux-mips.org with ESMTP
-	id <S8225442AbUBERAk>; Thu, 5 Feb 2004 17:00:40 +0000
-Received: from tseo ([68.114.28.136])
-	by mxsf26.cluster1.charter.net (8.12.10/8.12.8) with SMTP id i15Gw5JC081838
-	for <linux-mips@linux-mips.org>; Thu, 5 Feb 2004 11:58:06 -0500 (EST)
-	(envelope-from seo_tmi@charter.net)
-From: "Toshio Seo" <seo_tmi@charter.net>
-To: "Linux-Mips" <linux-mips@linux-mips.org>
-Subject: Userland question
-Date: Thu, 5 Feb 2004 11:55:36 -0500
-Message-ID: <HGEAKBEJEJDAIDOBJGONKEMKCAAA.seo_tmi@charter.net>
-MIME-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="----=_NextPart_000_0019_01C3EBDE.F7912EE0"
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.6604 (9.0.2911.0)
-Importance: Normal
-X-MS-TNEF-Correlator: <HGEAKBEJEJDAIDOBJGONKEMKCAAA.seo_tmi@charter.net>
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1165
-Return-Path: <seo_tmi@charter.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Feb 2004 17:04:44 +0000 (GMT)
+Received: from baldur.fh-brandenburg.de ([IPv6:::ffff:195.37.0.5]:51357 "HELO
+	baldur.fh-brandenburg.de") by linux-mips.org with SMTP
+	id <S8225457AbUBEREn>; Thu, 5 Feb 2004 17:04:43 +0000
+Received: (1380 bytes) by baldur.fh-brandenburg.de
+	via sendmail with P:stdio/R:match-inet-hosts/T:smtp
+	(sender: <dahms@zeus.fh-brandenburg.de>) 
+	id <m1Aomqq-000ps5C@baldur.fh-brandenburg.de>
+	for <linux-mips@linux-mips.org>; Thu, 5 Feb 2004 17:59:40 +0100 (MET)
+	(Smail-3.2.0.97 1997-Aug-19 #3 built DST-Sep-15)
+Received: from zeus.fh-brandenburg.de(195.37.1.35)
+ via SMTP by baldur.fh-brandenburg.de, id smtpdNNAa001YW; Thu Feb  5 16:30:49 2004
+Received: (from dahms@localhost)
+	by zeus.fh-brandenburg.de (8.11.7p1+Sun/8.11.7) id i12G7Tt20206
+	for linux-mips@linux-mips.org; Mon, 2 Feb 2004 17:07:29 +0100 (MET)
+Date: Mon, 2 Feb 2004 17:07:29 +0100
+From: Markus Dahms <dahms@fh-brandenburg.de>
+To: linux-mips@linux-mips.org
+Subject: Indy R4000PC problems
+Message-ID: <20040202160729.GA5966@fh-brandenburg.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4.1i
+Return-Path: <dahms@zeus.fh-brandenburg.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4289
+X-archive-position: 4290
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: seo_tmi@charter.net
+X-original-sender: dahms@fh-brandenburg.de
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
-
-------=_NextPart_000_0019_01C3EBDE.F7912EE0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-
 Hi,
 
-I built am using a cross compiler and was able to build Linux with GCC-3.3.2
-and GLIB-2.3.2 but when trying to execute programs, I get GLIB errors since
-the Userland on the embedded system is not up to the right version.  I tried
-PTX but I think it is up to 3.2.3 and 2.2.5 respectively.  I there any good
-reference to updating the Userland when crosscompiling?
+I had problems getting the 2.4 kernel to work on an Indy with
+a R4000PC (100MHz) processor (very old PROM, too).
+The solution I found yesterday is to change an entry in
+arch/mips/kernel/cpu-probe.c from CPU_R4000SC to CPU_R4000PC.
+Is there a reason why only the SC version is thought to be
+there, or is it believed to be compatible?
+Without this change the machine locks up after loading the
+kernel, linux hasn't switched to the black background, yet.
 
-Toshio Seo
+I also changed the compiler flags from -m{arch,tune}=r4600 to
+*r4000, but this I also tried before without success.
 
+greetings,
 
----
-Outgoing mail is certified Virus Free.
-Checked by AVG anti-virus system (http://www.grisoft.com).
-Version: 6.0.573 / Virus Database: 363 - Release Date: 1/28/2004
- 
+	Markus Dahms
 
-------=_NextPart_000_0019_01C3EBDE.F7912EE0
-Content-Type: application/ms-tnef;
-	name="winmail.dat"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
-	filename="winmail.dat"
-
-eJ8+IiQQAQaQCAAEAAAAAAABAAEAAQeQBgAIAAAA5AQAAAAAAADoAAEIgAcAGAAAAElQTS5NaWNy
-b3NvZnQgTWFpbC5Ob3RlADEIAQ2ABAACAAAAAgACAAEGgAMADgAAANQHAgAFAAsANgAAAAQAJwEB
-A5AGALQGAAAkAAAACwACAAEAAAALACMAAAAAAAMAJgAAAAAACwApAAAAAAADADYAAAAAAB4AcAAB
-AAAAEgAAAFVzZXJsYW5kIHF1ZXN0aW9uAAAAAgFxAAEAAAAWAAAAAcPsCMYfGV5EUkpxRYqXUE8C
-EUJ1aAAAAgEdDAEAAAAZAAAAU01UUDpTRU9fVE1JQENIQVJURVIuTkVUAAAAAAsAAQ4AAAAAQAAG
-DgCE3qYI7MMBAgEKDgEAAAAYAAAAAAAAABRtoedp2XZAoUldXSIG/zTCgAAACwAfDgEAAAACAQkQ
-AQAAAHYCAAByAgAARwMAAExaRnWGXMd8AwAKAHJjcGcxMjUWMgD4C2BuDhAwMzNPAfcCpAPjAgBj
-aArAc/BldDAgBxMCgwBQBFV/EMkIVQeyAoMOUBBvEXV9JQqBdgiQd2sLgGQ0HQxgYwBQCwMLtSBI
-aQ4sCqIKhAqASSBidcMDEAVAYW0gdQCQDyA1GUAgBQBvBBEFoG1whwMQE6EAcGQgd2EEIGMBoBqw
-IHRvGOMbEEwJC4B1eBsgaXRoIEBHQ0MtMy4dQDKBGuNHTElCLTIdUzMY8AVAd2gJ8BuwcnlzGaIb
-wWV4BZAeoBugcEcDYAnAGVBzLCAY0Ge3ETAd0x+wcgNgERAgGZGmYxuhHuAgVREgcg8B9xsQAiAi
-U2UG0AmAAQAbEDhzeXMgEBlgBAAgbnJvBUB1cBuyImIFEGc6aAVAdgSQAJACIC4gjyDRHyAIkBsQ
-UFRYHoP1JrFoC4BrJJAFQCShJRTfHWEdUBrjHjAeMDUloAeQknAFkHRpJhBseSaE1x7gCXAa4Xkg
-8G8EcCnhnmYrISIjG9AlEGRhKlC/H2Iieh7TGgMaZBmhPxgaeQrzIFQaICfgG9AGYG//GBUAQRgj
-MAULRhRSF7EAALkLDjE4AzAvERugLTUg/TTETx6gK6AZogDAAxEkoY8iMAAgBpAm8lZpchmAVCBG
-CdEuNMRDHuBjimskAWIrgEFWRxrhXSpQLRYwN4IkNSgl4HSgcDovL3c7AC4JwFUEAG8BgC4aYSk4
-BVZBJiQ6IDYuMCnAN3UpMC83VUQs8AGgG0BlaTzgMzYpMC0H8CqAZYc+UT3yPnExLzI4P/BMMDAW
-sDTTIH0YFH0BQWAAAAMAAHwFAAAACwABgAggBgAAAAAAwAAAAAAAAEYAAAAAA4UAAAAAAAADAAOA
-CCAGAAAAAADAAAAAAAAARgAAAAAQhQAAAAAAAAMAJoAIIAYAAAAAAMAAAAAAAABGAAAAAFKFAABz
-eQEACwAzgAggBgAAAAAAwAAAAAAAAEYAAAAADoUAAAAAAAADADWACCAGAAAAAADAAAAAAAAARgAA
-AAARhQAAAAAAAAMANoAIIAYAAAAAAMAAAAAAAABGAAAAABiFAAAAAAAAAwBcgAggBgAAAAAAwAAA
-AAAAAEYAAAAAAYUAAAAAAAAeAGuACCAGAAAAAADAAAAAAAAARgAAAABUhQAAAQAAAAQAAAA5LjAA
-CwBsgAggBgAAAAAAwAAAAAAAAEYAAAAABoUAAAAAAAALAIeACCAGAAAAAADAAAAAAAAARgAAAACC
-hQAAAQAAAAMABoFACbNnNTvSEaWVACAYZIunAQAAACAAAABBAFYARwAgAEYATABBAEcAUwAgACgA
-TwBVAFQAKQAAAAAAAAMCAfgPAQAAABAAAAAUbaHnadl2QKFJXV0iBv80AgH6DwEAAAAQAAAAFG2h
-52nZdkChSV1dIgb/NAIB+w8BAAAAnwAAAAAAAAA4obsQBeUQGqG7CAArKlbCAABQU1RQUlguRExM
-AAAAAAAAAABOSVRB+b+4AQCqADfZbgAAAEM6XERvY3VtZW50cyBhbmQgU2V0dGluZ3NcQWRtaW5p
-c3RyYXRvclxMb2NhbCBTZXR0aW5nc1xBcHBsaWNhdGlvbiBEYXRhXE1pY3Jvc29mdFxPdXRsb29r
-XG91dGxvb2sucHN0AAADAP4PBQAAAAMADTT9NwAAAgF/AAEAAAAzAAAAPEhHRUFLQkVKRUpEQUlE
-T0JKR09OS0VNS0NBQUEuc2VvX3RtaUBjaGFydGVyLm5ldD4AAAMABhD63K0jAwAHELIBAAADABAQ
-AAAAAAMAERAAAAAAHgAIEAEAAABlAAAASEksSUJVSUxUQU1VU0lOR0FDUk9TU0NPTVBJTEVSQU5E
-V0FTQUJMRVRPQlVJTERMSU5VWFdJVEhHQ0MtMzMyQU5ER0xJQi0yMzJCVVRXSEVOVFJZSU5HVE9F
-WEVDVVRFUFJPRwAAAAAjgQ==
-
-------=_NextPart_000_0019_01C3EBDE.F7912EE0--
+-- 
+A bug in the code is worth two in the documentation.

@@ -1,55 +1,54 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id NAA54776 for <linux-archive@neteng.engr.sgi.com>; Wed, 25 Nov 1998 13:16:22 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id NAA45335 for <linux-archive@neteng.engr.sgi.com>; Wed, 25 Nov 1998 13:19:28 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id NAA20695
+	id NAA83238
 	for linux-list;
-	Wed, 25 Nov 1998 13:15:33 -0800 (PST)
+	Wed, 25 Nov 1998 13:18:25 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from fir.engr.sgi.com (fir.engr.sgi.com [150.166.61.141])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id NAA87398;
-	Wed, 25 Nov 1998 13:14:41 -0800 (PST)
-	mail_from (Olivier.Galibert@loria.fr)
-Received: from lorraine.loria.fr (lorraine.loria.fr [152.81.1.17]) 
-	by sgi.sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id NAA08318; Wed, 25 Nov 1998 13:14:39 -0800 (PST)
-	mail_from (Olivier.Galibert@loria.fr)
-Received: from renaissance.loria.fr (renaissance.loria.fr [152.81.4.102])
-	by lorraine.loria.fr (8.8.7/8.8.7/8.8.7/JCG) with ESMTP id WAA12714;
-	Wed, 25 Nov 1998 22:12:17 +0100 (MET)
-Received: (from galibert@localhost) by renaissance.loria.fr (8.8.2/8.8.2) id WAA05021; Wed, 25 Nov 1998 22:12:16 +0100 (MET)
-Message-ID: <19981125221216.A4954@loria.fr>
-Date: Wed, 25 Nov 1998 22:12:16 +0100
-From: Olivier Galibert <galibert@pobox.com>
-To: Greg Chesson <greg@xtp.engr.sgi.com>, linux@cthulhu.engr.sgi.com
+	via SMTP id NAA60993;
+	Wed, 25 Nov 1998 13:18:22 -0800 (PST)
+	mail_from (wje@fir.engr.sgi.com)
+Received: (from wje@localhost) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id NAA22913; Wed, 25 Nov 1998 13:18:12 -0800
+Date: Wed, 25 Nov 1998 13:18:12 -0800
+Message-Id: <199811252118.NAA22913@fir.engr.sgi.com>
+From: "William J. Earl" <wje@fir.engr.sgi.com>
+To: <pjlahaie@atlsci.com>
+Cc: Ariel Faigon <ariel@cthulhu.engr.sgi.com>,
+        Olivier Galibert <galibert@pobox.com>, linux@cthulhu.engr.sgi.com
 Subject: Re: help offered
-Mail-Followup-To: Greg Chesson <greg@xtp.engr.sgi.com>,
-	linux@cthulhu.engr.sgi.com
-References: <365AA647.62A5565D@fra.se> <199811242033.MAA31902@oz.engr.sgi.com> <19981125204900.A4692@loria.fr> <galibert@pobox.com> <9811251256.ZM24002@xtp.engr.sgi.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.91.1i
-In-Reply-To: <9811251256.ZM24002@xtp.engr.sgi.com>; from Greg Chesson on Wed, Nov 25, 1998 at 12:56:41PM -0800
+In-Reply-To: <Pine.LNX.4.04.9811251542540.3207-100000@elenuial.atlsci.com>
+References: <199811252037.MAA37649@oz.engr.sgi.com>
+	<Pine.LNX.4.04.9811251542540.3207-100000@elenuial.atlsci.com>
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Wed, Nov 25, 1998 at 12:56:41PM -0800, Greg Chesson wrote:
-> And woe to the vendors who have to compete against such garbage.
+pjlahaie@atlsci.com writes:
+ > On Wed, 25 Nov 1998, Ariel Faigon wrote:
+ > 
+ > > I've seen way much higher numbers.  They are not official, and
+ > > are not supposed to be used in sales situations, but were obtained
+ > > in our labs with XFS and arrays that were designed and tuned to
+ > > maximize bandwidth and to prove that XFS is not the bottleneck.
+ > > I believe they also used fiberchannel etc.   Anyway, there are
+ > > some much greater experts on this subject on this list if they
+ > > care to give the details.
+ > 
+ >     I was under the impression the O2k memory bandwidth was limited to
+ > ~800MB/s.  If so, even if you can read 4GB/s what are you foing to do with
+ > it?  It would have to go over the CrayLink "network" and that doesn't do
+ > 4GB/s.  The only way I can see 4GB/s disk throughput is multiple of the
+ > node accessing "local" drives and adding all the bandwidth together.
 
-Ohh yeah.
+       A single node is only 800 MB/s, but an 8P Origin 2000 has four nodes,
+and a 32P has 16 nodes.  The router network bandwidth scales with the number
+of nodes, so the memory bandwidth of a 32P Origin 2000 is far more than enough
+for 4 GB/s.  If you attach the drives to multiple controllers on multiple
+nodes, then it is easy to stripe across them with the volume manager to
+get high bandwidth.  The volume manager does requests in parallel, so it
+is not a bottleneck.
 
-Actually, in our case, it was slightly better:
-- we wanted 1TB of disk.
-- we wanted to be able to  dump the full 8GB memory  of the O2K to the
-  disk in around 10 seconds.
-- we wanted to buy everything to SGI (fibre channel raid array, disks,
-  everything).
-
-So the SGI dudes  were able to  choose solutions known to work instead
-of having to cope with existing hardware :-)
-
-  OG.
+     The Origin architecture does not have a central bus, so it is not bus
+limited.  Just add boxes until the bandwidth is enough for what you need.

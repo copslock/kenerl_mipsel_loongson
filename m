@@ -1,47 +1,49 @@
-Received:  by oss.sgi.com id <S554033AbRAWRFv>;
-	Tue, 23 Jan 2001 09:05:51 -0800
-Received: from sgigate.SGI.COM ([204.94.209.1]:23886 "EHLO
-        gate-sgigate.sgi.com") by oss.sgi.com with ESMTP id <S554029AbRAWRFo>;
-	Tue, 23 Jan 2001 09:05:44 -0800
+Received:  by oss.sgi.com id <S554039AbRAWRKV>;
+	Tue, 23 Jan 2001 09:10:21 -0800
+Received: from sgigate.SGI.COM ([204.94.209.1]:49532 "EHLO
+        gate-sgigate.sgi.com") by oss.sgi.com with ESMTP id <S554035AbRAWRKQ>;
+	Tue, 23 Jan 2001 09:10:16 -0800
 Received: (ralf@lappi.waldorf-gmbh.de) by bacchus.dhis.org
-	id <S870753AbRAWRDG>; Tue, 23 Jan 2001 09:03:06 -0800
-Date:	Tue, 23 Jan 2001 09:02:51 -0800
+	id <S870753AbRAWRH5>; Tue, 23 Jan 2001 09:07:57 -0800
+Date:	Tue, 23 Jan 2001 09:07:56 -0800
 From:	Ralf Baechle <ralf@oss.sgi.com>
-To:	Christoph Martin <martin@uni-mainz.de>
-Cc:	Dave Gilbert <gilbertd@treblig.org>, linux-mips@oss.sgi.com
-Subject: Re: Trying to boot an Indy
-Message-ID: <20010123090250.B945@bacchus.dhis.org>
-References: <Pine.LNX.4.10.10101210150410.964-100000@tardis.home.dave> <wwgofwyckov.fsf@arthur.zdv.Uni-Mainz.DE>
+To:	Jim Freeman <jfree@sovereign.org>
+Cc:	linux-mips@oss.sgi.com, dhinds@zen.stanford.edu
+Subject: Re: mips vs pcmcia - which wins?
+Message-ID: <20010123090756.C945@bacchus.dhis.org>
+References: <20010123093523.B4972@sovereign.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <wwgofwyckov.fsf@arthur.zdv.Uni-Mainz.DE>; from martin@uni-mainz.de on Tue, Jan 23, 2001 at 05:11:44PM +0100
+In-Reply-To: <20010123093523.B4972@sovereign.org>; from jfree@sovereign.org on Tue, Jan 23, 2001 at 09:35:23AM -0700
 X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, Jan 23, 2001 at 05:11:44PM +0100, Christoph Martin wrote:
-
-> > 1) I tried bootp - bootp()vmlinux - it says 'no server for vmlinux'.  The
-> > bootp server is a Linux/Alpha box running 2.4.0-ac9 - I've already done
-> > the trick with no_pmtu.  tcpdump shows bootp sending a packet with
-> > apparently the correct mac address.
-> > 
+On Tue, Jan 23, 2001 at 09:35:23AM -0700, Jim Freeman wrote:
+> From: Jim Freeman <jfree@sovereign.org>
+> Date:   Tue, 23 Jan 2001 09:35:23 -0700
+> To: linux-mips@oss.sgi.com, dhinds@zen.stanford.edu
+> Subject: mips vs pcmcia - which wins?
 > 
-> I have the same problem serving bootp from my i386 2.4.0 box. bootp
-> with kernel 2.2.x on the same box works. And it is only the bootp from
-> the command console that is failing. the bootp part later on in the
-> kernel is working from the 2.4.0 box.
+> The following mips kernel patchlet:
 > 
-> Weird.
+> 	diff -u --new-file --recursive --exclude-from diff.exclude \
+> 		linux-2.4.0/include/linux/sched.h \
+> 		linux-mips.cvs/include/linux/sched.h
+> 	--- linux-2.4.0/include/linux/sched.h   Thu Jan  4 15:50:47 2001
+> 	+++ linux-mips.cvs/include/linux/sched.h        Wed Jan 10 21:52:59 2001
+> 	@@ -562,6 +562,8 @@
+> 	 extern int in_group_p(gid_t);
+> 	 extern int in_egroup_p(gid_t);
+> 
+> 	+extern void release(struct task_struct * p);
+> 	+
 
-Not weired at all.  The firmware bootp()... does bootp and then uses tftp
-to download the kernel; the kernel then only uses bootp to figure out it's
-network configuration.  So the two are not only doing different things,
-they're also two are not only two independant and completly different
-implementations.
+The function getting exported here changed it's name to release_task in
+2.4; I've adjusted above declaration accordingly.
 
   Ralf

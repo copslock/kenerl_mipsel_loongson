@@ -1,52 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Apr 2003 21:09:16 +0100 (BST)
-Received: from p508B62A5.dip.t-dialin.net ([IPv6:::ffff:80.139.98.165]:49831
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225205AbTDJUJP>; Thu, 10 Apr 2003 21:09:15 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id h3AK96b02878;
-	Thu, 10 Apr 2003 22:09:06 +0200
-Date: Thu, 10 Apr 2003 22:09:06 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Mike Uhler <uhler@mips.com>
-Cc: Jun Sun <jsun@mvista.com>, linux-mips@linux-mips.org
-Subject: Re: way selection bit for multi-way cache
-Message-ID: <20030410220906.B519@linux-mips.org>
-References: <20030410212430.A519@linux-mips.org> <200304101937.h3AJbl211418@uhler-linux.mips.com>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Apr 2003 21:17:52 +0100 (BST)
+Received: from pasmtp.tele.dk ([IPv6:::ffff:193.162.159.95]:24327 "EHLO
+	pasmtp.tele.dk") by linux-mips.org with ESMTP id <S8225205AbTDJURv>;
+	Thu, 10 Apr 2003 21:17:51 +0100
+Received: from ekner.info (0x83a4a968.virnxx10.adsl-dhcp.tele.dk [131.164.169.104])
+	by pasmtp.tele.dk (Postfix) with ESMTP
+	id 8350FB56B; Thu, 10 Apr 2003 22:17:46 +0200 (CEST)
+Message-ID: <3E95D16D.1671BA5A@ekner.info>
+Date: Thu, 10 Apr 2003 22:17:49 +0200
+From: Hartvig Ekner <hartvig@ekner.info>
+X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.18-19.7.x i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+Cc: Linux MIPS mailing list <linux-mips@linux-mips.org>
+Subject: Re: ext3 under MIPS?
+References: <3E954651.C7AECB90@ekner.info> <20030410154050.GI5242@lug-owl.de>
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <200304101937.h3AJbl211418@uhler-linux.mips.com>; from uhler@mips.com on Thu, Apr 10, 2003 at 12:37:47PM -0700
-Return-Path: <ralf@linux-mips.net>
+Content-Transfer-Encoding: 7bit
+Return-Path: <hartvig@ekner.info>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1976
+X-archive-position: 1977
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: hartvig@ekner.info
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Apr 10, 2003 at 12:37:47PM -0700, Mike Uhler wrote:
+Jan-Benedict Glaw wrote:
 
-> > The question came up between Jun and me when revising the way of handling
-> > multi-way caches.  There is the MIPS32 / MIPS64 way of selecting the
-> > cache way - but that scheme was originally already introduced by the
-> > R4600.  The second somewhat less common scheme is using the lowest bits
-> > of the address.  That was originally introduced with the R10000 but a
-> > few other processors such as the R5432 and the TX49 series are using it
-> > as well.  Unfortunately there has been way to much creativity (usually
-> > a positive property but ...) among designers so this posting is an
-> > attempt to achieve completeness.
-> 
-> Exactly why we made it a standard in MIPS32 and MIPS64.
+> >
+> > So can somebody tell me what the heck just happened? After the ext3 recovery done before the mount,
+> > .autofsck is still on the disk, so the rc.sysinit script of course assumes the shutdown was unclean,
+>
+> This ".autofsck" file seems to be a userland approach to detect a system
+> which wasn't shutted down completely. Even this is fine. What's *not*
+> okay is that there are still errors remaining. It seems your filesystem
+> has been damaged before (and in no means which could have been handled
+> by the journal).
+>
+> > and pops the 5-second question. However, if I to be safe push "Y" here to get my filesystem check (which
+> > I guess should be unnecessary, due to the ext3 recovery just run, right?), strange things happen and
+> > fsck reports the "corrupted orphan list... " error.
+>
+> Wrong. The journal should prevent you from actually loosing things at
+> hard-power-off situations. It does *not* cover things like silent data
+> corruption, which may have lead to this breakage.
+>
+> > Is there something wrong here, or how should the system behave?
+>
+> Everything with journal recovery is fine here. The failing fsck is a
+> different problem (a journal doesn't preven you to do a fsck at a
+> regular basis. It's only to not be forced to to it if you don't have the
+> time to do this *now* (on crash)).
+>
+> So there seems do be some corruption (caused by whatever) going on at
+> your system:-(
+>
+> Watch out if this happens again soon after you've completed the fsck.
+>
 
-Yep, of the existing variations that was certainly the nicest.  Only a
-single function had to be taught about multi-way caches and that only
-because it's a bit hard to flush caches for another process due to the
-TLB translation required for the hit cacheops.  Alternative schemes need
-more support by the code.
+I can reproduce this anytime by just pushing the reset button and checking the filesystem
+at reboot after ext3 recovery has run. However, if I just do regular fsck's (without unclean
+shutdowns) nothing seems to be wrong. So I am pretty sure it is something which
+goes wrong in conjunction with the unclean shutdowns.
 
-  Ralf
+Is ext3 journal recovery really supposed to recover everything to a state where fsck returns no
+errors, or is it potentially leaving non-fatal errors in the filesystem (e.g. lost inodes which just
+reduces capacity, but does not cause further corruption if the filesystem is used) which will then
+be picked up by a later fsck when one has time to run it?
+
+What does the error "Inodes that were part of a corrupted orphan linked list found." actually
+mean? Is this a fatal error, or a non-critical error along the lines I described above (an error
+which does not get any worse if the filesystem is used)?
+
+Is there anybody with ext3 up and running who would volunteer to do a couple of unclean
+shutdowns and see if the recovery works without any fsck errors present afterwards?
+
+/Hartvig

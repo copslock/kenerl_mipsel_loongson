@@ -1,10 +1,10 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Dec 2002 04:51:43 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([12.44.186.158]:33267 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8225264AbSLNEvm>;
-	Sat, 14 Dec 2002 04:51:42 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Dec 2002 04:53:55 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([12.44.186.158]:37107 "EHLO
+	av.mvista.com") by linux-mips.org with ESMTP id <S8225264AbSLNExx>;
+	Sat, 14 Dec 2002 04:53:53 +0000
 Received: from adsl.pacbell.net (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id UAA08814;
-	Fri, 13 Dec 2002 20:51:22 -0800
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id UAA08832;
+	Fri, 13 Dec 2002 20:53:33 -0800
 Subject: PATCH
 From: Pete Popov <ppopov@mvista.com>
 To: Ralf Baechle <ralf@linux-mips.org>
@@ -12,14 +12,14 @@ Cc: linux-mips <linux-mips@linux-mips.org>
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 X-Mailer: Ximian Evolution 1.0.8 
-Date: 13 Dec 2002 20:50:35 -0800
-Message-Id: <1039841435.25371.10.camel@adsl.pacbell.net>
+Date: 13 Dec 2002 20:52:47 -0800
+Message-Id: <1039841567.25391.13.camel@adsl.pacbell.net>
 Mime-Version: 1.0
 Return-Path: <ppopov@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 892
+X-archive-position: 893
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -27,931 +27,1250 @@ X-original-sender: ppopov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Ralf,
 
-Here's an updated patch for 36 bit address support to replace the patch
-I sent you a couple of days ago. This one is "complete" because it takes
-care of remap_page_range() as well. It has been tested with a few 36 bit
-peripherals on the Alchemy boards. The remap_page_range() fixup was
-needed for a RageXL PCI card on the Pb1500 PCI bus and X runs fine on
-it.  The patch takes effect only if  CONFIG_64BIT_PHYS_ADDR and
-CONFIG_CPU_MIPS32 are both defined.  Otherwise it's a noop. A similar
-solution was tested and implemented on PPC, 2.4.x.
+This patch was sent to the RageXL maintainer but I don't think he was
+interested in it. Others might find it useful on embedded systems. It
+initializes the RageXL card when there is no system bios to initialize
+it from the video bios.  Tested on the Pb1500; makes a really good
+workstation.
 
 Pete
 
-diff -Naur --exclude=CVS linux-2.4-orig/arch/mips/mm/Makefile linux-2.4/arch/mips/mm/Makefile
---- linux-2.4-orig/arch/mips/mm/Makefile	Mon Dec  9 16:57:46 2002
-+++ linux-2.4/arch/mips/mm/Makefile	Tue Dec 10 22:14:30 2002
-@@ -25,7 +25,7 @@
- obj-$(CONFIG_CPU_R5432)		+= pg-r5432.o c-r5432.o tlb-r4k.o tlbex-r4k.o
- obj-$(CONFIG_CPU_RM7000)	+= pg-rm7k.o c-rm7k.o tlb-r4k.o tlbex-r4k.o
- obj-$(CONFIG_CPU_R10000)	+= pg-andes.o c-andes.o tlb-r4k.o tlbex-r4k.o
--obj-$(CONFIG_CPU_MIPS32)	+= pg-mips32.o c-mips32.o tlb-r4k.o tlbex-r4k.o
-+obj-$(CONFIG_CPU_MIPS32)	+= pg-mips32.o c-mips32.o tlb-r4k.o tlbex-mips32.o
- obj-$(CONFIG_CPU_MIPS64)	+= pg-mips32.o c-mips32.o tlb-r4k.o tlbex-r4k.o
- obj-$(CONFIG_CPU_SB1)		+= pg-sb1.o c-sb1.o tlb-sb1.o tlbex-r4k.o
+diff -Naur --exclude=CVS linux-2.4-orig/drivers/video/Config.in linux-2.4/drivers/video/Config.in
+--- linux-2.4-orig/drivers/video/Config.in	Wed Nov 13 15:07:55 2002
++++ linux-2.4/drivers/video/Config.in	Wed Dec 11 22:21:31 2002
+@@ -138,6 +138,9 @@
+ 	 if [ "$CONFIG_FB_ATY" != "n" ]; then
+ 	    bool '    Mach64 GX support (EXPERIMENTAL)' CONFIG_FB_ATY_GX
+ 	    bool '    Mach64 CT/VT/GT/LT (incl. 3D RAGE) support' CONFIG_FB_ATY_CT
++	    if [ "$CONFIG_FB_ATY_CT" != "n" ]; then
++	       bool '    Rage XL No-BIOS Init support' CONFIG_FB_ATY_XL_INIT
++	    fi
+ 	 fi
+  	 tristate '  ATI Radeon display support (EXPERIMENTAL)' CONFIG_FB_RADEON
+ 	 tristate '  ATI Rage128 display support (EXPERIMENTAL)' CONFIG_FB_ATY128
+diff -Naur --exclude=CVS linux-2.4-orig/drivers/video/aty/Makefile linux-2.4/drivers/video/aty/Makefile
+--- linux-2.4-orig/drivers/video/aty/Makefile	Wed Nov 13 15:07:59 2002
++++ linux-2.4/drivers/video/aty/Makefile	Wed Dec 11 22:21:31 2002
+@@ -6,6 +6,7 @@
+ obj-y				:= atyfb_base.o mach64_accel.o
+ obj-$(CONFIG_FB_ATY_GX)		+= mach64_gx.o
+ obj-$(CONFIG_FB_ATY_CT)		+= mach64_ct.o mach64_cursor.o
++obj-$(CONFIG_FB_ATY_XL_INIT)    += xlinit.o
+ obj-m				:= $(O_TARGET)
  
-diff -Naur --exclude=CVS linux-2.4-orig/arch/mips/mm/ioremap.c linux-2.4/arch/mips/mm/ioremap.c
---- linux-2.4-orig/arch/mips/mm/ioremap.c	Wed Nov 13 15:04:50 2002
-+++ linux-2.4/arch/mips/mm/ioremap.c	Wed Dec 11 22:55:45 2002
-@@ -94,6 +94,17 @@
- }
+ include $(TOPDIR)/Rules.make
+diff -Naur --exclude=CVS linux-2.4-orig/drivers/video/aty/atyfb.h linux-2.4/drivers/video/aty/atyfb.h
+--- linux-2.4-orig/drivers/video/aty/atyfb.h	Wed Nov 13 15:07:59 2002
++++ linux-2.4/drivers/video/aty/atyfb.h	Wed Dec 11 22:21:31 2002
+@@ -43,13 +43,17 @@
+     u8 pll_ref_div;
+     u8 pll_gen_cntl;
+     u8 mclk_fb_div;
++    u8 mclk_fb_mult;    /* 2 or 4 */
++    u8 sclk_fb_div;
+     u8 pll_vclk_cntl;
+     u8 vclk_post_div;
+     u8 vclk_fb_div;
+     u8 pll_ext_cntl;
++    u8 spll_cntl2;
+     u32 dsp_config;	/* Mach64 GTB DSP */
+     u32 dsp_on_off;	/* Mach64 GTB DSP */
+     u8 mclk_post_div_real;
++    u8 xclk_post_div_real;
+     u8 vclk_post_div_real;
+ };
  
- /*
-+ * Allow physical addresses to be fixed up to help 36 bit 
-+ * peripherals.
-+ */
-+static phys_t def_fixup_bigphys_addr(phys_t phys_addr, phys_t size)
-+{
-+	return phys_addr;
-+}
-+
-+phys_t (*fixup_bigphys_addr)(phys_t phys_addr, phys_t size) = def_fixup_bigphys_addr;
-+
-+/*
-  * Generic mapping function (not visible outside):
-  */
- 
-@@ -107,7 +118,7 @@
-  * caller shouldn't need to know that small detail.
-  */
- 
--#define IS_LOW512(addr) (!((phys_t)(addr) & ~0x1fffffffUL))
-+#define IS_LOW512(addr) (!((phys_t)(addr) & ~0x1fffffffUL)  && !((phys_t)addr & 0xFFFFFFFF00000000))
- 
- void * __ioremap(phys_t phys_addr, phys_t size, unsigned long flags)
- {
-@@ -116,6 +127,8 @@
- 	phys_t last_addr;
- 	void * addr;
- 
-+	phys_addr = fixup_bigphys_addr(phys_addr, size);
-+
- 	/* Don't allow wraparound or zero size */
- 	last_addr = phys_addr + size - 1;
- 	if (!size || last_addr < phys_addr)
-diff -Naur --exclude=CVS linux-2.4-orig/arch/mips/mm/tlb-r4k.c linux-2.4/arch/mips/mm/tlb-r4k.c
---- linux-2.4-orig/arch/mips/mm/tlb-r4k.c	Thu Dec  5 16:50:28 2002
-+++ linux-2.4/arch/mips/mm/tlb-r4k.c	Tue Dec 10 22:14:30 2002
-@@ -210,8 +210,14 @@
- 	idx = read_c0_index();
- 	ptep = pte_offset(pmdp, address);
- 	BARRIER;
-+#if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_CPU_MIPS32)
-+	write_c0_entrylo0(ptep->pte_high);
-+	ptep++;
-+	write_c0_entrylo1(ptep->pte_high);
-+#else
- 	write_c0_entrylo0(pte_val(*ptep++) >> 6);
- 	write_c0_entrylo1(pte_val(*ptep) >> 6);
-+#endif
- 	write_c0_entryhi(address | pid);
- 	BARRIER;
- 	if (idx < 0) {
-diff -Naur --exclude=CVS linux-2.4-orig/arch/mips/mm/tlbex-mips32.S linux-2.4/arch/mips/mm/tlbex-mips32.S
---- linux-2.4-orig/arch/mips/mm/tlbex-mips32.S	Wed Dec 31 16:00:00 1969
-+++ linux-2.4/arch/mips/mm/tlbex-mips32.S	Tue Dec 10 22:14:30 2002
-@@ -0,0 +1,329 @@
-+/*
-+ * TLB exception handling code for MIPS32 CPUs.
-+ *
-+ * Copyright (C) 1994, 1995, 1996 by Ralf Baechle and Andreas Busse
-+ *
-+ * Multi-cpu abstraction and reworking:
-+ * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)
-+ *
-+ * Carsten Langgaard, carstenl@mips.com
-+ * Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.
-+ *
-+ * Pete Popov, ppopov@pacbell.net
-+ * Added 36 bit phys address support.
-+ * Copyright (C) 2002 MontaVista Software, Inc.
-+ */
-+#include <linux/init.h>
-+
-+#include <asm/asm.h>
-+#include <asm/current.h>
-+#include <asm/offset.h>
-+#include <asm/cachectl.h>
-+#include <asm/fpregdef.h>
-+#include <asm/mipsregs.h>
-+#include <asm/page.h>
-+#include <asm/pgtable.h>
-+#include <asm/processor.h>
-+#include <asm/regdef.h>
-+#include <asm/stackframe.h>
-+
-+#define TLB_OPTIMIZE /* If you are paranoid, disable this. */
-+
-+#ifdef CONFIG_64BIT_PHYS_ADDR
-+
-+/* We really only support 36 bit physical addresses on MIPS32 */
-+#define PTE_L		lw
-+#define PTE_S		sw
-+#define PTE_SRL		srl
-+#define P_MTC0		mtc0
-+#define PTE_HALF        4 /* pte_high contains pre-shifted, ready to go entry */
-+#define PTE_SIZE        8
-+#define PTEP_INDX_MSK	0xff0
-+#define PTE_INDX_MSK	0xff8
-+#define PTE_INDX_SHIFT 9
-+#define CONVERT_PTE(pte)
-+#define PTE_MAKEWRITE_HIGH(pte, ptr) \
-+	lw	pte, 4(ptr); \
-+	ori	pte, (_PAGE_VALID | _PAGE_DIRTY)>>6; \
-+	sw	pte, 4(ptr); \
-+	lw	pte, 0(ptr);
-+
-+#define PTE_MAKEVALID_HIGH(pte, ptr) \
-+	lw	pte, 4(ptr); \
-+	ori	pte, pte, _PAGE_VALID>>6; \
-+	sw	pte, 4(ptr); \
-+	lw	pte, 0(ptr);
-+
-+#else
-+
-+#define PTE_L		lw
-+#define PTE_S		sw
-+#define PTE_SRL		srl
-+#define P_MTC0		mtc0
-+#define PTE_HALF        0
-+#define PTE_SIZE	4
-+#define PTEP_INDX_MSK	0xff8
-+#define PTE_INDX_MSK	0xffc
-+#define PTE_INDX_SHIFT	10
-+#define CONVERT_PTE(pte) srl pte, pte, 6
-+#define PTE_MAKEWRITE_HIGH(pte, ptr)
-+#define PTE_MAKEVALID_HIGH(pte, ptr)
-+
-+#endif  /* CONFIG_64BIT_PHYS_ADDR */
-+
-+	__INIT
-+
-+#ifdef CONFIG_64BIT_PHYS_ADDR
-+#define GET_PTE_OFF(reg)
-+#else
-+#define GET_PTE_OFF(reg)	srl	reg, reg, 1
-+#endif
-+
-+/*	
-+ * These handlers much be written in a relocatable manner
-+ * because based upon the cpu type an arbitrary one of the
-+ * following pieces of code will be copied to the KSEG0
-+ * vector location.
-+ */
-+	/* TLB refill, EXL == 0, MIPS32 version */
-+	.set	noreorder
-+	.set	noat
-+	LEAF(except_vec0_r4000)
-+	.set	mips3
-+#ifdef CONFIG_SMP
-+	mfc0	k1, CP0_CONTEXT
-+	la	k0, pgd_current
-+	srl	k1, 23
-+	sll	k1, 2				# log2(sizeof(pgd_t)
-+	addu	k1, k0, k1
-+	lw	k1, (k1)
-+#else 
-+	lw	k1, pgd_current			# get pgd pointer
-+#endif	
-+	nop
-+	mfc0	k0, CP0_BADVADDR		# Get faulting address
-+	srl	k0, k0, PGDIR_SHIFT		# get pgd only bits
-+
-+	sll	k0, k0, 2
-+	addu	k1, k1, k0			# add in pgd offset
-+	mfc0	k0, CP0_CONTEXT			# get context reg
-+	lw	k1, (k1)
-+	GET_PTE_OFF(k0)				# get pte offset
-+	and	k0, k0, PTEP_INDX_MSK
-+	addu	k1, k1, k0			# add in offset
-+
-+	PTE_L	k0, PTE_HALF(k1)		# get even pte
-+	CONVERT_PTE(k0)
-+	P_MTC0	k0, CP0_ENTRYLO0		# load it
-+	PTE_L	k1, (PTE_HALF+PTE_SIZE)(k1)	# get odd pte
-+	CONVERT_PTE(k1)
-+	P_MTC0	k1, CP0_ENTRYLO1		# load it
-+	b	1f
-+	tlbwr					# write random tlb entry
-+1:
-+	nop
-+	eret					# return from trap
-+	END(except_vec0_r4000)
-+
-+/*
-+ * These are here to avoid putting ifdefs in tlb-r4k.c
-+ */
-+	.set	noreorder
-+	.set	noat
-+	LEAF(except_vec0_nevada)
-+	.set	mips3
-+	PANIC("Nevada Exception Vec 0 called")
-+	END(except_vec0_nevada)
-+
-+	.set	noreorder
-+	.set	noat
-+	LEAF(except_vec0_r4600)
-+	.set	mips3
-+	PANIC("R4600 Exception Vec 0 called")
-+	END(except_vec0_r4600)
-+
-+	__FINIT
-+
-+/*
-+ * ABUSE of CPP macros 101.
-+ *
-+ * After this macro runs, the pte faulted on is
-+ * in register PTE, a ptr into the table in which
-+ * the pte belongs is in PTR.
-+ */
-+
-+#ifdef CONFIG_SMP
-+#define GET_PGD(scratch, ptr)        \
-+	mfc0    ptr, CP0_CONTEXT;    \
-+	la      scratch, pgd_current;\
-+	srl     ptr, 23;             \
-+	sll     ptr, 2;              \
-+	addu    ptr, scratch, ptr;   \
-+	lw      ptr, (ptr);          
-+#else
-+#define GET_PGD(scratch, ptr)    \
-+	lw	ptr, pgd_current;
-+#endif
-+
-+#define LOAD_PTE(pte, ptr) \
-+	GET_PGD(pte, ptr)          \
-+	mfc0	pte, CP0_BADVADDR; \
-+	srl	pte, pte, PGDIR_SHIFT; \
-+	sll	pte, pte, 2; \
-+	addu	ptr, ptr, pte; \
-+	mfc0	pte, CP0_BADVADDR; \
-+	lw	ptr, (ptr); \
-+	srl	pte, pte, PTE_INDX_SHIFT; \
-+	and	pte, pte, PTE_INDX_MSK; \
-+	addu	ptr, ptr, pte; \
-+	PTE_L	pte, (ptr);
-+
-+	/* This places the even/odd pte pair in the page
-+	 * table at PTR into ENTRYLO0 and ENTRYLO1 using
-+	 * TMP as a scratch register.
-+	 */
-+#define PTE_RELOAD(ptr, tmp) \
-+	ori	ptr, ptr, PTE_SIZE; \
-+	xori	ptr, ptr, PTE_SIZE; \
-+	PTE_L	tmp, (PTE_HALF+PTE_SIZE)(ptr); \
-+	CONVERT_PTE(tmp); \
-+	P_MTC0	tmp, CP0_ENTRYLO1; \
-+	PTE_L	ptr, PTE_HALF(ptr); \
-+	CONVERT_PTE(ptr); \
-+	P_MTC0	ptr, CP0_ENTRYLO0;
-+
-+#define DO_FAULT(write) \
-+	.set	noat; \
-+	SAVE_ALL; \
-+	mfc0	a2, CP0_BADVADDR; \
-+	STI; \
-+	.set	at; \
-+	move	a0, sp; \
-+	jal	do_page_fault; \
-+	 li	a1, write; \
-+	j	ret_from_exception; \
-+	 nop; \
-+	.set	noat;
-+
-+	/* Check is PTE is present, if not then jump to LABEL.
-+	 * PTR points to the page table where this PTE is located,
-+	 * when the macro is done executing PTE will be restored
-+	 * with it's original value.
-+	 */
-+#define PTE_PRESENT(pte, ptr, label) \
-+	andi	pte, pte, (_PAGE_PRESENT | _PAGE_READ); \
-+	xori	pte, pte, (_PAGE_PRESENT | _PAGE_READ); \
-+	bnez	pte, label; \
-+	PTE_L	pte, (ptr);
-+
-+	/* Make PTE valid, store result in PTR. */
-+#define PTE_MAKEVALID(pte, ptr) \
-+	ori	pte, pte, (_PAGE_VALID | _PAGE_ACCESSED); \
-+	PTE_S	pte, (ptr);
-+
-+	/* Check if PTE can be written to, if not branch to LABEL.
-+	 * Regardless restore PTE with value from PTR when done.
-+	 */
-+#define PTE_WRITABLE(pte, ptr, label) \
-+	andi	pte, pte, (_PAGE_PRESENT | _PAGE_WRITE); \
-+	xori	pte, pte, (_PAGE_PRESENT | _PAGE_WRITE); \
-+	bnez	pte, label; \
-+	PTE_L	pte, (ptr);
-+
-+	/* Make PTE writable, update software status bits as well,
-+	 * then store at PTR.
-+	 */
-+#define PTE_MAKEWRITE(pte, ptr) \
-+	ori	pte, pte, (_PAGE_ACCESSED | _PAGE_MODIFIED | \
-+			   _PAGE_VALID | _PAGE_DIRTY); \
-+	PTE_S	pte, (ptr);
-+
-+	.set	noreorder
-+
-+#define R5K_HAZARD nop
-+
-+	.align	5
-+	NESTED(handle_tlbl, PT_SIZE, sp)
-+	.set	noat
-+invalid_tlbl:
-+#ifdef TLB_OPTIMIZE
-+	/* Test present bit in entry. */
-+	LOAD_PTE(k0, k1)
-+	R5K_HAZARD
-+	tlbp
-+	PTE_PRESENT(k0, k1, nopage_tlbl)
-+	PTE_MAKEVALID_HIGH(k0, k1)
-+	PTE_MAKEVALID(k0, k1)
-+	PTE_RELOAD(k1, k0)
-+	nop
-+	b	1f
-+	 tlbwi
-+1:
-+	nop
-+	.set	mips3	
-+	eret
-+	.set	mips0
-+#endif
-+
-+nopage_tlbl:
-+	DO_FAULT(0)
-+	END(handle_tlbl)
-+
-+	.align	5
-+	NESTED(handle_tlbs, PT_SIZE, sp)
-+	.set	noat
-+#ifdef TLB_OPTIMIZE
-+	.set	mips3
-+        li      k0,0
-+	LOAD_PTE(k0, k1)
-+	R5K_HAZARD
-+	tlbp				# find faulting entry
-+	PTE_WRITABLE(k0, k1, nopage_tlbs)
-+	PTE_MAKEWRITE(k0, k1)
-+	PTE_MAKEWRITE_HIGH(k0, k1)
-+	PTE_RELOAD(k1, k0)
-+	nop
-+	b	1f
-+	 tlbwi
-+1:
-+	nop
-+	.set	mips3
-+	eret
-+	.set	mips0
-+#endif
-+
-+nopage_tlbs:
-+	DO_FAULT(1)
-+	END(handle_tlbs)
-+
-+	.align	5
-+	NESTED(handle_mod, PT_SIZE, sp)
-+	.set	noat
-+#ifdef TLB_OPTIMIZE
-+	.set	mips3
-+	LOAD_PTE(k0, k1)
-+	R5K_HAZARD
-+	tlbp					# find faulting entry
-+	andi	k0, k0, _PAGE_WRITE
-+	beqz	k0, nowrite_mod
-+	PTE_L	k0, (k1)
-+
-+	/* Present and writable bits set, set accessed and dirty bits. */
-+	PTE_MAKEWRITE(k0, k1)
-+	PTE_MAKEWRITE_HIGH(k0, k1)
-+	/* Now reload the entry into the tlb. */
-+	PTE_RELOAD(k1, k0)
-+	nop
-+	b	1f
-+	 tlbwi
-+1:
-+	nop
-+	.set	mips3
-+	eret
-+	.set	mips0
-+#endif
-+
-+nowrite_mod:
-+	DO_FAULT(1)
-+	END(handle_mod)
-+
-diff -Naur --exclude=CVS linux-2.4-orig/include/asm-mips/page.h linux-2.4/include/asm-mips/page.h
---- linux-2.4-orig/include/asm-mips/page.h	Sat Nov 16 21:39:31 2002
-+++ linux-2.4/include/asm-mips/page.h	Fri Dec 13 20:19:10 2002
-@@ -71,15 +71,22 @@
-  * These are used to make use of C type-checking..
-  */
- #ifdef CONFIG_64BIT_PHYS_ADDR
--typedef struct { unsigned long long pte; } pte_t;
-+  #ifdef CONFIG_CPU_MIPS32
-+    typedef struct { unsigned long pte_low, pte_high; } pte_t;
-+    #define pte_val(x)    ((x).pte_low | ((unsigned long long)(x).pte_high << 32))
-+  #else
-+    typedef struct { unsigned long long pte_low; } pte_t;
-+    #define pte_val(x)    ((x).pte_low)
-+  #endif
- #else
--typedef struct { unsigned long pte; } pte_t;
-+typedef struct { unsigned long pte_low; } pte_t;
-+#define pte_val(x)    ((x).pte_low)
- #endif
-+
- typedef struct { unsigned long pmd; } pmd_t;
- typedef struct { unsigned long pgd; } pgd_t;
- typedef struct { unsigned long pgprot; } pgprot_t;
- 
--#define pte_val(x)	((x).pte)
- #define pmd_val(x)	((x).pmd)
- #define pgd_val(x)	((x).pgd)
- #define pgprot_val(x)	((x).pgprot)
-diff -Naur --exclude=CVS linux-2.4-orig/include/asm-mips/pgtable-2level.h linux-2.4/include/asm-mips/pgtable-2level.h
---- linux-2.4-orig/include/asm-mips/pgtable-2level.h	Wed Dec 31 16:00:00 1969
-+++ linux-2.4/include/asm-mips/pgtable-2level.h	Fri Dec 13 20:19:10 2002
-@@ -0,0 +1,62 @@
-+#ifndef _MIPS_PGTABLE_2LEVEL_H
-+#define _MIPS_PGTABLE_2LEVEL_H
-+
-+/*
-+ * traditional mips two-level paging structure:
-+ */
-+
-+#if defined(CONFIG_64BIT_PHYS_ADDR)
-+#define PMD_SHIFT	21
-+#define PTRS_PER_PTE	512
-+#define PTRS_PER_PMD	1
-+#define PTRS_PER_PGD	2048
-+#define PGD_ORDER	1
-+#else
-+#define PMD_SHIFT	22
-+#define PTRS_PER_PTE	1024
-+#define PTRS_PER_PMD	1
-+#define PTRS_PER_PGD	1024
-+#define PGD_ORDER	0
-+#endif
-+
-+#if !defined (_LANGUAGE_ASSEMBLY)
-+#define pte_ERROR(e) \
-+	printk("%s:%d: bad pte %08lx.\n", __FILE__, __LINE__, (e).pte_low)
-+#define pmd_ERROR(e) \
-+	printk("%s:%d: bad pmd %08lx.\n", __FILE__, __LINE__, pmd_val(e))
-+#define pgd_ERROR(e) \
-+	printk("%s:%d: bad pgd %p(%016Lx).\n", __FILE__, __LINE__, &(e), pgd_val(e))
-+
-+static inline int pte_none(pte_t pte)    { return !(pte.pte_low); }
-+
-+/* Certain architectures need to do special things when pte's
-+ * within a page table are directly modified.  Thus, the following
-+ * hook is made available.
-+ */
-+static inline void set_pte(pte_t *ptep, pte_t pteval)
-+{
-+	*ptep = pteval;
-+#if !defined(CONFIG_CPU_R3000) && !defined(CONFIG_CPU_TX39XX)
-+	if (pte_val(pteval) & _PAGE_GLOBAL) {
-+		pte_t *buddy = ptep_buddy(ptep);
-+		/*
-+		 * Make sure the buddy is global too (if it's !none,
-+		 * it better already be global)
-+		 */
-+		if (pte_none(*buddy))
-+			pte_val(*buddy) = pte_val(*buddy) | _PAGE_GLOBAL;
-+	}
-+#endif
-+}
-+
-+#ifdef CONFIG_CPU_VR41XX
-+#define pte_page(x)  (mem_map+((unsigned long)(((x).pte_low >> (PAGE_SHIFT+2)))))
-+#define __mk_pte(page_nr,pgprot) __pte(((page_nr) << (PAGE_SHIFT+2)) | pgprot_val(pgprot))
-+#else
-+#define pte_page(x)  (mem_map+((unsigned long)(((x).pte_low >> PAGE_SHIFT))))
-+#define __mk_pte(page_nr,pgprot) __pte(((page_nr) << PAGE_SHIFT) | pgprot_val(pgprot))
-+#endif
-+
-+#endif
-+
-+#endif /* _MIPS_PGTABLE_2LEVEL_H */
-diff -Naur --exclude=CVS linux-2.4-orig/include/asm-mips/pgtable-3level.h linux-2.4/include/asm-mips/pgtable-3level.h
---- linux-2.4-orig/include/asm-mips/pgtable-3level.h	Wed Dec 31 16:00:00 1969
-+++ linux-2.4/include/asm-mips/pgtable-3level.h	Tue Dec 10 22:14:30 2002
-@@ -0,0 +1,63 @@
-+#ifndef _MIPS_PGTABLE_3LEVEL_H
-+#define _MIPS_PGTABLE_3LEVEL_H
-+
-+/*
-+ * Not really a 3 level page table but we follow most of the x86 PAE code.
-+ */
-+
-+#define PMD_SHIFT	21
-+#define PTRS_PER_PTE	512
-+#define PTRS_PER_PMD	1
-+#define PTRS_PER_PGD	2048
-+#define PGD_ORDER	1
-+
-+#if !defined (_LANGUAGE_ASSEMBLY)
-+#define pte_ERROR(e) \
-+	printk("%s:%d: bad pte %p(%08lx%08lx).\n", __FILE__, __LINE__, &(e), (e).pte_high, (e).pte_low)
-+#define pmd_ERROR(e) \
-+	printk("%s:%d: bad pmd %p(%016Lx).\n", __FILE__, __LINE__, &(e), pmd_val(e))
-+#define pgd_ERROR(e) \
-+	printk("%s:%d: bad pgd %p(%016Lx).\n", __FILE__, __LINE__, &(e), pgd_val(e))
-+
-+/*
-+ * MIPS32 Note
-+ * pte_low contains the 12 low bits only.  This includes the 6 lsb bits
-+ * which contain software control bits, and the next 6 attribute bits 
-+ * which are actually written in the entrylo[0,1] registers (G,V,D,Cache Mask).
-+ * pte_high contains the 36 bit physical address and the 6 hardware 
-+ * attribute bits (G,V,D, Cache Mask). The entry is already fully setup
-+ * so in the tlb refill handler we do not need to shift right 6.
-+ */
-+
-+/* Rules for using set_pte: the pte being assigned *must* be
-+ * either not present or in a state where the hardware will
-+ * not attempt to update the pte.  In places where this is
-+ * not possible, use pte_get_and_clear to obtain the old pte
-+ * value and then use set_pte to update it.  -ben
-+ */
-+static inline void set_pte(pte_t *ptep, pte_t pte)
-+{
-+	ptep->pte_high = (pte.pte_high & ~0x3f) | ((pte.pte_low>>6) & 0x3f);
-+	ptep->pte_low = pte.pte_low;
-+}
-+
-+static inline int pte_same(pte_t a, pte_t b)
-+{
-+	return a.pte_low == b.pte_low && a.pte_high == b.pte_high;
-+}
-+
-+#define pte_page(x)    (mem_map+(((x).pte_high >> 6)))
-+#define pte_none(x)    (!(x).pte_low && !(x).pte_high)
-+
-+static inline pte_t 
-+__mk_pte(unsigned long page_nr, pgprot_t pgprot)
-+{
-+	pte_t pte;
-+
-+	pte.pte_high = (page_nr << 6) | (pgprot_val(pgprot) >> 6);
-+	pte.pte_low = pgprot_val(pgprot);
-+	return pte;
-+}
-+#endif
-+
-+#endif /* _MIPS_PGTABLE_3LEVEL_H */
-diff -Naur --exclude=CVS linux-2.4-orig/include/asm-mips/pgtable.h linux-2.4/include/asm-mips/pgtable.h
---- linux-2.4-orig/include/asm-mips/pgtable.h	Sat Nov 16 21:39:31 2002
-+++ linux-2.4/include/asm-mips/pgtable.h	Fri Dec 13 20:19:10 2002
-@@ -13,6 +13,8 @@
- #include <asm/addrspace.h>
- #include <asm/page.h>
- 
-+#ifndef _LANGUAGE_ASSEMBLY
-+
- #include <linux/linkage.h>
- #include <asm/cachectl.h>
- #include <asm/fixmap.h>
-@@ -89,11 +91,8 @@
-  */
- 
- /* PMD_SHIFT determines the size of the area a second-level page table can map */
--#ifdef CONFIG_64BIT_PHYS_ADDR
--#define PMD_SHIFT	21
--#else
--#define PMD_SHIFT	22
--#endif
-+#endif /* !defined (_LANGUAGE_ASSEMBLY) */
-+
- #define PMD_SIZE	(1UL << PMD_SHIFT)
- #define PMD_MASK	(~(PMD_SIZE-1))
- 
-@@ -102,22 +101,6 @@
- #define PGDIR_SIZE	(1UL << PGDIR_SHIFT)
- #define PGDIR_MASK	(~(PGDIR_SIZE-1))
- 
--/*
-- * Entries per page directory level: we use two-level, so
-- * we don't really have any PMD directory physically.
-- */
--#ifdef CONFIG_64BIT_PHYS_ADDR
--#define PTRS_PER_PTE	512
--#define PTRS_PER_PMD	1
--#define PTRS_PER_PGD	2048
--#define PGD_ORDER	1
--#else
--#define PTRS_PER_PTE	1024
--#define PTRS_PER_PMD	1
--#define PTRS_PER_PGD	1024
--#define PGD_ORDER	0
--#endif
--
- #define USER_PTRS_PER_PGD	(0x80000000UL/PGDIR_SIZE)
- #define FIRST_USER_PGD_NR	0
- 
-@@ -169,17 +152,13 @@
- #define __S110	PAGE_SHARED
- #define __S111	PAGE_SHARED
- 
--#ifdef CONFIG_64BIT_PHYS_ADDR
--#define pte_ERROR(e) \
--	printk("%s:%d: bad pte %016Lx.\n", __FILE__, __LINE__, pte_val(e))
-+#if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_CPU_MIPS32)
-+#include <asm/pgtable-3level.h>
- #else
--#define pte_ERROR(e) \
--	printk("%s:%d: bad pte %08lx.\n", __FILE__, __LINE__, pte_val(e))
-+#include <asm/pgtable-2level.h>
- #endif
--#define pmd_ERROR(e) \
--	printk("%s:%d: bad pmd %08lx.\n", __FILE__, __LINE__, pmd_val(e))
--#define pgd_ERROR(e) \
--	printk("%s:%d: bad pgd %08lx.\n", __FILE__, __LINE__, pgd_val(e))
-+
-+#if !defined (_LANGUAGE_ASSEMBLY)
- 
- extern unsigned long empty_zero_page;
- extern unsigned long zero_page_mask;
-@@ -205,40 +184,6 @@
- 	pmd_val(*pmdp) = (((unsigned long) ptep) & PAGE_MASK);
- }
- 
--static inline int pte_none(pte_t pte)    { return !(pte_val(pte) & ~_PAGE_GLOBAL); }
--static inline int pte_present(pte_t pte) { return pte_val(pte) & _PAGE_PRESENT; }
--
--/* Certain architectures need to do special things when pte's
-- * within a page table are directly modified.  Thus, the following
-- * hook is made available.
-- */
--static inline void set_pte(pte_t *ptep, pte_t pteval)
--{
--	*ptep = pteval;
--#if !defined(CONFIG_CPU_R3000) && !defined(CONFIG_CPU_TX39XX)
--	if (pte_val(pteval) & _PAGE_GLOBAL) {
--		pte_t *buddy = ptep_buddy(ptep);
--		/*
--		 * Make sure the buddy is global too (if it's !none,
--		 * it better already be global)
--		 */
--		if (pte_none(*buddy))
--			pte_val(*buddy) = pte_val(*buddy) | _PAGE_GLOBAL;
--	}
--#endif
--}
--
--static inline void pte_clear(pte_t *ptep)
--{
--#if !defined(CONFIG_CPU_R3000) && !defined(CONFIG_CPU_TX39XX)
--	/* Preserve global status for the pair */
--	if (pte_val(*ptep_buddy(ptep)) & _PAGE_GLOBAL)
--		set_pte(ptep, __pte(_PAGE_GLOBAL));
--	else
--#endif
--		set_pte(ptep, __pte(0));
--}
--
- /*
-  * (pmds are folded into pgds so this doesn't get actually called,
-  * but the define is needed for a generic inline function.)
-@@ -281,69 +226,70 @@
- static inline void pgd_clear(pgd_t *pgdp)	{ }
- 
- /*
-- * Permanent address of a page.  Obviously must never be called on a highmem
-- * page.
-- */
--#ifdef CONFIG_CPU_VR41XX
--#define pte_page(x)             (mem_map+(unsigned long)((pte_val(x) >> (PAGE_SHIFT + 2))))
--#else
--#define pte_page(x)		(mem_map+(unsigned long)((pte_val(x) >> PAGE_SHIFT)))
--#endif
--
--/*
-  * The following only work if pte_present() is true.
-  * Undefined behaviour if not..
-  */
--static inline int pte_read(pte_t pte)	{ return pte_val(pte) & _PAGE_READ; }
--static inline int pte_write(pte_t pte)	{ return pte_val(pte) & _PAGE_WRITE; }
--static inline int pte_dirty(pte_t pte)	{ return pte_val(pte) & _PAGE_MODIFIED; }
--static inline int pte_young(pte_t pte)	{ return pte_val(pte) & _PAGE_ACCESSED; }
-+
-+static inline int pte_present(pte_t pte) { return (pte.pte_low) & _PAGE_PRESENT; }
-+
-+static inline int pte_read(pte_t pte)	{ return (pte).pte_low & _PAGE_READ; }
-+static inline int pte_write(pte_t pte)	{ return (pte).pte_low & _PAGE_WRITE; }
-+static inline int pte_dirty(pte_t pte)	{ return (pte).pte_low & _PAGE_MODIFIED; }
-+static inline int pte_young(pte_t pte)	{ return (pte).pte_low & _PAGE_ACCESSED; }
-+
-+static inline void pte_clear(pte_t *ptep)
-+{
-+	set_pte(ptep, __pte(0));
-+}
- 
- static inline pte_t pte_wrprotect(pte_t pte)
- {
--	pte_val(pte) &= ~(_PAGE_WRITE | _PAGE_SILENT_WRITE);
-+	(pte).pte_low &= ~(_PAGE_WRITE | _PAGE_SILENT_WRITE);
- 	return pte;
- }
- 
- static inline pte_t pte_rdprotect(pte_t pte)
- {
--	pte_val(pte) &= ~(_PAGE_READ | _PAGE_SILENT_READ);
-+	(pte).pte_low &= ~(_PAGE_READ | _PAGE_SILENT_READ);
- 	return pte;
- }
- 
- static inline pte_t pte_mkclean(pte_t pte)
- {
--	pte_val(pte) &= ~(_PAGE_MODIFIED|_PAGE_SILENT_WRITE);
-+	(pte).pte_low &= ~(_PAGE_MODIFIED|_PAGE_SILENT_WRITE);
- 	return pte;
- }
- 
- static inline pte_t pte_mkold(pte_t pte)
- {
--	pte_val(pte) &= ~(_PAGE_ACCESSED|_PAGE_SILENT_READ);
-+	(pte).pte_low &= ~(_PAGE_ACCESSED|_PAGE_SILENT_READ);
- 	return pte;
- }
- 
- static inline pte_t pte_mkwrite(pte_t pte)
- {
--	pte_val(pte) |= _PAGE_WRITE;
--	if (pte_val(pte) & _PAGE_MODIFIED)
--		pte_val(pte) |= _PAGE_SILENT_WRITE;
-+	(pte).pte_low |= _PAGE_WRITE;
-+	if ((pte).pte_low & _PAGE_MODIFIED) {
-+		(pte).pte_low |= _PAGE_SILENT_WRITE;
-+	}
- 	return pte;
- }
- 
- static inline pte_t pte_mkread(pte_t pte)
- {
--	pte_val(pte) |= _PAGE_READ;
--	if (pte_val(pte) & _PAGE_ACCESSED)
--		pte_val(pte) |= _PAGE_SILENT_READ;
-+	(pte).pte_low |= _PAGE_READ;
-+	if ((pte).pte_low & _PAGE_ACCESSED) {
-+		(pte).pte_low |= _PAGE_SILENT_READ;
-+	}
- 	return pte;
- }
- 
- static inline pte_t pte_mkdirty(pte_t pte)
- {
--	pte_val(pte) |= _PAGE_MODIFIED;
--	if (pte_val(pte) & _PAGE_WRITE)
--		pte_val(pte) |= _PAGE_SILENT_WRITE;
-+	(pte).pte_low |= _PAGE_MODIFIED;
-+	if ((pte).pte_low & _PAGE_WRITE) {
-+		(pte).pte_low |= _PAGE_SILENT_WRITE;
-+	}
- 	return pte;
- }
- 
-@@ -366,9 +312,9 @@
- 
- static inline pte_t pte_mkyoung(pte_t pte)
- {
--	pte_val(pte) |= _PAGE_ACCESSED;
--	if (pte_val(pte) & _PAGE_READ)
--		pte_val(pte) |= _PAGE_SILENT_READ;
-+	(pte).pte_low |= _PAGE_ACCESSED;
-+	if ((pte).pte_low & _PAGE_READ)
-+		(pte).pte_low |= _PAGE_SILENT_READ;
- 	return pte;
- }
- 
-@@ -376,43 +322,24 @@
-  * Conversion functions: convert a page and protection to a page entry,
-  * and a page entry and page directory to the page they refer to.
-  */
--
--#ifdef CONFIG_CPU_VR41XX
--#define mk_pte(page, pgprot)                                            \
--({                                                                      \
--        pte_t   __pte;                                                  \
--                                                                        \
--        pte_val(__pte) = ((phys_t)(page - mem_map) << (PAGE_SHIFT + 2)) | \
--                         pgprot_val(pgprot);                            \
--                                                                        \
--        __pte;                                                          \
--})
--#else
--#define mk_pte(page, pgprot)						\
--({									\
--	pte_t   __pte;							\
--									\
--	pte_val(__pte) = ((phys_t)(page - mem_map) << PAGE_SHIFT) | \
--	                 pgprot_val(pgprot);				\
--									\
--	__pte;								\
--})
--#endif
--
--static inline pte_t mk_pte_phys(phys_t physpage, pgprot_t pgprot)
--{
--#ifdef CONFIG_CPU_VR41XX
--        return __pte((physpage << 2) | pgprot_val(pgprot));
--#else
--	return __pte(physpage | pgprot_val(pgprot));
--#endif
--}
-+#define mk_pte(page, pgprot) __mk_pte((page) - mem_map, (pgprot))
-+#define mk_pte_phys(physpage, pgprot)	__mk_pte((physpage) >> PAGE_SHIFT, pgprot)
- 
- static inline pte_t pte_modify(pte_t pte, pgprot_t newprot)
- {
--	return __pte((pte_val(pte) & _PAGE_CHG_MASK) | pgprot_val(newprot));
-+	pte.pte_low &= _PAGE_CHG_MASK;
-+	pte.pte_low |= pgprot_val(newprot);
-+	return pte;
- }
- 
-+/*
-+ * (pmds are folded into pgds so this doesnt get actually called,
-+ * but the define is needed for a generic inline function.)
-+ */
-+#define set_pmd(pmdptr, pmdval) (*(pmdptr) = pmdval)
-+#define set_pgd(pgdptr, pgdval) (*(pgdptr) = pgdval)
-+
-+
- #define page_pte(page) page_pte_prot(page, __pgprot(0))
- 
- #define __pgd_offset(address)	pgd_index(address)
-@@ -464,7 +391,7 @@
- #define SWP_ENTRY(type,offset)	((swp_entry_t) { ((type) << 1) | ((offset) << 8) })
- #endif
- 
--#define pte_to_swp_entry(pte)	((swp_entry_t) { pte_val(pte) })
-+#define pte_to_swp_entry(pte)	((swp_entry_t) { (pte).pte_low })
- #define swp_entry_to_pte(x)	((pte_t) { (x).val })
+@@ -105,6 +109,7 @@
+     u32 ref_clk_per;
+     u32 pll_per;
+     u32 mclk_per;
++    u32 xclk_per;
+     u8 bus_type;
+     u8 ram_type;
+     u8 mem_refresh_rate;
+@@ -163,6 +168,7 @@
+ #define M64F_EXTRA_BRIGHT	0x00020000
+ #define M64F_LT_SLEEP		0x00040000
+ #define M64F_XL_DLL		0x00080000
++#define M64F_MFB_TIMES_4	0x00100000
  
 
-@@ -474,6 +401,8 @@
+     /*
+@@ -197,6 +203,34 @@
+ #endif
+ }
  
- #include <asm-generic/pgtable.h>
- 
-+#endif /* !defined (_LANGUAGE_ASSEMBLY) */
++static inline u16 aty_ld_le16(int regindex,
++			      const struct fb_info_aty *info)
++{
++    /* Hack for bloc 1, should be cleanly optimized by compiler */
++    if (regindex >= 0x400)
++    	regindex -= 0x800;
 +
- /*
-  * We provide our own get_unmapped area to cope with the virtual aliasing
-  * constraints placed on us by the cache architecture.
-diff -Naur --exclude=CVS linux-2.4-orig/include/linux/mm.h linux-2.4/include/linux/mm.h
---- linux-2.4-orig/include/linux/mm.h	Sat Nov 16 21:39:31 2002
-+++ linux-2.4/include/linux/mm.h	Fri Dec 13 20:19:10 2002
-@@ -473,7 +473,7 @@
++#if defined(__mc68000__)
++    return le16_to_cpu(*((volatile u16 *)(info->ati_regbase+regindex)));
++#else
++    return readw (info->ati_regbase + regindex);
++#endif
++}
++
++static inline void aty_st_le16(int regindex, u16 val,
++			       const struct fb_info_aty *info)
++{
++    /* Hack for bloc 1, should be cleanly optimized by compiler */
++    if (regindex >= 0x400)
++    	regindex -= 0x800;
++
++#if defined(__mc68000__)
++    *((volatile u16 *)(info->ati_regbase+regindex)) = cpu_to_le16(val);
++#else
++    writew (val, info->ati_regbase + regindex);
++#endif
++}
++
+ static inline u8 aty_ld_8(int regindex,
+ 			  const struct fb_info_aty *info)
+ {
+@@ -236,6 +270,19 @@
+     return res;
+ }
  
- extern void zap_page_range(struct mm_struct *mm, unsigned long address, unsigned long size);
- extern int copy_page_range(struct mm_struct *dst, struct mm_struct *src, struct vm_area_struct *vma);
--extern int remap_page_range(unsigned long from, unsigned long to, unsigned long size, pgprot_t prot);
-+extern int remap_page_range(unsigned long from, phys_t to, unsigned long size, pgprot_t prot);
- extern int zeromap_page_range(unsigned long from, unsigned long size, pgprot_t prot);
++/*
++ * CT family only.
++ */
++static inline void aty_st_pll(int offset, u8 val,
++			      const struct fb_info_aty *info)
++{
++    /* write addr byte */
++    aty_st_8(CLOCK_CNTL + 1, (offset << 2) | PLL_WR_EN, info);
++    /* write the register value */
++    aty_st_8(CLOCK_CNTL + 2, val, info);
++    aty_st_8(CLOCK_CNTL + 1, (offset << 2) & ~PLL_WR_EN, info);
++}
++
  
- extern int vmtruncate(struct inode * inode, loff_t offset);
-diff -Naur --exclude=CVS linux-2.4-orig/mm/memory.c linux-2.4/mm/memory.c
---- linux-2.4-orig/mm/memory.c	Wed Nov 13 15:08:45 2002
-+++ linux-2.4/mm/memory.c	Fri Dec 13 20:15:39 2002
-@@ -824,7 +824,7 @@
-  * in null mappings (currently treated as "copy-on-access")
+     /*
+      *  DAC operations
+diff -Naur --exclude=CVS linux-2.4-orig/drivers/video/aty/atyfb_base.c linux-2.4/drivers/video/aty/atyfb_base.c
+--- linux-2.4-orig/drivers/video/aty/atyfb_base.c	Wed Nov 13 15:07:59 2002
++++ linux-2.4/drivers/video/aty/atyfb_base.c	Wed Dec 11 23:47:00 2002
+@@ -225,6 +225,9 @@
+ #ifndef MODULE
+ int atyfb_setup(char*);
+ #endif
++#ifdef CONFIG_FB_ATY_XL_INIT
++extern int atyfb_xl_init(struct fb_info_aty *info);
++#endif
+ 
+ static int currcon = 0;
+ 
+@@ -252,6 +255,7 @@
+ static u32 default_vram __initdata = 0;
+ static int default_pll __initdata = 0;
+ static int default_mclk __initdata = 0;
++static int default_xclk __initdata = 0;
+ 
+ #ifndef MODULE
+ static char *mode_option __initdata = NULL;
+@@ -298,6 +302,8 @@
+ static char m64n_gtc_pp[] __initdata = "3D RAGE PRO (PQFP, PCI)";
+ static char m64n_gtc_ppl[] __initdata = "3D RAGE PRO (PQFP, PCI, limited 3D)";
+ static char m64n_xl[] __initdata = "3D RAGE (XL)";
++static char m64n_xl_33[] __initdata = "3D RAGE (XL PCI-33MHz)";
++static char m64n_xl_66[] __initdata = "3D RAGE (XL PCI-66MHz)";
+ static char m64n_ltp_a[] __initdata = "3D RAGE LT PRO (AGP)";
+ static char m64n_ltp_p[] __initdata = "3D RAGE LT PRO (PCI)";
+ static char m64n_mob_p[] __initdata = "3D RAGE Mobility (PCI)";
+@@ -308,59 +314,61 @@
+     u16 pci_id, chip_type;
+     u8 rev_mask, rev_val;
+     const char *name;
+-    int pll, mclk;
++    int pll, mclk, xclk;
+     u32 features;
+ } aty_chips[] __initdata = {
+ #ifdef CONFIG_FB_ATY_GX
+     /* Mach64 GX */
+-    { 0x4758, 0x00d7, 0x00, 0x00, m64n_gx,      135,  50, M64F_GX },
+-    { 0x4358, 0x0057, 0x00, 0x00, m64n_cx,      135,  50, M64F_GX },
++    { 0x4758, 0x00d7, 0x00, 0x00, m64n_gx,      135,  50, 50, M64F_GX },
++    { 0x4358, 0x0057, 0x00, 0x00, m64n_cx,      135,  50, 50, M64F_GX },
+ #endif /* CONFIG_FB_ATY_GX */
+ 
+ #ifdef CONFIG_FB_ATY_CT
+     /* Mach64 CT */
+-    { 0x4354, 0x4354, 0x00, 0x00, m64n_ct,      135,  60, M64F_CT | M64F_INTEGRATED | M64F_CT_BUS | M64F_MAGIC_FIFO },
+-    { 0x4554, 0x4554, 0x00, 0x00, m64n_et,      135,  60, M64F_CT | M64F_INTEGRATED | M64F_CT_BUS | M64F_MAGIC_FIFO },
++    { 0x4354, 0x4354, 0x00, 0x00, m64n_ct,      135,  60, 60, M64F_CT | M64F_INTEGRATED | M64F_CT_BUS | M64F_MAGIC_FIFO },
++    { 0x4554, 0x4554, 0x00, 0x00, m64n_et,      135,  60, 60, M64F_CT | M64F_INTEGRATED | M64F_CT_BUS | M64F_MAGIC_FIFO },
+ 
+     /* Mach64 VT */
+-    { 0x5654, 0x5654, 0xc7, 0x00, m64n_vta3,    170,  67, M64F_VT | M64F_INTEGRATED | M64F_VT_BUS | M64F_MAGIC_FIFO | M64F_FIFO_24 },
+-    { 0x5654, 0x5654, 0xc7, 0x40, m64n_vta4,    200,  67, M64F_VT | M64F_INTEGRATED | M64F_VT_BUS | M64F_MAGIC_FIFO | M64F_FIFO_24 | M64F_MAGIC_POSTDIV },
+-    { 0x5654, 0x5654, 0x00, 0x00, m64n_vtb,     200,  67, M64F_VT | M64F_INTEGRATED | M64F_VT_BUS | M64F_GTB_DSP | M64F_FIFO_24 },
+-    { 0x5655, 0x5655, 0x00, 0x00, m64n_vtb,     200,  67, M64F_VT | M64F_INTEGRATED | M64F_VT_BUS | M64F_GTB_DSP | M64F_FIFO_24 | M64F_SDRAM_MAGIC_PLL },
+-    { 0x5656, 0x5656, 0x00, 0x00, m64n_vt4,     230,  83, M64F_VT | M64F_INTEGRATED | M64F_GTB_DSP },
++    { 0x5654, 0x5654, 0xc7, 0x00, m64n_vta3,    170,  67, 67, M64F_VT | M64F_INTEGRATED | M64F_VT_BUS | M64F_MAGIC_FIFO | M64F_FIFO_24 },
++    { 0x5654, 0x5654, 0xc7, 0x40, m64n_vta4,    200,  67, 67, M64F_VT | M64F_INTEGRATED | M64F_VT_BUS | M64F_MAGIC_FIFO | M64F_FIFO_24 | M64F_MAGIC_POSTDIV },
++    { 0x5654, 0x5654, 0x00, 0x00, m64n_vtb,     200,  67, 67, M64F_VT | M64F_INTEGRATED | M64F_VT_BUS | M64F_GTB_DSP | M64F_FIFO_24 },
++    { 0x5655, 0x5655, 0x00, 0x00, m64n_vtb,     200,  67, 67, M64F_VT | M64F_INTEGRATED | M64F_VT_BUS | M64F_GTB_DSP | M64F_FIFO_24 | M64F_SDRAM_MAGIC_PLL },
++    { 0x5656, 0x5656, 0x00, 0x00, m64n_vt4,     230,  83, 83, M64F_VT | M64F_INTEGRATED | M64F_GTB_DSP },
+ 
+     /* Mach64 GT (3D RAGE) */
+-    { 0x4754, 0x4754, 0x07, 0x00, m64n_gt,      135,  63, M64F_GT | M64F_INTEGRATED | M64F_MAGIC_FIFO | M64F_FIFO_24 | M64F_EXTRA_BRIGHT },
+-    { 0x4754, 0x4754, 0x07, 0x01, m64n_gt,      170,  67, M64F_GT | M64F_INTEGRATED | M64F_GTB_DSP | M64F_FIFO_24 | M64F_SDRAM_MAGIC_PLL | M64F_EXTRA_BRIGHT },
+-    { 0x4754, 0x4754, 0x07, 0x02, m64n_gt,      200,  67, M64F_GT | M64F_INTEGRATED | M64F_GTB_DSP | M64F_FIFO_24 | M64F_SDRAM_MAGIC_PLL | M64F_EXTRA_BRIGHT },
+-    { 0x4755, 0x4755, 0x00, 0x00, m64n_gtb,     200,  67, M64F_GT | M64F_INTEGRATED | M64F_GTB_DSP | M64F_FIFO_24 | M64F_SDRAM_MAGIC_PLL | M64F_EXTRA_BRIGHT },
+-    { 0x4756, 0x4756, 0x00, 0x00, m64n_iic_p,   230,  83, M64F_GT | M64F_INTEGRATED | M64F_GTB_DSP | M64F_FIFO_24 | M64F_SDRAM_MAGIC_PLL | M64F_EXTRA_BRIGHT },
+-    { 0x4757, 0x4757, 0x00, 0x00, m64n_iic_a,   230,  83, M64F_GT | M64F_INTEGRATED | M64F_GTB_DSP | M64F_FIFO_24 | M64F_SDRAM_MAGIC_PLL | M64F_EXTRA_BRIGHT },
+-    { 0x475a, 0x475a, 0x00, 0x00, m64n_iic_a,   230,  83, M64F_GT | M64F_INTEGRATED | M64F_GTB_DSP | M64F_FIFO_24 | M64F_SDRAM_MAGIC_PLL | M64F_EXTRA_BRIGHT },
++    { 0x4754, 0x4754, 0x07, 0x00, m64n_gt,      135,  63, 63, M64F_GT | M64F_INTEGRATED | M64F_MAGIC_FIFO | M64F_FIFO_24 | M64F_EXTRA_BRIGHT },
++    { 0x4754, 0x4754, 0x07, 0x01, m64n_gt,      170,  67, 67, M64F_GT | M64F_INTEGRATED | M64F_GTB_DSP | M64F_FIFO_24 | M64F_SDRAM_MAGIC_PLL | M64F_EXTRA_BRIGHT },
++    { 0x4754, 0x4754, 0x07, 0x02, m64n_gt,      200,  67, 67, M64F_GT | M64F_INTEGRATED | M64F_GTB_DSP | M64F_FIFO_24 | M64F_SDRAM_MAGIC_PLL | M64F_EXTRA_BRIGHT },
++    { 0x4755, 0x4755, 0x00, 0x00, m64n_gtb,     200,  67, 67, M64F_GT | M64F_INTEGRATED | M64F_GTB_DSP | M64F_FIFO_24 | M64F_SDRAM_MAGIC_PLL | M64F_EXTRA_BRIGHT },
++    { 0x4756, 0x4756, 0x00, 0x00, m64n_iic_p,   230,  83, 83, M64F_GT | M64F_INTEGRATED | M64F_GTB_DSP | M64F_FIFO_24 | M64F_SDRAM_MAGIC_PLL | M64F_EXTRA_BRIGHT },
++    { 0x4757, 0x4757, 0x00, 0x00, m64n_iic_a,   230,  83, 83, M64F_GT | M64F_INTEGRATED | M64F_GTB_DSP | M64F_FIFO_24 | M64F_SDRAM_MAGIC_PLL | M64F_EXTRA_BRIGHT },
++    { 0x475a, 0x475a, 0x00, 0x00, m64n_iic_a,   230,  83, 83, M64F_GT | M64F_INTEGRATED | M64F_GTB_DSP | M64F_FIFO_24 | M64F_SDRAM_MAGIC_PLL | M64F_EXTRA_BRIGHT },
+ 
+     /* Mach64 LT */
+-    { 0x4c54, 0x4c54, 0x00, 0x00, m64n_lt,      135,  63, M64F_GT | M64F_INTEGRATED | M64F_GTB_DSP },
+-    { 0x4c47, 0x4c47, 0x00, 0x00, m64n_ltg,     230,  63, M64F_GT | M64F_INTEGRATED | M64F_GTB_DSP | M64F_SDRAM_MAGIC_PLL | M64F_EXTRA_BRIGHT | M64F_LT_SLEEP | M64F_G3_PB_1024x768 },
++    { 0x4c54, 0x4c54, 0x00, 0x00, m64n_lt,      135,  63, 63, M64F_GT | M64F_INTEGRATED | M64F_GTB_DSP },
++    { 0x4c47, 0x4c47, 0x00, 0x00, m64n_ltg,     230,  63, 63, M64F_GT | M64F_INTEGRATED | M64F_GTB_DSP | M64F_SDRAM_MAGIC_PLL | M64F_EXTRA_BRIGHT | M64F_LT_SLEEP | M64F_G3_PB_1024x768 },
+ 
+     /* Mach64 GTC (3D RAGE PRO) */
+-    { 0x4742, 0x4742, 0x00, 0x00, m64n_gtc_ba,  230, 100, M64F_GT | M64F_INTEGRATED | M64F_RESET_3D | M64F_GTB_DSP | M64F_SDRAM_MAGIC_PLL | M64F_EXTRA_BRIGHT },
+-    { 0x4744, 0x4744, 0x00, 0x00, m64n_gtc_ba1, 230, 100, M64F_GT | M64F_INTEGRATED | M64F_RESET_3D | M64F_GTB_DSP | M64F_SDRAM_MAGIC_PLL | M64F_EXTRA_BRIGHT },
+-    { 0x4749, 0x4749, 0x00, 0x00, m64n_gtc_bp,  230, 100, M64F_GT | M64F_INTEGRATED | M64F_RESET_3D | M64F_GTB_DSP | M64F_SDRAM_MAGIC_PLL | M64F_EXTRA_BRIGHT | M64F_MAGIC_VRAM_SIZE },
+-    { 0x4750, 0x4750, 0x00, 0x00, m64n_gtc_pp,  230, 100, M64F_GT | M64F_INTEGRATED | M64F_RESET_3D | M64F_GTB_DSP | M64F_SDRAM_MAGIC_PLL | M64F_EXTRA_BRIGHT },
+-    { 0x4751, 0x4751, 0x00, 0x00, m64n_gtc_ppl, 230, 100, M64F_GT | M64F_INTEGRATED | M64F_RESET_3D | M64F_GTB_DSP | M64F_SDRAM_MAGIC_PLL | M64F_EXTRA_BRIGHT },
+-
+-    /* 3D RAGE XL */
+-    { 0x4752, 0x4752, 0x00, 0x00, m64n_xl, 230, 100, M64F_GT | M64F_INTEGRATED | M64F_RESET_3D | M64F_GTB_DSP | M64F_SDRAM_MAGIC_PLL | M64F_EXTRA_BRIGHT | M64F_XL_DLL },
++    { 0x4742, 0x4742, 0x00, 0x00, m64n_gtc_ba,  230, 100, 100, M64F_GT | M64F_INTEGRATED | M64F_RESET_3D | M64F_GTB_DSP | M64F_SDRAM_MAGIC_PLL | M64F_EXTRA_BRIGHT },
++    { 0x4744, 0x4744, 0x00, 0x00, m64n_gtc_ba1, 230, 100, 100, M64F_GT | M64F_INTEGRATED | M64F_RESET_3D | M64F_GTB_DSP | M64F_SDRAM_MAGIC_PLL | M64F_EXTRA_BRIGHT },
++    { 0x4749, 0x4749, 0x00, 0x00, m64n_gtc_bp,  230, 100, 100, M64F_GT | M64F_INTEGRATED | M64F_RESET_3D | M64F_GTB_DSP | M64F_SDRAM_MAGIC_PLL | M64F_EXTRA_BRIGHT | M64F_MAGIC_VRAM_SIZE },
++    { 0x4750, 0x4750, 0x00, 0x00, m64n_gtc_pp,  230, 100, 100, M64F_GT | M64F_INTEGRATED | M64F_RESET_3D | M64F_GTB_DSP | M64F_SDRAM_MAGIC_PLL | M64F_EXTRA_BRIGHT },
++    { 0x4751, 0x4751, 0x00, 0x00, m64n_gtc_ppl, 230, 100, 100, M64F_GT | M64F_INTEGRATED | M64F_RESET_3D | M64F_GTB_DSP | M64F_SDRAM_MAGIC_PLL | M64F_EXTRA_BRIGHT },
++
++    /* 3D RAGE XL PCI-66/BGA */
++    { 0x474f, 0x474f, 0x00, 0x00, m64n_xl_66, 230, 83, 63, M64F_GT | M64F_INTEGRATED | M64F_RESET_3D | M64F_GTB_DSP | M64F_SDRAM_MAGIC_PLL | M64F_EXTRA_BRIGHT | M64F_XL_DLL | M64F_MFB_TIMES_4 },
++    /* 3D RAGE XL PCI-33/BGA */
++    { 0x4752, 0x4752, 0x00, 0x00, m64n_xl_33, 230, 83, 63, M64F_GT | M64F_INTEGRATED | M64F_RESET_3D | M64F_GTB_DSP | M64F_SDRAM_MAGIC_PLL | M64F_EXTRA_BRIGHT | M64F_XL_DLL | M64F_MFB_TIMES_4 },
+ 
+     /* Mach64 LT PRO */
+-    { 0x4c42, 0x4c42, 0x00, 0x00, m64n_ltp_a,   230, 100, M64F_GT | M64F_INTEGRATED | M64F_RESET_3D | M64F_GTB_DSP },
+-    { 0x4c44, 0x4c44, 0x00, 0x00, m64n_ltp_p,   230, 100, M64F_GT | M64F_INTEGRATED | M64F_RESET_3D | M64F_GTB_DSP },
+-    { 0x4c49, 0x4c49, 0x00, 0x00, m64n_ltp_p,   230, 100, M64F_GT | M64F_INTEGRATED | M64F_RESET_3D | M64F_GTB_DSP | M64F_EXTRA_BRIGHT | M64F_G3_PB_1_1 | M64F_G3_PB_1024x768 },
+-    { 0x4c50, 0x4c50, 0x00, 0x00, m64n_ltp_p,   230, 100, M64F_GT | M64F_INTEGRATED | M64F_RESET_3D | M64F_GTB_DSP },
++    { 0x4c42, 0x4c42, 0x00, 0x00, m64n_ltp_a,   230, 100, 100, M64F_GT | M64F_INTEGRATED | M64F_RESET_3D | M64F_GTB_DSP },
++    { 0x4c44, 0x4c44, 0x00, 0x00, m64n_ltp_p,   230, 100, 100, M64F_GT | M64F_INTEGRATED | M64F_RESET_3D | M64F_GTB_DSP },
++    { 0x4c49, 0x4c49, 0x00, 0x00, m64n_ltp_p,   230, 100, 100, M64F_GT | M64F_INTEGRATED | M64F_RESET_3D | M64F_GTB_DSP | M64F_EXTRA_BRIGHT | M64F_G3_PB_1_1 | M64F_G3_PB_1024x768 },
++    { 0x4c50, 0x4c50, 0x00, 0x00, m64n_ltp_p,   230, 100, 100, M64F_GT | M64F_INTEGRATED | M64F_RESET_3D | M64F_GTB_DSP },
+ 
+     /* 3D RAGE Mobility */
+-    { 0x4c4d, 0x4c4d, 0x00, 0x00, m64n_mob_p,   230,  50, M64F_GT | M64F_INTEGRATED | M64F_RESET_3D | M64F_GTB_DSP | M64F_MOBIL_BUS },
+-    { 0x4c4e, 0x4c4e, 0x00, 0x00, m64n_mob_a,   230,  50, M64F_GT | M64F_INTEGRATED | M64F_RESET_3D | M64F_GTB_DSP | M64F_MOBIL_BUS },
++    { 0x4c4d, 0x4c4d, 0x00, 0x00, m64n_mob_p,   230,  50, 50, M64F_GT | M64F_INTEGRATED | M64F_RESET_3D | M64F_GTB_DSP | M64F_MOBIL_BUS },
++    { 0x4c4e, 0x4c4e, 0x00, 0x00, m64n_mob_a,   230,  50, 50, M64F_GT | M64F_INTEGRATED | M64F_RESET_3D | M64F_GTB_DSP | M64F_MOBIL_BUS },
+ #endif /* CONFIG_FB_ATY_CT */
+ };
+ 
+@@ -777,7 +785,7 @@
+     } else {
+ 	i = aty_ld_le32(MEM_CNTL, info) & 0xf00fffff;
+ 	if (!M64_HAS(MAGIC_POSTDIV))
+-	    i |= info->mem_refresh_rate << 20;
++		i |= info->mem_refresh_rate << 20;
+ 	switch (par->crtc.bpp) {
+ 	    case 8:
+ 	    case 24:
+@@ -1249,7 +1257,10 @@
+     u32 ref_clk_per;
+     u8 pll_ref_div;
+     u8 mclk_fb_div;
++    u8 sclk_fb_div;
+     u8 mclk_post_div;		/* 1,2,3,4,8 */
++    u8 mclk_fb_mult;            /* 2 or 4 */
++    u8 xclk_post_div;		/* 1,2,3,4,8 */
+     u8 vclk_fb_div;
+     u8 vclk_post_div;		/* 1,2,3,4,6,8,12 */
+     u32 dsp_xclks_per_row;	/* 0-16383 */
+@@ -1302,14 +1313,17 @@
+ 	    clk.ref_clk_per = info->ref_clk_per;
+ 	    clk.pll_ref_div = pll->ct.pll_ref_div;
+ 	    clk.mclk_fb_div = pll->ct.mclk_fb_div;
++	    clk.sclk_fb_div = pll->ct.sclk_fb_div;
+ 	    clk.mclk_post_div = pll->ct.mclk_post_div_real;
++	    clk.mclk_fb_mult = pll->ct.mclk_fb_mult;
++	    clk.xclk_post_div = pll->ct.xclk_post_div_real;
+ 	    clk.vclk_fb_div = pll->ct.vclk_fb_div;
+ 	    clk.vclk_post_div = pll->ct.vclk_post_div_real;
+ 	    clk.dsp_xclks_per_row = dsp_config & 0x3fff;
+ 	    clk.dsp_loop_latency = (dsp_config>>16) & 0xf;
+ 	    clk.dsp_precision = (dsp_config>>20) & 7;
+-	    clk.dsp_on = dsp_on_off & 0x7ff;
+-	    clk.dsp_off = (dsp_on_off>>16) & 0x7ff;
++	    clk.dsp_off = dsp_on_off & 0x7ff;
++	    clk.dsp_on = (dsp_on_off>>16) & 0x7ff;
+ 	    if (copy_to_user((struct atyclk *)arg, &clk, sizeof(clk)))
+ 		    return -EFAULT;
+ 	} else
+@@ -1324,14 +1338,17 @@
+ 	    info->ref_clk_per = clk.ref_clk_per;
+ 	    pll->ct.pll_ref_div = clk.pll_ref_div;
+ 	    pll->ct.mclk_fb_div = clk.mclk_fb_div;
++	    pll->ct.sclk_fb_div = clk.sclk_fb_div;
+ 	    pll->ct.mclk_post_div_real = clk.mclk_post_div;
++	    pll->ct.mclk_fb_mult = clk.mclk_fb_mult;
++	    pll->ct.xclk_post_div_real = clk.xclk_post_div;
+ 	    pll->ct.vclk_fb_div = clk.vclk_fb_div;
+ 	    pll->ct.vclk_post_div_real = clk.vclk_post_div;
+ 	    pll->ct.dsp_config = (clk.dsp_xclks_per_row & 0x3fff) |
+ 				 ((clk.dsp_loop_latency & 0xf)<<16) |
+ 				 ((clk.dsp_precision & 7)<<20);
+-	    pll->ct.dsp_on_off = (clk.dsp_on & 0x7ff) |
+-				 ((clk.dsp_off & 0x7ff)<<16);
++	    pll->ct.dsp_on_off = (clk.dsp_off & 0x7ff) |
++				 ((clk.dsp_on & 0x7ff)<<16);
+ 	    aty_calc_pll_ct(info, &pll->ct);
+ 	    aty_set_pll_ct(info, pll);
+ 	} else
+@@ -1371,6 +1388,7 @@
+ 	unsigned long off;
+ 	int i;
+ 
++	printk("aty_mmap\n");
+ 	if (!fb->mmap_map)
+ 		return -ENXIO;
+ 
+@@ -1416,9 +1434,14 @@
+ 		pgprot_val(vma->vm_page_prot) &= ~(fb->mmap_map[i].prot_mask);
+ 		pgprot_val(vma->vm_page_prot) |= fb->mmap_map[i].prot_flag;
+ 
++		printk("calling remap_page_range: start %x offset %x\n",
++				vma->vm_start + page, map_offset);
+ 		if (remap_page_range(vma->vm_start + page, map_offset,
+-				     map_size, vma->vm_page_prot))
++				     map_size, vma->vm_page_prot)) {
++			printk("remap failed\n");
+ 			return -EAGAIN;
++		}
++		printk("remap done\n");
+ 
+ 		page += map_size;
+ 	}
+@@ -1751,6 +1774,36 @@
+ #endif /* CONFIG_PMAC_BACKLIGHT */
+ 
+
++static void __init aty_calc_mem_refresh(struct fb_info_aty *info,
++					u16 id,
++					int xclk)
++{
++	int i, size;
++	const int ragepro_tbl[] = {
++		44, 50, 55, 66, 75, 80, 100
++	};
++	const int ragexl_tbl[] = {
++		50, 66, 75, 83, 90, 95, 100, 105,
++		110, 115, 120, 125, 133, 143, 166
++	};
++	const int *refresh_tbl;
++
++	if (IS_XL(id)) {
++		refresh_tbl = ragexl_tbl;
++		size = sizeof(ragexl_tbl)/sizeof(int);
++	} else {
++		refresh_tbl = ragepro_tbl;
++		size = sizeof(ragepro_tbl)/sizeof(int);
++	}
++	
++	for (i=0; i < size; i++) {
++		if (xclk < refresh_tbl[i])
++			break;
++	}
++	
++	info->mem_refresh_rate = i;
++}
++
+ 
+     /*
+      *  Initialisation
+@@ -1768,12 +1821,12 @@
+     u16 type;
+     u8 rev;
+     const char *chipname = NULL, *ramname = NULL, *xtal;
+-    int pll, mclk, gtb_memsize;
++    int pll, mclk, xclk, gtb_memsize;
+ #if defined(CONFIG_PPC)
+     int sense;
+ #endif
+     u8 pll_ref_div;
+-
++    
+     info->aty_cmap_regs = (struct aty_cmap_regs *)(info->ati_regbase+0xc0);
+     chip_id = aty_ld_le32(CONFIG_CHIP_ID, info);
+     type = chip_id & CFG_CHIP_TYPE;
+@@ -1784,6 +1837,7 @@
+ 	    chipname = aty_chips[j].name;
+ 	    pll = aty_chips[j].pll;
+ 	    mclk = aty_chips[j].mclk;
++	    xclk = aty_chips[j].xclk;
+ 	    info->features = aty_chips[j].features;
+ 	    goto found;
+ 	}
+@@ -1854,17 +1908,39 @@
+ 	}
+     }
+ #endif /* CONFIG_FB_ATY_GX */
++
+ #ifdef CONFIG_FB_ATY_CT
+     if (M64_HAS(INTEGRATED)) {
+-	info->bus_type = PCI;
+-	info->ram_type = (aty_ld_le32(CONFIG_STAT0, info) & 0x07);
+-	ramname = aty_ct_ram[info->ram_type];
+-	info->dac_ops = &aty_dac_ct;
+-	info->pll_ops = &aty_pll_ct;
+ 	/* for many chips, the mclk is 67 MHz for SDRAM, 63 MHz otherwise */
+ 	if (mclk == 67 && info->ram_type < SDRAM)
+ 	    mclk = 63;
+     }
++#endif
++    
++    if (default_pll)
++	pll = default_pll;
++    if (default_mclk)
++	mclk = default_mclk;
++    if (default_xclk)
++	xclk = default_xclk;
++
++    aty_calc_mem_refresh(info, type, xclk);
++    info->pll_per = 1000000/pll;
++    info->mclk_per = 1000000/mclk;
++    info->xclk_per = 1000000/xclk;
++
++#ifdef CONFIG_FB_ATY_CT
++    if (M64_HAS(INTEGRATED)) {
++	info->dac_ops = &aty_dac_ct;
++	info->pll_ops = &aty_pll_ct;
++	info->bus_type = PCI;
++#ifdef CONFIG_FB_ATY_XL_INIT
++	if (IS_XL(type))
++		atyfb_xl_init(info);
++#endif
++	info->ram_type = (aty_ld_le32(CONFIG_STAT0, info) & 0x07);
++	ramname = aty_ct_ram[info->ram_type];
++    }
+ #endif /* CONFIG_FB_ATY_CT */
+ 
+     info->ref_clk_per = 1000000000000ULL/14318180;
+@@ -1954,33 +2030,11 @@
+ 	    i |= gtb_memsize ? MEM_SIZE_8M_GTB : MEM_SIZE_8M;
+ 	aty_st_le32(MEM_CNTL, i, info);
+     }
+-    if (default_pll)
+-	pll = default_pll;
+-    if (default_mclk)
+-	mclk = default_mclk;
+ 
+-    printk("%d%c %s, %s MHz XTAL, %d MHz PLL, %d Mhz MCLK\n",
++    printk("%d%c %s, %s MHz XTAL, %d MHz PLL, %d Mhz MCLK, %d Mhz XCLK\n",
+     	   info->total_vram == 0x80000 ? 512 : (info->total_vram >> 20),
+-    	   info->total_vram == 0x80000 ? 'K' : 'M', ramname, xtal, pll, mclk);
+-
+-    if (mclk < 44)
+-	info->mem_refresh_rate = 0;	/* 000 = 10 Mhz - 43 Mhz */
+-    else if (mclk < 50)
+-	info->mem_refresh_rate = 1;	/* 001 = 44 Mhz - 49 Mhz */
+-    else if (mclk < 55)
+-	info->mem_refresh_rate = 2;	/* 010 = 50 Mhz - 54 Mhz */
+-    else if (mclk < 66)
+-	info->mem_refresh_rate = 3;	/* 011 = 55 Mhz - 65 Mhz */
+-    else if (mclk < 75)
+-	info->mem_refresh_rate = 4;	/* 100 = 66 Mhz - 74 Mhz */
+-    else if (mclk < 80)
+-	info->mem_refresh_rate = 5;	/* 101 = 75 Mhz - 79 Mhz */
+-    else if (mclk < 100)
+-	info->mem_refresh_rate = 6;	/* 110 = 80 Mhz - 100 Mhz */
+-    else
+-	info->mem_refresh_rate = 7;	/* 111 = 100 Mhz and above */
+-    info->pll_per = 1000000/pll;
+-    info->mclk_per = 1000000/mclk;
++    	   info->total_vram == 0x80000 ? 'K' : 'M', ramname, xtal, pll,
++	   mclk, xclk);
+ 
+ #ifdef DEBUG
+     if (M64_HAS(INTEGRATED)) {
+@@ -2280,7 +2334,7 @@
+ 		j++;
+ 	    }
+ 
+-	    if (pdev->device != XL_CHIP_ID) {
++	    if (!IS_XL(pdev->device)) {
+ 		    /*
+ 		     * Fix PROMs idea of MEM_CNTL settings...
+ 		     */
+@@ -2390,7 +2444,7 @@
+ 		 *
+ 		 * where R is XTALIN (= 14318 or 29498 kHz).
+ 		 */
+-		if (pdev->device == XL_CHIP_ID)
++		if (IS_XL(pdev->device))
+ 			R = 29498;
+ 		else
+ 			R = 14318;
+@@ -2580,6 +2634,8 @@
+ 		default_pll = simple_strtoul(this_opt+4, NULL, 0);
+ 	else if (!strncmp(this_opt, "mclk:", 5))
+ 		default_mclk = simple_strtoul(this_opt+5, NULL, 0);
++	else if (!strncmp(this_opt, "xclk:", 5))
++		default_xclk = simple_strtoul(this_opt+5, NULL, 0);
+ #ifdef CONFIG_PPC
+ 	else if (!strncmp(this_opt, "vmode:", 6)) {
+ 	    unsigned int vmode = simple_strtoul(this_opt+6, NULL, 0);
+diff -Naur --exclude=CVS linux-2.4-orig/drivers/video/aty/mach64.h linux-2.4/drivers/video/aty/mach64.h
+--- linux-2.4-orig/drivers/video/aty/mach64.h	Thu Aug 23 20:38:49 2001
++++ linux-2.4/drivers/video/aty/mach64.h	Wed Dec 11 22:21:31 2002
+@@ -849,7 +849,18 @@
+ #define LI_CHIP_ID	0x4c49	/* RAGE LT PRO */
+ #define LP_CHIP_ID	0x4c50	/* RAGE LT PRO */
+ #define LT_CHIP_ID	0x4c54	/* RAGE LT */
+-#define XL_CHIP_ID	0x4752	/* RAGE (XL) */
++
++#define GR_CHIP_ID	0x4752	/* RAGE XL, BGA, PCI33 */
++#define GS_CHIP_ID	0x4753	/* RAGE XL, PQFP, PCI33 */
++#define GM_CHIP_ID	0x474d	/* RAGE XL, BGA, AGP 1x,2x */
++#define GN_CHIP_ID	0x474e	/* RAGE XL, PQFP,AGP 1x,2x */
++#define GO_CHIP_ID	0x474f	/* RAGE XL, BGA, PCI66 */
++#define GL_CHIP_ID	0x474c	/* RAGE XL, PQFP, PCI66 */
++
++#define IS_XL(id) ((id)==GR_CHIP_ID || (id)==GS_CHIP_ID || \
++                   (id)==GM_CHIP_ID || (id)==GN_CHIP_ID || \
++                   (id)==GO_CHIP_ID || (id)==GL_CHIP_ID)
++
+ #define GT_CHIP_ID	0x4754	/* RAGE (GT) */
+ #define GU_CHIP_ID	0x4755	/* RAGE II/II+ (GTB) */
+ #define GV_CHIP_ID	0x4756	/* RAGE IIC, PCI */
+diff -Naur --exclude=CVS linux-2.4-orig/drivers/video/aty/mach64_ct.c linux-2.4/drivers/video/aty/mach64_ct.c
+--- linux-2.4-orig/drivers/video/aty/mach64_ct.c	Thu Aug 23 20:38:49 2001
++++ linux-2.4/drivers/video/aty/mach64_ct.c	Wed Dec 11 22:21:31 2002
+@@ -4,6 +4,7 @@
   */
- static inline void remap_pte_range(pte_t * pte, unsigned long address, unsigned long size,
--	unsigned long phys_addr, pgprot_t prot)
-+	phys_t phys_addr, pgprot_t prot)
- {
- 	unsigned long end;
  
-@@ -848,7 +848,7 @@
+ #include <linux/fb.h>
++#include <linux/delay.h>
+ 
+ #include <asm/io.h>
+ 
+@@ -12,15 +13,14 @@
+ #include "mach64.h"
+ #include "atyfb.h"
+ 
++#undef DEBUG
+ 
+ /* FIXME: remove the FAIL definition */
+ #define FAIL(x) do { printk(x "\n"); return -EINVAL; } while (0)
+ 
+-static void aty_st_pll(int offset, u8 val, const struct fb_info_aty *info);
+-
+ static int aty_valid_pll_ct(const struct fb_info_aty *info, u32 vclk_per,
+ 			    struct pll_ct *pll);
+-static int aty_dsp_gt(const struct fb_info_aty *info, u8 bpp,
++static int aty_dsp_gt(const struct fb_info_aty *info, u32 bpp,
+ 		      struct pll_ct *pll);
+ static int aty_var_to_pll_ct(const struct fb_info_aty *info, u32 vclk_per,
+ 			     u8 bpp, union aty_pll *pll);
+@@ -28,34 +28,30 @@
+ 			     const union aty_pll *pll);
+ 
+
+-
+-static void aty_st_pll(int offset, u8 val, const struct fb_info_aty *info)
+-{
+-    /* write addr byte */
+-    aty_st_8(CLOCK_CNTL + 1, (offset << 2) | PLL_WR_EN, info);
+-    /* write the register value */
+-    aty_st_8(CLOCK_CNTL + 2, val, info);
+-    aty_st_8(CLOCK_CNTL + 1, (offset << 2) & ~PLL_WR_EN, info);
+-}
+-
+-
+ /* ------------------------------------------------------------------------- */
+ 
+     /*
+      *  PLL programming (Mach64 CT family)
+      */
+-
+-static int aty_dsp_gt(const struct fb_info_aty *info, u8 bpp,
++static int aty_dsp_gt(const struct fb_info_aty *info, u32 bpp,
+ 		      struct pll_ct *pll)
+ {
+     u32 dsp_xclks_per_row, dsp_loop_latency, dsp_precision, dsp_off, dsp_on;
+-    u32 xclks_per_row, fifo_off, fifo_on, y, fifo_size, page_size;
++    u32 xclks_per_row, fifo_off, fifo_on, y, fifo_size;
++    u32 memcntl, n, t_pfc, t_rp, t_ras, t_rcd, t_crd, t_rcc, t_lat;
++
++#ifdef DEBUG
++    printk(__FUNCTION__ ": mclk_fb_mult=%d\n", pll->mclk_fb_mult);
++#endif
++    
++    /* (64*xclk/vclk/bpp)<<11 = xclocks_per_row<<11 */
++    xclks_per_row = ((u32)pll->mclk_fb_mult * (u32)pll->mclk_fb_div *
++		     (u32)pll->vclk_post_div_real * 64) << 11;
++    xclks_per_row /=
++	    (2 * (u32)pll->vclk_fb_div * (u32)pll->xclk_post_div_real * bpp);
+ 
+-    /* xclocks_per_row<<11 */
+-    xclks_per_row = (pll->mclk_fb_div*pll->vclk_post_div_real*64<<11)/
+-		    (pll->vclk_fb_div*pll->mclk_post_div_real*bpp);
+     if (xclks_per_row < (1<<11))
+-	FAIL("Dotclock to high");
++	FAIL("Dotclock too high");
+     if (M64_HAS(FIFO_24)) {
+ 	fifo_size = 24;
+ 	dsp_loop_latency = 0;
+@@ -70,35 +66,54 @@
+ 	dsp_precision++;
+     }
+     dsp_precision -= 5;
++
+     /* fifo_off<<6 */
+-    fifo_off = ((xclks_per_row*(fifo_size-1))>>5)+(3<<6);
++    fifo_off = ((xclks_per_row*(fifo_size-1))>>5); // + (3<<6);
+ 
+     if (info->total_vram > 1*1024*1024) {
+-	if (info->ram_type >= SDRAM) {
++	switch (info->ram_type) {
++	case WRAM:
++	    /* >1 MB WRAM */
++	    dsp_loop_latency += 9;
++	    n = 4;
++	    break;
++	case SDRAM:
++	case SGRAM:
+ 	    /* >1 MB SDRAM */
+ 	    dsp_loop_latency += 8;
+-	    page_size = 8;
+-	} else {
++	    n = 2;
++	    break;
++	default:
+ 	    /* >1 MB DRAM */
+ 	    dsp_loop_latency += 6;
+-	    page_size = 9;
++	    n = 3;
++	    break;
+ 	}
+     } else {
+ 	if (info->ram_type >= SDRAM) {
+ 	    /* <2 MB SDRAM */
+ 	    dsp_loop_latency += 9;
+-	    page_size = 10;
++	    n = 2;
+ 	} else {
+ 	    /* <2 MB DRAM */
+ 	    dsp_loop_latency += 8;
+-	    page_size = 10;
++	    n = 3;
+ 	}
+     }
++
++    memcntl = aty_ld_le32(MEM_CNTL, info);
++    t_rcd = ((memcntl >> 10) & 0x03) + 1;
++    t_crd = ((memcntl >> 12) & 0x01);
++    t_rp  = ((memcntl >>  8) & 0x03) + 1;
++    t_ras = ((memcntl >> 16) & 0x07) + 1;
++    t_lat =  (memcntl >>  4) & 0x03;
++    
++    t_pfc = t_rp + t_rcd + t_crd;
++    
++    t_rcc = max(t_rp + t_ras, t_pfc + n);
++    
+     /* fifo_on<<6 */
+-    if (xclks_per_row >= (page_size<<11))
+-	fifo_on = ((2*page_size+1)<<6)+(xclks_per_row>>5);
+-    else
+-	fifo_on = (3*page_size+2)<<6;
++    fifo_on = (2 * t_rcc + t_pfc + n - 1) << 6;
+ 
+     dsp_xclks_per_row = xclks_per_row>>dsp_precision;
+     dsp_on = fifo_on>>dsp_precision;
+@@ -107,20 +122,27 @@
+     pll->dsp_config = (dsp_xclks_per_row & 0x3fff) |
+ 		      ((dsp_loop_latency & 0xf)<<16) |
+ 		      ((dsp_precision & 7)<<20);
+-    pll->dsp_on_off = (dsp_on & 0x7ff) | ((dsp_off & 0x7ff)<<16);
++    pll->dsp_on_off = (dsp_off & 0x7ff) | ((dsp_on & 0x7ff)<<16);
+     return 0;
  }
  
- static inline int remap_pmd_range(struct mm_struct *mm, pmd_t * pmd, unsigned long address, unsigned long size,
--	unsigned long phys_addr, pgprot_t prot)
-+	phys_t phys_addr, pgprot_t prot)
++
+ static int aty_valid_pll_ct(const struct fb_info_aty *info, u32 vclk_per,
+ 			    struct pll_ct *pll)
  {
- 	unsigned long end;
++#ifdef DEBUG
++    int pllmclk, pllsclk;
++#endif
+     u32 q, x;			/* x is a workaround for sparc64-linux-gcc */
+     x = x;			/* x is a workaround for sparc64-linux-gcc */
+-
++    
+     pll->pll_ref_div = info->pll_per*2*255/info->ref_clk_per;
+-
++    
+     /* FIXME: use the VTB/GTB /3 post divider if it's better suited */
+-    q = info->ref_clk_per*pll->pll_ref_div*4/info->mclk_per;	/* actually 8*q */
++
++    /* actually 8*q */
++    q = info->ref_clk_per*pll->pll_ref_div*4/info->mclk_per;
++
+     if (q < 16*8 || q > 255*8)
+ 	FAIL("mclk out of range");
+     else if (q < 32*8)
+@@ -131,8 +153,40 @@
+ 	pll->mclk_post_div_real = 2;
+     else
+ 	pll->mclk_post_div_real = 1;
+-    pll->mclk_fb_div = q*pll->mclk_post_div_real/8;
++    pll->sclk_fb_div = q*pll->mclk_post_div_real/8;
++    
++#ifdef DEBUG
++    pllsclk = (1000000 * 2 * pll->sclk_fb_div) /
++	    (info->ref_clk_per * pll->pll_ref_div);
++    printk(__FUNCTION__ ": pllsclk=%d MHz, mclk=%d MHz\n",
++	   pllsclk, pllsclk / pll->mclk_post_div_real);
++#endif
++    
++    pll->mclk_fb_mult = M64_HAS(MFB_TIMES_4) ? 4 : 2;
++
++    /* actually 8*q */
++    q = info->ref_clk_per * pll->pll_ref_div * 8 /
++	    (pll->mclk_fb_mult * info->xclk_per);
  
-@@ -868,8 +868,9 @@
- 	return 0;
++    if (q < 16*8 || q > 255*8)
++	FAIL("mclk out of range");
++    else if (q < 32*8)
++	pll->xclk_post_div_real = 8;
++    else if (q < 64*8)
++	pll->xclk_post_div_real = 4;
++    else if (q < 128*8)
++	pll->xclk_post_div_real = 2;
++    else
++	pll->xclk_post_div_real = 1;
++    pll->mclk_fb_div = q*pll->xclk_post_div_real/8;
++    
++#ifdef DEBUG
++    pllmclk = (1000000 * pll->mclk_fb_mult * pll->mclk_fb_div) /
++	    (info->ref_clk_per * pll->pll_ref_div);
++    printk(__FUNCTION__ ": pllmclk=%d MHz, xclk=%d MHz\n",
++	   pllmclk, pllmclk / pll->xclk_post_div_real);
++#endif
++    
+     /* FIXME: use the VTB/GTB /{3,6,12} post dividers if they're better suited */
+     q = info->ref_clk_per*pll->pll_ref_div*4/vclk_per;	/* actually 8*q */
+     if (q < 16*8 || q > 255*8)
+@@ -151,13 +205,14 @@
+ 
+ void aty_calc_pll_ct(const struct fb_info_aty *info, struct pll_ct *pll)
+ {
++    u8 xpostdiv = 0;
+     u8 mpostdiv = 0;
+     u8 vpostdiv = 0;
+-
++    
+     if (M64_HAS(SDRAM_MAGIC_PLL) && (info->ram_type >= SDRAM))
+-	pll->pll_gen_cntl = 0x04;
++	    pll->pll_gen_cntl = 0x64; /* mclk = sclk */
+     else
+-	pll->pll_gen_cntl = 0x84;
++	pll->pll_gen_cntl = 0xe4; /* mclk = sclk */
+ 
+     switch (pll->mclk_post_div_real) {
+ 	case 1:
+@@ -166,9 +221,6 @@
+ 	case 2:
+ 	    mpostdiv = 1;
+ 	    break;
+-	case 3:
+-	    mpostdiv = 4;
+-	    break;
+ 	case 4:
+ 	    mpostdiv = 2;
+ 	    break;
+@@ -176,12 +228,34 @@
+ 	    mpostdiv = 3;
+ 	    break;
+     }
+-    pll->pll_gen_cntl |= mpostdiv<<4;	/* mclk */
++
++    pll->spll_cntl2 = mpostdiv << 4; /* sclk == pllsclk / mpostdiv */
++    
++    switch (pll->xclk_post_div_real) {
++	case 1:
++	    xpostdiv = 0;
++	    break;
++	case 2:
++	    xpostdiv = 1;
++	    break;
++	case 3:
++	    xpostdiv = 4;
++	    break;
++	case 4:
++	    xpostdiv = 2;
++	    break;
++	case 8:
++	    xpostdiv = 3;
++	    break;
++    }
+ 
+     if (M64_HAS(MAGIC_POSTDIV))
+ 	pll->pll_ext_cntl = 0;
+     else
+-    	pll->pll_ext_cntl = mpostdiv;	/* xclk == mclk */
++	pll->pll_ext_cntl = xpostdiv;	/* xclk == pllmclk / xpostdiv */
++
++    if (pll->mclk_fb_mult == 4)
++	    pll->pll_ext_cntl |= 0x08;
+ 
+     switch (pll->vclk_post_div_real) {
+ 	case 2:
+@@ -234,24 +308,54 @@
+ 
+ void aty_set_pll_ct(const struct fb_info_aty *info, const union aty_pll *pll)
+ {
++#ifdef DEBUG
++    printk(__FUNCTION__ ": about to program:\n"
++	   "refdiv=%d, extcntl=0x%02x, mfbdiv=%d\n"
++	   "spllcntl2=0x%02x, sfbdiv=%d, gencntl=0x%02x\n"
++	   "vclkcntl=0x%02x, vpostdiv=0x%02x, vfbdiv=%d\n"
++	   "clocksel=%d\n",
++	   pll->ct.pll_ref_div, pll->ct.pll_ext_cntl,
++	   pll->ct.mclk_fb_div, pll->ct.spll_cntl2,
++	   pll->ct.sclk_fb_div, pll->ct.pll_gen_cntl,
++	   pll->ct.pll_vclk_cntl, pll->ct.vclk_post_div,
++	   pll->ct.vclk_fb_div, aty_ld_le32(CLOCK_CNTL, info) & 0x03);
++#endif
++
+     aty_st_pll(PLL_REF_DIV, pll->ct.pll_ref_div, info);
++
++    aty_st_pll(PLL_EXT_CNTL, pll->ct.pll_ext_cntl, info);
++    aty_st_pll(MCLK_FB_DIV, pll->ct.mclk_fb_div, info); // for XCLK
++    
++    aty_st_pll(SPLL_CNTL2, pll->ct.spll_cntl2, info);
++    aty_st_pll(SCLK_FB_DIV, pll->ct.sclk_fb_div, info); // for MCLK
++
+     aty_st_pll(PLL_GEN_CNTL, pll->ct.pll_gen_cntl, info);
+-    aty_st_pll(MCLK_FB_DIV, pll->ct.mclk_fb_div, info);
++    
++    aty_st_pll(EXT_VPLL_CNTL, 0, info);
+     aty_st_pll(PLL_VCLK_CNTL, pll->ct.pll_vclk_cntl, info);
+     aty_st_pll(VCLK_POST_DIV, pll->ct.vclk_post_div, info);
+     aty_st_pll(VCLK0_FB_DIV, pll->ct.vclk_fb_div, info);
+-    aty_st_pll(PLL_EXT_CNTL, pll->ct.pll_ext_cntl, info);
+ 
+     if (M64_HAS(GTB_DSP)) {
++	u8 dll_cntl;
++
+ 	if (M64_HAS(XL_DLL))
+-	    aty_st_pll(DLL_CNTL, 0x80, info);
++	    dll_cntl = 0x80;
+ 	else if (info->ram_type >= SDRAM)
+-	    aty_st_pll(DLL_CNTL, 0xa6, info);
++	    dll_cntl = 0xa6;
+ 	else
+-	    aty_st_pll(DLL_CNTL, 0xa0, info);
++	    dll_cntl = 0xa0;
++	aty_st_pll(DLL_CNTL, dll_cntl, info);
+ 	aty_st_pll(VFC_CNTL, 0x1b, info);
+ 	aty_st_le32(DSP_CONFIG, pll->ct.dsp_config, info);
+ 	aty_st_le32(DSP_ON_OFF, pll->ct.dsp_on_off, info);
++
++	mdelay(10);
++	aty_st_pll(DLL_CNTL, dll_cntl, info);
++	mdelay(10);
++	aty_st_pll(DLL_CNTL, dll_cntl | 0x40, info);
++	mdelay(10);
++	aty_st_pll(DLL_CNTL, dll_cntl & ~0x40, info);
+     }
  }
  
-+extern phys_t (*fixup_bigphys_addr)(phys_t phys_addr, phys_t size);
- /*  Note: this is only safe if the mm semaphore is held when called. */
--int remap_page_range(unsigned long from, unsigned long phys_addr, unsigned long size, pgprot_t prot)
-+int remap_page_range(unsigned long from, phys_t phys_addr, unsigned long size, pgprot_t prot)
- {
- 	int error = 0;
- 	pgd_t * dir;
-@@ -877,6 +878,7 @@
- 	unsigned long end = from + size;
- 	struct mm_struct *mm = current->mm;
- 
-+	phys_addr = fixup_bigphys_addr(phys_addr, size);
- 	phys_addr -= from;
- 	dir = pgd_offset(mm, from);
- 	flush_cache_range(mm, beg, end);
+diff -Naur --exclude=CVS linux-2.4-orig/drivers/video/aty/xlinit.c linux-2.4/drivers/video/aty/xlinit.c
+--- linux-2.4-orig/drivers/video/aty/xlinit.c	Wed Dec 31 16:00:00 1969
++++ linux-2.4/drivers/video/aty/xlinit.c	Wed Dec 11 22:21:31 2002
+@@ -0,0 +1,374 @@
++/*
++ *  ATI Rage XL Initialization. Support for Xpert98 and Victoria
++ *  PCI cards.
++ *
++ *  Copyright (C) 2002 MontaVista Software Inc.
++ *  Author: MontaVista Software, Inc.
++ *         	stevel@mvista.com or source@mvista.com
++ *
++ *  This program is free software; you can redistribute  it and/or modify it
++ *  under  the terms of  the GNU General  Public License as published by the
++ *  Free Software Foundation;  either version 2 of the  License, or (at your
++ *  option) any later version.
++ *
++ *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
++ *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
++ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
++ *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
++ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
++ *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
++ *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
++ *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
++ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
++ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ *
++ *  You should have received a copy of the  GNU General Public License along
++ *  with this program; if not, write  to the Free Software Foundation, Inc.,
++ *  675 Mass Ave, Cambridge, MA 02139, USA.
++ */
++#include <linux/config.h>
++#include <linux/module.h>
++#include <linux/kernel.h>
++#include <linux/errno.h>
++#include <linux/string.h>
++#include <linux/mm.h> 
++#include <linux/slab.h>
++#include <linux/vmalloc.h>
++#include <linux/delay.h>
++#include <linux/selection.h>
++#include <linux/console.h>
++#include <linux/fb.h>
++#include <linux/init.h>
++#include <linux/pci.h>
++#include <linux/vt_kern.h>
++#include <linux/kd.h> 
++#include <asm/io.h>
++#include <video/fbcon.h>
++#include "mach64.h"
++#include "atyfb.h"
++
++#define MPLL_GAIN       0xad
++#define VPLL_GAIN       0xd5
++
++enum {
++	VICTORIA = 0,
++	XPERT98,
++	NUM_XL_CARDS
++};
++
++extern const struct aty_pll_ops aty_pll_ct;
++
++#define DEFAULT_CARD XPERT98
++static int xl_card = DEFAULT_CARD;
++
++static const struct xl_card_cfg_t {
++	int ref_crystal; // 10^4 Hz
++	int mem_type;
++	int mem_size;
++	u32 mem_cntl;
++	u32 ext_mem_cntl;
++	u32 mem_addr_config;
++	u32 bus_cntl;
++	u32 dac_cntl;
++	u32 hw_debug;
++	u32 custom_macro_cntl;
++	u8  dll2_cntl;
++	u8  pll_yclk_cntl;
++} card_cfg[NUM_XL_CARDS] = {
++	// VICTORIA
++	{	2700, SDRAM, 0x800000,
++		0x10757A3B, 0x64000C81, 0x00110202, 0x7b33A040,
++		0x82010102, 0x48803800, 0x005E0179,
++		0x50, 0x25
++	},
++	// XPERT98
++	{	1432,  WRAM, 0x800000,
++		0x00165A2B, 0xE0000CF1, 0x00200213, 0x7333A001,
++		0x8000000A, 0x48833800, 0x007F0779,
++		0x10, 0x19
++	}
++};
++	  
++typedef struct {
++	u8 lcd_reg;
++	u32 val;
++} lcd_tbl_t;
++
++static const lcd_tbl_t lcd_tbl[] = {
++	{ 0x01,	0x000520C0 },
++	{ 0x08,	0x02000408 },
++	{ 0x03,	0x00000F00 },
++	{ 0x00,	0x00000000 },
++	{ 0x02,	0x00000000 },
++	{ 0x04,	0x00000000 },
++	{ 0x05,	0x00000000 },
++	{ 0x06,	0x00000000 },
++	{ 0x33,	0x00000000 },
++	{ 0x34,	0x00000000 },
++	{ 0x35,	0x00000000 },
++	{ 0x36,	0x00000000 },
++	{ 0x37,	0x00000000 }
++};
++
++static inline u32 aty_ld_lcd(u8 lcd_reg, struct fb_info_aty *info)
++{
++	aty_st_8(LCD_INDEX, lcd_reg, info);
++	return aty_ld_le32(LCD_DATA, info);
++}
++
++static inline void aty_st_lcd(u8 lcd_reg, u32 val,
++			      struct fb_info_aty *info)
++{
++	aty_st_8(LCD_INDEX, lcd_reg, info);
++	aty_st_le32(LCD_DATA, val, info);
++}
++
++static void reset_gui(struct fb_info_aty *info)
++{
++	aty_st_8(GEN_TEST_CNTL+1, 0x01, info);
++	aty_st_8(GEN_TEST_CNTL+1, 0x00, info);
++	aty_st_8(GEN_TEST_CNTL+1, 0x02, info);
++	mdelay(5);
++}
++
++
++static void reset_sdram(struct fb_info_aty *info)
++{
++	u8 temp;
++
++	temp = aty_ld_8(EXT_MEM_CNTL, info);
++	temp |= 0x02;
++	aty_st_8(EXT_MEM_CNTL, temp, info); // MEM_SDRAM_RESET = 1b
++	temp |= 0x08;
++	aty_st_8(EXT_MEM_CNTL, temp, info); // MEM_CYC_TEST    = 10b
++	temp |= 0x0c;
++	aty_st_8(EXT_MEM_CNTL, temp, info); // MEM_CYC_TEST    = 11b
++	mdelay(5);
++	temp &= 0xf3;
++	aty_st_8(EXT_MEM_CNTL, temp, info); // MEM_CYC_TEST    = 00b
++	temp &= 0xfd;
++	aty_st_8(EXT_MEM_CNTL, temp, info); // MEM_SDRAM_REST  = 0b
++	mdelay(5);
++}
++
++static void init_dll(struct fb_info_aty *info)
++{
++	// enable DLL
++	aty_st_pll(PLL_GEN_CNTL,
++		   aty_ld_pll(PLL_GEN_CNTL, info) & 0x7f,
++		   info);
++
++	// reset DLL
++	aty_st_pll(DLL_CNTL, 0x82, info);
++	aty_st_pll(DLL_CNTL, 0xE2, info);
++	mdelay(5);
++	aty_st_pll(DLL_CNTL, 0x82, info);
++	mdelay(6);
++}
++
++static void reset_clocks(struct fb_info_aty *info, struct pll_ct *pll,
++			 int hsync_enb)
++{
++	reset_gui(info);
++	aty_st_pll(MCLK_FB_DIV, pll->mclk_fb_div, info);
++	aty_st_pll(SCLK_FB_DIV, pll->sclk_fb_div, info);
++
++	mdelay(15);
++	init_dll(info);
++	aty_st_8(GEN_TEST_CNTL+1, 0x00, info);
++	mdelay(5);
++	aty_st_8(CRTC_GEN_CNTL+3, 0x04, info);
++	mdelay(6);
++	reset_sdram(info);
++	aty_st_8(CRTC_GEN_CNTL+3,
++		 hsync_enb ? 0x00 : 0x04, info);
++
++	aty_st_pll(SPLL_CNTL2, pll->spll_cntl2, info);
++	aty_st_pll(PLL_GEN_CNTL, pll->pll_gen_cntl, info);
++	aty_st_pll(PLL_VCLK_CNTL, pll->pll_vclk_cntl, info);
++}
++
++
++int atyfb_xl_init(struct fb_info_aty *info)
++{
++	int i, err;
++	u32 temp;
++	union aty_pll pll;
++	const struct xl_card_cfg_t * card = &card_cfg[xl_card];
++	
++	aty_st_8(CONFIG_STAT0, 0x85, info);
++	mdelay(10);
++
++	/*
++	 * The following needs to be set before the call
++	 * to var_to_pll() below. They'll be re-set again
++	 * to the same values in aty_init().
++	 */
++	info->ref_clk_per = 100000000UL/card->ref_crystal;
++	info->ram_type = card->mem_type;
++	info->total_vram = card->mem_size;
++	if (xl_card == VICTORIA) {
++		// the MCLK, XCLK are 120MHz on victoria card
++		info->mclk_per = 1000000/120;
++		info->xclk_per = 1000000/120;
++		info->features &= ~M64F_MFB_TIMES_4;
++	}
++	
++	/*
++	 * Calculate mclk and xclk dividers, etc. The passed
++	 * pixclock and bpp values don't matter yet, the vclk
++	 * isn't programmed until later.
++	 */
++	if ((err = aty_pll_ct.var_to_pll(info, 39726, 8, &pll)))
++		return err;
++
++	aty_st_pll(LVDS_CNTL0, 0x00, info);
++	aty_st_pll(DLL2_CNTL, card->dll2_cntl, info);
++	aty_st_pll(V2PLL_CNTL, 0x10, info);
++	aty_st_pll(MPLL_CNTL, MPLL_GAIN, info);
++	aty_st_pll(VPLL_CNTL, VPLL_GAIN, info);
++	aty_st_pll(PLL_VCLK_CNTL, 0x00, info);
++	aty_st_pll(VFC_CNTL, 0x1B, info);
++	aty_st_pll(PLL_REF_DIV, pll.ct.pll_ref_div, info);
++	aty_st_pll(PLL_EXT_CNTL, pll.ct.pll_ext_cntl, info);
++	aty_st_pll(SPLL_CNTL2, 0x03, info);
++	aty_st_pll(PLL_GEN_CNTL, 0x44, info);
++
++	reset_clocks(info, &pll.ct, 0);
++	mdelay(10);
++
++	aty_st_pll(VCLK_POST_DIV, 0x03, info);
++	aty_st_pll(VCLK0_FB_DIV, 0xDA, info);
++	aty_st_pll(VCLK_POST_DIV, 0x0F, info);
++	aty_st_pll(VCLK1_FB_DIV, 0xF5, info);
++	aty_st_pll(VCLK_POST_DIV, 0x3F, info);
++	aty_st_pll(PLL_EXT_CNTL, 0x40 | pll.ct.pll_ext_cntl, info);
++	aty_st_pll(VCLK2_FB_DIV, 0x00, info);
++	aty_st_pll(VCLK_POST_DIV, 0xFF, info);
++	aty_st_pll(PLL_EXT_CNTL, 0xC0 | pll.ct.pll_ext_cntl, info);
++	aty_st_pll(VCLK3_FB_DIV, 0x00, info);
++
++	aty_st_8(BUS_CNTL, 0x01, info);
++	aty_st_le32(BUS_CNTL, card->bus_cntl | 0x08000000, info);
++
++	aty_st_le32(CRTC_GEN_CNTL, 0x04000200, info);
++	aty_st_le16(CONFIG_STAT0, 0x0020, info);
++	aty_st_le32(MEM_CNTL, 0x10151A33, info);
++	aty_st_le32(EXT_MEM_CNTL, 0xE0000C01, info);
++	aty_st_le16(CRTC_GEN_CNTL+2, 0x0000, info);
++	aty_st_le32(DAC_CNTL, card->dac_cntl, info);
++	aty_st_le16(GEN_TEST_CNTL, 0x0100, info);
++	aty_st_le32(CUSTOM_MACRO_CNTL, 0x003C0171, info);
++	aty_st_le32(MEM_BUF_CNTL, 0x00382848, info);
++
++	aty_st_le32(HW_DEBUG, card->hw_debug, info);
++	aty_st_le16(MEM_ADDR_CONFIG, 0x0000, info);
++	aty_st_le16(GP_IO+2, 0x0000, info);
++	aty_st_le16(GEN_TEST_CNTL, 0x0000, info);
++	aty_st_le16(EXT_DAC_REGS+2, 0x0000, info);
++	aty_st_le32(CRTC_INT_CNTL, 0x00000000, info);
++	aty_st_le32(TIMER_CONFIG, 0x00000000, info);
++	aty_st_le32(0xEC, 0x00000000, info);
++	aty_st_le32(0xFC, 0x00000000, info);
++
++	for (i=0; i<sizeof(lcd_tbl)/sizeof(lcd_tbl_t); i++) {
++		aty_st_lcd(lcd_tbl[i].lcd_reg, lcd_tbl[i].val, info);
++	}
++
++	aty_st_le16(CONFIG_STAT0, 0x00A4, info);
++	mdelay(10);
++
++	aty_st_8(BUS_CNTL+1, 0xA0, info);
++	mdelay(10);
++	
++	reset_clocks(info, &pll.ct, 1);
++	mdelay(10);
++
++	// something about power management
++	aty_st_8(LCD_INDEX, 0x08, info);
++	aty_st_8(LCD_DATA, 0x0A, info);
++	aty_st_8(LCD_INDEX, 0x08, info);
++	aty_st_8(LCD_DATA+3, 0x02, info);
++	aty_st_8(LCD_INDEX, 0x08, info);
++	aty_st_8(LCD_DATA, 0x0B, info);
++	mdelay(2);
++	
++	// enable display requests, enable CRTC
++	aty_st_8(CRTC_GEN_CNTL+3, 0x02, info);
++	// disable display
++	aty_st_8(CRTC_GEN_CNTL, 0x40, info);
++	// disable display requests, disable CRTC
++	aty_st_8(CRTC_GEN_CNTL+3, 0x04, info);
++	mdelay(10);
++
++	aty_st_pll(PLL_YCLK_CNTL, 0x25, info);
++
++	aty_st_le16(CUSTOM_MACRO_CNTL, 0x0179, info);
++	aty_st_le16(CUSTOM_MACRO_CNTL+2, 0x005E, info);
++	aty_st_le16(CUSTOM_MACRO_CNTL+2, card->custom_macro_cntl>>16, info);
++	aty_st_8(CUSTOM_MACRO_CNTL+1,
++		 (card->custom_macro_cntl>>8) & 0xff, info);
++
++	aty_st_le32(MEM_ADDR_CONFIG, card->mem_addr_config, info);
++	aty_st_le32(MEM_CNTL, card->mem_cntl, info);
++	aty_st_le32(EXT_MEM_CNTL, card->ext_mem_cntl, info);
++
++	aty_st_8(CONFIG_STAT0, 0xA0 | card->mem_type, info);
++
++	aty_st_pll(PLL_YCLK_CNTL, 0x01, info);
++	mdelay(15);
++	aty_st_pll(PLL_YCLK_CNTL, card->pll_yclk_cntl, info);
++	mdelay(1);
++	
++	reset_clocks(info, &pll.ct, 0);
++	mdelay(50);
++	reset_clocks(info, &pll.ct, 0);
++	mdelay(50);
++
++	// enable extended register block
++	aty_st_8(BUS_CNTL+3, 0x7B, info);
++	mdelay(1);
++	// disable extended register block
++	aty_st_8(BUS_CNTL+3, 0x73, info);
++
++	aty_st_8(CONFIG_STAT0, 0x80 | card->mem_type, info);
++
++	// disable display requests, disable CRTC
++	aty_st_8(CRTC_GEN_CNTL+3, 0x04, info);
++	// disable mapping registers in VGA aperture
++	aty_st_8(CONFIG_CNTL, aty_ld_8(CONFIG_CNTL, info) & ~0x04, info);
++	mdelay(50);
++	// enable display requests, enable CRTC
++	aty_st_8(CRTC_GEN_CNTL+3, 0x02, info);
++
++	// make GPIO's 14,15,16 all inputs
++	aty_st_8(LCD_INDEX, 0x07, info);
++	aty_st_8(LCD_DATA+3, 0x00, info);
++
++	// enable the display
++	aty_st_8(CRTC_GEN_CNTL, 0x00, info);
++	mdelay(17);
++	// reset the memory controller
++	aty_st_8(GEN_TEST_CNTL+1, 0x02, info);
++	mdelay(15);
++	aty_st_8(GEN_TEST_CNTL+1, 0x00, info);
++	mdelay(30);
++
++	// enable extended register block
++	aty_st_8(BUS_CNTL+3,
++		 (u8)(aty_ld_8(BUS_CNTL+3, info) | 0x08),
++		 info);
++	// set FIFO size to 512 (PIO)
++	aty_st_le32(GUI_CNTL,
++		    aty_ld_le32(GUI_CNTL, info) & ~0x3,
++		    info);
++
++	// enable CRT and disable lcd
++	aty_st_8(LCD_INDEX, 0x01, info);
++	temp = aty_ld_le32(LCD_DATA, info);
++	temp = (temp | 0x01) & ~0x02;
++	aty_st_le32(LCD_DATA, temp, info);
++
++	return 0;
++}
++

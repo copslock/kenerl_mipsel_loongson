@@ -1,66 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 May 2004 19:22:49 +0100 (BST)
-Received: from mms1.broadcom.com ([IPv6:::ffff:63.70.210.58]:57863 "EHLO
-	mms1.broadcom.com") by linux-mips.org with ESMTP
-	id <S8225478AbUEQSWs>; Mon, 17 May 2004 19:22:48 +0100
-Received: from 63.70.210.1 by mms1.broadcom.com with ESMTP (Broadcom
- SMTP Relay (MMS v5.6.0)); Mon, 17 May 2004 11:20:40 -0700
-X-Server-Uuid: 97B92932-364A-4474-92D6-5CFE9C59AD14
-Received: from mail-sj1-1.sj.broadcom.com (mail-sj1-1.sj.broadcom.com
- [10.16.128.231]) by mon-irva-11.broadcom.com (8.9.1/8.9.1) with ESMTP
- id LAA14837; Mon, 17 May 2004 11:20:04 -0700 (PDT)
-Received: from broadcom.com ([10.21.2.22]) by mail-sj1-1.sj.broadcom.com
- (8.12.9/8.12.4/SSM) with ESMTP id i4HIKcLn005472; Mon, 17 May 2004 11:
- 20:38 -0700 (PDT)
-Message-ID: <40A901DD.80308@broadcom.com>
-Date: Mon, 17 May 2004 11:18:05 -0700
-From: "Mitch Lichtenberg" <mpl@broadcom.com>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.4)
- Gecko/20030624
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 May 2004 23:34:11 +0100 (BST)
+Received: from uswgne22.uswest.com ([IPv6:::ffff:204.26.87.76]:31619 "EHLO
+	uswgne22.uswest.com") by linux-mips.org with ESMTP
+	id <S8225362AbUEQWeK>; Mon, 17 May 2004 23:34:10 +0100
+Received: from egate-ne7.uswc.uswest.com (egate-ne7.uswc.uswest.com [151.117.69.18])
+	by uswgne22.uswest.com (8/8) with ESMTP id i4HMY43w008532
+	for <linux-mips@linux-mips.org>; Mon, 17 May 2004 17:34:05 -0500 (CDT)
+Received: from wopr.qwest.net (localhost [127.0.0.1])
+	by egate-ne7.uswc.uswest.com (8.12.10/8.12.10) with ESMTP id i4HMY4Tx027721
+	for <linux-mips@linux-mips.org>; Mon, 17 May 2004 17:34:04 -0500 (CDT)
+Received: from cyberMalex.com (igate.qwest.net [10.8.16.41])
+	by wopr.qwest.net (8.11.2/8.8.7) with ESMTP id i4HMY2H29732
+	for <linux-mips@linux-mips.org>; Mon, 17 May 2004 18:34:03 -0400
+Message-ID: <40A93DD8.6030205@cyberMalex.com>
+Date: Mon, 17 May 2004 18:34:00 -0400
+From: Alexander Markley <alex@cyberMalex.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.1) Gecko/20031009
 X-Accept-Language: en-us, en
 MIME-Version: 1.0
-To: "Ken Giusti" <manwithastinkydog@yahoo.com>
-cc: linux-mips@linux-mips.org
-Subject: Re: running 2.6 on swarm pass1
-References: <20040517150631.13795.qmail@web13301.mail.yahoo.com>
-In-Reply-To: <20040517150631.13795.qmail@web13301.mail.yahoo.com>
-X-WSS-ID: 6CB7DDF21NG7203616-01-01
-Content-Type: text/plain;
- charset=us-ascii;
- format=flowed
+To: linux-mips@linux-mips.org
+Subject: Re: SGI O2 MIPS R5000 bootp problems
+References: <40A8E08B.7070203@cyberMalex.com> <20040517161515.GA5706@umax645sx> <20040517163639.GA32507@linux-mips.org>
+In-Reply-To: <20040517163639.GA32507@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <mpl@broadcom.com>
+Return-Path: <alex@cyberMalex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5052
+X-archive-position: 5053
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mpl@broadcom.com
+X-original-sender: alex@cyberMalex.com
 Precedence: bulk
 X-list: linux-mips
 
-Ken,
+ > Looks like an attempt to load an IP22 kernel into an IP32.
 
-Pass1 BCM1250's have enough problems that it's no surprise
-that things don't work anymore.    Most of the workarounds
-to CPU core issues are deliberately not checked into the external
-(linux-mips) tree, and some require some nasty toolchain
-hacks (for example, taking exceptions on the instruction
-in a branch delay slot is perilous).
+Yeah, that's probably it... I've learned a lot since I started this 
+thread, and I'm not having any real trouble netbooting now.
 
-I don't know how you got your SWARM, but you might want to
-press for getting a new one.  No pass1's were ever shipped
-in volume, so it would be best to NOT support it.
+Thanks all.
+ttyl
+--Alex
 
-/Mitch.
-
-
-Ken Giusti wrote:
-> Hi,
+Ralf Baechle wrote:
+> On Mon, May 17, 2004 at 06:15:16PM +0200, Ladislav Michl wrote:
 > 
-> I've got a swarm board with a pass1 sibyte sb1250. 
-> Here's the relevant system info from the boot up
-> console:
 > 
-<<snip>>
+>>>7536
+>>>Cannot load bootp():r5000_boot.img.
+>>>Range check failure: text start 0x88802000, size 0x1d70.
+>>
+>>                                  ^^^^^^^^^^
+>>What kernel version are you running? This bug was fixed quite long ago.
+>>I'd recommend using recent cvs and patch by Ilya
+>>http://www.total-knowledge.com/progs/mips/patches
+> 
+> 
+> Looks like an attempt to load an IP22 kernel into an IP32.
+> 
+>   Ralf

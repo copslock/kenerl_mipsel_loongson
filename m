@@ -1,53 +1,46 @@
-Received:  by oss.sgi.com id <S42248AbQILXJe>;
-	Tue, 12 Sep 2000 16:09:34 -0700
-Received: from u-207.karlsruhe.ipdial.viaginterkom.de ([62.180.18.207]:59653
-        "EHLO u-207.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S42209AbQILXJH>; Tue, 12 Sep 2000 16:09:07 -0700
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S868900AbQILXIq>;
-        Wed, 13 Sep 2000 01:08:46 +0200
-Date:   Wed, 13 Sep 2000 01:08:46 +0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Andreas Jaeger <aj@suse.de>
-Cc:     Ulf Carlsson <ulfc@engr.sgi.com>,
-        Keith M Wesolowski <wesolows@foobazco.org>,
-        "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>, linux-mips@oss.sgi.com,
-        linux-mips@fnet.fr
-Subject: Re: One more gcc patch
-Message-ID: <20000913010846.A5527@bacchus.dhis.org>
-References: <20000908205810.A11920@bacchus.dhis.org> <u8ya0xbnao.fsf@gromit.rhein-neckar.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <u8ya0xbnao.fsf@gromit.rhein-neckar.de>; from aj@suse.de on Tue, Sep 12, 2000 at 06:14:07PM +0200
-X-Accept-Language: de,en,fr
+Received:  by oss.sgi.com id <S42271AbQIMGxq>;
+	Tue, 12 Sep 2000 23:53:46 -0700
+Received: from kayak.mcgary.org ([63.227.80.137]:28680 "EHLO kayak.mcgary.org")
+	by oss.sgi.com with ESMTP id <S42270AbQIMGx0>;
+	Tue, 12 Sep 2000 23:53:26 -0700
+Received: (from gkm@localhost)
+	by kayak.mcgary.org (8.9.3/8.9.3) id XAA20804;
+	Tue, 12 Sep 2000 23:53:16 -0700
+X-Authentication-Warning: kayak.mcgary.org: gkm set sender to greg using -f
+To:     linux-mips@oss.sgi.com
+Subject: Re: do_page_fault crash on Indigo2
+References: <200009120107.SAA31731@kayak.mcgary.org>
+From:   Greg McGary <greg@mcgary.org>
+Date:   12 Sep 2000 23:53:15 -0700
+In-Reply-To: Greg McGary's message of "Mon, 11 Sep 2000 18:07:17 -0700"
+Message-ID: <msk8cgsrz8.fsf@mcgary.org>
+X-Mailer: Gnus v5.7/Emacs 20.7
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, Sep 12, 2000 at 06:14:07PM +0200, Andreas Jaeger wrote:
+Here's the call trace.  I'm sure the symbol-table corresponds to the
+crashed system, but the trace looks bogus to me.  I should have a look
+at the call-trace dumping code in linux.  Since I have already written
+one of these things for an embedded system, I painfully aware that
+tracing the stack at runtime for MIPS is fraught with peril.
 
-> Did you run the testsuite?
+> Call Trace: [<88033678>] [<8802f31c>] [<881347ac>] [<88134a78>] [<88010c88>] [<88009f88>] [<880114d8>] [<88009fe0>] [<88008000>] [<88009f80>] [<8800f78c>] [<880114dc>] [<88135ce0>] [<880025c4>]
+> Code: 26315cf8  24100001  8c460004 <8cc30000> 00721024  00451024  1040005f  8dad0000  1320000e 
+>>???; 88026e10 <__wake_up+80/3a0>   <=====
 
-No; I tried rebuilding a large number of RH 6.2 packages.  A few of them
-are broken in ways that make me suspect the compiler is broken.  Might
-also be binutils; I did upgrade both in one step.
-
-> It doesn't seem to fix C++:
-> 
->                 === libstdc++ Summary ===
-> 
-> # of expected passes            9
-> # of unexpected failures        10
-> # of expected failures          11
-> 
-> The number for g++ are even worse, I stopped the check
-> 
-> Any idea how to get C++ working?
-
-Debugging?
-
-I think historically nobody did ever invest time into getting the libg++
-to work so we somewhen have to pay that price ...
-
-  Ralf
+Trace; 88033678 <update_process_times+34/f8>
+Trace; 8802f31c <tasklet_hi_action+a0/11c>
+Trace; 881347ac <indy_local0_irqdispatch+c8/f4>
+Trace; 88134a78 <__gnu_compiled_c+118/180>
+Trace; 88010c88 <stack_done+1c/38>
+Trace; 88009f88 <dummy+1f88/2000>
+Trace; 880114d8 <r4k_wait+0/18>
+Trace; 88009fe0 <dummy+1fe0/2000>
+Trace; 88008000 <init_task_union+0/0>
+Trace; 88009f80 <dummy+1f80/2000>
+Trace; 8800f78c <__gnu_compiled_c+3c/60>
+Trace; 880114dc <r4k_wait+4/18>
+Trace; 88135ce0 <__gnu_compiled_c+410/2960>
+Trace; 880025c4 <stext+40/a7c>

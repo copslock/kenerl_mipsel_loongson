@@ -1,75 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Aug 2003 13:32:37 +0100 (BST)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:14720 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225303AbTHPMcc>; Sat, 16 Aug 2003 13:32:32 +0100
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA15430;
-	Sat, 16 Aug 2003 14:32:18 +0200 (MET DST)
-X-Authentication-Warning: delta.ds2.pg.gda.pl: macro owned process doing -bs
-Date: Sat, 16 Aug 2003 14:32:17 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Jun Sun <jsun@mvista.com>
-cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [patch] Generic time trailing clean-ups
-In-Reply-To: <20030814095246.C1203@mvista.com>
-Message-ID: <Pine.GSO.3.96.1030816142004.15339A-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Aug 2003 02:16:58 +0100 (BST)
+Received: from [IPv6:::ffff:210.22.155.234] ([IPv6:::ffff:210.22.155.234]:25775
+	"EHLO mail.koretide.com.cn") by linux-mips.org with ESMTP
+	id <S8225258AbTHRBQq> convert rfc822-to-8bit; Mon, 18 Aug 2003 02:16:46 +0100
+Received: from zhufeng ([192.168.1.12])
+	(authenticated)
+	by mail.koretide.com.cn (8.11.6/8.11.6) with ESMTP id h7I1E9c11662;
+	Mon, 18 Aug 2003 09:14:12 +0800
+From: "=?utf-8?Q?=E6=9C=B1=E5=87=A4\=28zhufeng\=29?=" 
+	<zhufeng@koretide.com.cn>
+To: <wd@denx.de>
+Cc: "Wilson Chan" <wilsonc@cellvision1.com.tw>,
+	<linux-mips@linux-mips.org>
+Subject: RE: gdbserver and gdb debugging stub for mips 
+Date: Mon, 18 Aug 2003 09:16:06 +0800
+Message-ID: <MGEELAPMEFMLFBMDBLKLGEKOCEAA.zhufeng@koretide.com.cn>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: 8BIT
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4910.0300
+Importance: Normal
+In-Reply-To: <20030815150755.C4DCAC59E4@atlas.denx.de>
+Return-Path: <zhufeng@koretide.com.cn>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3061
+X-archive-position: 3062
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: zhufeng@koretide.com.cn
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 14 Aug 2003, Jun Sun wrote:
+when I build my mips program using gcc with -O0 , it is ok, while using -o2, there come the following questions.
+lingking,,,
 
-> > > 1) get rid of calibrate_*() function
-> > > 2) introduce a generic counter frequence calibration routine, which
-> > >    is only invoked when mips_counter_frequency is 0.
-> > > 3) If any board is not happy with this calibration, it is free to
-> > >    do its calibration in board_timer_init(), which would set
-> > >    mips_counter_frequency to be non-zero.
-> > 
-> >  So I am lost, too.  What I proposed with the patch is exactly what you
-> > describe above.  So what's wrong with it?
-> >
-> 
-> Oh, really? :)
-> 
-> 1) I don't see you " get rid of calibrate_*() function"
+relocation truncated to fit: R_MIPS_GPREL16  __global_ctor_start
+relocation truncated to fit: R_MIPS_GPREL16 __global_ctor_end
+relocation truncated to fit: R_MIPS_GPREL16 _recycle_start 
 
- The patch is for 2.4.  I won't cook a patch for 2.6 before applying this
-one, sorry.  Feel free to do that yourself, based on my proposal.  If the
-plan I've presented was unclear, then please tell me exactly, where. 
+and so on.
 
-> 2) oh, why? because your "generic counter frequence" is not generic -
->    it requires board-specific routines.  I was referring to using
->    jiffies to calibrate frequency.
+Has anybody encounter such questions?
 
- The calibration routine is generic -- every backend can use it without
-duplicating the code privately.  You cannot throw all platforms into a
-single bag because of different timer IRQ sources.
 
- I have already written why jiffies cannot be used directly. 
 
-> 3) I also don't see picky boards "do its calibration in board_timer_init()".
+-----Original Message-----
+From: wd@denx.de [mailto:wd@denx.de]
+Sent: 2003年8月15日 23:08
+To: Öì·ï
+Cc: Wilson Chan; linux-mips@linux-mips.org
+Subject: Re: gdbserver and gdb debugging stub for mips 
 
- If mips_hpt_frequency is non zero after calling board_time_init(), it's
-not recalibrated -- have you actually read the code???
 
-> Your proposal differs in every count. :)
+In message <MGEELAPMEFMLFBMDBLKLIEKICEAA.zhufeng@koretide.com.cn> you wrote:
+>  what do you mean by "MIPS is NOT MIPS"? Does it mean there are too many mips boards?
 
- The details may differ a bit.  The principles are the same.
+big endian, little endian, 32 bit, 64 bit, ...
 
-  Maciej
+It means that there are several  different  configurations,  and  you
+must use tools to match your configuration.
+
+Best regards,
+
+Wolfgang Denk
 
 -- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Software Engineering:  Embedded and Realtime Systems,  Embedded Linux
+Phone: (+49)-8142-4596-87  Fax: (+49)-8142-4596-88  Email: wd@denx.de
+Newer disks don't have a rectangular layout anymore,  but  Unix  (and
+SunOS) still assumes this.     - Peter Koch in <koch.779356598@rhein>

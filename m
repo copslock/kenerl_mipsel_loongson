@@ -1,46 +1,40 @@
-Received:  by oss.sgi.com id <S553772AbRBHLHM>;
-	Thu, 8 Feb 2001 03:07:12 -0800
-Received: from mail.sonytel.be ([193.74.243.200]:52382 "EHLO mail.sonytel.be")
-	by oss.sgi.com with ESMTP id <S553763AbRBHLHH>;
-	Thu, 8 Feb 2001 03:07:07 -0800
-Received: from escobaria.sonytel.be (escobaria.sonytel.be [10.34.80.3])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id MAA07551;
-	Thu, 8 Feb 2001 12:05:14 +0100 (MET)
-Date:   Thu, 8 Feb 2001 12:05:14 +0100 (MET)
-From:   Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
-To:     Alan Cox <alan@lxorguk.ukuu.org.uk>
-cc:     "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-        Florian Lohoff <flo@rfc822.org>, linux-mips@oss.sgi.com,
-        ralf@oss.sgi.com
-Subject: Re: NON FPU cpus - way to go
-In-Reply-To: <E14QomC-0003Bu-00@the-village.bc.nu>
-Message-ID: <Pine.GSO.4.10.10102081204300.23477-100000@escobaria.sonytel.be>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received:  by oss.sgi.com id <S553774AbRBHLUn>;
+	Thu, 8 Feb 2001 03:20:43 -0800
+Received: from noose.gt.owl.de ([62.52.19.4]:25104 "HELO noose.gt.owl.de")
+	by oss.sgi.com with SMTP id <S553768AbRBHLU1>;
+	Thu, 8 Feb 2001 03:20:27 -0800
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id E64CE7DD; Thu,  8 Feb 2001 12:20:15 +0100 (CET)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 824DCEEAC; Thu,  8 Feb 2001 12:20:30 +0100 (CET)
+Date:   Thu, 8 Feb 2001 12:20:30 +0100
+From:   Florian Lohoff <flo@rfc822.org>
+To:     linux-mips@oss.sgi.com
+Subject: [RESUME] fpu emulator
+Message-ID: <20010208122030.A5408@paradigm.rfc822.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Thu, 8 Feb 2001, Alan Cox wrote:
-> > Yep, I put it on my m68k TODO list as well ;-)
-> > 
-> > Alternatively you can make (most of) it a loadable module. I don't think
-> > /sbin/modprobe needs the FPU :-)
-> 
-> Task state init ?
 
-That's why I wrote `(most of)'.
+Hi,
+just to get it right - As i thought the FPU emulator is not really
+optional - It is even required for fpu-enabled devices which means
+we should clean the code in that way that if the user decides to 
+compile in the fpu emulator into the kernel we do an autodetection 
+upfront and change some of the entry/exit/lazy_fpu stuff.
+If the user decides not to compile in the FPU Emulator he is on his
+own and we ignore the whole FPU stuff and simply send SIGILL/SIGFPE
+to the processes causing all fpu binarys to fail on non-fpu enabled
+kernels.
 
-> m68k wants __mac __amiga and __atari as well of course ;)
-
-Yep, one more thing for the list...
-
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven ------------- Sony Software Development Center Europe (SDCE)
-Geert.Uytterhoeven@sonycom.com ------------------- Sint-Stevens-Woluwestraat 55
-Voice +32-2-7248626 Fax +32-2-7262686 ---------------- B-1130 Brussels, Belgium
+Flo
+-- 
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+     Why is it called "common sense" when nobody seems to have any?

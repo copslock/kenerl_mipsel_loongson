@@ -1,55 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jan 2004 15:25:37 +0000 (GMT)
-Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:27063 "EHLO
-	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225357AbUANPZf>; Wed, 14 Jan 2004 15:25:35 +0000
-Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
-	id 4B8464BE10; Wed, 14 Jan 2004 16:25:33 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by jurand.ds.pg.gda.pl (Postfix) with ESMTP
-	id 3BCA244F39; Wed, 14 Jan 2004 16:25:33 +0100 (CET)
-Date: Wed, 14 Jan 2004 16:25:33 +0100 (CET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Dan Aizenstros <dan@quicklogic.com>, Pete Popov <ppopov@mvista.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: CVS Update@-mips.org: linux
-In-Reply-To: <4004295F.9060104@quicklogic.com>
-Message-ID: <Pine.LNX.4.55.0401141623210.9549@jurand.ds.pg.gda.pl>
-References: <20040113080926Z8225270-16706+2387@linux-mips.org>
- <4004295F.9060104@quicklogic.com>
-Organization: Technical University of Gdansk
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jan 2004 15:59:31 +0000 (GMT)
+Received: from [IPv6:::ffff:209.116.120.7] ([IPv6:::ffff:209.116.120.7]:2317
+	"EHLO tnint11.telogy.design.ti.com") by linux-mips.org with ESMTP
+	id <S8225393AbUANP7b>; Wed, 14 Jan 2004 15:59:31 +0000
+Received: by tnint11.telogy.design.ti.com with Internet Mail Service (5.5.2653.19)
+	id <Z8T14LDD>; Wed, 14 Jan 2004 10:58:42 -0500
+Message-ID: <37A3C2F21006D611995100B0D0F9B73C04F11125@tnint11.telogy.design.ti.com>
+From: "Zajerko-McKee, Nick" <nmckee@telogy.com>
+To: linux-mips@linux-mips.org
+Subject: Correct assembler/compiler options for 4KC core?
+Date: Wed, 14 Jan 2004 10:58:32 -0500
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain
+Return-Path: <nmckee@telogy.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3938
+X-archive-position: 3939
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: nmckee@telogy.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 13 Jan 2004, Dan Aizenstros wrote:
+Hi,
 
-> You broke any build that does not define CONFIG_SERIAL_AU1X00
-> by adding an #error in the include/asm-mips/serial.h file.
-> 
-> -- Dan A.
-> 
-> ppopov@linux-mips.org wrote:
-> 
-> > CVSROOT:	/home/cvs
-> > Module name:	linux
-> > Changes by:	ppopov@ftp.linux-mips.org	04/01/13 08:09:22
+I'm trying to use the following opcodes: movz, movn, clo, clz, madd, msub on
+both a 4KC and 4KeC core. What gas options should I use to get the above
+opcodes to work (mips4?  mips32?)  How would one link against closed source
+libraries that were compiled for mips2?  Is there a list of what opcodes
+correspond to the various ISA's and gas flags?  The best reference I saw was
+from fsf that just mentions the -mips1/-mips2/-mips3/-mips4.  I did notice
+in the latest gas docs -march option, but I don't see that available in my
+toolchain.  I'm running on a development system with gas 2.9.5 and gcc 2.96.
 
- Thanks for the report.  It looks like a typo.  I've removed the #error
-statement -- Pete please check if that's what's intended.
+TIA,
 
-  Maciej
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Nick Zajerko-McKee

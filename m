@@ -1,71 +1,80 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA70851 for <linux-archive@neteng.engr.sgi.com>; Mon, 13 Jul 1998 15:40:21 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id GAA20747 for <linux-archive@neteng.engr.sgi.com>; Tue, 14 Jul 1998 06:31:42 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id PAA23058
+	id GAA47984
 	for linux-list;
-	Mon, 13 Jul 1998 15:38:46 -0700 (PDT)
+	Tue, 14 Jul 1998 06:31:04 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from wintermute.reading.sgi.com (wintermute.reading.sgi.com [144.253.74.171])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id PAA47087
-	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 13 Jul 1998 15:38:41 -0700 (PDT)
-	mail_from (sgi.sgi.com!rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
-Received: from rachael.franken.de (rachael.franken.de [193.175.24.38]) 
-	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id PAA05956
-	for <linux@cthulhu.engr.sgi.com>; Mon, 13 Jul 1998 15:38:34 -0700 (PDT)
-	mail_from (rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
-Received: from hub-fue by rachael.franken.de
-	via rmail with uucp
-	id <m0yvrEg-0027pJC@rachael.franken.de>
-	for cthulhu.engr.sgi.com!linux; Tue, 14 Jul 1998 00:38:18 +0200 (MET DST)
-	(Smail-3.2 1996-Jul-4 #4 built DST-Sep-8)
-Received: by hub-fue.franken.de (Smail3.1.29.1 #35)
-	id m0yvrEW-002OzrC; Tue, 14 Jul 98 00:38 MET DST
-Received: (from tsbogend@localhost)
-	by alpha.franken.de (8.8.7/8.8.5) id AAA02784;
-	Tue, 14 Jul 1998 00:08:26 +0200
-Message-ID: <19980714000825.24064@alpha.franken.de>
-Date: Tue, 14 Jul 1998 00:08:25 +0200
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To: ralf@uni-koblenz.de
-Cc: linux-mips@fnet.fr, linux@cthulhu.engr.sgi.com
-Subject: Re: One good and some bad news
-References: <19980712112949.25350@alpha.franken.de> <19980712190135.R10756@uni-koblenz.de> <19980712235319.65470@alpha.franken.de> <19980713023606.U10756@uni-koblenz.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.85
-In-Reply-To: <19980713023606.U10756@uni-koblenz.de>; from ralf@uni-koblenz.de on Mon, Jul 13, 1998 at 02:36:06AM +0200
+	via SMTP id GAA15798;
+	Tue, 14 Jul 1998 06:30:59 -0700 (PDT)
+	mail_from (leon@reading.sgi.com)
+Received: from localhost by wintermute.reading.sgi.com via SMTP (950413.SGI.8.6.12/911001.SGI)
+	 id OAA03348; Tue, 14 Jul 1998 14:30:47 +0100
+Date: Tue, 14 Jul 1998 14:30:47 +0100 (BST)
+From: Leon Verrall <leon@reading.sgi.com>
+To: Alex deVries <adevries@engsoc.carleton.ca>
+cc: Shrijeet Mukherjee <shm@cthulhu.engr.sgi.com>,
+        SGI Linux <linux@cthulhu.engr.sgi.com>
+Subject: Re: 5.1 installation fun & games...
+In-Reply-To: <Pine.LNX.3.95.980713141746.22134F-100000@lager.engsoc.carleton.ca>
+Message-ID: <Pine.SGI.3.96.980714142244.3264B-100000@wintermute.reading.sgi.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Mon, Jul 13, 1998 at 02:36:06AM +0200, ralf@uni-koblenz.de wrote:
-> On Sun, Jul 12, 1998 at 11:53:19PM +0200, Thomas Bogendoerfer wrote:
-> > good to know, as the address was really bogus. Is there a chance to
-> > print out the faulting physical address for a bus error ? This would
-> > give us some chances to find the real culprit. But it still hasn't happen
-> > again.
+On Mon, 13 Jul 1998, Alex deVries wrote:
+
+> On Mon, 13 Jul 1998, Leon Verrall wrote:
+>
+> > Well, here's a funny thing... 
+> > I now have a debian Linux box in the office configured for bootp and tftp
+> > etc. It has the manhattan alpha 1 distribution on it. I bootp():/vmlinuz my
+> > Indy, the kernel boots fine and then:
+> >   Warning: unable to open an initial console. 
+> > Where have we seen this before? 
 > 
-> Basically what to do would be to modify the kernel such that it will work
-> with caches disabled.  Then you get (almost) precise exceptions again.
-> Alternative and with less impact on the performance you could try to
-> writeback the caches in strategic positions for debugging.  That makes a
-> kind of a barrier for DBE exceptions.
+> This is a problem with the install not being able to find the /dev/console
+> file.  It usually means you don't have the install pointing in the right
+> place.  I'd suggest looking at tftp and nfs logs closely.
 
-ugly. I hope, that I won't need it.
+This is irritating... rpc.nfsd reports this activity during the boot:
 
-> You patch looks good, could you commit it?  Thanks.
+ Jul 14 13:55:59 lab17 mountd[199]: NFS mount of /usr/src/sgi/installfs
+ attempted from 144.253.75.29 
+ Jul 14 13:55:59 lab17 mountd[199]: /usr/src/sgi/installfs has been mounted
+ by 144.253.75.29
+ Jul 14 13:55:59 lab17 nfsd[420]: getattr [1 70/1/1 01:00:04 lab29 0.0]
+ Jul 14 13:55:59 lab17 nfsd[420]: ^I7200e760 04 708c8eca
+ Jul 14 13:55:59 lab17 nfsd[420]: result: 0
+ Jul 14 13:55:59 lab17 nfsd[420]: lookup [1 70/1/1 01:00:04 lab29 0.0]
+ Jul 14 13:55:59 lab17 nfsd[420]: ^Ifh:/usr/src/sgi/installfs n:dev
+ Jul 14 13:55:59 lab17 nfsd[420]: ^Inew_fh = /usr/src/sgi/installfs/dev
+ Jul 14 13:55:59 lab17 nfsd[420]: result: 0
+ Jul 14 13:55:59 lab17 nfsd[420]: lookup [1 70/1/1 01:00:04 lab29 0.0]
+ Jul 14 13:55:59 lab17 nfsd[420]: ^Ifh:/usr/src/sgi/installfs/dev n:console
+ Jul 14 13:55:59 lab17 nfsd[420]: ^Inew_fh =
+ /usr/src/sgi/installfs/dev/console  
+ Jul 14 13:55:59 lab17 nfsd[420]: result: 0                                      
 
-I do, when I've merged my stuff with the latest CVS commits. 
+And then goes on to stat init, some libraries and the install2 binary but
+still comlians that the console can't be opened. 
 
-Thomas
+OK, I thought perhaps that filesystems is duff. So I exported / on the linux
+box and booted with that as my nfsroot. OK it'll fail to find init (which it
+did) but it should open /dev/console. Nope, same error. 
+
+As far as I can tell the mount is sucessful and the right files are being
+accessed. Presumably the filesystem is properly mounted by the kernel on the
+Indy under / so what does that leave...?
+
+Leon
 
 -- 
-See, you not only have to be a good coder to create a system like Linux,
-you have to be a sneaky bastard too ;-)
-                   [Linus Torvalds in <4rikft$7g5@linux.cs.Helsinki.FI>]
+Leon Verrall - 01189 307734  \ "Don't cut your losses too soon,
+Secondline Software Support  / 'cos you'll only be cutting your throat.
+Silicon Graphics, Forum 1,   \ And answer a call while you still care at all
+Station Rd., Theale, RG7 4RA / 'cos nobody will if you wont" (6:00 - DT)

@@ -1,72 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Oct 2002 16:03:49 +0200 (CEST)
-Received: from delta.ds2.pg.gda.pl ([213.192.72.1]:56733 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S1123926AbSJWODs>; Wed, 23 Oct 2002 16:03:48 +0200
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id QAA06859;
-	Wed, 23 Oct 2002 16:04:12 +0200 (MET DST)
-Date: Wed, 23 Oct 2002 16:04:11 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Dinesh Nagpure <dinesh_nagpure@ivivity.com>
-cc: "'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
-Subject: Re: KSeg0 coherency policy selection.
-In-Reply-To: <AEC4671C8179D61194DE0002B328BDD2070C8C@ATLOPS>
-Message-ID: <Pine.GSO.3.96.1021023154603.3179C-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Oct 2002 16:13:04 +0200 (CEST)
+Received: from mail2.sonytel.be ([195.0.45.172]:13023 "EHLO mail.sonytel.be")
+	by linux-mips.org with ESMTP id <S1123926AbSJWONE>;
+	Wed, 23 Oct 2002 16:13:04 +0200
+Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.27])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id QAA15889;
+	Wed, 23 Oct 2002 16:12:38 +0200 (MET DST)
+Date: Wed, 23 Oct 2002 16:12:39 +0200 (MEST)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: Martin Schulze <joey@infodrom.org>
+cc: Ralf Baechle <ralf@linux-mips.org>,
+	Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: Re: [patch] Correct monochrome selection
+In-Reply-To: <20021019170534.GS14430@finlandia.infodrom.north.de>
+Message-ID: <Pine.GSO.4.21.0210231612060.2882-100000@vervain.sonytel.be>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Return-Path: <Geert.Uytterhoeven@sonycom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 491
+X-archive-position: 492
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 23 Oct 2002, Dinesh Nagpure wrote:
+On Sat, 19 Oct 2002, Martin Schulze wrote:
+> please apply the patch below which will add proper handling for
+> monochrome graphic cards.
+> 
+> Both changes are required since there are graphic cards out in the
+> voi^Wwild that are monochrome but have bits_per_pixel set to something
+> else than 1, e.g. PMAG-AA which uses 8 bits per pixel but ignores 7 of
+> it.
+> 
+> Since currently no such card is supported, this change wasn't
+> required.  However, we developed support for the PMAG-AA card and we
+> would like to add support for it to the Linux kernel, of course.
 
-> I am almost done with my porting of kernel 2.4.16 to our platform using
-> RM5231A. But I had to make a couple of very basic hacks and I am trying to
-> understand if there is any way I can avoid them.
+HP300 TopCat uses a similar scheme, and is supported by Linux/m68k.
 
- The kernel is almost a year old -- there were numerous fixes since then. 
-Consider grabbing a recent (currently 2.4.20-pre6) version from the CVS. 
-What I'm writing below refers to the current 2.4.x kernel. 
+Gr{oetje,eeting}s,
 
-> First the memcpy wouldn't work for me properly, both the compiler generated
-> and also the one under arch/mips/lib/memcpy.c, so I had to change the lib
-> version to do byte copy. I know this is a very crude change but things
-> worked.
+						Geert
 
- You mean arch/mips/lib/memcpy.S, don't you?  There were problems detected
-and fixed there this year.
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-> Second, the Kseg0 coherency algorithm selection in the function
-> ld_mmu_r4xx0( ) seems to be improper for RM5231A, This function sets the CP0
-> config register K0 field to 3 which as per RM5231A user manual is Cacheable,
-> noncoherent, write back policy Should this not be set to 0, which is
-> cacheable, non-coherent, write-through, no write allocate? 
-
- See CONF_CM_DEFAULT in include/asm-mips/pgtable-bits.h for how to select
-the KSEG0 caching policy in ld_mmu_r4xx0().  If that is not appropriate,
-you probably need a separate function to do the initialization (e.g. 
-ld_mmu_rm5231()) in a separate file (e.g. arch/mips/mm/c-rm5231.c).
-
-> Also from the knowledge base I understand there is a cache aliasing problem
-> associated with RM5231A when page size is set to 4KB. The document
-> recommends to invalidate the cache before retiring a virtual page OR
-> coloring of the pages. Can someone tell me if this fix is already taken care
-> of? For me when I enable caching under "Kernel hacking" my kernel crashes
-> with page fault, when it tries to run bin/init, consistently.
-
- I can't help here, but you definitely want to upgrade your kernel before
-going any further -- you may hit bugs that were fixed long ago and you may
-try handling problems someone else already resolved.
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

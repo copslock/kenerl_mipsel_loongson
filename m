@@ -1,63 +1,76 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id WAA131972; Fri, 15 Aug 1997 22:17:53 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id XAA128625; Fri, 15 Aug 1997 23:19:03 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id WAA22033 for linux-list; Fri, 15 Aug 1997 22:17:38 -0700
-Received: from motown.detroit.sgi.com (motown.detroit.sgi.com [169.238.128.3]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id WAA22027; Fri, 15 Aug 1997 22:17:35 -0700
-Received: from detroit.sgi.com by motown.detroit.sgi.com via ESMTP (950413.SGI.8.6.12/930416.SGI)
-	 id BAA24083; Sat, 16 Aug 1997 01:17:29 -0400
-Message-ID: <33F5377F.C05C1D42@detroit.sgi.com>
-Date: Sat, 16 Aug 1997 01:15:43 -0400
-From: Eric Kimminau <eak@detroit.sgi.com>
-Reply-To: eak@detroit.sgi.com
-Organization: Silicon Graphics, Inc
-X-Mailer: Mozilla 4.02 [en] (X11; I; IRIX 6.2 IP22)
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id XAA26590 for linux-list; Fri, 15 Aug 1997 23:18:37 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id XAA26585 for <linux@cthulhu.engr.sgi.com>; Fri, 15 Aug 1997 23:18:34 -0700
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id XAA21402
+	for <linux@cthulhu.engr.sgi.com>; Fri, 15 Aug 1997 23:18:28 -0700
+	env-from (ralf@informatik.uni-koblenz.de)
+Received: from thoma (ralf@thoma.uni-koblenz.de [141.26.4.61]) by informatik.uni-koblenz.de (8.8.6/8.6.9) with SMTP id IAA20984; Sat, 16 Aug 1997 08:18:24 +0200 (MEST)
+From: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
+Message-Id: <199708160618.IAA20984@informatik.uni-koblenz.de>
+Received: by thoma (SMI-8.6/KO-2.0)
+	id IAA06170; Sat, 16 Aug 1997 08:18:22 +0200
+Subject: Re: boot linux - wish
+To: eak@detroit.sgi.com
+Date: Sat, 16 Aug 1997 08:18:21 +0200 (MET DST)
+Cc: miguel@nuclecu.unam.mx, adevries@engsoc.carleton.ca, ariel@sgi.com,
+        linux@cthulhu.engr.sgi.com
+In-Reply-To: <33F535E0.7336423F@detroit.sgi.com> from "Eric Kimminau" at Aug 16, 97 01:08:48 am
 MIME-Version: 1.0
-To: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
-CC: miguel@nuclecu.unam.mx, jeremyw@motown.detroit.sgi.com,
-        linux@cthulhu.engr.sgi.com, linux-progress@cthulhu.engr.sgi.com
-Subject: Re: Booting Linux from second disk
-References: <199708152251.AAA28505@informatik.uni-koblenz.de>
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Ralf Baechle wrote:
-> 
-> > boot -f bootp()labb.detroit:/tftpboot/linux/vmlinux
-> > nfsaddrs=169.238.129.18,169.238.129.5
-> >
-> > labb (tftpboot server=169.238.129.5, linux=169.238.129.18)
-> >
-> > It boots but as soon as it sees the ethernet driver we get this:
-> >
-> > eth0: SGI Seeq8003 08:00:69:07:e6:29  (which is our correct MAC addr)_
-> > Unable to handle kernel paging request at virtual address 00000008, epc
-> > == 880cbc5c, ra == 880cbc3c
-> 
-> Could you send me the disassembler output of the kernel you've booted?
-> Use command like
-> 
->   mips-linux-objdump -d vmlinux --start-address=0x880cbb00 --stop-address=0x880cd00
-> 
-> to produce the dissassembler listing.
-> 
->   Ralf
+> Is there ever ANY chance of seeing XFS in Linux? Or a flavor of a really
+> fast journaled file system?
 
-I will when I get back in the office on Monday, but its the latest
-kernel available on ftp.linux:
+FYI:
 
-ftp://ftp.linux.sgi.com/pub/test/vmlinux-970813-jwr.gz
+>From owner-linux-ljfs@majordomo.ibasys.net  Wed Aug 13 00:13:50 1997
+Received: from alles.intern.julia.de (root@loehnberg1.core.julia.de [194.221.49.2]) by informatik.uni-koblenz.de (8.8.6/8.6.9) with ESMTP id AAA17532 for <ralf@uni-koblenz.de>; Wed, 13 Aug 1997 00:13:33 +0200 (MEST)
+Received: from smtp1.ibasys.net (smtp1.ibasys.net [207.51.79.5])
+	by alles.intern.julia.de (8.8.5/8.8.5) with ESMTP id WAA17166
+	for <ralf@Julia.DE>; Tue, 12 Aug 1997 22:49:47 +0200
+Received: from kis.net (pop.kis.net [207.51.79.11]) by smtp1.ibasys.net (8.7.5/8.7.3) with ESMTP id KAA11443; Tue, 12 Aug 1997 10:03:51 -0400
+Received: (from majordom@localhost)
+	by  kis.net (8.8.6/8.8.6) id SAA20470
+	for linux-ljfs-outgoing; Tue, 12 Aug 1997 18:07:49 -0400
+Message-Id: <m0wyOwj-0001BkC@adam.yggdrasil.com>
+Date: Tue, 12 Aug 1997 14:57:45 -0700 (PDT)
+From: adam@yggdrasil.com (Adam J. Richter)
+To: linux-ljfs@majordomo.ibasys.net
+Subject: LINUX-LJFS: snapshot FTPable
+Sender: owner-linux-ljfs@majordomo.ibasys.net
+Precedence: bulk
+Reply-To: linux-ljfs@majordomo.ibasys.net
+Status: RO
 
 
+	The Fall 1994 and Fall 1995 releases of Yggdrasil Plug & Play
+Linux include development snapshots of a compressed log strucutred
+filesystem for Linux.  This code is not functional.  An updated
+snapshot is now FTPable from:
 
+ftp://ftp.yggdrasil.com/private/adam/linux-2.0.30.ygg.tar.gz
+ftp://ftp.yggdrasil.com/private/adam/mklogfs.c
 
--- 
-Eric Kimminau                             System Engineer
-eak@detroit.sgi.com                       Silicon Graphics, Inc
-Vox:(810) 848-4455                        39001 West 12mile Road
-Fax:(810)848-5600                         Farmington, MI 48331-2903
-            "I speak my mind and no one else's."
-    http://www.dcs.ex.ac.uk/~aba/rsa/perl-rsa-sig.html
+	There is no fsck program yet.
 
------END PGP PUBLIC KEY BLOCK-----
-http://bs.mit.edu:11371/pks/lookup?op=vindex&search=Eric+A.+Kimminau&fingerprint=on
+	Again, this is just a snapshot.  The code is not yet functional,
+but it is lightyears ahead of the discussions on this list and it includes
+the sorts of kernel modifications necessary to implement a fast log
+strucutured filesystem under the Linux kernel.  The code should be
+instructuctive and should provide a good starting point for anyone
+wanted to implement a log structured filesystem under Linux.
+
+	Be warned that when I get back to hacking on this filesystem,
+I intend to make some incompatible changes to the filesystem format.
+In particular, it will use btrees to map logical blocks to physical
+blocks and the directory structure will support something faster
+than linear searches to find a file name in a directory.
+
+Adam J. Richter     __     ______________   4880 Stevens Creek Blvd, Suite 205
+adam@yggdrasil.com     \ /                  San Jose, California 95129-1034
++1 408 261-6630         | g g d r a s i l   United States of America
+fax +1 408 261-6631      "Free Software For The Rest Of Us."

@@ -1,60 +1,50 @@
 Received: from deliverator.sgi.com (deliverator.sgi.com [204.94.214.10])
-	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id PAA14298
-	for <pstadt@stud.fh-heilbronn.de>; Mon, 27 Sep 1999 15:25:45 +0200
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id GAA20360; Mon, 27 Sep 1999 06:22:10 -0700 (PDT)
+	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id QAA23249
+	for <pstadt@stud.fh-heilbronn.de>; Mon, 27 Sep 1999 16:01:16 +0200
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id GAA23864; Mon, 27 Sep 1999 06:57:42 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id GAA83546
+	id GAA74657
 	for linux-list;
-	Mon, 27 Sep 1999 06:16:56 -0700 (PDT)
+	Mon, 27 Sep 1999 06:50:00 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id GAA97621
-	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 27 Sep 1999 06:16:53 -0700 (PDT)
-	mail_from (andrewb@uab.edu)
-Received: from lilith.dpo.uab.edu (lilith.dpo.uab.edu [138.26.1.128]) 
+	via ESMTP id GAA07302
+	for <linux@engr.sgi.com>;
+	Mon, 27 Sep 1999 06:49:55 -0700 (PDT)
+	mail_from (gavin@refinery.com)
+Received: from irpmail.refinery.com (mail.refinery.com [207.8.216.3]) 
 	by sgi.com (980305.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id GAA2879197
-	for <linux@cthulhu.engr.sgi.com>; Mon, 27 Sep 1999 06:16:52 -0700 (PDT)
-	mail_from (andrewb@uab.edu)
-Received: from mdk187.tucc.uab.edu (mdk187.tucc.uab.edu [138.26.15.201])
-	by lilith.dpo.uab.edu (8.9.3/8.9.3) with SMTP id IAA27212;
-	Mon, 27 Sep 1999 08:16:48 -0500
-Date: Mon, 27 Sep 1999 08:15:13 -0500 (CDT)
-From: "Andrew R. Baker" <andrewb@uab.edu>
-X-Sender: andrewb@mdk187.tucc.uab.edu
-To: Bob Pielock <bpielock@ulink.net>
-cc: "'linux@cthulhu.engr.sgi.com'" <linux@cthulhu.engr.sgi.com>
-Subject: Re: Indigo 2 / Redhat 5.1
-In-Reply-To: <07E3A5CCB88FD2119A6E0000F83098114774E9@dragon.ulink.net>
-Message-ID: <Pine.LNX.3.96.990927081234.23905A-100000@mdk187.tucc.uab.edu>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	via ESMTP id GAA2573524
+	for <linux@engr.sgi.com>; Mon, 27 Sep 1999 06:49:53 -0700 (PDT)
+	mail_from (gavin@refinery.com)
+Received: from [216.63.49.245] (216.63.49.245) by irpmail.refinery.com (Worldmail 1.3.167) for linux@engr.sgi.com; 27 Sep 1999 09:48:52 -0400
+Mime-Version: 1.0
+X-Sender: gavin@refinery.com@207.8.216.3 (Unverified)
+Message-Id: <v04220602b415257a1e03@[216.63.49.245]>
+Date: Mon, 27 Sep 1999 08:49:49 -0500
+To: linux@cthulhu.engr.sgi.com
+From: Gavin Kistner <gavin@refinery.com>
+Subject: Linux->Indy->O2
+Content-Type: text/plain; charset="us-ascii"
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by lara.stud.fh-heilbronn.de id QAA23249
 
+I noticed the previous poster mentioning that the Indy2 doesn't have X support yet under Linux. I'm wondering: does linux support for one machine get fully implemented and then tweaked to go to others, or is it a ground-up approach for each new machine in the port list?
 
-You should have no problems getting the HardHat distrobution running on an
-Indigo2.  You might need to compile your own kernel from the CVS tree; I
-am not sure if any of the pre-compiled versions on www.linux.sgi.com have
-Indigo2 support in them.  However, there is currently no graphics support
-for the Indigo2 so you will need to use a serial console for installation.
-This also means there is no X support.
+Basically, I'm wondering how hard its going to be to take linux over to the O2 once the Indy stuff gets really done.
 
--Andrew
+In that vein, I want linux for my O2 so badly (even just in a command-line configuration) that I'm thinking about trying to help. What are the major obstacles which need overcoming to get the current state of linux-mips to work on an O2?
 
-On Mon, 27 Sep 1999, Bob Pielock wrote:
-> Hi I have a few questions about installing Linux on an Indigo system.
-> First off, I was wondering if anyone has ever attempted this before, if so
-> please email me about any problems you may have had.
-> Second, if no one has, could someone suggest anyhting that might come
-> up durring the process of doing so? Right now my box is running
-> IRIX 6.2, and I was thinking about getting a second hard drive just
-> for the linux instalation, does anyone have a better way to dothis?
-> How well is GL supported in Linux? Will the X server start?
+TIA,
+--
+Gavin Kistner                                   Creative Director
++1 314 725 5096                        Image Refinery Productions
+gavin@refinery.com                        http://www.refinery.com

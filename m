@@ -1,40 +1,38 @@
-Received:  by oss.sgi.com id <S553851AbQJ3KlN>;
-	Mon, 30 Oct 2000 02:41:13 -0800
-Received: from noose.gt.owl.de ([62.52.19.4]:30981 "HELO noose.gt.owl.de")
-	by oss.sgi.com with SMTP id <S553848AbQJ3KlE>;
-	Mon, 30 Oct 2000 02:41:04 -0800
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 6DCD99D8; Mon, 30 Oct 2000 11:41:02 +0100 (CET)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id C8898900C; Mon, 30 Oct 2000 11:39:48 +0100 (CET)
-Date:   Mon, 30 Oct 2000 11:39:48 +0100
-From:   Florian Lohoff <flo@rfc822.org>
-To:     Ralf Baechle <ralf@oss.sgi.com>
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: atomic.h changes fixed bug Was: CVS Update@oss.sgi.com: linux
-Message-ID: <20001030113948.B1016@paradigm.rfc822.org>
-References: <20001026235921Z553785-493+346@oss.sgi.com> <20001029172517.C2663@paradigm.rfc822.org> <20001029174732.D2663@paradigm.rfc822.org> <20001030021741.B20700@bacchus.dhis.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-User-Agent: Mutt/1.0.1i
-In-Reply-To: <20001030021741.B20700@bacchus.dhis.org>; from ralf@oss.sgi.com on Mon, Oct 30, 2000 at 02:17:41AM +0100
-Organization: rfc822 - pure communication
+Received:  by oss.sgi.com id <S553855AbQJ3LoD>;
+	Mon, 30 Oct 2000 03:44:03 -0800
+Received: from natmail2.webmailer.de ([192.67.198.65]:32980 "EHLO
+        post.webmailer.de") by oss.sgi.com with ESMTP id <S553852AbQJ3Lnp>;
+	Mon, 30 Oct 2000 03:43:45 -0800
+Received: from scotty.mgnet.de (p3E9EC9F2.dip.t-dialin.net [62.158.201.242])
+	by post.webmailer.de (8.9.3/8.8.7) with SMTP id MAA02561
+	for <linux-mips@oss.sgi.com>; Mon, 30 Oct 2000 12:43:40 +0100 (MET)
+Received: (qmail 20857 invoked from network); 30 Oct 2000 11:43:37 -0000
+Received: from spock.mgnet.de (192.168.1.4)
+  by scotty.mgnet.de with SMTP; 30 Oct 2000 11:43:37 -0000
+Date:   Mon, 30 Oct 2000 12:45:11 +0100 (CET)
+From:   Klaus Naumann <spock@mgnet.de>
+To:     Nicu Popovici <octavp@isratech.ro>
+cc:     linux-mips@oss.sgi.com
+Subject: Re: Still cannot compile the KERNEL!!!
+In-Reply-To: <39FDAE22.7626E6E@isratech.ro>
+Message-ID: <Pine.LNX.4.21.0010301244250.4786-100000@spock.mgnet.de>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Mon, Oct 30, 2000 at 02:17:41AM +0100, Ralf Baechle wrote:
-> > So it seems there is still some problem in some i/o stuff concerning
-> > the different disk ...
-> 
-> I only get those corruption reports from Indy users but from no other
-> platform.
+On Mon, 30 Oct 2000, Nicu Popovici wrote:
 
-Non Indy users also report this (Klaus Naumann e.g.) but i do not see
-this on my R4400 I2 only on the R4600 Indy ...
 
-Flo
+Sounds really like you have /usr/src/linux linked to your intel
+kernel and not to the mips kernel - check that first.
+
+	HTH, Klaus
+
 -- 
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-     Why is it called "common sense" when nobody seems to have any?
+Full Name   : Klaus Naumann     | (http://www.mgnet.de/) (Germany)
+Nickname    : Spock             | Org.: Mad Guys Network
+Phone / FAX : ++49/177/7862964  | E-Mail: (spock@mgnet.de)
+PGP Key     : www.mgnet.de/keys/key_spock.txt

@@ -1,58 +1,54 @@
-Received:  by oss.sgi.com id <S554001AbRAWD17>;
-	Mon, 22 Jan 2001 19:27:59 -0800
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:59467 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S553978AbRAWD13>; Mon, 22 Jan 2001 19:27:29 -0800
-Received: from dhcp-163-154-5-208.engr.sgi.com (dhcp-163-154-5-208.engr.sgi.com [163.154.5.208]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id TAA09183
-	for <linux-mips@oss.sgi.com>; Mon, 22 Jan 2001 19:36:22 -0800 (PST)
-	mail_from (ralf@uni-koblenz.de)
-Received: (ralf@lappi.waldorf-gmbh.de) by bacchus.dhis.org
-	id <S870753AbRAVFVc>; Sun, 21 Jan 2001 21:21:32 -0800
-Date: 	Mon, 22 Jan 2001 03:21:32 -0200
-From:   Ralf Baechle <ralf@uni-koblenz.de>
-To:     linux-mips@oss.sgi.com, linux-mips@fnet.fr
-Cc:     szwajc@ernie.icslab.agh.edu.pl
-Subject: [szwajc@ernie.icslab.agh.edu.pl: Mips R14000]
-Message-ID: <20010122032132.A1052@bacchus.dhis.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-X-Accept-Language: de,en,fr
+Received:  by oss.sgi.com id <S554027AbRAWQML>;
+	Tue, 23 Jan 2001 08:12:11 -0800
+Received: from mailgate1.zdv.Uni-Mainz.DE ([134.93.8.56]:55509 "EHLO
+        mailgate1.zdv.Uni-Mainz.DE") by oss.sgi.com with ESMTP
+	id <S554024AbRAWQLw>; Tue, 23 Jan 2001 08:11:52 -0800
+Received: from arthur.zdv.Uni-Mainz.DE (arthur.zdv.Uni-Mainz.DE [134.93.8.145])
+	by mailgate1.zdv.Uni-Mainz.DE (8.11.0/8.10.2) with ESMTP id f0NGBjM04542;
+	Tue, 23 Jan 2001 17:11:45 +0100 (MET)
+Received: (from martin@localhost)
+	by arthur.zdv.Uni-Mainz.DE (8.10.2/8.10.2) id f0NGBiZ02165;
+	Tue, 23 Jan 2001 17:11:44 +0100 (MET)
+To:     Dave Gilbert <gilbertd@treblig.org>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: Trying to boot an Indy
+References: <Pine.LNX.4.10.10101210150410.964-100000@tardis.home.dave>
+From:   Christoph Martin <martin@uni-mainz.de>
+Date:   23 Jan 2001 17:11:44 +0100
+In-Reply-To: Dave Gilbert's message of Sun, 21 Jan 2001 02:01:15 +0000 (GMT)
+Message-ID: <wwgofwyckov.fsf@arthur.zdv.Uni-Mainz.DE>
+X-Mailer: Gnus v5.3/Emacs 19.34
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Forwaring this email which got bounced to me due to the policy of
-posting only for subscribers.
+Dave Gilbert <gilbertd@treblig.org> writes:
 
-  Ralf
+> 
+> Hi,
+>   I'm trying to boot my Indy into Linux for the first time and not having
+> any luck.
+> 
+> 1) I tried bootp - bootp()vmlinux - it says 'no server for vmlinux'.  The
+> bootp server is a Linux/Alpha box running 2.4.0-ac9 - I've already done
+> the trick with no_pmtu.  tcpdump shows bootp sending a packet with
+> apparently the correct mac address.
+> 
 
+I have the same problem serving bootp from my i386 2.4.0 box. bootp
+with kernel 2.2.x on the same box works. And it is only the bootp from
+the command console that is failing. the bootp part later on in the
+kernel is working from the 2.4.0 box.
 
------ Forwarded message from Maciej Szwajcowski <szwajc@ernie.icslab.agh.edu.pl> -----
+Weird.
 
-From: Maciej Szwajcowski <szwajc@ernie.icslab.agh.edu.pl>
-Date: Thu, 18 Jan 2001 14:50:38 +0100 (MET)
-To: <linux-mips@fnet.fr>
-Subject: Mips R14000
-
-Hello ,
-Could Anybody provide me please any information about MIPS R14000 SGI
-Processor?
-I'm making a degree based on this and I'm very much looking for any
-information associated to it .
-Thank you very much in advance for your help ,
-Very Best Wishes  ,
-
-Maciej Szwajcowski
-University of Mining and Metallurgy ,
-Computer Sciences Center , Cracow - POLAND.
-
-
-
-
-
------ End forwarded message -----
-
-  Ralf
+-- 
+============================================================================
+Christoph Martin, Uni-Mainz, Germany
+ Internet-Mail:  Christoph.Martin@Uni-Mainz.DE
+--------------export-a-crypto-system-sig -RSA-3-lines-PERL------------------
+#!/usr/bin/perl -sp0777i<X+d*lMLa^*lN%0]dsXx++lMlN/dsM0<j]dsj
+$/=unpack('H*',$_);$_=`echo 16dio\U$k"SK$/SM$n\EsN0p[lN*1
+lK[d2%Sa2/d0$^Ixp"|dc`;s/\W//g;$_=pack('H*',/((..)*)$/)
+#what's this? see http://www.dcs.ex.ac.uk/~aba/rsa/

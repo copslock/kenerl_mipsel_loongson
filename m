@@ -1,42 +1,65 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f5ILBSX27231
-	for linux-mips-outgoing; Mon, 18 Jun 2001 14:11:28 -0700
-Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5ILBRV27228
-	for <linux-mips@oss.sgi.com>; Mon, 18 Jun 2001 14:11:27 -0700
-Received: by ocean.lucon.org (Postfix, from userid 1000)
-	id 98698125BA; Mon, 18 Jun 2001 14:11:26 -0700 (PDT)
-Date: Mon, 18 Jun 2001 14:11:26 -0700
-From: "H . J . Lu" <hjl@lucon.org>
-To: Greg Satz <satz@ayrnetworks.com>
-Cc: Brian Murphy <brian@murphy.dk>,
-   "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: Profiling support in glibc?
-Message-ID: <20010618141126.B31621@lucon.org>
-References: <3B2E5163.D130FA01@murphy.dk> <B753C92D.5ABA%satz@ayrnetworks.com>
+	by oss.sgi.com (8.11.2/8.11.3) id f5J0YC804705
+	for linux-mips-outgoing; Mon, 18 Jun 2001 17:34:12 -0700
+Received: from dea.waldorf-gmbh.de (u-95-18.karlsruhe.ipdial.viaginterkom.de [62.180.18.95])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5J0Y9V04696
+	for <linux-mips@oss.sgi.com>; Mon, 18 Jun 2001 17:34:10 -0700
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f5J0Xo128779;
+	Tue, 19 Jun 2001 02:33:50 +0200
+Date: Tue, 19 Jun 2001 02:33:50 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Daniel Jacobowitz <dan@debian.org>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: [patch flood] Debugging patches
+Message-ID: <20010619023350.A28059@bacchus.dhis.org>
+References: <20010616124102.A31141@nevyn.them.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <B753C92D.5ABA%satz@ayrnetworks.com>; from satz@ayrnetworks.com on Mon, Jun 18, 2001 at 03:05:18PM -0600
+In-Reply-To: <20010616124102.A31141@nevyn.them.org>; from dan@debian.org on Sat, Jun 16, 2001 at 12:41:02PM -0700
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Jun 18, 2001 at 03:05:18PM -0600, Greg Satz wrote:
-> I was able to get profiling working using glibc-2.2.2 and gcc-2.95.3. Both
-> packages needed changes. The compiler had a stack misalignment correction
-> for glibc. Glibc didn't save all the registers nor treat sp/fp correctly.
-> Currently files compiled with -pg need to be linked -static. Specs need to
-> be updated to do this automatically.
-> 
+On Sat, Jun 16, 2001 at 12:41:02PM -0700, Daniel Jacobowitz wrote:
 
-The next release of my mips toolchain should be as good as the x86
-version in RedHat 7.1. If you can send me patches against binutils,
-glibc and gcc under
+> The biggest one was the fact that passing arguments to the inferior in
+> floating point registers just didn't work.  I tracked this down to at least
+> three separate problems:
+>   - We would set last_task_used_math without clearing the ST0_CU1 bit in
+>     the previous task owning the FPU.  When that previous task swapped
+>     in again, it would use the existing FP registers, and lazy_fpu_switch
+>     would never be called.  This happened in signal.c and in ptrace.c.
 
-http://ftp.kernel.org/pub/linux/devel/binutils/mips/
+First signal.c segment - calling restore_fp_context should result in a
+proper FPU context switch.
 
-I will take a look to see if I can include them in my next release.
+>   - ptrace didn't look for the FP registers in the right places.  This's
+>     been broken since the FPU emulator merge a while back.
 
+>   - We would create new processes with the ST0_CU1 bit already set if
+>     their parent process had it set.
 
-H.J.
+No, copy_thread clears CU1.
+
+(Have to breed about this patch a bit more, stuff for the plane ...)
+
+> Of course, the lazy switching isn't quite as useful as it could be, since
+> every program will eventually use the FPU if not build -msoft-float - I
+> think it's happening in glibc.  But we can possibly work around that later. 
+> It still does save a great number of switches, so it's worthwhile - when it
+> works.
+
+Newer libcs shouldn't try to initialize $fcr31 to zero because that's
+already the default.
+
+> Other patches in my directory that I'm submitting along with that one:
+>  - kgdb-crash-resistant.diff
+>  - mips-gdb-with-kgdb.diff
+>  - mips-rtsignal.diff
+
+These three look good, applied.
+
+  Ralf

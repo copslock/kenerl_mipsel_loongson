@@ -1,21 +1,20 @@
-Received:  by oss.sgi.com id <S553797AbRAQMIB>;
-	Wed, 17 Jan 2001 04:08:01 -0800
-Received: from woody.ichilton.co.uk ([216.29.174.40]:39177 "HELO
-        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553758AbRAQMHj>;
-	Wed, 17 Jan 2001 04:07:39 -0800
+Received:  by oss.sgi.com id <S554019AbRAQM4W>;
+	Wed, 17 Jan 2001 04:56:22 -0800
+Received: from woody.ichilton.co.uk ([216.29.174.40]:44297 "HELO
+        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553807AbRAQM4G>;
+	Wed, 17 Jan 2001 04:56:06 -0800
 Received: by woody.ichilton.co.uk (Postfix, from userid 1000)
-	id 563747D11; Wed, 17 Jan 2001 12:07:37 +0000 (GMT)
-Date:   Wed, 17 Jan 2001 12:07:37 +0000
+	id D18097D11; Wed, 17 Jan 2001 12:56:03 +0000 (GMT)
+Date:   Wed, 17 Jan 2001 12:56:03 +0000
 From:   Ian Chilton <ian@ichilton.co.uk>
-To:     linux-mips@oss.sgi.com
-Cc:     macro@ds2.pg.gda.pl, ralf@oss.sgi.com
-Subject: CVS Kernel Report - 010117 (2.4.0)
-Message-ID: <20010117120737.B29202@woody.ichilton.co.uk>
+To:     "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc:     ralf@oss.sgi.com, linux-mips@oss.sgi.com
+Subject: Kernel Report - 010117 (2.4.0)
+Message-ID: <20010117125603.A29302@woody.ichilton.co.uk>
 Reply-To: Ian Chilton <ian@ichilton.co.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=unknown-8bit
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 User-Agent: Mutt/1.3.12i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
@@ -24,57 +23,220 @@ X-Orcpt: rfc822;linux-mips-outgoing
 
 Hello,
 
-I tried booting my Indy yesturday, but with no root fs. Maciej asked me
-to try changing something and give him some outputs.
+OK..this is the normal kernel straight from CVS (010117) on my I2 (not
+Indy as in yesturday..)
 
-My Indy is off, but my I2 is finished compiling, so I thought I would
-try that. The root fs, I have just had booted with 2.4.0-test9 (001027)
-with no problem.
+It seems a lot of things are repeated for some reason ?!?
 
-My plan was:
-
-Boot the kernel - post output, cpuinfo and iomem
-Make DEBUG change, reboot and repost output, cpuinfo and iomem
-
-However, I booted the I2, and got this:
-
-Activating swap...Adding Swap: 64376k swap-space (priority -1)
-[swapon:13] Illegal instruction 0000002c at 88198008 ra=8814b208
-[swapon:13] Illegal instruction 00000040 at 88198008 ra=8814b208
-[swapon:13] Illegal instruction 00000040 at 88198008 ra=8814b208
-[swapon:13] Illegal instruction 00000040 at 88198008 ra=8814b208
-[swapon:13] Illegal instruction 00000040 at 88198008 ra=8814b208
-[swapon:13] Illegal instruction 00000040 at 88198008 ra=8814b208
-[swapon:13] Illegal instruction 00000040 at 88198008 ra=8814b208
-[swapon:13] Illegal instruction 00000040 at 88198008 ra=8814b208
-[swapon:13] Illegal instruction 00000040 at 88198008 ra=8814b208
-[swapon:13] Illegal instruction 00000040 at 88198008 ra=8814b208
-[swapon:13] Illegal instruction 00000040 at 88198008 ra=8814b208
-[swapon:13] Illegal instruction 00000040 at 88198008 ra=8814b208
-[swapon:13] Illegal instruction 00000040 at 88198008 ra=8814b208
-[swapon:13] Illegal instruction 00000040 at 88198008 ra=8814b208
-[swapon:13] Illegal instruction 00000040 at 88198008 ra=8814b208
-[swapon:13] Illegal instruction 00000040 at 88198008 ra=8814b208
-[swapon:13] Illegal instruction 00000040 at 88198008 ra=8814b208
-[swapon:13] Illegal instruction 00000040 at 88198008 ra=8814b208
-[swapon:13] Illegal instruction 00000040 at 88198008 ra=8814b208
-[swapon:13] Illegal instruction 00000040 at 88198008 ra=8814b208
-[swapon:13] Illegal instruction 00000040 at 88198008 ra=8814b208
-[swapon:13] Illegal instruction 00000040 at 88198008 ra=8814b208
-[swapon:13] Illegal instruction 74747978 at 88198008 ra=8814b208
-[â.ttyx.#.d.d:13] Illegal instruction 74747978 at 88198008 ra=8814b208
-[â.ttyx.#.d.d:-2011578176] Illegal instruction 74747978 at 88198008
-ra=8814b208
-[â.ttyx.#.d.d:-2011483784] Illegal instruction 74747978 at 88198008
-ra=8814b208
+Also, lolo was right...it doesn't shut down..
 
 
 
+>> bootp():/vmlinux root=/dev/sda3 console=ttyS0
+Obtaining /vmlinux from server slinky
+ARCH: SGI-IP22
+PROMLIB: ARC firmware Version 1 Revision 10
+CPU: MIPS-R4400 FPU<MIPS-R4400FPC> ICACHE DCACHE SCACHE
+Loading R4000 MMU routines.
+CPU revision is: 00000460
+Primary instruction cache 16kb, linesize 16 bytes.
+Primary data cache 16kb, linesize 16 bytes.
+Secondary cache sized at 1024K linesize 128 bytes.
+Linux version 2.4.0 (ian@slinky) (gcc version 2.95.3 19991030
+(prerelease)) #2 1
+MC: SGI memory controller Revision 3
+Determined physical RAM map:
+ memory: 00001000 @ 00000000 (reserved)
+ memory: 00001000 @ 00001000 (reserved)
+ memory: 001d6000 @ 08002000 (reserved)
+ memory: 00568000 @ 081d8000 (usable)
+ memory: 000c0000 @ 08740000 (ROM data)
+ memory: 05800000 @ 08800000 (usable)
+On node 0 totalpages: 57344
+zone(0): 57344 pages.
+zone(1): 0 pages.
+zone(2): 0 pages.
+Kernel command line: root=/dev/sda3 console=ttyS0
+Calibrating system timer... 1000000 [200.00 MHz CPU]
+zs0: console input
+Console: ttyS0 (Zilog8530)
+ARCH: SGI-IP22
+PROMLIB: ARC firmware Version 1 Revision 10
+CPU: MIPS-R4400 FPU<MIPS-R4400FPC> ICACHE DCACHE SCACHE
+Loading R4000 MMU routines.
+CPU revision is: 00000460
+Primary instruction cache 16kb, linesize 16 bytes.
+Primary data cache 16kb, linesize 16 bytes.
+Secondary cache sized at 1024K linesize 128 bytes.
+Linux version 2.4.0 (ian@slinky) (gcc version 2.95.3 19991030
+(prerelease)) #2 1
+MC: SGI memory controller Revision 3
+Determined physical RAM map:
+ memory: 00001000 @ 00000000 (reserved)
+ memory: 00001000 @ 00001000 (reserved)
+ memory: 001d6000 @ 08002000 (reserved)
+ memory: 00568000 @ 081d8000 (usable)
+ memory: 000c0000 @ 08740000 (ROM data)
+ memory: 05800000 @ 08800000 (usable)
+On node 0 totalpages: 57344
+zone(0): 57344 pages.
+zone(1): 0 pages.
+zone(2): 0 pages.
+Kernel command line: root=/dev/sda3 console=ttyS0
+Calibrating system timer... 1000000 [200.00 MHz CPU]
+zs0: console input
+Console: ttyS0 (Zilog8530)
+Calibrating delay loop... Calibrating delay loop... 99.94 BogoMIPS
+99.94 BogoMIPS
+Memory: 91792k/95648k available (1560k kernel code, 3856k reserved, 88k
+data, 7)
+Memory: 91792k/95648k available (1560k kernel code, 3856k reserved, 88k
+data, 7)
+Dentry-cache hash table entries: 32768 (order: 6, 262144 bytes)
+Dentry-cache hash table entries: 32768 (order: 6, 262144 bytes)
+Buffer-cache hash table entries: 16384 (order: 4, 65536 bytes)
+Buffer-cache hash table entries: 16384 (order: 4, 65536 bytes)
+Page-cache hash table entries: 65536 (order: 6, 262144 bytes)
+Page-cache hash table entries: 65536 (order: 6, 262144 bytes)
+Inode-cache hash table entries: 16384 (order: 5, 131072 bytes)
+Inode-cache hash table entries: 16384 (order: 5, 131072 bytes)
+Checking for 'wait' instruction... Checking for 'wait' instruction...
+unavaila.
+ unavailable.
+POSIX conformance testing by UNIFIX
+POSIX conformance testing by UNIFIX
+Linux NET4.0 for Linux 2.4
+Linux NET4.0 for Linux 2.4
+Based upon Swansea University Computer Society NET3.039
+Based upon Swansea University Computer Society NET3.039
+Starting kswapd v1.8
+Starting kswapd v1.8
+initialize_kbd: Keyboard failed self test
+initialize_kbd: Keyboard failed self test
+Keyboard timed out[1]
+Keyboard timed out[1]
+pty: 256 Unix98 ptys configured
+pty: 256 Unix98 ptys configured
+keyboard: Timeout - AT keyboard not present?
+keyboard: Timeout - AT keyboard not present?
+keyboard: Timeout - AT keyboard not present?
+keyboard: Timeout - AT keyboard not present?
+DS1286 Real Time Clock Driver v1.0
+DS1286 Real Time Clock Driver v1.0
+streamable misc devices registered (keyb:150, gfx:148)
+streamable misc devices registered (keyb:150, gfx:148)
+sgiseeq.c: David S. Miller (dm@engr.sgi.com)
+sgiseeq.c: David S. Miller (dm@engr.sgi.com)
+eth0: SGI Seeq8003 eth0: SGI Seeq8003 08:08:00:00:69:69:08:08:9d:9d:ec
+ec
 
-I am contating home now to get someone to hit the reset. I will boot
-with the test9 and disable swap and carry on.
+SCSI subsystem driver Revision: 1.00
+SCSI subsystem driver Revision: 1.00
+wd33c93-0: chip=WD33c93B/13 no_sync=0xff no_dma=0wd33c93-0:
+chip=WD33c93B/13 no0
+ debug_flags=0x00
+           setup_args=           setup_args=,,,,,,,,,,,,,,,,,,
 
-Consider this a bug report  :)
+           Version 1.25 - 09/Jul/1997, Compiled Jan 17 2001 at 11:41:43
+           Version 1.25 - 09/Jul/1997, Compiled Jan 17 2001 at 11:41:43
+wd33c93-1: chip=WD33c93B/13 no_sync=0xff no_dma=0wd33c93-1:
+chip=WD33c93B/13 no0
+ debug_flags=0x00
+           setup_args=           setup_args=,,,,,,,,,,,,,,,,,,
+
+           Version 1.25 - 09/Jul/1997, Compiled Jan 17 2001 at 11:41:43
+           Version 1.25 - 09/Jul/1997, Compiled Jan 17 2001 at 11:41:43
+scsi0 : SGI WD93
+scsi0 : SGI WD93
+scsi1 : SGI WD93
+scsi1 : SGI WD93
+ sending SDTR  sending SDTR
+0101030301013f3f0c0csync_xfer=2csync_xfer=2c  VendoA
+
+  Type:   Direct-Access       Type:   Direct-Access
+ANSI S2
+
+Detected scsi disk sda at scsi0, channel 0, id 4, lun 0
+Detected scsi disk sda at scsi0, channel 0, id 4, lun 0
+SCSI device sda: 4226725 512-byte hdwr sectors (2164 MB)
+SCSI device sda: 4226725 512-byte hdwr sectors (2164 MB)
+Partition check:
+Partition check:
+ sda: sda: sda1 sda1 sda2 sda2 sda3 sda3 sda4 sda4 sda5 sda5 sda6 sda6
+
+SGI Zilog8530 serial driver version 1.00
+SGI Zilog8530 serial driver version 1.00
+tty00 at 0xbfbd9830 (irq = 21)tty00 at 0xbfbd9830 (irq = 21) is a
+Zilog8530
+ is a Zilog8530
+tty01 at 0xbfbd9838 (irq = 21)tty01 at 0xbfbd9838 (irq = 21) is a
+Zilog8530
+ is a Zilog8530
+NET4: Linux TCP/IP 1.0 for NET4.0
+NET4: Linux TCP/IP 1.0 for NET4.0
+IP Protocols: IP Protocols: ICMP, ICMP, UDP, UDP, TCP
+TCP
+IP: routing cache hash table of 2048 buckets, 16Kbytes
+IP: routing cache hash table of 2048 buckets, 16Kbytes
+TCP: Hash tables configured (established 16384 bind 16384)
+TCP: Hash tables configured (established 16384 bind 16384)
+Sending BOOTP requests...Sending BOOTP requests..... OK
+ OK
+IP-Config: Got BOOTP answer from 192.168.0.11, IP-Config: Got BOOTP
+answer from3
+my address is 192.168.0.13
+NET4: Unix domain sockets 1.0/SMP for Linux NET4.0.
+NET4: Unix domain sockets 1.0/SMP for Linux NET4.0.
+VFS: Mounted root (ext2 filesystem) readonly.
+VFS: Mounted root (ext2 filesystem) readonly.
+Freeing prom memory: 768kb freed
+Freeing prom memory: 768kb freed
+Freeing unused kernel memory: 72k freed
+Freeing unused kernel memory: 72k freed
+INIT: version 2.78 booting
+Bringing up the loopback interface...[  OK  ]
+Setting up hostname...[  OK  ]
+[SNIP]
+
+
+root:~# cat /proc/cpuinfo
+cpu                     : MIPS
+cpu model               : R4000SC V6.0
+system type             : SGI Indigo2
+BogoMIPS                : 0.00
+byteorder               : big endian
+unaligned accesses      : 0
+wait instruction        : no
+microsecond timers      : yes
+extra interrupt vector  : no
+hardware watchpoint     : yes
+VCED exceptions         : not available
+VCEI exceptions         : not available
+root:~# cat /proc/iomem
+00000000-00000fff : reserved
+00001000-00001fff : reserved
+08002000-081d7fff : reserved
+  08002000-08188297 : Kernel code
+  0819c300-081b23bf : Kernel data
+081d8000-0873ffff : System RAM
+08740000-087fffff : System RAM
+08800000-0dffffff : System RAM
+root:~# uname -a
+Linux dale 2.4.0 #2 Wed Jan 17 11:40:09 GMT 2001 mips unknown
+root:~# free -m
+             total       used       free     shared    buffers
+cached
+Mem:            89         34         54          0         26
+5
+-/+ buffers/cache:          2         86
+Swap:            0          0          0
+root:~#
+
+
+On reboot, I get *LOTS* of rubbish coming down the serial console.
+
+
+About to try the DEBUG thing now...
 
 
 Bye for Now,

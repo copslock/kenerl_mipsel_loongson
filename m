@@ -1,58 +1,48 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA04695; Wed, 9 Apr 1997 12:25:56 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA00364; Wed, 9 Apr 1997 08:23:29 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id MAA29136 for linux-list; Wed, 9 Apr 1997 12:25:19 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA29112 for <linux@engr.sgi.com>; Wed, 9 Apr 1997 12:25:16 -0700
-Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id MAA11579 for <linux@engr.sgi.com>; Wed, 9 Apr 1997 12:25:11 -0700
-Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id EAA08923 for linux@engr.sgi.com; Wed, 9 Apr 1997 04:58:18 -0400
-From: Mike Shaver <shaver@neon.ingenia.ca>
-Message-Id: <199704090858.EAA08923@neon.ingenia.ca>
-Subject: More on the serial strangeness
-To: linux@cthulhu.engr.sgi.com
-Date: Wed, 9 Apr 1997 04:58:17 -0400 (EDT)
-X-Mailer: ELM [version 2.4ME+ PL28 (25)]
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id IAA07729 for linux-list; Wed, 9 Apr 1997 08:22:35 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA07691 for <linux@relay.engr.SGI.COM>; Wed, 9 Apr 1997 08:22:29 -0700
+Received: from alles.intern.julia.de (loehnberg1.core.julia.de [194.221.49.2]) by sgi.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id IAA01626 for <linux@relay.engr.SGI.COM>; Wed, 9 Apr 1997 08:19:52 -0700
+Received: from kernel.panic.julia.de (kernel.panic.julia.de [194.221.49.153])
+	by alles.intern.julia.de (8.8.5/8.8.5) with ESMTP id MAA18135;
+	Wed, 9 Apr 1997 12:07:49 +0200
+From: Ralf Baechle <ralf@Julia.DE>
+Received: (from ralf@localhost)
+          by kernel.panic.julia.de (8.8.4/8.8.4)
+	  id MAA06864; Wed, 9 Apr 1997 12:06:52 +0200
+Message-Id: <199704091006.MAA06864@kernel.panic.julia.de>
+Subject: Re: serial consoles, sash and other wonders
+To: wje@fir.esd.sgi.com (William J. Earl)
+Date: Wed, 9 Apr 1997 12:06:52 +0200 (MET DST)
+Cc: shaver@neon.ingenia.ca, linux@cthulhu.engr.sgi.com
+In-Reply-To: <199704081948.MAA14047@fir.esd.sgi.com> from "William J. Earl" at Apr 8, 97 12:48:07 pm
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Some better information about my situation, now that I'm not as
-rushed:
+Hi,
 
-- I have a serial console on port 1 of the Indy, and I'm talking to it
-via minicom on my Linux box.  WOrks great.  Sometimes BRK gets me back
-to the PROM, sometimes it just hangs, but I can live with that.
-- The boot process goes pretty well, but when I get past the root
-mount (using init=/bin/sh), I can't interact with anything.
-- I see the `# ' prompt, I get stderr output (!) but the following
-commands (which do execute) produce no output:
-echo "ttyS0" > /dev/ttyS0
-echo "ttyS1" > /dev/ttyS1
-echo "cua1" > /dev/cua1
-echo "cua0" > /dev/cua0
-- If I try to access /dev/console or /dev/tty[1234], I get "can't
-create /dev/whatever: Error 19", which seems to be "no such device".
+>      By the way, it is pretty easy to write a little program to convert
+> a kernel ELF binary to an ECOFF binary, discarding most of the symbols and
+> other stuff, assuming you have the header files for the file formats.
+> (The result would not be acceptable to many of the tools, such as dbx,
+> but it would be bootable.)
+> 
+>      For a production linux for the Indy, the most reasonable approach,
+> however, would be to make silo or whatever boot program you are using be
+> ECOFF, so that old PROMs are supported.
 
-If someone with the appropriate tools could build me a static tail
-binary, it'll make the experimentation go a fair bit faster.
+I also have to deal with ARC machines (the little endian NT stuff).  By
+definiton they have to support ECOFF; everything else is optional.  This
+brings in the extra issue that the loader needs to be relocatable.
+MIPS-ECOFF configurations of GCC can't do that and the linker dies when
+loading ELF PIC code into an ECOFF executable.  Unfortunately fixing is
+nontrivial.
 
-I'll be back in Ottawa tomorrow afternoon for a few days, so I'll be
-able to work on the console, but since I'll be travelling a _lot_ over
-the next few weeks, having the serial stuff work properly is still
-important.
+The {Net,Open}BSD people already have a converter tool which they use to
+generate their kernel executable.  It would solve the ld problems.
+I did some work on it and I should probably finish it ...
 
-I'm still using the dm@neteng 2.0.12 kernel.  Ralf, do you have
-anything else built over there you want me to test?
-
-(If it'll help, I can set Miguel and Ralf up with appropriate access
-on neon so they can experiment.  It'll take a few days, but if it
-keeps those precious geek-cycle from going to waste...)
-
-Mike
-
--- 
-#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
-#>      Chief System Architect -- will tame sendmail(8) for food       
-#>                                                                     
-#> "You are a very perverse individual, and I think I'd like to get to 
-#>  know you better." --- eric@reference.com                           
+  Ralf

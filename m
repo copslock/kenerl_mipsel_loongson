@@ -1,61 +1,59 @@
-Received:  by oss.sgi.com id <S553834AbQJ2M46>;
-	Sun, 29 Oct 2000 04:56:58 -0800
-Received: from router.isratech.ro ([193.226.114.69]:4626 "EHLO
-        router.isratech.ro") by oss.sgi.com with ESMTP id <S553827AbQJ2M4h>;
-	Sun, 29 Oct 2000 04:56:37 -0800
-Received: from isratech.ro (calin.cs.tuiasi.ro [193.231.15.163])
-	by router.isratech.ro (8.10.2/8.10.2) with ESMTP id e9TCuKZ25583
-	for <linux-mips@oss.sgi.com>; Sun, 29 Oct 2000 10:56:22 -0200
-Message-ID: <39FC8D4C.16654639@isratech.ro>
-Date:   Sun, 29 Oct 2000 15:49:17 -0500
-From:   Nicu Popovici <octavp@isratech.ro>
-X-Mailer: Mozilla 4.74 [en] (X11; U; Linux 2.2.15-2.5.0 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     linux-mips@oss.sgi.com
-Subject: ATLAS board!
-Content-Type: multipart/mixed;
- boundary="------------EAA126E5B17A322118FEF5D5"
+Received:  by oss.sgi.com id <S553740AbQJ2Q1T>;
+	Sun, 29 Oct 2000 08:27:19 -0800
+Received: from noose.gt.owl.de ([62.52.19.4]:27147 "HELO noose.gt.owl.de")
+	by oss.sgi.com with SMTP id <S553714AbQJ2Q1F>;
+	Sun, 29 Oct 2000 08:27:05 -0800
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 9EF84815; Sun, 29 Oct 2000 17:27:02 +0100 (CET)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 75B1A900C; Sun, 29 Oct 2000 17:25:17 +0100 (CET)
+Date:   Sun, 29 Oct 2000 17:25:17 +0100
+From:   Florian Lohoff <flo@rfc822.org>
+To:     Ralf Baechle <ralf@oss.sgi.com>
+Cc:     linux-mips@oss.sgi.com
+Subject: atomic.h changes fixed bug Was: CVS Update@oss.sgi.com: linux
+Message-ID: <20001029172517.C2663@paradigm.rfc822.org>
+References: <20001026235921Z553785-493+346@oss.sgi.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+User-Agent: Mutt/1.0.1i
+In-Reply-To: <20001026235921Z553785-493+346@oss.sgi.com>; from ralf@oss.sgi.com on Thu, Oct 26, 2000 at 04:59:17PM -0700
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-This is a multi-part message in MIME format.
---------------EAA126E5B17A322118FEF5D5
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+On Thu, Oct 26, 2000 at 04:59:17PM -0700, Ralf Baechle wrote:
+> CVSROOT:	/home/pub/cvs
+> Module name:	linux
+> Changes by:	ralf@oss.sgi.com	00/10/26 16:59:17
+> 
+> Modified files:
+> 	include/asm-mips: atomic.h 
+> 	include/asm-mips64: atomic.h 
+> 
+> Log message:
+> 	Add memory clobbers to the atomic_*_return functions.  I hope this
+> 	fixes the file corruption / `D' state processes people observe.
 
-Hello,
+This at least fixes the file corruption stuff i have been seeing
+(Never The Same Checksum aka NTSC)
 
-I have an Atlas board and now I am struggling to setup a Linux on it. I
-have few questions
-1. After I will install Linux on the board, it will function as a
-standalone computer ?
-2 Do I need Yamon after  installing Linux on it ?
 
-Thanks
-Nicu
+remake:/home/flo# md5sum xfree86_4.0.1.orig.tar.gz
+590767187e145407bcda582facf5afc0  xfree86_4.0.1.orig.tar.gz
+remake:/home/flo# md5sum xfree86_4.0.1.orig.tar.gz
+590767187e145407bcda582facf5afc0  xfree86_4.0.1.orig.tar.gz
+remake:/home/flo# md5sum xfree86_4.0.1.orig.tar.gz
+590767187e145407bcda582facf5afc0  xfree86_4.0.1.orig.tar.gz
+remake:/home/flo# md5sum xfree86_4.0.1.orig.tar.gz
+590767187e145407bcda582facf5afc0  xfree86_4.0.1.orig.tar.gz
+remake:/home/flo# md5sum xfree86_4.0.1.orig.tar.gz
+590767187e145407bcda582facf5afc0  xfree86_4.0.1.orig.tar.gz
 
---------------EAA126E5B17A322118FEF5D5
-Content-Type: text/x-vcard; charset=us-ascii;
- name="octavp.vcf"
-Content-Transfer-Encoding: 7bit
-Content-Description: Card for Nicu Popovici
-Content-Disposition: attachment;
- filename="octavp.vcf"
 
-begin:vcard 
-n:POPOVICI;Nicolae Octavian 
-tel;cell:+40 93 605020
-x-mozilla-html:FALSE
-org:SC Silicon Service SRL;Software
-adr:;;;;;;
-version:2.1
-email;internet:octavp@isratech.ro
-title:Software engineer
-x-mozilla-cpt:;0
-fn:Nicolae Octavian POPOVICI
-end:vcard
-
---------------EAA126E5B17A322118FEF5D5--
+Flo
+-- 
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+     Why is it called "common sense" when nobody seems to have any?

@@ -1,38 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Mar 2004 22:53:36 +0000 (GMT)
-Received: from p508B7CA6.dip.t-dialin.net ([IPv6:::ffff:80.139.124.166]:32090
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225539AbUCXWxf>; Wed, 24 Mar 2004 22:53:35 +0000
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i2OMrVoM016179;
-	Wed, 24 Mar 2004 23:53:31 +0100
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i2OMrVV1016178;
-	Wed, 24 Mar 2004 23:53:31 +0100
-Date: Wed, 24 Mar 2004 23:53:31 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Christian Groessler <cpg@aladdin.de>
-Cc: linux-mips@linux-mips.org
-Subject: Re: cannot compile 2.6.4 cvs version for Decstation
-Message-ID: <20040324225331.GB15212@linux-mips.org>
-References: <87lllqarex.fsf@aladdin.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87lllqarex.fsf@aladdin.de>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Mar 2004 08:10:16 +0000 (GMT)
+Received: from [IPv6:::ffff:209.67.27.134] ([IPv6:::ffff:209.67.27.134]:2550
+	"HELO link-here.com") by linux-mips.org with SMTP
+	id <S8224772AbUCYIKP>; Thu, 25 Mar 2004 08:10:15 +0000
+To: <ladis@linux-mips.org>
+From: "randy" <fountain21tanya@hotmail.com>
+Date: Thu, 25 Mar 2004 08:05:07 GMT
+Message-Id: <1080201907-11895@excite.com>
+Subject: Exceptional deals on C1AL1S, 80 precent off!
+Content-Type: text/plain;
+Return-Path: <sweet1p06@hotmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4629
+X-archive-position: 4630
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: fountain21tanya@hotmail.com
 Precedence: bulk
 X-list: linux-mips
 
-DECstation doesn't yet work in 2.6; dunno what Maciej's plans for 2.6
-support are?
+Greatest VIAGRnoA and CIoALaIS
+Best offers on ValiuXXm and XZanaXx
+Quick weight loss (josh design) and antidepressant meedication!
+Incredible deals, 80 prcent off!
+We ship wroldwide!
 
-  Ralf
+Clik Here:
+http://looney.base4ds.com/s95/index.php?id=s95
+
+
+
+
+
+
+
+
+
+
+
+tracy clipper new gretchen paula advil tattoo new 
+gambit steph scorpion passion maria florida bigman lorraine 
+nikita jkm twins tango director memory jeff center blowfish

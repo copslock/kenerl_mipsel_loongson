@@ -1,27 +1,22 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA03300; Thu, 16 May 1996 09:05:29 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA05147; Thu, 16 May 1996 12:05:08 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id QAA23005 for linux-list; Thu, 16 May 1996 16:04:04 GMT
-Received: from neteng.engr.sgi.com (neteng.engr.sgi.com [192.26.80.10]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA22994 for <linux@cthulhu.engr.sgi.com>; Thu, 16 May 1996 09:04:03 -0700
-Received: from xtp.engr.sgi.com (xtp.engr.sgi.com [150.166.75.34]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA03222 for <lmlinux@neteng.engr.sgi.com>; Thu, 16 May 1996 09:04:02 -0700
-Received: by xtp.engr.sgi.com (940816.SGI.8.6.9/911001.SGI)
-	 id JAA06415; Thu, 16 May 1996 09:04:00 -0700
-From: "Greg Chesson" <greg@xtp.engr.sgi.com>
-Message-Id: <9605160903.ZM6413@xtp.engr.sgi.com>
-Date: Thu, 16 May 1996 09:03:58 -0700
-In-Reply-To: Linus Torvalds <torvalds@cs.Helsinki.FI>
-        "Re: lmbench with new checksum code..." (May 16,  1:08pm)
-References: <Pine.LNX.3.91.960516124452.6325L-100000@linux.cs.Helsinki.FI>
-X-Mailer: Z-Mail (3.2.0 26oct94 MediaMail)
-To: Linus Torvalds <torvalds@cs.Helsinki.FI>, Alan Cox <alan@cymru.net>
+Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id TAA22974 for linux-list; Thu, 16 May 1996 19:03:42 GMT
+Received: from neteng.engr.sgi.com (neteng.engr.sgi.com [192.26.80.10]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA22942 for <linux@cthulhu.engr.sgi.com>; Thu, 16 May 1996 12:03:39 -0700
+Received: from lanta.engr.sgi.com (lanta.engr.sgi.com [192.26.75.15]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA05094 for <lmlinux@neteng.engr.sgi.com>; Thu, 16 May 1996 12:03:38 -0700
+Received: by lanta.engr.sgi.com (940816.SGI.8.6.9/911001.SGI)
+	 id MAA13605; Thu, 16 May 1996 12:03:35 -0700
+Date: Thu, 16 May 1996 12:03:35 -0700
+From: nn@lanta.engr.sgi.com (Neal Nuckolls)
+Message-Id: <199605161903.MAA13605@lanta.engr.sgi.com>
+To: Alan Cox <alan@cymru.net>
 Subject: Re: lmbench with new checksum code...
-Cc: "David S. Miller" <davem@caip.rutgers.edu>, lmlinux@neteng.engr.sgi.com,
-        sparclinux-cvs@caipfs.rutgers.edu
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Cc: sparclinux-cvs@caipfs.rutgers.edu, torvalds@cs.helsinki.fi,
+        lmlinux@neteng.engr.sgi.com
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-folks have special-cased the loopback driver in the past to improve
-X performance.
+Alan is right, the Solaris tcp/ip implementation has a special case
+for loopback which skims just the top of the IP module, no checksum,
+no copy at that level, large mtu.
 
-g
+neal

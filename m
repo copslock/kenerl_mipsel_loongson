@@ -1,58 +1,45 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980327.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id NAA121350 for <linux-archive@neteng.engr.sgi.com>; Wed, 13 May 1998 13:40:17 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980327.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id CAA238485 for <linux-archive@neteng.engr.sgi.com>; Thu, 14 May 1998 02:38:26 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id NAA29788
+	id CAA03513
 	for linux-list;
-	Wed, 13 May 1998 13:37:45 -0700 (PDT)
+	Thu, 14 May 1998 02:37:23 -0700 (PDT)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id NAA52786
+	via ESMTP id CAA03059
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 13 May 1998 13:37:43 -0700 (PDT)
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id NAA09928
-	for <linux@cthulhu.engr.sgi.com>; Wed, 13 May 1998 13:37:38 -0700 (PDT)
-	mail_from (ralf@uni-koblenz.de)
-From: ralf@uni-koblenz.de
-Received: from uni-koblenz.de (ralf@pmport-05.uni-koblenz.de [141.26.249.5])
-	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id WAA14718
-	for <linux@cthulhu.engr.sgi.com>; Wed, 13 May 1998 22:37:32 +0200 (MEST)
-Received: (from ralf@localhost)
-	by uni-koblenz.de (8.8.7/8.8.7) id WAA00682;
-	Wed, 13 May 1998 22:37:25 +0200
-Message-ID: <19980513223725.33155@uni-koblenz.de>
-Date: Wed, 13 May 1998 22:37:25 +0200
-To: "Francis M. J. Hsieh" <mjhsieh@life.nthu.edu.tw>
-Cc: Alex deVries <adevries@engsoc.carleton.ca>, linux@cthulhu.engr.sgi.com
-Subject: Re: Installer changes...
-References: <Pine.LNX.3.95.980513003341.15722A-100000@lager.engsoc.carl eton.ca> <3.0.3.32.19980514032548.00730fa8@140.114.98.21>
-Mime-Version: 1.0
+	Thu, 14 May 1998 02:37:22 -0700 (PDT)
+Received: from mdhill.interlog.com (mdhill.interlog.com [199.212.154.112]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via SMTP id CAA10910
+	for <linux@cthulhu.engr.sgi.com>; Thu, 14 May 1998 02:37:20 -0700 (PDT)
+	mail_from (mike@mdhill.interlog.com)
+Received: (from mike@localhost) by mdhill.interlog.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id FAA01209; Thu, 14 May 1998 05:36:17 -0400
+From: Michael Hill <mdhill@interlog.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.85e
-In-Reply-To: <3.0.3.32.19980514032548.00730fa8@140.114.98.21>; from Francis M. J. Hsieh on Thu, May 14, 1998 at 03:25:48AM +0800
+Content-Transfer-Encoding: 7bit
+Date: Thu, 14 May 1998 05:36:16 -0400 (EDT)
+To: linux@cthulhu.engr.sgi.com
+Subject: Re: Installer changes...
+In-Reply-To: <3.0.3.32.19980514032548.00730fa8@140.114.98.21>
+References: <Pine.LNX.3.95.980513003341.15722A-100000@lager.engsoc.carl
+ eton.ca>
+	<3.0.3.32.19980514032548.00730fa8@140.114.98.21>
+X-Mailer: VM 6.43 under 20.4 "Emerald" XEmacs  Lucid
+Message-ID: <13658.47456.335828.327071@mdhill.interlog.com>
+Reply-To: mdhill@interlog.com
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Thu, May 14, 1998 at 03:25:48AM +0800, Francis M. J. Hsieh wrote:
+Francis M. J. Hsieh writes:
 
-> [deleted]
-> sgiseeq.c: David S. Miller (dm@engr.sgi.com)
-> eth0: SGI Seeq8003 blah:blah:blah:blah
-> Partition check
->    blah....
->    blah....
-> VFS: Mounted root (ext2 filesystem) readonly.
-> Freeing unused kernel memory: 32k freed
-> Warning: unable to open an initial console.
-> kernel panic: No init found. Try passing init= optional to kernel.
-> [halt]
+ > kernel panic: No init found. Try passing init= optional to kernel.
+ > [halt]
 
-Alex already said it, try adding init=/bin/sh to the boot options.
+I too get this with the new root-be.
 
-> And I use the kernel in GetingStarted directory, and got panic, too.
-> ("should not happened yet")
-
-That was a real bug.  The kernel in GettinStarted in truely ancient.  I
-replaced it by vmlinux-2.1.99.
-
-  Ralf
+Mike
+-- 
+Michael Hill
+Toronto, Canada
+mdhill@interlog.com

@@ -1,19 +1,19 @@
-Received:  by oss.sgi.com id <S553853AbRAVPZm>;
-	Mon, 22 Jan 2001 07:25:42 -0800
-Received: from mx.mips.com ([206.31.31.226]:10647 "EHLO mx.mips.com")
-	by oss.sgi.com with ESMTP id <S553848AbRAVPZR>;
-	Mon, 22 Jan 2001 07:25:17 -0800
+Received:  by oss.sgi.com id <S553854AbRAVQaD>;
+	Mon, 22 Jan 2001 08:30:03 -0800
+Received: from mx.mips.com ([206.31.31.226]:63383 "EHLO mx.mips.com")
+	by oss.sgi.com with ESMTP id <S553840AbRAVQ3t>;
+	Mon, 22 Jan 2001 08:29:49 -0800
 Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id HAA17328;
-	Mon, 22 Jan 2001 07:24:36 -0800 (PST)
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id IAA17863;
+	Mon, 22 Jan 2001 08:29:12 -0800 (PST)
 Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id HAA07008;
-	Mon, 22 Jan 2001 07:24:35 -0800 (PST)
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id IAA08514;
+	Mon, 22 Jan 2001 08:29:11 -0800 (PST)
 Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id QAA27308;
-	Mon, 22 Jan 2001 16:23:52 +0100 (MET)
-Message-ID: <3A6C5087.70B33B2B@mips.com>
-Date:   Mon, 22 Jan 2001 16:23:51 +0100
+	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id RAA02942;
+	Mon, 22 Jan 2001 17:28:27 +0100 (MET)
+Message-ID: <3A6C5FAB.CB6B03A@mips.com>
+Date:   Mon, 22 Jan 2001 17:28:27 +0100
 From:   Carsten Langgaard <carstenl@mips.com>
 X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
 X-Accept-Language: en
@@ -73,10 +73,12 @@ Geert Uytterhoeven wrote:
 > I suggest to put an explicit `mkswap' command in the startup scripts. It's not
 > needed to preserver the swap space contents between successive reboots (you
 > can't switch from 32-bit to 64-bit or vice versa without rebooting, right?).
+>
 
-That will probably solve my swap partition problem, but I think there are other
-potential problems as mention above.
-I don't think we can guarantee that data always are 32-bit aligned.
+I tried to use mkswap, but it also fails:
+
+mkswap /dev/hda2
+unknown ioctl: 00001260
 
 >
 > Gr{oetje,eeting}s,

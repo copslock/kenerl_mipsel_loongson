@@ -1,94 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Jun 2004 15:27:39 +0100 (BST)
-Received: from dvmwest.gt.owl.de ([IPv6:::ffff:62.52.24.140]:41138 "EHLO
-	dvmwest.gt.owl.de") by linux-mips.org with ESMTP
-	id <S8225534AbUFNO1e>; Mon, 14 Jun 2004 15:27:34 +0100
-Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
-	id 2AECA4B7CF; Mon, 14 Jun 2004 16:27:30 +0200 (CEST)
-Date: Mon, 14 Jun 2004 16:27:30 +0200
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To: linux-mips@linux-mips.org
-Subject: Re: "No such device" with PCI card
-Message-ID: <20040614142730.GQ20632@lug-owl.de>
-Mail-Followup-To: linux-mips@linux-mips.org
-References: <20040614115631.17040.qmail@web16612.mail.tpe.yahoo.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Jun 2004 18:19:39 +0100 (BST)
+Received: from sorrow.cyrius.com ([IPv6:::ffff:65.19.161.204]:27147 "EHLO
+	sorrow.cyrius.com") by linux-mips.org with ESMTP
+	id <S8225768AbUFNRTe>; Mon, 14 Jun 2004 18:19:34 +0100
+Received: by sorrow.cyrius.com (Postfix, from userid 10)
+	id B782664D3A; Mon, 14 Jun 2004 17:19:30 +0000 (UTC)
+Received: by deprecation.cyrius.com (Postfix, from userid 1000)
+	id C3D4FFFCF; Mon, 14 Jun 2004 18:17:51 +0100 (BST)
+Date: Mon, 14 Jun 2004 18:17:51 +0100
+From: Martin Michlmayr <tbm@cyrius.com>
+To: Dennis Grevenstein <dennis@pcde.inka.de>
+Cc: linux-mips@linux-mips.org
+Subject: Re: network problems with cobalt raq2
+Message-ID: <20040614171751.GA383@deprecation.cyrius.com>
+References: <20040613000452.GA3861@aton.pcde.inka.de>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="znSQlxigGrTagauB"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20040614115631.17040.qmail@web16612.mail.tpe.yahoo.com>
-X-Operating-System: Linux mail 2.4.18 
-X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
-X-gpg-key: wwwkeys.de.pgp.net
-User-Agent: Mutt/1.5.6i
-Return-Path: <jbglaw@dvmwest.gt.owl.de>
+In-Reply-To: <20040613000452.GA3861@aton.pcde.inka.de>
+User-Agent: Mutt/1.5.6+20040523i
+Return-Path: <tbm@cyrius.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5305
+X-archive-position: 5306
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jbglaw@lug-owl.de
+X-original-sender: tbm@cyrius.com
 Precedence: bulk
 X-list: linux-mips
 
+* Dennis Grevenstein <dennis@pcde.inka.de> [2004-06-13 02:04]:
+> I can transfer about 1MB/s at the very best. When it runs as
+> a masquerading router for my internal network performance
 
---znSQlxigGrTagauB
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I just tested on my RaQ2 and I get up to 2500kB/s via FTP.  This is
+in my LAN with a 100 MBit switch.
 
-On Mon, 2004-06-14 19:56:31 +0800, jospehchan <jospehchan@yahoo.com.tw>
-wrote in message <20040614115631.17040.qmail@web16612.mail.tpe.yahoo.com>:
-> Hi all,
->   I'm new in MIPS.=20
->   Recently, I encountered a strange problem.=20
->   That is when I plugged in a USB1.1 PCI card on my
-> MIPS machine.
->   When I load "usb-uhci" modules, the system returns
-> "Init_modules: No such device".
->   But checking "lspci", I can see the device's ID of
-> the USB PCI card.
->   Is there anything I missed? Any suggestion or advice
-> is appreciated.=20
-
-lspci tells you vendor and device id. These IDs need to be told to the
-driver. Because the uhci driver uses:
-
-static const struct pci_device_id uhci_pci_ids[] =3D { {
-        /* handle any USB UHCI controller */
-        PCI_DEVICE_CLASS(((PCI_CLASS_SERIAL_USB << 8) | 0x00), ~0),
-        .driver_data =3D  (unsigned long) &uhci_driver,
-        }, { /* end: all zeroes */ }
-};
-
-I think your device is just broken (and doesn't tell it's a USB host).
-If you think it's really driven by uhci (and not by ohci), then stick
-your device IDs into that table, or add those dynamically by echo'ing
-them to /sys/bus/pci/drivers/uhci_hcd/new_id. You need sysfs mounted to
-/sys, though.
-
-MfG, JBG
-
---=20
-   Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481
-   "Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg
-    fuer einen Freien Staat voll Freier B=FCrger" | im Internet! |   im Ira=
-k!
-   ret =3D do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM | TC=
-PA));
-
---znSQlxigGrTagauB
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.4 (GNU/Linux)
-
-iD8DBQFAzbXSHb1edYOZ4bsRAn9hAJ9oUiYsGsqAb2uUAqC/U7b+eQvpwwCfS2Z7
-py25SbLG8WHzkBaoArjF7FU=
-=KuIN
------END PGP SIGNATURE-----
-
---znSQlxigGrTagauB--
+Which network device do you use (the first or second)?  What's your
+setup?  Do you get such low rates also when you simply do FTP without
+any masquerading or other stuff?
+-- 
+Martin Michlmayr
+tbm@cyrius.com

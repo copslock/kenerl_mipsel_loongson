@@ -1,97 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Apr 2004 03:52:24 +0100 (BST)
-Received: from mx3out.umbc.edu ([IPv6:::ffff:130.85.25.12]:60340 "EHLO
-	mx3out.umbc.edu") by linux-mips.org with ESMTP id <S8225747AbUDPCwX>;
-	Fri, 16 Apr 2004 03:52:23 +0100
-Received: from webmail.umbc.edu (nuts.umbc.edu [130.85.24.70])
-	by mx3out.umbc.edu (8.12.10/8.12.10/UMBC-Central 1.1.2.1  mxout  1.2.2.3) with SMTP id i3G2qKD2008613
-	for <linux-mips@linux-mips.org>; Thu, 15 Apr 2004 22:52:20 -0400 (EDT)
-Received: from 130.85.168.85
-        (SquirrelMail authenticated user yiwang1)
-        by webmail.umbc.edu with HTTP;
-        Thu, 15 Apr 2004 22:52:20 -0400 (EDT)
-Message-ID: <1279.130.85.168.85.1082083940.squirrel@webmail.umbc.edu>
-Date: Thu, 15 Apr 2004 22:52:20 -0400 (EDT)
-Subject: building mips cross compiler -- an error when compiling glibc
-From: yiwang1@umbc.edu
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Apr 2004 22:13:37 +0100 (BST)
+Received: from athena.et.put.poznan.pl ([IPv6:::ffff:150.254.29.137]:32248
+	"EHLO athena.et.put.poznan.pl") by linux-mips.org with ESMTP
+	id <S8225772AbUDPVNf>; Fri, 16 Apr 2004 22:13:35 +0100
+Received: from athena (athena [150.254.29.137])
+	by athena.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id i3GLDTm13849
+	for <linux-mips@linux-mips.org>; Fri, 16 Apr 2004 23:13:30 +0200 (MET DST)
+Received: from helios.et.put.poznan.pl ([150.254.29.65])
+	by athena (MailMonitor for SMTP v1.2.2 ) ;
+	Fri, 16 Apr 2004 23:13:29 +0200 (MET DST)
+Received: from localhost (sskowron@localhost)
+	by helios.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id i3GLDTp26462
+	for <linux-mips@linux-mips.org>; Fri, 16 Apr 2004 23:13:29 +0200 (MET DST)
+X-Authentication-Warning: helios.et.put.poznan.pl: sskowron owned process doing -bs
+Date: Fri, 16 Apr 2004 23:13:29 +0200 (MET DST)
+From: Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
 To: linux-mips@linux-mips.org
-User-Agent: SquirrelMail/1.4.2
+Subject: IP30 goes relatively far now
+Message-ID: <Pine.GSO.4.10.10404162305570.25696-100000@helios.et.put.poznan.pl>
 MIME-Version: 1.0
-Content-Type: text/plain;charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-X-Priority: 3
-Importance: Normal
-X-AvMilter-Key: 1082084241:d60ea87feda58c82b300969e60e17056
-X-Avmilter: Message Skipped, too small
-X-Processed-By: MilterMonkey Version 0.9 -- http://www.membrain.com/miltermonkey
-Return-Path: <yiwang1@umbc.edu>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <sskowron@ET.PUT.Poznan.PL>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4794
+X-archive-position: 4795
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yiwang1@umbc.edu
+X-original-sender: sskowron@ET.PUT.Poznan.PL
 Precedence: bulk
 X-list: linux-mips
 
-Hi, I'm building a mips cross compiler on a i686 machine. The sources I
-used are:
-gcc-3.2.2
-glibc-2.3.2
-binutils-2.14.90.0.8
-linux-2.4.20
+Hello,
 
-I can successfully finish binutils installation and gcc bootstrap
-installation. I also finished copying kernel headers. Then I met a problem
-when compiling glibc. The error is like this:
-... ...
-/home/xmt/mips/bin/mipsel-linuxelf-gcc ../sysdeps/unix/sysv/linux/sa_len.c
--c -std=gnu99 -O2 -Wall -Winline -Wstrict-prototypes -Wwrite-strings
--mabi=32 -mips3
-     -I../include -I. -I/home/doudou/build-glibc/socket -I.. -I../libio 
--I/home/doudou/build-glibc -I../sysdeps/mips/elf
--I../linuxthreads/sysdeps/unix/sysv/linux/mips
--I../linuxthreads/sysdeps/unix/sysv/linux
--I../linuxthreads/sysdeps/pthread -I../sysdeps/pthread
--I../linuxthreads/sysdeps/unix/sysv -I../linuxthreads/sysdeps/unix
--I../linuxthreads/sysdeps/mips -I../sysdeps/unix/sysv/linux/mips
--I../sysdeps/unix/sysv/linux -I../sysdeps/gnu
--I../sysdeps/unix/common -I../sysdeps/unix/mman
--I../sysdeps/unix/inet -I../sysdeps/unix/sysv -I../sysdeps/unix/mips
--I../sysdeps/unix -I../sysdeps/posix -I../sysdeps/mips/mipsel
--I../sysdeps/mips/fpu -I../sysdeps/mips -I../sysdeps/wordsize-32
--I../sysdeps/ieee754/flt-32 -I../sysdeps/ieee754/dbl-64
--I../sysdeps/ieee754 -I../sysdeps/generic/elf -I../sysdeps/generic 
--nostdinc -isystem
-/home/xmt/mips/bin/../lib/gcc-lib/mipsel-linuxelf/3.2.2/include
--isystem /home/xmt/mips/include/ -D_LIBC_REENTRANT -D_LIBC_REENTRANT
--include ../include/libc-symbols.h  -DPIC     -o
-/home/doudou/build-glibc/socket/sa_len.o
-In file included from /home/xmt/mips/include/linux/config.h:4,
-                 from /home/xmt/mips/include/asm/types.h:12,
-                 from ../sysdeps/unix/sysv/linux/netatalk/at.h:22,
-                 from ../sysdeps/unix/sysv/linux/sa_len.c:22:
-/home/xmt/mips/include/linux/autoconf.h:1:2: #error Invalid kernel header
-included in userspace
-make[2]: *** [/home/doudou/build-glibc/socket/sa_len.o] Error 1
-make[2]: Leaving directory `/home/doudou/glibc-2.3.2/socket'
-make[1]: *** [socket/subdir_lib] Error 2
-make[1]: Leaving directory `/home/doudou/glibc-2.3.2'
-make: *** [all] Error 2
+I'm currently doing a reverse-engineered IP30 port of Linux-MIPS.
+Currently I'm using 2.6.1 as my base.
 
-The first error is at autoconf.h. My configure command line is:
+I don't know if it's been already fixed in >2.6.1, but in genex.S there
+should be a 'nop' between 'jal do_\handler' and 'ret_from_exception'. The
+symptom is a hang on 'Checking for the daddi bug...'. Somebody apparently
+got used to '.set reorder' :P
 
-CC="/home/xmt/mips/bin/mipsel-linuxelf-gcc" CFLAGS="-O2 -mips3 -mabi=32"
-AR="/home/xmt/mips/bin/mipsel-linuxelf-ar"
-RANLIB="/home/xmt/mips/bin/mipsel-linuxelf-ranlib"
-../glibc-2.3.2/configure --prefix=/home/xmt/mips/ --host=mipsel-linuxelf
---build=i686-pc-linux-gnu --without-tls --without-__thread
---enable-add-ons=linuxthreads --enable-kernel=2.4.20 --with-gd=no
---without-cvs --disable-profile --with-headers="/home/xmt/mips/include/"
+Well, now the kernel crashes a bit later. Actually, it gets to 'mice: PS/2
+mouse device common for all mice' and then gets an Instruction bus error.
+I will look into this.
 
-Any ideas on how to solve this problem? Thanks.
+Currently the kernel supports only MGRAS graphics (SI, SSI, MXI, SE, SSE,
+MXE) and uniprocessor. I don't have a SMP machine here, but I guess it
+would not be particularly hard to do. The ODYSSEY (VPro) would be a bit
+harder, as its architecture is vastly different from the MGRAS. Anyone
+interested may send me a VPro6 ;)
 
-Sam
----------
-UMBC
+When I get to 'cannot mount root', I will release the kernel patch.
+
+Yours,
+
+Stanislaw Skowronek
+
+--<=>--
+  Paranoid: one who is truly in touch with reality.

@@ -1,44 +1,37 @@
-Received:  by oss.sgi.com id <S42220AbQGKX5e>;
-	Tue, 11 Jul 2000 16:57:34 -0700
-Received: from u-215.karlsruhe.ipdial.viaginterkom.de ([62.180.10.215]:31751
-        "EHLO u-215.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S42190AbQGKX5S>; Tue, 11 Jul 2000 16:57:18 -0700
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S639437AbQGKX5Q>;
-        Wed, 12 Jul 2000 01:57:16 +0200
-Date:   Wed, 12 Jul 2000 01:57:16 +0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Tor Arntsen <tor@spacetec.no>
-Cc:     linux-mips@oss.sgi.com, linux-mips@vger.rutgers.edu,
-        linux-mips@fnet.fr
-Subject: Re: Kernel boot tips.
-Message-ID: <20000712015716.C4606@bacchus.dhis.org>
-References: <ralf@oss.sgi.com> <200007111419.QAA08466@pallas.spacetec.no>
+Received:  by oss.sgi.com id <S42227AbQGLOc2>;
+	Wed, 12 Jul 2000 07:32:28 -0700
+Received: from noose.gt.owl.de ([62.52.19.4]:46088 "HELO noose.gt.owl.de")
+	by oss.sgi.com with SMTP id <S42209AbQGLOcK>;
+	Wed, 12 Jul 2000 07:32:10 -0700
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 8F944894; Wed, 12 Jul 2000 16:32:13 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id AA03A8F73; Wed, 12 Jul 2000 16:31:39 +0200 (CEST)
+Date:   Wed, 12 Jul 2000 16:31:39 +0200
+From:   Florian Lohoff <flo@rfc822.org>
+To:     debian-mips@lists.debian.org, linux-mips@oss.sgi.com
+Subject: mips glibc 2.1.91 debian packages available
+Message-ID: <20000712163139.A1813@paradigm.rfc822.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <200007111419.QAA08466@pallas.spacetec.no>; from tor@spacetec.no on Tue, Jul 11, 2000 at 04:19:18PM +0200
-X-Accept-Language: de,en,fr
+User-Agent: Mutt/1.0.1i
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, Jul 11, 2000 at 04:19:18PM +0200, Tor Arntsen wrote:
+Hi,
+i have successfully build the debian source packages
+for glibc 2.1.91 (2.2. alpha)
 
-> On Jul 10, 23:53, Ralf Baechle wrote:
-> [...]
-> >It's a while that I last worked on it but as I remember --vh-to-unix was
-> >actually working while the other direction was work in progress.
-> 
-> It is indeed working, I was merely using it incorrectly (I had specified 
-> the device as I do with the SGI dvhtool instead of using -d).
-> 
-> >Maybe some nroff fan also wants to provide a manpage?
-> 
-> I can do it if nobody else beats me to it.
+They are available from 
 
-While still somewhat inaccurate the manpage is still a big improvment
-over the current Read-The-Fucking-Source state of things, so I've applied
-it.
+ftp://ftp.rfc822.org/pub/local/debian-mips/experimental
 
-  Ralf
+I havent tried to use them right now ... YMMV
+
+Flo
+-- 
+Florian Lohoff		flo@rfc822.org		      	+49-5201-669912
+     "If you're not having fun right now, you're wasting your time."

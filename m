@@ -1,47 +1,46 @@
-Received:  by oss.sgi.com id <S553815AbQJ1Byg>;
-	Fri, 27 Oct 2000 18:54:36 -0700
-Received: from ppp0.ocs.com.au ([203.34.97.3]:28175 "HELO mail.ocs.com.au")
-	by oss.sgi.com with SMTP id <S553792AbQJ1ByY>;
-	Fri, 27 Oct 2000 18:54:24 -0700
-Received: (qmail 16693 invoked from network); 28 Oct 2000 01:54:19 -0000
-Received: from ocs3.ocs-net (192.168.255.3)
-  by mail.ocs.com.au with SMTP; 28 Oct 2000 01:54:18 -0000
-X-Mailer: exmh version 2.1.1 10/15/1999
-From:   Keith Owens <kaos@melbourne.sgi.com>
-To:     Steve Kranz <skranz@ridgerun.com>
-cc:     linux-mips@oss.sgi.com, linux-mips@fnet.fr
-Subject: Re: remote GDB debugging and the __init macro of init.h 
-In-reply-to: Your message of "Fri, 27 Oct 2000 09:24:17 MDT."
-             <39F99E20.8EE47072@ridgerun.com> 
+Received:  by oss.sgi.com id <S553813AbQJ1DOg>;
+	Fri, 27 Oct 2000 20:14:36 -0700
+Received: from u-162.karlsruhe.ipdial.viaginterkom.de ([62.180.18.162]:35336
+        "EHLO u-162.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
+	with ESMTP id <S553682AbQJ1DOQ>; Fri, 27 Oct 2000 20:14:16 -0700
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S870710AbQJ1DN0>;
+        Sat, 28 Oct 2000 05:13:26 +0200
+Date:   Sat, 28 Oct 2000 05:13:26 +0200
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Joe Berens <jberens@sgi.com>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: Installing linux on Indy
+Message-ID: <20001028051326.B5764@bacchus.dhis.org>
+References: <Pine.SGI.4.10.10010271233390.241075-100000@jberens.americas.sgi.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Date:   Sat, 28 Oct 2000 12:54:18 +1100
-Message-ID: <4909.972698058@ocs3.ocs-net>
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <Pine.SGI.4.10.10010271233390.241075-100000@jberens.americas.sgi.com>; from jberens@sgi.com on Fri, Oct 27, 2000 at 12:46:13PM -0500
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Fri, 27 Oct 2000 09:24:17 -0600, 
-Steve Kranz <skranz@ridgerun.com> wrote:
->  I had to make a change to allow remote MIPS kernel
->  debugging (GDB). The change I found necessary was in the
->  file:
->
->    include/linux/init.h     (2.4.0-test9)
->
->  As you can see from the snippet below the change
->  involves conditionally defining the "__init" macro as
->  a function of whether remote debugging is enabled or
->  not. Am I missing something, or does this seem like a
->  reasonable change?
+On Fri, Oct 27, 2000 at 12:46:13PM -0500, Joe Berens wrote:
 
-It would be better to teach kgdb that the kernel has symbols in
-sections other than .text.  Even with your patch, you do not get all
-the symbols, there is also code in sections .setup.init, .initcall.init
-and .exitcall.exit, with similar sections for data.  You cannot remove
-.initcall.init without destroying the kernel initialization procedure.
+> I have followed the installation instructions and I think every thing is
+> set up right.  When I do "boot -f bootp()<ipaddr of
+> server>:/<hardhatdir>/vmlinux", the kernel seems to start booting and
+> hangs after:
+> 
+> Partition check: sda1 sda2 sda3 sda4
+> Looking up port of RPC 100003/2 on <ipaddr of server>
+> RPC: sendmsg returned error 128
+> RPC: sendmsg returned error 128
+> RPC: sendmsg returned error 128
+> RPC: sendmsg returned error 128
+> portmap: server <ip addr of server> not responding, timed out
+> Root-Nfs: Unable to get nfsd port number from server, using default
+> Looking up port of RPC 100005/1 on <ipaddr of server>
+> RPC: sendmsg returned error 128
 
-Recent versions of kgdb for ix86 use a modified version of gdb that
-knows about multiple sections for modules.  I do not know if they have
-the same functionality for the kernel.
+128 = ENETUNREACH.  Sure your network configuration is correct and both
+client and server are on the same subnet?
+
+  Ralf

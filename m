@@ -1,37 +1,52 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f48KnSd31272
-	for linux-mips-outgoing; Tue, 8 May 2001 13:49:28 -0700
-Received: from pizda.ninka.net (IDENT:root@pizda.ninka.net [216.101.162.242])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f48KnRF31269
-	for <linux-mips@oss.sgi.com>; Tue, 8 May 2001 13:49:27 -0700
-Received: (from davem@localhost)
-	by pizda.ninka.net (8.9.3/8.9.3) id NAA27455;
-	Tue, 8 May 2001 13:47:57 -0700
-From: "David S. Miller" <davem@redhat.com>
+	by oss.sgi.com (8.11.3/8.11.3) id f48LJdo32535
+	for linux-mips-outgoing; Tue, 8 May 2001 14:19:39 -0700
+Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f48LJaF32531;
+	Tue, 8 May 2001 14:19:36 -0700
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f48LJW017350;
+	Tue, 8 May 2001 14:19:32 -0700
+Message-ID: <3AF86306.343F53D0@mvista.com>
+Date: Tue, 08 May 2001 14:20:06 -0700
+From: Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
+To: Ralf Baechle <ralf@oss.sgi.com>, macro@ds2.pg.gda.pl
+CC: linux-mips@oss.sgi.com
+Subject: Re: machine types for MIPS in ELF file
+References: <3AF843F7.72BC47F0@mvista.com> <20010508164846.A1471@bacchus.dhis.org>
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Message-ID: <15096.23421.564537.144351@pizda.ninka.net>
-Date: Tue, 8 May 2001 13:47:57 -0700 (PDT)
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: linux-kernel@vger.kernel.org, linux-mips@fnet.fr, linux-mips@oss.sgi.com
-Subject: Re: [patch] 2.4.4: mmap() fails for certain legal requests
-In-Reply-To: <Pine.GSO.3.96.1010508214647.4713B-100000@delta.ds2.pg.gda.pl>
-References: <Pine.GSO.3.96.1010508214647.4713B-100000@delta.ds2.pg.gda.pl>
-X-Mailer: VM 6.75 under 21.1 (patch 13) "Crater Lake" XEmacs Lucid
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+Ralf Baechle wrote:
+> 
+> On Tue, May 08, 2001 at 12:07:35PM -0700, Jun Sun wrote:
+> 
+> > The e_machine field in ELF file standard defines two values for MIPS:
+> >
+> > 8     - MIPS RS3000 BE
+> > 10    - MIPS RS4000 BE
+> >
+> > Naturally the question is: what about LE binaries?  And what about other
+> > CPUs?  Is there any effort to clean up this thing?
+> >
+> > All the tools that I know of are using 8, pretty much for all CPUs and both
+> > endians.  No real harm has been observed, but it causes some anonying "invalid
+> > byte order" complains if you do "file" on a MIPS LE binary.  Of course, it
+> > will also invariably reports "R3000" cpu as well.
+> 
+> EM_MIPS_RS4_BE was apparently only in use for a short time; EM_MIPS is
+> being used for both byte order.  The byteorder is nowadays identified by
+> EI_DATA.
+> 
 
-Maciej W. Rozycki writes:
- >  The bug was discovered when tracking down the reason of dlopen() failures
- > when called from statically linked binaries on MIPS/Linux.  The patch
- > fixes them.
+That makes a lot of sense.
 
-There are several get_unmapped_area() implementations besides the
-standard one (search for HAVE_ARCH_UNMAPPED_AREA).  Please fix
-them up too.
+BTW, where is the latest ELF spec that says so?  Maciej, which spec are you
+referring to?
 
-Later,
-David S. Miller
-davem@redhat.com
+Jun

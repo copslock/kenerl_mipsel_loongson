@@ -1,45 +1,51 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fAQHMMd12319
-	for linux-mips-outgoing; Mon, 26 Nov 2001 09:22:22 -0800
-Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAQHMFo12314
-	for <linux-mips@oss.sgi.com>; Mon, 26 Nov 2001 09:22:16 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id RAA03502;
-	Mon, 26 Nov 2001 17:20:27 +0100 (MET)
-Date: Mon, 26 Nov 2001 17:20:26 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: "Houten K.H.C. van (Karel)" <vhouten@kpn.com>
-cc: linux-mips@oss.sgi.com
-Subject: Re: FPU interrupt handler 
-In-Reply-To: <200111261407.PAA11348@sparta.research.kpn.com>
-Message-ID: <Pine.GSO.3.96.1011126171137.21598V-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+	by oss.sgi.com (8.11.2/8.11.3) id fAQHSYC12595
+	for linux-mips-outgoing; Mon, 26 Nov 2001 09:28:34 -0800
+Received: from mail2.infineon.com (mail2.infineon.com [192.35.17.230])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAQHSSo12590;
+	Mon, 26 Nov 2001 09:28:28 -0800
+X-Envelope-Sender-Is: Andre.Messerschmidt@infineon.com (at relayer mail2.infineon.com)
+Received: from mchb0b1w.muc.infineon.com ([172.31.102.53])
+	by mail2.infineon.com (8.11.1/8.11.1) with ESMTP id fAQGSQD29436;
+	Mon, 26 Nov 2001 17:28:26 +0100 (MET)
+Received: from mchb0b5w.muc.infineon.com ([172.31.102.49]) by mchb0b1w.muc.infineon.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2653.13)
+	id X3V60QRT; Mon, 26 Nov 2001 17:28:24 +0100
+Received: from 172.29.128.3 by mchb0b5w.muc.infineon.com (InterScan E-Mail VirusWall NT); Mon, 26 Nov 2001 17:28:24 +0100
+Received: by dlfw003a.dus.infineon.com with Internet Mail Service (5.5.2653.19)
+	id <WR91WAAQ>; Mon, 26 Nov 2001 17:27:39 +0100
+Message-ID: <86048F07C015D311864100902760F1DD01B5E41A@dlfw003a.dus.infineon.com>
+From: Andre.Messerschmidt@infineon.com
+To: ralf@oss.sgi.com
+Cc: linux-mips@oss.sgi.com
+Subject: AW: Cross Compiler again
+Date: Mon, 26 Nov 2001 17:27:38 +0100
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi Karel,
 
-> I'm using the RedHat 7.1 packages from oss:
-> binutils-2.11.92.0.10-1.mips.rpm
-> gcc-2.96-99.1.mips.rpm
+> -G 0.
+Thanks that helped for the relocation error.
+init/main.o(.text.init+0x7d8): relocation truncated to fit: R_MIPS_GPREL16
+execute_command
 
- Can't comment on these.  I feel a bit uneasy about gcc 2.96, possibly due
-to the way it was incarnated.  I'll probably switch directly to 3.x when
-it's proved stable enough not to distract me from primary tasks.  I don't
-know how much binutils 2.11.92.0.10 differ from the mainline.
+But I still get a lot of undefined references.
+arch/mips/kernel/kernel.o(.debug+0x32e14): undefined reference to `L_E660'
+arch/mips/kernel/kernel.o(.debug+0x60e7c): undefined reference to `L_E549'
+arch/mips/kernel/kernel.o(.debug+0x8d097): undefined reference to `L_E8015'
+arch/mips/kernel/kernel.o(.debug+0x8d0b9): undefined reference to `L_E8015'
+arch/mips/kernel/kernel.o(.debug+0x8d168): undefined reference to `L_E8015'
+arch/mips/kernel/kernel.o(.debug+0x8d18a): undefined reference to `L_E8015'
+...
 
-> >  I may upload binaries of my kernels to my site if they are to be useful
-[...]
-> Yes please. I hope to get a new disk this week, so I can build a
-> stable development server...
+I believe there is still something wrong with my glibc, but I need to check
+that.
 
- OK -- I should have them by tomorrow.
+> What compiler are you using?  All compilers I've ever released did default
+> to -G 0.
+I compiled my own gcc using Bradley D. LaRonde's howto.
 
-  Maciej
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+regards
+Andre

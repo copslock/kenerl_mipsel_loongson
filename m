@@ -1,38 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 18 Jan 2003 16:33:02 +0000 (GMT)
-Received: from smtp03.infoave.net ([IPv6:::ffff:165.166.0.28]:39158 "EHLO
-	smtp03.infoave.net") by linux-mips.org with ESMTP
-	id <S8225259AbTARQdC>; Sat, 18 Jan 2003 16:33:02 +0000
-Received: from opus ([204.116.3.125])
- by SMTP00.InfoAve.Net (PMDF V6.1-1IA5 #38776)
- with ESMTP id <01KRDNFL0C3294RGXQ@SMTP00.InfoAve.Net> for
- linux-mips@linux-mips.org; Sat, 18 Jan 2003 11:32:56 -0500 (EST)
-Date: Sat, 18 Jan 2003 11:35:06 -0500
-From: Justin Pauley <jpauley@xwizards.com>
-Subject: Mopd Directions
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Jan 2003 05:19:02 +0000 (GMT)
+Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:22055
+	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
+	id <S8225197AbTATFTB>; Mon, 20 Jan 2003 05:19:01 +0000
+Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
+	by iris1.csv.ica.uni-stuttgart.de with esmtp (Exim 3.36 #2)
+	id 18aUKp-000O2E-00; Mon, 20 Jan 2003 06:18:59 +0100
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
+	id 18aUKp-0006Ff-00; Mon, 20 Jan 2003 06:18:59 +0100
+Date: Mon, 20 Jan 2003 06:18:59 +0100
 To: linux-mips@linux-mips.org
-Message-id: <1042907706.3331.206.camel@Opus>
-MIME-version: 1.0
-X-Mailer: Ximian Evolution 1.0.8 (1.0.8-10)
-Content-type: text/plain
-Content-transfer-encoding: 7bit
-Return-Path: <jpauley@xwizards.com>
+Cc: Karsten Merker <karsten@excalibur.cologne.de>
+Subject: Re: Problems booting
+Message-ID: <20030120051859.GG14931@rembrandt.csv.ica.uni-stuttgart.de>
+References: <1042769475.2735.161.camel@Opus> <20030117061047.GA474@excalibur.cologne.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20030117061047.GA474@excalibur.cologne.de>
+User-Agent: Mutt/1.4i
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1179
+X-archive-position: 1180
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jpauley@xwizards.com
+X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
 Precedence: bulk
 X-list: linux-mips
 
-Thank you all so much for helping me get my linux installed. I now have
-debian installed on my Decstation 5000/25 having used Mopd. I wrote down
-all the information I would need if i needed to do this again and if you
-would like you can send it out to other people who have my same problem.
-The directions are at http://www.xwizards.com/MopLinuxDec.html 
+Karsten Merker wrote:
+> On Thu, Jan 16, 2003 at 09:11:14PM -0500, Justin Pauley wrote:
+> 
+> > Well, MOPD works now! And I installed debian linux. However, now when i
+> > try to boot with:
+> > boot 3/rz0/vmlinux console=ttyS0 
+> > I get the following:
+> > delo V0.7 Copyright....
+> > extfs_open returned Unknown ext2 error(2133571404)
+
+I believe this is fixed in my improved version of delo. If you aren't afraid
+of raw source tarballs and want to try it out, it's available at
+http://www.csv.ica.uni-stuttgart.de/homes/ths/linux-mips/delo/
+
+> > Couldnt fetch config.file /etc/delo.cconf
+> 
+> Try just booting with "boot 3/rz0" without further parameters. Delo takes
+> its parameters a bit differently than e.g. Ultrixboot and if given no
+> parameters, it should use the default values from the installation process.
+> If this does not help: do you have /boot and /etc on the same partition? If
+> not, this might cause the problem. AFAIK delo cannot handle the config file
+> on one and the kernel on another partition. Flo, Thiemo?
+
+Yes, still true, even for my improved version of delo.
 
 
-Thank you all again,
-Justin Pauley
+Thiemo

@@ -1,48 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Sep 2003 23:55:50 +0100 (BST)
-Received: from www.piratehaven.org ([IPv6:::ffff:204.253.162.40]:9395 "EHLO
-	skull.piratehaven.org") by linux-mips.org with ESMTP
-	id <S8225545AbTIVWzs>; Mon, 22 Sep 2003 23:55:48 +0100
-Received: by skull.piratehaven.org (Postfix, from userid 512)
-	id DED4D101DF; Mon, 22 Sep 2003 22:55:42 +0000 (US/East)
-Date: Mon, 22 Sep 2003 15:55:41 -0700
-From: Brian Pomerantz <bapper@piratehaven.org>
-To: linux-mips@linux-mips.org
-Subject: virt_to_phys bug?
-Message-ID: <20030922225541.GA10469@skull.piratehaven.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Sep 2003 00:40:11 +0100 (BST)
+Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:14854
+	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
+	id <S8225547AbTIVXkJ>; Tue, 23 Sep 2003 00:40:09 +0100
+Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
+	by iris1.csv.ica.uni-stuttgart.de with esmtp
+	id 1A1aHY-0002iy-00; Tue, 23 Sep 2003 01:39:52 +0200
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
+	id 1A1aHY-0002Ir-00; Tue, 23 Sep 2003 01:39:52 +0200
+Date: Tue, 23 Sep 2003 01:39:52 +0200
+To: Alexandre Oliva <aoliva@redhat.com>
+Cc: Eric Christopher <echristo@redhat.com>,
+	"Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+	Atsushi Nemoto <nemoto@toshiba-tops.co.jp>,
+	Daniel Jacobowitz <dan@debian.org>, linux-mips@linux-mips.org,
+	binutils@sources.redhat.com
+Subject: Re: recent binutils and mips64-linux
+Message-ID: <20030922233952.GR13578@rembrandt.csv.ica.uni-stuttgart.de>
+References: <Pine.GSO.3.96.1030919144141.9134C-100000@delta.ds2.pg.gda.pl> <1063988420.2537.5.camel@ghostwheel.sfbay.redhat.com> <20030919164119.GH13578@rembrandt.csv.ica.uni-stuttgart.de> <ord6ds346n.fsf@free.redhat.lsd.ic.unicamp.br>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.4i
-X-homepage: http://www.piratehaven.org/~bapper/
-Return-Path: <bapper@piratehaven.org>
+In-Reply-To: <ord6ds346n.fsf@free.redhat.lsd.ic.unicamp.br>
+User-Agent: Mutt/1.5.4i
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3258
+X-archive-position: 3259
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bapper@piratehaven.org
+X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
 Precedence: bulk
 X-list: linux-mips
 
-Maybe the wrong function is being used here, I'm not sure.  I ran into
-a problem with using virt_to_phys.  The acacia driver for the IDT
-rc32438 chip uses virt_to_phys to convert from a KSEG1 address to a
-physical address.  Somehow this works on their 2.4.18 kernel but does
-not in the 2.4.22 tree.  After changing virt_to_phys to this:
+Alexandre Oliva wrote:
+> On Sep 19, 2003, Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de> wrote:
+> 
+> > A third answer is to add a -msign-extend-addresses switch in the assembler.
+> 
+> In what sense is this different from -Wa,-mabi=n32 ?
 
-	return (unsigned long)address - KSEGX(address);
-
-everything worked just fine.  I guess what I'm wondering is, is this
-the correct way to get a physical address for use with DMA?  The note
-in io.h above the function says no but fails to tell me what should be
-used.  My guess is virt_to_bus is correct but they are identical
-functions.  Since I didn't write this driver, I can only assume that
-address for the rung descriptors are accessed via KSEG1 so that they
-are uncached and don't require flushing after each access.  I had a
-lot of dropped packets when I failed to access the ring descriptors
-via KSEG1.
+ELF64 instead of ELF32.
 
 
-BAPper
+Thiemo

@@ -1,32 +1,39 @@
-Received:  by oss.sgi.com id <S553761AbQLFVxN>;
-	Wed, 6 Dec 2000 13:53:13 -0800
-Received: from widukind.bi.teuto.net ([212.8.197.28]:61713 "EHLO
-        widukind.bi.teuto.net") by oss.sgi.com with ESMTP
-	id <S553746AbQLFVw4>; Wed, 6 Dec 2000 13:52:56 -0800
-Received: from p400 (pD902EA4B.dip.t-dialin.net [217.2.234.75])
-	by widukind.bi.teuto.net (8.9.3/8.9.3) with SMTP id WAA07519
-	for <linux-mips@oss.sgi.com>; Wed, 6 Dec 2000 22:52:53 +0100
-Message-ID: <002701c05fce$98879d20$3264a8c0@brainstaff.de>
-From:   "Ingo Rose" <ingo@beldam.teuto.de>
-To:     <linux-mips@oss.sgi.com>
-Subject: rm linux port?
-Date:   Wed, 6 Dec 2000 22:15:29 +0100
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4133.2400
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
-X-Popauth-Info: 976139540
+Received:  by oss.sgi.com id <S553648AbQLGOU3>;
+	Thu, 7 Dec 2000 06:20:29 -0800
+Received: from noose.gt.owl.de ([62.52.19.4]:45067 "HELO noose.gt.owl.de")
+	by oss.sgi.com with SMTP id <S553645AbQLGOUB>;
+	Thu, 7 Dec 2000 06:20:01 -0800
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 590E2855; Thu,  7 Dec 2000 15:19:59 +0100 (CET)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id B4F4E8F74; Thu,  7 Dec 2000 13:34:05 +0100 (CET)
+Date:   Thu, 7 Dec 2000 13:34:05 +0100
+From:   Florian Lohoff <flo@rfc822.org>
+To:     Ingo Rose <ingo@beldam.teuto.de>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: rm linux port?
+Message-ID: <20001207133405.B4305@paradigm.rfc822.org>
+References: <002701c05fce$98879d20$3264a8c0@brainstaff.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <002701c05fce$98879d20$3264a8c0@brainstaff.de>; from ingo@beldam.teuto.de on Wed, Dec 06, 2000 at 10:15:29PM +0100
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-is there a port for for sni rm200 available?
+On Wed, Dec 06, 2000 at 10:15:29PM +0100, Ingo Rose wrote:
+> 
+> is there a port for for sni rm200 available?
+> 
 
+There was a port for the RM200 (Little Endian / Windows Firmware) although
+i dont think anyone has looked after it for a while (while >= 2 Years)
 
-regards,
-ingo
+Flo
+-- 
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+     Why is it called "common sense" when nobody seems to have any?

@@ -1,20 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Mar 2005 20:03:48 +0000 (GMT)
-Received: from mail.alphastar.de ([IPv6:::ffff:194.59.236.179]:22533 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Mar 2005 20:04:30 +0000 (GMT)
+Received: from mail.alphastar.de ([IPv6:::ffff:194.59.236.179]:22021 "EHLO
 	mail.alphastar.de") by linux-mips.org with ESMTP
-	id <S8229673AbVCYUDc>; Fri, 25 Mar 2005 20:03:32 +0000
-Received: by mail.alphastar.de with MERCUR Mailserver (v4.02.28 MTIxLTIxODAtNjY2OA==) for <linux-mips@linux-mips.org>; Fri, 25 Mar 2005 21:01:23 +0100
+	id <S8229674AbVCYUDd>; Fri, 25 Mar 2005 20:03:33 +0000
+Received: from SNaIlmail.Peter (212.144.145.222)
+          by mail.alphastar.de with MERCUR Mailserver (v4.02.28 MTIxLTIxODAtNjY2OA==)
+          for <linux-mips@linux-mips.org>; Fri, 25 Mar 2005 21:01:20 +0100
 Received: from Opal.Peter (pf@Opal.Peter [192.168.1.1])
-	by SNaIlmail.Peter (8.12.6/8.12.6/Sendmail/Linux 2.0.32) with ESMTP id j2PK0LrM000544;
-	Fri, 25 Mar 2005 21:00:21 +0100
+	by SNaIlmail.Peter (8.12.6/8.12.6/Sendmail/Linux 2.0.32) with ESMTP id j2PK0LrO000544;
+	Fri, 25 Mar 2005 21:00:22 +0100
 Received: from localhost (pf@localhost)
-	by Opal.Peter (8.9.3/8.9.3/Sendmail/Linux 2.2.5-15) with ESMTP id UAA00787;
-	Fri, 25 Mar 2005 20:59:59 +0100
-Date:	Fri, 25 Mar 2005 20:59:59 +0100 (CET)
+	by Opal.Peter (8.9.3/8.9.3/Sendmail/Linux 2.2.5-15) with ESMTP id UAA00779;
+	Fri, 25 Mar 2005 20:56:07 +0100
+Date:	Fri, 25 Mar 2005 20:56:07 +0100 (CET)
 From:	peter fuerst <pf@net.alphadv.de>
 To:	Ralf Baechle <ralf@linux-mips.org>
 cc:	linux-mips@linux-mips.org
-Subject: [PATCH] serial console (drivers/serial/ip22zilog.c)
-Message-ID: <Pine.LNX.4.21.0503252056350.775-100000@Opal.Peter>
+Subject: [PATCH] r4k_dma_cache_inv (arch/mips/mm/c-r4k.c)
+Message-ID: <Pine.LNX.4.21.0503252053060.775-100000@Opal.Peter>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Reply-To: pf@net.alphadv.de
@@ -22,7 +24,7 @@ Return-Path: <pf@net.alphadv.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7526
+X-archive-position: 7527
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,9 +36,11 @@ X-list: linux-mips
 
 Hi,
 
-here's a patch to make serial console work on IP2X machines.  I submitted
-it already on Dec 20, Kaj-Michael Lang submitted it again on Feb 14, but
-somehow it didn't find its way into CVS yet.  Please apply. Thank you.
+here's a (long outstanding) patch, that let's `r4k_dma_cache_inv' do what
+it should do, instead of being a mere copy of `r4k_dma_cache_wback_inv'.
+(There really are machines, where we occasionaly can't avoid to invalidate
+cache(s) :)
+Please apply. Thank you.
 
 with best regards
 
@@ -44,23 +48,42 @@ pf
 
 --- snip ---------------------------------------------------------------
 
-diff -Nau -b -B drivers/serial/ip22zilog.c.1.16 drivers/serial/ip22zilog.c
---- drivers/serial/ip22zilog.c.1.16	Fri Dec  3 06:07:38 2004
-+++ drivers/serial/ip22zilog.c	Sat Feb 12 15:14:48 2005
-@@ -881,6 +881,7 @@
- 	up->cflag = termios->c_cflag;
+diff -Nau -b -B arch/mips/mm/c-r4k.c.1.107 arch/mips/mm/c-r4k.c
+--- arch/mips/mm/c-r4k.c.1.107	Fri Mar 18 17:36:53 2005
++++ arch/mips/mm/c-r4k.c	Tue Mar 22 23:35:23 2005
+@@ -668,32 +668,24 @@
+ 	if (cpu_has_subset_pcaches) {
+ 		unsigned long sc_lsize = current_cpu_data.scache.linesz;
  
- 	ip22zilog_maybe_update_regs(up, ZILOG_CHANNEL_FROM_PORT(port));
-+	uart_update_timeout(port, termios->c_cflag, baud);
- 
- 	spin_unlock_irqrestore(&up->port.lock, flags);
- }
-@@ -1047,6 +1048,8 @@
+-		if (size >= scache_size) {
+-			r4k_blast_scache();
+-			return;
+-		}
+-
+ 		a = addr & ~(sc_lsize - 1);
+ 		end = (addr + size - 1) & ~(sc_lsize - 1);
+ 		while (1) {
+-			flush_scache_line(a);	/* Hit_Writeback_Inv_SD */
++			invalidate_scache_line(a);	/* Hit_Invalidate_SD/S */
+ 			if (a == end)
+ 				break;
+ 			a += sc_lsize;
+ 		}
+ 		return;
  	}
+-
+-	if (size >= dcache_size) {
+-		r4k_blast_dcache();
+-	} else {
++	{
+ 		unsigned long dc_lsize = current_cpu_data.dcache.linesz;
  
- 	con->cflag = cflag | CS8;			/* 8N1 */
-+
-+	uart_update_timeout(&ip22zilog_port_table[con->index].port, cflag, baud);
- }
- 
- static int __init ip22zilog_console_setup(struct console *con, char *options)
+ 		R4600_HIT_CACHEOP_WAR_IMPL;
+ 		a = addr & ~(dc_lsize - 1);
+ 		end = (addr + size - 1) & ~(dc_lsize - 1);
+ 		while (1) {
+-			flush_dcache_line(a);	/* Hit_Writeback_Inv_D */
++			invalidate_dcache_line(a);	/* Hit_Invalidate_D */
+ 			if (a == end)
+ 				break;
+ 			a += dc_lsize;

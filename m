@@ -1,77 +1,49 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f76JJxm24442
-	for linux-mips-outgoing; Mon, 6 Aug 2001 12:19:59 -0700
-Received: from scsoftware.sc-software.com (mipsdev@[206.40.202.193])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f76JJsV24436;
-	Mon, 6 Aug 2001 12:19:54 -0700
-Received: from localhost (mipsdev@localhost) by scsoftware.sc-software.com (8.8.3/8.8.3) with SMTP id MAA17908; Mon, 6 Aug 2001 12:13:29 GMT
-Date: Mon, 6 Aug 2001 12:13:29 +0000 (   )
-From: John Heil <mipsdev@scsoftware.sc-software.com>
-To: Ralf Baechle <ralf@oss.sgi.com>
-cc: linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.2/8.11.3) id f76JXmU25666
+	for linux-mips-outgoing; Mon, 6 Aug 2001 12:33:48 -0700
+Received: from dea.waldorf-gmbh.de (u-145-10.karlsruhe.ipdial.viaginterkom.de [62.180.10.145])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f76JXhV25659
+	for <linux-mips@oss.sgi.com>; Mon, 6 Aug 2001 12:33:44 -0700
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f76JWnt22002;
+	Mon, 6 Aug 2001 21:32:49 +0200
+Date: Mon, 6 Aug 2001 21:32:49 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: John Heil <mipsdev@scsoftware.sc-software.com>
+Cc: linux-mips@oss.sgi.com
 Subject: Re: Qube2 gcc 2.7.2 compiler error (fwd)
-In-Reply-To: <20010806114556.A17179@bacchus.dhis.org>
-Message-ID: <Pine.LNX.3.95.1010806120030.15505K-100000@scsoftware.sc-software.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Message-ID: <20010806213249.A21984@bacchus.dhis.org>
+References: <20010806114556.A17179@bacchus.dhis.org> <Pine.LNX.3.95.1010806120030.15505K-100000@scsoftware.sc-software.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.LNX.3.95.1010806120030.15505K-100000@scsoftware.sc-software.com>; from mipsdev@scsoftware.sc-software.com on Mon, Aug 06, 2001 at 12:13:29PM +0000
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, 6 Aug 2001, Ralf Baechle wrote:
+On Mon, Aug 06, 2001 at 12:13:29PM +0000, John Heil wrote:
 
-> Date: Mon, 6 Aug 2001 11:45:56 +0200
-> From: Ralf Baechle <ralf@oss.sgi.com>
-> To: John Heil <mipsdev@scsoftware.sc-software.com>
-> Cc: cobalt-22@devel.alal.com, cobalt-developers@list.cobalt.com,
->     linux-mips@oss.sgi.com
-> Subject: Re: Qube2 gcc 2.7.2 compiler error (fwd)
+> > gcc 2.7.2 creates a duplicate label for each function label.  That is no
+> > problem as both always have the same value.  But I assume you're talking
 > 
-> On Sun, Aug 05, 2001 at 12:59:23PM +0000, John Heil wrote:
-> > Date: Sun, 5 Aug 2001 12:59:23 +0000 (   )
-> > From: John Heil <mipsdev@scsoftware.sc-software.com>
-> > To: cobalt-22@devel.alal.com, cobalt-developers@list.cobalt.com,
-> >         linux-mips@oss.sgi.com
-> > Subject: Qube2 gcc 2.7.2 compiler error (fwd)
-> > 
-> > 
-> > On the Qube2, gcc 2.7.2, option -s, to generate MIPS assembler
-> > corresponding to the input C code, generates invalid assembler
-> > by virtue of generating duplicate labels. The resultant 
-> > assembler will not assemble, of course, due to the duplicate
-> > labels.  The code (linux kernel's printk.c) compiles cleanly
-> > from C to object code.
-> > 
-> > Q: How do I get valid assembler from gcc on Qube2 ?
-> > (My ultimate goal here is to be able to get listings out
-> > of gas.)
+> This is exactly the problem. The fact that the values are the same is
+> causing the assembler interface to GCC to fail. When gcc -S outputs a 
+> .s assembler file, the GNU as assembler errors out on 'duplicate label'.
+
+Since when that?  Gas used to accept that for just more than half a decade.
+You seem to be using some non-standard gas version?
+
+> I'm happy to upgrade...
 > 
-> gcc 2.7.2 creates a duplicate label for each function label.  That is no
-> problem as both always have the same value.  But I assume you're talking
+> What is the recommended level for kernel compiles and where can I find it.
+> I am required to work on 2.0.34C53_SK using Qube2 for my build platform
+> so I need compatibility. If I could cross compile on x86 that would be 
+> cool too.
 
-This is exactly the problem. The fact that the values are the same is
-causing the assembler interface to GCC to fail. When gcc -S outputs a 
-.s assembler file, the GNU as assembler errors out on 'duplicate label'.
+You may want to try H.J. Lu's latest tools from oss.  I should mention that
+nobody is testing on such old systems any more and I suspect some minor
+changes may be required to get these tools to work in such an environment.
 
-Further, using the gcc -Wa,... without using -S, causes the compile to 
-fail when the assembler is invoked and gives the same errors.
-
-
-> about a different type of label?  Can you send a piece of small piece of
-> source code and the assembler code generated from it to demonstrate the
-> problem?
-> 
-> Anyway, these days gcc 2.7.2 is so old these days it's not even funny.  You
-> really should upgrade.
-> 
->   Ralf
-> 
-
-I'm happy to upgrade...
-
-What is the recommended level for kernel compiles and where can I find it.
-I am required to work on 2.0.34C53_SK using Qube2 for my build platform
-so I need compatibility. If I could cross compile on x86 that would be 
-cool too.
-
-Thanx much
-John
+  Ralf

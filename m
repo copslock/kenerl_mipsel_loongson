@@ -1,59 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Dec 2004 01:02:35 +0000 (GMT)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:59740
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8226196AbULBBCa>; Thu, 2 Dec 2004 01:02:30 +0000
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp
-	id 1CZfMc-0008U8-00; Thu, 02 Dec 2004 02:02:30 +0100
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 1CZfMb-0006EA-00; Thu, 02 Dec 2004 02:02:29 +0100
-Date: Thu, 2 Dec 2004 02:02:29 +0100
-To: "Maciej W. Rozycki" <macro@linux-mips.org>
-Cc: Dominic Sweetman <dom@mips.com>, linux-mips@linux-mips.org,
-	ralf@linux-mips.org, Nigel Stephens <nigel@mips.com>,
-	David Ung <davidu@mips.com>
-Subject: Re: [PATCH] Improve atomic.h implementation robustness
-Message-ID: <20041202010229.GP3225@rembrandt.csv.ica.uni-stuttgart.de>
-References: <20041201070014.GG3225@rembrandt.csv.ica.uni-stuttgart.de> <16813.39660.948092.328493@doms-laptop.algor.co.uk> <20041201204536.GI3225@rembrandt.csv.ica.uni-stuttgart.de> <Pine.LNX.4.58L.0412012151210.13579@blysk.ds.pg.gda.pl> <20041201230332.GM3225@rembrandt.csv.ica.uni-stuttgart.de> <Pine.LNX.4.58L.0412020001340.20966@blysk.ds.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Dec 2004 01:56:52 +0000 (GMT)
+Received: from mo00.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:14801 "EHLO
+	mo00.iij4u.or.jp") by linux-mips.org with ESMTP id <S8226232AbULBB4r>;
+	Thu, 2 Dec 2004 01:56:47 +0000
+Received: MO(mo00)id iB21uC43004052; Thu, 2 Dec 2004 10:56:12 +0900 (JST)
+Received: MDO(mdo01) id iB21uB6Z028090; Thu, 2 Dec 2004 10:56:12 +0900 (JST)
+Received: 4UMRO01 id iB21uBR8002349; Thu, 2 Dec 2004 10:56:11 +0900 (JST)
+	from rally (localhost [127.0.0.1]) (authenticated)
+Date: Thu, 2 Dec 2004 10:56:26 +0900
+From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+To: "Maciej W. Rozycki" <macro@linux-mips.org>,
+	ica2_ts@csv.ica.uni-stuttgart.de
+Cc: yuasa@hh.iij4u.or.jp, ralf@linux-mips.org,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH 2.6] tlbwr hazard for NEC VR4100
+Message-Id: <20041202105626.46056a37.yuasa@hh.iij4u.or.jp>
+In-Reply-To: <Pine.LNX.4.58L.0412020019050.20966@blysk.ds.pg.gda.pl>
+References: <20041201234943.584d88e8.yuasa@hh.iij4u.or.jp>
+	<20041202000713.GO3225@rembrandt.csv.ica.uni-stuttgart.de>
+	<Pine.LNX.4.58L.0412020019050.20966@blysk.ds.pg.gda.pl>
+X-Mailer: Sylpheed version 1.0.0beta3 (GTK+ 1.2.10; i386-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.58L.0412020001340.20966@blysk.ds.pg.gda.pl>
-User-Agent: Mutt/1.5.6i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6540
+X-archive-position: 6541
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
-Maciej W. Rozycki wrote:
-[snip]
-> > I discussed this with Richard Sandiford a while ago, and the conclusion
-> > was to implement an explicit --msym32 option for both gcc and gas to
-> > improve register scheduling and get rid of the gas hack. So far, nobody
-> > came around to actually do the work for it.
+On Thu, 2 Dec 2004 00:24:30 +0000 (GMT)
+"Maciej W. Rozycki" <macro@linux-mips.org> wrote:
+
+> On Thu, 2 Dec 2004, Thiemo Seufer wrote:
 > 
->  ... like this, for example.  But if nobody has implemented it yet, then 
-> perhaps nobody is really interested in it? ;-)
-
-The old solution works, and kernel developers tend to use old toolchains.
-
-> > seen additional load/store insn creeping in ll/sc loops. I believe
-> > there's a large amount of inline assembly code (not necessarily in the
-> > kernel) which relies on similiar assumptions.
+> > If 64bit kernels are ever relevant for VR41xx, you might want to use
+> > the same branch trick as it is used for R4[04]00. IIRC it reduced the
+> > handler size from 34 to 30 instructions, saving another branch.
 > 
->  With explicit relocs you have no problem with any instructions appearing 
-> inside inline asms unexpectedly.  That is if you use the "R" constraint -- 
-> the "m" one never guaranteed that.
+>  Isn't that based on specific properties of the R4[04]00 pipeline?  It may
+> still work for the VR41xx, but you can't take it for granted, so it should
+> be double-checked.  Given the conditions it's probably worth the hassle,
+> though.
 
-But it happened to work, and is in widespread use.
+The specification of VR41xx does not have the guarantee to the branch trick.
+Furthermore, VR41xx has the NEC original pipeline.
 
+I think that the present method is exact for VR41xx.
 
-Thiemo
+Yoichi

@@ -1,74 +1,61 @@
-Received:  by oss.sgi.com id <S553846AbQKTKWF>;
-	Mon, 20 Nov 2000 02:22:05 -0800
-Received: from [203.116.49.131] ([203.116.49.131]:1477 "EHLO convert rfc822-to-8bit
-        as400.etown.com.sg") by oss.sgi.com with ESMTP id <S553842AbQKTKVg>;
-	Mon, 20 Nov 2000 02:21:36 -0800
-Received: from buttler-mad.mad.servicom.es ([63.52.247.249])
-          by as400.etown.com.sg (Lotus Domino Release 5.0.3 (Intl))
-          with SMTP id 2000111703584656:252 ;
-          Fri, 17 Nov 2000 03:58:46 +0800 
-Message-Id: <vt581n28ed5.b77d4a01g@buttler-mad.mad.servicom.es>
-From:   Lee@cc-srv.baranyanet.hu
-Subject: Information You Requested
-Date:   Thu, 16 Nov 2000 14:50:23 -0500
-To:     Elliot@essenet.it
-X-MIMETrack: Itemize by SMTP Server on etown/etown(Release 5.0.3 (Intl)|21 March 2000) at
- 11/17/2000 03:58:48 AM,
-	Serialize by Router on etown/etown(Release 5.0.3 (Intl)|21 March 2000) at
- 11/20/2000 06:20:46 PM
-MIME-Version: 1.0
-Content-Type: text/plain;
-	 charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
+Received:  by oss.sgi.com id <S553669AbQKTT44>;
+	Mon, 20 Nov 2000 11:56:56 -0800
+Received: from woody.ichilton.co.uk ([216.29.174.40]:22546 "HELO
+        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553660AbQKTT4p>;
+	Mon, 20 Nov 2000 11:56:45 -0800
+Received: by woody.ichilton.co.uk (Postfix, from userid 0)
+	id 8C51C7CF5; Mon, 20 Nov 2000 19:56:43 +0000 (GMT)
+Date:   Mon, 20 Nov 2000 19:56:43 +0000
+From:   Ian Chilton <mailinglist@ichilton.co.uk>
+To:     linux-mips@oss.sgi.com
+Subject: ICLinux/MIPS v1.0 Released
+Message-ID: <20001120195643.A31511@woody.ichilton.co.uk>
+Reply-To: Ian Chilton <ian@ichilton.co.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.3.11i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+Hello,
+
+I have just released ICLinux/MIPS v1.0. This is a full base system
+(incl compiler + networking). This is based on
+Linux-2.2/glibc-2.0.6/egcs-1.0.3a/binutils-2.8.1
+
+Coming soon is ICLinux/MIPS v2.0, which will be based on
+Linux-2.4/glibc-2.2/gcc 2.97
+
+ICLinux/MIPS is for Mips-Linux Systems, specifically the Indy or the I2
+
+A brief install guide can be seen at:
+ftp://download.ichilton.co.uk/pub/ichilton/linux-mips/iclinux/INSTALL
+
+-----------------------------------------------------------------
+Also, please remember to theck the Official #mipslinux web page @
+http://linuxmips.ichilton.co.uk 
+-----------------------------------------------------------------
 
 
-
-You were recently referred to me as someone who was
-ready for a CHANGE, a financial breakthrough, so I'll
-get right to the point.
-
-I am the one that can help you make $125,000 plus this
-year from HOME with your computer and phone. 
-This is Not MLM and it IS very REAL.
-
-Are you Serious about making $2000 plus per week 
-starting Right Away with a SIMPLE system 
-where customers are contacting you and 
-you do absolutely ZERO selling?
-
-Can you follow simple step-by-step instructions and put
-forth the effort to make this a reality for yourself starting
-today? If your answer is YES, then we need to talk.
-
-I have few positions available on my team and its in my best
-interest to train you for success.  In fact, I'm so sure that
-I can do so, I'm willing to put my money where my mouth is!
-Upon accepting you as a member on my team, I will provide 
-you with complete Professional Training and Advertising  
-Assistance to put you immediately on the road to success.
-
-No experience necessary.... However you must have 
-two qualities: moderate people skills and a serious desire 
-for a personal and financial change.
-
-Take a moment to take the next step by calling me at my 
-Home Office and I will get you the details.
+As usual, you use all this stuff at your own risk  :-)
 
 
-1-800-570-3782 ext 0652
-24 Hrs/ 7 Days
+I'd be interested in knowing if you use ICLinux and your comments.
 
 
-Prosperous Regards!
-Lee
+Bye for Now,
 
-"Profits are better than wages. Wages make you a living;
-Profits make you a fortune"
-					- Jim Rohn
+Ian
 
-To be removed send email to socpcf@yahoo.com
+                                \|||/
+                                (o o)
+ /---------------------------ooO-(_)-Ooo---------------------------\
+ |  Ian Chilton        (IRC Nick - GadgetMan)     ICQ #: 16007717  |
+ |-----------------------------------------------------------------|
+ |  E-Mail: ian@ichilton.co.uk     Web: http://www.ichilton.co.uk  |
+ |-----------------------------------------------------------------|
+ |       I used up all my sick days, so I'm calling in dead.       |
+ \-----------------------------------------------------------------/

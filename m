@@ -1,56 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Dec 2004 10:24:23 +0000 (GMT)
-Received: from mailfe10.tele2.se ([IPv6:::ffff:212.247.155.33]:59078 "EHLO
-	mailfe10.swip.net") by linux-mips.org with ESMTP
-	id <S8224943AbULSKYS>; Sun, 19 Dec 2004 10:24:18 +0000
-X-T2-Posting-ID: g63wq726D5fsXb2UbU6LU0KOXzHnTHjCzHZ35sC2MDs=
-Received: from [213.103.212.108] (HELO [192.168.0.32])
-  by mailfe10.swip.net (CommuniGate Pro SMTP 4.2.7)
-  with ESMTP id 43305559 for linux-mips@linux-mips.org; Sun, 19 Dec 2004 11:23:22 +0100
-Message-ID: <41C556C3.401@laposte.net>
-Date: Sun, 19 Dec 2004 11:24:03 +0100
-From: Frederic TEMPORELLI <frederic.temporelli@laposte.net>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.7.3) Gecko/20040910
-X-Accept-Language: fr, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Dec 2004 12:25:52 +0000 (GMT)
+Received: from sccrmhc11.comcast.net ([IPv6:::ffff:204.127.202.55]:24461 "EHLO
+	sccrmhc11.comcast.net") by linux-mips.org with ESMTP
+	id <S8225203AbULSMZr>; Sun, 19 Dec 2004 12:25:47 +0000
+Received: from [192.168.1.4] (pcp05077810pcs.waldrf01.md.comcast.net[68.54.246.193])
+          by comcast.net (sccrmhc11) with ESMTP
+          id <2004121912253001100atp6me>; Sun, 19 Dec 2004 12:25:30 +0000
+Message-ID: <41C57431.8000900@gentoo.org>
+Date: Sun, 19 Dec 2004 07:29:37 -0500
+From: Kumba <kumba@gentoo.org>
+User-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
 To: linux-mips@linux-mips.org
-Subject: SGI O2 - RAM 320MBytes - linux reports 245MBytes  (/proc/meminfo)
-References: <20041219023850Z8225215-1340+5@linux-mips.org>
-In-Reply-To: <20041219023850Z8225215-1340+5@linux-mips.org>
+CC: Frederic TEMPORELLI <frederic.temporelli@laposte.net>
+Subject: Re: SGI O2 - RAM 320MBytes - linux reports 245MBytes  (/proc/meminfo)
+References: <20041219023850Z8225215-1340+5@linux-mips.org> <41C556C3.401@laposte.net>
+In-Reply-To: <41C556C3.401@laposte.net>
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <frederic.temporelli@laposte.net>
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6708
+X-archive-position: 6709
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: frederic.temporelli@laposte.net
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+Frederic TEMPORELLI wrote:
+> Hello,
+> 
+> no way to see (use ?) all available RAM (320MB) on SGI O2 with 
+> 2.6.10-rc3 (latest cvs)
+> 
+> Hardware => SGI O2 with 320MBytes in this way:
+> dimm 1: 32MBytes - dimm2: 32MBytes
+> dimm 3: 32MBytes - dimm4: 32MBytes
+> dimm 5: 32MBytes - dimm6: 32MBytes
+> dimm 7: 64MBytes - dimm8: 64MBytes
+> 
+> Firmware => "hinv" is reporting 320MBytes (OK, match hardware)
+> 
+> Linux Kernel (32 and 64 bits) => /proc/meminfo is reporting a MemTotal 
+> of 245436KB
+> "top" command is reporting same wrong value (more than 64MB missing)
+> 
+> where can I look for in sources to report/use all available RAM ?
+> can you help me ?
 
-no way to see (use ?) all available RAM (320MB) on SGI O2 with 
-2.6.10-rc3 (latest cvs)
+O2, like Indy and I2/R4x00, are limited to 256MB max RAM currently.  To see 
+any further, O2 needs HIGHMEM support, which last I checked, doesn't exist.
 
-Hardware => SGI O2 with 320MBytes in this way:
-dimm 1: 32MBytes - dimm2: 32MBytes
-dimm 3: 32MBytes - dimm4: 32MBytes
-dimm 5: 32MBytes - dimm6: 32MBytes
-dimm 7: 64MBytes - dimm8: 64MBytes
+Patches welcome :)
 
-Firmware => "hinv" is reporting 320MBytes (OK, match hardware)
 
-Linux Kernel (32 and 64 bits) => /proc/meminfo is reporting a MemTotal 
-of 245436KB
-"top" command is reporting same wrong value (more than 64MB missing)
+--Kumba
 
-where can I look for in sources to report/use all available RAM ?
-can you help me ?
- 
-Regards
-
---
-Frederic TEMPORELLI
+-- 
+"Such is oft the course of deeds that move the wheels of the world: small 
+hands do them because they must, while the eyes of the great are elsewhere." 
+--Elrond

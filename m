@@ -1,58 +1,42 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f49BucU21503
-	for linux-mips-outgoing; Wed, 9 May 2001 04:56:38 -0700
-Received: from cvsftp.cotw.com (cvsftp.cotw.com [208.242.241.39])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f49BubF21500
-	for <linux-mips@oss.sgi.com>; Wed, 9 May 2001 04:56:37 -0700
-Received: from cotw.com (dhcp-050.inter.net [192.168.10.50])
-	by cvsftp.cotw.com (8.9.3/8.9.3) with ESMTP id GAA25018;
-	Wed, 9 May 2001 06:51:15 -0500
-Message-ID: <3AF93260.A9C63FB3@cotw.com>
-Date: Wed, 09 May 2001 07:04:48 -0500
-From: "Steven J. Hill" <sjhill@cotw.com>
-Reply-To: sjhill@cotw.com
-X-Mailer: Mozilla 4.76 [en] (X11; U; Linux 2.2.19pre17-idepci i686)
+	by oss.sgi.com (8.11.3/8.11.3) id f49C7gD21884
+	for linux-mips-outgoing; Wed, 9 May 2001 05:07:42 -0700
+Received: from mailgw2.netvision.net.il (mailgw2.netvision.net.il [194.90.1.9])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f49C7eF21881
+	for <linux-mips@oss.sgi.com>; Wed, 9 May 2001 05:07:40 -0700
+Received: from jungo.com ([194.90.113.98])
+	by mailgw2.netvision.net.il (8.9.3/8.9.3) with ESMTP id PAA13119;
+	Wed, 9 May 2001 15:05:49 +0300 (IDT)
+Message-ID: <3AF93224.6080304@jungo.com>
+Date: Wed, 09 May 2001 15:03:48 +0300
+From: Michael Shmulevich <michaels@jungo.com>
+Organization: Jungo LTD
+User-Agent: Mozilla/5.0 (X11; U; Linux 2.2.17-21mdk i686; en-US; 0.8.1) Gecko/20010326
 X-Accept-Language: en
 MIME-Version: 1.0
-To: Jun Sun <jsun@mvista.com>
-CC: linux-mips@oss.sgi.com
-Subject: Re: machine types for MIPS in ELF file
-References: <3AF843F7.72BC47F0@mvista.com>
-Content-Type: text/plain; charset=us-ascii
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+CC: linux-mips@fnet.fr, linux-mips@oss.sgi.com
+Subject: Re: [patch] 2.4.4: mmap() fails for certain legal requests
+References: <Pine.GSO.3.96.1010508235846.4713H-100000@delta.ds2.pg.gda.pl>
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Jun Sun wrote:
-> 
-> The e_machine field in ELF file standard defines two values for MIPS:
-> 
-> 8       - MIPS RS3000 BE
-> 10      - MIPS RS4000 BE
-> 
-> Naturally the question is: what about LE binaries?  And what about other
-> CPUs?  Is there any effort to clean up this thing?
-> 
-> All the tools that I know of are using 8, pretty much for all CPUs and both
-> endians.  No real harm has been observed, but it causes some anonying "invalid
-> byte order" complains if you do "file" on a MIPS LE binary.  Of course, it
-> will also invariably reports "R3000" cpu as well.
-> 
-This has bothered me as well. I would like to see a few machines added
-at least something like R5000, R8000, R10000 along with the proper ISA
-value being stored in the e_flags field. I would be more than happy to
-help make the changes as it is something that IMHO needs to be fixed.
+As a side question: does this patch apply to 2.2.x kernel too?
 
-As far as the latest ABI specs go, here are 2 different links for the
-same documents. Ralf and I went digging for these a few weeks back.
+While working on ld.so.1-9 port on MIPS I seen there's a try to mmap() 
+some address > 0x80000000 which fails due to the same 
+if(...TASK_SIZE...) mentioned in the patch.
 
-    http://www.sco.com/partners/developer/devspecs/
-    http://www.linuxbase.org/spec/refspecs/
+Just wondering if this applies to me too :-)
 
--Steve
-
--- 
- Steven J. Hill - Embedded SW Engineer
- Public Key: 'http://www.cotw.com/pubkey.txt'
- FPR1: E124 6E1C AF8E 7802 A815
- FPR2: 7D72 829C 3386 4C4A E17D
+Sincerely yours,
+Michael Shmulevich
+______________________________________
+Software Developer
+Jungo - R&D
+email: michaels@jungo.com
+web: http://www.jungo.com
+Phone: 1-877-514-0537(USA)  +972-9-8859365(Worldwide) ext. 233
+Fax:   1-877-514-0538(USA)  +972-9-8859366(Worldwide)

@@ -1,47 +1,41 @@
-Received:  by oss.sgi.com id <S305156AbQAMSXE>;
-	Thu, 13 Jan 2000 10:23:04 -0800
-Received: from deliverator.sgi.com ([204.94.214.10]:57176 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305154AbQAMSWp>;
-	Thu, 13 Jan 2000 10:22:45 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id KAA19033; Thu, 13 Jan 2000 10:19:47 -0800 (PST)
-	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id KAA59353
-	for linux-list;
-	Thu, 13 Jan 2000 10:10:31 -0800 (PST)
-	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id KAA39421
-	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 13 Jan 2000 10:10:29 -0800 (PST)
-	mail_from (weave@eng.umd.edu)
-Received: from po3.glue.umd.edu (po3.glue.umd.edu [128.8.10.123]) 
+Received:  by oss.sgi.com id <S305156AbQAMSnO>;
+	Thu, 13 Jan 2000 10:43:14 -0800
+Received: from sgi.SGI.COM ([192.48.153.1]:57419 "EHLO sgi.com")
+	by oss.sgi.com with ESMTP id <S305154AbQAMSmx>;
+	Thu, 13 Jan 2000 10:42:53 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id KAA00745
-	for <linux@cthulhu.engr.sgi.com>; Thu, 13 Jan 2000 10:09:49 -0800 (PST)
-	mail_from (weave@eng.umd.edu)
-Received: from z.glue.umd.edu (root@z.glue.umd.edu [128.8.10.71])
-	by po3.glue.umd.edu (8.9.3/8.9.3) with ESMTP id NAA28590
-	for <linux@cthulhu.engr.sgi.com>; Thu, 13 Jan 2000 13:09:17 -0500 (EST)
-Received: from z.glue.umd.edu (sendmail@localhost [127.0.0.1])
-	by z.glue.umd.edu (8.9.3/8.9.3) with SMTP id NAA26316
-	for <linux@cthulhu.engr.sgi.com>; Thu, 13 Jan 2000 13:09:16 -0500 (EST)
-Received: from localhost (weave@localhost)
-	by z.glue.umd.edu (8.9.3/8.9.3) with ESMTP id NAA26312
-	for <linux@cthulhu.engr.sgi.com>; Thu, 13 Jan 2000 13:09:16 -0500 (EST)
-X-Authentication-Warning: z.glue.umd.edu: weave owned process doing -bs
-Date:   Thu, 13 Jan 2000 13:09:16 -0500 (EST)
-From:   Vince Weaver <weave@eng.umd.edu>
-X-Sender: weave@z.glue.umd.edu
-To:     linux@cthulhu.engr.sgi.com
-Subject: identifying sgi system type
-In-Reply-To: <Pine.GSO.4.21.0001121729110.15153-100000@z.glue.umd.edu>
-Message-ID: <Pine.GSO.4.21.0001131258320.25401-100000@z.glue.umd.edu>
+	via ESMTP id KAA08524; Thu, 13 Jan 2000 10:43:32 -0800 (PST)
+	mail_from (owner-linux@cthulhu.engr.sgi.com)
+Received: (from majordomo-owner@localhost)
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	id KAA62623
+	for linux-list;
+	Thu, 13 Jan 2000 10:32:21 -0800 (PST)
+	mail_from (owner-linux@relay.engr.sgi.com)
+Received: from deliverator.sgi.com (deliverator.sgi.com [150.166.91.37])
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	via ESMTP id KAA72857
+	for <linux@cthulhu.engr.sgi.com>;
+	Thu, 13 Jan 2000 10:32:18 -0800 (PST)
+	mail_from (bercovic@swi.psy.uva.nl)
+Received: from swi.psy.uva.nl (swi.psy.uva.nl [145.18.114.14]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id KAA19981
+	for <linux@cthulhu.engr.sgi.com>; Thu, 13 Jan 2000 10:27:54 -0800 (PST)
+	mail_from (bercovic@swi.psy.uva.nl)
+Received: from localhost (bercovic@localhost)
+	by swi.psy.uva.nl (8.9.3/8.9.3) with ESMTP id TAA03063;
+	Thu, 13 Jan 2000 19:32:04 +0100 (MET)
+Date:   Thu, 13 Jan 2000 19:32:04 +0100 (MET)
+From:   Avi Bercovich <bercovic@swi.psy.uva.nl>
+X-Sender: bercovic@swi
+To:     bercovic@swi.psy.uva.nl
+cc:     linux@cthulhu.engr.sgi.com
+Subject: Status Indigo2 Beowulf project...
+In-Reply-To: <Pine.GSO.4.21.0001131258320.25401-100000@z.glue.umd.edu>
+Message-ID: <Pine.GSO.4.05.10001131927540.2873-100000@swi>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linuxmips@oss.sgi.com
@@ -49,32 +43,17 @@ Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-Hello again
 
-I was trying to see if I could get this Indigo2 to display that it is an
-Indigo2 under /proc/cpuinfo [instead of current behavior, which assumes
-all SGI's are indy's].
+Hello All,
 
-I thought that maybe I could get the PROM to tell me this info, using code
-like this
+I was wondering what the status was of the effort to build a beowulf 
+cluster using Indigo2's. 
 
-    #include <asm/sgialib.h>
+kind regards,
 
-    struct linux_sysid *mree;
+avi
 
-    mree=prom_getsysid();
-    printk("Vendor: %s     Prod: %s\n",mree->vend,mree->prod);
-
-
-the vendor is returned as SGI, but the "prod" just returns the serial
-number [which seems to be just the last few octets of the MAC address of
-the ethernet card].  
-
-Is it possible to figure out what system type it is from this info?  Is
-there another way to find out sgi system type?  Or is this just not
-possible?
-
-Vince
-____________
-\  /\  /\  /  Vince Weaver          
- \/__\/__\/   weave@eng.umd.edu     http://www.glue.umd.edu/~weave
+--------------------------------------------------------------------------
+Avi Bercovich                                      bercovic@swi.psy.uva.nl
+Sinjeur Semeynsstraat 9          Dept. of Social Science Informatics (SWI)
+1183LD Amstelveen                                  University of Amsterdam     

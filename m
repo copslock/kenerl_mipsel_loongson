@@ -1,89 +1,68 @@
-Received:  by oss.sgi.com id <S553765AbQJXR5p>;
-	Tue, 24 Oct 2000 10:57:45 -0700
-Received: from fileserv2.cologne.de ([195.227.25.6]:35673 "HELO
-        fileserv2.Cologne.DE") by oss.sgi.com with SMTP id <S553714AbQJXR5X>;
-	Tue, 24 Oct 2000 10:57:23 -0700
-Received: from localhost (3405 bytes) by fileserv2.Cologne.DE
-	via rmail with P:stdio/R:bind/T:smtp
-	(sender: <excalibur.cologne.de!karsten>) (ident <excalibur.cologne.de!karsten> using unix)
-	id <m13o8K5-0006w7C@fileserv2.Cologne.DE>
-	for <ralf@oss.sgi.com>; Tue, 24 Oct 2000 19:57:17 +0200 (CEST)
-	(Smail-3.2.0.101 1997-Dec-17 #5 built 1998-Jan-19)
-Received: (from karsten@localhost)
-	by excalibur.cologne.de (8.9.3/8.8.7) id TAA04519;
-	Tue, 24 Oct 2000 19:55:55 +0200
-Message-ID: <20001024195555.A4469@excalibur.cologne.de>
-Date:   Tue, 24 Oct 2000 19:55:55 +0200
-From:   Karsten Merker <karsten@excalibur.cologne.de>
+Received:  by oss.sgi.com id <S553777AbQJXVfG>;
+	Tue, 24 Oct 2000 14:35:06 -0700
+Received: from gateway-490.mvista.com ([63.192.220.206]:41979 "EHLO
+        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553774AbQJXVfA>;
+	Tue, 24 Oct 2000 14:35:00 -0700
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id e9OLXQ328024;
+	Tue, 24 Oct 2000 14:33:27 -0700
+Message-ID: <39F600D6.A54FC824@mvista.com>
+Date:   Tue, 24 Oct 2000 14:36:22 -0700
+From:   Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-5.0 i586)
+X-Accept-Language: en
+MIME-Version: 1.0
 To:     Ralf Baechle <ralf@oss.sgi.com>
-Cc:     linux-mips@fnet.fr, linux-mips@oss.sgi.com
-Subject: Re: process lockups
-Mail-Followup-To: Ralf Baechle <ralf@oss.sgi.com>, linux-mips@fnet.fr,
-	linux-mips@oss.sgi.com
-References: <20001024044736.B3397@bacchus.dhis.org> <200010240551.HAA02069@sparta.research.kpn.com> <20001024163843.A7342@bacchus.dhis.org>
-Mime-Version: 1.0
+CC:     linux-mips@oss.sgi.com
+Subject: Re: pthread_create() gets BUS ERROR
+References: <39EF765A.EC787ED6@mvista.com> <20001020003946.E20887@bacchus.dhis.org> <39F4E4C2.A9570003@mvista.com> <20001024033743.B2816@bacchus.dhis.org>
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.91i
-In-Reply-To: <20001024163843.A7342@bacchus.dhis.org>; from Ralf Baechle on Tue, Oct 24, 2000 at 04:38:43PM +0200
-X-No-Archive: yes
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, Oct 24, 2000 at 04:38:43PM +0200, Ralf Baechle wrote:
+Ralf Baechle wrote:
+> 
+> On Mon, Oct 23, 2000 at 06:24:18PM -0700, Jun Sun wrote:
+> 
+> > Since Ralf has not posted his patch for glibc yet, I looked into the
+> > problem a little bit more.
+> 
+> If you'd be waiting just a few minutes longer I'd have announced it :-)
+> 
+> The srpm is currently uploading to oss.sgi.com:/pub/linux/mips/glibc/
+> srpms/glibc-2.0.6-7lm.src.rpm.  The file is 4682466 bytes long, so don't
+> start downloading before it's completly uploaded :-)
+> 
+> > It appears to be another toolchain related problem, instead of a glibc
+> > problem.
+> >
+> > In linuxthread/pthread.c:pthread_initialize_manager(), it accesses a
+> > global variable __pthread_initial_thread_bos in pthread shared library.
+> > Apparently the code finds out the address of the variable through some
+> > table (why is that?).  It looks like the offset for variable is off by
+> > 8.  Another ld problem?
+> >
+> > I am using the "old but stable" toolchains, as I stated in an earlier
+> > email.:-9
+> 
+> This description somehow rings a bell.  I'll dig through my mailfolders
+> and will post if I find something.
+> 
+>   Ralf
 
-> Which is a problem - I need exactly the WCHAN information to debug this
-> problem.
+Since I suspect it is binutils problem, I tried to use the latest
+binutil with egcs 1.0.3a and glibc 2.0.6.  This leads to unusable
+userland programs - init hangs.  sash runs, but nothing else seems to
+work.  Do that mean I should not mix up the versions among toolchains? 
+Has anybody tried that above combo before?
 
-Here we go...
+I will try glibc-2.0.6-7lm.src.rpm, but I am very hopeful that it will
+solve this problem.
 
-Two major processes are running: a tar zxvf (PIDs 212 and 213) and a
-dpkg-buildpackage. Both together should consume all CPU time available,
-but they do not, they just sit idle. Interesting is that here there is no
-process in state "D" as I had before. This seems to be reproducible.
+BTW, has anybody got pthread running on any 2.4 Linux/MIPS?  I want to
+know if I am just unlucky or else...
 
-These logs were created from a fresh cvs-checkout (already including your
-patch).
-
-root# ps -laww
-  F S   UID   PID  PPID  C PRI  NI ADDR SZ WCHAN  TTY          TIME CMD
-100 S     0   189   168  0  60   0 -  1000 pause  ttyp0    00:00:00 screen
-100 S     0   212   191  1  60   0 -   579 ?      ttya0    00:00:00 tar
-000 S     0   213   212  0  60   0 -   394 pipe_w ttya0    00:00:00 gzip
-100 S     0   220   197  0  60   0 -   873 wait4  ttya2    00:00:00 dpkg-buildpacka
-100 S     0   272   220  0  60   0 -  1563 wait4  ttya2    00:00:02 dpkg-source
-000 S     0   277   272  0  60   0 -   394 pipe_w ttya2    00:00:00 gunzip
-100 S     0   278   272  0  60   0 -   536 ?      ttya2    00:00:00 cpio
-000 S     0   279   278  0  60   0 -   864 wait4  ttya2    00:00:00 sh
-000 S     0   280   279  0  60   0 -   333 pipe_w ttya2    00:00:00 egrep
-000 R     0   283   196  0  60   0 -   800 -      ttya1    00:00:00 ps
-
-While this happens, top tells:
-
-27 processes: 26 sleeping, 1 running, 0 zombie, 0 stopped
-CPU states:  10.5% user,   9.5% system,   0.0% nice,  79.9% idle
-Mem:  127056K av,  22064K used, 104992K free,      0K shrd,    488K buff
-Swap:      0K av,      0K used,      0K free                 10952K cached
- 
-  PID USER     PRI  NI  SIZE  RSS SHARE STAT  LIB %CPU %MEM   TIME COMMAND
-  284 root       0   0  1048 1048   684 R       0 12.9  0.8   0:00 top
-  190 root       0   0  1204 1204   984 S       0  0.8  0.9   0:02 screen
-    1 root       0   0   484  484   408 S       0  0.0  0.3   0:02 init
-[...]
-Any further processes have 0% CPU.
-
-
-After some time the tar zxvf suddenly starts running and decompresses the
-archive in one step.
-
-Hope this description is helpful, if you need further information, just
-mail me.
-
-Greetings,
-Karsten
--- 
-#include <standard_disclaimer>
-Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der Nutzung
-oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die Markt- oder
-Meinungsforschung.
+Jun

@@ -1,58 +1,166 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA96594 for <linux-archive@neteng.engr.sgi.com>; Wed, 30 Sep 1998 14:31:39 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id WAA75143 for <linux-archive@neteng.engr.sgi.com>; Thu, 1 Oct 1998 22:30:14 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id OAA26022
+	id WAA50318
 	for linux-list;
-	Wed, 30 Sep 1998 14:29:51 -0700 (PDT)
+	Thu, 1 Oct 1998 22:29:26 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id OAA38277
+	via ESMTP id WAA62855
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 30 Sep 1998 14:29:49 -0700 (PDT)
-	mail_from (ralf@uni-koblenz.de)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) 
+	Thu, 1 Oct 1998 22:29:23 -0700 (PDT)
+	mail_from (grim@zigzegv.ml.org)
+Received: from ruvild.bun.falkenberg.se ([194.236.80.7]) 
 	by sgi.sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id OAA07164
-	for <linux@cthulhu.engr.sgi.com>; Wed, 30 Sep 1998 14:29:44 -0700 (PDT)
-	mail_from (ralf@uni-koblenz.de)
-Received: from uni-koblenz.de (pmport-16.uni-koblenz.de [141.26.249.16])
-	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id XAA06542
-	for <linux@cthulhu.engr.sgi.com>; Wed, 30 Sep 1998 23:29:37 +0200 (MET DST)
-Received: (from ralf@localhost)
-	by uni-koblenz.de (8.8.7/8.8.7) id XAA01110;
-	Wed, 30 Sep 1998 23:29:40 +0200
-Message-ID: <19980930232939.E770@uni-koblenz.de>
-Date: Wed, 30 Sep 1998 23:29:39 +0200
-From: ralf@uni-koblenz.de
-To: Richard Hartensveld <richardh@infopact.nl>,
+	via ESMTP id WAA02687
+	for <linux@cthulhu.engr.sgi.com>; Thu, 1 Oct 1998 22:29:21 -0700 (PDT)
+	mail_from (grim@zigzegv.ml.org)
+Received: from calypso.saturn (really [130.244.179.11]) by bun.falkenberg.se
+	via in.smtpd with smtp (ident grim using rfc1413)
+	id <m0zOxq9-002vJrC@ruvild.bun.falkenberg.se> (Debian Smail3.2.0.101)
+	for <linux@cthulhu.engr.sgi.com>; Fri, 2 Oct 1998 07:33:17 +0200 (CEST) 
+Date: Fri, 2 Oct 1998 07:30:15 +0200 (CEST)
+From: Ulf Carlsson <grim@zigzegv.ml.org>
+X-Sender: grim@calypso.saturn
+Reply-To: Ulf Carlsson <grim@zigzegv.ml.org>
+To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+cc: Richard Hartensveld <richardh@infopact.nl>,
         "linux@cthulhu.engr.sgi.com" <linux@cthulhu.engr.sgi.com>
 Subject: Re: crosscompiling on debian/i386
-References: <36116D45.E34A6FEF@infopact.nl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.91.1
-In-Reply-To: <36116D45.E34A6FEF@infopact.nl>; from Richard Hartensveld on Wed, Sep 30, 1998 at 01:29:09AM +0200
+In-Reply-To: <19981001223848.19704@alpha.franken.de>
+Message-ID: <Pine.LNX.3.96.981002072614.15436B-101000@calypso.saturn>
+MIME-Version: 1.0
+Content-Type: MULTIPART/MIXED; BOUNDARY="-1463811840-635199750-907306214=:15436"
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Wed, Sep 30, 1998 at 01:29:09AM +0200, Richard Hartensveld wrote:
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+  Send mail to mime@docserver.cac.washington.edu for more info.
 
-> i'm trying to crosscompile a linux/sgi kernel on a debian/i386 machine
-> with the binutils and the mips-linux-gcc compiler from the linux-sgi ftp
-> site.
+---1463811840-635199750-907306214=:15436
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+On Thu, 1 Oct 1998, Thomas Bogendoerfer wrote:
+
+> no he tries to crosscompile with gcc-2.7.2.x a new kernel from CVS.
+> This does no longer work out of the box, because we've changed the 
+> #ifdef _LANGUAGE_ASSEMBLY to the egcs predefined ones. And these aren't
+> defined in the gcc-2.7 spec file.
 > 
-> But i keep getting the following  error, does anyone know what i am
-> doing wrong.?
+> I don't have a patch handy, but simply changing -D__LANGUAGE_ASSMBLEY__ to
+> -D_LANGUAGE_ASSEMBLY and -D__LANGUAGE_C__ to -D_LANGUAGE_C in the spec
+> file worked for me.
 
-The error messages look like you've been attempting to compile a vanilla
-kernel from ftp.kernel.org.  Won't work, get a tree from ftp.linux.sgi.com.
-You're also passing variables to make which normally isn't necessary.  Did
-you've select CONFIG_CROSSCOMPILE when configuring the kernel?  The sources
-will then automatically select the right compiler.
+I've already changed those defines.
 
-   Ralf
+I don't have a patch (I don't have the old file anylonger), but I can send
+the whole file (/usr/local/lib/gcc-lib/mips-linux/2.7.2.2/specs)
+
+It's attached.
+
+- Ulf
+
+
+---1463811840-635199750-907306214=:15436
+Content-Type: APPLICATION/octet-stream; name=specs
+Content-Transfer-Encoding: BASE64
+Content-ID: <Pine.LNX.3.96.981002073014.15436C@calypso.saturn>
+Content-Description: 
+
+KmFzbToKJXttY3B1PSp9ICV7bTQ2NTB9ICV7bW1hZDotbTQ2NTB9ICV7Ryp9
+ICV7RUJ9ICV7RUx9ICV7bWlwczF9ICV7bWlwczJ9ICV7bWlwczN9ICV7bWlw
+czR9ICV7dn0gJXtub2FzbW9wdDotTzB9ICV7IW5vYXNtb3B0OiV7TzotTzJ9
+ICV7TzE6LU8yfSAle08yOi1PMn0gJXtPMzotTzN9fSAle2d9ICV7ZzB9ICV7
+ZzF9ICV7ZzJ9ICV7ZzN9ICV7Z2dkYjotZ30gJXtnZ2RiMDotZzB9ICV7Z2dk
+YjE6LWcxfSAle2dnZGIyOi1nMn0gJXtnZ2RiMzotZzN9ICV7Z3N0YWJzOi1n
+fSAle2dzdGFiczA6LWcwfSAle2dzdGFiczE6LWcxfSAle2dzdGFiczI6LWcy
+fSAle2dzdGFiczM6LWczfSAle2dzdGFicys6LWd9ICV7Z3N0YWJzKzA6LWcw
+fSAle2dzdGFicysxOi1nMX0gJXtnc3RhYnMrMjotZzJ9ICV7Z3N0YWJzKzM6
+LWczfSAle2djb2ZmOi1nfSAle2djb2ZmMDotZzB9ICV7Z2NvZmYxOi1nMX0g
+JXtnY29mZjI6LWcyfSAle2djb2ZmMzotZzN9ICV7IWZuby1QSUM6JXshZm5v
+LXBpYzotS1BJQ319ICV7ZlBJQzotS1BJQ30gJXtmcGljOi1LUElDfSAle2Zu
+by1QSUM6LW5vbl9zaGFyZWR9ICV7Zm5vLXBpYzotbm9uX3NoYXJlZH0gJXtt
+ZW1iZWRkZWQtcGljfQoKKmFzbV9maW5hbDoKCgoqY3BwOgoley5jYzoJLURf
+X0xBTkdVQUdFX0NfUExVU19QTFVTX18gLURfX0xBTkdVQUdFX0NfUExVU19Q
+TFVTIC1EX0xBTkdVQUdFX0NfUExVU19QTFVTICAleyFhbnNpOi1ETEFOR1VB
+R0VfQ19QTFVTX1BMVVN9fSAley5jeHg6CS1EX19MQU5HVUFHRV9DX1BMVVNf
+UExVU19fIC1EX19MQU5HVUFHRV9DX1BMVVNfUExVUyAtRF9MQU5HVUFHRV9D
+X1BMVVNfUExVUyAleyFhbnNpOi1ETEFOR1VBR0VfQ19QTFVTX1BMVVN9fSAl
+ey5DOgktRF9fTEFOR1VBR0VfQ19QTFVTX1BMVVNfXyAtRF9fTEFOR1VBR0Vf
+Q19QTFVTX1BMVVMgLURfTEFOR1VBR0VfQ19QTFVTX1BMVVMgJXshYW5zaTot
+RExBTkdVQUdFX0NfUExVU19QTFVTfX0gJXsubToJLURfX0xBTkdVQUdFX09C
+SkVDVElWRV9DX18gLURfX0xBTkdVQUdFX09CSkVDVElWRV9DIC1EX0xBTkdV
+QUdFX09CSkVDVElWRV9DICV7IWFuc2k6LURMQU5HVUFHRV9PQkpFQ1RJVkVf
+Q319ICV7LlM6CS1EX19MQU5HVUFHRV9BU1NFTUJMWV9fIC1EX19MQU5HVUFH
+RV9BU1NFTUJMWSAtRF9MQU5HVUFHRV9BU1NFTUJMWSAleyFhbnNpOi1ETEFO
+R1VBR0VfQVNTRU1CTFkgfX0gJXsuczoJLURfX0xBTkdVQUdFX0FTU0VNQkxZ
+X18gLURfX0xBTkdVQUdFX0FTU0VNQkxZIC1EX0xBTkdVQUdFX0FTU0VNQkxZ
+ICV7IWFuc2k6LURMQU5HVUFHRV9BU1NFTUJMWSB9fSAleyEuUzoleyEuczot
+RF9fTEFOR1VBR0VfQ19fIC1EX19MQU5HVUFHRV9DIC1EX0xBTkdVQUdFX0Mg
+JXshYW5zaTotRExBTkdVQUdFX0MgfX19ICV7bWZwMzI6IC1EX01JUFNfRlBT
+RVQ9MTZ9JXshbWZwMzI6IC1EX01JUFNfRlBTRVQ9MzJ9ICV7bWlwczE6IC1E
+X01JUFNfSVNBPV9NSVBTX0lTQV9NSVBTMX0gJXttaXBzMjogLURfTUlQU19J
+U0E9X01JUFNfSVNBX01JUFMyfSAle21pcHMzOiAtRF9NSVBTX0lTQT1fTUlQ
+U19JU0FfTUlQUzN9ICV7bWlwczQ6IC1EX01JUFNfSVNBPV9NSVBTX0lTQV9N
+SVBTNH0gJXshbWlwczE6ICV7IW1pcHMyOiAleyFtaXBzMzogJXshbWlwczQ6
+IC1EX01JUFNfSVNBPV9NSVBTX0lTQV9NSVBTMX19fX0gJXttaW50NjQ6LURf
+TUlQU19TWklOVD02NCAleyFtbG9uZzY0Oi1EX19TSVpFX1RZUEVfXz1sb25n
+XCB1bnNpZ25lZFwgaW50IC1EX19TU0laRV9UWVBFX189bG9uZ1wgaW50IC1E
+X19QVFJESUZGX1RZUEVfXz1sb25nXCBpbnQgLURfTUlQU19TWkxPTkc9NjQg
+LURfTUlQU19TWlBUUj02NH19ICV7IW1pbnQ2NDotRF9NSVBTX1NaSU5UPTMy
+ICV7IW1sb25nNjQ6LURfX1NJWkVfVFlQRV9fPXVuc2lnbmVkXCBpbnQgLURf
+X1NTSVpFX1RZUEVfXz1pbnQgLURfX1BUUkRJRkZfVFlQRV9fPWludCAtRF9N
+SVBTX1NaTE9ORz0zMiAtRF9NSVBTX1NaUFRSPTMyfX0gJXttbG9uZzY0Oi1E
+X19TSVpFX1RZUEVfXz1sb25nXCB1bnNpZ25lZFwgaW50IC1EX19TU0laRV9U
+WVBFX189bG9uZ1wgaW50IC1EX19QVFJESUZGX1RZUEVfXz1sb25nXCBpbnQg
+LURfTUlQU19TWkxPTkc9NjQgLURfTUlQU19TWlBUUj02NH0gJXttaXBzMzot
+VV9fbWlwcyAtRF9fbWlwcz0zIC1EX19taXBzNjR9ICV7bWlwczQ6LVVfX21p
+cHMgLURfX21pcHM9NCAtRF9fbWlwczY0fSAle21ncDMyOi1VX19taXBzNjR9
+ICV7bWdwNjQ6LURfX21pcHM2NH0gJXtFQjotVU1JUFNFTCAtVV9fTUlQU0VM
+X18gLURfX01JUFNFQl9fICV7IWFuc2k6LURNSVBTRUJ9fSAle0VMOi1VTUlQ
+U0VCIC1VX19NSVBTRUJfXyAtRF9fTUlQU0VMX18gJXshYW5zaTotRE1JUFNF
+TH19ICV7Zm5vLVBJQzotVV9fUElDX18gLVVfX3BpY19ffSAle2Zuby1waWM6
+LVVfX1BJQ19fIC1VX19waWNfX30gJXtmUElDOi1EX19QSUNfXyAtRF9fcGlj
+X199ICV7ZnBpYzotRF9fUElDX18gLURfX3BpY19ffSAley1EX19IQVZFX0ZQ
+VV9fIH0gJXtwb3NpeDotRF9QT1NJWF9TT1VSQ0V9CgoqY2MxOgole2dsaW5l
+OiV7IWc6JXshZzA6JXshZzE6JXshZzI6IC1nMX19fX19ICV7bWlwczE6LW1m
+cDMyIC1tZ3AzMn0le21pcHMyOi1tZnAzMiAtbWdwMzJ9JXttaXBzMzoleyFt
+c2luZ2xlLWZsb2F0OiV7IW00NjUwOi1tZnA2NH19IC1tZ3A2NH0gJXttaXBz
+NDoleyFtc2luZ2xlLWZsb2F0OiV7IW00NjUwOi1tZnA2NH19IC1tZ3A2NH0g
+JXttZnA2NDole21zaW5nbGUtZmxvYXQ6JWVtYXkgbm90IHVzZSBib3RoIC1t
+ZnA2NCBhbmQgLW1zaW5nbGUtZmxvYXR9fSAle21mcDY0OiV7bTQ2NTA6JWVt
+YXkgbm90IHVzZSBib3RoIC1tZnA2NCBhbmQgLW00NjUwfX0gJXttNDY1MDot
+bWNwdT1yNDY1MH0gJXtHKn0gJXtFQjotbWVifSAle0VMOi1tZWx9ICV7RUI6
+JXtFTDolZW1heSBub3QgdXNlIGJvdGggLUVCIGFuZCAtRUx9fSAle3BpYy1u
+b25lOiAgIC1tbm8taGFsZi1waWN9ICV7cGljLWxpYjogICAgLW1oYWxmLXBp
+Y30gJXtwaWMtZXh0ZXJuOiAtbWhhbGYtcGljfSAle3BpYy1jYWxsczogIC1t
+aGFsZi1waWN9ICV7c2F2ZS10ZW1wczogfQoKKmNjMXBsdXM6CgoKKmVuZGZp
+bGU6CiV7IXNoYXJlZDpjcnRlbmQubyVzfSAle3NoYXJlZDpjcnRlbmRTLm8l
+c30gY3J0bi5vJXMKCipsaW5rOgole0cqfSAle0VCfSAle0VMfSAle21pcHMx
+fSAle21pcHMyfSAle21pcHMzfSAle21pcHM0fSAle2Jlc3RHbnVtfSAle3No
+YXJlZH0gJXtub25fc2hhcmVkfSAle2NhbGxfc2hhcmVkfSAle25vX2FyY2hp
+dmV9ICV7ZXhhY3RfdmVyc2lvbn0gICAleyFzaGFyZWQ6ICAgICAgICV7IXN0
+YXRpYzogCSV7cmR5bmFtaWM6LWV4cG9ydC1keW5hbWljfSAJJXshZHluYW1p
+Yy1saW5rZXI6LWR5bmFtaWMtbGlua2VyIC9saWIvbGQuc28uMX19IAkle3N0
+YXRpYzotc3RhdGljfX0KCipsaWI6CiV7IXNoYXJlZDogJXttaWVlZS1mcDot
+bGllZWV9ICV7cDotbGdtb259ICV7cGc6LWxnbW9ufSAgICAgICV7IWdnZGI6
+LWxjfSAle2dnZGI6LWxnfX0KCipsaWJnY2M6CiV7IXNoYXJlZDotbGdjY30K
+CipzdGFydGZpbGU6CiV7IXNoYXJlZDogICAgICAle3BnOmdjcnQxLm8lc30g
+JXshcGc6JXtwOmdjcnQxLm8lc30gICAgICAgICAgICAgICAgICAgICAgICAl
+eyFwOiV7cHJvZmlsZTpnY3J0MS5vJXN9ICAgICAgICAgICAgICAgICAgICAg
+ICAgICAleyFwcm9maWxlOmNydDEubyVzfX19fSAgICBjcnRpLm8lcyAleyFz
+aGFyZWQ6Y3J0YmVnaW4ubyVzfSAle3NoYXJlZDpjcnRiZWdpblMubyVzfQoK
+KnN3aXRjaGVzX25lZWRfc3BhY2VzOgoKCipzaWduZWRfY2hhcjoKJXtmdW5z
+aWduZWQtY2hhcjotRF9fQ0hBUl9VTlNJR05FRF9ffQoKKnByZWRlZmluZXM6
+Ci1EX19FTEZfXyAtRF9NSVBTX1NJTT1fTUlQU19TSU1fQUJJMzIgLURfX1BJ
+Q19fIC1EX19waWNfXyAtRHVuaXggLURtaXBzIC1EUjMwMDAgLURNSVBTRUIg
+LURsaW51eCAtQXN5c3RlbShsaW51eCkgLUFzeXN0ZW0ocG9zaXgpIC1BY3B1
+KG1pcHMpIC1BbWFjaGluZShtaXBzKQoKKmNyb3NzX2NvbXBpbGU6CjEKCipt
+dWx0aWxpYjoKLiAhRUwgIUVCO2VsIEVMICFFQjtlYiAhRUwgRUI7Cgo=
+---1463811840-635199750-907306214=:15436--

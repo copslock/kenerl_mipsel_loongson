@@ -1,22 +1,22 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g78EOpRw016393
-	for <linux-mips-outgoing@oss.sgi.com>; Thu, 8 Aug 2002 07:24:51 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g78F5gRw017852
+	for <linux-mips-outgoing@oss.sgi.com>; Thu, 8 Aug 2002 08:05:42 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g78EOp0b016392
-	for linux-mips-outgoing; Thu, 8 Aug 2002 07:24:51 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g78F5fDx017851
+	for linux-mips-outgoing; Thu, 8 Aug 2002 08:05:41 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
 Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g78EOIRw016380;
-	Thu, 8 Aug 2002 07:24:18 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id QAA14259;
-	Thu, 8 Aug 2002 16:26:46 +0200 (MET DST)
-Date: Thu, 8 Aug 2002 16:26:45 +0200 (MET DST)
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g78F5XRw017841;
+	Thu, 8 Aug 2002 08:05:34 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id RAA14957;
+	Thu, 8 Aug 2002 17:08:08 +0200 (MET DST)
+Date: Thu, 8 Aug 2002 17:08:07 +0200 (MET DST)
 From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
 To: Carsten Langgaard <carstenl@mips.com>
 cc: Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com
-Subject: Re: siginfo structure in 64-bit kernel
-In-Reply-To: <Pine.GSO.3.96.1020807134433.18037B-100000@delta.ds2.pg.gda.pl>
-Message-ID: <Pine.GSO.3.96.1020808155847.13783A-100000@delta.ds2.pg.gda.pl>
+Subject: Re: memcpy.S patch in 64-bit
+In-Reply-To: <3D52711F.D5C6A8FC@mips.com>
+Message-ID: <Pine.GSO.3.96.1020808170518.13783D-100000@delta.ds2.pg.gda.pl>
 Organization: Technical University of Gdansk
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
@@ -25,218 +25,22 @@ X-Spam-Level:
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, 7 Aug 2002, Maciej W. Rozycki wrote:
+On Thu, 8 Aug 2002, Carsten Langgaard wrote:
 
-> I'll check the patch at run-time later.
+> The __copy_user function (in arch/mips64/lib/memcpy.S) calls __bzero.
+> We can't do that because __bzero might modify len, which we want to
+> return in case of an error.
+> The following patch take care of the problem.
 
- I checked the patch and discovered you somehow made the order of struct
-members wrong.  Here is an updated version that works for me.  It includes
-both the ordering fix and unsigned type changes I suggested before.
+ Hmm, how about simply cloning arch/mips/lib/memcpy.S?  It seems:
 
- This version should be OK to apply.
+1. Designed to work on mips64 as well.
+
+2. More up to date.
+
+And it would ease maintenance. 
 
 -- 
 +  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
 +--------------------------------------------------------------+
 +        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
-
-patch-mips-2.4.19-rc1-20020807-carsten-signal32-3
-diff -up --recursive --new-file linux-mips-2.4.19-rc1-20020807.macro/arch/mips64/kernel/signal32.c linux-mips-2.4.19-rc1-20020807/arch/mips64/kernel/signal32.c
---- linux-mips-2.4.19-rc1-20020807.macro/arch/mips64/kernel/signal32.c	2002-08-06 02:57:36.000000000 +0000
-+++ linux-mips-2.4.19-rc1-20020807/arch/mips64/kernel/signal32.c	2002-08-08 00:20:04.000000000 +0000
-@@ -360,13 +360,55 @@ struct sigframe {
- 	sigset_t sf_mask;
- };
- 
--struct rt_sigframe {
-+struct rt_sigframe32 {
- 	u32 rs_ass[4];			/* argument save space for o32 */
- 	u32 rs_code[2];			/* signal trampoline */
--	struct siginfo rs_info;
-+	struct siginfo32 rs_info;
- 	struct ucontext rs_uc;
- };
- 
-+static int copy_siginfo_to_user32(siginfo_t32 *to, siginfo_t *from)
-+{
-+	int err;
-+
-+	if (!access_ok (VERIFY_WRITE, to, sizeof(siginfo_t32)))
-+		return -EFAULT;
-+
-+	/* If you change siginfo_t structure, please be sure
-+	   this code is fixed accordingly.
-+	   It should never copy any pad contained in the structure
-+	   to avoid security leaks, but must copy the generic
-+	   3 ints plus the relevant union member.
-+	   This routine must convert siginfo from 64bit to 32bit as well
-+	   at the same time.  */
-+	err = __put_user(from->si_signo, &to->si_signo);
-+	err |= __put_user(from->si_errno, &to->si_errno);
-+	err |= __put_user((short)from->si_code, &to->si_code);
-+	if (from->si_code < 0)
-+		err |= __copy_to_user(&to->_sifields._pad, &from->_sifields._pad, SI_PAD_SIZE);
-+	else {
-+		switch (from->si_code >> 16) {
-+		case __SI_CHLD >> 16:
-+			err |= __put_user(from->si_utime, &to->si_utime);
-+			err |= __put_user(from->si_stime, &to->si_stime);
-+			err |= __put_user(from->si_status, &to->si_status);
-+		default:
-+			err |= __put_user(from->si_pid, &to->si_pid);
-+			err |= __put_user(from->si_uid, &to->si_uid);
-+			break;
-+		case __SI_FAULT >> 16:
-+			err |= __put_user((long)from->si_addr, &to->si_addr);
-+			break;
-+		case __SI_POLL >> 16:
-+			err |= __put_user(from->si_band, &to->si_band);
-+			err |= __put_user(from->si_fd, &to->si_fd);
-+			break;
-+		/* case __SI_RT: This is not generated by the kernel as of now.  */
-+		}
-+	}
-+	return err;
-+}
-+
- asmlinkage void sys32_sigreturn(abi64_no_regargs, struct pt_regs regs)
- {
- 	struct sigframe *frame;
-@@ -405,11 +447,11 @@ badframe:
- 
- asmlinkage void sys32_rt_sigreturn(abi64_no_regargs, struct pt_regs regs)
- {
--	struct rt_sigframe *frame;
-+	struct rt_sigframe32 *frame;
- 	sigset_t set;
- 	stack_t st;
- 
--	frame = (struct rt_sigframe *) regs.regs[29];
-+	frame = (struct rt_sigframe32 *) regs.regs[29];
- 	if (!access_ok(VERIFY_READ, frame, sizeof(*frame)))
- 		goto badframe;
- 	if (__copy_from_user(&set, &frame->rs_uc.uc_sigmask, sizeof(set)))
-@@ -588,7 +630,7 @@ static void inline setup_rt_frame(struct
- 				  struct pt_regs *regs, int signr,
- 				  sigset_t *set, siginfo_t *info)
- {
--	struct rt_sigframe *frame;
-+	struct rt_sigframe32 *frame;
- 	int err = 0;
- 
- 	frame = get_sigframe(ka, regs, sizeof(*frame));
-@@ -613,8 +655,8 @@ static void inline setup_rt_frame(struct
- 		flush_cache_sigtramp((unsigned long) frame->rs_code);
- 	}
- 
--	/* Create siginfo.  */
--	err |= __copy_to_user(&frame->rs_info, info, sizeof(*info));
-+	/* Convert (siginfo_t -> siginfo_t32) and copy to user. */
-+	err |= copy_siginfo_to_user32(&frame->rs_info, info);
- 
- 	/* Create the ucontext.  */
- 	err |= __put_user(0, &frame->rs_uc.uc_flags);
-@@ -639,7 +681,7 @@ static void inline setup_rt_frame(struct
- 	 *   a2 = pointer to ucontext
- 	 *
- 	 * $25 and c0_epc point to the signal handler, $29 points to
--	 * the struct rt_sigframe.
-+	 * the struct rt_sigframe32.
- 	 */
- 	regs->regs[ 4] = signr;
- 	regs->regs[ 5] = (unsigned long) &frame->rs_info;
-diff -up --recursive --new-file linux-mips-2.4.19-rc1-20020807.macro/include/asm-mips64/siginfo.h linux-mips-2.4.19-rc1-20020807/include/asm-mips64/siginfo.h
---- linux-mips-2.4.19-rc1-20020807.macro/include/asm-mips64/siginfo.h	2002-08-06 02:58:32.000000000 +0000
-+++ linux-mips-2.4.19-rc1-20020807/include/asm-mips64/siginfo.h	2002-08-08 07:14:29.000000000 +0000
-@@ -18,11 +18,21 @@ typedef union sigval {
- 	void *sival_ptr;
- } sigval_t;
- 
-+#ifdef __KERNEL__
-+
-+typedef union sigval32 {
-+	int sival_int;
-+	s32 sival_ptr;
-+} sigval_t32;
-+
-+#endif /* __KERNEL__ */
-+
- /* This structure matches IRIX 32/n32 ABIs for binary compatibility but
-    has Linux extensions.  */
- 
- #define SI_MAX_SIZE	128
--#define SI_PAD_SIZE	((SI_MAX_SIZE/sizeof(int)) - 3)
-+#define SI_PAD_SIZE	((SI_MAX_SIZE/sizeof(int)) - 4)
-+#define SI_PAD_SIZE32	((SI_MAX_SIZE/sizeof(int)) - 3)
- 
- typedef struct siginfo {
- 	int si_signo;
-@@ -82,6 +92,68 @@ typedef struct siginfo {
- 	} _sifields;
- } siginfo_t;
- 
-+#ifdef __KERNEL__
-+
-+typedef struct siginfo32 {
-+	int si_signo;
-+	int si_code;
-+	int si_errno;
-+
-+	union {
-+		int _pad[SI_PAD_SIZE32];
-+
-+		/* kill() */
-+		struct {
-+			__kernel_pid_t32 _pid;	/* sender's pid */
-+			__kernel_uid_t32 _uid;	/* sender's uid */
-+		} _kill;
-+
-+		/* SIGCHLD */
-+		struct {
-+			__kernel_pid_t32 _pid;	/* which child */
-+			__kernel_uid_t32 _uid;	/* sender's uid */
-+			__kernel_clock_t32 _utime;
-+			int _status;		/* exit code */
-+			__kernel_clock_t32 _stime;
-+		} _sigchld;
-+
-+		/* IRIX SIGCHLD */
-+		struct {
-+			__kernel_pid_t32 _pid;	/* which child */
-+			__kernel_clock_t32 _utime;
-+			int _status;		/* exit code */
-+			__kernel_clock_t32 _stime;
-+		} _irix_sigchld;
-+
-+		/* SIGILL, SIGFPE, SIGSEGV, SIGBUS */
-+		struct {
-+			s32 _addr; /* faulting insn/memory ref. */
-+		} _sigfault;
-+
-+		/* SIGPOLL, SIGXFSZ (To do ...)  */
-+		struct {
-+			int _band;	/* POLL_IN, POLL_OUT, POLL_MSG */
-+			int _fd;
-+		} _sigpoll;
-+
-+		/* POSIX.1b timers */
-+		struct {
-+			unsigned int _timer1;
-+			unsigned int _timer2;
-+		} _timer;
-+
-+		/* POSIX.1b signals */
-+		struct {
-+			__kernel_pid_t32 _pid;	/* sender's pid */
-+			__kernel_uid_t32 _uid;	/* sender's uid */
-+			sigval_t32 _sigval;
-+		} _rt;
-+
-+	} _sifields;
-+} siginfo_t32;
-+
-+#endif /* __KERNEL__ */
-+
- /*
-  * How these fields are to be accessed.
-  */

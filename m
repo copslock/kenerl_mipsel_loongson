@@ -1,42 +1,53 @@
-Received:  by oss.sgi.com id <S42187AbQJKT2w>;
-	Wed, 11 Oct 2000 12:28:52 -0700
-Received: from [206.207.108.63] ([206.207.108.63]:49964 "HELO
-        ridgerun-lx.ridgerun.cxm") by oss.sgi.com with SMTP
-	id <S42180AbQJKT2R>; Wed, 11 Oct 2000 12:28:17 -0700
-Received: (qmail 15014 invoked from network); 11 Oct 2000 13:19:27 -0600
-Received: from randys-personal.ridgerun.cxm (HELO randyspersonal) (192.168.1.216)
-  by ridgerun-lx.ridgerun.cxm with SMTP; 11 Oct 2000 13:19:27 -0600
-From:   "Randy Sartin" <randys@ridgerun.com>
-To:     <linux-mips@oss.sgi.com>
-Subject: rs_ioctl() in sgiserial.c info/help needed
-Date:   Wed, 11 Oct 2000 13:28:05 -0600
-Message-ID: <NEBBLGAKILMAGOFHJDNNGEJMCAAA.randys@ridgerun.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
-Importance: Normal
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
+Received:  by oss.sgi.com id <S42195AbQJKW3m>;
+	Wed, 11 Oct 2000 15:29:42 -0700
+Received: from noose.gt.owl.de ([62.52.19.4]:32529 "HELO noose.gt.owl.de")
+	by oss.sgi.com with SMTP id <S42180AbQJKW33>;
+	Wed, 11 Oct 2000 15:29:29 -0700
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id BACA0809; Thu, 12 Oct 2000 00:28:46 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id E9E289014; Thu, 12 Oct 2000 00:26:19 +0200 (CEST)
+Date:   Thu, 12 Oct 2000 00:26:19 +0200
+From:   Florian Lohoff <flo@rfc822.org>
+To:     Cort Dougan <cort@fsmlabs.com>
+Cc:     linux-mips@oss.sgi.com, linux-mips@fnet.fr,
+        Ralf Baechle <ralf@uni-koblenz.de>
+Subject: Re: modutils bug?  'if' clause executes incorrectly
+Message-ID: <20001012002619.B678@paradigm.rfc822.org>
+References: <20001010224317.I733@hq.fsmlabs.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+User-Agent: Mutt/1.0.1i
+In-Reply-To: <20001010224317.I733@hq.fsmlabs.com>; from cort@fsmlabs.com on Tue, Oct 10, 2000 at 10:43:17PM -0600
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Background:
-I am trying to get the Indy's serial port to drive a dongle and am having
-some trouble getting the dongle to work. The problem seems to be in
-rs_ioctl() in sgiserial.c - it doesn't handle the TIOCMSET command. The
-TIOCMSET command allows control over the DTR and RTS lines.
+On Tue, Oct 10, 2000 at 10:43:17PM -0600, Cort Dougan wrote:
+> if A
+>   B
+> else
+>   C
+> 
+> in the order A, C, B when A is false and correctly (A, B) when A is true.
+> 
+> This is with GCC version egcs-2.90.29 980515 (egcs-1.0.3 release) and
+> binutils 2.8.1 (with BFD 2.8.1).
+> 
+> The asm in this routine looks good and I can keep the code from failing by
+> removing the request_irq() and replacing it with something else that
+> doesn't call into the kernel.  I can't reproduce this in user-code or in
+> kernel code.
+> 
+> Does anyone have any suggestions?  Perhaps a suggestion for modutils
+> version?
 
-The "standard" rs_ioctl() in serial.c does support TIOCMSET. It calls
-set_modem_info() to control the UART (I think) to then control DTR and RTS.
+Please send the resulting asm code - I hear someone whispering
+"Branch delay slot".
 
-So - my question is...
-Can I control DTR and RTS on Indy or is this a software feature that hasn't
-been implemented yet?
-
-Thanks,
-Randy Sartin
+Flo
+-- 
+Florian Lohoff		flo@rfc822.org		      	+49-5201-669912
+      "Write only memory - Oops. Time for my medication again ..."

@@ -1,61 +1,54 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4V0vWnC010590
-	for <linux-mips-outgoing@oss.sgi.com>; Thu, 30 May 2002 17:57:32 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4V2RSnC014339
+	for <linux-mips-outgoing@oss.sgi.com>; Thu, 30 May 2002 19:27:28 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4V0vWNS010589
-	for linux-mips-outgoing; Thu, 30 May 2002 17:57:32 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4V2RStg014338
+	for linux-mips-outgoing; Thu, 30 May 2002 19:27:28 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4V0vVnC010586
-	for <linux-mips@oss.sgi.com>; Thu, 30 May 2002 17:57:31 -0700
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.1) id g4V0wl002329
-	for linux-mips@oss.sgi.com; Thu, 30 May 2002 17:58:47 -0700
-Received: from sgi.com (sgi-too.SGI.COM [204.94.211.39])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4UDhNnC003555
-	for <linux-mips@oss.sgi.com>; Thu, 30 May 2002 06:43:23 -0700
-Received: from mailout07.sul.t-online.com (mailout07.sul.t-online.com [194.25.134.83]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id GAA00228
-	for <linux-mips@oss.sgi.com>; Thu, 30 May 2002 06:44:53 -0700 (PDT)
-	mail_from (florian@void.s.bawue.de)
-Received: from fwd00.sul.t-online.de 
-	by mailout07.sul.t-online.com with smtp 
-	id 17DQ4m-0000O4-08; Thu, 30 May 2002 15:34:48 +0200
-Received: from void.s.bawue.de (520095841842-0001@[62.155.180.20]) by fmrl00.sul.t-online.com
-	with esmtp id 17DQ4c-1yhO1QC; Thu, 30 May 2002 15:34:38 +0200
-Received: from florian by void.s.bawue.de with local (Exim 3.33 #1 (Debian))
-	id 17DP5M-0002Bk-00; Thu, 30 May 2002 14:31:20 +0200
-Date: Thu, 30 May 2002 14:31:20 +0200
-To: linux-mips@oss.sgi.com
-Subject: Re: __flush_cache_all() miscellany
-Message-ID: <20020530123120.GB1203@void.s.bawue.de>
-Mail-Followup-To: Florian Laws <florian@void.s.bawue.de>,
-	linux-mips@oss.sgi.com
-References: <1022691053.7644.16.camel@ldt-sj3-022.sj.broadcom.com> <20020529140759.A888@dea.linux-mips.net>
+Received: from topsns.toshiba-tops.co.jp (topsns.toshiba-tops.co.jp [202.230.225.5])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4V2ROnC014334
+	for <linux-mips@oss.sgi.com>; Thu, 30 May 2002 19:27:25 -0700
+Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for oss.sgi.com [128.167.58.27]) with SMTP; 31 May 2002 02:28:59 UT
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP
+	id 86EC0B46B; Fri, 31 May 2002 11:28:57 +0900 (JST)
+Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
+	id LAA10842; Fri, 31 May 2002 11:28:57 +0900 (JST)
+Date: Fri, 31 May 2002 11:28:47 +0900 (JST)
+Message-Id: <20020531.112847.74756483.nemoto@toshiba-tops.co.jp>
+To: takeshi_aihana@montavista.co.jp
+Cc: linux-mips@oss.sgi.com
+Subject: Re: (Re-Send) shmctl() returns corrupt value on pb1000.
+From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
+In-Reply-To: <1022763778.1046.71.camel@aihana>
+References: <1022757017.1045.47.camel@aihana>
+	<20020530.211902.102583216.nemoto@toshiba-tops.co.jp>
+	<1022763778.1046.71.camel@aihana>
+X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
+X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
+Organization: TOSHIBA Personal Computer System Corporation
+X-Mailer: Mew version 2.2 on Emacs 20.7 / Mule 4.1 (AOI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20020529140759.A888@dea.linux-mips.net>
-User-Agent: Mutt/1.3.28i
-From: Florian Laws <florian@void.s.bawue.de>
-X-Sender: 520095841842-0001@t-dialin.net
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, May 29, 2002 at 02:07:59PM -0700, Ralf Baechle wrote:
-> > 
-> > Which caches does this apply to?  It looks like the current
-> > implementations assume L1 only.
-> 
-> The operation got introduced for the R10000 where we only need to flush
-> the caches during initialization or the (unlikely on Origin) case of
+>>>>> On 30 May 2002 22:02:57 +0900, Takeshi Aihana <takeshi_aihana@montavista.co.jp> said:
+takeshi_aihana> (B) The version of glibc on pb1000 is 2.2.3/kernel-2.4.17.
 
-Which case?
+takeshi_aihana> Is there any inconsistents on those conditions?
 
-Thanks,
+AFAIK, Yes.  For example, look struct ipc_perm in bits/ipc.h and
+struct ipc64_perm in asm-mips/ipcbuf.h (not struct ipc_perm in
+linux/ipc.h which is obsolete).
 
-Florian
+takeshi_aihana> Should be update to 2.2.4 on pb1000?
+
+If you can.  Please do not forget rebuilding all applications which
+including these headers.  If you want to stay in 2.2.3, you will have
+to modify your kernel headers according to the libc headers.
+
+---
+Atsushi Nemoto

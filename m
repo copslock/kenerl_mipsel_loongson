@@ -1,51 +1,56 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1QBTLe12069
-	for linux-mips-outgoing; Tue, 26 Feb 2002 03:29:21 -0800
-Received: from firewall.i-data.com (firewall.i-data.com [195.24.22.194])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1QBTI912065
-	for <linux-mips@oss.sgi.com>; Tue, 26 Feb 2002 03:29:18 -0800
-Received: (qmail 23919 invoked from network); 26 Feb 2002 11:34:35 -0000
-Received: from idahub2000.i-data.com (HELO idanshub.i-data.com) (172.16.1.8)
-  by firewall.i-data.com with SMTP; 26 Feb 2002 11:34:35 -0000
-Received: from eicon.com ([172.17.159.1])
-          by idanshub.i-data.com (Lotus Domino Release 5.0.8)
-          with ESMTP id 2002022611291552:46028 ;
-          Tue, 26 Feb 2002 11:29:15 +0100 
-Message-ID: <3C7B63E7.8DFF9D89@eicon.com>
-Date: Tue, 26 Feb 2002 11:31:03 +0100
-From: "Tommy S. Christensen" <tommy.christensen@eicon.com>
-X-Mailer: Mozilla 4.76 [en] (X11; U; Linux 2.2.17-14 i686)
-X-Accept-Language: en
+	by oss.sgi.com (8.11.2/8.11.3) id g1QBnJ212542
+	for linux-mips-outgoing; Tue, 26 Feb 2002 03:49:19 -0800
+Received: from oval.algor.co.uk (root@oval.algor.co.uk [62.254.210.250])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1QBnC912536
+	for <linux-mips@oss.sgi.com>; Tue, 26 Feb 2002 03:49:13 -0800
+Received: from gladsmuir.algor.co.uk.algor.co.uk (IDENT:dom@gladsmuir.algor.co.uk [192.168.5.75])
+	by oval.algor.co.uk (8.11.6/8.10.1) with ESMTP id g1QAn6413505;
+	Tue, 26 Feb 2002 10:49:07 GMT
+From: Dominic Sweetman <dom@algor.co.uk>
 MIME-Version: 1.0
-To: Matthew Dharm <mdharm@momenco.com>
-CC: Kevin Paul Herbert <kph@ayrnetworks.com>,
-   Linux-MIPS <linux-mips@oss.sgi.com>
-Subject: Re: Is this a toolchain bug?
-References: <NEBBLJGMNKKEEMNLHGAIGEMACFAA.mdharm@momenco.com>
-X-MIMETrack: Itemize by SMTP Server on idaHUB2000/INT(Release 5.0.8 |June 18, 2001) at
- 26-02-2002 11:29:15,
-	Serialize by Router on idaHUB2000/INT(Release 5.0.8 |June 18, 2001) at 26-02-2002
- 11:29:16,
-	Serialize complete at 26-02-2002 11:29:16
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset=us-ascii
+Message-ID: <15483.26654.874273.652089@gladsmuir.algor.co.uk>
+Date: Tue, 26 Feb 2002 10:49:02 +0000
+To: Scott A McConnell <samcconn@cotw.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: MIPS, i8259 and spurious interrupts.
+In-Reply-To: <3C7A9579.BE02A838@cotw.com>
+References: <3C7A9579.BE02A838@cotw.com>
+X-Mailer: VM 6.89 under 21.1 (patch 14) "Cuyahoga Valley" XEmacs Lucid
+User-Agent: SEMI/1.13.7 (Awazu) CLIME/1.13.6 (=?ISO-2022-JP?B?GyRCQ2YbKEI=?=
+ =?ISO-2022-JP?B?GyRCJU4+MRsoQg==?=) MULE XEmacs/21.1 (patch 14) (Cuyahoga
+ Valley) (i386-redhat-linux)
+Content-Type: text/plain; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Matthew Dharm wrote:
-> 
-> So, we've got a problem somewhere in the module handling.  Either the
-> symbol wasn't being relocated properly, or it wasn't being allocated
-> properly, or something.  I'm not an expert in this region of the
-> kernel, but my guess is that we're going to see this more and more
-> often, so someone with a clue should take a look at this.
 
-To me, this looks like a problem with common symbols that I have run
-into a couple of times (I think it was in i2o).
+Scott A McConnell (samcconn@cotw.com) writes:
 
-Compiling with -fno-common or linking with -d worked for me.
-(Or avoid having uninitialized global variables.)
+> I have been trying to track down and resolve a spurious interrupt
+> problem. I have attached some output and the code used to generate it in
+> i8259.c.
 
-I guess insmod should actually complain in this case ?!
+Part of your problem may be write buffer hell.
 
- -Tommy
+Whatever you do to clear the interrupt when you've done with it
+involves writing to the 8259 controller.  It's probably a long way
+away - probably through a PCI bus to a simulated ISA bus.  Somewhere
+along the line the writes will be 'posted'; your CPU is fast, so when
+your CPU emerges from its interrupt routine the write may not have
+reached the 8259 yet, and you'll get a spurious interrupt.
+
+The code which switches off the interrupt at the 8259 should probably
+be equipped with a 'barrier' call to some system function which waits
+until the write has really happened.
+
+Then 8259s are ugly things which have some very CPU-specific
+interactions with x86 CPUs.  In a non-x86 context you need to
+initialise them in particular ways.  
+
+-- 
+Dominic Sweetman
+Algorithmics Ltd
+The Fruit Farm, Ely Road, Chittering, CAMBS CB5 9PH, ENGLAND
+phone +44 1223 706200/fax +44 1223 706250/direct +44 1223 706205
+http://www.algor.co.uk

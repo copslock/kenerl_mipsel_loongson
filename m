@@ -1,39 +1,46 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7VBDT916180
-	for linux-mips-outgoing; Fri, 31 Aug 2001 04:13:29 -0700
-Received: from storm.physik.tu-cottbus.de (storm.physik.TU-Cottbus.De [141.43.75.20])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7VBDQd16173
-	for <linux-mips@oss.sgi.com>; Fri, 31 Aug 2001 04:13:26 -0700
-Received: by storm.physik.tu-cottbus.de (Postfix, from userid 7215)
-	id 255246004D; Fri, 31 Aug 2001 13:13:22 +0200 (CEST)
-Date: Fri, 31 Aug 2001 13:13:21 +0200
-To: linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.2/8.11.3) id f7VCgEo18080
+	for linux-mips-outgoing; Fri, 31 Aug 2001 05:42:14 -0700
+Received: from caroubier.wanadoo.fr (smtp-rt-6.wanadoo.fr [193.252.19.160])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7VCgBd18077
+	for <linux-mips@oss.sgi.com>; Fri, 31 Aug 2001 05:42:12 -0700
+Received: from amyris.wanadoo.fr (193.252.19.150) by caroubier.wanadoo.fr; 31 Aug 2001 14:42:04 +0200
+Received: from ez (193.253.196.250) by amyris.wanadoo.fr; 31 Aug 2001 14:41:28 +0200
 Subject: Re: compile C++ code
-Message-ID: <20010831131321.B21981@physik.tu-cottbus.de>
-Mail-Followup-To: heinold@physik.tu-cottbus.de,
-	linux-mips@oss.sgi.com
-References: <02b801c13203$f52ad440$056aaac0@kjlin>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+From: Jean-Christophe ARNU <jc.arnu@wanadoo.fr>
+To: kjlin <kj.lin@viditec-netmedia.com.tw>
+Cc: linux-mips@oss.sgi.com
 In-Reply-To: <02b801c13203$f52ad440$056aaac0@kjlin>
-User-Agent: Mutt/1.3.20i
-From: heinold@physik.tu-cottbus.de (H.Heinold)
+References: <02b801c13203$f52ad440$056aaac0@kjlin>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Mailer: Evolution/0.12 (Preview Release)
+Date: 31 Aug 2001 14:38:38 -0400
+Message-Id: <999283122.29395.45.camel@ez>
+Mime-Version: 1.0
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, Aug 31, 2001 at 06:01:51PM +0800, kjlin wrote:
-> Hi all,
+On 31 Aug 2001 18:01:51 +0800, kjlin wrote:
+
+> #mips-linux-gcc test.C
+> /usr/lib/gcc-lib/mips-linux/egcs-2.91.66/libgcc.a(frame.o): In function `decode_uleb128':
+> /usr/src/redhat/BUILD/egcs-1.1.2/target-mips-linux/gcc/../../gcc/frame.c(.data+0x0): undefined reference to `pthread_create'
+> /usr/mips-linux/bin/ld: bfd assertion fail ../../bfd/elf32-mips.c:5123
+> mips-linux-gcc: Internal compiler error: program ld got fatal signal 11
+> #mips-linux-g++ test.C
+> /usr/mips-linux/lib/libstdc++.so: undefined reference to `pthread_create'
+> /usr/mips-linux/lib/libstdc++.so: undefined reference to `pthread_getspecific'
+> /usr/mips-linux/lib/libstdc++.so: undefined reference to `pthread_once'
+> /usr/mips-linux/lib/libstdc++.so: undefined reference to `pthread_key_create'
+> /usr/mips-linux/lib/libstdc++.so: undefined reference to `pthread_setspecific'
 > 
-> My host is x86 with redhat 7.0 and install the mips cross-compiler:
-> 1.binutils-mips-linux-2.8.1-2.i386.rpm
-> 2.egcs-mips-linux-1.1.2-3.i386.rpm
-> 3.egcs-c++-mips-linux-1.1.2-4.i386.rpm
-> 4.libc-2.0.6
-> 5.egcs-libstdc++-mips-linux-2.9.0-4.i386.rpm
-> But when i compile the following C++ code, something wrong!
+	It seems you should link with pthread lib : 
+	#mips-linux-g++ test.C -lpthread
 
-This packages are old und buggy.
-Please look in the archive where you can download the new toolchains.
-
-Henning Heinold
+	I think the libgcc.a should be linked with it ... Can anyone tell us
+further on that subject?
+-- 
+Jean-Christophe ARNU
+s/w developer 
+Paratronic France

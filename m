@@ -1,52 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Oct 2003 18:53:46 +0100 (BST)
-Received: from p508B6977.dip.t-dialin.net ([IPv6:::ffff:80.139.105.119]:22248
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225429AbTJJRxe>; Fri, 10 Oct 2003 18:53:34 +0100
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h9AHrWNK016847;
-	Fri, 10 Oct 2003 19:53:32 +0200
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h9AHrV7U016846;
-	Fri, 10 Oct 2003 19:53:31 +0200
-Date: Fri, 10 Oct 2003 19:53:31 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Krishna Kondaka <Krishna.Kondaka@MCDATA.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: mips 32 bit HIGHMEM support
-Message-ID: <20031010175331.GA11082@linux-mips.org>
-References: <501EA67E9359C645A10C42EB5B52480D2AB2D0@SNEXCH01.mcdata.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <501EA67E9359C645A10C42EB5B52480D2AB2D0@SNEXCH01.mcdata.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Oct 2003 19:57:01 +0100 (BST)
+Received: from mms3.broadcom.com ([IPv6:::ffff:63.70.210.38]:22024 "EHLO
+	mms3.broadcom.com") by linux-mips.org with ESMTP
+	id <S8225428AbTJJS47>; Fri, 10 Oct 2003 19:56:59 +0100
+Received: from 63.70.210.1 by mms3.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (MMS v5.5.3)); Fri, 10 Oct 2003 11:56:59 -0700
+Received: from mail-sj1-1.sj.broadcom.com (mail-sj1-1.sj.broadcom.com
+ [10.16.128.231]) by mon-irva-11.broadcom.com (8.9.1/8.9.1) with ESMTP
+ id LAA07228 for <linux-mips@linux-mips.org>; Fri, 10 Oct 2003 11:56:17
+ -0700 (PDT)
+Received: from broadcom.com (ldt-sj3-158 [10.21.64.158]) by
+ mail-sj1-1.sj.broadcom.com (8.12.9/8.12.4/SSM) with ESMTP id
+ h9AIujKX002186 for <linux-mips@linux-mips.org>; Fri, 10 Oct 2003 11:56:
+ 45 -0700 (PDT)
+Message-ID: <3F8700ED.4AE74ECE@broadcom.com>
+Date: Fri, 10 Oct 2003 11:56:45 -0700
+From: "Kip Walker" <kwalker@broadcom.com>
+Organization: Broadcom Corp. BPBU
+X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.20-18.7 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: linux-mips@linux-mips.org
+Subject: Re: CVS Update@-mips.org: linux
+References: <20031009160717Z8225587-1272+7472@linux-mips.org>
+X-WSS-ID: 1399DF713300071-01-01
+Content-Type: text/plain;
+ charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <kwalker@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3422
+X-archive-position: 3423
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: kwalker@broadcom.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Oct 10, 2003 at 10:44:19AM -0700, Krishna Kondaka wrote:
+This doesn't compile.  Remove the commas.
 
-> How safe is it to enable HIGHMEM for sibyte/broadcom's BCM12500 processors?
-> Do you know if any one is using HIGHMEM enabled linux on BCM12500s?
+Of course, "vt_check" doesn't build anymore either - I'm trying to fix
+that one.
 
-Perfectly reliable - in fact highmem for MIPS was written and debugged
-on this chip but there are many other that will work just as fine since
-they share the technical properties required to run highmem.
+Kip
 
-Actually with the latest change in CVS enabling CONFIG_HIGHMEM is always
-safe; in cases where it's not safe the kernel will simply limit the
-memory it's using to just lowmem.
-
-Stil the usual warning applies - highmem is a kludge and for systems
-doing heavy I/O it can be a rather slow kludge.  64-bit is the Nirvana
-kernel hackers are seeking ;-)
-
-  Ralf
+macro@linux-mips.org wrote:
+> 
+> CVSROOT:        /home/cvs
+> Module name:    linux
+> Changes by:     macro@ftp.linux-mips.org        03/10/09 17:07:12
+> 
+> Modified files:
+>         arch/mips/kernel: ioctl32.c
+> 
+> Log message:
+>         PIO_FONTX and KDFONTOP ioctls.

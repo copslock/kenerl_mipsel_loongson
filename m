@@ -1,39 +1,43 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id NAA89124 for <linux-archive@neteng.engr.sgi.com>; Thu, 5 Nov 1998 13:38:37 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA61971 for <linux-archive@neteng.engr.sgi.com>; Thu, 5 Nov 1998 16:08:02 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id NAA03188
+	id QAA61653
 	for linux-list;
-	Thu, 5 Nov 1998 13:38:51 -0800 (PST)
+	Thu, 5 Nov 1998 16:07:46 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id NAA45197;
-	Thu, 5 Nov 1998 13:38:49 -0800 (PST)
-	mail_from (alan@lxorguk.ukuu.org.uk)
-Received: from snowcrash.cymru.net (snowcrash.cymru.net [163.164.160.3]) 
+	via ESMTP id QAA65938;
+	Thu, 5 Nov 1998 16:07:44 -0800 (PST)
+	mail_from (miguel@metropolis.nuclecu.unam.mx)
+Received: from metropolis.nuclecu.unam.mx (metropolis.nuclecu.unam.mx [132.248.29.92]) 
 	by sgi.sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id NAA07829; Thu, 5 Nov 1998 13:38:45 -0800 (PST)
-	mail_from (alan@lxorguk.ukuu.org.uk)
-Received: from the-village.bc.nu (lightning.swansea.uk.linux.org [194.168.151.1]) by snowcrash.cymru.net (8.8.7/8.7.1) with SMTP id VAA21317; Thu, 5 Nov 1998 21:38:41 GMT
-Received: by the-village.bc.nu (Smail3.1.29.1 #2)
-	id m0zbXyz-0007U9C; Thu, 5 Nov 98 22:34 GMT
-Message-Id: <m0zbXyz-0007U9C@the-village.bc.nu>
-From: alan@lxorguk.ukuu.org.uk (Alan Cox)
-Subject: Re: Halloween doc II
+	via ESMTP id QAA07654; Thu, 5 Nov 1998 16:07:38 -0800 (PST)
+	mail_from (miguel@metropolis.nuclecu.unam.mx)
+Received: (from miguel@localhost)
+	by metropolis.nuclecu.unam.mx (8.8.7/8.8.7) id SAA11760;
+	Thu, 5 Nov 1998 18:13:10 -0600
+Date: Thu, 5 Nov 1998 18:13:10 -0600
+Message-Id: <199811060013.SAA11760@metropolis.nuclecu.unam.mx>
+From: Miguel de Icaza <miguel@nuclecu.unam.mx>
 To: ariel@cthulhu.engr.sgi.com
-Date: Thu, 5 Nov 1998 22:34:23 +0000 (GMT)
-Cc: alan@lxorguk.ukuu.org.uk, linux@cthulhu.engr.sgi.com
-In-Reply-To: <199811052134.NAA55597@oz.engr.sgi.com> from "Ariel Faigon" at Nov 5, 98 01:34:51 pm
-Content-Type: text
+CC: linux@cthulhu.engr.sgi.com
+In-reply-to: <199811052053.MAA55262@oz.engr.sgi.com> (ariel@oz.engr.sgi.com)
+Subject: Re: Halloween doc II
+X-Mexico: Este es un pais de orates, un pais amateur.
+References:  <199811052053.MAA55262@oz.engr.sgi.com>
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> :We've all seen it. 
-> :
-> How naive of me to even hint otherwise :-)
 
-Grin
+> Someone forward this to Red Hat / Gnome and the XFree86 teams ...
+
+I can :-)
+
+It also mentions GNOME, which made me extremely happy :-)
+
+Miguel.

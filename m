@@ -1,23 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Oct 2002 21:59:16 +0200 (CEST)
-Received: from mx2.redhat.com ([12.150.115.133]:11794 "EHLO mx2.redhat.com")
-	by linux-mips.org with ESMTP id <S1122978AbSJOT7P>;
-	Tue, 15 Oct 2002 21:59:15 +0200
-Received: from int-mx2.corp.redhat.com (int-mx2.corp.redhat.com [172.16.27.26])
-	by mx2.redhat.com (8.11.6/8.11.6) with ESMTP id g9FJwRs14927;
-	Tue, 15 Oct 2002 15:58:27 -0400
-Received: from potter.sfbay.redhat.com (potter.sfbay.redhat.com [172.16.27.15])
-	by int-mx2.corp.redhat.com (8.11.6/8.11.6) with ESMTP id g9FJx0l10139;
-	Tue, 15 Oct 2002 15:59:01 -0400
-Received: from tonopah.toronto.redhat.com (tonopah.toronto.redhat.com [172.16.14.91])
-	by potter.sfbay.redhat.com (8.11.6/8.11.6) with ESMTP id g9FJwwD09263;
-	Tue, 15 Oct 2002 12:58:58 -0700
-Received: (from wilson@localhost)
-	by tonopah.toronto.redhat.com (8.11.6/8.11.6) id g9FJwv418168;
-	Tue, 15 Oct 2002 15:58:57 -0400
-X-Authentication-Warning: tonopah.toronto.redhat.com: wilson set sender to wilson@redhat.com using -f
-To: "H. J. Lu" <hjl@lucon.org>
-Cc: Alexandre Oliva <aoliva@redhat.com>,
-	Richard Sandiford <rsandifo@redhat.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Oct 2002 22:03:00 +0200 (CEST)
+Received: from cygnus.equallogic.com ([65.170.102.10]:32777 "HELO
+	cygnus.equallogic.com") by linux-mips.org with SMTP
+	id <S1123930AbSJOUC7>; Tue, 15 Oct 2002 22:02:59 +0200
+Received: from cygnus.equallogic.com (localhost.localdomain [127.0.0.1])
+	by cygnus.equallogic.com (8.11.6/8.11.6) with ESMTP id g9FK2qN05645
+	for <linux-mips@linux-mips.org>; Tue, 15 Oct 2002 16:02:52 -0400
+Received: from deneb.dev.equallogic.com (deneb.dev.equallogic.com [172.16.1.99])
+	by cygnus.equallogic.com (8.11.6/8.11.6) with ESMTP id g9FK2pk05633;
+	Tue, 15 Oct 2002 16:02:51 -0400
+Received: from pkoning.dev.equallogic.com.equallogic.com (localhost.localdomain [127.0.0.1])
+	by deneb.dev.equallogic.com (8.11.6/8.11.6) with ESMTP id g9FK2om19272;
+	Tue, 15 Oct 2002 16:02:51 -0400
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID: <15788.29802.865689.741487@pkoning.dev.equallogic.com>
+Date: Tue, 15 Oct 2002 16:02:50 -0400
+From: Paul Koning <pkoning@equallogic.com>
+To: wilson@redhat.com
+Cc: hjl@lucon.org, aoliva@redhat.com, rsandifo@redhat.com,
 	linux-mips@linux-mips.org, gcc@gcc.gnu.org,
 	binutils@sources.redhat.com
 Subject: Re: MIPS gas relaxation still doesn't work
@@ -32,38 +33,35 @@ References: <20021014082810.A28682@lucon.org>
 	<20021014110118.B30940@lucon.org>
 	<orelas24n2.fsf@free.redhat.lsd.ic.unicamp.br>
 	<20021014123940.A32333@lucon.org>
-From: Jim Wilson <wilson@redhat.com>
-Date: 15 Oct 2002 15:58:57 -0400
-In-Reply-To: <20021014123940.A32333@lucon.org>
-Message-ID: <xwusmz7xym6.fsf@tonopah.toronto.redhat.com>
-User-Agent: Gnus/5.0808 (Gnus v5.8.8) Emacs/20.7
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <wilson@redhat.com>
+	<xwusmz7xym6.fsf@tonopah.toronto.redhat.com>
+X-Mailer: VM 7.07 under 21.1 (patch 14) "Cuyahoga Valley" XEmacs Lucid
+Return-Path: <pkoning@equallogic.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 444
+X-archive-position: 445
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wilson@redhat.com
+X-original-sender: pkoning@equallogic.com
 Precedence: bulk
 X-list: linux-mips
 
->Can gcc not to emit nop nor noreorder when it tries to fill the delay
->slot with nop?
+>>>>> "Jim" == Jim Wilson <wilson@redhat.com> writes:
 
-You never want the assembler to try to fill delay slots.  Consider a compiler
-optimization like software pipelining.  The compiler will schedule instructions
-inside a loop with full knowledge of the target pipeline to give maximum
-performance.  Then the assembler picks a random instruction from the loop,
-puts it in a branch delay slot, and now your code runs twice as slow because
-the assembler introduced pipeline stalls.  Of course, gcc isn't good enough
-yet to have this problem yet, but we will get there eventually.  Meanwhile, we
-need to get out of the habit of relying on assembler optimizations.  In the
-long run, assembler optimizations are bad, and we need to stop using them as
-soon as possible.  Gcc should emit .set nomacro/noreorder/noat/etc at the
-begining of its assembly output, and never turn them on.
+ >> Can gcc not to emit nop nor noreorder when it tries to fill the
+ >> delay slot with nop?
 
-Jim
+ Jim> You never want the assembler to try to fill delay slots.
+ Jim> Consider a compiler optimization like software pipelining. ...
+ Jim>  Meanwhile, we need to get out of
+ Jim> the habit of relying on assembler optimizations.  In the long
+ Jim> run, assembler optimizations are bad, and we need to stop using
+ Jim> them as soon as possible.  Gcc should emit .set
+ Jim> nomacro/noreorder/noat/etc at the begining of its assembly
+ Jim> output, and never turn them on.
+
+Makes sense to me.  As an assembly language programmer, I do the same
+thing in handwritten code, for the same reasons.
+
+      paul

@@ -1,77 +1,48 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fARHbQ425973
-	for linux-mips-outgoing; Tue, 27 Nov 2001 09:37:26 -0800
-Received: from sina.com ([202.106.187.156])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fARHbJo25961
-	for <linux-mips@oss.sgi.com>; Tue, 27 Nov 2001 09:37:19 -0800
-Message-Id: <200111271737.fARHbJo25961@oss.sgi.com>
-Received: (qmail 55096 invoked from network); 27 Nov 2001 15:15:37 -0000
-Received: from unknown (HELO localhost) (61.142.176.68)
-  by 202.106.187.156 with SMTP; 27 Nov 2001 15:15:37 -0000
-X-Sender: gentlesales@sina.com
-From: Jason Wong <gentlesales@sina.com>
-To: linux-mips@oss.sgi.com
-Date: Tue, 27 Nov 2001 23:31:12 +0800
-Subject: We Produce & Export high quality ultrasonic mist makers, Worldwide Agent Wanted
-Reply-To: gentlesales@sina.com
-Organization: Gentle
+	by oss.sgi.com (8.11.2/8.11.3) id fARHuoM26408
+	for linux-mips-outgoing; Tue, 27 Nov 2001 09:56:50 -0800
+Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fARHuho26405
+	for <linux-mips@oss.sgi.com>; Tue, 27 Nov 2001 09:56:44 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id RAA10679;
+	Tue, 27 Nov 2001 17:55:01 +0100 (MET)
+Date: Tue, 27 Nov 2001 17:55:00 +0100 (MET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Florian Lohoff <flo@rfc822.org>
+cc: debian-mips@lists.debian.org, debian-boot@lists.debian.org,
+   linux-mips@oss.sgi.com
+Subject: Re: failed installation debian-mipsel (Decstation 5000/150)
+In-Reply-To: <20011127163854.D9282@paradigm.rfc822.org>
+Message-ID: <Pine.GSO.3.96.1011127175326.440J-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Dear Sir or Mandam,
- 
-If your company is in the line of electronics, esp. in Mini Mist Maker, we would 
-be very keen to establish a long term business relationship with you.
- 
-Nanhai Chaoneng Electronic Factory Co., Ltd. was established in 1989, enjoying 
-over 10 years of good reputation, we have been constantly devoting to investigating 
-and manufacturing wonderful products to improve people's living, and market series 
-of ultrasonic mist makers, underwater light and a whole set of waterfall and 
-mist, artistically handcrafted products.
- 
-We have set up and adopted a whole series of strict quality control system in 
-our factory, ensuring quality steady and reliable. All of our products have been 
-tested and certified by safety standard approval from CE, EMC, GS, UL, CSA etc.
- 
- This year, our best sell is Mini Mist Maker, it utilizes electrical oscillation 
-frequencies, via ceramic disc's high frequencies resonance to create natural 
-white mist/fog on the surface of water, No heat or chemicals needed, just place 
-it into clean water, the mist add humidity to a room and the negative ions generated 
-by the unit help to freshen air, if add a few drops of fragrant oil or disinfector 
-oil to the water, it will produce an effect similar to an incense burner and 
-give you a clean dreaming space, breathe natural fresh air. Matching transformer 
-supplied together, safety lower voltage, no harm to body and animal absolutely.
+On Tue, 27 Nov 2001, Florian Lohoff wrote:
 
-"Quality, Credit Standing and Service" are our steady promises, confirmed by 
-highly qualified team. You are welcome to visit our homepage http://chaoneng.com.cn!
+> >  I see.  I haven't used TFTP on the DECstation ever.  I think the default
+> > timeout is too low anyway.  RFC826 does not specify any timeouts but
+> > keeping them below 2 minutes is pointless IMO.  If an interface assigned
+> > to an IP address changes its MAC address, it will start to use the new one
+> > for ARP requests immetiately and all caches in the LAN will have a chance
+> > to get updated.
+> 
+> IIRC the kernel refreshes the timeout on communication - But only on
+> TCP not UDP ...
 
-If you are interest in our products, please don't hesitate to contact us now!
- 
- Best regards,
+ Weird.
 
-Mr. Jason Wong
+> >  Weird -- the read should time out after 10000 loops...  It definitely
+> > needs to be checked. 
+> 
+> Did this change lately - The kernel of the boot-floppies is a little
+> old.
 
-Sales Department
+ I don't think so.
 
-NANHAI GENTLE ELECTRONIC CO.,LTD.
-
-International Marketing Office:
-Room 722, 7/F, Furong Center, No.1, Zumaio Rd,
-Foshan, Guangdong,
-528000, P.R. China
-Postal Code: 528000
-Tel: +86-757-3982666
-Fax: +86-757-2283667
-E-Mail: gentlesales@163.com
-             gentlesales@sina.com 
-Website: http://www.chaoeng.com.cn
-
-Factory:
-Nan 2 Road, Guicheng, 
-Nanhai, Guangdong,
-528200 P.R. of China
-TEL: +86-757-3982666  
-FAX: +86-757-2283667
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

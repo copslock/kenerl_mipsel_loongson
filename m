@@ -1,73 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Oct 2004 21:11:16 +0100 (BST)
-Received: from [IPv6:::ffff:65.205.244.70] ([IPv6:::ffff:65.205.244.70]:7999
-	"EHLO mail2.dmz.sj.pioneer-pra.com") by linux-mips.org with ESMTP
-	id <S8225281AbUJYULJ>; Mon, 25 Oct 2004 21:11:09 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by mail2.dmz.sj.pioneer-pra.com (Postfix) with ESMTP id A076C2340DB;
-	Mon, 25 Oct 2004 13:11:01 -0700 (PDT)
-Received: from mail2.dmz.sj.pioneer-pra.com ([127.0.0.1])
- by localhost (neo2 [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 18481-06; Mon, 25 Oct 2004 13:11:01 -0700 (PDT)
-Received: from Europa (unknown [207.215.131.4])
-	(using TLSv1 with cipher RC4-MD5 (128/128 bits))
-	(Client did not present a certificate)
-	by mail2.dmz.sj.pioneer-pra.com (Postfix) with ESMTP id DAEBD2340D8;
-	Mon, 25 Oct 2004 13:11:00 -0700 (PDT)
-From: "Mike C. Ward" <mike.ward@pioneer-pra.com>
-To: "Linux-MIPS List" <linux-mips@linux-mips.org>,
-	"uClibc List" <uclibc@uclibc.org>
-Subject: remote cross GDB debugging with shared libraries on mipsel-linux with uClibc
-Date: Mon, 25 Oct 2004 13:10:53 -0700
-Message-ID: <EBEFKGLFAJGMOFIOAPDICECBDGAA.mike.ward@pioneer-pra.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Oct 2004 02:46:04 +0100 (BST)
+Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:25104
+	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
+	id <S8225288AbUJZBp7>; Tue, 26 Oct 2004 02:45:59 +0100
+Received: from newms.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 26 Oct 2004 01:45:57 UT
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by newms.toshiba-tops.co.jp (Postfix) with ESMTP
+	id A6930239E2B; Tue, 26 Oct 2004 10:13:36 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id i9Q1Da3i063310;
+	Tue, 26 Oct 2004 10:13:36 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date: Tue, 26 Oct 2004 10:12:26 +0900 (JST)
+Message-Id: <20041026.101226.70226592.nemoto@toshiba-tops.co.jp>
+To: linux-mips@linux-mips.org
+Cc: ralf@linux-mips.org
+Subject: socket.h patch (SOCK_XXX break glibc build)
+From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.2 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
-Importance: Normal
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1441
-Return-Path: <mike.ward@pioneer-pra.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6202
+X-archive-position: 6203
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mike.ward@pioneer-pra.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-I am having trouble with remote cross GDB debugging on mipsel-linux 
-with uClibc.  
+On 2.6.9, SOCK_DGRAM, etc. in asm-mips/socket.h are visible from
+userland.  It will break glibc build.  For other archs,
+include/linux/net.h uses "#ifdef __KERNEL__" for SOCK_XXX definitions,
+so asm-mips/socket.h should use "#ifdef __KERNEL__" too?
 
-Has anyone had success remote debugging a MIPSEL program that uses 
-shared libraries and uClibc?  Anyone aware of a problem with this 
-configuration?
 
-mipsel-linux-gcc (GCC) 3.3.3
-uClibc-0.9.27
-binutils 2.14.90.0.7 20031029
-Linux 2.4.25
-GDB 5.3 and GDB 6.2.1 and gdb+dejagnu-20040805
-have been tried.  
+diff -u linux-mips/include/asm-mips/socket.h linux/include/asm-mips/
+--- linux-mips/include/asm-mips/socket.h	Thu Oct 21 09:39:03 2004
++++ linux/include/asm-mips/socket.h	Mon Oct 25 22:06:43 2004
+@@ -68,6 +68,8 @@
+ 
+ #define SO_PEERSEC		30
+ 
++#ifdef __KERNEL__
++:
+ /** sock_type - Socket types
+  *
+  * Please notice that for binary compat reasons MIPS has to
+@@ -95,4 +97,6 @@
+ 
+ #define ARCH_HAS_SOCKET_TYPES 1
+ 
++#endif /* __KERNEL__ */
++
+ #endif /* _ASM_SOCKET_H */
 
-Thanks,
-
-Mike
-
-More details follow:
-
-GDB finds and opens
-ld-uClibc.so.0, but is unable to properly load any
-libraries. 
-Libraries are unstripped on the host,
-target contains stripped versions of the identical
-libraries.
-GDB gets shared library event breakpoints when libraries are loaded
-if they're enabled.  The GDB function elf_locate_base()
-finds DT_MIPS_RLD_MAP which "contains a pointer 
-to the address of the dynamic link structure."  But that
-address is read as 0.
+---
+Atsushi Nemoto

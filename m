@@ -1,43 +1,40 @@
 Received: from oss.sgi.com (localhost.localdomain [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g3FICf8d005975
-	for <linux-mips-outgoing@oss.sgi.com>; Mon, 15 Apr 2002 11:12:41 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g3FIfC8d008193
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 15 Apr 2002 11:41:12 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g3FICfuq005974
-	for linux-mips-outgoing; Mon, 15 Apr 2002 11:12:41 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g3FIfCjQ008192
+	for linux-mips-outgoing; Mon, 15 Apr 2002 11:41:12 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g3FICb8d005961
-	for <linux-mips@oss.sgi.com>; Mon, 15 Apr 2002 11:12:38 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id UAA29321;
-	Mon, 15 Apr 2002 20:13:43 +0200 (MET DST)
-Date: Mon, 15 Apr 2002 20:13:42 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Guido Guenther <agx@sigxcpu.org>
-cc: linux-mips@oss.sgi.com
-Subject: Re: head.S and init_task.c vs addinitrd
-In-Reply-To: <20020415181743.A24174@gandalf.physik.uni-konstanz.de>
-Message-ID: <Pine.GSO.3.96.1020415201017.19735Q-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received: from ayrnetworks.com (64-166-72-141.ayrnetworks.com [64.166.72.141])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g3FIf98d008182
+	for <linux-mips@oss.sgi.com>; Mon, 15 Apr 2002 11:41:10 -0700
+Received: (from wjhun@localhost)
+	by  ayrnetworks.com (8.11.2/8.11.2) id g3FIciu21802
+	for linux-mips@oss.sgi.com; Mon, 15 Apr 2002 11:38:44 -0700
+Date: Mon, 15 Apr 2002 11:38:44 -0700
+From: William Jhun <wjhun@ayrnetworks.com>
+To: linux-mips@oss.sgi.com
+Subject: rm7k flush_icache_line() in rm7k_dma_cache_*
+Message-ID: <20020415113844.A21747@ayrnetworks.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, 15 Apr 2002, Guido Guenther wrote:
+Hello,
 
-> Are you telling me the only reason for the changes in init_task.c/head.S
-> were made to break the elf2ecoff/addinitrd "hack"? Where exactly was
-> there a hack in head.S/init_task.c. Please point me to the line of code
-> since I don't understand enough about the kernel to see it.
+We've been experiencing some problems with our RM7k cache code which is
+based on the sgi mm/rm7k.c from around kernel version 2.4.2. While
+trying to track this down, we noticed that someone added a call to
+flush_icache_line() in the rm7k_dma_cache_*() routines (now
+mm/c-rm7k.c). What is the reason for this? It is our understanding that
+the instruction cache does not write back, and so stale cache lines in
+the icache which are later used for data/dma would seem innocuous. Is
+this not true? We could not find a CVS log entry to explain this,
+either. Did anyone experience problems without these calls to
+flush_icache_line()?
 
- I meant it stopped working because it is an ugly hack.  It is too fragile
-to work in all cases. 
-
-> That's 2.5 stuff. We should not break expected behavior in 2.4.
-
- Agreed.
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Thanks,
+Will

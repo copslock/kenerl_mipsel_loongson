@@ -1,67 +1,44 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1P3lx529625
-	for linux-mips-outgoing; Sun, 24 Feb 2002 19:47:59 -0800
-Received: from dtla2.teknuts.com (adsl-66-125-62-110.dsl.lsan03.pacbell.net [66.125.62.110])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1P3lt929605
-	for <linux-mips@oss.sgi.com>; Sun, 24 Feb 2002 19:47:55 -0800
-Received: from delllaptop ([208.187.134.59])
-	(authenticated)
-	by dtla2.teknuts.com (8.11.3/8.10.1) with ESMTP id g1P2llP09699;
-	Sun, 24 Feb 2002 18:47:49 -0800
-From: "Robert Rusek" <robru@teknuts.com>
-To: "'Florian Lohoff'" <flo@rfc822.org>
-Cc: <linux-mips@oss.sgi.com>
-Subject: RE: Latest kernel?
-Date: Sun, 24 Feb 2002 18:43:17 -0800
-Message-ID: <001401c1bda6$352f7d10$6601a8c0@delllaptop>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook, Build 10.0.3416
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-In-Reply-To: <20020220221507.GC29624@paradigm.rfc822.org>
-Importance: Normal
+	by oss.sgi.com (8.11.2/8.11.3) id g1P4C9V03575
+	for linux-mips-outgoing; Sun, 24 Feb 2002 20:12:09 -0800
+Received: from dea.linux-mips.net (a1as13-p121.stg.tli.de [195.252.191.121])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1P4C4903553
+	for <linux-mips@oss.sgi.com>; Sun, 24 Feb 2002 20:12:05 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.1) id g1P3BtV03165;
+	Mon, 25 Feb 2002 04:11:55 +0100
+Date: Mon, 25 Feb 2002 04:11:54 +0100
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Jun Sun <jsun@mvista.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: FPU emul and segmentation fault bug
+Message-ID: <20020225041154.A2993@dea.linux-mips.net>
+References: <3C76F53D.2C893BC7@mvista.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3C76F53D.2C893BC7@mvista.com>; from jsun@mvista.com on Fri, Feb 22, 2002 at 05:49:49PM -0800
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Florian,
+On Fri, Feb 22, 2002 at 05:49:49PM -0800, Jun Sun wrote:
 
-I checked the oss.sgi.com cvs and they do not seem to have linux_2_4
-only linux-2.4-xfs.  Is that what I am looking for?  Will that give me a
-working 2.4.x kernel?
+> I remember a while back we had a problem with FPU emulation code which causes
+> a segmentation fault.  (Perhaps another symptom is bus error, but I am not
+> 100% sure).
+> 
+> Apparently this problem is fixed in the recent kernel.  However, it shows up
+> again in SMP mode.
+> 
+> Does anybody remember details of the problem and the fix?  I am afraid maybe
+> something we did there is not SMP safe.
 
-Thanks in advance,
-Rob.
+That's most probably a SMP cache invalidation bug.  What happens is that
+remote CPUs try to invalidate the same address range as a local CPU as
+well without any consideration that the active context of the remote
+CPU might be different from the local one.  In combination with another
+bug this may actually crash the whole system.
 
------Original Message-----
-From: owner-linux-mips@oss.sgi.com [mailto:owner-linux-mips@oss.sgi.com]
-On Behalf Of Florian Lohoff
-Sent: Wednesday, February 20, 2002 2:15 PM
-To: Robert Rusek
-Cc: linux-mips@oss.sgi.com
-Subject: Re: Latest kernel?
-
-
-On Wed, Feb 20, 2002 at 02:00:36PM -0800, Robert Rusek wrote:
-> Where can I obtain the latest stable build of the kernel.  I need it 
-> to work on my SGI IP22.  If possible I do not want to use CSV since I 
-> do not have a high speed internet connection.  Any help would be 
-> greatly appreciated.
-
-I dont think there are regular tarballs - Take the pain once - checkout
-the kernel and before modifying make a tarball. Then you can just
-
-cvs -z3 update -Pd 
-
-Your tarball all the time. BTW: You should checkout -r linux_2_4 as i
-dont think 2.5 has success reports on mips already.
-
-Flo
--- 
-Florian Lohoff                  flo@rfc822.org
-+49-5201-669912
-Nine nineth on september the 9th              Welcome to the new
-billenium
+  Ralf

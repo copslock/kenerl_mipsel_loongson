@@ -1,52 +1,47 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id TAA539845 for <linux-archive@neteng.engr.sgi.com>; Wed, 25 Feb 1998 19:42:16 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id AAA604882 for <linux-archive@neteng.engr.sgi.com>; Thu, 26 Feb 1998 00:30:55 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id TAA25535 for linux-list; Wed, 25 Feb 1998 19:41:33 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id TAA25524 for <linux@cthulhu.engr.sgi.com>; Wed, 25 Feb 1998 19:41:31 -0800
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id TAA24377
-	for <linux@cthulhu.engr.sgi.com>; Wed, 25 Feb 1998 19:41:30 -0800
-	env-from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id WAA19268;
-	Wed, 25 Feb 1998 22:41:34 -0500
-X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
-Date: Wed, 25 Feb 1998 22:41:34 -0500 (EST)
-From: Alex deVries <adevries@engsoc.carleton.ca>
-To: Ulf Carlsson <grimsy@varberg.se>
-cc: linux@cthulhu.engr.sgi.com
-Subject: Re: installation problem.
-In-Reply-To: <Pine.LNX.3.96.980225224349.1894A-100000@calypso.saturn>
-Message-ID: <Pine.LNX.3.95.980225223801.13530B-100000@lager.engsoc.carleton.ca>
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id AAA06935 for linux-list; Thu, 26 Feb 1998 00:30:22 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA06919 for <linux@cthulhu.engr.sgi.com>; Thu, 26 Feb 1998 00:30:18 -0800
+Received: from netscape.com (h-205-217-237-47.netscape.com [205.217.237.47]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id AAA18430
+	for <linux@cthulhu.engr.sgi.com>; Thu, 26 Feb 1998 00:30:17 -0800
+	env-from (shaver@netscape.com)
+Received: from dredd.mcom.com (dredd.mcom.com [205.217.237.54])
+	by netscape.com (8.8.5/8.8.5) with ESMTP id AAA26593
+	for <linux@cthulhu.engr.sgi.com>; Thu, 26 Feb 1998 00:30:15 -0800 (PST)
+Received: from netscape.com ([205.217.243.3]) by dredd.mcom.com
+          (Netscape Messaging Server 3.5)  with ESMTP id AAA284C;
+          Thu, 26 Feb 1998 00:30:13 -0800
+Message-ID: <34F50934.7C766D2C@netscape.com>
+Date: Wed, 25 Feb 1998 22:18:28 -0800
+From: Mike Shaver <shaver@netscape.com>
+Organization: Package Reflectors
+X-Mailer: Mozilla 4.02 [en] (X11; U; IRIX 6.2 IP22)
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To: Ulf Carlsson <grimsy@varberg.se>
+CC: linux@cthulhu.engr.sgi.com
+Subject: Re: installation problem.
+References: <Pine.LNX.3.96.980226085920.2193D-100000@calypso.saturn>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+Ulf Carlsson wrote:
+> It's also very strange that the kernel doesn't detect my scsi harddrives
+> correctly (I have reported these error messages earlier). I tested fx, and
+> fx detected them correctly. I get the same error with my orginal sgi
+> harddrive which obviously works, since irix doesn't have any problems with
+> it.
 
-On Wed, 25 Feb 1998, Ulf Carlsson wrote:
-> On Wed, 25 Feb 1998, Alex deVries wrote:
-> > > sdb : sector size 0 reperted, assuming 512.
-> > > SCSI device sdb: hdwr sector= 512 bytes. Sectors= 1  [0 MB] [0.0 GB]
-> > Hm.  The 0 MB is what's worrisome, since the kernel doesn't know what kind
-> > of disk you have.  Can you partition and format that disk properly under
-> > Irix?
-> 
-> Hmm.. I have dropped the harddrive in the floor once :)
+Oh...is that drive SCSI id 7?  I had problems with one of my drives
+(which was happy under IRIX) until I changed the id to something other
+than 7.
+ 
+> I'll take a look in the kernel source and try to figure out what's causing
+> that kernel paging error.
 
-Who hasn't? :)
+You want to run mips-linux-objdump to get a function+offset (or, if that
+kernel was compiled -g, line number info) for the fault, and then we can
+try to debug it.
 
-> Well, I get the same error message from the kernel with sda. (those lines
-> are identical.. the sda error message is just above the sdb's).
-
-Yup.  It sounds like it's a SCSI driver problem.  Are you getting the
-error message now with .72?
-
-> Can't you please tell me how to partition and format a disk in irix? I
-> have no real experience of irix, got this indy last week. But I
-> have ofcourse been using linux for a long time :) 
-
-You need to use fx, or that cutesy graphical tool that's on the menus.
-
-NB: the latest release on ftp.linux.sgi.com is 2.1.72, not 2.1.82 as I'd
-mentioned earlier.  Too many numbers...
-
-- Alex
+Mike

@@ -1,70 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Sep 2002 17:42:09 +0200 (CEST)
-Received: from iris1.csv.ica.uni-stuttgart.de ([129.69.118.2]:19773 "EHLO
-	iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S1122987AbSIQPmI>; Tue, 17 Sep 2002 17:42:08 +0200
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp (Exim 3.36 #2)
-	id 17rKOt-002h7i-00
-	for linux-mips@linux-mips.org; Tue, 17 Sep 2002 17:36:31 +0200
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 17rKUD-0003OT-00
-	for <linux-mips@linux-mips.org>; Tue, 17 Sep 2002 17:42:01 +0200
-Date: Tue, 17 Sep 2002 17:42:01 +0200
-To: linux-mips@linux-mips.org
-Subject: Re: Delayed jumps and branches
-Message-ID: <20020917154201.GA18697@rembrandt.csv.ica.uni-stuttgart.de>
-References: <20020917161959.33787757.g.c.bransby-99@student.lboro.ac.uk>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Sep 2002 19:03:36 +0200 (CEST)
+Received: from [212.74.13.151] ([212.74.13.151]:29680 "EHLO dell.zee2.com")
+	by linux-mips.org with ESMTP id <S1122987AbSIQRDf>;
+	Tue, 17 Sep 2002 19:03:35 +0200
+Received: from zee2.com (localhost [127.0.0.1])
+	by dell.zee2.com (8.11.6/8.11.6) with ESMTP id g8HH3HM10370
+	for <linux-mips@linux-mips.org>; Tue, 17 Sep 2002 18:03:20 +0100
+Message-ID: <3D876053.C2CD1D8C@zee2.com>
+Date: Tue, 17 Sep 2002 18:03:15 +0100
+From: Stuart Hughes <seh@zee2.com>
+Organization: Zee2 Ltd
+X-Mailer: Mozilla 4.78 [en] (X11; U; Linux 2.4.18 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: Linux-MIPS <linux-mips@linux-mips.org>
+Subject: cannot debug multi-threaded programs with gdb/gdbserver
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20020917161959.33787757.g.c.bransby-99@student.lboro.ac.uk>
-User-Agent: Mutt/1.4i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+Content-Transfer-Encoding: 7bit
+Return-Path: <seh@zee2.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 201
+X-archive-position: 202
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: seh@zee2.com
 Precedence: bulk
 X-list: linux-mips
 
-Gareth wrote:
-> Hi,
-> 
-> I have been going through my mips architecture book learning about the delay
-> slots used in loads, jumps and branches and I am in need of some clarification.
-> The instruction just after the jump instruction is always executed wether the
-> jump is taken or not, right?
+Hi,
 
-There are no conditional jumps, so you are right. :-)
+I managed to get gdb to do multi-threaded debug using a gdb on the
+target, after Daniel J helped with a patch to sys/procfs.h
 
-> So the compiler can re-aarange the assembly to
-> take advantage of this, but if no instruction (that can be executed wether the
-> jump is taken or not) can be placed after the jump, a nop is used intstead. So
-> take this code for example :
-> 
->     jal <my_function>
->     li  $s2, 3
->     li  $v0, 2
+I am now trying to do host target with gdb/gdbserver.  The program on
+the target uses pthreads.
 
-The register name is either "$2" or "v0".
+I can connect, but as soon as you try to continue (to a breakpoint) I
+get:
 
-> If the jump is not taken, it requires 3 cycles to execute these 3 instructions.
-> If the jump is taken, it requires 3 cycles to execute the first instruction of
-> my_function, and li $s2, 3 is executed.
-> 
-> Is my reasoning correct?
+Program received signal SIG32, Real-time event 32.
+warning: Warning: GDB can't find the start of the function at
+0x2abee684.
+....
 
-Yes, if it was e.g.
-
-	beq	t0, zero, <my_function>
-
-instead of jal. Note that the "branch likely" variants don't execute the
-delay slot if not taken.
+I know that SIG32 is used for the thread control on the target, but I'm
+not sure if the host gdb is supposed to receive this.  I tried "set
+handle SIG32 pass noprint nostop"
+and variations, but this didn't help.
+ 
+Does anyone know whether there is some special setup needed on
+gdb/gdbserver to use the multi-threaded gdbserver ??
 
 
-Thiemo
+
+My environment is as follows:
+
+CPU:		NEC VR5432
+kernel: 	linux-2.4.18 + patches
+glibc:		2.2.3 + patches
+gdb:		5.2/3 from CVS
+gcc:		3.1
+binutils:	Version 2.11.90.0.25
+
+
+cross-gdb configured using: 
+
+configure --prefix=/usr --target=mipsel-linux --disable-sim
+--disable-tcl --enable-threads --enable-shared
+
+gdbserver configured using:
+
+configure --prefix=/usr --host=mipsel-linux --target=mipsel-linux
+--enable-threads --enable-shared
+
+
+Regards, Stuart

@@ -1,51 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Jan 2004 10:50:01 +0000 (GMT)
-Received: from jaguar.mkp.net ([IPv6:::ffff:192.139.46.146]:58345 "EHLO
-	jaguar.mkp.net") by linux-mips.org with ESMTP id <S8224914AbUA1KuA>;
-	Wed, 28 Jan 2004 10:50:00 +0000
-Received: from jes by jaguar.mkp.net with local (Exim 3.35 #1)
-	id 1AlnGh-0005Ko-00; Wed, 28 Jan 2004 05:49:59 -0500
-To: Ladislav Michl <ladis@linux-mips.org>
-Cc: Kevin Paul Herbert <kph@cisco.com>, linux-mips@linux-mips.org
-Subject: Re: Removal of ____raw_readq() and ____raw_writeq() from asm-mips/io.h
-References: <1075255111.8744.4.camel@shakedown>
-	<20040128094032.GB900@kopretinka>
-From: Jes Sorensen <jes@wildopensource.com>
-Date: 28 Jan 2004 05:49:58 -0500
-In-Reply-To: <20040128094032.GB900@kopretinka>
-Message-ID: <yq07jzcz6sp.fsf@wildopensource.com>
-User-Agent: Gnus/5.09 (Gnus v5.9.0) Emacs/21.2
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Jan 2004 13:57:54 +0000 (GMT)
+Received: from p508B7E65.dip.t-dialin.net ([IPv6:::ffff:80.139.126.101]:3675
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225609AbUA1N5y>; Wed, 28 Jan 2004 13:57:54 +0000
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i0SDvdex001953;
+	Wed, 28 Jan 2004 14:57:39 +0100
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i0SDvWFa001952;
+	Wed, 28 Jan 2004 14:57:32 +0100
+Date: Wed, 28 Jan 2004 14:57:32 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Matthew Dharm <mdharm@momenco.com>
+Cc: podstavin@dev.rtsoft.ru, "'Pavel Kiryukhin'" <savl@dev.rtsoft.ru>,
+	linux-mips@linux-mips.org
+Subject: Re: Marvell MV64340 documentation
+Message-ID: <20040128135732.GA1717@linux-mips.org>
+References: <1075229071.4058.46.camel@podstavin.dev.rtsoft.ru> <000d01c3e50d$4a6e8b40$7200a8c0@internal.momenco.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Return-Path: <jes@trained-monkey.org>
+Content-Disposition: inline
+In-Reply-To: <000d01c3e50d$4a6e8b40$7200a8c0@internal.momenco.com>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4157
+X-archive-position: 4158
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jes@wildopensource.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
->>>>> "Ladislav" == Ladislav Michl <ladis@linux-mips.org> writes:
+On Tue, Jan 27, 2004 at 11:39:34AM -0800, Matthew Dharm wrote:
 
-Ladislav> On Tue, Jan 27, 2004 at 05:58:31PM -0800, Kevin Paul Herbert
-Ladislav> wrote:
->> In edit 1.68, the non-interrupt locking versions of
->> raw_readq()/raw_writeq() were removed, in favor of locking
->> ones. While this makes sense in general, it breaks the compilation
->> of the sb1250 which uses the non-locking versions (____raw_readq()
->> and ____raw_writeq()) in interrupt handlers.
+> > Could you write me what do bits mean in the interrupt cause 
+> > registers for MV64340 Ethernet? I need to handle them in the 
+> > interrupt handler for the Gigabit Ethernet in the driver.
 
-Ladislav> Why was someone using these function at all? if you don't
-Ladislav> need locking simply do *reg_addr = val;
+> I can't really answer something that specific without violating the NDA.
 
-ARGHHHHHHHHHH!
+The quality of support in free software tends to be proportional to the
+availability of documentation.  Their score definately isn't Marvellous
+here ;-)
 
-If you are accessing memory mapped registers or memory on a PCI
-device, ie. likely on a 1250, you *must* use the readX/__raw_readX
-macros. Anybody just doing *reg = val on a PCI device should be
-banned from writing code for life!
-
-Jes
+  Ralf

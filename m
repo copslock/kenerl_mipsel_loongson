@@ -1,57 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Jan 2004 10:21:38 +0000 (GMT)
-Received: from gprs137-41.eurotel.cz ([IPv6:::ffff:160.218.137.41]:27908 "EHLO
-	kopretinka") by linux-mips.org with ESMTP id <S8225421AbUA1KVh>;
-	Wed, 28 Jan 2004 10:21:37 +0000
-Received: from ladis by kopretinka with local (Exim 3.36 #1 (Debian))
-	id 1AlmBX-0000FV-00; Wed, 28 Jan 2004 10:40:35 +0100
-Date: Wed, 28 Jan 2004 10:40:32 +0100
-To: Kevin Paul Herbert <kph@cisco.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: Removal of ____raw_readq() and ____raw_writeq() from asm-mips/io.h
-Message-ID: <20040128094032.GB900@kopretinka>
-References: <1075255111.8744.4.camel@shakedown>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1075255111.8744.4.camel@shakedown>
-User-Agent: Mutt/1.5.4i
-From: Ladislav Michl <ladis@linux-mips.org>
-Return-Path: <ladis@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Jan 2004 10:44:26 +0000 (GMT)
+Received: from neptune.fsa.ucl.ac.be ([IPv6:::ffff:130.104.233.21]:59361 "EHLO
+	neptune.fsa.ucl.ac.be") by linux-mips.org with ESMTP
+	id <S8224914AbUA1KoZ>; Wed, 28 Jan 2004 10:44:25 +0000
+Received: from 246tNt.com (21-6.CampusNet.ucl.ac.be [130.104.21.6])
+	by neptune.fsa.ucl.ac.be (8.12.10/8.12.9/mp-2002.03.25) with ESMTP id i0SAhwfe001749
+	for <linux-mips@linux-mips.org>; Wed, 28 Jan 2004 11:43:59 +0100 (MET)
+Message-ID: <4017927B.5080907@246tNt.com>
+Date: Wed, 28 Jan 2004 11:44:11 +0100
+From: Sylvain Munaut <tnt@246tnt.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.6b) Gecko/20031211 Thunderbird/0.4
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: linux-mips@linux-mips.org
+Subject: Linux 2.6 on AMD Alchemy Au1500 
+X-Enigmail-Version: 0.82.4.0
+X-Enigmail-Supports: pgp-inline, pgp-mime
+Content-Type: text/plain; charset=ISO-8859-15; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MailScanner: Found to be clean
+Return-Path: <tnt@246tnt.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4155
+X-archive-position: 4156
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ladis@linux-mips.org
+X-original-sender: tnt@246tnt.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Jan 27, 2004 at 05:58:31PM -0800, Kevin Paul Herbert wrote:
-> In edit 1.68, the non-interrupt locking versions of
-> raw_readq()/raw_writeq() were removed, in favor of locking ones. While
-> this makes sense in general, it breaks the compilation of the sb1250
-> which uses the non-locking versions (____raw_readq() and
-> ____raw_writeq()) in interrupt handlers.
-Why was someone using these function at all? if you don't need locking
-simply do *reg_addr = val; 
-> Personally, I think that it is very confusing to have so many similar
-> macros with similar names and increasing numbers of underscores, so I
-> don't really have a problem with this. I've modified
-> arch/mips/sibyte/sb1250/time.c and arch/mips/sibyte/sb1250/irq.c to use
-> the __ versions and have a few more instructions of overhead.
-__ versions wasn't probably intended to use in C code. One should use
-readq/writeq to get sane behaviour. These function was introduced to
-hide architecture specific details. If you need something special, you
-should introduce your own macros.
-> My question is whether this removal was intended or not, or whether
-> there are some other changes to the handlers in the sb1250-specific code
-> that got dropped somewhere.
-Yes it was. And I'm the one to blame for it ;)
-> If the consensus is that the ____ versions really should perish for the
-> sake of simplicity, I'll send my simple patches to the list to fix the
-> sb1250 build.
-Yes please.
+Hi
 
-	ladis
+For a new design, we're considering Alchemy Au1500 processor family. I'd 
+like to know what is the current state of the linux 2.6 on this 
+platforms / experiences ?
+
+I mainly need :
+ - PCI support to connect Wifi, IDE controller, USB2.0 Host, FireWire 
+controller
+ - Included Ethernet support
+
+I've seen in the kernel sources that it should be supported but I'd like 
+to know if there are known issues, comments, ...
+
+
+Thanks for any info.
+
+    Sylvain Munaut

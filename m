@@ -1,44 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Oct 2004 16:22:48 +0100 (BST)
-Received: from pD956226F.dip.t-dialin.net ([IPv6:::ffff:217.86.34.111]:43110
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8224952AbUJZPWo>; Tue, 26 Oct 2004 16:22:44 +0100
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i9QFMgow031910;
-	Tue, 26 Oct 2004 17:22:42 +0200
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i9QFMcSN031909;
-	Tue, 26 Oct 2004 17:22:38 +0200
-Date: Tue, 26 Oct 2004 17:22:38 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Narendra Kulkarni <narendradv@myrealbox.com>
-Cc: "'Narendra Kulkarni'" <narendra@spacomp.com>,
-	linux-mips@linux-mips.org
-Subject: Re: errors while  insmoding usb-skeleton.o (changed to suit our requirements)
-Message-ID: <20041026152238.GA31850@linux-mips.org>
-References: <000b01c4bb6a$f87b1580$0e00a8c0@narendra> <20041026150433.GA30620@linux-mips.org> <000a01c4bb6d$5f0f8ae0$0e00a8c0@narendra>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <000a01c4bb6d$5f0f8ae0$0e00a8c0@narendra>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Oct 2004 17:10:25 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:33276 "EHLO
+	hermes.mvista.com") by linux-mips.org with ESMTP
+	id <S8224944AbUJZQKT>; Tue, 26 Oct 2004 17:10:19 +0100
+Received: from mvista.com (prometheus.mvista.com [10.0.0.139])
+	by hermes.mvista.com (Postfix) with ESMTP
+	id 80C09185A9; Tue, 26 Oct 2004 09:10:17 -0700 (PDT)
+Message-ID: <417E76E9.1020003@mvista.com>
+Date: Tue, 26 Oct 2004 09:10:17 -0700
+From: Manish Lachwani <mlachwani@mvista.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.2) Gecko/20040308
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: Pete Popov <ppopov@embeddedalley.com>
+Cc: colin <colin@realtek.com.tw>, linux-mips@linux-mips.org
+Subject: Re: Which MIPS kernel is good to start up? linux-mips.org or Montavista?
+References: <007801c4bb2a$9e7ded90$8b1a13ac@realtek.com.tw> <417DF8BC.4080001@embeddedalley.com>
+In-Reply-To: <417DF8BC.4080001@embeddedalley.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <mlachwani@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6214
+X-archive-position: 6215
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: mlachwani@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Oct 26, 2004 at 08:36:26PM +0530, Narendra Kulkarni wrote:
+Pete Popov wrote:
+> colin wrote:
+> 
+>>Hi all,
+>>We want to begin to put Linux to our new board with 4KEc CPU.
+>>Is it better to start porting from Montavista's Kernel, or from the one of
+>>linux-mips.org?
+>>I phoned the sales of Montavista and he told me the difference of these 2
+>>kernels are little, but their kernels have been tested a lot for stability.
+>>
+>>Naturally, we would like to choose the kernel version above 2.6.
+> 
+> 
+> I don't believe MV currently offers a 2.6 based MIPS distro.
+> 
+> Pete
+> 
 
-> Hello Ralf,
-> I think if  we use -DKBUILD_BASENAME, we dont need -DMODULE. Correct me if i
-> am wrong
+Hello !
 
-Nope.
+Montavista has a 2.6 eval release that has support for this CPU. Among 
+the boards that are supported includes Malta and SWARM
 
-  Ralf
+Thanks
+Manish Lachwani

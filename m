@@ -1,58 +1,87 @@
-Received:  by oss.sgi.com id <S305177AbQAFTGI>;
-	Thu, 6 Jan 2000 11:06:08 -0800
-Received: from deliverator.sgi.com ([204.94.214.10]:46716 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305175AbQAFTFm>;
-	Thu, 6 Jan 2000 11:05:42 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id LAA19984; Thu, 6 Jan 2000 11:02:11 -0800 (PST)
+Received:  by oss.sgi.com id <S305178AbQAFTTR>;
+	Thu, 6 Jan 2000 11:19:17 -0800
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:23666 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S305175AbQAFTTC>; Thu, 6 Jan 2000 11:19:02 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id LAA00203; Thu, 6 Jan 2000 11:21:55 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id KAA22842
+	id LAA74695
 	for linux-list;
-	Thu, 6 Jan 2000 10:58:03 -0800 (PST)
+	Thu, 6 Jan 2000 11:12:49 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from liveoak.engr.sgi.com (liveoak.engr.sgi.com [163.154.5.24])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id KAA46322;
-	Thu, 6 Jan 2000 10:57:57 -0800 (PST)
+	via ESMTP id LAA41034;
+	Thu, 6 Jan 2000 11:11:06 -0800 (PST)
 	mail_from (wje@liveoak.engr.sgi.com)
 Received: (from wje@localhost)
-	by liveoak.engr.sgi.com (8.9.3/8.8.7) id KAA01481;
-	Thu, 6 Jan 2000 10:57:36 -0800
+	by liveoak.engr.sgi.com (8.9.3/8.8.7) id LAA02435;
+	Thu, 6 Jan 2000 11:10:44 -0800
 X-Authentication-Warning: liveoak.engr.sgi.com: wje set sender to wje@liveoak.engr.sgi.com using -f
 From:   "William J. Earl" <wje@cthulhu.engr.sgi.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Message-ID: <14452.58782.750095.352886@liveoak.engr.sgi.com>
-Date:   Thu, 6 Jan 2000 10:57:34 -0800 (PST)
-To:     "Kevin D. Kissell" <kevink@mips.com>
-Cc:     "Florian Lohoff" <flo@rfc822.org>, <linux@cthulhu.engr.sgi.com>
+Message-ID: <14452.59571.970106.514001@liveoak.engr.sgi.com>
+Date:   Thu, 6 Jan 2000 11:10:43 -0800 (PST)
+To:     Ralf Baechle <ralf@oss.sgi.com>
+Cc:     "Kevin D. Kissell" <kevink@mips.com>,
+        Florian Lohoff <flo@rfc822.org>, linux@cthulhu.engr.sgi.com
 Subject: Re: Decstation 5000/150 2.3.21 Boot successs
-In-Reply-To: <000601bf5826$273af500$0ceca8c0@satanas.mips.com>
+In-Reply-To: <20000106152612.B16947@uni-koblenz.de>
 References: <000601bf5826$273af500$0ceca8c0@satanas.mips.com>
+	<20000106152612.B16947@uni-koblenz.de>
 X-Mailer: VM 6.74 under Emacs 20.3.1
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-Kevin D. Kissell writes:
+Ralf Baechle writes:
 ...
- > The default SGI/MIPS Linux kernel startup sets the
- > "FR" bit in the CP0.Status register, which enables
- > R4000-style FPU registers, which is to say a full
- > compliment of 32 double-precision registers.  This
- > has the side-effect of making the kernel incompatible
- > with the distributed mipsel binaries and the distributed
- > DECstation root file system, since those binaries which
- > do double-precision floating point load their initial values
- > from memory as two singles.  That works on an R3000
- > or an R4000-with-FR=0, but not on an R4000-with-FR=1.
-...
+ > In firm assumption that due all the practical problems involved with
+ > a non-standard execution model (i.e. 32-bit, o32-style ELF, 32/32
+ > register model and 32-bit gprs) I decieded that in practice nobody will
+ > use this and dumped all the support for it from later 2.3 kernels.  That
+ > is the scheduler will no longer try to handle context switching for
+ > the 32/32 fpr model correctly etc.
+ > 
+ > If that's desired, how about providing a syscall which allows to manipulate
+ > this and possibly other bits?
+ > 
+ > Btw...  Thanks for posting.  You pointed my nose at the fact that this bug
+ > actually exists for the 64-bit kernel - and there is actually a real world
+ > bug because we can mix 32-bit and 64-bit binaries.
 
-     Note that the SVR4 MIPS ABI assumes FR=0 (R3000-compatible), as
-do SGI IRIX "-32" ("O32") binaries (and, I believe, default gcc
-binaries).  SGI IRIX "-n32" and "-n64" binaries assumes FR=1 (R4000-compatible),
-and also have a somewhat different register calling convention (which
-affects where arguments to system calls reside).
+      It also applies to -n32 (FR=1 32-bit binaries).  Basically, a complete
+kernel implementation has to treat the two cases which different from its own
+as "compatibility mode" targets.  That is, if the kernel is "-32" ("O32"),
+it has to turn on FR=1 for those processes currently executing a "-n32" binary
+and off for those executing a "-32" binary.  That is, exec has to change
+the desired FR value, and context switching to and from user mode has to
+save and restore it.
+
+     One other issue is that UX should always be set, to allow use of
+MIPS3 instructions, and that XX (bit 31) should be set on R5000 and
+R10000 processors, to enable MIPS4 instructions.  This in turn means
+that, to avoid various illegal address exceptions, the VM system
+should not allow a 32-bit user program to map anything into the top 32
+KB of the user address space.
+
+     The problem has to do with some compilers using integer
+arithmetic to compute a base for some variables in the current stack
+frame, and then using negative displacements to address the variables,
+for cases where the stack frame exceeds 32 KB, but is located near the
+top of memory.  The 32-bit unsigned integer add to, say, 0x7fffff00
+(64-bit address 0x000000007fffff00) produces a signed 32-bit value
+such as 0x80000f00, which is the 64-bit value 0xffffffff80000f00,
+since all 32-bit values, signed or unsigned, are stored as 32-bit
+signed values sign-extended to 64 bits.  When you do a load with a
+negative offset of, say, -0x1000, you get an address
+0xffffffff7fffff00, not 0x000000007fffff00.  With UX=0, this would be
+fine, but, with UX=1 (to enable MIPS3 instructions), the above address
+is illegal.  If the $sp is always at least 32 KB below the top of the
+address space, this problem does not arise, since any such intermediate
+pointer generated by the compiler will always be below 0x80000000.

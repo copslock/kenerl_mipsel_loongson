@@ -1,62 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Oct 2004 19:16:51 +0100 (BST)
-Received: from fed1rmmtao11.cox.net ([IPv6:::ffff:68.230.241.28]:52884 "EHLO
-	fed1rmmtao11.cox.net") by linux-mips.org with ESMTP
-	id <S8225230AbUJTSQn>; Wed, 20 Oct 2004 19:16:43 +0100
-Received: from opus ([68.107.143.141]) by fed1rmmtao11.cox.net
-          (InterMail vM.6.01.03.04 201-2131-111-106-20040729) with ESMTP
-          id <20041020181626.ZZKF17415.fed1rmmtao11.cox.net@opus>;
-          Wed, 20 Oct 2004 14:16:26 -0400
-Date: Wed, 20 Oct 2004 11:16:26 -0700
-From: Tom Rini <trini@kernel.crashing.org>
-To: Christoph Hellwig <hch@lst.de>
-Cc: linux-mips@linux-mips.org, netdev@oss.sgi.com
-Subject: Re: [PATCH 2.6.9] Export phys_cpu_present_map
-Message-ID: <20041020181626.GH12544@smtp.west.cox.net>
-References: <20041020171626.GG12544@smtp.west.cox.net> <20041020174905.GA12697@lst.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Oct 2004 19:19:42 +0100 (BST)
+Received: from [IPv6:::ffff:81.187.226.98] ([IPv6:::ffff:81.187.226.98]:29961
+	"EHLO phoenix.infradead.org") by linux-mips.org with ESMTP
+	id <S8225230AbUJTSTh>; Wed, 20 Oct 2004 19:19:37 +0100
+Received: from hch by phoenix.infradead.org with local (Exim 4.42 #1 (Red Hat Linux))
+	id 1CKL2x-0006GH-7g; Wed, 20 Oct 2004 19:18:51 +0100
+Date: Wed, 20 Oct 2004 19:18:50 +0100
+From: Christoph Hellwig <hch@infradead.org>
+To: Andrew Morton <akpm@osdl.org>
+Cc: Christoph Hellwig <hch@infradead.org>, dhowells@redhat.com,
+	torvalds@osdl.org, linux-kernel@vger.kernel.org,
+	discuss@x86-64.org, sparclinux@vger.kernel.org,
+	linuxppc64-dev@ozlabs.org, linux-m68k@vger.kernel.org,
+	linux-sh@m17n.org, linux-arm-kernel@lists.arm.linux.org.uk,
+	parisc-linux@parisc-linux.org, linux-ia64@vger.kernel.org,
+	linux-390@vm.marist.edu, linux-mips@linux-mips.org
+Subject: Re: [PATCH] Add key management syscalls to non-i386 archs
+Message-ID: <20041020181850.GA23979@infradead.org>
+Mail-Followup-To: Christoph Hellwig <hch@infradead.org>,
+	Andrew Morton <akpm@osdl.org>, dhowells@redhat.com,
+	torvalds@osdl.org, linux-kernel@vger.kernel.org, discuss@x86-64.org,
+	sparclinux@vger.kernel.org, linuxppc64-dev@ozlabs.org,
+	linux-m68k@vger.kernel.org, linux-sh@m17n.org,
+	linux-arm-kernel@lists.arm.linux.org.uk,
+	parisc-linux@parisc-linux.org, linux-ia64@vger.kernel.org,
+	linux-390@vm.marist.edu, linux-mips@linux-mips.org
+References: <3506.1098283455@redhat.com> <20041020152957.GA21774@infradead.org> <20041020105027.54bf9e89.akpm@osdl.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20041020174905.GA12697@lst.de>
-User-Agent: Mutt/1.5.6+20040907i
-Return-Path: <trini@kernel.crashing.org>
+In-Reply-To: <20041020105027.54bf9e89.akpm@osdl.org>
+User-Agent: Mutt/1.4.1i
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by phoenix.infradead.org
+	See http://www.infradead.org/rpr.html
+Return-Path: <SRS0+97a1f490ec9139208b82+423+infradead.org+hch@phoenix.srs.infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6136
+X-archive-position: 6137
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: trini@kernel.crashing.org
+X-original-sender: hch@infradead.org
 Precedence: bulk
 X-list: linux-mips
 
-[ Note that XFS has a similar problem, with cpu_possible() calls ]
-On Wed, Oct 20, 2004 at 07:49:05PM +0200, Christoph Hellwig wrote:
-> On Wed, Oct 20, 2004 at 10:16:26AM -0700, Tom Rini wrote:
-> > In net/ipv6/icmp.c::icmpv6_init() there is a call to cpu_possible()
-> > which preprocesses down to "test_bit(((i)), (phys_cpu_present_map).bits)"
-> > If ipv6 is a module, phys_cpu_present_map (or cpu_possible_map which is
-> > defined t phys_cpu_present_map) needs to be exported.
+On Wed, Oct 20, 2004 at 10:50:27AM -0700, Andrew Morton wrote:
+> Christoph Hellwig <hch@infradead.org> wrote:
+> >
+> > > Hi Linus, Andrew,
+> >  > 
+> >  > The attached patch adds syscalls for almost all archs (everything barring
+> >  > m68knommu which is in a real mess, and i386 which already has it).
+> >  > 
+> >  > It also adds 32->64 compatibility where appropriate.
+> > 
+> >  Umm, that patch added the damn multiplexer that had been vetoed multiple
+> >  times.  Why did this happen?
 > 
-> The loop in there should be rewritten as for_each_cpu which doesn't need
-> this export.
+> Fifteen new syscalls was judged excessive and the keyfs interface was
+> judged slow and bloaty.
 
-Here's what I did:
---- linux-2.6.9.orig/net/ipv6/icmp.c
-+++ linux-2.6.9/net/ipv6/icmp.c
-@@ -691,10 +691,7 @@ int __init icmpv6_init(struct net_proto_
- 	struct sock *sk;
- 	int err, i, j;
- 
--	for (i = 0; i < NR_CPUS; i++) {
--		if (!cpu_possible(i))
--			continue;
--
-+	for_each_cpu(i) {
-
-But I still get the problem.  Further, on i386 cpu_possible() becomes
-cpu_callout_map which is exported as well.
-
--- 
-Tom Rini
-http://gate.crashing.org/~trini/
+Maybe 15 syscalls just means the API is goddamn awfull and we certainly
+shouldn't merge it as-is.

@@ -1,39 +1,35 @@
-Received:  by oss.sgi.com id <S553661AbQKNRbS>;
-	Tue, 14 Nov 2000 09:31:18 -0800
-Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:57543 "EHLO
-        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553655AbQKNRaz>;
-	Tue, 14 Nov 2000 09:30:55 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id SAA24854;
-	Tue, 14 Nov 2000 18:24:14 +0100 (MET)
-Date:   Tue, 14 Nov 2000 18:24:13 +0100 (MET)
-From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To:     Carsten Langgaard <carstenl@mips.com>
-cc:     linux-mips@oss.sgi.com
-Subject: Re: The do_fast_gettimeoffset function
-In-Reply-To: <3A0FEAB6.7117CC3C@mips.com>
-Message-ID: <Pine.GSO.3.96.1001114182002.17140I-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received:  by oss.sgi.com id <S553783AbQKNS4u>;
+	Tue, 14 Nov 2000 10:56:50 -0800
+Received: from u-177.karlsruhe.ipdial.viaginterkom.de ([62.180.10.177]:32516
+        "EHLO u-177.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
+	with ESMTP id <S553655AbQKNS4f>; Tue, 14 Nov 2000 10:56:35 -0800
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S870065AbQKNQQq>;
+        Tue, 14 Nov 2000 17:16:46 +0100
+Date:   Tue, 14 Nov 2000 17:16:46 +0100
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Jun Sun <jsun@mvista.com>
+Cc:     Nicu Popovici <octavp@isratech.ro>, linux-mips@oss.sgi.com
+Subject: Re: Cross_compiler!
+Message-ID: <20001114171646.B1117@bacchus.dhis.org>
+References: <3A09DE18.E55FA70F@isratech.ro> <3A09ADDB.EA2A6246@mvista.com> <20001112211057.E15594@bacchus.dhis.org> <3A103DAE.463492A4@mvista.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <3A103DAE.463492A4@mvista.com>; from jsun@mvista.com on Mon, Nov 13, 2000 at 11:14:54AM -0800
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Mon, 13 Nov 2000, Carsten Langgaard wrote:
+On Mon, Nov 13, 2000 at 11:14:54AM -0800, Jun Sun wrote:
 
-> The do_fast_gettimeoffset function below (taken from
-> arch/mips/kernel/time.c) can only be used on 64-bit processors.
-> I would like to be able to use this on a 32-bit processor. As I'm not
-> completely sure what this function does, can someone who does please
-> help me out ?
+> My weekend was just fine - without reading this bothersome email. :-)
+> 
+> I thought egcs-1.1.2 had some problems with binutil 2.8.1 and glibc
+> 2.0.6.  Was the problem solved?  
 
- The function performs a 64-bit division.  You may look at
-do_ioasic_gettimeoffset which is almost identical (merging of these two
-functions into a single one is actually on my TODO list) but it works for
-32-bit processors. 
+Kindof.  I just dumped the multilib support.  I don't know of anybody who
+was actually using it, so away with it ...
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+  Ralf

@@ -1,81 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Feb 2003 17:27:57 +0000 (GMT)
-Received: from mail.stellartec.com ([IPv6:::ffff:65.107.16.99]:39433 "EHLO
-	nt_server.stellartec.com") by linux-mips.org with ESMTP
-	id <S8225207AbTBLR15>; Wed, 12 Feb 2003 17:27:57 +0000
-Received: from wssseeger ([192.168.1.53]) by nt_server.stellartec.com
-          (Post.Office MTA v3.1.2 release (PO205-101c)
-          ID# 568-43562U100L2S100) with SMTP id AAA113
-          for <linux-mips@linux-mips.org>; Wed, 12 Feb 2003 09:27:42 -0800
-Reply-To: <sseeger@stellartec.com>
-From: sseeger@stellartec.com (Steven Seeger)
-To: <linux-mips@linux-mips.org>
-Subject: RE: NEC VR4181A
-Date: Wed, 12 Feb 2003 09:30:58 -0800
-Message-ID: <027601c2d2bc$8234acd0$3501a8c0@wssseeger>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook CWS, Build 9.0.2416 (9.0.2911.0)
-In-Reply-To: <200302121823.09663.jscheel@activevb.de>
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Importance: Normal
-Return-Path: <sseeger@stellartec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Feb 2003 18:11:26 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:2298 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225207AbTBLSLZ>;
+	Wed, 12 Feb 2003 18:11:25 +0000
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.11.6/8.11.6) id h1CIBMq13970;
+	Wed, 12 Feb 2003 10:11:22 -0800
+Date: Wed, 12 Feb 2003 10:11:22 -0800
+From: Jun Sun <jsun@mvista.com>
+To: Ashish anand <ashish.anand@inspiretech.com>
+Cc: linux-mips@linux-mips.org, jsun@mvista.com
+Subject: Re: coprocessor unusable exception..
+Message-ID: <20030212101122.O7466@mvista.com>
+References: <200302121406.h1CE6mvO002242@smtp.inspirtek.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <200302121406.h1CE6mvO002242@smtp.inspirtek.com>; from ashish.anand@inspiretech.com on Wed, Feb 12, 2003 at 07:28:34PM +0530
+Return-Path: <jsun@orion.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1398
+X-archive-position: 1399
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sseeger@stellartec.com
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Julian,
 
-We are doing a project here at work with that board. Are you using the NEC
-Osprey? The board is a POS. Watch out for the voltage buffers on the extern
-ISA ports not being able to handle the speed of the ISA bus if the board
-isn't warmed up. Get your heat gun if you're plugging in any hardware to it.
+What kernel are you using?  Most likely someone stick a little
+printk in your do_cpu() function.
 
-For building your cross compiler (you will want to use mipsel, which is 32.
-Don't do 64 bit stuff on the 4181. You'll never need it) please see
-http://www.ltc.com/~brad/mips/mips-cross-toolchain/ which is a great guide.
-Take care not to overwrite your PC's libs with mips ones. Ouch. :)
+Jun
 
-I'm happy with this processor although it is a bit slow. I managed to get
-worst case interrupt latency at 46 microseconds with linux going full blast
-on network and compact flash stuff with our external board. (using RTAI and
-kernel 2.4.18)
-
-Steve
-
->-----Original Message-----
->From: linux-mips-bounce@linux-mips.org
->[mailto:linux-mips-bounce@linux-mips.org]On Behalf Of Julian Scheel
->Sent: Wednesday, February 12, 2003 9:23 AM
->To: linux-mips@linux-mips.org
->Subject: NEC VR4181A
->
->
->Hello all,
->
->I need a bit help. First I have to say I am a total newbie in
->cross-compiler
->and MIPS-section.
->I have a little board with a NEC VR4181A CPU (Mips 64). Now I
->want to build a
->kernel for this board.
->I think first I have to do is building a Cross-Toolchain, right?
->Can someone give me some links how to do that?
->
->Then I have to compile the kernel, are there any MIPS-specific
->things I have
->to be warned off?
->
->Thanks in advance and many greatings,
->Julian
->
+On Wed, Feb 12, 2003 at 07:28:34PM +0530, Ashish anand wrote:
+> Hello,
+> 
+> I have a quick and small question..
+> 
+> if after booting linux when i try to execute shell and other user space 
+> commands i get few coprocessor unusable exceptions resulting in messages
+> like..
+> Got cpu at 2aac289c.
+> Got cpu at 2aac28a0.
+> Got cpu at 2aac28a4.
+> Got cpu at 2aac28a8.
+> Got cpu at 2aac28dc.
+> Got cpu at 2aac287c.
+> Got cpu at 2aac2880.
+> Got cpu at 2aac2884.
+> 
+> where does fault it indicates for..?
+> Can I ignore it ..?
+> 
+> Best Regards,
+> Ashish Anand
+> 
+> 
+> 

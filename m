@@ -1,47 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 May 2004 00:34:59 +0100 (BST)
-Received: from p508B6CA9.dip.t-dialin.net ([IPv6:::ffff:80.139.108.169]:44053
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225978AbUEMXe6>; Fri, 14 May 2004 00:34:58 +0100
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i4DNYJxT028314;
-	Fri, 14 May 2004 01:34:19 +0200
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i4DNXwuD028312;
-	Fri, 14 May 2004 01:33:58 +0200
-Date: Fri, 14 May 2004 01:33:58 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Rujinschi Remus <deltha@analog.ro>
-Cc: uclinux-dev@uclinux.org, linux-mips@linux-mips.org
-Subject: Re: MSP2000-CB-A1
-Message-ID: <20040513233358.GA26740@linux-mips.org>
-References: <1972157758.20040513214403@analog.ro>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1972157758.20040513214403@analog.ro>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 May 2004 03:59:29 +0100 (BST)
+Received: from mail.ict.ac.cn ([IPv6:::ffff:159.226.39.4]:43244 "HELO
+	mail.ict.ac.cn") by linux-mips.org with SMTP id <S8225984AbUENC71>;
+	Fri, 14 May 2004 03:59:27 +0100
+Received: (qmail 15098 invoked from network); 14 May 2004 02:47:25 -0000
+Received: from unknown (HELO ict.ac.cn) (159.226.40.188)
+  by mail.ict.ac.cn with SMTP; 14 May 2004 02:47:25 -0000
+Message-ID: <40A43601.70307@ict.ac.cn>
+Date: Fri, 14 May 2004 10:59:13 +0800
+From: wuming <wuming@ict.ac.cn>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; zh-CN; rv:1.2.1) Gecko/20030225
+X-Accept-Language: zh-cn,zh
+MIME-Version: 1.0
+To: linux-mips@linux-mips.org
+Subject: Re: problems on D-cache alias in 2.4.22
+References: <B482D8AA59BF244F99AFE7520D74BF9609D4B1@server1.RightHand.righthandtech.com>
+In-Reply-To: <B482D8AA59BF244F99AFE7520D74BF9609D4B1@server1.RightHand.righthandtech.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <wuming@ict.ac.cn>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4998
+X-archive-position: 4999
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: wuming@ict.ac.cn
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, May 13, 2004 at 09:44:03PM +0300, Rujinschi Remus wrote:
+>
+>
+>I am having a similar problem with 2.4.26 on an NEC VR5500 with a 32k
+>2-way cache.  This is with a 32 bit little-endian kernel, and an ext2
+>filesystem on an ide hard drive in pio mode.
+>
+>Removing just the check for PG_dcache_dirty fixes the problem for me.
+>
+>Along the way, I found a bogus check for cache aliases in c-r4k.c.  In
+>the ld_mmu_r4xx0 function, it has the check:
+>    if (c->dcache.sets * c->dcache.ways > PAGE_SIZE)
+>which will never work for a 32k cache.
+>
+>Bob Breuer
+>
+>
+>
+>  
+>
+I have understood the phenomenon, and I think this is a kernel's bug.
+The real wrong place is not the judgement for condition "PG_dcache_dirty"
+in function __update_cache( ).
+in file mm/filemap.c and function filemap_nopage( ):
+......
+success:
+        /*
+         * Try read-ahead for sequential areas.
+         */
+        if (VM_SequentialReadHint(area))
+                nopage_sequential_readahead(area, pgoff, size);
+                                                                               
+        /*
+         * Found the page and have a reference on it, need to check sharing
+         * and possibly copy it over to another page..
+         */
+        mark_page_accessed(page);
+        flush_page_to_ram(page);
+        return page;
+......
 
->         Is there any attempt to port linux to Brecis MSP2000 MIPS32 4km
->         based SoC? Does anyone wanna provide any hint using
->         uClinux on it binutils gcc gdb, bootloader, drivers?
->         Is it a success using target=mipsisa32-elf as crosscompile
->         option?
+flush_page_to_ram( ) has not been used for a long time, and in kernel 2.4.22
+"include/asm-mips/cacheflush.h"
+#define flush_page_to_ram(page)         do { } while (0)
 
-No.  You'll need a mips-linux compiler configuration.
+so the mapped page has not been flushed to ram, and the user space will not
+know the latest data in the page.
+the flush_page_to_ram( ) should be replaced by flush_dcache_page( ),
+and if the flush_dcache_page( ) does not really flush the cache, it will set
+the PG_dcache_dirty, and the real flush will be postponed to 
+__update_cache( ).
+and if there is not the flush_dcache_page( ) here, no one will set the 
+PG_dcache_dirty,
+and __update_cache( ) will not flush the page too, so the D-cache 
+aliasing happens.
 
->  Template? Anything which not implies BRECIS proprietary licence?
+at last, when I replaced flush_page_to_ram( ) with flush_dcache_page( ),
+the internal compiler error disappeared.
 
-  Ralf
+I hope your problem will be solved by this way too. God bless you! :-)

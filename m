@@ -1,31 +1,36 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f35NbXt10076
-	for linux-mips-outgoing; Thu, 5 Apr 2001 16:37:33 -0700
-Received: from mailhost.taec.toshiba.com (mailhost.taec.com [209.243.128.33])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f35NbWM10073
-	for <linux-mips@oss.sgi.com>; Thu, 5 Apr 2001 16:37:32 -0700
-Received: from hdqmta.taec.toshiba.com (hdqmta [209.243.180.59])
-	by mailhost.taec.toshiba.com (8.8.8+Sun/8.8.8) with ESMTP id QAA13560
-	for <linux-mips@oss.sgi.com>; Thu, 5 Apr 2001 16:37:26 -0700 (PDT)
-Subject: ucLinux for MIPS
-To: linux-mips@oss.sgi.com
-X-Mailer: Lotus Notes Release 5.0.3  March 21, 2000
-Message-ID: <OF82A2E51E.E2ACCD3B-ON88256A25.007F33AB@taec.toshiba.com>
-From: Lisa.Hsu@taec.toshiba.com
-Date: Thu, 5 Apr 2001 16:29:50 -0700
-X-MIMETrack: Serialize by Router on HDQMTA/TOSHIBA_TAEC(Release 5.0.5 |September 22, 2000) at
- 04/05/2001 04:36:11 PM
-MIME-Version: 1.0
+	by oss.sgi.com (8.11.3/8.11.3) id f364Gft14796
+	for linux-mips-outgoing; Thu, 5 Apr 2001 21:16:41 -0700
+Received: from mta6.snfc21.pbi.net (mta6.snfc21.pbi.net [206.13.28.240])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f364GfM14793
+	for <linux-mips@oss.sgi.com>; Thu, 5 Apr 2001 21:16:41 -0700
+Received: from pacbell.net ([63.194.214.47])
+ by mta6.snfc21.pbi.net (Sun Internet Mail Server sims.3.5.2000.01.05.12.18.p9)
+ with ESMTP id <0GBC00IZ2RV4I0@mta6.snfc21.pbi.net> for linux-mips@oss.sgi.com;
+ Thu,  5 Apr 2001 21:16:16 -0700 (PDT)
+Date: Thu, 05 Apr 2001 21:15:25 -0700
+From: Pete Popov <ppopov@pacbell.net>
+Subject: edata alignment
+To: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Message-id: <3ACD42DD.A9E0A0E7@pacbell.net>
+MIME-version: 1.0
+X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.16-22 i686)
 Content-type: text/plain; charset=us-ascii
+Content-transfer-encoding: 7bit
+X-Accept-Language: en, bg
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
 
-Hi, All
+In arch/mips/kernel/head.S, there is this code in kernel_entry:
 
-Does anybody know where can I find the uCLinux release and patch  which
-supports MIPS?    (The chip that I am using has MMU but is disabled)
+   la      t0, _edata
+   sw      zero, (t0)
 
-Thanks,
+What guarantees that edata will be word aligned? I don't see a .ALIGN
+directive in the ld.script so is it safe to assume that edata will
+always be at least word aligned?  I've linked into the kernel a very
+large ramdisk, and edata ends up being an odd address, causing a cpu
+fault. 
 
-Lisa
+Pete

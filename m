@@ -1,45 +1,49 @@
-Received:  by oss.sgi.com id <S553817AbQKPB5l>;
-	Wed, 15 Nov 2000 17:57:41 -0800
-Received: from u-6.karlsruhe.ipdial.viaginterkom.de ([62.180.20.6]:56069 "EHLO
-        u-6.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com with ESMTP
-	id <S553704AbQKPB5T>; Wed, 15 Nov 2000 17:57:19 -0800
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S868642AbQKPB5D>;
-        Thu, 16 Nov 2000 02:57:03 +0100
-Date:   Thu, 16 Nov 2000 02:57:03 +0100
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Ian Chilton <ian@ichilton.co.uk>
-Cc:     Brady Brown <bbrown@ti.com>,
-        Linux-MIPS Mailing List <linux-mips@oss.sgi.com>
-Subject: Re: egcs 1.0.3a build error?
-Message-ID: <20001116025703.F6979@bacchus.dhis.org>
-References: <3A12F036.40753275@ti.com> <NAENLMKGGBDKLPONCDDOAEMGDCAA.ian@ichilton.co.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <NAENLMKGGBDKLPONCDDOAEMGDCAA.ian@ichilton.co.uk>; from ian@ichilton.co.uk on Wed, Nov 15, 2000 at 08:33:41PM -0000
-X-Accept-Language: de,en,fr
+Received:  by oss.sgi.com id <S553708AbQKPMVo>;
+	Thu, 16 Nov 2000 04:21:44 -0800
+Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:13792 "EHLO
+        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553690AbQKPMVR>;
+	Thu, 16 Nov 2000 04:21:17 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id NAA13311;
+	Thu, 16 Nov 2000 13:13:41 +0100 (MET)
+Date:   Thu, 16 Nov 2000 13:13:40 +0100 (MET)
+From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To:     Ralf Baechle <ralf@oss.sgi.com>
+cc:     Ian Chilton <ian@ichilton.co.uk>, linux-mips@oss.sgi.com,
+        lfs-discuss@linuxfromscratch.org, Andreas Jaeger <aj@suse.de>
+Subject: Re: User/Group Problem
+In-Reply-To: <20001115085244.A5153@bacchus.dhis.org>
+Message-ID: <Pine.GSO.3.96.1001116125444.12770A-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, Nov 15, 2000 at 08:33:41PM -0000, Ian Chilton wrote:
+On Wed, 15 Nov 2000, Ralf Baechle wrote:
 
-> > Thank you, I tried that and had the same result?? Maybe there are other
-> > CFLAGS that I need to specify?
-> 
-> Don't think so...it worked for me, but this was CVS GCC, not 1.0.3a. I have
-> had no such problems with 1.0.3a.
-> 
-> > CFLAGS=-O1
-> 
-> humm...I used CFLAGS="-O1"
-> donno what difference the quotes make, if any...
+> Ld.so isn't linked to the same base address as all other libraries for
+> obscure reasons.  Right now dl-machine.h use the constant value of 0x5ffe0000
+> as the base address which it assumes all libraries to be linked to - and that
+> makes us calculate the wrong base address which we're passing to mmap.
 
-No difference.
+ I don't count this as a bug.  The ELF spec allows shared objects to be
+loaded with any load address.  In fact it's great we are non-standard here
+-- this makes catching bugs easier.  I've already found and fixed a few
+bugs in gdb thanks to this difference. 
 
-In any case he seems to hit a different problem than the one you're
-refering to which only happens when using an old gcc suchs as egcs 1.0.3a
-without optimization for compilation of a fairly recent one.
+> So we've got two bugs, not just one.  I knew about the ld.so part since
+> Linux/MIPS has shared libs.  It's just that this is the first time this bug
+> bites us.
 
-  Ralf
+ I insist there is a kernel bug only.  We might change the enforced base
+address within ld.so one day to be more like other archs, but let's keep
+it for now -- this really benefits.
+
+  Maciej
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

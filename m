@@ -1,35 +1,61 @@
-Received:  by oss.sgi.com id <S554169AbRBAUfG>;
-	Thu, 1 Feb 2001 12:35:06 -0800
-Received: from stereotomy.lineo.com ([64.50.107.151]:37394 "HELO
-        stereotomy.lineo.com") by oss.sgi.com with SMTP id <S554162AbRBAUew>;
-	Thu, 1 Feb 2001 12:34:52 -0800
-Received: from Lineo.COM (localhost.localdomain [127.0.0.1])
-	by stereotomy.lineo.com (Postfix) with ESMTP id E42694CB82
-	for <linux-mips@oss.sgi.com>; Thu,  1 Feb 2001 13:34:49 -0700 (MST)
-Message-ID: <3A79C869.2040001@Lineo.COM>
-Date:   Thu, 01 Feb 2001 13:34:49 -0700
-From:   Quinn Jensen <jensenq@Lineo.COM>
-Organization: Lineo, Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux 2.2.16-9mdk i686; en-US; m18) Gecko/20001107 Netscape6/6.0
-X-Accept-Language: en
-MIME-Version: 1.0
+Received:  by oss.sgi.com id <S554189AbRBAVwR>;
+	Thu, 1 Feb 2001 13:52:17 -0800
+Received: from sovereign.org ([209.180.91.170]:683 "EHLO lux.homenet")
+	by oss.sgi.com with ESMTP id <S554180AbRBAVwB>;
+	Thu, 1 Feb 2001 13:52:01 -0800
+Received: (from jfree@localhost)
+	by lux.homenet (8.11.2/8.11.2/Debian 8.11.2-1) id f11Lq3X01790
+	for linux-mips@oss.sgi.com; Thu, 1 Feb 2001 14:52:03 -0700
+From:   Jim Freeman <jfree@sovereign.org>
+Date:   Thu, 1 Feb 2001 14:52:03 -0700
 To:     linux-mips@oss.sgi.com
-Subject: NFS root with cache on
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: Re: mips/CVS vs stock 2.4.1
+Message-ID: <20010201145203.A1657@sovereign.org>
+References: <20010201135347.A1164@sovereign.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.3.12i
+In-Reply-To: <20010201135347.A1164@sovereign.org>; from jfree@sovereign.org on Thu, Feb 01, 2001 at 01:53:47PM -0700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Is anyone else having trouble with NFS root on
-the 2.4.0 kernel?  It won't come up with the
-KSEG0 cache on unless I pepper the network driver
-with flush calls.
+In a merciful moment of remedial tutelage, Ilya kindly pointed out
+that using   'cvs update -d'   would more properly sync my tree, thus
+invalidating the first point of my previous e-mail.
 
-I'm using the new mips32 mm and cache code with
-my own patches to deal with the IDT 334's weird
-way bit (it's clear up at bit 12 even though the
-cache is only 2k).
+  [ Apologies - publicly showing/rectifying one's ignorance may
+    hurt the pride, but perhaps may be instructive to others ]
 
-Quinn
+Someone may have as simple a fix for the dead/empty dirs in mips' CVS ?
+
+...jfree
+========
+On Thu, Feb 01, 2001 at 01:53:47PM -0700, Jim Freeman wrote:
+...
+> Non-mips related directories mips has, but not present in stock 2.4.1
+> (all empty, except for CVS-relate overhead - should be trimmed out of CVS?) :
+> 
+> 	Documentation/networking/ip_masq
+> 	arch/arm/boot/tools
+> 	arch/ia64/kdb
+> 	arch/m68k/boot
+> 	arch/m68k/console
+> 	arch/ppc/kernel/include
+> 	arch/sparc/ap1000
+> 	drivers/char/hfmodem
+> 	drivers/isdn/teles
+> 	drivers/net/soundmodem
+> 	drivers/sound/lowlevel
+> 	drivers/usb/maps
+> 	fs/ext
+> 	fs/xiafs
+> 	include/asm-arm/arch-a5k
+> 	include/asm-arm/arch-vnc
+> 	include/asm-sparc/ap1000
+> 	net/netbeui
+> 	scripts/usb
+> 	net/irda/irlpt
+> 	net/irda/irobex

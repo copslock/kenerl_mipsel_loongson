@@ -1,58 +1,67 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1180uZ25548
-	for linux-mips-outgoing; Fri, 1 Feb 2002 00:00:56 -0800
-Received: from ocean.lucon.org (12-234-19-19.client.attbi.com [12.234.19.19])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1180pd25544
-	for <linux-mips@oss.sgi.com>; Fri, 1 Feb 2002 00:00:51 -0800
-Received: by ocean.lucon.org (Postfix, from userid 1000)
-	id 59746125C3; Thu, 31 Jan 2002 23:00:50 -0800 (PST)
-Date: Thu, 31 Jan 2002 23:00:50 -0800
-From: "H . J . Lu" <hjl@lucon.org>
-To: Hiroyuki Machida <machida@sm.sony.co.jp>
-Cc: kaz@ashi.footprints.net, macro@ds2.pg.gda.pl,
-   libc-alpha@sources.redhat.com, linux-mips@oss.sgi.com
-Subject: Re: [libc-alpha] Re: PATCH: Fix ll/sc for mips
-Message-ID: <20020131230050.C32690@lucon.org>
-References: <20020201.123523.50041631.machida@sm.sony.co.jp> <Pine.LNX.4.33.0201311952440.2305-100000@ashi.FootPrints.net> <20020201.135903.123568420.machida@sm.sony.co.jp>
+	by oss.sgi.com (8.11.2/8.11.3) id g1184Iw25670
+	for linux-mips-outgoing; Fri, 1 Feb 2002 00:04:18 -0800
+Received: from mail.pha.ha-vel.cz (mail.pha.ha-vel.cz [195.39.72.3])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1184Ad25665
+	for <linux-mips@oss.sgi.com>; Fri, 1 Feb 2002 00:04:11 -0800
+Received: (qmail 10665 invoked from network); 1 Feb 2002 07:04:05 -0000
+Received: from twilight.ucw.cz (HELO twilight.suse.cz) (root@195.39.74.230)
+  by mail.pha.ha-vel.cz with SMTP; 1 Feb 2002 07:04:05 -0000
+Received: (from vojtech@localhost)
+	by twilight.suse.cz (8.10.2/8.9.3) id g11745Z15608;
+	Fri, 1 Feb 2002 08:04:05 +0100
+Date: Fri, 1 Feb 2002 08:04:05 +0100
+From: Vojtech Pavlik <vojtech@suse.cz>
+To: James Simmons <jsimmons@transvirtual.com>
+Cc: Russell King <rmk@arm.linux.org.uk>,
+   Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+   linux-mips@oss.sgi.com,
+   Linux ARM mailing list <linux-arm-kernel@lists.arm.linux.org.uk>
+Subject: Re: [PATCH] Migration to input api for keyboards
+Message-ID: <20020201080405.B15571@suse.cz>
+References: <20020131004041.K19292@flint.arm.linux.org.uk> <Pine.LNX.4.10.10201311159380.23385-100000@www.transvirtual.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <20020201.135903.123568420.machida@sm.sony.co.jp>; from machida@sm.sony.co.jp on Fri, Feb 01, 2002 at 01:59:03PM +0900
+In-Reply-To: <Pine.LNX.4.10.10201311159380.23385-100000@www.transvirtual.com>; from jsimmons@transvirtual.com on Thu, Jan 31, 2002 at 12:06:36PM -0800
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, Feb 01, 2002 at 01:59:03PM +0900, Hiroyuki Machida wrote:
-> 
-> From: Kaz Kylheku <kaz@ashi.footprints.net>
-> Subject: Re: [libc-alpha] Re: PATCH: Fix ll/sc for mips
-> Date: Thu, 31 Jan 2002 20:02:25 -0800 (PST)
-> 
-> > On Fri, 1 Feb 2002, Hiroyuki Machida wrote:
-> > > Please note that "sc" may fail even if nobody write the
-> > > variable. (See P.211 "8.4.2 Load-Linked/Sotre-Conditional" of "See 
-> > > MIPS RUN" for more detail.) 
-> > > So, after your patch applied, compare_and_swap() may fail, even if
-> > > *p is equal to oldval.
+On Thu, Jan 31, 2002 at 12:06:36PM -0800, James Simmons wrote:
+
+> > >    As some on you know the input api drivers for the PS/2 keyboard/mice
+> > > have gone into the dj tree for 2.5.X. I need people on other platforms
+> > > besides ix86 to test it out. I made the following patch that forces the
+> > > use of the new input drivers so people can test it. Shortly this patch
+> > > will be placed into the DJ tree but before I do this I want to make sure
+> > > it works for all platforms. Here is the patch to do this. Thank you.  
 > > 
-> > I can't think of anything that will break because of this, as long
-> > as the compare_and_swap eventually succeeds on some subsequent trial.
-> > If the atomic operation has to abort for some reason other than *p being
-> > unequal to oldval, that should be cool.
+> > Oops.
 > 
-> I mean that this patch breaks the spec of compare_and_swap().
-> In most case, this patch may works as Kaz said. If this patch have
-> no side-effect to any application, it's ok to apply the patch. But
-> we can't know how to use compare_and_swap() in all aplications in a
-> whole world. So we have to follow the spec.  
+> Oops?
 > 
+> > Out of those 3 ARM machines, only 1 or maybe 2 has an 8042-compatible
+> > port.
+> > 
+> > CONFIG_PC_KEYB != i8042 controller present.  Please look more closely
+> > at stuff in include/asm-arm/arch-*/keyboard.h
+> 
+> I posted to find out which ones. BTW we have a driver for the acorn
+> keyboard controller. No acorn keyboard but we do have support the acorn
 
-Please note that the old compare_and_swap is broken. If you use
-compare_and_swap to check if *p == oldval, my patch doesn't help
-you. But if you use it to swap old/new, my patch works fine. But I
-don't think you can use it check if *p == oldval since *p can change
-at any time. It is the same as simply using "*p == oldval". I don't
-see my patch should break any sane applications.
+The acorn RiscPC keyboard controller has a connector for the standard AT
+keyboard, so it's rpckbd.c + atkbd.c doing the trick there.
 
+> mouse. I can create a patch so you can give the mouse driver a try. Also
+> help on porting the acorn keyboard driver would be helpful, any docs on
+> it. 
 
-H.J.
+Not needed. It's atkbd.c. And that way it'll be for a lot of other
+hardware - AT keyboards are used everywhere, only the controllers
+differ. That's the main reason for the keyboard (input) and keyboard
+controller (serio) driver split!
+
+-- 
+Vojtech Pavlik
+SuSE Labs

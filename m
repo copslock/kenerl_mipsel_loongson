@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 May 2004 16:51:39 +0100 (BST)
-Received: from mo03.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:46273 "EHLO
-	mo03.iij4u.or.jp") by linux-mips.org with ESMTP id <S8226035AbUEZPuu>;
-	Wed, 26 May 2004 16:50:50 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 May 2004 16:52:06 +0100 (BST)
+Received: from mo02.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:27116 "EHLO
+	mo02.iij4u.or.jp") by linux-mips.org with ESMTP id <S8226031AbUEZPvK>;
+	Wed, 26 May 2004 16:51:10 +0100
 Received: from mdo01.iij4u.or.jp (mdo01.iij4u.or.jp [210.130.0.171])
-	by mo03.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id AAA14287;
-	Thu, 27 May 2004 00:50:47 +0900 (JST)
-Received: 4UMDO01 id i4QFolu08918; Thu, 27 May 2004 00:50:47 +0900 (JST)
-Received: 4UMRO00 id i4QFokV28708; Thu, 27 May 2004 00:50:46 +0900 (JST)
+	by mo02.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id AAA02200;
+	Thu, 27 May 2004 00:51:07 +0900 (JST)
+Received: 4UMDO01 id i4QFp6u08963; Thu, 27 May 2004 00:51:06 +0900 (JST)
+Received: 4UMRO00 id i4QFp6V28728; Thu, 27 May 2004 00:51:06 +0900 (JST)
 	from stratos.frog (64.43.138.210.xn.2iij.net [210.138.43.64]) (authenticated)
-Date: Thu, 27 May 2004 00:50:44 +0900
+Date: Thu, 27 May 2004 00:51:04 +0900
 From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
 To: Ralf Baechle <ralf@linux-mips.org>
 Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH] [3/14] vr41xx: update fixup-eagle.c
-Message-Id: <20040527005044.19dedf25.yuasa@hh.iij4u.or.jp>
+Subject: [PATCH][4/14] vr41xx: add fixup-tb0219.c
+Message-Id: <20040527005104.40832d5f.yuasa@hh.iij4u.or.jp>
 X-Mailer: Sylpheed version 0.9.10 (GTK+ 1.2.10; i686-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -22,7 +22,7 @@ Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5168
+X-archive-position: 5169
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,47 +32,40 @@ X-list: linux-mips
 
 Hi Ralf,
 
-fixup-eagle.c was updated.
+fixup-tb0219.c was added.
 
 Please apply to v2.6 CVS tree.
 
 Yoichi
 
 diff -urN -X dontdiff linux-orig/arch/mips/pci/Makefile linux/arch/mips/pci/Makefile
---- linux-orig/arch/mips/pci/Makefile	Tue May 11 00:48:23 2004
-+++ linux/arch/mips/pci/Makefile	Wed May 12 22:06:52 2004
-@@ -38,7 +38,7 @@
- obj-$(CONFIG_MOMENCO_OCELOT)	+= fixup-ocelot.o pci-ocelot.o
- obj-$(CONFIG_MOMENCO_OCELOT_C)	+= fixup-ocelot-c.o pci-ocelot-c.o
- obj-$(CONFIG_MOMENCO_OCELOT_G)	+= fixup-ocelot-g.o ops-gt64240.o pci-ocelot-g.o
--obj-$(CONFIG_NEC_EAGLE)		+= fixup-eagle.o ops-vrc4173.o
-+obj-$(CONFIG_NEC_EAGLE)		+= fixup-eagle.o
- obj-$(CONFIG_PMC_YOSEMITE)	+= fixup-yosemite.o ops-titan.o ops-titan-ht.o
- obj-$(CONFIG_SGI_IP27)		+= pci-ip27.o
+--- linux-orig/arch/mips/pci/Makefile	Thu Apr 22 00:48:10 2004
++++ linux/arch/mips/pci/Makefile	Thu Apr 22 00:49:05 2004
+@@ -44,8 +44,8 @@
  obj-$(CONFIG_SGI_IP32)		+= fixup-ip32.o ops-mace.o pci-ip32.o
-diff -urN -X dontdiff linux-orig/arch/mips/pci/fixup-eagle.c linux/arch/mips/pci/fixup-eagle.c
---- linux-orig/arch/mips/pci/fixup-eagle.c	Fri Feb 20 00:49:46 2004
-+++ linux/arch/mips/pci/fixup-eagle.c	Wed May 12 22:06:52 2004
-@@ -1,15 +1,25 @@
- /*
-- * arch/mips/vr41xx/nec-eagle/pci_fixup.c
-+ *  fixup-eagle.c, The NEC Eagle/Hawk Board specific PCI fixups.
-  *
-- * The NEC Eagle/Hawk Board specific PCI fixups.
-+ *  Copyright (C) 2001-2002,2004  MontaVista Software, Inc.
-+ *    Author: Yoichi Yuasa <yyuasa@mvista.com, or source@mvista.com>
+ obj-$(CONFIG_SIBYTE_SB1250)	+= pci-sb1250.o
+ obj-$(CONFIG_SNI_RM200_PCI)	+= fixup-sni.o ops-sni.o
++obj-$(CONFIG_TANBAC_TB0219)	+= fixup-tb0219.o
+ obj-$(CONFIG_TANBAC_TB0226)	+= fixup-tb0226.o
+-obj-$(CONFIG_TANBAC_TB0229)	+= fixup-tb0229.o
+ obj-$(CONFIG_TOSHIBA_JMR3927)	+= fixup-jmr3927.o pci-jmr3927.o
+ obj-$(CONFIG_TOSHIBA_RBTX4927)	+= fixup-rbtx4927.o ops-tx4927.o
+ obj-$(CONFIG_VICTOR_MPC30X)	+= fixup-capcella.o
+diff -urN -X dontdiff linux-orig/arch/mips/pci/fixup-tb0219.c linux/arch/mips/pci/fixup-tb0219.c
+--- linux-orig/arch/mips/pci/fixup-tb0219.c	Thu Jan  1 09:00:00 1970
++++ linux/arch/mips/pci/fixup-tb0219.c	Thu Apr 22 00:49:05 2004
+@@ -0,0 +1,64 @@
++/*
++ *  fixup-tb0219.c, The TANBAC TB0219 specific PCI fixups.
++ *
++ *  Copyright (C) 2003  Megasolution Inc. <matsu@megasolution.jp>
 + *  Copyright (C) 2004  Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-  *
-- * Author: Yoichi Yuasa <you@mvista.com, or source@mvista.com>
++ *
 + *  This program is free software; you can redistribute it and/or modify
 + *  it under the terms of the GNU General Public License as published by
 + *  the Free Software Foundation; either version 2 of the License, or
 + *  (at your option) any later version.
-  *
-- * 2001-2002,2004 (c) MontaVista, Software, Inc. This file is licensed under
-- * the terms of the GNU General Public License version 2. This program
-- * is licensed "as is" without any warranty of any kind, whether express
-- * or implied.
++ *
 + *  This program is distributed in the hope that it will be useful,
 + *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 + *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -81,263 +74,116 @@ diff -urN -X dontdiff linux-orig/arch/mips/pci/fixup-eagle.c linux/arch/mips/pci
 + *  You should have received a copy of the GNU General Public License
 + *  along with this program; if not, write to the Free Software
 + *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-  */
-+#include <linux/config.h>
- #include <linux/init.h>
- #include <linux/pci.h>
- 
-@@ -29,13 +39,13 @@
- #define SLOT	PCISLOT_IRQ
- 
- static char irq_tab_eagle[][5] __initdata = {
-- [ 8] = { 0,    INTA, INTB, INTC, INTD },
-- [ 9] = { 0,    INTD, INTA, INTB, INTC },
-- [10] = { 0,    INTC, INTD, INTA, INTB },
-- [12] = { 0, PCMCIA1,    0,    0,    0 },
-- [13] = { 0, PCMCIA2,    0,    0,    0 },
-- [28] = { 0,     LAN,    0,    0,    0 },
-- [29] = { 0,    SLOT, INTB, INTC, INTD },
-+ [ 8] = { -1,    INTA, INTB, INTC, INTD },
-+ [ 9] = { -1,    INTD, INTA, INTB, INTC },
-+ [10] = { -1,    INTC, INTD, INTA, INTB },
-+ [12] = { -1, PCMCIA1,   -1,   -1,   -1 },
-+ [13] = { -1, PCMCIA2,   -1,   -1,   -1 },
-+ [28] = { -1,     LAN,  LAN,  LAN,  LAN },
-+ [29] = { -1,    SLOT, INTB, INTC, INTD },
- };
- 
- /*
-@@ -58,3 +68,97 @@
- struct pci_fixup pcibios_fixups[] __initdata = {
- 	{	.pass = 0,	},
- };
-+
-+#ifdef CONFIG_VRC4173
-+/*
-+ * PCI configuration registers
 + */
-+#define PCICONFAREG	KSEG1ADDR(0x0f000c18)
-+#define PCICONFDREG	KSEG1ADDR(0x0f000c14)
++#include <linux/init.h>
++#include <linux/pci.h>
 +
-+static inline void pci_config_write_byte(u8 reg, u8 val)
++#include <asm/vr41xx/tb0219.h>
++
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
 +{
-+	u32 data;
-+	int shift;
++	int irq = -1;
 +
-+	writel((1UL << 0x1e) | (reg & 0xfc), PCICONFAREG);
-+	data = readl(PCICONFDREG);
-+
-+	shift = (reg & 3) << 3;
-+	data &= ~(0xff << shift);
-+	data |= (((u32) val) << shift);
-+
-+	writel(data, PCICONFDREG);
-+}
-+
-+static inline u16 pci_config_read_halfword(u8 reg)
-+{
-+	u32 data;
-+
-+	writel(((1UL << 30) | (reg & 0xfc)), PCICONFAREG);
-+	data = readl(PCICONFDREG);
-+
-+	return (u16) (data >> ((reg & 2) << 3));
-+}
-+
-+static inline u32 pci_config_read_word(u8 reg)
-+{
-+	writel(((1UL << 30) | (reg & 0xfc)), PCICONFAREG);
-+
-+	return readl(PCICONFDREG);
-+}
-+
-+static inline void pci_config_write_word(u8 reg, u32 val)
-+{
-+	writel((1UL << 0x1e) | (reg & 0xfc), PCICONFAREG);
-+	writel(val, PCICONFDREG);
-+}
-+
-+/*
-+ * Pre-fixup for AC97U/CARDU/USBU of VRC4173
-+ */
-+static int __init vrc4173_prefixup(void)
-+{
-+	u32 cmdsts, base;
-+	u16 cmu_mask;
-+
-+
-+	if ((pci_config_read_halfword(PCI_VENDOR_ID) == PCI_VENDOR_ID_NEC) &&
-+	    (pci_config_read_halfword(PCI_DEVICE_ID) == PCI_DEVICE_ID_NEC_VRC4173)) {
-+		/*
-+		 * Initialized NEC VRC4173 Bus Control Unit
-+		 */
-+		cmdsts = pci_config_read_word(PCI_COMMAND);
-+		pci_config_write_word(PCI_COMMAND,
-+		                      cmdsts | PCI_COMMAND_IO |
-+		                      PCI_COMMAND_MEMORY | PCI_COMMAND_MASTER);
-+
-+		pci_config_write_byte(PCI_LATENCY_TIMER, 0x80);
-+
-+		pci_config_write_word(PCI_BASE_ADDRESS_0, VR41XX_PCI_IO_START);
-+		base = pci_config_read_word(PCI_BASE_ADDRESS_0);
-+		base &= PCI_BASE_ADDRESS_IO_MASK;
-+		pci_config_write_byte(0x40, 0x01);
-+
-+		/* CARDU1 IDSEL = AD12, CARDU2 IDSEL = AD13 */
-+		pci_config_write_byte(0x41, 0);
-+
-+		cmu_mask = 0x1000;
-+		outw(cmu_mask, base + 0x040);
-+		cmu_mask |= 0x0800;
-+		outw(cmu_mask, base + 0x040);
-+
-+		outw(0x000f, base + 0x042);	/* Soft reset of CMU */
-+		cmu_mask |= 0x05e0;
-+		outw(cmu_mask, base + 0x040);
-+		cmu_mask = inw(base + 0x040);	/* dummy read */
-+		outw(0x0000, base + 0x042);
-+
-+		return 0;
++	switch (slot) {
++	case 12:
++		vr41xx_set_irq_trigger(TB0219_PCI_SLOT1_PIN,
++				       TRIGGER_LEVEL,
++				       SIGNAL_THROUGH);
++		vr41xx_set_irq_level(TB0219_PCI_SLOT1_PIN,
++				     LEVEL_LOW);
++		irq = TB0219_PCI_SLOT1_IRQ;
++		break;
++	case 13:
++		vr41xx_set_irq_trigger(TB0219_PCI_SLOT2_PIN,
++				       TRIGGER_LEVEL,
++				       SIGNAL_THROUGH);
++		vr41xx_set_irq_level(TB0219_PCI_SLOT2_PIN,
++				     LEVEL_LOW);
++		irq = TB0219_PCI_SLOT2_IRQ;
++		break;
++	case 14:
++		vr41xx_set_irq_trigger(TB0219_PCI_SLOT3_PIN,
++				       TRIGGER_LEVEL,
++				       SIGNAL_THROUGH);
++		vr41xx_set_irq_level(TB0219_PCI_SLOT3_PIN,
++				     LEVEL_LOW);
++		irq = TB0219_PCI_SLOT3_IRQ;
++		break;
++	default:
++		break;
 +	}
 +
-+	return -ENODEV;
++	return irq;
 +}
 +
-+early_initcall(vrc4173_prefixup);
-+#endif
-diff -urN -X dontdiff linux-orig/arch/mips/pci/ops-vrc4173.c linux/arch/mips/pci/ops-vrc4173.c
---- linux-orig/arch/mips/pci/ops-vrc4173.c	Fri Jun 13 23:19:56 2003
-+++ linux/arch/mips/pci/ops-vrc4173.c	Thu Jan  1 09:00:00 1970
-@@ -1,120 +0,0 @@
++struct pci_fixup pcibios_fixups[] __initdata = {
++	{	.pass = 0,	},
++};
+diff -urN -X dontdiff linux-orig/arch/mips/pci/fixup-tb0229.c linux/arch/mips/pci/fixup-tb0229.c
+--- linux-orig/arch/mips/pci/fixup-tb0229.c	Thu Nov 13 00:24:37 2003
++++ linux/arch/mips/pci/fixup-tb0229.c	Thu Jan  1 09:00:00 1970
+@@ -1,64 +0,0 @@
 -/*
 - * FILE NAME
-- *	arch/mips/vr41xx/nec-eagle/vrc4173.c
+- *	arch/mips/vr41xx/tanbac-tb0229/pci_fixup.c
 - *
 - * BRIEF MODULE DESCRIPTION
-- *	Pre-setup for NEC VRC4173.
+- *	The TANBAC TB0229(VR4131DIMM) specific PCI fixups.
 - *
-- * Author: Yoichi Yuasa
-- *         yyuasa@mvista.com or source@mvista.com
-- *
-- * Copyright 2001,2002 MontaVista Software Inc.
+- * Copyright 2003 Megasolution Inc.
+- *                matsu@megasolution.jp
 - *
 - *  This program is free software; you can redistribute it and/or modify it
 - *  under the terms of the GNU General Public License as published by the
 - *  Free Software Foundation; either version 2 of the License, or (at your
 - *  option) any later version.
-- *
-- *  THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED
-- *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-- *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
-- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-- *  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
-- *  OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-- *  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
-- *  TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-- *  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-- *
-- *  You should have received a copy of the GNU General Public License along
-- *  with this program; if not, write to the Free Software Foundation, Inc.,
-- *  675 Mass Ave, Cambridge, MA 02139, USA.
 - */
+-#include <linux/config.h>
 -#include <linux/init.h>
 -#include <linux/pci.h>
--#include <linux/module.h>
 -
--#include <asm/io.h>
--#include <asm/vr41xx/eagle.h>
--#include <asm/vr41xx/vrc4173.h>
+-#include <asm/vr41xx/tb0229.h>
 -
--#define PCI_CONFIG_ADDR	KSEG1ADDR(0x0f000c18)
--#define PCI_CONFIG_DATA	KSEG1ADDR(0x0f000c14)
--
--static inline void config_writeb(u8 reg, u8 val)
+-void __init pcibios_fixup_irqs(void)
 -{
--	u32 data;
--	int shift;
+-#ifdef CONFIG_TANBAC_TB0219
+-	struct pci_dev *dev = NULL;
+-	u8 slot;
 -
--	writel((1UL << 0x1e) | (reg & 0xfc), PCI_CONFIG_ADDR);
--	data = readl(PCI_CONFIG_DATA);
+-	while ((dev = pci_find_device(PCI_ANY_ID, PCI_ANY_ID, dev)) != NULL) {
+-		slot = PCI_SLOT(dev->devfn);
+-		dev->irq = 0;
 -
--	shift = (reg & 3) << 3;
--	data &= ~(0xff << shift);
--	data |= (((u32) val) << shift);
+-		switch (slot) {
+-		case 12:
+-			vr41xx_set_irq_trigger(TB0219_PCI_SLOT1_PIN,
+-					       TRIGGER_LEVEL,
+-					       SIGNAL_THROUGH);
+-			vr41xx_set_irq_level(TB0219_PCI_SLOT1_PIN,
+-					     LEVEL_LOW);
+-			dev->irq = TB0219_PCI_SLOT1_IRQ;
+-			break;
+-		case 13:
+-			vr41xx_set_irq_trigger(TB0219_PCI_SLOT2_PIN,
+-					       TRIGGER_LEVEL,
+-					       SIGNAL_THROUGH);
+-			vr41xx_set_irq_level(TB0219_PCI_SLOT2_PIN,
+-					     LEVEL_LOW);
+-			dev->irq = TB0219_PCI_SLOT2_IRQ;
+-			break;
+-		case 14:
+-			vr41xx_set_irq_trigger(TB0219_PCI_SLOT3_PIN,
+-					       TRIGGER_LEVEL,
+-					       SIGNAL_THROUGH);
+-			vr41xx_set_irq_level(TB0219_PCI_SLOT3_PIN,
+-					     LEVEL_LOW);
+-			dev->irq = TB0219_PCI_SLOT3_IRQ;
+-			break;
+-		default:
+-			break;
+-		}
 -
--	writel(data, PCI_CONFIG_DATA);
--}
--
--static inline u16 config_readw(u8 reg)
--{
--	u32 data;
--
--	writel(((1UL << 30) | (reg & 0xfc)), PCI_CONFIG_ADDR);
--	data = readl(PCI_CONFIG_DATA);
--
--	return (u16) (data >> ((reg & 2) << 3));
--}
--
--static inline u32 config_readl(u8 reg)
--{
--	writel(((1UL << 30) | (reg & 0xfc)), PCI_CONFIG_ADDR);
--
--	return readl(PCI_CONFIG_DATA);
--}
--
--static inline void config_writel(u8 reg, u32 val)
--{
--	writel((1UL << 0x1e) | (reg & 0xfc), PCI_CONFIG_ADDR);
--	writel(val, PCI_CONFIG_DATA);
--}
--
--void __init vrc4173_preinit(void)
--{
--	u32 cmdsts, base;
--	u16 cmu_mask;
--
--
--	if ((config_readw(PCI_VENDOR_ID) == PCI_VENDOR_ID_NEC) &&
--	    (config_readw(PCI_DEVICE_ID) == PCI_DEVICE_ID_NEC_VRC4173)) {
--		/*
--		 * Initialized NEC VRC4173 Bus Control Unit
--		 */
--		cmdsts = config_readl(PCI_COMMAND);
--		config_writel(PCI_COMMAND,
--			      cmdsts |
--			      PCI_COMMAND_IO |
--			      PCI_COMMAND_MEMORY | PCI_COMMAND_MASTER);
--
--		config_writeb(PCI_LATENCY_TIMER, 0x80);
--
--		config_writel(PCI_BASE_ADDRESS_0, VR41XX_PCI_IO_START);
--		base = config_readl(PCI_BASE_ADDRESS_0);
--		base &= PCI_BASE_ADDRESS_IO_MASK;
--		config_writeb(0x40, 0x01);
--
--		/* CARDU1 IDSEL = AD12, CARDU2 IDSEL = AD13 */
--		config_writeb(0x41, 0);
--
--		cmu_mask = 0x1000;
--		outw(cmu_mask, base + 0x040);
--		cmu_mask |= 0x0800;
--		outw(cmu_mask, base + 0x040);
--
--		outw(0x000f, base + 0x042);	/* Soft reset of CMU */
--		cmu_mask |= 0x05e0;
--		outw(cmu_mask, base + 0x040);
--		cmu_mask = inw(base + 0x040);	/* dummy read */
--		outw(0x0000, base + 0x042);
+-		pci_write_config_byte(dev, PCI_INTERRUPT_LINE, dev->irq);
 -	}
+-#endif
 -}
-diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/nec-eagle/setup.c linux/arch/mips/vr41xx/nec-eagle/setup.c
---- linux-orig/arch/mips/vr41xx/nec-eagle/setup.c	Thu Apr 29 10:42:49 2004
-+++ linux/arch/mips/vr41xx/nec-eagle/setup.c	Wed May 12 22:06:52 2004
-@@ -87,8 +87,6 @@
- 
- #ifdef CONFIG_PCI
- 	vr41xx_pciu_init(&pci_address_map);
--
--	vrc4173_preinit();
- #endif
- 
- 	return 0;

@@ -1,63 +1,65 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id KAA15044 for <linux-archive@neteng.engr.sgi.com>; Fri, 2 Apr 1999 10:42:20 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA91664 for <linux-archive@neteng.engr.sgi.com>; Fri, 2 Apr 1999 16:53:22 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id KAA96948
+	id QAA41124
 	for linux-list;
-	Fri, 2 Apr 1999 10:40:41 -0800 (PST)
+	Fri, 2 Apr 1999 16:52:22 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from oz.engr.sgi.com (oz.engr.sgi.com [150.166.42.13])
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id KAA71834
+	via ESMTP id QAA02558
 	for <linux@engr.sgi.com>;
-	Fri, 2 Apr 1999 10:40:40 -0800 (PST)
-	mail_from (ariel@oz.engr.sgi.com)
-Received: (from ariel@localhost) by oz.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) id KAA07025 for linux@engr.sgi.com; Fri, 2 Apr 1999 10:40:40 -0800 (PST)
-From: ariel@oz.engr.sgi.com (Ariel Faigon)
-Message-Id: <199904021840.KAA07025@oz.engr.sgi.com>
-Subject: EFS status
-To: linux@cthulhu.engr.sgi.com (SGI/Linux mailing list)
-Date: Fri, 2 Apr 1999 10:40:39 -0800 (PST)
-Reply-To: ariel@cthulhu.engr.sgi.com (Ariel Faigon)
-Organization: Silicon Graphics Inc.
-X-Mailer: ELM [version 2.4 PL25]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	Fri, 2 Apr 1999 16:52:18 -0800 (PST)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1] (may be forged)) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id QAA05255
+	for <linux@engr.sgi.com>; Fri, 2 Apr 1999 16:52:16 -0800 (PST)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: from lappi.waldorf-gmbh.de (cacc-13.uni-koblenz.de [141.26.131.13])
+	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id CAA14027
+	for <linux@engr.sgi.com>; Sat, 3 Apr 1999 02:52:13 +0200 (MET DST)
+Received: (from ralf@localhost)
+	by lappi.waldorf-gmbh.de (8.8.7/8.8.7) id BAA13397;
+	Sat, 3 Apr 1999 01:31:02 +0200
+Message-ID: <19990403013101.F11665@uni-koblenz.de>
+Date: Sat, 3 Apr 1999 01:31:01 +0200
+From: ralf@uni-koblenz.de
+To: linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
+        linux-mips@vger.rutgers.edu
+Subject: Re: ALSA compile error
+References: <19990402223303.A20067@bun.falkenberg.se>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.93.2
+In-Reply-To: <19990402223303.A20067@bun.falkenberg.se>; from Ulf Carlsson on Fri, Apr 02, 1999 at 10:33:17PM -0500
+X-Accept-Language: de,en,fr
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-[Forwarding bounced message from Al Smith (probably subscribed
- with a different address...)]
+On Fri, Apr 02, 1999 at 10:33:17PM -0500, Ulf Carlsson wrote:
 
-There has been some progress latelyu on the EFS front
-thanks to Al Smith and Mike Shaver.  Good news, thanks
-guys!  -- Ariel.
+> I've been trying with egcs 1.0.2, gcc 2.7.2, binutils 2.8.1 and binutils 2.9.1
+> and it doesn't make any difference. I've also been trying without -pipe and
+> -fomit-frame-pointer.
 
+Use egcs 1.0.x and binutils 2.8.1.
 
-:Sender: Al.Smith@aeschi.ch.eu.org
-:Message-ID: <3704A41B.B4F5EDE2@aeschi.ch.eu.org>
-:Date: Fri, 02 Apr 1999 12:03:55 +0100
-:From: Al Smith <Al.Smith@aeschi.ch.eu.org>
-:Organization: http://aeschi.ch.eu.org/
-:To: linux@engr.sgi.com, linux-mips@fnet.fr, linux-mips@vger.rutgers.edu
-:Subject: EFS support for linux 2.2
-:Content-Type: text/plain; charset=us-ascii
-:Content-Transfer-Encoding: 7bit
-:
-:Support for EFS filesystems (both on CD, and on hard disk partitions) is
-:available from the anonymous sgi/linux CVS server, and from
-:http://aeschi.ch.eu.org/efs/. The code can be either compiled separately
-:and inserted as a module, or integrated into the kernel by applying a
-:patch.
-:
-:This support is still experimental - please let me know if you try it,
-:whether you encounter problems or not.
-:
-:-al.
-:
-:
+> This is the error message:
+> 
+> gcc -O2  -DLINUX -mips2 -mcpu=r4600 -Wall -Wstrict-prototypes -fomit-frame-pointer -pipe -I/usr/src/linux/include -I../include -c -o sound.o sound.c
+> /tmp/cca03757.s: Assembler messages:
+> /tmp/cca03757.s:1228: Error: Can not represent BFD_RELOC_16_PCREL_S2 relocation in this object file format
+> /tmp/cca03757.s:1285: Error: Can not represent BFD_RELOC_16_PCREL_S2 relocation in this object file format
 
+> It was something about the haifa scheduler I think.
 
--- 
-Peace, Ariel
+Haifa is innocent.  You are trying to compile the thing into PIC code and
+that won't work for kernel code.  Add -fno-pic -mno-abicalls and for modules
+also add -mlong-calls.
+
+  Ralf

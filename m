@@ -1,52 +1,99 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Oct 2004 03:59:29 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:19192 "EHLO
-	hermes.mvista.com") by linux-mips.org with ESMTP
-	id <S8225240AbUJUC7Z>; Thu, 21 Oct 2004 03:59:25 +0100
-Received: from prometheus.mvista.com (prometheus.mvista.com [10.0.0.139])
-	by hermes.mvista.com (Postfix) with ESMTP
-	id 4B417184F7; Wed, 20 Oct 2004 19:59:23 -0700 (PDT)
-Subject: [PATCH]MIPS64 RAMDISK in 2.6
-From: Manish Lachwani <mlachwani@mvista.com>
-To: linux-mips@linux-mips.org
-Cc: ralf@linux-mips.org
-Content-Type: text/plain
-Organization: 
-Message-Id: <1098327563.4266.26.camel@prometheus.mvista.com>
-Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.2.2 (1.2.2-5) 
-Date: 20 Oct 2004 19:59:23 -0700
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Oct 2004 04:00:30 +0100 (BST)
+Received: from mf2.realtek.com.tw ([IPv6:::ffff:220.128.56.22]:61195 "EHLO
+	mf2.realtek.com.tw") by linux-mips.org with ESMTP
+	id <S8225240AbUJUDAY>; Thu, 21 Oct 2004 04:00:24 +0100
+Received: from msx.realtek.com.tw (unverified [172.20.1.77]) by mf2.realtek.com.tw
+ (Content Technologies SMTPRS 4.3.14) with ESMTP id <T6cc78eb777dc803816a20@mf2.realtek.com.tw> for <linux-mips@linux-mips.org>;
+ Thu, 21 Oct 2004 11:01:27 +0800
+Received: from rtpdii3098 ([172.19.26.139])
+          by msx.realtek.com.tw (Lotus Domino Release 6.0.2CF1)
+          with ESMTP id 2004102111012599-133520 ;
+          Thu, 21 Oct 2004 11:01:25 +0800 
+Message-ID: <007101c4b71a$171bd830$8b1a13ac@realtek.com.tw>
+From: "colin" <colin@realtek.com.tw>
+Cc: <linux-mips@linux-mips.org>
+References: <001301c4b6ad$70ce4420$8b1a13ac@realtek.com.tw> <20041020163048.GC17445@gate.ebshome.net>
+Subject: Re: [*VIP*] Re: Strange! Cannot use JFFS2 as root
+Date: Thu, 21 Oct 2004 11:00:11 +0800
+MIME-Version: 1.0
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2800.1437
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1441
+X-MIMETrack: Itemize by SMTP Server on msx/Realtek(Release 6.0.2CF1|June 9, 2003) at
+ 2004/10/21 =?Bog5?B?pFekyCAxMTowMToyNQ==?=,
+	Serialize by Router on msx/Realtek(Release 6.0.2CF1|June 9, 2003) at 2004/10/21
+ =?Bog5?B?pFekyCAxMTowMToyNw==?=,
+	Serialize complete at 2004/10/21 =?Bog5?B?pFekyCAxMTowMToyNw==?=
 Content-Transfer-Encoding: 7bit
-Return-Path: <mlachwani@mvista.com>
+Content-Type: text/plain;
+	charset="iso-8859-1"
+To: unlisted-recipients:; (no To-header on input)
+Return-Path: <colin@realtek.com.tw>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6153
+X-archive-position: 6154
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mlachwani@mvista.com
+X-original-sender: colin@realtek.com.tw
 Precedence: bulk
 X-list: linux-mips
 
-Hello !
 
-I needed the following patch to get the RAMDISK support working in
-MIPS64. Tested on the Broadcom SWARM. Please review
+Hi Eugene,
+The Kernel I use is 2.6.4, and I donot see the entry you mentioned.
 
-Thanks
-Manish Lachwani
+Regards,
+Colin
 
---- arch/mips/ramdisk/Makefile.orig	2004-10-20 19:40:12.000000000 -0700
-+++ arch/mips/ramdisk/Makefile	2004-10-20 19:45:27.000000000 -0700
-@@ -5,7 +5,11 @@
- obj-y += ramdisk.o
- 
- 
-+ifndef CONFIG_MIPS64
- O_FORMAT = $(shell $(OBJDUMP) -i | head -n 2 | grep elf32)
-+else
-+O_FORMAT = $(shell $(OBJDUMP) -i | head -n 15 | grep elf64)
-+endif
- img := $(subst ",,$(CONFIG_EMBEDDED_RAMDISK_IMAGE))
- # add $(src) when $(img) is relative
- img := $(subst $(src)//,/,$(src)/$(img))
+
+----- Original Message ----- 
+From: "Eugene Surovegin" <ebs@ebshome.net>
+To: "colin" <colin@realtek.com.tw>
+Cc: <linux-mips@linux-mips.org>
+Sent: Thursday, October 21, 2004 12:30 AM
+Subject: [*VIP*] Re: Strange! Cannot use JFFS2 as root
+
+
+> On Wed, Oct 20, 2004 at 10:02:26PM +0800, colin wrote:
+> >
+> > Hi all,
+> > I had booted up Linux with nfs root, and write a JFFS2 image to
+/dev/mtd1.
+> > Here is my cmdline for Kernel:
+> >      go 0x80305018 root=/dev/nfs rw nfsroot=172.19.26.145:/nfs/rootfs
+> > ip=172.19.27.193::172.19.27.254:255.255.254.0:::
+> > mtdparts=maltaflash:1536k(ldr),2048k(root)
+> >
+> > After writing the JFFS2 image to /dev/mtd1, I can mount /dev/mtdblcok1
+to
+> > some directory.
+> >     mount -t jffs2 /dev/mtdblock1 /mnt
+> >
+> > Next, I hope to boot up Linux with JFFS2 root, and try to give this
+cmdline
+> > to Kernel:
+> >     go 0x80305018 rootfstype=jffs2
+> > mtdparts=maltaflash:1536k(ldr),2048k(root) root=/dev/mtdblock1
+> >
+> > and the Kernel would complain me about no root:
+> >     VFS: Unable to mount root fs via NFS, trying floppy.
+> >     Kernel panic: VFS: Unable to mount root fs on unknown-block(2,0)
+> >
+> > I traced the code and found that when passing "/dev/mtdblock1" to
+> > name_to_dev_t() in do_mounts.c, it would return 0 at every try_name(),
+> >  which will fail at open() with the path "/sys/block/%s/dev".
+> >
+> > What's the problem? Could anyone tell me?
+>
+> What is the kernel version you are using?
+>
+> Check that root_dev_names array in init/do_mounts.c has an entry,
+> which looks like
+>
+> { "mtdblock", 0x1f00 }
+>
+> --
+> Eugene

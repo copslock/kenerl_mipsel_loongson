@@ -1,39 +1,46 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBQLggM26247
-	for linux-mips-outgoing; Wed, 26 Dec 2001 13:42:42 -0800
+	by oss.sgi.com (8.11.2/8.11.3) id fBQLhWJ26353
+	for linux-mips-outgoing; Wed, 26 Dec 2001 13:43:32 -0800
 Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id fBQLgZX26233
-	for <linux-mips@oss.sgi.com>; Wed, 26 Dec 2001 13:42:35 -0800
+	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id fBQLhSX26342
+	for <linux-mips@oss.sgi.com>; Wed, 26 Dec 2001 13:43:28 -0800
 Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id fBQKfU701248
-	for linux-mips@oss.sgi.com; Wed, 26 Dec 2001 18:41:30 -0200
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id fBMClnA05968;
-	Sat, 22 Dec 2001 10:47:49 -0200
-Date: Sat, 22 Dec 2001 10:47:49 -0200
+	by dea.linux-mips.net (8.11.1/8.11.1) id fBP6fPR16989;
+	Tue, 25 Dec 2001 04:41:25 -0200
+Date: Tue, 25 Dec 2001 04:41:25 -0200
 From: Ralf Baechle <ralf@oss.sgi.com>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Jim Paris <jim@jtan.com>, Linux/MIPS Development <linux-mips@oss.sgi.com>
-Subject: Re: [ppopov@mvista.com: Re: [Linux-mips-kernel]ioremap & ISA]
-Message-ID: <20011222104749.J1437@dea.linux-mips.net>
-References: <20011218135712.B11726@neurosis.mit.edu> <Pine.GSO.4.21.0112191031050.28694-100000@vervain.sonytel.be>
+To: Carsten Langgaard <carstenl@mips.com>
+Cc: Jun Sun <jsun@mvista.com>, linux-mips@oss.sgi.com
+Subject: Re: an old FPU context corruption problem when signal happens
+Message-ID: <20011225044125.A16759@dea.linux-mips.net>
+References: <3C21390A.FA23978D@mvista.com> <3C219A3B.6DA93A75@mips.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.GSO.4.21.0112191031050.28694-100000@vervain.sonytel.be>; from geert@linux-m68k.org on Wed, Dec 19, 2001 at 10:34:04AM +0100
+In-Reply-To: <3C219A3B.6DA93A75@mips.com>; from carstenl@mips.com on Thu, Dec 20, 2001 at 08:58:51AM +0100
 X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, Dec 19, 2001 at 10:34:04AM +0100, Geert Uytterhoeven wrote:
+On Thu, Dec 20, 2001 at 08:58:51AM +0100, Carsten Langgaard wrote:
 
-> IMHO you should create isa_{check,request,release}_mem_region().
+> Are you sure this hasn't been fix in the latest sources (2.4.16) ?
+> I have send a patch to Ralf, which I believe solves a similar problem as
+> you describe below.
 > 
-> I said it many times before on linux-kernel, but it doesn't help :-(
-> I'm facing the same problem on PPC, where ISA memory space is not at address 0.
+> Ralf have you applied the patch ?
 
-Sounds good to me.  That would also solve certain problems on machine like
-the RM200C where we have to cheat a little bit to get things to work.
+Well, I applied it but it's really broken as something can be.  Just an
+example:
+
++       /* 
++        * FPU emulator may have it's own trampoline active just
++        * above the user stack, 16-bytes before the next lowest
++        * 16 byte boundary.  Try to avoid trashing it.
++        */
++       sp -= 32;
+
+So the whole thing needs some overhaul.
 
   Ralf

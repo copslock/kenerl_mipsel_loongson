@@ -1,57 +1,43 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id AAA36575 for <linux-archive@neteng.engr.sgi.com>; Mon, 15 Dec 1997 00:24:06 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id EAA39080 for <linux-archive@neteng.engr.sgi.com>; Mon, 15 Dec 1997 04:54:38 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id AAA08666 for linux-list; Mon, 15 Dec 1997 00:21:31 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA08652 for <linux@engr.sgi.com>; Mon, 15 Dec 1997 00:21:28 -0800
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id AAA08207
-	for <linux@engr.sgi.com>; Mon, 15 Dec 1997 00:21:26 -0800
-	env-from (ralf@uni-koblenz.de)
-From: ralf@uni-koblenz.de
-Received: from uni-koblenz.de (pmport-24.uni-koblenz.de [141.26.249.24])
-	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id JAA02205
-	for <linux@engr.sgi.com>; Mon, 15 Dec 1997 09:20:55 +0100 (MET)
-Received: (from ralf@localhost)
-	by uni-koblenz.de (8.8.7/8.8.7) id JAA12989;
-	Mon, 15 Dec 1997 09:16:03 +0100
-Message-ID: <19971215091602.29527@uni-koblenz.de>
-Date: Mon, 15 Dec 1997 09:16:02 +0100
-To: linux-mips@fnet.fr, linux@cthulhu.engr.sgi.com,
-        linux-mips@vger.rutgers.edu
-Subject: Cleanup ...
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id EAA11722 for linux-list; Mon, 15 Dec 1997 04:54:05 -0800
+Received: from meteor.nsg.sgi.com (meteor.nsg.sgi.com [134.14.162.53]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id EAA11714 for <linux@cthulhu.engr.sgi.com>; Mon, 15 Dec 1997 04:54:02 -0800
+Received: (from hakamada@localhost) by meteor.nsg.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id VAA18007; Mon, 15 Dec 1997 21:53:36 +0900
+Message-Id: <199712151253.VAA18007@meteor.nsg.sgi.com>
+To: andrewo@cse.unsw.edu.au
+Cc: linux@cthulhu.engr.sgi.com
+Subject: Re: Mount ext2 filesystem.
+In-Reply-To: Your message of "Fri, 12 Dec 1997 02:52:48 +0000 (GMT)"
+References: <Pine.SGI.3.95.971212024323.1030A-100000@dizzy.disy.cse.unsw.EDU.AU>
+X-Mailer: Mew version 1.70 on XEmacs 20.2
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.85e
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Date: Mon, 15 Dec 1997 21:53:35 +0900
+From: Takeshi Hakamada <hakamada@meteor.nsg.sgi.com>
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi all,
 
-I removed support for all machines which aren't supposed to be useable
-or at least close to which are the ACN board, Deskstation Tyne,
-Deskstation rPC44 and DECstation.  I haven't received patches for those
-machines over a long time and nobody seemed to be working on support
-for those machines.
+> As a warmup exercise, as I've been given access to an Indy and brought in
+> my home Linux x86 box as a bootserver, I'll try and install SGI/Linux. The
+> only prob is that I've never used/played with an SGI before and so would
+> appreciate a slightly more comprehensive howto then the FAQ. 
+> 
+> I've been lurking in the background the last few days and this seems like
+> an appropriate time to say "Hi".
+> 
+> Any hints or tips anyone could send me would be much appreciated.
 
-By now way this means that I don't want to see support for these
-machines and after all, whoever wants the old source fragments can
-still get them from the Attic/ directories in the CVS archive.  The
-background is that I want to clean some things and without someone
-actually working for these machines I'd have broken the existing fragments
-anyway.
+Eventually, I've booted SGI/Linux from local disk.
+However, my e2fs partition(super block) has been corrupted,
+I'll re-mke2fs and reinstall rpm stuff on the local disk.
+I'm also preparing for Installation howto or FAQ.
 
-On the positive side, the Indy stopped eating filesystems and seems to
-be quite useable, so when configuring you don't have to choose
-CONFIG_EXPERIMENTAL any longer.  I've moved most of the SGI specific
-configuration script stuff away from arch/mips/config.in to
-drivers/char/Config.in and drivers/sgi/char/Config.in.
-
-One of the next things to clean is the timer stuff.  Currently it is not
-possible to use something that doesn't have 100% pc-style timers and rtc.
-
-I'll also remove support for linking a kernel as ECOFF.  We're currently
-already have alot of ELF specific tricks and will use more in the
-future, so linking ELF -> ECOFF wouldn't work anymore.  Whoever works
-for a machine that requires ECOFF kernels should get the ELF to ECOFF
-converter program from the Milo sources which will work and not trigger
-all sorts of binutils problems that are almost impossible to fix.
-
-  Ralf
+Thanks,
+--
+Takeshi Hakamada                  
+Nihon Silicon Graphics Cray
+E-mail: hakamada@nsg.sgi.com, URL: http://reality.sgi.com/hakamada_nsg/
+Phone: +81-45-682-3712, Fax: +81-45-682-0856
+Voice mail: (internal)822-1300, (external)+81-3-5488-1863-1300

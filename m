@@ -1,54 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Dec 2004 13:27:03 +0000 (GMT)
-Received: from mo01.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:51147 "EHLO
-	mo01.iij4u.or.jp") by linux-mips.org with ESMTP id <S8224933AbULKN05>;
-	Sat, 11 Dec 2004 13:26:57 +0000
-Received: MO(mo01)id iBBDQsem020077; Sat, 11 Dec 2004 22:26:54 +0900 (JST)
-Received: MDO(mdo01) id iBBDQrAP004057; Sat, 11 Dec 2004 22:26:53 +0900 (JST)
-Received: 4UMRO00 id iBBDQq21005847; Sat, 11 Dec 2004 22:26:52 +0900 (JST)
-	from stratos (localhost [127.0.0.1]) (authenticated)
-Date: Sat, 11 Dec 2004 22:26:49 +0900
-From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH 2.6.10-rc3] fixed pci_ids.h
-Message-Id: <20041211222649.13895ef3.yuasa@hh.iij4u.or.jp>
-X-Mailer: Sylpheed version 1.0.0beta3 (GTK+ 1.2.10; i386-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yuasa@hh.iij4u.or.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Dec 2004 13:42:53 +0000 (GMT)
+Received: from server212.com ([IPv6:::ffff:203.194.159.163]:44171 "HELO
+	server212.com") by linux-mips.org with SMTP id <S8224933AbULKNmt>;
+	Sat, 11 Dec 2004 13:42:49 +0000
+Received: (qmail 20026 invoked by uid 2003); 11 Dec 2004 13:43:05 -0000
+Message-ID: <20041211134305.22769.qmail@server212.com>
+Reply-To: "wlacey" <wlacey@goldenhindresearch.com>
+From: "wlacey" <wlacey@goldenhindresearch.com>
+To: linux-mips@linux-mips.org
+Subject: No PCI_AUTO in 2.6...
+Date: Sat, 11 Dec 2004 13:43:05 
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="_ba3a001bb191b9756e5715dab9227106c"
+X-Mailer: WebMail 2.3
+X-Originating-IP: 67.149.145.76
+X-Originating-Email: wlacey@goldenhindresearch.com
+Return-Path: <wlacey@goldenhindresearch.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6652
+X-archive-position: 6653
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuasa@hh.iij4u.or.jp
+X-original-sender: wlacey@goldenhindresearch.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
+--_ba3a001bb191b9756e5715dab9227106c
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
 
-Some PCI IDs are defined doubly.
-Please apply this patch.
+Might someone be willing to share a bit knowledge with me?
 
-Yoichi
+I've transitioned to the 2.6.10 kernel and I'm having a difficult time understanding what things I must do different to get my pci slots probed as before in 2.4. At this point I'm well aware the 2.6 is not a drop in replacement for 2.4 but what is the a general approach to getting something like PCI_AUTO capability in 2.6 what steps must I take and is there document describing them.
 
-Signed-off-by: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+I call register_pci_controller() but the bus is never scanned becasue pcibios_init() fails out with...
+"Skipping PCI bus scan due to resource conflict"
 
-diff -urN -X dontdiff a-orig/include/linux/pci_ids.h a/include/linux/pci_ids.h
---- a-orig/include/linux/pci_ids.h	Sun Dec  5 21:25:04 2004
-+++ a/include/linux/pci_ids.h	Sat Dec 11 22:11:59 2004
-@@ -1452,11 +1452,6 @@
- #define PCI_DEVICE_ID_TOSHIBA_TC35815CF	0x0030
- #define PCI_DEVICE_ID_TOSHIBA_TX4927	0x0180
- 
--#define PCI_VENDOR_ID_TOSHIBA_2		0x102f
--#define PCI_DEVICE_ID_TOSHIBA_TX3927	0x000a
--#define PCI_DEVICE_ID_TOSHIBA_TC35815CF	0x0030
--#define PCI_DEVICE_ID_TOSHIBA_TX4927	0x0180
--
- #define PCI_VENDOR_ID_RICOH		0x1180
- #define PCI_DEVICE_ID_RICOH_RL5C465	0x0465
- #define PCI_DEVICE_ID_RICOH_RL5C466	0x0466
+Any hints/clues/breadcrumbs for the starving?
+
+Thanks,
+W
+
+
+--_ba3a001bb191b9756e5715dab9227106c
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+
+Might someone be willing to share a bit knowledge with me?<br>
+<br>
+I've transitioned to the 2.6.10 kernel and I'm having a difficult time understanding what things I must do different to get my pci slots probed as before in 2.4. At this point I'm well aware the 2.6 is not a drop in replacement for 2.4 but what is the a general approach to getting something like PCI_AUTO capability in 2.6 what steps must I take and is there document describing them.<br>
+<br>
+I call register_pci_controller() but the bus is never scanned becasue pcibios_init() fails out with...<br>
+&quot;Skipping PCI bus scan due to resource conflict&quot;<br>
+<br>
+Any hints/clues/breadcrumbs for the starving?<br>
+<br>
+Thanks,<br>
+W<br>
+<br>
+
+
+--_ba3a001bb191b9756e5715dab9227106c--

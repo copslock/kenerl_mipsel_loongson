@@ -1,55 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Feb 2003 10:03:33 +0000 (GMT)
-Received: from gandalf.physik.uni-konstanz.de ([IPv6:::ffff:134.34.144.69]:11180
-	"EHLO gandalf.physik.uni-konstanz.de") by linux-mips.org with ESMTP
-	id <S8225196AbTBJKDc>; Mon, 10 Feb 2003 10:03:32 +0000
-Received: from merry.physik.uni-konstanz.de (merry.physik.uni-konstanz.de [134.34.144.91])
-	by gandalf.physik.uni-konstanz.de (Postfix) with ESMTP
-	id ADFB793; Mon, 10 Feb 2003 11:03:19 +0100 (CET)
-Received: from agx by merry.physik.uni-konstanz.de with local (Exim 3.35 #1 (Debian))
-	id 18iAmV-00080b-00; Mon, 10 Feb 2003 11:03:19 +0100
-Date: Mon, 10 Feb 2003 11:03:19 +0100
-From: Guido Guenther <agx@gandalf.physik.uni-konstanz.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Feb 2003 10:33:25 +0000 (GMT)
+Received: from smtp-102.nerim.net ([IPv6:::ffff:62.4.16.102]:6163 "EHLO
+	kraid.nerim.net") by linux-mips.org with ESMTP id <S8225196AbTBJKdY>;
+	Mon, 10 Feb 2003 10:33:24 +0000
+Received: from melkor (vivienc.net1.nerim.net [213.41.134.233])
+	by kraid.nerim.net (Postfix) with ESMTP
+	id 880B640EF3; Mon, 10 Feb 2003 11:33:22 +0100 (CET)
+Received: from glaurung (helo=localhost)
+	by melkor with local-esmtp (Exim 3.36 #1 (Debian))
+	id 18iBFr-0000J0-00; Mon, 10 Feb 2003 11:33:39 +0100
+Date: Mon, 10 Feb 2003 11:33:39 +0100 (CET)
+From: Vivien Chappelier <vivienc@nerim.net>
+X-Sender: glaurung@melkor
 To: Andrew Clausen <clausen@melbourne.sgi.com>
-Cc: Linux-MIPS <linux-mips@linux-mips.org>
+Cc: Linux-MIPS <linux-mips@linux-mips.org>,
+	Guido Guenther <agx@sigxcpu.org>
 Subject: Re: porting arcboot
-Message-ID: <20030210100319.GA30624@merry>
-References: <20030210034549.GA8408@pureza.melbourne.sgi.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 In-Reply-To: <20030210034549.GA8408@pureza.melbourne.sgi.com>
-User-Agent: Mutt/1.3.28i
-Return-Path: <agx@mittelerde.physik.uni-konstanz.de>
+Message-ID: <Pine.LNX.4.21.0302101120390.1117-100000@melkor>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <vivienc@nerim.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1372
+X-archive-position: 1373
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: agx@gandalf.physik.uni-konstanz.de
+X-original-sender: vivienc@nerim.net
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
-On Mon, Feb 10, 2003 at 02:45:49PM +1100, Andrew Clausen wrote:
->  * I'll be cross-compiling (using the mips64-linux-gcc & friends that
-> are provided on ftp.linux-mips.org), which means some makefile hacking...
-There hopefully shouldn't be any trouble with that outside of e2fslib.
+> I'm planning to try porting arcboot to ip27 (mips64).
 
->  * the e2fs stuff... how is this being maintained?  It uses libc
-> headers a bit... can I kill them?  Or will this make it hard to update
-> to new upstream e2fsprogs releases?
-E2fslib will move out of arcboot with the next release and arcboot will
-link against the non pic version in the debian archive. I'd really like
-to keep e2fslib out of arcboot (at least for the debian version which is
-quiet different from the oss.sgi.com version). There should't be many
-libc header dependencies left then. If there are still any I'd be happy
-to kill them.
+I'm actually doing the same for ip32 (SGI O2). I've added support for
+64-bit ELF while sticking to 32-bit arcboot to avoid the issues you
+mention with 64-bit userland. The code is still a bit ugly and I've
+hardcoded a different load address for the O2 (this should be a
+'configure' option at least), but you might be interested to have a look.
+The same trick used for the kernel could probably be used to relocate the
+32-bit arcboot to 64-bit address space using objcopy, for the ip27 PROM
+which only supports 64-bit ELF (according to Ralf).
 
-> Anything else?
-Except for the above change I was working on a better command line
-handling among other things which I never got around to finish. Maybe
-this beats me to it.
-Regards,
- -- Guido
+An early patch is there:
+http://www.linux-mips.org/~glaurung/arcboot-0.3.5-o2.diff
+
+The idea is to load segments with the KSEG0 version of the physical
+address, which can be done with 32-bit code (but limits kernel load
+address to <512Mb). We then jump to the 64-bit entry point with a small
+bit of mips4 assembly. 
+
+Comments welcome.
+
+Vivien.

@@ -1,49 +1,50 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fA7Nnwt16310
-	for linux-mips-outgoing; Wed, 7 Nov 2001 15:49:58 -0800
-Received: from mail.palmchip.com ([63.203.52.2])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA7Nns016307
-	for <linux-mips@oss.sgi.com>; Wed, 7 Nov 2001 15:49:54 -0800
-Received: from palmchip.com (scarlett.palmchip.com [10.1.10.90])
-	by mail.palmchip.com (8.11.6/8.11.0) with ESMTP id fA7Mo5r13483;
-	Wed, 7 Nov 2001 14:50:05 -0800
-Message-ID: <3BE9D6E6.2010706@palmchip.com>
-Date: Wed, 07 Nov 2001 16:50:46 -0800
-From: Waren Hardy <warren@palmchip.com>
-Reply-To: warren.hardy@palmchip.com
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.2.1) Gecko/20010901
-X-Accept-Language: en-us
+	by oss.sgi.com (8.11.2/8.11.3) id fA84NA622142
+	for linux-mips-outgoing; Wed, 7 Nov 2001 20:23:10 -0800
+Received: from altrade.nijmegen.internl.net (altrade.nijmegen.internl.net [217.149.192.18])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA84N7022138
+	for <linux-mips@oss.sgi.com>; Wed, 7 Nov 2001 20:23:07 -0800
+Received: from whale.dutch.mountain by altrade.nijmegen.internl.net
+	via 1Cust153.tnt10.rtm1.nl.uu.net [213.116.114.153] with ESMTP for <linux-mips@oss.sgi.com>
+	id FAA13393 (8.8.8/1.3); Thu, 8 Nov 2001 05:22:59 +0100 (MET)
+Received: from localhost(really [127.0.0.1]) by whale.dutch.mountain
+	via in.smtpd with smtp
+	id <m161V1G-0006DIC@whale.dutch.mountain>
+	for <linux-mips@oss.sgi.com>; Wed, 7 Nov 2001 16:53:38 +0100 (MET)
+	(Smail-3.2 1996-Jul-4 #2 built 1996-Nov-26)
+Date: Wed, 7 Nov 2001 16:53:37 +0100 (MET)
+From: Richard van den Berg <R.vandenBerg@inter.NL.net>
+X-Sender: ravdberg@whale.dutch.mountain
+To: linux-mips@oss.sgi.com
+Subject: Re: DECStation framebuffer support
+In-Reply-To: <B3007554463@i01sv4107.ids1.intelonline.com>
+Message-ID: <Pine.LNX.3.95.1011107163728.7758A-100000@whale.dutch.mountain>
 MIME-Version: 1.0
-To: Linux-mips <linux-mips@oss.sgi.com>, MipsMailList <linux-mips@fnet.fr>
-Subject: memory mapping for MIPS 4Kc
-References: <008701c165ac$1a49a9a0$4c0c5c8c@trd.iii.org.tw> <07b401c165b2$f981ec30$3501010a@ltc.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I have a small prototype board with a mips 4kc on it and I have linux 
-running. I have to megs of sram mapped how do i map in sdram ?
+On Wed, 7 Nov 2001, Guo-Rong Koh wrote:
 
-the memory map looks like
+> I have just decided to try getting Linux running on my DECStation
+> 5000/25 (currently running NetBSD). I succeeded in cross-compiling a
+> 2.4.12 kernel from an i686 Linux box. My main aim is to get the
+> framebuffer working.
+> 
+> To test the kernel I dumped it on the NetBSD root and hit "boot
+> 3/rz0/vmlinux".
+> 
+> This gets me to "This is a Personal DECStation 5000/xx" then stops.
+> 
+> Any suggestions as to what I should do next?
+> Framebuffer support for all the framebuffers has been compiled in. The
+> question is: To what extent does the kernel support console on
+> framebuffer?
 
-0000.0000 - 0001f.ffff 2M SRAM
-0020.0000 - 0020.1fff 8K Embedded SRAM CPU
-0020.2000 - 002f.fffff reserved
-0030.0000 - 0030.ffff 64K Chip registers
-0031.0000 - 00ff.ffff reserved
-0100.0000 - 01ff.ffff 16M SDRAM
-0200.0000 - 1fb0.ffff SDRAM
-1fc0.0000 - 1fdf.ffff 2M ROM / FLASH
-0060.0000 - ffff.ffff SDRAM
+The kernel should support console on framebuffer, it once did. With the
+on-board video the kernel needed 'video=maxinefb:on' as a kernel option,
+dunno if that's still the case. You only have the on-board video, no
+second video controller?
 
-how do I get linux to read this 16M SDRAM @ 0100.000 - 01ff.ffff ? Then 
-how do I get linux to read RAM @ 0200.000 - 1fb0.ffff and 0060.000 - 
-ffff.ffff ?
-
-We have our own load which is loading linux from ROM, and we can pass 
-arg to linux, can the memory be set as an argument passed ?
-
-Thanks for you help
-
-Warren Hardy
+Greetings,
+Richard

@@ -1,43 +1,33 @@
-Received:  by oss.sgi.com id <S553719AbQK1Us0>;
-	Tue, 28 Nov 2000 12:48:26 -0800
-Received: from runyon.cygnus.com ([205.180.230.5]:19612 "EHLO cygnus.com")
-	by oss.sgi.com with ESMTP id <S553668AbQK1UsX>;
-	Tue, 28 Nov 2000 12:48:23 -0800
-Received: from elmo.cygnus.com (elmo.cygnus.com [205.180.230.137])
-	by runyon.cygnus.com (8.8.7-cygnus/8.8.7) with ESMTP id MAA27049;
-	Tue, 28 Nov 2000 12:48:20 -0800 (PST)
-Received: (nickc@localhost) by elmo.cygnus.com (8.9.3/8.6.4) id MAA08884; Tue, 28 Nov 2000 12:48:20 -0800
-Date:   Tue, 28 Nov 2000 12:48:20 -0800
-Message-Id: <200011282048.MAA08884@elmo.cygnus.com>
-X-Authentication-Warning: elmo.cygnus.com: nickc set sender to nickc@redhat.com using -f
-From:   Nick Clifton <nickc@redhat.com>
-To:     ralf@uni-koblenz.de
-CC:     hjl@valinux.com, drepper@cygnus.com, binutils@sources.redhat.com,
-        linux-mips@oss.sgi.com, linux-mips@fnet.fr
-Subject: Re: Update readelf to know about the new ELF constants
+Received:  by oss.sgi.com id <S553735AbQK2AOh>;
+	Tue, 28 Nov 2000 16:14:37 -0800
+Received: from NS.CenSoft.COM ([208.219.23.2]:61199 "EHLO
+        ns.centurysoftware.com") by oss.sgi.com with ESMTP
+	id <S553716AbQK2AOM>; Tue, 28 Nov 2000 16:14:12 -0800
+Received: from censoft.com (IDENT:jordanc@cen94.censoft.com [208.219.23.94])
+	by ns.centurysoftware.com (8.9.3/8.9.3) with ESMTP id SAA06943
+	for <linux-mips@oss.sgi.com>; Tue, 28 Nov 2000 18:28:31 -0700 (MST)
+Message-ID: <3A244A2C.5C648B27@censoft.com>
+Date:   Tue, 28 Nov 2000 17:13:32 -0700
+From:   Jordan Crouse <jordanc@Censoft.com>
+Organization: Century Software
+X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.17 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To:     linux-mips@oss.sgi.com
+Subject: DNS 
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hi Ralf,
- 
-: >      EM_MIPS_RS3_LE    10		MIPS RS3000 Little-endian
-: 
-: I don't know where you got this constant's name from, it's name is
-: EM_MIPS_RS4_BE (MIPS R4000 big endian) in all literature and header files
-: I've seen.  RS3000 series from MIPS was a workstation series of the former
-: Mips Computer Systems, Inc.  not a processor.
-: 
-: The constant is probably no longer in use - if it ever has been. it's only
-: use I've ever seen is in tools that read ELF but never in tools that write
-: ELF or in existing ELF files.
+Has anyone encountered peculiar happenings with the 2.0.7 glibc and
+resolving names via DNS?  It is simply *NOT* going out to the specifiec
+nameserver (verified via line sniffer), even though /etc/resolv.conf is
+present and correct.  Any lookups with the /etc/hosts file work great,
+its just when I try to go out on the network.
 
-Just to add a note that in the sources the entry actually looks like
-this:
+Has anyone noticed any strangeness with this????
 
-#define EM_MIPS_RS4_BE 10	/* MIPS R4000 big-endian */ /* Depreciated */
-#define EM_MIPS_RS3_LE 10	/* MIPS R3000 little-endian (Oct 4 1999 Draft)*/ /* Depreciated */
-
-Cheers
-	Nick
+Jordan

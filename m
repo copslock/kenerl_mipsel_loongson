@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jan 2004 23:37:10 +0000 (GMT)
-Received: from mo03.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:30162 "EHLO
-	mo03.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225480AbUAOXhI>;
-	Thu, 15 Jan 2004 23:37:08 +0000
-Received: from mdo01.iij4u.or.jp (mdo01.iij4u.or.jp [210.130.0.171])
-	by mo03.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id IAA11655;
-	Fri, 16 Jan 2004 08:37:03 +0900 (JST)
-Received: 4UMDO01 id i0FNb3g20055; Fri, 16 Jan 2004 08:37:03 +0900 (JST)
-Received: 4UMRO01 id i0FNb1u26097; Fri, 16 Jan 2004 08:37:02 +0900 (JST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jan 2004 23:38:35 +0000 (GMT)
+Received: from mo02.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:36816 "EHLO
+	mo02.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225480AbUAOXid>;
+	Thu, 15 Jan 2004 23:38:33 +0000
+Received: from mdo00.iij4u.or.jp (mdo00.iij4u.or.jp [210.130.0.170])
+	by mo02.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id IAA07221;
+	Fri, 16 Jan 2004 08:38:27 +0900 (JST)
+Received: 4UMDO00 id i0FNcRc12575; Fri, 16 Jan 2004 08:38:27 +0900 (JST)
+Received: 4UMRO01 id i0FNcQu26180; Fri, 16 Jan 2004 08:38:26 +0900 (JST)
 	from stratos.frog (64.43.138.210.xn.2iij.net [210.138.43.64]) (authenticated)
-Date: Fri, 16 Jan 2004 08:36:56 +0900
+Date: Fri, 16 Jan 2004 08:38:21 +0900
 From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
 To: Ralf Baechle <ralf@linux-mips.org>
 Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH][2.4] Update NEC VRC4171 PCMCIA driver
-Message-Id: <20040116083656.0bcde721.yuasa@hh.iij4u.or.jp>
+Subject: [PATCH][2.6] Update NEC VRC4171 PCMCIA driver
+Message-Id: <20040116083821.6b65c69f.yuasa@hh.iij4u.or.jp>
 X-Mailer: Sylpheed version 0.9.8a (GTK+ 1.2.10; i686-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -22,7 +22,7 @@ Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3990
+X-archive-position: 3991
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,42 +34,40 @@ Hello Ralf,
 
 I also updated the patch for VRC4171 PCMCIA driver.
 
-The VRC4171 is companion chip for NEC VR4111 and VR4121.
-The VRC4171 includes in the PCMCIA controller.
-
-This patch exists for linux_2_4 tag of linux-mips.org CVS.
+This patch exists for HEAD of linux-mips.org CVS.
 Please apply this patch.
 
 Yoichi
 
-diff -urN -X dontdiff linux-orig/drivers/pcmcia/Config.in linux/drivers/pcmcia/Config.in
---- linux-orig/drivers/pcmcia/Config.in	Sun Dec 21 10:27:50 2003
-+++ linux/drivers/pcmcia/Config.in	Fri Jan 16 08:04:34 2004
-@@ -40,6 +40,9 @@
-    if [ "$CONFIG_SIBYTE_SB1xxx_SOC" = "y" ]; then
-       dep_bool '  SiByte PCMCIA support' CONFIG_PCMCIA_SIBYTE $CONFIG_PCMCIA $CONFIG_BLK_DEV_IDE_SIBYTE
-    fi
-+   if [ "$CONFIG_VRC4171" = "y" -o "$CONFIG_VRC4171" = "m" ]; then
-+      dep_tristate '  NEC VRC4171 Card Controllers support' CONFIG_PCMCIA_VRC4171 $CONFIG_PCMCIA
-+   fi
-    if [ "$CONFIG_VRC4173" = "y" -o "$CONFIG_VRC4173" = "m" ]; then
-       dep_tristate '  NEC VRC4173 CARDU support' CONFIG_PCMCIA_VRC4173 $CONFIG_PCMCIA
-    fi
+diff -urN -X dontdiff linux-orig/drivers/pcmcia/Kconfig linux/drivers/pcmcia/Kconfig
+--- linux-orig/drivers/pcmcia/Kconfig	Fri Jan 16 01:21:24 2004
++++ linux/drivers/pcmcia/Kconfig	Fri Jan 16 08:05:00 2004
+@@ -121,6 +121,10 @@
+ 	bool
+ 	default y if ISA && !ARCH_SA1100 && !ARCH_CLPS711X
+ 
++config PCMCIA_VRC4171
++	tristate "NEC VRC4171 Card Controllers support"
++	depends on VRC4171 && PCMCIA
++
+ config PCMCIA_VRC4173
+ 	tristate "NEC VRC4173 CARDU support"
+ 	depends on CPU_VR41XX && PCI && PCMCIA
 diff -urN -X dontdiff linux-orig/drivers/pcmcia/Makefile linux/drivers/pcmcia/Makefile
---- linux-orig/drivers/pcmcia/Makefile	Tue Jul 15 01:14:06 2003
-+++ linux/drivers/pcmcia/Makefile	Fri Jan 16 08:04:34 2004
-@@ -89,6 +89,7 @@
- sa1100_cs-objs-$(CONFIG_SA1100_XP860)		+= sa1100_xp860.o sa1111_generic.o
- sa1100_cs-objs-$(CONFIG_SA1100_YOPY)		+= sa1100_yopy.o
+--- linux-orig/drivers/pcmcia/Makefile	Fri Jan 16 01:21:24 2004
++++ linux/drivers/pcmcia/Makefile	Fri Jan 16 08:05:00 2004
+@@ -11,6 +11,7 @@
+ obj-$(CONFIG_HD64465_PCMCIA)		+= hd64465_ss.o
+ obj-$(CONFIG_PCMCIA_SA1100)		+= sa1100_cs.o
+ obj-$(CONFIG_PCMCIA_SA1111)		+= sa1111_cs.o
++obj-$(CONFIG_PCMCIA_VRC4171)		+= vrc4171_card.o
+ obj-$(CONFIG_PCMCIA_VRC4173)		+= vrc4173_cardu.o
  
-+obj-$(CONFIG_PCMCIA_VRC4171)	+= vrc4171_card.o
- obj-$(CONFIG_PCMCIA_VRC4173)	+= vrc4173_cardu.o
- 
- include $(TOPDIR)/Rules.make
+ pcmcia_core-objs-y				:= cistpl.o rsrc_mgr.o bulkmem.o cs.o
 diff -urN -X dontdiff linux-orig/drivers/pcmcia/vrc4171_card.c linux/drivers/pcmcia/vrc4171_card.c
 --- linux-orig/drivers/pcmcia/vrc4171_card.c	Thu Jan  1 09:00:00 1970
-+++ linux/drivers/pcmcia/vrc4171_card.c	Fri Jan 16 08:04:34 2004
-@@ -0,0 +1,886 @@
++++ linux/drivers/pcmcia/vrc4171_card.c	Fri Jan 16 08:05:01 2004
+@@ -0,0 +1,885 @@
 +/*
 + * vrc4171_card.c, NEC VRC4171 Card Controller driver for Socket Services.
 + *
@@ -159,7 +157,7 @@ diff -urN -X dontdiff linux-orig/drivers/pcmcia/vrc4171_card.c linux/drivers/pcm
 +	spinlock_t event_lock;
 +	uint16_t events;
 +	struct socket_info_t *pcmcia_socket;
-+	struct tq_struct tq_task;
++	struct work_struct tq_work;
 +	char name[24];
 +	int csc_irq;
 +	int io_irq;
@@ -736,15 +734,14 @@ diff -urN -X dontdiff linux-orig/drivers/pcmcia/vrc4171_card.c linux/drivers/pcm
 +{
 +	uint16_t events;
 +
-+	socket->tq_task.routine = pccard_bh;
-+	socket->tq_task.data = socket;
++	INIT_WORK(&socket->tq_work, pccard_bh, socket);
 +
 +	events = get_events(slot);
 +	if (events) {
 +		spin_lock(&socket->event_lock);
 +		socket->events |= events;
 +		spin_unlock(&socket->event_lock);
-+		schedule_task(&socket->tq_task);
++		schedule_work(&socket->tq_task);
 +	}
 +}
 +

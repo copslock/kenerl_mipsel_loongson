@@ -1,44 +1,52 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g094HLM16600
-	for linux-mips-outgoing; Tue, 8 Jan 2002 20:17:21 -0800
-Received: from smtp.huawei.com ([61.144.161.21])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g094HIg16596
-	for <linux-mips@oss.sgi.com>; Tue, 8 Jan 2002 20:17:18 -0800
-Received: from h11752a ([172.17.254.1]) by smtp.huawei.com
-          (Netscape Messaging Server 4.15) with SMTP id GPNIDG00.O7K; Wed,
-          9 Jan 2002 11:15:16 +0800 
-Message-ID: <004101c198bb$988a6ec0$9b6e0b0a@huawei.com>
-From: "machael thailer" <dony.he@huawei.com>
-To: "Alan Cox" <alan@lxorguk.ukuu.org.uk>
-Cc: <linux-mips@oss.sgi.com>,
-   "Arnaldo Carvalho de Melo" <acme@conectiva.com.br>
-References: <E16O9BM-0008W9-00@the-village.bc.nu>
-Subject: Re: limited Memory question...
-Date: Wed, 9 Jan 2002 11:13:22 +0800
+	by oss.sgi.com (8.11.2/8.11.3) id g095gEj17779
+	for linux-mips-outgoing; Tue, 8 Jan 2002 21:42:14 -0800
+Received: from skip-ext.ab.videon.ca (skip-ext.ab.videon.ca [206.75.216.36] (may be forged))
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g095gAg17776
+	for <linux-mips@oss.sgi.com>; Tue, 8 Jan 2002 21:42:10 -0800
+Received: (qmail 19625 invoked from network); 9 Jan 2002 04:42:07 -0000
+Received: from unknown (HELO wakko.deltatee.com) ([24.82.81.190]) (envelope-sender <jgg@debian.org>)
+          by skip-ext.ab.videon.ca (qmail-ldap-1.03) with SMTP
+          for <phil@river-bank.demon.co.uk>; 9 Jan 2002 04:42:07 -0000
+Received: from localhost
+	([127.0.0.1] helo=wakko.deltatee.com ident=jgg)
+	by wakko.deltatee.com with smtp (Exim 3.16 #1 (Debian))
+	id 16OAYr-0002eH-00; Tue, 08 Jan 2002 21:42:02 -0700
+Date: Tue, 8 Jan 2002 21:42:01 -0700 (MST)
+From: Jason Gunthorpe <jgg@debian.org>
+X-Sender: jgg@wakko.deltatee.com
+Reply-To: Jason Gunthorpe <jgg@debian.org>
+To: Phil Thompson <phil@river-bank.demon.co.uk>
+cc: linux-mips@oss.sgi.com
+Subject: Re: How to Handle PCI Bridge Buffers?
+In-Reply-To: <3C39EE20.57513318@river-bank.demon.co.uk>
+Message-ID: <Pine.LNX.3.96.1020108213000.9606C-100000@wakko.deltatee.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.00.2615.200
-X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2615.200
-Content-Transfer-Encoding: 8bit
-X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id g094HJg16597
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-> >     I have a question to need you help. Our MIPS-based custom board has only
-> > 8M memory.When I want to insmod a 24M module, it often panics and says "out 
-> > of memory...".
-> > How can I solve this?
-> 
-> Stop the module using 24Mb of unpageable memory ?
 
-Sorry , I think I didn't describe my questions clearly before.
+On Mon, 7 Jan 2002, Phil Thompson wrote: 
 
-"24M" contains some debugging information. I compile it using "-g".
-code+data sections is only about 7.4M.
+> I am working with some hardware that has a "feature" that I'd like some
+> advice on how to handle. The PCI bridge has a read-ahead buffer between
+> the PCI bus and system memory - used by PCI bus masters. The buffer can
+> only be invalidated from software.
 
-Can you describe your solutions in more details?
+Geeze best put 'pci bridge' in quotes too, that's totally not allowed by
+the PCI bridge spec. Delayed transactions and any data that the bridge
+may prefetch have very specific lifetimes. Hardware that does what you
+describe is very much non conforming.. 
 
-machael.
+Are you sure of what you are seeing?
+
+> Is this "feature" common? Is there existing code I can look at?
+
+No - it's a bug not a feature :>
+
+The best you can do is have any write to a PCI io/memory space from the
+CPU clear the prefetch buffer, and hope you don't hit any of the other
+anomolies that can show up.
+
+Jason

@@ -1,41 +1,57 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBJJ9q609710
-	for linux-mips-outgoing; Wed, 19 Dec 2001 11:09:52 -0800
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id fBJJ9lo09705
-	for <linux-mips@oss.sgi.com>; Wed, 19 Dec 2001 11:09:48 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id fBJGll615413;
-	Wed, 19 Dec 2001 14:47:47 -0200
-Date: Wed, 19 Dec 2001 14:47:47 -0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Jun Sun <jsun@mvista.com>, Jim Paris <jim@jtan.com>,
-   Linux/MIPS Development <linux-mips@oss.sgi.com>
-Subject: Re: [ppopov@mvista.com: Re: [Linux-mips-kernel]ioremap & ISA]
-Message-ID: <20011219144747.D1181@dea.linux-mips.net>
-References: <3C1F9608.E4E32E18@mvista.com> <Pine.GSO.4.21.0112191031270.28694-100000@vervain.sonytel.be>
+	by oss.sgi.com (8.11.2/8.11.3) id fBJJxJk15045
+	for linux-mips-outgoing; Wed, 19 Dec 2001 11:59:19 -0800
+Received: from idiom.com (espin@idiom.com [216.240.32.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBJJxFo15042
+	for <linux-mips@oss.sgi.com>; Wed, 19 Dec 2001 11:59:15 -0800
+Received: (from espin@localhost)
+	by idiom.com (8.9.3/8.9.3) id KAA02726;
+	Wed, 19 Dec 2001 10:56:33 -0800 (PST)
+Date: Wed, 19 Dec 2001 10:56:33 -0800
+From: Geoffrey Espin <espin@idiom.com>
+To: James Simmons <jsimmons@transvirtual.com>
+Cc: "Gleb O. Raiko" <raiko@niisi.msk.ru>, linux-mips@oss.sgi.com
+Subject: Re: kmalloc/pci_alloc and skbuff's
+Message-ID: <20011219105633.B54722@idiom.com>
+References: <3C205853.EE642541@niisi.msk.ru> <Pine.LNX.4.10.10112190903520.3562-100000@www.transvirtual.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.GSO.4.21.0112191031270.28694-100000@vervain.sonytel.be>; from geert@linux-m68k.org on Wed, Dec 19, 2001 at 10:34:37AM +0100
-X-Accept-Language: de,en,fr
+X-Mailer: Mutt 0.95.1i
+In-Reply-To: <Pine.LNX.4.10.10112190903520.3562-100000@www.transvirtual.com>; from James Simmons on Wed, Dec 19, 2001 at 09:09:11AM -0800
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, Dec 19, 2001 at 10:34:37AM +0100, Geert Uytterhoeven wrote:
 
-> > >         set_io_port_base(0xb4000000);
-> > >         isa_slot_offset = 0xb0000000;
-> > 
-> > I see.  So isa_slot_offset is for isa_read/isa_write, although I still don't
-> > see what kind of drivers would use isa_read/isa_write.
-> 
-> E.g. VGA and ISA NVRAM.
+> > What's wrong with GFP_DMA ? Doesn't it solve exactly this problem ?
+> Personally I don't like the hack but you have to ask what he needs.
+> kmalloc grabs memory from the CPU cache. GFP_DMA insures that cache memory
+> is continues. I think Geoffrey needs to use a specific memory address in 
+> PCI space. Tho I like Geoffrey to try using GFP_DMA. The reason I don't
+> like the hack is that skbuff's is bus independent. Not all ethernet cards
+> are PCI based. Please try using GFP_DMA and let us know if it worked. 
 
-Correct.  And much much more, the whole PC insanity.  There are plenty of
-MIPS systems that are essentially PCs with a MIPS CPU glued on so you get
-all the fun, ISA, EISA, VLB etc.  Barf bag technology.
+Yes, I originally thought this was what addressed it.
+Is "setting dma_mask" what is meant by "using GFP_DMA"?
 
-  Ralf
+The problem is drivers call dev_alloc_skb() which can allocate
+memory anywhere in (my 32M) memory.
+
+The PCI host controller part of the uPD98052 with its VR4120a core
+(doc at http://www.idiom.com/~espin/nec/hwdoc/uPD98502-UM.pdf)
+allows you to program a 4M window onto DRAM.  I use top 4M of 32M,
+but it's arbitrary.  Then only this area can be transferred to
+by/from the PCI devices.  So its not the PCI devices that is the
+problem, but access to the host-side DRAM.
+
+Currently, my private pci_alloc/free_consistent() routines manage
+the 4M at top of memory (its not added to kernel with
+add_memory_region() in prom.c).
+
+With these hacks (including net/core/skbuff.c:alloc_skb->pci_alloc_consistent)
+I've been successfully using the Tulip Ethernet (LinkSys) card (with no
+changes to the driver).
+
+Geoff
+-- 
+Geoffrey Espin
+espin@idiom.com

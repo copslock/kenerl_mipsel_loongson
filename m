@@ -1,17 +1,17 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g7KFDlEC030170
-	for <linux-mips-outgoing@oss.sgi.com>; Tue, 20 Aug 2002 08:13:47 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g7KFKfEC030326
+	for <linux-mips-outgoing@oss.sgi.com>; Tue, 20 Aug 2002 08:20:41 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g7KFDl85030169
-	for linux-mips-outgoing; Tue, 20 Aug 2002 08:13:47 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g7KFKfIt030325
+	for linux-mips-outgoing; Tue, 20 Aug 2002 08:20:41 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from webmail24.rediffmail.com (webmail24.rediffmail.com [203.199.83.146] (may be forged))
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g7KFDeEC030159
-	for <linux-mips@oss.sgi.com>; Tue, 20 Aug 2002 08:13:41 -0700
-Received: (qmail 6014 invoked by uid 510); 20 Aug 2002 15:15:20 -0000
-Date: 20 Aug 2002 15:15:20 -0000
-Message-ID: <20020820151520.6013.qmail@webmail24.rediffmail.com>
-Received: from unknown (202.93.132.3) by rediffmail.com via HTTP; 20 Aug 2002 15:15:20 -0000
+Received: from webmail22.rediffmail.com (webmail22.rediffmail.com [203.199.83.144] (may be forged))
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g7KFKXEC030316
+	for <linux-mips@oss.sgi.com>; Tue, 20 Aug 2002 08:20:34 -0700
+Received: (qmail 6132 invoked by uid 510); 20 Aug 2002 15:21:47 -0000
+Date: 20 Aug 2002 15:21:47 -0000
+Message-ID: <20020820152147.6131.qmail@webmail22.rediffmail.com>
+Received: from unknown (202.93.132.3) by rediffmail.com via HTTP; 20 Aug 2002 15:21:47 -0000
 MIME-Version: 1.0
 From: "atul srivastava" <atulsrivastava9@rediffmail.com>
 Reply-To: "atul srivastava" <atulsrivastava9@rediffmail.com>

@@ -1,50 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Mar 2004 12:22:06 +0000 (GMT)
-Received: from p508B763E.dip.t-dialin.net ([IPv6:::ffff:80.139.118.62]:48934
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225489AbUCTMWF>; Sat, 20 Mar 2004 12:22:05 +0000
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i2KCM3Mk000885;
-	Sat, 20 Mar 2004 13:22:03 +0100
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i2KCM1RY000884;
-	Sat, 20 Mar 2004 13:22:01 +0100
-Date: Sat, 20 Mar 2004 13:22:01 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Mar 2004 12:22:31 +0000 (GMT)
+Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:44854
+	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
+	id <S8225489AbUCTMW3>; Sat, 20 Mar 2004 12:22:29 +0000
+Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42] ident=mail)
+	by iris1.csv.ica.uni-stuttgart.de with esmtp
+	id 1B4fUg-0003uu-00; Sat, 20 Mar 2004 13:22:26 +0100
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
+	id 1B4fUg-0003mw-00; Sat, 20 Mar 2004 13:22:26 +0100
+Date: Sat, 20 Mar 2004 13:22:26 +0100
 To: "Martin C. Barlow" <mips@martin.barlow.name>
 Cc: linux-mips@linux-mips.org
 Subject: Re: hwclock and df seg fault
-Message-ID: <20040320122201.GA32242@linux-mips.org>
+Message-ID: <20040320122225.GK25832@rembrandt.csv.ica.uni-stuttgart.de>
 References: <000201c40e62$e9d104f0$6500a8c0@colombia>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <000201c40e62$e9d104f0$6500a8c0@colombia>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+User-Agent: Mutt/1.5.5.1i
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4598
+X-archive-position: 4599
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Mar 20, 2004 at 09:05:40PM +1100, Martin C. Barlow wrote:
+Martin C. Barlow wrote:
+[snip]
+> Barcelona:/var/log# hwclock
+> Mar 21 19:11:20 Barcelona kernel: bad: scheduling while atomic!
+[snip]
+> Mar 21 19:11:20 Barcelona kernel: note: hwclock[369] exited with
+> preempt_count 2
 
-> I have an old SGI indy R4600 and have installed debian testing with
-> latest linux-mips cvs kernel. I found two problems with the programs
-> hwclock and df. Apart from that appears to work fine. I have included
-> their output. I don't know if it is a kernel or package problem. I don't
-> know if it as something to do with preemtible kernel which I enabled in
-> kernel. If anyone is interested and wants to see kernel .config, fstab
-> or anything else I'm happy to oblidge.
+So this was with CONFIG_PREEMPT, I guess. Does it happen also without
+that?
 
-Standard flame - what kernel version?
 
-I checked in the last fixes for the preemptible kernel less than two days
-ago so if your kernel is older than that it's time to update :-)
-
-  Ralf
+Thiemo

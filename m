@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Sep 2002 11:56:02 +0200 (CEST)
-Received: from webmail23.rediffmail.com ([203.199.83.145]:11415 "HELO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Sep 2002 12:02:07 +0200 (CEST)
+Received: from webmail23.rediffmail.com ([203.199.83.145]:63895 "HELO
 	webmail23.rediffmail.com") by linux-mips.org with SMTP
-	id <S1122961AbSIMJ4B>; Fri, 13 Sep 2002 11:56:01 +0200
-Received: (qmail 24814 invoked by uid 510); 13 Sep 2002 09:54:49 -0000
-Date: 13 Sep 2002 09:54:49 -0000
-Message-ID: <20020913095449.24813.qmail@webmail23.rediffmail.com>
-Received: from unknown (202.54.89.92) by rediffmail.com via HTTP; 13 Sep 2002 09:54:49 -0000
+	id <S1122961AbSIMKCG>; Fri, 13 Sep 2002 12:02:06 +0200
+Received: (qmail 30905 invoked by uid 510); 13 Sep 2002 10:00:58 -0000
+Date: 13 Sep 2002 10:00:58 -0000
+Message-ID: <20020913100058.30904.qmail@webmail23.rediffmail.com>
+Received: from unknown (202.54.89.92) by rediffmail.com via HTTP; 13 Sep 2002 10:00:58 -0000
 MIME-Version: 1.0
 From: "atul srivastava" <atulsrivastava9@rediffmail.com>
 Reply-To: "atul srivastava" <atulsrivastava9@rediffmail.com>
 To: linux-mips@linux-mips.org
-Subject: usable memory map..
+Subject: addition in usable memory map..
 Content-type: text/plain;
 	format=flowed
 Content-Disposition: inline
@@ -18,7 +18,7 @@ Return-Path: <atulsrivastava9@rediffmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 168
+X-archive-position: 169
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -28,12 +28,18 @@ X-list: linux-mips
 
 Hello ,
 
-on MIPS IDT 79S334A i am getting following
-usable memory regions by print_memory_map in
+during booting on MIPS IDT 79S334A i am getting following usable 
+memory regions by print_memory_map in
 arch/mips/kernel/setup.c .
 
 memory: 8000fc00 @ 80000400 (usable)
 memory: 00e01d2b @ 001fe2db (usable)
+Initial ramdisk at: 0x8014c000 (604512 bytes)
+.
+.
+.
+
+above line i missed to mention in my previous post.
 
 note that first column is SIZE and second one is START
 address.

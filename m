@@ -1,45 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jun 2003 13:15:16 +0100 (BST)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:63400 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8224861AbTFQMPO>; Tue, 17 Jun 2003 13:15:14 +0100
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA22870;
-	Tue, 17 Jun 2003 14:16:13 +0200 (MET DST)
-X-Authentication-Warning: delta.ds2.pg.gda.pl: macro owned process doing -bs
-Date: Tue, 17 Jun 2003 14:16:12 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Ladislav Michl <ladis@linux-mips.org>
-cc: Juan Quintela <quintela@trasno.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] kill prom_printf
-In-Reply-To: <20030617125216.E27590@ftp.linux-mips.org>
-Message-ID: <Pine.GSO.3.96.1030617141524.22214C-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jun 2003 13:16:27 +0100 (BST)
+Received: from mail.convergence.de ([IPv6:::ffff:212.84.236.4]:37343 "EHLO
+	mail.convergence.de") by linux-mips.org with ESMTP
+	id <S8224861AbTFQMQZ>; Tue, 17 Jun 2003 13:16:25 +0100
+Received: from [10.1.1.146] (helo=heck)
+	by mail.convergence.de with esmtp (TLSv1:DES-CBC3-SHA:168)
+	(Exim 4.14)
+	id 19SFNv-0002hS-Gm
+	for linux-mips@linux-mips.org; Tue, 17 Jun 2003 14:16:23 +0200
+Received: from js by heck with local (Exim 3.35 #1 (Debian))
+	id 19SFNu-0000xT-00
+	for <linux-mips@linux-mips.org>; Tue, 17 Jun 2003 14:16:22 +0200
+Date: Tue, 17 Jun 2003 14:16:22 +0200
+From: Johannes Stezenbach <js@convergence.de>
+To: linux-mips@linux-mips.org
+Subject: Re: Building a stand-alone FS on a very limited flash (newbie question)
+Message-ID: <20030617121622.GH1215@convergence.de>
+Mail-Followup-To: Johannes Stezenbach <js@convergence.de>,
+	linux-mips@linux-mips.org
+References: <20030610131519.47A8BC5FD7@atlas.denx.de> <3EEC9513.80905@galileo.co.il>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3EEC9513.80905@galileo.co.il>
+User-Agent: Mutt/1.5.4i
+Return-Path: <js@convergence.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2657
+X-archive-position: 2658
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: js@convergence.de
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 17 Jun 2003, Ladislav Michl wrote:
-
-> >  Well, I would see early_printk() as advantageous if it was also capable
-> > to leave messages in the kernel ring buffer for dmesg or klogd to fetch. 
+Baruch Chaikin wrote:
 > 
-> Ah, we probably don't understand each other. I should type EARLY_PRINTK
-> instead of early_printk (sorry for my lazyness, I'm usually typing in
-> lowercase). CONFIG_EARLY_PRINTK enables early console, you are supposed to
-> use printk everywhere and that way you achieve such functionality.
+> Another question is the file system itself.  What is the recommendation 
+> here - JFFS, CRAMFS, anything else?...
 
- So you need to explicitly configure it?  That's very bad.
+jffs if you need read/write, cramfs or squashfs for read-only.
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+stock cramfs has endianness problems (mkcramfs must run on same
+endianness as kernel), but patches exist.
+
+http://sourceforge.net/projects/squashfs/
+http://sourceforge.net/projects/cramfs/
+
+Johannes

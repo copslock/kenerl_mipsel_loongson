@@ -1,69 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2003 11:07:55 +0100 (BST)
-Received: from exchange.mabuhaynetworks.com ([IPv6:::ffff:206.169.233.186]:47889
-	"EHLO exchange.vivato.net") by linux-mips.org with ESMTP
-	id <S8225193AbTGWKHx> convert rfc822-to-8bit; Wed, 23 Jul 2003 11:07:53 +0100
-X-MIMEOLE: Produced By Microsoft Exchange V6.0.6249.0
-content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2003 13:48:27 +0100 (BST)
+Received: from 66-152-54-2.ded.btitelecom.net ([IPv6:::ffff:66.152.54.2]:31116
+	"EHLO mmc.atmel.com") by linux-mips.org with ESMTP
+	id <S8225193AbTGWMsY>; Wed, 23 Jul 2003 13:48:24 +0100
+Received: from ares.mmc.atmel.com (ares.mmc.atmel.com [10.127.240.37])
+	by mmc.atmel.com (8.9.3/8.9.3) with ESMTP id IAA01880
+	for <linux-mips@linux-mips.org>; Wed, 23 Jul 2003 08:48:04 -0400 (EDT)
+Received: from localhost (dkesselr@localhost)
+	by ares.mmc.atmel.com (8.9.3/8.9.3) with ESMTP id IAA17982
+	for <linux-mips@linux-mips.org>; Wed, 23 Jul 2003 08:48:04 -0400 (EDT)
+X-Authentication-Warning: ares.mmc.atmel.com: dkesselr owned process doing -bs
+Date: Wed, 23 Jul 2003 08:48:03 -0400 (EDT)
+From: David Kesselring <dkesselr@mmc.atmel.com>
+To: linux-mips@linux-mips.org
+Subject: odd link error
+Message-ID: <Pine.GSO.4.44.0307230844470.17973-100000@ares.mmc.atmel.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: RE: Cross Compilation
-Date: Wed, 23 Jul 2003 03:07:25 -0700
-Message-ID: <D8B86D9BB607124BA1D54EDB7944DB0B013D44E1@exchange.mabuhay>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: Cross Compilation
-Thread-Index: AcNQ7p5s83SLYOUCRZ2hZlELKbrQPQAE5LiQ
-From: "Jim Thompson" <jimt@vivato.net>
-To: "Tiemo Krueger - mycable GmbH" <tk@mycable.de>,
-	<saravana_kumar@naturesoft.net>
-Cc: <linux-mips@linux-mips.org>
-Return-Path: <jimt@vivato.net>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <dkesselr@mmc.atmel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2888
+X-archive-position: 2889
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jimt@vivato.net
+X-original-sender: dkesselr@mmc.atmel.com
 Precedence: bulk
 X-list: linux-mips
 
-Unfortunately, its broken right now.
+I know my build for a custom board isn't right but it got through the
+compiles only to get this link error. Does anyone know what it might point
+to?
 
-> -----Original Message-----
-> From: Tiemo Krueger - mycable GmbH [mailto:tk@mycable.de]
-> Sent: Wednesday, July 23, 2003 12:46 AM
-> To: saravana_kumar@naturesoft.net
-> Cc: linux-mips@linux-mips.org
-> Subject: Re: Cross Compilation
-> 
-> You could even use the buildroot thing from uclibc.org:
-> 
-> http://uclibc.org/cgi-bin/cvsweb/buildroot/buildroot.tar.gz?tarball=1
-> 
-> It's one of the most simple way for cross toolchain beginners, it
-> provides you finally with a toolchain and rootfile system and more
-> 
-> Tiemo
-> 
-> SaravanaKumar wrote:
-> 
-> >Dear All,
-> >    I am having my application in x86.
-> > I have to cross compile that to MIPS architecture.
-> >How to do that.
-> >
-> >Is there is any document for doing the cross compilation to MIPS.
-> >
-> >Cheers,
-> >N.S.Kumar
-> >
-> >
-> >
-> >
-> >
-> 
-> 
+mips64el-linux-ld --oformat elf32-tradlittlemips -G 0 -static  -T
+arch/mips64/ld.script.elf32 -Ttext  arch/mips64/kernel/head.o
+arch/mips64/kernel/init_task.o init/main.o init/version.o init/do_mounts.o
+\
+        --start-group \
+        arch/mips64/kernel/kernel.o arch/mips64/mm/mm.o kernel/kernel.o
+mm/mm.o fs/fs.o ipc/ipc.o arch/mips/math-emu/fpu_emulator.o
+arch/mips/ramdisk/ramdisk.o \
+         drivers/char/char.o drivers/block/block.o drivers/misc/misc.o
+drivers/net/net.o drivers/media/media.o \
+        net/network.o \
+        arch/mips64/lib/lib.a
+/home/dkesselr/stbsw/linux/linux-64sead/lib/lib.a \
+        --end-group \
+        -o vmlinux
+mips64el-linux-ld: invalid hex number `arch/mips64/kernel/head.o'
+make: *** [vmlinux] Error 1
+
+
+David Kesselring
+Atmel MMC
+dkesselr@mmc.atmel.com
+919-462-6587

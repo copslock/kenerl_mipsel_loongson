@@ -1,42 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jan 2003 11:05:39 +0000 (GMT)
-Received: from p508B5BAC.dip.t-dialin.net ([IPv6:::ffff:80.139.91.172]:35296
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225687AbTABLFj>; Thu, 2 Jan 2003 11:05:39 +0000
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id h02B5Su14781;
-	Thu, 2 Jan 2003 12:05:28 +0100
-Date: Thu, 2 Jan 2003 12:05:28 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: chamak man <chamakmann@yahoo.co.in>
-Cc: linux-mips@linux-mips.org
-Subject: Re: System Call in MIPS
-Message-ID: <20030102120528.A7401@linux-mips.org>
-References: <20030102035704.91069.qmail@web8204.mail.in.yahoo.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <20030102035704.91069.qmail@web8204.mail.in.yahoo.com>; from chamakmann@yahoo.co.in on Thu, Jan 02, 2003 at 03:57:04AM +0000
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jan 2003 15:44:16 +0000 (GMT)
+Received: from [IPv6:::ffff:209.116.120.7] ([IPv6:::ffff:209.116.120.7]:2320
+	"EHLO tnint11.telogy.design.ti.com") by linux-mips.org with ESMTP
+	id <S8225689AbTABPoP>; Thu, 2 Jan 2003 15:44:15 +0000
+Received: by tnint11.telogy.design.ti.com with Internet Mail Service (5.5.2653.19)
+	id <WY1Z4JYL>; Thu, 2 Jan 2003 10:42:06 -0500
+Message-ID: <37A3C2F21006D611995100B0D0F9B73CBFE3E1@tnint11.telogy.design.ti.com>
+From: "Zajerko-McKee, Nick" <nmckee@telogy.com>
+To: 'chamak man' <chamakmann@yahoo.co.in>, linux-mips@linux-mips.org
+Subject: RE: System Call in MIPS
+Date: Thu, 2 Jan 2003 10:42:05 -0500 
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Return-Path: <nmckee@telogy.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1076
+X-archive-position: 1077
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: nmckee@telogy.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jan 02, 2003 at 03:57:04AM +0000, chamak man wrote:
+One thing to check is if unistd.h matches whats in the syscall table.  In
+2.4.17 I was working with, there were more entries in the defines than in
+the table so when I added my calls they went to never never land...
 
->    I am finding problems in adding a new system call
-> for MIPS kernel.  Where can i get information on it. 
+-----Original Message-----
+From: chamak man [mailto:chamakmann@yahoo.co.in]
+Sent: Wednesday, January 01, 2003 10:57 PM
+To: linux-mips@linux-mips.org
+Subject: System Call in MIPS
 
-See include include/asm-mips/unistd.h and arch/mips/kernel/scall_o32.S.
 
-In general adding new syscalls is considered a bad idea you may want to
-look into using ioctl, sysctl(2) or procfs.
+Hi,
 
-  Ralf
+   I am finding problems in adding a new system call
+for MIPS kernel.  Where can i get information on it. 
+
+with regards,
+sumanth.g
+
+
+
+________________________________________________________________________
+Missed your favourite TV serial last night? Try the new, Yahoo! TV.
+       visit http://in.tv.yahoo.com

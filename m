@@ -1,66 +1,86 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id NAA89227 for <linux-archive@neteng.engr.sgi.com>; Sat, 20 Jun 1998 13:59:26 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id RAA88698 for <linux-archive@neteng.engr.sgi.com>; Sat, 20 Jun 1998 17:47:04 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id NAA71835
+	id RAA71419
 	for linux-list;
-	Sat, 20 Jun 1998 13:58:51 -0700 (PDT)
+	Sat, 20 Jun 1998 17:46:27 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from dataserv.detroit.sgi.com (dataserv.detroit.sgi.com [169.238.128.2])
+Received: from oz.engr.sgi.com (oz.engr.sgi.com [150.166.42.13])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via SMTP id NAA55434;
-	Sat, 20 Jun 1998 13:58:48 -0700 (PDT)
-	mail_from (eak@detroit.sgi.com)
-Received: from cygnus.detroit.sgi.com by dataserv.detroit.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1502/930416.SGI)
-	 id QAA20147; Sat, 20 Jun 1998 16:58:46 -0400
-Received: from detroit.sgi.com (cx1.detroit.sgi.com [169.238.130.4]) by cygnus.detroit.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA10601; Sat, 20 Jun 1998 16:58:44 -0400 (EDT)
-Message-ID: <358C2140.260930D5@detroit.sgi.com>
-Date: Sat, 20 Jun 1998 16:53:20 -0400
-From: Eric Kimminau <eak@detroit.sgi.com>
-Reply-To: eak@detroit.sgi.com
-Organization: Silicon Graphics, Inc
-X-Mailer: Mozilla 4.05C-SGI [en] (X11; I; IRIX 6.2 IP22)
+	via ESMTP id RAA06940
+	for <linux@cthulhu.engr.sgi.com>;
+	Sat, 20 Jun 1998 17:46:25 -0700 (PDT)
+	mail_from (ariel@oz.engr.sgi.com)
+Received: (from ariel@localhost) by oz.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) id RAA04831 for linux@engr.sgi.com; Sat, 20 Jun 1998 17:46:25 -0700 (PDT)
+From: ariel@oz.engr.sgi.com (Ariel Faigon)
+Message-Id: <199806210046.RAA04831@oz.engr.sgi.com>
+Subject: RedHat reveals some secrets
+To: linux@cthulhu.engr.sgi.com (SGI/Linux mailing list)
+Date: Sat, 20 Jun 1998 17:46:24 -0700 (PDT)
+Reply-To: ariel@cthulhu.engr.sgi.com (Ariel Faigon)
+Organization: Silicon Graphics Inc.
+X-Mailer: ELM [version 2.4 PL24 ME5a]
 MIME-Version: 1.0
-To: Alex deVries <adevries@engsoc.carleton.ca>
-CC: Bob Mende Pie <mende@piecomputer.engr.sgi.com>, linux@cthulhu.engr.sgi.com,
-        dmk@cthulhu.engr.sgi.com
-Subject: Re: more changes on linus.linux.sgi.com
-References: <Pine.LNX.3.95.980619220903.9073A-100000@lager.engsoc.carleton.ca>
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Alex deVries wrote:
 
-> However, there's definitely advantages to having Irix kicking around...
-> it's much easier having a reference Irix system for reference than
-> rebooting.
-> 
-> - Alex
+I was waiting for redHat to come out of the closet for a while.
+I believe publishing some numbers (as opposed to keeping them
+a secret) is the _one_ of the prereqs for being taken seriously
+by analysts like IDC and Fortune 500 companies.
 
-I should have an Indy running IRIX 6.5 available on the net for anyone
-looking for an account that "needs" one in another 2 weeks.
+In the article:
 
-Eric.
+	http://www.sjmercury.com/business/tech/docs/078480.htm
+
+The San Jose Mercury today says:
+
+        Red Hat software takes on the big guys
+
+        BY JOEL B. OBERMAYER
+        Raleigh News & Observer 
+
+        RESEARCH TRIANGLE PARK, N.C. -- Don't
+        mess with Microsoft. It's the cardinal rule of the
+        software industry. Plenty of promising companies
+        have crashed when they collided with the
+        Redmond, Wash.-based giant.
+
+        Yet there's a small, fast-growing Triangle
+        company making a living aggressively pushing in
+        the area Microsoft dominates: the operating
+        systems that run personal computers.
+
+	[... deleted ...]
+
+        Red Hat's sales of Linux products have doubled
+        every 12 months, putting it on target to ship
+        400,000 Linux CD-ROMs this year and reach
+	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        more than $10 million in sales, according to Young.
+	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        He said the company has been profitable every year.
 
 
+	[... deleted ...]
+
+	The competition with Microsoft isn't a problem,
+        either. Microsoft is unlikely to offer technical users
+        the control they want, he said.
+
+        ``The only way you can compete against a
+         monopoly is to change the rules on which the game
+         is played,'' Young said. ``It allows me to sleep at
+         night knowing we compete under different rules.''
+
+In a separate news article Linux was mentioned for the _first_ time
+by IDC and was estimated at 6.8% of the server operating system
+market, after NT, Novell NetWare, and "Unix" :-)
+
+I think this is cool :-)
 -- 
----------1---------2---------3---------4---------5---------6---------7
-Eric Kimminau                           RTA/RSA
-eak@detroit.sgi.com                     Silicon Graphics, Inc
-Voice: (248) 848-4455                   39001 West 12 Mile Rd.
-Fax:   (248) 848-5600                   Farmington, MI 48331-2903
-
-                 VNet Extension - 6-327-4455
-              "I speak my mind and no one else's."
-       http://www.dcs.ex.ac.uk/~aba/rsa/perl-rsa-sig.html
-
-    When confronted by a difficult problem, solve it by reducing 
-    it to the question, "How would the Lone Ranger handle this?"
-	
-         "I am the great supportfolio, do you have http?"
-
-        Copyright 1998, Silicon Graphics Computer Systems
-        Confidential to Silicon Graphics Computer Systems
-                ** -- not for redistribution -- **
+Peace, Ariel

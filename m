@@ -1,68 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Nov 2003 18:31:18 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:29943 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225370AbTKXSbG>;
-	Mon, 24 Nov 2003 18:31:06 +0000
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id hAOIV1923470;
-	Mon, 24 Nov 2003 10:31:01 -0800
-Date: Mon, 24 Nov 2003 10:31:01 -0800
-From: Jun Sun <jsun@mvista.com>
-To: "Steven J. Hill" <sjhill@realitydiluted.com>
-Cc: linux-mips@linux-mips.org, jsun@mvista.com
-Subject: Re: Kernel interface for MIPS timers....
-Message-ID: <20031124103101.I14650@mvista.com>
-References: <3FC200DF.8000804@realitydiluted.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <3FC200DF.8000804@realitydiluted.com>; from sjhill@realitydiluted.com on Mon, Nov 24, 2003 at 08:00:15AM -0500
-Return-Path: <jsun@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Nov 2003 15:28:10 +0000 (GMT)
+Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:33719 "EHLO
+	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225521AbTKYP16>; Tue, 25 Nov 2003 15:27:58 +0000
+Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
+	id DA5BA47B41; Tue, 25 Nov 2003 16:27:49 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by jurand.ds.pg.gda.pl (Postfix) with ESMTP
+	id CC1B647607; Tue, 25 Nov 2003 16:27:49 +0100 (CET)
+Date: Tue, 25 Nov 2003 16:27:49 +0100 (CET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Subject: Re: [patch] 2.4, head: PAGE_SHIFT changes break glibc
+In-Reply-To: <Pine.LNX.4.55.0311212021420.32551@jurand.ds.pg.gda.pl>
+Message-ID: <Pine.LNX.4.55.0311251623180.6716@jurand.ds.pg.gda.pl>
+References: <Pine.LNX.4.55.0311211550270.32551@jurand.ds.pg.gda.pl>
+ <20031121185035.GC8318@linux-mips.org> <Pine.LNX.4.55.0311212021420.32551@jurand.ds.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3661
+X-archive-position: 3665
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Nov 24, 2003 at 08:00:15AM -0500, Steven J. Hill wrote:
-> Hello.
+On Fri, 21 Nov 2003, Maciej W. Rozycki wrote:
+
+> > The kernel is already passing AT_PAGESZ to ELF binaries.  Wouldn't that
+> > be sufficient?  Currently it's passing the largest supported page size,
 > 
-> This could be an embarassing question, but I seem to be good at
-> asking those anyway. A lot more MIPS processors lately seem to
-> come with multiple timers. In addition to the main HPT timer on
-> R4K variants and above, usually there are 2 or 3 additional 16
-> or 32-bit timers with prescalars and other features. Some drivers
-> may decide to use one of these timers exclusively and I am sure
-> there are many other uses as well. There does not seem to be any
-> type of API or reservation system to cleanly utilize the timers
-> present in the system. Actually, on a lot of my boards the added
-> timers do not get any usage, but perhaps that could change. Has
-> anyone given thought to this, or does it just seem pointless?
+>  Well, AFAICS in glibc it's ld.so that is responsible for interpreting the
+> auxiliary vector -- see _dl_aux_init() in elf/dl-support.c.  If the
+> dynamic linker isn't run (which is the usual case for static binaries,
+> although calling dlopen() from them might complicate things), the
+> dl_pagesize variable remains set to zero.  Please prove me wrong if I am
+> missing anything.
+> 
+> > that is 64k.  However this constant is always passed even when a smaller
+> > page size is configured.
+> 
+>  Are you sure?  I can see create_elf_tables() in fs/binfmt_elf.c sets 
+> AT_PAGESZ to ELF_EXEC_PAGESIZE, which, in turn, is set in 
+> include/asm-mips/elf.h to PAGE_SIZE.  Which is the currently used page 
+> size and probably the optimal solution.
 
-I afraid it might be later. :)
+ After rebuilding glibc (2.2.5) with the patch applied, the following
+program:
 
-Kernel needs one timer, i.e., the system or jiffy timer.  All
-other time or timer services are provided based on it.
+#include <stdio.h>
+#include <unistd.h>
 
-Individual drivers or application may use the other timers, but
-that does not mean kernel needs to explicitly manage them.
+int main(void)
+{
+	printf("%u\n", getpagesize());
+	return 0;
+}
 
-Given that said, Monta Vista recently has implemented high resolution
-posix timer, in which case we do abstract out two system timers,
-one for jiffy, and other is for high resolution stuff.  (Individual
-board, however, is free to multiplex the same hw timer for both 
-purposes in its implementation)
+prints "4096" if dynamically linked and "65536" if statically linked on my
+system, as expected.
 
-Personally I don't think this approach is perfect.  The ultimate right 
-solution is to have a single high resolution timer interface native to
-the kernel, and we emulate jiffy timer on top to provide continuing support
-for existing (or legacy) jiffy timer services.
-
-This is something which should be interesting for 2.7.
-
-Jun
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

@@ -1,41 +1,60 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fAMGr0a23510
-	for linux-mips-outgoing; Thu, 22 Nov 2001 08:53:00 -0800
-Received: from ns1.ltc.com (vsat-148-63-243-254.c3.sb4.mrt.starband.net [148.63.243.254])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAMGqjo23474
-	for <linux-mips@oss.sgi.com>; Thu, 22 Nov 2001 08:52:50 -0800
-Received: from prefect (unknown [10.1.1.86])
-	by ns1.ltc.com (Postfix) with SMTP
-	id 715F2590A9; Thu, 22 Nov 2001 10:51:57 -0500 (EST)
-Message-ID: <002801c1736d$caac8d20$5601010a@prefect>
-From: "Bradley D. LaRonde" <brad@ltc.com>
-To: <Andre.Messerschmidt@infineon.com>, <linux-mips@oss.sgi.com>
-References: <86048F07C015D311864100902760F1DD01B5E3CA@dlfw003a.dus.infineon.com>
-Subject: Re: Cross Compiler again
-Date: Thu, 22 Nov 2001 10:53:08 -0500
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="Windows-1252"
-Content-Transfer-Encoding: 7bit
+	by oss.sgi.com (8.11.2/8.11.3) id fAMHWmL01733
+	for linux-mips-outgoing; Thu, 22 Nov 2001 09:32:48 -0800
+Received: from rexonline-plc ([212.159.17.190])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAMHWfo01684
+	for <linux-mips@oss.sgi.com>; Thu, 22 Nov 2001 09:32:42 -0800
+x-esmtp: 0 0 1
+Message-ID: <1512534-220011142216331140@rex.co.uk>
+X-EM-Version: 6, 0, 0, 6
+X-EM-Registration: #00F06206106618006920
 X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Reply-To: alex.bryant@rex.co.uk
+Organization: Rexonline Plc
+From: "Alex Bryant" <alex.bryant@rex.co.uk>
+To: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Careers Link
+Date: Thu, 22 Nov 2001 16:33:01 -00
+MIME-Version: 1.0
+Content-type: text/plain; charset=windows-1252
+X-SMTPExp-Version: 1, 0, 2, 13
+X-SMTPExp-Registration: 00B0320C107602006905
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
------ Original Message -----
-From: <Andre.Messerschmidt@infineon.com>
-To: <linux-mips@oss.sgi.com>
-Sent: Thursday, November 22, 2001 4:08 AM
-Subject: Cross Compiler again
+Dear Sir/Madam
+
+I am writing to you as your website currently links to the online
+recruitment site www.stepstone.co.uk. Earlier this month the site was
+closed.
+
+We would like to bring the following to your attention as an alternative
+career site recommendation to your visitors:
+
+www.jobmagic.net 
+JobMagic.net is an online recruitment site offering vacancies from UK
+Employers and Recruitment Agencies, CV Distribution, Jobs by Email and
+other key features to help find your next job.
+
+www.career-ahead.co.uk 
+Career Ahead is full of advice on CV writing, real-life scenarios,
+interview tips along with software to help you improve on your present
+career.
+
+Additionally we have two partner schemes:
+
+Add a job search engine to your site - www.jobmagic.net/addlink.asp
+
+Add your own online recruitment site - www.rexonline.co.uk/opportunity.htm 
+
+If we can assist by offering you a reciprocal link or other opportunities
+that maybe of interest please contact me on the numbers below.
+
+Kind regards
 
 
-> All went well but I had to learn that GCC 3.0.1 is not able to compile a
-> current kernel.
+Alex Bryant
+RexOnline Plc
 
-I regularly use gcc 3.0.1 to build the latest oss cvs kernels without
-obvious incident.
-
-Regards,
-Brad
+T: 0845 130 4422
+E: alex.bryant@rex.co.uk

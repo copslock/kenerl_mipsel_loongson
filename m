@@ -1,47 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Jul 2004 10:46:30 +0100 (BST)
-Received: from mx1.redhat.com ([IPv6:::ffff:66.187.233.31]:3781 "EHLO
-	mx1.redhat.com") by linux-mips.org with ESMTP id <S8224916AbUG0JqZ>;
-	Tue, 27 Jul 2004 10:46:25 +0100
-Received: from int-mx1.corp.redhat.com (int-mx1.corp.redhat.com [172.16.52.254])
-	by mx1.redhat.com (8.12.10/8.12.10) with ESMTP id i6R9kMe1008195;
-	Tue, 27 Jul 2004 05:46:22 -0400
-Received: from localhost (mail@vpnuser5.surrey.redhat.com [172.16.9.5])
-	by int-mx1.corp.redhat.com (8.11.6/8.11.6) with ESMTP id i6R9kLa11419;
-	Tue, 27 Jul 2004 05:46:21 -0400
-Received: from rsandifo by localhost with local (Exim 3.35 #1)
-	id 1BpOXM-0002Rh-00; Tue, 27 Jul 2004 10:46:20 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Jul 2004 14:05:09 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:3852 "EHLO
+	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225246AbUG0NFF>; Tue, 27 Jul 2004 14:05:05 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 511ECE1CC4; Tue, 27 Jul 2004 15:04:59 +0200 (CEST)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 12977-07; Tue, 27 Jul 2004 15:04:59 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 3266DE1CBE; Tue, 27 Jul 2004 15:04:59 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.12.11/8.11.4) with ESMTP id i6RD585x012577;
+	Tue, 27 Jul 2004 15:05:09 +0200
+Date: Tue, 27 Jul 2004 15:05:02 +0200 (CEST)
+From: "Maciej W. Rozycki" <macro@linux-mips.org>
 To: Thomas Koeller <thomas.koeller@baslerweb.com>
 Cc: linux-mips@linux-mips.org
-Subject: Re: [PATCH] Fix gcc-3.4.x compilation
-References: <200407261237.09965.thomas.koeller@baslerweb.com>
-From: Richard Sandiford <rsandifo@redhat.com>
-Date: Tue, 27 Jul 2004 10:46:20 +0100
-In-Reply-To: <200407261237.09965.thomas.koeller@baslerweb.com> (Thomas
- Koeller's message of "Mon, 26 Jul 2004 12:37:09 +0200")
-Message-ID: <87fz7dvl3n.fsf@redhat.com>
-User-Agent: Gnus/5.1006 (Gnus v5.10.6) Emacs/21.3 (gnu/linux)
+Subject: Re: ABI question
+In-Reply-To: <200407271057.53237.thomas.koeller@baslerweb.com>
+Message-ID: <Pine.LNX.4.58L.0407271500160.12915@blysk.ds.pg.gda.pl>
+References: <200407271057.53237.thomas.koeller@baslerweb.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <rsandifo@redhat.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5559
+X-archive-position: 5560
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rsandifo@redhat.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Thomas Koeller <thomas.koeller@baslerweb.com> writes:
-> Since the meaning of 'accum' used to be 'hi' and 'lo', all its uses
-> were clearly redundant.
+On Tue, 27 Jul 2004, Thomas Koeller wrote:
 
-For the record, that isn't quite true.  GCC internally treated
-"accum" as an entirely separate register (which is why it became
-such a headache).  In theory, if you have an instruction that
-clobbers lo and hi, but doesn't clobber "accum", gcc might think
-that a value in "accum" will still be valid.
+> for 2.6 kernels, arch/mips/Makefile contains the following lines:
+> 
+> ifdef CONFIG_MIPS64
+> gcc-abi			= 64
+> gas-abi			= 32
+> tool-prefix		= $(64bit-tool-prefix)
+> UTS_MACHINE		:= mips64
+> endif
+> 
+> Is it intentional that gcc-abi and gas-abi are different? This
 
-Richard
+ It is -- some people want to use 32-bit pointers within Linux, to 
+conserve memory.  It seems to work with older tools, but I've never tried 
+that.
+
+> results in '-Wa,-32' appearing on gcc's command line, causing
+> the asembler to complain:
+> 
+> Error: -mgp64 used with a 32-bit ABI
+> 
+> If I change gas-abi to 64, this error goes away.
+
+ You may run `make "gas-abi=64" <whatever>' as a workaround.  I'm going to 
+make it selectable in the configuration one day.
+
+  Maciej

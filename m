@@ -1,40 +1,45 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0E36UN21632
-	for linux-mips-outgoing; Sun, 13 Jan 2002 19:06:30 -0800
-Received: from 213.160.207.130 ([213.160.207.130])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0E36Qg21629
-	for <linux-mips@oss.sgi.com>; Sun, 13 Jan 2002 19:06:27 -0800
-Received: (qmail 1506 invoked from network); 13 Jan 2002 20:57:58 -0000
-Received: from 213-97-238-169.uc.nombres.ttd.es (HELO none) (213.97.238.169)
-  by dtu.co.uk with SMTP; 13 Jan 2002 20:57:58 -0000
-Message-ID: <476165711879$44007527$95404726@helmut>
-From: "schneckchen@brisant-mail.com" <schneckchen@brisant-mail.com>
-To: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Ich bin's
-Date: Sun, 13 Jan 2002 21:03:22 +0000
+	by oss.sgi.com (8.11.2/8.11.3) id g0E6Djq24312
+	for linux-mips-outgoing; Sun, 13 Jan 2002 22:13:45 -0800
+Received: from host099.momenco.com (IDENT:root@www.momenco.com [64.169.228.99])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0E6DVg24301
+	for <linux-mips@oss.sgi.com>; Sun, 13 Jan 2002 22:13:37 -0800
+Received: (from mdharm@localhost)
+	by host099.momenco.com (8.11.6/8.11.6) id g0E5DNc07128
+	for linux-mips@oss.sgi.com; Sun, 13 Jan 2002 21:13:23 -0800
+Date: Sun, 13 Jan 2002 21:13:23 -0800
+From: Matthew Dharm <mdharm@momenco.com>
+To: linux-mips@oss.sgi.com
+Subject: MIPS64 status?
+Message-ID: <20020113211323.A7115@momenco.com>
 Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+Organization: Momentum Computer, Inc.
+X-Copyright: (C) 2002 Matthew Dharm, all rights reserved.
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hallo, 
-....danke für Dein Mail. Ist schon `ne Weile her. Nun ja, bist Du immer 
-noch allein? Einsam? Ich auch. 
-Obwohl Freunde von mir sagen, dass ich recht gut aussehe, fehlt mir doch 
-noch ein netter Partner zum Reden, Lieben und Kuscheln. Vielleicht bist Du 
-es.  Dein Alter und Dein Aussehen ist für mich nicht so wichtig. 
+So, lots of people are asking me about 64-bit support for MIPS Linux.  And
+this is something I think I know, but I'm not sure.  And before I go
+spreading any more bad data, I thought I'd ask the experts. :)
 
-Im Moment spanne ich einige Tage aus, lasse die Seele baumeln-, versuche 
-nach Enttäuschungen mein Leben neu zu ordnen. 
+As I understand it, 64-bit support is really two different things:  64-bit
+data path (i.e. unsigned long long) and 64-bit addressing (for more than 4G
+of RAM).
 
-Ich habe mich bei  www.fairway-contacts.com  eingetragen. Du findest ein 
-Foto und meine Wohnungsanschrift mit normaler Telefonnummer unter der 
-Rubrik "Sie sucht Ihn". Wenn ich Dir gefallen sollte, rufe mich doch 
-einfach einmal an.
+My understanding is that "MIPS64" generally refers to a kernel which
+supports a 64-bit data path, but we're still limited to 32-bit addressing.
+Is that correct?
 
-Ich freue mich auf ein Gespräch mit Dir. Bis bald
+I suspect that this is very much a toolchain issue, as I don't think gcc
+will generate 64-bit addressing code.
 
-Dein 
-        Schneckchen
+Comments?  Corrections?  Smack-downs? :)
+
+Matt
+
+-- 
+Matthew Dharm                              Work: mdharm@momenco.com
+Senior Software Designer, Momentum Computer

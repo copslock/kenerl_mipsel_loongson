@@ -1,71 +1,57 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g2BGkdj06275
-	for linux-mips-outgoing; Mon, 11 Mar 2002 08:46:39 -0800
-Received: from ux3.sp.cs.cmu.edu (UX3.SP.CS.CMU.EDU [128.2.198.103])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2BGkU906272
-	for <linux-mips@oss.sgi.com>; Mon, 11 Mar 2002 08:46:31 -0800
-Received: from GS256.SP.CS.CMU.EDU ([128.2.199.27]) by ux3.sp.cs.cmu.edu
-          id aa11401; 11 Mar 2002 10:45 EST
-Subject: Re: Linux-mips porting issues
-From: Justin Carlson <justincarlson@cmu.edu>
-To: santhosh <ps.santhosh@gdatech.co.in>
-Cc: linux-mips@oss.sgi.com
-In-Reply-To: <3C8CFB45.9E749117@gdatech.co.in>
-References: <3C8CFB45.9E749117@gdatech.co.in>
-Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature";
-	boundary="=-mDyH/s9vLYj37utn03SB"
-X-Mailer: Evolution/1.0.2 
-Date: 11 Mar 2002 10:45:21 -0500
-Message-Id: <1015861530.28663.38.camel@gs256.sp.cs.cmu.edu>
-Mime-Version: 1.0
+	by oss.sgi.com (8.11.2/8.11.3) id g2BMju015077
+	for linux-mips-outgoing; Mon, 11 Mar 2002 14:45:56 -0800
+Received: from [64.152.86.3] (unknown.Level3.net [64.152.86.3] (may be forged))
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2BMjr915074
+	for <linux-mips@oss.sgi.com>; Mon, 11 Mar 2002 14:45:53 -0800
+Received: from mail.esstech.com by [64.152.86.3]
+          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 11 Mar 2002 21:49:44 UT
+Received: from venus (venus.esstech.com [193.5.205.5])
+	by mail.esstech.com (8.11.6/8.11.6) with SMTP id g2BLha515617
+	for <linux-mips@oss.sgi.com>; Mon, 11 Mar 2002 13:43:36 -0800 (PST)
+Received: from bud.austin.esstech.com by venus (SMI-8.6/SMI-SVR4)
+	id NAA23491; Mon, 11 Mar 2002 13:45:09 -0800
+Received: from esstech.com by bud.austin.esstech.com (SMI-8.6/SMI-SVR4)
+	id PAA24779; Mon, 11 Mar 2002 15:37:01 -0600
+Message-ID: <3C8D26C8.2060903@esstech.com>
+Date: Mon, 11 Mar 2002 15:51:04 -0600
+From: Gerald Champagne <gerald.champagne@esstech.com>
+User-Agent: Mozilla/5.0 (Windows; U; Win 9x 4.90; en-US; rv:0.9.8) Gecko/20020204
+X-Accept-Language: en-us
+MIME-Version: 1.0
+To: linux-mips@oss.sgi.com
+Subject: pci config cycles on VRC-5477
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
 
---=-mDyH/s9vLYj37utn03SB
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+I'm studying the VRC-5477 code and I'm trying to understand how pci config
+cycles can work reliably with the current code.  It looks like the pci
+config code must execute with interrupts disabled, but I can't find code
+that disables interrupts.  Can someone offer a few pointers?  Here's why
+I ask...
 
-On Mon, 2002-03-11 at 13:45, santhosh=03 wrote:
->=20
-> Hi All ...
->=20
->       Subj: Linux-Porting  issue
-> Here I ported Linux -mips on  BCM1250 board(Broadcom)  had occurred
-> some error which showed below
->=20
->=20
-> CFE>Boot -z -elf 192.168.200.150:zimage
-> andkishore_rane: Loader:elf Filesys:tftp Dev:eth0
-> File:192.168.200.150:zimage Optionsnull)
-> Loading: 0x80100000/1342312 0x80248000/2297856 0x80479000/343232 Entry
-> at 0x8010
-> 047c
+All pci io, memory, and config accesses on the 5477 are performed through
+two windows in the cpu address space.  Normally these two windows are configured
+to perform pci memory and io accesses, and any driver can access pci io and
+memory at any time.  In order to perform a pci config access, one of the two
+windows must be remapped to perform pci config cycles.  The code in
+read_config_dword() looks something like this:
 
-You're trying to boot the kernel image directly from CFE?  I hope you've
-embedded a ramdisk for your root filesystem...that or there must be some
-spiffy new features in CFE that weren't there last I looked at it.
+- Call ddb_access_config_base() to reconfigure the window into pci memory space
+   to access pci config space instead.
 
-> Kernel command line: root=3D/dev/ram0
+- Read from pci config space by reading from an offset into the window.
 
-That looks good...
+- Call ddb_close_config_base to restore the registers to the original values.
 
-Does it work fine with CONFIG_SMP=3Dn?  Or have you not tried that?
+It looks like anything can interrupt this an try to perform a pci memory
+access while the window is programmed to perfom config cycles.
 
--Justin
+Did I miss something, or is this a bug?
 
+Thanks.
 
---=-mDyH/s9vLYj37utn03SB
-Content-Type: application/pgp-signature; name=signature.asc
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iD8DBQA8jNER47Lg4cGgb74RAk6FAKDDurYRGrseI03cEQNDQrMJykl3kQCcCE7J
-HamoH/PRVM2rdB3LjsBXKlg=
-=MlFF
------END PGP SIGNATURE-----
-
---=-mDyH/s9vLYj37utn03SB--
+Gerald

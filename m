@@ -1,35 +1,37 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fAL5WgR31269
-	for linux-mips-outgoing; Tue, 20 Nov 2001 21:32:42 -0800
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id fAL5WQo31253
-	for <linux-mips@oss.sgi.com>; Tue, 20 Nov 2001 21:32:27 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id fAL4WLV09253;
-	Wed, 21 Nov 2001 15:32:21 +1100
-Date: Wed, 21 Nov 2001 15:32:21 +1100
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: ellis@spinics.net
-Cc: linux-mips@oss.sgi.com
-Subject: Re: ns83820
-Message-ID: <20011121153221.A30470@dea.linux-mips.net>
-References: <200111202208.fAKM8rU23663@spinics.net>
+	by oss.sgi.com (8.11.2/8.11.3) id fAL7EJ404616
+	for linux-mips-outgoing; Tue, 20 Nov 2001 23:14:19 -0800
+Received: from topsns.toshiba-tops.co.jp (topsns.toshiba-tops.co.jp [202.230.225.5])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAL7E6o04613;
+	Tue, 20 Nov 2001 23:14:08 -0800
+Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 21 Nov 2001 06:14:05 UT
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP
+	id D5E47B46B; Wed, 21 Nov 2001 15:14:03 +0900 (JST)
+Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
+	id PAA04964; Wed, 21 Nov 2001 15:14:03 +0900 (JST)
+Date: Wed, 21 Nov 2001 15:18:48 +0900 (JST)
+Message-Id: <20011121.151848.18315322.nemoto@toshiba-tops.co.jp>
+To: linux-mips@oss.sgi.com
+Cc: ralf@oss.sgi.com
+Subject: latest checksum.h
+From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
+X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
+X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
+Organization: TOSHIBA Personal Computer System Corporation
+X-Mailer: Mew version 2.1 on Emacs 20.7 / Mule 4.1 (AOI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <200111202208.fAKM8rU23663@spinics.net>; from ellis@spinics.net on Tue, Nov 20, 2001 at 02:08:53PM -0800
-X-Accept-Language: de,en,fr
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Nov 20, 2001 at 02:08:53PM -0800, ellis@spinics.net wrote:
+Is it something wrong in latest checksum.h?
 
-> Anybody used the ns83820 driver on a MIPS processor?  I stopped
-> working after a few packets when I try to use it.
+a __asm__ statement in csum_fold() has two "r" operands but there are
+no "%1" in the assembler template.  Is this OK?
 
-I've got no reports regarding the ns83820.  From your description the problem
-might be some cache coherence problem which might be both an error in
-the driver or the MIPS code itself.
-
-  Ralf
+# No patch because I'm not a __asm__ hacker :-)
+---
+Atsushi Nemoto

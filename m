@@ -1,41 +1,55 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f4SKJ7Z02557
-	for linux-mips-outgoing; Mon, 28 May 2001 13:19:07 -0700
+	by oss.sgi.com (8.11.3/8.11.3) id f4SKKIq02722
+	for linux-mips-outgoing; Mon, 28 May 2001 13:20:18 -0700
 Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f4SK1nd02341;
-	Mon, 28 May 2001 13:05:50 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id RAA26818;
-	Mon, 28 May 2001 17:43:19 +0200 (MET DST)
-Date: Mon, 28 May 2001 17:43:19 +0200 (MET DST)
+	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f4SKJkd02699
+	for <linux-mips@oss.sgi.com>; Mon, 28 May 2001 13:19:47 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA23240;
+	Mon, 28 May 2001 15:59:30 +0200 (MET DST)
+Date: Mon, 28 May 2001 15:59:29 +0200 (MET DST)
 From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Florian Lohoff <flo@rfc822.org>
-cc: Joe deBlaquiere <jadb@redhat.com>, Jun Sun <jsun@mvista.com>,
-   ralf@oss.sgi.com, Pete Popov <ppopov@mvista.com>,
-   George Gensure <werkt@csh.rit.edu>, linux-mips@oss.sgi.com,
-   "Kevin D. Kissell" <kevink@mips.com>
-Subject: Re: MIPS_ATOMIC_SET again (Re: newest kernel
-In-Reply-To: <20010526151550.B611@paradigm.rfc822.org>
-Message-ID: <Pine.GSO.3.96.1010528173758.15200K-100000@delta.ds2.pg.gda.pl>
+Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: "Kevin D. Kissell" <kevink@mips.com>
+cc: Daniel Jacobowitz <dan@debian.org>, linux-mips@oss.sgi.com
+Subject: Re: [PATCH] incorrect asm constraints for ll/sc constructs
+In-Reply-To: <005901c0e77c$dae9f2e0$0deca8c0@Ulysses>
+Message-ID: <Pine.GSO.3.96.1010528155039.15200F-100000@delta.ds2.pg.gda.pl>
 Organization: Technical University of Gdansk
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sat, 26 May 2001, Florian Lohoff wrote:
+On Mon, 28 May 2001, Kevin D. Kissell wrote:
 
-> Export the existance of ll/sc via /proc/cpuinfo or whatever.
+> I'd been disassembling the resulting .o files, as I didn't care whether
+> it's the compiler or the assembler that ultimately makes things right.
 
- That's a valid approach and also nothing new to glibc -- see Alpha and
-in()/out() support.  But do we want an extra overhead due to an indirect
-call?  Especially as _test_and_set() gets usually inlined?
+ It's good to check the generated assembly if you suspect a tool bug.
 
-> I dont think this is true necessarly - There are still people building
-> embedded x86 systems based on 386 cores. Look at the vr41xx systems - They
-> do also lack the ll/sc afaik. This is nowadays the most commonly
-> used embedded/pda cpu.
+> Repeating your experiment using -S gives the following results:
 
- Are vr41xx plain ISA I or crippled ISA II+ CPUs? 
+ Thanks for testing other versions.
+
+> However, if one compiles all the way to object code and looks
+> at what the assembler is actually doing with those "impossible"
+> offsets under gcc 2.90 and 2.91, technically, it's not violating ".noat"
+> in the "m" and "o" constraint  cases.   It is *not* using the "at" register.
+> It is, however, cleverly using the load destination  register as a temporary
+> to calculate  the correct address.  As there are no memory operations,
+
+ That's clever, indeed...
+
+> these instructions should have no effect  on the correct execution
+> of the ll/sc sequence  (though they will  increase the statistical
+> probability
+> of a context  switch between ll and sc).
+
+ ... but that won't work for a lone store, so we need a properly working
+'R' constraint in the compiler.  Since 3.0 works, as you report, there is
+no need to worry (but I might consider backporting changes to 2.95.3).
+
+  Maciej
 
 -- 
 +  Maciej W. Rozycki, Technical University of Gdansk, Poland   +

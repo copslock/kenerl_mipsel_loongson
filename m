@@ -1,59 +1,46 @@
-Received:  by oss.sgi.com id <S42284AbQGTAFR>;
-	Wed, 19 Jul 2000 17:05:17 -0700
-Received: from deliverator.sgi.com ([204.94.214.10]:6408 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42280AbQGTAEw>;
-	Wed, 19 Jul 2000 17:04:52 -0700
-Received: from thor ([207.246.91.243]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via SMTP id QAA24365
-	for <linux-mips@oss.sgi.com>; Wed, 19 Jul 2000 16:56:58 -0700 (PDT)
-	mail_from (jsk@tetracon-eng.net)
-Received: from localhost (localhost [127.0.0.1]) by thor (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id TAA07339; Wed, 19 Jul 2000 19:56:25 -0300
-Date:   Wed, 19 Jul 2000 19:56:25 -0300
-From:   "J. Scott Kasten" <jsk@tetracon-eng.net>
-To:     Keith M Wesolowski <wesolows@chem.unr.edu>
-cc:     linux-mips@oss.sgi.com
-Subject: Re: Simple Linux/MIPS 0.2b
-In-Reply-To: <20000719101346.B7480@chem.unr.edu>
-Message-ID: <Pine.SGI.4.10.10007191916250.7274-100000@thor.tetracon-eng.net>
+Received:  by oss.sgi.com id <S42285AbQGTBN6>;
+	Wed, 19 Jul 2000 18:13:58 -0700
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:39491 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S42280AbQGTBNY>; Wed, 19 Jul 2000 18:13:24 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id SAA07993
+	for <linux-mips@oss.sgi.com>; Wed, 19 Jul 2000 18:18:33 -0700 (PDT)
+	mail_from (jsun@mvista.com)
+Received: from deliverator.sgi.com (deliverator.sgi.com [150.166.91.37])
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	via ESMTP id SAA79995
+	for <linux@engr.sgi.com>;
+	Wed, 19 Jul 2000 18:12:32 -0700 (PDT)
+	mail_from (jsun@mvista.com)
+Received: from hermes.mvista.com (gateway-490.mvista.com [63.192.220.206]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id SAA04346
+	for <linux@engr.sgi.com>; Wed, 19 Jul 2000 18:05:00 -0700 (PDT)
+	mail_from (jsun@mvista.com)
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.9.3/8.9.3) with ESMTP id SAA15079;
+	Wed, 19 Jul 2000 18:12:14 -0700
+Message-ID: <397651ED.80F1A4D4@mvista.com>
+Date:   Wed, 19 Jul 2000 18:12:13 -0700
+From:   Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.7 [en] (X11; I; Linux 2.2.12-20b i586)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To:     linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
+        Geert.Uytterhoeven@sonycom.com
+Subject: Re: How does PCI device get its interrupt vector?
+References: <39762094.9F59676D@mvista.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+Jun Sun wrote:
+> 
+> 2. Assuming the ether chip returns 0xFF (an invalid interrupt vector,
+> which I believe is the correct behavior), which part of Linux is
+> responsible to figure out the correct interrupt vector?  
 
-On Wed, 19 Jul 2000, Keith M Wesolowski wrote:
-> I have successfully
-> built the X libs (4.0 + Guido's newport patch) with the toolchain
-> included in Simple 0.2b, and have run applications linked against
-> them. The entire system was built from the same toolchain.
+Never mind.  I found the place.  It is in pcibios_fixup_irqs().
 
-There is one thing at this point that would really really help.  I need to
-establish a reference point and follow someone elses procedures exactly to
-determine what the source of my problem is and why some of you are not
-seeing this to the extent that I am.  In this way, we can verify whether
-or not there is a bonified problem, and if it is with the tools, maybe get
-it fixed.
-
-I think the x libs are a good place to start, because I can guarantee that
-I'm breaking those, yet you claim to have them working.  I also know that
-I can grab someone else's prebuilt and compile against those and get
-working apps.  Thus the x libs demonstrate all the "features" of the
-problem that I'm encountering.
-
-If you can answer some questions, I can try to parallel what you have
-done:
-
-#1  You say you built X using the tool chain for Simple 0.2b.  Does that
-mean you compiled it natively on an Indy with what was effectively Simple
-0.2b installed?  Or was it cross compiled using the same releases of the
-tools?
-
-#2 You say X 4.0.  Can you be more specific?  Was it an official 4.0
-tarball on the xfree ftp site?  Pulled from CVS?  Or was it really a
-4.0.1?  Basicly, I want the exact same starting sources that you used.
-
-#3 Where can I get Guido's X patch?
-
-#4 What if anything did you add to the host.def or other config files
-before doing "make World"?
+Jun

@@ -1,98 +1,76 @@
-Received:  by oss.sgi.com id <S305156AbPKLFvA>;
-	Thu, 11 Nov 1999 21:51:00 -0800
-Received: from deliverator.sgi.com ([204.94.214.10]:53603 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305154AbPKLFuu>;
-	Thu, 11 Nov 1999 21:50:50 -0800
-Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id VAA00777
-	for <linuxmips@oss.sgi.com>; Thu, 11 Nov 1999 21:52:00 -0800 (PST)
-	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id VAA83658
-	for linux-list;
-	Thu, 11 Nov 1999 21:31:26 -0800 (PST)
-	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id VAA84113
-	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 11 Nov 1999 21:31:22 -0800 (PST)
-	mail_from (avalex@mail.ru)
-Received: from msk1.mail.ru (mx1.mail.ru [194.67.23.32]) 
+Received:  by oss.sgi.com id <S305155AbPKLU1L>;
+	Fri, 12 Nov 1999 12:27:11 -0800
+Received: from sgi.SGI.COM ([192.48.153.1]:3153 "EHLO sgi.com")
+	by oss.sgi.com with ESMTP id <S305154AbPKLU0p>;
+	Fri, 12 Nov 1999 12:26:45 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
 	by sgi.com (980305.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id VAA1394896
-	for <linux@cthulhu.engr.sgi.com>; Thu, 11 Nov 1999 21:31:13 -0800 (PST)
-	mail_from (avalex@mail.ru)
-Received: from camel.int ([10.0.0.98] helo=camel.mail.ru)
-	by msk1.mail.ru with esmtp (Exim 3.02 #108)
-	id 11m9Ic-000DE6-00
-	for linux@cthulhu.engr.sgi.com; Fri, 12 Nov 1999 08:31:02 +0300
-Received: from dial57060.mtu-net.ru ([195.34.57.60] helo=mail.ru)
-	by camel.mail.ru with esmtp (Exim 3.02 #105)
-	id 11m9Ib-00090h-00
-	for linux@cthulhu.engr.sgi.com; Fri, 12 Nov 1999 08:31:01 +0300
-Message-ID: <382BA623.E8BADC8A@mail.ru>
-Date:   Fri, 12 Nov 1999 08:31:15 +0300
-From:   Alexander Averyanov <avalex@mail.ru>
-Organization: UniSoft
-X-Mailer: Mozilla 4.6 [en] (X11; I; Linux 2.2.9-27mdk i686)
-X-Accept-Language: ru, en
-MIME-Version: 1.0
-To:     linux@cthulhu.engr.sgi.com
-Subject: PMAGB-B problems.
-Content-Type: multipart/alternative;
- boundary="------------1759EDB974E5227A2397FC2C"
+	via ESMTP id MAA1635266
+	for <linuxmips@oss.sgi.com>; Fri, 12 Nov 1999 12:31:57 -0800 (PST)
+	mail_from (owner-linux@cthulhu.engr.sgi.com)
+Received: (from majordomo-owner@localhost)
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	id MAA09084
+	for linux-list;
+	Fri, 12 Nov 1999 12:10:53 -0800 (PST)
+	mail_from (owner-linux@relay.engr.sgi.com)
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	via ESMTP id MAA52305
+	for <linux@engr.sgi.com>;
+	Fri, 12 Nov 1999 12:10:51 -0800 (PST)
+	mail_from (sgi.com!Cologne.DE!excalibur.cologne.de!karsten)
+Received: from fileserv2.Cologne.DE (fileserv2.cologne.de [193.29.188.3]) 
+	by sgi.com (980305.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via SMTP id MAA1553027
+	for <linux@engr.sgi.com>; Fri, 12 Nov 1999 12:10:38 -0800 (PST)
+	mail_from (Cologne.DE!excalibur.cologne.de!karsten)
+Received: from localhost (1331 bytes) by fileserv2.Cologne.DE
+	via rmail with P:stdio/R:bind/T:smtp
+	(sender: <excalibur.cologne.de!karsten>) (ident <excalibur.cologne.de!karsten> using unix)
+	id <m11mN1e-0006xMC@fileserv2.Cologne.DE>
+	for <linux@engr.sgi.com>; Fri, 12 Nov 1999 21:10:26 +0100 (CET)
+	(Smail-3.2.0.101 1997-Dec-17 #5 built 1998-Jan-19)
+Received: (from karsten@localhost)
+	by excalibur.cologne.de (8.9.3/8.8.7) id SAA06736;
+	Fri, 12 Nov 1999 18:15:29 +0100
+Message-ID: <19991112181529.B6502@excalibur.cologne.de>
+Date:   Fri, 12 Nov 1999 18:15:29 +0100
+From:   Karsten Merker <karsten@excalibur.cologne.de>
+To:     Alexander Averyanov <avalex@mail.ru>
+Cc:     linux@cthulhu.engr.sgi.com
+Subject: Re: PMAGB-B problems.
+Mail-Followup-To: Alexander Averyanov <avalex@mail.ru>, linux@engr.sgi.com
+References: <382BA623.E8BADC8A@mail.ru>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.91i
+In-Reply-To: <382BA623.E8BADC8A@mail.ru>; from Alexander Averyanov on Fri, Nov 12, 1999 at 08:31:15AM +0300
+X-No-Archive: yes
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
+Alexander Averyanov wrote:
 
---------------1759EDB974E5227A2397FC2C
-Content-Type: text/plain; charset=koi8-r
-Content-Transfer-Encoding: 7bit
+> Who have any technical reference to PMAGB-B card ?
+> 
+> I have DECstatoin 5000/200 with  this card, but dont have
 
+linux@engr.sgi.com is a mostly SGI-centric list, the DECstation matters
+are mostly covered on linux-mips@fnet.fr (see http://lena.fnet.fr).
 
-Hi !
-
-Who have any technical reference to PMAGB-B card ?
-
-I have DECstatoin 5000/200 with  this card, but dont have
-any documenation for it. I try switch on-off  jumpers on PMAGB-B card.
-After this procedure my DECstation go to cycle video test after
-power-on. I can not boot from machine.
-
-How solve this problem ?
-
-
---
-Best regards
-                Averyanov Alexander.
-
-
-
---------------1759EDB974E5227A2397FC2C
-Content-Type: text/html; charset=koi8-r
-Content-Transfer-Encoding: 7bit
-
-<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
-<html>
-&nbsp;
-<br>Hi !
-<p>Who have any technical reference to PMAGB-B card ?
-<p>I have DECstatoin 5000/200 with&nbsp; this card, but dont have
-<br>any documenation for it. I try switch on-off&nbsp; jumpers on PMAGB-B
-card.
-<br>After this procedure my DECstation go to cycle video test after
-<br>power-on. I can not boot from machine.
-<p>How solve this problem ?
-<br>&nbsp;
-<pre>--&nbsp;
-Best regards
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Averyanov Alexander.</pre>
-&nbsp;</html>
-
---------------1759EDB974E5227A2397FC2C--
+HTH,
+Karsten
+-- 
+#include <standard_disclaimer>
+Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der Nutzung
+oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die Markt- oder
+Meinungsforschung.

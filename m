@@ -1,50 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Aug 2003 17:16:46 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:51184 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8225384AbTHYQQn>;
-	Mon, 25 Aug 2003 17:16:43 +0100
-Received: from zeus.mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id JAA30388;
-	Mon, 25 Aug 2003 09:16:15 -0700
-Subject: Re: SD/MMC with db1100
-From: Pete Popov <ppopov@mvista.com>
-To: Dan Malek <dan@embeddededge.com>
-Cc: Yasushi SHOJI <yashi@atmark-techno.com>,
-	Linux MIPS mailing list <linux-mips@linux-mips.org>
-In-Reply-To: <3F495FDD.5070407@embeddededge.com>
-References: <20030823232326.2B9AF3E614@dns1.atmark-techno.com>
-	 <3F495FDD.5070407@embeddededge.com>
-Content-Type: text/plain
-Organization: MontaVista Software
-Message-Id: <1061828175.7493.1.camel@zeus.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Aug 2003 18:18:35 +0100 (BST)
+Received: from p508B61D6.dip.t-dialin.net ([IPv6:::ffff:80.139.97.214]:9367
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225389AbTHYRSc>; Mon, 25 Aug 2003 18:18:32 +0100
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h7PHIB8R016167
+	for <linux-mips@linux-mips.org>; Mon, 25 Aug 2003 19:18:11 +0200
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h7PHI6AH016157
+	for linux-mips@linux-mips.org; Mon, 25 Aug 2003 19:18:06 +0200
+Date: Mon, 25 Aug 2003 19:18:05 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: linux-mips@linux-mips.org
+Subject: Re: CVS Update@-mips.org: linux
+Message-ID: <20030825171805.GA15798@linux-mips.org>
+References: <20030825170001Z8225388-1272+4466@linux-mips.org>
 Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.2.4 
-Date: 25 Aug 2003 09:16:15 -0700
-Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@mvista.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20030825170001Z8225388-1272+4466@linux-mips.org>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3090
+X-archive-position: 3091
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@mvista.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, 2003-08-24 at 18:01, Dan Malek wrote:
-> Yasushi SHOJI wrote:
+On Mon, Aug 25, 2003 at 05:59:56PM +0100, kwalker@linux-mips.org wrote:
+
+> CVSROOT:	/home/cvs
+> Module name:	linux
+> Changes by:	kwalker@ftp.linux-mips.org	03/08/25 17:59:56
 > 
-> > Could someone enlighten me what's wrong with my code? or does anyone
-> > successfully used sd/mmc on au1?
+> Modified files:
+> 	arch/mips/mm-64: init.c 
 > 
-> There is a patch in Ralf's hands for the sd/mmc on this board.  If
-> it doesn't show up soon, we'll find a way to get it to you.
+> Log message:
+> 	remove unnecessary HIGHMEM stuff from 64bit version
 
-It's been there for a little while now -- a couple of weeks or so I
-think.
+Stooop, highmem will soon be needed for 64-bit also to handle machines
+that can't DMA to the entire memory.
 
-ftp.linux-mips.org:/pub/linux/mips/people/ppopov/au1x_mmc.patch
-
-
-Pete
+  Ralf

@@ -1,81 +1,92 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Mar 2005 07:17:03 +0100 (BST)
-Received: from mail.soc-soft.com ([IPv6:::ffff:202.56.254.199]:63492 "EHLO
-	IGateway.soc-soft.com") by linux-mips.org with ESMTP
-	id <S8224947AbVC3GQs>; Wed, 30 Mar 2005 07:16:48 +0100
-Received: from soc-mail.soc-soft.com ([192.168.4.25]) by IGateway with trend_isnt_name_B; Wed, 30 Mar 2005 11:48:46 +0530
-content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Mar 2005 08:38:08 +0100 (BST)
+Received: from web15807.mail.cnb.yahoo.com ([IPv6:::ffff:202.165.102.87]:21855
+	"HELO web15807.mail.cnb.yahoo.com") by linux-mips.org with SMTP
+	id <S8224953AbVC3Hhw>; Wed, 30 Mar 2005 08:37:52 +0100
+Message-ID: <20050330073742.28983.qmail@web15807.mail.cnb.yahoo.com>
+Received: from [210.76.108.109] by web15807.mail.cnb.yahoo.com via HTTP; Wed, 30 Mar 2005 15:37:42 CST
+Date:	Wed, 30 Mar 2005 15:37:42 +0800 (CST)
+From:	dfsd df <tomcs163@yahoo.com.cn>
+Subject: Some questions about kernel tailoring
+To:	linux-mips@linux-mips.org
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="----_=_NextPart_001_01C534F0.5474EE43"
-Subject: How to compile Target Root Directory
-X-MimeOLE: Produced By Microsoft Exchange V6.0.6249.0
-Date:	Wed, 30 Mar 2005 11:48:46 +0530
-Message-ID: <4BF47D56A0DD2346A1B8D622C5C5902C6C728D@soc-mail.soc-soft.com>
-X-MS-Has-Attach: yes
-X-MS-TNEF-Correlator: 
-Thread-Topic: How to compile Target Root Directory
-Thread-Index: AcU08FQV94+zLCAvQguY8TuQb9FWRw==
-From:	<Rishabh@soc-soft.com>
-To:	<linux-mips@linux-mips.org>
-Return-Path: <Rishabh@soc-soft.com>
+Content-Type: multipart/alternative; boundary="0-1799187920-1112168262=:27399"
+Content-Transfer-Encoding: 8bit
+Return-Path: <tomcs163@yahoo.com.cn>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7543
+X-archive-position: 7544
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Rishabh@soc-soft.com
+X-original-sender: tomcs163@yahoo.com.cn
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
+--0-1799187920-1112168262=:27399
+Content-Type: text/plain; charset=gb2312
+Content-Transfer-Encoding: 8bit
 
-------_=_NextPart_001_01C534F0.5474EE43
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Hello, everybody:
+     Now, I participate to porting linux to MIPS platform. I'm a newbie.
+ 
+     I met some questions, I hope somebody can tell me why or give me some hints! thanks!
+ 
+The board is Malta, CPU is MIPS4kc. I downloaded kernel src from ftp.mips.com
+ 
+    1. I use "make zImage" for kernel-2.4.3, everything is ok!
+ But using "make zImage" for kernel-2.4.18, I failed, It could only build a vmlinux file. 
+I  find it's because of no rules in arch/mips/boot/Makefile to build zImage. 
+So I modified the arch/mips/boot/Makefile, It worked fine.
+ but when excuted "./mkboot zImage.tmp zImage", It generated a very big zImage file. After noticing "file size exceed", the system delete the zImage file automatically!
+ 
+what's wrong about it? It's ok for kernel-2.4.3. and I can make sure that the mkboot is no problem.
+ 
+2. I only selectd board and cpu type when compiling the kernel-2.4.3. 
+If using make ,the vmlinux size is about 780k. If using "make zImage", the zImage file is about 580k.
+I think that's a minimun size by using "make menuconfig". 
+but I use gzip to compress this two files, its size became only 1/3 of their original size.
+ 
+So I'm puzzled why "make zImage" don't use gzip compress method? If so , we can get a more small kernel, isn't it?
+ 
+thanks again!
+ 
 
 
-Hi,
 
-I made some changes with the Memory Management module of MVL 3.1
-Linux(2.4.21). Do I need to recompile Target root directory. I am
-getting exceptions in Kernel bootup(/sbin/init). If so then where can I
-get the source code for it?=0D
+---------------------------------
+Do You Yahoo!?
+150ÕÚ«˙MP3∑ËøÒÀ—£¨¥¯ƒ˙¥≥»Î“Ù¿÷µÓÃ√
+√¿≈Æ√˜–«”¶”–æ°”–£¨À—±È√¿Õº°¢—ﬁÕº∫Õø·Õº
+1GæÕ «1000’◊£¨—≈ª¢µÁ” ◊‘÷˙¿©»›£°
+--0-1799187920-1112168262=:27399
+Content-Type: text/html; charset=gb2312
+Content-Transfer-Encoding: 8bit
 
-Rishabh Kumar Goel
-
-
-The information contained in this e-mail message and in any annexure is
-confidential to the  recipient and may contain privileged information. If=
- you are not
-the intended recipient, please notify the sender and delete the message=
- along with
-any annexure. You should not disclose, copy or otherwise use the=
- information contained
-in the message or any annexure. Any views expressed in this e-mail are=
- those of the
-individual sender except where the sender specifically states them to be=
- the views of
-SoCrates Software India Pvt Ltd., Bangalore.
-------_=_NextPart_001_01C534F0.5474EE43
-Content-Type: text/x-vcard;
-	name="Rishabh Kumar Goel.vcf"
-Content-Transfer-Encoding: base64
-Content-Description: Rishabh Kumar Goel.vcf
-Content-Disposition: attachment;
-	filename="Rishabh Kumar Goel.vcf"
-
-QkVHSU46VkNBUkQNClZFUlNJT046Mi4xDQpOOkdvZWw7UmlzaGFiaCBLdW1hcg0KRk46UmlzaGFi
-aCBLdW1hciBHb2VsDQpPUkc6U29jcmF0ZXMgU29mdHdhcmUgSW5kaWEgUHZ0IEx0ZC47T1MgJiBE
-RA0KVElUTEU6U0UNClRFTDtXT1JLO1ZPSUNFOjUxMTAxNjY5ICAgIEV4dDoyNjY5DQpBRFI7V09S
-SztFTkNPRElORz1RVU9URUQtUFJJTlRBQkxFOjtTb2NyYXRlcyBTb2Z0d2FyZSBJbmRpYSBQdnQu
-IEx0ZC47MTAgQnJpZGUgU3RyZWV0LCA9MEQ9MEFMYW5nZm9yZCBUb3duO0Jhbmc9DQphbG9yZTtL
-YXJuYXRha2E7NTYwMDI1O0lORElBDQpMQUJFTDtXT1JLO0VOQ09ESU5HPVFVT1RFRC1QUklOVEFC
-TEU6U29jcmF0ZXMgU29mdHdhcmUgSW5kaWEgUHZ0LiBMdGQuPTBEPTBBMTAgQnJpZGUgU3RyZWV0
-LCA9MEQ9MEFMYW5nZm9yZCBUb3duPQ0KPTBEPTBBQmFuZ2Fsb3JlLCBLYXJuYXRha2EgNTYwMDI1
-PTBEPTBBSU5ESUENCkVNQUlMO1BSRUY7SU5URVJORVQ6UmlzaGFiaEBzb2Mtc29mdC5jb20NClJF
-VjoyMDA1MDIxN1QwNjA4NDJaDQpFTkQ6VkNBUkQNCg==
-
-------_=_NextPart_001_01C534F0.5474EE43--
+<DIV>Hello, everybody:</DIV>
+<DIV>&nbsp;&nbsp;&nbsp;&nbsp; Now, I&nbsp;participate to porting linux to MIPS platform. I'm a newbie.</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>&nbsp;&nbsp;&nbsp;&nbsp; I met some questions, I hope somebody can tell me why or give me some hints! thanks!</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>The board is Malta, CPU is MIPS4kc. I downloaded kernel src from <A href="ftp://ftp.mips.com">ftp.mips.com</A></DIV>
+<DIV>&nbsp;</DIV>
+<DIV>&nbsp;&nbsp;&nbsp; 1. I use "make zImage" for kernel-2.4.3, everything is ok!</DIV>
+<DIV>&nbsp;But using&nbsp;"make zImage" for kernel-2.4.18, I failed, It could only build a&nbsp;vmlinux file. </DIV>
+<DIV>I&nbsp;&nbsp;find it's because of no rules in arch/mips/boot/Makefile to build zImage. </DIV>
+<DIV>So I&nbsp;modified the arch/mips/boot/Makefile, It worked fine.</DIV>
+<DIV>&nbsp;but when excuted "./mkboot zImage.tmp zImage", It generated a&nbsp;very big zImage file. After noticing "file size exceed", the&nbsp;system delete the zImage file automatically!</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>what's wrong about it? It's ok for kernel-2.4.3. and I can make sure that the mkboot is no problem.</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>2. I only selectd board and cpu type when compiling the kernel-2.4.3. </DIV>
+<DIV>If using make ,the vmlinux size is about&nbsp;780k.&nbsp;If using "make zImage", the zImage file is about 580k.</DIV>
+<DIV>I think that's a minimun size by using "make menuconfig". </DIV>
+<DIV>but I use gzip to compress this two files, its size became only 1/3 of their original size.</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>So I'm puzzled why "make zImage" don't use gzip compress method? If so , we can get a more small kernel, isn't it?</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>thanks again!</DIV>
+<DIV>&nbsp;</DIV><p><br><hr size=1><b>Do You Yahoo!?</b><br>
+<a href="http://music.yisou.com" target=blank>150ÕÚ«˙MP3∑ËøÒÀ—£¨¥¯ƒ˙¥≥»Î“Ù¿÷µÓÃ√</a><br><a href="http://image.yisou.com" target=blank>√¿≈Æ√˜–«”¶”–æ°”–£¨À—±È√¿Õº°¢—ﬁÕº∫Õø·Õº</a><br>
+<a href="http://cn.rd.yahoo.com/mail_cn/tag/1g/*http://cn.mail.yahoo.com/event/mail_1g/" target=blank>1GæÕ «1000’◊£¨—≈ª¢µÁ” ◊‘÷˙¿©»›£°</a>
+--0-1799187920-1112168262=:27399--

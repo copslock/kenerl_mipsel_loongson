@@ -1,46 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Nov 2002 15:59:09 +0100 (MET)
-Received: from webmail36.rediffmail.com ([IPv6:::ffff:203.199.83.248]:25220
-	"HELO webmail36.rediffmail.com") by ralf.linux-mips.org with SMTP
-	id <S868147AbSKZK6S>; Tue, 26 Nov 2002 11:58:18 +0100
-Received: (qmail 16314 invoked by uid 510); 26 Nov 2002 11:02:45 -0000
-Date: 26 Nov 2002 11:02:45 -0000
-Message-ID: <20021126110245.16313.qmail@webmail36.rediffmail.com>
-Received: from unknown (203.200.7.44) by rediffmail.com via HTTP; 26 nov 2002 11:02:45 -0000
-MIME-Version: 1.0
-From: "atul srivastava" <atulsrivastava9@rediffmail.com>
-Reply-To: "atul srivastava" <atulsrivastava9@rediffmail.com>
-To: linux-mips@linux-mips.org
-Subject: quick question regarding CONFIG_MIPS_UNCACHED..
-Content-type: text/plain;
-	format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Nov 2002 16:30:52 +0100 (MET)
+Received: from onda.linux-mips.net ([IPv6:::ffff:192.168.169.2]:61344 "EHLO
+	dea.linux-mips.net") by ralf.linux-mips.org with ESMTP
+	id <S869520AbSK1Pal>; Thu, 28 Nov 2002 16:30:41 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id gASFU8q17532;
+	Thu, 28 Nov 2002 16:30:08 +0100
+Date: Thu, 28 Nov 2002 16:30:08 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: George Gensure <werkt@csh.rit.edu>
+Cc: linux-mips@linux-mips.org
+Subject: [ADMIN] Re: O2 Patches
+Message-ID: <20021128163008.A17060@linux-mips.org>
+References: <Pine.SOL.4.31.0211261728560.19456-100000@fury.csh.rit.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Return-Path: <atulsrivastava9@rediffmail.com>
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <Pine.SOL.4.31.0211261728560.19456-100000@fury.csh.rit.edu>; from werkt@csh.rit.edu on Tue, Nov 26, 2002 at 05:30:29PM -0500
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 732
+X-archive-position: 733
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: atulsrivastava9@rediffmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+On Tue, Nov 26, 2002 at 05:30:29PM -0500, George Gensure wrote:
 
-In order to confirm a cache related problem , Is just setting
-CONFIG_MIPS_UNCACHED is suficient..as so many places function
-to operate on caches are  called directly while they should be
-under "#ifdef CONFIG_MIPS_UNCACHED " if not technically then
-atleast to make coding consistent.
+> What happened to Glaurung's O2 patches (to say nothing of his page in
+> general) from the linux-mips site?  That was the only place I could ever
+> find anything regarding the O2 port.
 
-secondly i am setting the uncached feature by,
-change_cp0_config(CONF_CM_CMASK, CONF_CM_UNCACHED);
+This week the linux-mips.org server machine's disks were upgraded, now it's
+about to be shipped from Denmark to it's future home in the UK.  During
+that time I'm running services more or less on my home DSL line.  That's
+a dialup line so everybody who's using DUL or a similar list for blocking
+email will no longer be able to receive email from this and other
+linux-mips.org lists and is probably going to be unsubscribed automatically
+after a few bounces.  Until the old machine is back most of the personal home
+pages will also not be available which is why you couldn't get to
+Glaurung's patches.  As for ftp.linux-mips.org, please use mirrors such
+as oss.sgi.com for now; the anonymous cvs server is now on
+:pserver:cvs.linux-mips.org:/home/cvs, password cvs.  The change of the
+hostname of the cvs archive will be permanent.
 
-now, should the dump_tlb() show the page coherency attribute for 
-each entries as "UNCACHED" in whole 4 gb address space..in my case 
-for some entries the page coherency attribute is still showing 
-"Cacheable, noncoherent, write-through, no write allocate".
-
-Best Regards,
-Atul
+  Ralf

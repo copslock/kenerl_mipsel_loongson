@@ -1,49 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Feb 2004 01:16:25 +0000 (GMT)
-Received: from p508B619B.dip.t-dialin.net ([IPv6:::ffff:80.139.97.155]:39742
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225474AbUBNBQZ>; Sat, 14 Feb 2004 01:16:25 +0000
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i1E1Fhex004631;
-	Sat, 14 Feb 2004 02:15:43 +0100
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i1E1FdYY004630;
-	Sat, 14 Feb 2004 02:15:39 +0100
-Date: Sat, 14 Feb 2004 02:15:39 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Cc: David Daney <ddaney@avtrex.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Feb 2004 01:22:40 +0000 (GMT)
+Received: from mx2.redhat.com ([IPv6:::ffff:66.187.237.31]:19209 "EHLO
+	mx2.redhat.com") by linux-mips.org with ESMTP id <S8225474AbUBNBWk>;
+	Sat, 14 Feb 2004 01:22:40 +0000
+Received: from int-mx2.corp.redhat.com (int-mx2.corp.redhat.com [172.16.27.26])
+	by mx2.redhat.com (8.11.6/8.11.6) with ESMTP id i1E0wAn12068;
+	Fri, 13 Feb 2004 19:58:10 -0500
+Received: from potter.sfbay.redhat.com (potter.sfbay.redhat.com [172.16.27.15])
+	by int-mx2.corp.redhat.com (8.11.6/8.11.6) with ESMTP id i1E1MbM24028;
+	Fri, 13 Feb 2004 20:22:37 -0500
+Received: from [192.168.123.101] (vpn26-4.sfbay.redhat.com [172.16.26.4])
+	by potter.sfbay.redhat.com (8.11.6/8.11.6) with ESMTP id i1E1MaX03005;
+	Fri, 13 Feb 2004 17:22:36 -0800
+Subject: Re: [patch] Prevent dead code/data removal with gcc 3.4
+From: Eric Christopher <echristo@redhat.com>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>,
+	David Daney <ddaney@avtrex.com>,
 	"Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
 	linux-mips@linux-mips.org
-Subject: Re: [patch] Prevent dead code/data removal with gcc 3.4
-Message-ID: <20040214011539.GB31847@linux-mips.org>
-References: <Pine.LNX.4.55.0402131453360.15042@jurand.ds.pg.gda.pl> <20040213145316.GA23810@linux-mips.org> <20040213222253.GA20118@rembrandt.csv.ica.uni-stuttgart.de> <402D513F.8080205@avtrex.com> <20040213224959.GB20118@rembrandt.csv.ica.uni-stuttgart.de>
+In-Reply-To: <20040214011539.GB31847@linux-mips.org>
+References: <Pine.LNX.4.55.0402131453360.15042@jurand.ds.pg.gda.pl>
+	 <20040213145316.GA23810@linux-mips.org>
+	 <20040213222253.GA20118@rembrandt.csv.ica.uni-stuttgart.de>
+	 <402D513F.8080205@avtrex.com>
+	 <20040213224959.GB20118@rembrandt.csv.ica.uni-stuttgart.de>
+	 <20040214011539.GB31847@linux-mips.org>
+Content-Type: text/plain
+Message-Id: <1076721727.3773.0.camel@dzur.sfbay.redhat.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20040213224959.GB20118@rembrandt.csv.ica.uni-stuttgart.de>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+X-Mailer: Ximian Evolution 1.4.5 (1.4.5-7) 
+Date: Fri, 13 Feb 2004 17:22:07 -0800
+Content-Transfer-Encoding: 7bit
+Return-Path: <echristo@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4359
+X-archive-position: 4360
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: echristo@redhat.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Feb 13, 2004 at 11:50:00PM +0100, Thiemo Seufer wrote:
 
-> > My understanding is that with gcc-3.4 that __asm__ __volatile__ does not 
-> > protect against dead code removal.  If the code is not dead __volatile__ 
-> > works as documented, but dead code removal still happens.
-> 
-> The inline version isn't dead code, and gcc isn't allowed to reschedule
-> code around a __asm__ __volatile__, so the patch should be ok.
+> It's the gcc generated function epilogue which is the problem.  There's
+> no reliable way to work around that ...
 
-It's the gcc generated function epilogue which is the problem.  There's
-no reliable way to work around that ...
+What's the problem?
 
-  Ralf
+-eric
+
+-- 
+Eric Christopher <echristo@redhat.com>

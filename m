@@ -1,77 +1,282 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Aug 2004 19:46:19 +0100 (BST)
-Received: from mx5.Informatik.Uni-Tuebingen.De ([IPv6:::ffff:134.2.12.32]:17595
-	"EHLO mx5.informatik.uni-tuebingen.de") by linux-mips.org with ESMTP
-	id <S8225003AbUHKSqO>; Wed, 11 Aug 2004 19:46:14 +0100
-Received: from localhost (loopback [127.0.0.1])
-	by mx5.informatik.uni-tuebingen.de (Postfix) with ESMTP
-	id 22F8B10E; Wed, 11 Aug 2004 20:46:07 +0200 (MST)
-Received: from mx3.informatik.uni-tuebingen.de ([134.2.12.26])
- by localhost (mx5 [134.2.12.32]) (amavisd-new, port 10024) with ESMTP
- id 30314-05; Wed, 11 Aug 2004 20:46:05 +0200 (DFT)
-Received: from dual (semeai.Informatik.Uni-Tuebingen.De [134.2.15.66])
-	by mx3.informatik.uni-tuebingen.de (Postfix) with ESMTP
-	id 79B18139; Wed, 11 Aug 2004 20:46:03 +0200 (DFT)
-Received: from mrvn by dual with local (Exim 4.34)
-	id 1Buy6o-0002Xx-MG; Wed, 11 Aug 2004 20:45:59 +0200
-To: Ralf Ackermann <rac@KOM.tu-darmstadt.de>
-Cc: linux-mips@linux-mips.org
-Subject: Re: Q: XFree86 (on MeshCube) from Debian?
-References: <Pine.LNX.4.58.0408110935080.16674@shofar.kom.e-technik.tu-darmstadt.de>
-From: Goswin von Brederlow <brederlo@informatik.uni-tuebingen.de>
-Date: Wed, 11 Aug 2004 20:45:57 +0200
-In-Reply-To: <Pine.LNX.4.58.0408110935080.16674@shofar.kom.e-technik.tu-darmstadt.de> (Ralf
- Ackermann's message of "Wed, 11 Aug 2004 09:35:35 +0200 (CEST)")
-Message-ID: <87smatpl7e.fsf@mrvn.homelinux.org>
-User-Agent: Gnus/5.1006 (Gnus v5.10.6) XEmacs/21.4 (Security Through
- Obscurity, linux)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Aug 2004 20:49:48 +0100 (BST)
+Received: from mail.pollak.com ([IPv6:::ffff:199.105.206.135]:63826 "HELO
+	canwebfilter01.pollak.com") by linux-mips.org with SMTP
+	id <S8225003AbUHKT1g>; Wed, 11 Aug 2004 20:27:36 +0100
+Received: from mailrouter.pollak.com ([204.26.10.31])
+ by canwebfilter01.pollak.com (SMSSMTP 4.0.0.59) with SMTP id M2004081115272808594
+ for <linux-mips@linux-mips.org>; Wed, 11 Aug 2004 15:27:28 -0400
+Received: by mailrouter.pollak.com with Internet Mail Service (5.5.2657.72)
+	id <QVHWKGP5>; Wed, 11 Aug 2004 15:33:02 -0400
+Message-ID: <A89802C676E6124D86C0FC7C986B68F08C07C4@boston-exch.pollak.com>
+From: "Foley, John" <John.Foley@pollak.com>
+To: "'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
+Subject: Free to a good home . . .
+Date: Wed, 11 Aug 2004 15:26:40 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Virus-Scanned: by amavisd-new (McAfee AntiVirus) at informatik.uni-tuebingen.de
-Return-Path: <brederlo@informatik.uni-tuebingen.de>
+X-Mailer: Internet Mail Service (5.5.2657.72)
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C47FD9.2065F4C0"
+Return-Path: <John.Foley@pollak.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5628
+X-archive-position: 5629
+X-Approved-By: ralf@linux-mips.org
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: brederlo@informatik.uni-tuebingen.de
+X-original-sender: John.Foley@pollak.com
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Ackermann <rac@KOM.tu-darmstadt.de> writes:
+This message is in MIME format. Since your mail reader does not understand
+this format, some or all of this message may not be legible.
 
-> Hello,
->
-> thanks a lot to the persons who helped me setting up a Debian/Sarge 
-> environment for the MeshCube (using cdebootstrap worked like a charm).
->
-> I may go on with an XFree86 server now (I tried using the ati module):
-> ...
-> XFree86 Version 4.3.0.1 (Debian 4.3.0.dfsg.1-6 20040709164028 
-> root@remake.rfc822
-> .org)
-> Release Date: 15 August 2003
-> X Protocol Version 11, Revision 0, Release 6.6
-> Build Operating System: Linux 2.4.25 mips [ELF]
-> Build Date: 10 July 2004
-> ...
->
-> Nevertheless - the server refuses to start because of:
-> Fatal server error:
-> xf86OpenConsole: Cannot open /dev/tty0 (No such file or directory)
->
-> Can this be fixed without having to install an alternative kernel on the 
-> cube? (e.g. by loading an additional / which? kernel module?)
+------_=_NextPart_001_01C47FD9.2065F4C0
+Content-Type: text/plain
 
-cdebootstrap only creates the absolutely essential device nodes for a
-chroot. You need more device nodes, udev or devfs.
+ 
 
-cd /dev
-MAKEDEV generic
+ 
 
-> best regards and thanks for your help
->  Ralf
+            I have several NeTpower FastSeries SP (MIPS R4600) workstations,
+in various states of being stripped, that I am looking to donate to the
+Linux cause. These machines are PCI and ISA (or EISA, depending on mobo rev)
+and have DEC Tulip Ethernet and NCR FWSCSI (IIRC.)
 
-MfG
-        Goswin
+            I'm located in Boston, and am willing to deliver and/or package
+(within reason) in order to see these machines go to promote Linux.
+
+ 
+
+            Any takers?
+
+ 
+
+John T. Foley
+
+Network Administrator, UNIX, CAD Systems, Data Coordinator
+
+Pollak Engineered Products, Actuator Products Division, A Stoneridge Company
+
+195 Freeport Street, Boston MA 02122
+
+ph: (617) 474-7266 fax: (617) 282-9058
+
+ 
+
+The geographical center of Boston is in Roxbury. Due north of the center we
+find the South End. This is not to be confused with South Boston which lies
+directly east from the South End. North of the South End is East Boston and
+southwest of East Boston is the North End.
+
+ 
+
+
+
+_________________________________________________________________ 
+This electronic mail transmission contains confidential information intended
+only for the person(s) and/or organization named. Any use, distribution,
+copying or disclosure by or to any other person outside your organization is
+strictly prohibited. If you received this transmission in error, please send
+an electronic mail message to postmaster@pollak.com so we may instruct you
+regarding its disposition.
+
+------_=_NextPart_001_01C47FD9.2065F4C0
+Content-Type: text/html
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:o=3D"urn:schemas-microsoft-com:office:office" =
+xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns:st1=3D"urn:schemas-microsoft-com:office:smarttags" =
+xmlns=3D"http://www.w3.org/TR/REC-html40">
+
+<head>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Dus-ascii">
+
+
+<meta name=3DGenerator content=3D"Microsoft Word 11 (filtered medium)">
+<o:SmartTagType =
+namespaceuri=3D"urn:schemas-microsoft-com:office:smarttags"
+ name=3D"place"/>
+<o:SmartTagType =
+namespaceuri=3D"urn:schemas-microsoft-com:office:smarttags"
+ name=3D"address"/>
+<o:SmartTagType =
+namespaceuri=3D"urn:schemas-microsoft-com:office:smarttags"
+ name=3D"PostalCode"/>
+<o:SmartTagType =
+namespaceuri=3D"urn:schemas-microsoft-com:office:smarttags"
+ name=3D"State"/>
+<o:SmartTagType =
+namespaceuri=3D"urn:schemas-microsoft-com:office:smarttags"
+ name=3D"City"/>
+<o:SmartTagType =
+namespaceuri=3D"urn:schemas-microsoft-com:office:smarttags"
+ name=3D"Street"/>
+<!--[if !mso]>
+<style>
+st1\:*{behavior:url(#default#ieooui) }
+</style>
+<![endif]-->
+<style>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+p
+	{mso-margin-top-alt:auto;
+	margin-right:0in;
+	mso-margin-bottom-alt:auto;
+	margin-left:0in;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+span.EmailStyle17
+	{mso-style-type:personal-compose;
+	font-family:Arial;
+	color:windowtext;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+
+</head>
+
+<body lang=3DEN-US link=3Dblue vlink=3Dpurple>
+
+<div class=3DSection1>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp; I have several NeTpower FastSeries SP (MIPS
+R4600) workstations, in various states of being stripped, that I am =
+looking to
+donate to the Linux cause. These machines are PCI and ISA (or EISA, =
+depending
+on mobo rev) and have DEC Tulip Ethernet and NCR FWSCSI =
+(IIRC.)<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp; I'm located in <st1:City w:st=3D"on"><st1:place
+ w:st=3D"on">Boston</st1:place></st1:City>, and am willing to deliver =
+and/or
+package (within reason) in order to see these machines go to promote =
+Linux.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp; Any takers?<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p style=3D'margin:0in;margin-bottom:.0001pt'><font size=3D2 =
+face=3D"Times New Roman"><span
+style=3D'font-size:10.0pt'>John T. Foley<o:p></o:p></span></font></p>
+
+<p style=3D'margin:0in;margin-bottom:.0001pt'><font size=3D2 =
+face=3D"Times New Roman"><span
+style=3D'font-size:10.0pt'>Network Administrator, UNIX, CAD Systems, =
+Data
+Coordinator<o:p></o:p></span></font></p>
+
+<p style=3D'margin:0in;margin-bottom:.0001pt'><font size=3D2 =
+face=3D"Times New Roman"><span
+style=3D'font-size:10.0pt'>Pollak Engineered Products, Actuator =
+Products
+Division, A Stoneridge Company<o:p></o:p></span></font></p>
+
+<p style=3D'margin:0in;margin-bottom:.0001pt'><st1:address =
+tabIndex=3D"0"
+style=3D"BACKGROUND-POSITION: left bottom; BACKGROUND-IMAGE: =
+url(res://ietag.dll/#34/#1001); BACKGROUND-REPEAT: repeat-x"
+w:st=3D"on"><st1:Street w:st=3D"on"><font size=3D2 face=3D"Times New =
+Roman"><span
+  style=3D'font-size:10.0pt'>195 Freeport =
+Street</span></font></st1:Street><font
+ size=3D2><span style=3D'font-size:10.0pt'>, <st1:City =
+w:st=3D"on">Boston</st1:City> <st1:State
+ w:st=3D"on">MA</st1:State> <st1:PostalCode =
+w:st=3D"on">02122</st1:PostalCode></span></font></st1:address><font
+size=3D2><span style=3D'font-size:10.0pt'><o:p></o:p></span></font></p>
+
+<p style=3D'margin:0in;margin-bottom:.0001pt'><font size=3D2 =
+face=3D"Times New Roman"><span
+style=3D'font-size:10.0pt'>ph: (617) 474-7266 fax: (617) =
+282-9058</span></font><o:p></o:p></p>
+
+<p style=3D'margin:0in;margin-bottom:.0001pt'><font size=3D3 =
+face=3D"Times New Roman"><span
+style=3D'font-size:12.0pt'>&nbsp;</span></font><font size=3D2><span
+style=3D'font-size:10.0pt'><o:p></o:p></span></font></p>
+
+<p style=3D'margin:0in;margin-bottom:.0001pt'><font size=3D2 =
+face=3D"Times New Roman"><span
+style=3D'font-size:10.0pt'>The geographical center of <st1:City =
+w:st=3D"on"><st1:place
+ w:st=3D"on">Boston</st1:place></st1:City> is in Roxbury. Due north of =
+the center
+we find the South End. This is not to be confused with <st1:place =
+w:st=3D"on">South
+ Boston</st1:place> which lies directly east from the South End. North =
+of the
+South End is East Boston and southwest of <st1:place w:st=3D"on">East =
+Boston</st1:place>
+is the North End.</span></font><font size=3D2><span =
+style=3D'font-size:10.0pt'><o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'><o:p>&nbsp;</o:p></span></font></p>
+
+</div>
+
+</body>
+
+</html>
+<BR>
+<BR>
+
+<P><FONT SIZE=3D2 =
+FACE=3D"Arial">_________________________________________________________=
+________ </FONT></P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">This electronic mail transmission =
+contains confidential information intended only for the person(s) =
+and/or organization named. Any use, distribution, copying or disclosure =
+by or to any other person outside your organization is strictly =
+prohibited. If you received this transmission in error, please send an =
+electronic mail message to postmaster@pollak.com so we may instruct you =
+regarding its disposition.</FONT></P>
+
+------_=_NextPart_001_01C47FD9.2065F4C0--

@@ -1,33 +1,46 @@
-Received:  by oss.sgi.com id <S554215AbRBBDdu>;
-	Thu, 1 Feb 2001 19:33:50 -0800
-Received: from router-100M.swansea.linux.org.uk ([194.168.151.17]:32019 "EHLO
-        the-village.bc.nu") by oss.sgi.com with ESMTP id <S554214AbRBBDde>;
-	Thu, 1 Feb 2001 19:33:34 -0800
-Received: from alan by the-village.bc.nu with local (Exim 2.12 #1)
-	id 14OWz8-0005jE-00; Fri, 2 Feb 2001 03:34:06 +0000
-Subject: Re: OGL for Indy
-To:     bebarker@meginc.com (Brandon Barker)
-Date:   Fri, 2 Feb 2001 03:34:04 +0000 (GMT)
-Cc:     linux-mips@oss.sgi.com ('linux-mips')
-In-Reply-To: <01020121311700.01655@localhost.localdomain> from "Brandon Barker" at Feb 01, 2001 09:31:17 PM
-X-Mailer: ELM [version 2.5 PL1]
-MIME-Version: 1.0
+Received:  by oss.sgi.com id <S554217AbRBBDua>;
+	Thu, 1 Feb 2001 19:50:30 -0800
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:48451 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S554214AbRBBDuC>; Thu, 1 Feb 2001 19:50:02 -0800
+Received: from sydney.sydney.sgi.com (sydney.sydney.sgi.com [134.14.48.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via SMTP id TAA02423
+	for <linux-mips@oss.sgi.com>; Thu, 1 Feb 2001 19:59:09 -0800 (PST)
+	mail_from (kaos@melbourne.sgi.com)
+Received: from kao2.melbourne.sgi.com by sydney.sydney.sgi.com via ESMTP (950413.SGI.8.6.12/930416.SGI)
+	 id OAA03192; Fri, 2 Feb 2001 14:49:19 +1100
+X-Mailer: exmh version 2.1.1 10/15/1999
+From:   Keith Owens <kaos@melbourne.sgi.com>
+To:     Jim Freeman <jfree@sovereign.org>
+cc:     linux-mips@oss.sgi.com
+Subject: Re: mystery files in stock->mips diff 
+In-reply-to: Your message of "Thu, 01 Feb 2001 20:21:29 PDT."
+             <20010201202129.A1107@sovereign.org> 
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-Id: <E14OWz8-0005jE-00@the-village.bc.nu>
-From:   Alan Cox <alan@lxorguk.ukuu.org.uk>
+Date:   Fri, 02 Feb 2001 14:48:39 +1100
+Message-ID: <3672.981085719@kao2.melbourne.sgi.com>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-> one for XFree86.  This means I may have to buy IRIX, though I would much 
-> rather use Linux.  Why has SGI not provided the necessary specs/code for 3d 
-> (open GL in this case?) acceleration?
+On Thu, 1 Feb 2001 20:21:29 -0700, 
+Jim Freeman <jfree@sovereign.org> wrote:
+>The following files are in the mips tree, and not in stock 2.4.1
+>- but they seem not to be mips-related.  Clues?
 
-They have to a few people at least. However you should understand that the
-direct render/context switch stuff aside the Indy is just a glorified drawing
-machine for solid triangles. Its old. What was in its time awesome technology
-is no longer.
+	arch/ppc/coffboot/main.c		del in 2.4.1-pre9
+	arch/ppc/configs/gemini_defconfig	del in 2.4.1-pre9
+	arch/ppc/kernel/gemini_pci.c		del in 2.4.1-pre9
+	arch/ppc/kernel/gemini_prom.S		del in 2.4.1-pre9
+	arch/ppc/kernel/gemini_setup.c		del in 2.4.1-pre9
+	arch/ppc/mbxboot/vmlinux.lds		del in 2.4.1-pre9
 
-Alan
+	drivers/acpi/hardware/hwcpu32.c		del in 2.4.1-pre11
+	drivers/acpi/hardware/hwxface.c		del in 2.4.1-pre11
+	drivers/acpi/ksyms.c			del in 2.4.1-pre9
+
+	include/asm-ppc/gemini.h		del in 2.4.1-pre9
+	include/asm-ppc/gemini_serial.h		del in 2.4.1-pre9
+
+All recently deleted from 2.4.x.

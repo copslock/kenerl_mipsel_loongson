@@ -1,59 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Mar 2003 17:59:39 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:15100 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225211AbTCJR7j>;
-	Mon, 10 Mar 2003 17:59:39 +0000
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id h2AHx7P10368;
-	Mon, 10 Mar 2003 09:59:07 -0800
-Date: Mon, 10 Mar 2003 09:59:07 -0800
-From: Jun Sun <jsun@mvista.com>
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: Kip Walker <kwalker@broadcom.com>, linux-mips@linux-mips.org,
-	jsun@mvista.com
-Subject: Re: [pathch] kernel/sched.c bogon?
-Message-ID: <20030310095907.U26071@mvista.com>
-References: <3E67EF64.152CFC6C@broadcom.com> <20030306174001.K26071@mvista.com> <20030310135531.B2206@linux-mips.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20030310135531.B2206@linux-mips.org>; from ralf@linux-mips.org on Mon, Mar 10, 2003 at 01:55:31PM +0100
-Return-Path: <jsun@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Mar 2003 21:09:20 +0000 (GMT)
+Received: from mail2.efi.com ([IPv6:::ffff:192.68.228.89]:57102 "HELO
+	fcexgw02.efi.internal") by linux-mips.org with SMTP
+	id <S8225073AbTCJVJU>; Mon, 10 Mar 2003 21:09:20 +0000
+Received: from 10.3.12.13 by fcexgw02.efi.internal (InterScan E-Mail VirusWall NT); Mon, 10 Mar 2003 13:09:12 -0800
+Received: by fcexbh02.efi.com with Internet Mail Service (5.5.2656.59)
+	id <DRDG30L1>; Mon, 10 Mar 2003 13:09:12 -0800
+Message-ID: <D9F6B9DABA4CAE4B92850252C52383AB07968235@ex-eng-corp.efi.com>
+From: Ranjan Parthasarathy <ranjanp@efi.com>
+To: "'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
+Subject: syscal handler query
+Date: Mon, 10 Mar 2003 13:09:01 -0800
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2656.59)
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Return-Path: <ranjanp@efi.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1683
+X-archive-position: 1684
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: ranjanp@efi.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Mar 10, 2003 at 01:55:31PM +0100, Ralf Baechle wrote:
-> On Thu, Mar 06, 2003 at 05:40:01PM -0800, Jun Sun wrote:
-> 
-> > I reported this bug last May.  Apparently it is still not
-> > taken up-stream.   Ralf, why don't we fix it here and push
-> > it up from you?
-> > 
-> > BTW, this bug actually has effect on real-time performance under
-> > preemptible kernel.
-> 
-> < = 2.4.x preemptible kernel is OPP.
-> 
-> >  It can delay the execution of the highest
-> > priority real-time process from execution up to 1 jiffy.
-> 
-> Quite a number of users get_cycles() in the kernel assume it to return a
-> 64-bit number.  I guess we'll have to fake a 64-bit counter in software ...
->
+The syscall handler code does an STI at the very begining in handle_sys. Can
+someone explain why that is needed. I am trying to debug a problem in my
+mips kernel with compressed ramdisks and I was using something like
 
-Whether we fake 64-bit or not, oldest_idle is declared as cycles_t.  
-So comparing it with (cycles_t)-1 should be always be correct.  And it
-actually makes a correct C program. :-)
+cli();
+gunzip();
+sti();
 
-I don't see any possible reason for rejecting the change.  My previous
-report is probably just lost in the noise.
+in the compressed ramdisk code and I could still see the timer interrupts
+being raised while gunzip was uncompressing. I suspected the STI in the
+syscall handler code. Removing the STI fixes the problem. The
+RESTORE_SP_AND_RET will reset the interrupts so I do not see why the STI is
+needed, but I am wary of any potential disastrous side effects of removing
+the STI.
 
-Jun
+The code is as follows - from arch/mips/kernel/scall_o32.S
+
+NESTED(handle_sys,PT_SIZE,sp)
+	.set 	noat
+	SAVE_SOME
+	STI
+            *
+            *
+
+Any help would be appreciated.
+
+Thanks
+
+Ranjan

@@ -1,55 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Jan 2004 19:42:57 +0000 (GMT)
-Received: from mx2.redhat.com ([IPv6:::ffff:66.187.237.31]:61961 "EHLO
-	mx2.redhat.com") by linux-mips.org with ESMTP id <S8225226AbUARTm4>;
-	Sun, 18 Jan 2004 19:42:56 +0000
-Received: from int-mx2.corp.redhat.com (int-mx2.corp.redhat.com [172.16.27.26])
-	by mx2.redhat.com (8.11.6/8.11.6) with ESMTP id i0IJJPO31300;
-	Sun, 18 Jan 2004 14:19:25 -0500
-Received: from potter.sfbay.redhat.com (potter.sfbay.redhat.com [172.16.27.15])
-	by int-mx2.corp.redhat.com (8.11.6/8.11.6) with ESMTP id i0IJgjM28851;
-	Sun, 18 Jan 2004 14:42:45 -0500
-Received: from [192.168.123.101] (vpn26-3.sfbay.redhat.com [172.16.26.3])
-	by potter.sfbay.redhat.com (8.11.6/8.11.6) with ESMTP id i0IJgib32757;
-	Sun, 18 Jan 2004 11:42:44 -0800
-Subject: Re: Trouble compiling MIPS cross-compiler
-From: Eric Christopher <echristo@redhat.com>
-To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Cc: linux-mips@linux-mips.org
-In-Reply-To: <20040118072824.GU22218@rembrandt.csv.ica.uni-stuttgart.de>
-References: <200401171711.34964@korath> <200401181510.35686@korath>
-	 <400A1B5F.6010307@gentoo.org> <200401181646.04740@korath>
-	 <1074409013.3602.16.camel@dzur.sfbay.redhat.com>
-	 <20040118072824.GU22218@rembrandt.csv.ica.uni-stuttgart.de>
-Content-Type: text/plain
-Message-Id: <1074454861.310.0.camel@dzur.sfbay.redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Jan 2004 19:50:10 +0000 (GMT)
+Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:15834 "EHLO
+	witte.sonytel.be") by linux-mips.org with ESMTP id <S8225226AbUARTuJ>;
+	Sun, 18 Jan 2004 19:50:09 +0000
+Received: from teasel.sonytel.be (localhost [127.0.0.1])
+	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id i0IJo7w1018508
+	for <linux-mips@linux-mips.org>; Sun, 18 Jan 2004 20:50:08 +0100 (MET)
+Received: (from dimitri@localhost)
+	by teasel.sonytel.be (8.9.3+Sun/8.9.3) id UAA22663
+	for linux-mips@linux-mips.org; Sun, 18 Jan 2004 20:50:06 +0100 (MET)
+Date: Sun, 18 Jan 2004 20:50:06 +0100
+From: Dimitri Torfs <dimitri@sonycom.com>
+To: linux-mips@linux-mips.org
+Subject: DMA_NONCOHERENT and dma_map_single
+Message-ID: <20040118195006.GA22616@sonycom.com>
 Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.4.5 (1.4.5-7) 
-Date: Sun, 18 Jan 2004 11:41:02 -0800
-Content-Transfer-Encoding: 7bit
-Return-Path: <echristo@redhat.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4.1i
+Return-Path: <dimitri@sonycom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4026
+X-archive-position: 4027
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: echristo@redhat.com
+X-original-sender: dimitri@sonycom.com
 Precedence: bulk
 X-list: linux-mips
 
+Hi,
 
-> > b) -mtune otherwise (this will generate generic code and then tune for
-> > something)
-> 
-> Actually, -mtune=r3900 breaks the "generic" part due to an assembler bug
-> (and did so for a long time).
+  dma_map_single() is supposed to be called on a buffer that exactly
+  starts and ends on a cacheline boundary, otherwise "bad things"
+  (e.g. overwrite of data that was written by device, ...) (especially
+  on dma non-coherent systems) may happen. 
 
-Hard to fix it if I don't know about it :)
+  So what should be done when dma_map_single is not called
+  with a sane (ptr, size) argument ?
 
-What's the bug?
+    - is the driver (caller) considered buggy and should we return a 0
+      return-value ?
+    - is the driver (caller) considered buggy but we do the mapping
+      anyway, hoping that the driver has not/will not touched/touch
+      the boundary cachelines ?
+    - should we take appropriate actions to make sure the
+      cache-effects do not come into play (e.g. by using some kind of
+      bounce buffer) ?
 
--eric
+
+  Dimitri
 
 -- 
-Eric Christopher <echristo@redhat.com>
+Dimitri Torfs       |  NSCE 
+dimitri@sonycom.com |  The Corporate Village
+tel: +32 2 7008541  |  Da Vincilaan 7 - D1 
+fax: +32 2 7008622  |  B-1935 Zaventem - Belgium

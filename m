@@ -1,26 +1,29 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id NAA13327; Tue, 29 Jul 1997 13:16:49 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id LAA57580; Wed, 30 Jul 1997 11:24:42 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id NAA06460 for linux-list; Tue, 29 Jul 1997 13:16:17 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA06402 for <linux@cthulhu.engr.sgi.com>; Tue, 29 Jul 1997 13:16:10 -0700
-Received: from athena.nuclecu.unam.mx (athena.nuclecu.unam.mx [132.248.29.9]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id NAA15961
-	for <linux@cthulhu.engr.sgi.com>; Tue, 29 Jul 1997 13:16:08 -0700
-	env-from (miguel@athena.nuclecu.unam.mx)
-Received: (from miguel@localhost)
-	by athena.nuclecu.unam.mx (8.8.5/8.8.5) id PAA12170;
-	Tue, 29 Jul 1997 15:13:58 -0500
-Date: Tue, 29 Jul 1997 15:13:58 -0500
-Message-Id: <199707292013.PAA12170@athena.nuclecu.unam.mx>
-From: Miguel de Icaza <miguel@nuclecu.unam.mx>
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA09915 for linux-list; Wed, 30 Jul 1997 11:23:27 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA09593 for <linux@engr.sgi.com>; Wed, 30 Jul 1997 11:22:04 -0700
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id LAA28865
+	for <linux@engr.sgi.com>; Wed, 30 Jul 1997 11:21:59 -0700
+	env-from (ralf@informatik.uni-koblenz.de)
+Received: from thoma (ralf@thoma.uni-koblenz.de [141.26.4.61]) by informatik.uni-koblenz.de (8.8.5/8.6.9) with SMTP id UAA07944 for <linux@engr.sgi.com>; Wed, 30 Jul 1997 20:21:44 +0200 (MEST)
+From: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
+Message-Id: <199707301821.UAA07944@informatik.uni-koblenz.de>
+Received: by thoma (SMI-8.6/KO-2.0)
+	id UAA04625; Wed, 30 Jul 1997 20:21:42 +0200
+Subject: CVS commits
 To: linux@cthulhu.engr.sgi.com
-In-reply-to: <199707181957.MAA13402@oz.engr.sgi.com> (ariel@oz.engr.sgi.com)
-Subject: Pending project and status page on www.linux.sgi.com
+Date: Wed, 30 Jul 1997 20:21:41 +0200 (MET DST)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+Hi all,
 
-I have placed a pending project and status information page on
-www.linux.sgi.com, please feel free to add further entries to the
-list. 
+what do you think, should we open a new mailing list where everybody
+is allowed to subscribe.  Only the CVS commits and other important
+announcements are being posted?  This would help making the development
+more transparent by showing interested non-developers what's going on.
 
-Cheers,
-Miguel.
+  Ralf

@@ -1,45 +1,40 @@
-Received:  by oss.sgi.com id <S553785AbQLSRJg>;
-	Tue, 19 Dec 2000 09:09:36 -0800
-Received: from hermes.research.kpn.com ([139.63.192.8]:6404 "EHLO
-        hermes.research.kpn.com") by oss.sgi.com with ESMTP
-	id <S553770AbQLSRJa>; Tue, 19 Dec 2000 09:09:30 -0800
-Received: from sparta.research.kpn.com (sparta.research.kpn.com [139.63.192.6])
- by research.kpn.com (PMDF V5.2-31 #42699)
- with ESMTP id <01JXWBSOTPKI0015S2@research.kpn.com> for
- linux-mips@oss.sgi.com; Tue, 19 Dec 2000 18:09:26 +0100
-Received: (from karel@localhost)	by sparta.research.kpn.com (8.8.8+Sun/8.8.8)
- id SAA18908; Tue, 19 Dec 2000 18:09:25 +0100 (MET)
-X-URL:  http://www-lsdm.research.kpn.com/~karel
-Date:   Tue, 19 Dec 2000 18:09:25 +0100 (MET)
-From:   Karel van Houten <K.H.C.vanHouten@research.kpn.com>
-Subject: Re: Kernel Oops when booting on DECstation
-In-reply-to: <XFMail.001219180300.Harald.Koerfgen@home.ivm.de>
-To:     Harald.Koerfgen@home.ivm.de
-Cc:     tbm@cyrius.com (Martin Michlmayr), linux-mips@oss.sgi.com,
-        flo@rfc822.org (Florian Lohoff)
-Message-id: <200012191709.SAA18908@sparta.research.kpn.com>
-MIME-version: 1.0
-X-Mailer: ELM [version 2.5 PL2]
-Content-type: text/plain; charset=us-ascii
-Content-transfer-encoding: 7bit
+Received:  by oss.sgi.com id <S553807AbQLSRv4>;
+	Tue, 19 Dec 2000 09:51:56 -0800
+Received: from brutus.conectiva.com.br ([200.250.58.146]:22510 "EHLO
+        dhcp046.distro.conectiva") by oss.sgi.com with ESMTP
+	id <S553799AbQLSRvo>; Tue, 19 Dec 2000 09:51:44 -0800
+Received: (ralf@lappi) by bacchus.dhis.org id <S867579AbQLSRr7>;
+	Tue, 19 Dec 2000 15:47:59 -0200
+Date:	Tue, 19 Dec 2000 15:47:59 -0200
+From:	Ralf Baechle <ralf@oss.sgi.com>
+To:	Carsten Langgaard <carstenl@mips.com>
+Cc:	linux-mips@oss.sgi.com
+Subject: Re: 64 bit build fails
+Message-ID: <20001219154759.A6566@bacchus.dhis.org>
+References: <3A379CBC.ED1D9F@mips.com> <20001214215933.C28871@bacchus.dhis.org> <3A39CC1F.8FE7B2FE@mips.com> <20001215162023.B28594@bacchus.dhis.org> <3A3DC6BA.DAC68261@mips.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <3A3DC6BA.DAC68261@mips.com>; from carstenl@mips.com on Mon, Dec 18, 2000 at 09:11:38AM +0100
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Harald wrote:
-> 
-> Is anybody else successfully using the NetBSD bootloader with a Linux kernel?
-> 
+On Mon, Dec 18, 2000 at 09:11:38AM +0100, Carsten Langgaard wrote:
 
-I used to use the NetBSD bootloader just fine, but switched to delo
-recently, which is easier to use because UFS read-write support
-is not stable in the current kernels.
+> Of course some time it is a little bit annoying you doesn't just accept
+> my patches :-)  Just kidding, I think that's the right way to do things.
 
--- 
-Karel van Houten
+Actually I tried to apply the patch but patch thinks your patch isn't a valid
+patch file ...
 
-----------------------------------------------------------
-The box said "Requires Windows 95 or better."
-I can't understand why it won't work on my Linux computer. 
-----------------------------------------------------------
+> I was just hoping that the 64bit code was in the same condition as the
+> rest of the code.
+
+Depends.  It's running fairly well on Origins; nobody made a more than
+halfbreed attempt to support IP22 for mips64, so what you see was kind of
+what had to be expected.
+
+  Ralf

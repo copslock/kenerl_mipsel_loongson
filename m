@@ -1,53 +1,71 @@
-Received:  by oss.sgi.com id <S42228AbQHMPRf>;
-	Sun, 13 Aug 2000 08:17:35 -0700
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:2671 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S42207AbQHMPR3>; Sun, 13 Aug 2000 08:17:29 -0700
-Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id IAA06004
-	for <linux-mips@oss.sgi.com>; Sun, 13 Aug 2000 08:23:34 -0700 (PDT)
-	mail_from (alan@lxorguk.ukuu.org.uk)
+Received:  by oss.sgi.com id <S42290AbQHNKCG>;
+	Mon, 14 Aug 2000 03:02:06 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:54385 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42271AbQHNKBp>;
+	Mon, 14 Aug 2000 03:01:45 -0700
+Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id CAA17190
+	for <linux-mips@oss.sgi.com>; Mon, 14 Aug 2000 02:54:10 -0700 (PDT)
+	mail_from (tkwriter@vanc.igs.net)
+From:   tkwriter@vanc.igs.net
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id DAA92714 for <linux-mips@oss.sgi.com>; Mon, 14 Aug 2000 03:01:14 -0700 (PDT)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id IAA49623
-	for <linux@cthulhu.engr.sgi.com>;
-	Sun, 13 Aug 2000 08:17:07 -0700 (PDT)
-	mail_from (alan@lxorguk.ukuu.org.uk)
-Received: from the-village.bc.nu (lightning.swansea.uk.linux.org [194.168.151.1]) 
+	via ESMTP id CAA73929;
+	Mon, 14 Aug 2000 02:58:24 -0700 (PDT)
+	mail_from (tkwriter@vanc.igs.net)
+Received: from buddy.pacificcoast.net (buddy.pacificcoast.net [216.86.100.2]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id IAA08644
-	for <linux@cthulhu.engr.sgi.com>; Sun, 13 Aug 2000 08:17:00 -0700 (PDT)
-	mail_from (alan@lxorguk.ukuu.org.uk)
-Received: from alan by the-village.bc.nu with local (Exim 2.12 #1)
-	id 13NzPH-0001bK-00; Sun, 13 Aug 2000 16:10:35 +0100
-Subject: Re: [linux-fbdev] SGI VW 540, fbdev and pot pourii of faults and
-To:     i15@ornl.gov
-Date:   Sun, 13 Aug 2000 16:10:31 +0100 (BST)
-Cc:     jsimmons@acsu.buffalo.edu (James Simmons),
-        linux-fbdev@vuser.vu.union.edu, linux@cthulhu.engr.sgi.com
-In-Reply-To: <Pine.SGI.4.10.10008091908170.26870-100000@tigger.ccs.ornl.gov> from "philloc@tigger.ccs.ornl.gov" at Aug 09, 2000 07:28:07 PM
-X-Mailer: ELM [version 2.5 PL1]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-Id: <E13NzPH-0001bK-00@the-village.bc.nu>
-From:   Alan Cox <alan@lxorguk.ukuu.org.uk>
+	via ESMTP id CAA09340; Mon, 14 Aug 2000 02:58:23 -0700 (PDT)
+	mail_from (tkwriter@vanc.igs.net)
+Received: from pacificcoast.net (bct140-107.gen.pacificcoast.net [209.53.140.107])
+	by buddy.pacificcoast.net (8.9.1a/8.9.1) with SMTP id BAA31993;
+	Mon, 14 Aug 2000 01:43:44 -0700
+Date:   Mon, 14 Aug 2000 01:43:44 -0700
+Message-Id: <200008140843.BAA31993@buddy.pacificcoast.net>
+Reply-To: tkwriter@vanc.igs.net
+To:     tkwriter@vanc.igs.net
+Subject: Documentation Specialist Seeking Contract Work
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-> 	Anyone from SGI care to comment on why SGI has not released the
-> specs to reasonable attention, since they are unable to help port? 
+Documentation Specialists Seeking Contract Work - Technical Writing, 
+graphics, Robohelp, HTML, SGML, etc. 
 
-Try getting the sources for the 3d driver and graphics components on their
-current workstation.
+Senior technical writers, project leaders and electronic documentation 
+specialists seek contract work. Clients have included companies such 
+as Microsoft and Koch Petroleum. Excellent communication skills, able 
+to work with all levels of the company from programmers to CEO.  
+Excellent background in technical, marketing and creative writing.
+Familiar with educational material as well as e-commerce.  
+Writing samples, full resume and references available on request.
 
-> 	Hey as an aside, anyone know how to "uncompress" a "vmlinuz"
-> kernel to a "vmlinux"? SGI had posted a kernel or 2 , but always in the
-> "vmlinuz" format. To the best of my knowledge cannot be booted
-> on the VW 540.
+Experience in creating both published and online documentation.
 
-gzip -d <vmlinuz >vmlinux should be fine.
+REQUIRED:
+
+Prefer Corp to Corp Sole relationship directly with the client. 
+Agents are also welcome in the same capacity.
+
+Production is done at our facility.  We are fully equipped. 
+
+PLEASE REPLY ONLY BY PHONE
+Contact - Casey Lea - 
+
+TO INQUIRE ABOUT SERVICES, AVAILABILITY, OR TO CONFIRM REMOVAL FROM OUR LIST 
+CALL 604-685-8348 PST
+
+Rates: Fees are charged by the hour or by the project.  
+
+-------------------
+This message is sent in compliance of the new e-mail bill: SECTION 301. Per Section 301, Paragraph (a)(2)(C) of S. 1618, 
+
+http://www.senate.gov/~murkowski/commercialemail/S771index.html___________________________________________________________
+This Message was Composed by a user of Extractor Pro '98 Bulk E- Mail Software. If 
+you wish to be removed from this advertiser's future mailings, please reply 
+with the subject "Remove" and this software will automatically block you 
+from their future mailings.

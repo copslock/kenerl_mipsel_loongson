@@ -1,28 +1,29 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA21301; Tue, 21 May 1996 08:20:37 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA03256; Tue, 21 May 1996 09:50:13 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA17434 for linux-list; Tue, 21 May 1996 15:20:32 GMT
-Received: from piecomputer.corp.sgi.com (piecomputer.corp.sgi.com [192.102.145.157]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA17426; Tue, 21 May 1996 08:20:31 -0700
-Received: by piecomputer.corp.sgi.com (950413.SGI.8.6.12/930416.SGI)
-	 id IAA15111; Tue, 21 May 1996 08:20:30 -0700
-From: "Bob Mende Pie" <mende@piecomputer.corp.sgi.com>
-Message-Id: <9605210820.ZM15109@piecomputer.corp.sgi.com>
-Date: Tue, 21 May 1996 08:20:30 -0700
-In-Reply-To: ariel@yon.engr.sgi.com (Ariel Faigon)
-        "Meeting wednesday" (May 20,  5:16pm)
-References: <199605210016.RAA05977@yon.engr.sgi.com>
-X-URL: http://reality.sgi.com/employees/mende/
-X-Mailer: Z-Mail-SGI (3.2S.2 10apr95 MediaMail)
-To: ariel@cthulhu.engr.sgi.com, linux@cthulhu.engr.sgi.com
-Subject: Re: Meeting wednesday
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id QAA00843 for linux-list; Tue, 21 May 1996 16:50:09 GMT
+Received: from yon.engr.sgi.com (yon.engr.sgi.com [150.166.61.32]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA00838 for <linux@cthulhu.engr.sgi.com>; Tue, 21 May 1996 09:50:08 -0700
+Received: (from ariel@localhost) by yon.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id JAA06906 for linux; Tue, 21 May 1996 09:49:44 -0700
+From: ariel@yon.engr.sgi.com (Ariel Faigon)
+Message-Id: <199605211649.JAA06906@yon.engr.sgi.com>
+Subject: Wednesday meeting
+To: linux@yon.engr.sgi.com
+Date: Tue, 21 May 1996 09:49:44 -0700 (PDT)
+Reply-To: ariel@cthulhu.engr.sgi.com
+Organization: Silicon Graphics Inc.
+X-Mailer: ELM [version 2.4 PL24 ME5a]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Ariel,
-    What time did you schedule the meeting for???
+Oops sorry, I left the hour out:
 
+	Linux meeting
+	Matisse Room 9 upper by the kitchen area
+	Wednesday (tomorrow)  1pm to 2pm
+
+	(David is arriving Friday.)
 
 -- 
-				      /Bob...			 mende@sgi.com
-				http://reality.sgi.com/mende/
+Peace, Ariel

@@ -1,71 +1,83 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA16548 for <linux-archive@neteng.engr.sgi.com>; Thu, 11 Feb 1999 15:37:46 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id TAA99235 for <linux-archive@neteng.engr.sgi.com>; Thu, 11 Feb 1999 19:13:23 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id PAA92606
+	id TAA58725
 	for linux-list;
-	Thu, 11 Feb 1999 15:37:04 -0800 (PST)
+	Thu, 11 Feb 1999 19:12:38 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from otg.dallas.sgi.com (roctane.dallas.sgi.com [169.238.83.62])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id PAA91325
+	via ESMTP id TAA54225
 	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 11 Feb 1999 15:37:03 -0800 (PST)
-	mail_from (sgi.com!rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
-Received: from rachael.franken.de (rachael.franken.de [193.175.24.38]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id PAA03499
-	for <linux@cthulhu.engr.sgi.com>; Thu, 11 Feb 1999 15:37:00 -0800 (PST)
-	mail_from (rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
-Received: from hub-fue by rachael.franken.de
-	via rmail with uucp
-	id <m10B5fG-0027UOC@rachael.franken.de>
-	for cthulhu.engr.sgi.com!linux; Fri, 12 Feb 1999 00:36:58 +0100 (MET)
-	(Smail-3.2 1996-Jul-4 #4 built DST-Sep-8)
-Received: by hub-fue.franken.de (Smail3.1.29.1 #35)
-	id m10B5f7-002PAmC; Fri, 12 Feb 99 00:36 MET
-Received: (from tsbogend@localhost)
-	by alpha.franken.de (8.8.7/8.8.5) id AAA04565;
-	Fri, 12 Feb 1999 00:29:15 +0100
-Message-ID: <19990212002915.A4561@alpha.franken.de>
-Date: Fri, 12 Feb 1999 00:29:15 +0100
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To: Chris Chiapusio <chipper@llamas.net>
-Cc: Alex deVries <adevries@engsoc.carleton.ca>, linux@cthulhu.engr.sgi.com
-Subject: Re: Challange S question..
-References: <19990211002534.A3363@alpha.franken.de> <Pine.LNX.4.05.9902111059380.683-100000@chipsworld.llamas.net>
-Mime-Version: 1.0
+	Thu, 11 Feb 1999 19:12:35 -0800 (PST)
+	mail_from (chad@dallas.sgi.com)
+Received: from dallas.sgi.com (localhost [127.0.0.1]) by otg.dallas.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id TAA05072; Thu, 11 Feb 1999 19:04:58 -0800 (PST)
+Message-ID: <36C39A50.6EE8E619@dallas.sgi.com>
+Date: Thu, 11 Feb 1999 21:04:58 -0600
+From: Chad Carlin <chad@dallas.sgi.com>
+Reply-To: chad@sgi.com
+Organization: Silicon Graphics Inc.
+X-Mailer: Mozilla 4.5C-SGI [en] (X11; I; IRIX64 6.5 IP30)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: ralf@uni-koblenz.de, Alexander Graefe <nachtfalke@usa.net>,
+        adevries@engsoc.carleton.ca
+CC: linux@cthulhu.engr.sgi.com
+Subject: Re: What kernel to use to install RH on a R4400 ?
+References: <19990202155147.A1565@ganymede> <19990203043951.D3920@uni-koblenz.de> <19990204154637.B5941@ganymede> <19990205034821.A620@uni-koblenz.de>
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.93.2
-In-Reply-To: <Pine.LNX.4.05.9902111059380.683-100000@chipsworld.llamas.net>; from Chris Chiapusio on Thu, Feb 11, 1999 at 11:05:23AM -0500
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Thu, Feb 11, 1999 at 11:05:23AM -0500, Chris Chiapusio wrote:
-> where can i find info on what the kernel is doing at each stage of the
-> boot process for a 'install' kernel like this so i can try to debug this
-> without buggin you guys for each problem?
+Ralf and all,
 
-the kernel has already booted. The HardHat kernel isn't able to work
-with a serial console, and in mine is /dev/ram missing.
+Now I'm in a jam. I can't use these instructions:
 
-> mke2fs 1.10, 24-Apr-97 for EXT2 FS 0.5b, 95/08/09
-> /dev/ram: Operation not supported by device while setting up superblock
-> creating 100k of ramdisk space... done
-> mounting /tmp from ramdisk... failed.
+irix-indy #./mke2fs drive
+irix-indy #./installer drive
+  cjwsh> MAKEDEV
+  cjwsh> cpio root-be-0.04.cpio
+  [piles of cpio extraction information]
+  cjwsh> exit
+  [ a moderately lengthy pause, and possibly a bus error -- don't worry
+    about it ]
+ irix-indy #
 
-ok, I didn't include the ramdisk driver in the kernel. Please try:
+to make the root filesystem on the indy because I can't make the device files
+with proper major|minor numbers from the installer utility from IRIX. Since
+nfsroot directive does not work on .131 and R4400 doesn't work on any other
+kernels, I think I'm up against a brick wall. Anyone have any ideas.
 
-ftp://ftp.linux.sgi.com/pub/linux/mips/test/vmlinux-indy-990212.gz
+Any chance of fixing nfsroot in the .131 kernel? I think that might get me
+there.
 
-This kernel boots with the Rough Cut CD I have here.
+Bootless,
+Chad
 
-Thomas.
+ralf@uni-koblenz.de wrote:
 
--- 
-   This device has completely bogus header. Compaq scores again :-|
-It's a host bridge, but it should be called ghost bridge instead ;^)
-                                        [Martin `MJ' Mares on linux-kernel]
+> On Thu, Feb 04, 1999 at 03:46:37PM +0100, Alexander Graefe wrote:
+>
+> > On Wed, Feb 03, 1999 at 04:39:51AM +0100, ralf@uni-koblenz.de wrote:
+> >
+> > >  - the exact screen output.  Especially the register dump following the
+> > >    Aiee message is important.
+> >
+> > kernel 2.1.100 (the one from the HardHat.tgz)
+>
+> 2.1.100 is known to fail on R4400.  This is supposed to be fixed in .131
+> which is why I'm worried about the other bug report.  Your case is obvious -
+> use a newer kernel.
+>
+>   Ralf
+
+--
+           -----------------------------------------------------
+            Chad Carlin                          Special Systems
+            Silicon Graphics Inc.                   972.205.5911
+            Pager 888.754.1597          VMail 800.414.7994 X5344
+            chad@sgi.com             http://reality.sgi.com/chad
+           -----------------------------------------------------
+        "flying through hyper space ain't like dusting crops, boy"

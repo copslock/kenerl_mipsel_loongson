@@ -1,61 +1,165 @@
 Received: from deliverator.sgi.com (deliverator.sgi.com [204.94.214.10])
-	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id EAA17021
-	for <pstadt@stud.fh-heilbronn.de>; Thu, 5 Aug 1999 04:37:30 +0200
-Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id TAA28161; Wed, 4 Aug 1999 19:29:57 -0700 (PDT)
+	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id WAA06214
+	for <pstadt@stud.fh-heilbronn.de>; Wed, 4 Aug 1999 22:32:30 +0200
+Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id NAA06117; Wed, 4 Aug 1999 13:27:12 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id TAA06621
+	id NAA64979
 	for linux-list;
-	Wed, 4 Aug 1999 19:25:25 -0700 (PDT)
+	Wed, 4 Aug 1999 13:23:09 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id TAA44680
-	for <linux@engr.sgi.com>;
-	Wed, 4 Aug 1999 19:23:59 -0700 (PDT)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
+	via ESMTP id NAB33210
+	for <linux@cthulhu.engr.sgi.com>;
+	Wed, 4 Aug 1999 13:23:07 -0700 (PDT)
+	mail_from (andrewb@uab.edu)
+Received: from lilith.dpo.uab.edu (lilith.dpo.uab.edu [138.26.1.128]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id TAA00790
-	for <linux@engr.sgi.com>; Wed, 4 Aug 1999 19:21:43 -0700 (PDT)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from lappi.waldorf-gmbh.de (cacc-19.uni-koblenz.de [141.26.131.19])
-	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id EAA16191
-	for <linux@engr.sgi.com>; Thu, 5 Aug 1999 04:21:40 +0200 (MET DST)
-Received: (from ralf@localhost)
-	by lappi.waldorf-gmbh.de (8.9.3/8.9.3) id EAA23504;
-	Thu, 5 Aug 1999 04:19:31 +0200
-Date: Thu, 5 Aug 1999 04:19:30 +0200
-From: Ralf Baechle <ralf@uni-koblenz.de>
-To: Mark Mitchell <mark@codesourcery.com>
-Cc: binutils@sourceware.cygnus.com, linux@cthulhu.engr.sgi.com,
-        linux-mips@fnet.fr, linux-mips@vger.rutgers.edu
-Subject: Re: R_MIPS_26 testcase
-Message-ID: <19990805041930.D22390@uni-koblenz.de>
-References: <19990804234523.A21269@uni-koblenz.de> <19990804152625A.mitchell@codesourcery.com> <19990805020216.A22390@uni-koblenz.de> <19990804182007L.mitchell@codesourcery.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.4us
-In-Reply-To: <19990804182007L.mitchell@codesourcery.com>; from Mark Mitchell on Wed, Aug 04, 1999 at 06:20:07PM -0700
-X-Accept-Language: de,en,fr
+	via ESMTP id NAA03613
+	for <linux@cthulhu.engr.sgi.com>; Wed, 4 Aug 1999 13:23:00 -0700 (PDT)
+	mail_from (andrewb@uab.edu)
+Received: from mdk187.tucc.uab.edu (mdk187.tucc.uab.edu [138.26.15.201])
+	by lilith.dpo.uab.edu (8.9.3/8.9.3) with SMTP id PAA13856
+	for <linux@cthulhu.engr.sgi.com>; Wed, 4 Aug 1999 15:22:59 -0500
+Date: Wed, 4 Aug 1999 23:19:27 -0500 (CDT)
+From: "Andrew R. Baker" <andrewb@uab.edu>
+X-Sender: andrewb@mdk187.tucc.uab.edu
+Reply-To: "Andrew R. Baker" <andrewb@uab.edu>
+To: Linux SGI <linux@cthulhu.engr.sgi.com>
+Subject: Re: EISA support
+In-Reply-To: <19990803011720.C29946@uni-koblenz.de>
+Message-ID: <Pine.LNX.3.96.990804230503.2789A-200000@mdk187.tucc.uab.edu>
+MIME-Version: 1.0
+Content-Type: MULTIPART/MIXED; BOUNDARY="445303055-1169691530-933826767=:2789"
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Wed, Aug 04, 1999 at 06:20:07PM -0700, Mark Mitchell wrote:
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+  Send mail to mime@docserver.cac.washington.edu for more info.
 
-> >>>>> "Ralf" == Ralf Baechle <ralf@uni-koblenz.de> writes:
-> 
->     Ralf> Just to make your waking sweeter, latest cvs-binutils plus
->     Ralf> the R_MIPS_26 patch from my other email plus your elflink.h
->     Ralf> patch build a working Linux kernel!
-> 
-> I must still be sleeping.  I thought you said something worked.  What
-> a nice dream I'm having ...
+--445303055-1169691530-933826767=:2789
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 
-Enjoy that feeling ...  before you read my other email ...
 
-  Ralf
+Here is my first patch for moving around interrupts for future support of
+EISA.  I want reassurance that I've done all of this step before I send
+out the code that actually moves them around.  I have defined everything
+in the form of "SGI_XXXX_IRQ" to match the definition for the keyboard irq
+that used to be in sgihpc.h.  These patches go against the linux_2_2
+branch but should apply to the 2.3 branch as well.  Let me know what you
+think.
+
+-Andrew 
+
+--445303055-1169691530-933826767=:2789
+Content-Type: TEXT/PLAIN; charset=US-ASCII; name="indigo2.patch.1999.08.04"
+Content-ID: <Pine.LNX.3.96.990804231927.2789B@mdk187.tucc.uab.edu>
+Content-Description: 
+Content-Transfer-Encoding: BASE64
+
+LS0tIGxpbnV4L2luY2x1ZGUvYXNtLW1pcHMvc2dpaHBjLmgub3JpZwlXZWQg
+QXVnICA0IDIwOjExOjUzIDE5OTkNCisrKyBsaW51eC9pbmNsdWRlL2FzbS1t
+aXBzL3NnaWhwYy5oCVdlZCBBdWcgIDQgMjA6MTA6NTIgMTk5OQ0KQEAgLTMz
+MCw4ICszMzAsNiBAQA0KIC8qIFdlIG5lZWQgc29mdHdhcmUgY29waWVzIG9m
+IHRoZXNlIGJlY2F1c2UgdGhleSBhcmUgd3JpdGUgb25seS4gKi8NCiBleHRl
+cm4gdW5zaWduZWQgbG9uZyBzZ2lfaHBjX3dyaXRlMSwgc2dpX2hwY193cml0
+ZTI7DQogDQotI2RlZmluZSBTR0lfS0VZQk9BUkRfSVJRIDIwDQotDQogc3Ry
+dWN0IGhwY19rZXliIHsNCiAjaWZkZWYgX19NSVBTRUJfXw0KIAl1bnNpZ25l
+ZCBjaGFyIF91bnVzZWQwWzNdOw0KLS0tIGxpbnV4L2luY2x1ZGUvYXNtLW1p
+cHMvc2dpbnQyMy5oLm9yaWcJV2VkIEF1ZyAgNCAyMDoxOToyNyAxOTk5DQor
+KysgbGludXgvaW5jbHVkZS9hc20tbWlwcy9zZ2ludDIzLmgJV2VkIEF1ZyAg
+NCAyMjo1NDozOSAxOTk5DQpAQCAtMjAsNiArMjAsMTkgQEANCiAjZGVmaW5l
+IFNHSU5UX0hQQ0RNQSAgIDQxICAvKiBJTkRZIGhhcyAxMSBIUENETUEgaXJx
+IF9zb3VyY2VzXyAqLw0KICNkZWZpbmUgU0dJTlRfRU5EICAgICAgNTIgIC8q
+IEVuZCBvZiAnc3BhY2VzJyAqLw0KIA0KKy8qIEluZGl2aWR1YWwgaW50ZXJy
+dXB0IGRlZmluaXRpb25zIGZvciB0aGUgSU5EWSBhbmQgSW5kaWdvMg0KKyAq
+Lw0KKw0KKyNkZWZpbmUgU0dJX1dEOTNfMF9JUlEJU0dJTlRfTE9DQUwwICsg
+MQkvKiAxc3Qgb25ib2FyZCBXRDkzICovDQorI2RlZmluZSBTR0lfV0Q5M18x
+X0lSUQlTR0lOVF9MT0NBTDAgKyAyCS8qIDJuZCBvbmJvYXJkIFdEOTMgKi8N
+CisjZGVmaW5lIFNHSV9FTkVUX0lSUQlTR0lOVF9MT0NBTDAgKyAzCS8qIG9u
+Ym9hcmQgZXRoZXJuZXQgKi8NCisNCisjZGVmaW5lIFNHSV9QQU5FTF9JUlEJ
+U0dJTlRfTE9DQUwxICsgMQkvKiBmcm9udCBwYW5lbCAqLw0KKw0KKyNkZWZp
+bmUgU0dJX0VJU0FfSVJRCVNHSU5UX0xPQ0FMMiArIDMJLyogRUlTQSBpbnRl
+cnJ1cHRzICovDQorI2RlZmluZSBTR0lfS0VZQk9BUkRfSVJRCVNHSU5UX0xP
+Q0FMMiArIDQJLyoga2V5Ym9hcmQgKi8NCisjZGVmaW5lIFNHSV9TRVJJQUxf
+SVJRCVNHSU5UX0xPQ0FMMiArIDUJLyogb25ib2FyZCBzZXJpYWwgKi8NCisN
+CiAvKiBJTlQyIG9jY3VwaWVzIEhQQyBQQlVTIHNsb3QgNCwgSU5UMyB1c2Vz
+IHNsb3QgNi4gKi8NCiAjZGVmaW5lIFNHSV9JTlQyX0JBU0UgMHgxZmJkOTAw
+MCAvKiBwaHlzaWNhbCAqLw0KICNkZWZpbmUgU0dJX0lOVDNfQkFTRSAweDFm
+YmQ5ODgwIC8qIHBoeXNpY2FsICovDQotLS0gbGludXgvZHJpdmVycy9uZXQv
+c2dpc2VlcS5jLm9yaWcJV2VkIEF1ZyAgNCAyMjoyODo0NiAxOTk5DQorKysg
+bGludXgvZHJpdmVycy9uZXQvc2dpc2VlcS5jCVdlZCBBdWcgIDQgMjE6NTk6
+MTUgMTk5OQ0KQEAgLTczOCw1ICs3MzgsNSBAQA0KIAlzdHIyZWFkZHIob25i
+b2FyZF9ldGhfYWRkciwgZXApOw0KIAlyZXR1cm4gc2dpc2VlcV9pbml0KGRl
+diwNCiAJCQkgICAgKHN0cnVjdCBzZ2lzZWVxX3JlZ3MgKikgKEtTRUcxQURE
+UigweDFmYmQ0MDAwKSksDQotCQkJICAgICZocGMzYzAtPmV0aHJlZ3MsIDMp
+Ow0KKwkJCSAgICAmaHBjM2MwLT5ldGhyZWdzLCBTR0lfRU5FVF9JUlEpOw0K
+IH0NCi0tLSBsaW51eC9kcml2ZXJzL3Njc2kvc2dpd2Q5My5jLm9yaWcJV2Vk
+IEF1ZyAgNCAyMTo1OTo1MSAxOTk5DQorKysgbGludXgvZHJpdmVycy9zY3Np
+L3NnaXdkOTMuYwlXZWQgQXVnICA0IDIyOjAyOjIyIDE5OTkNCkBAIC0yODEs
+NyArMjgxLDcgQEANCiANCiAJc2dpd2Q5M19ob3N0ID0gc2NzaV9yZWdpc3Rl
+cihIUHNVWCwgc2l6ZW9mKHN0cnVjdCBXRDMzQzkzX2hvc3RkYXRhKSk7DQog
+CXNnaXdkOTNfaG9zdC0+YmFzZSA9ICh1bnNpZ25lZCBjaGFyICopIGhyZWdz
+Ow0KLQlzZ2l3ZDkzX2hvc3QtPmlycSA9IDE7DQorCXNnaXdkOTNfaG9zdC0+
+aXJxID0gU0dJX1dEOTNfMF9JUlE7DQogDQogCWJ1ZiA9ICh1Y2hhciAqKSBn
+ZXRfZnJlZV9wYWdlKEdGUF9LRVJORUwpOw0KIAlpbml0X2hwY19jaGFpbihi
+dWYpOw0KQEAgLTI5NSwxMiArMjk1LDEyIEBADQogCWhkYXRhLT5kbWFfYm91
+bmNlX2J1ZmZlciA9ICh1Y2hhciAqKSAoS1NFRzFBRERSKGJ1ZikpOw0KIAlk
+bWFfY2FjaGVfd2JhY2tfaW52KCh1bnNpZ25lZCBsb25nKSBidWYsIFBBR0Vf
+U0laRSk7DQogDQotCXJlcXVlc3RfaXJxKDEsIHNnaXdkOTNfaW50ciwgMCwg
+IlNHSSBXRDkzIiwgKHZvaWQgKikgc2dpd2Q5M19ob3N0KTsNCisJcmVxdWVz
+dF9pcnEoU0dJX1dEOTNfMF9JUlEsIHNnaXdkOTNfaW50ciwgMCwgIlNHSSBX
+RDkzIiwgKHZvaWQgKikgc2dpd2Q5M19ob3N0KTsNCiAgICAgICAgIC8qIHNl
+dCB1cCBzZWNvbmQgY29udHJvbGxlciBvbiB0aGUgSW5kaWdvMiAqLw0KIAlp
+Zighc2dpX2d1aW5lc3MpIHsNCiAJCXNnaXdkOTNfaG9zdDEgPSBzY3NpX3Jl
+Z2lzdGVyKEhQc1VYLCBzaXplb2Yoc3RydWN0IFdEMzNDOTNfaG9zdGRhdGEp
+KTsNCiAJCXNnaXdkOTNfaG9zdDEtPmJhc2UgPSAodW5zaWduZWQgY2hhciAq
+KSBocmVnczE7DQotCQlzZ2l3ZDkzX2hvc3QxLT5pcnEgPSAyOw0KKwkJc2dp
+d2Q5M19ob3N0MS0+aXJxID0gU0dJX1dEOTNfMV9JUlE7DQogDQogCQlidWYg
+PSAodWNoYXIgKikgZ2V0X2ZyZWVfcGFnZShHRlBfS0VSTkVMKTsNCiAJCWlu
+aXRfaHBjX2NoYWluKGJ1Zik7DQpAQCAtMzE0LDcgKzMxNCw3IEBADQogCQlo
+ZGF0YTEtPmRtYV9ib3VuY2VfYnVmZmVyID0gKHVjaGFyICopIChLU0VHMUFE
+RFIoYnVmKSk7DQogCQlkbWFfY2FjaGVfd2JhY2tfaW52KCh1bnNpZ25lZCBs
+b25nKSBidWYsIFBBR0VfU0laRSk7DQogDQotCQlyZXF1ZXN0X2lycSgyLCBz
+Z2l3ZDkzX2ludHIsIDAsICJTR0kgV0Q5MyIsICh2b2lkICopIHNnaXdkOTNf
+aG9zdDEpOw0KKwkJcmVxdWVzdF9pcnEoU0dJX1dEOTNfMV9JUlEsIHNnaXdk
+OTNfaW50ciwgMCwgIlNHSSBXRDkzIiwgKHZvaWQgKikgc2dpd2Q5M19ob3N0
+MSk7DQogCX0NCiAJDQogCWNhbGxlZCA9IDE7DQpAQCAtMzM3LDkgKzMzNywx
+NCBAQA0KIGludCBzZ2l3ZDkzX3JlbGVhc2Uoc3RydWN0IFNjc2lfSG9zdCAq
+aW5zdGFuY2UpDQogew0KICNpZmRlZiBNT0RVTEUNCi0JZnJlZV9pcnEoMSwg
+c2dpd2Q5M19pbnRyKTsNCisJZnJlZV9pcnEoU0dJX1dEOTNfMF9JUlEsIHNn
+aXdkOTNfaW50cik7DQogCWZyZWVfcGFnZShLU0VHMEFERFIoaGRhdGEtPmRt
+YV9ib3VuY2VfYnVmZmVyKSk7DQogCXdkMzNjOTNfcmVsZWFzZSgpOw0KKwlp
+ZiAoIXNnaV9ndWluZXNzKSB7DQorCQlmcmVlX2lycShTR0lfV0Q5M18xX0lS
+USwgc2dpd2Q5M19pbnRyKTsNCisJCWZyZWVfcGFnZShLU0VHMEFERFIoaGRh
+dGExLT5kbWFfYm91bmNlX2J1ZmZlcikpOw0KKwkJd2QzM2M5M19yZWxlYXNl
+KCk7DQorCX0NCiAjZW5kaWYNCiAJcmV0dXJuIDE7DQogfQ0KLS0tIGxpbnV4
+L2FyY2gvbWlwcy9zZ2kva2VybmVsL3Jlc2V0LmMub3JpZwlXZWQgQXVnICA0
+IDIyOjUyOjU5IDE5OTkNCisrKyBsaW51eC9hcmNoL21pcHMvc2dpL2tlcm5l
+bC9yZXNldC5jCVdlZCBBdWcgIDQgMjE6NDU6NTkgMTk5OQ0KQEAgLTEwOCw3
+ICsxMDgsNyBAQA0KIAlpZiAoaGFzX3BhbmljZWQpDQogCQlwcm9tX3JlYm9v
+dCgpOw0KIA0KLQllbmFibGVfaXJxKDkpOw0KKwllbmFibGVfaXJxKFNHSV9Q
+QU5FTF9JUlEpOw0KIH0NCiANCiBzdGF0aWMgaW5saW5lIHZvaWQgcG93ZXJf
+YnV0dG9uKHZvaWQpDQpAQCAtMTg1LDcgKzE4NSw3IEBADQogCWhwYzNtcmVn
+cy0+cGFuZWwgPSAzOyAvKiBwb3dlcl9pbnRlcnJ1cHQgfCBwb3dlcl9zdXBw
+bHlfb24gKi8NCiANCiAJaWYgKGlvY19pY29udHJvbC0+aXN0YXQxICYgMikg
+eyAvKiBXYWl0IHVudGlsIGludGVycnVwdCBnb2VzIGF3YXkgKi8NCi0JCWRp
+c2FibGVfaXJxKDkpOw0KKwkJZGlzYWJsZV9pcnEoU0dJX1BBTkVMX0lSUSk7
+DQogCQlpbml0X3RpbWVyKCZkZWJvdW5jZV90aW1lcik7DQogCQlkZWJvdW5j
+ZV90aW1lci5mdW5jdGlvbiA9IGRlYm91bmNlOw0KIAkJZGVib3VuY2VfdGlt
+ZXIuZXhwaXJlcyA9IGppZmZpZXMgKyA1Ow0KQEAgLTIzOSw3ICsyMzksNyBA
+QA0KIAlfbWFjaGluZV9oYWx0ID0gc2dpX21hY2hpbmVfaGFsdDsNCiAJX21h
+Y2hpbmVfcG93ZXJfb2ZmID0gc2dpX21hY2hpbmVfcG93ZXJfb2ZmOw0KIA0K
+LQlyZXF1ZXN0X2lycSg5LCBwYW5lbF9pbnQsIDAsICJGcm9udCBQYW5lbCIs
+IE5VTEwpOw0KKwlyZXF1ZXN0X2lycShTR0lfUEFORUxfSVJRLCBwYW5lbF9p
+bnQsIDAsICJGcm9udCBQYW5lbCIsIE5VTEwpOw0KIAlpbml0X3RpbWVyKCZi
+bGlua190aW1lcik7DQogCWJsaW5rX3RpbWVyLmZ1bmN0aW9uID0gYmxpbmtf
+dGltZW91dDsNCiAJbm90aWZpZXJfY2hhaW5fcmVnaXN0ZXIoJnBhbmljX25v
+dGlmaWVyX2xpc3QsICZwYW5pY19ibG9jayk7DQo=
+--445303055-1169691530-933826767=:2789--

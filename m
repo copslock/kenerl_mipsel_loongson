@@ -1,55 +1,55 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1E25Nq12384
-	for linux-mips-outgoing; Wed, 13 Feb 2002 18:05:23 -0800
-Received: from neurosis.mit.edu (NEUROSIS.MIT.EDU [18.243.0.82])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1E25I912378
-	for <linux-mips@oss.sgi.com>; Wed, 13 Feb 2002 18:05:18 -0800
-Received: (from jim@localhost)
-	by neurosis.mit.edu (8.11.4/8.11.4) id g1E157D03578;
-	Wed, 13 Feb 2002 20:05:07 -0500
-Date: Wed, 13 Feb 2002 20:05:07 -0500
-From: Jim Paris <jim@jtan.com>
-To: ellis@spinics.net
-Cc: linux-mips@oss.sgi.com
-Subject: Re: NFS ROOT Problem - boot (newbie)
-Message-ID: <20020213200507.A3446@neurosis.mit.edu>
-Reply-To: jim@jtan.com
-References: <200202140017.g1E0HqT11565@spinics.net>
+	by oss.sgi.com (8.11.2/8.11.3) id g1EB3oU08240
+	for linux-mips-outgoing; Thu, 14 Feb 2002 03:03:50 -0800
+Received: from topsns.toshiba-tops.co.jp (topsns.toshiba-tops.co.jp [202.230.225.5])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1EB3f908237;
+	Thu, 14 Feb 2002 03:03:42 -0800
+Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 14 Feb 2002 10:03:41 UT
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP
+	id D1E92B479; Thu, 14 Feb 2002 19:03:38 +0900 (JST)
+Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
+	id TAA49061; Thu, 14 Feb 2002 19:03:38 +0900 (JST)
+Date: Thu, 14 Feb 2002 19:08:07 +0900 (JST)
+Message-Id: <20020214.190807.28780825.nemoto@toshiba-tops.co.jp>
+To: linux-mips@oss.sgi.com
+Cc: ralf@oss.sgi.com
+Subject: cvt.s.d emulation fix
+From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
+X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
+X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
+Organization: TOSHIBA Personal Computer System Corporation
+X-Mailer: Mew version 2.1 on Emacs 20.7 / Mule 4.1 (AOI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <200202140017.g1E0HqT11565@spinics.net>; from ellis@spinics.net on Wed, Feb 13, 2002 at 04:17:52PM -0800
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-> >It seems that it initially finds the root on the nfs box but it
-> >never get to do an init. It just stops and waits... Do I need
-> >to modify any setting manually on my NFS image in order for the
-> >kernel to boot?
-> 
-> I had something like that happen to me. It'd start mounting the
-> NFS root but would stop sending packets after a while. I thought
-> it was the ethernet driver but I never did find the problem
-> before I had to move to other projects.
+I found two small problem on cvt.s.d emulation.
 
-I also saw a similar problem when booting the kernel with a ramdisk
-and attempting to NFS mount from there via a wireless card.  I don't
-even remember which kernel it was now, but I eventually concluded that
-the issue was with fragmented UDP packets.  Linux has
-NFS_DEF_FILE_IO_BUFFER_SIZE set to 4096, which is of course larger
-than an Ethernet frame (1536) and must fragment.  I'm not sure if it
-that was the fault with the kernel or the wireless access point I was
-using, but my host would send all fragments, and the MIPS box would
-eventually send back a reassembly timeout.  Anyway, my solution was:
+1. Converting a denormalized number does not raise Inexact exception.
 
-mount -o rsize=1024,wsize=1024 ...
+2. Any denormalized double precision numbers are converted to zero
+   regardless rounding mode.  If rounding mode was "up", a positive
+   denormalized double precision number should be converted to minimal
+   (denormalized) single precision number.
 
-I presume you could also set those from the boot command line if you
-need to use nfsroot.
+Here is a patch.
 
-(The symptoms were that I could mount, and a very small number of
-operations would occasionally work.  Of course, the ones that worked
-were just whatever ones happened to fit in an unfragmented UDP packet)
-
--jim
+--- linux-sgi-cvs/arch/mips/math-emu/sp_fdp.c	Mon Oct 22 10:29:56 2001
++++ linux.new/arch/mips/math-emu/sp_fdp.c	Thu Feb 14 18:56:06 2002
+@@ -55,6 +55,10 @@
+ 	case IEEE754_CLASS_DNORM:
+ 		/* cant possibly be sp representable */
+ 		SETCX(IEEE754_UNDERFLOW);
++		SETCX(IEEE754_INEXACT);
++		if ((ieee754_csr.rm == IEEE754_RU && !xs) ||
++		    (ieee754_csr.rm == IEEE754_RD && xs))
++			return ieee754sp_xcpt(ieee754sp_mind(xs), "fdp", x);
+ 		return ieee754sp_xcpt(ieee754sp_zero(xs), "fdp", x);
+ 	case IEEE754_CLASS_NORM:
+ 		break;
+---
+Atsushi Nemoto

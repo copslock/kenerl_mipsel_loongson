@@ -1,57 +1,41 @@
-Received:  by oss.sgi.com id <S553836AbRAHQfi>;
-	Mon, 8 Jan 2001 08:35:38 -0800
-Received: from brutus.conectiva.com.br ([200.250.58.146]:28661 "EHLO
+Received:  by oss.sgi.com id <S553839AbRAHQhs>;
+	Mon, 8 Jan 2001 08:37:48 -0800
+Received: from brutus.conectiva.com.br ([200.250.58.146]:55797 "EHLO
         dhcp046.distro.conectiva") by oss.sgi.com with ESMTP
-	id <S553817AbRAHQfQ>; Mon, 8 Jan 2001 08:35:16 -0800
+	id <S553830AbRAHQhf>; Mon, 8 Jan 2001 08:37:35 -0800
 Received: (ralf@lappi.waldorf-gmbh.de) by bacchus.dhis.org
-	id <S870731AbRAHQZN>; Mon, 8 Jan 2001 14:25:13 -0200
-Date:	Mon, 8 Jan 2001 14:25:13 -0200
+	id <S870731AbRAHQ13>; Mon, 8 Jan 2001 14:27:29 -0200
+Date:	Mon, 8 Jan 2001 14:27:29 -0200
 From:	Ralf Baechle <ralf@oss.sgi.com>
-To:	Carsten Langgaard <carstenl@mips.com>
-Cc:	linux-mips@oss.sgi.com
+To:	"Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc:	"Kevin D. Kissell" <kevink@mips.com>, linux-mips@oss.sgi.com,
+        Carsten Langgaard <carstenl@mips.com>,
+        Michael Shmulevich <michaels@jungo.com>
 Subject: Re: User applications
-Message-ID: <20010108142513.C886@bacchus.dhis.org>
-References: <3A598AFC.83204F56@mips.com>
+Message-ID: <20010108142729.D886@bacchus.dhis.org>
+References: <010701c07986$ac768180$0deca8c0@Ulysses> <Pine.GSO.3.96.1010108162406.23234I-100000@delta.ds2.pg.gda.pl>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <3A598AFC.83204F56@mips.com>; from carstenl@mips.com on Mon, Jan 08, 2001 at 10:40:12AM +0100
+In-Reply-To: <Pine.GSO.3.96.1010108162406.23234I-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Mon, Jan 08, 2001 at 04:40:06PM +0100
 X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Mon, Jan 08, 2001 at 10:40:12AM +0100, Carsten Langgaard wrote:
+On Mon, Jan 08, 2001 at 04:40:06PM +0100, Maciej W. Rozycki wrote:
 
-> When a new user process is started will its user space be cleared by the
-> kernel or is there a potential leak from an older user process ?
+> > than flushing the caches - so long as by "flush" we mean invalidate
+> > with writeback (on copyback caches), of course.
+> 
+>  What's wrong with cacheflush(addr, count, which) that actually checks if
+> <addr; addr+count> lies within the caller's address space before
+> performing the flush and returns -EPERM otherwise?  It would make the
+> caller crawl like a turtle if it wished to but it would leave other
+> processes alone. 
 
-A new process is started by the clone(2) or fork(2) syscalls.  Module the
-options that can be passed to clone(2) the two only create an identical copy
-of the invoking process, so they're designed to leak information by design ;-)
-
-execve(2) replaces the existing mappings with a new process image loaded
-from files plus a newly created stack area.  No old mappings survive, so
-there in memory there is no information leak.
-
-> What about the registers values, are they cleared for each new user
-> application or will it simply contain the current value it got when the
-> user application is started ?
-
-We make no attempt at the integer registers for a new process, so some
-information might be leaked in registers.  All the callee saved registers
-will be passed unchanged to the child process; the caller saved registers
-except those that are used as syscall return values will return random
-garbage.  Floating point registers will be cleared with SNANs as soon
-as the process is attempting to use a FPU for the first time, that is
-we won't leak information via fpu registers.
-
-(Ooops, we're not Orange Book B1 compliant, how sad ;-)
-
-> How can you flush the data and instruction cashes from a user application ?
-
-cacheflush(2).  See man page.
+cacheflush(2) actually is supposed to handle things that way.
 
   Ralf

@@ -1,66 +1,60 @@
-Received:  by oss.sgi.com id <S305202AbQDBQuG>;
-	Sun, 2 Apr 2000 09:50:06 -0700
-Received: from deliverator.sgi.com ([204.94.214.10]:52295 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305164AbQDBQto>;
-	Sun, 2 Apr 2000 09:49:44 -0700
-Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id JAA04930; Sun, 2 Apr 2000 09:45:02 -0700 (PDT)
+Received:  by oss.sgi.com id <S305194AbQDBSBg>;
+	Sun, 2 Apr 2000 11:01:36 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:23373 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305164AbQDBSBW>;
+	Sun, 2 Apr 2000 11:01:22 -0700
+Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id KAA07928; Sun, 2 Apr 2000 10:56:40 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id JAA50848
+	id KAA56054
 	for linux-list;
-	Sun, 2 Apr 2000 09:41:09 -0700 (PDT)
+	Sun, 2 Apr 2000 10:51:29 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id JAA01463
+	via ESMTP id KAA25770
 	for <linux@engr.sgi.com>;
-	Sun, 2 Apr 2000 09:40:55 -0700 (PDT)
-	mail_from (flo@rfc822.org)
-Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4]) 
+	Sun, 2 Apr 2000 10:51:27 -0700 (PDT)
+	mail_from (ralf@oss.sgi.com)
+Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id JAA00383
-	for <linux@engr.sgi.com>; Sun, 2 Apr 2000 09:40:48 -0700 (PDT)
-	mail_from (flo@rfc822.org)
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id C2CE77DD; Sun,  2 Apr 2000 18:40:22 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 1D6FD8FC3; Sun,  2 Apr 2000 18:28:33 +0200 (CEST)
-Date:   Sun, 2 Apr 2000 18:28:33 +0200
-From:   Florian Lohoff <flo@rfc822.org>
+	via ESMTP id KAA03458
+	for <linux@engr.sgi.com>; Sun, 2 Apr 2000 10:51:26 -0700 (PDT)
+	mail_from (ralf@oss.sgi.com)
+Received: from cacc-2.uni-koblenz.de (cacc-2.uni-koblenz.de [141.26.131.2])
+	by mailhost.uni-koblenz.de (8.9.3/8.9.3) with ESMTP id TAA01621;
+	Sun, 2 Apr 2000 19:51:17 +0200 (MET DST)
+Received:  by lappi.waldorf-gmbh.de id <S407778AbQDBRu6>;
+	Sun, 2 Apr 2000 19:50:58 +0200
+Date:   Sun, 2 Apr 2000 19:50:58 +0200
+From:   Ralf Baechle <ralf@oss.sgi.com>
 To:     linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
         linux-mips@vger.rutgers.edu
-Subject: debian mipsel port status
-Message-ID: <20000402182833.C11880@paradigm.rfc822.org>
+Subject: New glibc release
+Message-ID: <20000402195057.A13982@uni-koblenz.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.3i
-Organization: rfc822 - pure communication
+X-Mailer: Mutt 1.0.1i
+X-Accept-Language: de,en,fr
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
+The package and a patch can be downloaded from oss.sgi.com in
+/pub/linux/mips/test-glibc/.  Two additional notes over what has already
+been mentioned in other postings.  First, somebody else has made a libc
+release without telling me, that one has a higher version number this
+release even though it's older.  I don't know about the differences.
+Second I changed rpm again such that it uses *.mips.rpm, not mipseb.rpm
+als package extension.  This will make the assumption from many spec
+files that $RPM_ARCH-linux is a valid GNU-style architecture descriptor
+true also for big endian MIPS.  This did eleminate most of the
+necessity to change spec files for big endian MIPS.  Anyway, that's
+why the binary rpm packages again have the .mips.rpm extension.
 
-Hi,
-i anounced today on the debian-mips list the compilation of the 1000st 
-debian-mipsel binary package.
-
-I wont post the full package list but i think  the debian people will setup
-an apt-getable area within the next weeks.
-
-Currently no X or gtk based packages are available due to lack of
-XFree packages - I dont think ill port the debian 3.3.6 package
-but ill start working on XFree4 the next days.
-
-I havent set up an "debian autobuilder" but hopefully will do so 
-the next weeks so we will have an up2date distribution all the time.
-
-Flo
--- 
-Florian Lohoff		flo@rfc822.org		      	+49-5241-470566
-"Technology is a constant battle between manufacturers producing bigger and
-more idiot-proof systems and nature producing bigger and better idiots."
+  Ralf

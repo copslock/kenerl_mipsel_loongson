@@ -1,151 +1,154 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Jan 2003 17:53:53 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:4345 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225274AbTA1Rxw>;
-	Tue, 28 Jan 2003 17:53:52 +0000
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id h0SHrlr26791;
-	Tue, 28 Jan 2003 09:53:47 -0800
-Date: Tue, 28 Jan 2003 09:53:47 -0800
-From: Jun Sun <jsun@mvista.com>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Linux/MIPS Development <linux-mips@linux-mips.org>, jsun@mvista.com
-Subject: Re: unaligned load in branch delay slot
-Message-ID: <20030128095347.W11633@mvista.com>
-References: <Pine.GSO.4.21.0301131704080.21279-100000@vervain.sonytel.be>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Jan 2003 19:49:14 +0000 (GMT)
+Received: from ftp.mips.com ([IPv6:::ffff:206.31.31.227]:51603 "EHLO
+	mx2.mips.com") by linux-mips.org with ESMTP id <S8225196AbTA1TtN>;
+	Tue, 28 Jan 2003 19:49:13 +0000
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id h0SJmt67013084;
+	Tue, 28 Jan 2003 11:48:55 -0800 (PST)
+Received: from uhler-linux.mips.com (uhler-linux [192.168.11.222])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id LAA25336;
+	Tue, 28 Jan 2003 11:48:55 -0800 (PST)
+Received: from uhler-linux.mips.com (uhler@localhost)
+	by uhler-linux.mips.com (8.11.2/8.9.3) with ESMTP id h0SJmug29073;
+	Tue, 28 Jan 2003 11:48:56 -0800
+Message-Id: <200301281948.h0SJmug29073@uhler-linux.mips.com>
+X-Authentication-Warning: uhler-linux.mips.com: uhler owned process doing -bs
+X-Mailer: exmh version 2.2 06/23/2000 with nmh-1.0.4
+To: Jun Sun <jsun@mvista.com>
+cc: Geert Uytterhoeven <geert@linux-m68k.org>,
+	Linux/MIPS Development <linux-mips@linux-mips.org>
+cc: uhler@mips.com
+Reply-To: uhler@mips.com
+Subject: Re: unaligned load in branch delay slot 
+In-reply-to: Your message of "Tue, 28 Jan 2003 09:53:47 PST."
+             <20030128095347.W11633@mvista.com> 
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.GSO.4.21.0301131704080.21279-100000@vervain.sonytel.be>; from geert@linux-m68k.org on Mon, Jan 13, 2003 at 05:13:17PM +0100
-Return-Path: <jsun@orion.mvista.com>
+Date: Tue, 28 Jan 2003 11:48:56 -0800
+From: "Mike Uhler" <uhler@mips.com>
+Return-Path: <uhler@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1256
+X-archive-position: 1257
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: uhler@mips.com
 Precedence: bulk
 X-list: linux-mips
 
 
-Geert,
+> 
+> Geert,
+> 
+> I had exactly the same problem with Vr4120A chip!
+> 
+> I have narrowed it down to be a hardware bug.  Basically under
+> certain conditions, BD flag won't get set.
+> 
+> You can verify that by inserting various number of "nop" just
+> before the faulting places and observe certain address alignment
+> would show/hide this bug.
+> 
+> Further more I wrote a standalone kernel code and could not
+> reproduce it, which means it requires more conditions than just
+> address alignment.
+> 
+> NEC Europe knows about this problem.  Not sure if they passed
+> it to Japan where the chip is designed.  Their engineers
+> even had difficulty to understand what I was talking about. 
 
-I had exactly the same problem with Vr4120A chip!
+Let me give the list some background on this to aid in understanding.
 
-I have narrowed it down to be a hardware bug.  Basically under
-certain conditions, BD flag won't get set.
+When the MIPS I Architecture was originally defined (back in
+1984), it included the architecturally-visible branch delay slot
+that exists in the architecture today.  The Coprocessor 0
+EPC register was defined to be the PC at which to restart after
+an exception or an interrupt.  However, because an exception or
+interrupt could occur while attempting to execute the instruction
+in a branch delay slot, EPC could not simply point at that
+instruction, because if the branch or jump was taken, restarting
+at the delay slot PC doesn't account for the taken branch/jump.
+As such, the architecture was specified such that if an exception
+or interrupt was detected while attempting to execution the
+instruction in a branch delay slot, EPC was defined to receive
+the PC of the branch, and the BD bit was set in the Coprocessor 0
+Cause register.  Most implementations of the MIPS Architecture did
+exactly this.
 
-You can verify that by inserting various number of "nop" just
-before the faulting places and observe certain address alignment
-would show/hide this bug.
+In a few implementations of the MIPS Architecture (and I can't confirm
+nor deny that this is the case with the NEC VR 41xx chips - I simply don't
+know), the implementors observed that the restart PC could, in fact,
+be the PC of the instruction in the delay slot, but only if the preceding
+branch was known to be not-taken.  Restarting a not-taken branch
+at the branch is equivalent to restarting at the delay slot in
+terms of PC flow.  Note that this assumes that restarting at the
+branch would not cause a different decision on the restart as
+on the original execution, and this is required by the architecture.
 
-Further more I wrote a standalone kernel code and could not
-reproduce it, which means it requires more conditions than just
-address alignment.
+Since the MIPS architecture has no not-taken jump instructions, there
+should never be a case in which EPC points at the delay slot of a
+jump, nor should there ever be a case in which EPC points at the
+delay slot of a taken branch.
 
-NEC Europe knows about this problem.  Not sure if they passed
-it to Japan where the chip is designed.  Their engineers
-even had difficulty to understand what I was talking about. 
+In the MIPS32 and MIPS64 Architecture, we explicitly require that the
+value in EPC point at the branch/jump and that the BD bit be set in
+the Cause register if an exception is detected in the delay slot.
+Our compliance testing tests for this, and there are no compliant
+implementations of the MIPS32 or MIPS64 Architecture which will
+cause EPC to point to the delay slot of the branch (subject, of coure,
+to an obscure bug).
 
-(more sighs)
+As I mentioned earlier, there are some number of implementations of
+earlier versions of the MIPS Architecture which apparently have
+decided to point EPC at the delay slot instruction in the case of
+a not-taken branch.  I can't give you a list of such implementations
+because they pre-date our formal MIPS32/MIPS64 compliance testing.
+I would hope that the users manual and/or errata sheets for chips
+that do this would mention this as an issue.
 
+So, the proposed code that went by on this list earlier can almost
+certainly remove the jumps (they are always taken), and only adjust
+PC if the previous instruction was a branch.
 
-Jun
+One word of warning, however:  Note that branch delay slots are
+defined as DYNAMIC, not STATIC instructions.  Consider the following
+example:
 
-On Mon, Jan 13, 2003 at 05:13:17PM +0100, Geert Uytterhoeven wrote:
-> 
-> I'm seeing a crash in 2.4.20 in emulate_load_store_insn(), when accepting a TCP
-> connection (exact line number influenced by debug code):
-> 
-> Unhandled kernel unaligned access or invalid instruction in unaligned.c::emulate_load_store_insn, line 492:
-> $0 : 00000000 10008400 30000000 00000000 83c2a380 83d9f80e 838941c0 00000001
-> $8 : 00000016 c0a80002 c0a80001 00000016 83f326a4 83f326a8 83f326a0 00000000
-> $16: 83c2a43c 811af440 00000000 83c2a380 803da18c 00000000 00000000 00000000
-> $24: 00000000 2ac41330                   8039a000 8039baf8 a38415b4 8033eea4
-> Hi : 00000000
-> Lo : 00000140
-> epc  : 80346448    Not tainted
-> Status: 10008403
-> Cause : 00000010
-> Process swapper (pid: 0, stackpage=8039a000)
-> Stack:    00000000 00000000 00000000 00000000 00000000 00000000 00000000
->  00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
->  00000000 00000000 00000000 00000000 00000000 00000000 00000000 8039a000
->  00000001 810d0060 802dd370 00000000 00000000 8039bb70 00000000 8041a690
->  803d2000 810c5de0 8041a620 810d0060 802dd370 80213fa4 810c41a0 8039bbc8
->  8020ad50 ...
-> Call Trace:   [<802dd370>] [<802dd370>] [<80213fa4>] [<8020ad50>] [<802ea344>]
->  [<802ea2fc>] [<80307e08>] [<802378f8>] [<8020a0d4>] [<8020a0d4>] [<802061d8>]
->  [<802061d8>] [<8020a0d4>] [<8033eea4>] [<80346fbc>] [<80347060>] [<8034716c>]
->  [<803476f4>] [<80329a50>] [<80326648>] [<8032952c>] [<80329ddc>] [<80329d98>]
->  [<80329ddc>] [<8031700c>] [<80329790>] [<8031700c>] [<80316bb4>] [<803172b8>]
->  [<802df95c>] [<8021bf30>] [<80317500>] [<80316ecc>] [<8021b810>] [<80379278>]
->  [<8020ad50>] [<8020aeb0>] [<8020ae84>] [<80379228>] [<80204250>] ...
-> 
-> Code: 8cc30064  3c023000  00621824 <14600012> 8cb50010  8c840238  8c820004  90830000  00621007 
-> Kernel panic: Aiee, killing interrupt handler!
-> In interrupt handler - not syncing
-> 
-> 803463f8 <tcp_v4_conn_request>:
-> 803463f8:	27bdfe20 	addiu	sp,sp,-480
-> 803463fc:	afb601d8 	sw	s6,472(sp)
-> 80346400:	afb301cc 	sw	s3,460(sp)
-> 80346404:	afb101c4 	sw	s1,452(sp)
-> 80346408:	afbf01dc 	sw	ra,476(sp)
-> 8034640c:	afb501d4 	sw	s5,468(sp)
-> 80346410:	afb401d0 	sw	s4,464(sp)
-> 80346414:	afb201c8 	sw	s2,456(sp)
-> 80346418:	afb001c0 	sw	s0,448(sp)
-> 8034641c:	00a08821 	move	s1,a1
-> 80346420:	8ca50020 	lw	a1,32(a1)
-> 80346424:	8e260028 	lw	a2,40(s1)
-> 80346428:	8e320044 	lw	s2,68(s1)
-> 8034642c:	8ca2000c 	lw	v0,12(a1)
-> 80346430:	00809821 	move	s3,a0
-> 80346434:	0000b021 	move	s6,zero
-> 80346438:	afa201b8 	sw	v0,440(sp)
-> 8034643c:	8cc30064 	lw	v1,100(a2)
-> 80346440:	3c023000 	lui	v0,0x3000
-> 80346444:	00621824 	and	v1,v1,v0
-> 80346448:	14600012 	bnez	v1,80346494 <tcp_v4_conn_request+0x9c>
-> 8034644c:	8cb50010 	lw	s5,16(a1)
->                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> 80346450:	8c840238 	lw	a0,568(a0)
-> 80346454:	8c820004 	lw	v0,4(a0)
-> 80346458:	90830000 	lbu	v1,0(a0)
-> 8034645c:	00621007 	srav	v0,v0,v1
-> 
-> If I print the parameters at label `sigill' in emulate_load_store_insn(), I
-> get:
-> 
->     pc 0x80346448 addr 0x83d9f81e ins 0x14600012
-> 
-> And emulate_load_store_insn() gets confused because 0x14600012 is not a
-> load/store. 0x14600012 is the branch instruction before the load, not the load
-> after the branch instruction! Note that bit 31 of cause (CAUSEF_BD) is not set.
-> Some more investigations showed that the branch is indeed not taken.
-> 
-> Apparently if an unaligned access happens right after a branch which is not
-> taking, epc points to the branch instruction, and CAUSEF_BD is not set
-> (technically speaking, this is not a branch delay, since the branch is not
-> taken :-). Is this expected behavior? The CPU is a VR4120A core.
-> 
-> As a workaround, I assume I can just test whether pc points to a branch
-> instruction, and increment pc if that's the case?
-> 
-> Thanks!
-> 
-> Gr{oetje,eeting}s,
-> 
-> 						Geert
-> 
-> --
-> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-> 
-> In personal conversations with technical people, I call myself a hacker. But
-> when I'm talking to journalists I just say "programmer" or something like that.
-> 							    -- Linus Torvalds
-> 
-> 
+	...
+5:	b	20f
+	nop
+	...
+10:	b	someplace
+20:	instruction-that-causes-exception
+
+If the PC flow goes executions the branch at label 10 and detects
+an exception on the instruction at label 20, EPC should point at
+label 10, and the BD bit in Cause should be set.  However, if the branch
+at label 5, with the nop in its delay slot, goes directly to the
+excepting instruction at label 20, that instruction IS NOT in a
+branch delay slot (remember, it's a dynamic relationship, not a
+static one), so EPC would point at label 20 and the BD bit in cause
+would not be set.
+
+If the patch assumes that one can look backward by one instruction
+in the STATIC code to determine if the instruction is in a
+delay slot, one can not have code that jumps directly to the
+instruction following another branch, as this would cause the
+code to assume that it was in the delay slot of the branch.
+
+This is exactly the reason why the architecture is defined in the
+way that it is.
+
+If anyone has any other questions, let me know.
+
+/gmu
+
+-- 
+
+  =*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=
+  Michael Uhler, VP, Systems, Architecture, and Software Products 
+  MIPS Technologies, Inc.   Email: uhler@mips.com   Pager: uhler_p@mips.com
+  1225 Charleston Road      Voice:  (650)567-5025   FAX:   (650)567-5225
+  Mountain View, CA 94043   Mobile: (650)868-6870   Admin: (650)567-5085

@@ -1,36 +1,45 @@
-Received:  by oss.sgi.com id <S42183AbQJLMzo>;
-	Thu, 12 Oct 2000 05:55:44 -0700
-Received: from u-161.karlsruhe.ipdial.viaginterkom.de ([62.180.18.161]:37127
-        "EHLO u-161.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S42180AbQJLMzT>; Thu, 12 Oct 2000 05:55:19 -0700
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S869441AbQJLEaM>;
-        Thu, 12 Oct 2000 06:30:12 +0200
-Date:   Thu, 12 Oct 2000 06:30:12 +0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Ian Chilton <mailinglist@ichilton.co.uk>
+Received:  by oss.sgi.com id <S42206AbQJLOte>;
+	Thu, 12 Oct 2000 07:49:34 -0700
+Received: from woody.ichilton.co.uk ([216.29.174.40]:31749 "HELO
+        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S42183AbQJLOtM>;
+	Thu, 12 Oct 2000 07:49:12 -0700
+Received: by woody.ichilton.co.uk (Postfix, from userid 0)
+	id 9173A7C75; Thu, 12 Oct 2000 15:48:30 +0100 (BST)
+Date:   Thu, 12 Oct 2000 15:48:30 +0100
+From:   Ian Chilton <mailinglist@ichilton.co.uk>
+To:     Ralf Baechle <ralf@oss.sgi.com>
 Cc:     linux-mips@oss.sgi.com
 Subject: Re: Patches for CVS Glibc, Binutils, GCC
-Message-ID: <20001012063012.A14443@bacchus.dhis.org>
-References: <20001011181738.A22525@woody.ichilton.co.uk>
+Message-ID: <20001012154830.A24509@woody.ichilton.co.uk>
+References: <20001011181738.A22525@woody.ichilton.co.uk> <20001012063012.A14443@bacchus.dhis.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <20001011181738.A22525@woody.ichilton.co.uk>; from mailinglist@ichilton.co.uk on Wed, Oct 11, 2000 at 06:17:38PM +0100
-X-Accept-Language: de,en,fr
+Content-Disposition: inline
+User-Agent: Mutt/1.3.9i
+In-Reply-To: <20001012063012.A14443@bacchus.dhis.org>; from ralf@oss.sgi.com on Thu, Oct 12, 2000 at 06:30:12AM +0200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, Oct 11, 2000 at 06:17:38PM +0100, Ian Chilton wrote:
+Hello,
 
-> 
-> Does anyone have the patches required for the latest CVS glibc/gcc/binutils?
-> 
-> I have the GCC patch from early last week that Ralf sent out, but I don't know whether that is still relevenet, or whether there is a new one etc..
-> 
-> Also I have no patches for glibc / binutils..do I need any?
+> Yes, both need patches.
+ 
+humm...any chance you could have a directory on oss, where you always stick the patches when they are updated...maybe also a text file, with the date it was last changed...
 
-Yes, both need patches.
 
-  Ralf
+Thanks!
+
+
+Bye for Now,
+
+Ian
+
+
+                     \|||/ 
+                     (o o)
+ /----------------ooO-(_)-Ooo----------------\
+ |  Ian Chilton                              |
+ |  E-Mail : ian@ichilton.co.uk              |
+ \-------------------------------------------/

@@ -1,53 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jul 2003 12:49:09 +0100 (BST)
-Received: from p508B6063.dip.t-dialin.net ([IPv6:::ffff:80.139.96.99]:3494
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225214AbTG2LtH>; Tue, 29 Jul 2003 12:49:07 +0100
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h6TBn5x6032724;
-	Tue, 29 Jul 2003 13:49:05 +0200
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h6TBn5VS032723;
-	Tue, 29 Jul 2003 13:49:05 +0200
-Date: Tue, 29 Jul 2003 13:49:04 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: =?us-ascii?B?PT9pc28tODg1OS0xP1E/?= Frank=20F=F6rstemann ?= 
-	<Foerstemann@web.de>
-Cc: linux-mips@linux-mips.org
-Subject: Re: No mouse support for Indy in 2.5.75 ?
-Message-ID: <20030729114904.GA32526@linux-mips.org>
-References: <200307252137.h6PLb6Q01329@mailgate5.cinetic.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jul 2003 13:20:54 +0100 (BST)
+Received: from dvmwest.gt.owl.de ([IPv6:::ffff:62.52.24.140]:64197 "EHLO
+	dvmwest.gt.owl.de") by linux-mips.org with ESMTP
+	id <S8225212AbTG2MUw>; Tue, 29 Jul 2003 13:20:52 +0100
+Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
+	id 3C8F64A8BE; Tue, 29 Jul 2003 14:20:50 +0200 (CEST)
+Date: Tue, 29 Jul 2003 14:20:50 +0200
+From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+To: linux-mips@linux-mips.org
+Subject: Re: CVS Update@-mips.org: linux
+Message-ID: <20030729122050.GJ1873@lug-owl.de>
+Mail-Followup-To: linux-mips@linux-mips.org
+References: <20030729120925Z8225214-1272+3844@linux-mips.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="rwgQ89ZNnFUwFHTC"
 Content-Disposition: inline
-In-Reply-To: <200307252137.h6PLb6Q01329@mailgate5.cinetic.de>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20030729120925Z8225214-1272+3844@linux-mips.org>
+X-Operating-System: Linux mail 2.4.18 
+X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
+X-gpg-key: wwwkeys.de.pgp.net
+User-Agent: Mutt/1.5.4i
+Return-Path: <jbglaw@dvmwest.gt.owl.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2919
+X-archive-position: 2920
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: jbglaw@lug-owl.de
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Jul 25, 2003 at 11:37:06PM +0200, =?iso-8859-1?Q? Frank=20F=F6rstemann ?= wrote:
 
-> I tried kernel version 2.5.75 on my Indy. It works fine with the
-> exception that the mouse in XFree86 does not move. The devices are 
-> available, but event debugging shows no mouse events at all. Are there
-> any special configuration options for the Indy mouse except the ones in
-> the 'input' section ? Dmesg output and kernel configuration are
-> attached.
+--rwgQ89ZNnFUwFHTC
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-We knew there was something wrong in that area; the probe for kbd and mouse
-also takes very long on the Indy.  What worries me more are those
-kernel messages from your log:
+On Tue, 2003-07-29 13:09:21 +0100, ralf@linux-mips.org <ralf@linux-mips.org>
+wrote in message <20030729120925Z8225214-1272+3844@linux-mips.org>:
+>=20
+> CVSROOT:	/home/cvs
+> Module name:	linux
+> Changes by:	ralf@ftp.linux-mips.org	03/07/29 13:09:21
+>=20
+> linux/drivers/media/dvb/ttusb-dec
 
-mount: Exception at [<88113a38>] (88113bf0)
-mount: Exception at [<88113a38>] (88113bf0)
-mount: Exception at [<88113a38>] (88113bf0)
+Are DECstations now shipped with DVB receivers/decoders?
 
-  Ralf
+SCNR, JBG
+
+--=20
+   Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481
+   "Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg
+    fuer einen Freien Staat voll Freier B=FCrger" | im Internet! |   im Ira=
+k!
+      ret =3D do_actions((curr | FREE_SPEECH) & ~(IRAQ_WAR_2 | DRM | TCPA));
+
+--rwgQ89ZNnFUwFHTC
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.2 (GNU/Linux)
+
+iD8DBQE/JmahHb1edYOZ4bsRAsU9AJkBa7owzRScGMhMJ31on06X0k2P/QCePDxz
+/Z0J9eS/odkp4CgFV1qXSPg=
+=+pXk
+-----END PGP SIGNATURE-----
+
+--rwgQ89ZNnFUwFHTC--

@@ -1,60 +1,39 @@
-Received:  by oss.sgi.com id <S554277AbRBZXJm>;
-	Mon, 26 Feb 2001 15:09:42 -0800
-Received: from pigsty.barnyard.co.uk ([195.149.50.58]:6409 "EHLO
-        pigsty.barnyard.co.uk") by oss.sgi.com with ESMTP
-	id <S554270AbRBZXJ2>; Mon, 26 Feb 2001 15:09:28 -0800
-Received: (from david@localhost)
-	by pigsty.barnyard.co.uk (8.11.0/8.11.0) id f1QN7qw20327
-	for linux-mips@oss.sgi.com; Mon, 26 Feb 2001 23:07:52 GMT
-X-Authentication-Warning: pigsty.barnyard.co.uk: david set sender to david@cantrell.org.uk using -f
-Date:   Mon, 26 Feb 2001 23:07:52 +0000
-From:   David Cantrell <david@cantrell.org.uk>
-To:     linux-mips@oss.sgi.com
-Subject: Re: RedHat 7.0 ?
-Message-ID: <20010226230750.A19551@pigsty.barnyard.co.uk>
-References: <3A71B011.4B82F6C3@mips.com> <20010127105409.E867@bacchus.dhis.org> <3A9A7A21.F6CE24CB@mips.com>
+Received:  by oss.sgi.com id <S554276AbRBZXlM>;
+	Mon, 26 Feb 2001 15:41:12 -0800
+Received: from deliverator.sgi.com ([204.94.214.10]:34395 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S553847AbRBZXlA>;
+	Mon, 26 Feb 2001 15:41:00 -0800
+Received: from sydney.sydney.sgi.com (sydney.sydney.sgi.com [134.14.48.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via SMTP id PAA11895
+	for <linux-mips@oss.sgi.com>; Mon, 26 Feb 2001 15:39:55 -0800 (PST)
+	mail_from (kaos@melbourne.sgi.com)
+Received: from kao2.melbourne.sgi.com by sydney.sydney.sgi.com via ESMTP (950413.SGI.8.6.12/930416.SGI)
+	 id KAA08771; Tue, 27 Feb 2001 10:39:32 +1100
+X-Mailer: exmh version 2.1.1 10/15/1999
+From:   Keith Owens <kaos@melbourne.sgi.com>
+To:     michaels@jungo.com
+cc:     linux-mips@oss.sgi.com
+Subject: Re: ELF header kernel module wrong? 
+In-reply-to: Your message of "Mon, 26 Feb 2001 13:17:42 +0200."
+             <3A9A3B56.B0141D21@jungo.com> 
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-md5;
-	protocol="application/pgp-signature"; boundary="oyUTqETQ0mS9luUI"
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <3A9A7A21.F6CE24CB@mips.com>; from carstenl@mips.com on Mon, Feb 26, 2001 at 04:45:37PM +0100
-X-public-key-is-at: http://www.cantrell.org.uk/david/public-key.txt
+Content-Type: text/plain; charset=us-ascii
+Date:   Tue, 27 Feb 2001 10:39:39 +1100
+Message-ID: <23954.983230779@kao2.melbourne.sgi.com>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+On Mon, 26 Feb 2001 13:17:42 +0200, 
+michaels@jungo.com wrote:
+>If what you say is correct, then any module created by this toolchain
+>would be impossible to 'insmod'
 
---oyUTqETQ0mS9luUI
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Not impossible, just silently corrupted if the symbol numbers were
+wrong.  modutils 2.3.11 added a sanity check on the number of local
+symbols, a version before 2.3.11 would accept any local symbol number
+and overrun the allocated table if the number was out of bounds.
 
-On Mon, Feb 26, 2001 at 04:45:37PM +0100, Carsten Langgaard wrote:
-
-> Any progress on the RH7.0 easy installer ?
-
-Are we talking a bootable CD?  If so, I'd *kill* for it!
-
---=20
-David Cantrell | root@alphacomplex.org | http://www.cantrell.org.uk/david/
-
-   Any technology distinguishable from magic is insufficiently advanced
-
-** I read encrypted mail first, so encrypt if your message is important **
-
---oyUTqETQ0mS9luUI
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.2 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iD8DBQE6muHGQmE+qbO4leURAqWjAKCXwH0Ux0vXFtyZVL1yDbJlIVUoewCeMfVP
-0AUqiERMfSb+OOzj2htIdIg=
-=Jwdi
------END PGP SIGNATURE-----
-
---oyUTqETQ0mS9luUI--
+Sometimes the toolchain creates valid symbol numbers, sometimes an
+invalid number will not cause any problems.  It is pure luck if it
+works.

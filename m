@@ -1,74 +1,91 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA43582 for <linux-archive@neteng.engr.sgi.com>; Sat, 29 May 1999 16:42:49 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA42352 for <linux-archive@neteng.engr.sgi.com>; Sat, 29 May 1999 16:42:49 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id QAA34620
+	id QAA44289
 	for linux-list;
-	Sat, 29 May 1999 16:41:22 -0700 (PDT)
+	Sat, 29 May 1999 16:40:23 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id QAA90150
-	for <linux@engr.sgi.com>;
-	Sat, 29 May 1999 16:41:19 -0700 (PDT)
+	via ESMTP id QAA03307
+	for <linux@cthulhu.engr.sgi.com>;
+	Sat, 29 May 1999 16:40:20 -0700 (PDT)
 	mail_from (ralf@lappi.waldorf-gmbh.de)
 Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1] (may be forged)) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id QAA02272
-	for <linux@engr.sgi.com>; Sat, 29 May 1999 16:41:18 -0700 (PDT)
+	via ESMTP id QAA01076
+	for <linux@cthulhu.engr.sgi.com>; Sat, 29 May 1999 16:40:18 -0700 (PDT)
 	mail_from (ralf@lappi.waldorf-gmbh.de)
 Received: from lappi.waldorf-gmbh.de (cacc-23.uni-koblenz.de [141.26.131.23])
-	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id BAA20787
-	for <linux@engr.sgi.com>; Sun, 30 May 1999 01:41:15 +0200 (MET DST)
+	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id BAA20742
+	for <linux@cthulhu.engr.sgi.com>; Sun, 30 May 1999 01:40:14 +0200 (MET DST)
 Received: (from ralf@localhost)
-	by lappi.waldorf-gmbh.de (8.9.3/8.8.7) id QAA01533;
-	Sat, 29 May 1999 16:51:47 +0200
-Date: Sat, 29 May 1999 16:51:47 +0200
+	by lappi.waldorf-gmbh.de (8.9.3/8.8.7) id RAA01551;
+	Sat, 29 May 1999 17:00:58 +0200
+Date: Sat, 29 May 1999 17:00:58 +0200
 From: Ralf Baechle <ralf@uni-koblenz.de>
-To: "Vladimir A. Roganov" <roganov@niisi.msk.ru>
-Cc: linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
-        linux-mips@vger.rutgers.edu
-Subject: Re: Platform-independent hack in ptrace.c
-Message-ID: <19990529165147.B1517@uni-koblenz.de>
-References: <374D37E6.59A6A9F3@niisi.msk.ru> <19990527212654.A4058@uni-koblenz.de> <374E5FB1.D3860089@niisi.msk.ru>
+To: Pete Young <pete@alien.bt.co.uk>
+Cc: linux@cthulhu.engr.sgi.com
+Subject: Re: glib (Was Re: X server update, observations on a successful installation)
+Message-ID: <19990529170058.C1517@uni-koblenz.de>
+References: <m10nNOH-001kwNC@mail.alien.bt.co.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 X-Mailer: Mutt 0.95.4us
-In-Reply-To: <374E5FB1.D3860089@niisi.msk.ru>; from Vladimir A. Roganov on Fri, May 28, 1999 at 01:19:45PM +0400
+In-Reply-To: <m10nNOH-001kwNC@mail.alien.bt.co.uk>; from Pete Young on Fri, May 28, 1999 at 03:14:23PM +0100
 X-Accept-Language: de,en,fr
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Fri, May 28, 1999 at 01:19:45PM +0400, Vladimir A. Roganov wrote:
+On Fri, May 28, 1999 at 03:14:23PM +0100, Pete Young wrote:
 
-> We implemented it by very interesting reason: old Baget uses special
-> VIC register which exists on bus only (!!!) when interrupt is active.
-> But interrupt can be deactivated by external reason. In such case
-> IRQ handler catch SIGBUS, what crashes current process.
+> > This happens because we use an old version of net-tools in HardHat but
+> > use a current kernel.  It's harmless however.  The solution is to
+> > upgrade net-tools.
 > 
-> It was overwritten twice, and it looks debugged hardly :-)
-> May be it can help here.
-> 
-> > The other bug is that memory accesses via ptrace for virtual addresses
-> > which are uncached would be executed cached, trouble ahead.
-> 
-> YES, we obtained such effect.
-> To avoid it we just moved to physical address space (high bits are ignored),
-> but it is not good in general.
-> 
-> > Further complexity is added by handling write buffers for the R3000 and
-> > virtual coherency for R4000.
->
-> Yes, it should be tried to be fixed once for every arch.
+> Pulled down version 1.51 source from our nearest RedHat mirror and built
+> it. Still 2 routes to the local subnet. Editing
+> /etc/sysconfig/network-scripts/ipup and commenting out the route bit stops
+> it, but also removes the route to lo0. Not sure which is worse.
 
-That means we need something like read_phys() and write_phys() for all
-CPU variants, even board variations.  The functions needs to get passed
-an virtual address as well such that it can deal with virtual coherency
-on R4000.
+Well, my advice was not complete.  Why upgrading net-tools is necessary you
+also have to upgrade /sbin/ifup to a newer version.  The problem's cause is
+that Linux 2.2 adds a route to every interface automatically.  The ifup
+script then adds another route ...
 
-Then again R10k does this in hardware, so why bother ;-)
+> On a slightly different note, has anyone succeeded in building glib ?
+
+Me :-)
+
+> I'm attempting to build glib-1.2.1   Compilation keels over in
+> testgthread complaining about undefined references to various pthread
+> functions:
+> 
+> gcc -g -O2 -Wall -D_REENTRANT -o .libs/testgthread testgthread.o 
+> ../.libs/libglib.so .libs/libgthread.so -Wl,--rpath -Wl,/usr/local/lib
+> testgthread.o: In function `new_thread':
+> /usr/src/redhat/SOURCES/glib-1.2.1/gthread/testgthread.c:89: undefined reference 
+> to `pthread_create'
+> testgthread.o: In function `test_private':
+> /usr/src/redhat/SOURCES/glib-1.2.1/gthread/testgthread.c:197: undefined 
+> reference to `pthread_join'
+> .libs/libgthread.so: undefined reference to `pthread_getspecific'
+> .libs/libgthread.so: undefined reference to `pthread_key_create'
+> .libs/libgthread.so: undefined reference to `pthread_mutex_trylock'
+> .libs/libgthread.so: undefined reference to `pthread_cond_timedwait'
+> .libs/libgthread.so: undefined reference to `pthread_setspecific'
+> collect2: ld returned 1 exit status
+> make[2]: *** [testgthread] Error 1
+> 
+> Any suggestions welcomed. 
+
+The program should be linked against libpthread, so the above link command
+lacks the -lpthread option.  The question is now, why.  I think this happens
+due to a bug which has been fixed in the meantime.  Please try to upgrade to
+the libc from the Redhat 5.2 directory, does rebuilding work them?
 
   Ralf

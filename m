@@ -1,71 +1,123 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 May 2003 20:08:43 +0100 (BST)
-Received: from p508B7184.dip.t-dialin.net ([IPv6:::ffff:80.139.113.132]:5573
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225255AbTEITIl>; Fri, 9 May 2003 20:08:41 +0100
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h49J8Rts012279;
-	Fri, 9 May 2003 21:08:27 +0200
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h49J8NtE012278;
-	Fri, 9 May 2003 21:08:23 +0200
-Date: Fri, 9 May 2003 21:08:23 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Keith M Wesolowski <wesolows@foobazco.org>
-Cc: Ladislav Michl <ladis@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] Highmem detection for Indigo2
-Message-ID: <20030509190823.GA29398@linux-mips.org>
-References: <20030428071639.GA7578@simek> <20030508061117.GA30191@foobazco.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 May 2003 20:45:55 +0100 (BST)
+Received: from nx5.HRZ.Uni-Dortmund.DE ([IPv6:::ffff:129.217.131.21]:44484
+	"EHLO nx5.hrz.uni-dortmund.de") by linux-mips.org with ESMTP
+	id <S8225255AbTEITpw>; Fri, 9 May 2003 20:45:52 +0100
+Received: from unimail.uni-dortmund.de (mx1.HRZ.Uni-Dortmund.DE [129.217.128.51])
+	by nx5.hrz.uni-dortmund.de (Postfix) with ESMTP id 7F78D4AA626
+	for <linux-mips@linux-mips.org>; Fri,  9 May 2003 21:45:51 +0200 (MET DST)
+Received: from linuxpc1 (p508EFA07.dip.t-dialin.net [80.142.250.7])
+	(authenticated (0 bits))
+	by unimail.uni-dortmund.de (8.12.9+Sun/8.11.6) with ESMTP id h49JjhtC015886
+	(using TLSv1/SSLv3 with cipher RC4-MD5 (128 bits) verified NOT)
+	for <linux-mips@linux-mips.org>; Fri, 9 May 2003 21:45:44 +0200 (MEST)
+From: Benjamin =?iso-8859-1?q?Menk=FCc?= <benmen@gmx.de>
+Reply-To: menkuec@auto-intern.com
+To: linux-mips@linux-mips.org
+Subject: compiling glibc
+Date: Fri, 9 May 2003 21:45:43 +0200
+User-Agent: KMail/1.5.1
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <20030508061117.GA30191@foobazco.org>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Message-Id: <200305092145.43690.benmen@gmx.de>
+X-MailScanner-Information: UniDo-UniMail
+X-MailScanner: Found to be clean
+Return-Path: <benmen@gmx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2327
+X-archive-position: 2328
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: benmen@gmx.de
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, May 07, 2003 at 11:11:17PM -0700, Keith M Wesolowski wrote:
+Hi,
 
-> > Following patch builds whole RAM map based of MC's memory configuration
-> > registers, does some samity checks adds high system memory (if any) to
-> > bootmem.
-> 
-> > +static void init_bootmem(void)
-> ...
-> > +	init_bootmem();
-> 
-> This is a pretty unfortunate choice of names for this function.  See
-> mm/bootmem.c.
-> 
-> Other than that, your patch works fine for me; my Indy has 192MB
-> memory and it's detected properly.  I do get an oops in do_be from
-> xdm, but I get that without the patch also.
-> 
-> Determined physical RAM map:
->  memory: 00001000 @ 00000000 (reserved)
->  memory: 00001000 @ 00001000 (reserved)
->  memory: 001e1000 @ 08002000 (reserved)
->  memory: 0055d000 @ 081e3000 (usable)
->  memory: 000c0000 @ 08740000 (ROM data)
->  memory: 0b800000 @ 08800000 (usable)
-> 
-> I need to do the same kind of thing for ip32 as the ARC memory
-> detection has the same shortcoming on that platform.  No sense having
-> a machine support 1GB memory and only looking for 256MB of it,
-> especially in a 64-bit kernel.  ARC[S] really does seem to be useless.
+I cross-compiled binutils 2.13 and gcc-3.2.3 successfully for mips.
 
-That's what I'm saying since '94.  ARC was a commitee approach of the
-ACE consortium which soon died.  The firmware part of the ARC standard
-was also published as the Microsoft Portable Bootloader Standard but
-Today every ARC implementation has some major deviations from the
-standard rendering the term standard into nothing but a cynic demonation ...
+[benmen@linuxpc1 mipsel-glibc] LD_LIBRARY_PATH="" CFLAGS="-O2 -g 
+-finline-limit=10000" ../glibc-2.3.2/configure --build=i686-linux 
+--host=mipsel-linux --enable-add-ons --prefix=/home/benmen/mipsel
 
-  Ralf
+...
+
+When I try to compile glibc I get this error:
+
+[benmen@linuxpc1 mipsel-glibc] make
+make -r PARALLELMFLAGS="" CVSOPTS="" -C ../glibc-2.3.2 objdir=`pwd` all
+...
+make[2]: Leaving directory `/home/benmen/mips/glibc-2.3.2/csu'
+make[2]: Entering directory `/home/benmen/mips/glibc-2.3.2/csu'
+gcc ../sysdeps/unix/sysv/linux/init-first.c -c -std=gnu99 -O2 -Wall -Winline 
+-Wstrict-prototypes -Wwrite-strings -finline-limit=10000 -g      -I../include 
+-I. -I/home/benmen/mips/mipsel-glibc/csu -I.. -I../libio  
+-I/home/benmen/mips/mipsel-glibc -I../sysdeps/mips/elf 
+-I../linuxthreads/sysdeps/unix/sysv/linux/mips 
+-I../linuxthreads/sysdeps/unix/sysv/linux -I../linuxthreads/sysdeps/pthread 
+-I../sysdeps/pthread -I../linuxthreads/sysdeps/unix/sysv 
+-I../linuxthreads/sysdeps/unix -I../linuxthreads/sysdeps/mips 
+-I../sysdeps/unix/sysv/linux/mips -I../sysdeps/unix/sysv/linux 
+-I../sysdeps/gnu -I../sysdeps/unix/common -I../sysdeps/unix/mman 
+-I../sysdeps/unix/inet -I../sysdeps/unix/sysv -I../sysdeps/unix/mips 
+-I../sysdeps/unix -I../sysdeps/posix -I../sysdeps/mips/mipsel 
+-I../sysdeps/mips/fpu -I../sysdeps/mips -I../sysdeps/wordsize-32 
+-I../sysdeps/ieee754/flt-32 -I../sysdeps/ieee754/dbl-64 -I../sysdeps/ieee754 
+-I../sysdeps/generic/elf -I../sysdeps/generic   -D_LIBC_REENTRANT -include 
+../include/libc-symbols.h       -DHAVE_INITFINI -o 
+/home/benmen/mips/mipsel-glibc/csu/init-first.o
+In file included from ../linuxthreads/descr.h:42,
+                 from ../linuxthreads/internals.h:29,
+                 from ../linuxthreads/sysdeps/pthread/bits/libc-lock.h:27,
+                 from ../sysdeps/generic/ldsodefs.h:38,
+                 from ../sysdeps/unix/sysv/linux/ldsodefs.h:25,
+                 from ../sysdeps/mips/elf/ldsodefs.h:25,
+                 from ../sysdeps/unix/sysv/linux/init-first.c:30:
+../linuxthreads/sysdeps/mips/pt-machine.h:48: invalid register name for 
+`stack_pointer'
+In file included from ../sysdeps/unix/sysv/linux/mips/sys/procfs.h:29,
+                 from ../linuxthreads_db/proc_service.h:20,
+                 from ../linuxthreads_db/thread_dbP.h:7,
+                 from ../linuxthreads/descr.h:43,
+                 from ../linuxthreads/internals.h:29,
+                 from ../linuxthreads/sysdeps/pthread/bits/libc-lock.h:27,
+                 from ../sysdeps/generic/ldsodefs.h:38,
+                 from ../sysdeps/unix/sysv/linux/ldsodefs.h:25,
+                 from ../sysdeps/mips/elf/ldsodefs.h:25,
+                 from ../sysdeps/unix/sysv/linux/init-first.c:30:
+../sysdeps/unix/sysv/linux/mips/sys/user.h:26:21: asm/reg.h: Datei oder 
+Verzeichnis nicht gefunden
+In file included from ../sysdeps/unix/sysv/linux/mips/sys/procfs.h:29,
+                 from ../linuxthreads_db/proc_service.h:20,
+                 from ../linuxthreads_db/thread_dbP.h:7,
+                 from ../linuxthreads/descr.h:43,
+                 from ../linuxthreads/internals.h:29,
+                 from ../linuxthreads/sysdeps/pthread/bits/libc-lock.h:27,
+                 from ../sysdeps/generic/ldsodefs.h:38,
+                 from ../sysdeps/unix/sysv/linux/ldsodefs.h:25,
+                 from ../sysdeps/mips/elf/ldsodefs.h:25,
+                 from ../sysdeps/unix/sysv/linux/init-first.c:30:
+../sysdeps/unix/sysv/linux/mips/sys/user.h:30: `EF_SIZE' undeclared here (not 
+in a function)
+../sysdeps/unix/sysv/linux/mips/sys/user.h:41: confused by earlier errors, 
+bailing out
+make[2]: *** [/home/benmen/mips/mipsel-glibc/csu/init-first.o] Fehler 1
+make[2]: Leaving directory `/home/benmen/mips/glibc-2.3.2/csu'
+make[1]: *** [csu/subdir_lib] Fehler 2
+make[1]: Leaving directory `/home/benmen/mips/glibc-2.3.2'
+make: *** [all] Fehler 2
+Verzeichnis: ~/mips/mipsel-glibc
+[benmen@linuxpc1 mipsel-glibc]
+
+The headers including asm/reg.h are located in /home/benmen/mipsel/include ...
+the mipsel-linux-gcc + binutils stuff is in /home/benmen/mipsel/bin ...
+
+Thanks for Your help.
+
+regards,
+
+Ben

@@ -1,50 +1,49 @@
-Received:  by oss.sgi.com id <S554106AbRA2AJe>;
-	Sun, 28 Jan 2001 16:09:34 -0800
-Received: from deliverator.sgi.com ([204.94.214.10]:52570 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S554102AbRA2AJP>;
-	Sun, 28 Jan 2001 16:09:15 -0800
-Received: from dhcp-163-154-5-240.engr.sgi.com (dhcp-163-154-5-240.engr.sgi.com [163.154.5.240]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id QAA16856
-	for <linux-mips@oss.sgi.com>; Sun, 28 Jan 2001 16:08:16 -0800 (PST)
-	mail_from (ralf@oss.sgi.com)
-Received: (ralf@lappi.waldorf-gmbh.de) by bacchus.dhis.org
-	id <S869667AbRA2AFS>; Sun, 28 Jan 2001 16:05:18 -0800
-Date: 	Sun, 28 Jan 2001 16:05:18 -0800
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Mike McDonald <mikemac@mikemac.com>
-Cc:     linux-mips@oss.sgi.com
+Received:  by oss.sgi.com id <S553803AbRA2Io6>;
+	Mon, 29 Jan 2001 00:44:58 -0800
+Received: from mail.sonytel.be ([193.74.243.200]:41607 "EHLO mail.sonytel.be")
+	by oss.sgi.com with ESMTP id <S553740AbRA2Io2>;
+	Mon, 29 Jan 2001 00:44:28 -0800
+Received: from escobaria.sonytel.be (escobaria.sonytel.be [10.34.80.3])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id JAA25389;
+	Mon, 29 Jan 2001 09:44:08 +0100 (MET)
+Date:   Mon, 29 Jan 2001 09:44:08 +0100 (MET)
+From:   Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
+To:     Ralf Baechle <ralf@oss.sgi.com>
+cc:     "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+        Florian Lohoff <flo@rfc822.org>,
+        Pete Popov <ppopov@mvista.com>, linux-mips@oss.sgi.com
 Subject: Re: Cross compiling RPMs
-Message-ID: <20010128160518.E4287@bacchus.dhis.org>
-References: <20010128041025.C4287@bacchus.dhis.org> <200101281745.JAA25600@saturn.mikemac.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <200101281745.JAA25600@saturn.mikemac.com>; from mikemac@mikemac.com on Sun, Jan 28, 2001 at 09:45:39AM -0800
-X-Accept-Language: de,en,fr
+In-Reply-To: <20010128160242.D4287@bacchus.dhis.org>
+Message-ID: <Pine.GSO.4.10.10101290943380.17039-100000@escobaria.sonytel.be>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Sun, Jan 28, 2001 at 09:45:39AM -0800, Mike McDonald wrote:
-
-> >>   I was thinking of what the MINIMUM set of RPMs you needed installed
-> >> so you could bootstrap a system up from sources, not what's the
-> >> minimum needed to recompile any arbitrary RPM.
-> >
-> >Really depends on what you want to do.  Many packages detect other packages
-> >or features of other packages.  This builds a big evil network of
-> >dependencies which make bootstrapping somewhat hard.  It's a good idea to
-> >start with an as complete installation as possible.
+On Sun, 28 Jan 2001, Ralf Baechle wrote:
+> On Sun, Jan 28, 2001 at 07:30:40PM +0100, Geert Uytterhoeven wrote:
+> > > I recently was told there is some m68k VME system out there which needs
+> > > approx. 3 days to rebuild it's kernel.
+> > 
+> > Since even my 25 MHz 68040 only ca. 6 hours to build a complete 2.4.0 kernel
+> > (incl. lots of modules) these days, that's probably an underclocked 68020 or
+> > so?:-)
 > 
->   I want to do just the opposite. I want to start with the minimum set
-> of installed binaries and build a complete binary distribution from
-> its sources. (That means finding the root of the dependency graph and
-> starting there, assuming there actually is one. It isn't necessarily a
-> single rpm. People like to make circular dependancies!)
+> It's a memory starved '030.
+> 
+> Reminds me of my good old Amiga.  Anybody got me a power supply for it, I
+> feel like reactiviting it :-)
 
-Rpm is a particularly sucky self dependency.  One generation of rpm
-inherits certain settings from it's ancestor so bootstrapping only from
-sources is a royally sucky.
+What kind of Amiga was it? If it was an A3000, you may get a PSU from Jes,
+since he's in 110V country now.
 
-  Ralf
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven ------------- Sony Software Development Center Europe (SDCE)
+Geert.Uytterhoeven@sonycom.com ------------------- Sint-Stevens-Woluwestraat 55
+Voice +32-2-7248626 Fax +32-2-7262686 ---------------- B-1130 Brussels, Belgium

@@ -1,75 +1,83 @@
-Received:  by oss.sgi.com id <S42308AbQHVP4T>;
-	Tue, 22 Aug 2000 08:56:19 -0700
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:26679 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S42304AbQHVPzy>; Tue, 22 Aug 2000 08:55:54 -0700
-Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id JAA02807
-	for <linux-mips@oss.sgi.com>; Tue, 22 Aug 2000 09:02:10 -0700 (PDT)
-	mail_from (shm@cthulhu.engr.sgi.com)
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id IAA28242 for <linux-mips@oss.sgi.com>; Tue, 22 Aug 2000 08:55:23 -0700 (PDT)
-Received: from tantrik.engr.sgi.com (tantrik.engr.sgi.com [130.62.52.189])
+Received:  by oss.sgi.com id <S42313AbQHVQ3J>;
+	Tue, 22 Aug 2000 09:29:09 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:34319 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42304AbQHVQ3A>;
+	Tue, 22 Aug 2000 09:29:00 -0700
+Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id JAA22613
+	for <linux-mips@oss.sgi.com>; Tue, 22 Aug 2000 09:21:23 -0700 (PDT)
+	mail_from (ehab@aia067.aia.rwth-aachen.de)
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id IAA95466;
-	Tue, 22 Aug 2000 08:53:50 -0700 (PDT)
-	mail_from (shm@cthulhu.engr.sgi.com)
-Received: from localhost (shm@localhost) by tantrik.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id IAA64683; Tue, 22 Aug 2000 08:53:49 -0700 (PDT)
-Date:   Tue, 22 Aug 2000 08:53:49 -0700
-From:   Shrijeet Mukherjee <shm@cthulhu.engr.sgi.com>
-cc:     linux-fbdev@vuser.vu.union.edu,
+	via ESMTP id JAA22893;
+	Tue, 22 Aug 2000 09:28:41 -0700 (PDT)
+	mail_from (ehab@aia067.aia.RWTH-Aachen.DE)
+Received: from aia067.aia.RWTH-Aachen.DE (aia067.aia.RWTH-Aachen.DE [134.130.140.67]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id JAA01932; Tue, 22 Aug 2000 09:28:37 -0700 (PDT)
+	mail_from (ehab@aia067.aia.RWTH-Aachen.DE)
+Received: from localhost (localhost [[UNIX: localhost]])
+	by aia067.aia.RWTH-Aachen.DE (8.9.3/8.9.3/SuSE Linux 8.9.3-0.1) id SAA08887;
+	Tue, 22 Aug 2000 18:28:30 +0200
+From:   Ehab Fares <ehab@aia.rwth-aachen.de>
+To:     Shrijeet Mukherjee <shm@cthulhu.engr.sgi.com>
+Subject: Re: [linux-fbdev] SGI VW 540, fbdev... and other stuff
+Date:   Tue, 22 Aug 2000 17:59:43 +0200
+X-Mailer: KMail [version 1.0.28]
+Content-Type: text/plain
+Cc:     linux-fbdev@vuser.vu.union.edu,
         Linux porting team <linux@cthulhu.engr.sgi.com>
-Subject: Re: [linux-fbdev] SGI VW 540, fbdev and pot pourii of faults and
- evidence..:-)
-In-Reply-To: <Pine.LNX.4.10.10008221138450.664-100000@maxwell.futurevision.com>
-Message-ID: <Pine.SGI.4.21.0008220847450.264415-100000@tantrik.engr.sgi.com>
+References: <Pine.SGI.4.21.0008220847450.264415-100000@tantrik.engr.sgi.com>
+In-Reply-To: <Pine.SGI.4.21.0008220847450.264415-100000@tantrik.engr.sgi.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-To:     unlisted-recipients:; (no To-header on input)
+Message-Id: <00082218283000.08755@aia067>
+Content-Transfer-Encoding: 8bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, 22 Aug 2000, James Simmons wrote:
+On Tue, 22 Aug 2000, Shrijeet Mukherjee wrote:
+> Well as I have tried to explain in the past the situation is not as cut
+> and dry as all that. For most hardware systems, well written driver code
+> is a good place to start. (in fact al of the internal port to linux for
+> the 320 was done without formal docs, or the engg's to talk to)
+> 
+> The real problem is that the 320 gfx family uses a SGI style
+> high-performance which is different from the AGP style approach that the
+> other guys use. Porting this to linux .. or more than knowing how the
+> hardware works .. since we need to port a very complicated mechanism, for
+> which linux may not have obvious and ready replacements.
+> 
+> On top of that .. there are potentially Intellectual Property issues with
+> the management style. Thus the concerns with just releasing the specs.
+> 
+> Since this is a recurring question, are there people on this list that are
+> personally motivated to try and port this system over ?
+> 
+We are using a 540 system with the top configuration (4 processors, 2GB Ram and
+the flat panel 1600SW). We are certainly motivated to get linux and the
+X-Server working  poperly. As already posted in this mailing list the X-server
+is not the only problem. I therefore would suggest to start collecting all the
+problems that should be solved and look for people interested in working on
+the port.  
 
-JS>> I don't speak for SGI, but in the past I think they said that the
-JS>> specs basically do not exist in a releasable form.  Basically, the
-JS>> hardware developers and software developers worked in the same hallway
-JS>> and the development was of the form "hey Joe, how do I program the
-JS>> zapbot to do foobaz?"
-JS>
-JS>Actually you are right. The lack of docs internally in SGI has caused this
-JS>problem. This also has had the bad side effect of when they lose a
-JS>critical employee then no one else has a clue on how it program it. You
-JS>have to start from scratch. 
-JS>
+The problems we have are:
+1) new kernels simply wouldn'[t boot the machine. I got the machine working
+with  the 2.2.10 patched kernel. All the four processors are working.
+2) We have only 960 MB Ram of the installed 2GB working.
+3) strange behaviour of the keyboard.
+4) the parallel port is not working. (we haven't tested the rest of the ports)
+5) very poor X performance with hangs every now and then which is probably
+because of the X-Server.
 
-Well as I have tried to explain in the past the situation is not as cut
-and dry as all that. For most hardware systems, well written driver code
-is a good place to start. (in fact al of the internal port to linux for
-the 320 was done without formal docs, or the engg's to talk to)
+Are there other people having similar or other problems and interested in
+solving them? Is there anyone who have the experience or knowledge of that
+system (and linux) who can help?
 
-The real problem is that the 320 gfx family uses a SGI style
-high-performance which is different from the AGP style approach that the
-other guys use. Porting this to linux .. or more than knowing how the
-hardware works .. since we need to port a very complicated mechanism, for
-which linux may not have obvious and ready replacements.
+I personally would like to help but need some information and
+details as I'm not a kernel hacker. 
 
-On top of that .. there are potentially Intellectual Property issues with
-the management style. Thus the concerns with just releasing the specs.
-
-Since this is a recurring question, are there people on this list that are
-personally motivated to try and port this system over ?
-
-Std Disclaimer: I am not speaking for SGI .. all opinions expressed here
-and mine and mine alone.
-
-Thanx
-
--- 
---------------------------------------------------------------------------
-Shrijeet Mukherjee,    		        Advanced Graphics, SGI
-http://reality.sgi.com/shm_engr     	phone: 650-933-5312
-email: shm@sgi.com, shrijeet@hotmail.com
---------------------------------------------------------------------------
-Where there is a will, there is a way. If a way cannot be found, 
-it is the will that is suspect ..                                   -- shm 
+Ehab.

@@ -1,96 +1,41 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4DIXQnC006993
-	for <linux-mips-outgoing@oss.sgi.com>; Mon, 13 May 2002 11:33:26 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4DLrAnC014952
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 13 May 2002 14:53:10 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4DIXQL9006992
-	for linux-mips-outgoing; Mon, 13 May 2002 11:33:26 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4DLrA5D014951
+	for linux-mips-outgoing; Mon, 13 May 2002 14:53:10 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from sentinel.sanera.net (ns1.sanera.net [208.253.254.10])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4DIXInC006989
-	for <linux-mips@oss.sgi.com>; Mon, 13 May 2002 11:33:18 -0700
-Received: from icarus.sanera.net (icarus [192.168.254.11])
-	by sentinel.sanera.net (8.11.2/8.11.2) with ESMTP id g4DIXW006620;
-	Mon, 13 May 2002 11:33:32 -0700
-Received: from exceed1.sanera.net (exceed1.sanera.net [172.16.2.31])
-	by icarus.sanera.net (8.11.6/8.11.6) with SMTP id g4DIXRT21466;
-	Mon, 13 May 2002 11:33:27 -0700
-Message-Id: <200205131833.g4DIXRT21466@icarus.sanera.net>
-Date: Mon, 13 May 2002 11:33:27 -0700 (PDT)
-From: Krishna Kondaka <krishna@Sanera.net>
-Reply-To: Krishna Kondaka <krishna@Sanera.net>
-Subject: Re: Is this a /proc or kernel bug? (more info...)
-To: flo@rfc822.org
-Cc: linux-mips@oss.sgi.com
+Received: from dtla2.teknuts.com (adsl-66-125-62-110.dsl.lsan03.pacbell.net [66.125.62.110])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4DLr8nC014948
+	for <linux-mips@oss.sgi.com>; Mon, 13 May 2002 14:53:08 -0700
+Received: from whrrusek (whnat1.weiderpub.com [65.115.104.67])
+	(authenticated)
+	by dtla2.teknuts.com (8.11.3/8.10.1) with ESMTP id g4DLrSn03080
+	for <linux-mips@oss.sgi.com>; Mon, 13 May 2002 14:53:28 -0700
+From: "Robert Rusek" <rrusek@teknuts.com>
+To: <linux-mips@oss.sgi.com>
+Subject: dump/Restore issues on Indy
+Date: Mon, 13 May 2002 14:53:26 -0700
+Message-ID: <C0F41630CD8B9C4680F2412914C1CF070164C9@WH-EXCHANGE1.AD.WEIDERPUB.COM>
 MIME-Version: 1.0
-Content-Type: TEXT/plain; charset=us-ascii
-Content-MD5: jKWVtFz27WkEbVsnIesOKA==
-X-Mailer: dtmail 1.3.0 @(#)CDE Version 1.4.2 SunOS 5.8 sun4u sparc 
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook, Build 10.0.3416
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4910.0300
+Importance: Normal
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Thanks for the reply florian!
+I am having problems doing a restore after a dump.  The dump finishes
+without any problems.  I get an invalid header when doing a restore.
+When I use tar it works great so I know that it is not a hardware
+problem.  I have compiled the lates dump/restore and ef2progs.  
 
-I think I was able to fix this problem by writing the code differently.
-Initially I copied some code from the existing proc_read routines but they
-are assuming a maximum of page size, in this case 4K.
+Any help would be greatly appreciated.
 
-I have modified the my proc read code as below, and it seem to work fine!
-
-static int
-mydriver_proc_read(char *page, char **start, off_t off, int count, int *eof
-void *d)
-{
-	uint32_t pos, len, i;
-	
-	len = MIN(count, (SIZE-off));
-	pos = (off & (PAGE_SIZE-1));
-
-	if (len > 0) {
-		for (i = 0; i < len; i++)
-			page[pos+i] = ' ' + i % 64;
-		*start = page + (off & (PAGE_SIZE-1));
-	} else {
-		len = 0;
-		*eof = 0;
-	}
-}
-	
-I am assuming that (off & (PAGE_SIZE-1)) + count <= PAGE_SIZE, which seems
-to be the case always during my testing.
-
-
-Krishna
-
->X-Authentication-Warning: oss.sgi.com: mail owned process doing -bs
->X-Authentication-Warning: oss.sgi.com: majordomo set sender to 
-owner-linux-mips@oss.sgi.com using -f
->Date: Sun, 12 May 2002 15:36:56 +0200
->From: Florian Lohoff <flo@rfc822.org>
->To: Krishna Kondaka <krishna@Sanera.net>
->Cc: linux-mips@oss.sgi.com
->Subject: Re: Is this a /proc or kernel bug? (more info...)
->Mime-Version: 1.0
->Content-Disposition: inline
->User-Agent: Mutt/1.3.28i
->
->On Wed, May 08, 2002 at 08:28:32PM -0700, Krishna Kondaka wrote:
->> The above function works fine as long as the SIZE is lessthan 4K. If SIZE is
->> greater than 4K then some times I see the following kernel panic when
->> I try to do "cat /proc/<myfilename>"
->> 
->> Unhandled kernel unaligned access in unaligned.c:emulate_load_store_insn, 
-line 
->> 373:
->> $0 : 00000000 10009f00 8f20802c 48494a4b
->> $4 : 8f320988 00000001 00000000 00000116
->
->IIRC i386 has the same problem with reading more then a single page from 
->/proc.
->
->Retrieving more information should probably be a device driver with
->a char or block interface.
->
->Flo
->-- 
->Florian Lohoff                  flo@rfc822.org             +49-5201-669912
->                        Heisenberg may have been here.
+--
+Robert Rusek
+    

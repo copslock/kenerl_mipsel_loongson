@@ -1,70 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Jul 2003 18:22:33 +0100 (BST)
-Received: from alpha.total-knowledge.com ([IPv6:::ffff:209.157.135.102]:39055
-	"HELO alpha.total-knowledge.com") by linux-mips.org with SMTP
-	id <S8225214AbTGURWb>; Mon, 21 Jul 2003 18:22:31 +0100
-Received: (qmail 15205 invoked from network); 21 Jul 2003 17:22:27 -0000
-Received: from unknown (HELO gateway.total-knowledge.com) (12.234.207.60)
-  by alpha.total-knowledge.com with SMTP; 21 Jul 2003 17:22:27 -0000
-Received: (qmail 19559 invoked by uid 502); 21 Jul 2003 17:22:27 -0000
-Date: Mon, 21 Jul 2003 10:22:27 -0700
-From: Ilya Volynets-Evenbach <ilya@theIlya.com>
-To: Fr?d?ric MEUROU <frederic@meurou.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: SGI O2, MIPS R10k and Linux
-Message-ID: <20030721172227.GA19461@gateway.total-knowledge.com>
-References: <1058813390.30494.12.camel@localhost>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Jul 2003 18:26:41 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:37108 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225221AbTGUR0i>;
+	Mon, 21 Jul 2003 18:26:38 +0100
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.11.6/8.11.6) id h6LHQVQ17635;
+	Mon, 21 Jul 2003 10:26:31 -0700
+Date: Mon, 21 Jul 2003 10:26:31 -0700
+From: Jun Sun <jsun@mvista.com>
+To: =?iso-8859-1?Q?Vincent_Stehl=E9?= <vincent.stehle@free.fr>
+Cc: linux-mips <linux-mips@linux-mips.org>, jsun@mvista.com
+Subject: Re: PATCH: time.c needs to export more funcs
+Message-ID: <20030721102631.C17287@mvista.com>
+References: <3F1AC15A.6050604@free.fr>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="uAKRQypu60I7Lcqm"
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <1058813390.30494.12.camel@localhost>
-User-Agent: Mutt/1.4i
-Return-Path: <ilya@gateway.total-knowledge.com>
+Content-Transfer-Encoding: 8bit
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3F1AC15A.6050604@free.fr>; from vincent.stehle@free.fr on Sun, Jul 20, 2003 at 06:20:42PM +0200
+Return-Path: <jsun@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2839
+X-archive-position: 2840
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ilya@theIlya.com
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
+On Sun, Jul 20, 2003 at 06:20:42PM +0200, Vincent Stehlé wrote:
+> 
+> Hi,
+> 
+> time.c needs to export some more functions for modules such as mips_rtc.
+> 
+> Regards,
+> 
+> ---
+> diff -urN -X dontdiff linux/arch/mips/kernel/time.c 
+> linux-vs/arch/mips/kernel/time.c
+> --- linux/arch/mips/kernel/time.c       2003-07-18 03:30:14.000000000 +0200
+> +++ linux-vs/arch/mips/kernel/time.c    2003-07-18 03:41:19.000000000 +0200
+> @@ -585,3 +585,6 @@
+>   }
+> 
+>   EXPORT_SYMBOL(rtc_lock);
+> +EXPORT_SYMBOL(to_tm);
+> +EXPORT_SYMBOL(rtc_set_time);
+> +EXPORT_SYMBOL(rtc_get_time);
+> 
 
---uAKRQypu60I7Lcqm
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thanks.  Just applied.
 
-Check out http://www.linux-mips.org/~glaurung/
-There is a kernel there, that is kinda-sorta bootable.
-However, do not expect *any* stability. R10K in O2's and I2's
-has a problem, that needs rather intrusive modifications to kernel
-to work arround it.
-
-	Ilya.
-
-On Mon, Jul 21, 2003 at 06:49:50PM +0000, Fr?d?ric MEUROU wrote:
-> Is there a kernel that works on such a workstation?
->=20
->=20
->=20
-> --=20
-> Fr?d?ric MEUROU <frederic@meurou.com>
->=20
->=20
-
---uAKRQypu60I7Lcqm
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.7 (GNU/Linux)
-
-iD8DBQE/HCFT7sVBmHZT8w8RAu1qAJ43YRzlN0xtdFSmsoiugZtmI+csQwCgnwLt
-GsIaiCyGA7P8JHJdXbOzoE0=
-=jAB6
------END PGP SIGNATURE-----
-
---uAKRQypu60I7Lcqm--
+Jun

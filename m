@@ -1,95 +1,71 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0HK7xA28852
-	for linux-mips-outgoing; Thu, 17 Jan 2002 12:07:59 -0800
-Received: from deliverator.sgi.com (deliverator.sgi.com [204.94.214.10])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0HK7pP28849
-	for <linux-mips@oss.sgi.com>; Thu, 17 Jan 2002 12:07:51 -0800
-Received: from hermes.mvista.com ([12.44.186.158]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id LAA28675
-	for <linux-mips@oss.sgi.com>; Thu, 17 Jan 2002 11:03:22 -0800 (PST)
-	mail_from (ppopov@pacbell.net)
-Received: from zeus.mvista.com (zeus.mvista.com [10.0.0.112])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id g0HIxvB07463;
-	Thu, 17 Jan 2002 10:59:57 -0800
-Subject: Re: usb-problems with Au1000
-From: Pete Popov <ppopov@pacbell.net>
-To: Kunihiko IMAI <kimai@laser5.co.jp>
-Cc: linux-mips <linux-mips@oss.sgi.com>
-In-Reply-To: <m3bsft6z87.wl@l5ac152.l5.laser5.co.jp>
-References: <3B7DA3A3.8010000@pacbell.net> <3C3DD208.45B5BC29@esk.fhg.de> 
-	<m3bsft6z87.wl@l5ac152.l5.laser5.co.jp>
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Mailer: Evolution/1.0 (Preview Release)
-Date: 17 Jan 2002 11:02:03 -0800
-Message-Id: <1011294123.4550.58.camel@zeus>
+	by oss.sgi.com (8.11.2/8.11.3) id g0HKrfb30438
+	for linux-mips-outgoing; Thu, 17 Jan 2002 12:53:41 -0800
+Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0HKraP30435
+	for <linux-mips@oss.sgi.com>; Thu, 17 Jan 2002 12:53:36 -0800
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id CB3F8838; Thu, 17 Jan 2002 20:53:21 +0100 (CET)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 09E834395; Thu, 17 Jan 2002 20:49:14 +0100 (CET)
+Date: Thu, 17 Jan 2002 20:49:13 +0100
+From: Florian Lohoff <flo@rfc822.org>
+To: "Houten K.H.C. van (Karel)" <vhouten@kpn.com>
+Cc: karsten@excalibur.cologne.de, linux-mips@oss.sgi.com
+Subject: Re: DECStation debian CD's
+Message-ID: <20020117194913.GB26395@paradigm.rfc822.org>
+References: <200201170937.KAA28900@sparta.research.kpn.com>
 Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="vGgW1X5XWziG23Ko"
+Content-Disposition: inline
+In-Reply-To: <200201170937.KAA28900@sparta.research.kpn.com>
+User-Agent: Mutt/1.3.25i
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, 2002-01-17 at 02:36, Kunihiko IMAI wrote:
-> Hi,
-> 
-> I'm trying SGI version of kernel-2.2.17.
-> And I get same message,
-> 
-> At Thu, 10 Jan 2002 18:40:24 +0100,
-> Wolfgang Heidrich wrote:
-> 
-> > hub.c: USB new device connect on bus1/1, assigned device number 3
-> > usb.c: USB device not accepting new address=3 (error=-145)
 
-I'm surprised the sgi kernel works with usb at all.  We did a patch for
-non-pci usb devices which was not accepted by the usb project at that
-time because they were working on a different solution.
- 
-> when connect some device.
-> 
-> 
-> I checked in some cases:
-> 
-> - Some devices are recognized, some are not.
-> 	A joystick device (sanwa supply) works fine.
-> 	A mouse device (century corp.) works too.
-> 	But another mouse (Logitech Mini Wheel Mouse) doesn't work and
-> 		I got message like above.
-> 
-> - When connected via USB hub device, Logitech mouse works fine.
-> 
-> I think USB root HUB doesn't work properly. 
- 
-> By the way:
-> 
-> today, I got a errata document from the chip dealer.  This document
-> reports some USB errata.
-> I read the report and source code, then  I found a bug in
-> arch/mips/au1000/pb1000/setup.c.
-> 
-> 
-> The errata report says workaround method:
-> - set the CPU clock is 384MHz
-> - set the source of USB host controller is CPU clcck.
-> 
-> And the code:
-> 
->         /*
->          * Setup 48MHz FREQ2 from CPUPLL for USB Host
->          */
->         /* FRDIV2=3 -> div by 8 of 384MHz -> 48MHz */
->         sys_freqctrl |= ((3<<22) | (1<<21) | (0<<20));
->         outl(sys_freqctrl, FQ_CNTRL_1);
-> 
-> Comment says "Setup FREQ2" but the code set FREQ5.
+--vGgW1X5XWziG23Ko
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-It's the comment that's wrong, not the code. The code works and has been
-tested.  Alchemy makes available the Linux Support Package (LSP) which
-we did. That kernel has been tested with all peripherals so I would
-recommend that you get that from them.  Also,make sure your jumpers are
-setup correctly (S4).
+On Thu, Jan 17, 2002 at 10:37:30AM +0100, Houten K.H.C. van (Karel) wrote:
+> - delo doesn't work in combination with th 5000/200 PROM ???
+>   (the systems just resets)
 
-I do have a better USB workaround which checks the CPU silicon rev, but
-I haven't had time to send Ralf an updated patch. The current setup.c
-should work though.  Get the latest LSP from Alchemy, check the S4
-jumpers (1-4 off, 5-6 on, 7-8 off), and let me know if it still doesn't
-work for you.
+Thats correct - The /200 should ne a REX (non-REX?) prom which is
+basically not supported yet - I havent got a running /200=20
 
-Pete
+loader/main.c
+     30         /* FIXME We only check for REX but dont handle it right
+now */
+     31         if (magic =3D=3D DEC_REX_MAGIC) {
+     32                 /* Store Call Vector */
+     33                 callv=3Dcv;
+     34                 rex_prom=3D1;
+     35         }
+
+Somebody would need to actually tune a bit for the prom calls for
+read/write of disks and the command line parameters.
+
+Flo
+--=20
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+Nine nineth on september the 9th              Welcome to the new billenium
+
+--vGgW1X5XWziG23Ko
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.6 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iD8DBQE8Ryq5Uaz2rXW+gJcRAgISAKDVzm6l4fRzHzzLhbhEbuf+Oa8tNgCgsgNq
+GFmE8TbF/xdX6ua7PsKfXxI=
+=eV/x
+-----END PGP SIGNATURE-----
+
+--vGgW1X5XWziG23Ko--

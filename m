@@ -1,56 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Oct 2002 18:43:45 +0200 (CEST)
-Received: from mx2.redhat.com ([12.150.115.133]:27155 "EHLO mx2.redhat.com")
-	by linux-mips.org with ESMTP id <S1123253AbSJPQnp>;
-	Wed, 16 Oct 2002 18:43:45 +0200
-Received: from int-mx2.corp.redhat.com (int-mx2.corp.redhat.com [172.16.27.26])
-	by mx2.redhat.com (8.11.6/8.11.6) with ESMTP id g9GGgrs20888;
-	Wed, 16 Oct 2002 12:42:53 -0400
-Received: from potter.sfbay.redhat.com (potter.sfbay.redhat.com [172.16.27.15])
-	by int-mx2.corp.redhat.com (8.11.6/8.11.6) with ESMTP id g9GGhYl15006;
-	Wed, 16 Oct 2002 12:43:34 -0400
-Received: from tonopah.toronto.redhat.com (tonopah.toronto.redhat.com [172.16.14.91])
-	by potter.sfbay.redhat.com (8.11.6/8.11.6) with ESMTP id g9GGhVD06062;
-	Wed, 16 Oct 2002 09:43:31 -0700
-Received: (from wilson@localhost)
-	by tonopah.toronto.redhat.com (8.11.6/8.11.6) id g9GGhUf08543;
-	Wed, 16 Oct 2002 12:43:30 -0400
-X-Authentication-Warning: tonopah.toronto.redhat.com: wilson set sender to wilson@redhat.com using -f
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Oct 2002 20:11:54 +0200 (CEST)
+Received: from buserror-extern.convergence.de ([212.84.236.66]:47110 "EHLO
+	hell") by linux-mips.org with ESMTP id <S1123253AbSJPSLx>;
+	Wed, 16 Oct 2002 20:11:53 +0200
+Received: from js by hell with local (Exim 3.35 #1 (Debian))
+	id 181sdr-00072G-00; Wed, 16 Oct 2002 20:11:35 +0200
+Date: Wed, 16 Oct 2002 20:11:35 +0200
+From: Johannes Stezenbach <js@convergence.de>
 To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: Alexandre Oliva <aoliva@redhat.com>, "H. J. Lu" <hjl@lucon.org>,
-	"David S. Miller" <davem@redhat.com>, rsandifo@redhat.com,
-	linux-mips@linux-mips.org, gcc@gcc.gnu.org,
-	binutils@sources.redhat.com
-Subject: Re: MIPS gas relaxation still doesn't work
-References: <Pine.GSO.3.96.1021016124113.14774D-100000@delta.ds2.pg.gda.pl>
-From: Jim Wilson <wilson@redhat.com>
-Date: 16 Oct 2002 12:43:30 -0400
-In-Reply-To: <Pine.GSO.3.96.1021016124113.14774D-100000@delta.ds2.pg.gda.pl>
-Message-ID: <xwu1y6qqqq5.fsf@tonopah.toronto.redhat.com>
-User-Agent: Gnus/5.0808 (Gnus v5.8.8) Emacs/20.7
-MIME-Version: 1.0
+Cc: "Kevin D. Kissell" <kevink@mips.com>, linux-mips@linux-mips.org
+Subject: Re: Once again: test_and_set for CPUs w/o LL/SC
+Message-ID: <20021016181135.GA26994@convergence.de>
+Mail-Followup-To: Johannes Stezenbach <js@convergence.de>,
+	"Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+	"Kevin D. Kissell" <kevink@mips.com>, linux-mips@linux-mips.org
+References: <20021007184344.GA17548@convergence.de> <Pine.GSO.3.96.1021015171817.16503B-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Return-Path: <wilson@redhat.com>
+Content-Disposition: inline
+In-Reply-To: <Pine.GSO.3.96.1021015171817.16503B-100000@delta.ds2.pg.gda.pl>
+User-Agent: Mutt/1.4i
+Return-Path: <js@convergence.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 460
+X-archive-position: 461
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wilson@redhat.com
+X-original-sender: js@convergence.de
 Precedence: bulk
 X-list: linux-mips
 
->  Still for "-mips2" the code is not exactly perfect:
+On Tue, Oct 15, 2002 at 05:36:29PM +0200, Maciej W. Rozycki wrote:
+>  Well, the kernel changes should be trivial, with no performance impact if
+> written carefully, so they might get included even if only a few people
+> are interested.  Send a proposal.
 
-I'm guessing that gas is only doing one pass.  When it first looks at the
-first load, the nop is necessary.  When it later moves the second load into
-the branch delay slot, it doesn't go back and check to see if the nop after
-the first load is still necessary.  To get this perfect, we would have to
-add global optimization support to gas, so that it considered all nop
-insertions and branch delay slot filling all at the same time, and iterated
-until it got the best code.  I think it is pointless to do this kind of
-stuff in an assembler when we already have an optimizing compiler that already
-has infrastructure to do this kind of stuff.
+Here's patch for the kernel. Tested on a VR41XX, but my glibc
+patch needs some cleanup and so will be posted seperately.
 
-Jim
+I thought "explicit is better than implicit" and thus added
+many small changes depending on CONFIG_CPU_USERSPACE_LLSC_EMUL
+before every eret.
+
+The changes in tlbex-r4k.S are not stricly necessary, since
+in current code k1 always ends up with a CP0_ENTRYLO value
+with has bit31 == 0, which is sufficient for the glibc-patch.
+Also, the 'move k1,zero' does not add any overhead and thus
+could be done unconditionally.
+But i thought that adding the #ifdef CONFIG_CPU_USERSPACE_LLSC_EMUL
+prevents possible future changes from accidentally breaking this.
+
+The patch is only for the VR41XX. I'm not shure what other CPUs
+fall into the same category. If I read binutils/opcodes/mips-opc.c
+correctly, then the TX39XX, while not being ISA2, has beql.
+
+Please tell me if the patch is acceptable.
+
+Possible options:
+- don't mess with tlbex-r4k.S
+- or unconditonally replace the 'nop's before 'eret's in tlbex-r4k.S with
+  'move k1,zero' plus a comment
+- drop the CONFIG_CPU_USERSPACE_LLSC_EMUL configuration option and
+  always clear k1 in RESTORE_SP_AND_RET for the VR41XX
+
+
+Regards,
+Johannes

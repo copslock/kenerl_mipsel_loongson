@@ -1,33 +1,41 @@
-Received:  by oss.sgi.com id <S553752AbRBINIq>;
-	Fri, 9 Feb 2001 05:08:46 -0800
-Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:23978 "EHLO
-        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553712AbRBINIY>;
-	Fri, 9 Feb 2001 05:08:24 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA08663;
-	Fri, 9 Feb 2001 14:06:47 +0100 (MET)
-Date:   Fri, 9 Feb 2001 14:06:46 +0100 (MET)
-From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To:     "Kevin D. Kissell" <kevink@mips.com>
-cc:     Jun Sun <jsun@mvista.com>, linux-mips@oss.sgi.com
-Subject: Re: config option vs. run-time detection (the debate continues ...)
-In-Reply-To: <009c01c09297$c78b8360$0deca8c0@Ulysses>
-Message-ID: <Pine.GSO.3.96.1010209140422.4645G-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received:  by oss.sgi.com id <S553776AbRBIPPh>;
+	Fri, 9 Feb 2001 07:15:37 -0800
+Received: from noose.gt.owl.de ([62.52.19.4]:64518 "HELO noose.gt.owl.de")
+	by oss.sgi.com with SMTP id <S553650AbRBIPPU>;
+	Fri, 9 Feb 2001 07:15:20 -0800
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id C74297D9; Fri,  9 Feb 2001 16:15:08 +0100 (CET)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 94CF3EEAC; Fri,  9 Feb 2001 16:15:21 +0100 (CET)
+Date:   Fri, 9 Feb 2001 16:15:21 +0100
+From:   Florian Lohoff <flo@rfc822.org>
+To:     linux-mips@oss.sgi.com
+Subject: current cvs broken on sgi 
+Message-ID: <20010209161521.D13248@paradigm.rfc822.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Fri, 9 Feb 2001, Kevin D. Kissell wrote:
+Hi,
+can someone confirm that the current cvs ONCE AGAIN is broken
+on SGIs (Indy/I2) ?
 
-> "If it ain't broke..."
+Even with the "early console init" it simply dies ..
 
- Well, it's actually one of strengths of Linux we break things from time
-to time to make them better. 
+Command Monitor.  Type "exit" to return to the menu.
+>> bootp():vmlinux-ip22 console=ttyS0 root=/dev/sda2
+Setting $netaddr to 195.71.99.220 (from server watchdog)
+Obtaining vmlinux-ip22 from server watchdog
+1556544+0+152424 entry: 0x880025a8                                              
 
+
+Flo
 -- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+     Why is it called "common sense" when nobody seems to have any?

@@ -1,53 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Nov 2004 01:58:08 +0000 (GMT)
-Received: from pD95629F8.dip.t-dialin.net ([IPv6:::ffff:217.86.41.248]:47892
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8224917AbUKKB6E>; Thu, 11 Nov 2004 01:58:04 +0000
-Received: from fluff.linux-mips.net (localhost [127.0.0.1])
-	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id iAB1u3MK030275;
-	Thu, 11 Nov 2004 02:56:03 +0100
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.13.1/8.13.1/Submit) id iAB1u0oT030274;
-	Thu, 11 Nov 2004 02:56:00 +0100
-Date: Thu, 11 Nov 2004 02:56:00 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: "Maciej W. Rozycki" <macro@mips.com>
-Cc: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>,
-	linux-mips@linux-mips.org, libc-alpha@sources.redhat.com,
-	Nigel Stephens <nigel@mips.com>,
-	"Maciej W. Rozycki" <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Nov 2004 02:39:39 +0000 (GMT)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:41479 "EHLO
+	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8224917AbUKKCjf>; Thu, 11 Nov 2004 02:39:35 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 7E268F596F; Thu, 11 Nov 2004 03:39:27 +0100 (CET)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 10744-10; Thu, 11 Nov 2004 03:39:27 +0100 (CET)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 4E7A2E1C9A; Thu, 11 Nov 2004 03:39:27 +0100 (CET)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.1/8.13.1) with ESMTP id iAB2diMO000698;
+	Thu, 11 Nov 2004 03:39:44 +0100
+Date: Thu, 11 Nov 2004 02:39:29 +0000 (GMT)
+From: "Maciej W. Rozycki" <macro@linux-mips.org>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: "Maciej W. Rozycki" <macro@mips.com>, linux-mips@linux-mips.org,
+	libc-alpha@sources.redhat.com, Nigel Stephens <nigel@mips.com>
 Subject: Re: [PATCH] MIPS/Linux: Kernel vs libc struct siginfo discrepancy
-Message-ID: <20041111015600.GA30150@linux-mips.org>
-References: <Pine.LNX.4.61.0411101657420.11408@perivale.mips.com> <20041110180050.GK7235@rembrandt.csv.ica.uni-stuttgart.de> <Pine.LNX.4.61.0411101807550.11408@perivale.mips.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.61.0411101807550.11408@perivale.mips.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20041111014759.GA29699@linux-mips.org>
+Message-ID: <Pine.LNX.4.58L.0411110224380.5685@blysk.ds.pg.gda.pl>
+References: <Pine.LNX.4.61.0411101657420.11408@perivale.mips.com>
+ <20041111014759.GA29699@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.80/578/Mon Nov  8 15:26:49 2004
+	clamav-milter version 0.80j
+	on piorun.ds.pg.gda.pl
+X-Virus-Status: Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6301
+X-archive-position: 6302
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Nov 10, 2004 at 06:19:14PM +0000, Maciej W. Rozycki wrote:
+On Thu, 11 Nov 2004, Ralf Baechle wrote:
 
-> > > http://www.linux-mips.org/cvsweb/linux/include/asm-mips/siginfo.h.diff?r1=1.4&r2=1.5&only_with_tag=MAIN
-> > > 
-> > > dated back to Aug 1999 (!), the definitions of struct siginfo in Linux and 
-> > > GNU libc differ to each other.
-> > 
-> > Only 2.4 Kernels, 2.6 uses the normal definition again.
+> > dated back to Aug 1999 (!), the definitions of struct siginfo in Linux and 
+> > GNU libc differ to each other.  While it's the kernel that is at fault by 
+> > changing its ABI, at this stage it may be more acceptable to update glibc 
+> > as it's not the only program interfacing to Linux (uClibc?).  It doesn't 
 > 
->  Ah, it's been changed again for 2.6.9-rc3 without a word of a comment, 
-> grrr...
+> uClibc copies it's headers from glibc it seems.  The change in 1999 was
+> quite intensional because back then there was no SA_SIGINFO using libc for
+> MIPS yet.
 
-Yoichi Yuasa sent this patch upstream without notifying anybody.
-GRRRR also.
+ Well, I'm afraid the glibc's header dates back to Jan 1999, so it
+predates the change to Linux and this is why it uses the original
+definition.  Of course I know what the relationship between MIPS/Linux and
+glibc was back then and problems like this prove this wasn't the best idea
+ever.  They are the very reason I insist on pushing changes upstream as
+soon as possible.  Otherwise fixes get forgotten or lost as patches for
+old versions get discarded.  This change should have made its way to glibc
+at the time of the change to Linux.
 
-  Ralf
+  Maciej

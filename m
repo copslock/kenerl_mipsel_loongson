@@ -1,78 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Feb 2003 08:12:20 +0000 (GMT)
-Received: from noose.gt.owl.de ([IPv6:::ffff:62.52.19.4]:38157 "EHLO
-	noose.gt.owl.de") by linux-mips.org with ESMTP id <S8224939AbTBMIMU>;
-	Thu, 13 Feb 2003 08:12:20 +0000
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 8CE3425E9C; Thu, 13 Feb 2003 09:12:18 +0100 (CET)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 0110FB2AB; Thu, 13 Feb 2003 09:10:14 +0100 (CET)
-Date: Thu, 13 Feb 2003 09:10:14 +0100
-From: Florian Lohoff <flo@rfc822.org>
-To: Andrew Clausen <clausen@melbourne.sgi.com>
-Cc: Guido Guenther <agx@gandalf.physik.uni-konstanz.de>,
-	Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Re: porting arcboot
-Message-ID: <20030213081014.GA569@paradigm.rfc822.org>
-References: <20030210034549.GA8408@pureza.melbourne.sgi.com> <20030210100319.GA30624@merry> <20030210223955.GF8408@pureza.melbourne.sgi.com> <20030211224622.GC1186@paradigm.rfc822.org> <20030212050341.GI8408@pureza.melbourne.sgi.com> <20030212152620.GB7934@paradigm.rfc822.org> <20030212225823.GJ8408@pureza.melbourne.sgi.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="yrj/dFKFPuw6o+aM"
-Content-Disposition: inline
-In-Reply-To: <20030212225823.GJ8408@pureza.melbourne.sgi.com>
-User-Agent: Mutt/1.3.28i
-Organization: rfc822 - pure communication
-Return-Path: <flo@rfc822.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Feb 2003 13:19:25 +0000 (GMT)
+Received: from mail.stellartec.com ([IPv6:::ffff:65.107.16.99]:9738 "EHLO
+	nt_server.stellartec.com") by linux-mips.org with ESMTP
+	id <S8224939AbTBMNTY>; Thu, 13 Feb 2003 13:19:24 +0000
+Received: from wssseeger ([192.168.1.53]) by nt_server.stellartec.com
+          (Post.Office MTA v3.1.2 release (PO205-101c)
+          ID# 568-43562U100L2S100) with SMTP id AAA493;
+          Thu, 13 Feb 2003 05:19:18 -0800
+Reply-To: <sseeger@stellartec.com>
+From: sseeger@stellartec.com (Steven Seeger)
+To: "'Jun Sun'" <jsun@mvista.com>
+Cc: <linux-mips@linux-mips.org>
+Subject: RE: NEC VR4181A
+Date: Thu, 13 Feb 2003 05:22:36 -0800
+Message-ID: <02c101c2d362$f9e2eed0$3501a8c0@wssseeger>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook CWS, Build 9.0.2416 (9.0.2911.0)
+In-Reply-To: <20030212224837.D16015@mvista.com>
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Importance: Normal
+Return-Path: <sseeger@stellartec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1404
+X-archive-position: 1405
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: flo@rfc822.org
+X-original-sender: sseeger@stellartec.com
 Precedence: bulk
 X-list: linux-mips
 
+>Osprey uses Vr4181, which is a different chip from vr4181a.
 
---yrj/dFKFPuw6o+aM
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Yeah I didn't notice the A on there. We are looking into the possibility of
+using the A in our board. Part of the problem is that the A only comes in
+BGA and we don't like dealing with that.
 
-On Thu, Feb 13, 2003 at 09:58:23AM +1100, Andrew Clausen wrote:
-> On Wed, Feb 12, 2003 at 04:26:20PM +0100, Florian Lohoff wrote:
-> > > Am I missing something?
-> >=20
-> > Yes - That you dont need all those objects in that archive.=20
->=20
-> But how does that help?  It's painful to merely build the set
-> of objects we need.  (That would involve e2fsprogs makefile hacking...
-> i.e. not just reusing it out-of-the-box)  But it's absolutely necessary,
-> because it's impossible to build all the other objects for mips64 today.
->=20
-> So, are you doing the Makefile hacking, or what?
->=20
+>Interesting.  I was trying to get RT-Linux working at one time
+>but aborted that effort in the middle.
 
-I havent got any mips64 equipment yet and even less time. I guess until
-we have a real mips64-glibc we will need to put the kernel into the
-volume-header.
+Getting RTAI working wasn't easy. Took over a week and it was supposedly
+already "ported." One of these days I really must find the time to check in
+my changes to that project. It works very well and is quite stable. I think
+46 us worst-case interrupt response off one of the VR4181's interrupts from
+an external source is very good.
 
-Flo
---=20
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-                        Heisenberg may have been here.
-
---yrj/dFKFPuw6o+aM
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iD8DBQE+S1LmUaz2rXW+gJcRAiQZAKCgKyLl/rVNqLknH9rrvoVTeloHdACgueH7
-+JQD2flKZh1CjqmkPb3zTHs=
-=aKK0
------END PGP SIGNATURE-----
-
---yrj/dFKFPuw6o+aM--
+Steve

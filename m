@@ -1,49 +1,62 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id WAA19184 for <linux-archive@neteng.engr.sgi.com>; Sun, 5 Jul 1998 22:48:01 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id KAA85881 for <linux-archive@neteng.engr.sgi.com>; Mon, 6 Jul 1998 10:40:14 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id WAA14615
+	id KAA43900
 	for linux-list;
-	Sun, 5 Jul 1998 22:46:58 -0700 (PDT)
+	Mon, 6 Jul 1998 10:39:33 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id WAA82592
+	via ESMTP id KAA59270
 	for <linux@cthulhu.engr.sgi.com>;
-	Sun, 5 Jul 1998 22:46:55 -0700 (PDT)
-	mail_from (mjhsieh@helix.life.nthu.edu.tw)
-Received: from helix.life.nthu.edu.tw (helix.life.nthu.edu.tw [140.114.98.34]) 
+	Mon, 6 Jul 1998 10:39:31 -0700 (PDT)
+	mail_from (shaver@netscape.com)
+Received: from netscape.com (h-205-217-237-46.netscape.com [205.217.237.46]) 
 	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id WAA02151
-	for <linux@cthulhu.engr.sgi.com>; Sun, 5 Jul 1998 22:46:54 -0700 (PDT)
-	mail_from (mjhsieh@helix.life.nthu.edu.tw)
-Received: (from mjhsieh@localhost)
-	by helix.life.nthu.edu.tw (8.8.7/8.8.7) id NAA00510;
-	Mon, 6 Jul 1998 13:46:48 +0800
-Message-ID: <19980706134646.A506@life.nthu.edu.tw>
-Date: Mon, 6 Jul 1998 13:46:46 +0800
-From: "Francis M. J. Hsieh" <mjhsieh@life.nthu.edu.tw>
-To: linux@cthulhu.engr.sgi.com, Bob Kozdemba <koz@sgi.com>
-Subject: Re: installer swap problem
-References: <3592D796.C43C35C5@sgi.com> <19980626073608.03672@life.nthu.edu.tw> <3593A8B5.640ACFF9@sgi.com>
-Mime-Version: 1.0
+	via ESMTP id KAA15437
+	for <linux@cthulhu.engr.sgi.com>; Mon, 6 Jul 1998 10:39:26 -0700 (PDT)
+	mail_from (shaver@netscape.com)
+Received: from tintin.mcom.com (tintin.mcom.com [205.217.233.42])
+	by netscape.com (8.8.5/8.8.5) with ESMTP id KAA27602
+	for <linux@cthulhu.engr.sgi.com>; Mon, 6 Jul 1998 10:39:25 -0700 (PDT)
+Received: from netscape.com ([205.217.243.67]) by tintin.mcom.com
+          (Netscape Messaging Server  4.0b2 )  with ESMTP id 0EVOP1O0.029;
+          Mon, 6 Jul 1998 10:39:24 -0700
+Message-ID: <35A10B96.9B47C150@netscape.com>
+Date: Mon, 06 Jul 1998 13:38:30 -0400
+From: Mike Shaver <shaver@netscape.com>
+Organization: Mozilla Dot Weenies
+X-Mailer: Mozilla 4.5 [en] (X11; I; Linux 2.0.34 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: ralf@uni-koblenz.de
+CC: linux@cthulhu.engr.sgi.com
+Subject: Re: mozilla on the Indy
+References: <359A447B.2D25377D@netscape.com> <19980702041137.I3255@uni-koblenz.de>
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.91.1
-In-Reply-To: <3593A8B5.640ACFF9@sgi.com>; from Bob Kozdemba on Fri, Jun 26, 1998 at 09:57:09AM -0400
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Fri, Jun 26, 1998 at 09:57:09AM -0400, Bob Kozdemba wrote:
-> Francis M.J. Hsieh wrote:
-> After pressing OK, I am back to where I started and it will not let
-> me continue.
-> 
-> How did you manage to get past this point ?
+ralf@uni-koblenz.de wrote:
+> Now that I've taken myself two minutes to browse your attached sources -
+> the patches to the NSPR thread routines look suspicious.  The are
+> playing games with the frame pointer which at least on the first look
+> don't make sense as gcc automatically enables -fomit-frame-pointer when
+> optimizing.
 
-I got the same problem when I trying to install it on system disk, I am not sure
-if this is the cause. Just for you information.
+Turns out it's there only to save the FP so that you can use gdb to look
+at the NSPR thread stacks during debugging.  So, the fact that gcc
+removes it when building optimized isn't a problem.
 
-- Francis
+For the record, NSPR threads aren't clone() threads; they're
+setjmp/longjmp things.
+
+Mike
+
+-- 
+517588.35 442847.89

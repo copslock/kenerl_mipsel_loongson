@@ -1,47 +1,52 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id RAA03597; Tue, 3 Jun 1997 17:46:29 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA07407; Wed, 4 Jun 1997 00:05:21 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id RAA02364 for linux-list; Tue, 3 Jun 1997 17:45:28 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id RAA02318 for <linux@relay.engr.SGI.COM>; Tue, 3 Jun 1997 17:45:19 -0700
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id RAA14995
-	for <linux@relay.engr.SGI.COM>; Tue, 3 Jun 1997 17:45:13 -0700
-	env-from (ralf@informatik.uni-koblenz.de)
-Received: from flake (ralf@flake.uni-koblenz.de [141.26.4.37]) by informatik.uni-koblenz.de (8.8.5/8.6.9) with SMTP id CAA04699; Wed, 4 Jun 1997 02:41:21 +0200 (MEST)
-From: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
-Message-Id: <199706040041.CAA04699@informatik.uni-koblenz.de>
-Received: by flake (SMI-8.6/KO-2.0)
-	id CAA05044; Wed, 4 Jun 1997 02:41:15 +0200
-Subject: Re: The Plan For Userland(tm)
-To: adevries@engsoc.carleton.ca (Alex deVries)
-Date: Wed, 4 Jun 1997 02:41:14 +0200 (MET DST)
-Cc: ralf@mailhost.uni-koblenz.de, shaver@neon.ingenia.ca,
-        linux@cthulhu.engr.sgi.com
-In-Reply-To: <Pine.LNX.3.95.970603180712.25914M-100000@lager.engsoc.carleton.ca> from "Alex deVries" at Jun 3, 97 06:13:42 pm
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id AAA03667 for linux-list; Wed, 4 Jun 1997 00:04:20 -0700
+Received: from sgiger.munich.sgi.com (sgiger.munich.sgi.com [144.253.192.2]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA03656 for <linux@cthulhu.engr.sgi.com>; Wed, 4 Jun 1997 00:04:17 -0700
+Received: from knobi.munich.sgi.com by sgiger.munich.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1502/940406.SGI)
+	 id JAA13148; Wed, 4 Jun 1997 09:04:14 +0200
+Received: from knobi (localhost [127.0.0.1]) by knobi.munich.sgi.com (950413.SGI.8.6.12/951220.SGI.AUTOCF.knobi) via SMTP id JAA23763; Wed, 4 Jun 1997 09:04:10 +0200
+Message-ID: <3395136A.167E@munich.sgi.com>
+Date: Wed, 04 Jun 1997 09:04:10 +0200
+From: Martin Knoblauch <knobi@munich.sgi.com>
+Organization: Silicon Graphics GmbH, Am-Hochacker 3, D-85630 Grasbrunn
+X-Mailer: Mozilla 3.01SC-SGI (X11; I; IRIX 6.3 IP22)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+To: "David S. Miller" <davem@jenolan.rutgers.edu>
+CC: shaver@neon.ingenia.ca, linux@cthulhu.engr.sgi.com
+Subject: Re: http://bogomips.ingenia.com
+References: <199706032357.TAA02050@jenolan.caipgeneral>
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> I need to link it with libz, which I just realized is really called zlib,
-> not the zlibc found on prep.ai.mit.edu.  Who knew?  I'm just getting
-> problmes now with glibc's crt1.o, which I know little or nothing about.
+David S. Miller wrote:
 > 
-> Ralph, can you give us (Mike or I) a copy of your SSH's?  We will in turn
+>    From: Mike Shaver <shaver@neon.ingenia.ca>
+>    Date: Tue, 3 Jun 1997 15:18:34 -0400 (EDT)
+> 
+>    Once I figured out why it wasn't arping and didn't want to let me
+>    set routes, it got much easier... =)
+> 
+> Scheisse...
+> 
+David,
 
-s/Ralph/Ralf/
+ is this all you learned in Wuerzburg? I'm disappointed :-)
 
-> keep you up to date with our userland binaries, and hopefully we can move
-> towards sharing RPMs, both source and binary. 
+ As for the topic: congratulations Mike. Someone should maybe
+leak it out to the newsgroups.
 
-ssh is no big deal.  Builds out of the box.  You will just have to
-tell it for which architecture you're building, ie:
-./configure --prefix=/usr mips-linux
-
-There is also a rpm source package for libz available, but for now you
-can just use the libz.a and includes included with ssh.
-
-> mips-linux-gcc, incidentally, is very impressive.
-
-Just another GCC.
-
-  Ralf
+Martin
+-- 
+Check out the DevForum 97  !!!! (http://www.sgi.com/Forum97/)
+  If you miss it, you'll never forgive yourself. Neither will I :-)
++---------------------------------+-----------------------------------+
+|Martin Knoblauch                 | Silicon Graphics GmbH             |
+|Manager Technical Marketing      | Am Hochacker 3 - Technopark       |
+|Silicon Graphics Computer Systems| D-85630 Grasbrunn-Neukeferloh, FRG|
+|---------------------------------| Phone: (+int) 89 46108-179 or -0  |
+|http://reality.sgi.com/knobi     | Fax:   (+int) 89 46107-179        |
++---------------------------------+-----------------------------------+
+|e-mail: <knobi@munich.sgi.com>   | VM: 6-333-8197 | M/S: IDE-3150    |
++---------------------------------------------------------------------+

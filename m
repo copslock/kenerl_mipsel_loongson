@@ -1,44 +1,30 @@
-Received:  by oss.sgi.com id <S553675AbRAKXbe>;
-	Thu, 11 Jan 2001 15:31:34 -0800
-Received: from brutus.conectiva.com.br ([200.250.58.146]:49649 "EHLO
-        dhcp046.distro.conectiva") by oss.sgi.com with ESMTP
-	id <S553695AbRAKXbZ>; Thu, 11 Jan 2001 15:31:25 -0800
-Received: (ralf@lappi.waldorf-gmbh.de) by bacchus.dhis.org
-	id <S867057AbRAKXUF>; Thu, 11 Jan 2001 21:20:05 -0200
-Date:	Thu, 11 Jan 2001 21:20:05 -0200
-From:	Ralf Baechle <ralf@oss.sgi.com>
-To:	Ian Chilton <ian@ichilton.co.uk>
-Cc:	linux-mips@oss.sgi.com
-Subject: Re: Current CVS Kernel Broken on MIPS (010111 - 2.4.0)
-Message-ID: <20010111212005.C894@bacchus.dhis.org>
-References: <20010111225700.A2473@woody.ichilton.co.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20010111225700.A2473@woody.ichilton.co.uk>; from ian@ichilton.co.uk on Thu, Jan 11, 2001 at 10:57:01PM +0000
-X-Accept-Language: de,en,fr
+Received:  by oss.sgi.com id <S553728AbRALAUX>;
+	Thu, 11 Jan 2001 16:20:23 -0800
+Received: from adsl-64-163-211-122.dsl.snfc21.pacbell.net ([64.163.211.122]:52749
+        "EHLO guardian.agile.tv") by oss.sgi.com with ESMTP
+	id <S553711AbRALAUO>; Thu, 11 Jan 2001 16:20:14 -0800
+Received: from guardian.agile.tv (IDENT:ed@localhost.agile.tv [127.0.0.1])
+	by guardian.agile.tv (8.9.3/8.8.7) with ESMTP id RAA25914
+	for <linux-mips@oss.sgi.com>; Thu, 11 Jan 2001 17:19:45 -0800
+Message-Id: <200101120119.RAA25914@guardian.agile.tv>
+To:     linux-mips@oss.sgi.com
+Subject: Status of Linux 2.4 on Cobalt
+X-Organization: Left Wing Computing
+X-Face: "LX60V1[A=EN[jjZKY=&,"HB8ahM8?VoL;=Y8oj4%JV\F"4sfgV*;8GgAk!3]}5OmF$/Njv
+ jvRHqNwtZa7yO^g]9+<)e)'EL0?oPqczWF/"+d:XldxB"aLI.D_\|^e4F<W.6zm-3+G4E@npnf,MoY
+ `5T8|J+Pxw27hjrXC2T!nd]47"<_S&H(g1f+P-1NEIlz~,*Z<j-N8~abo,0R-GCx%jmf60\7?zjOqq
+ $kE2B]q:U*u+=)~<0
+Date:   Thu, 11 Jan 2001 17:19:45 -0800
+From:   Ed Gould <ed@agile.tv>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Thu, Jan 11, 2001 at 10:57:01PM +0000, Ian Chilton wrote:
+What is the current status of building and running a 2.4 kernel on the
+Cobalt RaQ2?  Is anyone working on this?
 
-> > Such a pile of numbers is pretty useless for debuggin unless accompanied
-> > with the disassembler listing of the crashing code, System.map or even
-> > better the kernel binary itself ...
-> 
-> Sorry, I forgot..:
-> 
-> http://files.ichilton.co.uk/linux-010111-IP22-4400.tar.gz
-> 
-> 
-> It's all in there, ELF + ECOFF + System.map
-
-It's a crash during the very early initialization of the kernel, that is
-before trap_init() gets called.  __alloc_bootmem_core calls memset with
-bogus addresses and that again crashes.  Not very much else I can read
-from this crash and not very much I can do without an Indy ...
-
-  Ralf
+--
+Ed Gould	AgileTV Corporation
+ed@agile.tv	333 Ravenswood Avenue, Bldg. 202
+		Menlo Park, CA  94025

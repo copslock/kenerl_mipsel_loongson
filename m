@@ -1,54 +1,60 @@
 Received: from cthulhu.engr.sgi.com by neteng.engr.sgi.com via ESMTP (950413.SGI.8.6.12/940406.SGI.AUTO)
-	 id FAA23971; Fri, 1 Mar 1996 05:13:55 -0800
+	 id TAA15968; Fri, 8 Mar 1996 19:34:02 -0800
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: by cthulhu.engr.sgi.com (950511.SGI.8.6.12.PATCH526/911001.SGI)
-	for linux-list id PAA09124; Thu, 29 Feb 1996 15:33:43 -0800
-Received: from leviathan.engr.sgi.com by cthulhu.engr.sgi.com via ESMTP (950511.SGI.8.6.12.PATCH526/911001.SGI)
-	for <linux@cthulhu.engr.sgi.com> id PAA09118; Thu, 29 Feb 1996 15:33:42 -0800
-Received: by leviathan.engr.sgi.com (950413.SGI.8.6.12/940406.SGI.AUTO)
-	 id PAA19817; Thu, 29 Feb 1996 15:33:41 -0800
-Date: Thu, 29 Feb 1996 15:33:41 -0800
-From: brucet@leviathan.engr.sgi.com (Bruce A. Templeton)
-Message-Id: <199602292333.PAA19817@leviathan.engr.sgi.com>
-To: linux@leviathan.engr.sgi.com
-Subject: WWW: Linux in High-Performance Computing (fwd)
-Organization: Silicon Graphics, Inc. Mountain View, CA
+	for linux-list id TAA25116; Fri, 8 Mar 1996 19:33:58 -0800
+Received: from yon.engr.sgi.com by cthulhu.engr.sgi.com via ESMTP (950511.SGI.8.6.12.PATCH526/911001.SGI)
+	for <linux@cthulhu.engr.sgi.com> id TAA25111; Fri, 8 Mar 1996 19:33:57 -0800
+Received: by yon.engr.sgi.com (940816.SGI.8.6.9/940406.SGI.AUTO)
+	for linux id TAA11611; Fri, 8 Mar 1996 19:33:56 -0800
+From: ariel@yon.engr.sgi.com (Ariel Faigon)
+Message-Id: <199603090333.TAA11611@yon.engr.sgi.com>
+Subject: Some material for thought
+To: linux@yon.engr.sgi.com
+Date: Fri, 8 Mar 1996 19:33:54 -0800 (PST)
+Reply-To: ariel@cthulhu.engr.sgi.com
+Organization: Silicon Graphics Inc.
+X-Mailer: ELM [version 2.4 PL23]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-------- start of forwarded message -------
+Hi All,
 
-I'm starting a new WWW site devoted to research and applications of Linux
-in all aspects of high-performance computing, including parallel and
-distributed systems, high-speed networks and interconnects, symmetric
-multiprocessing, applications (including database systems, multimedia and
-machine vision, and file servers), and parallel languages.
+It is Friday again, I hope that no announcement on buying
+another high-end company is coming this Monday. I had really bad
+timing with the Linux mailing list creation ...
 
-The goal of this page is to bring together links and documents on research
-projects as well as commercial products involving the use of Linux in these
-environments.
+Anyway, since you're so busy and quiet and since the PowerPC
+Linux page (http://speedy.redhat.com/ppc/) just had some
+really good news (Linux on PPC is now real) I thought about
+maintaining the one email/week traffic.
 
-Linux is a free POSIX-compatible UNIX clone which runs on 386/486/Pentium
-and Alpha-based systems. Because all of the source (including the kernel)
-is copylefted, it's an attractive operating system for people involved in
-operating systems and clustered-computing research. The complete operating
-system and thousands of applications are free, and it runs on inexpensive
-commidity PC hardware. 
+In the latest reorg memo, TJ wrote (quote):
 
-I'd like to expose and promote Linux as an O/S alternative for research
-and teaching in high-performance systems. The Linux-HPC page is
-	http://www.cs.cornell.edu/home/mdw/hpc/hpc.html
+"We will increase competitive pressure on other suppliers such
+ as Sun and HP and Wintel based PC products by directly attacking
+ their low-end workstation offerings with superior technology and
+ better price-performance." 
 
-If you're involved in parallel/networking systems work related to Linux,
-please feel free to contribute to these pages my sending e-mail to
-mdw@cs.cornell.edu.
+This is revolutionary thinking at SGI.  Moreover, it is a clear
+green light from up above to change the way we think.
 
-Thanks,
-M. Welsh, mdw@cs.cornell.edu
-U-Net hacker
-Cornell University Computer Science Department
-------- end of forwarded message -------
+Free-software should be a part of that strategy.
+So, please take some time, and read the following:
 
+   http://info.engr.sgi.com/~ariel/linux/free-software.html
+
+   (the first one was written for those who are not familiar
+    with free software, for you it may be obvious)
+
+And then, read some specifics in:
+
+   http://info.engr.sgi.com/~ariel/linux/
+
+Send me your comments. Good or Bad.
+[Again, please don't distribute this beyond the list yet.]
 -- 
-  Bruce A. Templeton                      brucet@engr.sgi.com
-  Silicon Graphics Inc.                   (415) 933-3872
+Peace, Ariel

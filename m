@@ -1,45 +1,43 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g2PItjU25078
-	for linux-mips-outgoing; Mon, 25 Mar 2002 10:55:45 -0800
-Received: from mail-gw.sonicblue.com (mail-gw.sonicblue.com [209.10.223.218])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2PIthq25075
-	for <linux-mips@oss.sgi.com>; Mon, 25 Mar 2002 10:55:43 -0800
-Received: from relay.sonicblue.com (timbale [10.6.1.10])
-	by mail-gw.sonicblue.com (8.11.6/8.11.6) with ESMTP id g2PIw1904316
-	for <linux-mips@oss.sgi.com>; Mon, 25 Mar 2002 11:58:01 -0700 (MST)
-Received: from corpvirus1.sc.sonicblue.com (corpvirus1.sonicblue.com [10.6.2.49])
-	by relay.sonicblue.com (8.11.5/8.11.5) with SMTP id g2PIw1600910
-	for <linux-mips@oss.sgi.com>; Mon, 25 Mar 2002 10:58:01 -0800 (PST)
-Received: FROM corpmailmx.sonicblue.com BY corpvirus1.sc.sonicblue.com ; Mon Mar 25 11:05:20 2002 -0800
-Received: by CORPMAILMX with Internet Mail Service (5.5.2653.19)
-	id <D4ZWDFWD>; Mon, 25 Mar 2002 10:58:46 -0800
-Message-ID: <37D1208A1C9BD511855B00D0B772242C011C7F15@corpmail1.sc.sonicblue.com>
-From: Peter Hartley <PDHartley@sonicblue.com>
-To: linux-mips@oss.sgi.com, linux kernel <linux-kernel@vger.kernel.org>,
-   GNU C Library <libc-alpha@sources.redhat.com>
-Subject: RE: Does e2fsprogs-1.26 work on mips?
-Date: Mon, 25 Mar 2002 11:00:05 -0800
+	by oss.sgi.com (8.11.2/8.11.3) id g2PKa1027796
+	for linux-mips-outgoing; Mon, 25 Mar 2002 12:36:01 -0800
+Received: from coplin09.mips.com ([80.63.7.130])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2PKZvq27792
+	for <linux-mips@oss.sgi.com>; Mon, 25 Mar 2002 12:35:57 -0800
+Received: (from hartvige@localhost)
+	by coplin09.mips.com (8.11.6/8.11.6) id g2PKbTQ28092
+	for linux-mips@oss.sgi.com; Mon, 25 Mar 2002 21:37:29 +0100
+From: Hartvig Ekner <hartvige@mips.com>
+Message-Id: <200203252037.g2PKbTQ28092@coplin09.mips.com>
+Subject: Re: Mips16 toolchain?
+To: linux-mips@oss.sgi.com
+Date: Mon, 25 Mar 2002 21:37:29 +0100 (CET)
+In-Reply-To: <no.id> from "Dominic Sweetman" at Mar 25, 2002 06:13:18 PM
+X-Mailer: ELM [version 2.5 PL5]
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2653.19)
-Content-Type: text/plain;
-	charset="iso-8859-1"
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-H J Lu wrote:
-> What are you talking about? It doesn't matter which kernel header
-> is used. glibc doesn't even use /usr/include/asm/resource.h nor
-> should any user space applications.
+Dominic Sweetman writes:
+> 
+> We are also developing a compiler from the same source tree, but
+> configured for Linux.  That was the compiler we'll be looking for
+> beta-testers for in the next couple of months.
+> 
+> If you want to be able to build MIPS16 applications and then run them
+> on Linux, this is more challenging.  You have to build everything
+> static: then it works mostly, and some people at MIPS have built and
+> run some programs.
 
-It's not about /usr/include/asm/resource.h, it's about
-/usr/include/asm/unistd.h, where the syscall numbers are defined.
+I have built glibc in a static and non-PIC version to allow linking against
+M16 user apps (non-PIC required because current Linux compilers cannot 
+generate M16 PIC code). It worked fine using the Algo 5.0 Beta for Linux. 
+I successfully built a few applications (ones which only required libc).
 
-This is presumably what the "#ifdef __NR_ugetrlimit" in
-sysdeps/unix/sysv/linux/i386/getrlimit.c is meant to be testing against --
-nothing in the glibc-2.2.5 distribution itself defines that symbol. Surely a
-Linux glibc doesn't compile without the target system's linux/* and asm/*
-headers?
+It won't be really useful until somebody builds a complete library set
+which is static and non-PIC, or PIC support gets included in the M16
+code generator.
 
-2.4's /usr/include/asm/unistd.h defines __NR_ugetrlimit but 2.2's doesn't.
-
-	Peter
+/Hartvig

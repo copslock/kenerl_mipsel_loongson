@@ -1,46 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Sep 2002 23:51:39 +0200 (CEST)
-Received: from delta.ds2.pg.gda.pl ([213.192.72.1]:46586 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S1122961AbSI0Vvi>; Fri, 27 Sep 2002 23:51:38 +0200
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id XAA23848;
-	Fri, 27 Sep 2002 23:52:00 +0200 (MET DST)
-Date: Fri, 27 Sep 2002 23:51:59 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Alex deVries <adevries@linuxcare.com>
-cc: Florian Lohoff <flo@rfc822.org>, linux-mips@linux-mips.org,
-	debian-mips@lists.debian.org
-Subject: Re: Format of bootable Indy CDs?
-In-Reply-To: <3D94C8BF.5090902@linuxcare.com>
-Message-ID: <Pine.GSO.3.96.1020927231854.16597C-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Sep 2002 23:51:58 +0200 (CEST)
+Received: from mail.esstech.com ([64.152.86.3]:2720 "HELO [64.152.86.3]")
+	by linux-mips.org with SMTP id <S1123913AbSI0Vvw>;
+	Fri, 27 Sep 2002 23:51:52 +0200
+Received: from mail.esstech.com by [64.152.86.3]
+          via smtpd (for mail.linux-mips.org [80.63.7.146]) with SMTP; Fri, 27 Sep 2002 14:51:51 -0700
+Received: from venus (venus.esstech.com [193.5.205.5])
+	by mail.esstech.com (8.12.2/8.12.2) with SMTP id g8RLqa0A020533;
+	Fri, 27 Sep 2002 14:52:36 -0700 (PDT)
+Received: from bud.austin.esstech.com by venus (SMI-8.6/SMI-SVR4)
+	id OAA02950; Fri, 27 Sep 2002 14:50:49 -0700
+Received: from [193.5.206.150] by bud.austin.esstech.com (SMI-8.6/SMI-SVR4)
+	id QAA25279; Fri, 27 Sep 2002 16:42:13 -0500
+Subject: Re: [PATCH] show register names in show_regs
+From: Gerald Champagne <gerald.champagne@esstech.com>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Linux Mips Mailing List <linux-mips@linux-mips.org>
+In-Reply-To: <Pine.GSO.3.96.1020927231028.16597B-100000@delta.ds2.pg.gda.pl>
+References: <Pine.GSO.3.96.1020927231028.16597B-100000@delta.ds2.pg.gda.pl>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Mailer: Ximian Evolution 1.0.8 
+Date: 27 Sep 2002 16:42:06 -0500
+Message-Id: <1033162931.2314.103.camel@localhost.localdomain>
+Mime-Version: 1.0
+X-Virus-Scanned: by AMaViS-perl11-milter (http://amavis.org/)
+Return-Path: <gerald.champagne@esstech.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 295
+X-archive-position: 296
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: gerald.champagne@esstech.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 27 Sep 2002, Alex deVries wrote:
+>  Note that the format is selected to optimize the space consumed as a
+> serial console is not always available and it's better not to let some
+> essential information scroll away from the virtual terminal. 
 
-> I wrote the ISO you posted on an i386 box with cdrecord.  I suspect my 
-> problem I didn't use set the blocksize to 512; exactly how did you burn 
-> this CD?
+Ah, I only use a serial console and I forgot about people that can't
+scroll back.
 
- Blocks on CD media are always 2048 bytes long (disregarding correction
-data).  The 512-byte block size as implemented by a few CD drives is
-simply an ability to present chunks of native blocks in 512-byte amounts. 
-This is just an artifical feature to fulfill a requirement of broken
-firmware that asserts that disks have 512-byte sectors.
+> Also
+> ksymoops will probably be unhappy with format changes (though it tries to
+> be flexible, so it might actually survive). 
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+I thought that the scripts only used the stack values.  Now I see that
+it seems to read ra as well.  But it does still work, for what it's
+worth...
+
+> How about writing a small
+> program or a script that would parse register dumps and output them in
+> your favourite layout?
+
+I just wanted something simple that I could use in real-time without
+processing.
+
+Thanks for the information.  Now I know why it's done the way it's done.
+
+Gerald

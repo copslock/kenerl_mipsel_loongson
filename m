@@ -1,58 +1,155 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Dec 2004 00:24:40 +0000 (GMT)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:47367 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8226154AbULBAYc>; Thu, 2 Dec 2004 00:24:32 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id C51D9E1C94; Thu,  2 Dec 2004 01:24:25 +0100 (CET)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 01510-01; Thu,  2 Dec 2004 01:24:25 +0100 (CET)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 5F4DDE1C61; Thu,  2 Dec 2004 01:24:25 +0100 (CET)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.1/8.13.1) with ESMTP id iB20OhlV014221;
-	Thu, 2 Dec 2004 01:24:44 +0100
-Date: Thu, 2 Dec 2004 00:24:30 +0000 (GMT)
-From: "Maciej W. Rozycki" <macro@linux-mips.org>
-To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Cc: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 2.6] tlbwr hazard for NEC VR4100
-In-Reply-To: <20041202000713.GO3225@rembrandt.csv.ica.uni-stuttgart.de>
-Message-ID: <Pine.LNX.4.58L.0412020019050.20966@blysk.ds.pg.gda.pl>
-References: <20041201234943.584d88e8.yuasa@hh.iij4u.or.jp>
- <20041202000713.GO3225@rembrandt.csv.ica.uni-stuttgart.de>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.80/605/Wed Nov 24 15:09:47 2004
-	clamav-milter version 0.80j
-	on piorun.ds.pg.gda.pl
-X-Virus-Status: Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Dec 2004 00:33:15 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:9711 "EHLO
+	prometheus.mvista.com") by linux-mips.org with ESMTP
+	id <S8226165AbULBAdK>; Thu, 2 Dec 2004 00:33:10 +0000
+Received: from prometheus.mvista.com (localhost.localdomain [127.0.0.1])
+	by prometheus.mvista.com (8.12.8/8.12.8) with ESMTP id iB20X8dh013093;
+	Wed, 1 Dec 2004 16:33:08 -0800
+Received: (from mlachwani@localhost)
+	by prometheus.mvista.com (8.12.8/8.12.8/Submit) id iB20X80r013091;
+	Wed, 1 Dec 2004 16:33:08 -0800
+Date: Wed, 1 Dec 2004 16:33:08 -0800
+From: Manish Lachwani <mlachwani@mvista.com>
+To: linux-mips@linux-mips.org
+Cc: ralf@linux-mips.org
+Subject: [PATCH] 2.4: Preemption fixes for Broadcom DMA Page operations
+Message-ID: <20041202003308.GA13085@prometheus.mvista.com>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="M9NhX3UHpAaciwkO"
+Content-Disposition: inline
+User-Agent: Mutt/1.4.1i
+Return-Path: <mlachwani@prometheus.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6535
+X-archive-position: 6536
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: mlachwani@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 2 Dec 2004, Thiemo Seufer wrote:
 
-> If 64bit kernels are ever relevant for VR41xx, you might want to use
-> the same branch trick as it is used for R4[04]00. IIRC it reduced the
-> handler size from 34 to 30 instructions, saving another branch.
+--M9NhX3UHpAaciwkO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
- Isn't that based on specific properties of the R4[04]00 pipeline?  It may
-still work for the VR41xx, but you can't take it for granted, so it should
-be double-checked.  Given the conditions it's probably worth the hassle,
-though.
+Hello !
 
-  Maciej
+The attached patch implements preempt_disable/preempt_enable around the SB1 DMA
+page operations. Please review ...
+
+Thanks
+Manish Lachwani
+
+--M9NhX3UHpAaciwkO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline; filename=patch-bcm91125-dma
+
+--- arch/mips/mm/pg-sb1.c.orig	2004-12-01 10:59:53.000000000 -0800
++++ arch/mips/mm/pg-sb1.c	2004-12-01 11:08:59.000000000 -0800
+@@ -157,7 +157,11 @@
+ 
+ void sb1_dma_init(void)
+ {
+-	int cpu = smp_processor_id();
++	int cpu;
++
++	preempt_disable();
++
++	cpu = smp_processor_id();
+ 	uint64_t base_val = PHYSADDR(&page_descr[cpu]) | V_DM_DSCR_BASE_RINGSZ(1);
+ 
+ 	out64(base_val,
+@@ -166,15 +170,23 @@
+ 	      IO_SPACE_BASE + A_DM_REGISTER(cpu, R_DM_DSCR_BASE));
+ 	out64(base_val | M_DM_DSCR_BASE_ENABL,
+ 	      IO_SPACE_BASE + A_DM_REGISTER(cpu, R_DM_DSCR_BASE));
++
++	preempt_enable();
+ }
+ 
+ void sb1_clear_page_dma(void *page)
+ {
+-	int cpu = smp_processor_id();
++	int cpu;
++
++	preempt_disable();
++
++	cpu = smp_processor_id();
+ 
+ 	/* if the page is above Kseg0, use old way */
+-	if (KSEGX(page) != K0BASE)
++	if (KSEGX(page) != K0BASE) {
++		preempt_enable();
+ 		return sb1_clear_page(page);
++	}
+ 
+ 	page_descr[cpu].dscr_a = PHYSADDR(page) | M_DM_DSCRA_ZERO_MEM | M_DM_DSCRA_L2C_DEST | M_DM_DSCRA_INTERRUPT;
+ 	page_descr[cpu].dscr_b = V_DM_DSCRB_SRC_LENGTH(PAGE_SIZE);
+@@ -187,17 +199,27 @@
+ 	while (!(in64(IO_SPACE_BASE + A_DM_REGISTER(cpu, R_DM_DSCR_BASE_DEBUG)) & M_DM_DSCR_BASE_INTERRUPT))
+ 		;
+ 	in64(IO_SPACE_BASE + A_DM_REGISTER(cpu, R_DM_DSCR_BASE));
++
++	preempt_enable();
+ }
+ 
+ void sb1_copy_page_dma(void *to, void *from)
+ {
+-	unsigned long from_phys = PHYSADDR(from);
+-	unsigned long to_phys = PHYSADDR(to);
+-	int cpu = smp_processor_id();
++	unsigned long from_phys;
++	unsigned long to_phys;
++	int cpu;
++
++	preempt_disable();
++
++	from_phys = PHYSADDR(from);
++	to_phys = PHYSADDR(to);
++	cpu = smp_processor_id();
+ 
+ 	/* if either page is above Kseg0, use old way */
+-	if ((KSEGX(to) != K0BASE) || (KSEGX(from) != K0BASE))
++	if ((KSEGX(to) != K0BASE) || (KSEGX(from) != K0BASE)) {
++		preempt_enable();
+ 		return sb1_copy_page(to, from);
++	}
+ 
+ 	page_descr[cpu].dscr_a = PHYSADDR(to_phys) | M_DM_DSCRA_L2C_DEST | M_DM_DSCRA_INTERRUPT;
+ 	page_descr[cpu].dscr_b = PHYSADDR(from_phys) | V_DM_DSCRB_SRC_LENGTH(PAGE_SIZE);
+@@ -210,6 +232,8 @@
+ 	while (!(in64(IO_SPACE_BASE + A_DM_REGISTER(cpu, R_DM_DSCR_BASE_DEBUG)) & M_DM_DSCR_BASE_INTERRUPT))
+ 		;
+ 	in64(IO_SPACE_BASE + A_DM_REGISTER(cpu, R_DM_DSCR_BASE));
++
++	preempt_enable();
+ }
+ 
+ #endif
+--- drivers/char/Config.in.orig	2004-12-01 10:33:59.000000000 -0800
++++ drivers/char/Config.in	2004-12-01 10:34:22.000000000 -0800
+@@ -178,7 +178,7 @@
+          define_bool CONFIG_AU1X00_USB_DEVICE y
+          fi
+       fi
+-      if [ "$CONFIG_SIBYTE_SB1250" = "y" ]; then
++      if [ "$CONFIG_SIBYTE_BOARD" = "y" ]; then
+          bool '  Support for sb1250 onchip DUART' CONFIG_SIBYTE_SB1250_DUART
+          if [ "$CONFIG_SIBYTE_SB1250_DUART" = "y" ]; then
+             bool '  Console on SB1250 DUART' CONFIG_SIBYTE_SB1250_DUART_CONSOLE
+--- drivers/net/Config.in.orig	2004-12-01 10:41:37.000000000 -0800
++++ drivers/net/Config.in	2004-12-01 10:41:46.000000000 -0800
+@@ -104,7 +104,7 @@
+    if [ "$CONFIG_IDT_79EB434" = "y" ]; then
+       bool '  IDT RC32434 Ethernet support' CONFIG_IDT_RC32434_ETH
+    fi
+-   if [ "$CONFIG_SIBYTE_SB1250" = "y" ]; then
++   if [ "$CONFIG_SIBYTE_BOARD" = "y" ]; then
+       tristate '  SB1250 Ethernet support' CONFIG_NET_SB1250_MAC
+    fi
+    if [ "$CONFIG_SGI_IP27" = "y" ]; then
+
+--M9NhX3UHpAaciwkO--

@@ -1,92 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Nov 2004 17:35:16 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:63986 "EHLO
-	hermes.mvista.com") by linux-mips.org with ESMTP
-	id <S8224897AbUKVRfL>; Mon, 22 Nov 2004 17:35:11 +0000
-Received: from mvista.com (prometheus.mvista.com [10.0.0.139])
-	by hermes.mvista.com (Postfix) with ESMTP
-	id 78DEA1861C; Mon, 22 Nov 2004 09:35:08 -0800 (PST)
-Message-ID: <41A2234C.8090809@mvista.com>
-Date: Mon, 22 Nov 2004 09:35:08 -0800
-From: Manish Lachwani <mlachwani@mvista.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.2) Gecko/20040308
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: Thomas Koeller <thomas.koeller@baslerweb.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Nov 2004 18:00:45 +0000 (GMT)
+Received: from p508B767E.dip.t-dialin.net ([IPv6:::ffff:80.139.118.126]:34868
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8224939AbUKVSAk>; Mon, 22 Nov 2004 18:00:40 +0000
+Received: from fluff.linux-mips.net (localhost [127.0.0.1])
+	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id iAMI0Ub3008146;
+	Mon, 22 Nov 2004 19:00:30 +0100
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.13.1/8.13.1/Submit) id iAMI0UD1008145;
+	Mon, 22 Nov 2004 19:00:30 +0100
+Date: Mon, 22 Nov 2004 19:00:30 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Ralf R?sch <ralf.roesch@rw-gmbh.de>
 Cc: linux-mips@linux-mips.org
-Subject: Re: titan code question
-References: <200411191623.14760.thomas.koeller@baslerweb.com>
-In-Reply-To: <200411191623.14760.thomas.koeller@baslerweb.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <mlachwani@mvista.com>
+Subject: Re: [PATCH] Fix for Toshiba  tx4297.h
+Message-ID: <20041122180030.GA8075@linux-mips.org>
+References: <NHBBLBCCGMJFJIKAMKLHEEHGCCAA.ralf.roesch@rw-gmbh.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <NHBBLBCCGMJFJIKAMKLHEEHGCCAA.ralf.roesch@rw-gmbh.de>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6402
+X-archive-position: 6403
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mlachwani@mvista.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Thomas,
+On Sat, Nov 20, 2004 at 10:40:20AM +0100, Ralf R?sch wrote:
 
-This makes sense. Basically, in Titan 1.0 and 1.1, there was no support 
-for IP header alignment. As a results, for every incoming packet, there 
-had to be an extra copy in the driver. This had to be somehow fixed in 
-the chip. So, the chip designers were basically looking for some unused 
-registers that can be used to indicate to the chip that IP header needs 
-aligning. And the chip designers wanted to implement this framework by 
-using minimal possible changes so that 1.2 can be released asap.
+> This patch fixes wrong address registers for the TX4927.
+> I have checked against the TMPR4927A data sheet and 
+> tested with some of the registers.
+> 
+> The patch included is against 2.6.
+> Could anyone review and apply please?
 
-Hence, they used this register. I am not sure if this is even 
-documented. However, this code has been written based on the feedback 
-from the chip designers. If you dont use this code, the MAC subsystem of 
-titan will stop aligning IP headers and you will need to implement the 
-code in the driver to do the aligning.
+And it applies to 2.4 also, interesting.
 
-Hope this clears things.
+Applied,
 
-Thanks
-Manish Lachwani
-
-
-Thomas Koeller wrote:
-> Hi Manish & Ralf,
-> 
-> the code below is from tian_ge.c:
-> 
-> 	/*
-> 	 * This is the 1.2 revision of the chip. It has fix for the
-> 	 * IP header alignment. Now, the IP header begins at an
-> 	 * aligned address and this wont need an extra copy in the
-> 	 * driver. This performance drawback existed in the previous
-> 	 * versions of the silicon
-> 	 */
-> 	reg_data_1 = TITAN_GE_READ(0x103c + (port_num << 12));
-> 	reg_data_1 |= 0x40000000;
-> 	TITAN_GE_WRITE((0x103c + (port_num << 12)), reg_data_1);
-> 
-> 	reg_data_1 |= 0x04000000;
-> 	TITAN_GE_WRITE((0x103c + (port_num << 12)), reg_data_1);
-> 
-> 	mdelay(5);
-> 
-> 	reg_data_1 &= ~(0x04000000);
-> 	TITAN_GE_WRITE((0x103c + (port_num << 12)), reg_data_1);
-> 
-> 	mdelay(5);
-> 
-> 
-> According to the RM9000 user manual, register 0x103c (and 0x203c
-> and 0x303c), named TTPRI0, contains eight four-bit fields, each
-> of which is a packet priority value. This would be used to find
-> the priority for incoming packets.
-> 
-> Given the register description in the cpu manual, I cannot make
-> any sense of the code above. Whoever did that, would you care to
-> explain?
-> 
-> thanks,
-> Thomas
+  Ralf

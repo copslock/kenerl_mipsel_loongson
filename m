@@ -1,56 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Jun 2004 11:40:16 +0100 (BST)
-Received: from mx1.redhat.com ([IPv6:::ffff:66.187.233.31]:15059 "EHLO
-	mx1.redhat.com") by linux-mips.org with ESMTP id <S8225722AbUFXKkL>;
-	Thu, 24 Jun 2004 11:40:11 +0100
-Received: from int-mx1.corp.redhat.com (int-mx1.corp.redhat.com [172.16.52.254])
-	by mx1.redhat.com (8.12.10/8.12.10) with ESMTP id i5OAdje1019773;
-	Thu, 24 Jun 2004 06:39:45 -0400
-Received: from localhost (mail@vpn50-12.rdu.redhat.com [172.16.50.12])
-	by int-mx1.corp.redhat.com (8.11.6/8.11.6) with ESMTP id i5OAdh020462;
-	Thu, 24 Jun 2004 06:39:43 -0400
-Received: from rsandifo by localhost with local (Exim 3.35 #1)
-	id 1BdRdu-0002UQ-00; Thu, 24 Jun 2004 11:39:42 +0100
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: cgd@broadcom.com, David Daney <ddaney@avtrex.com>,
-	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-	binutils@sources.redhat.com
-Subject: Re: [Patch]  / 0 should send SIGFPE not SIGTRAP...
-References: <40C9F5A4.2050606@avtrex.com> <40C9F5FE.8030607@avtrex.com>
-	<40C9F7F0.50501@avtrex.com>
-	<Pine.LNX.4.55.0406112039040.13062@jurand.ds.pg.gda.pl>
-	<mailpost.1086981251.16853@news-sj1-1>
-	<yov57juduc7q.fsf@ldt-sj3-010.sj.broadcom.com>
-	<Pine.LNX.4.55.0406222304340.23178@jurand.ds.pg.gda.pl>
-From: Richard Sandiford <rsandifo@redhat.com>
-Date: Thu, 24 Jun 2004 11:39:42 +0100
-In-Reply-To: <Pine.LNX.4.55.0406222304340.23178@jurand.ds.pg.gda.pl> (Maciej
- W. Rozycki's message of "Tue, 22 Jun 2004 23:30:48 +0200 (CEST)")
-Message-ID: <87y8mdgryp.fsf@redhat.com>
-User-Agent: Gnus/5.1006 (Gnus v5.10.6) Emacs/21.3 (gnu/linux)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Jun 2004 13:42:11 +0100 (BST)
+Received: from apollo.nbase.co.il ([IPv6:::ffff:194.90.137.2]:36626 "EHLO
+	apollo.nbase.co.il") by linux-mips.org with ESMTP
+	id <S8225763AbUFXMmH>; Thu, 24 Jun 2004 13:42:07 +0100
+Received: from mrv.com ([194.90.136.133]) by apollo.nbase.co.il
+          (Post.Office MTA v3.1.2 release (PO205-101c)
+          ID# 0-44418U200L2S100) with ESMTP id AAA1464
+          for <linux-mips@linux-mips.org>; Thu, 24 Jun 2004 15:50:03 +0200
+Message-ID: <40DACD33.60801@mrv.com>
+Date: Thu, 24 Jun 2004 15:46:43 +0300
+From: ypresente@mrv.com (Yaron Presente)
+Organization: MRV International
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.0.2) Gecko/20021120 Netscape/7.01
+X-Accept-Language: en-us, en, he
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <rsandifo@redhat.com>
+To: linux-mips@linux-mips.org
+Subject: non-contiguous physical memory
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ypresente@mrv.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5356
+X-archive-position: 5357
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rsandifo@redhat.com
+X-original-sender: ypresente@mrv.com
 Precedence: bulk
 X-list: linux-mips
 
-"Maciej W. Rozycki" <macro@ds2.pg.gda.pl> writes:
->  Or should we get rid of the 20-bit "break" completely?  The two-argument
-> version provides the same functionality, although the 10-bit codes to be
-> used do not map to the 20-bit equivalent "optically" very well.  
-> Especially if decimal notation is used.
+Hi all,
+I'm running montavista linux (2.4.18_mvl30-malta-mips_fp_le) on a board 
+that has 2 memory banks of physical memory.
+1. 32MB from physical address 0x00000000
+2. 16MB from physical address 0x20000000
 
-I notice no-one's really responded to this question yet.  FWIW, on gut
-instinct, I'd personally prefer to drop the 20-bit break than introduce
-a new, non-standard name for it.
+Currently I can only access the first bank (by add_memory_region(0, 32 
+<< 20, BOOT_MEM_RAM) in prom_init() ).
+I tried the obvious solution of adding another region at 0x20000000 
+(add_memory_region(0x20000000, 16 << 20, BOOT_MEM_RAM))
+but that didn't seem to work. I've also tried to add a BOOT_MEM_RESERVED 
+region in between the regions in order to create a seemingly contiguous 
+memory, with no success.
+My questions are:
+Is it possible to access the second bank as well under MIPS ?
+Is there a way to define a "hole" in the physical memory?
+Do I have to use CONFIG_DISCONTIGMEM ? is it fully supported ?
+Thanks for your help,
 
-Just an opinion though.  I won't argue against anyone saying different. ;)
-
-Richard
+-- 
+Yaron Presente
+MRV International
+Direct   : 972-4-9936237
+Fax      : 972-4-9890564
+Email   : ypresente@mrv.com
+www.mrv.com

@@ -1,45 +1,43 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f39DiZP06265
-	for linux-mips-outgoing; Mon, 9 Apr 2001 06:44:35 -0700
-Received: from bvdexchange.eicon.com (firewall.i-data.com [195.24.22.194])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f39DiYM06262
-	for <linux-mips@oss.sgi.com>; Mon, 9 Apr 2001 06:44:34 -0700
-Received: by BVDEXCHANGE with Internet Mail Service (5.5.1960.3)
-	id <H7Q47FJX>; Mon, 9 Apr 2001 15:45:02 +0200
-Message-ID: <7B3DBD648709D5119E870002A528BE6C12D7BD@BVDEXCHANGE>
-From: Tommy Christensen <tommy.christensen@eicon.com>
-To: "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
-Subject: _save_fp_context corrupts kernel sp
-Date: Mon, 9 Apr 2001 15:44:58 +0200 
+	by oss.sgi.com (8.11.3/8.11.3) id f39EG9q07199
+	for linux-mips-outgoing; Mon, 9 Apr 2001 07:16:09 -0700
+Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f39EFXM07183
+	for <linux-mips@oss.sgi.com>; Mon, 9 Apr 2001 07:15:34 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id QAA19477;
+	Mon, 9 Apr 2001 16:15:03 +0200 (MET DST)
+Date: Mon, 9 Apr 2001 16:15:02 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Scott A McConnell <samcconn@cotw.com>
+cc: linux-mips@oss.sgi.com
+Subject: Re: mips_memory_upper
+In-Reply-To: <3AD1BB55.224407E1@cotw.com>
+Message-ID: <Pine.GSO.3.96.1010409160306.9470F-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.1960.3)
-Content-Type: text/plain
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi all,
-this bug was triggered by the 'crashme' program, which deliberately does
-various bad things.
+On Mon, 9 Apr 2001, Scott A McConnell wrote:
 
-The problem occurs when _save_fp_context cannot write to the user stack.
-Since the fixup
-routine for this lacks a nop at the end, the following "random"
-instruction is executed (in
-my case it adjusted the stack pointer, which is pretty lethal).
+> Used to be defined in ./arch/mips/kernel/setup.c
 
-The patch below corrects this.
+ It's no longer needed -- MIPS now uses the bootmem allocator cosistently
+across system variations.  Memory holes are now permitted.  User may
+override the determined memory map using a kernel command line (for
+debugging, to isolate a faulty module, etc.).  The add_memory_region()
+function is used to register an area of memory. 
 
-Regards,
-Tommy S. Christensen, Eicon Networks
+> It is no longer defined. I also noticed that badget is now using
+> vac_memory_upper.
 
+ This is a system-specific value to write into chipset registers.  It's
+not overriden by a kernel command line in any case to initialize the
+chipset properly.  I can't say anything more specific about it -- I'm not
+a Baget expert. 
 
---- r4k_fpu.S.orig      Sun Dec 10 08:56:02 2000
-+++ r4k_fpu.S   Mon Apr  9 10:55:27 2001
-@@ -94,6 +94,7 @@
-         ctc1   t0,fcr31
-        END(_restore_fp_context)
- 
-+       .set    reorder
-        .type   fault@function
-        .ent    fault
- fault: li      v0, -EFAULT
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

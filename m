@@ -1,62 +1,46 @@
-Received:  by oss.sgi.com id <S553767AbRAHOwr>;
-	Mon, 8 Jan 2001 06:52:47 -0800
-Received: from noose.gt.owl.de ([62.52.19.4]:40206 "HELO noose.gt.owl.de")
-	by oss.sgi.com with SMTP id <S553764AbRAHOwZ>;
-	Mon, 8 Jan 2001 06:52:25 -0800
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 024857F6; Mon,  8 Jan 2001 15:52:22 +0100 (CET)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id DA104F44B; Mon,  8 Jan 2001 15:53:02 +0100 (CET)
-Date:   Mon, 8 Jan 2001 15:53:02 +0100
-From:   Florian Lohoff <flo@rfc822.org>
-To:     linux-mips@oss.sgi.com
-Subject: Current CVS kernel no-go on R4k Decstation 
-Message-ID: <20010108155302.A18422@paradigm.rfc822.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-Organization: rfc822 - pure communication
+Received:  by oss.sgi.com id <S553769AbRAHPJj>;
+	Mon, 8 Jan 2001 07:09:39 -0800
+Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:44260 "EHLO
+        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553766AbRAHPJV>;
+	Mon, 8 Jan 2001 07:09:21 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id QAA02303;
+	Mon, 8 Jan 2001 16:07:32 +0100 (MET)
+Date:   Mon, 8 Jan 2001 16:07:31 +0100 (MET)
+From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To:     "Kevin D. Kissell" <kevink@mips.com>
+cc:     linux-mips@oss.sgi.com, Carsten Langgaard <carstenl@mips.com>,
+        Michael Shmulevich <michaels@jungo.com>
+Subject: Re: User applications
+In-Reply-To: <00d801c0797d$5cc410c0$0deca8c0@Ulysses>
+Message-ID: <Pine.GSO.3.96.1010108151854.23234G-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hi,
-i am seeing this on my R4k Decstation (5000/150) 
+On Mon, 8 Jan 2001, Kevin D. Kissell wrote:
 
-This was the first try 
+> Back in the Ancient Old Days of System V, every architecture
+> had an architecture-specific system call entry, the first parameter
+> of which expressed what needed to be done.  Do we have
+> such a thing in Linux?   That would be the logical place to
+> things like cache flush and the atomic operations that were
+> being discussed here a couple of weeks ago.
 
-[...]
-Freeing unused PROM memory: 124k freed
-Freeing unused kernel memory: 60k freed
-[init:1] Illegal instruction 0320f809 at 0fb651c4 ra=0fb651cc
-[init:1] Illegal instruction 8f998018 at 0fb651c8 ra=0fb651cc
+ The only case caches need to be synchronized is modifying some code.  The
+ptrace syscall does it automatically for text writes -- it's needed and
+used by gdb to set breakpoints, for example.  For other code there is
+cacheflush() which allows you to flush a cache range relevant to a given
+virtual address (I see it's not implemented very well at the moment).
 
-Second try doesnt give me any output at all after
-the "Freeing unused kernel ..."
+ Obviously, you don't want to allow unprivileged users to flush caches as
+a whole as it could lead to a DoS. 
 
-CVS Checkout @ 20010108 ~15:00 MESZ
-
-This DECstation is a DS5000/1xx
-Loading R4000 MMU routines.
-CPU revision is: 00000430
-Primary instruction cache 8kb, linesize 16 bytes.
-Primary data cache 8kb, linesize 16 bytes.
-Secondary cache sized at 1024K linesize 32 bytes.
-Linux version 2.4.0-test11 (flo@paradigm) (gcc version egcs-2.91.66 19990314 (egcs-1.1.2 release)) #1 Mon Jan 8 15:35:19 CET 2001
-Determined physical RAM map:
- memory: 04000000 @ 00000000 (usable)
-On node 0 totalpages: 16384
-zone(0): 16384 pages.
-zone(1): 0 pages.
-zone(2): 0 pages.
-Kernel command line: console=ttyS2 root=/dev/sda2
-Calibrating delay loop... 49.81 BogoMIPS
-Memory: 62600k/65536k available (1269k kernel code, 2936k reserved, 69k data, 60k init)
-[...]
-
-Flo
 -- 
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-     Why is it called "common sense" when nobody seems to have any?
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

@@ -1,124 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Dec 2002 16:51:14 +0100 (CET)
-Received: from crack.them.org ([65.125.64.184]:2716 "EHLO crack.them.org")
-	by linux-mips.org with ESMTP id <S8224847AbSLDPvN>;
-	Wed, 4 Dec 2002 16:51:13 +0100
-Received: from nevyn.them.org ([66.93.61.169] ident=mail)
-	by crack.them.org with asmtp (Exim 3.12 #1 (Debian))
-	id 18JdgA-0007je-00; Wed, 04 Dec 2002 11:51:23 -0600
-Received: from drow by nevyn.them.org with local (Exim 3.36 #1 (Debian))
-	id 18Jbo8-0004xm-00; Wed, 04 Dec 2002 10:51:28 -0500
-Date: Wed, 4 Dec 2002 10:51:28 -0500
-From: Daniel Jacobowitz <dan@debian.org>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: watch exception only for kseg0 addresses..?
-Message-ID: <20021204155128.GA18940@nevyn.them.org>
-References: <20021204001547.GA8012@nevyn.them.org> <Pine.GSO.3.96.1021204125557.29982B-100000@delta.ds2.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.GSO.3.96.1021204125557.29982B-100000@delta.ds2.pg.gda.pl>
-User-Agent: Mutt/1.5.1i
-Return-Path: <drow@false.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Dec 2002 18:04:51 +0100 (CET)
+Received: from ftp.mips.com ([206.31.31.227]:13526 "EHLO mx2.mips.com")
+	by linux-mips.org with ESMTP id <S8224847AbSLDREu>;
+	Wed, 4 Dec 2002 18:04:50 +0100
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id gB4H4XNf023765;
+	Wed, 4 Dec 2002 09:04:33 -0800 (PST)
+Received: from grendel (grendel [192.168.236.16])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id JAA23529;
+	Wed, 4 Dec 2002 09:04:29 -0800 (PST)
+Message-ID: <021401c29bb7$cd02abe0$10eca8c0@grendel>
+From: "Kevin D. Kissell" <kevink@mips.com>
+To: "Carsten Langgaard" <carstenl@mips.com>
+Cc: <linux-mips@linux-mips.org>, "Jun Sun" <jsun@mvista.com>
+References: <20021203224504.B13437@mvista.com> <007501c29b78$f34680e0$10eca8c0@grendel> <3DEDD414.3854664F@mips.com> <3DEDE537.CD58AD8F@mips.com> <013d01c29b95$fb487f60$10eca8c0@grendel> <3DEDFFB9.3312BA1A@mips.com>
+Subject: Re: possible Malta 4Kc cache problem ...
+Date: Wed, 4 Dec 2002 18:08:22 +0100
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-15"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4807.1700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4910.0300
+Return-Path: <kevink@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 751
+X-archive-position: 752
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@debian.org
+X-original-sender: kevink@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Dec 04, 2002 at 04:45:38PM +0100, Maciej W. Rozycki wrote:
-> On Tue, 3 Dec 2002, Daniel Jacobowitz wrote:
+> > I think that Carsten's patch (or equivalent) should certainly be
+> > applied to the main tree, but I wonder how relevant it is here.
+> > The flushes associated with trampolines don't do indexed
+> > flush operations, do they?
 > 
-> > >  As a fallback the approach is just fine, but doesn't is suck
-> > > performance-wise for watchpoints at the stack?  It certainly sucks for
-> > > instruction fetches.  While gdb doesn't seem to use hardware breakpoints
-> > > as they are only really necessary for ROMs, other software may want to
-> > > (well, gdb too, one day). 
-> > 
-> > Page-protection watchpoints on the stack do bite for performance, yes. 
-> > Most watched variables are not on the stack, though.  People tend to
-> > watch globals.
-> 
->  Well, so far I've almost exclusively watched the stack, sometimes
-> malloc()ed areas, to track down out of bound corruption.  It's really
-> useful when a program crashes with a SIGSEGV when returning from a
-> function call or when calling free() with a legal pointer.  Watching
-> globals has not been really useful for me so far -- they are rarely used
-> in the first place and you know where they can get modified, so you can
-> set ordinary breakpoints in contexts of interest. 
+> True, but are we sure that it's the trampoline that's the problem here?
 
-Whereas I'm usually tracking global or heap variables whose value is
-getting set to something peculiar.  Interesting.
+Jun Sun seemed to think it was. To quote his original message
 
-> 
-> > On Mon, Nov 25, 2002 at 04:08:00PM +0100, Ralf Baechle wrote:
-> > > I assume you got and R4000 manual and the MIPS64 spec.   R4000 implements
-> > > matching a physical address with a granularity of 8 bytes for load and
-> > > store operations.
-> > 
-> > Not handy.
-> 
->  Still better than nothing.
+"The problem involves emulating a "lw" instruction in cp1 branch delay
+ slot, which needs to  set up trampoline in user stack.  The net effect
+ looks as if the icache line or dcache line is not flushed properly."
 
-Sorry, by "not handy" I meant I didn't have the manuals available :)
+I don't know what his actual observations were that lead to that
+conclusion, but the resemblence to what was reported under LTP
+with the pre-break_cow()-patch kernel intrigues me.
 
->  Userland doesn't need to care of the
-> underlying implementation anyway.  You simply have a single watchpoint
-> available.  The kernel needs to take care when entering and exiting
-> userland.
-> 
-> > > So how would a prefered ptrace(2) API for hardware watchpoints look like?
-> > 
-> > Well, it would be nice to have at least:
-> >   - query total number
-> >   - query the granularity, or at least query whether or not the
-> >     granularity is settable
-> >   - Set and remove watchpoints.
-> > 
-> > Off the top of my head:
-> > PTRACE_MIPS_WATCHPOINT_INFO
-> > struct mips_watchpoint_info {
-> >   u32 num_avail;
-> >   u32 max_size;
-> > };
-> 
->  The information may be provided when reading the registers.
-> 
-> > PTRACE_MIPS_WATCHPOINT_SET
-> > struct mips_watchpoint_set {
-> >   u32 index;
-> >   u32 size;
-> >   s64 address;
-> > };
-> 
->  How about a KISS approach:
-> 
-> typedef struct {
-> 	s64 address;
-> 	u64 mask;
-> 	u64 access;
-> } mips_watchpoint;
-> 
-> typedef struct {
-> 	s32 api_version;
-> 	s32 nr_watchpoints;
-> 	mips_watchpoint watchpoints[0];
-> } mips_watchpoint_set;
-> 
-> Then PTRACE_MIPS_WATCHPOINT_GET is used to retrieve current settings,
-> PTRACE_MIPS_WATCHPOINT_SET is used to alter them.  More details:
-
->  What do you think?
-
-You don't reveal to userland what size watchpoints are available - i.e.
-how large a watchpoint can be.  Does the mask match the hardware
-implementation, and what are the restrictions on it?
-
--- 
-Daniel Jacobowitz
-MontaVista Software                         Debian GNU/Linux Developer
+So, I repeat... 
+> > ...I don't have a 4Kc platform at
+> > hand, but I think that Jun Sun *may* have found a better
+> > way to get at the other problem I was referring to, which
+> > we rarely saw on non-superscalar issue CPUs, and which
+> > seems to be masked by an otherwise superfluous flush of
+> > the Icache that was added to the latest versions of break_cow().
+> > If Carsten's patch solves the problem without applying that
+> > other update, I'd want to know that.  If it *doesn't*, I'd be
+> > really interested to know if, by any chance, there is a
+> > corelation between failures of Jun Sun's test and the incidence
+> > of page faults on the CACHE op in protected_icache_invalidate_line().
+> >
+> >             Kevin K.

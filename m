@@ -1,239 +1,134 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 May 2003 23:13:00 +0100 (BST)
-Received: from vopmail.sfo.interquest.net ([IPv6:::ffff:66.135.128.69]:26382
-	"EHLO micaiah.rwc.iqcicom.com") by linux-mips.org with ESMTP
-	id <S8225211AbTEEWM6>; Mon, 5 May 2003 23:12:58 +0100
-Received: from Muruga.localdomain (unverified [66.135.134.124]) by micaiah.rwc.iqcicom.com
- (Vircom SMTPRS 2.0.244) with ESMTP id <B0006204760@micaiah.rwc.iqcicom.com>;
- Mon, 5 May 2003 15:12:54 -0700
-Received: from localhost (muthu@localhost)
-	by Muruga.localdomain (8.11.6/8.11.2) with ESMTP id h45Lq7718514;
-	Mon, 5 May 2003 14:52:07 -0700
-Date: Mon, 5 May 2003 14:52:07 -0700 (PDT)
-From: Muthukumar Ratty <muthu@iqmail.net>
-To: Michael Anburaj <michaelanburaj@hotmail.com>
-cc: <linux-mips@linux-mips.org>
-Subject: Re: Linux for MIPS Atlas 4Kc board
-In-Reply-To: <BAY1-F36IZS2TRqf69a00007fcb@hotmail.com>
-Message-ID: <Pine.LNX.4.33.0305051444530.18383-100000@Muruga.localdomain>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <muthu@iqmail.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 May 2003 06:33:23 +0100 (BST)
+Received: from rwcrmhc51.attbi.com ([IPv6:::ffff:204.127.198.38]:671 "EHLO
+	rwcrmhc51.attbi.com") by linux-mips.org with ESMTP
+	id <S8225211AbTEFFdS>; Tue, 6 May 2003 06:33:18 +0100
+Received: from lucon.org (12-234-88-5.client.attbi.com[12.234.88.5])
+          by attbi.com (rwcrmhc51) with ESMTP
+          id <2003050605330405100jdkuee>; Tue, 6 May 2003 05:33:04 +0000
+Received: by lucon.org (Postfix, from userid 1000)
+	id 62BE52C681; Mon,  5 May 2003 22:33:01 -0700 (PDT)
+Date: Mon, 5 May 2003 22:33:01 -0700
+From: "H. J. Lu" <hjl@lucon.org>
+To: linux-gcc@vger.kernel.org,
+	GNU C Library <libc-alpha@sources.redhat.com>,
+	gcc@gcc.gnu.org, Kenneth Albanowski <kjahds@kjahds.com>,
+	Mat Hostetter <mat@lcs.mit.edu>, Warner Losh <imp@village.org>,
+	linux-mips@linux-mips.org, Ron Guilmette <rfg@monkeys.com>,
+	"Polstra; John" <linux-binutils-in@polstra.com>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Linas Vepstas <linas@linas.org>,
+	Leonard Zubkoff <lnz@dandelion.com>,
+	"Steven J. Hill" <sjhill@cotw.com>
+Subject: The Linux binutils 2.14.90.0.1 is released
+Message-ID: <20030505223301.A28436@lucon.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+Return-Path: <hjl@lucon.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2276
+X-archive-position: 2277
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: muthu@iqmail.net
+X-original-sender: hjl@lucon.org
 Precedence: bulk
 X-list: linux-mips
 
+This is the beta release of binutils 2.14.90.0.1 for Linux, which is
+based on binutils 2003 0505 in CVS on sourecs.redhat.com plus various
+changes. It is purely for Linux.
 
-Hi Mike,
-You need to set up the userland. I got it from the mips website
-ftp://ftp.mips.com/pub/linux/mips/installation/redhat7.1/. There is a good
-document on how to install it. You can install it on a hard disk or use an
-NFS mounted system and set the bootvariable root=... properly.
+The Linux/mips support is added. You have to use
 
-For an NFS system I use
+# rpm --target=[mips|mipsel] -ta binutils-xx.xx.xx.xx.xx.tar.gz
 
-go . nfsroot=10.10.10.1:/shiva/export/linux/mipsel
+to build it. Or you can read mips/README in the source tree to apply
+the mips patches and build it by hand.
 
-Muthu.
+Please report any bugs related to binutils 2.14.90.0.1 to hjl@lucon.org.
 
-PS: There are other distributions you can try too. Checkout linux-mips
-website or google for it.
+Changes from binutils 2.13.90.0.20:
+
+1. Update from binutils 2003 0505.
+2. Fix various ELF visibility bugs.
+3. Fix some ia64 linker bugs.
+4. Fix some ia64 assembler bugs.
+5. Add some IAS compatibilities to ia64 assembler.
+6. Fix ELF common symbol alignment.
+7. Fix ELF weak symbol handling.
+
+Changes from binutils 2.13.90.0.18:
+
+1. Update from binutils 2003 0319.
+2. Fix an ia64 linker brl relaxation bug.
+3. Fix some ELF/ppc linker bugs.
+
+Changes from binutils 2.13.90.0.16:
+
+1. Update from binutils 2003 0121.
+2. Fix an ia64 gas bug.
+3. Fix some TLS bugs.
+4. Fix some ELF/ppc bugs.
+5. Fix an ELF/m68k bug.
+
+2. Include /usr/bin/c++filt.
+Changes from binutils 2.13.90.0.14:
+
+1. Update from binutils 2002 1126.
+2. Include /usr/bin/c++filt.
+3. Fix "ld -r" with execption handling.
+
+Changes from binutils 2.13.90.0.10:
+
+1. Update from binutils 2002 1114.
+2. Fix ELF/alpha bugs.
+3. Fix an ELF/i386 assembler bug.
+
+Changes from binutils 2.13.90.0.4:
+
+1. Update from binutils 2002 1010.
+2. More ELF/PPC linker bug fixes.
+3. Fix an ELF/alpha linker bug.
+4. Fix an ELF/sparc linker bug to support Solaris.
+5. More TLS updates.
+
+Changes from binutils 2.13.90.0.3:
+
+1. Update from binutils 2002 0814.
+2. Fix symbol versioning bugs for gcc 3.2.
+3. Fix mips gas.
+
+Changes from binutils 2.13.90.0.2:
+
+1. Update from binutils 2002 0809.
+2. Fix a mips gas compatibility bug.
+3. Fix an x86 TLS bfd bug.
+4. Fix an x86 PIC gas bug.
+5. Improve symbol versioning support.
+
+The file list:
+
+1. binutils-2.14.90.0.1.tar.gz. Source code.
+2. binutils-2.13.90.0.18-2.14.90.0.1.diff.gz. Patch against the
+   previous beta source code.
+3. binutils-2.14.90.0.1-1.i386.rpm. IA-32 binary RPM for RedHat 9.
+
+There is no separate source rpm. You can do
+
+# rpm -ta binutils-2.14.90.0.1.tar.gz
+
+to create both binary and source rpms.
+
+The primary sites for the beta Linux binutils are:
+
+1. http://ftp.kernel.org/pub/linux/devel/binutils/
+
+Thanks.
 
 
-
-On Mon, 5 May 2003, Michael Anburaj wrote:
-
-> Hi,
->
-> Thanks a lot Muthu & all others who helped me.
->
-> I used the defconfig-atlas to configure my linux build & it works great on
-> my board! <Probably I did not read the docs well, sorry> Thanks again, but I
-> still have one more hurdle to jump over to kick start this excercise with
-> linux.
->
-> Messages on my console (I used 'go' on YAMON prompt to start linux):
-> -------------------------------------------------------------------
->
-> Root-NFS: No NFS server available, giving up.
-> VFS: Unable to mount root fs via NFS, trying floppy.
-> VFS: Cannot open root device "" or 02:00
-> Please append a correct "root=" boot option
-> Kernel panic: VFS: Unable to mount root fs on 02:00
->
->
-> Please advise me the simplest form of starting linux from YAMON prompt after
-> downloading the image(srec) on to RAM.
-> Also please point me to a doc. that talks about the possible parameters when
-> starting Linux.
->
-> Thanks everyone & Cheers,
-> -Mike.
->
->
->
-> >From: Muthukumar Ratty <muthu@iqmail.net>
-> >To: Michael Anburaj <michaelanburaj@hotmail.com>
-> >Subject: Re: Linux for MIPS Atlas 4Kc board
-> >Date: Sun, 4 May 2003 22:49:40 -0700 (PDT)
-> >
-> >On Sun, 4 May 2003, Michael Anburaj wrote:
-> >
-> > > Hi Muthu,
-> > >
-> > > So, I guess then I would have to do,
-> > >
-> > > make menuconfig & choose little endian after "cp arch/mips/default-atlas
-> > > .config".
-> >
-> >small typo, its defconfig-atlas :)
-> >
-> >Yes, if you want to run little-endian. But I would suggest you try the big
-> >endian first (since I guess you have tools for that already).
-> >
-> >
-> > >Am I right? If so, Do I need mipsel-linux??? Because, as I
-> >
-> >If you decide to go with little-endian then you need mipsel-linux-*. You
-> >can either get it from linux-mips or build your own.
-> >
-> > > understand mips-linux tool-chain if for big endian.
-> > >
-> > > Did you run the final image on top of YAMON?
-> > >
-> >
-> >Yes. I used YAMON to net load the image. But I guess it doesnt matter
-> >(redboot/yamon/any). Actually I tried RedBoot before for linux-2.4.3 and
-> >it worked like a champ.
-> >
-> >Muthu
-> >
-> >
-> > > Please help me out & thanks,
-> > > -Mike.
-> > >
-> > >
-> > >
-> > >
-> > >
-> > >
-> > > >From: Muthukumar Ratty <muthu@iqmail.net>
-> > > >To: Michael Anburaj <michaelanburaj@hotmail.com>
-> > > >CC: <linux-mips@linux-mips.org>
-> > > >Subject: Re: Linux for MIPS Atlas 4Kc board
-> > > >Date: Sun, 4 May 2003 19:21:49 -0700 (PDT)
-> > > >
-> > > >
-> > > >Hi Mike,
-> > > >
-> > > >I dont know what version you are trying but the one at linux_2_4 branch
-> > > >(linux2.4.21-pre4) seems to work. You can get it with
-> > > >
-> > > >cvs -d :pserver:cvs@ftp.linux-mips.org:/home/cvs co -r linux_2_4 linux
-> > > >
-> > > >to configure, you can use the default config. from head do ..
-> > > >
-> > > >cp arch/mips/default-atlas .config
-> > > >
-> > > >I tried little endian. If you want that you need to select it in the
-> > > >config.
-> > > >
-> > > >Muthu
-> > > >
-> > > >
-> > > >On Sun, 4 May 2003, Michael Anburaj wrote:
-> > > >
-> > > > > Hi,
-> > > > >
-> > > > > Finally, I could compile vmlinux. I thought of booting this RAM
-> >image
-> > > >(or
-> > > > > its SREC equivalent) using the onboard YAMON (in BIG endian mode - I
-> >am
-> > > > > having trouble building Redboot in BIG endian mode <issue ported at
-> >ecos
-> > > > > forum>, so for now thought of using YAMON). After downloding the
-> > > > > vmlinux.srec over the serial port (Starting at 0x80100000), I issued
-> >the
-> > > >go
-> > > > > command to run the image. I get the following message:
-> > > > >
-> > > > > YAMON> go
-> > > > >
-> > > > > LINUX started...
-> > > > >
-> > > > > * Exception (user) : Reserved instruction *
-> > > > > BadVAddr = 0x00000000  Cause    = 0x00808028
-> > > > > Compare  = 0x00061a80  Config   = 0x80038083
-> > > > > Config1  = 0x1e9b4d8a  Context  = 0x63800000
-> > > > > Count    = 0xb9188fd8  DEPC     = 0x21424255
-> > > > > Debug    = 0x0400dc0b  EPC      = 0x80122258
-> > > > > EntryHi  = 0x00000068  EntryLo0 = 0x028ff72e
-> > > > > EntryLo1 = 0x035a241f  ErrorEPC = 0x8003add0
-> > > > > Index    = 0x0000000b  PRId     = 0x00018001
-> > > > > PageMask = 0x01b90000  Random   = 0x0000000d
-> > > > > Status   = 0x00000402  WatchHi  = 0x00000000
-> > > > > WatchLo  = 0x00000000  Wired    = 0x00000000
-> > > > > Hi       = 0x00000000  Lo       = 0x04000000
-> > > > >
-> > > > > $ 0(zr):0x00000000  $ 8(t0):0x00000000  $16(s0):0x802d810a
-> > > > > $24(t8):0xffffffff
-> > > > > $ 1(at):0x80280000  $ 9(t1):0x00000000  $17(s1):0x802d810c
-> > > > > $25(t9):0x802c1e94
-> > > > > $ 2(v0):0x0000000a  $10(t2):0x8024f401  $18(s2):0x00000400
-> > > > > $26(k0):0x00000000
-> > > > > $ 3(v1):0x00000000  $11(t3):0x00000000  $19(s3):0x00000001
-> > > > > $27(k1):0x00000000
-> > > > > $ 4(a0):0x00000000  $12(t4):0x00000000  $20(s4):0x0000001a
-> > > > > $28(gp):0x802c0000
-> > > > > $ 5(a1):0x80280000  $13(t5):0x00000000  $21(s5):0x0000000a
-> > > > > $29(sp):0x802c1f58
-> > > > > $ 6(a2):0x8024385a  $14(t6):0x802d8109  $22(s6):0x0000003e
-> > > > > $30(s8):0x800b1080
-> > > > > $ 7(a3):0x00000000  $15(t7):0xfffffffe  $23(s7):0x0000003c
-> > > > > $31(ra):0x80122230
-> > > > >
-> > > > >
-> > > > > The linux image started fine, but caused an exception after a while.
-> >Is
-> > > >this
-> > > > > because Linux is not compatible with YAMON? If so, what are the
-> >possible
-> > > > > monitor programs that can go with Linux? Please point me to the
-> > > >documents in
-> > > > > this regard (documents on running Linux executable on Atlas 4Kc
-> >board).
-> > > > >
-> > > > > Or will Linux work with any ROM monitor? If so, please let me know
-> >the
-> > > > > reason for the exception.
-> > > > >
-> > > > > Thanks a lot,
-> > > > > -Mike.
-> > > > >
-> > > > > _________________________________________________________________
-> > > > > STOP MORE SPAM with the new MSN 8 and get 2 months FREE*
-> > > > > http://join.msn.com/?page=features/junkmail
-> > > > >
-> > > > >
-> > > >
-> > >
-> > >
-> > > _________________________________________________________________
-> > > Help STOP SPAM with the new MSN 8 and get 2 months FREE*
-> > > http://join.msn.com/?page=features/junkmail
-> > >
-> >
->
->
-> _________________________________________________________________
-> Tired of spam? Get advanced junk mail protection with MSN 8.
-> http://join.msn.com/?page=features/junkmail
->
->
+H.J. Lu
+hjl@lucon.org
+05/05/2003

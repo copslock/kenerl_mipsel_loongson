@@ -1,52 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Dec 2004 21:04:58 +0000 (GMT)
-Received: from sorrow.cyrius.com ([IPv6:::ffff:65.19.161.204]:52231 "EHLO
-	sorrow.cyrius.com") by linux-mips.org with ESMTP
-	id <S8225250AbULWVEx>; Thu, 23 Dec 2004 21:04:53 +0000
-Received: by sorrow.cyrius.com (Postfix, from userid 10)
-	id E046E64D40; Thu, 23 Dec 2004 21:04:39 +0000 (UTC)
-Received: by deprecation.cyrius.com (Postfix, from userid 1000)
-	id 35A614FA17; Thu, 23 Dec 2004 21:03:41 +0000 (GMT)
-Date: Thu, 23 Dec 2004 21:03:40 +0000
-From: Martin Michlmayr <tbm@cyrius.com>
-To: linux-mips@linux-mips.org
-Subject: 2.6.10rc3: swarm only configures eth0, not eth1
-Message-ID: <20041223210340.GA27255@deprecation.cyrius.com>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Dec 2004 04:01:23 +0000 (GMT)
+Received: from web52806.mail.yahoo.com ([IPv6:::ffff:206.190.39.170]:59730
+	"HELO web52806.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S8225255AbULXEBI>; Fri, 24 Dec 2004 04:01:08 +0000
+Received: (qmail 93589 invoked by uid 60001); 24 Dec 2004 04:00:51 -0000
+Comment: DomainKeys? See http://antispam.yahoo.com/domainkeys
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  b=GSUAie02IlxekLIAVxYYn1aDqCXQAfkBkkY1OWbqcnjHtLgxKyhvEV4X/wJmB1Q1RIVp/P3StjsQRs4sRzgHSLyticT2bTd3Raqi+w7K57c5212A2q3fdbyKkXGjyiOzg65PIXHY9AbgyyYnZlimevVWd3I3ll6RIne6wzxs600=  ;
+Message-ID: <20041224040051.93587.qmail@web52806.mail.yahoo.com>
+Received: from [203.145.153.244] by web52806.mail.yahoo.com via HTTP; Thu, 23 Dec 2004 20:00:51 PST
+Date: Thu, 23 Dec 2004 20:00:51 -0800 (PST)
+From: Manish Lachwani <m_lachwani@yahoo.com>
+Subject: Re: [PATCH] Further TLB handler optimizations
+To: Martin Michlmayr <tbm@cyrius.com>, linux-mips@linux-mips.org
+In-Reply-To: <20041223202526.GA2254@deprecation.cyrius.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.6+20040907i
-Return-Path: <tbm@cyrius.com>
+Return-Path: <m_lachwani@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6750
+X-archive-position: 6751
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tbm@cyrius.com
+X-original-sender: m_lachwani@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-I just booted a 2.6.10rc3 kernel on my SWARM and noticed that only
-eth0 is configured, but eth1 isn't (even though I booted via eth1):
+Hello !
 
-sbmac: configuring MAC at 10064000
-eth0: enabling TCP rcv checksum
-eth0: SiByte Ethernet at 0x10064000, address: 00:02:4C:FE:0D:08
-sbmac: not configuring MAC at 10066000
+In what way does it break? Can you please provide more
+details. Also, does it break on UP or SMP?
 
-On a 2.4.x kernel, both network interfaces are configured and I get:
+Thanks
+Manish Lachwani
 
-eth0: SiByte Ethernet at 0x10064000, address: 00-02-4C-FE-0D-08
-eth0: enabling TCP rcv checksum
-eth1: SiByte Ethernet at 0x10065000, address: 00-02-4C-FE-0D-09
-eth1: enabling TCP rcv checksum
+--- Martin Michlmayr <tbm@cyrius.com> wrote:
 
-Note the difference for eth1 between 10066000 (2.6) and 10065000 (2.4).
+> * Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+> [2004-12-22 22:55]:
+> > The patch was tested on an O200 SMP system with 2
+> x R12000. Other
+> > machines are untested. Please test if it still
+> works for you,
+> 
+> It breaks SB1 SWARM.
+> -- 
+> Martin Michlmayr
+> http://www.cyrius.com/
+> 
+> 
 
-Thiemo suggested that this might be because the 2.4 kernel is 32 bit
-while the 2.6 kernel is 64 bit and that 2.6 might get the address
-wrong.
--- 
-Martin Michlmayr
-http://www.cyrius.com/
+
+=====
+http://www.koffee-break.com

@@ -1,52 +1,75 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id FAA30502 for <linux-archive@neteng.engr.sgi.com>; Tue, 2 Jun 1998 05:23:50 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id CAA02724 for <linux-archive@neteng.engr.sgi.com>; Wed, 3 Jun 1998 02:56:15 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id FAA69025
+	id CAA66287
 	for linux-list;
-	Tue, 2 Jun 1998 05:22:12 -0700 (PDT)
+	Wed, 3 Jun 1998 02:55:46 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id FAA32429
-	for <linux@engr.sgi.com>;
-	Tue, 2 Jun 1998 05:22:10 -0700 (PDT)
-	mail_from (Arnaud.Le.Neel@cyceron.fr)
-Received: from cyceron.fr (ns2.cyceron.fr [192.93.44.1]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam: SGI does not authorize the use of its proprietary systems or networks for unsolicited or bulk email from the Internet.) via ESMTP id FAA00460
-	for <linux@engr.sgi.com>; Tue, 2 Jun 1998 05:21:58 -0700 (PDT)
-	mail_from (Arnaud.Le.Neel@cyceron.fr)
-Received: from cyceron.fr (indigo1.cyceron.fr [192.93.44.9])
-	by cyceron.fr (8.8.8/8.8.8) with ESMTP id NAA18924
-	for <linux@engr.sgi.com>; Tue, 2 Jun 1998 13:22:01 GMT
-Message-ID: <3573FC79.75791526@cyceron.fr>
-Date: Tue, 02 Jun 1998 14:22:01 +0100
-From: Arnaud Le Neel <Arnaud.Le.Neel@cyceron.fr>
-Reply-To: Arnaud.Le.Neel@cyceron.fr
-Organization: Cyceron PET Center
-X-Mailer: Mozilla 4.04 [en] (X11; I; IRIX 6.2 IP20)
+	via ESMTP id CAA66574
+	for <linux@cthulhu.engr.sgi.com>;
+	Wed, 3 Jun 1998 02:55:44 -0700 (PDT)
+	mail_from (andrewo@cse.unsw.edu.au)
+Received: from note.orchestra.cse.unsw.EDU.AU (note.orchestra.cse.unsw.EDU.AU [129.94.242.29]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam: SGI does not authorize the use of its proprietary systems or networks for unsolicited or bulk email from the Internet.) via SMTP id CAA14974
+	for <linux@cthulhu.engr.sgi.com>; Wed, 3 Jun 1998 02:55:41 -0700 (PDT)
+	mail_from (andrewo@cse.unsw.edu.au)
+Received: From ives With LocalMail ; Wed, 3 Jun 98 19:55:37 +1000 
+From: "Andrew O'Brien" <andrewo@cse.unsw.edu.au>
+To: SGI/Linux mailing list <linux@cthulhu.engr.sgi.com>
+Date: Wed, 3 Jun 1998 19:55:37 +1000 (EST)
+X-Sender: andrewo@ives.orchestra.cse.unsw.EDU.AU
+Reply-To: andrewo@cse.unsw.edu.au
+Subject: Account request.
+Message-ID: <Pine.OSF.3.95.980603193243.22028C-100000@ives.orchestra.cse.unsw.EDU.AU>
 MIME-Version: 1.0
-To: linux@cthulhu.engr.sgi.com
-Subject: Newbie on this list
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi there,
 
-I'm newbie on this list, and i want to know how advanced is this
-project. I didn't found some updated documentation on www.linux.sgi.com
-and i wondered if it was because of the low speed of the project?
+Sorry about the spam. I thought it'd have more chance of being acted upon
+soon(ish) if I posted to the group.
 
-Excuse me for this question, but i didn't found the FAQ, and i'm 
-interested in installing Linux on a old Indy.
+I'm after an account on linus. I'm currently working on a port to a
+specialised 4600 board developed here at the UNSW (actually I'm porting
+linux to run on top of L4, a microkernel, running on this board)
 
-Thank's a lot,
-arno
+I attempted to access the cvs tree with user: cvs, password:cvs and then
+found that cvs was not accessable this way. Poking back through the mail
+archive (thanks Ariel - its at http://reality.sgi.com/ariel/linux.gz for
+those of you wondering) I found that it's only available via ssh.
 
--- 
-       Arnaud Le Néel			Cyceron PET Research Center
-Systems and Network administrator	  Bd Becquerel - BP 5229
-mailto:Arnaud.Le.Neel@cyceron.fr	   F-14074 Caen - CEDEX
-       	ICQ #8852927			Tel :	(+33) (0)231 470 203
-  http://www.cyceron.fr/~arno		Fax :	(+33) (0)231 470 222
+Therefore, an account would be nice as mirroring via ftp is not really
+that productive ;)
+
+I seem to remember there being problems with the cvs-commit mailing list -
+if this is fixed could someone add me (or let me know what the address
+is for the majordomo server) to that as well ? 
+
+My thanks to you all.
+
+
+
+BTW - if anyone is interested in local OS stuff, have a look at the
+following:
+
+UNSW Mungi Project (Mungi is a 64bit SASOS and the final target of my
+port)
+http://www.cse.unsw.edu.au/~disy/Mungi.html
+
+MIPS L4 developed here:
+http://www.cse.unsw.edu.au/~disy/L4/
+
+http://www.cse.unsw.edu.au/~andrewo/thesis (not much here but a short talk
+on the general design goals of the Linux on L4 port)
+
+
+
+--___________________________________________________________________
+ /  Andrew O'Brien       andrewo@cse.unsw.edu.au   bbq@mindless.com  \
+/  Student, Faculty of CSE       http://www.cse.unsw.edu.au/~andrewo  \
+>  UNSW, Australia           President COMPSOC   http://www/~compsoc  <
+\  BE (Comp)/BA (Psych)      Student Representative   stu-reps@cse..  /
+ \_____ "finger andrewo@cse.unsw.edu.au" for my current location ____/

@@ -1,45 +1,49 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5OFeqnC001179
-	for <linux-mips-outgoing@oss.sgi.com>; Mon, 24 Jun 2002 08:40:52 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5OFomnC001360
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 24 Jun 2002 08:50:48 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5OFeqEa001178
-	for linux-mips-outgoing; Mon, 24 Jun 2002 08:40:52 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5OFomha001359
+	for linux-mips-outgoing; Mon, 24 Jun 2002 08:50:48 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from dea.linux-mips.net (c-180-196-18.ka.dial.de.ignite.net [62.180.196.18])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5OFelnC001175
-	for <linux-mips@oss.sgi.com>; Mon, 24 Jun 2002 08:40:49 -0700
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id g5OFdtV01135;
-	Mon, 24 Jun 2002 17:39:55 +0200
-Date: Mon, 24 Jun 2002 17:39:55 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: "Gleb O. Raiko" <raiko@niisi.msk.ru>
-Cc: Carsten Langgaard <carstenl@mips.com>,
-   "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: Bug in __copy_user
-Message-ID: <20020624173954.A1109@dea.linux-mips.net>
-References: <3D1729F3.7241A74A@mips.com> <3D17376B.59333E27@niisi.msk.ru>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <3D17376B.59333E27@niisi.msk.ru>; from raiko@niisi.msk.ru on Mon, Jun 24, 2002 at 07:14:51PM +0400
-X-Accept-Language: de,en,fr
+Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5OFodnC001355;
+	Mon, 24 Jun 2002 08:50:40 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id RAA02953;
+	Mon, 24 Jun 2002 17:54:29 +0200 (MET DST)
+Date: Mon, 24 Jun 2002 17:54:28 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Ralf Baechle <ralf@oss.sgi.com>
+cc: Guido Guenther <agx@sigxcpu.org>, linux-mips@oss.sgi.com
+Subject: Re: 2.4.18: pgtable.h compile fix
+In-Reply-To: <20020624153330.C28145@dea.linux-mips.net>
+Message-ID: <Pine.GSO.3.96.1020624174346.22509N-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Gleb,
+On Mon, 24 Jun 2002, Ralf Baechle wrote:
 
-On Mon, Jun 24, 2002 at 07:14:51PM +0400, Gleb O. Raiko wrote:
-
-> This patch also solves the problem for mips in 2.4/2.5 kernel. My
-> question was about the patch for mips64 and mips in 2.2 kernel.
+> >  MIPS64 lags behind a bit due to less interest/testing.  Note that you
+> > should use "__ASSEMBLY__" to guard assembly-unsafe parts of headers.
 > 
-> Shall memcpy.S from 2.4/2.5 be backported to 2.2 and mips64?
+> _LANGUAGE_ASSEMBLY is the traditional MIPS cpp symbol to indicate assembler
+> source code.
 
-I think that would be the prefered solution as it'll be easier to maintain.
+ Well, but the rest of the kernel uses "__ASSEMBLY__", that's defined in
+the top-level Makefile.  What's the point in being different? 
 
-I've not received any 2.2 patches in a very long, long time - anybody
-actually still using it?
+ Also it doesn't seem to work for me -- the rules in specs look broken:
 
-  Ralf
+$ mipsel-linux-gcc -E -dM -xassembler-with-cpp /dev/null | grep LANGUAGE
+#define __LANGUAGE_C 1
+#define _LANGUAGE_C 1
+#define LANGUAGE_C 1
+
+thus it cannot be considered reliable.
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

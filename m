@@ -1,139 +1,112 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA01031; Thu, 3 Apr 1997 10:13:57 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA12542; Thu, 3 Apr 1997 10:53:18 -0800
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id KAA27375 for linux-list; Thu, 3 Apr 1997 10:13:18 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA27360 for <linux@relay.engr.SGI.COM>; Thu, 3 Apr 1997 10:13:14 -0800
-Received: from alles.intern.julia.de (loehnberg1.core.julia.de [194.221.49.2]) by sgi.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id KAA21583 for <linux@relay.engr.SGI.COM>; Thu, 3 Apr 1997 10:13:05 -0800
-Received: from kernel.panic.julia.de (kernel.panic.julia.de [194.221.49.153])
-	by alles.intern.julia.de (8.8.5/8.8.5) with ESMTP id UAA13926
-	for <linux@relay.engr.SGI.COM>; Thu, 3 Apr 1997 20:09:00 +0200
-From: Ralf Baechle <ralf@Julia.DE>
-Received: (from ralf@localhost)
-          by kernel.panic.julia.de (8.8.4/8.8.4)
-	  id UAA21447 for linux@relay.engr.SGI.COM; Thu, 3 Apr 1997 20:10:35 +0200
-Message-Id: <199704031810.UAA21447@kernel.panic.julia.de>
-Subject: Re: The Indy has landed...
-To: linux@cthulhu.engr.sgi.com
-Date: Thu, 3 Apr 1997 20:10:35 +0200 (MET DST)
-In-Reply-To: <199704031612.LAA16242@neon.ingenia.ca> from "Mike Shaver" at Apr 3, 97 11:12:26 am
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id KAA09771 for linux-list; Thu, 3 Apr 1997 10:52:41 -0800
+Received: from gandalf.engr.sgi.com (gandalf.engr.sgi.com [150.166.61.44]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA09756 for <linux@cthulhu.engr.sgi.com>; Thu, 3 Apr 1997 10:52:39 -0800
+Received: from gandalf (localhost [127.0.0.1]) by gandalf.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via SMTP id KAA26978; Thu, 3 Apr 1997 10:51:57 -0800
+Message-ID: <3343FC4C.41C6@j.c>
+Date: Thu, 03 Apr 1997 10:51:56 -0800
+From: Jean-Michel <j@j.c>
+X-Mailer: Mozilla 2.02S (X11; I; IRIX 6.2 IP22)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
+To: lm@j.c, neteng@j.c, linux@cthulhu.engr.sgi.com
+CC: pittet@basel.sgi.com
+Subject: Linux on N64??
+X-URL: http://www.ix.de/ix/artikel/E/1997/04/036/
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi,
+This German Computer magazine claims to have seen a prototype
+of Linux on N64. I send a msg to confirm the prototype.
 
-> [shaver@neon shaver]$ telnet bogomips
-> Trying 205.207.220.72...
-> Connected to bogomips.ingenia.com.
-> Escape character is '^]'.
+Cheers
+JM
+--
+http://www.ix.de/ix/artikel/E/1997/04/036/
+> [iX-Minilogo] online [blaue Linie]
 > 
+>  [Aufmacher]  Linux for Nintendo 64
 > 
-> IRIX (bogomips.ingenia.com)
-
-(Hope this is R4600 - otherwise BogoMIPS won't be too impressive ...)
-
-> login: root
-> Password:
-> IRIX Release 6.2 IP22 bogomips
-> Copyright 1987-1996 Silicon Graphics, Inc. All Rights Reserved.
-> Last login: Thu Apr  3 07:18:17 PST 1997 on :0
-> bogomips 1# w
->   8:07am  up 50 mins,  2 users,  load average: 0.38, 0.25, 0.10
-> User     tty from            login@   idle   JCPU   PCPU  what
-> demos    q0  :0.0            8:02am      4                -csh
-> root     q1  205.207.220.57  8:06am                       w
-> bogomips 2# 
+> Jürgen Seeger
 > 
-> It would seem, ladies and gentlemen, that we're off to the races!
-> After the conference sessions tonight I'll see about setting up the
-> tftpboot stuff.  (Tips welcome!)
+>                             German version
+> 
+> [Leeraum: 25 Pkt.]
+> 
+> As early as Comdex fall 95 Netscape Corp. is said to have presented a
+> port of their Navigator to the Mips CPU based Nintendo 64 behind
+> closed doors. Talking to iX during the 1996 GUUG meeting, SCO's Doug
+> Michels, too, regarded alliances with Sega or Nintendo as a "real
+> option", especially as far as the postitioning of the Network Computer
+> against the wintel dominance is concerned.
+> 
+> Insiders assume that Netscape's initiative failed because of a
+> personal animosity between young entrepreneur Marc Andreessen and the
+> very conservative Nintendo boss Hiroshi Yamaushi. SCO wasn't able to
+> follow up their plans, for they have to concentrate their resources to
+> the development of the 64 bit Unix they have codenamed Gemini.
+> 
+> And, as has happened before, the internet community, strongly
+> committed to free software, put things to work, which were not
+> completed in the commercial field. At the end of last year an Italian
+> programmers' team got hold of the US version of N64 and a SGI Indy,
+> including the N64 card. Thus the team ported Linux/Mips to the play
+> station. Linux/Mips originally had been initiated by the music company
+> Waldorf (see iX 2/96) and, since the beginning of 1996, has been
+> ready-to-run on R4x00 CPUs.
+> 
+> The main difficulties, according to the Italians, were caused by the
+> port of the X Window System to the N64 I/O hardware. At first they
+> ported the output routines to the dedicated co-processors. Although
+> N64-X11 is not yet really stable, legendary 500000 XStones have been
+> reached so far - running on an ordinary TV set, driven by high
+> frequency signals. Of course, the quality of the picture is much
+> better, if an AV cable and a high-quality monitor are used.
+> 
+> Input media can be either the bundled console (see photograph above)
+> or a PC keyboard via adapter. The first solution requires a bit of
+> experience when entering text, because each character is represented
+> by a 3 degree angle of the analog stick. Internationally less
+> frequently used characters like the backslash were, therefore, not
+> implemented.
+> 
+> Those who buy the optional N64 controller pack, can even save some
+> data, e. g. personal preferences or WWW hotlists. The prototyp
+> available at editorial deadline hasn't yet got a reliable network
+> connection, because there are still problems between the manually
+> soldered 100 MBit/s Digital 21140 chip and the 93.75 MHz of the R4300i
+> CPU.
+> 
+> Like the former Mips RISC OS Linux/N64 works in bi-endian mode and,
+> therefore, can process data of the two possible byte orders. Yet the
+> kernel version 2.11 based Linux/N64 doesn't use Nintendo's 64 bit
+> address mode - which is not really a disadvantage, considering the 4
+> MBytes of memory available. A further problem: Nintendo Kyoto
+> headquarter so far has steadfastly refused to build cards in
+> significant volumes or to include Linux/N64 in their distribution
+> channels. Siemens Nixdorf and Silicon Graphics, on the other hand,
+> have expressed "a lot of interest". "This project could lead to a new
+> deal in the desktop market", a speaker of the Munich based company
+> figured. According to their speaker, Luciano Aprilia, the Italian
+> developers, are going to make the software available under the GPL, so
+> it can be used free of charge.
+> 
+> [unsichtbares Pixel] [Leeraum] [Leeraum]
+> 
+>                                  [iX]
+> 
+>             © Copyright by Verlag Heinz Heise GmbH & Co KG
+>             Veröffentlichung und Vervielfältigung nur mit
+>            Genehmigung des Verlags Heinz Heise GmbH & Co KG
+> 
+>   Letzte Veränderung am 624. März 1997 von js - Kritik, Anregungen &
+>                    cetera bitte an den iX-Webmaster
 
-Assuming you're using a Linux box as TFTP Server here are old versions of
-my config files.  Iff(OS != Linux) while(1){swear();rtfm(damn);swear()} ;-)
-
---- /etc/bootptab ------------------------------------------------------------
-
-# /etc/net/bootptab: database for bootp server (/usr/net/in.bootpd)
-# Last update Mon 11/7/88 18:03
-# Blank lines and lines beginning with '#' are ignored.
-#
-# Legend:
-#
-#	first field -- hostname
-#			(may be full domain name and probably should be)
-#
-#	hd -- home directory
-#	bf -- bootfile
-#	cs -- cookie servers
-#	ds -- domain name servers
-#	gw -- gateways
-#	ha -- hardware address
-#	ht -- hardware type
-#	im -- impress servers
-#	ip -- host IP address
-#	lg -- log servers
-#	lp -- LPR servers
-#	ns -- IEN-116 name servers
-#	rl -- resource location protocol servers
-#	sm -- subnet mask
-#	tc -- template host (points to similar host entry)
-#	to -- time offset (seconds)
-#	ts -- time servers
-#
-# Be careful about including backslashes where they're needed.  Weird (bad)
-# things can happen when a backslash is omitted where one is intended.
-#
-
-# First, define a global entry which specifies the stuff every host uses.
-# NOTE: THE VALUES BELOW ARE MEANT AS AN EXAMPLE!
-#allhost:hd=/tmp:bf=null:\
-#	:ds=145.71.35.1 145.71.32.1:\
-#	:sm=255.255.254.0:\
-#	:gw=145.71.35.1:\
-#	:ts=145.71.35.1:\
-#	:lp=145.71.35.1:\
-#	:to=-7200:
-
-# Define all individual entries.
-#hostname:ht=1:ha=ether_addr_in_hex:ip=ip_addr_in_dec:tc=allhost:
-
-#
-#
-#
-.diskless:bf=null:\
-	:sm=255.255.255.0:\
-	:to=7200:
-
-mipsy:hd=/tftpboot/193.98.169.17/:\
-	:rp=/tftpboot/193.98.169.17/:\
-	:ht=ethernet:\
-	:ha=004095e11dc2:\
-	:ip=193.98.169.17:\
-	:tc=.diskless:
-
-#mipsy:hd=/tftpboot/194.121.228.22/:\
-#	:rp=/tftpboot/194.121.228.22/:\
-#	:ht=ethernet:\
-#	:ha=004095e11dc2:\
-#	:ip=194.121.228.22:\
-#	:tc=.diskless:
-
--- snipet from /etc/inetd.conf -----------------------------------------------
-
-bootps dgram   udp     wait    root    /usr/sbin/tcpd  /usr/sbin/in.bootpd
-
-(My bootpd (probably from Slackware 2.0 or 3.0) had to be replaced; it
-wasn't working at all ...)
-
-------------------------------------------------------------------------------
-
-/tftpboot/193.98.169.17/ is Mipsy's NFS root, 004095e11dc2 it's 48 bit
-Ethernet hardware address.  Note that the kernel makes some assumptions
-about where the NFS root is on the server (/tftpboot/<ip>); if you
-change that you need to pass some kernel options.  My setup is such
-that I don't need to pass any options at all.
-
-Does that help?
-
-  Ralf
+ 
+-----8<-----
+Jean-Michel Pittet,          jmp@sgi.com     Phone:415-933-6149
+FAX:933-0513
+Silicon Graphics, Inc., 2011 N.Shoreline Blvd,9U-510, Mountain View CA
+94043
+    http://www.sgi.com/Products/hardware/servers/products/Network.html

@@ -1,149 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 May 2004 16:23:50 +0100 (BST)
-Received: from mta9.srv.hcvlny.cv.net ([IPv6:::ffff:167.206.5.42]:2357 "EHLO
-	mta9.srv.hcvlny.cv.net") by linux-mips.org with ESMTP
-	id <S8225474AbUEQPXt>; Mon, 17 May 2004 16:23:49 +0100
-Received: from mcs.bigip.mine.nu
- (ool-4353cae3.dyn.optonline.net [67.83.202.227]) by mta9.srv.hcvlny.cv.net
- (iPlanet Messaging Server 5.2 HotFix 1.25 (built Mar  3 2004))
- with ESMTP id <0HXV004LX6QAP6@mta9.srv.hcvlny.cv.net> for
- linux-mips@linux-mips.org; Mon, 17 May 2004 11:23:01 -0400 (EDT)
-Received: from mcs.bigip.mine.nu (localhost.localdomain [127.0.0.1])
-	by mcs.bigip.mine.nu (8.12.11/8.12.11) with ESMTP id i4HFNDlZ030435; Mon,
- 17 May 2004 11:23:13 -0400
-Received: (from mchouque@localhost)
-	by mcs.bigip.mine.nu (8.12.11/8.12.11/Submit) id i4HFNBaw030433; Mon,
- 17 May 2004 11:23:11 -0400
-Date: Mon, 17 May 2004 11:23:11 -0400
-From: Mathieu Chouquet-Stringer <mchouque@online.fr>
-X-Face: %JOeya=Dg!}[/#Go&*&cQ+)){p1c8}u\Fg2Q3&)kothIq|JnWoVzJtCFo~4X<uJ\9cHK'.w
- 3:{EoxBR
-Subject: Re: [PATCH] Fix for 2.6.6 Makefiles to get KBUILD_OUTPUT working
-In-reply-to: <20040516203322.GA4784@mars.ravnborg.org>
-To: linux-kernel@vger.kernel.org, rth@twiddle.net,
-	linux-alpha@vger.kernel.org, ralf@gnu.org,
-	linux-mips@linux-mips.org, akpm@osdl.org, bjornw@axis.com,
-	dev-etrax@axis.com, mikael.starvik@axis.com, sam@ravnborg.org
-Mail-followup-to: Mathieu Chouquet-Stringer <mchouque@online.fr>,
- linux-kernel@vger.kernel.org, rth@twiddle.net, linux-alpha@vger.kernel.org,
- ralf@gnu.org, linux-mips@linux-mips.org, akpm@osdl.org, bjornw@axis.com,
- dev-etrax@axis.com, mikael.starvik@axis.com, sam@ravnborg.org
-Message-id: <20040517152311.GA29999@localhost>
-MIME-version: 1.0
-Content-type: text/plain; charset=us-ascii
-Content-transfer-encoding: 7BIT
-Content-disposition: inline
-User-Agent: Mutt/1.4.1i
-References: <20040516012245.GA11733@localhost>
- <20040516203322.GA4784@mars.ravnborg.org>
-Return-Path: <mchouque@mcs.bigip.mine.nu>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 May 2004 16:56:02 +0100 (BST)
+Received: from uswgco35.uswest.com ([IPv6:::ffff:199.168.32.124]:52464 "EHLO
+	uswgco35.uswest.com") by linux-mips.org with ESMTP
+	id <S8225474AbUEQP4A>; Mon, 17 May 2004 16:56:00 +0100
+Received: from egate-co2.uswc.uswest.com (egate-co2.uswc.uswest.com [151.119.214.10])
+	by uswgco35.uswest.com (8/8) with ESMTP id i4HFtvfB009879
+	for <linux-mips@linux-mips.org>; Mon, 17 May 2004 09:55:58 -0600 (MDT)
+Received: from wopr.qwest.net (localhost [127.0.0.1])
+	by egate-co2.uswc.uswest.com (8.12.10/8.12.10) with ESMTP id i4HFtuOR025432
+	for <linux-mips@linux-mips.org>; Mon, 17 May 2004 09:55:56 -0600 (MDT)
+Received: from cyberMalex.com (igate.qwest.net [10.8.16.41])
+	by wopr.qwest.net (8.11.2/8.8.7) with ESMTP id i4HFttH22496
+	for <linux-mips@linux-mips.org>; Mon, 17 May 2004 11:55:56 -0400
+Message-ID: <40A8E08B.7070203@cyberMalex.com>
+Date: Mon, 17 May 2004 11:55:55 -0400
+From: Alexander Markley <alex@cyberMalex.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.1) Gecko/20031009
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: linux-mips@linux-mips.org
+Subject: SGI O2 MIPS R5000 bootp problems
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <alex@cyberMalex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5046
+X-archive-position: 5047
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mchouque@online.fr
+X-original-sender: alex@cyberMalex.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, May 16, 2004 at 10:33:22PM +0200, Sam Ravnborg wrote:
-> > --- arch/mips/Makefile.orig	2004-05-15 20:48:52.000000000 -0400
-> > +++ arch/mips/Makefile	2004-05-15 20:49:58.000000000 -0400
-> >  
-> > -makeboot =$(Q)$(MAKE) -f scripts/Makefile.build obj=arch/mips/boot $(1)
-> > +makeboot =$(Q)$(MAKE) $(build)=arch/mips/boot $(1)
-> 
-> Please get rid of makeboot. Use $(Q)$(MAKE) ... instead.
-> Hereby the '+' sign is no longer needed (used today where makeboot is used.
+Hi. I just get an SGI O2 with a MIPS R5000 chip in it, and I'd love to 
+run linux on it. The machine seems to be in working order, and has been 
+known to boot into IRIX in the recent past.
 
-Ok, I applied the changes you requested, please check the diff for mips as
-I had to modify some other lines too.
+I have gotten the debian tftp boot images and things, and have properly 
+set up dhcp and tftp, but I cannot make this machine boot!
 
---- arch/alpha/Makefile.orig	2004-05-15 20:46:06.000000000 -0400
-+++ arch/alpha/Makefile	2004-05-15 20:47:52.000000000 -0400
-@@ -106,10 +106,10 @@ boot := arch/alpha/boot
- all boot: $(boot)/vmlinux.gz
- 
- $(boot)/vmlinux.gz: vmlinux
--	$(Q)$(MAKE) -f scripts/Makefile.build obj=$(boot) $@
-+	$(Q)$(MAKE) $(build)=$(boot) $@
- 
- bootimage bootpfile bootpzfile: vmlinux
--	$(Q)$(MAKE) -f scripts/Makefile.build obj=$(boot) $(boot)/$@
-+	$(Q)$(MAKE) $(build)=$(boot) $(boot)/$@
- 
- 
- prepare: include/asm-$(ARCH)/asm_offsets.h
-@@ -121,8 +121,8 @@ include/asm-$(ARCH)/asm_offsets.h: arch/
- 	$(call filechk,gen-asm-offsets)
- 
- archclean:
--	$(Q)$(MAKE) -f scripts/Makefile.clean obj=$(boot)
-+	$(Q)$(MAKE) $(clean)=$(boot)
- 
- CLEAN_FILES += include/asm-$(ARCH)/asm_offsets.h
- 
---- arch/mips/Makefile.orig	2004-05-15 20:48:52.000000000 -0400
-+++ arch/mips/Makefile	2004-05-17 11:11:57.000000000 -0400
-@@ -686,8 +686,6 @@ vmlinux.64: vmlinux
- 		--change-addresses=0xa800000080000000 $< $@
- endif
- 
--makeboot =$(Q)$(MAKE) -f scripts/Makefile.build obj=arch/mips/boot $(1)
--
- ifdef CONFIG_SGI_IP27
- all:	vmlinux.64
- endif
-@@ -697,10 +695,10 @@ all:	vmlinux.ecoff
- endif
- 
- vmlinux.ecoff vmlinux.rm200: vmlinux
--	+@$(call makeboot,$@)
-+	$(Q)$(MAKE) $(build)=arch/mips/boot $@
- 
- vmlinux.srec: vmlinux
--	+@$(call makeboot,$@)
-+	$(Q)$(MAKE) $(build)=arch/mips/boot $@
- 
- CLEAN_FILES += vmlinux.ecoff \
- 	       vmlinux.srec \
-@@ -708,10 +706,10 @@ CLEAN_FILES += vmlinux.ecoff \
- 	       vmlinux.rm200
- 
- archclean:
--	@$(MAKE) -f scripts/Makefile.clean obj=arch/mips/boot
--	@$(MAKE) -f scripts/Makefile.clean obj=arch/mips/baget
--	@$(MAKE) -f scripts/Makefile.clean obj=arch/mips/lasat
-+	$(Q)$(MAKE) $(clean)=arch/mips/boot
-+	$(Q)$(MAKE) $(clean)=arch/mips/baget
-+	$(Q)$(MAKE) $(clean)=arch/mips/lasat
- 
- # Generate <asm/offset.h 
- #
---- arch/sh/boot/Makefile.orig	2004-05-15 20:50:11.000000000 -0400
-+++ arch/sh/boot/Makefile	2004-05-15 20:50:41.000000000 -0400
-@@ -16,5 +16,5 @@ $(obj)/zImage: $(obj)/compressed/vmlinux
- 	@echo 'Kernel: $@ is ready'
- 
- $(obj)/compressed/vmlinux: FORCE
--	$(Q)$(MAKE) -f scripts/Makefile.build obj=$(obj)/compressed $@
-+	$(Q)$(MAKE) $(build)=$(obj)/compressed $@
- 
---- arch/cris/Makefile.orig	2004-05-15 20:59:49.000000000 -0400
-+++ arch/cris/Makefile	2004-05-15 21:00:36.000000000 -0400
-@@ -81,7 +81,7 @@ compressed: zImage
- 
- archmrproper:
- archclean:
--	$(Q)$(MAKE) -f scripts/Makefile.clean obj=arch/$(ARCH)/boot	
-+	$(Q)$(MAKE) $(clean)=arch/$(ARCH)/boot	
- 	rm -f timage vmlinux.bin cramfs.img
- 	rm -rf $(LD_SCRIPT).tmp
- 
+...
+ > boot f bootp():r5000_boot.img
+Setting $netaddr to 192.168.1.235 (from server )
+Obtaining r5000_boot.img from server
+7536
+Cannot load bootp():r5000_boot.img.
+Range check failure: text start 0x88802000, size 0x1d70.
+Text section would overwrite an already loaded program.Unable to execute 
+bootp():r5000_boot.img:  not enough space
+Unable to load bootp():r5000_boot.img: not enough space
+ >
+...
 
--- 
-Mathieu Chouquet-Stringer                 E-Mail: mchouque@online.fr
-       Never attribute to malice that which can be adequately
-                    explained by stupidity.
-                     -- Hanlon's Razor --
+I'm not sure why this doesn't work for me when it works for everyone 
+else... Is it because my machine only has 64 MB of ram?
+
+Another strange bit is that this kernel does load and boot fine: 
+http://www.linux-mips.org/~glaurung/O2/linux-2.6.1/kernel/vmlinux64
+
+Of course, it can't finish booting since I didn't provide a root FS, but 
+I wonder why the PROM doesn't want to jump to the debian image?
+
+I'll keep trying different things, and keep you guys posted. In the 
+meantime, and input would be much appriciated. Also, I haven't joined 
+the list, so CCing me would also be appriciated.
+
+ttyl
+--Alex

@@ -1,53 +1,59 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4UJVInC000664
-	for <linux-mips-outgoing@oss.sgi.com>; Thu, 30 May 2002 12:31:18 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4UJYwnC000812
+	for <linux-mips-outgoing@oss.sgi.com>; Thu, 30 May 2002 12:34:58 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4UJVInG000663
-	for linux-mips-outgoing; Thu, 30 May 2002 12:31:18 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4UJYww3000811
+	for linux-mips-outgoing; Thu, 30 May 2002 12:34:58 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from mms3.broadcom.com (mms3.broadcom.com [63.70.210.38])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4UJVFnC000660
-	for <linux-mips@oss.sgi.com>; Thu, 30 May 2002 12:31:15 -0700
-Received: from 63.70.210.1 by mms3.broadcom.com with ESMTP (Broadcom
- MMS-3 SMTP Relay (MMS v4.7)); Thu, 30 May 2002 12:32:45 -0700
-X-Server-Uuid: 1e1caf3a-b686-11d4-a6a3-00508bfc9ae5
-Received: from ldt-sj3-022.sj.broadcom.com (ldt-sj3-022 [10.21.64.22])
- by mail-sj1-5.sj.broadcom.com (8.12.2/8.12.2) with ESMTP id
- g4UJWl1S016348 for <linux-mips@oss.sgi.com>; Thu, 30 May 2002 12:32:47
- -0700 (PDT)
-Received: (from carlson@localhost) by ldt-sj3-022.sj.broadcom.com (
- 8.11.6/8.9.3) id g4UJWlv17833; Thu, 30 May 2002 12:32:47 -0700
-X-Authentication-Warning: ldt-sj3-022.sj.broadcom.com: carlson set
- sender to justinca@cs.cmu.edu using -f
-Subject: Function pointers and #defines
-From: "Justin Carlson" <justinca@cs.cmu.edu>
-To: linux-mips@oss.sgi.com
-X-Mailer: Ximian Evolution 1.0.5
-Date: 30 May 2002 12:32:47 -0700
-Message-ID: <1022787167.14210.472.camel@ldt-sj3-022.sj.broadcom.com>
+Received: from coplin09.mips.com ([80.63.7.130])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4UJYrnC000807
+	for <linux-mips@oss.sgi.com>; Thu, 30 May 2002 12:34:54 -0700
+Received: (from hartvige@localhost)
+	by coplin09.mips.com (8.11.6/8.11.6) id g4UJaBG04915;
+	Thu, 30 May 2002 21:36:11 +0200
+From: Hartvig Ekner <hartvige@mips.com>
+Message-Id: <200205301936.g4UJaBG04915@coplin09.mips.com>
+Subject: Re: cross-compiler for MIPS_RedHat7.1_Release-01.00 on Atlas/4Kc using RH7.3-i386 host
+To: dpchrist@holgerdanske.com (David Christensen)
+Date: Thu, 30 May 2002 21:36:10 +0200 (CEST)
+Cc: linux-mips@oss.sgi.com
+In-Reply-To: <no.id> from "David Christensen" at May 30, 2002 10:54:55 AM
+X-Mailer: ELM [version 2.5 PL5]
 MIME-Version: 1.0
-X-WSS-ID: 10E8A1D763377-01-01
-Content-Type: text/plain; 
- charset=us-ascii
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-A fair number of places in the headers, we have stuff like this:
+Hi David,
 
-void (*_some_fn)(int arg1, int arg2);
-#define some_fn(arg1, arg2) _some_fn(arg1, arg2)
+David Christensen writes:
+> 
+> linux-mips@oss.sgi.com:
+> 
+> I have downloaded ftp://ftp.mips.com/pub/linux/mips/installation/redhat7
+> .1/01.00/MIPS_RedHat7.1_Release-01.00.iso, burned a CD, and followed the
+> instructions provided on the CD (/linux/installation/README) to install
+> Linux (little-endian) on a MIPS Atlas/4Kc board with a SCSI disk.
 
-Why do we do this, as opposed to:
+Note that you can install the Release-02.00 (with all the latest RPMs
+from H.J.) as well on an Atlas, you'll just have to use the 2.4.3 install
+kernel from the 01.00 CD image you downloaded, and everything else from 
+the new release.
 
-void (*some_fn)(int arg1, int arg2);
 
-Both syntaxes result in being able to say
+> would now like to recompile the kernel to experiment with sound.  I have
+> posted to this mailing list before and was informed that I need a cross-
+> compiler, available on oss.sgi.com.  My host is Red Hat Linux-i386 7.3.
 
-some_fn(1, 2);
+For kernel cross compilation we use the following binary RPM's (LE shown only):
 
-but the latter is both clearer and shorter.  Is there some deep,
-mystical C reason that we use the former, or did someone do it that way
-a long time ago and no one has changed it?
+        binutils-mipsel-linux-2.9.5-3
+        egcs-mipsel-linux-1.1.2-4
 
--Justin
+They can be found on:
+
+        ftp://oss.sgi.com/pub/linux/mips/crossdev/i386-linux/mipsel-linux/
+
+
+/Hartvig

@@ -1,57 +1,47 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id RAA154694 for <linux-archive@neteng.engr.sgi.com>; Thu, 22 Jan 1998 17:31:59 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id UAA174673 for <linux-archive@neteng.engr.sgi.com>; Thu, 22 Jan 1998 20:05:13 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id RAA27042 for linux-list; Thu, 22 Jan 1998 17:29:51 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id RAA27011 for <linux@cthulhu.engr.sgi.com>; Thu, 22 Jan 1998 17:29:46 -0800
-Received: from mdhill.interlog.com (mdhill.interlog.com [199.212.154.112]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id RAA20492
-	for <linux@cthulhu.engr.sgi.com>; Thu, 22 Jan 1998 17:29:43 -0800
-	env-from (mike@mdhill.interlog.com)
-Received: (from mike@localhost) by mdhill.interlog.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id UAA02293; Thu, 22 Jan 1998 20:28:50 -0500
-Date: Thu, 22 Jan 1998 20:28:50 -0500
-Message-Id: <199801230128.UAA02293@mdhill.interlog.com>
-From: Michael Hill <mdhill@interlog.com>
-MIME-Version: 1.0
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id UAA26146 for linux-list; Thu, 22 Jan 1998 20:02:02 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id UAA26141 for <linux@cthulhu.engr.sgi.com>; Thu, 22 Jan 1998 20:02:00 -0800
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id UAA05711
+	for <linux@cthulhu.engr.sgi.com>; Thu, 22 Jan 1998 20:01:58 -0800
+	env-from (ralf@uni-koblenz.de)
+From: ralf@uni-koblenz.de
+Received: from uni-koblenz.de (pmport-25.uni-koblenz.de [141.26.249.25])
+	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id FAA02675
+	for <linux@cthulhu.engr.sgi.com>; Fri, 23 Jan 1998 05:01:56 +0100 (MET)
+Received: (from ralf@localhost)
+	by uni-koblenz.de (8.8.7/8.8.7) id EAA08502;
+	Fri, 23 Jan 1998 04:57:25 +0100
+Message-ID: <19980123045725.54480@uni-koblenz.de>
+Date: Fri, 23 Jan 1998 04:57:25 +0100
+To: Oliver Frommel <oliver@aec.at>
+Cc: Mike Shaver <shaver@netscape.com>,
+        Alex deVries <adevries@engsoc.carleton.ca>,
+        SGI Linux <linux@cthulhu.engr.sgi.com>
+Subject: Re: root-be-0.03.tar.gz
+References: <34C6E304.680D7541@netscape.com> <Pine.LNX.3.96.980122130326.18071A-100000@web.aec.at>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-To: linux@cthulhu.engr.sgi.com
-Subject: Re: wd33c93 errors.
-In-Reply-To: <Pine.LNX.3.95.980122175054.21753I-100000@lager.engsoc.carleton.ca>
-References: <m0xvVCP-0005FsC@lightning.swansea.linux.org.uk>
-	<Pine.LNX.3.95.980122175054.21753I-100000@lager.engsoc.carleton.ca>
-X-Mailer: VM 6.34 under 20.3 "Vatican City" XEmacs  Lucid
-Reply-To: mdhill@interlog.com
+X-Mailer: Mutt 0.85e
+In-Reply-To: <Pine.LNX.3.96.980122130326.18071A-100000@web.aec.at>; from Oliver Frommel on Thu, Jan 22, 1998 at 01:04:30PM +0100
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+On Thu, Jan 22, 1998 at 01:04:30PM +0100, Oliver Frommel wrote:
 
-Alex deVries writes:
- > 
- > On Thu, 22 Jan 1998, Alan Cox wrote:
- > > > repartitioned it from Irix, and mounted it as an EFS partition under Irix
- > > > just fine.  That would seem to indicate that everything is alright with
- > > Including rewriting it ?
- > 
- > Ah, I tried that specifically, and had problems too with Irix.  So, the
- > disk is toast, and it'll go back to the storage room I found it in (along
- > with an AXP).
- > 
+> > Could we not modify sash to know about ext2?
+> > I thought I read somewhere that we could get sash sources/info, which
+> > would help a lot.
+> > 
+> 
+> sash is located in the volumen header afaik(?)
+> wouldn't it be possible to replace sash by another (possibly free) bootloader?
 
-The 1 G drive I posted about last week was made visible to IRIX by
-modifying wd93_syncenable and wd93_syncperiod in
-/var/sysgen/master.d/wd93 before recompiling the IRIX kernel.  Does
-anyone know of similar changes to the Linux source that would prevent
-the system from hanging on startup with the following message?
+Basically we could Milo for the Indy also.  Milo even has the required
+features to be built as ECOFF executable thus supporting old machines
+where the ARC proms can't load ELF.
 
- sending SDTR 0103013f0csync_xfer=2cscsi : aborting command due to timeout : pid 7, scsi0, channel 0, id 3, lun 0 Inquiry 00 00
-scsi0: Aborting connected command 7 - stopping DMA - sending wd33c93 ABORT command - flushing fifo - asr - 20, sr=ff, 16777215 by
- - sending wd33c93 DISCONNECT command - asr = 20, sr=18.
+Q: What filesystem types are supported directly by the ARC firmware in the
+ROMs?
 
-If this is a bug, as Alan said, maybe there's hope for my drive, as
-well as the one Alex has.
-
-Thanks,
-
-Mike
--- 
-Michael Hill
-Toronto, Canada
-mdhill@interlog.com
+  Ralf

@@ -1,46 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Oct 2003 00:00:59 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:26614 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8225643AbTJIXA5>;
-	Fri, 10 Oct 2003 00:00:57 +0100
-Received: from zeus.mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id QAA15576
-	for <linux-mips@linux-mips.org>; Thu, 9 Oct 2003 16:00:54 -0700
-Subject: Re: CFE bootloader
-From: Pete Popov <ppopov@mvista.com>
-To: Linux MIPS mailing list <linux-mips@linux-mips.org>
-In-Reply-To: <DC1BF43A8FAE654DA6B3FB7836DD3A56DEB772@iris.adtech-inc.com>
-References: <DC1BF43A8FAE654DA6B3FB7836DD3A56DEB772@iris.adtech-inc.com>
-Content-Type: text/plain
-Organization: MontaVista Software
-Message-Id: <1065740466.17498.70.camel@zeus.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Oct 2003 00:23:49 +0100 (BST)
+Received: from mo03.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:62691 "EHLO
+	mo03.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225405AbTJIXXQ>;
+	Fri, 10 Oct 2003 00:23:16 +0100
+Received: from mdo01.iij4u.or.jp (mdo01.iij4u.or.jp [210.130.0.171])
+	by mo03.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id IAA03796;
+	Fri, 10 Oct 2003 08:23:12 +0900 (JST)
+Received: 4UMDO01 id h99NNCl13420; Fri, 10 Oct 2003 08:23:12 +0900 (JST)
+Received: 4UMRO00 id h99NNAO17692; Fri, 10 Oct 2003 08:23:11 +0900 (JST)
+	from stratos.frog (64.43.138.210.xn.2iij.net [210.138.43.64]) (authenticated)
+Date: Fri, 10 Oct 2003 08:23:10 +0900
+From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+To: ralf@linux-mips.org
+Cc: yuasa@hh.iij4u.or.jp, linux-mips@linux-mips.org
+Subject: Re: [patch] VR4133
+Message-Id: <20031010082310.4bd1de37.yuasa@hh.iij4u.or.jp>
+In-Reply-To: <20031008003402.23a326cb.yuasa@hh.iij4u.or.jp>
+References: <20031008003402.23a326cb.yuasa@hh.iij4u.or.jp>
+X-Mailer: Sylpheed version 0.9.6 (GTK+ 1.2.10; i686-pc-linux-gnu)
 Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.2.4 
-Date: 09 Oct 2003 16:01:07 -0700
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@mvista.com>
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3412
+X-archive-position: 3413
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@mvista.com
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 2003-10-09 at 15:41, Finney, Steve wrote:
-> I have no idea how someone would make a choice 
-> between MIPS bootloaders (YAMON, U-Boot, CFE, Redboot(?),
-> and whatever else), but just so all the options are out 
-> there, here's access and licensing information for the 
-> Broadcom CFE bootloader: 
+Hello Ralf,
 
-I would take a look at the community that's behind it. I like yamon and
-it has worked great on the MIPS boards I've worked with. I haven't
-played with uboot on MIPS, but what uboot has going for it is a
-community that is improving it, adding features, new boards, etc. It's
-also cross-arch so if you find yourself supporting multiple products on
-different arches, you only have to deal with one bootloader.
+Do these patches have any problem?
 
-Pete
+Yoichi
+
+On Wed, 8 Oct 2003 00:34:02 +0900
+Yoichi Yuasa <yuasa@hh.iij4u.or.jp> wrote:
+
+> Hello Ralf,
+> 
+> I made patches for NEC VR4133.
+> These patches add support of new CPU of NEC.
+> 
+> Please apply this patch to CVS tree.
+> 
+> Yoichi
+> 

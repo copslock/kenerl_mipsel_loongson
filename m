@@ -1,42 +1,29 @@
-Received:  by oss.sgi.com id <S553852AbQKCSba>;
-	Fri, 3 Nov 2000 10:31:30 -0800
-Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:5322 "EHLO
-        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553833AbQKCSbJ>;
-	Fri, 3 Nov 2000 10:31:09 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id TAA27731;
-	Fri, 3 Nov 2000 19:27:02 +0100 (MET)
-Date:   Fri, 3 Nov 2000 19:27:01 +0100 (MET)
-From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To:     Keith M Wesolowski <wesolows@chem.unr.edu>
-cc:     Ian Chilton <mailinglist@ichilton.co.uk>, linux-mips@oss.sgi.com
-Subject: Re: More GCC problems
-In-Reply-To: <20001103100728.A8133@chem.unr.edu>
-Message-ID: <Pine.GSO.3.96.1001103191640.25680C-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received:  by oss.sgi.com id <S553855AbQKCSfu>;
+	Fri, 3 Nov 2000 10:35:50 -0800
+Received: from srvntsxconn3.toc.ixl.com ([216.99.0.139]:21003 "HELO
+        srvntsxconn3.toc.ixl.com") by oss.sgi.com with SMTP
+	id <S553851AbQKCSff>; Fri, 3 Nov 2000 10:35:35 -0800
+Received: from 216.99.0.139 by srvntsxconn3.toc.ixl.com (InterScan E-Mail VirusWall NT); Fri, 03 Nov 2000 13:35:24 -0500 (Eastern Standard Time)
+Received: by srvntsxconn3.toc.ixl.com with Internet Mail Service (5.5.2650.21)
+	id <TMPFK8GF>; Fri, 3 Nov 2000 13:35:24 -0500
+Message-ID: <0A5319EEAF65D411825E00805FBBD8A1209BCF@exchange.clt.ixl.com>
+From:   tmaloney@ixl.com
+To:     linux-mips@oss.sgi.com
+Subject: will this drive work in an Indy?
+Date:   Fri, 3 Nov 2000 13:33:38 -0500 
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Mailer: Internet Mail Service (5.5.2650.21)
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Fri, 3 Nov 2000, Keith M Wesolowski wrote:
+Quantum Atlas II 4GB SCA drive fit for SGI Octane or O2. Model: HN4550SCA.
+SGI P/N 064-0039-001.
 
-> I have no idea how to build a static compiler. The approach I took to
-
- Just add "-static" to CFLAGS in the usual way.
-
-> get my working native 1019 compiler was to cross-build it with the
-> same version. Since it was built against glibc 2.2, I simply installed
-> both glibc 2.2 and the new native compiler on my system.
-
- But check the "cross_compile" statement in the gcc's specs file. 
-Depending on the way of installing a cross-compiled native compiler on the
-host machine you may get it right or not -- it should be "0".  I had to
-tweak it manually when making an RPM package of gcc-2.95.3 (packages
-available from ftp://ftp.ds2.pg.gda.pl/pub/macro).
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+7200RPM Spindle Speed 
+3.5" 
+SCA Interface/80 pin 
+Bare Drive Only 

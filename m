@@ -1,47 +1,60 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA92041 for <linux-archive@neteng.engr.sgi.com>; Wed, 15 Jul 1998 16:30:26 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA95122 for <linux-archive@neteng.engr.sgi.com>; Wed, 15 Jul 1998 16:51:23 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id QAA05325
+	id QAA73941
 	for linux-list;
-	Wed, 15 Jul 1998 16:29:46 -0700 (PDT)
+	Wed, 15 Jul 1998 16:50:46 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id QAA96875
+	via ESMTP id QAA69567
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 15 Jul 1998 16:29:44 -0700 (PDT)
-	mail_from (dliu@npiww.com)
-Received: from dirtpan.npiww.com (dirtpan.networkprograms.com [207.113.23.2]) 
+	Wed, 15 Jul 1998 16:50:40 -0700 (PDT)
+	mail_from (adevries@engsoc.carleton.ca)
+Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) 
 	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via SMTP id QAA05089
-	for <linux@cthulhu.engr.sgi.com>; Wed, 15 Jul 1998 16:29:40 -0700 (PDT)
-	mail_from (dliu@npiww.com)
-Received: from pluto.npi.com [192.9.202.51] by dirtpan.npiww.com (8.6.9/8.6.9) with ESMTP id PAA03267 for <linux@cthulhu.engr.sgi.com>; Wed, 15 Jul 1998 15:38:32 -0400
-Date: Wed, 15 Jul 1998 19:48:43 -0400
-Message-Id: <199807152348.TAA00114@pluto.npiww.com>
-From: Dong Liu <dliu@npiww.com>
-To: linux@cthulhu.engr.sgi.com
-Subject: libpthread of hard hat still doesn't work
+	via ESMTP id QAA13529
+	for <linux@cthulhu.engr.sgi.com>; Wed, 15 Jul 1998 16:50:39 -0700 (PDT)
+	mail_from (adevries@engsoc.carleton.ca)
+Received: from localhost (adevries@localhost)
+	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id TAA14037;
+	Wed, 15 Jul 1998 19:50:35 -0400
+X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
+Date: Wed, 15 Jul 1998 19:50:34 -0400 (EDT)
+From: Alex deVries <adevries@engsoc.carleton.ca>
+To: Honza Pazdziora <adelton@informatics.muni.cz>
+cc: linux@cthulhu.engr.sgi.com
+Subject: Re: The pre-release of Hard Hat Linux for SGI... (fwd)
+In-Reply-To: <199807151959.VAA21677@aisa.fi.muni.cz>
+Message-ID: <Pine.LNX.3.95.980715194807.22020M-100000@lager.engsoc.carleton.ca>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
 
-This is what I got
+On Wed, 15 Jul 1998, Honza Pazdziora wrote:
+> > From shm@cthulhu.engr.sgi.com  Wed Jul 15 20:56:01 1998
+> > it still hangs at
+> > Looking up port of RPC 100003/2 on (server_ip)
+> > page fault from irq handler: 0
+> > in case you would like to know this in IP22 r4400 with 16K I and D caches
+> > ..
+> > what is wrong ?
 
-/usr/lib/libpthread.so: undefined reference to `__libc_accept'
-/usr/lib/libpthread.so: undefined reference to `__libc_send'
-/usr/lib/libpthread.so: undefined reference to `__libc_recvfrom'
-/usr/lib/libpthread.so: undefined reference to `__libc_recvmsg'
-/usr/lib/libpthread.so: undefined reference to `__libc_sendmsg'
-/usr/lib/libpthread.so: undefined reference to `__libc_recv'
-/usr/lib/libpthread.so: undefined reference to `__libc_sendto'
-/usr/lib/libpthread.so: undefined reference to `__libc_connect'
+I don't actually know if this is a CPU compatibility issue.  Ralf?
 
+> > could it be because I am serving the files from a dir, which are in turn
+> > NFS exported from an SGI box .. (though I would be very surprised to hear
+> > a yes to this )
 
-Thanks!
+I have not yet tried to install it using an Irix box because I only have
+one;  is it possible to try this using another Linux box?
 
-Dong.
+(as expected, it works with Linux on Sparc)
+
+- Alex

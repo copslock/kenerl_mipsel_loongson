@@ -1,48 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Jan 2003 13:09:06 +0000 (GMT)
-Received: from p508B625A.dip.t-dialin.net ([IPv6:::ffff:80.139.98.90]:45256
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225248AbTAQNJG>; Fri, 17 Jan 2003 13:09:06 +0000
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id h0HD92L08800;
-	Fri, 17 Jan 2003 14:09:02 +0100
-Date: Fri, 17 Jan 2003 14:09:02 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Chetan B L <chetanb@ishoni.com>
-Cc: "'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
-Subject: Re: Performance measuring in MIPS R3000
-Message-ID: <20030117140902.B8301@linux-mips.org>
-References: <7CFD7CA8510CD6118F950002A519EA3003FB04E6@leonoid.in.ishoni.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <7CFD7CA8510CD6118F950002A519EA3003FB04E6@leonoid.in.ishoni.com>; from chetanb@ishoni.com on Thu, Jan 16, 2003 at 12:01:52PM +0530
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 18 Jan 2003 16:33:02 +0000 (GMT)
+Received: from smtp03.infoave.net ([IPv6:::ffff:165.166.0.28]:39158 "EHLO
+	smtp03.infoave.net") by linux-mips.org with ESMTP
+	id <S8225259AbTARQdC>; Sat, 18 Jan 2003 16:33:02 +0000
+Received: from opus ([204.116.3.125])
+ by SMTP00.InfoAve.Net (PMDF V6.1-1IA5 #38776)
+ with ESMTP id <01KRDNFL0C3294RGXQ@SMTP00.InfoAve.Net> for
+ linux-mips@linux-mips.org; Sat, 18 Jan 2003 11:32:56 -0500 (EST)
+Date: Sat, 18 Jan 2003 11:35:06 -0500
+From: Justin Pauley <jpauley@xwizards.com>
+Subject: Mopd Directions
+To: linux-mips@linux-mips.org
+Message-id: <1042907706.3331.206.camel@Opus>
+MIME-version: 1.0
+X-Mailer: Ximian Evolution 1.0.8 (1.0.8-10)
+Content-type: text/plain
+Content-transfer-encoding: 7bit
+Return-Path: <jpauley@xwizards.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1178
+X-archive-position: 1179
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: jpauley@xwizards.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jan 16, 2003 at 12:01:52PM +0530, Chetan B L wrote:
+Thank you all so much for helping me get my linux installed. I now have
+debian installed on my Decstation 5000/25 having used Mopd. I wrote down
+all the information I would need if i needed to do this again and if you
+would like you can send it out to other people who have my same problem.
+The directions are at http://www.xwizards.com/MopLinuxDec.html 
 
->       I want to measure the time taken by any kernel function. 
-> Is  there anything like rdtsc indtruction in MIPS ?
-> I saw timepeg patch for measuring the same for Pentium , is there anything
-> similar to it for MIPS ?
 
-The subject of your mail is mentioning the R3000 which doesn't have any
-kind of timer in the processor.  As already mentioned in my other posting
-do_gettimeofday() is the portable timer interface providing the highest
-accuracy.  But the R3000 processor itself doesn't provide any timers so
-the precission of the clock will actually depend of the whatever timers
-are provided by the rest of the system.  Hoever I doubt you're actually
-using a true R3000 - the R3000 is an ~ 1988 vintage processor.  Later
-R3000 processors frequently contain a suitable timer.
-
-  Ralf
+Thank you all again,
+Justin Pauley

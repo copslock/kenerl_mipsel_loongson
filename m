@@ -1,71 +1,56 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA84045 for <linux-archive@neteng.engr.sgi.com>; Fri, 5 Mar 1999 16:37:04 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA45498 for <linux-archive@neteng.engr.sgi.com>; Sat, 6 Mar 1999 15:12:00 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id QAA34969
+	id PAA10328
 	for linux-list;
-	Fri, 5 Mar 1999 16:35:57 -0800 (PST)
+	Sat, 6 Mar 1999 15:11:17 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from relay1.corp.sgi.com (spindle.corp.sgi.com [198.29.75.13] (may be forged))
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id QAA50774
+	via ESMTP id PAA96340
 	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 5 Mar 1999 16:35:56 -0800 (PST)
-	mail_from (chad@dallas.sgi.com)
-Received: from dallas.sgi.com (roctane.dallas.sgi.com [169.238.83.62]) by relay1.corp.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA31718; Fri, 5 Mar 1999 16:35:42 -0800 (PST)
-Message-ID: <36E0785D.1758693B@dallas.sgi.com>
-Date: Fri, 05 Mar 1999 18:35:41 -0600
-From: Chad Carlin <chad@dallas.sgi.com>
-Reply-To: chad@sgi.com
-Organization: Silicon Graphics Inc.
-X-Mailer: Mozilla 4.5C-SGI [en] (X11; I; IRIX64 6.5 IP30)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-CC: linux-mips@fnet.fr, linux@cthulhu.engr.sgi.com,
+	Sat, 6 Mar 1999 15:11:15 -0800 (PST)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id PAA01210
+	for <linux@cthulhu.engr.sgi.com>; Sat, 6 Mar 1999 15:11:02 -0800 (PST)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: from lappi.waldorf-gmbh.de (cacc-28.uni-koblenz.de [141.26.131.28])
+	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id AAA07899
+	for <linux@cthulhu.engr.sgi.com>; Sun, 7 Mar 1999 00:10:43 +0100 (MET)
+Received: (from ralf@localhost)
+	by lappi.waldorf-gmbh.de (8.8.7/8.8.7) id AAA13586;
+	Sun, 7 Mar 1999 00:06:42 +0100
+Message-ID: <19990307000640.B10228@uni-koblenz.de>
+Date: Sun, 7 Mar 1999 00:06:40 +0100
+From: ralf@uni-koblenz.de
+To: Chad Carlin <chad@dallas.sgi.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: linux-mips@fnet.fr, linux@cthulhu.engr.sgi.com,
         linux-mips@vger.rutgers.edu
 Subject: Re: 2.2.1 MIPS kernel sources plus Indy kernel binaries uploaded
-References: <19990227001617.A4022@alpha.franken.de>
+References: <19990227001617.A4022@alpha.franken.de> <36E0785D.1758693B@dallas.sgi.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-Mailer: Mutt 0.93.2
+In-Reply-To: <36E0785D.1758693B@dallas.sgi.com>; from Chad Carlin on Fri, Mar 05, 1999 at 06:35:41PM -0600
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Thomas,
+On Fri, Mar 05, 1999 at 06:35:41PM -0600, Chad Carlin wrote:
 
-Anyone else have trouble with these on an R4400? I tried a couple times. Both
-stopped the boot process a the "freeing unused memory" part. Sorry there was no
-other info.
+> Anyone else have trouble with these on an R4400? I tried a couple times. Both
+> stopped the boot process a the "freeing unused memory" part. Sorry there was no
 
-Regards,
-Chad
+It seems one of the ``high priests'' will need get access to one of these
+machine in order to debug the problem.
 
+Did you try the usual hot keys to get a register dump?  If that still works,
+what is the epc value, is the machine looping?
 
-Thomas Bogendoerfer wrote:
-
-> After syncing my two source trees with CVS, I've exported a tarball
-> and uploaded it to
->
-> ftp://ftp.linux.sgi.com/pub/linux/mips/test/linux-2.2.1-990226.tar.gz
->
-> I've tested compilation for Indy and Olivetti M700 (MIPS Magnum).
->
-> I also uploaded a Indy kernel (map and .config file included):
->
-> ftp://ftp.linux.sgi.com/pub/linux/mips/test/vmlinux-indy-2.2.1-990226.tar.gz
->
-> Thomas.
->
-> --
->    This device has completely bogus header. Compaq scores again :-|
-> It's a host bridge, but it should be called ghost bridge instead ;^)
->                                         [Martin `MJ' Mares on linux-kernel]
-
---
-           -----------------------------------------------------
-            Chad Carlin                          Special Systems
-            Silicon Graphics Inc.                   972.205.5911
-            Pager 888.754.1597          VMail 800.414.7994 X5344
-            chad@sgi.com             http://reality.sgi.com/chad
-           -----------------------------------------------------
-        "flying through hyper space ain't like dusting crops, boy"
+  Ralf

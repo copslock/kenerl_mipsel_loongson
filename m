@@ -1,34 +1,61 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id SAA04270; Mon, 3 Mar 1997 18:41:13 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA03998; Thu, 6 Mar 1997 11:15:27 -0800
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id AAA23910 for linux-list; Tue, 4 Mar 1997 00:54:00 GMT
-Received: from yon.engr.sgi.com (yon.engr.sgi.com [150.166.61.32]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id QAA23899 for <linux@cthulhu.engr.sgi.com>; Mon, 3 Mar 1997 16:53:58 -0800
-Received: (from ariel@localhost) by yon.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id QAA16088 for linux; Mon, 3 Mar 1997 16:50:51 -0800
-From: ariel@yon.engr.sgi.com (Ariel Faigon)
-Message-Id: <199703040050.QAA16088@yon.engr.sgi.com>
-Subject: Questions from Miguel
+Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id TAA20363 for linux-list; Thu, 6 Mar 1997 19:15:18 GMT
+Received: from yon.engr.sgi.com (yon.engr.sgi.com [150.166.61.32]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA20356 for <linux@cthulhu.engr.sgi.com>; Thu, 6 Mar 1997 11:15:17 -0800
+Received: from storm.corp.sgi.com (storm.corp.sgi.com [150.166.130.77]) by yon.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA26075 for <linux@yon.engr.sgi.com>; Thu, 6 Mar 1997 11:11:56 -0800
+Received: by storm.corp.sgi.com (950413.SGI.8.6.12/930416.SGI)
+	for linux@yon.engr.sgi.com id LAA05819; Thu, 6 Mar 1997 11:14:31 -0800
+From: "Donna Yobs" <yobs@storm.corp.sgi.com>
+Message-Id: <9703061114.ZM5817@storm.corp.sgi.com>
+Date: Thu, 6 Mar 1997 11:14:31 -0800
+In-Reply-To: ariel@yon.engr.sgi.com (Ariel Faigon)
+        "Linus is here" (Feb 26,  3:15pm)
+References: <199702262315.PAA02323@yon.engr.sgi.com>
+X-Mailer: Z-Mail (3.2.3 08feb96 MediaMail)
 To: linux@yon.engr.sgi.com
-Date: Mon, 3 Mar 1997 16:50:51 -0800 (PST)
-Reply-To: ariel@cthulhu.engr.sgi.com (Ariel Faigon)
-Organization: Silicon Graphics Inc.
-X-Mailer: ELM [version 2.4 PL24 ME5a]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Subject: Linus 
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi All,
+http://www.uniforum.org/news/html/publications/uninews/970305/thenews5.html
 
-First some good news. We are again making some progress
-on the SGI/Linux front. In fact we have two great people
-taking over the effort (Ralf and Miguel).
+UniForum Bestows Annual Awards
 
-I summarized the recent events on:
-	http://info.engr/linux/status.html
 
-If you care about the matter and would like to see
-the port completed soon, please read and let me know
-if you can help.
+
+                      The highest award UniForum presents is The
+                  UniForum Achievement Award which will be presented
+                   to two richly deserving recipients at UniForum '97.
+And the winners are:
+
+
+                                     Linus Torvalds, of Transmeta
+                                     Corp, Santa Clara, Calif., is the
+                                     "Father of the LINUX Operating
+                                     System". The award celebrates
+                                     his efforts in creating the LINUX
+                                     kernel and his pioneering efforts
+                                     in making his work available at
+                                     little or no cost to those who
+                                     wish to develop on it. The results
+                                     to date have been the creation of
+                                     new companies and products that
+                                     are using LINUX to bring added
+                                     value to applications for the
+                                     enterprise; and a new
+                                     appreciation for the power of a
+                                     truly open system.
+
+
+                               James Gosling, Vice president at
+                               SunSoft and a Sun Fellow, is the leader
+                               of the Java development team.
+
 
 -- 
-Peace, Ariel
+
+ -------------------------------------------------------------
+ Donna Derby Yobs        		     yobs@corp.sgi.com
+ Corporate Marketing		Silicon Graphics/Cray Research

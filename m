@@ -1,65 +1,85 @@
-Received:  by oss.sgi.com id <S554261AbRBZSDl>;
-	Mon, 26 Feb 2001 10:03:41 -0800
-Received: from gatekeep.ti.com ([192.94.94.61]:43455 "EHLO gatekeep.ti.com")
-	by oss.sgi.com with ESMTP id <S554258AbRBZSDc>;
-	Mon, 26 Feb 2001 10:03:32 -0800
-Received: from dlep8.itg.ti.com ([157.170.134.88])
-	by gatekeep.ti.com (8.11.1/8.11.1) with ESMTP id f1QI3Pr00090;
-	Mon, 26 Feb 2001 12:03:25 -0600 (CST)
-Received: from dlep8.itg.ti.com (localhost [127.0.0.1])
-	by dlep8.itg.ti.com (8.9.3/8.9.3) with ESMTP id MAA04640;
-	Mon, 26 Feb 2001 12:03:25 -0600 (CST)
-Received: from dlep3.itg.ti.com (dlep3-maint.itg.ti.com [157.170.133.16])
-	by dlep8.itg.ti.com (8.9.3/8.9.3) with ESMTP id MAA04622;
-	Mon, 26 Feb 2001 12:03:24 -0600 (CST)
-Received: from ti.com (IDENT:bbrown@bbrowndt.sc.ti.com [158.218.100.126])
-	by dlep3.itg.ti.com (8.9.3/8.9.3) with ESMTP id MAA06449;
-	Mon, 26 Feb 2001 12:03:24 -0600 (CST)
-Message-ID: <3A9A9B52.C990A581@ti.com>
-Date:   Mon, 26 Feb 2001 11:07:15 -0700
-From:   Brady Brown <bbrown@ti.com>
-Organization: Texas Instruments
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-5.0 i686)
-X-Accept-Language: en
+Received:  by oss.sgi.com id <S553791AbRBZUVn>;
+	Mon, 26 Feb 2001 12:21:43 -0800
+Received: from smtp.psdc.com ([209.125.203.83]:25162 "EHLO smtp.psdc.com")
+	by oss.sgi.com with ESMTP id <S553756AbRBZUVN>;
+	Mon, 26 Feb 2001 12:21:13 -0800
+Received: from BANANA ([209.125.203.85])
+	by smtp.psdc.com (8.8.8/8.8.8) with SMTP id MAA20819
+	for <linux-mips@oss.sgi.com>; Mon, 26 Feb 2001 12:05:06 -0800
+Message-ID: <001c01c09fcd$61c20070$dde0490a@BANANA>
+From:   "Steven Liu" <stevenliu@psdc.com>
+To:     <linux-mips@oss.sgi.com>
+Subject: Where is 2.2.x kernel? 
+Date:   Mon, 26 Feb 2001 00:23:22 -0800
 MIME-Version: 1.0
-To:     Tom Appermont <tea@sonycom.com>
-CC:     linux-mips@oss.sgi.com
-Subject: Re: ELF header kernel module wrong?
-References: <20010223151355.A9091@ginger.sonytel.be>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_0019_01C09F8A.537D07A0"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4133.2400
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Tom Appermont wrote:
+This is a multi-part message in MIME format.
 
-> Greetings,
->
-> I'm trying to get modules to work on my R5000 little endian
-> target, linux 2.4.1 + modutils 2.4.2 .
->
-> When I insmod a module, I get error messages like:
->
-> [root@192 /]# insmod dummy.o
-> dummy.o: local symbol gcc2_compiled. with index 10 exceeds local_symtab_size 10
-> dummy.o: local symbol __gnu_compiled_c with index 11 exceeds local_symtab_size 10
-> dummy.o: local symbol __module_kernel_version with index 12 exceeds local_symtab_size 10
-> dummy.o: local symbol set_multicast_list with index 13 exceeds local_symtab_size 10
-> dummy.o: local symbol dummy_init with index 14 exceeds local_symtab_size 10
-> dummy.o: local symbol dummy_xmit with index 15 exceeds local_symtab_size 10
-> dummy.o: local symbol dummy_get_stats with index 18 exceeds local_symtab_size 10
-> dummy.o: local symbol dummy_init_module with index 21 exceeds local_symtab_size 10
-> dummy.o: local symbol dev_dummy with index 22 exceeds local_symtab_size 10
-> dummy.o: local symbol dummy_cleanup_module with index 26 exceeds local_symtab_size 10
-> [root@192 /]#
+------=_NextPart_000_0019_01C09F8A.537D07A0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-I think the final conclusion on this problem in the old thread was that the assembler is generating ELF files that are IRIX flavored with respect to the symbol table ordering and index. I discovered by playing around that the linker was creating
-correct ELF symbol tables, so as a temporary work around until the assembler is tweaked I started to incrementally link my modules with the linker `ld -r <filename>` . This eliminated the immediate problem for me.
+Hi All:
 
---
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Brady Brown (bbrown@ti.com)       Work:(801)619-6103
-Texas Instruments: Broadband Access Group
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In ftp://oss.sgi.com/pub/linux/mips/kernel/, there are many folders like =
+v2.1, v2.2, and v2.3. But there is nothing in v2.2. Where could I=20
+find 2.2.x kernel?=20
+
+I would be very pleased if you can give me any information about that.=20
+Here is my e-mail address:
+                     =20
+                     stevenliu@psdc.com
+
+Thank you.
+
+Steven Liu
+
+------=_NextPart_000_0019_01C09F8A.537D07A0
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META content=3D"text/html; charset=3Diso-8859-1" =
+http-equiv=3DContent-Type>
+<META content=3D"MSHTML 5.00.3103.1000" name=3DGENERATOR>
+<STYLE></STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV><FONT face=3DArial size=3D2>Hi All:</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>In <A=20
+href=3D"ftp://oss.sgi.com/pub/linux/mips/kernel/">ftp://oss.sgi.com/pub/l=
+inux/mips/kernel/</A><A=20
+href=3D"ftp://oss.sgi.com/pub/linux/mips/"></A>, there are many folders =
+like v2.1,=20
+v2.2, and v2.3. But there is nothing in v2.2. Where could I </DIV>
+<DIV><FONT face=3DArial size=3D2>find 2.2.x kernel? </FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV>I would be very pleased if you can give me any information about =
+that.=20
+</DIV>
+<DIV>Here is my e-mail address:</DIV>
+<DIV>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</DIV>
+<DIV>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;=20
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; stevenliu@psdc.com</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>Thank you.</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>Steven Liu</DIV></FONT></BODY></HTML>
+
+------=_NextPart_000_0019_01C09F8A.537D07A0--

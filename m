@@ -1,54 +1,49 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fAR7ckd08998
-	for linux-mips-outgoing; Mon, 26 Nov 2001 23:38:46 -0800
-Received: from holomorphy (mail@holomorphy.com [216.36.33.161])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAR7cgo08995
-	for <linux-mips@oss.sgi.com>; Mon, 26 Nov 2001 23:38:42 -0800
-Received: from wli by holomorphy with local (Exim 3.31 #1 (Debian))
-	id 168bss-00038I-00
-	for <linux-mips@oss.sgi.com>; Mon, 26 Nov 2001 22:38:22 -0800
-Date: Mon, 26 Nov 2001 22:38:22 -0800
-From: William Lee Irwin III <wli@holomorphy.com>
-To: linux-mips@oss.sgi.com
-Subject: [RFC] tree-based bootmem
-Message-ID: <20011126223822.N1048@holomorphy.com>
+	by oss.sgi.com (8.11.2/8.11.3) id fAR870909608
+	for linux-mips-outgoing; Tue, 27 Nov 2001 00:07:00 -0800
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id fAR86uo09605
+	for <linux-mips@oss.sgi.com>; Tue, 27 Nov 2001 00:06:56 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id fAR76mt02868;
+	Tue, 27 Nov 2001 18:06:48 +1100
+Date: Tue, 27 Nov 2001 18:06:48 +1100
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: new asm-mips/io.h
+Message-ID: <20011127180648.H29424@dea.linux-mips.net>
+References: <20011126.123545.41627333.nemoto@toshiba-tops.co.jp> <20011126200946.A8408@dea.linux-mips.net> <20011127.130406.104026562.nemoto@toshiba-tops.co.jp>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Description: brief message
 Content-Disposition: inline
-User-Agent: Mutt/1.3.17i
-Organization: The Domain of Holomorphy
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20011127.130406.104026562.nemoto@toshiba-tops.co.jp>; from nemoto@toshiba-tops.co.jp on Tue, Nov 27, 2001 at 01:04:06PM +0900
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-A number of people have expressed a wish to replace the bitmap-based            
-bootmem allocator with one that tracks ranges explicitly. I have
-written such a replacement in order to deal with some of the situations
-I have encountered, in particular, to require less programming effort
-to initialize on machines with sparse and irregular memory layouts.
+On Tue, Nov 27, 2001 at 01:04:06PM +0900, Atsushi Nemoto wrote:
 
-The following patch features space usage proportional only to the number
-of distinct fragments of memory, tracking available memory at address
-granularity up until the point of initializing per-page data structures,
-and the use of segment trees in order to support efficient searches on
-those rare machines where this is an issue. According to testing, this
-patch appears to save somewhere between 8KB and 2MB on i386 PC's versus
-the bitmap-based bootmem allocator.
+> ralf> Aside of that I don't think we'll have any alternative to do
+> ralf> something along the lines of your patch.  There are for example
+> ralf> systems where the high 8 bits of the I/O or memory address on
+> ralf> the ISA bus are supplied in a separate register of the chipset,
+> ralf> not as part of the memory address itself.  It's really
+> ralf> remarkable how much bad taste some hardware designers have ...
+> 
+> So, what should we do for these tasteless hardware?
 
-The following patch has been tested on i386 PC's, IA64 Lions, Netwinders,
-DecStation 5000/200's, and IBM IA64 NUMA hardware with sparse memory,
-and debugged without the help of logic analyzers or in-target probes. I
-would like to thank the testers of #kernelnewbies (reltuk and asalib)
-and my co-workers for their help in making this work, and Tony Luck and
-Jack Steiner for their assistance in profiling the existing bootmem.
+Punish it's developers with fish and chips [1].
 
-I am now especially interested in feedback regarding its design, and
-also the results of wider testing.
+> Is there any suggestions? (please don't say "Do not eat" ...)
 
-The patch is available at
+Not a bad idea in context of fish and chips.
 
-  ftp://ftp.kernel.org/pub/linux/kernel/people/wli/bootmem/bootmem-2.5.1-pre1
+Well, talk to it's developers before it's too late.  Or as it has already
+happened for some hardware I think we should simply go with your
+suggestion and make all those functions vectors.
 
+  Ralf
 
-Cheers,
-Bill
+[1] Unavoidable part of the Australian experience

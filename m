@@ -1,250 +1,130 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0VLaIF06241
-	for linux-mips-outgoing; Thu, 31 Jan 2002 13:36:18 -0800
-Received: from ocean.lucon.org (12-234-19-19.client.attbi.com [12.234.19.19] (may be forged))
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0VLZpd06183
-	for <linux-mips@oss.sgi.com>; Thu, 31 Jan 2002 13:35:51 -0800
-Received: by ocean.lucon.org (Postfix, from userid 1000)
-	id 0F355125C3; Thu, 31 Jan 2002 12:35:48 -0800 (PST)
-Date: Thu, 31 Jan 2002 12:35:47 -0800
-From: "H . J . Lu" <hjl@lucon.org>
-To: GNU C Library <libc-alpha@sources.redhat.com>, linux-mips@oss.sgi.com
-Subject: PATCH: Fix ll/sc for mips
-Message-ID: <20020131123547.A22759@lucon.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
+	by oss.sgi.com (8.11.2/8.11.3) id g0VLa4Q06199
+	for linux-mips-outgoing; Thu, 31 Jan 2002 13:36:04 -0800
+Received: from skip-ext.ab.videon.ca (skip-ext.ab.videon.ca [206.75.216.36])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0VLZnd06179
+	for <linux-mips@oss.sgi.com>; Thu, 31 Jan 2002 13:35:49 -0800
+Received: (qmail 24951 invoked from network); 31 Jan 2002 20:35:43 -0000
+Received: from unknown (HELO wakko.deltatee.com) ([24.86.210.128]) (envelope-sender <jgg@debian.org>)
+          by skip-ext.ab.videon.ca (qmail-ldap-1.03) with SMTP
+          for <macro@ds2.pg.gda.pl>; 31 Jan 2002 20:35:43 -0000
+Received: from localhost
+	([127.0.0.1] helo=wakko.deltatee.com ident=jgg)
+	by wakko.deltatee.com with smtp (Exim 3.16 #1 (Debian))
+	id 16WNvq-0003Yj-00; Thu, 31 Jan 2002 13:35:42 -0700
+Date: Thu, 31 Jan 2002 13:35:42 -0700 (MST)
+From: Jason Gunthorpe <jgg@debian.org>
+X-Sender: jgg@wakko.deltatee.com
+Reply-To: Jason Gunthorpe <jgg@debian.org>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+cc: linux-mips@fnet.fr, linux-mips@oss.sgi.com
+Subject: Re: [patch] linux 2.4.17: An mb() rework
+In-Reply-To: <Pine.GSO.3.96.1020131115837.5578A-100000@delta.ds2.pg.gda.pl>
+Message-ID: <Pine.LNX.3.96.1020131110531.13418A-100000@wakko.deltatee.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I believe this patch fixes all the ll/sc bugs I found in glibc. Any 
-comments?
 
-Thanks.
+On Thu, 31 Jan 2002, Maciej W. Rozycki wrote:
+
+>  Well, other architectures seem to define the macros such that wmb() is a
+> pure ordering barrier (to assure strong ordering between writes) and rmb()
+> is a flush (since reads are synchronous by their nature this implies all
+> other transactions have to be finished before).
+
+Yes, I've noticed the wmb bit, not sure about rmb - it is hard to tell
+without knowing the gritty details of the unusual asm ops used :< sparc64 
+for instance seems to define them purely as ordering barriers.
+
+A little more qualification would be that:
+    write(...,device);   // Disable int
+    wmb()
+    enable_ints();
+Is expected to have a potential spurious interrupt. But, perhaps this is
+OK:
+    outl(...,device);
+    wmb();
+    enable_ints();
+This is consistant with how the PCI spec discusses ordering/etc and
+barriers are frequently used in the PCI drivers. Looking at the i386 code
+this is what I would expect to see.
+
+Anyone know for sure?
+
+>  Putting a "sync" before "eret" certainly doesn't work.  The case I've
+> identified is mask_and_ack() in an interrupt handler.  It masks an active
+> IRQ line in an external controller so that handle_IRQ_event() can unmask
+
+Yeah, Ok, this is fairly normal. You have the unique case were using a
+sync will solve your problem. Sync only fixes this if the target address
+is in the CPU's system controller, it does not work for, say, PCI devices.
+
+IMHO it is better to manage this sort of flushing explicitly in all
+drivers, PCI drivers already do a read from device, drivers for system
+controller devices could do that, or use a special sync macro.. That way
+it is visible in the code and not relying on an arch/cpu-specific wmb() 
+side effect. 
+
+If you are using a UP mips that has strongly ordered blocking reads and
+writes I'd think that rmb/wmb should only be asm("":::"memory"). If your
+driver needs to do syncs for non-ordering reasons it should be doing
+syncs. 
+
+>  Ok, what about assuring a value written to an I/O memory resource has
+> actually been commited?  That's what rmb() is for.  Since the CPU is
+> strongly-orderes wmb() (a "sync") should be indistinguishable from a
+> "nop". 
+
+No, a sync will still empty the write buffer. It may halt the pipeline for
+many (~80 perhaps) cycles while posted write data is dumped to the system
+controller.
+
+Regrettably, the SysAD bus that alot of mips chips use does not allow a
+non-posted write, so in that case 'sync' is not going to commit an I/O
+write as you would expect, it just moves it into a write buffer on the
+system controller or on a PCI bridge. (This is not what PCI defines for IO
+accesses, I don't know of any really elegent way to fix it though..)
+
+I don't think rmb is generaly defined to flush IO writes.. It isn't used
+very often at all in the drives/net and drivers/scsi stuff..
 
 
-H.J.
-----
-2002-01-31  H.J. Lu  <hjl@gnu.org>
+>  Hmm, the option seems to exist already, namely CONFIG_NONCOHERENT_IO, but
+> is it really worth making the third variation to save a single "nop",
+> especially as barriers are relatively rare? I'll do it, if it is.
 
-	* ysdeps/mips/pspinlock.c (__pthread_spin_lock): Use a
-	different register in the delayed slot.
+Er, no, CONFIG_NONCOHERENT_IO is for caches that are not coherent with the
+IO subsystem.
 
-	* sysdeps/mips/pt-machine.h (testandset): Call _test_and_set.
-	(__compare_and_swap): Return 0 when failed to compare or swap.
+Barriers seem to be pretty common in the ISR's for PCI drivers, at least
+the ones I've looked at..
 
-2002-01-31  H.J. Lu  <hjl@gnu.org>
+While we are on this topic, does anyone know what the correct linux way
+to turn off an interrupt at a PCI device is? I've seen this in a few
+of the drivers:
 
-	* sysdeps/mips/atomicity.h (compare_and_swap): Return 0 when
-	failed to compare or swap.
+    writeb(0,base+INT_ENABLE);
+    readb(base+INT_ENABLE);    // Flush the write through the PCI bus
+    wmb();
+    ints_on();
 
-	* sysdeps/unix/sysv/linux/mips/sys/tas.h (_test_and_set): Fill
-	the delay slot.
+Or should it be:
 
---- glibc-2.2.4/linuxthreads/sysdeps/mips/pspinlock.c.llsc	Wed Jan 30 16:06:28 2002
-+++ glibc-2.2.4/linuxthreads/sysdeps/mips/pspinlock.c	Thu Jan 31 10:27:10 2002
-@@ -29,20 +29,21 @@
- int
- __pthread_spin_lock (pthread_spinlock_t *lock)
- {
--  unsigned int tmp;
-+  unsigned int tmp1, tmp2;
- 
-   asm volatile
-     ("\t\t\t# spin_lock\n\t"
--     "1:\n\t"
--     "ll	%1,%2\n\t"
-      ".set	push\n\t"
--     ".set	noreorder\n\t"
-+     ".set	noreorder\n"
-+     "1:\n\t"
-+     "ll	%1,%3\n\t"
-      "bnez	%1,1b\n\t"
--     " li	%1,1\n\t"
--     ".set	pop\n\t"
--     "sc	%1,%0\n\t"
--     "beqz	%1,1b"
--     : "=m" (*lock), "=&r" (tmp)
-+     "li	%2,1\n\t"
-+     "sc	%2,%0\n\t"
-+     "beqz	%2,1b\n\t"
-+     "nop\n\t"
-+     ".set	pop"
-+     : "=m" (*lock), "=&r" (tmp1), "=&r" (tmp2)
-      : "m" (*lock)
-      : "memory");
- 
---- glibc-2.2.4/linuxthreads/sysdeps/mips/pt-machine.h.llsc	Sat Dec  9 08:55:34 2000
-+++ glibc-2.2.4/linuxthreads/sysdeps/mips/pt-machine.h	Thu Jan 31 10:02:53 2002
-@@ -33,41 +33,11 @@
- 
- /* Spinlock implementation; required.  */
- 
--#if (_MIPS_ISA >= _MIPS_ISA_MIPS2)
--
--PT_EI long int
--testandset (int *spinlock)
--{
--  long int ret, temp;
--
--  __asm__ __volatile__
--    ("/* Inline spinlock test & set */\n\t"
--     "1:\n\t"
--     "ll	%0,%3\n\t"
--     ".set	push\n\t"
--     ".set	noreorder\n\t"
--     "bnez	%0,2f\n\t"
--     " li	%1,1\n\t"
--     ".set	pop\n\t"
--     "sc	%1,%2\n\t"
--     "beqz	%1,1b\n"
--     "2:\n\t"
--     "/* End spinlock test & set */"
--     : "=&r" (ret), "=&r" (temp), "=m" (*spinlock)
--     : "m" (*spinlock)
--     : "memory");
--
--  return ret;
--}
--
--#else /* !(_MIPS_ISA >= _MIPS_ISA_MIPS2) */
--
- PT_EI long int
- testandset (int *spinlock)
- {
-   return _test_and_set (spinlock, 1);
- }
--#endif /* !(_MIPS_ISA >= _MIPS_ISA_MIPS2) */
- 
- 
- /* Get some notion of the current stack.  Need not be exactly the top
-@@ -84,22 +54,21 @@ register char * stack_pointer __asm__ ("
- PT_EI int
- __compare_and_swap (long int *p, long int oldval, long int newval)
- {
--  long int ret;
-+  long int ret, temp;
- 
-   __asm__ __volatile__
-     ("/* Inline compare & swap */\n\t"
--     "1:\n\t"
--     "ll	%0,%4\n\t"
--     ".set	push\n"
-+     "ll	%1,%5\n\t"
-+     ".set	push\n\t"
-      ".set	noreorder\n\t"
--     "bne	%0,%2,2f\n\t"
--     " move	%0,%3\n\t"
-+     "bne	%1,%3,1f\n\t"
-+     "move	%0,$0\n\t"
-      ".set	pop\n\t"
--     "sc	%0,%1\n\t"
--     "beqz	%0,1b\n"
--     "2:\n\t"
-+     "move	%0,%4\n\t"
-+     "sc	%0,%2\n"
-+     "1:\n\t"
-      "/* End compare & swap */"
--     : "=&r" (ret), "=m" (*p)
-+     : "=&r" (ret), "=&r" (temp), "=m" (*p)
-      : "r" (oldval), "r" (newval), "m" (*p)
-      : "memory");
- 
---- glibc-2.2.4/sysdeps/mips/atomicity.h.llsc	Mon Jul  9 11:58:19 2001
-+++ glibc-2.2.4/sysdeps/mips/atomicity.h	Thu Jan 31 10:36:47 2002
-@@ -32,12 +32,16 @@ exchange_and_add (volatile uint32_t *mem
-   int result, tmp;
- 
-   __asm__ __volatile__
--    ("/* Inline exchange & add */\n\t"
-+    ("/* Inline exchange & add */\n"
-      "1:\n\t"
-      "ll	%0,%3\n\t"
-      "addu	%1,%4,%0\n\t"
-      "sc	%1,%2\n\t"
-+     ".set	push\n\t"
-+     ".set	noreorder\n\t"
-      "beqz	%1,1b\n\t"
-+     "nop\n\t"
-+     ".set	pop\n\t"
-      "/* End exchange & add */"
-      : "=&r"(result), "=&r"(tmp), "=m"(*mem)
-      : "m" (*mem), "r"(val)
-@@ -53,12 +57,16 @@ atomic_add (volatile uint32_t *mem, int 
-   int result;
- 
-   __asm__ __volatile__
--    ("/* Inline atomic add */\n\t"
-+    ("/* Inline atomic add */\n"
-      "1:\n\t"
-      "ll	%0,%2\n\t"
-      "addu	%0,%3,%0\n\t"
-      "sc	%0,%1\n\t"
-+     ".set	push\n\t"
-+     ".set	noreorder\n\t"
-      "beqz	%0,1b\n\t"
-+     "nop\n\t"
-+     ".set	pop\n\t"
-      "/* End atomic add */"
-      : "=&r"(result), "=m"(*mem)
-      : "m" (*mem), "r"(val)
-@@ -69,22 +77,21 @@ static inline int
- __attribute__ ((unused))
- compare_and_swap (volatile long int *p, long int oldval, long int newval)
- {
--  long int ret;
-+  long int ret, temp;
- 
-   __asm__ __volatile__
-     ("/* Inline compare & swap */\n\t"
--     "1:\n\t"
--     "ll	%0,%4\n\t"
--     ".set	push\n"
-+     "ll	%1,%5\n\t"
-+     ".set	push\n\t"
-      ".set	noreorder\n\t"
--     "bne	%0,%2,2f\n\t"
--     "move	%0,%3\n\t"
-+     "bne	%1,%3,1f\n\t"
-+     "move	%0,$0\n\t"
-      ".set	pop\n\t"
--     "sc	%0,%1\n\t"
--     "beqz	%0,1b\n"
--     "2:\n\t"
-+     "move	%0,%4\n\t"
-+     "sc	%0,%2\n"
-+     "1:\n\t"
-      "/* End compare & swap */"
--     : "=&r" (ret), "=m" (*p)
-+     : "=&r" (ret), "=&r" (temp), "=m" (*p)
-      : "r" (oldval), "r" (newval), "m" (*p)
-      : "memory");
- 
---- glibc-2.2.4/sysdeps/unix/sysv/linux/mips/sys/tas.h.llsc	Mon Jul  9 11:58:45 2001
-+++ glibc-2.2.4/sysdeps/unix/sysv/linux/mips/sys/tas.h	Thu Jan 31 10:24:44 2002
-@@ -42,16 +42,17 @@ _test_and_set (int *p, int v) __THROW
-   int r, t;
- 
-   __asm__ __volatile__
--    ("1:\n\t"
-+    (".set	push\n\t"
-+     ".set	noreorder\n"
-+     "1:\n\t"
-      "ll	%0,%3\n\t"
--     ".set	push\n\t"
--     ".set	noreorder\n\t"
-      "beq	%0,%4,2f\n\t"
--     " move	%1,%4\n\t"
--     ".set	pop\n\t"
-+     "move	%1,%4\n\t"
-      "sc	%1,%2\n\t"
--     "beqz	%1,1b\n"
--     "2:\n"
-+     "beqz	%1,1b\n\t"
-+     "nop\n"
-+     "2:\n\t"
-+     ".set	pop"
-      : "=&r" (r), "=&r" (t), "=m" (*p)
-      : "m" (*p), "r" (v)
-      : "memory");
+    writeb(0,base+INT_ENABLE);
+    wmb();
+    readb(base+INT_ENABLE);    // Flush the write through the PCI bus
+    rmb();
+    ints_on();
+
+Which makes more sense..
+
+If the latter is correct then your patch needs to define rmb as:
+   'lw $1,KSEG'
+   'addiu $0, $1, 0x0000'
+Otherwise MIPS chips that do not support blocking uncached memory reads
+will not work right. (SR71000 is such a chip)
+
+Thanks,
+Jason

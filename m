@@ -1,51 +1,53 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f76Fdjw13527
-	for linux-mips-outgoing; Mon, 6 Aug 2001 08:39:45 -0700
-Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f76FdiV13522
-	for <linux-mips@oss.sgi.com>; Mon, 6 Aug 2001 08:39:44 -0700
-Received: by ocean.lucon.org (Postfix, from userid 1000)
-	id 4A20A125C3; Mon,  6 Aug 2001 08:39:43 -0700 (PDT)
-Date: Mon, 6 Aug 2001 08:39:42 -0700
-From: "H . J . Lu" <hjl@lucon.org>
-To: Eric Christopher <echristo@redhat.com>
-Cc: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>, gcc@gcc.gnu.org,
-   linux-mips@oss.sgi.com, GNU C Library <libc-alpha@sourceware.cygnus.com>
+	by oss.sgi.com (8.11.2/8.11.3) id f76GM2h16781
+	for linux-mips-outgoing; Mon, 6 Aug 2001 09:22:02 -0700
+Received: from dea.waldorf-gmbh.de (u-243-21.karlsruhe.ipdial.viaginterkom.de [62.180.21.243])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f76GLxV16778
+	for <linux-mips@oss.sgi.com>; Mon, 6 Aug 2001 09:22:00 -0700
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f76GKoH21156;
+	Mon, 6 Aug 2001 18:20:50 +0200
+Date: Mon, 6 Aug 2001 18:20:50 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Andreas Jaeger <aj@suse.de>
+Cc: "H . J . Lu" <hjl@lucon.org>, Eric Christopher <echristo@redhat.com>,
+   gcc@gcc.gnu.org, linux-mips@oss.sgi.com,
+   GNU C Library <libc-alpha@sourceware.cygnus.com>
 Subject: Re: Changing WCHAR_TYPE from "long int" to "int"?
-Message-ID: <20010806083942.A16047@lucon.org>
-References: <20010806164000.E400@rembrandt.csv.ica.uni-stuttgart.de> <997108890.1773.22.camel@ghostwheel.cygnus.com> <20010806082904.C15666@lucon.org> <997112036.2480.14.camel@ghostwheel.cygnus.com>
+Message-ID: <20010806182050.A21142@bacchus.dhis.org>
+References: <20010805094806.A3146@lucon.org> <20010806115913.B17179@bacchus.dhis.org> <hoofptjy6k.fsf@gee.suse.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <997112036.2480.14.camel@ghostwheel.cygnus.com>; from echristo@redhat.com on Mon, Aug 06, 2001 at 04:33:54PM +0100
+In-Reply-To: <hoofptjy6k.fsf@gee.suse.de>; from aj@suse.de on Mon, Aug 06, 2001 at 12:10:59PM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Aug 06, 2001 at 04:33:54PM +0100, Eric Christopher wrote:
+On Mon, Aug 06, 2001 at 12:10:59PM +0200, Andreas Jaeger wrote:
+
+> >> I am working with Eric to clean up the Linux/mips configuration in
+> >> gcc 3.x. I'd like to change WCHAR_TYPE from "long int" to "int". They
+> >> are the same on Linux/mips. There won't be any run-time problems. I am
+> >> wondering if there are any compatibility problems at the compile time
+> >> at the source and binary level. For one thing, __WCHAR_TYPE__ will be
+> >> changed from "long int" to "int". The only thing I can think of is
+> >> the C++ libraries. But gcc 3.x doesn't work on Linux/mips. The one
+> >> I am working on will be the first gcc 3.x for Linux/mips. So there
+> >> shouldn't be any problems. Am I right?
+> >
+> > The MIPS ABI defines wchar_t to long.  So please go ahead and make the
+> > change.
 > 
-> > Yes. Gcc won't even compile since cpp uses MAX_WCHAR_TYPE_SIZE, which
-> > is defined as WCHAR_TYPE_SIZE and has be to a constant. But mips'
-> > BITS_PER_WORD is not avaiable for cpp. Besides, we use 32bit wchar_t
-> > on most of the 64bit Linux targets. Why do we want to use 64 for
-> > mips64? Check out WCHAR_TYPE_SIZE on ia64 and alpha, which are all
-> > 64bit Linux targets.
-> > 
-> 
-> Right.  alpha doesn't define WCHAR_TYPE_SIZE, ia64 seems to do what you
-> want...
+> I'm confused.  The ABI defines it to be long - and he should change it
+> nevertheless?
 
-alpha does:
+It's defined as a "long", not "long int" so we're obviously off by a tiny
+bit.
 
-# grep WCHAR_TYPE defaults.h config/alpha/linux.h
-defaults.h:#ifndef WCHAR_TYPE_SIZE
-defaults.h:#define WCHAR_TYPE_SIZE INT_TYPE_SIZE
-config/alpha/linux.h:#undef WCHAR_TYPE
-config/alpha/linux.h:#define WCHAR_TYPE "int"
-# grep INT_TYPE_SIZE config/alpha/*.h
-config/alpha/alpha.h:#define INT_TYPE_SIZE 32
+H.J. - why did you want to change this type anyway?  "long int" and "int"
+both have the same size and signedness so there isn't any incompatibility
+anyway?
 
-So WCHAR_TYPE_SIZE is 32 for Linux/alpha.
-
-
-H.J.
+  Ralf

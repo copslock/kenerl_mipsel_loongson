@@ -1,53 +1,67 @@
-Received:  by oss.sgi.com id <S42225AbQFIPwx>;
-	Fri, 9 Jun 2000 08:52:53 -0700
-Received: from gandalf.physik.uni-konstanz.de ([134.34.144.30]:28200 "EHLO
-        gandalf.physik.uni-konstanz.de") by oss.sgi.com with ESMTP
-	id <S42199AbQFIPwm>; Fri, 9 Jun 2000 08:52:42 -0700
-Received: from bert.physik.uni-konstanz.de [134.34.144.20] 
-	by gandalf.physik.uni-konstanz.de with smtp (Exim 2.05 #1 (Debian))
-	id 130R3M-0007L7-00; Fri, 9 Jun 2000 17:50:36 +0200
-Received: by bert.physik.uni-konstanz.de (sSMTP sendmail emulation); Fri, 9 Jun 2000 17:46:35 +0200
-Date:   Fri, 9 Jun 2000 17:46:35 +0200
-From:   Guido Guenther <guido.guenther@gmx.net>
-To:     "J. Scott Kasten" <jsk@tetracon-eng.net>
-Cc:     Ian Chilton <mailinglist@ichilton.co.uk>,
-        Linux-MIPS Mailing List <linux-mips@oss.sgi.com>
-Subject: Re: Linux on Indy
-Message-ID: <20000609174635.A25844@bert.physik.uni-konstanz.de>
-References: <NAENLMKGGBDKLPONCDDOGEBOCMAA.mailinglist@ichilton.co.uk> <Pine.SGI.4.10.10006091025370.1120-100000@thor.tetracon-eng.net>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.1.9i
-In-Reply-To: <Pine.SGI.4.10.10006091025370.1120-100000@thor.tetracon-eng.net>; from jsk@tetracon-eng.net on Fri, Jun 09, 2000 at 10:31:05AM -0300
+Received:  by oss.sgi.com id <S42226AbQFIQHX>;
+	Fri, 9 Jun 2000 09:07:23 -0700
+Received: from mta01-svc.ntlworld.com ([62.253.162.41]:10237 "EHLO
+        mta01-svc.server.ntlworld.com") by oss.sgi.com with ESMTP
+	id <S42199AbQFIQHL>; Fri, 9 Jun 2000 09:07:11 -0700
+Received: from icserver.ichilton.co.uk ([62.252.237.138])
+          by mta01-svc.server.ntlworld.com
+          (InterMail vM.4.01.02.27 201-229-119-110) with ESMTP
+          id <20000609160709.KSNL381.mta01-svc.server.ntlworld.com@icserver.ichilton.co.uk>
+          for <linux-mips@oss.sgi.com>; Fri, 9 Jun 2000 17:07:09 +0100
+Received: from ian (ian.ichilton.local [192.168.0.8])
+	by icserver.ichilton.co.uk (8.10.2/8.10.1) with SMTP id e59G53N02255
+	for <linux-mips@oss.sgi.com>; Fri, 9 Jun 2000 17:05:03 +0100
+From:   "Ian Chilton" <mailinglist@ichilton.co.uk>
+To:     "Linux-MIPS Mailing List" <linux-mips@oss.sgi.com>
+Subject: RE: Linux on Indy
+Date:   Fri, 9 Jun 2000 17:05:05 +0100
+Message-ID: <NAENLMKGGBDKLPONCDDOKECBCMAA.mailinglist@ichilton.co.uk>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
+In-Reply-To: <20000609174635.A25844@bert.physik.uni-konstanz.de>
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4132.2800
+Importance: Normal
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Fri, Jun 09, 2000 at 10:31:05AM -0300, J. Scott Kasten wrote:
-> 
-[..snip..] 
-> >From what I have observed, the 5.1 tarball has under the mipseb directory
-> a minimal root file system with etc, sbin, lib, etc. in addition to the
-> RedHat/RPMS directory.  I suspect that you will need to get that minimal
-> root file system mounted, and then use that to run the install and explode
-> the RPMS to the disk.  I'm further going to speculate that you will
-> probably netboot the thing the first time and do an NFS mounted root to
-> make that happen.  But again, this is pure speculation...
-That's the way to go. As far as I remember the hardhat installer fires
-up automatically when you mount the rootfs per nfs. It will create a fs
-on the disk and unpack the rpms. As I did that, most of the scripts failed so
-I had to fix up some things by hand(the mailing list archive is a good
-read on that). I wrote a short description of what I did after the
-hardhat installer finished: 
-http://honk.physik.uni-konstanz.de/~agx/mipslinux/install/fix-install.txt
-I partitioned the disk from within irix but I can't remember that
-cryptic irix device names. Recently someone posted about a mini-distro
-he built(search the archives on that). This one might be easier to
-install than hardhat.
-Regards,
- -- Guido
+Hello,
 
--- 
-GPG-Public Key: http://honk.physik.uni-konstanz.de/~agx/guenther.gpg.asc
+> I suspect that you will need to get that minimal
+> root file system mounted, and then use that to run the install
+> and explode the RPMS to the disk
+
+
+eakkK!
+
+Sorry to be a pain..but is there anyone that wouldn't mind spening a few
+mins just to list the commands that I would use to do this...
+
+I have been using Windoze and Linux for years, but am *completely* new to
+SGI/Indy's and IRIX.
+I don't even have a clue how to partition use the 2nd hard disk I have put
+in....
+
+HELP!
+
+
+Thanks Again!
+
+
+Bye for Now,
+
+Ian
+
+
+                     \|||/
+                     (o o)
+ /----------------ooO-(_)-Ooo----------------\
+ |  Ian Chilton                              |
+ |  E-Mail : ian@ichilton.co.uk              |
+ \-------------------------------------------/

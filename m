@@ -1,36 +1,40 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g3MI8vqf006843
-	for <linux-mips-outgoing@oss.sgi.com>; Mon, 22 Apr 2002 11:08:57 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g3N9lFwJ006220
+	for <linux-mips-outgoing@oss.sgi.com>; Tue, 23 Apr 2002 02:47:15 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g3MI8vXL006842
-	for linux-mips-outgoing; Mon, 22 Apr 2002 11:08:57 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g3N9lFTG006219
+	for linux-mips-outgoing; Tue, 23 Apr 2002 02:47:15 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from mail.kendin.com (mail.kendin.com [209.128.93.97] (may be forged))
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g3MI8gqf006839
-	for <linux-mips@oss.sgi.com>; Mon, 22 Apr 2002 11:08:47 -0700
-Received: from cambrian (209-128-93-100.BAYAREA.NET [209.128.93.100])
-	by mail.kendin.com (8.11.6/8.11.2) with SMTP id g3MI2HE14067
-	for <linux-mips@oss.sgi.com>; Mon, 22 Apr 2002 11:02:17 -0700
-From: "Hui Jia" <hjia@kendin.com>
-To: <linux-mips@oss.sgi.com>
-Subject: linux for IDT79S334A
-Date: Mon, 22 Apr 2002 11:07:43 -0700
-Message-ID: <NEBBJJMPKLNOIGBLMBDGGEKLCCAA.hjia@kendin.com>
+Received: from mail2.infineon.com (mail2.infineon.com [192.35.17.230])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g3N9l2wJ006215;
+	Tue, 23 Apr 2002 02:47:03 -0700
+X-Envelope-Sender-Is: Andre.Messerschmidt@infineon.com (at relayer mail2.infineon.com)
+Received: from mchb0b1w.muc.infineon.com ([172.31.102.53])
+	by mail2.infineon.com (8.11.1/8.11.1) with ESMTP id g3N9lMn14266;
+	Tue, 23 Apr 2002 11:47:22 +0200 (MET DST)
+Received: from mchb0b5w.muc.infineon.com ([172.31.102.49]) by mchb0b1w.muc.infineon.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2653.13)
+	id JF1RT5LW; Tue, 23 Apr 2002 11:47:21 +0200
+Received: from 172.29.128.3 by mchb0b5w.muc.infineon.com (InterScan E-Mail VirusWall NT); Tue, 23 Apr 2002 11:47:21 +0200
+Received: by DLFW003A with Internet Mail Service (5.5.2653.19)
+	id <JJ7N9S09>; Tue, 23 Apr 2002 11:47:25 +0200
+Message-ID: <86048F07C015D311864100902760F1DD01B5E90E@DLFW003A>
+From: Andre.Messerschmidt@infineon.com
+To: ralf@oss.sgi.com
+Cc: linux-mips@oss.sgi.com
+Subject: AW: Wait queue problem
+Date: Tue, 23 Apr 2002 11:47:20 +0200
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
-Importance: Normal
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi,
+> A bad race condition in that code.  If foo_int is called before your
+> process
+> had a chance to get to sleep it'll never be woken before the timeout.
+> 
+I think this has been the problem. Thanks.
+Is there any possibility to check if there are processes waiting on a queue?
 
-Can any one tell me where I can find the linux porting to IDT79S334A board.
-Thanks.
-
-William Jia
+regards
+Andre

@@ -1,36 +1,53 @@
-Received:  by oss.sgi.com id <S553773AbQJTHTJ>;
-	Fri, 20 Oct 2000 00:19:09 -0700
-Received: from gandalf1.physik.uni-konstanz.de ([134.34.144.69]:16657 "EHLO
-        gandalf.physik.uni-konstanz.de") by oss.sgi.com with ESMTP
-	id <S553751AbQJTHTC>; Fri, 20 Oct 2000 00:19:02 -0700
-Received: from bilbo.physik.uni-konstanz.de [134.34.144.81] 
-	by gandalf.physik.uni-konstanz.de with esmtp (Exim 3.12 #1 (Debian))
-	id 13mWSB-0001XB-00; Fri, 20 Oct 2000 09:18:59 +0200
-Received: from agx by bilbo.physik.uni-konstanz.de with local (Exim 3.12 #1 (Debian))
-	id 13mWSB-0008LH-00; Fri, 20 Oct 2000 09:18:59 +0200
-Date:   Fri, 20 Oct 2000 09:18:58 +0200
-From:   Guido Guenther <guido.guenther@gmx.net>
-To:     Ralf Baechle <ralf@oss.sgi.com>
-Cc:     Guido Guenther <guido.guenther@gmx.net>, linux-mips@oss.sgi.com
-Subject: Re: patches for dvhtool
-Message-ID: <20001020091858.A32040@bilbo.physik.uni-konstanz.de>
-References: <20001015021522.B3106@bilbo.physik.uni-konstanz.de> <20001019222501.A20568@bacchus.dhis.org>
+Received:  by oss.sgi.com id <S553775AbQJTHp7>;
+	Fri, 20 Oct 2000 00:45:59 -0700
+Received: from widukind.bi.teuto.net ([212.8.197.28]:59399 "EHLO
+        widukind.bi.teuto.net") by oss.sgi.com with ESMTP
+	id <S553770AbQJTHph>; Fri, 20 Oct 2000 00:45:37 -0700
+Received: from micropolis.microdata-pos.de ([212.8.203.34])
+	by widukind.bi.teuto.net (8.9.3/8.9.3) with ESMTP id JAA20869
+	for <linux-mips@oss.sgi.com>; Fri, 20 Oct 2000 09:45:34 +0200
+Received: from imail.microdata-pos.de 
+	by micropolis.microdata-pos.de (8.9.3/8.9.3/Debian/GNU) with ESMTP id JAA19189
+	for <linux-mips@oss.sgi.com>; Fri, 20 Oct 2000 09:45:33 +0200
+Received: 
+	by imail.microdata-pos.de (8.9.3/8.9.3/Debian 8.9.3-21) id JAA09368
+	for linux-mips@oss.sgi.com; Fri, 20 Oct 2000 09:45:03 +0200
+Date:   Fri, 20 Oct 2000 09:45:03 +0200
+From:   Jan-Benedict Glaw <jbglaw@microdata-pos.de>
+To:     linux-mips@oss.sgi.com
+Subject: whiptail and debconf
+Message-ID: <20001020094503.A9179@microdata-pos.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 User-Agent: Mutt/1.0.1i
-In-Reply-To: <20001019222501.A20568@bacchus.dhis.org>; from ralf@oss.sgi.com on Thu, Oct 19, 2000 at 10:25:01PM +0200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Thu, Oct 19, 2000 at 10:25:01PM +0200, Ralf Baechle wrote:
-> On Sun, Oct 15, 2000 at 02:15:23AM +0200, Guido Guenther wrote:
-> 
-> I've applied your patches with exception of the debug junk and the
-> partition ID stuff - the values for the prtition ids exceed the maximum
-> value and we don't have assigned partition ids anyway.
-Fdisk created the linux partitions with 0x83 which is the same as on
-i386. Any reasons why we can't use them?
-Regards,
- -- Guido
+Hi!
+
+/*
+ *	My regular provider seems to be down right now,
+ *	so I've to use this email address;(
+ */
+
+Well, I've now got a chroot[1]-environment with quite most of all
+important packages installed the correct and ight way (TM). However,
+some of them fail because neither whiptail nor one of the debconf
+variants is available. I've not yet a native compiler; could someone
+*please* try to build a .deb of these packages?
+
+MfG, JBG
+[1] chroot seems to be little bit buggy to me in the declinux root fs...
+
+    root@localhost#> chroot base_tgz_dir/ /bin/bash
+
+    ...results in "cwd: Can't get current path" (from memory). Doing
+    a "ls" shows base_tgz_dir (and other directory entries) which
+    should no longer be available nor visible to the process!
+    chdir()ing into base_tgz_dir manually after doing the chroot
+    command fixes that, but that's a bit confusing to me...
+
+-- 
+My ~/.sig is on another host;(

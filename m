@@ -1,91 +1,68 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBV08Qt22269
-	for linux-mips-outgoing; Sun, 30 Dec 2001 16:08:26 -0800
-Received: from sgi.com (sgi.SGI.COM [192.48.153.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBV05tg22252
-	for <linux-mips@oss.sgi.com>; Sun, 30 Dec 2001 16:08:19 -0800
-Received: from straylight.cyberhqz.com (h24-83-212-254.sbm.shawcable.net [24.83.212.254]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id VAA07574
-	for <linux-mips@oss.sgi.com>; Thu, 27 Dec 2001 21:07:58 -0800 (PST)
-	mail_from (rmurray@cyberhqz.com)
-Received: (from rmurray@localhost)
-	by straylight.cyberhqz.com (8.9.3/8.9.3/Debian 8.9.3-21) id VAA22686;
-	Thu, 27 Dec 2001 21:06:00 -0800
-From: Ryan Murray <rmurray@cyberhqz.com>
-Date: Thu, 27 Dec 2001 21:06:00 -0800
-To: "H . J . Lu" <hjl@lucon.org>
-Cc: linux-mips@oss.sgi.com, config-patches@gnu.org
-Subject: Re: config.guess changs
-Message-ID: <20011227210600.G29645@cyberhqz.com>
-Mail-Followup-To: "H . J . Lu" <hjl@lucon.org>, linux-mips@oss.sgi.com,
-	config-patches@gnu.org
-References: <20011227020844.U29645@cyberhqz.com> <20011227095306.A16072@lucon.org>
+	by oss.sgi.com (8.11.2/8.11.3) id fBV45h425557
+	for linux-mips-outgoing; Sun, 30 Dec 2001 20:05:43 -0800
+Received: from fencepost.gnu.org (we-refuse-to-spy-on-our-users@fencepost.gnu.org [199.232.76.164])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBV45Wg25550
+	for <linux-mips@oss.sgi.com>; Sun, 30 Dec 2001 20:05:32 -0800
+Received: from buytenh by fencepost.gnu.org with local (Exim 3.22 #1 (Debian))
+	id 16Ksl2-00032O-00; Sun, 30 Dec 2001 22:05:00 -0500
+Date: Sun, 30 Dec 2001 22:05:00 -0500
+From: Lennert Buytenhek <buytenh@gnu.org>
+To: rth@dot.cygnus.com, linux-arm-kernel@lists.arm.linux.org.uk,
+   dev-etrax@axis.com, linux-ia64@linuxia64.org,
+   linux-m68k@lists.linux-m68k.org, linux-mips@oss.sgi.com,
+   grundler@cup.hp.com, cort@fsmlabs.com, linux-390@vm.marist.edu,
+   gniibe@mri.co.jp, sparclinux@vger.kernel.org, ultralinux@vger.kernel.org
+Cc: jdike@karaya.com
+Subject: [PATCH][RFC][CFT] remove global errno from the kernel, make _syscallX kernel-only
+Message-ID: <20011230220500.A10224@gnu.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="ncX6roZrNNHXnAbh"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20011227095306.A16072@lucon.org>
-User-Agent: Mutt/1.3.23i
+User-Agent: Mutt/1.2.5i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+(Apologies for the massive cross-post, but this is a matter that concerns
+all architectures.  For archs that don't have a maintainer listed in
+MAINTAINERS I grabbed a random email address from arch/$arch/kernel/*.
+If you're not the person to answer this for your $arch, please forward
+to an appropriate person/list.)
 
---ncX6roZrNNHXnAbh
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Dec 27, 2001 at 09:53:06AM -0800, H . J . Lu wrote:
-> > The config.guess rework of 12/12/2001 doesn't work on big endian machin=
-es,
-> > as the preprocessor defines "mips" to be " 1", so the cpp -E output ends
-> > up being "CPU=3D 1".
->=20
-> Try this patch.
->=20
->=20
-> H.J.
-> ----
-> 2001-12-27  H.J. Lu  <hjl@gnu.org>
->=20
-> 	* config.guess (mips:Linux:*:*): Undefine CPU, mips and mipsel
-> 	first.
->=20
-> --- config.guess	Wed Dec 12 19:53:12 2001
-> +++ config.guess	Thu Dec 27 09:51:18 2001
-> @@ -770,6 +770,9 @@ EOF
->      mips:Linux:*:*)
->  	eval $set_cc_for_build
->  	sed 's/^	//' << EOF >$dummy.c
-> +	#undef CPU
-> +	#undef mips
-> +	#undef mipsel
->  	#if defined(__MIPSEL__) || defined(__MIPSEL) || defined(_MIPSEL) || def=
-ined(MIPSEL)=20
->  	CPU=3Dmipsel=20
->  	#else
+Hi,
 
-That fixes the problem here.
+As I mentioned in my email to l-k with subject '[PATCH][RFC] global
+errno considered harmful' earlier today, having a global errno in the
+kernel doesn't really make sense.
 
---=20
-Ryan Murray, Debian Developer (rmurray@cyberhqz.com, rmurray@debian.org)
-The opinions expressed here are my own.
+Referenced patch [1] deletes all mention of a global errno from the
+kernel, fixes up a very small number of callers that were depending on
+it, and fixes up the syscall helpers in include/asm-$arch/unistd.h not
+to write an error code to errno in case of error anymore.
 
---ncX6roZrNNHXnAbh
-Content-Type: application/pgp-signature
-Content-Disposition: inline
+This subtly breaks userspace code that uses these helpers, but the general
+consensus seems to be that userspace code shouldn't be touching these in
+the first place.  Patch [2] fixes up asm-$arch/unistd.h to only define
+_syscallX in case __KERNEL_SYSCALLS__ is defined, to try and actively
+break userspace (ab)users of this code (thanks to Ralf Baechle for
+suggesting I should do something along these lines).
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
+What I would like to know from each architecture team:
+- What is your arch's policy on userspace usage of asm/unistd.h, and
+  consequently, what is your opinion on the goal these patches
+  aim for?
+- Are the changes I made in [1] and [2] for your $arch technically
+  correct?
+Please CC me on replies as I'm not on any of the lists posted to.
 
-iD8DBQE8K/24N2Dbz/1mRasRAh5+AKDeuY3E1QFqISMuWZCD/R5xXhuAtACeJkej
-mg7kVkPQVPq+Ff/ns2d/VTI=
-=nmc4
------END PGP SIGNATURE-----
+My intention is to push these to Linus for 2.5 if everyone agrees.
+They're probably too intrusive for 2.4 (although I'd love people
+to convince me otherwise).
 
---ncX6roZrNNHXnAbh--
+
+cheers,
+Lennert
+
+[1] http://www.math.leidenuniv.nl/~buytenh/errno_ectomy-1.diff
+[2] http://www.math.leidenuniv.nl/~buytenh/errno_ectomy-1-to-2.diff

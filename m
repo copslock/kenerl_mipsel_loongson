@@ -1,49 +1,34 @@
-Received:  by oss.sgi.com id <S554039AbRAWRKV>;
-	Tue, 23 Jan 2001 09:10:21 -0800
+Received:  by oss.sgi.com id <S554041AbRAWRNl>;
+	Tue, 23 Jan 2001 09:13:41 -0800
 Received: from sgigate.SGI.COM ([204.94.209.1]:49532 "EHLO
-        gate-sgigate.sgi.com") by oss.sgi.com with ESMTP id <S554035AbRAWRKQ>;
-	Tue, 23 Jan 2001 09:10:16 -0800
+        gate-sgigate.sgi.com") by oss.sgi.com with ESMTP id <S554038AbRAWRNY>;
+	Tue, 23 Jan 2001 09:13:24 -0800
 Received: (ralf@lappi.waldorf-gmbh.de) by bacchus.dhis.org
-	id <S870753AbRAWRH5>; Tue, 23 Jan 2001 09:07:57 -0800
-Date:	Tue, 23 Jan 2001 09:07:56 -0800
+	id <S870753AbRAWRLC>; Tue, 23 Jan 2001 09:11:02 -0800
+Date:	Tue, 23 Jan 2001 09:11:02 -0800
 From:	Ralf Baechle <ralf@oss.sgi.com>
-To:	Jim Freeman <jfree@sovereign.org>
-Cc:	linux-mips@oss.sgi.com, dhinds@zen.stanford.edu
-Subject: Re: mips vs pcmcia - which wins?
-Message-ID: <20010123090756.C945@bacchus.dhis.org>
-References: <20010123093523.B4972@sovereign.org>
+To:	"James McD" <vile8@hotmail.com>
+Cc:	linux-mips@oss.sgi.com
+Subject: Re: Fwd: pthread in glibc 2.2.1
+Message-ID: <20010123091102.D945@bacchus.dhis.org>
+References: <F69IBJYduiFPUEOYMui000010a7@hotmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <20010123093523.B4972@sovereign.org>; from jfree@sovereign.org on Tue, Jan 23, 2001 at 09:35:23AM -0700
+In-Reply-To: <F69IBJYduiFPUEOYMui000010a7@hotmail.com>; from vile8@hotmail.com on Mon, Jan 22, 2001 at 12:07:32AM +0000
 X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, Jan 23, 2001 at 09:35:23AM -0700, Jim Freeman wrote:
-> From: Jim Freeman <jfree@sovereign.org>
-> Date:   Tue, 23 Jan 2001 09:35:23 -0700
-> To: linux-mips@oss.sgi.com, dhinds@zen.stanford.edu
-> Subject: mips vs pcmcia - which wins?
-> 
-> The following mips kernel patchlet:
-> 
-> 	diff -u --new-file --recursive --exclude-from diff.exclude \
-> 		linux-2.4.0/include/linux/sched.h \
-> 		linux-mips.cvs/include/linux/sched.h
-> 	--- linux-2.4.0/include/linux/sched.h   Thu Jan  4 15:50:47 2001
-> 	+++ linux-mips.cvs/include/linux/sched.h        Wed Jan 10 21:52:59 2001
-> 	@@ -562,6 +562,8 @@
-> 	 extern int in_group_p(gid_t);
-> 	 extern int in_egroup_p(gid_t);
-> 
-> 	+extern void release(struct task_struct * p);
-> 	+
+> >even the simplest pthread-program dies with a bus error(see attachment)
+> >on my I2.  glibc is 2.2.1(same for 2.1.97), kernel is 2.4.0-test9.
+> >Interesting enough I can't even get a core dump. Any starting points to
+> >track this down?
 
-The function getting exported here changed it's name to release_task in
-2.4; I've adjusted above declaration accordingly.
+Last I checked the kernel didn't dump core for multithreaded programs
+since the core file's data structure doesn't support that yet.
 
   Ralf

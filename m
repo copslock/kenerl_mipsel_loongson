@@ -1,45 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Jan 2003 20:32:45 +0000 (GMT)
-Received: from mxout1.netvision.net.il ([IPv6:::ffff:194.90.9.20]:17292 "EHLO
-	mxout1.netvision.net.il") by linux-mips.org with ESMTP
-	id <S8226071AbTAHUco>; Wed, 8 Jan 2003 20:32:44 +0000
-Received: from Crusty ([62.0.78.173]) by mxout1.netvision.net.il
- (iPlanet Messaging Server 5.2 HotFix 1.08 (built Dec  6 2002))
- with ESMTPA id <0H8E002TCX24WX@mxout1.netvision.net.il> for
- linux-mips@linux-mips.org; Wed, 08 Jan 2003 22:32:30 +0200 (IST)
-Date: Wed, 08 Jan 2003 22:15:19 +0200
-From: Gilad Benjamini <gilad@riverhead.com>
-Subject: ksymoops and 64 bit mips
-To: linux-mips@linux-mips.org
-Message-id: <ECEPLLMMNGHMFBLHCLMAGEDGDHAA.gilad@riverhead.com>
-MIME-version: 1.0
-X-MIMEOLE: Produced By Microsoft MimeOLE V6.00.2800.1106
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
-Content-type: text/plain; charset=windows-1255
-Content-transfer-encoding: 7BIT
-Importance: Normal
-X-Priority: 3 (Normal)
-X-MSMail-priority: Normal
-Return-Path: <gilad@riverhead.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jan 2003 01:36:11 +0000 (GMT)
+Received: from p508B6BF1.dip.t-dialin.net ([IPv6:::ffff:80.139.107.241]:15840
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8226079AbTAIBgK>; Thu, 9 Jan 2003 01:36:10 +0000
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id h091a1a03540;
+	Thu, 9 Jan 2003 02:36:01 +0100
+Date: Thu, 9 Jan 2003 02:36:01 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Mike Uhler <uhler@mips.com>, Dominic Sweetman <dom@mips.com>,
+	linux-mips@linux-mips.org
+Subject: Re: [patch] Use XKPHYS for 64-bit TLB flushes
+Message-ID: <20030109023601.A1213@linux-mips.org>
+References: <20030108204408.A27888@linux-mips.org> <Pine.GSO.3.96.1030108210002.11293A-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <Pine.GSO.3.96.1030108210002.11293A-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Wed, Jan 08, 2003 at 09:12:03PM +0100
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1103
+X-archive-position: 1104
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gilad@riverhead.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-I tried using ksymoops to analyze an oops on my 64 bit SMP mips kernel.
-I am running ksymoops on x86 platform.
+On Wed, Jan 08, 2003 at 09:12:03PM +0100, Maciej W. Rozycki wrote:
 
-Initially I got a lot of garbage.
-Upgrdaing to ksymoops 2.4.5 , and using the --truncate=1 and 
--t elf32-little reduced 
-the amount of garbage, but still all the output shown
-was "No symbol available".
+>  Well, like it or not, CAMs do not like multiple matches -- up to a
+> physical damage even.  So they should be avoided if possible.  While KSEG0
+> won't match for any real address translation, there is a non-zero
+> probability of executing a tlbp for it as a result of buggy code or
+> execution gone wild (root running crashme?). 
 
-Any additional things I should do ?
+I'm told the TLB Shutdown bit in the R4000 is basically implemented as an
+overcurrent protection.  That is on many chips even a hit on several
+entries won't cause a tlb shutdown until the matches do result in the
+TLB drawing more than a certain current.
 
-TIA
+A tlbp on a KSEG0 address shouldn't happen.  If it's attempted we already
+have worse problems.
+
+  Ralf

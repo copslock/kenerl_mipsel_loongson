@@ -1,67 +1,56 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8OGOT703294
-	for linux-mips-outgoing; Mon, 24 Sep 2001 09:24:29 -0700
-Received: from linpro.no (qmailr@mail.linpro.no [213.203.57.2])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8OGONe03288
-	for <linux-mips@oss.sgi.com>; Mon, 24 Sep 2001 09:24:23 -0700
-Received: (qmail 13296 invoked from network); 24 Sep 2001 16:24:17 -0000
-Received: from false.linpro.no (213.203.57.201)
-  by mail.linpro.no with SMTP; 24 Sep 2001 16:24:17 -0000
-Received: from toffer by false.linpro.no with local (Exim 3.22 #1 (Debian))
-	id 15lYWn-0005Xv-00; Mon, 24 Sep 2001 18:24:17 +0200
-To: Raoul Borenius <borenius@shuttle.de>
-Cc: debian-mips@lists.debian.org, linux-mips@oss.sgi.com
-Subject: Re: Need an account on a Linux/Mips box
-References: <1f05gge.7bt3xkxllentM@[10.0.12.137]>
-	<vzay9n46373.fsf@false.linpro.no>
-	<20010924173723.A2203@bunny.shuttle.de>
-From: Kristoffer Gleditsch <kristoffer@linpro.no>
-Organization: Linpro AS, Oslo, Norway
-Date: Mon, 24 Sep 2001 18:24:17 +0200
-Message-ID: <vzawv2o4kwe.fsf@false.linpro.no>
-User-Agent: Gnus/5.090004 (Oort Gnus v0.04) Emacs/20.7
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+	by oss.sgi.com (8.11.2/8.11.3) id f8P0jvu05728
+	for linux-mips-outgoing; Mon, 24 Sep 2001 17:45:57 -0700
+Received: from mail.ict.ac.cn ([159.226.39.4])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8P0jRD05260
+	for <linux-mips@oss.sgi.com>; Mon, 24 Sep 2001 17:45:27 -0700
+Message-Id: <200109250045.f8P0jRD05260@oss.sgi.com>
+Received: (qmail 18902 invoked from network); 25 Sep 2001 00:39:41 -0000
+Received: from unknown (HELO heart1) (159.226.39.162)
+  by 159.226.39.4 with SMTP; 25 Sep 2001 00:39:41 -0000
+Date: Tue, 25 Sep 2001 8:42:29 +0800
+From: Zhang Fuxin <fxzhang@ict.ac.cn>
+To: Guido Guenther <agx@debian.org>
+CC: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Re: Re: Need an account on a Linux/Mips box
+X-mailer: FoxMail 3.11 Release [cn]
+Mime-Version: 1.0
+Content-Type: text/plain; charset="GB2312"
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id f8P0jSD05267
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-[ Raoul Borenius ]
+hi,Guido Guenther£¬
+   
 
-> Does it run without any problems?
+ÔÚ 2001-09-24 17:54:00 you wrote£º
+>On Mon, Sep 24, 2001 at 05:37:23PM +0200, Raoul Borenius wrote:
+>> Does it run without any problems? What kernel (with what patches?) are you
+>> running. I'm having troubles running our R4600-Indy:
+>> 
+>> - Perl is seg-faulting (especially when a perl-script is calling another)
+>I'm seeing the same here. The gdb output of these segfaults is rather
+>weird too(gotta look that one up though). Never found time to look
+>deeper into this.
+>> 
+>> I'm using kernel-image-2.4.5 from debian but we've had these problems
+>> all through 2.4.x.
+>Hmm...I'm sure that very early 2.4.x kernels worked quiet well on R4600.
+I am using IDTRC64474 cpu,which is essentially a R4600.And kernel here
+(based on cvs 20010909,2.4.8) works well too(Except for the 8259 problem
+I posted days ago).
+>One way to hunt the problem down, would be to roll back to 2.4.0 and
+>spot the point in cvs where things break.
+>Could it be possible that things fail since glibc uses sysmips?
+Maybe,if i use 2.4.8 kernel and the binarys of hardhat2.0,ls etc segfaults
+while it works well under its 2.4.2hh kernel.
+> -- Guido
+>
+>-- 
+>This kind of limitation can lead administrators to do irrational things,
+>      like install Windows. Clearly a fix was required. (lwn.net)
 
-Apart from sshd (OpenSSH), which started dying from SIGFPE (floating
-point exception, whatever that means :) a few days ago, it's working
-OK.
-
-> What kernel (with what patches?)  are you running. I'm having
-> troubles running our R4600-Indy:
-
-We're running 2.4.5 from CVS (~ 2001-08-08) with the sysmips-patch,
-self compiled with gcc 2.95.4.
-
-(If you're interested, both the kernel and the patch can be found at
-http://www.ping.uio.no/~toffer/linux-mips/.)
-
-> - Perl is seg-faulting (especially when a perl-script is calling
-> another)
-
-Hm.  It's not entirely unusual for dist-upgrades to segfault in
-various pre- and post-installation scripts.  That doesn't happen very
-often, though, and it seems to be the same packages every time
-(e.g. zsh), so I'm not sure whether it is a Perl problem or not.  I'll
-try to take a closer look at it next time it happens.
-
-> - bind9 hangs after a few days
-
-I installed bind9 on the development box now, to see if I can
-reproduce it.
-
-> - occasionally the box just stalls and returns to the bootprom 
-> - sometimes it just dies and we have to power-cycle it
-
-Apart from xdm, which oopses all our Indys, I have seen very few
-crashes like this on the various Indys I use.  They are great X
-terminals.  :)
-
--- 
-Kristoffer.
+Regards
+            Zhang Fuxin
+            fxzhang@ict.ac.cn

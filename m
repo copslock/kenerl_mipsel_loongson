@@ -1,126 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Sep 2003 11:16:22 +0100 (BST)
-Received: from [IPv6:::ffff:202.96.215.33] ([IPv6:::ffff:202.96.215.33]:61455
-	"EHLO tmtms.trident.com.cn") by linux-mips.org with ESMTP
-	id <S8225421AbTIRKQU>; Thu, 18 Sep 2003 11:16:20 +0100
-Received: by TMTMS with Internet Mail Service (5.5.2653.19)
-	id <SK19GYC6>; Thu, 18 Sep 2003 18:12:09 +0800
-Message-ID: <15F9E1AE3207D6119CEA00D0B7DD5F68019BF848@TMTMS>
-From: "Liu Hongming (Alan)" <alanliu@trident.com.cn>
-To: prabhakark@contechsoftware.com,
-	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
-Subject: RE: How disable CONFIG_PCI 
-Date: Thu, 18 Sep 2003 18:12:01 +0800
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Sep 2003 11:18:03 +0100 (BST)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:56517 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225421AbTIRKSB>; Thu, 18 Sep 2003 11:18:01 +0100
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id MAA15981;
+	Thu, 18 Sep 2003 12:17:54 +0200 (MET DST)
+X-Authentication-Warning: delta.ds2.pg.gda.pl: macro owned process doing -bs
+Date: Thu, 18 Sep 2003 12:17:54 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+cc: linux-mips@linux-mips.org
+Subject: Re: mips64 cpu-probe.c compile failure
+In-Reply-To: <20030918.180536.08320519.nemoto@toshiba-tops.co.jp>
+Message-ID: <Pine.GSO.3.96.1030918121138.15508B-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2653.19)
-Content-Type: multipart/alternative;
-	boundary="----_=_NextPart_001_01C37DCD.4D886D20"
-Return-Path: <alanliu@trident.com.cn>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3201
+X-archive-position: 3202
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alanliu@trident.com.cn
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-This message is in MIME format. Since your mail reader does not understand
-this format, some or all of this message may not be legible.
+On Thu, 18 Sep 2003, Atsushi Nemoto wrote:
 
-------_=_NextPart_001_01C37DCD.4D886D20
-Content-Type: text/plain;
-	charset="ISO-8859-1"
+> macro> Log message:
+> macro> 	Fix indeterminism in the multiply/shift erratum detection leading
+> macro> 	to false negatives.  Plus a few minor comment updates for clarity.
+> 
+> gcc 3.3.1 can not compile current (2.4) arch/mips64/kernel/cpu-probe.c.
+> 
+> cpu-probe.c:118: warning: asm operand 0 probably doesn't match constraints
+> cpu-probe.c:118: warning: asm operand 1 probably doesn't match constraints
+> ...
+> cpu-probe.c: In function `check_mult_sh':
+> cpu-probe.c:118: error: impossible constraint in `asm'
 
-Hi,
+ Hmm, perhaps 3.3.1 fails to inline the functions...  It works just fine
+with 2.95.4.
 
-In arch/mips/config.in, find the specific line relating to your CSB250(what
-is it???):
+> The code is:
+> 
+> static inline void align_mod(int align, int mod)
+> {
+> 	asm volatile(
+> 		".set	push\n\t"
+> 		".set	noreorder\n\t"
+> 		".balign %0\n\t"
+> 		".rept	%1\n\t"
+> 		"nop\n\t"
+> 		".endr\n\t"
+> 		".set	pop"
+> 		:
+> 		: "i" (align), "i" (mod));
+> }
+> 
+> The align_mod() and mult_sh_align_mod() should be written as macro?
 
- define_bool CONFIG_PCI y
+ I wanted to avoid that as the resulting code would be ugly.  I guess
+there is no other choice, although I think that's a bug in gcc.
 
-just delete it.
+ Can you quote the exact command line used for building the file?
 
-Alan
-
------Original Message-----
-From: Prabhakar Kalasani [mailto:prabhakark@contechsoftware.com]
-Sent: Thursday, September 18, 2003 11:47 PM
-To: 'linux-mips@linux-mips.org'
-Subject: How disable CONFIG_PCI 
-
-
-Hi all,
-I'm compiling Linux-2.4.21 kernel for CSB250 board downloaded from
-mips-linux,
-I've configured CONFIG_PCI n , but when i go for xconfig, the value to
-CONFIG_PCI y
-where it's getting over write ? 
-Because of CONFIG_PCI y, I'm unable to get my Framebuffer device active
-How to solve this problem...
-
-Thanks in advence
-Prabhakar Kalasani
-
-
-------_=_NextPart_001_01C37DCD.4D886D20
-Content-Type: text/html;
-	charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
-<HTML>
-<HEAD>
-<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
-charset=3DISO-8859-1">
-<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
-5.5.2653.12">
-<TITLE>RE: How disable CONFIG_PCI </TITLE>
-</HEAD>
-<BODY>
-
-<P><FONT SIZE=3D2>Hi,</FONT>
-</P>
-
-<P><FONT SIZE=3D2>In arch/mips/config.in, find the specific line =
-relating to your CSB250(what is it???):</FONT>
-</P>
-
-<P><FONT SIZE=3D2>&nbsp;define_bool CONFIG_PCI y</FONT>
-</P>
-
-<P><FONT SIZE=3D2>just delete it.</FONT>
-</P>
-
-<P><FONT SIZE=3D2>Alan</FONT>
-</P>
-
-<P><FONT SIZE=3D2>-----Original Message-----</FONT>
-<BR><FONT SIZE=3D2>From: Prabhakar Kalasani [<A =
-HREF=3D"mailto:prabhakark@contechsoftware.com">mailto:prabhakark@contech=
-software.com</A>]</FONT>
-<BR><FONT SIZE=3D2>Sent: Thursday, September 18, 2003 11:47 PM</FONT>
-<BR><FONT SIZE=3D2>To: 'linux-mips@linux-mips.org'</FONT>
-<BR><FONT SIZE=3D2>Subject: How disable CONFIG_PCI </FONT>
-</P>
-<BR>
-
-<P><FONT SIZE=3D2>Hi all,</FONT>
-<BR><FONT SIZE=3D2>I'm compiling Linux-2.4.21 kernel for CSB250 board =
-downloaded from mips-linux,</FONT>
-<BR><FONT SIZE=3D2>I've configured CONFIG_PCI n , but when i go for =
-xconfig, the value to CONFIG_PCI y</FONT>
-<BR><FONT SIZE=3D2>where it's getting over write ? </FONT>
-<BR><FONT SIZE=3D2>Because of CONFIG_PCI y, I'm unable to get my =
-Framebuffer device active</FONT>
-<BR><FONT SIZE=3D2>How to solve this problem...</FONT>
-</P>
-
-<P><FONT SIZE=3D2>Thanks in advence</FONT>
-<BR><FONT SIZE=3D2>Prabhakar Kalasani</FONT>
-</P>
-
-</BODY>
-</HTML>
-------_=_NextPart_001_01C37DCD.4D886D20--
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

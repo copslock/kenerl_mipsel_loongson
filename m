@@ -1,44 +1,41 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id PAA1343284 for <linux-archive@neteng.engr.sgi.com>; Fri, 5 Sep 1997 15:33:37 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id PAA1344239 for <linux-archive@neteng.engr.sgi.com>; Fri, 5 Sep 1997 15:52:42 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA00467 for linux-list; Fri, 5 Sep 1997 15:31:29 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA00393 for <linux@cthulhu.engr.sgi.com>; Fri, 5 Sep 1997 15:31:16 -0700
-Received: from gatekeeper.qms.com (gatekeeper.qms.com [161.33.3.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via SMTP id PAA03312
-	for <linux@cthulhu.engr.sgi.com>; Fri, 5 Sep 1997 15:31:09 -0700
-	env-from (marks@sun470.sun470.rd.qms.com)
-Received: from sun470.rd.qms.com (sun470.qms.com) by gatekeeper.qms.com (4.1/SMI-4.1)
-	id AA28446; Fri, 5 Sep 97 17:31:02 CDT
-Received: from speedy.rd.qms.com by sun470.rd.qms.com (4.1/SMI-4.1)
-	id AA00261; Fri, 5 Sep 97 17:31:00 CDT
-Received: by speedy.rd.qms.com (8.8.2) id RAA21201; Fri, 5 Sep 1997 17:30:59 -0500
-Date: Fri, 5 Sep 1997 17:30:59 -0500
-Message-Id: <199709052230.RAA21201@speedy.rd.qms.com>
-From: Mark Salter <marks@sun470.sun470.rd.qms.com>
-To: shaver@neon.ingenia.ca
-Cc: linux@cthulhu.engr.sgi.com
-In-Reply-To: <199709050458.AAA16971@neon.ingenia.ca> (message from Mike Shaver
-	on Fri, 5 Sep 1997 00:58:04 -0400 (EDT))
-Subject: Re: Kernel for local disk stuff
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA10093 for linux-list; Fri, 5 Sep 1997 15:51:03 -0700
+Received: from fir.engr.sgi.com (fir.engr.sgi.com [150.166.49.183]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA10081 for <linux@cthulhu.engr.sgi.com>; Fri, 5 Sep 1997 15:51:01 -0700
+Received: (from wje@localhost) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id PAA20078; Fri, 5 Sep 1997 15:51:00 -0700
+Date: Fri, 5 Sep 1997 15:51:00 -0700
+Message-Id: <199709052251.PAA20078@fir.engr.sgi.com>
+From: "William J. Earl" <wje@fir.engr.sgi.com>
+To: Miguel de Icaza <miguel@nuclecu.unam.mx>
+Cc: linux@fir.engr.sgi.com
+Subject: Re: [Q: Linux/SGI] IRIX executable memory map.
+In-Reply-To: <199709050245.VAA03103@athena.nuclecu.unam.mx>
+References: <199709050245.VAA03103@athena.nuclecu.unam.mx>
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+Miguel de Icaza writes:
+ > 
+ > Hello guys,
+ > 
+ >     Ok, it seems our irix_elfmap routine is just fine, I just found
+ > out with a simple test case that the code is trying to access memory
+ > from the location at 0x200000 which is making my IRIX executables
+ > crash (this one is crashing inside usinit ()).
+ > 
+ >     Is there something magic about 0x20000 on IRIX that I should be
+ > aware of? 
 
-Mike Shaver said:
-> because heavy ethernet traffic occasionally generates bus errors that
-> lock up the box.  I'm going to take a look at what causes those
-> tomorrow, hopefully.
+     0x20000 (not 0x200000) is automatically mapped in a process
+by the kernel when referenced.  See <sys/prctl.h> on IRIX for
+the definitions.  Most of the fields you can probably ignore,
+but you should set t_pid, t_rpid, and t_prid (where the latter is the value
+of the $prid COP0 register).  Set t_pid and t_rpid to the pid of the process.
+(They cannot really be different in IRIX.)
 
-These finally annoyed me to the point I started looking at it today. I
-was able to hack the buserr irq handler to set up a gdb frame so that
-gdb gets control at the instruction that was interrupted. The problem
-appears to be in sgiseeq.c which is no great surprise since it occurs
-during times of heavy network traffic. The bus error irqs always occur
-when interrupts are reenabled in the ret_from_sys_call after a sgiseeq
-irq. The hpc_ethregs tx_ctrl value is 0x1 indicating that transmit was
-inactive, but there was an underflow. The tx_ndptr value is 0xffffffff.
-The latter I think leads to the bus error. Look at kick_tx() being
-called from sgiseeq_tx() during the handling of the interrupt. With
-that value of tx_ndptr, kick_tx would end up writing to 0xbffffff0
-which is not we want to do. I don't have the HPC docs, so I'm probably
-not going to be able to come up with a proper fix...
+     The library is fetching the PID from t_pid instead of calling getpid()
+for performance reasons.
 
---Mark
+     Simply automatically create the page in the page fault handler
+when it is first referenced.  Treat as if it were an mmap() of /dev/zero
+for 1 page.

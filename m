@@ -1,40 +1,40 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id AAA06917 for <linux-archive@neteng.engr.sgi.com>; Fri, 17 Jul 1998 00:17:01 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id AAA12721 for <linux-archive@neteng.engr.sgi.com>; Fri, 17 Jul 1998 00:51:09 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id AAA34128
+	id AAA16464
 	for linux-list;
-	Fri, 17 Jul 1998 00:16:22 -0700 (PDT)
+	Fri, 17 Jul 1998 00:50:39 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id AAA47202
+	via ESMTP id AAA24239
 	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 17 Jul 1998 00:16:20 -0700 (PDT)
+	Fri, 17 Jul 1998 00:50:35 -0700 (PDT)
 	mail_from (adelton@informatics.muni.cz)
 Received: from aragorn.ics.muni.cz (aragorn.ics.muni.cz [147.251.4.33]) 
 	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id AAA28417
-	for <linux@cthulhu.engr.sgi.com>; Fri, 17 Jul 1998 00:16:18 -0700 (PDT)
+	via ESMTP id AAA04779
+	for <linux@cthulhu.engr.sgi.com>; Fri, 17 Jul 1998 00:50:33 -0700 (PDT)
 	mail_from (adelton@informatics.muni.cz)
 Received: from anxur.fi.muni.cz (0@anxur.fi.muni.cz [147.251.48.3])
-	by aragorn.ics.muni.cz (8.8.5/8.8.5) with ESMTP id JAA28953;
-	Fri, 17 Jul 1998 09:16:11 +0200 (MET DST)
+	by aragorn.ics.muni.cz (8.8.5/8.8.5) with ESMTP id JAA00410;
+	Fri, 17 Jul 1998 09:50:26 +0200 (MET DST)
 Received: from aisa.fi.muni.cz (11635@aisa [147.251.48.1])
-	by anxur.fi.muni.cz (8.8.5/8.8.5) with ESMTP id JAA03803;
-	Fri, 17 Jul 1998 09:16:09 +0200 (MET DST)
+	by anxur.fi.muni.cz (8.8.5/8.8.5) with ESMTP id JAA04921;
+	Fri, 17 Jul 1998 09:50:24 +0200 (MET DST)
 Received: (from adelton@localhost)
-	by aisa.fi.muni.cz (8.8.5/8.8.5) id JAA24626;
-	Fri, 17 Jul 1998 09:16:10 +0200 (MET DST)
-Message-Id: <199807170716.JAA24626@aisa.fi.muni.cz>
-Subject: Re: Installing noarch packages
-In-Reply-To: <Pine.LNX.3.95.980716140918.6127E-100000@lager.engsoc.carleton.ca> from Alex deVries at "Jul 16, 98 02:10:59 pm"
+	by aisa.fi.muni.cz (8.8.5/8.8.5) id JAA25556;
+	Fri, 17 Jul 1998 09:50:24 +0200 (MET DST)
+Message-Id: <199807170750.JAA25556@aisa.fi.muni.cz>
+Subject: Re: Message while mounting NFS
+In-Reply-To: <Pine.LNX.3.95.980717012619.5792C-100000@lager.engsoc.carleton.ca> from Alex deVries at "Jul 17, 98 01:28:19 am"
 To: adevries@engsoc.carleton.ca (Alex deVries)
-Date: Fri, 17 Jul 1998 09:16:10 +0200 (MET DST)
-Cc: adelton@informatics.muni.cz, linux@cthulhu.engr.sgi.com
+Date: Fri, 17 Jul 1998 09:50:24 +0200 (MET DST)
+Cc: dliu@npiww.com, adelton@informatics.muni.cz, linux@cthulhu.engr.sgi.com
 From: Honza Pazdziora <adelton@informatics.muni.cz>
 Phone: 420 (5) 415 12345
 X-Mailer: ELM [version 2.4ME+ PL39 (25)]
@@ -45,15 +45,15 @@ Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
 > 
-> there's a problem with /usr/lib/rpmrc then.  It should have a line like:
-> arch_compat: mipseb: noarch
+> On Thu, 16 Jul 1998, Dong Liu wrote:
+> > I think this is a bug of red hat system (BTW, where I can send them this bug
+> > report?), portmapper is started after nfsfs, it should be started before
+> > nfsfs.
+> 
+> Does starting portmapper before nfsfs actually work for you?  I still had
 
-This was there already.
-
-> If that doesn't work, try adding:
-> arch_compat: mips: noarch
-
-This fixed the problem. Thanks,
+Thanks to all. Yes, installing portmap-4.0-11.mipseb.rpm and moving
+S40portmap do S14portmap fixes the problem.
 
 ------------------------------------------------------------------------
  Honza Pazdziora | adelton@fi.muni.cz | http://www.fi.muni.cz/~adelton/

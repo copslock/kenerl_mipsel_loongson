@@ -1,58 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Jul 2004 23:35:50 +0100 (BST)
-Received: from 209-232-97-206.ded.pacbell.net ([IPv6:::ffff:209.232.97.206]:64985
-	"EHLO dns0.mips.com") by linux-mips.org with ESMTP
-	id <S8225763AbUGLWfq>; Mon, 12 Jul 2004 23:35:46 +0100
-Received: from mercury.mips.com (sbcns-dmz [209.232.97.193])
-	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id i6CMS4pN028506;
-	Mon, 12 Jul 2004 15:28:04 -0700 (PDT)
-Received: from Ulysses (ulysses [192.168.236.13])
-	by mercury.mips.com (8.12.11/8.12.11) with SMTP id i6CMS316007379;
-	Mon, 12 Jul 2004 15:28:03 -0700 (PDT)
-Message-ID: <021201c4685f$2925ee30$0deca8c0@Ulysses>
-From: "Kevin D. Kissell" <KevinK@mips.com>
-To: "Kevin D. Kissell" <KevinK@mips.com>,
-	"S C" <theansweriz42@hotmail.com>,
-	"Ralf Baechle" <ralf@linux-mips.org>
-Cc: <linux-mips@linux-mips.org>
-References: <BAY2-F27mxl2RtYP35u0000d191@hotmail.com> <020201c46859$fa6b98b0$0deca8c0@Ulysses>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jul 2004 00:00:55 +0100 (BST)
+Received: from p508B5DDF.dip.t-dialin.net ([IPv6:::ffff:80.139.93.223]:43093
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225763AbUGLXAv>; Tue, 13 Jul 2004 00:00:51 +0100
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i6CN0lm5013743;
+	Tue, 13 Jul 2004 01:00:47 +0200
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i6CN0kno013734;
+	Tue, 13 Jul 2004 01:00:46 +0200
+Date: Tue, 13 Jul 2004 01:00:46 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: S C <theansweriz42@hotmail.com>
+Cc: linux-mips@linux-mips.org
 Subject: Re: Strange, strange occurence
-Date: Tue, 13 Jul 2004 00:25:37 +0200
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4927.1200
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4927.1200
-X-Scanned-By: MIMEDefang 2.39
-Return-Path: <KevinK@mips.com>
+Message-ID: <20040712230046.GA6176@linux-mips.org>
+References: <BAY2-F27mxl2RtYP35u0000d191@hotmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <BAY2-F27mxl2RtYP35u0000d191@hotmail.com>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5449
+X-archive-position: 5450
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: KevinK@mips.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-> Your intuition is correct, and the code in r4k_tlb_init() does look scary.
-> But at least in the linux-mips CVS tree, flush_icache_range() tests to see
-> if "cpu_has_ic_fills_f_dc" (CPU has Icache fills from Dcache, I presume)
-> is set, and if it isn't, it pushes the specified range out of the Dcache before
-> flushing the Icache.  I would speculate that either your c-r4k.c is out of
-> sync with yout tlb-r4k.c, or you erroneously have cpu_has_ic_fills_f_dc
-> set.
+On Mon, Jul 12, 2004 at 09:23:20PM +0000, S C wrote:
 
-Hmm.  On closer examination, there *is* a bug in the current r4k_flush_icache_range(),
-in that it computes its cache flush loop for the I-cache based on the D-cache line size.
-Those line sizes are *usually* the same.  By any chance are they different for the
-TX49 family?  If the icache line is longer than the dcache line, there should be no
-functional problem, just some wasted cycles.  But if the dcache line were, say, 
-twice the length of the Icache line, only half of the icache lines would be invalidated...
+> And thinking about it a little more, I might as well clarfy my 
+> understanding while we're on the topic.
+> 
+> Here's a code snippet from r4k_tlb_init() in arch/mips/mm/c-r4k.c
+> 
+> memcpy((void *)KSEG0, &except_vec0_r4000, 0x80);
+> flush_icache_range(KSEG0, KSEG0 + 0x80);
+> 
+> So my understanding is that the TLB exception handler is being copied to 
+> the right memory location, and just in case some other TLB exception 
+> handler (YAMON's presumably) is residing in I-cache, to flush ( hit 
+> invalidate) it. Is this correct?
+> 
+> Shouldn't there be code to writeback_invalidate the exception handler from 
+> the data cache ?
 
-            Regards,
+flush_icache_range() does that where necessary.
 
-            Kevin K.
+> Presumably the memcpy causes the TLB handler to lodge 
+> itself in the D cache till it is moved to RAM
+
+Correct.  All MIPS processors [1] do their primary I-cache refills from
+second or third level cache or memory - whatever hits first.  If code
+was changed a flush of the data cache is required so the I-cache can
+actually fetch the new data and because old stale code might still be
+in the I-cache an I-cache flush is also required.
+
+> (either explicitly or when 
+> some other lines replace the cache lines where the handler is), right?
+> 
+> Thanks in advance for helping me understand the issue here.
+
+  Ralf
+
+[1] Exceptions are the R4000/R4400 SC and MC versions in a split S-cache
+    configuration where the primary I-cache is refilled from the secondary
+    I-cache which mean this flush has to flush the secondary data cache
+    back to memory also.  Linux doesn't support this configuration because
+    no known system uses it iow it's only a theoretically possible config.
+
+    The second exception are the AMD MIPS32 processors where the I-cache
+    is snooping the D-cache and therefore the D-cache flush can is
+    unnecessary.
+
+    The third exception are R1x000 in SMP configurations where I-caches
+    snoop remote stores so coherency doesn't need any maintenance in
+    software at all.  Only the I-cache of the CPU that did modify the code
+    needs flushing.

@@ -1,52 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Jan 2003 12:55:00 +0000 (GMT)
-Received: from p508B65B9.dip.t-dialin.net ([IPv6:::ffff:80.139.101.185]:59295
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225349AbTA1My7>; Tue, 28 Jan 2003 12:54:59 +0000
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id h0SCsrW32369;
-	Tue, 28 Jan 2003 13:54:53 +0100
-Date: Tue, 28 Jan 2003 13:54:53 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
-	Mike Uhler <uhler@mips.com>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: unaligned load in branch delay slot
-Message-ID: <20030128135453.B27977@linux-mips.org>
-References: <20030128124750.A25956@linux-mips.org> <Pine.GSO.3.96.1030128130651.22934A-100000@delta.ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Jan 2003 17:37:48 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:22771 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225196AbTA1Rhr>;
+	Tue, 28 Jan 2003 17:37:47 +0000
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.11.6/8.11.6) id h0SHbhO26719;
+	Tue, 28 Jan 2003 09:37:43 -0800
+Date: Tue, 28 Jan 2003 09:37:42 -0800
+From: Jun Sun <jsun@mvista.com>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org, jsun@mvista.com
+Subject: Re: when does do_fpe() get called? (or when does FPE happen?)
+Message-ID: <20030128093742.V11633@mvista.com>
+References: <20030127190423.U11633@mvista.com> <20030128043744.A24686@linux-mips.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <Pine.GSO.3.96.1030128130651.22934A-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Tue, Jan 28, 2003 at 01:30:03PM +0100
-Return-Path: <ralf@linux-mips.org>
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20030128043744.A24686@linux-mips.org>; from ralf@linux-mips.org on Tue, Jan 28, 2003 at 04:37:44AM +0100
+Return-Path: <jsun@orion.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1253
+X-archive-position: 1254
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Jan 28, 2003 at 01:30:03PM +0100, Maciej W. Rozycki wrote:
+On Tue, Jan 28, 2003 at 04:37:44AM +0100, Ralf Baechle wrote:
+> On Mon, Jan 27, 2003 at 07:04:23PM -0800, Jun Sun wrote:
+> 
+> > Can someone enlighten me a little?  I am trying
+> > to figure out what the FPU state should be (or can be) when
+> > we are inside do_fpe() routine.
+> 
+> Checkout the various flags in $fcr31.  Whenever one of the enabled
+> exceptions is triggered we get to handle_fpe via do_fpe.  In addition
+> the unimplemented exception can also result in invocation of do_fpe.
+>
 
->  Actually I have a datasheet for the Vr4121 (which is a Vr4120 plus some
-> glue logic for specific peripherals) and it explicitly states whenever
-> cp0.EPC points to a preceding branch/jump of a faulting instruction, the
-> cp0.Cause.BD bit is set.  Maybe there is an errata sheet available.
+So it seems safe to assume FPU should have been enabled when we get
+here, right?
 
-Honestly I'd not expect this to be documented in a NEC manual - they
-basically look like the description of the processor core is the same for
-basically all the Vr4xxx processors and SOCs.
-
->  Additionally the processor is "nice" enough to implement the MIPS III ISA
-> (with the MIPS16 extension) except ll/sc, lld/scd, sigh...  So the
-> emulation would need to be ported to the 64-bit kernel if we were to
-> support this processor in the 64-bit mode. 
-
-Maximum agreement on the "sigh" part ...
-
-  Ralf
+Jun

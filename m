@@ -1,62 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Jan 2004 08:42:54 +0000 (GMT)
-Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:9235 "EHLO
-	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8225254AbUAVImy>;
-	Thu, 22 Jan 2004 08:42:54 +0000
-Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
-	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
-	id 1AjaLY-0002eC-00; Thu, 22 Jan 2004 08:37:52 +0000
-Received: from olympia.mips.com ([192.168.192.128] helo=doms-laptop.algor.co.uk)
-	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
-	id 1AjaQ9-0004Oi-00; Thu, 22 Jan 2004 08:42:38 +0000
-From: Dominic Sweetman <dom@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Jan 2004 09:16:26 +0000 (GMT)
+Received: from web8206.mail.in.yahoo.com ([IPv6:::ffff:203.199.70.75]:54314
+	"HELO web8206.mail.in.yahoo.com") by linux-mips.org with SMTP
+	id <S8225254AbUAVJQZ>; Thu, 22 Jan 2004 09:16:25 +0000
+Message-ID: <20040122091618.91012.qmail@web8206.mail.in.yahoo.com>
+Received: from [202.41.227.188] by web8206.mail.in.yahoo.com via HTTP; Thu, 22 Jan 2004 09:16:18 GMT
+Date: Thu, 22 Jan 2004 09:16:18 +0000 (GMT)
+From: =?iso-8859-1?q?Arravind=20babu?= <aravindforl@yahoo.co.in>
+Subject: Doubt on gdbserver
+To: linux-mips@linux-mips.org
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-ID: <16399.36167.575161.386963@doms-laptop.algor.co.uk>
-Date: Thu, 22 Jan 2004 08:43:51 +0000
-To: =?iso-8859-1?q?karthikeyan=20natarajan?= <karthik_96cse@yahoo.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: Doubt in timer interrupt
-In-Reply-To: <20040122072407.11156.qmail@web10102.mail.yahoo.com>
-References: <20040122072407.11156.qmail@web10102.mail.yahoo.com>
-X-Mailer: VM 7.07 under 21.4 (patch 10) "Military Intelligence (RC5 Windows)" XEmacs Lucid
-X-MTUK-Scanner: Found to be clean
-X-MTUK-SpamCheck: not spam, SpamAssassin (score=-4.838, required 4, AWL,
-	BAYES_00)
-Return-Path: <dom@mips.com>
+Content-Type: multipart/alternative; boundary="0-203697124-1074762978=:88192"
+Content-Transfer-Encoding: 8bit
+Return-Path: <aravindforl@yahoo.co.in>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4098
+X-archive-position: 4099
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dom@mips.com
+X-original-sender: aravindforl@yahoo.co.in
 Precedence: bulk
 X-list: linux-mips
 
+--0-203697124-1074762978=:88192
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 
-Karthi,
+Hi all,
+ 
+   I am new to this mailing list.I have one doubt related to gdbserver.I want to debug applications remotely using gdb server.My host is normal intel processsor and my target is mips core.So to debug applications on mips i am planning to implement gdbserver on the target.How to do that one?Is there any document related to this?
+ 
+Thanks in advance,
+Aravind.
+ 
+ 
 
->   In R4000 & descendent processors, interrupt number 7
-> is being used for internal timer interrupt. From this
-> i understand that the timer interrupt is also maskable
-> when the IE bit in status register is cleared. If 
-> somebody mask this interrupt for a long time 
-> erroneously, then won't there be a problem in 
-> maintaining the system time?
+Yahoo! India Mobile: Ringtones, Wallpapers, Picture Messages and more.Download now.
+--0-203697124-1074762978=:88192
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 
-Yes, there may be a long delay.  So the standard way of using the
-onchip counter to generate a periodic interrupt is that the counter
-itself is allowed to free-run, keeping accurate time.
-
-The 'Compare' register is then incremented by a fixed amount.
-
-So long as the interrupt is not delayed by a whole tick, this keeps
-perfect time.
-
-I'm sure this is described in "See MIPS Run" - do you have a copy?
-
---
-Dominic Sweetman
-MIPS Technologies Inc
+<DIV>Hi all,</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>&nbsp;&nbsp; I am new to this mailing list.I have one doubt related to gdbserver.I want to debug applications remotely using gdb server.My host is normal intel processsor and my target is mips core.So to debug applications on mips i am planning to implement gdbserver on the target.How to do that one?Is there any document related to this?</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>Thanks in advance,</DIV>
+<DIV>Aravind.</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>&nbsp;</DIV><p><font face=arial size=-1>
+<a href="http://in.mobile.yahoo.com" target="_blank"><b>Yahoo! India Mobile</a>:</b> Ringtones, Wallpapers, Picture Messages and more.
+<font face=arial size=-1>Download <a href="http://in.mobile.yahoo.com" target="_blank"><b>now</a></b>.</font>
+--0-203697124-1074762978=:88192--

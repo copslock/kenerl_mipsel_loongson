@@ -1,40 +1,40 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id IAA59110 for <linux-archive@neteng.engr.sgi.com>; Wed, 1 Jul 1998 08:55:59 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id TAA38930 for <linux-archive@neteng.engr.sgi.com>; Wed, 1 Jul 1998 19:13:00 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id IAA31184
+	id TAA30685
 	for linux-list;
-	Wed, 1 Jul 1998 08:54:49 -0700 (PDT)
+	Wed, 1 Jul 1998 19:12:21 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id IAA08209
+	via ESMTP id TAA13963
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 1 Jul 1998 08:54:47 -0700 (PDT)
-	mail_from (ralf@mailhost.uni-koblenz.de)
+	Wed, 1 Jul 1998 19:12:20 -0700 (PDT)
+	mail_from (ralf@uni-koblenz.de)
 Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) 
 	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id IAA09706
-	for <linux@cthulhu.engr.sgi.com>; Wed, 1 Jul 1998 08:54:42 -0700 (PDT)
-	mail_from (ralf@mailhost.uni-koblenz.de)
-Received: from thoma (ralf@thoma.uni-koblenz.de [141.26.4.61])
-	by informatik.uni-koblenz.de (8.8.8/8.8.8) with SMTP id RAA23520;
-	Wed, 1 Jul 1998 17:54:29 +0200 (MEST)
-Received: by thoma (SMI-8.6/KO-2.0)
-	id RAA15362; Wed, 1 Jul 1998 17:54:26 +0200
-Message-ID: <19980701175425.34606@uni-koblenz.de>
-Date: Wed, 1 Jul 1998 17:54:25 +0200
+	via ESMTP id TAA07870
+	for <linux@cthulhu.engr.sgi.com>; Wed, 1 Jul 1998 19:12:15 -0700 (PDT)
+	mail_from (ralf@uni-koblenz.de)
 From: ralf@uni-koblenz.de
-To: Mike Shaver <shaver@netscape.com>
-Cc: linux@cthulhu.engr.sgi.com
+Received: from uni-koblenz.de (ralf@pmport-19.uni-koblenz.de [141.26.249.19])
+	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id EAA01949
+	for <linux@cthulhu.engr.sgi.com>; Thu, 2 Jul 1998 04:11:48 +0200 (MEST)
+Received: (from ralf@localhost)
+	by uni-koblenz.de (8.8.7/8.8.7) id EAA07418;
+	Thu, 2 Jul 1998 04:11:39 +0200
+Message-ID: <19980702041137.I3255@uni-koblenz.de>
+Date: Thu, 2 Jul 1998 04:11:37 +0200
+To: Mike Shaver <shaver@netscape.com>, linux@cthulhu.engr.sgi.com
 Subject: Re: mozilla on the Indy
 References: <359A447B.2D25377D@netscape.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.84e
+X-Mailer: Mutt 0.91.1
 In-Reply-To: <359A447B.2D25377D@netscape.com>; from Mike Shaver on Wed, Jul 01, 1998 at 10:15:23AM -0400
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
@@ -51,7 +51,10 @@ On Wed, Jul 01, 1998 at 10:15:23AM -0400, Mike Shaver wrote:
 > attached, and are the likely source of my problems.  Since the final
 > mostly-static link takes about 40 minutes, experimentation is expensive.
 
-Threads are broken, the attempt to create one will crash the process.
-On the to do list of things to be finished for Alex tomorrow.
+Now that I've taken myself two minutes to browse your attached sources -
+the patches to the NSPR thread routines look suspicious.  The are
+playing games with the frame pointer which at least on the first look
+don't make sense as gcc automatically enables -fomit-frame-pointer when
+optimizing.
 
-  ralf
+  Ralf

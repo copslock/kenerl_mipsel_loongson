@@ -1,55 +1,51 @@
-Received:  by oss.sgi.com id <S553859AbQJ3OWx>;
-	Mon, 30 Oct 2000 06:22:53 -0800
-Received: from noose.gt.owl.de ([62.52.19.4]:50445 "HELO noose.gt.owl.de")
-	by oss.sgi.com with SMTP id <S553795AbQJ3OWl>;
-	Mon, 30 Oct 2000 06:22:41 -0800
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 03F4FA21; Mon, 30 Oct 2000 15:22:39 +0100 (CET)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id A6BD9900C; Mon, 30 Oct 2000 15:21:29 +0100 (CET)
-Date:   Mon, 30 Oct 2000 15:21:29 +0100
-From:   Florian Lohoff <flo@rfc822.org>
-To:     Nicu Popovici <octavp@isratech.ro>
+Received:  by oss.sgi.com id <S553861AbQJ3PJe>;
+	Mon, 30 Oct 2000 07:09:34 -0800
+Received: from rotor.chem.unr.edu ([134.197.32.176]:8978 "EHLO
+        rotor.chem.unr.edu") by oss.sgi.com with ESMTP id <S553842AbQJ3PJN>;
+	Mon, 30 Oct 2000 07:09:13 -0800
+Received: (from wesolows@localhost)
+	by rotor.chem.unr.edu (8.9.3/8.9.3) id HAA06669;
+	Mon, 30 Oct 2000 07:08:46 -0800
+Date:   Mon, 30 Oct 2000 07:08:46 -0800
+From:   Keith M Wesolowski <wesolows@chem.unr.edu>
+To:     ian@ichilton.co.uk
 Cc:     linux-mips@oss.sgi.com
-Subject: Re: Still cannot compile the KERNEL!!!
-Message-ID: <20001030152129.D2687@paradigm.rfc822.org>
-References: <39FDAE22.7626E6E@isratech.ro>
+Subject: Re: GCC Problem
+Message-ID: <20001030070846.A6450@chem.unr.edu>
+References: <20001030115010.A18728@woody.ichilton.co.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-User-Agent: Mutt/1.0.1i
-In-Reply-To: <39FDAE22.7626E6E@isratech.ro>; from octavp@isratech.ro on Mon, Oct 30, 2000 at 12:21:38PM -0500
-Organization: rfc822 - pure communication
+Content-Disposition: inline
+User-Agent: Mutt/1.2i
+In-Reply-To: <20001030115010.A18728@woody.ichilton.co.uk>; from mailinglist@ichilton.co.uk on Mon, Oct 30, 2000 at 11:50:10AM +0000
+X-Complaints-To: postmaster@chem.unr.edu
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Mon, Oct 30, 2000 at 12:21:38PM -0500, Nicu Popovici wrote:
-> Hello you all,
-> 
-> I have a problem. I've built a crosscompiler for MIPS on my intel
-> machine but until now I could not compile any mips kernel. I tried with
-> version from CVS site  and now I an trying with
-> linux-2.2.12.mips-src.01.04.tar.gz and I an running into errors from the
-> beggining.( are in the attached file )
-> 
-> I still succeded to compile a test.c file on my intel machine with my
-> crosscompiler and then to run the resulted file on the mips machine and
-> it worked.
-> When I tried with the g++ and with the test.cpp ( a simple class ) the
-> crosscompiler made a file but when I executed on the mips machine it
-> says
-> a.out error in loading shared libraries
-> undefined simbol : _deregister_frame_info
+On Mon, Oct 30, 2000 at 11:50:10AM +0000, Ian Chilton wrote:
 
-I guess you have a broken 2.07 glibc for mips lying around - Try to eliminate
-that and use the 2.06 made by ralf or start with glibc 2.2
-(For experienced users)
+> I had a problem compiling egcs 1.0.3a nativly. I had it a few weeks
+> ago, and fixed it, and it worked. Now, I am having exactly the same
+> problem again, and I can't seem to fix it...annoying..
 
-BTW: For compiling a kernel you dont need and glibc on the cross devel machine
-at all.
+> /lfstmp/egcs-1.0.3a/gcc-build/gcc/xgcc
+> -B/lfstmp/egcs-1.0.3a/gcc-build/gcc/ -g -O2 -fno-implicit-templates
+> -EL -Wl,-soname,libstdc++.so.`echo 2.8.0 | sed
+> 's/\([0-9][.][0-9]\).*/\1/'` -shared -o libstdc++.so.2.8.0 `cat
+> piclist` -lm /usr/lib/libm.so: could not read symbols: Invalid
+> operation collect2: ld returned 1 exit status make[4]: ***
+> [libstdc++.so.2.8.0] Error 1
 
-Flo
+I used to get this too; I think it's simply a bug in old egcs. It
+tries to multilib libstdc++, which is usually impossible, since you
+would need to have both big and little endian libm.so in the same
+place. Since you don't need little-endian (or big-endian, if building
+mipsel) libstdc++ anyway, and the big endian one has already been
+built, the error is ignorable.
+
 -- 
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-     Why is it called "common sense" when nobody seems to have any?
+Keith M Wesolowski			wesolows@chem.unr.edu
+University of Nevada			http://www.chem.unr.edu
+Chemistry Department Systems and Network Administrator

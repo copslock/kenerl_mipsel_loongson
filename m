@@ -1,65 +1,37 @@
-Received:  by oss.sgi.com id <S42267AbQFKKw2>;
-	Sun, 11 Jun 2000 03:52:28 -0700
-Received: from deliverator.sgi.com ([204.94.214.10]:59184 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42199AbQFKKwD>;
-	Sun, 11 Jun 2000 03:52:03 -0700
-Received: from nodin.corp.sgi.com (fddi-nodin.corp.sgi.com [198.29.75.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id DAA12747
-	for <linux-mips@oss.sgi.com>; Sun, 11 Jun 2000 03:46:37 -0700 (PDT)
-	mail_from (ulfc@calypso.engr.sgi.com)
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id DAA60883 for <linux-mips@oss.sgi.com>; Sun, 11 Jun 2000 03:49:46 -0700 (PDT)
-Received: from calypso.engr.sgi.com (calypso.engr.sgi.com [163.154.5.113])
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id DAA06076;
-	Sun, 11 Jun 2000 03:48:06 -0700 (PDT)
-	mail_from (ulfc@calypso.engr.sgi.com)
-Received: from localhost (localhost [127.0.0.1])
-	by calypso.engr.sgi.com (Postfix) with ESMTP
-	id 1E0B7A7875; Sun, 11 Jun 2000 03:46:22 -0700 (PDT)
-Date:   Sun, 11 Jun 2000 03:46:22 -0700 (PDT)
-From:   Ulf Carlsson <ulfc@calypso.engr.sgi.com>
-To:     Jiri Kasi Kastner <indy.j@worldonline.cz>
-Cc:     linux@cthulhu.engr.sgi.com
-Subject: Re: i'm not able compile new kernel
-In-Reply-To: <00061112164900.01364@pingu>
-Message-ID: <Pine.LNX.4.21.0006110341490.30891-100000@calypso.engr.sgi.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received:  by oss.sgi.com id <S42288AbQFLQbr>;
+	Mon, 12 Jun 2000 09:31:47 -0700
+Received: from mailhost.uni-koblenz.de ([141.26.64.1]:58558 "EHLO
+        mailhost.uni-koblenz.de") by oss.sgi.com with ESMTP
+	id <S42285AbQFKNoV>; Sun, 11 Jun 2000 06:44:21 -0700
+Received: from cacc-19.uni-koblenz.de (cacc-19.uni-koblenz.de [141.26.131.19])
+	by mailhost.uni-koblenz.de (8.9.3/8.9.3) with ESMTP id PAA06350;
+	Sun, 11 Jun 2000 15:43:46 +0200 (MET DST)
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S1403854AbQFKNn2>;
+        Sun, 11 Jun 2000 15:43:28 +0200
+Date:   Sun, 11 Jun 2000 15:43:27 +0200
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Ian Chilton <mailinglist@ichilton.co.uk>
+Cc:     info-iris-hardware@ARL.MIL,
+        Linux-MIPS Mailing List <linux-mips@oss.sgi.com>
+Subject: Re: Can't find |
+Message-ID: <20000611154327.B9639@uni-koblenz.de>
+References: <NAENLMKGGBDKLPONCDDOMEEBCMAA.mailinglist@ichilton.co.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <NAENLMKGGBDKLPONCDDOMEEBCMAA.mailinglist@ichilton.co.uk>; from mailinglist@ichilton.co.uk on Sat, Jun 10, 2000 at 01:12:17PM +0100
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-> /usr/src/linux/include/linux/sched.h: In function `on_sig_stack':
-> In file included from /usr/src/linux/include/linux/mm.h:4,
->                  from /usr/src/linux/include/linux/slab.h:14,
->                  from /usr/src/linux/include/linux/malloc.h:4,
->                  from /usr/src/linux/include/linux/proc_fs.h:5,
->                  from init/main.c:15:
-> /usr/src/linux/include/linux/sched.h:566: `current' undeclared (first use this function)
-> /usr/src/linux/include/linux/sched.h:566: (Each undeclared identifier is reported only once
-> /usr/src/linux/include/linux/sched.h:566: for each function it appears in.)
-> /usr/src/linux/include/linux/sched.h:567: warning: control reaches end of non-void function
-> /usr/src/linux/include/linux/sched.h: In function `sas_ss_flags':
-> /usr/src/linux/include/linux/sched.h:571: `current' undeclared (first use this function)
-> /usr/src/linux/include/linux/sched.h:573: warning: control reaches end of non-void function
-> /usr/src/linux/include/linux/sched.h: In function `suser':
-> /usr/src/linux/include/linux/sched.h:596: `current' undeclared (first use this function)
-> /usr/src/linux/include/linux/sched.h: In function `fsuser':
-> /usr/src/linux/include/linux/sched.h:605: `current' undeclared (first use this function)
-> /usr/src/linux/include/linux/sched.h: In function `capable':
-> /usr/src/linux/include/linux/sched.h:621: `current' undeclared (first use this function)
-> /usr/src/linux/include/linux/mm.h: In function `expand_stack':
-> In file included from /usr/src/linux/include/linux/slab.h:14,
->                  from /usr/src/linux/include/linux/malloc.h:4,
->                  from /usr/src/linux/include/linux/proc_fs.h:5,
->                  from init/main.c:15:
-> /usr/src/linux/include/linux/mm.h:406: `current' undeclared (first use this function)
-> init/main.c: In function `start_kernel':
-> init/main.c:536: `current' undeclared (first use this function)
-> init/main.c: In function `do_basic_setup':
-> init/main.c:597: `current' undeclared (first use this function)
-> make: *** [init/main.o] Error 1
+On Sat, Jun 10, 2000 at 01:12:17PM +0100, Ian Chilton wrote:
 
-You have to use egcs when you compile the kernel.
+> I have recently bought an Indy, but didn't get a keyboard with it, so I
+> plugged a standard UK PS/2 keyboard in. All works well, except the | (pipe).
 
-Ulf
+Dunno about IRIX or the proms but Linux assumes that you have a standard
+keyboard.
+
+  Ralf

@@ -1,61 +1,61 @@
-Received: from pneumatic-tube.sgi.com (pneumatic-tube.sgi.com [204.94.214.22])
-	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id QAA08342
-	for <pstadt@stud.fh-heilbronn.de>; Mon, 23 Aug 1999 16:42:22 +0200
-Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id HAA01084; Mon, 23 Aug 1999 07:39:25 -0700 (PDT)
-	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id HAA52859
-	for linux-list;
-	Mon, 23 Aug 1999 07:30:34 -0700 (PDT)
-	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id HAA45984
-	for <linux@engr.sgi.com>;
-	Mon, 23 Aug 1999 07:30:30 -0700 (PDT)
-	mail_from (aj@arthur.rhein-neckar.de)
-Received: from news-ma.rhein-neckar.de (news-ma.rhein-neckar.de [193.197.90.3]) 
+Received: from sgi.com (sgi.SGI.COM [192.48.153.1])
+	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id QAA08913
+	for <pstadt@stud.fh-heilbronn.de>; Mon, 23 Aug 1999 16:47:43 +0200
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id HAA02126
-	for <linux@engr.sgi.com>; Mon, 23 Aug 1999 07:30:27 -0700 (PDT)
-	mail_from (aj@arthur.rhein-neckar.de)
-Received: from arthur.rhein-neckar.de (uucp@localhost)
-	by news-ma.rhein-neckar.de (8.8.8/8.8.8) with bsmtp id QAA01123;
-	Mon, 23 Aug 1999 16:29:34 +0200 (CEST)
-	(envelope-from aj@arthur.rhein-neckar.de)
-Received: from aj by arthur.rhein-neckar.de with local (Exim 3.02 #1)
-	id 11Iv5k-0005Xr-00; Mon, 23 Aug 1999 16:28:56 +0200
-To: Ralf Baechle <ralf@uni-koblenz.de>
-Cc: linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
-        linux-mips@vger.rutgers.edu
-Subject: Re: MIPS64
-References: <19990822141504.A15701@uni-koblenz.de>
-From: Andreas Jaeger <aj@arthur.rhein-neckar.de>
-Date: 23 Aug 1999 16:28:54 +0200
-In-Reply-To: Ralf Baechle's message of "Sun, 22 Aug 1999 14:15:04 +0200"
-Message-ID: <u87lmmd109.fsf@arthur.rhein-neckar.de>
-User-Agent: Gnus/5.070095 (Pterodactyl Gnus v0.95) XEmacs/21.1 (Arches)
+	via ESMTP id HAA03120; Mon, 23 Aug 1999 07:44:50 -0700 (PDT)
+	mail_from (owner-linux@cthulhu.engr.sgi.com)
+Received: (from majordomo-owner@localhost)
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	id HAA77493
+	for linux-list;
+	Mon, 23 Aug 1999 07:38:16 -0700 (PDT)
+	mail_from (owner-linux@relay.engr.sgi.com)
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	via ESMTP id HAA06680
+	for <linux@cthulhu.engr.sgi.com>;
+	Mon, 23 Aug 1999 07:38:14 -0700 (PDT)
+	mail_from (andrewb@uab.edu)
+Received: from lilith.dpo.uab.edu (lilith.dpo.uab.edu [138.26.1.128]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id HAA00351
+	for <linux@cthulhu.engr.sgi.com>; Mon, 23 Aug 1999 07:38:13 -0700 (PDT)
+	mail_from (andrewb@uab.edu)
+Received: from mdk187.tucc.uab.edu (mdk187.tucc.uab.edu [138.26.15.201])
+	by lilith.dpo.uab.edu (8.9.3/8.9.3) with SMTP id JAA31771;
+	Mon, 23 Aug 1999 09:38:09 -0500
+Date: Mon, 23 Aug 1999 09:35:57 -0500 (CDT)
+From: "Andrew R. Baker" <andrewb@uab.edu>
+X-Sender: andrewb@mdk187.tucc.uab.edu
+To: Bill Bradford <mrbill@frenzy.com>
+cc: linux@cthulhu.engr.sgi.com
+Subject: Re: Indigo2 status?
+In-Reply-To: <19990821193536.A16860@frenzy.com>
+Message-ID: <Pine.LNX.3.96.990823092957.20918A-100000@mdk187.tucc.uab.edu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
->>>>> Ralf Baechle writes:
 
- > Hi,
- > as those who are tracking the CVS archive or the commit mailing list
- > probably already have seen I've got started to work on a 64-bit kernel.
- > I'm also using the chance to do a major overhaul of various code which
- > over the years had turned into a major uglyness.
-Could anybody provide me with infos about the commit mailing list?  I
-couldn't find the information myself:-(.
 
-Thanks,
-Andreas
--- 
- Andreas Jaeger   aj@arthur.rhein-neckar.de    jaeger@informatik.uni-kl.de
-  for pgp-key finger ajaeger@aixd1.rhrk.uni-kl.de
+On Sat, 21 Aug 1999, Bill Bradford wrote:
+> Has anyone heard anything about the status of SGI Linux on an Indigo2?
+> I've got this box here with 128mb and Extreme graphics, and am wishing
+> I could fire up Linux on it....
+
+Well, you won't be able to use your graphics card yet, but you can still
+get it up and running.  Set yourself up with a serial console, and follow
+the installation instructions on http://www.linux.sgi.com/ and off you go.
+You'll probably want to build your own kernel from the CVS arvhive, as it
+will have more recent changes.  Support for the (E)ISA bus should be
+coming along sometime this week.
+
+-Andrew

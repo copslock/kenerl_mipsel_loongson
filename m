@@ -1,62 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Oct 2003 09:31:07 +0100 (BST)
-Received: from [IPv6:::ffff:80.88.36.193] ([IPv6:::ffff:80.88.36.193]:54673
-	"EHLO witte.sonytel.be") by linux-mips.org with ESMTP
-	id <S8225469AbTJIIbB>; Thu, 9 Oct 2003 09:31:01 +0100
-Received: from waterleaf.sonytel.be (localhost [127.0.0.1])
-	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id h998UvQG022398;
-	Thu, 9 Oct 2003 10:30:57 +0200 (MEST)
-Date: Thu, 9 Oct 2003 10:30:57 +0200 (MEST)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: =?iso-8859-1?Q?J=F8rg_Ulrich_Hansen?= <jh@hansen-telecom.dk>
-cc: Linux-Mips <linux-mips@linux-mips.org>
-Subject: Re: What toolchain for vr4181
-In-Reply-To: <EIEHIDHKGJLNEPLOGOPOAEIGCFAA.jh@hansen-telecom.dk>
-Message-ID: <Pine.GSO.4.21.0310091030110.7086-100000@waterleaf.sonytel.be>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Oct 2003 11:54:27 +0100 (BST)
+Received: from [IPv6:::ffff:203.82.55.162] ([IPv6:::ffff:203.82.55.162]:50930
+	"EHLO 1aurora.enabtech") by linux-mips.org with ESMTP
+	id <S8225462AbTJIKyV>; Thu, 9 Oct 2003 11:54:21 +0100
+Received: by 1aurora.enabtech with Internet Mail Service (5.5.2650.21)
+	id <4RT7BKQB>; Thu, 9 Oct 2003 15:46:20 +0500
+Message-ID: <10C6C1971DA00C4BB87AC0206E3CA38264F05F@1aurora.enabtech>
+From: Adeel Malik <AdeelM@avaznet.com>
+To: linux-mips@linux-mips.org
+Subject: YAMON Source code modification 
+Date: Thu, 9 Oct 2003 15:46:19 +0500 
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=ISO-8859-15
-Content-Transfer-Encoding: 8BIT
-Return-Path: <Geert.Uytterhoeven@sonycom.com>
+X-Mailer: Internet Mail Service (5.5.2650.21)
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C38E52.92A44720"
+Return-Path: <AdeelM@avaznet.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3394
+X-archive-position: 3395
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: AdeelM@avaznet.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 8 Oct 2003, [iso-8859-1] Jørg Ulrich Hansen wrote:
-> I am about to start porting Linux to my hardware with an vr4181 processor.
-> The hardware is very close to the osprey architecture. Now my problem is
-> what toolchain to use.
-> I could do with an up to date opinion.
-> 
-> ? gcc-2.95.3
-> ? gcc-2.95.4
-> ? egcs-1.1.2
-> ? gcc-3.2
-> ? binutils 2.13
-> ? glibc 2.2.5
-> ? Any patches
-> ? http://www.ltc.com/~brad/mips/mips-cross-toolchain/index.html
-> ? http://kegel.com/crosstool/
-> 
-> Where is a good starting point for a toolchain that will build and work?
-> I would prefere to build it my self because at a later state I might build
-> it under cygwin. But a prebuild does also have interest.
+This message is in MIME format. Since your mail reader does not understand
+this format, some or all of this message may not be legible.
 
-At work we use plain binutils 2.13.2.1 and gcc 3.2.2, which we build ourselves
-(host is Solaris/SPARC).
+------_=_NextPart_001_01C38E52.92A44720
+Content-Type: text/plain;
+	charset="iso-8859-1"
 
-Gr{oetje,eeting}s,
+We want to port and 'run' YAMON to our own MIPS-based Development Board. Can
+someone tell me what changes are necessary in the YAMON source code so that
+it works on our board ?.
+Regards,
+ADEEL MALIK,
+ 
 
-						Geert
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+------_=_NextPart_001_01C38E52.92A44720
+Content-Type: text/html;
+	charset="iso-8859-1"
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+
+
+<META content="MSHTML 6.00.2600.0" name=GENERATOR></HEAD>
+<BODY style="COLOR: #000000; FONT-FAMILY: Arial" hb_focus_attach="true">
+<DIV><SPAN class=902304110-09102003><FONT size=2>We want to port and 'run' YAMON 
+to our own MIPS-based Development Board. Can someone tell me what changes are 
+necessary in the YAMON source code so that it works on our board 
+?.</FONT></SPAN></DIV>
+<DIV><SPAN class=902304110-09102003><FONT size=2>Regards,</FONT></SPAN></DIV>
+<DIV><FONT face=Georgia color=#0000ff size=2><EM>ADEEL MALIK,</EM></FONT></DIV>
+<DIV><FONT size=2></FONT>&nbsp;</DIV>
+<P></P></BODY></HTML>
+
+------_=_NextPart_001_01C38E52.92A44720--

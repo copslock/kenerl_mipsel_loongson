@@ -1,36 +1,36 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g11CkDj01132
-	for linux-mips-outgoing; Fri, 1 Feb 2002 04:46:13 -0800
+	by oss.sgi.com (8.11.2/8.11.3) id g11CpEF01298
+	for linux-mips-outgoing; Fri, 1 Feb 2002 04:51:14 -0800
 Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g11Ck7d01129
-	for <linux-mips@oss.sgi.com>; Fri, 1 Feb 2002 04:46:08 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id MAA26518;
-	Fri, 1 Feb 2002 12:45:02 +0100 (MET)
-Date: Fri, 1 Feb 2002 12:45:02 +0100 (MET)
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g11CpBd01295
+	for <linux-mips@oss.sgi.com>; Fri, 1 Feb 2002 04:51:11 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id MAA26608;
+	Fri, 1 Feb 2002 12:50:48 +0100 (MET)
+Date: Fri, 1 Feb 2002 12:50:48 +0100 (MET)
 From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: "H . J . Lu" <hjl@lucon.org>
-cc: Hiroyuki Machida <machida@sm.sony.co.jp>, libc-alpha@sources.redhat.com,
-   linux-mips@oss.sgi.com
+To: Hiroyuki Machida <machida@sm.sony.co.jp>
+cc: hjl@lucon.org, libc-alpha@sources.redhat.com, linux-mips@oss.sgi.com
 Subject: Re: PATCH: Fix ll/sc for mips
-In-Reply-To: <20020131231714.E32690@lucon.org>
-Message-ID: <Pine.GSO.3.96.1020201124328.26449A-100000@delta.ds2.pg.gda.pl>
+In-Reply-To: <20020201.123523.50041631.machida@sm.sony.co.jp>
+Message-ID: <Pine.GSO.3.96.1020201124611.26449B-100000@delta.ds2.pg.gda.pl>
 Organization: Technical University of Gdansk
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, 31 Jan 2002, H . J . Lu wrote:
+On Fri, 1 Feb 2002, Hiroyuki Machida wrote:
 
-> > Gas will fill delay slots. Same object codes will be produced, so I
-> > think you don't have to do that by hand. 
+> > It will fail if *p is not same as oldval.
 > 
-> It will make the code more readable. We don't have to guess what
-> the assembler will do. 
+> Please note that "sc" may fail even if nobody write the
+> variable. (See P.211 "8.4.2 Load-Linked/Sotre-Conditional" of "See 
+> MIPS RUN" for more detail.) 
+> So, after your patch applied, compare_and_swap() may fail, even if
+> *p is equal to oldval.
 
- But you lose a chance for something useful being reordered to the slot.
-That might not necessarily be a "nop".  Please don't forget of indents
-anyway.
+ That's exactly what I meant -- "sc" may fail to execute the store, while
+"cmpxchgl" may not. 
 
 -- 
 +  Maciej W. Rozycki, Technical University of Gdansk, Poland   +

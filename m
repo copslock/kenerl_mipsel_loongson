@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Apr 2003 15:06:41 +0100 (BST)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:62161 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Apr 2003 15:15:26 +0100 (BST)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:17874 "EHLO
 	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225262AbTDOOGj>; Tue, 15 Apr 2003 15:06:39 +0100
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id QAA15755;
-	Tue, 15 Apr 2003 16:07:18 +0200 (MET DST)
-Date: Tue, 15 Apr 2003 16:07:18 +0200 (MET DST)
+	id <S8225202AbTDOOPZ>; Tue, 15 Apr 2003 15:15:25 +0100
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id QAA15901;
+	Tue, 15 Apr 2003 16:15:48 +0200 (MET DST)
+Date: Tue, 15 Apr 2003 16:15:47 +0200 (MET DST)
 From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
 To: Ralf Baechle <ralf@linux-mips.org>
 cc: linux-mips@linux-mips.org
-Subject: [patch] cp0.config access macros
-Message-ID: <Pine.GSO.3.96.1030415155224.13254F-100000@delta.ds2.pg.gda.pl>
+Subject: [patch] do_IRQ() and init_i8259_irqs() declarations
+Message-ID: <Pine.GSO.3.96.1030415160755.13254G-100000@delta.ds2.pg.gda.pl>
 Organization: Technical University of Gdansk
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
@@ -17,7 +17,7 @@ Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2053
+X-archive-position: 2054
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -27,757 +27,683 @@ X-list: linux-mips
 
 Ralf,
 
- Cryptic cp0.config accesses using hardcoded numbers are scattered through
-the sources.  I propose adding a few definitions to improve readability
-and ease grepping the sources.  This is for solely for cp0.config now -- I
-fixed all references I had docs handy for.  The next step should probably
-be cp0.config1.
+ There is a number of private declarations of do_IRQ() and
+init_i8259_irqs() scattered through the code.  These for do_IRQ() often
+have a different "opinion" on how the function is interfaced... 
 
- Beside that, the following patch fixes cache size units to be kilobytes
-instead of kilobits and fixes the R4000SC erratum #5 trigger. 
+ The following patch puts public declarations in appropriate headers and
+converts users of these functions to get the prototypes from there
+instead.  It also removes various related unused declarations. 
 
  OK?
 
-  Maciej 
+  Maciej
 
 -- 
 +  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
 +--------------------------------------------------------------+
 +        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
 
-patch-mips-2.4.21-pre4-20030414-c-rxk-6
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips/kernel/cpu-probe.c linux-mips-2.4.21-pre4-20030414/arch/mips/kernel/cpu-probe.c
---- linux-mips-2.4.21-pre4-20030414.macro/arch/mips/kernel/cpu-probe.c	2003-04-13 02:56:50.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030414/arch/mips/kernel/cpu-probe.c	2003-04-14 23:44:24.000000000 +0000
-@@ -18,7 +18,7 @@ void (*cpu_wait)(void) = NULL;
- static void r3081_wait(void)
+patch-mips-2.4.21-pre4-20030414-do_irq-8259A-0
+diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips/au1000/common/irq.c linux-mips-2.4.21-pre4-20030414/arch/mips/au1000/common/irq.c
+--- linux-mips-2.4.21-pre4-20030414.macro/arch/mips/au1000/common/irq.c	2003-03-30 02:56:22.000000000 +0000
++++ linux-mips-2.4.21-pre4-20030414/arch/mips/au1000/common/irq.c	2003-04-13 18:00:27.000000000 +0000
+@@ -28,6 +28,7 @@
+  */
+ #include <linux/errno.h>
+ #include <linux/init.h>
++#include <linux/irq.h>
+ #include <linux/kernel_stat.h>
+ #include <linux/module.h>
+ #include <linux/signal.h>
+@@ -96,7 +97,6 @@ static inline void mask_and_ack_fall_edg
+ inline void local_enable_irq(unsigned int irq_nr);
+ inline void local_disable_irq(unsigned int irq_nr);
+ 
+-extern unsigned int do_IRQ(int irq, struct pt_regs *regs);
+ extern void __init init_generic_irq(void);
+ 
+ #ifdef CONFIG_PM
+diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips/cobalt/irq.c linux-mips-2.4.21-pre4-20030414/arch/mips/cobalt/irq.c
+--- linux-mips-2.4.21-pre4-20030414.macro/arch/mips/cobalt/irq.c	2002-12-04 03:56:24.000000000 +0000
++++ linux-mips-2.4.21-pre4-20030414/arch/mips/cobalt/irq.c	2002-12-18 00:50:36.000000000 +0000
+@@ -17,6 +17,7 @@
+ #include <linux/ioport.h>
+ 
+ #include <asm/bootinfo.h>
++#include <asm/i8259.h>
+ #include <asm/io.h>
+ #include <asm/irq.h>
+ #include <asm/mipsregs.h>
+diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips/cobalt/via.c linux-mips-2.4.21-pre4-20030414/arch/mips/cobalt/via.c
+--- linux-mips-2.4.21-pre4-20030414.macro/arch/mips/cobalt/via.c	2003-03-10 03:56:27.000000000 +0000
++++ linux-mips-2.4.21-pre4-20030414/arch/mips/cobalt/via.c	2003-04-13 18:01:57.000000000 +0000
+@@ -10,6 +10,7 @@
+  *
+  */
+ 
++#include <linux/irq.h>
+ #include <linux/kernel.h>
+ 
+ #include <asm/gt64120.h>
+@@ -18,8 +19,6 @@
+ 
+ #include <asm/cobalt/cobalt.h>
+ 
+-extern void do_IRQ(int irq, struct pt_regs * regs);
+-
+ asmlinkage void via_irq(struct pt_regs *regs)
  {
- 	unsigned long cfg = read_c0_conf();
--	write_c0_conf(cfg | CONF_HALT);
-+	write_c0_conf(cfg | R30XX_CONF_HALT);
- }
+ 	char mstat, sstat;
+diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips/ddb5xxx/ddb5074/irq.c linux-mips-2.4.21-pre4-20030414/arch/mips/ddb5xxx/ddb5074/irq.c
+--- linux-mips-2.4.21-pre4-20030414.macro/arch/mips/ddb5xxx/ddb5074/irq.c	2003-02-27 03:56:30.000000000 +0000
++++ linux-mips-2.4.21-pre4-20030414/arch/mips/ddb5xxx/ddb5074/irq.c	2003-04-13 18:00:29.000000000 +0000
+@@ -6,14 +6,15 @@
+  */
+ #include <linux/config.h>
+ #include <linux/init.h>
++#include <linux/irq.h>
+ #include <linux/signal.h>
+ #include <linux/sched.h>
+ #include <linux/types.h>
+ #include <linux/interrupt.h>
+ #include <linux/ioport.h>
  
- static void r39xx_wait(void)
-@@ -108,7 +108,7 @@ static inline int cpu_has_confreg(void)
- 	unsigned long cfg = read_c0_conf();
++#include <asm/i8259.h>
+ #include <asm/io.h>
+-#include <asm/irq.h>
+ #include <asm/irq_cpu.h>
+ #include <asm/ptrace.h>
+ #include <asm/nile4.h>
+@@ -21,14 +22,7 @@
+ #include <asm/ddb5xxx/ddb5074.h>
  
- 	size1 = r3k_cache_size(ST0_ISC);
--	write_c0_conf(cfg ^ CONF_AC);
-+	write_c0_conf(cfg ^ R30XX_CONF_AC);
- 	size2 = r3k_cache_size(ST0_ISC);
- 	write_c0_conf(cfg);
- 	return size1 != size2;
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips/mm/c-r3k.c linux-mips-2.4.21-pre4-20030414/arch/mips/mm/c-r3k.c
---- linux-mips-2.4.21-pre4-20030414.macro/arch/mips/mm/c-r3k.c	2003-04-13 02:56:51.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030414/arch/mips/mm/c-r3k.c	2003-04-14 22:10:06.000000000 +0000
-@@ -7,6 +7,7 @@
-  * Tx39XX R4k style caches added. HK
-  * Copyright (C) 1998, 1999, 2000 Harald Koerfgen
-  * Copyright (C) 1998 Gleb Raiko & Vladimir Roganov
-+ * Copyright (C) 2001  Maciej W. Rozycki
+ 
+-extern void __init i8259_init(void);
+-extern void init_i8259_irqs (void);
+-extern void i8259_disable_irq(unsigned int irq_nr);
+-extern void i8259_enable_irq(unsigned int irq_nr);
+-
+ extern asmlinkage void ddbIRQ(void);
+-extern asmlinkage void i8259_do_irq(int irq, struct pt_regs *regs);
+-extern asmlinkage void do_IRQ(int irq, struct pt_regs *regs);
+ 
+ static struct irqaction irq_cascade = { no_action, 0, 0, "cascade", NULL, NULL };
+ 
+diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips/ddb5xxx/ddb5476/irq.c linux-mips-2.4.21-pre4-20030414/arch/mips/ddb5xxx/ddb5476/irq.c
+--- linux-mips-2.4.21-pre4-20030414.macro/arch/mips/ddb5xxx/ddb5476/irq.c	2002-08-06 02:57:07.000000000 +0000
++++ linux-mips-2.4.21-pre4-20030414/arch/mips/ddb5xxx/ddb5476/irq.c	2002-12-18 00:55:01.000000000 +0000
+@@ -14,6 +14,7 @@
+ #include <linux/types.h>
+ #include <linux/interrupt.h>
+ 
++#include <asm/i8259.h>
+ #include <asm/io.h>
+ #include <asm/ptrace.h>
+ 
+diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips/ddb5xxx/ddb5476/vrc5476_irq.c linux-mips-2.4.21-pre4-20030414/arch/mips/ddb5xxx/ddb5476/vrc5476_irq.c
+--- linux-mips-2.4.21-pre4-20030414.macro/arch/mips/ddb5xxx/ddb5476/vrc5476_irq.c	2002-08-06 02:57:07.000000000 +0000
++++ linux-mips-2.4.21-pre4-20030414/arch/mips/ddb5xxx/ddb5476/vrc5476_irq.c	2002-12-19 17:49:53.000000000 +0000
+@@ -12,6 +12,7 @@
   */
  #include <linux/init.h>
- #include <linux/kernel.h>
-@@ -100,7 +101,6 @@ static void __init r3k_probe_cache(void)
- 	if (dcache_size)
- 		dcache_lsize = r3k_cache_lsize(ST0_ISC);
+ #include <linux/interrupt.h>
++#include <linux/irq.h>
+ #include <linux/types.h>
+ #include <linux/ptrace.h>
  
--
- 	icache_size = r3k_cache_size(ST0_ISC|ST0_SWC);
- 	if (icache_size)
- 		icache_lsize = r3k_cache_lsize(ST0_ISC|ST0_SWC);
-@@ -339,8 +339,8 @@ void __init ld_mmu_r23000(void)
- 
- 	_dma_cache_wback_inv = r3k_dma_cache_wback_inv;
- 
--	printk("Primary instruction cache %dkb, linesize %d bytes\n",
--		(int) (icache_size >> 10), (int) icache_lsize);
--	printk("Primary data cache %dkb, linesize %d bytes\n",
--		(int) (dcache_size >> 10), (int) dcache_lsize);
-+	printk("Primary instruction cache %ldkB, linesize %ld bytes.\n",
-+		icache_size >> 10, icache_lsize);
-+	printk("Primary data cache %ldkB, linesize %ld bytes.\n",
-+		dcache_size >> 10, dcache_lsize);
- }
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips/mm/c-r4k.c linux-mips-2.4.21-pre4-20030414/arch/mips/mm/c-r4k.c
---- linux-mips-2.4.21-pre4-20030414.macro/arch/mips/mm/c-r4k.c	2003-04-14 02:56:57.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030414/arch/mips/mm/c-r4k.c	2003-04-15 08:08:38.000000000 +0000
-@@ -673,6 +673,7 @@ static void __init probe_pcache(void)
+@@ -81,7 +82,6 @@ vrc5476_irq_init(u32 base)
+ asmlinkage void
+ vrc5476_irq_dispatch(struct pt_regs *regs)
  {
- 	struct cpuinfo_mips *c = &current_cpu_data;
- 	unsigned int config = read_c0_config();
-+	unsigned int prid = read_c0_prid();
- 	unsigned long config1;
- 	unsigned int lsize;
+-	extern unsigned int do_IRQ(int irq, struct pt_regs *regs);
+ 	extern void spurious_interrupt(void);
  
-@@ -681,38 +682,38 @@ static void __init probe_pcache(void)
- 	case CPU_R4700:
- 	case CPU_R5000:
- 	case CPU_NEVADA:
--		icache_size = 1 << (12 + ((config >> 9) & 7));
--		c->icache.linesz = 16 << ((config >> 5) & 1);
-+		icache_size = 1 << (12 + ((config & CONF_IC) >> 9));
-+		c->icache.linesz = 16 << ((config & CONF_IB) >> 5);
- 		c->icache.ways = 2;
- 		c->icache.waybit = ffs(icache_size/2) - 1;
+ 	u32 mask;
+diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips/ddb5xxx/ddb5477/irq.c linux-mips-2.4.21-pre4-20030414/arch/mips/ddb5xxx/ddb5477/irq.c
+--- linux-mips-2.4.21-pre4-20030414.macro/arch/mips/ddb5xxx/ddb5477/irq.c	2003-02-27 03:56:31.000000000 +0000
++++ linux-mips-2.4.21-pre4-20030414/arch/mips/ddb5xxx/ddb5477/irq.c	2003-04-13 18:00:29.000000000 +0000
+@@ -13,9 +13,11 @@
+ #include <linux/config.h>
+ #include <linux/init.h>
+ #include <linux/interrupt.h>
++#include <linux/irq.h>
+ #include <linux/types.h>
+ #include <linux/ptrace.h>
  
--		dcache_size = 1 << (12 + ((config >> 6) & 7));
--		c->dcache.linesz = 16 << ((config >> 4) & 1);
-+		dcache_size = 1 << (12 + ((config & CONF_DC) >> 6));
-+		c->dcache.linesz = 16 << ((config & CONF_DB) >> 4);
- 		c->dcache.ways = 2;
- 		c->dcache.waybit= ffs(dcache_size/2) - 1;
- 		break;
- 
- 	case CPU_R5432:
- 	case CPU_R5500:
--		icache_size = 1 << (12 + ((config >> 9) & 7));
--		c->icache.linesz = 16 << ((config >> 5) & 1);
-+		icache_size = 1 << (12 + ((config & CONF_IC) >> 9));
-+		c->icache.linesz = 16 << ((config & CONF_IB) >> 5);
- 		c->icache.ways = 2;
- 		c->icache.waybit= 0;
- 
--		dcache_size = 1 << (12 + ((config >> 6) & 7));
--		c->dcache.linesz = 16 << ((config >> 4) & 1);
-+		dcache_size = 1 << (12 + ((config & CONF_DC) >> 6));
-+		c->dcache.linesz = 16 << ((config & CONF_DB) >> 4);
- 		c->dcache.ways = 2;
- 		c->dcache.waybit = 0;
- 		break;
- 
- 	case CPU_TX49XX:
--		icache_size = 1 << (12 + ((config >> 9) & 7));
--		c->icache.linesz = 16 << ((config >> 5) & 1);
-+		icache_size = 1 << (12 + ((config & CONF_IC) >> 9));
-+		c->icache.linesz = 16 << ((config & CONF_IB) >> 5);
- 		c->icache.ways = 4;
- 		c->icache.waybit= 0;
- 
--		dcache_size = 1 << (12 + ((config >> 6) & 7));
--		c->dcache.linesz = 16 << ((config >> 4) & 1);
-+		dcache_size = 1 << (12 + ((config & CONF_DC) >> 6));
-+		c->dcache.linesz = 16 << ((config & CONF_DB) >> 4);
- 		c->dcache.ways = 4;
- 		c->dcache.waybit = 0;
- 		break;
-@@ -723,25 +724,25 @@ static void __init probe_pcache(void)
- 	case CPU_R4400PC:
- 	case CPU_R4400SC:
- 	case CPU_R4400MC:
--		icache_size = 1 << (12 + ((config >> 9) & 7));
--		c->icache.linesz = 16 << ((config >> 5) & 1);
-+		icache_size = 1 << (12 + ((config & CONF_IC) >> 9));
-+		c->icache.linesz = 16 << ((config & CONF_IB) >> 5);
- 		c->icache.ways = 1;
- 		c->icache.waybit = 0; 	/* doesn't matter */
- 
--		dcache_size = 1 << (12 + ((config >> 6) & 7));
--		c->dcache.linesz = 16 << ((config >> 4) & 1);
-+		dcache_size = 1 << (12 + ((config & CONF_DC) >> 6));
-+		c->dcache.linesz = 16 << ((config & CONF_DB) >> 4);
- 		c->dcache.ways = 1;
- 		c->dcache.waybit = 0;	/* does not matter */
- 		break;
- 
- 	case CPU_VR4131:
--		icache_size = 1 << (10 + ((config >> 9) & 7));
--		c->icache.linesz = 16 << ((config >> 5) & 1);
-+		icache_size = 1 << (10 + ((config & CONF_IC) >> 9));
-+		c->icache.linesz = 16 << ((config & CONF_IB) >> 5);
- 		c->icache.ways = 2;
- 		c->icache.waybit = ffs(icache_size/2) - 1;
- 
--		dcache_size = 1 << (10 + ((config >> 6) & 7));
--		c->dcache.linesz = 16 << ((config >> 4) & 1);
-+		dcache_size = 1 << (10 + ((config & CONF_DC) >> 6));
-+		c->dcache.linesz = 16 << ((config & CONF_DB) >> 4);
- 		c->dcache.ways = 2;
- 		c->dcache.waybit = ffs(dcache_size/2) - 1;
- 		break;
-@@ -752,19 +753,19 @@ static void __init probe_pcache(void)
- 	case CPU_VR4122:
- 	case CPU_VR4181:
- 	case CPU_VR4181A:
--		icache_size = 1 << (10 + ((config >> 9) & 7));
--		c->icache.linesz = 16 << ((config >> 5) & 1);
-+		icache_size = 1 << (10 + ((config & CONF_IC) >> 9));
-+		c->icache.linesz = 16 << ((config & CONF_IB) >> 5);
- 		c->icache.ways = 1;
- 		c->icache.waybit = 0; 	/* doesn't matter */
- 
--		dcache_size = 1 << (10 + ((config >> 6) & 7));
--		c->dcache.linesz = 16 << ((config >> 4) & 1);
-+		dcache_size = 1 << (10 + ((config & CONF_DC) >> 6));
-+		c->dcache.linesz = 16 << ((config & CONF_DB) >> 4);
- 		c->dcache.ways = 1;
- 		c->dcache.waybit = 0;	/* does not matter */
- 		break;
- 
- 	default:
--		if (!(config & 0x80000000))
-+		if (!(config & MIPS_CONF_M))
- 			panic("Don't know how to probe P-caches on this cpu.");
- 
- 		/*
-@@ -803,16 +804,17 @@ static void __init probe_pcache(void)
- 	}
- 
- 	/*
--	 * Processor configuration sanity check for the R4000SC V2.2
--	 * erratum #5.  With pagesizes larger than 32kb there is no possibility
-+	 * Processor configuration sanity check for the R4000SC erratum
-+	 * #5.  With page sizes larger than 32kB there is no possibility
- 	 * to get a VCE exception anymore so we don't care about this
--	 * missconfiguration.  The case is rather theoretical anway; presumably
--	 * no vendor is shipping his hardware in the "bad" configuration.
-+	 * misconfiguration.  The case is rather theoretical anyway;
-+	 * presumably no vendor is shipping his hardware in the "bad"
-+	 * configuration.
- 	 */
--	if (PAGE_SIZE <= 0x8000 && read_c0_prid() == 0x0422 &&
--	    (read_c0_config() & CONF_SC) &&
--	     c->icache.linesz != 16)
--		panic("Impropper processor configuration detected");
-+	if ((prid & 0xff00) == PRID_IMP_R4000 && (prid & 0xff) < 0x40 &&
-+	    !(config & CONF_SC) && c->icache.linesz != 16 &&
-+	    PAGE_SIZE <= 0x8000)
-+		panic("Improper R4000SC processor configuration detected");
- 
- 	/* compute a couple of other cache variables */
- 	icache_way_size = icache_size / c->icache.ways;
-@@ -840,12 +842,12 @@ static void __init probe_pcache(void)
- 		break;
- 	}
- 
--	printk("Primary instruction cache %ldkb, %s, %s, linesize %d bytes\n",
-+	printk("Primary instruction cache %ldkB, %s, %s, linesize %d bytes.\n",
- 	       icache_size >> 10,
- 	       cpu_has_vtag_icache ? "virtually tagged" : "physically tagged",
- 	       way_string[c->icache.ways], c->icache.linesz);
- 
--	printk("Primary data cache %ldkb %s, linesize %d bytes\n",
-+	printk("Primary data cache %ldkB %s, linesize %d bytes.\n",
- 	       dcache_size >> 10, way_string[c->dcache.ways], c->dcache.linesz);
- }
- 
-@@ -862,10 +864,10 @@ static int __init probe_scache(void)
- 	unsigned int config = read_c0_config();
- 	int tmp;
- 
--	if ((config >> 17) & 1)
-+	if (config & CONF_SC)
- 		return 0;
- 
--	sc_lsize = 16 << ((config >> 22) & 3);
-+	sc_lsize = 16 << ((config & R4K_CONF_SB) >> 22);
- 
- 	begin = (unsigned long) &stext;
- 	begin &= ~((4 * 1024 * 1024) - 1);
-@@ -905,7 +907,7 @@ static int __init probe_scache(void)
- 	}
- 	local_irq_restore(flags);
- 	addr -= begin;
--	printk("Secondary cache sized at %ldK, linesize %ld bytes.\n",
-+	printk("Secondary cache sized at %ldkB, linesize %ld bytes.\n",
- 	       addr >> 10, sc_lsize);
- 	scache_size = addr;
- 
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips/mm/r5k-sc.c linux-mips-2.4.21-pre4-20030414/arch/mips/mm/r5k-sc.c
---- linux-mips-2.4.21-pre4-20030414.macro/arch/mips/mm/r5k-sc.c	2003-03-25 03:56:41.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030414/arch/mips/mm/r5k-sc.c	2003-04-15 00:03:28.000000000 +0000
-@@ -9,11 +9,11 @@
- 
- #include <asm/mipsregs.h>
- #include <asm/bcache.h>
-+#include <asm/cacheops.h>
- #include <asm/page.h>
- #include <asm/pgtable.h>
++#include <asm/i8259.h>
  #include <asm/system.h>
- #include <asm/mmu_context.h>
--#include <asm/cacheops.h>
- 
- /* Secondary cache size in bytes, if present.  */
- static unsigned long scache_size;
-@@ -69,7 +69,7 @@ static void r5k_sc_enable(void)
-         unsigned long flags;
- 
- 	local_irq_save(flags);
--	change_c0_config(CONF_SE, CONF_SE);
-+	change_c0_config(R5K_CONF_SE, R5K_CONF_SE);
- 	blast_r5000_scache();
- 	local_irq_restore(flags);
- }
-@@ -80,7 +80,7 @@ static void r5k_sc_disable(void)
- 
- 	local_irq_save(flags);
- 	blast_r5000_scache();
--	change_c0_config(CONF_SE, 0);
-+	change_c0_config(R5K_CONF_SE, 0);
- 	local_irq_restore(flags);
+ #include <asm/mipsregs.h>
+ #include <asm/debug.h>
+@@ -71,7 +73,6 @@ set_pci_int_attr(u32 pci, u32 intn, u32 
+ 	ddb_out32(pci, reg_value);
  }
  
-@@ -88,12 +88,12 @@ static inline int __init r5k_sc_probe(vo
+-extern void init_i8259_irqs (void);
+ extern void vrc5477_irq_init(u32 base);
+ extern void mips_cpu_irq_init(u32 base);
+ extern asmlinkage void ddb5477_handle_int(void);
+@@ -164,8 +165,6 @@ u8 i8259_interrupt_ack(void)
+ asmlinkage void
+ vrc5477_irq_dispatch(struct pt_regs *regs)
  {
- 	unsigned long config = read_c0_config();
+-	extern unsigned int do_IRQ(int irq, struct pt_regs *regs);
+-
+ 	u32 intStatus;
+ 	u32 bitmask;
+ 	u32 i;
+diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips/galileo-boards/ev96100/irq.c linux-mips-2.4.21-pre4-20030414/arch/mips/galileo-boards/ev96100/irq.c
+--- linux-mips-2.4.21-pre4-20030414.macro/arch/mips/galileo-boards/ev96100/irq.c	2002-12-04 03:56:25.000000000 +0000
++++ linux-mips-2.4.21-pre4-20030414/arch/mips/galileo-boards/ev96100/irq.c	2002-12-19 17:55:31.000000000 +0000
+@@ -32,6 +32,7 @@
+ #include <linux/errno.h>
+ #include <linux/init.h>
+ #include <linux/kernel_stat.h>
++#include <linux/irq.h>
+ #include <linux/module.h>
+ #include <linux/signal.h>
+ #include <linux/sched.h>
+@@ -45,13 +46,10 @@
+ #include <asm/bitops.h>
+ #include <asm/bootinfo.h>
+ #include <asm/io.h>
+-#include <asm/irq.h>
+ #include <asm/mipsregs.h>
+ #include <asm/system.h>
+ #include <asm/galileo-boards/ev96100int.h>
  
--	if(config & CONF_SC)
-+	if (config & CONF_SC)
- 		return(0);
+-extern asmlinkage unsigned int do_IRQ(int irq, struct pt_regs *regs);
+-
+ extern void mips_timer_interrupt(int irq, struct pt_regs *regs);
+ extern asmlinkage void ev96100IRQ(void);
  
--	scache_size = (512*1024) << ((config >> 20)&3);
-+	scache_size = (512 * 1024) << ((config & R5K_CONF_SS) >> 20);
- 
--	printk("R5000 SCACHE size %ldK, linesize 32 bytes.\n",
-+	printk("R5000 SCACHE size %ldkB, linesize 32 bytes.\n",
- 			scache_size >> 10);
- 
- 	return 1;
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips64/kernel/cpu-probe.c linux-mips-2.4.21-pre4-20030414/arch/mips64/kernel/cpu-probe.c
---- linux-mips-2.4.21-pre4-20030414.macro/arch/mips64/kernel/cpu-probe.c	2003-04-13 02:56:56.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030414/arch/mips64/kernel/cpu-probe.c	2003-04-15 00:00:37.000000000 +0000
-@@ -35,7 +35,7 @@ void (*cpu_wait)(void) = NULL;
- static void r3081_wait(void)
- {
- 	unsigned long cfg = read_c0_conf();
--	write_c0_conf(cfg | CONF_HALT);
-+	write_c0_conf(cfg | R30XX_CONF_HALT);
- }
- 
- static void r39xx_wait(void)
-@@ -347,7 +347,7 @@ static inline int cpu_has_confreg(void)
- 	unsigned long cfg = read_c0_conf();
- 
- 	size1 = r3k_cache_size(ST0_ISC);
--	write_c0_conf(cfg ^ CONF_AC);
-+	write_c0_conf(cfg ^ R30XX_CONF_AC);
- 	size2 = r3k_cache_size(ST0_ISC);
- 	write_c0_conf(cfg);
- 	return size1 != size2;
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips64/mm/c-r4k.c linux-mips-2.4.21-pre4-20030414/arch/mips64/mm/c-r4k.c
---- linux-mips-2.4.21-pre4-20030414.macro/arch/mips64/mm/c-r4k.c	2003-04-14 02:57:00.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030414/arch/mips64/mm/c-r4k.c	2003-04-15 08:08:38.000000000 +0000
-@@ -673,6 +673,7 @@ static void __init probe_pcache(void)
- {
- 	struct cpuinfo_mips *c = &current_cpu_data;
- 	unsigned int config = read_c0_config();
-+	unsigned int prid = read_c0_prid();
- 	unsigned long config1;
- 	unsigned int lsize;
- 
-@@ -681,38 +682,38 @@ static void __init probe_pcache(void)
- 	case CPU_R4700:
- 	case CPU_R5000:
- 	case CPU_NEVADA:
--		icache_size = 1 << (12 + ((config >> 9) & 7));
--		c->icache.linesz = 16 << ((config >> 5) & 1);
-+		icache_size = 1 << (12 + ((config & CONF_IC) >> 9));
-+		c->icache.linesz = 16 << ((config & CONF_IB) >> 5);
- 		c->icache.ways = 2;
- 		c->icache.waybit = ffs(icache_size/2) - 1;
- 
--		dcache_size = 1 << (12 + ((config >> 6) & 7));
--		c->dcache.linesz = 16 << ((config >> 4) & 1);
-+		dcache_size = 1 << (12 + ((config & CONF_DC) >> 6));
-+		c->dcache.linesz = 16 << ((config & CONF_DB) >> 4);
- 		c->dcache.ways = 2;
- 		c->dcache.waybit= ffs(dcache_size/2) - 1;
- 		break;
- 
- 	case CPU_R5432:
- 	case CPU_R5500:
--		icache_size = 1 << (12 + ((config >> 9) & 7));
--		c->icache.linesz = 16 << ((config >> 5) & 1);
-+		icache_size = 1 << (12 + ((config & CONF_IC) >> 9));
-+		c->icache.linesz = 16 << ((config & CONF_IB) >> 5);
- 		c->icache.ways = 2;
- 		c->icache.waybit= 0;
- 
--		dcache_size = 1 << (12 + ((config >> 6) & 7));
--		c->dcache.linesz = 16 << ((config >> 4) & 1);
-+		dcache_size = 1 << (12 + ((config & CONF_DC) >> 6));
-+		c->dcache.linesz = 16 << ((config & CONF_DB) >> 4);
- 		c->dcache.ways = 2;
- 		c->dcache.waybit = 0;
- 		break;
- 
- 	case CPU_TX49XX:
--		icache_size = 1 << (12 + ((config >> 9) & 7));
--		c->icache.linesz = 16 << ((config >> 5) & 1);
-+		icache_size = 1 << (12 + ((config & CONF_IC) >> 9));
-+		c->icache.linesz = 16 << ((config & CONF_IB) >> 5);
- 		c->icache.ways = 4;
- 		c->icache.waybit= 0;
- 
--		dcache_size = 1 << (12 + ((config >> 6) & 7));
--		c->dcache.linesz = 16 << ((config >> 4) & 1);
-+		dcache_size = 1 << (12 + ((config & CONF_DC) >> 6));
-+		c->dcache.linesz = 16 << ((config & CONF_DB) >> 4);
- 		c->dcache.ways = 4;
- 		c->dcache.waybit = 0;
- 		break;
-@@ -723,25 +724,25 @@ static void __init probe_pcache(void)
- 	case CPU_R4400PC:
- 	case CPU_R4400SC:
- 	case CPU_R4400MC:
--		icache_size = 1 << (12 + ((config >> 9) & 7));
--		c->icache.linesz = 16 << ((config >> 5) & 1);
-+		icache_size = 1 << (12 + ((config & CONF_IC) >> 9));
-+		c->icache.linesz = 16 << ((config & CONF_IB) >> 5);
- 		c->icache.ways = 1;
- 		c->icache.waybit = 0; 	/* doesn't matter */
- 
--		dcache_size = 1 << (12 + ((config >> 6) & 7));
--		c->dcache.linesz = 16 << ((config >> 4) & 1);
-+		dcache_size = 1 << (12 + ((config & CONF_DC) >> 6));
-+		c->dcache.linesz = 16 << ((config & CONF_DB) >> 4);
- 		c->dcache.ways = 1;
- 		c->dcache.waybit = 0;	/* does not matter */
- 		break;
- 
- 	case CPU_VR4131:
--		icache_size = 1 << (10 + ((config >> 9) & 7));
--		c->icache.linesz = 16 << ((config >> 5) & 1);
-+		icache_size = 1 << (10 + ((config & CONF_IC) >> 9));
-+		c->icache.linesz = 16 << ((config & CONF_IB) >> 5);
- 		c->icache.ways = 2;
- 		c->icache.waybit = ffs(icache_size/2) - 1;
- 
--		dcache_size = 1 << (10 + ((config >> 6) & 7));
--		c->dcache.linesz = 16 << ((config >> 4) & 1);
-+		dcache_size = 1 << (10 + ((config & CONF_DC) >> 6));
-+		c->dcache.linesz = 16 << ((config & CONF_DB) >> 4);
- 		c->dcache.ways = 2;
- 		c->dcache.waybit = ffs(dcache_size/2) - 1;
- 		break;
-@@ -752,19 +753,19 @@ static void __init probe_pcache(void)
- 	case CPU_VR4122:
- 	case CPU_VR4181:
- 	case CPU_VR4181A:
--		icache_size = 1 << (10 + ((config >> 9) & 7));
--		c->icache.linesz = 16 << ((config >> 5) & 1);
-+		icache_size = 1 << (10 + ((config & CONF_IC) >> 9));
-+		c->icache.linesz = 16 << ((config & CONF_IB) >> 5);
- 		c->icache.ways = 1;
- 		c->icache.waybit = 0; 	/* doesn't matter */
- 
--		dcache_size = 1 << (10 + ((config >> 6) & 7));
--		c->dcache.linesz = 16 << ((config >> 4) & 1);
-+		dcache_size = 1 << (10 + ((config & CONF_DC) >> 6));
-+		c->dcache.linesz = 16 << ((config & CONF_DB) >> 4);
- 		c->dcache.ways = 1;
- 		c->dcache.waybit = 0;	/* does not matter */
- 		break;
- 
- 	default:
--		if (!(config & 0x80000000))
-+		if (!(config & MIPS_CONF_M))
- 			panic("Don't know how to probe P-caches on this cpu.");
- 
- 		/*
-@@ -803,16 +804,17 @@ static void __init probe_pcache(void)
- 	}
- 
- 	/*
--	 * Processor configuration sanity check for the R4000SC V2.2
--	 * erratum #5.  With pagesizes larger than 32kb there is no possibility
-+	 * Processor configuration sanity check for the R4000SC erratum
-+	 * #5.  With page sizes larger than 32kB there is no possibility
- 	 * to get a VCE exception anymore so we don't care about this
--	 * missconfiguration.  The case is rather theoretical anway; presumably
--	 * no vendor is shipping his hardware in the "bad" configuration.
-+	 * misconfiguration.  The case is rather theoretical anyway;
-+	 * presumably no vendor is shipping his hardware in the "bad"
-+	 * configuration.
- 	 */
--	if (PAGE_SIZE <= 0x8000 && read_c0_prid() == 0x0422 &&
--	    (read_c0_config() & CONF_SC) &&
--	     c->icache.linesz != 16)
--		panic("Impropper processor configuration detected");
-+	if ((prid & 0xff00) == PRID_IMP_R4000 && (prid & 0xff) < 0x40 &&
-+	    !(config & CONF_SC) && c->icache.linesz != 16 &&
-+	    PAGE_SIZE <= 0x8000)
-+		panic("Improper R4000SC processor configuration detected");
- 
- 	/* compute a couple of other cache variables */
- 	icache_way_size = icache_size / c->icache.ways;
-@@ -840,12 +842,12 @@ static void __init probe_pcache(void)
- 		break;
- 	}
- 
--	printk("Primary instruction cache %ldkb, %s, %s, linesize %d bytes\n",
-+	printk("Primary instruction cache %ldkB, %s, %s, linesize %d bytes.\n",
- 	       icache_size >> 10,
- 	       cpu_has_vtag_icache ? "virtually tagged" : "physically tagged",
- 	       way_string[c->icache.ways], c->icache.linesz);
- 
--	printk("Primary data cache %ldkb %s, linesize %d bytes\n",
-+	printk("Primary data cache %ldkB %s, linesize %d bytes.\n",
- 	       dcache_size >> 10, way_string[c->dcache.ways], c->dcache.linesz);
- }
- 
-@@ -862,10 +864,10 @@ static int __init probe_scache(void)
- 	unsigned int config = read_c0_config();
- 	int tmp;
- 
--	if ((config >> 17) & 1)
-+	if (config & CONF_SC)
- 		return 0;
- 
--	sc_lsize = 16 << ((config >> 22) & 3);
-+	sc_lsize = 16 << ((config & R4K_CONF_SB) >> 22);
- 
- 	begin = (unsigned long) &stext;
- 	begin &= ~((4 * 1024 * 1024) - 1);
-@@ -905,7 +907,7 @@ static int __init probe_scache(void)
- 	}
- 	local_irq_restore(flags);
- 	addr -= begin;
--	printk("Secondary cache sized at %ldK, linesize %ld bytes.\n",
-+	printk("Secondary cache sized at %ldkB, linesize %ld bytes.\n",
- 	       addr >> 10, sc_lsize);
- 	scache_size = addr;
- 
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips64/mm/r5k-sc.c linux-mips-2.4.21-pre4-20030414/arch/mips64/mm/r5k-sc.c
---- linux-mips-2.4.21-pre4-20030414.macro/arch/mips64/mm/r5k-sc.c	2003-03-25 03:56:43.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030414/arch/mips64/mm/r5k-sc.c	2003-04-15 00:01:42.000000000 +0000
-@@ -69,7 +69,7 @@ static void r5k_sc_enable(void)
-         unsigned long flags;
- 
- 	local_irq_save(flags);
--	change_c0_config(CONF_SE, CONF_SE);
-+	change_c0_config(R5K_CONF_SE, R5K_CONF_SE);
- 	blast_r5000_scache();
- 	local_irq_restore(flags);
- }
-@@ -80,7 +80,7 @@ static void r5k_sc_disable(void)
- 
- 	local_irq_save(flags);
- 	blast_r5000_scache();
--	change_c0_config(CONF_SE, 0);
-+	change_c0_config(R5K_CONF_SE, 0);
- 	local_irq_restore(flags);
- }
- 
-@@ -88,12 +88,12 @@ static inline int __init r5k_sc_probe(vo
- {
- 	unsigned long config = read_c0_config();
- 
--	if(config & CONF_SC)
-+	if (config & CONF_SC)
- 		return(0);
- 
--	scache_size = (512*1024) << ((config >> 20)&3);
-+	scache_size = (512 * 1024) << ((config & R5K_CONF_SS) >> 20);
- 
--	printk("R5000 SCACHE size %ldK, linesize 32 bytes.\n",
-+	printk("R5000 SCACHE size %ldkB, linesize 32 bytes.\n",
- 			scache_size >> 10);
- 
- 	return 1;
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/include/asm-mips/mipsregs.h linux-mips-2.4.21-pre4-20030414/include/asm-mips/mipsregs.h
---- linux-mips-2.4.21-pre4-20030414.macro/include/asm-mips/mipsregs.h	2003-04-13 21:53:14.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030414/include/asm-mips/mipsregs.h	2003-04-14 23:29:24.000000000 +0000
-@@ -128,7 +128,7 @@
-  * E the exception enable
-  * S the sticky/flag bit
- */
--#define FPU_CSR_ALL_X 0x0003f000
-+#define FPU_CSR_ALL_X   0x0003f000
- #define FPU_CSR_UNI_X   0x00020000
- #define FPU_CSR_INV_X   0x00010000
- #define FPU_CSR_DIV_X   0x00008000
-@@ -373,8 +373,9 @@
- #define  CAUSEF_BD		(_ULCAST_(1)   << 31)
+diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips/ite-boards/generic/irq.c linux-mips-2.4.21-pre4-20030414/arch/mips/ite-boards/generic/irq.c
+--- linux-mips-2.4.21-pre4-20030414.macro/arch/mips/ite-boards/generic/irq.c	2003-02-27 03:56:31.000000000 +0000
++++ linux-mips-2.4.21-pre4-20030414/arch/mips/ite-boards/generic/irq.c	2003-04-13 18:00:29.000000000 +0000
+@@ -36,6 +36,7 @@
+ #include <linux/config.h>
+ #include <linux/errno.h>
+ #include <linux/init.h>
++#include <linux/irq.h>
+ #include <linux/kernel_stat.h>
+ #include <linux/module.h>
+ #include <linux/signal.h>
+diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips/ite-boards/generic/time.c linux-mips-2.4.21-pre4-20030414/arch/mips/ite-boards/generic/time.c
+--- linux-mips-2.4.21-pre4-20030414.macro/arch/mips/ite-boards/generic/time.c	2003-03-26 03:56:34.000000000 +0000
++++ linux-mips-2.4.21-pre4-20030414/arch/mips/ite-boards/generic/time.c	2003-04-13 18:00:29.000000000 +0000
+@@ -37,7 +37,6 @@
+ static unsigned long r4k_offset; /* Amount to increment compare reg each time */
+ static unsigned long r4k_cur;    /* What counter should be at next timer irq */
+ extern unsigned int mips_counter_frequency;
+-extern asmlinkage unsigned int do_IRQ(int irq, struct pt_regs *regs);
  
  /*
-- * Bits in the coprozessor 0 config register.
-+ * Bits in the coprocessor 0 config register.
+  * Figure out the r4k offset, the amount to increment the compare
+diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips/jazz/irq.c linux-mips-2.4.21-pre4-20030414/arch/mips/jazz/irq.c
+--- linux-mips-2.4.21-pre4-20030414.macro/arch/mips/jazz/irq.c	2001-12-18 05:27:34.000000000 +0000
++++ linux-mips-2.4.21-pre4-20030414/arch/mips/jazz/irq.c	2002-12-18 00:56:22.000000000 +0000
+@@ -12,6 +12,7 @@
+ #include <linux/kernel.h>
+ #include <linux/spinlock.h>
+ 
++#include <asm/i8259.h>
+ #include <asm/io.h>
+ #include <asm/jazz.h>
+ 
+@@ -19,7 +20,7 @@ extern asmlinkage void jazz_handle_int(v
+ 
+ /*
+  * On systems with i8259-style interrupt controllers we assume for
+- * driver compatibility reasons interrupts 0 - 15 to be the i8295
++ * driver compatibility reasons interrupts 0 - 15 to be the i8259
+  * interrupts even if the hardware uses a different interrupt numbering.
   */
-+/* Generic bits.  */
- #define CONF_CM_CACHABLE_NO_WA		0
- #define CONF_CM_CACHABLE_WA		1
- #define CONF_CM_UNCACHED		2
-@@ -384,22 +385,73 @@
- #define CONF_CM_CACHABLE_CUW		6
- #define CONF_CM_CACHABLE_ACCELERATED	7
- #define CONF_CM_CMASK			7
-+#define CONF_BE			(_ULCAST_(1) << 15)
-+
-+/* Bits common to various processors.  */
- #define CONF_CU			(_ULCAST_(1) <<  3)
- #define CONF_DB			(_ULCAST_(1) <<  4)
- #define CONF_IB			(_ULCAST_(1) <<  5)
--#define CONF_SE			(_ULCAST_(1) << 12)
-+#define CONF_DC			(_ULCAST_(7) <<  6)
-+#define CONF_IC			(_ULCAST_(7) <<  9)
-+#define CONF_EB			(_ULCAST_(1) << 13)
-+#define CONF_EM			(_ULCAST_(1) << 14)
-+#define CONF_SM			(_ULCAST_(1) << 16)
- #define CONF_SC			(_ULCAST_(1) << 17)
--#define CONF_AC			(_ULCAST_(1) << 23)
--#define CONF_HALT		(_ULCAST_(1) << 25)
-+#define CONF_EW			(_ULCAST_(3) << 18)
-+#define CONF_EP			(_ULCAST_(15)<< 24)
-+#define CONF_EC			(_ULCAST_(7) << 28)
-+#define CONF_CM			(_ULCAST_(1) << 31)
-+
-+/* Bits specific to the R4xx0.  */
-+#define R4K_CONF_SW		(_ULCAST_(1) << 20)
-+#define R4K_CONF_SS		(_ULCAST_(1) << 21)
-+#define R4K_CONF_SB		(_ULCAST_(3) << 22)
-+
-+/* Bits specific to the R5000.  */
-+#define R5K_CONF_SE		(_ULCAST_(1) << 12)
-+#define R5K_CONF_SS		(_ULCAST_(3) << 20)
-+
-+/* Bits specific to the R10000.  */
-+#define R10K_CONF_DN		(_ULCAST_(3) <<  3)
-+#define R10K_CONF_CT		(_ULCAST_(1) <<  5)
-+#define R10K_CONF_PE		(_ULCAST_(1) <<  6)
-+#define R10K_CONF_PM		(_ULCAST_(3) <<  7)
-+#define R10K_CONF_EC		(_ULCAST_(15)<<  9)
-+#define R10K_CONF_SB		(_ULCAST_(1) << 13)
-+#define R10K_CONF_SK		(_ULCAST_(1) << 14)
-+#define R10K_CONF_SS		(_ULCAST_(7) << 16)
-+#define R10K_CONF_SC		(_ULCAST_(7) << 19)
-+#define R10K_CONF_DC		(_ULCAST_(7) << 26)
-+#define R10K_CONF_IC		(_ULCAST_(7) << 29)
-+
-+/* Bits specific to the VR41xx.  */
-+#define VR41_CONF_CS		(_ULCAST_(1) << 12)
-+#define VR41_CONF_M16		(_ULCAST_(1) << 20)
-+#define VR41_CONF_AD		(_ULCAST_(1) << 23)
-+
-+/* Bits specific to the R30xx.  */
-+#define R30XX_CONF_FDM		(_ULCAST_(1) << 19)
-+#define R30XX_CONF_REV		(_ULCAST_(1) << 22)
-+#define R30XX_CONF_AC		(_ULCAST_(1) << 23)
-+#define R30XX_CONF_RF		(_ULCAST_(1) << 24)
-+#define R30XX_CONF_HALT		(_ULCAST_(1) << 25)
-+#define R30XX_CONF_FPINT	(_ULCAST_(7) << 26)
-+#define R30XX_CONF_DBR		(_ULCAST_(1) << 29)
-+#define R30XX_CONF_SB		(_ULCAST_(1) << 30)
-+#define R30XX_CONF_LOCK		(_ULCAST_(1) << 31)
+ void __init init_IRQ (void)
+diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips/jmr3927/rbhma3100/irq.c linux-mips-2.4.21-pre4-20030414/arch/mips/jmr3927/rbhma3100/irq.c
+--- linux-mips-2.4.21-pre4-20030414.macro/arch/mips/jmr3927/rbhma3100/irq.c	2003-02-27 03:56:32.000000000 +0000
++++ linux-mips-2.4.21-pre4-20030414/arch/mips/jmr3927/rbhma3100/irq.c	2003-04-13 18:00:29.000000000 +0000
+@@ -33,6 +33,7 @@
+ #include <linux/init.h>
  
--/*
-- * Bits in the TX49 coprozessor 0 config register.
-- */
-+/* Bits specific to the TX49.  */
- #define TX49_CONF_DC		(_ULCAST_(1) << 16)
- #define TX49_CONF_IC		(_ULCAST_(1) << 17)  /* conflict with CONF_SC */
- #define TX49_CONF_HALT		(_ULCAST_(1) << 18)
- #define TX49_CONF_CWFON		(_ULCAST_(1) << 27)
+ #include <linux/errno.h>
++#include <linux/irq.h>
+ #include <linux/kernel_stat.h>
+ #include <linux/signal.h>
+ #include <linux/sched.h>
+@@ -47,7 +48,6 @@
  
-+/* Bits specific to the MIPS32/64 PRA.  */
-+#define MIPS_CONF_MT		(_ULCAST_(7) <<  7)
-+#define MIPS_CONF_AR		(_ULCAST_(7) << 10)
-+#define MIPS_CONF_AT		(_ULCAST_(3) << 13)
-+#define MIPS_CONF_M		(_ULCAST_(1) << 31)
-+
- /*
-  * R10000 performance counter definitions.
-  *
-diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/include/asm-mips64/mipsregs.h linux-mips-2.4.21-pre4-20030414/include/asm-mips64/mipsregs.h
---- linux-mips-2.4.21-pre4-20030414.macro/include/asm-mips64/mipsregs.h	2003-04-13 18:48:34.000000000 +0000
-+++ linux-mips-2.4.21-pre4-20030414/include/asm-mips64/mipsregs.h	2003-04-14 23:29:24.000000000 +0000
-@@ -128,7 +128,7 @@
-  * E the exception enable
-  * S the sticky/flag bit
- */
--#define FPU_CSR_ALL_X 0x0003f000
-+#define FPU_CSR_ALL_X   0x0003f000
- #define FPU_CSR_UNI_X   0x00020000
- #define FPU_CSR_INV_X   0x00010000
- #define FPU_CSR_DIV_X   0x00008000
-@@ -373,8 +373,9 @@
- #define  CAUSEF_BD		(_ULCAST_(1)   << 31)
+ #include <asm/bitops.h>
+ #include <asm/io.h>
+-#include <asm/irq.h>
+ #include <asm/mipsregs.h>
+ #include <asm/system.h>
  
- /*
-- * Bits in the coprozessor 0 config register.
-+ * Bits in the coprocessor 0 config register.
+@@ -287,7 +287,6 @@ void jmr3927_spurious(struct pt_regs *re
+ 	       regs->cp0_cause, regs->cp0_epc, regs->regs[31]);
+ }
+ 
+-extern asmlinkage void do_IRQ(int irq, struct pt_regs *regs);
+ void jmr3927_irc_irqdispatch(struct pt_regs *regs)
+ {
+ 	int irq;
+diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips/kernel/i8259.c linux-mips-2.4.21-pre4-20030414/arch/mips/kernel/i8259.c
+--- linux-mips-2.4.21-pre4-20030414.macro/arch/mips/kernel/i8259.c	2002-08-06 02:57:16.000000000 +0000
++++ linux-mips-2.4.21-pre4-20030414/arch/mips/kernel/i8259.c	2003-04-14 21:45:14.000000000 +0000
+@@ -15,6 +15,7 @@
+ #include <linux/kernel.h>
+ #include <linux/spinlock.h>
+ 
++#include <asm/i8259.h>
+ #include <asm/io.h>
+ 
+ void enable_8259A_irq(unsigned int irq);
+diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips/lasat/interrupt.c linux-mips-2.4.21-pre4-20030414/arch/mips/lasat/interrupt.c
+--- linux-mips-2.4.21-pre4-20030414.macro/arch/mips/lasat/interrupt.c	2003-02-25 03:56:37.000000000 +0000
++++ linux-mips-2.4.21-pre4-20030414/arch/mips/lasat/interrupt.c	2003-04-13 18:00:29.000000000 +0000
+@@ -40,7 +40,6 @@ static volatile int *lasat_int_mask = NU
+ static volatile int lasat_int_mask_shift;
+ 
+ extern asmlinkage void mipsIRQ(void);
+-extern void do_IRQ(int irq, struct pt_regs *regs);
+ 
+ #if 0
+ #define DEBUG_INT(x...) printk(x)
+diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips/mips-boards/atlas/atlas_int.c linux-mips-2.4.21-pre4-20030414/arch/mips/mips-boards/atlas/atlas_int.c
+--- linux-mips-2.4.21-pre4-20030414.macro/arch/mips/mips-boards/atlas/atlas_int.c	2003-02-27 03:56:32.000000000 +0000
++++ linux-mips-2.4.21-pre4-20030414/arch/mips/mips-boards/atlas/atlas_int.c	2003-04-13 18:00:29.000000000 +0000
+@@ -40,7 +40,6 @@ struct atlas_ictrl_regs *atlas_hw0_icreg
+ 	= (struct atlas_ictrl_regs *)ATLAS_ICTRL_REGS_BASE;
+ 
+ extern asmlinkage void mipsIRQ(void);
+-extern void do_IRQ(int irq, struct pt_regs *regs);
+ 
+ #if 0
+ #define DEBUG_INT(x...) printk(x)
+diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips/mips-boards/malta/malta_int.c linux-mips-2.4.21-pre4-20030414/arch/mips/mips-boards/malta/malta_int.c
+--- linux-mips-2.4.21-pre4-20030414.macro/arch/mips/mips-boards/malta/malta_int.c	2003-02-27 03:56:32.000000000 +0000
++++ linux-mips-2.4.21-pre4-20030414/arch/mips/mips-boards/malta/malta_int.c	2003-04-13 18:00:29.000000000 +0000
+@@ -23,13 +23,14 @@
   */
-+/* Generic bits.  */
- #define CONF_CM_CACHABLE_NO_WA		0
- #define CONF_CM_CACHABLE_WA		1
- #define CONF_CM_UNCACHED		2
-@@ -384,22 +385,73 @@
- #define CONF_CM_CACHABLE_CUW		6
- #define CONF_CM_CACHABLE_ACCELERATED	7
- #define CONF_CM_CMASK			7
-+#define CONF_BE			(_ULCAST_(1) << 15)
-+
-+/* Bits common to various processors.  */
- #define CONF_CU			(_ULCAST_(1) <<  3)
- #define CONF_DB			(_ULCAST_(1) <<  4)
- #define CONF_IB			(_ULCAST_(1) <<  5)
--#define CONF_SE			(_ULCAST_(1) << 12)
-+#define CONF_DC			(_ULCAST_(7) <<  6)
-+#define CONF_IC			(_ULCAST_(7) <<  9)
-+#define CONF_EB			(_ULCAST_(1) << 13)
-+#define CONF_EM			(_ULCAST_(1) << 14)
-+#define CONF_SM			(_ULCAST_(1) << 16)
- #define CONF_SC			(_ULCAST_(1) << 17)
--#define CONF_AC			(_ULCAST_(1) << 23)
--#define CONF_HALT		(_ULCAST_(1) << 25)
-+#define CONF_EW			(_ULCAST_(3) << 18)
-+#define CONF_EP			(_ULCAST_(15)<< 24)
-+#define CONF_EC			(_ULCAST_(7) << 28)
-+#define CONF_CM			(_ULCAST_(1) << 31)
-+
-+/* Bits specific to the R4xx0.  */
-+#define R4K_CONF_SW		(_ULCAST_(1) << 20)
-+#define R4K_CONF_SS		(_ULCAST_(1) << 21)
-+#define R4K_CONF_SB		(_ULCAST_(3) << 22)
-+
-+/* Bits specific to the R5000.  */
-+#define R5K_CONF_SE		(_ULCAST_(1) << 12)
-+#define R5K_CONF_SS		(_ULCAST_(3) << 20)
-+
-+/* Bits specific to the R10000.  */
-+#define R10K_CONF_DN		(_ULCAST_(3) <<  3)
-+#define R10K_CONF_CT		(_ULCAST_(1) <<  5)
-+#define R10K_CONF_PE		(_ULCAST_(1) <<  6)
-+#define R10K_CONF_PM		(_ULCAST_(3) <<  7)
-+#define R10K_CONF_EC		(_ULCAST_(15)<<  9)
-+#define R10K_CONF_SB		(_ULCAST_(1) << 13)
-+#define R10K_CONF_SK		(_ULCAST_(1) << 14)
-+#define R10K_CONF_SS		(_ULCAST_(7) << 16)
-+#define R10K_CONF_SC		(_ULCAST_(7) << 19)
-+#define R10K_CONF_DC		(_ULCAST_(7) << 26)
-+#define R10K_CONF_IC		(_ULCAST_(7) << 29)
-+
-+/* Bits specific to the VR41xx.  */
-+#define VR41_CONF_CS		(_ULCAST_(1) << 12)
-+#define VR41_CONF_M16		(_ULCAST_(1) << 20)
-+#define VR41_CONF_AD		(_ULCAST_(1) << 23)
-+
-+/* Bits specific to the R30xx.  */
-+#define R30XX_CONF_FDM		(_ULCAST_(1) << 19)
-+#define R30XX_CONF_REV		(_ULCAST_(1) << 22)
-+#define R30XX_CONF_AC		(_ULCAST_(1) << 23)
-+#define R30XX_CONF_RF		(_ULCAST_(1) << 24)
-+#define R30XX_CONF_HALT		(_ULCAST_(1) << 25)
-+#define R30XX_CONF_FPINT	(_ULCAST_(7) << 26)
-+#define R30XX_CONF_DBR		(_ULCAST_(1) << 29)
-+#define R30XX_CONF_SB		(_ULCAST_(1) << 30)
-+#define R30XX_CONF_LOCK		(_ULCAST_(1) << 31)
+ #include <linux/config.h>
+ #include <linux/init.h>
++#include <linux/irq.h>
+ #include <linux/sched.h>
+ #include <linux/slab.h>
+ #include <linux/interrupt.h>
+ #include <linux/kernel_stat.h>
+ #include <linux/random.h>
  
--/*
-- * Bits in the TX49 coprozessor 0 config register.
-- */
-+/* Bits specific to the TX49.  */
- #define TX49_CONF_DC		(_ULCAST_(1) << 16)
- #define TX49_CONF_IC		(_ULCAST_(1) << 17)  /* conflict with CONF_SC */
- #define TX49_CONF_HALT		(_ULCAST_(1) << 18)
- #define TX49_CONF_CWFON		(_ULCAST_(1) << 27)
+-#include <asm/irq.h>
++#include <asm/i8259.h>
+ #include <asm/io.h>
+ #include <asm/mips-boards/malta.h>
+ #include <asm/mips-boards/maltaint.h>
+@@ -39,8 +40,6 @@
+ #include <asm/mips-boards/msc01_pci.h>
  
-+/* Bits specific to the MIPS32/64 PRA.  */
-+#define MIPS_CONF_MT		(_ULCAST_(7) <<  7)
-+#define MIPS_CONF_AR		(_ULCAST_(7) << 10)
-+#define MIPS_CONF_AT		(_ULCAST_(3) << 13)
-+#define MIPS_CONF_M		(_ULCAST_(1) << 31)
-+
+ extern asmlinkage void mipsIRQ(void);
+-extern asmlinkage void do_IRQ(int irq, struct pt_regs *regs);
+-extern void init_i8259_irqs (void);
+ extern int mips_pcibios_iack(void);
+ 
+ #ifdef CONFIG_KGDB
+diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips/mips-boards/sead/sead_int.c linux-mips-2.4.21-pre4-20030414/arch/mips/mips-boards/sead/sead_int.c
+--- linux-mips-2.4.21-pre4-20030414.macro/arch/mips/mips-boards/sead/sead_int.c	2002-12-04 03:56:36.000000000 +0000
++++ linux-mips-2.4.21-pre4-20030414/arch/mips/mips-boards/sead/sead_int.c	2002-12-19 17:58:58.000000000 +0000
+@@ -25,17 +25,16 @@
+  */
+ #include <linux/config.h>
+ #include <linux/init.h>
++#include <linux/irq.h>
+ #include <linux/sched.h>
+ #include <linux/slab.h>
+ #include <linux/interrupt.h>
+ #include <linux/kernel_stat.h>
+ 
+-#include <asm/irq.h>
+ #include <asm/mips-boards/sead.h>
+ #include <asm/mips-boards/seadint.h>
+ 
+ extern asmlinkage void mipsIRQ(void);
+-extern void do_IRQ(int irq, struct pt_regs *regs);
+ 
+ void disable_sead_irq(unsigned int irq_nr)
+ {
+diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips/momentum/ocelot_c/cpci-irq.c linux-mips-2.4.21-pre4-20030414/arch/mips/momentum/ocelot_c/cpci-irq.c
+--- linux-mips-2.4.21-pre4-20030414.macro/arch/mips/momentum/ocelot_c/cpci-irq.c	2002-11-11 23:05:46.000000000 +0000
++++ linux-mips-2.4.21-pre4-20030414/arch/mips/momentum/ocelot_c/cpci-irq.c	2002-12-19 17:59:28.000000000 +0000
+@@ -19,17 +19,15 @@
+ 
+ #include <linux/module.h>
+ #include <linux/interrupt.h>
++#include <linux/irq.h>
+ #include <linux/kernel.h>
+ #include <asm/ptrace.h>
+ #include <linux/config.h>
+ #include <linux/sched.h>
+ #include <linux/kernel_stat.h>
+ #include <asm/io.h>
+-#include <asm/irq.h>
+ #include "ocelot_c_fpga.h"
+ 
+-extern unsigned int do_IRQ(int irq, struct pt_regs *regs);
+-
+ #define CPCI_IRQ_BASE	8
+ 
+ static inline int ls1bit8(unsigned int x)
+diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips/momentum/ocelot_c/mv-irq.c linux-mips-2.4.21-pre4-20030414/arch/mips/momentum/ocelot_c/mv-irq.c
+--- linux-mips-2.4.21-pre4-20030414.macro/arch/mips/momentum/ocelot_c/mv-irq.c	2002-11-11 23:05:46.000000000 +0000
++++ linux-mips-2.4.21-pre4-20030414/arch/mips/momentum/ocelot_c/mv-irq.c	2002-12-19 17:59:55.000000000 +0000
+@@ -14,17 +14,15 @@
+ 
+ #include <linux/module.h>
+ #include <linux/interrupt.h>
++#include <linux/irq.h>
+ #include <linux/kernel.h>
+ #include <asm/ptrace.h>
+ #include <linux/config.h>
+ #include <linux/sched.h>
+ #include <linux/kernel_stat.h>
+ #include <asm/io.h>
+-#include <asm/irq.h>
+ #include <asm/mv64340.h>
+ 
+-extern unsigned int do_IRQ(int irq, struct pt_regs *regs);
+-
+ #define MV64340_IRQ_BASE	16
+ 
+ static inline int ls1bit32(unsigned int x)
+diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips/momentum/ocelot_c/uart-irq.c linux-mips-2.4.21-pre4-20030414/arch/mips/momentum/ocelot_c/uart-irq.c
+--- linux-mips-2.4.21-pre4-20030414.macro/arch/mips/momentum/ocelot_c/uart-irq.c	2002-11-11 23:05:46.000000000 +0000
++++ linux-mips-2.4.21-pre4-20030414/arch/mips/momentum/ocelot_c/uart-irq.c	2002-12-19 18:00:27.000000000 +0000
+@@ -14,6 +14,7 @@
+ 
+ #include <linux/module.h>
+ #include <linux/interrupt.h>
++#include <linux/irq.h>
+ #include <linux/kernel.h>
+ #include <asm/ptrace.h>
+ #include <linux/config.h>
+@@ -23,8 +24,6 @@
+ #include <asm/irq.h>
+ #include "ocelot_c_fpga.h"
+ 
+-extern unsigned int do_IRQ(int irq, struct pt_regs *regs);
+-
+ static inline int ls1bit8(unsigned int x)
+ {
+         int b = 7, s;
+diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips/philips/nino/irq.c linux-mips-2.4.21-pre4-20030414/arch/mips/philips/nino/irq.c
+--- linux-mips-2.4.21-pre4-20030414.macro/arch/mips/philips/nino/irq.c	2003-02-27 03:56:43.000000000 +0000
++++ linux-mips-2.4.21-pre4-20030414/arch/mips/philips/nino/irq.c	2003-04-13 18:00:29.000000000 +0000
+@@ -11,6 +11,7 @@
+  */
+ #include <linux/config.h>
+ #include <linux/init.h>
++#include <linux/irq.h>
+ #include <linux/sched.h>
+ #include <linux/interrupt.h>
+ #include <asm/io.h>
+@@ -19,8 +20,6 @@
+ 
+ #define ALLINTS (IE_IRQ0 | IE_IRQ1 | IE_IRQ2 | IE_IRQ3 | IE_IRQ4 | IE_IRQ5)
+ 
+-extern asmlinkage void do_IRQ(int irq, struct pt_regs *regs);
+-
+ static void enable_irq6(unsigned int irq)
+ {
+ 	if(irq == 0) {
+diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips/sgi-ip22/ip22-eisa.c linux-mips-2.4.21-pre4-20030414/arch/mips/sgi-ip22/ip22-eisa.c
+--- linux-mips-2.4.21-pre4-20030414.macro/arch/mips/sgi-ip22/ip22-eisa.c	2003-03-20 03:56:31.000000000 +0000
++++ linux-mips-2.4.21-pre4-20030414/arch/mips/sgi-ip22/ip22-eisa.c	2003-04-13 18:02:59.000000000 +0000
+@@ -22,6 +22,7 @@
+ #include <linux/config.h>
+ #include <linux/types.h>
+ #include <linux/init.h>
++#include <linux/irq.h>
+ #include <linux/kernel_stat.h>
+ #include <linux/signal.h>
+ #include <linux/sched.h>
+@@ -35,8 +36,6 @@
+ #include <asm/sgi/mc.h>
+ #include <asm/sgi/ip22.h>
+ 
+-extern void do_IRQ(int irq, struct pt_regs *regs);
+-
+ #define EISA_MAX_SLOTS		  4
+ #define EISA_MAX_IRQ             16
+ 
+diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips/sgi-ip22/ip22-int.c linux-mips-2.4.21-pre4-20030414/arch/mips/sgi-ip22/ip22-int.c
+--- linux-mips-2.4.21-pre4-20030414.macro/arch/mips/sgi-ip22/ip22-int.c	2003-03-25 03:56:42.000000000 +0000
++++ linux-mips-2.4.21-pre4-20030414/arch/mips/sgi-ip22/ip22-int.c	2003-04-13 18:03:28.000000000 +0000
+@@ -36,7 +36,6 @@ static char lc2msk_to_irqnr[256];
+ static char lc3msk_to_irqnr[256];
+ 
+ extern asmlinkage void indyIRQ(void);
+-extern void do_IRQ(int irq, struct pt_regs *regs);
+ extern int ip22_eisa_init(void);
+ 
+ static void enable_local0_irq(unsigned int irq)
+diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips/sgi-ip27/ip27-irq.c linux-mips-2.4.21-pre4-20030414/arch/mips/sgi-ip27/ip27-irq.c
+--- linux-mips-2.4.21-pre4-20030414.macro/arch/mips/sgi-ip27/ip27-irq.c	2002-08-06 02:57:33.000000000 +0000
++++ linux-mips-2.4.21-pre4-20030414/arch/mips/sgi-ip27/ip27-irq.c	2002-12-19 18:02:29.000000000 +0000
+@@ -7,6 +7,7 @@
+  */
+ #include <linux/config.h>
+ #include <linux/init.h>
++#include <linux/irq.h>
+ #include <linux/errno.h>
+ #include <linux/signal.h>
+ #include <linux/sched.h>
+@@ -25,7 +26,6 @@
+ #include <asm/io.h>
+ #include <asm/mipsregs.h>
+ #include <asm/system.h>
+-#include <asm/irq.h>
+ 
+ #include <asm/ptrace.h>
+ #include <asm/processor.h>
+@@ -68,7 +68,6 @@ unsigned char num_bridges;	/* number of 
+  */
+ 
+ extern asmlinkage void ip27_irq(void);
+-extern void do_IRQ(int irq, struct pt_regs *regs);
+ 
+ extern int irq_to_bus[], irq_to_slot[], bus_to_cpu[];
+ int intr_connect_level(int cpu, int bit);
+diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips/sgi-ip32/ip32-irq.c linux-mips-2.4.21-pre4-20030414/arch/mips/sgi-ip32/ip32-irq.c
+--- linux-mips-2.4.21-pre4-20030414.macro/arch/mips/sgi-ip32/ip32-irq.c	2002-12-04 03:56:38.000000000 +0000
++++ linux-mips-2.4.21-pre4-20030414/arch/mips/sgi-ip32/ip32-irq.c	2002-12-19 18:04:05.000000000 +0000
+@@ -12,6 +12,7 @@
+ #include <linux/kernel_stat.h>
+ #include <linux/types.h>
+ #include <linux/interrupt.h>
++#include <linux/irq.h>
+ #include <linux/bitops.h>
+ #include <linux/kernel.h>
+ #include <linux/slab.h>
+@@ -115,7 +116,6 @@ struct irqaction cpuerr_irq = { crime_cp
+ 			       NULL };
+ 
+ extern void ip32_handle_int (void);
+-asmlinkage unsigned int do_IRQ(int irq, struct pt_regs *regs);
+ 
  /*
-  * R10000 performance counter definitions.
-  *
+  * For interrupts wired from a single device to the CPU.  Only the clock
+diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips/sni/irq.c linux-mips-2.4.21-pre4-20030414/arch/mips/sni/irq.c
+--- linux-mips-2.4.21-pre4-20030414.macro/arch/mips/sni/irq.c	2001-12-18 05:27:36.000000000 +0000
++++ linux-mips-2.4.21-pre4-20030414/arch/mips/sni/irq.c	2002-12-19 18:04:24.000000000 +0000
+@@ -9,16 +9,17 @@
+ #include <linux/delay.h>
+ #include <linux/init.h>
+ #include <linux/interrupt.h>
++#include <linux/irq.h>
+ #include <linux/kernel.h>
+ #include <linux/spinlock.h>
+ 
++#include <asm/i8259.h>
+ #include <asm/io.h>
+ #include <asm/sni.h>
+ 
+ spinlock_t pciasic_lock = SPIN_LOCK_UNLOCKED;
+ 
+ extern asmlinkage void sni_rm200_pci_handle_int(void);
+-extern void do_IRQ(int irq, struct pt_regs *regs);
+ 
+ static void enable_pciasic_irq(unsigned int irq);
+ 
+diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_irq.c linux-mips-2.4.21-pre4-20030414/arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_irq.c
+--- linux-mips-2.4.21-pre4-20030414.macro/arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_irq.c	2003-04-11 17:26:20.000000000 +0000
++++ linux-mips-2.4.21-pre4-20030414/arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_irq.c	2003-04-14 21:46:58.000000000 +0000
+@@ -670,7 +670,6 @@ static void toshiba_rbtx4927_irq_isa_end
+ void __init init_IRQ(void)
+ {
+ 	extern void tx4927_irq_init(void);
+-	extern void init_i8259_irqs(void);
+ 
+ 	cli();
+ 
+diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips/vr41xx/common/giu.c linux-mips-2.4.21-pre4-20030414/arch/mips/vr41xx/common/giu.c
+--- linux-mips-2.4.21-pre4-20030414.macro/arch/mips/vr41xx/common/giu.c	2003-04-07 02:56:30.000000000 +0000
++++ linux-mips-2.4.21-pre4-20030414/arch/mips/vr41xx/common/giu.c	2003-04-13 18:00:30.000000000 +0000
+@@ -211,8 +211,6 @@ int vr41xx_cascade_irq(unsigned int irq,
+ 	return retval;
+ }
+ 
+-extern unsigned int do_IRQ(int irq, struct pt_regs *regs);
+-
+ unsigned int giuint_do_IRQ(int pin, struct pt_regs *regs)
+ {
+ 	struct vr41xx_giuint_cascade *cascade;
+diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips/vr41xx/common/icu.c linux-mips-2.4.21-pre4-20030414/arch/mips/vr41xx/common/icu.c
+--- linux-mips-2.4.21-pre4-20030414.macro/arch/mips/vr41xx/common/icu.c	2003-04-07 02:56:30.000000000 +0000
++++ linux-mips-2.4.21-pre4-20030414/arch/mips/vr41xx/common/icu.c	2003-04-13 18:00:30.000000000 +0000
+@@ -58,7 +58,6 @@ extern asmlinkage void vr41xx_handle_int
+ 
+ extern void __init init_generic_irq(void);
+ extern void mips_cpu_irq_init(u32 irq_base);
+-extern unsigned int do_IRQ(int irq, struct pt_regs *regs);
+ 
+ extern void vr41xx_giuint_init(void);
+ extern unsigned int giuint_do_IRQ(int pin, struct pt_regs *regs);
+diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/arch/mips64/kernel/i8259.c linux-mips-2.4.21-pre4-20030414/arch/mips64/kernel/i8259.c
+--- linux-mips-2.4.21-pre4-20030414.macro/arch/mips64/kernel/i8259.c	2002-08-06 02:57:35.000000000 +0000
++++ linux-mips-2.4.21-pre4-20030414/arch/mips64/kernel/i8259.c	2003-04-14 21:45:24.000000000 +0000
+@@ -15,6 +15,7 @@
+ #include <linux/kernel.h>
+ #include <linux/spinlock.h>
+ 
++#include <asm/i8259.h>
+ #include <asm/io.h>
+ 
+ void enable_8259A_irq(unsigned int irq);
+diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/include/asm-mips/i8259.h linux-mips-2.4.21-pre4-20030414/include/asm-mips/i8259.h
+--- linux-mips-2.4.21-pre4-20030414.macro/include/asm-mips/i8259.h	1970-01-01 00:00:00.000000000 +0000
++++ linux-mips-2.4.21-pre4-20030414/include/asm-mips/i8259.h	2002-12-21 11:17:35.000000000 +0000
+@@ -0,0 +1,23 @@
++/*
++ *	include/asm-mips/i8259.h
++ *
++ *	i8259A interrupt definitions.
++ *
++ *	Copyright (C) 2003  Maciej W. Rozycki
++ *
++ *	This program is free software; you can redistribute it and/or
++ *	modify it under the terms of the GNU General Public License
++ *	as published by the Free Software Foundation; either version
++ *	2 of the License, or (at your option) any later version.
++ */
++#ifndef __ASM_MIPS_I8259_H
++#define __ASM_MIPS_I8259_H
++
++#include <linux/spinlock.h>
++
++#include <asm/io.h>
++#include <asm/system.h>
++
++extern void init_i8259_irqs(void);
++
++#endif /* __ASM_MIPS_I8259_H */
+diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/include/asm-mips/irq.h linux-mips-2.4.21-pre4-20030414/include/asm-mips/irq.h
+--- linux-mips-2.4.21-pre4-20030414.macro/include/asm-mips/irq.h	2002-12-16 04:19:56.000000000 +0000
++++ linux-mips-2.4.21-pre4-20030414/include/asm-mips/irq.h	2002-12-21 11:16:52.000000000 +0000
+@@ -12,6 +12,7 @@
+ #define _ASM_IRQ_H
+ 
+ #include <linux/config.h>
++#include <linux/linkage.h>
+ 
+ #define NR_IRQS 128		/* Largest number of ints of all machines.  */
+ 
+@@ -24,13 +25,13 @@ static inline int irq_cannonicalize(int 
+ #define irq_cannonicalize(irq) (irq)	/* Sane hardware, sane code ... */
+ #endif
+ 
+-struct irqaction;
+-extern int i8259_setup_irq(int irq, struct irqaction * new);
+-
+ extern void disable_irq(unsigned int);
+ extern void disable_irq_nosync(unsigned int);
+ extern void enable_irq(unsigned int);
+ 
++struct pt_regs;
++extern asmlinkage unsigned int do_IRQ(int irq, struct pt_regs *regs);
++
+ /* Machine specific interrupt initialization  */
+ extern void (*irq_setup)(void);
+ 
+diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/include/asm-mips64/i8259.h linux-mips-2.4.21-pre4-20030414/include/asm-mips64/i8259.h
+--- linux-mips-2.4.21-pre4-20030414.macro/include/asm-mips64/i8259.h	1970-01-01 00:00:00.000000000 +0000
++++ linux-mips-2.4.21-pre4-20030414/include/asm-mips64/i8259.h	2002-12-21 11:17:43.000000000 +0000
+@@ -0,0 +1,23 @@
++/*
++ *	include/asm-mips/i8259.h
++ *
++ *	i8259A interrupt definitions.
++ *
++ *	Copyright (C) 2003  Maciej W. Rozycki
++ *
++ *	This program is free software; you can redistribute it and/or
++ *	modify it under the terms of the GNU General Public License
++ *	as published by the Free Software Foundation; either version
++ *	2 of the License, or (at your option) any later version.
++ */
++#ifndef __ASM_MIPS64_I8259_H
++#define __ASM_MIPS64_I8259_H
++
++#include <linux/spinlock.h>
++
++#include <asm/io.h>
++#include <asm/system.h>
++
++extern void init_i8259_irqs(void);
++
++#endif /* __ASM_MIPS64_I8259_H */
+diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030414.macro/include/asm-mips64/irq.h linux-mips-2.4.21-pre4-20030414/include/asm-mips64/irq.h
+--- linux-mips-2.4.21-pre4-20030414.macro/include/asm-mips64/irq.h	2003-01-27 00:04:58.000000000 +0000
++++ linux-mips-2.4.21-pre4-20030414/include/asm-mips64/irq.h	2003-04-13 18:00:30.000000000 +0000
+@@ -12,6 +12,7 @@
+ #define _ASM_IRQ_H
+ 
+ #include <linux/config.h>
++#include <linux/linkage.h>
+ #include <asm/sn/arch.h>
+ 
+ #define NR_IRQS 256
+@@ -42,13 +43,13 @@ static inline int irq_cannonicalize(int 
+ #define irq_cannonicalize(irq) (irq)	/* Sane hardware, sane code ... */
+ #endif
+ 
+-struct irqaction;
+-extern int i8259_setup_irq(int irq, struct irqaction * new);
+-
+ extern void disable_irq(unsigned int);
+ extern void disable_irq_nosync(unsigned int);
+ extern void enable_irq(unsigned int);
+ 
++struct pt_regs;
++extern asmlinkage unsigned int do_IRQ(int irq, struct pt_regs *regs);
++
+ /* Machine specific interrupt initialization  */
+ extern void (*irq_setup)(void);
+ 

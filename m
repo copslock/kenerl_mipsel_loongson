@@ -1,35 +1,40 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f2NMs1X11861
-	for linux-mips-outgoing; Fri, 23 Mar 2001 14:54:01 -0800
-Received: from sprint02.rtmx.net (IDENT:qmailr@sprint02.RTMX.NET [208.31.160.2])
-	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f2NMs1M11858
-	for <linux-mips@oss.sgi.com>; Fri, 23 Mar 2001 14:54:01 -0800
-Received: (qmail 12007 invoked by uid 102); 23 Mar 2001 22:53:59 -0000
-Received: from host098.momenco.com (HELO beagle) (64.169.228.98)
-  by 208.31.160.29 with SMTP; 23 Mar 2001 22:53:59 -0000
-From: "Matthew Dharm" <mdharm@momenco.com>
-To: "Linux-MIPS" <linux-mips@oss.sgi.com>
-Subject: Multiple processor support?
-Date: Fri, 23 Mar 2001 14:53:59 -0800
-Message-ID: <NEBBLJGMNKKEEMNLHGAIKELKCAAA.mdharm@momenco.com>
+	by oss.sgi.com (8.11.3/8.11.3) id f2NMu5512107
+	for linux-mips-outgoing; Fri, 23 Mar 2001 14:56:05 -0800
+Received: from pobox.sibyte.com (pobox.sibyte.com [208.12.96.20])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f2NMu4M12104
+	for <linux-mips@oss.sgi.com>; Fri, 23 Mar 2001 14:56:04 -0800
+Received: from postal.sibyte.com (moat.sibyte.com [208.12.96.21])
+	by pobox.sibyte.com (Postfix) with SMTP
+	id 52EAB205FC; Fri, 23 Mar 2001 14:55:59 -0800 (PST)
+Received: from SMTP agent by mail gateway 
+ Fri, 23 Mar 2001 14:48:54 -0800
+Received: from plugh.sibyte.com (plugh.sibyte.com [10.21.64.158])
+	by postal.sibyte.com (Postfix) with ESMTP
+	id 530B21595F; Fri, 23 Mar 2001 14:55:59 -0800 (PST)
+Received: by plugh.sibyte.com (Postfix, from userid 61017)
+	id B19D6686D; Fri, 23 Mar 2001 14:58:35 -0800 (PST)
+From: Justin Carlson <carlson@sibyte.com>
+Reply-To: carlson@sibyte.com
+Organization: Sibyte
+To: "Matthew Dharm" <mdharm@momenco.com>
+Subject: Re: Multiple processor support?
+Date: Fri, 23 Mar 2001 14:58:20 -0800
+X-Mailer: KMail [version 1.0.29]
+Content-Type: text/plain
+References: <NEBBLJGMNKKEEMNLHGAIKELKCAAA.mdharm@momenco.com>
+In-Reply-To: <NEBBLJGMNKKEEMNLHGAIKELKCAAA.mdharm@momenco.com>
+Cc: linux-mips@oss.sgi.com
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
-Importance: Normal
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
+Message-Id: <01032314583505.00779@plugh.sibyte.com>
+Content-Transfer-Encoding: 8bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Does the MIPS port of linux support multiple-processor architectures?
+On Fri, 23 Mar 2001, you wrote:
+> Does the MIPS port of linux support multiple-processor architectures?
+> 
 
-Matt Dharm
+MIPS or MIPS64?
 
---
-Matthew D. Dharm                            Senior Software Designer
-Momentum Computer Inc.                      1815 Aston Ave.  Suite 107
-(760) 431-8663 X-115                        Carlsbad, CA 92008-7310
-Momentum Works For You                      www.momenco.com
+-Justin

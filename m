@@ -1,67 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Dec 2002 19:43:08 +0100 (MET)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:24337
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by ralf.linux-mips.org
-	with ESMTP id <S870691AbSLFSmx>; Fri, 6 Dec 2002 19:42:53 +0100
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp (Exim 3.36 #2)
-	id 18KNPp-0006wy-00; Fri, 06 Dec 2002 19:41:33 +0100
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 18KNPp-0004PO-00; Fri, 06 Dec 2002 19:41:33 +0100
-Date: Fri, 6 Dec 2002 19:41:33 +0100
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: Carsten Langgaard <carstenl@mips.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Dec 2002 20:01:42 +0100 (MET)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:36575 "EHLO
+	delta.ds2.pg.gda.pl") by ralf.linux-mips.org with ESMTP
+	id <S870705AbSLFTBd>; Fri, 6 Dec 2002 20:01:33 +0100
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id TAA03902;
+	Fri, 6 Dec 2002 19:58:26 +0100 (MET)
+Date: Fri, 6 Dec 2002 19:58:25 +0100 (MET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+cc: Carsten Langgaard <carstenl@mips.com>,
 	Ralf Baechle <ralf@linux-mips.org>,
 	"Kevin D. Kissell" <kevink@mips.com>, linux-mips@linux-mips.org
 Subject: Re: Latest sources from CVS.
-Message-ID: <20021206184133.GL23743@rembrandt.csv.ica.uni-stuttgart.de>
-References: <20021206172438.GJ23743@rembrandt.csv.ica.uni-stuttgart.de> <Pine.GSO.3.96.1021206192349.26674T-100000@delta.ds2.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.GSO.3.96.1021206192349.26674T-100000@delta.ds2.pg.gda.pl>
-User-Agent: Mutt/1.4i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+In-Reply-To: <20021206184133.GL23743@rembrandt.csv.ica.uni-stuttgart.de>
+Message-ID: <Pine.GSO.3.96.1021206194914.3424A-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 815
+X-archive-position: 816
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-Maciej W. Rozycki wrote:
-> On Fri, 6 Dec 2002, Thiemo Seufer wrote:
+On Fri, 6 Dec 2002, Thiemo Seufer wrote:
+
+> >  I'm only going to support n64 on the DECstation.  You are welcomed to do
+> > n32 stuff yourself if you want to. 
 > 
-> > Maybe I wasn't clear about it, I meant kernels with 32 bit address
-> > space but 64 bit register width, allowing for userland N32 ABI.
-> > 
-> > E.g. the old DECstations with R4k CPU and limited memory would fit
-> > in this scheme. :-)
+> What does N64 on the DECstation better than N32 could do? N32 has
+> more compact code, better cache usage and less memory consumption.
+
+ Well, as you probably noticed, the DECstation is not a performance
+screamer anymore.  If I needed a fast system, I'd use something else.  I
+need a reference platform, though, even if it costs performance.
+
+> >  I haven't considered you may mean crippling the available user address
+> > space.
 > 
->  I'm only going to support n64 on the DECstation.  You are welcomed to do
-> n32 stuff yourself if you want to. 
+> IIRC is the maximum of RAM 448 MB on some machines. Actually utilizing
 
-What does N64 on the DECstation better than N32 could do? N32 has
-more compact code, better cache usage and less memory consumption.
+ For the record, it's 480MB, actually (15 * 32MB). 
 
-> > >  Remember we are writing of the kernel -- we don't know what userland is
-> > > going to bring us
-> > 
-> > I don't understand this. The kernel _defines_ what the userland is allowed
-> > to do.
-> 
->  I haven't considered you may mean crippling the available user address
-> space.
+> an user address space larger than 2 GB would mean a RAM/Swap ratio of
+> about 1:4, IOW, it likely gets unusable slow.
 
-IIRC is the maximum of RAM 448 MB on some machines. Actually utilizing
-an user address space larger than 2 GB would mean a RAM/Swap ratio of
-about 1:4, IOW, it likely gets unusable slow.
+ That depends on the utility of swap -- it's usually slow, although not
+always. 
 
-Is there any point besides of hack value to use N64 on these machines?
+> Is there any point besides of hack value to use N64 on these machines?
 
+ Probably not.
 
-Thiemo
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

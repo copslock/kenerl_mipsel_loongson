@@ -1,77 +1,98 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g2N4k4204938
-	for linux-mips-outgoing; Fri, 22 Mar 2002 20:46:04 -0800
-Received: from paul.rutgers.edu (paul.rutgers.edu [128.6.5.53])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2N4jtq04935
-	for <linux-mips@oss.sgi.com>; Fri, 22 Mar 2002 20:45:55 -0800
-Received: (from muthur@localhost)
-	by paul.rutgers.edu (8.10.2+Sun/8.8.8) id g2N4mIg06476;
-	Fri, 22 Mar 2002 23:48:18 -0500 (EST)
-Date: Fri, 22 Mar 2002 23:48:18 -0500 (EST)
-From: Muthukumar Ratty <muthur@paul.rutgers.edu>
-To: linux-mips@oss.sgi.com
-Subject: Lost when execve-ing the init.
-Message-ID: <Pine.SOL.4.10.10203212243150.12256-100000@paul.rutgers.edu>
+	by oss.sgi.com (8.11.2/8.11.3) id g2N8j4207222
+	for linux-mips-outgoing; Sat, 23 Mar 2002 00:45:04 -0800
+Received: from ms45.hinet.net (root@ms45.hinet.net [168.95.4.45])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2N8isq07219
+	for <linux-mips@oss.sgi.com>; Sat, 23 Mar 2002 00:44:55 -0800
+Received: from sam (61-220-89-134.HINET-IP.hinet.net [61.220.89.134])
+	by ms45.hinet.net (8.8.8/8.8.8) with SMTP id QAA04899;
+	Sat, 23 Mar 2002 16:47:06 +0800 (CST)
+From: "Y.H. Ku" <iskoo@ms45.hinet.net>
+To: "Marc Karasek" <marc_karasek@ivivity.com>, <linux-mips@oss.sgi.com>
+Subject: RE: BootLoader on MIPS
+Date: Sat, 23 Mar 2002 16:42:41 +0800
+Message-ID: <NGBBILOAMLLIJMLIOCADAELACCAA.iskoo@ms45.hinet.net>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain;
+	charset="big5"
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
+Importance: Normal
+In-Reply-To: <25369470B6F0D41194820002B328BDD2195BD9@ATLOPS>
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6600
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from base64 to 8bit by oss.sgi.com id g2N8iuq07220
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+Hi everybody,
 
-Hi,
-I was trying a kernel I made and found that I got lost after it goes to
-execve("/sbin/init") in init/main.c. I can ping the board which means the
-board is alive. I tried to trace it down but got stuck with the following
-code in "include/asm-mips/unistd.h" [ I believe it implements 
-the execve function since in the same file I have .....
-static inline _syscall3(int,execve,const char *,file,char **,argv,char
-**,envp)] 
+I trace PMON into mips.S, and find the entry "_go".
+the entry transfer control to client prog.
 
-------------------------------------------------------------------------------
+I am confused of what information PMON transfer to MIPS's BOOTLOADER
+and transfer to which entry point of BOOTLOADER.
 
-#define _syscall3(type,name,atype,a,btype,b,ctype,c) \
-type name (atype a, btype b, ctype c) \
-{ \
-long __res, __err; \
-__asm__ volatile ("move\t$4,%3\n\t" \
-                  "move\t$5,%4\n\t" \
-                  "move\t$6,%5\n\t" \
-                  "li\t$2,%2\n\t" \
-                  "syscall\n\t" \
-                  "move\t%0, $2\n\t" \
-                  "move\t%1, $7" \
-                  : "=r" (__res), "=r" (__err) \
-                  : "i" (__NR_##name),"r" ((long)(a)), \
-                                      "r" ((long)(b)), \
-                                      "r" ((long)(c)) \
-                  : "$2","$4","$5","$6","$7","$8","$9","$10","$11","$12",
-\
-                    "$13","$14","$15","$24"); \
-if (__err == 0) \
-        return (type) __res; \
-errno = __res; \
-return -1; \
-}
----------------------------------------------------------------------------
+I found the bd_t struct of PPCBOOT.h for PPCBOOT package on POWERPC platform.
+It is corresponding POWERPC-LINUX data structure bd_info in ~/include/asm/mbx.h 
+(register r3~r7)
 
-I guess...
-After setting up the arguments its referencing (#defined ???) syscall. I
-couldnt find the definition for "syscall". Could someone point me to the 
-right place (and help me get some sleep please ;). Also any idea about how
-to debug this. (Can I set breakpoint in syscall3??). (Any idea why its not
-going.. error in my irq setup??...)
+I just can not find the entry for MIPS's one. (can not find corresponding baget.h's one)
 
-Thanks a lot,
-Muthu.
+Could anybody tell me what is the information (register inforation) PMON transfer
+to bootloader?
 
-PS : what does this funny thing mean???
+Or anybody can disscuss with me,
 
-   : "=r" (__res), "=r" (__err) \
-                  : "i" (__NR_##name),"r" ((long)(a)), \
-                                      "r" ((long)(b)), \
-                                      "r" ((long)(c)) \
-                  : "$2","$4","$5","$6","$7","$8","$9","$10","$11","$12",
-\
-                    "$13","$14","$15","$24"); \
-if (__err == 0) \
- 
+best regards,
+--sam
+
+-----Original Message-----
+From: owner-linux-mips@oss.sgi.com
+[mailto:owner-linux-mips@oss.sgi.com]On Behalf Of Marc Karasek
+Sent: Friday, March 22, 2002 9:21 PM
+To: 'Y.H. Ku'; linux-mips@oss.sgi.com
+Subject: RE: BootLoader on MIPS
+
+
+YAMON is prob the default right now.  It has support for loading a kernel
+over tftp.  
+
+I do not think it is OS though.  I maybe wrong, I will have to check the
+source I have to see if it is or not.  I am currently adding  BOOTP support
+to it, along with some other options.  If it is OS, then I will be providing
+these back to the community.
+
+/*******************************************
+Marc Karasek
+Sr. Firmware Engineer
+iVivity Inc.
+Ph: 678-990-1550 x238
+Fax: 678-990-1551
+email: marc_karasek@ivivity.com
+/*******************************************
+
+
+-----Original Message-----
+From: Y.H. Ku [mailto:iskoo@ms45.hinet.net]
+Sent: Friday, March 22, 2002 3:16 AM
+To: linux-mips@oss.sgi.com
+Subject: BootLoader on MIPS
+
+
+Hello there,
+
+I am trying to porting Prom monitor code to
+appropriate MIPS bootloader for loading Linux kernel
+
+I ever make a test sucessfully with ppcboot's to load MBXloader
+for transfering control to linux kernel (hardhat).
+
+But I can not find the entry, and make decision what kind of BOOT LOADER
+to use on MIPS platform.
+
+I have the ddb5476 board type linux from montavista,
+Could anybody give me some suggestion?
+
+--Sam

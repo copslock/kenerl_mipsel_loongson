@@ -1,85 +1,138 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Dec 2004 00:04:16 +0000 (GMT)
-Received: from web201.biz.mail.re2.yahoo.com ([IPv6:::ffff:68.142.224.163]:54938
-	"HELO web201.biz.mail.re2.yahoo.com") by linux-mips.org with SMTP
-	id <S8225230AbULaAEK>; Fri, 31 Dec 2004 00:04:10 +0000
-Message-ID: <20041231000354.53760.qmail@web201.biz.mail.re2.yahoo.com>
-Received: from [64.164.196.27] by web201.biz.mail.re2.yahoo.com via HTTP; Thu, 30 Dec 2004 16:03:54 PST
-Date: Thu, 30 Dec 2004 16:03:54 -0800 (PST)
-From: Peter Popov <ppopov@embeddedalley.com>
-Subject: Re: Request for new machtype
-To: =?ISO-8859-1?Q?"J=F8rg"?= Ulrich Hansen <jh@hansen-telecom.dk>,
-	linux-mips@linux-mips.org
-In-Reply-To: <000201c4ed88$efdc64b0$040ba8c0@ANNEMETTE>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Dec 2004 01:11:59 +0000 (GMT)
+Received: from mail.alphastar.de ([IPv6:::ffff:194.59.236.179]:31492 "EHLO
+	mail.alphastar.de") by linux-mips.org with ESMTP
+	id <S8225230AbULaBLy>; Fri, 31 Dec 2004 01:11:54 +0000
+Received: from SNaIlmail.Peter (217.249.217.132)
+          by mail.alphastar.de with MERCUR Mailserver (v4.02.28 MTIxLTIxODAtNjY2OA==)
+          for <linux-mips@linux-mips.org>; Fri, 31 Dec 2004 02:09:52 +0100
+Received: from Indigo2.Peter (Indigo2.Peter [192.168.1.28])
+	by SNaIlmail.Peter (8.12.6/8.12.6/Sendmail/Linux 2.0.32) with ESMTP id iBV18ZGQ000482
+	for <linux-mips@linux-mips.org>; Fri, 31 Dec 2004 02:08:35 +0100
+Received: from pf (helo=localhost)
+	by Indigo2.Peter with local-esmtp (Exim 3.35 #1 (Debian))
+	id 1CkBFq-00007R-00
+	for <linux-mips@linux-mips.org>; Fri, 31 Dec 2004 02:06:58 +0100
+Date: Fri, 31 Dec 2004 02:06:02 +0100 (CET)
+From: Peter Fuerst <pf@Indigo2.Peter>
+To: linux-mips@linux-mips.org
+Subject: Confused assembler
+In-Reply-To: <20041227124435.GC26100@linux-mips.org>
+Message-ID: <Pine.LNX.4.58.0412310201350.455@Indigo2.Peter>
+References: <20041225172449.1063A1F123@trashy.coderock.org>
+ <20041227124435.GC26100@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <ppopov@embeddedalley.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Reply-To: pf@net.alphadv.de
+Return-Path: <pf@net.alphadv.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6790
+X-archive-position: 6791
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@embeddedalley.com
+X-original-sender: pf@Indigo2.Peter
 Precedence: bulk
 X-list: linux-mips
 
 
-I'll take care of it.
 
-Pete
+Hello !
 
---- Jørg Ulrich Hansen <jh@hansen-telecom.dk> wrote:
 
-> Hi
-> 
-> We are the manufacture of a cpu module based on ADMs
-> Alchemy au1100 and
-> would like a machtype as defined in bootinfo.h
-> 
-> I have included a patch that defines MACH_MB1100 as
-> 9 but would like to
-> have it confirm so we are not running into conflicts
-> in the future.
-> 
-> Index: linux267/include/asm-mips/bootinfo.h
->
-===================================================================
-> RCS file:
-> /home/cvs/linux/include/asm-mips/bootinfo.h,v
-> retrieving revision 1.74
-> diff -u -p -r1.74 bootinfo.h
-> --- linux267/include/asm-mips/bootinfo.h	13 Apr 2004
-> 22:07:45
-> -0000	1.74
-> +++ linux267/include/asm-mips/bootinfo.h	27 Nov 2004
-> 16:20:31
-> -0000
-> @@ -174,6 +174,7 @@
->  #define  MACH_XXS1500		6       /* Au1500-based eval
-> board */
->  #define  MACH_MTX1		7       /* 4G MTX-1
-> Au1500-based board
-> */
->  #define  MACH_PB1550		8       /* Au1550-based eval
-> board */
-> +#define  MACH_MB1100		9   /* Mechatronic Brick
-> mb1100 module
-> */
->  
->  /*
->   * Valid machtype for group NEC_VR41XX 
-> 
-> Kind regards Jorg Hansen
-> 
-> This is not advertising but more information about
-> the module as well as
-> crosstool based on buildroot and patches can be
-> found at:
-> http://www.mechatronicbrick.dk/uk/mb1100.html
-> 
-> 
->  
-> 
-> 
-> 
+When building 2.6.10, the assembler (2.13.2.1) gets confused by a "b target2"
+(compiler generated) immediately following a "beqzl target1" (inline assembly
+macro), and reorders these instructions (with wrong address calculation too)
+to an infinite loop.
+(Well, not really infinite - after about ten minutes some timer interrupt
+makes an end to it by a null-pointer dereference in __queue_work()  ;-)
+This bug is rather unreliable though, going away with minimal, unintentional
+code changes, unexpectedly reappearing after some later rebuild...
+
+Was this behaviour already observed elsewhere ?  Is it fixed in some newer
+assembler version ?  Or should i just be content with it and work around
+with appropriate "nop"s in the concerned inline-assembly macros ? ... ?
+
+
+
+as -EB -G 0 -mips4 -O2 -g0 -64 -mcpu=r8000 -v -64 -non_shared -64 -march=r8000 -mips4 --trap -o kernel/.tmp_fork.o
+GNU assembler version 2.13.2.1 (mips64-ip28-linux-gnu) using BFD version 2.13.2.1
+GNU assembler version 2.13.2.1 (mips64-linux) using BFD version 2.13.2.1
+
+Here are examples of what the assembler receives from the compiler,
+and what it produces:
+
+a80000002003a6c0 <copy_process>:
+...
+
+	.set	macro
+	.set	reorder
+	cache 0x14,0($sp)	# Cache Barrier
+ #APP
+	1:	lld	$3, 256($4)	# atomic64_add
+	addu	$3, $2
+	scd	$3, 256($4)
+	beqzl	$3, 1b
+ #NO_APP
+	b	$L5881
+$L5887:
+	 # Cache Barrier omitted.
+	move	$5,$0
+$L5881:
+	...
+a80000002003a944:	bfb40000 	cache	0x14,0(sp)
+a80000002003a948:	d0830100 	lld	v1,256(a0)
+a80000002003a94c:	00621821 	addu	v1,v1,v0
+a80000002003a950:	f0830100 	scd	v1,256(a0)
+a80000002003a954 <!>:	1000ffff 	b	a80000002003a954 <$L6939+0xe4>
+a80000002003a958:	00000000 	nop
+a80000002003a95c:	50600000 	beqzl	v1,a80000002003a960 <$L5887>
+a80000002003a960 <$L5887>:
+a80000002003a960:	0000282d 	move	a1,zero
+a80000002003a964 <$L5881>:
+...
+
+ #APP
+	1:	ll	$5, 0($2)	# atomic_add
+	addu	$5, $3
+	sc	$5, 0($2)
+	beqzl	$5, 1b
+ #NO_APP
+	b	$L6092
+$L6057:
+	...
+$L6092:
+	...
+a80000002003abe4:	c0450000 	ll	a1,0(v0)
+a80000002003abe8 <!>:	00a32821 	addu	a1,a1,v1
+a80000002003abec:	e0450000 	sc	a1,0(v0)
+a80000002003abf0:	1000fffd 	b	a80000002003abe8 <$L6045+0x70>
+a80000002003abf4:	00000000 	nop
+a80000002003abf8:	50a00000 	beqzl	a1,a80000002003abfc <$L6057>
+a80000002003abfc <$L6057>:
+...
+
+ #APP
+	1:	ll	$5, 4($2)	# atomic_add
+	addu	$5, $3
+	sc	$5, 4($2)
+	beqzl	$5, 1b
+ #NO_APP
+	b	$L6480
+$L6411:
+	...
+$L6480:
+	...
+a80000002003aedc:	c0450004 	ll	a1,4(v0)
+a80000002003aee0:	00a32821 	addu	a1,a1,v1
+a80000002003aee4 <!>:	e0450004 	sc	a1,4(v0)
+a80000002003aee8:	1000fffe 	b	a80000002003aee4 <$L6401+0x54>
+a80000002003aeec:	00000000 	nop
+a80000002003aef0:	50a00000 	beqzl	a1,a80000002003aef4 <$L6411>
+a80000002003aef4 <$L6411>:
+...
+
+
+with kind regards
+
+pf

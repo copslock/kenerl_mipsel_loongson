@@ -1,177 +1,100 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Feb 2004 16:34:01 +0000 (GMT)
-Received: from mo03.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:54776 "EHLO
-	mo03.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225463AbUBEQeA>;
-	Thu, 5 Feb 2004 16:34:00 +0000
-Received: from mdo01.iij4u.or.jp (mdo01.iij4u.or.jp [210.130.0.171])
-	by mo03.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id BAA21557;
-	Fri, 6 Feb 2004 01:33:56 +0900 (JST)
-Received: 4UMDO01 id i15GXuG21236; Fri, 6 Feb 2004 01:33:56 +0900 (JST)
-Received: 4UMRO00 id i15GXt416468; Fri, 6 Feb 2004 01:33:55 +0900 (JST)
-	from stratos.frog (64.43.138.210.xn.2iij.net [210.138.43.64]) (authenticated)
-Date: Fri, 6 Feb 2004 01:33:46 +0900
-From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH][2.4] Added keymap of Victor MP-C30x
-Message-Id: <20040206013346.15d4d82a.yuasa@hh.iij4u.or.jp>
-X-Mailer: Sylpheed version 0.9.9 (GTK+ 1.2.10; i686-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yuasa@hh.iij4u.or.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Feb 2004 17:00:40 +0000 (GMT)
+Received: from mxsf26.cluster1.charter.net ([IPv6:::ffff:209.225.28.226]:24595
+	"EHLO mxsf26.cluster1.charter.net") by linux-mips.org with ESMTP
+	id <S8225442AbUBERAk>; Thu, 5 Feb 2004 17:00:40 +0000
+Received: from tseo ([68.114.28.136])
+	by mxsf26.cluster1.charter.net (8.12.10/8.12.8) with SMTP id i15Gw5JC081838
+	for <linux-mips@linux-mips.org>; Thu, 5 Feb 2004 11:58:06 -0500 (EST)
+	(envelope-from seo_tmi@charter.net)
+From: "Toshio Seo" <seo_tmi@charter.net>
+To: "Linux-Mips" <linux-mips@linux-mips.org>
+Subject: Userland question
+Date: Thu, 5 Feb 2004 11:55:36 -0500
+Message-ID: <HGEAKBEJEJDAIDOBJGONKEMKCAAA.seo_tmi@charter.net>
+MIME-Version: 1.0
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_000_0019_01C3EBDE.F7912EE0"
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.6604 (9.0.2911.0)
+Importance: Normal
+X-MS-TNEF-Correlator: <HGEAKBEJEJDAIDOBJGONKEMKCAAA.seo_tmi@charter.net>
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1165
+Return-Path: <seo_tmi@charter.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4288
+X-archive-position: 4289
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuasa@hh.iij4u.or.jp
+X-original-sender: seo_tmi@charter.net
 Precedence: bulk
 X-list: linux-mips
 
-Hello Ralf,
+This is a multi-part message in MIME format.
 
-I made a patch for keymap of Victor MP-30x.
-Please apply this patch to v2.4.
+------=_NextPart_000_0019_01C3EBDE.F7912EE0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
 
-Yoichi
+Hi,
 
-diff -urN -X dontdiff linux-orig/arch/mips/config-shared.in linux/arch/mips/config-shared.in
---- linux-orig/arch/mips/config-shared.in	Fri Jan 16 01:18:59 2004
-+++ linux/arch/mips/config-shared.in	Fri Feb  6 00:59:57 2004
-@@ -697,7 +697,6 @@
-    define_bool CONFIG_PCI y
-    define_bool CONFIG_NEW_PCI y
-    define_bool CONFIG_PCI_AUTO y
--   define_bool CONFIG_DUMMY_KEYB y
-    define_bool CONFIG_SCSI n
- fi
- if [ "$CONFIG_ZAO_CAPCELLA" = "y" ]; then
-diff -urN -X dontdiff linux-orig/drivers/char/Makefile linux/drivers/char/Makefile
---- linux-orig/drivers/char/Makefile	Fri Jan 23 21:13:49 2004
-+++ linux/drivers/char/Makefile	Fri Feb  6 00:59:57 2004
-@@ -51,6 +51,9 @@
-     ifeq ($(CONFIG_IBM_WORKPAD),y)
-       KEYMAP = ibm_workpad_keymap.o
-     endif
-+    ifeq ($(CONFIG_VICTOR_MPC30X),y)
-+      KEYMAP = victor_mpc30x_keymap.o
-+    endif
-     KEYBD    = vr41xx_keyb.o
-   endif
- endif
-@@ -357,4 +360,7 @@
- 	set -e ; loadkeys --mktable $< | sed -e 's/^static *//' > $@
+I built am using a cross compiler and was able to build Linux with GCC-3.3.2
+and GLIB-2.3.2 but when trying to execute programs, I get GLIB errors since
+the Userland on the embedded system is not up to the right version.  I tried
+PTX but I think it is up to 3.2.3 and 2.2.5 respectively.  I there any good
+reference to updating the Userland when crosscompiling?
+
+Toshio Seo
+
+
+---
+Outgoing mail is certified Virus Free.
+Checked by AVG anti-virus system (http://www.grisoft.com).
+Version: 6.0.573 / Virus Database: 363 - Release Date: 1/28/2004
  
- ibm_workpad_keymap.c: ibm_workpad_keymap.map
-+	set -e ; loadkeys --mktable $< | sed -e 's/^static *//' > $@
-+
-+victor_mpc30x_keymap.c: victor_mpc30x_keymap.map
- 	set -e ; loadkeys --mktable $< | sed -e 's/^static *//' > $@
-diff -urN -X dontdiff linux-orig/drivers/char/victor_mpc30x_keymap.map linux/drivers/char/victor_mpc30x_keymap.map
---- linux-orig/drivers/char/victor_mpc30x_keymap.map	Thu Jan  1 09:00:00 1970
-+++ linux/drivers/char/victor_mpc30x_keymap.map	Fri Feb  6 00:59:57 2004
-@@ -0,0 +1,102 @@
-+# Victor Interlink MP-C303/304 keyboard keymap
-+#
-+# Copyright (C) 2003  Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-+#
-+# This file is subject to the terms and conditions of the GNU General Public
-+# License.  See the file "COPYING" in the main directory of this archive
-+# for more details.
-+keymaps 0-1,4-5,8-9,12
-+alt_is_meta
-+strings as usual
-+compose as usual for "iso-8859-1"
-+
-+# First line
-+keycode 89 = Escape
-+keycode  9 = Delete
-+
-+# 2nd line
-+keycode 73 = one              exclam
-+keycode 18 = two              quotedbl
-+keycode 92 = three            numbersign
-+	control	keycode 92 = Escape
-+keycode 53 = four             dollar
-+	control	keycode 53 = Control_backslash
-+keycode 21 = five             percent
-+	control	keycode 21 = Control_bracketright
-+keycode 50 = six              ampersand
-+	control	keycode 50 = Control_underscore
-+keycode 48 = seven            apostrophe
-+keycode 51 = eight            parenleft
-+keycode 16 = nine             parenright
-+keycode 80 = zero             asciitilde
-+	control	keycode 80 = nul
-+keycode 49 = minus            equal
-+keycode 30 = asciicircum      asciitilde
-+	control	keycode 30 = Control_asciicircum
-+keycode  5 = backslash        bar
-+	control	keycode  5 = Control_backslash
-+keycode 13 = BackSpace
-+# 3rd line
-+keycode 57 = Tab
-+keycode 74 = q
-+keycode 26 = w
-+keycode 81 = e
-+keycode 29 = r
-+keycode 37 = t
-+keycode 45 = y
-+keycode 72 = u
-+keycode 24 = i
-+keycode 32 = o
-+keycode 41 = p
-+keycode  1 = at               grave
-+	control	keycode  1 = nul
-+keycode 54 = bracketleft      braceleft
-+keycode 63 = Return
-+	alt	keycode 63 = Meta_Control_m
-+# 4th line
-+keycode 23 = Caps_Lock
-+keycode 34 = a
-+keycode 66 = s
-+keycode 52 = d
-+keycode 20 = f
-+keycode 84 = g
-+keycode 67 = h
-+keycode 64 = j
-+keycode 17 = k
-+keycode 83 = l
-+keycode 22 = semicolon        plus
-+keycode 61 = colon            asterisk
-+	control keycode 61 = Control_g
-+keycode 65 = bracketright     braceright
-+	control	keycode 65 = Control_bracketright
-+# 5th line
-+keycode 91 = Shift
-+keycode 76 = z
-+keycode 68 = x
-+keycode 28 = c
-+keycode 36 = v
-+keycode 44 = b
-+keycode 19 = n
-+keycode 27 = m
-+keycode 35 = comma            less
-+keycode  3 = period           greater
-+	control	keycode  3 = Compose
-+keycode 38 = slash            question
-+	control	keycode 38 = Delete
-+	shift	control	keycode 38 = Delete
-+keycode  6 = backslash        underscore
-+	control	keycode  6 = Control_backslash
-+keycode 55 = Up
-+	alt keycode 55 = PageUp
-+keycode 14 = Shift
-+# 6th line
-+keycode 56 = Control
-+keycode 42 = Alt
-+keycode 33 = space
-+	control	keycode 33 = nul
-+keycode  7 = Left
-+	alt keycode  7 = Home
-+keycode 31 = Down
-+	alt keycode 31 = PageDown
-+keycode 47 = Right
-+	alt keycode 47 = End
+
+------=_NextPart_000_0019_01C3EBDE.F7912EE0
+Content-Type: application/ms-tnef;
+	name="winmail.dat"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+	filename="winmail.dat"
+
+eJ8+IiQQAQaQCAAEAAAAAAABAAEAAQeQBgAIAAAA5AQAAAAAAADoAAEIgAcAGAAAAElQTS5NaWNy
+b3NvZnQgTWFpbC5Ob3RlADEIAQ2ABAACAAAAAgACAAEGgAMADgAAANQHAgAFAAsANgAAAAQAJwEB
+A5AGALQGAAAkAAAACwACAAEAAAALACMAAAAAAAMAJgAAAAAACwApAAAAAAADADYAAAAAAB4AcAAB
+AAAAEgAAAFVzZXJsYW5kIHF1ZXN0aW9uAAAAAgFxAAEAAAAWAAAAAcPsCMYfGV5EUkpxRYqXUE8C
+EUJ1aAAAAgEdDAEAAAAZAAAAU01UUDpTRU9fVE1JQENIQVJURVIuTkVUAAAAAAsAAQ4AAAAAQAAG
+DgCE3qYI7MMBAgEKDgEAAAAYAAAAAAAAABRtoedp2XZAoUldXSIG/zTCgAAACwAfDgEAAAACAQkQ
+AQAAAHYCAAByAgAARwMAAExaRnWGXMd8AwAKAHJjcGcxMjUWMgD4C2BuDhAwMzNPAfcCpAPjAgBj
+aArAc/BldDAgBxMCgwBQBFV/EMkIVQeyAoMOUBBvEXV9JQqBdgiQd2sLgGQ0HQxgYwBQCwMLtSBI
+aQ4sCqIKhAqASSBidcMDEAVAYW0gdQCQDyA1GUAgBQBvBBEFoG1whwMQE6EAcGQgd2EEIGMBoBqw
+IHRvGOMbEEwJC4B1eBsgaXRoIEBHQ0MtMy4dQDKBGuNHTElCLTIdUzMY8AVAd2gJ8BuwcnlzGaIb
+wWV4BZAeoBugcEcDYAnAGVBzLCAY0Ge3ETAd0x+wcgNgERAgGZGmYxuhHuAgVREgcg8B9xsQAiAi
+U2UG0AmAAQAbEDhzeXMgEBlgBAAgbnJvBUB1cBuyImIFEGc6aAVAdgSQAJACIC4gjyDRHyAIkBsQ
+UFRYHoP1JrFoC4BrJJAFQCShJRTfHWEdUBrjHjAeMDUloAeQknAFkHRpJhBseSaE1x7gCXAa4Xkg
+8G8EcCnhnmYrISIjG9AlEGRhKlC/H2Iieh7TGgMaZBmhPxgaeQrzIFQaICfgG9AGYG//GBUAQRgj
+MAULRhRSF7EAALkLDjE4AzAvERugLTUg/TTETx6gK6AZogDAAxEkoY8iMAAgBpAm8lZpchmAVCBG
+CdEuNMRDHuBjimskAWIrgEFWRxrhXSpQLRYwN4IkNSgl4HSgcDovL3c7AC4JwFUEAG8BgC4aYSk4
+BVZBJiQ6IDYuMCnAN3UpMC83VUQs8AGgG0BlaTzgMzYpMC0H8CqAZYc+UT3yPnExLzI4P/BMMDAW
+sDTTIH0YFH0BQWAAAAMAAHwFAAAACwABgAggBgAAAAAAwAAAAAAAAEYAAAAAA4UAAAAAAAADAAOA
+CCAGAAAAAADAAAAAAAAARgAAAAAQhQAAAAAAAAMAJoAIIAYAAAAAAMAAAAAAAABGAAAAAFKFAABz
+eQEACwAzgAggBgAAAAAAwAAAAAAAAEYAAAAADoUAAAAAAAADADWACCAGAAAAAADAAAAAAAAARgAA
+AAARhQAAAAAAAAMANoAIIAYAAAAAAMAAAAAAAABGAAAAABiFAAAAAAAAAwBcgAggBgAAAAAAwAAA
+AAAAAEYAAAAAAYUAAAAAAAAeAGuACCAGAAAAAADAAAAAAAAARgAAAABUhQAAAQAAAAQAAAA5LjAA
+CwBsgAggBgAAAAAAwAAAAAAAAEYAAAAABoUAAAAAAAALAIeACCAGAAAAAADAAAAAAAAARgAAAACC
+hQAAAQAAAAMABoFACbNnNTvSEaWVACAYZIunAQAAACAAAABBAFYARwAgAEYATABBAEcAUwAgACgA
+TwBVAFQAKQAAAAAAAAMCAfgPAQAAABAAAAAUbaHnadl2QKFJXV0iBv80AgH6DwEAAAAQAAAAFG2h
+52nZdkChSV1dIgb/NAIB+w8BAAAAnwAAAAAAAAA4obsQBeUQGqG7CAArKlbCAABQU1RQUlguRExM
+AAAAAAAAAABOSVRB+b+4AQCqADfZbgAAAEM6XERvY3VtZW50cyBhbmQgU2V0dGluZ3NcQWRtaW5p
+c3RyYXRvclxMb2NhbCBTZXR0aW5nc1xBcHBsaWNhdGlvbiBEYXRhXE1pY3Jvc29mdFxPdXRsb29r
+XG91dGxvb2sucHN0AAADAP4PBQAAAAMADTT9NwAAAgF/AAEAAAAzAAAAPEhHRUFLQkVKRUpEQUlE
+T0JKR09OS0VNS0NBQUEuc2VvX3RtaUBjaGFydGVyLm5ldD4AAAMABhD63K0jAwAHELIBAAADABAQ
+AAAAAAMAERAAAAAAHgAIEAEAAABlAAAASEksSUJVSUxUQU1VU0lOR0FDUk9TU0NPTVBJTEVSQU5E
+V0FTQUJMRVRPQlVJTERMSU5VWFdJVEhHQ0MtMzMyQU5ER0xJQi0yMzJCVVRXSEVOVFJZSU5HVE9F
+WEVDVVRFUFJPRwAAAAAjgQ==
+
+------=_NextPart_000_0019_01C3EBDE.F7912EE0--

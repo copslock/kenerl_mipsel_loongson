@@ -1,78 +1,66 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f81IObv17067
-	for linux-mips-outgoing; Sat, 1 Sep 2001 11:24:37 -0700
-Received: from mail.ict.ac.cn ([159.226.39.4])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f81IOWd17062
-	for <linux-mips@oss.sgi.com>; Sat, 1 Sep 2001 11:24:33 -0700
-Message-Id: <200109011824.f81IOWd17062@oss.sgi.com>
-Received: (qmail 14979 invoked from network); 1 Sep 2001 18:18:59 -0000
-Received: from unknown (HELO heart1) (159.226.39.162)
-  by 159.226.39.4 with SMTP; 1 Sep 2001 18:18:59 -0000
-Date: Sun, 2 Sep 2001 2:24:39 +0800
-From: Fuxin Zhang <fxzhang@ict.ac.cn>
-To: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: Re: set_except_vector question
-X-mailer: FoxMail 3.11 Release [cn]
-Mime-Version: 1.0
-Content-Type: text/plain; charset="GB2312"
-Content-Transfer-Encoding: 8bit
-X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id f81IOXd17063
+	by oss.sgi.com (8.11.2/8.11.3) id f81KO0v19470
+	for linux-mips-outgoing; Sat, 1 Sep 2001 13:24:00 -0700
+Received: from mcp.csh.rit.edu (mcp.csh.rit.edu [129.21.60.9])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f81KNvd19464
+	for <linux-mips@oss.sgi.com>; Sat, 1 Sep 2001 13:23:57 -0700
+Received: from csh.rit.edu (unknown [129.21.60.133])
+	by mcp.csh.rit.edu (Postfix) with ESMTP id 2D022288
+	for <linux-mips@oss.sgi.com>; Sat,  1 Sep 2001 16:23:56 -0400 (EDT)
+Message-ID: <3B913DF7.6040007@csh.rit.edu>
+Date: Sat, 01 Sep 2001 15:58:47 -0400
+From: George Gensure <werkt@csh.rit.edu>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.3) Gecko/20010801
+X-Accept-Language: en-us
+MIME-Version: 1.0
+To: linux-mips <linux-mips@oss.sgi.com>
+Subject: xdm bus errors
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-hello,Lars Munch
- 2001-09-01 18:10:00£º
->What do you mean by "synthesizing a jump"?
-I think he means " making a jump instruction"
-and yes.
-the "j handler" instruction can be made that way:
-    _______________________
-    |opcode |   target     |
-    -----------------------
-    opcode for j is 000010,the target pc is computed as currentpc[31-28]||target||00
->
->My CPU is a 5Kc and it has a DIVEC which is set to the mipsIRQ function in
->/arch/mips64/mips-boards/generic/mipsIRQ.S to handle interrupts. But I still do
->not understand the address manipulation which is done before storing the
->function pointer (handler).
->
->Thanks
->Lars Munch
->
->On Sat, Sep 01, 2001 at 11:54:26AM -0400, Bradley D. LaRonde wrote:
->> Looks like it is synthesizing a jump (j) instruction to forward interrupt
->> exceptions to the interrupt handler for cpus that have a dedicated interrupt
->> vector (DIVEC).  arch/mips/kernel/setup.c sets the DIVEC option for certain
->> cpus.
->> 
->> Regards,
->> Brad
->> 
->> ----- Original Message -----
->> From: "Lars Munch" <lars@segv.dk>
->> To: <linux-mips@oss.sgi.com>
->> Sent: Saturday, September 01, 2001 10:58 AM
->> Subject: set_except_vector question
->> 
->> 
->> > Hi
->> >
->> > I have been looking at the set_except_vector function in
->> > arch/mips[64]/kernel/traps.c and wondering why the handler
->> > address is changed/recalculated before it is stored:
->> >
->> > *(volatile u32 *)(KSEG0+0x200) = 0x08000000 | (0x03ffffff & (handler >>
->> 2));
->> >
->> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->> >
->> > Could someone please enlighten me?
->> >
->> > Thanks
->> > Lars Munch
->> >
->> 
+I got this lovely bit of alphanumericism whilst trying to run xdm. 
+ Anyone have any idea how to fix this bus error?
 
-Regards
-            Fuxin Zhang
-            fxzhang@ict.ac.cn
+Data bus error, epc == 8815e5c4, ra == 880c0eb0
+Oops in traps.c:, line 310:
+$0 : 00000000 80000000 7fff7668 7fff7668
+$4 : 7fff5668 80090000 00002000 00002000
+$8 : 00000000 00090000 00000000 00000003
+$12: 000000b0 00002000 7fff5668 7fff5668
+$16: 8d197520 ffffffea 00002000 7fff5668
+$20: 00000001 00000010 10008778 10021550
+$24: 00000040 80090000
+$28: 8ccfc000 8ccfdef0 00000000 880c0eb0
+epc   : 8815e5c4
+Status: 9000fc03
+Cause : 0000401c
+Process xdm (pid: 164, stackpage=8ccfc000)
+Stack: 8d197500 8804bb9c 00000001 00000000 00000004 8804b4b4 10008718 
+2aac6000
+       10008750 7fff7768 7fff76a0 00000004 000003b8 10007b10 8800f7c8 
+8800f7c8
+       00000001 7fff77a8 7fff7828 00000000 ffffffff 00000000 00000000 
+9000fc00
+       00000fa3 000000b0 00000004 7fff5668 00002000 00000400 0000fc00 
+2b039164
+       00000000 00000002 fffffffc 2b131cac 00000005 7fff76e0 10008750 
+7fff7768
+       00000001 ...
+Call Trace [<8804bb9c>] [<8804b4b4>] [<8800f7c8>] [8800f7c8>]
+Code: 24840010  13000045  30ca0040 <8ca80000> 8ca90004  8cab0008 
+ 8cac000c  ac880000 ac890004
+Got a bus error IRQ, shouldn't happen yet
+$0 : 00000000 9000fc01 00000001 00000000
+$4 : 881c98c4 00000003 00000003 8ccfc100
+$8 : 9000fc00 1000001f 00000001 07200720
+$12: 07200720 00080000 881e70c0 885a6ea0
+$16: 00000001 881b0000 fffffffe 9000fc00
+$20: 00000001 00000010 10008778 10021550
+$24: 00000000 00000010
+$28: 8ccfc000 8ccfdce8 00000000 88011aec
+epc   : 8802acd4
+Status: 9000fc03
+Cause : 00004000
+Spinning...

@@ -1,56 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Aug 2003 07:41:28 +0100 (BST)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:4729
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8225301AbTHSGlZ>; Tue, 19 Aug 2003 07:41:25 +0100
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp (Exim 3.35 #1)
-	id 19p0BD-0004ZM-00
-	for linux-mips@linux-mips.org; Tue, 19 Aug 2003 08:41:19 +0200
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 19p0BC-0003xK-00
-	for <linux-mips@linux-mips.org>; Tue, 19 Aug 2003 08:41:18 +0200
-Date: Tue, 19 Aug 2003 08:41:18 +0200
-To: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Aug 2003 13:22:43 +0100 (BST)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:42638 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225309AbTHSMWl>; Tue, 19 Aug 2003 13:22:41 +0100
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA29602;
+	Tue, 19 Aug 2003 14:22:38 +0200 (MET DST)
+X-Authentication-Warning: delta.ds2.pg.gda.pl: macro owned process doing -bs
+Date: Tue, 19 Aug 2003 14:22:37 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Ralf Baechle <ralf@linux-mips.org>
+cc: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>,
+	linux-mips@linux-mips.org
 Subject: Re: GCCFLAGS for gcc 3.3.x (-march and _MIPS_ISA)
-Message-ID: <20030819064118.GB13468@rembrandt.csv.ica.uni-stuttgart.de>
-References: <20030812.152654.74756131.nemoto@toshiba-tops.co.jp> <20030812065118.GD23104@rembrandt.csv.ica.uni-stuttgart.de> <20030819035756.GC6223@linux-mips.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20030819035756.GC6223@linux-mips.org>
-User-Agent: Mutt/1.5.4i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+In-Reply-To: <20030819033843.GA6223@linux-mips.org>
+Message-ID: <Pine.GSO.3.96.1030819140527.29184B-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3072
+X-archive-position: 3073
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
-> On Tue, Aug 12, 2003 at 08:51:18AM +0200, Thiemo Seufer wrote:
-> 
-> > > 	GCCFLAGS += -mabi=32 -march=mips2 -mtune=r4600 -Wa,--trap
-> > > (or	GCCFLAGS += $(call check_gcc, -mcpu=r4600 -mips2, -mabi=32 -march=mips2 -mtune=r4600) -Wa,--trap)
+On Tue, 19 Aug 2003, Ralf Baechle wrote:
+
+> > > > #ifdef __mips64
+> > > > # define MFC0		dmfc0
+> > > > # define MTC0		dmtc0
+> > > > #else
+> > > > # define MFC0		mfc0
+> > > > # define MTC0		mtc0
+> > > > #endif
 > > > 
-> > > Isn't it?
+> > >  I'd go for CONFIG_MIPS64 here.
 > > 
-> > -march=mips2 is an alias for -march=r6000, I don't think that's a
-> > good choice.
+> > This would work as well, but I prefer compiler intrinsic defines
+> > over custom configury.
 > 
-> Why? MIPSII / MIPS32 are the highest ISAs supported for building 32-bit
-> kernels so that makes sense.
+> I agree for this particular header file because it's been copied into
+> user applications.  So ideally it should be able to live entirely without
+> CONFIG_* symbols rsp. <linux/config.h>.
 
-Because you get only MIPS II instructions then. This doesn't matter
-much for R4600, but the improvements of later ISAs won't be used.
+ OK, I now recall <asm/asm.h> and <asm/regdef.h> as traditionally being
+often included in user assembly.  But then we should get rid of
+configuration dependency entirely, i.e. remove "#include <linux/config.h>" 
+and a CONFIG_CPU_HAS_PREFETCH dependency.  Perhaps <asm/pref.h> would be
+desireable if we don't want wasting cycles.
 
--mabi=32 -march=r4600 works for 32bit kernels with newer toolchains,
-there's no need to use -mtune separately.
+ It's a pity a more reasonable choice wasn't made for the location of
+these headers -- the asm and linux trees shouldn't really be used for
+userland.  For example Alpha has <alpha/regdef.h> that comes from glibc. 
 
-
-Thiemo
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

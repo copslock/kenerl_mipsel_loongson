@@ -1,238 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 May 2004 15:29:22 +0100 (BST)
-Received: from europa.et.put.poznan.pl ([IPv6:::ffff:150.254.29.138]:40929
-	"EHLO europa.et.put.poznan.pl") by linux-mips.org with ESMTP
-	id <S8225272AbUEOO3V>; Sat, 15 May 2004 15:29:21 +0100
-Received: from europa (europa.et.put.poznan.pl [150.254.29.138])
-	by europa.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id i4FETJb22707
-	for <linux-mips@linux-mips.org>; Sat, 15 May 2004 16:29:19 +0200 (MET DST)
-Received: from helios.et.put.poznan.pl ([150.254.29.65])
-	by europa.et.put.poznan.pl (MailMonitor for SMTP v1.2.2 ) ;
-	Sat, 15 May 2004 16:29:18 +0200 (MET DST)
-Received: from localhost (sskowron@localhost)
-	by helios.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id i4FETHF27735
-	for <linux-mips@linux-mips.org>; Sat, 15 May 2004 16:29:17 +0200 (MET DST)
-X-Authentication-Warning: helios.et.put.poznan.pl: sskowron owned process doing -bs
-Date: Sat, 15 May 2004 16:29:16 +0200 (MET DST)
-From: Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
-To: linux-mips@linux-mips.org
-Subject: XKPHYS_KERNEL patch - kernel in 64-bit space
-Message-ID: <Pine.GSO.4.10.10405151626200.27563-200000@helios.et.put.poznan.pl>
-MIME-Version: 1.0
-Content-Type: MULTIPART/MIXED; BOUNDARY="-559023410-851401618-1084631356=:27563"
-Return-Path: <sskowron@ET.PUT.Poznan.PL>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 May 2004 15:51:01 +0100 (BST)
+Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:52323
+	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
+	id <S8225272AbUEOOvA>; Sat, 15 May 2004 15:51:00 +0100
+Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42] ident=mail)
+	by iris1.csv.ica.uni-stuttgart.de with esmtp
+	id 1BP0V6-0001DM-00; Sat, 15 May 2004 16:50:56 +0200
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
+	id 1BP0V6-0008Ax-00; Sat, 15 May 2004 16:50:56 +0200
+Date: Sat, 15 May 2004 16:50:56 +0200
+To: Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
+Cc: linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: XKPHYS_KERNEL patch - kernel in 64-bit space
+Message-ID: <20040515145056.GC14219@rembrandt.csv.ica.uni-stuttgart.de>
+References: <Pine.GSO.4.10.10405151626200.27563-200000@helios.et.put.poznan.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.GSO.4.10.10405151626200.27563-200000@helios.et.put.poznan.pl>
+User-Agent: Mutt/1.5.6i
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5023
+X-archive-position: 5024
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sskowron@ET.PUT.Poznan.PL
+X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
 Precedence: bulk
 X-list: linux-mips
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
-  Send mail to mime@docserver.cac.washington.edu for more info.
+Stanislaw Skowronek wrote:
+[snip]
+> diff -urN linux-mips-cvs-mdules/arch/mips/mm/tlb-andes.c linux-mips-xkphys/arch/mips/mm/tlb-andes.c
+> --- linux-mips-cvs-mdules/arch/mips/mm/tlb-andes.c	Wed Mar 17 22:26:44 2004
+> +++ linux-mips-xkphys/arch/mips/mm/tlb-andes.c	Sat May 15 16:09:42 2004
+> @@ -264,7 +264,7 @@
+>  #endif
+>  #ifdef CONFIG_MIPS64
+>  	memcpy((void *)(CKSEG0 + 0x000), &except_vec0_generic, 0x80);
+> -	memcpy((void *)(CKSEG0 + 0x080), except_vec1_r10k, 0x80);
+> +	memcpy((void *)(CKSEG0 + 0x080), &except_vec1_r10k, 0x80);
+>  	flush_icache_range(CKSEG0 + 0x80, CKSEG0 + 0x100);
 
----559023410-851401618-1084631356=:27563
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+This flush_icache_range should start from CKSEG0, not (CKSEG0 + 80).
 
-This patch allows the kernel to run from any place in the whole physical
-address space, not only the lowest 512 MB. It is REQUIRED for operation on
-IP30 (Octane) and for R8000 support.
 
-R8000 support would require changing the remaining compatibility segment
-accesses, which - from what I know - are limited to loading exception
-handlers. As I don't have an R8000 machine, I didn't introduce this here.
-
-Stanislaw Skowronek
-
---<=>--
-  "You're not as old as the trees, not as young as the leaves.
-   Not as free as the breeze, not as open as the seas."
-
----559023410-851401618-1084631356=:27563
-Content-Type: TEXT/PLAIN; charset=US-ASCII; name="linux-cvs-xkphys.patch"
-Content-Transfer-Encoding: BASE64
-Content-ID: <Pine.GSO.4.10.10405151629160.27563@helios.et.put.poznan.pl>
-Content-Description: 
-Content-Disposition: attachment; filename="linux-cvs-xkphys.patch"
-
-ZGlmZiAtdXJOIGxpbnV4LW1pcHMtY3ZzLW1kdWxlcy9hcmNoL21pcHMvS2Nv
-bmZpZyBsaW51eC1taXBzLXhrcGh5cy9hcmNoL21pcHMvS2NvbmZpZw0KLS0t
-IGxpbnV4LW1pcHMtY3ZzLW1kdWxlcy9hcmNoL21pcHMvS2NvbmZpZwlXZWQg
-QXByIDI4IDE4OjA1OjU0IDIwMDQNCisrKyBsaW51eC1taXBzLXhrcGh5cy9h
-cmNoL21pcHMvS2NvbmZpZwlTYXQgTWF5IDE1IDE2OjA5OjQyIDIwMDQNCkBA
-IC0xMjQxLDYgKzEyNDEsMTQgQEANCiAJYm9vbCAiU3VwcG9ydCBmb3IgNjQt
-Yml0IHBoeXNpY2FsIGFkZHJlc3Mgc3BhY2UiDQogCWRlcGVuZHMgb24gKENQ
-VV9SNFgwMCB8fCBDUFVfUjUwMDAgfHwgQ1BVX1JNNzAwMCB8fCBDUFVfUk05
-MDAwIHx8IENQVV9SMTAwMDAgfHwgQ1BVX1NCMSB8fCBDUFVfTUlQUzMyIHx8
-IENQVV9NSVBTNjQpICYmIE1JUFMzMg0KIA0KK2NvbmZpZyBYS1BIWVNfS0VS
-TkVMDQorCWJvb2wgIkFsbG93IGtlcm5lbCB0byBydW4gZnJvbSA2NC1iaXQg
-c2VnbWVudHMiDQorCWRlcGVuZHMgb24gTUlQUzY0DQorCWRlZmF1bHQgeSBp
-ZiBTR0lfSVAzMA0KKwloZWxwDQorCSAgVGhpcyBvcHRpb24gYWxsb3dzIHRv
-IGxvY2F0ZSB0aGUga2VybmVsIGluIDY0LWJpdCB1bm1hcHBlZCBtZW1vcnkN
-CisJICBzcGFjZSAoeGtwaHlzKS4gVGhpcyBpcyByZXF1aXJlZCBmb3IgT2N0
-YW5lIChJUDMwKSBtYWNoaW5lcy4NCisNCiBjb25maWcgQ1BVX0FEVkFOQ0VE
-DQogCWJvb2wgIk92ZXJyaWRlIENQVSBPcHRpb25zIg0KIAlkZXBlbmRzIG9u
-IE1JUFMzMg0KZGlmZiAtdXJOIGxpbnV4LW1pcHMtY3ZzLW1kdWxlcy9hcmNo
-L21pcHMvTWFrZWZpbGUgbGludXgtbWlwcy14a3BoeXMvYXJjaC9taXBzL01h
-a2VmaWxlDQotLS0gbGludXgtbWlwcy1jdnMtbWR1bGVzL2FyY2gvbWlwcy9N
-YWtlZmlsZQlUdWUgQXByIDEzIDIzOjMwOjE2IDIwMDQNCisrKyBsaW51eC1t
-aXBzLXhrcGh5cy9hcmNoL21pcHMvTWFrZWZpbGUJU2F0IE1heSAxNSAxNjox
-MzoyNSAyMDA0DQpAQCAtMzUsNyArMzUsMTEgQEANCiBlbmRpZg0KIGlmZGVm
-IENPTkZJR19NSVBTNjQNCiBnY2MtYWJpCQkJPSA2NA0KK2lmZGVmIENPTkZJ
-R19YS1BIWVNfS0VSTkVMDQorZ2FzLWFiaQkJCT0gNjQNCitlbHNlDQogZ2Fz
-LWFiaQkJCT0gMzINCitlbmRpZg0KIHRvb2wtcHJlZml4CQk9ICQoNjRiaXQt
-dG9vbC1wcmVmaXgpDQogVVRTX01BQ0hJTkUJCTo9IG1pcHM2NA0KIGVuZGlm
-DQpAQCAtNjA4LDkgKzYxMiwxNSBAQA0KIA0KIGlmZGVmIENPTkZJR19NSVBT
-MzINCiBidWlsZC1iZmQJCT0gJCgzMmJpdC1iZmQpDQorb3V0cHV0LWJmZAkJ
-PSAkKDMyYml0LWJmZCkNCiBjZmxhZ3MteQkJKz0gJCgzMmJpdC1pc2EteSkN
-CiBlbmRpZg0KIGlmZGVmIENPTkZJR19NSVBTNjQNCitpZmRlZiBDT05GSUdf
-WEtQSFlTX0tFUk5FTA0KK291dHB1dC1iZmQJCT0gJCg2NGJpdC1iZmQpDQor
-ZWxzZQ0KK291dHB1dC1iZmQJCT0gJCgzMmJpdC1iZmQpDQorZW5kaWYNCiBi
-dWlsZC1iZmQJCT0gJCg2NGJpdC1iZmQpDQogY2ZsYWdzLXkJCSs9ICQoNjRi
-aXQtaXNhLXkpDQogZW5kaWYNCkBAIC02NTAsNyArNjYwLDcgQEANCiBBRkxB
-R1MJCSs9ICQoY2ZsYWdzLXkpDQogQ0ZMQUdTCQkrPSAkKGNmbGFncy15KQ0K
-IA0KLUxERkxBR1MJCQkrPSAtLW9mb3JtYXQgJCgzMmJpdC1iZmQpDQorTERG
-TEFHUwkJCSs9IC0tb2Zvcm1hdCAkKG91dHB1dC1iZmQpDQogDQogaGVhZC15
-IDo9IGFyY2gvbWlwcy9rZXJuZWwvaGVhZC5vIGFyY2gvbWlwcy9rZXJuZWwv
-aW5pdF90YXNrLm8NCiANCmRpZmYgLXVyTiBsaW51eC1taXBzLWN2cy1tZHVs
-ZXMvYXJjaC9taXBzL2tlcm5lbC9zY2FsbDY0LW8zMi5TIGxpbnV4LW1pcHMt
-eGtwaHlzL2FyY2gvbWlwcy9rZXJuZWwvc2NhbGw2NC1vMzIuUw0KLS0tIGxp
-bnV4LW1pcHMtY3ZzLW1kdWxlcy9hcmNoL21pcHMva2VybmVsL3NjYWxsNjQt
-bzMyLlMJTW9uIEFwciAyNiAxNzowNjoxMCAyMDA0DQorKysgbGludXgtbWlw
-cy14a3BoeXMvYXJjaC9taXBzL2tlcm5lbC9zY2FsbDY0LW8zMi5TCVNhdCBN
-YXkgMTUgMTY6MDk6NDIgMjAwNA0KQEAgLTE0Miw3ICsxNDIsNyBAQA0KIAls
-ZAl0MCwgUFRfUjI5KHNwKQkJIyBnZXQgb2xkIHVzZXIgc3RhY2sgcG9pbnRl
-cg0KIAlQVFJfTEEJdDEsIDNmCQkJIyBjb3B5IDEgdG8gMiBhcmd1bWVudHMN
-CiAJc2xsCXQzLCB0MywgMg0KLQlzdWJ1CXQxLCB0Mw0KKwlkc3VidQl0MSwg
-dDMNCiAJanIJdDENCiANCiAJLyogT2ssIGNvcHkgdGhlIGFyZ3MgZnJvbSB0
-aGUgbHVzZXIgc3RhY2sgdG8gdGhlIGtlcm5lbCBzdGFjayAqLw0KZGlmZiAt
-dXJOIGxpbnV4LW1pcHMtY3ZzLW1kdWxlcy9hcmNoL21pcHMva2VybmVsL3Nl
-dHVwLmMgbGludXgtbWlwcy14a3BoeXMvYXJjaC9taXBzL2tlcm5lbC9zZXR1
-cC5jDQotLS0gbGludXgtbWlwcy1jdnMtbWR1bGVzL2FyY2gvbWlwcy9rZXJu
-ZWwvc2V0dXAuYwlTdW4gRmViICA4IDE1OjU3OjA0IDIwMDQNCisrKyBsaW51
-eC1taXBzLXhrcGh5cy9hcmNoL21pcHMva2VybmVsL3NldHVwLmMJU2F0IE1h
-eSAxNSAxNjowOTo0MiAyMDA0DQpAQCAtMjIxLDEzICsyMjEsMTMgQEANCiAJ
-CWluaXRyZF9zdGFydCA9ICh1bnNpZ25lZCBsb25nKSZpbml0cmRfaGVhZGVy
-WzJdOw0KIAkJaW5pdHJkX2VuZCA9IGluaXRyZF9zdGFydCArIGluaXRyZF9o
-ZWFkZXJbMV07DQogCX0NCi0Jc3RhcnRfcGZuID0gUEZOX1VQKENQSFlTQURE
-UigoJl9lbmQpKyhpbml0cmRfZW5kIC0gaW5pdHJkX3N0YXJ0KSArIFBBR0Vf
-U0laRSkpOw0KKwlzdGFydF9wZm4gPSBQRk5fVVAoS1BIWVNBRERSKCgmX2Vu
-ZCkrKGluaXRyZF9lbmQgLSBpbml0cmRfc3RhcnQpICsgUEFHRV9TSVpFKSk7
-DQogI2Vsc2UNCiAJLyoNCiAJICogUGFydGlhbGx5IHVzZWQgcGFnZXMgYXJl
-IG5vdCB1c2FibGUgLSB0aHVzDQogCSAqIHdlIGFyZSByb3VuZGluZyB1cHdh
-cmRzLg0KIAkgKi8NCi0Jc3RhcnRfcGZuID0gUEZOX1VQKENQSFlTQUREUigm
-X2VuZCkpOw0KKwlzdGFydF9wZm4gPSBQRk5fVVAoS1BIWVNBRERSKCZfZW5k
-KSk7DQogI2VuZGlmCS8qIENPTkZJR19CTEtfREVWX0lOSVRSRCAqLw0KIA0K
-ICNpZm5kZWYgQ09ORklHX1NHSV9JUDI3DQpAQCAtMzU3LDEwICszNTcsMTAg
-QEANCiAJCSAgICAgICAodm9pZCAqKWluaXRyZF9zdGFydCwNCiAJCSAgICAg
-ICBpbml0cmRfc2l6ZSk7DQogDQotCQlpZiAoQ1BIWVNBRERSKGluaXRyZF9l
-bmQpID4gUEZOX1BIWVMobWF4X2xvd19wZm4pKSB7DQorCQlpZiAoS1BIWVNB
-RERSKGluaXRyZF9lbmQpID4gUEZOX1BIWVMobWF4X2xvd19wZm4pKSB7DQog
-CQkJcHJpbnRrKCJpbml0cmQgZXh0ZW5kcyBiZXlvbmQgZW5kIG9mIG1lbW9y
-eSAiDQogCQkJICAgICAgICIoMHglMCpMeCA+IDB4JTAqTHgpXG5kaXNhYmxp
-bmcgaW5pdHJkXG4iLA0KLQkJCSAgICAgICBzaXplb2YobG9uZykgKiAyLCBD
-UEhZU0FERFIoaW5pdHJkX2VuZCksDQorCQkJICAgICAgIHNpemVvZihsb25n
-KSAqIDIsIEtQSFlTQUREUihpbml0cmRfZW5kKSwNCiAJCQkgICAgICAgc2l6
-ZW9mKGxvbmcpICogMiwgUEZOX1BIWVMobWF4X2xvd19wZm4pKTsNCiAJCQlp
-bml0cmRfc3RhcnQgPSBpbml0cmRfZW5kID0gMDsNCiAJCX0NCmRpZmYgLXVy
-TiBsaW51eC1taXBzLWN2cy1tZHVsZXMvYXJjaC9taXBzL21tL2luaXQuYyBs
-aW51eC1taXBzLXhrcGh5cy9hcmNoL21pcHMvbW0vaW5pdC5jDQotLS0gbGlu
-dXgtbWlwcy1jdnMtbWR1bGVzL2FyY2gvbWlwcy9tbS9pbml0LmMJTW9uIEFw
-ciAxOSAxODozNjozNSAyMDA0DQorKysgbGludXgtbWlwcy14a3BoeXMvYXJj
-aC9taXBzL21tL2luaXQuYwlTYXQgTWF5IDE1IDE2OjA5OjQyIDIwMDQNCkBA
-IC0yNjYsOCArMjY2LDggQEANCiB7DQogI2lmZGVmIENPTkZJR19NSVBTNjQN
-CiAJLyogU3dpdGNoIGZyb20gS1NFRzAgdG8gWEtQSFlTIGFkZHJlc3NlcyAq
-Lw0KLQlzdGFydCA9ICh1bnNpZ25lZCBsb25nKXBoeXNfdG9fdmlydChDUEhZ
-U0FERFIoc3RhcnQpKTsNCi0JZW5kID0gKHVuc2lnbmVkIGxvbmcpcGh5c190
-b192aXJ0KENQSFlTQUREUihlbmQpKTsNCisJc3RhcnQgPSAodW5zaWduZWQg
-bG9uZylwaHlzX3RvX3ZpcnQoS1BIWVNBRERSKHN0YXJ0KSk7DQorCWVuZCA9
-ICh1bnNpZ25lZCBsb25nKXBoeXNfdG9fdmlydChLUEhZU0FERFIoZW5kKSk7
-DQogI2VuZGlmDQogCWlmIChzdGFydCA8IGVuZCkNCiAJCXByaW50ayhLRVJO
-X0lORk8gIkZyZWVpbmcgaW5pdHJkIG1lbW9yeTogJWxkayBmcmVlZFxuIiwN
-CkBAIC0yOTMsNyArMjkzLDcgQEANCiAJYWRkciA9ICh1bnNpZ25lZCBsb25n
-KSAmX19pbml0X2JlZ2luOw0KIAl3aGlsZSAoYWRkciA8ICh1bnNpZ25lZCBs
-b25nKSAmX19pbml0X2VuZCkgew0KICNpZmRlZiBDT05GSUdfTUlQUzY0DQot
-CQlwYWdlID0gUEFHRV9PRkZTRVQgfCBDUEhZU0FERFIoYWRkcik7DQorCQlw
-YWdlID0gUEFHRV9PRkZTRVQgfCBLUEhZU0FERFIoYWRkcik7DQogI2Vsc2UN
-CiAJCXBhZ2UgPSBhZGRyOw0KICNlbmRpZg0KZGlmZiAtdXJOIGxpbnV4LW1p
-cHMtY3ZzLW1kdWxlcy9hcmNoL21pcHMvbW0vdGxiLWFuZGVzLmMgbGludXgt
-bWlwcy14a3BoeXMvYXJjaC9taXBzL21tL3RsYi1hbmRlcy5jDQotLS0gbGlu
-dXgtbWlwcy1jdnMtbWR1bGVzL2FyY2gvbWlwcy9tbS90bGItYW5kZXMuYwlX
-ZWQgTWFyIDE3IDIyOjI2OjQ0IDIwMDQNCisrKyBsaW51eC1taXBzLXhrcGh5
-cy9hcmNoL21pcHMvbW0vdGxiLWFuZGVzLmMJU2F0IE1heSAxNSAxNjowOTo0
-MiAyMDA0DQpAQCAtMjY0LDcgKzI2NCw3IEBADQogI2VuZGlmDQogI2lmZGVm
-IENPTkZJR19NSVBTNjQNCiAJbWVtY3B5KCh2b2lkICopKENLU0VHMCArIDB4
-MDAwKSwgJmV4Y2VwdF92ZWMwX2dlbmVyaWMsIDB4ODApOw0KLQltZW1jcHko
-KHZvaWQgKikoQ0tTRUcwICsgMHgwODApLCBleGNlcHRfdmVjMV9yMTBrLCAw
-eDgwKTsNCisJbWVtY3B5KCh2b2lkICopKENLU0VHMCArIDB4MDgwKSwgJmV4
-Y2VwdF92ZWMxX3IxMGssIDB4ODApOw0KIAlmbHVzaF9pY2FjaGVfcmFuZ2Uo
-Q0tTRUcwICsgMHg4MCwgQ0tTRUcwICsgMHgxMDApOw0KICNlbmRpZg0KIH0N
-CmRpZmYgLXVyTiBsaW51eC1taXBzLWN2cy1tZHVsZXMvaW5jbHVkZS9hc20t
-bWlwcy9hZGRyc3BhY2UuaCBsaW51eC1taXBzLXhrcGh5cy9pbmNsdWRlL2Fz
-bS1taXBzL2FkZHJzcGFjZS5oDQotLS0gbGludXgtbWlwcy1jdnMtbWR1bGVz
-L2luY2x1ZGUvYXNtLW1pcHMvYWRkcnNwYWNlLmgJU3VuIE5vdiAzMCAwMjo1
-MjoyNSAyMDAzDQorKysgbGludXgtbWlwcy14a3BoeXMvaW5jbHVkZS9hc20t
-bWlwcy9hZGRyc3BhY2UuaAlTYXQgTWF5IDE1IDE2OjA5OjQyIDIwMDQNCkBA
-IC0zLDYgKzMsNyBAQA0KICAqIExpY2Vuc2UuICBTZWUgdGhlIGZpbGUgIkNP
-UFlJTkciIGluIHRoZSBtYWluIGRpcmVjdG9yeSBvZiB0aGlzIGFyY2hpdmUN
-CiAgKiBmb3IgbW9yZSBkZXRhaWxzLg0KICAqDQorICogQ29weXJpZ2h0IChD
-KSAyMDA0IFN0YW5pc2xhdyBTa293cm9uZWsNCiAgKiBDb3B5cmlnaHQgKEMp
-IDE5OTYsIDk5IFJhbGYgQmFlY2hsZQ0KICAqIENvcHlyaWdodCAoQykgMjAw
-MCwgMjAwMiAgTWFjaWVqIFcuIFJvenlja2kNCiAgKiBDb3B5cmlnaHQgKEMp
-IDE5OTAsIDE5OTkgYnkgU2lsaWNvbiBHcmFwaGljcywgSW5jLg0KQEAgLTM4
-LDE0ICszOSw0MCBAQA0KICNlbmRpZg0KIA0KIC8qDQorICogTWVtb3J5IHNl
-Z21lbnRzICg2NGJpdCBrZXJuZWwgbW9kZSBhZGRyZXNzZXMpDQorICogVGhl
-IGNvbXBhdGliaWxpdHkgc2VnbWVudHMgdXNlIHRoZSBmdWxsIDY0LWJpdCBz
-aWduIGV4dGVuZGVkIHZhbHVlLiAgTm90ZQ0KKyAqIHRoZSBSODAwMCBkb2Vz
-bid0IGhhdmUgdGhlbSBzbyBkb24ndCByZWZlcmVuY2UgdGhlc2UgaW4gZ2Vu
-ZXJpYyBNSVBTIGNvZGUuDQorICovDQorI2RlZmluZSBYS1VTRUcJCQkweDAw
-MDAwMDAwMDAwMDAwMDANCisjZGVmaW5lIFhLU1NFRwkJCTB4NDAwMDAwMDAw
-MDAwMDAwMA0KKyNkZWZpbmUgWEtQSFlTCQkJMHg4MDAwMDAwMDAwMDAwMDAw
-DQorI2RlZmluZSBYS1NFRwkJCTB4YzAwMDAwMDAwMDAwMDAwMA0KKyNkZWZp
-bmUgQ0tTRUcwCQkJMHhmZmZmZmZmZjgwMDAwMDAwDQorI2RlZmluZSBDS1NF
-RzEJCQkweGZmZmZmZmZmYTAwMDAwMDANCisjZGVmaW5lIENLU1NFRwkJCTB4
-ZmZmZmZmZmZjMDAwMDAwMA0KKyNkZWZpbmUgQ0tTRUczCQkJMHhmZmZmZmZm
-ZmUwMDAwMDAwDQorDQorDQorLyoNCiAgKiBNZW1vcnkgc2VnbWVudHMgKDMy
-Yml0IGtlcm5lbCBtb2RlIGFkZHJlc3NlcykNCiAgKiBUaGVzZSBhcmUgdGhl
-IHRyYWRpdGlvbmFsIG5hbWVzIHVzZWQgaW4gdGhlIDMyLWJpdCB1bml2ZXJz
-ZS4NCi0gKi8NCisgKiBPbiBNSVBTNjQgdGhleSBhcmUgNjQtYml0IGxvbmcg
-Y29uc3RhbnRzIGJlY2F1c2U6DQorICogIDEpIGRyaXZlcnMgd2hpY2ggdXNl
-IHRoZW0gZm9yIGxvbmdzIG9yIHBvaW50ZXJzIHdpbGwgd29yayBjb3JyZWN0
-bHkNCisgKiAgMikgZHJpdmVycyB3aGljaCB1c2UgdGhlbSBmcm9tIGludHMg
-d2lsbCBvbmx5IHRydW5jYXRlIHRoZW0NCisgKi8NCisjaWZkZWYgQ09ORklH
-X01JUFM2NA0KKyNkZWZpbmUgS1VTRUcJCQlYS1VTRUcNCisjZGVmaW5lIEtT
-RUcwCQkJQ0tTRUcwDQorI2RlZmluZSBLU0VHMQkJCUNLU0VHMQ0KKyNkZWZp
-bmUgS1NFRzIJCQlDS1NFRzINCisjZGVmaW5lIEtTRUczCQkJQ0tTRUczDQor
-I2Vsc2UNCiAjZGVmaW5lIEtVU0VHCQkJMHgwMDAwMDAwMA0KICNkZWZpbmUg
-S1NFRzAJCQkweDgwMDAwMDAwDQogI2RlZmluZSBLU0VHMQkJCTB4YTAwMDAw
-MDANCiAjZGVmaW5lIEtTRUcyCQkJMHhjMDAwMDAwMA0KICNkZWZpbmUgS1NF
-RzMJCQkweGUwMDAwMDAwDQorI2VuZGlmDQogDQogLyoNCiAgKiBSZXR1cm5z
-IHRoZSBrZXJuZWwgc2VnbWVudCBiYXNlIG9mIGEgZ2l2ZW4gYWRkcmVzcw0K
-QEAgLTcxLDE5ICs5OCwyMCBAQA0KICNkZWZpbmUgQ0tTRUcyQUREUihhKQkJ
-KENQSFlTQUREUihhKSB8IENLU0VHMikNCiAjZGVmaW5lIENLU0VHM0FERFIo
-YSkJCShDUEhZU0FERFIoYSkgfCBDS1NFRzMpDQogDQotLyoNCi0gKiBNZW1v
-cnkgc2VnbWVudHMgKDY0Yml0IGtlcm5lbCBtb2RlIGFkZHJlc3NlcykNCi0g
-KiBUaGUgY29tcGF0aWJpbGl0eSBzZWdtZW50cyB1c2UgdGhlIGZ1bGwgNjQt
-Yml0IHNpZ24gZXh0ZW5kZWQgdmFsdWUuICBOb3RlDQotICogdGhlIFI4MDAw
-IGRvZXNuJ3QgaGF2ZSB0aGVtIHNvIGRvbid0IHJlZmVyZW5jZSB0aGVzZSBp
-biBnZW5lcmljIE1JUFMgY29kZS4NCi0gKi8NCi0jZGVmaW5lIFhLVVNFRwkJ
-CTB4MDAwMDAwMDAwMDAwMDAwMA0KLSNkZWZpbmUgWEtTU0VHCQkJMHg0MDAw
-MDAwMDAwMDAwMDAwDQotI2RlZmluZSBYS1BIWVMJCQkweDgwMDAwMDAwMDAw
-MDAwMDANCi0jZGVmaW5lIFhLU0VHCQkJMHhjMDAwMDAwMDAwMDAwMDAwDQot
-I2RlZmluZSBDS1NFRzAJCQkweGZmZmZmZmZmODAwMDAwMDANCi0jZGVmaW5l
-IENLU0VHMQkJCTB4ZmZmZmZmZmZhMDAwMDAwMA0KLSNkZWZpbmUgQ0tTU0VH
-CQkJMHhmZmZmZmZmZmMwMDAwMDAwDQotI2RlZmluZSBDS1NFRzMJCQkweGZm
-ZmZmZmZmZTAwMDAwMDANCisNCisjaWZkZWYgQ09ORklHX01JUFM2NA0KKyNk
-ZWZpbmUgSzBCQVNFCQkJMHhhODAwMDAwMDAwMDAwMDAwDQorI2Vsc2UNCisj
-ZGVmaW5lIEswQkFTRQkJCUtTRUcwDQorI2VuZGlmDQorDQorI2lmZGVmIENP
-TkZJR19YS1BIWVNfS0VSTkVMDQorI2RlZmluZSBLMFJBTUJBU0UJCTB4YTgw
-MDAwMDAyMDAwMDAwMA0KKyNkZWZpbmUgS1BIWVNBRERSCQlYUEhZU0FERFIN
-CisjZWxzZQ0KKyNkZWZpbmUgSzBSQU1CQVNFCQlLMEJBU0UNCisjZGVmaW5l
-IEtQSFlTQUREUgkJQ1BIWVNBRERSDQorI2VuZGlmDQogDQogLyoNCiAgKiBD
-YWNoZSBtb2RlcyBmb3IgWEtQSFlTIGFkZHJlc3MgY29udmVyc2lvbiBtYWNy
-b3MNCg==
----559023410-851401618-1084631356=:27563--
+Thiemo

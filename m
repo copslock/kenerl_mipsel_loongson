@@ -1,49 +1,61 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0IKKZb07574
-	for linux-mips-outgoing; Fri, 18 Jan 2002 12:20:35 -0800
-Received: from cygnus.com (runyon.sfbay.redhat.com [205.180.230.5] (may be forged))
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0IKKVP07570
-	for <linux-mips@oss.sgi.com>; Fri, 18 Jan 2002 12:20:32 -0800
-Received: from myware.mynet (fiendish.sfbay.redhat.com [205.180.231.146])
-	by runyon.cygnus.com (8.8.7-cygnus/8.8.7) with ESMTP id LAA22159;
-	Fri, 18 Jan 2002 11:20:19 -0800 (PST)
-Received: (from drepper@localhost)
-	by myware.mynet (8.11.6/8.11.6) id g0IJKHe00822;
-	Fri, 18 Jan 2002 11:20:17 -0800
-X-Authentication-Warning: myware.mynet: drepper set sender to drepper@redhat.com using -f
-To: "H . J . Lu" <hjl@lucon.org>
-Cc: GNU libc hacker <libc-hacker@sources.redhat.com>, linux-mips@oss.sgi.com
-Subject: Re: thread-ready ABIs
-References: <m3elkoa5dw.fsf@myware.mynet> <20020118101908.C23887@lucon.org>
-	<m3elkn4ikq.fsf@myware.mynet> <20020118110844.A25165@lucon.org>
-Reply-To: drepper@redhat.com (Ulrich Drepper)
-X-fingerprint: BE 3B 21 04 BC 77 AC F0  61 92 E4 CB AC DD B9 5A
-X-fingerprint: e6:49:07:36:9a:0d:b7:ba:b5:e9:06:f3:e7:e7:08:4a
-From: Ulrich Drepper <drepper@redhat.com>
-Date: 18 Jan 2002 11:20:17 -0800
-In-Reply-To: <20020118110844.A25165@lucon.org>
-Message-ID: <m34rlj4gb2.fsf@myware.mynet>
-User-Agent: Gnus/5.0808 (Gnus v5.8.8) XEmacs/21.5 (asparagus)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+	by oss.sgi.com (8.11.2/8.11.3) id g0IKmpa08801
+	for linux-mips-outgoing; Fri, 18 Jan 2002 12:48:51 -0800
+Received: from hermes.mvista.com ([12.44.186.158])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0IKmkP08797
+	for <linux-mips@oss.sgi.com>; Fri, 18 Jan 2002 12:48:47 -0800
+Received: from zeus.mvista.com (zeus.mvista.com [10.0.0.112])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id g0IJklB14075;
+	Fri, 18 Jan 2002 11:46:47 -0800
+Subject: Re: usb-problems with Au1000
+From: Pete Popov <ppopov@pacbell.net>
+To: Kunihiko IMAI <kimai@laser5.co.jp>
+Cc: linux-mips <linux-mips@oss.sgi.com>
+In-Reply-To: <m3advc6xhx.wl@l5ac152.l5.laser5.co.jp>
+References: <3B7DA3A3.8010000@pacbell.net> <3C3DD208.45B5BC29@esk.fhg.de>
+	<m3bsft6z87.wl@l5ac152.l5.laser5.co.jp> <1011294123.4550.58.camel@zeus> 
+	<m3advc6xhx.wl@l5ac152.l5.laser5.co.jp>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Mailer: Evolution/1.0 (Preview Release)
+Date: 18 Jan 2002 11:49:09 -0800
+Message-Id: <1011383349.18177.6.camel@zeus>
+Mime-Version: 1.0
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-"H . J . Lu" <hjl@lucon.org> writes:
 
-> I can write to k0/k1. But the value is not perserved by kernel.
+> > It's the comment that's wrong, not the code. The code works and has been
+> > tested.  Alchemy makes available the Linux Support Package (LSP) which
+> > we did. That kernel has been tested with all peripherals so I would
+> > recommend that you get that from them.  Also,make sure your jumpers are
+> > setup correctly (S4).
+> 
+> In the source code:
+> 
+> 	sys_clksrc |= ((4<<12) | (0<<11) | (0<<10));
+> 
+> 	(snip...)
+> 
+> 	outl(sys_clksrc, CLOCK_SOURCE_CNTRL);
+> 
+> This code sets the clock source of USB host controller is FREQ2.  So
+> FREQ5 clock source doesn't affect to USB host controller.
 
-Strange.  This means the registers cannot have been used so far and if
-the kernel can be changed it is free.
+After looking into it, both the comment and code are correct. From
+include/asm-mips/au1000.h:
 
-> I don't think so. k0/k1 is reserved for OS. I don't know if OS can
-> restore it for use space or not.
+#define FQ_CNTRL_1                0xB1900020
+#define FQ_CNTRL_2                0xB1900024
 
-There are so many different MIPS implementations that I wouldn't bet
-on it.  One would have to look at the minimum architecture definition.
-Also, what do the new MIPS32 cores do?
+So FQ_CNTRL_1 corresponds to what is now sys_freqctrl0. In other words,
+the update to the databook has not been incorporated into the Au1000
+files. The names of the registers were updated after I had done all the
+core work. I need to update the code so the names of the registers
+correspond to the latest Au1000 manual.
 
--- 
----------------.                          ,-.   1325 Chesapeake Terrace
-Ulrich Drepper  \    ,-------------------'   \  Sunnyvale, CA 94089 USA
-Red Hat          `--' drepper at redhat.com   `------------------------
+Since the boards we have do work with USB and there were some usb
+hardware glitches, please check with Alchemy on what the problem might
+be with your board. 
+
+Pete

@@ -1,31 +1,21 @@
-Received:  by oss.sgi.com id <S553808AbQJZUaM>;
-	Thu, 26 Oct 2000 13:30:12 -0700
-Received: from gatekeep.ti.com ([192.94.94.61]:6040 "EHLO gatekeep.ti.com")
-	by oss.sgi.com with ESMTP id <S553805AbQJZUaD>;
-	Thu, 26 Oct 2000 13:30:03 -0700
-Received: from dlep6.itg.ti.com ([157.170.188.9])
-	by gatekeep.ti.com (8.11.1/8.11.1) with ESMTP id e9QKTvn14202;
-	Thu, 26 Oct 2000 15:29:57 -0500 (CDT)
-Received: from dlep6.itg.ti.com (localhost [127.0.0.1])
-	by dlep6.itg.ti.com (8.9.3/8.9.3) with ESMTP id PAA01673;
-	Thu, 26 Oct 2000 15:29:57 -0500 (CDT)
-Received: from dlep3.itg.ti.com (dlep3-maint.itg.ti.com [157.170.133.16])
-	by dlep6.itg.ti.com (8.9.3/8.9.3) with ESMTP id PAA01635;
-	Thu, 26 Oct 2000 15:29:55 -0500 (CDT)
-Received: from ti.com (IDENT:bbrown@bbrowndt.sc.ti.com [158.218.100.180])
-	by dlep3.itg.ti.com (8.9.3/8.9.3) with ESMTP id PAA19879;
-	Thu, 26 Oct 2000 15:29:50 -0500 (CDT)
-Message-ID: <39F89556.582FD0B@ti.com>
-Date:   Thu, 26 Oct 2000 14:34:30 -0600
-From:   Brady Brown <bbrown@ti.com>
-Organization: Texas Instruments
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.4.0-test9 i686)
+Received:  by oss.sgi.com id <S553705AbQJZVQw>;
+	Thu, 26 Oct 2000 14:16:52 -0700
+Received: from gateway-490.mvista.com ([63.192.220.206]:50172 "EHLO
+        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553652AbQJZVQl>;
+	Thu, 26 Oct 2000 14:16:41 -0700
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id e9QLEr308975;
+	Thu, 26 Oct 2000 14:14:53 -0700
+Message-ID: <39F89F81.1A34F7C@mvista.com>
+Date:   Thu, 26 Oct 2000 14:17:53 -0700
+From:   Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-5.0 i586)
 X-Accept-Language: en
 MIME-Version: 1.0
-To:     Nicu Popovici <octavp@isratech.ro>
+To:     Mark Lehrer <mark@knm.org>
 CC:     linux-mips@oss.sgi.com
-Subject: Re: Atlas Board!
-References: <39F828B2.A662A568@isratech.ro>
+Subject: Re: Threads on mips
+References: <200010261455.IAA05015@home.knm.org>
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
@@ -33,35 +23,34 @@ Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Nicu Popovici wrote:
-
-> Hello ,
->
-> I want to ask few questions about an Atlas board. Who has such a board
-> maybe will give me some tips to have an working Linux on that machine.
->
-> 1. What type of RAM do I need ?
-> 2. I want to cross - compile the CVS linux kernel for Mips but I failed
-> on a i686. Could anyone tell me if I try to compile the kernel on Atlas
-> board I will  succeed.
+Mark Lehrer wrote:
+> 
+> Hello!  I am just getting started with one of the MIPS embedded
+> platforms, the NEC VR4122.  I downloaded the kernel & ramdisk from the
+> linux-vr web pages.
+> 
+> Some of the apps I'm trying to port over use pthreads; however, the
+> pthread library that is included doesn't appear to work - the process
+> that tries to create a thread just waits forever until I hit ctrl-c.
 >
 
-We have linux running on several Atlas boards here. We are Cross-Compiling
-the kernel successfully on an Intel machine. The cross tools we are
-currently using are:
-binutils-mipsel-linux-2.8.1-1
-egcs-c++-mipsel-linux-1.0.3a-2
-egcs-g77-mipsel-linux-1.0.3a-2
-egcs-mipsel-linux-1.0.3a-2
-egcs-libstdc++-mipsel-linux-2.8.0-2
-egcs-objc-mipsel-linux-1.0.3a-2
+I have worked with linux-vr before and tried to get pthread working. 
+The glibc v2.0.7 had several problems in terms of getting pthread
+working.
 
-These are available at
-ftp://oss.sgi.com/pub/linux/mips/crossdev/i386-linux/mipsel-linux/
-Note: the binutils version 2.9.5-1 gave us some problems when we tried it
-so we are still using 2.8.1-1
---
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Brady Brown (bbrown@ti.com)       Work:(801)619-6103
-Texas Instruments: Broadband Access Group
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> Is anyone using threads with the mips embedded platforms?  If so, what
+> kernel, libc, and pthreads library are you using?
+>
+
+I just found a bug in kernel yesterday.  After the temporary fix, my
+pthread test program seems to work.  I am using glibc 2.0.6.  Kernel is
+v2.4 from cvs tree.
+ 
+> If not, has anyone thought about what it might take to get threads to
+> work?
+>
+
+I am thinking about that a lot. :-)  I like to get ViewML, a web
+broswer, working.  It requires pthreads.
+
+Jun

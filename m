@@ -1,74 +1,36 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6OIr8Rw005202
-	for <linux-mips-outgoing@oss.sgi.com>; Wed, 24 Jul 2002 11:53:08 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6OIwARw005340
+	for <linux-mips-outgoing@oss.sgi.com>; Wed, 24 Jul 2002 11:58:10 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6OIr82n005201
-	for linux-mips-outgoing; Wed, 24 Jul 2002 11:53:08 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6OIwAnj005339
+	for linux-mips-outgoing; Wed, 24 Jul 2002 11:58:10 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from av.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6OIqxRw005190
-	for <linux-mips@oss.sgi.com>; Wed, 24 Jul 2002 11:52:59 -0700
-Received: from mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id LAA02800;
-	Wed, 24 Jul 2002 11:53:50 -0700
-Message-ID: <3D3EF5BD.60802@mvista.com>
-Date: Wed, 24 Jul 2002 11:45:17 -0700
-From: Jun Sun <jsun@mvista.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.9) Gecko/20020408
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
+Received: from dea.linux-mips.net (shaft19-f151.dialo.tiscali.de [62.246.19.151])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6OIvvRw005329
+	for <linux-mips@oss.sgi.com>; Wed, 24 Jul 2002 11:58:04 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id g6OIwhs22735;
+	Wed, 24 Jul 2002 20:58:43 +0200
+Date: Wed, 24 Jul 2002 20:58:43 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
 To: Krishna Kondaka <krishna@Sanera.net>
-CC: linux-mips@oss.sgi.com
+Cc: linux-mips@oss.sgi.com
 Subject: Re: kernel BUG at slab.c:1073!
+Message-ID: <20020724205843.A22500@dea.linux-mips.net>
 References: <200207241834.g6OIYDi28110@icarus.sanera.net>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, hits=0.5 required=5.0 tests=PLING version=2.20
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <200207241834.g6OIYDi28110@icarus.sanera.net>; from krishna@Sanera.net on Wed, Jul 24, 2002 at 11:34:13AM -0700
+X-Accept-Language: de,en,fr
+X-Spam-Status: No, hits=-3.9 required=5.0 tests=IN_REP_TO,PLING version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Krishna Kondaka wrote:
-> Hi,
-> 
-> 	My system panics with the following message, when I do insmod of a
-> 	driver.
-> 	
-> kernel BUG at slab.c:1073!
-> Unable to handle kernel paging request at virtual address 00000000, epc == 
-> 80131490, ra == 80131490
-> Oops in fault.c:do_page_fault, line 172:
-> $0 : 00000000 10009f00 0000001b 0000000a
-> $4 : 80282ab0 00000001 00000001 00000000
-> $8 : 802a2f42 b0060170 0000001b 0000000d
-> $12: 00000000 0000001b 10009f00 0000000a
-> $16: 00000000 000000f0 8fe40600 000000f0
-> $20: 00000001 1002d948 00000060 8fdd4ec0
-> $24: 802a2f27 ffffffff
-> $28: 8f3b6000 8f3b7df8 00000008 80131490
-> epc    : 0000000080131490
-> Status : 10009f03
-> Cause  : 1080000c
-> 
-> BadAddr: 000000008fdd4ec0Process insmod (pid: 67, stackpage=8f3b6000)
-> Stack: 8022a860 8022a878 00000431 8fe40600 8fe40600 000000f0 ffffffff ffffffea
->        8f1b7000 80131988 0000003e 0000003c 00000059 80116110 00000000 00000000
->        00000000 c0021538 10009f01 ffffffea 00000008 c001f000 10033338 ffffffea
->        00000008 c001f000 10033338 ffffffea c0021b68 c0021b58 c00244b4 c00244a8
->        00000043 00000002 00000000 c001f000 80117678 80116f98 80101c00 00030002
->        80135e80 ...
-> Call Trace: [<8022a860>] [<8022a878>] [<80131988>] [<80116110>] [<c0021538>] 
-> [<c001f000>]
->  [<c001f000>] [<c0021b68>] [<c0021b58>] [<c00244b4>] [<c00244a8>] [<c001f000>]
->  [<80117678>] [<80116f98>] [<80101c00>] [<80135e80>] [<c0014000>] [<c001f060>]
->  [<8010d924>] [<c001f060>]
-> 
-> Code: 24a5a878  0c0457ca  24060431 <ae000000> 24020020  126200c4  24140001  
-> 40056000  34a10001 
-> Kernel panic: Aiee, killing interrupt handler!
-> In interrupt handler - not syncing
-> Rebooting in 5 seconds..swarm_linux_exit called...passing control back to CFE
-> 
+On Wed, Jul 24, 2002 at 11:34:13AM -0700, Krishna Kondaka wrote:
+
 > slab.c : line 1072-1073 is        
 > 
 > if (in_interrupt() && (flags & SLAB_LEVEL_MASK) != SLAB_ATOMIC)
@@ -79,12 +41,14 @@ Krishna Kondaka wrote:
 > that I can fix my driver to use GFP_ATOMIC if running in interrupt context.
 > 
 > My question is why is the "insmod" command running in interrupt context?
-> 
 
-I don't think insmod should have interrupt context set.
+Simple answer: it isn't, normally.  You should try to figure out who was
+calling kmalloc or the slab allocator; knowing the function will probably
+already solve the miracle.  All the addresses in the call trace that are
+in the range from 0xc0000000 and above are potencially modules addresses,
+so they're worth some closer examination.
 
-Do you have preemptible kernel enabled?  This problem often happens if 
-preemptible kernel is enabled and there is a missing interrupt path not pre-k 
-ready.
+Aside, I urgently recommend an upgrade to a newer kernel.  2.4.9 is lacking
+more than half a year worth of bug fixes.  That can ruin your whole day ...
 
-Jun
+  Ralf

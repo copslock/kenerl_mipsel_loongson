@@ -1,74 +1,89 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Dec 2002 16:58:37 +0000 (GMT)
-Received: from crack.them.org ([65.125.64.184]:37799 "EHLO crack.them.org")
-	by linux-mips.org with ESMTP id <S8225241AbSLKQ6g>;
-	Wed, 11 Dec 2002 16:58:36 +0000
-Received: from nevyn.them.org ([66.93.61.169] ident=mail)
-	by crack.them.org with asmtp (Exim 3.12 #1 (Debian))
-	id 18MC3t-00079D-00; Wed, 11 Dec 2002 12:58:25 -0600
-Received: from drow by nevyn.them.org with local (Exim 3.36 #1 (Debian))
-	id 18MACE-0003Bm-00; Wed, 11 Dec 2002 11:58:54 -0500
-Date: Wed, 11 Dec 2002 11:58:54 -0500
-From: Daniel Jacobowitz <dan@debian.org>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: watch exception only for kseg0 addresses..?
-Message-ID: <20021211165854.GA12223@nevyn.them.org>
-References: <20021204155128.GA18940@nevyn.them.org> <Pine.GSO.3.96.1021204182756.29982G-100000@delta.ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Dec 2002 17:04:08 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([12.44.186.158]:48626 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225241AbSLKREH>;
+	Wed, 11 Dec 2002 17:04:07 +0000
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.11.6/8.11.6) id gBBH45l06881;
+	Wed, 11 Dec 2002 09:04:05 -0800
+Date: Wed, 11 Dec 2002 09:04:05 -0800
+From: Jun Sun <jsun@mvista.com>
+To: Carsten Langgaard <carstenl@mips.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+	jsun@mvista.com
+Subject: Re: Malta board patch
+Message-ID: <20021211090405.B6755@mvista.com>
+References: <3DF6F54C.64858797@mips.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Pine.GSO.3.96.1021204182756.29982G-100000@delta.ds2.pg.gda.pl>
-User-Agent: Mutt/1.5.1i
-Return-Path: <drow@false.org>
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3DF6F54C.64858797@mips.com>; from carstenl@mips.com on Wed, Dec 11, 2002 at 09:20:28AM +0100
+Return-Path: <jsun@orion.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 859
+X-archive-position: 860
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@debian.org
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Dec 04, 2002 at 06:54:02PM +0100, Maciej W. Rozycki wrote:
-> On Wed, 4 Dec 2002, Daniel Jacobowitz wrote:
-> 
-> > Sorry, by "not handy" I meant I didn't have the manuals available :)
-> 
->  'http://www.mips.com/Documentation/R4400_Uman_book_Ed2.pdf' or see under
-> "Publications"/"R4000...".  There are other sources of the book available,
-> e.g. somewhere within SGI web pages.  R10k implements a single watchpoint
-> this way, too. 
-> 
-> > >  What do you think?
-> > 
-> > You don't reveal to userland what size watchpoints are available - i.e.
-> > how large a watchpoint can be.  Does the mask match the hardware
-> > implementation, and what are the restrictions on it?
-> 
->  For that you set up a disabled watchpoint with a mask set to all ones (or
-> the range you are interested in).  Then when you retrieve it, you may see
-> which bits stayed at ones.  Similarly you may check for hardwired
-> don't-cares by using a mask with all zeroes.  The mask may differ for each
-> watchpoint, e.g. for R4650 it's different for IWatch and DWatch, so you
-> really want to have a per-watchpoint setting.  Also the MIPS32/64 ISA
-> specification implies a mask need not be contiguous. 
-> 
->  Similarly you may check for access types permitted, by enabling all of
-> them (or ones you are interested in) and seeing which ones remained
-> enabled.  Per-watchpoint, again. 
-> 
->  I'd prefer not to overdesign the API leaving as much information as
-> possible passed as is.  This way userland gets more control over what's
-> available.
 
-That way we expose more of the hardware to userland; and the thing
-that's most important to me is that GDB not have to know if it's on a
-MIPS32 or an R4650 when determining how watchpoints work. 
-IWatch/DWatch are two particular watchpoints or distinguished by access
-type?  I.E. what would GDB need to know to know which it is setting?
+A couple of nit-picking points ...
 
--- 
-Daniel Jacobowitz
-MontaVista Software                         Debian GNU/Linux Developer
+On Wed, Dec 11, 2002 at 09:20:28AM +0100, Carsten Langgaard wrote:
+> Index: arch/mips/mips-boards/generic/pci.c
+> ===================================================================
+> RCS file: /home/cvs/linux/arch/mips/mips-boards/generic/pci.c,v
+> retrieving revision 1.5.2.4
+> diff -u -r1.5.2.4 pci.c
+> --- arch/mips/mips-boards/generic/pci.c	28 Sep 2002 18:28:44 -0000	1.5.2.4
+> +++ arch/mips/mips-boards/generic/pci.c	11 Dec 2002 08:11:56 -0000
+> @@ -405,6 +405,12 @@
+>  			".set\treorder");
+>  
+>  		irq = *(volatile u32 *)(KSEG1ADDR(BONITO_PCICFG_BASE));
+> +		__asm__ __volatile__(
+> +			".set\tnoreorder\n\t"
+> +			".set\tnoat\n\t"
+> +			"sync\n\t"
+> +			".set\tat\n\t"
+> +			".set\treorder");
+>  		irq &= 0xff;
+>  		BONITO_PCIMAP_CFG = 0;
+>  		break;
+
+Would a higher level macro such as __sync or fast_mb be better here?
+
+> Index: arch/mips/mips-boards/malta/malta_int.c
+> ===================================================================
+> RCS file: /home/cvs/linux/arch/mips/mips-boards/malta/malta_int.c,v
+> retrieving revision 1.8.2.6
+> diff -u -r1.8.2.6 malta_int.c
+> --- arch/mips/mips-boards/malta/malta_int.c	5 Aug 2002 23:53:34 -0000	1.8.2.6
+> +++ arch/mips/mips-boards/malta/malta_int.c	11 Dec 2002 08:11:57 -0000
+> @@ -91,6 +91,9 @@
+>  {
+>          unsigned int data,datahi;
+>  
+> +	/* Mask out corehi interrupt. */
+> +	clear_c0_status(IE_IRQ3);
+> +
+>          printk("CoreHI interrupt, shouldn't happen, so we die here!!!\n");
+>          printk("epc   : %08lx\nStatus: %08lx\nCause : %08lx\nbadVaddr : %08lx\n"
+>  , regs->cp0_epc, regs->cp0_status, regs->cp0_cause, regs->cp0_badvaddr);
+> @@ -125,7 +128,6 @@
+>  
+>          /* We die here*/
+>          die("CoreHi interrupt", regs);
+> -        while (1) ;
+>  }
+>  
+>  void __init init_IRQ(void)
+
+I think corehi interrupt should be blocked from the beginning.  I seem to 
+remember a board errata itme that recommands not using it.
+
+Jun

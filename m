@@ -1,61 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Oct 2003 09:52:52 +0100 (BST)
-Received: from gw.icm.edu.pl ([IPv6:::ffff:212.87.0.39]:52772 "EHLO
-	atol.icm.edu.pl") by linux-mips.org with ESMTP id <S8225258AbTJWIwu>;
-	Thu, 23 Oct 2003 09:52:50 +0100
-Received: from rekin.icm.edu.pl (mail@rekin.icm.edu.pl [192.168.1.132])
-	by atol.icm.edu.pl (8.12.6/8.12.6/rzm-4.6/icm) with ESMTP id h9N8q2Hg012204;
-	Thu, 23 Oct 2003 10:52:02 +0200 (CEST)
-Received: from rathann by rekin.icm.edu.pl with local (Exim 3.35 #1 (Debian))
-	id 1ACbCN-0000VA-00; Thu, 23 Oct 2003 10:52:03 +0200
-Date: Thu, 23 Oct 2003 10:52:03 +0200
-From: "Dominik 'Rathann' Mierzejewski" <rathann@icm.edu.pl>
-To: "Gleb O. Raiko" <raiko@niisi.msk.ru>
-Cc: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Oct 2003 10:13:31 +0100 (BST)
+Received: from [IPv6:::ffff:193.232.173.111] ([IPv6:::ffff:193.232.173.111]:5413
+	"EHLO t111.niisi.ras.ru") by linux-mips.org with ESMTP
+	id <S8225360AbTJWJM7>; Thu, 23 Oct 2003 10:12:59 +0100
+Received: from t06.niisi.ras.ru (t06.niisi.ras.ru [193.232.173.6])
+	by t111.niisi.ras.ru (8.11.7/8.11.7) with ESMTP id h9NADIv25858
+	for <linux-mips@linux-mips.org>; Thu, 23 Oct 2003 13:13:18 +0300
+Received: (from uucp@localhost) by t06.niisi.ras.ru (8.7.6/8.7.3) with UUCP id NAA30883 for linux-mips@linux-mips.org; Thu, 23 Oct 2003 13:15:46 +0300
+Received: from niisi.msk.ru (t34 [193.232.173.34])
+	by niisi.msk.ru (8.12.5/8.12.5) with ESMTP id h9N8p1nk000439
+	for <linux-mips@linux-mips.org>; Thu, 23 Oct 2003 12:51:01 +0400 (MSK)
+Message-ID: <3F97983C.57A34617@niisi.msk.ru>
+Date: Thu, 23 Oct 2003 12:58:36 +0400
+From: "Gleb O. Raiko" <raiko@niisi.msk.ru>
+Organization: NIISI RAN
+X-Mailer: Mozilla 4.8 [en] (Windows NT 5.0; U)
+X-Accept-Language: en,ru
+MIME-Version: 1.0
+To: linux-mips@linux-mips.org
 Subject: Re: Packages for RH 7.3/mips
-Message-ID: <20031023085203.GA1064@icm.edu.pl>
-Mail-Followup-To: "Gleb O. Raiko" <raiko@niisi.msk.ru>,
-	linux-mips@linux-mips.org
 References: <3F964D7E.DF3EB883@niisi.msk.ru> <20031022145956.GA16117@lucon.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20031022145956.GA16117@lucon.org>
-User-Agent: Mutt/1.3.28i
-Return-Path: <rathann@icm.edu.pl>
+Content-Type: text/plain; charset=koi8-r
+Content-Transfer-Encoding: 7bit
+Return-Path: <raiko@niisi.msk.ru>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3493
+X-archive-position: 3494
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rathann@icm.edu.pl
+X-original-sender: raiko@niisi.msk.ru
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Oct 22, 2003 at 07:59:56AM -0700, H. J. Lu wrote:
-> I no longer work on MIPS. I forward your email to the Linux mips
-> mailing list.
-> 
-> 
-> H.J.
-> ---
-> On Wed, Oct 22, 2003 at 01:27:26PM +0400, Gleb O. Raiko wrote:
-> > Hello!
-> > 
-> > My team is extended your RedHat 7.3 distribution for big-endian mips.
-> > The work is done for our customer, but I, of course, would like to put
-> > them for the public access. The best way in my opinion is to merge those
-> > packages into your disribution for mips. Are you interesting?
-> > 
-> > Our goal was to get all packages cross compiled, so we have to patch
-> > several packages from your disribution. Also, we had to fix a few minor
-> > bugs.
- 
+"H. J. Lu" wrote:
+> I no longer work on MIPS. I forward your email to the Linux mips mailing list.
 
-Can you make these packages available somewhere? I'd be quite interested
-in these. I also _may_ be able to make them available publicly as an apt
-repository.
+Well, does anybody in the list have an interest in?
 
--- 
-Dominik 'Rathann' Mierzejewski <rathann@icm.edu.pl>
+Basically, I would like to follow GPL rules and put the packages for the
+public access.
+
+Regards,
+Gleb.

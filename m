@@ -1,50 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Mar 2004 23:25:23 +0000 (GMT)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:49935
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8225319AbUCQXZN>; Wed, 17 Mar 2004 23:25:13 +0000
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42] ident=mail)
-	by iris1.csv.ica.uni-stuttgart.de with esmtp
-	id 1B3kPP-0007Jb-00
-	for <linux-mips@linux-mips.org>; Thu, 18 Mar 2004 00:25:11 +0100
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 1B3kPP-0008Ha-00
-	for <linux-mips@linux-mips.org>; Thu, 18 Mar 2004 00:25:11 +0100
-Date: Thu, 18 Mar 2004 00:25:10 +0100
-To: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Mar 2004 23:46:59 +0000 (GMT)
+Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:1513 "EHLO
+	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225322AbUCQXq6>; Wed, 17 Mar 2004 23:46:58 +0000
+Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
+	id 0709D4B05E; Thu, 18 Mar 2004 00:46:51 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by jurand.ds.pg.gda.pl (Postfix) with ESMTP
+	id 8AC234AC7D; Thu, 18 Mar 2004 00:46:51 +0100 (CET)
+Date: Thu, 18 Mar 2004 00:46:51 +0100 (CET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Kumba <kumba@gentoo.org>
+Cc: linux-mips@linux-mips.org
 Subject: Re: 2.4 kernels + >=binutils-2.14.90.0.8
-Message-ID: <20040317232510.GD28639@rembrandt.csv.ica.uni-stuttgart.de>
-References: <404D0A18.6050802@gentoo.org> <20040309003447.GH16163@rembrandt.csv.ica.uni-stuttgart.de> <404D1909.1020005@gentoo.org> <20040309013841.GI16163@rembrandt.csv.ica.uni-stuttgart.de> <404D28B1.4010608@gentoo.org> <20040309023737.GJ16163@rembrandt.csv.ica.uni-stuttgart.de> <Pine.LNX.4.55.0403171829130.14525@jurand.ds.pg.gda.pl> <4058BC76.9020204@gentoo.org> <Pine.LNX.4.55.0403172202060.14525@jurand.ds.pg.gda.pl> <4058DAE2.8000902@gentoo.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 In-Reply-To: <4058DAE2.8000902@gentoo.org>
-User-Agent: Mutt/1.5.5.1i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+Message-ID: <Pine.LNX.4.55.0403180041560.14525@jurand.ds.pg.gda.pl>
+References: <404D0132.3020202@gentoo.org> <20040308234450.GF16163@rembrandt.csv.ica.uni-stuttgart.de>
+ <404D0A18.6050802@gentoo.org> <20040309003447.GH16163@rembrandt.csv.ica.uni-stuttgart.de>
+ <404D1909.1020005@gentoo.org> <20040309013841.GI16163@rembrandt.csv.ica.uni-stuttgart.de>
+ <404D28B1.4010608@gentoo.org> <20040309023737.GJ16163@rembrandt.csv.ica.uni-stuttgart.de>
+ <Pine.LNX.4.55.0403171829130.14525@jurand.ds.pg.gda.pl> <4058BC76.9020204@gentoo.org>
+ <Pine.LNX.4.55.0403172202060.14525@jurand.ds.pg.gda.pl> <4058DAE2.8000902@gentoo.org>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4567
+X-archive-position: 4568
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-Kumba wrote:
-> Maciej W. Rozycki wrote:
-> 
-> > The patch just triggers it.  Previously, the segment's start address as
-> >set by Linux in a linker script was already aligned to the page size as it
-> >was defined then.
-> 
+On Wed, 17 Mar 2004, Kumba wrote:
+
 > Hmm, so would removing the patch function as a temporary workaround 
 > until the real problem is fixed, or not recommended (meaning unbootable 
 > kernels till it's fixed)?
 
-It works as a workaround, unless the kernel wants to take advantage
-from pagesizes other than 4kB.
+ A simpler workaround (no need to rebuild binutils) might be setting:
 
+LOADADDR := 0x88010000
 
-Thiemo
+for CONFIG_SGI_IP22 in arch/mips/Makefile.
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

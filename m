@@ -1,51 +1,50 @@
-Received:  by oss.sgi.com id <S553811AbRBXADl>;
-	Fri, 23 Feb 2001 16:03:41 -0800
-Received: from u-183-20.karlsruhe.ipdial.viaginterkom.de ([62.180.20.183]:1522
-        "EHLO dea.waldorf-gmbh.de") by oss.sgi.com with ESMTP
-	id <S553796AbRBXAD3>; Fri, 23 Feb 2001 16:03:29 -0800
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f1NBbe113526;
-	Fri, 23 Feb 2001 12:37:40 +0100
-Date:   Fri, 23 Feb 2001 12:37:40 +0100
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     ldavies@oz.agile.tv
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: Small remote debug kernels??
-Message-ID: <20010223123739.A13254@bacchus.dhis.org>
-References: <3A95E682.982AC529@agile.tv>
+Received:  by oss.sgi.com id <S553925AbRBXBym>;
+	Fri, 23 Feb 2001 17:54:42 -0800
+Received: from sovereign.org ([209.180.91.170]:6272 "EHLO lux.homenet")
+	by oss.sgi.com with ESMTP id <S553720AbRBXByT>;
+	Fri, 23 Feb 2001 17:54:19 -0800
+Received: (from jfree@localhost)
+	by lux.homenet (8.11.2/8.11.2/Debian 8.11.2-1) id f1N8GPH05776
+	for linux-mips@oss.sgi.com; Fri, 23 Feb 2001 01:16:25 -0700
+From:   Jim Freeman <jfree@sovereign.org>
+Date:   Fri, 23 Feb 2001 01:16:25 -0700
+To:     linux-mips@oss.sgi.com
+Subject: Redundant Configure.help entries?
+Message-ID: <20010223011625.A5748@sovereign.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <3A95E682.982AC529@agile.tv>; from ldavies@agile.tv on Fri, Feb 23, 2001 at 02:26:42PM +1000
-X-Accept-Language: de,en,fr
+User-Agent: Mutt/1.3.15i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Fri, Feb 23, 2001 at 02:26:42PM +1000, Liam Davies wrote:
+mips.cvs/Documentation/Configure.help has redundant
+CONFIG_DDB5074 entries ??
 
-> I would like to remote debug my kernel.
-> On the Cobalt box I have there is (allegedly) a bootloader bug that
-> stops the
-> kernel being any larger than 1M/2.5M, compressed/uncompressed.
+	Support for NEC DDB Vrc-5074
+	CONFIG_DDB5074
+	  This enables support for the VR5000-based NEC DDB Vrc-5074
+	  evaluation board.
 
-I've never read the bootloader code during my Cobalt time but supposedly
-it reserves a fixed amount of memory for loading and decompressing the
-kernel.  As the firmware uses gzip routines to decompress the loaded
-kernel and has an entire Linux kernel in it for reading the real kernel
-from an ext2 filesystem it must be covered by the GPL and you can ask
-Cobalt^WSun for the source to change this limit.
+	Support for NEC DDB Vrc-5476
+	CONFIG_DDB5476
+	  This enables support for the R5432-based NEC DDB Vrc-5476
+	  evaluation board.
 
-> I have stripped the kernel bare but can't get much lower than 6M
-> uncompressed.
-> 
-> Is there any way I can have a mini-remote debugging kernel??
+	  Features : kernel debugging, serial terminal, NFS root fs, on-board
+	  ether port (with a patch to tulip driver), IDE controller,
+	  PS2 keyboard, PS2 mouse, etc.
 
-Either your kernel isn't really stripped or you have a huge configuration.
-The 64-bit Origin kernel which I'm using here is 3037235 (unstripped) /
-1874064 (striped) in size.  Did you strip symbols only and left debug
-information in the object file?
+	  TODO : USB, Compact-PCI interface.
 
-  Ralf
+	Support for MIPS Atlas board
+	CONFIG_DDB5074
+	  This enables support for the QED R5231-based MIPS Atlas evaluation
+	  board.
+
+	Support for MIPS Malta board
+	CONFIG_DDB5074
+	  This enables support for the VR5000-based MIPS Malta evaluation
+	  board.

@@ -1,68 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Jan 2004 09:53:02 +0000 (GMT)
-Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:14992 "EHLO
-	witte.sonytel.be") by linux-mips.org with ESMTP id <S8225254AbUAVJxB>;
-	Thu, 22 Jan 2004 09:53:01 +0000
-Received: from waterleaf.sonytel.be (localhost [127.0.0.1])
-	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id i0M9qxw2011386;
-	Thu, 22 Jan 2004 10:53:00 +0100 (MET)
-Date: Thu, 22 Jan 2004 10:52:59 +0100 (MET)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: Jun Sun <jsun@mvista.com>
-cc: Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 2.6] set up conswitchp when CONFIG_VT is set
-In-Reply-To: <20040121162032.F29705@mvista.com>
-Message-ID: <Pine.GSO.4.58.0401221052100.1408@waterleaf.sonytel.be>
-References: <20040121162032.F29705@mvista.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <geert@linux-m68k.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Jan 2004 10:31:02 +0000 (GMT)
+Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:22534
+	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
+	id <S8225353AbUAVKbC>; Thu, 22 Jan 2004 10:31:02 +0000
+Received: from no.name.available by topsns.toshiba-tops.co.jp
+          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 22 Jan 2004 10:31:51 UT
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id i0MAVg1x067812;
+	Thu, 22 Jan 2004 19:31:42 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date: Thu, 22 Jan 2004 19:32:27 +0900 (JST)
+Message-Id: <20040122.193227.28780052.nemoto@toshiba-tops.co.jp>
+To: ralf@linux-mips.org
+Cc: dimitri@sonycom.com, linux-mips@linux-mips.org
+Subject: Re: access_ok and CONFIG_MIPS32 for 2.6
+From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20040104210327.GA15475@sonycom.com>
+	<20040122024529Z8224936-9616+669@linux-mips.org>
+	<20040104.210532.74756709.anemo@mba.ocn.ne.jp>
+References: <20040102194403.GB31092@linux-mips.org>
+	<20040104.210532.74756709.anemo@mba.ocn.ne.jp>
+	<20040104210327.GA15475@sonycom.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 2.2 on Emacs 21.2 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4101
+X-archive-position: 4102
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 21 Jan 2004, Jun Sun wrote:
-> conswitchp needs to be set whenever CONFIG_VT is selected.
-> Currently this job is done individually by each board in its setup
-> routine, often in a wrong way.
->
-> The right thing to do is to set the pointer in the common code
-> and remove almost two dozens of duplicated and often wrong settings.
->
-> The attached patch is for illustration only.  The removal of board settings
-> is not complete.
->
-> Comments?  Objections and cheers are equally welcome. :)
+>>>>> On Sun, 4 Jan 2004 22:03:27 +0100, Dimitri Torfs <dimitri@sonycom.com> said:
+>> It seems there should be another definition of USER_DS for
+>> CONFIG_MIPS32 in 2.6.
 
-| --- linux/arch/mips/kernel/setup.c.orig	Tue Nov 18 10:01:24 2003
-| +++ linux/arch/mips/kernel/setup.c	Wed Jan 21 16:00:47 2004
-| @@ -471,6 +472,15 @@
-|  	set_c0_status(ST0_CU0|ST0_KX|ST0_SX|ST0_FR);
-|  #endif
-|
-| +#ifdef CONFIG_VT
-| +#if defined(CONFIG_VGA_CONSOLE)
-| +        conswitchp = &vga_con;
-| +#elif defined(CONFIG_DUMMY_CONSOLE)
-| +        conswitchp = &dummy_con;
-| +#endif
-| +#endif
+dimitri> Yes, I'm setting USER_DS to 0x80000000 for CONFIG_MIPS32:
 
-Isn't the #ifdef CONFIG_VT superfluous?
+Now we can see this fix in CVS 2.6 tree (Thank you, Ralf).
 
-Gr{oetje,eeting}s,
+Then, how about this one?
 
-						Geert
+>>>>> On Sun, 04 Jan 2004 21:05:32 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> said:
+> Second, __access_ok for 64bit kernel is broken both 2.4 and 2.6.  It
+> returns 0 if 'addr' + 'size' == TASK_SIZE (which should be OK).
+> 
+> 2.4 mips64:
+> #define __access_ok(addr, size, mask)					\
+> 	(((mask) & ((addr) | ((addr) + (size)) | __ua_size(size))) == 0)
+> 2.6:
+> #define __access_ok(addr, size, mask)					\
+> 	(((signed long)((mask) & ((addr) | ((addr) + (size)) | __ua_size(size)))) == 0)
+> 
+> I think these macros should be:
+> 
+> 2.4 mips64:
+> #define __access_ok(addr, size, mask)					\
+> 	(((mask) & ((addr) | ((addr) + (size) - 1) | __ua_size(size))) == 0)
+> 2.6:
+> #define __access_ok(addr, size, mask)					\
+> 	(((signed long)((mask) & ((addr) | ((addr) + (size) - 1) | __ua_size(size)))) == 0)
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+For example, currently, access_ok(0xfffffff000UL, 0x1000) will return
+0.  This must be legal (and this is a real problem for n64 mount
+syscall which may grab user stack.  See copy_mount_option()).
+
+---
+Atsushi Nemoto

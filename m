@@ -1,45 +1,184 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g555N2nC020248
-	for <linux-mips-outgoing@oss.sgi.com>; Tue, 4 Jun 2002 22:23:02 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g55FC8nC008113
+	for <linux-mips-outgoing@oss.sgi.com>; Wed, 5 Jun 2002 08:12:08 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g555N1eR020247
-	for linux-mips-outgoing; Tue, 4 Jun 2002 22:23:01 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g55FC8Op008112
+	for linux-mips-outgoing; Wed, 5 Jun 2002 08:12:08 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from mail2.infineon.com (mail2.infineon.com [192.35.17.230])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g555MwnC020244
-	for <linux-mips@oss.sgi.com>; Tue, 4 Jun 2002 22:22:59 -0700
-X-Envelope-Sender-Is: Andre.Messerschmidt@infineon.com (at relayer mail2.infineon.com)
-Received: from mchb0b1w.muc.infineon.com ([172.31.102.53])
-	by mail2.infineon.com (8.11.1/8.11.1) with ESMTP id g555OrS17591
-	for <linux-mips@oss.sgi.com>; Wed, 5 Jun 2002 07:24:53 +0200 (MET DST)
-Received: from mchb0b5w.muc.infineon.com ([172.31.102.49]) by mchb0b1w.muc.infineon.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2653.13)
-	id M24KSFFZ; Wed, 5 Jun 2002 07:24:52 +0200
-Received: from 172.29.128.3 by mchb0b5w.muc.infineon.com (InterScan E-Mail VirusWall NT); Wed, 05 Jun 2002 07:24:52 +0200
-Received: by DLFW003A with Internet Mail Service (5.5.2653.19)
-	id <JJ7N0G7X>; Wed, 5 Jun 2002 07:25:04 +0200
-Message-ID: <86048F07C015D311864100902760F1DD01B5EA6B@DLFW003A>
-From: Andre.Messerschmidt@infineon.com
-To: linux-mips@oss.sgi.com
-Subject: kmalloc question
-Date: Wed, 5 Jun 2002 07:25:02 +0200 
+Received: from oval.algor.co.uk (root@oval.algor.co.uk [62.254.210.250])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g55FBgnC007957
+	for <linux-mips@oss.sgi.com>; Wed, 5 Jun 2002 08:11:46 -0700
+Received: from gladsmuir.algor.co.uk (gladsmuir.algor.co.uk [192.168.5.75])
+	by oval.algor.co.uk (8.11.6/8.10.1) with ESMTP id g55FDRd18944;
+	Wed, 5 Jun 2002 16:13:28 +0100 (BST)
+From: Dominic Sweetman <dom@algor.co.uk>
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2653.19)
-Content-Type: text/plain
+Content-Type: multipart/mixed; boundary="MwF7gxnaJe"
+Content-Transfer-Encoding: 7bit
+Message-ID: <15614.10904.705392.925058@gladsmuir.algor.co.uk>
+Date: Wed, 5 Jun 2002 16:13:28 +0100
+To: Joe Buck <Joe.Buck@synopsys.com>
+Cc: echristo@redhat.com (Eric Christopher), dom@algor.co.uk (Dominic Sweetman),
+   js@convergence.de (Johannes Stezenbach), gcc@gcc.gnu.org,
+   linux-mips@oss.sgi.com, sde@algor.co.uk
+Subject: Re: [Fwd: Current state of MIPS16 support?]
+In-Reply-To: <200205312144.OAA15256@atrus.synopsys.com>
+References: <1022870431.3668.19.camel@ghostwheel.cygnus.com>
+	<200205312144.OAA15256@atrus.synopsys.com>
+X-Mailer: VM 6.92 under 21.1 (patch 14) "Cuyahoga Valley" XEmacs Lucid
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi.
 
-I always thought that it is save to use kmalloc in an interrupt handler as
-long as you use GFP_ATOMIC. 
-Now someone told me that it is not allowed to use these functions in any way
-in an interrupt.
+--MwF7gxnaJe
+Content-Type: text/plain; charset=us-ascii
+Content-Description: message body text
+Content-Transfer-Encoding: 7bit
 
-Can please someone clarify me here? 
 
-regards
+Joe Buck (Joe.Buck@synopsys.com) writes:
+
+> Dominic wrote:
+> > > We do publish our sources on our web server.  Not only are they
+> > > GPL but we have a copyright assignment to the FSF in place
+> > > (which I know was sent to Jim Wilson of Cygnus, albeit in
+> > > 1993...)
+> 
+> Eric Christopher wrote:
+> > It's great that your changes do get out in one form or
+> > another. I'm personally uncertain as to the nature of copyright
+> > and how it would affect if I looked at your code and put it into
+> > the mainline sources - so I haven't :)
+> 
+> Whose name and what company name would be on the copyright assignment?
+> We can check with the FSF list to see if it's on file.  Meanwhile it
+> should not go in.
+
+I signed the assignment/waiver.  The companies involved are
+Algorithmics Ltd and DFS3 Ltd.  It was faxed to Jim Wilson (then at
+Cygnus) in October 1993 in the form recommended at that time.  Here's
+a PDF.  Note the 'company stationery' has changed since 1993...
+
+
+--MwF7gxnaJe
+Content-Type: application/pdf
+Content-Disposition: attachment;
+	filename="gnu-disclaimer.pdf"
+Content-Transfer-Encoding: base64
+
+JVBERi0xLjIKJcfsj6IKNiAwIG9iago8PC9MZW5ndGggNyAwIFIvRmlsdGVyIC9GbGF0ZURl
+Y29kZT4+CnN0cmVhbQp4nJ1WXXfaOBB996+Yt5KzoJVkyZJ4S0Og3UOTNGHP7kNfjHHAXX+0
+xpwc/n1nJBtI2r5schLG0ujOvfMhw5kATr/9Z1ZF36M/HxVs95GAIpKGczDGWKgu7DKSCedM
+u/AotcSNxBmmRP+gnYUsCrZyllxPR5TAIx6LrCxSRvR2GSnLHaH4R2Xd+Xh4CLjB7gOejhCV
+gEVWFj1HMYcXlLFAuolllnyUYkZ6MbFggthowaSXpHVMltFJQr7oY1VC3iaRjnzL6ClCWi8R
+J0htFKM945jxzlIzOi0SFvsMCYuGUUayENAKdDRGxswGKEKxtldFCDYJdtnbmCSKLy2Xnoex
+qs8cWZRfTAFR9htaqPMR/zBUgWzlNLmejighT1WQ5DUE8Rs+/HDkxCvzrLfRdxC+aYaPrIL3
+K2wbB5jx1XMUegl7wUmfEgmrKhqlV6uvkXAstri52kSjkhYcS7RzLixhKWCVRaNt09Keskzo
+3rn4yXnUeUDUq/qFXVVktJZgkLhf29PC7Qo+Y9V+z1wIpIvMcUPARJAAbbiXg8yhBCAY9IsH
+P8uMvvBUhllcQG9scqEkpoyEXC8X948fVx8+fbx5GsNql8O8PRQdzNO2GsNteYTHJt2M4WZX
+dF3eFvUW7bRa7+HmvQb38AGd7hbL67vZSYZU1NWcOR1jA2mliSbH/vGmon/UXb9VqgcFLiiQ
+pEC5XivHUeJSB/awul1O3yjXTEinh4z/oRQIKbHPeSI5713PyZQXASROBo4PBQnoAAc4JfZ3
+tKTSWHT5E7f59b9vqSmmtZT2V9S0p4aITCK4YdRVGlUo3ddMOK5MQH68XcD9fP7x5nb6hpxj
+nFsj+wD/o5qv+cYxc+rUqAAU+O7+bVCcUPaKsxEG2zvpecf043mjhFgKHYQmXqgNh5Q8C1X2
+p8aE5Wo2BDVUs4sRRrWJE4w7Oj3Brgs5WjV+9iSLh3RgmXi/Of2LNvE2FWErlLuo4B9alwnT
+QwqLct/UmKPjtj74QZ1gLOeoaxQ54B1tic9LNJqlXT4F2+3IDe9coU7guHufdc06b0E4F3uc
+4NHDSMtUorzjvG2qKcyaqqjDXSE4Xtv8FdjTS553VYrErku8iYqO7pVAb/DugTEhIuTzIdxu
+yFdeiEatvncRdJvvpyD6LLs+y5NwYGKMR8M3EmLTOSa59cdWDbz4rGFzJ+oCOlDdNRVgA1bp
+EbKmznJ/bTrFhiGo35QVA+LdiEAT6e9adLnUCMtuA2m9gdn8KfYPzTPEMGvTY9fU8OCZSHMS
+OUrb/8awbOoN7t5hw979Dbu8zddH2BT7rEyx6Gnp7/lJf67P3ChrvvmMGS81oB3bYrvroKhx
+ePI9GZDt0hpThwo3OSDsXbHNS3jq8m+7vN6PYZG3abmB+7po6j00Lc5eW+xhluNIpnWoWQgx
+BO4a2DeHNssxYxtERqJdW6xDL9A3ikHbocs3cKg32FYdjjpyqvaUD3pYoNBFXlNweDisyyID
+/ENG+RhZZ+Vhg8Pfd0zAHMJ/Ga3Dmwy/Z3BxCgV10yGvMi+PX65gcXPjyzCEatZf86yDQ1eU
+RVfkexZmpcc41/Kp2Nb5ZurfgTjvSxyb0Okw9PTVu4iI4M6ntE63yBJmRYvg+MZ9F+H0iaHL
+wqUyvvaJUSx51X2jN01zHg55zvQJGDdjxzR/jTz7NXLfeez0wvsc/QCNkIBPZW5kc3RyZWFt
+CmVuZG9iago3IDAgb2JqCjEyNzMKZW5kb2JqCjIwIDAgb2JqCjw8L1I0CjQgMCBSPj4KZW5k
+b2JqCjIxIDAgb2JqCjw8L1IxMQoxMSAwIFIvUjEzCjEzIDAgUi9SMTUKMTUgMCBSL1IxOQox
+OSAwIFIvUjE3CjE3IDAgUi9SOQo5IDAgUj4+CmVuZG9iago1IDAgb2JqCjw8L1R5cGUvUGFn
+ZS9NZWRpYUJveCBbMCAwIDU5NSA4NDJdCi9Sb3RhdGUgMC9QYXJlbnQgMyAwIFIKL1Jlc291
+cmNlczw8L1Byb2NTZXRbL1BERiAvVGV4dF0KL0V4dEdTdGF0ZSAyMCAwIFIKL0ZvbnQgMjEg
+MCBSCj4+Ci9Db250ZW50cyA2IDAgUgo+PgplbmRvYmoKMyAwIG9iago8PCAvVHlwZSAvUGFn
+ZXMgL0tpZHMgWwo1IDAgUgpdIC9Db3VudCAxCj4+CmVuZG9iagoxIDAgb2JqCjw8L1R5cGUg
+L0NhdGFsb2cgL1BhZ2VzIDMgMCBSCj4+CmVuZG9iago0IDAgb2JqCjw8L1R5cGUvRXh0R1N0
+YXRlL05hbWUvUjQvVFIvSWRlbnRpdHk+PgplbmRvYmoKMTEgMCBvYmoKPDwvU3VidHlwZS9U
+eXBlMS9CYXNlRm9udC9aYXBmRGluZ2JhdHMvVHlwZS9Gb250L05hbWUvUjExPj4KZW5kb2Jq
+CjEwIDAgb2JqCjw8L1R5cGUvRm9udERlc2NyaXB0b3IvRm9udE5hbWUvWmFwZkRpbmdiYXRz
+Pj4KZW5kb2JqCjEzIDAgb2JqCjw8L1N1YnR5cGUvVHlwZTEvQmFzZUZvbnQvSGVsdmV0aWNh
+LUJvbGQvVHlwZS9Gb250L05hbWUvUjEzPj4KZW5kb2JqCjEyIDAgb2JqCjw8L1R5cGUvRm9u
+dERlc2NyaXB0b3IvRm9udE5hbWUvSGVsdmV0aWNhLUJvbGQ+PgplbmRvYmoKMTUgMCBvYmoK
+PDwvU3VidHlwZS9UeXBlMS9CYXNlRm9udC9IZWx2ZXRpY2EvVHlwZS9Gb250L05hbWUvUjE1
+Pj4KZW5kb2JqCjE4IDAgb2JqCjw8L1R5cGUvRm9udERlc2NyaXB0b3IvRm9udE5hbWUvVGlt
+ZXMtQm9sZD4+CmVuZG9iagoxNiAwIG9iago8PC9UeXBlL0ZvbnREZXNjcmlwdG9yL0ZvbnRO
+YW1lL1RpbWVzLVJvbWFuPj4KZW5kb2JqCjE0IDAgb2JqCjw8L1R5cGUvRm9udERlc2NyaXB0
+b3IvRm9udE5hbWUvSGVsdmV0aWNhPj4KZW5kb2JqCjE5IDAgb2JqCjw8L1N1YnR5cGUvVHlw
+ZTEvQmFzZUZvbnQvVGltZXMtQm9sZC9UeXBlL0ZvbnQvTmFtZS9SMTkvRmlyc3RDaGFyIDAv
+TGFzdENoYXIgMjU1L1dpZHRoc1sKNTgxIDUyMCA1NTYgNjY3IDM4OSA0NDQgNzIyIDEwMDAg
+Mjc4IDI1MCAyNTAgMjUwIDI1MCAyNTAgMjUwIDI1MAoyNTAgMjUwIDI1MCAyNTAgMjUwIDI1
+MCAyNTAgMjUwIDI1MCAyNTAgMjUwIDI1MCAyNTAgMjUwIDI1MCAyNTAKMjUwIDMzMyA1NTUg
+NTAwIDUwMCAxMDAwIDgzMyAzMzMgMzMzIDMzMyA1MDAgNTcwIDI1MCAzMzMgMjUwIDI3OAo1
+MDAgNTAwIDUwMCA1MDAgNTAwIDUwMCA1MDAgNTAwIDUwMCA1MDAgMzMzIDMzMyA1NzAgNTcw
+IDU3MCA1MDAKOTMwIDcyMiA2NjcgNzIyIDcyMiA2NjcgNjExIDc3OCA3NzggMzg5IDUwMCA3
+NzggNjY3IDk0NCA3MjIgNzc4CjYxMSA3NzggNzIyIDU1NiA2NjcgNzIyIDcyMiAxMDAwIDcy
+MiA3MjIgNjY3IDMzMyAyNzggMzMzIDMzMyA1MDAKMzMzIDUwMCA1NTYgNDQ0IDU1NiA0NDQg
+MzMzIDUwMCA1NTYgMjc4IDMzMyA1NTYgMjc4IDgzMyA1NTYgNTAwCjU1NiA1NTYgNDQ0IDM4
+OSAzMzMgNTU2IDUwMCA3MjIgNTAwIDUwMCA0NDQgMzk0IDIyMCAzOTQgMzMzIDI1MAozMzMg
+NTAwIDUwMCAzNTAgNTAwIDE2NyAxMDAwIDUwMCA1MDAgNTAwIDEwMDAgMjUwIDU1NiA1NTYg
+MjUwIDI1MAoyNzggMjUwIDMzMyAzMzMgMzMzIDMzMyAzMzMgMzMzIDMzMyA1MDAgNTAwIDcy
+MiAyNzggNTAwIDEwMDAgNjY3CjI1MCAzMzMgNTAwIDUwMCA1MDAgNTAwIDIyMCA1MDAgMzMz
+IDc0NyAzMDAgMzMzIDU3MCA1NzAgNzQ3IDMzMwo0MDAgNTcwIDMwMCAzMDAgMzMzIDU1NiA1
+NDAgMjUwIDMzMyAzMDAgMzMwIDMzMyA3NTAgNzUwIDc1MCA1MDAKNzIyIDcyMiA3MjIgNzIy
+IDcyMiA3MjIgMTAwMCA3MjIgNjY3IDY2NyA2NjcgNjY3IDM4OSAzODkgMzg5IDM4OQo3MjIg
+NzIyIDc3OCA3NzggNzc4IDc3OCA3NzggNTcwIDc3OCA3MjIgNzIyIDcyMiA3MjIgNzIyIDYx
+MSA1NTYKNTAwIDUwMCA1MDAgNTAwIDUwMCA1MDAgNzIyIDQ0NCA0NDQgNDQ0IDQ0NCA0NDQg
+Mjc4IDI3OCAyNzggMjc4CjUwMCA1NTYgNTAwIDUwMCA1MDAgNTAwIDUwMCA1NzAgNTAwIDU1
+NiA1NTYgNTU2IDU1NiA1MDAgNTU2IDUwMF0KPj4KZW5kb2JqCjE3IDAgb2JqCjw8L1N1YnR5
+cGUvVHlwZTEvQmFzZUZvbnQvVGltZXMtUm9tYW4vVHlwZS9Gb250L05hbWUvUjE3L0ZpcnN0
+Q2hhciAwL0xhc3RDaGFyIDI1NS9XaWR0aHNbCjQ2OSA1NDEgNTU2IDYxMSAzODkgNDQ0IDcy
+MiA5ODAgMTgwIDI1MCAyNTAgMjUwIDI1MCAyNTAgMjUwIDI1MAoyNTAgMjUwIDI1MCAyNTAg
+MjUwIDI1MCAyNTAgMjUwIDI1MCAyNTAgMjUwIDI1MCAyNTAgMjUwIDI1MCAyNTAKMjUwIDMz
+MyA0MDggNTAwIDUwMCA4MzMgNzc4IDMzMyAzMzMgMzMzIDUwMCA1NjQgMjUwIDMzMyAyNTAg
+Mjc4CjUwMCA1MDAgNTAwIDUwMCA1MDAgNTAwIDUwMCA1MDAgNTAwIDUwMCAyNzggMjc4IDU2
+NCA1NjQgNTY0IDQ0NAo5MjEgNzIyIDY2NyA2NjcgNzIyIDYxMSA1NTYgNzIyIDcyMiAzMzMg
+Mzg5IDcyMiA2MTEgODg5IDcyMiA3MjIKNTU2IDcyMiA2NjcgNTU2IDYxMSA3MjIgNzIyIDk0
+NCA3MjIgNzIyIDYxMSAzMzMgMjc4IDMzMyAzMzMgNTAwCjMzMyA0NDQgNTAwIDQ0NCA1MDAg
+NDQ0IDMzMyA1MDAgNTAwIDI3OCAyNzggNTAwIDI3OCA3NzggNTAwIDUwMAo1MDAgNTAwIDMz
+MyAzODkgMjc4IDUwMCA1MDAgNzIyIDUwMCA1MDAgNDQ0IDQ4MCAyMDAgNDgwIDMzMyAyNTAK
+MzMzIDUwMCA1MDAgMzUwIDUwMCAxNjcgMTAwMCA1MDAgNTAwIDUwMCAxMDAwIDI1MCA1NTYg
+NTU2IDI1MCAyNTAKMjc4IDI1MCAzMzMgMzMzIDMzMyAzMzMgMzMzIDMzMyAzMzMgNDQ0IDQ0
+NCA3MjIgMjc4IDQ0NCA4ODkgNjExCjI1MCAzMzMgNTAwIDUwMCA1MDAgNTAwIDIwMCA1MDAg
+MzMzIDc2MCAyNzYgMzMzIDU2NCA1NjQgNzYwIDMzMwo0MDAgNTY0IDMwMCAzMDAgMzMzIDUw
+MCA0NTMgMjUwIDMzMyAzMDAgMzEwIDMzMyA3NTAgNzUwIDc1MCA0NDQKNzIyIDcyMiA3MjIg
+NzIyIDcyMiA3MjIgODg5IDY2NyA2MTEgNjExIDYxMSA2MTEgMzMzIDMzMyAzMzMgMzMzCjcy
+MiA3MjIgNzIyIDcyMiA3MjIgNzIyIDcyMiA1NjQgNzIyIDcyMiA3MjIgNzIyIDcyMiA3MjIg
+NTU2IDUwMAo0NDQgNDQ0IDQ0NCA0NDQgNDQ0IDQ0NCA2NjcgNDQ0IDQ0NCA0NDQgNDQ0IDQ0
+NCAyNzggMjc4IDI3OCAyNzgKNTAwIDUwMCA1MDAgNTAwIDUwMCA1MDAgNTAwIDU2NCA1MDAg
+NTAwIDUwMCA1MDAgNTAwIDUwMCA1MDAgNTAwXQo+PgplbmRvYmoKOSAwIG9iago8PC9TdWJ0
+eXBlL1R5cGUxL0Jhc2VGb250L0hlbHZldGljYS1PYmxpcXVlL1R5cGUvRm9udC9OYW1lL1I5
+Pj4KZW5kb2JqCjggMCBvYmoKPDwvVHlwZS9Gb250RGVzY3JpcHRvci9Gb250TmFtZS9IZWx2
+ZXRpY2EtT2JsaXF1ZT4+CmVuZG9iagoyIDAgb2JqCjw8L1Byb2R1Y2VyIChHTlUgR2hvc3Rz
+Y3JpcHQgNi41MSkKPj5lbmRvYmoKeHJlZgowIDIyCjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAw
+MDAwMTcxMiAwMDAwMCBuIAowMDAwMDA0Nzc1IDAwMDAwIG4gCjAwMDAwMDE2NTMgMDAwMDAg
+biAKMDAwMDAwMTc2MCAwMDAwMCBuIAowMDAwMDAxNDkzIDAwMDAwIG4gCjAwMDAwMDAwMTUg
+MDAwMDAgbiAKMDAwMDAwMTM1OCAwMDAwMCBuIAowMDAwMDA0NzA4IDAwMDAwIG4gCjAwMDAw
+MDQ2MjkgMDAwMDAgbiAKMDAwMDAwMTg5MSAwMDAwMCBuIAowMDAwMDAxODE1IDAwMDAwIG4g
+CjAwMDAwMDIwMzIgMDAwMDAgbiAKMDAwMDAwMTk1NCAwMDAwMCBuIAowMDAwMDAyMjkzIDAw
+MDAwIG4gCjAwMDAwMDIwOTcgMDAwMDAgbiAKMDAwMDAwMjIzMSAwMDAwMCBuIAowMDAwMDAz
+NDkzIDAwMDAwIG4gCjAwMDAwMDIxNzAgMDAwMDAgbiAKMDAwMDAwMjM1MyAwMDAwMCBuIAow
+MDAwMDAxMzc4IDAwMDAwIG4gCjAwMDAwMDE0MDggMDAwMDAgbiAKdHJhaWxlcgo8PCAvU2l6
+ZSAyMiAvUm9vdCAxIDAgUiAvSW5mbyAyIDAgUgo+PgpzdGFydHhyZWYKNDgyNwolJUVPRgo=
+
+--MwF7gxnaJe
+Content-Type: text/plain; charset=us-ascii
+Content-Description: message body text
+Content-Transfer-Encoding: 7bit
+
+
+Let me know if you need a contemporary form.
+
 --
-Andre Messerschmidt
+Dominic Sweetman
+Algorithmics Ltd
+The Fruit Farm, Ely Road, Chittering, CAMBS CB5 9PH, ENGLAND
+phone +44 1223 706200/fax +44 1223 706250/direct +44 1223 706205
+http://www.algor.co.uk
 
-Application Engineer
-Infineon Technologies AG
+--MwF7gxnaJe--

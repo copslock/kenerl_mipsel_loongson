@@ -1,44 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Jul 2004 12:21:56 +0100 (BST)
-Received: from p508B6BD7.dip.t-dialin.net ([IPv6:::ffff:80.139.107.215]:45095
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225260AbUGILVv>; Fri, 9 Jul 2004 12:21:51 +0100
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i69BLmPH029669;
-	Fri, 9 Jul 2004 13:21:48 +0200
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i69BLl8n029668;
-	Fri, 9 Jul 2004 13:21:47 +0200
-Date: Fri, 9 Jul 2004 13:21:47 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Ricardo Mendoza <ricardo.mendoza@kanux.com>
-Cc: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Jul 2004 16:46:51 +0100 (BST)
+Received: from mail.supercable.net.ve ([IPv6:::ffff:216.72.155.13]:40324 "EHLO
+	supercable.net.ve") by linux-mips.org with ESMTP
+	id <S8225264AbUGIPqr>; Fri, 9 Jul 2004 16:46:47 +0100
+Received: from [200.85.73.10] (unverified [200.85.73.10]) 
+	by supercable.net.ve (TRUE) with ESMTP id 7730830 
+	for multiple; Fri, 09 Jul 2004 11:46:12 GMT -4
+Message-ID: <40EEBDDE.9070005@kanux.com>
+Date: Fri, 09 Jul 2004 11:46:38 -0400
+From: Ricardo Mendoza <ricardo.mendoza@kanux.com>
+Reply-To: ricardo.mendoza@kanux.com
+User-Agent: Mozilla Thunderbird 0.7.1 (Windows/20040626)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
 Subject: Re: [Fwd: Re: sharp mobilon hc-4100]
-Message-ID: <20040709112147.GB20141@linux-mips.org>
-References: <40EDA87E.3060509@kanux.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <40EDA87E.3060509@kanux.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+References: <40EDA87E.3060509@kanux.com> <20040709112147.GB20141@linux-mips.org>
+In-Reply-To: <20040709112147.GB20141@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Server: High Performance Mail Server - http://surgemail.com
+X-Authenticated-User: numen Domain supercable.net.ve
+Return-Path: <ricardo.mendoza@kanux.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5437
+X-archive-position: 5438
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ricardo.mendoza@kanux.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jul 08, 2004 at 04:03:10PM -0400, Ricardo Mendoza wrote:
+Ralf Baechle wrote:
 
-> The 2.4.17 tree on Steven J. Hill's website is functional, I can give it
->  to you if you cant find it, just let me know.
+> Would be nice if somebody can resurrect this platform.  It's rotting
+> for too long and Steven even convinced me to remove it from 2.6.  I
+> hope we can add functional code back somewhen.
 
-Would be nice if somebody can resurrect this platform.  It's rotting
-for too long and Steven even convinced me to remove it from 2.6.  I
-hope we can add functional code back somewhen.
+Hey Ralf, well as you know I have been getting involved in that, as far 
+as today PCMCIA IDE kind of works, but the real plan is to develop a 
+PCMCIA driver for the controller.
 
-  Ralf
+Im ricmm, perhaps now that vacations started for me I can really get 
+into the stuff, I will let you know if I get into porting it to the 2.6 
+kernel.
+
+
+-- 
+Ricardo Mendoza Meinhardt
+ricardo.mendoza@kanux.com
+
+.knxTech
+Administrador Linux
+Programador/PHP
+
+"get ready for a bit of the old Ultra Violence"

@@ -1,63 +1,101 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Aug 2004 03:03:14 +0100 (BST)
-Received: from p508B5F12.dip.t-dialin.net ([IPv6:::ffff:80.139.95.18]:31504
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225261AbUHFCDJ>; Fri, 6 Aug 2004 03:03:09 +0100
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i76235um028380;
-	Fri, 6 Aug 2004 04:03:05 +0200
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i76235Dn028379;
-	Fri, 6 Aug 2004 04:03:05 +0200
-Date: Fri, 6 Aug 2004 04:03:04 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Kumba <kumba@gentoo.org>
-Cc: linux-mips@linux-mips.org
-Subject: Re: anybody tried NPTL?
-Message-ID: <20040806020304.GA27895@linux-mips.org>
-References: <20040804152936.D6269@mvista.com> <411188A8.9040607@gentoo.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <411188A8.9040607@gentoo.org>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Aug 2004 05:01:25 +0100 (BST)
+Received: from nwd2mail2.analog.com ([IPv6:::ffff:137.71.25.51]:47051 "EHLO
+	nwd2mail2.analog.com") by linux-mips.org with ESMTP
+	id <S8224896AbUHFEBV>; Fri, 6 Aug 2004 05:01:21 +0100
+Received: from nwd2mhb1.analog.com (nwd2mhb1.analog.com [137.71.5.12])
+	by nwd2mail2.analog.com (8.12.10/8.12.10) with ESMTP id i7641GfT001707
+	for <linux-mips@linux-mips.org>; Fri, 6 Aug 2004 00:01:16 -0400
+Received: from jasmine.cpgindia.analog.com ([10.121.13.30])
+	by nwd2mhb1.analog.com (8.9.3 (PHNE_28810+JAGae91741)/8.9.3) with ESMTP id AAA09577
+	for <linux-mips@linux-mips.org>; Fri, 6 Aug 2004 00:01:07 -0400 (EDT)
+Received: from asingh2d01 ([10.121.13.93])
+	by jasmine.cpgindia.analog.com (8.9.1/8.9.1) with SMTP id JAA04143
+	for <linux-mips@linux-mips.org>; Fri, 6 Aug 2004 09:31:04 +0530 (IST)
+From: "akshay" <akshay.singh@analog.com>
+To: <linux-mips@linux-mips.org>
+Subject: pthread uClibc
+Date: Fri, 6 Aug 2004 09:43:03 +0530
+Message-ID: <006101c47b6b$abbd6610$5d0d790a@asingh2d01>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook CWS, Build 9.0.2416 (9.0.2911.0)
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1409
+X-Scanned-By: MIMEDefang 2.41
+Return-Path: <akshay.singh@analog.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5610
+X-archive-position: 5611
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: akshay.singh@analog.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Aug 04, 2004 at 09:08:56PM -0400, Kumba wrote:
 
-> >I am looking into porting NPTL to MIPS.  Just curious if
-> >anybody has tried this before.
-> >
-> >I notice there was a discussion about the ABI extension
-> >for TLS (thread local storage) support.  Before that support
-> >becomes a reality it seems one can still use NPTL with 
-> >the help of additional system calls.
-> >
-> >A rough search of latest glibc source shows there is
-> >zero MIPS code for nptl.  A couple of other arches
-> >are missing as well (such as ARM)
-> >
-> >Jun
-> 
-> All I've heard about this is that some kernel changes are (still?) 
-> needed, then just the glibc support along w/ TLS (Maybe compiler support?).
-> 
-> I believe I heard reports that the glibc people were looking to 
-> deprecate linuxthreads within a another release or two (but don't know 
-> specifics or anything), so it sounds like NPTL should be something to 
-> get working.
+Hi,
 
-Threading support means breaking the ABI compatibility.  There are other
-issues that can best be solved by breakin the ABI which is why this is
-stretching out.
+I am trying to use pthread on mips based platform.
 
-  Ralf
+I have simple program to just create pthreads and when I run my program, it
+goes in infinite loop and never comes back.
+Though when I hit enter on console, I see following message on console.
+
+pt: assertion failed in manager.c:154.
+
+pt: assertion failed in manager.c:193.
+
+Can someone plz help me here .
+
+
+
+Here is the code for my program.
+==============================================================
+#include <stdio.h>
+#include <pthread.h>
+
+void print_message_function( void *ptr );
+
+     pthread_t thread1;
+     char *message1 = "Thread 1";
+
+main()
+{
+     int  iret1, iret2;
+
+    /* Create independant threads each of which will execute function */
+
+     iret1 = pthread_create( &thread1, NULL, (void*)&print_message_function,
+(v
+oid*) message1);
+
+printf("threads created ....\n");
+     /* Wait till threads are complete before main continues. Unless we  */
+     /* wait we run the risk of executing an exit which will terminate   */
+     /* the process and all threads before the threads have completed.   */
+
+     pthread_join( thread1, NULL);
+
+     printf("Thread 1 returns: %d\n",iret1);
+     exit(0);
+}
+
+void print_message_function( void *ptr )
+{
+     char *message;
+     message = (char *) ptr;
+     printf("%s \n", message);
+}
+
+
+
+
+
+Thanks,
+Akshay

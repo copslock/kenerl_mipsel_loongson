@@ -1,35 +1,55 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA05435; Wed, 9 Apr 1997 10:16:38 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA20096; Wed, 9 Apr 1997 00:08:12 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id KAA10956 for linux-list; Wed, 9 Apr 1997 10:15:29 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA10931 for <linux@relay.engr.SGI.COM>; Wed, 9 Apr 1997 10:15:26 -0700
-Received: from alles.intern.julia.de (loehnberg1.core.julia.de [194.221.49.2]) by sgi.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id JAA22350 for <linux@relay.engr.SGI.COM>; Wed, 9 Apr 1997 09:46:19 -0700
-Received: from kernel.panic.julia.de (kernel.panic.julia.de [194.221.49.153])
-	by alles.intern.julia.de (8.8.5/8.8.5) with ESMTP id HAA15076;
-	Wed, 9 Apr 1997 07:26:44 +0200
-From: Ralf Baechle <ralf@Julia.DE>
-Received: (from ralf@localhost)
-          by kernel.panic.julia.de (8.8.4/8.8.4)
-	  id HAA06508; Wed, 9 Apr 1997 07:25:46 +0200
-Message-Id: <199704090525.HAA06508@kernel.panic.julia.de>
-Subject: Re: It booooooooooots!
-To: wje@fir.esd.sgi.com (William J. Earl)
-Date: Wed, 9 Apr 1997 07:25:46 +0200 (MET DST)
-Cc: shaver@neon.ingenia.ca, linux@cthulhu.engr.sgi.com,
-        kneedham@ottawa.sgi.com
-In-Reply-To: <199704082337.QAA14690@fir.esd.sgi.com> from "William J. Earl" at Apr 8, 97 04:37:49 pm
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id AAA15795 for linux-list; Wed, 9 Apr 1997 00:07:03 -0700
+Received: from sgiger.munich.sgi.com (sgiger.munich.sgi.com [144.253.192.2]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA15772 for <linux@cthulhu.engr.sgi.com>; Wed, 9 Apr 1997 00:06:57 -0700
+Received: from knobi.munich.sgi.com by sgiger.munich.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1502/940406.SGI)
+	 id JAA03892; Wed, 9 Apr 1997 09:06:33 +0200
+Received: from knobi (localhost [127.0.0.1]) by knobi.munich.sgi.com (950413.SGI.8.6.12/951220.SGI.AUTOCF.knobi) via SMTP id JAA19306; Wed, 9 Apr 1997 09:06:30 +0200
+Message-ID: <334B3FF5.41C6@munich.sgi.com>
+Date: Wed, 09 Apr 1997 09:06:29 +0200
+From: Martin Knoblauch <knobi@munich.sgi.com>
+Organization: Silicon Graphics GmbH, Am-Hochacker 3, D-85630 Grasbrunn
+X-Mailer: Mozilla 3.01SGoldC-SGI (X11; I; IRIX 6.3 IP22)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+To: Alistair Lambie <alambie@wellington.sgi.com>
+CC: Mike Shaver <shaver@neon.ingenia.ca>, linux@cthulhu.engr.sgi.com
+Subject: Re: init=/bin/sh and serial devices
+References: <199704090209.WAA06281@neon.ingenia.ca> <9704091424.ZM9048@windy.wellington.sgi.com>
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> ...
->  > Checking for 'wait' instruction...  unavailable.
-> ...
+Alistair Lambie wrote:
 > 
->      This appears to be a bug.  The R5000 does have the wait instruction.
+> On Apr 9,  2:12pm, Mike Shaver wrote:
+> > Subject: init=/bin/sh and serial devices
+> > Wierd stuff here.
+> > We've got it mountinng the NFS partition and running /bin/sh, but we
+> > can't type anything to it at that point.
+> > It's kinda weird, because we see the `#' prompt, but stuff I type to
+> > it isn't registering.
+> >
+> > stdin in /dev/cua1, FWIW.
+> >
+> 
+> Does your Indy not have a 'head' on it....why are you using
+> the serial ports..
+>
 
-Linux doesn't really check; instead it has encoded which CPU types
-have a wait instruction.  I add the R500 to that list.
+ this brings up the question: do we already have drivers for
+the textport? Not to speak of an X-Server? How are we (SGI)
+going to handle this? As far as I know we never published
+the hardware dependent parts on the X11 distribution, did we?
 
-  Ralf
+Martin 
+-- 
++---------------------------------+-----------------------------------+
+|Martin Knoblauch                 | Silicon Graphics GmbH             |
+|Manager Technical Marketing      | Am Hochacker 3 - Technopark       |
+|Silicon Graphics Computer Systems| D-85630 Grasbrunn-Neukeferloh, FRG|
+|---------------------------------| Phone: (+int) 89 46108-179 or -0  |
+|http://reality.sgi.com/knobi     | Fax:   (+int) 89 46107-179        |
++---------------------------------+-----------------------------------+
+|e-mail: <knobi@munich.sgi.com>   | VM: 6-333-8197 | M/S: IDE-3150    |
++---------------------------------------------------------------------+

@@ -1,70 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jul 2004 07:58:46 +0100 (BST)
-Received: from eezi.conceptual.net.au ([IPv6:::ffff:203.190.192.22]:61588 "EHLO
-	eezi.net.au") by linux-mips.org with ESMTP id <S8225195AbUGNG6m>;
-	Wed, 14 Jul 2004 07:58:42 +0100
-Received: from swift (203-190-195-081.dial.usertools.net [::ffff:203.190.195.81])
-  by eezi.net.au with esmtp; Wed, 14 Jul 2004 14:58:26 +0800
-Message-ID: <000e01c4696f$f65cf4f0$0a9913ac@swift>
-From: "Collin Baillie" <collin@xorotude.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jul 2004 09:42:24 +0100 (BST)
+Received: from skl1.ukl.uni-freiburg.de ([IPv6:::ffff:193.196.199.1]:37846
+	"EHLO relay1.uniklinik-freiburg.de") by linux-mips.org with ESMTP
+	id <S8225215AbUGNImT>; Wed, 14 Jul 2004 09:42:19 +0100
+Received: from ktl77.ukl.uni-freiburg.de (ktl77.ukl.uni-freiburg.de [193.196.226.77])
+	by relay1.uniklinik-freiburg.de (Email) with ESMTP
+	id 741422F3FB; Wed, 14 Jul 2004 10:42:14 +0200 (CEST)
+From: Max Zaitsev <maksik@gmx.co.uk>
+Organization: Mutella Dev co.
 To: linux-mips@linux-mips.org
-References: <BAY2-F21njXXBARdkfw0003b0c8@hotmail.com> <20040710100412.GA23624@linux-mips.org> <00ba01c46823$3729b200$0deca8c0@Ulysses> <20040713003317.GA26715@linux-mips.org> <000701c468ae$141c3e50$0a9913ac@swift> <20040713080320.GC18841@lug-owl.de>
-Subject: Re: Help with MOP network boot install on DECstation 5000/240
-Date: Wed, 14 Jul 2004 14:57:52 +0800
+Subject: is there *any* way to boot IP32 from hard drive ?
+Date: Wed, 14 Jul 2004 10:42:18 +0200
+User-Agent: KMail/1.6.2
+Cc: Guido Guenther <agx@sigxcpu.org>, Ilya Volynets <ilya@theIlya.com>,
+	Kumba <kumba@gentoo.org>, Jan Seidel <tuxus@gentoo.org>
 MIME-Version: 1.0
+Content-Disposition: inline
 Content-Type: text/plain;
-	charset="iso-8859-1"
+  charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1409
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1409
-Return-Path: <collin@xorotude.com>
+Message-Id: <200407141042.18505.maksik@gmx.co.uk>
+Return-Path: <maksik@gmx.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5465
+X-archive-position: 5466
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: collin@xorotude.com
+X-original-sender: maksik@gmx.co.uk
 Precedence: bulk
 X-list: linux-mips
 
-> [Thanks for *not* hijacking threads]
+Hi List,
 
-Sorry *blush*
+I've asked the very same question here before, but got no answer. Probably, 
+the experts, who might have known the answer just overlooked it... (sorry 
+guys for addressing some of you directly, but I'm really in trouble). The 
+thing is that I desperately need to get the O2 to boot from its HDD, it's all 
+installed and supposed to be used as a standalone box.
 
-> So it seems to try to get a file some times and gives up on it.
+I'm using kernel 2.6.6 with minimal patches from Ilya and as to be expected it 
+does not boot from the volume header. Arcboot seems to be the way to go, but 
+I'm not able to compile the bootable arcboot.IP32 image. When I've tried to 
+self-compile it with gcc 3.3.3 the image size was over 500K and it did not do 
+anything at all. Self-compilation with gcc 3.4 fails during linking. In a 
+mean time I've extracted the binary arcboot.IP32 image from the debian 
+package and this one at least does something: it loads the kernel into memory 
+(goes very slow), recognises a 64-bit executable and even starts it... But 
+immediately after the kernel crashes. Any idea why it could be happening? In 
+some other thread, Ilya have mentioned, that he has a "highly hacked" version 
+of arcboot. Is it available anywhere? Or are other other solutions?
 
-Oh.. I think it asks for the file, but the mopd server is not sending it. I
-am only guessing though.
-
-> Maybe you'd try Debian's install image?
-
-Maybe, but on a _shared_ 31.2k dialup link, it takes a while to download...
-and other people tend to get upset... I am using jigdo to get the 4 - 6 ISO
-images.. if there's a better (smaller / faster to download) method, I'd love
-to hear about it. I really would like to get to know Debian as I'm a
-Slackware man and have had to use RedHat at work.. Debian would be another
-nice addition to my Linux skillset.
-
-> By the way, which mopd are you using? There are several of them around,
-> some quite unuseable...
-
-Umm.. 2.5.3. I downloaded one from linux-mips.org, and applied all the
-patches in the order listed in the spec file, but it doesn't compile. So I
-compiled another 2.5.3 (79k as opposed to the 48k tgz file I got from
-linux-mips.org) and it compiles and responds, but still no file transfer. (I
-am compiling/running on i386 arch, so I am wondering if all those patches
-are necessary...)
-
-I've read that MOP images usually have some special header in them (NetBSD
-website) and someone mentioned that mopd-linux will fudge those headers if
-the kernel doesn't have them... or something...
-
-I am perservering with it, and will eventually get there... but for now, I
-just thought someone might have more of a clue than I do.
-
-Thanks,
-
-Collin Baillie
+Thanks in advance,
+Max

@@ -1,60 +1,172 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Jun 2003 00:23:32 +0100 (BST)
-Received: from p508B7C8B.dip.t-dialin.net ([IPv6:::ffff:80.139.124.139]:50133
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225196AbTFMXX3>; Sat, 14 Jun 2003 00:23:29 +0100
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h5DNNHbY023835;
-	Fri, 13 Jun 2003 16:23:17 -0700
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h5DNNFnE023834;
-	Sat, 14 Jun 2003 01:23:15 +0200
-Date: Sat, 14 Jun 2003 01:23:15 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Jun Sun <jsun@mvista.com>
-Cc: Dan Malek <dan@embeddededge.com>,
-	"Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: CVS Update@-mips.org: linux
-Message-ID: <20030613232315.GB22949@linux-mips.org>
-References: <Pine.GSO.3.96.1030613221736.20506C-100000@delta.ds2.pg.gda.pl> <3EEA3B5C.2000201@embeddededge.com> <20030613144425.E14458@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Jun 2003 01:36:22 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:8442 "EHLO
+	av.mvista.com") by linux-mips.org with ESMTP id <S8225294AbTFNAgU>;
+	Sat, 14 Jun 2003 01:36:20 +0100
+Received: from zeus.mvista.com (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id RAA11187;
+	Fri, 13 Jun 2003 17:36:16 -0700
+Subject: Re: [RFC] Au1x00 Ethernet driver
+From: Pete Popov <ppopov@mvista.com>
+To: joeg@clearcore.com
+Cc: Linux MIPS mailing list <linux-mips@linux-mips.org>
+In-Reply-To: <20030606180102.17899.qmail@clearcore.com>
+References: <20030606180102.17899.qmail@clearcore.com>
+Content-Type: text/plain
+Organization: MontaVista Software
+Message-Id: <1055551001.6221.190.camel@zeus.mvista.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20030613144425.E14458@mvista.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+X-Mailer: Ximian Evolution 1.2.4 
+Date: 13 Jun 2003 17:36:42 -0700
+Content-Transfer-Encoding: 7bit
+Return-Path: <ppopov@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2628
+X-archive-position: 2629
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ppopov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Jun 13, 2003 at 02:44:25PM -0700, Jun Sun wrote:
+Joe,
 
-> Congradualtions!  You will have roughly about 950 files under that
-> directory.
-> 
-> Even with good effort to combine files and promote sharing, I think
-> you will still have quite some.
-> 
-> I think having another directory layer under arch/mips/platforms
-> shouldn't be too bad, (although I like arch/mips/machines better).  
-> 
-> We can use some scheme like Geert was proposing, i.e., named after
-> boards and chipsets.  Hack, I think even naming after board vendor
-> is acceptable.
+OK, I ran a quick test and applied it. I should probably put in a config
+option to allow you to disable the highest ethernet port and use the
+gpios instead.
 
-Chipsets are a too coarse granularity to structure things these days.
-Modern chipsets integrate a large number of logically independant
-functionality.  Frequently such chipsets are ASICs which consist of
-various logically independant functions licensed from several sources
-and possibly multiple chipset / ASICs are being used in a single
-system.  The world just isn't that simple ...
+Pete
 
-  Ralf
+On Fri, 2003-06-06 at 11:01, Joe George wrote:
+> The Au1x00 SOCs allow the highest number ethernet interface
+> to be disabled and some of the signals to be used as GPIOs.
+> 
+> The patch below detects if the interface is enabled and
+> ignores it if it is disabled.  It is part of what I need.
+> 
+> Our boards do not contain the phy for either ethernet
+> channel and may be used with 0, 1, or 2 ethernet interfaces.
+> The phys are on separate boards.
+> 
+> If I do not install a phy on an interface I get an oops, so
+> it doesn't look like everything that was setup in anticipation
+> of finding the phy gets taken back down correctly.
+> 
+> 
+> <4>eth0: Au1xxx ethernet found at 0xb0500000, irq 28
+> <3>eth0: No MII transceivers found!
+> <3>eth0: au1000_probe1 failed.  Returns 0
+> <4>eth0: Au1xxx ethernet found at 0xb0510000, irq 29
+> <6>eth0: Broadcom BCM5221 10/100 BaseT PHY at phy address 0
+> <6>eth0: Using Broadcom BCM5221 10/100 BaseT PHY as default
+> .
+> .
+> .
+> <1>Unable to handle kernel paging request at virtual address 00000002, epc == 8024e140, ra == 8024ea34
+> <4>Oops in fault.c::do_page_fault, line 206:
+> .
+> .
+> .
+> 
+> I would like to use the same kernel for all cases and use phy
+> detection to configure the interfaces.  So I'm really asking if
+> phy detection is acceptable for inclusion in the kernel?  If so,
+> I'll try to come up with acceptable patches.
+> 
+> More generally, I'm wondering whether using autodetection for
+> configuration is desirable as there are a number of other areas
+> where I'd like to see it used.
+> 
+> Joe
+> 
+> 
+> --- linux-mips-cvs24/drivers/net/au1000_eth.c	Mon Jun  2 21:35:28 2003
+> +++ tst_mips24/drivers/net/au1000_eth.c	Wed Jun  4 17:51:46 2003
+> @@ -54,6 +54,7 @@
+>  #include <asm/io.h>
+>  
+>  #include <asm/au1000.h>
+> +#include <asm/cpu.h>
+>  #include "au1000_eth.h"
+>  
+>  #ifdef AU1000_ETH_DEBUG
+> @@ -109,27 +110,6 @@ extern char * __init prom_getcmdline(voi
+>   */
+>  
+> 
+> -/*
+> - * Base address and interupt of the Au1xxx ethernet macs
+> - */
+> -static struct au1if {
+> -	unsigned int port;
+> -	int irq;
+> -} au1x00_iflist[] = {
+> -#if defined(CONFIG_SOC_AU1000)
+> -		{AU1000_ETH0_BASE, AU1000_ETH0_IRQ}, 
+> -		{AU1000_ETH1_BASE, AU1000_ETH1_IRQ}
+> -#elif defined(CONFIG_SOC_AU1500)
+> -		{AU1500_ETH0_BASE, AU1000_ETH0_IRQ}, 
+> -		{AU1500_ETH1_BASE, AU1000_ETH1_IRQ}
+> -#elif defined(CONFIG_SOC_AU1100)
+> -		{AU1000_ETH0_BASE, AU1000_ETH0_IRQ}, 
+> -#else
+> -#error "Unsupported Au1x00 CPU"
+> -#endif
+> -	};
+> -#define NUM_INTERFACES (sizeof(au1x00_iflist) / sizeof(struct au1if))
+> -
+>  static char version[] __devinitdata =
+>      "au1000eth.c:1.1 ppopov@mvista.com\n";
+>  
+> @@ -1003,17 +983,40 @@ setup_hw_rings(struct au1000_private *au
+>  	}
+>  }
+>  
+> +/*
+> + * Setup the base address and interupt of the Au1xxx ethernet macs
+> + * based on cpu type and whether the interface is enabled in sys_pinfunc
+> + * register. The last interface is enabled if SYS_PF_NI2 (bit 4) is 0.
+> + */
+>  static int __init au1000_init_module(void)
+>  {
+> -	int i;
+> -	int base_addr, irq;
+> -
+> -	for (i=0; i<NUM_INTERFACES; i++) {
+> -		base_addr = au1x00_iflist[i].port;
+> -		irq = au1x00_iflist[i].irq;
+> -		if (au1000_probe1(NULL, base_addr, irq, i) != 0) {
+> +	struct cpuinfo_mips *c = &current_cpu_data;
+> +	int base_addr[2], irq[2], num_ifs, i;
+> +	int ni = (int)((au_readl(SYS_PINFUNC) & (u32)(SYS_PF_NI2)) >> 4);
+> +
+> +	irq[0] = AU1000_ETH0_IRQ;
+> +	irq[1] = AU1000_ETH1_IRQ;
+> +	switch (c->cputype) {
+> +	case CPU_AU1000:
+> +		num_ifs = 2 - ni;
+> +		base_addr[0] = AU1000_ETH0_BASE;
+> +		base_addr[1] = AU1000_ETH1_BASE;
+> +		break;
+> +	case CPU_AU1100:
+> +		num_ifs = 1 - ni;
+> +		base_addr[0] = AU1000_ETH0_BASE;
+> +		break;
+> +	case CPU_AU1500:
+> +		num_ifs = 2 - ni;
+> +		base_addr[0] = AU1500_ETH0_BASE;
+> +		base_addr[1] = AU1500_ETH1_BASE;
+> +		break;
+> +	default:
+> +		num_ifs = 0;
+> +	}
+> +	for(i = 0; i < num_ifs; i++) {
+> +		if (au1000_probe1(NULL, base_addr[i], irq[i], i) != 0)
+>  			return -ENODEV;
+> -		}
+>  	}
+>  	return 0;
+>  }
+> 
+> 

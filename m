@@ -1,52 +1,51 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA90178 for <linux-archive@neteng.engr.sgi.com>; Thu, 10 Jun 1999 15:38:59 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA86092 for <linux-archive@neteng.engr.sgi.com>; Thu, 10 Jun 1999 15:14:28 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id PAA64974
+	id PAA01051
 	for linux-list;
-	Thu, 10 Jun 1999 15:37:52 -0700 (PDT)
+	Thu, 10 Jun 1999 15:11:56 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id PAA77067
+	via ESMTP id PAA27019
 	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 10 Jun 1999 15:37:49 -0700 (PDT)
-	mail_from (serdar@thegline.com)
-Received: from mail0.mailsender.net (mail0.mailsender.net [209.132.1.30]) 
+	Thu, 10 Jun 1999 15:11:36 -0700 (PDT)
+	mail_from (ulfc@thepuffingroup.com)
+Received: from calypso (dialup88-11-4.swipnet.se [130.244.88.164]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via SMTP id PAA06362
-	for <linux@cthulhu.engr.sgi.com>; Thu, 10 Jun 1999 15:37:49 -0700 (PDT)
-	mail_from (serdar@thegline.com)
-Received: from gline (167.206.177.147) by mail0.mailsender.net; 10 Jun 1999 15:34:37 -0700
-From: "Serdar Yegulalp" <serdar@thegline.com>
-To: <linux@cthulhu.engr.sgi.com>
-Subject: O2 Guinea-pig ready
-Date: Thu, 10 Jun 1999 18:38:54 -0400
-Message-ID: <000001beb392$0550efa0$93b1cea7@gline.optonline.net>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook 8.5, Build 4.71.2173.0
-Importance: Normal
-In-Reply-To: <37603CAB.8094D1CD@cobaltnet.com>
-X-MimeOLE: Produced By Microsoft MimeOLE V4.72.3110.3
+	via ESMTP id PAA03385
+	for <linux@cthulhu.engr.sgi.com>; Thu, 10 Jun 1999 15:11:27 -0700 (PDT)
+	mail_from (ulfc@thepuffingroup.com)
+Received: by calypso (Linux Smail3.2.0.101 #1)
+	id m10sDXD-003Ln3C; Fri, 11 Jun 1999 00:42:55 +0200 (CEST)
+Date: Fri, 11 Jun 1999 00:42:55 +0200
+From: Ulf Carlsson <ulfc@thepuffingroup.com>
+To: Linux SGI <linux@cthulhu.engr.sgi.com>
+Subject: CVS problem
+Message-ID: <19990611004255.B19664@thepuffingroup.com>
+Mail-Followup-To: Linux SGI <linux@cthulhu.engr.sgi.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.95.4i
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Greetings, all. I know this is probably premature, but when the O2 port gets
-going, I just want y'all to know I have an O2 machine here which is ready to
-be exploited.  Thx.
+Hi,
 
---------------------------------------------------------------------------
-serdar@thegline.com                                    EFNet IRC: TheGline
-www.thegline.com                             ICQ: 934998  AOL IM: Ginrei23
---------------------------------------------------------------------------
-           w e ' v e  c o m e  t o  f a k e  y o u  o v e r
- you can crush me as I speak/write on rocks what you feel/now feel this
---------------------------------------------------------------------------
+I have had problems with the CVS server at linus.linux.sgi.com now for some
+time:
+
+	$ export CVS_RSH=ssh
+	$ export CVSROOT="linus.linux.sgi.com:/src/cvs"
+	$ cvs commit tm-linux.h
+	bash: cvs: command not found
+	cvs [commit aborted]: end of file from server (consult above message if any)
+
+It looks like /usr/local/bin/cvs isn't in the path or something. Can someone
+please confirm this problem or fix it?
+
+- Ulf

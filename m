@@ -1,57 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Apr 2004 09:49:17 +0100 (BST)
-Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:20903 "EHLO
-	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225951AbUDXItQ>; Sat, 24 Apr 2004 09:49:16 +0100
-Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
-	id 0E5314AEE3; Sat, 24 Apr 2004 10:49:09 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by jurand.ds.pg.gda.pl (Postfix) with ESMTP
-	id F1BDC4AEA0; Sat, 24 Apr 2004 10:49:09 +0200 (CEST)
-Date: Sat, 24 Apr 2004 10:49:09 +0200 (CEST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>,
-	linux-mips@linux-mips.org
-Subject: Re: 32-bit ABI
-In-Reply-To: <20040424082655.GC26165@linux-mips.org>
-Message-ID: <Pine.LNX.4.55.0404241043160.14494@jurand.ds.pg.gda.pl>
-References: <Pine.GSO.4.10.10404240945500.14182-100000@helios.et.put.poznan.pl>
- <Pine.LNX.4.55.0404240949350.14494@jurand.ds.pg.gda.pl>
- <20040424075545.GA27039@linux-mips.org> <Pine.LNX.4.55.0404240959200.14494@jurand.ds.pg.gda.pl>
- <20040424081854.GB26165@linux-mips.org> <Pine.LNX.4.55.0404241021140.14494@jurand.ds.pg.gda.pl>
- <20040424082655.GC26165@linux-mips.org>
-Organization: Technical University of Gdansk
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Apr 2004 10:00:49 +0100 (BST)
+Received: from athena.et.put.poznan.pl ([IPv6:::ffff:150.254.29.137]:6347 "EHLO
+	athena.et.put.poznan.pl") by linux-mips.org with ESMTP
+	id <S8225951AbUDXJAq>; Sat, 24 Apr 2004 10:00:46 +0100
+Received: from athena (athena [150.254.29.137])
+	by athena.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id i3O90iu18014
+	for <linux-mips@linux-mips.org>; Sat, 24 Apr 2004 11:00:44 +0200 (MET DST)
+Received: from helios.et.put.poznan.pl ([150.254.29.65])
+	by athena (MailMonitor for SMTP v1.2.2 ) ;
+	Sat, 24 Apr 2004 11:00:44 +0200 (MET DST)
+Received: from localhost (sskowron@localhost)
+	by helios.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id i3O90i218419
+	for <linux-mips@linux-mips.org>; Sat, 24 Apr 2004 11:00:44 +0200 (MET DST)
+X-Authentication-Warning: helios.et.put.poznan.pl: sskowron owned process doing -bs
+Date: Sat, 24 Apr 2004 11:00:44 +0200 (MET DST)
+From: Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
+To: linux-mips@linux-mips.org
+Subject: pci-ip27 memory ranges
+Message-ID: <Pine.GSO.4.10.10404241059030.18252-100000@helios.et.put.poznan.pl>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Return-Path: <sskowron@ET.PUT.Poznan.PL>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4889
+X-archive-position: 4890
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: sskowron@ET.PUT.Poznan.PL
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 24 Apr 2004, Ralf Baechle wrote:
+Why does the pci-ip27 driver register all memory resources (0UL - ~0UL)? I
+had to change it to the appropriate Xtalk window to get the kernel to
+recognize PCI at all.
 
-> >  That precludes the firmware from being run cached, though.  Not very 
-> > nice, especially for callbacks, but perhaps a bit easier to deal with.
-> 
-> Sane firmware copies itself to RAM at the earliest possible stage anyway -
-> ROMs are way too slow.
+Now, the IOC3 makes a kernel panic. Will see...
 
- Indeed, though it excludes the RAM used from the OS control (unless the 
-OS wants to block itself from the access to callbacks).
+Stanislaw Skowronek
 
- FYI, DEC copies only the bits it currently needs (and e.g. option ROMs 
-typically cannot be directly executed at all as they often are 8-bit, but 
-return word-aligned data) and when booting the OS certain callback vector 
-entries point to RAM and others to ROM.
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+--<=>--
+  Paranoid: one who is truly in touch with reality.

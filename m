@@ -1,52 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Jun 2003 19:54:51 +0100 (BST)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:14211 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225209AbTFNSyt>; Sat, 14 Jun 2003 19:54:49 +0100
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id UAA06240;
-	Sat, 14 Jun 2003 20:55:46 +0200 (MET DST)
-X-Authentication-Warning: delta.ds2.pg.gda.pl: macro owned process doing -bs
-Date: Sat, 14 Jun 2003 20:55:45 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Ralf Baechle <ralf@linux-mips.org>
-cc: Jun Sun <jsun@mvista.com>, Dan Malek <dan@embeddededge.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: CVS Update@-mips.org: linux
-In-Reply-To: <20030613232315.GB22949@linux-mips.org>
-Message-ID: <Pine.GSO.3.96.1030614204954.1934F-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Jun 2003 20:39:19 +0100 (BST)
+Received: from janus.foobazco.org ([IPv6:::ffff:198.144.194.226]:61825 "EHLO
+	mail.foobazco.org") by linux-mips.org with ESMTP
+	id <S8225073AbTFNTjR>; Sat, 14 Jun 2003 20:39:17 +0100
+Received: from fallout.sjc.foobazco.org (fallout.sjc.foobazco.org [192.168.21.20])
+	by mail.foobazco.org (Postfix) with ESMTP
+	id AEBBCFACE; Sat, 14 Jun 2003 12:39:13 -0700 (PDT)
+Received: by fallout.sjc.foobazco.org (Postfix, from userid 1014)
+	id 6290224; Sat, 14 Jun 2003 12:39:13 -0700 (PDT)
+Date: Sat, 14 Jun 2003 12:39:13 -0700
+From: Keith M Wesolowski <wesolows@foobazco.org>
+To: ralf@linux-mips.org
+Cc: linux-mips@linux-mips.org
+Subject: PATCH: ip32 pci update
+Message-ID: <20030614193913.GA25863@foobazco.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.4i
+Return-Path: <wesolows@foobazco.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2635
+X-archive-position: 2636
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: wesolows@foobazco.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 14 Jun 2003, Ralf Baechle wrote:
+Since we're chainsawing PCI anyway, here's an update to the IP32 code.
 
-> > We can use some scheme like Geert was proposing, i.e., named after
-> > boards and chipsets.  Hack, I think even naming after board vendor
-> > is acceptable.
-> 
-> Chipsets are a too coarse granularity to structure things these days.
-> Modern chipsets integrate a large number of logically independant
-> functionality.  Frequently such chipsets are ASICs which consist of
-> various logically independant functions licensed from several sources
-> and possibly multiple chipset / ASICs are being used in a single
-> system.  The world just isn't that simple ...
+diff -urN -x CVS 2.5-mips/arch/mips/sgi-ip32/ip32-pci.c 2.5-mips-moosehead/arch/mips/sgi-ip32/ip32-pci.c
+--- 2.5-mips/arch/mips/sgi-ip32/ip32-pci.c	2003-06-04 17:04:31.000000000 -0700
++++ 2.5-mips-moosehead/arch/mips/sgi-ip32/ip32-pci.c	2003-06-14 12:33:19.952495096 -0700
+@@ -135,9 +135,6 @@
+ 	mace_write_32 (MACEPCI_ERROR_ADDR, 0);
+ 	mace_write_32 (MACEPCI_ERROR_FLAGS, 0);
+ 	mace_write_32 (MACEPCI_CONTROL, 0xff008500);
+-	crime_write_64 (CRIME_HARD_INT, 0UL);
+-	crime_write_64 (CRIME_SOFT_INT, 0UL);
+-	crime_write_64 (CRIME_INT_STAT, 0x000000000000ff00UL);
+ 
+ 	if (request_irq (MACE_PCI_BRIDGE_IRQ, macepci_error, 0,
+ 			 "MACE PCI error", NULL))
+@@ -214,26 +211,6 @@
+ 		pci_write_config_word (dev, PCI_COMMAND, cmd);
+ 		pci_set_master (dev);
+ 	}
+-        /*
+-         * Fixup O2 PCI slot. Bad hack.
+-         */
+-/*        devtag = pci_make_tag(0, 0, 3, 0);
+-
+-        slot = macepci_conf_read(0, devtag, PCI_COMMAND_STATUS_REG);
+-        slot |= PCI_COMMAND_IO_ENABLE | PCI_COMMAND_MEM_ENABLE;
+-        macepci_conf_write(0, devtag, PCI_COMMAND_STATUS_REG, slot);
+-
+-        slot = macepci_conf_read(0, devtag, PCI_MAPREG_START);
+-        if (slot == 0xffffffe1)
+-                macepci_conf_write(0, devtag, PCI_MAPREG_START, 0x00001000);
+-
+-        slot = macepci_conf_read(0, devtag, PCI_MAPREG_START + (2 << 2));
+-        if ((slot & 0xffff0000) == 0) {
+-                slot += 0x00010000;
+-                macepci_conf_write(0, devtag, PCI_MAPREG_START + (2 << 2),
+-                    0x00000000);
+-        }
+- */
+ #ifdef DEBUG_MACE_PCI
+ 	printk ("Triggering PCI bridge interrupt...\n");
+ 	mace_write_32 (MACEPCI_ERROR_FLAGS, MACEPCI_ERROR_INTERRUPT_TEST);
 
- What's the deal?  E.g. for a PCI chip we can have a separate file for
-each function.  And anything that is not related to a system's core, i.e. 
-a peripheral device, belongs to drivers/whatever anyway.
 
 -- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Keith M Wesolowski <wesolows@foobazco.org> http://foobazco.org/~wesolows
+------(( Project Foobazco Coordinator and Network Administrator ))------
+	"May Buddha bless all stubborn people!"
+				-- Uliassutai Karakorum Blake

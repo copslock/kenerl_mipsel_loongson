@@ -1,59 +1,35 @@
-Received:  by oss.sgi.com id <S553974AbQLEKf4>;
-	Tue, 5 Dec 2000 02:35:56 -0800
-Received: from router.isratech.ro ([193.226.114.69]:32781 "EHLO
-        router.isratech.ro") by oss.sgi.com with ESMTP id <S553690AbQLEKfl>;
-	Tue, 5 Dec 2000 02:35:41 -0800
-Received: from isratech.ro (calin.cs.tuiasi.ro [193.231.15.163])
-	by router.isratech.ro (8.10.2/8.10.2) with ESMTP id eB5AXvV05087
-	for <linux-mips@oss.sgi.com>; Tue, 5 Dec 2000 12:34:20 +0200
-Message-ID: <3A2D310E.CA3BE148@isratech.ro>
-Date:   Tue, 05 Dec 2000 13:16:47 -0500
-From:   Nicu Popovici <octavp@isratech.ro>
-X-Mailer: Mozilla 4.74 [en] (X11; U; Linux 2.2.15-2.5.0 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     linux-mips@oss.sgi.com
-Subject: X on ATLAS.
-Content-Type: multipart/mixed;
- boundary="------------304B261A0E1FC155F593FB3F"
+Received:  by oss.sgi.com id <S553712AbQLENH0>;
+	Tue, 5 Dec 2000 05:07:26 -0800
+Received: from gandalf.physik.uni-konstanz.de ([134.34.144.69]:47880 "EHLO
+        gandalf.physik.uni-konstanz.de") by oss.sgi.com with ESMTP
+	id <S553652AbQLENHQ>; Tue, 5 Dec 2000 05:07:16 -0800
+Received: from bilbo.physik.uni-konstanz.de [134.34.144.81] 
+	by gandalf.physik.uni-konstanz.de with esmtp (Exim 3.12 #1 (Debian))
+	id 143HoH-0004Qn-00; Tue, 05 Dec 2000 14:07:05 +0100
+Received: from agx by bilbo.physik.uni-konstanz.de with local (Exim 3.12 #1 (Debian))
+	id 143HoG-0007TL-00; Tue, 05 Dec 2000 14:07:04 +0100
+Date:   Tue, 5 Dec 2000 14:07:04 +0100
+From:   Guido Guenther <guido.guenther@uni-konstanz.de>
+To:     Nicu Popovici <octavp@isratech.ro>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: X on ATLAS.
+Message-ID: <20001205140704.C28457@bilbo.physik.uni-konstanz.de>
+References: <3A2D310E.CA3BE148@isratech.ro>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3A2D310E.CA3BE148@isratech.ro>; from octavp@isratech.ro on Tue, Dec 05, 2000 at 01:16:47PM -0500
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-This is a multi-part message in MIME format.
---------------304B261A0E1FC155F593FB3F
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-
-Hello ,
-
-Does anyone know  something about running X on a mips machine ( ATLAS
-board + QEV processor ) ? Please try to give me a clue .
-
-Regards,
-Nicu
-
-
---------------304B261A0E1FC155F593FB3F
-Content-Type: text/x-vcard; charset=us-ascii;
- name="octavp.vcf"
-Content-Transfer-Encoding: 7bit
-Content-Description: Card for Nicu Popovici
-Content-Disposition: attachment;
- filename="octavp.vcf"
-
-begin:vcard 
-n:POPOVICI;Nicolae Octavian 
-tel;cell:+40 93 605020
-x-mozilla-html:FALSE
-org:SC Silicon Service SRL;Software
-adr:;;;;;;
-version:2.1
-email;internet:octavp@isratech.ro
-title:Software engineer
-x-mozilla-cpt:;0
-fn:Nicolae Octavian POPOVICI
-end:vcard
-
---------------304B261A0E1FC155F593FB3F--
+Hi,
+On Tue, Dec 05, 2000 at 01:16:47PM -0500, Nicu Popovici wrote:
+> Does anyone know  something about running X on a mips machine ( ATLAS
+> board + QEV processor ) ? Please try to give me a clue .
+What kind of graphic hardware does the ATLAS board have. If you have 
+a framebuffer device you should be able to get X(>=4.0.1) running fairly 
+easily. 
+ -- Guido

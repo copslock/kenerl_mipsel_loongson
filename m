@@ -1,52 +1,36 @@
-Received:  by oss.sgi.com id <S553858AbRCHQh7>;
-	Thu, 8 Mar 2001 08:37:59 -0800
-Received: from u-45-19.karlsruhe.ipdial.viaginterkom.de ([62.180.19.45]:55556
+Received:  by oss.sgi.com id <S553895AbRCHQlJ>;
+	Thu, 8 Mar 2001 08:41:09 -0800
+Received: from u-45-19.karlsruhe.ipdial.viaginterkom.de ([62.180.19.45]:56324
         "EHLO u-45-19.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S553719AbRCHQhw>; Thu, 8 Mar 2001 08:37:52 -0800
-Received: from dea ([193.98.169.28]:899 "EHLO dea.waldorf-gmbh.de")
-	by bacchus.dhis.org with ESMTP id <S867055AbRCHQhd>;
-	Thu, 8 Mar 2001 17:37:33 +0100
+	with ESMTP id <S553836AbRCHQlF>; Thu, 8 Mar 2001 08:41:05 -0800
+Received: from dea ([193.98.169.28]:1411 "EHLO dea.waldorf-gmbh.de")
+	by bacchus.dhis.org with ESMTP id <S867055AbRCHQku>;
+	Thu, 8 Mar 2001 17:40:50 +0100
 Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f28GbOG14462;
-	Thu, 8 Mar 2001 17:37:24 +0100
-Date:	Thu, 8 Mar 2001 17:37:24 +0100
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f28GeiX14498;
+	Thu, 8 Mar 2001 17:40:44 +0100
+Date:	Thu, 8 Mar 2001 17:40:44 +0100
 From:	Ralf Baechle <ralf@oss.sgi.com>
-To:	Jeff Harrell <jharrell@ti.com>
-Cc:	linux-mips@oss.sgi.com
+To:	heinold@physik.tu-cottbus.de, linux-mips@oss.sgi.com
 Subject: Re: Question concerning Assembler error
-Message-ID: <20010308173724.A11107@bacchus.dhis.org>
-References: <3AA7B13F.F918E1F8@ti.com>
+Message-ID: <20010308174044.B11107@bacchus.dhis.org>
+References: <3AA7B13F.F918E1F8@ti.com> <20010308173003.A17217@physik.tu-cottbus.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <3AA7B13F.F918E1F8@ti.com>; from jharrell@ti.com on Thu, Mar 08, 2001 at 09:20:15AM -0700
+In-Reply-To: <20010308173003.A17217@physik.tu-cottbus.de>; from heinold@physik.tu-cottbus.de on Thu, Mar 08, 2001 at 05:30:03PM +0100
 X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Thu, Mar 08, 2001 at 09:20:15AM -0700, Jeff Harrell wrote:
+On Thu, Mar 08, 2001 at 05:30:03PM +0100, H.Heinold wrote:
 
->         /* Interrupt : For now we simply disable interrupts and
->      return */
-> 
->              MFC0(   k0, C0_STATUS)
->              srl     k0, 1
->              sll     k0, 1
->              MTC0(   k0, C0_STATUS)
->              nop
->              .set    mips3
->      ==>  eret   <==
->              .set    mips2
->              nop
-> 
-> 
-> Any information that anyone might have would be greatly appreciated.
+> Hm sorry cant help with the assembler problem, but which machine
+> has a 4600 Prozessor and run mipsel on it?
 
-I suggest to run this code through the preprocessor only using the
--E -C options.  The output will be somewhat cryptic but explain much better
-what's wrong.
+RM200C.
 
   Ralf

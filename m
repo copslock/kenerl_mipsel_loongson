@@ -1,39 +1,36 @@
-Received:  by oss.sgi.com id <S554276AbRBZXlM>;
-	Mon, 26 Feb 2001 15:41:12 -0800
-Received: from deliverator.sgi.com ([204.94.214.10]:34395 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S553847AbRBZXlA>;
-	Mon, 26 Feb 2001 15:41:00 -0800
-Received: from sydney.sydney.sgi.com (sydney.sydney.sgi.com [134.14.48.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via SMTP id PAA11895
-	for <linux-mips@oss.sgi.com>; Mon, 26 Feb 2001 15:39:55 -0800 (PST)
-	mail_from (kaos@melbourne.sgi.com)
-Received: from kao2.melbourne.sgi.com by sydney.sydney.sgi.com via ESMTP (950413.SGI.8.6.12/930416.SGI)
-	 id KAA08771; Tue, 27 Feb 2001 10:39:32 +1100
-X-Mailer: exmh version 2.1.1 10/15/1999
-From:   Keith Owens <kaos@melbourne.sgi.com>
-To:     michaels@jungo.com
-cc:     linux-mips@oss.sgi.com
-Subject: Re: ELF header kernel module wrong? 
-In-reply-to: Your message of "Mon, 26 Feb 2001 13:17:42 +0200."
-             <3A9A3B56.B0141D21@jungo.com> 
+Received:  by oss.sgi.com id <S554314AbRB0Bne>;
+	Mon, 26 Feb 2001 17:43:34 -0800
+Received: from u-217-21.karlsruhe.ipdial.viaginterkom.de ([62.180.21.217]:38899
+        "EHLO dea.waldorf-gmbh.de") by oss.sgi.com with ESMTP
+	id <S554312AbRB0BnP>; Mon, 26 Feb 2001 17:43:15 -0800
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f1R1gZX26804;
+	Tue, 27 Feb 2001 02:42:35 +0100
+Date:   Tue, 27 Feb 2001 02:42:35 +0100
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     "Steven Liu" <stevenliu@psdc.com>
+Cc:     <linux-mips@oss.sgi.com>
+Subject: Re: Where is 2.2.x kernel?
+Message-ID: <20010227024235.A26684@bacchus.dhis.org>
+References: <001c01c09fcd$61c20070$dde0490a@BANANA>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Date:   Tue, 27 Feb 2001 10:39:39 +1100
-Message-ID: <23954.983230779@kao2.melbourne.sgi.com>
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <001c01c09fcd$61c20070$dde0490a@BANANA>; from stevenliu@psdc.com on Mon, Feb 26, 2001 at 12:23:22AM -0800
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Mon, 26 Feb 2001 13:17:42 +0200, 
-michaels@jungo.com wrote:
->If what you say is correct, then any module created by this toolchain
->would be impossible to 'insmod'
+On Mon, Feb 26, 2001 at 12:23:22AM -0800, Steven Liu wrote:
 
-Not impossible, just silently corrupted if the symbol numbers were
-wrong.  modutils 2.3.11 added a sanity check on the number of local
-symbols, a version before 2.3.11 would accept any local symbol number
-and overrun the allocated table if the number was out of bounds.
+> In ftp://oss.sgi.com/pub/linux/mips/kernel/, there are many folders like v2.1, v2.2, and v2.3. But there is nothing in v2.2. Where could I 
+> find 2.2.x kernel? 
 
-Sometimes the toolchain creates valid symbol numbers, sometimes an
-invalid number will not cause any problems.  It is pure luck if it
-works.
+You can now get the kernel from anonymous CVS.  See the howto at
+http://oss.sgi.com/mips/mips-howto.html for how to access anonymous CVS;
+Linux 2.2 is on the CVS branch linux_2_2.
+
+  Ralf

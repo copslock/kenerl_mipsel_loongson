@@ -1,195 +1,62 @@
-Received:  by oss.sgi.com id <S553808AbQKQBQT>;
-	Thu, 16 Nov 2000 17:16:19 -0800
-Received: from [206.207.108.63] ([206.207.108.63]:27481 "HELO
-        ridgerun-lx.ridgerun.cxm") by oss.sgi.com with SMTP
-	id <S553675AbQKQBQD>; Thu, 16 Nov 2000 17:16:03 -0800
-Received: (qmail 31550 invoked from network); 16 Nov 2000 18:15:51 -0700
-Received: from stevej-lx.ridgerun.cxm (HELO ridgerun.com) (stevej@192.168.1.4)
-  by ridgerun-lx.ridgerun.cxm with SMTP; 16 Nov 2000 18:15:51 -0700
-Message-ID: <3A1486C7.408C50DE@ridgerun.com>
-Date:   Thu, 16 Nov 2000 18:15:51 -0700
-From:   Steve Johnson <stevej@ridgerun.com>
-Organization: Ridgerun, Inc.
-X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.16 i686)
-X-Accept-Language: en
+Received:  by oss.sgi.com id <S553865AbQKQBou>;
+	Thu, 16 Nov 2000 17:44:50 -0800
+Received: from gateway-490.mvista.com ([63.192.220.206]:36090 "EHLO
+        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553829AbQKQBog>;
+	Thu, 16 Nov 2000 17:44:36 -0800
+Received: from mvista.com (IDENT:ppopov@zeus.mvista.com [10.0.0.112])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id eAH1fi328800;
+	Thu, 16 Nov 2000 17:41:44 -0800
+Message-ID: <3A148E0C.5056F18A@mvista.com>
+Date:   Thu, 16 Nov 2000 17:46:52 -0800
+From:   Pete Popov <ppopov@mvista.com>
+Organization: Monta Vista Software
+X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.17 i586)
+X-Accept-Language: bg, en
 MIME-Version: 1.0
-To:     linux-mips@oss.sgi.com
-Subject: MIPS config.in NET configuration
-Content-Type: multipart/mixed;
- boundary="------------E67C727199CC0F7C045E6927"
+To:     Steve Johnson <stevej@ridgerun.com>,
+        "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: RE: MIPS config.in NET configuration
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-This is a multi-part message in MIME format.
---------------E67C727199CC0F7C045E6927
-Content-Type: multipart/alternative;
- boundary="------------015809693C09D4C35C44B073"
 
+Hi Steve,
 
---------------015809693C09D4C35C44B073
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+> I'm trying to add support for a Galileo Tech. EV64120A board,
+>building on Pete Popov's work that's already in CVS.  I'm having trouble
+>with the "Network device support" menu when I "make xconfig".
 
-Hi,
+xconfig was broken for me the last time I did some powerpc work as
+well.  If you want to be really safe, use "make config".
 
-    I'm trying to add support for a Galileo Tech. EV64120A board,
-building on Pete Popov's work that's already in CVS.  I'm having trouble
-with the "Network device support" menu when I "make xconfig".
+>    If I select "Galileo EV96100 Evaluation board" on the "Machine
+>selection" menu, I can't select PPP support in the "Network device
+>support" menu because the IP22/Decstation/Baget code in
+>arch/mips/config.in eclipses the normal net menu's CONFIG_PPP.  Is there
+>a reasonable way to resolve two different environments needing the same
+>variable defined?
 
-    If I select "Galileo EV96100 Evaluation board" on the "Machine
-selection" menu, I can't select PPP support in the "Network device
-support" menu because the IP22/Decstation/Baget code in
-arch/mips/config.in eclipses the normal net menu's CONFIG_PPP.  Is there
-a reasonable way to resolve two different environments needing the same
-variable defined?
+>    The same problem exists for CONFIG_SERIAL, which is defined by the
+>Decstation and doesn't let me use the normal character device 16550 UART
+>menu item.
 
-    The same problem exists for CONFIG_SERIAL, which is defined by the
-Decstation and doesn't let me use the normal character device 16550 UART
-menu item.
+>    Please note that this is only a problem for "make xconfig".  "make
+>menuconfig" works correctly and selects one set of responses for network
+>devices based on the machine selection.  Is that the solution, that
+>everyone in MIPS uses "make menuconfig"?
 
-    Please note that this is only a problem for "make xconfig".  "make
-menuconfig" works correctly and selects one set of responses for network
-devices based on the machine selection.  Is that the solution, that
-everyone in MIPS uses "make menuconfig"?
+BTW, I hope that by the end of next week, I'll be able to send Ralf the
+latest patches for the ev96100. It's running pretty well now with the
+scache enabled, but I found 96100 misconfiguration problems in the sdram
+decoders/subdecoders. The DEC tulip (with one small patch), serial.c
+(small patch again) also run fine, as well as the 96100 internal
+10/100Mbps controllers.
 
-if [ "$CONFIG_NET" = "y" ]; then
-   mainmenu_option next_comment
-   comment 'Network device support'
-
-   bool 'Network device support' CONFIG_NETDEVICES
-   if [ "$CONFIG_NETDEVICES" = "y" ]; then
-
-      if [ "$CONFIG_SGI_IP22" != "y" -a \
-          "$CONFIG_DECSTATION" != "y" -a \
-    "$CONFIG_BAGET_MIPS" != "y" ]; then
-
-  source drivers/net/Config.in
-
-  if [ "$CONFIG_ATM" = "y" ]; then
-     source drivers/atm/Config.in
-  fi
-      else
-  tristate 'Dummy net driver support' CONFIG_DUMMY
-  tristate 'SLIP (serial line) support' CONFIG_SLIP
-  if [ "$CONFIG_SLIP" != "n" ]; then
-     bool ' CSLIP compressed headers' CONFIG_SLIP_COMPRESSED
-     bool ' Keepalive and linefill' CONFIG_SLIP_SMART
-  fi
-  tristate 'PPP (point-to-point) support' CONFIG_PPP
-  if [ ! "$CONFIG_PPP" = "n" ]; then
-     comment 'CCP compressors for PPP are only built as modules.'
-  fi
-         if [ "$CONFIG_SGI_IP22" = "y" ]; then
-     bool 'SGI Seeq ethernet controller support' CONFIG_SGISEEQ
-  fi
-  if [ "$CONFIG_DECSTATION" = "y" ]; then
-     bool 'DEC LANCE ethernet controller support' CONFIG_DECLANCE
-  fi
-  if [ "$CONFIG_BAGET_MIPS" = "y" ]; then
-     tristate 'Baget AMD LANCE support' CONFIG_BAGETLANCE
-  fi
-      fi
-   fi
-   endmenu
-fi
-
-
-    Steve
-
-
---------------015809693C09D4C35C44B073
-Content-Type: text/html; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-
-<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
-<html>
-Hi,
-<p>&nbsp;&nbsp;&nbsp; I'm trying to add support for a Galileo Tech. EV64120A
-board, building on Pete Popov's work that's already in CVS.&nbsp; I'm having
-trouble with the "Network device support" menu when I "make xconfig".
-<p>&nbsp;&nbsp;&nbsp; If I select "Galileo EV96100 Evaluation board" on
-the "Machine selection" menu, I can't select PPP support in the "Network
-device support" menu because the IP22/Decstation/Baget code in arch/mips/config.in
-eclipses the normal net menu's CONFIG_PPP.&nbsp; Is there a reasonable
-way to resolve two different environments needing the same variable defined?
-<p>&nbsp;&nbsp;&nbsp; The same problem exists for CONFIG_SERIAL, which
-is defined by the Decstation and doesn't let me use the normal character
-device 16550 UART menu item.
-<p>&nbsp;&nbsp;&nbsp; Please note that this is only a problem for "make
-xconfig".&nbsp; "make menuconfig" works correctly and selects one set of
-responses for network devices based on the machine selection.&nbsp; Is
-that the solution, that everyone in MIPS uses "make menuconfig"?
-<p><tt>if [ "$CONFIG_NET" = "y" ]; then</tt>
-<br><tt>&nbsp;&nbsp; mainmenu_option next_comment</tt>
-<br><tt>&nbsp;&nbsp; comment 'Network device support'</tt><tt></tt>
-<p><tt>&nbsp;&nbsp; bool 'Network device support' CONFIG_NETDEVICES</tt>
-<br><tt>&nbsp;&nbsp; if [ "$CONFIG_NETDEVICES" = "y" ]; then</tt><tt></tt>
-<p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if [ "$CONFIG_SGI_IP22" != "y" -a
-\</tt>
-<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "$CONFIG_DECSTATION"
-!= "y" -a \</tt>
-<br><tt>&nbsp;&nbsp;&nbsp; "$CONFIG_BAGET_MIPS" != "y" ]; then</tt><tt></tt>
-<p><tt>&nbsp; source drivers/net/Config.in</tt><tt></tt>
-<p><tt>&nbsp; if [ "$CONFIG_ATM" = "y" ]; then</tt>
-<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; source drivers/atm/Config.in</tt>
-<br><tt>&nbsp; fi</tt>
-<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else</tt>
-<br><tt>&nbsp; tristate 'Dummy net driver support' CONFIG_DUMMY</tt>
-<br><tt>&nbsp; tristate 'SLIP (serial line) support' CONFIG_SLIP</tt>
-<br><tt>&nbsp; if [ "$CONFIG_SLIP" != "n" ]; then</tt>
-<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; bool ' CSLIP compressed headers' CONFIG_SLIP_COMPRESSED</tt>
-<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; bool ' Keepalive and linefill' CONFIG_SLIP_SMART</tt>
-<br><tt>&nbsp; fi</tt>
-<br><tt>&nbsp; tristate 'PPP (point-to-point) support' CONFIG_PPP</tt>
-<br><tt>&nbsp; if [ ! "$CONFIG_PPP" = "n" ]; then</tt>
-<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; comment 'CCP compressors for PPP are only
-built as modules.'</tt>
-<br><tt>&nbsp; fi</tt>
-<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if [ "$CONFIG_SGI_IP22"
-= "y" ]; then</tt>
-<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; bool 'SGI Seeq ethernet controller support'
-CONFIG_SGISEEQ</tt>
-<br><tt>&nbsp; fi</tt>
-<br><tt>&nbsp; if [ "$CONFIG_DECSTATION" = "y" ]; then</tt>
-<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; bool 'DEC LANCE ethernet controller support'
-CONFIG_DECLANCE</tt>
-<br><tt>&nbsp; fi</tt>
-<br><tt>&nbsp; if [ "$CONFIG_BAGET_MIPS" = "y" ]; then</tt>
-<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; tristate 'Baget AMD LANCE support' CONFIG_BAGETLANCE</tt>
-<br><tt>&nbsp; fi</tt>
-<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fi</tt>
-<br><tt>&nbsp;&nbsp; fi</tt>
-<br><tt>&nbsp;&nbsp; endmenu</tt>
-<br><tt>fi</tt>
-<br><tt></tt>&nbsp;<tt></tt>
-<p>&nbsp;&nbsp;&nbsp; Steve
-<br>&nbsp;</html>
-
---------------015809693C09D4C35C44B073--
-
---------------E67C727199CC0F7C045E6927
-Content-Type: text/x-vcard; charset=us-ascii;
- name="stevej.vcf"
-Content-Transfer-Encoding: 7bit
-Content-Description: Card for Steve Johnson
-Content-Disposition: attachment;
- filename="stevej.vcf"
-
-begin:vcard 
-n:Johnson;Steve
-tel;fax:208-331-2227
-tel;work:208-331-2226x11
-x-mozilla-html:TRUE
-url:http://www.ridgerun.com
-org:RidgeRun, Inc.
-version:2.1
-email;internet:stevej@ridgerun.com
-title:Senior Kernel Developer
-adr;quoted-printable:;;RidgeRun, Inc.=0D=0A200 N 4th St, Suite 101		;Boise;ID;83702;USA
-x-mozilla-cpt:;27936
-fn:Steve Johnson
-end:vcard
-
---------------E67C727199CC0F7C045E6927--
+-- 
+Pete Popov
+MontaVista Software, Inc
+ppopov@mvista.com

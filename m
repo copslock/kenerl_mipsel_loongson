@@ -1,49 +1,42 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g2LJ9DU10294
-	for linux-mips-outgoing; Thu, 21 Mar 2002 11:09:13 -0800
-Received: from quicklogic.com (quick1.quicklogic.com [206.184.225.224])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2LJ9Aq10290
-	for <linux-mips@oss.sgi.com>; Thu, 21 Mar 2002 11:09:10 -0800
-Received: from qldomain-Message_Server by quicklogic.com
-	with Novell_GroupWise; Thu, 21 Mar 2002 11:11:32 -0800
-Message-Id: <sc99bfe4.043@quicklogic.com>
-X-Mailer: Novell GroupWise Internet Agent 5.5.3.1
-Date: Thu, 21 Mar 2002 11:10:56 -0800
-From: "Dan Aizenstros" <daizenstros@quicklogic.com>
-To: <dom@algor.co.uk>, <fxzhang@ict.ac.cn>, <linux-mips@oss.sgi.com>,
-   <girishvg@yahoo.com>
-Subject: Re: Re: PCI VGA Card Initilization (SIS6326 / PT80)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id g2LJ9Aq10291
+	by oss.sgi.com (8.11.2/8.11.3) id g2LJJDO10737
+	for linux-mips-outgoing; Thu, 21 Mar 2002 11:19:13 -0800
+Received: from tibook.netx4.com ([209.113.146.155])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2LJJAq10734
+	for <linux-mips@oss.sgi.com>; Thu, 21 Mar 2002 11:19:10 -0800
+Received: from embeddededge.com (IDENT:dan@localhost.localdomain [127.0.0.1])
+	by tibook.netx4.com (8.11.1/8.11.1) with ESMTP id g2LJLW100683;
+	Thu, 21 Mar 2002 14:21:32 -0500
+Message-ID: <3C9A32B9.7000307@embeddededge.com>
+Date: Thu, 21 Mar 2002 14:21:29 -0500
+From: Dan Malek <dan@embeddededge.com>
+Organization: Embedded Edge, LLC.
+User-Agent: Mozilla/5.0 (X11; U; Linux 2.4.11-pre6-ben0 ppc; en-US; 0.8) Gecko/20010419
+X-Accept-Language: en
+MIME-Version: 1.0
+To: sjhill@cotw.com
+CC: Pete Popov <ppopov@mvista.com>, linux-mips <linux-mips@oss.sgi.com>
+Subject: Re: pci-pcmcia bridges/adapters
+References: <1016683254.4951.168.camel@zeus> <3C9A15AA.304AE304@cotw.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hello Dominic,
+Steven J. Hill wrote:
 
-Actually it was Girish Gulawani who said he used the
-MILO bios not Zhang. He said he was using the files
-vgaraw1.c and vgaraw2.c from MILO. Those files do not
-use the x86emu BIOS emulator but try to directly
-initialize the VGA adapter.
 
-Dan Aizenstros
-Software Project Manager
-QuickLogic Canada
+> ....of my wireless cards and the driver never worked, so my
+> experience has not been good. 
 
->>> Dominic Sweetman <dom@algor.co.uk> 03/21/02 08:28 AM >>>
+I have been working with quite a few wireless cards in embedded
+systems and have discovered they are quite sensitive to reset
+after power up.  The power-on, reset, first access to the card
+seems to have some timing considerations that some socket drivers
+can handle better than others.  Before you assume the bridge and
+its related software are at fault, try a variety of cards not
+sensitive to this, like a CF in a PCMCIA adapter.  I got burned
+by this again yesterday :-).
 
-Dan,
 
-> Is Algorithmics BIOS emulator not the x86emu code
-> that can be found in the Alpha MILO and the XFree86
-> code base as Alan Cox mentioned?
-
-It's an entirely indepedent invention of the same idea.  I've no idea
-whether it's any better/worse, but it sounded like our binary was
-working for Zhang better than the MILO he'd built.
-
-Dominic
-Algorithmics Ltd
+	-- Dan

@@ -1,40 +1,36 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id NAA512052 for <linux-archive@neteng.engr.sgi.com>; Thu, 29 Jan 1998 13:25:33 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id NAA513772 for <linux-archive@neteng.engr.sgi.com>; Thu, 29 Jan 1998 13:54:58 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id NAA09633 for linux-list; Thu, 29 Jan 1998 13:24:56 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA09621 for <linux@cthulhu.engr.sgi.com>; Thu, 29 Jan 1998 13:24:55 -0800
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id NAA26933
-	for <linux@cthulhu.engr.sgi.com>; Thu, 29 Jan 1998 13:24:53 -0800
-	env-from (ralf@mailhost.uni-koblenz.de)
-Received: from zaphod (ralf@zaphod.uni-koblenz.de [141.26.4.13])
-	by informatik.uni-koblenz.de (8.8.8/8.8.8) with SMTP id WAA04468;
-	Thu, 29 Jan 1998 22:24:50 +0100 (MET)
-Received: by zaphod (SMI-8.6/KO-2.0)
-	id WAA08923; Thu, 29 Jan 1998 22:24:48 +0100
-Message-ID: <19980129222448.55873@uni-koblenz.de>
-Date: Thu, 29 Jan 1998 22:24:48 +0100
-From: ralf@uni-koblenz.de
-To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: linux-mips@fnet.fr, linux@cthulhu.engr.sgi.com
-Subject: Re: strange problem with my oli M700
-References: <19980129212705.29618@alpha.franken.de> <19980129221750.18001@uni-koblenz.de>
-Mime-Version: 1.0
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id NAA17566 for linux-list; Thu, 29 Jan 1998 13:51:42 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA17519 for <linux@cthulhu.engr.sgi.com>; Thu, 29 Jan 1998 13:51:36 -0800
+Received: from azure.engin.umich.edu (azure.engin.umich.edu [141.212.78.14]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id NAA05433
+	for <linux@cthulhu.engr.sgi.com>; Thu, 29 Jan 1998 13:51:35 -0800
+	env-from (jwelling@engin.umich.edu)
+Received: from engin.umich.edu (pm371-01.dialip.mich.net [207.75.186.191])
+	by azure.engin.umich.edu (8.8.7/8.8.7) with ESMTP id QAA23551
+	for <linux@cthulhu.engr.sgi.com>; Thu, 29 Jan 1998 16:51:33 -0500 (EST)
+Message-ID: <34D0F985.2DDF0814@engin.umich.edu>
+Date: Thu, 29 Jan 1998 16:49:57 -0500
+From: Jeremy Welling <jwelling@engin.umich.edu>
+X-Mailer: Mozilla 4.04 [en] (X11; I; IRIX 6.2 IP22)
+MIME-Version: 1.0
+To: linux@cthulhu.engr.sgi.com
+Subject: New to group
+References: <19980129212705.29618@alpha.franken.de> <19980129221750.18001@uni-koblenz.de> <19980129222448.55873@uni-koblenz.de>
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.84e
-In-Reply-To: <19980129221750.18001@uni-koblenz.de>; from ralf@uni-koblenz.de on Thu, Jan 29, 1998 at 10:17:50PM +0100
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Thu, Jan 29, 1998 at 10:17:50PM +0100, ralf@uni-koblenz.de wrote:
-
-> > I'm trying to read the firmware prom of my Olivetti M700 (Magnum 4000 clone).
-> > When access the address 0x9fc00000 (which is the KSEG0 address of the prom)
-> > the box freezes immidiately. Does anybody know why ? And how could I access
-> > the prom otherwise ?
-> 
-> Did you try uncached accesses via KSEG1?  I wouldn't wonder if the used
-> PROMs can't cope with the bursts generated for filling a cacheline.
-
-Which btw reminds me that enabling the second level cache on a Indy also
-makes call into the ARC firmware crash.  Dunno why.
-
-  Ralf
+Hello People,
+    Just wondering if the web page for sgi-linux is a bit out of date with the
+install instructions.  There's all kinds of stuff on the ftp server that isn't
+mentioned anywhere.  I'll probably skim the news archive after this.  I have an
+Indy.  I run Linux on my pc, and am very interested in this port.  What is the
+status of the xserver?  What are the current goals of the port?  How long do you
+expect before the dual boot is running?   I would be willing to run it and
+participate as a beta tester and have subscribed to this list.  If you could post an
+installation walkthrough or something updated for the latest changes, that would be
+great.
+Thanks,
+Jeremy Welling
+UofMich Engr Student

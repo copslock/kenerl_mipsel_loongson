@@ -1,89 +1,70 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f399cjt32598
-	for linux-mips-outgoing; Mon, 9 Apr 2001 02:38:45 -0700
-Received: from mx.mips.com (mx.mips.com [206.31.31.226])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f399cgM32593;
-	Mon, 9 Apr 2001 02:38:42 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id CAA27903;
-	Mon, 9 Apr 2001 02:38:45 -0700 (PDT)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id CAA24516;
-	Mon, 9 Apr 2001 02:38:42 -0700 (PDT)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id LAA22234;
-	Mon, 9 Apr 2001 11:38:00 +0200 (MEST)
-Message-ID: <3AD182F7.FF740CA6@mips.com>
-Date: Mon, 09 Apr 2001 11:37:59 +0200
-From: Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
-X-Accept-Language: en
+	by oss.sgi.com (8.11.3/8.11.3) id f39AAdk01068
+	for linux-mips-outgoing; Mon, 9 Apr 2001 03:10:39 -0700
+Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f39AAFM01055
+	for <linux-mips@oss.sgi.com>; Mon, 9 Apr 2001 03:10:29 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id LAA10009;
+	Mon, 9 Apr 2001 11:48:40 +0200 (MET DST)
+Date: Mon, 9 Apr 2001 11:48:40 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Florian Lohoff <flo@rfc822.org>
+cc: "Kevin D. Kissell" <kevink@mips.com>, debian-mips@lists.debian.org,
+   linux-mips@oss.sgi.com
+Subject: Re: first packages for mipsel
+In-Reply-To: <20010407172900.A3935@paradigm.rfc822.org>
+Message-ID: <Pine.GSO.3.96.1010409113508.9470A-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-To: Ralf Baechle <ralf@oss.sgi.com>
-CC: John Tobey <jtobey@john-edwin-tobey.org>, linux-mips@oss.sgi.com
-Subject: Re: 64-bit on Cobalt?
-References: <20010408184241.A3443@john-edwin-tobey.org> <20010409035453.B774@bacchus.dhis.org>
-Content-Type: text/plain; charset=iso-8859-15
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Ralf Baechle wrote:
+On Sat, 7 Apr 2001, Florian Lohoff wrote:
 
-> On Sun, Apr 08, 2001 at 06:42:41PM -0400, John Tobey wrote:
->
-> > The CPU is a QED RM5231 (CONFIG_NEVADA) 150MHz.  May I assume that
-> > nobody has run a 64-bit kernel on this thing?  The RaQ has no video
-> > card but a serial console, PCI, IDE, Ethernet, and special LEDs, panel
-> > buttons, and LCD display.  If I can get a 64-bit kernel to boot and
-> > prove its existence through any of these devices, I will be drunk with
-> > power.
->
-> So far the only supported machine by the mips64 kernel is the SGI Origin
-> 200 / 2000 series.
+> >  You are right, of course.  That's why glibc contains two versions of
+> > _test_and_set() code.  If compiled for MIPS I, glibc uses a syscall
+> > (currently sysmips()), while for MIPS II and higher it uses inline
+> > assembly code which makes use of LL/SC.
+> > 
+> >  That's exactly the way glibc does CPU-model-specific code for other
+> > archs.
+> 
+> The problem is that it is compile time - I would like to have
+> a runtime version - Just export the existance of ll/sc to
+> userspace somewhow.
 
-I have a QED RM5261 running a bigendian 64-bit kernel on our Malta board (it
-got a serial console, PCI, IDE, Ethernet).
-I haven't send the patch to Ralf yet, but you can get a snapshot at our
-kernel sources at
-ftp://ftp.mips.com/pub/linux/mips/kernel/2.4/src/linux-2.4.1.mips-src-01.00.tar.gz
+ I can't see any problem.  If you want to go for speed -- compile glibc
+for MIPS II (assuming you have a MIPS II or better CPU).  If you want to
+go for compatibility -- compile glibc for MIPS I (it will still run on
+MIPS II or better CPUs, although suboptimally; actually, it won't be the
+worst suboptimality then).
 
-Hope it helps you.
+ Similarly -- an Alpha EV56-compiled glibc will not run on an EV4 CPU,
+while an EV4-compiled glibc will run on an EV56 CPU, although
+suboptimally. 
 
->
-> > The reason I want 64 bits is that I (a) want a challenge, (b) plan to
-> > write an application that uses a sparse address space (40 bits is
-> > better than 31), (c) plan to outlive the 31-bit time_t, and (d) am
-> > p.o.ed at having bought the thing based on misleading advertising that
-> > mentioned a 64-bit processor but not the 32-bit OS.
->
-> > Big/little endian macht nichts.  I guess big will be easier, and I'm
-> > not concerned with running any existing 32-bit binaries.
->
-> Go for little endian because the firmware is little endian; supporting
-> ``other-endian'' for userspace would be unecessary extra pain.  We already
-> have suport for 32-bit binaries in the 64-bit kernel; in fact ALL
-> software we run on 64-bit kernels is 32-bit.
->
-> 32-bit wasn't only the easy thing to do - it's also the more efficient
-> thing for most software which doesn't need 64-bit registers or 64-bit
-> address space.  For a system with a dog slow 32-bit memory bus such as
-> the Qube 64-bit kernels would mean a dramatic slowdown.
->
-> I admit it's interesting though, mostly for engineering reasons, not
-> as a platform.
->
-> > I imagine that I would start by grafting Cobalt's peripheral support
-> > code from arch/mips/cobalt (now defunct) and include/asm-mips/cobalt.h
-> > into the mips64 tree from cvs@oss.sgi.com:/cvs/linux.
->
-> Somebody else was already working on upgrading the Cobalt kernel to 2.4.
->
->   Ralf
+> >  I don't like run-time detection either.  The compile-time choice is
+> > sufficient enough.  The _test_and_set() library function already hides
+> > implementation details from the user.
+> 
+> It isnt sufficent as we need a glibc beeing able to run on old
+> decstations AND on newer machines like the Lasat machine
+> which has an R5000.
 
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+ A MIPS-I-compiled glibc will run on any MIPS CPU, using a kernel
+_test_and_set() emulation (how kernel emulates _test_and_set() is not the
+point here -- it has to be done in an MP-safe way, if necessary; LL/SC is
+the most likely candidate for MIPS II or better kernels).  A
+MIPS-II-compiled glibc will run on any MIPS II or better CPU using LL/SC
+directly.  Similar for MIPS-III-compiled glibc, etc.
+
+ A MIPS-II-compiled kernel will still provide a _test_and_set() emulation
+to keep the ABI consistent (e.g. for statically linked MIPS I binaries).
+
+ Still any problems?  I will happily clarify any remaining issues. 
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

@@ -1,40 +1,42 @@
-Received:  by oss.sgi.com id <S553686AbRBJJFN>;
-	Sat, 10 Feb 2001 01:05:13 -0800
-Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:16562 "EHLO
-        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553650AbRBJJFF>;
-	Sat, 10 Feb 2001 01:05:05 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id KAA02509;
-	Sat, 10 Feb 2001 10:05:28 +0100 (MET)
-Date:   Sat, 10 Feb 2001 10:05:28 +0100 (MET)
-From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To:     "Kevin D. Kissell" <kevink@mips.com>
-cc:     Jun Sun <jsun@mvista.com>, linux-mips@oss.sgi.com
-Subject: Re: config option vs. run-time detection (the debate continues ...)
-In-Reply-To: <01b001c092e5$58f6a8a0$0deca8c0@Ulysses>
-Message-ID: <Pine.GSO.3.96.1010210100216.2153B-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received:  by oss.sgi.com id <S553748AbRBJNCh>;
+	Sat, 10 Feb 2001 05:02:37 -0800
+Received: from cvsftp.cotw.com ([208.242.241.39]:22023 "EHLO cvsftp.cotw.com")
+	by oss.sgi.com with ESMTP id <S553688AbRBJNCX>;
+	Sat, 10 Feb 2001 05:02:23 -0800
+Received: from cotw.com (dsl19.cedar-rapids.net [208.242.241.211])
+	by cvsftp.cotw.com (8.9.3/8.9.3) with ESMTP id HAA17339
+	for <linux-mips@oss.sgi.com>; Sat, 10 Feb 2001 07:02:20 -0600
+Message-ID: <3A853EB4.2DED9737@cotw.com>
+Date:   Sat, 10 Feb 2001 07:14:28 -0600
+From:   "Steven J. Hill" <sjhill@cotw.com>
+Reply-To: sjhill@cotw.com
+X-Mailer: Mozilla 4.73 [en] (X11; I; Linux 2.4.0 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To:     linux-mips@oss.sgi.com
+Subject: Re: Patch for Philips Nino...
+References: <Pine.LNX.4.21.0101231656410.3184-100000@cslin-gps> <3A84E2C4.112F8B2F@cotw.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Fri, 9 Feb 2001, Kevin D. Kissell wrote:
+"Steven J. Hill" wrote:
+> 
+> I would like to submit a patch for the Philips Nino. It can be
+> gotten from here (ftp://ftp.cotw.com/pub/nino/mips-tools/).
+> I didn't want to waste bandwidth by attaching it. It overlaps
+> some of Florian's stuff. Criticisms very welcome. Thanks.
+> 
+And then he realizes that in his sleepiness, he attached it
+anyway. Sorry everyone.
 
-> The best method I know for post-R3000 CPUs is to
-> write and read back the CU1 bit of the Status register.
-> CPUs without an integrated FPU will not have a flip-flop
-> for the bit, and will read back a 0 even after writing a 1.
-> There was never any architectural requirement that
-> this be so, however, and this cannot be absolutely
-> guaranteed to work.  If anyone has a counter-example,
-> however, I'd be interested in hearing about it.
-
- OK, then we may try to toggle CU1 and only if that succeeds check the FPU
-implementation id.  Thanks for the point. 
+-Steve
 
 -- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+ Steven J. Hill - Embedded SW Engineer
+ Public Key: 'finger sjhill@mail.cotw.com'
+ FPR1: E124 6E1C AF8E 7802 A815
+ FPR2: 7D72 829C 3386 4C4A E17D

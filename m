@@ -1,51 +1,37 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id SAA93043 for <linux-archive@neteng.engr.sgi.com>; Tue, 30 Mar 1999 18:35:18 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id HAA72968 for <linux-archive@neteng.engr.sgi.com>; Wed, 31 Mar 1999 07:22:50 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id SAA15949
+	id HAA67998
 	for linux-list;
-	Tue, 30 Mar 1999 18:33:14 -0800 (PST)
+	Wed, 31 Mar 1999 07:20:46 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from fir.engr.sgi.com (fir.engr.sgi.com [150.166.40.90])
+Received: from dataserv.detroit.sgi.com (dataserv.detroit.sgi.com [169.238.128.2])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via SMTP id SAA86499;
-	Tue, 30 Mar 1999 18:33:11 -0800 (PST)
-	mail_from (wje@fir.engr.sgi.com)
-Received: (from wje@localhost) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id SAA17826; Tue, 30 Mar 1999 18:33:10 -0800
-Date: Tue, 30 Mar 1999 18:33:10 -0800
-Message-Id: <199903310233.SAA17826@fir.engr.sgi.com>
-From: "William J. Earl" <wje@fir.engr.sgi.com>
-To: "Mark A. Zottola" <asnmaz01@asc.edu>
-Cc: Alan Hoyt <neuroinc@unidial.com>,
-        Ariel Faigon <ariel@cthulhu.engr.sgi.com>, linux@cthulhu.engr.sgi.com
-Subject: Re: Port to R3000 Indigo
-In-Reply-To: <37017BA5.160B97BD@asc.edu>
-References: <37016B61.5AC93288@unidial.com>
-	<37017BA5.160B97BD@asc.edu>
+	via ESMTP id HAA56327
+	for <linux@cthulhu.engr.sgi.com>;
+	Wed, 31 Mar 1999 07:20:45 -0800 (PST)
+	mail_from (eak@detroit.sgi.com)
+Received: from detroit.sgi.com (cx1.detroit.sgi.com [169.238.130.4]) by dataserv.detroit.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id KAA08674; Wed, 31 Mar 1999 10:20:42 -0500 (EST)
+Message-ID: <37023B47.3BF5B566@detroit.sgi.com>
+Date: Wed, 31 Mar 1999 07:12:07 -0800
+From: Eric Kimminau <eak@detroit.sgi.com>
+Reply-To: eak@detroit.sgi.com
+Organization: SGI
+X-Mailer: Mozilla 4.51C-SGI [en] (X11; I; IRIX 6.5 IP22)
+X-Accept-Language: en-US
+MIME-Version: 1.0
+To: linux@cthulhu.engr.sgi.com, mdlug@collie.net, linux-speakers@corp.sgi.com
+Subject: Salon 21st | Martin Luther, meet Linus Torvalds
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Mark A. Zottola writes:
- > 
- > I would like to second Alan's request. Our port of LINUX to the Indigo2 has
- > ground to an unceremonious halt for a lack of hardware documentation. I
- > understand that there are legal considerations. Would it not be possible to
- > release the documentation under some sort of non-disclosure agreement? As
- > we are writing code, if we do not :
- > 
- > 1) include specific citations of the documentation within the comments, or
- > 2) discuss those hardware matters deemed as proprietary within the comments
- > 
- > then it seems we could be able to satisfy any non-disclosure agreement SGI
- > would have while working under the disclosure constraint of the LINUX's
- > GPL. It seems there is an eminently workable way around this if reasonable
- > people can come together to discuss this reasonably.
-...
+Greetings!
 
-     For serious developers, we can definitely provide the Indy documentation,
-which covers quite a bit of Indigo R4000 and Indigo2, although there are 
-differences in some places, notably due to those machines using an earlier
-revision of the I/O controller (HPC).  We are still working on getting a 
-more general policy on release of documentation, including selected bits
-of low-level IRIX code (at least where license issues do not arise).  The
-Indy situation was a special case, done some time ago.
+I would like to thank Mark Wagnon from EarthLink,
+http://earthwood.frazmtn.com/ for pointing me towards this article. I always
+knew my love affair with Linux would turn into a holy war someday...
+
+http://www.salonmagazine.com/21st/feature/1998/11/12feature.html

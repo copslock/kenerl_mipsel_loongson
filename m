@@ -1,68 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Oct 2004 09:44:03 +0100 (BST)
-Received: from [IPv6:::ffff:145.253.187.134] ([IPv6:::ffff:145.253.187.134]:474
-	"EHLO mail01.baslerweb.com") by linux-mips.org with ESMTP
-	id <S8225228AbUJTIn6>; Wed, 20 Oct 2004 09:43:58 +0100
-Received: from mail01.baslerweb.com (localhost.localdomain [127.0.0.1])
-	by localhost.domain.tld (Basler) with ESMTP id D165C134034
-	for <linux-mips@linux-mips.org>; Wed, 20 Oct 2004 10:42:55 +0200 (CEST)
-Received: from comm1.baslerweb.com (unknown [172.16.13.2])
-	by mail01.baslerweb.com (Basler) with ESMTP id CEAF9134032
-	for <linux-mips@linux-mips.org>; Wed, 20 Oct 2004 10:42:55 +0200 (CEST)
-Received: from vclinux-1.basler.corp (localhost [172.16.13.253]) by comm1.baslerweb.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2657.72)
-	id 4YRPMMDC; Wed, 20 Oct 2004 10:43:31 +0200
-From: Thomas Koeller <thomas.koeller@baslerweb.com>
-Organization: Basler AG
-To: linux-mips@linux-mips.org
-Subject: Re: ioremap() and CONFIG_SWAP_IO_SPACE
-Date: Wed, 20 Oct 2004 10:47:29 +0200
-User-Agent: KMail/1.6.2
-References: <200408251130.53865.thomas.koeller@baslerweb.com> <200410191245.59878.thomas.koeller@baslerweb.com> <20041019183105.GB9379@linux-mips.org>
-In-Reply-To: <20041019183105.GB9379@linux-mips.org>
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Oct 2004 11:53:38 +0100 (BST)
+Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:35155
+	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
+	id <S8225228AbUJTKxc>; Wed, 20 Oct 2004 11:53:32 +0100
+Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
+	by iris1.csv.ica.uni-stuttgart.de with esmtp
+	id 1CKE5m-0005s8-00; Wed, 20 Oct 2004 12:53:18 +0200
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
+	id 1CKE5k-0005bJ-00; Wed, 20 Oct 2004 12:53:16 +0200
+Date: Wed, 20 Oct 2004 12:53:16 +0200
+To: Andre.Messerschmidt@infineon.com
+Cc: linux-mips@linux-mips.org
+Subject: Re: Mozilla Firefox compile problem
+Message-ID: <20041020105316.GE21691@rembrandt.csv.ica.uni-stuttgart.de>
+References: <34A8108658DCCE4B8595675ABFD8172709FAFF@dusse201.eu.infineon.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-Message-Id: <200410201047.30128.thomas.koeller@baslerweb.com>
-Return-Path: <thomas.koeller@baslerweb.com>
+In-Reply-To: <34A8108658DCCE4B8595675ABFD8172709FAFF@dusse201.eu.infineon.com>
+User-Agent: Mutt/1.5.6i
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6116
+X-archive-position: 6117
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas.koeller@baslerweb.com
+X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
 Precedence: bulk
 X-list: linux-mips
 
-On Tuesday 19 October 2004 20:31, Ralf Baechle wrote:
+Andre.Messerschmidt@infineon.com wrote:
+> 
+> >This patch is broken and will only paper over the problem. Use 
+> >the patch in https://bugzilla.mozilla.org/show_bug.cgi?id=258429
+> >At least the firefox 0.93 in Debian mips works with it.
+> 
+> Thanks for the reply. With that patch I got two undefined macros
+> (SETUP_GP and SAVE_GP). SETUP_GP was mentioned in the thread, but I
+> could not find a definition for SAVE_GP. To go on I just defined it
+> empty and continued to compile.
 >
-> If the standard readX() / writeX() functions don't suffice for some reason
-> then a bus specific versions in a separate header file are needed.
->
+> Then I got the following error, which leaves me totally lost.
 
-So I guess I will have to create something like ocd_readl()/ocd_writel().
+Well, not doing the SAVE_GP can have interesting effects. Its
+definition should be found in /usr/include/sys/asm.h. For o32
+it is
 
-> An example are the ISA versions.  For compatibility with super old
-> versions from before ioremap or where things on i386 at least seemed to
-> work without ioremap a special isa_readX() / isa_writeX() is supplied.
-> Again for compatibility reasons these macros are defined in <asm/io.h>,
-> not in a separate header file.
->
+#define SAVE_GP(x) .cprestore x
 
-Much confusion could be avoided, then, if readX()/writeX() were name
-pci_readX()/pci_writeX(), and, of course, CONFIG_SWAP_IO_SPACE were
-named CONFIG_SWAP_PCI_SPACE.
 
-Thomas
--- 
---------------------------------------------------
-
-Thomas Koeller, Software Development
-Basler Vision Technologies
-
-thomas dot koeller at baslerweb dot com
-http://www.baslerweb.com
-
-==============================
+Thiemo

@@ -1,37 +1,25 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id IAA09195 for <linux-archive@neteng.engr.sgi.com>; Thu, 5 Nov 1998 08:28:13 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id MAA85274 for <linux-archive@neteng.engr.sgi.com>; Thu, 5 Nov 1998 12:53:50 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id IAA89545
+	id MAA63215
 	for linux-list;
-	Thu, 5 Nov 1998 08:27:37 -0800 (PST)
+	Thu, 5 Nov 1998 12:53:06 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from oz.engr.sgi.com (oz.engr.sgi.com [150.166.42.13])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id IAA70170;
-	Thu, 5 Nov 1998 08:27:32 -0800 (PST)
-	mail_from (richardm@bif.cd.com)
-Received: from beltway.cd.com (beltway.cd.com [204.217.30.66]) 
-	by sgi.sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id IAA07349; Thu, 5 Nov 1998 08:27:31 -0800 (PST)
-	mail_from (richardm@bif.cd.com)
-Received: from bif.cd.com (bif [204.217.30.130])
-	by beltway.cd.com (8.9.1a/8.9.1) with SMTP id KAA25385;
-	Thu, 5 Nov 1998 10:26:59 -0600 (CST)
-Received: by bif.cd.com (SMI-8.6/SMI-SVR4)
-	id KAA07758; Thu, 5 Nov 1998 10:27:22 -0600
-From: richardm@bif.cd.com (Richard Masoner)
-Message-Id: <199811051627.KAA07758@bif.cd.com>
-Subject: Re: Challenge S question
-To: mende@piecomputer.engr.sgi.com (Bob Mende Pie)
-Date: Thu, 5 Nov 1998 10:27:22 -0600 (CST)
-Cc: ralf@uni-koblenz.de, linux@cthulhu.engr.sgi.com
-In-Reply-To: <199811050041.QAA02949@piecomputer.engr.sgi.com> from "Bob Mende Pie" at Nov 4, 98 04:41:46 pm
-Reply-To: <richardm@cd.com>
-Organization: Digi International
+	via ESMTP id MAA60312
+	for <linux@engr.sgi.com>;
+	Thu, 5 Nov 1998 12:53:05 -0800 (PST)
+	mail_from (ariel@oz.engr.sgi.com)
+Received: (from ariel@localhost) by oz.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) id MAA55262 for linux@engr.sgi.com; Thu, 5 Nov 1998 12:53:05 -0800 (PST)
+From: ariel@oz.engr.sgi.com (Ariel Faigon)
+Message-Id: <199811052053.MAA55262@oz.engr.sgi.com>
+Subject: Halloween doc II
+To: linux@cthulhu.engr.sgi.com (SGI/Linux mailing list)
+Date: Thu, 5 Nov 1998 12:53:04 -0800 (PST)
+Reply-To: ariel@cthulhu.engr.sgi.com (Ariel Faigon)
+Organization: Silicon Graphics Inc.
 X-Mailer: ELM [version 2.4 PL25]
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -39,20 +27,64 @@ Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+Hi,
 
-Ralf asked:
+A second "what is Linux and how to combat it" document
+just came out the Microsoft leak factory:
 
-> > Short question, the Challenge S is headless.  Does it still have the
-> > keyboard controller and keyboard and mouse ports in the hardware?
+        http://www.opensource.org/halloween2.html
 
-And Bob answered:
+It is a followup doc to the infamous "Halloween Doc"
+(now renamed "Halloween I").   It was leaked by an MS
+employee as a reaction to the recent publicity for
+Halloween-I.  It adds the threat of Linux as a client
+and gives a very positive evaluation of Linux (coming
+from within MS, this is telling).
 
-> It should.
+It concludes again, with the sinister suggestions to
+"de-commoditize" open protocols, plus (surprise) ways
+to attack Linux via litigation (if you can't beat them
+on merit, there are always the nukes, Bill).
 
-The two Challenge S's I've had, and the one I currently have, do
-not have keyboard and mouse ports.
+		---
+There's specific interest to this community: David Miller
+and Miguel de Icaza are both mentioned and their SPARC
+comparison docs are linked from this document.  No doubt,
+the MS guys did a great research job.
 
-Refer to page 3-32 of the SGI Hardware Developer Handbook R2.0 for a
-diagram of what the Challenge S has.
+There's a lot the Linux community learn from this document.
+Just read the "what's missing in Linux compared to NT"
+part and make sure it is implemented. It doesn't appear
+too hard.  Some points which are definitely geared towards
+the non sophisticated users include:
 
-Richard Masoner
+	1) Automounting a floppy/CD when it is inserted
+	   (BTW: IRIX mediad has been doing this for quite a while)
+
+	2) Simpler installation: e.g. rather than asking 30
+	   questions, provide a menu like:
+		1) Express install: don't ask me anything,
+		   just go ahead and fill my disk.
+		2) Pick and chose: let me select
+		...
+
+	3) XFree86 installation: don't ask me what chipset I have
+	   and what's the scan rates etc.  Instead have an internal
+	   mapping table between well known brand names (e.g. ATI Mach64)
+	   and the details of the card.  People usually know the latter
+	   (what's written on the box, but rarely the former)
+
+	4) Simpler Network config:  DHCP client installed by default
+	   Again saving complex questions to the simple user
+
+	5) Of course, a coherent consistent GUI to manage everything
+	   from HW devices to access to files etc.  Those who need
+	   the simplicity, will never be willing to do command line
+	   stuff.
+
+	6) Development tools like VB/VC++ :-)
+
+Someone forward this to Red Hat / Gnome and the XFree86 teams ...
+
+-- 
+Peace, Ariel

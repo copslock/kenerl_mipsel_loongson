@@ -1,41 +1,56 @@
-Received:  by oss.sgi.com id <S554039AbRAYWWA>;
-	Thu, 25 Jan 2001 14:22:00 -0800
-Received: from gateway-1237.mvista.com ([12.44.186.158]:22256 "EHLO
-        hermes.mvista.com") by oss.sgi.com with ESMTP id <S554036AbRAYWV4>;
-	Thu, 25 Jan 2001 14:21:56 -0800
-Received: from mvista.com (IDENT:ppopov@zeus.mvista.com [10.0.0.112])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f0PMIlI30612;
-	Thu, 25 Jan 2001 14:18:47 -0800
-Message-ID: <3A70A718.F0628BBB@mvista.com>
-Date:   Thu, 25 Jan 2001 14:22:16 -0800
-From:   Pete Popov <ppopov@mvista.com>
-Organization: Monta Vista Software
-X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.17 i586)
-X-Accept-Language: bg, en
-MIME-Version: 1.0
-To:     Michael Shmulevich <michaels@jungo.com>
-CC:     "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: MIPS/linux compatible PCI network cards
-References: <3A70A356.F3CA71F1@jungo.com>
+Received:  by oss.sgi.com id <S554041AbRAYWXK>;
+	Thu, 25 Jan 2001 14:23:10 -0800
+Received: from sgi.SGI.COM ([192.48.153.1]:1358 "EHLO sgi.com")
+	by oss.sgi.com with ESMTP id <S554038AbRAYWWw>;
+	Thu, 25 Jan 2001 14:22:52 -0800
+Received: from dhcp-163-154-5-240.engr.sgi.com ([163.154.5.240]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id OAA06031
+	for <linux-mips@oss.sgi.com>; Thu, 25 Jan 2001 14:22:51 -0800 (PST)
+	mail_from (ralf@oss.sgi.com)
+Received: (ralf@lappi.waldorf-gmbh.de) by bacchus.dhis.org
+	id <S870759AbRAYWTw>; Thu, 25 Jan 2001 14:19:52 -0800
+Date: 	Thu, 25 Jan 2001 14:19:52 -0800
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Joe deBlaquiere <jadb@redhat.com>
+Cc:     Florian Lohoff <flo@rfc822.org>, linux-mips@oss.sgi.com
+Subject: Re: [FIX] sysmips(MIPS_ATMIC_SET, ...) ret_from_sys_call vs. o32_ret_from_sys_call
+Message-ID: <20010125141952.C2311@bacchus.dhis.org>
+References: <20010124163048.B15348@paradigm.rfc822.org> <20010124165919.C15348@paradigm.rfc822.org> <20010125165530.B12576@paradigm.rfc822.org> <3A70705C.5020600@redhat.com> <3A707FFB.60802@redhat.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3A707FFB.60802@redhat.com>; from jadb@redhat.com on Thu, Jan 25, 2001 at 01:35:23PM -0600
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Michael Shmulevich wrote:
-> 
-> Hello all,
-> 
-> I would like to ask if someone knows some more or less widely available
-> PCI network card that is compatible with MIPS/Linux.
-> 
-> I have heard of Tulip and AMD's PCnet. I wonder if you heard of others.
-> 
-> Thanks in advance,
-> Sorry if this mail bothered you...
+On Thu, Jan 25, 2001 at 01:35:23PM -0600, Joe deBlaquiere wrote:
 
-Another one is the RTL8139.  It's quite cheap (I think less than $20).
+> sysmips(MIPS_ATOMIC_SET,ptr,val)
+> {
+> 	 *ptr = val ;
+> 	val 0 ;
+> }
+> 
+> but it is an atomic operation
+> 
+> if this correct in a pseudo-code sense?
 
-Pete
+It's more:
+
+sysmips(MIPS_ATOMIC_SET, ptr, val)
+{
+	result = *ptr;
+	*ptr = val;
+
+	return result;
+}
+
+   Ralf

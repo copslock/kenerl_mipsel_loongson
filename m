@@ -1,53 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Jan 2005 16:13:37 +0000 (GMT)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:41011
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8225203AbVAFQNd>; Thu, 6 Jan 2005 16:13:33 +0000
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp
-	id 1CmaFu-00063g-00; Thu, 06 Jan 2005 17:12:58 +0100
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 1CmaFk-0007VP-00; Thu, 06 Jan 2005 17:12:48 +0100
-Date: Thu, 6 Jan 2005 17:12:48 +0100
-To: Christoph Hellwig <hch@lst.de>
-Cc: "Steven J. Hill" <sjhill@realitydiluted.com>,
-	linux-mips@linux-mips.org
-Subject: Re: [RFC] Add 4/8 bytes to 'struct k_sigaction'...
-Message-ID: <20050106161248.GO4017@rembrandt.csv.ica.uni-stuttgart.de>
-References: <41DCC038.9000307@realitydiluted.com> <20050106154852.GA23433@lst.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Jan 2005 16:33:52 +0000 (GMT)
+Received: from dhcp-1285-65.blizz.at ([IPv6:::ffff:213.143.126.4]:404 "EHLO
+	cervus.intra") by linux-mips.org with ESMTP id <S8225203AbVAFQdr>;
+	Thu, 6 Jan 2005 16:33:47 +0000
+Received: from xterm.intra ([10.49.1.10])
+	by cervus.intra with esmtp (Exim 4.34)
+	id 1Cmaa1-0004An-Cf; Thu, 06 Jan 2005 17:33:45 +0100
+Subject: Re: [PATCH] I/O helpers rework
+From: Herbert Valerio Riedel <hvr@inso.tuwien.ac.at>
+To: "Maciej W. Rozycki" <macro@mips.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+	"Maciej W. Rozycki" <macro@linux-mips.org>
+In-Reply-To: <Pine.LNX.4.61.0412151936460.14855@perivale.mips.com>
+References: <Pine.LNX.4.61.0412151936460.14855@perivale.mips.com>
+Content-Type: text/plain
+Organization: Research Group for Industrial Software @ Vienna University of
+	Technology
+Date: Thu, 06 Jan 2005 17:33:44 +0100
+Message-Id: <1105029224.4361.21.camel@xterm.intra>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20050106154852.GA23433@lst.de>
-User-Agent: Mutt/1.5.6+20040907i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+X-Mailer: Evolution 2.0.3 
+Content-Transfer-Encoding: 7bit
+Return-Path: <hvr@inso.tuwien.ac.at>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6817
+X-archive-position: 6818
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: hvr@inso.tuwien.ac.at
 Precedence: bulk
 X-list: linux-mips
 
-Christoph Hellwig wrote:
-> > --- signal.h	30 Sep 2003 14:27:29 -0000	1.17
-> > +++ signal.h	6 Jan 2005 04:21:58 -0000
-> > @@ -135,7 +135,7 @@
-> > 
-> >  struct k_sigaction {
-> >  	struct sigaction sa;
-> > -#ifdef CONFIG_BINFMT_IRIX
-> > +#if !defined(CONFIG_CPU_LITTLE_ENDIAN)
-> >  	void		(*sa_restorer)(void);
-> >  #endif
+On Wed, 2004-12-15 at 21:13 +0000, Maciej W. Rozycki wrote:
+[..]
+>  The changes have been verified with a Malta board for port I/O and with a 
+> SWARM one for memory-mapped I/O (with an updated driver; to be sent 
+> separately).  Broadcom SiByte systems are the only ones utilizing current 
+> __raw_*() and ____raw_*() calls.  I have a patch to convert them to 
+> bus_*() and __bus_*() ones as appropriate ready as well.
 > 
-> #ifdef __mipseb__ maybe?
+>  OK to apply?
+ 
+jfyi, this change broke mtd and au1xxx-usb on big endian au1xxx systems,
+as the _raw calls do suddenly byteswapping :-(
 
-AFAICS most parts of the kernel seem to prefer CONFIG_CPU_LITTLE_ENDIAN
-over compiler-dependent macros. (And IIRC it would need to be __MIPSEB.)
+was this intended?
 
-
-Thiemo
+regards,
+-- 
+Herbert Valerio Riedel <hvr@inso.tuwien.ac.at>
+Research Group for Industrial Software @ Vienna University of Technology

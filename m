@@ -1,21 +1,19 @@
-Received:  by oss.sgi.com id <S553937AbQKMSec>;
-	Mon, 13 Nov 2000 10:34:32 -0800
-Received: from natmail2.webmailer.de ([192.67.198.65]:39663 "EHLO
-        post.webmailer.de") by oss.sgi.com with ESMTP id <S553916AbQKMSe0>;
-	Mon, 13 Nov 2000 10:34:26 -0800
-Received: from scotty.mgnet.de (p3E9912F2.dip.t-dialin.net [62.153.18.242])
-	by post.webmailer.de (8.9.3/8.8.7) with SMTP id TAA26951
-	for <linux-mips@oss.sgi.com>; Mon, 13 Nov 2000 19:34:23 +0100 (MET)
-Received: (qmail 24468 invoked from network); 13 Nov 2000 18:34:18 -0000
-Received: from spock.mgnet.de (192.168.1.4)
-  by scotty.mgnet.de with SMTP; 13 Nov 2000 18:34:18 -0000
-Date:   Mon, 13 Nov 2000 19:34:20 +0100 (CET)
-From:   Klaus Naumann <spock@mgnet.de>
-To:     Markus Hoff-Holtmanns <markus@LFM.rwth-aachen.de>
-cc:     linux-mips@oss.sgi.com
-Subject: Re: MIPS Linux and O2 and/or Octane...
-In-Reply-To: <012301c04d5c$b4d71b60$38258286@lfm.rwthaachen.de>
-Message-ID: <Pine.LNX.4.21.0011131931310.3276-100000@spock.mgnet.de>
+Received:  by oss.sgi.com id <S553936AbQKMTDN>;
+	Mon, 13 Nov 2000 11:03:13 -0800
+Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:54970 "EHLO
+        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553897AbQKMTCt>;
+	Mon, 13 Nov 2000 11:02:49 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id UAA14948;
+	Mon, 13 Nov 2000 20:02:48 +0100 (MET)
+Date:   Mon, 13 Nov 2000 20:02:48 +0100 (MET)
+From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To:     Ralf Baechle <ralf@oss.sgi.com>
+cc:     Ian Chilton <ian@ichilton.co.uk>, linux-mips@oss.sgi.com,
+        lfs-discuss@linuxfromscratch.org
+Subject: Re: User/Group Problem
+In-Reply-To: <20001108050158.B12999@bacchus.dhis.org>
+Message-ID: <Pine.GSO.3.96.1001113195048.12211C-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
@@ -23,30 +21,83 @@ Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Mon, 13 Nov 2000, Markus Hoff-Holtmanns wrote:
+On Wed, 8 Nov 2000, Ralf Baechle wrote:
 
-> Hi folks!
-> 
-> There probably already were numerous threads concerning this subject, but
-> I'm new and I didn't find anything fitting in the archives. So here is my
-> question.
-> 
-> Anyone who did or tried a Linux port for O2, or contributed anything
-> regarding that topic, could you please give me that information again. At
-> the moment I try to gather as much info as possible in this regard, as we
-> have some O2s running IRIX 6.3 and gathering dust most of the time.
+>  - your chown / chgrp binaries are statically linked.  In that case nss
+>    won't work on MIPS until it's fixed ...
 
-As far as I know only Keith M. Wesolowski and Harald Koerfgen
-were trying to get Linux running and also got it to boot into 
-usermode - the problem is that noone has such a machine.
-So if you have a bunch of them which collect dust and want to
-get rid of them this is the right place :-)
+ That's actually not a MIPS-specific problem.  This happens due to a bogus
+error from mmap() (when called by ld.so) which cannot handle certain valid
+requests -- when there is a non-zero suggested VM address, but the area
+and all space above it is already occupied or unavailable for other
+reasons.  It can sometimes appear for other ports, as well (I have an i386
+test case, for example), but it bites MIPS specifically, because of a
+non-zero initial VMA set for our shared objects.
 
+ Here is a patch I use since July successfully.  We need to wait until
+2.4.1 or so (or maybe even 2.5) is released for it to be applied as
+2.4.0-test* are currently code-frozen.  Maybe we could apply it to our CVS
+for now?  Ralf, what do you think? 
 
-				Klaus
+  Maciej
 
 -- 
-Full Name   : Klaus Naumann     | (http://www.mgnet.de/) (Germany)
-Nickname    : Spock             | Org.: Mad Guys Network
-Phone / FAX : ++49/177/7862964  | E-Mail: (spock@mgnet.de)
-PGP Key     : www.mgnet.de/keys/key_spock.txt
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+
+diff -u --recursive --new-file linux-2.4.0-test4.macro/mm/mmap.c linux-2.4.0-test4/mm/mmap.c
+--- linux-2.4.0-test4.macro/mm/mmap.c	Sun Jul 16 22:27:29 2000
++++ linux-2.4.0-test4/mm/mmap.c	Tue Jul 25 05:06:21 2000
+@@ -175,7 +175,7 @@
+ 	if ((len = PAGE_ALIGN(len)) == 0)
+ 		return addr;
+ 
+-	if (len > TASK_SIZE || addr > TASK_SIZE-len)
++	if (len > TASK_SIZE || ((flags & MAP_FIXED) && (addr > TASK_SIZE - len)))
+ 		return -EINVAL;
+ 
+ 	/* offset overflow? */
+@@ -356,20 +356,31 @@
+ unsigned long get_unmapped_area(unsigned long addr, unsigned long len)
+ {
+ 	struct vm_area_struct * vmm;
++	int pass = 0;
+ 
+ 	if (len > TASK_SIZE)
+ 		return 0;
+-	if (!addr)
+-		addr = TASK_UNMAPPED_BASE;
+-	addr = PAGE_ALIGN(addr);
+-
+-	for (vmm = find_vma(current->mm, addr); ; vmm = vmm->vm_next) {
+-		/* At this point:  (!vmm || addr < vmm->vm_end). */
+-		if (TASK_SIZE - len < addr)
+-			return 0;
+-		if (!vmm || addr + len <= vmm->vm_start)
+-			return addr;
+-		addr = vmm->vm_end;
++
++	while (1) {
++		if (!addr)
++			addr = TASK_UNMAPPED_BASE;
++		addr = PAGE_ALIGN(addr);
++
++		for (vmm = find_vma(current->mm, addr); ; vmm = vmm->vm_next) {
++			/* At this point:  (!vmm || addr < vmm->vm_end). */
++			if (TASK_SIZE - len < addr) {
++				if (pass > 0)
++					return 0;
++				else {
++					pass = 1;
++					addr = 0;
++					break;
++				}
++			}
++			if (!vmm || addr + len <= vmm->vm_start)
++				return addr;
++			addr = vmm->vm_end;
++		}
+ 	}
+ }
+ #endif

@@ -1,77 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Sep 2002 22:41:01 +0200 (CEST)
-Received: from jeeves.momenco.com ([64.169.228.99]:65029 "EHLO
-	host099.momenco.com") by linux-mips.org with ESMTP
-	id <S1122978AbSIBUlA>; Mon, 2 Sep 2002 22:41:00 +0200
-Received: (from mdharm@localhost)
-	by host099.momenco.com (8.11.6/8.11.6) id g82KerX28367;
-	Mon, 2 Sep 2002 13:40:53 -0700
-Date: Mon, 2 Sep 2002 13:40:53 -0700
-From: Matthew Dharm <mdharm@momenco.com>
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Re: PATCH: linux_2_4: add support for the Ocelot-G board
-Message-ID: <20020902134053.A28347@momenco.com>
-References: <NEBBLJGMNKKEEMNLHGAIKEJOCIAA.mdharm@momenco.com> <20020902190038.F15618@linux-mips.org> <20020902123850.A28171@momenco.com> <20020902224615.A17378@linux-mips.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <20020902224615.A17378@linux-mips.org>; from ralf@linux-mips.org on Mon, Sep 02, 2002 at 10:46:15PM +0200
-Organization: Momentum Computer, Inc.
-X-Copyright: (C) 2002 Matthew Dharm, all rights reserved.
-Return-Path: <mdharm@host099.momenco.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Sep 2002 22:44:21 +0200 (CEST)
+Received: from mcp.csh.rit.edu ([129.21.60.9]:2470 "EHLO mcp.csh.rit.edu")
+	by linux-mips.org with ESMTP id <S1122978AbSIBUoV>;
+	Mon, 2 Sep 2002 22:44:21 +0200
+Received: from fury.csh.rit.edu (fury.csh.rit.edu [129.21.60.5])
+	by mcp.csh.rit.edu (Postfix) with ESMTP id 958D84376
+	for <linux-mips@linux-mips.org>; Mon,  2 Sep 2002 16:44:08 -0400 (EDT)
+Date: Mon, 2 Sep 2002 16:43:55 -0400 (EDT)
+From: George Gensure <werkt@csh.rit.edu>
+To: <linux-mips@linux-mips.org>
+Subject: root-nfs hang and error
+Message-ID: <Pine.SOL.4.31.0209021634320.24635-100000@fury.csh.rit.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <werkt@csh.rit.edu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57
+X-archive-position: 58
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mdharm@momenco.com
+X-original-sender: werkt@csh.rit.edu
 Precedence: bulk
 X-list: linux-mips
 
-Hrm... okay... first question, where do I get the 64-bit toolchain?  Right
-now, I'm using HJ's toolchain RPMs (from over a year ago -- I should update
-those).
+I've got a problem with a diskless install on an Indy.
 
-Second, what about all those nifty extras?  Things like the fact that
-kseg0/1 (well, their 64-bit equivalents) are now larger (how big are they,
-anyway) so they can map all of my SDRAM as well as most (all?) of my
-I/O space... I guess for that I need to reprogram all my address decoders,
-and then that sort of thing must be what the arch/mips64/* stuff is for.
-Yes? No?  Or am I smoking something too strong again?
+When trying to mount an nfs to install to, I end up with about a 5 minute
+hang (afterwards, though, all file transfer is seamless).  When rebooting
+to boot from that nfs root I get an rpc error from the Indy and it refuses
+to mount the root.  (obviously it panics).  The kernel is 2.4.16 and has
+nfs v2 and v3 installed, as well as root nfs support.  Anyone have any
+suggestions for getting this root to mount correctly?
 
-The 64/32 mixed-mode linux is certainly of some interest to our customers,
-but full 64-bit is really where the demand is.  Is there anything that a
-non-compiler guy can do to help the effort along?
-
-Matt
-
-On Mon, Sep 02, 2002 at 10:46:15PM +0200, Ralf Baechle wrote:
-> On Mon, Sep 02, 2002 at 12:38:50PM -0700, Matthew Dharm wrote:
-> 
-> > Oh, I agree that a 64-bit kernel makes sense.  I'm just not sure what is
-> > needed to get from where I am now to where I want to be.
-> > 
-> > There is _much_ interest from our customers for 64-bit linux.  Especially
-> > if the toolchain catches up so that we can have 64-bit userspace.
-> 
-> The toolchain stuff is being worked on.  Hold your breath but cheat every
-> once in a while when your face turns blue ;-)
-> 
-> > Anyone have some quick pointers on how to get from here to there?
-> 
-> The basic receipe is easy.  The 64-bit kernel has a binary compatibility
-> layer that allows you to use 32-bit software with no changes.  Just use
-> a 64-bit compiler, for now that's probably still the egcs 1.1.2 /
-> binutils 2.9.5 based mips64-linux / mips64el-linux tool chain.  Using your
-> old .config file do a "make ARCH=mips64 oldconfig" etc.  The resulting
-> binary file will be a 32-bit ELF file so you can just feed that to your
-> firmware for booting as usual.  Problems may be hit along the way ;-)
-> 
->   Ralf
-
--- 
-Matthew Dharm                              Work: mdharm@momenco.com
-Senior Software Designer, Momentum Computer
+-George
+werkt@csh.rit.edu

@@ -1,97 +1,98 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Apr 2003 01:24:15 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:50939 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8225203AbTD3AYL>;
-	Wed, 30 Apr 2003 01:24:11 +0100
-Received: from mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id RAA06001;
-	Tue, 29 Apr 2003 17:24:08 -0700
-Message-ID: <3EAF17A8.8050805@mvista.com>
-Date: Tue, 29 Apr 2003 17:24:08 -0700
-From: Steve Longerbeam <stevel@mvista.com>
-Organization: MontaVista Software
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.0.2) Gecko/20030208 Netscape/7.02
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: linux-mips@linux-mips.org
-CC: Pete Popov <ppopov@mvista.com>, Jun Sun <jsun@mvista.com>
-Subject: patch: change config options for au1x00 usb device
-Content-Type: multipart/mixed;
- boundary="------------010100090308090708080807"
-Return-Path: <stevel@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Apr 2003 05:01:03 +0100 (BST)
+Received: from bay1-f107.bay1.hotmail.com ([IPv6:::ffff:65.54.245.107]:53775
+	"EHLO hotmail.com") by linux-mips.org with ESMTP
+	id <S8225073AbTD3EBB>; Wed, 30 Apr 2003 05:01:01 +0100
+Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
+	 Tue, 29 Apr 2003 21:00:52 -0700
+Received: from 4.3.108.196 by by1fd.bay1.hotmail.msn.com with HTTP;
+	Wed, 30 Apr 2003 04:00:52 GMT
+X-Originating-IP: [4.3.108.196]
+X-Originating-Email: [michaelanburaj@hotmail.com]
+From: "Michael Anburaj" <michaelanburaj@hotmail.com>
+To: wd@denx.de
+Cc: geert@linux-m68k.org, linux-mips@linux-mips.org,
+	edotkumar@yahoo.com
+Subject: Re: Linux for MIPS Atlas 4Kc board
+Date: Tue, 29 Apr 2003 21:00:52 -0700
+Mime-Version: 1.0
+Content-Type: text/plain; format=flowed
+Message-ID: <BAY1-F107QuhhqeOhFm0001075c@hotmail.com>
+X-OriginalArrivalTime: 30 Apr 2003 04:00:52.0848 (UTC) FILETIME=[17E51700:01C30ECD]
+Return-Path: <michaelanburaj@hotmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
 X-Spam-Checker-Version: SpamAssassin 2.50 (1.173-2003-02-20-exp)
-X-archive-position: 2231
+X-archive-position: 2232
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: stevel@mvista.com
+X-original-sender: michaelanburaj@hotmail.com
 Precedence: bulk
 X-list: linux-mips
 
+Hi all,
 
-This is a multi-part message in MIME format.
---------------010100090308090708080807
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
+Thanks for the comments. But still I get an error.
 
-Attached patch fixes CONFIG_AU1000_USB_DEVICE, which
-had to be defined manually for each au1x00-based board in
-arch/mips/config.in. The patch defines it automatically if one of
-the au1x00 usb function drivers have been enabled.
+[root@localhost linux-2.4.20-6]# make ARCH=mips xconfig
+rm -f include/asm
+( cd include ; ln -sf asm-mips asm)
+make -C scripts kconfig.tk
+make[1]: Entering directory `/usr/src/linux-2.4.20-6/scripts'
+cat header.tk >> ./kconfig.tk
+./tkparse < ../arch/mips/config.in >> kconfig.tk
+arch/mips/config-shared.in: 482: unterminated quoted string
+make[1]: *** [kconfig.tk] Error 1
+make[1]: Leaving directory `/usr/src/linux-2.4.20-6/scripts'
+make: *** [xconfig] Error 2
 
--- 
-Steve Longerbeam
-MontaVista Software, Inc.
-office:408-328-9008, fax:408-328-3875
-http://www.mvista.com
+Please help me get passed this. Please let me know if there is document on 
+this.
 
 
---------------010100090308090708080807
-Content-Type: text/plain;
- name="au1000-usbd.patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="au1000-usbd.patch"
+Thanks a lot,
+-Mike.
 
-Index: arch/mips/config.in
-===================================================================
-RCS file: /cvsdev/mvl-kernel/linux/arch/mips/config.in,v
-retrieving revision 1.20.2.15
-diff -u -r1.20.2.15 config.in
---- arch/mips/config.in	19 Feb 2003 11:34:46 -0000	1.20.2.15
-+++ arch/mips/config.in	29 Apr 2003 21:56:12 -0000
-@@ -391,7 +391,6 @@
-    define_bool CONFIG_NONCOHERENT_IO y
-    define_bool CONFIG_PC_KEYB y
-    define_bool CONFIG_SWAP_IO_SPACE y
--   define_bool CONFIG_AU1000_USB_DEVICE y
- fi
- if [ "$CONFIG_MIPS_PB1500" = "y" ]; then
-    define_bool CONFIG_MIPS_AU1000 y
-Index: drivers/char/Config.in
-===================================================================
-RCS file: /cvsdev/mvl-kernel/linux/drivers/char/Config.in,v
-retrieving revision 1.14.4.11
-diff -u -r1.14.4.11 Config.in
---- drivers/char/Config.in	26 Mar 2003 03:51:58 -0000	1.14.4.11
-+++ drivers/char/Config.in	29 Apr 2003 21:56:23 -0000
-@@ -71,9 +71,13 @@
-      if [ "$CONFIG_AU1000_UART" = "y" ]; then
-          bool '        Enable Au1000 serial console' CONFIG_AU1000_SERIAL_CONSOLE
-      fi
--     dep_tristate '  Au1000 USB TTY Device support' CONFIG_AU1000_USB_TTY $CONFIG_AU1000_USB_DEVICE
-+     dep_tristate '  Au1000 USB TTY Device support' CONFIG_AU1000_USB_TTY $CONFIG_MIPS_AU1000
-      if [ "$CONFIG_AU1000_USB_TTY" != "y" ]; then
--        dep_tristate '  Au1000 USB Raw Device support' CONFIG_AU1000_USB_RAW $CONFIG_AU1000_USB_DEVICE
-+        dep_tristate '  Au1000 USB Raw Device support' CONFIG_AU1000_USB_RAW $CONFIG_MIPS_AU1000
-+     fi
-+     if [ "$CONFIG_AU1000_USB_TTY" != "n" -o \
-+          "$CONFIG_AU1000_USB_RAW" != "n" ]; then
-+	define_bool CONFIG_AU1000_USB_DEVICE y
-      fi
-      bool 'TXx927 SIO support' CONFIG_TXX927_SERIAL 
-      if [ "$CONFIG_TXX927_SERIAL" = "y" ]; then
 
---------------010100090308090708080807--
+
+
+
+>From: Wolfgang Denk <wd@denx.de>
+>To: "Michael Anburaj" <michaelanburaj@hotmail.com>
+>CC: geert@linux-m68k.org, linux-mips@linux-mips.org
+>Subject: Re: Linux for MIPS Atlas 4Kc board Date: Tue, 29 Apr 2003 22:00:29 
+>+0200
+>
+>In message <BAY1-F39ahdtT8esYrJ0000a53e@hotmail.com> you wrote:
+> >
+> > Now I have all the tools (mips32el-linux) on Redhat Linux 9 & its 
+>source. I
+>
+>Did you have a look at the ELDK? See http://www.denx.de/re/ELDK.html
+>resp. ftp://ftp.leo.org/pub/eldk/2.1.0/eldk-mips-linux-x86/
+>
+> > $ make xconfig
+> >
+> > It displayed a window with lot of options. But under processor I could 
+>only
+> > find flavors of x86 core.
+>
+>I bet you missed to set "ARCH := mips" in the TLD Makefile;
+>alternatively try "make ARCH=mips xconfig"
+>
+>
+>Best regards,
+>
+>Wolfgang Denk
+>
+>--
+>Software Engineering:  Embedded and Realtime Systems,  Embedded Linux
+>Phone: (+49)-8142-4596-87  Fax: (+49)-8142-4596-88  Email: wd@denx.de
+>"The number  of  Unix  installations  has  grown  to  10,  with  more
+>expected."    - The Unix Programmer's Manual, 2nd Edition, June, 1972
+
+
+_________________________________________________________________
+The new MSN 8: smart spam protection and 2 months FREE*  
+http://join.msn.com/?page=features/junkmail

@@ -1,92 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Oct 2004 20:47:40 +0100 (BST)
-Received: from 67-121-164-6.ded.pacbell.net ([IPv6:::ffff:67.121.164.6]:54797
-	"EHLO mailserver.sunrisetelecom.com") by linux-mips.org with ESMTP
-	id <S8225275AbUJNTre>; Thu, 14 Oct 2004 20:47:34 +0100
-Received: from sunrisetelecom.com ([192.168.50.222]) by mailserver.sunrisetelecom.com with Microsoft SMTPSVC(5.0.2195.6713);
-	 Thu, 14 Oct 2004 12:47:22 -0700
-Message-ID: <416ED763.2090501@sunrisetelecom.com>
-Date: Thu, 14 Oct 2004 15:45:39 -0400
-From: Karl Lessard <klessard@sunrisetelecom.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.0.0) Gecko/20020623 Debian/1.0.0-0.woody.1
-MIME-Version: 1.0
-To: linux-mips <linux-mips@linux-mips.org>
-Subject: Duplicated allocation in AU1xxx OHCI driver
-Content-Type: multipart/mixed;
- boundary="------------070702060606050605090108"
-X-OriginalArrivalTime: 14 Oct 2004 19:47:22.0488 (UTC) FILETIME=[9F553780:01C4B226]
-Return-Path: <klessard@sunrisetelecom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Oct 2004 21:14:15 +0100 (BST)
+Received: from p508B6C80.dip.t-dialin.net ([IPv6:::ffff:80.139.108.128]:23335
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225275AbUJNUOK>; Thu, 14 Oct 2004 21:14:10 +0100
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i9EKDord009884;
+	Thu, 14 Oct 2004 22:13:50 +0200
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i9EKDinY009872;
+	Thu, 14 Oct 2004 22:13:44 +0200
+Date: Thu, 14 Oct 2004 22:13:44 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Bjoern Riemer <riemer@fokus.fraunhofer.de>,
+	ppopov@embeddedalley.com,
+	Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: Re: meshcube patch for au1000 network driver
+Message-ID: <20041014201344.GD5975@linux-mips.org>
+References: <416BC4D9.2060904@fokus.fraunhofer.de> <20041013110947.GA6992@linux-mips.org> <Pine.GSO.4.61.0410131314040.2571@waterleaf.sonytel.be>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.GSO.4.61.0410131314040.2571@waterleaf.sonytel.be>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6047
+X-archive-position: 6048
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: klessard@sunrisetelecom.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
---------------070702060606050605090108
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
+On Wed, Oct 13, 2004 at 01:14:22PM +0200, Geert Uytterhoeven wrote:
 
-Hello,
+> On Wed, 13 Oct 2004, Ralf Baechle wrote:
+> > On Tue, Oct 12, 2004 at 01:49:45PM +0200, Bjoern Riemer wrote:
+> > > i fixed the ioctl support in the net driver to support link detection by
+> > >   ifplugd ond maybe netplugd(not tested)
+> > > here my patch for
+> > > drivers/net/au1000.c
+> > 
+> > Please never ever send ed-style patches, only unified (-u).  They're
+> > totally unreadable and have several technical problems.  And preferbly
+> > inline, not attachment.
+> 
+> And `-p' helps as wel...
 
-I was looking at the code of the new ohci-au1xxx, and I've figured out 
-that operationnal regiters resource
-is allocated two times: once when registering the OHCI platform device 
-(check in drivers/base/platform.c),
-and once in OHCI driver probe.
-Is that ok?? I'm kind of surprised that the second allocation doesn't 
-failed. Removing it seems to works
-well for me.
+True, it makes patches more readable but there seems to be some trouble
+with -p and cvs diff and I certaily don't consider the non-use any kind
+of reason for rejecting a patch.
 
-Thanks,
-Karl
-
---------------070702060606050605090108
-Content-Type: text/plain;
- name="ohci-au1xxx.patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="ohci-au1xxx.patch"
-
---- linux-mips/drivers/usb/host/ohci-au1xxx.c	Sun Oct 10 13:56:25 2004
-+++ linux/drivers/usb/host/ohci-au1xxx.c	Thu Oct 14 15:39:11 2004
-@@ -91,13 +91,6 @@ int usb_hcd_au1xxx_probe (const struct h
- 	struct usb_hcd *hcd = 0;
- 
- 	unsigned int *addr = NULL;
--
--	if (!request_mem_region(dev->resource[0].start,
--				dev->resource[0].end
--				- dev->resource[0].start + 1, hcd_name)) {
--		pr_debug("request_mem_region failed");
--		return -EBUSY;
--	}
- 	
- 	au1xxx_start_hc(dev);
- 	
-@@ -173,9 +166,6 @@ int usb_hcd_au1xxx_probe (const struct h
- 		driver->hcd_free(hcd);
-  err1:
- 	au1xxx_stop_hc(dev);
--	release_mem_region(dev->resource[0].start,
--				dev->resource[0].end
--			   - dev->resource[0].start + 1);
- 	return retval;
- }
- 
-@@ -219,9 +209,6 @@ void usb_hcd_au1xxx_remove (struct usb_h
- 	hcd->driver->hcd_free (hcd);
- 
- 	au1xxx_stop_hc(dev);
--	release_mem_region(dev->resource[0].start,
--			   dev->resource[0].end
--			   - dev->resource[0].start + 1);
- }
- 
- /*-------------------------------------------------------------------------*/
-
---------------070702060606050605090108--
+  Ralf

@@ -1,29 +1,41 @@
-Received:  by oss.sgi.com id <S553837AbQKBS0d>;
-	Thu, 2 Nov 2000 10:26:33 -0800
-Received: from srvntsxconn3.toc.ixl.com ([216.99.0.139]:14600 "HELO
-        srvntsxconn3.toc.ixl.com") by oss.sgi.com with SMTP
-	id <S553834AbQKBS0K>; Thu, 2 Nov 2000 10:26:10 -0800
-Received: from 216.99.0.139 by srvntsxconn3.toc.ixl.com (InterScan E-Mail VirusWall NT); Thu, 02 Nov 2000 13:26:01 -0500 (Eastern Standard Time)
-Received: by srvntsxconn3.toc.ixl.com with Internet Mail Service (5.5.2650.21)
-	id <TMPFKP7D>; Thu, 2 Nov 2000 13:26:00 -0500
-Message-ID: <0A5319EEAF65D411825E00805FBBD8A1209BA6@exchange.clt.ixl.com>
-From:   tmaloney@ixl.com
-To:     linux-mips@oss.sgi.com
-Subject: Indy ram question
-Date:   Thu, 2 Nov 2000 13:24:12 -0500 
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2650.21)
-Content-Type: text/plain;
-	charset="iso-8859-1"
+Received:  by oss.sgi.com id <S553755AbQKCAVZ>;
+	Thu, 2 Nov 2000 16:21:25 -0800
+Received: from u-240.karlsruhe.ipdial.viaginterkom.de ([62.180.21.240]:23313
+        "EHLO u-240.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
+	with ESMTP id <S553793AbQKCAVQ>; Thu, 2 Nov 2000 16:21:16 -0800
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S869098AbQKBMz3>;
+        Thu, 2 Nov 2000 13:55:29 +0100
+Date:   Thu, 2 Nov 2000 13:55:29 +0100
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Pete Popov <ppopov@mvista.com>
+Cc:     "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Re: rm7000/orion board
+Message-ID: <20001102135528.A19967@bacchus.dhis.org>
+References: <3A00EEDF.7C5E6BD5@mvista.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <3A00EEDF.7C5E6BD5@mvista.com>; from ppopov@mvista.com on Wed, Nov 01, 2000 at 08:34:39PM -0800
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-will this work in an Indy? 
+On Wed, Nov 01, 2000 at 08:34:39PM -0800, Pete Popov wrote:
 
-"8Meg configuration 72pin 50ns Tested Simms. This is a dutch auction and you
-will be bidding for the price of 1 ea. These are all tested and working
-simms. Non-Edo, W-Parity, FPM, all simms have gold fingers."
+> There's some R7000 support, apparently added for an "Orion" board.  Has
+> any one had any experience with this board, or with linux on the R7000
+> in general?
 
-thanks. 
+The Orion is an embedded application based on the RM7000, not an evaluation
+board.
+
+The RM7000 as is in CVS isn't currently completly supported.  In particular
+that code doesn't handle the L2 and L3 caches, so as is no DMA I/O is
+supported for RM7000.  Aside of that it's fine CPU with Linux - and one
+of the few 64-bit MIPSes with sane caches.  I got some RM7000 code in the
+queue - but I will not commit it before it's tested on something better
+than vapor hardware.
+
+  Ralf

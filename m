@@ -1,69 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Mar 2003 18:47:11 +0000 (GMT)
-Received: from il-la.la.idealab.com ([IPv6:::ffff:63.251.211.5]:44504 "HELO
-	idealab.com") by linux-mips.org with SMTP id <S8225223AbTCMSrK>;
-	Thu, 13 Mar 2003 18:47:10 +0000
-Received: (qmail 18445 invoked by uid 6180); 13 Mar 2003 18:47:04 -0000
-Date: Thu, 13 Mar 2003 10:47:04 -0800
-From: Jeff Baitis <baitisj@evolution.com>
-To: Pete Popov <ppopov@mvista.com>
-Cc: linux-mips@linux-mips.org
-Subject: arch/mips/au1000/common/irq.c
-Message-ID: <20030313104704.V20129@luca.pas.lab>
-Reply-To: baitisj@evolution.com
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-Return-Path: <baitisj@idealab.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Mar 2003 18:51:03 +0000 (GMT)
+Received: from 154-84-51-66.reonbroadband.com ([IPv6:::ffff:66.51.84.154]:38784
+	"EHLO tibook.netx4.com") by linux-mips.org with ESMTP
+	id <S8225223AbTCMSux>; Thu, 13 Mar 2003 18:50:53 +0000
+Received: from embeddededge.com (IDENT:dan@localhost.localdomain [127.0.0.1])
+	by tibook.netx4.com (8.11.1/8.11.1) with ESMTP id h2DIokc01209;
+	Thu, 13 Mar 2003 13:50:46 -0500
+Message-ID: <3E70D306.5090608@embeddededge.com>
+Date: Thu, 13 Mar 2003 13:50:46 -0500
+From: Dan Malek <dan@embeddededge.com>
+Organization: Embedded Edge, LLC.
+User-Agent: Mozilla/5.0 (X11; U; Linux ppc; en-US; rv:0.9.9) Gecko/20020411
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: baitisj@evolution.com
+CC: Pete Popov <ppopov@mvista.com>, linux-mips@linux-mips.org
+Subject: Re: arch/mips/au1000/common/irq.c
+References: <20030313104704.V20129@luca.pas.lab>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <dan@embeddededge.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1735
+X-archive-position: 1736
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: baitisj@evolution.com
+X-original-sender: dan@embeddededge.com
 Precedence: bulk
 X-list: linux-mips
 
-Pete:
+Jeff Baitis wrote:
 
-I've got a question concerning irq.c. In intc0_req0_irqdispatch() (linux_2_4
-branch) on lines 545 thru 552, the code reads:
+> Pete:
+> 
+> I've got a question concerning irq.c. In intc0_req0_irqdispatch() (linux_2_4
+> branch) on lines 545 thru 552, the code reads:
 
-      for (i=0; i<32; i++) {
-          if ((intc0_req0 & (1<<i))) {
-              intc0_req0 &= ~(1<<i);
-              do_IRQ(irq, regs);
-              break;
-          }
-          irq++;
-      }
+I'm hacking these functions to use 'clz' and for other updates, so
+the code will be changing soon, anyway :-)  Comment on the next version :-)
 
-My question is: why do we increment i and irq independently?
-Why doesn't the code read:
-
-      for (i=0; i<32; i++) {
-          if ((intc0_req0 & (1<<i))) {
-              intc0_req0 &= ~(1<<i);
-              do_IRQ(i, regs);
-              break;
-          }
-      }
-
-Thanks for your help!
-
--Jeff
+Thanks.
 
 
-
-
-
--- 
-         Jeffrey Baitis - Associate Software Engineer
-
-                    Evolution Robotics, Inc.
-                     130 West Union Street
-                       Pasadena CA 91103
-
- tel: 626.535.2776  |  fax: 626.535.2777  |  baitisj@evolution.com 
+	-- Dan

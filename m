@@ -1,51 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Jan 2005 11:10:26 +0000 (GMT)
-Received: from smtp4.wanadoo.fr ([IPv6:::ffff:193.252.22.27]:47027 "EHLO
-	smtp4.wanadoo.fr") by linux-mips.org with ESMTP id <S8225305AbVAJLKV>;
-	Mon, 10 Jan 2005 11:10:21 +0000
-Received: from me-wanadoo.net (localhost [127.0.0.1])
-	by mwinf0406.wanadoo.fr (SMTP Server) with ESMTP id 4BF791C00620
-	for <linux-mips@linux-mips.org>; Mon, 10 Jan 2005 12:10:15 +0100 (CET)
-Received: from smtp.innova-card.com (AMarseille-206-1-6-143.w80-14.abo.wanadoo.fr [80.14.198.143])
-	by mwinf0406.wanadoo.fr (SMTP Server) with ESMTP id 24FA61C000FC
-	for <linux-mips@linux-mips.org>; Mon, 10 Jan 2005 12:10:15 +0100 (CET)
-Received: from [192.168.0.24] (spoutnik.innova-card.com [192.168.0.24])
-	by smtp.innova-card.com (Postfix) with ESMTP id 2318D38023
-	for <linux-mips@linux-mips.org>; Mon, 10 Jan 2005 12:10:09 +0100 (CET)
-Message-ID: <41E26267.2090300@innova-card.com>
-Date: Mon, 10 Jan 2005 12:09:27 +0100
-From: Franck Bui-Huu <franck.bui-huu@innova-card.com>
-Reply-To: franck.bui-huu@innova-card.com
-Organization: Innova Card
-User-Agent: Mozilla Thunderbird 0.9 (X11/20041127)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Jan 2005 12:52:10 +0000 (GMT)
+Received: from schenk.ISAR.de ([IPv6:::ffff:212.14.78.13]:43304 "EHLO
+	schenk.isar.de") by linux-mips.org with ESMTP id <S8225305AbVAJMwG>;
+	Mon, 10 Jan 2005 12:52:06 +0000
+Received: from gwhaus.rt.schenk (gwhaus.rt.schenk [172.22.0.4])
+	by schenk.isar.de (8.11.6/8.11.6/SuSE Linux 0.5) with ESMTP id j0ACpt414553;
+	Mon, 10 Jan 2005 13:51:55 +0100
+Received: from [172.22.10.24] (pcimr4.rt.schenk [172.22.10.24])
+	by gwhaus.rt.schenk (8.11.6/8.11.6/SuSE Linux 0.5) with ESMTP id j0ACpsi09520;
+	Mon, 10 Jan 2005 13:51:54 +0100
+Message-ID: <41E27A6A.5060204@schenk.isar.de>
+Date: Mon, 10 Jan 2005 13:51:54 +0100
+From: Rojhalat Ibrahim <ibrahim@schenk.isar.de>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7) Gecko/20040617
 X-Accept-Language: en-us, en
 MIME-Version: 1.0
-To: linux-mips@linux-mips.org
-Subject: CPHYSADDR in setup.c
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+CC: linux-mips@linux-mips.org
+Subject: Re: [PATCH] Further TLB handler optimizations
+References: <20041223202526.GA2254@deprecation.cyrius.com> <20041224040051.93587.qmail@web52806.mail.yahoo.com> <20041224085645.GJ3539@rembrandt.csv.ica.uni-stuttgart.de> <20050107190605.GG31335@rembrandt.csv.ica.uni-stuttgart.de>
+In-Reply-To: <20050107190605.GG31335@rembrandt.csv.ica.uni-stuttgart.de>
+X-Enigmail-Version: 0.84.1.0
+X-Enigmail-Supports: pgp-inline, pgp-mime
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <franck.bui-huu@innova-card.com>
+Return-Path: <ibrahim@schenk.isar.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6855
+X-archive-position: 6856
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: franck.bui-huu@innova-card.com
+X-original-sender: ibrahim@schenk.isar.de
 Precedence: bulk
 X-list: linux-mips
 
-Hi
+Thiemo Seufer wrote:
+> 
+> I updated the patch now and checked it in. Please test, especially
+> for cases I couldn't do, like R3000-style TLB handling and MIPS32
+> CPUs with 64bit physaddr.
+> 
 
-I have noticed that someone has comitted some changes because
-of 64 bits proc and specially added CPHYSADDR macro in
-resource_init function. Is it really needed to add specific code
-in setup.c ? Couldn't we modify "virt_to_phys" or "__pa"
-instead of ?
+My Yosemite board (RM9000 processor) does not boot anymore with
+CONFIG_64BIT_PHYS_ADDR. Without that option it seems to be working
+as before. I tried to define cpu_has_64bit_gp_regs. With that it
+boots partly. When I also define cpu_has_64bit_addresses it stops
+working again.
 
-I think we should get ride of this CPHYSADDR macro if
-it's possible.
-
-Thanks for your answers.
-
-    Franck
+Rojhalat Ibrahim

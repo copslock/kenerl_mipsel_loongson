@@ -1,69 +1,53 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id KAA51101 for <linux-archive@neteng.engr.sgi.com>; Tue, 13 Apr 1999 10:25:25 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id LAA55889 for <linux-archive@neteng.engr.sgi.com>; Tue, 13 Apr 1999 11:20:14 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id KAA61427
+	id LAA01279
 	for linux-list;
-	Tue, 13 Apr 1999 10:22:23 -0700 (PDT)
+	Tue, 13 Apr 1999 11:17:56 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id KAA41971
+	via ESMTP id LAA20612
 	for <linux@cthulhu.engr.sgi.com>;
-	Tue, 13 Apr 1999 10:22:22 -0700 (PDT)
-	mail_from (shaver@netscape.com)
-Received: from netscape.com (h-205-217-237-46.netscape.com [205.217.237.46]) 
+	Tue, 13 Apr 1999 11:17:54 -0700 (PDT)
+	mail_from (alan@lxorguk.ukuu.org.uk)
+Received: from snowcrash.cymru.net (snowcrash.cymru.net [163.164.160.3]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id KAA01121
-	for <linux@cthulhu.engr.sgi.com>; Tue, 13 Apr 1999 10:22:21 -0700 (PDT)
-	mail_from (shaver@netscape.com)
-Received: from tintin.mcom.com (tintin.mcom.com [205.217.233.42])
-	by netscape.com (8.8.5/8.8.5) with ESMTP id KAA24898
-	for <linux@cthulhu.engr.sgi.com>; Tue, 13 Apr 1999 10:22:20 -0700 (PDT)
-Received: from netscape.com ([205.217.243.67]) by
-          tintin.mcom.com (Netscape Messaging Server 4.03) with ESMTP id
-          FA51LN00.JSA; Tue, 13 Apr 1999 10:22:35 -0700 
-Message-ID: <37137D65.B0AFBD50@netscape.com>
-Date: Tue, 13 Apr 1999 13:22:45 -0400
-From: Mike Shaver <shaver@netscape.com>
-Organization: mozilla.org diplomatic corps
-X-Mailer: Mozilla 4.51 [en] (X11; I; Linux 2.2.3-5 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: Andrew Isaacson <adisaacs@mtu.edu>
-CC: linux@cthulhu.engr.sgi.com
+	via ESMTP id LAA07715
+	for <linux@cthulhu.engr.sgi.com>; Tue, 13 Apr 1999 11:17:53 -0700 (PDT)
+	mail_from (alan@lxorguk.ukuu.org.uk)
+Received: from the-village.bc.nu (lightning.swansea.uk.linux.org [194.168.151.1]) by snowcrash.cymru.net (8.8.7/8.7.1) with SMTP id TAA04958; Tue, 13 Apr 1999 19:17:42 +0100
+Received: by the-village.bc.nu (Smail3.1.29.1 #2)
+	id m10X8aD-0007TvC; Tue, 13 Apr 99 20:10 BST
+Message-Id: <m10X8aD-0007TvC@the-village.bc.nu>
+From: alan@lxorguk.ukuu.org.uk (Alan Cox)
 Subject: Re: Resources in X11 port
-References: <199904130857.OAA23664@bhairavi.newdelhi.sgi.com> <19990413122357.A16312@ruvild.bun.falkenberg.se> <371371D7.A8187D38@hol.gr> <19990413125254.A20170@mtu.edu>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+To: adisaacs@mtu.edu (Andrew Isaacson)
+Date: Tue, 13 Apr 1999 20:10:52 +0100 (BST)
+Cc: linux@cthulhu.engr.sgi.com
+In-Reply-To: <19990413125254.A20170@mtu.edu> from "Andrew Isaacson" at Apr 13, 99 12:52:54 pm
+Content-Type: text
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Andrew Isaacson wrote:
-> Interesting page.  However, I would suggest that anybody who plans to
-> tackle porting XFree86 to Linux/SGI should contact xfree86@xfree86.org
-> and ask to become an XFree86 developer.  There are several resources
-> which are available only to developers, including mailing list
-> archives and the 4.0 development tree, which will likely prove
-> invaluable to anyone attempting a port.
-> 
 > If you (the porters) are willing to wait until June to have publicly
 > distributable code, you should develop for the 4.0 branch rather than
 > the 3.3 branch.  There are a lot of useful new features in the new
 > code base, and the new design is quite a bit easier to code for than
 > the old.
 
-I think Ulf and I are both XFree86 developers, and I've been reading
-code off and on for a little while to get a handle on what has to be
-done.  (We haven't coordinated anything yet, of course, and I'm sure
-that Ulf will be much more useful than I, but still...)
+Actually I wonder if it will be. Not having seen the code because of the silly
+XFree about beta releases its hard to be sure. The X folks I talked to all
+pointed me at the 8514 driver - which is very similar in many ways to the
+SGI cards - both are designed for X11, both have no direct frame buffer
+access and they have fairly similar concepts.
 
-4.0 is definitely the plan, I believe.
+I would urge btw that anyone working on an XFree SGI driver releases it under
+a license like the NPL so that the XFree people can't hide it in a locked away
+beta release in future.
 
-Mike
-
--- 
-4204.37 3709.72
+Alan

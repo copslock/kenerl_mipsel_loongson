@@ -1,44 +1,76 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4RE1nnC006671
-	for <linux-mips-outgoing@oss.sgi.com>; Mon, 27 May 2002 07:01:49 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4REDmnC006848
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 27 May 2002 07:13:48 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4RE1nsa006670
-	for linux-mips-outgoing; Mon, 27 May 2002 07:01:49 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4REDlxi006847
+	for linux-mips-outgoing; Mon, 27 May 2002 07:13:47 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from mx2.mips.com (mx2.mips.com [206.31.31.227])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4RE1lnC006667
-	for <linux-mips@oss.sgi.com>; Mon, 27 May 2002 07:01:47 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.9.3/8.9.0) with ESMTP id HAA03804;
-	Mon, 27 May 2002 07:02:54 -0700 (PDT)
-Received: from grendel (grendel [192.168.236.16])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id HAA20057;
-	Mon, 27 May 2002 07:02:54 -0700 (PDT)
-Message-ID: <029b01c20588$16335830$10eca8c0@grendel>
-From: "Kevin D. Kissell" <kevink@mips.com>
-To: "Geert Uytterhoeven" <geert@linux-m68k.org>,
-   "Steven J. Hill" <sjhill@realitydiluted.com>
-Cc: "Linux/MIPS Development" <linux-mips@oss.sgi.com>
-References: <Pine.GSO.4.21.0205271534430.15706-100000@vervain.sonytel.be>
-Subject: Re: PCI Graphics/Video Card for Malta Board?
-Date: Mon, 27 May 2002 16:09:14 +0200
-MIME-Version: 1.0
+Received: from mail.ict.ac.cn ([159.226.39.4])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4REDenC006844
+	for <linux-mips@oss.sgi.com>; Mon, 27 May 2002 07:13:40 -0700
+Message-Id: <200205271413.g4REDenC006844@oss.sgi.com>
+Received: (qmail 9771 invoked from network); 27 May 2002 14:06:35 -0000
+Received: from unknown (HELO foxsen) (159.226.40.150)
+  by 159.226.39.4 with SMTP; 27 May 2002 14:06:35 -0000
+Date: Mon, 27 May 2002 22:13:37 +0800
+From: "Zhang Fuxin" <fxzhang@ict.ac.cn>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+CC: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Re: Re: PCI Graphics/Video Card for Malta Board?
+X-mailer: Foxmail 4.1 [cn]
+Mime-Version: 1.0
 Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4807.1700
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4807.1700
+      charset="GB2312"
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id g4REDfnC006845
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-> One of the exceptions is matroxfb, which is able to initialize older Matrox
-> cards. This should cover all their PCI cards (Matrox didn't release any new PCI
-> cards during the last few years).
+hi,
 
-They still sell/support the G450PCI, which has TV output support,
-and a flat-panel transmitter, and which might do the job for me.
-Can anyone confirm that the matroxfb support works for it?
+======= 2002-05-27 15:37:00 you wrote��=======
 
-            Kevin K.
+>On Mon, 27 May 2002, Steven J. Hill wrote:
+>> Kevin D. Kissell wrote:
+>> > I'd like to get a video-capable graphics card up
+>> I can think of two things. First, a lot of graphics cards
+>> rely on BIOS calls to be set up before the operating system
+>> even boots. Second, I would stick to graphics cards that
+>> have framebuffer support in the kernel as you stand at least
+>> half a chance that those cards don't rely so heavily on a
+>> peecee bios. Just my $.02.
+>
+>Even then, most frame buffer device drivers rely on the firmware (PC BIOS or
+>SPARC/PPC Open Firmware) having set up the video card.
+i have made vesa frame buffer & vga text console work for a pile of cards with 
+x86emu code i posted days ago.but i think he want video-capable,that may leave
+few candidates
+>
+>One of the exceptions is matroxfb, which is able to initialize older Matrox
+>cards. This should cover all their PCI cards (Matrox didn't release any new PCI
+>cards during the last few years).
+It is expensive now:) I bought two G450pci last year,they are hard to find.
+>
+>Gr{oetje,eeting}s,
+>
+>						Geert
+>
+>--
+>Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+>
+>In personal conversations with technical people, I call myself a hacker. But
+>when I'm talking to journalists I just say "programmer" or something like that.
+>							    -- Linus Torvalds
+
+= = = = = = = = = = = = = = = = = = = =
+			
+
+Best Regards
+---------------------------------------
+Zhang Fuxin
+System Architecture Lab
+Institute of Computing Technology
+Chinese Academy of Sciences,China
+http://www.ict.ac.cn
+ 
+			　　　　　　　　　2002-05-27

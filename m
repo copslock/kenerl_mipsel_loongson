@@ -1,51 +1,30 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f51Ee0R25403
-	for linux-mips-outgoing; Fri, 1 Jun 2001 07:40:00 -0700
-Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f51Eb5h25184
-	for <linux-mips@oss.sgi.com>; Fri, 1 Jun 2001 07:37:30 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id QAA03732;
-	Fri, 1 Jun 2001 16:21:26 +0200 (MET DST)
-Date: Fri, 1 Jun 2001 16:21:26 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Andreas Jaeger <aj@suse.de>
-cc: linux-mips@fnet.fr, linux-mips@oss.sgi.com,
-   Ralf Baechle <ralf@uni-koblenz.de>, Jun Sun <jsun@mvista.com>
-Subject: Re: [patch] RFC: A sys__test_and_set() implementation, 2nd iteration
-In-Reply-To: <hoelt4xqdn.fsf@gee.suse.de>
-Message-ID: <Pine.GSO.3.96.1010601160422.26484C-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+	by oss.sgi.com (8.11.3/8.11.3) id f51L68B14204
+	for linux-mips-outgoing; Fri, 1 Jun 2001 14:06:08 -0700
+Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f51L67h14196
+	for <linux-mips@oss.sgi.com>; Fri, 1 Jun 2001 14:06:07 -0700
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f51L62030547;
+	Fri, 1 Jun 2001 14:06:02 -0700
+Message-ID: <3B180383.C7DDAEDC@mvista.com>
+Date: Fri, 01 Jun 2001 14:05:07 -0700
+From: Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To: linux-mips@oss.sgi.com
+Subject: Linux on PlayStation 2
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On 1 Jun 2001, Andreas Jaeger wrote:
 
-> We normally do not define anything to 0 - unless there's no other
-> way.  And looking briefly over your code there should be other
-> solutions.  Sorry, I'm limited in time currently, otherwise I would
-> rewrite it myself.
+I got forwarded by the following link, although in Japanese, which says Sony
+is selling a Linux kit for PS2.  Does anybody know more details about this
+port?  Specifically, does anyone have the source code?
 
- OK, I'll check how to write it better and still get good optimization
-results.  Please don't bother writing it yourself -- we don't have any
-kernel code yet, so there is no real need to get involved so much.
+http://www.jp.playstation.com/linux/
 
-> Look at i386/lockf64.c for a cleaner example.
-
- Hmm, glibc rules certainly look different from Linux's ones -- I tried to
-avoid interspersing real code with preprocessor conditionals.  Since you
-state it's OK, I should have no problem with coding accrdingly.
-
-> >  It's a syscall wrapper.  We want to export syscall wrappers, don't
-> >  we? 
-> 
-> No, not everything - we already export _test_and_set and that should
-> be enough.
-
- OK, then.
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Jun

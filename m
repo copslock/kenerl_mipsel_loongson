@@ -1,87 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Feb 2004 00:52:21 +0000 (GMT)
-Received: from dvmwest.gt.owl.de ([IPv6:::ffff:62.52.24.140]:58833 "EHLO
-	dvmwest.gt.owl.de") by linux-mips.org with ESMTP
-	id <S8225518AbUBAAwU>; Sun, 1 Feb 2004 00:52:20 +0000
-Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
-	id 860714B4F3; Sun,  1 Feb 2004 01:52:18 +0100 (CET)
-Date: Sun, 1 Feb 2004 01:52:18 +0100
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Feb 2004 04:53:00 +0000 (GMT)
+Received: from p508B577C.dip.t-dialin.net ([IPv6:::ffff:80.139.87.124]:5416
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8224793AbUBAExA>; Sun, 1 Feb 2004 04:53:00 +0000
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i114qwex005567
+	for <linux-mips@linux-mips.org>; Sun, 1 Feb 2004 05:52:59 +0100
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i114qw18005566
+	for linux-mips@linux-mips.org; Sun, 1 Feb 2004 05:52:58 +0100
+Date: Sun, 1 Feb 2004 05:52:58 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
 To: linux-mips@linux-mips.org
-Subject: Warning while building current 2.6.x CVS
-Message-ID: <20040201005218.GM20536@lug-owl.de>
-Mail-Followup-To: linux-mips@linux-mips.org
+Subject: R4600 V1.7 errata
+Message-ID: <20040201045258.GA4601@linux-mips.org>
+References: <20040129102215.GC17760@ballina> <4018E322.9030801@gentoo.org> <20040131030435.GA24228@linux-mips.org> <20040131141027.GA11048@ballina>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="/hP/389S7qb5BOej"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Operating-System: Linux mail 2.4.18 
-X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
-X-gpg-key: wwwkeys.de.pgp.net
-User-Agent: Mutt/1.5.4i
-Return-Path: <jbglaw@dvmwest.gt.owl.de>
+In-Reply-To: <20040131141027.GA11048@ballina>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4213
+X-archive-position: 4214
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jbglaw@lug-owl.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Sat, Jan 31, 2004 at 03:10:27PM +0100, Jorik Jonker wrote:
 
---/hP/389S7qb5BOej
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> 
+> On Sat, Jan 31, 2004 at 04:04:35AM +0100, Ralf Baechle wrote:
+> > Over the past days a few fixes went into CVS, the last only a few minutes
+> > ago.  Can you retry and let me know?
+> 
+> Well, it a little 'better'. It now hangs while configurating the network
+> device, while in earlier versions the freeze appeared while calibrating the
+> delay loop, or mounting the root fs.
+> Is there something else I could try?
+> Until I know what's going on, I am going to look for a kernel with proper
+> VINO support which is 'old' enough to run without the freeze..
 
-Hi!
+Seems I lost the R4600 V1.7 errata documents I used to have so all
+information that is left to me is what's documented in the Linux code.
+I've removed all the mentioned instructions and the kernel which
+otherwise is running fine on R5000 systems or R4600 V2.0 keeps crashing.
+I suspect I'm becoming victim of some of the other of the chip's errata;
+it has at least 18 ...
 
-I get a warning while compiling current CVS (end of non-void function).
-This patch would fix it...
+Anybody still got errata information for the R4600 V1.7 around?
 
-MfG, JBG
-
-
-
-Index: arch/mips/lib-32/dump_tlb.c
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-RCS file: /home/ftp/pub/mirror/CVS/ftp.linux-mips.org/linux/arch/mips/lib-3=
-2/dump_tlb.c,v
-retrieving revision 1.2
-diff -u -r1.2 dump_tlb.c
---- arch/mips/lib-32/dump_tlb.c	18 Dec 2003 21:52:33 -0000	1.2
-+++ arch/mips/lib-32/dump_tlb.c	1 Feb 2004 00:46:22 -0000
-@@ -31,6 +31,7 @@
- 	case PM_64M:	return "64Mb";
- 	case PM_256M:	return "256Mb";
- #endif
-+	default:	return "unknown";
- 	}
- }
-=20
---=20
-   Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481
-   "Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg
-    fuer einen Freien Staat voll Freier B=FCrger" | im Internet! |   im Ira=
-k!
-   ret =3D do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM | TC=
-PA));
-
---/hP/389S7qb5BOej
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.3 (GNU/Linux)
-
-iD8DBQFAHE3CHb1edYOZ4bsRAs7VAJ9oluiTDgbxUpIIUpP/LYcE34hY9gCfVIxh
-/yg/IEQO5SSlSjRaLrf10FU=
-=su70
------END PGP SIGNATURE-----
-
---/hP/389S7qb5BOej--
+  Ralf

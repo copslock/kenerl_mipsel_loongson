@@ -1,85 +1,61 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id RAA87417 for <linux-archive@neteng.engr.sgi.com>; Mon, 22 Feb 1999 17:31:40 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id SAA05596 for <linux-archive@neteng.engr.sgi.com>; Mon, 22 Feb 1999 18:21:55 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id RAA45468
+	id SAA34595
 	for linux-list;
-	Mon, 22 Feb 1999 17:30:46 -0800 (PST)
+	Mon, 22 Feb 1999 18:21:11 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from otg.dallas.sgi.com (roctane.dallas.sgi.com [169.238.83.62])
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id RAA69326
+	via ESMTP id SAA92623
 	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 22 Feb 1999 17:30:43 -0800 (PST)
-	mail_from (chad@dallas.sgi.com)
-Received: from dallas.sgi.com (localhost [127.0.0.1]) by otg.dallas.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id RAA18214; Mon, 22 Feb 1999 17:28:04 -0800 (PST)
-Message-ID: <36D20423.1B7513D1@dallas.sgi.com>
-Date: Mon, 22 Feb 1999 19:28:04 -0600
-From: Chad Carlin <chad@dallas.sgi.com>
-Reply-To: chad@sgi.com
-Organization: Silicon Graphics Inc.
-X-Mailer: Mozilla 4.5C-SGI [en] (X11; I; IRIX64 6.5 IP30)
+	Mon, 22 Feb 1999 18:21:09 -0800 (PST)
+	mail_from (asnmaz01@asc.edu)
+Received: from vera.dpo.uab.edu (Vera.dpo.uab.edu [138.26.1.12]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id SAA05965
+	for <linux@cthulhu.engr.sgi.com>; Mon, 22 Feb 1999 18:21:07 -0800 (PST)
+	mail_from (asnmaz01@asc.edu)
+Received: from asc.edu (138.26.15.137) by vera.dpo.uab.edu (LSMTP for Windows NT v1.1a) with SMTP id <0.E0AC7750@vera.dpo.uab.edu>; Mon, 22 Feb 1999 20:21:07 -0600
+Message-ID: <36D21134.B11129C1@asc.edu>
+Date: Mon, 22 Feb 1999 20:23:48 -0600
+From: "Mark A. Zottola" <asnmaz01@asc.edu>
+X-Mailer: Mozilla 4.5 [en] (Win95; I)
 X-Accept-Language: en
 MIME-Version: 1.0
-To: ralf@uni-koblenz.de, linux <linux@cthulhu.engr.sgi.com>
+To: Eric Melville <m_thrope@rigelfore.com>
+CC: chad@sgi.com, SGI Linux <linux@cthulhu.engr.sgi.com>
 Subject: Re: able to bootp/NFS-install/reboot R4400SC Indy
-References: <Pine.LNX.3.96.990217020751.6350A-100000@lager.engsoc.carleton.ca> <36D19E7E.955F66EC@dallas.sgi.com> <19990223000909.B502@uni-koblenz.de>
+References: <Pine.LNX.3.96.990217020751.6350A-100000@lager.engsoc.carleton.ca> <36D19E7E.955F66EC@dallas.sgi.com> <36D1E0B9.F62F10E4@rigelfore.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Ralf,
+Actually we are running into the same problem as we attempt to port Linux to the
+Indigo2. Does anyone know where we can get the list of errata for the R4400
+revision 6.0? That info is not currently available upon SGI's web pages... Any
+pointers to this information (or a copy of same) would be greatly appreciated!
 
-On closer observation......
+Mark
 
-The message in the syslog is as follows:
-kernel: kmod: failed to exec /sbin/modprobe -s -k net-pf-N, errno = 2
+Eric Melville wrote:
 
-ls -l /sbin/modprobe
-.....No such file or directory
-
-Obviously, I need modprobe. I wonder how I didn't get modprobe?
-
-Other info:
-uname -r  = 2.1.131
-
-cat /proc/cpuinfo
-
-cpu: MIPS
-cpu model: R4000SC V6.0
-system type: SGI Indy
-BogoMIPS: 99.94
-........
-
-Let me know if you want to see more.
-
-
-
-
-ralf@uni-koblenz.de wrote:
-
-> On Mon, Feb 22, 1999 at 12:14:22PM -0600, Chad Carlin wrote:
+> does your hinv say R4400 revision 6.0? if so, let me know which kernel
+> you've booted, because i havn't found any that don't hang during boot :(
+>
+> -E
 >
 > > I got my 200MHz R4400 working too. Yes it actually boots. I guess you guys
 > > weren't making all this stuff up after all.
-> >
-> > I have one problem though. Something is broken in modules. The networking
-> > stuff is working incorrectly because of this. When I try to telnet in from
-> > another host, the linux-indy panics. I can hand copy more verbose
-> > information when I get home if this is not a common problem that everyone
-> > else knows the answer to.
->
-> I'd appreciate a more detailed bug report with all the messages you got.
-> Which kernel binary exactly were you using?
->
->   Ralf
 
 --
-           -----------------------------------------------------
-            Chad Carlin                          Special Systems
-            Silicon Graphics Inc.                   972.205.5911
-            Pager 888.754.1597          VMail 800.414.7994 X5344
-            chad@sgi.com             http://reality.sgi.com/chad
-           -----------------------------------------------------
-        "flying through hyper space ain't like dusting crops, boy"
+*********
+Mark A. Zottola                       Alabama Research and Education Network
+119 Rust Research Center              Nichols Research Corporation
+University of Alabama-Birmingham      VOICE:  (205) 934-3893
+Birmingham, AL  35294                 EMAIL:  asnmaz01@csimail.asc.edu

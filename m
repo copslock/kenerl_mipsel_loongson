@@ -1,80 +1,129 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Aug 2004 16:52:43 +0100 (BST)
-Received: from skl1.ukl.uni-freiburg.de ([IPv6:::ffff:193.196.199.1]:52904
-	"EHLO relay1.uniklinik-freiburg.de") by linux-mips.org with ESMTP
-	id <S8224929AbUHRPwi>; Wed, 18 Aug 2004 16:52:38 +0100
-Received: from ktl77.ukl.uni-freiburg.de (ktl77.ukl.uni-freiburg.de [193.196.226.77])
-	by relay1.uniklinik-freiburg.de (Email) with ESMTP
-	id 3E3C12F291; Wed, 18 Aug 2004 17:52:30 +0200 (CEST)
-From: Maxim Zaitsev <zaitsev@ukl.uni-freiburg.de>
-Organization: University Hospital Freiburg
-To: "Kaj-Michael Lang" <milang@tal.org>
-Subject: Re: O2 arcboot 32-bit kernel boot fix
-Date: Wed, 18 Aug 2004 17:52:35 +0200
-User-Agent: KMail/1.6.2
-Cc: <linux-mips@linux-mips.org>
-References: <001401c483b8$51d289f0$54dc10c3@amos> <003901c48530$577b4f80$54dc10c3@amos> <200408181646.53698.maksik@gmx.co.uk>
-In-Reply-To: <200408181646.53698.maksik@gmx.co.uk>
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Aug 2004 16:58:34 +0100 (BST)
+Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:41222
+	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
+	id <S8224929AbUHRP6W>; Wed, 18 Aug 2004 16:58:22 +0100
+Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42] ident=mail)
+	by iris1.csv.ica.uni-stuttgart.de with esmtp
+	id 1BxSpS-00069q-00; Wed, 18 Aug 2004 17:58:22 +0200
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
+	id 1BxSpP-0005w6-00; Wed, 18 Aug 2004 17:58:19 +0200
+Date: Wed, 18 Aug 2004 17:58:19 +0200
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org, binutils@sources.redhat.com,
+	Daniel Jacobowitz <drow@false.org>
+Subject: Re: Branch bug in gas on MIPS
+Message-ID: <20040818155819.GJ23756@rembrandt.csv.ica.uni-stuttgart.de>
+References: <20040817160110.GA32594@linux-mips.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Type: text/plain;
-  charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <200408181752.35073.zaitsev@ukl.uni-freiburg.de>
-Return-Path: <zaitsev@ukl.uni-freiburg.de>
+In-Reply-To: <20040817160110.GA32594@linux-mips.org>
+User-Agent: Mutt/1.5.6i
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5678
+X-archive-position: 5679
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zaitsev@ukl.uni-freiburg.de
+X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
 Precedence: bulk
 X-list: linux-mips
 
-Ha!!! It works!!! Well, only 32-bit kernels work, but anyways, sorry for 
-trouble. I must have tested it before bothering you with stupid questions... 
+Ralf Baechle wrote:
+> Below little test case demonstrates a gas bug that results in swapping
+> of the two branch instructions and use of bogus destination addresses
+> for the first of the two branches.
+> 
+> [ralf@lappi tmp]$ cat s.s
+> 1:      beqzl   $2, 1b
+>         beq     $4, $5, 1b
+> [ralf@lappi tmp]$ mips-linux-as -mips2 -o s.o s.s
+> [ralf@lappi tmp]$ mips-linux-objdump -d s.o
+>  
+> s.o:     file format elf32-tradbigmips
+>  
+> Disassembly of section .text:
+>  
+> 00000000 <.text>:
+>    0:   1085ffff        beq     a0,a1,0x0
+>    4:   00000000        nop
+>    8:   50400000        beqzl   v0,0xc
+>    c:   00000000        nop
 
-With regard to booting a 64-bit kernel it all looks OK, loading works and what 
-I see in the end is:
+I applied the appended patch. Daniel, I think this should also go
+in the branch.
 
-Starting 64-bit kernel
---- Press <spacebar> to restart ---
 
-No OOPs, no crash, nothing! Isn't that strange? Any ideas?
+Thiemo
 
-Regards,
-Max
 
-On Wednesday 18 August 2004 16:46, Max Zaitsev wrote:
-> > Did you just use the small fix or did you use the whole patch ?
->
-> No, I've just used the original 3.8.1 distribution and could not compile
-> that I've tried it like a month ago and did not get anywhere neither with
-> self-compilation nor with cross-compilation. I wrote Guido Guenther and he
-> had said that he only tried to compile arcboot with gcc 2.95 and that gcc
-> 3.x might have problems stripping some symbols that we want from the
-> binary, while leaving the others, that we don't want... That would explain
-> the factor 10 increase in the resulting file size and it's inability to do
-> anything...
->
-> So the thing is that the original arcboot 3.8.1 does not work for me if I
-> compile (whereas the debian binary of the same version does), so it made no
-> sense for me to try to apply your patch. I need to find a way to compile
-> arcboot properly first. How do you do that yourself? Or do you think your
-> fixes in makefiles make difference already? Actually, you've changed the
-> LDFLAGS, which could be the problem... OK, I'll give it a try and let you
-> know how it was.
->
-> Regards,
-> Max
+/gas/ChangeLog
+2004-08-18  Thiemo Seufer  <seufer@csv.ica.uni-stuttgart.de>
+	* config/tc-mips.c (append_insn): Handle delay slots in branch likely
+	correctly.
 
--- 
-Dr. Maxim Zaitsev
-University Hospital Freiburg
-Department of Diagnostic Radiology
-Medical Physics
-Hugstetterstr. 55
-79106 Freiburg
-Tel. (761) 270 3800
-Fax. (761) 270 3831
+/gas/testsuite/ChangeLog
+2004-08-18  Thiemo Seufer  <seufer@csv.ica.uni-stuttgart.de>
+	* gas/mips/branch-swap.s: New testcase.
+	* gas/mips/branch-swap.d: New testcase.
+	* gas/mips/mips.exp: Run the testcase.
+
+
+--- gas/config/tc-mips.c.old	2004-05-17 21:36:10.000000000 +0200
++++ gas/config/tc-mips.c	2004-08-17 20:00:43.000000000 +0200
+@@ -2708,6 +2708,7 @@ append_insn (struct mips_cl_insn *ip, ex
+ 	  prev_insn_reloc_type[1] = BFD_RELOC_UNUSED;
+ 	  prev_insn_reloc_type[2] = BFD_RELOC_UNUSED;
+ 	  prev_insn_extended = 0;
++	  prev_insn_is_delay_slot = 1;
+ 	}
+       else
+ 	{
+--- gas/testsuite/gas/mips/mips.exp.old	2004-08-17 22:50:38.000000000 +0200
++++ gas/testsuite/gas/mips/mips.exp	2004-08-18 14:53:43.000000000 +0200
+@@ -429,6 +429,7 @@ if { [istarget mips*-*-*] } then {
+     run_dump_test_arches "branch-misc-1" [mips_arch_list_matching mips1]
+     run_list_test_arches "branch-misc-2" "-32 -non_shared" [mips_arch_list_matching mips1]
+     run_list_test_arches "branch-misc-2pic" "-32 -call_shared" [mips_arch_list_matching mips1]
++    run_dump_test "branch-swap"
+ 
+     if $ilocks {
+ 	run_dump_test "div-ilocks"
+--- gas/testsuite/gas/mips/branch-swap.s.old	1970-01-01 01:00:00.000000000 +0100
++++ gas/testsuite/gas/mips/branch-swap.s	2004-08-17 22:52:50.000000000 +0200
+@@ -0,0 +1,9 @@
++	.set push
++	.set mips2
++1:	beqzl	$2, 1b
++	b	1b
++foo:	beqzl	$2, foo
++	b	foo
++
++	.set pop
++	.space 8
+--- gas/testsuite/gas/mips/branch-swap.d.old	1970-01-01 01:00:00.000000000 +0100
++++ gas/testsuite/gas/mips/branch-swap.d	2004-08-17 22:57:36.000000000 +0200
+@@ -0,0 +1,20 @@
++#as: -march=mips2
++#objdump: -dr
++#name: MIPS branch-swap
++
++.*:     file format .*mips.*
++
++Disassembly of section \.text:
++
++00000000 <foo-0x10>:
++   0:	5040ffff 	beqzl	v0,0 <foo-0x10>
++   4:	00000000 	nop
++   8:	1000fffd 	b	0 <foo-0x10>
++   c:	00000000 	nop
++
++00000010 <foo>:
++  10:	5040ffff 	beqzl	v0,10 <foo>
++  14:	00000000 	nop
++  18:	1000fffd 	b	10 <foo>
++  1c:	00000000 	nop
++	\.\.\.

@@ -1,65 +1,50 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id KAA74758 for <linux-archive@neteng.engr.sgi.com>; Wed, 28 Apr 1999 10:42:29 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id KAA76462 for <linux-archive@neteng.engr.sgi.com>; Wed, 28 Apr 1999 10:56:03 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id KAA85111
+	id KAA95708
 	for linux-list;
-	Wed, 28 Apr 1999 10:41:35 -0700 (PDT)
+	Wed, 28 Apr 1999 10:53:50 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from anchor.engr.sgi.com (anchor.engr.sgi.com [150.166.49.42])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id KAA00771
-	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 28 Apr 1999 10:41:33 -0700 (PDT)
-	mail_from (adevries@engsoc.carleton.ca)
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id NAA03164
-	for <linux@cthulhu.engr.sgi.com>; Wed, 28 Apr 1999 13:41:32 -0400 (EDT)
-	mail_from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id NAA29453;
-	Wed, 28 Apr 1999 13:42:23 -0400
-X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
-Date: Wed, 28 Apr 1999 13:42:22 -0400 (EDT)
-From: Alex deVries <adevries@engsoc.carleton.ca>
-To: Chris Pezzee <cpezzee@microsoft.com>
-cc: "'linux@engr.sgi.com'" <linux@cthulhu.engr.sgi.com>
+	via ESMTP id KAA19021;
+	Wed, 28 Apr 1999 10:53:47 -0700 (PDT)
+	mail_from (olson@anchor.engr.sgi.com)
+Received: (from olson@localhost) by anchor.engr.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) id KAA79893; Wed, 28 Apr 1999 10:53:47 -0700 (PDT)
+From: olson@anchor.engr.sgi.com (Dave Olson)
+Message-Id: <199904281753.KAA79893@anchor.engr.sgi.com>
 Subject: Re: using ec3 on a Challenge S
-In-Reply-To: <BB61526CDE70D2119D0F00805FBECA2F664CBA@RED-MSG-55>
-Message-ID: <Pine.LNX.3.96.990428133838.9204B-100000@lager.engsoc.carleton.ca>
+In-Reply-To: <Pine.LNX.3.96.990428133838.9204B-100000@lager.engsoc.carleton.ca> from Alex deVries at "Apr 28, 99 01:42:22 pm"
+To: adevries@engsoc.carleton.ca (Alex deVries)
+Date: Wed, 28 Apr 1999 10:53:47 -0700 (PDT)
+Cc: cpezzee@microsoft.com, linux@cthulhu.engr.sgi.com
+Organization: Silicon Graphics, Inc.  Mt. View, CA
+X-Mailer: ELM [version 2.4ME+ PL35 (25)]
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+Alex deVries wrote: 
+|  You should probably try to figure out where on the GIO64 that is located,
+|  it shouldn't be too difficult with some guidance from folks at SGI.  What
+|  ethernet controller is on there exactly?
 
-On Wed, 28 Apr 1999, Chris Pezzee wrote:
-> The situation:
->   I inherited 20+  SGI Challenge S machines that I would like to use for 
->   web test clients and/or DIPC personal projects.  I would like to use
->   the second Ethernet port (ec3 in Irix) for something other than dust
->   collection.  I've read the list-archive, and there was a brief mention
->   of adding some probing code to the driver but that was all.
-> 
-> What I'd like to know:
->   Is anyone working on this right now?
+It's basicly the same ethernet setup as the IP20 (r4k Indigo).
+The driver is quite similar, but there are a few differences in
+features.  The DMA is the IP20 dma (hpc1, not hpc3), but the 
+ethernet chip is identical to the one on the indy/challenge S,
+just some features enabled by hpc3 aren't present.
 
-I'm reasonably sure that nobody has started.
+If you have an irix system, the HPC31 defines in hpc3.h provide
+most of the necessary info.  On irix, it's actually shipped as
+a seperate binary driver from the onboard ethernet, because of
+the dma/control register differences.  It would be possible to
+do it all in one driver, but we didn't bother.  The source code
+for irix is the same for both, with a few ifdefs.
 
->   If not, I'd love to try to get this working, but I haven't done any driver
-> work before, 
->   so where's a good place to start?
 
-You should probably try to figure out where on the GIO64 that is located,
-it shouldn't be too difficult with some guidance from folks at SGI.  What
-ethernet controller is on there exactly?
-
-At some point I was going to inherit such a card for my Indy (which would
-replace my Newport temporarily), but I never got the card, and have been
-busy with other things.  I wouldn't mind looking at this though.
-
-- Alex
+Dave Olson, Silicon Graphics
+http://reality.sgi.com/olson   olson@sgi.com

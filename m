@@ -1,83 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Feb 2004 02:11:31 +0000 (GMT)
-Received: from law10-f96.law10.hotmail.com ([IPv6:::ffff:64.4.15.96]:51214
-	"EHLO hotmail.com") by linux-mips.org with ESMTP
-	id <S8225074AbUBBCLb>; Mon, 2 Feb 2004 02:11:31 +0000
-Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
-	 Sun, 1 Feb 2004 18:11:23 -0800
-Received: from 24.209.41.112 by lw10fd.law10.hotmail.msn.com with HTTP;
-	Mon, 02 Feb 2004 02:11:22 GMT
-X-Originating-IP: [24.209.41.112]
-X-Originating-Email: [juszczec@hotmail.com]
-X-Sender: juszczec@hotmail.com
-From: "Mark and Janice Juszczec" <juszczec@hotmail.com>
-To: linux-mips@linux-mips.org
-Subject: mipsel-linux-objcopy problem
-Date: Mon, 02 Feb 2004 02:11:22 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Feb 2004 13:57:32 +0000 (GMT)
+Received: from p508B7363.dip.t-dialin.net ([IPv6:::ffff:80.139.115.99]:41024
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225226AbUBBN5c>; Mon, 2 Feb 2004 13:57:32 +0000
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i12DvUex021975;
+	Mon, 2 Feb 2004 14:57:30 +0100
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i12DvUAO021974;
+	Mon, 2 Feb 2004 14:57:30 +0100
+Date: Mon, 2 Feb 2004 14:57:30 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: linux-mips@linux-mips.org
+Subject: Re: [patch] pg-r4k.c bugs for R4k systems with a secondary cache
+Message-ID: <20040202135730.GC21735@linux-mips.org>
+References: <Pine.LNX.4.55.0401261731370.26076@jurand.ds.pg.gda.pl> <Pine.LNX.4.55.0401271208040.683@jurand.ds.pg.gda.pl> <20040201224958.GA11444@linux-mips.org>
 Mime-Version: 1.0
-Content-Type: text/plain; format=flowed
-Message-ID: <Law10-F967gzKHmdpVn0001d29b@hotmail.com>
-X-OriginalArrivalTime: 02 Feb 2004 02:11:23.0007 (UTC) FILETIME=[DACD68F0:01C3E931]
-Return-Path: <juszczec@hotmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20040201224958.GA11444@linux-mips.org>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4224
+X-archive-position: 4225
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: juszczec@hotmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Sun, Feb 01, 2004 at 11:49:58PM +0100, Ralf Baechle wrote:
 
-Hi folks
+> > >  The patch also removes references to has_scache which currently disable 
+> > > code for the S-cache line size of 128 bytes as the variable is always 0.
+> > 
+> >  Here is a somewhat better version.  It's functionally equivalent.  OK to 
+> > apply?
+> 
+> Missed your mail and ran over it only now that I had just started to debug
+> the problem myself - but still before wasting a major amount of time ...
+> 
+> Lemme test it on my R4400 V4.0  I'll report on it later.
 
-On one system, I've got
+So the patch was looking good but didn't solve the problems with 128 byte
+S-cache lines.  I've used your patch as a base and solved the remaining
+problems, will apply it in a minute.
 
-# mipsel-linux-objcopy --version
-GNU objcopy 2.8.1
-Copyright 1997 Free Software Foundation, Inc.
-This program is free software; you may redistribute it under the terms of
-the GNU General Public License.  This program has absolutely no warranty.
-
-# ls -l memload-full
--rwxr-xr-x    1 root     root      1791550 Feb  1 20:46 memload-full
-
-# mipsel-linux-objcopy -Obinary --remove-section=.bss --remove-section=.data 
---remove-section=.mdebug --pad-to=0x9fe00000 memload-full tryrom
-
-[root@mjolnir hfload]# ls -l tryrom
--rwxr-xr-x    1 root     root      2097152 Feb  1 21:09 tryrom
-
-on another system,
-
-# mipsel-unknown-linux-gnu-objcopy --version
-GNU objcopy 2.13.90.0.18 20030121
-Copyright 2002 Free Software Foundation, Inc.
-This program is free software; you may redistribute it under the terms of
-the GNU General Public License.  This program has absolutely no warranty.
-
-# ls -l memload-full
--rwxr-xr-x    1 root     root      1791550 Feb  1 20:35 memload-full
-
-mipsel-unknown-linux-gnu-objcopy -Obinary --remove-section=.bss 
---remove-section=.data --remove-section=.mdebug --pad-to=0x9fe00000 
-memload-full tryrom
-
-# ls -l tryrom
--rwxr-xr-x    1 root     root      1725680 Feb  1 21:01 tryrom
-
-Any idea why tryrom made with mipsel-unknown-linux-gnu-objcopy ver 
-2.13.90.0.18 is smaller than the one made with mipsel-linux-objcopy ver 
-2.8.1
-
-This is a step in making a rom image for an emulator.  The emulator needs 
-the file tryrom to be  2097152.  I'm stuck.
-
-Help.
-
-Mark
-
-_________________________________________________________________
-Learn how to choose, serve, and enjoy wine at Wine @ MSN. 
-http://wine.msn.com/
+  Ralf

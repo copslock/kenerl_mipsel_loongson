@@ -1,59 +1,66 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA97033 for <linux-archive@neteng.engr.sgi.com>; Tue, 12 Jan 1999 14:19:29 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA99238 for <linux-archive@neteng.engr.sgi.com>; Tue, 12 Jan 1999 16:42:08 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id OAA32125
+	id QAA73395
 	for linux-list;
-	Tue, 12 Jan 1999 14:18:11 -0800 (PST)
+	Tue, 12 Jan 1999 16:41:27 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from fddi-sgi.engr.sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from dragon.engr.sgi.com (dragon.engr.sgi.com [150.166.75.63])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id OAA29006
+	via ESMTP id QAA86048
 	for <linux@cthulhu.engr.sgi.com>;
-	Tue, 12 Jan 1999 14:18:09 -0800 (PST)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
-	by fddi-sgi.engr.sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id OAA00944; Tue, 12 Jan 1999 14:16:41 -0800 (PST)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from lappi.waldorf-gmbh.de (pmport-25.uni-koblenz.de [141.26.249.25])
-	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id XAA19768;
-	Tue, 12 Jan 1999 23:12:48 +0100 (MET)
-Received: (from ralf@localhost)
-	by lappi.waldorf-gmbh.de (8.8.7/8.8.7) id RAA00933;
-	Tue, 12 Jan 1999 17:51:47 +0100
-Message-ID: <19990112175147.C341@uni-koblenz.de>
-Date: Tue, 12 Jan 1999 17:51:47 +0100
-From: ralf@uni-koblenz.de
-To: chad@sgi.engr.sgi.com, linux <linux@cthulhu.engr.sgi.com>
-Cc: Alex deVries <adevries@engsoc.carleton.ca>
-Subject: Re: same boot vmlinux trouble
-References: <369AD0C2.977C04AC@dallas.sgi.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.93.2
-In-Reply-To: <369AD0C2.977C04AC@dallas.sgi.com>; from Chad Carlin on Mon, Jan 11, 1999 at 10:34:10PM -0600
+	Tue, 12 Jan 1999 16:41:26 -0800 (PST)
+	mail_from (sr@dragon.engr.sgi.com)
+Received: (from sr@localhost) by dragon.engr.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) id QAA18295 for linux@cthulhu.engr.sgi.com; Tue, 12 Jan 1999 16:41:26 -0800 (PST)
+From: sr@dragon.engr.sgi.com (Steve Rikli)
+Message-Id: <199901130041.QAA18295@dragon.engr.sgi.com>
+Subject: Re: linus down?
+To: linux@cthulhu.engr.sgi.com
+Date: Tue, 12 Jan 1999 16:41:25 -0800 (PST)
+In-Reply-To: <199901112313.PAA16055@dragon.engr.sgi.com> from "Steve Rikli" at Jan 11, 99 03:13:54 pm
+X-Mailer: ELM [version 2.4 PL25]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Mon, Jan 11, 1999 at 10:34:10PM -0600, Chad Carlin wrote:
-
-> Still having the same problem. Anyone have a more recent vmlinux kernel?
-> Does anyone have a sample of what this boot output looks like when it
-> works? 
+Steve Rikli wrote:
+> Steve Rikli wrote:
+> > Shrijeet Mukherjee wrote:
+> > > On Mon, 11 Jan 1999, Mike Shaver wrote:
+> > > 
+> > > ->I can't get to cvs or http services on linus...anyone know what's up?
+> > > 
+> > > I am seeing the same problem .. what is going on ?
+> > 
+> > linus.linux.sgi.com gives every appearance of being down with some
+> > kinda h/w problem.
+> > 
+> > I've just started poking it -- more info when I have it.
 > 
-> BTW I have mounted my linux dev directory on another linux machine and
-> was able to write to the console device. Also was able to create new
-> device files in the mounted directory and use those as well.
+> Update -- this has almost nothing to do with linus' h/w , rather it
+> appears to be one of the Internet router connections to linus.
 > 
-> I'm pretty stuck here. Any help would be appreciated.
+> Trying to get in touch with the appropriate parties now.
 
-This old kernel doesn't handle R4000 / R4400 SC versions correctly, you'll
-need a newer one.
+An addtional update here:
 
-Alex, could you brew a binary kernel from CVS?  Thanks.
+The appropriate parties responsible for the external network which
+linus.linux.sgi.com lives on have been notified of the situation
+and are (have been) looking at the matter for a while.
 
-  Ralf
+Unfortunately I don't have a full-fledged ETA yet, since the "fix"
+likely involves some potential work on one of SGI's Internet routers.
+
+Again, more info when I get it.
+
+Sorry for the delay, and thanks for your patience so far.
+
+sr.
+-- 
+|| Steve Rikli <sr@sgi.com> |||                                         ||
+|| Systems Administrator    ||| Does fuzzy logic tickle?                ||
+|| NSD/SNS/ASD/SSBU/CSBU/...|||                                         ||
+|| Silicon Graphics, Inc.   |||                                         ||

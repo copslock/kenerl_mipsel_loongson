@@ -1,151 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Aug 2003 04:39:01 +0100 (BST)
-Received: from [IPv6:::ffff:159.226.39.4] ([IPv6:::ffff:159.226.39.4]:27333
-	"HELO mail.ict.ac.cn") by linux-mips.org with SMTP
-	id <S8225333AbTHDDi7>; Mon, 4 Aug 2003 04:38:59 +0100
-Received: (qmail 15037 invoked from network); 4 Aug 2003 03:34:17 -0000
-Received: from unknown (HELO ict.ac.cn) (159.226.40.150)
-  by 159.226.39.4 with SMTP; 4 Aug 2003 03:34:17 -0000
-Message-ID: <3F2DD534.1010905@ict.ac.cn>
-Date: Mon, 04 Aug 2003 11:38:28 +0800
-From: Fuxin Zhang <fxzhang@ict.ac.cn>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4) Gecko/20030624
-X-Accept-Language: zh-cn, en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Aug 2003 11:04:27 +0100 (BST)
+Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:43529 "EHLO
+	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8225334AbTHDKEQ>;
+	Mon, 4 Aug 2003 11:04:16 +0100
+Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
+	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
+	id 19jcDK-0001ct-00; Mon, 04 Aug 2003 11:05:14 +0100
+Received: from gladsmuir.algor.co.uk ([172.20.192.66] helo=gladsmuir.mips.com)
+	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
+	id 19jayF-0003wJ-00; Mon, 04 Aug 2003 09:45:35 +0100
+From: Dominic Sweetman <dom@mips.com>
 MIME-Version: 1.0
-To: Adam Kiepul <Adam_Kiepul@pmc-sierra.com>
-CC: Ralf Baechle <ralf@linux-mips.org>,
-	MAKE FUN PRANK CALLS <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID: <16174.7469.845997.741559@gladsmuir.mips.com>
+Date: Mon, 4 Aug 2003 09:45:33 +0100
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: Dominic Sweetman <dom@mips.com>,
+	Adam Kiepul <Adam_Kiepul@pmc-sierra.com>,
+	Fuxin Zhang <fxzhang@ict.ac.cn>, linux-mips@linux-mips.org
 Subject: Re: RM7k cache_flush_sigtramp
-References: <9DFF23E1E33391449FDC324526D1F259017DF091@SJC1EXM02>
-In-Reply-To: <9DFF23E1E33391449FDC324526D1F259017DF091@SJC1EXM02>
-Content-Type: text/plain; charset=gb18030; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <fxzhang@ict.ac.cn>
+In-Reply-To: <20030801092649.GA17624@linux-mips.org>
+References: <9DFF23E1E33391449FDC324526D1F259017DF087@SJC1EXM02>
+	<16170.7179.635988.268987@doms-laptop.algor.co.uk>
+	<20030801092649.GA17624@linux-mips.org>
+X-Mailer: VM 6.92 under 21.1 (patch 14) "Cuyahoga Valley" XEmacs Lucid
+X-MTUK-Scanner: Found to be clean
+X-MTUK-SpamCheck: not spam, SpamAssassin (score=-0.8, required 4, AWL,
+	QUOTED_EMAIL_TEXT, REFERENCES)
+Return-Path: <dom@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2974
+X-archive-position: 2975
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fxzhang@ict.ac.cn
+X-original-sender: dom@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Adam,
-   
-   My cpu PRID:  0x2732, runs at freq 133x2MHz
 
-disassemble code before patch:
+Ralf,
 
-ffffffff8010f2fc <r4k_flush_cache_sigtramp>:
-ffffffff8010f2fc:	3c03802c 	lui	v1,0x802c
-ffffffff8010f300:	246367ec 	addiu	v1,v1,26604
-ffffffff8010f304:	94620010 	lhu	v0,16(v1)
-ffffffff8010f308:	94650000 	lhu	a1,0(v1)
-ffffffff8010f30c:	00021023 	negu	v0,v0
-ffffffff8010f310:	00821024 	and	v0,a0,v0
-ffffffff8010f314:	bc550000 	cache	0x15,0(v0)
-ffffffff8010f318:	00052823 	negu	a1,a1
-ffffffff8010f31c:	00852024 	and	a0,a0,a1
-ffffffff8010f320:	bc900000 	cache	0x10,0(a0)
-ffffffff8010f324:	03e00008 	jr	ra
-ffffffff8010f328:	00000000 	nop
+> Linux supports the traditional MIPS UNIX cacheflush(2) syscall through
+> a libc interface.  Since I've not seen any other use for the call than
+> I/D-cache synchronization.  I'd just make cacheflush(3) use SYNCI where
+> available...
 
-disassemble code after patch:
-ffffffff8010ceb0 <r4k_flush_cache_sigtramp>:
-ffffffff8010ceb0:	3c03802f 	lui	v1,0x802f
-ffffffff8010ceb4:	2463e3ac 	addiu	v1,v1,-7252
-ffffffff8010ceb8:	94620010 	lhu	v0,16(v1)
-ffffffff8010cebc:	94650000 	lhu	a1,0(v1)
-ffffffff8010cec0:	00021023 	negu	v0,v0
-ffffffff8010cec4:	00821024 	and	v0,a0,v0
-ffffffff8010cec8:	bc550000 	cache	0x15,0(v0)
-ffffffff8010cecc:	0000000f 	sync
-ffffffff8010ced0:	00052823 	negu	a1,a1
-ffffffff8010ced4:	00852024 	and	a0,a0,a1
-ffffffff8010ced8:	bc900000 	cache	0x10,0(a0)
-ffffffff8010cedc:	03e00008 	jr	ra
-ffffffff8010cee0:	00000000 	nop
+SYNCI just does what's required to execute code you just wrote: that's
+a D-cache writeback and an I-cache invalidate.  It doesn't invalidate
+the D-cache afterwards, which is required by the definition of
+cacheflush(3).
 
+I think it would be better to provide cache manipulation calls defined
+top-down (by their purpose); but so long as we are stuck with calls
+which are defined as performing particular low-level actions, it's
+surely dangerous to guess that we know what they are used for so we
+can trim the functions accordingly...
 
-We do have more than one set of ev64240 and RM7k cpu£¬but it will take 
-some time for
-me to get another one for test. I will tell you the result once i do it.
-
-Thank you.
- 
-
-Adam Kiepul wrote:
-
->Hi Fuxin,
->
->Could you please provide me with the _original_ Kernel code disassembly snippet around the point where your SYNC patch applies?
->Also, can you check what RM7000 part revision is on your board? You can find it out by reading the PrID register.
->
->I will check if there is an erratum that the code could trigger.
->
->By the way, are you aware of any other ev64240 board that would exhibit the same behavior?
->
->I would be quite careful drawing any conclusions at the moment since we can not preclude the possibility that it is simply a "bad CPU on the board" case. Please note that the SYNC instruction changes a lot in the manner things physically happen in the CPU so it can often mask off various problems, such as a bad part.
->
->Thank you,
->
->Adam
->
->
->-----Original Message-----
->From: Fuxin Zhang [mailto:fxzhang@ict.ac.cn]
->Sent: Thursday, July 31, 2003 9:59 PM
->To: Ralf Baechle
->Cc: Adam Kiepul; MAKE FUN PRANK CALLS
->Subject: Re: RM7k cache_flush_sigtramp
->
->
->I am using a slightly modified 2.4.21-pre4,based on cvs of early this 
->month(?).
->We have merged with latest cvs, I will run it and report the result tonight.
->
->
->Ralf Baechle wrote:
->
->  
->
->>Adam,
->>
->>On Fri, Aug 01, 2003 at 08:40:14AM +0800, Fuxin Zhang wrote:
->>
->> 
->>
->>    
->>
->>>Current linux code does exactly this. But I was seeing all kinds of 
->>>faults occuring around the
->>>sigreturn point on the stack without a sync? And a sync does greatly 
->>>improve the stablity.
->>>
->>>   
->>>
->>>      
->>>
->>>>The ordering does matter however since the Hit_Invalidate_I makes sure the 
->>>>write buffer is flushed.
->>>>     
->>>>
->>>>        
->>>>
->>could there be an errata explaining Fuxin's findings?
->>
->>Fuxin, what version are you running?
->>
->> Ralf
->>
->>
->> 
->>
->>    
->>
->
->
->
->  
->
+--
+Dominic Sweetman
+MIPS Technologies

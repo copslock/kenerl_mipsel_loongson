@@ -1,39 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Dec 2002 16:52:05 +0000 (GMT)
-Received: from gateway.pace.co.uk ([195.44.197.250]:38760 "EHLO
-	exchange.saltaire.pace.co.uk") by linux-mips.org with ESMTP
-	id <S8225241AbSLKQvz>; Wed, 11 Dec 2002 16:51:55 +0000
-Received: by exchange.saltaire.pace.co.uk with Internet Mail Service (5.5.2653.19)
-	id <XYCZRGFH>; Wed, 11 Dec 2002 16:51:49 -0000
-Message-ID: <44632C76B97BD211AF6B00805FADCAB208790F97@exchange.saltaire.pace.co.uk>
-From: Simon Wood <Simon.Wood@pace.co.uk>
-To: linux-mips@linux-mips.org
-Subject: Linux on LSI SC2000
-Date: Wed, 11 Dec 2002 16:51:48 -0000
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2653.19)
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Return-Path: <Simon.Wood@pace.co.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Dec 2002 16:58:37 +0000 (GMT)
+Received: from crack.them.org ([65.125.64.184]:37799 "EHLO crack.them.org")
+	by linux-mips.org with ESMTP id <S8225241AbSLKQ6g>;
+	Wed, 11 Dec 2002 16:58:36 +0000
+Received: from nevyn.them.org ([66.93.61.169] ident=mail)
+	by crack.them.org with asmtp (Exim 3.12 #1 (Debian))
+	id 18MC3t-00079D-00; Wed, 11 Dec 2002 12:58:25 -0600
+Received: from drow by nevyn.them.org with local (Exim 3.36 #1 (Debian))
+	id 18MACE-0003Bm-00; Wed, 11 Dec 2002 11:58:54 -0500
+Date: Wed, 11 Dec 2002 11:58:54 -0500
+From: Daniel Jacobowitz <dan@debian.org>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: watch exception only for kseg0 addresses..?
+Message-ID: <20021211165854.GA12223@nevyn.them.org>
+References: <20021204155128.GA18940@nevyn.them.org> <Pine.GSO.3.96.1021204182756.29982G-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.GSO.3.96.1021204182756.29982G-100000@delta.ds2.pg.gda.pl>
+User-Agent: Mutt/1.5.1i
+Return-Path: <drow@false.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 858
+X-archive-position: 859
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Simon.Wood@pace.co.uk
+X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi all,
-Does anyone have any information on the Linux port to the LSI SC2000 (Tiny
-Mips core). There is a page on AstonLinux's web site but I can't find any
-source around the net....
+On Wed, Dec 04, 2002 at 06:54:02PM +0100, Maciej W. Rozycki wrote:
+> On Wed, 4 Dec 2002, Daniel Jacobowitz wrote:
+> 
+> > Sorry, by "not handy" I meant I didn't have the manuals available :)
+> 
+>  'http://www.mips.com/Documentation/R4400_Uman_book_Ed2.pdf' or see under
+> "Publications"/"R4000...".  There are other sources of the book available,
+> e.g. somewhere within SGI web pages.  R10k implements a single watchpoint
+> this way, too. 
+> 
+> > >  What do you think?
+> > 
+> > You don't reveal to userland what size watchpoints are available - i.e.
+> > how large a watchpoint can be.  Does the mask match the hardware
+> > implementation, and what are the restrictions on it?
+> 
+>  For that you set up a disabled watchpoint with a mask set to all ones (or
+> the range you are interested in).  Then when you retrieve it, you may see
+> which bits stayed at ones.  Similarly you may check for hardwired
+> don't-cares by using a mask with all zeroes.  The mask may differ for each
+> watchpoint, e.g. for R4650 it's different for IWatch and DWatch, so you
+> really want to have a per-watchpoint setting.  Also the MIPS32/64 ISA
+> specification implies a mask need not be contiguous. 
+> 
+>  Similarly you may check for access types permitted, by enabling all of
+> them (or ones you are interested in) and seeing which ones remained
+> enabled.  Per-watchpoint, again. 
+> 
+>  I'd prefer not to overdesign the API leaving as much information as
+> possible passed as is.  This way userland gets more control over what's
+> available.
 
-http://www.astonlinux.com/solution/LSI.htm
+That way we expose more of the hardware to userland; and the thing
+that's most important to me is that GDB not have to know if it's on a
+MIPS32 or an R4650 when determining how watchpoints work. 
+IWatch/DWatch are two particular watchpoints or distinguished by access
+type?  I.E. what would GDB need to know to know which it is setting?
 
-Hopefully there is something I can make use of in my hacking around
-
-Thanks,
-Simon Wood
-(in a personal capacity).
+-- 
+Daniel Jacobowitz
+MontaVista Software                         Debian GNU/Linux Developer

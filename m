@@ -1,59 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jan 2004 11:51:09 +0000 (GMT)
-Received: from gw.icm.edu.pl ([IPv6:::ffff:212.87.0.39]:35881 "EHLO
-	atol.icm.edu.pl") by linux-mips.org with ESMTP id <S8225507AbUAPLvI>;
-	Fri, 16 Jan 2004 11:51:08 +0000
-Received: from rekin.icm.edu.pl (rekin.icm.edu.pl [192.168.1.132])
-	by atol.icm.edu.pl (8.12.6/8.12.6/rzm-4.6/icm) with ESMTP id i0GBot4p006342
-	for <linux-mips@linux-mips.org>; Fri, 16 Jan 2004 12:50:56 +0100 (CET)
-Received: from rathann by rekin.icm.edu.pl with local (Exim 3.35 #1 (Debian))
-	id 1AhSV3-0004nB-00
-	for <linux-mips@linux-mips.org>; Fri, 16 Jan 2004 12:50:53 +0100
-Date: Fri, 16 Jan 2004 12:50:53 +0100
-From: "Dominik 'Rathann' Mierzejewski" <rathann@icm.edu.pl>
-To: linux-mips@linux-mips.org
-Subject: Re: Current 2.4 CVS (2.4.24-pre2) doesn't boot on SGI Indy
-Message-ID: <20040116115053.GA18099@icm.edu.pl>
-Mail-Followup-To: linux-mips@linux-mips.org
-References: <20040115141427.GA28546@icm.edu.pl> <Pine.LNX.4.21.0401151816540.3511-100000@www.marty44.net> <20040115231735.GA6619@icm.edu.pl> <4007386F.80207@gentoo.org> <20040115172602.H18368@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jan 2004 12:34:04 +0000 (GMT)
+Received: from verein.lst.de ([IPv6:::ffff:212.34.189.10]:4569 "EHLO
+	mail.lst.de") by linux-mips.org with ESMTP id <S8224893AbUAPMeA>;
+	Fri, 16 Jan 2004 12:34:00 +0000
+Received: from verein.lst.de (localhost [127.0.0.1])
+	by mail.lst.de (8.12.3/8.12.3/Debian-6.6) with ESMTP id i0GCXre6013050
+	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
+	Fri, 16 Jan 2004 13:33:53 +0100
+Received: (from hch@localhost)
+	by verein.lst.de (8.12.3/8.12.3/Debian-6.6) id i0GCXqOw013048;
+	Fri, 16 Jan 2004 13:33:52 +0100
+Date: Fri, 16 Jan 2004 13:33:52 +0100
+From: Christoph Hellwig <hch@lst.de>
+To: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+Cc: Ralf Baechle <ralf@linux-mips.org>,
+	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH][2.6] Update NEC VRC4171 PCMCIA driver
+Message-ID: <20040116123352.GA13006@lst.de>
+References: <20040116083821.6b65c69f.yuasa@hh.iij4u.or.jp>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20040115172602.H18368@mvista.com>
+In-Reply-To: <20040116083821.6b65c69f.yuasa@hh.iij4u.or.jp>
 User-Agent: Mutt/1.3.28i
-Return-Path: <rathann@icm.edu.pl>
+X-Spam-Score: -4.901 () BAYES_00
+X-Scanned-By: MIMEDefang 2.39
+Return-Path: <hch@lst.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3997
+X-archive-position: 3998
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rathann@icm.edu.pl
+X-original-sender: hch@lst.de
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jan 15, 2004 at 05:26:02PM -0800, Jun Sun wrote:
-> On Thu, Jan 15, 2004 at 08:03:43PM -0500, Kumba wrote:
-> > Dominik 'Rathann' Mierzejewski wrote:
-[...] 
-> > I have a 2.4.23 kernel I used from a 20031128 CVS snapshot that works 
-> > fine, but a 2.4.23 20031214 snapshot didn't work (on an R4400@250MHz 
-> > I2), so likely the problem was introduced sometime between those dates. 
-> >   Might help for tracking down the issue.
+On Fri, Jan 16, 2004 at 08:38:21AM +0900, Yoichi Yuasa wrote:
+> +static int pccard_register_callback(unsigned int slot,
+> +                                    void (*handler)(void *, unsigned int),
+> +                                    void *info)
+> +{
+> +	vrc4171_socket_t *socket;
+> +
+> +	if (slot >= CARD_MAX_SLOTS)
+> +		return -EINVAL;
+> +
+> +	socket = &vrc4171_sockets[slot];
+> +
+> +	socket->handler = handler;
+> +	socket->info = info;
+> +
+> +	if (handler)
+> +		MOD_INC_USE_COUNT;
+> +	else
+> +		MOD_DEC_USE_COUNT;
+> +
+> +	return 0;
+> +}
 
-Thanks, that'll be useful.
-
-> If you like to know what changes had been made during that period,
-> you may find my tracking tool useful.  Just select the 2.4 branch
-> and enter the date range, it will give you all the changes in 
-> patch format.  So you can also find out who is the lamer! :)
-> 
-> http://linux.junsun.net/xcvs/xcvs_linux_mips
-
-Excellent tool! Thank you very much. I'll try and identify the offending
-patch today.
-
--- 
-Dominik 'Rathann' Mierzejewski <rathann@icm.edu.pl>                                                 
-Interdisciplinary Centre for Mathematical and Computational Modelling                               
-Warsaw University  |  http://www.icm.edu.pl  |  tel. +48 (22) 5540810                               
+This is most certainly wrong.  Module refcounting handling has moved one
+layer up in 2.6.

@@ -1,89 +1,48 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id MAA65955 for <linux-archive@neteng.engr.sgi.com>; Tue, 2 Feb 1999 12:27:20 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id MAA60084 for <linux-archive@neteng.engr.sgi.com>; Tue, 2 Feb 1999 12:16:19 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id MAA68980
+	id MAA44448
 	for linux-list;
-	Tue, 2 Feb 1999 12:26:32 -0800 (PST)
+	Tue, 2 Feb 1999 12:15:37 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id MAA64633
+	via ESMTP id MAA39967
 	for <linux@cthulhu.engr.sgi.com>;
-	Tue, 2 Feb 1999 12:26:31 -0800 (PST)
-	mail_from (jonas@bigblue.frungy.se)
-Received: from bigblue.frungy.se (bigblue.frungy.se [193.15.54.140]) 
+	Tue, 2 Feb 1999 12:15:35 -0800 (PST)
+	mail_from (alan@lxorguk.ukuu.org.uk)
+Received: from snowcrash.cymru.net (snowcrash.cymru.net [163.164.160.3]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id MAA08919
-	for <linux@cthulhu.engr.sgi.com>; Tue, 2 Feb 1999 12:26:29 -0800 (PST)
-	mail_from (jonas@bigblue.frungy.se)
-Received: from localhost (jonas@localhost)
-	by bigblue.frungy.se (8.9.0/8.8.7) with SMTP id VAA00179;
-	Tue, 2 Feb 1999 21:26:08 +0100
-Date: Tue, 2 Feb 1999 21:26:08 +0100 (CET)
-From: Jonas Vis <jonas@bigblue.frungy.se>
-To: Chad Carlin <chad@roctane.dallas.sgi.com>
-cc: Alexander Graefe <nachtfalke@usa.net>, linux@cthulhu.engr.sgi.com
-Subject: Re: What kernel to use to install RH on a R4400 ?
-In-Reply-To: <36B74206.8E63A799@roctane.dallas.sgi.com>
-Message-ID: <Pine.LNX.3.96.990202212242.142B-100000@bigblue.frungy.se>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	via ESMTP id MAA08344; Tue, 2 Feb 1999 12:15:27 -0800 (PST)
+	mail_from (alan@lxorguk.ukuu.org.uk)
+Received: from the-village.bc.nu (lightning.swansea.uk.linux.org [194.168.151.1]) by snowcrash.cymru.net (8.8.7/8.7.1) with SMTP id UAA20697; Tue, 2 Feb 1999 20:15:21 GMT
+Received: by the-village.bc.nu (Smail3.1.29.1 #2)
+	id m107n69-0007U1C; Tue, 2 Feb 99 21:11 GMT
+Message-Id: <m107n69-0007U1C@the-village.bc.nu>
+From: alan@lxorguk.ukuu.org.uk (Alan Cox)
+Subject: Re: weird HAL2
+To: ulfc@bun.falkenberg.se (Ulf Carlsson)
+Date: Tue, 2 Feb 1999 21:11:04 +0000 (GMT)
+Cc: alambie@rock.csd.sgi.com, linux@cthulhu.engr.sgi.com
+In-Reply-To: <19990202205328.A1996@bun.falkenberg.se> from "Ulf Carlsson" at Feb 2, 99 08:53:28 pm
+Content-Type: text
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi
+> This is exactly what I'm trying to do by first writing 0x0000 to isr, waiting
+> some us, and then writing 0x0018. Then the card should be active and isr should
+> IMHO contain 0x0018.
 
-I`m having the same problem on my Indy(R4400). The kernel boots ok, but
-after the remote root-nfs is mounted it dies with something about irq
-request handler. I`m using a PC running Linux to boot from.
+Stupid question but does
 
+write 0x0010
+wait 10uS
+write 0x0018
 
-//Jonas
+work ?
 
-On Tue, 2 Feb 1999, Chad Carlin wrote:
-
-> Alexander,
-> 
-> I'm having similar problems with my R4400. I was trying to boot from
-> another Indy. Now I went and got a PC and loaded linux on it. This
-> should put my config as much like everyone elses as I can make it.
-> Will try the boot later tonight.
-> 
-> I've asked this list for anyone else running linux on an R4400. I've
-> gotten no responses. You and I may be the only ones.
-> 
-> Chad
-> 
-> Alexander Graefe wrote:
-> 
-> > Hi.
-> >
-> > I got as far as booting Linux via bootp on my Indy, but after the
-> > remote root-fs is mounted, the kernel dies with an "Aieee" and
-> > something about irq request handler.
-> >
-> > I tried booting with the 2.1.131-Kernel from ftp.linux.sgi.com, but
-> > that one doesn't try to mount the root-fs via NFS.
-> >
-> > What kernel should I use to actually see a prompt on my Indy ?
-> >
-> > Bye,
-> >         LeX, determined to get Linux on there :)
-> > --
-> > Quidquid latine dictum sit, altum viditur.
-> 
-> --
->            -----------------------------------------------------
->             Chad Carlin                          Special Systems
->             Silicon Graphics Inc.                   972.205.5911
->             Pager 888.754.1597          VMail 800.414.7994 X5344
->             chad@sgi.com             http://reality.sgi.com/chad
->            -----------------------------------------------------
->         "flying through hyper space ain't like dusting crops, boy"
-> 
-> 
-> 
+(ie do you have to bring them out of reset card, then codec ?

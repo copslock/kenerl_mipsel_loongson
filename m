@@ -1,34 +1,52 @@
-Received:  by oss.sgi.com id <S553787AbQKOQYt>;
-	Wed, 15 Nov 2000 08:24:49 -0800
-Received: from srvntsxconn3.toc.ixl.com ([216.99.0.139]:42503 "HELO
-        srvntsxconn3.toc.ixl.com") by oss.sgi.com with SMTP
-	id <S553771AbQKOQYe>; Wed, 15 Nov 2000 08:24:34 -0800
-Received: from 216.99.0.139 by srvntsxconn3.toc.ixl.com (InterScan E-Mail VirusWall NT); Wed, 15 Nov 2000 11:23:59 -0500 (Eastern Standard Time)
-Received: by srvntsxconn3.toc.ixl.com with Internet Mail Service (5.5.2650.21)
-	id <W6VAD8S8>; Wed, 15 Nov 2000 11:23:58 -0500
-Message-ID: <0A5319EEAF65D411825E00805FBBD8A1209D40@exchange.clt.ixl.com>
-From:   tmaloney@ixl.com
-To:     linux-mips@oss.sgi.com
-Subject: re: Indy drive question
-Date:   Wed, 15 Nov 2000 11:24:15 -0500
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2650.21)
-Content-Type: text/plain;
-	charset="iso-8859-1"
+Received:  by oss.sgi.com id <S553850AbQKOQ66>;
+	Wed, 15 Nov 2000 08:58:58 -0800
+Received: from woody.ichilton.co.uk ([216.29.174.40]:57871 "HELO
+        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553729AbQKOQ6b>;
+	Wed, 15 Nov 2000 08:58:31 -0800
+Received: by woody.ichilton.co.uk (Postfix, from userid 0)
+	id 050F17CEC; Wed, 15 Nov 2000 16:58:29 +0000 (GMT)
+Date:   Wed, 15 Nov 2000 16:58:29 +0000
+From:   Ian Chilton <mailinglist@ichilton.co.uk>
+To:     tmaloney@ixl.com
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: 5400 rpm drive in an Indy
+Message-ID: <20001115165829.A22899@woody.ichilton.co.uk>
+Reply-To: Ian Chilton <ian@ichilton.co.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.3.11i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-http://cgi.ebay.com/aw-cgi/eBayISAPI.dll?ViewItem&item=484497206&ed=97379781
+Hello,
 
-this is the drive in question form my previous email.
+> i don't know what that music means. 
 
-Tim Maloney
-Senior Developer
-iXL, Inc.
-1930 Camden Road, Suite 2070
-Charlotte, NC 28203
-704 943-7193 phone
-tmaloney@ixl.com
-www.ixl.com
+It means: "hey, i'm on and working!"
+
+
+> here's a little something on topic though: where can i get a copy of HardHat
+> on cd? i know it's only based on RedHat 5.1, but it's a place to start.
+
+AFAIK, you can't
+
+
+ftp://oss.sgi.com/pub/linux/mips/redhat/     :-)
+
+
+Bye for Now,
+
+Ian
+
+                                \|||/
+                                (o o)
+ /---------------------------ooO-(_)-Ooo---------------------------\
+ |  Ian Chilton        (IRC Nick - GadgetMan)     ICQ #: 16007717  |
+ |-----------------------------------------------------------------|
+ |  E-Mail: ian@ichilton.co.uk     Web: http://www.ichilton.co.uk  |
+ |-----------------------------------------------------------------|
+ |       I used up all my sick days, so I'm calling in dead.       |
+ \-----------------------------------------------------------------/

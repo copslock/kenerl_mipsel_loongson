@@ -1,78 +1,57 @@
-Received:  by oss.sgi.com id <S553831AbQKCRzk>;
-	Fri, 3 Nov 2000 09:55:40 -0800
-Received: from gateway-490.mvista.com ([63.192.220.206]:21499 "EHLO
-        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553784AbQKCRza>;
-	Fri, 3 Nov 2000 09:55:30 -0800
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id eA3HrT317793;
-	Fri, 3 Nov 2000 09:53:29 -0800
-Message-ID: <3A02FC13.338F4CF6@mvista.com>
-Date:   Fri, 03 Nov 2000 09:55:31 -0800
-From:   Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-5.0 i586)
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     "Kevin D. Kissell" <kevink@mips.com>
-CC:     Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com
-Subject: Re: "Setting flush to zero for ..." - what is the warning?
-References: <3A0067C5.BA9E3174@mvista.com> <20001102040657.A17786@bacchus.dhis.org> <007d01c04585$25262e40$0deca8c0@Ulysses>
+Received:  by oss.sgi.com id <S553848AbQKCSIa>;
+	Fri, 3 Nov 2000 10:08:30 -0800
+Received: from rotor.chem.unr.edu ([134.197.32.176]:2318 "EHLO
+        rotor.chem.unr.edu") by oss.sgi.com with ESMTP id <S553830AbQKCSIP>;
+	Fri, 3 Nov 2000 10:08:15 -0800
+Received: (from wesolows@localhost)
+	by rotor.chem.unr.edu (8.9.3/8.9.3) id KAA08341;
+	Fri, 3 Nov 2000 10:07:28 -0800
+Date:   Fri, 3 Nov 2000 10:07:28 -0800
+From:   Keith M Wesolowski <wesolows@chem.unr.edu>
+To:     Ian Chilton <mailinglist@ichilton.co.uk>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: More GCC problems
+Message-ID: <20001103100728.A8133@chem.unr.edu>
+References: <20001103143725.A2123@woody.ichilton.co.uk>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+User-Agent: Mutt/1.2i
+In-Reply-To: <20001103143725.A2123@woody.ichilton.co.uk>; from mailinglist@ichilton.co.uk on Fri, Nov 03, 2000 at 02:37:25PM +0000
+X-Complaints-To: postmaster@chem.unr.edu
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-"Kevin D. Kissell" wrote:
+On Fri, Nov 03, 2000 at 02:37:25PM +0000, Ian Chilton wrote:
+
+> Hello,
 > 
-> > On Wed, Nov 01, 2000 at 10:58:13AM -0800, Jun Sun wrote:
-> >
-> > > I ran some stress tests and start to get this warning.  It appears to be
-> > > generated in do_fpe() routine.  See below.  I wonder why this is
-> > > happening.  Can someone explain what is going on?  Thanks.
-> >
-> > It tells you the over-the-thumb-fp-mode has been activated ;-)
+> > /tmp/cca08866.s: Assembler messages:
+> > /tmp/cca08866.s:27593: Error: Branch out of range
+> > /tmp/cca08866.s:27632: Error: Branch out of range
+> > /tmp/cca08866.s:27637: Error: Branch out of range
 > 
-> More seriously, there was (is, in 2.4 I guess) a hack by which,
-> in a desperate attempt to avoid having to do the FP emulation
-> in software, the kernel changed the FPU denorm handling mode
-> and replayed the instruction, in hopes that the problem would
-> go away (which it would for a subset of the unimplemented
-> operation cases). This is not legal IEEE behaviour, as it turns out,
-> but not many people cared.
->
+> I get this same thing, when doing this:
 
-I am reading between the lines.  Do you mean
+Don't blame the compiler. This is a gas problem. You should be able to
+get around it by using optimization; -O2 is sufficient I believe. If
+not, you may have to use -Os.
 
-1) even though the CPU (R5432 in this case) has a FPU, some instructions
-(or under certain conditions) are NOT supported by the hardware?
-2) So in those cases, software should do the job, but the existing 2.4
-is not doing it right?
-3) Can we summarize exactly what instructions (under what conditions)
-are considered not supported by hardware?  Or is it too complicated to
-summarieze in short?  Or should it be documented in CPU manual (which
-may vary for different CPUs)
+> PLEASE someone help me out here.... I have spent the last 2 days
+> trying to compile GCC. I have tried every version I can find, from
+> 07072000 to 1707200 which suposidly work, to the lastest CVS
+> version. I have tried native and cross compiling....  I need a 2.97
+> native build, static, to compile glibc 2.2, then build a 2.97
+> dynamic.
 
- 
-> > Somebody at MIPS is working on merging the necessary fp support software
-> > into the kernel, so this problem should be solved soon.
-> 
-> Once we had bolted the Algorithmics FPU emulator into the kernel,
-> the hack was no longer necessary.   To say that "somebody at MIPS
-> is working on merging the necessary fp support software into the
-> kernel" is perhaps a bit misleading.  The FPU emulator itself is in
-> the oss.sgi.com repository, in the 2_2 branch, but I did not merge
-> in the hacks to the kernel exception, context, signal, etc. handling.
-> And there are several bug fixes that have been made since then.
-> All the additional code is available on the ftp.mips.com server, and
-> has been merged by others into 2.3/2.4, most notably by the VrLinux
-> guys.
-> 
+I have no idea how to build a static compiler. The approach I took to
+get my working native 1019 compiler was to cross-build it with the
+same version. Since it was built against glibc 2.2, I simply installed
+both glibc 2.2 and the new native compiler on my system.
 
-If I understand correctly, FPU emulator is for the case where FPU is
-completely absent.  Does it do the job we are talking about here?
-
-Thanks.
-
-Jun  
-... totally ignorant about FPU
+-- 
+Keith M Wesolowski			wesolows@chem.unr.edu
+University of Nevada			http://www.chem.unr.edu
+Chemistry Department Systems and Network Administrator

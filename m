@@ -1,48 +1,56 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0M0iDP19213
-	for linux-mips-outgoing; Mon, 21 Jan 2002 16:44:13 -0800
-Received: from [64.152.86.3] (unknown.Level3.net [64.152.86.3] (may be forged))
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0M0iBP19210
-	for <linux-mips@oss.sgi.com>; Mon, 21 Jan 2002 16:44:11 -0800
-Received: from mail.esstech.com by [64.152.86.3]
-          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 21 Jan 2002 23:47:13 UT
-Received: from venus (venus.esstech.com [193.5.205.5])
-	by mail.esstech.com (8.11.6/8.11.6) with SMTP id g0LNg9W13674
-	for <linux-mips@oss.sgi.com>; Mon, 21 Jan 2002 15:42:09 -0800 (PST)
-Received: from bud.austin.esstech.com by venus (SMI-8.6/SMI-SVR4)
-	id PAA07631; Mon, 21 Jan 2002 15:43:29 -0800
-Received: from esstech.com by bud.austin.esstech.com (SMI-8.6/SMI-SVR4)
-	id RAA15559; Mon, 21 Jan 2002 17:37:32 -0600
-Message-ID: <3C4CA8C8.5010801@esstech.com>
-Date: Mon, 21 Jan 2002 17:48:24 -0600
-From: Gerald Champagne <gerald.champagne@esstech.com>
-User-Agent: Mozilla/5.0 (Windows; U; Win 9x 4.90; en-US; rv:0.9.6) Gecko/20011120
-X-Accept-Language: en-us
+	by oss.sgi.com (8.11.2/8.11.3) id g0M0vBk19615
+	for linux-mips-outgoing; Mon, 21 Jan 2002 16:57:11 -0800
+Received: from mx.mips.com (mx.mips.com [206.31.31.226])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0M0v5P19612;
+	Mon, 21 Jan 2002 16:57:05 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id PAA23132;
+	Mon, 21 Jan 2002 15:56:54 -0800 (PST)
+Received: from Ulysses (ulysses [192.168.236.13])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id PAA19075;
+	Mon, 21 Jan 2002 15:56:52 -0800 (PST)
+Message-ID: <01be01c1a2d7$6ec299c0$0deca8c0@Ulysses>
+From: "Kevin D. Kissell" <kevink@mips.com>
+To: "Ralf Baechle" <ralf@oss.sgi.com>, "Ulrich Drepper" <drepper@redhat.com>
+Cc: "Mike Uhler" <uhler@mips.com>, <linux-mips@oss.sgi.com>,
+   "GNU libc hacker" <libc-hacker@sources.redhat.com>,
+   "H . J . Lu" <hjl@lucon.org>
+References: <m3elkoa5dw.fsf@myware.mynet> <20020118101908.C23887@lucon.org><01b801c1a081$3f6518e0$0deca8c0@Ulysses><20020119162415.B31028@dea.linux-mips.net> <m3d703thl6.fsf@myware.mynet>
+Subject: Re: thread-ready ABIs
+Date: Tue, 22 Jan 2002 00:57:46 +0100
 MIME-Version: 1.0
-To: linux-mips@oss.sgi.com
-Subject: ide dma in latest cvs
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4807.1700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4807.1700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Does the latest CVS version work with an IDE controller in DMA mode?
+Ulrich Drepper" <drepper@redhat.com> writes:
+>
+> Ralf Baechle <ralf@oss.sgi.com> writes:
+>
+> > Changing the kernel for the small number of threaded applications that
+> > exists and taking a performance impact for the kernel itself and
+anything
+> > that's using threads is an exquisite example for a bad tradeoff.
+>
+> Well, it seems you haven't read what I wrote.  It's not about a small
+> number of threaded applications anymore.  The thread register will be
+> part of the ABI and all applications, threaded or not, will use it.
 
-I have an NEC VR5432 based system working with the IDE controller, but it
-crashes when used in dma mode.  I've tracked it down to the following code
-called from ide_build_sglist():
+As MIPS "owns" the ABI, whether or not the thread register
+becomes a part of it is not something that anyone outside
+of MIPS can simply decree.   I'd very much appreciate it if
+someone would explain to me just what this register is used
+for, and why a register needs to be permantly allocated
+for this purpose.  There may still be other ways to solve the
+problem without doing violence to the kernel or to the ABI.
 
-- blk_rq_map_sg() is called to build a list of blocks to be transferred.
-   It sets address = NULL for every entry (other fields like "page" are
-   set to valid values).
+            Regards,
 
-- dma_cache_wback_inv(addr, size) is called for each block entry.  This
-   routine crashes because the address parameter is always set to zero
-   when the routine is called.
-
-I see that this is part of the new bio code recently added.  Should I expect
-this code to work, or is it not yet working for the mips platform?
-
-Thanks.
-
-Gerald
+            Kevin K.

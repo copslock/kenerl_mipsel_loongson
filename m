@@ -1,136 +1,115 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Dec 2002 07:05:49 +0000 (GMT)
-Received: from smtp-send.myrealbox.com ([192.108.102.143]:37758 "EHLO
-	smtp-send.myrealbox.com") by linux-mips.org with ESMTP
-	id <S8225218AbSLLHFs>; Thu, 12 Dec 2002 07:05:48 +0000
-Received: from GILAD yaelgilad@smtp-send.myrealbox.com [194.90.64.161]
-	by smtp-send.myrealbox.com with NetMail SMTP Agent $Revision:   3.21  $ on Novell NetWare;
-	Thu, 12 Dec 2002 00:05:43 -0700
-From: "yaelgilad" <yaelgilad@myrealbox.com>
-To: <linux-mips@linux-mips.org>
-Subject: R_MIPS_26 etc.
-Date: Thu, 12 Dec 2002 09:07:27 +0200
-Message-ID: <ECEPLLMMNGHMFBLHCLMAOEDMDGAA.yaelgilad@myrealbox.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Dec 2002 07:47:02 +0000 (GMT)
+Received: from ftp.mips.com ([206.31.31.227]:21501 "EHLO mx2.mips.com")
+	by linux-mips.org with ESMTP id <S8225218AbSLLHrB>;
+	Thu, 12 Dec 2002 07:47:01 +0000
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id gBC7koNf005546;
+	Wed, 11 Dec 2002 23:46:50 -0800 (PST)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id XAA19082;
+	Wed, 11 Dec 2002 23:46:52 -0800 (PST)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id gBC7kqb22811;
+	Thu, 12 Dec 2002 08:46:52 +0100 (MET)
+Message-ID: <3DF83EEC.23C991D4@mips.com>
+Date: Thu, 12 Dec 2002 08:46:52 +0100
+From: Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.77 [en] (X11; U; SunOS 5.8 sun4u)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="----=_NextPart_000_000E_01C2A1BD.E4BD0940"
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
-Importance: Normal
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Return-Path: <yaelgilad@myrealbox.com>
+To: Jun Sun <jsun@mvista.com>
+CC: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: Malta board patch
+References: <3DF6F54C.64858797@mips.com> <20021211090405.B6755@mvista.com>
+Content-Type: text/plain; charset=iso-8859-15
+Content-Transfer-Encoding: 7bit
+Return-Path: <carstenl@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 878
+X-archive-position: 879
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yaelgilad@myrealbox.com
+X-original-sender: carstenl@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
+Jun Sun wrote:
 
-------=_NextPart_000_000E_01C2A1BD.E4BD0940
-Content-Type: text/plain;
-	charset="windows-1255"
-Content-Transfer-Encoding: 7bit
+> A couple of nit-picking points ...
+>
+> On Wed, Dec 11, 2002 at 09:20:28AM +0100, Carsten Langgaard wrote:
+> > Index: arch/mips/mips-boards/generic/pci.c
+> > ===================================================================
+> > RCS file: /home/cvs/linux/arch/mips/mips-boards/generic/pci.c,v
+> > retrieving revision 1.5.2.4
+> > diff -u -r1.5.2.4 pci.c
+> > --- arch/mips/mips-boards/generic/pci.c       28 Sep 2002 18:28:44 -0000      1.5.2.4
+> > +++ arch/mips/mips-boards/generic/pci.c       11 Dec 2002 08:11:56 -0000
+> > @@ -405,6 +405,12 @@
+> >                       ".set\treorder");
+> >
+> >               irq = *(volatile u32 *)(KSEG1ADDR(BONITO_PCICFG_BASE));
+> > +             __asm__ __volatile__(
+> > +                     ".set\tnoreorder\n\t"
+> > +                     ".set\tnoat\n\t"
+> > +                     "sync\n\t"
+> > +                     ".set\tat\n\t"
+> > +                     ".set\treorder");
+> >               irq &= 0xff;
+> >               BONITO_PCIMAP_CFG = 0;
+> >               break;
+>
+> Would a higher level macro such as __sync or fast_mb be better here?
 
-Looking in the assembly code of my driver, I see the following
-pattern repeating with every function call.
-    4ce4: 0c000000  jal 0
-      4ce4: R_MIPS_26 rx_wait_packet
-(R_MIPS_26 is sometimes replaces by a similar command)
-What is R_MIPS_26 ? What are the rest of them ?
-I am guessing it has to do with relocatable addresses, but this specific
-function is in the same C file. Marking it as "static" does change the code
-and get rid of this command.
-
-TIA
-Gilad
-
-P.S. I am building assembler files in two different methods:
-- gmake <path-to-file>.lst
-- mips-linux-odjdump -x -S <path-to-C-file>  > <path-to-file.lst>
-The outputs are similar but not identical.
-What's the more "correct" way ?
-TIA-2
+I have already send a new patch to Ralf, because he argued for the same thing.
+These macros was just not around, when I made this fix.
 
 
+>
+> > Index: arch/mips/mips-boards/malta/malta_int.c
+> > ===================================================================
+> > RCS file: /home/cvs/linux/arch/mips/mips-boards/malta/malta_int.c,v
+> > retrieving revision 1.8.2.6
+> > diff -u -r1.8.2.6 malta_int.c
+> > --- arch/mips/mips-boards/malta/malta_int.c   5 Aug 2002 23:53:34 -0000       1.8.2.6
+> > +++ arch/mips/mips-boards/malta/malta_int.c   11 Dec 2002 08:11:57 -0000
+> > @@ -91,6 +91,9 @@
+> >  {
+> >          unsigned int data,datahi;
+> >
+> > +     /* Mask out corehi interrupt. */
+> > +     clear_c0_status(IE_IRQ3);
+> > +
+> >          printk("CoreHI interrupt, shouldn't happen, so we die here!!!\n");
+> >          printk("epc   : %08lx\nStatus: %08lx\nCause : %08lx\nbadVaddr : %08lx\n"
+> >  , regs->cp0_epc, regs->cp0_status, regs->cp0_cause, regs->cp0_badvaddr);
+> > @@ -125,7 +128,6 @@
+> >
+> >          /* We die here*/
+> >          die("CoreHi interrupt", regs);
+> > -        while (1) ;
+> >  }
+> >
+> >  void __init init_IRQ(void)
+>
+> I think corehi interrupt should be blocked from the beginning.  I seem to
+> remember a board errata itme that recommands not using it.
+>
+
+I have found quite a lot of bugs, with the corehi interrupt enabled. It should never
+happen, so it indicates a fatal error, if it does.
+It's true that on an early revision of some PLD code, there was a bug around the corehi
+interrupt. If you got such a board, I suggest you update your PLD code.
 
 
+>
+> Jun
 
-------=_NextPart_000_000E_01C2A1BD.E4BD0940
-Content-Type: text/html;
-	charset="windows-1255"
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD>
-<META http-equiv=3DContent-Type content=3D"text/html; =
-charset=3Dwindows-1255">
-<META content=3D"MSHTML 6.00.2722.900" name=3DGENERATOR></HEAD>
-<BODY>
-<DIV><FONT face=3DArial size=3D2><SPAN =
-class=3D328594915-10122002>Looking in the=20
-assembly code of my driver, I see the following </SPAN></FONT></DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN =
-class=3D328594915-10122002>pattern repeating=20
-with every function call.</SPAN></FONT></DIV>
-<DIV><FONT><SPAN class=3D328594915-10122002>
-<DIV><FONT face=3DArial size=3D2>&nbsp;&nbsp;&nbsp; 4ce4: 0c000000&nbsp; =
-jal=20
-0&nbsp;</FONT></DIV>
-<DIV><FONT face=3DArial size=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4ce4: =
-R_MIPS_26=20
-rx_wait_packet</FONT></DIV>
-<DIV><FONT><SPAN class=3D328594915-10122002></SPAN><FONT face=3DArial =
-size=3D2>(<SPAN=20
-class=3D328594915-10122002>R_MIPS_26 is sometimes replaces by a similar=20
-command)</SPAN><BR>What is R_MIPS_26 ? What are the rest of them=20
-?</FONT></FONT></DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN class=3D328594915-10122002>I am =
-guessing it has=20
-to do with relocatable addresses, but this specific</SPAN></FONT></DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN =
-class=3D328594915-10122002>function is in the=20
-same C file. Marking it as "static" does change the code =
-</SPAN></FONT></DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN class=3D328594915-10122002>and =
-get rid of this=20
-command.</SPAN></FONT></DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN=20
-class=3D328594915-10122002></SPAN></FONT>&nbsp;</DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN=20
-class=3D328594915-10122002>TIA</SPAN></FONT></DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN=20
-class=3D328594915-10122002>Gilad</SPAN></FONT></DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN=20
-class=3D328594915-10122002></SPAN></FONT>&nbsp;</DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN class=3D328594915-10122002>P.S. I =
-am building=20
-assembler files in two different methods:</SPAN></FONT></DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN class=3D328594915-10122002>- =
-gmake=20
-&lt;path-to-file&gt;.lst</SPAN></FONT></SPAN></FONT></DIV></DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN class=3D328594915-10122002>- =
-mips-linux-odjdump=20
--x -S &lt;path-to-C-file&gt;&nbsp; &gt;=20
-&lt;path-to-file.lst&gt;</SPAN></FONT></DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN =
-class=3D328594915-10122002>The&nbsp;outputs are=20
-similar but not identical.</SPAN></FONT></DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN class=3D328594915-10122002>What's =
-the more=20
-"correct" way ?</SPAN></FONT></DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN=20
-class=3D328594915-10122002>TIA-2</SPAN></FONT></DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN=20
-class=3D328594915-10122002></SPAN></FONT>&nbsp;</DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN=20
-class=3D328594915-10122002></SPAN></FONT>&nbsp;</DIV>
-<DIV>&nbsp;</DIV>
-<DIV>&nbsp;</DIV></BODY></HTML>
-
-------=_NextPart_000_000E_01C2A1BD.E4BD0940--
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

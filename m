@@ -1,34 +1,42 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id LAA93481 for <linux-archive@neteng.engr.sgi.com>; Sat, 10 Jan 1998 11:15:03 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id XAA127066 for <linux-archive@neteng.engr.sgi.com>; Sat, 10 Jan 1998 23:27:28 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA11684 for linux-list; Sat, 10 Jan 1998 11:11:32 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA11677 for <linux@cthulhu.engr.sgi.com>; Sat, 10 Jan 1998 11:11:22 -0800
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id LAA05460
-	for <linux@cthulhu.engr.sgi.com>; Sat, 10 Jan 1998 11:11:19 -0800
-	env-from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id OAA03180;
-	Sat, 10 Jan 1998 14:13:33 -0500
-Date: Sat, 10 Jan 1998 14:13:33 -0500 (EST)
-From: Alex deVries <adevries@engsoc.carleton.ca>
-To: Alan Cox <alan@lxorguk.ukuu.org.uk>
-cc: linux@cthulhu.engr.sgi.com
-Subject: Re: RedHat 5.0 RPMs for SGI...
-In-Reply-To: <m0xr5TY-0005FsC@lightning.swansea.linux.org.uk>
-Message-ID: <Pine.LNX.3.95.980110130336.20199A-100000@lager.engsoc.carleton.ca>
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id XAA25569 for linux-list; Sat, 10 Jan 1998 23:22:14 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id XAA25564 for <linux@cthulhu.engr.sgi.com>; Sat, 10 Jan 1998 23:22:12 -0800
+Received: from note.orchestra.cse.unsw.EDU.AU (note.orchestra.cse.unsw.EDU.AU [129.94.242.29]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via SMTP id XAA23397
+	for <linux@cthulhu.engr.sgi.com>; Sat, 10 Jan 1998 23:22:10 -0800
+	env-from (andrewo@cse.unsw.edu.au)
+Received: From dizzy With LocalMail ; Sun, 11 Jan 98 18:22:05 +1100 
+From: "Andrew O'Brien" <andrewo@cse.unsw.edu.au>
+To: SGI/Linux mailing list <linux@cthulhu.engr.sgi.com>
+Date: Sun, 11 Jan 1998 07:22:04 +0000 (GMT)
+X-Sender: andrewo@dizzy.disy.cse.unsw.EDU.AU
+Reply-To: andrewo@cse.unsw.edu.au
+Subject: Anybody want a R4600 IRIX w/o L2 cache kernel ?
+Message-ID: <Pine.SGI.3.95.980111070701.2066I-100000@dizzy.disy.cse.unsw.EDU.AU>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
 
-On Sat, 10 Jan 1998, Alan Cox wrote:
-> Ok. I'll work with you on that from Monday. Ive got the fixes for several
-> RH5 SRPMS to build with mips.  Glibc 2.0.6 should fix the argv[0] bug
-> and the -lbsd problems too so much more should build
+If anybody wants it then email me .... unless some kind soul will put it
+on the ftp site for me as I noticed there was no public upload dir.
 
-My build ran until about 2am last night before hanging because of a zombie
-process.  No big deal.  The first pass ended at about 't'.  In about an
-hour all my work will be in ftp://ftp.linux.sgi.com/pub/RedHat/RPMS-5.0 .
-I've moved the existing RPMs to RPMS-4.9.x. 
+It was built using the kernel source found in
+/pub/test/linux-970915.tar.gz, crosscompiled on a x86/linux box, using a
+patched binutils-2.8.1 and the gcc found in the rpm within the crossdev/
+dir.
 
-- Alex
+It has not undergone extensive testing, but given that there were no
+errors during compile, I would assume its as stable as anything else out
+there based in this kernel.
+
+Let me know if anybody wants the binary or tarball for the ftp site.
+
+
+--___________________________________________________________________
+ /  Andrew O'Brien       andrewo@cse.unsw.edu.au   bbq@mindless.com  \
+/  Student, Faculty of CSE       http://www.cse.unsw.edu.au/~andrewo  \
+>  UNSW, Australia           President COMPSOC   http://www/~compsoc  <
+\  BE (Comp)/BA (Psych)      Student Representative   stu-reps@cse..  /
+ \___ "finger -l andrewo@cse.unsw.edu.au" for my current location ___/

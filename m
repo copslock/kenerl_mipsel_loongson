@@ -1,85 +1,60 @@
-Received:  by oss.sgi.com id <S553791AbRBZUVn>;
-	Mon, 26 Feb 2001 12:21:43 -0800
-Received: from smtp.psdc.com ([209.125.203.83]:25162 "EHLO smtp.psdc.com")
-	by oss.sgi.com with ESMTP id <S553756AbRBZUVN>;
-	Mon, 26 Feb 2001 12:21:13 -0800
-Received: from BANANA ([209.125.203.85])
-	by smtp.psdc.com (8.8.8/8.8.8) with SMTP id MAA20819
-	for <linux-mips@oss.sgi.com>; Mon, 26 Feb 2001 12:05:06 -0800
-Message-ID: <001c01c09fcd$61c20070$dde0490a@BANANA>
-From:   "Steven Liu" <stevenliu@psdc.com>
-To:     <linux-mips@oss.sgi.com>
-Subject: Where is 2.2.x kernel? 
-Date:   Mon, 26 Feb 2001 00:23:22 -0800
-MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="----=_NextPart_000_0019_01C09F8A.537D07A0"
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4133.2400
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
+Received:  by oss.sgi.com id <S554277AbRBZXJm>;
+	Mon, 26 Feb 2001 15:09:42 -0800
+Received: from pigsty.barnyard.co.uk ([195.149.50.58]:6409 "EHLO
+        pigsty.barnyard.co.uk") by oss.sgi.com with ESMTP
+	id <S554270AbRBZXJ2>; Mon, 26 Feb 2001 15:09:28 -0800
+Received: (from david@localhost)
+	by pigsty.barnyard.co.uk (8.11.0/8.11.0) id f1QN7qw20327
+	for linux-mips@oss.sgi.com; Mon, 26 Feb 2001 23:07:52 GMT
+X-Authentication-Warning: pigsty.barnyard.co.uk: david set sender to david@cantrell.org.uk using -f
+Date:   Mon, 26 Feb 2001 23:07:52 +0000
+From:   David Cantrell <david@cantrell.org.uk>
+To:     linux-mips@oss.sgi.com
+Subject: Re: RedHat 7.0 ?
+Message-ID: <20010226230750.A19551@pigsty.barnyard.co.uk>
+References: <3A71B011.4B82F6C3@mips.com> <20010127105409.E867@bacchus.dhis.org> <3A9A7A21.F6CE24CB@mips.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-md5;
+	protocol="application/pgp-signature"; boundary="oyUTqETQ0mS9luUI"
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3A9A7A21.F6CE24CB@mips.com>; from carstenl@mips.com on Mon, Feb 26, 2001 at 04:45:37PM +0100
+X-public-key-is-at: http://www.cantrell.org.uk/david/public-key.txt
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-This is a multi-part message in MIME format.
 
-------=_NextPart_000_0019_01C09F8A.537D07A0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+--oyUTqETQ0mS9luUI
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi All:
+On Mon, Feb 26, 2001 at 04:45:37PM +0100, Carsten Langgaard wrote:
 
-In ftp://oss.sgi.com/pub/linux/mips/kernel/, there are many folders like =
-v2.1, v2.2, and v2.3. But there is nothing in v2.2. Where could I=20
-find 2.2.x kernel?=20
+> Any progress on the RH7.0 easy installer ?
 
-I would be very pleased if you can give me any information about that.=20
-Here is my e-mail address:
-                     =20
-                     stevenliu@psdc.com
+Are we talking a bootable CD?  If so, I'd *kill* for it!
 
-Thank you.
+--=20
+David Cantrell | root@alphacomplex.org | http://www.cantrell.org.uk/david/
 
-Steven Liu
+   Any technology distinguishable from magic is insufficiently advanced
 
-------=_NextPart_000_0019_01C09F8A.537D07A0
-Content-Type: text/html;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+** I read encrypted mail first, so encrypt if your message is important **
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD>
-<META content=3D"text/html; charset=3Diso-8859-1" =
-http-equiv=3DContent-Type>
-<META content=3D"MSHTML 5.00.3103.1000" name=3DGENERATOR>
-<STYLE></STYLE>
-</HEAD>
-<BODY bgColor=3D#ffffff>
-<DIV><FONT face=3DArial size=3D2>Hi All:</FONT></DIV>
-<DIV>&nbsp;</DIV>
-<DIV><FONT face=3DArial size=3D2>In <A=20
-href=3D"ftp://oss.sgi.com/pub/linux/mips/kernel/">ftp://oss.sgi.com/pub/l=
-inux/mips/kernel/</A><A=20
-href=3D"ftp://oss.sgi.com/pub/linux/mips/"></A>, there are many folders =
-like v2.1,=20
-v2.2, and v2.3. But there is nothing in v2.2. Where could I </DIV>
-<DIV><FONT face=3DArial size=3D2>find 2.2.x kernel? </FONT></DIV>
-<DIV>&nbsp;</DIV>
-<DIV>I would be very pleased if you can give me any information about =
-that.=20
-</DIV>
-<DIV>Here is my e-mail address:</DIV>
-<DIV>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
-</DIV>
-<DIV>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;=20
-&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; stevenliu@psdc.com</DIV>
-<DIV>&nbsp;</DIV>
-<DIV>Thank you.</DIV>
-<DIV>&nbsp;</DIV>
-<DIV>Steven Liu</DIV></FONT></BODY></HTML>
+--oyUTqETQ0mS9luUI
+Content-Type: application/pgp-signature
+Content-Disposition: inline
 
-------=_NextPart_000_0019_01C09F8A.537D07A0--
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.2 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iD8DBQE6muHGQmE+qbO4leURAqWjAKCXwH0Ux0vXFtyZVL1yDbJlIVUoewCeMfVP
+0AUqiERMfSb+OOzj2htIdIg=
+=Jwdi
+-----END PGP SIGNATURE-----
+
+--oyUTqETQ0mS9luUI--

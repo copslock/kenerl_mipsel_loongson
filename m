@@ -1,75 +1,57 @@
-Received:  by oss.sgi.com id <S305162AbQAaJ00>;
-	Mon, 31 Jan 2000 01:26:26 -0800
-Received: from sgi.SGI.COM ([192.48.153.1]:18302 "EHLO sgi.com")
-	by oss.sgi.com with ESMTP id <S305160AbQAaJ0G>;
-	Mon, 31 Jan 2000 01:26:06 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id BAA01595; Mon, 31 Jan 2000 01:28:56 -0800 (PST)
+Received:  by oss.sgi.com id <S305162AbQAaNsq>;
+	Mon, 31 Jan 2000 05:48:46 -0800
+Received: from deliverator.sgi.com ([204.94.214.10]:33047 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305160AbQAaNsU>;
+	Mon, 31 Jan 2000 05:48:20 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id FAA16882; Mon, 31 Jan 2000 05:46:44 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id BAA92611
+	id FAA74066
 	for linux-list;
-	Mon, 31 Jan 2000 01:16:01 -0800 (PST)
+	Mon, 31 Jan 2000 05:38:57 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id BAA59253
-	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 31 Jan 2000 01:15:57 -0800 (PST)
-	mail_from (flo@rfc822.org)
-Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4]) 
+	via ESMTP id FAA11739
+	for <linux@engr.sgi.com>;
+	Mon, 31 Jan 2000 05:38:53 -0800 (PST)
+	mail_from (jori@lumumba.luc.ac.be)
+Received: from lumumba.luc.ac.be (lumumba.luc.ac.be [193.190.9.252]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id BAA09336
-	for <linux@cthulhu.engr.sgi.com>; Mon, 31 Jan 2000 01:15:55 -0800 (PST)
-	mail_from (flo@rfc822.org)
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id CBE787D9; Mon, 31 Jan 2000 10:15:53 +0100 (CET)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 1C3848FC4; Mon, 31 Jan 2000 09:42:57 +0100 (CET)
-Date:   Mon, 31 Jan 2000 09:42:57 +0100
-From:   Florian Lohoff <flo@rfc822.org>
-To:     Ralf Baechle <ralf@oss.sgi.com>
-Cc:     linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
-        linux-mips@vger.rutgers.edu
-Subject: Re: WCHAN on R3000
-Message-ID: <20000131094256.A3806@paradigm.rfc822.org>
-References: <20000128212909.A11816@uni-koblenz.de> <20000129233325.I1329@paradigm.rfc822.org> <20000131053326.A12102@uni-koblenz.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.3i
-In-Reply-To: <20000131053326.A12102@uni-koblenz.de>; from Ralf Baechle on Mon, Jan 31, 2000 at 05:33:26AM +0100
-Organization: rfc822 - pure communication
+	via SMTP id FAA07723
+	for <linux@engr.sgi.com>; Mon, 31 Jan 2000 05:38:48 -0800 (PST)
+	mail_from (jori@lumumba.luc.ac.be)
+Received: (qmail 15094 invoked from network); 31 Jan 2000 13:38:32 -0000
+Received: from lumumba.luc.ac.be (jori@193.190.9.252)
+  by lumumba.luc.ac.be with SMTP; 31 Jan 2000 13:38:32 -0000
+Date:   Mon, 31 Jan 2000 14:38:32 +0100 (CET)
+From:   Jori <jori@lumumba.luc.ac.be>
+To:     linux@cthulhu.engr.sgi.com
+Subject: Kernel
+Message-ID: <Pine.LNX.4.10.10001311432260.14943-100000@lumumba.luc.ac.be>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On Mon, Jan 31, 2000 at 05:33:26AM +0100, Ralf Baechle wrote:
-> On Sat, Jan 29, 2000 at 11:33:25PM +0100, Florian Lohoff wrote:
-> 
-> > (root@repeat)~# cat /proc/cpuinfo 
-> [...]
-> > VCED exceptions         : 750604
-> > VCEI exceptions         : 4523546
-> [...]
-> 
-> > I dont know if you call this "sane" ...
-> 
-> The large number of VCEI exceptions smells.  How long has this machine
-> been up?
 
-Around ~26 days (I dont know what this would be with corrected 100Hz bug)
+Hello,
 
-Flo
--- 
-Florian Lohoff		flo@rfc822.org		      	+49-5241-470566
-"Technology is a constant battle between manufacturers producing bigger and
-more idiot-proof systems and nature producing bigger and better idiots."
+I've recently downloaded the hardhat distribution and installed it without
+much problems. But the kernel (2.1.100) which comes with the distribution
+seems to crash after a day or so. So I tried to compile some other
+kernels, but this seems to be a lot trickier than on a i386: I've only
+succeeded in compiling a few kernels, of which only one actually worked
+(linux-19991209.tar.gz from ftp.linux.sgi.com). Well, 'worked' doens't
+really describe what it does, since it seems to be pretty buggy kernel:
+Page faults, bus errors,... 
+Now, my question is: can I get a stable kernel somewhere ?
+
+Bye,
+Jori

@@ -1,70 +1,38 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f36HU1t02429
-	for linux-mips-outgoing; Fri, 6 Apr 2001 10:30:01 -0700
-Received: from cvsftp.cotw.com (cvsftp.cotw.com [208.242.241.39])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f36HTxM02421
-	for <linux-mips@oss.sgi.com>; Fri, 6 Apr 2001 10:30:00 -0700
-Received: from cotw.com (ptecdev3.inter.net [192.168.10.5])
-	by cvsftp.cotw.com (8.9.3/8.9.3) with ESMTP id MAA00722
-	for <linux-mips@oss.sgi.com>; Fri, 6 Apr 2001 12:29:42 -0500
-Message-ID: <3ACE0BA3.98823D4D@cotw.com>
-Date: Fri, 06 Apr 2001 11:32:03 -0700
-From: Scott A McConnell <samcconn@cotw.com>
-X-Mailer: Mozilla 4.76 [en] (X11; U; Linux 2.2.16-3 i686)
-X-Accept-Language: en
+	by oss.sgi.com (8.11.3/8.11.3) id f36HrHk02965
+	for linux-mips-outgoing; Fri, 6 Apr 2001 10:53:17 -0700
+Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f36Hq7M02952
+	for <linux-mips@oss.sgi.com>; Fri, 6 Apr 2001 10:52:36 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id SAA19118;
+	Fri, 6 Apr 2001 18:48:42 +0200 (MET DST)
+Date: Fri, 6 Apr 2001 18:48:42 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Florian Lohoff <flo@rfc822.org>
+cc: "Kevin D. Kissell" <kevink@mips.com>, debian-mips@lists.debian.org,
+   linux-mips@oss.sgi.com
+Subject: Re: first packages for mipsel
+In-Reply-To: <20010406152836.A21459@paradigm.rfc822.org>
+Message-ID: <Pine.GSO.3.96.1010406184110.15958F-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-To: linux-mips@oss.sgi.com
-Subject: set_cp0_status (mipsregs.h)
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Which is correct?
-1 or 2 parameters ?
-The first comes from a 2.4.0 kernel and the second from a 2.4.2
-extracted from cvs a few days ago.
+On Fri, 6 Apr 2001, Florian Lohoff wrote:
 
-Thanks,
-Scott
+> For SMP versions we could currently just put an "#error" in it. There has
+> to be machine dependent support as the older SGI Challenge have. So dont
+> worry on that case.
 
---------------------------------------------
+ Yep, DS5800 provides hw for atomic ops as well -- a write to a specific
+location makes the next memory read and write cycle atomic.
 
-/*
- * Manipulate the status register.
- * Mostly used to access the interrupt bits.
- */
-#define __BUILD_SET_CP0(name,register)                          \
-extern __inline__ unsigned int                                  \
-set_cp0_##name(unsigned int change, unsigned int new)           \
-{                                                               \
- unsigned int res;                                       \
-                                                                \
- res = read_32bit_cp0_register(register);                \
- res &= ~change;                                         \
- res |= (new & change);                                  \
- if(change)                                              \
-  write_32bit_cp0_register(register, res);        \
-                                                                \
- return res;                                             \
-}
+ The kernel may choose whatever way is needed for particular hw (if we
+ever support it).
 
-__BUILD_SET_CP0(status,CP0_STATUS)
-__BUILD_SET_CP0(cause,CP0_CAUSE)
-__BUILD_SET_CP0(config,CP0_CONFIG)
-
-
-------------------------- or --------------------------------
-
-#define __BUILD_SET_CP0(name,register)                          \
-extern __inline__ unsigned int                                  \
-set_cp0_##name(unsigned int set)    \
-{                                                               \
- unsigned int res;                                       \
-                                                                \
- res = read_32bit_cp0_register(register);                \
- res |= set;      \
- write_32bit_cp0_register(register, res);         \
-                                                                \
- return res;                                             \
-}
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

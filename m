@@ -1,52 +1,53 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9I5tu117769
-	for linux-mips-outgoing; Wed, 17 Oct 2001 22:55:56 -0700
-Received: from mail.sonytel.be (main.sonytel.be [195.0.45.167])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9I5toD17765
-	for <linux-mips@oss.sgi.com>; Wed, 17 Oct 2001 22:55:50 -0700
-Received: from mullein.sonytel.be (mail.sonytel.be [10.17.0.27])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id HAA26208;
-	Thu, 18 Oct 2001 07:54:34 +0200 (MET DST)
-Date: Thu, 18 Oct 2001 07:54:18 +0200 (MEST)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
-cc: raiko@niisi.msk.ru, hli@quicklogic.com,
-   Linux/MIPS Development <linux-mips@oss.sgi.com>
-Subject: Re: IDE DMA mode in Big endian for mips
-In-Reply-To: <20011018.111843.41626947.nemoto@toshiba-tops.co.jp>
-Message-ID: <Pine.GSO.4.21.0110180752320.9667-100000@mullein.sonytel.be>
+	by oss.sgi.com (8.11.2/8.11.3) id f9IAbCX24458
+	for linux-mips-outgoing; Thu, 18 Oct 2001 03:37:12 -0700
+Received: from t111.niisi.ras.ru (t111.niisi.ras.ru [193.232.173.111])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9IAb8D24448
+	for <linux-mips@oss.sgi.com>; Thu, 18 Oct 2001 03:37:08 -0700
+Received: from t06.niisi.ras.ru (t06.niisi.ras.ru [193.232.173.6])
+	by t111.niisi.ras.ru (8.9.1/8.9.1) with ESMTP id OAA11970;
+	Thu, 18 Oct 2001 14:36:53 +0300
+Received: (from uucp@localhost) by t06.niisi.ras.ru (8.7.6/8.7.3) with UUCP id OAA10851; Thu, 18 Oct 2001 14:32:52 +0300
+Received: from niisi.msk.ru (t34 [193.232.173.34]) by niisi.msk.ru (8.8.8/8.8.8) with ESMTP id NAA23636; Thu, 18 Oct 2001 13:32:07 +0300 (MSK)
+Message-ID: <3BCEAFFD.3EDDBE29@niisi.msk.ru>
+Date: Thu, 18 Oct 2001 14:33:33 +0400
+From: "Gleb O. Raiko" <raiko@niisi.msk.ru>
+Organization: NIISI RAN
+X-Mailer: Mozilla 4.77 [en] (WinNT; U)
+X-Accept-Language: en,ru
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
+CC: hli@quicklogic.com, linux-mips@oss.sgi.com
+Subject: Re: IDE DMA mode in Big endian for mips
+References: <20011017.113842.41627007.nemoto@toshiba-tops.co.jp>
+		<3BCD506F.9683F0E8@niisi.msk.ru>
+		<20011017.204358.39150084.nemoto@toshiba-tops.co.jp> <20011018.111843.41626947.nemoto@toshiba-tops.co.jp>
+Content-Type: text/plain; charset=koi8-r
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, 18 Oct 2001, Atsushi Nemoto wrote:
-> >>>>> On Wed, 17 Oct 2001 20:43:58 +0900 (JST), Atsushi Nemoto <nemoto@toshiba-tops.co.jp> said:
-> nemoto> Yes, I depend on hardware swapping on word/dword access.  It
-> nemoto> seems many pci drivers depend on this swapping too.
-> 
-> Sorry, last sentence might be wrong.  I doubt I have been
-> misunderstanding long time...
-> 
-> Can anybody explain me a PCI driver's policy of endianness?  Should we
-> use cpu_to_le32 with outl/writel?  Should we use cpu_to_le32 to write
-> 32bit data to DMA area?
+Atsushi Nemoto wrote:
+> Can anybody explain me a PCI driver's policy of endianness?  
 
-The PCI bus is little-endian.
-All accesses should be done using one of
-  - {read,write}[bwlq]: PCI memory space
-  - {in,out}[bwl]: PCI (and ISA) I/O space
-  - isa_{read,write}[bwl]: ISA memory space
+It depens on device and board. Most drivers assume PCI is little-endian,
+but rely on outl implementation in byte swapping policy.
 
-The functions above should take care of endian conversion.
+> Should we use cpu_to_le32 with outl/writel?  
 
-Gr{oetje,eeting}s,
+If you can't instruct hw to perform byte-swapping for PCI IO, you have
+to add cpu_to_le32, it's clear. For writel, i.e. PCI MEM the situation
+is a bit subtle. The problem is your videocard, that may or may not
+support byte swapping. So, in order to suport videocards that aren't
+able to swap bytes, you have to setup PCI MEM in big-endian mode.
 
-						Geert
+Look, for example, at the tulip driver, it swaps bytes for DMA and
+doesn't do it for register access.
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+> Should we use cpu_to_le32 to write 32bit data to DMA area?
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+DMA data is stream of bytes. I would treat a device/board as broken, if
+it would need byte swapping for DMA data.
+
+Regards,
+Gleb.

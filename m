@@ -1,40 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Jan 2003 02:09:41 +0000 (GMT)
-Received: from smtp02.infoave.net ([IPv6:::ffff:165.166.0.27]:63989 "EHLO
-	smtp02.infoave.net") by linux-mips.org with ESMTP
-	id <S8225240AbTAQCJl>; Fri, 17 Jan 2003 02:09:41 +0000
-Received: from opus ([204.116.3.125])
- by SMTP00.InfoAve.Net (PMDF V6.1-1IA5 #38777)
- with ESMTP id <01KRBEZT1QGQ90XD8E@SMTP00.InfoAve.Net> for
- linux-mips@linux-mips.org; Thu, 16 Jan 2003 21:09:34 -0500 (EST)
-Date: Thu, 16 Jan 2003 21:11:14 -0500
-From: Justin Pauley <jpauley@xwizards.com>
-Subject: Problems booting
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Jan 2003 03:32:23 +0000 (GMT)
+Received: from f143.law9.hotmail.com ([IPv6:::ffff:64.4.9.143]:16140 "EHLO
+	hotmail.com") by linux-mips.org with ESMTP id <S8225240AbTAQDcX>;
+	Fri, 17 Jan 2003 03:32:23 +0000
+Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
+	 Thu, 16 Jan 2003 19:32:12 -0800
+Received: from 210.74.191.34 by lw9fd.law9.hotmail.msn.com with HTTP;
+	Fri, 17 Jan 2003 03:32:12 GMT
+X-Originating-IP: [210.74.191.34]
+From: "" <henaldohzh@hotmail.com>
 To: linux-mips@linux-mips.org
-Message-id: <1042769475.2735.161.camel@Opus>
-MIME-version: 1.0
-X-Mailer: Ximian Evolution 1.0.8 (1.0.8-10)
-Content-type: text/plain
-Content-transfer-encoding: 7bit
-Return-Path: <jpauley@xwizards.com>
+Subject: problem about porting kernel to mips`
+Date: Fri, 17 Jan 2003 03:32:12 +0000
+Mime-Version: 1.0
+Content-Type: text/plain; charset=gb2312; format=flowed
+Message-ID: <F143mF1IT18olkDTM9w00040789@hotmail.com>
+X-OriginalArrivalTime: 17 Jan 2003 03:32:12.0397 (UTC) FILETIME=[05E0D9D0:01C2BDD9]
+Return-Path: <henaldohzh@hotmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1173
+X-archive-position: 1174
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jpauley@xwizards.com
+X-original-sender: henaldohzh@hotmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Well, MOPD works now! And I installed debian linux. However, now when i
-try to boot with:
-boot 3/rz0/vmlinux console=ttyS0 
-I get the following:
-delo V0.7 Copyright....
-extfs_open returned Unknown ext2 error(2133571404)
-Couldnt fetch config.file /etc/delo.cconf
+hi, all,
+  So sorry to distrub you. 
+  now, I am porting kernel to a board with vr4131 core. But when I run 
+application, sometimes, kernel report bug in sched.c or traps.c. I debuged 
+the kernel and found that problem is in_interrupt return 2(local_bh_irq is 
+2). So am I puzzled. And sometimes,kernel report data unaligned. 
+  Thanks very much for your help.
 
-Any ideas?
-Thanks,
-Justin
+_________________________________________________________________
+与联机的朋友进行交流，请使用 MSN Messenger: http://messenger.msn.com/cn 

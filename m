@@ -1,51 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jan 2005 21:44:13 +0000 (GMT)
-Received: from mail.scs.ch ([IPv6:::ffff:212.254.229.5]:21933 "EHLO
-	mail.scs.ch") by linux-mips.org with ESMTP id <S8225285AbVATVoH>;
-	Thu, 20 Jan 2005 21:44:07 +0000
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.scs.ch (8.12.11/8.12.11) with ESMTP id j0KLi2vo006975
-	for <linux-mips@linux-mips.org>; Thu, 20 Jan 2005 22:44:02 +0100
-Received: from mail.scs.ch ([127.0.0.1])
- by localhost (mail.scs.ch [127.0.0.1]) (amavisd-new, port 10024) with LMTP
- id 06767-04 for <linux-mips@linux-mips.org>;
- Thu, 20 Jan 2005 22:43:58 +0100 (CET)
-Received: from kronenbourg.scs.ch (190.scs.ch [212.254.229.190])
-	by mail.scs.ch (8.12.11/8.12.11) with ESMTP id j0KLhstq006969
-	for <linux-mips@linux-mips.org>; Thu, 20 Jan 2005 22:43:54 +0100
-Subject: Re: Au1000 Big Endian USB OHCI
-From:	Thomas Sailer <sailer@scs.ch>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jan 2005 22:26:16 +0000 (GMT)
+Received: from amsfep13-int.chello.nl ([IPv6:::ffff:213.46.243.23]:64584 "EHLO
+	amsfep13-int.chello.nl") by linux-mips.org with ESMTP
+	id <S8225285AbVATW0L>; Thu, 20 Jan 2005 22:26:11 +0000
+Received: from [127.0.0.1] (really [62.195.248.222])
+          by amsfep13-int.chello.nl
+          (InterMail vM.6.01.03.04 201-2131-111-106-20040729) with ESMTP
+          id <20050120222602.KAOR11192.amsfep13-int.chello.nl@[127.0.0.1]>
+          for <linux-mips@linux-mips.org>; Thu, 20 Jan 2005 23:26:02 +0100
+Message-ID: <41F02FFC.6080702@amsat.org>
+Date:	Thu, 20 Jan 2005 23:26:04 +0100
+From:	Jeroen Vreeken <pe1rxq@amsat.org>
+User-Agent: Mozilla Thunderbird 0.9 (X11/20041103)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
 To:	linux-mips@linux-mips.org
-In-Reply-To: <1106238575.8838.9.camel@kronenbourg.scs.ch>
-References: <1106238575.8838.9.camel@kronenbourg.scs.ch>
-Content-Type: text/plain
-Organization: SCS
-Date:	Thu, 20 Jan 2005 22:43:53 +0100
-Message-Id: <1106257433.7458.0.camel@kronenbourg.scs.ch>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.0.2 (2.0.2-3) 
+Subject: edimax router with adm5120
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: by amavisd-new at scs.ch
-Return-Path: <sailer@scs.ch>
+Return-Path: <pe1rxq@amsat.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6971
+X-archive-position: 6972
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sailer@scs.ch
+X-original-sender: pe1rxq@amsat.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 2005-01-20 at 17:29 +0100, Thomas Sailer wrote:
+Hi,
 
-> does the Au1000 OHCI controller work for anybody with the current 2.6
-> cvs tree in big endian mode? When I try to insmod ohci-hcd, the machine
-> just hangs. Also, I used the attached patch to be able to select usb
-> ohci even without PCI.
+I'm new on this list....
+I have a edimax br6104k router which runs linux and have been 
+experimenting a bit with building my own kernels.
 
-Ok, now I've tried little endian, and it didn't help. ohci-hcd in EL
-mode also hangs the system. So it's quite likely not related to the
-endianness mode.
+In various forums I found some stuff about the adm5120, but not much.
+I would like to add some pages about it to the linux-mips wiki.
+My question is how much info would be appropriate?
+Most boards mentioned in it have only a short blurp.
+Would it be ok to have more info on it? ie schematics, documentation...
 
-Tom
+Jeroen

@@ -1,71 +1,44 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7D3cYL28522
-	for linux-mips-outgoing; Sun, 12 Aug 2001 20:38:34 -0700
-Received: from surfers.oz.agile.tv (fw.oz.agile.tv [210.9.52.165])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7D3cVj28519
-	for <linux-mips@oss.sgi.com>; Sun, 12 Aug 2001 20:38:32 -0700
-Received: from oz.agile.tv (IDENT:simong@pacific.oz.agile.tv [192.168.16.16])
-	by surfers.oz.agile.tv (8.11.0/8.11.0) with ESMTP id f7D3cUj02355
-	for <linux-mips@oss.sgi.com>; Mon, 13 Aug 2001 13:38:30 +1000
-Message-ID: <3B774FA9.A96C838B@oz.agile.tv>
-Date: Mon, 13 Aug 2001 13:55:21 +1000
-From: Simon Gee <simong@oz.agile.tv>
-Organization: AgileTV Corporation Australia
-X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.16-22 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: linux-mips@oss.sgi.com
-Subject: PATCH: missing call-graph data and profiling
+	by oss.sgi.com (8.11.2/8.11.3) id f7D4ppi29143
+	for linux-mips-outgoing; Sun, 12 Aug 2001 21:51:51 -0700
+Received: from mail.foobazco.org (snowman.foobazco.org [198.144.194.230])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7D4poj29140
+	for <linux-mips@oss.sgi.com>; Sun, 12 Aug 2001 21:51:50 -0700
+Received: from galt.foobazco.org (galt.foobazco.org [198.144.194.227])
+	by mail.foobazco.org (Postfix) with ESMTP
+	id 3AF673E90; Sun, 12 Aug 2001 21:39:43 -0700 (PDT)
+Received: by galt.foobazco.org (Postfix, from userid 1014)
+	id F24E713FD0; Sun, 12 Aug 2001 21:46:15 -0700 (PDT)
+Date: Sun, 12 Aug 2001 21:46:15 -0700
+From: Keith M Wesolowski <wesolows@foobazco.org>
+To: Mark Nellemann <mark@nellemann.nu>
+Cc: linux-mips mail list <linux-mips@oss.sgi.com>
+Subject: Re: Is it possible to boot linux on an O2 r5k ?
+Message-ID: <20010812214615.B24560@foobazco.org>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <3B73A5D0.1050202@nellemann.nu>
+User-Agent: Mutt/1.3.18i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-When attempting to use profiling under mips-linux the produced gmon.out
-file was reported as "missing call -raph data". The problem lay in the
-fact that the following from machine-gmon.h:
+On Fri, Aug 10, 2001 at 11:13:52AM +0200, Mark Nellemann wrote:
 
-        "move $5,$31;" \
-        "jal __mcount;" \
-        "move $4,$1;" \
+> I was told on irc a month ago, that someone had gotten an O2 to boot.
 
-was assembled as:
+You were not lied to.  http://foobazco.org/~wesolows/o2.txt
 
-0x432458 <_mcount+40>: move $a1,$ra
-0x43245c <_mcount+44>: lw $t9,-32724($gp)
-0x432460 <_mcount+48>: nop
-0x432464 <_mcount+52>: addiu $t9,$t9,8816
-0x432468 <_mcount+56>: jalr $t9
-0x43246c <_mcount+60>: nop
-0x432470 <_mcount+64>: lw $gp,0($s8)
-0x432474 <_mcount+68>: move $a0,$at
+> Yesterday I tried to fire up my O2. The whole bootp, tftp setup was working 
+> fine, but when I boot'ed the kernel (linux-2.4.3-ip22) the kernel said "Yee, 
+> could not determine architecture type <SGI-IP32>". Is this because i'm using a 
+> wrong kernel or isn't it possible to boot the O2 yet ?
 
-by gas. Basically, the fact that "jal __mcount" was being expanded
-forced "move $4,$1;" out of the delay slot which resulted in the first
-argument to __mcount to be incorrect. The following patch against glibc
-corrects this problem.
+Certainly not with that kernel.  You need a modified kernel that
+understands O2 (and a 64-bit kernel toolchain to build it).
 
-*** sysdeps/mips/machine-gmon.h.orig    Mon Aug 13 12:17:39 2001
---- sysdeps/mips/machine-gmon.h Mon Aug 13 12:18:00 2001
-***************
-*** 43,50 ****
-          "sw $1,16($29);" \
-          "sw $31,20($29);" \
-          "move $5,$31;" \
--         "jal __mcount;" \
-          "move $4,$1;" \
-          "lw $4,24($29);" \
-          "lw $5,28($29);" \
-          "lw $6,32($29);" \
---- 43,51 ----
-          "sw $1,16($29);" \
-          "sw $31,20($29);" \
-          "move $5,$31;" \
-          "move $4,$1;" \
-+         "jal __mcount;" \
-+         "nop;" \
-          "lw $4,24($29);" \
-          "lw $5,28($29);" \
-          "lw $6,32($29);" \
-
-Simon
+-- 
+Keith M Wesolowski <wesolows@foobazco.org> http://foobazco.org/~wesolows
+------(( Project Foobazco Coordinator and Network Administrator ))------
+ 	"There is no such song as 'Acid Acid Acid' by 'The Acid Heads'
+	 but there might as well be." --jwz

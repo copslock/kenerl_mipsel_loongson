@@ -1,59 +1,40 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f3UI8wI19074
-	for linux-mips-outgoing; Mon, 30 Apr 2001 11:08:58 -0700
-Received: from pobox.sibyte.com (pobox.sibyte.com [208.12.96.20])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3UI8vM19071
-	for <linux-mips@oss.sgi.com>; Mon, 30 Apr 2001 11:08:57 -0700
-Received: from postal.sibyte.com (moat.sibyte.com [208.12.96.21])
-	by pobox.sibyte.com (Postfix) with SMTP id 99590205FB
-	for <linux-mips@oss.sgi.com>; Mon, 30 Apr 2001 11:08:51 -0700 (PDT)
-Received: from SMTP agent by mail gateway 
- Mon, 30 Apr 2001 11:00:54 -0800
-Received: from plugh.sibyte.com (plugh.sibyte.com [10.21.64.158])
-	by postal.sibyte.com (Postfix) with ESMTP id 5F40615961
-	for <linux-mips@oss.sgi.com>; Mon, 30 Apr 2001 11:08:52 -0700 (PDT)
-Received: by plugh.sibyte.com (Postfix, from userid 61017)
-	id 7FD22686D; Mon, 30 Apr 2001 11:08:41 -0700 (PDT)
-From: Justin Carlson <carlson@sibyte.com>
-Reply-To: carlson@sibyte.com
-Organization: Sibyte
-To: linux-mips@oss.sgi.com
-Subject: mips64 linux glibc compilation broken?
-Date: Mon, 30 Apr 2001 11:07:33 -0700
-X-Mailer: KMail [version 1.0.29]
-Content-Type: text/plain
-MIME-Version: 1.0
-Message-Id: <0104301108411I.31854@plugh.sibyte.com>
-Content-Transfer-Encoding: 8bit
+	by oss.sgi.com (8.11.3/8.11.3) id f3UKQFg24849
+	for linux-mips-outgoing; Mon, 30 Apr 2001 13:26:15 -0700
+Received: from dea.waldorf-gmbh.de (IDENT:root@localhost [127.0.0.1])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3UKQ1M24844
+	for <linux-mips@oss.sgi.com>; Mon, 30 Apr 2001 13:26:02 -0700
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f3UKOJY31118;
+	Mon, 30 Apr 2001 17:24:19 -0300
+Date: Mon, 30 Apr 2001 17:24:19 -0300
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Florian Lohoff <flo@rfc822.org>, Pete Popov <ppopov@mvista.com>,
+   linux-mips@oss.sgi.com
+Subject: Re: Illegal instruction - a workaround or fix ?
+Message-ID: <20010430172419.B30998@bacchus.dhis.org>
+References: <20010420215841.D15990@paradigm.rfc822.org> <Pine.GSO.3.96.1010430113243.889B-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.GSO.3.96.1010430113243.889B-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Mon, Apr 30, 2001 at 11:34:32AM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Mon, Apr 30, 2001 at 11:34:32AM +0200, Maciej W. Rozycki wrote:
 
-I could swear I saw this topic go by before, but searching my archives,
-I don't see it.
+> > A different solution would be to take the usual exit in sysmips via
+> > the return at the end (for which the compiler generated a correct
+> > epilogue) and modify the return address - This is an very ugly hack
+> > and you cant tell where the compiler stores the ra on the stack.
+> 
+>  It could be doable with __builtin_frame_address().  Haven't investigated
+> it further, though. 
 
-glibc fresh out of redhat cvs doesn't compile for mips64-linux; it fails
-with quite a bit of stuff like this:
+MIPS ABI doesn't define that ra gets stored at a constant offset in
+the stackframe, so that won't work.
 
----
-In file included from dynamic-link.h:21,
-from dl-load.c:32:
-../sysdeps/mips/mips64/dl-machine.h: In function `elf_machine_got_rel':
-../sysdeps/mips/mips64/dl-machine.h:178: warning: passing arg 2 of `_dl_lookup_symbol' from incompatible pointer type
-../sysdeps/mips/mips64/dl-machine.h:178: warning: passing arg 3 of `_dl_lookup_symbol' from incompatible pointer type
-../sysdeps/mips/mips64/dl-machine.h:178: warning: passing arg 4 of `_dl_lookup_symbol' from incompatible pointer type
-../sysdeps/mips/mips64/dl-machine.h:178: too few arguments to function `_dl_lookup_symbol'
-../sysdeps/mips/mips64/dl-machine.h:181: warning: passing arg 2 of `_dl_lookup_symbol' from incompatible pointer type
-../sysdeps/mips/mips64/dl-machine.h:181: warning: passing arg 3 of `_dl_lookup_symbol' from incompatible pointer type
-../sysdeps/mips/mips64/dl-machine.h:181: warning: passing arg 4 of `_dl_lookup_symbol' from incompatible pointer type
----
-
-It looks like this is something that has been fixed for mips, but not mips64. 
-I'm sure I can fix the immediate compile problems, but am not familiar enough
-with glibc to be confident of doing the Right Thing overall.
-
-Are there any patches for mips64 linux that haven't made it into the mainline
-cvs yet?
-
-Thanks,
-Justin
+  Ralf

@@ -1,15 +1,15 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA20333; Mon, 23 Jun 1997 12:31:56 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA21173; Mon, 23 Jun 1997 12:43:58 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id MAA16725 for linux-list; Mon, 23 Jun 1997 12:31:32 -0700
-Received: from heaven.newport.sgi.com (heaven.newport.sgi.com [169.238.102.134]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA16712 for <linux@engr.sgi.com>; Mon, 23 Jun 1997 12:31:30 -0700
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id MAA19353 for linux-list; Mon, 23 Jun 1997 12:43:42 -0700
+Received: from heaven.newport.sgi.com (heaven.newport.sgi.com [169.238.102.134]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA19347 for <linux@engr.sgi.com>; Mon, 23 Jun 1997 12:43:40 -0700
 Received: by heaven.newport.sgi.com (940816.SGI.8.6.9/940406.SGI)
-	for linux@engr id MAA08630; Mon, 23 Jun 1997 12:31:28 -0700
+	for linux@engr id MAA08647; Mon, 23 Jun 1997 12:43:38 -0700
 From: "Christopher W. Carlson" <carlson@heaven.newport.sgi.com>
-Message-Id: <9706231231.ZM8628@heaven.newport.sgi.com>
-Date: Mon, 23 Jun 1997 12:31:28 -0700
-In-Reply-To: Steve Alexander <sca@refugee.engr.sgi.com>
-        "Re: Getting X on Linux/SGI" (Jun 20,  1:20pm)
-References: <199706202020.NAA11950@refugee.engr.sgi.com>
+Message-Id: <9706231243.ZM8645@heaven.newport.sgi.com>
+Date: Mon, 23 Jun 1997 12:43:38 -0700
+In-Reply-To: lm@neteng.engr.sgi.com (Larry McVoy)
+        "Re: Getting X on Linux/SGI" (Jun 22, 10:50am)
+References: <199706221750.KAA09710@neteng.engr.sgi.com>
 X-Mailer: Z-Mail-SGI (3.2S.2 10apr95 MediaMail)
 To: linux@cthulhu.engr.sgi.com
 Subject: Re: Getting X on Linux/SGI
@@ -18,31 +18,40 @@ Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Jun 20,  1:20pm, Steve Alexander wrote:
-> Subject: Re: Getting X on Linux/SGI
-> "Christopher W. Carlson" <carlson@heaven.newport.sgi.com> writes:
-> >Initially, I wouldn't buy an O2 to run Linux, either.  But, after a
-> >while, I might consider puting Linux on it.  If Linux was pretty well
-> >tuned (maybe not as well as IRIX but good enough) and I wanted to do
-> >some kernel tinkering, you can bet Linux would at least be on a
-> >partition.
+On Jun 22, 10:50am, Larry McVoy wrote:
 >
-> Why not just a PC?  Cheaper, more expansion, probably better performance for
-> just plain kernel hacking.
+> I think almost 100% of what I would call embedded Linux on MIPS is for
+> game platforms.  What they really want is a full on Unix environment
+> that they can use for development/debugging.  When they get done,
+> they want to rip out Linux/Unix and run an app on the bare hardware.
+> They may eventually want to leave a stripped down Linux in there but I
+> don't see why today.
 >
-> Unless you're doing graphics things, there's just no point in having an O2,
-> IMO.
->
-> -- Steve
->-- End of excerpt from Steve Alexander
+> What they really want is a reasonable development environment and they are
+> smart enough to realize they get there fastest with Linux.
+>-- End of excerpt from Larry McVoy
 
 
-Yes, that's why I might want to run Linux on an O2.  Since it isn't
-even an option yet, I'd run IRIX (if I had an O2).  Also, if there was
-some bug in IRIX that kept me from doing something but the bug didn't
-exist in Linux, I might want to switch.  It is far easier (and
-cheaper) to get a bug fixed in Linux than in IRIX.  Especially if you
-can't afford the maintenance fees.
+I would think that the reason they might want to have Linux running on
+some embedded system is the same as the reason Microsoft wants to run
+Windows on your microwave oven/television/VCR/etc...
+
+I'm sure it isn't "Windows", it's just the core drivers and stuff.  I
+think the ultimate goal of Microsoft is to allow people to have
+everything electrical in their house networked together.  Then they
+could turn on the microwave by logging into their home computer and
+telling it to turn on the microwave (of course that's just a
+pedagogical example).
+
+FYI, according to an article I read in New Yorker, Microsoft's goal is
+to get money every time one of their products is used.  Thus, with the
+above scenerio, they could get a penny because you logged into your
+home computer and another penny because you enabled your microwave.
+
+I'd prefer to have Linux as the embedded system.  Then my microwave
+can run some program using X windows and display it on my home
+computer's X server and Microsoft doesn't get anything!  :-)
+
 
 -- 
 

@@ -1,67 +1,64 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id GAA61462 for <linux-archive@neteng.engr.sgi.com>; Wed, 9 Sep 1998 06:34:51 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA94709 for <linux-archive@neteng.engr.sgi.com>; Wed, 9 Sep 1998 16:42:11 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id GAA20998
+	id QAA77686
 	for linux-list;
-	Wed, 9 Sep 1998 06:34:15 -0700 (PDT)
+	Wed, 9 Sep 1998 16:41:20 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id GAA60330
-	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 9 Sep 1998 06:34:12 -0700 (PDT)
+	via ESMTP id QAA97183
+	for <linux@engr.sgi.com>;
+	Wed, 9 Sep 1998 16:41:18 -0700 (PDT)
 	mail_from (ralf@uni-koblenz.de)
 Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) 
 	by sgi.sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id GAA07786
-	for <linux@cthulhu.engr.sgi.com>; Wed, 9 Sep 1998 06:34:09 -0700 (PDT)
+	via ESMTP id QAA03130
+	for <linux@engr.sgi.com>; Wed, 9 Sep 1998 16:41:14 -0700 (PDT)
 	mail_from (ralf@uni-koblenz.de)
-Received: from uni-koblenz.de (pmport-14.uni-koblenz.de [141.26.249.14])
-	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id PAA10924
-	for <linux@cthulhu.engr.sgi.com>; Wed, 9 Sep 1998 15:34:05 +0200 (MEST)
+Received: from uni-koblenz.de (pmport-19.uni-koblenz.de [141.26.249.19])
+	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id BAA08872
+	for <linux@engr.sgi.com>; Thu, 10 Sep 1998 01:41:11 +0200 (MEST)
 Received: (from ralf@localhost)
-	by uni-koblenz.de (8.8.7/8.8.7) id OAA01546;
-	Wed, 9 Sep 1998 14:42:41 +0200
-Message-ID: <19980909144240.E1340@uni-koblenz.de>
-Date: Wed, 9 Sep 1998 14:42:40 +0200
+	by uni-koblenz.de (8.8.7/8.8.7) id QAA00820;
+	Wed, 9 Sep 1998 16:03:00 +0200
+Message-ID: <19980909160300.C423@uni-koblenz.de>
+Date: Wed, 9 Sep 1998 16:03:00 +0200
 From: ralf@uni-koblenz.de
-To: Ulf Carlsson <grim@zigzegv.ml.org>
+To: Rob Lembree <lembree@sgi.com>
 Cc: linux@cthulhu.engr.sgi.com
-Subject: Re: cdrom
-References: <19980902000840.C370@uni-koblenz.de> <Pine.LNX.3.96.980902174807.334B-100000@calypso.saturn>
+Subject: Re: Success at last...
+References: <Pine.LNX.3.96.980904130745.26347A-100000@lager.engsoc.carleton.ca> <35F59FCD.F7A6E459@sgi.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 X-Mailer: Mutt 0.91.1
-In-Reply-To: <Pine.LNX.3.96.980902174807.334B-100000@calypso.saturn>; from Ulf Carlsson on Wed, Sep 02, 1998 at 05:58:15PM +0200
+In-Reply-To: <35F59FCD.F7A6E459@sgi.com>; from Rob Lembree on Tue, Sep 08, 1998 at 05:21:17PM -0400
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Wed, Sep 02, 1998 at 05:58:15PM +0200, Ulf Carlsson wrote:
+On Tue, Sep 08, 1998 at 05:21:17PM -0400, Rob Lembree wrote:
 
-> On Wed, 2 Sep 1998 ralf@uni-koblenz.de wrote:
+> > This is really weird.  Can you explain in greater detail what you changed
+> > to make sure that it worked?
 > 
-> > As I recently told you on IRC - the patch as you've posted it is not
-> > correct.  It will misstreat VCEI exceptions.
-> 
-> My idea is based on that we write the wrong cache line back, and that's
-> why we receive the invalid instruction errors. 
-> 
-> Maybe this is foolish, but anyway: If we have data from main memory cached
-> in the secondary cache and then overwrite that data line in main memory
-> with an instruction line and cache the instruction. We receive a VCEI when
-> we try to access the cached line, and our handler writes the data back
-> instead of the intstruction and causes the invalid instructions. Well,
-> this is the only idea I have at the moment.
+> I found that IRIX's tar wasn't very careful with modification dates,
+> which I don't think is a problem, but the major and minor IDs of the
+> dev files were all zero -- clearly broken.  I haven't experimented,
+> but I believe this to be the failure.
 
-Note that we don't have to care about if the line contains data or
-instructions.  All we know is that the l2 line corrosponding to the
-instruction which threw the vcei exception is in some state other than
-invalid.  We cannot accidently writeback an instruction line to memory
-because the Hit_Writeback_Inv_SD cacheop we're using will only write
-dirty lines back.
+This seems to indicate to me that we should replace the dev directory
+with a script that creates the inodes.  Luckily we already have one which
+is called ``MAKEDEV''.  As we already know the representation of the
+minor / major device number isn't transparent through NFS, so the MAKEDEV
+will have to detect the NFS server's OS and to corrospondingly munge the
+device number used as argument for mkdev in a way that after exporting
+from the NFS server the client sees what he expects to see.  If that is
+at all possible in all cases.  Yuck.  But it's a longstanding problem
+which before has already been reported by people using other operating
+systems like HP/UX.
 
   Ralf

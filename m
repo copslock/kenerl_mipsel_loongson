@@ -1,57 +1,36 @@
-Received:  by oss.sgi.com id <S553862AbRA2Xwb>;
-	Mon, 29 Jan 2001 15:52:31 -0800
-Received: from noose.gt.owl.de ([62.52.19.4]:64010 "HELO noose.gt.owl.de")
-	by oss.sgi.com with SMTP id <S553857AbRA2XwY>;
-	Mon, 29 Jan 2001 15:52:24 -0800
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id C05937DD; Tue, 30 Jan 2001 00:52:22 +0100 (CET)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 55698EE9C; Tue, 30 Jan 2001 00:52:50 +0100 (CET)
-Date:   Tue, 30 Jan 2001 00:52:50 +0100
-From:   Florian Lohoff <flo@rfc822.org>
-To:     linux-mips@oss.sgi.com
-Subject: [PATCH] clean error in arch/mips/pmc/cp7000/irq.c:request_irq
-Message-ID: <20010130005250.A11722@paradigm.rfc822.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-Organization: rfc822 - pure communication
+Received:  by oss.sgi.com id <S553865AbRA3AMl>;
+	Mon, 29 Jan 2001 16:12:41 -0800
+Received: from saturn.mikemac.com ([216.99.199.88]:23822 "EHLO
+        saturn.mikemac.com") by oss.sgi.com with ESMTP id <S553859AbRA3AMU>;
+	Mon, 29 Jan 2001 16:12:20 -0800
+Received: from Saturn (localhost [127.0.0.1])
+	by saturn.mikemac.com (8.9.3/8.9.3) with ESMTP id QAA17611;
+	Mon, 29 Jan 2001 16:12:04 -0800
+Message-Id: <200101300012.QAA17611@saturn.mikemac.com>
+To:     "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+cc:     linux-mips@oss.sgi.com
+Subject: Re: Cross compiling RPMs 
+In-Reply-To: Your message of "Mon, 29 Jan 2001 16:57:08 +0100."
+             <Pine.GSO.3.96.1010129164905.20889E-100000@delta.ds2.pg.gda.pl> 
+Date:   Mon, 29 Jan 2001 16:12:04 -0800
+From:   Mike McDonald <mikemac@mikemac.com>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
 
-Hi,
-i think this is more correct - On failing of shared irqs one should
-at least reenable interrupts and free the allocated buffer.
+>Date:   Mon, 29 Jan 2001 16:57:08 +0100 (MET)
+>From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+>To: Ralf Baechle <ralf@oss.sgi.com>
+>Subject: Re: Cross compiling RPMs
 
-Apply before anyone copys this into his/her code ...
+>   If you have a decent native
+>system, why to bother with cross-compiling? 
 
+  Because that's a huge IF! Most of the systems I deal with aren't
+"decent" enough to support native compilation of the system. (The
+systems of interest to me are embedded and handheld units.)
 
-Index: arch/mips/pmc/cp7000/irq.c
-===================================================================
-RCS file: /cvs/linux/arch/mips/pmc/cp7000/irq.c,v
-retrieving revision 1.1
-diff -u -r1.1 irq.c
---- arch/mips/pmc/cp7000/irq.c	2000/12/13 21:07:34	1.1
-+++ arch/mips/pmc/cp7000/irq.c	2001/01/29 23:50:34
-@@ -327,8 +327,11 @@
- 
- 	if ((old = *p) != NULL) {
- 		/* Can't share interrupts unless both agree to */
--		if (!(old->flags & action->flags & SA_SHIRQ))
-+		if (!(old->flags & action->flags & SA_SHIRQ)) {
-+			restore_flags(flags);
-+			kfree(action);
- 			return -EBUSY;
-+		}
- 		/* add new interrupt at end of irq queue */
- 		do {
- 			p = &old->next;
-
-
--- 
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-     Why is it called "common sense" when nobody seems to have any?
+  Mike McDonald
+  mikemac@mikemac.com

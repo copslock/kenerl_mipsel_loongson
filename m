@@ -1,42 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Mar 2005 17:12:50 +0100 (BST)
-Received: from p3EE2B2E8.dip.t-dialin.net ([IPv6:::ffff:62.226.178.232]:49284
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8226041AbVCaQMf>; Thu, 31 Mar 2005 17:12:35 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id j2VG9j0R002517;
-	Thu, 31 Mar 2005 17:09:45 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j2VG9gfr002516;
-	Thu, 31 Mar 2005 17:09:42 +0100
-Date:	Thu, 31 Mar 2005 17:09:42 +0100
-From:	Ralf Baechle DL5RB <ralf@linux-mips.org>
-To:	Stuart Longland <stuartl@longlandclan.hopto.org>
-Cc:	dfsd df <tomcs163@yahoo.com.cn>, linux-mips@linux-mips.org
-Subject: Re: Some questions about kernel tailoring
-Message-ID: <20050331160942.GI27952@linux-mips.org>
-References: <20050330073742.28983.qmail@web15807.mail.cnb.yahoo.com> <424B2621.20006@longlandclan.hopto.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <424B2621.20006@longlandclan.hopto.org>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Mar 2005 17:25:01 +0100 (BST)
+Received: from smtp007.bizmail.sc5.yahoo.com ([IPv6:::ffff:66.163.170.10]:56994
+	"HELO smtp007.bizmail.sc5.yahoo.com") by linux-mips.org with SMTP
+	id <S8226043AbVCaQYp>; Thu, 31 Mar 2005 17:24:45 +0100
+Received: from unknown (HELO ?192.168.1.101?) (ppopov@embeddedalley.com@63.194.214.47 with plain)
+  by smtp007.bizmail.sc5.yahoo.com with SMTP; 31 Mar 2005 16:24:43 -0000
+Message-ID: <424C2450.4030406@embeddedalley.com>
+Date:	Thu, 31 Mar 2005 08:24:48 -0800
+From:	Pete Popov <ppopov@embeddedalley.com>
+Reply-To:  ppopov@embeddedalley.com
+Organization: Embedded Alley Solutions, Inc
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.3) Gecko/20041020
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	"Robin H. Johnson" <robbat2@orbis-terrarum.net>
+CC:	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: Compressed Kernels
+References: <1112258126.28438.16.camel@localhost.localdomain> <20050331084207.GA8346@curie-int.orbis-terrarum.net>
+In-Reply-To: <20050331084207.GA8346@curie-int.orbis-terrarum.net>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ppopov@embeddedalley.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7554
+X-archive-position: 7555
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ppopov@embeddedalley.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Mar 31, 2005 at 08:20:17AM +1000, Stuart Longland wrote:
+Robin H. Johnson wrote:
+> On Thu, Mar 31, 2005 at 09:35:26AM +0100, JP Foster wrote:
+> 
+>>I've noticed that mips doesn't have a compressed kernel option,
+>>so I had added support (ripped shamelessly from arch/i386) for it
+>>to save space on our flash chips.
+>>
+>>It works fine for my db1550 and also our product boards.
+>>The patch is pretty messy but if there was interest in it I could clean
+>>it up. Is there any historical reason for it not being included?
+> 
+> Pete Popov was already working some zImage code.
+> 
+> His link for it:
+> ftp://ftp.linux-mips.org/pub/linux/mips/people/ppopov/2.6/zImage_2_6_10.patch
+> 
+> It worked for me in January on an XXS1500 device, but I haven't tried it
+> on any newer kernel since then.
+> 
+> I don't know the current status of it, or if it is going to go into the
+> main codebase at all.
 
-> (PS... Please refrain from HTML email on this list)
+Should be easy to update if if doesn't apply cleanly anymore. I think the 
+complaint about that patch is that it duplicates some code from other 
+architectures and a more common solution is needed. Since I don't have time to 
+work on something more common, the patch remains stand alone.
 
-The list is configured to reject HTML email.  But - the filter didn't
-detect this broken use of HTML.
-
-  Ralf
+Pete

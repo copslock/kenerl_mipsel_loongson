@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Sep 2002 19:06:24 +0200 (CEST)
-Received: from gateway-1237.mvista.com ([12.44.186.158]:19698 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S1122961AbSIRRGY>;
-	Wed, 18 Sep 2002 19:06:24 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Sep 2002 19:10:07 +0200 (CEST)
+Received: from gateway-1237.mvista.com ([12.44.186.158]:54005 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S1122961AbSIRRKH>;
+	Wed, 18 Sep 2002 19:10:07 +0200
 Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id g8IGrkx28492;
-	Wed, 18 Sep 2002 09:53:46 -0700
-Date: Wed, 18 Sep 2002 09:53:46 -0700
+	by orion.mvista.com (8.11.6/8.11.6) id g8IGvUM28498;
+	Wed, 18 Sep 2002 09:57:30 -0700
+Date: Wed, 18 Sep 2002 09:57:30 -0700
 From: Jun Sun <jsun@mvista.com>
 To: "Kevin D. Kissell" <kevink@mips.com>
 Cc: linux-mips@linux-mips.org, jsun@mvista.com
-Subject: Re: [RFC] FPU context switch
-Message-ID: <20020918095346.T17321@mvista.com>
-References: <20020917110423.E17321@mvista.com> <01ad01c25ea4$435ab220$10eca8c0@grendel> <20020917164520.P17321@mvista.com> <003c01c25eee$cfb41c30$10eca8c0@grendel>
+Subject: Re: [jsun@mvista.com: Re: [RFC] FPU context switch]
+Message-ID: <20020918095730.U17321@mvista.com>
+References: <20020917160425.O17321@mvista.com> <01b801c25ea7$ce074ed0$10eca8c0@grendel> <20020917171434.Q17321@mvista.com> <004101c25eef$ba035350$10eca8c0@grendel>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <003c01c25eee$cfb41c30$10eca8c0@grendel>; from kevink@mips.com on Wed, Sep 18, 2002 at 10:38:38AM +0200
+In-Reply-To: <004101c25eef$ba035350$10eca8c0@grendel>; from kevink@mips.com on Wed, Sep 18, 2002 at 10:45:08AM +0200
 Return-Path: <jsun@orion.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 238
+X-archive-position: 239
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -29,39 +29,42 @@ X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Sep 18, 2002 at 10:38:38AM +0200, Kevin D. Kissell wrote:
+On Wed, Sep 18, 2002 at 10:45:08AM +0200, Kevin D. Kissell wrote:
 > From: "Jun Sun" <jsun@mvista.com>
-> > On Wed, Sep 18, 2002 at 01:44:57AM +0200, Kevin D. Kissell wrote:
-> > > 
-> > > I'd much prefer something that is simple and processor-local,
-> > > even if it may be less optimal in some corner cases.  For example,
-> > > Why not simply use CP0.Status.CU1 as a "dirty" bit?  If it's set 
-> > > when a process switches out, the FPU state gets saved, and CU1 
-> > > cleared.  If it's not set when a process hits an FP instruction, 
-> > > CU1 gets set and the context gets loaded. This involves no 
-> > > access whatever to shared control variables, indeed, it doesn't 
-> > > even go to memory to make the decision. It will, of course, save 
-> > > some FP contexts that don't need saving, but it is well behaved
-> > > in the cases I care most about - it avoids saving/restoring FPRs
-> > > of code that is doing no FP whatsoever, and it ensures that
-> > > whenever a thread starts up, whatever CPU its on, its full
-> > > context is available to that CPU, no (coherent) questions asked.
-> > > 
+> > On Wed, Sep 18, 2002 at 02:10:17AM +0200, Kevin D. Kissell wrote:
+> > > Are you able to test this stuff on a proper SMP
+> > > system, by the way?  The efficiency of the code 
+> > > that manipulates interprocessor control variables 
+> > > can reasonably be expected to drop off a bit
+> > > in a system with MP cache invalidations blasting
+> > > left and right. 
 > > 
-> > This is basically 2) except for dirty bit difference.
-> > 
-> > My current implementaion uses bit:1 in task->used_math flag for 
-> > "dirty" bit purpose.
+> > Yes.  I understand this effect.  Solution 1), 2) 
+> > and 3) don't really suffer from this problem because
+> > variables tested & manipulated are local - unless the 
+> > process migrates which is a different problem.
 > 
-> Which is not a property of the CPU, but of the thread,
-> meaning that it will be written by one CPU and read by
-> another, i.e. there will be MP memory traffic and cache
-> interventions/invalidations/misses around the operation.
+> It's not a "different problem", 
+
+Process migration causeing inter-processor memory access traffic
+(which should be one-time) belongs to scheduling issue.  It is
+a different problem.
+
+> it's the heart of the
+> problem.  If we weren't worried about SMP
+> behavior, we wouldn't be revisiting this stuff.
+> While (1) can obviously be done without any
+> global knowledge, as could something (2)-like 
+> based on CPU-local state such as Status.CU1, 
+> (2), (3) and (4), as you describe them, all depend 
+> to some degree on shared multiprocessor variables 
+> to determine whether to save or restore FP state.
 >
 
-In all places the task is "current" process.  Therefore no inter-processor
-traffic.
+1), 2), 3) do not depend on global variables with shared
+access from multiple cpus.  Please read again.
 
-Obiviously it is still less desriable than a bit in cpu regiters....
+Please note variables of "current" process do not cause 
+inter-processor traffic and thus not belong to this category.
 
 Jun

@@ -1,60 +1,102 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Sep 2003 18:22:08 +0100 (BST)
-Received: from nevyn.them.org ([IPv6:::ffff:66.93.172.17]:60850 "EHLO
-	nevyn.them.org") by linux-mips.org with ESMTP id <S8225425AbTIRRWE>;
-	Thu, 18 Sep 2003 18:22:04 +0100
-Received: from drow by nevyn.them.org with local (Exim 4.22 #1 (Debian))
-	id 1A02Tj-00062f-ME; Thu, 18 Sep 2003 13:22:03 -0400
-Date: Thu, 18 Sep 2003 13:22:03 -0400
-From: Daniel Jacobowitz <dan@debian.org>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: ddb5477 fixes for 2.6
-Message-ID: <20030918172203.GA23194@nevyn.them.org>
-References: <20030918170642.GA22753@nevyn.them.org> <Pine.GSO.3.96.1030918191604.20533C-100000@delta.ds2.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.GSO.3.96.1030918191604.20533C-100000@delta.ds2.pg.gda.pl>
-User-Agent: Mutt/1.5.1i
-Return-Path: <drow@crack.them.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Sep 2003 22:22:26 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:50933 "EHLO
+	av.mvista.com") by linux-mips.org with ESMTP id <S8225425AbTIRVWY>;
+	Thu, 18 Sep 2003 22:22:24 +0100
+Received: from mvista.com (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id OAA12994;
+	Thu, 18 Sep 2003 14:22:18 -0700
+Message-ID: <3F6A21FD.9040508@mvista.com>
+Date: Thu, 18 Sep 2003 14:22:05 -0700
+From: Pete Popov <ppopov@mvista.com>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.4) Gecko/20030624 Netscape/7.1 (ax)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: Bruno Randolf <bruno.randolf@4g-systems.biz>
+CC: linux-mips@linux-mips.org
+Subject: Re: 2.4.22 pci on au1500
+References: <200309181645.00676.bruno.randolf@4g-systems.biz>
+In-Reply-To: <200309181645.00676.bruno.randolf@4g-systems.biz>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ppopov@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3211
+X-archive-position: 3214
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@debian.org
+X-original-sender: ppopov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Sep 18, 2003 at 07:19:21PM +0200, Maciej W. Rozycki wrote:
-> On Thu, 18 Sep 2003, Daniel Jacobowitz wrote:
-> 
-> > >  Is it OK for other PCI systems?
-> > 
-> > Yes, I think so.  Those two functions seem to have migrated in from
-> > pci-hplj.c; they can't possibly compile, since they use constants only
-> > defined in that file.
-> 
->  Then the snippet should probably get removed altogether.
-> 
-> > >  Why do you want these suffixes?  They don't work for assembly sources.
-> > 
-> > Because otherwise uses of XKPHYS in a 32-bit kernel generate noisy
-> > warnings.  I don't remember where it was offhand.  Wrap it in
-> > __ASSEMBLY__ if you like.
-> 
->  Hmm, but is there any use for XKPHYS, etc. in a 32-bit kernel at all? 
-> The address cannot effectively be used anyway. 
+Hi Bruno,
 
-That patch is a total hack/slash job.  You're probably right on both
-counts.
+>i just tried 2.4.22 on my au1500 (mtx-1) board and it seems like pci is 
+>broken. is there anything that has changed for the board initialization, 
+>which i might have missed?
+>
+Yes, I changed 2.4.22 because we were calling ioremap inside the 
+pci_config routine, and this is a problem for drivers that call pci 
+config routines from interrupt context -- like the ide driver. I tested 
+the new approach on the db1500...
 
-Take a look at __ioremap_mode which probably needs some #ifdefs for
-32-bit kernels.  It uses cpu_has_64bit_addresses, which means at
-runtime it's OK, but we get a lot of warnings.
+>it woked fine with 2.4.21, there i got:
+>
+>Autoconfig PCI channel 0x802eaf28
+>Scanning bus 00, I/O 0x00000300:0x00100000, Mem 0x40000000:0x44000000
+>00:00.0 Class 0280: 1260:3873 (rev 01)
+>        Mem at 0x40000000 [size=0x1000]
+>
+>with 2.4.22 and debugging output enabled, i get:
+>
+>Autoconfig PCI channel 0x802f0e88
+>Scanning bus 00, I/O 0x00000300:0x00100000, Mem 0x40000000:0x50000000
+>config_access: 0 bus 0 device 0 at 0 *data 18000057, conf 0
+>config_access: 0 bus 0 device 1 at 0 *data 18000057, conf 0
+>config_access: 0 bus 0 device 2 at 0 *data 180000d7, conf 0
+>config_access: 0 bus 0 device 3 at 0 *data 18000157, conf 0
+>config_access: 0 bus 0 device 4 at 0 *data 18000257, conf 0
+>config_access: 0 bus 0 device 5 at 0 *data 18000457, conf 0
+>config_access: 0 bus 0 device 6 at 0 *data 18000857, conf 0
+>config_access: 0 bus 0 device 7 at 0 *data 18001057, conf 0
+>config_access: 0 bus 0 device 8 at 0 *data 18002057, conf 0
+>config_access: 0 bus 0 device 9 at 0 *data 18004057, conf 0
+>config_access: 0 bus 0 device 10 at 0 *data 18008057, conf 0
+>config_access: 0 bus 0 device 11 at 0 *data 18010057, conf 0
+>config_access: 0 bus 0 device 12 at 0 *data 18020057, conf 0
+>config_access: 0 bus 0 device 13 at 0 *data 18040057, conf 0
+>config_access: 0 bus 0 device 14 at 0 *data 18080057, conf 0
+>config_access: 0 bus 0 device 15 at 0 *data 18100057, conf 0
+>config_access: 0 bus 0 device 16 at 0 *data 18200057, conf 0
+>config_access: 0 bus 0 device 17 at 0 *data 18400057, conf 0
+>config_access: 0 bus 0 device 18 at 0 *data 18800057, conf 0
+>config_access: 0 bus 0 device 0 at e *data 18000057, conf c
+>config_access: 0 bus 0 device 1 at e *data 18000057, conf c
+>config_access: 0 bus 0 device 2 at e *data 180000d7, conf c
+>config_access: 0 bus 0 device 3 at e *data 18000157, conf c
+>config_access: 0 bus 0 device 4 at e *data 18000257, conf c
+>config_access: 0 bus 0 device 5 at e *data 18000457, conf c
+>config_access: 0 bus 0 device 6 at e *data 18000857, conf c
+>config_access: 0 bus 0 device 7 at e *data 18001057, conf c
+>config_access: 0 bus 0 device 8 at e *data 18002057, conf c
+>config_access: 0 bus 0 device 9 at e *data 18004057, conf c
+>config_access: 0 bus 0 device 10 at e *data 18008057, conf c
+>config_access: 0 bus 0 device 11 at e *data 18010057, conf c
+>config_access: 0 bus 0 device 12 at e *data 18020057, conf c
+>config_access: 0 bus 0 device 13 at e *data 18040057, conf c
+>config_access: 0 bus 0 device 14 at e *data 18080057, conf c
+>config_access: 0 bus 0 device 15 at e *data 18100057, conf c
+>config_access: 0 bus 0 device 16 at e *data 18200057, conf c
+>config_access: 0 bus 0 device 17 at e *data 18400057, conf c
+>config_access: 0 bus 0 device 18 at e *data 18800057, conf c
+>config_access: 0 bus 0 device 19 at e *data 19000057, conf c
+>
+>thanks for your help - again :)
+>  
+>
+Let me test it one more time on the db1500 to make sure something didn't 
+get broken after I pushed the patch. I'll get back to you in a couple of 
+days since I just got back from a long trip.
 
--- 
-Daniel Jacobowitz
-MontaVista Software                         Debian GNU/Linux Developer
+Pete

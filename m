@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 May 2004 16:56:15 +0100 (BST)
-Received: from mo02.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:56812 "EHLO
-	mo02.iij4u.or.jp") by linux-mips.org with ESMTP id <S8226031AbUEZPwb>;
-	Wed, 26 May 2004 16:52:31 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 May 2004 16:56:44 +0100 (BST)
+Received: from mo02.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:58604 "EHLO
+	mo02.iij4u.or.jp") by linux-mips.org with ESMTP id <S8226045AbUEZPwi>;
+	Wed, 26 May 2004 16:52:38 +0100
 Received: from mdo00.iij4u.or.jp (mdo00.iij4u.or.jp [210.130.0.170])
-	by mo02.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id AAA02606;
-	Thu, 27 May 2004 00:52:27 +0900 (JST)
-Received: 4UMDO00 id i4QFqRQ00102; Thu, 27 May 2004 00:52:27 +0900 (JST)
-Received: 4UMRO00 id i4QFqQV28848; Thu, 27 May 2004 00:52:26 +0900 (JST)
+	by mo02.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id AAA02630;
+	Thu, 27 May 2004 00:52:34 +0900 (JST)
+Received: 4UMDO00 id i4QFqXQ00117; Thu, 27 May 2004 00:52:33 +0900 (JST)
+Received: 4UMRO00 id i4QFqXV28859; Thu, 27 May 2004 00:52:33 +0900 (JST)
 	from stratos.frog (64.43.138.210.xn.2iij.net [210.138.43.64]) (authenticated)
-Date: Thu, 27 May 2004 00:52:24 +0900
+Date: Thu, 27 May 2004 00:52:31 +0900
 From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
 To: Ralf Baechle <ralf@linux-mips.org>
 Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH][13/14] vr41xx: update setup.c for NEC Eagle
-Message-Id: <20040527005224.542a5087.yuasa@hh.iij4u.or.jp>
+Subject: [PATCH][14/14] vr41xx: vrc4173.c synchronizes with latest
+Message-Id: <20040527005231.0d0c03b1.yuasa@hh.iij4u.or.jp>
 X-Mailer: Sylpheed version 0.9.10 (GTK+ 1.2.10; i686-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -22,7 +22,7 @@ Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5178
+X-archive-position: 5179
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,147 +32,45 @@ X-list: linux-mips
 
 Hi Ralf,
 
-setup.c for NEC Eagle was updated.
+vrc4173.c synchronizes with latest.
 
 Please apply to v2.6 CVS tree.
 
 Yoichi
 
-diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/nec-eagle/setup.c linux/arch/mips/vr41xx/nec-eagle/setup.c
---- linux-orig/arch/mips/vr41xx/nec-eagle/setup.c	Thu May 13 23:33:00 2004
-+++ linux/arch/mips/vr41xx/nec-eagle/setup.c	Fri May 14 00:23:19 2004
-@@ -1,72 +1,26 @@
+diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/common/vrc4173.c linux/arch/mips/vr41xx/common/vrc4173.c
+--- linux-orig/arch/mips/vr41xx/common/vrc4173.c	Thu Dec 18 01:02:24 2003
++++ linux/arch/mips/vr41xx/common/vrc4173.c	Fri May 14 00:32:07 2004
+@@ -1,143 +1,336 @@
  /*
-- * arch/mips/vr41xx/nec-eagle/setup.c
-+ *  setup.c, Setup for the NEC Eagle/Hawk board.
+- * FILE NAME
+- *	drivers/char/vrc4173.c
+- * 
+- * BRIEF MODULE DESCRIPTION
+- *	NEC VRC4173 driver for NEC VR4122/VR4131.
++ *  vrc4173.c, NEC VRC4173 base driver for NEC VR4122/VR4131.
   *
-- * Setup for the NEC Eagle/Hawk board.
-+ *  Copyright (C) 2001-2004  MontaVista Software Inc.
+- * Author: Yoichi Yuasa
+- *         yyuasa@mvista.com or source@mvista.com
++ *  Copyright (C) 2001-2003  MontaVista Software Inc.
 + *    Author: Yoichi Yuasa <yyuasa@mvista.com, or source@mvista.com>
++ *  Copyright (C) 2004  Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
   *
-- * Author: Yoichi Yuasa <yyuasa@mvista.com, or source@mvista.com>
+- * Copyright 2001,2002 MontaVista Software Inc.
 + *  This program is free software; you can redistribute it and/or modify
 + *  it under the terms of the GNU General Public License as published by
 + *  the Free Software Foundation; either version 2 of the License, or
 + *  (at your option) any later version.
   *
-- * 2001-2004 (c) MontaVista, Software, Inc. This file is licensed under
-- * the terms of the GNU General Public License version 2. This program
-- * is licensed "as is" without any warranty of any kind, whether express
-- * or implied.
-+ *  This program is distributed in the hope that it will be useful,
-+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ *  GNU General Public License for more details.
-+ *
-+ *  You should have received a copy of the GNU General Public License
-+ *  along with this program; if not, write to the Free Software
-+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-  */
- #include <linux/config.h>
--#include <linux/ioport.h>
--
--#include <asm/io.h>
--#include <asm/pci_channel.h>
--#include <asm/vr41xx/eagle.h>
--
--#ifdef CONFIG_PCI
--
--extern void vrc4173_preinit(void);
--
--static struct resource vr41xx_pci_io_resource = {
--	"PCI I/O space",
--	VR41XX_PCI_IO_START,
--	VR41XX_PCI_IO_END,
--	IORESOURCE_IO
--};
--
--static struct resource vr41xx_pci_mem_resource = {
--	"PCI memory space",
--	VR41XX_PCI_MEM_START,
--	VR41XX_PCI_MEM_END,
--	IORESOURCE_MEM
--};
--
--extern struct pci_ops vr41xx_pci_ops;
- 
--struct pci_controller vr41xx_controller = {
--	.pci_ops	= &vr41xx_pci_ops,
--	.io_resource	= &vr41xx_pci_io_resource,
--	.mem_resource	= &vr41xx_pci_mem_resource,
--};
--
--struct vr41xx_pci_address_space vr41xx_pci_mem1 = {
--	VR41XX_PCI_MEM1_BASE,
--	VR41XX_PCI_MEM1_MASK,
--	IO_MEM1_RESOURCE_START
--};
--
--struct vr41xx_pci_address_space vr41xx_pci_mem2 = {
--	VR41XX_PCI_MEM2_BASE,
--	VR41XX_PCI_MEM2_MASK,
--	IO_MEM2_RESOURCE_START
--};
--
--struct vr41xx_pci_address_space vr41xx_pci_io = {
--	VR41XX_PCI_IO_BASE,
--	VR41XX_PCI_IO_MASK,
--	IO_PORT_RESOURCE_START
--};
--
--static struct vr41xx_pci_address_map pci_address_map = {
--	&vr41xx_pci_mem1,
--	&vr41xx_pci_mem2,
--	&vr41xx_pci_io
--};
--#endif
-+#include <asm/vr41xx/vr41xx.h>
- 
- const char *get_system_type(void)
- {
-@@ -75,18 +29,10 @@
- 
- static int nec_eagle_setup(void)
- {
--	set_io_port_base(IO_PORT_BASE);
--	ioport_resource.start = IO_PORT_RESOURCE_START;
--	ioport_resource.end = IO_PORT_RESOURCE_END;
--
- #ifdef CONFIG_SERIAL_8250
- 	vr41xx_select_siu_interface(SIU_RS232C, IRDA_NONE);
- 	vr41xx_siu_init();
- 	vr41xx_dsiu_init();
--#endif
--
--#ifdef CONFIG_PCI
--	vr41xx_pciu_init(&pci_address_map);
- #endif
- 
- 	return 0;
-diff -urN -X dontdiff linux-orig/include/asm-mips/vr41xx/eagle.h linux/include/asm-mips/vr41xx/eagle.h
---- linux-orig/include/asm-mips/vr41xx/eagle.h	Mon Mar 24 00:01:42 2003
-+++ linux/include/asm-mips/vr41xx/eagle.h	Fri May 14 00:23:19 2004
-@@ -1,71 +1,29 @@
- /*
-- * FILE NAME
-- *	include/asm-mips/vr41xx/eagle.h
-+ *  eagle.h, Include file for NEC Eagle board.
-  *
-- * BRIEF MODULE DESCRIPTION
-- *	Include file for NEC Eagle board.
-+ *  Copyright (C) 2001-2003  MontaVista Software Inc.
-+ *    Author: Yoichi Yuasa <yyuasa@mvista.com, or source@mvista.com>
-  *
-- * Author: MontaVista Software, Inc.
-- *         yyuasa@mvista.com or source@mvista.com
-- *
-- * Copyright 2001-2003 MontaVista Software Inc.
-- *
 - *  This program is free software; you can redistribute it and/or modify it
 - *  under the terms of the GNU General Public License as published by the
 - *  Free Software Foundation; either version 2 of the License, or (at your
 - *  option) any later version.
-- *
++ *  This program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
+  *
 - *  THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED
 - *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 - *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
@@ -187,224 +85,618 @@ diff -urN -X dontdiff linux-orig/include/asm-mips/vr41xx/eagle.h linux/include/a
 - *  You should have received a copy of the GNU General Public License along
 - *  with this program; if not, write to the Free Software Foundation, Inc.,
 - *  675 Mass Ave, Cambridge, MA 02139, USA.
-+ *  This program is free software; you can redistribute it and/or modify
-+ *  it under the terms of the GNU General Public License as published by
-+ *  the Free Software Foundation; either version 2 of the License, or
-+ *  (at your option) any later version.
-+ *
-+ *  This program is distributed in the hope that it will be useful,
-+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ *  GNU General Public License for more details.
-+ *
 + *  You should have received a copy of the GNU General Public License
 + *  along with this program; if not, write to the Free Software
 + *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
   */
- #ifndef __NEC_EAGLE_H
- #define __NEC_EAGLE_H
++#include <linux/config.h>
+ #include <linux/init.h>
+ #include <linux/module.h>
+ #include <linux/interrupt.h>
+ #include <linux/irq.h>
+ #include <linux/pci.h>
++#include <linux/spinlock.h>
+ #include <linux/types.h>
  
--#include <asm/addrspace.h>
  #include <asm/vr41xx/vr41xx.h>
+ #include <asm/vr41xx/vrc4173.h>
+ 
+-MODULE_DESCRIPTION("NEC VRC4173 driver for NEC VR4122/4131");
++MODULE_DESCRIPTION("NEC VRC4173 base driver for NEC VR4122/4131");
+ MODULE_AUTHOR("Yoichi Yuasa <yyuasa@mvista.com>");
+ MODULE_LICENSE("GPL");
+ 
+ #define VRC4173_CMUCLKMSK	0x040
++ #define MSKPIU			0x0001
++ #define MSKKIU			0x0002
++ #define MSKAIU			0x0004
++ #define MSKPS2CH1		0x0008
++ #define MSKPS2CH2		0x0010
++ #define MSKUSB			0x0020
++ #define MSKCARD1		0x0040
++ #define MSKCARD2		0x0080
++ #define MSKAC97		0x0100
++ #define MSK48MUSB		0x0400
++ #define MSK48MPIN		0x0800
++ #define MSK48MOSC		0x1000
+ #define VRC4173_CMUSRST		0x042
+-
+-#define VRC4173_SELECTREG	0x09e
++ #define USBRST			0x0001
++ #define CARD1RST		0x0002
++ #define CARD2RST		0x0004
++ #define AC97RST		0x0008
+ 
+ #define VRC4173_SYSINT1REG	0x060
+ #define VRC4173_MSYSINT1REG	0x06c
+ 
+-static struct pci_device_id vrc4173_table[] = {
+-	{PCI_VENDOR_ID_NEC, PCI_DEVICE_ID_NEC_VRC4173, PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0},
+-	{0, }
++#define VRC4173_SELECTREG	0x09e
++ #define SEL3			0x0008
++ #define SEL2			0x0004
++ #define SEL1			0x0002
++ #define SEL0			0x0001
++
++static struct pci_device_id vrc4173_id_table[] __devinitdata = {
++	{	.vendor		= PCI_VENDOR_ID_NEC,
++		.device		= PCI_DEVICE_ID_NEC_VRC4173,
++		.subvendor	= PCI_ANY_ID,
++		.subdevice	= PCI_ANY_ID,			},
++	{	.vendor		= 0,				},
+ };
+ 
+ unsigned long vrc4173_io_offset = 0;
+ 
+ EXPORT_SYMBOL(vrc4173_io_offset);
+ 
+-static u16 vrc4173_cmuclkmsk;
+ static int vrc4173_initialized;
++static uint16_t vrc4173_cmuclkmsk;
++static uint16_t vrc4173_selectreg;
++static spinlock_t vrc4173_cmu_lock;
++static spinlock_t vrc4173_giu_lock;
+ 
+-void vrc4173_clock_supply(u16 mask)
++static inline void set_cmusrst(uint16_t val)
++{
++	uint16_t cmusrst;
++
++	cmusrst = vrc4173_inw(VRC4173_CMUSRST);
++	cmusrst |= val;
++	vrc4173_outw(cmusrst, VRC4173_CMUSRST);
++}
++
++static inline void clear_cmusrst(uint16_t val)
++{
++	uint16_t cmusrst;
++
++	cmusrst = vrc4173_inw(VRC4173_CMUSRST);
++	cmusrst &= ~val;
++	vrc4173_outw(cmusrst, VRC4173_CMUSRST);
++}
++
++void vrc4173_supply_clock(vrc4173_clock_t clock)
+ {
+ 	if (vrc4173_initialized) {
+-		vrc4173_cmuclkmsk |= mask;
++		spin_lock_irq(&vrc4173_cmu_lock);
++
++		switch (clock) {
++		case VRC4173_PIU_CLOCK:
++			vrc4173_cmuclkmsk |= MSKPIU;
++			break;
++		case VRC4173_KIU_CLOCK:
++			vrc4173_cmuclkmsk |= MSKKIU;
++			break;
++		case VRC4173_AIU_CLOCK:
++			vrc4173_cmuclkmsk |= MSKAIU;
++			break;
++		case VRC4173_PS2_CH1_CLOCK:
++			vrc4173_cmuclkmsk |= MSKPS2CH1;
++			break;
++		case VRC4173_PS2_CH2_CLOCK:
++			vrc4173_cmuclkmsk |= MSKPS2CH2;
++			break;
++		case VRC4173_USBU_PCI_CLOCK:
++			set_cmusrst(USBRST);
++			vrc4173_cmuclkmsk |= MSKUSB;
++			break;
++		case VRC4173_CARDU1_PCI_CLOCK:
++			set_cmusrst(CARD1RST);
++			vrc4173_cmuclkmsk |= MSKCARD1;
++			break;
++		case VRC4173_CARDU2_PCI_CLOCK:
++			set_cmusrst(CARD2RST);
++			vrc4173_cmuclkmsk |= MSKCARD2;
++			break;
++		case VRC4173_AC97U_PCI_CLOCK:
++			set_cmusrst(AC97RST);
++			vrc4173_cmuclkmsk |= MSKAC97;
++			break;
++		case VRC4173_USBU_48MHz_CLOCK:
++			set_cmusrst(USBRST);
++			vrc4173_cmuclkmsk |= MSK48MUSB;
++			break;
++		case VRC4173_EXT_48MHz_CLOCK:
++			if (vrc4173_cmuclkmsk & MSK48MOSC)
++				vrc4173_cmuclkmsk |= MSK48MPIN;
++			else
++				printk(KERN_WARNING
++				       "vrc4173_supply_clock: "
++				       "Please supply VRC4173_48MHz_CLOCK first "
++				       "rather than VRC4173_EXT_48MHz_CLOCK.\n");
++			break;
++		case VRC4173_48MHz_CLOCK:
++			vrc4173_cmuclkmsk |= MSK48MOSC;
++			break;
++		default:
++			printk(KERN_WARNING
++			       "vrc4173_supply_clock: Invalid CLOCK value %u\n", clock);
++			break;
++		}
++
+ 		vrc4173_outw(vrc4173_cmuclkmsk, VRC4173_CMUCLKMSK);
++
++		switch (clock) {
++		case VRC4173_USBU_PCI_CLOCK:
++		case VRC4173_USBU_48MHz_CLOCK:
++			clear_cmusrst(USBRST);
++			break;
++		case VRC4173_CARDU1_PCI_CLOCK:
++			clear_cmusrst(CARD1RST);
++			break;
++		case VRC4173_CARDU2_PCI_CLOCK:
++			clear_cmusrst(CARD2RST);
++			break;
++		case VRC4173_AC97U_PCI_CLOCK:
++			clear_cmusrst(AC97RST);
++			break;
++		default:
++			break;
++		}
++
++		spin_unlock_irq(&vrc4173_cmu_lock);
+ 	}
+ }
+ 
+-void vrc4173_clock_mask(u16 mask)
++EXPORT_SYMBOL(vrc4173_supply_clock);
++
++void vrc4173_mask_clock(vrc4173_clock_t clock)
+ {
+ 	if (vrc4173_initialized) {
+-		vrc4173_cmuclkmsk &= ~mask;
++		spin_lock_irq(&vrc4173_cmu_lock);
++
++		switch (clock) {
++		case VRC4173_PIU_CLOCK:
++			vrc4173_cmuclkmsk &= ~MSKPIU;
++			break;
++		case VRC4173_KIU_CLOCK:
++			vrc4173_cmuclkmsk &= ~MSKKIU;
++			break;
++		case VRC4173_AIU_CLOCK:
++			vrc4173_cmuclkmsk &= ~MSKAIU;
++			break;
++		case VRC4173_PS2_CH1_CLOCK:
++			vrc4173_cmuclkmsk &= ~MSKPS2CH1;
++			break;
++		case VRC4173_PS2_CH2_CLOCK:
++			vrc4173_cmuclkmsk &= ~MSKPS2CH2;
++			break;
++		case VRC4173_USBU_PCI_CLOCK:
++			set_cmusrst(USBRST);
++			vrc4173_cmuclkmsk &= ~MSKUSB;
++			break;
++		case VRC4173_CARDU1_PCI_CLOCK:
++			set_cmusrst(CARD1RST);
++			vrc4173_cmuclkmsk &= ~MSKCARD1;
++			break;
++		case VRC4173_CARDU2_PCI_CLOCK:
++			set_cmusrst(CARD2RST);
++			vrc4173_cmuclkmsk &= ~MSKCARD2;
++			break;
++		case VRC4173_AC97U_PCI_CLOCK:
++			set_cmusrst(AC97RST);
++			vrc4173_cmuclkmsk &= ~MSKAC97;
++			break;
++		case VRC4173_USBU_48MHz_CLOCK:
++			set_cmusrst(USBRST);
++			vrc4173_cmuclkmsk &= ~MSK48MUSB;
++			break;
++		case VRC4173_EXT_48MHz_CLOCK:
++			vrc4173_cmuclkmsk &= ~MSK48MPIN;
++			break;
++		case VRC4173_48MHz_CLOCK:
++			vrc4173_cmuclkmsk &= ~MSK48MOSC;
++			break;
++		default:
++			printk(KERN_WARNING "vrc4173_mask_clock: Invalid CLOCK value %u\n", clock);
++			break;
++		}
++
+ 		vrc4173_outw(vrc4173_cmuclkmsk, VRC4173_CMUCLKMSK);
++
++		switch (clock) {
++		case VRC4173_USBU_PCI_CLOCK:
++		case VRC4173_USBU_48MHz_CLOCK:
++			clear_cmusrst(USBRST);
++			break;
++		case VRC4173_CARDU1_PCI_CLOCK:
++			clear_cmusrst(CARD1RST);
++			break;
++		case VRC4173_CARDU2_PCI_CLOCK:
++			clear_cmusrst(CARD2RST);
++			break;
++		case VRC4173_AC97U_PCI_CLOCK:
++			clear_cmusrst(AC97RST);
++			break;
++		default:
++			break;
++		}
++
++		spin_unlock_irq(&vrc4173_cmu_lock);
+ 	}
+ }
+ 
++EXPORT_SYMBOL(vrc4173_mask_clock);
++
+ static inline void vrc4173_cmu_init(void)
+ {
+ 	vrc4173_cmuclkmsk = vrc4173_inw(VRC4173_CMUCLKMSK);
+-}
+ 
+-EXPORT_SYMBOL(vrc4173_clock_supply);
+-EXPORT_SYMBOL(vrc4173_clock_mask);
++	spin_lock_init(&vrc4173_cmu_lock);
++}
+ 
+-void vrc4173_select_function(int func)
++void vrc4173_select_function(vrc4173_function_t function)
+ {
+-	u16 val;
+-
+ 	if (vrc4173_initialized) {
+-		val = vrc4173_inw(VRC4173_SELECTREG);
+-		switch(func) {
+-		case PS2CH1_SELECT:
+-			val |= 0x0004;
++		spin_lock_irq(&vrc4173_giu_lock);
++
++		switch(function) {
++		case PS2_CHANNEL1:
++			vrc4173_selectreg |= SEL2;
+ 			break;
+-		case PS2CH2_SELECT:
+-			val |= 0x0002;
++		case PS2_CHANNEL2:
++			vrc4173_selectreg |= SEL1;
+ 			break;
+-		case TOUCHPANEL_SELECT:
+-			val &= 0x0007;
++		case TOUCHPANEL:
++			vrc4173_selectreg &= SEL2 | SEL1 | SEL0;
+ 			break;
+-		case KIU8_SELECT:
+-			val &= 0x000e;
++		case KEYBOARD_8SCANLINES:
++			vrc4173_selectreg &= SEL3 | SEL2 | SEL1;
+ 			break;
+-		case KIU10_SELECT:
+-			val &= 0x000c;
++		case KEYBOARD_10SCANLINES:
++			vrc4173_selectreg &= SEL3 | SEL2;
+ 			break;
+-		case KIU12_SELECT:
+-			val &= 0x0008;
++		case KEYBOARD_12SCANLINES:
++			vrc4173_selectreg &= SEL3;
+ 			break;
+-		case GPIO_SELECT:
+-			val |= 0x0008;
++		case GPIO_0_15PINS:
++			vrc4173_selectreg |= SEL0;
++			break;
++		case GPIO_16_20PINS:
++			vrc4173_selectreg |= SEL3;
+ 			break;
+ 		}
+-		vrc4173_outw(val, VRC4173_SELECTREG);
++
++		vrc4173_outw(vrc4173_selectreg, VRC4173_SELECTREG);
++
++		spin_unlock_irq(&vrc4173_giu_lock);
+ 	}
+ }
+ 
+ EXPORT_SYMBOL(vrc4173_select_function);
+ 
++static inline void vrc4173_giu_init(void)
++{
++	vrc4173_selectreg = vrc4173_inw(VRC4173_SELECTREG);
++
++	spin_lock_init(&vrc4173_giu_lock);
++}
++
+ static void enable_vrc4173_irq(unsigned int irq)
+ {
+-	u16 val;
++	uint16_t val;
+ 
+ 	val = vrc4173_inw(VRC4173_MSYSINT1REG);
+-	val |= (u16)1 << (irq - VRC4173_IRQ_BASE);
++	val |= (uint16_t)1 << (irq - VRC4173_IRQ_BASE);
+ 	vrc4173_outw(val, VRC4173_MSYSINT1REG);
+ }
+ 
+ static void disable_vrc4173_irq(unsigned int irq)
+ {
+-	u16 val;
++	uint16_t val;
+ 
+ 	val = vrc4173_inw(VRC4173_MSYSINT1REG);
+-	val &= ~((u16)1 << (irq - VRC4173_IRQ_BASE));
++	val &= ~((uint16_t)1 << (irq - VRC4173_IRQ_BASE));
+ 	vrc4173_outw(val, VRC4173_MSYSINT1REG);
+ }
+ 
+@@ -157,19 +350,18 @@
+ }
+ 
+ static struct hw_interrupt_type vrc4173_irq_type = {
+-	"VRC4173",
+-	startup_vrc4173_irq,
+-	shutdown_vrc4173_irq,
+-	enable_vrc4173_irq,
+-	disable_vrc4173_irq,
+-	ack_vrc4173_irq,
+-	end_vrc4173_irq,
+-	NULL
++	.typename	= "VRC4173",
++	.startup	= startup_vrc4173_irq,
++	.shutdown	= shutdown_vrc4173_irq,
++	.enable		= enable_vrc4173_irq,
++	.disable	= disable_vrc4173_irq,
++	.ack		= ack_vrc4173_irq,
++	.end		= end_vrc4173_irq,
+ };
+ 
+ static int vrc4173_get_irq_number(int irq)
+ {
+-	u16 status, mask;
++	uint16_t status, mask;
+ 	int i;
+ 
+         status = vrc4173_inw(VRC4173_SYSINT1REG);
+@@ -179,18 +371,18 @@
+ 	if (status) {
+ 		for (i = 0; i < 16; i++)
+ 			if (status & (0x0001 << i))
+-				return VRC4173_IRQ_BASE + i;
++				return VRC4173_IRQ(i);
+ 	}
+ 
+ 	return -EINVAL;
+ }
+ 
+-static inline void vrc4173_icu_init(int cascade_irq)
++static inline int vrc4173_icu_init(int cascade_irq)
+ {
+ 	int i;
+ 
+ 	if (cascade_irq < GIU_IRQ(0) || cascade_irq > GIU_IRQ(15))
+-		return;
++		return -EINVAL;
+ 	
+ 	vrc4173_outw(0, VRC4173_MSYSINT1REG);
+ 
+@@ -199,33 +391,38 @@
+ 
+ 	for (i = VRC4173_IRQ_BASE; i <= VRC4173_IRQ_LAST; i++)
+                 irq_desc[i].handler = &vrc4173_irq_type;
++
++	return 0;
+ }
+ 
+-static int __devinit vrc4173_probe(struct pci_dev *pdev,
+-                                   const struct pci_device_id *ent)
++static int __devinit vrc4173_probe(struct pci_dev *dev,
++                                   const struct pci_device_id *id)
+ {
+ 	unsigned long start, flags;
+ 	int err;
+ 
+-	if ((err = pci_enable_device(pdev)) < 0) {
+-		printk(KERN_ERR "vrc4173: failed to enable device -- err=%d\n", err);
++	err = pci_enable_device(dev);
++	if (err < 0) {
++		printk(KERN_ERR "vrc4173: Failed to enable PCI device, aborting\n");
+ 		return err;
+ 	}
+ 
+-	pci_set_master(pdev);
++	pci_set_master(dev);
+ 
+-	start = pci_resource_start(pdev, 0);
+-	if (!start) {
+-		printk(KERN_ERR "vrc4173:No PCI I/O resources, aborting\n");
+-		return -ENODEV;
++	start = pci_resource_start(dev, 0);
++	if (start == 0) {
++		printk(KERN_ERR "vrc4173:No such PCI I/O resource, aborting\n");
++		return -ENXIO;
+ 	}
+ 
+-	if (!start || (((flags = pci_resource_flags(pdev, 0)) & IORESOURCE_IO) == 0)) {
+-		printk(KERN_ERR "vrc4173: No PCI I/O resources, aborting\n");
+-		return -ENODEV;
++	flags = pci_resource_flags(dev, 0);
++	if ((flags & IORESOURCE_IO) == 0) {
++		printk(KERN_ERR "vrc4173: No such PCI I/O resource, aborting\n");
++		return -ENXIO;
+ 	}
+ 
+-	if ((err = pci_request_regions(pdev, "NEC VRC4173")) < 0) {
++	err = pci_request_regions(dev, "NEC VRC4173");
++	if (err < 0) {
+ 		printk(KERN_ERR "vrc4173: PCI resources are busy, aborting\n");
+ 		return err;
+ 	}
+@@ -233,25 +430,37 @@
+ 	set_vrc4173_io_offset(start);
+ 
+ 	vrc4173_cmu_init();
++	vrc4173_giu_init();
+ 
+-	vrc4173_icu_init(pdev->irq);
++	err = vrc4173_icu_init(dev->irq);
++	if (err < 0) {
++		printk(KERN_ERR "vrc4173: Invalid IRQ %d, aborting\n", dev->irq);
++		return err;
++	}
+ 
+-	if ((err = vr41xx_cascade_irq(pdev->irq, vrc4173_get_irq_number)) < 0) {
+-		printk(KERN_ERR
+-		       "vrc4173: IRQ resource %d is busy, aborting\n", pdev->irq);
++	err = vr41xx_cascade_irq(dev->irq, vrc4173_get_irq_number);
++	if (err < 0) {
++		printk(KERN_ERR "vrc4173: IRQ resource %d is busy, aborting\n", dev->irq);
+ 		return err;
+ 	}
+ 
+ 	printk(KERN_INFO
+-	       "NEC VRC4173 at 0x%#08lx, IRQ is cascaded to %d\n", start, pdev->irq);
++	       "NEC VRC4173 at 0x%#08lx, IRQ is cascaded to %d\n", start, dev->irq);
+ 
+ 	return 0;
+ }
+ 
++static void vrc4173_remove(struct pci_dev *dev)
++{
++	free_irq(dev->irq, NULL);
++
++	pci_release_regions(dev);
++}
++
+ static struct pci_driver vrc4173_driver = {
+ 	.name		= "NEC VRC4173",
+ 	.probe		= vrc4173_probe,
+-	.remove		= NULL,
++	.remove		= vrc4173_remove,
+ 	.id_table	= vrc4173_table,
+ };
+ 
+@@ -259,7 +468,8 @@
+ {
+ 	int err;
+ 
+-	if ((err = pci_module_init(&vrc4173_driver)) < 0)
++	err = pci_module_init(&vrc4173_driver);
++	if (err < 0)
+ 		return err;
+ 
+ 	vrc4173_initialized = 1;
+diff -urN -X dontdiff linux-orig/include/asm-mips/vr41xx/vrc4173.h linux/include/asm-mips/vr41xx/vrc4173.h
+--- linux-orig/include/asm-mips/vr41xx/vrc4173.h	Sat Dec 20 01:49:05 2003
++++ linux/include/asm-mips/vr41xx/vrc4173.h	Fri May 14 00:32:07 2004
+@@ -1,19 +1,24 @@
+ /*
+- * FILE NAME
+- *	include/asm-mips/vr41xx/vrc4173.h
++ *  vrc4173.h, Include file for NEC VRC4173.
+  *
+- * BRIEF MODULE DESCRIPTION
+- *	Include file for NEC VRC4173.
++ *  Copyright (C) 2000  Michael R. McDonald
++ *  Copyright (C) 2001-2003 Montavista Software Inc.
++ *    Author: Yoichi Yuasa <yyuasa@mvista.com, or source@mvista.com>
++ *  Copyright (C) 2004  Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+  *
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
+  *
+- * Copyright (C) 2000 by Michael R. McDonald
++ *  This program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
+  *
+- * Copyright 2001-2003 Montavista Software Inc.
+- * Author: Yoichi Yuasa
+- *         yyuasa@mvista.com or source@mvista.com
++ *  You should have received a copy of the GNU General Public License
++ *  along with this program; if not, write to the Free Software
++ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+  */
+ #ifndef __NEC_VRC4173_H 
+ #define __NEC_VRC4173_H 
+@@ -72,35 +77,38 @@
+ /*
+  * Clock Mask Unit
+  */
+-#define VRC4173_PIU_CLOCK		0x0001
+-#define VRC4173_KIU_CLOCK		0x0002
+-#define VRC4173_AIU_CLOCK		0x0004
+-#define VRC4173_PS2CH1_CLOCK		0x0008
+-#define VRC4173_PS2CH2_CLOCK		0x0010
+-#define VRC4173_USBU_PCI_CLOCK		0x0020
+-#define VRC4173_CARDU1_PCI_CLOCK	0x0040
+-#define VRC4173_CARDU2_PCI_CLOCK	0x0080
+-#define VRC4173_AC97U_PCI_CLOCK		0x0100
+-#define VRC4173_USBU_48MHz_CLOCK	0x0400
+-#define VRC4173_EXT_48MHz_CLOCK		0x0800
+-#define VRC4173_48MHz_CLOCK		0x1000
++enum vrc4173_clock {
++	VRC4173_PIU_CLOCK,
++	VRC4173_KIU_CLOCK,
++	VRC4173_AIU_CLOCK,
++	VRC4173_PS2_CH1_CLOCK,
++	VRC4173_PS2_CH2_CLOCK,
++	VRC4173_USBU_PCI_CLOCK,
++	VRC4173_CARDU1_PCI_CLOCK,
++	VRC4173_CARDU2_PCI_CLOCK,
++	VRC4173_AC97U_PCI_CLOCK,
++	VRC4173_USBU_48MHz_CLOCK,
++	VRC4173_EXT_48MHz_CLOCK,
++	VRC4173_48MHz_CLOCK,
++} vrc4173_clock_t;
+ 
+-extern void vrc4173_clock_supply(u16 mask);
+-extern void vrc4173_clock_mask(u16 mask);
++extern void vrc4173_supply_clock(vrc4173_clock_t clock);
++extern void vrc4173_mask_clock(vrc4173_clock_t clock);
  
  /*
-- * Board specific address mapping
-- */
--#define VR41XX_PCI_MEM1_BASE		0x10000000
--#define VR41XX_PCI_MEM1_SIZE		0x04000000
--#define VR41XX_PCI_MEM1_MASK		0x7c000000
--
--#define VR41XX_PCI_MEM2_BASE		0x14000000
--#define VR41XX_PCI_MEM2_SIZE		0x02000000
--#define VR41XX_PCI_MEM2_MASK		0x7e000000
--
--#define VR41XX_PCI_IO_BASE		0x16000000
--#define VR41XX_PCI_IO_SIZE		0x02000000
--#define VR41XX_PCI_IO_MASK		0x7e000000
--
--#define VR41XX_PCI_IO_START		0x01000000
--#define VR41XX_PCI_IO_END		0x01ffffff
--
--#define VR41XX_PCI_MEM_START		0x12000000
--#define VR41XX_PCI_MEM_END		0x15ffffff
--
--#define IO_PORT_BASE			KSEG1ADDR(VR41XX_PCI_IO_BASE)
--#define IO_PORT_RESOURCE_START		0
--#define IO_PORT_RESOURCE_END		VR41XX_PCI_IO_SIZE
--#define IO_MEM1_RESOURCE_START		VR41XX_PCI_MEM1_BASE
--#define IO_MEM1_RESOURCE_END		(VR41XX_PCI_MEM1_BASE + VR41XX_PCI_MEM1_SIZE)
--#define IO_MEM2_RESOURCE_START		VR41XX_PCI_MEM2_BASE
--#define IO_MEM2_RESOURCE_END		(VR41XX_PCI_MEM2_BASE + VR41XX_PCI_MEM2_SIZE)
--
--/*
-  * General-Purpose I/O Pin Number
+  * General-Purpose I/O Unit
   */
- #define VRC4173_PIN			1
-@@ -99,167 +57,5 @@
- #define CP_INTD_IRQ			PCIINT_IRQ(3)
- #define LANINTA_IRQ			PCIINT_IRQ(4)
- #define PCIINT_IRQ_LAST			LANINTA_IRQ
--
--/*
-- * On board Devices I/O Mapping
-- */
--#define NEC_EAGLE_SIO1RB		KSEG1ADDR(0x0DFFFEC0)
--#define NEC_EAGLE_SIO1TH		KSEG1ADDR(0x0DFFFEC0)
--#define NEC_EAGLE_SIO1IE		KSEG1ADDR(0x0DFFFEC2)
--#define NEC_EAGLE_SIO1IID		KSEG1ADDR(0x0DFFFEC4)
--#define NEC_EAGLE_SIO1FC		KSEG1ADDR(0x0DFFFEC4)
--#define NEC_EAGLE_SIO1LC		KSEG1ADDR(0x0DFFFEC6)
--#define NEC_EAGLE_SIO1MC		KSEG1ADDR(0x0DFFFEC8)
--#define NEC_EAGLE_SIO1LS		KSEG1ADDR(0x0DFFFECA)
--#define NEC_EAGLE_SIO1MS		KSEG1ADDR(0x0DFFFECC)
--#define NEC_EAGLE_SIO1SC		KSEG1ADDR(0x0DFFFECE)
--
--#define NEC_EAGLE_SIO2TH		KSEG1ADDR(0x0DFFFED0)
--#define NEC_EAGLE_SIO2IE		KSEG1ADDR(0x0DFFFED2)
--#define NEC_EAGLE_SIO2IID		KSEG1ADDR(0x0DFFFED4)
--#define NEC_EAGLE_SIO2FC		KSEG1ADDR(0x0DFFFED4)
--#define NEC_EAGLE_SIO2LC		KSEG1ADDR(0x0DFFFED6)
--#define NEC_EAGLE_SIO2MC		KSEG1ADDR(0x0DFFFED8)
--#define NEC_EAGLE_SIO2LS		KSEG1ADDR(0x0DFFFEDA)
--#define NEC_EAGLE_SIO2MS		KSEG1ADDR(0x0DFFFEDC)
--#define NEC_EAGLE_SIO2SC		KSEG1ADDR(0x0DFFFEDE)
--
--#define NEC_EAGLE_PIOPP_DATA		KSEG1ADDR(0x0DFFFEE0)
--#define NEC_EAGLE_PIOPP_STATUS		KSEG1ADDR(0x0DFFFEE2)
--#define NEC_EAGLE_PIOPP_CNT		KSEG1ADDR(0x0DFFFEE4)
--#define NEC_EAGLE_PIOPP_EPPADDR		KSEG1ADDR(0x0DFFFEE6)
--#define NEC_EAGLE_PIOPP_EPPDATA0	KSEG1ADDR(0x0DFFFEE8)
--#define NEC_EAGLE_PIOPP_EPPDATA1	KSEG1ADDR(0x0DFFFEEA)
--#define NEC_EAGLE_PIOPP_EPPDATA2	KSEG1ADDR(0x0DFFFEEC)
--
--#define NEC_EAGLE_PIOECP_DATA		KSEG1ADDR(0x0DFFFEF0)
--#define NEC_EAGLE_PIOECP_CONFIG		KSEG1ADDR(0x0DFFFEF2)
--#define NEC_EAGLE_PIOECP_EXTCNT		KSEG1ADDR(0x0DFFFEF4)
--
--/*
-- *  FLSHCNT Register
-- */
--#define NEC_EAGLE_FLSHCNT		KSEG1ADDR(0x0DFFFFA0)
--#define NEC_EAGLE_FLSHCNT_FRDY		0x80
--#define NEC_EAGLE_FLSHCNT_VPPE		0x40
--#define NEC_EAGLE_FLSHCNT_WP2		0x01
--
--/*
-- * FLSHBANK Register
-- */
--#define NEC_EAGLE_FLSHBANK		KSEG1ADDR(0x0DFFFFA4)
--#define NEC_EAGLE_FLSHBANK_S_BANK2	0x40
--#define NEC_EAGLE_FLSHBANK_S_BANK1	0x20
--#define NEC_EAGLE_FLSHBANK_BNKQ4	0x10
--#define NEC_EAGLE_FLSHBANK_BNKQ3	0x08
--#define NEC_EAGLE_FLSHBANK_BNKQ2	0x04
--#define NEC_EAGLE_FLSHBANK_BNKQ1	0x02
--#define NEC_EAGLE_FLSHBANK_BNKQ0	0x01
--
--/*
-- * SWITCH Setting Register
-- */
--#define NEC_EAGLE_SWTCHSET		KSEG1ADDR(0x0DFFFFA8)
--#define NEC_EAGLE_SWTCHSET_DP2SW4	0x80
--#define NEC_EAGLE_SWTCHSET_DP2SW3	0x40
--#define NEC_EAGLE_SWTCHSET_DP2SW2	0x20
--#define NEC_EAGLE_SWTCHSET_DP2SW1	0x10
--#define NEC_EAGLE_SWTCHSET_DP1SW4	0x08
--#define NEC_EAGLE_SWTCHSET_DP1SW3	0x04
--#define NEC_EAGLE_SWTCHSET_DP1SW2	0x02
--#define NEC_EAGLE_SWTCHSET_DP1SW1	0x01
--
--/*
-- * PPT Parallel Port Device Controller
-- */
--#define NEC_EAGLE_PPT_WRITE_DATA	KSEG1ADDR(0x0DFFFFB0)
--#define NEC_EAGLE_PPT_READ_DATA		KSEG1ADDR(0x0DFFFFB2)
--#define NEC_EAGLE_PPT_CNT		KSEG1ADDR(0x0DFFFFB4)
--#define NEC_EAGLE_PPT_CNT2		KSEG1ADDR(0x0DFFFFB4)
--
--/* Control Register */
--#define NEC_EAGLE_PPT_INTMSK		0x20
--#define NEC_EAGLE_PPT_PARIINT		0x10
--#define NEC_EAGLE_PPT_SELECTIN		0x08
--#define NEC_EAGLE_PPT_INIT		0x04
--#define NEC_EAGLE_PPT_AUTOFD		0x02
--#define NEC_EAGLE_PPT_STROBE		0x01
--
--/* Control Rgister 2 */
--#define NEC_EAGLE_PPT_PAREN		0x80
--#define NEC_EAGLE_PPT_AUTOEN		0x20
--#define NEC_EAGLE_PPT_BUSY		0x10
--#define NEC_EAGLE_PPT_ACK		0x08
--#define NEC_EAGLE_PPT_PE		0x04
--#define NEC_EAGLE_PPT_SELECT		0x02
--#define NEC_EAGLE_PPT_FAULT		0x01
--
--/*
-- * LEDWR Register
-- */
--#define NEC_EAGLE_LEDWR1		KSEG1ADDR(0x0DFFFFC0)
--#define NEC_EAGLE_LEDWR2		KSEG1ADDR(0x0DFFFFC4)
--
--/*
-- * SDBINT Register
-- */
--#define NEC_EAGLE_SDBINT		KSEG1ADDR(0x0DFFFFD0)
--#define NEC_EAGLE_SDBINT_PARINT		0x20
--#define NEC_EAGLE_SDBINT_SIO2INT	0x10
--#define NEC_EAGLE_SDBINT_SIO1INT	0x08
--#define NEC_EAGLE_SDBINT_ENUM		0x04
--#define NEC_EAGLE_SDBINT_DEG		0x02
--
--/*
-- * SDB INTMSK Register
-- */
--#define NEC_EAGLE_SDBINTMSK		KSEG1ADDR(0x0DFFFFD4)
--#define NEC_EAGLE_SDBINTMSK_MSKPAR	0x20
--#define NEC_EAGLE_SDBINTMSK_MSKSIO2	0x10
--#define NEC_EAGLE_SDBINTMSK_MSKSIO1	0x08
--#define NEC_EAGLE_SDBINTMSK_MSKENUM	0x04
--#define NEC_EAGLE_SDBINTMSK_MSKDEG	0x02
--
--/*
-- * RSTREG Register
-- */
--#define NEC_EAGLE_RSTREG		KSEG1ADDR(0x0DFFFFD8)
--#define NEC_EAGLE_RST_RSTSW		0x02
--#define NEC_EAGLE_RST_LEDOFF		0x01
--
--/*
-- * PCI INT Rgister
-- */
--#define NEC_EAGLE_PCIINTREG		KSEG1ADDR(0x0DFFFFDC)
--#define NEC_EAGLE_PCIINT_LANINT		0x10
--#define NEC_EAGLE_PCIINT_CP_INTD	0x08
--#define NEC_EAGLE_PCIINT_CP_INTC	0x04
--#define NEC_EAGLE_PCIINT_CP_INTB	0x02
--#define NEC_EAGLE_PCIINT_CP_INTA	0x01
--
--/*
-- * PCI INT Mask Register
-- */
--#define NEC_EAGLE_PCIINTMSKREG		KSEG1ADDR(0x0DFFFFE0)
--#define NEC_EAGLE_PCIINTMSK_MSKLANINT	0x10
--#define NEC_EAGLE_PCIINTMSK_MSKCP_INTD	0x08
--#define NEC_EAGLE_PCIINTMSK_MSKCP_INTC	0x04
--#define NEC_EAGLE_PCIINTMSK_MSKCP_INTB	0x02
--#define NEC_EAGLE_PCIINTMSK_MSKCP_INTA	0x01
--
--/*
-- * CLK Division Register
-- */
--#define NEC_EAGLE_CLKDIV		KSEG1ADDR(0x0DFFFFE4)
--#define NEC_EAGLE_CLKDIV_PCIDIV1	0x10
--#define NEC_EAGLE_CLKDIV_PCIDIV0	0x08
--#define NEC_EAGLE_CLKDIV_VTDIV2		0x04
--#define NEC_EAGLE_CLKDIV_VTDIV1		0x02
--#define NEC_EAGLE_CLKDIV_VTDIV0		0x01
--
--/*
-- * Source Revision Register
-- */
--#define NEC_EAGLE_REVISION		KSEG1ADDR(0x0DFFFFE8)
+-enum {
+-	PS2CH1_SELECT,
+-	PS2CH2_SELECT,
+-	TOUCHPANEL_SELECT,
+-	KIU8_SELECT,
+-	KIU10_SELECT,
+-	KIU12_SELECT,
+-	GPIO_SELECT
+-};
++enum vrc4173_function {
++	PS2_CHANNEL1,
++	PS2_CHANNEL2,
++	TOUCHPANEL,
++	KEYBOARD_8SCANLINES,
++	KEYBOARD_10SCANLINES,
++	KEYBOARD_12SCANLINES,
++	GPIO_0_15PINS,
++	GPIO_16_20PINS,
++} vrc4173_function_t;
  
- #endif /* __NEC_EAGLE_H */
+-extern void vrc4173_select_function(int func);
++extern void vrc4173_select_function(vrc4173_function_t function);
+ 
+ #endif /* __NEC_VRC4173_H */

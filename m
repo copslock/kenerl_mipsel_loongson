@@ -1,69 +1,49 @@
-Received:  by oss.sgi.com id <S305179AbQADB4p>;
-	Mon, 3 Jan 2000 17:56:45 -0800
-Received: from sgi.SGI.COM ([192.48.153.1]:11794 "EHLO sgi.com")
-	by oss.sgi.com with ESMTP id <S305166AbQADB4b>;
-	Mon, 3 Jan 2000 17:56:31 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id RAA04921; Mon, 3 Jan 2000 17:57:08 -0800 (PST)
+Received:  by oss.sgi.com id <S305180AbQADV5j>;
+	Tue, 4 Jan 2000 13:57:39 -0800
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:36202 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S305166AbQADV51>; Tue, 4 Jan 2000 13:57:27 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id OAA01967; Tue, 4 Jan 2000 14:00:16 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id RAA23299
+	id NAA29948
 	for linux-list;
-	Mon, 3 Jan 2000 17:44:31 -0800 (PST)
+	Tue, 4 Jan 2000 13:48:31 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id RAA50701
-	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 3 Jan 2000 17:44:28 -0800 (PST)
-	mail_from (ralf@oss.sgi.com)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
+	via ESMTP id NAA13262
+	for <linux@engr.sgi.com>;
+	Tue, 4 Jan 2000 13:48:27 -0800 (PST)
+	mail_from (indy.j@seznam.cz)
+Received: from pingu.kastner.net (as1-34.plzen.iol.cz [194.228.131.162]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id RAA00264
-	for <linux@cthulhu.engr.sgi.com>; Mon, 3 Jan 2000 17:44:26 -0800 (PST)
-	mail_from (ralf@oss.sgi.com)
-Received: from cacc-28.uni-koblenz.de (cacc-28.uni-koblenz.de [141.26.131.28])
-	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id CAA22776;
-	Tue, 4 Jan 2000 02:44:21 +0100 (MET)
-Received:  by lappi.waldorf-gmbh.de id <S407891AbQADBnx>;
-	Tue, 4 Jan 2000 02:43:53 +0100
-Date:   Tue, 4 Jan 2000 02:43:53 +0100
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Jeff Harrell <jharrell@ti.com>
-Cc:     linux@cthulhu.engr.sgi.com, bbrown@ti.com
-Subject: Re: C/Assembler listing files
-Message-ID: <20000104024353.B6063@uni-koblenz.de>
-References: <38712453.B0BCE0CD@ti.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0pre3us
-In-Reply-To: <38712453.B0BCE0CD@ti.com>
-X-Accept-Language: de,en,fr
+	via ESMTP id NAA05523
+	for <linux@engr.sgi.com>; Tue, 4 Jan 2000 13:48:20 -0800 (PST)
+	mail_from (indy.j@seznam.cz)
+Received: from pingu.kastner.net (IDENT:root@pingu.kastner.net [192.168.1.1])
+	by pingu.kastner.net (8.9.3/8.8.7) with SMTP id WAA01058
+	for <linux@engr.sgi.com>; Tue, 4 Jan 2000 22:48:02 +0100
+From:   "Jiri Kastner jr." <indy@arcom.cz>
+To:     linux@cthulhu.engr.sgi.com
+Subject: XFree86-FBDev and /dev/fb0
+Date:   Tue, 4 Jan 2000 22:40:27 +0100
+X-Mailer: KMail [version 1.0.20]
+Content-Type: text/plain
+MIME-Version: 1.0
+Message-Id: <00010422480200.01013@pingu.kastner.net>
+Content-Transfer-Encoding: 8bit
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On Mon, Jan 03, 2000 at 03:36:03PM -0700, Jeff Harrell wrote:
+I have installed XFree86-FBDev, but everytime, when I want to start X, I get
+message, that is missing /dev/fb0, and I dont know, how to make it (MAKEDEV
+dont know anything about fb* devices).
 
-> Has anyone tried to generate an interleaved C and Assembler listing file
-> with the MIPS cross compilation tools?  I tried to pass the following flags
-> to gcc
-> (and the assembler):
-
-I just tried this on my current version of the x-tools and it seemed
-to work.  There is a number of other problems, mostly that 32-bit
-static linking of PIC code is broken and then infinite 64-bit problems
-which prevent me from making a real release and declaring them to be
-``the'' official versions.  If that doesn't bother you, go ahead and
-get the stuff from oss.sgi.com:/pub/linux/mips/crossdev/testing/.
-
-  Ralf
+Jiri Kastner.

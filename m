@@ -1,63 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jun 2004 17:23:26 +0100 (BST)
-Received: from smtp.vmb-service.ru ([IPv6:::ffff:80.73.198.33]:46477 "EHLO
-	smtp.vmb-service.ru") by linux-mips.org with ESMTP
-	id <S8225479AbUFVQXW>; Tue, 22 Jun 2004 17:23:22 +0100
-Received: from office.vmb-service.ru ([80.73.192.47]:44045 "EHLO ALEC")
-	by Altair with ESMTP id <S1166865AbUFVQXN>;
-	Tue, 22 Jun 2004 20:23:13 +0400
-Reply-To: <a.voropay@vmb-service.ru>
-From: "Alexander Voropay" <a.voropay@vmb-service.ru>
-To: <linux-mips@linux-mips.org>
-Subject: Howto run Linux on ACER PICA 61
-Date: Tue, 22 Jun 2004 20:23:57 +0400
-Organization: VMB-Service
-Message-ID: <01d701c45875$5205b460$0200000a@ALEC>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook, Build 10.0.4024
-Importance: Normal
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4927.1200
-Return-Path: <a.voropay@vmb-service.ru>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jun 2004 17:32:44 +0100 (BST)
+Received: from p508B7102.dip.t-dialin.net ([IPv6:::ffff:80.139.113.2]:35612
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225479AbUFVQck>; Tue, 22 Jun 2004 17:32:40 +0100
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i5MGWYQx007898;
+	Tue, 22 Jun 2004 18:32:34 +0200
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i5MGWV5x007894;
+	Tue, 22 Jun 2004 18:32:31 +0200
+Date: Tue, 22 Jun 2004 18:32:31 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>,
+	Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] vr41xx: remove Eagle support
+Message-ID: <20040622163231.GA7387@linux-mips.org>
+References: <20040622013322.0273fadb.yuasa@hh.iij4u.or.jp> <20040622153252.GA6504@linux-mips.org> <20040623010534.23c7ab45.yuasa@hh.iij4u.or.jp> <Pine.GSO.4.58.0406221818340.29076@waterleaf.sonytel.be>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.GSO.4.58.0406221818340.29076@waterleaf.sonytel.be>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5346
+X-archive-position: 5347
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: a.voropay@vmb-service.ru
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi!
+On Tue, Jun 22, 2004 at 06:19:23PM +0200, Geert Uytterhoeven wrote:
 
- I've just got (for free :) an ancient MIPS ACER PICA 61 motherboard.
+> Which doesn't mean all boards are currently located in Japan... (Yes, we have
+> one at work in Brussels ;-)
 
- Can anyone help/guide me to run Linux-MIPS on this machine ?
-Is it still possible to run Linux on this architecture ?
+<salespitch>
 
- The motherboard is old (~1993) and it is very difficult to find
-any documentations... AFAIK, this is version of ARC MIPS.
-(mipsel)
+I see, we have a volunteer :-)
 
+</salespitch>
 
- This is Full-size AT board, AT power supply, 5 ISA slots, 8 SIMM
-slots. The CPU is PACEMIPS R4000-50Mhz (x2=100 internal ???) by
-Performance Semiconductor Corp.. NatSemi Ethernet/AUI onboard.
-No IDE connector. One additional slot is not ISA, but maked as
-IO an contains SCSI/Floppy/Serial/Perallel/Mice card. Another slot
-is like reversed EISA (double) and marked as VIO (locabus video?).
-Unfortunately, the original videocard is lost. :( However it works fine
-with old CirrusLogic VGA card in ISA slot (old ISA Trident 8900/9000
-does not works).
-
-
-
-
-St.Petersburg, Russia
---
--=AV=- 
+  Ralf

@@ -1,87 +1,145 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA2630815 for <linux-archive@neteng.engr.sgi.com>; Thu, 2 Apr 1998 16:49:03 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id EAA2823025 for <linux-archive@neteng.engr.sgi.com>; Fri, 3 Apr 1998 04:07:50 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id QAA7075242
+	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id EAA7360765
 	for linux-list;
-	Thu, 2 Apr 1998 16:47:56 -0800 (PST)
+	Fri, 3 Apr 1998 04:07:04 -0800 (PST)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id QAA6050576
-	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 2 Apr 1998 16:47:54 -0800 (PST)
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id QAA27376
-	for <linux@cthulhu.engr.sgi.com>; Thu, 2 Apr 1998 16:47:53 -0800 (PST)
+	via ESMTP id EAA7322454;
+	Fri, 3 Apr 1998 04:07:02 -0800 (PST)
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id EAA05861; Fri, 3 Apr 1998 04:06:48 -0800 (PST)
 	mail_from (ralf@uni-koblenz.de)
 From: ralf@uni-koblenz.de
-Received: from uni-koblenz.de (pmport-12.uni-koblenz.de [141.26.249.12])
-	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id CAA21210
-	for <linux@cthulhu.engr.sgi.com>; Fri, 3 Apr 1998 02:47:51 +0200 (MEST)
+Received: from uni-koblenz.de (pmport-30.uni-koblenz.de [141.26.249.30])
+	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id OAA06781;
+	Fri, 3 Apr 1998 14:06:38 +0200 (MEST)
 Received: (from ralf@localhost)
-	by uni-koblenz.de (8.8.7/8.8.7) id CAA02701;
-	Fri, 3 Apr 1998 02:47:32 +0200
-Message-ID: <19980403024732.64164@uni-koblenz.de>
-Date: Fri, 3 Apr 1998 02:47:32 +0200
-To: Dong Liu <dliu@npiww.com>
+	by uni-koblenz.de (8.8.7/8.8.7) id NAA03955;
+	Fri, 3 Apr 1998 13:52:47 +0200
+Message-ID: <19980403135245.23593@uni-koblenz.de>
+Date: Fri, 3 Apr 1998 13:52:45 +0200
+To: "William J. Earl" <wje@fir.engr.sgi.com>
 Cc: linux@cthulhu.engr.sgi.com
-Subject: Re: serial console
-References: <199804021731.TAA00404@calypso.saturn> <199804021855.NAA08562@pluto.npiww.com> <19980402204738.29605@uni-koblenz.de> <199804022006.PAA10227@pluto.npiww.com> <19980402233532.10932@uni-koblenz.de> <199804022316.PAA01989@fir.engr.sgi.com> <199804022353.SAA15219@pluto.npiww.com>
+Subject: Re: VCE exceptions
+References: <19980402225314.63238@uni-koblenz.de> <199804022141.NAA01565@fir.engr.sgi.com> <19980403003623.50122@uni-koblenz.de> <199804022315.PAA01986@fir.engr.sgi.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/mixed; boundary=PXFtsOsTdHNUZQcU
 X-Mailer: Mutt 0.85e
-In-Reply-To: <199804022353.SAA15219@pluto.npiww.com>; from Dong Liu on Thu, Apr 02, 1998 at 06:53:46PM -0500
+In-Reply-To: <199804022315.PAA01986@fir.engr.sgi.com>; from William J. Earl on Thu, Apr 02, 1998 at 03:15:03PM -0800
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Thu, Apr 02, 1998 at 06:53:46PM -0500, Dong Liu wrote:
 
->  >      For reduced user confusion, accepting "console=d" as an alias
->  > for "console=d1" might reduce user confusion.
+--PXFtsOsTdHNUZQcU
+Content-Type: text/plain; charset=us-ascii
 
-Correct.
+On Thu, Apr 02, 1998 at 03:15:03PM -0800, William J. Earl wrote:
 
-> Yes, but from arch/mips/sgi/setup.c
-> 
-> 	ctype = prom_getenv("console");
-> 	serial_console = 0;
-> 	if(*ctype == 'd') {
-> 		if(*(ctype+1)=='2')
-> 			serial_console = 1;
-> 		else
-> 			serial_console = 2;
-> 		if(!serial_console) {
-> 			prom_printf("Weird console env setting %s\n", ctype);
-> 			prom_printf("Press a key to reboot.\n");
-> 			prom_getchar();
-> 			prom_imode();
-> 		}
-> 	}
-> 
-> It got it the wrong serial_console, "d2" means serial port 1, "d"
-> means serial port 2.
+> At MIPS, with the Magnum 4000PC under RISC/os, and at SGI, with the
+> Indy R4000PC (and later R4600 and R5000), I modified RISC/os and IRIX to
+> control virtual aliasing, but only for those platforms without hardware
+> VCE detection (in order to minimize time to market).  
 
-Ooops.
+VCE's don't look too difficult to tackle under Linux.
 
-> Any way, I think I found out why serial port doesn't work, con_init()
-> call rs_cons_hook() before rs_init got called. 
-> 
-> But now I got another problem, I got the patch from
-> ftp://zero.aec.at/pub/sgi-linux, using the same .config file from the
-> same ftp site, I got
-> 
-> Exception: <vector=UTLB Miss>
-> Status register: 0x30044803<CU1,CU0,CH,IM7,IM4,IPL=???,MODE=KERNEL,EXL,IE>
-> Cause register: 0x8008<CE=0,IP8,EXC=RMISS>
-> Exception PC: 0x880ec7f0, Exception RA: 0x880f0294
-> exception, bad address: 0x0
-> Local I/O interrupt register 1: 0x80 <VR/GIO2>
->   Saved user regs in hex (&gpda 0xa8740e08, &_regs 0xa8741008):
->   arg: 0 8bfffcae 8bfffc24 88107498
->   tmp: e 8813e5bc a 8811216c 100000 88100000 0 48
->   sve: 88121228 2 8813e570 4 4 1 88121220 9fc47a40
->   t8 48 t9 bfbd9833 at 4f v0 1 v1 88107498 k1 bad11bad
->   gp 8bf70000 fp 9fc47bac sp 8bfff840 ra 880f0294
+>     Note that taking a K0SEG address for a physical page which is also mapped
+> to user space can easily cause a VCE, since there is a good chance that
+> the K0SEG virtual index differs from the user space virtual index, unless
+> you match physical page color to virtual page color when allocating pages.
+> Note that you have to do that for any pages which must be accessible in
+> the general exception handler, since you cannot handle a VCE in the
+> exception handler.
 
-Which looks similar to the Challenge S report recently posted to this
-list, but not the same.
+The VCE bug is actually worse than I thought before.  I was in the assumption
+that we'd handle all cases were VC might hit us because the MIPS ABI takes
+care of by it's restrictions of the virtual addresses for mmaping.  Well,
+I was wrong.  Writing via write(2) to a file that is also mmap(2)ed may
+result in virtual coherency problems.
+
+Another problem is that under Linux one cannot simply allocate a page of
+a desired colour - which would of course be the prefered solution.  Luckily
+a vce exceptionhandler will not run into the problem under Linux.
+
+A small test program for the mmap/write problem attached.  If may be
+necessary to start it several times in order to make it print the ``Big
+trouble, man ...'' message.
 
   Ralf
+
+--PXFtsOsTdHNUZQcU
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename="mmap.c"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <string.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/mman.h>
+
+#define TESTFILE "hurz"
+
+static char zero[4096];
+static char one[4096];
+
+int main(int argc, char *argv[])
+{
+	int fd, res, i;
+	char *addr;
+	volatile char *p;
+
+	memset(zero, 0, 4096);
+	memset(one, 1, 4096);
+
+	fd = open(TESTFILE, O_RDWR | O_CREAT, 664);
+	unlink(TESTFILE);
+	if(fd < 0) {
+		perror("Opening testfile failed");
+		exit(EXIT_FAILURE);
+	}
+
+	res =write(fd, one, 4096);
+	if (res < 0) {
+		perror("Write failed");
+		exit(EXIT_FAILURE);
+	}
+
+	addr = mmap(NULL, 4096, PROT_READ|PROT_WRITE, MAP_SHARED, fd, 0);
+	if (addr == MAP_FAILED) {
+		perror("Mapping /dev/zero failed");
+	}
+
+	p = addr;
+	for (i=0;i<4096;i++) {
+		*(p++);
+	}
+
+	res = lseek(fd, SEEK_SET, 0);
+	if (res < 0) {
+		perror("Seek failed");
+		exit(EXIT_FAILURE);
+	}
+
+	res =write(fd, zero, 4096);
+	if (res < 0) {
+		perror("Write failed");
+		exit(EXIT_FAILURE);
+	}
+
+	p = addr;
+	res = 0;
+	for (i=0;i<4096;i++) {
+		res |= *(p++);
+	}
+
+	if (res) {
+		fprintf(stderr, "Big trouble, man ...\n");
+	}
+
+	exit(EXIT_SUCCESS);
+}
+
+--PXFtsOsTdHNUZQcU--

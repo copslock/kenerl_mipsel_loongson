@@ -1,72 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Jul 2004 19:50:12 +0100 (BST)
-Received: from bay2-f21.bay2.hotmail.com ([IPv6:::ffff:65.54.247.21]:24582
-	"EHLO hotmail.com") by linux-mips.org with ESMTP
-	id <S8225302AbUGISuI>; Fri, 9 Jul 2004 19:50:08 +0100
-Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
-	 Fri, 9 Jul 2004 11:50:00 -0700
-Received: from 209.243.128.191 by by2fd.bay2.hotmail.msn.com with HTTP;
-	Fri, 09 Jul 2004 18:50:00 GMT
-X-Originating-IP: [209.243.128.191]
-X-Originating-Email: [theansweriz42@hotmail.com]
-X-Sender: theansweriz42@hotmail.com
-From: "S C" <theansweriz42@hotmail.com>
-To: linux-mips@linux-mips.org
-Subject: Strange, strange occurence
-Date: Fri, 09 Jul 2004 18:50:00 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Jul 2004 22:57:06 +0100 (BST)
+Received: from p508B6BD7.dip.t-dialin.net ([IPv6:::ffff:80.139.107.215]:28974
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225321AbUGIV5C>; Fri, 9 Jul 2004 22:57:02 +0100
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i69Lv1mr010291;
+	Fri, 9 Jul 2004 23:57:01 +0200
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i69Lv0Y9010290;
+	Fri, 9 Jul 2004 23:57:00 +0200
+Date: Fri, 9 Jul 2004 23:57:00 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Song Wang <wsonguci@yahoo.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: kbuild support to build one module with multiple separate components?
+Message-ID: <20040709215700.GB4316@linux-mips.org>
+References: <20040706230050.53313.qmail@web40006.mail.yahoo.com>
 Mime-Version: 1.0
-Content-Type: text/plain; format=flowed
-Message-ID: <BAY2-F21njXXBARdkfw0003b0c8@hotmail.com>
-X-OriginalArrivalTime: 09 Jul 2004 18:50:00.0703 (UTC) FILETIME=[89CCC0F0:01C465E5]
-Return-Path: <theansweriz42@hotmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20040706230050.53313.qmail@web40006.mail.yahoo.com>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5439
+X-archive-position: 5440
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: theansweriz42@hotmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Well I'm hoping it isn't so strange to some of you folks and you'll be able 
-to tell what's going on :)
+On Tue, Jul 06, 2004 at 04:00:50PM -0700, Song Wang wrote:
 
-Here's my problem:
+> This is wrong, because kbuild will treat A as
+> independent module. All I want is to treat
+> A as component of the only module mymodule.o. It
+> should be linked to mymodule.o
+> 
+> Any idea on how to write a kbuild Makefile to
+> support such kind of single module produced
+> by linking multiple components and each component
+> is located in separate directory? Thanks.
 
-Using MontaVista Linux 3.1 on a Toshiba RBTx4938 board. Using YAMON, when I 
-download the kernel via the debug ethernet port it runs fine. If I download 
-the kernel via the Tx4938 inbuilt ethernet controller, it crashes!
+That's a limitation in the current kbuild system.  You either have to put
+all files into a single directory or if you don't want that split your
+module into several independant modules.  What I haven't tried is using
+.a libraries but they're generally deprecated in kbuild.
 
-Memory checksumming and a quick manual memory dump inspection reveals that 
-the kernel download went perfectly ok, and the image is completely and 
-correctly downloaded to RAM.
-
-The crash is occuring inside the function r4k_flush_icache_range().
-
-I tried 'flush -i' and 'flush -d' on YAMON after the download but before the 
-'go', but that didn't help. I also tried completely disabling caches and 
-loading/running uncached, but it gave the same error.
-
-Now, the final twist! Using an ICE, I set a breakpoint at the 
-r4k_flush_icache_range function. Then I loaded the kernel as usual, ran it 
-with the ICE, stepped through a few instructions inside the 
-r4k_flush_icache_range function and then did a 'cont'. The kernel now booted 
-fine!
-
-If I don't set the breakpoint inside that function though, and just try to 
-run with the ICE the same
-error (Inst fetch/Load error) occurs.
-
-I'm at a loss trying to figure out what's going on. I suspect it has 
-something to do with caches perhaps (duh!), but have no clue what!  Anybody 
-out there face a similar kind of a situation before?
-
-Thanks in advance for any help offered.
-
-Regards,
--Steve
-
-_________________________________________________________________
-MSN 9 Dial-up Internet Access helps fight spam and pop-ups – now 2 months 
-FREE! http://join.msn.click-url.com/go/onm00200361ave/direct/01/
+  Ralf

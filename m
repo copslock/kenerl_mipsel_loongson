@@ -1,60 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Jan 2005 08:48:36 +0000 (GMT)
-Received: from smtp004.bizmail.sc5.yahoo.com ([IPv6:::ffff:66.163.175.81]:9131
-	"HELO smtp004.bizmail.sc5.yahoo.com") by linux-mips.org with SMTP
-	id <S8224930AbVA1IsV>; Fri, 28 Jan 2005 08:48:21 +0000
-Received: from unknown (HELO ?10.2.2.60?) (ppopov@embeddedalley.com@63.194.214.47 with plain)
-  by smtp004.bizmail.sc5.yahoo.com with SMTP; 28 Jan 2005 08:48:18 -0000
-Message-ID: <41F9FC53.7070401@embeddedalley.com>
-Date:	Fri, 28 Jan 2005 00:48:19 -0800
-From:	Pete Popov <ppopov@embeddedalley.com>
-Reply-To:  ppopov@embeddedalley.com
-Organization: Embedded Alley Solutions, Inc
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.3) Gecko/20040913
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Jan 2005 13:59:36 +0000 (GMT)
+Received: from moutng.kundenserver.de ([IPv6:::ffff:212.227.126.185]:31208
+	"EHLO moutng.kundenserver.de") by linux-mips.org with ESMTP
+	id <S8225221AbVA1N7V>; Fri, 28 Jan 2005 13:59:21 +0000
+Received: from [212.227.126.162] (helo=mrelayng.kundenserver.de)
+	by moutng.kundenserver.de with esmtp (Exim 3.35 #1)
+	id 1CuWeZ-00081i-00
+	for linux-mips@linux-mips.org; Fri, 28 Jan 2005 14:59:15 +0100
+Received: from [213.39.254.66] (helo=tuxator.satorlaser-intern.com)
+	by mrelayng.kundenserver.de with asmtp (TLSv1:RC4-MD5:128)
+	(Exim 3.35 #1)
+	id 1CuWeY-00010Q-00
+	for linux-mips@linux-mips.org; Fri, 28 Jan 2005 14:59:14 +0100
+From:	Ulrich Eckhardt <eckhardt@satorlaser.com>
+Organization: Sator Laser GmbH
+To:	linux-mips@linux-mips.org
+Subject: bitrot in drivers/net/au1000_eth.c
+Date:	Fri, 28 Jan 2005 15:01:17 +0100
+User-Agent: KMail/1.7.1
 MIME-Version: 1.0
-To:	Kevin Turner <kevin.m.turner@pobox.com>
-CC:	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: pcmcia on au1x00
-References: <1106895575.4059.42.camel@troglodyte.asianpear>
-In-Reply-To: <1106895575.4059.42.camel@troglodyte.asianpear>
-X-Enigmail-Version: 0.86.1.0
-X-Enigmail-Supports: pgp-inline, pgp-mime
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain;
+  charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@embeddedalley.com>
+Content-Disposition: inline
+Message-Id: <200501281501.19162.eckhardt@satorlaser.com>
+X-Provags-ID: kundenserver.de abuse@kundenserver.de auth:e35cee35a663f5c944b9750a965814ae
+Return-Path: <eckhardt@satorlaser.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7057
+X-archive-position: 7058
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@embeddedalley.com
+X-original-sender: eckhardt@satorlaser.com
 Precedence: bulk
 X-list: linux-mips
 
-Kevin Turner wrote:
-> Compiling from current CVS:
-> 
->   CC [M]  drivers/pcmcia/au1000_pb1x00.o
-> drivers/pcmcia/au1000_pb1x00.c:29:26: linux/tqueue.h: No such file or directory
-> drivers/pcmcia/au1000_pb1x00.c:42:28: pcmcia/bus_ops.h: No such file or directory
-> drivers/pcmcia/au1000_pb1x00.c:49:24: asm/au1000.h: No such file or directory
-> drivers/pcmcia/au1000_pb1x00.c:50:31: asm/au1000_pcmcia.h: No such file or directory
-> drivers/pcmcia/au1000_pb1x00.c:58:24: asm/pb1500.h: No such file or directory
-> 
-> What's the status of pcmcia on au1x00?
-> Selecting db1x00 instead of pb1x00 seems to compile cleanly.
+Hi!
 
-Right. The db1x00 is up to date. The pb1x boards are not.
+I've been debugging a problem in above mentioned file and found several cases 
+of redundant, unused or even buggy code in the handling of the MII there. 
+Also, there is a comment that suggests that I'm not the only one: 
+ * FIXME
+ * All of the PHY code really should be detached from the MAC
+ * code.
 
-> Can you give me an idea of what'll be necessary to do to get pcmcia
-> working on a new Au1500-based board?
+An important point there is that much of the code is in fact not even specific 
+to the au1x00 ethernet adapters. I found driver code for the MII I wanted to 
+drive in sis900.c, and it looked almost similar to the code in au1x00.c. 
+Simply adding the device/vendor IDs to a map and choosing the first of the 
+drivers there got my ethernet running.
 
-The au1000_generic.c is the generic portion of the driver. Then 
-there is the board(s) specific portion. Just a look at the new 
-db1x00 part and updating the pb1x00 driver should be pretty straight 
-forward. You can reference the 2.4 kernel for the hardware specifics 
-of the pb1x.
+Now, question is how to proceed. There are basically three ways I would go:
+1. Leave it like it is, because someone else is working on it. I'd just post a 
+mini-patch that binds my device to an existing driver.
+2. Remove the dead/unused parts from au1x00.c, try to restructure and document 
+the code so it is easier to maintain in the future.
+3. Split off the MII handling code or, better, reuse the facility already 
+provided by drivers/net/mii.c. This would mean a significant rewrite of 
+au1x00.c, including probably breaking things on the way.
 
-Pete
+Uli

@@ -1,56 +1,52 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id UAA34508 for <linux-archive@neteng.engr.sgi.com>; Tue, 26 May 1998 20:14:20 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id FAA30502 for <linux-archive@neteng.engr.sgi.com>; Tue, 2 Jun 1998 05:23:50 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id UAA37094
+	id FAA69025
 	for linux-list;
-	Tue, 26 May 1998 20:12:42 -0700 (PDT)
+	Tue, 2 Jun 1998 05:22:12 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id UAA05686
+	via ESMTP id FAA32429
 	for <linux@engr.sgi.com>;
-	Tue, 26 May 1998 20:12:38 -0700 (PDT)
-	mail_from (ralf@uni-koblenz.de)
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam: SGI does not authorize the use of its proprietary systems or networks for unsolicited or bulk email from the Internet.) via ESMTP id UAA06782
-	for <linux@engr.sgi.com>; Tue, 26 May 1998 20:12:36 -0700 (PDT)
-	mail_from (ralf@uni-koblenz.de)
-From: ralf@uni-koblenz.de
-Received: from uni-koblenz.de (ralf@pmport-04.uni-koblenz.de [141.26.249.4])
-	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id FAA16949
-	for <linux@engr.sgi.com>; Wed, 27 May 1998 05:12:34 +0200 (MEST)
-Received: (from ralf@localhost)
-	by uni-koblenz.de (8.8.7/8.8.7) id EAA01439;
-	Wed, 27 May 1998 04:26:29 +0200
-Message-ID: <19980527042629.62884@uni-koblenz.de>
-Date: Wed, 27 May 1998 04:26:29 +0200
-To: linux-mips@fnet.fr, linux@cthulhu.engr.sgi.com,
-        linux-mips@vger.rutgers.edu
-Cc: hjl@lucon.org
-Subject: Assembler bug
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.85e
+	Tue, 2 Jun 1998 05:22:10 -0700 (PDT)
+	mail_from (Arnaud.Le.Neel@cyceron.fr)
+Received: from cyceron.fr (ns2.cyceron.fr [192.93.44.1]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam: SGI does not authorize the use of its proprietary systems or networks for unsolicited or bulk email from the Internet.) via ESMTP id FAA00460
+	for <linux@engr.sgi.com>; Tue, 2 Jun 1998 05:21:58 -0700 (PDT)
+	mail_from (Arnaud.Le.Neel@cyceron.fr)
+Received: from cyceron.fr (indigo1.cyceron.fr [192.93.44.9])
+	by cyceron.fr (8.8.8/8.8.8) with ESMTP id NAA18924
+	for <linux@engr.sgi.com>; Tue, 2 Jun 1998 13:22:01 GMT
+Message-ID: <3573FC79.75791526@cyceron.fr>
+Date: Tue, 02 Jun 1998 14:22:01 +0100
+From: Arnaud Le Neel <Arnaud.Le.Neel@cyceron.fr>
+Reply-To: Arnaud.Le.Neel@cyceron.fr
+Organization: Cyceron PET Center
+X-Mailer: Mozilla 4.04 [en] (X11; I; IRIX 6.2 IP20)
+MIME-Version: 1.0
+To: linux@cthulhu.engr.sgi.com
+Subject: Newbie on this list
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-I ran into an assembler bug which affects at least MIPS GAS 2.7 and 2.8.1.
-An example which triggers the bug:
+Hi there,
 
-[ralf@lappi ralf]$ cat s.s 
-        .globl  label1
-label1:
+I'm newbie on this list, and i want to know how advanced is this
+project. I didn't found some updated documentation on www.linux.sgi.com
+and i wondered if it was because of the low speed of the project?
 
-        .org    0x1000
+Excuse me for this question, but i didn't found the FAQ, and i'm 
+interested in installing Linux on a old Indy.
 
-        .align  13		# align on 8kb boundary
-[ralf@lappi /tmp]$ mips-linux-as -O3 -o s.o s.s
-[ralf@lappi /tmp]$ mips-linux-objdump --syms s.o | grep label1
-0000000000002000 g     O .text  0000000000000000 label1
-[ralf@lappi /tmp]$ 
+Thank's a lot,
+arno
 
-=> Label label1 get's the wrong value 0x2000, not 0x0 as it should,
-assigned.  Inserting a label definition after the .org pseudo op generates
-correct code again.  I haven't tried this on non-MIPS GAS.
-
-  Ralf
+-- 
+       Arnaud Le Néel			Cyceron PET Research Center
+Systems and Network administrator	  Bd Becquerel - BP 5229
+mailto:Arnaud.Le.Neel@cyceron.fr	   F-14074 Caen - CEDEX
+       	ICQ #8852927			Tel :	(+33) (0)231 470 203
+  http://www.cyceron.fr/~arno		Fax :	(+33) (0)231 470 222

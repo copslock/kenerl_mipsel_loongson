@@ -1,47 +1,68 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g149s0D18077
-	for linux-mips-outgoing; Mon, 4 Feb 2002 01:54:00 -0800
-Received: from mail.ict.ac.cn ([159.226.39.4])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g149rrA17976
-	for <linux-mips@oss.sgi.com>; Mon, 4 Feb 2002 01:53:56 -0800
-Message-Id: <200202040953.g149rrA17976@oss.sgi.com>
-Received: (qmail 2779 invoked from network); 4 Feb 2002 08:54:06 -0000
-Received: from unknown (HELO foxsen) (@159.226.40.150)
-  by 159.226.39.4 with SMTP; 4 Feb 2002 08:54:06 -0000
-Date: Mon, 4 Feb 2002 16:50:43 +0800
-From: Zhang Fuxin <fxzhang@ict.ac.cn>
-To: "H . J . Lu" <hjl@lucon.org>
-CC: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: Re: SNaN & QNaN on mips
-X-mailer: FoxMail 3.11 Release [cn]
-Mime-Version: 1.0
-Content-Type: text/plain; charset="GB2312"
-Content-Transfer-Encoding: 8bit
-X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id g149ruA18014
+	by oss.sgi.com (8.11.2/8.11.3) id g14AWqY24591
+	for linux-mips-outgoing; Mon, 4 Feb 2002 02:32:52 -0800
+Received: from oval.algor.co.uk (root@oval.algor.co.uk [62.254.210.250])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g14AWjA24547
+	for <linux-mips@oss.sgi.com>; Mon, 4 Feb 2002 02:32:45 -0800
+Received: from gladsmuir.algor.co.uk.algor.co.uk (IDENT:dom@gladsmuir.algor.co.uk [192.168.5.75])
+	by oval.algor.co.uk (8.11.6/8.10.1) with ESMTP id g149Waa27266;
+	Mon, 4 Feb 2002 09:32:37 GMT
+From: Dominic Sweetman <dom@algor.co.uk>
+Message-ID: <15454.21812.39310.478616@gladsmuir.algor.co.uk>
+Date: Mon, 4 Feb 2002 09:32:36 +0000
+MIME-Version: 1.0
+To: Hiroyuki Machida <machida@sm.sony.co.jp>
+Cc: hjl@lucon.org, linux-mips@oss.sgi.com
+Subject: Re: PATCH: Fix ll/sc for mips (take 3)
+In-Reply-To: <20020202.113717.68552217.machida@sm.sony.co.jp>
+References: <20020201102943.A11146@lucon.org>
+	<20020201180126.A23740@nevyn.them.org>
+	<20020201151513.A15913@lucon.org>
+	<20020202.113717.68552217.machida@sm.sony.co.jp>
+X-Mailer: VM 6.89 under 21.1 (patch 14) "Cuyahoga Valley" XEmacs Lucid
+User-Agent: SEMI/1.13.7 (Awazu) CLIME/1.13.6 (=?ISO-2022-JP?B?GyRCQ2YbKEI=?=
+ =?ISO-2022-JP?B?GyRCJU4+MRsoQg==?=) MULE XEmacs/21.1 (patch 14) (Cuyahoga
+ Valley) (i386-redhat-linux)
+Content-Type: text/plain; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
 
-ÔÚ 2002-02-03 22:54:00 you wrote£º
->On Mon, Feb 04, 2002 at 02:22:48PM +0800, Zhang Fuxin wrote:
->> hi,
->> 
->> Gcc (2.96 20000731,H.J.LU's rh port for mips) think 0x7fc00000 is QNaN and 
->> optimize 0.0/0.0 as 0x7fc00000 for single precision ops,while for my cpu
->> (maybe most mips cpu) is a SNaN. R4k user's manual and "See Mips Run" both
->>  say so.And experiments confirm this.
->> 
->> Should we correct it?
->
->Yes. Do you have a patch?
-Not currently but I will have a try. glibc seems having the same problem.
+Hiroyuki Machida (machida@sm.sony.co.jp) writes:
 
->
->Thanks.
->
->
->H.J.
+> I think we can assume CPU has branch-likely insns, if CPU has MIPS
+> ISA 2 or greater ISA..
 
-Regards
-            Zhang Fuxin
-            fxzhang@ict.ac.cn
+"MIPS II" is officially the instruction set introduced for the long
+lost R6000 CPU.
+
+But "MIPS II" is now used to mean "the 32-bit subset of MIPS III"
+(which is extremely close to the same thing, but I'm never quite sure
+about the last details of the R6000 - Kevin would remember better,
+probably).
+
+OK: branch-likely is definitely part of MIPS II and MIPS32.  There are
+still MIPS CPUs in regular use which are based on MIPS I and don't
+provide them.  Generally the advantages of MIPS II are slight, so if
+you want to build a kernel which will not require instruction-set
+variants, it's no big deal to restrict it to MIPS I.
+
+> (FYI: we can't assume CPU has LL/SC even if CPU has branch-likely
+> insns. )
+
+LL/SC is also part of MIPS III (and the 32-bit variants are thus taken
+to be in MIPS II).  Unfortunately, the documentation of LL/SC gave the
+impression that they were useful only in multiprocessor systems, so
+they were omitted by NEC building the Vr41xx and Toshiba's R59xx.
+In both cases it's a bug - but since it isn't about to be fixed, you
+need workarounds.
+
+In these more enlightened days, CPU vendors are more likely to ask an
+operating system person before they leave out bits of the instruction
+set, so we hope it won't happen again!
+
+Dominic Sweetman
+Algorithmics Ltd
+The Fruit Farm, Ely Road, Chittering, CAMBS CB5 9PH, ENGLAND
+phone: +44 1223 706200 / fax: +44 1223 706250 / direct: +44 1223 706205
+http://www.algor.co.uk

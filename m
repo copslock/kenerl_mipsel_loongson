@@ -1,68 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Sep 2002 22:47:41 +0200 (CEST)
-Received: from crack.them.org ([65.125.64.184]:60680 "EHLO crack.them.org")
-	by linux-mips.org with ESMTP id <S1122987AbSIQUrk>;
-	Tue, 17 Sep 2002 22:47:40 +0200
-Received: from nevyn.them.org ([66.93.61.169] ident=mail)
-	by crack.them.org with asmtp (Exim 3.12 #1 (Debian))
-	id 17rQBs-0004TP-00; Tue, 17 Sep 2002 16:47:28 -0500
-Received: from drow by nevyn.them.org with local (Exim 3.35 #1 (Debian))
-	id 17rPFp-0008Bi-00; Tue, 17 Sep 2002 16:47:29 -0400
-Date: Tue, 17 Sep 2002 16:47:29 -0400
-From: Daniel Jacobowitz <dan@debian.org>
-To: "Steven J. Hill" <sjhill@realitydiluted.com>
-Cc: Stuart Hughes <seh@zee2.com>,
-	Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Re: cannot debug multi-threaded programs with gdb/gdbserver
-Message-ID: <20020917204729.GA31458@nevyn.them.org>
-References: <3D876053.C2CD1D8C@zee2.com> <3D87653E.9030702@realitydiluted.com> <20020917182536.GA25012@nevyn.them.org> <3D878695.3040101@realitydiluted.com>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Sep 2002 23:44:27 +0200 (CEST)
+Received: from alg133.algor.co.uk ([62.254.210.133]:31460 "EHLO
+	oval.algor.co.uk") by linux-mips.org with ESMTP id <S1122987AbSIQVo0>;
+	Tue, 17 Sep 2002 23:44:26 +0200
+Received: from gladsmuir.algor.co.uk (pubfw.algor.co.uk [62.254.210.129])
+	by oval.algor.co.uk (8.11.6/8.10.1) with ESMTP id g8HLiCr26331;
+	Tue, 17 Sep 2002 22:44:17 +0100 (BST)
+From: Dominic Sweetman <dom@algor.co.uk>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3D878695.3040101@realitydiluted.com>
-User-Agent: Mutt/1.5.1i
-Return-Path: <drow@false.org>
+Content-Transfer-Encoding: 7bit
+Message-ID: <15751.41516.224075.295052@gladsmuir.algor.co.uk>
+Date: Tue, 17 Sep 2002 22:44:12 +0100
+To: Jun Sun <jsun@mvista.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: [RFC] FPU context switch
+In-Reply-To: <20020917110423.E17321@mvista.com>
+References: <20020917110423.E17321@mvista.com>
+X-Mailer: VM 6.92 under 21.1 (patch 14) "Cuyahoga Valley" XEmacs Lucid
+Return-Path: <dom@algor.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 215
+X-archive-position: 216
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@debian.org
+X-original-sender: dom@algor.co.uk
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Sep 17, 2002 at 02:46:29PM -0500, Steven J. Hill wrote:
-> Daniel Jacobowitz wrote:
-> >On Tue, Sep 17, 2002 at 12:24:14PM -0500, Steven J. Hill wrote:
-> >
-> >Steve, have you started memorizing my responses again? :)
-> >
-> *gurgle* Yeah, I have. I apologize if it seemed I was taking
-> credit for anything.
-> 
-> >>>cross-gdb configured using: 
-> >>>
-> >>>configure --prefix=/usr --target=mipsel-linux --disable-sim
-> >>>--disable-tcl --enable-threads --enable-shared
-> >>>
-> >>
-> >>Use '--target=mips-linux' and you'll be better off. Don't worry, it
-> >>will support both endians.
-> >
-> >
-> >Except for this one - where'd that come from?  It should make no
-> >functional difference either way, at least assuming you always give GDB
-> >a binary.
-> >
-> I got some weird errors (unfortunately I can't remember) if I tried
-> using 'mipsel-linux' as the target. So you're saying that a gdb
-> configured for 'mipsel-linux' or 'mips-linux' should work the same?
-> Thanks Daniel.
 
-Hmm, if you can reproduce these let me know what they are.  I use a
-mipsel GDB regularly.
+Jun Sun (jsun@mvista.com) writes:
 
--- 
-Daniel Jacobowitz
-MontaVista Software                         Debian GNU/Linux Developer
+> 1) always blindly save and restore during context switch (switch_to())
+
+Just a suggestion...
+
+> Not interesting.  Just list it here for completeness.
+
+Agreed, it's not interesting.
+
+But it would work, every time; while the current scheme has been a
+fertile source of interesting bugs.  How much useful optimisation
+might have been done with the effort required to fix them?
+
+Saving all the FPU registers on a 400MHz CPU takes about a tenth of a
+microsecond.  Does anyone reading this list have evidence that this is
+ever any kind of problem?
+
+Dominic Sweetman
+MIPS Technologies.

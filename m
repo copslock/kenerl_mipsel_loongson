@@ -1,38 +1,71 @@
-Received: (from mail@localhost)
-	by linux-xfs.sgi.com (8.12.0.Beta5/8.12.0.Beta5) id f59EOIeT012088
-	for linux-mips-outgoing; Sat, 9 Jun 2001 07:24:18 -0700
-X-Authentication-Warning: linux-xfs.sgi.com: mail set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from dea.waldorf-gmbh.de (u-42-20.karlsruhe.ipdial.viaginterkom.de [62.180.20.42])
-	by linux-xfs.sgi.com (8.12.0.Beta5/8.12.0.Beta5) with SMTP id f59EOC3D012070
-	for <linux-mips@oss.sgi.com>; Sat, 9 Jun 2001 07:24:15 -0700
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f59EO4o08938;
-	Sat, 9 Jun 2001 16:24:04 +0200
-Date: Sat, 9 Jun 2001 16:24:04 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: "H . J . Lu" <hjl@lucon.org>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: Does anyone know this?
-Message-ID: <20010609162404.A8916@bacchus.dhis.org>
-References: <20010608225036.A4162@lucon.org>
+Received: (from majordomo@localhost)
+	by linux-xfs.sgi.com (8.12.0.Beta5/8.12.0.Beta5) id f59HFUsA028344
+	for linux-mips-outgoing; Sat, 9 Jun 2001 10:15:30 -0700
+X-Authentication-Warning: linux-xfs.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
+Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
+	by linux-xfs.sgi.com (8.12.0.Beta5/8.12.0.Beta5) with SMTP id f59HFS3D028337
+	for <linux-mips@oss.sgi.com>; Sat, 9 Jun 2001 10:15:29 -0700
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 418187F9; Sat,  9 Jun 2001 19:15:26 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 4B7FB42D0; Sat,  9 Jun 2001 19:15:36 +0200 (CEST)
+Date: Sat, 9 Jun 2001 19:15:36 +0200
+From: Florian Lohoff <flo@rfc822.org>
+To: linux-mips@oss.sgi.com
+Subject: Current cvs does not compile
+Message-ID: <20010609191535.A6407@paradigm.rfc822.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20010608225036.A4162@lucon.org>; from hjl@lucon.org on Fri, Jun 08, 2001 at 10:50:36PM -0700
-X-Accept-Language: de,en,fr
+User-Agent: Mutt/1.3.15i
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, Jun 08, 2001 at 10:50:36PM -0700, H . J . Lu wrote:
 
-> Does anyone know this?
-> 
-> http://mail-index.netbsd.org/port-mips/2001/05/24/0002.html
-> 
-> Do we still have the pthread problems mentioned there?
+Hi,
+it seems the current cvs doesnt compile - It seems some include strategies
+are broken.
 
-The varargs bug afair was fixed in glibc by Chris Johnson and Andreas
-Jaeger and Maciej recently posted a patch for the kernel to linux-kernel.
+asm-mips/io.h needs _CACHE_UNCACHED which is defined in pgtable.h
+pgtable.h needs mm_struct which is defined in shed.h
 
-  Ralf
+
+Index: include/asm-mips/io.h
+===================================================================
+RCS file: /cvs/linux/include/asm-mips/io.h,v
+retrieving revision 1.19
+diff -u -r1.19 io.h
+--- include/asm-mips/io.h	2001/06/06 23:46:17	1.19
++++ include/asm-mips/io.h	2001/06/09 17:12:48
+@@ -14,6 +14,7 @@
+ #include <linux/config.h>
+ #include <asm/addrspace.h>
+ #include <asm/byteorder.h>
++#include <asm/pgtable.h>
+ 
+ /*
+  * Slowdown I/O port space accesses for antique hardware.
+Index: include/asm-mips/pgtable.h
+===================================================================
+RCS file: /cvs/linux/include/asm-mips/pgtable.h,v
+retrieving revision 1.54
+diff -u -r1.54 pgtable.h
+--- include/asm-mips/pgtable.h	2001/06/05 23:24:07	1.54
++++ include/asm-mips/pgtable.h	2001/06/09 17:12:50
+@@ -17,6 +17,7 @@
+ #include <linux/linkage.h>
+ #include <asm/cachectl.h>
+ #include <linux/config.h>
++#include <linux/sched.h>
+ 
+ /* Cache flushing:
+  *
+
+Now it fails for me in pgtable.h as it needs "high_memory" which should
+be defined as extern (from mm/memory.c"
+
+Flo
+-- 
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+     Why is it called "common sense" when nobody seems to have any?

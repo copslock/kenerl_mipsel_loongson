@@ -1,55 +1,46 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id IAA88326 for <linux-archive@neteng.engr.sgi.com>; Wed, 2 Sep 1998 08:58:31 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id JAA81080 for <linux-archive@neteng.engr.sgi.com>; Fri, 4 Sep 1998 09:04:40 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id IAA87023
+	id JAA96006
 	for linux-list;
-	Wed, 2 Sep 1998 08:58:04 -0700 (PDT)
+	Fri, 4 Sep 1998 09:03:56 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from sguk.reading.sgi.com (sguk.reading.sgi.com [144.253.64.2])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id IAA74098
+	via SMTP id JAA87427
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 2 Sep 1998 08:58:02 -0700 (PDT)
-	mail_from (grim@zigzegv.ml.org)
-Received: from ballyhoo.ml.org ([194.236.80.80]) 
-	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id IAA10648
-	for <linux@cthulhu.engr.sgi.com>; Wed, 2 Sep 1998 08:58:02 -0700 (PDT)
-	mail_from (grim@zigzegv.ml.org)
-Received: from calypso.saturn ([130.244.166.70]) by ballyhoo.ml.org
-	 with smtp (ident grim using rfc1413) id m0zEFHY-000xgmC
-	(Debian Smail-3.2.0.101 1997-Dec-17 #2); Wed, 2 Sep 1998 17:57:16 +0200 (CEST)
-Date: Wed, 2 Sep 1998 17:58:15 +0200 (CEST)
-From: Ulf Carlsson <grim@zigzegv.ml.org>
-X-Sender: grim@calypso.saturn
-Reply-To: Ulf Carlsson <grim@zigzegv.ml.org>
-To: ralf@uni-koblenz.de
-cc: linux@cthulhu.engr.sgi.com
-Subject: Re: cdrom
-In-Reply-To: <19980902000840.C370@uni-koblenz.de>
-Message-ID: <Pine.LNX.3.96.980902174807.334B-100000@calypso.saturn>
+	Fri, 4 Sep 1998 09:03:53 -0700 (PDT)
+	mail_from (leon@reading.sgi.com)
+Received: from wintermute.reading.sgi.com (wintermute.reading.sgi.com [144.253.74.171]) by sguk.reading.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF+cray) via ESMTP id RAA25700 for <@sguk.reading.sgi.com:linux@cthulhu.engr.sgi.com>; Fri, 4 Sep 1998 17:03:52 +0100
+Received: from localhost (localhost [127.0.0.1]) by wintermute.reading.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via SMTP id RAA32592 for <linux@cthulhu.engr.sgi.com>; Fri, 4 Sep 1998 17:03:49 +0100 (BST)
+Date: Fri, 4 Sep 1998 17:03:49 +0100 (BST)
+From: Leon Verrall <leon@reading.sgi.com>
+To: SGI Linux <linux@cthulhu.engr.sgi.com>
+Subject: Success at last...
+Message-ID: <Pine.SGI.3.96.980904170040.34640A-100000@wintermute.reading.sgi.com>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Wed, 2 Sep 1998 ralf@uni-koblenz.de wrote:
 
-> As I recently told you on IRC - the patch as you've posted it is not
-> correct.  It will misstreat VCEI exceptions.
+FInally got rid of the "Warning, unable to open console" message. I think I
+managed it by not letting IRIX anywhere near the tarball of hard hat.
+Downloaded and extracted entirely on Debian Linux.
 
-My idea is based on that we write the wrong cache line back, and that's
-why we receive the invalid instruction errors. 
+The installer went without a hitch *applause* and I now have a running
+Indy...
 
-Maybe this is foolish, but anyway: If we have data from main memory cached
-in the secondary cache and then overwrite that data line in main memory
-with an instruction line and cache the instruction. We receive a VCEI when
-we try to access the cached line, and our handler writes the data back
-instead of the intstruction and causes the invalid instructions. Well,
-this is the only idea I have at the moment.
+The only odd think I've noticed is the console(s) are defaulting to 150
+columns and 68 lines (I think) which is way larger than the visible area.
+I've fiddles with stty and the likes... Is there something fundamental going
+on here?
 
-- Ulf
+Leon
+
+-- 
+Leon Verrall - 01189 307734  \ "Don't cut your losses too soon,
+Secondline Software Support  / 'cos you'll only be cutting your throat.
+Silicon Graphics, Forum 1,   \ And answer a call while you still care at all
+Station Rd., Theale, RG7 4RA / 'cos nobody will if you wont" (6:00 - DT)

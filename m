@@ -1,33 +1,52 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fAE0I3g29891
-	for linux-mips-outgoing; Tue, 13 Nov 2001 16:18:03 -0800
-Received: from www.transvirtual.com (root@www.transvirtual.com [206.14.214.140])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAE0I2029888
-	for <linux-mips@oss.sgi.com>; Tue, 13 Nov 2001 16:18:02 -0800
-Received: from www.transvirtual.com (jsimmons@localhost [127.0.0.1])
-        by localhost (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id fAE0HtjR028982;
-	Tue, 13 Nov 2001 16:17:55 -0800
-Received: from localhost (jsimmons@localhost)
-        by www.transvirtual.com (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id fAE0HsaG028978;
-	Tue, 13 Nov 2001 16:17:54 -0800
-X-Authentication-Warning: www.transvirtual.com: jsimmons owned process doing -bs
-Date: Tue, 13 Nov 2001 16:17:54 -0800 (PST)
-From: James Simmons <jsimmons@transvirtual.com>
-To: Guo-Rong Koh <grk@start.com.au>
-cc: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: 2.4.13-pre5 problem
-In-Reply-To: <B1514136053@i01sv4132.ids1.intelonline.com>
-Message-ID: <Pine.LNX.4.10.10111131617310.28670-100000@transvirtual.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.2/8.11.3) id fAE0IfN29965
+	for linux-mips-outgoing; Tue, 13 Nov 2001 16:18:41 -0800
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id fAE0Ib029960
+	for <linux-mips@oss.sgi.com>; Tue, 13 Nov 2001 16:18:37 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id fAE0IYN10837;
+	Wed, 14 Nov 2001 11:18:34 +1100
+Date: Wed, 14 Nov 2001 11:18:34 +1100
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Wayne Gowcher <wgowcher@yahoo.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: ld error " linking PIC files with non-PIC files "
+Message-ID: <20011114111834.B10410@dea.linux-mips.net>
+References: <20011026161259.54925.qmail@web11908.mail.yahoo.com> <20011113200948.75977.qmail@web11908.mail.yahoo.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20011113200948.75977.qmail@web11908.mail.yahoo.com>; from wgowcher@yahoo.com on Tue, Nov 13, 2001 at 12:09:48PM -0800
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Tue, Nov 13, 2001 at 12:09:48PM -0800, Wayne Gowcher wrote:
 
-> I decided to give up on framebuffer support for now. 
-> Anyway, what's the current suggested kernel for a DECStation 5000/25?
-> My cross-compiled 2.4.13-pre5 kernel stops after calibrating the delay
-> loop. Is this kernel revision buggy or is there something else I need
-> to know? (It seems to die somewhere in mem_init).
+> I am trying to cross compile X using the redhat7.0
+> distribution from the sgi mips site as my base. Most
+> files compile OK, but they fail at the link stage with
+> the following error :
+> 
+> linking PIC files with non-PIC files.
+> 
+> I created my cross-compile library files in
+> /usr/mipsel-linux from the packages :
+> glibc-2.2.2-1.mipsel.rpm &
+> glibc-devel-2.2.2-1.mipsel.rpm
+> are there other libraries I need ?
+> 
+> I found a reference on the web to a module called
+> libc6-pic.o, I don't see this anywhere in my libraries
+> is this what I need ?
+> 
+> Has anyone else seen this problem before and do they
+> know how to fix it ?
 
-Use the current snapshot from the OSS tree. 
+Don't use non-pic code ever in userspace.  Actually it's very strange
+that you hit this problem as gcc defaults to pic code so you should
+try to find which of your object files or libraries are non-pic.
+
+  Ralf

@@ -1,50 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Jun 2004 06:04:46 +0100 (BST)
-Received: from smtp808.mail.sc5.yahoo.com ([IPv6:::ffff:66.163.168.187]:49062
-	"HELO smtp808.mail.sc5.yahoo.com") by linux-mips.org with SMTP
-	id <S8224915AbUFMFEl>; Sun, 13 Jun 2004 06:04:41 +0100
-Received: from unknown (HELO ?10.2.2.68?) (ppopov@pacbell.net@63.194.214.47 with plain)
-  by smtp808.mail.sc5.yahoo.com with SMTP; 13 Jun 2004 05:04:34 -0000
-Subject: Re: Au1000 AC97 ALSA Driver
-From: Pete Popov <pete_popov@yahoo.com>
-To: charles.eidsness@ieee.org
-Cc: linux-mips@linux-mips.org
-In-Reply-To: <40CB2FAF.3050807@ieee.org>
-References: <40CB2FAF.3050807@ieee.org>
-Content-Type: text/plain
-Organization: 
-Message-Id: <1087103071.1432.3.camel@thinkpad>
-Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.2.2 (1.2.2-4) 
-Date: 12 Jun 2004 22:04:31 -0700
-Content-Transfer-Encoding: 7bit
-Return-Path: <pete_popov@yahoo.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Jun 2004 09:34:01 +0100 (BST)
+Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:14244 "EHLO
+	witte.sonytel.be") by linux-mips.org with ESMTP id <S8225287AbUFMIdu>;
+	Sun, 13 Jun 2004 09:33:50 +0100
+Received: from waterleaf.sonytel.be (localhost [127.0.0.1])
+	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id i5D8XDXK017736;
+	Sun, 13 Jun 2004 10:33:13 +0200 (MEST)
+Date: Sun, 13 Jun 2004 10:33:13 +0200 (MEST)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: David Daney <ddaney@avtrex.com>
+cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>, cgd@broadcom.com,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Linux/MIPS Development <linux-mips@linux-mips.org>,
+	binutils@sources.redhat.com
+Subject: Re: [Patch] (revised patch) / 0 should send SIGFPE not SIGTRAP 
+In-Reply-To: <40CA1FE3.9030507@avtrex.com>
+Message-ID: <Pine.GSO.4.58.0406131032350.85@waterleaf.sonytel.be>
+References: <40C9F5A4.2050606@avtrex.com> <40C9F5FE.8030607@avtrex.com>
+ <40C9F7F0.50501@avtrex.com> <Pine.LNX.4.55.0406112039040.13062@jurand.ds.pg.gda.pl>
+ <mailpost.1086981251.16853@news-sj1-1> <yov57juduc7q.fsf@ldt-sj3-010.sj.broadcom.com>
+ <Pine.LNX.4.55.0406112133380.13062@jurand.ds.pg.gda.pl> <40CA1B35.6010603@avtrex.com>
+ <40CA1FE3.9030507@avtrex.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5297
+X-archive-position: 5299
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pete_popov@yahoo.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 2004-06-12 at 09:30, Charles Eidsness wrote:
-> I've been working on an ALSA driver for the Au1000 processor AC'97 port. 
-> Specifically for the DBAu1000 Merlot eval card. It seems to be working 
-> in OSS emulation mode, I'm having a few problems setting up my system to 
-> work in ALSA native mode, and it contains only a minimum of features. 
-> i.e. it's still a work in progress, but I thought there may be someone 
-> else out there interested in it.
-> 
-> I've posted a patch that should add a mips sub-directory in the sound 
-> directory of the 2.6.6 kernel and add an au1000 sound option to the 
-> kernel configuration menu here: 
-> http://members.rogers.com/charles.eidsness/au1000_alsa.patch
-> 
-> Alternately you can find just the source code here:
-> http://members.rogers.com/charles.eidsness/au1000.c
+On Fri, 11 Jun 2004, David Daney wrote:
+> David Daney wrote:
+> > How about the attached (lightly tested) patch?
+> >
+> I will quit sending patches after this one.  It is equivalent to the
+> previous version, except it uses the symbolic names of the break codes
+> instead of the numeric values.
 
-Great -- let me know when the driver is ready to be checked in :)
+Please send one more, where you use `diff -up' :-)
 
-Pete
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

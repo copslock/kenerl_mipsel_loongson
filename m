@@ -1,63 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Apr 2003 17:23:46 +0100 (BST)
-Received: from smtp-out.comcast.net ([IPv6:::ffff:24.153.64.115]:48140 "EHLO
-	smtp-out.comcast.net") by linux-mips.org with ESMTP
-	id <S8225240AbTDNQXq>; Mon, 14 Apr 2003 17:23:46 +0100
-Received: from gentoo.org
- (pcp02545003pcs.waldrf01.md.comcast.net [68.48.92.102])
- by mtaout09.icomcast.net
- (iPlanet Messaging Server 5.2 HotFix 1.14 (built Mar 18 2003))
- with ESMTP id <0HDC003IYDI5KQ@mtaout09.icomcast.net> for
- linux-mips@linux-mips.org; Mon, 14 Apr 2003 12:22:53 -0400 (EDT)
-Date: Mon, 14 Apr 2003 12:24:54 -0400
-From: Kumba <kumba@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Apr 2003 17:35:06 +0100 (BST)
+Received: from lopsy-lu.misterjones.org ([IPv6:::ffff:62.4.18.26]:24332 "EHLO
+	young-lust.wild-wind.fr.eu.org") by linux-mips.org with ESMTP
+	id <S8225237AbTDNQfF>; Mon, 14 Apr 2003 17:35:05 +0100
+Received: from hina.wild-wind.fr.eu.org ([192.168.70.139])
+	by young-lust.wild-wind.fr.eu.org with esmtp (Exim 3.35 #1 (Debian))
+	id 1956oZ-0006sI-00; Mon, 14 Apr 2003 18:28:15 +0200
+Received: from maz by hina.wild-wind.fr.eu.org with local (Exim 3.36 #1 (Debian))
+	id 1956o1-0004la-00; Mon, 14 Apr 2003 18:27:41 +0200
+To: kumba@gentoo.org
+Cc: linux-mips@linux-mips.org
 Subject: Re: Oddities with CVS Kernels, Memory on Indigo2
-In-reply-to: <wrpbrz9vzkl.fsf@hina.wild-wind.fr.eu.org>
-To: linux-mips@linux-mips.org
-Reply-to: kumba@gentoo.org
-Message-id: <3E9AE0D6.5060401@gentoo.org>
-MIME-version: 1.0
-Content-type: text/plain; charset=us-ascii; format=flowed
-Content-transfer-encoding: 7BIT
-X-Accept-Language: en-us, en
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.3)
- Gecko/20030312
 References: <3E98F206.5050206@gentoo.org> <20030414140717.GA805@simek>
- <3E9AD98B.90808@gentoo.org> <wrpbrz9vzkl.fsf@hina.wild-wind.fr.eu.org>
-Return-Path: <kumba@gentoo.org>
+	<3E9AD98B.90808@gentoo.org> <wrpbrz9vzkl.fsf@hina.wild-wind.fr.eu.org>
+	<3E9ADEED.7050106@gentoo.org>
+Organization: Metropolis -- Nowhere
+X-Attribution: maz
+Reply-to: mzyngier@freesurf.fr
+From: Marc Zyngier <mzyngier@freesurf.fr>
+Date: 14 Apr 2003 18:27:41 +0200
+Message-ID: <wrp65phvybm.fsf@hina.wild-wind.fr.eu.org>
+In-Reply-To: <3E9ADEED.7050106@gentoo.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <maz@misterjones.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2029
+X-archive-position: 2030
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: mzyngier@freesurf.fr
 Precedence: bulk
 X-list: linux-mips
 
+>>>>> "kumba" == kumba  <kumba@gentoo.org> writes:
 
-	Also, forgot to mention on this topic, but while messing with ISA/EISA 
-cards in the I2, I've run across some strange "hack" regarding Local IRQ 
-3 on the machine.  There's a construct inside 
-arch/mips/sgi-ip22/ip22-int.c in the enable_local3_irq() function that 
-purposely panics the kernel if LIRQ3 is probed or used.  Any one got any 
-idea why this is?  There aren't any comments in the code to explain this 
-odd little construct, and removing it generates some amusing messages at 
-bootup, long the lines of "Whee: Got an LIO3 irq, winging it...".  Quite 
-odd if you ask me.
+kumba> As am I.  I've also gotten an NE2000 ISA 10mbps network card to
+kumba> be detected and work under `ifconfig', but forgot how to deal
+kumba> with multiple network cards, so I didn't actually get it hooked
+kumba> up to the network.
 
---Kumba
+Very nice, indeed.
 
+kumba> I've got a 3com 3c597 EISA card in there at the moment, but I
+kumba> think it's cooked, since it's MAC Address reports itself as all
+kumba> ff's.
 
-Marc Zyngier wrote:
->>>>>>"kumba" == kumba  <kumba@gentoo.org> writes:
-> 
-> 
-> kumba> Mind you, that's an ISA Parallel Port card I dropped in.  I
-> kumba> noticed the SGI's parallel port never worked, so I dug up a
-> kumba> spare and tried it.
-> 
-> So you're the first to try an ISA card on the I2. I must say I'm
-> quite pleased it worked ! :-)
-> 
->         M.
+Maybe not. 3c597 may be tricky to support, because it does
+bus-mastering, which is really a no-go given the state of the current
+EISA code on IP22. I'll try to do something about it when 2.5 is
+running on the IP22 (if it ever runs...).
+
+kumba> I'm also hunting for an EISA Mach32 video card to see if maybe
+kumba> on the offchance, it's possible to build a VESA Compatible
+kumba> framebuffer for the system. That will prove to be an
+kumba> interesting experiment.
+
+Interesting is quite an understatement... :-)
+
+        M.
+-- 
+Places change, faces change. Life is so very strange.

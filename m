@@ -1,57 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Sep 2004 08:49:07 +0100 (BST)
-Received: from bay19-f29.bay19.hotmail.com ([IPv6:::ffff:64.4.53.79]:34310
-	"EHLO hotmail.com") by linux-mips.org with ESMTP
-	id <S8224988AbUILHtC>; Sun, 12 Sep 2004 08:49:02 +0100
-Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
-	 Sun, 12 Sep 2004 00:48:55 -0700
-Received: from 218.75.247.251 by by19fd.bay19.hotmail.msn.com with HTTP;
-	Sun, 12 Sep 2004 07:48:54 GMT
-X-Originating-IP: [218.75.247.251]
-X-Originating-Email: [paozhaokeats@hotmail.com]
-X-Sender: paozhaokeats@hotmail.com
-From: "Bao zhao" <paozhaokeats@hotmail.com>
-To: linux-mips@linux-mips.org
-Subject: Cannot find the source code of handle_tlbl
-Date: Sun, 12 Sep 2004 15:48:54 +0800
-Mime-Version: 1.0
-Content-Type: text/plain; format=flowed
-Message-ID: <BAY19-F29WOApQF88Un00011c0a@hotmail.com>
-X-OriginalArrivalTime: 12 Sep 2004 07:48:55.0376 (UTC) FILETIME=[F445ED00:01C4989C]
-Return-Path: <paozhaokeats@hotmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Sep 2004 23:33:37 +0100 (BST)
+Received: from 64-60-250-34.cust.telepacific.net ([IPv6:::ffff:64.60.250.34]:30504
+	"EHLO panta-1.pantasys.com") by linux-mips.org with ESMTP
+	id <S8225011AbUIMWdc>; Mon, 13 Sep 2004 23:33:32 +0100
+Received: from [10.1.40.165] ([10.1.40.1]) by panta-1.pantasys.com with Microsoft SMTPSVC(5.0.2195.6713);
+	 Mon, 13 Sep 2004 15:26:25 -0700
+Message-ID: <41462025.9070607@pantasys.com>
+Date: Mon, 13 Sep 2004 15:33:09 -0700
+From: Peter Buckingham <peter@pantasys.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.2) Gecko/20040820 Debian/1.7.2-4
+X-Accept-Language: en
+MIME-Version: 1.0
+To: Ralf Baechle <ralf@linux-mips.org>
+CC: linux-mips@linux-mips.org
+Subject: [PATCH 2.6] fix mips atomic_lock declaration
+Content-Type: multipart/mixed;
+ boundary="------------090704080203070902000007"
+X-OriginalArrivalTime: 13 Sep 2004 22:26:25.0718 (UTC) FILETIME=[B4BC4D60:01C499E0]
+Return-Path: <peter@pantasys.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5824
+X-archive-position: 5826
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paozhaokeats@hotmail.com
+X-original-sender: peter@pantasys.com
 Precedence: bulk
 X-list: linux-mips
 
-   hi, I am a newbie to learn mips kernel.  As I know,there is no hardware 
-support for pagetable,only has support for tlb miss. Following is my 
-question:
-   (1) In entry.S.   I found the following exception's handlers:
-                 BUILD_HANDLER(adel,ade,ade,silent)		/* #4  */
-	BUILD_HANDLER(ades,ade,ade,silent)		/* #5  */
-	BUILD_HANDLER(ibe,ibe,cli,verbose)		/* #6  */
-	BUILD_HANDLER(dbe,dbe,cli,silent)		/* #7  */
-	BUILD_HANDLER(bp,bp,sti,silent)			/* #9  */
-	BUILD_HANDLER(ri,ri,sti,silent)			/* #10 */
-	...
-         but not all of exception's handlers are there.I cannot find 
-handlers such as  handle_mod, handle_tlb,handle_tlbs;
+This is a multi-part message in MIME format.
+--------------090704080203070902000007
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 
-  (2)do_page_fault should be called by tlb miss handler, but I cannot find 
-which function called it.
+Hi Ralf,
 
-btw, Is there any documentations about mips-kernel's implementaion?
+I modified the declaration of atomic_lock to be static. This means that 
+I can now build and run SMP on the 1250. See attached patch.
 
-Any help would be greatly appreciated.
+peter
 
-                                                       Keats
+Signed-off-by: Peter Buckingham <peter@pantasys.com>
 
-_________________________________________________________________
-MSN 8 with e-mail virus protection service: 2 months FREE* 
-http://join.msn.com/?page=features/virus
+--------------090704080203070902000007
+Content-Type: text/plain;
+ name="p"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="p"
+
+? include/asm-mips/.atomic.h.swp
+? include/asm-mips/agp.h
+Index: include/asm-mips/atomic.h
+===================================================================
+RCS file: /home/cvs/linux/include/asm-mips/atomic.h,v
+retrieving revision 1.36
+diff -u -r1.36 atomic.h
+--- include/asm-mips/atomic.h	19 Aug 2004 09:54:23 -0000	1.36
++++ include/asm-mips/atomic.h	13 Sep 2004 21:51:56 -0000
+@@ -26,7 +26,7 @@
+ #include <asm/cpu-features.h>
+ #include <asm/war.h>
+ 
+-extern spinlock_t atomic_lock;
++static spinlock_t atomic_lock;
+ 
+ typedef struct { volatile int counter; } atomic_t;
+ 
+
+--------------090704080203070902000007--

@@ -1,120 +1,138 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f620j0N29082
-	for linux-mips-outgoing; Sun, 1 Jul 2001 17:45:00 -0700
-Received: from dsic.co.kr ([210.221.126.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f620isV29070
-	for <linux-mips@oss.sgi.com>; Sun, 1 Jul 2001 17:44:55 -0700
-Received: from astonlinux.com [192.168.2.173] by dsic.co.kr [210.221.126.1]
-	with SMTP (MDaemon.v3.5.6.R)
-	for <linux-mips@oss.sgi.com>; Mon, 02 Jul 2001 09:43:07 +0900
-Message-ID: <3B407B8C.C18C839C@astonlinux.com>
-Date: Mon, 02 Jul 2001 09:47:56 -0400
-From: =?EUC-KR?B?sK29xbHU?= <cosmos@astonlinux.com>
-Organization: astonlinux
-X-Mailer: Mozilla 4.75 [ko] (X11; U; Linux 2.2.16-21hl i686)
-X-Accept-Language: ko
+	by oss.sgi.com (8.11.2/8.11.3) id f62F5sr17429
+	for linux-mips-outgoing; Mon, 2 Jul 2001 08:05:54 -0700
+Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f62F5oV17426
+	for <linux-mips@oss.sgi.com>; Mon, 2 Jul 2001 08:05:50 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id RAA12148;
+	Mon, 2 Jul 2001 17:06:44 +0200 (MET DST)
+Date: Mon, 2 Jul 2001 17:06:44 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Harald Koerfgen <Harald.Koerfgen@home.ivm.de>,
+   Ralf Baechle <ralf@uni-koblenz.de>
+cc: linux-mips@fnet.fr, linux-mips@oss.sgi.com
+Subject: linux 2.4.5: A DECstation HALT interrupt handler
+Message-ID: <Pine.GSO.3.96.1010702163112.5606E-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-To: Ralph Metzler <rjkm@convergence.de>
-CC: linux-mips@fnet.fr, linux-mips@oss.sgi.com
-Subject: Re: Help me.
-References: <3B3B9C29.6898DC59@astonlinux.com> <15163.24240.316758.268911@valen.metzler>
-Content-Type: text/plain; charset=EUC-KR
-Content-Transfer-Encoding: 7bit
-X-MDRemoteIP: 192.168.2.173
-X-Return-Path: cosmos@astonlinux.com
-X-MDaemon-Deliver-To: linux-mips@oss.sgi.com
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+Hi,
 
+ Following is a minimal implementation of a HALT interrupt handler for
+DECstations.  The handler resets a system (invokes a warm restart) after
+the HALT button or, in case of the MAXINE, the HALT sequence of keys is
+pressed.  The patch should be OK to apply.
 
-Ralph Metzler wrote:
+  Maciej
 
-> Hi,
->
-> =?EUC-KR?B?sK29xbHU?= writes:
->  > I am trying to port a linux 2.4 to R3000 based system (LSI LOGIC
->  > SC2000).
->  > SC2000 have caches. one is Two-way set associative or direct mapped
->  > Instruction cache (16K) and another is Direct-mapped data cache(8K).
->
-> I also spent one or two weeks with Linux on an SC2000 a while ago
-> but had to stop due to other more important projects. I also ran
-> into problems with the caching. Without caching I got it to boot
-> via NFS. Anyway, at least one mistake is in this part:
->
->  > ---------------lsi-cache.S--------------------------------
->  >
->  > /* void flush_icache(void) */
->  > LEAF(flush_icache)
->  >         .set    noreorder
->  >
->  >         la      a3, icache_size     # 8Kbyte
->  >         lw      t4, 0(a3)
->  >
->  >         mfc0    t7, CP0_STATUS          # save SR
->  >         nop
->  >         nop
->  >
->  >         and     t0, t7, ~ST0_IEC        # disable interrupts
->  >         mtc0    t0, CP0_STATUS
->  >         nop
->  >         nop
->  >
->  >         li      t3, CBSYS             # BBCC configuration register
->  >         lw      t8, 0(t3)               # save config. register
->  >         nop
->  >
->  >         li      t0, KSEG0
->  >         or      t4, t4, t0              # end of I-cache
->  >
->  >         move    t5, t0
->  >
->  > 2:        la      t0, 3f                  # switch to Kseg1
->  >         or      t0, KSEG1
->  >         jr      t0
->  >         nop
->  >
->  > #
->  > # flush I-cache set 0
->  > #
->  > 3:
->  >         li      t0, (CFG_DCEN | CFG_ICEN)
->  >         or      t0, CFG_CMODE_ITEST     # I-cache set1 enable
->  >                                         # D-cache enable, I-cache set0
->  > enable
->  >                                         # I-cache software test
->  >         sw      t0, 0(t3)
->  >         lw      zero, 0(t3)
->  >         addi    zero, zero, 1
->  >
->  >         move    t0, t5
->  > 4:      sw      zero, (t0)
->  >         nop
->  >         lw      zero, (t0)
->  >         addu    t0, t6
->  >         bltu    t0, t4, 4b
->  >         nop
->
-> Where does t6 get set?
-> This bug already is in the LSI sample code.
-> I think they just copied the loop code from the cache invalidation
-> functions (where they actually do determine t6 from the cache
-> line size) and forgot to adjust it.
->
-> Best regards,
-> Ralph
->
-> --
-> /--------------------------------------------------------------------\
-> | Dr. Ralph J.K. Metzler         | Convergence integrated media      |
-> |--------------------------------|-----------------------------------|
-> | rjkm@convergence.de            | http://www.convergence.de/        |
-> \--------------------------------------------------------------------/
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
 
-Thank you.
-
-I modified the bug. but problem is same.
-
-Regards,
-Shinkyu.
+patch-mips-2.4.5-20010627-halt-basic-0
+diff -up --recursive --new-file linux-mips-2.4.5-20010627.macro/arch/mips/dec/int-handler.S linux-mips-2.4.5-20010627/arch/mips/dec/int-handler.S
+--- linux-mips-2.4.5-20010627.macro/arch/mips/dec/int-handler.S	Thu Jun 14 04:26:19 2001
++++ linux-mips-2.4.5-20010627/arch/mips/dec/int-handler.S	Sun Jul  1 00:24:21 2001
+@@ -230,14 +230,6 @@ spurious:
+ dec_intr_fpu:	PANIC("Unimplemented FPU interrupt handler")
+ 
+ /*
+- * Halt interrupt
+- */
+-		EXPORT(intr_halt)
+-intr_halt:	la	k0,0xbc000000
+-		jr	k0
+-		 nop
+-
+-/*
+  * Generic unimplemented interrupt routines - ivec_tbl is initialised to
+  * point all interrupts here.  The table is then filled in by machine-specific
+  * initialisation in dec_setup().
+diff -up --recursive --new-file linux-mips-2.4.5-20010627.macro/arch/mips/dec/reset.c linux-mips-2.4.5-20010627/arch/mips/dec/reset.c
+--- linux-mips-2.4.5-20010627.macro/arch/mips/dec/reset.c	Tue Mar 28 04:26:06 2000
++++ linux-mips-2.4.5-20010627/arch/mips/dec/reset.c	Sun Jul  1 00:27:53 2001
+@@ -23,3 +23,7 @@ void dec_machine_power_off(void)
+ 	back_to_prom();
+ }
+ 
++void dec_intr_halt(int irq, void *dev_id, struct pt_regs *regs)
++{
++	dec_machine_halt();
++}
+diff -up --recursive --new-file linux-mips-2.4.5-20010627.macro/arch/mips/dec/setup.c linux-mips-2.4.5-20010627/arch/mips/dec/setup.c
+--- linux-mips-2.4.5-20010627.macro/arch/mips/dec/setup.c	Tue Jun  5 04:26:20 2001
++++ linux-mips-2.4.5-20010627/arch/mips/dec/setup.c	Sun Jul  1 00:32:55 2001
+@@ -45,17 +45,18 @@ volatile unsigned int *imr = 0L;	/* addr
+ extern void dec_machine_restart(char *command);
+ extern void dec_machine_halt(void);
+ extern void dec_machine_power_off(void);
++extern void dec_intr_halt(int irq, void *dev_id, struct pt_regs *regs);
+ 
+ extern void wbflush_setup(void);
+ 
+ extern struct rtc_ops dec_rtc_ops;
+ 
+-extern void intr_halt(void);
+-
+ extern int setup_dec_irq(int, struct irqaction *);
+ 
+ void (*board_time_init) (struct irqaction * irq);
+ 
++static struct irqaction irq10 = {dec_intr_halt, 0, 0, "halt", NULL, NULL};
++
+ /*
+  * enable the periodic interrupts
+  */
+@@ -74,6 +75,14 @@ static void __init dec_time_init(struct 
+     setup_dec_irq(CLOCK, irq);
+ }
+ 
++/*
++ * Enable the halt interrupt.
++ */
++static void __init dec_halt_init(struct irqaction *irq)
++{
++    setup_dec_irq(HALT, irq);
++}
++
+ void __init decstation_setup(void)
+ {
+     board_time_init = dec_time_init;
+@@ -311,6 +320,7 @@ void __init dec_init_kn02ba(void)
+     cpu_mask_tbl[5] = IE_IRQ5;
+     cpu_irq_nr[5] = FPU;
+ 
++    dec_halt_init(&irq10);
+ }				/* dec_init_kn02ba */
+ 
+ /*
+@@ -387,6 +397,7 @@ void __init dec_init_kn02ca(void)
+     cpu_mask_tbl[4] = IE_IRQ5;
+     cpu_irq_nr[4] = FPU;
+ 
++    dec_halt_init(&irq10);
+ }				/* dec_init_kn02ca */
+ 
+ /*
+@@ -468,4 +479,5 @@ void __init dec_init_kn03(void)
+     cpu_mask_tbl[4] = IE_IRQ5;
+     cpu_irq_nr[4] = FPU;
+ 
++    dec_halt_init(&irq10);
+ }				/* dec_init_kn03 */
+diff -up --recursive --new-file linux-mips-2.4.5-20010627.macro/include/asm-mips/dec/interrupts.h linux-mips-2.4.5-20010627/include/asm-mips/dec/interrupts.h
+--- linux-mips-2.4.5-20010627.macro/include/asm-mips/dec/interrupts.h	Sat Aug 26 04:26:45 2000
++++ linux-mips-2.4.5-20010627/include/asm-mips/dec/interrupts.h	Sat Jun  2 22:09:53 2001
+@@ -77,8 +77,6 @@ extern void	kn02_io_int(void);
+ extern void	kn02xa_io_int(void);
+ extern void	kn03_io_int(void);
+ 
+-extern void	intr_halt(void);
+-
+ extern void	asic_intr_unimplemented(void);
+ 
+ #endif

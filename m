@@ -1,63 +1,102 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Sep 2002 17:59:39 +0200 (CEST)
-Received: from rwcrmhc52.attbi.com ([216.148.227.88]:64967 "EHLO
-	rwcrmhc52.attbi.com") by linux-mips.org with ESMTP
-	id <S1124005AbSI0P7i>; Fri, 27 Sep 2002 17:59:38 +0200
-Received: from lucon.org ([12.234.88.146]) by rwcrmhc52.attbi.com
-          (InterMail vM.4.01.03.27 201-229-121-127-20010626) with ESMTP
-          id <20020927155930.ITCH1696.rwcrmhc52.attbi.com@lucon.org>;
-          Fri, 27 Sep 2002 15:59:30 +0000
-Received: by lucon.org (Postfix, from userid 1000)
-	id 003432C58F; Fri, 27 Sep 2002 08:59:27 -0700 (PDT)
-Date: Fri, 27 Sep 2002 08:59:27 -0700
-From: "H. J. Lu" <hjl@lucon.org>
-To: GNU C Library <libc-alpha@sources.redhat.com>,
-	Kenneth Albanowski <kjahds@kjahds.com>,
-	Mat Hostetter <mat@lcs.mit.edu>, Warner Losh <imp@village.org>,
-	linux-mips@linux-mips.org, Ron Guilmette <rfg@monkeys.com>,
-	"Polstra; John" <linux-binutils-in@polstra.com>,
-	Ralf Baechle <ralf@informatik.uni-koblenz.de>,
-	Linas Vepstas <linas@linas.org>,
-	Feher Janos <aries@hal2000.terra.vein.hu>,
-	Leonard Zubkoff <lnz@dandelion.com>,
-	"Steven J. Hill" <sjhill@cotw.com>, gcc@gcc.gnu.org
-Subject: Re: The untested Linux binutils 2.13.90.0.5
-Message-ID: <20020927085927.A3790@lucon.org>
-References: <20020927084523.A3538@lucon.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Sep 2002 18:01:16 +0200 (CEST)
+Received: from noose.gt.owl.de ([62.52.19.4]:49936 "HELO noose.gt.owl.de")
+	by linux-mips.org with SMTP id <S1122961AbSI0QBP>;
+	Fri, 27 Sep 2002 18:01:15 +0200
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 10F22805; Fri, 27 Sep 2002 18:01:08 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 3A4593717F; Fri, 27 Sep 2002 18:00:00 +0200 (CEST)
+Date: Fri, 27 Sep 2002 18:00:00 +0200
+From: Florian Lohoff <flo@rfc822.org>
+To: Alex deVries <adevries@linuxcare.com>
+Cc: linux-mips@linux-mips.org, debian-mips@lists.debian.org
+Subject: Re: Format of bootable Indy CDs?
+Message-ID: <20020927160000.GB622@paradigm.rfc822.org>
+References: <3D92B80A.3080802@linuxcare.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="p4qYPpj5QlsIQJ0K"
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <20020927084523.A3538@lucon.org>; from hjl@lucon.org on Fri, Sep 27, 2002 at 08:45:23AM -0700
-Return-Path: <hjl@lucon.org>
+In-Reply-To: <3D92B80A.3080802@linuxcare.com>
+User-Agent: Mutt/1.3.28i
+Organization: rfc822 - pure communication
+Return-Path: <flo@rfc822.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 284
+X-archive-position: 285
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hjl@lucon.org
+X-original-sender: flo@rfc822.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Sep 27, 2002 at 08:45:23AM -0700, H. J. Lu wrote:
-> The last Linux binutils was made more than a month ago. Now it is the
-> time for a new one. However, the current binutils in CVS is unstable.
-> I put the untested Linux binutils 2.13.90.0.5 at
-> 
-> http://ftp.kernel.org/pub/linux/devel/binutils/binutils-2.13.90.0.5.tar.gz
-> 
-> It is based on binutils 2002 0927 in CVS on sourecs.redhat.com. Give it
-> a try if you need the new features in it. Please report any problems to
-> hjl@lucon.org.
-> 
-> Thanks.
-> 
 
-Ooops. It is at
+--p4qYPpj5QlsIQJ0K
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-http://ftp.kernel.org/pub/linux/devel/binutils/test/binutils-2.13.90.0.5.tar.gz
+On Thu, Sep 26, 2002 at 03:32:26AM -0400, Alex deVries wrote:
+> I'm curious about the possibility of making a Linux installer for the=20
+> Indy that boots from CD; is there any description of the format of=20
+> bootable IRIX CDs out there?  What does the firmware expect?
+>=20
+> I know that sash is involved somehow...
 
+Ok - i reworked the procedure a bit whil beeing in Oldenburg.
 
+flo@split:~/projects/boot$ mkisofs -J -R -V testboot -o iso
+tftpboot-r4k-ip22.img
+Total translation table size: 0
+Total rockridge attributes bytes: 262
+Total directory bytes: 0
+Path table size(bytes): 10
+Max brk space used 6644
+2208 extents written (4 Mb)
+flo@split:~/projects/boot$ isoinfo -l -R -i iso
 
-H.J.
+Directory listing of /
+dr-xr-xr-x   2 1750 1750             2048 Sep 27 2002 [    28]  .
+?---------   0 1750 1750             2048 Sep 27 2002 [    28]  ..
+-rwxr-xr-x   1 1750 1750          4414116 Sep 12 2002 [    31] tftpboot-r4k=
+-ip22.img
+flo@split:~/projects/boot$ echo $[ 31 * 4 ]
+124
+flo@split:~/projects/boot$ genisovh-0.1/genisovh iso sashARCS:124,4414116 i=
+p22:124,4414116
+
+The last command adds a "volume header" in the first 512 byte into the
+iso file. This volume header spans the whole iso filesystem and lists 2
+files at identical positions which is the ECOFF tftpboot-r4k-ip22.img.
+The name sashARCS is coded in the Indys prom for the installer when
+using your mouse and "Install System Software" and "Local cdrom".
+
+Now one needs to write a wrapper for the Indy bootfloppys aka debian-cd
+to produce bootable cds.
+
+I put up the stuff:
+
+http://www.silicon-verl.de/home/flo/software/ip22test.iso
+http://www.silicon-verl.de/home/flo/software/genisovh-0.1.tgz
+
+Flo
+--=20
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+                        Heisenberg may have been here.
+
+--p4qYPpj5QlsIQJ0K
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.6 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iD8DBQE9lIB/Uaz2rXW+gJcRAnNkAJ4zOvuP8eE2GGRCmGpzvbAtjxj54wCbBY+8
+se/imWqY7jgWl+vCfI8OXkc=
+=K1vg
+-----END PGP SIGNATURE-----
+
+--p4qYPpj5QlsIQJ0K--

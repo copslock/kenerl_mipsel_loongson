@@ -1,58 +1,67 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1P3Uvp24789
-	for linux-mips-outgoing; Sun, 24 Feb 2002 19:30:57 -0800
-Received: from host099.momenco.com (IDENT:root@www.momenco.com [64.169.228.99])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1P3Ur924766
-	for <linux-mips@oss.sgi.com>; Sun, 24 Feb 2002 19:30:53 -0800
-Received: (from mdharm@localhost)
-	by host099.momenco.com (8.11.6/8.11.6) id g1P2UpC17314;
-	Sun, 24 Feb 2002 18:30:51 -0800
-Date: Sun, 24 Feb 2002 18:30:51 -0800
-From: Matthew Dharm <mdharm@momenco.com>
-To: Daniel Jacobowitz <dan@debian.org>
-Cc: Linux-MIPS <linux-mips@oss.sgi.com>
-Subject: Re: Is this a toolchain bug?
-Message-ID: <20020224183051.B17291@momenco.com>
-References: <NEBBLJGMNKKEEMNLHGAICELKCFAA.mdharm@momenco.com> <20020223210608.A1424@nevyn.them.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20020223210608.A1424@nevyn.them.org>; from dan@debian.org on Sat, Feb 23, 2002 at 09:06:08PM -0500
-Organization: Momentum Computer, Inc.
-X-Copyright: (C) 2002 Matthew Dharm, all rights reserved.
+	by oss.sgi.com (8.11.2/8.11.3) id g1P3lx529625
+	for linux-mips-outgoing; Sun, 24 Feb 2002 19:47:59 -0800
+Received: from dtla2.teknuts.com (adsl-66-125-62-110.dsl.lsan03.pacbell.net [66.125.62.110])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1P3lt929605
+	for <linux-mips@oss.sgi.com>; Sun, 24 Feb 2002 19:47:55 -0800
+Received: from delllaptop ([208.187.134.59])
+	(authenticated)
+	by dtla2.teknuts.com (8.11.3/8.10.1) with ESMTP id g1P2llP09699;
+	Sun, 24 Feb 2002 18:47:49 -0800
+From: "Robert Rusek" <robru@teknuts.com>
+To: "'Florian Lohoff'" <flo@rfc822.org>
+Cc: <linux-mips@oss.sgi.com>
+Subject: RE: Latest kernel?
+Date: Sun, 24 Feb 2002 18:43:17 -0800
+Message-ID: <001401c1bda6$352f7d10$6601a8c0@delllaptop>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook, Build 10.0.3416
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+In-Reply-To: <20020220221507.GC29624@paradigm.rfc822.org>
+Importance: Normal
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Okay, so I added that flag, and it actually seems to be correct.
+Florian,
 
-But, the question remains, why does accessing that variable cause a
-problem?  I'm going to do some more digging when I'm in the office
-tomorrow, but one of the tests I already did was to put
+I checked the oss.sgi.com cvs and they do not seem to have linux_2_4
+only linux-2.4-xfs.  Is that what I am looking for?  Will that give me a
+working 2.4.x kernel?
 
-e1000_proc_dev = NULL;
+Thanks in advance,
+Rob.
 
-at one point in the code.  That line caused a crash with what looked like a
-NULL-ptr dereference.
+-----Original Message-----
+From: owner-linux-mips@oss.sgi.com [mailto:owner-linux-mips@oss.sgi.com]
+On Behalf Of Florian Lohoff
+Sent: Wednesday, February 20, 2002 2:15 PM
+To: Robert Rusek
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Latest kernel?
 
-I'm going to re-examine this tomorrow, but I'm wondering if any of the
-people on this list that are using this driver have CONFIG_PROC_FS turned
-on.
 
-Matt
+On Wed, Feb 20, 2002 at 02:00:36PM -0800, Robert Rusek wrote:
+> Where can I obtain the latest stable build of the kernel.  I need it 
+> to work on my SGI IP22.  If possible I do not want to use CSV since I 
+> do not have a high speed internet connection.  Any help would be 
+> greatly appreciated.
 
-On Sat, Feb 23, 2002 at 09:06:08PM -0500, Daniel Jacobowitz wrote:
-> On Fri, Feb 22, 2002 at 05:57:08PM -0800, Matthew Dharm wrote:
-> > If this is user-error, I'd love to know what I'm doing wrong.  If this
-> > is a toolchain bug, who do I report this to?
-> 
-> User error, at least what you've described.  Add the -r flag to the
-> objdump command line, or look at a statically linked object.
-> 
-> -- 
-> Daniel Jacobowitz                           Carnegie Mellon University
-> MontaVista Software                         Debian GNU/Linux Developer
+I dont think there are regular tarballs - Take the pain once - checkout
+the kernel and before modifying make a tarball. Then you can just
 
+cvs -z3 update -Pd 
+
+Your tarball all the time. BTW: You should checkout -r linux_2_4 as i
+dont think 2.5 has success reports on mips already.
+
+Flo
 -- 
-Matthew Dharm                              Work: mdharm@momenco.com
-Senior Software Designer, Momentum Computer
+Florian Lohoff                  flo@rfc822.org
++49-5201-669912
+Nine nineth on september the 9th              Welcome to the new
+billenium

@@ -1,62 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2002 07:59:49 +0200 (CEST)
-Received: from [213.163.26.102] ([213.163.26.102]:2317 "EHLO
-	tarzan.ugyvitelszolgaltato.hu") by linux-mips.org with ESMTP
-	id <S1123915AbSJBF7t>; Wed, 2 Oct 2002 07:59:49 +0200
-Received: from atti.ugyvitelszolgaltato.hu (atti.ugyvitelszolgaltato.hu [193.80.82.9])
-	by tarzan.ugyvitelszolgaltato.hu (8.9.3/8.9.3/Debian 8.9.3-21) with ESMTP id IAA10428
-	for <linux-mips@linux-mips.org>; Wed, 2 Oct 2002 08:40:54 +0200
-Received: from root by atti.ugyvitelszolgaltato.hu with local (Exim 3.35 #1 (Debian))
-	id 17wcXn-0003E7-00
-	for <linux-mips@linux-mips.org>; Wed, 02 Oct 2002 07:59:35 +0200
-Date: Wed, 2 Oct 2002 07:59:35 +0200
-From: Attila Szabo <trial@ugyvitelszolgaltato.hu>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2002 14:21:48 +0200 (CEST)
+Received: from iris1.csv.ica.uni-stuttgart.de ([129.69.118.2]:97 "EHLO
+	iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
+	id <S1123915AbSJBMVr>; Wed, 2 Oct 2002 14:21:47 +0200
+Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
+	by iris1.csv.ica.uni-stuttgart.de with esmtp (Exim 3.36 #2)
+	id 17wiVY-00324z-00
+	for linux-mips@linux-mips.org; Wed, 02 Oct 2002 14:21:40 +0200
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
+	id 17wiVX-00008g-00
+	for <linux-mips@linux-mips.org>; Wed, 02 Oct 2002 14:21:39 +0200
+Date: Wed, 2 Oct 2002 14:21:39 +0200
 To: linux-mips@linux-mips.org
-Subject: some indy question
-Message-ID: <20021002055935.GA12393@csola.ugyvitelszolgaltato.hu>
-Mail-Followup-To: linux-mips@linux-mips.org
+Subject: Re: some indy question
+Message-ID: <20021002122139.GB4801@rembrandt.csv.ica.uni-stuttgart.de>
+References: <20021002055935.GA12393@csola.ugyvitelszolgaltato.hu>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-2
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.3.28i
-Organization: Ugyvitelszolgaltato Kft.
-X-OS: Linux 2.4.18, Debian Woody
-X-Sys: MSI K7T Turbo, AMD Tbird 850MHz, 1GB RAM, Matrox g200, 20GB Hdd
-X-WM: Blackbox 0.62
-Return-Path: <root@ugyvitelszolgaltato.hu>
+In-Reply-To: <20021002055935.GA12393@csola.ugyvitelszolgaltato.hu>
+User-Agent: Mutt/1.4i
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 329
+X-archive-position: 330
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: trial@ugyvitelszolgaltato.hu
+X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+Attila Szabo wrote:
+> Hi,
+> 
+> When I try to use the external cdrom on my Indy,
+> the machine produces scsi errors, like command timeout and
+> I have to reboot with sysrq.
+> I tried two harddisks but the same.Under Irix it is
+> working with the same scsi id-s.
+> Is there a bug around cdrom,sr_mod or something to know
+> about the external cdroms under 2.4.17 ?
+> It is working with external harddisk.
+> I use 2.4.17, woody.
 
-When I try to use the external cdrom on my Indy,
-the machine produces scsi errors, like command timeout and
-I have to reboot with sysrq.
-I tried two harddisks but the same.Under Irix it is
-working with the same scsi id-s.
-Is there a bug around cdrom,sr_mod or something to know
-about the external cdroms under 2.4.17 ?
-It is working with external harddisk.
-I use 2.4.17, woody.
-I tried to compile 2.4.18 but the newport console gets
-blue and the output stops, otherwise ok.
-I tried to compile linux-2.4.19 from cvs, but
-it does'nt boot.
-Please tell me what's this cdrom error and
-which kernel is known to be completely working ?
+FYI, I have similiar problems with both internal and external
+cdroms on my I2. The hardware works fine under IRIX.
 
-thank you
 
--- 
--
--
-A t t i l a :: trial@ugyvitelszolgaltato.hu :: S z a b o
--
--
+Thiemo

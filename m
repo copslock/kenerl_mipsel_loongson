@@ -1,62 +1,80 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id QAA78521 for <linux-archive@neteng.engr.sgi.com>; Fri, 26 Mar 1999 16:46:19 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA77946 for <linux-archive@neteng.engr.sgi.com>; Fri, 26 Mar 1999 15:40:17 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id PAA44443
+	id PAA63645
 	for linux-list;
-	Fri, 26 Mar 1999 15:07:50 -0800 (PST)
+	Fri, 26 Mar 1999 15:38:36 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id PAA96471
-	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 26 Mar 1999 15:07:48 -0800 (PST)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1] (may be forged)) 
+	via ESMTP id PAA59174;
+	Fri, 26 Mar 1999 15:38:34 -0800 (PST)
+	mail_from (neuroinc@unidial.com)
+Received: from mail.unidial.com (unidial.com [206.112.0.9]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id PAA02420
-	for <linux@cthulhu.engr.sgi.com>; Fri, 26 Mar 1999 15:07:35 -0800 (PST)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from lappi.waldorf-gmbh.de (cacc-4.uni-koblenz.de [141.26.131.4])
-	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id AAA18522
-	for <linux@cthulhu.engr.sgi.com>; Sat, 27 Mar 1999 00:07:32 +0100 (MET)
-Received: (from ralf@localhost)
-	by lappi.waldorf-gmbh.de (8.8.7/8.8.7) id AAA04923;
-	Sat, 27 Mar 1999 00:06:29 +0100
-Message-ID: <19990327000627.M553@uni-koblenz.de>
-Date: Sat, 27 Mar 1999 00:06:27 +0100
-From: ralf@uni-koblenz.de
-To: Alan <neuroinc@unidial.com>, linux@cthulhu.engr.sgi.com
-Subject: Re: Kernel port
-References: <36FBC35A.26AB8300@unidial.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-X-Mailer: Mutt 0.93.2
-In-Reply-To: <36FBC35A.26AB8300@unidial.com>; from Alan on Fri, Mar 26, 1999 at 12:26:50PM -0500
-X-Accept-Language: de,en,fr
+	via ESMTP id PAA01182; Fri, 26 Mar 1999 15:38:20 -0800 (PST)
+	mail_from (neuroinc@unidial.com)
+Received: from unidial.com (root@pool-209-138-14-73.ipls.grid.net [209.138.14.73])
+	by mail.unidial.com (8.8.7/ntr.net 3.0.0) with ESMTP id XAA02477;
+	Fri, 26 Mar 1999 23:38:10 GMT
+Message-ID: <36FC14FD.46F1279E@unidial.com>
+Date: Fri, 26 Mar 1999 23:15:09 +0000
+From: root <neuroinc@unidial.com>
+X-Mailer: Mozilla 4.5 [en] (X11; I; Linux 2.0.36 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: Ariel Faigon <ariel@cthulhu.engr.sgi.com>
+CC: "linux@engr.sgi.com" <linux@cthulhu.engr.sgi.com>
+Subject: Re: Port to R3000 Indigo
+References: <199903262208.OAA31331@oz.engr.sgi.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Fri, Mar 26, 1999 at 12:26:50PM -0500, Alan wrote:
+Ariel Faigon wrote:
 
-> The "Goals" section on the www.linux.sgi.com web page states that the
-> project would like to achieve  "Ports to newer hardware like O2(TM),
-> OCTANE(TM), and Origin(TM), and even to old hardware like R3000
-> Indigo(TM)."
-> 
-> But wasn’t this written two years ago?  How relevant is a port to the
-> R3000 Indigo?  If it is relevant and people are still interested, how
-> could one acquire more detailed hardware specifications necessary for a
-> port?
+> As Linus use to say: talk is cheap, show me the code... ;-)
 
-Well, not everything works as planned.  While in the meantime Linux has
-been ported to quite a number of new MIPS targets Linux has not yet been
-ported to the machines mentioned above.  I however hope the SGI's recently
-announced commitment to Linux will also have some effect on the MIPS area
-and make above port come true :-)
+As always!
 
-  Ralf
+>
+>
+> It won't happen by itself, only if someone devotes serious
+> time to it.  My personal feeling is that Linux on R3000
+> will not happen (there are cheaper and faster old pentium 90's
+> out there) but if someone builds it... I've been wrong before.
+
+Are you saying that the effort necessary to port Linux to R3000 Indigo would be
+better placed elsewhere?
+
+>
+>
+> :
+> :And I know a group at KSC that's getting rid of a bunch of O2s.  We'd love to
+> :grab them and make a nice little Beowulf cluster out of them :-).
+> :Unfortunately, we don't have the time at work to do a port :-(
+> :
+> :> I think it would be very relevant.  My company recently sold around 30
+> :> of the R3000 Indigo's.  Just about every person who bought one of these
+> :> was interested in the SGI/Linux project and wanted to know if they would
+> :> some day be able to run Linux on it.
+> :>
+>
+> --
+> Peace, Ariel
+
+The final portion of my original question, is really the most important - are the
+hardware specifications/documentation available or are they considered
+proprietary?
+
+This issue alone is paramount since it substantially affects the "effort"
+necessary to port.
+
+Thanks
+
+- Alan Hoyt -

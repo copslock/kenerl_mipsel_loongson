@@ -1,34 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Jul 2003 17:47:29 +0100 (BST)
-Received: from sd20.sivit.org ([IPv6:::ffff:81.91.65.104]:19898 "HELO
-	sd20.sivit.org") by linux-mips.org with SMTP id <S8225214AbTGUQrS>;
-	Mon, 21 Jul 2003 17:47:18 +0100
-Received: (qmail 23864 invoked by uid 1006); 21 Jul 2003 16:50:44 -0000
-Received: from unknown (HELO ARennes-201-1-4-201.w81-53.abo.wanadoo.fr) (81.53.134.201)
-  by sd20.sivit.org with SMTP; 21 Jul 2003 16:50:44 -0000
-Subject: SGI O2, MIPS R10k and Linux
-From: =?ISO-8859-1?Q?Fr=E9d=E9ric?= MEUROU <frederic@meurou.com>
-To: linux-mips@linux-mips.org
-Content-Type: text/plain; charset=iso-8859-15
-Message-Id: <1058813390.30494.12.camel@localhost>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Jul 2003 18:22:33 +0100 (BST)
+Received: from alpha.total-knowledge.com ([IPv6:::ffff:209.157.135.102]:39055
+	"HELO alpha.total-knowledge.com") by linux-mips.org with SMTP
+	id <S8225214AbTGURWb>; Mon, 21 Jul 2003 18:22:31 +0100
+Received: (qmail 15205 invoked from network); 21 Jul 2003 17:22:27 -0000
+Received: from unknown (HELO gateway.total-knowledge.com) (12.234.207.60)
+  by alpha.total-knowledge.com with SMTP; 21 Jul 2003 17:22:27 -0000
+Received: (qmail 19559 invoked by uid 502); 21 Jul 2003 17:22:27 -0000
+Date: Mon, 21 Jul 2003 10:22:27 -0700
+From: Ilya Volynets-Evenbach <ilya@theIlya.com>
+To: Fr?d?ric MEUROU <frederic@meurou.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: SGI O2, MIPS R10k and Linux
+Message-ID: <20030721172227.GA19461@gateway.total-knowledge.com>
+References: <1058813390.30494.12.camel@localhost>
 Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.4.0 
-Date: 21 Jul 2003 18:49:50 +0000
-Content-Transfer-Encoding: 8bit
-Return-Path: <frederic@meurou.com>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="uAKRQypu60I7Lcqm"
+Content-Disposition: inline
+In-Reply-To: <1058813390.30494.12.camel@localhost>
+User-Agent: Mutt/1.4i
+Return-Path: <ilya@gateway.total-knowledge.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2838
+X-archive-position: 2839
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: frederic@meurou.com
+X-original-sender: ilya@theIlya.com
 Precedence: bulk
 X-list: linux-mips
 
-Is there a kernel that works on such a workstation?
 
+--uAKRQypu60I7Lcqm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+Check out http://www.linux-mips.org/~glaurung/
+There is a kernel there, that is kinda-sorta bootable.
+However, do not expect *any* stability. R10K in O2's and I2's
+has a problem, that needs rather intrusive modifications to kernel
+to work arround it.
 
--- 
-Frédéric MEUROU <frederic@meurou.com>
+	Ilya.
+
+On Mon, Jul 21, 2003 at 06:49:50PM +0000, Fr?d?ric MEUROU wrote:
+> Is there a kernel that works on such a workstation?
+>=20
+>=20
+>=20
+> --=20
+> Fr?d?ric MEUROU <frederic@meurou.com>
+>=20
+>=20
+
+--uAKRQypu60I7Lcqm
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.7 (GNU/Linux)
+
+iD8DBQE/HCFT7sVBmHZT8w8RAu1qAJ43YRzlN0xtdFSmsoiugZtmI+csQwCgnwLt
+GsIaiCyGA7P8JHJdXbOzoE0=
+=jAB6
+-----END PGP SIGNATURE-----
+
+--uAKRQypu60I7Lcqm--

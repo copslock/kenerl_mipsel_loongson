@@ -1,72 +1,72 @@
-Received:  by oss.sgi.com id <S553783AbRBZKWh>;
-	Mon, 26 Feb 2001 02:22:37 -0800
-Received: from [210.241.238.126] ([210.241.238.126]:60168 "EHLO
-        viditec-netmedia.com.tw") by oss.sgi.com with ESMTP
-	id <S553775AbRBZKWO>; Mon, 26 Feb 2001 02:22:14 -0800
-Received: from kjlin ([210.241.238.122])
-	by viditec-netmedia.com.tw (8.9.3/8.8.7) with SMTP id TAA09319;
-	Mon, 26 Feb 2001 19:02:36 +0800
-Message-ID: <037601c09fd4$e81ef540$056aaac0@kjlin>
-From:   "kjlin" <kj.lin@viditec-netmedia.com.tw>
-To:     "Joe deBlaquiere" <jadb@redhat.com>
-Cc:     <linux-mips@oss.sgi.com>
-References: <Pine.GSO.4.10.10102220752430.13615-100000@escobaria.sonytel.be> <3A95F83D.9030600@redhat.com>
-Subject: Re: Does linux support for microprocessor without MMU?
-Date:   Mon, 26 Feb 2001 17:17:13 +0800
+Received:  by oss.sgi.com id <S554235AbRBZLTr>;
+	Mon, 26 Feb 2001 03:19:47 -0800
+Received: from [194.90.113.98] ([194.90.113.98]:22021 "EHLO
+        yes.home.krftech.com") by oss.sgi.com with ESMTP id <S554201AbRBZLTb>;
+	Mon, 26 Feb 2001 03:19:31 -0800
+Received: from jungo.com (michaels@kobie.home.krftech.com [199.204.71.69])
+	by yes.home.krftech.com (8.8.7/8.8.7) with ESMTP id OAA18369;
+	Mon, 26 Feb 2001 14:23:50 +0200
+From:   michaels@jungo.com
+Message-ID: <3A9A3B56.B0141D21@jungo.com>
+Date:   Mon, 26 Feb 2001 13:17:42 +0200
+Organization: Jungo LTD
+X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.17-21mdk i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+To:     Keith Owens <kaos@melbourne.sgi.com>
+CC:     Tom Appermont <tea@sonycom.com>, linux-mips@oss.sgi.com
+Subject: Re: ELF header kernel module wrong?
+References: <11701.983148650@kao2.melbourne.sgi.com>
+Content-Type: text/plain; charset=koi8-r
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.00.2919.6600
-X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6600
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Is the uClibc/uC-glibc platform dependent??
-Can we use the "normal linux  glibc" instead of uClibc/uC-glibc when running
-uClinux??
-As to object file format, is it real necessary to modify the elf2flt
-program?
-On the other hand, there is an isssue which confuses me.
-That is, i had already got a cross-compiler for compiling the "normal linux"
-kernel used.
-Should i need to remake a cross-compiler to compile the uClinux kernel and
-applications?
+Keith,
 
-Thanks.
+If what you say is correct, then any module created by this toolchain
+would be impossible to 'insmod', and that is not the case. As I said, we
+have one module which we managed to install, and it was compiled with
+exactly the same toolchain. The module is quite large, has a lot of
+symbols, and was NOT taken from the kernel tree. I would suspect that
+there is some problem with kernel module linkage that is incompatible
+with mips toolchain. 
 
+Besides that, in "old" modultils there IS a check for symtab size, and
+it did work as expected. So, what you say is only part of the truth.
 
------ Original Message -----
-From: "Joe deBlaquiere" <jadb@redhat.com>
-To: "Geert Uytterhoeven" <Geert.Uytterhoeven@sonycom.com>
-Cc: "Crossfire" <xfire@xware.cx>; "kjlin" <kj.lin@viditec-netmedia.com.tw>;
-<linux-mips@oss.sgi.com>
-Sent: Friday, February 23, 2001 1:42 PM
-Subject: Re: Does linux support for microprocessor without MMU?
+Keith Owens wrote:
+> 
+> On Sun, 25 Feb 2001 11:06:29 +0200,
+> michaels@jungo.com wrote:
+> >I have seen this problem too. My kernel is 2.2.14 though, using modutils
+> >2.3.x.
+> >I tried to do many things with modutils, tried even not to check the
+> >boundary, but that caused crashes. The only solution that worked for me
+> >was to step downwards to modutils 2.2.2. Even then, depmod segfaults
+> >unless you put a remark on obj_free in some place... Hope you get a
+> >better solution.
+> 
+> All you are doing by using old modutils is hiding the problem and
+> risking storage corruption.  modutils follows the ELF specification
+> 
+>   "A symbol table section's sh_info section header member holds the
+>   symbol table index for the first non-local symbol."
+> 
+> The mips toolchain is generating local symbols with index numbers
+> greater than sh_info.  Old modutils did not check for that and silently
+> created corrupt modules.  New modutils check this field for
+> correctness.  Fix the mips toolchain.
 
-
-> Geert Uytterhoeven wrote:
->
-> > On Wed, 21 Feb 2001, Joe deBlaquiere wrote:
-> >
-> >>
-> >> There isn't (yet) support for MIPS on uClinux.
-> >
-> >
-> > But it can't be that hard to add support for it...
-> >
-> Porting the kernel isn't much worse than any other architectural port.
-> Of course that's only a part of the story, since you'll need to port the
-> C library (uClibc/uC-glibc) and you will have to play around with the
-> object file format to make it work with FLAT binaries... If you're
-> serious about doing uClinux you can find a somewhat cryptic article on
-> porting to uClinux at:
->
-> http://www.redhat.com/embedded/technologies/resources
->
-> --
-> Joe
+-- 
+Sincerely yours,
+Michael Shmulevich
+______________________________________
+Software Developer
+Jungo - R&D 
+email: michaels@jungo.com
+web: http://www.jungo.com
+Phone: 1-877-514-0537(USA)  +972-9-8859365(Worldwide) ext. 233
+Fax:   1-877-514-0538(USA)  +972-9-8859366(Worldwide)

@@ -1,45 +1,71 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fB7KhnZ22511
-	for linux-mips-outgoing; Fri, 7 Dec 2001 12:43:49 -0800
-Received: from neurosis.mit.edu (NEUROSIS.MIT.EDU [18.243.0.82])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fB7Khko22508
-	for <linux-mips@oss.sgi.com>; Fri, 7 Dec 2001 12:43:46 -0800
-Received: (from jim@localhost)
-	by neurosis.mit.edu (8.11.4/8.11.4) id fB7Jhh504444;
-	Fri, 7 Dec 2001 14:43:43 -0500
-Date: Fri, 7 Dec 2001 14:43:43 -0500
-From: Jim Paris <jim@jtan.com>
-To: Justin Carlson <justinca@ri.cmu.edu>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: PATCH: io.h remove detrimental do {...} whiles, add sequence points, add const modifiers
-Message-ID: <20011207144343.A4417@neurosis.mit.edu>
-Reply-To: jim@jtan.com
-References: <20011207121416.A9583@dev1.ltc.com> <Pine.GSO.4.21.0112071830000.29896-100000@mullein.sonytel.be> <20011207123833.A23784@nevyn.them.org> <20011207160636.B23798@dea.linux-mips.net> <20011207131521.A3942@neurosis.mit.edu> <1007753789.1680.1.camel@GLOVEBOX.AHS.RI.CMU.EDU>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <1007753789.1680.1.camel@GLOVEBOX.AHS.RI.CMU.EDU>; from justinca@ri.cmu.edu on Fri, Dec 07, 2001 at 02:36:28PM -0500
+	by oss.sgi.com (8.11.2/8.11.3) id fB7L4bC23110
+	for linux-mips-outgoing; Fri, 7 Dec 2001 13:04:37 -0800
+Received: from gw-nl5.philips.com (gw-nl5.philips.com [212.153.235.99])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fB7L4Vo23105
+	for <linux-mips@oss.sgi.com>; Fri, 7 Dec 2001 13:04:31 -0800
+Received: from smtpscan-nl4.philips.com (localhost.philips.com [127.0.0.1])
+          by gw-nl5.philips.com with ESMTP id VAA11437;
+          Fri, 7 Dec 2001 21:04:27 +0100 (MET)
+          (envelope-from balaji.ramalingam@philips.com)
+From: balaji.ramalingam@philips.com
+Received: from smtpscan-nl4.philips.com(130.139.36.24) by gw-nl5.philips.com via mwrap (4.0a)
+	id xma011435; Fri, 7 Dec 01 21:04:27 +0100
+Received: from smtprelay-us1.philips.com (localhost [127.0.0.1]) 
+	by smtpscan-nl4.philips.com (8.9.3/8.8.5-1.2.2m-19990317) with ESMTP id VAA09892; Fri, 7 Dec 2001 21:04:26 +0100 (MET)
+Received: from arj001soh.diamond.philips.com (amsoh01.diamond.philips.com [161.88.79.212]) 
+	by smtprelay-us1.philips.com (8.9.3/8.8.5-1.2.2m-19990317) with ESMTP id OAA11781; Fri, 7 Dec 2001 14:04:24 -0600 (CST)
+Subject: Re: not getting the kernel prompt
+To: linux-mips@oss.sgi.com
+Cc: jsimmons@transvirtual.com, jim@jtan.com
+Date: Fri, 7 Dec 2001 12:05:09 -0800
+Message-ID: <OF60F1F443.933DC857-ON88256B1B.006D7D46@diamond.philips.com>
+X-MIMETrack: Serialize by Router on arj001soh/H/SERVER/PHILIPS(Release 5.0.5 |September
+ 22, 2000) at 07/12/2001 14:08:22
+MIME-Version: 1.0
+Content-type: text/plain; charset=us-ascii
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-> Maybe I missed this, but is there any reason for the patch, other then 
-> a personal preference of how to do macros that look like functions? 
-> I've seen gcc do strange non-optimal things with functions declared
-> inlines, but I've never seen it generate bad code WRT to do{}while(0)
-> constructs.
-> 
-> Unless I'm missing something, this patch looks like a solution in search
-> of a problem...
 
-In the case of set_io_port_base, I see no real reason.  But for the
-out[b,w,l] functions, having the do/while can prevent constructs that
-might otherwise make sense, like
+Hello Folks,
 
-	for(i=0;i<10;i++,outb(i,port)) {
-           ...
-        }
+I do have a  /dev/console in the ramdisk.
 
-Okay, so it's a bad example, but.. :)  Maybe Brad has a better one.
+################################################
+
+[root@svlhp106 dev]# cd /mnt/ramdisk_raj/
+[root@svlhp106 ramdisk_raj]# cd dev
+[root@svlhp106 dev]# ll console
+crw--w--w-    1 root     root       5,   1 Aug  9 15:16 console
+[root@svlhp106 dev]# ll ttyS0
+crw-rw-rw-    1 root     root       4,  64 Aug  9 15:16 ttyS0
+[root@svlhp106 dev]#
+
+####################################################
+
+
+regards,
+Balaji
+
+
+
+
+
+
+Jim Paris <jim@jtan.com> on 12/07/2001 11:38:41 AM
+
+Please respond to jim@jtan.com
+
+To:     Balaji Ramalingam/SVL/SC/PHILIPS@AMEC
+cc:     linux-mips@oss.sgi.com
+Subject:  Re: not getting the kernel prompt
+Classification:
+
+
+
+> Warning:  unable to open an initial console.
+
+Make sure you have a valid /dev/console (or just use devfs)
 
 -jim

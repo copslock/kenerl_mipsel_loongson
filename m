@@ -1,47 +1,38 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id BAA11640; Thu, 10 Apr 1997 01:04:23 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id TAA00597; Wed, 9 Apr 1997 19:22:13 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id BAA27816 for linux-list; Thu, 10 Apr 1997 01:03:38 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id BAA27792 for <linux@relay.engr.SGI.COM>; Thu, 10 Apr 1997 01:03:34 -0700
-Received: from alles.intern.julia.de (loehnberg1.core.julia.de [194.221.49.2]) by sgi.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id BAA08682 for <linux@relay.engr.SGI.COM>; Thu, 10 Apr 1997 01:03:30 -0700
-Received: from kernel.panic.julia.de (kernel.panic.julia.de [194.221.49.153])
-	by alles.intern.julia.de (8.8.5/8.8.5) with ESMTP id JAA01710;
-	Thu, 10 Apr 1997 09:02:25 +0200
-From: Ralf Baechle <ralf@Julia.DE>
-Received: (from ralf@localhost)
-          by kernel.panic.julia.de (8.8.4/8.8.4)
-	  id JAA08771; Thu, 10 Apr 1997 09:01:33 +0200
-Message-Id: <199704100701.JAA08771@kernel.panic.julia.de>
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id TAA18269 for linux-list; Wed, 9 Apr 1997 19:21:08 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id TAA18255 for <linux@relay.engr.SGI.COM>; Wed, 9 Apr 1997 19:21:01 -0700
+Received: from athena.nuclecu.unam.mx (athena.nuclecu.unam.mx [132.248.29.9]) by sgi.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id TAA19610 for <linux@relay.engr.SGI.COM>; Wed, 9 Apr 1997 19:20:59 -0700
+Received: (from miguel@localhost)
+	by athena.nuclecu.unam.mx (8.8.5/8.8.5) id CAA22863;
+	Thu, 10 Apr 1997 02:18:59 -0500
+Date: Thu, 10 Apr 1997 02:18:59 -0500
+Message-Id: <199704100718.CAA22863@athena.nuclecu.unam.mx>
+From: Miguel de Icaza <miguel@nuclecu.unam.mx>
+To: shaver@neon.ingenia.ca
+CC: linux@cthulhu.engr.sgi.com
+In-reply-to: <199704100211.WAA16857@neon.ingenia.ca> (message from Mike Shaver
+	on Wed, 9 Apr 1997 22:11:01 -0400 (EDT))
 Subject: Re: all in the family
-To: davem@jenolan.rutgers.edu (David S. Miller)
-Date: Thu, 10 Apr 1997 09:01:33 +0200 (MET DST)
-Cc: shaver@neon.ingenia.ca, linux@cthulhu.engr.sgi.com
-In-Reply-To: <199704100226.WAA01960@jenolan.caipgeneral> from "David S. Miller" at Apr 9, 97 10:26:18 pm
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
+X-Windows: Form follows malfunction.
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
->    Looks like I may be getting a machine here to see if we can migrate
->    some of our non-Oracle machines to Linux/SPARC.
-> 
->    Anyone know if the emulation is up to hosting the Linux/Indy
->    cross-compiler?
-> 
-> It should be straight forward, 32-bit to 32-bit crosses under gcc work
-> flawlessly right out of the box for everything I've ever tried.  It's
-> when you cross from 32-bit to 64-bit that you may hit a bug or two.
 
-I've got the necessary patches to make the binutils and GCC work as
-Linux/Alpha -> Linux/MIPS crosscompiler.  Mike, if you need them remind
-me to send them if you need them.
+> Anyone know if the emulation is up to hosting the Linux/Indy
+> cross-compiler?
 
->    In related news, we'll then have Linux running on 5 architectures
->    in the same room (Intel, Alpha, SPARC, ELKS, Indy).  Maybe I'll
->    steal the PowerMac too... =)
-> 
-> ELKS, that is cheating ;-)
+Why do you need the emulation for on Linux/SPARC?   You just need to
+run configure on Linux/SPARC with the proper --target option and you
+will get your native cross-compiler in a second.
+
+You need to configure both binutils and gcc like this.
+
+
+> In related news, we'll then have Linux running on 5 architectures in
+> the same room (Intel, Alpha, SPARC, ELKS, Indy).  Maybe I'll steal the
+> PowerMac too... =)
 
 :-)
 
-  Ralf
+Miguel.

@@ -1,55 +1,42 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f5MBwBe01863
-	for linux-mips-outgoing; Fri, 22 Jun 2001 04:58:11 -0700
-Received: from storm.physik.tu-cottbus.de (storm.physik.TU-Cottbus.De [141.43.75.20])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5MBwAV01860
-	for <linux-mips@oss.sgi.com>; Fri, 22 Jun 2001 04:58:10 -0700
-Received: by storm.physik.tu-cottbus.de (Postfix, from userid 7215)
-	id 2F7436004D; Fri, 22 Jun 2001 13:58:05 +0200 (MET DST)
-Date: Fri, 22 Jun 2001 13:58:04 +0200
-To: linux-mips@oss.sgi.com
-Subject: Re: Developer's meeting at LinuxTag?
-Message-ID: <20010622135804.B9418@physik.tu-cottbus.de>
-Mail-Followup-To: heinold@physik.tu-cottbus.de,
-	linux-mips@oss.sgi.com
-References: <20010621203618.B4805@linuxtag.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20010621203618.B4805@linuxtag.org>
-User-Agent: Mutt/1.3.18i
-From: heinold@physik.tu-cottbus.de (H.Heinold)
+	by oss.sgi.com (8.11.2/8.11.3) id f5MKvkl21111
+	for linux-mips-outgoing; Fri, 22 Jun 2001 13:57:46 -0700
+Received: from www.transvirtual.com (root@www.transvirtual.com [206.14.214.140])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5MKvkV21108
+	for <linux-mips@oss.sgi.com>; Fri, 22 Jun 2001 13:57:46 -0700
+Received: from www.transvirtual.com (jsimmons@localhost [127.0.0.1])
+        by localhost (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f5MKvce9018899;
+	Fri, 22 Jun 2001 13:57:38 -0700
+Received: from localhost (jsimmons@localhost)
+        by www.transvirtual.com (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f5MKvcT9018895;
+	Fri, 22 Jun 2001 13:57:38 -0700
+X-Authentication-Warning: www.transvirtual.com: jsimmons owned process doing -bs
+Date: Fri, 22 Jun 2001 13:57:38 -0700 (PDT)
+From: James Simmons <jsimmons@transvirtual.com>
+To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+cc: linux-mips@oss.sgi.com
+Subject: [ANNOUNCE] Secondary mips tree.
+Message-ID: <Pine.LNX.4.10.10106221348150.9835-100000@transvirtual.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, Jun 21, 2001 at 08:36:18PM +0200, Karsten Merker wrote:
-> Hallo everybody,
-> 
-> from July, 5th to July, 8th this year's LinuxTag will take place at the
-> Stuttgart Exhibition Centre in Germany. Many Linux developers will be
-> there and I would find it nice to get to know some of the Linux/MIPS people
-> in person, so I wanted to ask if somebody of you is planning to visit
-> LinuxTag this year. The Linux-Ports-booth (among other things showing
-> Linux/MIPS) would be a nice meeting point in case somebody is interested.
-> 
-> There is no entrance fee for LinuxTag, if you need further information,
-> please take a look at http://www.linuxtag.org/ (german version) or
-> http://www.linuxtag.org/2001/english/ (english version) or feel free to
-> ask me by email.
-> 
-> Greetings,
-> Karsten
-> -- 
-> #include <standard_disclaimer>
-> Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der Nutzung
-> oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die Markt- oder
-> Meinungsforschung.
-> 
 
+Hi all,
 
-I will be there, even on the debian booth.
+ 	We have started a secondary tree for linux mips. This tree will
+be to SGI mips tree as Alan Cox's tree is to linus branch. We will test
+and play with "experimental patches" and then in time hand them off to the
+main branch Ralf Baechle maintains. Also one of the main reasons for this
+branch was to unite several of the mips trees into one place. Anyones
+patches (if good) are welcomed. The site is 
 
--- 
+http://www.sf.net/projects/linux-mips
 
+We also have a mailing list which instructions are on the SF page on how
+to join. Thank you. 
 
-Henning Heinold
+P.S
+    If anyone has the mips cobalt working with 2.4.X I really like those
+patches. Thank you.

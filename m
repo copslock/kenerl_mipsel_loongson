@@ -1,33 +1,46 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fAE2lMx00761
-	for linux-mips-outgoing; Tue, 13 Nov 2001 18:47:22 -0800
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id fAE2lK000756
-	for <linux-mips@oss.sgi.com>; Tue, 13 Nov 2001 18:47:21 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id fAE2lIE21866;
-	Wed, 14 Nov 2001 13:47:18 +1100
-Date: Wed, 14 Nov 2001 13:47:18 +1100
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Pete Popov <ppopov@mvista.com>
-Cc: linux-mips <linux-mips@oss.sgi.com>,
-   sforge <linux-mips-kernel@lists.sourceforge.net>
-Subject: Re: compiler problem
-Message-ID: <20011114134718.E16741@dea.linux-mips.net>
-References: <1005591216.470.20.camel@zeus>
+	by oss.sgi.com (8.11.2/8.11.3) id fAE9vBR12117
+	for linux-mips-outgoing; Wed, 14 Nov 2001 01:57:11 -0800
+Received: from faui02.informatik.uni-erlangen.de (root@faui02.informatik.uni-erlangen.de [131.188.30.102])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAE9v8012114
+	for <linux-mips@oss.sgi.com>; Wed, 14 Nov 2001 01:57:08 -0800
+Received: from rz.de (root@faui02b.informatik.uni-erlangen.de [131.188.30.151])
+	by faui02.informatik.uni-erlangen.de (8.9.1/8.1.16-FAU) with ESMTP id KAA02730; Wed, 14 Nov 2001 10:56:51 +0100 (MET)
+Received: (from rz@localhost)
+	by rz.de (8.8.8/8.8.8) id KAA00191;
+	Wed, 14 Nov 2001 10:46:56 +0100
+Date: Wed, 14 Nov 2001 10:46:55 +0100
+From: Richard Zidlicky <rz@linux-m68k.org>
+To: Roman Zippel <zippel@linux-m68k.org>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>, Jun Sun <jsun@mvista.com>,
+   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+   Linux/MIPS Development <linux-mips@oss.sgi.com>,
+   Linux/m68k <linux-m68k@lists.linux-m68k.org>,
+   Linux/PPC Development <linuxppc-dev@lists.linuxppc.org>
+Subject: Re: [RFC] generic MIPS RTC driver
+Message-ID: <20011114104655.A187@linux-m68k.org>
+References: <20011113144240.B669@linux-m68k.org> <Pine.LNX.4.33.0111131630310.3818-100000@serv>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <1005591216.470.20.camel@zeus>; from ppopov@mvista.com on Mon, Nov 12, 2001 at 10:53:36AM -0800
-X-Accept-Language: de,en,fr
+In-Reply-To: <Pine.LNX.4.33.0111131630310.3818-100000@serv>; from zippel@linux-m68k.org on Tue, Nov 13, 2001 at 04:32:42PM +0100
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Nov 12, 2001 at 10:53:36AM -0800, Pete Popov wrote:
+On Tue, Nov 13, 2001 at 04:32:42PM +0100, Roman Zippel wrote:
+> Hi,
+> 
+> On Tue, 13 Nov 2001, Richard Zidlicky wrote:
+> 
+> > hwclock and a bunch of less known porgrams like chrony.
+> 
+> I was playing with chrony, but it was unable to adjust the time, last
+> weekend I switched back to ntp and that works better.
 
-> What's the recommended oss binutils version?
+some years ago chrony was the reason I wrote the Q40 rtc driver.
+It didn't work very well for me either, but the rtc driver was
+very useful in the meantime :)
 
-I'm using 2.9.5-3.  But your problem more smells like a bug in the source.
-
-  Ralf
+Bye
+Richard

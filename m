@@ -1,77 +1,87 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6GJ7MRw009696
-	for <linux-mips-outgoing@oss.sgi.com>; Tue, 16 Jul 2002 12:07:22 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6GLqlRw015863
+	for <linux-mips-outgoing@oss.sgi.com>; Tue, 16 Jul 2002 14:52:47 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6GJ7MUp009695
-	for linux-mips-outgoing; Tue, 16 Jul 2002 12:07:22 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6GLqlOK015862
+	for linux-mips-outgoing; Tue, 16 Jul 2002 14:52:47 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from mx2.mips.com (ftp.mips.com [206.31.31.227])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6GJ79Rw009686;
-	Tue, 16 Jul 2002 12:07:10 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id g6GJBuXb028970;
-	Tue, 16 Jul 2002 12:11:56 -0700 (PDT)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id MAA11596;
-	Tue, 16 Jul 2002 12:11:57 -0700 (PDT)
-Received: from mips.com ([172.18.27.100])
-	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g6GJBub18183;
-	Tue, 16 Jul 2002 21:11:57 +0200 (MEST)
-Message-ID: <3D347120.B9CAFF75@mips.com>
-Date: Tue, 16 Jul 2002 21:16:48 +0200
-From: Carsten Langgaard <carstenl@mips.com>
-Organization: MIPS Technologies
-X-Mailer: Mozilla 4.76 [en] (Windows NT 5.0; U)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: "H. J. Lu" <hjl@lucon.org>
-CC: Ralf Baechle <ralf@oss.sgi.com>,
-   GNU C Library <libc-alpha@sources.redhat.com>, linux-mips@oss.sgi.com
-Subject: Re: PATCH: Add sys/personality (Re: Personality)
-References: <3D33DAB2.353A4399@mips.com> <20020716123632.B17038@dea.linux-mips.net> <20020716090728.A22128@lucon.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, hits=0.0 required=5.0 tests= version=2.20
+Received: from shaun.billgotchy.de (dialer101.kel.de.core.tng.de [213.178.65.101])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6GLqZRw015843
+	for <linux-mips@oss.sgi.com>; Tue, 16 Jul 2002 14:52:37 -0700
+Received: from shaun.billgotchy.de (shaun [127.0.0.1])
+	by shaun.billgotchy.de (8.12.4/8.12.4/Debian-4) with ESMTP id g6GLxvOJ008143
+	for <linux-mips@oss.sgi.com>; Tue, 16 Jul 2002 23:59:57 +0200
+Received: (from palic@localhost)
+	by shaun.billgotchy.de (8.12.4/8.12.4/Debian-4) id g6GLxu3s008125
+	for linux-mips@oss.sgi.com; Tue, 16 Jul 2002 23:59:56 +0200
+Date: Tue, 16 Jul 2002 23:59:56 +0200
+From: Jan-Hendrik Palic <jan.palic@linux-debian.de>
+To: linux-mips@oss.sgi.com
+Subject: Re: New Debian Indy...
+Message-ID: <20020716215956.GA5482@billgotchy.de>
+Mail-Followup-To: linux-mips@oss.sgi.com
+References: <20020714094331.5207794b.mike@overlord.linux-dude.com> <20020714160806.A31002@gandalf.physik.uni-konstanz.de>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-md5;
+	protocol="application/pgp-signature"; boundary="n8g4imXOkfNTN/H1"
+Content-Disposition: inline
+In-Reply-To: <20020714160806.A31002@gandalf.physik.uni-konstanz.de>
+User-Agent: Mutt/1.3.27i
+X-Internet: http://www.billgotchy.de
+X-gpg-key: http://www.linux-debian.de/bin/m.asc
+X-Fingerprint: D146 9433 E94B DD1E AB41  398B 41C3 45C1 331F FF66
+X-Key-ID: 331FFF66
+X-OS: Linux Debian Unstable
+X-Private-Debian-Site: http://www.linux-debian.de
+X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Thanks.
-Now that we are at it, what should personality return in case it's called with a
-value, which isn't defined in the personality.h file.
-Should it return -EINVAL ?
-I don't think, that is the case at the moment, I believe you can set personality
-to anything.
 
-/Carsten
+--n8g4imXOkfNTN/H1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+Hi ..=20
 
-"H. J. Lu" wrote:
+On Sun, Jul 14, 2002 at 04:08:06PM +0200, Guido Guenther wrote:
+>Hi Mike,
+>On Sun, Jul 14, 2002 at 09:43:31AM -0400, Mike Martin wrote:
+>[..snip..]=20
+>> Things that don't work:
+>> X in 24 bit mode (I have the XL-24, 8 bit X works great)
+>Not supported in the debian packages but flaky support in XFree86
+>4.2.0. See
+> http://honk.physik.uni-konstanz.de/linux-mips/x/x.html
+>for details.
 
-> On Tue, Jul 16, 2002 at 12:36:32PM +0200, Ralf Baechle wrote:
-> > On Tue, Jul 16, 2002 at 10:34:58AM +0200, Carsten Langgaard wrote:
-> >
-> > > The include/linux/personality.h file has changed between the 2.4.3 and
-> > > the 2.4.18 kernel.
-> > > Now there is a define of personality (#define personality(pers) (pers &
-> > > PER_MASK), but that breaks things for the users, if they include this
-> > > file.
-> > > The user wishes to call the glibc personality function (which do the
-> > > syscall), and not use the above definition.
-> > >
-> > > So I guess we need a "#ifdef __KERNEL__" around some of the code in
-> > > include/linux/personality.h (at least around the define of personality),
-> > > which then has to go into the glibc kernel header files.
-> >
-> > The general policy about such problems is to not use kernel include files
-> > from user applications directly.  Hjl - maybe time for <sys/personality.h>?
-> >
->
-> Here is a patch.
->
-> H.J.
->
->   ------------------------------------------------------------------------
->
->    glibc-personality.patchName: glibc-personality.patch
->                           Type: Plain Text (text/plain)
+http://people.debian.org/~branden/sid/mips/ <---- there you will find
+debs for debian-unstable for xfree-4.2 :P
+
+Guido, please, can you add this to your side?
+
+	Regards
+		Jan
+
+--=20
+  .''`.    Jan-Hendrik Palic     |
+ : :' : ** Debian GNU/ Linux **  |   ** OpenOffice.org **       ,.. ,..
+ `. `'   http://www.debian.org   | http://www.openoffice.org  ,: ..`   `
+   `-  jan.palic@linux-debian.de |                           '  `  `
+
+--n8g4imXOkfNTN/H1
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.6 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iD8DBQE9NJdbQcNFwTMf/2YRAZHlAJ9NNE+4ujfj3tR5gw5UEGfwI1SEkACfVMK6
+o/lVKwwHSabP0uq+UwLm9E0=
+=KNFX
+-----END PGP SIGNATURE-----
+
+--n8g4imXOkfNTN/H1--

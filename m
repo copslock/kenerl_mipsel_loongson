@@ -1,43 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Aug 2004 17:03:14 +0100 (BST)
-Received: from p508B6A77.dip.t-dialin.net ([IPv6:::ffff:80.139.106.119]:55881
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225238AbUHXQDK>; Tue, 24 Aug 2004 17:03:10 +0100
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i7OG39vX024553;
-	Tue, 24 Aug 2004 18:03:09 +0200
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i7OG34sV024449;
-	Tue, 24 Aug 2004 18:03:04 +0200
-Date: Tue, 24 Aug 2004 18:03:04 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Valdis.Kletnieks@vt.edu
-Cc: Linus Torvalds <torvalds@osdl.org>, Andrew Morton <akpm@osdl.org>,
-	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] 2.6.9-rc1 - #ifdef cleanip for MIPS
-Message-ID: <20040824160304.GA23826@linux-mips.org>
-References: <200408241352.i7ODqf73026463@turing-police.cc.vt.edu>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <200408241352.i7ODqf73026463@turing-police.cc.vt.edu>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Aug 2004 17:24:03 +0100 (BST)
+Received: from web8201.mail.in.yahoo.com ([IPv6:::ffff:203.199.70.114]:38314
+	"HELO web8201.mail.in.yahoo.com") by linux-mips.org with SMTP
+	id <S8225238AbUHXQX7>; Tue, 24 Aug 2004 17:23:59 +0100
+Message-ID: <20040824132249.79568.qmail@web8201.mail.in.yahoo.com>
+Received: from [202.41.227.188] by web8201.mail.in.yahoo.com via HTTP; Tue, 24 Aug 2004 14:22:49 BST
+Date: Tue, 24 Aug 2004 14:22:49 +0100 (BST)
+From: =?iso-8859-1?q?Arravind=20babu?= <aravindforl@yahoo.co.in>
+Subject: Testing File systmes and drivers in linux kernel 2.4.20 
+To: binutils@sources.redhat.com
+Cc: linux-mips@linux-mips.org
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="0-1315701508-1093353769=:72915"
+Content-Transfer-Encoding: 8bit
+Return-Path: <aravindforl@yahoo.co.in>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5728
+X-archive-position: 5729
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: aravindforl@yahoo.co.in
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Aug 24, 2004 at 09:52:41AM -0400, Valdis.Kletnieks@vt.edu wrote:
+--0-1315701508-1093353769=:72915
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 
-> Cleaning up some #if to use #ifdef instead, to make life safer for compiling
-> with -Wundef.
+Hi all,
+ 
+       We upgraded the linux kernel 2.4.14 to 2.4.20 in our MIPS based embedded device.So we are planning to test the kernel stability.For this we have to test 
+ 
+File systems (RAMdisk , ROMFS , JFFS , CRAMFS) ,
+NAND driver ,
+Ethernet driver.
+ 
+Is there any tools available freely to test the above things? Pls tell me if there are any tools or links todo these tasks?
+ 
+Thanks in advance,
+Aravind.
 
-Thanks, applied.
+Yahoo! India Matrimony: Find your life partneronline.
+--0-1315701508-1093353769=:72915
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 
-  Ralf
+<DIV>Hi all,</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; We upgraded the linux kernel 2.4.14 to 2.4.20 in our <STRONG>MIPS</STRONG> based embedded device.So we are planning to test the kernel stability.For this we have to test </DIV>
+<DIV>&nbsp;</DIV>
+<DIV><STRONG>File systems</STRONG> (RAMdisk , ROMFS , JFFS , CRAMFS) ,</DIV>
+<DIV><STRONG>NAND </STRONG>driver ,</DIV>
+<DIV><STRONG>Ethernet</STRONG> driver.</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>Is there any tools available freely to test the above things? Pls tell me if there are any tools or links todo these tasks?</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>Thanks in advance,</DIV>
+<DIV>Aravind.</DIV><p><font face=arial size=-1>
+<a href="http://in.rd.yahoo.com/specials/mailtg/*http://yahoo.shaadi.com/india-matrimony/" target="_blank">
+<b>Yahoo! India Matrimony</a>:</b> Find your life partner
+<a href="http://in.rd.yahoo.com/specials/mailtg2/*http://yahoo.shaadi.com/india-matrimony/" target="_blank">online</a>.</font>
+--0-1315701508-1093353769=:72915--

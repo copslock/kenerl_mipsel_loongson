@@ -1,50 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Apr 2004 09:17:49 +0100 (BST)
-Received: from europa.et.put.poznan.pl ([IPv6:::ffff:150.254.29.138]:37527
-	"EHLO europa.et.put.poznan.pl") by linux-mips.org with ESMTP
-	id <S8225951AbUDXIRs>; Sat, 24 Apr 2004 09:17:48 +0100
-Received: from europa (europa.et.put.poznan.pl [150.254.29.138])
-	by europa.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id i3O8HiN13000
-	for <linux-mips@linux-mips.org>; Sat, 24 Apr 2004 10:17:44 +0200 (MET DST)
-Received: from helios.et.put.poznan.pl ([150.254.29.65])
-	by europa.et.put.poznan.pl (MailMonitor for SMTP v1.2.2 ) ;
-	Sat, 24 Apr 2004 10:17:43 +0200 (MET DST)
-Received: from localhost (sskowron@localhost)
-	by helios.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id i3O8HgZ16205
-	for <linux-mips@linux-mips.org>; Sat, 24 Apr 2004 10:17:42 +0200 (MET DST)
-X-Authentication-Warning: helios.et.put.poznan.pl: sskowron owned process doing -bs
-Date: Sat, 24 Apr 2004 10:17:42 +0200 (MET DST)
-From: Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
-To: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Apr 2004 09:19:36 +0100 (BST)
+Received: from p508B74B7.dip.t-dialin.net ([IPv6:::ffff:80.139.116.183]:6744
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225951AbUDXITg>; Sat, 24 Apr 2004 09:19:36 +0100
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i3O8JExT007587;
+	Sat, 24 Apr 2004 10:19:14 +0200
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i3O8IsGB007558;
+	Sat, 24 Apr 2004 10:18:54 +0200
+Date: Sat, 24 Apr 2004 10:18:54 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>,
+	linux-mips@linux-mips.org
 Subject: Re: 32-bit ABI
-In-Reply-To: <20040424081405.GA26165@linux-mips.org>
-Message-ID: <Pine.GSO.4.10.10404241015150.15622-100000@helios.et.put.poznan.pl>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <sskowron@ET.PUT.Poznan.PL>
+Message-ID: <20040424081854.GB26165@linux-mips.org>
+References: <Pine.GSO.4.10.10404240945500.14182-100000@helios.et.put.poznan.pl> <Pine.LNX.4.55.0404240949350.14494@jurand.ds.pg.gda.pl> <20040424075545.GA27039@linux-mips.org> <Pine.LNX.4.55.0404240959200.14494@jurand.ds.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.55.0404240959200.14494@jurand.ds.pg.gda.pl>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4884
+X-archive-position: 4885
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sskowron@ET.PUT.Poznan.PL
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-> The first kernel was built with the stock Makefile; the second was modified
-> to use 64-bit ELF using gcc 2.95.4 / binutils 2.13.2.1.  So I'd call those
-> 817559 bytes kernel obesity ;)
+On Sat, Apr 24, 2004 at 10:07:02AM +0200, Maciej W. Rozycki wrote:
 
-Yeah, true. It's really appalling. Make it a config option then, default
-'n'. I will set it to 'y' for SGI_IP30. The Octane firmware has no
-problems booting ELF64 (don't know about ELF32 though).
+> > > > Yeah. The weirdness is not in that part; what's weird is placing the rest
+> > > > of memory somewhere else.
+> > > 
+> > >  Perhaps to be able to put iomem stuff in CKSEG1 without implying a hole
+> > > in the RAM.
+> > 
+> > The machine is running a 64-bit kernel so likely it was designed with
+> > little consideration for 32-bit issues.
+> 
+>  Well, the exception arrangement requires RAM starting from the physical
+> address 0.  It seems natural to place RAM just there, avoiding additional
+> complexity to address decoders.  But then firmware has to be somewere
+> around 0x1fc00000, so to support more than 508MB of RAM the designers
+> would have to create a hole in RAM, which would have to be handled by the
+> OS then.  Thus abandoning the idea of putting RAM low, placing it
+> somewhere above 0x1fffffff and just mapping some of it at 0 for the
+> exceptions seems a better solution.
+> 
+>  Fortunately everything is not a PC. :-)
 
-> > Yeah. The weirdness is not in that part; what's weird is placing the rest
-> > of memory somewhere else.
-> Not uncommon on SGI systems.  The Indy's memory also starts at 128MB; only
-> a few kB for exeption vectors are mirrored to physical address 0.
+Actually the R10000 way to do something like this is to use the uncached
+attribute like in the Origin.  It allows using the same physical address
+space several times for different purposes.  So on node 0 of an Origin
+indeed memory starts at physical address zero and there is no hole for
+the firmware.  IP27 is afaik the only system using this R10000 feature
+which surprises me a little due to the otherwise great similarity of these
+two systems.
 
-They made a habit of this. The bastards. ;)
-
-Stanislaw
+  Ralf

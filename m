@@ -1,38 +1,39 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f3JK5Pv23567
-	for linux-mips-outgoing; Thu, 19 Apr 2001 13:05:25 -0700
-Received: from protactinium (protactinium.btinternet.com [194.73.73.176])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3JK5OM23564
-	for <linux-mips@oss.sgi.com>; Thu, 19 Apr 2001 13:05:24 -0700
-Received: from [213.122.128.81] (helo=tardis)
-	by protactinium with esmtp (Exim 3.03 #83)
-	id 14qKfq-0002PM-00
-	for linux-mips@oss.sgi.com; Thu, 19 Apr 2001 21:05:07 +0100
-Date: Thu, 19 Apr 2001 21:00:48 +0100 (BST)
-From: Dave Gilbert <gilbertd@treblig.org>
-X-Sender: gilbertd@tardis.home.dave
+	by oss.sgi.com (8.11.3/8.11.3) id f3JKeYS24754
+	for linux-mips-outgoing; Thu, 19 Apr 2001 13:40:34 -0700
+Received: from gandalf.physik.uni-konstanz.de (gandalf.physik.uni-konstanz.de [134.34.144.69])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3JKeWM24751
+	for <linux-mips@oss.sgi.com>; Thu, 19 Apr 2001 13:40:32 -0700
+Received: from bilbo.physik.uni-konstanz.de [134.34.144.81] (8)
+	by gandalf.physik.uni-konstanz.de with esmtp (Exim 3.12 #1 (Debian))
+	id 14qLE7-0002qF-00; Thu, 19 Apr 2001 22:40:31 +0200
+Received: from agx by bilbo.physik.uni-konstanz.de with local (Exim 3.12 #1 (Debian))
+	id 14qLE7-0005Ab-00; Thu, 19 Apr 2001 22:40:31 +0200
+Date: Thu, 19 Apr 2001 22:40:30 +0200
+From: Guido Guenther <guido.guenther@gmx.net>
 To: linux-mips@oss.sgi.com
-Subject: Passing kernel args
-Message-ID: <Pine.LNX.4.10.10104192059310.894-100000@tardis.home.dave>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Subject: Re: Passing kernel args
+Message-ID: <20010419224030.A19856@bilbo.physik.uni-konstanz.de>
+Mail-Followup-To: linux-mips@oss.sgi.com
+References: <Pine.LNX.4.10.10104192059310.894-100000@tardis.home.dave>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.LNX.4.10.10104192059310.894-100000@tardis.home.dave>; from gilbertd@treblig.org on Thu, Apr 19, 2001 at 09:00:48PM +0100
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi,
-  With help from some of the guys on the #mipslinux IRC channel I've
-managed to force a Linux kernel onto my Indy's internal disc.
-
-One problem is that I'd like to pass some parameters to it, but it is not
-obvious to me which prom environment variable to put them in - any
-suggestions???
-
-Thanks in advance,
-
-Dave
-
--- 
- ---------------- Have a happy GNU millennium! ----------------------   
-/ Dr. David Alan Gilbert      | Running GNU/Linux on Alpha, | Happy  \ 
-\   gro.gilbert @ treblig.org | 68K,MIPS,x86,ARM and SPARC  | In Hex /
- \ ___________________________|___ http://www.treblig.org   |_______/
+On Thu, Apr 19, 2001 at 09:00:48PM +0100, Dave Gilbert wrote:
+> Hi,
+>   With help from some of the guys on the #mipslinux IRC channel I've
+> managed to force a Linux kernel onto my Indy's internal disc.
+> 
+> One problem is that I'd like to pass some parameters to it, but it is not
+> obvious to me which prom environment variable to put them in - any
+> suggestions???
+OSLoadOptions
+See 
+http://honk.physik.uni-konstanz.de/linux-mips/indy-boot/indy-hd-boot-micro-howto.html
+(at the bottom) for an example.
+ -- Guido

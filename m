@@ -1,49 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Oct 2003 17:50:03 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:17403 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225344AbTJ0RuA>;
-	Mon, 27 Oct 2003 17:50:00 +0000
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id h9RHnss01701;
-	Mon, 27 Oct 2003 09:49:54 -0800
-Date: Mon, 27 Oct 2003 09:49:54 -0800
-From: Jun Sun <jsun@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Oct 2003 18:10:03 +0000 (GMT)
+Received: from p508B7DF8.dip.t-dialin.net ([IPv6:::ffff:80.139.125.248]:44220
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225344AbTJ0SKA>; Mon, 27 Oct 2003 18:10:00 +0000
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h9RI9wNK025978;
+	Mon, 27 Oct 2003 19:09:58 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h9RI9vgT025977;
+	Mon, 27 Oct 2003 19:09:57 +0100
+Date: Mon, 27 Oct 2003 19:09:57 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
 To: Teresa Tao <TERESAT@TTI-DM.COM>
-Cc: linux-mips@linux-mips.org, jsun@mvista.com
-Subject: Re: need help on bus error problem
-Message-ID: <20031027094954.B1678@mvista.com>
-References: <92F2591F460F684C9C309EB0D33256FA01B54329@trid-mail1.tridentmicro.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: question regarding bss section
+Message-ID: <20031027180957.GA25797@linux-mips.org>
+References: <92F2591F460F684C9C309EB0D33256FA01B750B3@trid-mail1.tridentmicro.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <92F2591F460F684C9C309EB0D33256FA01B54329@trid-mail1.tridentmicro.com>; from TERESAT@TTI-DM.COM on Sat, Oct 25, 2003 at 09:44:35AM -0700
-Return-Path: <jsun@mvista.com>
+In-Reply-To: <92F2591F460F684C9C309EB0D33256FA01B750B3@trid-mail1.tridentmicro.com>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3519
+X-archive-position: 3520
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Oct 25, 2003 at 09:44:35AM -0700, Teresa Tao wrote:
-> Hi there,
-> 
-> I am working on an real time video playback applicaion on a mips cpu. But after my video application play a while like 5 to 10 minutes, a bus error happened.
-> 
-> We add some debug meesage in the kernel, so we know that after the do_ade function inside the unalign.c, the bus error happens for the opcode lw or sw. So my guess is that I have an unaligned memory pointer(not in 4 byte boundary).
-> But my puzzle is that if I have an unaligned memory pointer, it should happen at the first loop I playback, how come it happens after it plays several loops?
-> 
+On Mon, Oct 27, 2003 at 09:44:05AM -0800, Teresa Tao wrote:
 
-There are many reasons for having bus error, cache, errant pointers,
-unstable hardware, or some tricky kernel bugs which happens when
-certain conditions happen together.
+> I have several questions and hope somebody could help me with the answers:
+> 1. how to use gcc to compile the user mode program with larger stack size?
 
-> Is there a possibility that my application's stack being trashed after a while? but I don't have recursive calls inside my application.
+Not at all.  Stack size is a resource limit which is set with can be
+manipulated with setrlimit(2) or in bash with the ulimit command.  It
+defaults to 8MB.
 
-Everything is possible.  :)
+For pthread applications the stack size is a thead attribute, seem libc
+manual.
 
-Jun
+> 2. Inside the user mode program, I have declared some gloabal data which
+> is being put on the bss section and I would like to know whom initialize
+> the bss section?
+
+.bss is uninitialized.  Initialized data can't be in .bss.
+
+> How big is the bss section? Under what kind of situation,
+
+As big as needed for everything in it.
+
+> the bss section data could be corrupted?
+
+There's millions of ways of writing broken code.
+
+> 3. What's the difference to compile the program with -G 0 option? That
+> menas I don't use the $gp register, will there be any side effect?
+
+-G 0 is the default for userspace.  Iow. passing the option changed nothing.
+
+  Ralf

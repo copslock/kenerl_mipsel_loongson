@@ -1,60 +1,53 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f5A45tk11182
-	for linux-mips-outgoing; Sat, 9 Jun 2001 21:05:55 -0700
-Received: from straylight.cyberhqz.com (root@h24-78-251-235.vc.shawcable.net [24.78.251.235])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5A45sV11179
-	for <linux-mips@oss.sgi.com>; Sat, 9 Jun 2001 21:05:54 -0700
-Received: (from rmurray@localhost)
-	by straylight.cyberhqz.com (8.9.3/8.9.3/Debian 8.9.3-21) id VAA32615
-	for linux-mips@oss.sgi.com; Sat, 9 Jun 2001 21:05:54 -0700
-From: Ryan Murray <rmurray@cyberhqz.com>
-Date: Sat, 9 Jun 2001 21:05:54 -0700
-To: linux-mips@oss.sgi.com
-Subject: Re: gcc 3.0 sig11
-Message-ID: <20010609210554.A12904@cyberhqz.com>
-References: <20010609205641.A27425@foobazco.org>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="fdj2RfSjLxBAspz7"
-Content-Disposition: inline
-User-Agent: Mutt/1.3.17i
-In-Reply-To: <20010609205641.A27425@foobazco.org>; from wesolows@foobazco.org on Sat, Jun 09, 2001 at 08:56:41PM -0700
+	by oss.sgi.com (8.11.2/8.11.3) id f5AF0nE25394
+	for linux-mips-outgoing; Sun, 10 Jun 2001 08:00:49 -0700
+Received: from tricom.net ([200.50.8.14])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5AF0mV25391
+	for <linux-mips@oss.sgi.com>; Sun, 10 Jun 2001 08:00:48 -0700
+Received: from vaio (net0port187.tricom.net [200.50.9.4])
+	by tricom.net (8.11.1/8.11.1) with SMTP id f5A6vfZ11335
+	for <linux-mips@oss.sgi.com>; Sun, 10 Jun 2001 10:57:41 +0400 (GMT)
+Message-ID: <007901c0f1bd$ff8827c0$0b0932c8@vaio>
+Reply-To: =?iso-8859-1?Q?Manuel_Poueri=E9?= <pouerie@cpmsa.com>
+From: =?iso-8859-1?Q?Manuel_Poueri=E9?= <pouerie@cpmsa.com>
+To: <linux-mips@oss.sgi.com>
+Subject: 
+Date: Sun, 10 Jun 2001 10:59:48 -0400
+Organization: CP&M
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_0076_01C0F19C.775930E0"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4133.2400
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+This is a multi-part message in MIME format.
 
---fdj2RfSjLxBAspz7
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+------=_NextPart_000_0076_01C0F19C.775930E0
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jun 09, 2001 at 08:56:41PM -0700, Keith M Wesolowski wrote:
-> For the past few weeks (0422 is ok, 0528 and 0609 are not) gcc built
-> for mips-linux takes sig11 during build.  Specifically at
-> /s/crossdev-build/src/gcc-3.0-20010609/gcc/unwind-dw2-fde.c:1001:
-> Internal error: Segmentation fault.
->=20
-> I know at least one other person has seen this.  Anybody produced a
-> patch or done any debugging on this?
+unsuscribe correo@cpmsa.com
 
-I filed a bug and got the response that they do have successful build logs,
-so they think it is fixed.
+------=_NextPart_000_0076_01C0F19C.775930E0
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
---=20
-Ryan Murray, Debian Developer (rmurray@cyberhqz.com, rmurray@debian.org)
-The opinions expressed here are my own.
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Diso-8859-1">
+<META content=3D"MSHTML 5.50.4207.2601" name=3DGENERATOR>
+<STYLE></STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV><FONT face=3DArial size=3D2>unsuscribe <A=20
+href=3D"mailto:correo@cpmsa.com">correo@cpmsa.com</A></FONT></DIV></BODY>=
+</HTML>
 
---fdj2RfSjLxBAspz7
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.4 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iD8DBQE7IvIhN2Dbz/1mRasRAsM5AKCu4l9OsaTXYif/7GGprYbLPnqegACgqYO1
-YJVYjYVAP4Uqr+A0sDFwymQ=
-=39se
------END PGP SIGNATURE-----
-
---fdj2RfSjLxBAspz7--
+------=_NextPart_000_0076_01C0F19C.775930E0--

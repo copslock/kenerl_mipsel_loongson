@@ -1,40 +1,86 @@
-Received:  by oss.sgi.com id <S42245AbQFLWik>;
-	Mon, 12 Jun 2000 15:38:40 -0700
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:30259 "EHLO
+Received:  by oss.sgi.com id <S42280AbQFMKQY>;
+	Tue, 13 Jun 2000 03:16:24 -0700
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:10599 "EHLO
         pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S42186AbQFLWiZ>; Mon, 12 Jun 2000 15:38:25 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id QAA01837
-	for <linux-mips@oss.sgi.com>; Mon, 12 Jun 2000 16:43:25 -0700 (PDT)
-	mail_from (ulfc@calypso.engr.sgi.com)
-Received: from calypso.engr.sgi.com (calypso.engr.sgi.com [163.154.5.113])
+	id <S42186AbQFMKQG>; Tue, 13 Jun 2000 03:16:06 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id EAA06818
+	for <linux-mips@oss.sgi.com>; Tue, 13 Jun 2000 04:21:07 -0700 (PDT)
+	mail_from (Huseyin@sgi.com)
+Received: from relay.istanbul.sgi.com (relay.istanbul.sgi.com [144.253.232.2])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id QAA51523;
-	Mon, 12 Jun 2000 16:38:00 -0700 (PDT)
-	mail_from (ulfc@calypso.engr.sgi.com)
-Received: from localhost (localhost [127.0.0.1])
-	by calypso.engr.sgi.com (Postfix) with ESMTP
-	id BB2FAA7875; Mon, 12 Jun 2000 16:36:12 -0700 (PDT)
-Date:   Mon, 12 Jun 2000 16:36:12 -0700 (PDT)
-From:   Ulf Carlsson <ulfc@calypso.engr.sgi.com>
-To:     "Jiri Kastner jr." <indy.j@worldonline.cz>
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: i'm not able compile new kernel
-In-Reply-To: <00061223063600.00832@pingu>
-Message-ID: <Pine.LNX.4.21.0006121632510.30891-100000@calypso.engr.sgi.com>
+	via ESMTP id EAA30010
+	for <linux@cthulhu.engr.sgi.com>;
+	Tue, 13 Jun 2000 04:15:36 -0700 (PDT)
+	mail_from (Huseyin@sgi.com)
+Received: from nt-emea-trbdc.istanbul.sgi.com (nt-emea-trbdc.istanbul.sgi.com [144.253.232.21]) by relay.istanbul.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA04066 for <linux@cthulhu.engr.sgi.com>; Tue, 13 Jun 2000 14:15:30 +0300 (MDT)
+Received: by nt-emea-trbdc.istanbul.sgi.com with Internet Mail Service (5.5.2650.21)
+	id <L6RWPC7L>; Tue, 13 Jun 2000 14:15:39 +0300
+Message-ID: <9496A27F9004D411AF890090278610F3017001@nt-emea-trbdc.istanbul.sgi.com>
+From:   Huseyin Sasmaz <Huseyin@sgi.com>
+To:     linux@cthulhu.engr.sgi.com
+Subject: Problem on booting linux on Indy
+Date:   Tue, 13 Jun 2000 14:15:38 +0300
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Mailer: Internet Mail Service (5.5.2650.21)
+Content-Type: multipart/mixed;
+	boundary="----_=_NextPart_000_01BFD528.B42A6A70"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-> > 
-> > You have to use egcs when you compile the kernel.
-> > 
-> > Ulf
-> 
-> Is possible to compile kernel with gcc-2.7.2?
+This message is in MIME format. Since your mail reader does not understand
+this format, some or all of this message may not be legible.
 
-Try the egcs 1.0.2 release (egcs-2.90.27) or later. 
+------_=_NextPart_000_01BFD528.B42A6A70
+Content-Type: text/plain;
+	charset="windows-1254"
 
-Ulf
+
+
+I would like to install the redhat 5.1 to my indy. I am getting the
+following error messages after the vmlinux is booted ;
+
+Looking up port of RPC 100003/2 on 144.253.232.3  <----- This my bootp
+server and nfs server which is O2.
+sendmsg returned error 128
+..
+..
+..
+portmap server 144.253.232.3 not responding, timed out.
+
+Then Indy panics
+
+Your help will be appreciated,
+
+
+Thansk in advance
+
+
+Huseyin
+
+ <<Huseyin Sasmaz (E-mail).vcf>> 
+
+------_=_NextPart_000_01BFD528.B42A6A70
+Content-Type: application/octet-stream;
+	name="Huseyin Sasmaz (E-mail).vcf"
+Content-Disposition: attachment;
+	filename="Huseyin Sasmaz (E-mail).vcf"
+
+BEGIN:VCARD
+VERSION:2.1
+N:Sasmaz;Huseyin
+FN:Huseyin Sasmaz (E-mail)
+ORG:SGI
+TITLE:Customer Support Manager
+TEL;WORK;VOICE:+90 (216) 361 71 81
+TEL;WORK;FAX:+90 (216) 361 71 76
+ADR;WORK;ENCODING=QUOTED-PRINTABLE:;Istanbul;Ucgen Plaza, Cayiryolu Sokak.=0D=0ANo.7 Kat.13;Istanbul;;81120;Tur=
+key
+LABEL;WORK;ENCODING=QUOTED-PRINTABLE:Istanbul=0D=0AUcgen Plaza, Cayiryolu Sokak.=0D=0ANo.7 Kat.13=0D=0AIstanbul 8=
+1120=0D=0ATurkey
+EMAIL;PREF;INTERNET:Huseyin@sgi.com
+REV:20000612T081952Z
+END:VCARD
+
+------_=_NextPart_000_01BFD528.B42A6A70--

@@ -1,45 +1,42 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g3P8BdwJ011861
-	for <linux-mips-outgoing@oss.sgi.com>; Thu, 25 Apr 2002 01:11:39 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g3P8VHwJ012128
+	for <linux-mips-outgoing@oss.sgi.com>; Thu, 25 Apr 2002 01:31:17 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g3P8BdBW011860
-	for linux-mips-outgoing; Thu, 25 Apr 2002 01:11:39 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g3P8VHRD012127
+	for linux-mips-outgoing; Thu, 25 Apr 2002 01:31:17 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g3P8BWwJ011847;
-	Thu, 25 Apr 2002 01:11:33 -0700
-Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.26])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id KAA16985;
-	Thu, 25 Apr 2002 10:11:55 +0200 (MET DST)
-Date: Thu, 25 Apr 2002 10:11:55 +0200 (MEST)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: Ralf Baechle <ralf@oss.sgi.com>
-cc: Pete Popov <ppopov@mvista.com>, linux-mips <linux-mips@oss.sgi.com>
-Subject: Re: reiserfs
-In-Reply-To: <20020425005128.A26673@dea.linux-mips.net>
-Message-ID: <Pine.GSO.4.21.0204251011190.1401-100000@vervain.sonytel.be>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received: from gandalf.physik.uni-konstanz.de (gandalf.physik.uni-konstanz.de [134.34.144.69])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g3P8VEwJ012123
+	for <linux-mips@oss.sgi.com>; Thu, 25 Apr 2002 01:31:14 -0700
+Received: from galadriel.physik.uni-konstanz.de (galadriel.physik.uni-konstanz.de [134.34.144.79])
+	by gandalf.physik.uni-konstanz.de (Postfix) with ESMTP
+	id 581C78D35; Thu, 25 Apr 2002 10:31:42 +0200 (CEST)
+Received: from agx by galadriel.physik.uni-konstanz.de with local (Exim 3.12 #1 (Debian))
+	id 170efG-0006S0-00; Thu, 25 Apr 2002 10:31:42 +0200
+Date: Thu, 25 Apr 2002 10:31:42 +0200
+From: Guido Guenther <agx@sigxcpu.org>
+To: Dani Eichhorn <dani.eichhorn@squix.ch>, linux-mips@oss.sgi.com
+Subject: Re: Challenge S crashes configuring the base system
+Message-ID: <20020425103142.A24749@galadriel.physik.uni-konstanz.de>
+Mail-Followup-To: Dani Eichhorn <dani.eichhorn@squix.ch>,
+	linux-mips@oss.sgi.com
+References: <OBEHJEMLCCGNNEAACCLCAEAICCAA.dani.eichhorn@squix.ch> <20020421131051.A12044@gandalf.physik.uni-konstanz.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20020421131051.A12044@gandalf.physik.uni-konstanz.de>; from agx@sigxcpu.org on Sun, Apr 21, 2002 at 01:10:51PM +0200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, 25 Apr 2002, Ralf Baechle wrote:
-> On Wed, Apr 24, 2002 at 04:13:06PM -0700, Pete Popov wrote:
-> > Has anyone been able to run reiserfs on big endian systems?
-> 
-> I've seen reports of people running Reiserfs on MIPS but I don't know what
-> endianess.
-
-Some people run it on PowerPC, which is big endian as far as Linux is
-concerned.
-
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+On Sun, Apr 21, 2002 at 01:10:51PM +0200, Guido Guenther wrote:
+[..snip..] 
+> It doesn't really "crash". The porblem is that the installer doesn't
+> correctly detect the serial console and therefore displays everything on
+> tty1 not ttyS0. Boot with /bin/bash as init (use "boot init=/bin/bash"
+I just doublechecked this on an Indy. The installer detects the serial
+console with either console=ttyS0 as kernel command line argument or
+"console=d1" as prom var correctly. Can you try another installation and
+save /var/log/messages as well as /target/etc/inittab before you reboot
+from the installer?
+ -- Guido 

@@ -1,57 +1,88 @@
-Received:  by oss.sgi.com id <S553769AbQJNLga>;
-	Sat, 14 Oct 2000 04:36:30 -0700
-Received: from noose.gt.owl.de ([62.52.19.4]:38673 "HELO noose.gt.owl.de")
-	by oss.sgi.com with SMTP id <S553760AbQJNLgJ>;
-	Sat, 14 Oct 2000 04:36:09 -0700
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id B98B67F8; Sat, 14 Oct 2000 13:36:07 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 9DBB4900C; Sat, 14 Oct 2000 13:35:02 +0200 (CEST)
-Date:   Sat, 14 Oct 2000 13:35:02 +0200
-From:   Florian Lohoff <flo@rfc822.org>
-To:     linux-mips@oss.sgi.com, debian-mips@lists.debian.org
-Subject: delo 0.1 / Decstation Boot Loader 
-Message-ID: <20001014133502.A1685@paradigm.rfc822.org>
+Received:  by oss.sgi.com id <S553771AbQJNL7K>;
+	Sat, 14 Oct 2000 04:59:10 -0700
+Received: from woody.ichilton.co.uk ([216.29.174.40]:47366 "HELO convert rfc822-to-8bit
+        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553762AbQJNL65>;
+	Sat, 14 Oct 2000 04:58:57 -0700
+Received: by woody.ichilton.co.uk (Postfix, from userid 0)
+	id 759BD7C74; Sat, 14 Oct 2000 12:58:55 +0100 (BST)
+Date:   Sat, 14 Oct 2000 12:58:55 +0100
+From:   Ian Chilton <mailinglist@ichilton.co.uk>
+To:     linux-mips@oss.sgi.com
+Cc:     wesolows@foobazco.org
+Subject: CVS GCC Problem
+Message-ID: <20001014125855.A28429@woody.ichilton.co.uk>
+Reply-To: ian@ichilton.co.uk
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-User-Agent: Mutt/1.0.1i
-Organization: rfc822 - pure communication
+Content-Disposition: inline
+Content-Transfer-Encoding: 8BIT
+User-Agent: Mutt/1.3.9i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hi,
-i started to hack on a Decstation bootloader - It is currently
-not booting anything but i thought of letting you know.
+Hello,
 
-I put the stuff i already have at
+I guess it's not my weekend  :(
 
-ftp://ftp.rfc822.org/pub/local/debian-mipsel/experimental
+I am trying to satup a cross compile environment on my x86 linux box (gcc 2.95.2
+, glibc 2.1.3, binutils 2.10, linux-2.2.17)
 
-And it is called "delo" - The Decstation Loader - It is loosly
-designed like "SILO" the Sparc Loader.
+I am building current CVS binutils and GCC of today with patches that Keith Weso
+lowski sent me.                                                                
 
-I have a small application called "writeboot" which is based on
-lilo and bootprep and inserts the extents to load into the
-bootsector of the defined disk. This seems to work quiet well.
-I succeeded to load a full kernel dumped with objcopy like this.
+I have tried this 2 or 3 times, and get the same problem every time,..
 
-The second thing is the "loader" which will (when finished) use
-the libe2fs to open an ext2 filesystem, load the kernel and run it.
+mkdir /crossdev
+mkdir /crossdev-build
+mkdir /crossdev-build/gcc-build
+mkdir /crossdev-build/binutils-build
 
-Goal is to be able to select the kernel image to be loaded on the
-prom command line like
+cd /crossdev-build
 
-boot 3/rz0 /boot/vmlinux root=/dev/sda5 console=ttyS2
+cp -ax ~/cvs/linux-mips/src binutils
+cp -ax  ~/cvs/linux-mips/gcc .
 
-Although i am not shure on how to select the partition/filesystem
-on which to look for the kernel. Also MS-DOS Disklabel support
-has to be added to be able to automatically find the partitions.
-Currently i am using the first partition starting at 64 (Although
-the open_ext2 currently fails :( )
+cd binutils
+patch -p1 < /export/mips/patches/binutils-1009.diff 
 
-Flo
--- 
-Florian Lohoff		flo@rfc822.org		      	+49-5201-669912
-      "Write only memory - Oops. Time for my medication again ..."
+cd ../gcc
+patch -p0 < /export/mips/patches/gcc-000922.diff
+
+cd ../binutils-build
+../binutils/configure --prefix=/crossdev --target=mips-linux && make && make install
+
+export PATH=$PATH:/crossdev/bin
+
+cd ../gcc-build
+AR=mips-linux-ar RANLIB=mips-linux-ranlib ../gcc/configure --prefix=/crossdev --target=mips-linux --with-newlib && make -C libiberty LANGUAGES=c && make -C gcc LANGUAGES=c
+
+..This is where it goes wrong  :(
+
+./xgcc -B./ -B/crossdev/mips-linux/bin/ -isystem /crossdev/mips-linux/include -O2  -DCROSS_COMPILE -DIN_GCC    `echo -g -W -Wall -Wtraditional -Wwrite-strings -Wstrict-prototypes -Wmissing-prototypes -pedantic -Wno-long-long|sed -e s/-pedantic//g -e s/-Wtraditional//g` -isystem ./include  -fPIC -g1  -DIN_LIBGCC2 -D__GCC_FLOAT_NOT_NEEDED -Dinhibit_libc -shared -nodefaultlibs -Wl,--soname=libgcc_s.so.0 -Wl,--version-script=libgcc.map -o libgcc_s.so   libgcc/./_muldi3.o libgcc/./_divdi3.o libgcc/./_moddi3.o libgcc/./_udivdi3.o libgcc/./_umoddi3.o libgcc/./_negdi2.o libgcc/./_lshrdi3.o libgcc/./_ashldi3.o libgcc/./_ashrdi3.o libgcc/./_ffsdi2.o libgcc/./_clz.o libgcc/./_udiv_w_sdiv.o libgcc/./_udivmoddi4.o libgcc/./_cmpdi2.o libgcc/./_ucmpdi2.o libgcc/./_floatdidf.o libgcc/./_floatdisf.o libgcc/./_fixunsdfsi.o libgcc/./_fixunssfsi.o libgcc/./_fixunsdfdi.o libgcc/./_fixdfdi.o libgcc/./_fixunssfdi.o libgcc/./_fixsfdi.o libgcc/./_fixxfdi.o libgcc/./_fixunsxfdi.o libgcc/./_floatdixf.o libgcc/./_fixunsxfsi.o libgcc/./_fixtfdi.o libgcc/./_fixunstfdi.o libgcc/./_floatditf.o libgcc/./__gcc_bcmp.o libgcc/./_varargs.o libgcc/./__dummy.o libgcc/./_eprintf.o libgcc/./_bb.o libgcc/./_shtab.o libgcc/./_clear_cache.o libgcc/./_trampoline.o libgcc/./__main.o libgcc/./_exit.o libgcc/./_ctors.o libgcc/./_eh.o libgcc/./frame-dwarf2.o -lc
+/crossdev/mips-linux/bin/ld: cannot open crti.o: No such file or directory
+collect2: ld returned 1 exit status
+make[1]: *** [libgcc_s.so] Error 1
+make[1]: Leaving directory `/crossdev-build/gcc-build/gcc'
+make: *** [libgcc.a] Error 2
+make: Leaving directory `/crossdev-build/gcc-build/gcc'
+
+
+Any ideas?
+
+
+Thanks!
+
+
+Bye for Now,
+
+Ian
+
+
+                     \|||/ 
+                     (o o)
+ /----------------ooO-(_)-Ooo----------------\
+ |  Ian Chilton                              |
+ |  E-Mail : ian@ichilton.co.uk              |
+ \-------------------------------------------/

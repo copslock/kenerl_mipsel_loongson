@@ -1,57 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jul 2003 16:51:48 +0100 (BST)
-Received: from mail2.sonytel.be ([IPv6:::ffff:195.0.45.172]:33772 "EHLO
-	witte.sonytel.be") by linux-mips.org with ESMTP id <S8225256AbTGBPvq>;
-	Wed, 2 Jul 2003 16:51:46 +0100
-Received: from vervain.sonytel.be (localhost [127.0.0.1])
-	by witte.sonytel.be (8.12.9/8.12.9) with ESMTP id h62FpbRd005470;
-	Wed, 2 Jul 2003 17:51:37 +0200 (MEST)
-Date: Wed, 2 Jul 2003 17:51:37 +0200 (MEST)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: "Sirotkin, Alexander" <demiurg@ti.com>
-cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jul 2003 16:57:20 +0100 (BST)
+Received: from p508B6205.dip.t-dialin.net ([IPv6:::ffff:80.139.98.5]:4766 "EHLO
+	dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225256AbTGBP5R>; Wed, 2 Jul 2003 16:57:17 +0100
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h62Fv8DB008518;
+	Wed, 2 Jul 2003 17:57:08 +0200
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h62Fv7sJ008517;
+	Wed, 2 Jul 2003 17:57:07 +0200
+Date: Wed, 2 Jul 2003 17:57:07 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: "Sirotkin, Alexander" <demiurg@ti.com>,
+	"Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
 	Linux/MIPS Development <linux-mips@linux-mips.org>
 Subject: Re: do_ri
-In-Reply-To: <3F02FBE1.7070107@ti.com>
-Message-ID: <Pine.GSO.4.21.0307021750091.15047-100000@vervain.sonytel.be>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <Geert.Uytterhoeven@sonycom.com>
+Message-ID: <20030702155707.GA6158@linux-mips.org>
+References: <3F02FBE1.7070107@ti.com> <Pine.GSO.4.21.0307021750091.15047-100000@vervain.sonytel.be>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.GSO.4.21.0307021750091.15047-100000@vervain.sonytel.be>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2755
+X-archive-position: 2756
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 2 Jul 2003, Sirotkin, Alexander wrote:
-> Are you sure ?
+On Wed, Jul 02, 2003 at 05:51:37PM +0200, Geert Uytterhoeven wrote:
+
+> > 
+> > ./arch/mips/kernel/traps.c:asmlinkage void do_ri(struct pt_regs *regs)
+> > ./arch/mips/kernel/traps.c:             do_ri(regs);
+> > ./arch/mips/lx/lxRi.c:  do_ri(regp);
+> > 
+> > On my linux-2.4.17_mvl21 kernel. And I'm quite sure that when my kernel 
+> > crashes it's not being called from any of these places.
 > 
-> Because "grep -r" shows only 
+> I remember getting bitten by that one, too...
 > 
-> ./arch/mips/kernel/traps.c:asmlinkage void do_ri(struct pt_regs *regs)
-> ./arch/mips/kernel/traps.c:             do_ri(regs);
-> ./arch/mips/lx/lxRi.c:  do_ri(regp);
+> Check out BUILD_HANDLER(ri,ri,sti,silent) in arch/mips/kernel/entry.S.
 > 
-> On my linux-2.4.17_mvl21 kernel. And I'm quite sure that when my kernel 
-> crashes it's not being called from any of these places.
+> Grep isn't always your friend, `nm -g' is, in this case :-)
 
-I remember getting bitten by that one, too...
+I guess people not finding the callers of the do_* functions is one of the
+most common questions on this list :-)
 
-Check out BUILD_HANDLER(ri,ri,sti,silent) in arch/mips/kernel/entry.S.
+  Ralf
 
-Grep isn't always your friend, `nm -g' is, in this case :-)
-
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+PS: Ever heared of Intercal? ;-)

@@ -1,51 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Jan 2005 09:48:27 +0000 (GMT)
-Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:17158
-	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
-	id <S8225275AbVAXJsV>; Mon, 24 Jan 2005 09:48:21 +0000
-Received: from newms.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 24 Jan 2005 09:48:20 UT
-Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
-	by newms.toshiba-tops.co.jp (Postfix) with ESMTP
-	id 1EE30239E47; Mon, 24 Jan 2005 18:48:16 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id j0O9mFRm087068;
-	Mon, 24 Jan 2005 18:48:15 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Mon, 24 Jan 2005 18:48:15 +0900 (JST)
-Message-Id: <20050124.184815.79301222.nemoto@toshiba-tops.co.jp>
-To:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: MIPS32/MIPS64 profiling (Re: CVS Update@linux-mips.org: linux)
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20050117175805Z8225250-1340+1463@linux-mips.org>
-References: <20050117175805Z8225250-1340+1463@linux-mips.org>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Jan 2005 11:52:03 +0000 (GMT)
+Received: from host51-186.pool80204.interbusiness.it ([IPv6:::ffff:80.204.186.51]:33711
+	"EHLO gate.exadron.com") by linux-mips.org with ESMTP
+	id <S8225323AbVAXLv5>; Mon, 24 Jan 2005 11:51:57 +0000
+Received: from 10.0.10.57 ([10.0.10.57])
+	by gate.exadron.com (8.12.7/8.12.7) with ESMTP id j0OCDPMM030685
+	(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NO);
+	Mon, 24 Jan 2005 13:13:30 +0100
+Subject: Re: CONFIG_PM depends on CONFIG_MACH_AU1X00?
+From:	Christian <c.pellegrin@exadron.com>
+To:	Dan Malek <dan@embeddededge.com>
+Cc:	Clem Taylor <clem.taylor@gmail.com>, linux-mips@linux-mips.org
+In-Reply-To: <DF642A6E-6BE2-11D9-B764-003065F9B7DC@embeddededge.com>
+References: <ecb4efd10501210949db48ce1@mail.gmail.com>
+	 <ecb4efd1050121112268e163ba@mail.gmail.com>
+	 <DF642A6E-6BE2-11D9-B764-003065F9B7DC@embeddededge.com>
+Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature"; boundary="=-/aRb+FBva/LlBM51JDzu"
+Date:	Mon, 24 Jan 2005 12:45:56 +0100
+Message-Id: <1106567159.5282.102.camel@absolute.ascensit.com>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+X-Mailer: Evolution 2.0.2 (2.0.2-3) 
+Return-Path: <c.pellegrin@exadron.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7020
+X-archive-position: 7021
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: c.pellegrin@exadron.com
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Mon, 17 Jan 2005 17:58:00 +0000, ralf@linux-mips.org said:
-ralf> Modified files:
-ralf> 	arch/mips/oprofile: common.c 
 
-ralf> Log message:
-ralf> 	Hooks to support profiling for MIPS32 / MIPS64 processors, for the
-ralf> 	moment only for the 24K.
+--=-/aRb+FBva/LlBM51JDzu
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-Please add op_model_mipsxx.c to CVS since arch/mips/orofile/Makefile
-already use it.
+On Fri, 2005-01-21 at 11:30 -0800, Dan Malek wrote:
+> On Jan 21, 2005, at 11:22 AM, Clem Taylor wrote:
+>=20
+> > I guess I should recompile after making a change to a Kconfig file. It
+> > turns out that the arch/mips/au1000/common/irq.c code doesn't compile
+> > for the Au1550 with CONFIG_PM defined.
+>=20
+> Ooops.  I guess I haven't done this for 2.6.  I'll add it to my list of
+> things to look into.
+>=20
 
----
-Atsushi Nemoto
+Hi, I sent a couple of days ago a patch to the list that fixes this (and
+the fb driver) for 2.6. I'm going to do some more work on 2.6.x on
+au1xxx, so drop me a line if there is some other problems around that I
+could work on.
+
+--=20
+Christian <c.pellegrin@exadron.com>
+
+--=-/aRb+FBva/LlBM51JDzu
+Content-Type: application/pgp-signature; name=signature.asc
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.6 (GNU/Linux)
+
+iD4DBQBB9N/zq26xP1xKlLcRAiWPAJY020QQuZebSexSL4pcr6QEpk4qAJ9a9bXU
+Oti884yMnYdxtGf+NBjTAg==
+=CbMb
+-----END PGP SIGNATURE-----
+
+--=-/aRb+FBva/LlBM51JDzu--

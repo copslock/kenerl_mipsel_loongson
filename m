@@ -1,45 +1,43 @@
-Received:  by oss.sgi.com id <S553844AbQKMLPT>;
-	Mon, 13 Nov 2000 03:15:19 -0800
-Received: from voyager.cistron.net ([195.64.68.34]:29193 "EHLO smtp.cistron.nl")
-	by oss.sgi.com with ESMTP id <S553984AbQKMLPA>;
-	Mon, 13 Nov 2000 03:15:00 -0800
-Received: from picard.cistron.nl ([195.64.65.20])
-	by smtp.cistron.nl with esmtp (Exim 3.13 #1 (Debian))
-	id 13vHZn-0002OM-00; Mon, 13 Nov 2000 12:15:03 +0100
-Received: (from wichert@localhost)
-	by picard.cistron.nl (8.9.3/8.9.3/Debian 8.9.3-6) id MAA07008;
-	Mon, 13 Nov 2000 12:14:54 +0100
-Date:   Mon, 13 Nov 2000 12:14:54 +0100
-From:   Wichert Akkerman <wichert@cistron.nl>
-To:     Mark Lehrer <mark@knm.org>
-Cc:     linux-mips@oss.sgi.com
+Received:  by oss.sgi.com id <S554084AbQKMPFb>;
+	Mon, 13 Nov 2000 07:05:31 -0800
+Received: from rotor.chem.unr.edu ([134.197.32.176]:13832 "EHLO
+        rotor.chem.unr.edu") by oss.sgi.com with ESMTP id <S553991AbQKMPFQ>;
+	Mon, 13 Nov 2000 07:05:16 -0800
+Received: (from wesolows@localhost)
+	by rotor.chem.unr.edu (8.9.3/8.9.3) id HAA19918;
+	Mon, 13 Nov 2000 07:04:02 -0800
+Date:   Mon, 13 Nov 2000 07:04:02 -0800
+From:   Keith M Wesolowski <wesolows@chem.unr.edu>
+To:     flaws@bawue.de
+Cc:     bjzheng@ict.ac.cn, linux-mips@oss.sgi.com
 Subject: Re: Can you help me?
-Message-ID: <20001113121454.B6557@cistron.nl>
-Mail-Followup-To: Mark Lehrer <mark@knm.org>, linux-mips@oss.sgi.com
-References: <002801c04d1b$c1adc320$a727e29f@ict.ac.cn> <200011130439.VAA19564@home.knm.org>
+Message-ID: <20001113070402.A19583@chem.unr.edu>
+References: <20001113092014.54D9D1F10E@helena.bawue.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <200011130439.VAA19564@home.knm.org>; from mark@knm.org on Sun, Nov 12, 2000 at 09:39:36PM -0700
+User-Agent: Mutt/1.2i
+In-Reply-To: <20001113092014.54D9D1F10E@helena.bawue.de>; from flaws@bawue.de on Mon, Nov 13, 2000 at 10:20:14AM +0100
+X-Complaints-To: postmaster@chem.unr.edu
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Previously Mark Lehrer wrote:
-> Does this kind of message violate any RFC's or anything?  I can't read
-> it in emacs.  I am disturbed at how MS mail readers only use MIME types
-> and don't include plain text.
+On Mon, Nov 13, 2000 at 10:20:14AM +0100, flaws@bawue.de wrote:
 
-Your emacs is broken then, it was a multipart/alternative message
-with one plan in our standard character set and the other in gb2312.
-mutt shows it just fine.
+> AFAIK Onyx is pretty much the same as an Origin, except for the graphics
+> hardware. Since Ralf is working on an Origin port, which is in quite a good
+> state, I guess, Onyx should be supported, too.
+> Without graphics, of course.
 
-Wichert.
+You're confusing Onyx with Onyx2.  The Onyx2 is Origin-like and
+probably works.  The Onyx is sort of a multiprocessor version of the
+Crimson (or, alternately, a graphics-heavy version of a Challenge D).
+There were also Power Onyxen, with R8000 CPUs; I can't remember
+whether there were r10k versions.
 
 -- 
-   ________________________________________________________________
- / Generally uninteresting signature - ignore at your convenience  \
-| wichert@cistron.nl                  http://www.liacs.nl/~wichert/ |
-| 1024D/2FA3BC2D 576E 100B 518D 2F16 36B0  2805 3CB8 9250 2FA3 BC2D |
+Keith M Wesolowski			wesolows@chem.unr.edu
+University of Nevada			http://www.chem.unr.edu
+Chemistry Department Systems and Network Administrator

@@ -1,41 +1,44 @@
-Received:  by oss.sgi.com id <S554017AbRBBOuP>;
-	Fri, 2 Feb 2001 06:50:15 -0800
-Received: from mx.mips.com ([206.31.31.226]:38124 "EHLO mx.mips.com")
-	by oss.sgi.com with ESMTP id <S553967AbRBBOtx>;
-	Fri, 2 Feb 2001 06:49:53 -0800
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id GAA12448
-	for <linux-mips@oss.sgi.com>; Fri, 2 Feb 2001 06:49:50 -0800 (PST)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id GAA08986
-	for <linux-mips@oss.sgi.com>; Fri, 2 Feb 2001 06:49:49 -0800 (PST)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id PAA07178
-	for <linux-mips@oss.sgi.com>; Fri, 2 Feb 2001 15:49:39 +0100 (MET)
-Message-ID: <3A7AC901.4BD0F4E0@mips.com>
-Date:   Fri, 02 Feb 2001 15:49:37 +0100
-From:   Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
-X-Accept-Language: en
+Received:  by oss.sgi.com id <S554046AbRBBPC4>;
+	Fri, 2 Feb 2001 07:02:56 -0800
+Received: from bastion.power-x.co.uk ([62.232.19.201]:49166 "EHLO
+        bastion.power-x.co.uk") by oss.sgi.com with ESMTP
+	id <S554024AbRBBPCo>; Fri, 2 Feb 2001 07:02:44 -0800
+Received: from springhead.px.uk.com (IDENT:dg@springhead.px.uk.com [172.16.18.41])
+	by bastion.power-x.co.uk (8.9.3/8.9.3) with ESMTP id PAA06849;
+	Fri, 2 Feb 2001 15:02:25 GMT
+Date:   Fri, 2 Feb 2001 15:03:11 +0000 (GMT)
+From:   "Dr. David Gilbert" <gilbertd@treblig.org>
+X-Sender:  <dg@springhead.px.uk.com>
+To:     Carsten Langgaard <carstenl@mips.com>
+cc:     <linux-mips@oss.sgi.com>
+Subject: Re: Cross build applications
+In-Reply-To: <3A7AC901.4BD0F4E0@mips.com>
+Message-ID: <Pine.LNX.4.30.0102021502170.1654-100000@springhead.px.uk.com>
 MIME-Version: 1.0
-To:     linux-mips@oss.sgi.com
-Subject: Cross build applications
-Content-Type: text/plain; charset=iso-8859-15
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-I'm trying to cross build a small test program on a linux PC, but it
-fails.
+On Fri, 2 Feb 2001, Carsten Langgaard wrote:
 
-mips-linux-gcc -o test test.c
-/usr/mips-linux/bin/ld: cannot open crt1.o: No such file or directory
+> I'm trying to cross build a small test program on a linux PC, but it
+> fails.
+>
+> mips-linux-gcc -o test test.c
+> /usr/mips-linux/bin/ld: cannot open crt1.o: No such file or directory
 
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+Yep - you need to obtain a copy of this - just copy it out of Linux/mips
+installation and put it in one of the lib directories under your
+/usr/mips-linux.
+
+(That let me get "hello world" crossing from Linux/Alpha last week)
+
+Dave
+-- 
+/------------------------------------------------------------------\
+| Dr. David Alan Gilbert | Work:dg@px.uk.com +44-161-286-2000 Ex258|
+| -------- G7FHJ --------|---------------------------------------- |
+| Home: dave@treblig.org            http://www.treblig.org         |
+\------------------------------------------------------------------/

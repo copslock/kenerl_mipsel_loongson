@@ -1,39 +1,42 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f48Jrqq28424
-	for linux-mips-outgoing; Tue, 8 May 2001 12:53:52 -0700
-Received: from dea.waldorf-gmbh.de (IDENT:root@localhost [127.0.0.1])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f48JroF28421
-	for <linux-mips@oss.sgi.com>; Tue, 8 May 2001 12:53:51 -0700
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f48JpQ901860;
-	Tue, 8 May 2001 16:51:26 -0300
-Date: Tue, 8 May 2001 16:51:26 -0300
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
-Cc: Kaj-Michael Lang <milang@tal.org>, linux-mips@oss.sgi.com
-Subject: Re: Linux on a Tektronix XP217C xterm
-Message-ID: <20010508165126.B1471@bacchus.dhis.org>
-References: <Pine.LNX.4.33.0105080945260.20283-100000@tori.tal.org> <Pine.GSO.4.10.10105080959500.13343-100000@escobaria.sonytel.be>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.GSO.4.10.10105080959500.13343-100000@escobaria.sonytel.be>; from Geert.Uytterhoeven@sonycom.com on Tue, May 08, 2001 at 10:00:38AM +0200
-X-Accept-Language: de,en,fr
+	by oss.sgi.com (8.11.3/8.11.3) id f48Junj28735
+	for linux-mips-outgoing; Tue, 8 May 2001 12:56:49 -0700
+Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f48JiBF27611
+	for <linux-mips@oss.sgi.com>; Tue, 8 May 2001 12:46:39 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id VAA06088;
+	Tue, 8 May 2001 21:34:23 +0200 (MET DST)
+Date: Tue, 8 May 2001 21:34:22 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Jun Sun <jsun@mvista.com>
+cc: linux-mips@oss.sgi.com
+Subject: Re: machine types for MIPS in ELF file
+In-Reply-To: <3AF843F7.72BC47F0@mvista.com>
+Message-ID: <Pine.GSO.3.96.1010508211713.4713A-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, May 08, 2001 at 10:00:38AM +0200, Geert Uytterhoeven wrote:
+On Tue, 8 May 2001, Jun Sun wrote:
 
-> On Tue, 8 May 2001, Kaj-Michael Lang wrote:
-> > Any chance of getting linux running on a tektronix x-terminal ? It has
-> > a LR33020 cpu, that I think is a R3000 integrated with some graphics
-> > chip. I've tried searching for documentation for the chip but I didn't
-> > find anything.
+> The e_machine field in ELF file standard defines two values for MIPS:
 > 
-> IIRC there's a different separate graphics chip in the 217. I think the 33020
-> is not a MIPS, but a RISC chip from LSI Logic.
+> 8	- MIPS RS3000 BE
+> 10	- MIPS RS4000 BE
+> 
+> Naturally the question is: what about LE binaries?  And what about other
+> CPUs?  Is there any effort to clean up this thing?
 
-Which in turn is a MIPS licensee ...
+ The latter has been changed to "MIPS RS3000 LE" in the latest ELF spec,
+AFAIK.  The ISA level is further specified in the e_flags field.  No idea
+why they want to keep redundant endianness information in e_machine --
+there is an endianness specification at e_ident[5]. 
 
-  Ralf
+ Also no idea why they named the CPU RS3000 and not R3000. 
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

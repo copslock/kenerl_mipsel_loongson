@@ -1,78 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Oct 2004 06:17:56 +0100 (BST)
-Received: from cantor.suse.de ([IPv6:::ffff:195.135.220.2]:10944 "EHLO
-	Cantor.suse.de") by linux-mips.org with ESMTP id <S8224858AbUJRFRq>;
-	Mon, 18 Oct 2004 06:17:46 +0100
-Received: from hermes.suse.de (hermes-ext.suse.de [195.135.221.8])
-	(using TLSv1 with cipher EDH-RSA-DES-CBC3-SHA (168/168 bits))
-	(No client certificate requested)
-	by Cantor.suse.de (Postfix) with ESMTP id B0A66DB6A0B;
-	Mon, 18 Oct 2004 07:17:28 +0200 (CEST)
-Received: from aj by arthur.inka.de with local (Exim 4.42)
-	id 1CJPte-0001GW-Ds; Mon, 18 Oct 2004 07:17:26 +0200
-To: "Maciej W. Rozycki" <macro@mips.com>
-Cc: linux-mips@linux-mips.org, libc-alpha@sources.redhat.com,
-	Dominic Sweetman <dom@mips.com>,
-	Nigel Stephens <nigel@mips.com>,
-	"Maciej W. Rozycki" <macro@linux-mips.org>
-Subject: Re: [patch] glibc 2.3: Memory clobber missing from syscalls
-References: <Pine.LNX.4.61.0410151318550.8084@perivale.mips.com>
-From: Andreas Jaeger <aj@suse.de>
-Date: Mon, 18 Oct 2004 07:17:24 +0200
-In-Reply-To: <Pine.LNX.4.61.0410151318550.8084@perivale.mips.com> (Maciej
-	W. Rozycki's message of "Fri, 15 Oct 2004 13:47:59 +0100 (BST)")
-Message-ID: <m31xfwmwpn.fsf@gromit.moeb>
-User-Agent: Gnus/5.110003 (No Gnus v0.3) XEmacs/21.4 (Security Through
-	Obscurity, linux)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Oct 2004 09:25:33 +0100 (BST)
+Received: from smtp5.infineon.com ([IPv6:::ffff:217.10.50.127]:60539 "EHLO
+	smtp5.infineon.com") by linux-mips.org with ESMTP
+	id <S8224772AbUJRIZ2> convert rfc822-to-8bit; Mon, 18 Oct 2004 09:25:28 +0100
+Received: from unknown (HELO mucse211.eu.infineon.com) (172.29.27.228)
+  by smtp5.infineon.com with ESMTP; 18 Oct 2004 10:28:06 +0200
+X-SBRS: None
+Received: from dusse201.eu.infineon.com ([172.29.128.17]) by mucse211.eu.infineon.com over TLS secured channel with Microsoft SMTPSVC(5.0.2195.6713);
+	 Mon, 18 Oct 2004 10:25:11 +0200
+content-class: urn:content-classes:message
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
-	micalg=pgp-sha1; protocol="application/pgp-signature"
-Return-Path: <aj@suse.de>
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6603.0
+Subject: Mozilla Firefox compile problem
+Date: Mon, 18 Oct 2004 10:24:59 +0200
+Message-ID: <34A8108658DCCE4B8595675ABFD8172709FAFE@dusse201.eu.infineon.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Mozilla Firefox compile problem
+Thread-Index: AcS06/SMnXbopdclShajbRG+NznO6g==
+From: <Andre.Messerschmidt@infineon.com>
+To: <linux-mips@linux-mips.org>
+X-OriginalArrivalTime: 18 Oct 2004 08:25:11.0452 (UTC) FILETIME=[FC2FC5C0:01C4B4EB]
+Return-Path: <Andre.Messerschmidt@infineon.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6078
+X-archive-position: 6079
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aj@suse.de
+X-original-sender: Andre.Messerschmidt@infineon.com
 Precedence: bulk
 X-list: linux-mips
 
---=-=-=
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Hi,
 
-"Maciej W. Rozycki" <macro@mips.com> writes:
+I am trying to compile Mozilla Firefox 1.0PR with Montavista Pro 3.1 toolchain (I linked mips_fp_be to mips-linux), but I get the following error messages:
 
-> Hi,
->
->  It seems nobody at the libc-alpha list is intersted in this fix, so I'm=
-=20
-> sending it here, so that people do not struggle against weird failures,=20
-> while a fix is already done.  The fix is needed for the current version o=
-f=20
-> glibc.
+---- snip ---------------------------------------------------
+mips-linux-g++  -I/opt/mvx/usr/X11R6/include -fno-rtti -fno-exceptions -Wall -Wconversion -Wpointer-arith -Wcast-align -Woverloaded-virtual -Wsynth -Wno-ctor-dtor-privacy -Wno-non-virtual-dtor -Wno-long-long -Wa,-xgot -pthread -pipe  -DDEBUG -D_DEBUG -DDEBUG_am -DTRACING -g -fno-inline -o nsIFileEnumerator nsIFileEnumerator.o           -L../../dist/bin -L../../dist/lib -L../../dist/bin -lxpcom  -L/data2/Sources/inca/mozilla/dist/lib -lplds4 -lplc4 -lnspr4 -lpthread -ldl   -ldl -lm
+../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub203()'
+../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub156()'
+../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub184()'
+../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub128()'
+../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub226()'
+../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub246()'
+../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub112()'
+../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub180()'
+../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub230()'
+../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub147()'
+../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub151()'
+../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub116()'
+../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub111()'
+../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub231()'
+../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub141()'
+../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub104()'
+../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub58()'
+../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub53()'
 
-Sorry, it took me longer to react than normal - but there is interest,
-just not always time to do anything properly.
+...
 
-I've committed your patch after adjusting the copyright years also.
+---- snap ---------------------------------------------------
 
-Thanks,
-Andreas
-=2D-=20
- Andreas Jaeger, aj@suse.de, http://www.suse.de/~aj
-  SUSE Linux AG, Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
-   GPG fingerprint =3D 93A3 365E CE47 B889 DF7F  FED1 389A 563C C272 A126
+I found some similar error messages from 2002 via Google, but the provided patches were for PPC and I do not know how to port them to MIPS. (Also i assume that such patches would have made it into the main branch by now)
 
---=-=-=
-Content-Type: application/pgp-signature
+Has anybody compiled Firefox successfully with Montavista and can give me some hints on how to proceed?
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.5 (GNU/Linux)
-
-iD8DBQBBc1HmOJpWPMJyoSYRAn9YAKCPU2YU9N0QTse2H+gTF5NaDhlUDACffLTR
-jE2lQf8VDj6XBDiBeyUhMmo=
-=re3E
------END PGP SIGNATURE-----
---=-=-=--
+Thanks and regards 
+André Messerschmidt

@@ -1,73 +1,48 @@
-Received:  by oss.sgi.com id <S553834AbQLRIMf>;
-	Mon, 18 Dec 2000 00:12:35 -0800
-Received: from mx.mips.com ([206.31.31.226]:33262 "EHLO mx.mips.com")
-	by oss.sgi.com with ESMTP id <S553820AbQLRIML>;
-	Mon, 18 Dec 2000 00:12:11 -0800
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id AAA06374;
-	Mon, 18 Dec 2000 00:12:04 -0800 (PST)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id AAA28304;
-	Mon, 18 Dec 2000 00:12:02 -0800 (PST)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id JAA01484;
-	Mon, 18 Dec 2000 09:11:39 +0100 (MET)
-Message-ID: <3A3DC6BA.DAC68261@mips.com>
-Date:   Mon, 18 Dec 2000 09:11:38 +0100
-From:   Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     Ralf Baechle <ralf@oss.sgi.com>
-CC:     linux-mips@oss.sgi.com
-Subject: Re: 64 bit build fails
-References: <3A379CBC.ED1D9F@mips.com> <20001214215933.C28871@bacchus.dhis.org> <3A39CC1F.8FE7B2FE@mips.com> <20001215162023.B28594@bacchus.dhis.org>
+Received:  by oss.sgi.com id <S553831AbQLRLHp>;
+	Mon, 18 Dec 2000 03:07:45 -0800
+Received: from noose.gt.owl.de ([62.52.19.4]:23561 "HELO noose.gt.owl.de")
+	by oss.sgi.com with SMTP id <S553837AbQLRLH2>;
+	Mon, 18 Dec 2000 03:07:28 -0800
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 93A107FC; Mon, 18 Dec 2000 12:07:25 +0100 (CET)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id D608E8F74; Mon, 18 Dec 2000 12:07:14 +0100 (CET)
+Date:   Mon, 18 Dec 2000 12:07:14 +0100
+From:   Florian Lohoff <flo@rfc822.org>
+To:     Martin Michlmayr <tbm@cyrius.com>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: Kernel Oops when booting on DECstation
+Message-ID: <20001218120714.C401@paradigm.rfc822.org>
+References: <20001216085603.A514@sumpf.cyrius.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20001216085603.A514@sumpf.cyrius.com>; from tbm@cyrius.com on Sat, Dec 16, 2000 at 08:56:03AM +0100
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Ralf Baechle wrote:
+On Sat, Dec 16, 2000 at 08:56:03AM +0100, Martin Michlmayr wrote:
 
-> On Fri, Dec 15, 2000 at 08:45:35AM +0100, Carsten Langgaard wrote:
->
-> > > > mips64-linux-gcc -D__KERNEL__
-> > > > -I/home/soc/proj/work/carstenl/sw/linux-2.4.0/include -Wall
-> > > > -Wstrict-prototypes -O2 -fomit-frame-pointer -fno-strict-aliasing
-> > > > -mabi=64 -G 0 -mno-abicalls -fno-pic -Wa,--trap -pipe -mcpu=r8000 -mips4
-> > > > -Wa,-32   -c head.S -o head.o
-> > > > head.S: Assembler messages:
-> > > > head.S:69: Error: Missing ')' assumed
-> > >
-> > > Looks like an attempt to build a 64-bit Indy kernel.  Various people working
-> > > on the Origin support have completly broken the support for anything else in
-> > > their battle tank-style approach ...
-> >
-> > Ok, that explains why a lot of things are broken.
-> > So who will be responsible for fixing all the broken pieces ?
->
-> This is the question you'd ask a company.  This is Free Software, not some
-> company's product ...
+> Linux version 2.4.0-test8-pre1 (flo@slimer.rfc822.org) (gcc version egcs-2.90.20
+[...]
+> Any ideas?  (I hope and think that it has nothing to do with me
+> booting from a NetBSD partition.  I don't have ethernet on the machine
+> and thus have to boot the kernel from the existing FFS partition in
+> order to start Linux and then run delo.  NetBSD boots and works, btw.)
 
-What I mean is that we need some discipline, as you mention yourself, it is
-unfortunate with this battle tank-style approach.
-And I think you do a pretty good job trying to make the rest of the code as clean
-as possible.
-Of course some time it is a little bit annoying you doesn't just accept my patches
-:-)
-Just kidding, I think that's the right way to do things.
+I have the suspicion that you are running into a bug Harald and me
+solved when booting my /150 from Disk. It seems the Firmware KN04 V2.1k
+doesnt correctly reset/disable the SCSI Controller and the Ethernet
+chip causing the system to crash immediatly in the "request_irq" section.
 
-I was just hoping that the 64bit code was in the same condition as the rest of the
-code.
+I guess the backtrace is bogus but i might be wrong. I would recommend
+trying to compile a current cvs kernel yourself and retry.
 
-/Carsten
-
-
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+Flo
+-- 
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+     Why is it called "common sense" when nobody seems to have any?

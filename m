@@ -1,42 +1,47 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id RAA02779 for <linux-archive@neteng.engr.sgi.com>; Sun, 18 Oct 1998 17:15:28 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id RAA48636 for <linux-archive@neteng.engr.sgi.com>; Sun, 18 Oct 1998 17:16:32 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id RAA46269
+	id RAA28762
 	for linux-list;
-	Sun, 18 Oct 1998 17:15:25 -0700 (PDT)
+	Sun, 18 Oct 1998 17:16:30 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from fir.engr.sgi.com (fir.engr.sgi.com [150.166.49.183])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via SMTP id RAA09687;
-	Sun, 18 Oct 1998 17:15:24 -0700 (PDT)
+	via SMTP id RAA38990;
+	Sun, 18 Oct 1998 17:16:28 -0700 (PDT)
 	mail_from (wje@fir.engr.sgi.com)
-Received: (from wje@localhost) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id RAA15185; Sun, 18 Oct 1998 17:15:09 -0700
-Date: Sun, 18 Oct 1998 17:15:09 -0700
-Message-Id: <199810190015.RAA15185@fir.engr.sgi.com>
+Received: (from wje@localhost) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id RAA15191; Sun, 18 Oct 1998 17:15:43 -0700
+Date: Sun, 18 Oct 1998 17:15:43 -0700
+Message-Id: <199810190015.RAA15191@fir.engr.sgi.com>
 From: "William J. Earl" <wje@fir.engr.sgi.com>
-To: ralf@uni-koblenz.de
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Jeremy John Welling <jwelling@engin.umich.edu>,
+To: Ulf Carlsson <grim@zigzegv.ml.org>
+Cc: ralf@uni-koblenz.de, Jeff Coffin <jcoffin@sv.usweb.com>,
         linux@cthulhu.engr.sgi.com
-Subject: Re: XZ
-In-Reply-To: <19981018015624.H4768@uni-koblenz.de>
-References: <19981016214659.A2754@zigzegv.ml.org>
-	<Pine.SOL.4.02.9810162113360.7062-100000@azure.engin.umich.edu>
-	<19981017111725.D1121@alpha.franken.de>
-	<19981018015624.H4768@uni-koblenz.de>
+Subject: Re: Partial Success Report
+In-Reply-To: <19981018020954.A3868@zigzegv.ml.org>
+References: <m3ww618s88.fsf@lil.sv.usweb.com>
+	<19981016001717.B2072@zigzegv.ml.org>
+	<m3pvbt8k2y.fsf@lil.sv.usweb.com>
+	<19981016214659.A2754@zigzegv.ml.org>
+	<19981017040148.C4768@uni-koblenz.de>
+	<19981018020954.A3868@zigzegv.ml.org>
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-ralf@uni-koblenz.de writes:
- > On Sat, Oct 17, 1998 at 11:17:25AM +0200, Thomas Bogendoerfer wrote:
+Ulf Carlsson writes:
+ > On Sat, Oct 17, 1998 at 04:01:48AM +0200, ralf@uni-koblenz.de wrote:
+ > > On Fri, Oct 16, 1998 at 09:46:59PM +0200, Ulf Carlsson wrote:
+ > > 
+ > > bootp() is just a ARC filename which is either interpreted by the PROM
+ > > command interpreter or by sash where sash afaik is nothing other than the
+ > > PROMs compiled with special flags.
  > 
- > > If XZ isn't another name for newport, then no.
- > 
- > XL is the official name for the Newport.
+ > The command 'boot bootp():' requires a harddrive, but I can run 'bootp():'
+ > diskless. Does the 'boot' part of the command tell the PROM to use sash?
 
-    XZ is one of the variants of the Elan/Extreme series of cards,
-which have one or more geometry engines on the card.  The geometry
-engines need microcode downloaded for full functionality, and the
-interfaces are not externally documented, so it is hard to build
-linux support without access to the IRIX source for reference.
+      Try
+
+	boot -f bootp():
+
+This avoids trying to load sash.

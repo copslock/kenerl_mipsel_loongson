@@ -1,47 +1,58 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f34FICH20728
-	for linux-mips-outgoing; Wed, 4 Apr 2001 08:18:12 -0700
-Received: from chmls05.mediaone.net (chmls05.mediaone.net [24.147.1.143])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f34FIBM20725
-	for <linux-mips@oss.sgi.com>; Wed, 4 Apr 2001 08:18:11 -0700
-Received: from decoy (h00a0cc39f081.ne.mediaone.net [24.218.248.129])
-	by chmls05.mediaone.net (8.11.1/8.11.1) with SMTP id f34FHhx13488;
-	Wed, 4 Apr 2001 11:17:47 -0400 (EDT)
-From: "Jay Carlson" <nop@nop.com>
-To: "Joe deBlaquiere" <jadb@redhat.com>, "Florian Lohoff" <flo@rfc822.org>
-Cc: "Kevin D. Kissell" <kevink@mips.com>,
-   "MIPS/Linux List \(SGI\)" <linux-mips@oss.sgi.com>
-Subject: RE: Dumb Question on Cross-Development
-Date: Wed, 4 Apr 2001 11:17:39 -0400
-Message-ID: <KEEOIBGCMINLAHMMNDJNIEHHCAAA.nop@nop.com>
+	by oss.sgi.com (8.11.3/8.11.3) id f34Fbi821529
+	for linux-mips-outgoing; Wed, 4 Apr 2001 08:37:44 -0700
+Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f34FbWM21522;
+	Wed, 4 Apr 2001 08:37:33 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id RAA21345;
+	Wed, 4 Apr 2001 17:37:15 +0200 (MET DST)
+Date: Wed, 4 Apr 2001 17:37:15 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Carsten Langgaard <carstenl@mips.com>
+cc: Ralf Baechle <ralf@oss.sgi.com>, Florian Lohoff <flo@rfc822.org>,
+   "Kevin D. Kissell" <kevink@mips.com>,
+   "MIPS/Linux List (SGI)" <linux-mips@oss.sgi.com>
+Subject: Re: Dumb Question on Cross-Development
+In-Reply-To: <3ACB2E5E.D8AFB3BF@mips.com>
+Message-ID: <Pine.GSO.3.96.1010404171225.6521F-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
-In-Reply-To: <3AC93C0B.5020102@redhat.com>
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
-Importance: Normal
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-> Perfect it is not, but it's not nearly _that_ bad either. I would
-> say 40% of the RPMs I've tried will configure out of the box for
-> a cross build. Another 40% or so require a few "export
-> ac_cv_sizeof_long=4" kind of settings to configure for a cross
-> build. The remaining 20% are painful.
+On Wed, 4 Apr 2001, Carsten Langgaard wrote:
 
-Yeah, and it's not so bad once you start building up a config.site file you
-can reuse across builds.  I got this idea from the debian dpkg-cross
-package.  For people who aren't debian-y, the idea is that you set
-CONFIG_SITE to point at a file like
-http://www.csee.umbc.edu/~acedil1/agenda/files/agenda-config.site and run
-configure as normal.  (I don't think I like that particular file but it
-should give you ideas.)
+> Now I would like to start cross compile SRPMs (let say redhat7.0).
+> What do I need to do to make the SRPMS cross compile ?
 
-BTW dpkg-cross comes with a tool that does ldd via grepping through objdump
-output.
+ Spec files need to be written appropriately for cross-compilation to be
+supported as you need to override the compiler used (and possibly other
+tools) and configure scripts need to be passed a host system name.  Also
+depending on the cluefulness of a given maintainer/team, packages might be
+easy or difficult to cross-compile -- heavy patching is required in some
+cases. 
 
-Jay
+ For the way I am using RPM to cross-compile you might visit my FTP site
+at 'ftp://ftp.ds2.pg.gda.pl/pub/macro/' (mirrored at
+'ftp://ftp.rfc822.org/pub/mirror/ftp.ds2.pg.gda.pl/pub/macro' -- thanks,
+Flo).  There are source and binary packages as well as configuration files
+I use.  Read the READMEs and look at a few spec files and everything
+should be clear.  Many of the *.mipsel.rpm packages available there were
+cross-built -- you may verify it with `rpm -qip': "macro" is my i386-linux
+system, while "3maxp" is my mipsel-linux one (still no i386-linux
+cross-compiler on my mipsel-linux system, sigh... :-( ). 
+
+ You need to build cross-binutils, cross-gcc and cross-glibc to start. 
+I've already written and sent a detailed description on cross-gcc
+bootstrapping here.  I'm not sure if the list is archived, or not.  If
+not, I may dig through my mail archives and send it again. 
+
+ If you have any specific questions, don't hesitate to ask me.
+
+  Maciej
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

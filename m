@@ -1,52 +1,37 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8PMBwT04329
-	for linux-mips-outgoing; Tue, 25 Sep 2001 15:11:58 -0700
-Received: from dea.linux-mips.net (u-247-10.karlsruhe.ipdial.viaginterkom.de [62.180.10.247])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8PMBoD04322
-	for <linux-mips@oss.sgi.com>; Tue, 25 Sep 2001 15:11:50 -0700
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id f8PMBaJ07681;
-	Wed, 26 Sep 2001 00:11:36 +0200
-Date: Wed, 26 Sep 2001 00:11:36 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: tommy.christensen@eicon.com
-Cc: linux-mips@oss.sgi.com, linux-mips@fnet.fr
-Subject: Re: Register allocation in copy_to_user
-Message-ID: <20010926001136.A5828@dea.linux-mips.net>
-References: <3BB0D217.80E313F5@eicon.com>
+	by oss.sgi.com (8.11.2/8.11.3) id f8QA8dm17577
+	for linux-mips-outgoing; Wed, 26 Sep 2001 03:08:39 -0700
+Received: from arbat.com (cpe.atm2-0-104276.arcnxx10.customer.tele.dk [62.242.211.100])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8QA8YD17574
+	for <linux-mips@oss.sgi.com>; Wed, 26 Sep 2001 03:08:36 -0700
+Received: (qmail 25144 invoked by uid 307); 26 Sep 2001 10:08:31 -0000
+Date: Wed, 26 Sep 2001 12:08:31 +0200
+From: Erik Corry <erik@arbat.com>
+To: "H . J . Lu" <hjl@lucon.org>
+Cc: Ryan Murray <rmurray@cyberhqz.com>, linux-mips@oss.sgi.com,
+   binutils@sourceware.cygnus.com, gcc@gcc.gnu.org
+Subject: Re: linker problem: relocation truncated to fit
+Message-ID: <20010926120831.A22219@arbat.com>
+References: <20010916091654.C1812@lucon.org> <Pine.BSO.4.33.0109161323280.14503-100000@oddbox.cn> <20010917000719.B25531@false.linpro.no> <20010916153857.H22750@cyberhqz.com> <20010916155003.B1446@lucon.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <3BB0D217.80E313F5@eicon.com>; from tommy.christensen@eicon.com on Tue, Sep 25, 2001 at 08:51:03PM +0200
-X-Accept-Language: de,en,fr
+In-Reply-To: <20010916155003.B1446@lucon.org>; from hjl@lucon.org on Sun, Sep 16, 2001 at 03:50:03PM -0700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Sep 25, 2001 at 08:51:03PM +0200, tommy.christensen@eicon.com wrote:
+On Sun, Sep 16, 2001 at 03:50:03PM -0700, H . J . Lu wrote:
+> > 
+> > I don't think -G is the problem here.  The problem is that the GOT
+> > needs to be bigger than a 16 bit value.  The only way to do this is to
+> > recompile everything that is going to be linked in statically
+> > (libc_noshared.a and libgcc.a included) with -Wa,-xgot This problem
+> > currently affects openh323 and mozilla, among other things.
 
-> For some time, I have seen occasional corruption of tty-output (pty's and
-> serial). This turned out to be caused by a register collision in read_chan
-> ()
-> in n_tty.c. In the expansion of copy_to_user, the compiler chose register
-> "a0" to hold the value of local variable __cu_from. Since this register is
-> modified in the asm statement, before __cu_from is used, the corruption
-> occured.
-> 
-> I am not sure, whether this is a compiler-bug (egcs-2.91.66) or the code
-> should prevent this from happening. Have the semantics about side-effects
-> of asm statements changed?
-> 
-> Anyway, the attached patch solves this by explicitly building the arguments
-> to __copy_user in the argument registers ;-) instead of moving them around.
-> So it actually saves some instructions as well. And the compiler can
-> generate better code since it now has more registers for temporary
-> variables ...
-> 
-> Is this OK? It works just fine for me with a 2.4.9 kernel (VR5000).
+I think the current favoured solution on IRIX is multigot, where
+if I understand correctly you switch GOT on some function calls 
+in order to have multiple GOTs in one .o (or .so).
 
-Unfortunately I had to find that your bugreport is correct.   To make
-things worse at the time when I implemented this code I used your approach
-(which definately is the cleaner approach) and I ran into the same problem.
-
-  Ralf
+-- 
+Erik Corry erik@arbat.com

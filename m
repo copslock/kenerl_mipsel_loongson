@@ -1,49 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Mar 2003 09:44:37 +0000 (GMT)
-Received: from webmail17.rediffmail.com ([IPv6:::ffff:203.199.83.27]:19592
-	"HELO rediffmail.com") by linux-mips.org with SMTP
-	id <S8225197AbTCEJog>; Wed, 5 Mar 2003 09:44:36 +0000
-Received: (qmail 6798 invoked by uid 510); 5 Mar 2003 09:42:46 -0000
-Date: 5 Mar 2003 09:42:46 -0000
-Message-ID: <20030305094246.6797.qmail@webmail17.rediffmail.com>
-Received: from unknown (203.126.245.198) by rediffmail.com via HTTP; 05 mar 2003 09:42:46 -0000
-MIME-Version: 1.0
-From: "Santosh " <ipv6_san@rediffmail.com>
-Reply-To: "Santosh " <ipv6_san@rediffmail.com>
-To: "Yogish  Patil" <yogishpatila@rediffmail.com>
-Cc: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Mar 2003 15:41:11 +0000 (GMT)
+Received: from p508B7A20.dip.t-dialin.net ([IPv6:::ffff:80.139.122.32]:24013
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225202AbTCEPlK>; Wed, 5 Mar 2003 15:41:10 +0000
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id h25Feae12170;
+	Wed, 5 Mar 2003 16:40:36 +0100
+Date: Wed, 5 Mar 2003 16:40:36 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Santosh <ipv6_san@rediffmail.com>
+Cc: Yogish Patil <yogishpatila@rediffmail.com>,
+	linux-mips@linux-mips.org
 Subject: Re: glibc-2.2.1 problems for mips-linux
-Content-type: text/plain;
-	format=flowed
+Message-ID: <20030305164036.A10407@linux-mips.org>
+References: <20030305094246.6797.qmail@webmail17.rediffmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Return-Path: <ipv6_san@rediffmail.com>
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <20030305094246.6797.qmail@webmail17.rediffmail.com>; from ipv6_san@rediffmail.com on Wed, Mar 05, 2003 at 09:42:46AM -0000
+Return-Path: <ralf@linux-mips.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1629
+X-archive-position: 1630
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ipv6_san@rediffmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Wed, Mar 05, 2003 at 09:42:46AM -0000, Santosh  wrote:
 
-Try this link ftp://ftp.linux-mips.org/pub/linux/mips/glibc/
+> Try this link ftp://ftp.linux-mips.org/pub/linux/mips/glibc/
 
--San
+Don't.  That's over two year old stuff and almost implies a guarantee to
+make you unhappy.  Recompiling libc requires fairly complex setup in
+particular when crosscompiling so the strong recommendation is to use
+the binaries of your favorite Linux distribution.
 
-On Wed, 05 Mar 2003 Yogish  Patil wrote :
->Hello,
->
->Can anybody point me to get pre-compiled glibc for mips-linux?
->I am not specific to any version. At the same time I was trying 
->to build
->glibc-2.2.1 but facing problems....has somebody successfully 
->build ?
->
->I would really appreciate if someone guide me.
->
->with regards,
->-yogish
->
->
+  Ralf

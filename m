@@ -1,38 +1,59 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f3E8TI311119
-	for linux-mips-outgoing; Sat, 14 Apr 2001 01:29:18 -0700
-Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3E8TGM11112
-	for <linux-mips@oss.sgi.com>; Sat, 14 Apr 2001 01:29:16 -0700
-Received: from ginger.sonytel.be (ginger.sonytel.be [10.34.16.6])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id KAA19540
-	for <linux-mips@oss.sgi.com>; Sat, 14 Apr 2001 10:29:01 +0200 (MET DST)
-Received: (from tea@localhost)
-	by ginger.sonytel.be (8.9.0/8.8.6) id KAA13622
-	for linux-mips@oss.sgi.com; Sat, 14 Apr 2001 10:29:01 +0200 (MET DST)
-Date: Sat, 14 Apr 2001 10:29:01 +0200
-From: Tom Appermont <tea@sonycom.com>
-To: linux-mips@oss.sgi.com
-Subject: address translation with TLB
-Message-ID: <20010414102901.A13595@ginger.sonytel.be>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0i
+	by oss.sgi.com (8.11.3/8.11.3) id f3G9pia16691
+	for linux-mips-outgoing; Mon, 16 Apr 2001 02:51:44 -0700
+Received: from viditec-netmedia.com.tw ([210.241.238.126])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3G9pgM16688
+	for <linux-mips@oss.sgi.com>; Mon, 16 Apr 2001 02:51:42 -0700
+Received: from kjlin ([210.241.238.122])
+	by viditec-netmedia.com.tw (8.9.3/8.8.7) with SMTP id SAA12418
+	for <linux-mips@oss.sgi.com>; Mon, 16 Apr 2001 18:57:09 +0800
+Message-ID: <001f01c0c651$00a2e520$056aaac0@kjlin>
+From: "kjlin" <kj.lin@viditec-netmedia.com.tw>
+To: <linux-mips@oss.sgi.com>
+Subject: linux-2.4.0.0-test5 for MIPS
+Date: Mon, 16 Apr 2001 16:41:16 +0800
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_001C_01C0C694.0E1E4C60"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.2919.6600
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6600
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+This is a multi-part message in MIME format.
 
-Howdy,
+------=_NextPart_000_001C_01C0C694.0E1E4C60
+Content-Type: text/plain;
+	charset="big5"
+Content-Transfer-Encoding: quoted-printable
 
-What are the things to do to use the TLB for access to otherwize
-unreachable PCI memory or IO areas? I have used the function
-add_wired_entry to add an entry to the TLB, modified the 
-functions virt_to_phys, phys_to_virt, virt_to_bus, bus_to_virt,
-and ioremap to do the translations I want , but I wonder if there
-are other things to do to get this working. Even more so, because
-none of the mips boards currently in the tree seem to need TLB
-remapping.
+Maybe it is not a good question here.....
+But......
+Can anybody tell me where to download the linux-2.4.0.0-test5 for MIPS??
+Thanx!
 
-Greetz,
 
-Tom
+------=_NextPart_000_001C_01C0C694.0E1E4C60
+Content-Type: text/html;
+	charset="big5"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META content=3D"text/html; charset=3Dbig5" http-equiv=3DContent-Type>
+<META content=3D"MSHTML 5.00.2919.6307" name=3DGENERATOR>
+<STYLE></STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV><FONT size=3D2>Maybe it is not a good question =
+here.....</FONT></DIV>
+<DIV><FONT size=3D2>But......</FONT></DIV>
+<DIV><FONT size=3D2>Can anybody tell me where to download the =
+linux-2.4.0.0-test5=20
+for MIPS??</FONT></DIV>
+<DIV><FONT size=3D2>Thanx!</FONT></DIV>
+<DIV>&nbsp;</DIV></BODY></HTML>
+
+------=_NextPart_000_001C_01C0C694.0E1E4C60--

@@ -1,201 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Mar 2004 20:32:22 +0000 (GMT)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:12393
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8225198AbUCWUcV>; Tue, 23 Mar 2004 20:32:21 +0000
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42] ident=mail)
-	by iris1.csv.ica.uni-stuttgart.de with esmtp
-	id 1B5sZP-0007Sb-00; Tue, 23 Mar 2004 21:32:19 +0100
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 1B5sZP-0001zr-00; Tue, 23 Mar 2004 21:32:19 +0100
-Date: Tue, 23 Mar 2004 21:32:19 +0100
-To: linux-mips@linux-mips.org
-Cc: ralf@linux-mips.org
-Subject: [PATCH] ABI selection fixes for unistd.h and asm.h
-Message-ID: <20040323203219.GR26428@rembrandt.csv.ica.uni-stuttgart.de>
-Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="oPmsXEqKQNHCSXW7"
-Content-Disposition: inline
-User-Agent: Mutt/1.5.5.1i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Mar 2004 12:38:13 +0000 (GMT)
+Received: from mx5.Informatik.Uni-Tuebingen.De ([IPv6:::ffff:134.2.12.32]:12754
+	"EHLO mx5.informatik.uni-tuebingen.de") by linux-mips.org with ESMTP
+	id <S8225385AbUCXMiM>; Wed, 24 Mar 2004 12:38:12 +0000
+Received: from localhost (loopback [127.0.0.1])
+	by mx5.informatik.uni-tuebingen.de (Postfix) with ESMTP
+	id D0B4212A; Wed, 24 Mar 2004 13:38:04 +0100 (NFT)
+Received: from mx5.informatik.uni-tuebingen.de ([127.0.0.1])
+ by localhost (mx5 [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 38972-04; Wed, 24 Mar 2004 13:38:03 +0100 (NFT)
+Received: from dual (semeai.Informatik.Uni-Tuebingen.De [134.2.15.66])
+	by mx5.informatik.uni-tuebingen.de (Postfix) with ESMTP
+	id A5FF6121; Wed, 24 Mar 2004 13:38:02 +0100 (NFT)
+Received: from mrvn by dual with local (Exim 3.36 #1 (Debian))
+	id 1B67eN-0004WS-00; Wed, 24 Mar 2004 13:38:27 +0100
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
+	"Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+	Dominic Sweetman <dom@mips.com>,
+	Eric Christopher <echristo@redhat.com>,
+	Long Li <long21st@yahoo.com>,
+	Linux/MIPS Development <linux-mips@linux-mips.org>,
+	David Ung <davidu@mips.com>, Nigel Stephens <nigel@mips.com>
+Subject: Re: gcc support of mips32 release 2
+References: <20040305075517.42647.qmail@web40404.mail.yahoo.com>
+	<1078478086.4308.14.camel@dzur.sfbay.redhat.com>
+	<16456.21112.570245.1011@arsenal.mips.com>
+	<Pine.LNX.4.55.0403181404210.5750@jurand.ds.pg.gda.pl>
+	<20040318213713.GC25815@linux-mips.org>
+	<Pine.GSO.4.58.0403191141290.2173@waterleaf.sonytel.be>
+	<20040319125502.GA32363@linux-mips.org>
+From: Goswin von Brederlow <brederlo@informatik.uni-tuebingen.de>
+Date: 24 Mar 2004 13:38:27 +0100
+In-Reply-To: <20040319125502.GA32363@linux-mips.org>
+Message-ID: <87isguwhbw.fsf@mrvn.homelinux.org>
+User-Agent: Gnus/5.0808 (Gnus v5.8.8) XEmacs/21.4 (Reasonable Discussion)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Virus-Scanned: by amavisd-new (McAfee AntiVirus) at informatik.uni-tuebingen.de
+Return-Path: <brederlo@informatik.uni-tuebingen.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4624
+X-archive-position: 4625
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: brederlo@informatik.uni-tuebingen.de
 Precedence: bulk
 X-list: linux-mips
 
+Ralf Baechle <ralf@linux-mips.org> writes:
 
---oPmsXEqKQNHCSXW7
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> On Fri, Mar 19, 2004 at 11:42:11AM +0100, Geert Uytterhoeven wrote:
+> 
+> > > Take a look at the 68020 to see where instruction set madness can lead:
+> > >
+> > > 	movel	([42, a0, d0.2*2],123), ([43, a0, d0.2*2], 22)
+> > > 	bfextu	([42, a0, d0.2*2],123){8:8}, d2
+> > 
+> > These instructions didn't complete in 1 cycle, while the new RISCies do.
+> 
+> That's the point, they went overboard with their C^2ISC philosophy.  These
+> instructions were more or less unusable by compilers of the time and the
+> given the rarity were not the most performant instructions of the
+> architecture either, so made sense only relativly rarely.  So in the end
+> the didn't get it right in the beginning which lead to the removal of the
+> instruction in 060, if I recall right.
+> 
+>   Ralf
 
-Hello All,
+Thats a
 
-the selection of the correct syscall wrapper ABI in unistd.h is
-broken in an interesting way. I wonder why any kernel survived
-this. Patch for 2.4 and 2.6 is attached.
+ move.l 31530(A0, D0*2), 5675(A0, D0*2)  (that would give a bus error)
 
+before assembly right?
 
-Thiemo
+That instruction is great to access array or aligned structure members
+with an offset and compilers should be able to generate it for it. But
+its only realy usefull if your short on registers, which gcc does not
+optimize for.
 
---oPmsXEqKQNHCSXW7
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename="unistd-fix-2.4.diff"
+Don't think they got removed. Could it be you are thinking about
+mulu.l d0,d0:d1   (32*32=64 bit mul) and the like?
 
-Index: include/asm-mips/unistd.h
-===================================================================
-RCS file: /home/cvs/linux/include/asm-mips/unistd.h,v
-retrieving revision 1.29.2.7
-diff -u -p -r1.29.2.7 unistd.h
---- include/asm-mips/unistd.h	31 Oct 2003 21:12:09 -0000	1.29.2.7
-+++ include/asm-mips/unistd.h	23 Mar 2004 20:11:39 -0000
-@@ -863,7 +863,7 @@ type name(atype a, btype b, ctype c, dty
- 	return -1; \
- }
- 
--#if (_MIPS_SIM == _MIPS_SIM_ABIN32)
-+#if (_MIPS_SIM == _MIPS_SIM_ABI32)
- 
- /*
-  * Using those means your brain needs more than an oil change ;-)
-@@ -931,9 +931,9 @@ type name(atype a, btype b, ctype c, dty
- 	return -1; \
- }
- 
--#endif /* (_MIPS_SIM == _MIPS_SIM_ABIN32) */
-+#endif /* (_MIPS_SIM == _MIPS_SIM_ABI32) */
- 
--#if (_MIPS_SIM == _MIPS_SIM_NABIN32) || (_MIPS_SIM == _MIPS_SIM_ABI64)
-+#if (_MIPS_SIM == _MIPS_SIM_NABI32) || (_MIPS_SIM == _MIPS_SIM_ABI64)
- 
- #define _syscall5(type,name,atype,a,btype,b,ctype,c,dtype,d,etype,e) \
- type name (atype a,btype b,ctype c,dtype d,etype e) \
-@@ -989,7 +989,7 @@ type name (atype a,btype b,ctype c,dtype
- 	return -1; \
- }
- 
--#endif /* (_MIPS_SIM == _MIPS_SIM_NABIN32) || (_MIPS_SIM == _MIPS_SIM_ABI64) */
-+#endif /* (_MIPS_SIM == _MIPS_SIM_NABI32) || (_MIPS_SIM == _MIPS_SIM_ABI64) */
- 
- #ifdef __KERNEL_SYSCALLS__
- 
-Index: include/asm-mips64/unistd.h
-===================================================================
-RCS file: /home/cvs/linux/include/asm-mips64/Attic/unistd.h,v
-retrieving revision 1.19.2.19
-diff -u -p -r1.19.2.19 unistd.h
---- include/asm-mips64/unistd.h	28 Oct 2003 13:39:37 -0000	1.19.2.19
-+++ include/asm-mips64/unistd.h	23 Mar 2004 20:11:39 -0000
-@@ -865,7 +865,7 @@ type name(atype a, btype b, ctype c, dty
- 	return -1; \
- }
- 
--#if (_MIPS_SIM == _MIPS_SIM_ABIN32)
-+#if (_MIPS_SIM == _MIPS_SIM_ABI32)
- 
- /*
-  * Using those means your brain needs more than an oil change ;-)
-@@ -933,9 +933,9 @@ type name(atype a, btype b, ctype c, dty
- 	return -1; \
- }
- 
--#endif /* (_MIPS_SIM == _MIPS_SIM_ABIN32) */
-+#endif /* (_MIPS_SIM == _MIPS_SIM_ABI32) */
- 
--#if (_MIPS_SIM == _MIPS_SIM_NABIN32) || (_MIPS_SIM == _MIPS_SIM_ABI64)
-+#if (_MIPS_SIM == _MIPS_SIM_NABI32) || (_MIPS_SIM == _MIPS_SIM_ABI64)
- 
- #define _syscall5(type,name,atype,a,btype,b,ctype,c,dtype,d,etype,e) \
- type name (atype a,btype b,ctype c,dtype d,etype e) \
-@@ -991,7 +991,7 @@ type name (atype a,btype b,ctype c,dtype
- 	return -1; \
- }
- 
--#endif /* (_MIPS_SIM == _MIPS_SIM_NABIN32) || (_MIPS_SIM == _MIPS_SIM_ABI64) */
-+#endif /* (_MIPS_SIM == _MIPS_SIM_NABI32) || (_MIPS_SIM == _MIPS_SIM_ABI64) */
- 
- #ifdef __KERNEL_SYSCALLS__
- 
-
---oPmsXEqKQNHCSXW7
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename="unistd-fix-2.6.diff"
-
-Index: include/asm-mips/asm.h
-===================================================================
-RCS file: /home/cvs/linux/include/asm-mips/asm.h,v
-retrieving revision 1.20
-diff -u -p -r1.20 asm.h
---- include/asm-mips/asm.h	30 Dec 2003 06:01:04 -0000	1.20
-+++ include/asm-mips/asm.h	23 Mar 2004 20:15:44 -0000
-@@ -209,7 +209,7 @@ symbol		=	value
- #define ALSZ	7
- #define ALMASK	~7
- #endif
--#if (_MIPS_SIM == _MIPS_SIM_ABIN32) || (_MIPS_SIM == _MIPS_SIM_ABI64)
-+#if (_MIPS_SIM == _MIPS_SIM_NABI32) || (_MIPS_SIM == _MIPS_SIM_ABI64)
- #define ALSZ	15
- #define ALMASK	~15
- #endif
-@@ -237,7 +237,7 @@ symbol		=	value
- #define REG_SUBU	subu
- #define REG_ADDU	addu
- #endif
--#if (_MIPS_SIM == _MIPS_SIM_ABIN32) || (_MIPS_SIM == _MIPS_SIM_ABI64)
-+#if (_MIPS_SIM == _MIPS_SIM_NABI32) || (_MIPS_SIM == _MIPS_SIM_ABI64)
- #define REG_S		sd
- #define REG_L		ld
- #define REG_SUBU	dsubu
-@@ -386,7 +386,7 @@ symbol		=	value
- #define MFC0		mfc0
- #define MTC0		mtc0
- #endif
--#if (_MIPS_SIM == _MIPS_SIM_ABIN32) || (_MIPS_SIM == _MIPS_SIM_ABI64)
-+#if (_MIPS_SIM == _MIPS_SIM_NABI32) || (_MIPS_SIM == _MIPS_SIM_ABI64)
- #define MFC0		dmfc0
- #define MTC0		dmtc0
- #endif
-Index: include/asm-mips/unistd.h
-===================================================================
-RCS file: /home/cvs/linux/include/asm-mips/unistd.h,v
-retrieving revision 1.58
-diff -u -p -r1.58 unistd.h
---- include/asm-mips/unistd.h	11 Mar 2004 16:46:57 -0000	1.58
-+++ include/asm-mips/unistd.h	23 Mar 2004 20:15:44 -0000
-@@ -917,7 +917,7 @@ type name(atype a, btype b, ctype c, dty
- 	return -1; \
- }
- 
--#if (_MIPS_SIM == _MIPS_SIM_ABIN32)
-+#if (_MIPS_SIM == _MIPS_SIM_ABI32)
- 
- /*
-  * Using those means your brain needs more than an oil change ;-)
-@@ -985,9 +985,9 @@ type name(atype a, btype b, ctype c, dty
- 	return -1; \
- }
- 
--#endif /* (_MIPS_SIM == _MIPS_SIM_ABIN32) */
-+#endif /* (_MIPS_SIM == _MIPS_SIM_ABI32) */
- 
--#if (_MIPS_SIM == _MIPS_SIM_NABIN32) || (_MIPS_SIM == _MIPS_SIM_ABI64)
-+#if (_MIPS_SIM == _MIPS_SIM_NABI32) || (_MIPS_SIM == _MIPS_SIM_ABI64)
- 
- #define _syscall5(type,name,atype,a,btype,b,ctype,c,dtype,d,etype,e) \
- type name (atype a,btype b,ctype c,dtype d,etype e) \
-@@ -1043,7 +1043,7 @@ type name (atype a,btype b,ctype c,dtype
- 	return -1; \
- }
- 
--#endif /* (_MIPS_SIM == _MIPS_SIM_NABIN32) || (_MIPS_SIM == _MIPS_SIM_ABI64) */
-+#endif /* (_MIPS_SIM == _MIPS_SIM_NABI32) || (_MIPS_SIM == _MIPS_SIM_ABI64) */
- 
- #ifdef __KERNEL_SYSCALLS__
- 
-
---oPmsXEqKQNHCSXW7--
+MfG
+        Goswin

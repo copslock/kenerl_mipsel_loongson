@@ -1,51 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Aug 2004 23:28:43 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:54258 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8225216AbUHLW2i>;
-	Thu, 12 Aug 2004 23:28:38 +0100
-Received: from mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id PAA07501;
-	Thu, 12 Aug 2004 15:28:01 -0700
-Message-ID: <411BEEF0.7060107@mvista.com>
-Date: Thu, 12 Aug 2004 15:28:00 -0700
-From: Pete Popov <ppopov@mvista.com>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.6) Gecko/20040113
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Aug 2004 06:42:16 +0100 (BST)
+Received: from webmail27.rediffmail.com ([IPv6:::ffff:203.199.83.37]:21523
+	"HELO rediffmail.com") by linux-mips.org with SMTP
+	id <S8225216AbUHMCMn>; Fri, 13 Aug 2004 03:12:43 +0100
+Received: (qmail 10802 invoked by uid 510); 13 Aug 2004 02:12:33 -0000
+Date: 13 Aug 2004 02:12:33 -0000
+Message-ID: <20040813021233.10801.qmail@webmail27.rediffmail.com>
+Received: from unknown (61.30.127.4) by rediffmail.com via HTTP; 13 aug 2004 02:12:33 -0000
 MIME-Version: 1.0
-To: Ralf Ackermann <rac@KOM.tu-darmstadt.de>
-CC: Geert Uytterhoeven <geert@linux-m68k.org>, dev-list@meshcube.org,
-	linuxconsole-dev@lists.sourceforge.net,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: Q: problems with missing /dev/tty0 on X startup in MIPS system
-References: <Pine.LNX.4.58.0408121954270.14123@shofar.kom.e-technik.tu-darmstadt.de> <Pine.GSO.4.58.0408122101460.18214@waterleaf.sonytel.be> <Pine.LNX.4.58.0408130009070.14554@shofar.kom.e-technik.tu-darmstadt.de>
-In-Reply-To: <Pine.LNX.4.58.0408130009070.14554@shofar.kom.e-technik.tu-darmstadt.de>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@mvista.com>
+From: "bel racu" <belracu22@rediffmail.com>
+Reply-To: "bel racu" <belracu22@rediffmail.com>
+To: linux-mips@linux-mips.org
+Subject: lsmod -- used by ?
+Content-type: multipart/alternative;
+	boundary="Next_1092363153---0-203.199.83.37-10799"
+Return-Path: <belracu22@rediffmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5638
+X-archive-position: 5639
+X-Approved-By: ralf@linux-mips.org
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@mvista.com
+X-original-sender: belracu22@rediffmail.com
 Precedence: bulk
 X-list: linux-mips
 
+ This is a multipart mime message
 
->Unfortunately - neither the fbdev code nor the X startup activates the 
->card.
->The X startup failed with an "unable to map the card" once and now 
->repeatedly fails with:
->  
->
 
-I don't know which ATI Rage card you have exactly, but there is a patch 
-for the RageXL (tested on a MIPS board) on 
-ftp.linux-mips.org:/pub/linux/mips/people/ppopov/2.4/aty_nobiosinit.patch.
+--Next_1092363153---0-203.199.83.37-10799
+Content-type: text/html;
+	charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 
-The problem is that at kernel version 2.4.24 or .25, don't remember 
-which one, the aty code was restructured and the patch does not apply 
-anymore.
+<P>=0A&nbsp; <BR>=0AHello,<BR>=0A<BR>=0Atrying to get framebuffer up on au1=
+500 Alchemy db1500 board.<BR>=0Awith cyberpro 5000 chipset PCI graphics car=
+d.<BR>=0A<BR>=0AAble to insert the module cyber2000fb withot problem, <BR>=
+=0Aand the cards gets registerd ... When issued lsmod i get some thing <BR>=
+=0Astrange like this like this <BR>=0A<BR>=0A&nbsp;  #lsmod<BR>=0A&nbsp; &n=
+bsp; Module&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Size&nbsp; &nbsp; Used=
+ by&nbsp; &nbsp; Tainted: P&nbsp; <BR>=0A&nbsp; &nbsp; cyber2000fb&nbsp; &n=
+bsp; &nbsp;  1776&nbsp; &nbsp; 63 <BR>=0A<BR>=0Awhat is does 63 under modul=
+e UsedBy meeen ?<BR>=0A<BR>=0ARam=0A</P>=0A<br><br>=0A<A target=3D"_blank" =
+HREF=3D"http://clients.rediff.com/signature/track_sig.asp"><IMG SRC=3D"http=
+://ads.rediff.com/RealMedia/ads/adstream_nx.cgi/www.rediffmail.com/inbox.ht=
+m@Bottom" BORDER=3D0 VSPACE=3D0 HSPACE=3D0></a>=0A
+--Next_1092363153---0-203.199.83.37-10799
+Content-type: text/plain;
+	charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 
-Pete
+  =0AHello,=0A=0Atrying to get framebuffer up on au1500 Alchemy db1500 boar=
+d.=0Awith cyberpro 5000 chipset PCI graphics card.=0A=0AAble to insert the =
+module cyber2000fb withot problem, =0Aand the cards gets registerd ... When=
+ issued lsmod i get some thing =0Astrange like this like this =0A=0A   #lsm=
+od=0A    Module            Size    Used by    Tainted: P  =0A    cyber2000f=
+b       1776    63 =0A=0Awhat is does 63 under module UsedBy meeen ?=0A=0AR=
+am
+--Next_1092363153---0-203.199.83.37-10799--

@@ -1,42 +1,45 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fB7Kee822383
-	for linux-mips-outgoing; Fri, 7 Dec 2001 12:40:40 -0800
-Received: from www.transvirtual.com (root@www.transvirtual.com [206.14.214.140])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fB7Keco22376
-	for <linux-mips@oss.sgi.com>; Fri, 7 Dec 2001 12:40:38 -0800
-Received: from www.transvirtual.com (jsimmons@localhost [127.0.0.1])
-        by localhost (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id fB7JeM6n012583;
-	Fri, 7 Dec 2001 11:40:22 -0800
-Received: from localhost (jsimmons@localhost)
-        by www.transvirtual.com (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id fB7JeKMZ012575;
-	Fri, 7 Dec 2001 11:40:21 -0800
-X-Authentication-Warning: www.transvirtual.com: jsimmons owned process doing -bs
-Date: Fri, 7 Dec 2001 11:40:18 -0800 (PST)
-From: James Simmons <jsimmons@transvirtual.com>
-To: balaji.ramalingam@philips.com
-cc: linux-mips@oss.sgi.com
-Subject: Re: not getting the kernel prompt
-In-Reply-To: <OFBC8C65B4.81E473E6-ON08256B1B.006A7240@diamond.philips.com>
-Message-ID: <Pine.LNX.4.10.10112071139380.2763-100000@www.transvirtual.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.2/8.11.3) id fB7KhnZ22511
+	for linux-mips-outgoing; Fri, 7 Dec 2001 12:43:49 -0800
+Received: from neurosis.mit.edu (NEUROSIS.MIT.EDU [18.243.0.82])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fB7Khko22508
+	for <linux-mips@oss.sgi.com>; Fri, 7 Dec 2001 12:43:46 -0800
+Received: (from jim@localhost)
+	by neurosis.mit.edu (8.11.4/8.11.4) id fB7Jhh504444;
+	Fri, 7 Dec 2001 14:43:43 -0500
+Date: Fri, 7 Dec 2001 14:43:43 -0500
+From: Jim Paris <jim@jtan.com>
+To: Justin Carlson <justinca@ri.cmu.edu>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: PATCH: io.h remove detrimental do {...} whiles, add sequence points, add const modifiers
+Message-ID: <20011207144343.A4417@neurosis.mit.edu>
+Reply-To: jim@jtan.com
+References: <20011207121416.A9583@dev1.ltc.com> <Pine.GSO.4.21.0112071830000.29896-100000@mullein.sonytel.be> <20011207123833.A23784@nevyn.them.org> <20011207160636.B23798@dea.linux-mips.net> <20011207131521.A3942@neurosis.mit.edu> <1007753789.1680.1.camel@GLOVEBOX.AHS.RI.CMU.EDU>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <1007753789.1680.1.camel@GLOVEBOX.AHS.RI.CMU.EDU>; from justinca@ri.cmu.edu on Fri, Dec 07, 2001 at 02:36:28PM -0500
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-
-> RAMDISK driver initialized: 16 RAM disks of 4096K size 1024 blocksize
-> RAMDISK: Compressed image found at block 0
-> crc errorFreeing initrd memory:  1871k freed
-> VFS:  Mounted root (ext2 filesystem) .
-> Freeing unused kernel memory:  36k freed
-> Warning:  unable to open an initial console.
-> attempt to access beyond end of device
-> 01:00: rw=0, want=7771, limit=4096
+> Maybe I missed this, but is there any reason for the patch, other then 
+> a personal preference of how to do macros that look like functions? 
+> I've seen gcc do strange non-optimal things with functions declared
+> inlines, but I've never seen it generate bad code WRT to do{}while(0)
+> constructs.
 > 
-> ##########################################################################################
-> 
-> I played around the ramdisk image and made sure that the /etc has fstab file
-> with /dev/ram entry in it. Also there is a inittab file with /sbin/agetty entry to take
-> care of the console ttyS0.
+> Unless I'm missing something, this patch looks like a solution in search
+> of a problem...
 
-Do you have a /dev/console on that ramdisk?
+In the case of set_io_port_base, I see no real reason.  But for the
+out[b,w,l] functions, having the do/while can prevent constructs that
+might otherwise make sense, like
+
+	for(i=0;i<10;i++,outb(i,port)) {
+           ...
+        }
+
+Okay, so it's a bad example, but.. :)  Maybe Brad has a better one.
+
+-jim

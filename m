@@ -1,69 +1,41 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4RLulnC017214
-	for <linux-mips-outgoing@oss.sgi.com>; Mon, 27 May 2002 14:56:47 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4S6jCnC007763
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 27 May 2002 23:45:12 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4RLulVK017213
-	for linux-mips-outgoing; Mon, 27 May 2002 14:56:47 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4S6jC6p007762
+	for linux-mips-outgoing; Mon, 27 May 2002 23:45:12 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from dtla2.teknuts.com (adsl-66-125-62-110.dsl.lsan03.pacbell.net [66.125.62.110])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4RLudnC017209;
-	Mon, 27 May 2002 14:56:42 -0700
-Received: from sohotower (adsl-66.218.38.74.dslextreme.com [66.218.38.74])
-	(authenticated)
-	by dtla2.teknuts.com (8.11.3/8.10.1) with ESMTP id g4RLvsa02522;
-	Mon, 27 May 2002 14:57:54 -0700
-From: "Robert Rusek" <robru@teknuts.com>
-To: <flo@rfc822.org>
-Cc: "'Ralf Baechle'" <ralf@oss.sgi.com>, <linux-mips@oss.sgi.com>
-Subject: RE: Executing IRIX binary ?
-Date: Mon, 27 May 2002 14:58:15 -0700
-Message-ID: <001d01c205c9$9d8faf40$0a01a8c0@sohotower>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook, Build 10.0.3416
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Importance: Normal
-In-Reply-To: <20020527211513.GE32064@paradigm.rfc822.org>
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4S6jAnC007755
+	for <linux-mips@oss.sgi.com>; Mon, 27 May 2002 23:45:10 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.1) id g4S6kOg09470;
+	Mon, 27 May 2002 23:46:24 -0700
+Date: Mon, 27 May 2002 23:46:24 -0700
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Robert Rusek <robru@teknuts.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Executing IRIX binary ?
+Message-ID: <20020527234624.A9392@dea.linux-mips.net>
+References: <20020525154426.A2481@dea.linux-mips.net> <000701c205bd$adaeff40$0a01a8c0@sohotower>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <000701c205bd$adaeff40$0a01a8c0@sohotower>; from robru@teknuts.com on Mon, May 27, 2002 at 01:32:43PM -0700
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I have IRIX binary support turned on in the kernel.  I can copy over my
-IRIX libs from my old IRIX partition (I just do not know which ones).  I
-don't think I have the dynamic loader?  How would I check to see if I
-have it?  If not where would I get it?  Sorry about all these newbie
-questions it is just that I need to be able to run the IRIX version of
-fronpage server extensions since MS does not provide the open source.
+On Mon, May 27, 2002 at 01:32:43PM -0700, Robert Rusek wrote:
 
-Thanks,
-Robert.
+> Looks like I have the kernal compiled with the IRIX binary support.  How
+> do I go about executing the binaries?  When I try to execute it tells me
+> that the file is not found.
 
-      -----Original Message-----
-      From: flo@rfc822.org [mailto:flo@rfc822.org] 
-      Sent: Monday, May 27, 2002 2:15 PM
-      To: Robert Rusek
-      Cc: 'Ralf Baechle'; linux-mips@oss.sgi.com
-      Subject: Re: Executing IRIX binary ?
-      
-      
-      On Mon, May 27, 2002 at 01:32:43PM -0700, Robert Rusek wrote:
-      > Ralf,
-      > 
-      > Looks like I have the kernal compiled with the IRIX 
-      binary support.  
-      > How do I go about executing the binaries?  When I try 
-      to execute it 
-      > tells me that the file is not found.
-      
-      Are you shure you have the dynamic loader + libc + other 
-      libs of IRIX installed in your system ?
-      
-      Flo
-      -- 
-      Florian Lohoff                  flo@rfc822.org            
-       +49-5201-669912
-                              Heisenberg may have been here.
-      
+The file it didn't find is the dynamic linker /usr/lib/libc.so.1.  You
+have to install this file and others in special magic places.  Also the
+kernel contains broken code to distinguish IRIX and Linux executables
+which you'd have to fix first before the code has any chance of working.
+
+  Ralf

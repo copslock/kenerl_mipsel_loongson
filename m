@@ -1,191 +1,86 @@
-Received:  by oss.sgi.com id <S305196AbQD1OUy>;
-	Fri, 28 Apr 2000 07:20:54 -0700
-Received: from deliverator.sgi.com ([204.94.214.10]:44824 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305175AbQD1OUc>;
-	Fri, 28 Apr 2000 07:20:32 -0700
-Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id HAA12288; Fri, 28 Apr 2000 07:15:46 -0700 (PDT)
+Received:  by oss.sgi.com id <S305207AbQD1SBf>;
+	Fri, 28 Apr 2000 11:01:35 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:61787 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305202AbQD1SBS>;
+	Fri, 28 Apr 2000 11:01:18 -0700
+Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id KAA13698; Fri, 28 Apr 2000 10:56:32 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id HAA82613
+	id KAA29273
 	for linux-list;
-	Fri, 28 Apr 2000 07:07:36 -0700 (PDT)
+	Fri, 28 Apr 2000 10:31:58 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id HAA60508
+	via ESMTP id KAA56430
 	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 28 Apr 2000 07:07:35 -0700 (PDT)
-	mail_from (flo@rfc822.org)
-Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4]) 
+	Fri, 28 Apr 2000 10:31:56 -0700 (PDT)
+	mail_from (kevink@mips.com)
+Received: from mx.mips.com (mx.mips.com [206.31.31.226]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id HAA08924
-	for <linux@cthulhu.engr.sgi.com>; Fri, 28 Apr 2000 07:07:20 -0700 (PDT)
-	mail_from (flo@rfc822.org)
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 1EB347DD; Fri, 28 Apr 2000 16:07:16 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 06AA28FFD; Fri, 28 Apr 2000 15:55:06 +0200 (CEST)
-Date:   Fri, 28 Apr 2000 15:55:05 +0200
-From:   Florian Lohoff <flo@rfc822.org>
-To:     linux@cthulhu.engr.sgi.com
-Subject: [patch] getting cvs to run on IP22
-Message-ID: <20000428155505.F2891@paradigm.rfc822.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.3i
-Organization: rfc822 - pure communication
+	via ESMTP id KAA08652
+	for <linux@cthulhu.engr.sgi.com>; Fri, 28 Apr 2000 10:31:53 -0700 (PDT)
+	mail_from (kevink@mips.com)
+Received: from newman.mips.com (newman [206.31.31.8])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id KAA15916
+	for <linux@cthulhu.engr.sgi.com>; Fri, 28 Apr 2000 10:31:50 -0700 (PDT)
+Received: from satanas (satanas [192.168.236.12])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id KAA08291
+	for <linux@cthulhu.engr.sgi.com>; Fri, 28 Apr 2000 10:31:48 -0700 (PDT)
+Message-ID: <008a01bfb137$ec2c3120$0ceca8c0@satanas.mips.com>
+From:   "Kevin D. Kissell" <kevink@mips.com>
+To:     "SGI Linux Alias" <linux@cthulhu.engr.sgi.com>
+Subject: Merge of MIPS 2.2 kernel enhancements for FPU emulation, etc.
+Date:   Fri, 28 Apr 2000 19:33:46 +0200
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 4.72.3110.5
+X-MimeOLE: Produced By Microsoft MimeOLE V4.72.3110.3
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-Hi,
-i had the time today and retry getting 2.3.99pre6 (current cvs)
-to run on SGI. I'll just attach the patch with what you get
-the kernel to work.
+OK folks, here's the deal.   As some of you will have noticed, 
+I checked the FPU emulation machinery of for the MIPS 2.2 
+kernel into the oss.sgi.com repository earlier this week.  Since 
+then, I've been working on merging in the changes to the other 
+kernel modules (most importantly traps.c, but a number of others)
+necessary to integrate it into the kernel.   I had hoped to keep it 
+to a subset of the mods and fixes we've made at MIPS, but as is 
+often the case,  there are chains of interdependency.  I cannot spare 
+the time to re-engineer everything to isolate the FP emulation support.
+In particular, I'm not going to back-out the changes that were made
+to eliminate the (intrinsically unsafe) use of bitfields for instruction
+decoding.
+  
+So, here's the deal.  Either I will merge the totality of our mods into 
+the 2.2 repository, or I will leave things as they are now, and leave it 
+to others to re-implement what we did at MIPS (and which can be 
+ownloaded from ftp://ftp.mips.com/pub/linux/kernel ).   My inclination
+is to check the stuff in and get it over with, but this *will* create some 
+differences with the 2.3 tree that might confuse some people.   It will
+also be the case that there I cannot test all known configurations - 
+indeed, as far as SGI boxes go, I can only test on an Indy - and risk 
+leaving some minor problems to be cleaned up by someone else with 
+the appropriate platform.  So it those sorts of prospects scare you, 
+speak up now.
 
-Following things get changes:
+            Regards,
 
-- Move __initcall(rs_init) to drivers/char/sgiserial.c 
-  This is obvious and rs_init in mips/sgi/kernel/setup.c
-  is definitly only a dirty hack i introduced
+            Kevin K.
+__
 
-- Do a different (probably incorrect but working) 
-  memory setup -  I had the problem of not having any
-  DMAable pages after initialization. Now ALL pages
-  get into ZONE_DMA which might be right ( I surrounded
-  this by CONFIG_ISA and CONFIG_PCI as the PCee controllers
-  mostly have DMA limits )
-
-- Call init_serial_console even if CONFIG_SERIAL isnt set
-  (but CONFIG_SGI_SERIAL)
-
-- Remove the console initialisation from sgi/kernel/setup.c
-  as this hmmm - isnt the thing i think is correct. 
-  Normally a kernel "console=" parameter should override
-  the setup of the prom (i have ArcEnv = g but want serial console)
-
-TODO:
-
-- Cleanup of mips/arc/memory.c changes for kernel allocation 
-  I seem to have luck to get the only broken prom version on the
-  planet not allocating the kernel space.
-  So - prevent allocating already allocated pages or ignorant
-  freeing of ARC memory chunks for some broken proms.
-
-- Clean way of setting the console (Arc Console Env as fallback
-  and priotity to console= command line and support
-  for the major 5 minor 1 console device like on i386 etc ... 
-
-
-I would like to have some comments on the different fragments.
-
-Flo
-
-Index: arch/mips/mm/init.c
-===================================================================
-RCS file: /cvs/linux/arch/mips/mm/init.c,v
-retrieving revision 1.27
-diff -u -r1.27 init.c
---- arch/mips/mm/init.c	2000/02/23 01:33:56	1.27
-+++ arch/mips/mm/init.c	2000/04/28 13:47:55
-@@ -256,12 +256,16 @@
- 	max_dma = virt_to_phys((char *)MAX_DMA_ADDRESS) >> PAGE_SHIFT;
- 	low = max_low_pfn;
- 
-+#if defined(CONFIG_PCI) || defined(CONFIG_ISA)
- 	if (low < max_dma)
- 		zones_size[ZONE_DMA] = low;
- 	else {
- 		zones_size[ZONE_DMA] = max_dma;
- 		zones_size[ZONE_NORMAL] = low - max_dma;
- 	}
-+#else
-+	zones_size[ZONE_DMA] = low;
-+#endif
- 
- 	free_area_init(zones_size);
- }
-Index: arch/mips/sgi/kernel/setup.c
-===================================================================
-RCS file: /cvs/linux/arch/mips/sgi/kernel/setup.c,v
-retrieving revision 1.32
-diff -u -r1.32 setup.c
---- arch/mips/sgi/kernel/setup.c	2000/04/06 20:26:58	1.32
-+++ arch/mips/sgi/kernel/setup.c	2000/04/28 13:47:55
-@@ -160,20 +160,6 @@
- 	/* Now enable boardcaches, if any. */
- 	indy_sc_init();
- 
--#ifdef CONFIG_SERIAL_CONSOLE
--	/* ARCS console environment variable is set to "g?" for
--	 * graphics console, it is set to "d" for the first serial
--	 * line and "d2" for the second serial line.
--	 */
--	ctype = ArcGetEnvironmentVariable("console");
--	if(*ctype == 'd') {
--		if(*(ctype+1)=='2')
--			console_setup ("ttyS1");
--		else
--			console_setup ("ttyS0");
--	}
--#endif
--
- #ifdef CONFIG_REMOTE_DEBUG
- 	kgdb_ttyd = prom_getcmdline();
- 	if ((kgdb_ttyd = strstr(kgdb_ttyd, "kgdb=ttyd")) != NULL) {
-@@ -195,10 +181,6 @@
- 	}
- #endif
- 
--#ifdef CONFIG_SGI_PROM_CONSOLE
--	console_setup("ttyS0");
--#endif
-- 
- 	sgi_volume_set(simple_strtoul(ArcGetEnvironmentVariable("volume"), NULL, 10));
- 
- #ifdef CONFIG_VT
-@@ -230,4 +212,3 @@
- 	init_vino();
- #endif
- }
--__initcall(rs_init);
-Index: drivers/char/tty_io.c
-===================================================================
-RCS file: /cvs/linux/drivers/char/tty_io.c,v
-retrieving revision 1.33
-diff -u -r1.33 tty_io.c
---- drivers/char/tty_io.c	2000/04/28 01:09:37	1.33
-+++ drivers/char/tty_io.c	2000/04/28 13:47:58
-@@ -2189,7 +2189,7 @@
- #ifdef CONFIG_SERIAL_CONSOLE
- #ifdef CONFIG_8xx
- 	console_8xx_init();
--#elif defined(CONFIG_SERIAL) 	
-+#elif defined(CONFIG_SERIAL) || defined(CONFIG_SGI_SERIAL)
- 	serial_console_init();
- #endif /* CONFIG_8xx */
- #if defined(CONFIG_MVME162_SCC) || defined(CONFIG_BVME6000_SCC) || defined(CONFIG_MVME147_SCC)
-Index: drivers/sgi/char/sgiserial.c
-===================================================================
-RCS file: /cvs/linux/drivers/sgi/char/sgiserial.c,v
-retrieving revision 1.23
-diff -u -r1.23 sgiserial.c
---- drivers/sgi/char/sgiserial.c	2000/01/27 01:05:35	1.23
-+++ drivers/sgi/char/sgiserial.c	2000/04/28 13:48:21
-@@ -2251,3 +2251,5 @@
- {
- 	register_console(&sgi_console_driver);
- }
-+
-+__initcall(rs_init);
-
-
--- 
-Florian Lohoff		flo@rfc822.org		      	+49-subject-2-change
-"Technology is a constant battle between manufacturers producing bigger and
-more idiot-proof systems and nature producing bigger and better idiots."
+Kevin D. Kissell
+MIPS Technologies European Architecture Lab
+kevink@mips.com
+Tel. +33.4.78.38.70.67
+FAX. +33.4.78.38.70.68

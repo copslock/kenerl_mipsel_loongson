@@ -1,47 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jun 2003 17:36:09 +0100 (BST)
-Received: from pop3.galileo.co.il ([IPv6:::ffff:199.203.130.130]:11470 "EHLO
-	galileo5.galileo.co.il") by linux-mips.org with ESMTP
-	id <S8225211AbTFIQgH>; Mon, 9 Jun 2003 17:36:07 +0100
-Received: from galileo.co.il ([10.2.2.45])
-	by galileo5.galileo.co.il (8.12.6/8.12.6) with ESMTP id h59HY559020309;
-	Mon, 9 Jun 2003 19:34:05 +0200 (GMT-2)
-Message-ID: <3EE4C5CF.3050607@galileo.co.il>
-Date: Mon, 09 Jun 2003 19:37:19 +0200
-From: Baruch Chaikin <bchaikin@il.marvell.com>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.0.2) Gecko/20030208 Netscape/7.02
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-CC: linux-mips@linux-mips.org, Rabeeh Khoury <rabeeh@galileo.co.il>,
-	Baruch Chaikin <bchaikin@galileo.co.il>
-Subject: Building a stand-alone FS on a very limited flash (newbie  question)
-References: <Pine.GSO.4.44.0306061234410.4045-100000@hydra.mmc.atmel.com> <Pine.GSO.3.96.1030609164009.2806n-100000@delta.ds2.pg.gda.pl> <20030609154408.GA1781@nevyn.them.org>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jun 2003 17:37:29 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:45306 "EHLO
+	av.mvista.com") by linux-mips.org with ESMTP id <S8225211AbTFIQh1>;
+	Mon, 9 Jun 2003 17:37:27 +0100
+Received: from zeus.mvista.com (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id JAA03196;
+	Mon, 9 Jun 2003 09:36:23 -0700
+Subject: Re: pcmcia problem on pb1500
+From: Pete Popov <ppopov@mvista.com>
+To: Jan Pedersen <jp@q-networks.com>
+Cc: Linux MIPS mailing list <linux-mips@linux-mips.org>
+In-Reply-To: <1055143704.17835.16.camel@jp>
+References: <1054907964.14600.172.camel@jp>
+	 <1054919329.18838.184.camel@zeus.mvista.com> <1055013539.10775.46.camel@jp>
+	 <1055110501.11039.2.camel@adsl.pacbell.net>  <1055143704.17835.16.camel@jp>
+Content-Type: text/plain
+Organization: MontaVista Software
+Message-Id: <1055176618.9976.1.camel@zeus.mvista.com>
+Mime-Version: 1.0
+X-Mailer: Ximian Evolution 1.2.4 
+Date: 09 Jun 2003 09:36:59 -0700
 Content-Transfer-Encoding: 7bit
-To: unlisted-recipients:; (no To-header on input)
-Return-Path: <bchaikin@galileo.co.il>
+Return-Path: <ppopov@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2568
+X-archive-position: 2569
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bchaikin@il.marvell.com
+X-original-sender: ppopov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi all,
 
-I'm using MIPS kernel 2.4.18 with NFS file system mounted on a RedHat 
-machine. This works fine, but is unsuitable for system deployment. Do 
-you have hints for me where to start, in order to put the file system on 
-flash? The platform I'm using is very limited - only one MTD block of 
-2.5 MB is available for the file system, out of a 4 MB flash:
-    0.5 MB is allocated for the firmware code
-    1.0 MB for the compressed kernel image
-    2.5 MB for the (compressed?) file system
+> tried same with 64bit_pcmcia.patch
+> same result. I guess that the 36bit patch is included in this kernel?
 
-For example, I've noticed LibC itself is ~5 MB !
+I think so. I don't remember the date when Ralf applied the patch.
 
-Thanks for any tip,
--    Baruch.
+> Tried 2.4.21 & 2.4.21-pre7 from kernel.org
+> They die when initializing pci.
+> 
+> Are there different versions of the 36bit-patch? Mine is named
+> 36bit_addr_121302.patch
+
+Well, I kept updating the patch and always put the latest one in my
+directory. But the updates were always minor -- just so the patch would
+apply cleanly. After Ralf checked it in, I removed it from my directory.
+
+Pete

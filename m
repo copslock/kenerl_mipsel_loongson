@@ -1,73 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Jun 2004 15:16:37 +0100 (BST)
-Received: from mo03.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:33526 "EHLO
-	mo03.iij4u.or.jp") by linux-mips.org with ESMTP id <S8226298AbUFCOQc>;
-	Thu, 3 Jun 2004 15:16:32 +0100
-Received: from mdo00.iij4u.or.jp (mdo00.iij4u.or.jp [210.130.0.170])
-	by mo03.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id XAA15948;
-	Thu, 3 Jun 2004 23:16:29 +0900 (JST)
-Received: 4UMDO00 id i53EGTl16288; Thu, 3 Jun 2004 23:16:29 +0900 (JST)
-Received: 4UMRO00 id i53EGS625840; Thu, 3 Jun 2004 23:16:29 +0900 (JST)
-	from stratos.frog (64.43.138.210.xn.2iij.net [210.138.43.64]) (authenticated)
-Date: Thu, 3 Jun 2004 23:16:27 +0900
-From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH]  fix vrc4173 base driver
-Message-Id: <20040603231627.28e332cd.yuasa@hh.iij4u.or.jp>
-X-Mailer: Sylpheed version 0.9.11 (GTK+ 1.2.10; i686-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Jun 2004 15:22:55 +0100 (BST)
+Received: from p508B7B0E.dip.t-dialin.net ([IPv6:::ffff:80.139.123.14]:37683
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8226320AbUFCOWF>; Thu, 3 Jun 2004 15:22:05 +0100
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i53ELxiZ021202;
+	Thu, 3 Jun 2004 16:22:00 +0200
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i53ELwO6021201;
+	Thu, 3 Jun 2004 16:21:58 +0200
+Date: Thu, 3 Jun 2004 16:21:58 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+Cc: linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] fix atomic_sub_if_positive() and atomic64_sub_if_positive()
+Message-ID: <20040603142158.GA21089@linux-mips.org>
+References: <20040603231331.46ac0070.yuasa@hh.iij4u.or.jp>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yuasa@hh.iij4u.or.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20040603231331.46ac0070.yuasa@hh.iij4u.or.jp>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5244
+X-archive-position: 5245
+X-Approved-By: ralf@linux-mips.org
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuasa@hh.iij4u.or.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
+On Thu, Jun 03, 2004 at 11:13:31PM +0900, Yoichi Yuasa wrote:
 
-I found my mistake about vrc4173 base driver.
+> I found the mistake about return value of atomic_sub_if_positive() 
+> and atomic64_sub_if_positive().
 
-Please apply this patch to v2.6 CVS tree.
+Applied,
 
-Yoichi
-
-diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/common/vrc4173.c linux/arch/mips/vr41xx/common/vrc4173.c
---- linux-orig/arch/mips/vr41xx/common/vrc4173.c	Thu May 27 08:14:29 2004
-+++ linux/arch/mips/vr41xx/common/vrc4173.c	Mon May 31 00:51:02 2004
-@@ -461,7 +461,7 @@
- 	.name		= "NEC VRC4173",
- 	.probe		= vrc4173_probe,
- 	.remove		= vrc4173_remove,
--	.id_table	= vrc4173_table,
-+	.id_table	= vrc4173_id_table,
- };
- 
- static int __devinit vrc4173_init(void)
-diff -urN -X dontdiff linux-orig/include/asm-mips/vr41xx/vrc4173.h linux/include/asm-mips/vr41xx/vrc4173.h
---- linux-orig/include/asm-mips/vr41xx/vrc4173.h	Thu May 27 08:14:44 2004
-+++ linux/include/asm-mips/vr41xx/vrc4173.h	Mon May 31 00:50:13 2004
-@@ -77,7 +77,7 @@
- /*
-  * Clock Mask Unit
-  */
--enum vrc4173_clock {
-+typedef enum vrc4173_clock {
- 	VRC4173_PIU_CLOCK,
- 	VRC4173_KIU_CLOCK,
- 	VRC4173_AIU_CLOCK,
-@@ -98,7 +98,7 @@
- /*
-  * General-Purpose I/O Unit
-  */
--enum vrc4173_function {
-+typedef enum vrc4173_function {
- 	PS2_CHANNEL1,
- 	PS2_CHANNEL2,
- 	TOUCHPANEL,
+  Ralf

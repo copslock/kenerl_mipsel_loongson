@@ -1,154 +1,101 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Aug 2004 21:31:02 +0100 (BST)
-Received: from mailout2.echostar.com ([IPv6:::ffff:204.76.128.102]:61706 "EHLO
-	mailout2.echostar.com") by linux-mips.org with ESMTP
-	id <S8225241AbUHEUa4>; Thu, 5 Aug 2004 21:30:56 +0100
-Received: by riv-exchcon.echostar.com with Internet Mail Service (5.5.2653.19)
-	id <QHDV02NK>; Thu, 5 Aug 2004 14:30:44 -0600
-Message-ID: <F71A246055866844B66AFEB10654E7860F1B84@riv-exchb6.echostar.com>
-From: "Xu, Jiang" <Jiang.Xu@echostar.com>
-To: linux-mips@linux-mips.org
-Subject: shared memory issues on linux kernel 2.4.18
-Date: Thu, 5 Aug 2004 14:30:34 -0600 
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Aug 2004 23:31:43 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:4856 "EHLO
+	av.mvista.com") by linux-mips.org with ESMTP id <S8225257AbUHEWbh>;
+	Thu, 5 Aug 2004 23:31:37 +0100
+Received: from [10.0.10.221] (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id PAA22714;
+	Thu, 5 Aug 2004 15:31:33 -0700
+Message-ID: <4112B545.8090103@mvista.com>
+Date: Thu, 05 Aug 2004 15:31:33 -0700
+From: Pete Popov <ppopov@mvista.com>
+User-Agent: Mozilla Thunderbird 0.7.3 (Windows/20040803)
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2653.19)
-Content-Type: multipart/alternative;
-	boundary="----_=_NextPart_001_01C47B2B.0F1D2E15"
-Return-Path: <Jiang.Xu@echostar.com>
+To: G H <giles67@yahoo.com>
+CC: linux-mips@linux-mips.org
+Subject: Re: do_ri failure in cache flushing routines
+References: <20040805201643.6422.qmail@web50806.mail.yahoo.com>
+In-Reply-To: <20040805201643.6422.qmail@web50806.mail.yahoo.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ppopov@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5608
+X-archive-position: 5609
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Jiang.Xu@echostar.com
+X-original-sender: ppopov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-This message is in MIME format. Since your mail reader does not understand
-this format, some or all of this message may not be legible.
+G H wrote:
 
-------_=_NextPart_001_01C47B2B.0F1D2E15
-Content-Type: text/plain
+> At the moment I don't have the board set up for using kgdb and it's 
+> complicated by the fact that we only have one serial console port. But 
+> I am looking into setting it up for kgdb now.
 
-Hi, All,
- 
-The kernel version may be old to most of you guys, but this is what I am
-doing the tests on.
- 
-Previously I use uclibc tool chain and compiling everything fine and it runs
-fine; System V IPC works, including shared memory works...
-The nightmare starts when I try to use glibc tool chain.  I downloaded
-crosstool and successfully compiled everything.
-However, when I run it problem happens on shared memory.
-What I did for testing is this:
-1) call shmget to allocate the shared memory
-2) call shmat to mmap to process virtual memory space.
-3) call shmctl to verify everything appeared fine.
-4) for testing, just write couple bytes inside of that memory region.
- 
-The problem and also the interesting thing is:
-If without 4) everything runs fine.
-However, once excute 4) or any type of the writing to that memory region,
-the box will get a kernel crash later, but not immediately....
-I guess the kernel crashes when kswapd tried to do something, because the
-oops happens on kswapd with the following information:
- 
-Kernel BUG at filemap.c:908!
-Unable to handle kernel paging request at virtual address 00000000, epc ==
-80025ebc, ra == 80025ebc
- 
-But if I do not excute 4) everything runs perfect without problem.
- 
-At now, I am completely out of clue, wonder anybody may have any ideas and
-can help me out??
- 
-Thanks
- 
-John
- 
- 
- 
+A single serial port will work fine.
 
-------_=_NextPart_001_01C47B2B.0F1D2E15
-Content-Type: text/html
+>  
+> As far as stressing the system, it doesn't have enough resources ( 
+> disk space ) to be able to compile the kernel, but we did write a 
+> simple program that would stress the system by spawning multiple 
+> threads, each one performing floating point calculations. With this 
+> test, top reported a load average of over 400 and we have 
+> seen no failure so far.
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD>
-<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=us-ascii">
-<TITLE>Message</TITLE>
+You can use an NFS mounted root fs to do native builds, assuming you 
+have a native toolchain. That's an excellent stress test.
 
-<META content="MSHTML 5.50.4937.800" name=GENERATOR></HEAD>
-<BODY>
-<DIV><FONT face=Arial size=2><SPAN class=119061920-05082004>Hi, 
-All,</SPAN></FONT></DIV>
-<DIV><FONT face=Arial size=2><SPAN 
-class=119061920-05082004></SPAN></FONT>&nbsp;</DIV>
-<DIV><FONT face=Arial size=2><SPAN class=119061920-05082004>The kernel version 
-may be old to most of you guys, but this is what I am doing the tests 
-on.</SPAN></FONT></DIV>
-<DIV><FONT face=Arial size=2><SPAN 
-class=119061920-05082004></SPAN></FONT>&nbsp;</DIV>
-<DIV><FONT face=Arial size=2><SPAN class=119061920-05082004>Previously I use 
-uclibc tool chain and compiling everything fine and it runs fine;&nbsp;System V 
-IPC works, including shared memory works...</SPAN></FONT></DIV>
-<DIV><FONT face=Arial size=2><SPAN class=119061920-05082004>The nightmare starts 
-when I try to use glibc tool chain.&nbsp; I downloaded crosstool and 
-successfully compiled everything.</SPAN></FONT></DIV>
-<DIV><FONT face=Arial size=2><SPAN class=119061920-05082004>However, when I run 
-it problem happens on shared memory.</SPAN></FONT></DIV>
-<DIV><FONT face=Arial size=2><SPAN class=119061920-05082004>What I did for 
-testing is this:</SPAN></FONT></DIV>
-<DIV><FONT face=Arial size=2><SPAN class=119061920-05082004>1) call shmget to 
-allocate the shared memory</SPAN></FONT></DIV>
-<DIV><FONT face=Arial size=2><SPAN class=119061920-05082004>2) call shmat to 
-mmap to process virtual memory space.</SPAN></FONT></DIV>
-<DIV><FONT face=Arial size=2><SPAN class=119061920-05082004>3) call shmctl to 
-verify everything appeared fine.</SPAN></FONT></DIV>
-<DIV><FONT face=Arial size=2><SPAN class=119061920-05082004>4) for testing, just 
-write couple bytes inside of that memory region.</SPAN></FONT></DIV>
-<DIV><FONT face=Arial size=2><SPAN 
-class=119061920-05082004></SPAN></FONT>&nbsp;</DIV>
-<DIV><FONT face=Arial size=2><SPAN class=119061920-05082004>The problem and also 
-the interesting thing is:</SPAN></FONT></DIV>
-<DIV><FONT face=Arial size=2><SPAN class=119061920-05082004>If without 4) 
-everything runs fine.</SPAN></FONT></DIV>
-<DIV><FONT face=Arial size=2><SPAN class=119061920-05082004>However, once excute 
-4) or any type of the writing to that memory region, the box will get a kernel 
-crash later, but not immediately....</SPAN></FONT></DIV>
-<DIV><FONT face=Arial size=2><SPAN class=119061920-05082004>I guess the kernel 
-crashes when kswapd tried to do something, because&nbsp;the</SPAN></FONT><FONT 
-face=Arial size=2><SPAN class=119061920-05082004> oops happens on kswapd with 
-the following information:</SPAN></FONT></DIV>
-<DIV><FONT face=Arial size=2><SPAN 
-class=119061920-05082004></SPAN></FONT>&nbsp;</DIV>
-<DIV><FONT face=Arial size=2><SPAN class=119061920-05082004>Kernel BUG at 
-filemap.c:908!</SPAN></FONT></DIV>
-<DIV><FONT face=Arial size=2><SPAN class=119061920-05082004>Unable to handle 
-kernel paging request at virtual address 00000000, epc == 80025ebc, ra == 
-80025ebc</SPAN></FONT></DIV>
-<DIV><FONT face=Arial size=2><SPAN 
-class=119061920-05082004></SPAN></FONT>&nbsp;</DIV>
-<DIV><FONT face=Arial size=2><SPAN class=119061920-05082004>But if I do not 
-excute 4) everything runs perfect without problem.</SPAN></FONT></DIV>
-<DIV><FONT face=Arial size=2><SPAN 
-class=119061920-05082004></SPAN></FONT>&nbsp;</DIV>
-<DIV><FONT face=Arial size=2><SPAN class=119061920-05082004>At now, I am 
-completely out of clue, wonder anybody may have any ideas and can help me 
-out??</SPAN></FONT></DIV>
-<DIV><FONT face=Arial size=2><SPAN 
-class=119061920-05082004></SPAN></FONT>&nbsp;</DIV>
-<DIV><FONT face=Arial size=2><SPAN 
-class=119061920-05082004>Thanks</SPAN></FONT></DIV>
-<DIV><FONT face=Arial size=2><SPAN 
-class=119061920-05082004></SPAN></FONT>&nbsp;</DIV>
-<DIV><FONT face=Arial size=2><SPAN 
-class=119061920-05082004>John</SPAN></FONT></DIV>
-<DIV><FONT face=Arial size=2><SPAN 
-class=119061920-05082004></SPAN></FONT>&nbsp;</DIV>
-<DIV><FONT face=Arial size=2><SPAN 
-class=119061920-05082004></SPAN></FONT>&nbsp;</DIV>
-<DIV><FONT face=Arial size=2><SPAN 
-class=119061920-05082004></SPAN></FONT>&nbsp;</DIV></BODY></HTML>
+Pete
 
-------_=_NextPart_001_01C47B2B.0F1D2E15--
+>
+> */Pete Popov <ppopov@mvista.com>/* wrote:
+>
+>     G H wrote:
+>
+>     > I've not had much response to this question so I would like to
+>     > rephrase it :
+>     >
+>     > Can anyone think of any possible scenario where do_ri could
+>     occur in
+>     > blast_icache32() ??
+>     >
+>     > Is this possibly a cache synchronisation problem ??
+>     >
+>
+>     Could be a hardware memory glitch. I would use kgdb to put a
+>     breakpoint
+>     there and see what the data in memory looks like when this happens --
+>     look for memory corruption, etc.
+>
+>     Pete
+>
+>     > TIA
+>     >
+>     > >While testing out an amd au1500 based board I have been getting "
+>     > do_ri " exceptions >that always occur in the cache flushing
+>     routines.
+>     > More often than not in >blast_icache_32().
+>     >
+>     > >So far this has mainly happened after running the board for
+>     days on
+>     > end while running >multiple telnet sessions t! o it. It has
+>     sometimes (
+>     > quite rarely ) happened after a few >hours to a day of multiple
+>     telnet
+>     > session use.
+>     >
+>     > __________________________________________________
+>     > Do You Yahoo!?
+>     > Tired of spam? Yahoo! Mail has the best spam protection around
+>     > http://mail.yahoo.com
+>     >
+>
+> ------------------------------------------------------------------------
+> Do you Yahoo!?
+> Yahoo! Mail Address AutoComplete 
+> <http://us.rd.yahoo.com/mail_us/taglines/aac/*http://promotions.yahoo.com/new_mail/static/ease.html> 
+> - You start. We finish. 

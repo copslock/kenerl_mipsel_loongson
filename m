@@ -1,43 +1,56 @@
-Received:  by oss.sgi.com id <S553672AbQKGP2a>;
-	Tue, 7 Nov 2000 07:28:30 -0800
-Received: from [194.98.116.10] ([194.98.116.10]:6405 "EHLO hermes.epita.fr")
-	by oss.sgi.com with ESMTP id <S553667AbQKGP2V>;
-	Tue, 7 Nov 2000 07:28:21 -0800
-Received: from purple42.epx.epita.fr (purple42.epx.epita.fr [10.225.7.1])
-	by hermes.epita.fr id QAA18444 for <linux-mips@oss.sgi.com> 
-	EPITA Paris France Tue, 7 Nov 2000 16:27:19 GMT
-Received: by purple42.epx.epita.fr (Postfix, from userid 501)
-	id D1B1B48D; Tue,  7 Nov 2000 16:26:53 +0100 (CET)
-Date:   Tue, 7 Nov 2000 16:26:53 +0100
-From:   Thomas Poindessous <poinde_t@epita.fr>
-To:     linux-mips@oss.sgi.com
-Subject: Decstation 5000/200
-Message-ID: <20001107162653.A31659@purple42.epx.epita.fr>
+Received:  by oss.sgi.com id <S553685AbQKGQHA>;
+	Tue, 7 Nov 2000 08:07:00 -0800
+Received: from woody.ichilton.co.uk ([216.29.174.40]:1037 "HELO
+        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553677AbQKGQGw>;
+	Tue, 7 Nov 2000 08:06:52 -0800
+Received: by woody.ichilton.co.uk (Postfix, from userid 0)
+	id 026AA7CF1; Tue,  7 Nov 2000 16:06:50 +0000 (GMT)
+Date:   Tue, 7 Nov 2000 16:06:50 +0000
+From:   Ian Chilton <ian@ichilton.co.uk>
+To:     Michl Ladislav <xmichl03@stud.fee.vutbr.cz>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: mips dist?
+Message-ID: <20001107160650.A8493@woody.ichilton.co.uk>
+Reply-To: Ian Chilton <ian@ichilton.co.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
+Content-Disposition: inline
+User-Agent: Mutt/1.3.11i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hi,
-I have one IBM Decstation 5000/200 (PowerServer). 
-I have minicom it but nothing, no garbage, nada.
+Hello,
 
-The little led behind are set like this.
+> You could do following: download kernel and base-files from
+> ftp://ftp.rfc822.org/pub/local/debian-mips/. install bootp, tftp and nfs
+> server on another machine (howto can be found in archives) and boot linux
+> from this remote computer. after that you can partition your harddisk,
+> create filesystems and copy kernel and base-files. instruction how to boot
+> linux directly from harddisk (for indy) can be found at:
+> http://honk.physik.uni-konstanz.de/linux-mips/indy-boot/indy-hd-boot-micro-howto.html
+> now, you have fully functional Debian/GNU Linux, just wait for new
+> packages :-)
 
-.XXX..XX  (X light, . no light)
 
-After two day of google, I still can't find what are errors code ?
+I know about this. There is also Simple Linux/MIPS, and soon, my own base systems which will be downloadable, but to answer the origional question, there is no full distro for Linux/MIPS with a proper installer, except the very old, outdated, broken Hardhat.
 
-Where can I find these errors code ?
+However, on a brigher note, things are moving on at the moment. Ralf is working on a Redhat 7.0, based on glibc 2.2, and Flo (lolo) has started uploading debian packages based on glibc 2.2 to debian.org, so we are moving closed to having some working, easier to install systems.
 
-BTW, is there a port for Mips Magnum R4000 (Big endian) ?
 
-Thanks
+Bye for Now,
 
--- 
-Thomas Poindessous
-EpX asso GNU/Linux de l'Epita
-epx@epita.fr && http://www.epita.fr/~epx
+Ian
+
+
+                                \|||/ 
+                                (o o)
+ /---------------------------ooO-(_)-Ooo---------------------------\
+ |  Ian Chilton     (IRC Nick - GadgetMan)     ian@ichilton.co.uk  |
+ |-----------------------------------------------------------------|
+ |  Backup E-Mail -->  ian@ichilton.dhis.org      ICQ #: 16007717  |
+ |  Web Site      -->  http://www.ichilton.co.uk                   |
+ |-----------------------------------------------------------------|
+ |  "Unix is user friendly - it's just picky about it's friends."  |
+ \-----------------------------------------------------------------/

@@ -1,22 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Aug 2003 10:24:12 +0100 (BST)
-Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:4359
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Aug 2003 11:05:13 +0100 (BST)
+Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:15114
 	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
-	id <S8225072AbTHLJYI>; Tue, 12 Aug 2003 10:24:08 +0100
+	id <S8225072AbTHLKFL>; Tue, 12 Aug 2003 11:05:11 +0100
 Received: from no.name.available by topsns.toshiba-tops.co.jp
-          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 12 Aug 2003 09:24:06 UT
+          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 12 Aug 2003 10:05:09 UT
 Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.9/8.12.9) with ESMTP id h7C9Nt2S000528;
-	Tue, 12 Aug 2003 18:23:55 +0900 (JST)
-	(envelope-from nemoto@toshiba-tops.co.jp)
-Date: Tue, 12 Aug 2003 18:25:29 +0900 (JST)
-Message-Id: <20030812.182529.18309031.nemoto@toshiba-tops.co.jp>
-To: kumba@gentoo.org
-Cc: linux-mips@linux-mips.org
+	by srd2sd.toshiba-tops.co.jp (8.12.9/8.12.9) with ESMTP id h7CA522S000664
+	for <linux-mips@linux-mips.org>; Tue, 12 Aug 2003 19:05:02 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date: Tue, 12 Aug 2003 19:06:36 +0900 (JST)
+Message-Id: <20030812.190636.39150536.nemoto@toshiba-tops.co.jp>
+To: linux-mips@linux-mips.org
 Subject: Re: GCCFLAGS for gcc 3.3.x (-march and _MIPS_ISA)
-From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
-In-Reply-To: <3F388E0C.50802@gentoo.org>
+From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20030812065118.GD23104@rembrandt.csv.ica.uni-stuttgart.de>
 References: <20030812.152654.74756131.nemoto@toshiba-tops.co.jp>
-	<3F388E0C.50802@gentoo.org>
+	<20030812065118.GD23104@rembrandt.csv.ica.uni-stuttgart.de>
 X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
 X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
 Organization: TOSHIBA Personal Computer System Corporation
@@ -24,32 +23,37 @@ X-Mailer: Mew version 2.2 on Emacs 21.2 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <nemoto@toshiba-tops.co.jp>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3030
+X-archive-position: 3031
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nemoto@toshiba-tops.co.jp
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Tue, 12 Aug 2003 02:49:48 -0400, Kumba <kumba@gentoo.org> said:
-kumba> I don't claim to be an expert on all things mips yet, but If I
-kumba> recall correctly, the R4K processor line is a MIPS III capable
-kumba> processor.  So -mips3 -mabi=32 should be safe for it.  I've
-kumba> been building kernels off linux-mips.org CVS using "-mips3
-kumba> -mabi=32 -Wa,--trap" in the arch/mips/Makefile, and it works
-kumba> great.
+>>>>> On Tue, 12 Aug 2003 08:51:18 +0200, Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de> said:
+>> The option -march=r4600 seems to make gcc 3.3.x choose
+>> MIPS_ISA_MIPS3.
 
-Only affected code I found is __BUILD_clear_ade.  So the 32-bit kernel
-compiled with -mips3 will work fine normally, but once an address
-error occur the kernel will crash.
+Thiemo> Which is ok, because the available ISA has little to do with
+Thiemo> the actually used register width.
 
-As Thiemo said, it seems include/asm-mips/asm.h should be fixed
-instead of Makefile.  Still investigating...
+Thiemo> If the intention is to use mfc0 for 32bit kernels and dmfc0
+Thiemo> for 64bit, the check should probably be
 
----
-Atsushi Nemoto
+Thiemo> #ifdef __mips64
+Thiemo> # define MFC0		dmfc0
+Thiemo> # define MTC0		dmtc0
+Thiemo> #else
+Thiemo> # define MFC0		mfc0
+Thiemo> # define MTC0		mtc0
+Thiemo> #endif
+
+Thanks for your explanations.  Perhaps the code should be fixed is
+__BUILD_clear_ade in entry.S, but I'm not sure.  Does anybody know why
+__BUILD_clear_ade uses MFC0 and REG_S though other parts using mfc0
+and sw ?

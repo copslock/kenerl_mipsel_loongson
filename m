@@ -1,79 +1,86 @@
-Received:  by oss.sgi.com id <S305162AbQAaOeq>;
-	Mon, 31 Jan 2000 06:34:46 -0800
-Received: from deliverator.sgi.com ([204.94.214.10]:6432 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305160AbQAaOe1>;
-	Mon, 31 Jan 2000 06:34:27 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id GAA19647; Mon, 31 Jan 2000 06:32:52 -0800 (PST)
-	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id GAA43272
-	for linux-list;
-	Mon, 31 Jan 2000 06:18:52 -0800 (PST)
-	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id GAA97668
-	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 31 Jan 2000 06:18:48 -0800 (PST)
-	mail_from (amcfaul@nhgri.nih.gov)
-Received: from kronos.nhgri.nih.gov (nhgri.nih.gov [165.112.191.6]) 
+Received:  by oss.sgi.com id <S305166AbQBARGQ>;
+	Tue, 1 Feb 2000 09:06:16 -0800
+Received: from sgi.SGI.COM ([192.48.153.1]:19975 "EHLO sgi.com")
+	by oss.sgi.com with ESMTP id <S305160AbQBARGI>;
+	Tue, 1 Feb 2000 09:06:08 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id GAA06402
-	for <linux@cthulhu.engr.sgi.com>; Mon, 31 Jan 2000 06:18:47 -0800 (PST)
-	mail_from (amcfaul@nhgri.nih.gov)
-Received: from nhgri.nih.gov (shiraz.nhgri.nih.gov [165.112.191.106])
-	by kronos.nhgri.nih.gov (8.9.3/8.9.3) with ESMTP id JAA20334
-	for <linux@cthulhu.engr.sgi.com>; Mon, 31 Jan 2000 09:18:46 -0500 (EST)
-Message-ID: <389587E5.7880C7FC@nhgri.nih.gov>
-Date:   Mon, 31 Jan 2000 08:02:30 -0500
-From:   Alan McFaul <amcfaul@nhgri.nih.gov>
-Reply-To: amcfaul@nhgri.nih.gov
-Organization: NIH-NHGRI LAN Support
-X-Mailer: Mozilla 4.51C-SGI [en] (X11; I; IRIX64 6.5 IP28)
+	via ESMTP id JAA00617; Tue, 1 Feb 2000 09:09:07 -0800 (PST)
+	mail_from (owner-linux@cthulhu.engr.sgi.com)
+Received: (from majordomo-owner@localhost)
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	id IAA65150
+	for linux-list;
+	Tue, 1 Feb 2000 08:43:19 -0800 (PST)
+	mail_from (owner-linux@relay.engr.sgi.com)
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	via ESMTP id IAA66574
+	for <linux@cthulhu.engr.sgi.com>;
+	Tue, 1 Feb 2000 08:43:14 -0800 (PST)
+	mail_from (jharrell@ti.com)
+Received: from gatekeep.ti.com (gatekeep.ti.com [192.94.94.61]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id IAA02852
+	for <linux@cthulhu.engr.sgi.com>; Tue, 1 Feb 2000 08:43:13 -0800 (PST)
+	mail_from (jharrell@ti.com)
+Received: from dlep6.itg.ti.com ([157.170.188.9])
+	by gatekeep.ti.com (8.9.3/8.9.3) with ESMTP id KAA05495
+	for <linux@cthulhu.engr.sgi.com>; Tue, 1 Feb 2000 10:43:12 -0600 (CST)
+Received: from dlep6.itg.ti.com (localhost [127.0.0.1])
+	by dlep6.itg.ti.com (8.9.3/8.9.3) with ESMTP id KAA17154
+	for <linux@cthulhu.engr.sgi.com>; Tue, 1 Feb 2000 10:43:07 -0600 (CST)
+Received: from dlep4.itg.ti.com (dlep4.itg.ti.com [157.170.188.63])
+	by dlep6.itg.ti.com (8.9.3/8.9.3) with ESMTP id KAA17133
+	for <linux@cthulhu.engr.sgi.com>; Tue, 1 Feb 2000 10:43:06 -0600 (CST)
+Received: from ti.com (IDENT:jharrell@pcp97780pcs.sc.ti.com [158.218.100.100])
+	by dlep4.itg.ti.com (8.9.3/8.9.3) with ESMTP id KAA09445
+	for <linux@cthulhu.engr.sgi.com>; Tue, 1 Feb 2000 10:43:10 -0600 (CST)
+Message-ID: <38970DA5.165EDA0F@ti.com>
+Date:   Tue, 01 Feb 2000 09:45:25 -0700
+From:   Jeff Harrell <jharrell@ti.com>
+X-Mailer: Mozilla 4.61 [en] (X11; U; Linux 2.2.12-20 i686)
 X-Accept-Language: en
 MIME-Version: 1.0
-To:     "linux@cthulhu.engr.sgi.com" <linux@cthulhu.engr.sgi.com>
-Subject: (no subject)
-Content-Type: multipart/mixed;
- boundary="------------8EDC26DE30A867E205D722FE"
+To:     sgi-mips <linux@cthulhu.engr.sgi.com>
+Subject: Question concerning memory configuration variables
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-This is a multi-part message in MIME format.
---------------8EDC26DE30A867E205D722FE
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: base64
+I have been looking at 2.2.23 and noticed that a few things concerning
+memory
+paging has changed.  I wonder if anybody could give me a definition of a
+couple
+of the variables that are defined.  The first is the max_low_pfn
+variable.  It looks
+like the first time that I see this called is during the paging_init()
+function and
+passed to free_area_init().   The memory map size is determined from
+this variable.
+It memory map will extend to the end of physical memory (what used to be
+mips_memory_
+upper).  Do I determine the max_low_pfn by calculating the available
+memory and subtract
+the size of the kernel?  How does the variable "start" play into this
+equation?  Are they
+the same?  Any help would be greatly appreciated.
 
-VW5zdWJzY3JpYmUNCg0KLS0NCkFsYW4gTWNGYXVsDQpOSUgtTkhHUkkgTEFOIFN1cHBvcnQN
-ClVuaXggU3lzdGVtcyBBZG1pbmlzdHJhdGlvbg0KMzAxLTQzNS02MDgzIE9mZmljZSBvciAx
-LTg4OC02NzgtOTAyOSBQYWdlcg0KDQoNCg==
---------------8EDC26DE30A867E205D722FE
-Content-Type: message/rfc822
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
+Thanks,
+Jeff
 
-X-Mozilla-Status2: 00000000
-Message-ID: <3895833C.14E057F8@nhgri.nih.gov>
-Date: Mon, 31 Jan 2000 07:42:37 -0500
-From: Alan McFaul <amcfaul@nhgri.nih.gov>
-Reply-To: amcfaul@nhgri.nih.gov
-Organization: NIH-NHGRI LAN Support
-X-Mailer: Mozilla 4.51C-SGI [en] (X11; I; IRIX64 6.5 IP28)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: "linux@cthulhu.engr.sgi.com" <linux@cthulhu.engr.sgi.com>
-Subject: Unsubscribe
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: base64
-
-RFFvTkNpMHREUXBCYkdGdUlFMWpSbUYxYkEwS1RrbElMVTVJUjFKSklFeEJUaUJUZFhCd2Iz
-SjBEUXBWYm1sNElGTjVjM1JsCmJYTWdRV1J0YVc1cGMzUnlZWFJwYjI0TkNqTXdNUzAwTXpV
-dE5qQTRNeUJQWm1acFkyVWdiM0lnTVMwNE9EZ3ROamM0TFRrdwpNamtnVUdGblpYSU5DZzBL
-RFFvPQo=
---------------8EDC26DE30A867E205D722FE--
+--
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Jeff Harrell                    Work:  (801) 619-6104
+Broadband Access group/TI
+jharrell@ti.com
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -1,80 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jun 2004 17:32:13 +0100 (BST)
-Received: from dvmwest.gt.owl.de ([IPv6:::ffff:62.52.24.140]:52670 "EHLO
-	dvmwest.gt.owl.de") by linux-mips.org with ESMTP
-	id <S8225826AbUFQQcJ>; Thu, 17 Jun 2004 17:32:09 +0100
-Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
-	id 208374B6E3; Thu, 17 Jun 2004 18:32:07 +0200 (CEST)
-Date: Thu, 17 Jun 2004 18:32:07 +0200
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jun 2004 19:53:39 +0100 (BST)
+Received: from rwcrmhc11.comcast.net ([IPv6:::ffff:204.127.198.35]:163 "EHLO
+	rwcrmhc11.comcast.net") by linux-mips.org with ESMTP
+	id <S8225938AbUFQSxf>; Thu, 17 Jun 2004 19:53:35 +0100
+Received: from gentoo.org (pcp04939029pcs.waldrf01.md.comcast.net[68.48.72.58])
+          by comcast.net (rwcrmhc11) with ESMTP
+          id <2004061718532501300gleg5e>
+          (Authid: kumba12345);
+          Thu, 17 Jun 2004 18:53:25 +0000
+Message-ID: <40D1E976.5010204@gentoo.org>
+Date: Thu, 17 Jun 2004 14:56:54 -0400
+From: Kumba <kumba@gentoo.org>
+Reply-To: kumba@gentoo.org
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.6) Gecko/20040113
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
 To: linux-mips@linux-mips.org
 Subject: Re: CVS access
-Message-ID: <20040617163206.GQ20632@lug-owl.de>
-Mail-Followup-To: linux-mips@linux-mips.org
-References: <1087486756.3789.4.camel@localhost.localdomain>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="VKuXy7C2ZpXslCZ2"
-Content-Disposition: inline
-In-Reply-To: <1087486756.3789.4.camel@localhost.localdomain>
-X-Operating-System: Linux mail 2.4.18 
-X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
-X-gpg-key: wwwkeys.de.pgp.net
-User-Agent: Mutt/1.5.6i
-Return-Path: <jbglaw@dvmwest.gt.owl.de>
+References: <1087486756.3789.4.camel@localhost.localdomain> <20040617163206.GQ20632@lug-owl.de>
+In-Reply-To: <20040617163206.GQ20632@lug-owl.de>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5326
+X-archive-position: 5327
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jbglaw@lug-owl.de
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
+Jan-Benedict Glaw wrote:
 
---VKuXy7C2ZpXslCZ2
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> pserver seems running (shouldn't it been sho^Wut down due to
+> vulnerabilities?).
+> 
+> But to help you: You'd rsync the whole CVS repo to a local machine and
+> then check-out locally. Oh, kernel.org vanilla kernels won't really
+> compile nor boot, I guess. All development is done here...
 
-On Thu, 2004-06-17 08:39:16 -0700, Prasanth Kumar <lunix@comcast.net>
-wrote in message <1087486756.3789.4.camel@localhost.localdomain>:
->=20
-> [bubba]$ cvs -d :pserver:cvs@ftp.linux-mips.org:/home/cvs loginLogging
-> in to :pserver:cvs@ftp.linux-mips.org:2401/home/cvs
-> CVS password:
-> cvs login: authorization failed: server ftp.linux-mips.org rejected
-> access to /home/cvs for user cvs
+Ralf updated the CVS packages on lmo.org and reactivated the CVS 
+anoncvs.  I checked out 2.6.7 yesterday via it, so it's definitely working.
 
-pserver seems running (shouldn't it been sho^Wut down due to
-vulnerabilities?).
 
-But to help you: You'd rsync the whole CVS repo to a local machine and
-then check-out locally. Oh, kernel.org vanilla kernels won't really
-compile nor boot, I guess. All development is done here...
+--Kumba
 
-MfG, JBG
-
---=20
-   Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481
-   "Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg
-    fuer einen Freien Staat voll Freier B=FCrger" | im Internet! |   im Ira=
-k!
-   ret =3D do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM | TC=
-PA));
-
---VKuXy7C2ZpXslCZ2
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.4 (GNU/Linux)
-
-iD8DBQFA0ceGHb1edYOZ4bsRAqPbAJ9bFQAfdZtVfKVrtNUJTR80ccs/9ACeLt5t
-+pgzVb7O1uJaRXU3+v2e0Z4=
-=3qEr
------END PGP SIGNATURE-----
-
---VKuXy7C2ZpXslCZ2--
+-- 
+"Such is oft the course of deeds that move the wheels of the world: 
+small hands do them because they must, while the eyes of the great are 
+elsewhere."  --Elrond

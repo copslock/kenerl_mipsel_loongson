@@ -1,52 +1,54 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA81354 for <linux-archive@neteng.engr.sgi.com>; Tue, 16 Jun 1998 15:24:15 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id FAA93556 for <linux-archive@neteng.engr.sgi.com>; Wed, 17 Jun 1998 05:42:15 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id PAA69381
+	id FAA78213
 	for linux-list;
-	Tue, 16 Jun 1998 15:22:45 -0700 (PDT)
+	Wed, 17 Jun 1998 05:41:41 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id PAA99979
+	via ESMTP id FAA90195
 	for <linux@cthulhu.engr.sgi.com>;
-	Tue, 16 Jun 1998 15:22:43 -0700 (PDT)
-	mail_from (rodmur@ecst.csuchico.edu)
-Received: from rubella.ecst.csuchico.edu (rubella.ecst.csuchico.edu [132.241.4.10]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam: SGI does not authorize the use of its proprietary systems or networks for unsolicited or bulk email from the Internet.) via SMTP id PAA07595
-	for <linux@cthulhu.engr.sgi.com>; Tue, 16 Jun 1998 15:22:42 -0700 (PDT)
-	mail_from (rodmur@ecst.csuchico.edu)
-Received: (qmail 25809 invoked by uid 3636); 16 Jun 1998 15:22:41 -0700
-Message-ID: <19980616152241.D25396@ecst.csuchico.edu>
-Date: Tue, 16 Jun 1998 15:22:41 -0700
-From: "D.A. Harris" <rodmur@ecst.csuchico.edu>
-To: Alex deVries <adevries@engsoc.carleton.ca>
-Cc: linux@cthulhu.engr.sgi.com
-Subject: Re: ridiculous question. . . ;)
-References: <19980615171556.B13655@ecst.csuchico.edu> <Pine.LNX.3.95.980615203744.1698A-100000@lager.engsoc.carleton.ca>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.91.1
-In-Reply-To: <Pine.LNX.3.95.980615203744.1698A-100000@lager.engsoc.carleton.ca>; from Alex deVries on Mon, Jun 15, 1998 at 08:38:02PM -0400
+	Wed, 17 Jun 1998 05:41:39 -0700 (PDT)
+	mail_from (adelton@informatics.muni.cz)
+Received: from aragorn.ics.muni.cz ([147.251.4.33]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam: SGI does not authorize the use of its proprietary systems or networks for unsolicited or bulk email from the Internet.) via ESMTP id FAA14225
+	for <linux@cthulhu.engr.sgi.com>; Wed, 17 Jun 1998 05:41:33 -0700 (PDT)
+	mail_from (adelton@informatics.muni.cz)
+Received: from anxur.fi.muni.cz (0@anxur.fi.muni.cz [147.251.48.3])
+	by aragorn.ics.muni.cz (8.8.5/8.8.5) with ESMTP id OAA03295
+	for <linux@cthulhu.engr.sgi.com>; Wed, 17 Jun 1998 14:40:54 +0200 (MET DST)
+Received: from aisa.fi.muni.cz (11635@aisa [147.251.48.1])
+	by anxur.fi.muni.cz (8.8.5/8.8.5) with ESMTP id OAA13018
+	for <linux@cthulhu.engr.sgi.com>; Wed, 17 Jun 1998 14:40:52 +0200 (MET DST)
+Received: (from adelton@localhost)
+	by aisa.fi.muni.cz (8.8.5/8.8.5) id OAA04748
+	for linux@cthulhu.engr.sgi.com; Wed, 17 Jun 1998 14:40:48 +0200 (MET DST)
+Message-Id: <199806171240.OAA04748@aisa.fi.muni.cz>
+Subject: ssh 1.2.25 mipseb rpm
+In-Reply-To: <Pine.LNX.3.95.980616120817.26590C-100000@lager.engsoc.carleton.ca> from Alex deVries at "Jun 16, 98 12:10:08 pm"
+To: linux@cthulhu.engr.sgi.com
+Date: Wed, 17 Jun 1998 14:40:48 +0200 (MET DST)
+From: Honza Pazdziora <adelton@informatics.muni.cz>
+Phone: 420 (5) 415 12345
+X-Mailer: ELM [version 2.4ME+ PL39 (25)]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Mon, Jun 15, 1998 at 08:38:02PM -0400, Alex deVries wrote:
-> 
-> What's Maya?
-> 
-> - Alex
 
-The replacement for Alias from Alias/Wavefront, a subsidary of SGI.  Maya 
-is Powerful 3D animation software, what I've seen and what my boss and 
-co-workers are saying is that it very intuitive to use, so far they love it, 
-one of the animators say it is more useful than Lightwave.  Course right now 
-it is only available for IRIX, and cost in the neighborhood of $40,000 (unless 
-you can get it on some educational discount).  An NT port is in the works
-by Alias/Wavefront.  Yeah, I know, I'll never see it on Linux, and I'm 
-wasting bandwidth.
+Hello,
 
--- 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Dale Harris  <rodmur@csuchico.edu>   PGP KeyID: E26EC5FD      
-http://www.ecst.csuchico.edu/~rodmur/
-|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|
+I've displayed mipseb rpms of ssh on
+
+ftp://ftp.fi.muni.cz/pub/ssh/local-fi.muni.cz/linux/
+
+You need all four rpms for complete system. The rpms were compiled
+without the X11 support.
+
+------------------------------------------------------------------------
+ Honza Pazdziora | adelton@fi.muni.cz | http://www.fi.muni.cz/~adelton/
+                   I can take or leave it if I please
+------------------------------------------------------------------------

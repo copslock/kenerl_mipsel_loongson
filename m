@@ -1,66 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Oct 2003 20:04:09 +0100 (BST)
-Received: from mms3.broadcom.com ([IPv6:::ffff:63.70.210.38]:54027 "EHLO
-	mms3.broadcom.com") by linux-mips.org with ESMTP
-	id <S8225428AbTJJTED>; Fri, 10 Oct 2003 20:04:03 +0100
-Received: from 63.70.210.1 by mms3.broadcom.com with ESMTP (Broadcom
- SMTP Relay (MMS v5.5.3)); Fri, 10 Oct 2003 12:04:08 -0700
-Received: from mail-sj1-1.sj.broadcom.com (mail-sj1-1.sj.broadcom.com
- [10.16.128.231]) by mon-irva-11.broadcom.com (8.9.1/8.9.1) with ESMTP
- id MAA08972; Fri, 10 Oct 2003 12:03:27 -0700 (PDT)
-Received: from broadcom.com (ldt-sj3-158 [10.21.64.158]) by
- mail-sj1-1.sj.broadcom.com (8.12.9/8.12.4/SSM) with ESMTP id
- h9AJ3rKX003995; Fri, 10 Oct 2003 12:03:55 -0700 (PDT)
-Message-ID: <3F870299.E96FCFE2@broadcom.com>
-Date: Fri, 10 Oct 2003 12:03:53 -0700
-From: "Kip Walker" <kwalker@broadcom.com>
-Organization: Broadcom Corp. BPBU
-X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.20-18.7 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-cc: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Oct 2003 08:27:32 +0100 (BST)
+Received: from p508B6977.dip.t-dialin.net ([IPv6:::ffff:80.139.105.119]:8104
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225310AbTJKH1U>; Sat, 11 Oct 2003 08:27:20 +0100
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h9B7RENK022226;
+	Sat, 11 Oct 2003 09:27:14 +0200
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h9B7RAsm022164;
+	Sat, 11 Oct 2003 09:27:10 +0200
+Date: Sat, 11 Oct 2003 09:27:09 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Kip Walker <kwalker@broadcom.com>
+Cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+	linux-mips@linux-mips.org
 Subject: Re: CVS Update@-mips.org: linux
-References: <20031009160717Z8225587-1272+7472@linux-mips.org>
- <3F8700ED.4AE74ECE@broadcom.com>
-X-WSS-ID: 1399DD223300966-01-01
-Content-Type: text/plain;
- charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <kwalker@broadcom.com>
+Message-ID: <20031011072709.GA16273@linux-mips.org>
+References: <20031009160717Z8225587-1272+7472@linux-mips.org> <3F8700ED.4AE74ECE@broadcom.com> <3F870299.E96FCFE2@broadcom.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3F870299.E96FCFE2@broadcom.com>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3424
+X-archive-position: 3425
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kwalker@broadcom.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Curse the "Reply-To" from CVS commit messages.  This wasn't intended for
-the list.
+On Fri, Oct 10, 2003 at 12:03:53PM -0700, Kip Walker wrote:
 
-sorry,
-Kip
+> Curse the "Reply-To" from CVS commit messages.  This wasn't intended for
+> the list.
 
-Kip Walker wrote:
-> 
-> This doesn't compile.  Remove the commas.
-> 
-> Of course, "vt_check" doesn't build anymore either - I'm trying to fix
-> that one.
-> 
-> Kip
-> 
-> macro@linux-mips.org wrote:
-> >
-> > CVSROOT:        /home/cvs
-> > Module name:    linux
-> > Changes by:     macro@ftp.linux-mips.org        03/10/09 17:07:12
-> >
-> > Modified files:
-> >         arch/mips/kernel: ioctl32.c
-> >
-> > Log message:
-> >         PIO_FONTX and KDFONTOP ioctls.
+The Reply-To was necessary because linux-cvs isn't a mailing list that
+can be posted to, that is mail sent to it will bounce.
+
+  Ralf

@@ -1,46 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Jan 2003 14:25:55 +0000 (GMT)
-Received: from p508B69C2.dip.t-dialin.net ([IPv6:::ffff:80.139.105.194]:61620
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225241AbTA2OZz>; Wed, 29 Jan 2003 14:25:55 +0000
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id h0TEPht26540;
-	Wed, 29 Jan 2003 15:25:43 +0100
-Date: Wed, 29 Jan 2003 15:25:43 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Mike Uhler <uhler@mips.com>
-Cc: Jun Sun <jsun@mvista.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: unaligned load in branch delay slot
-Message-ID: <20030129152543.B25701@linux-mips.org>
-References: <20030128095347.W11633@mvista.com> <200301281948.h0SJmug29073@uhler-linux.mips.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <200301281948.h0SJmug29073@uhler-linux.mips.com>; from uhler@mips.com on Tue, Jan 28, 2003 at 11:48:56AM -0800
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Jan 2003 14:32:44 +0000 (GMT)
+Received: from queen.kulnet.kuleuven.ac.be ([IPv6:::ffff:134.58.240.43]:46227
+	"EHLO queen.kulnet.kuleuven.ac.be") by linux-mips.org with ESMTP
+	id <S8225241AbTA2Ocn>; Wed, 29 Jan 2003 14:32:43 +0000
+Received: from crassus.kulnet.kuleuven.ac.be (queen [127.0.0.1])
+	by queen.kulnet.kuleuven.ac.be (Postfix) with SMTP id 272971881AD
+	for <linux-mips@linux-mips.org>; Wed, 29 Jan 2003 15:32:38 +0100 (CET)
+Received: through eSafe SMTP Relay 1041503224; Wed Jan 29 15:32:38 2003
+Received: from there (basecamp.kotnet.org [10.4.9.38])
+	by crassus.kulnet.kuleuven.ac.be (Postfix) with SMTP id 8D59413EC09
+	for <linux-mips@linux-mips.org>; Wed, 29 Jan 2003 15:32:37 +0100 (CET)
+Content-Type: text/plain;
+  charset="iso-8859-1"
+X-KMail-Redirect-From: Skippie <skippie@skynet.be>
+Subject: Re: XFree XZ support
+From: Skippie <skippie@skynet.be> (by way of Skippie <skippie@skynet.be>)
+Date: Wed, 29 Jan 2003 15:32:36 +0100
+To: linux-mips@linux-mips.org
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Message-Id: <20030129143237.8D59413EC09@crassus.kulnet.kuleuven.ac.be>
+Return-Path: <skippie@skynet.be>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1271
+X-archive-position: 1272
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: skippie@skynet.be
 Precedence: bulk
 X-list: linux-mips
 
-Mike,
+> This is a card that's magnitudes too complex to support.  Even with docs
+> it was to hard.  Something as trivial as printing a character to the
+> screen involves writing firmware for the i860 processor(s) of the XZ.
+>
+>   Ralf
 
-On Tue, Jan 28, 2003 at 11:48:56AM -0800, Mike Uhler wrote:
+I will have to wait until there is Xfree support for this card.
+(if this will ever be)
 
-> Let me give the list some background on this to aid in understanding.
+Thanks for all the reactions.
 
-Thanks for elaborating on this problem.
-
-My workaround was trying so deal with a different problem so I'm going to
-pull that patch again until the nature of Geert's problem is fully
-understood.
-
-  Ralf
+--
+Greetz
+Skippie
+--
+mail: skippie@skynet.be

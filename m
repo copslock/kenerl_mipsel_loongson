@@ -1,35 +1,43 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fA9JiT616156
-	for linux-mips-outgoing; Fri, 9 Nov 2001 11:44:29 -0800
-Received: from neurosis.mit.edu (NEUROSIS.MIT.EDU [18.243.0.82])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA9JiP016153;
-	Fri, 9 Nov 2001 11:44:25 -0800
-Received: (from jim@localhost)
-	by neurosis.mit.edu (8.11.4/8.11.4) id fA9JiLY30238;
-	Fri, 9 Nov 2001 14:44:21 -0500
-Date: Fri, 9 Nov 2001 14:44:21 -0500
-From: Jim Paris <jim@jtan.com>
-To: Jun Sun <jsun@mvista.com>
-Cc: James Simmons <jsimmons@transvirtual.com>, Ralf Baechle <ralf@oss.sgi.com>,
-   Atsushi Nemoto <nemoto@toshiba-tops.co.jp>, linux-mips@oss.sgi.com,
-   linux-mips-kernel@lists.sourceforge.net
-Subject: Re: [Linux-mips-kernel]Re: i8259.c in big endian
-Message-ID: <20011109144421.A30230@neurosis.mit.edu>
-Reply-To: jim@jtan.com
-References: <Pine.LNX.4.10.10111081348000.13456-100000@transvirtual.com> <3BEC20D5.AD6ABBA6@mvista.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <3BEC20D5.AD6ABBA6@mvista.com>; from jsun@mvista.com on Fri, Nov 09, 2001 at 10:30:45AM -0800
+	by oss.sgi.com (8.11.2/8.11.3) id fA9KLKA17081
+	for linux-mips-outgoing; Fri, 9 Nov 2001 12:21:20 -0800
+Received: from smtp.psdc.com (smtp.psdc.com [209.125.203.83])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA9KLI017078
+	for <linux-mips@oss.sgi.com>; Fri, 9 Nov 2001 12:21:18 -0800
+Received: (from ex2k [172.19.1.1])
+ by smtp.psdc.com (NAVGW 2.5.1.13) with SMTP id M2001110912214208218
+ for <linux-mips@oss.sgi.com>; Fri, 09 Nov 2001 12:21:42 -0800
+content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Subject: Which usrland packages should be built for swapon, hostname,and grep?
+X-MimeOLE: Produced By Microsoft Exchange V6.0.4712.0
+Date: Fri, 9 Nov 2001 12:16:11 -0800
+Message-ID: <84CE342693F11946B9F54B18C1AB837B14AE21@ex2k.pcs.psdc.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Which usrland packages should be built for swapon, hostname,and grep?
+Thread-Index: AcFpW17mJ6c/Rd3lS5uAjvpYG3akJg==
+From: "Steven Liu" <stevenliu@psdc.com>
+To: <linux-mips@oss.sgi.com>
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id fA9KLI017079
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-> You are probably referring to isa_slot_offset?
-> 
-> isa_slot_offset is an obselete garbage.  Can someone do Ralf's a favor and
-> send him a patch to get rid of it (as if he can't do it himself :-0) ?
+Hi All:
 
-How should it be properly done?
+I am porting linux to mips r3000 now and need to build the following
+files for the target board:
+    /sbin/swapon,
+   /bin/hostname,
+   /bin/mount,
+   /bin/grep.
+Which usrland packages should I use for the above files?
 
--jim
+Any help should be greatly appreciated.
+
+Thank you.
+
+Steven Liu

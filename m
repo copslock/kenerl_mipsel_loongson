@@ -1,164 +1,164 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Jan 2005 15:57:29 +0000 (GMT)
-Received: from rwcrmhc11.comcast.net ([IPv6:::ffff:204.127.198.35]:50403 "EHLO
-	rwcrmhc11.comcast.net") by linux-mips.org with ESMTP
-	id <S8225196AbVADP5X>; Tue, 4 Jan 2005 15:57:23 +0000
-Received: from gw.junsun.net (c-24-6-106-170.client.comcast.net[24.6.106.170])
-          by comcast.net (rwcrmhc11) with ESMTP
-          id <2005010415565901300c83qne>; Tue, 4 Jan 2005 15:57:03 +0000
-Received: from gw.junsun.net (gw.junsun.net [127.0.0.1])
-	by gw.junsun.net (8.13.1/8.13.1) with ESMTP id j04FuqNq012195;
-	Tue, 4 Jan 2005 07:56:54 -0800
-Received: (from jsun@localhost)
-	by gw.junsun.net (8.13.1/8.13.1/Submit) id j04FupPV012194;
-	Tue, 4 Jan 2005 07:56:51 -0800
-Date: Tue, 4 Jan 2005 07:56:51 -0800
-From: Jun Sun <jsun@junsun.net>
-To: Rojhalat Ibrahim <ibrahim@schenk.isar.de>
-Cc: linux-mips@linux-mips.org
-Subject: Re: SMP on Yosemite
-Message-ID: <20050104155651.GB12031@gw.junsun.net>
-References: <41DA6A13.7090703@schenk.isar.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <41DA6A13.7090703@schenk.isar.de>
-User-Agent: Mutt/1.4.1i
-Return-Path: <jsun@junsun.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Jan 2005 21:24:51 +0000 (GMT)
+Received: from 205-200-7-228.static.mts.net ([IPv6:::ffff:205.200.7.228]:3222
+	"EHLO librestream.com") by linux-mips.org with ESMTP
+	id <S8225263AbVADVYq> convert rfc822-to-8bit; Tue, 4 Jan 2005 21:24:46 +0000
+X-MIMEOLE: Produced By Microsoft Exchange V6.5.6944.0
+Content-class: urn:content-classes:message
+Subject: vmalloc memory corruption
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Date: Tue, 4 Jan 2005 15:24:32 -0600
+Message-ID: <8230E1CC35AF9F43839F3049E930169A0D89F9@yang.LibreStream.local>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: vmalloc memory corruption
+thread-index: AcTyUEmfwnfNY8yHRIy37OS63vlw6wAUEV1w
+From: "Christian Gan" <christian.gan@librestream.com>
+To: <linux-mips@linux-mips.org>
+Return-Path: <christian.gan@librestream.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6802
+X-archive-position: 6803
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@junsun.net
+X-original-sender: christian.gan@librestream.com
 Precedence: bulk
 X-list: linux-mips
 
+Hey all,
 
-In earlier version time.c file, I introduced something like 
-"smp_emulate_local_timer" variable.  When it is set, cpu 0 sends
-"EMULATE_LOCAL_TIMER" IPI to other CPUs.  Sending IPI is done
-inside timer_interrupt().
+I'm running into a strange memory corruption problem while trying to get
+a driver to load firmware using hotplug support on a DBAU1550 eval
+board.  This board has a single AU1550 MIPS32 processor.  I'm running
+kernel version 2.6.10-rc3.
 
-I think that is a better approach, where implementation can be shared
-by other SMP machines.
+I've attached a code snippet below that I'd like somebody to try to
+verify for me so I can determine whether or not it is a problem with my
+kernel/hardware.  
 
-I would just rename RESCHEDULE_YOURSELF to EMULATE_LOCAL_TIMER.
+The test code is a simplified version of the interaction between the
+driver and the firmware/hotplug support of the kernel.  The firmware
+hotplug support (linux/drivers/base/firmware_class.c) if fed data from a
+file and places it into a buffer, this buffer gets reallocated when
+required and grows as more data is read in.  Old data is memcopied into
+the new reallocated buffer and newly read data is appended to the end.
+What I'm finding is that eventually this data is corrupted.
 
-Jun
+Compile the test snippet below as a module and insmod it.  If things are
+successful you should see results like this:
 
-On Tue, Jan 04, 2005 at 11:04:03AM +0100, Rojhalat Ibrahim wrote:
-> Hi!
-> 
-> I noticed that on the Yosemite board in SMP mode
-> local_timer_interrupt is never called on the CPU
-> which does not handle the timer IRQ in the first
-> place. Therefore process accounting does not work
-> for at least one CPU. I have attached a patch that
-> sends an inter-processor interrupt to the other
-> CPU every time a timer interrupt occurs. I have
-> used SMP_RESCHEDULE_YOURSELF since it is obviously
-> unused. If this is not the way it's supposed to
-> be done, please let me know.
-> 
-> Thanks
-> Rojhalat Ibrahim
-> 
+# insmod vmalloctest.ko
+Using vmalloctest.ko
+testing vmalloc
+0x00 0x01 0x02 0x03 0x04 0x05 0x06 0x07 0x08 0x09
+0x00 0x01 0x02 0x03 0x04 0x05 0x06 0x07 0x08 0x09
+0x00 0x01 0x02 0x03 0x04 0x05 0x06 0x07 0x08 0x09
+...
+0x00 0x01 0x02 0x03 0x04 0x05 0x06 0x07 0x08 0x09
 
-> Index: setup.c
-> ===================================================================
-> RCS file: /home/cvs/linux/arch/mips/pmc-sierra/yosemite/setup.c,v
-> retrieving revision 1.12
-> diff -u -r1.12 setup.c
-> --- setup.c	19 Dec 2004 02:38:44 -0000	1.12
-> +++ setup.c	4 Jan 2005 09:46:17 -0000
-> @@ -127,8 +127,22 @@
->  	return 0;
->  }
->  
-> +irqreturn_t yosemite_timer_interrupt(int irq, void *dev_id, struct pt_regs *regs)
-> +{
-> +#ifdef CONFIG_SMP
-> +	int cpu = smp_processor_id();
-> +	
-> +	if (ocd_base) {
-> +	   if (cpu == 0) core_send_ipi(1,SMP_RESCHEDULE_YOURSELF);
-> +	   else core_send_ipi(0,SMP_RESCHEDULE_YOURSELF);
-> +	}
-> +#endif
-> +	return timer_interrupt(irq,dev_id,regs);
-> +}
-> +
->  void yosemite_timer_setup(struct irqaction *irq)
->  {
-> +	irq->handler = yosemite_timer_interrupt;
->  	setup_irq(7, irq);
->  }
->  
-> @@ -136,13 +150,13 @@
->  {
->  	board_timer_setup = yosemite_timer_setup;
->  	mips_hpt_frequency = cpu_clock / 2;
-> -mips_hpt_frequency = 33000000 * 3 * 5;
-> +	mips_hpt_frequency = 100000000 * 5;
->  }
->  
->  /* No other usable initialization hook than this ...  */
->  extern void (*late_time_init)(void);
->  
-> -unsigned long ocd_base;
-> +unsigned long ocd_base = 0;
->  
->  EXPORT_SYMBOL(ocd_base);
->  
-> Index: smp.c
-> ===================================================================
-> RCS file: /home/cvs/linux/arch/mips/pmc-sierra/yosemite/smp.c,v
-> retrieving revision 1.11
-> diff -u -r1.11 smp.c
-> --- smp.c	15 Dec 2004 20:04:59 -0000	1.11
-> +++ smp.c	4 Jan 2005 09:46:17 -0000
-> @@ -1,5 +1,6 @@
->  #include <linux/linkage.h>
->  #include <linux/sched.h>
-> +#include <linux/interrupt.h>
->  
->  #include <asm/pmon.h>
->  #include <asm/titan_dep.h>
-> @@ -7,6 +8,8 @@
->  extern unsigned int (*mips_hpt_read)(void);
->  extern void (*mips_hpt_init)(unsigned int);
->  
-> +extern void local_timer_interrupt(int irq, void *dev_id, struct pt_regs *regs);
-> +
->  #define LAUNCHSTACK_SIZE 256
->  
->  static spinlock_t launch_lock __initdata;
-> @@ -122,10 +125,10 @@
->  {
->  }
->  
-> -asmlinkage void titan_mailbox_irq(struct pt_regs *regs)
-> +asmlinkage void titan_mailbox_irq(int irq, struct pt_regs *regs)
->  {
->  	int cpu = smp_processor_id();
-> -	unsigned long status;
-> +	unsigned long status = 0;
->  
->  	if (cpu == 0) {
->  		status = OCD_READ(RM9000x2_OCD_INTP0STATUS3);
-> @@ -139,6 +142,13 @@
->  
->  	if (status & 0x2)
->  		smp_call_function_interrupt();
-> +	
-> +	if (status & 0x4)
-> +	{
-> +		irq_enter();
-> +		local_timer_interrupt(irq, NULL, regs);
-> +		irq_exit();
-> +	}
->  }
->  
->  /*
+But if data changes at any time, you've got problems like me.  When I
+run this on my platform eventually the data becomes all 0x00.
+
+Notice that if you use kmalloc instead of vmalloc (define USE_KMALLOC),
+everything works.
+
+Thanks!
+
+Christian Gan
+
+// Start vmalloctest.c
+
+#ifndef __KERNEL__
+#define __KERNEL__
+#endif
+
+#include <linux/config.h>
+#include <linux/version.h>
+#include <linux/module.h>
+#include <linux/kernel.h>
+#include <linux/errno.h>
+#include <linux/string.h>
+#include <linux/mm.h>
+#include <linux/delay.h>
+#include <linux/init.h>
+#include <linux/vmalloc.h>
+
+#include <asm/io.h>
+
+//#define USE_KMALLOC
+
+void fillbuf(char * buf, unsigned long len)
+{
+	int i = 0;
+	for (i = 0; i < len; i++)
+	{
+		buf[i] = 0xFF & i;
+	}
+}
+
+int __init vmalloctest_init(void)
+{
+    char * buf = NULL;
+	int i = 0;
+
+	printk("testing vmalloc\n");
+	
+	for (i = 0; i < 50; i++)
+	{
+		int j = 0;
+#ifndef USE_KMALLOC		
+		char * newbuf = vmalloc( (i+1)*PAGE_SIZE );
+// allocate a new buffer that grows in size
+#else
+		char * newbuf = kmalloc( (i+1)*PAGE_SIZE, GFP_KERNEL );
+// allocate a new buffer that grows in size
+#endif		
+		if (!newbuf)
+		{
+			printk("Could not allocate memory: %ld bytes\n",
+(i+1)*PAGE_SIZE);
+			break;
+		}
+				
+		if (i==0)
+		{
+			fillbuf(newbuf, PAGE_SIZE );		// fill
+the original buffer with some data... any will suffice
+		}
+		else
+		{
+			memcpy(newbuf, buf, i*PAGE_SIZE);	// copy
+the contents of the old buffer to the new	
+		}
+		
+#ifndef USE_KMALLOC
+		vfree(buf);		// free the old buffer
+#else
+		kfree(buf);		// free the old buffer
+#endif		
+
+		buf = newbuf;
+		
+		// print out the first few bytes
+		for (j=0; j < 10; j++)
+		{
+			printk("0x%02X ", 0xff & buf[j]);
+		}
+		printk("\n");
+	}
+
+#ifndef USE_KMALLOC
+	vfree(buf);
+#else
+	kfree(buf);
+#endif		
+
+	return 0;
+}
+module_init(vmalloctest_init);
+
+MODULE_LICENSE("GPL");

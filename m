@@ -1,47 +1,73 @@
-Received:  by oss.sgi.com id <S553942AbQKMTPC>;
-	Mon, 13 Nov 2000 11:15:02 -0800
-Received: from gateway-490.mvista.com ([63.192.220.206]:56829 "EHLO
-        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553897AbQKMTOl>;
-	Mon, 13 Nov 2000 11:14:41 -0800
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id eADJCR319253;
-	Mon, 13 Nov 2000 11:12:27 -0800
-Message-ID: <3A103DAE.463492A4@mvista.com>
-Date:   Mon, 13 Nov 2000 11:14:54 -0800
-From:   Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-5.0 i586)
-X-Accept-Language: en
+Received:  by oss.sgi.com id <S553958AbQKMUBW>;
+	Mon, 13 Nov 2000 12:01:22 -0800
+Received: from serv1.is1.u-net.net ([195.102.240.129]:7626 "EHLO
+        serv1.is1.u-net.net") by oss.sgi.com with ESMTP id <S553945AbQKMUAx>;
+	Mon, 13 Nov 2000 12:00:53 -0800
+Received: from [213.48.88.27] (helo=zurg)
+	by serv1.is1.u-net.net with smtp (Exim 3.12 #1)
+	id 13vPmU-0006fU-00; Mon, 13 Nov 2000 20:00:42 +0000
+From:   "Ian Chilton" <ian@ichilton.co.uk>
+To:     "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+        "Ralf Baechle" <ralf@oss.sgi.com>
+Cc:     <linux-mips@oss.sgi.com>, <lfs-discuss@linuxfromscratch.org>
+Subject: RE: User/Group Problem
+Date:   Mon, 13 Nov 2000 20:02:21 -0000
+Message-ID: <NAENLMKGGBDKLPONCDDOGEMADCAA.ian@ichilton.co.uk>
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@oss.sgi.com>
-CC:     Nicu Popovici <octavp@isratech.ro>, linux-mips@oss.sgi.com
-Subject: Re: Cross_compiler!
-References: <3A09DE18.E55FA70F@isratech.ro> <3A09ADDB.EA2A6246@mvista.com> <20001112211057.E15594@bacchus.dhis.org>
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain;
+	charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
+In-Reply-To: <Pine.GSO.3.96.1001113195048.12211C-100000@delta.ds2.pg.gda.pl>
+Importance: Normal
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Ralf Baechle wrote:
-> 
-> On Wed, Nov 08, 2000 at 11:47:39AM -0800, Jun Sun wrote:
-> 
-> > You can get the cross-compile tool chains from the monta vista ftp
-> > site.  These tools are considered stable and recommeded - at least
-> > before Ralf shows his latest toys. :-0
-> 
-> > 2. egcs 1.0.3a
-> 
-> Sorry to ruin your weekend but I've alredy put egcs-1.1.2 on oss two days
-> before your posting :-)
-> 
->   Ralf
+Hello,
 
-My weekend was just fine - without reading this bothersome email. :-)
+>  That's actually not a MIPS-specific problem.
 
-I thought egcs-1.1.2 had some problems with binutil 2.8.1 and glibc
-2.0.6.  Was the problem solved?  
+I actually got round this by copying /lib/libnss* from glibc 2.0.6 over,
+until I had finished compiling everything..
 
 
-Jun
+>From the LFS-Book:
+
+------------ Quote --------------
+Copying old NSS library files
+If your normal Linux system runs glibc-2.0, you need to copy the NSS library
+files to the LFS partition. Certain statically linked programs still depend
+on the NSS library, especially programs that need to lookup
+usernames,userid's and groupid's. You can check which C library version your
+normal Linux system uses by running:
+
+strings /lib/libc* | grep "release version"
+
+The output of that command should tell you something like this:
+
+GNU C Library stable release version 2.1.3, by Roland McGrath et al.
+
+If you have a libc-2.0.x file copy the NSS library files by running:
+
+cp -av /lib/libnss* $LFS/lib
+
+--------------- End Quote --------------
+
+
+Bye for Now,
+
+Ian
+
+
+                                \|||/
+                                (o o)
+ /---------------------------ooO-(_)-Ooo---------------------------\
+ |  Ian Chilton        (IRC Nick - GadgetMan)     ICQ #: 16007717  |
+ |-----------------------------------------------------------------|
+ |  E-Mail: ian@ichilton.co.uk     Web: http://www.ichilton.co.uk  |
+ \-----------------------------------------------------------------/

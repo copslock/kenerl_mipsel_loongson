@@ -1,21 +1,20 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g2PEtiE16690
-	for linux-mips-outgoing; Mon, 25 Mar 2002 06:55:44 -0800
-Received: from mx2.mips.com (mx2.mips.com [206.31.31.227])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2PEtcq16669
-	for <linux-mips@oss.sgi.com>; Mon, 25 Mar 2002 06:55:38 -0800
+	by oss.sgi.com (8.11.2/8.11.3) id g2PFJL417232
+	for linux-mips-outgoing; Mon, 25 Mar 2002 07:19:21 -0800
+Received: from mx2.mips.com (ftp.mips.com [206.31.31.227])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2PFJGq17229
+	for <linux-mips@oss.sgi.com>; Mon, 25 Mar 2002 07:19:16 -0800
 Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.9.3/8.9.0) with ESMTP id GAA18384;
-	Mon, 25 Mar 2002 06:57:54 -0800 (PST)
+	by mx2.mips.com (8.9.3/8.9.0) with ESMTP id HAA18439
+	for <linux-mips@oss.sgi.com>; Mon, 25 Mar 2002 07:21:33 -0800 (PST)
 Received: from Ulysses (ulysses [192.168.236.13])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id GAA00048;
-	Mon, 25 Mar 2002 06:57:51 -0800 (PST)
-Message-ID: <00e901c1d40d$a257a200$0deca8c0@Ulysses>
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id HAA01275
+	for <linux-mips@oss.sgi.com>; Mon, 25 Mar 2002 07:21:31 -0800 (PST)
+Message-ID: <00f201c1d410$f05bd540$0deca8c0@Ulysses>
 From: "Kevin D. Kissell" <kevink@mips.com>
-To: "Johannes Stezenbach" <js@convergence.de>, <linux-mips@oss.sgi.com>
-References: <20020325135834.GA1736@convergence.de>
-Subject: Re: Mips16 toolchain?
-Date: Mon, 25 Mar 2002 15:59:13 +0100
+To: "MIPS/Linux List \(SGI\)" <linux-mips@oss.sgi.com>
+Subject: EJTAG Debug Exceptions and LL/SC
+Date: Mon, 25 Mar 2002 16:19:44 +0100
 MIME-Version: 1.0
 Content-Type: text/plain;
 	charset="iso-8859-1"
@@ -27,51 +26,37 @@ X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4807.1700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-> I saw that the algorithmics toolchain (which Dominic Sweetman
-> offered to the Linux/MIPS community here a month ago) claims
-> to have full support for the mips16 instruction set.
-> 
-> My questions:
-> Does anyone here have experiences with mips16 and/or with the
-> algorithmics toolchain?
+In the course of hacking around in the 2.4.18 kernel
+on a new MIPS CPU, I came across something that
+urgently needs to be fixed in any repositories that
+propose MIPS EJTAG support.
 
-Yes.  Both Algorithmics and Green Hills embedded
-tool chains support it reasonably well.  GHS has no
-Linux target, though.  Algorithmics has been working
-on one, but I'm not sure what it's current status is.
+EJTAG exceptions do *not* affect the LL/SC
+flipflop.  That means that they are non-invasive
+if injected into a LL/SC sequence.  It also means
+that one cannot use LL/SC within a Debug exception
+handler.  The Linux mini Debug exception handler
+has for some time performed printk()'s to let the
+world know that something "unusual" has happened.
+Somewhere between 2.4.3 and 2.4.18, someone
+cleverly fixed printk() to not munge simultaneous
+output lines on SMP systems, which on MIPS
+means using LL/SC.  Result:  the kernel will go
+into an infinite loop in Debug mode (no further 
+interrupts taken, etc.)  if ever an Debug exception 
+is taken after an LL sets the flop.  So those calls to
+printk() need to go away, and a big narly comment
+needs to go at the top of ejtag_exception_handler()
+warning people not to call any function that might
+involve a kernel semaphore, cause a TLB fault,
+or depend on an interrupt beind delivered.
 
-> Is there working support for mips16 in any other gcc-version?
-
-Cygnus (now part of Red Hat) did the very first MIPS16
-support for gcc, most of which found its way into the
-main development/maintence stream.  But apparently
-not enough of it, based on your experience.
-
-> How about gcc-3.x from CVS?
-
-No data there.
-
-> Any other comments or recommendations regarding mips16?
-
-MIPS16 requires more than just gcc support.
-One needs a binutils that can distinguish a MIPS16
-binary module (or function if you want to be fancy and 
-mix/match within modules)  from a MIPS32/64 module
-and perform fixups so that the right selections are made
-between JAL and JALX on function invocations.  
-If you've got that, you should not need a seperate 
-MIPS16 libc.
-
-To correctly support MIPS16, the Linux kernel does
-need to be tweaked in those cases where user-mode
-instructions are decoded and interpreted, as in
-arch/mips/kernel/branch.c and unaligned.c.
-I believe that code has been prototyped somewhere,
-but it's not yet in any commonly used repository to
-the best of my knowledge.  If you avoid throwing
-executing non-instructions, performing unaligned 
-accesses, etc, you should be able to tiptoe around
-that deficiency.
+In general, code executed in the kernel in Debug
+mode needs to be carefully quarantined.  Any invocation
+of kernel services needs to be done either by passing
+a message to be sampled at some later point by the
+kernel, or by setting up a software interrupt to be taken
+after the DERET from the Debug exception.
 
             Regards,
 

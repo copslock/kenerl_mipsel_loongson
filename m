@@ -1,128 +1,207 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Sep 2003 19:16:03 +0100 (BST)
-Received: from mx2.mips.com ([IPv6:::ffff:206.31.31.227]:13281 "EHLO
-	mx2.mips.com") by linux-mips.org with ESMTP id <S8225633AbTIZSP6>;
-	Fri, 26 Sep 2003 19:15:58 +0100
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id h8QIDUYY029420;
-	Fri, 26 Sep 2003 11:13:30 -0700 (PDT)
-Received: from xchange.mips.com (xchange [192.168.20.31])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id LAA08662;
-	Fri, 26 Sep 2003 11:16:52 -0700 (PDT)
-Received: by xchange.mips.com with Internet Mail Service (5.5.2653.19)
-	id <TVNB9C1L>; Fri, 26 Sep 2003 11:13:06 -0700
-Message-ID: <0C5F4C7A1E3ED51194E200508B2CE32A02264DC1@xchange.mips.com>
-From: "Mitchell, Earl" <earlm@mips.com>
-To: "'Pete Popov'" <ppopov@mvista.com>,
-	Adeel Malik <AdeelM@avaznet.com>
-Cc: linux-mips@linux-mips.org
-Subject: RE: How to increase download speed for UART
-Date: Fri, 26 Sep 2003 11:13:05 -0700
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2653.19)
-Content-Type: text/plain
-Return-Path: <earlm@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Sep 2003 02:28:01 +0100 (BST)
+Received: from mail.ict.ac.cn ([IPv6:::ffff:159.226.39.4]:2460 "HELO
+	mail.ict.ac.cn") by linux-mips.org with SMTP id <S8225408AbTI2B17> convert rfc822-to-8bit;
+	Mon, 29 Sep 2003 02:27:59 +0100
+Received: (qmail 8497 invoked from network); 29 Sep 2003 01:11:05 -0000
+Received: from unknown (HELO xing) (159.226.39.104)
+  by mail.ict.ac.cn with SMTP; 29 Sep 2003 01:11:05 -0000
+From: "Guangxing Zhang" <guangxing@ict.ac.cn>
+To: invictus rm <invictus_rm@hotmail.com>
+CC: linux-mips@linux-mips.org <linux-mips@linux-mips.org>
+Subject: Re: Re: Re: help, question on pci communication!
+X-mailer: Foxmail 4.2 [cn]
+Mime-Version: 1.0
+Content-Type: text/plain;
+      charset="GB2312"
+Content-Transfer-Encoding: 8BIT
+Date: Mon, 29 Sep 2003 9:28:20 +0800
+Message-Id: <20030929012759Z8225408-1272+6746@linux-mips.org>
+Return-Path: <guangxing@ict.ac.cn>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3313
+X-archive-position: 3314
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: earlm@mips.com
+X-original-sender: guangxing@ict.ac.cn
 Precedence: bulk
 X-list: linux-mips
 
-You can also get a probe with
-ethernet support and do it that
-way. 
+Hi,
 
--earlm
+	Thank your for your help.
+    Other troublesome things to me ,so long time to see my mail.
+    I will try to read it and find to know how , the result will be mailed to 
+you if i have any tried.
+    Thank you again for your enthusiastic advice. 
 
------Original Message-----
-From: Mitchell, Earl [mailto:earlm@mips.com]
-Sent: Friday, September 26, 2003 11:04 AM
-To: 'Pete Popov'; Adeel Malik
-Cc: linux-mips@linux-mips.org
-Subject: RE: How to increase download speed for UART
+======= invictus_rm@hotmail.com 2003-09-25 20:01:00 WROTE��=======
 
+>http://www.xml.com/ldd/chapter/book/ch13.html
+>search for ioermap in this web page
+>
+>hope this helps
+>
+>rm
+>
+>
+>>From: "Guangxing Zhang" <guangxing@ict.ac.cn>
+>>To: invictus rm <invictus_rm@hotmail.com>
+>>CC: linux-mips@linux-mips.org <linux-mips@linux-mips.org>, angela 
+>><jhyang@ict.ac.cn>, Fuxin Zhang <fxzhang@ict.ac.cn>
+>>Subject: Re: Re: help, question on pci communication!
+>>Date: Thu, 25 Sep 2003 9:41:35 +0800
+>>
+>>Hi, invictus rm
+>>       Thank you very much for your enthusiastic help.
+>>       I think it will be BIG help to me.Thank you.
+>>       There is some thing i want to see your advise and help again.
+>>       In BCM1250 we run the mips-linux which is customer compiled by us,
+>>and in the  MCP750 there is linux too.What i want to implement is
+>>transfering  data from BCM1250 to MCP750 through PCI.And using "dmesg"
+>>i found the following info:(In BCM1250 ,MIPS-LINUX)
+>>---------------------------------------------------------------------------------------------------------------------
+>>.............
+>>     Jan  1 00:00:11 (none) kernel: Determined physical RAM map:
+>>     Jan  1 00:00:11 (none) kernel:  memory: 003a7000 @ 00000000 (usable)
+>>Jan  1 00:00:11 (none) kernel:  memory: 0f711000 @ 0075c000 (usable)
+>>Jan  1 00:00:11 (none) kernel:  memory: 1ffffe00 @ 80000000 (usable)
+>>Jan  1 00:00:11 (none) kernel:  memory: 0ffffe00 @ c0000000 (usable)
+>>Jan  1 00:00:11 (none) kernel:  memory: 003b5000 @ 003a7000 (reserved)
+>>Jan  1 00:00:11 (none) kernel: 2815MB HIGHMEM available.
+>>Jan  1 00:00:11 (none) kernel: Initial ramdisk at: 0x803a7000 (3887104 
+>>bytes)
+>>Jan  1 00:00:11 (none) kernel: On node 0 totalpages: 851967
+>>Jan  1 00:00:11 (none) kernel: zone(0): 131072 pages.
+>>Jan  1 00:00:11 (none) kernel: zone(1): 0 pages.
+>>Jan  1 00:00:11 (none) kernel: zone(2): 720895 pages.
+>>@ Jan  1 00:00:11 (none) kernel: Kernel command line: root=/dev/ram0 rw 
+>>bigphysarea=8192 pcisharesize=16
+>>@ Jan  1 00:00:11 (none) kernel: pcisharemem allocated @ 85800000
+>>...................
+>>---------------------------------------------------------------------------------------------------------------------
+>>     In the above lines tagged with @ i notice that there is 
+>>"bigphysarea=8192 pcisharesize=16",
+>>I have read "kernel/include/linux/mm/bigphysarea.h" ,and known that 
+>>bigphysarea can be used
+>>to reserve some amount of physical memory at boot-time for PCI 
+>>communication.A friend told me
+>>using it is simple ,but he did not tell me kow :-)~(Of course i think he 
+>>knows it from others).
+>>And i think in my kernel module i can implement it.Without any knowledge on 
+>>it ,I am swamped now.
+>>Can you give me some info on how to do that ,such as how to use the 
+>>"bigphysarea"?How the MCP750
+>>see the "bigphysarea" in BCM1250 and access it (read it)?
+>>     I think i am so avaricious , but i really thirst for the help and 
+>>advice.
+>>     Thank you again and in advance again.:-)~
+>>
+>>
+>>======= invictus_rm@hotmail.com 2003-09-24 23:15:00 WROTE��=======
+>>
+>> >hi,
+>> >
+>> >  If the BCM1250 is operating in the device mode in the peripheral slot 
+>>of
+>> >the CPCI chassis, u need t get the enumeration of the PCI being done from
+>> >MCP 750 right.
+>> >  The code for MCP750 alread exists in the linux kernel ( if i remember
+>> >correctly).
+>> >
+>> >U can proceed in the following directions-->
+>> >(a) Get the PCI enumeration working properly on the MCP750 ( look at the
+>> >ouput of lspci -vvv to decide whether resource allocation is proper or 
+>>not)
+>> >.. The powerpc provides a fairly comprehensive PCI enumeration code(
+>> >including scanning beyond the bridge).
+>> >
+>> >(b) Once u are able to see ur device in the lspci output on the MCP board 
+>>,
+>> >u can load the driver ( ur custom driver ) to do the transfer from the
+>> >BCM1250 to MCP and vice versa.
+>> >
+>> >(v) Look at the few PCI based drivers about the way the data transfers is
+>> >handled specially pci_alloc_* / pci_map_*/pci_resource_*.........
+>> >
+>> >Hope this helps
+>> >
+>> >
+>> >
+>> >
+>> >>From: "Guangxing Zhang" <guangxing@ict.ac.cn>
+>> >>To: Fuxin Zhang <fxzhang@ict.ac.cn>
+>> >>CC: linux-mips@linux-mips.org <linux-mips@linux-mips.org>, angela
+>> >><jhyang@ict.ac.cn>
+>> >>Subject: help, question on pci communication!
+>> >>Date: Wed, 24 Sep 2003 16:29:32 +0800
+>> >>
+>> >>Hi, Fuxin and everyone see this mail,
+>> >>     In linux world ,newbies always like to ask and the veterans will
+>> >>always be enthusiastic.:)~~
+>> >>     Now there is a "ask", of course i am a newbie.
+>> >>     Follow is the  architecture  which we are working on.
+>> >>     Now i want to transfer the data from the "sb1250" to mcp750 through
+>> >>the PCI bus with the help of 21555 bridge.
+>> >>I want to implement it in kernel module.Although knowing "use the force
+>> >>,read source",but i really do not know
+>> >>how and where to begin.
+>> >>     Is there any advice on it ? How to implement the communication 
+>>through
+>> >>PCI (or PCI-to-PCI bridge) in kernel
+>> >>moudle?
+>> >>     Any help will be appreciated!Thank in advance!
+>> >>
+>> >>                       -------------
+>> >>                   |  MCP 750  |  (Power PC)
+>> >>                       -------------
+>> >>                             |
+>> >>　     -------------------------------------------CPCI
+>> >>                          |
+>> >>              ---------------|--------------------------------
+>> >>              |      --------|-----                         |
+>> >>              |      |Intel 21555 |(PCI-TO-PCI Bridge)      |
+>> >>              |      --------------                         |
+>> >>              |        |                        |
+>> >>              |      --------(PCI bus)        |
+>> >>    |          |                                  |
+>> >>    |       --------                              |
+>> >>    |   |SB1250|(CPU)                         |
+>> >>    |       --------                              |
+>> >>              ----------------------------------------------
+>> >>　　　　　　　　Guangxing Zhang
+>> >>　　　　　　　　guangxing@ict.ac.cn
+>> >>       2003-09-24 16:03:04
+>> >>　　　　　　　　　　
+>> >>
+>> >>
+>> >>
+>> >>
+>> >
+>> >_________________________________________________________________
+>> >Talk to Karthikeyan. Watch his stunning feats.
+>> >http://server1.msn.co.in/sp03/tataracing/index.asp Download images.
+>>
+>>= = = = = = = = = = = = = = = = = = = =
+>>
+>>
+>>
+>>　　　　　　　　Guangxing Zhang
+>>　　　　　　　　guangxing@ict.ac.cn
+>>　　　　　　　　2003-09-25 08:43:44
+>>
+>>
+>>
+>
+>_________________________________________________________________
+>MSN Hotmail now on your Mobile phone. 
+>http://server1.msn.co.in/sp03/mobilesms/ Click here
 
-
-YAMON only prints '.' feedback for 
-ethernet download, unless you modified it.
-Download a copy of TeraTerm and use that
-instead of Hyperterminal. Then you can use
-the "Send File" command under File pulldown.
-This gives you feedback showing how many
-bytes have been transferred. 
-
-I was able to load a 6.4MB linux srec
-image in 27 minutes on my Malta 4Kc board
-with baud rate set to 38.4K. Using TFTP 
-over ethernet it takes 17 seconds. Another
-alternative is to consider buying an EJTAG probe 
-and loading thru that. The probes will probably load
-something this size within 1-4 minutes. This
-is assuming you have EJTAG interface available.
-But I wouldn't buy a probe just to download
-code. ;-) 
-
--earlm
-
------Original Message-----
-From: Pete Popov [mailto:ppopov@mvista.com]
-Sent: Friday, September 26, 2003 9:09 AM
-To: Adeel Malik
-Cc: linux-mips@linux-mips.org
-Subject: RE: How to increase download speed for UART
-
-
-On Fri, 2003-09-26 at 08:41, Adeel Malik wrote:
-> Yes this is an Motorola's S-Record File. Do you think that I am missing
-> something?. I am using YAMON to configure the UART's settings on the board
-> and HyperTerminal on the Host the transfer this file.
-
-Yes, I think there's something definitely wrong. I wonder if the
-download is even in progress... You're using windows and hyperterm? Try
-it on linux but just doing "cat <srec file name>  > /dev/ttyS0",
-assuming you're using the first serial port to connect to the target.
-Yamon gives you feedback of the download progress by printing dots, when
-downloading over ethernet. I imagine it does the same when downloading
-over serial port, so if you are not seeing any progress feedback, then
-perhaps that's another indication that your download is not working.
-
-Pete
-
-> ADEEL 
-> 
-> 
-> -----Original Message-----
-> From: Pete Popov [mailto:ppopov@mvista.com]
-> Sent: Friday, September 26, 2003 8:45 PM
-> To: Adeel Malik
-> Cc: linux-mips@linux-mips.org
-> Subject: Re: How to increase download speed for UART
-> 
-> 
-> On Fri, 2003-09-26 at 08:32, Adeel Malik wrote:
-> > Hi All,
-> >          I am porting Linux to a MIPS based development platform. The
-> > UART on the board provides a maximum baud rate of 115 kbps. But the
-> > download time for the kernel Image of about 4.3 MB is about 4 hours
-> > !!!!!. 
-> 
-> 4.3MB? Is this an SREC file? I've downloaded images over the serial port
-> (srec files) and it takes no more than 10 minutes.
-> 
-> Pete
-> 
-> > Can someone help me address this problem ?. 
-> >  
-> > (I can't download the kernel image via tftp server using ethernet, as
-> > the CPU doesn't have the MAC interface).
-> >  
-> > Regards,
-> > ADEEL MALIK,
-> >  
-> > 
-> 
-> 
+= = = = = = = = = = = = = = = = = = = =
+			
+ 
+				 
+　　　　　　　　Guangxing Zhang
+　　　　　　　　guangxing@ict.ac.cn
+　　　　　　　　2003-09-29 09:24:33

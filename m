@@ -1,31 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Apr 2003 15:18:49 +0100 (BST)
-Received: from frank.harvard.edu ([IPv6:::ffff:140.247.122.99]:4521 "EHLO
-	frank.harvard.edu") by linux-mips.org with ESMTP
-	id <S8225220AbTDYOSq>; Fri, 25 Apr 2003 15:18:46 +0100
-Received: from frank.harvard.edu (frank.harvard.edu [140.247.122.99])
-	by frank.harvard.edu (8.11.6/8.11.6) with ESMTP id h3PEIfI23827;
-	Fri, 25 Apr 2003 10:18:41 -0400
-Date: Fri, 25 Apr 2003 10:18:41 -0400 (EDT)
-From: Chip Coldwell <coldwell@frank.harvard.edu>
-To: Dan Aizenstros <daizenstros@quicklogic.com>
-cc: kevink@mips.com, <linux-mips@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Apr 2003 16:02:58 +0100 (BST)
+Received: from host-65-122-203-2.quicklogic.com ([IPv6:::ffff:65.122.203.2]:31195
+	"HELO quicklogic.com") by linux-mips.org with SMTP
+	id <S8225220AbTDYPC5> convert rfc822-to-8bit; Fri, 25 Apr 2003 16:02:57 +0100
+Received: from qldomain-Message_Server by quicklogic.com
+	with Novell_GroupWise; Fri, 25 Apr 2003 08:04:30 -0700
+Message-Id: <sea8ec0e.043@quicklogic.com>
+X-Mailer: Novell GroupWise Internet Agent 5.5.6.1
+Date: Fri, 25 Apr 2003 08:04:07 -0700
+From: "Dan Aizenstros" <daizenstros@quicklogic.com>
+To: <coldwell@frank.harvard.edu>
+Cc: <linux-mips@linux-mips.org>
 Subject: Re: NCD900 port?
-In-Reply-To: <sea8dc20.085@quicklogic.com>
-Message-ID: <Pine.LNX.4.44.0304251008550.23558-100000@frank.harvard.edu>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <coldwell@frank.harvard.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+Return-Path: <daizenstros@quicklogic.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2196
+X-archive-position: 2197
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: coldwell@frank.harvard.edu
+X-original-sender: daizenstros@quicklogic.com
 Precedence: bulk
 X-list: linux-mips
 
+Hello Chip,
+
+The V320USC has a boot EEPROM that is used to configure
+it. If it is socketed on the board than I would suggest
+you remove it and put it in a device programmer and dump
+its contents. From the EEPROM contents you can find out
+some of the memory map of the system.
+
+You would be able to find out the base address of the
+V320USC registers which do not have a fixed address and
+could be located anywhere in the KSEG1 region.
+
+You would be able to find out the base address of the
+chips selects for the local bus.
+
+Without a memory map from NCD you will probably have
+to probe around to find the addresses of the devices
+attached to the local bus.
+
+You may have to write drivers for the devices attached
+to the local bus.
+
+Devices attached to the PCI bus will be easy to probe
+using configuration cycles.
+
+As for the bootloader, if it downloads binary images
+than you need to know what start address is expects
+so that you can compile linux to run from that address.
+If it can download ELF or S3 records than it will
+probably use the start address in the kernel image.
+Do you get a bootloader prompt on startup? Or does
+it just launch straight into X.
+
+-- Dan A.
+
+>>> Chip Coldwell <coldwell@frank.harvard.edu> 04/25/03 07:21 AM >>>
 On Fri, 25 Apr 2003, Dan Aizenstros wrote:
 > 
 > The V320USC is fully documented and manuals are
@@ -36,7 +73,7 @@ On Fri, 25 Apr 2003, Dan Aizenstros wrote:
 > be for our Hurricane board and so you will have to make
 > changes to support the NCD device.
 
-I found the documentation on line; it looks very thorough.  I also
+I found the documentation on line; it looks very thorough. I also
 found the (little-endian) toolchain on your website, which is very
 convenient.
 

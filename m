@@ -1,77 +1,84 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id RAA44379 for <linux-archive@neteng.engr.sgi.com>; Wed, 21 Oct 1998 17:47:39 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id RAA29337 for <linux-archive@neteng.engr.sgi.com>; Wed, 21 Oct 1998 17:56:50 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id RAA93342
+	id RAA98275
 	for linux-list;
-	Wed, 21 Oct 1998 17:47:07 -0700 (PDT)
+	Wed, 21 Oct 1998 17:56:29 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id RAA79604
+	via ESMTP id RAA82251
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 21 Oct 1998 17:47:04 -0700 (PDT)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
+	Wed, 21 Oct 1998 17:56:27 -0700 (PDT)
+	mail_from (jcoffin@lil.sv.usweb.com)
+Received: from lil.sv.usweb.com ([207.44.155.155]) 
 	by sgi.sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id RAA08209
-	for <linux@cthulhu.engr.sgi.com>; Wed, 21 Oct 1998 17:47:03 -0700 (PDT)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from lappi.waldorf-gmbh.de (pmport-23.uni-koblenz.de [141.26.249.23])
-	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id CAA15693
-	for <linux@cthulhu.engr.sgi.com>; Thu, 22 Oct 1998 02:46:53 +0200 (MET DST)
-Received: (from ralf@localhost)
-	by lappi.waldorf-gmbh.de (8.8.7/8.8.7) id CAA00469;
-	Thu, 22 Oct 1998 02:44:08 +0200
-Message-ID: <19981022024408.A360@uni-koblenz.de>
-Date: Thu, 22 Oct 1998 02:44:08 +0200
-From: ralf@uni-koblenz.de
-To: "David S. Miller" <davem@dm.cobaltmicro.com>
-Cc: linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
-        linux-mips@vger.rutgers.edu
-Subject: Re: Haifa scheduler bug in egcs 1.0.2
-References: <19981021015047.G1830@uni-koblenz.de> <199810210139.SAA22458@dm.cobaltmicro.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.91.1
-In-Reply-To: <199810210139.SAA22458@dm.cobaltmicro.com>; from David S. Miller on Tue, Oct 20, 1998 at 06:39:21PM -0700
-X-Mutt-References: <199810210139.SAA22458@dm.cobaltmicro.com>
+	via SMTP id RAA03538
+	for <linux@cthulhu.engr.sgi.com>; Wed, 21 Oct 1998 17:56:26 -0700 (PDT)
+	mail_from (jcoffin@lil.sv.usweb.com)
+Received: (qmail 16169 invoked by uid 500); 22 Oct 1998 00:56:11 -0000
+To: linux@cthulhu.engr.sgi.com
+Subject: Re: Partial Success Report
+From: Jeff Coffin <jcoffin@sv.usweb.com>
+Date: 21 Oct 1998 17:56:11 -0700
+Message-ID: <m3vhldwh1w.fsf@lil.sv.usweb.com>
+X-Mailer: Gnus v5.5/Emacs 20.2
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Tue, Oct 20, 1998 at 06:39:21PM -0700, David S. Miller wrote:
 
->    Relocating the code generated from this source later on will not be
->    possible for ld.  As knows this and dies ungracefully.
-> 
-> Then why is this a supposed bug in Haifa?  It looks to me there is a
-> problem with how %hi relocs are assosciated with %lo ones in binutils.
+Fogot to CC the list on this....
 
-It's not necessarily a bug in Haida itself but it gets visible when Haifa
-is enabled.  I haven't looked closely at the involved egcs code yet.
+Thomas Bogendoerfer <tsbogend@alpha.franken.de> writes:
 
-> The code you showed me looks perfectly legal.
+> Could you please lookup major and minor number of /dev/console on
+> your root filesystem ? It should be major 5 and minor 2 to work
+> properly with the serial console.
 
-For ECOFF and ELF, relocations against symbols are done in two parts, with
-a hi16 relocation and a lo16 relocation.  Each relocation has only 16 bits of
-space to store an addend and a carry may have to be propagated between
-the two.  This means that in order for the linker to handle carries
-correctly, it must be able to locate both the hi16 and the lo16 relocation.
-Object files which don't contain any other information except the order in
-the relocation table which could be used to find the hi16 / lo16 relocs which
-belong together.
+I fixed it, do I need to change systty too perhps?:
 
-The code I showed cannot be represented in a ELF or ECOFF object such that
-the linker still knows which hi16 and which lo16 relocations are associated
-with each other.  Therefore it is not possible for the linker to correctly
-do the hi16 relocations.  Btw, all MIPS assemblers I know of will warn or
-even error about that fragment.
+[root@lil dev]# ls -l
+total 0
+crw-------   1 root     disk       5,   2 Oct 21 13:25 console
+crw-------   1 root     disk       4,   0 May 11 08:48 console.dist
+crw-rw-r--   1 root     root       1,   3 May 11 08:48 null
+brw-r-----   1 root     disk       1,   1 May 11 08:48 ram
+crw-------   1 root     disk       4,   0 May 11 08:48 systty
+crw-------   1 root     root       4,   1 May 11 08:48 tty1
+crw-------   1 root     root       4,   2 May 11 08:48 tty2
+crw-------   1 root     root       4,   3 May 11 08:48 tty3
+crw-------   1 root     root       4,   4 May 11 08:48 tty4
+crw-------   1 root     root       4,   5 May 11 08:48 tty5
 
-The ABI is quite strict in that aspect, it wants one lo16 per hi16 for the
-same symbol.  Binutils relax that by allowing an arbitrary number of hi16
-and one lo16 for the same symbol.
+> please try to boot these kernels with bootp()/vmlinux console=ttyS0 (also
+> try ttyS1) and a terminal hooked up to one of the serial ports (in .116
+> ttyS0 is port 2 and ttyS1 is port 1; I've changed that in .121, but I'm not
+> sure if this fix is already in the precompiled kernel). It's possible, 
+> that I've messed up the card detection so, that it panics, when there is 
+> no newport installed.
 
-  Ralf
+Nope, didn't work.  The 116 kernel makes the power light blink red to
+green ad infinitum and the 121 version appears to load, but the
+console is elsewhere.  I'm using port 1 for the serial connection
+(it's setup thusly in the PROM)
+
+The default kernel still boots OK and appears to mount the nfsroot:
+
+Looking up port of RPC 100003/2 on 192.168.0.20
+Looking up port of RPC 100005/1 on 192.168.0.20
+VFS: Mounted root (nfs filesystem).
+Adv: done running setup() 
+
+but then nothing....                                                     
+
+BTW, I'm doing the whole thing from a serial console (minicom).  The
+gfx card doesn't work from IRIX either.  One of these days I'll
+replace it, but it's not real high on my list of things to buy for
+$200+.
+
+
+--jeff

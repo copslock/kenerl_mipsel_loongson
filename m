@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Mar 2004 18:46:37 +0000 (GMT)
-Received: from p508B7A49.dip.t-dialin.net ([IPv6:::ffff:80.139.122.73]:16153
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Mar 2004 20:09:20 +0000 (GMT)
+Received: from p508B7A49.dip.t-dialin.net ([IPv6:::ffff:80.139.122.73]:65053
 	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225300AbUCVSqg>; Mon, 22 Mar 2004 18:46:36 +0000
+	id <S8225299AbUCVUJT>; Mon, 22 Mar 2004 20:09:19 +0000
 Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i2MIkZoM017326;
-	Mon, 22 Mar 2004 19:46:35 +0100
+	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i2MK9GoM019511;
+	Mon, 22 Mar 2004 21:09:16 +0100
 Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i2MIkYIO017325;
-	Mon, 22 Mar 2004 19:46:34 +0100
-Date: Mon, 22 Mar 2004 19:46:34 +0100
+	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i2MK968M019510;
+	Mon, 22 Mar 2004 21:09:06 +0100
+Date: Mon, 22 Mar 2004 21:09:06 +0100
 From: Ralf Baechle <ralf@linux-mips.org>
-To: Andrew Frezell <dfrezell@speakeasy.net>
-Cc: linux-mips@linux-mips.org
-Subject: Re: mounting fs from memory
-Message-ID: <20040322184634.GC6720@linux-mips.org>
-References: <9C1F2DDC-7BAF-11D8-A797-00039394886E@speakeasy.net>
+To: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc: linux-mips@linux-mips.org, ica2_ts@csv.ica.uni-stuttgart.de
+Subject: Re: [PATCH, 2.4] Fix bad check_gcc order for mips64, make offset.h creation more robust
+Message-ID: <20040322200906.GA19051@linux-mips.org>
+References: <20040122040759.GB23173@rembrandt.csv.ica.uni-stuttgart.de> <20040322.160627.41628364.nemoto@toshiba-tops.co.jp>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <9C1F2DDC-7BAF-11D8-A797-00039394886E@speakeasy.net>
+In-Reply-To: <20040322.160627.41628364.nemoto@toshiba-tops.co.jp>
 User-Agent: Mutt/1.4.1i
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4613
+X-archive-position: 4614
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,21 +32,10 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, Mar 21, 2004 at 10:18:37PM -0500, Andrew Frezell wrote:
+On Mon, Mar 22, 2004 at 04:06:27PM +0900, Atsushi Nemoto wrote:
 
-> 1.  Is there some way to protect the memory regions in RAM from linux 
-> just trashing it?  I saw a function add_memory_region in 
-> arch/mips/kernel/setup.c that seems to do something, does anyone know 
-> what exactly this does?
+> Could you remember this two months old patch?
 
-The kernel won't touch any memory below the kernel itself.  I consider that
-a bug so will change that for now that's a save region to place something.
-add_memory_region takes a third argument which can be BOOT_MEM_RAM,
-BOOT_MEM_ROM_DATA or BOOT_MEM_RESERVED.  You should pass BOOT_MEM_RESERVED
-for to tell the kernel that a certain region should not be considered
-usable memory.  For completeness sake BOOT_MEM_RAM is free memory and
-BOOT_MEM_ROM_DATA will be free at the end of kernel initialization so is
-usually used to describe free memory regions which hold firmware data that
-becomes useless after initialization.
+Sorry ...  Applied.
 
   Ralf

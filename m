@@ -1,56 +1,69 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA41617 for <linux-archive@neteng.engr.sgi.com>; Thu, 24 Jun 1999 15:34:42 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id GAA85723 for <linux-archive@neteng.engr.sgi.com>; Fri, 25 Jun 1999 06:33:20 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id PAA04313
+	id GAA27076
 	for linux-list;
-	Thu, 24 Jun 1999 15:33:38 -0700 (PDT)
+	Fri, 25 Jun 1999 06:31:01 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id PAA96812
+	via ESMTP id GAA55425
 	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 24 Jun 1999 15:33:36 -0700 (PDT)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
+	Fri, 25 Jun 1999 06:30:58 -0700 (PDT)
+	mail_from (ulfc@thepuffingroup.com)
+Received: from calypso (dialup145-1-28.swipnet.se [130.244.145.28]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id PAA08432
-	for <linux@cthulhu.engr.sgi.com>; Thu, 24 Jun 1999 15:33:33 -0700 (PDT)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from lappi.waldorf-gmbh.de (cacc-16.uni-koblenz.de [141.26.131.16])
-	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id AAA26984
-	for <linux@cthulhu.engr.sgi.com>; Fri, 25 Jun 1999 00:33:30 +0200 (MET DST)
-Received: (from ralf@localhost)
-	by lappi.waldorf-gmbh.de (8.9.3/8.9.3) id AAA02961;
-	Fri, 25 Jun 1999 00:33:10 +0200
-Date: Fri, 25 Jun 1999 00:33:10 +0200
-From: Ralf Baechle <ralf@uni-koblenz.de>
-To: Andrew Linfoot <andy@derfel99.freeserve.co.uk>
-Cc: linux <linux@cthulhu.engr.sgi.com>
-Subject: Re: xcompiler setup for IRIX 6.5.x
-Message-ID: <19990625003310.F17220@uni-koblenz.de>
-References: <000701bebb31$f2e8d790$0a02030a@snafu>
+	via ESMTP id GAA02862
+	for <linux@cthulhu.engr.sgi.com>; Fri, 25 Jun 1999 06:30:50 -0700 (PDT)
+	mail_from (ulfc@thepuffingroup.com)
+Received: by calypso (Linux Smail3.2.0.101 #1)
+	id m10xW4S-003Lo9C; Fri, 25 Jun 1999 15:31:08 +0200 (CEST)
+Date: Fri, 25 Jun 1999 15:31:08 +0200
+From: Ulf Carlsson <ulfc@thepuffingroup.com>
+To: Ralf Baechle <ralf@uni-koblenz.de>
+Cc: linux@cthulhu.engr.sgi.com
+Subject: Re: File corruption
+Message-ID: <19990625153108.A8684@thepuffingroup.com>
+Mail-Followup-To: Ralf Baechle <ralf@uni-koblenz.de>,
+	linux@cthulhu.engr.sgi.com
+References: <19990622032859.B6955@thepuffingroup.com> <19990622152145.A1059@uni-koblenz.de> <19990623014923.A8953@thepuffingroup.com> <19990625002853.D17220@uni-koblenz.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.4us
-In-Reply-To: <000701bebb31$f2e8d790$0a02030a@snafu>; from Andrew Linfoot on Sun, Jun 20, 1999 at 04:31:18PM +0100
-X-Accept-Language: de,en,fr
+X-Mailer: Mutt 0.95.4i
+In-Reply-To: <19990625002853.D17220@uni-koblenz.de>; from Ralf Baechle on Fri, Jun 25, 1999 at 12:28:53AM +0200
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Sun, Jun 20, 1999 at 04:31:18PM +0100, Andrew Linfoot wrote:
+> > > And under which kernel version did this start to happen?
+> > 
+> > 2.2.1 I think.
+> 
+> Are you shure?  The problem Alan is tracking started to hit from 2.2.7 on.  If
+> 2.2.1 already starts making these kind of troubles then we probably track two
+> different problems.
 
-> I have an Indy running IRIX 6.5.3 can anyone tell me what i need to set this
-> up for xcompiling using gcc or ecgs?
+Probably.  I have a new problem with the 2.3.8 kernel now as well:  Page->owner
+becomes -1 at line 1218 in buffer.c, thus forcing an oops.  This happens when I
+try to cat a couple of big files into a new file.  This is even reproduceable...
 
-See the FAQ on http://www.linux.sgi.com/.
+I get some error messages before the oops as well:
 
-> What IRIX libraries etc do i need, I don't have access to a licence for the
-> sgi compiler so i must use gcc/egcs.
+attempt to access beyond end of device
+08:01: rw=0, want=122156967, limit=929559
+attempt to access beyond end of device
+08:01: rw=0, want=886680107, limit=929559
 
-Doesn't matter which compiler you use to build the crosscompiler.
+> > Unfortunately I don't have IRIX.  However, I have a 133 MHz R4600 CPU with
+> > 512 k board cache.  I have two 1 Gb SCSI driver connected.
+> 
+> Is this a low-mem configuration?  The problem Alan is tracking apparently
+> seems to hit low mem systems more often.
 
-  Ralf
+Not really, I have 128 Mb RAM, but no swap.
+
+Regards,
+Ulf

@@ -1,36 +1,30 @@
-Received:  by oss.sgi.com id <S553760AbQJRWhp>;
-	Wed, 18 Oct 2000 15:37:45 -0700
-Received: from u-11.karlsruhe.ipdial.viaginterkom.de ([62.180.19.11]:27918
-        "EHLO u-11.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S553669AbQJRWhU>; Wed, 18 Oct 2000 15:37:20 -0700
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S868995AbQJRWhC>;
-        Thu, 19 Oct 2000 00:37:02 +0200
-Date:   Thu, 19 Oct 2000 00:37:02 +0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Florian Lohoff <flo@rfc822.org>
-Cc:     Jun Sun <jsun@mvista.com>, linux-mips@fnet.fr,
-        linux-mips@oss.sgi.com
-Subject: Re: The initial results (Re: stable binutils, gcc, glibc ...
-Message-ID: <20001019003702.B12745@bacchus.dhis.org>
-References: <39E7EB73.9206D0DB@mvista.com> <39ED2166.9B5F970@mvista.com> <20001018035719.F7865@bacchus.dhis.org> <20001018143003.C2354@paradigm.rfc822.org>
-Mime-Version: 1.0
+Received:  by oss.sgi.com id <S553660AbQJSBWS>;
+	Wed, 18 Oct 2000 18:22:18 -0700
+Received: from bob.openport.com ([208.219.70.3]:16870 "EHLO
+        purgatory.openport.com") by oss.sgi.com with ESMTP
+	id <S553651AbQJSBV6>; Wed, 18 Oct 2000 18:21:58 -0700
+Received: from openport.com (isdn-dgarnier.openport.com [192.168.111.175])
+	by purgatory.openport.com (Pro-8.9.3/Pro-8.9.3) with ESMTP id UAA11297
+	for <linux-mips@oss.sgi.com>; Wed, 18 Oct 2000 20:21:50 -0500 (CDT)
+Message-ID: <39EE2D79.D55CA9A7@openport.com>
+Date:   Wed, 18 Oct 2000 18:08:41 -0500
+From:   Dave Garnier <dgarnier@openport.com>
+Reply-To: dgarnier@openport.com
+Organization: OPT
+X-Mailer: Mozilla 4.61 [en] (WinNT; U)
+X-Accept-Language: en
+MIME-Version: 1.0
+To:     SGI news group <linux-mips@oss.sgi.com>
+Subject: Indigo2 setup
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <20001018143003.C2354@paradigm.rfc822.org>; from flo@rfc822.org on Wed, Oct 18, 2000 at 02:30:03PM +0200
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, Oct 18, 2000 at 02:30:03PM +0200, Florian Lohoff wrote:
-
-> By thinking about this without any knowledge of the binutils code generation.
-> 
-> How does this work if loop is only an external symbol ? The distance
-> will than be relevant when linking but then the code will already be there
-> and one would need to insert an instruction.
-
-Branches to external symbols aren't allowed with MIPS ELF objects.
-
-  Ralf
+I just picked up an indigo2 with irix6.5 on it, but no install cd's.  Is
+it possible to install mips-linux with out the irix cd's?  I would like
+to wipe the drive clean, and I remember reading that you need the irix
+boot loader, is this still true?  Also is there a how-to, web site with
+an install guide, or FAQ ?

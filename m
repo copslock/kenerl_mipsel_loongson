@@ -1,47 +1,88 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4TBjwnC008489
-	for <linux-mips-outgoing@oss.sgi.com>; Wed, 29 May 2002 04:45:58 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4TCW4nC010310
+	for <linux-mips-outgoing@oss.sgi.com>; Wed, 29 May 2002 05:32:04 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4TBjwVI008488
-	for linux-mips-outgoing; Wed, 29 May 2002 04:45:58 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4TCW4Co010309
+	for linux-mips-outgoing; Wed, 29 May 2002 05:32:04 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from irongate.swansea.linux.org.uk (pc2-cwma1-5-cust12.swa.cable.ntl.com [80.5.121.12])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4TBjsnC008484
-	for <linux-mips@oss.sgi.com>; Wed, 29 May 2002 04:45:55 -0700
-Received: from irongate.swansea.linux.org.uk (localhost [127.0.0.1])
-	by irongate.swansea.linux.org.uk (8.12.2/8.11.6) with ESMTP id g4TCo0Z1012278;
-	Wed, 29 May 2002 13:50:01 +0100
-Received: (from alan@localhost)
-	by irongate.swansea.linux.org.uk (8.12.2/8.12.2/Submit) id g4TCnw0Q012270;
-	Wed, 29 May 2002 13:49:58 +0100
-X-Authentication-Warning: irongate.swansea.linux.org.uk: alan set sender to alan@lxorguk.ukuu.org.uk using -f
-Subject: Re: PCI Graphics/Video Card for Malta Board?
-From: Alan Cox <alan@lxorguk.ukuu.org.uk>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Dan Malek <dan@embeddededge.com>, "Kevin D. Kissell" <kevink@mips.com>,
-   Jun Sun <jsun@mvista.com>, "Steven J. Hill" <sjhill@realitydiluted.com>,
-   Linux/MIPS Development
-	 <linux-mips@oss.sgi.com>
-In-Reply-To: <Pine.GSO.4.21.0205291014450.2890-100000@vervain.sonytel.be>
-References: <Pine.GSO.4.21.0205291014450.2890-100000@vervain.sonytel.be>
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Mailer: Ximian Evolution 1.0.3 (1.0.3-6) 
-Date: 29 May 2002 13:49:58 +0100
-Message-Id: <1022676598.4124.165.camel@irongate.swansea.linux.org.uk>
-Mime-Version: 1.0
+Received: from ubik.localnet (port48.ds1-vbr.adsl.cybercity.dk [212.242.58.113])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4TCVsnC008829
+	for <linux-mips@oss.sgi.com>; Wed, 29 May 2002 05:31:55 -0700
+Received: from murphy.dk (brm@brian.localnet [10.0.0.2])
+	by ubik.localnet (8.12.2/8.12.2/Debian -5) with ESMTP id g4TCXGtS010463
+	for <linux-mips@oss.sgi.com>; Wed, 29 May 2002 14:33:16 +0200
+Message-ID: <3CF4CA8C.9040802@murphy.dk>
+Date: Wed, 29 May 2002 14:33:16 +0200
+From: Brian Murphy <brian@murphy.dk>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.8) Gecko/20020214
+X-Accept-Language: en
+MIME-Version: 1.0
+To: linux-mips <linux-mips@oss.sgi.com>
+Subject: ioremap?
+Content-Type: multipart/mixed;
+ boundary="------------060405030301000005000902"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, 2002-05-29 at 09:17, Geert Uytterhoeven wrote:
-> On 29 May 2002, Alan Cox wrote:
-> > Old S3 cards are very easy to configure. 3Dfx Voodoo 2 is great as we
+This is a multi-part message in MIME format.
+--------------060405030301000005000902
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 
-> Of course I'm part of the problem myself, since I never got anything out of the
-> Vision968 and Trio64V+ in my PPC box. Except by emulating the BIOS code and
-> using vga16fb...
+In three files/drivers I have had problems with physical addresses not 
+being ioremapped.
+I include my patch to fix things up and request comments. How come 
+others don't have similar
+problems?
 
-I've had no problem with Russell King's ARM code. And for the 3dfx
-voodoo2 (UKP 9 off ebay) none at all. The voodoo seems to have always
-been designed to be totally soft configured and as its not a primary
-video card the bios/firmware all leaves it alone
+/Brian
+
+--------------060405030301000005000902
+Content-Type: text/plain;
+ name="ioremap.diff"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="ioremap.diff"
+
+--- drivers/ide/ide-dma.c	2001/10/19 01:24:24	1.9
++++ drivers/ide/ide-dma.c	2002/05/29 11:49:14
+@@ -741,7 +741,8 @@
+ 	if (hwif->mate && hwif->mate->dma_base) {
+ 		dma_base = hwif->mate->dma_base - (hwif->channel ? 0 : 8);
+ 	} else {
+-		dma_base = pci_resource_start(dev, 4);
++		dma_base = ioremap(pci_resource_start(dev, 4), 
++				pci_resource_len(dev, 4));
+ 		if (!dma_base) {
+ 			printk("%s: dma_base is invalid (0x%04lx)\n", name, dma_base);
+ 			dma_base = 0;
+--- drivers/ide/ide-pci.c	2001/11/19 13:53:59	1.20
++++ drivers/ide/ide-pci.c	2002/05/29 11:49:15
+@@ -716,8 +716,10 @@
+ 		if (IDE_PCI_DEVID_EQ(d->devid, DEVID_HPT366) && (port) && (class_rev < 0x03))
+ 			return;
+ 		if ((dev->class >> 8) != PCI_CLASS_STORAGE_IDE || (dev->class & (port ? 4 : 1)) != 0) {
+-			ctl  = dev->resource[(2*port)+1].start;
+-			base = dev->resource[2*port].start;
++			ctl = ioremap(pci_resource_start(dev, (2*port)+1), 
++			              pci_resource_len(dev, (2*port)+1));
++			base = ioremap(pci_resource_start(dev, 2*port), 
++			              pci_resource_len(dev, 2*port));
+ 			if (!(ctl & PCI_BASE_ADDRESS_IO_MASK) ||
+ 			    !(base & PCI_BASE_ADDRESS_IO_MASK)) {
+ 				printk("%s: IO baseregs (BIOS) are reported as MEM, report to <andre@linux-ide.org>.\n", d->name);
+--- drivers/net/pcnet32.c	2002/02/26 05:59:35	1.33.2.1
++++ drivers/net/pcnet32.c	2002/05/29 11:49:18
+@@ -494,7 +494,8 @@
+     }
+     pci_set_master(pdev);
+ 
+-    ioaddr = pci_resource_start (pdev, 0);
++    ioaddr = ioremap(pci_resource_start (pdev, 0),
++		    pci_resource_len (pdev, 0));
+     printk(KERN_INFO "    ioaddr=%#08lx  resource_flags=%#08lx\n", ioaddr, pci_resource_flags (pdev, 0));
+     if (!ioaddr) {
+         printk (KERN_ERR "no PCI IO resources, aborting\n");
+
+
+--------------060405030301000005000902--

@@ -1,47 +1,44 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA09750; Thu, 26 Jun 1997 08:10:05 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA16484; Thu, 26 Jun 1997 11:46:43 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id IAA09005 for linux-list; Thu, 26 Jun 1997 08:09:53 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA09000 for <linux@cthulhu.engr.sgi.com>; Thu, 26 Jun 1997 08:09:51 -0700
-Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id IAA06505
-	for <linux@cthulhu.engr.sgi.com>; Thu, 26 Jun 1997 08:09:50 -0700
-	env-from (shaver@neon.ingenia.ca)
-Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id LAA18745; Thu, 26 Jun 1997 11:01:48 -0400
-From: Mike Shaver <shaver@neon.ingenia.ca>
-Message-Id: <199706261501.LAA18745@neon.ingenia.ca>
-Subject: Re: Intel tools suspect, film at 11
-In-Reply-To: <199706261449.QAA29376@informatik.uni-koblenz.de> from Ralf Baechle at "Jun 26, 97 04:49:21 pm"
-To: ralf@mailhost.uni-koblenz.de (Ralf Baechle)
-Date: Thu, 26 Jun 1997 11:01:48 -0400 (EDT)
-Cc: linux@cthulhu.engr.sgi.com
-X-Mailer: ELM [version 2.4ME+ PL28 (25)]
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA17963 for linux-list; Thu, 26 Jun 1997 11:46:26 -0700
+Received: from oz.engr.sgi.com (oz.engr.sgi.com [150.166.61.27]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA17934 for <linux@engr.sgi.com>; Thu, 26 Jun 1997 11:46:22 -0700
+Received: (from ariel@localhost) by oz.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA11570 for linux@engr.sgi.com; Thu, 26 Jun 1997 11:46:22 -0700
+From: ariel@oz.engr.sgi.com (Ariel Faigon)
+Message-Id: <199706261846.LAA11570@oz.engr.sgi.com>
+Subject: anon-ftp enabled on linus
+To: linux@cthulhu.engr.sgi.com (SGI/Linux mailing list)
+Date: Thu, 26 Jun 1997 11:46:22 -0700 (PDT)
+Reply-To: ariel@sgi.com (Ariel Faigon)
+Organization: Silicon Graphics Inc.
+X-Mailer: ELM [version 2.4 PL24 ME5a]
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Thus spake Ralf Baechle:
-> > Well, I can build a (working) kernel with the IRIX-hosted tools, and
-> > not the Intel-hosted ones, so I'm beginning to suspect that it's not
-> > _just_ my incompetence at work.
-> 
-> Sorry, but the tools work 100% for Intel.  I've been using them for
-> one or two eternities on Intel.
+FYI:
 
-That doesn't reflect too well on me then, does it? =)
+I just enabled public ftp access to linus.linux.sgi.com
+ftpd runs as user/group  ftp/ftp.
 
-Seriously though, I'm at a loss.
-I can build a kernel with the IRIX tools, and I can't with the Intel
-ones.
+The chroot'ed location (~ftp) is /src (where the CVS tree resides)
 
-I'll blow everything away and reinstall, I guess.
+I made sure that the source tree has no world write permissions
+or ftp group write permissions anywhere.
 
-Mike
+Since IRIX comes only with a dynamically liked '/bin/ls'
+I had to add /lib/rld libc.so and /dev/zero rooted at /src
+for dir to work.  I made all the permissions secure but
+another check would be appreciated.
+
+If anyone feels like building the latest wu-ftpd (with all security
+patches) and replace the SGI ftpd - welcome.
+
+A web site is planned too.  I hope we got a volunteer to set it up.
+
+Let's keep the public areas only on the /src partition. I suggest
+/src/www (or some such) for the web doc root.
 
 -- 
-#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
-#>                   Welcome to the technocracy.
-#>                                                                     
-#> "you'd be so disappointed
-#>              to find out that the magic was not
-#>                          really meant for you" - OLP
+Peace, Ariel

@@ -1,51 +1,38 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9JFkXT31301
-	for linux-mips-outgoing; Fri, 19 Oct 2001 08:46:33 -0700
-Received: from saturn.mikemac.com (saturn.mikemac.com [216.99.199.88])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9JFkTD31297
-	for <linux-mips@oss.sgi.com>; Fri, 19 Oct 2001 08:46:29 -0700
-Received: from Saturn (localhost [127.0.0.1])
-	by saturn.mikemac.com (8.9.3/8.9.3) with ESMTP id IAA27669;
-	Fri, 19 Oct 2001 08:56:04 -0700
-Message-Id: <200110191556.IAA27669@saturn.mikemac.com>
-To: Justin Carlson <justincarlson@cmu.edu>
-cc: linux-mips@oss.sgi.com
-Subject: Re: Moving kernel_entry to LOADADDR 
-In-Reply-To: Your message of "19 Oct 2001 11:21:41 EDT."
-             <1003504901.29529.54.camel@gs256.sp.cs.cmu.edu> 
-Date: Fri, 19 Oct 2001 08:56:04 -0700
-From: Mike McDonald <mikemac@mikemac.com>
+	by oss.sgi.com (8.11.2/8.11.3) id f9JFpw631576
+	for linux-mips-outgoing; Fri, 19 Oct 2001 08:51:58 -0700
+Received: from dea.linux-mips.net (a1as03-p40.stg.tli.de [195.252.186.40])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9JFprD31573
+	for <linux-mips@oss.sgi.com>; Fri, 19 Oct 2001 08:51:53 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id f9JFlOp27413;
+	Fri, 19 Oct 2001 17:47:24 +0200
+Date: Fri, 19 Oct 2001 17:47:24 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: "H . J . Lu" <hjl@lucon.org>, linux-mips@oss.sgi.com
+Subject: Re: Strange behavior of serial console under 2.4.9
+Message-ID: <20011019174724.A27300@dea.linux-mips.net>
+References: <20011018194014.A8744@lucon.org> <Pine.GSO.3.96.1011019152309.1657F-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.GSO.3.96.1011019152309.1657F-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Fri, Oct 19, 2001 at 03:26:10PM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Fri, Oct 19, 2001 at 03:26:10PM +0200, Maciej W. Rozycki wrote:
 
->Subject: Re: Moving kernel_entry to LOADADDR
->From: Justin Carlson <justincarlson@cmu.edu>
->To: linux-mips@oss.sgi.com
->Date: 19 Oct 2001 11:21:41 -0400
->
->On Fri, 2001-10-19 at 11:11, Mike McDonald wrote:
->
->>   Because a bare bones bootloader may not know anything about ELF. The
->> simplest solution is to just stick a "jmp start_kernel" at LOADADDR
->> right before the fill. Then the load address and the entry point are
->> the same. Once the exception vectors get loaded, they'll overwrite the
->> jmp, so no space is wasted and none of the LOADADDRs have to be
->> changed.
->
->
->This may be true, but grokking ELF far enough to find e_entry just a
->matter of looking at a fixed offset into the kernel image.  Problems
->that require bootloaders to be simpler than that are pretty rare...
->
->-Justin
+> > I am using 9600 buad. It used to be ok under 2.4.3/2.4.5. But under
+> > 2.4.9, the first 10 minutes after boot is very slow. After that, it
+> > seems ok.
+> 
+>  That might be driver-specific.  I'm using drivers/tc/zs.c and it works
+> fine at 115200 bps.
 
-  But they do exist, especially in the embedded world. For instance,
-I've run linux with boot loader out of a 1MB flash into 8MB of RAM. 
-(VR4121 based system.) The kernel image stored in the flash had to be
-a compressed raw memory image inorder to fit in the flash.  (The flash
-also had to have room to the initrd.) Adding ELF headers to the image
-would probably have pushed the size over the limit.
+I haven't noticed this problem ever on Origins which use the standard
+16550 driver.
 
-  Mike McDonald
-  mikemac@mikemac.com
+  Ralf

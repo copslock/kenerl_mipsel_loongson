@@ -1,54 +1,60 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBEMo6011215
-	for linux-mips-outgoing; Fri, 14 Dec 2001 14:50:06 -0800
-Received: from mail.ivivity.com (user-vc8ftn3.biz.mindspring.com [216.135.246.227])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBEMo2o11211
-	for <linux-mips@oss.sgi.com>; Fri, 14 Dec 2001 14:50:02 -0800
-Received: by ATLOPS with Internet Mail Service (5.5.2448.0)
-	id <QMJC3GGG>; Fri, 14 Dec 2001 16:49:53 -0500
-Message-ID: <25369470B6F0D41194820002B328BDD21423F1@ATLOPS>
-From: Dinesh Nagpure <dinesh_nagpure@ivivity.com>
-To: "'Justin Carlson'" <justincarlson@cmu.edu>,
-   Dinesh Nagpure
-	 <dinesh_nagpure@ivivity.com>
-Cc: linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.2/8.11.3) id fBEN3ms11501
+	for linux-mips-outgoing; Fri, 14 Dec 2001 15:03:48 -0800
+Received: from ux3.sp.cs.cmu.edu (UX3.SP.CS.CMU.EDU [128.2.198.103])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBEN3fo11498
+	for <linux-mips@oss.sgi.com>; Fri, 14 Dec 2001 15:03:42 -0800
+Received: from GS256.SP.CS.CMU.EDU by ux3.sp.cs.cmu.edu id aa14947;
+          14 Dec 2001 17:02 EST
 Subject: RE: 2.4.16 on mips-malta, networking fails...
-Date: Fri, 14 Dec 2001 16:49:52 -0500
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2448.0)
-Content-Type: text/plain;
-	charset="iso-8859-1"
+From: Justin Carlson <justincarlson@cmu.edu>
+To: Dinesh Nagpure <dinesh_nagpure@ivivity.com>
+Cc: linux-mips@oss.sgi.com
+In-Reply-To: <25369470B6F0D41194820002B328BDD21423F1@ATLOPS>
+References: <25369470B6F0D41194820002B328BDD21423F1@ATLOPS>
+Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature";
+	boundary="=-K2loZN6yJ1YLNus+dw0m"
+X-Mailer: Evolution/0.99.2 (Preview Release)
+Date: 14 Dec 2001 17:02:59 -0500
+Message-Id: <1008367379.19225.25.camel@gs256.sp.cs.cmu.edu>
+Mime-Version: 1.0
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Isn't passing ip= command line boot option sufficient for this?
-I mean I sure will have ifconfig and route in the root but for now all I
-want is to make things work.
 
-Dinesh
+--=-K2loZN6yJ1YLNus+dw0m
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
------Original Message-----
-From: Justin Carlson [mailto:justincarlson@cmu.edu]
-Sent: Friday, December 14, 2001 3:50 PM
-To: Dinesh Nagpure
-Cc: linux-mips@oss.sgi.com
-Subject: RE: 2.4.16 on mips-malta, networking fails...
+On Fri, 2001-12-14 at 16:49, Dinesh Nagpure wrote:
+> Isn't passing ip=3D command line boot option sufficient for this?
+> I mean I sure will have ifconfig and route in the root but for now all I
+> want is to make things work.
+>=20
+> Dinesh
+>=20
 
+Passing ip=3D on the command line should work if you are giving it good
+information, but the best way to really see what's going on will be to
+use ifconfig and route.
 
-On Fri, 2001-12-14 at 15:25, Dinesh Nagpure wrote:
-
-> Apparently the device is being detected.
-> I am using ramdisk root which i created using busybox v0.60.1 and dont
-have
-> ifconfig or route built into it.
-> 
-
-How are you setting the IP information for the NIC, then?  Are you
-compiling a kernel with IP autoconfiguration and using a DHCP server?  
-
-If you're not configuring the NIC, then the OS doesn't consider it to be
-a valid source/target of IP information, so when you try to ping from
-the machine, Linux is telling you "I don't have any valid place to put
-an ICMP packet to get to the place you want it to go".  
+In honesty, I'd not realized ip=3D existed until you mentioned it and I
+looked at the code.  Learn something new every day.   :)
 
 -Justin
+
+
+
+--=-K2loZN6yJ1YLNus+dw0m
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.6 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iD8DBQA8GncT47Lg4cGgb74RApw5AJ9dZLVcOENe2gavTyrSCWq7a7axpACfYypm
+xxcOZQf3qtalW3ZX6GWfgUM=
+=M3+e
+-----END PGP SIGNATURE-----
+
+--=-K2loZN6yJ1YLNus+dw0m--

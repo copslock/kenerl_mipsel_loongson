@@ -1,78 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Dec 2002 13:00:04 +0000 (GMT)
-Received: from p508B5BE3.dip.t-dialin.net ([IPv6:::ffff:80.139.91.227]:47045
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225536AbSLTNAD>; Fri, 20 Dec 2002 13:00:03 +0000
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id gBKCxt631568;
-	Fri, 20 Dec 2002 13:59:55 +0100
-Date: Fri, 20 Dec 2002 13:59:55 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Juan Quintela <quintela@mandrakesoft.com>
-Cc: mipslist <linux-mips@linux-mips.org>
-Subject: Re: [PATCH]: test_bit returns int in all the architectures
-Message-ID: <20021220135955.A31554@linux-mips.org>
-References: <m2fzstgffx.fsf@demo.mitica>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Dec 2002 14:26:14 +0000 (GMT)
+Received: from webmail8.rediffmail.com ([IPv6:::ffff:202.54.124.153]:55505
+	"HELO rediffmail.com") by linux-mips.org with SMTP
+	id <S8225541AbSLTO0N>; Fri, 20 Dec 2002 14:26:13 +0000
+Received: (qmail 1030 invoked by uid 510); 20 Dec 2002 14:24:59 -0000
+Date: 20 Dec 2002 14:24:59 -0000
+Message-ID: <20021220142459.1029.qmail@webmail8.rediffmail.com>
+Received: from unknown (164.164.83.140) by rediffmail.com via HTTP; 20 dec 2002 14:24:59 -0000
+MIME-Version: 1.0
+From: "Pichai  Raghavan" <ragh_avan@rediffmail.com>
+Reply-To: "Pichai  Raghavan" <ragh_avan@rediffmail.com>
+To: linux-mips@linux-mips.org
+Subject: applications compiled with mips16 ISA
+Content-type: text/plain;
+	format=flowed
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <m2fzstgffx.fsf@demo.mitica>; from quintela@mandrakesoft.com on Fri, Dec 20, 2002 at 11:20:02AM +0100
-Return-Path: <ralf@linux-mips.org>
+Return-Path: <ragh_avan@rediffmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1024
+X-archive-position: 1025
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ragh_avan@rediffmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Dec 20, 2002 at 11:20:02AM +0100, Juan Quintela wrote:
+Hi,
 
->         to be consistent with everybody else, test_bit should return a
->         int.  Notice that it only returns 0/1, not a big deal.
+Has anyone put MIPS16 based applications on Linux 2.4.2 kernel? We 
+want to use this to get more flash storage but unaware of the 
+issues behind this. For ex: how will the loader work; will shared 
+libraries compiled with MIPS16 work with MIPS32 applications. Can 
+anyone thow light on this topic or point to us to some relevant 
+documentation?
 
-I'm using below patch instead.
-
-  Ralf
-
-Index: include/asm-mips/bitops.h
-===================================================================
-RCS file: /home/cvs/linux/include/asm-mips/bitops.h,v
-retrieving revision 1.21.2.9
-diff -u -r1.21.2.9 bitops.h
---- include/asm-mips/bitops.h	5 Dec 2002 03:25:20 -0000	1.21.2.9
-+++ include/asm-mips/bitops.h	20 Dec 2002 12:54:10 -0000
-@@ -582,9 +582,9 @@
-  * @nr: bit number to test
-  * @addr: Address to start counting from
-  */
--static __inline__ int test_bit(int nr, volatile void *addr)
-+static inline int test_bit(int nr, volatile void *addr)
- {
--	return ((1UL << (nr & 31)) & (((const unsigned int *) addr)[nr >> 5])) != 0;
-+	return 1UL & (((const volatile unsigned long *) addr)[nr >> SZLONG_LOG] >> (nr & SZLONG_MASK));
- }
- 
- /*
-Index: include/asm-mips64/bitops.h
-===================================================================
-RCS file: /home/cvs/linux/include/asm-mips64/bitops.h,v
-retrieving revision 1.15.2.10
-diff -u -r1.15.2.10 bitops.h
---- include/asm-mips64/bitops.h	5 Dec 2002 03:25:20 -0000	1.15.2.10
-+++ include/asm-mips64/bitops.h	20 Dec 2002 12:54:12 -0000
-@@ -302,9 +302,9 @@
-  * @nr: bit number to test
-  * @addr: Address to start counting from
-  */
--static inline unsigned long test_bit(int nr, volatile void * addr)
-+static inline int test_bit(int nr, volatile void * addr)
- {
--	return 1UL & (((volatile unsigned long *) addr)[nr >> 6] >> (nr & 0x3f));
-+	return 1UL & (((const volatile unsigned long *) addr)[nr >> SZLONG_LOG] >> (nr & SZLONG_MASK));
- }
- 
- /*
+Thanks in advance
+Raghav

@@ -1,44 +1,56 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f99L37723898
-	for linux-mips-outgoing; Tue, 9 Oct 2001 14:03:07 -0700
-Received: from [64.152.86.3] (unknown.Level3.net [64.152.86.3] (may be forged))
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f99L35D23895
-	for <linux-mips@oss.sgi.com>; Tue, 9 Oct 2001 14:03:05 -0700
-Received: from mail.esstech.com by [64.152.86.3]
-          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 9 Oct 2001 21:04:31 UT
-Received: from bud.austin.esstech.com ([193.5.206.3])
-	by mail.esstech.com (8.8.8+Sun/8.8.8) with SMTP id OAA16648
-	for <linux-mips@oss.sgi.com>; Tue, 9 Oct 2001 14:01:41 -0700 (PDT)
-Received: from esstech.com by bud.austin.esstech.com (SMI-8.6/SMI-SVR4)
-	id QAA13848; Tue, 9 Oct 2001 16:01:14 -0500
-Message-ID: <3BC36684.6020609@esstech.com>
-Date: Tue, 09 Oct 2001 16:05:08 -0500
-From: Gerald Champagne <gerald.champagne@esstech.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.3) Gecko/20010801
+	by oss.sgi.com (8.11.2/8.11.3) id f99L8Sd24251
+	for linux-mips-outgoing; Tue, 9 Oct 2001 14:08:28 -0700
+Received: from clrsrv.clearcore.com (@www.clearcore.com [208.141.182.168])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f99L8PD24248
+	for <linux-mips@oss.sgi.com>; Tue, 9 Oct 2001 14:08:25 -0700
+Received: from clearcore.net (nephi.clearcore.com [192.168.3.3])
+	by clrsrv.clearcore.com (8.10.1/8.10.1) with ESMTP id f99L8Lk25884;
+	Tue, 9 Oct 2001 15:08:21 -0600
+Message-ID: <3BC3673F.3030808@clearcore.net>
+Date: Tue, 09 Oct 2001 15:08:15 -0600
+From: Joe George <joeg@clearcore.net>
+Organization: ClearCore
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.3) Gecko/20010802
 X-Accept-Language: en-us
 MIME-Version: 1.0
-To: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: VisionClick debugger with Linux kernel
+To: Jun Sun <jsun@mvista.com>
+CC: linux-mips@oss.sgi.com
+Subject: Re: MIPS PC - anyone?
+References: <20011006102302.B3492@mvista.com>
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+I have been working on the design of such a machine for a few months now
+as a background project.   The mainboard features are:	PMC RM7000A
+400MHz CPU, 2MB tertiary cache, GT64120A system controller, 512K byte
+boot prom, DS1501 RTC, 512MB SDRAM, two serial ports (ST16C2552),
+OPTI 82C862 USB controller, 4 32-bit 33MHz PCI slots, 2 32-bit 66MHz
+PCI slots, ATX form factor.
 
-Has anyone used the Wind River VisionClick debugger with the Linux kernel?
-I'm using this debugger and works great except it thinks that the symbols
-for some files start at address zero instead of the proper offset.  Has anyone
-else seen this and were you able to get it to work?  I'm using the latest tools
-from:
+Prices for the processor and system controller are significantly higher than
+the equivilent i386 components in low volume.  High enough volume to get
+it to parity with i386 prices is probably not realistic.  From what I've 
+heard
+some people still don't use Linux. :)
 
-ftp://oss.sgi.com/pub/linux/mips/redhat/7.1/RPMS/i386/toolchain-mips-20010830-1.i386.rpm
+Price for the system will probably be in the US$1200 range.  Send me an
+email off the list if you are interested or have suggestions.  The more 
+I hear
+from the faster it will probably get done.
 
-I can't find any differences between the files that work and the files that
-don't work and the symbols look correct in the System.map file.
+Joe
 
-Yeah, I'm working with Wind River, but I haven't gotten a solution yet.
-You know how that 8-5 centralized corporate support is though. :)
-
-Thanks!
-
-Gerald
+Jun Sun wrote:
+> Does anybody know if there is such a "MIPS PC" machine?  Essentially
+> I am looking for a machine with MIPS CPU and PC peripherals (such as
+> SIMM RAM, PCI bus, EIDE HD, VGA graphics, PS/2 mouse/kbd, etc).
+> 
+> It would be really nice to have such a box.  If it is massively produced,
+> the price should be cheaper than i386 PCs because MIPS CPU price is
+> much cheaper. 
+> 
+> Jun 
+> 

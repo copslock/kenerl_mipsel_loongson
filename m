@@ -1,50 +1,55 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f4AHlDV07903
-	for linux-mips-outgoing; Thu, 10 May 2001 10:47:13 -0700
-Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f4AHlCF07900
-	for <linux-mips@oss.sgi.com>; Thu, 10 May 2001 10:47:12 -0700
-Received: from mvista.com (IDENT:ppopov@zeus.mvista.com [10.0.0.112])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f4AHka014392;
-	Thu, 10 May 2001 10:46:36 -0700
-Message-ID: <3AFAD368.9B70E1D5@mvista.com>
-Date: Thu, 10 May 2001 10:44:08 -0700
-From: Pete Popov <ppopov@mvista.com>
-Organization: Monta Vista Software
-X-Mailer: Mozilla 4.76 [en] (X11; U; Linux 2.2.16-22 i586)
-X-Accept-Language: en, bg
-MIME-Version: 1.0
-To: Wayne Gowcher <wgowcher@yahoo.com>
-CC: Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>,
-   linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.3/8.11.3) id f4AHrdl08564
+	for linux-mips-outgoing; Thu, 10 May 2001 10:53:39 -0700
+Received: from web11904.mail.yahoo.com (web11904.mail.yahoo.com [216.136.172.188])
+	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f4AHrdF08561
+	for <linux-mips@oss.sgi.com>; Thu, 10 May 2001 10:53:39 -0700
+Message-ID: <20010510175339.83183.qmail@web11904.mail.yahoo.com>
+Received: from [209.243.184.191] by web11904.mail.yahoo.com; Thu, 10 May 2001 10:53:39 PDT
+Date: Thu, 10 May 2001 10:53:39 -0700 (PDT)
+From: Wayne Gowcher <wgowcher@yahoo.com>
 Subject: Re: Configuration of PCI Video card on a BIOS-less board
-References: <Pine.GSO.4.10.10105101919230.14224-100000@rose.sonytel.be>
+To: Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>,
+   Pete Popov <ppopov@mvista.com>
+Cc: linux-mips@oss.sgi.com
+In-Reply-To: <Pine.GSO.4.10.10105101919230.14224-100000@rose.sonytel.be>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Geert Uytterhoeven wrote:
-> 
-> On Thu, 10 May 2001, Pete Popov wrote:
-> > Are you really trying to assign 0xC000 0000 to the card or was that just
-> > an example address?  Unless your pci to memory window is such that
-> > there's a translation that occurs, that address is incorrect.  If the
-> > window is 1:1, the physical address 0xC000 0000 does not exist.  You
-> > need to assign the card a real physical address; if your system has 32MB
-> > of memory, than that address would have to be between 0 and 0x2000000.
-> > (well, you can't give it address "0" because of interrupt vectors, but
-> > you get the point). I can point you to some examples if you have
-> > problems.
-> 
-> If you have 32 MB of RAM and you put a PCI card at an address between 0 and
-> 0x2000000 you'll have a problem! PCI cards must not overlap with real memory.
+Geert, Pete,
 
-Sorry Wayne, I'm working on an ethernet driver and was thinking of
-descriptors and data buffers for PCI ethernet cards, which have to be in
-real physical memory. Geert is right, but 0xC000 0000 still seems
-suspicious.  That's a very high physical address and pci devices are
-usually mapped at lower addresses. Something like 0x2000 0000 is more
-reasonable and makes accessing the card through kseg1 possible. 
+Thanks for your input, it makes me question things I
+should have questioned before.
 
-Pete
+0xC000 0000 is the actual address I am trying to use.
+I used it because another PCI card that I have a
+driver for was using it and so I just carried on its
+use. I didnt really question the value or its use. But
+obviously it works for that card.
+
+After your emails I revisited that code and now I
+partially understand why it works. The chip has an
+internal bus that translates address requests
+internally. So when i write to 0xC000 0000 it would
+never make to the actual address lines of the chip and
+instead be routed to the PCI controller ( I think :) )
+
+The original card i had a problem had an ATI Rage
+chip. I am now experimenting with a VGA card with a
+Cirrus Logic chip. I've got this card to accept the
+programmed base address and am in teh process of
+studying clgenfb.c to see if I can modify it to my
+needs. 
+On first inspection clgenfb.c is written for the
+Amiga??? and so I am trying to weed out the
+dependencies. If anyone knows of a more generic driver
+it would be much appreciated.
+
+Wayne
+
+__________________________________________________
+Do You Yahoo!?
+Yahoo! Auctions - buy the things you want at great prices
+http://auctions.yahoo.com/

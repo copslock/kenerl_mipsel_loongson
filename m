@@ -1,60 +1,33 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f3IL3th21264
-	for linux-mips-outgoing; Wed, 18 Apr 2001 14:03:55 -0700
-Received: from nevyn.them.org (mail@NEVYN.RES.CMU.EDU [128.2.145.225])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3IL3sM21259
-	for <linux-mips@oss.sgi.com>; Wed, 18 Apr 2001 14:03:54 -0700
-Received: from drow by nevyn.them.org with local (Exim 3.22 #1 (Debian))
-	id 14pz7G-0007yn-00; Wed, 18 Apr 2001 17:03:58 -0400
-Date: Wed, 18 Apr 2001 17:03:58 -0400
-From: Daniel Jacobowitz <dan@debian.org>
-To: Andreas Jaeger <aj@suse.de>
-Cc: "Steven J. Hill" <sjhill@cotw.com>, linux-mips@oss.sgi.com
-Subject: Re: Question on the binutils tradlittlemips patch
-Message-ID: <20010418170358.B29531@nevyn.them.org>
-References: <20010418141959.A24473@nevyn.them.org> <u8vgo23r4w.fsf@gromit.rhein-neckar.de>
-Mime-Version: 1.0
+	by oss.sgi.com (8.11.3/8.11.3) id f3ILAbI21993
+	for linux-mips-outgoing; Wed, 18 Apr 2001 14:10:37 -0700
+Received: from the-village.bc.nu (router-100M.swansea.linux.org.uk [194.168.151.17])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3ILAZM21990
+	for <linux-mips@oss.sgi.com>; Wed, 18 Apr 2001 14:10:35 -0700
+Received: from alan by the-village.bc.nu with local (Exim 2.12 #1)
+	id 14pzEm-0005jl-00; Wed, 18 Apr 2001 22:11:44 +0100
+Subject: Re: Linux on LSI EZ4102
+To: wesolows@foobazco.org (Keith M Wesolowski)
+Date: Wed, 18 Apr 2001 22:11:42 +0100 (BST)
+Cc: rjkm@convergence.de (Ralph Metzler), jensenq@Lineo.COM (Quinn Jensen),
+   linux-mips@oss.sgi.com
+In-Reply-To: <20010418132323.A25356@foobazco.org> from "Keith M Wesolowski" at Apr 18, 2001 01:23:24 PM
+X-Mailer: ELM [version 2.5 PL1]
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.16i
-In-Reply-To: <u8vgo23r4w.fsf@gromit.rhein-neckar.de>; from aj@suse.de on Wed, Apr 18, 2001 at 10:11:11PM +0200
+Content-Transfer-Encoding: 7bit
+Message-Id: <E14pzEm-0005jl-00@the-village.bc.nu>
+From: Alan Cox <alan@lxorguk.ukuu.org.uk>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, Apr 18, 2001 at 10:11:11PM +0200, Andreas Jaeger wrote:
-> Daniel Jacobowitz <dan@debian.org> writes:
-> 
-> > I've been trying to make this patch work as part of a complete
-> > toolchain, based on glibc.  In addition to a little snag (when building
-> > glibc for big-endian mips you need an equivalent change in the target
-> > format), I hit a serious shared library error - nothing linked
-> 
-> Do I understand you correctly that glibc needs a patch?  Please send
-> it to me.
+> Any -ac kernel contains at most the same changes that are in the oss
+> tree.  Trees other than the oss one, including ac, are likely to
+> contain more bugs.
 
-Yes, I think it does.  Do we care about being able to build with old
-(including every released version before [I think] HJ's 2.10.91.0.5)
-binutils on MIPS?  Having it both ways is pretty hard, but it could
-probably be autoconfed.
+-ac has all the stuff Ralf has sent me. Linus has most of that. In some
+ways -ac has less bugs (eg the oss tree has serious disk corruption bugs -ac
+doesnt) but I certainly cant guarantee -ac will always build on mips, and 
+right now with the sem changes it quite probably wont.
 
-> You might be - but it's quite difficult to fix in glibc.  If you get
-> it working in glibc, send me a patch that works with old and new
-> binaries - and I'll gladly review and commit it.
-
-Well, this will need a comment from someone with a better understanding
-of ELF than I, but my thought:
-
-How harmful would it be, given that we've been assuming the hardcoded
-base address of 0x5ffe0000, to assume that the base address is either
-that or 0?  Just check if subtracting 0x5ffe0000 from the base address
-of the first load would be an obvious error (i.e. if it would
-overflow).
-
-Could someone enlighten me on when the vaddr of the first load command
-is not the same as MIPS_BASE_ADDRESS?  I could easily enough (since
-we've already seen the PT_DYNAMIC entry at this point) read the
-BASE_ADDRESS value out of the library, but that's a bit of a speed hit.
-
--- 
-Daniel Jacobowitz                           Debian GNU/Linux Developer
-Monta Vista Software                              Debian Security Team
+Alan

@@ -1,53 +1,48 @@
-Received:  by oss.sgi.com id <S553673AbQKRQmh>;
-	Sat, 18 Nov 2000 08:42:37 -0800
-Received: from [210.59.227.242] ([210.59.227.242]:19722 "HELO
-        smtp02.yuanta.com.tw") by oss.sgi.com with SMTP id <S553647AbQKRQmT>;
-	Sat, 18 Nov 2000 08:42:19 -0800
-Received: from 63.52.248.235 (unverified [63.52.248.235]) by smtp02.yuanta.com.tw
- (EMWAC SMTPRS 0.83) with SMTP id <B0008562733@smtp02.yuanta.com.tw>;
- Sat, 18 Nov 2000 11:22:00 +0800
-Message-ID: <0000004e4d37$00005be7$000004a8@63.52.248.235>
-To:     <McLean@d10.de>
-From:   McLean@d10.de
-Subject: Brand New FREE Satellite System
-Date:   Fri, 17 Nov 2000 22:17:50 -0400
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="Windows-1252"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
+Received:  by oss.sgi.com id <S553700AbQKRRVq>;
+	Sat, 18 Nov 2000 09:21:46 -0800
+Received: from u-248.karlsruhe.ipdial.viaginterkom.de ([62.180.21.248]:11528
+        "EHLO u-248.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
+	with ESMTP id <S553671AbQKRRVb>; Sat, 18 Nov 2000 09:21:31 -0800
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S868506AbQKRRVP>;
+        Sat, 18 Nov 2000 18:21:15 +0100
+Date:   Sat, 18 Nov 2000 18:21:15 +0100
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
+Cc:     linux-cvs@oss.sgi.com, linux-mips@oss.sgi.com, linux-mips@fnet.fr
+Subject: Re: CVS Update@oss.sgi.com: linux
+Message-ID: <20001118182114.A19710@bacchus.dhis.org>
+References: <20001118132233Z553804-494+838@oss.sgi.com> <XFMail.001118180639.Harald.Koerfgen@home.ivm.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <XFMail.001118180639.Harald.Koerfgen@home.ivm.de>; from Harald.Koerfgen@home.ivm.de on Sat, Nov 18, 2000 at 06:06:39PM +0100
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
-Message-ID: <20001118021750.ZXFABnAq82_28JuBdgk1jEzdpuOqt2O8-fLjVaalvmk@z>
 
-FREE Satellite T.V. System and FREE Installation
+On Sat, Nov 18, 2000 at 06:06:39PM +0100, Harald Koerfgen wrote:
 
-For a limited time we'll give you this top of the line Digital
-Satellite System for FREE!  We'll even include Free installation.
+> On 18-Nov-00 Ralf Baechle wrote:
+> > CVSROOT:      /home/pub/cvs
+> > Module name:  linux
+> > Changes by:   ralf@oss.sgi.com        00/11/18 05:22:32
+> > 
+> > Modified files:
+> >       Documentation  : Configure.help 
+> >       arch/mips      : config.in 
+> >       arch/mips/mm   : r4xx0.c 
+> > 
+> > Log message:
+> >       New configuration option CONFIG_MIPS_UNCACHED.  Not yet selectable due
+> >       to the manuals documenting ll/sc operation as undefined for uncached
+> >       memory.
+> 
+> Wouldn't it make sense then to disable CONFIG_CPU_HAS_LLSC as well?
 
-Enjoy over 500 Channels of crystal clear digital picture and
-cd stereo sound on your FREE Satellite TV System.  Why pay
-for these items in a retail store, when we're giving you the
-same satellite package for free.
+I'm waiting for authoritative answer from silicon guys before I deciede.
+In the past I ran kernel entirely uncached and they seemed to work even
+though the documentation made me assume the opposite.
 
-
-Call 888-514-6881 to be Guaranteed Your FREE Satellite Today
-
-
-This Innovative 20" Satellite includes a stereo receiver and
-an infrared remote.  With this FREE offer you will have both
-Interactive Television Capability and an On Screen Program Guide.
-
-This limited time FREE offer is much less than the monthly cost
-of cable tv. All you have to do is call us to arrange delivery.   
-If you call today, we'll throw in a second receiver for your
-second T.V. free.
-
-
-Call 888-514-6881 to Begin Surfing through 500 Channels Today!
-
-
-To be removed send email to tcaiom@yahoo.com
+  Ralf

@@ -1,32 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Apr 2003 19:22:46 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:18173 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8225196AbTDASWp>;
-	Tue, 1 Apr 2003 19:22:45 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Apr 2003 19:29:50 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:6639 "EHLO
+	av.mvista.com") by linux-mips.org with ESMTP id <S8225195AbTDAS3t>;
+	Tue, 1 Apr 2003 19:29:49 +0100
 Received: from zeus.mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id KAA31961;
-	Tue, 1 Apr 2003 10:22:33 -0800
-Subject: Re: Au1500 hardware cache coherency
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id KAA32328;
+	Tue, 1 Apr 2003 10:29:42 -0800
+Subject: Re: Patch to disable PCI coherency on AU1500 platforms
 From: Pete Popov <ppopov@mvista.com>
 To: Hartvig Ekner <hartvig@ekner.info>
-Cc: Pete@ekner.info, Popov@ekner.info,
-	Linux MIPS mailing list <linux-mips@linux-mips.org>
-In-Reply-To: <1049221364.26674.248.camel@zeus.mvista.com>
-References: <3E882FB8.BBFDACE2@ekner.info> <3E8853B3.9080902@amd.com>
-	 <3E885B68.6927451E@ekner.info> <3E8883B8.1000000@amd.com>
-	 <3E889602.62B7AB6B@ekner.info> <1049142818.26677.68.camel@zeus.mvista.com>
-	 <3E8944EA.6E7AE06C@ekner.info> <1049221364.26674.248.camel@zeus.mvista.com>
+Cc: Linux MIPS mailing list <linux-mips@linux-mips.org>
+In-Reply-To: <3E898652.2717AEF2@ekner.info>
+References: <3E898652.2717AEF2@ekner.info>
 Content-Type: text/plain
 Organization: MontaVista Software
-Message-Id: <1049221414.26883.250.camel@zeus.mvista.com>
+Message-Id: <1049221843.26884.256.camel@zeus.mvista.com>
 Mime-Version: 1.0
 X-Mailer: Ximian Evolution 1.2.3 
-Date: 01 Apr 2003 10:23:35 -0800
+Date: 01 Apr 2003 10:30:43 -0800
 Content-Transfer-Encoding: 7bit
 Return-Path: <ppopov@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1894
+X-archive-position: 1895
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,57 +30,118 @@ X-original-sender: ppopov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-As Ralf pointed out, 
 
-s/2.4.20-pre4/2.4.21-pre4  :)
+I have a Pb1500 but like I said, I won't be able to get to it until end
+of the month. I would really like to run some stress tests before
+applying such core patches.  Can you wait until I get back?
 
 Pete
 
-On Tue, 2003-04-01 at 10:22, Pete Popov wrote:
-> > > Config[OD] is set in setup.c and should not be cleared afterward.
+On Tue, 2003-04-01 at 04:30, Hartvig Ekner wrote:
+> The patch below sets the NC bit in the PCI_CFG register to disable HW coherency when
+> running non-coherent. Until now, this bit was cleared which means corruption when using PCI
+> DMA masters, even if the kernel was correctly compiled with CONFIG_NONCOHERENT_IO.
 > 
-> > Due to errata #4, it is cleared whenever macroes like set_c0_config or change_c0_config is
-> > called. This happens in several places:
+> Pb1500 specific notes: I don't have a PB1500, so I cannot test if it works there. Note: I also
+> removed what I think was an extraneous write to the PCI_CMEM register, so if somebody
+> could test this on a PB1500 it would be great.
 > 
-> >     au1000_restart (probably doesn't matter?)
-> >     cache parity error exception (doesn't matter, we're probably dying anyway)
-> >     ld_mmu_mips32 (in c-mips32.c)
+> /Hartvig
 > 
-> Thanks for bringing this to my attention. I'll take a look at it, but
-> I'm leaving this Thursday for two weeks and won't be able to get to it
-> until after 4/21.
 > 
-> > I'm not quite sure whether ld_mmu_mips32 is called after au1x00 setup, but if it is,
-> > the bit is cleared, never to be set again. Maybe the c0_config macroes should be changed
-> > due to errata #4?
 > 
-> I doubt Ralf is going to change common macros to fix a specific bug.
+> ______________________________________________________________________
 > 
-> > > Can you send me your test and exact instructions on how you're
-> > > duplicating the error? I won't have time to look at it until after 4/20
-> > > though.
-> > >
-> > 
-> > Sure. However, I will first try to make sure that the kernel does not have the same problem on another
-> > non AU1500 platform.
-> > 
-> > BTW, are you using the HPT onboard IDE controller? Last time I tried, it wasn't functional, the kernel crashed
-> > during boot when kudzu was doing some HW probing on the IDE stuff. I'm using a plug-in promise card
-> > (20268 based).
-> 
-> The Pb1500 HPT370 driver works fine for me, and now the Db1500 HPT371
-> seems to work as well. However, with the 2.4.20-pre4 kernel, both boards
-> crash with a kernel panic when doing a very large 'cp -a'. I don't know
-> at this point what the problem is. The MV 2.4.18 based kernel passes the
-> same stress tests repeatedly on the Pb1500. So either something got
-> broken between 2.4.18 and 2.4.20-pre4, or the 2.4.18 kernel is getting
-> lucky.  The boards are still 'usable' with a 2.4.20-pre4 and a hard disk
-> cause I can boot with a disk based root fs and run lmbench of the disk.
-> But it's quite possible that the problem you observed is caused by the
-> same bug I'm encountering. 
-> 
-> I think I have a Promise IDE card at home and I'll run a test with it
-> when I get back. It would be interesting to see if that driver causes
-> the same problems.
-> 
-> Pete
+> Index: db1x00/setup.c
+> ===================================================================
+> RCS file: /home/cvs/linux/arch/mips/au1000/db1x00/Attic/setup.c,v
+> retrieving revision 1.1.2.4
+> diff -u -r1.1.2.4 setup.c
+> --- db1x00/setup.c	21 Mar 2003 19:00:46 -0000	1.1.2.4
+> +++ db1x00/setup.c	1 Apr 2003 12:14:54 -0000
+> @@ -78,9 +78,8 @@
+>  void __init au1x00_setup(void)
+>  {
+>  	char *argptr;
+> -	u32 pin_func, static_cfg0;
+> -	u32 sys_freqctrl, sys_clksrc;
+> -	u32 prid = read_c0_prid();
+> +	u32 pin_func;
+> +//	u32 prid = read_c0_prid();
+>  
+>  	argptr = prom_getcmdline();
+>  
+> @@ -187,6 +186,19 @@
+>  
+>  #ifdef CONFIG_BLK_DEV_IDE
+>  	ide_ops = &std_ide_ops;
+> +#endif
+> +
+> +#ifdef CONFIG_PCI
+> +	/* Although YAMON has setup the PCI controller, some things
+> +	   may need to change. Eventually, all the PCI initialization
+> +	   should be done here (as in eg. ../pb1500/setup.c)
+> +	*/
+> +
+> +#ifdef CONFIG_NONCOHERENT_IO
+> +	/* Must disable PCI coherency if running non-coherent */
+> +
+> +	au_writel(au_readl(Au1500_PCI_CFG) | (1<<16), Au1500_PCI_CFG);
+> +#endif
+>  #endif
+>  
+>  #if 0
+> Index: pb1500/setup.c
+> ===================================================================
+> RCS file: /home/cvs/linux/arch/mips/au1000/pb1500/setup.c,v
+> retrieving revision 1.1.2.12
+> diff -u -r1.1.2.12 setup.c
+> --- pb1500/setup.c	21 Mar 2003 19:00:47 -0000	1.1.2.12
+> +++ pb1500/setup.c	1 Apr 2003 12:14:54 -0000
+> @@ -35,6 +35,7 @@
+>  #include <linux/console.h>
+>  #include <linux/mc146818rtc.h>
+>  #include <linux/delay.h>
+> +#include <linux/proc_fs.h>
+>  
+>  #include <asm/cpu.h>
+>  #include <asm/bootinfo.h>
+> @@ -90,6 +91,7 @@
+>  	char *argptr;
+>  	u32 pin_func, static_cfg0;
+>  	u32 sys_freqctrl, sys_clksrc;
+> +	u32 pcicfg;
+>  
+>  	argptr = prom_getcmdline();
+>  
+> @@ -232,15 +234,25 @@
+>  
+>  #ifdef CONFIG_PCI
+>  	// Setup PCI bus controller
+> -	au_writel(0, Au1500_PCI_CMEM);
+> -	au_writel(0x00003fff, Au1500_CFG_BASE);
+> +
+> +	au_writel(0x00003fff, Au1500_PCI_CMEM);
+> +
+>  #if defined(__MIPSEB__)
+> -	au_writel(0xf | (2<<6) | (1<<4), Au1500_PCI_CFG);
+> +	pcicfg = 0xf | (2<<6) | (1<<4);
+>  #else
+> -	au_writel(0xf, Au1500_PCI_CFG);
+> +	pcicfg = 0xf;
+>  #endif
+> +
+> +#ifdef CONFIG_NONCOHERENT_IO
+> +	/* Must disable PCI coherency if running non-coherent */
+> +
+> +	pcicfg |= (1<<16);
+> +#endif
+> +
+> +	au_writel(pcicfg,     Au1500_PCI_CFG);
+> +
+>  	au_writel(0xf0000000, Au1500_PCI_MWMASK_DEV);
+> -	au_writel(0, Au1500_PCI_MWBASE_REV_CCL);
+> +	au_writel(0,          Au1500_PCI_MWBASE_REV_CCL);
+>  	au_writel(0x02a00356, Au1500_PCI_STATCMD);
+>  	au_writel(0x00003c04, Au1500_PCI_HDRTYPE);
+>  	au_writel(0x00000008, Au1500_PCI_MBAR);

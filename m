@@ -1,48 +1,78 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g11Dl5R03600
-	for linux-mips-outgoing; Fri, 1 Feb 2002 05:47:05 -0800
-Received: from gandalf.physik.uni-konstanz.de (gandalf.physik.uni-konstanz.de [134.34.144.69])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g11Dl2d03597
-	for <linux-mips@oss.sgi.com>; Fri, 1 Feb 2002 05:47:02 -0800
-Received: from agx by gandalf.physik.uni-konstanz.de with local (Exim 3.12 #1 (Debian))
-	id 16Wd5m-000695-00; Fri, 01 Feb 2002 13:46:58 +0100
-Date: Fri, 1 Feb 2002 13:46:06 +0100
-From: Guido Guenther <agx@sigxcpu.org>
-To: George Gensure <werkt@csh.rit.edu>
-Cc: linux-mips@lists.debian.org
-Subject: Re: Newport XZ
-Message-ID: <20020201134606.A22880@gandalf.physik.uni-konstanz.de>
-References: <20020131111144.A14922@gandalf.physik.uni-konstanz.de> <Pine.SOL.4.31.0201311537330.11295-100000@fury.csh.rit.edu>
-Mime-Version: 1.0
+	by oss.sgi.com (8.11.2/8.11.3) id g11EkI204723
+	for linux-mips-outgoing; Fri, 1 Feb 2002 06:46:18 -0800
+Received: from outboundx.mv.meer.net (outboundx.mv.meer.net [209.157.152.12])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g11EkCd04719
+	for <linux-mips@oss.sgi.com>; Fri, 1 Feb 2002 06:46:12 -0800
+Received: from meer.meer.net (mail.meer.net [209.157.152.14])
+	by outboundx.mv.meer.net (8.11.6/8.11.6) with ESMTP id g11Dk7h90984;
+	Fri, 1 Feb 2002 05:46:07 -0800 (PST)
+	(envelope-from weasel@meer.net)
+Received: from localhost.meer.net (ptn-130.mv.meer.net [209.157.137.130])
+	by meer.meer.net (8.9.3/8.9.3/meer) with ESMTP id FAA4109180;
+	Fri, 1 Feb 2002 05:45:20 -0800 (PST)
+To: binutils@sources.redhat.com, linux-mips@oss.sgi.com
+Subject: me vs gas mips64 relocation
+From: d p chang <weasel@meer.net>
+User-Agent: Gnus/5.0808 (Gnus v5.8.8) Emacs/20.7
+Reply-To: weasel@cs.stanford.edu
+Date: 01 Feb 2002 05:45:19 -0800
+Message-ID: <m2vgdh5n9s.fsf@meer.net>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.SOL.4.31.0201311537330.11295-100000@fury.csh.rit.edu>; from werkt@csh.rit.edu on Thu, Jan 31, 2002 at 03:43:04PM -0500
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, Jan 31, 2002 at 03:43:04PM -0500, George Gensure wrote:
-> It's definitely not a dual head board, however, attached to the sgi bus
-> (s-bus?) these two cards are stacked on top of one another.  The top one
-> has the display adapter.  I only say it is a XZ because of a hardware site
-GIO Bus. You misunderstood me here. I'm not taling about two video outs
-on one card. I actually ment:
- http://www.reputable.com/indytech.html#DualHead
-This "dual head graphics option board"(as it is called there) looks
-very much like a XL. Is that what you have?
+Hi there, I'm trying to figure out if i've just misconfigured
+something here or if there is a real problem in gas. I did some
+grovelling through the mailing list archives, but really am still
+catching up.
 
-> that I found that showed all the different Newport cards, and this was the
-> only one that matched it.  I don't have a problem doing the serial (found
-> a cord), but I looked at the kernel source for the graphics and gconsole
-> drivers, and it looked like they work now by some dark black magic.  There
-> is no probing of the card of any kind, and even the code that looks as
-> though it might be able to run on more than one machine has been #if 0 -ed
-> out.  Would only the base address for the XZ be different, or would it be
-> a completely different arrangement for the card as opposed to the XLs?
-GIO bus probing is being worked at. The current "probing" is crap and
-let's an I2 halt immediately with a bus error. As I said before: if both
-of these cards are XL(aka newport, although the "lower" one might be a
-slight variation to allow for the daughter board) and not XZ(aka
-fullhouse) you might have chances to get this working by only adjusting
-the base addresses(the likely ones are in include/video/newport.h).
- -- Guido
+Anyway, here at home i grabbed the current cvs binutils and configured
+(i thought successfully since I only checked the assembly before the
+final link and hadn't been looking at the reloc bits) it to cross
+compile from macos x to mips64-linux. It appeared to be successful but
+it wasn't until i had written the rest of my chipset startup logic
+that I noticed a problem.
+
+My test case looks like this:
+
+    .text
+    .comm   my_test_global, 8, 8
+
+    LEAF(reloc_hi_test)
+
+    ld      t0, my_test_global      ; my problem
+
+    lui     t0, %hi(my_test_global) ; works
+    addiu   t0, %lo(my_test_global)
+
+    END(reloc_hi_test)
+
+    .end
+
+i compile this w/ (i only just added all the verbosity flags).
+
+    mips64-linux-gcc  -I /Volumes/Homey/dpc/Devel/linux-2.4.17/include/asm/gcc -D__KERNEL__ -I/Volumes/Homey/dpc/Devel/linux-2.4.17/include -Wall -Wstrict-prototypes -Wno-trigraphs -O2 -fomit-frame-pointer -fno-strict-aliasing -fno-common -G 0 -mno-abicalls -fno-pic -Wa,--trap -pipe -mips4 -mmad -Wa,-march=r5231 -mlong64 -mgp64 -mfp64 -ffreestanding -mabi=n32 reloc.S -c -o reloc.o -Wa,-acdhls -v -Wa,-v -Wa,-O0 
+
+and I get this from objdump:
+
+    reloc.o:     file format elf32-tradbigmips
+
+    Disassembly of section .text:
+
+    00000000 <reloc_hi_test>:
+       0:   3c0c0000        lui     t0,0x0
+       4:   258c0000        addiu   t0,t0,0
+                            4: R_MIPS_LO16  my_test_global
+       8:   3c0c0000        lui     t0,0x0
+                            8: R_MIPS_HI16  my_test_global
+       c:   258c0000        addiu   t0,t0,0
+                            c: R_MIPS_LO16  my_test_global
+
+Anyway, the missing R_MIPS_HI16 relocation at offset 0 is my
+problem. I had expected the two to generate the same code. am i
+mistaken, did i screw something up configuring, is this a bug, or
+something else?
+
+\p

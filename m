@@ -1,86 +1,44 @@
-Received:  by oss.sgi.com id <S553825AbRAKMEa>;
-	Thu, 11 Jan 2001 04:04:30 -0800
-Received: from noose.gt.owl.de ([62.52.19.4]:54798 "HELO noose.gt.owl.de")
-	by oss.sgi.com with SMTP id <S553687AbRAKMEJ>;
-	Thu, 11 Jan 2001 04:04:09 -0800
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id DBDEB7F3; Thu, 11 Jan 2001 13:04:06 +0100 (CET)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 5E7F0F597; Thu, 11 Jan 2001 13:04:50 +0100 (CET)
-Date:   Thu, 11 Jan 2001 13:04:50 +0100
-From:   Florian Lohoff <flo@rfc822.org>
-To:     Erik Andersen <andersen@lineo.com>
-Cc:     Michael Shmulevich <michaels@jungo.com>,
-        busybox@opensource.lineo.com,
-        "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: [BusyBox] 0.48 - Can't mount /proc
-Message-ID: <20010111130450.B5811@paradigm.rfc822.org>
-References: <3A5CAC53.60700@jungo.com> <20010110122159.A24714@lineo.com> <3A5D609C.2080201@jungo.com> <20010111044808.A1592@lineo.com>
+Received:  by oss.sgi.com id <S553966AbRAKNFU>;
+	Thu, 11 Jan 2001 05:05:20 -0800
+Received: from woody.ichilton.co.uk ([216.29.174.40]:12551 "HELO
+        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553963AbRAKNFG>;
+	Thu, 11 Jan 2001 05:05:06 -0800
+Received: by woody.ichilton.co.uk (Postfix, from userid 1000)
+	id AA5057CF5; Thu, 11 Jan 2001 13:05:04 +0000 (GMT)
+Date:   Thu, 11 Jan 2001 13:05:04 +0000
+From:   Ian Chilton <mailinglist@ichilton.co.uk>
+To:     ralf@oss.sgi.com
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: R4X00 Kernel
+Message-ID: <20010111130504.A30705@woody.ichilton.co.uk>
+Reply-To: Ian Chilton <ian@ichilton.co.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20010111044808.A1592@lineo.com>; from andersen@lineo.com on Thu, Jan 11, 2001 at 04:48:08AM -0700
-Organization: rfc822 - pure communication
+User-Agent: Mutt/1.3.12i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Thu, Jan 11, 2001 at 04:48:08AM -0700, Erik Andersen wrote:
-> On Thu Jan 11, 2001 at 09:28:28AM +0200, Michael Shmulevich wrote:
-> > Erik,
-> > 
-> > No, doesn't help.
-> > 
-> > bash# mount proc /proc -t proc                                          
-> >        
-> > mount: Mounting proc on /proc failed: Unknown error 716878944           
-> >        
-> > 
-> > Maybe people in mips-linux know something about this?
-> 
-> Yes, this does sound like a kernel specific problem then,
-> since this works on (at least) arm, ppc, sh, and x86.
-> I havn't tried it on anything else.
+Hello,
 
-Henning Heinold has done a lot with busybox on mips (debian installer)
-Might this be due to kernel 2.4 and /proc/mounts includeing a / in front
-of proc 
+I just compiled a kernel from 001027 with the same toolchain and
+quintella booted it on the same I2....
 
-(flo@ping)~# cat /proc/mounts 
-/dev/root / ext2 rw 0 0
-proc /proc proc rw 0 0
-devpts /dev/pts devpts rw 0 0
-/dev/sda7 /usr ext2 rw 0 0
-/dev/sda8 /var ext2 rw 0 0
-/dev/sda9 /tmp ext2 rw 0 0
-/dev/sda10 /home ext2 rw 0 0
-/dev/hda5 /var/tmp ext3 rw 0 0
-usbdevfs /proc/bus/usb usbdevfs rw 0 0
-automount(pid19472) /mnt autofs rw 0 0
-(flo@ping)~# uname -a
-Linux ping.mediaways.net 2.2.18ext3 #1 Thu Dec 14 18:24:45 CET 2000 i686 unknown
+Looks like the test12 in CVS is broken  :)
+ 
 
-Or 
+Bye for Now,
 
-flo@resume:~$ cat /proc/mounts 
-/dev/root / ext2 rw 0 0
-/proc /proc proc rw 0 0
-/dev/sdb1 /home2 ext2 rw 0 0
-/dev/sdc1 /home3 ext2 rw 0 0
-/dev/sdd1 /ftp.rfc822.org ext2 rw 0 0
-/dev/sde1 /home4 ext2 rw 0 0
-shmfs /var/shm shm rw 0 0
-devpts /home4/dev/pts devpts rw 0 0
-proc /home4/proc proc rw 0 0
-flo@resume:~$ uname -a
-Linux resume.rfc822.org 2.4.0-test6 #2 Sun Aug 27 12:37:51 GMT 2000 mips unknown
+Ian
 
-
-Henning has fought with this IIRC.
-
-Flo
--- 
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-     Why is it called "common sense" when nobody seems to have any?
+                                \|||/
+                                (o o)
+ /---------------------------ooO-(_)-Ooo---------------------------\
+ |  Ian Chilton        (IRC Nick - GadgetMan)     ICQ #: 16007717  |
+ |-----------------------------------------------------------------|
+ |  E-Mail: ian@ichilton.co.uk     Web: http://www.ichilton.co.uk  |
+ |-----------------------------------------------------------------|
+ |        Proofread carefully to see if you any words out.         |
+ \-----------------------------------------------------------------/

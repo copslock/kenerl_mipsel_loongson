@@ -1,36 +1,52 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g17IxGi30705
-	for linux-mips-outgoing; Thu, 7 Feb 2002 10:59:16 -0800
-Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g17IxDA30702
-	for <linux-mips@oss.sgi.com>; Thu, 7 Feb 2002 10:59:13 -0800
-Received: from zeus.mvista.com (zeus.mvista.com [10.0.0.112])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id g17Iv0B16346;
-	Thu, 7 Feb 2002 10:57:00 -0800
-Subject: Re: madplay on MIPS
-From: Pete Popov <ppopov@pacbell.net>
-To: Hartvig Ekner <hartvige@mips.com>
-Cc: linux-mips <linux-mips@oss.sgi.com>
-In-Reply-To: <200202071846.TAA27734@copsun18.mips.com>
-References: <200202071846.TAA27734@copsun18.mips.com>
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Mailer: Evolution/1.0.1 
-Date: 07 Feb 2002 11:00:39 -0800
-Message-Id: <1013108440.2956.40.camel@zeus>
-Mime-Version: 1.0
+	by oss.sgi.com (8.11.2/8.11.3) id g1880Iw21187
+	for linux-mips-outgoing; Fri, 8 Feb 2002 00:00:18 -0800
+Received: from Cantor.suse.de (ns.suse.de [213.95.15.193])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1880DA21183
+	for <linux-mips@oss.sgi.com>; Fri, 8 Feb 2002 00:00:14 -0800
+Received: from Hermes.suse.de (Hermes.suse.de [213.95.15.136])
+	by Cantor.suse.de (Postfix) with ESMTP
+	id 581011E24B; Fri,  8 Feb 2002 09:00:07 +0100 (MET)
+X-Authentication-Warning: gee.suse.de: aj set sender to aj@suse.de using -f
+Mail-Copies-To: never
+To: "H . J . Lu" <hjl@lucon.org>
+Cc: linux-mips@oss.sgi.com, GNU C Library <libc-alpha@sources.redhat.com>
+Subject: Re: PATCH: Not use branch likely on mips
+References: <20020205180243.A11993@lucon.org> <hoadulk25q.fsf@gee.suse.de>
+	<20020207091327.B15331@lucon.org>
+From: Andreas Jaeger <aj@suse.de>
+Date: Fri, 08 Feb 2002 09:00:02 +0100
+In-Reply-To: <20020207091327.B15331@lucon.org> ("H . J . Lu"'s message of
+ "Thu, 7 Feb 2002 09:13:27 -0800")
+Message-ID: <hou1sswghp.fsf@gee.suse.de>
+User-Agent: Gnus/5.090006 (Oort Gnus v0.06) XEmacs/21.4 (Artificial
+ Intelligence, i386-suse-linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, 2002-02-07 at 10:46, Hartvig Ekner wrote:
-> I seem to recall somebody asking about madplay mp3 player about a week
-> ago. For what it's worth, we just ran mad-0.14.2b on our Malta board
-> with the 2.4.3 kernel, and it works without a hitch (so far only LE
-> tested). CPU utilization is around 25% of a 200 MHz CPU.
-> 
-> The soundcard was a Creative SB card, based on the Ensoniq chip and
-> using the es1371.c driver.
+"H . J . Lu" <hjl@lucon.org> writes:
 
-OK, thanks. I'll take a look at the es1371 driver.
+> On Thu, Feb 07, 2002 at 11:38:09AM +0100, Andreas Jaeger wrote:
+>> "H . J . Lu" <hjl@lucon.org> writes:
+>> 
+>> > This patch removes branch likely.
+>> 
+>> Please update the copyright years next time.
+>> 
+>> I've committed the patch,
+>> 
+>
+> Here is a new patch. I have checked in a gcc patch which makes
+> ".set noreorder" unnecessary even with "gcc -g".
 
-Pete
+But what about current GCC releases?  Does it work there also without
+problems?
+
+Andreas
+-- 
+ Andreas Jaeger
+  SuSE Labs aj@suse.de
+   private aj@arthur.inka.de
+    http://www.suse.de/~aj

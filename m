@@ -1,49 +1,44 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8O9HZf26231
-	for linux-mips-outgoing; Mon, 24 Sep 2001 02:17:35 -0700
-Received: from smtp.huawei.com ([61.144.161.21])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8O9HVe26228
-	for <linux-mips@oss.sgi.com>; Mon, 24 Sep 2001 02:17:31 -0700
-Received: from r19223a ([10.105.30.54]) by smtp.huawei.com
-          (Netscape Messaging Server 4.15) with SMTP id GK5TPH00.OBQ; Mon,
-          24 Sep 2001 17:15:17 +0800 
-Message-ID: <013701c144d9$af44d3c0$361e690a@huawei.com>
-From: "renc stone" <renwei@huawei.com>
-To: <gcc@gnu.org>
-Cc: <linux-mips@oss.sgi.com>
-Subject: recent gdb add-symbol-file problem?
-Date: Mon, 24 Sep 2001 17:17:07 +0800
+	by oss.sgi.com (8.11.2/8.11.3) id f8OF3mc01112
+	for linux-mips-outgoing; Mon, 24 Sep 2001 08:03:48 -0700
+Received: from linpro.no (qmailr@mail.linpro.no [213.203.57.2])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8OF3je01107
+	for <linux-mips@oss.sgi.com>; Mon, 24 Sep 2001 08:03:46 -0700
+Received: (qmail 10205 invoked from network); 24 Sep 2001 15:03:44 -0000
+Received: from false.linpro.no (213.203.57.201)
+  by mail.linpro.no with SMTP; 24 Sep 2001 15:03:44 -0000
+Received: from toffer by false.linpro.no with local (Exim 3.22 #1 (Debian))
+	id 15lXGq-0004dn-00; Mon, 24 Sep 2001 17:03:44 +0200
+To: manu@netbsd.org (Emmanuel Dreyfus)
+Cc: linux-mips@oss.sgi.com, debian-mips@lists.debian.org
+Subject: Re: Need an account on a Linux/Mips box
+References: <1f05gge.7bt3xkxllentM@[10.0.12.137]>
+From: Kristoffer Gleditsch <kristoffer@linpro.no>
+Organization: Millennium Hand And Shrimp Society
+Date: Mon, 24 Sep 2001 17:03:44 +0200
+Message-ID: <vzay9n46373.fsf@false.linpro.no>
+User-Agent: Gnus/5.090004 (Oort Gnus v0.04) Emacs/20.7
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="gb2312"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.00.2615.200
-X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2615.200
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-hi ,
- I use gdb 20010919 source form sources.redhat.com,
- target mipsel, host i386 box.
+Hi,
 
-When I want to use this to debug some module of linux-mips kernel ,
-trouble comes:
+(Crossposted to the debian-mips list, in case there are others who are
+interested.)
 
-When I use the add-symbol-file command to add the symbols of module,
+[ Emmanuel Dreyfus ]
 
-add-symbol-file mymodule.o 0xc001e060
-gdb echos no problem,
-but it seems to be confused:
-the command
-b my_func1
-b my_func2
-b my_func3
+> I'm working on Linux compatibility on NetBSD/Mips. In order to
+> implement things such as signals, I need a user account on a big
+> endian Linux/Mips system.
 
-all show the same address, all the functions starts from ONE place?
-I checked the address, it's the text section start address of this module.
-Can't the gdb  correctly read the elf file of mipsel ?
+We have an SGI Indy (R4600 100Mhz CPU, 96MB RAM, 6.5GB HD) running
+Debian (Sid) which is available for developers who need access to a
+MIPS computer.  Please email me if you want an account.
 
- Any ideas?  Or anyone who have done this  please tell me how to get through
-it .
+Regards,
+
+-- 
+Kristoffer.

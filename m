@@ -1,82 +1,67 @@
-Received:  by oss.sgi.com id <S554152AbRA0Kwb>;
-	Sat, 27 Jan 2001 02:52:31 -0800
-Received: from hermes.research.kpn.com ([139.63.192.8]:61455 "EHLO
-        hermes.research.kpn.com") by oss.sgi.com with ESMTP
-	id <S554149AbRA0KwJ>; Sat, 27 Jan 2001 02:52:09 -0800
-Received: from sparta.research.kpn.com (sparta.research.kpn.com [139.63.192.6])
- by research.kpn.com (PMDF V5.2-31 #42699)
- with ESMTP id <01JZEG0B548W0007BC@research.kpn.com> for
- linux-mips@oss.sgi.com; Sat, 27 Jan 2001 11:52:06 +0100
-Received: (from karel@localhost)	by sparta.research.kpn.com (8.8.8+Sun/8.8.8)
- id LAA21268; Sat, 27 Jan 2001 11:52:05 +0100 (MET)
-X-URL:  http://www-lsdm.research.kpn.com/~karel
-Date:   Sat, 27 Jan 2001 11:52:05 +0100 (MET)
-From:   Karel van Houten <K.H.C.vanHouten@research.kpn.com>
-Subject: Re: Cross compiling RPMs
-In-reply-to: <200101262114.NAA26672@saturn.mikemac.com>
-To:     mikemac@mikemac.com (Mike McDonald)
-Cc:     flo@rfc822.org (Florian Lohoff), linux-mips@oss.sgi.com
-Message-id: <200101271052.LAA21268@sparta.research.kpn.com>
-MIME-version: 1.0
-X-Mailer: ELM [version 2.5 PL2]
-Content-type: text/plain; charset=us-ascii
-Content-transfer-encoding: 7bit
+Received:  by oss.sgi.com id <S553712AbRA0Vbn>;
+	Sat, 27 Jan 2001 13:31:43 -0800
+Received: from gateway-1237.mvista.com ([12.44.186.158]:46070 "EHLO
+        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553690AbRA0Vb1>;
+	Sat, 27 Jan 2001 13:31:27 -0800
+Received: from mvista.com (IDENT:ppopov@zeus.mvista.com [10.0.0.112])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f0RLSEI26703;
+	Sat, 27 Jan 2001 13:28:14 -0800
+Message-ID: <3A733E40.9B1F02DD@mvista.com>
+Date:   Sat, 27 Jan 2001 13:31:44 -0800
+From:   Pete Popov <ppopov@mvista.com>
+Organization: Monta Vista Software
+X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.17 i586)
+X-Accept-Language: bg, en
+MIME-Version: 1.0
+To:     Michael Shmulevich <michaels@jungo.com>
+CC:     "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Re: MIPS/linux compatible PCI network cards
+References: <3A70A356.F3CA71F1@jungo.com> <3A70A718.F0628BBB@mvista.com> <3A712D90.3CC9EBAF@jungo.com> <3A71BF37.7DBE8234@mvista.com> <3A728DCE.33C2CE8A@jungo.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Mike wrote:
+Michael Shmulevich wrote:
 > 
->   If one were to go the native compiling route, what would the minimum
-> set of rpms needed be? kernel, bin-utils, cc. file-utils? ???
+> Pete Popov wrote:
 > 
+> > To get the realtek driver to work, all you need to do is to set
+> > mips_io_port_base to KSEG1.  Let's assume that the ethernet card has
+> > been assigned i/o space at 0x14000000.  The driver will pick that up as
+> > the ioaddr and use the 0x1400000 as the "port". The inb()/outb() macros
+> > add mips_io_port_base to the "port" value and now you have 0xB4000000,
+> > so you can access the card.
+> >
+> > Pete
+> 
+> The KSEG1() is indeed what I did, however the driver, as I tried to
+> describe, starts to loose synchronization on buffer at some point and
+> just waits quietly... Even with all the DEBUG and mental effort switched
+> on I can't get the reason why this happens...
+> 
+> By the way, which version of the driver are you talking about? Mine
+> doesn't have any ifdef on anything... besides MODULE of course:-)
+> 
+> Mine is:
+> 
+> static const char *version =
+> "rtl8139.c:v1.07 5/6/99 Donald Becker
+> http://cesdis.gsfc.nasa.gov/linux/drivers/"
 
-It depends on what and how you want to compile. To use rpm, you need
-quite a lot tools (db3, patch, sed, grep, find,...). Beside that
-you'll at least need glibc, binutils, gcc, and make. But you'll find
-out that you'll have to compile flex, bison, m4, automake, autoconf,
-and even perl to get rpm builds going. My mipsel native environment
-currently has the following packages:
+Hmmm, the above looks like the header for the 8129 driver, except that
+it says rtl8139.  Make sure you're using drivers/net/8139too.c   I see
+this in the driver:   #define RTL8139_VERSION "0.9.10". I'm using test9
+kernel, I doubt that you're driver is out of date -- it seems you're
+perhaps using the wrong driver.
 
-MAKEDEV-3.0.6-5         gcc-c++-2.95.3-14       newt-devel-0.50.17-1
-SysVinit-2.78-10        gcc-libstdc++-2.95.3-14 pam-0.72-26
-XFree86-4.0.1-1lm       gdbm-1.8.0-5            patch-2.5.4-4
-XFree86-devel-4.0.1-1lm gdbm-devel-1.8.0-5      perl-5.6.0-9
-XFree86-libs-4.0.1-1lm  gettext-0.10.35-23      popt-1.6-4lm
-autoconf-2.13-9         glib-1.2.8-4            pwdb-0.61.1-1
-automake-1.4-8          glib-devel-1.2.8-4      python-1.5.2-27
-basesystem-7.0-2        glibc-2.1.97-1          python-devel-1.5.2-27
-bash-2.04-11            glibc-devel-2.1.97-1    python-tools-1.5.2-27
-bc-1.05a-13             gmp-3.0.1-5             readline-4.1-5
-bdflush-1.5-14          gmp-devel-3.0.1-5       readline-devel-4.1-5
-binutils-2.10.1-3       gpm-1.19.3-4            rpm-4.0-4lm
-binutils-libs-2.10.1-3  gpm-devel-1.19.3-4      rpm-build-4.0-4lm
-bison-1.28-5            grep-2.4.2-4            sed-3.02-8
-byacc-1.9-16            groff-1.16-7            sh-utils-2.0-11
-bzip2-1.0.1-3           gtk+-1.2.8-7            slang-1.4.1-5
-bzip2-devel-1.0.1-3     gtk+-devel-1.2.8-7      slang-devel-1.4.1-5
-cpio-2.4.2-20           gzip-1.3-6              tar-1.13-4
-db1-1.85-4              info-4.0-15             tcl-8.3.1-46
-db1-devel-1.85-4        ldconfig-1.9.5-16       tcllib-0.4-46
-db2-2.4.14-4            libelf-0.7.0-3          termcap-11.0.1-3
-db2-devel-2.4.14-4      libelf-devel-0.7.0-3    texinfo-4.0-15
-db3-3.1.14-6lm          libpng-1.0.8-1          textutils-2.0e-8
-db3-devel-3.1.14-6lm    libpng-devel-1.0.8-1    tix-4.1.0.6-46
-db3-utils-3.1.14-6lm    libtermcap-2.0.8-25     tk-8.3.1-46
-dev-3.0.6-5             libtermcap-devel-2.0.8- tkinter-1.5.2-27
-diffutils-2.7-21        libtool-1.3.4-3lm       unzip-5.41-3
-fileutils-4.0x-3        m4-1.4.1-3              utempter-0.5.2-4
-findutils-4.1.5-4       make-3.79.1-5           vim-common-5.7-6
-flex-2.5.4a-11          ncurses-5.1-2           vim-minimal-5.7-6
-gawk-3.0.6-1            ncurses-devel-5.1-2     zlib-1.1.3-12
-gcc-2.95.3-14           newt-0.50.17-1          zlib-devel-1.1.3-12
+Regarding the I/O vs MEM accesses, look for this:
 
-But you surely can start with less... :-)
--- 
-Karel van Houten
 
-----------------------------------------------------------
-The box said "Requires Windows 95 or better."
-I can't understand why it won't work on my Linux computer. 
-----------------------------------------------------------
+/* define to 1 to enable PIO instead of MMIO */
+#undef USE_IO_OPS
+
+
+Pete

@@ -1,46 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Dec 2002 22:38:17 +0000 (GMT)
-Received: from pc2-cwma1-4-cust129.swan.cable.ntl.com ([213.105.254.129]:30660
-	"EHLO irongate.swansea.linux.org.uk") by linux-mips.org with ESMTP
-	id <S8225241AbSLKWiR>; Wed, 11 Dec 2002 22:38:17 +0000
-Received: from irongate.swansea.linux.org.uk (localhost [127.0.0.1])
-	by irongate.swansea.linux.org.uk (8.12.5/8.12.5) with ESMTP id gBBNFplQ019394;
-	Wed, 11 Dec 2002 23:15:52 GMT
-Received: (from alan@localhost)
-	by irongate.swansea.linux.org.uk (8.12.5/8.12.5/Submit) id gBBNFm6S019392;
-	Wed, 11 Dec 2002 23:15:49 GMT
-X-Authentication-Warning: irongate.swansea.linux.org.uk: alan set sender to alan@lxorguk.ukuu.org.uk using -f
-Subject: Re: [PATCH 2.5] SGI O2 framebuffer driver
-From: Alan Cox <alan@lxorguk.ukuu.org.uk>
-To: Vivien Chappelier <vivienc@nerim.net>
-Cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-	Ilya Volynets <ilya@theIlya.com>
-In-Reply-To: <Pine.LNX.4.21.0212112252410.2300-100000@melkor>
-References: <Pine.LNX.4.21.0212112252410.2300-100000@melkor>
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Mailer: Ximian Evolution 1.0.8 (1.0.8-10) 
-Date: 11 Dec 2002 23:15:48 +0000
-Message-Id: <1039648548.18587.52.camel@irongate.swansea.linux.org.uk>
-Mime-Version: 1.0
-Return-Path: <alan@lxorguk.ukuu.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Dec 2002 22:41:03 +0000 (GMT)
+Received: from cm19173.red.mundo-r.com ([213.60.19.173]:9411 "EHLO demo.mitica")
+	by linux-mips.org with ESMTP id <S8225241AbSLKWlC>;
+	Wed, 11 Dec 2002 22:41:02 +0000
+Received: by demo.mitica (Postfix, from userid 501)
+	id 80E9CD657; Wed, 11 Dec 2002 23:46:20 +0100 (CET)
+To: ilya@theIlya.com
+Cc: Christoph Hellwig <hch@infradead.org>, linux-mips@linux-mips.org,
+	ralf@linux-mips.org
+Subject: Re: O2 VICE support
+References: <20021210191120.GE609@gateway.total-knowledge.com>
+	<20021211133831.A19300@infradead.org>
+	<20021211221629.GP609@gateway.total-knowledge.com>
+X-Url: http://people.mandrakesoft.com/~quintela
+From: Juan Quintela <quintela@mandrakesoft.com>
+In-Reply-To: <20021211221629.GP609@gateway.total-knowledge.com>
+Date: 11 Dec 2002 23:46:20 +0100
+Message-ID: <m2d6o8mawz.fsf@demo.mitica>
+User-Agent: Gnus/5.09 (Gnus v5.9.0) Emacs/21.2.92
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <quintela@mandrakesoft.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 870
+X-archive-position: 871
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alan@lxorguk.ukuu.org.uk
+X-original-sender: quintela@mandrakesoft.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 2002-12-11 at 22:25, Vivien Chappelier wrote:
-> Hi,
-> 
-> 	Here's a patch to add support for the framebuffer on the SGI
-> O2. It has support for both static (bootmem) and dynamic video memory
-> allocation (limited to 2MB due to the small number of available vmalloc
-> mappings in the current mips64 kernel). 
+>>>>> "ilya" == ilya  <ilya@theIlya.com> writes:
 
-Since vmalloc is physically non linear is there any reason you can't
-just use get_free_page() a lot ?
+
+>> 
+>> > +void vice_cleanup_module(void)
+>> > +{
+>> > +#ifndef CONFIG_DEVFS_FS
+>> > +    /* cleanup_module is never called if registering failed */
+>> > +    unregister_chrdev(vice_major, "vice");
+>> > +#endif
+>> 
+>> Umm, just because someone makes the mistake of enabling devfs he
+>> doesn't have to use it.. :)
+ilya> I'm not buying that one :)
+
+Read behind the joke:
+- you have devfs compiled in
+- you don't have devfs mounted
+
+Conclusion:
+        there is a bug in your code :)
+
+Later, Juan.
+
+-- 
+In theory, practice and theory are the same, but in practice they 
+are different -- Larry McVoy

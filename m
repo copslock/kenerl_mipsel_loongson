@@ -1,49 +1,51 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id JAA84066 for <linux-archive@neteng.engr.sgi.com>; Mon, 18 Jan 1999 09:21:20 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id JAA84773 for <linux-archive@neteng.engr.sgi.com>; Mon, 18 Jan 1999 09:30:13 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id JAA25798
+	id JAA54717
 	for linux-list;
-	Mon, 18 Jan 1999 09:20:39 -0800 (PST)
+	Mon, 18 Jan 1999 09:29:05 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id JAA35819;
-	Mon, 18 Jan 1999 09:20:35 -0800 (PST)
-	mail_from (miguel@metropolis.nuclecu.unam.mx)
-Received: from metropolis.nuclecu.unam.mx (metropolis.nuclecu.unam.mx [132.248.29.92]) 
+	via ESMTP id JAA60483
+	for <linux@cthulhu.engr.sgi.com>;
+	Mon, 18 Jan 1999 09:29:03 -0800 (PST)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: from lappi.waldorf-gmbh.de (bpxterm.cs.uni-sb.de [134.96.243.164]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id MAA06189; Mon, 18 Jan 1999 12:20:34 -0500 (EST)
-	mail_from (miguel@metropolis.nuclecu.unam.mx)
-Received: (from miguel@localhost)
-	by metropolis.nuclecu.unam.mx (8.8.7/8.8.7) id LAA20930;
-	Mon, 18 Jan 1999 11:25:00 -0600
-Date: Mon, 18 Jan 1999 11:25:00 -0600
-Message-Id: <199901181725.LAA20930@metropolis.nuclecu.unam.mx>
-From: Miguel de Icaza <miguel@nuclecu.unam.mx>
-To: ariel@cthulhu.engr.sgi.com
-CC: davem@dm.cobaltmicro.com, ralf@uni-koblenz.de, ariel@cthulhu.engr.sgi.com,
-        linux@cthulhu.engr.sgi.com, adevries@engsoc.carleton.ca,
-        richard@infopact.nl
-In-reply-to: <199901181040.CAA33736@oz.engr.sgi.com> (ariel@oz.engr.sgi.com)
-Subject: Re: linus.linux.sgi.com
-X-Windows: The defacto substandard.
-References:  <199901181040.CAA33736@oz.engr.sgi.com>
+	via ESMTP id MAA04893
+	for <linux@cthulhu.engr.sgi.com>; Mon, 18 Jan 1999 12:29:01 -0500 (EST)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: (from ralf@localhost)
+	by lappi.waldorf-gmbh.de (8.8.7/8.8.7) id SAA01231;
+	Mon, 18 Jan 1999 18:29:18 +0100
+Message-ID: <19990118182918.B859@uni-koblenz.de>
+Date: Mon, 18 Jan 1999 18:29:18 +0100
+From: ralf@uni-koblenz.de
+To: linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr
+Subject: Re: SGI/Linux press
+References: <19990118181002.A859@uni-koblenz.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.93.2
+In-Reply-To: <19990118181002.A859@uni-koblenz.de>; from ralf@uni-koblenz.de on Mon, Jan 18, 1999 at 06:10:02PM +0100
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+On Mon, Jan 18, 1999 at 06:10:02PM +0100, ralf@uni-koblenz.de wrote:
 
-> The binary compatibility FUD is ironic considering
-> that they have broken binary compatibility as well as source
-> compatibility so many times in their history (m68k -> SPARC
-> SPARC - x86, SunOs -> Solaris) believe me I know since I've
-> been a Sun customer and an ISV.  
+> More press about SGI and Linux.  This is available on
+> http://www.nwfusion.com/news/1999/0118linux2.html.
+> 
+> Grass-roots effort pulls SGI toward Linux
+> 
+> By Deni Connor
+> Network World, 01/18/99
 
-You forgot the breakage in the various Solaris 2.n->2.n+1
+Forgot that Deni Connor's email is dconnor@nww.com ...
 
-At least the 2.4->2.5 was painful for me
-
-Miguel.
+  Ralf

@@ -1,68 +1,46 @@
-Received:  by oss.sgi.com id <S553734AbRAOVV2>;
-	Mon, 15 Jan 2001 13:21:28 -0800
-Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:29901 "EHLO
-        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553724AbRAOVVQ>;
-	Mon, 15 Jan 2001 13:21:16 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id WAA12903;
-	Mon, 15 Jan 2001 22:21:29 +0100 (MET)
-Date:   Mon, 15 Jan 2001 22:21:27 +0100 (MET)
-From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To:     Florian Lohoff <flo@rfc822.org>
-cc:     linux-mips@oss.sgi.com
-Subject: Re: crash in __alloc_bootmem_core on SGI current cvs
-In-Reply-To: <20010115181133.A2439@paradigm.rfc822.org>
-Message-ID: <Pine.GSO.3.96.1010115220514.16619Z-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received:  by oss.sgi.com id <S553682AbRAPGLt>;
+	Mon, 15 Jan 2001 22:11:49 -0800
+Received: from brutus.conectiva.com.br ([200.250.58.146]:15600 "EHLO
+        dhcp046.distro.conectiva") by oss.sgi.com with ESMTP
+	id <S553672AbRAPGLU>; Mon, 15 Jan 2001 22:11:20 -0800
+Received: (ralf@lappi.waldorf-gmbh.de) by bacchus.dhis.org
+	id <S868141AbRAPGK3>; Tue, 16 Jan 2001 04:10:29 -0200
+Date:	Tue, 16 Jan 2001 04:10:29 -0200
+From:	Ralf Baechle <ralf@oss.sgi.com>
+To:	Predrag Malicevic <pmalic@blic.net>
+Cc:	<linux-mips@oss.sgi.com>
+Subject: Re: O200 problem...
+Message-ID: <20010116041028.B2068@bacchus.dhis.org>
+References: <20010109004138.A12181@bacchus.dhis.org> <Pine.LNX.4.30.0101121507090.13361-100000@quake.blic.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.LNX.4.30.0101121507090.13361-100000@quake.blic.net>; from pmalic@blic.net on Fri, Jan 12, 2001 at 03:20:25PM +0100
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Mon, 15 Jan 2001, Florian Lohoff wrote:
+On Fri, Jan 12, 2001 at 03:20:25PM +0100, Predrag Malicevic wrote:
 
-> the current cvs kernel crashes in __alloc_bootmem_core here:
+> > Thanks for sending the oops message; however without additional data
+> > provided I can't use it.  Can you please point please put the kernel image
+> > that resulted in the oops online?
 > 
-> [...]
->         printk("%s, %d memset %p 0 %d\n", __FUNCTION__, __LINE__, ret, size);
->         memset(ret, 0, size);
->         printk("%s, %d\n", __FUNCTION__, __LINE__);
->         return ret;
-> [...]
+> http://lothar.penguinpowered.com/o200.tar.gz
 > 
-> Output coming:
-> 
-> __alloc_bootmem_core, 230
-> __alloc_bootmem_core, 234 memset 81000000 0 36864
-> 
-> I guess this is really bogus as the ARCS MEMORY debug gives:
-> 
-> [0,a8748da0]: base<00000000> pages<00000001> type<Exception Block>              
-> [1,a8748dbc]: base<00000001> pages<00000001> type<ARCS Romvec Page>             
-> [2,a8748d84]: base<00008002> pages<00000173> type<Standlong Program Pages>      
-> [3,a87491cc]: base<00008175> pages<000005cb> type<Generic Free RAM>             
-> [4,a874919c]: base<00008740> pages<000000c0> type<ARCS Temp Storage Area>       
-> [5,a8749180]: base<00008800> pages<00007800> type<Generic Free RAM>            
-> 
-> Might this be the sgi/arc bootmem/memory.c doesnt alloc everything
-> or frees to much ?
+> You'll find everything in the archive: vmlinux, System.map, kernel
+> configuration file and a new session log with 'oops messages'.
 
- Thanks for a useful report.  I am the responsible person, it would seem,
-as I've rewritten the bootmem allocation code recently to make it
-consistent across all the subports and more flexible as well.  I could 
-only test the DECstation code so it's possible I screwed up things
-elsewhere.  I'll look at the code and I'll provide a patch, either a fix,
-if I am able to develop it immediately or some debugging code otherwise.
+I just examined your crash data; it's not obvious why what is causing the
+DBE exception that is making your kernel die.  It seems to happen in
+the SCSI code; I wonder if any of the devices you have on the SCSI bus
+especially on the second hostadapter is making the Qlogic driver go nuts.
 
- As I see prink() works for you could you please also check and report the
-memory map as found by the kernel, i.e. the lines output after "Determined
-physical RAM map:", if any?  The code is executed very early, before an
-actual allocation takes place, so it should run regardless.
+Can you retry your kernel with devices from this bus removed?
 
-  Maciej
+Thanks,
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+  Ralf

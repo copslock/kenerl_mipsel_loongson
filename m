@@ -1,33 +1,34 @@
-Received:  by oss.sgi.com id <S553854AbRBSTmZ>;
-	Mon, 19 Feb 2001 11:42:25 -0800
-Received: from yacht.ee.fit.edu ([163.118.137.187]:9186 "EHLO yacht.ee.fit.edu")
-	by oss.sgi.com with ESMTP id <S553793AbRBSTmL>;
-	Mon, 19 Feb 2001 11:42:11 -0800
-Received: from localhost (altine@localhost)
-	by yacht.ee.fit.edu (8.9.1b+Sun/8.9.1) with ESMTP id OAA13587
-	for <linux-mips@oss.sgi.com>; Mon, 19 Feb 2001 14:52:10 -0500 (EST)
-Date:   Mon, 19 Feb 2001 14:52:10 -0500 (EST)
-From:   Can Altineller <altine@ee.fit.edu>
-X-Sender: altine@yacht
-To:     linux-mips@oss.sgi.com
-Subject: newbie question.
-In-Reply-To: <20010219141130.C17354@cistron.nl>
-Message-ID: <Pine.GSO.4.05.10102191449510.13560-100000@yacht>
+Received:  by oss.sgi.com id <S553795AbRBTEmM>;
+	Mon, 19 Feb 2001 20:42:12 -0800
+Received: from agile-50.OntheNet.com.au ([203.144.13.50]:34316 "EHLO
+        surfers.oz.agile.tv") by oss.sgi.com with ESMTP id <S553772AbRBTElr>;
+	Mon, 19 Feb 2001 20:41:47 -0800
+Received: from agile.tv (IDENT:ldavies@tugun.oz.agile.tv [192.168.16.20])
+	by surfers.oz.agile.tv (8.11.0/8.11.0) with ESMTP id f1K4fjV26637;
+	Tue, 20 Feb 2001 14:41:45 +1000
+Message-ID: <3A91F56F.9020603@agile.tv>
+Date:   Tue, 20 Feb 2001 14:41:19 +1000
+From:   Liam Davies <ldavies@agile.tv>
+Reply-To: ldavies@oz.agile.tv
+User-Agent: Mozilla/5.0 (X11; U; Linux 2.2.16-22 i686; en-US; m18) Gecko/20010131 Netscape6/6.01
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To:     linux-mips <linux-mips@oss.sgi.com>
+Subject: pci io remapping and ide_ioreg_t
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+I have an old (2.0.x) ide driver that used to hard code the 
+hwif->io_ports up to the 0x100001f0-0x100001f7 range. This is now broken 
+in the 2.4 kernel since ide_ioreg_t has changed from unsigned long to 
+unsigned short.
 
-	Hello;
+What is the mechanism for reaching these ports now?
 
-	I got an Indy 4600SC with 64Megs of memory, and I dont feel like
-running Irix on it. What is the status of the sgi port port of linux. Is
-there a distro available? Also, I dont have a floppy in my indy, so can I
-net boot? If someone point me out in the correct way, I will be very
-happy.
 
-	Thanks.
-	-C.A.
+Thanks
+Liam

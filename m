@@ -1,58 +1,64 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g14K5tV30992
-	for linux-mips-outgoing; Mon, 4 Feb 2002 12:05:55 -0800
-Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g14K5jA30793;
-	Mon, 4 Feb 2002 12:05:45 -0800
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id g14J1aB11076;
-	Mon, 4 Feb 2002 11:01:36 -0800
-Message-ID: <3C5EDB08.B4F2FF7B@mvista.com>
-Date: Mon, 04 Feb 2002 11:03:36 -0800
-From: Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
-X-Accept-Language: en
+	by oss.sgi.com (8.11.2/8.11.3) id g14KKNv10302
+	for linux-mips-outgoing; Mon, 4 Feb 2002 12:20:23 -0800
+Received: from cygnus.equallogic.com (cygnus.equallogic.com [65.170.102.10])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g14KKHA10161
+	for <linux-mips@oss.sgi.com>; Mon, 4 Feb 2002 12:20:17 -0800
+Received: from deneb.dev.equallogic.com (deneb.dev.equallogic.com [172.16.1.99])
+	by cygnus.equallogic.com (8.11.6/8.11.6) with ESMTP id g14JHC606535;
+	Mon, 4 Feb 2002 14:17:12 -0500
+Received: from pkoning.dev.equallogic.com.equallogic.com (localhost.localdomain [127.0.0.1])
+	by deneb.dev.equallogic.com (8.11.6/8.11.2) with SMTP id g14JH8704342;
+	Mon, 4 Feb 2002 14:17:08 -0500
 MIME-Version: 1.0
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-CC: Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com
-Subject: Re: CVS Update@oss.sgi.com: linux
-References: <Pine.GSO.3.96.1020204101743.5750B-100000@delta.ds2.pg.gda.pl>
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
+Message-ID: <15454.56884.108220.380799@pkoning.dev.equallogic.com>
+Date: Mon, 4 Feb 2002 14:17:08 -0500 (EST)
+From: Paul Koning <pkoning@equallogic.com>
+To: justinca@ri.cmu.edu
+Cc: hjl@lucon.org, dan@debian.org, macro@ds2.pg.gda.pl, machida@sm.sony.co.jp,
+   libc-alpha@sources.redhat.com, linux-mips@oss.sgi.com, gcc@gcc.gnu.org
+Subject: Re: PATCH: Fix ll/sc for mips (take 3)
+References: <20020131231714.E32690@lucon.org>
+	<Pine.GSO.3.96.1020201124328.26449A-100000@delta.ds2.pg.gda.pl>
+	<20020201102943.A11146@lucon.org>
+	<20020201180126.A23740@nevyn.them.org>
+	<20020201151513.A15913@lucon.org>
+	<20020201222657.A13339@nevyn.them.org>
+	<1012676003.1563.6.camel@xyzzy.stargate.net>
+	<20020202120354.A1522@lucon.org>
+	<1012715250.2297.9.camel@xyzzy.stargate.net>
+X-Mailer: VM 6.75 under 21.1 (patch 11) "Carlsbad Caverns" XEmacs Lucid
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-"Maciej W. Rozycki" wrote:
-> 
-> On Sun, 3 Feb 2002, Ralf Baechle wrote:
-> 
-> > >  Hmm, the assumption might be justifiable for the i386 only?  Shouldn't
-> > > i8259.c be fixed instead?
-> >
-> > These are the ISA interrupts; many drivers make assumptions about the
-> > interrupts numbers, so we can't really change the numbers anyway.  For
-> > any non-ISA interrupt it's number can be choosen freely.
-> 
->  I don't think such assumptions are sane even for the i386 -- an I/O APIC
-> system is free to route ISA interrupts to whichever I/O APIC inputs are
-> available, not necessarily the low 16.  The Intel MP Spec explicitly
-> allows such a setup -- ISA interrupts are only tied in default
-> configurations, which are rarely used (probably not at all these days).
-> 
->  Anyway, only the drivers that read an IRQ number from jumpers or Flash
-> memory need to be checked, and these are a minority (3Com Ethernet cards
-> and possibly very few others).  These that do probing (with probe_irq) or
-> simply take the number from an option will work automatically.
-> 
->  While I agree for 2.4 it might be not the best idea to do such changes,
-> for 2.5 it's worth considering, isn't it?
-> 
+>>>>> "Justin" == Justin Carlson <justinca@ri.cmu.edu> writes:
 
-This patch is from me.  It merely reflects a change of the irq base mapping
-from 0x20 to 0x0.  I think someone did this change for Malta board.
+ Justin> On Sat, 2002-02-02 at 15:03, H . J . Lu wrote:
+ >> Does everyone agree with this? If yes, I can make a patch not to
+ >> use branch likely. But on the other hand, "gcc -mips2" will
+ >> generate code using branch likely. If branch likely doesn't buy
+ >> you anything, shouldn't we change gcc not to generate branch
+ >> likely instructions?
+ >> 
 
-A better solution is to have init_i8259_irqs() take an argument that is the
-base IRQ number, like many other irq controller code do.  This way it is a
-board level decision as what block of IRQs i8259 should use.
+ Justin> I know of at least one internal version of gcc which already
+ Justin> has been hacked to remove generation of branch likely
+ Justin> instructions. 
 
-Jun
+More precisely (if you're looking at the same one I was) -- it has a
+target processor type check that disables it for those CPUs where it
+is known to be not a good idea.
+
+ Justin> Also, I didn't say branch likely doesn't buy you anything;
+ Justin> there are situations where it works well.  Looking at the
+ Justin> spin_lock code, though, this isn't one of them.  
+
+I agree, and I think that point was missed.  Independent of whether a
+particular processor (MIPS or otherwise) has the concept of "branch
+likely", the design rule of spinlocks is that you try to avoid
+spinning (i.e., avoid lock contention) in the system design.  So for
+that particular construct, the right answer is "branch not likely".
+
+     paul

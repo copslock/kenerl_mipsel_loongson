@@ -1,67 +1,86 @@
-Received:  by oss.sgi.com id <S305167AbQDQV1I>;
-	Mon, 17 Apr 2000 14:27:08 -0700
-Received: from deliverator.sgi.com ([204.94.214.10]:33878 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305161AbQDQV05>;
-	Mon, 17 Apr 2000 14:26:57 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id OAA24907; Mon, 17 Apr 2000 14:22:12 -0700 (PDT)
+Received:  by oss.sgi.com id <S305170AbQDQX77>;
+	Mon, 17 Apr 2000 16:59:59 -0700
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:65037 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S305167AbQDQX7b>; Mon, 17 Apr 2000 16:59:31 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id RAA09888; Mon, 17 Apr 2000 17:03:30 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id OAA01993
+	id QAA63743
 	for linux-list;
-	Mon, 17 Apr 2000 14:14:47 -0700 (PDT)
+	Mon, 17 Apr 2000 16:46:41 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from dhcp-163-154-5-221.engr.sgi.com (dhcp-163-154-5-221.engr.sgi.com [163.154.5.221])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id OAA91693
+	via ESMTP id QAA42007
 	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 17 Apr 2000 14:14:46 -0700 (PDT)
+	Mon, 17 Apr 2000 16:46:40 -0700 (PDT)
 	mail_from (ralf@oss.sgi.com)
-Received:  by lappi.waldorf-gmbh.de id <S1406016AbQDQVLk>;
-	Mon, 17 Apr 2000 14:11:40 -0700
-Date:   Mon, 17 Apr 2000 14:11:40 -0700
+Received:  by lappi.waldorf-gmbh.de id <S1405571AbQDQXnd>;
+	Mon, 17 Apr 2000 16:43:33 -0700
+Date:   Mon, 17 Apr 2000 16:43:33 -0700
 From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Michael Engel <engel@math.uni-siegen.de>
-Cc:     linux@cthulhu.engr.sgi.com
-Subject: Re: Indigo R3000 PROM calls /
-Message-ID: <20000417141140.A3123@uni-koblenz.de>
-References: <200004162112.XAA02036@jordan.numerik.math.uni-siegen.de>
+To:     Mike Klar <mfklar@ponymail.com>
+Cc:     linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr
+Subject: Re: Unaligned address handling, and the cause of that login problem
+Message-ID: <20000417164333.B3123@uni-koblenz.de>
+References: <NDBBIDGAOKMNJNDAHDDMAEGGCJAA.mfklar@ponymail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 X-Mailer: Mutt 1.0.1i
-In-Reply-To: <200004162112.XAA02036@jordan.numerik.math.uni-siegen.de>; from engel@math.uni-siegen.de on Sun, Apr 16, 2000 at 11:12:02PM +0200
+In-Reply-To: <NDBBIDGAOKMNJNDAHDDMAEGGCJAA.mfklar@ponymail.com>; from mfklar@ponymail.com on Sun, Apr 16, 2000 at 03:19:01PM -0700
 X-Accept-Language: de,en,fr
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On Sun, Apr 16, 2000 at 11:12:02PM +0200, Michael Engel wrote:
+On Sun, Apr 16, 2000 at 03:19:01PM -0700, Mike Klar wrote:
 
-> I had some time over the weekend and started to hack on Linux for my
-> good old R3000 Indigo (oh yeah, I should better try to write drivers
-> for the PMAG-F and the FDDI adapter in my DECstations but Indigo 
-> hacking seemed to be more fun ;-)). I can load the kernel from sash 
-> and it actually starts at kernel_entry (whow) and - no wonder - crashes 
-> somewhere in init_arch (because I didn't change anything there ...).
+> While tracking down a random memory corruption bug, I stumbled across the
+> cause of that telnet/ssh problem in recent kernels reported about a month
+> ago:
 > 
-> Now, it would of course be nice to have some kind of debugging output
-> early on. Does anyone know if the R3k Indigo has the same ARCS console 
-> semantics as the Indy ? I.e. there is a PROMBLOCK struct at address 
-> 0xa0001000 (as defined in include/asm-mips/sgiarcs.h) which points to 
-> romvec which I can then use to dereference PROM functions ? Or is it 
-> something completely different ? 
+> The version of down_trylock() for CPUs with support LL/SC assumes that
+> struct semaphore is 64-bit aligned, since it accesses count and waking as a
+> single dualword (with lld/scd).  Nothing in struct semaphore guarantees this
+> alignment, and in fact, struct tty_struct has a struct semaphore that is not
+> 64-bit aligned.  Depending on how a tty is used (I think it's a non-blocking
+> read that triggers the problem, in drivers/char/n_tty.c), the kernel will
+> attempt an unaligned lld, it will cause an address error, and the handler in
+> arch/mips/kernel/unaligned.c will kill current with SIGBUS (since lld/scd
+> cannot be properly simulated).
+> 
+> The quick-and-dirty workaround is to put 32 bits of padding before the
+> atomic_read member of struct tty_struct.  Of course, that doesn't fix the
+> real problem, and there may well be other non-64-bit aligned struct
+> semaphore's out there.  A proper fix would be to either hack up struct
+> semaphore to guarantee dualword alignment, or rework the was down_trylock
+> does its thing.
 
-Check out include/asm-mips/mipsprom.h, it should be fairly close to what
-you're looking for.  SGI used two different PROM styles for their machines,
-those with 64-bit CPUs are ARCS, the older machines have another
-firmware implementation.  I do have some tested code for this platform
-but it's back at home while I'm here at SGI ...
+I'll put __attribute__ ((aligned(64))) to the structure which will fix this.
+This will have to be changed again when we add support for 32-bit processors
+with ll / sc instructions but for now we don't support them, so it's the
+right thing.
 
-> Of course, if someone unexpectedly finds some Indigo R3k hardware docs 
-> somewhere, I'd appreciate it ;).
+> While I'm on the topic of unaligned handling, this behavior of sending
+> SIGBUS, SIGSEGV, or SIGILL to current on unaligned accesses seems to me like
+> incorrect behavior if the original fault happened in kernel mode.
 
-A few power series systems are the oldest stuff that I've seen over here
-at SGI and even are mostly used as hightech door stops ...
+> The above
+> example of an unaligned lld sending SIGBUS is not too bad, since the fault
+> does happen while doing something on behalf of the current process.
+
+The assumption is that the kernel should never ever use ll, lld, sc and scd
+on improperly aligned memory objects, so not checking is ok.  In other
+words it's it's perfectly ok if the kernel dies or behaves silly following
+such a can-not-happen case.
+
+Note that while we don't attemt to handle missaligned ll/sc/lld/scd
+instructions because that would break atomicity on SMP machines.  On the
+other side again emulating them on CPUs that don't have them at all like
+the R3000 is ok because those are not used on SMP systems.  That is not
+counting the oddball SMP systems which we'll probably not support ever.
 
   Ralf

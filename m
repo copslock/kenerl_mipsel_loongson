@@ -1,38 +1,30 @@
-Received:  by oss.sgi.com id <S553734AbRALApo>;
-	Thu, 11 Jan 2001 16:45:44 -0800
-Received: from web1.lanscape.net ([64.240.156.194]:51723 "EHLO
-        web1.lanscape.net") by oss.sgi.com with ESMTP id <S553717AbRALApT>;
-	Thu, 11 Jan 2001 16:45:19 -0800
-Received: from fisch.cyrius.com (IDENT:root@web1.lanscape.net [64.240.156.194])
-	by web1.lanscape.net (8.9.3/8.9.3) with ESMTP id SAA18554;
-	Thu, 11 Jan 2001 18:44:54 -0600
-Received: by fisch.cyrius.com (Postfix, from userid 1000)
-	id 70352231F9; Fri, 12 Jan 2001 00:44:52 +0000 (GMT)
-Date:   Fri, 12 Jan 2001 00:44:52 +0000
-From:   Martin Michlmayr <tbm@cyrius.com>
-To:     Ed Gould <ed@agile.tv>
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: Status of Linux 2.4 on Cobalt
-Message-ID: <20010112004452.A27573@sumpf.cyrius.com>
-References: <200101120119.RAA25914@guardian.agile.tv>
-Mime-Version: 1.0
+Received:  by oss.sgi.com id <S553766AbRALCsY>;
+	Thu, 11 Jan 2001 18:48:24 -0800
+Received: from gateway-1237.mvista.com ([12.44.186.158]:63983 "EHLO
+        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553763AbRALCr4>;
+	Thu, 11 Jan 2001 18:47:56 -0800
+Received: from mvista.com (IDENT:ppopov@zeus.mvista.com [10.0.0.112])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f0C2jJC01940
+	for <linux-mips@oss.sgi.com>; Thu, 11 Jan 2001 18:45:19 -0800
+Message-ID: <3A5E7091.BF530036@mvista.com>
+Date:   Thu, 11 Jan 2001 18:48:49 -0800
+From:   Pete Popov <ppopov@mvista.com>
+Organization: Monta Vista Software
+X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.17 i586)
+X-Accept-Language: bg, en
+MIME-Version: 1.0
+To:     "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: IRDA
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <200101120119.RAA25914@guardian.agile.tv>; from ed@agile.tv on Thu, Jan 11, 2001 at 05:19:45PM -0800
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-* Ed Gould <ed@agile.tv> [20010111 17:19]:
-> What is the current status of building and running a 2.4 kernel on the
-> Cobalt RaQ2?  Is anyone working on this?
 
-Cobalt support was removed from CVS because it wouldn't even compile.
+The IRDA menu and its options don't show up in "make config" nor "make
+menuconfig".  Does anyone know how to quickly fix this (I'm not sure I'm
+the best person to muck with scripts)?
 
-Mathew Edward Kovach <mkovach@alal.com> used to work on 2.4 support
-again, but I haven't heard from him for quite a while...
--- 
-Martin Michlmayr
-tbm@cyrius.com
+Pete

@@ -1,104 +1,88 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id HAA44643 for <linux-archive@neteng.engr.sgi.com>; Tue, 25 May 1999 07:06:28 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id IAA00815 for <linux-archive@neteng.engr.sgi.com>; Wed, 26 May 1999 08:26:28 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id HAA02372
+	id IAA83493
 	for linux-list;
-	Tue, 25 May 1999 07:04:41 -0700 (PDT)
+	Wed, 26 May 1999 08:22:52 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from dataserv.detroit.sgi.com (dataserv.detroit.sgi.com [169.238.128.2])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id HAA78854
+	via ESMTP id IAA31752
 	for <linux@engr.sgi.com>;
-	Tue, 25 May 1999 07:04:39 -0700 (PDT)
-	mail_from (martin.solli@paintbox.no)
-Received: from mail.paintbox.no (mail.paintbox.no [193.215.245.25]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id HAA01200
-	for <linux@engr.sgi.com>; Tue, 25 May 1999 07:04:37 -0700 (PDT)
-	mail_from (martin.solli@paintbox.no)
-Received: by PBOX_OSLO with Internet Mail Service (5.5.2232.9)
-	id <K8FVHL3R>; Tue, 25 May 1999 16:05:28 +0200
-Message-ID: <3B2A814C9979D2119CC600A0C9AACD9919B3DF@PBOX_OSLO>
-From: Martin Solli <martin.solli@paintbox.no>
-To: "'linux@engr.sgi.com'" <linux@cthulhu.engr.sgi.com>
-Subject: Hardhat on the Indy
-Date: Tue, 25 May 1999 16:05:20 +0200
+	Wed, 26 May 1999 08:22:50 -0700 (PDT)
+	mail_from (eak@detroit.sgi.com)
+Received: from cx1.detroit.sgi.com (cx1.detroit.sgi.com [169.238.130.4]) by dataserv.detroit.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id LAA13653; Wed, 26 May 1999 11:22:49 -0400 (EDT)
+Received: from detroit.sgi.com (localhost [127.0.0.1]) by cx1.detroit.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id LAA13277; Wed, 26 May 1999 11:22:46 -0400 (EDT)
+Message-ID: <374C11C5.33E77827@detroit.sgi.com>
+Date: Wed, 26 May 1999 11:22:45 -0400
+From: Eric Kimminau <eak@detroit.sgi.com>
+Reply-To: eak@sgi.com
+Organization: sgi
+X-Mailer: Mozilla 4.6C-SGI [en] (X11; I; IRIX 6.5 IP22)
+X-Accept-Language: en
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2232.9)
-Content-Type: text/plain;
-	charset="iso-8859-1"
+To: MDLUG <mdlug@collie.net>
+Subject: Pacific HiTech to Bundle IBM DB2 With
+ 	           TurboLinux
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+By Rachel Chalmers 
 
-I know this has been discussed serveral times on the mailing list (I've read
-the archives), but somehow the info didn't help me much booting my Indy.
+Pacific HiTech (PHT) Inc will bundle IBM Corp's DB2 database with its
+own
+distribution of the Linux operating system, TurboLinux. In return, IBM
+will offer 24-hour phone support to users of DB2 on TurboLinux. The
+announcement clarifies an earlier announcement by IBM that it would
+support the four leading Linux distribution vendors, so expect news of
+similar deals with SuSE Inc, Caldera Inc and Red Hat Software Inc in
+the weeks to come - "specific things with specific distributions," as
+director of integrated solutions and Linux marketing for IBM, Jon
+Prial, puts it. IBM plans to be as agnostic about different flavors of
+Linux as it tries to be about those other server operating systems,
+Solaris and NT. "We are not getting into a religious war," says Prial,
+"the bottom line comes down to customer choice." 
 
-The boot server: A Pentium box running Red Hat 5.2 and kernel 2.2.8
-The NFS server: A solaris 2.5.1 box
-The kernel image for the Indy: vmlinux-indy-2.2.1-990329
-(also tried vmlinux from hardhat, vmlinux-indy-990212 and
-vmlinux-indy-initrd-990313)
+PHT chief executive, Cliff Miller says the deal should give PHT's
+corporate customers peace of mind. "The relationship extends far
+beyond combining our software together and the ease of installation,
+and performance boosts that will bring," he told ComputerWire,
+"there's also the support infrastructure that IBM brings." Prial
+agrees:
+"What we're finding is that there clearly is an interest in Linux," he
+says, "it's just not running under the purview of the CIO. Our
+announcement of support should make Linux more viable." 
 
-My boot command:
-boot bootp():/vmlinux-indy-2.2.1-990329
-nfsroot=193.215.244.135:/prod/martin/hardhat/mipseb
+Another plus for PHT is the North America sales channels that Big Blue
+can provide. PHT has just re-entered the US market after a successful
+sojourn in Asia. "IBM has a little bit of experience in this area,"
+Miller jokes. PHT's Asian beachhead won't hurt DB2 in those markets,
+either. "We're working closely with IBM Japan to address
+internationalization," Miller says, adding this jab at his rivals:
+"DB2 already runs on TurboLinux with support for Japanese, whereas
+with some of the other distributions, support for Japanese is broken." 
 
-The Indy:
----
-jonas:~$ hinv
-CPU: MIPS R4400 Processor Chip Revision: 5.0
-FPU: MIPS R4000 Floating Point Coprocessor Revision: 0.0
-1 150 MHZ IP22 Processor
-Main memory size: 128 Mbytes
-Secondary unified instruction/data cache size: 1 Mbyte on Processor 0
-Instruction cache size: 16 Kbytes
-Data cache size: 16 Kbytes
-Integral SCSI controller 0: Version WD33C93B, revision D
-  Disk drive: unit 1 on SCSI controller 0
-  Disk drive: unit 2 on SCSI controller 0
-  CDROM: unit 4 on SCSI controller 0
-On-board serial ports: 2
-On-board bi-directional parallel port
-Graphics board: Indy 24-bit
-Integral Ethernet: ec0, version 1
-Integral ISDN: Basic Rate Interface unit 0, revision 1.0
-Iris Audio Processor: version A2 revision 4.1.0
-Vino video: unit 0, revision 0, IndyCam connected
----
+If this seems like the perfect marriage of open source and binary-only
+software vendors, it's not. Miller famously attributes part of the
+success of TurboLinux in Asia to its laissez-faire attitude towards
+software piracy. "With Linux, that's really not an issue," he says.
+Add DB2 to TurboLinux CDs and unlicensed copying takes on a very
+different complexion. Prial insists that the Chinese market is
+changing and that pretty soon: "Software sales will become a good
+source of revenue." Again, support will be the key. It may be easy for
+Chinese companies to obtain unlicensed copies of DB2, but it will
+remain difficult for them to obtain technical support unless they can
+prove they have handed over the purchase
+price.                                                                                                                             
 
-
-Here's what the kernel says after checking the hard drive partitions:
----
-Looking up port of RPC 100003/2 on 193.215.244.135
-Looking up port of RPC 100005/1 on 193.215.244.135
-VFS: Mounted root (nfs filesystem).
-Adv: done running setup()
-Freeing unused kernel memory: 44k freed
-page fault from irq handler: 0000
-$0 : 00000000 88180000 0000062d 00000000
-$4 : 00000000 1004fc00 00000000 00000000
-$8 : 00000000 00000000 00000000 00046098
-$12: 358d667d 8ff14874 8ff14800 00000000
-$16: 8ff25000 8ff100e0 0000062d 881523c8
-$20: aff25040 bfb94000 00000000 bfbd4000
-$24: 00000000 8ff4fb58
-$28: 88000000 88009d90 0000000e 880e3f38
-eoc   : 880e3e74
-Status: 1004fc02
-Cause : 00000008
-Aiee, killing interrupt handler
-Kernel panic: Attempted to kill the idle task!
-In swapper task - not syncing
----
-
-Then it hangs. Suggestions? Fixes? Comments?
-
-Thanks a lot! :)
-
---
-.\\artin 
+© ComputerWire Inc, 1999.
+-- 
+.--------1---------2---------3---------4---------5---------6---------7---
+  Eric Kimminau           eak@sgi.com       Electronic Support Tools
+      Vox:248-848-4455  Fax:248-848-5600  VNET:6-327-4455  
+              "I speak my mind and no one else's."
+ "I am a bomb technician. If you see me running, try to keep up..."
+                    http://support.sgi.com

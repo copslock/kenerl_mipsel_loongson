@@ -1,213 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Mar 2003 02:01:39 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:60399 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225199AbTCMCBi>;
-	Thu, 13 Mar 2003 02:01:38 +0000
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id h2D21ac02704;
-	Wed, 12 Mar 2003 18:01:36 -0800
-Date: Wed, 12 Mar 2003 18:01:36 -0800
-From: Jun Sun <jsun@mvista.com>
-To: linux-mips@linux-mips.org
-Cc: jsun@mvista.com
-Subject: [PATCH] memory leak in ptrace 
-Message-ID: <20030312180136.F24687@mvista.com>
-Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="rwEMma7ioTxnRzrJ"
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-Return-Path: <jsun@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Mar 2003 02:22:25 +0000 (GMT)
+Received: from [IPv6:::ffff:159.226.39.4] ([IPv6:::ffff:159.226.39.4]:32195
+	"HELO mail.ict.ac.cn") by linux-mips.org with SMTP
+	id <S8225199AbTCMCWY>; Thu, 13 Mar 2003 02:22:24 +0000
+Received: (qmail 24841 invoked from network); 13 Mar 2003 02:03:37 -0000
+Received: from unknown (HELO ict.ac.cn) (159.226.40.150)
+  by 159.226.39.4 with SMTP; 13 Mar 2003 02:03:37 -0000
+Message-ID: <3E709EC2.7050501@ict.ac.cn>
+Date: Thu, 13 Mar 2003 10:07:46 -0500
+From: Zhang Fuxin <fxzhang@ict.ac.cn>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.0.1) Gecko/20020809
+X-Accept-Language: zh-cn, en-us
+MIME-Version: 1.0
+To: Richard Hodges <rh@matriplex.com>
+CC: Ralf Baechle <ralf@linux-mips.org>,
+	Ranjan Parthasarathy <ranjanp@efi.com>,
+	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
+Subject: Re: Disabling lwl and lwr instruction generation
+References: <D9F6B9DABA4CAE4B92850252C52383AB0796823C@ex-eng-corp.efi.com> <20030313014338.C29568@linux-mips.org> <Pine.BSF.4.50.0303121647400.95890-100000@mail.matriplex.com>
+Content-Type: text/plain; charset=x-gbk; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <fxzhang@ict.ac.cn>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1712
+X-archive-position: 1713
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: fxzhang@ict.ac.cn
 Precedence: bulk
 X-list: linux-mips
 
 
---rwEMma7ioTxnRzrJ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+
+Richard Hodges wrote:
+
+>On Thu, 13 Mar 2003, Ralf Baechle wrote:
+>
+>  
+>
+>>On Wed, Mar 12, 2003 at 10:05:20AM -0800, Ranjan Parthasarathy wrote:
+>>
+>>    
+>>
+>>>Is there a way to tell gcc to not generate the lwl, lwr instructions?
+>>>      
+>>>
+>>Gcc will only ever generate these instructions when __attribute__((unaligned))
+>>is used.
+>>    
+>>
+>
+>I got lwl and lwr from a memcpy() with two void pointers...
+>
+>I quickly changed those to the (aligned) structure pointers instead, and
+>then memcpy() changed to ordinary word loads and stores.
+>
+>So, is somebody starting a toolchain for that new Chinese CPU? :-)
+>  
+>
+
+I don't hear about it,but it will happen soon or later:)
+
+We work around lwl/lwr problem by modifying toolchain from H.J. Lu's rh 
+port.
+
+it seems that gcc will explicitly output lwl/lwr for unaligned block 
+copy,in other cases it will generate
+ulW macros for gas to handle.
 
 
-Several places in sys_ptrace() don't decrease the page
-count where they should.  This will cause memory leak
-later when the traced task is freed.
-
-This patch is initially brought up by Sony people and modified
-by Drow and me.
-
-Jun
 
 
---rwEMma7ioTxnRzrJ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename="030312.2.4-ptrace-memory-leak.patch"
 
-diff -Nru linux/arch/mips/kernel/ptrace.c.orig linux/arch/mips/kernel/ptrace.c
---- linux/arch/mips/kernel/ptrace.c.orig	Thu Nov  7 14:05:33 2002
-+++ linux/arch/mips/kernel/ptrace.c	Wed Mar 12 17:28:34 2003
-@@ -72,7 +72,7 @@
- 
- 	ret = -EPERM;
- 	if (pid == 1)		/* you may not mess with init */
--		goto out;
-+		goto out_tsk;
- 
- 	if (request == PTRACE_ATTACH) {
- 		ret = ptrace_attach(child);
-@@ -94,8 +94,7 @@
- 		if (copied != sizeof(tmp))
- 			break;
- 		ret = put_user(tmp,(unsigned long *) data);
--
--		goto out;
-+		break;
- 		}
- 
- 	/* Read the word at location addr in the USER area.  */
-@@ -164,10 +163,10 @@
- 		default:
- 			tmp = 0;
- 			ret = -EIO;
--			goto out;
-+			goto out_tsk;
- 		}
- 		ret = put_user(tmp, (unsigned long *) data);
--		goto out;
-+		break;
- 		}
- 
- 	case PTRACE_POKETEXT: /* write the word at location addr. */
-@@ -177,7 +176,7 @@
- 		    == sizeof(data))
- 			break;
- 		ret = -EIO;
--		goto out;
-+		break;
- 
- 	case PTRACE_POKEUSR: {
- 		struct pt_regs *regs;
-@@ -277,7 +276,7 @@
- 
- 	default:
- 		ret = -EIO;
--		goto out;
-+		break;
- 	}
- out_tsk:
- 	free_task_struct(child);
-diff -Nru linux/arch/mips64/kernel/ptrace.c.orig linux/arch/mips64/kernel/ptrace.c
---- linux/arch/mips64/kernel/ptrace.c.orig	Wed Jan 29 15:33:04 2003
-+++ linux/arch/mips64/kernel/ptrace.c	Wed Mar 12 17:34:33 2003
-@@ -206,7 +206,7 @@
- 			ret = -EIO;
- 			break;
- 		}
--		goto out;
-+		break;
- 		}
- 	case PTRACE_SYSCALL: /* continue and stop at next (return from) syscall */
- 	case PTRACE_CONT: { /* restart after signal. */
-@@ -293,7 +293,7 @@
- 
- 	ret = -EPERM;
- 	if (pid == 1)		/* you may not mess with init */
--		goto out;
-+		goto out_tsk;
- 
- 	if (request == PTRACE_ATTACH) {
- 		ret = ptrace_attach(child);
-@@ -427,7 +427,7 @@
- 			ret = -EIO;
- 			break;
- 		}
--		goto out;
-+		break;
- 		}
- 	case PTRACE_SYSCALL: /* continue and stop at next (return from) syscall */
- 	case PTRACE_CONT: { /* restart after signal. */
-
---rwEMma7ioTxnRzrJ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename="030312.2.5-ptrace-memory-leak.patch"
-
-diff -Nru linux/arch/mips/kernel/ptrace.c.orig linux/arch/mips/kernel/ptrace.c
---- linux/arch/mips/kernel/ptrace.c.orig	Thu Dec 12 13:58:26 2002
-+++ linux/arch/mips/kernel/ptrace.c	Wed Mar 12 17:41:56 2003
-@@ -73,7 +73,7 @@
- 
- 	ret = -EPERM;
- 	if (pid == 1)		/* you may not mess with init */
--		goto out;
-+		goto out_tsk;
- 
- 	if (request == PTRACE_ATTACH) {
- 		ret = ptrace_attach(child);
-@@ -95,8 +95,7 @@
- 		if (copied != sizeof(tmp))
- 			break;
- 		ret = put_user(tmp,(unsigned long *) data);
--
--		goto out;
-+		break;
- 		}
- 
- 	/* Read the word at location addr in the USER area.  */
-@@ -165,10 +164,10 @@
- 		default:
- 			tmp = 0;
- 			ret = -EIO;
--			goto out;
-+			goto out_tsk;
- 		}
- 		ret = put_user(tmp, (unsigned long *) data);
--		goto out;
-+		break;
- 		}
- 
- 	case PTRACE_POKETEXT: /* write the word at location addr. */
-@@ -178,7 +177,7 @@
- 		    == sizeof(data))
- 			break;
- 		ret = -EIO;
--		goto out;
-+		break;
- 
- 	case PTRACE_POKEUSR: {
- 		struct pt_regs *regs;
-diff -Nru linux/arch/mips64/kernel/ptrace.c.orig linux/arch/mips64/kernel/ptrace.c
---- linux/arch/mips64/kernel/ptrace.c.orig	Thu Feb 13 11:37:35 2003
-+++ linux/arch/mips64/kernel/ptrace.c	Wed Mar 12 17:41:56 2003
-@@ -206,7 +206,7 @@
- 			ret = -EIO;
- 			break;
- 		}
--		goto out;
-+		break;
- 		}
- 	case PTRACE_SYSCALL: /* continue and stop at next (return from) syscall */
- 	case PTRACE_CONT: { /* restart after signal. */
-@@ -286,7 +286,7 @@
- 
- 	ret = -EPERM;
- 	if (pid == 1)		/* you may not mess with init */
--		goto out;
-+		goto out_tsk;
- 
- 	if (request == PTRACE_ATTACH) {
- 		ret = ptrace_attach(child);
-@@ -420,7 +420,7 @@
- 			ret = -EIO;
- 			break;
- 		}
--		goto out;
-+		break;
- 		}
- 	case PTRACE_SYSCALL: /* continue and stop at next (return from) syscall */
- 	case PTRACE_CONT: { /* restart after signal. */
-
---rwEMma7ioTxnRzrJ--
+>-Richard
+>
+>
+>
+>  
+>

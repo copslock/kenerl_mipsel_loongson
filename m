@@ -1,47 +1,40 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980327.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id FAA890634 for <linux-archive@neteng.engr.sgi.com>; Thu, 9 Apr 1998 05:05:21 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980327.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id KAA891415 for <linux-archive@neteng.engr.sgi.com>; Thu, 9 Apr 1998 10:56:10 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id FAA9639804
+	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id KAA9824201
 	for linux-list;
-	Thu, 9 Apr 1998 05:04:26 -0700 (PDT)
+	Thu, 9 Apr 1998 10:47:54 -0700 (PDT)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id FAA9716827
+	via ESMTP id KAA9739736
 	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 9 Apr 1998 05:04:22 -0700 (PDT)
-Received: from ballyhoo.ml.org ([194.236.80.80]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id FAA27202
-	for <linux@cthulhu.engr.sgi.com>; Thu, 9 Apr 1998 05:04:20 -0700 (PDT)
-	mail_from (grimsy@zigzegv.ml.org)
-Received: from calypso.saturn ([130.244.91.107]) by ballyhoo.ml.org
-	 with smtp (ident grimsy using rfc1413) id m0yNF6c-000xk2C
-	(Debian Smail-3.2 1996-Jul-4 #2); Thu, 9 Apr 1998 13:02:54 +0200 (CEST)
-Date: Thu, 9 Apr 1998 16:01:19 +0200 (CEST)
-From: Ulf Carlsson <grimsy@zigzegv.ml.org>
-X-Sender: grimsy@calypso.saturn
+	Thu, 9 Apr 1998 10:47:46 -0700 (PDT)
+Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id KAA00709
+	for <linux@cthulhu.engr.sgi.com>; Thu, 9 Apr 1998 10:47:43 -0700 (PDT)
+	mail_from (adevries@engsoc.carleton.ca)
+Received: from localhost (adevries@localhost)
+	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id NAA23843;
+	Thu, 9 Apr 1998 13:45:13 -0400
+X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
+Date: Thu, 9 Apr 1998 13:45:12 -0400 (EDT)
+From: Alex deVries <adevries@engsoc.carleton.ca>
 To: Oliver Frommel <oliver@aec.at>
-cc: linux@cthulhu.engr.sgi.com
+cc: Ulf Carlsson <grimsy@zigzegv.ml.org>, linux@cthulhu.engr.sgi.com
 Subject: Re: crosstools rpms
 In-Reply-To: <Pine.LNX.3.96.980409124830.25635A-100000@web.aec.at>
-Message-ID: <Pine.LNX.3.96.980409160003.20294B-100000@calypso.saturn>
+Message-ID: <Pine.LNX.3.95.980409134407.11499B-100000@lager.engsoc.carleton.ca>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Thu, 9 Apr 1998, Oliver Frommel wrote:
 
-> > > the tools are capable of compiling 2.1.90 and require glibc.  > > if
-> there's any interest i can make the SRPMs, RPMs for libc5 and/or > > an
-> IRIX package available too eventually ..  > > Can't you put them on
-> ftp.sgi.linux.com too?  ls> >
-> 
-i think i don't have the necessary permissions for doing so. maybe someone else
+On Thu, 9 Apr 1998, Oliver Frommel wrote:
+> i think i don't have the necessary permissions for doing so. maybe someone else
 > can do that. did you have any problems downloading from zero.aec.at?
 
-No, but I think most of the people who look for crosscompiling tools for
-Linux/SGI look at ftp.linux.sgi.com, and download the old nonfunctional
-crosscompiling tools.
+I've moved those now into ftp://ftp.linux.sgi.com/pub/crossdev/something.
+Sorry for the delay.  I also moved the old RPMS and tarballs to
+/src/ftp/pub/mips-linux/old on linus.
 
-Ralf?
-
-- Ulf
+- Alex

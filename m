@@ -1,49 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jun 2003 01:57:39 +0100 (BST)
-Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:273 "HELO
-	topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
-	id <S8225241AbTFEA5g>; Thu, 5 Jun 2003 01:57:36 +0100
-Received: from no.name.available by topsns.toshiba-tops.co.jp
-          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 5 Jun 2003 00:57:34 UT
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.9/8.12.9) with ESMTP id h550vKjf028992;
-	Thu, 5 Jun 2003 09:57:20 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date: Thu, 05 Jun 2003 09:58:02 +0900 (JST)
-Message-Id: <20030605.095802.59461340.nemoto@toshiba-tops.co.jp>
-To: macro@ds2.pg.gda.pl
-Cc: anemo@mba.ocn.ne.jp, linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: mips64 LOAD_KPTE2 fix
-From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <Pine.GSO.3.96.1030604160418.18707B-100000@delta.ds2.pg.gda.pl>
-References: <20030604.100204.74756139.nemoto@toshiba-tops.co.jp>
-	<Pine.GSO.3.96.1030604160418.18707B-100000@delta.ds2.pg.gda.pl>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-Organization: TOSHIBA Personal Computer System Corporation
-X-Mailer: Mew version 2.2 on Emacs 21.2 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jun 2003 02:38:39 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:27389 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225241AbTFEBih>;
+	Thu, 5 Jun 2003 02:38:37 +0100
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.11.6/8.11.6) id h551caE00805;
+	Wed, 4 Jun 2003 18:38:36 -0700
+Date: Wed, 4 Jun 2003 18:38:36 -0700
+From: Jun Sun <jsun@mvista.com>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org, jsun@mvista.com
+Subject: Re: [RFC] synchronized CPU count registers on SMP machines
+Message-ID: <20030604183836.B25414@mvista.com>
+References: <20030604153930.H19122@mvista.com> <20030604231547.GA22410@linux-mips.org> <20030604164652.J19122@mvista.com> <20030605001232.GA5626@linux-mips.org>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20030605001232.GA5626@linux-mips.org>; from ralf@linux-mips.org on Thu, Jun 05, 2003 at 02:12:32AM +0200
+Return-Path: <jsun@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2530
+X-archive-position: 2531
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Wed, 4 Jun 2003 16:09:10 +0200 (MET DST), "Maciej W. Rozycki" <macro@ds2.pg.gda.pl> said:
->> Thank you for pointing out this.  I did not think very much.  But
->> you mean "slt \tmp, \tmp, \ptr", don't you?
+On Thu, Jun 05, 2003 at 02:12:32AM +0200, Ralf Baechle wrote:
+> On Wed, Jun 04, 2003 at 04:46:52PM -0700, Jun Sun wrote:
+> 
+> > Assuming SGI systems represent the past of MIPS, we are still ok
+> > future-wise. :)
+> 
+> You loose.  The reasons why SGI did construct their systems that way are
+> still valid.  It can be quite tricky to distribute the clock in large
+> systems - even for a moderate definition of large.  And for ccNUMAs which
+> are going to show up on the embedded market sooner or later it's easy
+> for the lazy designer to use several clock sources anyway.  Note our
+> current time code for will not work properly if clocks diverge on the
+> slightest bit - among other things the standards mandate time to
+> monotonically increase.
+>
 
-macro>  Not at all.  Why would I want to reverse the comparison?
+Aside from aficionado of SGI legacy, do you see any value in
+implementing this just for the applicable SMP systems?
 
-Sorry, I garbled.  Please ignore my last patch.  Your patch works
-fine.  Thank you again.
+Here is my take:
 
----
-Atsushi Nemoto
+To implement an efficient and correct time management in SMP
+is a hard problem.  I don't think there is a generic solution
+here.  (Convince me if I am wrong.)
+
+Therefore for a set of "conforming" SMP systems which don't
+have the listed 3 issues, we provide a feasible solution.
+I don't see how we can avoid this - unless we don't care about
+getting time right.
+
+Jun

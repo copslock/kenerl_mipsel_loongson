@@ -1,46 +1,49 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fAQLSNc24314
-	for linux-mips-outgoing; Mon, 26 Nov 2001 13:28:23 -0800
-Received: from post.webmailer.de (natwar.webmailer.de [192.67.198.70])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAQLSKo24308
-	for <linux-mips@oss.sgi.com>; Mon, 26 Nov 2001 13:28:20 -0800
-Received: from excalibur.cologne.de (pD9E408C5.dip.t-dialin.net [217.228.8.197])
-	by post.webmailer.de (8.9.3/8.8.7) with ESMTP id VAA04936
-	for <linux-mips@oss.sgi.com>; Mon, 26 Nov 2001 21:23:59 +0100 (MET)
-Received: from karsten by excalibur.cologne.de with local (Exim 3.12 #1 (Debian))
-	id 168SSo-0000FW-00
-	for <linux-mips@oss.sgi.com>; Mon, 26 Nov 2001 21:34:50 +0100
-Date: Mon, 26 Nov 2001 21:34:50 +0100
-From: Karsten Merker <karsten@excalibur.cologne.de>
-To: linux-mips@oss.sgi.com
-Subject: Re: Status RM200
-Message-ID: <20011126213450.B943@excalibur.cologne.de>
-Mail-Followup-To: Karsten Merker <karsten@excalibur.cologne.de>,
-	linux-mips@oss.sgi.com
-References: <20011126204509.A10341@paradigm.rfc822.org>
+	by oss.sgi.com (8.11.2/8.11.3) id fAQLVNA24491
+	for linux-mips-outgoing; Mon, 26 Nov 2001 13:31:23 -0800
+Received: from nevyn.them.org (mail@NEVYN.RES.CMU.EDU [128.2.145.6])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAQLVKo24484
+	for <linux-mips@oss.sgi.com>; Mon, 26 Nov 2001 13:31:20 -0800
+Received: from drow by nevyn.them.org with local (Exim 3.32 #1 (Debian))
+	id 168SPd-0002DU-00; Mon, 26 Nov 2001 15:31:33 -0500
+Date: Mon, 26 Nov 2001 15:31:33 -0500
+From: Daniel Jacobowitz <dan@debian.org>
+To: Andre.Messerschmidt@infineon.com
+Cc: ralf@oss.sgi.com, linux-mips@oss.sgi.com
+Subject: Re: Cross Compiler again
+Message-ID: <20011126153132.A8406@nevyn.them.org>
+References: <86048F07C015D311864100902760F1DD01B5E41A@dlfw003a.dus.infineon.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20011126204509.A10341@paradigm.rfc822.org>; from flo@rfc822.org on Mon, Nov 26, 2001 at 08:45:09PM +0100
-X-No-Archive: yes
+In-Reply-To: <86048F07C015D311864100902760F1DD01B5E41A@dlfw003a.dus.infineon.com>
+User-Agent: Mutt/1.3.23i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Nov 26, 2001 at 08:45:09PM +0100, Florian Lohoff wrote:
+On Mon, Nov 26, 2001 at 05:27:38PM +0100, Andre.Messerschmidt@infineon.com wrote:
+> 
+> > -G 0.
+> Thanks that helped for the relocation error.
+> init/main.o(.text.init+0x7d8): relocation truncated to fit: R_MIPS_GPREL16
+> execute_command
+> 
+> But I still get a lot of undefined references.
+> arch/mips/kernel/kernel.o(.debug+0x32e14): undefined reference to `L_E660'
+> arch/mips/kernel/kernel.o(.debug+0x60e7c): undefined reference to `L_E549'
+> arch/mips/kernel/kernel.o(.debug+0x8d097): undefined reference to `L_E8015'
+> arch/mips/kernel/kernel.o(.debug+0x8d0b9): undefined reference to `L_E8015'
+> arch/mips/kernel/kernel.o(.debug+0x8d168): undefined reference to `L_E8015'
+> arch/mips/kernel/kernel.o(.debug+0x8d18a): undefined reference to `L_E8015'
+> ...
+> 
+> I believe there is still something wrong with my glibc, but I need to check
+> that.
 
-> i guess the RM200 parts are untested for at least a year (possibly
-> even more). Does anyone work on this or does know a working
-> checkout date ?
+I don't know what compiler you're using, but it isn't working right :)
+I suspect you're running afoul of the change in debugging format
+between binutils 2.10 and 2.11.2.
 
-Ralf has at least made the RM200 support compile again while we
-were driving home from Oldenburg :-).
-I do not know if it really works though - wrong endianess...
-
-Greetings,
-Karsten
 -- 
-#include <standard_disclaimer>
-Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der Nutzung
-oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die Markt- oder
-Meinungsforschung.
+Daniel Jacobowitz                           Carnegie Mellon University
+MontaVista Software                         Debian GNU/Linux Developer

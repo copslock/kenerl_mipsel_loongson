@@ -1,102 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jul 2004 15:45:27 +0100 (BST)
-Received: from mail57.messagelabs.com ([IPv6:::ffff:195.245.230.115]:14522
-	"HELO mail57.messagelabs.com") by linux-mips.org with SMTP
-	id <S8225219AbUGTOpX>; Tue, 20 Jul 2004 15:45:23 +0100
-X-VirusChecked: Checked
-X-Env-Sender: martin.nichols@oxinst.co.uk
-X-Msg-Ref: server-6.tower-57.messagelabs.com!1090334713!10747510
-X-StarScan-Version: 5.2.10; banners=-,-,-
-X-Originating-IP: [194.200.52.193]
-Received: (qmail 18160 invoked from network); 20 Jul 2004 14:45:13 -0000
-Received: from smtp1.oxinst.co.uk (HELO ukhontx01.oxinst.co.uk) (194.200.52.193)
-  by server-6.tower-57.messagelabs.com with SMTP; 20 Jul 2004 14:45:13 -0000
-Received: by UKHONTX01 with Internet Mail Service (5.5.2653.19)
-	id <PGQJPK8L>; Tue, 20 Jul 2004 15:44:59 +0100
-Message-ID: <DEF431FFDB15C1488464F0E57D5506642AA53A@MEDNT02>
-From: martin.nichols@oxinst.co.uk
-To: ddaney@avtrex.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jul 2004 16:01:32 +0100 (BST)
+Received: from mail.elvees.com ([IPv6:::ffff:80.92.98.198]:11459 "EHLO
+	narwhal.elvees.dmz") by linux-mips.org with ESMTP
+	id <S8225219AbUGTPB2>; Tue, 20 Jul 2004 16:01:28 +0100
+Received: from (IP:192.168.2.1)
+	=?ISO-8859-1?Q?=9C(authenticated?= with LOGIN user mail-deepfire)
+	=?ISO-8859-1?Q?=9Cby?= mail.elvees.com with ESMTP id i6KF0vvp006317;
+	Tue, 20 Jul 2004 19:01:00 +0400 (MSD)
+	(envelope-from deepfire@elvees.com)
+From: Samium Gromoff <deepfire@elvees.com>
+To: maksik@gmx.co.uk
+Subject: Re: is there *any* way to boot IP32 from hard drive ?
+Date: Tue, 20 Jul 2004 18:01:54 +0400
+User-Agent: KMail/1.6.2
 Cc: linux-mips@linux-mips.org
-Subject: RE: Link errors
-Date: Tue, 20 Jul 2004 15:47:58 +0100
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2653.19)
-Content-Type: text/plain
-Return-Path: <martin.nichols@oxinst.co.uk>
+Content-Disposition: inline
+Message-Id: <200407201801.55096.deepfire@elvees.com>
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Return-Path: <deepfire@elvees.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5521
+X-archive-position: 5522
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: martin.nichols@oxinst.co.uk
+X-original-sender: deepfire@elvees.com
 Precedence: bulk
 X-list: linux-mips
 
-David,
+> Hi List,
+>
+> I've asked the very same question here before, but got no answer. Probably, 
+> the experts, who might have known the answer just overlooked it... (sorry 
+> guys for addressing some of you directly, but I'm really in trouble). The 
+> thing is that I desperately need to get the O2 to boot from its HDD, it'sall 
+> installed and supposed to be used as a standalone box.
 
-Many thanks.
-I should have Googled first ;)
+First -- you`re right to use the arcboot image from debian -- that`s how i got
+it working.
 
-Best regards,
+Second -- not all kernels will run successfully, indeed -- the one i used was
+the glaurung 2.6.1 kernel from:
 
-Martin Nichols.
+	http://www.linux-mips.org/~glaurung/
 
-> -----Original Message-----
-> From:	David Daney [SMTP:ddaney@avtrex.com]
-> Sent:	19 July 2004 17:44
-> To:	martin.nichols@oxinst.co.uk
-> Cc:	linux-mips@linux-mips.org
-> Subject:	Re: Link errors
-> 
-> martin.nichols@oxinst.co.uk wrote:
-> > Hi All,
-> > 
-> > I'm new to MIPs architecture and Linux so apologies in advance!
-> > 
-> > I'm trying to build an application to run on the Au1100.
-> > I have a crosscompiler setup (gcc 3.2) and can build a 'hello world'
-> that
-> > runs on the target.
-> > When I try building a more serious application using Kdevelop - with the
-> > appropriate settings
-> > for the crosstools - I get lots of errors like this:
-> > assert.o(.text+0x1cc): relocation truncated to fit: R_MIPS_GOT16
-> > __assert_program_name
-> >
-> /opt/crosstool/mipsel-unknown-linux-gnu/gcc-3.2.3-glibc-2.2.3/mipsel-unkno
-> wn
-> > -linux-gnu/lib/libc.a(dcigettext.o): In function `_nl_find_msg':
-> > dcigettext.o(.text+0x153c): relocation truncated to fit: R_MIPS_CALL16
-> > _nl_load_domain
-> >
-> /opt/crosstool/mipsel-unknown-linux-gnu/gcc-3.2.3-glibc-2.2.3/mipsel-unkno
-> wn
-> > -linux-gnu/lib/libc.a(finddomain.o): In function `_nl_find_domain':
-> > 
-> > Could someone tell me what I'm doing wrong please.
-> > 
-> This is the got overflow problem.
-> 
-> Later versions of binutils have multi-got support (2.15 for example),
-> which under most circumstances will fix the problem.
-> 
-> If you have extreamly large compilation units you might have to use a
-> 32bit got index.  In GCC3.4 and later this is done with the -mxgot
-> option.  With eariler versions of GCC you have to pass -xgot to the
-> assembler (-Wa,-xgot IIRC).
-> 
-> David Daney.
-> 
-> 
-> +++ Virus-scanned by Messagelabs for Oxford Instruments +++
-> 
- ###  OXFORD INSTRUMENTS   http://www.oxford-instruments.com/  ### 
+This is the only kernel which worked for me so far, and it is not without it`s
+share of flaws, namely -- RTC, framebuffer, the AD-based sound chip and mouse
+all having issues. Also it hangs (at times) =)
 
-Unless stated above to be non-confidential, this E-mail and any 
-attachments are private and confidential and are for the addressee 
-only and may not be used, copied or disclosed save to the addressee.
-If you have received this E-mail in error please notify us upon receipt 
-and delete it from your records. Internet communications are not secure 
-and Oxford Instruments is not responsible for their abuse by third 
-parties nor for any alteration or corruption in transmission. 
+Hope this helps.
+
+regards, Samium Gromoff

@@ -1,110 +1,98 @@
-Received:  by oss.sgi.com id <S305175AbPL3A6S>;
-	Wed, 29 Dec 1999 16:58:18 -0800
-Received: from sgi.SGI.COM ([192.48.153.1]:45153 "EHLO sgi.com")
-	by oss.sgi.com with ESMTP id <S305166AbPL3A6C>;
-	Wed, 29 Dec 1999 16:58:02 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id QAA08171; Wed, 29 Dec 1999 16:58:14 -0800 (PST)
+Received:  by oss.sgi.com id <S305179AbQACWtp>;
+	Mon, 3 Jan 2000 14:49:45 -0800
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:27511 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S305166AbQACWt3>; Mon, 3 Jan 2000 14:49:29 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id OAA09796; Mon, 3 Jan 2000 14:52:12 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id QAA40461
+	id OAA99621
 	for linux-list;
-	Wed, 29 Dec 1999 16:48:25 -0800 (PST)
+	Mon, 3 Jan 2000 14:34:38 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id QAA18474
+	via ESMTP id OAA39037
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 29 Dec 1999 16:48:21 -0800 (PST)
-	mail_from (conradp@cse.unsw.edu.au)
-Received: from note.orchestra.cse.unsw.EDU.AU (note.orchestra.cse.unsw.EDU.AU [129.94.242.29]) 
+	Mon, 3 Jan 2000 14:34:35 -0800 (PST)
+	mail_from (jharrell@ti.com)
+Received: from jester.ti.com (jester.ti.com [192.94.94.1]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via SMTP id QAA03578
-	for <linux@cthulhu.engr.sgi.com>; Wed, 29 Dec 1999 16:48:17 -0800 (PST)
-	mail_from (conradp@cse.unsw.edu.au)
-Received: From ives With LocalMail ; Thu, 30 Dec 99 11:47:36 +1100 
-From:   Conrad Parker <conradp@cse.unsw.edu.au>
-To:     Jeff Harrell <jharrell@ti.com>, linux@cthulhu.engr.sgi.com
-Date:   Thu, 30 Dec 1999 11:47:36 +1100
-Message-ID: <19991230114736.C18261@cse.unsw.edu.au>
-Subject: Re: question concerning serial console setup
-References: <386A5F9B.50B4AFEF@ti.com>
-Mime-Version: 1.0
+	via ESMTP id OAA02843
+	for <linux@cthulhu.engr.sgi.com>; Mon, 3 Jan 2000 14:34:34 -0800 (PST)
+	mail_from (jharrell@ti.com)
+Received: from dlep9.itg.ti.com ([157.170.135.38])
+	by jester.ti.com (8.9.3/8.9.3) with ESMTP id QAA20669
+	for <linux@cthulhu.engr.sgi.com>; Mon, 3 Jan 2000 16:33:58 -0600 (CST)
+Received: from dlep9.itg.ti.com (localhost [127.0.0.1])
+	by dlep9.itg.ti.com (8.9.3/8.9.3) with ESMTP id QAA01617
+	for <linux@cthulhu.engr.sgi.com>; Mon, 3 Jan 2000 16:34:33 -0600 (CST)
+Received: from dlep4.itg.ti.com (dlep4.itg.ti.com [157.170.188.63])
+	by dlep9.itg.ti.com (8.9.3/8.9.3) with ESMTP id QAA01610
+	for <linux@cthulhu.engr.sgi.com>; Mon, 3 Jan 2000 16:34:33 -0600 (CST)
+Received: from ti.com (IDENT:jharrell@pcp97780pcs.sc.ti.com [158.218.100.100])
+	by dlep4.itg.ti.com (8.9.3/8.9.3) with ESMTP id QAA05096;
+	Mon, 3 Jan 2000 16:34:32 -0600 (CST)
+Message-ID: <38712453.B0BCE0CD@ti.com>
+Date:   Mon, 03 Jan 2000 15:36:03 -0700
+From:   Jeff Harrell <jharrell@ti.com>
+X-Mailer: Mozilla 4.61 [en] (X11; U; Linux 2.2.12-20 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To:     linux@cthulhu.engr.sgi.com
+CC:     bbrown@ti.com
+Subject: C/Assembler listing files
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.93.2i
-In-Reply-To: <386A5F9B.50B4AFEF@ti.com>; from Jeff Harrell on Wed, Dec 29, 1999 at 12:23:07PM -0700
+Content-Transfer-Encoding: 7bit
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On Wed, Dec 29, 1999 at 12:23:07PM -0700, Jeff Harrell wrote:
-> I wonder if anybody might have some information concerning the setup of
-> a serial console device
-> on the MIPS/Linux platform.  I have been looking at the sgi (indy)
-> source code to determine how to
-> setup a serial console device.  The file arch/mips/sgi/kernel/setup.c
-> contains a call to "console_setup"
-> passing the parameters "ttys0" and NULL.  I have had some trouble
-> locating the routine that this is
-> actually calling (file, directory?).  It looks like there is a version
-> in printk.c and in one of  the char drivers (serial167.c).
-> These do not seem like the correct routines.
+Has anyone tried to generate an interleaved C and Assembler listing file
+with
+the MIPS cross compilation tools?  I tried to pass the following flags
+to gcc
+(and the assembler):
 
-the version in serial167.c is commented out and looks like it was once
-there only as a placeholder.
+-Wa,-ahl=file.txt
 
-console_setup() in printk.c is the correct one, but it doesn't do everything
-you want. It simply determines which of the possible consoles is the system
-("preferred") console. Normally this is called via parse_options in
-init/main.c so you can set it on booting by passing the kernel parameter
-console=blah, but it can be called any time before the kernel calls
-console_init() (which it does immediately after calling parse_options, in
-order to get the console up asap). If you've configured the kernel to run a
-serial console, console_init() (which is in drivers/char/tty_io.c) will call
-serial_console_init().
+I get the following errors:
+--------------------------------------------------------
+mips-linux-gcc -D__KERNEL__ -I/home/jharrell/work/mips_linux/include
+-Wall -g -Wa,-alh=signal.lst  -Wstrict-prototypes -O2
+-fomit-frame-pointer  -G 0 -mno-abicalls -fno-pic -mcpu=r4600 -mips3
+-pipe   -DEXPORT_SYMTAB -c signal.c
+signal.c: In function `dequeue_signal':
+signal.c:106: warning: assignment from incompatible pointer type
+signal.c:107: warning: assignment from incompatible pointer type
+{standard input}: Assembler messages:
+{standard input}:541: Fatal error: Symbol signals_init already defined.
+signal.c: In function `sys_rt_sigprocmask':
+signal.c:698: output pipe has been closed
+cpp: output pipe has been closed
 
-For the SGI/MIPS, (the code you're looking at in
-arch/mips/sgi/kernel/setup.c) the choice of serial console can be
-determined by querying the prom settings, so rather than forcing this to be
-a boot parameter the correct console is set up at runtime. (If I'm not
-mistaken, this can still be overriden by passing a kernel parameter, as
-this bit of setup is called way before init/main.c calls parse_options()).
-However, you don't need to call console_setup() in your platform setup
-routine -- it's only done here for convenience.
+---------------------------------------------------------------
 
-> In our architecture we are
-> using the 85C30 (SCC) driver
-> (zs.c, zs.h),  can I use the serial_console_init routines from this code
-> to accomplish the same thing?  Is
-> serial_console setting up additional information that won't get setup
-> elsewhere?   Any help would be
-> greatly appreciated.
-> 
+If I remove the  "-Wa,-ahl=file.txt" the kernel compiles with no
+errors.  I attempt a
+similar type of command on the x386 version of gcc and it seems to
+work.  Is this a
+command that is not supported on the MIPS cross-compilation tools?  Any
+information
+on this would be greatly appreciated.
 
-using zs.c and zs.h from where? (ie. your own code, or from somewhere like
-drivers/tc?) drivers/sgi/char/sgiserial.c also implements Z8530 support
-nicely.
 
-The serial console routines set up linux console functions that happen
-to use the serial device; a console is something that basically provides
-a write function, possibly a read function, and some other stuff like
-special key settings. So, eg. your console write function (like
-zs_console_write in sgiserial.c) does a few serial put_chars and so on.
+Thanks,
+Jeff Harrell
 
-You need to set up a struct console with these fields (as defined in
-<linux/console.h>), then make a serial_console_init() function that
-calls register_console (defined in printk.c). It'll become the default
-system console if it's the first console to be registered (and nothing
-then calls console_setup), or if you pass the console=ttyS? parameter to
-the kernel.
-
-Conrad.
+--
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Jeff Harrell                    Work:  (801) 619-6104
+Broadband Access group/TI
+jharrell@ti.com
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

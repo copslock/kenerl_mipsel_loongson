@@ -1,43 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 26 Feb 2005 14:38:35 +0000 (GMT)
-Received: from imfep06.dion.ne.jp ([IPv6:::ffff:210.174.120.157]:24142 "EHLO
-	imfep06.dion.ne.jp") by linux-mips.org with ESMTP
-	id <S8225192AbVBZOhE>; Sat, 26 Feb 2005 14:37:04 +0000
-Received: from [192.168.0.2] ([218.222.92.182]) by imfep06.dion.ne.jp
-          (InterMail vM.4.01.03.31 201-229-121-131-20020322) with ESMTP
-          id <20050226143651.MQJB23095.imfep06.dion.ne.jp@[192.168.0.2]>;
-          Sat, 26 Feb 2005 23:36:51 +0900
-Message-ID: <42208982.30201@mb.neweb.ne.jp>
-Date:	Sat, 26 Feb 2005 23:36:50 +0900
-From:	Nyauyama <ichinoh@mb.neweb.ne.jp>
-User-Agent: Mozilla Thunderbird 1.0 (Macintosh/20041206)
-X-Accept-Language: ja, en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 26 Feb 2005 18:07:23 +0000 (GMT)
+Received: from msr35.hinet.net ([IPv6:::ffff:168.95.4.135]:6110 "EHLO
+	msr35.hinet.net") by linux-mips.org with ESMTP id <S8225200AbVBZSHI>;
+	Sat, 26 Feb 2005 18:07:08 +0000
+Received: from [192.168.186.100] (218-160-39-172.dynamic.hinet.net [218.160.39.172])
+	by msr35.hinet.net (8.9.3/8.9.3) with ESMTP id CAA20702
+	for <linux-mips@linux-mips.org>; Sun, 27 Feb 2005 02:07:02 +0800 (CST)
+Message-ID: <4220BA87.8070101@s90.tku.edu.tw>
+Date:	Sun, 27 Feb 2005 02:05:59 +0800
+From:	Tsang-Ren Chang <690190029@s90.tku.edu.tw>
+User-Agent: Mozilla Thunderbird 0.9 (Windows/20041103)
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
 To:	linux-mips@linux-mips.org
-CC:	Nyauyama <ichinoh@mb.neweb.ne.jp>
-Subject: Question DbAu1500 PCI
-Content-Type: text/plain; charset=ISO-2022-JP
+Subject: Re: ADM5120: Data bus error
+References: <421DF870.30708@s90.tku.edu.tw> <20050225100247.GA10193@linux-mips.org>
+In-Reply-To: <20050225100247.GA10193@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <ichinoh@mb.neweb.ne.jp>
+Return-Path: <690190029@s90.tku.edu.tw>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7344
+X-archive-position: 7345
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ichinoh@mb.neweb.ne.jp
+X-original-sender: 690190029@s90.tku.edu.tw
 Precedence: bulk
 X-list: linux-mips
 
-Hello!
+Ralf Baechle wrote:
 
-I have a problem about DbAu1500's PCI.
+>On Thu, Feb 24, 2005 at 11:53:20PM +0800, Tsang-Ren Chang wrote:
+>
+>  
+>
+>>Hi,
+>>I'm porting linux-2.4.27 on adm5120 (MIPS 4Kc core).
+>>But when I copied /sbin/pppd , It crashed.
+>>    
+>>
+>
+>In addition to what Maciej said I'd like to add that bus errors are often
+>signalled asynchronously, so the machine state in a register dump very
+>often has no relation to the actual problem.
+>
+>  Ralf
+>
+>.
+>
+>  
+>
+Hi,
+I rebuilt the kernel with uncached option and the error disappeared.
+What does that mean?
 
-The PCI Configuration space of DbAu1500 is not seen by
-the boot loader that I made.
-However, if the PCI board is not installed in DbAu1500,
-the Configuration space of PCI HOST is seen.
-
-Have you ever encountered this phenomenon?
-
-Nyauyama
+Thanks,
+T.R. Chang

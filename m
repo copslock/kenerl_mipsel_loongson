@@ -1,65 +1,48 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f39AE2c01354
-	for linux-mips-outgoing; Mon, 9 Apr 2001 03:14:02 -0700
-Received: from mailgw3.netvision.net.il (mailgw3.netvision.net.il [194.90.1.11])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f39AE0M01351
-	for <linux-mips@oss.sgi.com>; Mon, 9 Apr 2001 03:14:00 -0700
-Received: from jungo.com ([194.90.113.98])
-	by mailgw3.netvision.net.il (8.9.3/8.9.3) with ESMTP id NAA26539;
-	Mon, 9 Apr 2001 13:12:07 +0300 (IDT)
-Message-ID: <3AD18B4D.8070204@jungo.com>
-Date: Mon, 09 Apr 2001 13:13:33 +0300
-From: Michael Shmulevich <michaels@jungo.com>
-Organization: Jungo LTD
-User-Agent: Mozilla/5.0 (X11; U; Linux 2.2.17-21mdk i686; en-US; 0.8.1) Gecko/20010326
-X-Accept-Language: en
+	by oss.sgi.com (8.11.3/8.11.3) id f39CQ2b04238
+	for linux-mips-outgoing; Mon, 9 Apr 2001 05:26:02 -0700
+Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f39CPeM04233
+	for <linux-mips@oss.sgi.com>; Mon, 9 Apr 2001 05:25:56 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA14849;
+	Mon, 9 Apr 2001 14:16:53 +0200 (MET DST)
+Date: Mon, 9 Apr 2001 14:16:53 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Joe deBlaquiere <jadb@redhat.com>
+cc: "Kevin D. Kissell" <kevink@mips.com>,
+   "MIPS/Linux List (SGI)" <linux-mips@oss.sgi.com>
+Subject: Re: Dumb Question on Cross-Development
+In-Reply-To: <3ACF323D.3030704@redhat.com>
+Message-ID: <Pine.GSO.3.96.1010409141238.9470E-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-To: David Jez <dave.jez@seznam.cz>
-CC: Lisa.Hsu@taec.toshiba.com, linux-mips@oss.sgi.com
-Subject: Re: ucLinux for MIPS
-References: <OF82A2E51E.E2ACCD3B-ON88256A25.007F33AB@taec.toshiba.com> <20010408134919.A18546@stud.fee.vutbr.cz>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-In uClinux mips/ subtree is pure 2.4.0, so I don't expect it to support 
-any non-MMU architecture. On the other hand, you may try to write the 
-support yourself. Take examples from armnommu/, which has been recently 
-updated.
+On Sat, 7 Apr 2001, Joe deBlaquiere wrote:
 
+> You might call it a hack, but it makes life easy if you do something like:
+> 
+> export ac_cv_sizeof_short=2
+> export ac_cv_sizeof_int=4
+> export ac_cv_sizeof_long=4
+> 
+> sh ./configure --target=$CONFIG_TARGET --host=$CONFIG_HOST 
+> --prefix=$CONFIG_PREFIX --exec-prefix=$CONFIG_EXECPR
+> 
+> This will short circuit a "broken" configure trying to execute programs 
+> for this kind of thing. If configure doesn't care about sizeof_int, then 
+> this definition is silently ignored...
 
-David Jez wrote:
-
->> Hi, All
-> 
->   Hi Lisa,
-> 
-> 
->> Does anybody know where can I find the uCLinux release and patch  which
->> supports MIPS?    (The chip that I am using has MMU but is disabled)
->> 
->> Thanks,
-> 
->   I find it here:
->   http://cvs.uclinux.org/cgi-bin/cvsweb/uClinux-2.4.x/arch/mips/
-> 
->   (You can try download CVS verios of uClinux from cvs.uclinux.org or
-> www.uclinux.org. It may supports MIPS architecture)
-> 
-> 
->> Lisa
-> 
->   Best Regards,
-
+ If you look at my RPM packages, you'll see I'm already doing this.  I've
+already thought of making global cross-compilation configuration files for
+each host containing appropriate definitions.  I'm not sure how to
+integrate it with RPM, yet (the macro definition file is a good
+candidate).  I didn't make any progress due to a low priority of this
+task. 
 
 -- 
-Sincerely yours,
-Michael Shmulevich
-______________________________________
-Software Developer
-Jungo - R&D
-email: michaels@jungo.com
-web: http://www.jungo.com
-Phone: 1-877-514-0537(USA)  +972-9-8859365(Worldwide) ext. 233
-Fax:   1-877-514-0538(USA)  +972-9-8859366(Worldwide)
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

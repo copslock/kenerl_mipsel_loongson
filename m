@@ -1,72 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 09 May 2004 13:57:56 +0100 (BST)
-Received: from p508B632F.dip.t-dialin.net ([IPv6:::ffff:80.139.99.47]:26182
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225768AbUEIM5z>; Sun, 9 May 2004 13:57:55 +0100
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i49CvqxT024041;
-	Sun, 9 May 2004 14:57:52 +0200
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i49Cvof9024040;
-	Sun, 9 May 2004 14:57:50 +0200
-Date: Sun, 9 May 2004 14:57:50 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Jun Sun <jsun@mvista.com>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: semaphore woes in 2.6, 32bit
-Message-ID: <20040509125750.GA19225@linux-mips.org>
-References: <20040507181031.F9702@mvista.com> <20040508071822.GA29554@linux-mips.org> <20040508224806.A24682@mvista.com> <Pine.GSO.4.58.0405091108150.26985@waterleaf.sonytel.be>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 09 May 2004 14:14:39 +0100 (BST)
+Received: from mx1.redhat.com ([IPv6:::ffff:66.187.233.31]:62608 "EHLO
+	mx1.redhat.com") by linux-mips.org with ESMTP id <S8225771AbUEINOi>;
+	Sun, 9 May 2004 14:14:38 +0100
+Received: from int-mx1.corp.redhat.com (int-mx1.corp.redhat.com [172.16.52.254])
+	by mx1.redhat.com (8.12.10/8.12.10) with ESMTP id i49DEZ0m008461;
+	Sun, 9 May 2004 09:14:35 -0400
+Received: from localhost (mail@vpnuser2.surrey.redhat.com [172.16.9.2])
+	by int-mx1.corp.redhat.com (8.11.6/8.11.6) with ESMTP id i49DEYv22462;
+	Sun, 9 May 2004 09:14:35 -0400
+Received: from rsandifo by localhost with local (Exim 3.35 #1)
+	id 1BMo8X-0006fb-00; Sun, 09 May 2004 14:14:33 +0100
+To: "Bradley D. LaRonde" <brad@laronde.org>
+Cc: <uclibc@uclibc.org>, <linux-mips@linux-mips.org>
+Subject: Re: uclibc mips ld.so and undefined symbols with nonzero symbol
+ table entry st_value
+References: <045b01c43155$1e06cd80$8d01010a@prefect>
+From: Richard Sandiford <rsandifo@redhat.com>
+Date: Sun, 09 May 2004 14:14:33 +0100
+In-Reply-To: <045b01c43155$1e06cd80$8d01010a@prefect> (Bradley D. LaRonde's
+ message of "Mon, 3 May 2004 17:25:11 -0400")
+Message-ID: <874qqpg2ti.fsf@redhat.com>
+User-Agent: Gnus/5.1006 (Gnus v5.10.6) Emacs/21.2 (gnu/linux)
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.GSO.4.58.0405091108150.26985@waterleaf.sonytel.be>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Return-Path: <rsandifo@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4948
+X-archive-position: 4949
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: rsandifo@redhat.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, May 09, 2004 at 11:09:29AM +0200, Geert Uytterhoeven wrote:
+"Bradley D. LaRonde" <brad@laronde.org> writes:
+> I guess that the point of these procedure stubs is to keep
+> pointer-to-function values consistent between executables and share
+> libraries.  Is that what binutils is trying to accomplish here?
 
-> > Kernel is yesterday's CVS. gcc is 3.3.1.  config is ddb5477.  No
-> > additional patch.  See below.
-> >
-> > In any case if you look at the uart code you should see there
-> > is a problem already.  'state' is allocated through kmalloc() which only
-> > gives 4-byte alignement.  The only puzzling thing is that why this
-> > did not show up before.  Maybe kmalloc() was giving 8-byte aligned block?
-> 
-> AFAIK, kmaloc() always[*] returns 8-byte (or higher, for archs that need it)
-> aligned blocks.
+No, it's to enable lazy binding.  The idea is that when the dynamic
+loader loads libpthread.so, it doesn't need to resolve malloc()
+immediately, it can just leave the GOT entry pointing to the stub.
+Then, when the stub is called, it will ask the dynamic linker to
+find the true address of malloc() and update the GOT accordingly.
+This is supposed to reduce start-up time.
 
-We got tripped by a change in 2.6.6-rc2.  Before that change the kmalloc
-slab caches were being created with SLAB_HWCACHE_ALIGN which results in
-L1_CACHE_SHIFT alignment for allocations of L1_CACHE_SHIFT for slab caches
-that are at least that size.  For the sake of S390 this behaviour was
-changed; new it defaults to BYTES_PER_WORD alignment which is four bytes.
+An object should never use stubs if takes the address of the function.
+It should only use a stub for some symbol foo if every use of foo is
+for a direct call.
 
-Fixed by defining ARCH_KMALLOC_MINALIGN as 8.
+If the dynamic loader is choosing libpthread's stub over the real
+definition in libc.so, that sounds on the face of it like a dynamic
+loader bug.
 
-  Ralf
+> But should stubs really be getting involved here?  As Thiemo Seufer pointed
+> out to me, readelf shows me that every undefined symbol in every shared
+> library in /lib on my x86 debian box has the st_value member for the symbol
+> table entry set to zero.
 
-Index: include/asm-mips/cache.h
-===================================================================
-RCS file: /home/cvs/linux/include/asm-mips/cache.h,v
-retrieving revision 1.16
-diff -u -r1.16 cache.h
---- include/asm-mips/cache.h	10 Oct 2003 20:37:35 -0000	1.16
-+++ include/asm-mips/cache.h	9 May 2004 12:57:38 -0000
-@@ -18,4 +18,6 @@
- #define SMP_CACHE_SHIFT		L1_CACHE_SHIFT
- #define SMP_CACHE_BYTES		L1_CACHE_BYTES
- 
-+#define ARCH_KMALLOC_MINALIGN	8
-+
- #endif /* _ASM_CACHE_H */
+The x86 and MIPS ABIs are very different though.
+
+Richard

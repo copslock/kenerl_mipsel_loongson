@@ -1,84 +1,100 @@
 Received: from sgi.com (sgi.SGI.COM [192.48.153.1])
-	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id MAA14701
-	for <pstadt@stud.fh-heilbronn.de>; Sat, 21 Aug 1999 12:33:30 +0200
+	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id AAA06062
+	for <pstadt@stud.fh-heilbronn.de>; Sun, 22 Aug 1999 00:36:00 +0200
 Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id DAA04996; Sat, 21 Aug 1999 03:30:53 -0700 (PDT)
+	via ESMTP id PAA03843; Sat, 21 Aug 1999 15:32:17 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id DAA23727
+	id PAA70486
 	for linux-list;
-	Sat, 21 Aug 1999 03:25:25 -0700 (PDT)
+	Sat, 21 Aug 1999 15:27:15 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from kilimanjaro.engr.sgi.com (kilimanjaro.engr.sgi.com [150.166.49.139])
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id DAA77638
-	for <linux@cthulhu.engr.sgi.com>;
-	Sat, 21 Aug 1999 03:25:21 -0700 (PDT)
-	mail_from (owner-linux@kilimanjaro.engr.sgi.com)
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by kilimanjaro.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id DAA71157; Sat, 21 Aug 1999 03:25:14 -0700 (PDT)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id DAA57977;
-	Sat, 21 Aug 1999 03:25:14 -0700 (PDT)
-	mail_from (cory@real-time.com)
-Received: from paladin.real-time.com (paladin.real-time.com [206.10.252.2]) 
+	via ESMTP id PAA62988
+	for <linux@cthulhu.engr.sgi.com>;
+	Sat, 21 Aug 1999 15:27:11 -0700 (PDT)
+	mail_from (tshrider@kascope.com)
+Received: from vertigo.gndn.org ([216.50.90.66]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id DAA02898; Sat, 21 Aug 1999 03:25:13 -0700 (PDT)
-	mail_from (cory@real-time.com)
-Received: from real-time.com (mondas.dalekchess.org [206.147.104.202])
-	by paladin.real-time.com (8.8.8/8.8.8) with ESMTP id FAA16186;
-	Sat, 21 Aug 1999 05:25:12 -0500 (CDT)
-Message-ID: <37BE7D80.20B8D36A@real-time.com>
-Date: Sat, 21 Aug 1999 05:20:49 -0500
-From: Cory Jon Hollingsworth <cory@real-time.com>
-X-Mailer: Mozilla 4.6 [en] (X11; I; Linux 2.2.9 i586)
-X-Accept-Language: en
+	via ESMTP id PAA01152
+	for <linux@cthulhu.engr.sgi.com>; Sat, 21 Aug 1999 15:27:09 -0700 (PDT)
+	mail_from (tshrider@kascope.com)
+Received: from localhost (tshrider@localhost)
+	by vertigo.gndn.org (8.9.3/8.9.3) with ESMTP id MAA00581;
+	Sat, 21 Aug 1999 12:27:44 -0500
+X-Authentication-Warning: vertigo.gndn.org: tshrider owned process doing -bs
+Date: Sat, 21 Aug 1999 12:27:44 -0500 (EST)
+From: "Todd M. Shrider" <tshrider@kascope.com>
+X-Sender: tshrider@vertigo.gndn.org
+To: brett <brett@madhouse.org>
+cc: William Holmes <palsoft@earthlink.net>, Linux <linux@cthulhu.engr.sgi.com>
+Subject: Re: Root Password
+In-Reply-To: <Pine.LNX.3.96.990821150833.20173A-100000@caligula.madhouse.org>
+Message-ID: <Pine.LNX.4.10.9908211227300.579-100000@vertigo.gndn.org>
 MIME-Version: 1.0
-To: Joan Eslinger <wombat@kilimanjaro.engr.sgi.com>
-CC: linux@kilimanjaro.engr.sgi.com
-Subject: Re: Hard Hat and Tandem.
-References: <199908210155.SAA81529@kilimanjaro.engr.sgi.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
-Content-Transfer-Encoding: 7bit
 
-Joan Eslinger wrote:
 
->  * > >     Tandem was a company situated in Texas that was in the business of
->
-> Texas? Headquarters was Cupertino, California.
->
+hehe... well, that will work to, I guess... :-)
 
-    Hey I said my history was bastardized.  If that is the only fact I got wrong I
-feel quite happy.
 
->
->  * > > selling business servers.  At the time this box was purchased, Tandem was
->  * > > repackaging SGI hardware and selling them as Tandem servers.  Since then
->  * > > Tandem has been bought by Compaq, which I believe where more or less bought
->  * > > Tandem in order to acquire the brand name.  Currently I believe Compaq sells
->  * > > industrial computers under the Tandem name.  I do not think those machines
->  * > > have a MIPS chip set though.
->  * >
->  * > Tandem has a very interesting program of HA machines and software.  They
->  * > have more or less the only UNIX systems that guarantee like 99.99999%
->  * > availability.
->
-> Tandem had 2 computer lines: the fault-tolorant Himalaya line running
-> their own OS called Non-Stop built with MIPS CPUs, and the Integrity
-> line which was OEM'ed SGI Challenge servers running IRIX.
->
-> Looks like new Himalaya servers are built around Alpha CPUs.
+--
+Todd M. Shrider			Coder Emeritus
+Kaleidoscope Inc.		The Diner Inc.
+tshrider@kascope.com		(317)581-6378
 
-    So I can confidently say I have a Challenge S with a Tandem cover.  The machine
-was running IRIX prior to me acquiring it.
+       I degaussed my girlfriend and I'm 
+       just not attracted to her anymore. 
+
+On Sat, 21 Aug 1999, brett wrote:
+
+> not having a system cd for an old Indigo I went over to rootshell.com and
+> got a root exploit for the system.
+> 
+> b
+> 
+> 
+> 
+> On Sat, 21 Aug 1999, Todd M. Shrider wrote:
+> 
+> > 
+> > You'll need the system cd's, or at least the first cd, to reset the root
+> > passwd. When the system starts, press escape to go into the maintenance
+> > menu and then choose install system software. (Were not actually going to
+> > install the system software). At the meno choose Administration (opetion
+> > 13 I believe) and then type chroot
+> > 
+> > This will put you at a prompt so you can type passwd and give a new root
+> > passwd. As far as I know this is the only way to change things...
+> > 
+> > 
+> > --
+> > Todd M. Shrider			Coder Emeritus
+> > Kaleidoscope Inc.		The Diner Inc.
+> > tshrider@kascope.com		(317)581-6378
+> > 
+> >        I degaussed my girlfriend and I'm 
+> >        just not attracted to her anymore. 
+> > 
+> > On Sat, 21 Aug 1999, William Holmes wrote:
+> > 
+> > > I just got a O2 system and the root password is set and I have no idea what it is. System runnig fine with IRIX 6.3 but no CD'S. I know this doesn't have any thing to do with LINUX but can some one help?
+> > > 
+> > > Thanks In Advance
+> > > 
+> > > William Holmes
+> > > 
+> > 
+> > 
+> 

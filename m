@@ -1,66 +1,103 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Apr 2003 21:04:20 +0100 (BST)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:1061
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8225202AbTDDUER>; Fri, 4 Apr 2003 21:04:17 +0100
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp (Exim 3.36 #2)
-	id 191XQ7-000Ebh-00
-	for linux-mips@linux-mips.org; Fri, 04 Apr 2003 22:04:15 +0200
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 191XQ7-0002ZK-00
-	for <linux-mips@linux-mips.org>; Fri, 04 Apr 2003 22:04:15 +0200
-Date: Fri, 4 Apr 2003 22:04:15 +0200
-To: "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: Re: Unknown ARCS message/hang
-Message-ID: <20030404200415.GI14490@rembrandt.csv.ica.uni-stuttgart.de>
-References: <1049427871.3e8cff9f9c50e@my.visi.com> <Pine.GSO.3.96.1030404142811.7307B-100000@delta.ds2.pg.gda.pl> <20030404131935.GF11906@bogon.ms20.nix> <1049467405.3e8d9a0dea4a5@my.visi.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Apr 2003 23:45:40 +0100 (BST)
+Received: from mail.ocs.com.au ([IPv6:::ffff:203.34.97.2]:29446 "HELO
+	mail.ocs.com.au") by linux-mips.org with SMTP id <S8225202AbTDDWpj>;
+	Fri, 4 Apr 2003 23:45:39 +0100
+Received: (qmail 21067 invoked from network); 4 Apr 2003 22:45:27 -0000
+Received: from ocs3.intra.ocs.com.au (192.168.255.3)
+  by mail.ocs.com.au with SMTP; 4 Apr 2003 22:45:27 -0000
+Received: by ocs3.intra.ocs.com.au (Postfix, from userid 16331)
+	id 228F43000B8; Sat,  5 Apr 2003 08:45:24 +1000 (EST)
+Received: from ocs3.intra.ocs.com.au (localhost [127.0.0.1])
+	by ocs3.intra.ocs.com.au (Postfix) with ESMTP
+	id 9968C178; Sat,  5 Apr 2003 08:45:24 +1000 (EST)
+X-Mailer: exmh version 2.4 06/23/2000 with nmh-1.0.4
+From: Keith Owens <kaos@ocs.com.au>
+To: Alvaro Martinez Echevarria <alvarom@cisco.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: problem with modutils under mips 
+In-reply-to: Your message of "Fri, 04 Apr 2003 14:26:34 PST."
+             <Pine.LNX.4.44.0304041414020.15408-100000@alvarom-lnx.cisco.com> 
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1049467405.3e8d9a0dea4a5@my.visi.com>
-User-Agent: Mutt/1.4i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+Date: Sat, 05 Apr 2003 08:45:18 +1000
+Message-ID: <27004.1049496318@ocs3.intra.ocs.com.au>
+Return-Path: <kaos@ocs.com.au>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1929
+X-archive-position: 1930
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: kaos@ocs.com.au
 Precedence: bulk
 X-list: linux-mips
 
-Erik J. Green wrote:
-> 
-> .. and just to display my complete technical mastery, I failed to echo this
-> message to the list the first time around =\
-> 
-> 
-> Quoting Guido Guenther <agx@sigxcpu.org>:
-> > >  0x211c4018 is a mapped address, which you can't use that early in a boot.
-> > Isn't 0xa8000000211c4000 in xkphys and therefore unmapped? The PROM only
-> > seems to look at the lower 32bits of PC though.
-> > Puzzled,
-> >  -- Guido
-> 
-> That's what I thought too.  I did notice that the 64 bit kernel seems to refer
-> to some 32 bit compatibility address spaces, so I'm probably confused on what
-> gets used when.
-> 
-> FYI, the load address I'm using (0xa800000020004000) is the one specified in the
-> irix headers for an IP30 kernel (as I read it anyway) and is very close to the
-> entry point IRIX uses on the same machine.
+On Fri, 4 Apr 2003 14:26:34 -0800 (PST), 
+Alvaro Martinez Echevarria <alvarom@cisco.com> wrote:
+>We are having some modutils trouble under mips, when
+>compiling modules with gcc-3.2 and debugging information. It
+>turns out gcc is generating debug sections in DWARF format, i.e.,
+>with elf section type SHT_MIPS_DWARF. That results in an error in
+>obj/obj_mips.c:arch_load_proc_section(), as follows:
+>
+>foo.o: Unhandled section header type: 7000001e
+>foo.o: Unknown section header type: 7000001e
+>
+>This is the simple fix I have:
+>
+>---------------------------------------------------------------------------=
+>----
+>--- obj_mips.c.OLD  2002-02-28 16:39:06.000000000 -0800
+>+++ obj_mips.c    2003-04-02 18:34:44.000000000 -0800
+>@@ -74,6 +74,7 @@
+>     {
+>     case SHT_MIPS_DEBUG:
+>     case SHT_MIPS_REGINFO:
+>+    case SHT_MIPS_DWARF:
+>       /* Actually these two sections are as useless as something can be ..=
+>=2E  */
+>       sec->contents =3D NULL;
+>       break;
+>@@ -83,7 +84,6 @@
+>     case SHT_MIPS_GPTAB:
+>     case SHT_MIPS_UCODE:
+>     case SHT_MIPS_OPTIONS:
+>-    case SHT_MIPS_DWARF:
+>     case SHT_MIPS_EVENTS:
+>       /* These shouldn't ever be in a module file.  */
+>       error("Unhandled section header type: %08x", sec->header.sh_type);
+>---------------------------------------------------------------------------=
+>
+>At the same time, maybe there should be something after the
+>"Unhandled" message for all those types, so the execution doesn't
+>skip over to the default: case and return -1, but I don't know
+>that much.
 
-Current 64-bit kernels are loaded in the 32-bit compatibility space, i.e. the
-load address is 0xffffffff8???????. If you want to load to 64-bit space (the
-firmware of r10k ip28 needs this, too), you'll have to fix several macro
-expansions in the kernel. I did this once for my ip28, but haven't found the
-time to make it really work yet.
+Thanks, this is what went into my tree, patch is against modutils 2.4.25.
 
-An outdated patch which covers this and some other issues is available at
-http://www.csv.ica.uni-stuttgart.de/homes/ths/linux-mips/kernel/oss-linux-2002-06-05.diff
-
-
-Thiemo
+Index: 26.1/obj/obj_mips.c
+--- 26.1/obj/obj_mips.c Fri, 01 Mar 2002 11:39:06 +1100 kaos (modutils-2.4/c/10_obj_mips.c 1.4 644)
++++ 26.1(w)/obj/obj_mips.c Sat, 05 Apr 2003 08:36:33 +1000 kaos (modutils-2.4/c/10_obj_mips.c 1.4 644)
+@@ -74,7 +74,8 @@ arch_load_proc_section(struct obj_sectio
+     {
+     case SHT_MIPS_DEBUG:
+     case SHT_MIPS_REGINFO:
+-      /* Actually these two sections are as useless as something can be ...  */
++    case SHT_MIPS_DWARF:
++      /* Ignore debugging sections  */
+       sec->contents = NULL;
+       break;
+ 
+@@ -83,10 +84,10 @@ arch_load_proc_section(struct obj_sectio
+     case SHT_MIPS_GPTAB:
+     case SHT_MIPS_UCODE:
+     case SHT_MIPS_OPTIONS:
+-    case SHT_MIPS_DWARF:
+     case SHT_MIPS_EVENTS:
+       /* These shouldn't ever be in a module file.  */
+       error("Unhandled section header type: %08x", sec->header.sh_type);
++      return -1;
+ 
+     default:
+       /* We don't even know the type.  This time it might as well be a

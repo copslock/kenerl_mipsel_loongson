@@ -1,34 +1,51 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id BAA388212 for <linux-archive@neteng.engr.sgi.com>; Fri, 5 Dec 1997 01:06:47 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id JAA414159 for <linux-archive@neteng.engr.sgi.com>; Fri, 5 Dec 1997 09:13:56 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id BAA14995 for linux-list; Fri, 5 Dec 1997 01:04:59 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id BAA14976; Fri, 5 Dec 1997 01:04:52 -0800
-Received: from snowcrash.cymru.net (snowcrash.cymru.net [163.164.160.3]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id BAA03331; Fri, 5 Dec 1997 01:03:27 -0800
-	env-from (alan@lxorguk.ukuu.org.uk)
-Received: from lightning.swansea.linux.org.uk (the-village.bc.nu [163.164.160.21]) by snowcrash.cymru.net (8.8.7/8.7.1) with SMTP id JAA12483; Fri, 5 Dec 1997 09:03:22 GMT
-Received: by lightning.swansea.linux.org.uk (Smail3.1.29.1 #2)
-	id m0xdtip-0005FsC; Fri, 5 Dec 97 09:06 GMT
-Message-Id: <m0xdtip-0005FsC@lightning.swansea.linux.org.uk>
-From: alan@lxorguk.ukuu.org.uk (Alan Cox)
-Subject: Re: Linux on the O2
-To: ralf@uni-koblenz.de
-Date: Fri, 5 Dec 1997 09:06:55 +0000 (GMT)
-Cc: alan@lxorguk.ukuu.org.uk, greg@xtp.engr.sgi.com,
-        chatz@omen.melbourne.sgi.com, ligeh@carpediem.com, cwcarlson@home.com,
-        linux@cthulhu.engr.sgi.com
-In-Reply-To: <19971205011745.03995@uni-koblenz.de> from "ralf@uni-koblenz.de" at Dec 5, 97 01:17:45 am
-Content-Type: text
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id JAA24454 for linux-list; Fri, 5 Dec 1997 09:11:09 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA24424 for <linux@engr.sgi.com>; Fri, 5 Dec 1997 09:11:04 -0800
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id JAA05855
+	for <linux@engr.sgi.com>; Fri, 5 Dec 1997 09:11:00 -0800
+	env-from (ralf@uni-koblenz.de)
+From: ralf@uni-koblenz.de
+Received: from uni-koblenz.de (ralf@pmport-09.uni-koblenz.de [141.26.249.9])
+	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id SAA24125
+	for <linux@engr.sgi.com>; Fri, 5 Dec 1997 18:10:57 +0100 (MET)
+Received: (from ralf@localhost)
+	by uni-koblenz.de (8.8.7/8.8.7) id SAA02427;
+	Fri, 5 Dec 1997 18:07:17 +0100
+Message-ID: <19971205180717.22087@uni-koblenz.de>
+Date: Fri, 5 Dec 1997 18:07:17 +0100
+To: linux@cthulhu.engr.sgi.com
+Subject: Update ...
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.85
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> > If that is SGI's attitude to the thing then theres an Indy on my desk waiting
-> > for someone to ship it back.
+135mb rpm packages and maybe 20mb tarballs waiting to be uploaded.  Plus
+a small pile of tarballs ...  Problems still to solve:
 
-Ok before this goes too far let me point of that there were a certain number
-of invisible humour/sarcasm tags on that comment as a lead in to the monitor
-info.
+  - a change in the kernel makes ld.so die under certain circumstances.
+  - RedHat's sh-utils package is broken, it's pam support  doesn't compile.
+  - When building the binutils 2.8.1-1 rpm cc1 dies with signal 6.
+    Strange, because the same package works great on the little endian
+    boxes and GCC actually shouldn't contain byteorder problems.
+  - the Emacs srpm refuses to he compiled on big endian machines
+  - I think I found the bug causing the large number of timouts the Seeq
+    driver is signalling.  Haven't tested it, my kernel sources are in the
+    other end of the universe, under IRIX and I don't feel like rebooting ...
+  - timekeeping seems to be pretty broken, I saw my clock doing 10h in
+    three hours of uptime.
+  - the console code is somehow broken.  Occasionally it writes garbage
+    characters under the lowest line that normally is used.  When the
+    screenblanker is active one can see it writing garbage characters
+    on other places of the screen.  Aside it's crawling, scrolling in less
+    reminds of a Sparc console of a slow Sparc.  Furthermore I suspect
+    the console is also the cause of the memory corruption I occasionally
+    see.
 
-To start with if Dave can figure out an ultrasparc and we can crack the 
-Macintosh 68K nobody in SGI could stop us 8)
+Fixing #1 is the most important.  It breaks recompiling libc as well as
+the library dependency generation in RPM for all packages.  RPM, btw. is
+dumb and continues without noticing ...
 
-
-Alan
+  Ralf

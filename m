@@ -1,43 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Jul 2003 22:24:09 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:59130 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225208AbTG1VYH>;
-	Mon, 28 Jul 2003 22:24:07 +0100
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id h6SLO1h17925;
-	Mon, 28 Jul 2003 14:24:01 -0700
-Date: Mon, 28 Jul 2003 14:24:01 -0700
-From: Jun Sun <jsun@mvista.com>
-To: Teresa Tao <Teresat@tridentmicro.com>
-Cc: linux-mips@linux-mips.org, jsun@mvista.com
-Subject: Re: mmap'ed memory cacheable or uncheable
-Message-ID: <20030728142401.K25784@mvista.com>
-References: <61F6477DE6BED311B69F009027C3F58403AA396F@EXCHANGE>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jul 2003 08:12:06 +0100 (BST)
+Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:42773
+	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
+	id <S8225208AbTG2HMC>; Tue, 29 Jul 2003 08:12:02 +0100
+Received: from no.name.available by topsns.toshiba-tops.co.jp
+          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 29 Jul 2003 07:12:00 UT
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.9/8.12.9) with ESMTP id h6T7BoDV067690;
+	Tue, 29 Jul 2003 16:11:50 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date: Tue, 29 Jul 2003 16:13:03 +0900 (JST)
+Message-Id: <20030729.161303.130243885.nemoto@toshiba-tops.co.jp>
+To: ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: 64bit _syscall6 fix
+From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+Organization: TOSHIBA Personal Computer System Corporation
+X-Mailer: Mew version 2.2 on Emacs 21.2 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <61F6477DE6BED311B69F009027C3F58403AA396F@EXCHANGE>; from Teresat@tridentmicro.com on Fri, Jul 25, 2003 at 03:52:33PM -0700
-Return-Path: <jsun@mvista.com>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2917
+X-archive-position: 2918
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Jul 25, 2003 at 03:52:33PM -0700, Teresa Tao wrote:
-> How about if I specify the following flags in my mmap routine just like what the pgprot_noncached micro did.
-> 	pgprot_val(vma->vm_page_prot) &= ~_CACHE_MASK;
-> 	pgprot_val(vma->vm_page_prot) |= _CACHE_UNCACHED;
-> 
-> Will this have kernel make the mmap'd memory non-cacheable? Or is there a mmap non-cacheable patch?
->
+Here is a small fix for 64bit (N32 or ABI64) version of _syscall6().
+"__NR_##name" is 7th parameter not 6th.
 
-I think this might work.  Did you try it?  The performance will be bad
-though as mmap() is used widely by userland.
+This is for 2.4 branch.  
 
-Jun
+diff -u linux-mips-cvs/include/asm-mips64/unistd.h linux.new/include/asm-mips64/unistd.h
+--- linux-mips-cvs/include/asm-mips64/unistd.h	Tue Jul 22 09:48:19 2003
++++ linux.new/include/asm-mips64/unistd.h	Tue Jul 29 16:03:31 2003
+@@ -883,7 +883,7 @@
+ 	\
+ 	__asm__ volatile ( \
+ 	".set\tnoreorder\n\t" \
+-	"li\t$2, %6\t\t\t# " #name "\n\t" \
++	"li\t$2, %7\t\t\t# " #name "\n\t" \
+ 	"syscall\n\t" \
+ 	"move\t%0, $2\n\t" \
+ 	".set\treorder" \
+
+And this is for 2.6.
+
+diff -u linux-mips-cvs-2.6/include/asm-mips/unistd.h linux.new-2.6/include/asm-mips/unistd.h
+--- linux-mips-cvs-2.6/include/asm-mips/unistd.h	Tue Jul 29 16:08:13 2003
++++ linux.new-2.6/include/asm-mips/unistd.h	Tue Jul 29 16:10:43 2003
+@@ -1028,7 +1028,7 @@
+ 	\
+ 	__asm__ volatile ( \
+ 	".set\tnoreorder\n\t" \
+-	"li\t$2, %6\t\t\t# " #name "\n\t" \
++	"li\t$2, %7\t\t\t# " #name "\n\t" \
+ 	"syscall\n\t" \
+ 	"move\t%0, $2\n\t" \
+ 	".set\treorder" \
+---
+Atsushi Nemoto

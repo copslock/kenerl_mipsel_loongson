@@ -1,46 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Dec 2004 15:57:29 +0000 (GMT)
-Received: from embeddededge.com ([IPv6:::ffff:209.113.146.155]:14351 "EHLO
-	penguin.netx4.com") by linux-mips.org with ESMTP
-	id <S8225242AbULGP5Z>; Tue, 7 Dec 2004 15:57:25 +0000
-Received: from [192.168.253.28] (tibook.embeddededge.com [192.168.253.28])
-	by penguin.netx4.com (8.12.8/8.12.9) with ESMTP id iB7FiN9f011188;
-	Tue, 7 Dec 2004 10:44:23 -0500
-In-Reply-To: <20041207184258.071bf401.toch@dfpost.ru>
-References: <20041207184258.071bf401.toch@dfpost.ru>
-Mime-Version: 1.0 (Apple Message framework v619)
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Message-Id: <AD0D6ED2-4868-11D9-BB64-003065F9B7DC@embeddededge.com>
-Content-Transfer-Encoding: 7bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Dec 2004 16:55:59 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:12271 "EHLO
+	hermes.mvista.com") by linux-mips.org with ESMTP
+	id <S8225247AbULGQzz>; Tue, 7 Dec 2004 16:55:55 +0000
+Received: from mvista.com (prometheus.mvista.com [10.0.0.139])
+	by hermes.mvista.com (Postfix) with ESMTP
+	id 42D40186D7; Tue,  7 Dec 2004 08:55:53 -0800 (PST)
+Message-ID: <41B5E098.3070107@mvista.com>
+Date: Tue, 07 Dec 2004 08:55:52 -0800
+From: Manish Lachwani <mlachwani@mvista.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.2) Gecko/20040308
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: Michael Stickel <michael.stickel@4g-systems.biz>
 Cc: linux-mips@linux-mips.org
-From: Dan Malek <dan@embeddededge.com>
-Subject: Re: mmap problem
-Date: Tue, 7 Dec 2004 10:57:20 -0500
-To: Dmitriy Tochansky <toch@dfpost.ru>
-X-Mailer: Apple Mail (2.619)
-Return-Path: <dan@embeddededge.com>
+Subject: Re: [PATCH] Ocelot-3 memory configuration patch
+References: <20041207003553.GA22456@prometheus.mvista.com> <200412071106.14064.michael.stickel@4g-systems.biz>
+In-Reply-To: <200412071106.14064.michael.stickel@4g-systems.biz>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <mlachwani@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6584
+X-archive-position: 6585
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@embeddededge.com
+X-original-sender: mlachwani@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
+Michael Stickel wrote:
+> What if the "memsize" PMON variable is not defined?
+> Can that happen. Then the memory size is either 0L,
+> or an undefined value.
+> Shouldn't it be initialized to 128 by default?
+> 
+> On Tuesday 07 December 2004 01:35, you wrote:
+> 
+>>Hi Ralf,
+>>
+>>Based on your suggestion, I have now modified the Ocelot-3 code
+>>to probe for memory that has been configured by PMON. Please review ...
+>>
+>>Thanks
+>>Manish Lachwani
+> 
+> 
+memsize is always defined by PMON
 
-On Dec 7, 2004, at 10:42 AM, Dmitriy Tochansky wrote:
-
->   ret = remap_page_range( start, 0x40000000, size, vma->vm_page_prot 
-> ); //
-
-Use io_remap_page_range, it has the same parameters, and is
-designed to work with > 32-bit physical addresses.
-
-Also, you should really use pci_resource_* functions to get
-information about the pci address, size, etc.  Don't hardcode this,
-even for testing.
-
-
-	-- Dan
+Thanks
+Manish Lachwani

@@ -1,80 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Oct 2002 15:25:52 +0200 (CEST)
-Received: from buserror-extern.convergence.de ([212.84.236.66]:10500 "EHLO
-	hell") by linux-mips.org with ESMTP id <S1123891AbSJQNZv>;
-	Thu, 17 Oct 2002 15:25:51 +0200
-Received: from js by hell with local (Exim 3.35 #1 (Debian))
-	id 182Aen-0000Tc-00; Thu, 17 Oct 2002 15:25:45 +0200
-Date: Thu, 17 Oct 2002 15:25:45 +0200
-From: Johannes Stezenbach <js@convergence.de>
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Oct 2002 15:28:54 +0200 (CEST)
+Received: from t111.niisi.ras.ru ([193.232.173.111]:11633 "EHLO
+	t111.niisi.ras.ru") by linux-mips.org with ESMTP
+	id <S1123891AbSJQN2y>; Thu, 17 Oct 2002 15:28:54 +0200
+Received: from t06.niisi.ras.ru (t06.niisi.ras.ru [193.232.173.6])
+	by t111.niisi.ras.ru (8.9.1/8.9.1) with ESMTP id QAA07029;
+	Thu, 17 Oct 2002 16:28:45 +0300
+Received: (from uucp@localhost) by t06.niisi.ras.ru (8.7.6/8.7.3) with UUCP id QAA00434; Thu, 17 Oct 2002 16:48:40 +0300
+Received: from niisi.msk.ru (t34 [193.232.173.34])
+	by niisi.msk.ru (8.12.5/8.12.5) with ESMTP id g9HDPhpa013526;
+	Thu, 17 Oct 2002 17:25:43 +0400 (MSK)
+Message-ID: <3DAEBBD3.333275FC@niisi.msk.ru>
+Date: Thu, 17 Oct 2002 17:32:03 +0400
+From: "Gleb O. Raiko" <raiko@niisi.msk.ru>
+Organization: NIISI RAN
+X-Mailer: Mozilla 4.79 [en] (WinNT; U)
+X-Accept-Language: en,ru
+MIME-Version: 1.0
+To: Johannes Stezenbach <js@convergence.de>
+CC: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
 	"Kevin D. Kissell" <kevink@mips.com>, linux-mips@linux-mips.org
 Subject: Re: Once again: test_and_set for CPUs w/o LL/SC
-Message-ID: <20021017132545.GA1813@convergence.de>
-Mail-Followup-To: Johannes Stezenbach <js@convergence.de>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	"Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-	"Kevin D. Kissell" <kevink@mips.com>, linux-mips@linux-mips.org
-References: <20021016181135.GA26994@convergence.de> <Pine.GSO.3.96.1021017134232.24495A-100000@delta.ds2.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.GSO.3.96.1021017134232.24495A-100000@delta.ds2.pg.gda.pl>
-User-Agent: Mutt/1.4i
-Return-Path: <js@convergence.de>
+References: <3DAE872E.D5EF0E4D@niisi.msk.ru> <Pine.GSO.3.96.1021017135738.24495B-100000@delta.ds2.pg.gda.pl> <20021017131115.GA1689@convergence.de>
+Content-Type: text/plain; charset=koi8-r
+Content-Transfer-Encoding: 7bit
+Return-Path: <raiko@niisi.msk.ru>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 472
+X-archive-position: 473
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: js@convergence.de
+X-original-sender: raiko@niisi.msk.ru
 Precedence: bulk
 X-list: linux-mips
 
-Hello Ralf,
+Johannes Stezenbach wrote:
+> 
+> On Thu, Oct 17, 2002 at 02:02:35PM +0200, Maciej W. Rozycki wrote:
+> > On Thu, 17 Oct 2002, Gleb O. Raiko wrote:
+> >
+> > > Implement new sysmips then.
+> >
+> >  I'm not sure if that's a good idea.  Glibc alone uses test_and_set(),
+> > exchange_and_add(), atomic_add() and compare_and_swap().  Do you want a
+> > separate syscall for each of these functions?  I think the ll/sc emulation
+> > may be the best solution after all.  At least it's most flexible and not
+> > much slower if at all.
+> 
+> Depends on your usage pattern. E.g. we don't run software that uses
+> atomicity.h (i.e. no C++ code), but heavily use pthread_mutex_lock() etc.
+> The few uses of atomicity.h internal to glibc don't warrant
+> any optimizations. So, if the beql-Method would not exist, I would
+> consider implementing a new sysmips for compare_and_swap().
 
-On Thu, Oct 17, 2002 at 01:57:29PM +0200, Maciej W. Rozycki wrote:
-> On Wed, 16 Oct 2002, Johannes Stezenbach wrote:
-> 
-> > The patch is only for the VR41XX. I'm not shure what other CPUs
-> > fall into the same category. If I read binutils/opcodes/mips-opc.c
-> > correctly, then the TX39XX, while not being ISA2, has beql.
-> 
->  I think I have TX39XX docs somewhere -- I may check if that's true.
-> 
-> > Please tell me if the patch is acceptable.
-> > 
-> > Possible options:
-> > - don't mess with tlbex-r4k.S
-> > - or unconditonally replace the 'nop's before 'eret's in tlbex-r4k.S with
-> >   'move k1,zero' plus a comment
-> 
->  I'd go for that, so that VR41XX user binaries work fine on real MIPS II+
-> processors as well.  There is no performance nor space impact for
-> tlbex-r4k.S and for stackframe.h the single-instruction impact is not
-> critical, or I believe there is a single free slot in RESTORE_SOME that
-> may be reused (after a bit of restructuring to make sure
-> RESTORE_SP_AND_RET isn't used alone). 
-
-This also would prevent me from shooting myself in the foot by accidentally
-running a VR41XX user binaries on a kernel with "clear k1" support disabled ;-)
-
-> > - drop the CONFIG_CPU_USERSPACE_LLSC_EMUL configuration option and
-> >   always clear k1 in RESTORE_SP_AND_RET for the VR41XX
-> 
->  And this one as well.  There is no need for a separate config option --
-> lone comments in place should suffice.
-> 
->  But you may ask Ralf before making further changes as he is the one to
-> decide if the patch goes in. 
-
-If this is OK with you, I would prepare a patch that just
-unconditionally clears k1 before every eret in tlbex-r4k.S
-and stackframe.h according to Maciej's suggestions, and adds
-a comment explaining its purpose.
-
+I didn't look at newer glibc sources (read: greater than 2.0.6), so the
+question. Why  is the difference between compare_and_swap and
+test_and_set so huge that it eats an exception penalty? ;-)
 
 Regards,
-Johannes
+Gleb.

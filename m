@@ -1,38 +1,57 @@
-Received:  by oss.sgi.com id <S42195AbQJLVGZ>;
-	Thu, 12 Oct 2000 14:06:25 -0700
-Received: from u-151.karlsruhe.ipdial.viaginterkom.de ([62.180.18.151]:51719
+Received:  by oss.sgi.com id <S553761AbQJMAYT>;
+	Thu, 12 Oct 2000 17:24:19 -0700
+Received: from u-151.karlsruhe.ipdial.viaginterkom.de ([62.180.18.151]:15368
         "EHLO u-151.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S42185AbQJLVGR>; Thu, 12 Oct 2000 14:06:17 -0700
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S868674AbQJLVFU>;
-        Thu, 12 Oct 2000 23:05:20 +0200
-Date:   Thu, 12 Oct 2000 23:05:20 +0200
+	with ESMTP id <S553721AbQJMAYK>; Thu, 12 Oct 2000 17:24:10 -0700
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S869535AbQJMAXu>;
+        Fri, 13 Oct 2000 02:23:50 +0200
+Date:   Fri, 13 Oct 2000 02:23:50 +0200
 From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Jun Sun <jsun@mvista.com>
-Cc:     Ian Chilton <mailinglist@ichilton.co.uk>, linux-mips@oss.sgi.com
-Subject: Re: Patches for CVS Glibc, Binutils, GCC
-Message-ID: <20001012230520.B21634@bacchus.dhis.org>
-References: <20001011181738.A22525@woody.ichilton.co.uk> <20001012063012.A14443@bacchus.dhis.org> <20001012154830.A24509@woody.ichilton.co.uk> <39E66230.C6010B25@mvista.com>
+To:     Keith Owens <kaos@melbourne.sgi.com>
+Cc:     Cort Dougan <cort@fsmlabs.com>, linux-mips@oss.sgi.com,
+        linux-mips@fnet.fr
+Subject: Re: modutils bug? 'if' clause executes incorrectly
+Message-ID: <20001013022350.J21634@bacchus.dhis.org>
+References: <20001011171449.A19344@bacchus.dhis.org> <3897.971317531@kao2.melbourne.sgi.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 X-Mailer: Mutt 1.0.1i
-In-Reply-To: <39E66230.C6010B25@mvista.com>; from jsun@mvista.com on Thu, Oct 12, 2000 at 06:15:28PM -0700
+In-Reply-To: <3897.971317531@kao2.melbourne.sgi.com>; from kaos@melbourne.sgi.com on Thu, Oct 12, 2000 at 01:25:31PM +1100
 X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Thu, Oct 12, 2000 at 06:15:28PM -0700, Jun Sun wrote:
+On Thu, Oct 12, 2000 at 01:25:31PM +1100, Keith Owens wrote:
 
-> > humm...any chance you could have a directory on oss, where you always stick the patches when they are updated...maybe also a text file, with the date it was last changed...
+> Ralf Baechle <ralf@oss.sgi.com> wrote:
+> >For such occassions I would like to see some debugging functionality in
+> >modutils which allows dumping the relocated disk image as it would be
+> >loaded into the kernel into a disk image which then could be examined
+> >with objdump etc. for potencial problems.
+> 
+> By the time insmod has finished with the module, the rest is a binary
+> blob.  No ELF headers, no symbols, all the sections run together with a
+> struct module at the start.  I can dump that easily enough but I
+> question how much use it would be.  Outputing anything more complicated
+> such as ELF headers and symbols would be a significant addition to
+> insmod.
 
-> I agree.  A common way of doing it is to have a patch named after a
-> date, which inidicates the patch can be applied against the CVS tree on
-> that date.
+The blob is actually already ok and just what I wanted.  You can easily talk
+objdump into disassembling that easily.  All that is required in addition
+is the base address of the blob as the argument of the --adjust-vma option.
 
-In general all those patches are only fairly shortlived.  They're intended
-to be tested and will then go into back to their original maintainers.
-And probably noone of the hackers really like producing a large extra
-administrative overhead to extra bookkeeping work ...
+[ralf@lappi ralf]$ mips-linux-objdump -b binary -m mips --adjust-vma 0xc0000000 -D /etc/group | head
+
+/etc/group:     file format binary
+
+No symbols in "/etc/group".
+Disassembly of section .data:
+
+00000000c0000000 <.data>:
+    c0000000:	726f6f74 	jalx	c1bdbdc8
+    c0000004:	3a3a303a 	xori	$s0,$s1,0x3a3a
+    c0000008:	726f6f74 	jalx	c1bdbdc8
 
   Ralf

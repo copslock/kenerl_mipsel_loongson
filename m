@@ -1,36 +1,42 @@
 Received: from oss.sgi.com (localhost.localdomain [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g3FJ8J8d009969
-	for <linux-mips-outgoing@oss.sgi.com>; Mon, 15 Apr 2002 12:08:19 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g3FJM18d010748
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 15 Apr 2002 12:22:01 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g3FJ8JsZ009968
-	for linux-mips-outgoing; Mon, 15 Apr 2002 12:08:19 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g3FJM16D010747
+	for linux-mips-outgoing; Mon, 15 Apr 2002 12:22:01 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from smtpout.mac.com (smtpout.mac.com [204.179.120.85])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g3FJ8I8d009965
-	for <linux-mips@oss.sgi.com>; Mon, 15 Apr 2002 12:08:18 -0700
-Received: from smtp-relay01.mac.com (smtp-relay01-qfe3 [10.13.10.224])
-	by smtpout.mac.com (8.12.1/8.10.2/1.0) with ESMTP id g3FJ98FO026937
-	for <linux-mips@oss.sgi.com>; Mon, 15 Apr 2002 12:09:08 -0700 (PDT)
-Received: from asmtp01.mac.com ([10.13.10.65]) by
-          smtp-relay01.mac.com (Netscape Messaging Server 4.15 relay01 Jun
-          21 2001 23:53:48) with ESMTP id GUMIJ300.1VV for
-          <linux-mips@oss.sgi.com>; Mon, 15 Apr 2002 12:09:03 -0700 
-Received: from localhost ([65.25.221.221]) by asmtp01.mac.com
-          (Netscape Messaging Server 4.15 asmtp01 Jun 21 2001 23:53:48)
-          with ESMTP id GUMIJ200.0HV; Mon, 15 Apr 2002 12:09:02 -0700 
-Date: Mon, 15 Apr 2002 14:08:55 -0500
-Subject: Linux for MIPS on SGI Indigo2
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Mime-Version: 1.0 (Apple Message framework v481)
-Cc: linux-mips@fnet.fr
-To: linux-mips@oss.sgi.com
-From: Chris Wright <chris_wright@mac.com>
-In-Reply-To: <Pine.GSO.3.96.1020415154230.19735J-100000@delta.ds2.pg.gda.pl>
-Message-Id: <3B792D54-50A4-11D6-B60A-0050E4AEBF2A@mac.com>
-Content-Transfer-Encoding: 7bit
-X-Mailer: Apple Mail (2.481)
+Received: from gandalf.physik.uni-konstanz.de (gandalf.physik.uni-konstanz.de [134.34.144.69])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g3FJLv8d010742
+	for <linux-mips@oss.sgi.com>; Mon, 15 Apr 2002 12:21:58 -0700
+Received: from galadriel.physik.uni-konstanz.de (galadriel.physik.uni-konstanz.de [134.34.144.79])
+	by gandalf.physik.uni-konstanz.de (Postfix) with ESMTP
+	id 891FD8D35; Mon, 15 Apr 2002 21:22:47 +0200 (CEST)
+Received: from agx by galadriel.physik.uni-konstanz.de with local (Exim 3.12 #1 (Debian))
+	id 16xC3r-0004sv-00; Mon, 15 Apr 2002 21:22:47 +0200
+Date: Mon, 15 Apr 2002 21:22:47 +0200
+From: Guido Guenther <agx@sigxcpu.org>
+To: Chris Wright <chris_wright@mac.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Linux for MIPS on SGI Indigo2
+Message-ID: <20020415212247.A18769@galadriel.physik.uni-konstanz.de>
+Mail-Followup-To: Chris Wright <chris_wright@mac.com>,
+	linux-mips@oss.sgi.com
+References: <Pine.GSO.3.96.1020415154230.19735J-100000@delta.ds2.pg.gda.pl> <3B792D54-50A4-11D6-B60A-0050E4AEBF2A@mac.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3B792D54-50A4-11D6-B60A-0050E4AEBF2A@mac.com>; from chris_wright@mac.com on Mon, Apr 15, 2002 at 02:08:55PM -0500
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I am looking for detailed instructions on installing a linux 
-distribution onto an SGI Indigo2 4400.  Thank you. --Chris
+On Mon, Apr 15, 2002 at 02:08:55PM -0500, Chris Wright wrote:
+> I am looking for detailed instructions on installing a linux 
+> distribution onto an SGI Indigo2 4400.  Thank you. --Chris
+The graphics boards in the I2 are still all unsupported. You will have
+to do a serial console install, see:
+ http://www.linux-debian.de/howto/debian-mips-woody-install.html
+and
+ http://oss.sgi.com/mips/i2-howto.html
+for details.
+ -- Guido

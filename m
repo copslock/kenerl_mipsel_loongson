@@ -1,48 +1,47 @@
-Received:  by oss.sgi.com id <S42251AbQGIXtX>;
-	Sun, 9 Jul 2000 16:49:23 -0700
-Received: from noose.gt.owl.de ([62.52.19.4]:3848 "HELO noose.gt.owl.de")
-	by oss.sgi.com with SMTP id <S42185AbQGIXsz>;
-	Sun, 9 Jul 2000 16:48:55 -0700
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 12D0A959; Mon, 10 Jul 2000 01:49:02 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 900C08F73; Mon, 10 Jul 2000 01:18:46 +0200 (CEST)
-Date:   Mon, 10 Jul 2000 01:18:46 +0200
-From:   Florian Lohoff <flo@rfc822.org>
-To:     linux-mips@oss.sgi.com
-Subject: current cvs binutils and mipsel-linux kernel
-Message-ID: <20000710011846.A1275@paradigm.rfc822.org>
+Received:  by oss.sgi.com id <S42264AbQGJDqE>;
+	Sun, 9 Jul 2000 20:46:04 -0700
+Received: from rotor.chem.unr.edu ([134.197.32.176]:17938 "EHLO
+        rotor.chem.unr.edu") by oss.sgi.com with ESMTP id <S42185AbQGJDpt>;
+	Sun, 9 Jul 2000 20:45:49 -0700
+Received: (from wesolows@localhost)
+	by rotor.chem.unr.edu (8.9.3/8.9.3) id UAA10775;
+	Sun, 9 Jul 2000 20:45:46 -0700
+Date:   Sun, 9 Jul 2000 20:45:45 -0700
+From:   Keith M Wesolowski <wesolows@chem.unr.edu>
+To:     Florian Lohoff <flo@rfc822.org>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: current cvs binutils and mipsel-linux kernel
+Message-ID: <20000709204545.A10621@chem.unr.edu>
+References: <20000710011846.A1275@paradigm.rfc822.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-User-Agent: Mutt/1.0.1i
-Organization: rfc822 - pure communication
+Content-Disposition: inline
+User-Agent: Mutt/1.2i
+In-Reply-To: <20000710011846.A1275@paradigm.rfc822.org>; from flo@rfc822.org on Mon, Jul 10, 2000 at 01:18:46AM +0200
+X-Complaints-To: postmaster@chem.unr.edu
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hi,
-it seems there is a problem in the binutils from current cvs ...
+On Mon, Jul 10, 2000 at 01:18:46AM +0200, Florian Lohoff wrote:
 
-mipsel-linux-gcc -D__KERNEL__ -I/home/flo/mips/dec/src/linux-2.4.0-test3/include -Wall -Wstrict-prototypes -O2 -fomit-frame-pointer  -G 0 -mno-abicalls -fno-pic -mcpu=r4600 -mips2 -pipe -fno-strict-aliasing -c softfp.S -o softfp.o
-softfp.S: Assembler messages:
-softfp.S:225: Error: illegal operands `la'
-softfp.S:225: Error: unrecognized opcode `cvt'
-softfp.S:225: Error: Rest of line ignored. First ignored character is `.'.
-make[1]: *** [softfp.o] Error 1
-make[1]: Leaving directory `/home/flo/mips/dec/src/linux-2.4.0-test3/arch/mips/kernel'
-make: *** [_dir_arch/mips/kernel] Error 2
+> mipsel-linux-gcc -D__KERNEL__ -I/home/flo/mips/dec/src/linux-2.4.0-test3/include -Wall -Wstrict-prototypes -O2 -fomit-frame-pointer  -G 0 -mno-abicalls -fno-pic -mcpu=r4600 -mips2 -pipe -fno-strict-aliasing -c softfp.S -o softfp.o
+> softfp.S: Assembler messages:
+> softfp.S:225: Error: illegal operands `la'
+> softfp.S:225: Error: unrecognized opcode `cvt'
+> softfp.S:225: Error: Rest of line ignored. First ignored character is `.'.
+> make[1]: *** [softfp.o] Error 1
+> make[1]: Leaving directory `/home/flo/mips/dec/src/linux-2.4.0-test3/arch/mips/kernel'
+> make: *** [_dir_arch/mips/kernel] Error 2
 
-(flo@ping)~/mips/dec/src/linux-2.4.0-test3# mipsel-linux-as --version
-GNU assembler 2.10.90
-Copyright 2000 Free Software Foundation, Inc.
-This program is free software; you may redistribute it under the terms of
-the GNU General Public License.  This program has absolutely no warranty.
-This assembler was configured for a target of `mipsel-linux'.
+This is not a binutils problem. It is caused by a behaviour change in
+the C preprocessor in gcc 2.96 >= 000703. This has been fixed in the
+CVS kernel; there are other changes required to build with such
+compilers available in my patch at
+ftp://oss.sgi.com/pub/linux/mips/mips-linux/simple/kernel-patches/kernel-newcpp-000707.diff.
 
-This is cvs checkout as of 20000708
-
-Flo
 -- 
-Florian Lohoff		flo@rfc822.org		      	+49-5201-669912
-     "If you're not having fun right now, you're wasting your time."
+Keith M Wesolowski			wesolows@chem.unr.edu
+University of Nevada			http://www.chem.unr.edu
+Chemistry Department Systems and Network Administrator

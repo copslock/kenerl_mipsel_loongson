@@ -1,81 +1,52 @@
-Received: from sgi.com (sgi.SGI.COM [192.48.153.1])
-	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id WAA12913
-	for <pstadt@stud.fh-heilbronn.de>; Fri, 6 Aug 1999 22:53:42 +0200
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id NAA02525; Fri, 6 Aug 1999 13:36:59 -0700 (PDT)
+Received: from deliverator.sgi.com (deliverator.sgi.com [204.94.214.10])
+	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id XAA14248
+	for <pstadt@stud.fh-heilbronn.de>; Fri, 6 Aug 1999 23:10:05 +0200
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id OAA19142; Fri, 6 Aug 1999 14:03:11 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id NAA26270
+	id NAA28671
 	for linux-list;
-	Fri, 6 Aug 1999 13:29:47 -0700 (PDT)
+	Fri, 6 Aug 1999 13:56:24 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from hollywood.engr.sgi.com (hollywood.engr.sgi.com [150.166.61.38])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id NAA29019
+	via SMTP id NAA36689
 	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 6 Aug 1999 13:29:42 -0700 (PDT)
-	mail_from (mikehill@hgeng.com)
-Received: from calvin.tor.onramp.ca (calvin.tor.onramp.ca [204.225.88.15]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via SMTP id NAA05037
-	for <linux@cthulhu.engr.sgi.com>; Fri, 6 Aug 1999 13:29:38 -0700 (PDT)
-	mail_from (mikehill@hgeng.com)
-Received: (qmail 30734 invoked from network); 6 Aug 1999 20:29:36 -0000
-Received: from imail.hgeng.com (HELO bart.hgeng.com) (199.246.72.233)
-  by mail.onramp.ca with SMTP; 6 Aug 1999 20:29:36 -0000
-Received: by BART with Internet Mail Service (5.5.2232.9)
-	id <QK82N3FZ>; Fri, 6 Aug 1999 16:30:28 -0400
-Message-ID: <E138DB347D10D3119C630008C79F5DEC07EB93@BART>
-From: Mike Hill <mikehill@hgeng.com>
-To: "'Ulf Carlsson'" <ulfc@thepuffingroup.com>
-Cc: linux@cthulhu.engr.sgi.com
-Subject: RE: Floptical Drive
-Date: Fri, 6 Aug 1999 16:30:25 -0400 
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2232.9)
-Content-Type: text/plain
+	Fri, 6 Aug 1999 13:56:22 -0700 (PDT)
+	mail_from (owner-linux@hollywood.engr.sgi.com)
+Received: (from fisher@localhost) by hollywood.engr.sgi.com (940816.SGI.8.6.9/960327.SGI.AUTOCF) id NAA10977; Fri, 6 Aug 1999 13:56:21 -0700
+From: fisher@hollywood.engr.sgi.com (William Fisher)
+Message-Id: <199908062056.NAA10977@hollywood.engr.sgi.com>
+Subject: Re: Status update for new features for slinx and SGI Linux 1.1 needed
+To: wje@fir.engr.sgi.com (William J. Earl)
+Date: Fri, 6 Aug 1999 13:56:17 -0800 (PDT)
+Cc: wombat@kilimanjaro.engr.sgi.com, sp@albion.engr.sgi.com,
+        slinx@albion.engr.sgi.com, linux@hollywood.engr.sgi.com,
+        fisher@hollywood.engr.sgi.com (William Fisher)
+In-Reply-To: <14251.18809.661631.345106@fir.engr.sgi.com> from "William J. Earl" at Aug 6, 99 01:45:45 pm
+Reply-To: fisher@sgi.com
+X-Mailer: ELM [version 2.4 PL3]
+Content-Type: text
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Same problem with 2.2, just a different error:
+> 
+> Joan Eslinger writes:
+>  > Two more things not specifically on your list, but that are traditionally
+>  > included in RedHat kernels (and went in 1.0):
+>  > 
+>  > pcmcia
+>  > ibcs
+>  > 
+>  > I have these in my drivers tree.
+> 
+>       Are these not part of the base Linux release from Linus?  If not,
+> I will add them to the list.
+> 
+	Reading the kernel mailing list, there was a LONG series of
+	messages on the "infrastructure" support for pcmcia cards
+	between some Stanford-ites and Linus. Hence it wasn't clear
+	what was going to get checked into the tree.
 
-make[3]: Entering directory `/usr/src/mips/linux/drivers/net'
-mips-linux-gcc -D__KERNEL__ -I/usr/src/mips/linux/include -Wall
--Wstrict-prototypes -O2 -fomit-frame-pointer -G 0 -mno-abicalls -fno-pic
--mcpu=r4600 -mips2 -pipe   -c -o sgiseeq.o sgiseeq.c
-sgiseeq.c: In function `sgiseeq_probe':
-sgiseeq.c:741: `SGI_ENET_IRQ' undeclared (first use this function)
-sgiseeq.c:741: (Each undeclared identifier is reported only once
-sgiseeq.c:741: for each function it appears in.)
-make[3]: *** [sgiseeq.o] Error 1
-make[3]: Leaving directory `/usr/src/mips/linux/drivers/net'
-make[2]: *** [first_rule] Error 2
-make[2]: Leaving directory `/usr/src/mips/linux/drivers/net'
-make[1]: *** [_subdir_net] Error 2
-make[1]: Leaving directory `/usr/src/mips/linux/drivers'
-make: *** [_dir_drivers] Error 2
-
-
-> -----Original Message-----
-> From:	Ulf Carlsson [SMTP:ulfc@thepuffingroup.com]
-> Sent:	Wednesday, August 04, 1999 2:30 PM
-> To:	Mike Hill
-> Cc:	linux@cthulhu.engr.sgi.com
-> Subject:	Re: Floptical Drive
-> 
-> > When I try to add msdos or vfat filesystem support to the kernel (latest
-> > CVS) I get the following failure:
-> 
-> Linus broke all filesystems some time ago, this is not MIPS specific.
-> 
-> Try the 2.2 kernel instead, I think they should be ok.
-> 
-> Ulf
+-- Bill

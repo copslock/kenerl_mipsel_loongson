@@ -1,55 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Feb 2003 14:04:50 +0000 (GMT)
-Received: from sj-msg-core-1.cisco.com ([IPv6:::ffff:171.71.163.11]:26519 "EHLO
-	sj-msg-core-1.cisco.com") by linux-mips.org with ESMTP
-	id <S8225192AbTBFOEt>; Thu, 6 Feb 2003 14:04:49 +0000
-Received: from cisco.com (megha.cisco.com [192.122.173.140])
-	by sj-msg-core-1.cisco.com (8.12.2/8.12.6) with ESMTP id h16E4fSQ021769
-	for <linux-mips@linux-mips.org>; Thu, 6 Feb 2003 06:04:42 -0800 (PST)
-Received: from IILANGOVW2K ([10.77.139.167])
-	by cisco.com (8.8.8/2.6/Cisco List Logging/8.8.8) with SMTP id TAA19712
-	for <linux-mips@linux-mips.org>; Thu, 6 Feb 2003 19:33:35 +0530 (IST)
-Message-ID: <005201c2cde8$b145e5d0$a78b4d0a@apac.cisco.com>
-From: "Indukumar Ilangovan" <iilangov@cisco.com>
-To: <linux-mips@linux-mips.org>
-Subject: manipulating e_machine value in the elf Header
-Date: Thu, 6 Feb 2003 19:34:40 +0530
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Feb 2003 14:35:55 +0000 (GMT)
+Received: from [IPv6:::ffff:208.17.32.26] ([IPv6:::ffff:208.17.32.26]:39989
+	"EHLO cdcavux01.cable.comcast.com") by linux-mips.org with ESMTP
+	id <S8225195AbTBFOfz>; Thu, 6 Feb 2003 14:35:55 +0000
+Received: from cdcexsmtp01.cable.comcast.com (localhost [127.0.0.1])
+	by cdcavux01.cable.comcast.com (8.11.6+Sun/8.11.6) with ESMTP id h16EZk112256;
+	Thu, 6 Feb 2003 09:35:47 -0500 (EST)
+Received: by cdcexsmtp01.cable.comcast.com with Internet Mail Service (5.5.2656.59)
+	id <1L5B4S4D>; Thu, 6 Feb 2003 09:35:46 -0500
+Message-ID: <94A55F1D6E06F048B4BCACA34415D78B03D314E9@whtexcg04.cable.comcast.com>
+From: "Yates, Ben" <Ben_Yates@cable.comcast.com>
+To: "'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
+Cc: "Benyates3 (benyates3@comcast.net)" <benyates3@comcast.net>
+Subject: Need help
+Date: Thu, 6 Feb 2003 09:35:41 -0500 
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Return-Path: <iilangov@cisco.com>
+X-Mailer: Internet Mail Service (5.5.2656.59)
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C2CDEC.E2FA8800"
+Return-Path: <Ben_Yates@cable.comcast.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1353
+X-archive-position: 1354
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: iilangov@cisco.com
+X-original-sender: Ben_Yates@cable.comcast.com
 Precedence: bulk
 X-list: linux-mips
 
+This message is in MIME format. Since your mail reader does not understand
+this format, some or all of this message may not be legible.
+
+------_=_NextPart_001_01C2CDEC.E2FA8800
+Content-Type: text/plain
+
 Hi,
+I'm a student and wondering if there is anyone out there could send me full
+instructions step by step on how to successfully install Linux on a SGI
+Indigo2 machine and what particular version of Linux is needed? Thanks for
+any help.
 
-I'm trying to port linux kernel to a mips board with a R4700 processor. It
-has a rom monitor program which can be used to load the image. (has support
-for tftp boot, xmodem....) . This bootloader has a hardcoded cpu_type which
-is cross checked with the e_machine value in the elf header. When I try to
-load the linux kernel this check (cpu_type == e_machine) fails & hence the
-boot loader aborts the loading of image.
 
-I tried to change the e_machine type value by changing the EM_MIPS value in
-include/linux/elf.h, still e_machine type is "8" in the image even after
-completely rebuilding the image. I even changed the EM_MIPS value in
-/usr/include/elf.h & couple of other locations (sde headers.....) still no
-luck....though hand editing the elf header is an option.. I don't want to do
-that !
+Ben Yates
+443-677-2693
 
-If any of you have any idea/suggestions I would be a happy man !
 
-Thanks in advance,
-Indu
+------_=_NextPart_001_01C2CDEC.E2FA8800
+Content-Type: text/html
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Dus-ascii">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+5.5.2655.61">
+<TITLE>Need help</TITLE>
+</HEAD>
+<BODY>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">Hi,</FONT>
+<BR><FONT SIZE=3D2 FACE=3D"Arial">I'm a student and wondering if there =
+is anyone out there could send me full instructions step by step on how =
+to successfully install Linux on a SGI Indigo2 machine and what =
+particular version of Linux is needed? Thanks for any help.</FONT></P>
+<BR>
+
+<P><B><I><FONT COLOR=3D"#000080" FACE=3D"Arial">Ben =
+Yates</FONT></I></B>
+<BR><B><I><FONT COLOR=3D"#000080" =
+FACE=3D"Arial">443-677-2693</FONT></I></B>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C2CDEC.E2FA8800--

@@ -1,49 +1,40 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f35GpBH00798
-	for linux-mips-outgoing; Thu, 5 Apr 2001 09:51:11 -0700
-Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f35GovM00773;
-	Thu, 5 Apr 2001 09:51:04 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id SAA12981;
-	Thu, 5 Apr 2001 18:50:30 +0200 (MET DST)
-Date: Thu, 5 Apr 2001 18:50:27 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+	by oss.sgi.com (8.11.3/8.11.3) id f35IlgI03650
+	for linux-mips-outgoing; Thu, 5 Apr 2001 11:47:42 -0700
+Received: from dea.waldorf-gmbh.de (u-199-21.karlsruhe.ipdial.viaginterkom.de [62.180.21.199])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f35IleM03646
+	for <linux-mips@oss.sgi.com>; Thu, 5 Apr 2001 11:47:40 -0700
+Received: (from ralf@localhost)
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f35CWdX13764;
+	Thu, 5 Apr 2001 14:32:39 +0200
+Date: Thu, 5 Apr 2001 14:32:39 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
 To: Carsten Langgaard <carstenl@mips.com>
-cc: Ralf Baechle <ralf@oss.sgi.com>, Florian Lohoff <flo@rfc822.org>,
+Cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>, Florian Lohoff <flo@rfc822.org>,
    "Kevin D. Kissell" <kevink@mips.com>,
    "MIPS/Linux List (SGI)" <linux-mips@oss.sgi.com>
 Subject: Re: Dumb Question on Cross-Development
-In-Reply-To: <3ACC82C9.7612DCDE@mips.com>
-Message-ID: <Pine.GSO.3.96.1010405173512.21134I-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Message-ID: <20010405143239.B13023@bacchus.dhis.org>
+References: <Pine.GSO.3.96.1010404171225.6521F-100000@delta.ds2.pg.gda.pl> <3ACC4EF4.D0F7D810@mips.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3ACC4EF4.D0F7D810@mips.com>; from carstenl@mips.com on Thu, Apr 05, 2001 at 12:54:44PM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, 5 Apr 2001, Carsten Langgaard wrote:
+On Thu, Apr 05, 2001 at 12:54:44PM +0200, Carsten Langgaard wrote:
 
-> I tried the following:
-> rpm -ba --rcfile .rpmrc-mipsel SPECS/mipsel-linux-binutils-2.10.91-2.spec
-> 
-> but it fails with
-> Architecture is excluded: mipsel
+> Thanks a lot.
+> I have question about installation of the SRPMs, though.
+> How can I relocate the packages, so they don't need to reside under
+> /usr/src/redhat/ ?
 
- All packages which names start with <cpu>-<os> are cross-development
-packages.  Mipsel-linux-binutils is a package providing binutils targeted
-to mipsel.  You cannot build the package for the mipsel-linux host (which
-the .rpmrc-mipsel configuration file sets up) as this wouldn't be a
-cross-development package.  For this package to build just run: 
+That patch is compiled into rpm and a number of the config files of rpm
+in /usr/lib/rpm which are generated are rpm build time.  So changing
+isn't that easy, you'll have to rebuild rpm configured with a different
+pathname, I think.
 
-$ rpm -ba SPECS/mipsel-linux-binutils-2.10.91-2.spec
-
- You can only change the host system with .rpmrc-* files.  The target
-system is hardcoded in cross-development packages and the build system is
-implied.
-
- I hope this helps.
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+  Ralf

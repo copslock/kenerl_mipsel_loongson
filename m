@@ -1,118 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Dec 2002 10:30:45 +0000 (GMT)
-Received: from cm19173.red.mundo-r.com ([IPv6:::ffff:213.60.19.173]:27267 "EHLO
-	demo.mitica") by linux-mips.org with ESMTP id <S8225527AbSLTKao>;
-	Fri, 20 Dec 2002 10:30:44 +0000
-Received: by demo.mitica (Postfix, from userid 501)
-	id E93F6D657; Fri, 20 Dec 2002 11:36:52 +0100 (CET)
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: linux mips mailing list <linux-mips@linux-mips.org>,
-	Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH]: make highmem only things enclosed in the right #ifdef
-References: <Pine.GSO.3.96.1021219125246.27339I-100000@delta.ds2.pg.gda.pl>
-X-Url: http://people.mandrakesoft.com/~quintela
-From: Juan Quintela <quintela@mandrakesoft.com>
-In-Reply-To: <Pine.GSO.3.96.1021219125246.27339I-100000@delta.ds2.pg.gda.pl>
-Date: 20 Dec 2002 11:36:52 +0100
-Message-ID: <m2y96lf03f.fsf@demo.mitica>
-User-Agent: Gnus/5.09 (Gnus v5.9.0) Emacs/21.2.92
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Dec 2002 13:00:04 +0000 (GMT)
+Received: from p508B5BE3.dip.t-dialin.net ([IPv6:::ffff:80.139.91.227]:47045
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225536AbSLTNAD>; Fri, 20 Dec 2002 13:00:03 +0000
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id gBKCxt631568;
+	Fri, 20 Dec 2002 13:59:55 +0100
+Date: Fri, 20 Dec 2002 13:59:55 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Juan Quintela <quintela@mandrakesoft.com>
+Cc: mipslist <linux-mips@linux-mips.org>
+Subject: Re: [PATCH]: test_bit returns int in all the architectures
+Message-ID: <20021220135955.A31554@linux-mips.org>
+References: <m2fzstgffx.fsf@demo.mitica>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Return-Path: <quintela@mandrakesoft.com>
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <m2fzstgffx.fsf@demo.mitica>; from quintela@mandrakesoft.com on Fri, Dec 20, 2002 at 11:20:02AM +0100
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1023
+X-archive-position: 1024
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: quintela@mandrakesoft.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
->>>>> "maciej" == Maciej W Rozycki <macro@ds2.pg.gda.pl> writes:
+On Fri, Dec 20, 2002 at 11:20:02AM +0100, Juan Quintela wrote:
 
-maciej> On 19 Dec 2002, Juan Quintela wrote:
->> What do you think of this new one?
+>         to be consistent with everybody else, test_bit should return a
+>         int.  Notice that it only returns 0/1, not a big deal.
 
-maciej> Well, you could remove the line below:
+I'm using below patch instead.
 
->> sizeof(pgd_t ) * USER_PTRS_PER_PGD);
->> 
->> -	pgd_base = swapper_pg_dir;
->> 
->> #ifdef CONFIG_HIGHMEM
+  Ralf
 
-maciej> but that's nitpicking (and I may fix it up if Ralf applies the patch as
-maciej> is) -- I've pointed you out the problem of spacing more to bring your
-maciej> attention to such details than to object this particular change.  The
-maciej> patch looks semantically OK. 
-
-Hi
-
-        Do you preffer this way?
-
-Later, Juan.
-
-
-Index: arch/mips/mm/init.c
+Index: include/asm-mips/bitops.h
 ===================================================================
-RCS file: /home/cvs/linux/arch/mips/mm/init.c,v
-retrieving revision 1.38.2.7
-diff -u -r1.38.2.7 init.c
---- arch/mips/mm/init.c	5 Aug 2002 23:53:35 -0000	1.38.2.7
-+++ arch/mips/mm/init.c	20 Dec 2002 09:55:03 -0000
-@@ -161,6 +161,7 @@
- extern char _ftext, _etext, _fdata, _edata;
- extern char __init_begin, __init_end;
- 
-+#ifdef CONFIG_HIGHMEM
- static void __init fixrange_init (unsigned long start, unsigned long end,
- 	pgd_t *pgd_base)
+RCS file: /home/cvs/linux/include/asm-mips/bitops.h,v
+retrieving revision 1.21.2.9
+diff -u -r1.21.2.9 bitops.h
+--- include/asm-mips/bitops.h	5 Dec 2002 03:25:20 -0000	1.21.2.9
++++ include/asm-mips/bitops.h	20 Dec 2002 12:54:10 -0000
+@@ -582,9 +582,9 @@
+  * @nr: bit number to test
+  * @addr: Address to start counting from
+  */
+-static __inline__ int test_bit(int nr, volatile void *addr)
++static inline int test_bit(int nr, volatile void *addr)
  {
-@@ -189,33 +190,35 @@
- 		j = 0;
- 	}
+-	return ((1UL << (nr & 31)) & (((const unsigned int *) addr)[nr >> 5])) != 0;
++	return 1UL & (((const volatile unsigned long *) addr)[nr >> SZLONG_LOG] >> (nr & SZLONG_MASK));
  }
-+#endif /* CONFIG_HIGHMEM */
  
- void __init pagetable_init(void)
+ /*
+Index: include/asm-mips64/bitops.h
+===================================================================
+RCS file: /home/cvs/linux/include/asm-mips64/bitops.h,v
+retrieving revision 1.15.2.10
+diff -u -r1.15.2.10 bitops.h
+--- include/asm-mips64/bitops.h	5 Dec 2002 03:25:20 -0000	1.15.2.10
++++ include/asm-mips64/bitops.h	20 Dec 2002 12:54:12 -0000
+@@ -302,9 +302,9 @@
+  * @nr: bit number to test
+  * @addr: Address to start counting from
+  */
+-static inline unsigned long test_bit(int nr, volatile void * addr)
++static inline int test_bit(int nr, volatile void * addr)
  {
-+#ifdef CONFIG_HIGHMEM
- 	unsigned long vaddr;
--	pgd_t *pgd, *pgd_base;
-+	pgd_t *pgd;
- 	pmd_t *pmd;
- 	pte_t *pte;
-+#endif
+-	return 1UL & (((volatile unsigned long *) addr)[nr >> 6] >> (nr & 0x3f));
++	return 1UL & (((const volatile unsigned long *) addr)[nr >> SZLONG_LOG] >> (nr & SZLONG_MASK));
+ }
  
- 	/* Initialize the entire pgd.  */
- 	pgd_init((unsigned long)swapper_pg_dir);
- 	pgd_init((unsigned long)swapper_pg_dir +
- 	         sizeof(pgd_t ) * USER_PTRS_PER_PGD);
- 
--	pgd_base = swapper_pg_dir;
- 
- #ifdef CONFIG_HIGHMEM
- 	/*
- 	 * Fixed mappings:
- 	 */
- 	vaddr = __fix_to_virt(__end_of_fixed_addresses - 1) & PMD_MASK;
--	fixrange_init(vaddr, 0, pgd_base);
-+	fixrange_init(vaddr, 0, swapper_pg_dir);
- 
- 	/*
- 	 * Permanent kmaps:
- 	 */
- 	vaddr = PKMAP_BASE;
--	fixrange_init(vaddr, vaddr + PAGE_SIZE*LAST_PKMAP, pgd_base);
-+	fixrange_init(vaddr, vaddr + PAGE_SIZE*LAST_PKMAP, swapper_pg_dir);
- 
- 	pgd = swapper_pg_dir + __pgd_offset(vaddr);
- 	pmd = pmd_offset(pgd, vaddr);
-
-
-
-
--- 
-In theory, practice and theory are the same, but in practice they 
-are different -- Larry McVoy
+ /*

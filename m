@@ -1,71 +1,86 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id KAA04931 for <linux-archive@neteng.engr.sgi.com>; Wed, 29 Jul 1998 10:37:51 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id LAA12730 for <linux-archive@neteng.engr.sgi.com>; Wed, 29 Jul 1998 11:21:23 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id KAA08176
+	id LAA34431
 	for linux-list;
-	Wed, 29 Jul 1998 10:36:41 -0700 (PDT)
+	Wed, 29 Jul 1998 11:20:30 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from fir.engr.sgi.com (fir.engr.sgi.com [150.166.49.183])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id KAA72849
-	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 29 Jul 1998 10:36:38 -0700 (PDT)
-	mail_from (rji@bristol.st.com)
-Received: from poke.dmz.st.com (poke.stmicroelectronics.com [195.101.81.2]) 
-	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id KAA00331
-	for <linux@cthulhu.engr.sgi.com>; Wed, 29 Jul 1998 10:36:37 -0700 (PDT)
-	mail_from (rji@bristol.st.com)
-Received: from thistle.inmos.co.uk (thistle.bri.st.com [138.198.1.7])
-	by poke.dmz.st.com (8.8.7/8.8.6) with ESMTP id TAA29990;
-	Wed, 29 Jul 1998 19:31:34 +0200 (MET DST)
-Received: from panther ([138.198.35.30])
-	by thistle.inmos.co.uk with smtp (Exim 1.90 #1)
-	id 0z1a5u-00002w-00; Wed, 29 Jul 1998 18:32:54 +0100
-Received: from rji by panther with local (Exim 1.62 #1)
-	id 0z1a4M-0001Yj-00; Wed, 29 Jul 1998 18:31:18 +0100
-From: Richard Ingram <rji@bristol.st.com>
-Message-Id: <9807291831.ZM5995@bristol.st.com>
-Date: Wed, 29 Jul 1998 18:31:18 +0100
-In-Reply-To: ralf@uni-koblenz.de
-        "Re: sound, power button, volume buttons" (Jul 29,  6:50pm)
-References: <Pine.BSI.3.96.980729001735.24028A-100000@shell.mdc.net> 
-	<19980729090902.D1989@uni-koblenz.de> 
-	<199807291540.IAA20337@fir.engr.sgi.com> 
-	<19980729185007.K771@uni-koblenz.de>
-X-Mailer: Z-Mail (3.2.1 10apr95)
+	via SMTP id LAA74425;
+	Wed, 29 Jul 1998 11:20:22 -0700 (PDT)
+	mail_from (wje@fir.engr.sgi.com)
+Received: (from wje@localhost) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id LAA21260; Wed, 29 Jul 1998 11:19:48 -0700
+Date: Wed, 29 Jul 1998 11:19:48 -0700
+Message-Id: <199807291819.LAA21260@fir.engr.sgi.com>
+From: "William J. Earl" <wje@fir.engr.sgi.com>
 To: ralf@uni-koblenz.de
+Cc: "William J. Earl" <wje@fir.engr.sgi.com>, 4819 <rmk@shell.mdc.net>,
+        linux@cthulhu.engr.sgi.com
 Subject: Re: sound, power button, volume buttons
-Cc: linux@cthulhu.engr.sgi.com
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <19980729185007.K771@uni-koblenz.de>
+References: <Pine.BSI.3.96.980729001735.24028A-100000@shell.mdc.net>
+	<19980729090902.D1989@uni-koblenz.de>
+	<199807291540.IAA20337@fir.engr.sgi.com>
+	<19980729185007.K771@uni-koblenz.de>
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Jul 29,  6:50pm, ralf@uni-koblenz.de wrote:
+ralf@uni-koblenz.de writes:
+ > On Wed, Jul 29, 1998 at 08:40:10AM -0700, William J. Earl wrote:
+ > 
+ > >      I can generally answer specific questions.  Also, I can arrange to send
+ > > a copy of the documentation to people who want to actively work on the
+ > > project.  (The informal limited distribution agreement was the basis on which
+ > > the management agreed to let us release the documentation.)  
+ > > 
+ > >      People have asked about documentation for other products.  In general,
+ > > I don't know where to find documentation for any of the SGI R3000-based systems.
+ > 
+ > Do you think a ``Call for dusty Paper'' CfdP (TM) on the Usenet in groups
+ > like comp.sys.mips or comp.sys.sgi.* might make sense?  I bet there are
+ > still people out there, maybe former SGI employees in the meantime which
+ > have helpful data around.
 
-> Do you think a ``Call for dusty Paper'' CfdP (TM) on the Usenet in groups
-> like comp.sys.mips or comp.sys.sgi.* might make sense?  I bet there are
-> still people out there, maybe former SGI employees in the meantime which
-> have helpful data around.
->
-> > I do have incomplete documentation for some of the MIPS systems.
->
-> I'm currently doing some brain surgery on some OEM machine which identifies
-> itself as RS3230 and is running RISC/os 4.50 :-)
+     I doubt it would.  The behavior of the machines are documented in
+the IRIX source (for IRIX 5.3 and earlier; support for R3000 systems
+was dropped after that), but we cannot in general release that due to
+our license agreements with the providers of some of that source.
+With management approval, we might be able to release certain parts which
+show the hardware interfaces and which only have an SGI copyright.  I 
+will see what is possible.
 
-Some bits of documentation are out on the WWW for MIPS R4000 boxes, but not
-very technical - stuff like the 680MB CD-Rom users guide and ARC PROM commands
-guide. I downloaded them from the Internet Technical Documentation Archive.
+ > > I do have incomplete documentation for some of the MIPS systems.
+ > 
+ > I'm currently doing some brain surgery on some OEM machine which identifies
+ > itself as RS3230 and is running RISC/os 4.50 :-)
 
-I also have some docs for the RC3x30 series - I'll mail the titles tommorrow
-(if I remember to dig them out!), I was going to make them available to the
-ITDA.
+      I don't have much on that one, other than the RISC/os source,
+although I did work on the RS3230.  The Magnum and Millenium 4000
+systems are ARCS machines, with many PC-compatible parts, and I have
+more information about them, but I gather that linux already runs on
+them.
 
-Richard.
+...
+ > As I already wrote to Richard Masoner - it's not uncommon that people
+ > write GPL software while being under NDA.  The company reviews the code
+ > when it is finished and gives it's ok to publish it but the documentation
+ > (whatever it consists of - paper, code, electronic files, drawings ...)
+ > will stay undisclosed.  In many cases this is a way to keep both sides
+ > happy.
 
--- 
+     I will offer that option to the management; that might make it
+easier to make the documentation (especially the relevant
+SGI-copyright-only IRIX source) available.
+
+ > Since you mentioned the various graphic subsystems above - do you think
+ > the implementation of a ARC firmware text only based console might be
+ > sensible?  I've got several requests for Linux from people who have a
+ > XZ graphic which we don't support yet - and there is quite a number of
+ > graphic options for SGI's out there so this might be somewhat helpful.
+
+       Yes, I think one could use the same firmware interface as the
+PROM.  I believe that it is even possible to do X that way, with limited
+performance.  I am not familiar with the details of the PROM firmware interface,
+but I will check it out when I have a bit more time. 

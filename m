@@ -1,67 +1,45 @@
-Received: from sgi.com (sgi.SGI.COM [192.48.153.1])
-	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id BAA13662
-	for <pstadt@stud.fh-heilbronn.de>; Sun, 1 Aug 1999 01:51:41 +0200
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id QAA08439; Sat, 31 Jul 1999 16:47:51 -0700 (PDT)
+Received: from deliverator.sgi.com (deliverator.sgi.com [204.94.214.10])
+	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id KAA05895
+	for <pstadt@stud.fh-heilbronn.de>; Sun, 1 Aug 1999 10:45:58 +0200
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id BAA01680; Sun, 1 Aug 1999 01:41:11 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id QAA64699
+	id BAA22749
 	for linux-list;
-	Sat, 31 Jul 1999 16:44:38 -0700 (PDT)
+	Sun, 1 Aug 1999 01:37:23 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id QAA50232
+	via ESMTP id BAA00154
 	for <linux@engr.sgi.com>;
-	Sat, 31 Jul 1999 16:44:36 -0700 (PDT)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
+	Sun, 1 Aug 1999 01:37:20 -0700 (PDT)
+	mail_from (sonnie@263.net)
+Received: from ns.cstnet-hf.net.cn ([210.72.12.1]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id QAA05246
-	for <linux@engr.sgi.com>; Sat, 31 Jul 1999 16:44:34 -0700 (PDT)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from lappi.waldorf-gmbh.de (cacc-10.uni-koblenz.de [141.26.131.10])
-	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id BAA18436
-	for <linux@engr.sgi.com>; Sun, 1 Aug 1999 01:44:32 +0200 (MET DST)
-Received: (from ralf@localhost)
-	by lappi.waldorf-gmbh.de (8.9.3/8.9.3) id BAA20674;
-	Sun, 1 Aug 1999 01:44:11 +0200
-Date: Sun, 1 Aug 1999 01:44:11 +0200
-From: Ralf Baechle <ralf@uni-koblenz.de>
-To: Mark Mitchell <mark@codesourcery.com>
-Cc: ralf@gnu.org, binutils@sourceware.cygnus.com, thockin@cobaltnet.com,
-        linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
-        linux-mips@vger.rutgers.edu
-Subject: Re: MIPS/ELF linker
-Message-ID: <19990801014411.V12249@uni-koblenz.de>
-References: <19990731233150.Q12249@uni-koblenz.de> <19990731152842N.mitchell@codesourcery.com> <19990801012203.U12249@uni-koblenz.de> <19990731164237C.mitchell@codesourcery.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.4us
-In-Reply-To: <19990731164237C.mitchell@codesourcery.com>; from Mark Mitchell on Sat, Jul 31, 1999 at 04:42:37PM -0700
-X-Accept-Language: de,en,fr
+	via ESMTP id BAA04763
+	for <linux@engr.sgi.com>; Sun, 1 Aug 1999 01:37:15 -0700 (PDT)
+	mail_from (sonnie@263.net)
+From: sonnie@263.net
+Received: from ustc.edu.cn (hpe25.nic.ustc.edu.cn [202.38.64.1])
+	by ns.cstnet-hf.net.cn (8.8.7/8.8.6) with SMTP id QAA20203
+	for <linux@engr.sgi.com>; Sun, 1 Aug 1999 16:31:53 -0800
+Message-Id: <199908020031.QAA20203@ns.cstnet-hf.net.cn>
+Received: from crimson.fsc.ustc.edu.cn by  ustc.edu.cn with SMTP
+	(8.6.10/16.2) id QAA29028; Sun, 1 Aug 1999 16:37:36 +0800
+Date: Sun, 1 Aug 1999 16:37:36 +0800
+Subject: IRIX 5.2??
+Apparently-To: linux@cthulhu.engr.sgi.com
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Sat, Jul 31, 1999 at 04:42:37PM -0700, Mark Mitchell wrote:
+I have a IRIS-Crimson running IRIX5.2.
+In order to track the SGI/linux project,
+should I upgrade 5.2 to a higher version?
+Can I do this FREELY?
 
-> Ralf --
-> 
->   Thanks for the tarball.  I'll not be able to look at this until
-> tomorrow, but I will do so then.
-
-Ok, I'm looking into things in parallel if I find the time.  I'll also
-try to rebuild GNU libc for MIPS.  That has historically proven to be
-a bone breaker for ld.  The last time I tried a few weeks ago I got
-~500 assertion messages from ld just alone for the libc final link ...
-Will let you know how things go.
-
-  Ralf
+Best regards,
+sonnie

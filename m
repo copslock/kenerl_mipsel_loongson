@@ -1,55 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 May 2004 01:16:40 +0100 (BST)
-Received: from p508B6C63.dip.t-dialin.net ([IPv6:::ffff:80.139.108.99]:18256
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225463AbUERAQj>; Tue, 18 May 2004 01:16:39 +0100
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i4I0GcxT011227;
-	Tue, 18 May 2004 02:16:38 +0200
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i4I0GcH8011226;
-	Tue, 18 May 2004 02:16:38 +0200
-Date: Tue, 18 May 2004 02:16:38 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Ken Giusti <manwithastinkydog@yahoo.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: running 2.6 on swarm pass1
-Message-ID: <20040518001638.GA10423@linux-mips.org>
-References: <20040517150631.13795.qmail@web13301.mail.yahoo.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20040517150631.13795.qmail@web13301.mail.yahoo.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 May 2004 04:13:17 +0100 (BST)
+Received: from 202-47-55-78.adsl.gil.com.au ([IPv6:::ffff:202.47.55.78]:8576
+	"EHLO longlandclan.hopto.org") by linux-mips.org with ESMTP
+	id <S8224954AbUERDNQ>; Tue, 18 May 2004 04:13:16 +0100
+Received: (qmail 9193 invoked by uid 204); 18 May 2004 13:13:05 +1000
+Received: from stuartl@longlandclan.hopto.org by www by uid 201 with qmail-scanner-1.16 
+ (spamassassin: 2.63.  Clear:. 
+ Processed in 0.034629 secs); 18 May 2004 03:13:05 -0000
+Received: from unknown (HELO longlandclan.hopto.org) (10.0.0.251)
+  by 192.168.5.1 with SMTP; 18 May 2004 13:13:05 +1000
+Message-ID: <40A97F41.3030605@longlandclan.hopto.org>
+Date: Tue, 18 May 2004 13:13:05 +1000
+From: Stuart Longland <stuartl@longlandclan.hopto.org>
+User-Agent: Mozilla Thunderbird 0.5 (Windows/20040207)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: ratin@koperasw.com
+CC: linux-mips@linux-mips.org
+Subject: Re: setup X11 on MIPS64/MALTA
+References: <005401c43c6b$35b750f0$6901a8c0@ratwin1>
+In-Reply-To: <005401c43c6b$35b750f0$6901a8c0@ratwin1>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 8bit
+Return-Path: <stuartl@longlandclan.hopto.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5055
+X-archive-position: 5056
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: stuartl@longlandclan.hopto.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, May 17, 2004 at 08:06:31AM -0700, Ken Giusti wrote:
+Ratin Kumar wrote:
 
-> 2.6.6 from kernel.org doesn't appear to run at all.
-> Once I load the image via CFE and type "go" I get
-> absolutely no console output - the system just hangs.
+> I am trying to get X11 up on my MALTA (MIPS 64, little endian board). I 
+> have the frame buffer working (using Matrox Mill – II PCI card). I also 
+> have the Red Hat 7.3 installation going but I am not able to get X to 
+> work. Has any one tried this combination OR if there is any advice on 
+> this ??
 
-There is still plenty of code that needs to be merged into the kernel.org
-tree before this will have a chance of working.  For any MIPS system.
+How have you tried configuring XFree86?  Did you use the matrox driver 
+or fbdev?  If the framebuffer works, then I'd suggest trying fbdev.
 
-> 2.6.5 from linux-mips is a bit better - I get bootup
-> console output, then an immediate crash (included
-> below).
-> 
-> Has anyone had any luck getting 2.6 running on swarm
-> with pass1?  
-
-I still do have a pass1 board he so I'll eventually look at it.  However
-this doesn't look like the fingerprint of the usual pass1 crashes so it's
-probably simply a genuine kernel bug.
-
-  Ralf
+Beyond that, I wouldn't have a clue.
+-- 
++-------------------------------------------------------------+
+| Stuart Longland           stuartl at longlandclan.hopto.org |
+| Brisbane Mesh Node: 719             http://stuartl.cjb.net/ |
+| I haven't lost my mind - it's backed up on a tape somewhere |
+| Atomic Linux Project    <--->    http://atomicl.berlios.de/ |
++-------------------------------------------------------------+

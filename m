@@ -1,105 +1,234 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 May 2004 03:50:22 +0100 (BST)
-Received: from sea2-f19.sea2.hotmail.com ([IPv6:::ffff:207.68.165.19]:47368
-	"EHLO hotmail.com") by linux-mips.org with ESMTP
-	id <S8225994AbUEYCuT>; Tue, 25 May 2004 03:50:19 +0100
-Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
-	 Mon, 24 May 2004 19:50:11 -0700
-Received: from 61.230.216.210 by sea2fd.sea2.hotmail.msn.com with HTTP;
-	Tue, 25 May 2004 02:50:11 GMT
-X-Originating-IP: [61.230.216.210]
-X-Originating-Email: [brad1972_10@hotmail.com]
-X-Sender: brad1972_10@hotmail.com
-From:	=?big5?B?tsAgtmmlwQ==?= <brad1972_10@hotmail.com>
-To:	linux-mips@linux-mips.org, raiko@niisi.msk.ru
-Cc:	ralf@gnu.org, info@uclinux.com
-Subject: A question about memory allocation of linux kernel!!
-Date:	Tue, 25 May 2004 10:50:11 +0800
-Mime-Version: 1.0
-Content-Type: text/plain; charset=big5; format=flowed
-Message-ID: <Sea2-F197vy0dV1Hv8g00066d73@hotmail.com>
-X-OriginalArrivalTime: 25 May 2004 02:50:11.0856 (UTC) FILETIME=[FF955100:01C44202]
-Return-Path: <brad1972_10@hotmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 May 2004 19:50:00 +0100 (BST)
+Received: from host73.ipowerweb.com ([IPv6:::ffff:12.129.211.254]:12585 "EHLO
+	host73.ipowerweb.com") by linux-mips.org with ESMTP
+	id <S8226016AbUEYSt5>; Tue, 25 May 2004 19:49:57 +0100
+Received: from c-67-170-233-233.client.comcast.net ([67.170.233.233] helo=ratwin1)
+	by host73.ipowerweb.com with asmtp (Exim 3.36 #1)
+	id 1BSgyD-0002aX-00
+	for linux-mips@linux-mips.org; Tue, 25 May 2004 11:48:13 -0700
+Reply-To: <ratin@koperasw.com>
+From:	"Ratin Kumar" <ratin@koperasw.com>
+To:	<linux-mips@linux-mips.org>
+Subject: Gnome/Mozilla on Malta
+Date:	Tue, 25 May 2004 11:49:36 -0700
+Organization: Kopera Software Inc.
+Message-ID: <00b601c44289$09cfc2a0$6901a8c0@ratwin1>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_00B7_01C4424E.5D70EAA0"
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook, Build 10.0.4510
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1409
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - host73.ipowerweb.com
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [0 0] / [0 0]
+X-AntiAbuse: Sender Address Domain - koperasw.com
+Return-Path: <ratin@koperasw.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5149
+X-archive-position: 5164
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: brad1972_10@hotmail.com
+X-original-sender: ratin@koperasw.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi, Sir,
+This is a multi-part message in MIME format.
 
-I have a question about memory allocation when linux OS is booting. We use 
-linux as embedded OS for internet access device(ADSL router). Our system is 
-MIPS-like CPU (R3000)  with 2M flash and 8M SDRAM(MMU less). Due to use 
-small memory footprint, we can not run many application on ADSL router. But 
-we confuse about the memory for kernel "reserved". We can see the message 
-that printed by booting procedure. Listed below:
+------=_NextPart_000_00B7_01C4424E.5D70EAA0
+Content-Type: text/plain;
+	charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
 
-Loading R[23]000 MMU routines.
-CPU revision is: 136451c3
-Primary instruction cache 4kb, linesize 16 bytes
-Primary data cache 1kb, linesize 16 bytes
-Linux version 2.4.17-uc0 (brad@localhost) (gcc version egcs-2.91.66 
-19990314/Linux (egcs-1.1.2 rel4Determined physical RAM map:
-boot_mem_map.nr_map==1
- memory: 00800000 @ 00000000 (usable)
-PAGE_SIZE(1000)
-the address of _end==80279d70
-start_pfn(27a)
-boot_mem_map.map[0].size==8388608
-max_pfn==0
-start PFN 0 end PFN 2048
-start < first_usable_pfn
-first_usable_pfn==-1
-start==0
-end=2048
-before init bootmem first_usable_pfn=0000027a max_pfn=00000800
-max_low_pfn(800),min_low_pfn(27a)
-bootmap_size = 0x100
-before reserve bootmem first_usable_pfn 
-address=0027a000,bootmap_size=00000100
-reserve_bootmem_core: start(0),addr(27a000),size(100)
-sidx(27a), eidx(27b), end(27b)
-Initial ramdisk at: 0x8015b000 (666765 bytes)
-On node 0 totalpages: 2048
-size(20040).
-zone(0): 2048 pages.
-size(80).
-size(40).
-size(20).
-size(10).
-size(8).
-size(4).
-size(4).
-size(4).
-size(4).
-size(4).
-zone(1): 0 pages.
-zone(2): 0 pages.
-size(1c).
-Kernel command line: root=/dev/ram0 
-ip=199.190.143.254::199.190.143.1:255.255.255.0:tc3160:eth0:onoCalibrating 
-delay loop... 199.47 BogoMIPS
-Brad Add: init mem_init
-totalram_pages==1381
-reservedpages==667
-Memory: 5524k/8192k available (1168k kernel code, 2668k reserved, 745k 
-data, 52k init)
-                              :
-                              :
-                              :
-We can see the memory usage by linux kernel from booting message. The total 
-memory size we can use is 5524K bytes. Because there are 2668K are 
-reserved. Can we reduce the "reserved" memory size? Or where we can set the 
-size of memory for reserved? Please provide comment! Thanks!!
+Hi,
 
-Best Regards
-Brad.
+ 
 
-_________________________________________________________________
-現在就上 MSN 會員目錄：在線上結交新朋友，找到興趣相投的夥伴 
-http://members.msn.com?pgmarket=zh-tw 
+Has anyone tried building gnome and/or mozilla for Malta?
+
+ 
+
+My target is RH7.3 port for mipsel with a matrox mill II PCI card in frame
+buffer mode.
+
+ 
+
+I have tried native build of gnome and got quiet a few components going.
+
+ 
+
+I have also tried garnome with some success in getting a few components to
+build but it failed with Nautilus.
+
+ 
+
+I have also tried KDE but for some odd reason it does not pick up my QT
+installation during configure stage, even after I have set the
+LD_LIBRARY_PATH...
+
+ 
+
+Basically I want to have a browser running on RH installation.
+
+ 
+
+Any ideas???
+
+ 
+
+Thanks in advance.
+
+ 
+
+-Ratin.
+
+
+------=_NextPart_000_00B7_01C4424E.5D70EAA0
+Content-Type: text/html;
+	charset="US-ASCII"
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+
+<head>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Dus-ascii">
+
+
+<meta name=3DGenerator content=3D"Microsoft Word 10 (filtered)">
+
+<style>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+span.EmailStyle17
+	{font-family:Arial;
+	color:windowtext;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+
+</head>
+
+<body lang=3DEN-US link=3Dblue vlink=3Dpurple>
+
+<div class=3DSection1>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Hi,</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Has anyone tried building gnome and/or mozilla for =
+</span></font><font
+  size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;font-family:Arial'>Malta</span></font><font
+size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;font-family:Arial'>?</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>My target is RH7.3 port for mipsel with a matrox mill =
+II PCI
+card in frame buffer mode.</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>I have tried native build of gnome and got quiet a =
+few
+components going.</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>I have also tried garnome with some success in =
+getting a few
+components to build but it failed with Nautilus.</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>I have also tried KDE but for some odd reason it does =
+not
+pick up my QT installation during configure stage, even after I have set =
+the
+LD_LIBRARY_PATH&#8230;..</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Basically I want to have a browser running on RH
+installation.</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Any ideas???</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Thanks in advance&#8230;</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>-Ratin.</span></font></p>
+
+</div>
+
+</body>
+
+</html>
+
+------=_NextPart_000_00B7_01C4424E.5D70EAA0--

@@ -1,35 +1,31 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f339scW28756
-	for linux-mips-outgoing; Tue, 3 Apr 2001 02:54:38 -0700
+	by oss.sgi.com (8.11.3/8.11.3) id f33A1P629304
+	for linux-mips-outgoing; Tue, 3 Apr 2001 03:01:25 -0700
 Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f339sJM28709;
-	Tue, 3 Apr 2001 02:54:21 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id LAA25830;
-	Tue, 3 Apr 2001 11:26:12 +0200 (MET DST)
-Date: Tue, 3 Apr 2001 11:26:11 +0200 (MET DST)
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f339xuM29260
+	for <linux-mips@oss.sgi.com>; Tue, 3 Apr 2001 03:00:27 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id LAA26637;
+	Tue, 3 Apr 2001 11:52:18 +0200 (MET DST)
+Date: Tue, 3 Apr 2001 11:52:18 +0200 (MET DST)
 From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Florian Lohoff <flo@rfc822.org>
-cc: "Kevin D. Kissell" <kevink@mips.com>, Ralf Baechle <ralf@oss.sgi.com>,
+To: Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
+cc: Florian Lohoff <flo@rfc822.org>, "Kevin D. Kissell" <kevink@mips.com>,
    "MIPS/Linux List (SGI)" <linux-mips@oss.sgi.com>
 Subject: Re: Dumb Question on Cross-Development
-In-Reply-To: <20010402234850.B25228@paradigm.rfc822.org>
-Message-ID: <Pine.GSO.3.96.1010403112218.25523B-100000@delta.ds2.pg.gda.pl>
+In-Reply-To: <Pine.GSO.4.10.10104030810220.11969-100000@escobaria.sonytel.be>
+Message-ID: <Pine.GSO.3.96.1010403115056.25523D-100000@delta.ds2.pg.gda.pl>
 Organization: Technical University of Gdansk
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, 2 Apr 2001, Florian Lohoff wrote:
+On Tue, 3 Apr 2001, Geert Uytterhoeven wrote:
 
-> Cross-compilation is IMHO so broken when it comes to userspace
-> than noone really thinking of having something reusable would
-> consider this. It all ends beeing a really ugly hack.
+> So if you would have a `cross ldd', things would be better?
 
- I disagree.  It's not that userland cross-compilation is broken.  It's
-just the matter of certain programmers who do not care to write
-scripts/Makefiles to support cross-development portably.  They might even
-not realize there exists such a feature as cross-compilation. 
+ Everything is already in place -- readelf might be used, for example. 
+See my other letter. 
 
 -- 
 +  Maciej W. Rozycki, Technical University of Gdansk, Poland   +

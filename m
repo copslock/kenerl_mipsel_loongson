@@ -1,64 +1,98 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Nov 2002 03:12:29 +0100 (MET)
-Received: from [IPv6:::ffff:202.145.53.89] ([IPv6:::ffff:202.145.53.89]:58592
-	"EHLO miao.coventive.com") by ralf.linux-mips.org with ESMTP
-	id <S868815AbSKZCMT>; Tue, 26 Nov 2002 03:12:19 +0100
-Received: from jefflee (PC193.ia.kh.coventive.com [192.168.23.193] (may be forged))
-	by miao.coventive.com (8.11.6/8.11.6) with SMTP id gAQ2Hqx24014;
-	Tue, 26 Nov 2002 10:17:52 +0800
-From: "jeff" <jeff_lee@coventive.com>
-To: <henaldohzh@hotmail.com>, <ralf@linux-mips.org>
-Cc: <linux-mips@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Nov 2002 03:16:30 +0100 (MET)
+Received: from f169.law9.hotmail.com ([IPv6:::ffff:64.4.9.169]:5380 "EHLO
+	hotmail.com") by ralf.linux-mips.org with ESMTP id <S868817AbSKZCQT>;
+	Tue, 26 Nov 2002 03:16:19 +0100
+Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
+	 Mon, 25 Nov 2002 18:22:02 -0800
+Received: from 12.18.185.141 by lw9fd.law9.hotmail.msn.com with HTTP;
+	Tue, 26 Nov 2002 02:22:02 GMT
+X-Originating-IP: [12.18.185.141]
+From: "" <henaldohzh@hotmail.com>
+To: jeff_lee@coventive.com
+Cc: linux-mips@linux-mips.org
 Subject: RE: Problem about porting mips kernel
-Date: Tue, 26 Nov 2002 10:23:05 +0800
-Message-ID: <LPECIADMAHLPOFOIEEFNEEOBCLAA.jeff_lee@coventive.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="gb2312"
-Content-Transfer-Encoding: base64
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
-Importance: Normal
-In-Reply-To: <F61cMzfoV1qdiixjnzi000000e5@hotmail.com>
-X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6700
-Return-Path: <jeff_lee@coventive.com>
+Date: Tue, 26 Nov 2002 02:22:02 +0000
+Mime-Version: 1.0
+Content-Type: text/plain; charset=gb2312; format=flowed
+Message-ID: <F169TgbLYluLCTaogxL00000112@hotmail.com>
+X-OriginalArrivalTime: 26 Nov 2002 02:22:02.0868 (UTC) FILETIME=[9B52B340:01C294F2]
+Return-Path: <henaldohzh@hotmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 720
+X-archive-position: 721
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jeff_lee@coventive.com
+X-original-sender: henaldohzh@hotmail.com
 Precedence: bulk
 X-list: linux-mips
 
-SGksIGNhbiB5b3UgdHVybiBvZmYgdGhlIGNhY2hlIG9uIG1lbnVjb25maWcgYW5kIHRyeSBhZ2Fp
-bj8NCg0KUmVnYXJkcywNCg0KSmVmZg0KDQotLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KRnJv
-bTogbGludXgtbWlwcy1ib3VuY2VAbGludXgtbWlwcy5vcmcgW21haWx0bzpsaW51eC1taXBzLWJv
-dW5jZUBsaW51eC1taXBzLm9yZ11PbiBCZWhhbGYgT2YgaGVuYWxkb2h6aEBob3RtYWlsLmNvbQ0K
-U2VudDogVHVlc2RheSwgTm92ZW1iZXIgMjYsIDIwMDIgMTA6MDYgQU0NClRvOiByYWxmQGxpbnV4
-LW1pcHMub3JnDQpDYzogbGludXgtbWlwc0BsaW51eC1taXBzLm9yZw0KU3ViamVjdDogUmU6IFBy
-b2JsZW0gYWJvdXQgcG9ydGluZyBtaXBzIGtlcm5lbA0KDQoNCkkgdGhpbmsgdGhhdCBrZXJuZWwg
-aGFkIGJlZW4gY29uZmlndXJlZCBwcm9wZXJseSwgYmVjYXVzZSBJIGNhbiBvcGVuIHRoZSANCnR0
-eVMwIGRldmljZSBpbiByYW1kaXNrLiBJdCBtZWFucyBubyByYW1kaXNrIHByb2JsZW0uIEJ1dCBJ
-IGhhdmUgbm90IGFueSANCmV4cGVyaWVuY2UgdG8gZml4IHRsYiBvciBjYWNoZSBidWcuIElmIHlv
-dSBjYW4gZ2l2ZSBzb21lIG1vcmUgYWR2aWNlPyBUaHguDQoNCg0KDQoNCj5Gcm9tOiBSYWxmIEJh
-ZWNobGUgPHJhbGZAbGludXgtbWlwcy5vcmc+DQo+VG86IGhlbmFsZG9oemhAaG90bWFpbC5jb20N
-Cj5DQzogbGludXgtbWlwc0BsaW51eC1taXBzLm9yZw0KPlN1YmplY3Q6IFJlOiBQcm9ibGVtIGFi
-b3V0IHBvcnRpbmcgbWlwcyBrZXJuZWwNCj5EYXRlOiBNb24sIDI1IE5vdiAyMDAyIDEzOjUzOjEw
-ICswMTAwDQo+DQo+T24gTW9uLCBOb3YgMjUsIDIwMDIgYXQgMTI6NDc6MjhQTSArMDAwMCwgaGVu
-YWxkb2h6aEBob3RtYWlsLmNvbSB3cm90ZToNCj4NCj4gPiAgIHRoZXNlIGRheXMsIEkgYW0gYnVz
-eSB3aXRoIHBvcnRpbmcgbWlwcyBrZXJuZWwgdG8gYSBib2FyZCB3aXRoIHZyNDEzMQ0KPiA+IGNv
-cmUuIFRoaXMgYm9hcmQgaGFzIG9ubHkgU0lVIHNlcmlhbCBwb3J0LCBhbmQgc29tZSBodyBoYXZl
-IGJlZW4gDQptb2RpZmllZC4NCj4gPiBOb3csIEkgaGF2ZSBwb3J0ZWQgdGhlIGtlcm5lbCB0byBp
-dCwgYW5kIG1vZGlmaWVkIGh3IHJ1biB3ZWxsLiBCdXQgc28NCj4gPiBwdXp6bGluZyBtZSwgdGhl
-IGV4ZWN1dGlvbiBmaWxlIGNhbm4ndCBydW4gYXQgYWxsLiBJZiBzb21lIG9uZSBjYW4gaGVscCAN
-Cm1lDQo+ID4gb3IgZ2l2ZSBzb21lIGFkdmljZXMuIEkgaGF2ZSBiZWVuIGNyYXp5IGZvciB0aGUg
-cHJvYmxlbS4gT2ZmIGhhdCBmb3IgDQp5b3VyDQo+ID4gaGVscC4gVGhhbmtzIGEgbG90Lg0KPiA+
-ICBidHcsIEkgdXNlIHRoZSByYW1kaXNrIHdpdGggYnVzeWJveC4NCj4NCj5JbiBnZW5lcmFsIHRo
-aXMga2luZCBvZiBwcm9ibGVtIG1lYW5zIHRoZSB0bGIgb3IgY2FjaGUgY29kZSBmb3IgYSANCnBh
-cnRpY3VsYXINCj5wbGF0Zm9ybSBpcyBmYXVsdHkgb3IgdGhlIGtlcm5lbCBub3QgY29uZmlndXJl
-ZCBwcm9wZXJseS4NCj4NCj4gICBSYWxmDQoNCg0KX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18NCsPit9HPwtTYIE1TTiBFeHBs
-b3JlcjogIGh0dHA6Ly9leHBsb3Jlci5tc24uY29tL2xjY24vIA0K
+
+  Yes. I have disabled the cache once on menuconfig. But still same 
+problem.
+
+
+>From: "jeff" <jeff_lee@coventive.com>
+>To: <henaldohzh@hotmail.com>, <ralf@linux-mips.org>
+>CC: <linux-mips@linux-mips.org>
+>Subject: RE: Problem about porting mips kernel
+>Date: Tue, 26 Nov 2002 10:23:05 +0800
+>
+>Hi, can you turn off the cache on menuconfig and try again?
+>
+>Regards,
+>
+>Jeff
+>
+>-----Original Message-----
+>From: linux-mips-bounce@linux-mips.org 
+[mailto:linux-mips-bounce@linux-mips.org]On Behalf Of 
+henaldohzh@hotmail.com
+>Sent: Tuesday, November 26, 2002 10:06 AM
+>To: ralf@linux-mips.org
+>Cc: linux-mips@linux-mips.org
+>Subject: Re: Problem about porting mips kernel
+>
+>
+>I think that kernel had been configured properly, because I can open the
+>ttyS0 device in ramdisk. It means no ramdisk problem. But I have not any
+>experience to fix tlb or cache bug. If you can give some more advice? Thx.
+>
+>
+>
+>
+> >From: Ralf Baechle <ralf@linux-mips.org>
+> >To: henaldohzh@hotmail.com
+> >CC: linux-mips@linux-mips.org
+> >Subject: Re: Problem about porting mips kernel
+> >Date: Mon, 25 Nov 2002 13:53:10 +0100
+> >
+> >On Mon, Nov 25, 2002 at 12:47:28PM +0000, henaldohzh@hotmail.com wrote:
+> >
+> > >   these days, I am busy with porting mips kernel to a board with 
+vr4131
+> > > core. This board has only SIU serial port, and some hw have been
+>modified.
+> > > Now, I have ported the kernel to it, and modified hw run well. But so
+> > > puzzling me, the execution file cann't run at all. If some one can 
+help
+>me
+> > > or give some advices. I have been crazy for the problem. Off hat for
+>your
+> > > help. Thanks a lot.
+> > >  btw, I use the ramdisk with busybox.
+> >
+> >In general this kind of problem means the tlb or cache code for a
+>particular
+> >platform is faulty or the kernel not configured properly.
+> >
+> >   Ralf
+>
+>
+>_________________________________________________________________
+>免费下载 MSN Explorer:  http://explorer.msn.com/lccn/
+
+
+_________________________________________________________________
+与联机的朋友进行交流，请使用 MSN Messenger: http://messenger.msn.com/lccn/ 

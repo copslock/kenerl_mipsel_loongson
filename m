@@ -1,65 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Feb 2005 10:05:18 +0000 (GMT)
-Received: from no-dns-yet.demon.co.uk ([IPv6:::ffff:83.104.11.251]:43699 "EHLO
-	exterity.co.uk") by linux-mips.org with ESMTP id <S8225339AbVBXKFC>;
-	Thu, 24 Feb 2005 10:05:02 +0000
-Received: from [192.168.0.85] ([192.168.0.85]) by exterity.co.uk with Microsoft SMTPSVC(6.0.3790.211);
-	 Thu, 24 Feb 2005 10:06:20 +0000
-Subject: Re: Big Endian au1550
-From:	JP Foster <jp.foster@exterity.co.uk>
-To:	ppopov@embeddedalley.com
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <000001c519d1$84d9c250$0300a8c0@Exterity.local>
-References: <1109157737.16445.6.camel@localhost.localdomain>
-	 <000301c5199d$3154ad40$0300a8c0@Exterity.local>
-	 <1109160313.16445.20.camel@localhost.localdomain>
-	 <cb80abe539fa80effd786cacc1340de7@embeddededge.com>
-	 <1109177856.18018.13.camel@kronenbourg.scs.ch>
-	 <000001c519d1$84d9c250$0300a8c0@Exterity.local>
-Content-Type: text/plain
-Date:	Thu, 24 Feb 2005 10:04:55 +0000
-Message-Id: <1109239495.8389.8.camel@localhost.localdomain>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.1.5 
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Feb 2005 14:37:55 +0000 (GMT)
+Received: from sccrmhc11.comcast.net ([IPv6:::ffff:204.127.202.55]:27058 "EHLO
+	sccrmhc11.comcast.net") by linux-mips.org with ESMTP
+	id <S8225395AbVBXOhj>; Thu, 24 Feb 2005 14:37:39 +0000
+Received: from [192.168.1.4] (pcp05077810pcs.waldrf01.md.comcast.net[68.54.246.193])
+          by comcast.net (sccrmhc11) with ESMTP
+          id <2005022414372801100stlu3e>; Thu, 24 Feb 2005 14:37:29 +0000
+Message-ID: <421DE686.6040003@gentoo.org>
+Date:	Thu, 24 Feb 2005 09:36:54 -0500
+From:	Kumba <kumba@gentoo.org>
+User-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+CC:	libc-alpha@sources.redhat.com, linux-mips@linux-mips.org
+Subject: Re: Building GLIBC 2.3.4 on MIPS
+References: <421BCF34.90308@jg555.com> <421BD616.4030101@avtrex.com> <Pine.LNX.4.61L.0502231300200.11922@blysk.ds.pg.gda.pl>
+In-Reply-To: <Pine.LNX.4.61L.0502231300200.11922@blysk.ds.pg.gda.pl>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 24 Feb 2005 10:06:20.0546 (UTC) FILETIME=[7CEFC620:01C51A58]
-Return-Path: <jpfoster@exterity.co.uk>
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7331
+X-archive-position: 7332
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jp.foster@exterity.co.uk
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 2005-02-23 at 18:00 +0000, Pete Popov wrote:
->Thomas Sailer wrote:
->> On Wed, 2005-02-23 at 10:03 -0500, Dan Malek wrote:
->> 
->> 
->>>The only issues with big endian Au1xxx is the USB and potentially
->>>PCI.  There have been recent patches posted for USB that could
->>>fix this.  The PCI problem is with the read/write/in/out macros.
->> 
->> 
->> Last time I tried (about a month ago using the then current linux-mips
->> 2.6 CVS tree), USB host didn't work neither in big nor little endian
->> mode on my AMD Pb1000. Ethernet and Serial worked either way.
->
->We've been doing all the 2.6 work on the Db1x boards. The Pb1x need 
->an uplift as well, but I don't know if we'll have time to do it.
->
->Pete
->
+Maciej W. Rozycki wrote:
+> 
+>  The culprit is elsewhere.  The glibc's syscall number translator script 
+> doesn't work with asm-mips/unistd.h as of Linux 2.6 (you could have 
+> probably used 2.4 headers instead; I'm not sure if that is compatible with 
+> "--enable-kernel=2.6.0", though).  A correct fix has been prepared and 
+> proposed by Richard Sandiford and is available here: 
+> "http://sourceware.org/ml/libc-alpha/2004-11/msg00097.html".  I would 
+> expect this patch to have been applied before 2.3.4, but apparently this 
+> hasn't happened.  That's regrettable and I fear it's the result of glibc 
+> being somewhat inadequately maintained for MIPS/Linux these days, sigh...
+> 
+>  I'm not sure what the maintenance plan is for the 2.3 branch of glibc, 
+> but if 2.3.5 is ever going to happen, the Richard's patch is one of the 
+> must-have additions.
+> 
+>   Maciej
 
-Great, but I still can't get a running kernel from cvs mips-linux for
-a DB1550 board. Is it perhaps the toolchain? I'm using gcc-3.4.1 perhaps
-that is too recent. 
+The debian patch I referenced is what we require for glibc to generate a 
+proper syscalls.h for 2.4 kernels.  Unknown on the 2.6 kernel front how that 
+patch affects things.  I'll have to see if this patch affects/changes anything 
+for either headers version.
 
-Tried mipsel last night and got the same result as big end so I suspect
-it may be my compiler/binutils combination. Is there are recommended
-toolchain for mips. Should I go build gcc-2.95 and binutils 2.12 ?
 
-JP
+--Kumba
+
+-- 
+"Such is oft the course of deeds that move the wheels of the world: small 
+hands do them because they must, while the eyes of the great are elsewhere." 
+--Elrond

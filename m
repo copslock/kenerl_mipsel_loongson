@@ -1,45 +1,42 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0HDQ6B12068
-	for linux-mips-outgoing; Thu, 17 Jan 2002 05:26:06 -0800
-Received: from gate.hhi.de (gate.HHI.DE [193.174.67.20])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0HDQ2P12064
-	for <linux-mips@oss.sgi.com>; Thu, 17 Jan 2002 05:26:02 -0800
-Received: from mails.hhi.de by gate.hhi.de
-          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 17 Jan 2002 12:26:00 UT
-Received: from hhi.de (bs-hpp.HHI.DE)
- by mails.HHI.DE (Sun Internet Mail Server sims.3.5.2000.01.05.12.18.p9)
- with ESMTP id <0GQ300MFT1791B@mails.HHI.DE> for linux-mips@oss.sgi.com; Thu,
- 17 Jan 2002 13:25:58 +0100 (MET)
-Date: Thu, 17 Jan 2002 13:25:57 +0100
-From: Torsten Weber <t.weber@hhi.de>
-Subject: -O2 in gcc 2.96 buggy?
-To: Linux MIPS <linux-mips@oss.sgi.com>
-Message-id: <3C46C2D5.F191DC26@hhi.de>
-Organization: HHI
-MIME-version: 1.0
-X-Mailer: Mozilla 4.7 [en] (X11; I; HP-UX B.10.20 9000/782)
-Content-type: text/plain; charset=us-ascii
-Content-transfer-encoding: 7bit
-X-Accept-Language: en
+	by oss.sgi.com (8.11.2/8.11.3) id g0HECaF12932
+	for linux-mips-outgoing; Thu, 17 Jan 2002 06:12:36 -0800
+Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0HECBP12929;
+	Thu, 17 Jan 2002 06:12:14 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA13169;
+	Thu, 17 Jan 2002 14:04:50 +0100 (MET)
+Date: Thu, 17 Jan 2002 14:04:49 +0100 (MET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Carsten Langgaard <carstenl@mips.com>
+cc: Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com
+Subject: Re: IDE driver broken in bigendian 2.4.17 kernel
+In-Reply-To: <3C46B151.7A15C5F4@mips.com>
+Message-ID: <Pine.GSO.3.96.1020117135554.10407B-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On a RedHat 7.1 installation I compiled gawk (3.1.0),  but gawk crashed
-(gawk couldn't run glibc-2.2.4/scripts/firstversions.awk, it resulted
-in:
-       > (FILENAME=- FNR=1) fatal error: internal error
-       > Aborted (core dumped)
-)
-The gawk problem disappeares if I compile without optimizing with -O2
-(i.e. optimizing with -O works).
+On Thu, 17 Jan 2002, Carsten Langgaard wrote:
 
-gcc version is 2.96 20000731 (Red Hat Linux 7.1 2.96-99.1)
+> Due to changes in the string port macros/functions (insl, outsl, insw,
+> ...) the bigendian IDE driver doesn't work anymore.
+> I think we need to have local versions of these functions in
+> include/asm-mips/ide.h, therefore these functions should be macros
+> (#define) and not static functions in include/asm-mips/io.h (in order to
+> redefine them).
 
-Is this problem already known, or where is my mistake?
+ I believe the inline functions should be left as they are and the IDE
+driver should use own ones that call the formers and perform byteswapping
+on results as needed.  You should avoid the name clash. 
 
-Thanks.
+ Also if that's a chipset-specific issue and not an IDE host adapter's
+one, this should be resolved globally as other devices/drivers may be
+affected. 
 
----------------------------------------------------------------
-Torsten Weber                    Heinrich-Hertz-Institut fuer
-E-Mail: t.weber@hhi.de           Nachrichtentechnik Berlin GmbH
----------------------------------------------------------------
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

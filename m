@@ -1,201 +1,260 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Oct 2003 20:42:41 +0100 (BST)
-Received: from opengraphics.com ([IPv6:::ffff:216.208.162.194]:45994 "EHLO
-	hurricane.opengraphics.com") by linux-mips.org with ESMTP
-	id <S8225562AbTJHTmi>; Wed, 8 Oct 2003 20:42:38 +0100
-Received: from lsorense by hurricane.opengraphics.com with local (Exim 3.36 #1 (Debian))
-	id 1A7KCF-00026u-00; Wed, 08 Oct 2003 15:42:07 -0400
-Date: Wed, 8 Oct 2003 15:42:07 -0400
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>,
-	debian-mips@lists.debian.org, linux-mips@linux-mips.org
-Subject: Re: Question about use of PMAD-AA ethernet adapter on Decstation
-Message-ID: <20031008194207.GA16118@opengraphics.com>
-References: <20031008142337.GI12409@rembrandt.csv.ica.uni-stuttgart.de> <Pine.GSO.3.96.1031008162829.26799D-100000@delta.ds2.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.GSO.3.96.1031008162829.26799D-100000@delta.ds2.pg.gda.pl>
-User-Agent: Mutt/1.3.28i
-From: Len Sorensen <lsorense@opengraphics.com>
-X-MailScanner: Found to be clean
-X-MailScanner-SpamCheck: not spam, SpamAssassin (score=-5.694, required 5,
-	AWL, BAYES_00)
-Return-Path: <lsorense@opengraphics.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Oct 2003 21:12:28 +0100 (BST)
+Received: from real.realitydiluted.com ([IPv6:::ffff:208.242.241.164]:64413
+	"EHLO real.realitydiluted.com") by linux-mips.org with ESMTP
+	id <S8225562AbTJHUM0>; Wed, 8 Oct 2003 21:12:26 +0100
+Received: from localhost ([127.0.0.1] helo=realitydiluted.com)
+	by real.realitydiluted.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1A7KfU-0004Fv-00
+	for <linux-mips@linux-mips.org>; Wed, 08 Oct 2003 15:12:20 -0500
+Message-ID: <3F846FA3.6090208@realitydiluted.com>
+Date: Wed, 08 Oct 2003 16:12:19 -0400
+From: "Steven J. Hill" <sjhill@realitydiluted.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4) Gecko/20030930 Debian/1.4-5
+X-Accept-Language: en
+MIME-Version: 1.0
+To: linux-mips@linux-mips.org
+Subject: [PATCH] Toshiba RBTX4927 NMI handling code....
+Content-Type: multipart/mixed;
+ boundary="------------040801090006060007020702"
+Return-Path: <sjhill@realitydiluted.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3384
+X-archive-position: 3385
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lsorense@opengraphics.com
+X-original-sender: sjhill@realitydiluted.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Oct 08, 2003 at 05:31:09PM +0200, Maciej W. Rozycki wrote:
->  The trace dump looks through the kernel stack and uses simple heuristics
-> to judge whether a word should be included or not: if it is in the range
-> covered by the kernel's text segment, it's printed.  It might be pure
-> coincidence a specific value corresponding to a kernel address is present
-> at the stack as it may actually be a leftover from past execution, e.g. 
-> within a stack frame reserved for local variables that hasn't been
-> initialized yet, or are simply unused for a particular execution path. 
-> You need to analyze the backtrace, comparing it to actual code involved to
-> see which of the addresses are results of real function calls. 
-> 
->  Well, most interrupt handlers can be interrupted by other interrupts,
-> only the high priority ones cannot.  These are marked with SA_INTERRUPT in
-> the flags.  Of course the entry code for IRQ handling cannot be
-> interrupted and only a single interrupt source is selected for handling
-> based on predefined priorities, but once execution reaches
-> handle_IRQ_event() (which calls specific handlers registered by drivers),
-> another interrupt can be taken. 
-> 
->  The trace doesn't look suspicious at first sight to me.
-> 
->  The PMAD-A cannot be handled the same way as the others since it has a
-> sane buffer space layout, something that cannot be said of the others. 
-> Therefore the stock declance.c driver doesn't handle the PMAD-A properly
-> -- that's functionality that needs to be implemented when the driver gets
-> restructured (it'll happen for 2.6 and probably a backport to 2.4 will be
-> available later as well).  There is a patch that converts the stock driver
-> into one working for the PMAD-A (but it doesn't work for the others than)
-> and I'm told Debian uses thus modified code as a separate driver.  The
-> patch is based on work by Dave Airlie and is available here:
-> 'ftp://ftp.ds2.pg.gda.pl/pub/macro/drivers/pmad-a/patch-mips-2.4.20-pre6-20021222-declance-pmad-12.gz' 
-> -- it applies cleanly to the current version of declance.c.
+This is a multi-part message in MIME format.
+--------------040801090006060007020702
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Well I am runing declance for the onboard and pmadaa for the add on card
-as far as I can tell.
+Greetings.
 
->  Both dev->mem_start and dev->mem_end are initialized incorrectly as they
-> should use bus addresses and now they use CPU virtual ones.  For
-> MIPS-based TURBOchannel systems, the mapping between the addresses is
-> quite straightforward, but it's not necessarily the case for the others.
-> The addresses should also be used for I/O resource allocation mamagement
-> which is not implemented in the driver.
-> 
->  Your point about dev->mem_end is of course valid -- the bug wasn't
-> noticed, because the variable isn't used for anything in these cases.
-> 
->  Please send me the full oops report and I'll see what I can decipher from
-> it.
+If no one has any objections, I would like to apply this patch.
+This utilizes the NMI present on the RBTX4927 board and is quite
+handy for debugging purposes. I have also refined my earlier NMI
+code a bit and believe this to be much cleaner than before.
 
-Here is what I got on the console:
+-Steve
 
-Instruction bus error, epc == 80045ae0, ra == 8005d8a8
-Oops in traps.c::do_be, line 491:
-$0 : 00000000 80280000 80280000 000f48b0 8027ef94 000f48b0 8027ef94 00000000
-$8 : 8023e108 bc040000 00000020 874d227c 86b857e4 86b857e8 86b857e0 00000008
-$16: 00000000 00000000 00000000 8027ebc0 80259820 fffffffe 00000000 04102060
-$24: 00000000 2b107a90                   8023e000 8023fde0 8043ff80 8005d8a8
-Hi : 00000000
-Lo : 00000600
-epc  : 80045ae0    Not tainted
-Status: 1000e400
-Cause : 00000018
-Process swapper (pid: 0, stackpage=8023e000)
-Stack:    00000000 8005da74 00000000 04102060 00000001 8005dd18 8027ebe0
- 20000001 8027ebe0 8005de64 8027ebe0 800598e4 00000000 811b2940 8023fea8
- 801263bc 800596a0 00000000 80158898 80158888 000000c0 80259848 00000000
- 80259838 fffffffe 1000e400 8023fea8 00000000 80059170 30000400 fffffffb
- 00000011 8004a6e8 8667c000 802590d0 8026c97c fffffffb 0000000d 8004a728
- 8044e2d0 ...
-Call Trace:   [<8005da74>] [<8005dd18>] [<8005de64>] [<800598e4>] [<801263bc>]
- [<800596a0>] [<80158898>] [<80158888>] [<80059170>] [<8004a6e8>] [<8004a728>]
- [<80125574>] [<80125574>] [<800432dc>] [<800432c0>] [<8020a37c>] [<8004042c>]
- [<8020959c>]
+--------------040801090006060007020702
+Content-Type: text/plain;
+ name="toshiba-rbtx4927-nmi.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="toshiba-rbtx4927-nmi.patch"
 
-Code: 03a02021  080115e0  00000000 <401a6000> 00000000  001ad0c0  07400003  03a0d821  3c1b802b
-Kernel panic: Aiee, killing interrupt handler!
-In interrupt handler - not syncing
+diff -urN linux/arch/mips/config-shared.in linux-patched/arch/mips/config-shared.in
+--- linux/arch/mips/config-shared.in	Wed Sep 10 15:06:10 2003
++++ linux-patched/arch/mips/config-shared.in	Wed Oct  8 14:06:55 2003
+@@ -647,6 +647,7 @@
+    define_bool CONFIG_SWAP_IO_SPACE_L y
+    define_bool CONFIG_ISA y
+    define_bool CONFIG_NONCOHERENT_IO y
++   define_bool CONFIG_NMI y
+ fi
+ if [ "$CONFIG_VICTOR_MPC30X" = "y" ]; then
+    define_bool CONFIG_IRQ_CPU y
+diff -urN linux/arch/mips/defconfig-rbtx4927 linux-patched/arch/mips/defconfig-rbtx4927
+--- linux/arch/mips/defconfig-rbtx4927	Tue Sep  9 20:17:31 2003
++++ linux-patched/arch/mips/defconfig-rbtx4927	Wed Oct  8 14:07:23 2003
+@@ -1,5 +1,5 @@
+ #
+-# Automatically generated by make menuconfig: don't edit
++# Automatically generated make config: don't edit
+ #
+ CONFIG_MIPS=y
+ CONFIG_MIPS32=y
+@@ -76,7 +76,7 @@
+ CONFIG_SWAP_IO_SPACE_L=y
+ CONFIG_ISA=y
+ CONFIG_NONCOHERENT_IO=y
+-CONFIG_DUMMY_KEYB=y
++CONFIG_NMI=y
+ # CONFIG_MIPS_AU1000 is not set
+ 
+ #
+@@ -199,6 +199,10 @@
+ # CONFIG_KHTTPD is not set
+ # CONFIG_ATM is not set
+ # CONFIG_VLAN_8021Q is not set
++
++#
++#  
++#
+ # CONFIG_IPX is not set
+ # CONFIG_ATALK is not set
+ 
+@@ -407,7 +411,6 @@
+ # CONFIG_ESPSERIAL is not set
+ # CONFIG_MOXA_INTELLIO is not set
+ # CONFIG_MOXA_SMARTIO is not set
+-# CONFIG_ISI is not set
+ # CONFIG_SYNCLINK is not set
+ # CONFIG_SYNCLINKMP is not set
+ # CONFIG_N_HDLC is not set
+@@ -416,12 +419,11 @@
+ # CONFIG_SX is not set
+ # CONFIG_RIO is not set
+ # CONFIG_STALDRV is not set
+-CONFIG_SERIAL_TXX9=y
+-CONFIG_SERIAL_TXX9_CONSOLE=y
+ # CONFIG_SERIAL_TX3912 is not set
+ # CONFIG_SERIAL_TX3912_CONSOLE is not set
++CONFIG_SERIAL_TXX9=y
++CONFIG_SERIAL_TXX9_CONSOLE=y
+ # CONFIG_TXX927_SERIAL is not set
+-# CONFIG_TXX927_SERIAL_CONSOLE is not set
+ # CONFIG_UNIX98_PTYS is not set
+ 
+ #
+@@ -439,6 +441,14 @@
+ # Joysticks
+ #
+ # CONFIG_INPUT_GAMEPORT is not set
++
++#
++# Input core support is needed for gameports
++#
++
++#
++# Input core support is needed for joysticks
++#
+ # CONFIG_QIC02_TAPE is not set
+ # CONFIG_IPMI_HANDLER is not set
+ # CONFIG_IPMI_PANIC_EVENT is not set
+diff -urN linux/arch/mips/kernel/traps.c linux-patched/arch/mips/kernel/traps.c
+--- linux/arch/mips/kernel/traps.c	Wed Sep 10 15:06:10 2003
++++ linux-patched/arch/mips/kernel/traps.c	Wed Oct  8 14:03:03 2003
+@@ -1009,6 +1009,14 @@
+ 		restore_fp_context = fpu_emulator_restore_context;
+ 	}
+ 
++#ifdef CONFIG_NMI
++	{
++		extern void nmi_handler_setup (void);
++
++		nmi_handler_setup();
++	}
++#endif
++
+ 	flush_icache_range(KSEG0, KSEG0 + 0x400);
+ 
+ 	atomic_inc(&init_mm.mm_count);	/* XXX UP?  */
+diff -urN linux/arch/mips/tx4927/toshiba_rbtx4927/Makefile linux-patched/arch/mips/tx4927/toshiba_rbtx4927/Makefile
+--- linux/arch/mips/tx4927/toshiba_rbtx4927/Makefile	Fri Apr 11 13:26:20 2003
++++ linux-patched/arch/mips/tx4927/toshiba_rbtx4927/Makefile	Wed Oct  8 14:04:27 2003
+@@ -16,5 +16,6 @@
+ 
+ obj-$(CONFIG_PCI)	+= toshiba_rbtx4927_pci_fixup.o 
+ obj-$(CONFIG_PCI)	+= toshiba_rbtx4927_pci_ops.o 
++obj-$(CONFIG_NMI)	+= toshiba_rbtx4927_nmi.o
+ 
+ include $(TOPDIR)/Rules.make
+diff -urN linux/arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_nmi.S linux-patched/arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_nmi.S
+--- linux/arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_nmi.S	Wed Dec 31 19:00:00 1969
++++ linux-patched/arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_nmi.S	Wed Oct  8 14:03:29 2003
+@@ -0,0 +1,46 @@
++/*
++ * linux/arch/mips/tx4927/toshiba_rbtx4927/tx4927_irq_handler.S
++ *
++ * NMI handler for Toshiba RBTX4927 board
++ *
++ * Copyright (C) 2003 TimeSys Corp.
++ *                    S. James Hill (James.Hill@timesys.com)
++ *                                  (sjhill@realitydiluted.com)
++ *
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License as published by the
++ *  Free Software Foundation; either version 2 of the License, or (at your
++ *  option) any later version.
++ *
++ *  THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED
++ *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
++ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
++ *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
++ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
++ *  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
++ *  OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
++ *  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
++ *  TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
++ *  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ *
++ *  You should have received a copy of the GNU General Public License along
++ *  with this program; if not, write to the Free Software Foundation, Inc.,
++ *  675 Mass Ave, Cambridge, MA 02139, USA.
++ */
++#include <asm/regdef.h>
++#include <asm/stackframe.h>
++
++		.align	5
++		.set noat
++		NESTED(tx4927_nmi_handler, PT_SIZE, sp)
++		SAVE_ALL
++		CLI
++		.set at
++		mfc0	k0, CP0_STATUS
++		lui	k1, 0x50		/* Clear BEV and NMI */
++		nor	k1, zero, k1
++		and	k0, k1
++		mtc0	k0, CP0_STATUS
++		move	a0, sp
++		jal	toshiba_rbtx4927_nmi
++		END(tx4927_nmi_handler)
+diff -urN linux/arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_setup.c linux-patched/arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_setup.c
+--- linux/arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_setup.c	Thu Aug 28 10:04:47 2003
++++ linux-patched/arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_setup.c	Wed Oct  8 14:08:29 2003
+@@ -907,6 +907,46 @@
+ 	/* no return */
+ }
+ 
++#ifdef CONFIG_NMI
++void toshiba_rbtx4927_nmi (struct pt_regs *regs)
++{
++	extern void show_code(unsigned int *pc);
++	extern void show_runqueue(void);
++	extern void show_stack(unsigned int *sp);
++	extern void show_state_nolock(void);
++	extern void show_trace(unsigned long *sp, unsigned int *ra,
++			       unsigned int *pc);
++
++	bust_spinlocks(1);
++	printk("\ncurrent = %d:%s\n",current->pid,current->comm);
++	show_regs(regs);
++	printk("Process %s (pid: %d, stackpage=%08lx)\n",
++		current->comm, current->pid, (unsigned long) current);
++	show_stack((unsigned int *)regs->regs[29]);
++	show_trace((unsigned long *)regs->regs[29], 
++	           (unsigned int *)regs->regs[31],
++	           (unsigned int *)regs->cp0_epc);
++	show_code((unsigned int *)regs->cp0_epc);
++	bust_spinlocks(0);
++}
++
++void nmi_handler_setup (void)
++{
++	extern void tx4927_nmi_handler (void);
++	unsigned long vec[2];
++
++	vec[0] = 0x08000000 |
++			(0x03ffffff & ((unsigned long)tx4927_nmi_handler >> 2));
++	vec[1] = 0;
++
++	/*
++	 * Our firmware (PMON in this case) has a NMI hook that
++	 * jumps to 0x80000220. We locate our NMI handler there.
++	 */
++	memcpy((void *)(KSEG0 + 0x220), &vec, 0x8);
++}
++#endif
++
+ void __init toshiba_rbtx4927_setup(void)
+ {
+ 	vu32 cp0_config;
 
-Through ksymoops it gets to be:
-
-Instruction bus error, epc == 80045ae0, ra == 8005d8a8
-Oops in traps.c::do_be, line 491:
-$0 : 00000000 80280000 80280000 000f48b0 8027ef94 000f48b0 8027ef94 00000000
-$8 : 8023e108 bc040000 00000020 874d227c 86b857e4 86b857e8 86b857e0 00000008
-$16: 00000000 00000000 00000000 8027ebc0 80259820 fffffffe 00000000 04102060
-$24: 00000000 2b107a90                   8023e000 8023fde0 8043ff80 8005d8a8
-Hi : 00000000
-Lo : 00000600
-epc  : 80045ae0    Not tainted
-Using defaults from ksymoops -t elf32-tradlittlemips -a mips:3000
-Status: 1000e400
-Cause : 00000018
-Process swapper (pid: 0, stackpage=8023e000)
-Stack:    00000000 8005da74 00000000 04102060 00000001 8005dd18 8027ebe0
- 20000001 8027ebe0 8005de64 8027ebe0 800598e4 00000000 811b2940 8023fea8
- 801263bc 800596a0 00000000 80158898 80158888 000000c0 80259848 00000000
- 80259838 fffffffe 1000e400 8023fea8 00000000 80059170 30000400 fffffffb
- 00000011 8004a6e8 8667c000 802590d0 8026c97c fffffffb 0000000d 8004a728
- 8044e2d0 ...
-Call Trace:   [<8005da74>] [<8005dd18>] [<8005de64>] [<800598e4>] [<801263bc>]
- [<800596a0>] [<80158898>] [<80158888>] [<80059170>] [<8004a6e8>] [<8004a728>]
- [<80125574>] [<80125574>] [<800432dc>] [<800432c0>] [<8020a37c>] [<8004042c>]
- [<8020959c>]
-Code: 03a02021  080115e0  00000000 <401a6000> 00000000  001ad0c0  07400003  03a0d821  3c1b802b
-
-
->>RA;  8005d8a8 <update_wall_time+18/7c>
->>$1; 80280000 <uidhash_table+2c/40c>
->>$2; 80280000 <uidhash_table+2c/40c>
->>$4; 8027ef94 <xtime+4/8>
->>$6; 8027ef94 <xtime+4/8>
->>$8; 8023e108 <init_task_union+108/2000>
->>$19; 8027ebc0 <irq_stat+0/20>
->>$20; 80259820 <tasklet_hi_vec+0/10>
->>$28; 8023e000 <init_task_union+0/2000>
->>$29; 8023fde0 <init_task_union+1de0/2000>
->>$31; 8005d8a8 <update_wall_time+18/7c>
-
->>PC;  80045ae0 <handle_ibe+0/cc>   <=====
-
-Trace; 8005da74 <update_process_times+34/11c>
-Trace; 8005dd18 <timer_bh+160/168>
-Trace; 8005de64 <do_timer+144/14c>
-Trace; 800598e4 <bh_action+60/d8>
-Trace; 801263bc <timer_interrupt+f8/1cc>
-Trace; 800596a0 <tasklet_hi_action+110/1a4>
-Trace; 80158898 <lance_interrupt+2b0/2d8>
-Trace; 80158888 <lance_interrupt+2a0/2d8>
-Trace; 80059170 <do_softirq+1a0/1a8>
-Trace; 8004a6e8 <do_IRQ+e4/12c>
-Trace; 8004a728 <do_IRQ+124/12c>
-Trace; 80125574 <handle_it+8/10>
-Trace; 80125574 <handle_it+8/10>
-Trace; 800432dc <cpu_idle+6c/74>
-Trace; 800432c0 <cpu_idle+50/74>
-Trace; 8020a37c <p.1+324/d38>
-Trace; 8004042c <init+0/194>
-Trace; 8020959c <genexcept_early+dc/9f0>
-
-Code;  80045ad4 <handle_ades_int+28/34>
-00000000 <_PC>:
-Code;  80045ad4 <handle_ades_int+28/34>
-   0:   03a02021  move    a0,sp
-Code;  80045ad8 <handle_ades_int+2c/34>
-   4:   080115e0  j       45780 <_PC+0x45780>
-Code;  80045adc <handle_ades_int+30/34>
-   8:   00000000  nop
-Code;  80045ae0 <handle_ibe+0/cc>   <=====
-   c:   401a6000  mfc0    k0,$12   <=====
-Code;  80045ae4 <handle_ibe+4/cc>
-  10:   00000000  nop
-Code;  80045ae8 <handle_ibe+8/cc>
-  14:   001ad0c0  sll     k0,k0,0x3
-Code;  80045aec <handle_ibe+c/cc>
-  18:   07400003  bltz    k0,28 <_PC+0x28>
-Code;  80045af0 <handle_ibe+10/cc>
-  1c:   03a0d821  move    k1,sp
-Code;  80045af4 <handle_ibe+14/cc>
-  20:   3c1b802b  lui     k1,0x802b
-
-Kernel panic: Aiee, killing interrupt handler!
-
-Does that help anything?  If not I may just have to assume it was a
-fluke that the machine crashed twice in 15 minutes after putting in the
-PMAD-AA card.  I haven't managed to make it crash today.
-
-Len Sorensen
+--------------040801090006060007020702--

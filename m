@@ -1,48 +1,52 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA27236; Fri, 19 Apr 1996 11:47:58 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA00061; Fri, 19 Apr 1996 14:52:45 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: by cthulhu.engr.sgi.com (950511.SGI.8.6.12.PATCH526/911001.SGI)
-	for linux-list id LAA20845; Fri, 19 Apr 1996 11:47:49 -0700
-Received: from yon.engr.sgi.com by cthulhu.engr.sgi.com via ESMTP (950511.SGI.8.6.12.PATCH526/911001.SGI)
-	for <linux@cthulhu.engr.sgi.com> id LAA20838; Fri, 19 Apr 1996 11:47:47 -0700
-Received: by yon.engr.sgi.com (950413.SGI.8.6.12/940406.SGI.AUTO)
-	for linux id LAA23886; Fri, 19 Apr 1996 11:47:45 -0700
-From: ariel@yon.engr.sgi.com (Ariel Faigon)
-Message-Id: <199604191847.LAA23886@yon.engr.sgi.com>
-Subject: Linux/MIPS port resources
-To: linux@yon.engr.sgi.com
-Date: Fri, 19 Apr 1996 11:47:45 -0700 (PDT)
-Reply-To: ariel@cthulhu.engr.sgi.com
-Organization: Silicon Graphics Inc.
-X-Mailer: ELM [version 2.4 PL24 ME5a]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	for linux-list id OAA16120; Fri, 19 Apr 1996 14:52:30 -0700
+Received: from neteng.engr.sgi.com by cthulhu.engr.sgi.com via ESMTP (950511.SGI.8.6.12.PATCH526/911001.SGI)
+	for <linux@cthulhu.engr.sgi.com> id OAA16115; Fri, 19 Apr 1996 14:52:29 -0700
+Received: (from lm@localhost) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id OAA29927 for linux; Fri, 19 Apr 1996 14:52:28 -0700
+Date: Fri, 19 Apr 1996 14:52:28 -0700
+From: lm@neteng.engr.sgi.com (Larry McVoy)
+Message-Id: <199604192152.OAA29927@neteng.engr.sgi.com>
+To: linux@neteng.engr.sgi.com
+Subject: Good news
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+Hi-
+	as some of you know, we've been negociating to get David Miller,
+the Sparc/Linux guy, to come out and work on a MIPS/Linux port.  He has
+accepted, he starts on May 25th, and will be here until August 25th.
+We had to do a lot of work with the laywers, but we have agreement that
+all of the work that he does here will be
 
-I was thinking about what should we do to make David Miller come
-up to speed as fast as possible when he comes for the summer.
-After all, he may not be familiar with MIPS assembly, IRIX etc.
+	a) owned by SGI (we paid for it), and b) distributed under the
+	terms of the GPL.
 
-So I set up a *preliminary* Web page with a list of resources
-for the Linux/MIPS port. Most of the pointers are from Bill Earl,
-thanks Bill.
+No exceptions.  SGI owns the code so we can choose to use anything that 
+turns out to be interesting inside IRIX without the constraints of the
+GPL (you may or may not be aware that the owner of the code can choose
+to distribute the code under multiple copyrights - so we can use stuff
+in IRIX without "polluting" the IRIX kernel with the GPL).
 
-Please send me suggestions for improvement, what's missing, etc.
-This is just a quick first shot so you get the idea. The 6.2
-freeware gcc is not yet configured to work with GNU-as (so it uses
-stabs and supports debugging) and our linker. I'll be working
-on this next week.
+I'd like to thank everyone that has been pulling for this, and especially
+Greg Chesson who did the hard work of getting the contract hammered out
+to the satisfaction of SGI & David.
 
-We also need to make sure that all the equipment, the office, etc.
-is ready when David lands here. I assume someone is taking care of
-all this (?). And that someone with intimate knowledge of our low
-level stuff is really available to assist him on call.
+We are currently in the process of figuring out what code we can use to
+help with the port; there may be parts of the setup OS that are both
+appropriate and useful.
 
-I'll leave it to Larry or Greg to announce the details on David
-Miller's accepting SGI's offer.   p l e a s e  :-)
+Ariel and others are working to get a development machine set up in
+the engr domain.  It will be linux.engr.sgi.com, and should be up and 
+running on Monday or Tuesday.
 
-6 weeks to go...
--- 
-Peace, Ariel
+I'll keep you posted on new news as it happens.
+
+--lm
+---
+Larry McVoy     lm@sgi.com     http://reality.sgi.com/lm     (415) 933-1804
+Copyright 1996, all rights reserved.   Microsoft Network is prohibited from
+redistributing this work in any form, in whole or in part without license.
+License to distribute this work is available to Microsoft at $500.
+Transmission without permission constitutes an agreement to these terms.

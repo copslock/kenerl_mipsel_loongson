@@ -1,109 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Dec 2004 12:35:53 +0000 (GMT)
-Received: from p508B7F35.dip.t-dialin.net ([IPv6:::ffff:80.139.127.53]:20609
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225210AbULAMft>; Wed, 1 Dec 2004 12:35:49 +0000
-Received: from fluff.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id iB1CXkHv005963;
-	Wed, 1 Dec 2004 13:33:46 +0100
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.13.1/8.13.1/Submit) id iB1CXaXu005962;
-	Wed, 1 Dec 2004 13:33:36 +0100
-Date: Wed, 1 Dec 2004 13:33:36 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Dominic Sweetman <dom@mips.com>
-Cc: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>,
-	linux-mips@linux-mips.org, Nigel Stephens <nigel@mips.com>,
-	David Ung <davidu@mips.com>
-Subject: Re: [PATCH] Improve atomic.h implementation robustness
-Message-ID: <20041201123336.GA5612@linux-mips.org>
-References: <20041201070014.GG3225@rembrandt.csv.ica.uni-stuttgart.de> <16813.39660.948092.328493@doms-laptop.algor.co.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Dec 2004 14:49:55 +0000 (GMT)
+Received: from mo01.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:30960 "EHLO
+	mo01.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225341AbULAOtu>;
+	Wed, 1 Dec 2004 14:49:50 +0000
+Received: MO(mo01)id iB1EnkSi000947; Wed, 1 Dec 2004 23:49:46 +0900 (JST)
+Received: MDO(mdo00) id iB1Enjid016307; Wed, 1 Dec 2004 23:49:45 +0900 (JST)
+Received: 4UMRO01 id iB1EniOD004399; Wed, 1 Dec 2004 23:49:44 +0900 (JST)
+	from stratos (localhost [127.0.0.1]) (authenticated)
+Date: Wed, 1 Dec 2004 23:49:43 +0900
+From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH 2.6] tlbwr hazard for NEC VR4100
+Message-Id: <20041201234943.584d88e8.yuasa@hh.iij4u.or.jp>
+X-Mailer: Sylpheed version 1.0.0beta3 (GTK+ 1.2.10; i386-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <16813.39660.948092.328493@doms-laptop.algor.co.uk>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6518
+X-archive-position: 6519
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Dec 01, 2004 at 10:20:28AM +0000, Dominic Sweetman wrote:
+Hi Ralf,
 
-> > the atomic functions use so far memory references for the inline
-> > assembler to access the semaphore. This can lead to additional
-> > instructions in the ll/sc loop, because newer compilers don't
-> > expand the memory reference any more but leave it to the assembler.
-> > 
-> > The appended patch...
-> 
-> I thought it was an explicit aim of the substantial rewrite of the
-> MIPS backend for 3.x to get the compiler to generate only "real"
-> instructions, not macros which expand to multiple instructions inside
-> the assembler.  So it's disappointing if newer compilers got worse.
-> 
-> Can one of our compiler-knowledgable people follow this up?
+This patch had added tlbwr hazard for NEC VR4100.
+Please apply this patch to 2.6.
 
-Dominik,
+Yoichi
 
-this problem here is specific to inline assembler.  The splitlock code for
-a reasonable CPU is:
+Signed-off-by: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
 
-static __inline__ void atomic_add(int i, atomic_t * v)
-{
-        unsigned long temp;
-
-        __asm__ __volatile__(
-        "1:     ll      %0, %1          # atomic_add            \n"
-        "       addu    %0, %2                                  \n"
-        "       sc      %0, %1                                  \n"
-        "       beqz    %0, 1b                                  \n"
-        : "=&r" (temp), "=m" (v->counter)
-        : "Ir" (i), "m" (v->counter));
-}
-
-For the average atomic op generated code is going to look about like:
-
-80100634:       lui     a0,0x802c
-80100638:       ll      a0,-24160(a0)
-8010063c:       addu    a0,a0,v0
-80100640:       lui     at,0x802c
-80100644:       addu    at,at,v1
-80100648:       sc      a0,-24160(at)
-8010064c:       beqz    a0,80100634 <init+0x194>
-80100650:       nop
-
-It's significantly worse for 64-bit due to the excessive code sequence
-generated for loading a 64-bit address.  One outside CKSEGx that is.
-
-On 32-bit Thiemo's patch would cut that down to something like:
-
-80100630:       lui     t0,0x802c
-80100634:       addiu	t0,t0,-24160
-80100638:       ll      a0,0(t0)
-8010063c:       addu    a0,a0,v0
-80100648:       sc      a0,0(to)
-8010064c:       beqz    a0,80100638 <init+0x194>
-80100650:       nop
-
-On 64-bit the savings would be even more significant.  But what we actually
-want would be using the "o" constraint.  Which just at least on the
-compilers where I've tried it, didn't produce code any different from "m".
-The expected code would be something like:
-
-80100634:       lui     t0,0x802c
-80100638:       ll      a0,-24160(t0)
-8010063c:       addu    a0,a0,v0
-80100648:       sc      a0,-24160(to)
-8010064c:       beqz    a0,80100634 <init+0x194>
-80100650:       nop
-
-So another instruction less.
-
-  Ralf
+diff -urN -X dontdiff a-orig/arch/mips/mm/tlbex.c a/arch/mips/mm/tlbex.c
+--- a-orig/arch/mips/mm/tlbex.c	Tue Nov 30 20:42:08 2004
++++ a/arch/mips/mm/tlbex.c	Wed Dec  1 23:23:11 2004
+@@ -820,6 +820,25 @@
+ 		i_ssnop(p);
+ 		break;
+ 
++	case CPU_VR4111:
++	case CPU_VR4121:
++	case CPU_VR4122:
++	case CPU_VR4181:
++	case CPU_VR4181A:
++		i_nop(p);
++		i_nop(p);
++		i_tlbwr(p);
++		i_nop(p);
++		i_nop(p);
++		break;
++
++	case CPU_VR4131:
++	case CPU_VR4133:
++		i_nop(p);
++		i_nop(p);
++		i_tlbwr(p);
++		break;
++
+ 	default:
+ 		panic("No TLB refill handler yet (CPU type: %d)",
+ 		      current_cpu_data.cputype);

@@ -1,48 +1,29 @@
-Received:  by oss.sgi.com id <S553791AbQJPPzl>;
-	Mon, 16 Oct 2000 08:55:41 -0700
-Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:30951 "EHLO
-        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553784AbQJPPzY>;
-	Mon, 16 Oct 2000 08:55:24 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id RAA19268;
-	Mon, 16 Oct 2000 17:41:45 +0200 (MET DST)
-Date:   Mon, 16 Oct 2000 17:41:45 +0200 (MET DST)
-From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To:     Jun Sun <jsun@mvista.com>
-cc:     linux-mips@fnet.fr, linux-mips@oss.sgi.com
-Subject: Re: stable binutils, gcc, glibc ...
-In-Reply-To: <39E7EB73.9206D0DB@mvista.com>
-Message-ID: <Pine.GSO.3.96.1001016173427.18406D-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received:  by oss.sgi.com id <S553761AbQJPSDC>;
+	Mon, 16 Oct 2000 11:03:02 -0700
+Received: from gateway-490.mvista.com ([63.192.220.206]:34044 "EHLO
+        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553700AbQJPSCq>;
+	Mon, 16 Oct 2000 11:02:46 -0700
+Received: from mvista.com (IDENT:ppopov@zeus.mvista.com [10.0.0.112])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id e9GI1Vx06622
+	for <linux-mips@oss.sgi.com>; Mon, 16 Oct 2000 11:01:31 -0700
+Message-ID: <39EB41B0.101F0123@mvista.com>
+Date:   Mon, 16 Oct 2000 10:58:08 -0700
+From:   Pete Popov <ppopov@mvista.com>
+Organization: Monta Vista Software
+X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.12-20b i586)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To:     "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: IDT 32334 processor
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Fri, 13 Oct 2000, Jun Sun wrote:
 
-> b) Andreas Jaeger recommanded Ulf's patch against the CVS tree.  He
-> recommanded 
-> 
-> ftp://oss.sgi.com/pub/linux/mips/src/binutils/binutils-000420.diff.gz.  
-> 
-> But I only found the following file.
-> 
-> ftp://oss.sgi.com/pub/linux/mips/binutils/binutils-000424.diff.gz
+Has anyone done (or heard of) any work with linux and the IDT 32334 mips
+processor?
 
- I've forward-ported the patch to the final 2.10 release.  It's available
-at ftp://ftp.ds2.pg.gda.pl/pub/macro/ and http://www.ds2.pg.gda.pl/~macro/
-(the latter is slightly outdated though -- I need to update it from RPM
-packages).
-
-> c) Maciej reported he got binutils v2.10 working for glibc 2.2.  No
-> details or any distribution.
-
- The package is available from ftp://ftp.ds2.pg.gda.pl/pub/macro/.  Newer
-versions get uploaded as they are ready. 
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Pete

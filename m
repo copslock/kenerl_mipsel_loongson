@@ -1,50 +1,71 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id IAA54129 for <linux-archive@neteng.engr.sgi.com>; Mon, 4 Jan 1999 08:41:15 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA30042 for <linux-archive@neteng.engr.sgi.com>; Thu, 7 Jan 1999 14:08:38 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id IAA79638
+	id OAA83209
 	for linux-list;
-	Mon, 4 Jan 1999 08:39:41 -0800 (PST)
+	Thu, 7 Jan 1999 14:07:08 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id IAA69149
+	via ESMTP id OAA67534
 	for <linux@engr.sgi.com>;
-	Mon, 4 Jan 1999 08:39:38 -0800 (PST)
-	mail_from (ralf@uni-koblenz.de)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
+	Thu, 7 Jan 1999 14:07:05 -0800 (PST)
+	mail_from (billc@netcommunity.com)
+Received: from ns1.netcommunity.com (ns1.netcommunity.com [198.212.27.192]) 
 	by sgi.sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id IAA01166
-	for <linux@engr.sgi.com>; Mon, 4 Jan 1999 08:39:27 -0800 (PST)
-	mail_from (ralf@uni-koblenz.de)
-From: ralf@uni-koblenz.de
-Received: from eddie (ralf@eddie.uni-koblenz.de [141.26.4.17])
-	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with SMTP id RAA08905;
-	Mon, 4 Jan 1999 17:39:12 +0100 (MET)
-Received: by eddie (SMI-8.6/KO-2.0)
-	id RAA15300; Mon, 4 Jan 1999 17:39:08 +0100
-Message-ID: <19990104173908.37809@uni-koblenz.de>
-Date: Mon, 4 Jan 1999 17:39:08 +0100
-To: linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
-        linux-mips@vger.rutgers.edu
-Subject: CVS commit of 2.1.131/MIPS
-Mime-Version: 1.0
+	via ESMTP id OAA04577
+	for <linux@engr.sgi.com>; Thu, 7 Jan 1999 14:07:03 -0800 (PST)
+	mail_from (billc@netcommunity.com)
+Received: from netcommunity.com ([149.174.154.165]) by ns1.netcommunity.com
+          (Netscape Messaging Server 3.01)  with ESMTP id AAA26092
+          for <linux@engr.sgi.com>; Thu, 7 Jan 1999 17:02:34 -0500
+Message-ID: <3695312F.E6260C7A@netcommunity.com>
+Date: Thu, 07 Jan 1999 17:11:59 -0500
+From: "Bill Chatfield" <billc@netcommunity.com>
+Organization: Internet Media Properties
+X-Mailer: Mozilla 4.04 [en] (WinNT; I)
+MIME-Version: 1.0
+To: SGI Linux Mailing List <linux@cthulhu.engr.sgi.com>
+Subject: Install Problems
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.84e
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-I had a CVS-crash during my yesterday attempt of commiting Linux patches upto
-2.1.131 into the CVS.  As a result both my working copy and the CVS archive
-ended up in an ``interesting'' state.  This should be fixed by now;
-everobody who did a checkout / upgrade during the last about 24h should now
-run a ``cvs update -d -P''.  Sorry for the hazzle.
+Is anyone still working on the SGI/Linux port?
 
-The G364 driver for the Magnum 4000 will need an update as the low level
-interface for frame buffer drivers has changed, so at this time the ports
-for Olivetti M700 / Magnum 4000 is broken.
+I'm trying to get SGI/Linux (Hard Hat 5.1) working on an Indy.  I've
+followed all the instructions very carefully.  The kernel booted and ran
+correctly for the install, but when I rebooted after the install, the
+system doesn't come up correctly.
 
-  Ralf
+I've been through the mailing list archive and couldn't find something
+similiar to the problem I'm having.  So, I'm hoping someone can help me
+out.
+
+The kernel seems to boot mostly, but I think the console gets stuck and
+stops scrolling so I can't see what is happening.  The reason that I
+think this is because it just stops printing anything to the console,
+but the machine comes up well enough to ping it.  Telet and ftp to the
+machine result in a connection refused error.
+
+I've tried to run the install process again so I can get a working
+kernel so I can mount my hard disk to see what the problem might be, but
+I can't figure out how to get the disk mounted from another virtual
+console during the install process.  'mount' is not available.  The
+virtual consoles don't seem to work right because they don't scroll, so
+you can only see the first screen of text.
+
+I'd really like to get this working.  If I can, I've got two other Indys
+and two Challenge S servers that I'd like to try it on.
+
+I'd appreciate anything you can suggest...  Thanks!
+
+-- 
+Bill Chatfield
+Internet Media Properties
+billc@netcommunity.com

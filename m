@@ -1,90 +1,118 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Feb 2005 20:34:07 +0000 (GMT)
-Received: from mailout06.sul.t-online.com ([IPv6:::ffff:194.25.134.19]:17849
-	"EHLO mailout06.sul.t-online.com") by linux-mips.org with ESMTP
-	id <S8225244AbVBEUdv>; Sat, 5 Feb 2005 20:33:51 +0000
-Received: from fwd06.aul.t-online.de 
-	by mailout06.sul.t-online.com with smtp 
-	id 1CxWco-0000o3-00; Sat, 05 Feb 2005 21:33:50 +0100
-Received: from denx.de (XRxHPiZXQeVbs0ia1-DSctoPgyZY1OMRzfBfhTeIrBl42VWI1iQa0L@[62.158.200.222]) by fmrl06.sul.t-online.com
-	with esmtp id 1CxWcZ-0zYkpk0; Sat, 5 Feb 2005 21:33:35 +0100
-Received: from atlas.denx.de (atlas.denx.de [10.0.0.14])
-	by denx.de (Postfix) with ESMTP
-	id 463B942F9E; Sat,  5 Feb 2005 21:33:34 +0100 (MET)
-Received: by atlas.denx.de (Postfix, from userid 15)
-	id CD4DBC108D; Sat,  5 Feb 2005 21:33:33 +0100 (MET)
-Received: from atlas.denx.de (localhost [127.0.0.1])
-	by atlas.denx.de (Postfix) with ESMTP
-	id CAC2A13D6DB; Sat,  5 Feb 2005 21:33:33 +0100 (MET)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 Feb 2005 00:28:27 +0000 (GMT)
+Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:23126
+	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
+	id <S8225261AbVBFA2L>; Sun, 6 Feb 2005 00:28:11 +0000
+Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
+	by iris1.csv.ica.uni-stuttgart.de with esmtp
+	id 1CxaHa-0006XM-00; Sun, 06 Feb 2005 01:28:10 +0100
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
+	id 1CxaHZ-0000sK-00; Sun, 06 Feb 2005 01:28:09 +0100
+Date:	Sun, 6 Feb 2005 01:28:09 +0100
 To:	Robert Michel <news@robertmichel.de>
 Cc:	linux-mips <linux-mips@linux-mips.org>
-From:	Wolfgang Denk <wd@denx.de>
-Subject: Re: patch like kexec for MIPS possible? 
-Mime-version: 1.0
-Content-type: text/plain; charset=ISO-8859-1
-Content-transfer-encoding: 8bit
-In-reply-to: Your message of "Sat, 05 Feb 2005 20:11:10 +0100."
-             <20050205191110.GD3071@mail.robertmichel.de> 
-Date:	Sat, 05 Feb 2005 21:33:28 +0100
-Message-Id: <20050205203333.CD4DBC108D@atlas.denx.de>
-X-ID:	XRxHPiZXQeVbs0ia1-DSctoPgyZY1OMRzfBfhTeIrBl42VWI1iQa0L@t-dialin.net
-X-TOI-MSGID: 50e230f1-10c5-4941-b350-ca80a19c5b8d
-Return-Path: <wd@denx.de>
+Subject: Re: patch like kexec for MIPS possible?
+Message-ID: <20050206002809.GV28252@rembrandt.csv.ica.uni-stuttgart.de>
+References: <20050205165019.GC3071@mail.robertmichel.de> <20050205174150.GU28252@rembrandt.csv.ica.uni-stuttgart.de> <20050205191110.GD3071@mail.robertmichel.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20050205191110.GD3071@mail.robertmichel.de>
+User-Agent: Mutt/1.5.6+20040907i
+From:	Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7164
+X-archive-position: 7166
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wd@denx.de
+X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
 Precedence: bulk
 X-list: linux-mips
 
-In message <20050205191110.GD3071@mail.robertmichel.de> you wrote:
+Robert Michel wrote:
+> Salve Thiemo!
 > 
-> Kexec is written for x86 (yet) - but the (my) question is if
-> this would be possible with MIPS, too.
+> Thiemo Seufer schrieb am Samstag, den 05. Februar 2005 um 18:41h:
+> > MIPS kernels are usually position dependent code, and loaded in
+> > unmapped memory, so a kernel would need to overwrite itself for
+> > kexec. I don't know if kexec is flexible enough to handle this.
+[snip]
+> The task of overwriting the old kernel with the new one
+> is done in three stages: 
+> 
+> 1. Copy the new kernel into memory. 
+> 2. Move this kernel image into dynamic kernel memory. 
+> 3. Copy this image into the real destination (overwriting the current
+>    kernel), and start the new kernel. 
 
-Other, smilar solutions exist for other  architectures,  like  Magnus
-Damm's  "relf"  tool for PowerPC and x86 (relf - reload elf: a driver
-to load and start a new elf file from within  Linux).  Adaptions  for
-other processors are more or less trivial.
+Ok, so is no exception WRT.
 
-> Does GRUB run on MIPS? Does GRUB support SSH2? Does most MIPS
-> bootlaoders support USB-sticks or booting via VPNs?
+> > Frankly, I don't see what kexec is good for. Who else besides
+> > kernel developers would need to reboot a machine continuously?
+> 
+> Does GRUB run on MIPS?
 
-Use U-Boot :-)
+No.
 
-> LinuxBios is a "nice" project, but for most boards/boxes Linuxer
-> could be happy to be able to boot it - to develop a nice boadloader
-> is depended from the hard/firmware of the systems.
+> Does GRUB support SSH2?
 
-Use U-Boot :-)
+No idea.
 
-> A kernel with a kexec like patch could be used into the bootchain
-> for several reasons:
-...
+> Does most MIPS bootlaoders support USB-sticks or booting via VPNs?
+
+There are various, and usually they are open source, ao adding such
+features shouldn't be a problem.
+
+[snip]
+> - making developing and hacking more easy
+
+Usually done via netboot or JTAG download.
+
+> - booting with options
+> - choice which kernel to boot
 > - booting from original not supported devices (usb, network)
-...
+> - remote control for the boot process
+> - bypassing memoryrestrictions of the bootloader
+> - more flexibility - independance from proprietary bootloader
+
+Those things should be fixed in the bootloader.
+
+> - developing security, statistic features...
+> - fail save boot
+> - starting restore system, analyse tools....
+> - option for modular system 
+
+?
+
 > - for upgrades lower downtimes (Router, Firewalls....)
 
-These are IMHO the only valid reasons for such an approach.
+30 seconds for the tftp, and you have to hope the previous
+kernel left everything in a sane state.
 
+> - perversive computing, the box could be on a place without
+>   physicaly access
+
+You don't want to do that without a safe fallback (aka serial console).
+
+> - the kernel would be more often updated, than the bootloader
+> - just for fun
+> - just because it could be usefull - an implemented feature
+>   may become the base for other features - unthinkable before
+>   this first step
+> - ...
+> 
+> So my point is not to boot a machine continuously,
+> but to expand the bootchain:
+> 
 > IMHO would be the most powerfull and flexible way 
 > to boot a linux kernel,
 > to boot it just from an other linux kernel.
+> ;)
 
-We've been using "relf" in some projects (x86 - where we  were  stuck
-with  really  dumb  BIOSes),  but  I cannot see many situations where
-kexec is actually better or more powerful than  a  decent  bootloader
-line U-Boot. OK, I'm obviously biased.
+What if any of both is buggy? Either you have a working fallback,
+or you'll be screwed sooner or later.
 
-Best regards,
 
-Wolfgang Denk
-
--- 
-Software Engineering:  Embedded and Realtime Systems,  Embedded Linux
-Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email: wd@denx.de
-In an organization, each person rises to the level of his own  incom-
-petency                                         - The Peter Principle
+Thiemo

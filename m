@@ -1,50 +1,49 @@
-Received:  by oss.sgi.com id <S554102AbRAZUYr>;
-	Fri, 26 Jan 2001 12:24:47 -0800
-Received: from noose.gt.owl.de ([62.52.19.4]:27910 "HELO noose.gt.owl.de")
-	by oss.sgi.com with SMTP id <S553783AbRAZUY2>;
-	Fri, 26 Jan 2001 12:24:28 -0800
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 2B44F7FF; Fri, 26 Jan 2001 21:24:24 +0100 (CET)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 5F9A5EE9C; Fri, 26 Jan 2001 21:23:41 +0100 (CET)
-Date:   Fri, 26 Jan 2001 21:23:41 +0100
-From:   Florian Lohoff <flo@rfc822.org>
-To:     Pete Popov <ppopov@mvista.com>
+Received:  by oss.sgi.com id <S554105AbRAZU3g>;
+	Fri, 26 Jan 2001 12:29:36 -0800
+Received: from gateway-1237.mvista.com ([12.44.186.158]:49908 "EHLO
+        orion.mvista.com") by oss.sgi.com with ESMTP id <S554099AbRAZU33>;
+	Fri, 26 Jan 2001 12:29:29 -0800
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.9.3/8.9.3) id MAA09422;
+	Fri, 26 Jan 2001 12:28:38 -0800
+Date:   Fri, 26 Jan 2001 12:28:38 -0800
+From:   Jun Sun <jsun@mvista.com>
+To:     Mike McDonald <mikemac@mikemac.com>
 Cc:     linux-mips@oss.sgi.com
 Subject: Re: Cross compiling RPMs
-Message-ID: <20010126212341.A26384@paradigm.rfc822.org>
-References: <200101261815.KAA08917@saturn.mikemac.com> <3A71C3CF.A179113@mvista.com>
+Message-ID: <20010126122838.F9325@mvista.com>
+References: <200101261815.KAA08917@saturn.mikemac.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <3A71C3CF.A179113@mvista.com>; from ppopov@mvista.com on Fri, Jan 26, 2001 at 10:37:03AM -0800
-Organization: rfc822 - pure communication
+In-Reply-To: <200101261815.KAA08917@saturn.mikemac.com>; from mikemac@mikemac.com on Fri, Jan 26, 2001 at 10:15:21AM -0800
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Fri, Jan 26, 2001 at 10:37:03AM -0800, Pete Popov wrote:
-> glibc.  Others might have similar toolchains they can point you at. 
-> Another option is native builds, which I personally don't like.
+On Fri, Jan 26, 2001 at 10:15:21AM -0800, Mike McDonald wrote:
+> 
+>   Can anyone point me to some references of techniques for cross
+> compiling RPMs? I want to build some packages for my little endian
+> MIPS but I haven't found any info on cross compiling RPMs in the RPM
+> docs nor "Maximum RPM". Any pointers would be appreciated. (I'm
+> particularly interested in how to specify the tool chain.)
+>
 
-Cross compiling is definitly no option for debian as the dependencies
-etc are all made from "ldd binary" which has to fail for cross-compiling.
-I guess this also happens to rpm packages so cross-compiling to really
-get a correct distribution is definitly no option.
+Mike,
 
-The larger the packages are the harder it is to get them cross-compiled
-correctly as they run nifty little check programs from configure which
-cant work. I guess you had similar problems as all rpms are
-"noarch" which is definitly - ummm - interesting.
+Most GNU packages allow you to specify environment variables such
+as CC, AR, RANLIB, etc when invoking the "configure" command.  So
+you will need to set those variables in your spec file
+where "configure" is invoked.
 
-I definitly go for native builds - Once you have a working stable 
-base you can set up debian autobuilders which will do nearly 
-everything for you except signing and uploading the package into
-the main repository.
+If a package itself is not cross-compiling friendly, you need to 
+make it cross-compilable first. :-)
 
-Flo
--- 
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-     Why is it called "common sense" when nobody seems to have any?
+If you only cross-compile one package, I suggest you read through
+spec file and do the job manually (untar, applying patch, configure,
+make, make install, etc).
+
+Jun

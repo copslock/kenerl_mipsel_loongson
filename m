@@ -1,41 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Sep 2003 22:27:30 +0100 (BST)
-Received: from nevyn.them.org ([IPv6:::ffff:66.93.172.17]:49844 "EHLO
-	nevyn.them.org") by linux-mips.org with ESMTP id <S8225425AbTIRV12>;
-	Thu, 18 Sep 2003 22:27:28 +0100
-Received: from drow by nevyn.them.org with local (Exim 4.22 #1 (Debian))
-	id 1A06JD-0006Qv-1U; Thu, 18 Sep 2003 17:27:27 -0400
-Date: Thu, 18 Sep 2003 17:27:27 -0400
-From: Daniel Jacobowitz <dan@debian.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Sep 2003 01:31:05 +0100 (BST)
+Received: from avtrex.com ([IPv6:::ffff:216.102.217.178]:1426 "EHLO avtrex.com")
+	by linux-mips.org with ESMTP id <S8225442AbTISAbD>;
+	Fri, 19 Sep 2003 01:31:03 +0100
+Received: from avtrex.com ([192.168.0.111] RDNS failed) by avtrex.com with Microsoft SMTPSVC(5.0.2195.6713);
+	 Thu, 18 Sep 2003 17:30:58 -0700
+Message-ID: <3F6A4E41.1090100@avtrex.com>
+Date: Thu, 18 Sep 2003 17:30:57 -0700
+From: David Daney <ddaney@avtrex.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.2.1) Gecko/20021130
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
 To: linux-mips@linux-mips.org
-Cc: binutils@sources.redhat.com
-Subject: recent binutils and mips64-linux
-Message-ID: <20030918212727.GA24686@nevyn.them.org>
-Mail-Followup-To: linux-mips@linux-mips.org, binutils@sources.redhat.com
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.1i
-Return-Path: <drow@crack.them.org>
+Subject: Will ll/sc work from user space?
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 19 Sep 2003 00:30:58.0148 (UTC) FILETIME=[4B86E240:01C37E45]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3215
+X-archive-position: 3217
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@debian.org
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-I'm sure this has been discussed already...
+Q:  Will ll/sc instructions work from a linux user process ?
 
-The Linux kernel currently uses among other things, -Wa,-32,-mgp64.  The
-point is to use 32-bit ELF and 64-bit instructions.  But nowadays binutils
-requires that the ABI explicitly match the width of GP registers.
+If so What happens if there is a context switch between the two?
 
-Can gas still do ELF32 in with 64-bit registers?  If so, what the heck is
-the command-line magic?
+What happens if the memory location is paged out and then back into a 
+different physical page?
 
--- 
-Daniel Jacobowitz
-MontaVista Software                         Debian GNU/Linux Developer
+Thanks in advance for any insight into this.
+
+David Daney.

@@ -1,52 +1,39 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id JAA521197; Sat, 23 Aug 1997 09:04:56 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id KAA527440; Sat, 23 Aug 1997 10:55:01 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id JAA15138 for linux-list; Sat, 23 Aug 1997 09:04:36 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA15044 for <linux@cthulhu.engr.sgi.com>; Sat, 23 Aug 1997 09:03:38 -0700
-Received: from aec.at (web.aec.at [193.170.192.5]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id JAA21540
-	for <linux@cthulhu.engr.sgi.com>; Sat, 23 Aug 1997 09:03:35 -0700
-	env-from (oliver@aec.at)
-Received: (from oliver@localhost) by aec.at (8.8.3/8.7) id SAA18891; Sat, 23 Aug 1997 18:02:10 +0200
-Date: Sat, 23 Aug 1997 18:02:10 +0200 (MET DST)
-From: Oliver Frommel <oliver@aec.at>
-To: Miguel de Icaza <miguel@nuclecu.unam.mx>
-cc: linux@cthulhu.engr.sgi.com
-Subject: Re: "unable to handle kernel paging request" at boot
-In-Reply-To: <199708211605.LAA08758@athena.nuclecu.unam.mx>
-Message-ID: <Pine.LNX.3.91.970823175207.18779A-100000@web.aec.at>
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id KAA27339 for linux-list; Sat, 23 Aug 1997 10:54:43 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA27334 for <linux@engr.sgi.com>; Sat, 23 Aug 1997 10:54:40 -0700
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id KAA21316
+	for <linux@engr.sgi.com>; Sat, 23 Aug 1997 10:54:39 -0700
+	env-from (ralf@informatik.uni-koblenz.de)
+Received: from thoma (ralf@thoma.uni-koblenz.de [141.26.4.61]) by informatik.uni-koblenz.de (8.8.6/8.6.9) with SMTP id TAA15897; Sat, 23 Aug 1997 19:54:36 +0200 (MEST)
+From: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
+Message-Id: <199708231754.TAA15897@informatik.uni-koblenz.de>
+Received: by thoma (SMI-8.6/KO-2.0)
+	id TAA08318; Sat, 23 Aug 1997 19:54:35 +0200
+Subject: Re: Kernel compile errors...
+To: shaver@neon.ingenia.ca (Mike Shaver)
+Date: Sat, 23 Aug 1997 19:54:34 +0200 (MET DST)
+Cc: ralf@mailhost.uni-koblenz.de, linux@cthulhu.engr.sgi.com
+In-Reply-To: <199708231606.MAA02843@neon.ingenia.ca> from "Mike Shaver" at Aug 23, 97 12:06:02 pm
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-hello,
+> Thus spake Ralf Baechle:
+> > Check the version number and file dates.  Compare with current version and
+> > date.  Conclusion? ;-)
+> 
+> My binutils include:
+> -rwxr-xr-x   2 root     root       193440 Sep 20  1996 mips-linux-as
+> and the tar ball matches the one on linus.  Ditto for GCC.
+> 
+> And I get the same errors as Alex and the others.  Are there newer
+> versions?  If so, where the heck are they?
 
-now i put r4k_show_regs() right after  printk(KERN_ALERT "Unable to handle.."
-into fault.c and get the following output (using kernel linux-970704, btw :)
+Well, I've never build binaries of newer versions for Intel.  Since right
+now my Indy is 10000km away and my workhorse is a Pentium I'll publish
+updates as soon as I'm finished with some more urgent things.
 
-$0 : 00000000 1004fc00 00000010 00000000
-$1 : 00000010 00000000 1fffffff 00000000
-$2 : 89f772b8 00000000 00000000 00000000
-$12: 00000008 00000282 88368038 1004fc01
-$16: 89f77000 8811d2f8 00000005 8810317c
-$20: bfb34000 bfbd4000 00000003 00000000
-$24: 00000000 0000000f
-$28: 566a6ead 89f91da0 00000001 880d8f04
-epc   : 880d8f24
-Status: 1004fc03
-Cause : 1000000c
-
-my System.map shows this:
-880d8d74 t sgiseeq_set_multicast
-880d8d7c T sgiseeq_init
-880d9084 T sgiseeq_probe
-
-gdb disas this:
-0x880d8f18 <sgiseeq_init+412>:  move $v1,$a3
-0x880d8f1c <sgiseeq_init+416>:  addu $v0,$a3,$a0
-0x880d8f20 <sgiseeq_init+420>:  and $v0,$v0,$a2
-0x880d8f24 <sgiseeq_init+424>:  sw $v0,8($v1)
-
-
-dunno if that helps :)
-
-o.
+  Ralf

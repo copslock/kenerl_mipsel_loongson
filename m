@@ -1,65 +1,52 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id RAA06251; Sun, 15 Jun 1997 17:22:14 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA05717; Mon, 16 Jun 1997 00:31:02 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id RAA11153 for linux-list; Sun, 15 Jun 1997 17:21:53 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id RAA11144 for <linux@relay.engr.SGI.COM>; Sun, 15 Jun 1997 17:21:49 -0700
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id RAA26189
-	for <linux@relay.engr.SGI.COM>; Sun, 15 Jun 1997 17:21:44 -0700
-	env-from (ralf@informatik.uni-koblenz.de)
-Received: from thoma (ralf@thoma.uni-koblenz.de [141.26.4.61]) by informatik.uni-koblenz.de (8.8.5/8.6.9) with SMTP id CAA23535; Mon, 16 Jun 1997 02:17:07 +0200 (MEST)
-From: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
-Message-Id: <199706160017.CAA23535@informatik.uni-koblenz.de>
-Received: by thoma (SMI-8.6/KO-2.0)
-	id CAA17134; Mon, 16 Jun 1997 02:17:04 +0200
-Subject: Re: A pointed question about endianness...
-To: adevries@engsoc.carleton.ca (Alex deVries)
-Date: Mon, 16 Jun 1997 02:17:02 +0200 (MET DST)
-Cc: linux@cthulhu.engr.sgi.com, ralf@Julia.DE, shaver@engsoc.carleton.ca
-In-Reply-To: <Pine.LNX.3.95.970615184212.1448A-100000@lager.engsoc.carleton.ca> from "Alex deVries" at Jun 15, 97 06:54:36 pm
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id AAA27803 for linux-list; Mon, 16 Jun 1997 00:30:39 -0700
+Received: from sgiger.munich.sgi.com (sgiger.munich.sgi.com [144.253.192.2]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA27792 for <linux@cthulhu.engr.sgi.com>; Mon, 16 Jun 1997 00:30:36 -0700
+Received: from knobi.munich.sgi.com by sgiger.munich.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1502/940406.SGI)
+	 id JAA20094; Mon, 16 Jun 1997 09:30:33 +0200
+Received: from knobi (localhost [127.0.0.1]) by knobi.munich.sgi.com (950413.SGI.8.6.12/951220.SGI.AUTOCF.knobi) via SMTP id JAA00979; Mon, 16 Jun 1997 09:30:23 +0200
+Message-ID: <33A4EB8F.237C@munich.sgi.com>
+Date: Mon, 16 Jun 1997 09:30:23 +0200
+From: Martin Knoblauch <knobi@munich.sgi.com>
+Organization: Silicon Graphics GmbH, Am-Hochacker 3, D-85630 Grasbrunn
+X-Mailer: Mozilla 3.01SC-SGI (X11; I; IRIX 6.3 IP22)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+To: Miguel de Icaza <miguel@nuclecu.unam.mx>
+CC: linux@cthulhu.engr.sgi.com
+Subject: Re: gcc for Irix.
+References: <199706131455.JAA11578@athena.nuclecu.unam.mx>
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> As we speak, Ralf has produced a batch of MIPS LSB binaries that would be
-> glorious to be able to run.  The kernel that Mike Shaver and I have is
-> MSB, as are our kernel, cross-compiler and rudamentary binaries.  I
-> believe this is because we're branching off of Dave M's work.
+Miguel de Icaza wrote:
 > 
-> But, can we please agree on one endianness?  I don't care which it is, so
-> long as we all agree. Mike and I are quite willing to give up MSB.
+> Hello guys,
 > 
-> My proposal is to use Ralf's LSB binaries as a launchpad[1], and produce
-> only LSB binaries until we get bi-endianness going. 
+>    I am running into a little problem.  The binary gcc that is
+> available on the free software collection is for Irix 5.3 and the
+> include files that are packaged with it are not quite ok for Irix 6.2
+> 
+>    I do not have a native cc, so this is kind of problematic :-)
+> 
+> Miguel.
+Miguel,
 
-Well, the point in a bi-endian kernel is that it will give us the possibility
-of running binaries with the opposite byteorder of the kernel.  We don't
-have that feature available right now, so we're bound to whatever byteorder
-the kernel is running.  Which again is fixed on many machines.  This
-means that for now we'll have to build both little endian and big endian
-binaries; on SGI we'll only be able to execute big endian binaries.
+ if you took the stuff from Ariels home page, don't worry
+about the "5.3" stuff. It is basically the only way to build
+an "official" gcc for 6.x. Otherwise, the stuff is binary
+compatible. As for the header files, what is the problem?
+Errors, or incompleteness?
 
-I think your missunderstood that bi-endianess gives us the possibility to
-execute binaries of both endianess concurrently on the same kernel.  It
-does that but it also give us at all the possibility to run binaries of
-the other byteorder.  So your proposal is currently technically not possible.
-
-Btw, question to the SGI gurus - is the kernel byteorder of SGI machines
-be reconfigurable?
-
-> Also, Ralf, could you put up a binary of your kernel and a tar ball of
-> your root fs?
-
-Ok, I'll put it on http://www.uni-koblenz.de/~linux/vmlinux-2.1.42-pre3.gz.
-Not on kernel.panic because I've run out of disk space.  Feel free to
-put it on your ftp server.  My root fs is definately to big for upload over
-a 14.4k line, so stay tuned.
-
-> [1] Which are mirrored on ftp://ftp.engsoc.carleton.ca/pub/mips if you're
-> having problems getting them from .de.  That is, until whatever.sgi.com is
-> setup.
-
-Hmm...  Ariel, Larry or whoever knows about that - what is the current
-state of linux.sgi.com?
-
-  Ralf
+Martin
+-- 
++---------------------------------+-----------------------------------+
+|Martin Knoblauch                 | Silicon Graphics GmbH             |
+|Manager Technical Marketing      | Am Hochacker 3 - Technopark       |
+|Silicon Graphics Computer Systems| D-85630 Grasbrunn-Neukeferloh, FRG|
+|---------------------------------| Phone: (+int) 89 46108-179 or -0  |
+|http://reality.sgi.com/knobi     | Fax:   (+int) 89 46107-179        |
++---------------------------------+-----------------------------------+
+|e-mail: <knobi@munich.sgi.com>   | VM: 6-333-8197 | M/S: IDE-3150    |
++---------------------------------------------------------------------+

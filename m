@@ -1,36 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jan 2003 12:45:25 +0000 (GMT)
-Received: from smtp02.infoave.net ([IPv6:::ffff:165.166.0.27]:46817 "EHLO
-	smtp02.infoave.net") by linux-mips.org with ESMTP
-	id <S8225198AbTAOMpY>; Wed, 15 Jan 2003 12:45:24 +0000
-Received: from opus ([204.116.3.125])
- by SMTP00.InfoAve.Net (PMDF V6.1-1IA5 #38777)
- with ESMTP id <01KR98LSKQFW91A929@SMTP00.InfoAve.Net> for
- linux-mips@linux-mips.org; Wed, 15 Jan 2003 07:44:57 -0500 (EST)
-Date: Wed, 15 Jan 2003 07:46:05 -0500
-From: Justin Pauley <jpauley@xwizards.com>
-Subject: MOPD
-To: linux-mips@linux-mips.org
-Message-id: <1042634769.3331.89.camel@Opus>
-MIME-version: 1.0
-X-Mailer: Ximian Evolution 1.0.8 (1.0.8-10)
-Content-type: text/plain
-Content-transfer-encoding: 7bit
-Return-Path: <jpauley@xwizards.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jan 2003 12:58:04 +0000 (GMT)
+Received: from p508B634D.dip.t-dialin.net ([IPv6:::ffff:80.139.99.77]:40601
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225198AbTAOM6E>; Wed, 15 Jan 2003 12:58:04 +0000
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id h0FCm8728283;
+	Wed, 15 Jan 2003 13:48:08 +0100
+Date: Wed, 15 Jan 2003 13:48:08 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Guido Guenther <agx@sigxcpu.org>
+Cc: libc-alpha@sources.redhat.com, linux-mips@linux-mips.org
+Subject: Re: [PATCH] INTERNAL_SYSCALL for linux-mips
+Message-ID: <20030115134808.C27412@linux-mips.org>
+References: <20030114230607.GH27645@bogon.ms20.nix>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <20030114230607.GH27645@bogon.ms20.nix>; from agx@sigxcpu.org on Wed, Jan 15, 2003 at 12:06:08AM +0100
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1158
+X-archive-position: 1159
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jpauley@xwizards.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Does anyone know where I can find out more information (than what is in
-the man page) for MOPD. I would like to know how it works,etc. So I can
-find out what I am doing wrong. Once again, if someone would like to
-sell a Decstation with Linux installed please let me know.
+On Wed, Jan 15, 2003 at 12:06:08AM +0100, Guido Guenther wrote:
 
-Thanks a lot!
-Justin
+> +	register long __v0 asm("$2"); 					\
+> +	register long __a3 asm("$7"); 					\
+
+The patch looks fine to me but as a word of warning - I'm using the same
+code construct is also being used in the kernel but I've found it very
+fragile wrt. misscompilation by gcc over the years ...
+
+  Ralf

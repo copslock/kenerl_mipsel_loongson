@@ -1,67 +1,61 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA16681; Fri, 20 Jun 1997 12:50:18 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA17798; Fri, 20 Jun 1997 13:17:13 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id MAA16866 for linux-list; Fri, 20 Jun 1997 12:49:47 -0700
-Received: from oz.engr.sgi.com (oz.engr.sgi.com [150.166.61.27]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA16861; Fri, 20 Jun 1997 12:49:44 -0700
-Received: (from ariel@localhost) by oz.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id MAA07201; Fri, 20 Jun 1997 12:49:18 -0700
-From: ariel@oz.engr.sgi.com (Ariel Faigon)
-Message-Id: <199706201949.MAA07201@oz.engr.sgi.com>
-Subject: Re: Linux or IRIX on O2s
-To: sca@refugee.engr.sgi.com (Steve Alexander)
-Date: Fri, 20 Jun 1997 12:49:18 -0700 (PDT)
-Cc: davem@jenolan.rutgers.edu, lm@neteng.engr.sgi.com,
-        carlson@heaven.newport.sgi.com, linux@cthulhu.engr.sgi.com
-In-Reply-To: <199706200839.BAA09420@refugee.engr.sgi.com> from "Steve Alexander" at Jun 20, 97 01:39:35 am
-Reply-To: ariel@sgi.com (Ariel Faigon)
-Organization: Silicon Graphics Inc.
-X-Mailer: ELM [version 2.4 PL24 ME5a]
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id NAA23993 for linux-list; Fri, 20 Jun 1997 13:16:50 -0700
+Received: from aa5b.engr.sgi.com (aa5b.engr.sgi.com [150.166.36.26]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA23969; Fri, 20 Jun 1997 13:16:46 -0700
+Received: from localhost (nigel@localhost) by aa5b.engr.sgi.com (970321.SGI.8.8.5/950213.SGI.AUTOCF) via SMTP id UAA03555; Fri, 20 Jun 1997 20:16:45 GMT
+Date: Fri, 20 Jun 1997 13:16:45 -0700 (PDT)
+From: Nigel Gamble <nigel@cthulhu.engr.sgi.com>
+To: "David S. Miller" <davem@jenolan.rutgers.edu>
+cc: linux@cthulhu.engr.sgi.com
+Subject: Re: Getting X on Linux/SGI
+In-Reply-To: <199706200917.FAA07966@jenolan.caipgeneral>
+Message-ID: <Pine.SGI.3.96.970620125702.3690A-100000@aa5b.engr.sgi.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-:
-:"David S. Miller" <davem@jenolan.rutgers.edu> writes:
-:>Don't get me wrong, I was constantly reminded what keeps the lights on
-:>in bldg. 9 when I was there last summer, but when and if Linux begins
-:>to do some (not all) of that "enabling", people might begin to
-:>perceive the situation a bit differently.
-:
-:Don't get me wrong.  I'm not opposed to Linux on SGI.  In fact, I'm in favor
-:of it, at least on some set of systems.  I don't believe that Linux on 64P
-:O2000s makes a lot of sense yet, but I think it would be nice to have Linux
-:running on O200s and Indys.
-:
-:Personally, I wouldn't buy an O2 to run Linux.
-:
-:-- Steve
-:
-Knowing Steve, I believe he meant:
+On Fri, 20 Jun 1997, David S. Miller wrote:
+> He was given QNX to write his drivers and get the box going.  Since it
+> is a micro-kernel, you have to perform a task switch to handle even an
+> interrupt, and you have to compile your interrupt handlers with a
+> special compiler and compiler options using QNX compilers just to cope
+> with this bullshit.  This was on both systems.
+> 
+> Interrupt response was so slow, that even when he coded the drivers in
+> raw optimized assembly he could not keep up and would drop characters
+> easily on his serial ports, the ISDN performance sucked balls as well.
+> 
+> So eddie got so frustrated one night that he took both the m68k and
+> Intel ports of Linux, in about an hour added kernel build time
+> configuration options such as "CONFIG_NO_MEMORY_MANAGEMENT",
+> "CONFIG_NO_FANCY_SYSCALLS", "CONFIG_NO_USELESS_FEATURES" and the like
+> to the point where he was able to get a 120k sized Linux kernel with
+> his drivers and the specialized code to run the control systems he
+> needed to deploy, and he got full over the serial line KGDB source
+> level debugging of his kernel as well.
+> 
+> The next night he got it completely working and debugged, needless to
+> say this thing didn't have the interrupt performance problems QNX
+> did.  The next evening he blew the first revisions of the PROM's the
+> boxes would eventually use in production when these things got sent
+> to the customers.
 
-	I wouldn't buy an O2 to run Linux _today_.
+This tells me more about this guy's determination to use Linux, come
+what may, than it does about QNX.  If he'd put half the effort into
+learning the QNX device driver model that he did into hacking Linux,
+I bet he could have solved his problem with QNX.  I certainly could.
 
-Neither would I, because the current value of an O2 is in that big
-software chunk that can actually make it work and useful.
-IRIX/gfx/Xsgi/digital-media etc.
+When I first implemented a version of the Linux parallel port
+printer driver that used interrupts (because the polling driver was
+only printing one line every 30 seconds on my old dot-matrix printer),
+I discovered that my driver couldn't send characters fast enough
+to keep up with a laser printer.  Does this imply that Linux's
+(non-threaded) interrupt performance sucked?  No, it just meant that
+my naive first attempt was taking an interrupt for every character.
 
-In fact Linux wouldn't even run on an O2 today so the question is moot.
 
-But, if I would have the choice of a fully functional Linux with graphics
-and OpenGL, VRML 2.0 viewer etc. etc.  I would prefer the openness
-of Linux over IRIX.  The compelling reasons why people move in droves
-to Linux were expressed very eloquently by David, Mike, Todd Shrider,
-and others.  I would sum it up as the "formidable advantage of free
-software and complete openness over proprietary models."
-
-The lack of this insight is what made IBM lose its dominance in the
-industry in the early 90s, what nearly killed Apple in recent years,
-and in 15 years, it is my belief (and hope), it is what will kill MS
-(Intel is much closer).
-
-SGI/MIPS has a great opportunity with its dominance in the low-end
-embedded market (19.2 m units in 1996 and by far the highest growth
-rates) to open up and we are somehow seeding this change.  What
-is not obvious to many will become more and more obvious with time.
-
---
-Peace, Ariel
+Nigel Gamble       "Are we going to push the edge of the envelope, Brain?"
+Silicon Graphics   "No, Pinky, but we may get to the sticky part."
+nigel@sgi.com
+(415) 933-3109

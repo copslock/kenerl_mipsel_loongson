@@ -1,31 +1,27 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6AGegk30794
-	for linux-mips-outgoing; Tue, 10 Jul 2001 09:40:42 -0700
-Received: from pltn13.pbi.net (mta7.pltn13.pbi.net [64.164.98.8])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6AGeeV30790
-	for <linux-mips@oss.sgi.com>; Tue, 10 Jul 2001 09:40:41 -0700
-Received: from pacbell.net ([63.194.214.47])
- by mta7.pltn13.pbi.net (iPlanet Messaging Server 5.1 (built May  7 2001))
- with ESMTP id <0GG9002D6NNLJM@mta7.pltn13.pbi.net> for linux-mips@oss.sgi.com;
- Tue, 10 Jul 2001 09:40:34 -0700 (PDT)
-Date: Tue, 10 Jul 2001 09:39:02 -0700
-From: Pete Popov <ppopov@pacbell.net>
-Subject: Re: MIPS Cross Compiler Tools
+	by oss.sgi.com (8.11.2/8.11.3) id f6AGkUZ30952
+	for linux-mips-outgoing; Tue, 10 Jul 2001 09:46:30 -0700
+Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6AGkTV30949
+	for <linux-mips@oss.sgi.com>; Tue, 10 Jul 2001 09:46:29 -0700
+Received: by ocean.lucon.org (Postfix, from userid 1000)
+	id B2644125BA; Tue, 10 Jul 2001 09:46:27 -0700 (PDT)
+Date: Tue, 10 Jul 2001 09:46:27 -0700
+From: "H . J . Lu" <hjl@lucon.org>
 To: Marc Karasek <marc_karasek@ivivity.com>
 Cc: "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
-Reply-to: ppopov@pacbell.net
-Message-id: <3B4B2FA6.4080508@pacbell.net>
-MIME-version: 1.0
-Content-type: text/plain; format=flowed; charset=us-ascii
-Content-transfer-encoding: 7bit
-X-Accept-Language: en-us
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.2) Gecko/20010628
+Subject: Re: MIPS Cross Compiler Tools
+Message-ID: <20010710094627.D19026@lucon.org>
 References: <25369470B6F0D41194820002B328BDD27D22@ATLOPS>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <25369470B6F0D41194820002B328BDD27D22@ATLOPS>; from marc_karasek@ivivity.com on Tue, Jul 10, 2001 at 12:27:43PM -0400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Marc Karasek wrote:
-
+On Tue, Jul 10, 2001 at 12:27:43PM -0400, Marc Karasek wrote:
 > I had a question about the cross compiler tools for MIPS, specifically
 > glibc.  I d/l the rpms from oss.sgi.com,  but they are only binutils, and
 > the compiler (C, C++).  
@@ -34,10 +30,23 @@ Marc Karasek wrote:
 > completely from scratch?  As glibc is needed to compile anything else other
 > than the kernel. 
 
-Friday or Monday MontaVista should have the HHL2.0 Journeyman mips 
-release on the ftp site which will include the userland apps, cross AND 
-native tools, etc.  The tools and glibc are very up to date. I would 
-suggest checking Monday for the release and using that instead of 
-building your own.
+My RedHat 7.1 release on oss.sgi.com has the complete cross toolchain:
 
-Pete
+
+
+H.J.
+-----
+My mini-port of RedHat 7.1 is at
+
+ftp://oss.sgi.com/pub/linux/mips/redhat/7.1/
+
+you should be able to put a small RedHat 7.1 on the mips/mipsel box and
+compile the rest of RedHat 7.1 yourselves.
+
+Here are something you should know:
+
+1. The cross compiler hosted on RedHat 7.1/ia32 is provided as a
+toolchain rpm. The binary rpms for the mips and mipsel cross compilers
+are included.
+2. You have to find a way to put those rpms on your machine. I use
+network boot and NFS root to do it.

@@ -1,43 +1,47 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id DAA73073 for <linux-archive@neteng.engr.sgi.com>; Wed, 3 Dec 1997 03:47:54 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id KAA106120 for <linux-archive@neteng.engr.sgi.com>; Wed, 3 Dec 1997 10:06:47 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id DAA19348 for linux-list; Wed, 3 Dec 1997 03:42:44 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id DAA19338 for <linux@engr.sgi.com>; Wed, 3 Dec 1997 03:42:38 -0800
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id DAA29587
-	for <linux@engr.sgi.com>; Wed, 3 Dec 1997 03:42:37 -0800
-	env-from (ralf@mailhost.uni-koblenz.de)
-Received: from zaphod (ralf@zaphod.uni-koblenz.de [141.26.4.13])
-	by informatik.uni-koblenz.de (8.8.8/8.8.8) with SMTP id MAA15922
-	for <linux@engr.sgi.com>; Wed, 3 Dec 1997 12:42:35 +0100 (MET)
-Received: by zaphod (SMI-8.6/KO-2.0)
-	id MAA17997; Wed, 3 Dec 1997 12:42:33 +0100
-Message-ID: <19971203124232.10294@zaphod.uni-koblenz.de>
-Date: Wed, 3 Dec 1997 12:42:32 +0100
-From: Ralf Baechle <ralf@uni-koblenz.de>
-To: linux@cthulhu.engr.sgi.com
-Subject: libc
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id KAA28757 for linux-list; Wed, 3 Dec 1997 10:05:45 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA28714; Wed, 3 Dec 1997 10:05:36 -0800
+Received: from home.axess.net (usr-14.syr.axess.net [205.247.138.214]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id KAA29720; Wed, 3 Dec 1997 10:05:27 -0800
+	env-from (delznic@acm.org)
+Received: from win95.axess.net ([192.168.4.69])
+	by home.axess.net (8.8.5/8.8.5) with SMTP id NAA01695;
+	Wed, 3 Dec 1997 13:04:47 -0500
+Message-Id: <3.0.2.32.19971203130453.006e8f68@192.168.4.20>
+X-Sender: delznic@192.168.4.20
+X-Mailer: QUALCOMM Windows Eudora Light Version 3.0.2 (32)
+Date: Wed, 03 Dec 1997 13:04:53 -0500
+To: cypher <cypher@vertigo.cs.indiana.edu>
+From: "Douglas F. Elznic" <delznic@acm.org>
+Subject: Re: Linux on the O2
+Cc: Ariel Faigon <ariel@cthulhu.engr.sgi.com>,
+        Ralf Baechle <ralf@uni-koblenz.de>, linux@cthulhu.engr.sgi.com
+In-Reply-To: <Pine.LNX.3.95.971203132942.15095B-100000@vertigo.cs.indian
+ a.edu>
+References: <3.0.2.32.19971202205146.006bfe54@192.168.4.20>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.84e
+Content-Type: text/plain; charset="us-ascii"
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi all,
+At 01:31 PM 12/3/97 -0500, cypher wrote:
+>
+>Speaking of the N64,
+>
+>There now exists an emulator for it. Now if one were to port the kernel to
+>the emulator and then burn that to a rom.... hmmm
+>
+>I guess you would at least want the 8mb memory upgrade, but 4mb would be a
+>nice enough for an embeded linux.
+>
+What are the specs on Sun's javastation? They can not be a whole lot
+greater that the N64.
 
-it turned out that the libc bugs I was still observing were produced
-due to the libc install process failing in a subtile way.  So the
-sources are ok.  Now that this problem is gone the RPM factory has
-been restarted.
-
-Be careful: I still observe occasional disk corruption.  Fsck is your
-friend :-(  I suspect the console driver is the cause as it also has
-some other misterious "properties".  For some reason the system's
-performance is extremly bad.  Crosscompiling libc on IRIX takes about
-90 minutes using a R4600/133Mhz.  Using a R5000 under Linux takes more
-than four times as much.  Again I suspect the console driver as the
-cause.
-
-Since the load address for the program interpreter is no longer fixed
-in the kernel also directly calling ld.so like during the libc build or
-in ldd fails.  Easy to fix.
-
-  Ralf
+--
+Douglas F. Elznic
+Email:
+delznic@acm.org
+Pager:
+3154492502.2423685@pagenet.net
+"The tree of liberty must be refreshed from time to time with the blood of
+patriots and tyrants."

@@ -1,36 +1,57 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9PHdPV20727
-	for linux-mips-outgoing; Thu, 25 Oct 2001 10:39:25 -0700
-Received: from www.transvirtual.com (root@www.transvirtual.com [206.14.214.140])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9PHdKD20719;
-	Thu, 25 Oct 2001 10:39:20 -0700
-Received: from www.transvirtual.com (jsimmons@localhost [127.0.0.1])
-        by localhost (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f9PHdHE0012136;
-	Thu, 25 Oct 2001 10:39:17 -0700
-Received: from localhost (jsimmons@localhost)
-        by www.transvirtual.com (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f9PHdHNG012132;
-	Thu, 25 Oct 2001 10:39:17 -0700
-X-Authentication-Warning: www.transvirtual.com: jsimmons owned process doing -bs
-Date: Thu, 25 Oct 2001 10:39:17 -0700 (PDT)
-From: James Simmons <jsimmons@transvirtual.com>
+	by oss.sgi.com (8.11.2/8.11.3) id f9PIxui27903
+	for linux-mips-outgoing; Thu, 25 Oct 2001 11:59:56 -0700
+Received: from ns.snowman.net (ns.snowman.net [63.80.4.34])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9PIxlD27899;
+	Thu, 25 Oct 2001 11:59:47 -0700
+Received: from localhost (nick@localhost)
+	by ns.snowman.net (8.9.3/8.9.3/Debian 8.9.3-21) with ESMTP id OAA18616;
+	Thu, 25 Oct 2001 14:59:41 -0400
+Date: Thu, 25 Oct 2001 14:59:41 -0400 (EDT)
+From: <nick@snowman.net>
+X-Sender: nick@ns
 To: Ralf Baechle <ralf@oss.sgi.com>
-cc: linux-mips@oss.sgi.com
-Subject: Compile issues
-In-Reply-To: <Pine.LNX.4.10.10110251019420.8950-100000@transvirtual.com>
-Message-ID: <Pine.LNX.4.10.10110251038060.8950-100000@transvirtual.com>
+cc: Lukas Hejtmanek <xhejtman@mail.muni.cz>, linux-mips@oss.sgi.com
+Subject: Re: Origin 200
+In-Reply-To: <20011025121450.A1644@dea.linux-mips.net>
+Message-ID: <Pine.LNX.4.21.0110251458380.2654-100000@ns>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+I didn't notice any huge differences.  My ASIC HUB ran at a different
+speed, 120mhz IIRC.  I will try to aquire a single proc module for my
+o200.  Lukas: Can I get a copy of your boot messages under linux?
+	Thanks
+		Nick
 
-I get the following errors when compiling. It barfs at mips/kernel/setup.c.
-I would send you a patch but I don't know what values you want to set
-these to. 
+On Thu, 25 Oct 2001, Ralf Baechle wrote:
 
-setup.c: In function `cpu_probe':
-setup.c:246: `PRID_REV_TX3927B' undeclared (first use in this function)
-setup.c:246: (Each undeclared identifier is reported only once
-setup.c:246: for each function it appears in.)
-setup.c:256: `PRID_REV_TX39H3TEG' undeclared (first use in this function)
-setup.c:275: `PRID_IMP_TX49' undeclared (first use in this function)
+> On Thu, Oct 25, 2001 at 10:33:33AM +0200, Lukas Hejtmanek wrote:
+> 
+> > On Wed, Oct 24, 2001 at 08:23:00PM -0400, nick@snowman.net wrote:
+> > > Getting it running 64bit shouldn't be *too* bad, however there are some
+> > > revs of some chips on the MB which linux currently can't deal with, and
+> > > noone is quite sure 1. what revs, 2. why, or 3. anything
+> > > usefull. <Grin>.  Could you send a hinv -v from the prom?  Boot logs would
+> > > also be usefull (so I can tell if we are haveing the exact same problem,
+> > > or just similar ones)
+> > 
+> > >> hinv -v
+> > IP27 Node Board, Module 1, Slot MotherBoard
+> >     ASIC HUB Rev 3, 90 MHz, (nasid 0)
+> [...]
+> 
+> Pretty much a standard Origin.  I suspect the problem might be related to
+> machines which only have a single physical CPU, that was the only common
+> thing between all the Origins on which Linux fails.  And indeed I don't
+> think we ever used such a small configuration for testing at SGI ...
+> 
+> Nick, did you observe any interesting differences to your failing Origin
+> configuration?
+> 
+> Btw, Origin UP kernel is definately broken ...
+> 
+>   Ralf
+> 

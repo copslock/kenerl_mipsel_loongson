@@ -1,61 +1,61 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA14165; Wed, 9 Apr 1997 11:50:49 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA21413; Wed, 9 Apr 1997 00:31:33 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA15347 for linux-list; Wed, 9 Apr 1997 11:50:15 -0700
-Received: from yon.engr.sgi.com (yon.engr.sgi.com [150.166.61.32]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA15323; Wed, 9 Apr 1997 11:50:11 -0700
-Received: (from ariel@localhost) by yon.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA21442; Wed, 9 Apr 1997 11:46:07 -0700
-From: ariel@yon.engr.sgi.com (Ariel Faigon)
-Message-Id: <199704091846.LAA21442@yon.engr.sgi.com>
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id AAA18875 for linux-list; Wed, 9 Apr 1997 00:30:28 -0700
+Received: from soyuz.wellington.sgi.com (soyuz.wellington.sgi.com [134.14.64.194]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA18859 for <linux@cthulhu.engr.sgi.com>; Wed, 9 Apr 1997 00:30:21 -0700
+Received: from windy.wellington.sgi.com by soyuz.wellington.sgi.com via ESMTP (940816.SGI.8.6.9/940406.SGI)
+	 id TAA06677; Wed, 9 Apr 1997 19:30:16 +1200
+Received: (alambie@localhost) by windy.wellington.sgi.com (950413.SGI.8.6.12/8.6.9) id TAA10080; Wed, 9 Apr 1997 19:30:15 +1200
+From: "Alistair Lambie" <alambie@wellington.sgi.com>
+Message-Id: <9704091930.ZM10078@windy.wellington.sgi.com>
+Date: Wed, 9 Apr 1997 19:30:15 +0000
+In-Reply-To: Martin Knoblauch <knobi@munich.sgi.com>
+        "Re: init=/bin/sh and serial devices" (Apr  9,  7:07pm)
+References: <199704090209.WAA06281@neon.ingenia.ca> 
+	<9704091424.ZM9048@windy.wellington.sgi.com> 
+	<334B3FF5.41C6@munich.sgi.com>
+X-Mailer: Z-Mail (3.2.3 08feb96 MediaMail)
+To: Martin Knoblauch <knobi@munich.sgi.com>
 Subject: Re: init=/bin/sh and serial devices
-To: adevries@engsoc.carleton.ca (Alex deVries)
-Date: Wed, 9 Apr 1997 11:46:07 -0700 (PDT)
-Cc: alambie@wellington.sgi.com, shaver@neon.ingenia.ca,
-        linux@cthulhu.engr.sgi.com
-In-Reply-To: <Pine.LNX.3.95.970408235053.28353A-100000@lager.engsoc.carleton.ca> from "Alex deVries" at Apr 9, 97 00:29:32 am
-Reply-To: ariel@cthulhu.engr.sgi.com (Ariel Faigon)
-Organization: Silicon Graphics Inc.
-X-Mailer: ELM [version 2.4 PL24 ME5a]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Cc: linux@cthulhu.engr.sgi.com
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-:
-:-----BEGIN PGP SIGNED MESSAGE-----
-:
-:
-:On Wed, 9 Apr 1997, Alistair Lambie wrote:
-:> On Apr 9,  2:12pm, Mike Shaver wrote:
-:> > stdin in /dev/cua1, FWIW.
-:> >
-:> 
-:> Does your Indy not have a 'head' on it....why are you using the serial ports..
-:
-:The machine we're working on, bogomips, is in Ottawa, Canada.  Mike's on
-:business in Mountainview, California.  Joshua "boot boy" Lamorie handles
-:the hardboots, and I offer petty advice from Boston, watching Mike use
-:minicom in a ytalk session through a serial connection.  Odd, but it
-:works.
-:
-:Does anyone know the the status of gcc for sgi-linux?  I understand the
-:cross compiler between Irix and sgi-linux is operational.  How about a
-:native compiler?  I'm keen on porting a ton of RPM's...
-:
-:- - Alex
-:
-:<()       Alex deVries
-: |_\_ System Administrator
-:  ^^   The EngSoc Project
-:
-:
+On Apr 9,  7:07pm, Martin Knoblauch wrote:
+> Subject: Re: init=/bin/sh and serial devices
+> Alistair Lambie wrote:
+> >
+> > On Apr 9,  2:12pm, Mike Shaver wrote:
+> > > Subject: init=/bin/sh and serial devices
+> > > Wierd stuff here.
+> > > We've got it mountinng the NFS partition and running /bin/sh, but we
+> > > can't type anything to it at that point.
+> > > It's kinda weird, because we see the `#' prompt, but stuff I type to
+> > > it isn't registering.
+> > >
+> > > stdin in /dev/cua1, FWIW.
+> > >
+> >
+> > Does your Indy not have a 'head' on it....why are you using
+> > the serial ports..
+> >
+>
+>  this brings up the question: do we already have drivers for
+> the textport? Not to speak of an X-Server? How are we (SGI)
+> going to handle this? As far as I know we never published
+> the hardware dependent parts on the X11 distribution, did we?
+>
 
-This is one of the things that weren't done and we want to get done
-by the Linux/SGI developers.  I believe that Miguel is one of the
-best people to make this happen.  If we can just get his Indy R5000
-out of the bureaucratic mess.  Miguel's Indy was shipped three weeks
-ago to Mexico and requires a "special permit for used equipment" by
-the Mexican customs to be provided by the SGI Mexico City office)
+We already have drivers for 'textport'....well actually it takes over the whole
+screen with a font that allows something like 132x80 from what I remeber.  This
+has VC support so you can do the usual Alt-F1 etc like on a PC based linux box.
+ No work has been done on the X-Server yet.
 
-I hope Miguel will send us some good news soon.
+Cheers, Alistair
+
 -- 
-Peace, Ariel
+Alistair Lambie					    alambie@wellington.sgi.com
+Silicon Graphics New Zealand				  SGI Voicemail: 56791
+Level 5, Walsh Wrightson Tower,				    Ph: +64-4-802 1455
+94-96 Dixon St, Wellington, NZ			  	   Fax: +64-4-802 1459

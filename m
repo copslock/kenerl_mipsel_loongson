@@ -1,64 +1,51 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id CAA58028 for <linux-archive@neteng.engr.sgi.com>; Sun, 2 Aug 1998 02:59:41 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA38062 for <linux-archive@neteng.engr.sgi.com>; Mon, 3 Aug 1998 14:31:41 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id CAA09558
+	id OAA27052
 	for linux-list;
-	Sun, 2 Aug 1998 02:59:15 -0700 (PDT)
+	Mon, 3 Aug 1998 14:30:51 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id CAA84502
+	via ESMTP id OAA45278
 	for <linux@cthulhu.engr.sgi.com>;
-	Sun, 2 Aug 1998 02:59:13 -0700 (PDT)
-	mail_from (ralf@mailhost.uni-koblenz.de)
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) 
+	Mon, 3 Aug 1998 14:30:49 -0700 (PDT)
+	mail_from (adevries@engsoc.carleton.ca)
+Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) 
 	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id CAA10531
-	for <linux@cthulhu.engr.sgi.com>; Sun, 2 Aug 1998 02:59:11 -0700 (PDT)
-	mail_from (ralf@mailhost.uni-koblenz.de)
-Received: from thoma (ralf@thoma.uni-koblenz.de [141.26.4.61])
-	by informatik.uni-koblenz.de (8.8.8/8.8.8) with SMTP id LAA09727;
-	Sun, 2 Aug 1998 11:59:06 +0200 (MEST)
-Received: by thoma (SMI-8.6/KO-2.0)
-	id LAA03870; Sun, 2 Aug 1998 11:59:05 +0200
-Message-ID: <19980802115905.12081@uni-koblenz.de>
-Date: Sun, 2 Aug 1998 11:59:05 +0200
-From: ralf@uni-koblenz.de
-To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: Alex deVries <adevries@engsoc.carleton.ca>, linux@cthulhu.engr.sgi.com
-Subject: Re: FYI newport abscon
-References: <19980802022907.05519@alpha.franken.de> <Pine.LNX.3.95.980802003721.4859A-100000@lager.engsoc.carleton.ca> <19980802112712.38261@alpha.franken.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.84e
-In-Reply-To: <19980802112712.38261@alpha.franken.de>; from Thomas Bogendoerfer on Sun, Aug 02, 1998 at 11:27:12AM +0200
+	via ESMTP id OAA09918
+	for <linux@cthulhu.engr.sgi.com>; Mon, 3 Aug 1998 14:30:39 -0700 (PDT)
+	mail_from (adevries@engsoc.carleton.ca)
+Received: from localhost (adevries@localhost)
+	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id RAA09375
+	for <linux@cthulhu.engr.sgi.com>; Mon, 3 Aug 1998 17:30:31 -0400
+X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
+Date: Mon, 3 Aug 1998 17:30:30 -0400 (EDT)
+From: Alex deVries <adevries@engsoc.carleton.ca>
+To: SGI Linux <linux@cthulhu.engr.sgi.com>
+Subject: Hard hat is no more...
+Message-ID: <Pine.LNX.3.95.980803172658.28338A-100000@lager.engsoc.carleton.ca>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Sun, Aug 02, 1998 at 11:27:12AM +0200, Thomas Bogendoerfer wrote:
 
-> yes, and that's my primary goal. The closer we get to the current 2.1.x
-> kernel, the better we can merge our changes into Linus tree. And this is
-> the best thing to let people see, that the MIPS port is still alive.
+I've been informed by the powers that be that "Hard Hat" CDs are from now
+on going to be called "Rough Cuts", sinc ethe original name is too close
+to "Red Hat", and ldilutes the Red Hat trade mark.
 
->From the next week on I'll spend allmost all my time again on Linux, so
-if there it is possible to convince Linux to accept our patches, then we
-can make it.
+To me, Rough Cuts sounds like the perfect title for a pornographic film,
+but hey, who am I to talk?
 
-> > Well, this is very cool.  What kind of use is this?  aalib... man, that'll
-> > be neat.  To hell with X when you have aalib.
-> 
-> :-) As I only speeded up scrolling time, it won't make any difference for
-> aalib. But sitting in front of a fast console you get the impression, that
-> the machine flys:-)
+Anyway, let's not change the WWW pages or anything until the CD is out.
 
-How true.  Also the old console is very buggy.  When using the driver for
-the Linux console aa plain doesn't work.
+- Alex
 
-(And who says one needs stinking X for c0o/_ D3m0z ;-)
-
-  Ralf
+-- 
+Alex deVries, puffin on LinuxNet.
+http://www.engsoc.carleton.ca/~adevries/ .

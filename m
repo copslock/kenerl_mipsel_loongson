@@ -1,72 +1,64 @@
-Received:  by oss.sgi.com id <S305174AbQDNNc3>;
-	Fri, 14 Apr 2000 06:32:29 -0700
-Received: from deliverator.sgi.com ([204.94.214.10]:25182 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305159AbQDNNcU>;
-	Fri, 14 Apr 2000 06:32:20 -0700
-Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id GAA24884; Fri, 14 Apr 2000 06:27:36 -0700 (PDT)
+Received:  by oss.sgi.com id <S305167AbQDPV1H>;
+	Sun, 16 Apr 2000 14:27:07 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:58981 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305163AbQDPV04>;
+	Sun, 16 Apr 2000 14:26:56 -0700
+Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id OAA06720; Sun, 16 Apr 2000 14:22:11 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id GAA60175
+	id OAA25487
 	for linux-list;
-	Fri, 14 Apr 2000 06:07:52 -0700 (PDT)
+	Sun, 16 Apr 2000 14:07:42 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id GAA57178
+	via ESMTP id OAA79520
 	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 14 Apr 2000 06:07:49 -0700 (PDT)
-	mail_from (geert@linux-m68k.org)
-Received: from styx.cs.kuleuven.ac.be (styx.cs.kuleuven.ac.be [134.58.40.3]) 
+	Sun, 16 Apr 2000 14:07:39 -0700 (PDT)
+	mail_from (engel@math.uni-siegen.de)
+Received: from jordan.numerik.math.uni-siegen.de (jordan.numerik.math.uni-siegen.de [141.99.112.9]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id GAA08466
-	for <linux@cthulhu.engr.sgi.com>; Fri, 14 Apr 2000 06:07:48 -0700 (PDT)
-	mail_from (geert@linux-m68k.org)
-Received: from cassiopeia.home (root@dialup006.cs.kuleuven.ac.be [134.58.47.135])
-	by styx.cs.kuleuven.ac.be (8.9.3/8.9.3) with ESMTP id PAA09979;
-	Fri, 14 Apr 2000 15:07:20 +0200 (MET DST)
-Received: from localhost (geert@localhost)
-	by cassiopeia.home (8.9.3/8.9.3/Debian/GNU) with ESMTP id OAA00471;
-	Fri, 14 Apr 2000 14:48:42 +0200
-X-Authentication-Warning: cassiopeia.home: geert owned process doing -bs
-Date:   Fri, 14 Apr 2000 14:48:42 +0200 (CEST)
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     Florian Lohoff <flo@rfc822.org>
-cc:     linux@cthulhu.engr.sgi.com, linux-kernel@vger.rutgers.edu
-Subject: Re: sgiserial.c / rs_init invoke ?
-In-Reply-To: <20000412201829.A451@paradigm.rfc822.org>
-Message-ID: <Pine.LNX.4.10.10004141447350.433-100000@cassiopeia.home>
+	via ESMTP id OAA02627
+	for <linux@cthulhu.engr.sgi.com>; Sun, 16 Apr 2000 14:07:38 -0700 (PDT)
+	mail_from (engel@math.uni-siegen.de)
+Received: (from engel@localhost) by jordan.numerik.math.uni-siegen.de (Mailhost) id XAA02036 for linux@cthulhu.engr.sgi.com; Sun, 16 Apr 2000 23:12:02 +0200 (MET DST)
+From:   Michael Engel <engel@math.uni-siegen.de>
+Message-Id: <200004162112.XAA02036@jordan.numerik.math.uni-siegen.de>
+Subject: Indigo R3000 PROM calls /
+To:     linux@cthulhu.engr.sgi.com
+Date:   Sun, 16 Apr 2000 23:12:02 +0200 (MET DST)
+X-Mailer: ELM [version 2.5 PL2]
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On Wed, 12 Apr 2000, Florian Lohoff wrote:
-> i am currently digging deeper into sgiserial.c and friends.
-> My problem right now is that i dont understand when and how the
-> rs_init should and will be called - Currently i have an
-> __initcall(rs_init) in arch/mips/sgi/kernel/setup.c which is definitly
-> wrong - But should this be invoked - I cant find how i386 does this
-> (Could somebody enlighten me what module_init(rs_init) in
-> drivers/char/serial.c does ?)
 
-module_init(rs_init) == __initcall(rs_init)
+Hi,
 
-Both add rs_init() to the list (read: array) of functions to be called during
-initialization.
+I had some time over the weekend and started to hack on Linux for my
+good old R3000 Indigo (oh yeah, I should better try to write drivers
+for the PMAG-F and the FDDI adapter in my DECstations but Indigo 
+hacking seemed to be more fun ;-)). I can load the kernel from sash 
+and it actually starts at kernel_entry (whow) and - no wonder - crashes 
+somewhere in init_arch (because I didn't change anything there ...).
 
-Gr{oetje,eeting}s,
+Now, it would of course be nice to have some kind of debugging output
+early on. Does anyone know if the R3k Indigo has the same ARCS console 
+semantics as the Indy ? I.e. there is a PROMBLOCK struct at address 
+0xa0001000 (as defined in include/asm-mips/sgiarcs.h) which points to 
+romvec which I can then use to dereference PROM functions ? Or is it 
+something completely different ? 
 
-						Geert
+Of course, if someone unexpectedly finds some Indigo R3k hardware docs 
+somewhere, I'd appreciate it ;).
 
---
-Geert Uytterhoeven -- Linux/{m68k~Amiga,PPC~CHRP} -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+Best regards,
+	Michael Engel	(engel@unix-ag.org)

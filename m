@@ -1,48 +1,43 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9J0vaZ10382
-	for linux-mips-outgoing; Thu, 18 Oct 2001 17:57:36 -0700
-Received: from [64.152.86.3] (unknown.Level3.net [64.152.86.3] (may be forged))
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9J0vXD10379
-	for <linux-mips@oss.sgi.com>; Thu, 18 Oct 2001 17:57:33 -0700
-Received: from mail.esstech.com by [64.152.86.3]
-          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 19 Oct 2001 00:59:07 UT
-Received: from bud.austin.esstech.com ([193.5.206.3])
-	by mail.esstech.com (8.8.8+Sun/8.8.8) with SMTP id RAA24872
-	for <linux-mips@oss.sgi.com>; Thu, 18 Oct 2001 17:56:05 -0700 (PDT)
-Received: from esstech.com by bud.austin.esstech.com (SMI-8.6/SMI-SVR4)
-	id TAA24559; Thu, 18 Oct 2001 19:55:18 -0500
-Message-ID: <3BCF7AD2.2000000@esstech.com>
-Date: Thu, 18 Oct 2001 19:58:58 -0500
-From: Gerald Champagne <gerald.champagne@esstech.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.5) Gecko/20011012
-X-Accept-Language: en-us
-MIME-Version: 1.0
-To: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Moving kernel_entry to LOADADDR
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
+	by oss.sgi.com (8.11.2/8.11.3) id f9J1DRd10693
+	for linux-mips-outgoing; Thu, 18 Oct 2001 18:13:27 -0700
+Received: from idiom.com (espin@idiom.com [216.240.32.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9J1DPD10689
+	for <linux-mips@oss.sgi.com>; Thu, 18 Oct 2001 18:13:25 -0700
+Received: (from espin@localhost)
+	by idiom.com (8.9.3/8.9.3) id SAA64191;
+	Thu, 18 Oct 2001 18:13:22 -0700 (PDT)
+Date: Thu, 18 Oct 2001 18:13:22 -0700
+From: Geoffrey Espin <espin@idiom.com>
+To: Gerald Champagne <gerald.champagne@esstech.com>
+Cc: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Re: Moving kernel_entry to LOADADDR
+Message-ID: <20011018181322.B56244@idiom.com>
+References: <3BCF7AD2.2000000@esstech.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.95.1i
+In-Reply-To: <3BCF7AD2.2000000@esstech.com>; from Gerald Champagne on Thu, Oct 18, 2001 at 07:58:58PM -0500
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I'm planning to work with a very minimal boot loader, and I'd like
-to hard-code a jump to kernel_entry in my boot loader.  I got tired
-of having kernel_entry moving around, so I just moved it to the top
-of head.S, just afte the ".fill 0x280".  That places kernel_entry at
-the same place every time.  It's always at LOADADDR+0x280.
+Gerald,
 
-But wait a minute... the 0x280 is there to leave room for the exception
-vectors.  Doesn't that only make sense if LOADADDR=0x80000000?  Isn't
-this allocating the space for the exception vectors twice?  Why not
-remove the .fill, then the kernel entry point will always be exactly
-LOADADDR?  This would break any configuration that has LOADADDR=0x80000000,
-but the only configuration like that is CONFIG_ALGOR_P4032, and that could
-easily be modified to LOADADDR=0x80000280 to get the same effect.
+> to hard-code a jump to kernel_entry in my boot loader.  I got tired
+> of having kernel_entry moving around, so I just moved it to the top
+> of head.S, just afte the ".fill 0x280".  That places kernel_entry at
+> the same place every time.  It's always at LOADADDR+0x280.
 
-I also removed the .fill, and now kernel_entry is always exactly LOADADDR,
-and that makes my bootloader easier to maintain.
+Don't know about all .fill & exception vecs... the trick I use in
+my (vr)boot loader...
 
-Is this worth changing in cvs, or did I miss something?
+KERNEL_ENTRY=$(shell awk '/kernel_entry/{print "0x" $$1}' $(LINUX_SRC)/System.map)
+CFLAGS+=-DKERNEL_ENTRY=$(KERNEL_ENTRY)
 
-Thanks.
+And compile boot.S or whatever your bootloader is.
 
-Gerald
+But a fixed, well-known offset can't be a bad thing either.
+
+Geoff
+-- 
+Geoffrey Espin espin@idiom.com

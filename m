@@ -1,39 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Dec 2004 16:32:52 +0000 (GMT)
-Received: from the-doors.enix.org ([IPv6:::ffff:62.210.169.120]:13021 "EHLO
-	the-doors.enix.org") by linux-mips.org with ESMTP
-	id <S8225272AbUL0Qcr>; Mon, 27 Dec 2004 16:32:47 +0000
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	by the-doors.enix.org (Postfix) with ESMTP id 68380400D3
-	for <linux-mips@linux-mips.org>; Mon, 27 Dec 2004 17:32:51 +0100 (CET)
-Message-ID: <41D039BB.3030202@enix.org>
-Date: Mon, 27 Dec 2004 17:35:07 +0100
-From: Thomas Petazzoni <thomas.petazzoni@enix.org>
-User-Agent: Mozilla Thunderbird 0.8 (X11/20040926)
-X-Accept-Language: fr, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Dec 2004 22:11:47 +0000 (GMT)
+Received: from mother.pmc-sierra.com ([IPv6:::ffff:216.241.224.12]:22525 "HELO
+	mother.pmc-sierra.bc.ca") by linux-mips.org with SMTP
+	id <S8225273AbUL0WLl>; Mon, 27 Dec 2004 22:11:41 +0000
+Received: (qmail 9089 invoked by uid 101); 27 Dec 2004 22:11:22 -0000
+Received: from unknown (HELO ogmios.pmc-sierra.bc.ca) (216.241.226.59)
+  by mother.pmc-sierra.com with SMTP; 27 Dec 2004 22:11:22 -0000
+Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
+	by ogmios.pmc-sierra.bc.ca (8.12.9/8.12.7) with ESMTP id iBRMBGJv029866;
+	Mon, 27 Dec 2004 14:11:21 -0800
+Received: by bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca with Internet Mail Service (5.5.2656.59)
+	id <YS6FFDQ9>; Mon, 27 Dec 2004 14:11:15 -0800
+Message-ID: <04781D450CFF604A9628C8107A62FCCF013DDAE4@sjc1exm01.pmc_nt.nt.pmc-sierra.bc.ca>
+From: Brad Larson <Brad_Larson@pmc-sierra.com>
+To: "'Thomas Petazzoni'" <thomas.petazzoni@enix.org>,
+	linux-mips@linux-mips.org
+Subject: RE: Some cache questions
+Date: Mon, 27 Dec 2004 14:11:15 -0800
 MIME-Version: 1.0
-To: linux-mips@linux-mips.org
-Subject: Some cache questions
-X-Enigmail-Version: 0.86.1.0
-X-Enigmail-Supports: pgp-inline, pgp-mime
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="------------enig9003D6FB7C21635BAA229BB4"
-Return-Path: <thomas.petazzoni@enix.org>
+X-Mailer: Internet Mail Service (5.5.2656.59)
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Return-Path: <Brad_Larson@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6771
+X-archive-position: 6772
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas.petazzoni@enix.org
+X-original-sender: Brad_Larson@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---------------enig9003D6FB7C21635BAA229BB4
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+You haven't mentioned which board.  If its Yosemite then you may have one of the few not upgraded to 1.2 silicon.  If so it won't work with the changes committed by Ralf which requires the shared state for SMP boot.  For further discussion contact the apps@pmc-sierra.com
+
+--Brad
+
+-----Original Message-----
+From: linux-mips-bounce@linux-mips.org
+[mailto:linux-mips-bounce@linux-mips.org]On Behalf Of Thomas Petazzoni
+Sent: Monday, December 27, 2004 8:35 AM
+To: linux-mips@linux-mips.org
+Subject: Some cache questions
+
 
 Hello,
 
@@ -63,19 +72,3 @@ PETAZZONI Thomas - thomas.petazzoni@enix.org
 http://thomas.enix.org - Jabber: thomas.petazzoni@jabber.dk
 http://kos.enix.org, http://sos.enix.org
 Fingerprint : 0BE1 4CF3 CEA4 AC9D CC6E  1624 F653 CB30 98D3 F7A7
-
---------------enig9003D6FB7C21635BAA229BB4
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.4 (GNU/Linux)
-Comment: Using GnuPG with Thunderbird - http://enigmail.mozdev.org
-
-iD8DBQFB0Dm79lPLMJjT96cRAvoKAJ0dVfqFyrGPQVXy/KNd2h/paJ/xegCgo38W
-ajSIAS77TEUdgdQhjPLpOF8=
-=LuPp
------END PGP SIGNATURE-----
-
---------------enig9003D6FB7C21635BAA229BB4--

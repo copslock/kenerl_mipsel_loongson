@@ -1,54 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Mar 2003 16:03:07 +0000 (GMT)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:50109
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8225203AbTCRQDG>; Tue, 18 Mar 2003 16:03:06 +0000
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp (Exim 3.36 #2)
-	id 18vJYO-001y95-00; Tue, 18 Mar 2003 17:03:04 +0100
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 18vJYN-0003EG-00; Tue, 18 Mar 2003 17:03:03 +0100
-Date: Tue, 18 Mar 2003 17:03:03 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Mar 2003 17:43:00 +0000 (GMT)
+Received: from mta9-0.mail.adelphia.net ([IPv6:::ffff:64.8.50.199]:17634 "EHLO
+	mta9.adelphia.net") by linux-mips.org with ESMTP
+	id <S8225203AbTCRRm7>; Tue, 18 Mar 2003 17:42:59 +0000
+Received: from there ([24.51.55.15]) by mta6.adelphia.net
+          (InterMail vM.5.01.05.27 201-253-122-126-127-20021220) with SMTP
+          id <20030318172414.MLZJ7686.mta6.adelphia.net@there>
+          for <linux-mips@linux-mips.org>; Tue, 18 Mar 2003 12:24:14 -0500
+Content-Type: text/plain;
+  charset="iso-8859-1"
+From: Neurophyre <listbox@evernex.com>
 To: linux-mips@linux-mips.org
-Cc: Guido Guenther <agx@sigxcpu.org>
-Subject: Re: -mcpu vs. binutils 2.13.90.0.18
-Message-ID: <20030318160303.GN13122@rembrandt.csv.ica.uni-stuttgart.de>
-References: <20030318154155.GF2613@bogon.ms20.nix>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20030318154155.GF2613@bogon.ms20.nix>
-User-Agent: Mutt/1.4i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+Subject: 2.4.20 SCSI problems on NASRaQ
+Date: Tue, 18 Mar 2003 12:24:10 -0500
+X-Mailer: KMail [version 1.3.2]
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Message-Id: <20030318172414.MLZJ7686.mta6.adelphia.net@there>
+Return-Path: <listbox@evernex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1764
+X-archive-position: 1765
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: listbox@evernex.com
 Precedence: bulk
 X-list: linux-mips
 
-Guido Guenther wrote:
-> Hi,
-> it seems newer binutils doen't know about -mcpu anymore. Is it correct
-> to simply change:
->  -mcpu=r5000 -mips2 -Wa,--trap
-> to
->  -mtune=r5000 -mips2 -Wa,--trap
+Hello all.  I'm trying to get Debian 3.0r1 working usefully on a
+MIPS-based Seagate (Cobalt) NASRaQ.  The system uses the same processor
+as the Qube 2 and has an integrated 53c860 SCSI controller, which would
+appear to be supported by no fewer than three kernel drivers!
 
-On newer toolchains this will select r6000 opcodes with r5000 scheduling.
+I'm compiling the kernel source available at
+ftp://ftp.linux-mips.org/pub/linux/mips/kernel/test/linux-2.4.20.tar.gz
+WITH Paul Martin's tulip and PCIfun patches applied.  I should mention
+that the stock 2.4.20 source with the debian kernel-patch-2.4-cobalt
+package applied to it presented numerous problems and I had to give up.
 
-Try
-   -mabi=o32 -march=r5000 -Wa,--trap
-This may fail if the compiler is very old, though.
+The problem is that upon boot (or module installation), I get similar
+messages from all three SCSI drivers.
 
-> for IP22? -mips2 conflicts with -march=r5000 since this implies -mips4.
+Examples:
 
-This was fixed in very recent gcc. -mips2 should be an alias for -march=r6000
-and -mips4 one for -march=r8000.
+sym.0.8.0: IO region 0x10102000[0..127] is in use
+or
+ncr53c8xx: IO region 0x10102000[0..127] is in use
 
+On boot, the boot process just goes on, but no 'scsi0 blah blah'
+printout occurs, and nothing is printed about a tape drive I have
+attached to the machine for testing.
 
-Thiemo
+When installing as a module (only tested with sym53c8xx driver) the
+module installation fails and a message like above is printed to the
+serial console.
+
+Doing a 'cat /proc/scsi/scsi' yields
+
+Attached devices: none
+
+no matter what.
+
+Does anyone have any suggestions?  We'd really like to modernize the
+NASRaQ and still be able to use its SCSI port.

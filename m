@@ -1,39 +1,37 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g2A6VfP18982
-	for linux-mips-outgoing; Sat, 9 Mar 2002 22:31:41 -0800
-Received: from real.realitydiluted.com (real.realitydiluted.com [208.242.241.164])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2A6Vc918979
-	for <linux-mips@oss.sgi.com>; Sat, 9 Mar 2002 22:31:38 -0800
-Received: from localhost.localdomain ([127.0.0.1] helo=cotw.com)
-	by real.realitydiluted.com with esmtp (Exim 3.22 #1 (Red Hat Linux))
-	id 16jvve-0005Fd-00; Sat, 09 Mar 2002 23:31:30 -0600
-Message-ID: <3C8AEF8F.21DB96B9@cotw.com>
-Date: Sat, 09 Mar 2002 23:30:55 -0600
-From: "Steven J. Hill" <sjhill@cotw.com>
-Reply-To: sjhill@cotw.com
-X-Mailer: Mozilla 4.77 [en] (X11; U; Linux 2.4.17-xfs i686)
-X-Accept-Language: en
+	by oss.sgi.com (8.11.2/8.11.3) id g2ACGZB25701
+	for linux-mips-outgoing; Sun, 10 Mar 2002 04:16:35 -0800
+Received: from hlubocky.del.cz (hlubocky.del.cz [212.27.221.67])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2ACGV925696
+	for <linux-mips@oss.sgi.com>; Sun, 10 Mar 2002 04:16:32 -0800
+Received: from ladis (helo=localhost)
+	by hlubocky.del.cz with local-esmtp (Exim 3.12 #1 (Debian))
+	id 16k1JL-0002KT-00; Sun, 10 Mar 2002 12:16:19 +0100
+Date: Sun, 10 Mar 2002 12:16:19 +0100 (CET)
+From: Ladislav Michl <ladislav.michl@hlubocky.del.cz>
+To: =?iso-8859-1?q?Nicolas=20Sauzede?= <nsauzede@yahoo.com>
+cc: linux-mips@oss.sgi.com
+Subject: Re: XL8 => XL24
+In-Reply-To: <20020308172453.53229.qmail@web13008.mail.yahoo.com>
+Message-ID: <Pine.LNX.4.21.0203101200480.8613-100000@hlubocky.del.cz>
 MIME-Version: 1.0
-To: Pete Popov <ppopov@mvista.com>
-CC: linux-mips <linux-mips@oss.sgi.com>
-Subject: Re: xfs
-References: <1015611727.12994.441.camel@zeus>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Pete Popov wrote:
-> 
-> I see on SGI's web site that XFS is supported only on x86 and IA64. Has
-> anyone tried it on mips?
-> 
-Oh most definitely. I've been using it on my NEC 5432 platform for almost
-a year now, little endian. Works great. I've compiled the Linux/MIPS 2.4.x
-kernel with toolchains based on latest binutils, gcc-3.0.x, gcc-3.1 and
-glibc-2.2.3 and glibc-2.2.5 combinations.
+On Fri, 8 Mar 2002, Nicolas Sauzede wrote:
 
--Steve
+> Sorry this is not related to linux, but does anyone know if it's
+> possible to (in hardware) modify an Indy shipped with XL8 graphics to
+> XL24 ??
 
--- 
- Steven J. Hill - Embedded SW Engineer
+Newport graphics is sloted GIO device, so it is easy to replace it.
+
+> (I mean, does one just have to replace one chip by another)
+
+one card by another... in fact 8bit version of newport differs only in
+amount of memory. printed circuit board is the same, so in theory adding
+memory should be all you have to do. (is anyone able to lend me 24bit
+version of Newport to do juxtaposition?)
+
+	ladis

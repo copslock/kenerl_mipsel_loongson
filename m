@@ -1,45 +1,61 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA08773; Wed, 28 May 1997 12:21:32 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA09376; Wed, 28 May 1997 12:25:15 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id MAA21327 for linux-list; Wed, 28 May 1997 12:21:22 -0700
-Received: from yon.engr.sgi.com (yon.engr.sgi.com [150.166.61.32]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA21307 for <linux@cthulhu.engr.sgi.com>; Wed, 28 May 1997 12:21:18 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by yon.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA11767 for <linux@yon.engr.sgi.com>; Wed, 28 May 1997 12:21:17 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA21271; Wed, 28 May 1997 12:21:15 -0700
-Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id MAA09227; Wed, 28 May 1997 12:21:10 -0700
-	env-from (shaver@neon.ingenia.ca)
-Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id PAA31653; Wed, 28 May 1997 15:19:04 -0400
-From: Mike Shaver <shaver@neon.ingenia.ca>
-Message-Id: <199705281919.PAA31653@neon.ingenia.ca>
-Subject: Re: hardware independent hinv
-In-Reply-To: <199705281912.MAA06609@neteng.engr.sgi.com> from Larry McVoy at "May 28, 97 12:12:22 pm"
-To: lm@neteng.engr.sgi.com (Larry McVoy)
-Date: Wed, 28 May 1997 15:19:04 -0400 (EDT)
-Cc: ariel@sgi.com, linux@yon.engr.sgi.com, olson@anchor.engr.sgi.com,
-        scotth@sgi.com, swmgr@swmgr.engr.sgi.com, breyer@swmgr.engr.sgi.com
-X-Mailer: ELM [version 2.4ME+ PL28 (25)]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id MAA22396 for linux-list; Wed, 28 May 1997 12:24:53 -0700
+Received: from yon.engr.sgi.com (yon.engr.sgi.com [150.166.61.32]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA22337 for <linux@cthulhu.engr.sgi.com>; Wed, 28 May 1997 12:24:46 -0700
+Received: from neteng.engr.sgi.com (gate5-neteng.engr.sgi.com [150.166.61.33]) by yon.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA11809 for <linux@yon.engr.sgi.com>; Wed, 28 May 1997 12:24:45 -0700
+Received: from localhost (lm@localhost) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via SMTP id MAA09260; Wed, 28 May 1997 12:24:36 -0700
+Message-Id: <199705281924.MAA09260@neteng.engr.sgi.com>
+To: miguel@nuclecu.unam.mx, shaver@neon.ingenia.ca, linux@yon.engr.sgi.com
+Cc: kenmcd@gonzo.melbourne.sgi.com
+Subject: nifty tools on Linux/IRIX
+Date: Wed, 28 May 1997 12:24:36 -0700
+From: Larry McVoy <lm@neteng.engr.sgi.com>
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Thus spake Larry McVoy:
-> : Just forwarding since it sounds someone hopes that Linux/MIPS
-> : will some day have a HW independent hinv... - Ariel
-> 
-> Here's my first pass at it.  It certainly isn't complete but it is a 
-> start.  We could evolve Linux' /proc to fully handle this.
+Miguel asked about cool tools.  Talk to Ken, he's the man.
 
-What about a perl (SGI::?)Hinv:: module that would get hinv data from the
-appropriate source?  I've been thinking about a clean perl interface
-to /proc for a while, and I assume the data's there for the taking on
-the Irixen as well, if you know where to look.  (open("hinv|") is all
-else fails.)
+------- Forwarded Message
 
-Mike
+Date:    Fri, 23 May 1997 05:20:54 -0500
+From:    "Ken McDonell" <kenmcd@gonzo.melbourne.sgi.com>
+To:      ptg@melbourne.sgi.com
+cc:      lm@cthulhu
+Subject: scary ... irix and linux exchange simple PCP PDUs
 
--- 
-#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
-#>                 Ignore the man behind the curtain.                  
-#>                                                                     
-#> "And then I realized that it never should have worked in the first  
-#>  place.  Thus, it would not work again until rewritten." --- Anon.  
+After minor brain-failure on my part, we have success at exchanging
+the PDU headers (with no translation for the PDU body).
+
+linux -> linux -> linux
+
+[guest@linux pcp]$ ./pdu-client -D1 -h linux.engr.sgi.com 12345
+pdu-client: PID 12334
+pdu-client: connected fd=3
+[12334]pmXmitPDU: DATA_X fd=3 len=16
+000:       10     700b     302e 12345678 
+[12334]pmGetPDU: DATA_X fd=3 len=16 from=12329 moreinput? no
+000:       10     700b     3029 12345678 
+
+linux -> irix -> linux
+
+[guest@linux pcp]$ ./pdu-client -D1 -h bozo.melbourne.sgi.com 12345
+pdu-client: PID 12333
+pdu-client: connected fd=3
+[12333]pmXmitPDU: DATA_X fd=3 len=16
+000:       10     700b     302d 12345678 
+[12333]pmGetPDU: DATA_X fd=3 len=16 from=29807 moreinput? no
+000:       10     700b     746f 12345678 
+
+irix -> linux -> irix
+
+bozo 8% ./pdu-client -D1 -h linux.engr.sgi.com 12345
+pdu-client: PID 29821
+pdu-client: connected fd=3
+[29821]pmXmitPDU: DATA_X fd=3 len=16
+000:       10     700b     747d 12345678 
+[29821]pmGetPDU: DATA_X fd=3 len=16 from=12329 moreinput? no
+000:       10     700b     3029 12345678 
+
+Now moving onto the translation of the PDU body for each PDU type.
+
+------- End of Forwarded Message

@@ -1,47 +1,41 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f5PBqCx28796
-	for linux-mips-outgoing; Mon, 25 Jun 2001 04:52:12 -0700
-Received: from t111.niisi.ras.ru (IDENT:root@t111.niisi.ras.ru [193.232.173.111])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5PBqBV28793
-	for <linux-mips@oss.sgi.com>; Mon, 25 Jun 2001 04:52:11 -0700
+	by oss.sgi.com (8.11.2/8.11.3) id f5PC2OO29189
+	for linux-mips-outgoing; Mon, 25 Jun 2001 05:02:24 -0700
+Received: from t111.niisi.ras.ru (t111.niisi.ras.ru [193.232.173.111])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5PC2LV29186
+	for <linux-mips@oss.sgi.com>; Mon, 25 Jun 2001 05:02:23 -0700
 Received: from t06.niisi.ras.ru (t06.niisi.ras.ru [193.232.173.6])
-	by t111.niisi.ras.ru (8.9.1/8.9.1) with ESMTP id PAA01899;
-	Mon, 25 Jun 2001 15:52:32 +0400
-Received: (from uucp@localhost) by t06.niisi.ras.ru (8.7.6/8.7.3) with UUCP id PAA23375; Mon, 25 Jun 2001 15:43:21 +0400
-Received: from niisi.msk.ru (t34 [193.232.173.34]) by niisi.msk.ru (8.8.8/8.8.8) with ESMTP id PAA18194; Mon, 25 Jun 2001 15:45:36 +0400 (MSD)
-Message-ID: <3B372893.7EB21D8C@niisi.msk.ru>
-Date: Mon, 25 Jun 2001 16:03:31 +0400
+	by t111.niisi.ras.ru (8.9.1/8.9.1) with ESMTP id QAA02013;
+	Mon, 25 Jun 2001 16:02:32 +0400
+Received: (from uucp@localhost) by t06.niisi.ras.ru (8.7.6/8.7.3) with UUCP id PAA23418; Mon, 25 Jun 2001 15:55:51 +0400
+Received: from niisi.msk.ru (t34 [193.232.173.34]) by niisi.msk.ru (8.8.8/8.8.8) with ESMTP id PAA18618; Mon, 25 Jun 2001 15:59:51 +0400 (MSD)
+Message-ID: <3B372BE8.C9B3D08F@niisi.msk.ru>
+Date: Mon, 25 Jun 2001 16:17:44 +0400
 From: "Gleb O. Raiko" <raiko@niisi.msk.ru>
 Organization: NIISI RAN
 X-Mailer: Mozilla 4.77 [en] (WinNT; U)
 X-Accept-Language: en,ru
 MIME-Version: 1.0
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-CC: Ralf Baechle <ralf@uni-koblenz.de>, linux-mips@oss.sgi.com
-Subject: Re: Bug in memmove
-References: <Pine.GSO.3.96.1010622200059.18677C-100000@delta.ds2.pg.gda.pl>
-Content-Type: text/plain; charset=koi8-r
-Content-Transfer-Encoding: 7bit
+To: =?iso-8859-1?Q?=C1=B6=BE=E7=C8=AF?= <joey@medialincs.com>
+CC: linux-mips@oss.sgi.com
+Subject: Re: SanDisk flash memory 16M
+References: <200106250104.KAA00397@intranet.medialincs.com>
+Content-Type: text/plain; charset=iso-8859-1
+X-MIME-Autoconverted: from 8bit to quoted-printable by t111.niisi.ras.ru id QAA02013
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id f5PC2NV29187
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Maciej,
-
-"Maciej W. Rozycki" wrote:
+Á¶¾çÈ¯ wrote:
 > 
->  Ralf, I think it should get applied unless someone cooks up a better
-> solution, i.e. optimizes it.  I'll optimize it myself, eventually, if no
-> one else does, but don't hold your breath.
+> anyone have experience SanDisk flash memory porting?
+> I finded driver for Intel & AMD driver, but this flash device
+> is not documented..
 > 
-Great! Optimized memmove is in todos of several MIPS developers.
-Considering your patch and my investigation though, it's not
-showstopper. In fact, there are a few places that call memmove, all of
-them aren't on "common path". However, I would consider that common path
-certainly depends on the way Linux is used. I may imagine the
-configuration where the bug may trigger.
+> and CFI is not ported on Big Endian machine?
 
-Perhaps, eliminating that known "horror fix" (you know) is more
-important.
+Indeed. Check MTD cvs.
 
 Regards,
 Gleb.

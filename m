@@ -1,42 +1,49 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA16123; Sun, 25 May 1997 09:18:03 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA16200; Mon, 26 May 1997 00:49:38 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id JAA18323 for linux-list; Sun, 25 May 1997 09:16:45 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA18309 for <linux@engr.sgi.com>; Sun, 25 May 1997 09:16:37 -0700
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id JAA10205
-	for <linux@engr.sgi.com>; Sun, 25 May 1997 09:16:31 -0700
-	env-from (ralf@informatik.uni-koblenz.de)
-Received: from thoma (ralf@thoma.uni-koblenz.de [141.26.4.61]) by informatik.uni-koblenz.de (8.8.5/8.6.9) with SMTP id SAA24974; Sun, 25 May 1997 18:12:40 +0200 (MEST)
-From: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
-Message-Id: <199705251612.SAA24974@informatik.uni-koblenz.de>
-Received: by thoma (SMI-8.6/KO-2.0)
-	id SAA24302; Sun, 25 May 1997 18:12:39 +0200
-Subject: Cross-GCC for IRIX 6.2
-To: linux-mips@fnet.fr
-Date: Sun, 25 May 1997 18:12:38 +0200 (MET DST)
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id AAA18885 for linux-list; Mon, 26 May 1997 00:48:11 -0700
+Received: from sgiger.munich.sgi.com (sgiger.munich.sgi.com [144.253.192.2]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA18861 for <linux@cthulhu.engr.sgi.com>; Mon, 26 May 1997 00:48:07 -0700
+Received: from knobi.munich.sgi.com by sgiger.munich.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1502/940406.SGI)
+	 id JAA03869; Mon, 26 May 1997 09:48:04 +0200
+Received: from knobi (localhost [127.0.0.1]) by knobi.munich.sgi.com (950413.SGI.8.6.12/951220.SGI.AUTOCF.knobi) via SMTP id JAA11186; Mon, 26 May 1997 09:48:01 +0200
+Message-ID: <33894031.446B@munich.sgi.com>
+Date: Mon, 26 May 1997 09:48:01 +0200
+From: Martin Knoblauch <knobi@munich.sgi.com>
+Organization: Silicon Graphics GmbH, Am-Hochacker 3, D-85630 Grasbrunn
+X-Mailer: Mozilla 3.01SC-SGI (X11; I; IRIX 6.3 IP22)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+To: Mike Shaver <shaver@neon.ingenia.ca>
+CC: linux@cthulhu.engr.sgi.com
+Subject: Re: small world
+References: <199705221913.PAA15629@neon.ingenia.ca>
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
------BEGIN PGP SIGNED MESSAGE-----
+Mike Shaver wrote:
+> 
+> 
+> Also, I'm going to be in San Jose the week of the SGI Developers'
+> Forum, and the SGI Canada guys may be sponsoring my attendance.  Will
+> any of this list's denizens be around?  I'd love to put faces to the
+> names...
+> 
+> Mike
+>
 
-Hi,
+ I'll definitely be there. Maybe we can have some kind of Linux
+meeting around the event.
 
-I've uploaded cross-compiler binaries for IRIX 6.2 to ftp.fnet.fr and
-kernel.panic.julia.de.
-
-  Ralf
-
-d27482ba58b2543d4bda756b180da1d1  mips-linux/gcc-2.7.2-4.tar.gz
-ce3e8931cef63ef4c87e2c78acddff2b  mipsel-linux/gcc-2.7.2-4.tar.gz
-
------BEGIN PGP SIGNATURE-----
-Version: 2.6.2
-
-iQCVAgUBM4hk9Eckbl6vezDBAQEM6AP+I7SauhXfxrDxXedHht6uAGnIG06e1bbS
-/6xKlIJl0Hj689LWudZ5/+U4zsC8v/cy0RlKG/A3N/qN7BOViYQMTfB/yqlS1oLE
-LjAggWgQkQ6jiigCLNW6SSzO7lqtEBKOmUVmdYB4OgyLTcZKpIDIGfMExqsWYEm9
-C/Tuz6fuaZ8=
-=K/nI
------END PGP SIGNATURE-----
+Martin 
+-- 
+Check out the DevForum 97  !!!! (http://www.sgi.com/Forum97/)
+  If you miss it, you'll never forgive yourself :-)
++---------------------------------+-----------------------------------+
+|Martin Knoblauch                 | Silicon Graphics GmbH             |
+|Manager Technical Marketing      | Am Hochacker 3 - Technopark       |
+|Silicon Graphics Computer Systems| D-85630 Grasbrunn-Neukeferloh, FRG|
+|---------------------------------| Phone: (+int) 89 46108-179 or -0  |
+|http://reality.sgi.com/knobi     | Fax:   (+int) 89 46107-179        |
++---------------------------------+-----------------------------------+
+|e-mail: <knobi@munich.sgi.com>   | VM: 6-333-8197 | M/S: IDE-3150    |
++---------------------------------------------------------------------+

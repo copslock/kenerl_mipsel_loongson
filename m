@@ -1,43 +1,49 @@
-Received:  by oss.sgi.com id <S553836AbRAQTAz>;
-	Wed, 17 Jan 2001 11:00:55 -0800
-Received: from mailout1-0.nyroc.rr.com ([24.92.226.81]:65357 "EHLO
-        mailout1-1.nyroc.rr.com") by oss.sgi.com with ESMTP
-	id <S553688AbRAQTAp>; Wed, 17 Jan 2001 11:00:45 -0800
-Received: from hork (roc-24-161-76-252.rochester.rr.com [24.161.76.252])
-	by mailout1-1.nyroc.rr.com (8.9.3/8.9.3) with ESMTP id NAA01604;
-	Wed, 17 Jan 2001 13:54:36 -0500 (EST)
-Received: from molotov by hork with local (Exim 3.20 #1 (Debian))
-	id 14Ixmk-0002yv-00; Wed, 17 Jan 2001 13:58:18 -0500
-Date:   Wed, 17 Jan 2001 13:58:18 -0500
-To:     "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc:     Ian Chilton <ian@ichilton.co.uk>, linux-mips@oss.sgi.com
+Received:  by oss.sgi.com id <S553712AbRAQTCf>;
+	Wed, 17 Jan 2001 11:02:35 -0800
+Received: from woody.ichilton.co.uk ([216.29.174.40]:60681 "HELO
+        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553910AbRAQTCV>;
+	Wed, 17 Jan 2001 11:02:21 -0800
+Received: by woody.ichilton.co.uk (Postfix, from userid 1000)
+	id 12A397D0E; Wed, 17 Jan 2001 19:02:20 +0000 (GMT)
+Date:   Wed, 17 Jan 2001 19:02:19 +0000
+From:   Ian Chilton <ian@ichilton.co.uk>
+To:     Chris Ruvolo <csr6702@grace.rit.edu>
+Cc:     linux-mips@oss.sgi.com
 Subject: Re: Current CVS (010116) Boots OK
-Message-ID: <20010117135818.B7083@hork>
-Mail-Followup-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-	Ian Chilton <ian@ichilton.co.uk>, linux-mips@oss.sgi.com
-References: <20010116192836.A26863@woody.ichilton.co.uk> <Pine.GSO.3.96.1010116210848.5546Z-100000@delta.ds2.pg.gda.pl>
+Message-ID: <20010117190219.A30315@woody.ichilton.co.uk>
+Reply-To: Ian Chilton <ian@ichilton.co.uk>
+References: <20010116192836.A26863@woody.ichilton.co.uk> <Pine.GSO.3.96.1010116210848.5546Z-100000@delta.ds2.pg.gda.pl> <20010117135818.B7083@hork>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.3.12i
-In-Reply-To: <Pine.GSO.3.96.1010116210848.5546Z-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Tue, Jan 16, 2001 at 09:17:45PM +0100
-From:   Chris Ruvolo <csr6702@grace.rit.edu>
+In-Reply-To: <20010117135818.B7083@hork>; from csr6702@grace.rit.edu on Wed, Jan 17, 2001 at 01:58:18PM -0500
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, Jan 16, 2001 at 09:17:45PM +0100, Maciej W. Rozycki wrote:
-> On Tue, 16 Jan 2001, Ian Chilton wrote:
-> > Memory: 91868k/95716k available (1517k kernel code, 3848k reserved, 84k
-> > data, 6)
-> 
->  Great!  The code works.  Thanks for the report.  Hmm, that "6)" at the
-> end looks weird, though -- there should be something like "xxxk init, 0k
-> highmem)"... 
+Hello,
 
-I belive this is because of the terminal program being used.  It appears to
-not have any kind of line wrap, so characters printed after the 80th
-overwrite the last column of the display.
+> I belive this is because of the terminal program being used.  It appears to
+> not have any kind of line wrap, so characters printed after the 80th
+> overwrite the last column of the display.
 
--Chris
+
+humm..could be minicom, but may be my mailer ?
+
+
+Bye for Now,
+
+Ian
+
+
+                                \|||/ 
+                                (o o)
+ /---------------------------ooO-(_)-Ooo---------------------------\
+ |  Ian Chilton        (IRC Nick - GadgetMan)     ICQ #: 16007717  |
+ |-----------------------------------------------------------------|
+ |  E-Mail: ian@ichilton.co.uk     Web: http://www.ichilton.co.uk  |
+ |-----------------------------------------------------------------|
+ |         Budget: A method for going broke methodically.          |
+ \-----------------------------------------------------------------/

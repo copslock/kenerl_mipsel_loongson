@@ -1,36 +1,37 @@
-Received:  by oss.sgi.com id <S554158AbRBEF0x>;
-	Sun, 4 Feb 2001 21:26:53 -0800
-Received: from c824216-a.stcla1.sfba.home.com ([24.176.212.15]:37108 "EHLO
-        dea.waldorf-gmbh.de") by oss.sgi.com with ESMTP id <S554101AbRBEF0d>;
-	Sun, 4 Feb 2001 21:26:33 -0800
+Received:  by oss.sgi.com id <S554233AbRBEKJE>;
+	Mon, 5 Feb 2001 02:09:04 -0800
+Received: from c824216-a.stcla1.sfba.home.com ([24.176.212.15]:11513 "EHLO
+        dea.waldorf-gmbh.de") by oss.sgi.com with ESMTP id <S554156AbRBEKIp>;
+	Mon, 5 Feb 2001 02:08:45 -0800
 Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f155KNl27723;
-	Sun, 4 Feb 2001 21:20:23 -0800
-Date:   Sun, 4 Feb 2001 21:20:23 -0800
+	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f15A2fM30380;
+	Mon, 5 Feb 2001 02:02:41 -0800
+Date:   Mon, 5 Feb 2001 02:02:41 -0800
 From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Florian Lohoff <flo@rfc822.org>
-Cc:     Kenneth C Barr <kbarr@MIT.EDU>, linux-mips@oss.sgi.com
-Subject: Re: netbooting indy
-Message-ID: <20010204212023.B27490@bacchus.dhis.org>
-References: <Pine.LNX.4.30.0102010926190.20992-100000@springhead.px.uk.com> <Pine.GSO.4.30L.0102012329020.18202-100000@biohazard-cafe.mit.edu> <20010202103607.C18620@paradigm.rfc822.org>
+To:     Carsten Langgaard <carstenl@mips.com>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: Filesystem corruption
+Message-ID: <20010205020241.A30062@bacchus.dhis.org>
+References: <3A781F33.6B28D19C@mips.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <20010202103607.C18620@paradigm.rfc822.org>; from flo@rfc822.org on Fri, Feb 02, 2001 at 10:36:07AM +0100
+In-Reply-To: <3A781F33.6B28D19C@mips.com>; from carstenl@mips.com on Wed, Jan 31, 2001 at 03:20:35PM +0100
 X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Fri, Feb 02, 2001 at 10:36:07AM +0100, Florian Lohoff wrote:
+On Wed, Jan 31, 2001 at 03:20:35PM +0100, Carsten Langgaard wrote:
 
-> > 2.  Similar behavior with 3 different ELF kernel images (hardhat,
-> > vmlinux-indy-2.2.1-990226, and the 2.4.0-test9).  I get the spinning
-> 
-> Ever tried using an ECOFF image ? Some proms cant load elf ..
+> Has anyone seen problems with fsck on the latest 2.4.0 kernel ?
+> My filesystem gets corrupted from time to time when I use the latest
+> 2.4.0 kernel.
 
-If that's the problem the firmware will complain loudly.
+2.4.1 is known to cause fs corruption for all architectures; 2.4.0 should
+actually be fine.  I just reached 8 days of uptime on a 32p Origin 2000,
+so it can't be that bad.
 
   Ralf

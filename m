@@ -1,67 +1,49 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6GDwQRw031496
-	for <linux-mips-outgoing@oss.sgi.com>; Tue, 16 Jul 2002 06:58:26 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6GEDERw031816
+	for <linux-mips-outgoing@oss.sgi.com>; Tue, 16 Jul 2002 07:13:14 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6GDwPbS031495
-	for linux-mips-outgoing; Tue, 16 Jul 2002 06:58:25 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6GEDEDY031815
+	for linux-mips-outgoing; Tue, 16 Jul 2002 07:13:14 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6GDwHRw031480
-	for <linux-mips@oss.sgi.com>; Tue, 16 Jul 2002 06:58:18 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id QAA27700;
-	Tue, 16 Jul 2002 16:03:30 +0200 (MET DST)
-Date: Tue, 16 Jul 2002 16:03:29 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: "Kevin D. Kissell" <kevink@kevink.net>
-cc: Ryan Martindale <ryan@qsicorp.com>, linux-mips@oss.sgi.com
-Subject: Re: fpu woes (TX3912)
-In-Reply-To: <01fa01c22c2a$3011d9c0$10eca8c0@grendel>
-Message-ID: <Pine.GSO.3.96.1020716155539.20654N-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received: from dea.linux-mips.net (shaft17-f125.dialo.tiscali.de [62.246.17.125])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6GED7Rw031805
+	for <linux-mips@oss.sgi.com>; Tue, 16 Jul 2002 07:13:09 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id g6GAaW317905;
+	Tue, 16 Jul 2002 12:36:32 +0200
+Date: Tue, 16 Jul 2002 12:36:32 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Carsten Langgaard <carstenl@mips.com>
+Cc: "H. J. Lu" <hjl@lucon.org>, linux-mips@oss.sgi.com
+Subject: Re: Personality
+Message-ID: <20020716123632.B17038@dea.linux-mips.net>
+References: <3D33DAB2.353A4399@mips.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <3D33DAB2.353A4399@mips.com>; from carstenl@mips.com on Tue, Jul 16, 2002 at 10:34:58AM +0200
+X-Accept-Language: de,en,fr
 X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, 15 Jul 2002, Kevin D. Kissell wrote:
+On Tue, Jul 16, 2002 at 10:34:58AM +0200, Carsten Langgaard wrote:
 
-> The following lines in my copy of the file are:
->                 memcpy((void *)(KSEG0 + 0x80), &except_vec3_generic, 0x80);
->                 break;
+> The include/linux/personality.h file has changed between the 2.4.3 and
+> the 2.4.18 kernel.
+> Now there is a define of personality (#define personality(pers) (pers &
+> PER_MASK), but that breaks things for the users, if they include this
+> file.
+> The user wishes to call the glibc personality function (which do the
+> syscall), and not use the above definition.
 > 
->         case CPU_UNKNOWN:
->         default:
->                 panic("Unknown CPU type");
->         }
->         if (!(mips_cpu.options & MIPS_CPU_FPU)) {
->                 save_fp_context = fpu_emulator_save_context;
->                 restore_fp_context = fpu_emulator_restore_context;
->         }
-> 
-> This should overwrite the fp_context save/restore pointers
-> with those of the emulator.  If that clause doesn't appear
-> in your traps.c file, please try putting it in.
+> So I guess we need a "#ifdef __KERNEL__" around some of the code in
+> include/linux/personality.h (at least around the define of personality),
+> which then has to go into the glibc kernel header files.
 
- It's worded a bit differently in the CVS:
+The general policy about such problems is to not use kernel include files
+from user applications directly.  Hjl - maybe time for <sys/personality.h>?
 
-	case CPU_UNKNOWN:
-	default:
-		panic("Unknown CPU type");
-	}
-
-	flush_icache_range(KSEG0, KSEG0 + 0x400);
-
-	if (mips_cpu.options & MIPS_CPU_FPU) {
-		save_fp_context = _save_fp_context;
-		restore_fp_context = _restore_fp_context;
-	} else {
-		save_fp_context = fpu_emulator_save_context;
-		restore_fp_context = fpu_emulator_restore_context;
-	}
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+  Ralf

@@ -1,56 +1,57 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1LCuZj10282
-	for linux-mips-outgoing; Thu, 21 Feb 2002 04:56:35 -0800
-Received: from topsns.toshiba-tops.co.jp (topsns.toshiba-tops.co.jp [202.230.225.5])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1LCuU910227
-	for <linux-mips@oss.sgi.com>; Thu, 21 Feb 2002 04:56:30 -0800
-Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 21 Feb 2002 11:56:30 UT
-Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP
-	id AE931B46B; Thu, 21 Feb 2002 20:56:28 +0900 (JST)
-Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
-	id UAA70757; Thu, 21 Feb 2002 20:56:28 +0900 (JST)
-Date: Thu, 21 Feb 2002 21:00:52 +0900 (JST)
-Message-Id: <20020221.210052.38718643.nemoto@toshiba-tops.co.jp>
-To: macro@ds2.pg.gda.pl
-Cc: jgg@debian.org, kevink@mips.com, linux-mips@fnet.fr,
-   linux-mips@oss.sgi.com
-Subject: Re: [patch] linux 2.4.17: The second mb() rework (final)
-From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
-In-Reply-To: <Pine.GSO.3.96.1020215203113.29773Q-100000@delta.ds2.pg.gda.pl>
-References: <Pine.LNX.3.96.1020215104857.10921A-100000@wakko.debian.net>
-	<Pine.GSO.3.96.1020215203113.29773Q-100000@delta.ds2.pg.gda.pl>
-X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
-X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
-Organization: TOSHIBA Personal Computer System Corporation
-X-Mailer: Mew version 2.1 on Emacs 20.7 / Mule 4.1 (AOI)
+	by oss.sgi.com (8.11.2/8.11.3) id g1LDWYD02999
+	for linux-mips-outgoing; Thu, 21 Feb 2002 05:32:34 -0800
+Received: from dvmwest.gt.owl.de (dvmwest.gt.owl.de [62.52.24.140])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1LDWS902944
+	for <linux-mips@oss.sgi.com>; Thu, 21 Feb 2002 05:32:29 -0800
+Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
+	id 1B2D89EF2; Thu, 21 Feb 2002 13:32:23 +0100 (CET)
+Date: Thu, 21 Feb 2002 13:32:22 +0100
+From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+To: linux-mips@oss.sgi.com
+Subject: Toolchain question
+Message-ID: <20020221133222.J21530@lug-owl.de>
+Mail-Followup-To: linux-mips@oss.sgi.com
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="k1BdFSKqAqVdu8k/"
+Content-Disposition: inline
+User-Agent: Mutt/1.3.23i
+X-Operating-System: Linux mail 2.4.15-pre2 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
->>>>> On Fri, 15 Feb 2002 20:39:09 +0100 (MET), "Maciej W. Rozycki" <macro@ds2.pg.gda.pl> said:
-macro>  Well, the "classic" MIPS R2020 and R3220 ones would break PCI
-macro> (or actually any I/O) ordering semantics as they return data
-macro> from a posted write upon a hit.  The affected read never
-macro> appears at the I/O bus in that case.  They never reorder writes
-macro> though, as they work as FIFOs (the former is four stage deep
-macro> and the latter is six stage deep), so wmb() may be null for
-macro> them.
 
-macro>  I've read a suggestion a "bc0f" might be needed for the TX39's
-macro> write buffer as a barrier.  That means the buffer behaves as
-macro> the "classic" ones.
+--k1BdFSKqAqVdu8k/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-As I wrote in another mail, TX39's uncached load does NOT return data
-from a write buffer.  Uncached load/store always appears on I/O bus in
-same order.
+Hi!
 
-The problem of TX39's write buffer is that cached load/store operation
-can overtake preceding uncached store operation (even if "SYNC" was
-exist between these operations).
+I'm to build a new toolchain and looked around. There's still the
+cross-all-20010423.tar package on oss.sgi.com. Is it still
+recommened to use this, or am I better off using a current
+CVS co of binutils and gcc?
 
----
-Atsushi Nemoto
+MfG, JBG
+
+--=20
+Jan-Benedict Glaw   .   jbglaw@lug-owl.de   .   +49-172-7608481
+	 -- New APT-Proxy written in shell script --
+	   http://lug-owl.de/~jbglaw/software/ap2/
+
+--k1BdFSKqAqVdu8k/
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.6 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iEYEARECAAYFAjx06NYACgkQHb1edYOZ4bvTJgCeIO1a/Ga3piLcOP0QoLKx90hR
+I9gAnjX91fXMCgpiQPC8o7IFPK9zvKSm
+=kOGN
+-----END PGP SIGNATURE-----
+
+--k1BdFSKqAqVdu8k/--

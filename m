@@ -1,45 +1,89 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7QD6j432188
-	for linux-mips-outgoing; Sun, 26 Aug 2001 06:06:45 -0700
-Received: from dea.linux-mips.net (u-168-18.karlsruhe.ipdial.viaginterkom.de [62.180.18.168])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7QD6fd32183
-	for <linux-mips@oss.sgi.com>; Sun, 26 Aug 2001 06:06:41 -0700
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id f7QD43w15016;
-	Sun, 26 Aug 2001 15:04:03 +0200
-Date: Sun, 26 Aug 2001 15:04:03 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: linux-mips@oss.sgi.com, linux-mips@fnet.fr
-Subject: Re: Patch against ac11
-Message-ID: <20010826150403.A14665@dea.linux-mips.net>
-References: <20010826010933.A8466@dea.linux-mips.net> <20010826024459.A8915@dea.linux-mips.net>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20010826024459.A8915@dea.linux-mips.net>; from ralf@oss.sgi.com on Sun, Aug 26, 2001 at 02:44:59AM +0200
-X-Accept-Language: de,en,fr
+	by oss.sgi.com (8.11.2/8.11.3) id f7QMi3j07996
+	for linux-mips-outgoing; Sun, 26 Aug 2001 15:44:03 -0700
+Received: from mx.mips.com (mx.mips.com [206.31.31.226])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7QMhwd07992
+	for <linux-mips@oss.sgi.com>; Sun, 26 Aug 2001 15:43:59 -0700
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id PAA02272;
+	Sun, 26 Aug 2001 15:43:51 -0700 (PDT)
+Received: from Ulysses (ulysses [192.168.236.13])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id PAA21401;
+	Sun, 26 Aug 2001 15:43:49 -0700 (PDT)
+Message-ID: <005801c12e81$37cc9da0$0deca8c0@Ulysses>
+From: "Kevin D. Kissell" <kevink@mips.com>
+To: "Atsushi Nemoto" <nemoto@toshiba-tops.co.jp>
+Cc: <linux-mips@oss.sgi.com>
+References: <00b701c1275f$0c38a5e0$0deca8c0@Ulysses> <20010821.123113.25481933.nemoto@toshiba-tops.co.jp>
+Subject: Re: FP handling in signal.c and traps.c
+Date: Mon, 27 Aug 2001 00:48:12 +0200
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4133.2400
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sun, Aug 26, 2001 at 02:44:59AM +0200, Ralf Baechle wrote:
+> >>>>> On Fri, 17 Aug 2001 22:56:02 +0200, "Kevin D. Kissell"
+<kevink@mips.com> said:
+> kevink> I attach a diff relative to the current OSS repository for a
+> kevink> proposed patch to fix the signal holes discussed over the past
+> kevink> few days.
+>
+> Thanks for your patch.  I tried this patch and it seems to work fine,
+> but I think still there is a hole in it.
+>
+> After patching it, codes in restore_sigcontext becomes:
+>
+> if (owned_fp) {
+> /* Can't tell if signal handler used FP, must restore */
+> err |= restore_fp_context(sc);
+> } else {
+> if (current == last_task_used_math) {
+> /* Signal handler acquired FPU - give it back */
+> last_task_used_math = NULL;
+> regs->cp0_status &= ~ST0_CU1;
+> if (current->used_math) {
+> /* Undo possible contamination of thread state */
+> restore_thread_fp_context(sc);
+> }
+> }
+> }
+>
+> But this should be:
+>
+> if (owned_fp) {
+> /* Can't tell if signal handler used FP, must restore */
+> err |= restore_fp_context(sc);
+> } else {
+> if (current == last_task_used_math) {
+> /* Signal handler acquired FPU - give it back */
+> last_task_used_math = NULL;
+> regs->cp0_status &= ~ST0_CU1;
+> }
+> if (current->used_math) {
+> /* Undo possible contamination of thread state */
+> restore_thread_fp_context(sc);
+> }
+> }
+>
+> This change fix a hole in case that:
+>
+> - The signaled thread used the FPU but not owns it.
+> - and context switch occur in the signal handler.
+> - and other thread takes the FPU (the signal handler loses the FPU).
+>
+> In this case, last_task_used_math is not current at
+> restore_sigcontext, but we must restore the saved fp context.
 
-> > For those who want to stay on the bleeding edge or maybe just want one of
-> > the features not yet merged into Linus' codebase I've uploaded a patch
-> > against 2.4.8-ac11 to oss.sgi.com:/pub/linux/mips/kernel/ac/.
-> 
-> The patch was generated on a corrupt XFS filesystem which did a few minutes
-> after.  I'll re-create the patch once I finally fixed the fs problem
-> and that looks tricky, IRIX keeps kernel core dumping ...
+I believe you are correct.  The
+"if(current->used_math)restore_thread_fp_context(sc)"
+should be moved out one level of conditional.  I had hoped
+to avoid some needless thread context restores, but it really
+does need to be symmetric with the setup_sigcontext code.
 
-Turned out to be more fun than I initially though, reproducably crashing
-IRIX and corrupting XFS at the price of just one  cvs update command.
-
-The correct patch is 3829168 bytes long and has the following md5sum:
-
-15b4d1c08d981326cf1490f35a810541  linux-2.4.8-ac11-rb1.diff.gz
-
-The patch is meant to be applied on top of the current CVS kernel, not
-on top of ac11.
-
-  Ralf
+            Kevin K.

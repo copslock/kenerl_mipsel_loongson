@@ -1,30 +1,38 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id PAA37465; Wed, 16 Jul 1997 15:25:36 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id KAA05008; Thu, 17 Jul 1997 10:34:13 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA24486 for linux-list; Wed, 16 Jul 1997 15:25:22 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA24476 for <linux@cthulhu.engr.sgi.com>; Wed, 16 Jul 1997 15:25:20 -0700
-Received: from swan.ml.org (eerandy.swan.ac.uk [137.44.4.77]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id PAA09907
-	for <linux@cthulhu.engr.sgi.com>; Wed, 16 Jul 1997 15:25:18 -0700
-	env-from (alan@lxorguk.ukuu.org.uk)
-Received: from lightning.swansea.linux.org.uk (surd [137.44.10.205]) by swan.ml.org (8.7.4/8.7.3) with SMTP id XAA28708; Wed, 16 Jul 1997 23:24:43 +0100
-Received: by lightning.swansea.linux.org.uk (Smail3.1.29.1 #2)
-	id m0wodMS-0005FiC; Thu, 17 Jul 97 00:19 BST
-Message-Id: <m0wodMS-0005FiC@lightning.swansea.linux.org.uk>
-From: alan@lxorguk.ukuu.org.uk (Alan Cox)
-Subject: Re: Wellcome, Alan
-To: ariel@sgi.com
-Date: Thu, 17 Jul 1997 00:19:55 +0100 (BST)
-Cc: linux@cthulhu.engr.sgi.com
-In-Reply-To: <199707162206.PAA08262@oz.engr.sgi.com> from "Ariel Faigon" at Jul 16, 97 03:06:59 pm
-Content-Type: text
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id KAA09528 for linux-list; Thu, 17 Jul 1997 10:33:44 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA09509 for <linux@engr.sgi.com>; Thu, 17 Jul 1997 10:33:42 -0700
+Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id KAA03667
+	for <linux@engr.sgi.com>; Thu, 17 Jul 1997 10:33:38 -0700
+	env-from (shaver@neon.ingenia.ca)
+Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id NAA08651 for linux@engr.sgi.com; Thu, 17 Jul 1997 13:28:44 -0400
+From: Mike Shaver <shaver@neon.ingenia.ca>
+Message-Id: <199707171728.NAA08651@neon.ingenia.ca>
+Subject: strace
+To: linux@cthulhu.engr.sgi.com (Linux/SGI list)
+Date: Thu, 17 Jul 1997 13:28:43 -0400 (EDT)
+X-Mailer: ELM [version 2.4ME+ PL28 (25)]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> mailing list.  To those who don't know Alan, he is almost as
-> famous as Linus himself in the Linux community :-)
+Anyone know what state the strace stuff in the CVS tree is in?
 
-Umm.. not convinced
+I'm seeing some weird behaviour with rpm right now (can't find
+user/group) and I'd like to see what it's actually doing.
 
-Anyway my target is basically to make Red Hat occur on an SGI, including
-hacking up the RH installer as needed to make it do the right thing.
+(Also, remind me to work on fdisk when I get back[*] -- I don't like
+fx very much.)
 
-Alan
+[*] in Sunnyvale Sunday-Wednesday, Mountain View Thursday until 2200.
+
+Mike
+
+-- 
+#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
+#>       Chief System Architect -- Head geek -- System exorcist        
+#>                                                                     
+#>   "Have you considered a life?  I hear they're quite affordable     
+#>          these days." --- shields@tembel.org                        

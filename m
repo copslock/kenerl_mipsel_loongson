@@ -1,42 +1,42 @@
-Received:  by oss.sgi.com id <S553922AbQLAAAW>;
-	Thu, 30 Nov 2000 16:00:22 -0800
+Received:  by oss.sgi.com id <S553923AbQLAADB>;
+	Thu, 30 Nov 2000 16:03:01 -0800
 Received: from u-59-20.karlsruhe.ipdial.viaginterkom.de ([62.180.20.59]:45320
         "EHLO u-59-20.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S553918AbQLAAAC>; Thu, 30 Nov 2000 16:00:02 -0800
-Received: (ralf@lappi) by bacchus.dhis.org id <S869735AbQK3X7m>;
-	Fri, 1 Dec 2000 00:59:42 +0100
-Date:	Fri, 1 Dec 2000 00:59:42 +0100
+	with ESMTP id <S553918AbQLAACx>; Thu, 30 Nov 2000 16:02:53 -0800
+Received: (ralf@lappi) by bacchus.dhis.org id <S869735AbQLAACe>;
+	Fri, 1 Dec 2000 01:02:34 +0100
+Date:	Fri, 1 Dec 2000 01:02:34 +0100
 From:	Ralf Baechle <ralf@oss.sgi.com>
-To:	"Kevin D. Kissell" <kevink@mips.com>
-Cc:	Jesse Dyson <jesse@winston-salem.com>,
-        Klaus Naumann <spock@mgnet.de>, linux-mips@oss.sgi.com
-Subject: Re: Indigo2 Kernel Boots!!!
-Message-ID: <20001201005942.A6172@bacchus.dhis.org>
-References: <Pine.LNX.4.10.10011300938100.6504-100000@mail.netunlimited.net> <00f601c05ae8$19014500$0deca8c0@Ulysses>
+To:	Keith M Wesolowski <wesolows@chem.unr.edu>
+Cc:	Ian Chilton <ian@ichilton.co.uk>,
+        Jesse Dyson <jesse@winston-salem.com>, linux-mips@oss.sgi.com
+Subject: Re: Kernel Boot Hard Locks Indigo 2
+Message-ID: <20001201010234.B6172@bacchus.dhis.org>
+References: <20001129191730.A22085@woody.ichilton.co.uk> <20001129112640.A22235@chem.unr.edu>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 X-Mailer: Mutt 1.0.1i
-In-Reply-To: <00f601c05ae8$19014500$0deca8c0@Ulysses>; from kevink@mips.com on Thu, Nov 30, 2000 at 05:10:32PM +0100
+In-Reply-To: <20001129112640.A22235@chem.unr.edu>; from wesolows@chem.unr.edu on Wed, Nov 29, 2000 at 11:26:40AM -0800
 X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Thu, Nov 30, 2000 at 05:10:32PM +0100, Kevin D. Kissell wrote:
+On Wed, Nov 29, 2000 at 11:26:40AM -0800, Keith M Wesolowski wrote:
 
-> When the init process fires up, it opens /dev/console as the
-> console output device.  A default SGI workstation installation
-> file system will have /dev/console bound to the major/minor device
-> node of the graphics display console.  If you want to run with a serial
-> console, you must therefore change this to bind /dev/console
-> to the serial port.  You can do this by doing an explicit mknod,
-> or by linking to the appropriate serial port device node,
-> which is usually /dev/ttyS0.
+> PROMs older than a certain date (which may be sometime in 1995)
+> require ECOFF kernels because they are incapable of understanding ELF.
+> The symptom is mentioned in the FAQ.  This seems to happen with most
+> if not all Indigo2s and a few older Indys.
+> 
+> > > PROM Monitor SGI Version 5.1 Rev B IP22 Sep 16, 1993 (BE)
+> > 
+> > Not sure, Ralf will be able to tell you what's the score with that..
+> 
+> You need ECOFF.  My Indigo2 has this date also and does not understand
+> ELF.
 
-Which both are wrong.  /dev/console should be a char device major 5, minor 1.
-There is no need to change this ever except for very old kernels.  With 2.2
-or 2.4 whenever people change /dev/console's major/minor it's usually painting
-over some bug.
+Rule of thumb, R5k IP22 can handle ELF, pre-R5k firmware may or may not.
 
   Ralf

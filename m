@@ -1,38 +1,36 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9GIp3v05779
-	for linux-mips-outgoing; Tue, 16 Oct 2001 11:51:03 -0700
-Received: from idiom.com (espin@idiom.com [216.240.32.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9GIp1D05776
-	for <linux-mips@oss.sgi.com>; Tue, 16 Oct 2001 11:51:01 -0700
-Received: (from espin@localhost)
-	by idiom.com (8.9.3/8.9.3) id LAA36984;
-	Tue, 16 Oct 2001 11:50:59 -0700 (PDT)
-Date: Tue, 16 Oct 2001 11:50:59 -0700
-From: Geoffrey Espin <espin@idiom.com>
-To: Pete Popov <ppopov@mvista.com>
-Cc: linux-mips-kernel@lists.sourceforge.net, linux-mips@oss.sgi.com
-Subject: Re: [Linux-mips-kernel]PATCH
-Message-ID: <20011016115059.A29701@idiom.com>
-References: <3BC24525.8030201@mvista.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.1i
-In-Reply-To: <3BC24525.8030201@mvista.com>; from Pete Popov on Mon, Oct 08, 2001 at 05:30:29PM -0700
+	by oss.sgi.com (8.11.2/8.11.3) id f9GK6Oh07305
+	for linux-mips-outgoing; Tue, 16 Oct 2001 13:06:24 -0700
+Received: from ex2k ([209.125.203.85])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9GK6ND07302
+	for <linux-mips@oss.sgi.com>; Tue, 16 Oct 2001 13:06:23 -0700
+Subject: system call fork in  init.
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Date: Tue, 16 Oct 2001 13:02:06 -0700
+Message-ID: <84CE342693F11946B9F54B18C1AB837B14A7CE@ex2k.pcs.psdc.com>
+X-MimeOLE: Produced By Microsoft Exchange V6.0.4712.0
+content-class: urn:content-classes:message
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: system call fork in  init.
+Thread-Index: AcFWfW3Gu3EC1zgvQpWWM40gVJmllw==
+From: "Steven Liu" <stevenliu@psdc.com>
+To: <linux-mips@oss.sgi.com>
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id f9GK6ND07303
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Pete,
+Hi, All:
 
-> I've attached a patch which adds zImage support for the Alchemy pb1000 board. 
-> The image is burned in flash and yamon can be used to just jump to that location 
->... 
-> Feedback would be appreciated, including whether or not arch/mips/zboot is the 
-> most appropriate place to put the zImage support.
+Currently, I am porting Linux 2.2.12 to mips a r3000 CPU. When the init
+program forked a child process and the the scheduler try to run it, the
+child's stack are all zeros. 
 
-It ain't a pretty patch.  I do want to do this for the Korva-Markham
-board... either arch/arm/boot/compressed or arch/ppc/boot scheme
-would be nice to follow.  I think arch/ppc/boot/mbx/Makefile does
-some of the magic offset stuff you need with quick `sh ` scripts
-and also includes piggyback initrd stuff!
+Any one help will be greatly appreciated.
 
-Geoff
+Thanks,
+
+Steven Liu

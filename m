@@ -1,137 +1,83 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8CGvtS13806
-	for linux-mips-outgoing; Wed, 12 Sep 2001 09:57:55 -0700
-Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8CGvle13801
-	for <linux-mips@oss.sgi.com>; Wed, 12 Sep 2001 09:57:47 -0700
-Received: from pacbell.net (zeus.mvista.com [10.0.0.112])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f8CH1OA25418;
-	Wed, 12 Sep 2001 10:01:24 -0700
-Message-ID: <3B9F94C6.90300@pacbell.net>
-Date: Wed, 12 Sep 2001 10:00:54 -0700
-From: Pete Popov <ppopov@pacbell.net>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.3) Gecko/20010801
-X-Accept-Language: en-us
+	by oss.sgi.com (8.11.2/8.11.3) id f8CJnPW17719
+	for linux-mips-outgoing; Wed, 12 Sep 2001 12:49:25 -0700
+Received: from mx.mips.com (mx.mips.com [206.31.31.226])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8CJnLe17714
+	for <linux-mips@oss.sgi.com>; Wed, 12 Sep 2001 12:49:21 -0700
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id MAA01387;
+	Wed, 12 Sep 2001 12:49:09 -0700 (PDT)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id MAA02009;
+	Wed, 12 Sep 2001 12:49:10 -0700 (PDT)
+Received: from mips.com (coppccl [172.17.27.2])
+	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id f8CJn9a25936;
+	Wed, 12 Sep 2001 21:49:10 +0200 (MEST)
+Message-ID: <3B9FBCB3.FDACFE3E@mips.com>
+Date: Wed, 12 Sep 2001 21:51:15 +0200
+From: Carsten Langgaard <carstenl@mips.com>
+Organization: MIPS Technologies
+X-Mailer: Mozilla 4.76 [en] (Windows NT 5.0; U)
+X-Accept-Language: en
 MIME-Version: 1.0
-To: "Sun, Lei" <lsun@3eti.com>
-CC: "'Zhang Fuxin'" <fxzhang@ict.ac.cn>, linux-mips@oss.sgi.com
-Subject: Re: _gp_disp
-References: <32CC5B62AF0BD2119E4C00A0C9663E226F8E29@MAIL>
-Content-Type: text/plain; charset=GB2312
-Content-Transfer-Encoding: 8bit
-X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id f8CGvle13802
+To: Pete Popov <ppopov@pacbell.net>
+CC: linux-mips@oss.sgi.com
+Subject: Re: Update for RedHat 7.1
+References: <20010907230009.A1705@lucon.org> <3B9F21C9.985A1F0F@mips.com> <3B9F319B.E87DC64B@mips.com> <20010912094822.A4491@lucon.org> <3B9F9489.90608@pacbell.net>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Sun, Lei wrote:
-> Hi:
->   Unfortunately, make clean didn't work, the linking problem still sit
-> there!
 
-Do you have a binary image that you're trying to link, such as a ramdisk?
+Pete Popov wrote:
 
-Pete
+> H . J . Lu wrote:
+> > On Wed, Sep 12, 2001 at 11:57:47AM +0200, Carsten Langgaard wrote:
+> >
+> >>Carsten Langgaard wrote:
+> >>
+> >>
+> >>>I have installed your new set of RedHat7.1 RPMs, and tried to build Perl
+> >>>natively.
+> >>>But it fails with the following message:
+> >>>
+> >>>`sh  cflags libperl.a toke.o`  toke.c
+> >>>          CCCMD =  gcc -DPERL_CORE -c -fno-strict-aliasing
+> >>>-I/usr/local/include
+> >>>-O2
+> >>>
+> >>>Cannot allocate 2676168 bytes after allocating 3899765696 bytes
+> >>>make: *** [toke.o] Error 1
+> >>>error: Bad exit status from /var/tmp/rpm-tmp.43439 (%build)
+> >>>
+> >>>RPM build errors:
+> >>>    Bad exit status from /var/tmp/rpm-tmp.43439 (%build)
+> >>>
+> >>>
+> >>I tried to build perl again an now I get this message:
+> >>
+> >>`sh  cflags libperl.a toke.o`  toke.c
+> >>          CCCMD =  gcc -DPERL_CORE -c -fno-strict-aliasing
+> >>-I/usr/local/include -O2
+> >>gcc: Internal error: Terminated (program cc1)
+> >>Please submit a full bug report.
+> >>See <URL:http://bugzilla.redhat.com/bugzilla/> for instructions.
+> >>make: *** [toke.o] Error 1
+> >>error: Bad exit status from /var/tmp/rpm-tmp.53242 (%build)
+> >>
+> >>RPM build errors:
+> >>    Bad exit status from /var/tmp/rpm-tmp.53242 (%build)
+> >>
+> >>
+> >
+> > It may be a kernel/hardware bug. I have no problem building perl
+> > natively.
+>
+> Carsten, what board/cpu are you using?
 
-> 
-> thanks
-> lei 
-> 
-> -----Original Message-----
-> From: Zhang Fuxin [mailto:fxzhang@ict.ac.cn]
-> Sent: Wednesday, September 12, 2001 12:38 PM
-> To: Sun, Lei
-> Cc: linux-mips@oss.sgi.com
-> Subject: Re: RE: _gp_disp
-> 
-> 
-> Sun, Lei£¬ÄúºÃ£¡
-> 
->  I think a make clean will do.
->  You got some .o lurking compiled without the flags
-> 
-> ÔÚ 2001-09-12 11:57:00 ÄúÐ´µÀ£º
-> 
->>Thanks for the kind response.
->>after modified my Makefile according to Pete's suggestion, But I got the
->>following erro when linking
->>/opt/Embedix/tools/mipsel-linux/bin/ld: prism2dl.o: linking PIC files with
->>non-P
->>IC files
->>/opt/Embedix/tools/mipsel-linux/bin/ld: prism2dl.o: uses different e_flags
->>(0x100) fields than previous modules(0x0)
->>Bad value: failed to merge target specific data of file prism2dl.o
->>
->>ANy more input?
->>thank you!
->>lei 
->>
->>-----Original Message-----
->>From: Jun Sun [mailto:jsun@mvista.com]
->>Sent: Monday, September 10, 2001 7:18 PM
->>To: Pete Popov
->>Cc: Sun, Lei; Debian-Mips (E-mail)
->>Subject: Re: _gp_disp
->>
->>
->>Pete Popov wrote:
->>
->>>Sun, Lei wrote:
->>>
->>>>Hi:
->>>>  I was trying to port a wireless lan driver to MIPS based platform
->>>>
-> (IDT
-> 
->>>>79S334), the compilation seems fine, But when I try to load the created
->>>>module, it tells me "unresoved symbol _gp_disp".( I cross-compiled it
->>>>
-> by
-> 
->>>>mipsel-gcc compiler).
->>>>  By doing a quick grep in the driver source, I didn't find the gp_disp
->>>>symbol. My question is where did the _gp_disp come from and how I
->>>>
-> should
-> 
->>>>solve this problem?
->>>>
->>>>Appreciate your help!
->>>>
->>>You did not use the correct gcc options. Add these to your gcc flags and
->>>
->>it
->>
->>>should work (replace -mcpu=<cpu> if you need to):
->>>
->>>-Wall -Wstrict-prototypes -O2 -fomit-frame-pointer -fno-strict-aliasing
->>>
-> -G
-> 
->>0
->>
->>>-mno-abicalls -fno-pic -mcpu=r4600 -mips2 -Wa,--trap -pipe -DMODULE
->>>
->>-mlong-calls
->>
->>>   -DEXPORT_SYMTAB
->>>
->>>
->>I think some of the options might not be necessary, but you definitely need
->>"-DKERNEL"
->>
->>Jun
->>
->>
->>-- 
->>To UNSUBSCRIBE, email to debian-mips-request@lists.debian.org
->>with a subject of "unsubscribe". Trouble? Contact
->>
-> listmaster@lists.debian.org
-> 
->                     ÖÂ
-> Àñ£¡
-> 
->             Zhang Fuxin
->             fxzhang@ict.ac.cn
-> 
-> 
+On a Atlas board with a QED RM5261 CPU (little-endian).
+The kernel is based on 2.4.3.
+
+>
+> Pete

@@ -1,60 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Oct 2004 05:06:56 +0100 (BST)
-Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:37383
-	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
-	id <S8224839AbUJGEGw>; Thu, 7 Oct 2004 05:06:52 +0100
-Received: from newms.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 7 Oct 2004 04:06:50 UT
-Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
-	by newms.toshiba-tops.co.jp (Postfix) with ESMTP
-	id 4373A239E23; Thu,  7 Oct 2004 13:09:29 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id i9746g8G029667;
-	Thu, 7 Oct 2004 13:06:43 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date: Thu, 07 Oct 2004 13:05:38 +0900 (JST)
-Message-Id: <20041007.130538.71082967.nemoto@toshiba-tops.co.jp>
-To: linux-mips@linux-mips.org
-Cc: ralf@linux-mips.org
-Subject: sdc1 $f0 in r4k_switch.S
-From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.2 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Oct 2004 05:11:30 +0100 (BST)
+Received: from [IPv6:::ffff:202.9.170.7] ([IPv6:::ffff:202.9.170.7]:59602 "EHLO
+	trishul.procsys.com") by linux-mips.org with ESMTP
+	id <S8224839AbUJGELZ>; Thu, 7 Oct 2004 05:11:25 +0100
+Received: from [192.168.1.36] ([192.168.1.36])
+	by trishul.procsys.com (8.12.10/8.12.10) with ESMTP id i97476GG025011;
+	Thu, 7 Oct 2004 09:37:06 +0530
+Message-ID: <4164C099.5000503@procsys.com>
+Date: Thu, 07 Oct 2004 09:35:45 +0530
+From: "T. P. Saravanan" <sara@procsys.com>
+User-Agent: Mozilla Thunderbird 0.7.2 (Windows/20040707)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: "T. P. Saravanan" <sara@procsys.com>
+CC: David Daney <ddaney@avtrex.com>, linux-mips@linux-mips.org
+Subject: Re: mips linux glibc-2.3.3 build - Unknown ABI problem
+References: <4160E489.6010503@procsys.com> <41617816.2000608@avtrex.com> <4162634E.3050600@procsys.com> <4163710D.8020009@procsys.com>
+In-Reply-To: <4163710D.8020009@procsys.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+X-ProcSys-Com-Anti-Virus-Mail-Filter-Virus-Found: no
+Return-Path: <sara@procsys.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5967
+X-archive-position: 5968
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: sara@procsys.com
 Precedence: bulk
 X-list: linux-mips
 
-I found a bug in resume() in 2.6 kernel.  $f0 register may not be
-saved on context switch in 64bit kernel.  Here is a quick fix.
+T. P. Saravanan wrote:
 
-Or moving "sdc1 $f0" to fpu_save_16even might be better fix.
+> T. P. Saravanan wrote:
+>
+>> David Daney wrote:
+>>
+>>>> What should I do to fix the build?
+>>>>   
+>>>
+>>>
+>>>
+>>> get the most recent machine-gmon.h from glibc CVS.
+>>>
+>>> You will probably find a problem linking libc at a later step.  But the
+>>> newer machine-gmon.h will fix this problem.
+>>>  
+>>>
+>> OK. That worked.  Thanks a lot.
+>>
+> Oops!  I will take that back. I suspect it is not working.
+>
+> When you said CVS I assumed the one in http://linux-mips/cvsweb/libc.  
+> On closer
+> look it looks very old.  From discussions in another thread I gather 
+> CVS means 
+> http://sources.redhat.com/cgi-bin/cvsweb.cgi/libc/?cvsroot=glibc. 
+> (Correct me
+> if this is wrong.) If I take the machine-gmon.h from here - It still 
+> has the
+> same problem :-(
+>
+Correction Again:  It works.  I got the machine-gmon.h and builds all 
+mixed up.  I did
+a fresh compile and it went past this point.
 
-diff -u linux-mips/arch/mips/kernel/r4k_switch.S linux/arch/mips/kernel/r4k_switch.S
---- linux-mips/arch/mips/kernel/r4k_switch.S	1 Sep 2004 08:03:31 -0000	1.11
-+++ linux/arch/mips/kernel/r4k_switch.S	7 Oct 2004 03:27:56 -0000
-@@ -81,10 +81,10 @@
- #ifdef CONFIG_MIPS64
- 	sll	t2, t0, 5
- 	bgez	t2, 2f
--	sdc1	$f0, (THREAD_FPU + 0x00)(a0)
-         fpu_save_16odd a0
- 2:
-         fpu_save_16even a0 t1                   # clobbers t1
-+	sdc1	$f0, (THREAD_FPU + 0x00)(a0)
- #endif
- 1:
- 
+[Sorry for all the confusion.  I will post more carefully in future.]
 
----
-Atsushi Nemoto
+-Sa.

@@ -1,57 +1,44 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA23490 for <linux-archive@neteng.engr.sgi.com>; Thu, 29 Oct 1998 14:28:31 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA15391 for <linux-archive@neteng.engr.sgi.com>; Thu, 29 Oct 1998 14:32:26 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id OAA85432
+	id OAA03587
 	for linux-list;
-	Thu, 29 Oct 1998 14:27:47 -0800 (PST)
+	Thu, 29 Oct 1998 14:32:03 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id OAA51582
+	via ESMTP id OAA05792
 	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 29 Oct 1998 14:27:45 -0800 (PST)
-	mail_from (ulfc@bun.falkenberg.se)
-Received: from calypso.saturn ([194.236.80.22]) 
+	Thu, 29 Oct 1998 14:32:02 -0800 (PST)
+	mail_from (imp@village.org)
+Received: from rover.village.org (rover.village.org [204.144.255.49]) 
 	by sgi.sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id OAA05636
-	for <linux@cthulhu.engr.sgi.com>; Thu, 29 Oct 1998 14:27:42 -0800 (PST)
-	mail_from (ulfc@bun.falkenberg.se)
-Received: by bun.falkenberg.se
-	via sendmail from stdin
-	id <m0zZ0ZL-000w5GC@calypso.saturn> (Debian Smail3.2.0.101)
-	for linux@cthulhu.engr.sgi.com; Thu, 29 Oct 1998 23:29:27 +0100 (CET) 
-Message-ID: <19981029232927.A1325@zigzegv.ml.org>
-Date: Thu, 29 Oct 1998 23:29:27 +0100
-From: Ulf Carlsson <ulfc@bun.falkenberg.se>
-To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>, ralf@uni-koblenz.de
-Cc: linux@cthulhu.engr.sgi.com
-Subject: Re: HAL2 interrupt
-References: <19981028005901.C23849@zigzegv.ml.org> <19981028232652.A2587@alpha.franken.de> <19981029111211.B28553@zigzegv.ml.org> <19981029231009.A3756@alpha.franken.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.93.2
-In-Reply-To: <19981029231009.A3756@alpha.franken.de>; from Thomas Bogendoerfer on Thu, Oct 29, 1998 at 11:10:09PM +0100
+	via SMTP id OAA03694
+	for <linux@cthulhu.engr.sgi.com>; Thu, 29 Oct 1998 14:32:00 -0800 (PST)
+	mail_from (imp@village.org)
+Received: from harmony [10.0.0.6] 
+	by rover.village.org with esmtp (Exim 1.71 #1)
+	id 0zZ0bY-00076l-00; Thu, 29 Oct 1998 15:31:44 -0700
+Received: from harmony.village.org (localhost.village.org [127.0.0.1]) by harmony.village.org (8.9.1/8.8.3) with ESMTP id PAA17553 for <linux@cthulhu.engr.sgi.com>; Thu, 29 Oct 1998 15:31:32 -0700 (MST)
+Message-Id: <199810292231.PAA17553@harmony.village.org>
+To: linux@cthulhu.engr.sgi.com
+Subject: Prices on Indy
+Date: Thu, 29 Oct 1998 15:31:32 -0700
+From: Warner Losh <imp@village.org>
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> > Well, looks like I'm out of luck, I'll do some trial & error.
-> 
-> try interrupt 12, which should be the HPC3 interrupt (sgint23.h). After
-> getting an HPC3 interrupt you have to look in HPC3 register istat0 and 
-> istat1 for the interrupt source. I guess DaveM wanted to map these
-> interrupt sources to SGINT_HPCDMA, but never got to implement it.
 
-Thanks, I'll do this tonight or tomorrow.
+I'm looking at a couple of Indy machines that have 50MHz R4400 CPUs in
+them.  What's the going price for this?  There is no memory or disks
+or much of anything else included with these machines.  What's a good
+price?  The person I'm talking to wants $210
 
-By the way, I have patched the kernel to support ksymoops (with stack tracing,
-call tracing and code dump), and Keith Owens has patched ksymoops to support
-MIPS. There was some sort of show_registers() function in traps.c which wasn't
-used. I rewrote that function and made it work (yes, the original function
-didn't work at all). Sounds interesting, doesn't it? I'll send you the patch
-tomorrow...
+Also, I have a chance to get full systems (with 80M-128M memory,
+500M-1G disk) for $525.  This includes monitors, etc.
 
-- Ulf
+Warner

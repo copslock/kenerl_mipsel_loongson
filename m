@@ -1,80 +1,95 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jul 2004 19:21:24 +0100 (BST)
-Received: from mail.supercable.net.ve ([IPv6:::ffff:216.72.155.13]:62416 "EHLO
-	supercable.net.ve") by linux-mips.org with ESMTP
-	id <S8226154AbUGHSVT>; Thu, 8 Jul 2004 19:21:19 +0100
-Received: from [200.85.73.10] (unverified [200.85.73.10]) 
-	by supercable.net.ve (TRUE) with ESMTP id 7708807 
-	for multiple; Thu, 08 Jul 2004 14:20:50 GMT -4
-Message-ID: <40ED9097.6040800@kanux.com>
-Date: Thu, 08 Jul 2004 14:21:11 -0400
-From: Ricardo Mendoza <ricardo.mendoza@kanux.com>
-Reply-To: ricardo.mendoza@kanux.com
-User-Agent: Mozilla Thunderbird 0.7.1 (Windows/20040626)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: Volker Jahns <Volker.Jahns@thalreit.de>, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jul 2004 20:16:20 +0100 (BST)
+Received: from moutng.kundenserver.de ([IPv6:::ffff:212.227.126.176]:47341
+	"EHLO moutng.kundenserver.de") by linux-mips.org with ESMTP
+	id <S8225297AbUGHTQQ>; Thu, 8 Jul 2004 20:16:16 +0100
+Received: from [212.227.126.208] (helo=mrelayng.kundenserver.de)
+	by moutng.kundenserver.de with esmtp (Exim 3.35 #1)
+	id 1BieNN-0005pd-00; Thu, 08 Jul 2004 21:16:09 +0200
+Received: from [84.128.28.95] (helo=ikarus.thalreit)
+	by mrelayng.kundenserver.de with asmtp (Exim 3.35 #1)
+	id 1BieNN-0003la-00; Thu, 08 Jul 2004 21:16:09 +0200
+Received: by ikarus.thalreit (Postfix, from userid 501)
+	id E6D073368C; Thu,  8 Jul 2004 21:26:25 +0200 (CEST)
+Date: Thu, 8 Jul 2004 21:26:25 +0200
+From: Volker Jahns <volker@thalreit.de>
+To: Ricardo Mendoza <ricardo.mendoza@kanux.com>
+Cc: linux-mips@linux-mips.org
 Subject: Re: sharp mobilon hc-4100
-References: <33009.194.59.120.11.1089291164.squirrel@thalreit.dyndns.org>
-In-Reply-To: <33009.194.59.120.11.1089291164.squirrel@thalreit.dyndns.org>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Server: High Performance Mail Server - http://surgemail.com
-X-Authenticated-User: numen Domain supercable.net.ve
-Return-Path: <ricardo.mendoza@kanux.com>
+Message-ID: <20040708192625.GB9312@ikarus.thalreit>
+Mail-Followup-To: Ricardo Mendoza <ricardo.mendoza@kanux.com>,
+	linux-mips@linux-mips.org
+References: <33009.194.59.120.11.1089291164.squirrel@thalreit.dyndns.org> <40ED9097.6040800@kanux.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <40ED9097.6040800@kanux.com>
+User-Agent: Mutt/1.4i
+X-Provags-ID: kundenserver.de abuse@kundenserver.de auth:5b79f71352ef1364d4beaa70fe75636d
+Return-Path: <volker@thalreit.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5431
+X-archive-position: 5432
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ricardo.mendoza@kanux.com
+X-original-sender: volker@thalreit.de
 Precedence: bulk
 X-list: linux-mips
 
-Volker Jahns wrote:
-> Linux on Sharp Mobilon HC-4100
-> 
-> I would like to have Linux boot on the Sharp HC-4100 and have tried a
-> couple of suitable kernels with the following outcome:
-> 
-> Booting
-> -------
-> netbsd tx3912               - netbsd 1.5.3 , keyboard functional
-> linux for philips velo      - vmlinux-2.4.0-test4-pre3 , keyboard not
-> functional
-> 
-> 
-> Booting, but framebuffer scrambled
-> ----------------------------------
-> linux nino                  - vmlinux-2.4.17
-> linux sharp HC-4500/HC-4600 - vmlinux-2.3.21. vmlinux-2.3.47
-> 
-> I have tried to compile a kernel from versions - 2.4.20 and 2.4.0-test9 -
-> ( sharp mobilon, philips velo, philips nino) which all boot but have the
-> framebuffer device scrambled.
-> 
-> Which kernel version is good to start from, and where would I find its code ?
-> Has somebody a working .config vor the Velo 500 available, so that I get
-> the correct options to have this damn framebuffer device working?
-> 
-> 
-> Please redirect, in case this should be the wrong place to post.
+On Thu, Jul 08, 2004 at 02:21:11PM -0400, Ricardo Mendoza wrote:
+> Volker Jahns wrote:
+> >Linux on Sharp Mobilon HC-4100
+> >
+> >I would like to have Linux boot on the Sharp HC-4100 and have tried a
+> >couple of suitable kernels with the following outcome:
+> >
 
-Hi, sometimes the scrambled problem happens when you are using a linked 
-inside ramdisk image and it corrupts the kernel itself in some way, it 
-has happened to me quite many times with the nino kernel.
+...
 
-It would help to check your config, I can assure you that the 2.4.17 
-nino code is working, I use it myself but on the nino, it might require 
-some modifications for the Mobilon.
+
+> It would help to check your config, I can assure you that the 2.4.17 
+> nino code is working, I use it myself but on the nino, it might require 
+> some modifications for the Mobilon.
+
+Modifications are certainly a must:
+
+e.g. 2.4.20 in drivers/video/tx3912fb.h thereis _only_  framebuffer definitions for the nino:
+<pre>
+#if defined(CONFIG_NINO_4MB) || defined(CONFIG_NINO_8MB)
+#define FB_X_RES       240 
+#define FB_Y_RES       320
+#if defined(CONFIG_FBCON_CFB4)
+#define FB_BPP         4
+</pre>
+
+while 2.4.0-test9 carries the _good_ information for the velo 1, velo 500 and for the helio ( the code for the nino is missing here). In drivers/video/r3912fb.h ( which seems to be the historic version of tx3912fb.h, ouch what a chaos :-(
+<pre>
+#ifdef CONFIG_PHILIPS_VELO
+#       ifdef CONFIG_PHILIPS_VELO1
+#               define FB_X_RES         480
+#       elif defined(CONFIG_PHILIPS_VELO500)
+#               define FB_X_RES         640
+#       endif
+#       define  FB_Y_RES        240
+#       ifdef CONFIG_PHILIPS_VELO_4GRAY
+#               define FB_BPP   2
+#       else /* CONFIG_PHILIPS_VELO_16GRAY */
+#               define FB_BPP   4
+#       endif
+#       define FB_IS_GREY     1
+#       define FB_IS_INVERSE  0
+#       define VIDEORAM_SIZE  (FB_X_RES * FB_Y_RES * FB_BPP / 8)
+</pre>
+
+On the other hand the mobilon needs 
+<pre>
+#               define FB_X_RES         640
+#               define FB_X_RES         240
+#               define FB_BPP           4
+</pre>
+
+This information ( and what else which might be of interest to make the LCD working on this thing) must have get lost on the kernel's way. I really wonder where to find a more or less functional version of the kernel code to start with.
 
 -- 
-Ricardo Mendoza Meinhardt
-ricardo.mendoza@kanux.com
-
-.knxTech
-Administrador Linux
-Programador/PHP
-
-"get ready for a bit of the old Ultra Violence"
+Volker Jahns, Volker.Jahns@thalreit.de, http://thalreit.de, DG7PM

@@ -1,92 +1,126 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Dec 2002 11:36:11 +0000 (GMT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Dec 2002 11:36:31 +0000 (GMT)
 Received: from p508B51DF.dip.t-dialin.net ([IPv6:::ffff:80.139.81.223]:6295
 	"EHLO p508B51DF.dip.t-dialin.net") by linux-mips.org with ESMTP
-	id <S8225296AbSLWLed>; Mon, 23 Dec 2002 11:34:33 +0000
-Received: from cm19173.red.mundo-r.com ([IPv6:::ffff:213.60.19.173]:12939 "EHLO
-	demo.mitica") by ralf.linux-mips.org with ESMTP id <S868818AbSLUWLK>;
-	Sat, 21 Dec 2002 23:11:10 +0100
-Received: by demo.mitica (Postfix, from userid 501)
-	id C286DD657; Sat, 21 Dec 2002 23:14:17 +0100 (CET)
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: Ralf Baechle <ralf@linux-mips.org>,
+	id <S8225556AbSLWLed>; Mon, 23 Dec 2002 11:34:33 +0000
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:21388 "EHLO
+	delta.ds2.pg.gda.pl") by ralf.linux-mips.org with ESMTP
+	id <S868820AbSLUWwu>; Sat, 21 Dec 2002 23:52:50 +0100
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id XAA11210;
+	Sat, 21 Dec 2002 23:49:43 +0100 (MET)
+Date: Sat, 21 Dec 2002 23:49:43 +0100 (MET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Juan Quintela <quintela@mandrakesoft.com>
+cc: Ralf Baechle <ralf@linux-mips.org>,
 	mipslist <linux-mips@linux-mips.org>
 Subject: Re: [PATCH]: for poor sools with old I2 & 64 bits kernel
-References: <Pine.GSO.3.96.1021221221459.7158C-100000@delta.ds2.pg.gda.pl>
-X-Url: http://people.mandrakesoft.com/~quintela
-From: Juan Quintela <quintela@mandrakesoft.com>
-In-Reply-To: <Pine.GSO.3.96.1021221221459.7158C-100000@delta.ds2.pg.gda.pl>
-Date: 21 Dec 2002 23:14:17 +0100
-Message-ID: <m2fzsrdnpi.fsf@demo.mitica>
-User-Agent: Gnus/5.09 (Gnus v5.9.0) Emacs/21.2.92
+In-Reply-To: <m2fzsrdnpi.fsf@demo.mitica>
+Message-ID: <Pine.GSO.3.96.1021221231334.7158H-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <quintela@mandrakesoft.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1042
+X-archive-position: 1043
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: quintela@mandrakesoft.com
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
->>>>> "maciej" == Maciej W Rozycki <macro@ds2.pg.gda.pl> writes:
+On 21 Dec 2002, Juan Quintela wrote:
 
-maciej> On 21 Dec 2002, Juan Quintela wrote:
->> BTW, are you using mips64 in a r4k? If so, do you need any additional
->> patches?
+> maciej> Yep, for quite some time now, running a DECstation 5000/260 with an
+> maciej> R4400SC.  Yep, a few. 
+> 
+> Here it is bigendian (SGI Indigo 2).
 
-maciej> Yep, for quite some time now, running a DECstation 5000/260 with an
-maciej> R4400SC.  Yep, a few. 
+ The endianness shouldn't matter, but who knows?
 
-Here it is bigendian (SGI Indigo 2).
+> ARCH: SGI-IP22                                                                  
+> PROMLIB: ARC firmware Version 1 Revision 10                                     
+> CPU: MIPS-R4400 FPU<MIPS-R4400FPC> ICACHE DCACHE SCACHE                         
+> CPU revision is: 00000450                                                       
+> FPU revision is: 00000500                                                       
+> Primary instruction cache 16kb, linesize 16 bytes.                              
+> Primary data cache 16kb, linesize 16 bytes.                                     
+> Secondary cache sized at 1024K linesize 128 bytes.                              
 
-ARCH: SGI-IP22                                                                  
-PROMLIB: ARC firmware Version 1 Revision 10                                     
-CPU: MIPS-R4400 FPU<MIPS-R4400FPC> ICACHE DCACHE SCACHE                         
-CPU revision is: 00000450                                                       
-FPU revision is: 00000500                                                       
-Primary instruction cache 16kb, linesize 16 bytes.                              
-Primary data cache 16kb, linesize 16 bytes.                                     
-Secondary cache sized at 1024K linesize 128 bytes.                              
+ Please get: 
+'ftp://ftp.ds2.pg.gda.pl/pub/macro/linux/patch-mips-2.4.20-pre6-20021212-mips-bugs-14mod.gz'
+try it and send me the boot log, specifically the bug checks.  My PRId is
+00000440 and that is definitely buggy revision 1.0.  Yours is probably
+revision 2.0 and should work better, but it won't hurt checking.
 
-I am using the egcs-1.1.2 from ralf for doing compiles, I think that
-you have a more modern compiler, if so, I will be happy to download.
+ Note the patch is unfinished code; I had to modify it a bit for you to
+make it work at all with standard tools.  It does not necessarily make
+much sense. ;-) 
 
-maciej> I'm merging the patches slowly, but it's not that easy.  Errata for the
-maciej> R4000 and the R4400 require toolchain changes and bits in the patches
-maciej> depend on fixed tools.  So chances are I won't merge everything until
-maciej> changes are applied to tools. 
+> I am using the egcs-1.1.2 from ralf for doing compiles, I think that
+> you have a more modern compiler, if so, I will be happy to download.
 
->> I am having some memory corruption :(
+ Indeed, I use heavily patched gcc 2.95.4.  It's available at my site,
+too, as RPM packages.  For mips64 there are only source and i386 binary
+packages of a bootstrap cross-compiler -- look for
+mips64el-linux-boot-gcc.  It should be fairly easy to build big-endian
+packages from the sources.
 
-maciej> What kind of?  And what processor (PRId) have you got? 
+ But there is a drawback -- the packages have a patch to handle the daddiu
+erratum and the workaround is unconditional now.  The result is somewhat
+worse code is emitted.
 
-PRid show before.
+> Corruption is that when I do a ssh to that host, I got parts of
+> /proc/ksyms into the console.
 
-Corruption is that when I do a ssh to that host, I got parts of
-/proc/ksyms into the console.
+ SSH works just fine for me.  I haven't tried connecting over IPv6 to
+64-bit Linux, though (for 32-bit version it works).
 
+> maciej> My system seems reasonably stable, but sometimes it crashes under a load.
+> maciej> I have yet to get at tracking the problem down.
+> 
+> mine in 32bits is stable, don't crash under load (not very high load
+> yet).  But in 64bits (with exactly the same userland) got losts of
+> problems.
 
-maciej> My system seems reasonably stable, but sometimes it crashes under a load.
-maciej> I have yet to get at tracking the problem down.
+ Well, for me the 32-bit configuration is rock-solid.  It's the 64-bit one
+that causes some problems, but it's stable enough for most of the recent
+package builds to be done with it.  I debugged showstopper problems last
+Summer.
 
-mine in 32bits is stable, don't crash under load (not very high load
-yet).  But in 64bits (with exactly the same userland) got losts of
-problems.
+> Already found a couple of problems in c-r4k.c send to the list, and
 
-Already found a couple of problems in c-r4k.c send to the list, and
-now a couple of problems in sgiseeq.c and sgiserial.c.  Notice that I
-am running that machine with nfsroot, i.e. I don't have basically more
-devices than the serial console and the network card.  No real console
-support and not harddisk support either.
+ I haven't seen any problems with caching recently.  I might have been
+lucky.  But my cache configuration differs a bit:
 
-If you have any patches, I will like to take a look.
+CPU revision is: 00000440
+FPU revision is: 00000500
+Loading R4000 MMU routines.
+Primary instruction cache 16kb, linesize 16 bytes.
+Primary data cache 16kb, linesize 16 bytes.
+Secondary cache sized at 1024K linesize 32 bytes.
 
-Later, Juan.
+> now a couple of problems in sgiseeq.c and sgiserial.c.  Notice that I
+
+ That's driver-specific.  The declance.c and zs.c drivers work.
+
+> am running that machine with nfsroot, i.e. I don't have basically more
+> devices than the serial console and the network card.  No real console
+> support and not harddisk support either.
+
+ Ditto here.  Except a keyboard and a framebuffer also work; the latter
+also under X11. 
+
+> If you have any patches, I will like to take a look.
+
+ Nothing ready for inclusion.  And probably nothing critical (except for
+the DECstation), but please send me the report first. 
+
+  Maciej
 
 -- 
-In theory, practice and theory are the same, but in practice they 
-are different -- Larry McVoy
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

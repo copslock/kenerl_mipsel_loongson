@@ -1,75 +1,73 @@
-Received:  by oss.sgi.com id <S305155AbQCGUPG>;
-	Tue, 7 Mar 2000 12:15:06 -0800
-Received: from deliverator.sgi.com ([204.94.214.10]:32830 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305154AbQCGUOn>;
-	Tue, 7 Mar 2000 12:14:43 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id MAA19319; Tue, 7 Mar 2000 12:10:07 -0800 (PST)
+Received:  by oss.sgi.com id <S305157AbQCGWO2>;
+	Tue, 7 Mar 2000 14:14:28 -0800
+Received: from deliverator.sgi.com ([204.94.214.10]:56929 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305154AbQCGWOJ>;
+	Tue, 7 Mar 2000 14:14:09 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id OAA06396; Tue, 7 Mar 2000 14:09:34 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id LAA33527
+	id OAA50659
 	for linux-list;
-	Tue, 7 Mar 2000 11:44:05 -0800 (PST)
+	Tue, 7 Mar 2000 14:05:28 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id LAA57008
+	via ESMTP id OAA35548
 	for <linux@cthulhu.engr.sgi.com>;
-	Tue, 7 Mar 2000 11:43:28 -0800 (PST)
-	mail_from (Harald.Koerfgen@home.ivm.de)
-Received: from mail.ivm.net (mail.ivm.net [62.204.1.4]) 
+	Tue, 7 Mar 2000 14:05:25 -0800 (PST)
+	mail_from (andrewb@uab.edu)
+Received: from lilith.dpo.uab.edu (lilith.dpo.uab.edu [138.26.1.128]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id LAA08353
-	for <linux@cthulhu.engr.sgi.com>; Tue, 7 Mar 2000 11:43:20 -0800 (PST)
-	mail_from (Harald.Koerfgen@home.ivm.de)
-Received: from franz.no.dom (port207.duesseldorf.ivm.de [195.247.65.207])
-	by mail.ivm.net (8.8.8/8.8.8) with ESMTP id UAA21172;
-	Tue, 7 Mar 2000 20:42:56 +0100
-X-To:   linux@cthulhu.engr.sgi.com
-Message-ID: <XFMail.000307204343.Harald.Koerfgen@home.ivm.de>
-X-Mailer: XFMail 1.4.0 on Linux
-X-Priority: 3 (Normal)
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 8bit
+	via ESMTP id OAA05319
+	for <linux@cthulhu.engr.sgi.com>; Tue, 7 Mar 2000 14:05:11 -0800 (PST)
+	mail_from (andrewb@uab.edu)
+Received: from lithium (lithium.tucc.uab.edu [138.26.15.219])
+	by lilith.dpo.uab.edu (8.9.3/8.9.3) with SMTP id QAA21654
+	for <linux@cthulhu.engr.sgi.com>; Tue, 7 Mar 2000 16:05:07 -0600
+Date:   Tue, 7 Mar 2000 16:05:07 -0600 (CST)
+From:   "Andrew R. Baker" <andrewb@uab.edu>
+X-Sender: andrewb@lithium
+To:     Linux SGI <linux@cthulhu.engr.sgi.com>
+Subject: problem with most recent 2.3 CVS kernel
+Message-ID: <Pine.LNX.3.96.1000307160335.13309I-100000@lithium>
 MIME-Version: 1.0
-In-Reply-To: <Pine.LNX.3.96.1000307125403.13309E-100000@lithium>
-Date:   Tue, 07 Mar 2000 20:43:43 +0100 (MET)
-Reply-To: "Harald Koerfgen" <Harald.Koerfgen@home.ivm.de>
-Organization: none
-From:   Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
-To:     "Andrew R. Baker" <andrewb@uab.edu>
-Subject: Re: FP emulation patch available
-Cc:     linux-mips@vger.rutgers.edu, linux-mips@fnet.fr,
-        Linux SGI <linux@cthulhu.engr.sgi.com>,
-        "Gleb O. Raiko" <raiko@niisi.msk.ru>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
 
-On 07-Mar-00 Andrew R. Baker wrote:
-> 
-> 
-> On Tue, 7 Mar 2000, Gleb O. Raiko wrote:
->> "Bradley D. LaRonde" wrote:
->> > 
->> > I would jump right on this but I really need it for 2.3.47+.
->> > 
->> > Regards,
->> > Brad
->> 
->> I vote for 2.3 too. It seems 2.2 will vanish soon anyway.
-> 
-> Working on it.
+Everything goes well until just after the SCSI disk detection.  Then I
+get:
 
-Me too. Compiles and links but doesn't work. I guess the cpu detection doesn't
-work properly for my Mobilon yet. I am actually compiling it for a DECstation
-:-)
 
--- 
-Regards,
-Harald
+scsi : detected 2 SCSI disks total.                                             
+scsi::resize_dma_pool: WARNING, dma_sectors=0, wanted=160, scaling              
+scsi::resize_dma_pool: WARNING, dma_sectors=0, wanted=128, scaling              
+scsi::resize_dma_pool: WARNING, dma_sectors=0, wanted=96, scaling               
+scsi::resize_dma_pool: WARNING, dma_sectors=0, wanted=80, scaling               
+scsi::resize_dma_pool: WARNING, dma_sectors=0, wanted=64, scaling               
+scsi::resize_dma_pool: WARNING, dma_sectors=0, wanted=48, scaling               
+      WARNING, not enough memory, pool not expanded
+Unable to handle kernel paging request at virtual address 00000000, epc ==
+880a4
+Oops in fault.c:do_page_fault, line 153:                                        
+$0 : 00000000 881100e0 00000000 00000021                                        
+$4 : 00000019 00000008 00000008 00000001                                        
+$8 : 1004fc00 1000001f 00000003 88631e54                                        
+$12: 00000000 0000000a 00000000 88115840                                        
+$16: 00000000 bfbc0003 00000008 00000001                                        
+$20: 00000080 00000049 0000003a 1004fc00                                        
+$24: 00000020 bfbd9833                                                          
+$28: 88008000 88009e08 88635800 880a7714                                        
+epc   : 880a77a4
+
+
+Any hints on this one?
+
+-Andrew

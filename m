@@ -1,50 +1,259 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jan 2003 12:36:10 +0000 (GMT)
-Received: from ip-161-71-171-238.corp-eur.3com.com ([IPv6:::ffff:161.71.171.238]:18922
-	"EHLO columba.www.eur.3com.com") by linux-mips.org with ESMTP
-	id <S8226125AbTAJMgK>; Fri, 10 Jan 2003 12:36:10 +0000
-Received: from toucana.eur.3com.com (toucana.EUR.3Com.COM [140.204.220.50])
-	by columba.www.eur.3com.com  with ESMTP id h0ACbcNS017223;
-	Fri, 10 Jan 2003 12:37:44 GMT
-Received: from notesmta.eur.3com.com (eurmta1.EUR.3Com.COM [140.204.220.206])
-	by toucana.eur.3com.com  with SMTP id h0ACbQQ17121;
-	Fri, 10 Jan 2003 12:37:26 GMT
-Received: by notesmta.eur.3com.com(Lotus SMTP MTA v4.6.3  (733.2 10-16-1998))  id 80256CAA.00453B66 ; Fri, 10 Jan 2003 12:36:11 +0000
-X-Lotus-FromDomain: 3COM
-From: "Jon Burgess" <Jon_Burgess@eur.3com.com>
-To: "atul srivastava" <atulsrivastava9@rediffmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jan 2003 12:37:05 +0000 (GMT)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:20939 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8226128AbTAJMhE>; Fri, 10 Jan 2003 12:37:04 +0000
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id NAA24336;
+	Fri, 10 Jan 2003 13:37:14 +0100 (MET)
+Date: Fri, 10 Jan 2003 13:37:12 +0100 (MET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Ralf Baechle <ralf@linux-mips.org>
 cc: linux-mips@linux-mips.org
-Message-ID: <80256CAA.00453946.00@notesmta.eur.3com.com>
-Date: Fri, 10 Jan 2003 12:33:13 +0000
-Subject: Re: handling of s-record images by bootloader
-Mime-Version: 1.0
-Content-type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Return-Path: <Jon_Burgess@eur.3com.com>
+Subject: [patch] R4k cache code synchronization
+Message-ID: <Pine.GSO.3.96.1030110131859.23678B-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1118
+X-archive-position: 1119
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Jon_Burgess@eur.3com.com
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
+Ralf,
 
+ Here are some bits to synchronize c-r4k.c across ports.  There are no
+functional changes, at least no intended ones.  OK to apply?
 
+ I can't see any need for flush_cache_l1() and flush_cache_l2().  I'd like
+to remove them.  A single flush_cache_all() seems sufficient for our
+needs.  Any objections? 
 
-atul srivastava wrote:
-> I am umware that, how differently s-record image need
-> to be handled..?
-> i just need some idea or if possible any example code for that..
+  Maciej
 
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
 
-On second thoughts the binutils code is probably rather large. You could try the
-pmon source
-
-http://www.carmel.com/pmon/pmon.tgz
-
-pmon/tools/rdsrec.c might do what you want.
-
-     Jon
+patch-mips-2.4.20-pre6-20030107-mips-c-r4k-sync-0
+diff -up --recursive --new-file linux-mips-2.4.20-pre6-20030107.macro/arch/mips/mm/c-r4k.c linux-mips-2.4.20-pre6-20030107/arch/mips/mm/c-r4k.c
+--- linux-mips-2.4.20-pre6-20030107.macro/arch/mips/mm/c-r4k.c	2002-12-20 03:56:50.000000000 +0000
++++ linux-mips-2.4.20-pre6-20030107/arch/mips/mm/c-r4k.c	2003-01-09 22:23:33.000000000 +0000
+@@ -948,12 +948,13 @@ static void r4k_flush_icache_page_p(stru
+ static void r4k_dma_cache_wback_inv_pc(unsigned long addr, unsigned long size)
+ {
+ 	unsigned long end, a;
+-	unsigned int flags;
+ 
+ 	if (size >= dcache_size) {
+ 		flush_cache_all();
+ 	} else {
+ #ifdef R4600_V2_HIT_CACHEOP_WAR
++		unsigned long flags;
++
+ 		/* Workaround for R4600 bug.  See comment in <asm/war>. */
+ 		local_irq_save(flags);
+ 		*(volatile unsigned long *)KSEG1;
+@@ -962,7 +963,7 @@ static void r4k_dma_cache_wback_inv_pc(u
+ 		a = addr & ~(dc_lsize - 1);
+ 		end = (addr + size - 1) & ~(dc_lsize - 1);
+ 		while (1) {
+-			flush_dcache_line(a); /* Hit_Writeback_Inv_D */
++			flush_dcache_line(a);	/* Hit_Writeback_Inv_D */
+ 			if (a == end) break;
+ 			a += dc_lsize;
+ 		}
+@@ -970,6 +971,7 @@ static void r4k_dma_cache_wback_inv_pc(u
+ 		local_irq_restore(flags);
+ #endif
+ 	}
++
+ 	bc_wback_inv(addr, size);
+ }
+ 
+@@ -994,12 +996,13 @@ static void r4k_dma_cache_wback_inv_sc(u
+ static void r4k_dma_cache_inv_pc(unsigned long addr, unsigned long size)
+ {
+ 	unsigned long end, a;
+-	unsigned int flags;
+ 
+ 	if (size >= dcache_size) {
+ 		flush_cache_all();
+ 	} else {
+ #ifdef R4600_V2_HIT_CACHEOP_WAR
++		unsigned long flags;
++
+ 		/* Workaround for R4600 bug.  See comment in <asm/war>. */
+ 		local_irq_save(flags);
+ 		*(volatile unsigned long *)KSEG1;
+@@ -1008,7 +1011,7 @@ static void r4k_dma_cache_inv_pc(unsigne
+ 		a = addr & ~(dc_lsize - 1);
+ 		end = (addr + size - 1) & ~(dc_lsize - 1);
+ 		while (1) {
+-			flush_dcache_line(a); /* Hit_Writeback_Inv_D */
++			flush_dcache_line(a);	/* Hit_Writeback_Inv_D */
+ 			if (a == end) break;
+ 			a += dc_lsize;
+ 		}
+@@ -1016,6 +1019,7 @@ static void r4k_dma_cache_inv_pc(unsigne
+ 		local_irq_restore(flags);
+ #endif
+ 	}
++
+ 	bc_inv(addr, size);
+ }
+ 
+@@ -1031,7 +1035,7 @@ static void r4k_dma_cache_inv_sc(unsigne
+ 	a = addr & ~(sc_lsize - 1);
+ 	end = (addr + size - 1) & ~(sc_lsize - 1);
+ 	while (1) {
+-		flush_scache_line(a); /* Hit_Writeback_Inv_SD */
++		flush_scache_line(a);	/* Hit_Writeback_Inv_SD */
+ 		if (a == end) break;
+ 		a += sc_lsize;
+ 	}
+@@ -1232,10 +1236,10 @@ static void __init setup_noscache_funcs(
+ 		_flush_cache_page = r4k_flush_cache_page_d32i32;
+ 		break;
+ 	}
+-	___flush_cache_all = _flush_cache_all;
+-
+ 	_flush_icache_page = r4k_flush_icache_page_p;
+ 
++	___flush_cache_all = _flush_cache_all;
++
+ 	_dma_cache_wback_inv = r4k_dma_cache_wback_inv_pc;
+ 	_dma_cache_wback = r4k_dma_cache_wback_inv_pc;
+ 	_dma_cache_inv = r4k_dma_cache_inv_pc;
+@@ -1317,8 +1321,10 @@ static void __init setup_scache_funcs(vo
+ 		_copy_page = r4k_copy_page_s128;
+ 		break;
+ 	}
+-	___flush_cache_all = _flush_cache_all;
+ 	_flush_icache_page = r4k_flush_icache_page_s;
++
++	___flush_cache_all = _flush_cache_all;
++
+ 	_dma_cache_wback_inv = r4k_dma_cache_wback_inv_sc;
+ 	_dma_cache_wback = r4k_dma_cache_wback_inv_sc;
+ 	_dma_cache_inv = r4k_dma_cache_inv_sc;
+@@ -1373,10 +1379,10 @@ void __init ld_mmu_r4xx0(void)
+ 	}
+ 
+ 	_flush_cache_sigtramp = r4k_flush_cache_sigtramp;
+-	_flush_icache_range = r4k_flush_icache_range;	/* Ouch */
+ 	if ((read_c0_prid() & 0xfff0) == 0x2020) {
+ 		_flush_cache_sigtramp = r4600v20k_flush_cache_sigtramp;
+ 	}
++	_flush_icache_range = r4k_flush_icache_range;	/* Ouch */
+ 
+ 	__flush_cache_all();
+ }
+diff -up --recursive --new-file linux-mips-2.4.20-pre6-20030107.macro/arch/mips64/mm/c-r4k.c linux-mips-2.4.20-pre6-20030107/arch/mips64/mm/c-r4k.c
+--- linux-mips-2.4.20-pre6-20030107.macro/arch/mips64/mm/c-r4k.c	2002-12-20 03:56:52.000000000 +0000
++++ linux-mips-2.4.20-pre6-20030107/arch/mips64/mm/c-r4k.c	2003-01-09 23:21:39.000000000 +0000
+@@ -950,7 +950,7 @@ static void r4k_dma_cache_wback_inv_pc(u
+ 	unsigned long end, a;
+ 
+ 	if (size >= dcache_size) {
+-		flush_cache_l1();
++		flush_cache_all();
+ 	} else {
+ #ifdef R4600_V2_HIT_CACHEOP_WAR
+ 		unsigned long flags;
+@@ -963,7 +963,7 @@ static void r4k_dma_cache_wback_inv_pc(u
+ 		a = addr & ~(dc_lsize - 1);
+ 		end = (addr + size - 1) & ~(dc_lsize - 1);
+ 		while (1) {
+-			flush_dcache_line(a); /* Hit_Writeback_Inv_D */
++			flush_dcache_line(a);	/* Hit_Writeback_Inv_D */
+ 			if (a == end) break;
+ 			a += dc_lsize;
+ 		}
+@@ -971,6 +971,7 @@ static void r4k_dma_cache_wback_inv_pc(u
+ 		local_irq_restore(flags);
+ #endif
+ 	}
++
+ 	bc_wback_inv(addr, size);
+ }
+ 
+@@ -979,7 +980,7 @@ static void r4k_dma_cache_wback_inv_sc(u
+ 	unsigned long end, a;
+ 
+ 	if (size >= scache_size) {
+-		flush_cache_l1();
++		flush_cache_all();
+ 		return;
+ 	}
+ 
+@@ -997,7 +998,7 @@ static void r4k_dma_cache_inv_pc(unsigne
+ 	unsigned long end, a;
+ 
+ 	if (size >= dcache_size) {
+-		flush_cache_l1();
++		flush_cache_all();
+ 	} else {
+ #ifdef R4600_V2_HIT_CACHEOP_WAR
+ 		unsigned long flags;
+@@ -1010,7 +1011,7 @@ static void r4k_dma_cache_inv_pc(unsigne
+ 		a = addr & ~(dc_lsize - 1);
+ 		end = (addr + size - 1) & ~(dc_lsize - 1);
+ 		while (1) {
+-			flush_dcache_line(a); /* Hit_Writeback_Inv_D */
++			flush_dcache_line(a);	/* Hit_Writeback_Inv_D */
+ 			if (a == end) break;
+ 			a += dc_lsize;
+ 		}
+@@ -1027,14 +1028,14 @@ static void r4k_dma_cache_inv_sc(unsigne
+ 	unsigned long end, a;
+ 
+ 	if (size >= scache_size) {
+-		flush_cache_l1();
++		flush_cache_all();
+ 		return;
+ 	}
+ 
+ 	a = addr & ~(sc_lsize - 1);
+ 	end = (addr + size - 1) & ~(sc_lsize - 1);
+ 	while (1) {
+-		flush_scache_line(a); /* Hit_Writeback_Inv_SD */
++		flush_scache_line(a);	/* Hit_Writeback_Inv_SD */
+ 		if (a == end) break;
+ 		a += sc_lsize;
+ 	}
+@@ -1241,9 +1242,10 @@ static void __init setup_noscache_funcs(
+ 		_flush_cache_page = r4k_flush_cache_page_d32i32;
+ 		break;
+ 	}
+-
+ 	_flush_icache_page = r4k_flush_icache_page_p;
+ 
++	___flush_cache_all = _flush_cache_all;
++
+ 	_dma_cache_wback_inv = r4k_dma_cache_wback_inv_pc;
+ 	_dma_cache_wback = r4k_dma_cache_wback_inv_pc;
+ 	_dma_cache_inv = r4k_dma_cache_inv_pc;
+@@ -1333,6 +1335,9 @@ static void __init setup_scache_funcs(vo
+ 		break;
+ 	}
+ 	_flush_icache_page = r4k_flush_icache_page_s;
++
++	___flush_cache_all = _flush_cache_all;
++
+ 	_dma_cache_wback_inv = r4k_dma_cache_wback_inv_sc;
+ 	_dma_cache_wback = r4k_dma_cache_wback_inv_sc;
+ 	_dma_cache_inv = r4k_dma_cache_inv_sc;
+@@ -1394,5 +1399,5 @@ void __init ld_mmu_r4xx0(void)
+ 
+ 	_flush_cache_l2 = r4k_flush_cache_l2;
+ 
+-	flush_cache_l1();
++	__flush_cache_all();
+ }

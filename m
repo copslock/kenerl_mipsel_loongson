@@ -1,48 +1,42 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5JBDKnC015384
-	for <linux-mips-outgoing@oss.sgi.com>; Wed, 19 Jun 2002 04:13:20 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5JC1OnC023593
+	for <linux-mips-outgoing@oss.sgi.com>; Wed, 19 Jun 2002 05:01:24 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5JBDKE8015383
-	for linux-mips-outgoing; Wed, 19 Jun 2002 04:13:20 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5JC1O7u023592
+	for linux-mips-outgoing; Wed, 19 Jun 2002 05:01:24 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from dea.linux-mips.net (c-180-196-69.ka.dial.de.ignite.net [62.180.196.69])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5JBDEnC015380
-	for <linux-mips@oss.sgi.com>; Wed, 19 Jun 2002 04:13:16 -0700
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id g5JBDlW23563;
-	Wed, 19 Jun 2002 13:13:47 +0200
-Date: Wed, 19 Jun 2002 13:13:47 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Carsten Langgaard <carstenl@mips.com>
-Cc: Justin Carlson <justin@cs.cmu.edu>, linux-mips@oss.sgi.com
-Subject: Re: 64-bit kernel
-Message-ID: <20020619131347.A23495@dea.linux-mips.net>
-References: <3D0F28AE.7B0D822B@mips.com> <1024416198.1166.1.camel@xyzzy.rlson.org> <20020619113244.B22048@dea.linux-mips.net> <3D106601.2347EECC@mips.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: from ws3-3.us4.outblaze.com (205-158-62-93.outblaze.com [205.158.62.93])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5JC1LnC023584
+	for <linux-mips@oss.sgi.com>; Wed, 19 Jun 2002 05:01:21 -0700
+Received: (qmail 8474 invoked by uid 1001); 19 Jun 2002 12:04:14 -0000
+Message-ID: <20020619120414.8473.qmail@email.com>
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <3D106601.2347EECC@mips.com>; from carstenl@mips.com on Wed, Jun 19, 2002 at 01:07:46PM +0200
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+X-Mailer: MIME-tools 5.41 (Entity 5.404)
+Received: from [202.140.142.131] by ws3-3.us4.outblaze.com with http for
+    balakris_ananth@email.com; Wed, 19 Jun 2002 07:04:14 -0500
+From: "Balakrishnan Ananthanarayanan" <balakris_ananth@email.com>
+To: linux-mips@oss.sgi.com, linux-kernel@vger.kernel.org,
+   redhat-list@redhat.com
+Date: Wed, 19 Jun 2002 07:04:14 -0500
+Subject: MIPS - Serial port
+X-Originating-Ip: 202.140.142.131
+X-Originating-Server: ws3-3.us4.outblaze.com
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, Jun 19, 2002 at 01:07:46PM +0200, Carsten Langgaard wrote:
+Hi all,
 
-> I'm trying to compile glibc natively using my 64-bit kernel, but it fails with
-> the following message:
-> 
-> Out of Memory: Killed process 641 (qmgr).
-> Out of Memory: Killed process 642 (tlsmgr).
-> Out of Memory: Killed process 378 (portmap).
-> Out of Memory: Killed process 9363 (cc1).
-> Out of Memory: Killed process 9363 (cc1).
-> 
-> So there may be a memory leak problem in 64-bit kernel.
-> Has anyone seen this ?
+   Is there anyone who has accessed the serial port of an RM7000 MIPS processor? If u can provide me the code please - or atleast the Serial PORT number of an RM7000 proc. mounted on an EV64120A Galileo Board? 
 
-No.  The entire Redhat 7.0 stuff I built was done exclusivly on a 64-bit
-kernel (with 2GB RAM however ...) and no such problem ever, even after
-long uptimes.
+Balakrishnan
 
-  Ralf
+-- 
+__________________________________________________________
+Sign-up for your own FREE Personalized E-mail at Mail.com
+http://www.mail.com/?sr=signup
+
+Save up to $160 by signing up for NetZero Platinum Internet service.
+http://www.netzero.net/?refcd=N2P0602NEP8

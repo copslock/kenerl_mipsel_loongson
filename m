@@ -1,109 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Feb 2003 11:39:23 +0000 (GMT)
-Received: from webmail17.rediffmail.com ([IPv6:::ffff:203.199.83.27]:58296
-	"HELO rediffmail.com") by linux-mips.org with SMTP
-	id <S8225201AbTBULjW>; Fri, 21 Feb 2003 11:39:22 +0000
-Received: (qmail 18122 invoked by uid 510); 21 Feb 2003 11:38:54 -0000
-Date: 21 Feb 2003 11:38:54 -0000
-Message-ID: <20030221113854.18121.qmail@webmail17.rediffmail.com>
-Received: from unknown (194.175.117.86) by rediffmail.com via HTTP; 21 feb 2003 11:38:54 -0000
-MIME-Version: 1.0
-From: "santosh kumar gowda" <ipv6_san@rediffmail.com>
-Reply-To: "santosh kumar gowda" <ipv6_san@rediffmail.com>
-To: netdev@oss.sgi.com
-Cc: linux-mips@linux-mips.org
-Content-type: text/plain;
-	format=flowed
-Content-Disposition: inline
-Return-Path: <ipv6_san@rediffmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Feb 2003 11:59:54 +0000 (GMT)
+Received: from inspiration-98-179-ban.inspiretech.com ([IPv6:::ffff:203.196.179.98]:11655
+	"EHLO smtp.inspirtek.com") by linux-mips.org with ESMTP
+	id <S8225201AbTBUL7x>; Fri, 21 Feb 2003 11:59:53 +0000
+Received: from mail.inspiretech.com (mail.inspiretech.com [150.1.1.1])
+	by smtp.inspirtek.com (8.12.5/8.12.5) with ESMTP id h1LC42vO032379
+	for <linux-mips@linux-mips.org>; Fri, 21 Feb 2003 17:34:10 +0530
+Message-Id: <200302211204.h1LC42vO032379@smtp.inspirtek.com>
+Received: from WorldClient [150.1.1.1] by inspiretech.com [150.1.1.1]
+	with SMTP (MDaemon.v3.5.7.R)
+	for <linux-mips@linux-mips.org>; Fri, 21 Feb 2003 17:19:46 +0530
+Date: Fri, 21 Feb 2003 17:19:45 +0530
+From: "Ashish anand" <ashish.anand@inspiretech.com>
+To: linux-mips@linux-mips.org
+Subject: wired tlb entries and global bit..
+X-Mailer: WorldClient Standard 3.5.0e
+X-MDRemoteIP: 150.1.1.1
+X-Return-Path: ashish.anand@inspiretech.com
+X-MDaemon-Deliver-To: linux-mips@linux-mips.org
+Return-Path: <ashish.anand@inspiretech.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1506
-Subject: (no subject)
+X-archive-position: 1507
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ipv6_san@rediffmail.com
+X-original-sender: ashish.anand@inspiretech.com
 Precedence: bulk
 X-list: linux-mips
 
+A small question..
 
-Well, i have a Linux machine i686 and an IAD based on MIPS 32-bit 
-arch,
-both enabled with IPv6.
+1.my understanding of wired tlb entries mean set of address translations
+that i always want to be present throughout the system is on ,
+irrespective of asid's/tlb flush , examplesake pci io/mem window ...is
+this right?
 
-Linux with 2.4.18-14 based on i686 configured as...
-# ip -6 addr add 3ff3:1234::1/64 dev eth0
-# ip -6 route add 3ffe:1234/64 dev eth0
+2.can i acheive the same by using the global bit from entrylo0 and
+entrylo1.
 
-IAD with 2.4.5-pre1 kernel based on MIPS 32-bit core configured 
-as...
-# ip -6 addr add 3ff3:1234::2/64 dev epmac1
-# ip -6 route add 3ff3:1234/64dev epmac1
---------------------------------------------------
-My IAD has a Flash, where the Linux kernel and the filesystem
-images are present.
-Flash size = 16MB
-Filesystem is jffs2
-Generated partitions are...
-yamon partition size:2048 Kb
-kernel partition size: 1024 Kb
-rw image size: 10624 Kb
-env partition size:128 Kb
-
-Total: 13824 Kb
-------------------------------
-
-These two are connected in a IPv4 based LAN.
-When i try to ping6 from Linux machine to the IAD,
-my IAD hangs and generates a kernel OOps message.
-Below is the snap shot of the message...
-
-Following message is produced at the IAD terminal.....
-
-# Unable to handle kernel paging request at virtual address 
-00000000, epc == 802
-4ce74, ra == 802592a8
-Oops in fault.c:do_page_fault, line 172:
-$0 : 00000000 1000fc00 8024ce70 8032bbbc
-$4 : 00000000 83cbf120 00000000 83cbf17c
-$8 : 00000001 0000000f 8030e000 00000003
-$12: 00000416 83f69e18 00000000 8030914b
-$16: fffffffd 00000000 00000018 c0026d20
-$20: 81120dc0 83cbf17c 83cbf17c 00000000
-$24: 00000001 2ac1d440
-$28: 80106000 80107d78 83cbf120 802592a8
-epc   : 8024ce74
-Status: 1000fc03
-Cause : 00800008
-Process swapper (pid: 0, stackpage=80106000)
-Stack: 00000008 00000000 83a00000 00000000 fd010018 83a11860 
-8031fd50 00000000
-        00000000 8024ca40 00000000 0000002c 8e8e1dac 00000000 
-fffffffd 83cbf120
-        00000000 83cbf17c c0026d20 00000000 00000000 00000000 
-800e1d38 80259b0c
-        83a53346 801efd1c 83a53346 839e92a0 00000000 83a118e0 
-83a53346 00000000
-        8022a1ec 80229e90 00000001 83cbf120 0000000e 8008a0e0 
-04000000 00000000
-        801f9384 ...
-Call Trace: [<8024ca40>] [<c0026d20>] [<80259b0c>] [<801efd1c>] 
-[<8022a1ec>] [<8
-0229e90>] [<801f9384>] [<8024c97c>] [<8011f6b0>] [<8011f214>] 
-[<801f5674>] [<801
-1af14>] [<8011f73c>] [<8011ad88>] [<8011aacc>] [<8011aacc>] 
-[<801117cc>] [<80111
-7cc>] [<8010a478>] [<8010dee8>] [<80107fe0>] [<80125700>] 
-[<801117cc>] [<8010600
-0>] [<80107f60>] [<8010870c>] [<801086f0>] [<80108a78>] 
-[<80115470>] [<802bfffc>
-] [<802b7d30>] [<802c0b48>] [<801005e8>]
-Code: 03e00008  27bd0030  00803021 <8cc50000> 30a400e0  10800003  
-240300e0  1483
-0034  24020001
-
-Suggestions/Tips are welcome.
-
--San
--------------------------------------
+Best Regards,
+Ashish Anand

@@ -1,43 +1,37 @@
-Received:  by oss.sgi.com id <S554051AbQLBKe5>;
-	Sat, 2 Dec 2000 02:34:57 -0800
-Received: from adsl-61-8-131.mia.bellsouth.net ([208.61.8.131]:44805 "EHLO
-        spawn.hockeyfiend.com") by oss.sgi.com with ESMTP
-	id <S554048AbQLBKeg>; Sat, 2 Dec 2000 02:34:36 -0800
-Received: from localhost ([127.0.0.1] ident=chris)
-	by spawn.hockeyfiend.com with esmtp (Exim 3.16 #1 (Debian))
-	id 1429zm-0006lr-00; Sat, 02 Dec 2000 05:34:18 -0500
-Date:   Sat, 2 Dec 2000 05:34:13 -0500 (EST)
-From:   "Christopher C. Chimelis" <chris@debian.org>
-X-Sender: chris@spawn.hockeyfiend.com
-To:     Jamie Fifield <fifield@amirix.com>
-cc:     linux-mips@oss.sgi.com
-Subject: Re: cross-compile tools made easy ...
-In-Reply-To: <00Nov29.094316ast.7303@dragon.appliedmicro.ns.ca>
-Message-ID: <Pine.LNX.4.21.0012020530010.25986-100000@spawn.hockeyfiend.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received:  by oss.sgi.com id <S554055AbQLBMU6>;
+	Sat, 2 Dec 2000 04:20:58 -0800
+Received: from web1.lanscape.net ([64.240.156.194]:38155 "EHLO
+        web1.lanscape.net") by oss.sgi.com with ESMTP id <S554052AbQLBMUj>;
+	Sat, 2 Dec 2000 04:20:39 -0800
+Received: from sumpf.cyrius.com (IDENT:root@web1.lanscape.net [64.240.156.194])
+	by web1.lanscape.net (8.9.3/8.9.3) with ESMTP id GAA29579;
+	Sat, 2 Dec 2000 06:20:27 -0600
+Received: by sumpf.cyrius.com (Postfix, from userid 1000)
+	id 0F0D415086; Sat,  2 Dec 2000 12:25:20 +0000 (GMT)
+Date:   Sat, 2 Dec 2000 12:25:20 +0000
+From:   Martin Michlmayr <tbm@cyrius.com>
+To:     Ralf Baechle <ralf@oss.sgi.com>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: Support for smaller glibc
+Message-ID: <20001202122520.A815@sumpf.cyrius.com>
+References: <20001202050306.A12319@bacchus.dhis.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20001202050306.A12319@bacchus.dhis.org>; from ralf@oss.sgi.com on Sat, Dec 02, 2000 at 05:03:06AM +0100
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+* Ralf Baechle <ralf@oss.sgi.com> [20001202 05:03]:
+> For the information of the embedded community.
+> 
+>> BTW, please discuss it on sglibc@external-lists.valinux.com.
 
-On Wed, 29 Nov 2000, Jamie Fifield wrote:
+See http://external-lists.valinux.com/lists/listinfo/sglibc/
 
-> Chris: Any chance I could persuade you to upload a binutils-mips to Woody? :)
-
-Ok, I have returned and am considering :-)
-
-What's the state of the toolchain on big-endian MIPS lately?  My indy has
-been relegated to other tasks and I've been unable to boot to Linux
-because of it :-(   Are any patches needed against my 2.10.1.0.2-1 package
-for it to work properly as a native assembler?  (in other words, are those
-branch errors still popping up while bootstrapping gcc?).
-
-There are STILl a ton of MIPS-related changes going into binutils CVS, so
-I'm hesitant to enable it until the submitter(s) slow down a bit.
-
-Would an experimental package due that targets only mips and mipsel as
-cross targets in the meantime?
-
-C
+-- 
+Martin Michlmayr
+tbm@cyrius.com

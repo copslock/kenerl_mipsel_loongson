@@ -1,200 +1,171 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Aug 2003 10:44:00 +0100 (BST)
-Received: from [IPv6:::ffff:159.226.39.4] ([IPv6:::ffff:159.226.39.4]:11212
-	"HELO mail.ict.ac.cn") by linux-mips.org with SMTP
-	id <S8225347AbTHUJn6>; Thu, 21 Aug 2003 10:43:58 +0100
-Received: (qmail 6464 invoked from network); 21 Aug 2003 09:35:30 -0000
-Received: from unknown (HELO ict.ac.cn) (159.226.40.187)
-  by mail.ict.ac.cn with SMTP; 21 Aug 2003 09:35:30 -0000
-Message-ID: <3F449440.4010403@ict.ac.cn>
-Date: Thu, 21 Aug 2003 17:43:28 +0800
-From: Fuxin Zhang <fxzhang@ict.ac.cn>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4) Gecko/20030624
-X-Accept-Language: zh-cn, en-us, en
-MIME-Version: 1.0
-To: =?gb18030?Q?=22=D6=EC=B7=EF=5C=5C=28zhufeng=5C=5C=29=22?= 
-	<zhufeng@koretide.com.cn>
-CC: linux-mips@linux-mips.org
-Subject: Re: gdbserver and gdb debugging stub for mips
-References: <MGEELAPMEFMLFBMDBLKLMENDCEAA.zhufeng@koretide.com.cn>
-In-Reply-To: <MGEELAPMEFMLFBMDBLKLMENDCEAA.zhufeng@koretide.com.cn>
-Content-Type: text/plain; charset=gb18030; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <fxzhang@ict.ac.cn>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Aug 2003 17:04:41 +0100 (BST)
+Received: from rwcrmhc12.comcast.net ([IPv6:::ffff:216.148.227.85]:44443 "EHLO
+	rwcrmhc12.comcast.net") by linux-mips.org with ESMTP
+	id <S8225362AbTHUQEj>; Thu, 21 Aug 2003 17:04:39 +0100
+Received: from lucon.org ([12.234.88.5]) by comcast.net (rwcrmhc12) with ESMTP
+          id <2003082115550601400d0h7ee>; Thu, 21 Aug 2003 15:55:06 +0000
+Received: by lucon.org (Postfix, from userid 1000)
+	id 14B402C4E3; Thu, 21 Aug 2003 08:55:05 -0700 (PDT)
+Date: Thu, 21 Aug 2003 08:55:04 -0700
+From: "H. J. Lu" <hjl@lucon.org>
+To: linux-gcc@vger.kernel.org, Kenneth Albanowski <kjahds@kjahds.com>,
+	Mat Hostetter <mat@lcs.mit.edu>, Warner Losh <imp@village.org>,
+	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+	Linas Vepstas <linas@linas.org>,
+	"Steven J. Hill" <sjhill@realitydiluted.com>, gcc@gcc.gnu.org,
+	GNU C Library <libc-alpha@sources.redhat.com>
+Subject: The Linux binutils 2.14.90.0.6 is released
+Message-ID: <20030821155504.GA16941@lucon.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4.1i
+Return-Path: <hjl@lucon.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3086
+X-archive-position: 3087
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fxzhang@ict.ac.cn
+X-original-sender: hjl@lucon.org
 Precedence: bulk
 X-list: linux-mips
 
+This is the beta release of binutils 2.14.90.0.6 for Linux, which is
+based on binutils 2003 0820 in CVS on sources.redhat.com plus various
+changes. It is purely for Linux.
+
+Please report any bugs related to binutils 2.14.90.0.6 to hjl@lucon.org.
+
+If you don't use
+
+# rpmbuild -ta binutils-xx.xx.xx.xx.xx.tar.gz
+
+to compile the Linux binutils, please read patches/README in source
+tree to apply Linux patches.
+
+Changes from binutils 2.14.90.0.5:
+
+1. Update from binutils 2003 0820.
+2. No longer use section names for ELF section types nor flags.
+3. Fix some ELF/IA64 linker bugs.
+4. Fix some ELF/ppc bugs.
+5. Add archive support to readelf.
+
+Changes from binutils 2.14.90.0.4.1:
+
+1. Update from binutils 2003 0722.
+2. Fix an ELF/mips linker bug.
+3. Fix an ELF/hpppa linker bug.
+4. Fix an ELF/ia64 assembler bug.
+5. Fix a linkonce support with C++ debug.
+6. A new working C++ demangler.
+7. Various alpha, mips, ia64, ... bug fixes.
+8. Support for the current gcc and glibc.
+
+Changes from binutils 2.14.90.0.4:
+ 
+1. Fix an ia64 assembler hint@pause bug.
+2. Support Intel Precott New Instructions.
+
+Changes from binutils 2.14.90.0.3:
+
+1. Work around the brain dead libtool.
+
+Changes from binutils 2.14.90.0.2:
+
+1. Update from binutils 2003 0523.
+2. Fix 2 ELF visibility bugs.
+3. Fix ELF/ppc linker bugs.
+
+Changes from binutils 2.14.90.0.1:
+
+1. Update from binutils 2003 0515.
+2. Fix various ELF visibility bugs.
+3. Fix some ia64 linker bugs.
+4. Add more IAS compatibilities to ia64 assembler.
+
+Changes from binutils 2.13.90.0.20:
+
+1. Update from binutils 2003 0505.
+2. Fix various ELF visibility bugs.
+3. Fix some ia64 linker bugs.
+4. Fix some ia64 assembler bugs.
+5. Add some IAS compatibilities to ia64 assembler.
+6. Fix ELF common symbol alignment.
+7. Fix ELF weak symbol handling.
+
+Changes from binutils 2.13.90.0.18:
+
+1. Update from binutils 2003 0319.
+2. Fix an ia64 linker brl relaxation bug.
+3. Fix some ELF/ppc linker bugs.
+
+Changes from binutils 2.13.90.0.16:
+
+1. Update from binutils 2003 0121.
+2. Fix an ia64 gas bug.
+3. Fix some TLS bugs.
+4. Fix some ELF/ppc bugs.
+5. Fix an ELF/m68k bug.
+
+2. Include /usr/bin/c++filt.
+Changes from binutils 2.13.90.0.14:
+
+1. Update from binutils 2002 1126.
+2. Include /usr/bin/c++filt.
+3. Fix "ld -r" with execption handling.
+
+Changes from binutils 2.13.90.0.10:
+
+1. Update from binutils 2002 1114.
+2. Fix ELF/alpha bugs.
+3. Fix an ELF/i386 assembler bug.
+
+Changes from binutils 2.13.90.0.4:
+
+1. Update from binutils 2002 1010.
+2. More ELF/PPC linker bug fixes.
+3. Fix an ELF/alpha linker bug.
+4. Fix an ELF/sparc linker bug to support Solaris.
+5. More TLS updates.
+
+Changes from binutils 2.13.90.0.3:
+
+1. Update from binutils 2002 0814.
+2. Fix symbol versioning bugs for gcc 3.2.
+3. Fix mips gas.
+
+Changes from binutils 2.13.90.0.2:
+
+1. Update from binutils 2002 0809.
+2. Fix a mips gas compatibility bug.
+3. Fix an x86 TLS bfd bug.
+4. Fix an x86 PIC gas bug.
+5. Improve symbol versioning support.
+
+The file list:
+
+1. binutils-2.14.90.0.6.tar.gz. Source code.
+2. binutils-2.14.90.0.5-2.14.90.0.6.diff.gz. Patch against the
+   previous beta source code.
+3. binutils-2.14.90.0.6-1.i386.rpm. IA-32 binary RPM for RedHat 9.
+4. binutils-2.14.90.0.6-1.ia64.rpm. IA-64 binary RPM for RedHat AS 2.1.
+
+There is no separate source rpm. You can do
+
+# rpmbuild -ta binutils-2.14.90.0.6.tar.gz
+
+to create both binary and source rpms.
+
+The primary sites for the beta Linux binutils are:
+
+1. http://www.kernel.org/pub/linux/devel/binutils/
+
+Thanks.
 
 
-Öì·ï(zhufeng) wrote:
-
->I wanto access 0x40000000 on mips, I did the following,but still exception
->happed:
->
->     page MASK is set to 4k
->
->    uint asid = 0;
->    ulong reg_entryhi = 0x40000000 | asid;
->
->    ulong reg_entrylo0;
->    ulong phyadd0  = 0x20000000 >> 12;
->    ulong pfn0 = phyadd0 << 6;
->    uint tlb_C = 2 << 3;     //cache coherence bit
->    uint tlb_D = 0 << 2;        //dirty bit
->  
->
-You want to write then you should set this bit, D means "writable",not 
-really dirty
-
->    uint tlb_V = 1 << 1;        // valid bit
->    uint tlb_G = 1;             //global bit
->
->    reg_entrylo0 = pfn0|tlb_C|tlb_D|tlb_V|tlb_G;
->	set_entryhi(reg_entryhi);
->	set_entrylo0(reg_entrylo0);
->	set_entrylo1(0|tlb_G);
->	tlb_write_indexed();
->
->    *((unsigned long *)0x40000000) = 0x44;  //still trap into exception
->
->what's the problem? thanks
->
->-----Original Message-----
->From: linux-mips-bounce@linux-mips.org
->[mailto:linux-mips-bounce@linux-mips.org]On Behalf Of Fuxin Zhang
->Sent: 2003Äê8ÔÂ18ÈÕ 13:20
->To: Öì·ï(zhufeng)
->Cc: linux-mips@linux-mips.org
->Subject: Re: gdbserver and gdb debugging stub for mips
->
->
->An answer cited from elsewhere:
->-----
->    <snip>
->
->    Rosimildo> /ecos/work/install/lib/libtarget.a(net_tcpip_ip_id.o): In
->function
->    Rosimildo> `ip_initid':
->    Rosimildo>
->/ecos/ecos-1.3.1/packages/net/tcpip/v1_0b1/src/sys/netinet/ip_id.c:231:
->    Rosimildo> relocaton truncated to fit: R_MIPS_GPREL16 time
->
->    Rosimildo> I am wondering if this seems familiar to anyone doing
->    Rosimildo> MIPS stuff.
->
->I think I know what the problem is, but I cannot be 100% sure.
->
->The MIPS architecture allows for a certain amount of global data to be
->accessed more quickly than others, using different instructions. The
->compiler exploits this facility by putting small global variables into
->sections .sdata and .sbss, rather than the normal sections .data and
->.bss. Of course the compiler has no idea how many modules are going to
->end up in the final executable. Hence at link-time it is possible that
->there is now too much data in these sections, and you will get a
->"relocation truncated" message. For most applications you will not hit
->the limit, in fact I am somewhat surprised that any ordinary eCos
->application would cause the problem to arise.
->
->The correct solution would be for the linker to handle this situation
->and decide which global variables should remain in the special region
->and which ones should be moved elsewhere. In theory it could use
->information such as the number of accesses to a particular global, or
->maybe even profiling feedback, to decide which variables are most
->worthwhile keeping in the special region. Unfortunately this would
->require the linker changing the instructions used to access the
->variables that are moved to the ordinary .data and .bss sections,
->which is a non-trivial operation. Also, having the linker change
->instructions would mess up other things such as the compiler's
->attempts at instruction scheduling.
->
->On occasion we have had requests to fix the toolchain so that it does
->the right thing (for some definition of the right thing), but the work
->is sufficiently involved that so far nobody has been willing to fund
->it.
->
->There is a workaround. The mips toolchain accepts an argument -G<num>,
->with a default value of 8. This means that any global variable <= 8
->bytes will end up in .sdata or .sbss. If you compile all the code with
->a different value, e.g. -G4, then less data ends up in the special
->sections so you will not hit the overflow condition. There is a
->performance penalty, of course. I suggest experimenting with -G
->values, and looking at the relevant gcc documentation as well since
->things may have changed since the last time I looked at this. It might
->also be worthwhile searching through the gcc mailing list archives at
->http://gcc.gnu.org/ml/gcc/
->
->Bart Veer // eCos net maintainer
->
->
->
->Öì·ï(zhufeng) wrote:
->
->  
->
->>when I build my mips program using gcc with -O0 , it is ok, while
->>    
->>
->using -o2, there come the following questions.
->  
->
->>lingking,,,
->>
->>relocation truncated to fit: R_MIPS_GPREL16  __global_ctor_start
->>relocation truncated to fit: R_MIPS_GPREL16 __global_ctor_end
->>relocation truncated to fit: R_MIPS_GPREL16 _recycle_start
->>
->>and so on.
->>
->>Has anybody encounter such questions?
->>
->>
->>
->>-----Original Message-----
->>From: wd@denx.de [mailto:wd@denx.de]
->>Sent: 2003å¹????—¥ 23:08
->>To: Ã–Ã¬Â·Ã¯
->>Cc: Wilson Chan; linux-mips@linux-mips.org
->>Subject: Re: gdbserver and gdb debugging stub for mips
->>
->>
->>In message <MGEELAPMEFMLFBMDBLKLIEKICEAA.zhufeng@koretide.com.cn> you
->>    
->>
->wrote:
->  
->
->>    
->>
->>>what do you mean by "MIPS is NOT MIPS"? Does it mean there are too many
->>>      
->>>
->mips boards?
->  
->
->>>      
->>>
->>big endian, little endian, 32 bit, 64 bit, ...
->>
->>It means that there are several  different  configurations,  and  you
->>must use tools to match your configuration.
->>
->>Best regards,
->>
->>Wolfgang Denk
->>
->>
->>
->>    
->>
->
->
->
->  
->
+H.J. Lu
+hjl@lucon.org
+08/21/2003

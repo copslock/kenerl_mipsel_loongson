@@ -1,69 +1,64 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id NAA10470 for <linux-archive@neteng.engr.sgi.com>; Fri, 5 Feb 1999 13:39:55 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id NAA15549 for <linux-archive@neteng.engr.sgi.com>; Fri, 5 Feb 1999 13:42:51 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id NAA91362
+	id NAA85830
 	for linux-list;
-	Fri, 5 Feb 1999 13:39:07 -0800 (PST)
+	Fri, 5 Feb 1999 13:42:21 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from otg.dallas.sgi.com (roctane.dallas.sgi.com [169.238.83.62])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id NAA86873
+	via ESMTP id NAA60165
 	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 5 Feb 1999 13:39:00 -0800 (PST)
-	mail_from (sgi.com!rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
-Received: from rachael.franken.de (rachael.franken.de [193.175.24.38]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id NAA03290
-	for <linux@cthulhu.engr.sgi.com>; Fri, 5 Feb 1999 13:38:59 -0800 (PST)
-	mail_from (rachael.franken.de!hub-fue!alpha.franken.de!tsbogend)
-Received: from hub-fue by rachael.franken.de
-	via rmail with uucp
-	id <m108sxk-0027SkC@rachael.franken.de>
-	for cthulhu.engr.sgi.com!linux; Fri, 5 Feb 1999 22:38:56 +0100 (MET)
-	(Smail-3.2 1996-Jul-4 #4 built DST-Sep-8)
-Received: by hub-fue.franken.de (Smail3.1.29.1 #35)
-	id m108sxd-002PC3C; Fri, 5 Feb 99 22:38 MET
-Received: (from tsbogend@localhost)
-	by alpha.franken.de (8.8.7/8.8.5) id WAA02081;
-	Fri, 5 Feb 1999 22:26:07 +0100
-Message-ID: <19990205222607.A2076@alpha.franken.de>
-Date: Fri, 5 Feb 1999 22:26:07 +0100
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To: Alexander Graefe <nachtfalke@usa.net>, ralf@uni-koblenz.de,
-        linux@cthulhu.engr.sgi.com
+	Fri, 5 Feb 1999 13:42:19 -0800 (PST)
+	mail_from (chad@dallas.sgi.com)
+Received: from dallas.sgi.com (localhost [127.0.0.1]) by otg.dallas.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id NAA23026; Fri, 5 Feb 1999 13:42:17 -0800 (PST)
+Message-ID: <36BB65B9.A036E9C5@dallas.sgi.com>
+Date: Fri, 05 Feb 1999 15:42:17 -0600
+From: Chad Carlin <chad@dallas.sgi.com>
+Reply-To: chad@sgi.com
+Organization: Silicon Graphics Inc.
+X-Mailer: Mozilla 4.5C-SGI [en] (X11; I; IRIX64 6.5 IP30)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: ralf@uni-koblenz.de
+CC: Alexander Graefe <nachtfalke@usa.net>, linux@cthulhu.engr.sgi.com
 Subject: Re: What kernel to use to install RH on a R4400 ?
-References: <19990202155147.A1565@ganymede> <19990203043951.D3920@uni-koblenz.de> <19990204154637.B5941@ganymede> <19990205034821.A620@uni-koblenz.de> <19990205055140.A383@ganymede>
-Mime-Version: 1.0
+References: <19990202155147.A1565@ganymede> <19990203043951.D3920@uni-koblenz.de> <19990204154637.B5941@ganymede> <19990205034821.A620@uni-koblenz.de>
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.93.2
-In-Reply-To: <19990205055140.A383@ganymede>; from Alexander Graefe on Fri, Feb 05, 1999 at 05:51:40AM +0100
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Fri, Feb 05, 1999 at 05:51:40AM +0100, Alexander Graefe wrote:
-> I tried that, but .131 doesn't support nfs-root. It keeps failing to
-> mount the root device.
+Does this mean that I should be able to use .131 kernel in conjunction with a
+local e2fs filesystem with the contents of root-be-0.04.cpio installed on it?
+And it should work?
 
-I've uploaded my current development kernel with support for bootp
-and nfs-root compiled it:
+Chad
 
-ftp://ftp.linux.sgi.com/pub/linux/mips/test/vmlinux-indy-990205.gz
 
-BTW I want to make sure, that the kernel also boots headless (Challange S
-simulation), can I just remove the newport from the Indy ?
+ralf@uni-koblenz.de wrote:
 
-> Can I bake my own kernel for the Indy on my PC with the right compiler ?
+> On Thu, Feb 04, 1999 at 03:46:37PM +0100, Alexander Graefe wrote:
+>
+> > On Wed, Feb 03, 1999 at 04:39:51AM +0100, ralf@uni-koblenz.de wrote:
+> >
+> > >  - the exact screen output.  Especially the register dump following the
+> > >    Aiee message is important.
+> >
+> > kernel 2.1.100 (the one from the HardHat.tgz)
+>
+> 2.1.100 is known to fail on R4400.  This is supposed to be fixed in .131
+> which is why I'm worried about the other bug report.  Your case is obvious -
+> use a newer kernel.
+>
+>   Ralf
 
-sure, but be prepared to do some hacking. There is no out of the box
-cross compiling stuff.
-
-Thomas.
-
--- 
-   This device has completely bogus header. Compaq scores again :-|
-It's a host bridge, but it should be called ghost bridge instead ;^)
-                                        [Martin `MJ' Mares on linux-kernel]
+--
+           -----------------------------------------------------
+            Chad Carlin                          Special Systems
+            Silicon Graphics Inc.                   972.205.5911
+            Pager 888.754.1597          VMail 800.414.7994 X5344
+            chad@sgi.com             http://reality.sgi.com/chad
+           -----------------------------------------------------
+        "flying through hyper space ain't like dusting crops, boy"

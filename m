@@ -1,46 +1,37 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8QFuQv24069
-	for linux-mips-outgoing; Wed, 26 Sep 2001 08:56:26 -0700
-Received: from mail.ivivity.com (user-vc8ftn3.biz.mindspring.com [216.135.246.227])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8QFuHD24057
-	for <linux-mips@oss.sgi.com>; Wed, 26 Sep 2001 08:56:19 -0700
-Received: by ATLOPS with Internet Mail Service (5.5.2448.0)
-	id <QMJCNNX7>; Wed, 26 Sep 2001 11:56:04 -0400
-Message-ID: <25369470B6F0D41194820002B328BDD2195AA3@ATLOPS>
-From: Marc Karasek <marc_karasek@ivivity.com>
-To: "'Jason Saggers'" <psyclone@owbn.net.nz>, linux-mips@oss.sgi.com
-Subject: RE: Newbie to the SGI Mips
-Date: Wed, 26 Sep 2001 11:56:03 -0400
+	by oss.sgi.com (8.11.2/8.11.3) id f8QHYS025796
+	for linux-mips-outgoing; Wed, 26 Sep 2001 10:34:28 -0700
+Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8QHYRD25793
+	for <linux-mips@oss.sgi.com>; Wed, 26 Sep 2001 10:34:27 -0700
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f8QHbOB11590;
+	Wed, 26 Sep 2001 10:37:24 -0700
+Message-ID: <3BB20FA9.79D167BA@mvista.com>
+Date: Wed, 26 Sep 2001 10:26:01 -0700
+From: Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2448.0)
-Content-Type: text/plain;
-	charset="iso-8859-1"
+To: Marc Karasek <marc_karasek@ivivity.com>
+CC: "'Karsten Merker'" <karsten@excalibur.cologne.de>, linux-mips@oss.sgi.com
+Subject: Re: busybox does not like 2.4.8, or the other way around?
+References: <25369470B6F0D41194820002B328BDD2195AA2@ATLOPS>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Where did you get your system from?  I maybe looking for one in the near
-future to do some development on.  If anyone else knows where I can get one
-at a reasonable price can you email me....
+Marc Karasek wrote:
+> 
+> Yes, there was a bug in busybox that caused this.  I helped track it down a
+> few months ago and it should be fixed in the latest one.  I have attached an
+> email about the bug.  What version(s) of busybox are you using?
+> 
 
-Thanks
-Marc
+It is 0.51.  Looks like the same busybox bug to me.  Time to update busybox.
 
------Original Message-----
-From: Jason Saggers [mailto:psyclone@owbn.net.nz]
-Sent: Friday, September 21, 2001 6:32 AM
-To: linux-mips@oss.sgi.com
-Subject: Newbie to the SGI Mips
+I'd appreciate if someone has already updated my little busybox ramdisk at
+http://linux.junsun.net and send me a copy ...
 
-
-Hi,
-	I have come into possesion of the SGI Indy Workstation with a R5000
-processor.
-
-I have been going thorugh a number of site that I could find and have found
-a number of out of date distribution, and have manage to get the simple
-distribution partially working.
-
-If someone could point me to a resonable distribution I would be
-grateful....
-
-Jason
+Jun

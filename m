@@ -1,61 +1,189 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fA58A7111917
-	for linux-mips-outgoing; Mon, 5 Nov 2001 00:10:07 -0800
-Received: from smtp.huawei.com ([61.144.161.21])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA58A0011903
-	for <linux-mips@oss.sgi.com>; Mon, 5 Nov 2001 00:10:00 -0800
-Received: from hcdong11752a ([10.105.28.74]) by smtp.huawei.com
-          (Netscape Messaging Server 4.15) with SMTP id GMBGV800.C8L for
-          <linux-mips@oss.sgi.com>; Mon, 5 Nov 2001 15:30:45 +0800 
-Message-ID: <013301c165cc$5d030fa0$4a1c690a@huawei.com>
-From: "machael" <dony.he@huawei.com>
-To: <linux-mips@oss.sgi.com>
-Subject: vmalloc bugs in 2.4.5???
-Date: Mon, 5 Nov 2001 15:34:44 +0800
+	by oss.sgi.com (8.11.2/8.11.3) id fA5HIbc13407
+	for linux-mips-outgoing; Mon, 5 Nov 2001 09:18:37 -0800
+Received: from atlrel1.hp.com (atlrel1.hp.com [156.153.255.210])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA5HIM013403
+	for <linux-mips@oss.sgi.com>; Mon, 5 Nov 2001 09:18:22 -0800
+Received: from xatlrelay2.atl.hp.com (xatlrelay2.atl.hp.com [15.45.89.191])
+	by atlrel1.hp.com (Postfix) with ESMTP
+	id 80CE051F; Mon,  5 Nov 2001 12:18:21 -0500 (EST)
+Received: from xatlbh1.atl.hp.com (xatlbh1.atl.hp.com [15.45.89.186])
+	by xatlrelay2.atl.hp.com (Postfix) with ESMTP
+	id C9C7D1F510; Mon,  5 Nov 2001 12:18:19 -0500 (EST)
+Received: by xatlbh1.atl.hp.com with Internet Mail Service (5.5.2653.19)
+	id <VPWQD532>; Mon, 5 Nov 2001 12:18:19 -0500
+Message-ID: <CBD6266EA291D5118144009027AA63353F9255@xboi05.boi.hp.com>
+From: "TWEDE,ROGER (HP-Boise,ex1)" <roger_twede@hp.com>
+To: "'Bradley D. LaRonde'" <brad@ltc.com>, Green <greeen@iii.org.tw>,
+   Linux-mips <linux-mips@oss.sgi.com>, MipsMailList <linux-mips@fnet.fr>
+Subject: RE: do_ri( )
+Date: Mon, 5 Nov 2001 12:18:15 -0500 
 MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2653.19)
 Content-Type: text/plain;
-	charset="gb2312"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.00.2615.200
-X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2615.200
+	charset="windows-1252"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-hello:
-    I use linux-2.4.5 and I think VMALLOC may have some bugs which i don't
-know how to fixup.
-    I try to replace some kernel functions with my own implementations.I
-will explain it in the following:
-    Let's say:
-        void (*my_func)(void)=func1;
-     where "my_func" is a function pointer defined in kernel, and "func1" is
- a function(void func1(void)) implemented in kernel.And "my_func" is an
- EXPORTED SYMBOL in mips_ksyms.c.
+I've seen the same with glibc 2.2.4 on the QED RM5261 processor (Mips 5000).
 
-    Now I want to replace "func1" with my own "func2" in a module
- my_module.o:
-     extern void (*my_func)(void);
-     my_func = func2;
-     where "func2" is a function (void fun2(void)) implemented in
- "my_module.o".
+I can take a multi-threaded application that runs without fail using glibc
+2.2.2 and reproduce the failure using glibc 2.2.3 and glibc 2.2.4.
 
-     If I do "insmod my_module.o", the kernel should run OK. In fact, it is
- often met an "unhandled kernel unaligned access" or "do_page_fault"
- exception and then panics.
+A small test app I wrote to exhibit the problem is included below.
 
-     We know "func1" should be in KSEG0(unmapped , cached) ,So it's address
-should be 0x8XXXXXXX.And "my_func" should also pointed to this same address
-before inserting
- my_module.o.  "func2" should be in KSEG2(mapped, cached) since it is
- implemented in module, So it's address should be 0xCXXXXXXX.After inserting
- my_module.o, "my_func" should be changed to pointed to this new address in
- KSEG2. But kernel panics......
-    If I change "module_map()" in include/asm/module.h from vmalloc to
-kmalloc, kernel runs ok after inserting my module. So I think vmalloc may
-have some bugs.
+I was using gcc 3.0 at the time.  I question whether gcc 2.96 might help
+since the glibc variants at sgi.com were compiled using 2.96.
 
-    Anyone knows how to fixup it?
+Regards,
 
-    machael
+Roger
+
+// CODE STARTS BELOW
+
+
+#include <assert.h>
+#include <pthread.h>
+#include <sched.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <errno.h>
+
+
+struct ThreadStartInfo {
+    pthread_mutex_t InitCompleteMutex;
+    pthread_cond_t InitCompleteCond;
+    void * (*Func)(void *);
+    void * Arg;
+    int Priority;
+    char * ThreadName;
+    unsigned char InitCompleteCount;
+};
+
+
+static void * StartFunction(void * Arg)
+{
+
+   struct ThreadStartInfo * StartInfo = (struct ThreadStartInfo *) Arg;
+   int result;
+   void * retVal = 0;
+
+   assert(Arg != NULL);
+
+   result = pthread_mutex_lock(&(StartInfo->InitCompleteMutex));
+   assert(result == 0);
+   printf("pid=%d thread mutex locked at x%x\n", getpid(),
+&(StartInfo->InitCompleteMutex));
+   StartInfo->InitCompleteCount = 1;
+   result = pthread_cond_signal(&(StartInfo->InitCompleteCond));
+   assert(result == 0);
+   printf("pid=%d thread cond signal sent, unlocking at 0x%x\n", getpid(),
+&(StartInfo->InitCompleteMutex));
+   result = pthread_mutex_unlock(&(StartInfo->InitCompleteMutex));
+   assert(result == 0);
+   printf("pid=%d thread unlocked\n", getpid());
+   sched_yield();
+   printf("pid=%d yielded and back again\n", getpid());
+
+   return(retVal);
+
+
+}
+
+
+
+
+int main(void)
+{
+    pthread_t ThreadObject;
+    struct ThreadStartInfo StartInfo;
+    pthread_mutexattr_t mutexAttr;
+    pthread_attr_t threadAttr;
+    pthread_condattr_t condAttr;
+    int result = 0;
+
+    StartInfo.ThreadName = "mythread";
+
+    result = pthread_mutexattr_init(&mutexAttr);
+    assert(result == 0);
+    printf("pid=%d Init mutex\n", getpid());
+    result = pthread_mutex_init(&(StartInfo.InitCompleteMutex), &mutexAttr);
+    assert(result == 0);
+
+    result = pthread_condattr_init(&condAttr);
+    assert(result == 0);
+    result = pthread_cond_init(&(StartInfo.InitCompleteCond), &condAttr);
+    assert(result == 0);
+
+    StartInfo.InitCompleteCount = 0;
+
+    pthread_mutex_lock(&(StartInfo.InitCompleteMutex));
+
+    printf("pid=%d About to create thread: %s\n", getpid(),
+StartInfo.ThreadName);
+    result = pthread_attr_init(&threadAttr);
+    assert(result == 0);
+    result = pthread_create(&ThreadObject,
+                              &threadAttr,
+                              &StartFunction,
+                              (void *)&StartInfo);
+    assert(result == 0);
+    while ((result == 0) && (StartInfo.InitCompleteCount == 0))
+    {
+        do
+        {
+	   printf("pid=%d about to cond_wait for %s init 1.\n", getpid(),
+StartInfo.ThreadName);
+    	   result = pthread_cond_wait(&(StartInfo.InitCompleteCond),
+&(StartInfo.InitCompleteMutex));
+    	   printf("pid=%d back from cond_wait for %s init 1.  result=%d\n",
+getpid(), StartInfo.ThreadName, result);
+        } while (result == EINTR);
+    }
+
+    result = pthread_mutex_unlock(&(StartInfo.InitCompleteMutex));
+    assert(result == 0);
+
+    getchar();
+    return 0;
+}
+
+
+// CODE ABOVE
+
+
+-----Original Message-----
+From: Bradley D. LaRonde [mailto:brad@ltc.com]
+Sent: Sunday, November 04, 2001 9:33 PM
+To: Green; Linux-mips; MipsMailList
+Subject: Re: do_ri( )
+
+
+I've seen the same thing but on a different processor (VR5432).  gcc 3.0.1,
+glibc 2.2.3.  I suspect stack/register corruption.
+
+Regards,
+Brad
+
+----- Original Message -----
+From: Green
+To: Linux-mips ; MipsMailList
+Sent: Sunday, November 04, 2001 10:43 PM
+Subject: do_ri( )
+
+Dear all,
+
+    I often get into trouble executing multithread application.
+    Sometimes it will appear the message " Illegal instruction = 0xXXXX " in
+    do_ri() function in /arch/mips/kernel/traps.c.
+    It happened randomly.
+
+    Up to now, I still didn't know how to fix bug.
+    If any one know how to fix it, please reply me.
+    Appreciate in sincerely.
+
+    P.S  My mips bos is R3912.
+
+~~
+Green  greeen@iii.org.tw

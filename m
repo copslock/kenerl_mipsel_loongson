@@ -1,28 +1,43 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id CAA69193 for <linux-archive@neteng.engr.sgi.com>; Wed, 3 Dec 1997 02:53:23 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id DAA73073 for <linux-archive@neteng.engr.sgi.com>; Wed, 3 Dec 1997 03:47:54 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id CAA14574 for linux-list; Wed, 3 Dec 1997 02:50:09 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id CAA14564 for <linux@cthulhu.engr.sgi.com>; Wed, 3 Dec 1997 02:50:08 -0800
-Received: from snowcrash.cymru.net (snowcrash.cymru.net [163.164.160.3]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id CAA20849
-	for <linux@cthulhu.engr.sgi.com>; Wed, 3 Dec 1997 02:49:07 -0800
-	env-from (alan@lxorguk.ukuu.org.uk)
-Received: from lightning.swansea.linux.org.uk (the-village.bc.nu [163.164.160.21]) by snowcrash.cymru.net (8.8.7/8.7.1) with SMTP id KAA22753; Wed, 3 Dec 1997 10:48:56 GMT
-Received: by lightning.swansea.linux.org.uk (Smail3.1.29.1 #2)
-	id m0xdCOt-0005FsC; Wed, 3 Dec 97 10:51 GMT
-Message-Id: <m0xdCOt-0005FsC@lightning.swansea.linux.org.uk>
-From: alan@lxorguk.ukuu.org.uk (Alan Cox)
-Subject: Re: Linux on the O2
-To: ratfink@xtra.co.nz (Brendan Black)
-Date: Wed, 3 Dec 1997 10:51:27 +0000 (GMT)
-Cc: linux@cthulhu.engr.sgi.com
-In-Reply-To: <3484C528.4DDB2A53@xtra.co.nz> from "Brendan Black" at Dec 3, 97 03:34:16 pm
-Content-Type: text
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id DAA19348 for linux-list; Wed, 3 Dec 1997 03:42:44 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id DAA19338 for <linux@engr.sgi.com>; Wed, 3 Dec 1997 03:42:38 -0800
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id DAA29587
+	for <linux@engr.sgi.com>; Wed, 3 Dec 1997 03:42:37 -0800
+	env-from (ralf@mailhost.uni-koblenz.de)
+Received: from zaphod (ralf@zaphod.uni-koblenz.de [141.26.4.13])
+	by informatik.uni-koblenz.de (8.8.8/8.8.8) with SMTP id MAA15922
+	for <linux@engr.sgi.com>; Wed, 3 Dec 1997 12:42:35 +0100 (MET)
+Received: by zaphod (SMI-8.6/KO-2.0)
+	id MAA17997; Wed, 3 Dec 1997 12:42:33 +0100
+Message-ID: <19971203124232.10294@zaphod.uni-koblenz.de>
+Date: Wed, 3 Dec 1997 12:42:32 +0100
+From: Ralf Baechle <ralf@uni-koblenz.de>
+To: linux@cthulhu.engr.sgi.com
+Subject: libc
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.84e
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> I can imagine all sorts of 'uses' for something like this (linux on the
-> N64) - but one thing crops
-> up, I thought there WAS an N64 port.
-> 
-> I seem to remember something, may have been an article on IX magazine...
+Hi all,
 
-April issue I believe ...
+it turned out that the libc bugs I was still observing were produced
+due to the libc install process failing in a subtile way.  So the
+sources are ok.  Now that this problem is gone the RPM factory has
+been restarted.
+
+Be careful: I still observe occasional disk corruption.  Fsck is your
+friend :-(  I suspect the console driver is the cause as it also has
+some other misterious "properties".  For some reason the system's
+performance is extremly bad.  Crosscompiling libc on IRIX takes about
+90 minutes using a R4600/133Mhz.  Using a R5000 under Linux takes more
+than four times as much.  Again I suspect the console driver as the
+cause.
+
+Since the load address for the program interpreter is no longer fixed
+in the kernel also directly calling ld.so like during the libc build or
+in ldd fails.  Easy to fix.
+
+  Ralf

@@ -1,56 +1,43 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7D50GS29299
-	for linux-mips-outgoing; Sun, 12 Aug 2001 22:00:16 -0700
+	by oss.sgi.com (8.11.2/8.11.3) id f7D57eF29414
+	for linux-mips-outgoing; Sun, 12 Aug 2001 22:07:40 -0700
 Received: from mail.foobazco.org (snowman.foobazco.org [198.144.194.230])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7D50Fj29295
-	for <linux-mips@oss.sgi.com>; Sun, 12 Aug 2001 22:00:15 -0700
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7D57dj29411
+	for <linux-mips@oss.sgi.com>; Sun, 12 Aug 2001 22:07:39 -0700
 Received: from galt.foobazco.org (galt.foobazco.org [198.144.194.227])
 	by mail.foobazco.org (Postfix) with ESMTP
-	id 226513E90; Sun, 12 Aug 2001 21:48:05 -0700 (PDT)
+	id 58C573E90; Sun, 12 Aug 2001 21:55:32 -0700 (PDT)
 Received: by galt.foobazco.org (Postfix, from userid 1014)
-	id 1877513FD0; Sun, 12 Aug 2001 21:54:43 -0700 (PDT)
-Date: Sun, 12 Aug 2001 21:54:42 -0700
+	id 81DDC13FD0; Sun, 12 Aug 2001 22:02:10 -0700 (PDT)
+Date: Sun, 12 Aug 2001 22:02:10 -0700
 From: Keith M Wesolowski <wesolows@foobazco.org>
-To: Ilya Volynets <ilya@theIlya.com>
-Cc: Mark Nellemann <mark@nellemann.nu>,
-   linux-mips mail list <linux-mips@oss.sgi.com>
-Subject: Re: Is it possible to boot linux on an O2 r5k ?
-Message-ID: <20010812215442.C24560@foobazco.org>
+To: "Salisbury, Roger" <Roger.Salisbury@team.telstra.com>
+Cc: "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
+Subject: Re: FW: indigo2 kernel build failures
+Message-ID: <20010812220210.D24560@foobazco.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <01081009105200.07543@gateway>
+In-Reply-To: <C1CCF0351229D311BBEB0008C75B9A8A02CAFACC@ntmsg0080.corpmail.telstra.com.au>
 User-Agent: Mutt/1.3.18i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, Aug 10, 2001 at 09:10:52AM -0700, Ilya Volynets wrote:
+On Fri, Aug 10, 2001 at 11:31:58AM +1000, Salisbury, Roger wrote:
 
-> Both. The kernel sources for O2 live in cvs.foobazco.org. Also,
-> there are LOTS of problems. You will need some extra ethernet
-> adapter, for example, since MACE ethernet is not suported. (I am
-> working on it at the moment, but don't hold your breath).  NICs that
-> are knownw to work: some tulip-based.  NICs that are known not to
-> work: 3c905B-TX...
+> > I just wondering if  the UNKNOW  aspect "mips-unknown-linux-gnu" of
+> > building packages has some detrimental affect
+> > on the success of building a kernel.
+> > IE
+> > The machine status isn't detected properly.
 
-Also eepro100 has worked for me in the past.  Someone should
-investigate why the 3c doesn't work; probably the driver is doing
-something forbidden.  While we're at it, someone should sync that tree
-with oss again.  It doesn't appear likely that I'll be working on it
-for some time, if ever.
-
-> Also, things only work uncached.
-
-Well, even then I can't really claim that it "works" for any standard
-meaning of the word.  Frankly, I'd rather people start running cached
-so that those problems can get fixed, especially since running cached
-isn't really *that* much worse anyway.
-
-> As you now understand, O2+Linux is kernel-hacker only toy at the moment.
-
-Isn't that the rule?  Completeness of Linux support is directly
-proportional to the degree of obsolescence of the hardware.  You want
-full support, just run Irix... it's not like it's windows or anything.
+Nope.  Even if it did the kernel wouldn't care.  Build gcc on a peecee
+sometime and you'll see "i386-unknown-linux-gnu" and it will work as
+well as gcc ever does.  Have some fun with it - maybe
+"mips-fuckmeinthegoatass-linux-gnu" (STR) for your amusement or
+"mips-notintel-linux-gnu" to make a statement.  It won't affect
+anything.  Leave off the -gnu, though, and configure will kindly add
+it back on, reminding you that it is, in fact, GNU/Linux, dammit.
 
 -- 
 Keith M Wesolowski <wesolows@foobazco.org> http://foobazco.org/~wesolows

@@ -1,94 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Apr 2003 22:23:02 +0100 (BST)
-Received: from mail.stellartec.com ([IPv6:::ffff:65.107.16.99]:2821 "EHLO
-	nt_server.stellartec.com") by linux-mips.org with ESMTP
-	id <S8225208AbTDXVW5>; Thu, 24 Apr 2003 22:22:57 +0100
-Received: from wssseeger ([192.168.1.53]) by nt_server.stellartec.com
-          (Post.Office MTA v3.1.2 release (PO205-101c)
-          ID# 568-43562U100L2S100) with SMTP id AAA469;
-          Thu, 24 Apr 2003 14:22:48 -0700
-Reply-To: <sseeger@stellartec.com>
-From: sseeger@stellartec.com (Steven Seeger)
-To: "'Jun Sun'" <jsun@mvista.com>,
-	"'Steven Seeger'" <sseeger@stellartec.com>
-Cc: <linux-mips@linux-mips.org>
-Subject: [patch] new wait instruction for vr4181
-Date: Thu, 24 Apr 2003 14:28:47 -0700
-Message-ID: <079701c30aa8$7de13300$3501a8c0@wssseeger>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Apr 2003 22:44:10 +0100 (BST)
+Received: from mx2.mips.com ([IPv6:::ffff:206.31.31.227]:13218 "EHLO
+	mx2.mips.com") by linux-mips.org with ESMTP id <S8225208AbTDXVoF>;
+	Thu, 24 Apr 2003 22:44:05 +0100
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id h3OLhpUe019581;
+	Thu, 24 Apr 2003 14:43:52 -0700 (PDT)
+Received: from grendel (grendel [192.168.236.16])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id OAA03757;
+	Thu, 24 Apr 2003 14:43:52 -0700 (PDT)
+Message-ID: <011a01c30aab$b7748ce0$10eca8c0@grendel>
+From: "Kevin D. Kissell" <kevink@mips.com>
+To: "Chip Coldwell" <coldwell@frank.harvard.edu>,
+	<linux-mips@linux-mips.org>
+References: <Pine.LNX.4.44.0304241613190.18155-100000@frank.harvard.edu>
+Subject: Re: NCD900 port?
+Date: Thu, 24 Apr 2003 23:51:41 +0200
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="----=_NextPart_000_0798_01C30A6D.D1825B00"
-X-Priority: 3 (Normal)
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
 X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook CWS, Build 9.0.2416 (9.0.2911.0)
-In-Reply-To: <20030424112711.E28275@mvista.com>
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Importance: Normal
-Return-Path: <sseeger@stellartec.com>
+X-Mailer: Microsoft Outlook Express 5.50.4807.1700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4910.0300
+Return-Path: <kevink@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2180
+X-archive-position: 2181
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sseeger@stellartec.com
+X-original-sender: kevink@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
+> I'm facing a ~$1K site license charge for NCD's NCBridge software for
+> their NC948 X Terminals, and since my site consists of exactly three
+> of these things that I bought for less than $250 each I'm balking a
+> bit.
+> 
+> The NC948 consists of a 165 MHz QED RM5231, S3 Savage4 graphics
+> controller, and an AMD PCnet NIC of some sort.  It doesn't seem like
+> there's anything in that set that Linux or XFree86 wouldn't be happy
+> to run.
 
-------=_NextPart_000_0798_01C30A6D.D1825B00
-Content-Type: text/plain;
-	charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
+What PCI bridge is being used?  Galileo?
 
-I think I figured this out. Could someone look at this and tell me if I did
-it right?
+> To be completely explicit what I'm proposing is to run Linux on the X
+> Terminal (as opposed to the server that provides boot image, xdm,
+> etc.).  My question is: has anybody done it or does anybody know a
+> reason why it can't be done?
 
-Thanks.
-
--Steve
-
-
-------=_NextPart_000_0798_01C30A6D.D1825B00
-Content-Type: application/octet-stream;
-	name="cpu-probe.c.diff"
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: attachment;
-	filename="cpu-probe.c.diff"
-
---- /root/vr/new/linux-2.4.21.orig/arch/mips/kernel/cpu-probe.c	=
-2003-04-24 05:32:21.000000000 -0700
-+++ ./cpu-probe.c	2003-04-24 14:16:35.000000000 -0700
-@@ -34,6 +34,16 @@
- 		".set\tmips0");
- }
-=20
-+#ifdef CONFIG_VR4181
-+static void vr4181_wait(void)
-+{
-+   __asm__(".set\tnoreorder\n"
-+	   ".int 0x42000021\n"
-+	   ".set\treorder\n");
-+  =20
-+}
-+#endif
-+ =20
- void au1k_wait(void)
- {
- #ifdef CONFIG_PM
-@@ -83,6 +93,12 @@
- 		cpu_wait =3D au1k_wait;
- 		printk(" available.\n");
- 		break;
-+#ifdef CONFIG_VR4181
-+	 case CPU_VR4181:
-+	   cpu_wait =3D vr4181_wait;
-+	   printk(" available\n");
-+	   break;
-+#endif	  =20
- 	default:
- 		printk(" unavailable.\n");
- 		break;
-
-------=_NextPart_000_0798_01C30A6D.D1825B00--
+I think it's probably doable, but if you want two reasons 
+why it might not be, I'd say they would be:
+1) Undocumented/unsupported PCI or other interface
+2) Not enough RAM

@@ -1,34 +1,48 @@
-Received:  by oss.sgi.com id <S553783AbQJPLa3>;
-	Mon, 16 Oct 2000 04:30:29 -0700
-Received: from u-206.karlsruhe.ipdial.viaginterkom.de ([62.180.18.206]:26379
-        "EHLO u-206.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S553779AbQJPLaZ>; Mon, 16 Oct 2000 04:30:25 -0700
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S869487AbQJPLaK>;
-        Mon, 16 Oct 2000 13:30:10 +0200
-Date:   Mon, 16 Oct 2000 13:30:10 +0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Jay Carlson <nop@nop.com>
-Cc:     Mike Klar <mfklar@ponymail.com>, Jay Carlson <nop@place.org>,
-        linux-mips@fnet.fr, linux-mips@oss.sgi.com
+Received:  by oss.sgi.com id <S553791AbQJPPzl>;
+	Mon, 16 Oct 2000 08:55:41 -0700
+Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:30951 "EHLO
+        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553784AbQJPPzY>;
+	Mon, 16 Oct 2000 08:55:24 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id RAA19268;
+	Mon, 16 Oct 2000 17:41:45 +0200 (MET DST)
+Date:   Mon, 16 Oct 2000 17:41:45 +0200 (MET DST)
+From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To:     Jun Sun <jsun@mvista.com>
+cc:     linux-mips@fnet.fr, linux-mips@oss.sgi.com
 Subject: Re: stable binutils, gcc, glibc ...
-Message-ID: <20001016133010.B17878@bacchus.dhis.org>
-References: <NDBBIDGAOKMNJNDAHDDMAENPCMAA.mfklar@ponymail.com> <KEEOIBGCMINLAHMMNDJNOECBCAAA.nop@nop.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <KEEOIBGCMINLAHMMNDJNOECBCAAA.nop@nop.com>; from nop@nop.com on Mon, Oct 16, 2000 at 07:26:19AM -0400
-X-Accept-Language: de,en,fr
+In-Reply-To: <39E7EB73.9206D0DB@mvista.com>
+Message-ID: <Pine.GSO.3.96.1001016173427.18406D-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Mon, Oct 16, 2000 at 07:26:19AM -0400, Jay Carlson wrote:
+On Fri, 13 Oct 2000, Jun Sun wrote:
 
-> Does anyone know if gcc 2.97 can build glibc 2.0.x?
+> b) Andreas Jaeger recommanded Ulf's patch against the CVS tree.  He
+> recommanded 
+> 
+> ftp://oss.sgi.com/pub/linux/mips/src/binutils/binutils-000420.diff.gz.  
+> 
+> But I only found the following file.
+> 
+> ftp://oss.sgi.com/pub/linux/mips/binutils/binutils-000424.diff.gz
 
-I'm using a glibc snapshot of about two weeks ago which seems to work fine
-for glibc.  I however suspect it's making Emacs die and Emacs addicts
-keep insisting that this isn't within spec ;-)
+ I've forward-ported the patch to the final 2.10 release.  It's available
+at ftp://ftp.ds2.pg.gda.pl/pub/macro/ and http://www.ds2.pg.gda.pl/~macro/
+(the latter is slightly outdated though -- I need to update it from RPM
+packages).
 
-  Ralf
+> c) Maciej reported he got binutils v2.10 working for glibc 2.2.  No
+> details or any distribution.
+
+ The package is available from ftp://ftp.ds2.pg.gda.pl/pub/macro/.  Newer
+versions get uploaded as they are ready. 
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

@@ -1,53 +1,94 @@
-Received:  by oss.sgi.com id <S553768AbRB1M63>;
-	Wed, 28 Feb 2001 04:58:29 -0800
-Received: from u-155-18.karlsruhe.ipdial.viaginterkom.de ([62.180.18.155]:15108
-        "EHLO u-155-18.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S553690AbRB1M6S>; Wed, 28 Feb 2001 04:58:18 -0800
-Received: from [193.98.169.28] ([193.98.169.28]:55936 "EHLO
-	dea.waldorf-gmbh.de") by bacchus.dhis.org with ESMTP
-	id <S870768AbRB1M5p>; Wed, 28 Feb 2001 04:57:45 -0800
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f1SCuS705711;
-	Wed, 28 Feb 2001 13:56:28 +0100
-Date:	Wed, 28 Feb 2001 13:56:28 +0100
-From:	Ralf Baechle <ralf@oss.sgi.com>
-To:	"Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc:	Fabrice Bellard <bellard@email.enst.fr>, linux-mips@oss.sgi.com
-Subject: Re: Serious bug in uaccess.h
-Message-ID: <20010228135628.C5452@bacchus.dhis.org>
-References: <20010227232227.B384@email.enst.fr> <Pine.GSO.3.96.1010228130945.6646A-100000@delta.ds2.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.GSO.3.96.1010228130945.6646A-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Wed, Feb 28, 2001 at 01:47:27PM +0100
-X-Accept-Language: de,en,fr
+Received:  by oss.sgi.com id <S553829AbRB1Vmo>;
+	Wed, 28 Feb 2001 13:42:44 -0800
+Received: from stereotomy.lineo.com ([64.50.107.151]:38162 "HELO
+        stereotomy.lineo.com") by oss.sgi.com with SMTP id <S553773AbRB1Vm1>;
+	Wed, 28 Feb 2001 13:42:27 -0800
+Received: from Lineo.COM (localhost.localdomain [127.0.0.1])
+	by stereotomy.lineo.com (Postfix) with ESMTP id DD36F4C92B
+	for <linux-mips@oss.sgi.com>; Wed, 28 Feb 2001 14:42:26 -0700 (MST)
+Message-ID: <3A9D70C2.6010504@Lineo.COM>
+Date:   Wed, 28 Feb 2001 14:42:26 -0700
+From:   Quinn Jensen <jensenq@Lineo.COM>
+Organization: Lineo, Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux 2.2.16-9mdk i686; en-US; m18) Gecko/20001107 Netscape6/6.0
+X-Accept-Language: en
+MIME-Version: 1.0
+To:     linux-mips@oss.sgi.com
+Subject: Patch allowing GDB to ignore misaligned data faults
+References: <000a01c0a0cf$849efbe0$dde0490a@BANANA>
+Content-Type: multipart/mixed;
+ boundary="------------040204030603060306000202"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, Feb 28, 2001 at 01:47:27PM +0100, Maciej W. Rozycki wrote:
-> Date: Wed, 28 Feb 2001 13:47:27 +0100 (MET)
-> From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-> To: Fabrice Bellard <bellard@email.enst.fr>,
->         Ralf Baechle <ralf@uni-koblenz.de>
-> cc: linux-mips@oss.sgi.com
-> Subject: Re: Serious bug in uaccess.h
-> 
-> On Tue, 27 Feb 2001, Fabrice Bellard wrote:
-> 
-> > I mean the code in arch/mips/lib/memcpy.S. It is possible to modify
-> > __copy_user so that it has exactly the same calling convention of a C
-> > function. Then, no asm is necessary in uaccess.h. It costs us a
-> > supplementary jump.
-> 
->  You mean the supplementary return value in a2?  Hmm, it is always set to
-> zero!  Also "addu $1, %2, %3" makes no sense.
-> 
->  Ralf, the code is weird.  The header implies you are the author.  Could
-> you please elaborate what you meant in copy_*_user()? 
+This is a multi-part message in MIME format.
+--------------040204030603060306000202
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 
-I'll look at it and try to recall :-)
+When using gdb on the kernel, I've found it helpful to allow
+misaligned exceptions to be emulated instead of being
+intercepted by gdb.  The following patch does this.  But is
+there a better way?  Perhaps a config.in option?
 
-  Ralf
+Or is this a case of treating the symptom?  Maybe there are
+far too many altogether.  The network stack seems to
+be littered with them--is skbuf alignment bad or something?
+
+Ouch, I just looked and after a couple of days there have
+been a lot!  This machine is running with nfs root, so every
+time you breathe there's a lot of network I/O.
+
+What kind of "unaligned accesses" counts are others seeing?
+
+/ # cat /proc/cpuinfo
+cpu                     : MIPS
+cpu model               : RC32300 V0.0
+system type             : IDT 79S334
+BogoMIPS                : 149.91
+byteorder               : little endian
+unaligned accesses      : 329630
+wait instruction        : no
+microsecond timers      : no
+extra interrupt vector  : yes
+hardware watchpoint     : yes
+VCED exceptions         : not available
+VCEI exceptions         : not available
+
+/ # uptime
+   2:07pm  up 1 day, 21:07, load average: 0.00, 0.00, 0.00
+
+Quinn
+
+
+
+
+
+
+--------------040204030603060306000202
+Content-Type: text/plain;
+ name="patch-gdb-stub"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="patch-gdb-stub"
+
+diff -bpBuN -r -X - linux-sgi-cvs/arch/mips/kernel/gdb-stub.c linux+4/arch/mips/kernel/gdb-stub.c
+--- linux-sgi-cvs/arch/mips/kernel/gdb-stub.c	Sun Dec  3 21:04:09 2000
++++ linux+4/arch/mips/kernel/gdb-stub.c	Mon Feb 26 14:56:05 2001
+@@ -399,8 +399,11 @@ void set_debug_traps(void)
+ 	unsigned char c;
+ 
+ 	save_and_cli(flags);
+-	for (ht = hard_trap_info; ht->tt && ht->signo; ht++)
++	for (ht = hard_trap_info; ht->tt && ht->signo; ht++) {
++		/* let the emulator handle adel and ades */
++		if (ht->tt == 4 || ht->tt == 5) continue;
+ 		set_except_vector(ht->tt, trap_low);
++	}
+   
+ 	/*
+ 	 * In case GDB is started before us, ack any packets
+
+--------------040204030603060306000202--

@@ -1,154 +1,124 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Nov 2002 12:50:15 +0100 (CET)
-Received: from r-hh.iij4u.or.jp ([210.130.0.72]:48611 "EHLO r-hh.iij4u.or.jp")
-	by linux-mips.org with ESMTP id <S1122109AbSKDLuO>;
-	Mon, 4 Nov 2002 12:50:14 +0100
-Received: from stratos (h197.p500.iij4u.or.jp [210.149.244.197])
-	by r-hh.iij4u.or.jp (8.11.6+IIJ/8.11.6) with SMTP id gA4BnuQ25402;
-	Mon, 4 Nov 2002 20:49:56 +0900 (JST)
-Date: Mon, 4 Nov 2002 20:49:29 +0900
-From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-To: Ralf Baechle <ralf@uni-koblenz.de>
-Cc: yuasa@hh.iij4u.or.jp, linux-mips@linux-mips.org
-Subject: Re: fixed the problem about build of vr41xx on linux-2.5.45
-Message-Id: <20021104204929.558ddff2.yuasa@hh.iij4u.or.jp>
-In-Reply-To: <20021103183650.A23232@bacchus.dhis.org>
-References: <20021103235224.2d7a4814.yuasa@hh.iij4u.or.jp>
-	<20021103183650.A23232@bacchus.dhis.org>
-X-Mailer: Sylpheed version 0.8.5 (GTK+ 1.2.10; i686-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="Multipart_Mon__4_Nov_2002_20:49:29_+0900_082566c0"
-Return-Path: <yuasa@hh.iij4u.or.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Nov 2002 15:49:53 +0100 (CET)
+Received: from real.realitydiluted.com ([208.242.241.164]:1175 "EHLO
+	real.realitydiluted.com") by linux-mips.org with ESMTP
+	id <S1122121AbSKDOtx>; Mon, 4 Nov 2002 15:49:53 +0100
+Received: from localhost.localdomain ([127.0.0.1] helo=realitydiluted.com)
+	by real.realitydiluted.com with esmtp (Exim 3.22 #1 (Red Hat Linux))
+	id 188iXw-0004Q2-00; Mon, 04 Nov 2002 08:49:44 -0600
+Message-ID: <3DC68907.30708@realitydiluted.com>
+Date: Mon, 04 Nov 2002 08:49:43 -0600
+From: "Steven J. Hill" <sjhill@realitydiluted.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.1) Gecko/20020913 Debian/1.1-1
+X-Accept-Language: en
+MIME-Version: 1.0
+To: linux-mips@linux-mips.org, binutils@sources.redhat.com
+Subject: Re: Problems generating shared library for MIPS using binutils-2.13...
+References: <Pine.GSO.3.96.1021025185639.1121A-100000@delta.ds2.pg.gda.pl>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sjhill@realitydiluted.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 555
+X-archive-position: 556
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuasa@hh.iij4u.or.jp
+X-original-sender: sjhill@realitydiluted.com
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
-
---Multipart_Mon__4_Nov_2002_20:49:29_+0900_082566c0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-
-Hello Ralf,
-
-On Sun, 3 Nov 2002 18:36:50 +0100
-Ralf Baechle <ralf@uni-koblenz.de> wrote:
-
-> On Sun, Nov 03, 2002 at 11:52:24PM +0900, Yoichi Yuasa wrote:
+Maciej W. Rozycki wrote:
 > 
-> > Hello Ralf,
-> > 
-> > I fixed the problem about build of vr41xx on linux-2.5.45.
-> > Here is a patch.
+>>>Is every object or library mentioned on that line already marked as
+>>>MIPS-2 by readelf?  Even crt*, libc*?
+>>>
+>>
+>>I knew I was being stupid, crt* and libc* are mips1 *sigh*. Looks
+>>like I have more work to do for my build system. Below is the verbose
+>>output, but I think that's the problem for sure.
 > 
-> I applied the patch although quite heavily modified.  Here the bad bits:
 > 
-> >  config SERIAL
-> >  	tristate
-> > -	depends on NEC_OSPREY || IBM_WORKPAD || CASIO_E55
-> > +	depends on ZAO_CAPCELLA || NEC_EAGLE || NEC_OSPREY || VICTOR_MPC30X || IBM_WORKPAD || CASIO_E55
-> >  	default y
-> >  	---help---
-> >  	  This selects whether you want to include the driver for the standard
+>  Hmm, that's strange as a single mips2 object among mips1 ones should make
+> an executable/shared library be marked as mips2 and not mips1.  I wouldn't
+> worry in the long run, though, as I think this should be fixed in the
+> trunk as Richard Sandiford was working in these areas recently.  You might
+> want to do a verification to be sure, though. 
 > 
-> This misses the problem.  There is no more CONFIG_SERIAL option and as such
-> I removed all CONFIG_SERIAL* stuff entirely.
+I tried the trunk and got the same thing. I have made some additional
+progress. First, I used H.J.Lu's patch for the most part:
 
-I made a patch for vr41xx about this problem.
-Please apply a patch.
+    http://sources.redhat.com/ml/binutils/2001-10/msg00526.html
 
-Thanks,
+Specifically the part:
 
-Yoichi
+-  elf_elfheader (abfd)->e_flags &= ~(EF_MIPS_ARCH | EF_MIPS_MACH);
+-  elf_elfheader (abfd)->e_flags |= val;
++  if (isa != 0 && (elf_elfheader (abfd)->e_flags & EF_MIPS_ARCH) == 0)
++    {
++      elf_elfheader (abfd)->e_flags &= ~EF_MIPS_ARCH;
++      elf_elfheader (abfd)->e_flags |= isa;
++    }
++
++  if (cpu != 0)
++    {
++      elf_elfheader (abfd)->e_flags &= ~EF_MIPS_MACH;
++      elf_elfheader (abfd)->e_flags |= cpu;
++    }
 
---Multipart_Mon__4_Nov_2002_20:49:29_+0900_082566c0
-Content-Type: text/plain;
- name="vr41xx-serial.diff"
-Content-Disposition: attachment;
- filename="vr41xx-serial.diff"
-Content-Transfer-Encoding: 7bit
+So, now when I am building 'zlib', the object files get built with:
 
-diff -aruN linux.orig/arch/mips/vr41xx/casio-e55/setup.c linux/arch/mips/vr41xx/casio-e55/setup.c
---- linux.orig/arch/mips/vr41xx/casio-e55/setup.c	Tue Oct 29 09:56:59 2002
-+++ linux/arch/mips/vr41xx/casio-e55/setup.c	Mon Nov  4 15:05:00 2002
-@@ -68,5 +68,7 @@
- 
- 	vr41xx_cmu_init(0);
- 
-+#ifdef CONFIG_SERIAL_8250
- 	vr41xx_siu_init(SIU_RS232C, 0);
-+#endif
- }
-diff -aruN linux.orig/arch/mips/vr41xx/common/Makefile linux/arch/mips/vr41xx/common/Makefile
---- linux.orig/arch/mips/vr41xx/common/Makefile	Fri Nov  1 11:32:25 2002
-+++ linux/arch/mips/vr41xx/common/Makefile	Mon Nov  4 15:01:14 2002
-@@ -5,7 +5,7 @@
- obj-y		:= bcu.o cmu.o giu.o icu.o int-handler.o reset.o
- 
- obj-$(CONFIG_PCI)		+= pciu.o
--obj-$(CONFIG_SERIAL)		+= serial.o
-+obj-$(CONFIG_SERIAL_8250)	+= serial.o
- obj-$(CONFIG_VR41XX_TIME_C)	+= time.o
- 
- EXTRA_AFLAGS := $(CFLAGS)
-diff -aruN linux.orig/arch/mips/vr41xx/ibm-workpad/setup.c linux/arch/mips/vr41xx/ibm-workpad/setup.c
---- linux.orig/arch/mips/vr41xx/ibm-workpad/setup.c	Tue Oct 29 09:56:59 2002
-+++ linux/arch/mips/vr41xx/ibm-workpad/setup.c	Mon Nov  4 15:10:05 2002
-@@ -68,5 +68,7 @@
- 
- 	vr41xx_cmu_init(0);
- 
-+#ifdef CONFIG_SERIAL_8250
- 	vr41xx_siu_init(SIU_RS232C, 0);
-+#endif
- }
-diff -aruN linux.orig/arch/mips/vr41xx/nec-eagle/setup.c linux/arch/mips/vr41xx/nec-eagle/setup.c
---- linux.orig/arch/mips/vr41xx/nec-eagle/setup.c	Tue Oct 29 09:56:59 2002
-+++ linux/arch/mips/vr41xx/nec-eagle/setup.c	Mon Nov  4 15:10:46 2002
-@@ -146,8 +146,10 @@
- 
- 	vr41xx_cmu_init(0);
- 
-+#ifdef CONFIG_SERIAL_8250
- 	vr41xx_dsiu_init();
- 	vr41xx_siu_init(SIU_RS232C, 0);
-+#endif
- 
- #ifdef CONFIG_PCI
- 	vr41xx_pciu_init(&pci_address_map);
-diff -aruN linux.orig/arch/mips/vr41xx/victor-mpc30x/setup.c linux/arch/mips/vr41xx/victor-mpc30x/setup.c
---- linux.orig/arch/mips/vr41xx/victor-mpc30x/setup.c	Tue Oct 29 09:56:59 2002
-+++ linux/arch/mips/vr41xx/victor-mpc30x/setup.c	Mon Nov  4 15:11:14 2002
-@@ -116,7 +116,9 @@
- 
- 	vr41xx_cmu_init(0);
- 
-+#ifdef CONFIG_SERIAL_8250
- 	vr41xx_siu_init(SIU_RS232C, 0);
-+#endif
- 
- #ifdef CONFIG_PCI
- 	vr41xx_pciu_init(&pci_address_map);
-diff -aruN linux.orig/arch/mips/vr41xx/zao-capcella/setup.c linux/arch/mips/vr41xx/zao-capcella/setup.c
---- linux.orig/arch/mips/vr41xx/zao-capcella/setup.c	Tue Oct 29 09:56:59 2002
-+++ linux/arch/mips/vr41xx/zao-capcella/setup.c	Mon Nov  4 15:11:52 2002
-@@ -116,8 +116,10 @@
- 
- 	vr41xx_cmu_init(0x0102);
- 
-+#ifdef CONFIG_SERIAL_8250
- 	vr41xx_siu_init(SIU_RS232C, 0);
- 	vr41xx_dsiu_init();
-+#endif
- 
- #ifdef CONFIG_PCI
- 	vr41xx_pciu_init(&pci_address_map);
+   mipsel-linux-gcc -march=r6000 -fPIC -O3 -DHAVE_UNISTD_H -DUSE_MMAP
 
---Multipart_Mon__4_Nov_2002_20:49:29_+0900_082566c0--
+and then shared object creation uses:
+
+   mipsel-linux-gcc -shared -Wl,-A,r6000,-v,-soname,libz.so.1 \
+     -march=r6000 -o libz.so.1.1.4 adler32.o compress.o crc32.o gzio.o \
+     compr.o deflate.o trees.o zutil.o inflate.o infblock.o inftrees.o \
+     infcodes.o infutil.o inffast.o
+
+with the verbose output of:
+
+collect2 version 3.2 (MIPSel GNU/Linux with ELF)
+/opt/toolchains/uclibc/bin/../lib/gcc-lib/mipsel-linux/3.2/../../../../mipsel-linux/bin/ld 
+--eh-frame-hdr -EL -shared -o libz.so.1.1.4 
+/opt/toolchains/uclibc/bin/../lib/gcc-lib/mipsel-linux/3.2/../../../../mipsel-linux/lib/crti.o 
+/opt/toolchains/uclibc/bin/../lib/gcc-lib/mipsel-linux/3.2/crtbeginS.o 
+-L/opt/toolchains/uclibc/bin/../lib/gcc-lib/mipsel-linux/3.2 
+-L/opt/toolchains/uclibc/bin/../lib/gcc-lib 
+-L/opt/toolchains/uclibc-crosstools-1.0.0/lib/gcc-lib/mipsel-linux/3.2 
+-L/opt/toolchains/uclibc/bin/../lib/gcc-lib/mipsel-linux/3.2/../../../../mipsel-linux/lib 
+-L/opt/toolchains/uclibc-crosstools-1.0.0/lib/gcc-lib/mipsel-linux/3.2/../../../../mipsel-linux/lib 
+-L/opt/toolchains/uclibc/bin/../lib/gcc-lib/mipsel-linux/3.2/../../.. -A 
+r6000 -v -soname libz.so.1 adler32.o compress.o crc32.o gzio.o uncompr.o 
+deflate.o trees.o zutil.o inflate.o infblock.o inftrees.o infcodes.o 
+infutil.o inffast.o -lgcc -lc -lgcc 
+/opt/toolchains/uclibc/bin/../lib/gcc-lib/mipsel-linux/3.2/crtendS.o 
+/opt/toolchains/uclibc/bin/../lib/gcc-lib/mipsel-linux/3.2/../../../../mipsel-linux/lib/crtn.o
+
+The 'crt*' files and my C runtime are compiled with 'mips1', but as
+Maciej correctly states in his reply, the output binary should be
+the highest ISA value when mixing differing ISA objects.
+
+I'm convinced the linker completely ignores '-A' for MIPS. In the 
+'_bfd_mips_elf_final_write_processing' function in 'bfd/elfxx-mips.c'
+If I print out the EF_MIPS_ARCH flags for the input BFD descriptor. It
+is properly set to 'MIPS2', but when the case statement in 
+'_bfd_mips_elf_final_write_processing' is traversed, it
+uses the R3000/default case which means that the target CPU architecture
+didn't get put into the BFD descriptor. So, I instead changed the ISA
+if statement above to be:
+
+   if (((elf_elfheader (abfd)->e_flags & EF_MIPS_ARCH) != isa) && (isa 
+!= 0))
+     {
+       elf_elfheader (abfd)->e_flags &= ~EF_MIPS_ARCH;
+       elf_elfheader (abfd)->e_flags |= isa;
+     }
+
+which then properly sets the ISA in the ELF header. My gut feeling
+though is that we shouldn't have to do this as the target CPU
+architecture should have been set properly for the incoming BFD.
+Comments and suggestions welcome. Thanks.
+
+-Steve

@@ -1,149 +1,150 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 May 2004 21:17:52 +0100 (BST)
-Received: from host-212-158-214-243.bulldogdsl.com ([IPv6:::ffff:212.158.214.243]:45696
-	"EHLO megablaster5.clown-smart.co.uk") by linux-mips.org with ESMTP
-	id <S8226086AbUEDURt>; Tue, 4 May 2004 21:17:49 +0100
-Received: from [127.0.0.1] (host-212-158-214-244.bulldogdsl.com [212.158.214.244])
-	by megablaster5.clown-smart.co.uk (Postfix) with ESMTP
-	id 4F7414FB06; Tue,  4 May 2004 21:32:03 +0100 (BST)
-Message-ID: <4097FADE.5080609@clownfishltd.com>
-Date: Tue, 04 May 2004 21:19:42 +0100
-From: Clownfish Internet <support@clownfishltd.com>
-User-Agent: Mozilla Thunderbird 0.5 (Windows/20040426)
-X-Accept-Language: en
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 May 2004 18:19:56 +0100 (BST)
+Received: from mail.stellartec.com ([IPv6:::ffff:65.107.16.99]:24589 "EHLO
+	gateway.stellartec.com") by linux-mips.org with ESMTP
+	id <S8226044AbUEFRTz>; Thu, 6 May 2004 18:19:55 +0100
+Received: from Exchange.stellartec.com ([192.168.1.7]) by gateway.stellartec.com with Microsoft SMTPSVC(6.0.3790.0);
+	 Thu, 6 May 2004 10:19:44 -0700
+X-MIMEOLE: Produced By Microsoft Exchange V6.5.6944.0
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-To: "Ilya A. Volynets-Evenbakh" <ilya@theilya.com>
-Cc: Damian Presswell <damian@clown-fish.com>, linux-mips@linux-mips.org
-Subject: Re: Linux Mips SGI O2 R5000 IP32 INSTALL
-References: <408D6BFC.6030902@clown-fish.com> <20040426222441.GC1276@gateway.total-knowledge.com> <408FA3C3.3060304@clown-fish.com> <408FFE1E.5080605@theilya.com>
-In-Reply-To: <408FFE1E.5080605@theilya.com>
-X-Enigmail-Version: 0.83.6.0
-X-Enigmail-Supports: pgp-inline, pgp-mime
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <support@clownfishltd.com>
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C4338E.53011F38"
+Subject: Strange Behavior - help
+Date: Thu, 6 May 2004 10:19:43 -0700
+Message-ID: <7F5F67B895426C40AC75B8290421C23915CE57@Exchange.stellartec.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Strange Behavior - help
+Thread-Index: AcQzjlK5D+RXyiEsR4KMtsdJR31r+g==
+From: "Yashwant Shitoot" <yshitoot@stellartec.com>
+To: <linux-mips@linux-mips.org>
+X-OriginalArrivalTime: 06 May 2004 17:19:44.0455 (UTC) FILETIME=[5306E570:01C4338E]
+Return-Path: <yshitoot@stellartec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4935
+X-archive-position: 4936
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: support@clownfishltd.com
+X-original-sender: yshitoot@stellartec.com
 Precedence: bulk
 X-list: linux-mips
 
-Ilya - do you have a working version of arcboot - I am unable to get any 
-versions that I have found to install and be able to read my primary HD 
-volume header (50meg) -
+This is a multi-part message in MIME format.
 
-I have found the following gentoo ebuild file:
+------_=_NextPart_001_01C4338E.53011F38
+Content-Type: text/plain;
+	charset="US-ASCII"
+Content-Transfer-Encoding: quoted-printable
 
-http://dev.gentoo.org/~kumba/mips/misc/arcboot-0.3.8.1.ebuild
+Hello Friends,
 
-is there anyway I may use this to pull the package into my system ? - i 
-havent managed it yet -
+=20
 
-thanks
+My root file system and linux is in rom (flash). The linux itself runs
+out of ram. When I reprogram the rom, I erase and write a new image of
+the rom from a compact flash card. After the new image is programmed in
+the function fclose() hangs up, implying that fclose() is rom resident
+and loaded as needed. Does this make sense ? Remember even after erasing
+the rom fopen() works fine.
 
+=20
 
-Ilya A. Volynets-Evenbakh wrote:
+Thanks=20
 
-> Well, you are not the only one ;-)
-> Currently you cannot use volume header for loading linux kernel due to 
-> some
-> very strange bug. I spent two weeks chsing it, and then decided that 
-> my time
-> is better spent elsewhere. Also, dents in my walls resulting from 
-> contact between
-> my head and walls' surface do not look nice. For now, you should 
-> either use
-> dhcp/bootp or arcboot. Latest version of arcboot (0.3.8.-something, 
-> afair) should work out
-> of the box with O2. If it doesn't, let me know - I'll dig out my 
-> highly-hacked binary.
->
->    Ilya.
->
-> Damian Presswell wrote:
->
->> Hi Ilya -
->>
->> thanks for coming back to me -
->>
->> I have managed to build a root filesystem using the gentoo sources 
->> that you suggested - however -
->> I am unable to boot off the hardisk -
->> I have fdisked the first scsi disk, created a 50 meg vlhdr, where I 
->> have copied my pre-compiled vmlinux binaries  -
->> it  appears to load and provide an entry point but then just hangs 
->> and goes no further -
->> I have also added the original netboot vmlinux  binary that I use to 
->> boot via tftpboot to the HD's volume header but it does the same 
->> thing - just hangs after the entry point -
->>
->> I can boot the system using bootp(): and the kernel binary located  
->> in  the tftpboot using  root=dev/sda3 - but  cannot figure why it  
->> doesnt seem to work off the volume header of the HD -
->>
->> once again -
->>
->> any help would be appreciated -
->>
->> thanks
->>
->>
->>
->> ilya@theIlya.com wrote:
->>
->>> Use Gentoo.
->>> Also, Glaurung's kernels are bit out-od-date. Use self-built
->>> kernel from recent linux-mips.org CVS. In worst case, use
->>> one of Gentoo's kernel binaries.
->>>
->>>     Ilya.
->>>
->>> On Mon, Apr 26, 2004 at 09:07:24PM +0100, Damian Presswell wrote:
->>>  
->>>
->>>> My apologies if this is the wrong mailing list for this question -
->>>>
->>>> I have recently aquired an SGI  O2 ip32 R5k box that I am trying to 
->>>> install linux onto -
->>>>
->>>> I have managed to get a binary 64bit kernel to boot vis nfs and 
->>>> bootp() that I downloaded from Glaurungs website:
->>>>
->>>> http://www.linux-mips.org/~glaurung/
->>>>
->>>> however I am unsure as to the correct rootfs that I am suposed to 
->>>> use - I pulled down the redhat 7.1 rootfs from somewhere but it 
->>>> hangs when trying to start the 'local' service - and wont boot if 
->>>> this service is switched off -
->>>>
->>>> I would be grateful if you could suggest where I may download a 
->>>> suitable rootfs and ecoff boot image that will work together on my 
->>>> O2 box - would hate to give in at this stage - and indeed any other 
->>>> help you may be able to give me as a linux mips O2 user - I will 
->>>> put together an updated HOWTO once I am sure exactly what I am 
->>>> supposed to be doing - the information and resources on this 
->>>> subject do seem to be a little vague -
->>>>
->>>> thanks for your time
->>>>
->>>> Damian
->>>
->>>
->
+=20
+
+Yash
 
 
--- 
+------_=_NextPart_001_01C4338E.53011F38
+Content-Type: text/html;
+	charset="US-ASCII"
+Content-Transfer-Encoding: quoted-printable
 
+<html xmlns:o=3D"urn:schemas-microsoft-com:office:office" =
+xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns=3D"http://www.w3.org/TR/REC-html40">
 
---------------------------------------------------------------------------------------------------------------
-support@clownfishltd.com
+<head>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Dus-ascii">
+<meta name=3DGenerator content=3D"Microsoft Word 11 (filtered medium)">
+<style>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+span.EmailStyle17
+	{mso-style-type:personal-compose;
+	font-family:Arial;
+	color:windowtext;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.0in 192.25pt 1.0in;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
 
-Damian Presswell
+</head>
 
-(M) +44 07986 494824
+<body lang=3DEN-US link=3Dblue vlink=3Dpurple>
 
-(T)  +44 0845 1259523
+<div class=3DSection1>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Hello Friends,<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>My root file system and linux is in rom (flash). The =
+linux
+itself runs out of ram. When I reprogram the rom, I erase and write a =
+new image
+of the rom from a compact flash card. After the new image is programmed =
+in the
+function fclose() hangs up, implying that fclose() is rom resident and =
+loaded
+as needed. Does this make sense ? Remember even after erasing the rom =
+fopen()
+works fine.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Thanks <o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Yash<o:p></o:p></span></font></p>
+
+</div>
+
+</body>
+
+</html>
+
+------_=_NextPart_001_01C4338E.53011F38--

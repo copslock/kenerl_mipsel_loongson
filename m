@@ -1,47 +1,54 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id JAA02484 for <linux-archive@neteng.engr.sgi.com>; Wed, 14 Jan 1998 09:18:31 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id JAA02882 for <linux-archive@neteng.engr.sgi.com>; Wed, 14 Jan 1998 09:37:53 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id JAA25570 for linux-list; Wed, 14 Jan 1998 09:14:48 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA25566 for <linux@cthulhu.engr.sgi.com>; Wed, 14 Jan 1998 09:14:46 -0800
-Received: from aragorn.ics.muni.cz (aragorn.ics.muni.cz [147.251.4.33]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id JAA12820
-	for <linux@cthulhu.engr.sgi.com>; Wed, 14 Jan 1998 09:14:44 -0800
-	env-from (adelton@informatics.muni.cz)
-Received: from anxur.fi.muni.cz (anxur.fi.muni.cz [147.251.48.3])
-	by aragorn.ics.muni.cz (8.8.5/8.8.5) with ESMTP id SAA16582;
-	Wed, 14 Jan 1998 18:14:01 +0100 (MET)
-Received: from aisa.fi.muni.cz (aisa [147.251.48.1])
-	by anxur.fi.muni.cz (8.8.5/8.8.5) with ESMTP id SAA26613;
-	Wed, 14 Jan 1998 18:14:23 +0100 (MET)
-Received: (from adelton@localhost) by aisa.fi.muni.cz (8.8.5/8.6.9) id SAA01788; Wed, 14 Jan 1998 18:13:58 +0100 (MET)
-Message-Id: <199801141713.SAA01788@aisa.fi.muni.cz>
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id JAA01381 for linux-list; Wed, 14 Jan 1998 09:35:11 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA01355 for <linux@cthulhu.engr.sgi.com>; Wed, 14 Jan 1998 09:35:10 -0800
+Received: from note.orchestra.cse.unsw.EDU.AU (note.orchestra.cse.unsw.EDU.AU [129.94.242.29]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via SMTP id JAA19794
+	for <linux@cthulhu.engr.sgi.com>; Wed, 14 Jan 1998 09:35:08 -0800
+	env-from (andrewo@cse.unsw.edu.au)
+Received: From ives With LocalMail ; Thu, 15 Jan 98 04:34:30 +1100 
+From: "Andrew O'Brien" <andrewo@cse.unsw.edu.au>
+To: Honza Pazdziora <adelton@informatics.muni.cz>
+Date: Thu, 15 Jan 1998 04:34:29 +1100 (EST)
+X-Sender: andrewo@ives.orchestra.cse.unsw.EDU.AU
+Reply-To: andrewo@cse.unsw.edu.au
+cc: Alex deVries <adevries@engsoc.carleton.ca>, linux@cthulhu.engr.sgi.com
 Subject: Re: 2.1.72 precompiled on Linus...
-In-Reply-To: <Pine.LNX.3.95.980114111306.2369C-100000@lager.engsoc.carleton.ca> from Alex deVries at "Jan 14, 98 11:15:40 am"
-To: adevries@engsoc.carleton.ca (Alex deVries)
-Date: Wed, 14 Jan 1998 18:13:57 +0100 (MET)
-Cc: linux@cthulhu.engr.sgi.com
-From: Honza Pazdziora <adelton@informatics.muni.cz>
-Phone: 420 (5) 415 12345
-X-Mailer: ELM [version 2.4ME+ PL25 (25)]
+In-Reply-To: <199801141713.SAA01788@aisa.fi.muni.cz>
+Message-ID: <Pine.OSF.3.95.980115043152.15141A-100000@ives.orchestra.cse.unsw.EDU.AU>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+On Wed, 14 Jan 1998, Honza Pazdziora wrote:
+
+> > 
+> > ftp://ftp.linux.sgi.com/pub/test/vmlinux-indy-2.1.72.tar.gz
+> > is available for your usage and testing.  If there are no complaints I'll
+> > archive 2.1.67.
 > 
-> ftp://ftp.linux.sgi.com/pub/test/vmlinux-indy-2.1.72.tar.gz
-> is available for your usage and testing.  If there are no complaints I'll
-> archive 2.1.67.
+> Please disregard my previous post, I've got the noL2 version.
+> 
+> However, after the boot (via bootp) the screen goes blank and that's
+> it -- no boot messages come. It doesn't however crash visibly as the
+> yesL2.
+> 
+> It's R4600PC and 2.1.67 runs OK on it -- I can send more info if
+> applicable.
 
-Please disregard my previous post, I've got the noL2 version.
+I wont be able to test the new binary for at least another 24 hrs (the
+indy is in use by someone else at the moment) but I will try out the new
+kernel as soon as possible if noone else comes up with either supporting
+crashes or reports of success.
 
-However, after the boot (via bootp) the screen goes blank and that's
-it -- no boot messages come. It doesn't however crash visibly as the
-yesL2.
+Alex - I can send you the .config from the successful compile I did on the
+2.1.67 if you need it.
 
-It's R4600PC and 2.1.67 runs OK on it -- I can send more info if
-applicable.
+cya
 
-------------------------------------------------------------------------
- Honza Pazdziora | adelton@fi.muni.cz | http://www.fi.muni.cz/~adelton/
-                   I can take or leave it if I please
-------------------------------------------------------------------------
+--___________________________________________________________________
+ /  Andrew O'Brien       andrewo@cse.unsw.edu.au   bbq@mindless.com  \
+/  Student, Faculty of CSE       http://www.cse.unsw.edu.au/~andrewo  \
+>  UNSW, Australia           President COMPSOC   http://www/~compsoc  <
+\  BE (Comp)/BA (Psych)      Student Representative   stu-reps@cse..  /
+ \___ "finger -l andrewo@cse.unsw.edu.au" for my current location ___/

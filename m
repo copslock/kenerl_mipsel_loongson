@@ -1,42 +1,72 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f768ofR31654
-	for linux-mips-outgoing; Mon, 6 Aug 2001 01:50:41 -0700
-Received: from kenton.algor.co.uk (smtp.algor.co.uk [62.254.210.199])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f768oYV31651
-	for <linux-mips@oss.sgi.com>; Mon, 6 Aug 2001 01:50:37 -0700
-Received: from gladsmuir.algor.co.uk (IDENT:root@gladsmuir.algor.co.uk [192.168.5.75])
-	by kenton.algor.co.uk (8.9.3/8.8.8) with ESMTP id JAA16147;
-	Mon, 6 Aug 2001 09:50:15 +0100 (GMT/BST)
-Received: (from dom@localhost)
-	by gladsmuir.algor.co.uk (8.11.0/8.8.7) id f768oEX01106;
-	Mon, 6 Aug 2001 09:50:14 +0100
-From: Dominic Sweetman <dom@algor.co.uk>
+	by oss.sgi.com (8.11.2/8.11.3) id f76ABhq01359
+	for linux-mips-outgoing; Mon, 6 Aug 2001 03:11:43 -0700
+Received: from Cantor.suse.de (ns.suse.de [213.95.15.193])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f76ABMV01336;
+	Mon, 6 Aug 2001 03:11:22 -0700
+Received: from Hermes.suse.de (Hermes.suse.de [213.95.15.136])
+	by Cantor.suse.de (Postfix) with ESMTP
+	id 421571E532; Mon,  6 Aug 2001 12:11:16 +0200 (MEST)
+X-Authentication-Warning: gee.suse.de: aj set sender to aj@suse.de using -f
+Mail-Copies-To: never
+To: Ralf Baechle <ralf@oss.sgi.com>
+Cc: "H . J . Lu" <hjl@lucon.org>, Eric Christopher <echristo@redhat.com>,
+   gcc@gcc.gnu.org, linux-mips@oss.sgi.com,
+   GNU C Library <libc-alpha@sourceware.cygnus.com>
+Subject: Re: Changing WCHAR_TYPE from "long int" to "int"?
+References: <20010805094806.A3146@lucon.org>
+	<20010806115913.B17179@bacchus.dhis.org>
+From: Andreas Jaeger <aj@suse.de>
+Date: Mon, 06 Aug 2001 12:10:59 +0200
+In-Reply-To: <20010806115913.B17179@bacchus.dhis.org> (Ralf Baechle's
+ message of "Mon, 6 Aug 2001 11:59:13 +0200")
+Message-ID: <hoofptjy6k.fsf@gee.suse.de>
+User-Agent: Gnus/5.090004 (Oort Gnus v0.04) XEmacs/21.1 (Cuyahoga Valley)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-ID: <15214.23110.345236.934305@gladsmuir.algor.co.uk>
-Date: Mon, 6 Aug 2001 09:50:14 +0100 (BST)
-To: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
-Cc: linux-mips@oss.sgi.com, linux-mips@fnet.fr
-Subject: Re: SysV IPC shared memory and virtual alising
-In-Reply-To: <20010806164452D.nemoto@toshiba-tops.co.jp>
-References: <20010806164452D.nemoto@toshiba-tops.co.jp>
-X-Mailer: VM 6.72 under 21.1 (patch 12) "Channel Islands" XEmacs Lucid
+Content-Type: multipart/signed; boundary="=-=-=";
+	micalg=pgp-sha1; protocol="application/pgp-signature"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+--=-=-=
+Content-Transfer-Encoding: quoted-printable
 
-Atsushi Nemoto (nemoto@toshiba-tops.co.jp) writes:
+Ralf Baechle <ralf@oss.sgi.com> writes:
 
-> Here is an patch to fix virtual aliasing problem with SysV IPC
-> shared memory.  I tested this patch on a r4k cpu with 32Kb D-cache.
-> 
-> If D-cache is smaller than PAGE_SIZE this patch is not needed at
-> all...
+> On Sun, Aug 05, 2001 at 09:48:06AM -0700, H . J . Lu wrote:
+>
+>> I am working with Eric to clean up the Linux/mips configuration in
+>> gcc 3.x. I'd like to change WCHAR_TYPE from "long int" to "int". They
+>> are the same on Linux/mips. There won't be any run-time problems. I am
+>> wondering if there are any compatibility problems at the compile time
+>> at the source and binary level. For one thing, __WCHAR_TYPE__ will be
+>> changed from "long int" to "int". The only thing I can think of is
+>> the C++ libraries. But gcc 3.x doesn't work on Linux/mips. The one
+>> I am working on will be the first gcc 3.x for Linux/mips. So there
+>> shouldn't be any problems. Am I right?
+>
+> The MIPS ABI defines wchar_t to long.  So please go ahead and make the
+> change.
 
-More precisely, if the size of a D-cache "set" is smaller than
-PAGE_SIZE.  So a CPU with a 16Kbyte 4-way set-associative cache and
-4Kbyte PAGE_SIZE is safe.
+I'm confused.  The ABI defines it to be long - and he should change it
+nevertheless?
 
-Dominic Sweetman
-Algorithmics Ltd
+Andreas
+=2D-=20
+ Andreas Jaeger
+  SuSE Labs aj@suse.de
+   private aj@arthur.inka.de
+    http://www.suse.de/~aj
+
+--=-=-=
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.6 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iD8DBQE7bm0zOJpWPMJyoSYRArSgAJ9Ct50CFo0gDljzP3M9kE0sdN+70QCeN6n9
+WlALwFwEUpNW6OVo6ZPpa6k=
+=uKbi
+-----END PGP SIGNATURE-----
+--=-=-=--

@@ -1,78 +1,88 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA15686 for <linux-archive@neteng.engr.sgi.com>; Thu, 27 May 1999 15:49:41 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id HAA02209 for <linux-archive@neteng.engr.sgi.com>; Fri, 28 May 1999 07:22:44 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id PAA01274
+	id HAA84857
 	for linux-list;
-	Thu, 27 May 1999 15:47:49 -0700 (PDT)
+	Fri, 28 May 1999 07:20:24 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id PAA20640
+	via ESMTP id HAA45051
 	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 27 May 1999 15:47:46 -0700 (PDT)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1] (may be forged)) 
+	Fri, 28 May 1999 07:20:22 -0700 (PDT)
+	mail_from (pete@alien.bt.co.uk)
+Received: from mail.alien.bt.co.uk (orb.alien.bt.co.uk [132.146.196.84]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id PAA03832
-	for <linux@cthulhu.engr.sgi.com>; Thu, 27 May 1999 15:47:44 -0700 (PDT)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from lappi.waldorf-gmbh.de (cacc-20.uni-koblenz.de [141.26.131.20])
-	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id AAA11471
-	for <linux@cthulhu.engr.sgi.com>; Fri, 28 May 1999 00:47:40 +0200 (MET DST)
-Received: (from ralf@localhost)
-	by lappi.waldorf-gmbh.de (8.8.7/8.8.7) id AAA01190;
-	Fri, 28 May 1999 00:46:32 +0200
-Date: Fri, 28 May 1999 00:46:32 +0200
-From: Ralf Baechle <ralf@uni-koblenz.de>
-To: Robert Keller <rck@corp.home.net>
+	via SMTP id HAA06330
+	for <linux@cthulhu.engr.sgi.com>; Fri, 28 May 1999 07:20:20 -0700 (PDT)
+	mail_from (pete@alien.bt.co.uk)
+Received: from cornfed(really [132.146.196.81]) by mail.alien.bt.co.uk
+	via sendmail with smtp
+	id <m10nNOH-001kwNC@mail.alien.bt.co.uk>
+	for <linux@cthulhu.engr.sgi.com>; Fri, 28 May 1999 15:13:41 +0100 (BST)
+	(Smail-3.2 1996-Jul-4 #3 built 1998-May-29)
+Message-Id: <m10nNOH-001kwNC@mail.alien.bt.co.uk>
+Date: Fri, 28 May 1999 15:14:23 +0100 (BST)
+From: Pete Young <pete@alien.bt.co.uk>
+Reply-To: Pete Young <pete@alien.bt.co.uk>
+Subject: glib (Was Re: X server update, observations on a successful installation)
+To: ralf@uni-koblenz.de
 Cc: linux@cthulhu.engr.sgi.com
-Subject: Re: after the kernel seems to live
-Message-ID: <19990528004632.B608@uni-koblenz.de>
-References: <4.1.19990526115716.03f65930@mail> <4.1.19990526115716.03f65930@mail> <19990527121840.T866@uni-koblenz.de> <4.1.19990527124423.00930cd0@mail>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.4us
-In-Reply-To: <4.1.19990527124423.00930cd0@mail>; from Robert Keller on Thu, May 27, 1999 at 01:03:32PM -0700
-X-Accept-Language: de,en,fr
+MIME-Version: 1.0
+Content-Type: TEXT/plain; charset=us-ascii
+Content-MD5: OZ92zxoMe6kxbLZdIJO73Q==
+X-Mailer: dtmail 1.2.0 CDE Version 1.2 SunOS 5.6 i86pc i386 
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Thu, May 27, 1999 at 01:03:32PM -0700, Robert Keller wrote:
+Ralf Baechle wrote:
 
-> At 12:18 PM 5/27/99 +0200, Ralf Baechle wrote:
-> >What CPU is being used on that eval board?  If it's one that isn't yet
-> >supported in our sources then I suspect you have a problem either with the
-> >cacheflushing routines themselfes or the calls to them in the network
-> >driver.  What NIC are you using, btw?  We've got patches around for a
-> >couple of those which are most often being used with MIPS machines.
-> 
-> Its a VR5000 (D30500S2),  2.2.1 seems to recognize it as a
-> type 24 (0x18).  Presently, I'm using a PCI 3c905 despite the
-> fact that the eval board has a 21140 (albeit with a completely
-> bogus SROM) built in to it.  I have my own patches to 3c59x.c
-> tulip.c and even tlan.c to get them working to varying degrees.
-> I'd still be interested in comparing my patches with the ones
-> you have...
+> This happens because we use an old version of net-tools in HardHat but
+> use a current kernel.  It's harmless however.  The solution is to
+> upgrade net-tools.
 
-The R5000 is supported and known to work.  You happen to have a
-second level cache on that board?
+Pulled down version 1.51 source from our nearest RedHat mirror and
+built it. Still 2 routes to the local subnet. Editing
+/etc/sysconfig/network-scripts/ipup and commenting out the route bit
+stops it, but also removes the route to lo0. Not sure which is worse.
 
-> How can I make sure that I'm not haveing cacheflushing problems?
+> The Indy hardware doesn't have a frame buffer which makes writing an
+> X server more difficult.  The X clients are working fine however.
 
-Debugging :-)
+Thanks for the info. I look forward to the completion of the Xserver.
 
-In particular the ring structures are nasty, allocate them as uncached
-memory in KSEG1.  In general the rule is that you should try to handle
-as much in uncached memory as possible when debugging such problems.
-That's of course very bad for performance but it helps.
+On a slightly different note, has anyone succeeded in building glib ?
 
-> I'm presently using declinuxroot-990518.tgz from ftp.linux.sgi.com,
-> so should I assume that it should just work?
+I'm attempting to build glib-1.2.1   Compilation keels over in
+testgthread complaining about undefined references to various pthread
+functions:
 
-Yes, it should.
+gcc -g -O2 -Wall -D_REENTRANT -o .libs/testgthread testgthread.o 
+../.libs/libglib.so .libs/libgthread.so -Wl,--rpath -Wl,/usr/local/lib
+testgthread.o: In function `new_thread':
+/usr/src/redhat/SOURCES/glib-1.2.1/gthread/testgthread.c:89: undefined reference 
+to `pthread_create'
+testgthread.o: In function `test_private':
+/usr/src/redhat/SOURCES/glib-1.2.1/gthread/testgthread.c:197: undefined 
+reference to `pthread_join'
+.libs/libgthread.so: undefined reference to `pthread_getspecific'
+.libs/libgthread.so: undefined reference to `pthread_key_create'
+.libs/libgthread.so: undefined reference to `pthread_mutex_trylock'
+.libs/libgthread.so: undefined reference to `pthread_cond_timedwait'
+.libs/libgthread.so: undefined reference to `pthread_setspecific'
+collect2: ld returned 1 exit status
+make[2]: *** [testgthread] Error 1
 
-  Ralf
+Any suggestions welcomed. 
+
+Kind regards,
+
+Pete
+
+  ____________________________________________________________________
+  Pete Young          pete@alien.bt.co.uk        Phone +44 1473 642740
+      "Just another crouton, floating on the bouillabaisse of life"

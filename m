@@ -1,48 +1,49 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA94148 for <linux-archive@neteng.engr.sgi.com>; Tue, 4 May 1999 14:51:45 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id KAA46735 for <linux-archive@neteng.engr.sgi.com>; Tue, 4 May 1999 10:48:52 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id OAA99396
+	id KAA48729
 	for linux-list;
-	Tue, 4 May 1999 14:50:11 -0700 (PDT)
+	Tue, 4 May 1999 10:46:56 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from deliverator.sgi.com (deliverator.sgi.com [150.166.91.37])
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id OAA90066
+	via ESMTP id KAA23685
 	for <linux@cthulhu.engr.sgi.com>;
-	Tue, 4 May 1999 14:50:08 -0700 (PDT)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id OAA25677
-	for <linux@cthulhu.engr.sgi.com>; Tue, 4 May 1999 14:49:34 -0700 (PDT)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from lappi.waldorf-gmbh.de (cacc-12.uni-koblenz.de [141.26.131.12])
-	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id XAA21965
-	for <linux@cthulhu.engr.sgi.com>; Tue, 4 May 1999 23:49:53 +0200 (MET DST)
-Received: (from ralf@localhost)
-	by lappi.waldorf-gmbh.de (8.8.7/8.8.7) id MAA05070;
-	Tue, 4 May 1999 12:59:03 +0200
-Message-ID: <19990504125903.G3700@uni-koblenz.de>
-Date: Tue, 4 May 1999 12:59:03 +0200
-From: Ralf Baechle <ralf@uni-koblenz.de>
-To: "Andrew R. Baker" <andrewb@uab.edu>,
-        Ulf Carlsson <ulfc@thepuffingroup.com>
-Cc: Linux SGI <linux@cthulhu.engr.sgi.com>
-Subject: Re: Indigo2 patch
-References: <19990502205347.A7346@thepuffingroup.com> <Pine.LNX.3.96.990502202759.15211B-100000@mdk187.tucc.uab.edu>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.93.2
-In-Reply-To: <Pine.LNX.3.96.990502202759.15211B-100000@mdk187.tucc.uab.edu>; from Andrew R. Baker on Sun, May 02, 1999 at 08:31:20PM -0500
-X-Accept-Language: de,en,fr
+	Tue, 4 May 1999 10:46:53 -0700 (PDT)
+	mail_from (clepple@foo.tho.org)
+Received: from foo.tho.org (pr250.pheasantrun.net [208.140.225.250]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id NAA09854
+	for <linux@cthulhu.engr.sgi.com>; Tue, 4 May 1999 13:46:52 -0400 (EDT)
+	mail_from (clepple@foo.tho.org)
+Received: from tool.foo.tho.org (clepple@tool.foo.tho.org [206.223.45.1])
+	by foo.tho.org (8.8.7/8.8.7) with ESMTP id NAA30483;
+	Tue, 4 May 1999 13:46:17 -0400
+Date: Tue, 4 May 1999 13:46:17 -0400 (EDT)
+From: Charles Lepple <clepple@foo.tho.org>
+To: Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
+cc: SGI Linux <linux@cthulhu.engr.sgi.com>
+Subject: Re: CP0_STATUS interrupt mask patch
+In-Reply-To: <XFMail.990430105522.Harald.Koerfgen@home.ivm.de>
+Message-ID: <Pine.LNX.4.04.9905041342400.30478-100000@foo.tho.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Sun, May 02, 1999 at 08:31:20PM -0500, Andrew R. Baker wrote:
+On Fri, 30 Apr 1999, Harald Koerfgen wrote:
 
-> Any chance on getting the cross linker fixed?
+> on DECstations but may trigger undiscovered bugs on other machines.
 
-I'll have the time to work on this soon again.  However just removing -N
-does the job; there are no other known kernel build problems with
-binutils 2.8.1.
+I just pulled down the CVS kernel with the patch, and it seems that it
+causes a 'keyboard timeout[2]' to be printed on the console after the SCSI
+bus is probed. I undid the patch manually (ie, the rest of the kernel is
+still from the cvs update) and it boots fine. Anyone else seen this?
 
-  Ralf
+--Charles Lepple
+System Administrator, Virginia Tech EE Workstation Labs
+clepple@foo.tho.org || http://foo.tho.org/charles/

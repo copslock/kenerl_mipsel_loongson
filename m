@@ -1,69 +1,52 @@
-Received:  by oss.sgi.com id <S553827AbQKCK4i>;
-	Fri, 3 Nov 2000 02:56:38 -0800
-Received: from mx.mips.com ([206.31.31.226]:21405 "EHLO mx.mips.com")
-	by oss.sgi.com with ESMTP id <S553814AbQKCK4W>;
-	Fri, 3 Nov 2000 02:56:22 -0800
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id CAA10781;
-	Fri, 3 Nov 2000 02:56:00 -0800 (PST)
-Received: from Ulysses (ulysses [192.168.236.13])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id CAA03645;
-	Fri, 3 Nov 2000 02:56:00 -0800 (PST)
-Message-ID: <007d01c04585$25262e40$0deca8c0@Ulysses>
-From:   "Kevin D. Kissell" <kevink@mips.com>
-To:     "Ralf Baechle" <ralf@oss.sgi.com>, "Jun Sun" <jsun@mvista.com>
-Cc:     <linux-mips@oss.sgi.com>
-References: <3A0067C5.BA9E3174@mvista.com> <20001102040657.A17786@bacchus.dhis.org>
-Subject: Re: "Setting flush to zero for ..." - what is the warning?
-Date:   Fri, 3 Nov 2000 11:58:56 +0100
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4133.2400
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
+Received:  by oss.sgi.com id <S553838AbQKCME2>;
+	Fri, 3 Nov 2000 04:04:28 -0800
+Received: from woody.ichilton.co.uk ([216.29.174.40]:43019 "HELO
+        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553821AbQKCMET>;
+	Fri, 3 Nov 2000 04:04:19 -0800
+Received: by woody.ichilton.co.uk (Postfix, from userid 0)
+	id 8BF3E7CF1; Fri,  3 Nov 2000 12:04:18 +0000 (GMT)
+Date:   Fri, 3 Nov 2000 12:04:18 +0000
+From:   Ian Chilton <mailinglist@ichilton.co.uk>
+To:     linux-mips@oss.sgi.com
+Subject: CVS GCC Broken (001103)
+Message-ID: <20001103120418.A1950@woody.ichilton.co.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.3.11i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-> On Wed, Nov 01, 2000 at 10:58:13AM -0800, Jun Sun wrote:
->
-> > I ran some stress tests and start to get this warning.  It appears to be
-> > generated in do_fpe() routine.  See below.  I wonder why this is
-> > happening.  Can someone explain what is going on?  Thanks.
->
-> It tells you the over-the-thumb-fp-mode has been activated ;-)
+Hello,
 
-More seriously, there was (is, in 2.4 I guess) a hack by which,
-in a desperate attempt to avoid having to do the FP emulation
-in software, the kernel changed the FPU denorm handling mode
-and replayed the instruction, in hopes that the problem would
-go away (which it would for a subset of the unimplemented
-operation cases). This is not legal IEEE behaviour, as it turns out,
-but not many people cared.
+I have been trying to compile GCC from today nativly, but it gives me the same error I got with the 07102000 one from oss.
 
-> Somebody at MIPS is working on merging the necessary fp support software
-> into the kernel, so this problem should be solved soon.
+It works when cross-compiling with make-cross though....
 
-Once we had bolted the Algorithmics FPU emulator into the kernel,
-the hack was no longer necessary.   To say that "somebody at MIPS
-is working on merging the necessary fp support software into the
-kernel" is perhaps a bit misleading.  The FPU emulator itself is in
-the oss.sgi.com repository, in the 2_2 branch, but I did not merge
-in the hacks to the kernel exception, context, signal, etc. handling.
-And there are several bug fixes that have been made since then.
-All the additional code is available on the ftp.mips.com server, and
-has been merged by others into 2.3/2.4, most notably by the VrLinux
-guys.
 
-We've got 2.4-test running in the lab, but it is a long way
-from being as robust under torture as our 2.2 kernel, and
-we have not decided whether it is "ripe" enough to merge
-in the FPU emulation support ourselves.
+Nativly (with egcs 1.0.3a) I get :
 
-            Regards,
+/usr/bin/ld:libgcc.map:1: parse error in VERSION script
+collect2: ld returned 1 exit status
+make[3]: *** [libgcc_s.so] Error 1
+make[3]: Leaving directory `/mnt/hd2/lfstmp/gcc/gcc-build/gcc'
+make[2]: *** [libgcc.a] Error 2
+make[2]: Leaving directory `/mnt/hd2/lfstmp/gcc/gcc-build/gcc'
+make[1]: *** [stage_a] Error 2
+make[1]: Leaving directory `/mnt/hd2/lfstmp/gcc/gcc-build/gcc'
+make: *** [bootstrap] Error 2
 
-            Kevin K.
+
+Bye for Now,
+
+Ian
+
+
+                     \|||/ 
+                     (o o)
+ /----------------ooO-(_)-Ooo----------------\
+ |  Ian Chilton                              |
+ |  E-Mail : ian@ichilton.co.uk              |
+ \-------------------------------------------/

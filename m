@@ -1,44 +1,61 @@
-Received:  by oss.sgi.com id <S553783AbQLNWQw>;
-	Thu, 14 Dec 2000 14:16:52 -0800
-Received: from mta3-rme.xtra.co.nz ([203.96.92.13]:44381 "EHLO
-        mta3-rme.xtra.co.nz") by oss.sgi.com with ESMTP id <S553781AbQLNWQk>;
-	Thu, 14 Dec 2000 14:16:40 -0800
-Received: from server1.metering.co.nz ([210.55.57.194])
-          by mta3-rme.xtra.co.nz with ESMTP
-          id <20001214221633.WNHI8799530.mta3-rme.xtra.co.nz@server1.metering.co.nz>
-          for <linux-mips@oss.sgi.com>; Fri, 15 Dec 2000 11:16:33 +1300
-Received: by server1.metering.co.nz with Internet Mail Service (5.5.2650.21)
-	id <XYBRPQ9N>; Fri, 15 Dec 2000 11:16:32 +1300
-Message-ID: <8BEF9F7FD6FEA8409D2A706B2D6D32280553FF@server1.metering.co.nz>
-From:   Pete Black <pete.black@metering.co.nz>
-To:     "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
-Subject: Linux/MIPS on quad-R4400 Challenge L
-Date:   Fri, 15 Dec 2000 11:16:31 +1300
+Received:  by oss.sgi.com id <S553771AbQLOHqK>;
+	Thu, 14 Dec 2000 23:46:10 -0800
+Received: from mx.mips.com ([206.31.31.226]:6359 "EHLO mx.mips.com")
+	by oss.sgi.com with ESMTP id <S553767AbQLOHqH>;
+	Thu, 14 Dec 2000 23:46:07 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id XAA13746;
+	Thu, 14 Dec 2000 23:46:03 -0800 (PST)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id XAA04770;
+	Thu, 14 Dec 2000 23:46:01 -0800 (PST)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id IAA17020;
+	Fri, 15 Dec 2000 08:45:36 +0100 (MET)
+Message-ID: <3A39CC1F.8FE7B2FE@mips.com>
+Date:   Fri, 15 Dec 2000 08:45:35 +0100
+From:   Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
+X-Accept-Language: en
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2650.21)
-Content-Type: text/plain
+To:     Ralf Baechle <ralf@oss.sgi.com>
+CC:     linux-mips@oss.sgi.com
+Subject: Re: 64 bit build fails
+References: <3A379CBC.ED1D9F@mips.com> <20001214215933.C28871@bacchus.dhis.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hi there,
+Ralf Baechle wrote:
 
-I happen to have acquired a quad-R4400 SGI Challenge-L server.
+> On Wed, Dec 13, 2000 at 04:58:52PM +0100, Carsten Langgaard wrote:
+>
+> > I'm trying to build a 64bit kernel, but it fails with following message:
+> >
+> > mips64-linux-gcc -D__KERNEL__
+> > -I/home/soc/proj/work/carstenl/sw/linux-2.4.0/include -Wall
+> > -Wstrict-prototypes -O2 -fomit-frame-pointer -fno-strict-aliasing
+> > -mabi=64 -G 0 -mno-abicalls -fno-pic -Wa,--trap -pipe -mcpu=r8000 -mips4
+> > -Wa,-32   -c head.S -o head.o
+> > head.S: Assembler messages:
+> > head.S:69: Error: Missing ')' assumed
+>
+> Looks like an attempt to build a 64-bit Indy kernel.  Various people working
+> on the Origin support have completly broken the support for anything else in
+> their battle tank-style approach ...
 
-It's big, it's black, and it seems to run OK.
+Ok, that explains why a lot of things are broken.
+So who will be responsible for fixing all the broken pieces ?
 
-Is there any support in Linux/MIPS for a beast like this?
+>
+>   Ralf
 
-Its currently running IRIX 6.5.9 quite happily, but i'd much rather run
-Linux, since then i have a standard OS across all my machines, and no hefty
-SGI taxes to pay.
-
->From what i read on the FAQs, the Multi-processor versions of the R4400 are
-not supported.. will there ever be a time when Linux/MIPS will run on a
-machin elike this, or am i stuck with IRIX for the rest of this machine's
-life?
-
-Thanks
-
--Pete
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

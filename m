@@ -1,70 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Jun 2003 09:12:32 +0100 (BST)
-Received: from p508B6D44.dip.t-dialin.net ([IPv6:::ffff:80.139.109.68]:47001
-	"EHLO p508B6D44.dip.t-dialin.net") by linux-mips.org with ESMTP
-	id <S8225214AbTFBILs>; Mon, 2 Jun 2003 09:11:48 +0100
-Received: from 12-234-207-60.client.attbi.com ([IPv6:::ffff:12.234.207.60]:31621
-	"HELO gateway.total-knowledge.com") by linux-mips.net with SMTP
-	id <S868897AbTFBFEo>; Mon, 2 Jun 2003 07:04:44 +0200
-Received: (qmail 16539 invoked by uid 502); 2 Jun 2003 05:03:41 -0000
-Date: Sun, 1 Jun 2003 22:03:41 -0700
-From: ilya@theIlya.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Jun 2003 09:38:13 +0100 (BST)
+Received: from verden.pvv.ntnu.no ([IPv6:::ffff:129.241.210.224]:16146 "HELO
+	verden.pvv.ntnu.no") by linux-mips.org with SMTP
+	id <S8225214AbTFBIiL>; Mon, 2 Jun 2003 09:38:11 +0100
+Received: (qmail 72864 invoked by uid 23199); 2 Jun 2003 08:38:08 -0000
+Date: Mon, 2 Jun 2003 10:38:08 +0200 (CEST)
+From: Bjorn Hanch Sollie <bhs@pvv.org>
+X-X-Sender: bhs@verden.pvv.ntnu.no
 To: linux-mips@linux-mips.org
-Subject: Another lost patch
-Message-ID: <20030602050341.GJ3035@gateway.total-knowledge.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="JsihDCElWRmQcbOr"
-Content-Disposition: inline
-User-Agent: Mutt/1.4i
-Return-Path: <ilya@gateway.total-knowledge.com>
+Subject: MIPSPro + GCC
+Message-ID: <Pine.BSF.4.52.0306021029350.72800@verden.pvv.ntnu.no>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <bhs@pvv.ntnu.no>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2494
+X-archive-position: 2495
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ilya@theIlya.com
+X-original-sender: bhs@pvv.org
 Precedence: bulk
 X-list: linux-mips
 
+Hi all,
 
---JsihDCElWRmQcbOr
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Does anyone here have an idea about what it takes to link my MIPSPro
+compiled program (MIPSPro 7.4) to a gcc built library (GCC 3.2.2)?  I
+will be very thankful for suggestions on how to resolve the FATAL 52
+below.  I suspect this might be a compiler/linker bug, since I at no
+point specify the -fini option, and I'm not attempting to build a
+driver or resident module (just a regular dso). (In case anyone is
+wondering, the library I'm linking against is the ITK segmentation and
+registration toolkit, http://www.itk.org/.)
 
- I think this is still needed as well...
+Thanks in advance for any help!
 
-Index: arch/mips64/mm/tlb-r4k.c
-===================================================================
-RCS file: /home/cvs/linux/arch/mips64/mm/tlb-r4k.c,v
-retrieving revision 1.18
-diff -u -r1.18 tlb-r4k.c
---- arch/mips64/mm/tlb-r4k.c    28 May 2003 07:32:46 -0000      1.18
-+++ arch/mips64/mm/tlb-r4k.c    2 Jun 2003 03:58:44 -0000
-@@ -253,8 +253,9 @@
-        tlb_probe();
-        BARRIER;
-        pmdp = pmd_offset(pgdp, address);
-+
-        idx = read_c0_index();
--       ptep = pte_offset(pmdp, address);
-+       ptep = pte_offset_map(pmdp, address);
-        BARRIER;
-        write_c0_entrylo0(pte_val(*ptep++) >> 6);
-        write_c0_entrylo1(pte_val(*ptep) >> 6);
+-Beorn
+
+bjorns@octane:~/Surge/Segmentation/demo:$ make
+        ld -o seg InputOutput.o  Levelset.o  Lumen3DSegment.o  Thrombus2DSegment.o  Thrombus3DSegment.o  Segment.o  main.o -L/usr/lib32/mips3  -L/usr/lib32  -L/lib32  -L/lib  -L/oslo/people/bjorns/src/Surge/lib  -L/oslo/people/bjorns/Surge/lib/ITK -lITKAlgorithms  -lITKBasicFilters  -lITKCommon  -lITKFEM  -lITKIO  -lITKMetaIO  -lITKNumerics  -lITKStatistics  -lVXLNumerics  -litkpng  -litkzlib -cxx -n32 -nostdlib -abi
+ld32: WARNING 84 : /oslo/people/bjorns/Surge/lib/ITK/libITKAlgorithms.so is not used for resolving any symbol.
+ld32: WARNING 84 : /oslo/people/bjorns/Surge/lib/ITK/libITKBasicFilters.so is not used for resolving any symbol.
+ld32: WARNING 84 : /oslo/people/bjorns/Surge/lib/ITK/libITKFEM.so is not used for resolving any symbol.
+ld32: WARNING 84 : /oslo/people/bjorns/Surge/lib/ITK/libITKNumerics.so is not used for resolving any symbol.
+ld32: WARNING 84 : /oslo/people/bjorns/Surge/lib/ITK/libITKStatistics.so is not used for resolving any symbol.
+ld32: FATAL   52 : _fini specified for -fini is not defined in the current object.
+*** Error code 4 (bu21)
+bjorns@octane:~/Surge/Segmentation/demo:$ ld -V
+ld32: INFO    153: Version 7.4.
+ld32: INFO    46 : No objects linked.
+bjorns@octane:~/Surge/Segmentation/demo:$ g++ --version
+g++ (GCC) 3.2.2
+Copyright (C) 2002 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+bjorns@octane:~/Surge/Segmentation/demo:$ CC -version
+MIPSpro Compilers: Version 7.4
+bjorns@octane:~/Surge/Segmentation/demo:$
+
+-Beorn
+-- 
+Truth is often just a widely held opinion.
 
 
---JsihDCElWRmQcbOr
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.7 (GNU/Linux)
-
-iD8DBQE+2tqs7sVBmHZT8w8RArMSAJ0Vlm2GgizkYX/aVDixmCFQvUUYWQCfe75s
-ycFdKGBTlvYFmYXSZhMrgM4=
-=PsY3
------END PGP SIGNATURE-----
-
---JsihDCElWRmQcbOr--
+-- 
+Truth is often just a widely held opinion.

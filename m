@@ -1,55 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jan 2004 16:28:10 +0000 (GMT)
-Received: from gw.icm.edu.pl ([IPv6:::ffff:212.87.0.39]:62503 "EHLO
-	atol.icm.edu.pl") by linux-mips.org with ESMTP id <S8225442AbUATQ2K>;
-	Tue, 20 Jan 2004 16:28:10 +0000
-Received: from rekin.icm.edu.pl (rekin.icm.edu.pl [192.168.1.132])
-	by atol.icm.edu.pl (8.12.6/8.12.6/rzm-4.6/icm) with ESMTP id i0KGRwCM028999
-	for <linux-mips@linux-mips.org>; Tue, 20 Jan 2004 17:27:58 +0100 (CET)
-Received: from rathann by rekin.icm.edu.pl with local (Exim 3.35 #1 (Debian))
-	id 1AiyjR-0007lC-00
-	for <linux-mips@linux-mips.org>; Tue, 20 Jan 2004 17:28:01 +0100
-Date: Tue, 20 Jan 2004 17:28:01 +0100
-From: "Dominik 'Rathann' Mierzejewski" <rathann@icm.edu.pl>
-To: linux-mips@linux-mips.org
-Subject: Re: Current 2.4 CVS (2.4.24-pre2) doesn't boot on SGI Indy
-Message-ID: <20040120162800.GA29792@icm.edu.pl>
-Mail-Followup-To: linux-mips@linux-mips.org
-References: <20040115141427.GA28546@icm.edu.pl> <Pine.LNX.4.21.0401151816540.3511-100000@www.marty44.net> <20040115231735.GA6619@icm.edu.pl> <4007386F.80207@gentoo.org> <20040115172602.H18368@mvista.com> <20040116115053.GA18099@icm.edu.pl> <20040120130625.GA24435@icm.edu.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jan 2004 16:47:31 +0000 (GMT)
+Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:10573
+	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
+	id <S8225437AbUATQra>; Tue, 20 Jan 2004 16:47:30 +0000
+Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
+	by iris1.csv.ica.uni-stuttgart.de with esmtp
+	id 1Aiz2E-0006Ev-00; Tue, 20 Jan 2004 17:47:26 +0100
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
+	id 1Aiz2E-0000qz-00; Tue, 20 Jan 2004 17:47:26 +0100
+Date: Tue, 20 Jan 2004 17:47:26 +0100
+To: Goswin von Brederlow <brederlo@informatik.uni-tuebingen.de>
+Cc: Guido Guenther <agx@debian.org>, linux-mips@linux-mips.org,
+	debian-mips@lists.debian.org
+Subject: Re: Need .config files for Debians kernel-image-2.4.24-mips(el)
+Message-ID: <20040120164726.GA22218@rembrandt.csv.ica.uni-stuttgart.de>
+References: <878yk21z7p.fsf@mrvn.homelinux.org> <20040120144212.GA7046@bogon.ms20.nix> <874quq1tdg.fsf@mrvn.homelinux.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20040120130625.GA24435@icm.edu.pl>
-User-Agent: Mutt/1.3.28i
-Return-Path: <rathann@icm.edu.pl>
+In-Reply-To: <874quq1tdg.fsf@mrvn.homelinux.org>
+User-Agent: Mutt/1.5.4i
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4068
+X-archive-position: 4069
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rathann@icm.edu.pl
+X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Jan 20, 2004 at 02:06:26PM +0100, Dominik 'Rathann' Mierzejewski wrote:
-[...]
-> OK, I've narrowed it down to sometime between 20031205 and 20031214, but
-> since there were no commits between 20031204 and 20031211, it has to be one
-> of these:
+Goswin von Brederlow wrote:
+[snip]
+> While working on the upgrade I came across some questions:
 > 
-> 6242 2003/12/11 01:29:17 linux_2_4 ralf Fix a bunch of long standing bugs
-> and performance clear_page issues: - Fi .....
-[...] 
-> Still searching...
+> Is the kernel-patch-2.4.22-mips relative to the debian kernel source
+> or the vanilla source?
 
-Found it! After applying the above patch, the kernel no longer goes
-past the "Freeing unused kernel memory" stage. So for now I'm sticking
-with the 20031205 kernel.
+It'S relative to the debian kernel source package.
 
-HTH & HAND
+> And is the result (after patching) the mips cvs
+> or cvs merged with the debian patch? And should that be done that way
+> again?
 
--- 
-Dominik 'Rathann' Mierzejewski <rathann@icm.edu.pl>                                                 
-Interdisciplinary Centre for Mathematical and Computational Modelling                               
-Warsaw University  |  http://www.icm.edu.pl  |  tel. +48 (22) 5540810                               
+AFAIK mips cvs plus (usually generic) debian fixes.
+
+[snip]
+> Have you thought about dropping the udebs and letting debian-installer
+> build -di udebs the way it does for several other arches now?
+
+The decstations still use the -udeb flavour.
+
+
+Thiemo

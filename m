@@ -1,48 +1,35 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0RIaBc30412
-	for linux-mips-outgoing; Sun, 27 Jan 2002 10:36:11 -0800
-Received: from mta7.pltn13.pbi.net (mta7.pltn13.pbi.net [64.164.98.8])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0RIa8P30399
-	for <linux-mips@oss.sgi.com>; Sun, 27 Jan 2002 10:36:08 -0800
-Received: from [10.2.2.61] ([63.194.214.47])
- by mta7.pltn13.pbi.net (iPlanet Messaging Server 5.1 (built May  7 2001))
- with ESMTP id <0GQL00H94Y864C@mta7.pltn13.pbi.net> for linux-mips@oss.sgi.com;
- Sun, 27 Jan 2002 09:36:06 -0800 (PST)
-Date: Sun, 27 Jan 2002 09:33:02 -0800
-From: Pete Popov <ppopov@mvista.com>
-Subject: Re: Help with OOPSes, anyone?
-In-reply-to: <20020127002242.A11373@momenco.com>
-To: Matthew Dharm <mdharm@momenco.com>
-Cc: linux-mips <linux-mips@oss.sgi.com>
-Message-id: <1012152783.2026.7.camel@localhost.localdomain>
-MIME-version: 1.0
-X-Mailer: Evolution/1.0.1
-Content-type: text/plain
-Content-transfer-encoding: 7bit
-References: <20020127002242.A11373@momenco.com>
+	by oss.sgi.com (8.11.2/8.11.3) id g0RLCub18361
+	for linux-mips-outgoing; Sun, 27 Jan 2002 13:12:56 -0800
+Received: from the-village.bc.nu (lightning.swansea.linux.org.uk [194.168.151.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0RLCoP18358;
+	Sun, 27 Jan 2002 13:12:51 -0800
+Received: from alan by the-village.bc.nu with local (Exim 3.33 #5)
+	id 16Uvqu-0002X7-00; Sun, 27 Jan 2002 20:24:36 +0000
+Subject: Re: thread-ready ABIs
+To: dan@debian.org (Daniel Jacobowitz)
+Date: Sun, 27 Jan 2002 20:24:36 +0000 (GMT)
+Cc: kevink@mips.com (Kevin D. Kissell), dom@algor.co.uk (Dominic Sweetman),
+   ralf@oss.sgi.com (Ralf Baechle), drepper@redhat.com (Ulrich Drepper),
+   uhler@mips.com (Mike Uhler),
+   linux-mips@oss.sgi.com ("MIPS/Linux List (SGI)"),
+   hjl@lucon.org (H . J . Lu)
+In-Reply-To: <20020122121330.A16110@nevyn.them.org> from "Daniel Jacobowitz" at Jan 22, 2002 12:13:30 PM
+X-Mailer: ELM [version 2.5 PL6]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-Id: <E16Uvqu-0002X7-00@the-village.bc.nu>
+From: Alan Cox <alan@lxorguk.ukuu.org.uk>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+> Which it is.  Fork shares no memory regions; vfork/clone share all
+> memory regions.  AFAIK there is no share-heap-but-not-stack option in
+> Linux.
 
-> But, under certain conditions, the kernel OOPSes.  Attached to this message
-> are a few of those OOPSes (serial console is wonderful!) along with the
-> ksymoops output.  I think the read_lsmod() warning is bogus, because there
-> are, actually, no modules loaded.
-> 
-> My instincts are telling me that these are all being caused by the same
-> problem, but I'll be damned if I can figure out what that is.  Caching is a
-> good suspect, but that's just because it's always a good suspect.
+Thats a design decision. At the point you don't have identical mappings for
+both threads you need two sets of page tables and you take all the
+performance hits that go with changing current tables on a schedule.
 
-Native compiles have indeed proven a great way to shake out hardware and
-software bugs. 
-
-One suggestion. The rm7k, at least some of the silicon versions, have
-hardware erratas with the 'wait' instruction, used in the cpu_idle()
-loop.  The CPU I have on one of the EV96100 boards, in combination with
-the gt96100, will hang hard every time if I don't disable the use of
-'wait'.  So while this bug might not have anything to do with what
-you're observing, I would ifdef-out the 'wait' instruction in
-check_wait(), just to be sure that that's not the cause or one of the
-problems.
-
-Pete
+Its a lot cheaper to use a different %esp for each thread

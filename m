@@ -1,41 +1,45 @@
-Received:  by oss.sgi.com id <S553659AbQJRCNM>;
-	Tue, 17 Oct 2000 19:13:12 -0700
-Received: from u-237.karlsruhe.ipdial.viaginterkom.de ([62.180.18.237]:47885
-        "EHLO u-237.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S553646AbQJRCMu>; Tue, 17 Oct 2000 19:12:50 -0700
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S868617AbQJRCMh>;
-        Wed, 18 Oct 2000 04:12:37 +0200
-Date:   Wed, 18 Oct 2000 04:12:36 +0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
+Received:  by oss.sgi.com id <S553685AbQJRCUC>;
+	Tue, 17 Oct 2000 19:20:02 -0700
+Received: from gateway-490.mvista.com ([63.192.220.206]:35320 "EHLO
+        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553661AbQJRCUA>;
+	Tue, 17 Oct 2000 19:20:00 -0700
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id e9I2I3x32613;
+	Tue, 17 Oct 2000 19:18:03 -0700
+Message-ID: <39ED6B6A.E938CBAC@mvista.com>
+Date:   Wed, 18 Oct 2000 02:20:42 -0700
+From:   Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-5.0 i586)
+X-Accept-Language: en
+MIME-Version: 1.0
 To:     Florian Lohoff <flo@rfc822.org>
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: base.tgz
-Message-ID: <20001018041235.G7865@bacchus.dhis.org>
-References: <20001016043346.A6656@lug-owl.de> <20001017041449.A17546@lug-owl.de> <20001017162724.H4890@paradigm.rfc822.org> <20001017173525.C22796@lug-owl.de> <20001018033031.A2259@paradigm.rfc822.org>
-Mime-Version: 1.0
+CC:     linux-mips@fnet.fr, linux-mips@oss.sgi.com
+Subject: Re: The initial results (Re: stable binutils, gcc, glibc ...
+References: <39E7EB73.9206D0DB@mvista.com> <39ED2166.9B5F970@mvista.com> <20001018033350.B2259@paradigm.rfc822.org>
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <20001018033031.A2259@paradigm.rfc822.org>; from flo@rfc822.org on Wed, Oct 18, 2000 at 03:30:31AM +0200
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, Oct 18, 2000 at 03:30:31AM +0200, Florian Lohoff wrote:
-
-> On Tue, Oct 17, 2000 at 05:35:25PM +0200, Jan-Benedict Glaw wrote:
-> > On Tue, Oct 17, 2000 at 04:27:24PM +0200, Florian Lohoff wrote:
-> > > On Tue, Oct 17, 2000 at 04:14:50AM +0200, Jan-Benedict Glaw wrote:
-> > 
-> > Will see what I can do;) First of all, I'll combine all the .deb's
-> > I've currently fetched up. Btw, Geert asked for pciutils. Are there
-> > MIPSel machines with PCI bus(ses)?
+Florian Lohoff wrote:
 > 
-> RM200C i guess 
+> On Tue, Oct 17, 2000 at 09:04:54PM -0700, Jun Sun wrote:
+> >
+> > (Ralf, you cannot find egcs-1.0.3a.tar.gz release on the net anymore.
+> > You probably want to save this file on the same site with the diff
+> > file.)
+> 
+> You can ...
+> 
+> lftp gcc.cygnus.com:/pub/gcc/old-releases/egcs> ls
 
-All SNI MIPS PCI machines can be reconfigured for both byte orders.
 
-And of course Cobalt's ...
+Darn! I missed the most sensible place ...
 
-  Ralf
+On the other hand, if you try to search for egcs-1.0.3a, I bet you will
+really have a hard time - I suppose ftp is conveniently forgotten due to
+the new, crowded, over-populated web.
+
+Jun

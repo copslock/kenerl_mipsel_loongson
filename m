@@ -1,47 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jun 2003 21:05:00 +0100 (BST)
-Received: from 66-122-194-201.ded.pacbell.net ([IPv6:::ffff:66.122.194.201]:18049
-	"EHLO localhost.localdomain") by linux-mips.org with ESMTP
-	id <S8224802AbTFEUE6>; Thu, 5 Jun 2003 21:04:58 +0100
-Received: from localhost.localdomain (greglaptop [127.0.0.1])
-	by localhost.localdomain (8.12.8/8.12.5) with ESMTP id h55K6WOW001670
-	for <linux-mips@linux-mips.org>; Thu, 5 Jun 2003 13:06:32 -0700
-Received: (from lindahl@localhost)
-	by localhost.localdomain (8.12.8/8.12.8/Submit) id h55K6W9m001668
-	for linux-mips@linux-mips.org; Thu, 5 Jun 2003 13:06:32 -0700
-X-Authentication-Warning: localhost.localdomain: lindahl set sender to lindahl@keyresearch.com using -f
-Date: Thu, 5 Jun 2003 13:06:32 -0700
-From: Greg Lindahl <lindahl@keyresearch.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jun 2003 21:12:46 +0100 (BST)
+Received: from p508B4F3A.dip.t-dialin.net ([IPv6:::ffff:80.139.79.58]:59066
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8224802AbTFEUMo>; Thu, 5 Jun 2003 21:12:44 +0100
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h55KCgbY027999
+	for <linux-mips@linux-mips.org>; Thu, 5 Jun 2003 13:12:42 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h55KCg7e027998
+	for linux-mips@linux-mips.org; Thu, 5 Jun 2003 22:12:42 +0200
+Date: Thu, 5 Jun 2003 22:12:41 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
 To: linux-mips@linux-mips.org
-Subject: Re: [RFC] synchronized CPU count registers on SMP machines
-Message-ID: <20030605200632.GA1513@greglaptop.internal.keyresearch.com>
-Mail-Followup-To: linux-mips@linux-mips.org
-References: <20030604153930.H19122@mvista.com> <20030604231547.GA22410@linux-mips.org> <20030604164652.J19122@mvista.com> <20030605001232.GA5626@linux-mips.org> <20030604183836.B25414@mvista.com> <16094.64161.12926.645512@doms-laptop.algor.co.uk> <20030605084852.GA25712@linux-mips.org> <20030605095348.C25414@mvista.com>
+Subject: Re: CVS Update@-mips.org: linux
+Message-ID: <20030605201241.GA27522@linux-mips.org>
+References: <20030605182419Z8224802-1272+2270@linux-mips.org> <20030605184223.GB29450@bogon.ms20.nix> <20030605194516.GW30457@lug-owl.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20030605095348.C25414@mvista.com>
+In-Reply-To: <20030605194516.GW30457@lug-owl.de>
 User-Agent: Mutt/1.4.1i
-Return-Path: <lindahl@keyresearch.com>
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2547
+X-archive-position: 2548
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lindahl@keyresearch.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jun 05, 2003 at 09:53:48AM -0700, Jun Sun wrote:
+On Thu, Jun 05, 2003 at 09:45:16PM +0200, Jan-Benedict Glaw wrote:
 
-> 1) yes, it is always possible to use some external system-wide
-> timer source, if available, to solve this problem.  However, that could
-> get tricky too, and I wanted to do something generic which is hopefully 
-> applicable to more systems.
+> While talking to a coworker today, I called that harakiri merging. You
+> did a great job, Ralf! Do you want to get inter-BKxx patches from me or
+> do you prefer to only import evenly versioned Linus patches?
 
-Such sources are generally both much lower resolution, and they take a
-long time to read. But a _consistent_ but higher overhead, lower
-resolution number is better than an inconsistent number.
+In general I try to keep the merging overhead low by not following all
+the -bk releases.
 
-greg
+  Ralf

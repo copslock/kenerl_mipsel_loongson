@@ -1,74 +1,92 @@
-Received:  by oss.sgi.com id <S305162AbQA3Nmr>;
-	Sun, 30 Jan 2000 05:42:47 -0800
-Received: from sgi.SGI.COM ([192.48.153.1]:23361 "EHLO sgi.com")
-	by oss.sgi.com with ESMTP id <S305160AbQA3NmU>;
-	Sun, 30 Jan 2000 05:42:20 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id FAA08760; Sun, 30 Jan 2000 05:45:07 -0800 (PST)
+Received:  by oss.sgi.com id <S305162AbQA3VR3>;
+	Sun, 30 Jan 2000 13:17:29 -0800
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:28231 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S305160AbQA3VRI>; Sun, 30 Jan 2000 13:17:08 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id NAA00333; Sun, 30 Jan 2000 13:22:34 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id FAA14144
+	id NAA21808
 	for linux-list;
-	Sun, 30 Jan 2000 05:30:59 -0800 (PST)
+	Sun, 30 Jan 2000 13:00:43 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id FAA17590
+	via ESMTP id NAA30729
 	for <linux@cthulhu.engr.sgi.com>;
-	Sun, 30 Jan 2000 05:30:45 -0800 (PST)
-	mail_from (R.vandenBerg@inter.NL.net)
-Received: from altrade.nijmegen.inter.nl.net (altrade.nijmegen.inter.nl.net [193.67.237.6]) 
+	Sun, 30 Jan 2000 13:00:40 -0800 (PST)
+	mail_from (bpielock@ulink.net)
+Received: from mta1.snfc21.pbi.net (mta1.snfc21.pbi.net [206.13.28.122]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id FAA00638
-	for <linux@cthulhu.engr.sgi.com>; Sun, 30 Jan 2000 05:30:43 -0800 (PST)
-	mail_from (R.vandenBerg@inter.NL.net)
-Received: from whale.dutch.mountain by altrade.nijmegen.inter.nl.net
-	via hn51-34.Hoorn.NL.net [193.79.46.198] with ESMTP
-	id OAA09129 (8.8.8/3.41); Sun, 30 Jan 2000 14:30:40 +0100 (MET)
-Received: from localhost(really [127.0.0.1]) by whale.dutch.mountain
-	via in.smtpd with smtp
-	id <m12EuQY-00024aC@whale.dutch.mountain>
-	for <linux@cthulhu.engr.sgi.com>; Sun, 30 Jan 2000 14:30:06 +0100 (MET)
-	(Smail-3.2 1996-Jul-4 #2 built 1996-Nov-26)
-Date:   Sun, 30 Jan 2000 14:30:05 +0100 (MET)
-From:   Richard van den Berg <R.vandenBerg@inter.NL.net>
-X-Sender: ravdberg@whale.dutch.mountain
-To:     "Kevin D. Kissell" <kevink@mips.com>
-cc:     Florian Lohoff <flo@rfc822.org>, Ralf Baechle <ralf@oss.sgi.com>,
-        linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
-        linux-mips@vger.rutgers.edu
-Subject: Re: WCHAN on R3000
-In-Reply-To: <000801bf6b14$51b2e620$0ceca8c0@satanas.mips.com>
-Message-ID: <Pine.LNX.3.95.1000130142648.3037A-100000@whale.dutch.mountain>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	via ESMTP id NAA04194
+	for <linux@cthulhu.engr.sgi.com>; Sun, 30 Jan 2000 13:00:40 -0800 (PST)
+	mail_from (bpielock@ulink.net)
+Received: from fay ([207.212.133.25])
+ by mta1.snfc21.pbi.net (Sun Internet Mail Server sims.3.5.1999.09.16.21.57.p8)
+ with SMTP id <0FP600K9S220HJ@mta1.snfc21.pbi.net> for
+ linux@cthulhu.engr.sgi.com; Sun, 30 Jan 2000 12:54:03 -0800 (PST)
+Date:   Sun, 30 Jan 2000 12:52:39 -0800
+From:   Bob Pielock <bpielock@ulink.net>
+Subject: Open GL Full Release
+To:     linux@cthulhu.engr.sgi.com
+Message-id: <00c001bf6b64$76cb4d80$1985d4cf@pacbell.net>
+MIME-version: 1.0
+X-Mailer: Microsoft Outlook Express 5.00.2615.200
+Content-type: multipart/alternative;
+ boundary="----=_NextPart_000_00B4_01BF6B20.E3B552E0"
+X-MSMail-Priority: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2615.200
+X-Priority: 3
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On Sun, 30 Jan 2000, Kevin D. Kissell wrote:
+This is a multi-part message in MIME format.
 
-> Note, however, that the incident below happened
-> on an R4000 platform, not an R3K.   It's probably
-> more significant that it was on a DECstation, thus
-> a little-endian platform.
+------=_NextPart_000_00B4_01BF6B20.E3B552E0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-More specific the DECstation platform.
+I hear SGI has Open Sourced all of Open GL. Can anyone confirm this? If =
+so what will this mean to SGI Linux????
+Also, at this stage what sgi system would be most compatible / easy to =
+setup to run linux on? I had an Indigo 2 IP22 system with 128megs of =
+ram, but It just wouldn't work.
 
-> >(root@repeat)~# ps axl
-> >Unknown HZ value! (0) Assume 100.
+-Bob
 
-The HZ_TO_STD problem Ralf asked to fix caused by a overhaul of
-fs/proc/array.c, I'm working on a patch.
 
-Regards,
-Richard
+
+------=_NextPart_000_00B4_01BF6B20.E3B552E0
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META content=3D"text/html; charset=3Diso-8859-1" =
+http-equiv=3DContent-Type>
+<META content=3D"MSHTML 5.00.2722.2800" name=3DGENERATOR>
+<STYLE></STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV><FONT size=3D2>I hear SGI has Open Sourced all of Open GL. Can =
+anyone confirm=20
+this? If so what will this mean to SGI Linux????</FONT></DIV>
+<DIV><FONT size=3D2>Also, at this stage what sgi system would be most =
+compatible /=20
+easy to setup to run linux on? I had an Indigo 2 IP22 system with =
+128megs of=20
+ram, but It just wouldn't work.</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT size=3D2>-Bob</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV>&nbsp;</DIV></BODY></HTML>
+
+------=_NextPart_000_00B4_01BF6B20.E3B552E0--

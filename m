@@ -1,61 +1,69 @@
-Received:  by oss.sgi.com id <S305171AbPLHGAg>;
-	Tue, 7 Dec 1999 22:00:36 -0800
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:13944 "EHLO
+Received:  by oss.sgi.com id <S305172AbPLHLWk>;
+	Wed, 8 Dec 1999 03:22:40 -0800
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:22793 "EHLO
         pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S305167AbPLHGAS>; Tue, 7 Dec 1999 22:00:18 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id WAA03796; Tue, 7 Dec 1999 22:09:21 -0800 (PST)
+	id <S305167AbPLHLWS>; Wed, 8 Dec 1999 03:22:18 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id DAA09705; Wed, 8 Dec 1999 03:31:22 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id WAA17838
+	id DAA70772
 	for linux-list;
-	Tue, 7 Dec 1999 22:00:51 -0800 (PST)
+	Wed, 8 Dec 1999 03:21:49 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from hollywood.engr.sgi.com (hollywood.engr.sgi.com [150.166.61.38])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via SMTP id WAA36414
+	via SMTP id DAA10830
 	for <linux@cthulhu.engr.sgi.com>;
-	Tue, 7 Dec 1999 22:00:48 -0800 (PST)
+	Wed, 8 Dec 1999 03:21:46 -0800 (PST)
 	mail_from (owner-linux@hollywood.engr.sgi.com)
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by hollywood.engr.sgi.com (940816.SGI.8.6.9/960327.SGI.AUTOCF) via ESMTP id WAA25031; Tue, 7 Dec 1999 22:00:42 -0800
-Received: from liveoak.engr.sgi.com (liveoak.engr.sgi.com [150.166.40.92])
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by hollywood.engr.sgi.com (940816.SGI.8.6.9/960327.SGI.AUTOCF) via ESMTP id DAA25251; Wed, 8 Dec 1999 03:21:44 -0800
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id WAA12351;
-	Tue, 7 Dec 1999 22:00:25 -0800 (PST)
-	mail_from (wje@liveoak.engr.sgi.com)
-Received: (from wje@localhost)
-	by liveoak.engr.sgi.com (8.9.3/8.8.7) id WAA16757;
-	Tue, 7 Dec 1999 22:00:15 -0800
-X-Authentication-Warning: liveoak.engr.sgi.com: wje set sender to wje@liveoak.engr.sgi.com using -f
-From:   "William J. Earl" <wje@cthulhu.engr.sgi.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-ID: <14413.62447.427645.648406@liveoak.engr.sgi.com>
-Date:   Tue, 7 Dec 1999 22:00:15 -0800 (PST)
-To:     fisher@sgi.com
-Cc:     ralf@oss.sgi.com, kevink@mips.com, linux@hollywood.engr.sgi.com,
-        fisher@hollywood.engr.sgi.com (William Fisher)
+	via ESMTP id DAA05326;
+	Wed, 8 Dec 1999 03:21:44 -0800 (PST)
+	mail_from (ralf@oss.sgi.com)
+Received: from lappi (animaniacs.conectiva.com.br [200.250.58.146]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id DAA07947; Wed, 8 Dec 1999 03:21:27 -0800 (PST)
+	mail_from (ralf@oss.sgi.com)
+Received:  by lappi.waldorf-gmbh.de id <S407621AbPLHLVM>;
+	Wed, 8 Dec 1999 09:21:12 -0200
+Date:   Wed, 8 Dec 1999 09:21:12 -0200
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Alistair Lambie <alambie@rock.csd.sgi.com>
+Cc:     fisher@sgi.com, kevink@mips.com, linux@hollywood.engr.sgi.com,
+        William Fisher <fisher@hollywood.engr.sgi.com>
 Subject: Re: Question for David Miller or anyone else about R6000 code
-In-Reply-To: <199912080313.TAA24823@hollywood.engr.sgi.com>
-References: <19991206092830.C765@uni-koblenz.de>
-	<199912080313.TAA24823@hollywood.engr.sgi.com>
-X-Mailer: VM 6.74 under Emacs 20.3.1
+Message-ID: <19991208092112.F10331@uni-koblenz.de>
+References: <199912080313.TAA24823@hollywood.engr.sgi.com> <384DDEF9.E3BE1F10@csd.sgi.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0pre3us
+In-Reply-To: <384DDEF9.E3BE1F10@csd.sgi.com>
+X-Accept-Language: de,en,fr
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-William Fisher writes:
-...
- > 	Since the R6000 was an ECL machine produced in late 1992, just
- > 	before the MIPS/SGI merger. There were only a few machines sold
- > 	and the machine was designed to be a Fortran FP specialist.
- > 
- > 	Hence the R6000 is long since dead. We still have the MIPS risc/os 5.01
- > 	operating system source code, so if anybody has lots of free cycles
- > 	to waste, I'm sure we can send them locore.
+On Wed, Dec 08, 1999 at 05:30:49PM +1300, Alistair Lambie wrote:
 
-      Actually, CDC later sold quite a few multiple-processor machines, after
-MIPS was merged into SGI.  They are not very practical, however, as they
-use a lot of power and are only a little faster than a 100 MHZ R4000SC.
+> Don't forget CDC used the R6000 and ramped it to 90MHz.  They also got
+> it going in an SMP configuration with 4 processors from what I can
+> remember.  I guess it is possible that someone could actually want to
+> burn some cycles on this, although they had better have a cheap source
+> of power and good airconditioning :-)
+
+At one time some Linux/m68k hacker was seriously looking into porting
+Linux to a 3-CPU 256mb CDC which at that time was used as
+ftp.uni-erlangen.de.
+
+As usual the largest problem was technical documentation for the machine
+and the CPU; the R6k is covered very badly by the freely available
+documentation.
+
+  Ralf

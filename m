@@ -1,55 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Mar 2004 03:18:43 +0000 (GMT)
-Received: from mail4.speakeasy.net ([IPv6:::ffff:216.254.0.204]:51850 "EHLO
-	mail4.speakeasy.net") by linux-mips.org with ESMTP
-	id <S8225592AbUCVDSm>; Mon, 22 Mar 2004 03:18:42 +0000
-Received: (qmail 8439 invoked from network); 22 Mar 2004 03:18:37 -0000
-Received: from descartes.jellydonut.org (HELO [10.0.1.102]) (dfrezell@[216.27.160.185])
-          (envelope-sender <dfrezell@speakeasy.net>)
-          by mail4.speakeasy.net (qmail-ldap-1.03) with SMTP
-          for <linux-mips@linux-mips.org>; 22 Mar 2004 03:18:37 -0000
-Mime-Version: 1.0 (Apple Message framework v613)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Mar 2004 07:06:03 +0000 (GMT)
+Received: from [IPv6:::ffff:202.230.225.5] ([IPv6:::ffff:202.230.225.5]:53010
+	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
+	id <S8224793AbUCVHGC>; Mon, 22 Mar 2004 07:06:02 +0000
+Received: from no.name.available by topsns.toshiba-tops.co.jp
+          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 22 Mar 2004 07:06:00 UT
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id i2M75i1x041949;
+	Mon, 22 Mar 2004 16:05:44 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date: Mon, 22 Mar 2004 16:06:27 +0900 (JST)
+Message-Id: <20040322.160627.41628364.nemoto@toshiba-tops.co.jp>
+To: linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc: ica2_ts@csv.ica.uni-stuttgart.de
+Subject: Re: [PATCH, 2.4] Fix bad check_gcc order for mips64, make offset.h
+ creation more robust
+From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20040122040759.GB23173@rembrandt.csv.ica.uni-stuttgart.de>
+	<20031105.171701.42767326.nemoto@toshiba-tops.co.jp>
+References: <20040122040759.GB23173@rembrandt.csv.ica.uni-stuttgart.de>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.2 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Message-Id: <9C1F2DDC-7BAF-11D8-A797-00039394886E@speakeasy.net>
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-To: linux-mips@linux-mips.org
-From: Andrew Frezell <dfrezell@speakeasy.net>
-Subject: mounting fs from memory
-Date: Sun, 21 Mar 2004 22:18:37 -0500
-X-Mailer: Apple Mail (2.613)
-Return-Path: <dfrezell@speakeasy.net>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4605
+X-archive-position: 4606
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dfrezell@speakeasy.net
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hello All,
+Could you remember this two months old patch?
 
-I have a bootloader that that is reading segments out of flash and into 
-memory.  The segments are 3 compressed ext2 filesystems and the linux 
-kernel.  After a signature check of each of the sections in memory the 
-bootloader jumps to the kernel.
+>>>>> On Thu, 22 Jan 2004 05:07:59 +0100, Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de> said:
+Thiemo> current 2.4 64bit kernels fail to build for newer toolchains
+Thiemo> because the -finline-limit=100000 option is ignored. The
+Thiemo> symptom is some bogus offset.h content which stops the build
+Thiemo> in arch/mips64/mm/tlbex-r4k.S.
 
-I would like to mount one filesystem section in RAM as the root 
-filesystem.  I think it's easy enough to specify initrd as the offset 
-and size of the section in RAM.  But I would also like to mount the 
-remaining two filesystems in RAM when linux starts up.  This is where 
-I'm having some trouble.  I have two questions:
+Or this four months old patch?
 
-1.  Is there some way to protect the memory regions in RAM from linux 
-just trashing it?  I saw a function add_memory_region in 
-arch/mips/kernel/setup.c that seems to do something, does anyone know 
-what exactly this does?
+>>>>> On Wed, 05 Nov 2003 17:17:01 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> said:
+anemo> It seems mips64 Makefile does not pass "-finline-limit=100000"
+anemo> to gcc.  The "check_gcc" must be defined before used ?
 
-2.  How do you mount an area of memory that you know has a filesystem 
-already there under linux?  Is there some mount command where you can 
-pass the address and size, and mount does the right thing?
 
-Thank you in advance,
+I think this fix is definitely required for 2.4 mips64 tree.  Please
+commit to CVS if no problem with this.
 
-Drew Frezell
+---
+Atsushi Nemoto

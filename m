@@ -1,34 +1,59 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id QAA17870; Sun, 11 May 1997 16:00:49 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA17640; Sun, 11 May 1997 15:47:49 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id QAA07057 for linux-list; Sun, 11 May 1997 16:00:26 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id QAA07042 for <linux@relay.engr.SGI.COM>; Sun, 11 May 1997 16:00:20 -0700
-Received: from caipfs.rutgers.edu (caipfs.rutgers.edu [128.6.19.100]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id QAA00761
-	for <linux@relay.engr.SGI.COM>; Sun, 11 May 1997 16:00:16 -0700
-	env-from (davem@caipfs.rutgers.edu)
-Received: from jenolan.caipgeneral (jenolan.rutgers.edu [128.6.111.5])
-	by caipfs.rutgers.edu (8.8.5/8.8.5) with SMTP id SAA04160;
-	Sun, 11 May 1997 18:56:29 -0400 (EDT)
-Received: by jenolan.caipgeneral (SMI-8.6/SMI-SVR4)
-	id SAA11246; Sun, 11 May 1997 18:55:08 -0400
-Date: Sun, 11 May 1997 18:55:08 -0400
-Message-Id: <199705112255.SAA11246@jenolan.caipgeneral>
-From: "David S. Miller" <davem@jenolan.rutgers.edu>
-To: shaver@neon.ingenia.ca
-CC: linux@cthulhu.engr.sgi.com
-In-reply-to: <199705112256.SAA11805@neon.ingenia.ca> (message from Mike Shaver
-	on Sun, 11 May 1997 18:56:35 -0400 (EDT))
-Subject: Re: irix_times
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA05418 for linux-list; Sun, 11 May 1997 15:47:13 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA05342 for <linux@engr.sgi.com>; Sun, 11 May 1997 15:47:00 -0700
+Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id PAA29532
+	for <linux@engr.sgi.com>; Sun, 11 May 1997 15:46:57 -0700
+	env-from (shaver@neon.ingenia.ca)
+Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id SAA11805 for linux@engr.sgi.com; Sun, 11 May 1997 18:56:36 -0400
+From: Mike Shaver <shaver@neon.ingenia.ca>
+Message-Id: <199705112256.SAA11805@neon.ingenia.ca>
+Subject: irix_times
+To: linux@cthulhu.engr.sgi.com
+Date: Sun, 11 May 1997 18:56:35 -0400 (EDT)
+X-Mailer: ELM [version 2.4ME+ PL28 (25)]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-   From: Mike Shaver <shaver@neon.ingenia.ca>
-   Date: Sun, 11 May 1997 18:56:35 -0400 (EDT)
+>From sysirix.c:
 
-   gcc tells me, quite rightly, that error may be used without
-   initialization, and I'm wondering if the hiding of error in the C<if
-   (tbuf)> block is intentional.
+asmlinkage int irix_times(struct tms * tbuf)
+{
+        int error;
+        lock_kernel();
+        if (tbuf) {
+                int error = verify_area(VERIFY_WRITE,tbuf,sizeof
+*tbuf);
+                if (error)
+                        goto out;
+                __put_user(current->utime,&tbuf->tms_utime);
+                __put_user(current->stime,&tbuf->tms_stime);
+                __put_user(current->cutime,&tbuf->tms_cutime);
+                __put_user(current->cstime,&tbuf->tms_cstime);
+        }
+        error = 0;
 
-   I assume not, but I thought I'd make sure it just wasn't davem
-   outsmarting me again. =)
+out:
+        unlock_kernel();
+        return error;
+}
 
-Thats just my stupidity, the obvious fix is the intended code.
+gcc tells me, quite rightly, that error may be used without
+initialization, and I'm wondering if the hiding of error in the C<if
+(tbuf)> block is intentional.
+
+I assume not, but I thought I'd make sure it just wasn't davem
+outsmarting me again. =)
+
+Mike
+
+-- 
+#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
+#>                   Welcome to the technocracy.
+#>                                                                     
+#> "you'd be so disappointed
+#>              to find out that the magic was not
+#>                          really meant for you" - OLP

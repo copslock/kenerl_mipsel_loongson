@@ -1,64 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Feb 2005 01:05:04 +0000 (GMT)
-Received: from NAT.office.mind.be ([IPv6:::ffff:62.166.230.82]:57486 "EHLO
-	nat.office.mind.be") by linux-mips.org with ESMTP
-	id <S8225009AbVBOBEt>; Tue, 15 Feb 2005 01:04:49 +0000
-Received: from p2 by codecarver with local (Exim 3.36 #1 (Debian))
-	id 1D0r8y-0004oK-00
-	for <linux-mips@linux-mips.org>; Tue, 15 Feb 2005 02:04:48 +0100
-Date:	Tue, 15 Feb 2005 02:04:48 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Feb 2005 06:53:43 +0000 (GMT)
+Received: from rproxy.gmail.com ([IPv6:::ffff:64.233.170.197]:20583 "EHLO
+	rproxy.gmail.com") by linux-mips.org with ESMTP id <S8224814AbVBOGx3>;
+	Tue, 15 Feb 2005 06:53:29 +0000
+Received: by rproxy.gmail.com with SMTP id y7so837088rne
+        for <linux-mips@linux-mips.org>; Mon, 14 Feb 2005 22:53:27 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding;
+        b=e1jYjrv+cja6FObB5jk9owL81a99nIa/TbAMyA5ZcvjPu4/u0lEEORLmRg/JSZ7fGRQyGZwctBgI3uu0ygCSut4wQd+CFaoual3jCPAnLePry2q30vtQsc1JBeUN1+2MHbNYYwV3t+RRhy3U66D5cdvRfknzKQ6+5FpdpLrRfvI=
+Received: by 10.38.65.62 with SMTP id n62mr220034rna;
+        Mon, 14 Feb 2005 22:53:27 -0800 (PST)
+Received: by 10.38.104.29 with HTTP; Mon, 14 Feb 2005 22:53:27 -0800 (PST)
+Message-ID: <e8180c7f0502142253456c027e@mail.gmail.com>
+Date:	Mon, 14 Feb 2005 23:53:27 -0700
+From:	Prasad Boddupalli <p.boddupalli@gmail.com>
+Reply-To: Prasad Boddupalli <p.boddupalli@gmail.com>
 To:	linux-mips@linux-mips.org
-Subject: turbo channel drivers for 2.6
-Message-ID: <20050215010448.GP3448@mind.be>
-Mail-Followup-To: peter.de.schrijver@mind.be, linux-mips@linux-mips.org
+Subject: xgcc for 64-bit machines?
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="+gHRqQ1BTyNna/y8"
-Content-Disposition: inline
-X-Answer: 42
-X-Operating-system: Debian GNU/Linux
-X-Message-Flag:	Get yourself a real email client. http://www.mutt.org/
-X-mate:	Mate, man gewoehnt sich an alles
-User-Agent: Mutt/1.5.6+20040907i
-From:	Peter 'p2' De Schrijver <p2@mind.be>
-Return-Path: <p2@mind.be>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <p.boddupalli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7253
+X-archive-position: 7254
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: p2@mind.be
+X-original-sender: p.boddupalli@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-
---+gHRqQ1BTyNna/y8
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
 Hi,
 
-Is there anyone working on a turbo channel driver for 2.6 ? I have 2.4
-running on the DEC 3000 (turbo channel alpha machine). I want to get 2.6
-to work and it would make sense to share the turbo channel part with
-other platforms (mipsel, vax).
+Is the Linux/386 crosscompiler available at 
 
-Thanks,
+http://www.linux-mips.org/wiki/index.php/Toolchains
 
-Peter (p2).
+good for 64-bit targets too?
 
---+gHRqQ1BTyNna/y8
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.5 (GNU/Linux)
-
-iD8DBQFCEUqvKLKVw/RurbsRAuUQAJ9cKei1vUJZ9GlXt1rpMI5osVp+lACfUZKY
-DTPQGoyFf+o2dSUR3AYa2DQ=
-=fgg4
------END PGP SIGNATURE-----
-
---+gHRqQ1BTyNna/y8--
+thanks,
+Prasad

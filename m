@@ -1,74 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Nov 2002 13:34:56 +0100 (CET)
-Received: from p508B75AF.dip.t-dialin.net ([80.139.117.175]:32912 "EHLO
-	dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S1124127AbSKRMe4>; Mon, 18 Nov 2002 13:34:56 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id gAICYd111074;
-	Mon, 18 Nov 2002 13:34:39 +0100
-Date: Mon, 18 Nov 2002 13:34:39 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: atul srivastava <atulsrivastava9@rediffmail.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: -mips2 amd -mcpu=r4600 for Rc32334..?
-Message-ID: <20021118133438.A4988@linux-mips.org>
-References: <20021118114317.22526.qmail@mailweb34.rediffmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <20021118114317.22526.qmail@mailweb34.rediffmail.com>; from atulsrivastava9@rediffmail.com on Mon, Nov 18, 2002 at 11:43:17AM -0000
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Nov 2002 14:20:43 +0100 (CET)
+Received: from mx2.mips.com ([206.31.31.227]:46792 "EHLO mx2.mips.com")
+	by linux-mips.org with ESMTP id <S1123974AbSKRNUm>;
+	Mon, 18 Nov 2002 14:20:42 +0100
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id gAIDKSNf003314
+	for <linux-mips@linux-mips.org>; Mon, 18 Nov 2002 05:20:28 -0800 (PST)
+Received: from grendel (grendel [192.168.236.16])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id FAA19818
+	for <linux-mips@linux-mips.org>; Mon, 18 Nov 2002 05:20:29 -0800 (PST)
+Message-ID: <015201c28f05$cb583800$10eca8c0@grendel>
+From: "Kevin D. Kissell" <kevink@mips.com>
+To: <linux-mips@linux-mips.org>
+Subject: Alignment of FP Context Storage
+Date: Mon, 18 Nov 2002 14:24:06 +0100
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4807.1700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4910.0300
+Return-Path: <kevink@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 663
+X-archive-position: 664
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: kevink@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Nov 18, 2002 at 11:43:17AM -0000, atul srivastava wrote:
+I'm cleaning up some old Linux kernel sandboxes, and
+came across a patch which I had long ago made in a
+local copy of include/asm-mips/processor.h but which
+does not seem to have been propagated more widely.
+I had added "__attribute__((aligned(8))))" to the
+declarations of the mips_fpu_hard_struct and
+mips_fpu_soft_struct data structures, presumably
+because there was a need to ensure 64-bit alignment
+of the elements so that LDC1 instructions would work.
+We don't generally have a problem here, presumably
+because either the previous data declarations naturally
+align things to 64-bits, or because we've ensured things 
+at a higher level of makfile compiler directives.  Are we 
+in fact guarnateed to be safe without the source code 
+directive, or should those __attribute__ directives be 
+added as insurance?
 
-> what should be appropiate compilation flag for MIPS 
-> RC32134/Rc32334..?
-> currently i am trying in arch/mips/Makefile
->   GCCFLAGS        += -mcpu=r4600 -mips2 -Wa,--trap
-> 
-> But I doubt it for two reasons.
-> 
-> 1.I think mips1 should be used instead of mips2 because
-> if you follow mips literature mips 2* and 3* series fall under 
-> MIPS1 category.
-
-Exceptions such at the R3900 which is an almost-mips2 processor ...
-
-> 4* and bigger series comes under MIP2 and MIPS3 series.
-> 
-> for example CONFIG_CPU_LLSC is not enabled for all MIPS1
-> category processors.
-
-CONFIG_CPU_LLSC is mandatory for for multiprocessor systems.  For uni-
-processor systems such as your's CONFIG_CPU_LLSC should be enabled for
-best performance - but only if your CPU actually has ll / sc instructions.
-
-The kernel emulates ll/sc instructions if they're not available in
-hardware.  The emulation is not performance optimal so should be avoided
-by using the appropriate setting of CONFIG_CPU_LLSC.
-
-> 2.Is -mcpu=r4600 switch is alright for Rc32334?
-
-Not knowing the Rc32334 in detail I can only tell you the switch is
-technically correct.  It may or may not be optimal.
-
-> I was just wondering why i should use -mcpu=r4600 for RC323334
-
--mcpu=<cpu> is just a performance optimization option.  Gcc doesn't use
-this value very well to optimize the code but it's making some minor
-difference.  For most <cpu> values the code generator doesn't use
-instructions that are specific to CPU, so there's little risk playing
-with the value.  Gcc doesn't know the Rc32334 as value so you'll have to
-pick a CPU that is as similar possible.
-
-  Ralf
+            Kevin K.

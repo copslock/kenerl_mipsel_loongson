@@ -1,56 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jan 2004 07:42:22 +0000 (GMT)
-Received: from web10106.mail.yahoo.com ([IPv6:::ffff:216.136.130.56]:60278
-	"HELO web10106.mail.yahoo.com") by linux-mips.org with SMTP
-	id <S8225266AbUASHmV>; Mon, 19 Jan 2004 07:42:21 +0000
-Message-ID: <20040119074219.15886.qmail@web10106.mail.yahoo.com>
-Received: from [128.107.253.43] by web10106.mail.yahoo.com via HTTP; Mon, 19 Jan 2004 07:42:19 GMT
-Date: Mon, 19 Jan 2004 07:42:19 +0000 (GMT)
-From: =?iso-8859-1?q?karthikeyan=20natarajan?= <karthik_96cse@yahoo.com>
-Subject: In r4k, where does PC point to?
-To: linux-mips@linux-mips.org
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Return-Path: <karthik_96cse@yahoo.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jan 2004 12:58:26 +0000 (GMT)
+Received: from p508B617B.dip.t-dialin.net ([IPv6:::ffff:80.139.97.123]:30473
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225531AbUASM60>; Mon, 19 Jan 2004 12:58:26 +0000
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i0JCwKex007180;
+	Mon, 19 Jan 2004 13:58:20 +0100
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i0JCwIr4007179;
+	Mon, 19 Jan 2004 13:58:18 +0100
+Date: Mon, 19 Jan 2004 13:58:18 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Christoph Hellwig <hch@lst.de>
+Cc: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>,
+	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH][2.6] Update NEC VRC4171 PCMCIA driver
+Message-ID: <20040119125818.GD6312@linux-mips.org>
+References: <20040116083821.6b65c69f.yuasa@hh.iij4u.or.jp> <20040116123352.GA13006@lst.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20040116123352.GA13006@lst.de>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4032
+X-archive-position: 4033
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: karthik_96cse@yahoo.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi All,
+On Fri, Jan 16, 2004 at 01:33:52PM +0100, Christoph Hellwig wrote:
 
-    Basically, the PC points to the next instruction
-to
-be executed. But, in R4k, there are 8 instructions
-getting executed in parallel. Where does the PC point
-to? My understanding is that PC points to the next 
-instruction that will be entered into the pipeline.
-    Please correct me if i am wrong..
+> This is most certainly wrong.  Module refcounting handling has moved one
+> layer up in 2.6.
 
-Thanks,
--karthi
+To be fair with Yoichi - MIPS has no module support yet in 2.6, it'll need
+to be rewritten from scratch so Yoichi didn't have a chance to really
+test this ...
 
-
-=====
-The expert at anything was once a beginner
-                  ______________________________
-                 /                              \
-             O  /      Karthikeyan.N             \
-           O   |       Chennai, India.            |
-    `\|||/'     \    Mobile: +919884104346       /
-     (o o)       \                              /
-_ ooO (_) Ooo____________________________________
-_____|_____|_____|_____|_____|_____|_____|_____|_
-__|_____|_____|_____|_____|_____|_____|_____|____
-_____|_____|_____|_____|_____|_____|_____|_____|_
-
-________________________________________________________________________
-Yahoo! Messenger - Communicate instantly..."Ping" 
-your friends today! Download Messenger Now 
-http://uk.messenger.yahoo.com/download/index.html
+  Ralf

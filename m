@@ -1,42 +1,37 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA05840; Mon, 30 Jun 1997 10:29:43 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA17648; Mon, 30 Jun 1997 10:58:22 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id KAA21962 for linux-list; Mon, 30 Jun 1997 10:29:10 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA21923 for <linux@cthulhu.engr.sgi.com>; Mon, 30 Jun 1997 10:29:08 -0700
-Received: from athena.nuclecu.unam.mx (athena.nuclecu.unam.mx [132.248.29.9]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id KAA00756
-	for <linux@cthulhu.engr.sgi.com>; Mon, 30 Jun 1997 10:27:30 -0700
-	env-from (miguel@athena.nuclecu.unam.mx)
-Received: (from miguel@localhost)
-	by athena.nuclecu.unam.mx (8.8.5/8.8.5) id MAA06962;
-	Mon, 30 Jun 1997 12:12:50 -0500
-Date: Mon, 30 Jun 1997 12:12:50 -0500
-Message-Id: <199706301712.MAA06962@athena.nuclecu.unam.mx>
-From: Miguel de Icaza <miguel@nuclecu.unam.mx>
-To: linux@cthulhu.engr.sgi.com
-Subject: newport misc questions
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id KAA00849 for linux-list; Mon, 30 Jun 1997 10:58:02 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA00813 for <linux@engr.sgi.com>; Mon, 30 Jun 1997 10:57:55 -0700
+Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id KAA12311
+	for <linux@engr.sgi.com>; Mon, 30 Jun 1997 10:57:54 -0700
+	env-from (shaver@neon.ingenia.ca)
+Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id NAA07279; Mon, 30 Jun 1997 13:54:24 -0400
+From: Mike Shaver <shaver@neon.ingenia.ca>
+Message-Id: <199706301754.NAA07279@neon.ingenia.ca>
+Subject: ncurses
+To: ralf@uni-koblenz.de (Ralf Baechle),
+        miguel@roxanne.nuclecu.unam.mx (Miguel de Icaza)
+Date: Mon, 30 Jun 1997 13:54:23 -0400 (EDT)
+Cc: linux@cthulhu.engr.sgi.com
+X-Mailer: ELM [version 2.4ME+ PL28 (25)]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+ncurses is built, and it was pretty clean (now that I've got tools to
+munge Makefiles for me).
 
-Hello guys,
+I'll build a tarball with includes and libs suitable for unpacking in
+/usr/local/mips-linux on the crossdev machine or /usr on the Indy
+itself and stick it on linus shortly.
 
-   Since an X server that uses the block-fill command for drawing
-patterns is not the fastest thing you could be a witness of, I came up
-with a new set of questions for all of you:
+Mike
 
-  1. How can I use the newport stipple mode registers and the 32-bit
-     stipple pattern register to draw thingies in the screen?
-
-  2. If you have any documentation on what the operations for the
-     drawmode0 register are, I would appreciate a copy of it
-     (actually, I would appreciate the whole doc :-)
-
-  3. How can I load the color pallete on the newport?  I have the
-     feeling that the newport supports an 8-bit+pallete mode and a
-     24-bit true-color mode, which leds to the next question.
-
-  4. How can I command the newport to draw on the 8 bit plane or to
-     draw on the 24-bit plane?  That is, assuming I haven't been
-     smoking chemicals and that there really are 8 and 24 bit planes.
-
-Cheers,
-Miguel.
+-- 
+#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
+#>       Chief System Architect -- Head geek -- System exorcist        
+#>                                                                     
+#>   "Have you considered a life?  I hear they're quite affordable     
+#>          these days." --- shields@tembel.org                        

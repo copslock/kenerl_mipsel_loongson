@@ -1,40 +1,61 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8J12js12063
-	for linux-mips-outgoing; Tue, 18 Sep 2001 18:02:45 -0700
-Received: from dea.linux-mips.net (u-114-21.karlsruhe.ipdial.viaginterkom.de [62.180.21.114])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8J12ge12060
-	for <linux-mips@oss.sgi.com>; Tue, 18 Sep 2001 18:02:42 -0700
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id f8J12J302544;
-	Wed, 19 Sep 2001 03:02:19 +0200
-Date: Wed, 19 Sep 2001 03:02:19 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Gerald Champagne <gerald.champagne@esstech.com>
-Cc: Zhang Fuxin <fxzhang@ict.ac.cn>,
-   "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: Freeing global memory used only by __init functions
-Message-ID: <20010919030219.B2161@dea.linux-mips.net>
-References: <200109181808.LAA05245@mail.esstech.com> <3BA7946B.4070806@esstech.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <3BA7946B.4070806@esstech.com>; from gerald.champagne@esstech.com on Tue, Sep 18, 2001 at 01:37:31PM -0500
-X-Accept-Language: de,en,fr
+	by oss.sgi.com (8.11.2/8.11.3) id f8J2fY514335
+	for linux-mips-outgoing; Tue, 18 Sep 2001 19:41:34 -0700
+Received: from smtp.huawei.com ([61.144.161.21])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8J2fUe14331
+	for <linux-mips@oss.sgi.com>; Tue, 18 Sep 2001 19:41:30 -0700
+Received: from z15805 ([10.105.34.205]) by smtp.huawei.com
+          (Netscape Messaging Server 4.15) with SMTP id GJW21N00.24G; Wed,
+          19 Sep 2001 10:39:23 +0800 
+Message-ID: <00fe01c140b4$ad3f9200$cd22690a@huawei.com>
+Reply-To: "Shaolin Zhang" <zhangshaolin@huawei.com>
+From: "Shaolin Zhang" <zhangshaolin@huawei.com>
+To: <linux-mips@oss.sgi.com>
+Cc: "Ernest Jih" <ernest.jih@idt.com>, "\"recc stone\"" <renwei@huawei.com>
+Subject: kgdb with linux-mips problem
+Date: Wed, 19 Sep 2001 10:42:08 +0800
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="gb2312"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4522.1200
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4522.1200
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from base64 to 8bit by oss.sgi.com id f8J2fUe14332
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Sep 18, 2001 at 01:37:31PM -0500, Gerald Champagne wrote:
+Hello ,
 
-> Can someone point to a set of rules for submitting patches
-> for linux-mips?  I'm familiar with the methods used for the
-> kernel.  Is this the same?  I'm using 2.4.3 from the mips site.
-> Can I patch against that, or do I have to start from a
-> certain cvs version?
+  Now we have some problems in using kgdb to debug the Linux-mips kernel on IDT 79s334A board.
 
-Please send unified diffs relative to the latest revision of the CVS
-archive from oss.sgi.com to me by mail.  Same rulesSee
-http://oss.sgi.com/mips/mips-howto.html for how to access CVS.  See also
-Documentation/SubmittingPatches in your kernel tree.
+1.I enabled the kernel startup option kgdb=on to debug the kernel setup.
+  At first, the gdb on host pc connected to the target boards correctly.
+  Then I use a few "n"(Next) command to debug the kernel, but the kernel
+seems
+ to run out of my hands, as if I had executed some "c" command.
+  I use "set debug remote 1"  command to see the packets gdb send&receive:
+  and find :
+   the gdb send a "c" packet to the stub at the end of packet sequence.
 
-  Ralf
+  I guess that the gdb on the host pc send some wrong command , or it can't
+get right info
+  to debug?
+
+
+2.I want to debug some init_module function in module , like this :
+
+int init_module(void)
+{
+    breakpoint(); // use the breakpoint function in kernel to get a break.
+    my_functions();
+}
+
+When I insmod this module, it through exception 9 (breakpoint), then I run
+"bt"
+command in gdb, but this time gdb report "can't find the start of function
+0x....".
+Is this a gdb problem or gdb stub problem? BTW, when I first bootup the
+kernel
+and connect the gdb&stub ,the sample problem happened.

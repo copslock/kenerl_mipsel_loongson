@@ -1,261 +1,49 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1BGwOS13471
-	for linux-mips-outgoing; Mon, 11 Feb 2002 08:58:24 -0800
-Received: from deliverator.sgi.com (deliverator.sgi.com [204.94.214.10])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1BGvv913465
-	for <linux-mips@oss.sgi.com>; Mon, 11 Feb 2002 08:57:57 -0800
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id HAA23298
-	for <linux-mips@oss.sgi.com>; Mon, 11 Feb 2002 07:53:27 -0800 (PST)
-	mail_from (macro@ds2.pg.gda.pl)
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id QAA24645;
-	Mon, 11 Feb 2002 16:45:54 +0100 (MET)
-Date: Mon, 11 Feb 2002 16:45:54 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Ralf Baechle <ralf@uni-koblenz.de>
-cc: linux-mips@fnet.fr, linux-mips@oss.sgi.com
-Subject: [patch] linux 2.4.17: The second mb() rework (final)
-Message-ID: <Pine.GSO.3.96.1020211164038.18917I-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.2/8.11.3) id g1BHTEA13946
+	for linux-mips-outgoing; Mon, 11 Feb 2002 09:29:14 -0800
+Received: from hell (buserror-extern.convergence.de [212.84.236.66])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1BHT9913943
+	for <linux-mips@oss.sgi.com>; Mon, 11 Feb 2002 09:29:09 -0800
+Received: from js by hell with local (Exim 3.33 #1 (Debian))
+	id 16aJJs-0000nH-00; Mon, 11 Feb 2002 17:28:44 +0100
+Date: Mon, 11 Feb 2002 17:28:44 +0100
+From: Johannes Stezenbach <js@convergence.de>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Florian Lohoff <flo@rfc822.org>, linux-mips@oss.sgi.com
+Subject: Re: gcc include strangeness
+Message-ID: <20020211162844.GD2918@convergence.de>
+Mail-Followup-To: Johannes Stezenbach <js@convergence.de>,
+	"Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+	Florian Lohoff <flo@rfc822.org>, linux-mips@oss.sgi.com
+References: <20020211142708.GA2577@convergence.de> <Pine.GSO.3.96.1020211155920.18917F-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.GSO.3.96.1020211155920.18917F-100000@delta.ds2.pg.gda.pl>
+User-Agent: Mutt/1.3.27i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Ralf,
+On Mon, Feb 11, 2002 at 04:10:34PM +0100, Maciej W. Rozycki wrote:
+> 
+>  Is gcc 3.x already stable enough to be used by people not directly
+> involved in gcc development?  More specifically for MIPS/Linux and
+> i386/Linux, for both the kernel and the userland?  I'm told it is not.
 
- I haven't seen any objections.  Could you please apply it?
+I'm reading about gcc 3.x code generation bugs every now and then,
+but so far I did not hit any of them.
+I would prefer gcc 2.95.x though, if I only could get it
+to work on MIPS.
 
-  Maciej
+>  Gcc 2.95.x as distributed certainly doesn't work.  With a set of patches
+> it appears rock solid.  For MIPS/Linux I'm using it for over two years for
+> both the kernel and the userland.  The last time I found bug and needed to
+> apply a fix to gcc 2.95.3 for MIPS/Linux was in April 2001. 
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+I would certainly be interested in getting my hands on those
+patches. Do you mind if I ask why they did not go into
+gcc-2_95-branch CVS?
 
-patch-mips-2.4.17-20020129-mb-wb-5
-diff -up --recursive --new-file linux-mips-2.4.17-20020129.macro/arch/mips/config.in linux-mips-2.4.17-20020129/arch/mips/config.in
---- linux-mips-2.4.17-20020129.macro/arch/mips/config.in	Fri Jan 25 05:26:34 2002
-+++ linux-mips-2.4.17-20020129/arch/mips/config.in	Mon Feb  4 00:07:13 2002
-@@ -384,6 +384,12 @@ else
-       fi
-    fi
- fi
-+if [ "$CONFIG_CPU_R3000" = "y" -o \
-+     "$CONFIG_CPU_TX39XX" = "y" ]; then
-+   define_bool CONFIG_CPU_HAS_SYNC n
-+else
-+   define_bool CONFIG_CPU_HAS_SYNC y
-+fi
- endmenu
- 
- mainmenu_option next_comment
-diff -up --recursive --new-file linux-mips-2.4.17-20020129.macro/include/asm-mips/system.h linux-mips-2.4.17-20020129/include/asm-mips/system.h
---- linux-mips-2.4.17-20020129.macro/include/asm-mips/system.h	Sun Jan 27 05:27:59 2002
-+++ linux-mips-2.4.17-20020129/include/asm-mips/system.h	Mon Feb  4 02:10:33 2002
-@@ -18,9 +18,12 @@
- 
- #include <linux/config.h>
- #include <asm/sgidefs.h>
--#include <asm/ptrace.h>
-+
- #include <linux/kernel.h>
- 
-+#include <asm/addrspace.h>
-+#include <asm/ptrace.h>
-+
- __asm__ (
- 	".macro\t__sti\n\t"
- 	".set\tpush\n\t"
-@@ -166,32 +169,57 @@ extern void __global_restore_flags(unsig
- #define local_irq_disable()	__cli();
- #define local_irq_enable()	__sti();
- 
--/*
-- * These are probably defined overly paranoid ...
-- */
-+#ifdef CONFIG_CPU_HAS_SYNC
-+#define __sync()				\
-+	__asm__ __volatile__(			\
-+		".set	push\n\t"		\
-+		".set	noreorder\n\t"		\
-+		"sync\n\t"			\
-+		".set	pop"			\
-+		: /* no output */		\
-+		: /* no input */		\
-+		: "memory")
-+#else
-+#define __sync()	do { } while(0)
-+#endif
-+
-+#define __fast_iob()				\
-+	__asm__ __volatile__(			\
-+		".set	push\n\t"		\
-+		".set	noreorder\n\t"		\
-+		"lw	$0,%0\n\t"		\
-+		"nop\n\t"			\
-+		".set	pop"			\
-+		: /* no output */		\
-+		: "m" (*(int *)KSEG1)		\
-+		: "memory")
-+
-+#define fast_wmb()	__sync()
-+#define fast_rmb()	__sync()
-+#define fast_mb()	__sync()
-+#define fast_iob()				\
-+	do {					\
-+		__sync();			\
-+		__fast_iob();			\
-+	} while (0)
-+
- #ifdef CONFIG_CPU_HAS_WB
- 
- #include <asm/wbflush.h>
--#define rmb()	do { } while(0)
--#define wmb()	wbflush()
--#define mb()	wbflush()
--
--#else /* CONFIG_CPU_HAS_WB  */
--
--#define mb()						\
--__asm__ __volatile__(					\
--	"# prevent instructions being moved around\n\t"	\
--	".set\tnoreorder\n\t"				\
--	"# 8 nops to fool the R4400 pipeline\n\t"	\
--	"nop;nop;nop;nop;nop;nop;nop;nop\n\t"		\
--	".set\treorder"					\
--	: /* no output */				\
--	: /* no input */				\
--	: "memory")
--#define rmb() mb()
--#define wmb() mb()
- 
--#endif /* CONFIG_CPU_HAS_WB  */
-+#define wmb()		fast_wmb()
-+#define rmb()		fast_rmb()
-+#define mb()		wbflush();
-+#define iob()		wbflush();
-+
-+#else /* !CONFIG_CPU_HAS_WB */
-+
-+#define wmb()		fast_wmb()
-+#define rmb()		fast_rmb()
-+#define mb()		fast_mb()
-+#define iob()		fast_iob()
-+
-+#endif /* !CONFIG_CPU_HAS_WB */
- 
- #ifdef CONFIG_SMP
- #define smp_mb()	mb()
-diff -up --recursive --new-file linux-mips-2.4.17-20020129.macro/include/asm-mips/wbflush.h linux-mips-2.4.17-20020129/include/asm-mips/wbflush.h
---- linux-mips-2.4.17-20020129.macro/include/asm-mips/wbflush.h	Fri Sep  7 04:26:33 2001
-+++ linux-mips-2.4.17-20020129/include/asm-mips/wbflush.h	Mon Feb  4 02:52:11 2002
-@@ -6,29 +6,30 @@
-  * for more details.
-  *
-  * Copyright (c) 1998 Harald Koerfgen
-+ * Copyright (C) 2002 Maciej W. Rozycki
-  */
- #ifndef __ASM_MIPS_WBFLUSH_H
- #define __ASM_MIPS_WBFLUSH_H
- 
- #include <linux/config.h>
- 
--#if defined(CONFIG_CPU_HAS_WB)
--/*
-- * R2000 or R3000
-- */
--extern void (*__wbflush) (void);
-+#ifdef CONFIG_CPU_HAS_WB
- 
--#define wbflush() __wbflush()
-+extern void (*__wbflush)(void);
-+extern void wbflush_setup(void);
- 
--#else
--/*
-- * we don't need no stinkin' wbflush
-- */
-+#define wbflush()			\
-+	do {				\
-+		__sync();		\
-+		__wbflush();		\
-+	} while (0)
- 
--#define wbflush()  do { } while(0)
-+#else /* !CONFIG_CPU_HAS_WB */
- 
--#endif
-+#define wbflush_setup() do { } while (0)
- 
--extern void wbflush_setup(void);
-+#define wbflush() fast_iob()
-+
-+#endif /* !CONFIG_CPU_HAS_WB */
- 
- #endif /* __ASM_MIPS_WBFLUSH_H */
-diff -up --recursive --new-file linux-mips-2.4.17-20020129.macro/include/asm-mips64/system.h linux-mips-2.4.17-20020129/include/asm-mips64/system.h
---- linux-mips-2.4.17-20020129.macro/include/asm-mips64/system.h	Sun Jan 27 05:27:59 2002
-+++ linux-mips-2.4.17-20020129/include/asm-mips64/system.h	Mon Feb  4 02:12:27 2002
-@@ -11,12 +11,13 @@
- #define _ASM_SYSTEM_H
- 
- #include <linux/config.h>
--
- #include <asm/sgidefs.h>
--#include <asm/ptrace.h>
- 
- #include <linux/kernel.h>
- 
-+#include <asm/addrspace.h>
-+#include <asm/ptrace.h>
-+
- __asm__ (
- 	".macro\t__sti\n\t"
- 	".set\tpush\n\t"
-@@ -163,20 +164,32 @@ extern void __global_restore_flags(unsig
- #define local_irq_disable()	__cli();
- #define local_irq_enable()	__sti();
- 
--/*
-- * These are probably defined overly paranoid ...
-- */
--#define mb()						\
--__asm__ __volatile__(					\
--	"# prevent instructions being moved around\n\t"	\
--	".set\tnoreorder\n\t"				\
--	"sync\n\t"					\
--	".set\treorder"					\
--	: /* no output */				\
--	: /* no input */				\
--	: "memory")
--#define rmb() mb()
--#define wmb() mb()
-+#define __sync()				\
-+	__asm__ __volatile__(			\
-+		".set	push\n\t"		\
-+		".set	noreorder\n\t"		\
-+		"sync\n\t"			\
-+		".set	pop"			\
-+		: /* no output */		\
-+		: /* no input */		\
-+		: "memory")
-+
-+#define wmb()		__sync()
-+#define rmb()		__sync()
-+#define mb()		__sync()
-+#define iob()					\
-+	do {					\
-+		__sync();			\
-+		__asm__ __volatile__(		\
-+			".set	push\n\t"	\
-+			".set	noreorder\n\t"	\
-+			"lw	$0,%0\n\t"	\
-+			"nop\n\t"		\
-+			".set	pop"		\
-+			: /* no output */	\
-+			: "m" (*(int *)KSEG1)	\
-+			: "memory");		\
-+	} while (0)
- 
- #ifdef CONFIG_SMP
- #define smp_mb()	mb()
+
+Regards,
+Johannes

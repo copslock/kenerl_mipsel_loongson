@@ -1,66 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jun 2003 18:11:59 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:34545 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8225275AbTFLRL5>;
-	Thu, 12 Jun 2003 18:11:57 +0100
-Received: from zeus.mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id KAA07950;
-	Thu, 12 Jun 2003 10:11:51 -0700
-Subject: Re: FW: Db1500 PCI Auto Scan Question, bus master operation
-From: Pete Popov <ppopov@mvista.com>
-To: fpga dsp <fpga_dsp@yahoo.com.au>
-Cc: Tom Cernius <tcernius@correlant.com>,
-	Linux MIPS mailing list <linux-mips@linux-mips.org>
-In-Reply-To: <20030612021517.42227.qmail@web41202.mail.yahoo.com>
-References: <20030612021517.42227.qmail@web41202.mail.yahoo.com>
-Content-Type: text/plain
-Organization: MontaVista Software
-Message-Id: <1055437921.9969.729.camel@zeus.mvista.com>
-Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.2.4 
-Date: 12 Jun 2003 10:12:01 -0700
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jun 2003 20:11:14 +0100 (BST)
+Received: from tomts13.bellnexxia.net ([IPv6:::ffff:209.226.175.34]:12690 "EHLO
+	tomts13-srv.bellnexxia.net") by linux-mips.org with ESMTP
+	id <S8225274AbTFLTLL>; Thu, 12 Jun 2003 20:11:11 +0100
+Received: from amdk62400 ([206.172.132.43]) by tomts13-srv.bellnexxia.net
+          (InterMail vM.5.01.05.32 201-253-122-126-132-20030307) with SMTP
+          id <20030612191059.YYUS1194.tomts13-srv.bellnexxia.net@amdk62400>
+          for <linux-mips@linux-mips.org>; Thu, 12 Jun 2003 15:10:59 -0400
+Message-ID: <000501c33116$3e90e2b0$0400a8c0@amdk62400>
+Reply-To: "HG" <henri@broadbandnetdevices.com>
+From: "HG" <henri@broadbandnetdevices.com>
+To: <linux-mips@linux-mips.org>
+Subject: ramdisk on mips question 
+Date: Thu, 12 Jun 2003 15:10:08 -0400
+Organization: BND
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@mvista.com>
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4133.2400
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
+Return-Path: <henri@broadbandnetdevices.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2614
+X-archive-position: 2615
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@mvista.com
+X-original-sender: henri@broadbandnetdevices.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 2003-06-11 at 19:15, fpga dsp wrote:
-> Hi,
-> 
-> I am using kernel 2.4.20-pre6 version on db1500 and
-> having problem with PCI card as bus master. Basicly,
-> the kernel can recognize the card and assign into
-> 0x40000000 address region, irq is 1. Now that is
-> really strange, stty1 using irq 1 as well. Are they
-> the same or different. 
+Hi all,
 
-There's no UART1 on the Au1500 so you don't have to worry about that
-interrupt, even though it's defined in the .h file for the Au1000.
+while compiling a kernel for our board based on the idt 79rc332 , i am
+getting the error below.
+The target board is big endian. The files that where gziped where created
+with a crossassembler that produces big endian files
+the kernel is the 2.4.21-pre3. the ramdisk.gz file was created on a pc based
+linux with some test files(big endian)
+and copied in the location .../linux/arch/mips/ramdisk
+
+1-    am i reading it right that the linker wont accept the ramdisk.gz
+because it was created on a little endian system (the pc linux)
+command to create the file : cat file1 file2 ... | gzip -c > ramdisk.gz
+
+2-    anyone know a workaround for this problem(other than changing the
+target ,and its monitor to little endian ) .
 
 
-> However ,the problem is that
-> after setup the device and trigger it, it should go
-> and fetch the descriptor and will fetch the content
-> pointed by that descriptor afterward but it only fetch
-> the descriptor and quiet. I am even try to trigger it
-> again by write into it register mapped on PCI memory
-> region but after the first trigger, the second trigger
-> doesn't appear on pci bus analyzer at all. 
 
-> Another issues, it when I look at au1000_eth.c device
-> driver , dma_alloc() function allocate a DMAable
-> buffer in KSEG0 region but pci_alloc_consistent return
-> in KSEG1 region. So which one is right?
+many thanks for all help
 
-Right for what? KSEG0 works because the cache is coherent. But due to a
-pci coherency bug, I think for a new device driver that's a pci bus
-master you need to use kseg1 for now.
+Henri
 
-Pete
+
+
+from make .....
+ make[1]: Entering directory
+`/home/henri/idt/linux_2p4p21/linux/arch/mips/ramdisk'
+echo "O_FORMAT:  " elf32-bigmips
+O_FORMAT:   elf32-bigmips
+mips-linux-ld -T ld.script -b binary --oformat elf32-bigmips -o ramdisk.o
+"ramdisk.gz"
+mips-linux-ld: ramdisk.gz: compiled for a little endian system and target is
+big endian
+File in wrong format: failed to merge target specific data of file
+ramdisk.gz
+make[1]: *** [ramdisk.o] Error 1
+make[1]: Leaving directory
+`/home/henri/idt/linux_2p4p21/linux/arch/mips/ramdisk'
+make: *** [_dir_arch/mips/ramdisk] Error 2

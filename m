@@ -1,45 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Nov 2002 21:37:15 +0100 (CET)
-Received: from luonnotar.infodrom.org ([195.124.48.78]:12815 "EHLO
-	luonnotar.infodrom.org") by linux-mips.org with ESMTP
-	id <S1123920AbSKFUhO>; Wed, 6 Nov 2002 21:37:14 +0100
-Received: by luonnotar.infodrom.org (Postfix, from userid 10)
-	id 94447366B55; Wed,  6 Nov 2002 21:37:07 +0100 (CET)
-Received: at Infodrom Oldenburg (/\##/\ Smail-3.2.0.102 1998-Aug-2 #2)
-	from infodrom.org by finlandia.Infodrom.North.DE
-	via smail from stdin
-	id <m189Wn7-000pCbC@finlandia.Infodrom.North.DE>
-	for linux-mips@linux-mips.org; Wed, 6 Nov 2002 21:28:45 +0100 (CET) 
-Date: Wed, 6 Nov 2002 21:28:45 +0100
-From: Martin Schulze <joey@infodrom.org>
-To: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Nov 2002 21:50:50 +0100 (CET)
+Received: from gateway-1237.mvista.com ([12.44.186.158]:29430 "EHLO
+	av.mvista.com") by linux-mips.org with ESMTP id <S1123920AbSKFUut>;
+	Wed, 6 Nov 2002 21:50:49 +0100
+Received: from zeus.mvista.com (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id MAA20711
+	for <linux-mips@linux-mips.org>; Wed, 6 Nov 2002 12:50:16 -0800
 Subject: Re: unsubcribe linux-mips
-Message-ID: <20021106202845.GN727@finlandia.infodrom.north.de>
-References: <5F6E2048A983A74CA0E76CAF7B4529AD15CD3C@Newman.mascorp.com>
+From: Pete Popov <ppopov@mvista.com>
+To: linux-mips@linux-mips.org
+In-Reply-To: <20021106202845.GN727@finlandia.infodrom.north.de>
+References: <5F6E2048A983A74CA0E76CAF7B4529AD15CD3C@Newman.mascorp.com> 
+	<20021106202845.GN727@finlandia.infodrom.north.de>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Mailer: Ximian Evolution 1.0.8 
+Date: 06 Nov 2002 12:50:47 -0800
+Message-Id: <1036615848.11926.23.camel@zeus.mvista.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <5F6E2048A983A74CA0E76CAF7B4529AD15CD3C@Newman.mascorp.com>
-User-Agent: Mutt/1.4i
-Return-Path: <joey@infodrom.org>
+Return-Path: <ppopov@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 591
+X-archive-position: 592
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: joey@infodrom.org
+X-original-sender: ppopov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Hess Smith wrote:
-> unsubcribe linux-mips
+So much for Ralf's filter :)
 
-It's like the windmills...
+Pete
 
-Regards,
-
-	Joey
-
--- 
-It's time to close the windows.
+On Wed, 2002-11-06 at 12:28, Martin Schulze wrote:
+> Hess Smith wrote:
+> > unsubcribe linux-mips
+> 
+> It's like the windmills...
+> 
+> Regards,
+> 
+> 	Joey
+> 
+> -- 
+> It's time to close the windows.
+> 
+> 

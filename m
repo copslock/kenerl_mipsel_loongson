@@ -1,53 +1,60 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f988MZB08891
-	for linux-mips-outgoing; Mon, 8 Oct 2001 01:22:35 -0700
-Received: from mx.mips.com (mx.mips.com [206.31.31.226])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f988MWD08888
-	for <linux-mips@oss.sgi.com>; Mon, 8 Oct 2001 01:22:32 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id BAA01230;
-	Mon, 8 Oct 2001 01:22:22 -0700 (PDT)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id BAA20306;
-	Mon, 8 Oct 2001 01:22:21 -0700 (PDT)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id f988MKa21165;
-	Mon, 8 Oct 2001 10:22:22 +0200 (MEST)
-Message-ID: <3BC1623C.ADAE211@mips.com>
-Date: Mon, 08 Oct 2001 10:22:20 +0200
-From: Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: Harald Koerfgen <hkoerfg@web.de>
-CC: linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.2/8.11.3) id f98C6it12840
+	for linux-mips-outgoing; Mon, 8 Oct 2001 05:06:44 -0700
+Received: from mout04.kundenserver.de (mout04.kundenserver.de [195.20.224.89])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f98C6eD12834
+	for <linux-mips@oss.sgi.com>; Mon, 8 Oct 2001 05:06:41 -0700
+Received: from [195.20.224.204] (helo=mrvdom00.schlund.de)
+	by mout04.kundenserver.de with esmtp (Exim 2.12 #2)
+	id 15qZB7-0005NQ-00; Mon, 8 Oct 2001 14:06:37 +0200
+Received: from pd9590fea.dip.t-dialin.net ([217.89.15.234] helo=pegasus.thalreit)
+	by mrvdom00.schlund.de with esmtp (Exim 2.12 #2)
+	id 15qZB7-0005IN-00; Mon, 8 Oct 2001 14:06:37 +0200
+Received: from thalreit.de (localhost.thalreit [127.0.0.1])
+	by pegasus.thalreit (8.11.3/8.11.3) with SMTP id f98C6ZH38300;
+	Mon, 8 Oct 2001 14:06:35 +0200 (CEST)
+	(envelope-from volker@thalreit.de)
+Received: from 194.59.120.11 (proxying for 194.59.113.24, 194.59.120.104)
+        (SquirrelMail authenticated user volker)
+        by thalreit.dyndns.org with HTTP;
+        Mon, 8 Oct 2001 14:06:36 +0200 (CEST)
+Message-ID: <62824.194.59.120.11.1002542796.squirrel@thalreit.dyndns.org>
+Date: Mon, 8 Oct 2001 14:06:36 +0200 (CEST)
 Subject: Re: MIPS PC - anyone?
-References: <20011006102302.B3492@mvista.com> <3BC08164.D7332834@mips.com> <01100720573800.00458@intel>
-Content-Type: text/plain; charset=iso-8859-15
-Content-Transfer-Encoding: 7bit
+From: <volker@thalreit.de>
+To: caleb@webninja.com
+In-Reply-To: <3BC15DD8.10002@webninja.com>
+References: <3BC15DD8.10002@webninja.com>
+Cc: linux-mips@oss.sgi.com
+X-Mailer: SquirrelMail (version 1.0.6)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Harald Koerfgen wrote:
+> I actually have the Japanese model that works with the Linux release
+> for 
+>    the PS2.  Unfortunately, I won't be in Japan again for another year 
+> and they won't ship overseas.  If anyone knows of a way to get the PS2 
+> Linux release in the US, please let me know.
+It seems SONY will release the LINUX kit in Germany soon (they claim it is
+going to happen this autumn). They say it will be available at SONY's online
+shop only. Source of information is http://www.golem.de .
 
-> On Sunday 07 October 2001 18:23, Carsten Langgaard wrote:
-> > What about a Malta board, it got a PC like structure with ATX form factor,
-> [...]
-> > I probably forgot something, but the board is more or less designed to be a
-> > "MIPS PC".
->
-> Fine, but how much?
-
-I'm afraid we are not in the business of selling PCs, so the price is about
-$3000.
-
->
-> Greetings,
-> Harald
-
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+> 
+> Caleb Shay
+> caleb@webninja.com
+> 
+> Kevin D. Kissell wrote:
+> 
+>>>>2.2 or 2.4, is the necessary configuration in fact generally
+>>>>available?  Last I heard, which was some months ago,
+>>>>it required a PS2 configuration that was only available
+>>>>in Japan.
+>>>>
+>>>This is true. Well this month they made available another PS2 
+>>>configuration in germany. Luckly the company I work for has people
+>>>going back and forth to Japan.
+>>>
+>> 

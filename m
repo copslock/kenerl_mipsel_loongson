@@ -1,47 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Dec 2002 19:06:07 +0100 (MET)
-Received: from onda.linux-mips.net ([IPv6:::ffff:192.168.169.2]:684 "EHLO
-	dea.linux-mips.net") by ralf.linux-mips.org with ESMTP
-	id <S869802AbSLFSF5>; Fri, 6 Dec 2002 19:05:57 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id gB6I41l08600;
-	Fri, 6 Dec 2002 19:04:01 +0100
-Date: Fri, 6 Dec 2002 19:04:01 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Dec 2002 19:20:35 +0100 (MET)
+Received: from alg133.algor.co.uk ([IPv6:::ffff:62.254.210.133]:14048 "EHLO
+	oalggw.algor.co.uk") by ralf.linux-mips.org with ESMTP
+	id <S869812AbSLFSUZ>; Fri, 6 Dec 2002 19:20:25 +0100
+Received: from gladsmuir.algor.co.uk (pubfw.algor.co.uk [62.254.210.129])
+	by oalggw.algor.co.uk (8.11.6/8.10.1) with ESMTP id gB6IIMW23429;
+	Fri, 6 Dec 2002 18:18:27 GMT
+From: Dominic Sweetman <dom@algor.co.uk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID: <15856.59886.661994.493446@gladsmuir.algor.co.uk>
+Date: Fri, 6 Dec 2002 18:18:22 +0000
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>,
+	"Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
 	Carsten Langgaard <carstenl@mips.com>,
 	"Kevin D. Kissell" <kevink@mips.com>, linux-mips@linux-mips.org
 Subject: Re: Latest sources from CVS.
-Message-ID: <20021206190401.A7806@linux-mips.org>
-References: <20021206164558.GH23743@rembrandt.csv.ica.uni-stuttgart.de> <Pine.GSO.3.96.1021206175502.26674R-100000@delta.ds2.pg.gda.pl> <20021206172438.GJ23743@rembrandt.csv.ica.uni-stuttgart.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <20021206172438.GJ23743@rembrandt.csv.ica.uni-stuttgart.de>; from ica2_ts@csv.ica.uni-stuttgart.de on Fri, Dec 06, 2002 at 06:24:38PM +0100
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20021206180241.A7492@linux-mips.org>
+References: <20021206135110.GD23743@rembrandt.csv.ica.uni-stuttgart.de>
+	<Pine.GSO.3.96.1021206165118.26674N-100000@delta.ds2.pg.gda.pl>
+	<20021206164558.GH23743@rembrandt.csv.ica.uni-stuttgart.de>
+	<20021206180241.A7492@linux-mips.org>
+X-Mailer: VM 6.92 under 21.1 (patch 14) "Cuyahoga Valley" XEmacs Lucid
+Return-Path: <dom@algor.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 811
+X-archive-position: 812
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: dom@algor.co.uk
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Dec 06, 2002 at 06:24:38PM +0100, Thiemo Seufer wrote:
 
-> Maybe I wasn't clear about it, I meant kernels with 32 bit address
-> space but 64 bit register width, allowing for userland N32 ABI.
+Ralf Baechle (ralf@linux-mips.org) writes:
+
+> Absolutely:
 > 
-> E.g. the old DECstations with R4k CPU and limited memory would fit
-> in this scheme. :-)
+> [ralf@dea linux-sgi-2.4]$ mips64-linux-size vmlinux
+>    text    data     bss     dec     hex filename
+> 1978296  317344  156224 2451864  256998 vmlinux
+> [ralf@dea linux-sgi-2.4]$ mips64-linux-size vmlinux
+>    text    data     bss     dec     hex filename
+> 1761168  317344  156224 2234736  221970 vmlinux
+> 
+> The first kernel was built as 64-bit ELF using 64-bit pointer and everything
+> 64-bit.  The second kernel was built using the -Wa,-32 trick.  That's over
+> 12% of bloat for full 64-bitiness which brings zero gain.
 
-I'm considering kernels with just 2-level page tables as a step into that
-direction.  With 16kB pages that permits for 64GB of virtual address
-space, with 4kB pages; with a bit of tweaking we should be able to
-maintain the ability to map 2GB in the userspace.
-
-  Ralf
+Percentages are dangerous things.  This is 220Kbytes of memory, which
+currently represents an investment of about $0.05.  There may be
+embedded linux applications which care about 5c cost, but they
+probably won't use any variety of 64 bits...

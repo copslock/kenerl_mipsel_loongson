@@ -1,48 +1,42 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id RAA33510 for <linux-archive@neteng.engr.sgi.com>; Tue, 18 Aug 1998 17:54:52 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id TAA99159 for <linux-archive@neteng.engr.sgi.com>; Tue, 18 Aug 1998 19:34:01 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id RAA46500
+	id TAA66546
 	for linux-list;
-	Tue, 18 Aug 1998 17:54:18 -0700 (PDT)
+	Tue, 18 Aug 1998 19:31:40 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from fir.engr.sgi.com (fir.engr.sgi.com [150.166.49.183])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id RAA36722
-	for <linux@cthulhu.engr.sgi.com>;
-	Tue, 18 Aug 1998 17:54:17 -0700 (PDT)
-	mail_from (adevries@engsoc.carleton.ca)
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) 
-	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id RAA00501
-	for <linux@cthulhu.engr.sgi.com>; Tue, 18 Aug 1998 17:54:15 -0700 (PDT)
-	mail_from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id UAA23627
-	for <linux@cthulhu.engr.sgi.com>; Tue, 18 Aug 1998 20:54:22 -0400
-X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
-Date: Tue, 18 Aug 1998 20:54:22 -0400 (EDT)
-From: Alex deVries <adevries@engsoc.carleton.ca>
-To: SGI Linux <linux@cthulhu.engr.sgi.com>
-Subject: Merging for 2.1.116...
-Message-ID: <Pine.LNX.3.96.980818205222.15702E-100000@lager.engsoc.carleton.ca>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	via SMTP id TAA58988;
+	Tue, 18 Aug 1998 19:31:36 -0700 (PDT)
+	mail_from (wje@fir.engr.sgi.com)
+Received: (from wje@localhost) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id TAA27036; Tue, 18 Aug 1998 19:31:05 -0700
+Date: Tue, 18 Aug 1998 19:31:05 -0700
+Message-Id: <199808190231.TAA27036@fir.engr.sgi.com>
+From: "William J. Earl" <wje@fir.engr.sgi.com>
+To: ralf@uni-koblenz.de
+Cc: Ulf Carlsson <grim@zigzegv.ml.org>, linux@cthulhu.engr.sgi.com
+Subject: Re: bus error IRQ
+In-Reply-To: <19980818021316.J3345@uni-koblenz.de>
+References: <199808171845.UAA29545@calypso.saturn>
+	<19980818021316.J3345@uni-koblenz.de>
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+ralf@uni-koblenz.de writes:
+...
+ > The bad thing with a bus error is that it may be delayed for a very long
+ > time thus resulting in a useless program counter.  What happens is that
+ > the CPU writes to some invalid address but the write access over the
+ > system bus is delayed because the writeback cache policy is being used.
+ > Later, maybe even much later, when the cacheline gets written back to
+ > memory for some reason the system board signals a bus error interrupt.
+ > At this point the program counter may already be completly useless.
+...
 
-Is someone going to take to task merging our latest kernel into 2.1.116?
-It would be really good to get everything in for 2.2.
-
-I don't mind taking a stab at it, although I'm supposed to be packing for
-my move to Toronto in two weeks (finally!).
-
-- Alex
-
--- 
-Alex deVries, puffin on LinuxNet.
-http://www.engsoc.carleton.ca/~adevries/ .
+     You cannot get a delayed bus error on a cached write, unless
+you do a "create dirty exclusive" cache operation to validate the line
+before writing.  You can get delayed bus errors on uncached writes,
+as to device control registers.  Since any K1SEG address is uncached,
+it is not too hard to generate a bus error with a bad pointer value.

@@ -1,55 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jul 2004 09:42:24 +0100 (BST)
-Received: from skl1.ukl.uni-freiburg.de ([IPv6:::ffff:193.196.199.1]:37846
-	"EHLO relay1.uniklinik-freiburg.de") by linux-mips.org with ESMTP
-	id <S8225215AbUGNImT>; Wed, 14 Jul 2004 09:42:19 +0100
-Received: from ktl77.ukl.uni-freiburg.de (ktl77.ukl.uni-freiburg.de [193.196.226.77])
-	by relay1.uniklinik-freiburg.de (Email) with ESMTP
-	id 741422F3FB; Wed, 14 Jul 2004 10:42:14 +0200 (CEST)
-From: Max Zaitsev <maksik@gmx.co.uk>
-Organization: Mutella Dev co.
-To: linux-mips@linux-mips.org
-Subject: is there *any* way to boot IP32 from hard drive ?
-Date: Wed, 14 Jul 2004 10:42:18 +0200
-User-Agent: KMail/1.6.2
-Cc: Guido Guenther <agx@sigxcpu.org>, Ilya Volynets <ilya@theIlya.com>,
-	Kumba <kumba@gentoo.org>, Jan Seidel <tuxus@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jul 2004 10:54:36 +0100 (BST)
+Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:45003 "EHLO
+	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225215AbUGNJya>; Wed, 14 Jul 2004 10:54:30 +0100
+Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
+	id CC97447B41; Wed, 14 Jul 2004 11:54:23 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by jurand.ds.pg.gda.pl (Postfix) with ESMTP
+	id C0E4647AAC; Wed, 14 Jul 2004 11:54:23 +0200 (CEST)
+Date: Wed, 14 Jul 2004 11:54:23 +0200 (CEST)
+From: "Maciej W. Rozycki" <macro@linux-mips.org>
+To: Collin Baillie <collin@xorotude.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: Help with MOP network boot install on DECstation 5000/240
+In-Reply-To: <000e01c4696f$f65cf4f0$0a9913ac@swift>
+Message-ID: <Pine.LNX.4.55.0407141058480.4513@jurand.ds.pg.gda.pl>
+References: <BAY2-F21njXXBARdkfw0003b0c8@hotmail.com> <20040710100412.GA23624@linux-mips.org>
+ <00ba01c46823$3729b200$0deca8c0@Ulysses> <20040713003317.GA26715@linux-mips.org>
+ <000701c468ae$141c3e50$0a9913ac@swift> <20040713080320.GC18841@lug-owl.de>
+ <000e01c4696f$f65cf4f0$0a9913ac@swift>
 MIME-Version: 1.0
-Content-Disposition: inline
-Content-Type: text/plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Message-Id: <200407141042.18505.maksik@gmx.co.uk>
-Return-Path: <maksik@gmx.co.uk>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5466
+X-archive-position: 5467
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: maksik@gmx.co.uk
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi List,
+On Wed, 14 Jul 2004, Collin Baillie wrote:
 
-I've asked the very same question here before, but got no answer. Probably, 
-the experts, who might have known the answer just overlooked it... (sorry 
-guys for addressing some of you directly, but I'm really in trouble). The 
-thing is that I desperately need to get the O2 to boot from its HDD, it's all 
-installed and supposed to be used as a standalone box.
+> > So it seems to try to get a file some times and gives up on it.
+> 
+> Oh.. I think it asks for the file, but the mopd server is not sending it. I
+> am only guessing though.
 
-I'm using kernel 2.6.6 with minimal patches from Ilya and as to be expected it 
-does not boot from the volume header. Arcboot seems to be the way to go, but 
-I'm not able to compile the bootable arcboot.IP32 image. When I've tried to 
-self-compile it with gcc 3.3.3 the image size was over 500K and it did not do 
-anything at all. Self-compilation with gcc 3.4 fails during linking. In a 
-mean time I've extracted the binary arcboot.IP32 image from the debian 
-package and this one at least does something: it loads the kernel into memory 
-(goes very slow), recognises a 64-bit executable and even starts it... But 
-immediately after the kernel crashes. Any idea why it could be happening? In 
-some other thread, Ilya have mentioned, that he has a "highly hacked" version 
-of arcboot. Is it available anywhere? Or are other other solutions?
+ It looks so.  You may try to verify with `tcpdump', too.
 
-Thanks in advance,
-Max
+> > By the way, which mopd are you using? There are several of them around,
+> > some quite unuseable...
+> 
+> Umm.. 2.5.3. I downloaded one from linux-mips.org, and applied all the
+> patches in the order listed in the spec file, but it doesn't compile. So I
+
+ Hmm, there's no mopd at linux-mips.org.  Do you refer to one at my site,
+i.e. "ftp://ftp.ds2.pg.gda.pl/pub/macro/"?  If so, then please report
+compiler errors to me.
+
+> compiled another 2.5.3 (79k as opposed to the 48k tgz file I got from
+> linux-mips.org) and it compiles and responds, but still no file transfer. (I
+> am compiling/running on i386 arch, so I am wondering if all those patches
+> are necessary...)
+
+ They are.  They are not processor-dependent.
+
+> I've read that MOP images usually have some special header in them (NetBSD
+> website) and someone mentioned that mopd-linux will fudge those headers if
+> the kernel doesn't have them... or something...
+
+ You've been misled.  The MOP protocol sends raw data annotated with
+addresses.  It's up to the MOP server to obtain both of them.  For example
+they can be retrieved from ordinary ELF images.
+
+> I am perservering with it, and will eventually get there... but for now, I
+> just thought someone might have more of a clue than I do.
+
+ Try running `mopchk <your-image-file>' to check if it's interpreted 
+correctly.
+
+  Maciej

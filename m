@@ -1,75 +1,89 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id XAA33459 for <linux-archive@neteng.engr.sgi.com>; Tue, 14 Jul 1998 23:06:09 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id CAA37349 for <linux-archive@neteng.engr.sgi.com>; Wed, 15 Jul 1998 02:02:12 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id XAA40297
+	id CAA37891
 	for linux-list;
-	Tue, 14 Jul 1998 23:05:38 -0700 (PDT)
+	Wed, 15 Jul 1998 02:01:30 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id XAA86694
+	via ESMTP id CAA05865
 	for <linux@cthulhu.engr.sgi.com>;
-	Tue, 14 Jul 1998 23:05:31 -0700 (PDT)
-	mail_from (adevries@engsoc.carleton.ca)
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) 
+	Wed, 15 Jul 1998 02:01:24 -0700 (PDT)
+	mail_from (adelton@informatics.muni.cz)
+Received: from aragorn.ics.muni.cz (aragorn.ics.muni.cz [147.251.4.33]) 
 	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id XAA23751
-	for <linux@cthulhu.engr.sgi.com>; Tue, 14 Jul 1998 23:05:30 -0700 (PDT)
-	mail_from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id CAA12236;
-	Wed, 15 Jul 1998 02:05:15 -0400
-X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
-Date: Wed, 15 Jul 1998 02:05:15 -0400 (EDT)
-From: Alex deVries <adevries@engsoc.carleton.ca>
-To: ralf@uni-koblenz.de
-cc: SGI Linux <linux@cthulhu.engr.sgi.com>
+	via ESMTP id CAA01648
+	for <linux@cthulhu.engr.sgi.com>; Wed, 15 Jul 1998 02:01:22 -0700 (PDT)
+	mail_from (adelton@informatics.muni.cz)
+Received: from anxur.fi.muni.cz (0@anxur.fi.muni.cz [147.251.48.3])
+	by aragorn.ics.muni.cz (8.8.5/8.8.5) with ESMTP id LAA20985;
+	Wed, 15 Jul 1998 11:01:00 +0200 (MET DST)
+Received: from aisa.fi.muni.cz (11635@aisa [147.251.48.1])
+	by anxur.fi.muni.cz (8.8.5/8.8.5) with ESMTP id LAA23283;
+	Wed, 15 Jul 1998 11:00:54 +0200 (MET DST)
+Received: (from adelton@localhost)
+	by aisa.fi.muni.cz (8.8.5/8.8.5) id LAA00705;
+	Wed, 15 Jul 1998 11:00:48 +0200 (MET DST)
+Message-Id: <199807150900.LAA00705@aisa.fi.muni.cz>
 Subject: Re: The pre-release of Hard Hat Linux for SGI...
-In-Reply-To: <19980715065248.D2938@uni-koblenz.de>
-Message-ID: <Pine.LNX.3.95.980715015327.30234B-100000@lager.engsoc.carleton.ca>
+In-Reply-To: <Pine.LNX.3.95.980715015327.30234B-100000@lager.engsoc.carleton.ca> from Alex deVries at "Jul 15, 98 02:05:15 am"
+To: adevries@engsoc.carleton.ca (Alex deVries)
+Date: Wed, 15 Jul 1998 11:00:47 +0200 (MET DST)
+Cc: ralf@uni-koblenz.de, linux@cthulhu.engr.sgi.com
+From: Honza Pazdziora <adelton@informatics.muni.cz>
+Phone: 420 (5) 415 12345
+X-Mailer: ELM [version 2.4ME+ PL39 (25)]
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+> 
+> > Time to put up a webpage and register users :-)
+> 
+> Yup.  I updated the WWW and FTP site a bit.  It'd be really good if we
 
-On Wed, 15 Jul 1998 ralf@uni-koblenz.de wrote:
-> There is even more going on this week.  The DECstation guys have managed
-> to run their first user task, Thomas managed to get X up on the Magnum 4000 /
-> Olivetti.  I'd say a pretty good week.
+OK, I've updated other links to manhattan/. Is the name Hard Hat 5.1
+official?
 
-Absolutely!
+> could maybe put a direct link from the main page to the Manhattan page.
+> Also, it'd be good to have some sort of hardware compatibility page.  I
+> know there will be people wondering about CPU compatibility, something I'm
+> a bit confused about. Honza, could you help us out with that?
 
-> Time to put up a webpage and register users :-)
+Yes, I'll try to create the page. Basically R4400, R4600, R5000,
+PC and SC, anyrate are OK? How about R4000? Other hardware: XGE, XZ
+(for consoles), 10BaseT, any reasonable SCSI? How about the Challenge S?
 
-Yup.  I updated the WWW and FTP site a bit.  It'd be really good if we
-could maybe put a direct link from the main page to the Manhattan page.
-Also, it'd be good to have some sort of hardware compatibility page.  I
-know there will be people wondering about CPU compatibility, something I'm
-a bit confused about. Honza, could you help us out with that?
+> I know it's a bitch to download 270MB, but I'd really like it if someone
+> would give this dsitribution a shot.  Red Hat's going to press this on a
+> CD later this week, and we need to make sure that we get it right.
+> Actually, even Linux/SGI coasters would be pretty cool...
 
-I know it's a bitch to download 270MB, but I'd really like it if someone
-would give this dsitribution a shot.  Red Hat's going to press this on a
-CD later this week, and we need to make sure that we get it right.
-Actually, even Linux/SGI coasters would be pretty cool...
+I have question about the ftp part (some of them based on the fact
+that we are little bit short of space on our mirror, but I'd like to
+mirror as much as possible). How about the RPM's in the
+/src/ftp/pub/redhat/old directory? Shouldn't the be in some
+subdirectory or gone? Also, I suggest renaming
+/src/ftp/pub/redhat/old/redhat-5.1 to something like
+redhat-5.1-alpha1 to be consistent with the name reflect the name of
+redhat-5.1alpha1.tgz.
 
-We're now at 455 packages, which is something like 70 short of i386.  I
-think we're at the point now where we could do another pass over the
-packages and get a couple more out. Things like emacs and gdb are just
-around the corner.  
+Also, /src/ftp/pub/test/vml.tar.gz could be renamed to something like
+vmlinux-indy-2.1.99.tar.gz (is it 2.1.99?), and perhaps we could even
+put the kernels to some directory other than test (maybe kernel?) and
+also have a link there from software.html.
 
-I think this is worth an article on slashdot.org.
+Anyway, our mirror already has 56 MB of that 270, let's hope it will
+go on ;-)
 
-When Hard Hat is released, is SGI interested in doing a press release?
-
-This is really excellent work on everyone's part. Especially in the last
-month, we've really pulled everything together.  There's been some long
-hours for some of the developers, and it's very satisfying to see a
-distribution come out of it.
-
-
-- Alex
+------------------------------------------------------------------------
+ Honza Pazdziora | adelton@fi.muni.cz | http://www.fi.muni.cz/~adelton/
+                   I can take or leave it if I please
+------------------------------------------------------------------------

@@ -1,101 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Aug 2004 23:31:43 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:4856 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8225257AbUHEWbh>;
-	Thu, 5 Aug 2004 23:31:37 +0100
-Received: from [10.0.10.221] (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id PAA22714;
-	Thu, 5 Aug 2004 15:31:33 -0700
-Message-ID: <4112B545.8090103@mvista.com>
-Date: Thu, 05 Aug 2004 15:31:33 -0700
-From: Pete Popov <ppopov@mvista.com>
-User-Agent: Mozilla Thunderbird 0.7.3 (Windows/20040803)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: G H <giles67@yahoo.com>
-CC: linux-mips@linux-mips.org
-Subject: Re: do_ri failure in cache flushing routines
-References: <20040805201643.6422.qmail@web50806.mail.yahoo.com>
-In-Reply-To: <20040805201643.6422.qmail@web50806.mail.yahoo.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Aug 2004 03:03:14 +0100 (BST)
+Received: from p508B5F12.dip.t-dialin.net ([IPv6:::ffff:80.139.95.18]:31504
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225261AbUHFCDJ>; Fri, 6 Aug 2004 03:03:09 +0100
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i76235um028380;
+	Fri, 6 Aug 2004 04:03:05 +0200
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i76235Dn028379;
+	Fri, 6 Aug 2004 04:03:05 +0200
+Date: Fri, 6 Aug 2004 04:03:04 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Kumba <kumba@gentoo.org>
+Cc: linux-mips@linux-mips.org
+Subject: Re: anybody tried NPTL?
+Message-ID: <20040806020304.GA27895@linux-mips.org>
+References: <20040804152936.D6269@mvista.com> <411188A8.9040607@gentoo.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <411188A8.9040607@gentoo.org>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5609
+X-archive-position: 5610
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@mvista.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-G H wrote:
+On Wed, Aug 04, 2004 at 09:08:56PM -0400, Kumba wrote:
 
-> At the moment I don't have the board set up for using kgdb and it's 
-> complicated by the fact that we only have one serial console port. But 
-> I am looking into setting it up for kgdb now.
+> >I am looking into porting NPTL to MIPS.  Just curious if
+> >anybody has tried this before.
+> >
+> >I notice there was a discussion about the ABI extension
+> >for TLS (thread local storage) support.  Before that support
+> >becomes a reality it seems one can still use NPTL with 
+> >the help of additional system calls.
+> >
+> >A rough search of latest glibc source shows there is
+> >zero MIPS code for nptl.  A couple of other arches
+> >are missing as well (such as ARM)
+> >
+> >Jun
+> 
+> All I've heard about this is that some kernel changes are (still?) 
+> needed, then just the glibc support along w/ TLS (Maybe compiler support?).
+> 
+> I believe I heard reports that the glibc people were looking to 
+> deprecate linuxthreads within a another release or two (but don't know 
+> specifics or anything), so it sounds like NPTL should be something to 
+> get working.
 
-A single serial port will work fine.
+Threading support means breaking the ABI compatibility.  There are other
+issues that can best be solved by breakin the ABI which is why this is
+stretching out.
 
->  
-> As far as stressing the system, it doesn't have enough resources ( 
-> disk space ) to be able to compile the kernel, but we did write a 
-> simple program that would stress the system by spawning multiple 
-> threads, each one performing floating point calculations. With this 
-> test, top reported a load average of over 400 and we have 
-> seen no failure so far.
-
-You can use an NFS mounted root fs to do native builds, assuming you 
-have a native toolchain. That's an excellent stress test.
-
-Pete
-
->
-> */Pete Popov <ppopov@mvista.com>/* wrote:
->
->     G H wrote:
->
->     > I've not had much response to this question so I would like to
->     > rephrase it :
->     >
->     > Can anyone think of any possible scenario where do_ri could
->     occur in
->     > blast_icache32() ??
->     >
->     > Is this possibly a cache synchronisation problem ??
->     >
->
->     Could be a hardware memory glitch. I would use kgdb to put a
->     breakpoint
->     there and see what the data in memory looks like when this happens --
->     look for memory corruption, etc.
->
->     Pete
->
->     > TIA
->     >
->     > >While testing out an amd au1500 based board I have been getting "
->     > do_ri " exceptions >that always occur in the cache flushing
->     routines.
->     > More often than not in >blast_icache_32().
->     >
->     > >So far this has mainly happened after running the board for
->     days on
->     > end while running >multiple telnet sessions t! o it. It has
->     sometimes (
->     > quite rarely ) happened after a few >hours to a day of multiple
->     telnet
->     > session use.
->     >
->     > __________________________________________________
->     > Do You Yahoo!?
->     > Tired of spam? Yahoo! Mail has the best spam protection around
->     > http://mail.yahoo.com
->     >
->
-> ------------------------------------------------------------------------
-> Do you Yahoo!?
-> Yahoo! Mail Address AutoComplete 
-> <http://us.rd.yahoo.com/mail_us/taglines/aac/*http://promotions.yahoo.com/new_mail/static/ease.html> 
-> - You start. We finish. 
+  Ralf

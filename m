@@ -1,75 +1,48 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9IN36l08564
-	for linux-mips-outgoing; Thu, 18 Oct 2001 16:03:06 -0700
-Received: from hell.ascs.muni.cz (hell.ascs.muni.cz [147.251.60.186])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9IN30D08561
-	for <linux-mips@oss.sgi.com>; Thu, 18 Oct 2001 16:03:00 -0700
-Received: (from xhejtman@localhost)
-	by hell.ascs.muni.cz (8.11.2/8.11.2) id f9IN5er01625;
-	Fri, 19 Oct 2001 01:05:40 +0200
-Date: Fri, 19 Oct 2001 01:05:40 +0200
-From: Lukas Hejtmanek <xhejtman@mail.muni.cz>
-To: Wilbern Cobb <vedge@csoft.org>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: Origin 200[B
-Message-ID: <20011019010540.I1089@mail.muni.cz>
-References: <20011018163605.F1089@mail.muni.cz> <Pine.BSO.4.33.0110181945150.31704-100000@oddbox.cn>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-2
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.BSO.4.33.0110181945150.31704-100000@oddbox.cn>; from vedge@csoft.org on Thu, Oct 18, 2001 at 07:50:14PM -0300
-X-MIME-Autoconverted: from 8bit to quoted-printable by hell.ascs.muni.cz id f9IN5er01625
-Content-Transfer-Encoding: 8bit
-X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id f9IN31D08562
+	by oss.sgi.com (8.11.2/8.11.3) id f9J0vaZ10382
+	for linux-mips-outgoing; Thu, 18 Oct 2001 17:57:36 -0700
+Received: from [64.152.86.3] (unknown.Level3.net [64.152.86.3] (may be forged))
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9J0vXD10379
+	for <linux-mips@oss.sgi.com>; Thu, 18 Oct 2001 17:57:33 -0700
+Received: from mail.esstech.com by [64.152.86.3]
+          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 19 Oct 2001 00:59:07 UT
+Received: from bud.austin.esstech.com ([193.5.206.3])
+	by mail.esstech.com (8.8.8+Sun/8.8.8) with SMTP id RAA24872
+	for <linux-mips@oss.sgi.com>; Thu, 18 Oct 2001 17:56:05 -0700 (PDT)
+Received: from esstech.com by bud.austin.esstech.com (SMI-8.6/SMI-SVR4)
+	id TAA24559; Thu, 18 Oct 2001 19:55:18 -0500
+Message-ID: <3BCF7AD2.2000000@esstech.com>
+Date: Thu, 18 Oct 2001 19:58:58 -0500
+From: Gerald Champagne <gerald.champagne@esstech.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.5) Gecko/20011012
+X-Accept-Language: en-us
+MIME-Version: 1.0
+To: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Moving kernel_entry to LOADADDR
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, Oct 18, 2001 at 07:50:14PM -0300, Wilbern Cobb wrote:
-> > I've finally got our origin to load linux kernel via bootp/tftp (Btw, it
-> > _must_ be the same server for bootp and tftp?)
-> 
-> I'm using different bootp and tftp/nfs servers without problems. My router
-> serves bootp, bootparam, rarp, and my development box serves NFS and tftp.
+I'm planning to work with a very minimal boot loader, and I'd like
+to hard-code a jump to kernel_entry in my boot loader.  I got tired
+of having kernel_entry moving around, so I just moved it to the top
+of head.S, just afte the ".fill 0x280".  That places kernel_entry at
+the same place every time.  It's always at LOADADDR+0x280.
 
-However, my origin only boots if tftp server runs on the same server as bootp
+But wait a minute... the 0x280 is there to leave room for the exception
+vectors.  Doesn't that only make sense if LOADADDR=0x80000000?  Isn't
+this allocating the space for the exception vectors twice?  Why not
+remove the .fill, then the kernel entry point will always be exactly
+LOADADDR?  This would break any configuration that has LOADADDR=0x80000000,
+but the only configuration like that is CONFIG_ALGOR_P4032, and that could
+easily be modified to LOADADDR=0x80000280 to get the same effect.
 
-if 'sa' option in bootptab is present origin does not boot.
+I also removed the .fill, and now kernel_entry is always exactly LOADADDR,
+and that makes my bootloader easier to maintain.
 
-> Interesting. Just a guess, have you tried disabling the serial driver?  The
-> faulty address is a kernel one, that's all I can deduce from that panic.
-> I need to get one of these boxes some day..
+Is this worth changing in cvs, or did I miss something?
 
-I can try, but origin have only serial console so will I see output if I disable
-the serial driver?
+Thanks.
 
-2 times the last message seen from kernel was:
-Memory: 60824k/65536k available (1423k kernel code, 4712k reserved, 184k data, 220k init)
-And nothing more, no oops.
-
-once the last message was about serial ports (two detected) and nothing more.
-[ cut ]
-Initializing RT netlink socket
-Starting kswapd v1.8
-pty: 256 Unix98 ptys configured
-Serial driver version 5.05c (2001-07-08) with MANY_PORTS SHARE_IRQ SERIAL_PCI
-enabled
-ttyS00 at iomem 0x9200000008620178 (irq = 0) is a 16550A
-ttyS01 at iomem 0x9200000008620170 (irq = 0) is a 16550A
-Ass well nothing more just stoped.
-
-
-for fourth time it writed:
-.... [ cut ]...
-Based upon Swansea University Computer Society NET3.039
-Initializing RT netlink socket
-Unhandled kernel unaligned access: 0000
-Cpu 0
-$0      : 0000000000000000 ffffffffc11f0000 0000000000000003 a80000000025be6
-
-So it did oops before kswapd started.
-
-fifth time message I've already posted.
-
--- 
-Luká¹ Hejtmánek
+Gerald

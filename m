@@ -1,63 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Mar 2004 21:56:55 +0100 (BST)
-Received: from [IPv6:::ffff:206.181.163.222] ([IPv6:::ffff:206.181.163.222]:3198
-	"EHLO alfalfa.fortresstech.com") by linux-mips.org with ESMTP
-	id <S8225474AbUC3U4y>; Tue, 30 Mar 2004 21:56:54 +0100
-Received: from audev ([172.26.52.2]) by alfalfa.fortresstech.com with Microsoft SMTPSVC(5.0.2195.6713);
-	 Tue, 30 Mar 2004 15:56:49 -0500
-Subject: Re: mips-linux cross-compiler
-From: Steve Lazaridis <slaz@fortresstech.com>
-Reply-To: slaz@fortresstech.com
-To: Ronen Shitrit <rshitrit@il.marvell.com>
-Cc: linux-mips@linux-mips.org
-In-Reply-To: <40692540.9090800@il.marvell.com>
-References: <40692540.9090800@il.marvell.com>
-Content-Type: text/plain
-Organization: Fortress Technologies
-Message-Id: <1080680258.10476.4.camel@gigada>
-Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.4.5 
-Date: Tue, 30 Mar 2004 15:57:38 -0500
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Mar 2004 22:14:59 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:27379 "EHLO
+	av.mvista.com") by linux-mips.org with ESMTP id <S8225479AbUC3VO6>;
+	Tue, 30 Mar 2004 22:14:58 +0100
+Received: from mvista.com (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id NAA20757;
+	Tue, 30 Mar 2004 13:14:53 -0800
+Message-ID: <4069E34B.1080608@mvista.com>
+Date: Tue, 30 Mar 2004 13:14:51 -0800
+From: Pete Popov <ppopov@mvista.com>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.6) Gecko/20040113
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: Bob Lees <bob@diamond.demon.co.uk>
+CC: linux-mips@linux-mips.org
+Subject: Re: Frequency (cpu speed) control on AU1100
+References: <200403302137.38123.bob@diamond.demon.co.uk>
+In-Reply-To: <200403302137.38123.bob@diamond.demon.co.uk>
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 30 Mar 2004 20:56:49.0427 (UTC) FILETIME=[853B2630:01C41699]
-Return-Path: <SLaz@fortresstech.com>
+Return-Path: <ppopov@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4697
+X-archive-position: 4698
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: slaz@fortresstech.com
+X-original-sender: ppopov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 2004-03-30 at 02:44, Ronen Shitrit wrote:
-> Hi
-> 
-> I have a mips-linux cross compiler on i686 host, which is using gcc 2.95.3 .
-> This compiler doesn't support the MIPS 4 Instruction Set,
-> So I'm trying to build a new mips-linux cross compiler using any gcc 3.3/2.*
-> but without any luck,
-> Did anyone succeed to build such a cross compiler??
-> which gcc and binutils version did you use??
-> what are the configure flags you used??
-> Did you used any special steps?? (except for configure ... , make, make 
-> install )
-> 
-> Thanks a lot
+Bob Lees wrote:
 
-I've successfully built toolchains for mipsel using 
-http://www.kegel.com/crosstool/
+>Hi All
+>
+>I am working on an AU1100 board (Aurora) from DSP Design and want to control 
+>the processor cpu speed, as in CPU_FREQ, type control.  I suspect I am 
+>missing something somewhere, but I can't find any references to cpu speed 
+>control for the MIPS processors, specically the au1x range.
+>
+>Any clues?
+>  
+>
+I assume you mean dynamically? Or at boot time only?
 
-It's a great tool, makes crosstoolchains building a piece of cake.
-The toolchain was built for gcc-3.3.2 and glibc-2.3.2
+There is an Au1x power management implementation that I haven't tested 
+in a while. It allows you to scale the frequency using sysctl, if I 
+remember correctly.
 
-hope this helps..
-
-cheers,
-
--- 
-Steve Lazaridis
-Software Engineer
-Fortress Technologies
-slaz@fortresstech.com | Ph:813.288.7388 x115
+Pete

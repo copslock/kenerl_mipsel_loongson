@@ -1,31 +1,41 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8EHB9r00840
-	for linux-mips-outgoing; Fri, 14 Sep 2001 10:11:09 -0700
-Received: from www.transvirtual.com (root@www.transvirtual.com [206.14.214.140])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8EHB7e00836
-	for <linux-mips@oss.sgi.com>; Fri, 14 Sep 2001 10:11:07 -0700
-Received: from www.transvirtual.com (jsimmons@localhost [127.0.0.1])
-        by localhost (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f8EHAxuI024674;
-	Fri, 14 Sep 2001 10:10:59 -0700
-Received: from localhost (jsimmons@localhost)
-        by www.transvirtual.com (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f8EHAxw0024670;
-	Fri, 14 Sep 2001 10:10:59 -0700
-X-Authentication-Warning: www.transvirtual.com: jsimmons owned process doing -bs
-Date: Fri, 14 Sep 2001 10:10:58 -0700 (PDT)
-From: James Simmons <jsimmons@transvirtual.com>
-To: "H . J . Lu" <hjl@lucon.org>
-cc: linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.2/8.11.3) id f8EHFp200956
+	for linux-mips-outgoing; Fri, 14 Sep 2001 10:15:51 -0700
+Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8EHFoe00953
+	for <linux-mips@oss.sgi.com>; Fri, 14 Sep 2001 10:15:50 -0700
+Received: by ocean.lucon.org (Postfix, from userid 1000)
+	id 61947125C3; Fri, 14 Sep 2001 10:15:49 -0700 (PDT)
+Date: Fri, 14 Sep 2001 10:15:49 -0700
+From: "H . J . Lu" <hjl@lucon.org>
+To: James Simmons <jsimmons@transvirtual.com>
+Cc: linux-mips@oss.sgi.com
 Subject: Re: PATCH: Fix offset of mmap
-In-Reply-To: <20010914100700.A16047@lucon.org>
-Message-ID: <Pine.LNX.4.10.10109141009260.20461-100000@transvirtual.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Message-ID: <20010914101549.A16156@lucon.org>
+References: <20010914100700.A16047@lucon.org> <Pine.LNX.4.10.10109141009260.20461-100000@transvirtual.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.LNX.4.10.10109141009260.20461-100000@transvirtual.com>; from jsimmons@transvirtual.com on Fri, Sep 14, 2001 at 10:10:58AM -0700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Fri, Sep 14, 2001 at 10:10:58AM -0700, James Simmons wrote:
+> 
+> > We should check if offset of mmap is on the page boundary.
+> 
+> I believe this would break certain pieces of hardware. For example the
+> mq200 framebuffer in the sigmarion is not paged aligned. You have to
+> supply a offset to make it work.
 
-> We should check if offset of mmap is on the page boundary.
+How do you mmap a memory whose offset is not page aligned? The code
+here is
 
-I believe this would break certain pieces of hardware. For example the
-mq200 framebuffer in the sigmarion is not paged aligned. You have to
-supply a offset to make it work.
+return do_mmap2(addr, len, prot, flags, fd, offset >> PAGE_SHIFT);
+					    ^^^^^^^^^^^^^^^^^^^^
+
+It is up to the user code to make sure everything is ok.
+
+
+H.J.

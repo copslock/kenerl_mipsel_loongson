@@ -1,49 +1,46 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1MHvTQ16370
-	for linux-mips-outgoing; Fri, 22 Feb 2002 09:57:29 -0800
-Received: from rwcrmhc54.attbi.com (rwcrmhc54.attbi.com [216.148.227.87])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1MHvR916367
-	for <linux-mips@oss.sgi.com>; Fri, 22 Feb 2002 09:57:27 -0800
-Received: from ocean.lucon.org ([12.234.16.87]) by rwcrmhc54.attbi.com
-          (InterMail vM.4.01.03.27 201-229-121-127-20010626) with ESMTP
-          id <20020222165721.YOMU1214.rwcrmhc54.attbi.com@ocean.lucon.org>;
-          Fri, 22 Feb 2002 16:57:21 +0000
-Received: by ocean.lucon.org (Postfix, from userid 1000)
-	id 085CD125C1; Fri, 22 Feb 2002 08:57:20 -0800 (PST)
-Date: Fri, 22 Feb 2002 08:57:20 -0800
-From: "H . J . Lu" <hjl@lucon.org>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: Wayne Gowcher <wgowcher@yahoo.com>, Linux-MIPS <linux-mips@oss.sgi.com>
-Subject: Re: pthread support in mipsel-linux
-Message-ID: <20020222085720.B17035@lucon.org>
-References: <20020221102503.A28936@lucon.org> <Pine.GSO.3.96.1020222143540.5266C-100000@delta.ds2.pg.gda.pl> <20020222085310.A17035@lucon.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20020222085310.A17035@lucon.org>; from hjl@lucon.org on Fri, Feb 22, 2002 at 08:53:10AM -0800
+	by oss.sgi.com (8.11.2/8.11.3) id g1MI92N16640
+	for linux-mips-outgoing; Fri, 22 Feb 2002 10:09:02 -0800
+Received: from coplin19.mips.com ([80.63.7.130])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1MI8w916637
+	for <linux-mips@oss.sgi.com>; Fri, 22 Feb 2002 10:08:58 -0800
+Received: (from kjelde@localhost)
+	by coplin19.mips.com (8.11.6/8.11.6) id g1MH8pX13027;
+	Fri, 22 Feb 2002 18:08:51 +0100
+Date: Fri, 22 Feb 2002 18:08:51 +0100
+From: Kjeld Borch Egevang <kjelde@mips.com>
+Message-Id: <200202221708.g1MH8pX13027@coplin19.mips.com>
+To: <linux-mips@oss.sgi.com>
+Subject: Re: ieee754_csr is the problem (Re: lazy fpu switch irrelavant to no-fpu  case?
+In-Reply-To: <006701c1bb87$b2b6fb80$0deca8c0@Ulysses>
+References: <3C75B181.C5A065A1@mvista.com> <3C75C19C.13BB0FCC@mvista.com> <006701c1bb87$b2b6fb80$0deca8c0@Ulysses>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, Feb 22, 2002 at 08:53:10AM -0800, H . J . Lu wrote:
-> On Fri, Feb 22, 2002 at 02:38:53PM +0100, Maciej W. Rozycki wrote:
-> > On Thu, 21 Feb 2002, H . J . Lu wrote:
-> > 
-> > > > Just to clarify, the glibc rpm in your Redhat 7.1 is
-> > > > compiled with -mips1 right ? So as it is broken yes ?
-> > > 
-> > > Yes. -mips1 doesn't work well with thread.
-> > 
-> >  What's wrong with -mips1 currently?  It used to be OK around glibc 2.2 --
-> > has anything changed since then that needs -mips1 to be fixed?
-> > 
-> 
-> Mutex is now implemented with spin lock by default. BTW, how many
-> people have run "make check" on glibc compiled -mips1?
+In mips.test, you wrote:
+>This is what I get for processing my mail in-order.
+>I just got done writing a message asking if the
+>ieee_754_csr issue might be at the root of your
+>problem.
+>
+>Anyway, rather than create an array of the damned
+>things, I would think that the "best" thing to do would
+>be to merge the "abstract" IEEE CSR with the
+>simulated MIPS CSR (by adding the "noq" and
+>"nod" bits in otherwise unused/reserved bit positions),
+>and using the thread-local CSR copy for all of the
+>ieee_754_csr manipulations, much as I did for
+>the FP registers.  That would be a bit more intrusive
+>than your proposed hack, however, and only slightly
+>more efficient.
 
-Also, how many people have bootstrapped and run "make check" on gcc
-3.1 from CVS on Linux/mips with glibc compiled with -mips1?  There are
-some thread tests in libstdc++-v3.
+I've been wondering: Why was the CSR copy made in the first place?
 
+/Kjeld
 
-H.J.
+-- 
+_    _ ____  ___                       Mailto:kjelde@mips.com
+|\  /|||___)(___    MIPS Denmark       Direct: +45 44 86 55 85
+| \/ |||    ____)   Lautrupvang 4 B    Switch: +45 44 86 55 55
+  TECHNOLOGIES      DK-2750 Ballerup   Fax...: +45 44 86 55 56
+                    Denmark            http://www.mips.com/

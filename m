@@ -1,69 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Dec 2002 14:42:50 +0000 (GMT)
-Received: from cm19173.red.mundo-r.com ([IPv6:::ffff:213.60.19.173]:25988 "EHLO
-	demo.mitica") by linux-mips.org with ESMTP id <S8225541AbSLTOmt>;
-	Fri, 20 Dec 2002 14:42:49 +0000
-Received: by demo.mitica (Postfix, from userid 501)
-	id 42005D657; Fri, 20 Dec 2002 15:48:56 +0100 (CET)
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: mipslist <linux-mips@linux-mips.org>
-Subject: Re: [PATCH]: for poor sools with old I2 & 64 bits kernel
-References: <m2el8dixmr.fsf@demo.mitica>
-	<20021220034450.A21950@linux-mips.org>
-X-Url: http://people.mandrakesoft.com/~quintela
-From: Juan Quintela <quintela@mandrakesoft.com>
-In-Reply-To: <20021220034450.A21950@linux-mips.org>
-Date: 20 Dec 2002 15:48:56 +0100
-Message-ID: <m2ptrwg2zr.fsf@demo.mitica>
-User-Agent: Gnus/5.09 (Gnus v5.9.0) Emacs/21.2.92
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Dec 2002 14:51:43 +0000 (GMT)
+Received: from [IPv6:::ffff:209.226.172.94] ([IPv6:::ffff:209.226.172.94]:59822
+	"EHLO semigate.zarlink.com") by linux-mips.org with ESMTP
+	id <S8225541AbSLTOvn>; Fri, 20 Dec 2002 14:51:43 +0000
+Received: from ottmta01.zarlink.com (ottmta01 [134.199.14.110])
+	by semigate.zarlink.com (8.10.2+Sun/8.10.2) with ESMTP id gBKEpVL02164;
+	Fri, 20 Dec 2002 09:51:31 -0500 (EST)
+Subject: Re: Problems with CONFIG_PREEMPT
+To: Jun Sun <jsun@mvista.com>
+Cc: linux-mips@linux-mips.org, rml@mvista.com
+X-Mailer: Lotus Notes Release 5.0.8  June 18, 2001
+Message-ID: <OF2066EDAB.79E8E12E-ON80256C95.00517ECB@zarlink.com>
+From: Colin.Helliwell@Zarlink.Com
+Date: Fri, 20 Dec 2002 14:51:24 +0000
+X-MIMETrack: Serialize by Router on ottmta01/Semi(Release 5.0.11  |July 24, 2002) at 12/20/2002
+ 09:51:31 AM
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <quintela@mandrakesoft.com>
+Content-type: text/plain; charset=us-ascii
+Return-Path: <Colin.Helliwell@Zarlink.Com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1026
+X-archive-position: 1027
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: quintela@mandrakesoft.com
+X-original-sender: Colin.Helliwell@Zarlink.Com
 Precedence: bulk
 X-list: linux-mips
 
->>>>> "ralf" == Ralf Baechle <ralf@linux-mips.org> writes:
 
-ralf> On Thu, Dec 19, 2002 at 09:04:12PM +0100, Juan Quintela wrote:
->> this small patch made possible to compile a 64bit kernel for
->> people that have old proms that only accept ecoff.  As usual
->> stolen from the 32 bits version.
->> 
->> The easiest way is creating the file in arch/mips/boot,
->> otherwise we need to copy elf2ecoff.c to mips64.
-
-ralf> Applied slightly modified.  I removed two other unused targets.
-
-Please, add that back, and things will indeed compile :)
-
-Later, Juan.
-
-Index: arch/mips64/Makefile
-===================================================================
-RCS file: /home/cvs/linux/arch/mips64/Makefile,v
-retrieving revision 1.22.2.21
-diff -u -r1.22.2.21 Makefile
---- arch/mips64/Makefile	20 Dec 2002 02:42:26 -0000	1.22.2.21
-+++ arch/mips64/Makefile	20 Dec 2002 14:37:18 -0000
-@@ -235,7 +235,7 @@
- CORE_FILES := arch/mips64/kernel/kernel.o arch/mips64/mm/mm.o $(CORE_FILES)
- LIBS := arch/mips64/lib/lib.a $(LIBS)
- 
--MAKEBOOT = $(MAKE) -C arch/$(ARCH)/boot
-+MAKEBOOT = $(MAKE) -C arch/mips/boot
- 
- ifdef CONFIG_CPU_LITTLE_ENDIAN
- 64bit-bfd = elf64-tradlittlemips
+Think I'm ok with respect to interrupt handling, but what does making
+globals "safe or taken care of" consist of?
 
 
 
--- 
-In theory, practice and theory are the same, but in practice they 
-are different -- Larry McVoy
+
+                                                                                                                                       
+                      Jun Sun                                                                                                          
+                      <jsun@mvista.com>        To:       Colin.Helliwell@Zarlink.Com                                                   
+                                               cc:       linux-mips@linux-mips.org, rml@mvista.com, jsun@mvista.com                    
+                      19-Dec-2002 05:59        Subject:  Re: Problems with CONFIG_PREEMPT                                              
+                      PM                                                                                                               
+                                                                                                                                       
+                                                                                                                                       
+
+
+
+
+On Thu, Dec 19, 2002 at 09:10:40AM +0000, Colin.Helliwell@Zarlink.Com
+wrote:
+>
+> Thanks for the patch, but unfortunately the problem is still the same.
+
+If the problem happens very soon after you boot up, there is something
+*obviously* wrong.  The most common problem is that you have an interupt
+handling path not going through standard do_IRQ().  Then you need to
+do similar treatment like those in ll_timer_interrupt().
+
+The second thing is to look for any *new* global variables you may
+introduce in your kernel.  Most of current global variables are either
+safe or taken care of (Although another update patch will come out
+today or tomorrow to really close the final hole we have).
+
+> I'm
+> not sure whether it occurs as a result of interrupts, or just after a
+> certain amount of scheduler 'activity' as it sits there copying the
+initrd
+> into ram disk. A few interrupts are enabled, but its only the MIPS timer
+> which should be generating any interrupts at that point (I'll check that,
+> in case its relevant).
+
+FYI, I have mips kernel with initrd running just fine with preemptible
+kernel.
+In fact, it has passed some very stressful tests with initrd.
+
+> I presume the change from "sti()" to "__sti()" was a semantic (or SMP)
+> thing, since the former is #defined to the latter anyway? Please note
+also
+> the following modification which was required to 2.4.19:
+>
+
+This is true.  Since our kernel had synchronize_irq() added long time ago,
+I probably forgot about it when I created the pre-k patch.
+
+Jun

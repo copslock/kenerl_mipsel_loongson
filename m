@@ -1,51 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Nov 2002 12:54:54 +0100 (CET)
-Received: from delta.ds2.pg.gda.pl ([213.192.72.1]:56033 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S1121742AbSKYLyx>; Mon, 25 Nov 2002 12:54:53 +0100
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id MAA09706;
-	Mon, 25 Nov 2002 12:55:12 +0100 (MET)
-Date: Mon, 25 Nov 2002 12:55:11 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Ralf Baechle <ralf@linux-mips.org>
-cc: atul srivastava <atulsrivastava9@rediffmail.com>,
-	linux-mips@linux-mips.org
-Subject: Re: watch exception only for kseg0 addresses..?
-In-Reply-To: <20021125102458.B22046@linux-mips.org>
-Message-ID: <Pine.GSO.3.96.1021125123643.8769B-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Nov 2002 13:00:57 +0100 (CET)
+Received: from mx2.mips.com ([206.31.31.227]:8141 "EHLO mx2.mips.com")
+	by linux-mips.org with ESMTP id <S1121742AbSKYMA4>;
+	Mon, 25 Nov 2002 13:00:56 +0100
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id gAPC0jNf007316;
+	Mon, 25 Nov 2002 04:00:45 -0800 (PST)
+Received: from grendel (grendel [192.168.236.16])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id EAA00114;
+	Mon, 25 Nov 2002 04:00:43 -0800 (PST)
+Message-ID: <00d001c2947a$d71231d0$10eca8c0@grendel>
+From: "Kevin D. Kissell" <kevink@mips.com>
+To: "atul srivastava" <atulsrivastava9@rediffmail.com>,
+	"Ralf Baechle" <ralf@linux-mips.org>
+Cc: <linux-mips@linux-mips.org>
+References: <20021125100152.6471.qmail@mailweb33.rediffmail.com>
+Subject: Re: Re: watch exception only for kseg0 addresses..?
+Date: Mon, 25 Nov 2002 13:04:28 +0100
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4807.1700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4910.0300
+Return-Path: <kevink@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 703
+X-archive-position: 704
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: kevink@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 25 Nov 2002, Ralf Baechle wrote:
+> > Beyond that there
+> > are at least two different formats of watch registers implemented 
+> > in actual silicon, the original R4000-style and the MIPS32/MIPS64 
+> > style watch registers and the kernel's watch code only know the R4000 
+> > style.
+> 
+> my cpu manual ( IDT RC32334) talks about two watch registers 
+> CP0_IWATCH and CP0_DWATCH where it is required to just put desired 
+> VIRTUAL( bits 2--31) addresses to be watched , there is no mention 
+> of CP0_WATCHLO and CP0_WATCHHI .
 
-> The whole watch stuff in the the kernel is pretty much an ad-hoc API
-> which I did create to debug a stack overflow.  I'm sure if you're
-> going to use it you'll find problems.  For userspace for example you'd
-> have to switch the watch register when switching the MMU context so
-> each process gets it's own virtual watch register.  Beyond that there
-> are at least two different formats of watch registers implemented in
-> actual silicon, the original R4000-style and the MIPS32/MIPS64 style
-> watch registers and the kernel's watch code only know the R4000 style
-> one.  So check your CPU's manual ...
+Your CPU would appear to be neither MIPS32/MIPS64 compliant
+nor R4000 backward-compatible.  The designers may have sought 
+to simplify the use of watch registers in user space, apparently at the price 
+of the restriction you are seeing.
 
- I think the best use of the watch exception would be making it available
-to userland via PTRACE_PEEKUSR and PTRACE_POKEUSR for hardware watchpoint
-support (e.g. for gdb).  Hardware support is absolutely necessary for
-watching read accesses and much beneficial for write ones (otherwise gdb
-single-steps code which sucks performace-wise).
+> additionally i guees for userspace virtual watch register problem, 
+> the hardware takes care of all , i just need to specify my virual 
+> address this is what i understand from my  manual.
+> 
+> and one more problem i face when i try to debug a mysterious page 
+> fault problem, that i get my watch exception but after page fault 
+> ..hence I can't really debug , shouldn't the priority of watch 
+> exceptions should be higher than atleast instruction fetch 
+> exception.? or the scope of debugging by watch exception is 
+> limited by design.....
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Does your CPU implement EJTAG?
+
+            Kevin K.

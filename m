@@ -1,79 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jun 2004 12:57:45 +0100 (BST)
-Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:35221 "EHLO
-	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225203AbUF2L5l>; Tue, 29 Jun 2004 12:57:41 +0100
-Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
-	id 5DB37475C1; Tue, 29 Jun 2004 13:57:34 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by jurand.ds.pg.gda.pl (Postfix) with ESMTP
-	id 4AAF7474EF; Tue, 29 Jun 2004 13:57:34 +0200 (CEST)
-Date: Tue, 29 Jun 2004 13:57:34 +0200 (CEST)
-From: "Maciej W. Rozycki" <macro@linux-mips.org>
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jun 2004 13:09:50 +0100 (BST)
+Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:7138 "EHLO
+	witte.sonytel.be") by linux-mips.org with ESMTP id <S8225203AbUF2MJq>;
+	Tue, 29 Jun 2004 13:09:46 +0100
+Received: from waterleaf.sonytel.be (localhost [127.0.0.1])
+	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id i5TC9bXK016761;
+	Tue, 29 Jun 2004 14:09:37 +0200 (MEST)
+Date: Tue, 29 Jun 2004 14:09:36 +0200 (MEST)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: "Maciej W. Rozycki" <macro@linux-mips.org>
+cc: Ralf Baechle <ralf@linux-mips.org>,
+	Linux/MIPS Development <linux-mips@linux-mips.org>
 Subject: Re: [patch] Incorrect mapping of serial ports to lines
-In-Reply-To: <20040628235908.GC5736@linux-mips.org>
-Message-ID: <Pine.LNX.4.55.0406291345590.31801@jurand.ds.pg.gda.pl>
+In-Reply-To: <Pine.LNX.4.55.0406291345590.31801@jurand.ds.pg.gda.pl>
+Message-ID: <Pine.GSO.4.58.0406291408020.29058@waterleaf.sonytel.be>
 References: <Pine.LNX.4.55.0406281513120.23162@jurand.ds.pg.gda.pl>
- <20040628235908.GC5736@linux-mips.org>
+ <20040628235908.GC5736@linux-mips.org> <Pine.LNX.4.55.0406291345590.31801@jurand.ds.pg.gda.pl>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5377
+X-archive-position: 5378
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 29 Jun 2004, Ralf Baechle wrote:
+On Tue, 29 Jun 2004, Maciej W. Rozycki wrote:
+>  That's a bit troublesome for the Malta board which has both a pair of
+> PC-compatible serial ports which are expected to be lines 0 and 1 and an
+> Atlas serial port, which is expected to be line 2.  The Atlas port on the
+> Malta board isn't handled by Linux right now, but I plan to fix it.  Are
+> there systems that have both PC-compatible ports and system-specific ones
+> and expect them to be mapped in the reverse order?
 
-> Yep, having STD_SERIAL_PORT_DEFNS after EXTRA_SERIAL_PORT_DEFNS was
-> unintentional.  The idea was to have to have all the system-specific at
-> the start of the list or we get fun on all system that may have on-board
-> serials which should receive the lowest numbers and any (E)ISA serial cards
-> at the end, so my suggestion for fixing this would look a little different:
-> 
-> #define SERIAL_PORT_DFNS                                \
->         COBALT_SERIAL_PORT_DEFNS                        \
->         DDB5477_SERIAL_PORT_DEFNS                       \
->         EV96100_SERIAL_PORT_DEFNS                       \
->         IP32_SERIAL_PORT_DEFNS                          \
->         ITE_SERIAL_PORT_DEFNS                           \
->         IVR_SERIAL_PORT_DEFNS                           \
->         JAZZ_SERIAL_PORT_DEFNS                          \
->         MOMENCO_OCELOT_G_SERIAL_PORT_DEFNS              \
->         MOMENCO_OCELOT_C_SERIAL_PORT_DEFNS              \
->         MOMENCO_OCELOT_SERIAL_PORT_DEFNS                \
->         TXX927_SERIAL_PORT_DEFNS                        \
->         AU1000_SERIAL_PORT_DEFNS			\
+The NEC DDB Vrc-5074 (and probably the other DDB variants as well) has one
+serial port in the Nile 4 host bridge, and 2 serial ports in the Super I/O.
 
- Hmm, why is Au1000 at the end -- does the system have others from the
-list above, too?
+To me it sounds the most logical if the one in the Nile 4 is ttyS0.
 
- Also you've removed a few system-specific ports -- why?
+Gr{oetje,eeting}s,
 
-> 							\
->         STD_SERIAL_PORT_DEFNS                           \
-> 	EXTRA_SERIAL_PORT_DEFNS				\
->         HUB6_SERIAL_PORT_DFNS                           \
-> 
-> Comments?
+						Geert
 
- That's a bit troublesome for the Malta board which has both a pair of
-PC-compatible serial ports which are expected to be lines 0 and 1 and an
-Atlas serial port, which is expected to be line 2.  The Atlas port on the
-Malta board isn't handled by Linux right now, but I plan to fix it.  Are
-there systems that have both PC-compatible ports and system-specific ones
-and expect them to be mapped in the reverse order?
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
- AFAIK, PC-compatible serial ports on PCI cards get mapped dynamically to
-lines above this standard list.  I don't know about EISA boards, but it
-would be consistent to handle them the same way, i.e. I'd propose to fix
-the driver in this case.
-
-  Maciej
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

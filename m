@@ -1,97 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Mar 2004 12:40:07 +0000 (GMT)
-Received: from virtual.paginaweb.be ([IPv6:::ffff:212.3.242.133]:29081 "EHLO
-	virtual.paginaweb.be") by linux-mips.org with ESMTP
-	id <S8225340AbUCRMkG>; Thu, 18 Mar 2004 12:40:06 +0000
-Received: from virtual.paginaweb.be (localhost [127.0.0.1])
-	by virtual.paginaweb.be (8.12.10/8.12.10/UnixTech - Niddle v2.5 - abuse@unixtech.be) with ESMTP id i2ICe1IW017367
-	for <linux-mips@linux-mips.org>; Thu, 18 Mar 2004 13:40:03 +0100
-Received: (from amavis@localhost)
-	by virtual.paginaweb.be (8.12.10/8.12.10/Debian-4) id i2ICambc016835
-	for linux-mips@linux-mips.org; Thu, 18 Mar 2004 13:36:48 +0100
-X-Authentication-Warning: virtual.paginaweb.be: amavis set sender to <> using -f
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Mar 2004 13:09:22 +0000 (GMT)
+Received: from web.123-box.de ([IPv6:::ffff:193.254.185.98]:38278 "HELO
+	web.123-box.de") by linux-mips.org with SMTP id <S8225340AbUCRNJV> convert rfc822-to-8bit;
+	Thu, 18 Mar 2004 13:09:21 +0000
+Received: (qmail 14785 invoked by uid 110); 18 Mar 2004 13:12:10 -0000
+Received: from unknown (HELO server10.dallmeier.de) (217.235.81.157)
+  by web.123-box.de with SMTP; 18 Mar 2004 13:12:10 -0000
+Content-Class: urn:content-classes:message
 MIME-Version: 1.0
-Subject: VIRUS (W32/Netsky.D@mm) IN YOUR MAIL
-Message-Id: <VSXXegqH2g@virtual>
-Content-Type: multipart/report; report-type=delivery-status;
-    boundary="----------=_1079613408-16384-1"
-From: AMaViS <virusalert@unixtech.be>
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: PMON documentation
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6487.1
+Date: Thu, 18 Mar 2004 14:09:19 +0100
+Message-ID: <765921A8173EC145948ACBAA0480F67E2C76D5@server10.dallmeier.de>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: PMON documentation
+thread-index: AcQM6jtfFwvE2zUOQk2j6Ga5RTGRJw==
+From: "erras stefan" <stefan.erras@dallmeier-electronic.com>
 To: <linux-mips@linux-mips.org>
-Date: Thu, 18 Mar 2004 13:36:48 +0100 (CET)
-X-Virus-Scanned: by amavisd-new
-Return-Path: <>
+Return-Path: <stefan.erras@dallmeier-electronic.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4577
+X-archive-position: 4578
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: virusalert@unixtech.be
+X-original-sender: stefan.erras@dallmeier-electronic.com
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format...
+Hello,
+I'm working on a development project with a RM5231 MIPS processor.
+I have to modify some things in the PMON bootloader source-code.
+Can anybody give me an advice where I can find PMON source code
+documentation or a detailed explanation how PMON works.
+Which files do I have to look into, when I would like to modify the
+bootloader.
+Maybe I can use another bootloader. Which alternatives do I have. I do
+not need the debug functionality of PMON. Maybe there is an easier to
+understand and modify bootloader.
 
-------------=_1079613408-16384-1
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 7bit
+Thank you all in advance for your help!
 
-VIRUS ALERT
-
-Our virus checker found
-    virus: W32/Netsky.D@mm
-    banned filename: your_website.pif
-in your email to the following recipient:
--> info@namurlug.org
-
-Delivery of the email was stopped!
-
-Please check your system for viruses,
-or ask your system administrator to do so.
-
-For your reference, here are headers from your email:
-------------------------- BEGIN HEADERS -----------------------------
-From: linux-mips@linux-mips.org
-To: info@namurlug.org
-Subject: Re: Your website
-Date: Thu, 18 Mar 2004 18:05:29 +0530
-MIME-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="----=_NextPart_000_0003_0000775C.000043A7"
-X-Priority: 3
-X-MSMail-Priority: Normal
--------------------------- END HEADERS ------------------------------
-
-------------=_1079613408-16384-1
-Content-Type: message/delivery-status
-Content-Disposition: inline
-Content-Transfer-Encoding: 7bit
-Content-Description: Delivery error report
-
-Reporting-MTA: dns; virtual
-Arrival-Date: Thu, 18 Mar 2004 13:36:48 +0100 (CET)
-
-Final-Recipient: rfc822; info@namurlug.org
-Action: failed
-Status: 5.7.1
-Diagnostic-Code: smtp; 550 5.7.1 Message content rejected, id=XXegqH2g - VIRUS: W32/Netsky.D@mm
-Last-Attempt-Date: Thu, 18 Mar 2004 13:36:48 +0100 (CET)
-
-------------=_1079613408-16384-1
-Content-Type: text/rfc822-headers
-Content-Disposition: inline
-Content-Transfer-Encoding: 7bit
-Content-Description: Undelivered-message headers
-
-From: linux-mips@linux-mips.org
-To: info@namurlug.org
-Subject: Re: Your website
-Date: Thu, 18 Mar 2004 18:05:29 +0530
-MIME-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="----=_NextPart_000_0003_0000775C.000043A7"
-X-Priority: 3
-X-MSMail-Priority: Normal
-
-------------=_1079613408-16384-1--
+Best regards
+Stefan

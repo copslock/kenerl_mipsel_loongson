@@ -1,38 +1,47 @@
-Received:  by oss.sgi.com id <S305168AbQCORMm>;
-	Wed, 15 Mar 2000 09:12:42 -0800
-Received: from deliverator.sgi.com ([204.94.214.10]:40056 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305156AbQCORMa>;
-	Wed, 15 Mar 2000 09:12:30 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id JAA13628; Wed, 15 Mar 2000 09:07:52 -0800 (PST)
+Received:  by oss.sgi.com id <S305158AbQCPFYQ>;
+	Wed, 15 Mar 2000 21:24:16 -0800
+Received: from deliverator.sgi.com ([204.94.214.10]:50534 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305156AbQCPFX7>;
+	Wed, 15 Mar 2000 21:23:59 -0800
+Received: from nodin.corp.sgi.com (fddi-nodin.corp.sgi.com [198.29.75.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id VAA07911; Wed, 15 Mar 2000 21:19:22 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id VAA42846; Wed, 15 Mar 2000 21:22:25 -0800 (PST)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id JAA70050
+	id VAA17972
 	for linux-list;
-	Wed, 15 Mar 2000 09:01:32 -0800 (PST)
+	Wed, 15 Mar 2000 21:11:40 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id JAA06751
+	via ESMTP id VAA67656
 	for <linux@engr.sgi.com>;
-	Wed, 15 Mar 2000 09:01:26 -0800 (PST)
-	mail_from (gnava@sirio.tecmor.mx)
-Received: from sirio.tecmor.mx (sirio.tecmor.mx [200.33.171.1]) 
+	Wed, 15 Mar 2000 21:11:37 -0800 (PST)
+	mail_from (weave@eng.umd.edu)
+Received: from po4.glue.umd.edu (po4.glue.umd.edu [128.8.10.124]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id JAA02626
-	for <linux@engr.sgi.com>; Wed, 15 Mar 2000 09:01:20 -0800 (PST)
-	mail_from (gnava@sirio.tecmor.mx)
-Received: from localhost (gnava@localhost)
-	by sirio.tecmor.mx (8.9.3/8.9.3) with ESMTP id LAA15539
-	for <linux@engr.sgi.com>; Wed, 15 Mar 2000 11:05:12 -0600
-Date:   Wed, 15 Mar 2000 11:05:12 -0600 (CST)
-From:   Gabriel Nava Vazquez <gnava@sirio.tecmor.mx>
+	via ESMTP id VAA05404
+	for <linux@engr.sgi.com>; Wed, 15 Mar 2000 21:11:36 -0800 (PST)
+	mail_from (weave@eng.umd.edu)
+Received: from z.glue.umd.edu (root@z.glue.umd.edu [128.8.10.71])
+	by po4.glue.umd.edu (8.9.3/8.9.3) with ESMTP id AAA19839
+	for <linux@engr.sgi.com>; Thu, 16 Mar 2000 00:11:36 -0500 (EST)
+Received: from z.glue.umd.edu (sendmail@localhost [127.0.0.1])
+	by z.glue.umd.edu (8.9.3/8.9.3) with SMTP id AAA28924
+	for <linux@engr.sgi.com>; Thu, 16 Mar 2000 00:11:35 -0500 (EST)
+Received: from localhost (weave@localhost)
+	by z.glue.umd.edu (8.9.3/8.9.3) with ESMTP id AAA28920
+	for <linux@engr.sgi.com>; Thu, 16 Mar 2000 00:11:35 -0500 (EST)
+X-Authentication-Warning: z.glue.umd.edu: weave owned process doing -bs
+Date:   Thu, 16 Mar 2000 00:11:35 -0500 (EST)
+From:   Vince Weaver <weave@eng.umd.edu>
+X-Sender: weave@z.glue.umd.edu
 To:     linux@cthulhu.engr.sgi.com
-Subject: instalation crashes 
-Message-ID: <Pine.LNX.4.10.10003151104410.15537-100000@sirio.tecmor.mx>
+Subject: /proc/cpuinfo cleanups 
+Message-ID: <Pine.GSO.4.21.0003160008490.28783-100000@z.glue.umd.edu>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linuxmips@oss.sgi.com
@@ -40,43 +49,31 @@ Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-Hello 
+Hello,
 
-I'm installing sgi-linux on an Indy (R4600), in a Seagate disk.
+I noticed that my patch to add Indigo2 support to /proc/cpuinfo never made
+it into the kernel
+[http://www.glue.umd.edu/~weave/patches/patch_indigo2_support]
 
-I changed the id for sda1 from EFS to Linux Native, i also tryied
-creating a smaller partition in sda1 and 'w', then i pressed 'done' 
-and the instalation program crashes with the next error:
+I know Ralf said he'd like for the cpuinfo stuff to be completely
+re-written and the afforementioned support be added along with a slew of
+other features.
 
-Oops: 0000
+I have an interest in /proc/cpuinfo, with linux_logo being one of the few
+programs that actively parses it.  Linus has always ignored any of my
+attempted cleanups, apparently on the premise that "if it's not
+super-broken don't fix it".  So I was a bit hesitant to start such an
+ambitious re-writing of the involved code, especially since I no longer
+have access to the Indigo2 machine I was working with.
 
-$0 : 00000000 1000fc00 00001000 ffffffe0
-$4 : 00000020 00000000 1000fc00 1000fc00
-$8 : 00000010 881095c0 00000001 00000001
-$12: 00000001 fffffffc 1000fc01 89e31864
-$16: 00000000 00001000 a9f5e000 89f5c800
-$20: 89f5fe70 bfbc0003 00000000 bfb90000
-$24: 00000001 2abe2f30
-$28: 89e88000 89e89b98 89f5fe70 880fa8c4
-epc	: 88020f80
-Status	: 1000fc02
-Cause   : 00000008
-install exited abnormally -- received signal 11
-sendig termination signals.. done
-sending kill signals.. done
-unmounting filesistems.. done
-/proc
-unmount failed /tmp
-you may safely reboot your system
---------
- 
-in Alt-f2, the message is the same, but preceded by:
-<1> Unable to handle the kernel paging request at virtual adress 00000000,
-epc==88020f80, ra== 880fa8c4
+Well, this is a round-about way of asking, should I try to get my
+originaly patch included again, or should I try to scrape together some
+time to work on the more complicated problem?  Hopefully I'll get a
+summer-job that lets me work on such things full time, instead of working
+on the sgi-linux stuff during my breaks...
 
-What can i do?
+Vince
 
-Thanks for help
-
-Gabriel Nava Vazquez
-Instituto Tecnologico de Morelia, Mexico
+____________
+\  /\  /\  /  Vince Weaver          
+ \/__\/__\/   weave@eng.umd.edu     http://www.glue.umd.edu/~weave

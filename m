@@ -1,42 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Aug 2003 18:05:48 +0100 (BST)
-Received: from p508B60FA.dip.t-dialin.net ([IPv6:::ffff:80.139.96.250]:2231
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225347AbTHBRFq>; Sat, 2 Aug 2003 18:05:46 +0100
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h72H5hpR005112;
-	Sat, 2 Aug 2003 19:05:43 +0200
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h72H5gLi005111;
-	Sat, 2 Aug 2003 19:05:42 +0200
-Date: Sat, 2 Aug 2003 19:05:42 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: linux-mips@linux-mips.org
-Subject: Re: [patch] More time fixes: do_gettimeofday() & do_settimeofday()
-Message-ID: <20030802170542.GB19401@linux-mips.org>
-References: <Pine.GSO.3.96.1030801134735.3800D-100000@delta.ds2.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.GSO.3.96.1030801134735.3800D-100000@delta.ds2.pg.gda.pl>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Aug 2003 21:42:04 +0100 (BST)
+Received: from sccrmhc12.comcast.net ([IPv6:::ffff:204.127.202.56]:63383 "EHLO
+	sccrmhc12.comcast.net") by linux-mips.org with ESMTP
+	id <S8225213AbTHBUl7>; Sat, 2 Aug 2003 21:41:59 +0100
+Received: from gentoo.org (pcp02545003pcs.waldrf01.md.comcast.net[68.48.92.102](untrusted sender))
+          by comcast.net (sccrmhc12) with SMTP
+          id <20030802204152012005ke30e>
+          (Authid: kumba12345);
+          Sat, 2 Aug 2003 20:41:52 +0000
+Message-ID: <3F2C2217.5010006@gentoo.org>
+Date: Sat, 02 Aug 2003 16:41:59 -0400
+From: Kumba <kumba@gentoo.org>
+Reply-To: kumba@gentoo.org
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.4) Gecko/20030624
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: linux-mips@linux-mips.org
+Subject: Re: udelay
+References: <Pine.GSO.4.21.0308021401150.543-100000@vervain.sonytel.be>
+In-Reply-To: <Pine.GSO.4.21.0308021401150.543-100000@vervain.sonytel.be>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2971
+X-archive-position: 2972
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Aug 01, 2003 at 02:04:29PM +0200, Maciej W. Rozycki wrote:
+Geert Uytterhoeven wrote:
 
->  Here are fixes for do_gettimeofday() and do_settimeofday() not taking the
-> wall time and the value of tick properly into account.  OK to apply? 
+> Any kernel messages (e.g. transmit timed out) from the tulip driver when it
+> dies?
 
-Yes, looks good.  One user less of USECS_PER_JIFFY ...
+None that I can see.  If I'm using SSH, input/output just stops cold. 
+In some cases, I have noticed that if you send a single character (like 
+you were in a text editor when input/output died), and you wait a minute 
+or so, it will appear.  This seems to mean the interface hasn't died 
+completely, but seems to havce slowed down to the point of complete 
+unsuability, like >1bps would be my guess.
 
-  Ralf
+Restarting the interface fixes it for several seconds until it drops 
+again.  I usually disconnect from the serial console before trying any 
+SSH activity, as serial console work + network activity can halt the 
+kernel (which I have confirmed does occur in 2.4.21 CVS).
+
+As an experiment, I did try replacing the udelay(1000) line in the 
+cobalt patch with mdelay(1) to see if this udelay() brokeness was the 
+issue, but it still drops out after several seconds.
+
+--Kumba
+
+-- 
+"Such is oft the course of deeds that move the wheels of the world: 
+small hands do them because they must, while the eyes of the great are 
+elsewhere."  --Elrond

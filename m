@@ -1,53 +1,115 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g48LWOwJ016635
-	for <linux-mips-outgoing@oss.sgi.com>; Wed, 8 May 2002 14:32:24 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g48LfkwJ016786
+	for <linux-mips-outgoing@oss.sgi.com>; Wed, 8 May 2002 14:41:46 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g48LWNB2016634
-	for linux-mips-outgoing; Wed, 8 May 2002 14:32:23 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g48Lfk5A016785
+	for linux-mips-outgoing; Wed, 8 May 2002 14:41:46 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from av.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g48LWJwJ016619
-	for <linux-mips@oss.sgi.com>; Wed, 8 May 2002 14:32:19 -0700
-Received: from mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id OAA19502;
-	Wed, 8 May 2002 14:33:59 -0700
-Message-ID: <3CD9996A.1030500@mvista.com>
-Date: Wed, 08 May 2002 14:32:26 -0700
-From: Jun Sun <jsun@mvista.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.2.1) Gecko/20010901
-X-Accept-Language: en-us
-MIME-Version: 1.0
-To: Rick Spanbauer <rick@sirius.cvnet.com>
-CC: linux-mips@oss.sgi.com
-Subject: Re: copy_mount_options
-References: <NFBBJEOAELIHHOOPHOOHOEOACGAA.rick@sirius.cvnet.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Received: from potter.sfbay.redhat.com (IDENT:root@potter.sfbay.redhat.com [205.180.83.107])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g48LfawJ016779
+	for <linux-mips@oss.sgi.com>; Wed, 8 May 2002 14:41:36 -0700
+Received: from localhost.localdomain (remus.sfbay.redhat.com [172.16.27.252])
+	by potter.sfbay.redhat.com (8.11.6/8.11.6) with ESMTP id g48Lfav19198;
+	Wed, 8 May 2002 14:41:37 -0700
+Subject: Re: [Fwd: Current state of MIPS16 support?]
+From: Eric Christopher <echristo@redhat.com>
+To: Dominic Sweetman <dom@algor.co.uk>
+Cc: Johannes Stezenbach <js@convergence.de>, gcc@gcc.gnu.org,
+   linux-mips@oss.sgi.com, sde@algor.co.uk
+In-Reply-To: <15566.28397.770794.272735@gladsmuir.algor.co.uk>
+References: <3CBFEAA9.9070707@algor.co.uk> 
+	<15566.28397.770794.272735@gladsmuir.algor.co.uk>
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
+X-Mailer: Ximian Evolution 1.0.4.99 
+Date: 08 May 2002 14:40:52 -0700
+Message-Id: <1020894054.2575.2.camel@ghostwheel.cygnus.com>
+Mime-Version: 1.0
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Rick Spanbauer wrote:
+Dominic, 
 
-> Howdy - I am having a bit of a problem with a kernel port I've been working
-> on recently.  Linux is up and running to the initial sh prompt, networking/ethernet
-> works, and so on.  When I try a mount(), I am getting a kernel page fault.  Between
-> a few hours worth of debugging and some Googling around, I believe I understand
-> what is happening, ie when copy_mount_option is copying in from user space, it
-> seems to be running off the end of the data segment (code was apparently written with
-> the assumption that this is legal).  I can think of several different solutions, but
-> the question is this - is there some common, accepted practice solution to
-> this particular problem?  From searching the discussion groups, this class of problem
-> seems to be a known issue, but the arguments pro/con about what to do about
-> it never seem to converge :)  So before tracking off into the wilderness
-> on my own, I thought I might ask!  Tnx Rick Spanbauer
+> > I have not looked at the Algorithmics code because I don't have
+> > copyright on it...
 > 
+> We do publish our sources on our web server.  Not only are they GPL
+> but we have a copyright assignment to the FSF in place (which I know
+> was sent to Jim Wilson of Cygnus, albeit in 1993...)
+> 
+It's great that your changes do get out in one form or another. I'm
+personally uncertain as to the nature of copyright and how it would
+affect if I looked at your code and put it into the mainline sources -
+so I haven't :) 
+
+> We're operating from a baseline which was a Cygnus/RedHat "2.96"
+> release made to MIPS Technologies in late 2000.  A snapshot from a
+> contract which had run into some kind of dissension, it had some new
+> MIPS16 support but it was very buggy (the regular 32-bit MIPS code
+> generator, too).  It has some nice features, though, like the "Haifa"
+> scheduler and the DFA extensions to machine descriptions for
+> superscalar CPUs.
+> 
+I don't remember any new mips16 support, however, I do remember that the
+work was quite old (more than 2 years now). MIPS32 support is quite a
+bit better now, and with the acceptance of Vlad's DFA scheduler into
+mainline the scheduling descriptions will be following shortly. 
+
+> It's true we have not contributed patches lately.  We don't really
+> have the resouces; our success rate used to be very low, and since
+> we're not working around the developing 3.x sources the prospects seem
+> even dimmer.
+> 
+The backend has changed a bit in the time, however, it hasn't changed so
+much that the patches would be that difficult for you to bring forward.
+I encourage you to reconsider contributing them. 
+
+> We're working (with funding from MIPS Technologies) on building a
+> toolchain which:
+> 
+> o Can build Linux kernel, libraries and applications alike;
+> 
+> o Is substantially more efficient than other GCC versions when
+>   producing MIPS application ("MIPS/ABI", PIC) code;
+> 
+> o Will produce ugly-but-correct PIC code for MIPS16 functions, so
+>   MIPS16 can be tested in a standard Linux environment;
+> 
+> o Operates to a known and documented ABI (even the forgotten details,
+>   like gprof...)
+> 
+> (The modesty of those ambitions should be measured against the reality
+> of today's Linux/MIPS...)
+I'm not certain what you are actually fixing here as I've not seen any
+descriptions of problems here. I'd love to fix any problems that you've
+had reported in the mainline sources so that everyone can get the
+benefit of the work you are doing. 
 
 
-Congradulations!  You must have checked out the kernel from OSS CVS tree 
-sometime in the past a couple of days.  There is a small time window when Ralf 
-checked in the "correct epc for delay slot" fix with a typo and later got 
-fixed again.  And coyp_mount_option() kernel fault was the symptom of the typo.
+> It would be even more valuable if we could ensure that MIPS becomes a
+> "first-class" architecture for the evolving GCC - but the latter
+> surely is a big commitment for the core GCC group.
+> 
+I'm putting in a lot of effort to cleaning up the MIPS port and am
+committed to the architecture. 
 
-Get the latest code and give it a try.
+> It's a pity that the different priorities of various funders and
+> developers mean that there is no baseline toolkit for Linux/MIPS, so
+> that such resources as are available are frequently used to re-invent
+> the wheel.
+> 
+> Anyone got any ideas how to make it better?
+> 
+The problem as I see it is that no one wants/cares to contribute their
+changes back that they make, or at least file bug reports against the
+problems that they have. Almost 90% of the bug reports I see are against
+IRIX. People have to "re-invent the wheel" because the changes never
+make it back into the official sources - everyone has their own one
+offs. If we fix this then the work that all of the disparate groups are
+doing will at least go toward a common goal. 
 
-Jun
+-eric 
+
+-- 
+A fire drill does not demand
+a fire.

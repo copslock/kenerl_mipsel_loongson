@@ -1,62 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2003 18:44:02 +0000 (GMT)
-Received: from stork.mail.pas.earthlink.net ([IPv6:::ffff:207.217.120.188]:18591
-	"EHLO stork.mail.pas.earthlink.net") by linux-mips.org with ESMTP
-	id <S8225455AbTKLSna>; Wed, 12 Nov 2003 18:43:30 +0000
-Received: from [207.215.131.7] (helo=jaco)
-	by stork.mail.pas.earthlink.net with asmtp (Exim 3.33 #1)
-	id 1AJzxf-0000Uz-00; Wed, 12 Nov 2003 10:43:28 -0800
-Subject: Patch for ALI15x3 - Linux-MIPS kernel 2.4.22-rc3
-From: Jack Miller <jvmiller@earthlink.net>
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: Linux-MIPS <linux-mips@linux-mips.org>
-Content-Type: multipart/mixed; boundary="=-XMwbFPDN0Ikw4P9BYAnN"
-X-Mailer: Ximian Evolution 1.0.8 (1.0.8-9.7x.1) 
-Date: 12 Nov 2003 10:43:03 -0800
-Message-Id: <1068662598.2185.2.camel@jaco>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2003 19:51:18 +0000 (GMT)
+Received: from noose.gt.owl.de ([IPv6:::ffff:62.52.19.4]:8715 "EHLO
+	noose.gt.owl.de") by linux-mips.org with ESMTP id <S8225458AbTKLTvH>;
+	Wed, 12 Nov 2003 19:51:07 +0000
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 9E5F425E42; Wed, 12 Nov 2003 20:51:05 +0100 (CET)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id B994F13806A; Wed, 12 Nov 2003 19:29:56 +0100 (CET)
+Date: Wed, 12 Nov 2003 19:29:56 +0100
+From: Florian Lohoff <flo@rfc822.org>
+To: linux-mips@linux-mips.org
+Subject: lasat mqpro reboots on "heavy" disk i/o
+Message-ID: <20031112182956.GA6456@paradigm.rfc822.org>
 Mime-Version: 1.0
-X-ELNK-Trace: 00c7b4e377e67b8a1aa676d7e74259b7b3291a7d08dfec79a2dd1171d5a8c90bc7f803517eebc3bf350badd9bab72f9c350badd9bab72f9c350badd9bab72f9c
-Return-Path: <jvmiller@earthlink.net>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="EeQfGwPcQSOJBaQU"
+Content-Disposition: inline
+Organization: rfc822 - pure communication
+User-Agent: Mutt/1.5.4i
+Return-Path: <flo@paradigm.rfc822.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3609
+X-archive-position: 3610
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jvmiller@earthlink.net
+X-original-sender: flo@rfc822.org
 Precedence: bulk
 X-list: linux-mips
 
 
---=-XMwbFPDN0Ikw4P9BYAnN
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-
-  Ralf,
-    Please apply this patch for the file drivers/ide/pci/alim15x3.c.  It
-fixes the LBA addressing mode for chip revisions <= 0xC4.  Thank-You.
-
-  Regards,
-    Jack
-
-
-
-
---=-XMwbFPDN0Ikw4P9BYAnN
-Content-Disposition: attachment; filename=patch
+--EeQfGwPcQSOJBaQU
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; name=patch; charset=ISO-8859-15
 
---- alim15x3.c.orig	2003-11-12 10:32:04.000000000 -0800
-+++ alim15x3.c	2003-11-12 08:18:08.000000000 -0800
-@@ -760,7 +760,7 @@
- 	hwif->speedproc =3D &ali15x3_tune_chipset;
-=20
- 	/* Don't use LBA48 on ALi devices before rev 0xC5 */
--	hwif->addressing =3D (m5229_revision <=3D 0xC4) ? 1 : 0;
-+	hwif->addressing =3D (m5229_revision <=3D 0xC4) ? 0 : 1;
-=20
- 	if (!hwif->dma_base) {
- 		hwif->drives[0].autotune =3D 1;
 
---=-XMwbFPDN0Ikw4P9BYAnN--
+Hi,
+i just updated one of the Lasat mqpro to the latest CVS version as it
+was reported that the current kernel (a bit older) reboots on diskio.
+
+I am now running todays CVS version (2.4.22) which still reboots under
+heavy disk i/o. I would guess that this is a hardware problem=20
+as the machine moved to a different location before the problem seemed
+to have appeared first.
+
+Does anyone have a clue ?
+
+Flo
+PS: heavy disk i/o caused by a scp of some kernel modules into the
+machine
+--=20
+Florian Lohoff                  flo@rfc822.org             +49-171-2280134
+                        Heisenberg may have been here.
+
+--EeQfGwPcQSOJBaQU
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.1 (GNU/Linux)
+
+iD8DBQE/snwkUaz2rXW+gJcRArQlAKChe5pVR0JyIu5w4TNyVhjdp6QslQCglSGi
+GDvn3gbkyNYnSt6oa0+GpHo=
+=1DB1
+-----END PGP SIGNATURE-----
+
+--EeQfGwPcQSOJBaQU--

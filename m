@@ -1,47 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Jan 2004 15:57:16 +0000 (GMT)
-Received: from x1000-57.tellink.net ([IPv6:::ffff:63.161.110.249]:48633 "EHLO
-	tibook.netx4.com") by linux-mips.org with ESMTP id <S8225475AbUA1P5P>;
-	Wed, 28 Jan 2004 15:57:15 +0000
-Received: from embeddededge.com (IDENT:dan@localhost.localdomain [127.0.0.1])
-	by tibook.netx4.com (8.11.1/8.11.1) with ESMTP id i0SFvsT00951;
-	Wed, 28 Jan 2004 10:57:54 -0500
-Message-ID: <4017DC01.50003@embeddededge.com>
-Date: Wed, 28 Jan 2004 10:57:53 -0500
-From: Dan Malek <dan@embeddededge.com>
-Organization: Embedded Edge, LLC.
-User-Agent: Mozilla/5.0 (X11; U; Linux ppc; en-US; rv:0.9.9) Gecko/20020411
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: Ralf Baechle <ralf@linux-mips.org>
-CC: Pete Popov <ppopov@mvista.com>, Sylvain Munaut <tnt@246tnt.com>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: Linux 2.6 on AMD Alchemy Au1500
-References: <4017927B.5080907@246tNt.com> <1075302354.16255.12.camel@localhost.localdomain> <4017D2D5.2050605@246tNt.com> <1075303379.16255.23.camel@localhost.localdomain> <20040128153627.GB14580@linux-mips.org>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <dan@embeddededge.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Jan 2004 16:01:53 +0000 (GMT)
+Received: from p508B7E65.dip.t-dialin.net ([IPv6:::ffff:80.139.126.101]:34653
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225383AbUA1QBw>; Wed, 28 Jan 2004 16:01:52 +0000
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i0SG1dex016043;
+	Wed, 28 Jan 2004 17:01:39 +0100
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i0SG1blY016042;
+	Wed, 28 Jan 2004 17:01:37 +0100
+Date: Wed, 28 Jan 2004 17:01:37 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Ladislav Michl <ladis@linux-mips.org>
+Cc: Jes Sorensen <jes@wildopensource.com>,
+	Kevin Paul Herbert <kph@cisco.com>, linux-mips@linux-mips.org
+Subject: Re: Removal of ____raw_readq() and ____raw_writeq() from asm-mips/io.h
+Message-ID: <20040128160137.GA15977@linux-mips.org>
+References: <1075255111.8744.4.camel@shakedown> <20040128094032.GB900@kopretinka> <yq07jzcz6sp.fsf@wildopensource.com> <20040128150828.A19525@linux-mips.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20040128150828.A19525@linux-mips.org>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4170
+X-archive-position: 4171
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@embeddededge.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
+On Wed, Jan 28, 2004 at 03:08:28PM +0000, Ladislav Michl wrote:
 
-> Because in the not too far future the Linux community will largely run
-> away from 2.4?  In fact the motivation of many developers to continue
-> with 2.4 is quite down already and Marcelo is going to put 2.4 into
-> deep freeze after 2.4.25.
+> eh? I said nothing about PCI device. These ____raw_writeq are
+> used in board specific code. Anyway, defining struct sb_registers
+> and ioremaping it would be nice solution (I didn't read code too
+> carefully, so maybye not in this particular case where registers
+> are 64bit width, but I definitely prefer it in board specific code
+> over read[bwl]/write[bwl]). Also readq/writeq seems mips specific,
+> so rants about portability doesn't apply.
 
-As someone that does _product_ development, 2.4 is going to be used
-for a long time.  It may not be interesting to people with the goal
-of software modification, but when you are deploying real devices to
-real customers, people finding bugs is the last thing you want to see.
+They're not MIPS specific; they're just not so common because some people
+still believe 64-bit is something esotheric they don't need ;-)
 
+Try grep -lw readq include/asm-*/io.h - 6 architectures implement it.
 
-	-- Dan
+  Ralf

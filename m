@@ -1,70 +1,60 @@
-Received:  by oss.sgi.com id <S305167AbQDDT11>;
-	Tue, 4 Apr 2000 12:27:27 -0700
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:47131 "EHLO
+Received:  by oss.sgi.com id <S305167AbQDDTms>;
+	Tue, 4 Apr 2000 12:42:48 -0700
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:20253 "EHLO
         pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S305166AbQDDT1J>; Tue, 4 Apr 2000 12:27:09 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id MAA09446; Tue, 4 Apr 2000 12:30:55 -0700 (PDT)
+	id <S305166AbQDDTm3>; Tue, 4 Apr 2000 12:42:29 -0700
+Received: from nodin.corp.sgi.com (fddi-nodin.corp.sgi.com [198.29.75.193]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id MAA01857; Tue, 4 Apr 2000 12:46:14 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id MAA08727; Tue, 4 Apr 2000 12:42:27 -0700 (PDT)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id MAA70991
+	id MAA98541
 	for linux-list;
-	Tue, 4 Apr 2000 12:15:09 -0700 (PDT)
+	Tue, 4 Apr 2000 12:32:45 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id MAA82674
+	via ESMTP id MAA34369
 	for <linux@cthulhu.engr.sgi.com>;
-	Tue, 4 Apr 2000 12:15:00 -0700 (PDT)
+	Tue, 4 Apr 2000 12:32:43 -0700 (PDT)
 	mail_from (flo@rfc822.org)
 Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id MAA04544
-	for <linux@cthulhu.engr.sgi.com>; Tue, 4 Apr 2000 12:14:40 -0700 (PDT)
+	via ESMTP id MAA00843
+	for <linux@cthulhu.engr.sgi.com>; Tue, 4 Apr 2000 12:32:41 -0700 (PDT)
 	mail_from (flo@rfc822.org)
 Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 91FED7F9; Tue,  4 Apr 2000 21:14:37 +0200 (CEST)
+	id 8344A7F9; Tue,  4 Apr 2000 21:32:41 +0200 (CEST)
 Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id A81258FC3; Tue,  4 Apr 2000 21:02:57 +0200 (CEST)
-Date:   Tue, 4 Apr 2000 21:02:57 +0200
+	id A4F598FC3; Tue,  4 Apr 2000 21:11:17 +0200 (CEST)
+Date:   Tue, 4 Apr 2000 21:11:17 +0200
 From:   Florian Lohoff <flo@rfc822.org>
 To:     Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
 Cc:     linux@cthulhu.engr.sgi.com
 Subject: Re: kernel hang indigo2 current cvs more specific
-Message-ID: <20000404210257.A1517@paradigm.rfc822.org>
-References: <20000404102252.B276@paradigm.rfc822.org> <Pine.GSO.4.10.10004041057310.24463-100000@dandelion.sonytel.be>
+Message-ID: <20000404211117.C1517@paradigm.rfc822.org>
+References: <20000404102252.B276@paradigm.rfc822.org> <Pine.GSO.4.10.10004041057310.24463-100000@dandelion.sonytel.be> <20000404210257.A1517@paradigm.rfc822.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 X-Mailer: Mutt 0.95.3i
-In-Reply-To: <Pine.GSO.4.10.10004041057310.24463-100000@dandelion.sonytel.be>; from Geert Uytterhoeven on Tue, Apr 04, 2000 at 10:59:43AM +0200
+In-Reply-To: <20000404210257.A1517@paradigm.rfc822.org>; from Florian Lohoff on Tue, Apr 04, 2000 at 09:02:57PM +0200
 Organization: rfc822 - pure communication
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On Tue, Apr 04, 2000 at 10:59:43AM +0200, Geert Uytterhoeven wrote:
+On Tue, Apr 04, 2000 at 09:02:57PM +0200, Florian Lohoff wrote:
+> in the arch/mips/sgi/kernel/ directory ? Could it be that this structure
+> is new and has never been implemented for the IP22 ?
 > 
-> Perhaps this helps: the bootmem stuff in arch/mips/ddb5074/prom.c works fine.
-> The DDB5074 has 64 MB of fixed non-upgradable memory at physical 0x00000000
-> virtual 0x80000000.
+> Yep - Thats it - In 2.3.21 this init_bootmem thing doesnt exists - And though
+> dec hasnt got it - In 2.3.99pre3 the dec has it - But not the sgi *grrrrr*
 
-Do you or anyone else have a clue why i cant find anything like this
-
-    bootmap_size = init_bootmem(start_pfn, mem_size >> PAGE_SHIFT);
-
-    /* Free the entire available memory after the _end symbol.  */
-    free_start += bootmap_size;
-    free_bootmem(free_start, free_end-free_start);
-
-in the arch/mips/sgi/kernel/ directory ? Could it be that this structure
-is new and has never been implemented for the IP22 ?
-
-Yep - Thats it - In 2.3.21 this init_bootmem thing doesnt exists - And though
-dec hasnt got it - In 2.3.99pre3 the dec has it - But not the sgi *grrrrr*
+Ops - Better look around before writing mails - arc ... 
 
 Flo
 -- 

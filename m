@@ -1,39 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Nov 2004 10:25:22 +0000 (GMT)
-Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:37903 "EHLO
-	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8225257AbUK3KZP>;
-	Tue, 30 Nov 2004 10:25:15 +0000
-Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
-	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
-	id 1CZ5JW-0004zT-00; Tue, 30 Nov 2004 10:32:54 +0000
-Received: from gladsmuir.algor.co.uk ([172.20.192.66] helo=gladsmuir)
-	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
-	id 1CZ5Bh-0002Da-00; Tue, 30 Nov 2004 10:24:49 +0000
-From: Dominic Sweetman <dom@mips.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-ID: <16812.19039.764510.640663@gargle.gargle.HOWL>
-Date: Tue, 30 Nov 2004 10:24:31 +0000
-To: "Gilad Rom" <gilad@romat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Nov 2004 16:27:18 +0000 (GMT)
+Received: from mail.romat.com ([IPv6:::ffff:212.143.245.3]:23059 "EHLO
+	mail.romat.com") by linux-mips.org with ESMTP id <S8225236AbUK3Q1M>;
+	Tue, 30 Nov 2004 16:27:12 +0000
+Received: from localhost (localhost.lan [127.0.0.1])
+	by mail.romat.com (Postfix) with ESMTP id 8EE4CEB2D3;
+	Tue, 30 Nov 2004 18:27:04 +0200 (IST)
+Received: from mail.romat.com ([127.0.0.1])
+ by localhost (mail.romat.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 03192-05; Tue, 30 Nov 2004 18:26:59 +0200 (IST)
+Received: from gilad (unknown [192.168.1.167])
+	by mail.romat.com (Postfix) with ESMTP id BA5FAEB2A9;
+	Tue, 30 Nov 2004 18:26:59 +0200 (IST)
+From: "Gilad Rom" <gilad@romat.com>
+To: "'Dominic Sweetman'" <dom@mips.com>
 Cc: <linux-mips@linux-mips.org>
-Subject: Re: CP0 EntryLo
-In-Reply-To: <20041130095640.499DFEB2EF@mail.romat.com>
-References: <20041130095640.499DFEB2EF@mail.romat.com>
-X-Mailer: VM 7.17 under 21.4 (patch 15) "Security Through Obscurity" XEmacs Lucid
-X-MTUK-Scanner: Found to be clean
-X-MTUK-SpamCheck: not spam, SpamAssassin (score=-4.827, required 4, AWL,
-	BAYES_00)
-Return-Path: <dom@mips.com>
+Subject: RE: CP0 EntryLo
+Date: Tue, 30 Nov 2004 18:26:59 +0200
+Organization: Romat Telecom
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Office Outlook, Build 11.0.6353
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
+Thread-Index: AcTW1kRF9gMSusawQCq9nUlJg3s8BQAIlxwg
+In-Reply-To: <16812.19039.764510.640663@gargle.gargle.HOWL>
+Message-Id: <20041130162659.BA5FAEB2A9@mail.romat.com>
+X-Virus-Scanned: by amavisd-new at romat.com
+Return-Path: <gilad@romat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6506
+X-archive-position: 6507
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dom@mips.com
+X-original-sender: gilad@romat.com
 Precedence: bulk
 X-list: linux-mips
+
+So, what I need to do, if I understand correctly, is to create a fixed
+mapping
+From a virtual address to a physical address on the tlb, and use this
+Virtual address to change the values of EntryLo to 0xD in order to 
+Access the device on the address range I mapped Chip-select 1 to?
+
+(Excuse my poor phrasing, I've been googling all day...)
+
+Any idea on how I might accomplish that from a driver?
+I've found a function called add_wired_entry(...), is this
+What I should be using?
+
+Thanks!
+Gilad.
+
+-----Original Message-----
+From: Dominic Sweetman [mailto:dom@mips.com] 
+Sent: Tuesday, November 30, 2004 12:25 PM
+To: Gilad Rom
+Cc: linux-mips@linux-mips.org
+Subject: Re: CP0 EntryLo
 
 
 Gilad Rom (gilad@romat.com) writes:

@@ -1,55 +1,54 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1RIvCG12560
-	for linux-mips-outgoing; Wed, 27 Feb 2002 10:57:12 -0800
+	by oss.sgi.com (8.11.2/8.11.3) id g1RJNZm13087
+	for linux-mips-outgoing; Wed, 27 Feb 2002 11:23:35 -0800
 Received: from mx2.mips.com (ftp.mips.com [206.31.31.227])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1RIv8912556
-	for <linux-mips@oss.sgi.com>; Wed, 27 Feb 2002 10:57:08 -0800
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1RJNT913082
+	for <linux-mips@oss.sgi.com>; Wed, 27 Feb 2002 11:23:30 -0800
 Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.9.3/8.9.0) with ESMTP id JAA13001
-	for <linux-mips@oss.sgi.com>; Wed, 27 Feb 2002 09:56:59 -0800 (PST)
+	by mx2.mips.com (8.9.3/8.9.0) with ESMTP id KAA13109;
+	Wed, 27 Feb 2002 10:23:19 -0800 (PST)
 Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id JAA15608
-	for <linux-mips@oss.sgi.com>; Wed, 27 Feb 2002 09:57:00 -0800 (PST)
-Received: from copsun18.mips.com (copsun18 [192.168.205.28])
-	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g1RHuSA09406
-	for <linux-mips@oss.sgi.com>; Wed, 27 Feb 2002 18:56:28 +0100 (MET)
-From: Hartvig Ekner <hartvige@mips.com>
-Received: (from hartvige@localhost)
-	by copsun18.mips.com (8.9.1/8.9.0) id SAA26112
-	for linux-mips@oss.sgi.com; Wed, 27 Feb 2002 18:56:58 +0100 (MET)
-Message-Id: <200202271756.SAA26112@copsun18.mips.com>
-Subject: Re: Setting up of GP in static, non-PIC version of glibc?
-To: linux-mips@oss.sgi.com
-Date: Wed, 27 Feb 2002 18:56:58 +0100 (MET)
-In-Reply-To: <20020226182231.A25493@dea.linux-mips.net> from "Ralf Baechle" at Feb 26, 2002 06:22:31 PM
-X-Mailer: ELM [version 2.5 PL1]
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id KAA16699;
+	Wed, 27 Feb 2002 10:23:09 -0800 (PST)
+Received: from mips.com ([172.18.27.100])
+	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g1RIMaA10945;
+	Wed, 27 Feb 2002 19:22:36 +0100 (MET)
+Message-ID: <3C7D2474.6A2F3CA2@mips.com>
+Date: Wed, 27 Feb 2002 19:24:52 +0100
+From: Carsten Langgaard <carstenl@mips.com>
+Organization: MIPS Technologies
+X-Mailer: Mozilla 4.76 [en] (Windows NT 5.0; U)
+X-Accept-Language: en
 MIME-Version: 1.0
+To: Andre.Messerschmidt@infineon.com
+CC: linux-mips@oss.sgi.com
+Subject: Re: Wait instruction on 5kc
+References: <86048F07C015D311864100902760F1DD01B5E73C@dlfw003a.dus.infineon.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi,
+Andre.Messerschmidt@infineon.com wrote:
 
-On Tue, Feb 26, 2002 at 09:55:30AM -0500, Jay Carlson wrote:
-> Right.  In my ideal world, here's how it would work:
-> 
-> cc1 defaults to -G0.  I think we have that now.
-> 
-> gas defaults to -G0.  Messing with SUBTARGET_ASM_SPEC has that effect 
-> for people who use the gcc driver, but anybody invoking gas directly 
-> will still hit this problem, but too bad.
-> 
-> So I think the primary constituency for gas defaulting to -G8 are 
-> existing cygnuhhhh I mean redhat embedded MIPS customers, outside of 
-> Linux; that's who we should check with before we change the default.
+> Hi.
+>
+> Is there a patch available for the wait instruction bug in the 5kc (RTL
+> Revision >= 2.1)?
 
-We cannot change the default for non-Linux MIPS users without causing
-massive problems. As far as I know, everybody uses -G8 as the default,
-which can include such things as libraries (which may be delivered as
-binary only).
+It's been fixed in RTL revision >=2.3.
 
-So this is probably one of these things where the Linux/MIPS world will
-do one thing, and the rest something else.
+>
+> As a hack I changed it to nop (in r4k_wait() ), but I believe there is a
+> clever solution for this.
 
-/Hartvig
+You can remove CPU_5KC from the case statement in check_wait in the file
+arch/mips/kernel/setup.c
+
+>
+> regards
+> --
+> Andre Messerschmidt
+>
+> Application Engineer
+> Infineon Technologies AG

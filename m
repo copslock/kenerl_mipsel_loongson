@@ -1,42 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 May 2003 01:31:29 +0100 (BST)
-Received: from pc2-cwma1-4-cust86.swan.cable.ntl.com ([IPv6:::ffff:213.105.254.86]:3788
-	"EHLO lxorguk.ukuu.org.uk") by linux-mips.org with ESMTP
-	id <S8225213AbTE0AbV>; Tue, 27 May 2003 01:31:21 +0100
-Received: from dhcp22.swansea.linux.org.uk (dhcp22.swansea.linux.org.uk [127.0.0.1])
-	by lxorguk.ukuu.org.uk (8.12.8/8.12.5) with ESMTP id h4QNXJRQ017282;
-	Tue, 27 May 2003 00:33:20 +0100
-Received: (from alan@localhost)
-	by dhcp22.swansea.linux.org.uk (8.12.8/8.12.8/Submit) id h4QNXCkT017280;
-	Tue, 27 May 2003 00:33:12 +0100
-X-Authentication-Warning: dhcp22.swansea.linux.org.uk: alan set sender to alan@lxorguk.ukuu.org.uk using -f
-Subject: Re: PCI Conf Space in application mode
-From: Alan Cox <alan@lxorguk.ukuu.org.uk>
-To: JinuM <jinum@esntechnologies.co.in>
-Cc: linux-mips@linux-mips.org
-In-Reply-To: <AF572D578398634881E52418B2892567122B4C@mail.esn.activedirectory>
-References: <AF572D578398634881E52418B2892567122B4C@mail.esn.activedirectory>
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-Organization: 
-Message-Id: <1053991990.17128.12.camel@dhcp22.swansea.linux.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 May 2003 05:09:54 +0100 (BST)
+Received: from p508B77C3.dip.t-dialin.net ([IPv6:::ffff:80.139.119.195]:22203
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225213AbTE0EJv>; Tue, 27 May 2003 05:09:51 +0100
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h4R49lbY013927;
+	Mon, 26 May 2003 21:09:47 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h4R49jcA013925;
+	Tue, 27 May 2003 06:09:45 +0200
+Date: Tue, 27 May 2003 06:09:45 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] Embedded ramdisks
+Message-ID: <20030527040945.GA13908@linux-mips.org>
+References: <Pine.GSO.4.21.0305231551110.26586-100000@vervain.sonytel.be>
 Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.2.2 (1.2.2-5) 
-Date: 27 May 2003 00:33:12 +0100
-Return-Path: <alan@lxorguk.ukuu.org.uk>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.GSO.4.21.0305231551110.26586-100000@vervain.sonytel.be>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2449
+X-archive-position: 2450
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alan@lxorguk.ukuu.org.uk
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-> On my x86 system i do that using iopl() call n then accessing PCI Conf space
-> through ADDRESS port(0xCF8) and DATA port(0xCFC). Here i have no problems
-> accessing the IO ports.
+On Fri, May 23, 2003 at 03:52:45PM +0200, Geert Uytterhoeven wrote:
 
-This is wrong. If the kernel does a PCI config access between your two
-accesses you will break the system. See pcilib as used by lspci
+> Fix the dependency for embedded ramdisks by using the contents of
+> CONFIG_EMBEDDED_RAMDISK_IMAGE (after stripping the leading and trailing double
+> quotes) instead of using the hardcoded filename `ramdisk.gz'.
+
+Thanks, applied.
+
+  Ralf

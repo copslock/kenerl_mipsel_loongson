@@ -1,40 +1,44 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBHEDdO12775
-	for linux-mips-outgoing; Mon, 17 Dec 2001 06:13:39 -0800
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBHEDXo12762
-	for <linux-mips@oss.sgi.com>; Mon, 17 Dec 2001 06:13:34 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA19984;
-	Mon, 17 Dec 2001 14:12:44 +0100 (MET)
-Date: Mon, 17 Dec 2001 14:12:44 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Keith Owens <kaos@melbourne.sgi.com>
-cc: Karsten Merker <karsten@excalibur.cologne.de>, linux-mips@oss.sgi.com
-Subject: Re: No bzImage target for MIPS 
-In-Reply-To: <20472.1008407699@ocs3.intra.ocs.com.au>
-Message-ID: <Pine.GSO.3.96.1011217140621.19523A-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.2/8.11.3) id fBHIAcB26762
+	for linux-mips-outgoing; Mon, 17 Dec 2001 10:10:38 -0800
+Received: from ocean.lucon.org (12-234-19-19.client.attbi.com [12.234.19.19])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBHIAZo26758
+	for <linux-mips@oss.sgi.com>; Mon, 17 Dec 2001 10:10:35 -0800
+Received: by ocean.lucon.org (Postfix, from userid 1000)
+	id 2C4B4125C0; Mon, 17 Dec 2001 09:10:32 -0800 (PST)
+Date: Mon, 17 Dec 2001 09:10:32 -0800
+From: "H . J . Lu" <hjl@lucon.org>
+To: Jakub Jelinek <jakub@redhat.com>
+Cc: Andreas Jaeger <aj@suse.de>,
+   GNU libc hacker <libc-hacker@sources.redhat.com>,
+   binutils@sourceware.cygnus.com, linux-mips@oss.sgi.com
+Subject: Prelink for mips (Re: MIPS broken in 2.3)
+Message-ID: <20011217091032.A29014@lucon.org>
+References: <u8ellzsg3q.fsf@gromit.moeb> <20011213093958.A6057@lucon.org> <hou1uqclnk.fsf@gee.suse.de> <20011217123631.G542@sunsite.ms.mff.cuni.cz>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20011217123631.G542@sunsite.ms.mff.cuni.cz>; from jakub@redhat.com on Mon, Dec 17, 2001 at 12:36:31PM +0100
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sat, 15 Dec 2001, Keith Owens wrote:
+On Mon, Dec 17, 2001 at 12:36:31PM +0100, Jakub Jelinek wrote:
 
-> AFAICT ecoff is only used on mips but, since ecoff is not an arch
-> specific object format, it makes sense to make it a generic kbuild
-> target, like elf, srec and bin.  To that end, I looked at moving
-> elf2ecoff and addinitrd to an arch independent directory so everybody
-> could use those tools, alas both contain mips specific code.  Any idea
-> how much work is required to make elf2ecoff and addinitrd into generic
-> utilities?  Is it worth the effort or should they stay as mips only?
+> instead (well, best would be if somebody ported prelink to mips;
+> I'll try to answer any questions and help).
 
- Elf2ecoff is probably going not to be used one day anymore, i.e. once
-binutils are fixed.  Right now there is a problem in marking ELF
-executables impure (non-paged).  Ultimately either objcopy or even ld
-directly is going to be used for ECOFF binary creation. 
+Do you have some documentations how prelink works?
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+> I skipped mips because it is way too different from how any other ELF
+> architecture works (e.g. using a single dynamic reloc type for everything
+> with various meanings, etc.) and I have no access to it.
+
+That is what I am afraid of. The MIPS ABI supports "quickstart". I
+don't know if we can add prelink to mips without breaking/changing
+the MIPS ABI. I don't want to spend my time on it if it can't be done
+at all.
+
+
+
+H.J.

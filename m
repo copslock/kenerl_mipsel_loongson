@@ -1,82 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Feb 2003 09:28:09 +0000 (GMT)
-Received: from mail2.sonytel.be ([IPv6:::ffff:195.0.45.172]:58580 "EHLO
-	mail.sonytel.be") by linux-mips.org with ESMTP id <S8224851AbTBZJ2I>;
-	Wed, 26 Feb 2003 09:28:08 +0000
-Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.26])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id KAA29667;
-	Wed, 26 Feb 2003 10:27:49 +0100 (MET)
-Date: Wed, 26 Feb 2003 10:27:55 +0100 (MET)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: Jiahan Chen <jiahanchen@yahoo.com>
-cc: Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: CVS Usage and Kernel Build
-In-Reply-To: <20030226030636.95154.qmail@web40804.mail.yahoo.com>
-Message-ID: <Pine.GSO.4.21.0302261027150.11509-100000@vervain.sonytel.be>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Feb 2003 11:50:44 +0000 (GMT)
+Received: from webmail15.rediffmail.com ([IPv6:::ffff:203.199.83.25]:35544
+	"HELO rediffmail.com") by linux-mips.org with SMTP
+	id <S8224851AbTBZLun>; Wed, 26 Feb 2003 11:50:43 +0000
+Received: (qmail 19906 invoked by uid 510); 26 Feb 2003 11:49:44 -0000
+Date: 26 Feb 2003 11:49:44 -0000
+Message-ID: <20030226114944.19905.qmail@webmail15.rediffmail.com>
+Received: from unknown (203.196.179.98) by rediffmail.com via HTTP; 26 feb 2003 11:49:44 -0000
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <Geert.Uytterhoeven@sonycom.com>
+From: "Yogish  Patil" <yogishpatila@rediffmail.com>
+Reply-To: "Yogish  Patil" <yogishpatila@rediffmail.com>
+To: linux-mips@linux-mips.org
+Subject: problematic big endian ramdisk...
+Content-type: text/plain;
+	format=flowed
+Content-Disposition: inline
+Return-Path: <yogishpatila@rediffmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1564
+X-archive-position: 1565
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: yogishpatila@rediffmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 25 Feb 2003, Jiahan Chen wrote:
-> > > Where and how can I get CVS source tree to build customized 
-> > > Linux kernel for Mips?
-> > 
-> > http://www.google.com/search?q=Linux+MIPS+CVS
-> > 
-> > Gr{oetje,eeting}s,
-> >
-> 
-> >From Mips web-site, I read:
->  
-> cvs -d :pserver:cvs@ftp.linux-mips.org:/home/cvs login
-> (Only needed the first time you use anonymous CVS, the password is "cvs")
-> cvs -d :pserver:cvs@ftp.linux-mips.org:/home/cvs co <repository>
-> 
-> I have a few questions:
-> 1. There should be a client "cvs" in my linux PC, then to use 
->    above command to get CVS source files INDIVIDUALLY?
+I am unable to make a working big endian ramdisk.
 
-cvs -d :pserver:cvs@ftp.linux-mips.org:/home/cvs co linux/path/to/file.
+I have tried big endian ramdisk from
+ftp://ftp.ltc.com/pub/linux/mips/ramdisk/ramdisk
+and sorry to say this is simply not big endian ramdisk.
+i find in mailing list other people also complaining about 
+this...
 
-> 2. After get everything from ftp site as above, do we use
->    the similar procedure to re-build linux kernel for MIPS, such as
->    make config; make dep; make vmlinux
+when trying to execve it gives me ENOEXEC error that is because
+first few bytes of elf header are swapped.
 
-Yes.
+specific problem is in identifying the e_type and e_machine 
+fields
+in elf header of executables.
+expected value of e_type is 0x2(ET_EXEC) amd e_machine is
+0x8(EM_MIPS)
+but those are read as 0x200 and 0x800 respectivly ..this is
+obviously the endianness problem.
 
-> 3. Does this source tree support R3000 (CPU) and USB?
+but if i try the big endian ramdisk from debian it just goes 
+fine.
+but this is precompiled busybox hence i can't add my stuff 
+there.
 
-Yes.
+can anybody point to a link for downloading a correct big endian
+ramdisk..
 
-> 4. In order to add a new USB device driver, do I need update
->    drivers/usb/Config.In and drivers/usb/Makefile manully?
-
-Yes.
-
-> Currently, I am in the initial phase for development, the Network
-> card is not available and Winmoden doesn't work with Linux,
-> so I have no ftp connection from my Linux box to get
-> CVS. In this case, is there any alternative to get CVS source
-> tree?
-
-Use CVS on another box.
-
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+with regards,
+--yogi

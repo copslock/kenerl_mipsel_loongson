@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 09 Mar 2003 13:46:45 +0000 (GMT)
-Received: from p508B4B98.dip.t-dialin.net ([IPv6:::ffff:80.139.75.152]:33756
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 09 Mar 2003 13:59:57 +0000 (GMT)
+Received: from p508B4B98.dip.t-dialin.net ([IPv6:::ffff:80.139.75.152]:49884
 	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225073AbTCINqo>; Sun, 9 Mar 2003 13:46:44 +0000
+	id <S8225213AbTCIN74>; Sun, 9 Mar 2003 13:59:56 +0000
 Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id h29DkQ627754;
-	Sun, 9 Mar 2003 14:46:26 +0100
-Date: Sun, 9 Mar 2003 14:46:26 +0100
+	by dea.linux-mips.net (8.11.6/8.11.6) id h29DxjH28095;
+	Sun, 9 Mar 2003 14:59:45 +0100
+Date: Sun, 9 Mar 2003 14:59:45 +0100
 From: Ralf Baechle <ralf@linux-mips.org>
-To: Tinga Shilo <tingashilo@yahoo.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: static variables access and gp
-Message-ID: <20030309144625.A27651@linux-mips.org>
-References: <20030306073017.65521.qmail@web41509.mail.yahoo.com>
+To: Daniel Jacobowitz <dan@debian.org>
+Cc: HG <henri@broadbandnetdevices.com>, linux-mips@linux-mips.org
+Subject: Re: mips-linux-ld related question
+Message-ID: <20030309145945.B27651@linux-mips.org>
+References: <000f01c2e4c6$65818600$0400a8c0@amdk62400> <20030307181720.GA5795@nevyn.them.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <20030306073017.65521.qmail@web41509.mail.yahoo.com>; from tingashilo@yahoo.com on Wed, Mar 05, 2003 at 11:30:17PM -0800
+In-Reply-To: <20030307181720.GA5795@nevyn.them.org>; from dan@debian.org on Fri, Mar 07, 2003 at 01:17:20PM -0500
 Return-Path: <ralf@linux-mips.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1671
+X-archive-position: 1672
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -29,28 +29,22 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Mar 05, 2003 at 11:30:17PM -0800, Tinga Shilo wrote:
+On Fri, Mar 07, 2003 at 01:17:20PM -0500, Daniel Jacobowitz wrote:
 
-> I am implementing a kernel mechanism which is 
-> very performance oriented. Along my long critical
-> path,
-> there is a static variable that needs to be accessed
-> quite a few times. This variable is a structure which
-> is approximately 60 bytes big.
-> In there any way I can "convince" my kernel (compiled
-> with gcc) to access this variable using gp ?
-> Is gp usually used for this purpose in mips-linux ?
-> Can it be ?
+> > I installed the binutils-mips-linux-2.13.1.i386.rpm and
+> > egcs-mips-linux-1.1.2-4.i386.rpm from the linux-mips ftp site on a caldera
+> > distribution 3.11 linux box to crosscompile a 2.4 kernel.
+> > no error message while compiling , i get the following error while linking :
+> >  mips-linux-ld: target elf32-bigmips not found
+> > 
+> > is there some env variable or path that I missed that needs to be set ????
 > 
-> A while ago I saw a small discussion here about usage
-> of gp for static variables, but it didn't provide
-> any definite answers.
+> Fix the kernel; if it references elf32-bigmips your source is too old. 
+> It should be tradbigmips with those tools.
 
-Use a pointer to the that structure.  Gcc will keep this pointer in a
-registers wherever it considers that sensible.  Any reference to members
-of the structure can then be made with just a single instruction.
-
-$28 is used for the current pointer so only suitable for per-process
-data.
+True - almost.  We still have two systems, the Baget and the EV64120
+explicitly referencing elf32-bigmips, so I guess he was using one of these
+two systems.  I just fixed that in CVS - IRIX ELF really should be dead
+since years.
 
   Ralf

@@ -1,63 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Aug 2003 11:04:27 +0100 (BST)
-Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:43529 "EHLO
-	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8225334AbTHDKEQ>;
-	Mon, 4 Aug 2003 11:04:16 +0100
-Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
-	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
-	id 19jcDK-0001ct-00; Mon, 04 Aug 2003 11:05:14 +0100
-Received: from gladsmuir.algor.co.uk ([172.20.192.66] helo=gladsmuir.mips.com)
-	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
-	id 19jayF-0003wJ-00; Mon, 04 Aug 2003 09:45:35 +0100
-From: Dominic Sweetman <dom@mips.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-ID: <16174.7469.845997.741559@gladsmuir.mips.com>
-Date: Mon, 4 Aug 2003 09:45:33 +0100
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: Dominic Sweetman <dom@mips.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Aug 2003 12:52:16 +0100 (BST)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:13565 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225213AbTHDLwM>; Mon, 4 Aug 2003 12:52:12 +0100
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id NAA17309;
+	Mon, 4 Aug 2003 13:51:58 +0200 (MET DST)
+X-Authentication-Warning: delta.ds2.pg.gda.pl: macro owned process doing -bs
+Date: Mon, 4 Aug 2003 13:51:57 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Dominic Sweetman <dom@mips.com>
+cc: Ralf Baechle <ralf@linux-mips.org>,
 	Adam Kiepul <Adam_Kiepul@pmc-sierra.com>,
 	Fuxin Zhang <fxzhang@ict.ac.cn>, linux-mips@linux-mips.org
 Subject: Re: RM7k cache_flush_sigtramp
-In-Reply-To: <20030801092649.GA17624@linux-mips.org>
-References: <9DFF23E1E33391449FDC324526D1F259017DF087@SJC1EXM02>
-	<16170.7179.635988.268987@doms-laptop.algor.co.uk>
-	<20030801092649.GA17624@linux-mips.org>
-X-Mailer: VM 6.92 under 21.1 (patch 14) "Cuyahoga Valley" XEmacs Lucid
-X-MTUK-Scanner: Found to be clean
-X-MTUK-SpamCheck: not spam, SpamAssassin (score=-0.8, required 4, AWL,
-	QUOTED_EMAIL_TEXT, REFERENCES)
-Return-Path: <dom@mips.com>
+In-Reply-To: <16174.7469.845997.741559@gladsmuir.mips.com>
+Message-ID: <Pine.GSO.3.96.1030804134034.17066B-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2975
+X-archive-position: 2976
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dom@mips.com
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
+Dominic,
 
-Ralf,
+> I think it would be better to provide cache manipulation calls defined
+> top-down (by their purpose); but so long as we are stuck with calls
+> which are defined as performing particular low-level actions, it's
+> surely dangerous to guess that we know what they are used for so we
+> can trim the functions accordingly...
 
-> Linux supports the traditional MIPS UNIX cacheflush(2) syscall through
-> a libc interface.  Since I've not seen any other use for the call than
-> I/D-cache synchronization.  I'd just make cacheflush(3) use SYNCI where
-> available...
+ The API is not cast in stone -- if there's a justifiable benefit,
+appropriate fuctions can be added; either completely new ones (possibly
+inlined) or as an extension to cacheflush() (which still has 30 bits
+freely available). 
 
-SYNCI just does what's required to execute code you just wrote: that's
-a D-cache writeback and an I-cache invalidate.  It doesn't invalidate
-the D-cache afterwards, which is required by the definition of
-cacheflush(3).
+  Maciej
 
-I think it would be better to provide cache manipulation calls defined
-top-down (by their purpose); but so long as we are stuck with calls
-which are defined as performing particular low-level actions, it's
-surely dangerous to guess that we know what they are used for so we
-can trim the functions accordingly...
-
---
-Dominic Sweetman
-MIPS Technologies
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

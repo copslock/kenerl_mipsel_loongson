@@ -1,58 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Dec 2002 23:41:47 +0000 (GMT)
-Received: from p508B7C81.dip.t-dialin.net ([80.139.124.129]:2216 "EHLO
-	p508B7C81.dip.t-dialin.net") by linux-mips.org with ESMTP
-	id <S8225241AbSLKXlr>; Wed, 11 Dec 2002 23:41:47 +0000
-Received: from mallaury.noc.nerim.net ([IPv6:::ffff:62.4.17.82]:12305 "EHLO
-	mallaury.noc.nerim.net") by ralf.linux-mips.org with ESMTP
-	id <S868621AbSLKXlq>; Thu, 12 Dec 2002 00:41:46 +0100
-Received: from melkor (vivienc.net1.nerim.net [213.41.134.233])
-	by mallaury.noc.nerim.net (Postfix) with ESMTP
-	id 5DA7062F00; Thu, 12 Dec 2002 00:41:42 +0100 (CET)
-Received: from glaurung (helo=localhost)
-	by melkor with local-esmtp (Exim 3.36 #1 (Debian))
-	id 18MGU8-00029Z-00; Thu, 12 Dec 2002 00:41:48 +0100
-Date: Thu, 12 Dec 2002 00:41:48 +0100 (CET)
-From: Vivien Chappelier <vivienc@nerim.net>
-X-Sender: glaurung@melkor
-To: Alan Cox <alan@lxorguk.ukuu.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Dec 2002 00:53:42 +0000 (GMT)
+Received: from pc2-cwma1-4-cust129.swan.cable.ntl.com ([213.105.254.129]:44996
+	"EHLO irongate.swansea.linux.org.uk") by linux-mips.org with ESMTP
+	id <S8225241AbSLLAxl>; Thu, 12 Dec 2002 00:53:41 +0000
+Received: from irongate.swansea.linux.org.uk (localhost [127.0.0.1])
+	by irongate.swansea.linux.org.uk (8.12.5/8.12.5) with ESMTP id gBC1VJlQ019716;
+	Thu, 12 Dec 2002 01:31:20 GMT
+Received: (from alan@localhost)
+	by irongate.swansea.linux.org.uk (8.12.5/8.12.5/Submit) id gBC1VHUr019714;
+	Thu, 12 Dec 2002 01:31:17 GMT
+X-Authentication-Warning: irongate.swansea.linux.org.uk: alan set sender to alan@lxorguk.ukuu.org.uk using -f
+Subject: Re: [PATCH 2.5] SGI O2 framebuffer driver
+From: Alan Cox <alan@lxorguk.ukuu.org.uk>
+To: Vivien Chappelier <vivienc@nerim.net>
 Cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
 	Ilya Volynets <ilya@theIlya.com>
-Subject: Re: [PATCH 2.5] SGI O2 framebuffer driver
-In-Reply-To: <1039648548.18587.52.camel@irongate.swansea.linux.org.uk>
-Message-ID: <Pine.LNX.4.21.0212120004330.2300-100000@melkor>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <vivienc@nerim.net>
+In-Reply-To: <Pine.LNX.4.21.0212120004330.2300-100000@melkor>
+References: <Pine.LNX.4.21.0212120004330.2300-100000@melkor>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Mailer: Ximian Evolution 1.0.8 (1.0.8-10) 
+Date: 12 Dec 2002 01:31:16 +0000
+Message-Id: <1039656676.18587.63.camel@irongate.swansea.linux.org.uk>
+Mime-Version: 1.0
+Return-Path: <alan@lxorguk.ukuu.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 874
+X-archive-position: 875
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vivienc@nerim.net
+X-original-sender: alan@lxorguk.ukuu.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-On 11 Dec 2002, Alan Cox wrote:
+On Wed, 2002-12-11 at 23:41, Vivien Chappelier wrote:
+> linear framebuffer (up to 8MB with 64kB granularity). I'm then remapping
+> all those pages to one virtual region obtained from get_vm_area so that
+> 1. caching attributes can be set to cacheable write-through no WA
 
-> Since vmalloc is physically non linear is there any reason you can't
-> just use get_free_page() a lot ?
-
-I'm not using vmalloc directly. I'm indeed using many get_free_pages of 64kB,
-as the O2 FB device has a TLB of it's own and can handle a non physically
-linear framebuffer (up to 8MB with 64kB granularity). I'm then remapping
-all those pages to one virtual region obtained from get_vm_area so that
-1. caching attributes can be set to cacheable write-through no WA
-2. the fbcon-cfb* code can be used as it sees the framebuffer as linear.
-3. 64kB chuncks can be dynamically allocated and freed depending on the
-framebuffer resolution, keeping memory optimally shared between apps and
-framebuffer (compared to the static bootmem allocation).
-
-However, as it is implemented currently, there are only 1024 kernel
-virtual->physical mappings available (include/asm-mips64/pgtable.h),
-that is only 4MB can be mapped. Maybe something like fixmap would help
-but it's not yet there for mips64.
-
-regards,
-Vivien.
+Ick. The framebuffer can't handle cached and write barriers ?

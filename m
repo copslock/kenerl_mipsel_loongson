@@ -1,48 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Mar 2003 22:48:19 +0000 (GMT)
-Received: from mout1.freenet.de ([IPv6:::ffff:194.97.50.132]:35259 "EHLO
-	mout1.freenet.de") by linux-mips.org with ESMTP id <S8225203AbTCRWsS>;
-	Tue, 18 Mar 2003 22:48:18 +0000
-Received: from [194.97.55.148] (helo=mx5.freenet.de)
-	by mout1.freenet.de with asmtp (Exim 4.14)
-	id 18vPsV-0004F3-HV; Tue, 18 Mar 2003 23:48:15 +0100
-Received: from p508f5fbc.dip.t-dialin.net ([80.143.95.188] helo=server.private.priv)
-	by mx5.freenet.de with asmtp (ID aspam@freenet.de) (Exim 4.14 #1)
-	id 18vPsV-0000Er-9a; Tue, 18 Mar 2003 23:48:15 +0100
-Received: from physik.private.priv (physik.private.priv [192.168.1.10])
-	by server.private.priv (8.12.6/8.12.6) with SMTP id h2IMmCtc000979;
-	Tue, 18 Mar 2003 23:48:13 +0100 (CET)
-Date: Tue, 18 Mar 2003 23:48:44 +0100
-From: Achim Hensel <achim.hensel@ruhr-uni-bochum.de>
-To: port-sgimips@netbsd.org, Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Running on R4k/R3k Indigo
-Message-Id: <20030318234844.2e465609.achim.hensel@ruhr-uni-bochum.de>
-X-Mailer: Sylpheed version 0.8.10 (GTK+ 1.2.10; i386-portbld-freebsd4.7)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Mar 2003 23:27:14 +0000 (GMT)
+Received: from honk1.physik.uni-konstanz.de ([IPv6:::ffff:134.34.140.224]:19668
+	"EHLO honk1.physik.uni-konstanz.de") by linux-mips.org with ESMTP
+	id <S8225203AbTCRX1N>; Tue, 18 Mar 2003 23:27:13 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP
+	id CBDB62BC30; Wed, 19 Mar 2003 00:27:08 +0100 (CET)
+Received: from honk1.physik.uni-konstanz.de ([127.0.0.1])
+ by localhost (honk [127.0.0.1:10024]) (amavisd-new) with ESMTP id 25323-05;
+ Wed, 19 Mar 2003 00:27:08 +0100 (CET)
+Received: from bogon.sigxcpu.org (kons-d9bb543c.pool.mediaWays.net [217.187.84.60])
+	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP
+	id CD8B22BC2F; Wed, 19 Mar 2003 00:27:07 +0100 (CET)
+Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
+	id 732071735C; Wed, 19 Mar 2003 00:24:54 +0100 (CET)
+Date: Wed, 19 Mar 2003 00:24:54 +0100
+From: Guido Guenther <agx@sigxcpu.org>
+To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Cc: linux-mips@linux-mips.org
+Subject: Re: -mcpu vs. binutils 2.13.90.0.18
+Message-ID: <20030318232454.GA19990@bogon.ms20.nix>
+Mail-Followup-To: Guido Guenther <agx@sigxcpu.org>,
+	Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>,
+	linux-mips@linux-mips.org
+References: <20030318154155.GF2613@bogon.ms20.nix> <20030318160303.GN13122@rembrandt.csv.ica.uni-stuttgart.de> <20030318174241.GG2613@bogon.ms20.nix> <20030318190841.GO13122@rembrandt.csv.ica.uni-stuttgart.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <achim.hensel@ruhr-uni-bochum.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20030318190841.GO13122@rembrandt.csv.ica.uni-stuttgart.de>
+User-Agent: Mutt/1.4i
+Return-Path: <agx@sigxcpu.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1768
+X-archive-position: 1769
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: achim.hensel@ruhr-uni-bochum.de
+X-original-sender: agx@sigxcpu.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello, folks (of both lists)
+Hi Thiemo,
+thanks a lot for the explanations!
 
-I recently got both an R4k and an R3k SGI Indigo. 
+On Tue, Mar 18, 2003 at 08:08:41PM +0100, Thiemo Seufer wrote:
+> This would be nice, but older compilers don't have -march/-mtune.
+> IIRC gcc 3.0.X is the first one to employ these. Similiar for -mabi.
+I don't care about old compilers at the moment ;)
 
-I know, none of them is supported at the moment.
-So, I want to try to change that.
-
-I hadn't started yet, but every help is appreciated.
-
-CU,
-	Achim
-
-P.S.: This was posted to both lists, as I don't know, which OS 
-has the better starting point for my computers.
+[..snip..] 
+> -mabi=FOO: 
+> Produce, hosted on a multi ABI system, a userland binary with the lowest
+> possible ISA for the selected ABI.
+> 
+> Then there are optimizations for different CPUs.
+> 
+> -march=BAR:
+> Allow opcodes for CPU BAR in addition to the ISA ones.
+> 
+> -mtune=BAZ:
+> Optimize opcode scheduling for CPU BAZ.
+So to build kernels for say IP22 R5k I'd change the current
+	GCCFLAGS += -mcpu=r5000 -mips2 -Wa,--trap
+to 
+	GCCFLAGS += -mabi=o32 -march=R5000 -mtune=R5000 -Wa,--trap
+where as for R4X00 I use
+	GCCFLAGS += -mabi=o32 -march=R4600 -mtune=R4600 -Wa,--trap
+Correct?
+ -- Guido

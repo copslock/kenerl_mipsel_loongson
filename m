@@ -1,38 +1,57 @@
-Received:  by oss.sgi.com id <S553972AbRA2V6k>;
-	Mon, 29 Jan 2001 13:58:40 -0800
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:11829 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S553955AbRA2V6R>; Mon, 29 Jan 2001 13:58:17 -0800
-Received: from dhcp-163-154-5-240.engr.sgi.com (dhcp-163-154-5-240.engr.sgi.com [163.154.5.240]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id OAA00537
-	for <linux-mips@oss.sgi.com>; Mon, 29 Jan 2001 14:07:17 -0800 (PST)
-	mail_from (ralf@oss.sgi.com)
-Received: (ralf@lappi.waldorf-gmbh.de) by bacchus.dhis.org
-	id <S869667AbRA2VyC>; Mon, 29 Jan 2001 13:54:02 -0800
-Date: 	Mon, 29 Jan 2001 13:54:02 -0800
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
-Cc:     "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-        Florian Lohoff <flo@rfc822.org>,
-        Pete Popov <ppopov@mvista.com>, linux-mips@oss.sgi.com
-Subject: Re: Cross compiling RPMs
-Message-ID: <20010129135402.B874@bacchus.dhis.org>
-References: <20010128160242.D4287@bacchus.dhis.org> <Pine.GSO.4.10.10101290943380.17039-100000@escobaria.sonytel.be>
+Received:  by oss.sgi.com id <S553862AbRA2Xwb>;
+	Mon, 29 Jan 2001 15:52:31 -0800
+Received: from noose.gt.owl.de ([62.52.19.4]:64010 "HELO noose.gt.owl.de")
+	by oss.sgi.com with SMTP id <S553857AbRA2XwY>;
+	Mon, 29 Jan 2001 15:52:24 -0800
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id C05937DD; Tue, 30 Jan 2001 00:52:22 +0100 (CET)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 55698EE9C; Tue, 30 Jan 2001 00:52:50 +0100 (CET)
+Date:   Tue, 30 Jan 2001 00:52:50 +0100
+From:   Florian Lohoff <flo@rfc822.org>
+To:     linux-mips@oss.sgi.com
+Subject: [PATCH] clean error in arch/mips/pmc/cp7000/irq.c:request_irq
+Message-ID: <20010130005250.A11722@paradigm.rfc822.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.GSO.4.10.10101290943380.17039-100000@escobaria.sonytel.be>; from Geert.Uytterhoeven@sonycom.com on Mon, Jan 29, 2001 at 09:44:08AM +0100
-X-Accept-Language: de,en,fr
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Mon, Jan 29, 2001 at 09:44:08AM +0100, Geert Uytterhoeven wrote:
 
-> What kind of Amiga was it? If it was an A3000, you may get a PSU from Jes,
-> since he's in 110V country now.
+Hi,
+i think this is more correct - On failing of shared irqs one should
+at least reenable interrupts and free the allocated buffer.
 
-A2000C.
+Apply before anyone copys this into his/her code ...
 
-  Ralf
+
+Index: arch/mips/pmc/cp7000/irq.c
+===================================================================
+RCS file: /cvs/linux/arch/mips/pmc/cp7000/irq.c,v
+retrieving revision 1.1
+diff -u -r1.1 irq.c
+--- arch/mips/pmc/cp7000/irq.c	2000/12/13 21:07:34	1.1
++++ arch/mips/pmc/cp7000/irq.c	2001/01/29 23:50:34
+@@ -327,8 +327,11 @@
+ 
+ 	if ((old = *p) != NULL) {
+ 		/* Can't share interrupts unless both agree to */
+-		if (!(old->flags & action->flags & SA_SHIRQ))
++		if (!(old->flags & action->flags & SA_SHIRQ)) {
++			restore_flags(flags);
++			kfree(action);
+ 			return -EBUSY;
++		}
+ 		/* add new interrupt at end of irq queue */
+ 		do {
+ 			p = &old->next;
+
+
+-- 
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+     Why is it called "common sense" when nobody seems to have any?

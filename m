@@ -1,126 +1,404 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6T7lbRw028971
-	for <linux-mips-outgoing@oss.sgi.com>; Mon, 29 Jul 2002 00:47:37 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6TDP6Rw001530
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 29 Jul 2002 06:25:06 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6T7lbst028970
-	for linux-mips-outgoing; Mon, 29 Jul 2002 00:47:37 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6TDP6uK001529
+	for linux-mips-outgoing; Mon, 29 Jul 2002 06:25:06 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from mx2.mips.com (mx2.mips.com [206.31.31.227])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6T7lNRw028960
-	for <linux-mips@oss.sgi.com>; Mon, 29 Jul 2002 00:47:23 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id g6T7lqXb012191;
-	Mon, 29 Jul 2002 00:47:52 -0700 (PDT)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id AAA15011;
-	Mon, 29 Jul 2002 00:47:51 -0700 (PDT)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g6T7lob20482;
-	Mon, 29 Jul 2002 09:47:51 +0200 (MEST)
-Message-ID: <3D44F31D.55155E24@mips.com>
-Date: Mon, 29 Jul 2002 09:47:49 +0200
-From: Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.77 [en] (X11; U; SunOS 5.8 sun4u)
-X-Accept-Language: en
+Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6TDOHRw001517
+	for <linux-mips@oss.sgi.com>; Mon, 29 Jul 2002 06:24:18 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA25263;
+	Mon, 29 Jul 2002 15:25:54 +0200 (MET DST)
+Date: Mon, 29 Jul 2002 15:25:53 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Johannes Stezenbach <js@convergence.de>,
+   Ralf Baechle <ralf@uni-koblenz.de>, linux-mips@fnet.fr,
+   linux-mips@oss.sgi.com
+Subject: [patch] Oops and magic SysRq stack dump clean-ups
+In-Reply-To: <Pine.GSO.3.96.1020725114648.27463B-100000@delta.ds2.pg.gda.pl>
+Message-ID: <Pine.GSO.3.96.1020729150226.22288D-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-To: cgd@broadcom.com
-CC: hjl@lucon.org, "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-   linux-mips@fnet.fr, linux-mips@oss.sgi.com, binutils@sources.redhat.com
-Subject: Re: PATCH: Update E_MIP_ARCH_XXX (Re: [patch] linux: 
- RFC:elf_check_arch() rework)
-References: <Pine.GSO.3.96.1020725125830.27463H-100000@delta.ds2.pg.gda.pl>
-	 <3D3FFD21.8DA26337@mips.com> <20020725082610.A21614@lucon.org>
-	 <mailpost.1027610779.9546@news-sj1-1> <yov54remph1v.fsf@broadcom.com>
-Content-Type: text/plain; charset=iso-8859-15
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, hits=0.1 required=5.0 tests=PORN_10 version=2.20
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-First of all I will like to thank you for all the replies, we really appreciate
-it, because it helps us in our process of making a proper ABI spec.
-I known it's a relative late state we are trying to provide the community with an
-ABI document, but I guess it's better to be late than to never show up.
-I believe we all could benefit from such a document, it's only in a internal draft
-version right now, but it might be a good idea to send it out to the community for
-comments, before the finally version.
-But we are still in an early state and on the learning curve.
+Hello,
 
-Regarding the ELF header arch values, we did try to select whose in order not to
-break things for anyone.
-I'm also a little surprised to see these value out in binutils, it really surprise
-me, if we got a linux toolchain that can generate mips32/mips64 code.
+ I've reviewed the stack dumping code more thoroughly and here is the
+result.  Please check if it's OK for you.  Tested visually with oopses and
+<SysRq>+<t> on MIPS/Linux and MIPS64/Linux.  The idea is to fit as much
+data as possible in as little space as possible and at the same time lay
+the numbers out visually nicely so that manual copying of output from a
+terminal for ksymoops analysis is easier for a reader.  Tools ignore
+spacing when processing such output anyway.
 
-MIPS32R2 and MIPS64R2 is a new enhanced version of MIPS32 and MIPS64 architecture,
-which among other things include some new instructions.
+ Based somewhat on the i386 port.  Addresses cast to signed longs, since
+they are such on MIPS (additionally, the code doesn't care anyway but the
+resulting source is smaller).  Any objections? 
 
-Regarding Algorithmics, I don't know if everybody are aware of it, but we have
-just acquired Algorithmics.
-That among other things, is done in order to play a stronger part in the
-development of the toolchain. And their work will be pushed back to the community.
+  Maciej
 
-Algorithmics have done a MIPS32 compiler for us, which is very close to be
-released.
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
 
-I hope this clarify a little bit, what our motivation are.
-/Carsten
-
-
-cgd@broadcom.com wrote:
-
-> At Thu, 25 Jul 2002 15:26:19 +0000 (UTC), "H. J. Lu" wrote:
-> > I'd like to fix binutils ASAP. Here is a patch.
->
-> OK, so, I've seen no response so far that indicates that binutils
-> should actually be changed.
->
-> to recap:
->
-> * Binutils has deployed these values in several releases now, and I
->   know for a fact that people are using binaries with these values.
->
-> * SGI has followed binutils' lead in selecting values.
->
-> * Algorithmics did something else, though it's not clear what the
->   difference between "ARCH_ALGOR_32" and "ARCH_32" really is.
->
-> It seems obvious that the simplest solution that causes the least pain
-> all around is to go with the numbering binutils currently uses.  This
-> will probably cause a little bit of pain for Algorithmics, but, well,
-> they could have sent something to binutils to indicate use of that
-> number, and i'm quite sure that most of the rest of us have had to put
-> temporary backward-compat hacks in our own codebases for incompatible
-> changes made by others in the past.  It's not that hard and doesn't
-> cause long-term pain.
->
-> I could understand that MIPS or Algorithmics might like that, but I
-> think there're a bunch of morals to this story: if you want to lead on
-> ABI issues, get out in front of them (you can't lead from the back
-> 8-); interact with the tool development and use communities about such
-> issues _before_ solutions are needed and agreed upon in those
-> communities; and, you're hacking open source code like binutils,
-> contribute your changes back as soon as you possibly can.
->
-> I'd also like to point out that saying "mips will be defining this
-> ABI, so you should all change your code to work with it" without,
-> AFAIK, even providing a draft of said ABI... is unlikely to produce
-> positive results even _if_ there's no precedent that would go against
-> the requested change.  (if somebody has a ptr, i'd be glad to be
-> corrected 8-)
->
-> (I wonder what other incompatibilities may exist between this new ABI
-> and the current binutils MIPS ELF headers...)
->
-> cgd
-> --
-> Chris Demetriou                                            Broadcom Corporation
-> Senior Staff Design Engineer                  Broadband Processor Business Unit
->   Any opinions expressed in this message are mine, not necessarily Broadcom's.
-
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+patch-mips-2.4.19-rc1-20020719-mips-show_trace-8
+diff -up --recursive --new-file linux-mips-2.4.19-rc1-20020719.macro/arch/mips/kernel/traps.c linux-mips-2.4.19-rc1-20020719/arch/mips/kernel/traps.c
+--- linux-mips-2.4.19-rc1-20020719.macro/arch/mips/kernel/traps.c	2002-07-08 16:46:04.000000000 +0000
++++ linux-mips-2.4.19-rc1-20020719/arch/mips/kernel/traps.c	2002-07-27 11:48:19.000000000 +0000
+@@ -181,61 +181,95 @@ static inline void simulate_sc(struct pt
+ }
+ 
+ /*
++ * If the address is either in the .text section of the
++ * kernel, or in the vmalloc'ed module regions, it *may*
++ * be the address of a calling routine
++ */
++
++#ifdef CONFIG_MODULES
++
++extern struct module *module_list;
++extern struct module kernel_module;
++
++static inline int kernel_text_address(long addr)
++{
++	extern char _stext, _etext;
++	int retval = 0;
++	struct module *mod;
++
++	if (addr >= (long) &_stext && addr <= (long) &_etext)
++		return 1;
++
++	for (mod = module_list; mod != &kernel_module; mod = mod->next) {
++		/* mod_bound tests for addr being inside the vmalloc'ed
++		 * module area. Of course it'd be better to test only
++		 * for the .text subset... */
++		if (mod_bound(addr, 0, mod)) {
++			retval = 1;
++			break;
++		}
++	}
++
++	return retval;
++}
++
++#else
++
++static inline int kernel_text_address(long addr)
++{
++	extern char _stext, _etext;
++
++	return (addr >= (long) &_stext && addr <= (long) &_etext);
++}
++
++#endif
++
++/*
+  * This routine abuses get_user()/put_user() to reference pointers
+  * with at least a bit of error checking ...
+  */
+-void show_stack(unsigned int *sp)
++void show_stack(long *sp)
+ {
+ 	int i;
+-	unsigned int *stack;
+-
+-	stack = sp ? sp : (unsigned int *)&sp;
+-	i = 0;
++	long stackdata;
+ 
+-	printk("Stack:");
+-	while ((unsigned long) stack & (PAGE_SIZE - 1)) {
+-		unsigned long stackdata;
++	sp = sp ? sp : (long *)&sp;
+ 
+-		if (__get_user(stackdata, stack++)) {
+-			printk(" (Bad stack address)");
++	printk("Stack:   ");
++	i = 1;
++	while ((long) sp & (PAGE_SIZE - 1)) {
++		if (i && ((i % 8) == 0))
++			printk("\n");
++		if (i > 40) {
++			printk(" ...");
+ 			break;
+ 		}
+ 
+-		printk(" %08lx", stackdata);
+-
+-		if (++i > 40) {
+-			printk(" ...");
++		if (__get_user(stackdata, sp++)) {
++			printk(" (Bad stack address)");
+ 			break;
+ 		}
+ 
+-		if (i % 8 == 0)
+-			printk("\n      ");
++		printk(" %08lx", stackdata);
++		i++;
+ 	}
++	printk("\n");
+ }
+ 
+-void show_trace(unsigned int *sp)
++void show_trace(long *sp)
+ {
+ 	int i;
+-	int column = 0;
+-	unsigned int *stack;
+-	unsigned long kernel_start, kernel_end;
+-	unsigned long module_start, module_end;
+-	extern char _stext, _etext;
+-
+-	stack = sp ? sp : (unsigned int *) &sp;
+-	i = 0;
+-
+-	kernel_start = (unsigned long) &_stext;
+-	kernel_end = (unsigned long) &_etext;
+-	module_start = VMALLOC_START;
+-	module_end = module_start + MODULE_RANGE;
++	long addr;
+ 
+-	printk("\nCall Trace:");
++	sp = sp ? sp : (long *) &sp;
+ 
+-	while ((unsigned long) stack & (PAGE_SIZE -1)) {
+-		unsigned long addr;
++	printk("Call Trace:  ");
++	i = 1;
++	while ((long) sp & (PAGE_SIZE - 1)) {
+ 
+-		if (__get_user(addr, stack++)) {
++		if (__get_user(addr, sp++)) {
++			if (i && ((i % 6) == 0))
++				printk("\n");
+ 			printk(" (Bad stack address)\n");
+ 			break;
+ 		}
+@@ -249,27 +283,24 @@ void show_trace(unsigned int *sp)
+ 		 * out the call path that was taken.
+ 		 */
+ 
+-		if ((addr >= kernel_start && addr < kernel_end) ||
+-		    (addr >= module_start && addr < module_end)) { 
+-
+-			printk(" [<%08lx>]", addr);
+-			if (column++ == 5) {
++		if (kernel_text_address(addr)) {
++			if (i && ((i % 6) == 0))
+ 				printk("\n");
+-				column = 0;
+-			}
+-			if (++i > 40) {
++			if (i > 40) {
+ 				printk(" ...");
+ 				break;
+ 			}
++
++			printk(" [<%08lx>]", addr);
++			i++;
+ 		}
+ 	}
+-	if (column != 0)
+-		printk("\n");
++	printk("\n");
+ }
+ 
+ void show_trace_task(struct task_struct *tsk)
+ {
+-	show_trace((unsigned int *)tsk->thread.reg29);
++	show_trace((long *)tsk->thread.reg29);
+ }
+ 
+ void show_code(unsigned int *pc)
+@@ -321,8 +352,8 @@ void show_registers(struct pt_regs *regs
+ 	show_regs(regs);
+ 	printk("Process %s (pid: %d, stackpage=%08lx)\n",
+ 		current->comm, current->pid, (unsigned long) current);
+-	show_stack((unsigned int *) regs->regs[29]);
+-	show_trace((unsigned int *) regs->regs[29]);
++	show_stack((long *) regs->regs[29]);
++	show_trace((long *) regs->regs[29]);
+ 	show_code((unsigned int *) regs->cp0_epc);
+ 	printk("\n");
+ }
+diff -up --recursive --new-file linux-mips-2.4.19-rc1-20020719.macro/arch/mips64/kernel/traps.c linux-mips-2.4.19-rc1-20020719/arch/mips64/kernel/traps.c
+--- linux-mips-2.4.19-rc1-20020719.macro/arch/mips64/kernel/traps.c	2002-07-08 16:46:08.000000000 +0000
++++ linux-mips-2.4.19-rc1-20020719/arch/mips64/kernel/traps.c	2002-07-27 11:43:15.000000000 +0000
+@@ -70,60 +70,91 @@ int kstack_depth_to_print = 24;
+ #define OPCODE 0xfc000000
+ 
+ /*
++ * If the address is either in the .text section of the
++ * kernel, or in the vmalloc'ed module regions, it *may*
++ * be the address of a calling routine
++ */
++
++#ifdef CONFIG_MODULES
++
++extern struct module *module_list;
++extern struct module kernel_module;
++
++static inline int kernel_text_address(long addr)
++{
++	extern char _stext, _etext;
++	int retval = 0;
++	struct module *mod;
++
++	if (addr >= (long) &_stext && addr <= (long) &_etext)
++		return 1;
++
++	for (mod = module_list; mod != &kernel_module; mod = mod->next) {
++		/* mod_bound tests for addr being inside the vmalloc'ed
++		 * module area. Of course it'd be better to test only
++		 * for the .text subset... */
++		if (mod_bound(addr, 0, mod)) {
++			retval = 1;
++			break;
++		}
++	}
++
++	return retval;
++}
++
++#else
++
++static inline int kernel_text_address(long addr)
++{
++	extern char _stext, _etext;
++
++	return (addr >= (long) &_stext && addr <= (long) &_etext);
++}
++
++#endif
++
++/*
+  * This routine abuses get_user()/put_user() to reference pointers
+  * with at least a bit of error checking ...
+  */
+-void show_stack(unsigned long *sp)
++void show_stack(long *sp)
+ {
+ 	int i;
+-	unsigned long *stack;
+-
+-	stack = sp;
+-	i = 0;
++	long stackdata;
+ 
+ 	printk("Stack:");
+-	while ((unsigned long) stack & (PAGE_SIZE - 1)) {
+-		unsigned long stackdata;
+-
+-		if (__get_user(stackdata, stack++)) {
+-			printk(" (Bad stack address)");
++	i = 0;
++	while ((long) sp & (PAGE_SIZE - 1)) {
++		if (i && ((i % 4) == 0))
++			printk("\n      ");
++		if (i > 40) {
++			printk(" ...");
+ 			break;
+ 		}
+ 
+-		printk(" %016lx", stackdata);
+-
+-		if (++i > 40) {
+-			printk(" ...");
++		if (__get_user(stackdata, sp++)) {
++			printk(" (Bad stack address)");
+ 			break;
+ 		}
+ 
+-		if (i % 4 == 0)
+-			printk("\n      ");
++		printk(" %016lx", stackdata);
++		i++;
+ 	}
++	printk("\n");
+ }
+ 
+-void show_trace(unsigned long *sp)
++void show_trace(long *sp)
+ {
+ 	int i;
+-	unsigned long *stack;
+-	unsigned long kernel_start, kernel_end;
+-	unsigned long module_start, module_end;
+-	extern char _stext, _etext;
++	long addr;
+ 
+-	stack = sp;
++	printk("Call Trace:");
+ 	i = 0;
++	while ((long) sp & (PAGE_SIZE - 1)) {
+ 
+-	kernel_start = (unsigned long) &_stext;
+-	kernel_end = (unsigned long) &_etext;
+-	module_start = VMALLOC_START;
+-	module_end = module_start + MODULE_RANGE;
+-
+-	printk("\nCall Trace:");
+-
+-	while ((unsigned long) stack & (PAGE_SIZE - 1)) {
+-		unsigned long addr;
+-
+-		if (__get_user(addr, stack++)) {
++		if (__get_user(addr, sp++)) {
++			if (i && ((i % 3) == 0))
++				printk("\n           ");
+ 			printk(" (Bad stack address)\n");
+ 			break;
+ 		}
+@@ -137,25 +168,24 @@ void show_trace(unsigned long *sp)
+ 		 * out the call path that was taken.
+ 		 */
+ 
+-		if ((addr >= kernel_start && addr < kernel_end) ||
+-		    (addr >= module_start && addr < module_end)) { 
+-
+-			/* Since our kernel is still at KSEG0,
+-			 * truncate the address so that ksymoops
+-			 * understands it.
+-			 */
+-			printk(" [<%08x>]", (unsigned int) addr);
+-			if (++i > 40) {
++		if (kernel_text_address(addr)) {
++			if (i && ((i % 3) == 0))
++				printk("\n           ");
++			if (i > 40) {
+ 				printk(" ...");
+ 				break;
+ 			}
++
++			printk(" [<%016lx>]", addr);
++			i++;
+ 		}
+ 	}
++	printk("\n");
+ }
+ 
+ void show_trace_task(struct task_struct *tsk)
+ {
+-	show_trace((unsigned long *)tsk->thread.reg29);
++	show_trace((long *)tsk->thread.reg29);
+ }
+ 
+ 
+@@ -224,8 +254,8 @@ void show_registers(struct pt_regs *regs
+ 	show_regs(regs);
+ 	printk("Process %s (pid: %d, stackpage=%016lx)\n",
+ 		current->comm, current->pid, (unsigned long) current);
+-	show_stack((unsigned long *) regs->regs[29]);
+-	show_trace((unsigned long *) regs->regs[29]);
++	show_stack((long *) regs->regs[29]);
++	show_trace((long *) regs->regs[29]);
+ 	show_code((unsigned int *) regs->cp0_epc);
+ 	printk("\n");
+ }

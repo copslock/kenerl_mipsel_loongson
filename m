@@ -1,32 +1,42 @@
-Received:  by oss.sgi.com id <S554207AbRBBC2I>;
-	Thu, 1 Feb 2001 18:28:08 -0800
-Received: from Sioux.meginc.com ([207.246.76.19]:6418 "EHLO sioux.meginc.com")
-	by oss.sgi.com with ESMTP id <S554202AbRBBC1n>;
-	Thu, 1 Feb 2001 18:27:43 -0800
-Received: from localhost.localdomain (IDENT:brandon@[207.246.76.63])
-	by sioux.meginc.com (8.9.3/8.9.1) with SMTP id VAA81615
-	for <linux-mips@oss.sgi.com>; Thu, 1 Feb 2001 21:28:31 -0500 (EST)
-	(envelope-from bebarker@meginc.com)
-From:   Brandon Barker <bebarker@meginc.com>
-Date:   Thu, 1 Feb 2001 21:31:17 -0500
-X-Mailer: KMail [version 1.1.99]
-Content-Type: text/plain;
-  charset="iso-8859-1"
-To:     "'linux-mips'" <linux-mips@oss.sgi.com>
-Subject: OGL for Indy
-MIME-Version: 1.0
-Message-Id: <01020121311700.01655@localhost.localdomain>
-Content-Transfer-Encoding: 8bit
+Received:  by oss.sgi.com id <S554209AbRBBDWA>;
+	Thu, 1 Feb 2001 19:22:00 -0800
+Received: from sovereign.org ([209.180.91.170]:8320 "EHLO lux.homenet")
+	by oss.sgi.com with ESMTP id <S554027AbRBBDVg>;
+	Thu, 1 Feb 2001 19:21:36 -0800
+Received: (from jfree@localhost)
+	by lux.homenet (8.11.2/8.11.2/Debian 8.11.2-1) id f123LT901126
+	for linux-mips@oss.sgi.com; Thu, 1 Feb 2001 20:21:29 -0700
+From:   Jim Freeman <jfree@sovereign.org>
+Date:   Thu, 1 Feb 2001 20:21:29 -0700
+To:     linux-mips@oss.sgi.com
+Subject: mystery files in stock->mips diff
+Message-ID: <20010201202129.A1107@sovereign.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.3.12i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-I've recently purchased 2 Indy boxes and wanted to use Linux on them to act 
-as a graphics workstation.  However, it seems SGI has not provided us with 
-the 3d acc. driver they must have (IRIX driver) so as to allow us to create 
-one for XFree86.  This means I may have to buy IRIX, though I would much 
-rather use Linux.  Why has SGI not provided the necessary specs/code for 3d 
-(open GL in this case?) acceleration?
+The following files are in the mips tree, and not in stock 2.4.1
+- but they seem not to be mips-related.  Clues?
 
-Brandon
+
+	arch/ppc/coffboot/main.c
+	arch/ppc/configs/gemini_defconfig
+	arch/ppc/kernel/gemini_pci.c
+	arch/ppc/kernel/gemini_prom.S
+	arch/ppc/kernel/gemini_setup.c
+	arch/ppc/mbxboot/vmlinux.lds
+
+	drivers/acpi/hardware/hwcpu32.c
+	drivers/acpi/hardware/hwxface.c
+	drivers/acpi/ksyms.c
+
+	include/asm-ppc/gemini.h
+	include/asm-ppc/gemini_serial.h
+
+
+...jfree

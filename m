@@ -1,54 +1,57 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fACJSko04578
-	for linux-mips-outgoing; Mon, 12 Nov 2001 11:28:46 -0800
-Received: from mailout03.sul.t-online.de (mailout03.sul.t-online.com [194.25.134.81])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fACJSi004575
-	for <linux-mips@oss.sgi.com>; Mon, 12 Nov 2001 11:28:44 -0800
-Received: from fwd06.sul.t-online.de 
-	by mailout03.sul.t-online.de with smtp 
-	id 163Ml4-0006Uz-06; Mon, 12 Nov 2001 20:28:38 +0100
-Received: from void.s.bawue.de (520095841842-0001@[62.227.2.105]) by fmrl06.sul.t-online.com
-	with esmtp id 163Mkq-0useEiC; Mon, 12 Nov 2001 20:28:24 +0100
-Received: from florian by void.s.bawue.de with local (Exim 3.32 #1 (Debian))
-	id 163NCH-0000OF-00; Mon, 12 Nov 2001 20:56:45 +0100
-Date: Mon, 12 Nov 2001 20:56:45 +0100
-To: Jun Sun <jsun@mvista.com>
-Cc: linux-mips@oss.sgi.com, linux-mips-kernel@lists.sourceforge.net
-Subject: Re: [Linux-mips-kernel]Re: i8259.c in big endian
-Message-ID: <20011112205644.B1459@void.s.bawue.de>
-Mail-Followup-To: Florian Laws <florian@void.s.bawue.de>,
-	Jun Sun <jsun@mvista.com>, linux-mips@oss.sgi.com,
-	linux-mips-kernel@lists.sourceforge.net
-References: <Pine.LNX.4.10.10111081348000.13456-100000@transvirtual.com> <3BEC20D5.AD6ABBA6@mvista.com> <20011112231528.D3949@dea.linux-mips.net> <3BF0159A.D5DAF75B@mvista.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3BF0159A.D5DAF75B@mvista.com>
-User-Agent: Mutt/1.3.20i
-From: Florian Laws <florian@void.s.bawue.de>
-X-Sender: 520095841842-0001@t-dialin.net
+	by oss.sgi.com (8.11.2/8.11.3) id fACJgAl05179
+	for linux-mips-outgoing; Mon, 12 Nov 2001 11:42:10 -0800
+Received: from gw-us4.philips.com (gw-us4.philips.com [63.114.235.90])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fACJg7005176
+	for <linux-mips@oss.sgi.com>; Mon, 12 Nov 2001 11:42:07 -0800
+Received: from smtpscan-us1.philips.com (localhost.philips.com [127.0.0.1])
+          by gw-us4.philips.com with ESMTP id NAA25000
+          for <linux-mips@oss.sgi.com>; Mon, 12 Nov 2001 13:42:06 -0600 (CST)
+          (envelope-from balaji.ramalingam@philips.com)
+From: balaji.ramalingam@philips.com
+Received: from smtpscan-us1.philips.com(167.81.233.25) by gw-us4.philips.com via mwrap (4.0a)
+	id xma024996; Mon, 12 Nov 01 13:42:06 -0600
+Received: from smtprelay-us1.philips.com (localhost [127.0.0.1]) 
+	by smtpscan-us1.philips.com (8.9.3/8.8.5-1.2.2m-19990317) with ESMTP id NAA20113
+	for <linux-mips@oss.sgi.com>; Mon, 12 Nov 2001 13:42:11 -0600 (CST)
+Received: from arj001soh.diamond.philips.com (amsoh01.diamond.philips.com [161.88.79.212]) 
+	by smtprelay-us1.philips.com (8.9.3/8.8.5-1.2.2m-19990317) with ESMTP id NAA23596
+	for <linux-mips@oss.sgi.com>; Mon, 12 Nov 2001 13:42:11 -0600 (CST)
+Subject: initrd disabled
+To: linux-mips@oss.sgi.com
+Date: Mon, 12 Nov 2001 11:42:45 -0800
+Message-ID: <OF185C54D7.3D8B2C10-ON88256B02.006AFF59@diamond.philips.com>
+X-MIMETrack: Serialize by Router on arj001soh/H/SERVER/PHILIPS(Release 5.0.5 |September
+ 22, 2000) at 12/11/2001 13:46:11
+MIME-Version: 1.0
+Content-type: text/plain; charset=us-ascii
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Nov 12, 2001 at 10:31:54AM -0800, Jun Sun wrote:
-> Ralf Baechle wrote:
-> > 
-> > On Fri, Nov 09, 2001 at 10:30:45AM -0800, Jun Sun wrote:
-> > 
-> > > isa_slot_offset is an obselete garbage.  Can someone do Ralf's a favor and
-> > > send him a patch to get rid of it (as if he can't do it himself :-0) ?
-> > 
-> > Nope.  Somebody could fix isa_{read,write}[bwl] to use isa_slot_offset.
-> > Right now all the ISA functions are broken.  So in case you're ISA drivers
-> > seem to work that's the proof that they're broken *evil grin* :-)
-> 
-> I doubt if there is any MIPS machine using standard PC ISA bus that is *not*
-> on a PCI bus ...
 
-FWIW, there is.
-There are some old Siemens RM400 models (1989 vintage) with R3000 CPU and ISA 
-bus.
 
-Pretty unlikely that they'll be supportet any time, though... :-(
+Hello,
 
-Florian
+I have been working in the linux kernel 2.4.3 which was ported for mips32 ISA.
+I cant understand certain things.
+The variable max_low_pfn is used to compare the initrd_end.
+I can see the max_low_pfn being zero and as a result the phys_to_virt(PFN_PHYS(max_low_pfn))
+is zero. Hence in the setup_arch, the initrd comparision fails and the initrd is disabled.
+I get the following  messages,
+
+Initial ramdisk at: 0x8010e000 (1916920 bytes)
+initrd extends beyond end of memory (0x802e1ff8 > 0x80000000)
+disabling initrd
+
+I dont know how this variable gets a value.
+Also I get some messages like the below in the bootmem.c. while accessing
+the reserve_bootmem function.  Is this a kernel BUG or is it something with my hardware?
+
+kernel BUG at bootmem.c:84!
+kernel BUG at bootmem.c:87!
+kernel BUG at bootmem.c:181!
+
+Any help would be greatly appreciated.
+
+regards,
+Balaji

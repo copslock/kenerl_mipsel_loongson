@@ -1,64 +1,82 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9TIgBY00996
-	for linux-mips-outgoing; Mon, 29 Oct 2001 10:42:11 -0800
-Received: from straylight.cyberhqz.com (root@h24-76-98-250.vc.shawcable.net [24.76.98.250])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9TIg7000993
-	for <linux-mips@oss.sgi.com>; Mon, 29 Oct 2001 10:42:07 -0800
-Received: (from rmurray@localhost)
-	by straylight.cyberhqz.com (8.9.3/8.9.3/Debian 8.9.3-21) id KAA15694
-	for linux-mips@oss.sgi.com; Mon, 29 Oct 2001 10:42:06 -0800
-From: Ryan Murray <rmurray@cyberhqz.com>
-Date: Mon, 29 Oct 2001 10:42:05 -0800
-To: linux-mips@oss.sgi.com
-Subject: Re: "relocation truncated to fit"
-Message-ID: <20011029104205.J18529@cyberhqz.com>
-Mail-Followup-To: linux-mips@oss.sgi.com
-References: <5.1.0.14.0.20011029204836.00a63170@192.168.1.5>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="5xSkJheCpeK0RUEJ"
-Content-Disposition: inline
-In-Reply-To: <5.1.0.14.0.20011029204836.00a63170@192.168.1.5>
-User-Agent: Mutt/1.3.23i
+	by oss.sgi.com (8.11.2/8.11.3) id f9TJTsX04041
+	for linux-mips-outgoing; Mon, 29 Oct 2001 11:29:54 -0800
+Received: from ns1.ltc.com (ns1.ltc.com [38.149.17.165])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9TJTm004036
+	for <linux-mips@oss.sgi.com>; Mon, 29 Oct 2001 11:29:48 -0800
+Received: from prefect (gw1.ltc.com [38.149.17.163])
+	by ns1.ltc.com (Postfix) with SMTP
+	id 59C09590AC; Mon, 29 Oct 2001 10:26:36 -0500 (EST)
+Message-ID: <04c801c160b0$1d62f660$3501010a@ltc.com>
+From: "Bradley D. LaRonde" <brad@ltc.com>
+To: "Jun Sun" <jsun@mvista.com>
+Cc: <linux-mips@oss.sgi.com>, <linux-mips-kernel@lists.sourceforge.net>
+References: <20011026210746.A20395@dev1.ltc.com> <3BDDACD2.7121F905@mvista.com>
+Subject: Re: PATCH: pci_auto bridge support
+Date: Mon, 29 Oct 2001 14:30:06 -0500
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+I considered that, but since only this small chuck of run-once surrogate
+bios autoconfig code needs to know, I figured better keep it separate.
 
---5xSkJheCpeK0RUEJ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Regards,
+Brad
 
-On Mon, Oct 29, 2001 at 09:08:10PM +0100, Peter Andersson wrote:
-> Hi, i am trying to compile mozilla 0.9.5 on my indy running mips/redhat=
-=20
-> linux 7.0 and get hundreds of messages telling me "relocation truncated t=
-o=20
-> fit: R_MIPS_GOT16". Does anyone know how to get around this? I tried to a=
-dd=20
-> the ld flags -G O but without success.
+----- Original Message -----
+From: "Jun Sun" <jsun@mvista.com>
+To: "Bradley D. LaRonde" <brad@ltc.com>
+Cc: <linux-mips@oss.sgi.com>; <linux-mips-kernel@lists.sourceforge.net>
+Sent: Monday, October 29, 2001 2:24 PM
+Subject: Re: PATCH: pci_auto bridge support
 
-0.9.5 should have a -Wa,-xgot section in the makefile for linux/mips, like
-netbsd/mips has.  If it doesn't, you'll need to pull that change from cvs.
 
-You'll also need to ensure that libgcc.a and libc_noshared.a are also built
-with -Wa,-xgot
-
---=20
-Ryan Murray, Debian Developer (rmurray@cyberhqz.com, rmurray@debian.org)
-The opinions expressed here are my own.
-
---5xSkJheCpeK0RUEJ
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iD8DBQE73aL9N2Dbz/1mRasRAiI3AJ9seU/aWLVPJ5APF7iGN83HsLzU6QCdGro3
-ultlllMudJMn9ePPFHIlAS8=
-=XHJM
------END PGP SIGNATURE-----
-
---5xSkJheCpeK0RUEJ--
+>
+> Brad,
+>
+> Have you considered embedding "topbus" argument into hose structure?  That
+> sounds like potentially better solution.
+>
+>
+>
+> "Bradley D. LaRonde" wrote:
+> >
+> > 2001-10-26  Bradley D. LaRonde <brad@ltc.com>
+> >
+> > * PCI bridge support.  See change log entry below.
+> >
+> > --- arch/mips/kernel/pci_auto.c 2001/08/18 06:21:53     1.1
+> > +++ arch/mips/kernel/pci_auto.c 2001/10/27 01:01:21
+> > @@ -4,6 +4,7 @@
+> >   * Author: Matt Porter <mporter@mvista.com>
+> >   *
+> >   * Copyright 2000, 2001 MontaVista Software Inc.
+> > + * Copyright 2001 Bradley D. LaRonde <brad@ltc.com>
+> >   *
+> >   * This program is free software; you can redistribute  it and/or
+modify it
+> >   * under  the terms of  the GNU General  Public License as published by
+the
+> > @@ -19,6 +20,15 @@
+> >   * . change most int to u32.
+> >   *
+> >   * Further modified to include it as mips generic code,
+ppopov@mvista.com.
+> > + *
+> > + * 2001-10-26  Bradley D. LaRonde <brad@ltc.com>
+> > + * - Add a top_bus argument to the "early config" functions so that
+> > + *   they can set a fake parent bus pointer to convince the underlying
+> > + *   pci ops to use type 1 configuration for sub busses.
+> > + * - Set bridge base and limit registers correctly.
+> > + * - Align io and memory base properly before and after bridge setup.
+> > + * - Don't fall through to pci_setup_bars for bridge.
+> > + * - Reformat the debug output to look more like lspci's output.
+> >   */

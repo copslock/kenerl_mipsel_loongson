@@ -1,78 +1,63 @@
-Received:  by oss.sgi.com id <S42240AbQEYOOG>;
-	Thu, 25 May 2000 07:14:06 -0700
-Received: from deliverator.sgi.com ([204.94.214.10]:53256 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42238AbQEYONt>;
-	Thu, 25 May 2000 07:13:49 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id IAA06829; Thu, 25 May 2000 08:08:57 -0700 (PDT)
+Received:  by oss.sgi.com id <S42240AbQEYPHH>;
+	Thu, 25 May 2000 08:07:07 -0700
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:49013 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S42238AbQEYPGs>; Thu, 25 May 2000 08:06:48 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id JAA09563; Thu, 25 May 2000 09:11:28 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id HAA37668
+	id IAA69754
 	for linux-list;
-	Thu, 25 May 2000 07:59:46 -0700 (PDT)
+	Thu, 25 May 2000 08:57:12 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id HAA31264;
-	Thu, 25 May 2000 07:59:37 -0700 (PDT)
-	mail_from (jimix@watson.ibm.com)
-Received: from igw8.watson.ibm.com (igw8.watson.ibm.com [198.81.209.20]) 
+	via ESMTP id IAA60416
+	for <linux@cthulhu.engr.sgi.com>;
+	Thu, 25 May 2000 08:57:10 -0700 (PDT)
+	mail_from (flo@rfc822.org)
+Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id HAA07072; Thu, 25 May 2000 07:59:35 -0700 (PDT)
-	mail_from (jimix@watson.ibm.com)
-Received: from sp1n189at0.watson.ibm.com (sp1n189at0.watson.ibm.com [9.2.104.62])
-	by igw8.watson.ibm.com (8.9.3/8.9.3/05-14-1999) with ESMTP id KAA12000;
-	Thu, 25 May 2000 10:59:38 -0400
-Received: from kitch0.watson.ibm.com (kitch0.watson.ibm.com [9.2.229.13]) by sp1n189at0.watson.ibm.com (8.9.3/Feb-20-98) with ESMTP id KAA22998; Thu, 25 May 2000 10:59:37 -0400
-Received: (from jimix@localhost)
-	by kitch0.watson.ibm.com (AIX4.3/8.9.3/8.9.3/01-10-2000) id KAA44418;
-	Thu, 25 May 2000 10:59:37 -0400
-From:   jimix@pobox.com (Jimi X)
-MIME-Version: 1.0
+	via ESMTP id IAA01962
+	for <linux@cthulhu.engr.sgi.com>; Thu, 25 May 2000 08:57:07 -0700 (PDT)
+	mail_from (flo@rfc822.org)
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id CB33B7F3; Thu, 25 May 2000 17:57:08 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 5F35E8FA7; Thu, 25 May 2000 17:53:54 +0200 (CEST)
+Date:   Thu, 25 May 2000 17:53:54 +0200
+From:   Florian Lohoff <flo@rfc822.org>
+To:     Dag Bakke <dagb@oslo.sgi.com>
+Cc:     nick@ns.snowman.net, linux@cthulhu.engr.sgi.com
+Subject: Re: New indy problems
+Message-ID: <20000525175354.D4082@paradigm.rfc822.org>
+References: <20000525023802.A8339@uni-koblenz.de> <Pine.LNX.4.05.10005242126570.19874-100000@ns.snowman.net> <20000525102527.A4082@paradigm.rfc822.org> <flo@rfc822.org> <10005251252.ZM1368@dagb.oslo.sgi.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-ID: <14637.16344.751320.262100@kitch0.watson.ibm.com>
-Date:   Thu, 25 May 2000 10:59:36 -0400 (EDT)
-To:     Ulf Carlsson <ulfc@calypso.engr.sgi.com>
-Cc:     linux@cthulhu.engr.sgi.com
-Subject: Re: cross Mips64-linux binutils problem
-In-Reply-To: <Pine.LNX.4.21.0005241637480.15277-100000@calypso.engr.sgi.com>
-References: <14636.15579.327225.215562@kitch0.watson.ibm.com>
-	<Pine.LNX.4.21.0005241637480.15277-100000@calypso.engr.sgi.com>
-X-Mailer: VM 6.75 under 20.4 "Emerald" XEmacs  Lucid
-Reply-To: jimix@watson.ibm.com
+User-Agent: Mutt/1.0.1i
+In-Reply-To: <10005251252.ZM1368@dagb.oslo.sgi.com>; from dagb@oslo.sgi.com on Thu, May 25, 2000 at 12:52:21PM +0200
+Organization: rfc822 - pure communication
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
->>>>> "UC" == Ulf Carlsson <ulfc@calypso.engr.sgi.com> writes:
+On Thu, May 25, 2000 at 12:52:21PM +0200, Dag Bakke wrote:
+> > The indigo2 has a jumper onboard to "erase" the nvram setting (I multiple
+> > times accidently changes the console setting)
+> 
+> The nvram pw is unrelated to the root pw on the systemdisk. (Which I am sure
+> you are aware of.  :-)
 
- >> I'm using binutils-19990825 patched with binutils-19991011.diff
- UC> I have used that patch together with the binutils CVS from
- UC> 19991011 and that worked for me.  At least for building 32-bit
- UC> kernel.
+If running linux you will reinstall anyway - So why do you care on the
+IRIX rootpw ?
 
-Well, I'm only interested in 64-bit static only. I'm not ready for
-shared yet either.
-
- >> They were obtained from:
- >> ftp://ftp.linux.sgi.com/pub/linux/mips/crossdev/src/mips64/
- >>
- >> Are these the latest? If so please read on..
-
- UC> You could try my superpatch that I have on oss.sgi.com.  It's a
- UC> newer than Ralf's patch that you have:
-
- UC>
- UC> 	ftp://oss.sgi.com/pub/linux/mips/src/binutils/binutils-000424.diff.gz
-
-thanks I will try and let you know.
-
-BTW: what are your people using to build the mip64 linux kernel changes 
-that went in a few months ago?
-
--Jimi X
+Flo
+-- 
+Florian Lohoff		flo@rfc822.org		      	+49-waiting-4-telekom
+"Technology is a constant battle between manufacturers producing bigger and
+more idiot-proof systems and nature producing bigger and better idiots."

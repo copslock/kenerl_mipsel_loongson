@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Dec 2004 17:25:01 +0000 (GMT)
-Received: from coderock.org ([IPv6:::ffff:193.77.147.115]:62172 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Dec 2004 17:25:34 +0000 (GMT)
+Received: from coderock.org ([IPv6:::ffff:193.77.147.115]:63196 "EHLO
 	trashy.coderock.org") by linux-mips.org with ESMTP
-	id <S8225244AbULYRY4>; Sat, 25 Dec 2004 17:24:56 +0000
+	id <S8225246AbULYRY6>; Sat, 25 Dec 2004 17:24:58 +0000
 Received: by trashy.coderock.org (Postfix, from userid 780)
-	id 6F9011EA0F; Sat, 25 Dec 2004 18:24:43 +0100 (CET)
+	id 979791F126; Sat, 25 Dec 2004 18:24:47 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
-	by trashy.coderock.org (Postfix) with ESMTP id 7AA171ED41;
-	Sat, 25 Dec 2004 18:24:42 +0100 (CET)
+	by trashy.coderock.org (Postfix) with ESMTP id 94AED1F124;
+	Sat, 25 Dec 2004 18:24:46 +0100 (CET)
 Received: from localhost.localdomain (localhost [127.0.0.1])
-	by trashy.coderock.org (Postfix) with ESMTP id 370061EA0F;
-	Sat, 25 Dec 2004 18:24:40 +0100 (CET)
-Subject: [patch 1/9] delete unused file
+	by trashy.coderock.org (Postfix) with ESMTP id 3056B1F123;
+	Sat, 25 Dec 2004 18:24:43 +0100 (CET)
+Subject: [patch 2/9] delete unused file
 To: ralf@linux-mips.org
 Cc: linux-mips@linux-mips.org, domen@coderock.org
 From: domen@coderock.org
-Date: Sat, 25 Dec 2004 18:24:50 +0100
-Message-Id: <20041225172440.370061EA0F@trashy.coderock.org>
+Date: Sat, 25 Dec 2004 18:24:53 +0100
+Message-Id: <20041225172443.3056B1F123@trashy.coderock.org>
 Return-Path: <domen@coderock.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6754
+X-archive-position: 6755
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,35 +35,64 @@ Signed-off-by: Domen Puncer <domen@coderock.org>
 ---
 
 
- kj/arch/mips/arc/salone.c |   24 ------------------------
- 1 files changed, 24 deletions(-)
+ kj/arch/mips/pmc-sierra/yosemite/ht-irq.c |   53 ------------------------------
+ 1 files changed, 53 deletions(-)
 
-diff -L arch/mips/arc/salone.c -puN arch/mips/arc/salone.c~remove_file-arch_mips_arc_salone.c /dev/null
---- kj/arch/mips/arc/salone.c
+diff -L arch/mips/pmc-sierra/yosemite/ht-irq.c -puN arch/mips/pmc-sierra/yosemite/ht-irq.c~remove_file-arch_mips_pmc_sierra_yosemite_ht_irq.c /dev/null
+--- kj/arch/mips/pmc-sierra/yosemite/ht-irq.c
 +++ /dev/null	2004-12-24 01:21:08.000000000 +0100
-@@ -1,24 +0,0 @@
+@@ -1,53 +0,0 @@
 -/*
-- * Routines to load into memory and execute stand-along program images using
-- * ARCS PROM firmware.
+- * Copyright 2003 PMC-Sierra
+- * Author: Manish Lachwani (lachwani@pmc-sierra.com)
 - *
-- * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)
+- * This program is free software; you can redistribute  it and/or modify it
+- * under  the terms of  the GNU General  Public License as published by the
+- * Free Software Foundation;  either version 2 of the  License, or (at your
+- * option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
 - */
+-
+-#include <linux/types.h>
+-#include <linux/pci.h>
+-#include <linux/kernel.h>
+-#include <linux/version.h>
 -#include <linux/init.h>
--#include <asm/sgialib.h>
+-#include <asm/pci.h>
 -
--LONG __init ArcLoad(CHAR *Path, ULONG TopAddr, ULONG *ExecAddr, ULONG *LowAddr)
+-/*
+- * HT Bus fixup for the Titan
+- * XXX IRQ values need to change based on the board layout
+- */
+-void __init titan_ht_pcibios_fixup_bus(struct pci_bus *bus)
 -{
--	return ARC_CALL4(load, Path, TopAddr, ExecAddr, LowAddr);
--}
+-        struct pci_bus *current_bus = bus;
+-        struct pci_dev *devices;
+-        struct list_head *devices_link;
 -
--LONG __init ArcInvoke(ULONG ExecAddr, ULONG StackAddr, ULONG Argc, CHAR *Argv[],
--	CHAR *Envp[])
--{
--	return ARC_CALL5(invoke, ExecAddr, StackAddr, Argc, Argv, Envp);
--}
+-	list_for_each(devices_link, &(current_bus->devices)) {
+-                devices = pci_dev_b(devices_link);
+-                if (devices == NULL)
+-                        continue;
+-	}
 -
--LONG __init ArcExecute(CHAR *Path, LONG Argc, CHAR *Argv[], CHAR *Envp[])
--{
--	return ARC_CALL4(exec, Path, Argc, Argv, Envp);
+-	/*
+-	 * PLX and SPKT related changes go here
+-	 */
+-
 -}
 _

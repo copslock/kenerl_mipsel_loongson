@@ -1,151 +1,89 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id LAA12519 for <linux-archive@neteng.engr.sgi.com>; Mon, 20 Jul 1998 11:43:03 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id LAA12704 for <linux-archive@neteng.engr.sgi.com>; Mon, 20 Jul 1998 11:44:30 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id LAA03805
+	id LAA87237
 	for linux-list;
-	Mon, 20 Jul 1998 11:42:37 -0700 (PDT)
+	Mon, 20 Jul 1998 11:44:21 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id LAA39532
+	via ESMTP id LAA92662
 	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 20 Jul 1998 11:42:36 -0700 (PDT)
-	mail_from (grimsy@zigzegv.ml.org)
-Received: from ballyhoo.ml.org ([194.236.80.80]) 
+	Mon, 20 Jul 1998 11:44:20 -0700 (PDT)
+	mail_from (wje@fir.engr.sgi.com)
+Received: from ms21.hinet.net (ms21.hinet.net [168.95.4.21]) 
 	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id LAA01316
-	for <linux@cthulhu.engr.sgi.com>; Mon, 20 Jul 1998 11:42:34 -0700 (PDT)
-	mail_from (grimsy@zigzegv.ml.org)
-Received: from calypso.saturn ([130.244.166.51]) by ballyhoo.ml.org
-	 with smtp (ident grimsy using rfc1413) id m0yyKoT-000xjTC
-	(Debian Smail-3.2.0.92 1997-Feb-9 #2); Mon, 20 Jul 1998 20:37:29 +0200 (CEST)
-Date: Mon, 20 Jul 1998 20:40:59 +0200 (CEST)
-From: Ulf Carlsson <grimsy@zigzegv.ml.org>
-X-Sender: grimsy@calypso.saturn
-To: linux@cthulhu.engr.sgi.com
-Subject: cross compiler fix
-In-Reply-To: <Pine.LNX.3.96.980719205718.21761B-100000@morpho.dar.net>
-Message-ID: <Pine.LNX.3.96.980720203318.12940D-101000@calypso.saturn>
-MIME-Version: 1.0
-Content-Type: MULTIPART/MIXED; BOUNDARY="-1463811840-451476392-900960059=:12940"
+	via ESMTP id LAA02043
+	for <linux@cthulhu.engr.sgi.com>; Mon, 20 Jul 1998 11:44:18 -0700 (PDT)
+	mail_from (wje@fir.engr.sgi.com)
+Received: from sgi.sgi.com (SGI.COM [192.48.153.1])
+	by ms21.hinet.net (8.8.8/8.8.8) with ESMTP id CAA08176
+	for <linux%cthulhu.engr.sgi.com@ms21.hinet.net>; Tue, 21 Jul 1998 02:44:03 +0800 (CST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
+	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id LAA01832; Mon, 20 Jul 1998 11:43:50 -0700 (PDT)
+	mail_from (wje@fir.engr.sgi.com)
+Received: from fir.engr.sgi.com (fir.engr.sgi.com [150.166.49.183])
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	via SMTP id LAA99731;
+	Mon, 20 Jul 1998 11:43:49 -0700 (PDT)
+	mail_from (wje@fir.engr.sgi.com)
+Received: (from wje@localhost) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id LAA28524; Mon, 20 Jul 1998 11:43:15 -0700
+Date: Mon, 20 Jul 1998 11:43:15 -0700
+Message-Id: <199807201843.LAA28524@fir.engr.sgi.com>
+From: "William J. Earl" <wje@fir.engr.sgi.com>
+To: ralf@uni-koblenz.de
+cc: Linux <linux%cthulhu.engr.sgi.com@ms21.hinet.net>
+Subject: Re: [Q] How to reboot automatically?
+In-Reply-To: <19980720203200.D440@uni-koblenz.de>
+References: <19980718164741.A868@life.nthu.edu.tw>
+	<19980719041810.G489@uni-koblenz.de>
+	<19980720041815.A298@helix.life.nthu.edu.tw>
+	<19980719232054.A956@uni-koblenz.de>
+	<19980720202548.A526@helix.life.nthu.edu.tw>
+	<199807201610.JAA28042@fir.engr.sgi.com>
+	<19980720203200.D440@uni-koblenz.de>
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
-  Send mail to mime@docserver.cac.washington.edu for more info.
+ralf@uni-koblenz.de writes:
+ > On Mon, Jul 20, 1998 at 09:10:34AM -0700, William J. Earl wrote:
+ > 
+ > > IRIX looks at the environment when booting.  That is, it finds
+ > > argc, argv, and envp in $a0, $a1, and $a2.  It copies them to
+ > > private storage before starting up, since they are in memory
+ > > which will be overlaid by dynamic memory allocation.  All of the
+ > > NVRAM and temporary environment variables are passed via envp.
+ > > IRIX looks for root= on the command line (in argv) first, and then
+ > > in the environment, before falling back on a default.  linux could
+ > > do the same.
+ > 
+ > That looks like a good idea; it can be implemented easily and nicely
+ > within Linux.  And for transparency we should.  What will stay different
+ > is the naming convention of Linux partitions.
 
----1463811840-451476392-900960059=:12940
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+     That is good, but you might consider translating incoming IRIX-format
+and ARCS-format names to Linux names, just as IRIX translates ARCS-format
+names to IRIX-format names.  
 
-Hi,
+ > The environment is allocated in ``Firmware Temporary'' memory, isn't it?
+ > We don't free that yet but we should, for low memory configurations that
+ > should be a significant amount of memory.
 
-Ralf has done some changes in the kernel tree for the egcs compiler (as
-far as I understand it). So, here's a fix for the crosscompiler, a
-modified specs file (/usr/local/lib/gcc-lib/mips-linux/2.7.2.2/specs).
+     Yes, the environment is in firmware temporary memory, along with
+a copy of the firmware.  The non-volatile environment is in the Dallas
+part, but the user, via PROM or sash, may have replaced one or more
+of the variables after the environment was copied to memory.
 
-Thank Ralf, not me - he told me what to change.
-
-- Ulf
-
----1463811840-451476392-900960059=:12940
-Content-Type: APPLICATION/octet-stream; name=specs
-Content-Transfer-Encoding: BASE64
-Content-ID: <Pine.LNX.3.96.980720204059.12940E@calypso.saturn>
-Content-Description: 
-
-KmFzbToKJXttY3B1PSp9ICV7bTQ2NTB9ICV7bW1hZDotbTQ2NTB9ICV7Ryp9
-ICV7RUJ9ICV7RUx9ICV7bWlwczF9ICV7bWlwczJ9ICV7bWlwczN9ICV7bWlw
-czR9ICV7dn0gJXtub2FzbW9wdDotTzB9ICV7IW5vYXNtb3B0OiV7TzotTzJ9
-ICV7TzE6LU8yfSAle08yOi1PMn0gJXtPMzotTzN9fSAle2d9ICV7ZzB9ICV7
-ZzF9ICV7ZzJ9ICV7ZzN9ICV7Z2dkYjotZ30gJXtnZ2RiMDotZzB9ICV7Z2dk
-YjE6LWcxfSAle2dnZGIyOi1nMn0gJXtnZ2RiMzotZzN9ICV7Z3N0YWJzOi1n
-fSAle2dzdGFiczA6LWcwfSAle2dzdGFiczE6LWcxfSAle2dzdGFiczI6LWcy
-fSAle2dzdGFiczM6LWczfSAle2dzdGFicys6LWd9ICV7Z3N0YWJzKzA6LWcw
-fSAle2dzdGFicysxOi1nMX0gJXtnc3RhYnMrMjotZzJ9ICV7Z3N0YWJzKzM6
-LWczfSAle2djb2ZmOi1nfSAle2djb2ZmMDotZzB9ICV7Z2NvZmYxOi1nMX0g
-JXtnY29mZjI6LWcyfSAle2djb2ZmMzotZzN9ICV7IWZuby1QSUM6JXshZm5v
-LXBpYzotS1BJQ319ICV7ZlBJQzotS1BJQ30gJXtmcGljOi1LUElDfSAle2Zu
-by1QSUM6LW5vbl9zaGFyZWR9ICV7Zm5vLXBpYzotbm9uX3NoYXJlZH0gJXtt
-ZW1iZWRkZWQtcGljfQoKKmFzbV9maW5hbDoKCgoqY3BwOgoley5jYzoJLURf
-X0xBTkdVQUdFX0NfUExVU19QTFVTX18gLURfX0xBTkdVQUdFX0NfUExVU19Q
-TFVTIC1EX0xBTkdVQUdFX0NfUExVU19QTFVTICAleyFhbnNpOi1ETEFOR1VB
-R0VfQ19QTFVTX1BMVVN9fSAley5jeHg6CS1EX19MQU5HVUFHRV9DX1BMVVNf
-UExVU19fIC1EX19MQU5HVUFHRV9DX1BMVVNfUExVUyAtRF9MQU5HVUFHRV9D
-X1BMVVNfUExVUyAleyFhbnNpOi1ETEFOR1VBR0VfQ19QTFVTX1BMVVN9fSAl
-ey5DOgktRF9fTEFOR1VBR0VfQ19QTFVTX1BMVVNfXyAtRF9fTEFOR1VBR0Vf
-Q19QTFVTX1BMVVMgLURfTEFOR1VBR0VfQ19QTFVTX1BMVVMgJXshYW5zaTot
-RExBTkdVQUdFX0NfUExVU19QTFVTfX0gJXsubToJLURfX0xBTkdVQUdFX09C
-SkVDVElWRV9DX18gLURfX0xBTkdVQUdFX09CSkVDVElWRV9DIC1EX0xBTkdV
-QUdFX09CSkVDVElWRV9DICV7IWFuc2k6LURMQU5HVUFHRV9PQkpFQ1RJVkVf
-Q319ICV7LlM6CS1EX19MQU5HVUFHRV9BU1NFTUJMWV9fIC1EX19MQU5HVUFH
-RV9BU1NFTUJMWSAtRF9MQU5HVUFHRV9BU1NFTUJMWSAleyFhbnNpOi1ETEFO
-R1VBR0VfQVNTRU1CTFkgfX0gJXsuczoJLURfX0xBTkdVQUdFX0FTU0VNQkxZ
-X18gLURfX0xBTkdVQUdFX0FTU0VNQkxZIC1EX0xBTkdVQUdFX0FTU0VNQkxZ
-ICV7IWFuc2k6LURMQU5HVUFHRV9BU1NFTUJMWSB9fSAleyEuUzoleyEuczot
-RF9fTEFOR1VBR0VfQ19fIC1EX19MQU5HVUFHRV9DIC1EX0xBTkdVQUdFX0Mg
-JXshYW5zaTotRExBTkdVQUdFX0MgfX19ICV7bWZwMzI6IC1EX01JUFNfRlBT
-RVQ9MTZ9JXshbWZwMzI6IC1EX01JUFNfRlBTRVQ9MzJ9ICV7bWlwczE6IC1E
-X01JUFNfSVNBPV9NSVBTX0lTQV9NSVBTMX0gJXttaXBzMjogLURfTUlQU19J
-U0E9X01JUFNfSVNBX01JUFMyfSAle21pcHMzOiAtRF9NSVBTX0lTQT1fTUlQ
-U19JU0FfTUlQUzN9ICV7bWlwczQ6IC1EX01JUFNfSVNBPV9NSVBTX0lTQV9N
-SVBTNH0gJXshbWlwczE6ICV7IW1pcHMyOiAleyFtaXBzMzogJXshbWlwczQ6
-IC1EX01JUFNfSVNBPV9NSVBTX0lTQV9NSVBTMX19fX0gJXttaW50NjQ6LURf
-TUlQU19TWklOVD02NCAleyFtbG9uZzY0Oi1EX19TSVpFX1RZUEVfXz1sb25n
-XCB1bnNpZ25lZFwgaW50IC1EX19TU0laRV9UWVBFX189bG9uZ1wgaW50IC1E
-X19QVFJESUZGX1RZUEVfXz1sb25nXCBpbnQgLURfTUlQU19TWkxPTkc9NjQg
-LURfTUlQU19TWlBUUj02NH19ICV7IW1pbnQ2NDotRF9NSVBTX1NaSU5UPTMy
-ICV7IW1sb25nNjQ6LURfX1NJWkVfVFlQRV9fPXVuc2lnbmVkXCBpbnQgLURf
-X1NTSVpFX1RZUEVfXz1pbnQgLURfX1BUUkRJRkZfVFlQRV9fPWludCAtRF9N
-SVBTX1NaTE9ORz0zMiAtRF9NSVBTX1NaUFRSPTMyfX0gJXttbG9uZzY0Oi1E
-X19TSVpFX1RZUEVfXz1sb25nXCB1bnNpZ25lZFwgaW50IC1EX19TU0laRV9U
-WVBFX189bG9uZ1wgaW50IC1EX19QVFJESUZGX1RZUEVfXz1sb25nXCBpbnQg
-LURfTUlQU19TWkxPTkc9NjQgLURfTUlQU19TWlBUUj02NH0gJXttaXBzMzot
-VV9fbWlwcyAtRF9fbWlwcz0zIC1EX19taXBzNjR9ICV7bWlwczQ6LVVfX21p
-cHMgLURfX21pcHM9NCAtRF9fbWlwczY0fSAle21ncDMyOi1VX19taXBzNjR9
-ICV7bWdwNjQ6LURfX21pcHM2NH0gJXtFQjotVU1JUFNFTCAtVV9fTUlQU0VM
-X18gLURfX01JUFNFQl9fICV7IWFuc2k6LURNSVBTRUJ9fSAle0VMOi1VTUlQ
-U0VCIC1VX19NSVBTRUJfXyAtRF9fTUlQU0VMX18gJXshYW5zaTotRE1JUFNF
-TH19ICV7Zm5vLVBJQzotVV9fUElDX18gLVVfX3BpY19ffSAle2Zuby1waWM6
-LVVfX1BJQ19fIC1VX19waWNfX30gJXtmUElDOi1EX19QSUNfXyAtRF9fcGlj
-X199ICV7ZnBpYzotRF9fUElDX18gLURfX3BpY19ffSAley1EX19IQVZFX0ZQ
-VV9fIH0gJXtwb3NpeDotRF9QT1NJWF9TT1VSQ0V9CgoqY2MxOgole2dsaW5l
-OiV7IWc6JXshZzA6JXshZzE6JXshZzI6IC1nMX19fX19ICV7bWlwczE6LW1m
-cDMyIC1tZ3AzMn0le21pcHMyOi1tZnAzMiAtbWdwMzJ9JXttaXBzMzoleyFt
-c2luZ2xlLWZsb2F0OiV7IW00NjUwOi1tZnA2NH19IC1tZ3A2NH0gJXttaXBz
-NDoleyFtc2luZ2xlLWZsb2F0OiV7IW00NjUwOi1tZnA2NH19IC1tZ3A2NH0g
-JXttZnA2NDole21zaW5nbGUtZmxvYXQ6JWVtYXkgbm90IHVzZSBib3RoIC1t
-ZnA2NCBhbmQgLW1zaW5nbGUtZmxvYXR9fSAle21mcDY0OiV7bTQ2NTA6JWVt
-YXkgbm90IHVzZSBib3RoIC1tZnA2NCBhbmQgLW00NjUwfX0gJXttNDY1MDot
-bWNwdT1yNDY1MH0gJXtHKn0gJXtFQjotbWVifSAle0VMOi1tZWx9ICV7RUI6
-JXtFTDolZW1heSBub3QgdXNlIGJvdGggLUVCIGFuZCAtRUx9fSAle3BpYy1u
-b25lOiAgIC1tbm8taGFsZi1waWN9ICV7cGljLWxpYjogICAgLW1oYWxmLXBp
-Y30gJXtwaWMtZXh0ZXJuOiAtbWhhbGYtcGljfSAle3BpYy1jYWxsczogIC1t
-aGFsZi1waWN9ICV7c2F2ZS10ZW1wczogfQoKKmNjMXBsdXM6CgoKKmVuZGZp
-bGU6CiV7IXNoYXJlZDpjcnRlbmQubyVzfSAle3NoYXJlZDpjcnRlbmRTLm8l
-c30gY3J0bi5vJXMKCipsaW5rOgole0cqfSAle0VCfSAle0VMfSAle21pcHMx
-fSAle21pcHMyfSAle21pcHMzfSAle21pcHM0fSAle2Jlc3RHbnVtfSAle3No
-YXJlZH0gJXtub25fc2hhcmVkfSAle2NhbGxfc2hhcmVkfSAle25vX2FyY2hp
-dmV9ICV7ZXhhY3RfdmVyc2lvbn0gICAleyFzaGFyZWQ6ICAgICAgICV7IXN0
-YXRpYzogCSV7cmR5bmFtaWM6LWV4cG9ydC1keW5hbWljfSAJJXshZHluYW1p
-Yy1saW5rZXI6LWR5bmFtaWMtbGlua2VyIC9saWIvbGQuc28uMX19IAkle3N0
-YXRpYzotc3RhdGljfX0KCipsaWI6CiV7IXNoYXJlZDogJXttaWVlZS1mcDot
-bGllZWV9ICV7cDotbGdtb259ICV7cGc6LWxnbW9ufSAgICAgICV7IWdnZGI6
-LWxjfSAle2dnZGI6LWxnfX0KCipsaWJnY2M6CiV7IXNoYXJlZDotbGdjY30K
-CipzdGFydGZpbGU6CiV7IXNoYXJlZDogICAgICAle3BnOmdjcnQxLm8lc30g
-JXshcGc6JXtwOmdjcnQxLm8lc30gICAgICAgICAgICAgICAgICAgICAgICAl
-eyFwOiV7cHJvZmlsZTpnY3J0MS5vJXN9ICAgICAgICAgICAgICAgICAgICAg
-ICAgICAleyFwcm9maWxlOmNydDEubyVzfX19fSAgICBjcnRpLm8lcyAleyFz
-aGFyZWQ6Y3J0YmVnaW4ubyVzfSAle3NoYXJlZDpjcnRiZWdpblMubyVzfQoK
-KnN3aXRjaGVzX25lZWRfc3BhY2VzOgoKCipzaWduZWRfY2hhcjoKJXtmdW5z
-aWduZWQtY2hhcjotRF9fQ0hBUl9VTlNJR05FRF9ffQoKKnByZWRlZmluZXM6
-Ci1EX19FTEZfXyAtRF9NSVBTX1NJTT1fTUlQU19TSU1fQUJJMzIgLURfX1BJ
-Q19fIC1EX19waWNfXyAtRHVuaXggLURtaXBzIC1EUjMwMDAgLURNSVBTRUIg
-LURsaW51eCAtQXN5c3RlbShsaW51eCkgLUFzeXN0ZW0ocG9zaXgpIC1BY3B1
-KG1pcHMpIC1BbWFjaGluZShtaXBzKQoKKmNyb3NzX2NvbXBpbGU6CjEKCipt
-dWx0aWxpYjoKLiAhRUwgIUVCO2VsIEVMICFFQjtlYiAhRUwgRUI7Cgo=
----1463811840-451476392-900960059=:12940--
+     I would guess that, depending on how the system was booted,
+firmware temporary memory could be 4 MB or more, although the
+actual environment and argument values are of course much smaller.
+Once you free the firmware area, you can no longer use the firmware
+entries (except to leave linux and reboot or halt).

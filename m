@@ -1,48 +1,36 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6VLBEI11761
-	for linux-mips-outgoing; Tue, 31 Jul 2001 14:11:14 -0700
-Received: from we-24-31-32-201.we.mediaone.net (root@we-24-31-32-201.we.mediaone.net [24.31.32.201])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6VLBDV11758
-	for <linux-mips@oss.sgi.com>; Tue, 31 Jul 2001 14:11:13 -0700
-Received: from webninja.com (caleb@[192.168.1.234])
-	by we-24-31-32-201.we.mediaone.net (8.9.3/8.9.3) with ESMTP id NAA21214;
-	Tue, 31 Jul 2001 13:12:26 -0700
-Message-ID: <3B671E27.3080808@webninja.com>
-Date: Tue, 31 Jul 2001 14:07:51 -0700
-From: Caleb Shay <caleb@webninja.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.2) Gecko/20010628
-X-Accept-Language: en-us
+	by oss.sgi.com (8.11.2/8.11.3) id f6VLBvg11815
+	for linux-mips-outgoing; Tue, 31 Jul 2001 14:11:57 -0700
+Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6VLBvV11812
+	for <linux-mips@oss.sgi.com>; Tue, 31 Jul 2001 14:11:57 -0700
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f6VLHBE01520;
+	Tue, 31 Jul 2001 14:17:11 -0700
+Message-ID: <3B671DFC.3999437D@mvista.com>
+Date: Tue, 31 Jul 2001 14:07:08 -0700
+From: Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
 To: James Simmons <jsimmons@transvirtual.com>
-CC: linux-mips-kernel@lists.sourceforge.net, linux-mips@oss.sgi.com
-Subject: Re: Mips Cobalt cube distro
-References: <Pine.LNX.4.10.10107311341170.28897-100000@transvirtual.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+CC: linux-mips@oss.sgi.com, linux-mips-kernel@lists.sourceforge.net
+Subject: Re: sys_mips problems
+References: <Pine.LNX.4.10.10107311357530.28897-100000@transvirtual.com>
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Ummm, what README?
-All I see is this.
-
-base-contents.txt <http://loco.pocketlinux.com/%7Esamc/debian-cobalt/base-contents.txt>       31-Jul-2001 13:40     5k  
-base.tar.bz2 <http://loco.pocketlinux.com/%7Esamc/debian-cobalt/base.tar.bz2>            31-Jul-2001 13:40  19.0M  
-vmlinux.gz <http://loco.pocketlinux.com/%7Esamc/debian-cobalt/vmlinux.gz>              31-Jul-2001 13:40   824k  
-
-
 James Simmons wrote:
+> 
+> Since I was having problems with everything sefaulting due to the sys_mips
+> bug I tried the patch floating around. It fixed the segfault problem but
+> instead I get this error. Anyone knows why?
+> 
+> : error while loading shared libraries: libc.so.6: cannot stat shared
+> object: Error 14
 
->Hi!
->
->   We just have created a debian distro from the latest packages using a
->2.4.5 kernel for tthe MIPS cobalt cube. You can grab the image from
->
->http://www.pocketlinux.com/~samc/debian-cobalt
->
->Just read the README and have fun.
->
->
->-----------------------------------------------------------------------------
->Crap can work. Given enough thrust pigs will fly, but it's not necessary a
->good idea.                                 [ Alexander Viro on linux-kernel ]
->
+Which patch did you use?  Does your CPU have ll/sc instructions?
+
+Jun

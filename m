@@ -1,72 +1,96 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Dec 2002 18:47:23 +0000 (GMT)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:62159 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225346AbSLRSrW>; Wed, 18 Dec 2002 18:47:22 +0000
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id TAA12179;
-	Wed, 18 Dec 2002 19:47:32 +0100 (MET)
-Date: Wed, 18 Dec 2002 19:47:31 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Juan Quintela <quintela@mandrakesoft.com>
-cc: linux mips mailing list <linux-mips@linux-mips.org>,
-	Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH]: fix compiler warnings in the math-emulator
-In-Reply-To: <m2vg1rnrkg.fsf@demo.mitica>
-Message-ID: <Pine.GSO.3.96.1021218194246.5977G-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Dec 2002 18:51:56 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:3055 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225346AbSLRSv4>;
+	Wed, 18 Dec 2002 18:51:56 +0000
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.11.6/8.11.6) id gBIIpnc07231;
+	Wed, 18 Dec 2002 10:51:49 -0800
+Date: Wed, 18 Dec 2002 10:51:48 -0800
+From: Jun Sun <jsun@mvista.com>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+	jsun@mvista.com
+Subject: Re: [PATCH] add dispatch_i8259_irq() to i8259.c
+Message-ID: <20021218105148.E6061@mvista.com>
+References: <20021218094828.A6061@mvista.com> <Pine.GSO.3.96.1021218185016.5977F-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.GSO.3.96.1021218185016.5977F-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Wed, Dec 18, 2002 at 07:14:20PM +0100
+Return-Path: <jsun@orion.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 954
+X-archive-position: 955
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On 18 Dec 2002, Juan Quintela wrote:
-
-> maciej> Is it needed?  The part that returns .mx should be optimized away by the
-> maciej> compiler automagically if unused. 
+On Wed, Dec 18, 2002 at 07:14:20PM +0100, Maciej W. Rozycki wrote:
+> On Wed, 18 Dec 2002, Jun Sun wrote:
 > 
-> Idea was to make things compile without warnings, that way when you
-> change anything, you search for warnings :(
+> > > do_IRQ(poll_8259A_irq(), regs);
+> > 
+> > I actually don't like the new semantic.  The main drawback is that we can't
+> > dispatch a 8259A interrupt from assemably code, which is often needed.
+> 
+>  You can't do that with your original code either, 
 
- The idea is fine, sure.
+What do you mean?  I could do a standard assembly intr dispatching code like
+this;
 
-> With the changes that I sent, I have put the warnings levels down to
-> (for IP22) to:
->      - 7 C warnings
->      - 2 Asm warnings
+	move	a0, sp
+	jal	dispatch_i8259_irq
+	j	ret_from_irq
 
- A few warnings are unavoidable -- e.g. there is no way to shut up gas
-complaining about macros expanding into multiple instructions in branch
-delay slots.  Too bad.
+Please cross-check all current assembly-level irq dispatching calls.  They
+are all like this.
 
- How about this patch? -- it seems to work here (gcc 2.95.4).
+> unless you arrange a
+> call to your dispatch_i8259_irq() C function.  This can still be done with
+> a trivial wrapper like:
+> 
+> asmlinkage void foo_dispatch_i8259_irq(struct pt_regs *regs)
+> {
+> 	do_IRQ(poll_8259A_irq(), regs);
+> }
+>
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+This is essentially the same as adding dispatch_i8259_irq() to i8259.c file,
+which in turn calls an inline function as its function body. 
 
-patch-mips-2.4.20-pre6-20021212-setcx-0
-diff -up --recursive --new-file linux-mips-2.4.20-pre6-20021212.macro/arch/mips/math-emu/ieee754int.h linux-mips-2.4.20-pre6-20021212/arch/mips/math-emu/ieee754int.h
---- linux-mips-2.4.20-pre6-20021212.macro/arch/mips/math-emu/ieee754int.h	2002-12-16 17:17:55.000000000 +0000
-+++ linux-mips-2.4.20-pre6-20021212/arch/mips/math-emu/ieee754int.h	2002-12-18 18:31:51.000000000 +0000
-@@ -58,10 +58,10 @@
- #define CLPAIR(x,y)	((x)*6+(y))
+Unless there is obvious another usage of poll_8259A_irq(), the inline function
+might as well be not inlined.
  
- #define CLEARCX	\
--  (ieee754_csr.cx = 0)
-+	(ieee754_csr.cx = 0)
+> which results in code like you proposed.
+>
+
+Yes, that is why I liked my original function call. :-)
  
- #define SETCX(x) \
--  (ieee754_csr.cx |= (x),ieee754_csr.sx |= (x),ieee754_csr.mx & (x))
-+	({ieee754_csr.cx |= (x); ieee754_csr.sx |= (x); ieee754_csr.mx & (x);})
- 
- #define TSTX()	\
- 	(ieee754_csr.cx & ieee754_csr.mx)
+> > What is wrong with original way of dispatching?  The general interrupt 
+> > dispatching flow is that you chase the routing path until you find the final
+> > source and do a do_IRQ().  That seems fine with i8259A case here.
+> 
+>  It does too much and is therefore useful for a single specific case only. 
+> I focused on handling the chip only and the resulting function may be used
+> however desired, including your specific case.  Not all platforms need to
+> want to call do_IRQ() immediately after getting an IRQ number, including
+> code already in existence. 
+
+Note those platforms don't read i8259 registers to get irq number either.
+
+There is also a style issue.  Dispatching an interrupt is really part of
+hw_interrupt_type structure.  You should implement it in the same file as the
+rest functions.  However, if anybody feels it is not optimized enough they are
+always free to lump all IRQ dispatching code together in one place, probably even
+in assembly code.
+
+I also disagree to have a header file with only one function declaration, but I 
+agree there is orthognal issue, mostly a maintenance issue.  So if Ralf is ok with that,
+I won't bitching about it.
+
+Jun

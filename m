@@ -1,63 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jan 2004 12:34:04 +0000 (GMT)
-Received: from verein.lst.de ([IPv6:::ffff:212.34.189.10]:4569 "EHLO
-	mail.lst.de") by linux-mips.org with ESMTP id <S8224893AbUAPMeA>;
-	Fri, 16 Jan 2004 12:34:00 +0000
-Received: from verein.lst.de (localhost [127.0.0.1])
-	by mail.lst.de (8.12.3/8.12.3/Debian-6.6) with ESMTP id i0GCXre6013050
-	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
-	Fri, 16 Jan 2004 13:33:53 +0100
-Received: (from hch@localhost)
-	by verein.lst.de (8.12.3/8.12.3/Debian-6.6) id i0GCXqOw013048;
-	Fri, 16 Jan 2004 13:33:52 +0100
-Date: Fri, 16 Jan 2004 13:33:52 +0100
-From: Christoph Hellwig <hch@lst.de>
-To: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-Cc: Ralf Baechle <ralf@linux-mips.org>,
-	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH][2.6] Update NEC VRC4171 PCMCIA driver
-Message-ID: <20040116123352.GA13006@lst.de>
-References: <20040116083821.6b65c69f.yuasa@hh.iij4u.or.jp>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jan 2004 14:16:32 +0000 (GMT)
+Received: from moutng.kundenserver.de ([IPv6:::ffff:212.227.126.177]:2517 "EHLO
+	moutng.kundenserver.de") by linux-mips.org with ESMTP
+	id <S8225208AbUAPOQW> convert rfc822-to-8bit; Fri, 16 Jan 2004 14:16:22 +0000
+Received: from [212.227.126.160] (helo=mrelayng.kundenserver.de)
+	by moutng.kundenserver.de with esmtp (Exim 3.35 #1)
+	id 1AhUlo-0000OW-00
+	for linux-mips@linux-mips.org; Fri, 16 Jan 2004 15:16:20 +0100
+Received: from [80.129.131.133] (helo=create.4g)
+	by mrelayng.kundenserver.de with asmtp (Exim 3.35 #1)
+	id 1AhUlo-0002ec-00
+	for linux-mips@linux-mips.org; Fri, 16 Jan 2004 15:16:20 +0100
+From: Bruno Randolf <bruno.randolf@4g-systems.biz>
+Organization: 4G Systems
+To: linux-mips <linux-mips@linux-mips.org>
+Subject: hang in setup_irq
+Date: Fri, 16 Jan 2004 15:16:19 +0100
+User-Agent: KMail/1.5.3
+MIME-Version: 1.0
+Content-Type: Text/Plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Content-Description: clearsigned data
 Content-Disposition: inline
-In-Reply-To: <20040116083821.6b65c69f.yuasa@hh.iij4u.or.jp>
-User-Agent: Mutt/1.3.28i
-X-Spam-Score: -4.901 () BAYES_00
-X-Scanned-By: MIMEDefang 2.39
-Return-Path: <hch@lst.de>
+Message-Id: <200401161516.19386.bruno.randolf@4g-systems.biz>
+X-Provags-ID: kundenserver.de abuse@kundenserver.de auth:d41044fba7cf33548d8f98fdbdd6d515
+Return-Path: <bruno.randolf@4g-systems.biz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3998
+X-archive-position: 3999
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hch@lst.de
+X-original-sender: bruno.randolf@4g-systems.biz
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Jan 16, 2004 at 08:38:21AM +0900, Yoichi Yuasa wrote:
-> +static int pccard_register_callback(unsigned int slot,
-> +                                    void (*handler)(void *, unsigned int),
-> +                                    void *info)
-> +{
-> +	vrc4171_socket_t *socket;
-> +
-> +	if (slot >= CARD_MAX_SLOTS)
-> +		return -EINVAL;
-> +
-> +	socket = &vrc4171_sockets[slot];
-> +
-> +	socket->handler = handler;
-> +	socket->info = info;
-> +
-> +	if (handler)
-> +		MOD_INC_USE_COUNT;
-> +	else
-> +		MOD_DEC_USE_COUNT;
-> +
-> +	return 0;
-> +}
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
 
-This is most certainly wrong.  Module refcounting handling has moved one
-layer up in 2.6.
+hello!
+
+i have a mtx-1 system (mipsel kernel 2.4.21) with 2 mini-pci prism2 cards, 
+both sharing the same interrupt. everything works fine when i power on
+the system.
+
+but when i reboot (without removing the power), the initialization of the 
+driver (hostap) hangs in the function setup_irq before 
+spin_unlock_irqrestore. this does not happen when the cards have seperate 
+irqs or with only one card. what could be the problem?
+
+bruno
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.3 (GNU/Linux)
+
+iD8DBQFAB/Izfg2jtUL97G4RAiWKAJ0ctq3ixQWapHor5q3e8rtcwJNtDwCfS/Is
+CV5n5t3W5MUpaGXcyaV0vvw=
+=E7lR
+-----END PGP SIGNATURE-----

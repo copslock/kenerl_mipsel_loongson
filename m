@@ -1,52 +1,42 @@
-Received:  by oss.sgi.com id <S553850AbQKOQ66>;
-	Wed, 15 Nov 2000 08:58:58 -0800
-Received: from woody.ichilton.co.uk ([216.29.174.40]:57871 "HELO
-        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553729AbQKOQ6b>;
-	Wed, 15 Nov 2000 08:58:31 -0800
-Received: by woody.ichilton.co.uk (Postfix, from userid 0)
-	id 050F17CEC; Wed, 15 Nov 2000 16:58:29 +0000 (GMT)
-Date:   Wed, 15 Nov 2000 16:58:29 +0000
-From:   Ian Chilton <mailinglist@ichilton.co.uk>
-To:     tmaloney@ixl.com
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: 5400 rpm drive in an Indy
-Message-ID: <20001115165829.A22899@woody.ichilton.co.uk>
-Reply-To: Ian Chilton <ian@ichilton.co.uk>
-Mime-Version: 1.0
+Received:  by oss.sgi.com id <S553702AbQKOTqi>;
+	Wed, 15 Nov 2000 11:46:38 -0800
+Received: from mail.ivm.net ([62.204.1.4]:45410 "EHLO mail.ivm.net")
+	by oss.sgi.com with ESMTP id <S553660AbQKOTqd>;
+	Wed, 15 Nov 2000 11:46:33 -0800
+Received: from franz.no.dom (port73.duesseldorf.ivm.de [195.247.65.73])
+	by mail.ivm.net (8.8.8/8.8.8) with ESMTP id UAA10526;
+	Wed, 15 Nov 2000 20:46:21 +0100
+X-To:   linux-mips@oss.sgi.com
+Message-ID: <XFMail.001115204615.Harald.Koerfgen@home.ivm.de>
+X-Mailer: XFMail 1.4.0 on Linux
+X-Priority: 3 (Normal)
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.11i
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+In-Reply-To: <20001115004122.G927@bacchus.dhis.org>
+Date:   Wed, 15 Nov 2000 20:46:15 +0100 (CET)
+Reply-To: Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
+Organization: none
+From:   Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
+To:     Ralf Baechle <ralf@oss.sgi.com>
+Subject: Re: Build failure for R3000 DECstation
+Cc:     linux-mips@oss.sgi.com
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hello,
 
-> i don't know what that music means. 
+On 14-Nov-00 Ralf Baechle wrote:
+> In any case, for uniprocessor non-ll/sc machines there is also a better
+> solution availble with no syscalls at all.  It's easy to implement, just
+> use the fact that any exception will change the values of k0/k1.  That of
+> course breaks silently on SMP.
 
-It means: "hey, i'm on and working!"
+Please, we do not even want to think about SMP boxen without ll/sc, do we?
 
+;-)
 
-> here's a little something on topic though: where can i get a copy of HardHat
-> on cd? i know it's only based on RedHat 5.1, but it's a place to start.
-
-AFAIK, you can't
-
-
-ftp://oss.sgi.com/pub/linux/mips/redhat/     :-)
-
-
-Bye for Now,
-
-Ian
-
-                                \|||/
-                                (o o)
- /---------------------------ooO-(_)-Ooo---------------------------\
- |  Ian Chilton        (IRC Nick - GadgetMan)     ICQ #: 16007717  |
- |-----------------------------------------------------------------|
- |  E-Mail: ian@ichilton.co.uk     Web: http://www.ichilton.co.uk  |
- |-----------------------------------------------------------------|
- |       I used up all my sick days, so I'm calling in dead.       |
- \-----------------------------------------------------------------/
+-- 
+Regards,
+Harald

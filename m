@@ -1,47 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Oct 2004 19:00:24 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:37895 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225363AbUJOSAS>; Fri, 15 Oct 2004 19:00:18 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 4572AF599A; Fri, 15 Oct 2004 20:00:08 +0200 (CEST)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 04236-02; Fri, 15 Oct 2004 20:00:08 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id EBDBDE1C84; Fri, 15 Oct 2004 20:00:07 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.1/8.12.11) with ESMTP id i9FI0LRH023276;
-	Fri, 15 Oct 2004 20:00:22 +0200
-Date: Fri, 15 Oct 2004 19:00:12 +0100 (BST)
-From: "Maciej W. Rozycki" <macro@linux-mips.org>
-To: Alec Voropay <a.voropay@vmb-service.ru>
-Cc: linux-mips@linux-mips.org
-Subject: Re: PATCH:  JAZZ jazzdma.c  linux_2_4
-In-Reply-To: <013201c4b2dd$6c4e64d0$1701a8c0@vmbservice.ru>
-Message-ID: <Pine.LNX.4.58L.0410151858170.11787@blysk.ds.pg.gda.pl>
-References: <013201c4b2dd$6c4e64d0$1701a8c0@vmbservice.ru>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Oct 2004 01:48:48 +0100 (BST)
+Received: from h014.c009.snv.cp.net ([IPv6:::ffff:209.228.34.127]:56722 "HELO
+	c009.snv.cp.net") by linux-mips.org with SMTP id <S8225307AbUJPAsj>;
+	Sat, 16 Oct 2004 01:48:39 +0100
+Received: (cpmta 11854 invoked from network); 15 Oct 2004 17:48:31 -0700
+Received: from 209.228.34.120 (HELO mail.canada.com.criticalpath.net)
+  by smtp.canada.com (209.228.34.127) with SMTP; 15 Oct 2004 17:48:31 -0700
+X-Sent: 16 Oct 2004 00:48:31 GMT
+Received: from [69.193.111.169] by mail.canada.com with HTTP;
+    Fri, 15 Oct 2004 17:48:31 -0700 (PDT)
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+To: linux-mips@linux-mips.org
+From: thomas_blattmann@canada.com
+Subject: crt1.o missing
+X-Sent-From: thomas_blattmann@canada.com
+Date: Fri, 15 Oct 2004 17:48:31 -0700 (PDT)
+X-Mailer: Web Mail 5.6.4-0
+Message-Id: <20041015174831.28904.h007.c009.wm@mail.canada.com.criticalpath.net>
+Return-Path: <thomas_blattmann@canada.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6066
+X-archive-position: 6067
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: thomas_blattmann@canada.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 15 Oct 2004, Alec Voropay wrote:
+Hi,
 
-> Spellcheck
+I'm trying to crosscompile a hello-world program but it
+fails:
 
- Thanks.  Applied as obvious after a manual formatting fix -- please try
-keeping formatting correct in the future.
+/usr/local/lib/gcc-lib/mipsel-linux/2.96-mips3264-000710/../../../../mipsel-linux/bin/ld: cannot open crt1.o:
+No such file or directory
+collect2: ld returned 1 exit status
 
-  Maciej
+There are several postings in the archives but non of
+them helped me on so far. I will probably have to get
+the libc for mipsel-linux - but where can I get it and
+what to do with it ??
+
+Thanks,
+
+Thomas
+ 

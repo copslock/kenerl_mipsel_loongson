@@ -1,82 +1,84 @@
-Received:  by oss.sgi.com id <S305155AbPKKFRi>;
-	Wed, 10 Nov 1999 21:17:38 -0800
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:33900 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S305154AbPKKFRT>; Wed, 10 Nov 1999 21:17:19 -0800
-Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id VAA03369
-	for <linuxmips@oss.sgi.com>; Wed, 10 Nov 1999 21:23:37 -0800 (PST)
-	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id UAA66479
-	for linux-list;
-	Wed, 10 Nov 1999 20:56:40 -0800 (PST)
-	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id UAA76488
-	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 10 Nov 1999 20:56:35 -0800 (PST)
-	mail_from (avalex@mail.ru)
-Received: from msk2.mail.ru (mx2.mail.ru [194.67.23.33]) 
+Received:  by oss.sgi.com id <S305155AbPKKXZT>;
+	Thu, 11 Nov 1999 15:25:19 -0800
+Received: from sgi.SGI.COM ([192.48.153.1]:20077 "EHLO sgi.com")
+	by oss.sgi.com with ESMTP id <S305154AbPKKXZB>;
+	Thu, 11 Nov 1999 15:25:01 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
 	by sgi.com (980305.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id UAA1054403
-	for <linux@cthulhu.engr.sgi.com>; Wed, 10 Nov 1999 20:56:29 -0800 (PST)
-	mail_from (avalex@mail.ru)
-Received: from camel.int ([10.0.0.98] helo=camel.mail.ru)
-	by msk2.mail.ru with esmtp (Exim 3.02 #107)
-	id 11lmHb-0007I7-00
-	for linux@cthulhu.engr.sgi.com; Thu, 11 Nov 1999 07:56:27 +0300
-Received: from dial54141.mtu-net.ru ([195.34.54.141] helo=mail.ru)
-	by camel.mail.ru with esmtp (Exim 3.02 #105)
-	id 11lmHV-0004t9-00
-	for linux@cthulhu.engr.sgi.com; Thu, 11 Nov 1999 07:56:21 +0300
-Message-ID: <382A4C6F.65D114C0@mail.ru>
-Date:   Thu, 11 Nov 1999 07:56:15 +0300
-From:   Alexander Averyanov <avalex@mail.ru>
-Organization: UniSoft
-X-Mailer: Mozilla 4.7 [en] (X11; I; Linux 2.2.9-27mdk i686)
-X-Accept-Language: ru, en
-MIME-Version: 1.0
-To:     linux@cthulhu.engr.sgi.com
-Subject: Indogo IRIS XS 24 (R3000)
-Content-Type: multipart/alternative;
- boundary="------------26B27E56D2F75F2D8071843E"
+	via ESMTP id PAA1281153
+	for <linuxmips@oss.sgi.com>; Thu, 11 Nov 1999 15:29:56 -0800 (PST)
+	mail_from (owner-linux@cthulhu.engr.sgi.com)
+Received: (from majordomo-owner@localhost)
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	id OAA90444
+	for linux-list;
+	Thu, 11 Nov 1999 14:59:58 -0800 (PST)
+	mail_from (owner-linux@relay.engr.sgi.com)
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	via ESMTP id OAA31131
+	for <linux@engr.sgi.com>;
+	Thu, 11 Nov 1999 14:59:40 -0800 (PST)
+	mail_from (ralf@uni-koblenz.de)
+Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
+	by sgi.com (980305.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id OAA1148100
+	for <linux@engr.sgi.com>; Thu, 11 Nov 1999 14:59:28 -0800 (PST)
+	mail_from (ralf@uni-koblenz.de)
+Received: from cacc-27.uni-koblenz.de (cacc-27.uni-koblenz.de [141.26.131.27])
+	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id XAA10684;
+	Thu, 11 Nov 1999 23:59:09 +0100 (MET)
+Received:  by lappi.waldorf-gmbh.de id <S407621AbPKKKyh>;
+	Thu, 11 Nov 1999 11:54:37 +0100
+Date:   Thu, 11 Nov 1999 11:54:37 +0100
+From:   Ralf Baechle <ralf@uni-koblenz.de>
+To:     Ian Lance Taylor <ian@zembu.com>
+Cc:     macro@ds2.pg.gda.pl, binutils@sourceware.cygnus.com, hjl@lucon.org,
+        aj@suse.de, flo@rfc822.org, linux@cthulhu.engr.sgi.com,
+        linux-mips@fnet.fr, linux-mips@vger.rutgers.edu
+Subject: Re: Symbol merging for MIPS*/ELF
+Message-ID: <19991111115437.A19641@uni-koblenz.de>
+References: <Pine.GSO.3.96.991110115952.9984B-100000@delta.ds2> <19991110155546.14856.qmail@daffy.airs.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0pre3us
+In-Reply-To: <19991110155546.14856.qmail@daffy.airs.com>
+X-Accept-Language: de,en,fr
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
+On Wed, Nov 10, 1999 at 10:55:46AM -0500, Ian Lance Taylor wrote:
 
---------------26B27E56D2F75F2D8071843E
-Content-Type: text/plain; charset=koi8-r
-Content-Transfer-Encoding: 7bit
+> Those patches were from Kazumoto Kojima
+> <kkojima@info.kanagawa-u.ac.jp>, and were intended to support dynamic
+> linking for MIPS GNU/Linux.  It may be that we should not be
+> generating SHN_MIPS_TEXT and SHN_MIPS_DATA in output files.  This may
+> be an Irix specific thing.  I don't know.
 
-Hi!
-Who has expirience with porting
-Linux to Indogo IRIS XS 24 (R3000)
+I just checked this in the blue books from AT&T.  It defines SHN_MIPS_ACOMMON
+(0xff00), SHN_MIPS_SCOMMON (0xff03), SHN_MIPS_SUNDEFINED (0xff04).  0xff01
+and 0xff02 are reserved values.  I guess the blue books are equivalent to
+ABI version 1.0.
 
---
-Best regards
-                Averyanov Alexander.
+The current MIPS ABI 3.0 then defines SHM_MIPS_TEXT as 0xff01 and
+SHM_MIPS_DATA as 0xff02 with the following explanation:
 
+  Symbols defined relative to these two sections are only present after a
+  program has been rewritten by the pixie code profiling program.  Such
+  rewritten programs are not ABI-compliant.  Symbols defined relative to
+  these sections will never occur in an ABI-compliant program.
 
+I cc this to the various Linux/MIPS mailing lists.  A number of the people
+who did work on the MIPS ABI and it's implementations are reading there.
+Maybe somebody can bring more light into this, especially the reasons for
+this SHN_MIPS_* magic.
 
---------------26B27E56D2F75F2D8071843E
-Content-Type: text/html; charset=koi8-r
-Content-Transfer-Encoding: 7bit
-
-<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
-<html>
-Hi!
-<br>Who has expirience with porting
-<br>Linux to Indogo IRIS XS 24 (R3000)
-<pre>--&nbsp;
-Best regards
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Averyanov Alexander.</pre>
-&nbsp;</html>
-
---------------26B27E56D2F75F2D8071843E--
+  Ralf

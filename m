@@ -1,62 +1,48 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7ABhYh10186
-	for linux-mips-outgoing; Fri, 10 Aug 2001 04:43:34 -0700
-Received: from sgi.com (sgi.SGI.COM [192.48.153.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7ABhUV10165;
-	Fri, 10 Aug 2001 04:43:30 -0700
-Received: from larry.melbourne.sgi.com (larry.melbourne.sgi.com [134.14.52.130]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via SMTP id EAA05053; Fri, 10 Aug 2001 04:42:21 -0700 (PDT)
-	mail_from (nathans@wobbly.melbourne.sgi.com)
-Received: from wobbly.melbourne.sgi.com (wobbly.melbourne.sgi.com [134.14.55.135]) by larry.melbourne.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id VAA25379; Fri, 10 Aug 2001 21:42:12 +1000
-Received: (from nathans@localhost)
-	by wobbly.melbourne.sgi.com (SGI-8.9.3/8.9.3) id VAA90837;
-	Fri, 10 Aug 2001 21:42:11 +1000 (EST)
-Date: Fri, 10 Aug 2001 21:42:11 +1000
-From: Nathan Scott <nathans@sgi.com>
-To: Ralf Baechle <ralf@oss.sgi.com>
-Cc: Seth Mos <knuffie@xs4all.nl>, Brandon Barker <bebarker@meginc.com>,
-   linux-mips@oss.sgi.com, linux-xfs@oss.sgi.com
-Subject: Re: XFS installer
-Message-ID: <20010810214211.B282097@wobbly.melbourne.sgi.com>
-References: <20010810035106.A23548@bacchus.dhis.org> <Pine.BSI.4.10.10108100733470.24104-100000@xs3.xs4all.nl> <20010810131954.C23866@bacchus.dhis.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20010810131954.C23866@bacchus.dhis.org>; from ralf@oss.sgi.com on Fri, Aug 10, 2001 at 01:19:54PM +0200
+	by oss.sgi.com (8.11.2/8.11.3) id f7ADWQd12302
+	for linux-mips-outgoing; Fri, 10 Aug 2001 06:32:26 -0700
+Received: from mout04.kundenserver.de (mout04.kundenserver.de [195.20.224.89])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7ADWPV12299
+	for <linux-mips@oss.sgi.com>; Fri, 10 Aug 2001 06:32:25 -0700
+Received: from [195.20.224.204] (helo=mrvdom00.schlund.de)
+	by mout04.kundenserver.de with esmtp (Exim 2.12 #2)
+	id 15VCOe-00043V-00; Fri, 10 Aug 2001 15:32:16 +0200
+Received: from pd9007d28.dip.t-dialin.net ([217.0.125.40] helo=shodan)
+	by mrvdom00.schlund.de with smtp (Exim 2.12 #2)
+	id 15VCOd-0007s8-00; Fri, 10 Aug 2001 15:32:15 +0200
+Message-ID: <002601c121a0$de4f2fa0$237900d9@shodan>
+From: "Armin F. Gnosa" <mipslist@gnosa.com>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: <linux-mips@oss.sgi.com>
+References: <Pine.GSO.3.96.1010810110057.2724F-100000@delta.ds2.pg.gda.pl>
+Subject: Re: Problem with PMAD-AA / DECStation 5000/200
+Date: Fri, 10 Aug 2001 15:32:13 +0200
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="Windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4522.1200
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4522.1200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-hi,
+>  I'm not sure how exactly the ROMs are wired (they're usually 8-bit);
+> hopefully in a "natural" way.  You can read most of ROMs under Linux via
+> mmap()ping /dev/mem -- parts of ROMs may not be directly available to the
+> host CPU if they contain option's CPU firmware.  The MB ROM is remapped
+> (byte-merged) by the chipset so that it can be read in 32-bit quantities
+> as parts of it get executed directly (the I/O ASIC permits switching the
+> byte merging off).  Option ROMs are not remapped as they always get copied
+> to the system RAM before execution.  Their organization can be read from
+> their headers as specified by the TURBOchannel firmware specification.
 
-On Fri, Aug 10, 2001 at 01:19:54PM +0200, Ralf Baechle wrote:
-> On Fri, Aug 10, 2001 at 07:38:15AM +0200, Seth Mos wrote:
-> 
-> > > of XFS on disk has somewhen been changed; the Linux version only supports
-> > > v2 while IRIX 6.2 is rather old so I think only supports v1.  Thus both
-> > > flavours are incompatible.
-> > 
-> > True, linux suports only v2. I don't know if Irix 6.2 supports the v2
-> > mode. Another thing to watch out for is that the blocksize must equal
-> > pagesize to be able to als mount it under linux.
-> 
-> Urg.  MIPS also supports various page sizes and so this will limit the
-> use of XFS for file exchange.  Is this planned to be fixed?
-> 
+That sounds like an interesting alternative to pulling the PROM out of
+its socket. Then, a program running on a DECStation 5000/200 should be
+reading from 0x1F81C0000..0x1F1FFFFF, right? One question about Byte
+Merging: Does it mean that I don't have to read bytewise but instead
+DWORD-wise?
 
-Yes, for the filesystem blocksize < pagesize case anyway - slated
-for Linux/XFS 1.1.  On IRIX mkfs defaults to a 4K blocksize, which
-is fortunate I guess.
-
-IRIX/XFS supports 512byte through to 64K blocksizes, so having
-variable page sizes on Linux/MIPS actually makes sharing easier
-on MIPS than on many other architectures.
-
-cheers.
-
--- 
-Nathan
+Regards,
+Armin

@@ -1,74 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Nov 2003 11:41:23 +0000 (GMT)
-Received: from webmail27.rediffmail.com ([IPv6:::ffff:203.199.83.37]:39119
-	"HELO rediffmail.com") by linux-mips.org with SMTP
-	id <S8225381AbTKQLkv>; Mon, 17 Nov 2003 11:40:51 +0000
-Received: (qmail 22353 invoked by uid 510); 17 Nov 2003 11:40:11 -0000
-Date: 17 Nov 2003 11:40:11 -0000
-Message-ID: <20031117114011.22352.qmail@webmail27.rediffmail.com>
-Received: from unknown (210.210.7.195) by rediffmail.com via HTTP; 17 nov 2003 11:40:11 -0000
-MIME-Version: 1.0
-From: "ashish  anand" <ashish_ibm@rediffmail.com>
-Reply-To: "ashish  anand" <ashish_ibm@rediffmail.com>
-To: linux-mips@linux-mips.org
-Subject: is cp0 interrupt infrastructure sufficient..?
-Content-type: multipart/alternative;
-	boundary="Next_1069069211---0-203.199.83.37-22293"
-Return-Path: <ashish_ibm@rediffmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Nov 2003 13:19:19 +0000 (GMT)
+Received: from p508B6BAF.dip.t-dialin.net ([IPv6:::ffff:80.139.107.175]:23495
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225383AbTKQNTH>; Mon, 17 Nov 2003 13:19:07 +0000
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id hAHDJ5A0006432;
+	Mon, 17 Nov 2003 14:19:05 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id hAHDJ4kp006423;
+	Mon, 17 Nov 2003 14:19:04 +0100
+Date: Mon, 17 Nov 2003 14:19:04 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: ashish anand <ashish_ibm@rediffmail.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: is cp0 interrupt infrastructure sufficient..?
+Message-ID: <20031117131904.GC5221@linux-mips.org>
+References: <20031117114011.22352.qmail@webmail27.rediffmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20031117114011.22352.qmail@webmail27.rediffmail.com>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3630
+X-archive-position: 3631
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ashish_ibm@rediffmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
- This is a multipart mime message
+On Mon, Nov 17, 2003 at 11:40:11AM -0000, ashish  anand wrote:
 
+> I have a generic question regarding interrupt controler functionality 
+> integrated in CP0 on mips architecture.
+> I don't see any interface to configure the edge/level triggering settings.
 
---Next_1069069211---0-203.199.83.37-22293
-Content-type: text/html;
-	charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+MIPS only supports level triggered interrupts in coprocessor 0.
 
-<P>=0AI have a generic question regarding interrupt controler functionality=
- <BR>=0Aintegrated in CP0 on mips architecture.<BR>=0AI don't see any inter=
-face to configure the edge/level triggering settings.<BR>=0A<BR>=0Athough i=
-n our BSP we take care of handling spurious interrupts , but is<BR>=0Athis =
-designed to be like that..?<BR>=0A<BR>=0AI mean to ask , suppose I want to =
-add a edge triggering peripheral <BR>=0A, to the extent of my understanding=
- this will certainly generate the<BR>=0Aspurious interrupts when coupled wi=
-th a level triggering configuration <BR>=0Ain CP0 (by default..?).<BR>=0A<B=
-R>=0Aif i am handling through CP0_CAUSE or any other register inspection<BR=
->=0Athat can work but I am loosing so many valid interupts which would have=
- been really valid with edge trigger pin of interrupt controller&nbsp; .<BR=
->=0Afurther this type of handling is valid for actual spurious interrupts <=
-BR>=0Anot for those who are certain to be fired because of edge/level misma=
-tching.<BR>=0A<BR>=0ABest Regards,<BR>=0AAshish Anand<BR>=0A<BR>=0A<BR>=0A<=
-BR>=0A<BR>=0A=0A</P>=0A<br><br>=0A<A target=3D"_blank" HREF=3D"http://clien=
-ts.rediff.com/signature/track_sig.asp"><IMG SRC=3D"http://ads.rediff.com/Re=
-alMedia/ads/adstream_nx.cgi/www.rediffmail.com/inbox.htm@Bottom" BORDER=3D0=
- VSPACE=3D0 HSPACE=3D0 HEIGHT=3D74 WIDTH=3D496></a>=0A
---Next_1069069211---0-203.199.83.37-22293
-Content-type: text/plain;
-	charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+> though in our BSP we take care of handling spurious interrupts , but is
+> this designed to be like that..?
 
-I have a generic question regarding interrupt controler functionality =0Ain=
-tegrated in CP0 on mips architecture.=0AI don't see any interface to config=
-ure the edge/level triggering settings.=0A=0Athough in our BSP we take care=
- of handling spurious interrupts , but is=0Athis designed to be like that..=
-?=0A=0AI mean to ask , suppose I want to add a edge triggering peripheral =
-=0A, to the extent of my understanding this will certainly generate the=0As=
-purious interrupts when coupled with a level triggering configuration =0Ain=
- CP0 (by default..?).=0A=0Aif i am handling through CP0_CAUSE or any other =
-register inspection=0Athat can work but I am loosing so many valid interupt=
-s which would have been really valid with edge trigger pin of interrupt con=
-troller  .=0Afurther this type of handling is valid for actual spurious int=
-errupts =0Anot for those who are certain to be fired because of edge/level =
-mismatching.=0A=0ABest Regards,=0AAshish Anand=0A=0A=0A=0A=0A
---Next_1069069211---0-203.199.83.37-22293--
+There is no handling needed.  If the processor takes an interrupt but none
+of the interrupt bits in c0_status is set, just return.  That's a legal
+condition.
+
+> I mean to ask , suppose I want to add a edge triggering peripheral.
+> to the extent of my understanding this will certainly generate the
+> spurious interrupts when coupled with a level triggering configuration 
+> in CP0 (by default..?).
+
+You can directly sample the level of the edge irq in the interrupt bits in
+the cause register.  But that seems a fragile approach.
+
+> if i am handling through CP0_CAUSE or any other register inspection
+> that can work but I am loosing so many valid interupts which would have
+> been really valid with edge trigger pin of interrupt controller  .
+> further this type of handling is valid for actual spurious interrupts 
+> not for those who are certain to be fired because of edge/level mismatching.
+
+If you really need to use an edge triggered interrupt on a MIPS then you
+probably want to use some circuit interrupt controller that converts the
+edge to a level triggered interrupt.  
+
+  Ralf

@@ -1,71 +1,30 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f83NccD04855
-	for linux-mips-outgoing; Mon, 3 Sep 2001 16:38:38 -0700
-Received: from porgy.srv.nld.sonera.net (mbox-01.soneraplaza.nl [195.66.15.137])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f83NcYd04850
-	for <linux-mips@oss.sgi.com>; Mon, 3 Sep 2001 16:38:34 -0700
-Received: from qn-195-66-28-189.quicknet.nl ([195.66.28.189]:1277 "EHLO
-        reporters.net") by soneramail.nl with ESMTP id <S118956AbRICXiS>;
-	Tue, 4 Sep 2001 01:38:18 +0200
-Message-ID: <3B94146A.80107@reporters.net>
-Date:   Tue, 04 Sep 2001 01:38:18 +0200
-From: Patrick Donker <padonker@reporters.net>
-User-Agent: Mozilla/5.0 (Windows; U; Win 9x 4.90; en-US; rv:0.9.2) Gecko/20010726 Netscape6/6.1
-X-Accept-Language: en,pdf
-MIME-Version: 1.0
-To: linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.2/8.11.3) id f8416PQ06320
+	for linux-mips-outgoing; Mon, 3 Sep 2001 18:06:25 -0700
+Received: from dea.linux-mips.net (u-155-21.karlsruhe.ipdial.viaginterkom.de [62.180.21.155])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8416Md06315
+	for <linux-mips@oss.sgi.com>; Mon, 3 Sep 2001 18:06:23 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id f84162X08747;
+	Tue, 4 Sep 2001 03:06:02 +0200
+Date: Tue, 4 Sep 2001 03:06:02 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Patrick Donker <padonker@reporters.net>
+Cc: linux-mips@oss.sgi.com
 Subject: Re: O2 Linux
-References: <3B93FC6E.4090108@reporters.net> <0109031511040C.11577@gateway>
-Content-Type: multipart/alternative;
- boundary="------------020301010402030804050602"
+Message-ID: <20010904030602.A8728@dea.linux-mips.net>
+References: <3B93FC6E.4090108@reporters.net> <0109031511040C.11577@gateway> <3B94146A.80107@reporters.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3B94146A.80107@reporters.net>; from padonker@reporters.net on Tue, Sep 04, 2001 at 01:38:18AM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+> Excellent! Do you have some more specific info on like a release date?
 
---------------020301010402030804050602
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
+When it's ready :-)
 
-Excellent! Do you have some more specific info on like a release date?
-
-Ilya Volynets wrote:
-
->Yes
->On Monday 03 September 2001 14:55, Patrick Donker wrote:
->
->>Hi y'all,
->>
->>Just a quick question that possibly already has been asked a number of
->>times;
->>Will there be a Linux for the O2 developed/released any time soon?
->>
->>Thanks
->>Patrick
->>
->
->
-
-
---------------020301010402030804050602
-Content-Type: text/html; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-
-<html>
-<head>
-</head>
-<body>
-Excellent! Do you have some more specific info on like a release date?<br>
-<br>
-Ilya Volynets wrote:<br>
-<blockquote type="cite" cite="mid:0109031511040C.11577@gateway">
-  <pre wrap="">Yes<br>On Monday 03 September 2001 14:55, Patrick Donker wrote:<br></pre>
-  <blockquote type="cite">
-    <pre wrap="">Hi y'all,<br><br>Just a quick question that possibly already has been asked a number of<br>times;<br>Will there be a Linux for the O2 developed/released any time soon?<br><br>Thanks<br>Patrick<br></pre>
-    </blockquote>
-    <pre wrap=""><!----><br><br></pre>
-    </blockquote>
-    <br>
-    </body>
-    </html>
-
---------------020301010402030804050602--
+  Ralf

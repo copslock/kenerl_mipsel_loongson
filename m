@@ -1,43 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Apr 2004 19:54:57 +0100 (BST)
-Received: from athena.et.put.poznan.pl ([IPv6:::ffff:150.254.29.137]:64944
-	"EHLO athena.et.put.poznan.pl") by linux-mips.org with ESMTP
-	id <S8226045AbUD0Sy4>; Tue, 27 Apr 2004 19:54:56 +0100
-Received: from athena (athena [150.254.29.137])
-	by athena.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id i3RIsQu08681;
-	Tue, 27 Apr 2004 20:54:26 +0200 (MET DST)
-Received: from helios.et.put.poznan.pl ([150.254.29.65])
-	by athena (MailMonitor for SMTP v1.2.2 ) ;
-	Tue, 27 Apr 2004 20:54:25 +0200 (MET DST)
-Received: from localhost (sskowron@localhost)
-	by helios.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id i3RIsP617186;
-	Tue, 27 Apr 2004 20:54:25 +0200 (MET DST)
-X-Authentication-Warning: helios.et.put.poznan.pl: sskowron owned process doing -bs
-Date: Tue, 27 Apr 2004 20:54:25 +0200 (MET DST)
-From: Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
-To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-cc: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Apr 2004 20:29:11 +0100 (BST)
+Received: from p508B663E.dip.t-dialin.net ([IPv6:::ffff:80.139.102.62]:47382
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8226052AbUD0T3K>; Tue, 27 Apr 2004 20:29:10 +0100
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i3RJSmxT009432
+	for <linux-mips@linux-mips.org>; Tue, 27 Apr 2004 21:28:48 +0200
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i3RJSSSI009428;
+	Tue, 27 Apr 2004 21:28:28 +0200
+Date: Tue, 27 Apr 2004 21:28:28 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
+Cc: linux-mips@linux-mips.org
 Subject: Re: TLB on R10k
-In-Reply-To: <20040427183309.GR16797@rembrandt.csv.ica.uni-stuttgart.de>
-Message-ID: <Pine.GSO.4.10.10404272053350.17125-100000@helios.et.put.poznan.pl>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <sskowron@ET.PUT.Poznan.PL>
+Message-ID: <20040427192828.GA7739@linux-mips.org>
+References: <Pine.GSO.4.10.10404272004460.14972-100000@helios.et.put.poznan.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.GSO.4.10.10404272004460.14972-100000@helios.et.put.poznan.pl>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4914
+X-archive-position: 4915
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sskowron@ET.PUT.Poznan.PL
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-> Sloppiness, I guess. They resolve to function pointers anyway. But the
-> flush_icache_range should be fixed to cover all memcpy'ed memory.
+On Tue, Apr 27, 2004 at 08:07:23PM +0200, Stanislaw Skowronek wrote:
 
-Yes, I've done it, too. Still gets hung. I wonder why, I have looked at
-all exception code and it is 64-bit-clean (except for some bit that is
-only compiled on SMP, so I don't really care).
+> Why, in tlb-andes.c, all exception handlers are prefixed with an
+> ampersand (&) when copying them to main memory, only the r10k fill handler
+> isn't? I'm getting a blackhole-style crash (no messages, no panic,
+> interrupts dead as a doornail, nobody knows what is happening) as soon as
+> I try to jump to usermode.
 
-/s
+Have you verified that the UX bit is set correctly by your kernel?  BEV
+also plays a role but since you survive BogoMIPS it should be right.
+
+  Ralf

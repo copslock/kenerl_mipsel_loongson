@@ -1,41 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Nov 2003 16:06:56 +0000 (GMT)
-Received: from gw.icm.edu.pl ([IPv6:::ffff:212.87.0.39]:40711 "EHLO
-	atol.icm.edu.pl") by linux-mips.org with ESMTP id <S8225339AbTKZMpB>;
-	Wed, 26 Nov 2003 12:45:01 +0000
-Received: from rekin.icm.edu.pl (mail@rekin.icm.edu.pl [192.168.1.132])
-	by atol.icm.edu.pl (8.12.6/8.12.6/rzm-4.6/icm) with ESMTP id hAQCiGTq003784
-	for <linux-mips@linux-mips.org>; Wed, 26 Nov 2003 13:44:32 +0100 (CET)
-Received: from rathann by rekin.icm.edu.pl with local (Exim 3.35 #1 (Debian))
-	id 1AOz1l-00084P-00
-	for <linux-mips@linux-mips.org>; Wed, 26 Nov 2003 13:44:17 +0100
-Date: Wed, 26 Nov 2003 13:44:17 +0100
-From: "Dominik 'Rathann' Mierzejewski" <rathann@icm.edu.pl>
-To: linux-mips@linux-mips.org
-Subject: ftp.linux-mips.org down?
-Message-ID: <20031126124416.GA30744@icm.edu.pl>
-Mail-Followup-To: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Nov 2003 16:07:28 +0000 (GMT)
+Received: from p508B60ED.dip.t-dialin.net ([IPv6:::ffff:80.139.96.237]:25259
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225346AbTKZPx4>; Wed, 26 Nov 2003 15:53:56 +0000
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id hAQFrsA0010941;
+	Wed, 26 Nov 2003 16:53:55 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id hAQFrk6M010929;
+	Wed, 26 Nov 2003 16:53:46 +0100
+Date: Wed, 26 Nov 2003 16:53:45 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
+Cc: linux-mips@linux-mips.org
+Subject: Re: [PATCH] TX49Lx support
+Message-ID: <20031126155345.GA10842@linux-mips.org>
+References: <20031126.150719.104026850.nemoto@toshiba-tops.co.jp>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.3.28i
-Return-Path: <rathann@icm.edu.pl>
+In-Reply-To: <20031126.150719.104026850.nemoto@toshiba-tops.co.jp>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3679
+X-archive-position: 3680
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rathann@icm.edu.pl
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi.
-I'm currently (12:40:14 UTC) getting connection refused while
-trying to connect to ftp.linux-mips.org, although traceroute
-shows no problems. Any clues?
+On Wed, Nov 26, 2003 at 03:07:19PM +0900, Atsushi Nemoto wrote:
 
-Regards,
--- 
-Dominik 'Rathann' Mierzejewski <rathann@icm.edu.pl>
-LAN ICM UW Geologia, tel. (22) 5540810
+> Some TX49 do not have FPU.  We can tell such CPUs by bit3 of PrID.
+> Here is a patch for 2.4 tree.  The first hunk can also be used for 2.6
+> tree.  Please apply.  Thank you.
+
+In general I'd like to ask people to send patches for 2.4 and 2.6 in
+separate email.
+
+I applied your patch with a little change for clarity; I also
+restructured the 64-bit cpu-probe.c the same way as it's 32-bit
+counterpart to keep the two files more similar.
+
+  Ralf

@@ -1,49 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jun 2003 13:27:53 +0100 (BST)
-Received: from p508B67B0.dip.t-dialin.net ([IPv6:::ffff:80.139.103.176]:47047
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225272AbTFLM1v>; Thu, 12 Jun 2003 13:27:51 +0100
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h5CCRobY011317;
-	Thu, 12 Jun 2003 05:27:50 -0700
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h5CCRo76011316;
-	Thu, 12 Jun 2003 14:27:50 +0200
-Date: Thu, 12 Jun 2003 14:27:50 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Trevor Woerner <mips081@vtnet.ca>
-Cc: linux-mips@linux-mips.org
-Subject: Re: 64-bit sysinfo
-Message-ID: <20030612122750.GB14965@linux-mips.org>
-References: <200306120659.26501.mips081@vtnet.ca> <20030612113520.GA8390@linux-mips.org> <200306120807.59346.mips081@vtnet.ca>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jun 2003 14:56:23 +0100 (BST)
+Received: from kauket.visi.com ([IPv6:::ffff:209.98.98.22]:46060 "HELO
+	mail-out.visi.com") by linux-mips.org with SMTP id <S8225240AbTFLN4U>;
+	Thu, 12 Jun 2003 14:56:20 +0100
+Received: from mahes.visi.com (mahes.visi.com [209.98.98.96])
+	by mail-out.visi.com (Postfix) with ESMTP
+	id C64DA36CD; Thu, 12 Jun 2003 08:56:28 -0500 (CDT)
+Received: from mahes.visi.com (localhost [127.0.0.1])
+	by mahes.visi.com (8.12.9/8.12.5) with ESMTP id h5CDuGKe041389;
+	Thu, 12 Jun 2003 08:56:16 -0500 (CDT)
+	(envelope-from erik@greendragon.org)
+Received: (from www@localhost)
+	by mahes.visi.com (8.12.9/8.12.5/Submit) id h5CDuA2t041388;
+	Thu, 12 Jun 2003 13:56:10 GMT
+X-Authentication-Warning: mahes.visi.com: www set sender to erik@greendragon.org using -f
+Received: from stpns.guidant.com (stpns.guidant.com [132.189.76.10]) 
+	by my.visi.com (IMP) with HTTP 
+	for <longshot@imap.visi.com>; Thu, 12 Jun 2003 13:56:10 +0000
+Message-ID: <1055426170.3ee8867abc934@my.visi.com>
+Date: Thu, 12 Jun 2003 13:56:10 +0000
+From: "Erik J. Green" <erik@greendragon.org>
+To: Martin Leopold <mleopold@tiscali.dk>
+Cc: "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+	Keith M Wesolowski <wesolows@foobazco.org>
+Subject: Re: Linux on Octane IP30 (was Re: Linux on Indigo2 (IP28) - R10000)
+References: <20030611222146.GE5140@asterix.cartoonnet>
+In-Reply-To: <20030611222146.GE5140@asterix.cartoonnet>
+MIME-Version: 1.0
+Content-Type: text/plain
 Content-Disposition: inline
-In-Reply-To: <200306120807.59346.mips081@vtnet.ca>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Transfer-Encoding: 7bit
+User-Agent: Internet Messaging Program (IMP) 4.0-cvs
+X-Originating-IP: 132.189.76.10
+Return-Path: <erik@greendragon.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2611
+X-archive-position: 2612
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: erik@greendragon.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jun 12, 2003 at 08:07:59AM -0400, Trevor Woerner wrote:
+Quoting Martin Leopold <mleopold@tiscali.dk>:
 
-> Thanks for your (and everyone's suggestions) I'll have a look at this 
-> today. I put a printk in kernel/proc.c:sys_sysinfo() so that's the one 
-> being called. I also put another printk in 
-> arch/mips64/mm/init.c:si_meminfo() (??? i think...) and it was being 
-> called from 'sys_info()'. I don't remember seeing sys32_sysinfo() but 
-> I'll look again.
+> He has some utils and some info on getting it running, what is your
+> take? Will this get my anywhere near having a running Linux on my
+> Ocane? Or do I have to start kernel-hacking before that will happen =]?
+> 
+> --
+> Regards Martin Leopold.
+> Dept. of Computer Science, University of Copenhagen
 
-sys32_sysinfo calls sys_sysinfo.  So if you see a direct call to
-sys_sysinfo this might proof something is using the wrong syscall.
-Strace is your friend ...  Oh, and verify that your kernel has Andrew's
-patch from my previous mail applied.
+You have to hack at least minimally.  The Origin and Octane are quite similar in
+a lot of ways, but they're not close enough to just boot the Origin code.
 
-  Ralf
+Erik
+
+
+
+-- 
+Erik J. Green
+erik@greendragon.org

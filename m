@@ -1,46 +1,58 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g14Jj2O16812
-	for linux-mips-outgoing; Mon, 4 Feb 2002 11:45:02 -0800
+	by oss.sgi.com (8.11.2/8.11.3) id g14K5tV30992
+	for linux-mips-outgoing; Mon, 4 Feb 2002 12:05:55 -0800
 Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g14JixA16774
-	for <linux-mips@oss.sgi.com>; Mon, 4 Feb 2002 11:44:59 -0800
-Received: from zeus.mvista.com (zeus.mvista.com [10.0.0.112])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id g14IgqB09457;
-	Mon, 4 Feb 2002 10:42:52 -0800
-Subject: Re: madplay on mips
-From: Pete Popov <ppopov@mvista.com>
-To: Jun Sun <jsun@mvista.com>
-Cc: linux-mips <linux-mips@oss.sgi.com>
-In-Reply-To: <3C5ED610.529C020E@mvista.com>
-References: <1012843753.14993.106.camel@zeus> 
-	<3C5ED610.529C020E@mvista.com>
-Content-Type: text/plain
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g14K5jA30793;
+	Mon, 4 Feb 2002 12:05:45 -0800
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id g14J1aB11076;
+	Mon, 4 Feb 2002 11:01:36 -0800
+Message-ID: <3C5EDB08.B4F2FF7B@mvista.com>
+Date: Mon, 04 Feb 2002 11:03:36 -0800
+From: Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+CC: Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com
+Subject: Re: CVS Update@oss.sgi.com: linux
+References: <Pine.GSO.3.96.1020204101743.5750B-100000@delta.ds2.pg.gda.pl>
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Mailer: Evolution/1.0.1 
-Date: 04 Feb 2002 10:46:54 -0800
-Message-Id: <1012848414.15163.140.camel@zeus>
-Mime-Version: 1.0
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, 2002-02-04 at 10:42, Jun Sun wrote:
-> Pete Popov wrote:
-> > 
-> > Has anyone used madplay on mips to play mp3 files successfully? I've
-> > tried it on two mips boards with different sound drivers, and in both
-> > cases it plays the song slower and a bit muffled.  It works on x86 and
-> > supposedly ppc.
-> > 
+"Maciej W. Rozycki" wrote:
 > 
-> I tried it before, and had the same results.
+> On Sun, 3 Feb 2002, Ralf Baechle wrote:
 > 
-> I looked over the system calls, and was pretty much sure that the problem was
-> on madplay side, and not on the driver side.  One problem suspected was the
-> floating point issue, but did get into it.
+> > >  Hmm, the assumption might be justifiable for the i386 only?  Shouldn't
+> > > i8259.c be fixed instead?
+> >
+> > These are the ISA interrupts; many drivers make assumptions about the
+> > interrupts numbers, so we can't really change the numbers anyway.  For
+> > any non-ISA interrupt it's number can be choosen freely.
+> 
+>  I don't think such assumptions are sane even for the i386 -- an I/O APIC
+> system is free to route ISA interrupts to whichever I/O APIC inputs are
+> available, not necessarily the low 16.  The Intel MP Spec explicitly
+> allows such a setup -- ISA interrupts are only tied in default
+> configurations, which are rarely used (probably not at all these days).
+> 
+>  Anyway, only the drivers that read an IRQ number from jumpers or Flash
+> memory need to be checked, and these are a minority (3Com Ethernet cards
+> and possibly very few others).  These that do probing (with probe_irq) or
+> simply take the number from an option will work automatically.
+> 
+>  While I agree for 2.4 it might be not the best idea to do such changes,
+> for 2.5 it's worth considering, isn't it?
+> 
 
-Even though madplay claims that no floating point is used, the
-disassembly of the latest version shows otherwise. But I tried it on a
-board with a cpu that does have a hardware floating point unit with the
-same result.
+This patch is from me.  It merely reflects a change of the irq base mapping
+from 0x20 to 0x0.  I think someone did this change for Malta board.
 
-Pete
+A better solution is to have init_i8259_irqs() take an argument that is the
+base IRQ number, like many other irq controller code do.  This way it is a
+board level decision as what block of IRQs i8259 should use.
+
+Jun

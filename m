@@ -1,51 +1,67 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id RAA46485 for <linux-archive@neteng.engr.sgi.com>; Wed, 19 Aug 1998 17:09:11 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id RAA75231 for <linux-archive@neteng.engr.sgi.com>; Wed, 19 Aug 1998 17:59:36 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id RAA80819
+	id RAA14530
 	for linux-list;
-	Wed, 19 Aug 1998 17:08:33 -0700 (PDT)
+	Wed, 19 Aug 1998 17:58:58 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id RAA29460
-	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 19 Aug 1998 17:08:31 -0700 (PDT)
+	via ESMTP id RAA84158;
+	Wed, 19 Aug 1998 17:58:31 -0700 (PDT)
 	mail_from (ralf@uni-koblenz.de)
 Received: from informatik.uni-koblenz.de ([141.26.4.1]) 
 	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id RAA24292
-	for <linux@cthulhu.engr.sgi.com>; Wed, 19 Aug 1998 17:08:30 -0700 (PDT)
+	via ESMTP id RAA05020; Wed, 19 Aug 1998 17:58:29 -0700 (PDT)
 	mail_from (ralf@uni-koblenz.de)
 From: ralf@uni-koblenz.de
-Received: from uni-koblenz.de (pmport-28.uni-koblenz.de [141.26.249.28])
-	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id CAA08261
-	for <linux@cthulhu.engr.sgi.com>; Thu, 20 Aug 1998 02:08:28 +0200 (MEST)
+Received: from uni-koblenz.de (pmport-16.uni-koblenz.de [141.26.249.16])
+	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id CAA11711;
+	Thu, 20 Aug 1998 02:58:27 +0200 (MEST)
 Received: (from ralf@localhost)
-	by uni-koblenz.de (8.8.7/8.8.7) id CAA00779;
-	Thu, 20 Aug 1998 02:07:03 +0200
-Message-ID: <19980820020702.B388@uni-koblenz.de>
-Date: Thu, 20 Aug 1998 02:07:02 +0200
-To: Alex deVries <adevries@engsoc.carleton.ca>,
-        Ulf Carlsson <grim@zigzegv.ml.org>
-Cc: linux@cthulhu.engr.sgi.com
-Subject: Re: [PATCH] sc
-References: <199808192003.WAA13671@calypso.saturn> <Pine.LNX.3.96.980819161628.4406D-100000@lager.engsoc.carleton.ca>
+	by uni-koblenz.de (8.8.7/8.8.7) id CAA00803;
+	Thu, 20 Aug 1998 02:13:22 +0200
+Message-ID: <19980820021322.C388@uni-koblenz.de>
+Date: Thu, 20 Aug 1998 02:13:22 +0200
+To: "William J. Earl" <wje@fir.engr.sgi.com>
+Cc: Ulf Carlsson <grim@zigzegv.ml.org>, linux@cthulhu.engr.sgi.com
+Subject: Re: bus error IRQ
+References: <199808171845.UAA29545@calypso.saturn> <19980818021316.J3345@uni-koblenz.de> <199808190231.TAA27036@fir.engr.sgi.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 X-Mailer: Mutt 0.91.1
-In-Reply-To: <Pine.LNX.3.96.980819161628.4406D-100000@lager.engsoc.carleton.ca>; from Alex deVries on Wed, Aug 19, 1998 at 04:16:52PM -0400
+In-Reply-To: <199808190231.TAA27036@fir.engr.sgi.com>; from William J. Earl on Tue, Aug 18, 1998 at 07:31:05PM -0700
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Wed, Aug 19, 1998 at 04:16:52PM -0400, Alex deVries wrote:
+On Tue, Aug 18, 1998 at 07:31:05PM -0700, William J. Earl wrote:
 
-> If there's no objections from the MIPS kernel hackers here, I'll apply
-> this to the CVS.
+> ralf@uni-koblenz.de writes:
+> ...
+>  > The bad thing with a bus error is that it may be delayed for a very long
+>  > time thus resulting in a useless program counter.  What happens is that
+>  > the CPU writes to some invalid address but the write access over the
+>  > system bus is delayed because the writeback cache policy is being used.
+>  > Later, maybe even much later, when the cacheline gets written back to
+>  > memory for some reason the system board signals a bus error interrupt.
+>  > At this point the program counter may already be completly useless.
+> ...
+> 
+>      You cannot get a delayed bus error on a cached write, unless
+> you do a "create dirty exclusive" cache operation to validate the line
+> before writing.
 
-Don't, it wont work for non-SC CPUs.
+Linux uses Create_Dirty_Excl_D as optimization where possible, so the
+probability for this to happen is relativly high.  Linux however should
+never use Create_Dirty_Excl_D or Create_Dirty_Excl_SD on R4[04]00SC
+CPUs, have to verify this.
+
+>                  You can get delayed bus errors on uncached writes,
+> as to device control registers.  Since any K1SEG address is uncached,
+> it is not too hard to generate a bus error with a bad pointer value.
 
   Ralf

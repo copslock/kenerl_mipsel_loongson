@@ -1,69 +1,62 @@
-Received:  by oss.sgi.com id <S305173AbQCALtT>;
-	Wed, 1 Mar 2000 03:49:19 -0800
-Received: from deliverator.sgi.com ([204.94.214.10]:55379 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305163AbQCALtN>;
-	Wed, 1 Mar 2000 03:49:13 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id DAA24353; Wed, 1 Mar 2000 03:44:39 -0800 (PST)
+Received:  by oss.sgi.com id <S305173AbQCAMKa>;
+	Wed, 1 Mar 2000 04:10:30 -0800
+Received: from deliverator.sgi.com ([204.94.214.10]:51285 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305163AbQCAMKJ>;
+	Wed, 1 Mar 2000 04:10:09 -0800
+Received: from nodin.corp.sgi.com (fddi-nodin.corp.sgi.com [198.29.75.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id EAA25497; Wed, 1 Mar 2000 04:05:35 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id EAA04840; Wed, 1 Mar 2000 04:09:37 -0800 (PST)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id DAA75531
+	id DAA08626
 	for linux-list;
-	Wed, 1 Mar 2000 03:39:27 -0800 (PST)
+	Wed, 1 Mar 2000 03:58:40 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id DAA11278
+	via ESMTP id DAA87506
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 1 Mar 2000 03:39:23 -0800 (PST)
-	mail_from (flo@rfc822.org)
-Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4]) 
+	Wed, 1 Mar 2000 03:58:37 -0800 (PST)
+	mail_from (Geert.Uytterhoeven@sonycom.com)
+Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id DAA01318
-	for <linux@cthulhu.engr.sgi.com>; Wed, 1 Mar 2000 03:39:22 -0800 (PST)
-	mail_from (flo@rfc822.org)
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id C9CBE7F5; Wed,  1 Mar 2000 12:39:21 +0100 (CET)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 4EF718FC3; Wed,  1 Mar 2000 12:26:50 +0100 (CET)
-Date:   Wed, 1 Mar 2000 12:26:50 +0100
-From:   Florian Lohoff <flo@rfc822.org>
-To:     Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
-Cc:     linux@cthulhu.engr.sgi.com
+	via ESMTP id DAA07206
+	for <linux@cthulhu.engr.sgi.com>; Wed, 1 Mar 2000 03:58:35 -0800 (PST)
+	mail_from (Geert.Uytterhoeven@sonycom.com)
+Received: from dandelion.sonytel.be (dandelion.sonytel.be [193.74.243.153])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id MAA18015;
+	Wed, 1 Mar 2000 12:58:29 +0100 (MET)
+Date:   Wed, 1 Mar 2000 12:58:28 +0100 (MET)
+From:   Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
+To:     Florian Lohoff <flo@rfc822.org>
+cc:     linux@cthulhu.engr.sgi.com
 Subject: Re: 2.3.47 success on Decstation 5000/150, problems with login
-Message-ID: <20000301122650.A5186@paradigm.rfc822.org>
-References: <20000301115053.A4608@paradigm.rfc822.org> <Pine.GSO.4.10.10003011222500.13477-100000@dandelion.sonytel.be> <20000301122329.B4608@paradigm.rfc822.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.3i
-In-Reply-To: <20000301122329.B4608@paradigm.rfc822.org>; from Florian Lohoff on Wed, Mar 01, 2000 at 12:23:29PM +0100
-Organization: rfc822 - pure communication
+In-Reply-To: <20000301122329.B4608@paradigm.rfc822.org>
+Message-ID: <Pine.GSO.4.10.10003011258010.13477-100000@dandelion.sonytel.be>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On Wed, Mar 01, 2000 at 12:23:29PM +0100, Florian Lohoff wrote:
-> On Wed, Mar 01, 2000 at 12:25:02PM +0100, Geert Uytterhoeven wrote:
-> > 
-> > What does `ssh -v root@repeat.rfc822.org' say?
+On Wed, 1 Mar 2000, Florian Lohoff wrote:
+> > BTW, does this mean you have a Debian/mipsel ssh package now?
 > 
-> (flo@ping)~# ssh -v root@repeat.rfc822.org 
-> SSH Version 1.2.26 [i586-unknown-linux], protocol version 1.5.
-> Standard version.  Does not use RSAREF.
+> ftp.rfc822.org
+> 
+> /pub/local/debian/debian-non-US/dists/potato/non-US/non-free/binary-mipsel/ssh_1.2.27-2_mipsel.deb
 
-BTW:
+Ah, now I remember. This package depends on a package that's not available.
 
-ssh root@repeat.rfc822.org reboot 
+Gr{oetje,eeting}s,
 
-Works - So it has to be something with the "interactive session" therefor
-i suspected PTY98 things ...
+						Geert
 
-Flo
--- 
-Florian Lohoff		flo@rfc822.org		      	+49-5241-470566
-"Technology is a constant battle between manufacturers producing bigger and
-more idiot-proof systems and nature producing bigger and better idiots."
+--
+Geert Uytterhoeven ------------- Sony Software Development Center Europe (SDCE)
+Geert.Uytterhoeven@sonycom.com ------------------- Sint-Stevens-Woluwestraat 55
+Voice +32-2-7248638 Fax +32-2-7262686 ---------------- B-1130 Brussels, Belgium

@@ -1,56 +1,43 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g2PAmDe10731
-	for linux-mips-outgoing; Mon, 25 Mar 2002 02:48:13 -0800
-Received: from mail-gw.sonicblue.com (mail-gw.sonicblue.com [209.10.223.218])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2PAm7q10728
-	for <linux-mips@oss.sgi.com>; Mon, 25 Mar 2002 02:48:07 -0800
-Received: from relay.sonicblue.com (timbale [10.6.1.10])
-	by mail-gw.sonicblue.com (8.11.6/8.11.6) with ESMTP id g2PAoP908502
-	for <linux-mips@oss.sgi.com>; Mon, 25 Mar 2002 03:50:25 -0700 (MST)
-Received: from corpvirus1.sc.sonicblue.com (corpvirus1.sonicblue.com [10.6.2.49])
-	by relay.sonicblue.com (8.11.5/8.11.5) with SMTP id g2PAoP603072
-	for <linux-mips@oss.sgi.com>; Mon, 25 Mar 2002 02:50:25 -0800 (PST)
-Received: FROM corpmailmx.sonicblue.com BY corpvirus1.sc.sonicblue.com ; Mon Mar 25 02:57:40 2002 -0800
-Received: by CORPMAILMX with Internet Mail Service (5.5.2653.19)
-	id <D4ZWC022>; Mon, 25 Mar 2002 02:51:06 -0800
-Message-ID: <37D1208A1C9BD511855B00D0B772242C011C7F13@corpmail1.sc.sonicblue.com>
-From: Peter Hartley <PDHartley@sonicblue.com>
-To: "'H . J . Lu'" <hjl@lucon.org>, Andrew Morton <akpm@zip.com.au>
-Cc: tytso@thunk.org, linux-mips@oss.sgi.com,
-   linux kernel
-	 <linux-kernel@vger.kernel.org>,
-   GNU C Library
-	 <libc-alpha@sources.redhat.com>
-Subject: RE: Does e2fsprogs-1.26 work on mips?
-Date: Mon, 25 Mar 2002 02:52:24 -0800
+	by oss.sgi.com (8.11.2/8.11.3) id g2PBchx11417
+	for linux-mips-outgoing; Mon, 25 Mar 2002 03:38:43 -0800
+Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2PBcdq11414
+	for <linux-mips@oss.sgi.com>; Mon, 25 Mar 2002 03:38:39 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id MAA05215;
+	Mon, 25 Mar 2002 12:40:09 +0100 (MET)
+Date: Mon, 25 Mar 2002 12:40:09 +0100 (MET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Dave Airlie <airlied@csn.ul.ie>
+cc: Ralf Baechle <ralf@uni-koblenz.de>, linux-mips@fnet.fr,
+   linux-mips@oss.sgi.com
+Subject: Re: [patch] linux: declance multicast filter fixes
+In-Reply-To: <Pine.LNX.4.32.0203241349380.32481-100000@skynet>
+Message-ID: <Pine.GSO.3.96.1020325123322.4605A-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2653.19)
-Content-Type: text/plain;
-	charset="iso-8859-1"
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-H J Lu wrote:
-> I look at the glibc code. It uses a constant RLIM_INFINITY for a given
-> arch. The user always passes (~0UL) to glibc on x86. glibc will check
-> if the kernel supports the new getrlimit at the run time. If it
-> doesn't, glibc will adjust the RLIM_INFINITY for setrlimit. I 
-> don't see
-> how glibc 2.2.5 compiled under kernel 2.2 will fail under 2.4 due to
-> this unless glibc is misconfigureed or miscompiled.
+On Sun, 24 Mar 2002, Dave Airlie wrote:
 
-It's not a question of which kernel glibc is compiled under, it's a question
-of which version of the kernel headers (/usr/include/{linux,asm}) glibc is
-compiled against.
+> well it should work for the PMAD and I've got a version for the VAX that
+> splits off from my one, the VAX uses a similiar wiring as the DS5000/200,
+> I've been waiting for the LANCE core to be separated out a lot of people
+> have talked about it and I hear for 2.5 maybe someone is actually going to
+> do it ...
 
-A glibc, even the newest glibc, *compiled against 2.2 headers* cannot know
-about the new getrlimit, so the run-time test cannot be compiled and is not
-used. Such a glibc subsequently breaks fsck if run under a 2.4 kernel.
+ Well, the core seems to be already separated -- see drivers/net/7990.c.
+I haven't yet checked how suitable it is and many front-end drivers use it
+already.
 
-Recompile your glibc against 2.4 headers and you should get a glibc and fsck
-that work if run under either a 2.2 or 2.4 kernel.
+ For the I/O ASIC front-end I'm going to check if the ASIC is capable of
+mapping the LANCE more sensibly before starting any further work.  The
+current configuration is a major loss, doubling the CPU's work and I can't
+see any reasonable explanation for such a setup.
 
-The necessary kernel patch to fix this mess is in the latest -pre-ac (thanks
-Alan).
-
-	Peter
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

@@ -1,67 +1,71 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1KNFEj31962
-	for linux-mips-outgoing; Wed, 20 Feb 2002 15:15:14 -0800
-Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1KNF8931958
-	for <linux-mips@oss.sgi.com>; Wed, 20 Feb 2002 15:15:09 -0800
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id DBFD87FA; Wed, 20 Feb 2002 23:14:41 +0100 (CET)
-Received: by localhost (Postfix, from userid 1000)
-	id 6FE0A1A2C7; Wed, 20 Feb 2002 23:15:07 +0100 (CET)
-Date: Wed, 20 Feb 2002 23:15:07 +0100
-From: Florian Lohoff <flo@rfc822.org>
-To: Robert Rusek <robru@teknuts.com>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: Latest kernel?
-Message-ID: <20020220221507.GC29624@paradigm.rfc822.org>
-References: <000d01c1ba5a$083b1fc0$6701a8c0@computer>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="PuGuTyElPB9bOcsM"
-Content-Disposition: inline
-In-Reply-To: <000d01c1ba5a$083b1fc0$6701a8c0@computer>
-User-Agent: Mutt/1.3.27i
-Organization: rfc822 - pure communication
+	by oss.sgi.com (8.11.2/8.11.3) id g1L2aHd04887
+	for linux-mips-outgoing; Wed, 20 Feb 2002 18:36:17 -0800
+Received: from host099.momenco.com (IDENT:root@www.momenco.com [64.169.228.99])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1L2a9904884
+	for <linux-mips@oss.sgi.com>; Wed, 20 Feb 2002 18:36:09 -0800
+Received: from beagle (beagle.internal.momenco.com [192.168.0.115])
+	by host099.momenco.com (8.11.6/8.11.6) with SMTP id g1L1a5R26771
+	for <linux-mips@oss.sgi.com>; Wed, 20 Feb 2002 17:36:05 -0800
+From: "Matthew Dharm" <mdharm@momenco.com>
+To: "Linux-MIPS" <linux-mips@oss.sgi.com>
+Subject: set_io_port_base()?
+Date: Wed, 20 Feb 2002 17:36:05 -0800
+Message-ID: <NEBBLJGMNKKEEMNLHGAIOEKBCFAA.mdharm@momenco.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
+Importance: Normal
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+So, what's the proper usage for set_io_port_base()?
 
---PuGuTyElPB9bOcsM
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I'm trying to bring up Linux on our newest board (the Ocelot-G -- see
+www.momenco.com for more information).  I think I'm pretty far along,
+but I can't get a plug-in PCI ethernet device to work.  What I get is:
 
-On Wed, Feb 20, 2002 at 02:00:36PM -0800, Robert Rusek wrote:
-> Where can I obtain the latest stable build of the kernel.  I need it to w=
-ork
-> on my SGI IP22.  If possible I do not want to use CSV since I do not have=
- a
-> high speed internet connection.  Any help would be greatly appreciated.
+eepro100.c:v1.09j-t 9/29/99 Donald Becker
+http://cesdis.gsfc.nasa.gov/linux/drivers/eepro100.html
+eepro100.c: $Revision: 1.36 $ 2000/11/17 Modified by Andrey V.
+Savochkin <saw@saw.sw.com.sg> and others
+PCI setting cache line size to 8 from 0
+eth0: Invalid EEPROM checksum 0x0000, check settings before activating
+this device!
+eth0: Intel Corp. 82559ER, 00:00:00:00:00:00, IRQ 9.
+  Receiver lock-up bug exists -- enabling work-around.
+  Board assembly 000000-000, Physical connectors present:
+  Primary interface chip None PHY #0.
+  General self-test: passed.
+  Serial sub-system self-test: passed.
+  Internal registers self-test: passed.
+  ROM checksum self-test: passed (0x1d68d8db).
+  Receiver lock-up workaround activated.
 
-I dont think there are regular tarballs - Take the pain once - checkout
-the kernel and before modifying make a tarball. Then you can just
+Now, I'm pretty sure this has something to do with the initcall to
+set_io_port_base() and ioremap(), which are in my setup.c (copied from
+linux/arch/mips/gt64120/momenco_ocelot/setup.c and modified).  Without
+that bit of code at the bottom of that function, I don't even get
+this -- it just crashes.  So I know I need this code, but I'm just not
+certain what/how I should be using it...
 
-cvs -z3 update -Pd=20
+My initial guess is that it's used to map some virtual address space
+onto the physical addresses needed to actually generate PCI I/O
+transactions, but that's just a guess.  If that's right, then the code
+I'm using _should_ work... I call ioremap() with the physical base and
+size, and then set_io_port_base() using the result of ioremap().
 
-Your tarball all the time. BTW: You should checkout -r linux_2_4 as
-i dont think 2.5 has success reports on mips already.
+Anyone have any thoughts?
 
-Flo
---=20
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-Nine nineth on september the 9th              Welcome to the new billenium
+Matt
 
---PuGuTyElPB9bOcsM
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iD8DBQE8dB/rUaz2rXW+gJcRAgfdAJ4ltnzDlHK7sE91tPl+Xxt3jW/X4ACg0Nhf
-zrbHlkNfmRLglhJx/Mgaveg=
-=Aaiy
------END PGP SIGNATURE-----
-
---PuGuTyElPB9bOcsM--
+--
+Matthew D. Dharm                            Senior Software Designer
+Momentum Computer Inc.                      1815 Aston Ave.  Suite 107
+(760) 431-8663 X-115                        Carlsbad, CA 92008-7310
+Momentum Works For You                      www.momenco.com

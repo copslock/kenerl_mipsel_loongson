@@ -1,59 +1,48 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f2MIaYK06491
-	for linux-mips-outgoing; Thu, 22 Mar 2001 10:36:34 -0800
-Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f2MIaXM06488
-	for <linux-mips@oss.sgi.com>; Thu, 22 Mar 2001 10:36:33 -0800
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f2MIX4020006;
-	Thu, 22 Mar 2001 10:33:04 -0800
-Message-ID: <3ABA4539.C3E780B6@mvista.com>
-Date: Thu, 22 Mar 2001 10:32:25 -0800
-From: Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: Jay Carlson <nop@nop.com>
-CC: "Kevin D. Kissell" <kevink@mips.com>, linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.3/8.11.3) id f2MJ0U407232
+	for linux-mips-outgoing; Thu, 22 Mar 2001 11:00:30 -0800
+Received: from pobox.sibyte.com (pobox.sibyte.com [208.12.96.20])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f2MJ0TM07229
+	for <linux-mips@oss.sgi.com>; Thu, 22 Mar 2001 11:00:29 -0800
+Received: from postal.sibyte.com (moat.sibyte.com [208.12.96.21])
+	by pobox.sibyte.com (Postfix) with SMTP id 53DF8205FF
+	for <linux-mips@oss.sgi.com>; Thu, 22 Mar 2001 11:00:24 -0800 (PST)
+Received: from SMTP agent by mail gateway 
+ Thu, 22 Mar 2001 10:53:21 -0800
+Received: from plugh.sibyte.com (plugh.sibyte.com [10.21.64.158])
+	by postal.sibyte.com (Postfix) with ESMTP id 5481B1595F
+	for <linux-mips@oss.sgi.com>; Thu, 22 Mar 2001 11:00:24 -0800 (PST)
+Received: by plugh.sibyte.com (Postfix, from userid 61017)
+	id 65F1F686D; Thu, 22 Mar 2001 11:02:52 -0800 (PST)
+From: Justin Carlson <carlson@sibyte.com>
+Reply-To: carlson@sibyte.com
+Organization: Sibyte
+To: linux-mips@oss.sgi.com
 Subject: Re: Embedded MIPS/Linux Needs
-References: <KEEOIBGCMINLAHMMNDJNIEHDCAAA.nop@nop.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Date: Thu, 22 Mar 2001 11:02:20 -0800
+X-Mailer: KMail [version 1.0.29]
+Content-Type: text/plain
+MIME-Version: 1.0
+Message-Id: <01032211025209.20180@plugh.sibyte.com>
+Content-Transfer-Encoding: 8bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Jay Carlson wrote:
-> 
-> Disclaimer: I'm just a hobbyist.
->
+On Thu, 22 Mar 2001, you wrote:
 
-Disclaimer: I am an MontaVista employee, but as always, this email only
-represents my own opinion. :-)
- 
-> Kevin D. Kissell writes:
-> 
-> 
-> Individual embedded Linux companies don't have much motivation to attack
-> this problem alone, as it looks like it could involve extensive gcc hacking.
-> If a particular customer looks like they have code density issues, it'd be
-> easier for embedded linux companies to just recommend, say, ARM.  MIPS
-> Technologies on the other hand carries the banner for all devices licensing
-> their architecture, and any toolchain work may result in greater demand for
-> their own cores and licensee products.
->
+> I have a question for those of you who are doing
+> Linux work for *new* platforms (as opposed to the
+> SGI/DEC legacy box support people).  IF, and I
+> emphasize the word *if*, MIPS Technologies were
+> make a bigger investment in MIPS/Linux technology,
+> be it kernel enhancements, cross/native tools,
+> userland ports, libraries, or whatever, what would
+> be your prioritized "wish list"?
 
-I agree.  Toolchain is the first step in the food chain.  It makes most sense
-for MTI to invest in it and to make it better.  All companies that I heard of
-switching from MIPS to PPC are due to toolchain (including debuggers). 
-Sometimes it even has nothing to do with Linux.
+1)  n64 support in the full current gnu toolchain 
+2)  n64 support in the full current gnu toolchain. 
+3)  n64...
 
-I think kernel also needs improvement in terms of board/machine support.  I
-wrote an email long time ago talking about introducing a board support
-structure.  I predicted we would see 20 new MIPS boards added this year and
-100 more down the road.  Apparently a better structure needs to be in place to
-accomdate the growth. It will certainly make future porting much easier too.
+I, of course, hold no biases whatsoever.  ;)
 
-While some of the improvement can be done incrementally (like time.c mess
-clean-up), some (like irq, PCI?) is probably best to be done just in one shot.
-
-Jun
+-Justin

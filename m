@@ -1,462 +1,491 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g2SDPFl09673
-	for linux-mips-outgoing; Thu, 28 Mar 2002 05:25:15 -0800
-Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2SDOSq09669
-	for <linux-mips@oss.sgi.com>; Thu, 28 Mar 2002 05:24:28 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA12347;
-	Thu, 28 Mar 2002 14:26:56 +0100 (MET)
-Date: Thu, 28 Mar 2002 14:26:55 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: David Woodhouse <dwmw2@redhat.com>, Ralf Baechle <ralf@uni-koblenz.de>,
-   Harald Koerfgen <hkoerfg@web.de>
-cc: linux-mips@fnet.fr, linux-mips@oss.sgi.com
-Subject: [patch] linux 2.4: DEC MS02-NV NVRAM module support
-Message-ID: <Pine.GSO.3.96.1020328140909.11187D-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+	by oss.sgi.com (8.11.2/8.11.3) id g2SLIdO20960
+	for linux-mips-outgoing; Thu, 28 Mar 2002 13:18:39 -0800
+Received: from oemcomputer ([218.66.143.210])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2SLHdq20945;
+	Thu, 28 Mar 2002 13:17:40 -0800
+Message-Id: <200203282117.g2SLHdq20945@oss.sgi.com>
+From: =?gb2312?q?=B3=C2=B9=FA=C7=BF_<hungmin@21cn.com>?=
+Reply-To: hungmin@21cn.com
+Subject: =?gb2312?q?=C5=E4=BC=FE=C5=FA=B7=A2=C9=CC?=
+Date: Fri, 29 Mar 2002 05:22:37 +0800
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: multipart/mixed; boundary="8c6125db-31fa-427a-9d97-9c1fa326cda5"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hello,
 
- The patch adds support for the DEC MS02-type lithium battery backed-up
-NVRAM board.  The board provides 1MB (architecturally up to 4MB) of fast
-SRAM originally meant as a PrestoServe NFS accelerator for the MIPS-based
-DECstations.
+This is a multi-part message in MIME format
+--8c6125db-31fa-427a-9d97-9c1fa326cda5
+Content-Type: text/plain; charset=gb2312
+Content-Transfer-Encoding: quoted-printable
 
- The code works fine for me since its creation back in August.  It was not
-tested by anyone else -- after announcing the code at the "linux-mips" 
-list last year I've read from two volunteers but they did not come back
-with results ever. 
+=CE=D2=CB=BE=F4=E9=CC=A8=CD=E5=F6=CE=B4=EF=C3=B3=D2=D7=B9=AB=CB=BE=D7=A4=CF=C3=
+=C3=C5=B0=EC=CA=C2=B4=A6=A3=AC=B3=A4=C6=DA=B4=D3=CA=C2=CF=C3=C3=C5=D3=EB=B8=DF=
+=D0=DB=B8=DB=D6=AE=BC=E4=B5=C4=D2=B5=CE=F1=CD=F9=C0=B4=A3=AC=C0=FB=D3=C3
+=CE=D2=C3=C7=B5=C4=C7=FE=B5=C0=BA=CD=D4=AD=B3=A7=BD=F8=BB=F5=B5=C4=BC=DB=B8=F1=
+=D3=C5=CA=C6=A3=AC=D7=DF=CB=BD=D2=BB=D0=A9=B0=B2=B7=C0=A3=BA=C8=E7=C9=E3=CF=F1=
+=BB=FA=A3=BB=D3=B2=C5=CC=C2=BC=CF=F3=BB=FA=B5=C8=BA=CD=B5=E7=C4=D4=B2=FA=C6=B7=
+=BC=B0=CF=E0=B9=D8=C5=E4=BC=FE=A3=AC=BD=F1=C4=EA=CE=D2=C3=C7=D2=AA=D4=DA=B9=F3=
+=B5=D8=C0=A9=D5=B9
+=D2=B5
+=CE=F1=A3=AC=D1=B0=D5=D2=D2=BB=BC=D2=D3=D0=CA=B5=C1=A6=B5=C4=BE=AD=CF=FA=B5=E3=
+=A3=AC=BE=DF=CC=E5=B2=D9=D7=F7=B7=BD=B0=B8=C8=E7=CF=C2=A3=BA1=C2=F2=B6=CF=A3=
+=AC=CE=D2=B7=BD=B0=B4=B9=F3=B7=BD=CB=F9=CC=E1=B9=A9=C7=E5=B5=A5=B9=A9=D3=A6=C9=
+=CC=C6=B7
+=A3=AC=B2=A2=B8=BA=D4=F0=D6=CA=B1=A3=D2=BB=C4=EA=A3=AC=B9=F3=B7=BD=B1=D8=D0=EB=
+=D6=A7=B8=B6=CF=E0=D3=A6=B5=C4=D7=CA=BD=F0=A3=AC=CA=D7=B4=CE=BF=C9=C1=F410%=CE=
+=AA=D6=CA=B1=A3=BD=F0=A3=AC=B2=A2=D0=E8=B5=BD=CE=D2=CB=BE=C7=A9=B6=A9=D3=D0=B9=
+=D8
+=B5=C4=CF=FA=CA=DB=BA=CF=CD=AC=A1=A32=A3=AC=C8=E7=D0=E8=D1=F9=C6=B7=A3=AC=D4=
+=DA=B9=F3=B7=BD=B2=BB=C4=DC=C5=C9=C8=CB=C7=B0=C0=B4=B5=C4=C7=E9=BF=F6=CF=C2=A3=
+=AC=B8=F9=BE=DD=BF=CD=BB=A7=D2=AA=C7=F3=A3=AC=BF=C9=CA=D3=C7=E9
+=BF=F6=A3=AC=CF=C8=B8=B640%=A1=AA80%=B5=C4=B6=A8=BD=F0=A3=AC=CE=D2=B7=BD=B2=C9=
+=D3=C3=BA=BD=BF=D5=BF=EC=B5=DD=B5=C4=B7=BD=B7=A8=D3=CA=BC=C4=A3=AC=D3=CA=BC=C4=
+=D1=F9=C6=B7=BD=F0=B6=EE=D7=EE=B8=DF5=CD=F2=D4=AA=D2=D4=C4=DA=A1=A3
+3=A3=AC=B4=FA=C0=ED=A3=BA=B3=FD=C1=CB=D2=AA=B5=BD=CE=D2=CB=BE=C7=A9=B6=A9=B4=
+=FA=C0=ED=BA=CF=D4=BC=A3=AC=C3=BF=D4=C2=D7=EE=B5=CD=CF=FA=CA=DB=BD=F0=B6=EE=B2=
+=BB=C4=DC=B5=CD=D3=DA50=CD=F2=D4=AA=A3=AC=C9=CF=B2=BB=B7=E2=B6=A5=A3=AC=B2=A2=
+=CC=E1
+=B9=A930%=D7=F7=CE=AA=B1=A3=D6=A4=BD=F0=A3=AC=C8=F4=B4=FA=C0=ED=B2=FA=C6=B7=B3=
+=AC=B3=F650=CD=F2=D4=AA=A3=AC=D4=F2=B0=B4=CA=B5=BC=CA=BD=F0=B6=EE=B5=C430%=D7=
+=F7=CE=AA=B1=A3=D6=A4=BD=F0=A3=AC=BB=F5=BF=EE=C3=BF=D4=C2=BD=E1=CB=E3
+=D2=BB
+=B4=CE=A3=AC=B1=A3=D6=A4=BD=F0=B3=A4=C6=DA=D1=BA=D4=DA=CE=D2=CB=BE=A3=AC=C8=E7=
+=B4=FA=C0=ED=BA=CF=CD=AC=C6=DA=C2=FA=A3=AC=B1=A3=D6=A4=BD=F0=D3=EB=CE=B4=BD=E1=
+=CB=E3=BB=F5=BF=EE=CF=E0=BF=DB=A3=AC=B6=E0=CD=CB=C9=D9=B2=B9=A1=A3=BA=CD=CE=D2=
+=CB=BE
+=BA=CF
+=D7=F7=C0=FB=C8=F3=B9=B2=CF=ED=A3=AC=B7=E7=CF=D5=B9=B2=B5=A3=A3=AC=C8=E7=D3=D0=
+=D2=E2=BA=CF=D7=F7=A3=AC=BE=DF=CC=E5=B2=D9=D7=F7=B7=BD=B0=B8=C7=EB=BA=CD=CE=D2=
+=CB=BE=B3=C2=B9=FA=C7=BF=BE=AD=C0=ED
+=C1=AA=CF=B5=A3=AC=B5=E7=BB=B0=A3=BA05953117594=A3=AC013850735096
+=C1=ED=B8=BD=D2=BB=B7=DD=BC=DB=B8=F1=B1=ED=B9=A9=B2=CE=D4=C4=A3=A825=CC=EC=CE=
+=AA=D2=BB=B1=A8=BC=DB=A3=A9       =F6=CE=B4=EF=B9=AB=CB=BE=D0=C5=CF=A2=BF=C6
+=CD=B6 =D3=B0 =BB=FA =B1=A8 =BC=DB =B1=ED=A3=A8=C8=FD=C1=E2=A3=A9
+=D0=F2=BA=C5
+=D0=CD  =BA=C5
+=C3=FB   =B3=C6   =BC=B0   =B9=E6   =B8=F1
+=B5=A5 =BC=DB
+1
+LVP-SA51U
+1200ANSI 800=A1=C1600 =CF=F1=CB=D8540=CF=DF =CA=FD=C2=EB=B7=C5=B4=F3
+9700.00=D4=AA
+2
+LVP-S50UX
+1200ANSI 800=A1=C1600 =CF=F1=CB=D8540=CF=DF =CA=FD=C2=EB=B7=C5=B4=F3
+10000.00=D4=AA
+3
+LVP-XD200U
+2000ANSI 1024=A1=C1768=CF=F1=CB=D8540=CF=DF =CA=FD=C2=EB=B7=C5=B4=F3=CB=AB=D1=
+=B6=BA=C5=D4=B4=CF=D4=CA=BE(=BB=AD=D6=D0=BB=AD)
+21500.00=D4=AA
+4
+LVP-SL1U
+1200ANSI 800=A1=C1600 =CF=F1=CB=D8540=CF=DF =CA=FD=C2=EB=B7=C5=B4=F3=CB=AB=D1=
+=B6=BA=C5=D4=B4=CF=D4=CA=BE(=BB=AD=D6=D0=BB=AD)
+12000.00=D4=AA
+5
+LVP-XL1U
+1200ANSI 1024=A1=C1768=CF=F1=CB=D8540=CF=DF =CA=FD=C2=EB=B7=C5=B4=F3=CB=AB=D1=
+=B6=BA=C5=D4=B4=CF=D4=CA=BE(=BB=AD=D6=D0=BB=AD)
+14000.00=D4=AA
+6
+LVP-S290U
+1800ANSI 800=A1=C1600 =CF=F1=CB=D8540=CF=DF =CA=FD=C2=EB=B7=C5=B4=F3=CB=AB=D1=
+=B6=BA=C5=D4=B4=CF=D4=CA=BE(=BB=AD=D6=D0=BB=AD)
+12500.00=D4=AA
+7
+LVP-X70BU
+1300ANSI 1024=A1=C1768=CF=F1=CB=D8540=CF=DF =CA=FD=C2=EB=B7=C5=B4=F3=CB=AB=D1=
+=B6=BA=C5=D4=B4=CF=D4=CA=BE(=BB=AD=D6=D0=BB=AD)
+12000.00=D4=AA
+8
+LVP-X80U
+1800ANSI 1024=A1=C1768=CF=F1=CB=D8540=CF=DF =CA=FD=C2=EB=B7=C5=B4=F3=CB=AB=D1=
+=B6=BA=C5=D4=B4=CF=D4=CA=BE(=BB=AD=D6=D0=BB=AD)
+15000.00=D4=AA
+9
+LVP-X400BU
+3200ANSI 1024=A1=C1768=CF=F1=CB=D8540=CF=DF =CA=FD=C2=EB=B7=C5=B4=F3=CB=AB=D1=
+=B6=BA=C5=D4=B4=CF=D4=CA=BE(=BB=AD=D6=D0=BB=AD)
+27000.00=D4=AA
+10
+LVP-S490U
+2600ANSI 800=A1=C1600=CF=F1=CB=D8540=CF=DF =CA=FD=C2=EB=B7=C5=B4=F3=CB=AB=D1=
+=B6=BA=C5=D4=B4=CF=D4=CA=BE(=BB=AD=D6=D0=BB=AD)
+19000.00=D4=AA
+11
+LVP-X490U
+2600ANSI 1024=A1=C1768=CF=F1=CB=D8540=CF=DF =CA=FD=C2=EB=B7=C5=B4=F3=CB=AB=D1=
+=B6=BA=C5=D4=B4=CF=D4=CA=BE(=BB=AD=D6=D0=BB=AD)
+22000.00=D4=AA
+12
+LVP-X500BU
+3700ANSI 1024=A1=C1768=CF=F1=CB=D8540=CF=DF =CA=FD=C2=EB=B7=C5=B4=F3=CB=AB=D1=
+=B6=BA=C5=D4=B4=CF=D4=CA=BE(=BB=AD=D6=D0=BB=AD)
+38000.00=D4=AA
+=C3=C0=B9=FA =B2=A8=CC=D8=A3=A8BOTER=A3=A9=B2=FA=C6=B7=B1=A8=BC=DB=B5=A5
+=D0=F2=BA=C5
+=D0=CD=BA=C5
+=B9=E6        =B8=F1
+=B5=A5=BC=DB
+=B2=CA=C9=AB=C9=E3=CF=F1=BB=FA
+1
+BTC-220
+1/3=A1=E5420=CF=DF0.3LuxF1.2=B3=AC=B1=B3=B9=E2=B2=B9=B3=A5=B9=A6=C4=DC=B2=CA=
+=C9=AB=C9=E3=CF=F1=BB=FA SONY=D0=BE=C6=AC85~265VAC  DC12V/AC24V
+1100.00=D4=AA
+2
+BTC-222
+1/3=A1=E5480=CF=DF0.3LuxF1.2=B3=AC=B1=B3=B9=E2=B2=B9=B3=A5=B9=A6=C4=DC=B2=CA=
+=C9=AB=C9=E3=CF=F1=BB=FA SONY=D0=BE=C6=AC85~265VAC  DC12V/AC24V
+1700.00=D4=AA
+3
+BTC-230
+1/3=A1=E5420=CF=DF0.1LuxF1.2=B3=AC=B1=B3=B9=E2=B2=B9=B3=A5=B9=A6=C4=DC=B2=CA=
+=C9=AB=C9=E3=CF=F1=BB=FA SONY=D0=BE=C6=ACY/C=D0=C5=BA=C5=CA=E4=B3=F6 =
+85~265VAC  DC12V/AC24V
+1280.00=D4=AA
+4
+BTC-232
+1/3=A1=E5480=CF=DF0.1LuxF1.2=B3=AC=B1=B3=B9=E2=B2=B9=B3=A5=B9=A6=C4=DC=B2=CA=
+=C9=AB=C9=E3=CF=F1=BB=FA SONY=D0=BE=C6=ACY/C=D0=C5=BA=C5=CA=E4=B3=F6 =
+85~265VAC  DC12V/AC24V
+2050.00=D4=AA
+5
+BTC-250
+1/3=A1=E5420=CF=DF0.05LuxF1.2=B5=CD=D5=D5=B6=C8=CA=B5=CA=B1=B3=AC=B1=B3=B9=E2=
+=B2=B9=B3=A5=B9=A6=C4=DC=B2=CA=C9=AB=C9=E3=CF=F1=BB=FA SONY=D0=BE=C6=ACY/C=D0=
+=C5=BA=C5=CA=E4=B3=F6 =B4=F8VD=CD=E2=CD=AC=B2=BD=BD=D3=BF=DA 85~265VAC  =
+DC12V/AC24V
+1640.00=D4=AA
+6
+BTC-252
+1/3=A1=E5480=CF=DF0.05LuxF1.2=B5=CD=D5=D5=B6=C8=CA=B5=CA=B1=B3=AC=B1=B3=B9=E2=
+=B2=B9=B3=A5=B9=A6=C4=DC=B2=CA=C9=AB=C9=E3=CF=F1=BB=FA SONY=D0=BE=C6=ACY/C=D0=
+=C5=BA=C5=CA=E4=B3=F6 =B4=F8VD=CD=E2=CD=AC=B2=BD=BD=D3=BF=DA 85~265VAC  =
+DC12V/AC24V
+1960.00=D4=AA
+7
+BTC-270/IR
+1/3=A1=E5420=CF=DF0~0.01LuxF1.2=B3=AC=B5=CD=D5=D5=B6=C8=CA=B5=CA=B1=B3=AC=B1=
+=B3=B9=E2=B2=B9=B3=A5=B9=A6=C4=DC=B2=CA=C9=AB=C9=E3=CF=F1=BB=FA SONY=D0=BE=C6=
+=ACY/C=D0=C5=BA=C5=CA=E4=B3=F6 =B4=F8VD=CD=E2=CD=AC=B2=BD=BD=D3=BF=DA =
+85~265VAC  DC12V/AC24V
+3000.00=D4=AA
+8
+BTC-272/IR
+1/3=A1=E5480=CF=DF0~0.01LuxF1.2=B3=AC=B5=CD=D5=D5=B6=C8=CA=B5=CA=B1=B3=AC=B1=
+=B3=B9=E2=B2=B9=B3=A5=B9=A6=C4=DC=B2=CA=C9=AB=C9=E3=CF=F1=BB=FA SONY=D0=BE=C6=
+=ACY/C=D0=C5=BA=C5=CA=E4=B3=F6 =B4=F8VD=CD=E2=CD=AC=B2=BD=BD=D3=BF=DA =
+85~265VAC  DC12V/AC24V
+3100.00=D4=AA
+=BA=DA=B0=D7=C9=E3=CF=F1=BB=FA
+1
+BTC-130
+1/3=A1=E5420=CF=DF0~0.01LuxF1.2=B5=CD=D5=D5=B6=C8=CA=B5=CA=B1=B3=AC=B1=B3=B9=
+=E2=B2=B9=B3=A5=BA=DA=B0=D7=C9=E3=CF=F1=BB=FA SONY=D0=BE=C6=AC85~265VAC  =
+DC12V/AC24V
+700.00=D4=AA
+2
+BTC-132
+1/3=A1=E5570=CF=DF0~0.01LuxF1.2=B5=CD=D5=D5=B6=C8=CA=B5=CA=B1=B3=AC=B1=B3=B9=
+=E2=B2=B9=B3=A5=BA=DA=B0=D7=C9=E3=CF=F1=BB=FA SONY=D0=BE=C6=AC85~265VAC  =
+DC12V/AC24V
+1020.00=D4=AA
+3
+BTC-150
+1/3=A1=E5420=CF=DF0~0.001LuxF1.2=B5=CD=D5=D5=B6=C8=CA=B5=CA=B1=B3=AC=B1=B3=B9=
+=E2=B2=B9=B3=A5=BA=DA=B0=D7=C9=E3=CF=F1=BB=FA SONY=D0=BE=C6=AC85~265VAC  =
+DC12V/AC24V
+1050.00=D4=AA
+4
+BTC-152
+1/3=A1=E5570=CF=DF0~0.001LuxF1.2=B5=CD=D5=D5=B6=C8=CA=B5=CA=B1=B3=AC=B1=B3=B9=
+=E2=B2=B9=B3=A5=BA=DA=B0=D7=C9=E3=CF=F1=BB=FA SONY=D0=BE=C6=AC85~265VAC  =
+DC12V/AC24V
+1800.00=D4=AA
+=B2=CA=C9=AB=B0=EB=C7=F2=C9=E3=CF=F1=BB=FA
+1
+BTD-420CP
+1/3=A1=E5420=CF=DF0.3LuxF1.2=B2=CA=C9=AB=B0=EB=C7=F2=C9=E3=CF=F1=BB=FA SONY=D0=
+=BE=C6=ACDC12V/AC24V
+800.00=D4=AA
+2
+BTD-422CP
+1/3=A1=E5480=CF=DF0.3LuxF1.2=B2=CA=C9=AB=B0=EB=C7=F2=C9=E3=CF=F1=BB=FA SONY=D0=
+=BE=C6=ACDC12V/AC24V
+1200.00=D4=AA
+3
+BTD-440CP
+1/3=A1=E5420=CF=DF0.05LuxF1.2=B5=CD=D5=D5=B6=C8=B2=CA=C9=AB=B0=EB=C7=F2=C9=E3=
+=CF=F1=BB=FA SONY=D0=BE=C6=ACDC12V/AC24V
+1000.00=D4=AA
+4
+BTD-442CP
+1/3=A1=E5480=CF=DF0.05LuxF1.2=B5=CD=D5=D5=B6=C8=B2=CA=C9=AB=B0=EB=C7=F2=C9=E3=
+=CF=F1=BB=FA SONY=D0=BE=C6=ACDC12V/AC24V
+1570.00=D4=AA
+=BA=DA=B0=D7=B0=EB=C7=F2=C9=E3=CF=F1=BB=FA
+1
+BTD-410BP
+1/3=A1=E5420=CF=DF0.1LuxF1.2=BA=DA=B0=D7=B0=EB=C7=F2=C9=E3=CF=F1=BB=FA SONY=D0=
+=BE=C6=ACDC12V/AC24V
+500.00=D4=AA
+2
+BTD-412BP
+1/3=A1=E5570=CF=DF0.1LuxF1.2=BA=DA=B0=D7=B0=EB=C7=F2=C9=E3=CF=F1=BB=FA SONY=D0=
+=BE=C6=ACDC12V/AC24V
+700.00=D4=AA
+3
+BTD-430BP
+1/3=A1=E5420=CF=DF0.05LuxF1.2=BA=DA=B0=D7=B2=CA=C9=AB=B0=EB=C7=F2=C9=E3=CF=F1=
+=BB=FA SONY=D0=BE=C6=ACDC12V/AC24V
+598.00=D4=AA
+4
+BTD-432BP
+1/3=A1=E5570=CF=DF0.05LuxF1.2=BA=DA=B0=D7=B2=CA=C9=AB=B0=EB=C7=F2=C9=E3=CF=F1=
+=BB=FA SONY=D0=BE=C6=ACDC12V/AC24V
+1090.00=D4=AA
+=B2=CA=C9=AB=BC=E0=CA=D3=C6=F7
+1
+BTM-140A
+14=A1=E5450=CF=DF=B2=CA=C9=AB=CA=FD=C2=EB=BC=E0=CA=D3=C6=F7
+1700.00=D4=AA
+2
+BTM-142A
+14=A1=E5600=CF=DF4=C2=B7=D2=F4=CA=D3=C6=B5=B2=CA=C9=AB=CA=FD=C2=EB=BC=E0=CA=D3=
+=C6=F7 
+2200.00=D4=AA
+3
+BTM-142B
+14=A1=E5720=CF=DF=B2=CA=C9=AB=CA=FD=C2=EB=BC=E0=CA=D3=C6=F7 S-Video=D0=C5=BA=
+=C5=CA=E4=C8=EB
+3000.00=D4=AA
+4
+BTM-210A
+21=A1=E5450=CF=DF=B2=CA=C9=AB=CA=FD=C2=EB=BC=E0=CA=D3=C6=F7 
+3400.00=D4=AA
+5
+BTM-212A
+21=A1=E5600=CF=DF=B2=CA=C9=AB=CA=FD=C2=EB=BC=E0=CA=D3=C6=F7 S-Video=D0=C5=BA=
+=C5=CA=E4=C8=EB
+4100.00=D4=AA
+=C7=B6=C8=EB=CA=BD=D3=B2=C5=CC=C2=BC=CF=F1=BB=FA
+1
+BTV-410
+4=C2=B7=D2=F4=CA=D3=C6=B5=CD=AC=B2=BD=C7=B6=C8=EB=CA=BD=D3=B2=C5=CC=C2=BC=CF=
+=F1=BB=FA =D3=A2=CE=C4=B2=CB=B5=A5=C4=DA=D6=C340GB=D3=B2=C5=CC =B4=F8=D2=A3=BF=
+=D8=C6=F7
+36000.00=D4=AA
+2
+BTV-420
+4=C2=B7=CA=D3=C6=B5=CA=E4=C8=EB=C7=B6=C8=EB=CA=BD=D3=B2=C5=CC=C2=BC=CF=F1=BB=
+=FA =D3=A2=CE=C4=B2=CB=B5=A5=C4=DA=D6=C330GB=D3=B2=C5=CC 
+20000.00=D4=AA
+3
+BTV-1600
+16=C2=B7=CA=D3=C6=B5=CA=E4=C8=EB=C7=B6=C8=EB=CA=BD=D3=B2=C5=CC=C2=BC=CF=F1=BB=
+=FA =D3=A2=CE=C4=B2=CB=B5=A5=C4=DA=D6=C345GB=D3=B2=C5=CC 
+41000.00=D4=AA
+=CD=BC=CF=F1=CD=F8=C2=E7=B7=FE=CE=F1=C6=F7
+1
+BTN-4100
+4=C2=B7=CA=D3=C6=B5=CA=E4=C8=EB =B4=AB=CA=E4=CB=D9=C2=CA=BF=C9=B4=EF25=D6=A1=
+/=C3=EB =D4=B6=B3=CC=BF=D8=D6=C6=D4=C6=CC=A8=BE=B5=CD=B7
+8000.00=D4=AA
+=B3=A4=CA=B1=BC=E4=C2=BC=CF=F1=BB=FA
+1
+AG-TL350
+24=D0=A1=CA=B1=B3=A4=CA=B1=BC=E4=C2=BC=CF=F1=BB=FA
+3500.00=D4=AA
+2
+HS-1024E(H)
+24=D0=A1=CA=B1=B3=A4=CA=B1=BC=E4=C2=BC=CF=F1=BB=FA
+3300.00=D4=AA
+=D6=B8=CE=C6=BF=BC=C7=DA=BB=FA
+1
+FDA-01
+=B5=A5=BB=FA=D0=CD=D6=B8=CE=C6=BF=BC=C7=DA=BB=FA(720=C3=B6/=CC=A8)
+7000.00=D4=AA
+=BB=AD=C3=E6=B7=D6=B8=EE=C6=F7
+1
+SLT-401
+=CB=C4=C2=B7=B2=CA=C9=AB=BB=AD=D6=D0=BB=AD=B7=D6=B8=EE=C6=F7 =B4=F8=B6=FE=A1=
+=A2=C8=FD=A1=A2=CB=C4=B7=D6=B8=EE =B4=F8=BB=D8=B7=C5(=CB=AB=B9=A6)
+2200.00=D4=AA
+2
+SLT-4D
+=CB=C4=C2=B7=BA=DA=B0=D7=BB=AD=D6=D0=BB=AD=B7=D6=B8=EE=C6=F7 =B4=F8=BB=D8=B7=
+=C5(=CB=AB=B9=A6)
+700.00=D4=AA
+3
+MV-96e
+16=C2=B7=BB=AD=C3=E6=B4=A6=C0=ED=C6=F7(ROBOT)
+2400.00=D4=AA
+=BA=AB=B9=FA=C8=FD=D0=C7=BA=BD=BF=D5=B2=CA=C9=AB=C9=E3=CF=F1=BB=FA=A3=BA
+SDZ-160R/L 1/4=A1=B1=BF=ED=B6=AF=CC=AC=BA=CD=B3=AC=BC=B6=B1=B3=B9=E2=B2=B9=B3=
+=A516XCCD=B2=CA=C9=AB=C9=E3=CF=F1=BB=FA     1500=D4=AA
+SDC-250PA 1/3=A1=B1=A3=A8=CD=AC=C9=CF=A3=A9                                   =
+                             1050=D4=AA
+SDC-450PA1/3=A1=B1=A3=A8=CD=AC=C9=CF=A3=A9                                    =
+                             1450=D4=AA
+SPD-16001/4=A1=B1=B4=F8=D4=C6=CC=A8=B5=C4=BF=ED=B6=AF=CC=AC=BA=CD=B3=AC=BC=B6=
+=B1=B3=B9=E2=B2=B9=B3=A5=B2=CA=C9=AB=C7=F2=D0=CE=C9=E3=CF=F1=BB=FA  6500=D4=AA=
 
- I believe it's suitable for inclusion in the official kernel.  The patch
-applies both to 2.4.19-pre4 and to the current CVS tree at oss.sgi.com. 
+=BA=AB=B9=FA=CA=FD=D7=D6=D3=B2=C5=CC=B2=CA=C9=AB=C2=BC=CF=F3=CF=B5=CD=B3
+SVR-400 4=C2=B7=C2=BC=CF=F3=BB=FA=A3=A8=B4=F845G=D3=B2=C5=CC=A3=A9            =
+     10500=D4=AA
+SVR-1600 16=C2=B7=C2=BC=CF=F3=BB=FA=A3=A8=B4=F8=CD=B745G=D3=B2=C5=CC=A3=A9    =
+      19500=D4=AA
+=B5=E7=C4=D4=C5=E4=BC=FE=A3=BA=BB=AA=CB=B6=A3=A8=D6=F7=B0=E5=A3=A9 
+TUSL2-C/WOA 815EP-B=D0=BE=C6=AC/ATA100/AGP4X/=D6=A7=B3=D6.13P=A2=F3(Tualatin) =
+400 =D4=AA
+TUSL2-M/SWA(=D0=A1=B0=E5) 815EP-B=D0=BE=C6=AC/ATA100/AGP4X/=BA=ACI752=CF=D4=BF=
+=A8/AC97=C9=F9=BF=A8/=D6=A7=B3=D6(Tualatin)470 =D4=AA
+TUEP2-M/SWA 815EP=D0=BE=C6=AC/ATA100/AGP4X/=CE=DE=CF=D4=BF=A8/AC97=C9=F9=BF=A8=
+ 350 =D4=AA
+P4T-F/PA Intel 850=D0=BE=C6=AC/Socket423/AGP4X/4=CC=F5RDRAM/AC97=C9=F9=BF=A8 =
+700 =D4=AA
+P4T-F Intel 850=D0=BE=C6=AC/Socket423 P4/AGP4X/4=CC=F5RDRAM/=CE=DE=C9=F9=BF=A8=
+ 550 =D4=AA
+A7V266 VIA KT266=D0=BE=C6=AC=D7=E9/=D6=A7=B3=D6UDMA100=A3=ACAGP 4X/=D6=A7=B3=
+=D6200.266FSB=C0=D7=C4=F1=D7=EA=C1=FASOCKET 462/ATX=BD=E1=B9=B9 460 =D4=AA
+A7VL-VM KL133=D0=BE=C6=AC/ATA100/SVAGAE4=CF=D4=BF=A8/AC97=C9=F9=BF=A8 240 =D4=
+=AA
+TUV4X/PA VIA 694T=D0=BE=C6=AC/ATA100/AGP4X/=BA=AC8738=D3=B2=C9=F9=BF=A8/=D6=A7=
+=B3=D6Tualatin 300 =D4=AA
+TUV4X/WOA VIA 694T=D0=BE=C6=AC/ATA100/AGP4X/=D6=A7=B3=D6Tualatin/=CE=DE=C9=F9=
+=BF=A8 360 =D4=AA
+CUVL-VM PL133=D0=BE=C6=AC/ATA100/SAVAGAE4=CF=D4=BF=A8/AC97=C9=F9=BF=A8 300 =D4=
+=AA
+CUSI-M/LAN SIS 630E=D0=BE=C6=AC/ATA66/=B4=F8SIS300=CF=D4=BF=A8/SIS900=CD=F8=BF=
+=A8/8378=D3=B2=C9=F9=BF=A8 330 =D4=AA
+P4S333 SIS645/DDR/CMI8738 6-CH S4700 =D4=AA
+P4B266-M/SWALAN 845D/DDR/S478/AC97630 =D4=AA
+=CE=A2=D0=C7
+MS-6532 Intel850/400MHz=D7=DC=CF=DF/423=BD=E1=B9=B9/=D6=A7=B3=D6P4 2G=CB=AB=CD=
+=A8=B5=C0/4=CC=F5RAMBUS=C4=DA=B4=E6/AC97=C9=F9=BF=A8/4=CC=F5PCI/1=CC=F5=
+AGP/4=B8=F6USB=BD=D3=BF=DA/1=B8=F6CNR 500 =D4=AA
+850 Pro5 Intel850/400MHz=D7=DC=CF=DF/P4 478=BD=E1=B9=B9/4=CC=F5RAMBUS=C4=DA=B4=
+=E6/8378=C9=F9=BF=A8/AGP4X/2X 600 =D4=AA 
+MS-6529 Intel845/400MHz=D7=DC=CF=DF/P4 423=BD=E1=B9=B9/3=CC=F5SDRAM=C4=DA=B4=
+=E6/AC97=C9=F9=BF=A8/5=CC=F5PCI/1=CC=F5AGP/4=B8=F6USB=BD=D3=BF=DA/1=B8=F6CNR =
+420 =D4=AA
+MS-6528 Intel845/P4 478=BD=E1=B9=B9/SDRAM=C4=DA=B4=E6/8738=C9=F9=BF=A8/6=CC=F5=
+PCI/1=CC=F5AGP/4=B8=F6USB=BD=D3=BF=DA/1=B8=F6CNR 600 =D4=AA
+Pro266 Plus VIA266/100/133/Socket 370/3=CC=F5DDR=C4=DA=B4=E6/=D6=A7=B3=D6=
+PCT2PC/AC97=C9=F9=BF=A8/ATA100/6=CC=F5PCI/1=CC=F5AGP 260 =D4=AA
+MS-6337-50B Intel 815EP/=D6=A7=B3=D6P=A2=F3=A1=A2=C8=FC=D1=EF=CF=B5=C1=D0/=D6=
+=A7=B3=D6133MHzCPU/PC133=C4=DA=B4=E6/Socket 370/ATA100/AC97=C9=F9=BF=A8/6=CC=
+=F5PCI/1=CC=F5AGP/ATX=BD=E1=B9=B9 300 =D4=AA
+MS-6337-50B-Raid Intel 815EP/ATX=BD=E1=B9=B9/Socket 370=BD=D3=BF=DA/133CPU=CD=
+=E2=C6=B5/ATA100/AC97=C9=F9=BF=A8/=D6=A7=B3=D6PC2PC=CD=F8=C2=E7=B9=A6=C4=DC=
+/6=CC=F5PCI/1=CC=F5AGP/=B4=F8=B4=C5=C5=CC=D5=F3=C1=D0 400 =D4=AA
+MS-6315EP Intel 815EP/ATX=BD=E1=B9=B9/Socket 370/AC97=C9=F9=BF=A8/3=CC=F5=
+PCI/1=CC=F5AGP 290 =D4=AA
+MS-6315E Intel 815/ATX=BD=E1=B9=B9/Socket 370/AC97=C9=F9=BF=A8/3=CC=F5PCI/1=CC=
+=F5AGP/1=CC=F5CNR 370 =D4=AA
+MS-6337 Intel 815E B-Step/ATX=BD=E1=B9=B9/Socket 370/ATA100/AC97=C9=F9=BF=A8=
+/=D6=A7=B3=D6PC2PC=CD=F8=C2=E7=B9=A6=C4=DC/6=CC=F5PCI/1=CC=F5AGP/4=CC=F5=C4=DA=
+=B4=E6=B2=DB 400 =D4=AA
+6368 VIA PLE133/ATX=BD=E1=B9=B9/Socket 370/ATA100/AC97=C9=F9=BF=A8/=B4=F8=
+9880=CF=D4=BF=A8 180 =D4=AA
+6368 VIA PLE133/ATX=BD=E1=B9=B9/Socket 370/ATA100/AC97=C9=F9=BF=A8/=B4=F8=
+9880=CF=D4=BF=A8/=B4=F88139C=CD=F8=BF=A8 200 =D4=AA
+694T Pro VIA 694T/686B/ATX=BD=E1=B9=B9/Socket370/=D6=A7=B3=D6P=A2=F3=BC=B0=C8=
+=FC=D1=EFCPU/AC97=C9=F9=BF=A8/1=CC=F5AGP/5=CC=F5PCI/1=CC=F5AMR 300 =D4=AA
+6330 VIA KT133/ATX 200MHz=D7=DC=CF=DF/=D5=EC=B4=ED=B5=C6/=CB=CD=D7=D4=B6=AF=B3=
+=AC=C6=B5=C8=ED=BC=FE/1=CC=F5AGP/6=CC=F5PCI/=B2=BB=D6=A7=B3=D6Athlon XP 200 =
+=D4=AA
+K7T Turbo-NL VIA KT133A/266MHz=D7=DC=CF=DF/AC97=C9=F9=BF=A8/=D7=D4=B6=AF=C9=CF=
+=CD=F8=CB=A2=D0=C2BIOS/1=CC=F5AGP/5=CC=F5PCI/1=CC=F5CNR/ATX/=B2=BB=D6=A7=B3=D6=
+Athlon XP 290 =D4=AA
+K7T Turbo-R Limited VIA KT133A/266MHz=D7=DC=CF=DF/AC97=C9=F9=BF=A8/=D7=D4=B6=
+=AF=C9=CF=CD=F8=CB=A2=D0=C2BIOS/1=CC=F5AGP/6=CC=F5PCI/1=CC=F5CNR/ATX/=B2=BB=D6=
+=A7=B3=D6Athlon XP/=CF=DE=C1=BF=B7=A2=D0=D0=BA=EC=C4=A7=B0=E5/=D6=A7=B3=D6=
+PC2PC=CD=F8=C2=E7=B9=A6=C4=DC/=B4=F8=B4=C5=C5=CC=D5=F3=C1=D0 300=D4=AA
+Intel =A3=A8=D6=D0=D1=EB=B4=A6=C0=ED=C6=F7=A3=A9
+=B1=BC=CC=DA4 2.2G Socket 478/512KB/400MHz /=BA=D0=D7=B0 3500 =D4=AA
+=B1=BC=CC=DA4 2.0A Socket 478/512KB/400MHz /=BA=D0=D7=B0 2000 =D4=AA
+=B1=BC=CC=DA4 2.0G Socket 478/256KB/400MHz /=BA=D0=D7=B0 2000 =D4=AA
+=B1=BC=CC=DA4 1.9G Socket 478/256KB/400MHz /=BA=D0=D7=B0 1050 =D4=AA
+=B1=BC=CC=DA4 1.8A Socket 478/512KB/400MHz /=BA=D0=D7=B0 900 =D4=AA
+=B1=BC=CC=DA4 1.7G Socket 478/256KB/400MHz /=BA=D0=D7=B0 750 =D4=AA
+=B1=BC=CC=DA4 1.6A Socket 478/512KB/400MHz /=BA=D0=D7=B0 700 =D4=AA
+=B1=BC=CC=DA4 1.5G Socket 478/256KB/400MHz /=BA=D0=D7=B0 590 =D4=AA
+=B1=BC=CC=DA=A2=F3 1G Socket 370/256K/133=D5=D7/=BA=D0=D7=B0 570=D4=AA
+=B1=BC=CC=DA=A2=F3 933 Socket 370/256K/133=D5=D7/=BA=D0=D7=B0 520 =D4=AA
+=C8=FC=D1=EF=A2=F3 1.3G Socket 370/256KB/100MHz/=BA=D0=D7=B0 700 =D4=AA
+=C8=FC=D1=EF=A2=F3 1.2G Socket 370/256k/100=D5=D7/0.13=A6=CCm/=BA=D0=D7=B0 =
+650=D4=AA
+=C8=FC=D1=EF=A2=F31000A Socket370/.13um/256K/100=D5=D7/=BA=D0=D7=B0 400 =D4=AA=
 
-  Maciej
+=C8=FC=D1=EF=A2=F31000A Socket370/.13um/256K/100=D5=D7/=C9=A2=D7=B0 330 =D4=AA=
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+=C8=FC=D1=EF=A2=F21000 Socket370/128K/100=D5=D7/=C9=A2=D7=B0 345 =D4=AA
+=C8=FC=D1=EF=A2=F2950 Socket370/128K/100=D5=D7/=C9=A2=D7=B0 300 =D4=AA
+=C8=FC=D1=EF=A2=F2900 Socket 370/128k/100=D5=D7/=BA=D0=D7=B0 240 =D4=AA
+=C8=FC=D1=EF=A2=F2 850 Socket 370/128k/100=D5=D7/=C9=A2=D7=B0250=D4=AA
+=C8=FC=D1=EF=A2=F2800 Socket370/128K/100=D5=D7/=C9=A2=D7=B0 270 =D4=AA
+=C8=FC=D1=EF=A2=F2 733 Socket 370/128K/66=D5=D7/=C9=A2=D7=B0 220 =D4=AA
+=C8=FC=D1=EF=A2=F2 667 Socket 370/128K/66=D5=D7/=C9=A2=D7=B0 200=D4=AA
+=C8=FC=D1=EF=A2=F2 633 Socket 370/128k/66=D5=D7/=C9=A2=D7=B0180=D4=AA
+=C8=FC=D1=EF=A2=F2 566 Socket 370/128K/66=D5=D7/=C9=A2=D7=B0 170=D4=AA
+=C4=DA=B4=E6=CC=F5 Hy 
+128M T-H/168PIN SDRAM/PC133(=CB=AB=C3=E6) 150 =D4=AA
+128M T-H/168PIN SDRAM/PC133(=B5=A5=C3=E6) 150 =D4=AA
+256M T-H/168PIN SDRAM/PC133 330 =D4=AA
+128M DDR 184PIN DDR RAM/=D4=AD=B3=A7=C4=DA=B4=E6 160 =D4=AA
+256M DDR 184PIN DDR RAM/=D4=AD=B3=A7=C4=DA=B4=E6 350 =D4=AA 
+512M T-S/168PIN SDRAM/PC133 520 =D4=AA
+Kingmax 
+128M 6ns/168PIN SDRAM/PC150 150 =D4=AA
+256M 6ns/168PIN SDRAM/PC-150 340 =D4=AA 
+256M 6ns/168PIN SDRAM/PC150(2.0=B0=E6) 345=D4=AA
+128MB 128MB DDR RAM/PC2700 190 =D4=AA
+256MB 256MB DDR RAM/PC2700 380 =D4=AA
+IBM(=D3=B2=C5=CC=A3=A9
+=CC=DA=C1=FA=C8=FD=B4=FA60GXP/40AV 40GB/ATA/100/2MB/7200rpm/IDE 430 =D4=AA
+=CC=DA=C1=FA=C8=FD=B4=FA60GXP/60AV 60GB/ATA/100/2MB/7200rpm/IDE 570 =D4=AA
+=CC=DA=C1=FA=CB=C4=B4=FA120GXP/40AVV 40GB/ATA/100/2MB/7200rpm/IDE 500 =D4=AA
+=CC=DA=C1=FA=CB=C4=B4=FA120GXP/80AVV 80GB/ATA/100/2MB/7200rpm/IDE 700 =D4=AA
+DMDM-10340 340M/128K/3600rpm/IBM =D0=A1=D3=B2=C5=CC/=CA=CA=D3=C3=D3=DA=BF=A8=
+=CE=F7=C5=B7=A1=A2=BF=C2=B4=EF=B5=C8=CA=FD=C2=EB=CF=E0=BB=FA/=BF=C9=D3=EB=B1=
+=CA=BC=C7=B1=BE=B5=E7=C4=D4=C1=AC=BD=D3 800 =D4=AA
+DMDM-11000 1G/128K/3600rpm/IBM =D0=A1=D3=B2=C5=CC/=CA=CA=D3=C3=D3=DA=BF=A8=CE=
+=F7=C5=B7=A1=A2=BF=C2=B4=EF=B5=C8=CA=FD=C2=EB=CF=E0=BB=FA/=BF=C9=D3=EB=B1=CA=
+=BC=C7=B1=BE=B5=E7=C4=D4=C1=AC=BD=D3 1500 =D4=AA
+=D7=EA=CA=AF 
+=C3=C0=D7=EA=B6=FE=B4=FA/2B020H1 20GB/UDMA 100/5400rpm/2M/IDE 300 =D4=AA
+=D0=C7=D7=EA=B6=FE=B4=FA/4W060H4 60GB/UDMA 100/5400rpm/2M/IDE/=B5=A5=B5=FA=
+30GB/ 600 =D4=AA
+=D0=C7=D7=EA=B6=FE=B4=FA/4W080H4 80GB/UDMA 100/5400rpm/2M/IDE/=B5=A5=B5=FA=
+30GB/ 700=D4=AA
+=D0=C7=D7=EA=C8=FD=B4=FA/4D040H2 40GB/UDMA 100/5400rpm/2M/IDE/=B5=A5=B5=FA=
+40GB 300 =D4=AA
+=BD=F0=D7=EA=C1=F9=B4=FA/AS20 20G/UDMA 100/2MB/7200rpm/IDE/3.5=B4=E7 310=D4=AA=
 
-patch-mips-2.4.18-20020327-ms02-nv-69
-diff -up --recursive --new-file linux-mips-2.4.18-20020327.macro/Documentation/Configure.help linux-mips-2.4.18-20020327/Documentation/Configure.help
---- linux-mips-2.4.18-20020327.macro/Documentation/Configure.help	2002-02-27 05:27:43.000000000 +0000
-+++ linux-mips-2.4.18-20020327/Documentation/Configure.help	2002-03-28 09:30:03.000000000 +0000
-@@ -12495,6 +12495,18 @@ CONFIG_MTD_SLRAM
-   you can still use it for storage or swap by using this driver to
-   present it to the system as a Memory Technology Device.
- 
-+DEC MS02-NV NVRAM module support
-+CONFIG_MTD_MS02NV
-+  This is a MTD driver for the DEC's MS02-type battery backed-up NVRAM
-+  module.  The module was originally meant as an NFS accelerator.  Say Y
-+  here if you have a DECstation 5000/2x0 or a DECsystem 5900 equipped
-+  with such a module.
-+
-+  If you want to compile this driver as a module ( = code which can be
-+  inserted in and removed from the running kernel whenever you want),
-+  say M here and read Documentation/modules.txt.  The module will be
-+  called ms02-nv.o.
-+
- Debugging RAM test driver
- CONFIG_MTD_MTDRAM
-   This enables a test MTD device driver which uses vmalloc() to
-diff -up --recursive --new-file linux-mips-2.4.18-20020327.macro/drivers/mtd/devices/Config.in linux-mips-2.4.18-20020327/drivers/mtd/devices/Config.in
---- linux-mips-2.4.18-20020327.macro/drivers/mtd/devices/Config.in	2001-11-06 05:27:13.000000000 +0000
-+++ linux-mips-2.4.18-20020327/drivers/mtd/devices/Config.in	2002-03-28 09:29:07.000000000 +0000
-@@ -10,6 +10,7 @@ if [ "$CONFIG_MTD_PMC551" = "y" -o  "$CO
-    bool '    PMC551 256M DRAM Bugfix' CONFIG_MTD_PMC551_BUGFIX
-    bool '    PMC551 Debugging' CONFIG_MTD_PMC551_DEBUG
- fi
-+dep_tristate '  DEC MS02-NV NVRAM module support' CONFIG_MTD_MS02NV $CONFIG_MTD $CONFIG_DECSTATION
- dep_tristate '  Uncached system RAM' CONFIG_MTD_SLRAM $CONFIG_MTD
- if [ "$CONFIG_SA1100_LART" = "y" ]; then
-   dep_tristate '  28F160xx flash driver for LART' CONFIG_MTD_LART $CONFIG_MTD
-diff -up --recursive --new-file linux-mips-2.4.18-20020327.macro/drivers/mtd/devices/Makefile linux-mips-2.4.18-20020327/drivers/mtd/devices/Makefile
---- linux-mips-2.4.18-20020327.macro/drivers/mtd/devices/Makefile	2001-11-06 05:27:13.000000000 +0000
-+++ linux-mips-2.4.18-20020327/drivers/mtd/devices/Makefile	2002-03-28 09:29:07.000000000 +0000
-@@ -18,6 +18,7 @@ obj-$(CONFIG_MTD_DOC2001)	+= doc2001.o
- obj-$(CONFIG_MTD_DOCPROBE)	+= docprobe.o docecc.o
- obj-$(CONFIG_MTD_SLRAM)		+= slram.o
- obj-$(CONFIG_MTD_PMC551)	+= pmc551.o
-+obj-$(CONFIG_MTD_MS02NV)	+= ms02-nv.o
- obj-$(CONFIG_MTD_MTDRAM)	+= mtdram.o
- obj-$(CONFIG_MTD_LART)		+= lart.o
- obj-$(CONFIG_MTD_BLKMTD)	+= blkmtd.o
-diff -up --recursive --new-file linux-mips-2.4.18-20020327.macro/drivers/mtd/devices/ms02-nv.c linux-mips-2.4.18-20020327/drivers/mtd/devices/ms02-nv.c
---- linux-mips-2.4.18-20020327.macro/drivers/mtd/devices/ms02-nv.c	1970-01-01 00:00:00.000000000 +0000
-+++ linux-mips-2.4.18-20020327/drivers/mtd/devices/ms02-nv.c	2002-03-28 09:35:33.000000000 +0000
-@@ -0,0 +1,323 @@
-+/*
-+ *      Copyright (c) 2001 Maciej W. Rozycki
-+ *
-+ *      This program is free software; you can redistribute it and/or
-+ *      modify it under the terms of the GNU General Public License
-+ *      as published by the Free Software Foundation; either version
-+ *      2 of the License, or (at your option) any later version.
-+ */
-+
-+#include <linux/init.h>
-+#include <linux/ioport.h>
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/mtd/mtd.h>
-+#include <linux/slab.h>
-+#include <linux/types.h>
-+
-+#include <asm/addrspace.h>
-+#include <asm/bootinfo.h>
-+#include <asm/dec/ioasic_addrs.h>
-+#include <asm/dec/kn02.h>
-+#include <asm/dec/kn03.h>
-+#include <asm/io.h>
-+#include <asm/paccess.h>
-+
-+#include "ms02-nv.h"
-+
-+
-+static char version[] __initdata =
-+        "ms02-nv.c: v.1.0.0  13 Aug 2001  Maciej W. Rozycki.\n";
-+
-+MODULE_AUTHOR("Maciej W. Rozycki <macro@ds2.pg.gda.pl>");
-+MODULE_DESCRIPTION("DEC MS02-NV NVRAM module driver");
-+MODULE_LICENSE("GPL");
-+
-+
-+/*
-+ * Addresses we probe for an MS02-NV at.  Modules may be located
-+ * at any 8MB boundary within a 0MB up to 112MB range or at any 32MB
-+ * boundary within a 0MB up to 448MB range.  We don't support a module
-+ * at 0MB, though.
-+ */
-+static ulong ms02nv_addrs[] __initdata = {
-+	0x07000000, 0x06800000, 0x06000000, 0x05800000, 0x05000000,
-+	0x04800000, 0x04000000, 0x03800000, 0x03000000, 0x02800000,
-+	0x02000000, 0x01800000, 0x01000000, 0x00800000
-+};
-+
-+static const char ms02nv_name[] = "DEC MS02-NV NVRAM";
-+static const char ms02nv_res_diag_ram[] = "Diagnostic RAM";
-+static const char ms02nv_res_user_ram[] = "General-purpose RAM";
-+static const char ms02nv_res_csr[] = "Control and status register";
-+
-+static struct mtd_info *root_ms02nv_mtd;
-+
-+
-+static int ms02nv_read(struct mtd_info *mtd, loff_t from,
-+			size_t len, size_t *retlen, u_char *buf)
-+{
-+	struct ms02nv_private *mp = (struct ms02nv_private *)mtd->priv;
-+
-+	if (from + len > mtd->size)
-+		return -EINVAL;
-+
-+	memcpy(buf, mp->uaddr + from, len);
-+	*retlen = len;
-+
-+	return 0;
-+}
-+
-+static int ms02nv_write(struct mtd_info *mtd, loff_t to,
-+			size_t len, size_t *retlen, const u_char *buf)
-+{
-+	struct ms02nv_private *mp = (struct ms02nv_private *)mtd->priv;
-+
-+	if (to + len > mtd->size)
-+		return -EINVAL;
-+
-+	memcpy(mp->uaddr + to, buf, len);
-+	*retlen = len;
-+
-+	return 0;
-+}
-+
-+
-+static inline uint ms02nv_probe_one(ulong addr)
-+{
-+	ms02nv_uint *ms02nv_diagp;
-+	ms02nv_uint *ms02nv_magicp;
-+	uint ms02nv_diag;
-+	uint ms02nv_magic;
-+	size_t size;
-+
-+	int err;
-+
-+	/*
-+	 * The firmware writes MS02NV_ID at MS02NV_MAGIC and also
-+	 * a diagnostic status at MS02NV_DIAG.
-+	 */
-+	ms02nv_diagp = (ms02nv_uint *)(KSEG1ADDR(addr + MS02NV_DIAG));
-+	ms02nv_magicp = (ms02nv_uint *)(KSEG1ADDR(addr + MS02NV_MAGIC));
-+	err = get_dbe(ms02nv_magic, ms02nv_magicp);
-+	if (err)
-+		return 0;
-+	if (ms02nv_magic != MS02NV_ID)
-+		return 0;
-+
-+	ms02nv_diag = *ms02nv_diagp;
-+	size = (ms02nv_diag & MS02NV_DIAG_SIZE_MASK) << MS02NV_DIAG_SIZE_SHIFT;
-+	if (size > MS02NV_CSR)
-+		size = MS02NV_CSR;
-+
-+	return size;
-+}
-+
-+static int __init ms02nv_init_one(ulong addr)
-+{
-+	struct mtd_info *mtd;
-+	struct ms02nv_private *mp;
-+	struct resource *mod_res;
-+	struct resource *diag_res;
-+	struct resource *user_res;
-+	struct resource *csr_res;
-+	ulong fixaddr;
-+	size_t size, fixsize;
-+
-+	static int version_printed;
-+
-+	int ret = -ENODEV;
-+
-+	/* The module decodes 8MB of address space. */
-+	mod_res = kmalloc(sizeof(*mod_res), GFP_KERNEL);
-+	if (!mod_res)
-+		return -ENOMEM;
-+
-+	memset(mod_res, 0, sizeof(*mod_res));
-+	mod_res->name = ms02nv_name;
-+	mod_res->start = addr;
-+	mod_res->end = addr + MS02NV_SLOT_SIZE - 1;
-+	mod_res->flags = IORESOURCE_MEM | IORESOURCE_BUSY;
-+	if (request_resource(&iomem_resource, mod_res) < 0)
-+		goto err_out_mod_res;
-+
-+	size = ms02nv_probe_one(addr);
-+	if (!size)
-+		goto err_out_mod_res_rel;
-+
-+	if (!version_printed) {
-+		printk(KERN_INFO "%s", version);
-+		version_printed = 1;
-+	}
-+
-+	ret = -ENOMEM;
-+	mtd = kmalloc(sizeof(*mtd), GFP_KERNEL);
-+	if (!mtd)
-+		goto err_out_mod_res_rel;
-+	memset(mtd, 0, sizeof(*mtd));
-+	mp = kmalloc(sizeof(*mp), GFP_KERNEL);
-+	if (!mp)
-+		goto err_out_mtd;
-+	memset(mp, 0, sizeof(*mp));
-+
-+	mtd->priv = mp;
-+	mp->resource.module = mod_res;
-+
-+	/* Firmware's diagnostic NVRAM area. */
-+	diag_res = kmalloc(sizeof(*diag_res), GFP_KERNEL);
-+	if (!diag_res)
-+		goto err_out_mp;
-+
-+	memset(diag_res, 0, sizeof(*diag_res));
-+	diag_res->name = ms02nv_res_diag_ram;
-+	diag_res->start = addr;
-+	diag_res->end = addr + MS02NV_RAM - 1;
-+	diag_res->flags = IORESOURCE_BUSY;
-+	request_resource(mod_res, diag_res);
-+
-+	mp->resource.diag_ram = diag_res;
-+
-+	/* User-available general-purpose NVRAM area. */
-+	user_res = kmalloc(sizeof(*user_res), GFP_KERNEL);
-+	if (!user_res)
-+		goto err_out_diag_res;
-+
-+	memset(user_res, 0, sizeof(*user_res));
-+	user_res->name = ms02nv_res_user_ram;
-+	user_res->start = addr + MS02NV_RAM;
-+	user_res->end = addr + size - 1;
-+	user_res->flags = IORESOURCE_BUSY;
-+	request_resource(mod_res, user_res);
-+
-+	mp->resource.user_ram = user_res;
-+
-+	/* Control and status register. */
-+	csr_res = kmalloc(sizeof(*csr_res), GFP_KERNEL);
-+	if (!csr_res)
-+		goto err_out_user_res;
-+
-+	memset(csr_res, 0, sizeof(*csr_res));
-+	csr_res->name = ms02nv_res_csr;
-+	csr_res->start = addr + MS02NV_CSR;
-+	csr_res->end = addr + MS02NV_CSR + 3;
-+	csr_res->flags = IORESOURCE_BUSY;
-+	request_resource(mod_res, csr_res);
-+
-+	mp->resource.csr = csr_res;
-+
-+	mp->addr = phys_to_virt(addr);
-+	mp->size = size;
-+
-+	/*
-+	 * Hide the firmware's diagnostic area.  It may get destroyed
-+	 * upon a reboot.  Take paging into account for mapping support.
-+	 */
-+	fixaddr = (addr + MS02NV_RAM + PAGE_SIZE - 1) & ~(PAGE_SIZE - 1);
-+	fixsize = (size - (fixaddr - addr)) & ~(PAGE_SIZE - 1);
-+	mp->uaddr = phys_to_virt(fixaddr);
-+
-+	mtd->type = MTD_RAM;
-+	mtd->flags = MTD_CAP_RAM | MTD_XIP;
-+	mtd->size = fixsize;
-+	mtd->name = (char *)ms02nv_name;
-+	mtd->module = THIS_MODULE;
-+	mtd->read = ms02nv_read;
-+	mtd->write = ms02nv_write;
-+
-+	ret = -EIO;
-+	if (add_mtd_device(mtd)) {
-+		printk(KERN_ERR
-+			"ms02-nv: Unable to register MTD device, aborting!\n");
-+		goto err_out_csr_res;
-+	}
-+
-+	printk(KERN_INFO "mtd%d: %s at 0x%08lx, size %uMB.\n",
-+		mtd->index, ms02nv_name, addr, size >> 20);
-+
-+	mp->next = root_ms02nv_mtd;
-+	root_ms02nv_mtd = mtd;
-+
-+	return 0;
-+
-+
-+err_out_csr_res:
-+	release_resource(csr_res);
-+	kfree(csr_res);
-+err_out_user_res:
-+	release_resource(user_res);
-+	kfree(user_res);
-+err_out_diag_res:
-+	release_resource(diag_res);
-+	kfree(diag_res);
-+err_out_mp:
-+	kfree(mp);
-+err_out_mtd:
-+	kfree(mtd);
-+err_out_mod_res_rel:
-+	release_resource(mod_res);
-+err_out_mod_res:
-+	kfree(mod_res);
-+	return ret;
-+}
-+
-+static void __exit ms02nv_remove_one(void)
-+{
-+	struct mtd_info *mtd = root_ms02nv_mtd;
-+	struct ms02nv_private *mp = (struct ms02nv_private *)mtd->priv;
-+
-+	root_ms02nv_mtd = mp->next;
-+
-+	del_mtd_device(mtd);
-+
-+	release_resource(mp->resource.csr);
-+	kfree(mp->resource.csr);
-+	release_resource(mp->resource.user_ram);
-+	kfree(mp->resource.user_ram);
-+	release_resource(mp->resource.diag_ram);
-+	kfree(mp->resource.diag_ram);
-+	release_resource(mp->resource.module);
-+	kfree(mp->resource.module);
-+	kfree(mp);
-+	kfree(mtd);
-+}
-+
-+
-+static int __init ms02nv_init(void)
-+{
-+	volatile u32 *csr;
-+	uint stride = 0;
-+	int count = 0;
-+	int i;
-+
-+	switch (mips_machtype) {
-+	case MACH_DS5000_200:
-+		csr = (volatile u32 *)KN02_CSR_ADDR;
-+		if (*csr & KN02_CSR_BNK32M)
-+			stride = 2;
-+		break;
-+	case MACH_DS5000_2X0:
-+		csr = (volatile u32 *)KN03_MCR_BASE;
-+		if (*csr & KN03_MCR_BNK32M)
-+			stride = 2;
-+		break;
-+	default:
-+		return -ENODEV;
-+		break;
-+	}
-+
-+	for (i = 0; i < (sizeof(ms02nv_addrs) / sizeof(*ms02nv_addrs)); i++)
-+		if (!ms02nv_init_one(ms02nv_addrs[i] << stride))
-+			count++;
-+
-+	return (count > 0) ? 0 : -ENODEV;
-+}
-+
-+static void __exit ms02nv_cleanup(void)
-+{
-+	while (root_ms02nv_mtd)
-+		ms02nv_remove_one();
-+}
-+
-+
-+module_init(ms02nv_init);
-+module_exit(ms02nv_cleanup);
-diff -up --recursive --new-file linux-mips-2.4.18-20020327.macro/drivers/mtd/devices/ms02-nv.h linux-mips-2.4.18-20020327/drivers/mtd/devices/ms02-nv.h
---- linux-mips-2.4.18-20020327.macro/drivers/mtd/devices/ms02-nv.h	1970-01-01 00:00:00.000000000 +0000
-+++ linux-mips-2.4.18-20020327/drivers/mtd/devices/ms02-nv.h	2001-08-12 20:10:10.000000000 +0000
-@@ -0,0 +1,43 @@
-+/*
-+ *      Copyright (c) 2001 Maciej W. Rozycki
-+ *
-+ *      This program is free software; you can redistribute it and/or
-+ *      modify it under the terms of the GNU General Public License
-+ *      as published by the Free Software Foundation; either version
-+ *      2 of the License, or (at your option) any later version.
-+ */
-+
-+#include <linux/ioport.h>
-+#include <linux/mtd/mtd.h>
-+
-+/* MS02-NV iomem register offsets. */
-+#define MS02NV_CSR		0x400000	/* control & status register */
-+
-+/* MS02-NV memory offsets. */
-+#define MS02NV_DIAG		0x0003f8	/* diagnostic status */
-+#define MS02NV_MAGIC		0x0003fc	/* MS02-NV magic ID */
-+#define MS02NV_RAM		0x000400	/* general-purpose RAM start */
-+
-+/* MS02-NV diagnostic status constants. */
-+#define MS02NV_DIAG_SIZE_MASK	0xf0		/* RAM size mask */
-+#define MS02NV_DIAG_SIZE_SHIFT	0x10		/* RAM size shift (left) */
-+
-+/* MS02-NV general constants. */
-+#define MS02NV_ID		0x03021966	/* MS02-NV magic ID value */
-+#define MS02NV_SLOT_SIZE	0x800000	/* size of the address space
-+						   decoded by the module */
-+
-+typedef volatile u32 ms02nv_uint;
-+
-+struct ms02nv_private {
-+	struct mtd_info *next;
-+	struct {
-+		struct resource *module;
-+		struct resource *diag_ram;
-+		struct resource *user_ram;
-+		struct resource *csr;
-+	} resource;
-+	u_char *addr;
-+	size_t size;
-+	u_char *uaddr;
-+};
+=BD=F0=D7=EA=C1=F9=B4=FA/AS30 30G/UDMA 100/2MB/7200rpm/IDE/3.5=B4=E7 390=D4=AA=
+
+=BD=F0=D7=EA=C6=DF=B4=FA/6L020J/L1 20GB/UDMA 133/7200rpm/2M/IDE/=B5=A5=B5=FA=
+40GB420=D4=AA
+=BD=F0=D7=EA=C6=DF=B4=FA/6L040J/L2 40GB/UDMA 133/7200rpm/2M/IDE/=B5=A5=B5=FA=
+40GB 510=D4=AA 
+=BD=F0=D7=EA=C6=DF=B4=FA/6L060J/L3 60GB/UDMA 133/7200rpm/2M/IDE/=B5=A5=B5=FA=
+40GB600=D4=AA 
+=B4=BF=C6=BD=CF=D4=CA=BE=C6=F7
+=C8=FD=D0=C7 755DF 17=A1=B1800
+450B 14=A1=B1500
+550B 15=A1=B1620
+750S 17=A1=B1 900
+950P 19=A1=B1 1400
+=B7=C9=C0=FB=C6=D1 105S 15=A1=B1320
+105B 15=A1=B1 500
+105G 15=A1=B1 580
+107E 17=A1=B1 700
+107T 17=A1=B1 900
+107P 17=A1=B1 105
+0   
+--8c6125db-31fa-427a-9d97-9c1fa326cda5--

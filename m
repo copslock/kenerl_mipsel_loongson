@@ -1,45 +1,62 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA04713 for <linux-archive@neteng.engr.sgi.com>; Mon, 25 Jan 1999 14:15:13 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA10054 for <linux-archive@neteng.engr.sgi.com>; Thu, 28 Jan 1999 15:05:39 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id OAA85221
+	id PAA72760
 	for linux-list;
-	Mon, 25 Jan 1999 14:13:51 -0800 (PST)
+	Thu, 28 Jan 1999 15:04:08 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id OAA92487
+	via ESMTP id PAA72563
 	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 25 Jan 1999 14:13:49 -0800 (PST)
-	mail_from (ulfc@bun.falkenberg.se)
-Received: from calypso.saturn (dialup89-3-7.swipnet.se [130.244.89.39]) 
+	Thu, 28 Jan 1999 15:04:07 -0800 (PST)
+	mail_from (adevries@engsoc.carleton.ca)
+Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id OAA07277
-	for <linux@cthulhu.engr.sgi.com>; Mon, 25 Jan 1999 14:13:23 -0800 (PST)
-	mail_from (ulfc@bun.falkenberg.se)
-Received: by bun.falkenberg.se
-	via sendmail from stdin
-	id <m105zay-00158gC@calypso.saturn> (Debian Smail3.2.0.102)
-	for linux@cthulhu.engr.sgi.com; Thu, 28 Jan 1999 23:07:28 +0100 (CET) 
-Date: Thu, 28 Jan 1999 23:07:28 +0100
-From: Ulf Carlsson <ulfc@bun.falkenberg.se>
-To: Linux SGI <linux@cthulhu.engr.sgi.com>
-Subject: linus.linux.sgi.com
-Message-ID: <19990128230728.A4232@bun.falkenberg.se>
-Mail-Followup-To: Linux SGI <linux@cthulhu.engr.sgi.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.1i
+	via ESMTP id PAA05900
+	for <linux@cthulhu.engr.sgi.com>; Thu, 28 Jan 1999 15:04:04 -0800 (PST)
+	mail_from (adevries@engsoc.carleton.ca)
+Received: from localhost (adevries@localhost)
+	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id SAA08201
+	for <linux@cthulhu.engr.sgi.com>; Thu, 28 Jan 1999 18:05:55 -0500
+X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
+Date: Thu, 28 Jan 1999 18:05:54 -0500 (EST)
+From: Alex deVries <adevries@engsoc.carleton.ca>
+To: SGI Linux <linux@cthulhu.engr.sgi.com>
+Subject: More HAL2 debugging..
+Message-ID: <Pine.LNX.3.96.990128180500.25641T-100000@lager.engsoc.carleton.ca>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi,
 
-What happend to linus, he seems to be dead. He doesn't reply on pings anymore.
+Here's the latest:
 
-Is it the router once again?
+resetting global isr:0018
+reset done isr:0000
+reactivation done isr:0000
+SGI HAL2 Processor, Revision 4.1.0
+hal2: checking registers
+hal2: waiting isr:0000 idr0:0000 idr1:ffff idr2:0000 idr3:0000
+hal2: finished waiting at cnt:1000 isr:0000 idr0:0000 idr1:ffff idr2:0000
+idr3:0000
+hal2: wrote #1
+hal2: waiting isr:0000 idr0:0000 idr1:0000 idr2:0000 idr3:0000
+hal2: finished waiting at cnt:1000 isr:0000 idr0:0000 idr1:0000 idr2:0000
+idr3:0000
+hal2: wrote #2
+hal2: waiting isr:0000 idr0:0000 idr1:0000 idr2:0000 idr3:0000
+hal2: finished waiting at cnt:1000 isr:0000 idr0:0000 idr1:0000 idr2:0000
+idr3:0000
+hal2: Didn't pass register check #1 (0000)
+sgiaudio: unable to find hal2 subsystem
 
-- Ulf
+
+-- 
+Alex deVries, puffin on LinuxNet.
+I know exactly what I want in life.

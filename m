@@ -1,59 +1,39 @@
-Received:  by oss.sgi.com id <S42442AbQIFVNk>;
-	Wed, 6 Sep 2000 14:13:40 -0700
-Received: from rotor.chem.unr.edu ([134.197.32.176]:24845 "EHLO
-        rotor.chem.unr.edu") by oss.sgi.com with ESMTP id <S42336AbQIFVNP>;
-	Wed, 6 Sep 2000 14:13:15 -0700
-Received: (from wesolows@localhost)
-	by rotor.chem.unr.edu (8.9.3/8.9.3) id OAA18333;
-	Wed, 6 Sep 2000 14:12:49 -0700
-Date:   Wed, 6 Sep 2000 14:12:49 -0700
-From:   Keith M Wesolowski <wesolows@chem.unr.edu>
-To:     Guido Guenther <guido.guenther@gmx.net>
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: latest glibc from cvs fails to build
-Message-ID: <20000906141248.A18088@chem.unr.edu>
-References: <20000906222133.A1052@bilbo.physik.uni-konstanz.de>
+Received:  by oss.sgi.com id <S42446AbQIFVOa>;
+	Wed, 6 Sep 2000 14:14:30 -0700
+Received: from u-48.karlsruhe.ipdial.viaginterkom.de ([62.180.20.48]:27652
+        "EHLO u-48.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
+	with ESMTP id <S42444AbQIFVOW>; Wed, 6 Sep 2000 14:14:22 -0700
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S868997AbQIFIx3>;
+        Wed, 6 Sep 2000 10:53:29 +0200
+Date:   Wed, 6 Sep 2000 10:53:29 +0200
+From:   Ralf Baechle <ralf@uni-koblenz.de>
+To:     Rabeeh Khoury <rabeeh@galileo.co.il>
+Cc:     linux-mips@oss.sgi.com, linux-mips@fnet.fr
+Subject: Re: modules in kernel 2.2.14
+Message-ID: <20000906105329.B1246@bacchus.dhis.org>
+References: <39B53DF0.80BE4104@galileo.co.il>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2i
-In-Reply-To: <20000906222133.A1052@bilbo.physik.uni-konstanz.de>; from guido.guenther@gmx.net on Wed, Sep 06, 2000 at 10:21:33PM +0200
-X-Complaints-To: postmaster@chem.unr.edu
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <39B53DF0.80BE4104@galileo.co.il>; from rabeeh@galileo.co.il on Tue, Sep 05, 2000 at 02:39:44PM -0400
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, Sep 06, 2000 at 10:21:33PM +0200, Guido Guenther wrote:
+On Tue, Sep 05, 2000 at 02:39:44PM -0400, Rabeeh Khoury wrote:
 
-> when cross-building glibc from today's cvs with gcc 2.96 (20000828) I get
-> the following error:
-> dl-reloc.c:104:50: warning: pasting would not give a valid
-> preprocessing token
-> dl-reloc.c:112:50: warning: pasting would not give a valid
-> preprocessing token
-> In file included from dynamic-link.h:21,
->                  from dl-reloc.c:92:
-> ../sysdeps/mips/dl-machine.h:542: too few arguments to function
-> `_dl_lookup_versioned_symbol'
-> ../sysdeps/mips/dl-machine.h:542: too few arguments to function
-> `_dl_lookup_symbol'
+> module.o: unresolved symbol _gp_disp
 > 
-> Does this look familiar to anyone? Otherwise I'll take a look at it
-> later this week.
+> Where this symbol missing, in the kernel or in the module ??!!
 
-This one's easy - dl_lookup_versioned_symbol and dl_lookup_symbol have
-had an argument added at the end of the list. It's a true/false value
-indicating whether the lookup is explicit (1) or implicit (0). The
-changelog describes it a bit more. So if you add the argument - I used
-0, for fun, to the end of the four such calls in dl-machine.h, it will
-build.
+Nowhere - there should be no reference to it.
 
-Unfortunately, there's another problem that looks less easy to fix. In
-the link phase later on, __syscall_getdents64 will be undefined. I am
-uncertain what needs to be done to fix this (anyone?).
+> Did any one encounter this kind of problem ? or have any alternative
+> solution ?
 
--- 
-Keith M Wesolowski			wesolows@chem.unr.edu
-University of Nevada			http://www.chem.unr.edu
-Chemistry Department Systems and Network Administrator
+Compile your module with the same flags as the kernel, especially use
+-fno-pic -mno-abicalls.
+
+  Ralf

@@ -1,50 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Mar 2004 14:11:18 +0000 (GMT)
-Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:14604 "EHLO
-	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8225362AbUCROLR>;
-	Thu, 18 Mar 2004 14:11:17 +0000
-Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
-	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
-	id 1B3y7u-0002ie-00; Thu, 18 Mar 2004 14:04:02 +0000
-Received: from arsenal.mips.com ([192.168.192.197])
-	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
-	id 1B3yEG-0004nx-00; Thu, 18 Mar 2004 14:10:36 +0000
-Received: from dom by arsenal.mips.com with local (Exim 3.35 #1 (Debian))
-	id 1B3yEG-0000Ij-00; Thu, 18 Mar 2004 14:10:36 +0000
-From: Dominic Sweetman <dom@mips.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-ID: <16473.44507.935886.271157@arsenal.mips.com>
-Date: Thu, 18 Mar 2004 14:10:35 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Mar 2004 16:52:07 +0000 (GMT)
+Received: from mx.mips.com ([IPv6:::ffff:206.31.31.226]:7568 "EHLO mx.mips.com")
+	by linux-mips.org with ESMTP id <S8225370AbUCRQwG>;
+	Thu, 18 Mar 2004 16:52:06 +0000
+Received: from mercury.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.12.11/8.12.11) with ESMTP id i2IGgma5010236;
+	Thu, 18 Mar 2004 08:42:48 -0800 (PST)
+Received: from gmu-linux (gmu-linux.mips.com [172.20.8.94])
+	by mercury.mips.com (8.12.11/8.12.11) with ESMTP id i2IGprgp011820;
+	Thu, 18 Mar 2004 08:51:54 -0800 (PST)
+Subject: Re: gcc support of mips32 release 2
+From: Michael Uhler <uhler@mips.com>
 To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
 Cc: Dominic Sweetman <dom@mips.com>,
 	Eric Christopher <echristo@redhat.com>,
 	Long Li <long21st@yahoo.com>, linux-mips@linux-mips.org,
 	David Ung <davidu@mips.com>, Nigel Stephens <nigel@mips.com>
-Subject: Re: gcc support of mips32 release 2
 In-Reply-To: <Pine.LNX.4.55.0403181404210.5750@jurand.ds.pg.gda.pl>
 References: <20040305075517.42647.qmail@web40404.mail.yahoo.com>
 	<1078478086.4308.14.camel@dzur.sfbay.redhat.com>
-	<16456.21112.570245.1011@arsenal.mips.com>
+	<16456.21112.570245.1011@arsenal.mips.com> 
 	<Pine.LNX.4.55.0403181404210.5750@jurand.ds.pg.gda.pl>
-X-Mailer: VM 7.03 under 21.4 (patch 6) "Common Lisp" XEmacs Lucid
-X-MTUK-Scanner: Found to be clean
-X-MTUK-SpamCheck: not spam, SpamAssassin (score=-4.846, required 4, AWL,
-	BAYES_00)
-Return-Path: <dom@mips.com>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Mailer: Ximian Evolution 1.0.8 (1.0.8-11) 
+Date: 18 Mar 2004 08:52:48 -0800
+Message-Id: <1079628769.1558.4.camel@gmu-linux>
+Mime-Version: 1.0
+X-Spam-Scan: SA 2.63
+X-Scanned-By: MIMEDefang 2.39
+Return-Path: <uhler@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4581
+X-archive-position: 4582
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dom@mips.com
+X-original-sender: uhler@mips.com
 Precedence: bulk
 X-list: linux-mips
 
+Dominic already gave the long explanation.
 
-Maciej W. Rozycki (macro@ds2.pg.gda.pl) writes:
+When we added field insert and extract, we were very sensitive to the
+implementability of the instructions.  If you look at the semantic
+definition, independent of the somewhat complex explanation, you'll
+find that both insert and extract can be implemented with a
+left or right shift, followed by a mux-per-bit which selects between
+the shifted operand or the unshifted operand.  That can be done
+very efficiently in hardware.
+
+/gmu
+
+On Thu, 2004-03-18 at 05:18, Maciej W. Rozycki wrote:
+> On Fri, 5 Mar 2004, Dominic Sweetman wrote:
 > 
 > > We added patterns to let our (old) GCC use the new rotates and
 > > bit-insert/extracts, at least in simple cases.  I'm not sure whether
@@ -55,27 +64,14 @@ Maciej W. Rozycki (macro@ds2.pg.gda.pl) writes:
 > actually is.  Even Intel abandoned support for bit insert/extract
 > instructions after an initial attempt for the i386.  They figured out the
 > implementation was too complicated. ;-)
-
-It probably was... but MIPS uses register-to-register ALU operations
-and no condition codes.  The interface to the ALU is typically rather
-simple.  So adding some peculiar new 2- or 3-operand computation is
-relatively easy.
-
-If the instruction is too complicated, of course, it might eventually
-become a critical path and make the whole CPU slower.  But
-insert/extract - while elaborate to describe - involve only fairly
-shallow logic.
-
-Remember: the point of RISC was never to have less instructions
-(that's just a cute acronym) - the point was and is to define an
-instruction set which is easy to implement as an efficient pipeline.
-
-Of course, instructions still have to be *useful* to be added.
-Insert/extract make a reasonable case for themselves, but actually
-arrived in MIPS32 release 2 as part of a bunch of other bit-shuffle
-instructions (also includes rotates and various byte-swaps) which -
-together - help quite a bit to manipulate sub-word data in registers.
-
---
-Dominic Sweetman
-MIPS Technologies
+> 
+> -- 
+> +  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
+> +--------------------------------------------------------------+
+> +        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+> 
+-- 
+Michael Uhler, Chief Technology Officer
+MIPS Technologies, Inc.  Email: uhler@mips.com
+1225 Charleston Road     Voice:  (650)567-5025  FAX:   (650)567-5225
+Mountain View, CA 94043  Mobile: (650)868-6870  Admin: (650)567-5085

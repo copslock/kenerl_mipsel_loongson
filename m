@@ -1,64 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Aug 2004 06:30:43 +0100 (BST)
-Received: from mx1.redhat.com ([IPv6:::ffff:66.187.233.31]:46535 "EHLO
-	mx1.redhat.com") by linux-mips.org with ESMTP id <S8224841AbUHJFai>;
-	Tue, 10 Aug 2004 06:30:38 +0100
-Received: from int-mx1.corp.redhat.com (int-mx1.corp.redhat.com [172.16.52.254])
-	by mx1.redhat.com (8.12.10/8.12.10) with ESMTP id i7A5UZe1007950;
-	Tue, 10 Aug 2004 01:30:35 -0400
-Received: from localhost (mail@vpnuser2.surrey.redhat.com [172.16.9.2])
-	by int-mx1.corp.redhat.com (8.11.6/8.11.6) with ESMTP id i7A5UUa11250;
-	Tue, 10 Aug 2004 01:30:30 -0400
-Received: from rsandifo by localhost with local (Exim 3.35 #1)
-	id 1BuPDQ-00008W-00; Tue, 10 Aug 2004 06:30:28 +0100
-To: Richard Henderson <rth@redhat.com>
-Cc: "Maciej W. Rozycki" <macro@linux-mips.org>,
-	Nigel Stephens <nigel@mips.com>, gcc-patches@gcc.gnu.org,
-	linux-mips@linux-mips.org
-Subject: Re: [patch] MIPS/gcc: Revert removal of DImode shifts for 32-bit
- targets
-References: <20040723202703.GB30931@redhat.com>
-	<20040723211232.GB5138@linux-mips.org>
-	<Pine.LNX.4.58L.0407261325470.3873@blysk.ds.pg.gda.pl>
-	<410E9E25.7080104@mips.com> <87acxcbxfl.fsf@redhat.com>
-	<410F5964.3010109@mips.com> <876580bm2e.fsf@redhat.com>
-	<410F60DF.9020400@mips.com>
-	<Pine.LNX.4.58L.0408042123030.31930@blysk.ds.pg.gda.pl>
-	<87r7qiwz54.fsf@redhat.com> <20040809220838.GE16493@redhat.com>
-From: Richard Sandiford <rsandifo@redhat.com>
-Date: Tue, 10 Aug 2004 06:30:28 +0100
-In-Reply-To: <20040809220838.GE16493@redhat.com> (Richard Henderson's
- message of "Mon, 9 Aug 2004 15:08:38 -0700")
-Message-ID: <87zn5336h7.fsf@redhat.com>
-User-Agent: Gnus/5.1006 (Gnus v5.10.6) Emacs/21.3 (gnu/linux)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Aug 2004 21:08:38 +0100 (BST)
+Received: from drum.kom.e-technik.tu-darmstadt.de ([IPv6:::ffff:130.83.139.190]:31104
+	"EHLO mailserver.KOM.e-technik.tu-darmstadt.de") by linux-mips.org
+	with ESMTP id <S8225072AbUHJUId>; Tue, 10 Aug 2004 21:08:33 +0100
+Received: from KOM.tu-darmstadt.de by mailserver.KOM.e-technik.tu-darmstadt.de (8.7.5/8.7.5) with ESMTP id WAA05288; Tue, 10 Aug 2004 22:07:55 +0200 (MEST)
+Date: Tue, 10 Aug 2004 22:09:28 +0200 (CEST)
+From: Ralf Ackermann <rac@KOM.tu-darmstadt.de>
+X-X-Sender: rac@shofar.kom.e-technik.tu-darmstadt.de
+To: dev-list@meshcube.org
+cc: Ralf Ackermann <rac@KOM.tu-darmstadt.de>, linux-mips@linux-mips.org
+Subject: Q: PCI VGA on Meshcube - any progress?
+In-Reply-To: <41176789.12682.FB0F085@localhost>
+Message-ID: <Pine.LNX.4.58.0408102158480.14110@shofar.kom.e-technik.tu-darmstadt.de>
+References: <41176789.12682.FB0F085@localhost>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <rsandifo@redhat.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <Ralf.Ackermann@KOM.tu-darmstadt.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5616
+X-archive-position: 5617
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rsandifo@redhat.com
+X-original-sender: rac@KOM.tu-darmstadt.de
 Precedence: bulk
 X-list: linux-mips
 
-Richard Henderson <rth@redhat.com> writes:
-> On Sat, Aug 07, 2004 at 08:01:43PM +0100, Richard Sandiford wrote:
->> +   do_compare_rtx_and_jump (cmp1, cmp2, cmp_code, true, op1_mode,
->> + 			   0, 0, subword_label);
->> + 
->> +   if (!expand_superword_shift (op1_mode, binoptab,
->> + 			       outof_input, op1,
->> + 			       outof_target, into_target,
->> + 			       unsignedp, methods))
->> +     return false;
->
-> Return without cleaning up the branch emitted?  In particular,
-> doing so without emitting the labels will result in ICEs.
+Hello,
 
-The whole thing's in a sequence that gets discarded if
-expand_doubleword_shift returns false.  Isn't that enough?
+today my MS-9513 miniPCI VGA card arrived and I started trying to use it.
+The card is identified in the /proc filesystem:
 
-Richad
+---------------
+[root@meshcube01 root]# cat /proc/pci
+PCI devices found:
+  Bus  0, device   3, function  0:
+    VGA compatible controller: ATI Technologies Inc Rage XL (rev 39).
+      IRQ 5.
+      Master Capable.  Latency=128.  Min Gnt=8.
+      Non-prefetchable 32 bit memory at 0x40000000 [0x40ffffff].
+      I/O at 0x300 [0x3ff].
+      Non-prefetchable 32 bit memory at 0x41000000 [0x41000fff].
+----------------
+
+Nevertheless - it does not output any signal - which is probably / as 
+expected due to the missing initialization (that is done by the BIOS on 
+x86 systems).
+
+Did anybody have any more practical success/experiences so far? If so:
+ - Did you try to use the card with the fbdev code (and with which 
+	kernel)?
+ - Did somebody suceed in using an XFree X server (which?, any special 
+	hints?)
+
+In addition to a cross-compile environment I'm using a chrooted 
+Redhat/MIPS installation. It does have the development tools and 
+infrastructure to compile an XFree X server on my own - nevertheless, I'd 
+like to share/wait for the experiences that others made before I spend 
+more time on it right now.
+
+Any hints are welcome!
+
+Best regards
+ Ralf
+
+---------------------------------------------------------------
+Dr. Ralf Ackermann            _         rac@KOM.tu-darmstadt.de
+Multimedia Communications |/ | | |\/|           Merckstrasse 25
+                          |\ |_| |  |  64283 Darmstadt, Germany
+Tel.: (+49) 6151 16-6138                Fax: (+49) 6151 16-6152
+---------------------------------------------------------------
+             http://www.kom.tu-darmstadt.de/~rac
+---------------------------------------------------------------

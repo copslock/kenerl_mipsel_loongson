@@ -1,56 +1,63 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id JAA12903 for <linux-archive@neteng.engr.sgi.com>; Fri, 11 Jun 1999 09:35:22 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id KAA17084 for <linux-archive@neteng.engr.sgi.com>; Fri, 11 Jun 1999 10:59:35 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id JAA37376
+	id KAA02631
 	for linux-list;
-	Fri, 11 Jun 1999 09:33:09 -0700 (PDT)
+	Fri, 11 Jun 1999 10:57:00 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id JAA62796
+	via ESMTP id KAA95999
 	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 11 Jun 1999 09:33:07 -0700 (PDT)
-	mail_from (mikehill@hgeng.com)
-Received: from calvin.tor.onramp.ca (calvin.tor.onramp.ca [204.225.88.15]) 
+	Fri, 11 Jun 1999 10:56:58 -0700 (PDT)
+	mail_from (ulfc@thepuffingroup.com)
+Received: from calypso (dialup120-1-10.swipnet.se [130.244.120.10]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via SMTP id JAA07288
-	for <linux@cthulhu.engr.sgi.com>; Fri, 11 Jun 1999 09:33:05 -0700 (PDT)
-	mail_from (mikehill@hgeng.com)
-Received: (qmail 12717 invoked from network); 11 Jun 1999 16:33:04 -0000
-Received: from imail.hgeng.com (HELO bart.hgeng.com) (199.246.72.233)
-  by mail.onramp.ca with SMTP; 11 Jun 1999 16:33:04 -0000
-Received: by BART with Internet Mail Service (5.5.2232.9)
-	id <MQV6QAK9>; Fri, 11 Jun 1999 12:35:10 -0400
-Message-ID: <E138DB347D10D3119C630008C79F5DEC07E9EB@BART>
-From: Mike Hill <mikehill@hgeng.com>
-To: "'Ulf Carlsson'" <ulfc@thepuffingroup.com>
+	via ESMTP id KAA01494
+	for <linux@cthulhu.engr.sgi.com>; Fri, 11 Jun 1999 10:56:56 -0700 (PDT)
+	mail_from (ulfc@thepuffingroup.com)
+Received: by calypso (Linux Smail3.2.0.101 #1)
+	id m10sW2P-003Ln2C; Fri, 11 Jun 1999 20:28:21 +0200 (CEST)
+Date: Fri, 11 Jun 1999 20:28:21 +0200
+From: Ulf Carlsson <ulfc@thepuffingroup.com>
+To: Mike Hill <mikehill@hgeng.com>
 Cc: linux@cthulhu.engr.sgi.com
-Subject: Belated Feedback:  HAL2
-Date: Fri, 11 Jun 1999 12:35:09 -0400
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2232.9)
-Content-Type: text/plain
+Subject: Re: Belated Feedback:  HAL2
+Message-ID: <19990611202821.C22699@thepuffingroup.com>
+Mail-Followup-To: Mike Hill <mikehill@hgeng.com>,
+	linux@cthulhu.engr.sgi.com
+References: <E138DB347D10D3119C630008C79F5DEC07E9EB@BART>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.95.4i
+In-Reply-To: <E138DB347D10D3119C630008C79F5DEC07E9EB@BART>; from Mike Hill on Fri, Jun 11, 1999 at 12:35:09PM -0400
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi Ulf,
+Mike,
 
-This is only a month late, but the sound driver installation went without a
-hitch, precisely according to your instructions.  I fired up the Indy last
-night using the latest sound kernel and played an .mp3 file using mpg123.
+> This is only a month late, but the sound driver installation went without a
+> hitch, precisely according to your instructions. I fired up the Indy last
+> night using the latest sound kernel and played an .mp3 file using mpg123.
 
-One thing I noticed was the absence of the occasional skips I've experienced
-in recent years playing CDs under IRIX 6.2.  I don't know if this can be
-attributed to a larger OS or my '94-vintage single-speed SGI-enabled CD
-drive, but it's not something I recall happening under IRIX 5.2.  (I guess
-5.2 was less taxing on 32 M RAM.)
+Better late than never. Great news!
 
-In an aside, Tux displays brilliantly at bootup on my 8-bit Newport.
+> One thing I noticed was the absence of the occasional skips I've experienced
+> in recent years playing CDs under IRIX 6.2.  I don't know if this can be
+> attributed to a larger OS or my '94-vintage single-speed SGI-enabled CD
+> drive, but it's not something I recall happening under IRIX 5.2.  (I guess
+> 5.2 was less taxing on 32 M RAM.)
 
-Regards,
+We beat IRIX, that sound great to me ;-)
 
-Mike
+I'm interested in how this CD playback works. Does it read raw data from the CD
+drive and just play it on the HAL2 or are there some other and smarter ways of
+doing it? I have a half-broken SCSI CD player here (which I'm currently only
+using to raise my monitor some inches from the desk). Is it possible to read raw
+data from an audio CD?
+
+- Ulf

@@ -1,53 +1,50 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA10136; Sat, 14 Jun 1997 08:40:16 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA05207; Sat, 14 Jun 1997 10:21:55 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id IAA16633 for linux-list; Sat, 14 Jun 1997 08:39:33 -0700
-Received: from heaven.newport.sgi.com (heaven.newport.sgi.com [169.238.102.134]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA16611 for <linux@engr.sgi.com>; Sat, 14 Jun 1997 08:39:30 -0700
-Received: by heaven.newport.sgi.com (940816.SGI.8.6.9/940406.SGI)
-	for linux@engr id IAA21080; Sat, 14 Jun 1997 08:39:28 -0700
-From: "Christopher W. Carlson" <carlson@heaven.newport.sgi.com>
-Message-Id: <9706140839.ZM21078@heaven.newport.sgi.com>
-Date: Sat, 14 Jun 1997 08:39:28 -0700
-In-Reply-To: "William J. Earl" <wje@fir.engr.sgi.com>
-        "Re: gcc for Irix." (Jun 13,  1:37pm)
-References: <199706131654.JAA28555@fir.engr.sgi.com> 
-	<199706131750.KAA09670@yon.engr.sgi.com> 
-	<199706132037.NAA29267@fir.engr.sgi.com>
-X-Mailer: Z-Mail-SGI (3.2S.2 10apr95 MediaMail)
-To: linux@cthulhu.engr.sgi.com
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id KAA00611 for linux-list; Sat, 14 Jun 1997 10:21:23 -0700
+Received: from yon.engr.sgi.com (yon.engr.sgi.com [150.166.61.32]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA00606 for <linux@cthulhu.engr.sgi.com>; Sat, 14 Jun 1997 10:21:20 -0700
+Received: (from ariel@localhost) by yon.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id KAA12726; Sat, 14 Jun 1997 10:21:07 -0700
+From: ariel@yon.engr.sgi.com (Ariel Faigon)
+Message-Id: <199706141721.KAA12726@yon.engr.sgi.com>
 Subject: Re: gcc for Irix.
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+To: carlson@heaven.newport.sgi.com (Christopher W. Carlson)
+Date: Sat, 14 Jun 1997 10:21:07 -0700 (PDT)
+Cc: linux@cthulhu.engr.sgi.com
+In-Reply-To: <9706140839.ZM21078@heaven.newport.sgi.com> from "Christopher W. Carlson" at Jun 14, 97 08:39:28 am
+Reply-To: ariel@sgi.com (Ariel Faigon)
+Organization: Silicon Graphics Inc.
+X-Mailer: ELM [version 2.4 PL24 ME5a]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Jun 13,  1:37pm, William J. Earl wrote:
-> 
->        If the old headers do not work on the new system, that is a
-> bug, not a feature.  There had better not be any subtle
-> incompatibilities.  (New headers will not work on an old system, but
-> that is a different problem.)
->-- End of excerpt from William J. Earl
+:
+:Actually, it isn't a bug because there was a major version change.
+:Anything can change between 5.3 and 6.2.  I know we try to maintain
+:backwards compatibility but sometimes ANSI requires changes in the
+:number of parameters, there's a change in the values used to pass to
+:functions, etc.
+:
+:I believe our promise is that code compiled on 5.3 will run on 6.2,
+:not that it will still compile.
+:
+Yes, It was mainly ANSI/POSIX1C/POSIX2/XPG4/UNIX95 (spec 1170) changes
+(See /usr/include/standards.h) which caused major changes in IRIX
+headers in order to be able to support all these standards without
+conflicts (a pretty big undertaking).
 
+In addition there were some enhancemnets to certain APIs, for example
+supporting faster serial speeds which changed some termios.h subtle
+interfaces (you may still compile with -D_OLD_TERMIOS of course, but
+still a change that may break compilations on old and arguably not
+cleanly written UNIX apps -- GNU less comes to mind) 
 
-Actually, it isn't a bug because there was a major version change.
-Anything can change between 5.3 and 6.2.  I know we try to maintain
-backwards compatibility but sometimes ANSI requires changes in the
-number of parameters, there's a change in the values used to pass to
-functions, etc.
-
-I believe our promise is that code compiled on 5.3 will run on 6.2,
-not that it will still compile.
+And finally there's "fix_headers" - the utility that comes with gcc
+and fixes headers so they can be used with some gcc conventions
+and extensions to C.  Combine this with our multi-standard headers
+which I suspect the designers of "fix_headers" never thought of
+and you get a pretty cool mess :-)
 
 -- 
-
-		Chris Carlson
-
-	+------------------------------------------------------+
-	| Also, carlson@sgi.com                                |
-	|   Work:   (714) 224-4530                             |
-	|   Vnet:       6-678-4530     FAX:    (714) 833-9503  |
-	|                                                      |
-	| Trivia fact: an electroencephalogram shows that a    |
-	| human brain and a bowl of quivering lime Jell-O have |
-	| the same waves.  [Time Magazine, Mar 17, 1997]       |
-	+------------------------------------------------------+
+Peace, Ariel

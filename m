@@ -1,60 +1,92 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Jan 2004 22:44:08 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:765 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225581AbUAVWoH>;
-	Thu, 22 Jan 2004 22:44:07 +0000
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id i0MMi5i23622;
-	Thu, 22 Jan 2004 14:44:05 -0800
-Date: Thu, 22 Jan 2004 14:44:05 -0800
-From: Jun Sun <jsun@mvista.com>
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>,
-	jsun@mvista.com
-Subject: Re: [PATCH 2.6] set up conswitchp when CONFIG_VT is set
-Message-ID: <20040122144405.C3573@mvista.com>
-References: <20040121162032.F29705@mvista.com> <Pine.GSO.4.58.0401221052100.1408@waterleaf.sonytel.be> <20040122122832.GA4482@linux-mips.org> <Pine.GSO.4.58.0401221331160.1408@waterleaf.sonytel.be> <20040122221820.GA23391@linux-mips.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20040122221820.GA23391@linux-mips.org>; from ralf@linux-mips.org on Thu, Jan 22, 2004 at 11:18:20PM +0100
-Return-Path: <jsun@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Jan 2004 23:20:10 +0000 (GMT)
+Received: from avtrex.com ([IPv6:::ffff:216.102.217.178]:3940 "EHLO avtrex.com")
+	by linux-mips.org with ESMTP id <S8225592AbUAVXUJ>;
+	Thu, 22 Jan 2004 23:20:09 +0000
+Received: from avtrex.com ([192.168.0.111] RDNS failed) by avtrex.com with Microsoft SMTPSVC(5.0.2195.6713);
+	 Thu, 22 Jan 2004 15:20:06 -0800
+Message-ID: <40105A6F.3060009@avtrex.com>
+Date: Thu, 22 Jan 2004 15:19:11 -0800
+From: David Daney <ddaney@avtrex.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.1) Gecko/20031030
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: linux-mips@linux-mips.org
+Subject: Lossage do to #ifndef __ASSEMBLY__ in mipsregs.h
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 22 Jan 2004 23:20:06.0115 (UTC) FILETIME=[452AA330:01C3E13E]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4112
+X-archive-position: 4113
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jan 22, 2004 at 11:18:20PM +0100, Ralf Baechle wrote:
-> On Thu, Jan 22, 2004 at 01:32:58PM +0100, Geert Uytterhoeven wrote:
-> 
-> > DUMMY_CONSOLE can be set in drivers/video/console/Kconfig only.
-> > drivers/video/console/Kconfig is included by drivers/video/Kconfig only, and
-> > its inclusion depends on VT.
-> > Hence the #ifdef CONFIG_VT is superfluous, unless the above isn't true for the
-> > MIPS tree (I checked plain 2.6.1).
-> 
-> A few systems used to hardwire CONFIG_DUMMY_CONSOLE in their Config.in /
-> Kconfig.  Seem that has been fixed, good.
-> 
+I am using gcc 3.3.1 to compile the linux_2_4 kernel obtained from cvs a 
+couple of days ago.
 
-You are both right.  
+My gcc defines these assemble related macros:
 
-In the end conswitchp needs to be set if and only if CONFIG_VT is set.  
-From this regard, I think it is OK to leave this config there even if 
-not all that useful given current code.
+[daney@dl xilleon]$ mipsel-linux-gcc -D__KERNEL__ 
+-I/newdisk/programs/linux-mips.org/linux/include -Wall 
+-Wstrict-prototypes -Wno-trigraphs -O2 -fno-strict-aliasing -fno-common 
+-fomit-frame-pointer -I 
+/newdisk/programs/linux-mips.org/linux/include/asm/gcc -G 0 
+-mno-abicalls -fno-pic -finline-limit=100000 -mabi=32 -march=mips32 
+-mips32 -Wa,-32 -Wa,-march=mips32 -Wa,-mips32 -Wa,--trap  
+-DLINUX_RAM_START=0x80100000 -dM -E -c xilleonIRQ.S | grep ASS
+#define __ASSEMBLER__ 1
+#define LANGUAGE_ASSEMBLY 1
+#define __LANGUAGE_ASSEMBLY 1
+#define __LANGUAGE_ASSEMBLY__ 1
+#define _LANGUAGE_ASSEMBLY 1
 
-OK, I admit.  I already checked it in that way :0  If anyone is seriously
-mad, I can take it out.  It does not really matter.  What really
-matters is we repealed another unnecessary tax on board part.
+Now in mipsregs.h we have:
+.
+.
+.
+#ifndef __ASSEMBLY__
+.
+.
+.
 
-Jun
+So I get a ton of errors trying to assemble the file.
 
-PS. the tax repealling thing is really learned from our governer Arnold
-Schwarzenegger ....
+Now back on 2002/06/27 we have:
+
+===================================================================
+RCS file: /home/cvs/linux/include/asm-mips/mipsregs.h,v
+retrieving revision 1.30.2.8
+retrieving revision 1.30.2.9
+diff -u -p -r1.30.2.8 -r1.30.2.9
+--- linux/include/asm-mips/mipsregs.h	2002/06/27 09:53:37	1.30.2.8
++++ linux/include/asm-mips/mipsregs.h	2002/06/27 14:21:23	1.30.2.9
+@@ -445,7 +445,7 @@
+ #define CEB_KERNEL	2	/* Count events in kernel mode EXL = ERL = 0 */
+ #define CEB_EXL		1	/* Count events with EXL = 1, ERL = 0 */
+ 
+-#ifndef _LANGUAGE_ASSEMBLY
++#ifndef __ASSEMBLY__
+ 
+ /*
+  * Functions to access the r10k performance counter and control registers
+@@ -1023,6 +1023,6 @@ do {									\
+ 		__disable_fpu();					\
+ } while (0)
+ 
+-#endif /* !defined (_LANGUAGE_ASSEMBLY) */
++#endif /* !__ASSEMBLY__ */
+ 
+ #endif /* _ASM_MIPSREGS_H */
+
+Why the change?
+
+I will fix my local mipsregs.h so that I can continue, but it seems like 
+the sources in CVS should be changed to allow gcc 3.3.1 to work.
+
+David Daney.

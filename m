@@ -1,116 +1,65 @@
-Received:  by oss.sgi.com id <S554051AbRAZAul>;
-	Thu, 25 Jan 2001 16:50:41 -0800
-Received: from blackdog.wirespeed.com ([208.170.106.25]:49671 "EHLO
-        blackdog.wirespeed.com") by oss.sgi.com with ESMTP
-	id <S554049AbRAZAu2>; Thu, 25 Jan 2001 16:50:28 -0800
-Received: from redhat.com (IDENT:joe@dhcp-4.wirespeed.com [172.16.17.4])
-	by blackdog.wirespeed.com (8.9.3/8.9.3) with ESMTP id SAA10182;
-	Thu, 25 Jan 2001 18:45:33 -0600
-Message-ID: <3A70CA98.102@redhat.com>
-Date:   Thu, 25 Jan 2001 18:53:44 -0600
-From:   Joe deBlaquiere <jadb@redhat.com>
-Organization: Red Hat, Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux 2.2.16-22 i686; en-US; m18) Gecko/20001107 Netscape6/6.0
+Received:  by oss.sgi.com id <S553840AbRAZHmn>;
+	Thu, 25 Jan 2001 23:42:43 -0800
+Received: from mx.mips.com ([206.31.31.226]:40162 "EHLO mx.mips.com")
+	by oss.sgi.com with ESMTP id <S553657AbRAZHmX>;
+	Thu, 25 Jan 2001 23:42:23 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id XAA03819;
+	Thu, 25 Jan 2001 23:42:19 -0800 (PST)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id XAA03616;
+	Thu, 25 Jan 2001 23:42:16 -0800 (PST)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id IAA29845;
+	Fri, 26 Jan 2001 08:42:10 +0100 (MET)
+Message-ID: <3A712A52.FAC574F1@mips.com>
+Date:   Fri, 26 Jan 2001 08:42:10 +0100
+From:   Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
 X-Accept-Language: en
 MIME-Version: 1.0
 To:     Ralf Baechle <ralf@oss.sgi.com>
-CC:     Florian Lohoff <flo@rfc822.org>, linux-mips@oss.sgi.com
-Subject: Re: [FIX] sysmips(MIPS_ATMIC_SET, ...) ret_from_sys_call vs. o32_ret_from_sys_call
-References: <20010124163048.B15348@paradigm.rfc822.org> <20010124165919.C15348@paradigm.rfc822.org> <20010125165530.B12576@paradigm.rfc822.org> <3A70705C.5020600@redhat.com> <3A707FFB.60802@redhat.com> <20010125141952.C2311@bacchus.dhis.org>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+CC:     Michael Shmulevich <michaels@jungo.com>,
+        "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Re: MIPS/linux compatible PCI network cards
+References: <3A70A356.F3CA71F1@jungo.com> <20010125141632.B2311@bacchus.dhis.org>
+Content-Type: text/plain; charset=iso-8859-15
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Ralf,
-	Thanks for the help. I generally consider myself a pseudo-expert on 
-Linux, but at the same time I'm amazed by how much I learn on a daily basis.
-
-So I've got the following code which seems to work... (I can't use the 
-ll/sc ops on the Vr41xx since they are not implemeted!)
-
-#ifdef CONFIG_CPU_VR41XX
-	/* this version is inherently single processor! */
-	
-	case MIPS_ATOMIC_SET: {
-		unsigned int tmp;
-		unsigned long flags;
-
-		p = (int *) arg1;
-		errno = verify_area(VERIFY_WRITE, p, sizeof(*p));
-		if (errno)
-			return errno;
-		errno = 0;
-
-		/* the Vr processors can't be SMP, so just lock ints */
-		save_and_cli(flags);
-		tmp = *p ;
-		*p = arg2 ;
-		restore_flags(flags);
-		return tmp;
-
-	}
-#endif
-
-The trailer in the normal call is like :
-
-		/* We're skipping error handling etc.  */
-		if (current->ptrace & PT_TRACESYS)
-			syscall_trace();
-
-		__asm__ __volatile__(
-			"move\t$29, %0\n\t"
-			"j\tret_from_sys_call"
-			: /* No outputs */
-			: "r" (&cmd));
-		/* Unreached */
-
-Which says "no outputs" although sysmips is specified as
-
-extern int sysmips __P ((__const cmd, __const int arg1,
-			 __const int arg2, __const int arg3));
-
-and the usage of this call in glibc pthreads implies that there should 
-be a return value. Should I be bypassing the scheduler to return also?
-
-The end goal of this is to make pthreads work on the Vr4181...it's 
-certainly an interesting task so far...
-
 Ralf Baechle wrote:
 
-> On Thu, Jan 25, 2001 at 01:35:23PM -0600, Joe deBlaquiere wrote:
-> 
-> 
->> sysmips(MIPS_ATOMIC_SET,ptr,val)
->> {
->> 	 *ptr = val ;
->> 	val 0 ;
->> }
->> 
->> but it is an atomic operation
->> 
->> if this correct in a pseudo-code sense?
-> 
-> 
-> It's more:
-> 
-> sysmips(MIPS_ATOMIC_SET, ptr, val)
-> {
-> 	result = *ptr;
-> 	*ptr = val;
-> 
-> 	return result;
-> }
-> 
->    Ralf
+> On Fri, Jan 26, 2001 at 12:06:14AM +0200, Michael Shmulevich wrote:
+> > Date:   Fri, 26 Jan 2001 00:06:14 +0200
+> > From: Michael Shmulevich <michaels@jungo.com>
+> > To: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+> > Subject: MIPS/linux compatible PCI network cards
+> >
+> > Hello all,
+> >
+> > I would like to ask if someone knows some more or less widely available
+> > PCI network card that is compatible with MIPS/Linux.
+> >
+> > I have heard of Tulip and AMD's PCnet. I wonder if you heard of others.
+>
+> These all have already been used with Linux/MIPS.  I don't have any reports
+> on the current status of these drivers.  If they don't work they should
+> be reasonably easy to fix.
+
+The tulip driver worked fine at least in the past. The AMD PCnet driver works
+just fine, we are using it on our reference boards.
 
 
--- 
-Joe deBlaquiere
-Red Hat, Inc.
-307 Wynn Drive
-Huntsville AL, 35805
-voice : (256)-704-9200
-fax   : (256)-837-3839
+>
+>
+>   Ralf
+
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

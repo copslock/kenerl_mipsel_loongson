@@ -1,60 +1,57 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA18460; Fri, 30 May 1997 10:36:20 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA22308; Fri, 30 May 1997 14:01:32 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id IAA15090 for linux-list; Fri, 30 May 1997 08:31:04 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA14796 for <linux@relay.engr.SGI.COM>; Fri, 30 May 1997 08:28:57 -0700
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id IAA07547
-	for <linux@relay.engr.SGI.COM>; Fri, 30 May 1997 08:28:56 -0700
-	env-from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-          by lager.engsoc.carleton.ca (8.8.5/8.8.4) with SMTP
-	  id LAA12688; Fri, 30 May 1997 11:02:53 -0400
-Date: Fri, 30 May 1997 11:02:49 -0400 (EDT)
-From: Alex deVries <adevries@engsoc.carleton.ca>
-To: Mike Shaver <shaver@neon.ingenia.ca>
-cc: Ralf Baechle <ralf@mailhost.uni-koblenz.de>, linux@cthulhu.engr.sgi.com
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id IAA13994 for linux-list; Fri, 30 May 1997 08:20:29 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA13722 for <linux@relay.engr.SGI.COM>; Fri, 30 May 1997 08:18:25 -0700
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id IAA05371
+	for <linux@relay.engr.SGI.COM>; Fri, 30 May 1997 08:18:03 -0700
+	env-from (ralf@informatik.uni-koblenz.de)
+Received: from thoma (ralf@thoma.uni-koblenz.de [141.26.4.61]) by informatik.uni-koblenz.de (8.8.5/8.6.9) with SMTP id RAA23721; Fri, 30 May 1997 17:13:55 +0200 (MEST)
+From: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
+Message-Id: <199705301513.RAA23721@informatik.uni-koblenz.de>
+Received: by thoma (SMI-8.6/KO-2.0)
+	id RAA17406; Fri, 30 May 1997 17:13:53 +0200
 Subject: Re: userland cometh
-In-Reply-To: <199705301346.JAA12694@neon.ingenia.ca>
-Message-ID: <Pine.LNX.3.95.970530105637.10806A-100000@lager.engsoc.carleton.ca>
+To: adevries@engsoc.carleton.ca (Alex deVries)
+Date: Fri, 30 May 1997 17:13:52 +0200 (MET DST)
+Cc: shaver@neon.ingenia.ca, ralf@mailhost.uni-koblenz.de,
+        linux@cthulhu.engr.sgi.com
+In-Reply-To: <Pine.LNX.3.95.970530105637.10806A-100000@lager.engsoc.carleton.ca> from "Alex deVries" at May 30, 97 11:02:49 am
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
------BEGIN PGP SIGNED MESSAGE-----
+Hi,
 
-On Fri, 30 May 1997, Mike Shaver wrote:
-> Actually, I think it'll be my cohort Alex who'll be building most of
-> them.  He likes RPM in a way that's a little frightening (hi, Alex!). =)
+> > Actually, I think it'll be my cohort Alex who'll be building most of
+> > them.  He likes RPM in a way that's a little frightening (hi, Alex!). =)
+> 
+> I am, yes, sitting on the edge of my seat for Mike to get the network
+> working so I can have access to the machine.  Mike's working on the
+> network now to stop my endless pestering.
+> 
+> The priority will be getting rpm itself to compile properly, although I
+> don't anticipate any huge problems.  I just need to tell it that
+> Linux/mips exists, I suspect.
 
-I am, yes, sitting on the edge of my seat for Mike to get the network
-working so I can have access to the machine.  Mike's working on the
-network now to stop my endless pestering.
+This and another one or two minor patches were required to make rpm
+build on my machine.
 
-The priority will be getting rpm itself to compile properly, although I
-don't anticipate any huge problems.  I just need to tell it that
-Linux/mips exists, I suspect.
+> There's a large lump of joy in knowing that gcc/libc etc work properly.
+> The rest is easy.
 
-There's a large lump of joy in knowing that gcc/libc etc work properly.
-The rest is easy.
+Trying to build and use a distribution will help us alot to find the bugs.
 
-> I can imagine.  I'm not looking to be a distribution (yet). =)
+> > I can imagine.  I'm not looking to be a distribution (yet). =)
+> 
+> I suspect if we do a good enough job of porting the bulk of the RPMS that
+> RedHat will take the effort seriously.  There'll be a lot of RPMs to port,
+> though... 
 
-I suspect if we do a good enough job of porting the bulk of the RPMS that
-RedHat will take the effort seriously.  There'll be a lot of RPMs to port,
-though... 
+Most of the changes we need to do are already covered by some other patch
+files in the SRPMs.  For example many packages already contain GNU libc
+patches; in some packages the GNU libc patches are disguised as Alpha
+patches.  And GNU libc patches are 90% of what we need to patch.
 
-- - Alex
-
-
-      Alex deVries           "Microsoft, the source of all evil!"
-  System Administrator                  - C. Theriault
-   The EngSoc Project     
-
------BEGIN PGP SIGNATURE-----
-Version: 2.6.2
-
-iQB1AwUBM47sHO5CP+X51y2VAQE6iAL/ZBVgh6VV7KMFmSd070Uem6RphF3Clq23
-bDZC5NQflkYXhkTdrMpfSNwCfTaEJsoU81vsn/MWsbBB87lVkWak1+gwl5pJr7Y8
-3cc5+7LvG4QXhiDQEjo6HI/tcyeALTEk
-=gc9x
------END PGP SIGNATURE-----
+  Ralf

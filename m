@@ -1,88 +1,73 @@
-Received:  by oss.sgi.com id <S305157AbQAMUnO>;
-	Thu, 13 Jan 2000 12:43:14 -0800
-Received: from sgi.SGI.COM ([192.48.153.1]:13426 "EHLO sgi.com")
-	by oss.sgi.com with ESMTP id <S305154AbQAMUmx>;
-	Thu, 13 Jan 2000 12:42:53 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id MAA00822; Thu, 13 Jan 2000 12:43:54 -0800 (PST)
+Received:  by oss.sgi.com id <S305157AbQAMV1E>;
+	Thu, 13 Jan 2000 13:27:04 -0800
+Received: from deliverator.sgi.com ([204.94.214.10]:38162 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305154AbQAMV0m>;
+	Thu, 13 Jan 2000 13:26:42 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id NAA12365; Thu, 13 Jan 2000 13:23:44 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id MAA95249
+	id NAA36747
 	for linux-list;
-	Thu, 13 Jan 2000 12:32:03 -0800 (PST)
+	Thu, 13 Jan 2000 13:15:51 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from liveoak.engr.sgi.com (liveoak.engr.sgi.com [163.154.5.24])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id MAA18453
-	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 13 Jan 2000 12:32:00 -0800 (PST)
-	mail_from (weave@eng.umd.edu)
-Received: from po3.glue.umd.edu (po3.glue.umd.edu [128.8.10.123]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id MAA04135
-	for <linux@cthulhu.engr.sgi.com>; Thu, 13 Jan 2000 12:31:58 -0800 (PST)
-	mail_from (weave@eng.umd.edu)
-Received: from z.glue.umd.edu (root@z.glue.umd.edu [128.8.10.71])
-	by po3.glue.umd.edu (8.9.3/8.9.3) with ESMTP id PAA03021;
-	Thu, 13 Jan 2000 15:31:51 -0500 (EST)
-Received: from z.glue.umd.edu (sendmail@localhost [127.0.0.1])
-	by z.glue.umd.edu (8.9.3/8.9.3) with SMTP id PAA09161;
-	Thu, 13 Jan 2000 15:31:50 -0500 (EST)
-Received: from localhost (weave@localhost)
-	by z.glue.umd.edu (8.9.3/8.9.3) with ESMTP id PAA09157;
-	Thu, 13 Jan 2000 15:31:50 -0500 (EST)
-X-Authentication-Warning: z.glue.umd.edu: weave owned process doing -bs
-Date:   Thu, 13 Jan 2000 15:31:50 -0500 (EST)
-From:   Vince Weaver <weave@eng.umd.edu>
-X-Sender: weave@z.glue.umd.edu
+	via ESMTP id NAA36179;
+	Thu, 13 Jan 2000 13:15:48 -0800 (PST)
+	mail_from (wje@liveoak.engr.sgi.com)
+Received: (from wje@localhost)
+	by liveoak.engr.sgi.com (8.9.3/8.8.7) id NAA23872;
+	Thu, 13 Jan 2000 13:15:36 -0800
+X-Authentication-Warning: liveoak.engr.sgi.com: wje set sender to wje@liveoak.engr.sgi.com using -f
+From:   "William J. Earl" <wje@cthulhu.engr.sgi.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID: <14462.16504.84215.298070@liveoak.engr.sgi.com>
+Date:   Thu, 13 Jan 2000 13:15:36 -0800 (PST)
 To:     eak@sgi.com
-cc:     linux@cthulhu.engr.sgi.com
+Cc:     Vince Weaver <weave@eng.umd.edu>, linux@cthulhu.engr.sgi.com
 Subject: Re: identifying sgi system type under Linux
 In-Reply-To: <387E2510.43D52D70@detroit.sgi.com>
-Message-ID: <Pine.GSO.4.21.0001131523370.8599-100000@z.glue.umd.edu>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+References: <Pine.GSO.4.21.0001131258320.25401-100000@z.glue.umd.edu>
+	<387E2510.43D52D70@detroit.sgi.com>
+X-Mailer: VM 6.74 under Emacs 20.3.1
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
+Eric Kimminau writes:
+ > Vince Weaver wrote:
+ > > 
+ > > Hello again
+ > > 
+ > > I was trying to see if I could get this Indigo2 to display that it is an
+ > > Indigo2 under /proc/cpuinfo [instead of current behavior, which assumes
+ > > all SGI's are indy's].
+ > >
+ > > Is it possible to figure out what system type it is from this info?  Is
+ > > there another way to find out sgi system type?  Or is this just not
+ > > possible?
+...
+ > The problem is that IP22 could be an Indy or an Indigo/2. Even under
+ > IRIX if you run hinv it doesn't tell you that a system is an Indy or
+ > an Indigo/2. Your only clues come from knowing additional bits about
+ > what is or is not Indy or I2 hardware.  For example you would never
+ > see Impact graphics on an Indy and you would never see an Indy 8-bit
+ > graphics board on an Indigo/2 (although there were 8 bit boards on an
+ > Indigo/2 - I have been looking aorund internally to see if I can find
+ > one to see what it actually reports at command monitor for graphics).
+ > Further confusion would be to try and identify an older Indigo with an
+ > R4000 upgrade from an Indy.
 
-> I am asking around internally to see what if  any portions of kernel
-> probe related code might be releaseable but the problem with even
-> attempting that (from the few limited conversations I have had with
-> kernel engineers) is that none of the IRIX hardware identification
-> code is in one central place. It is really all over the place and
-> dynamically builds this type of information in the hardware graph unde
-> IRIX based on all of the hardware the kernel finds in the system.
+      One key difference is that Indigo2 always has an EISA bus and
+Indy never does.  
 
-OK, I've done a tiny bit of research on the web, and this is what would be
-useful:
-
-a way of finding the hardware IP as opposed to the software IP
-    i.e., according to the SGI HARDWARE FAQ, while hinv reports
-          both indy's and indigo2's as IP22, hardware wise
-          the indy has an IP24 motherboard...
-
-what ranges of serial numbers the various hardware have
-    i.e., both of our indigo2's have serial numbers starting
-          with 69:07, but that could be co-incidence because
-          I am sure they were purchased at the same time.  
-          ( the personal IRIS starts with E0:48 and the giant
-          Crimson looks like A0:08 )
-
-anyway I guess this isn't the most critical of problems, I was just
-interested in having /proc/cpuinfo display it correctly [and thus, have
-linux_logo show it correctly as well].
-
-Thanks
-
-Vince
+      Note that the Linux kernel (like the IRIX kernel) has a way of
+detecting the difference, since it needs to know which box it is
+running on, so you could just get the kernel to export the data via
+/proc somewhere.  The kernel variable "sgi_guiness" is 1 if the system
+is an Indy ("Guinness") and 0 if the system is an Indigo2
+("FullHouse").  Look at the file indy_hpc.c to see how this is detected.

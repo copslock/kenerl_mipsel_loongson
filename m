@@ -1,41 +1,51 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8TAKrE00322
-	for linux-mips-outgoing; Sat, 29 Sep 2001 03:20:53 -0700
-Received: from gandalf.physik.uni-konstanz.de (gandalf.physik.uni-konstanz.de [134.34.144.69])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8TAKoD00319
-	for <linux-mips@oss.sgi.com>; Sat, 29 Sep 2001 03:20:51 -0700
-Received: from galadriel.physik.uni-konstanz.de [134.34.144.79] (8)
-	by gandalf.physik.uni-konstanz.de with esmtp (Exim 3.12 #1 (Debian))
-	id 15nHEl-0004Ue-00; Sat, 29 Sep 2001 12:20:47 +0200
-Received: from agx by galadriel.physik.uni-konstanz.de with local (Exim 3.12 #1 (Debian))
-	id 15nHEj-0003Kw-00; Sat, 29 Sep 2001 12:20:45 +0200
-Date: Sat, 29 Sep 2001 12:20:45 +0200
-From: Guido Guenther <agx@debian.org>
-To: debian-mips@lists.debian.org, linux-mips@oss.sgi.com
-Subject: Re: Need an account on a Linux/Mips box
-Message-ID: <20010929122045.A12811@galadriel.physik.uni-konstanz.de>
-Mail-Followup-To: debian-mips@lists.debian.org, linux-mips@oss.sgi.com
-References: <1f05gge.7bt3xkxllentM@[10.0.12.137]> <vzay9n46373.fsf@false.linpro.no> <20010924173723.A2203@bunny.shuttle.de> <vzawv2o4kwe.fsf@false.linpro.no>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <vzawv2o4kwe.fsf@false.linpro.no>; from kristoffer@linpro.no on Mon, Sep 24, 2001 at 06:24:17PM +0200
+	by oss.sgi.com (8.11.2/8.11.3) id f8TKDWx08657
+	for linux-mips-outgoing; Sat, 29 Sep 2001 13:13:32 -0700
+Received: from harper.owbn.net.nz (210-54-231-108.adsl.xtra.co.nz [210.54.231.108])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8TKDSD08654
+	for <linux-mips@oss.sgi.com>; Sat, 29 Sep 2001 13:13:29 -0700
+Received: from kindred (kindred.owbn.net.nz [192.168.20.1])
+	by harper.owbn.net.nz (8.11.0/8.11.0) with SMTP id f8TKITZ19294
+	for <linux-mips@oss.sgi.com>; Sun, 30 Sep 2001 08:18:30 +1200
+From: "Jason Saggers" <psyclone@owbn.net.nz>
+To: "Linux-Mips \(E-mail\)" <linux-mips@oss.sgi.com>
+Subject: FW: debian base 2 and tar issues ..
+Date: Sun, 30 Sep 2001 08:15:30 +1200
+Message-ID: <000001c14923$7ca389e0$0114a8c0@kindred>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook CWS, Build 9.0.2416 (9.0.2910.0)
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4522.1200
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from base64 to 8bit by oss.sgi.com id f8TKDTD08655
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Sep 24, 2001 at 06:24:17PM +0200, Kristoffer Gleditsch wrote:
-[..snip..] 
-> Apart from sshd (OpenSSH), which started dying from SIGFPE (floating
-> point exception, whatever that means :) a few days ago, it's working
-> OK.
-Toolchain update problem - recompiling fixes this. I've put recompiled
-debs at:
 
-http://honk.physik.uni-konstanz.de/linux-mips/debian/ssl-tmp/
 
- -- Guido
+-----Original Message-----
+From: Jason Saggers [mailto:psyclone@owbn.net.nz]
+Sent: Saturday, September 29, 2001 11:03 PM
+To: Debian-Sparc (E-mail)
+Subject: debian base 2 and tar issues ..
 
--- 
-This kind of limitation can lead administrators to do irrational things,
-      like install Windows. Clearly a fix was required. (lwn.net)
+
+
+I am getting
+
+indy:~# tar
+[tar:95] Illegal instruction 0100017c at 2ac8eeac ra=00000000
+Illegal Instruction
+
+
+I am running on a Indy R5000 150Mhz with 160MB RAM
+
+Any suggestions
+
+
+JasonÿôèPÔ” ‘ ÿzf¢–Úy¸šŸû)j·ÿ­ê®zËÿ–+-³÷^n&§şŠàÂ+ajË›ç-¡ÿîË›±ÊâmïÿNº.nWÿ
+‰íiËeŠËfjË^¯ùb²Ûÿuæâjè

@@ -1,50 +1,127 @@
-Received:  by oss.sgi.com id <S553698AbRBHXFU>;
-	Thu, 8 Feb 2001 15:05:20 -0800
-Received: from [62.145.23.107] ([62.145.23.107]:29547 "HELO
-        fileserv2.Cologne.DE") by oss.sgi.com with SMTP id <S553683AbRBHXFD>;
-	Thu, 8 Feb 2001 15:05:03 -0800
-Received: from localhost (1513 bytes) by fileserv2.Cologne.DE
-	via rmail with P:stdio/R:bind/T:smtp
-	(sender: <excalibur.cologne.de!karsten>) (ident <excalibur.cologne.de!karsten> using unix)
-	id <m14R07Z-0007GzC@fileserv2.Cologne.DE>
-	for <linux-mips@oss.sgi.com>; Fri, 9 Feb 2001 00:05:01 +0100 (CET)
-	(Smail-3.2.0.101 1997-Dec-17 #5 built 1998-Jan-19)
-Received: (from karsten@localhost)
-	by excalibur.cologne.de (8.9.3/8.8.7) id AAA17674
-	for linux-mips@oss.sgi.com; Fri, 9 Feb 2001 00:04:19 +0100
-Date:   Fri, 9 Feb 2001 00:04:19 +0100
-From:   Karsten Merker <karsten@excalibur.cologne.de>
-To:     linux-mips@oss.sgi.com
-Subject: DECstation crashes
-Message-ID: <20010209000419.A17609@excalibur.cologne.de>
-Mail-Followup-To: linux-mips@oss.sgi.com
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-X-No-Archive: yes
+Received:  by oss.sgi.com id <S553729AbRBIAWA>;
+	Thu, 8 Feb 2001 16:22:00 -0800
+Received: from mx.mips.com ([206.31.31.226]:62425 "EHLO mx.mips.com")
+	by oss.sgi.com with ESMTP id <S553724AbRBIAVh>;
+	Thu, 8 Feb 2001 16:21:37 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id QAA18964;
+	Thu, 8 Feb 2001 16:21:35 -0800 (PST)
+Received: from Ulysses (ulysses [192.168.236.13])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id QAA14390;
+	Thu, 8 Feb 2001 16:21:33 -0800 (PST)
+Message-ID: <021b01c0922e$c8df4440$0deca8c0@Ulysses>
+From:   "Kevin D. Kissell" <kevink@mips.com>
+To:     "Jun Sun" <jsun@mvista.com>
+Cc:     <linux-mips@oss.sgi.com>
+References: <3A830135.B1304041@mvista.com> <01bf01c0921b$6de26620$0deca8c0@Ulysses> <3A83247D.FC52431D@mvista.com>
+Subject: Re: config option vs. run-time detection (the debate continues ...)
+Date:   Fri, 9 Feb 2001 01:25:10 +0100
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4133.2400
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hallo everyone,
+> > > 1. Config option approach :
+> > >
+> > > In the kernel config menu, one picks one or more CPUs.  One also
+specifies
+> > > whether the CPU(s) have a FPU.
+> > >
+> > > All FPU related code in kernel is configured in or out based on the
+CONFIG
+> > > setting.
+> >
+> > As has been noted in other messages in this exchange, whether one
+> > has an FPU or not isn't really the determining factor in including FP
+> > support code in the kernel.  The bulk of it is the emulator, and the
+> > emulator needs to be there if you want to execute binaries built
+> > to include MIPS FP instructions, whether in full emulation or using
+> > the FPU (for the denormal cases, etc.).
+> >
+> That needs a little more explanation.
+>
+> . When I say "All FPU related code", I really meant FPU code which is not
+a
+> part of FPU emaulator.  One example is the code in exit_thread()
+> (arch/mips/process.c) as brough up by flo.  I believe there are also such
+code
+> in ptrace.c.
 
-I have been experimenting a bit to find out which changes cause the
-kernel crashes on DECstations we experience in the last days. A checkout
-from 2001-01-30 00:00 works fine, a checkout from 2001-02-02 00:00
-crashes. Between these two dates is the large patch merging in the
-changes from 2.4.0 -> 2.4.1, so it looks like the bug is somewhere in
-there. Any ideas?
+Understood.  My point is that that code can be lumped with
+the emulator as the set of support needed to run FPU-full
+binaries.  Even with an emulator, one needs to manage
+and communicate FP state.  The only difference is that
+the "floating point registers" are in the thread structure,
+not in the CPU.
 
-Do other Linux/MIPS-targets besides the DECstations show similar problems
-(kernel crash due to NULL-pointer dereference in __free_pages_ok just
-after mounting the rootfs) or is this a decstation-specific effect? The
-problems happens both on R3k and R4k (tested on 5000/20 and 5000/150).
+> . Regarding whether we should have FPU emulator, I think it should be a
+> separate CONFIG option.  It is orthorgal to HAS_FPU option.
+>
+> In other words, we will have four combinations:
+>
+>  a) HAS_FPU & FPU_EMULATION - which is necessary when FPU is not a full
+> implementation.
+>
+>  b) !HAS_FPU & FPU_EMULATION - which allows one to run fpu-ful userland
+> application
+>
+>  c) HAS_FPU & !FPU_EMULATION - when FPU is a full implementaion (or use
+the
+> old incomplete emaulation?)
 
-Greetings,
-Karsten
--- 
-#include <standard_disclaimer>
-Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der Nutzung
-oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die Markt- oder
-Meinungsforschung.
+We're talking about MIPS/Linux here.  To the best of my knowledge
+there are *no* "full" implementations of IEEE floating point on
+a MIPS CPU.  The number of unimplemented cases varies
+somewhat from design to design, but I know of no MIPS CPU
+where it is a null set.
+
+>  d) !HAS_FPU & !FPU_EMULATION - it mandates non-fpu-ful userland (which to
+me
+> is perfectly fine)
+>
+> I start to feel a little "shaky" here as I have not written any FPU code.
+> Will such a classification make life easier or worse?  Is there any
+> feasibility issue here?
+
+It's not so much that I doubt the feasibility, I just wonder
+if there's any point to adding the complexity.  As noted
+above, if you're going to support FP-full binaries, you
+have to support the processor model of FPU.  The user
+will be manipulating what he sees as FP registers, and
+all of the state, signal, and context management logic
+associated with them has to be there regardless of whether
+they exist in the CPU or in the kernel.  It's true that there are
+a few paths through the code, the ones that actually load
+and store the FP registers, that are distinct.  Those could
+certainly be suppressed at compile time if you wanted a
+kernel that would never allow a real FPU to be used,
+but the memory savings would be smaller than you seem
+to think.  It's not "HAS_FPU" versus "EMULATOR",
+it's "SUPPORTS_FP" and "HAS_FPU".
+
+But my main objection to treating the two options as
+orthogonal is that your (c) case above will simply
+create kernels that are guaranteed fail for some
+cases of IEEE math.  It's just not good engineering
+to give people a 25% chance of building a kernel
+that seems to be just fine, at first...
+
+My own recommendation would be to either have
+full FP support for binaries or none at all.  If someone
+really wants to put the FPU-specific assembler
+routines under a different conditional, that's cool, but
+the configuration options should be such that the
+(c) cannot be generated by the config scripts.
+
+
+            Regards,
+
+            Kevin K.

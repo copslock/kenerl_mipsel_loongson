@@ -1,29 +1,35 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6DJRq825396
-	for linux-mips-outgoing; Fri, 13 Jul 2001 12:27:52 -0700
-Received: from hefeweizen.linnaean.org (hefeweizen.cv.linnaean.org [209.58.179.123])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6DJRmV25391;
-	Fri, 13 Jul 2001 12:27:48 -0700
-Received: from perdition.linnaean.org (hagx.ne.mediaone.net [24.147.20.16])
-	by hefeweizen.linnaean.org (8.9.3/8.9.3/AI2.13/linnaean.master:2.6) with ESMTP id PAA19543;
-	Fri, 13 Jul 2001 15:25:36 -0400 (EDT)
-Received: by perdition.linnaean.org (Postfix, from userid 5281)
-	id 36A9199766; Fri, 13 Jul 2001 15:25:00 -0400 (EDT)
-From: Roland McGrath <roland@frob.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-To: Ralf Baechle <ralf@oss.sgi.com>
-Cc: "H . J . Lu" <hjl@lucon.org>, linux-mips@oss.sgi.com,
+	by oss.sgi.com (8.11.2/8.11.3) id f6DJV4F25556
+	for linux-mips-outgoing; Fri, 13 Jul 2001 12:31:04 -0700
+Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6DJV1V25553;
+	Fri, 13 Jul 2001 12:31:01 -0700
+Received: by ocean.lucon.org (Postfix, from userid 1000)
+	id 1FFE7125BA; Fri, 13 Jul 2001 12:31:00 -0700 (PDT)
+Date: Fri, 13 Jul 2001 12:31:00 -0700
+From: "H . J . Lu" <hjl@lucon.org>
+To: Roland McGrath <roland@frob.com>
+Cc: Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com,
    GNU C Library <libc-alpha@sourceware.cygnus.com>
 Subject: Re: Clean up the mips dynamic linker
-In-Reply-To: Ralf Baechle's message of  Fri, 13 July 2001 11:26:36 +0200 <20010713112635.A32010@bacchus.dhis.org>
-Emacs: ed  ::  20-megaton hydrogen bomb : firecracker
-Message-Id: <20010713192500.36A9199766@perdition.linnaean.org>
-Date: Fri, 13 Jul 2001 15:25:00 -0400 (EDT)
+Message-ID: <20010713123100.A27305@lucon.org>
+References: <20010713112635.A32010@bacchus.dhis.org> <20010713192500.36A9199766@perdition.linnaean.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20010713192500.36A9199766@perdition.linnaean.org>; from roland@frob.com on Fri, Jul 13, 2001 at 03:25:00PM -0400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-> Afair there is no requirement for loadable segments to be sorted
+On Fri, Jul 13, 2001 at 03:25:00PM -0400, Roland McGrath wrote:
+> > Afair there is no requirement for loadable segments to be sorted
+> 
+> PT_LOAD entries appear in ascending order, sorted on the p_vaddr member.
 
-PT_LOAD entries appear in ascending order, sorted on the p_vaddr member.
+Thanks. I missed that one. In any case, glibc has been right on mips
+for a long time. We just don't need that specical treatmeant for
+DT_MIPS_BASE_ADDRESS.
+
+
+H.J.

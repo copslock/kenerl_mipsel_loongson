@@ -1,55 +1,62 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id SAA05245 for <linux-archive@neteng.engr.sgi.com>; Sun, 21 Mar 1999 18:35:21 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id HAA01452 for <linux-archive@neteng.engr.sgi.com>; Mon, 22 Mar 1999 07:59:56 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id SAA66162
+	id HAA37663
 	for linux-list;
-	Sun, 21 Mar 1999 18:34:35 -0800 (PST)
+	Mon, 22 Mar 1999 07:57:47 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id SAA57801
-	for <linux@engr.sgi.com>;
-	Sun, 21 Mar 1999 18:34:32 -0800 (PST)
-	mail_from (imp@harmony.village.org)
-Received: from rover.village.org (rover.village.org [204.144.255.49]) 
+	via ESMTP id HAA37655
+	for <linux@cthulhu.engr.sgi.com>;
+	Mon, 22 Mar 1999 07:57:45 -0800 (PST)
+	mail_from (ulfc@bun.falkenberg.se)
+Received: from bun.falkenberg.se (dialup85-7-6.swipnet.se [130.244.85.102]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id VAA00104
-	for <linux@engr.sgi.com>; Sun, 21 Mar 1999 21:34:30 -0500 (EST)
-	mail_from (imp@harmony.village.org)
-Received: from harmony.village.org (harmony [10.0.0.6]) by rover.village.org (8.9.3/8.6.6) with ESMTP id CAA98028; Mon, 22 Mar 1999 02:33:54 GMT
-Received: from harmony.village.org (localhost.village.org [127.0.0.1]) by harmony.village.org (8.9.3/8.8.3) with ESMTP id TAA00474; Sun, 21 Mar 1999 19:33:23 -0700 (MST)
-Message-Id: <199903220233.TAA00474@harmony.village.org>
-To: linux-mips@fnet.fr
-Subject: Re: Little Endian - Debian/Linux/MIPS Port 
-Cc: Karel van Houten <K.H.C.vanHouten@research.kpn.com>,
-        linux@cthulhu.engr.sgi.com, linux-mips@vger.rutgers.edu,
-        joey@infodrom.north.de, debian-mips@lists.debian.org
-In-reply-to: Your message of "Sun, 21 Mar 1999 19:48:22 CST."
-		<Pine.SOL.3.95.990321194101.27295A-100000@ecom5> 
-References: <Pine.SOL.3.95.990321194101.27295A-100000@ecom5>  
-Date: Sun, 21 Mar 1999 19:33:23 -0700
-From: Warner Losh <imp@harmony.village.org>
+	via ESMTP id KAA04608
+	for <linux@cthulhu.engr.sgi.com>; Mon, 22 Mar 1999 10:57:43 -0500 (EST)
+	mail_from (ulfc@bun.falkenberg.se)
+Received: (from ulfc@localhost)
+	by bun.falkenberg.se (8.8.7/8.8.7) id QAA27517
+	for linux@cthulhu.engr.sgi.com; Mon, 22 Mar 1999 16:47:06 -0500
+Date: Mon, 22 Mar 1999 16:47:06 -0500
+From: Ulf Carlsson <ulfc@bun.falkenberg.se>
+To: Linux SGI <linux@cthulhu.engr.sgi.com>
+Subject: GDB
+Message-ID: <19990322164706.A27372@bun.falkenberg.se>
+Mail-Followup-To: Linux SGI <linux@cthulhu.engr.sgi.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.95.3us
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-In message <Pine.SOL.3.95.990321194101.27295A-100000@ecom5> Russell E Glaue writes:
-: Is the DECstation port compatible with the Deskstation bios and related
-: system chipset and hardware? I didn't think it was.
+Hi,
 
-Deskstation and DECstation are two different beasties.
+I'm having some problems with gdb for mips. I can't examine core files since gdb
+itself dumps core files when I try start gdb (gdb nsgsml core). Are there other
+ways to check where a program crashes (except for printf()s)? It isn't possible
+to run nsgsml in gdb either, or at least it doesn't provide the information I
+want.
 
-The Deskstation Tyne (and rPC44, which is my machine) are both R4xxx
-based machines that use the ARC BIOS interface.
+It's also tricky to debug where gdb fails because it just dumps another core
+when I try to debug the core file gdb dumps :)
 
-All ARC BIOS machines are little endian (well, sgi calls its bios ARC
-too, so that is confusing).  The JAZZ is supported as a ARC BIOS
-machine and it is little endian.  Ralf also has several other little
-endian mips machines that he's supporting.  The Tyne isn't one of them
-due to hardware problems with the one he had and some bone-headedness,
-at the time, on the part of Deskstation.
+By the way, I have received a new Indy from SGI (that's why I'm back in action).
+But the monitor was not working so I had to take the machine to the support
+center in Sweden, which I did last Friday. They replaced the monitor so
+everything works fine now. Thanks Nancy!
 
-Warner
+FYI I've fixed /dev/graphics now (thanks for making it a module at first place
+Alex!). The code was really broken. I'll commit that stuff sometime when I don't
+experience too much CVS problems.. (CVS is really bad from here..)
+
+I've applied for being an X developer now as well (X was the real reason for
+fixing /dev/graphics). Maybe I can remove the abscence of X servers if it's so
+easy to port the IBM8514 driver as everyone says it is.
+
+- Ulf

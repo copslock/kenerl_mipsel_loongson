@@ -1,52 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Sep 2002 20:17:39 +0200 (CEST)
-Received: from delta.ds2.pg.gda.pl ([213.192.72.1]:5050 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S1122960AbSIISRi>; Mon, 9 Sep 2002 20:17:38 +0200
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id UAA03572;
-	Mon, 9 Sep 2002 20:17:54 +0200 (MET DST)
-Date: Mon, 9 Sep 2002 20:17:53 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Jun Sun <jsun@mvista.com>
-cc: Matthew Dharm <mdharm@momenco.com>,
-	Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Re: LOADADDR and low physical addresses?
-In-Reply-To: <20020906144232.E1382@mvista.com>
-Message-ID: <Pine.GSO.3.96.1020909201102.28323J-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Sep 2002 22:20:45 +0200 (CEST)
+Received: from place.org ([65.163.18.18]:65492 "EHLO zachs.place.org")
+	by linux-mips.org with ESMTP id <S1122960AbSIIUUp>;
+	Mon, 9 Sep 2002 22:20:45 +0200
+Received: by zachs.place.org (Postfix, from userid 1002)
+	id D9A6A182F9; Mon,  9 Sep 2002 15:20:36 -0500 (CDT)
+Received: from localhost (localhost [127.0.0.1])
+	by zachs.place.org (Postfix) with ESMTP
+	id 5BD3518187; Mon,  9 Sep 2002 15:20:36 -0500 (CDT)
+Date: Mon, 9 Sep 2002 15:20:36 -0500 (CDT)
+From: Jay Carlson <nop@nop.com>
+X-X-Sender: nop@zachs.place.org
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Subject: Re: 64-bit and N32 kernel interfaces
+In-Reply-To: <20020904155645.A31893@linux-mips.org>
+Message-ID: <Pine.LNX.4.44.0209091445440.9959-100000@zachs.place.org>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Return-Path: <nop@nop.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 151
+X-archive-position: 152
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: nop@nop.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 6 Sep 2002, Jun Sun wrote:
+On Wed, 4 Sep 2002, Ralf Baechle wrote:
 
-> > And this is where I think the add_memory_region() magic might need to
-> > happen.  Do I need to add the on-chip SRAM and control registers using
-> > add_memory_region()?  
-> 
-> I don't think you have to.  I *think* it works if you don't.  Not sure
-> know if you actuall do add.
+> #define __NR_uselib                     (__NR_Linux +  86)
+>
+> a.out support.  Do we really want that.
 
- Well, you have to register usable RAM areas with add_memory_region(), if
-you want to make them available to Linux.  Adding other ranges is optional
-but you have to consider a part of the kernel may want to know if the
-range is usable or occupied (consider e.g. the PCI setup code modifying
-BARs).  It's also nice and sometimes useful to a user to let him see what
-space is occupied.
+Well, it's support for Linux-a.out-style shared libraries, which are
+actually binary-format independent.  Quick summary of how they work in
+ELF:
 
- What you register with add_memory_region() is printed upon boot and
-available from /proc/iomem.
+The file argument to uselib must have 1 or 2 program headers.  Exactly
+one of them must be PT_LOAD.  That segment is loaded at the fixed
+virtual address specified in in the header.  It's marked readable,
+writable, executable, and any BSS region is zeroed.
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+I contemplated using uselib(2) in snow and decided that I wanted
+multiple segments to support text and rodata being read-only.  I
+figured that attempting to communicate the read-only nature of the
+maps to the VM could elicit more efficient behavior.
+
+Anyway, now that we have ELF interpreters you can get one library
+loaded into core for you by the kernel.  That library can define a
+more reasonable version of uselib in userspace...
+
+I guess my point is that even the tiny set of people doing statically
+linked shared libraries will probably avoid this syscall.
+
+Jay

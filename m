@@ -1,47 +1,45 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f54Co6J25390
-	for linux-mips-outgoing; Mon, 4 Jun 2001 05:50:06 -0700
-Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
-	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f54Co4h25384
-	for <linux-mips@oss.sgi.com>; Mon, 4 Jun 2001 05:50:04 -0700
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 0373D7FC; Mon,  4 Jun 2001 14:50:02 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 3475242D1; Mon,  4 Jun 2001 14:34:09 +0200 (CEST)
-Date: Mon, 4 Jun 2001 14:34:09 +0200
-From: Florian Lohoff <flo@rfc822.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Linux/MIPS Development <linux-mips@oss.sgi.com>
-Subject: Re: wd33c93 question
-Message-ID: <20010604143409.A11675@paradigm.rfc822.org>
-References: <20010603154706.D4043@paradigm.rfc822.org> <Pine.LNX.4.05.10106041132520.28388-100000@callisto.of.borg>
-Mime-Version: 1.0
+	by oss.sgi.com (8.11.3/8.11.3) id f54HTaK11612
+	for linux-mips-outgoing; Mon, 4 Jun 2001 10:29:36 -0700
+Received: from mail.palmchip.com ([63.203.52.8])
+	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f54HTXh11608
+	for <linux-mips@oss.sgi.com>; Mon, 4 Jun 2001 10:29:35 -0700
+Received: from palmchip.com (sabretooth.palmchip.com [10.1.10.110])
+	by mail.palmchip.com (8.11.0/8.9.3) with ESMTP id f54HTSc07776
+	for <linux-mips@oss.sgi.com>; Mon, 4 Jun 2001 10:29:28 -0700
+Message-ID: <3B1BC6B8.C58758FA@palmchip.com>
+Date: Mon, 04 Jun 2001 10:34:48 -0700
+From: Ian Thompson <iant@palmchip.com>
+Organization: Palmchip Corporation
+X-Mailer: Mozilla 4.7 [en] (WinNT; I)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: linux-mips@oss.sgi.com
+Subject: dcache_blast() bug?
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.15i
-In-Reply-To: <Pine.LNX.4.05.10106041132520.28388-100000@callisto.of.borg>; from geert@linux-m68k.org on Mon, Jun 04, 2001 at 11:34:14AM +0200
-Organization: rfc822 - pure communication
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Jun 04, 2001 at 11:34:14AM +0200, Geert Uytterhoeven wrote:
-> > drivers/scsi/sgiwd93.c
-> 
->     [...]
-> 
-> > So we have an incompatibility with the sgiwd93.c from the mips tree
-> > and the wd33c93.c from the linus tree where we dont want the generic part
-> > of the wd33c93.c to (re)write the length of the current transfer block
-> > (scatter gather part) as we want it to do the whole transfer in one
-> > part (From the generic wd33c93.c we dont do scatter gather).
-> 
-> So it's OK to protect the above lines using #ifndef CONFIG_SGIWD93_SCSI?
 
-I guess so - I will have a look if thats probably the cause of
-the fs corruption we see on SGIs with that scsi driver. From just guessing
-the order of setting the values is different on SGI.
+Hi all,
 
-Flo
+I'm seeing some odd memory behavior around the time when blast_dcache()
+is called, leading me to think that the method may be a little buggy. 
+It appears that memory is being corrupted (consistently so) over the
+course of flushing the dcache.  This happens to my command line argument
+string - arcs_cmdline.  Before the blast_dcache() call, it is
+"console=ttyS0 ramdisk_start=0x9fcf0000 load_ramdisk=1", and after the
+call, the corrupted data is "ttyS0 ra0".  I take it this isn't supposed
+to happen?  any ideas of why the writeback_invalidate_d cache operation
+may be losing data?
+
+thanks,
+-ian
+
+
 -- 
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-     Why is it called "common sense" when nobody seems to have any?
+----------------------------------------
+Ian Thompson           tel: 408.952.2023
+Firmware Engineer      fax: 408.570.0910
+Palmchip Corporation   www.palmchip.com

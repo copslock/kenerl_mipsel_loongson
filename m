@@ -1,28 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jul 2003 17:06:52 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:57072 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8225072AbTGPQGu>;
-	Wed, 16 Jul 2003 17:06:50 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jul 2003 17:19:22 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:25334 "EHLO
+	av.mvista.com") by linux-mips.org with ESMTP id <S8225072AbTGPQTT>;
+	Wed, 16 Jul 2003 17:19:19 +0100
 Received: from zeus.mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id JAA14303;
-	Wed, 16 Jul 2003 09:06:46 -0700
-Subject: Re: [PATCH] [2.6.0-test1] Alchemy Pb1500 - Power management
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id JAA14794;
+	Wed, 16 Jul 2003 09:19:16 -0700
+Subject: Re: [PATCH] [2.60-test1] Alchemy UART build problems
 From: Pete Popov <ppopov@mvista.com>
 To: Liam Girdwood <liam.girdwood@wolfsonmicro.com>
 Cc: Linux MIPS mailing list <linux-mips@linux-mips.org>
-In-Reply-To: <1058348289.10765.1527.camel@caernarfon>
-References: <1058348289.10765.1527.camel@caernarfon>
+In-Reply-To: <1058359177.10765.1568.camel@caernarfon>
+References: <1058359177.10765.1568.camel@caernarfon>
 Content-Type: text/plain
 Organization: MontaVista Software
-Message-Id: <1058371630.27085.4.camel@zeus.mvista.com>
+Message-Id: <1058372380.27085.12.camel@zeus.mvista.com>
 Mime-Version: 1.0
 X-Mailer: Ximian Evolution 1.2.4 
-Date: 16 Jul 2003 09:07:10 -0700
+Date: 16 Jul 2003 09:19:40 -0700
 Content-Transfer-Encoding: 7bit
 Return-Path: <ppopov@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2806
+X-archive-position: 2807
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,54 +30,48 @@ X-original-sender: ppopov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Thanks.
-
-BTW, I'm waiting for some PM patches from Embedded Edge that will
-cleanup and Au1x PM support.
-
-Pete
-
-On Wed, 2003-07-16 at 02:38, Liam Girdwood wrote:
+On Wed, 2003-07-16 at 05:39, Liam Girdwood wrote:
 > Hi,
 > 
-> I'm working my way through building the latest CVS for my Pb1500 and
-> I've run into a couple of build problems.
+> I've found some function/type naming errors within the Alchemy serial
+> driver. Patch below.
 > 
-> This patch fixes some function naming problems and removes duplicate
-> symbol au1k_wait() (defined in kernel/cpu-probe.c) in the Pb1500 power
-> management code.
 > 
-> Index: arch/mips/au1000/common/power.c
+> Index: drivers/serial/au1x00_uart.c
 > ===================================================================
-> RCS file: /home/cvs/linux/arch/mips/au1000/common/power.c,v
-> retrieving revision 1.10
-> diff -r1.10 power.c
-> 36a37
-> > #include <linux/jiffies.h>
-> 54,55c55,56
-> < extern void set_au1000_speed(unsigned int new_freq);
-> < extern unsigned int get_au1000_speed(void);
+> RCS file: /home/cvs/linux/drivers/serial/au1x00_uart.c,v
+> retrieving revision 1.1
+> diff -r1.1 au1x00_uart.c
+> 1079c1079
+> < 		up->port.irq      = irq_cannonicalize(old_serial_port[i].irq);
 > ---
-> > extern void set_au1x00_speed(unsigned int new_freq);
-> > extern unsigned int get_au1x00_speed(void);
-> 190,191c191,192
-> < 		old_baud_base = get_au1000_uart_baud_base();
-> < 		old_cpu_freq = get_au1000_speed();
+> > 		up->port.irq      = irq_canonicalize(old_serial_port[i].irq);
+> 1307c1307
+> < int __init early_serial_setup(struct serial_struct *req)
 > ---
-> > 		old_baud_base = get_au1x00_uart_baud_base();
-> > 		old_cpu_freq = get_au1x00_speed();
-> 195,196c196,197
-> < 		set_au1000_speed(new_cpu_freq);
-> < 		set_au1000_uart_baud_base(new_baud_base);
-> ---
-> > 		set_au1x00_speed(new_cpu_freq);
-> > 		set_au1x00_uart_baud_base(new_baud_base);
-> 325,329d325
-> < }
-> < 
-> < void au1k_wait(void)
-> < {
-> < 	__asm__("nop\n\t" "nop\n\t");
+> > int __init early_serial_setup(struct uart_port *req)
 > 
 > 
-> Liam
+> There is also a reference to a non existant member called change_speed
+> of struct uart_ops on line 1055 i.e. 
+> 
+> 	.change_speed	= serial_au1x00_change_speed,
+> 
+> This builds if it is commented out, however serial_au1x00_change_speed()
+> is not called anywhere in the driver and the change_speed member is not
+> used anywhere else in the kernel!
+> 
+> It looks like this file is still in transition between 2.4 and 2.6 as
+> the 2.4 driver works fine. Does anyone have a working 2.5/2.6 Alchemy
+> uart driver ?
+
+The serial driver worked fine for me about a month or more ago. Then
+there was a large update with the latest 2.5.x bits and it's very
+possible that the driver got broken. There are other Au1x problems in
+2.5 as well. The 36 bit address patch is not there yet. The last time I
+played with 2.5 the kernel mounted the root fs and then hung trying to
+start a userland process ... and I haven't had any time since then.  I
+think you're in new territory here but, hey, someone needs to clean up
+everything :)
+
+Pete

@@ -1,44 +1,67 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id GAA53068 for <linux-archive@neteng.engr.sgi.com>; Thu, 28 Jan 1999 06:59:48 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id IAA83172 for <linux-archive@neteng.engr.sgi.com>; Thu, 28 Jan 1999 08:35:41 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id GAA64843
+	id IAA22645
 	for linux-list;
-	Thu, 28 Jan 1999 06:59:01 -0800 (PST)
+	Thu, 28 Jan 1999 08:34:24 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id GAA11102;
-	Thu, 28 Jan 1999 06:58:58 -0800 (PST)
-	mail_from (alan@lxorguk.ukuu.org.uk)
-Received: from snowcrash.cymru.net (snowcrash.cymru.net [163.164.160.3]) 
+	via ESMTP id IAA24662
+	for <linux@cthulhu.engr.sgi.com>;
+	Thu, 28 Jan 1999 08:34:21 -0800 (PST)
+	mail_from (rjh@pixel.maths.monash.edu.au)
+Received: from pixel.maths.monash.edu.au (pixel.maths.monash.edu.au [130.194.160.20]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id GAA06291; Thu, 28 Jan 1999 06:58:57 -0800 (PST)
-	mail_from (alan@lxorguk.ukuu.org.uk)
-Received: from the-village.bc.nu (lightning.swansea.uk.linux.org [194.168.151.1]) by snowcrash.cymru.net (8.8.7/8.7.1) with SMTP id OAA06866; Thu, 28 Jan 1999 14:57:18 GMT
-Received: by the-village.bc.nu (Smail3.1.29.1 #2)
-	id m105tkZ-0007U2C; Thu, 28 Jan 99 15:52 GMT
-Message-Id: <m105tkZ-0007U2C@the-village.bc.nu>
-From: alan@lxorguk.ukuu.org.uk (Alan Cox)
-Subject: Re: [Fwd: Linux on HP & SGI - FYI]
-To: eak@detroit.sgi.com
-Date: Thu, 28 Jan 1999 15:52:58 +0000 (GMT)
-Cc: ariel@cthulhu.engr.sgi.com, adevries@engsoc.carleton.ca,
-        ralf@uni-koblenz.de, linux@cthulhu.engr.sgi.com, mdlug@collie.net
-In-Reply-To: <36B077FF.1231B386@detroit.sgi.com> from "Eric Kimminau" at Jan 28, 99 09:45:19 am
+	via ESMTP id IAA02511
+	for <linux@cthulhu.engr.sgi.com>; Thu, 28 Jan 1999 08:34:19 -0800 (PST)
+	mail_from (rjh@pixel.maths.monash.edu.au)
+Received: (from rjh@localhost)
+	by pixel.maths.monash.edu.au (8.8.8/8.8.8-ajr) id DAA10412;
+	Fri, 29 Jan 1999 03:34:00 +1100 (EDT)
+From: Robin Humble <rjh@pixel.maths.monash.edu.au>
+Message-Id: <199901281634.DAA10412@pixel.maths.monash.edu.au>
+Subject: Re: Installing Linux on an Indy with 1 HD
+To: rstone@vitelus.com (Robbie Stone)
+Date: Fri, 29 Jan 1999 03:34:00 +1100 (EDT)
+Cc: nachtfalke@usa.net, linux@cthulhu.engr.sgi.com
+In-Reply-To: <Pine.LNX.4.05.9901281531560.9205-100000@vitelus.com> from "Robbie Stone" at Jan 28, 99 03:33:28 pm
+X-Mailer: ELM [version 2.4 PL23]
 Content-Type: text
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> > :Could you kindly fedex me a Cray so I can start churning out rpms?  I'm
-> > :sure if you sent one to Ralf he'd finish the kernel.
-> > :
-> > What was that snail mail address again :-)
-> Be sure to get that 13k volt power supply and water cooling tower installed
-> ASAP. 
 
-I thought the Cray ELC could run single processor off a conventional wall
-socket ?
+>Er, you can use gcc for most all of your building, as a matter of fact it
+
+Actually if you're talking about using gcc under IRIX then IRIX 5.3
+doesn't come with the necessary header files to compile anything(*).
+You need the IDO or IRIX >= 6.5 which Alexander does not posess. Also
+just to clear up some apparent confusion (which may well be mine rather
+than Alexanders) in order to install SGI-Linux for Indy you don't
+actually need to compile anything...
+
+I would also point out that Linux on Indy doesn't support any X11
+graphics yet. Swapping from IRIX 5.3 to something text-only could be
+a bit of a shock... But wait a few months and life could be all
+xPeaches and xCream :-)
+
+Personally I'd try to find a small (hyper-cheap/free) old SCSI drive
+(erm, 300-500M would do?) and install on that. Or do like Richard
+suggested and permanently run your Linux/Indy off a network root drive.
+
+cheers,
+robin
+
+(*) except the IRIX kernel. It uses a weirdly lobotomised compiler
+hidden well away...
+
+--
+He'd found that even the people whose job of work was, so to speak, the
+Universe, didn't really believe in it and were actually quite proud of not
+knowing what it really was or even if it could theoretically exist.
+     Robin Humble     /      http://www.maths.monash.edu.au/~rjh/

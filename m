@@ -1,53 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Jun 2003 13:55:50 +0100 (BST)
-Received: from honk1.physik.uni-konstanz.de ([IPv6:::ffff:134.34.140.224]:57785
-	"EHLO honk1.physik.uni-konstanz.de") by linux-mips.org with ESMTP
-	id <S8225235AbTFCMzq>; Tue, 3 Jun 2003 13:55:46 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP id EC82D2BC36
-	for <linux-mips@linux-mips.org>; Tue,  3 Jun 2003 14:55:43 +0200 (CEST)
-Received: from honk1.physik.uni-konstanz.de ([127.0.0.1])
- by localhost (honk [127.0.0.1:10024]) (amavisd-new) with ESMTP id 12483-10
- for <linux-mips@linux-mips.org>; Tue,  3 Jun 2003 14:55:43 +0200 (CEST)
-Received: from bogon.sigxcpu.org (bogon.physik.uni-konstanz.de [134.34.147.122])
-	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP id EC5352BC34
-	for <linux-mips@linux-mips.org>; Tue,  3 Jun 2003 14:55:42 +0200 (CEST)
-Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
-	id 58EDD17762; Tue,  3 Jun 2003 14:55:36 +0200 (CEST)
-Date: Tue, 3 Jun 2003 14:55:36 +0200
-From: Guido Guenther <agx@sigxcpu.org>
-To: linux-mips@linux-mips.org
-Subject: Re: rootfs for vr4181a
-Message-ID: <20030603125536.GB19435@bogon.ms20.nix>
-Mail-Followup-To: Guido Guenther <agx@sigxcpu.org>,
-	linux-mips@linux-mips.org
-References: <200306031428.48675.julian@jusst.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <200306031428.48675.julian@jusst.de>
-User-Agent: Mutt/1.5.3i
-Return-Path: <agx@sigxcpu.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Jun 2003 13:58:21 +0100 (BST)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:1228 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225072AbTFCM6T>; Tue, 3 Jun 2003 13:58:19 +0100
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA00804;
+	Tue, 3 Jun 2003 14:58:45 +0200 (MET DST)
+X-Authentication-Warning: delta.ds2.pg.gda.pl: macro owned process doing -bs
+Date: Tue, 3 Jun 2003 14:58:44 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
+cc: anemo@mba.ocn.ne.jp, linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: mips64 LOAD_KPTE2 fix
+In-Reply-To: <20030602.202345.08315331.nemoto@toshiba-tops.co.jp>
+Message-ID: <Pine.GSO.3.96.1030603141712.29576C-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2507
+X-archive-position: 2508
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: agx@sigxcpu.org
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Jun 03, 2003 at 02:28:48PM +0200, Julian Scheel wrote:
-> I am searching for a rootfs which can be used with a NEC VR4181A and can be 
-> mounted over NFS (shouldn't need any special things, should it?)
-> Has someone such a rootfs - or can give me a link where to find it - or a link 
-> to a description how to do it myself?
-You can try for mips:
-http://debian.physik.uni-konstanz.de/debian/dists/woody/main/disks-mips/3.0.23-2002-05-21/root.tar.gz
-or for mipsel:
-http://debian.physik.uni-konstanz.de/debian/dists/woody/main/disks-mipsel/3.0.23-2002-05-21/root.tar.gz
-(or any other debian mirror) for a rather minimal rootfs. You can build
-a more complete nfs-root by following the steps in the installer.
-Regards,
- -- Guido
+On Mon, 2 Jun 2003, Atsushi Nemoto wrote:
+
+> Please ignore it.  I missed an another fix.  The beqz lacks delay
+> slot.  Here is a new patch.
+> 
+> diff -u linux-mips-cvs/arch/mips64/mm/tlbex-r4k.S linux.new/arch/mips64/mm/tlbex-r4k.S
+> --- linux-mips-cvs/arch/mips64/mm/tlbex-r4k.S	Mon Apr 28 09:44:54 2003
+> +++ linux.new/arch/mips64/mm/tlbex-r4k.S	Mon Jun  2 20:16:41 2003
+> @@ -72,9 +72,12 @@
+>  	/*
+>  	 * Determine that fault address is within vmalloc range.
+>  	 */
+> +	bgez	\ptr, \not_vmalloc		# check overflow
+> +	nop
+>  	dla	\tmp, ekptbl
+>  	sltu	\tmp, \ptr, \tmp
+>  	beqz	\tmp, \not_vmalloc		# not vmalloc
+> +	nop
+>  	.endm
+
+ The missing delay slot filler might be called a feature, but LOAD_KPTE2
+is so far always used near such code it cannot be avoided.  So the "nop"
+is correct.  Please pay attention to proper indentation of instructions in
+branch delay slots -- this helps avoiding such errors.
+
+ I don't think a separate overflow check is needed, even I see how the
+code can fail for large offsets into XKSEG.  How about this patch?  Does
+it work for you?  It would not incur unnecessary overhead.
+
+  Maciej
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+
+patch-mips-2.4.21-pre4-20030505-load_kpte2-0
+diff -up --recursive --new-file linux-mips-2.4.21-pre4-20030505.macro/arch/mips64/mm/tlbex-r4k.S linux-mips-2.4.21-pre4-20030505/arch/mips64/mm/tlbex-r4k.S
+--- linux-mips-2.4.21-pre4-20030505.macro/arch/mips64/mm/tlbex-r4k.S	2003-04-27 02:56:39.000000000 +0000
++++ linux-mips-2.4.21-pre4-20030505/arch/mips64/mm/tlbex-r4k.S	2003-06-03 12:54:41.000000000 +0000
+@@ -73,8 +73,9 @@
+ 	 * Determine that fault address is within vmalloc range.
+ 	 */
+ 	dla	\tmp, ekptbl
+-	sltu	\tmp, \ptr, \tmp
++	slt	\tmp, \ptr, \tmp
+ 	beqz	\tmp, \not_vmalloc		# not vmalloc
++	 nop
+ 	.endm
+ 
+ 

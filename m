@@ -1,52 +1,153 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Jul 2003 01:56:51 +0100 (BST)
-Received: from host31.ipowerweb.com ([IPv6:::ffff:12.129.198.131]:5090 "EHLO
-	host31.ipowerweb.com") by linux-mips.org with ESMTP
-	id <S8225193AbTGXA4T>; Thu, 24 Jul 2003 01:56:19 +0100
-Received: from rrcs-central-24-123-115-44.biz.rr.com ([24.123.115.44] helo=radium)
-	by host31.ipowerweb.com with esmtp (Exim 3.36 #1)
-	id 19fUP4-0003AG-00; Wed, 23 Jul 2003 17:56:19 -0700
-From: "Lyle Bainbridge" <lyle@zevion.com>
-To: "'Tiemo Krueger - mycable GmbH'" <tk@mycable.de>
-Cc: <saravana_kumar@naturesoft.net>, <linux-mips@linux-mips.org>
-Subject: RE: Cross Compilation
-Date: Wed, 23 Jul 2003 19:55:56 -0500
-Message-ID: <000101c3517e$5783a400$1400a8c0@radium>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Jul 2003 12:13:46 +0100 (BST)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:26797 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225193AbTGXLNn>; Thu, 24 Jul 2003 12:13:43 +0100
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id NAA11563;
+	Thu, 24 Jul 2003 13:13:35 +0200 (MET DST)
+X-Authentication-Warning: delta.ds2.pg.gda.pl: macro owned process doing -bs
+Date: Thu, 24 Jul 2003 13:13:34 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Jun Sun <jsun@mvista.com>, Ralf Baechle <ralf@linux-mips.org>
+cc: linux-mips@linux-mips.org
+Subject: Re: [patch] Generic time fixes
+In-Reply-To: <20030723100043.M3135@mvista.com>
+Message-ID: <Pine.GSO.3.96.1030724130418.10709B-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook, Build 10.0.2616
-Importance: Normal
-In-Reply-To: <20030723100946.N3135@mvista.com>
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1106
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - host31.ipowerweb.com
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [0 0] / [0 0]
-X-AntiAbuse: Sender Address Domain - zevion.com
-Return-Path: <lyle@zevion.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2900
+X-archive-position: 2901
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lyle@zevion.com
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
+On Wed, 23 Jul 2003, Jun Sun wrote:
 
-> I took a look.  It looks similar to one project that I worked on
-> before.   Very interesting.
-> 
-> Has anybody tried successfully to do a cross MIPS yet?  From 
-> a Linux/i386 host obviously ...
+> Most people seem to be happy with getting hwclock working.  rtc_set_time()
+> does allow a low-oevrhead way to implement a generic rtc driver which
+> makes hwclock happy.
 
-I have used the uclibc toolchain for big endian mips. It works great.  I
-also have a gcc-3.2.3/glibc-2.2.5 based toolchain, and have used it to
-cross compile a kernel and a simple root filesystem.
+ Well, some people are not most people and they want a full-featured
+implementation as described in Documentation/rtc.txt.
 
-Lyle
+> I like see mc146818rtc related RTC go away eventually, but we don't have to 
+> agree on that right now.
+
+ You'll need to convince guys at the LKML first (me inclusive ;-) ).  If
+you write a clean and full-featured replacement, you'll most likely be
+welcome.
+
+> You can either include it in your next patch (if one is coming).  Or
+> just let me know and I will flesh it out and check it in.
+
+ Here is an optimized replacement I'm going to check in -- OK?  Ralf?
+
+ I'm working on further changes, but there is no point in coalescing
+self-contained changes.
+
+  Maciej
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+
+patch-mips-2.4.21-20030711-mips-mmss-0
+diff -up --recursive --new-file linux-mips-2.4.21-20030711.macro/arch/mips/kernel/time.c linux-mips-2.4.21-20030711/arch/mips/kernel/time.c
+--- linux-mips-2.4.21-20030711.macro/arch/mips/kernel/time.c	2003-07-21 20:28:39.000000000 +0000
++++ linux-mips-2.4.21-20030711/arch/mips/kernel/time.c	2003-07-24 08:22:52.000000000 +0000
+@@ -62,6 +62,7 @@ static int null_rtc_set_time(unsigned lo
+ 
+ unsigned long (*rtc_get_time)(void) = null_rtc_get_time;
+ int (*rtc_set_time)(unsigned long) = null_rtc_set_time;
++int (*rtc_set_mmss)(unsigned long);
+ 
+ 
+ /*
+@@ -364,7 +365,7 @@ void timer_interrupt(int irq, void *dev_
+ 	    xtime.tv_sec > last_rtc_update + 660 &&
+ 	    xtime.tv_usec >= 500000 - ((unsigned) tick) / 2 &&
+ 	    xtime.tv_usec <= 500000 + ((unsigned) tick) / 2) {
+-		if (rtc_set_time(xtime.tv_sec) == 0) {
++		if (rtc_set_mmss(xtime.tv_sec) == 0) {
+ 			last_rtc_update = xtime.tv_sec;
+ 		} else {
+ 			/* do it again in 60 s */
+@@ -473,6 +474,9 @@ void __init time_init(void)
+ 	if (board_time_init)
+ 		board_time_init();
+ 
++	if (!rtc_set_mmss)
++		rtc_set_mmss = rtc_set_time;
++
+ 	xtime.tv_sec = rtc_get_time();
+ 	xtime.tv_usec = 0;
+ 
+diff -up --recursive --new-file linux-mips-2.4.21-20030711.macro/arch/mips64/kernel/time.c linux-mips-2.4.21-20030711/arch/mips64/kernel/time.c
+--- linux-mips-2.4.21-20030711.macro/arch/mips64/kernel/time.c	2003-07-21 20:28:39.000000000 +0000
++++ linux-mips-2.4.21-20030711/arch/mips64/kernel/time.c	2003-07-24 08:22:52.000000000 +0000
+@@ -62,6 +62,7 @@ static int null_rtc_set_time(unsigned lo
+ 
+ unsigned long (*rtc_get_time)(void) = null_rtc_get_time;
+ int (*rtc_set_time)(unsigned long) = null_rtc_set_time;
++int (*rtc_set_mmss)(unsigned long);
+ 
+ 
+ /*
+@@ -364,7 +365,7 @@ void timer_interrupt(int irq, void *dev_
+ 	    xtime.tv_sec > last_rtc_update + 660 &&
+ 	    xtime.tv_usec >= 500000 - ((unsigned) tick) / 2 &&
+ 	    xtime.tv_usec <= 500000 + ((unsigned) tick) / 2) {
+-		if (rtc_set_time(xtime.tv_sec) == 0) {
++		if (rtc_set_mmss(xtime.tv_sec) == 0) {
+ 			last_rtc_update = xtime.tv_sec;
+ 		} else {
+ 			/* do it again in 60 s */
+@@ -473,6 +474,9 @@ void __init time_init(void)
+ 	if (board_time_init)
+ 		board_time_init();
+ 
++	if (!rtc_set_mmss)
++		rtc_set_mmss = rtc_set_time;
++
+ 	xtime.tv_sec = rtc_get_time();
+ 	xtime.tv_usec = 0;
+ 
+diff -up --recursive --new-file linux-mips-2.4.21-20030711.macro/include/asm-mips/time.h linux-mips-2.4.21-20030711/include/asm-mips/time.h
+--- linux-mips-2.4.21-20030711.macro/include/asm-mips/time.h	2003-07-21 21:02:58.000000000 +0000
++++ linux-mips-2.4.21-20030711/include/asm-mips/time.h	2003-07-24 08:24:08.000000000 +0000
+@@ -28,9 +28,12 @@
+  * RTC ops.  By default, they point to no-RTC functions.
+  *	rtc_get_time - mktime(year, mon, day, hour, min, sec) in seconds.
+  *	rtc_set_time - reverse the above translation and set time to RTC.
++ *	rtc_set_mmss - similar to rtc_set_time, but only min and sec need
++ *			to be set.  Used by RTC sync-up.
+  */
+ extern unsigned long (*rtc_get_time)(void);
+ extern int (*rtc_set_time)(unsigned long);
++extern int (*rtc_set_mmss)(unsigned long);
+ 
+ /*
+  * to_tm() converts system time back to (year, mon, day, hour, min, sec).
+diff -up --recursive --new-file linux-mips-2.4.21-20030711.macro/include/asm-mips64/time.h linux-mips-2.4.21-20030711/include/asm-mips64/time.h
+--- linux-mips-2.4.21-20030711.macro/include/asm-mips64/time.h	2003-07-21 21:02:58.000000000 +0000
++++ linux-mips-2.4.21-20030711/include/asm-mips64/time.h	2003-07-24 08:24:08.000000000 +0000
+@@ -28,9 +28,12 @@
+  * RTC ops.  By default, they point to no-RTC functions.
+  *	rtc_get_time - mktime(year, mon, day, hour, min, sec) in seconds.
+  *	rtc_set_time - reverse the above translation and set time to RTC.
++ *	rtc_set_mmss - similar to rtc_set_time, but only min and sec need
++ *			to be set.  Used by RTC sync-up.
+  */
+ extern unsigned long (*rtc_get_time)(void);
+ extern int (*rtc_set_time)(unsigned long);
++extern int (*rtc_set_mmss)(unsigned long);
+ 
+ /*
+  * to_tm() converts system time back to (year, mon, day, hour, min, sec).

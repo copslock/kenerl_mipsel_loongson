@@ -1,37 +1,58 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id IAA2439421 for <linux-archive@neteng.engr.sgi.com>; Tue, 31 Mar 1998 08:02:02 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id IAA2448943 for <linux-archive@neteng.engr.sgi.com>; Tue, 31 Mar 1998 08:02:02 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id IAA6008489
+	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id IAA5992804
 	for linux-list;
-	Tue, 31 Mar 1998 08:00:57 -0800 (PST)
+	Tue, 31 Mar 1998 08:01:26 -0800 (PST)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id IAA4461388
+	via ESMTP id IAA5906067
 	for <linux@cthulhu.engr.sgi.com>;
-	Tue, 31 Mar 1998 08:00:17 -0800 (PST)
-Received: from aec.at (web.aec.at [193.170.192.5]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id IAA00976
-	for <linux@cthulhu.engr.sgi.com>; Tue, 31 Mar 1998 08:00:02 -0800 (PST)
-	mail_from (oliver@web.aec.at)
-Received: from localhost (oliver@localhost) by aec.at (8.8.3/8.7) with SMTP id RAA18938; Tue, 31 Mar 1998 17:59:57 +0200
-Date: Tue, 31 Mar 1998 17:59:57 +0200 (MET DST)
-From: Oliver Frommel <oliver@aec.at>
+	Tue, 31 Mar 1998 08:01:23 -0800 (PST)
+Received: from dirtpan.npiww.com (dirtpan.networkprograms.com [207.113.23.2]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via SMTP id IAA01759
+	for <linux@cthulhu.engr.sgi.com>; Tue, 31 Mar 1998 08:01:21 -0800 (PST)
+	mail_from (dliu@npiww.com)
+Received: from mailhub.networkprograms.com [192.9.202.51] by dirtpan.npiww.com (8.6.9/8.6.9) with ESMTP id LAA02923; Tue, 31 Mar 1998 11:09:23 -0500
+Date: Tue, 31 Mar 1998 11:16:21 -0500
+Message-Id: <199803311616.LAA16707@pluto.npiww.com>
+From: Dong Liu <dliu@npiww.com>
 To: ralf@uni-koblenz.de
-cc: linux@cthulhu.engr.sgi.com
+Cc: linux@cthulhu.engr.sgi.com
 Subject: Re: compile problem with kernel
-In-Reply-To: <19980331173303.53710@uni-koblenz.de>
-Message-ID: <Pine.LNX.3.96.980331175646.17524D-100000@web.aec.at>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+In-Reply-To: <19980331091452.41730@uni-koblenz.de>
+References: <19980330154244.19782@uni-koblenz.de>
+	<Pine.LNX.3.96.980331092426.411B-100000@calypso.saturn>
+	<19980331091452.41730@uni-koblenz.de>
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-hi,
+ralf@uni-koblenz.de writes:
+ > On Tue, Mar 31, 1998 at 09:26:20AM +0200, Ulf Carlsson wrote:
+ > > > In the vanilla FSF sources the .previous pseudo is broken resulting in
+ > > > these messages.  The fix is in 2.7-4 and newer.
+ > > 
+ > > What are the vanilla FSF sources? The only FSF I have knowlegde of is the
+ > > Free Software Foundation :-)
+ > 
+ > Sorry, but the FSF doesn't over any other flavour except vanilla ;-)
+ > 
+ > > Do I need a new crosscompiler?
+ > 
+ > Not really, if you have a native compiler setup.  A crosscompiler is
+ > however very handy and sometimes even necessary when bootstrapping for a
+ > new system.
+ > 
+ >   Ralf
+ > 
 
-ich hab einen dir einen account auf greasy.aec.at eingerichtet.
-login: ralf, passwd: foobar7
+I also have the same problem, however I don't have a native compiler,
+I can't make the pre-compiled kernel boot on my Indy:), I'm cross
+compiling it on i486-linux I got my binutils from 
 
-die sourcen und patches fuer binutils sind in /usr/src/redhat...
-die entpackte source fuer gcc-2.7.2 ind /home/oliver/devel/gcc-2.7.2
+ftp://ftp.linux.sgi.com/pub/crossdev/i486-linux/mips-linux
 
-ciao
--oliver
+Where can I ftp binutils 2.7-4 ?
+
+Thanks!
+
+Dong

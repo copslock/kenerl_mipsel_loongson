@@ -1,34 +1,38 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id QAA17095 for <linux-archive@neteng.engr.sgi.com>; Wed, 14 Jan 1998 16:14:02 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id QAA17557 for <linux-archive@neteng.engr.sgi.com>; Wed, 14 Jan 1998 16:34:27 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id QAA13540 for linux-list; Wed, 14 Jan 1998 16:11:22 -0800
-Received: from dataserv.detroit.sgi.com (dataserv.detroit.sgi.com [169.238.128.2]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id QAA13525 for <linux@cthulhu.engr.sgi.com>; Wed, 14 Jan 1998 16:11:21 -0800
-Received: from cygnus.detroit.sgi.com by dataserv.detroit.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1502/930416.SGI)
-	 id TAA14666; Wed, 14 Jan 1998 19:11:19 -0500
-Received: from detroit.sgi.com (localhost [127.0.0.1]) by cygnus.detroit.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id TAA20883; Wed, 14 Jan 1998 19:11:17 -0500
-Message-ID: <34BD5425.42EBC033@detroit.sgi.com>
-Date: Wed, 14 Jan 1998 19:11:17 -0500
-From: Eric Kimminau <eak@detroit.sgi.com>
-Reply-To: eak@detroit.sgi.com
-Organization: Silicon Graphics, Inc
-X-Mailer: Mozilla 4.04C-SGI [en] (X11; I; IRIX 6.3 IP32)
-MIME-Version: 1.0
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id QAA19600 for linux-list; Wed, 14 Jan 1998 16:31:33 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id QAA19591 for <linux@cthulhu.engr.sgi.com>; Wed, 14 Jan 1998 16:31:32 -0800
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id QAA04111
+	for <linux@cthulhu.engr.sgi.com>; Wed, 14 Jan 1998 16:31:29 -0800
+	env-from (ralf@uni-koblenz.de)
+From: ralf@uni-koblenz.de
+Received: from uni-koblenz.de (pmport-30.uni-koblenz.de [141.26.249.30])
+	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id BAA05417
+	for <linux@cthulhu.engr.sgi.com>; Thu, 15 Jan 1998 01:31:27 +0100 (MET)
+Received: (from ralf@localhost)
+	by uni-koblenz.de (8.8.7/8.8.7) id BAA05839;
+	Thu, 15 Jan 1998 01:26:23 +0100
+Message-ID: <19980115012622.51359@uni-koblenz.de>
+Date: Thu, 15 Jan 1998 01:26:22 +0100
 To: William Ellis <bellis@cerf.net>
-CC: Linux porting team <linux@cthulhu.engr.sgi.com>
+Cc: Linux porting team <linux@cthulhu.engr.sgi.com>
 Subject: Re: boot problem
 References: <34BD4F3E.7F86@cerf.net>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-Mailer: Mutt 0.85e
+In-Reply-To: <34BD4F3E.7F86@cerf.net>; from William Ellis on Wed, Jan 14, 1998 at 03:50:22PM -0800
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-William Ellis wrote:
-> 
+On Wed, Jan 14, 1998 at 03:50:22PM -0800, William Ellis wrote:
+
 > I'm working with a Challenge S, R5000 (Allegedly the same
 > hardware as an Indy without a graphics card)
 > 
 > Initially booting via tftp with various errors, I am
 > now trying to just get the sash boot -f to work.
-> I have tried several of the applicable precompiled kernels
+> I have tried several of the applicable precompiled kernels 
 > at ftp.linux.sgi.com/pub/test all with similar errors:
 > 
 > Standalone Shell SGI Version 6.2 ARCS   Mar  9, 1996 (32 Bit)
@@ -41,24 +45,21 @@ William Ellis wrote:
 > need to get going for linux).  Could this error be an effect
 > of the fddi card being present, or that there is no graphics
 > card present?  Or am I missing something else all together?
-> Thanks in Advance, Bill
 
-A MAJOR difference in the ChallengeS is that it has differential SCSI
-controllers as well as the Indy SingleEnded controller.
+No, the FDDI card is just being ignored by Linux.  The problem is
+indeed the fact that the newport GFX card isn't installed.  I'll
+take a look at it when I have time for more than one breath
+per minute ...
 
+Thinking about it, the kernel should only try to touch the gfx hardware
+at all, if the ARC environment variable ``console'' is unset.  If you
+want to run from a serial console, then the variable's value should be
+either ``d1'' or ``d2'' for the first rsp. second serial interface.
+I suppose IRIX just defaults to serial console because it knows that
+a Challenge S is headless or after a failed probe for gfx hardware.
 
--- 
----------1---------2---------3---------4---------5---------6---------7---------8
-Eric Kimminau                           RTA/RSA
-eak@detroit.sgi.com                     Silicon Graphics, Inc
-Voice: (248) 848-4455                   39001 West 12 Mile Rd.
-Fax:   (248) 848-5600                   Farmington, MI 48331-2903
+William, what is the recommended way to recognice whethere a machine
+is a Indy or Challenge S?  Probing for a GFX card or checking via
+ARC firmware?
 
-                 VNet Extension - 6-327-4455
-              "I speak my mind and no one else's."
-       http://www.dcs.ex.ac.uk/~aba/rsa/perl-rsa-sig.html
-
-    When confronted by a difficult problem, solve it by reducing 
-    it to the question, "How would the Lone Ranger handle this?"
-	
-         "I am the great supportfolio, do you have http?"
+  Ralf

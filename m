@@ -1,92 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Mar 2004 07:21:10 +0100 (BST)
-Received: from web60701.mail.yahoo.com ([IPv6:::ffff:216.109.117.224]:11181
-	"HELO web60701.mail.yahoo.com") by linux-mips.org with SMTP
-	id <S8225207AbUC2GVI>; Mon, 29 Mar 2004 07:21:08 +0100
-Message-ID: <20040329062101.84127.qmail@web60701.mail.yahoo.com>
-Received: from [61.11.17.69] by web60701.mail.yahoo.com via HTTP; Sun, 28 Mar 2004 22:21:01 PST
-Date: Sun, 28 Mar 2004 22:21:01 -0800 (PST)
-From: Shantanu Gogate <sagogate@yahoo.com>
-Subject: Re: mips gcc compile error : unrecognized opcode errors
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-	Chris Dearman <chris@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Mar 2004 12:45:08 +0100 (BST)
+Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:63883 "EHLO
+	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225400AbUC2LpH>; Mon, 29 Mar 2004 12:45:07 +0100
+Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
+	id 6F05C4794B; Mon, 29 Mar 2004 13:44:59 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by jurand.ds.pg.gda.pl (Postfix) with ESMTP
+	id 5EB52477ED; Mon, 29 Mar 2004 13:44:59 +0200 (CEST)
+Date: Mon, 29 Mar 2004 13:44:59 +0200 (CEST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: larryhl@comcast.net
 Cc: linux-mips@linux-mips.org
-In-Reply-To: <Pine.LNX.4.55.0403261134030.3736@jurand.ds.pg.gda.pl>
+Subject: Re: gcc 3.4 and kernel 2.6 for 64bit on sb1250
+In-Reply-To: <032820041541.18245.4066F2450005255E000047452200750330FF9397868D8D9E@comcast.net>
+Message-ID: <Pine.LNX.4.55.0403291313291.19096@jurand.ds.pg.gda.pl>
+References: <032820041541.18245.4066F2450005255E000047452200750330FF9397868D8D9E@comcast.net>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <sagogate@yahoo.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4674
+X-archive-position: 4675
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sagogate@yahoo.com
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-Hi guys,
-Thanks for your replies ! Sure enough, the problem I mentioned about unrecognized opcodes was
-caused by screwed up Makefiles(include from standard host includes was erroneously taking place).
-I am past that hurdle now but facing a different problem:
+On Sun, 28 Mar 2004 larryhl@comcast.net wrote:
 
-1. I started getting some pretty weird unresolved symbol messages, which i figured was happening
-because it was not taking in libc.a and libgcc.a. This was happening although I had placed the
-libc.a and libgcc.a dir in the libsearch dir using the '-L' flag to gcc. 
+> I am wondering where gcc 3.4 cross-compiler for mips with little-endian
+> hosted on red-hat/intel could be downloaded. I tried to build them by
+> myself, but the compilation always failed because of pthread.h missing.
 
-2. So I gave the libc.a and libgcc.a path directly on the command prompt and it did build the
-binary file but gave warning that 
-'cannot find entry symbol __start; defaulting to 0000000000400090'
-I guess this is because it cannot find crt1.o or the other crt*.o files ?
-So, maybe even though I have got the binary file, it won run properly since it 'defaulted' the
-start address to something.
+ There are a few RPM packages at my site:  
+"ftp://ftp.ds2.pg.gda.pl/pub/macro/" (you'd need to use a mirror at:  
+"ftp://ftp.rfc822.org/pub/mirror/ftp.ds2.pg.gda.pl/pub/macro/" as we have
+temporary connectivity problems here).  I'm not sure if they'd work with
+an arbitrary version of RH, but they are not much demanding about
+libraries -- just shared glibc 2.2.4 or newer.  The Java frontend
+additionally requires zlib 1.1.x (1.1.4 is recommended due to a security
+fix).  An Ada (GNAT) frontend is included as well, which I suppose to be
+nice as it's not necessarily the easiest item to be built.
 
-3. My situation is like this : I have got the 'usr' directory from
-'glibc-devel-2.2.5-42.1.mips.rpm'  placed in a directory called '/work/GLIBC/' and I have
-'sdelinux 5.03eb installed' on my redhat 7.3 host machine. Can you guys tell me how I need to
-setup the Makefiles for that app so as to get a clean build ? If this is out of your domain can
-you point me to some resources (other than gcc man pages ;) ) which talks about setting up
-cross-compile environments ?
+ No warranty these work at all, although they've performed reasonably for
+me so far.  Expect updates once the original FTP site is resurrected, but 
+I don't plan to make a set of packages for the released version of 3.4 as 
+I'm already working on 3.5.
 
-Chris:
-as for your question about what problems I faced compiling busybox with sdelinux-5.01 (not 5.06 as
-u said):
-there is some code (i forgot the location now) which uses flexible length arrays in a struct and
-there are 2 such arrays declared in a struct one after the other as the last two entries in that
-struct. gcc used to bail out here cribbing that 'flexible length array not at end of struct'. 
-After going thru a few posts I stumbled upon your reply
-(http://www.linux-mips.org/archives/linux-mips/2003-11/msg00015.html) where u said that it was
-fixed in updated version of compiler. (i was compiling busybox-1.00-pre4). using 5.03 i did not
-face this problem.
+  Maciej
 
-
-thanks in advance,
-/shantanu.
-
---- "Maciej W. Rozycki" <macro@ds2.pg.gda.pl> wrote:
-> On Fri, 26 Mar 2004, Shantanu Gogate wrote:
-> 
-> > I am trying to cross compile a user mode application for mips and I am getting these error
-> > messages when trying to do that:
-> > 
-> > /tmp/ccgvdHuk.s: Assembler messages:
-> > /tmp/ccgvdHuk.s:1270: Error: unrecognized opcode `btl $4,0($2)'
-> > /tmp/ccgvdHuk.s:1270: Error: unrecognized opcode `setcb $25'
-> > /tmp/ccgvdHuk.s:3124: Error: unrecognized opcode `btl $4,0($2)'
-> > /tmp/ccgvdHuk.s:3124: Error: unrecognized opcode `setcb $25'
-> > /tmp/ccgvdHuk.s:3769: Error: unrecognized opcode `btl $4,0($2)'
-> > /tmp/ccgvdHuk.s:3769: Error: unrecognized opcode `setcb $25'
-> 
->  These are not MIPS instructions.  Make sure the file is built with a 
-> compiler for the MIPS target.  There's likely a bug in your Makefile.
-> 
-> -- 
-> +  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-> +--------------------------------------------------------------+
-> +        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
-
-
-__________________________________
-Do you Yahoo!?
-Yahoo! Finance Tax Center - File online. File on time.
-http://taxes.yahoo.com/filing.html
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

@@ -1,43 +1,98 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jul 2003 19:35:06 +0100 (BST)
-Received: from [IPv6:::ffff:207.215.131.7] ([IPv6:::ffff:207.215.131.7]:36343
-	"EHLO ns.pioneer-pdt.com") by linux-mips.org with ESMTP
-	id <S8225238AbTGBSfE>; Wed, 2 Jul 2003 19:35:04 +0100
-Received: from philt.mrp.pioneer-pdt.com ([172.30.2.110])
-          by ns.pioneer-pdt.com (Post.Office MTA v3.5.3 release 223
-          ID# 0-68491U100L2S100V35) with ESMTP id com;
-          Wed, 2 Jul 2003 11:37:29 -0700
-From: patrick.hilt@pioneer-pdt.com (Patrick Hilt)
-Organization: Pioneer
-To: sseeger@stellartec.com
-Subject: Re: rtai part 2
-Date: Wed, 2 Jul 2003 11:34:21 -0400
-User-Agent: KMail/1.5
-Cc: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Jul 2003 00:50:47 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:60922 "EHLO
+	av.mvista.com") by linux-mips.org with ESMTP id <S8225202AbTGCXun>;
+	Fri, 4 Jul 2003 00:50:43 +0100
+Received: from mvista.com (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id QAA00589
+	for <linux-mips@linux-mips.org>; Thu, 3 Jul 2003 16:50:20 -0700
+Message-ID: <3F04C13B.F1B92A1B@mvista.com>
+Date: Thu, 03 Jul 2003 17:50:19 -0600
+From: Michael Pruznick <michael_pruznick@mvista.com>
+Reply-To: michael_pruznick@mvista.com
+Organization: MontaVista
+X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.20 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="us-ascii"
+To: linux-mips@linux-mips.org
+Subject: AU1500 BE USB problem
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200307021134.21355.philt@pioneer-pdt.com>
-Return-Path: <patrick.hilt@pioneer-pdt.com>
+Return-Path: <michael_pruznick@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2758
+X-archive-position: 2759
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: patrick.hilt@pioneer-pdt.com
+X-original-sender: michael_pruznick@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Steven!
-I saw your RTAI related posts to the linux-mips mailing list and was wondering 
-if you could maybe help me with this: I would like to use rtai with a 2.4.18 
-kernel on a MIPS32 box. From the available documentation it's difficult to 
-see what version of rtai should/could work with my configuration.
-Thanks a lot in advance for any suggestions you might be able to give me!
+My db1500 usb works in LE mode.  In BE mode it does not.  Below is
+the first problem I've seen (may not be the first/only problem).  
+This is a 2.4.18 kernel.
 
-Take care,
+This problem shows up in sohci_submit_urb(), but looks like it is caused
+by FILL_CONTROL_URB().  Since FILL_CONTROL_URB() is depreciated I've
+also tried its replacement usb_fill_control_urb() with no difference.
 
-Patrick
+This is generic usb/ohci code.  Isn't this code already le/be safe?
+Shouldn't this just work?
+
+The au1500 hardware has a bit that will "swap usb data but not ohci
+control structs".  I see this same problem with that bit set or clear.
+
+Not sure if hcca->frame_no is considered an ohci control struct or
+usb data, but since it doesn't seam to be swapped when I change the
+bit, I'm guessing it is probably considered a control struct.
+
+Any thoughts on what I might be missing here?
+
+
+Here is the le/be diff:
+< hcc[32]:0xa02bd080=0x00000a1d
+---
+> hcc[32]:0xa02bd080=0x00000a1c
+...
+< frame_no = (x1=0x0d57,x2=0x0d57,x3=0x0d57)
+< frame_no = (y1=0x00000d57,y2=0x00000d57,y3=0x00000d57)
+< ...URB:[ d92] dev: 0,ep: 0-O,type:CTRL,flags:   0,len:0/0,stat:0(0)
+---
+> frame_no = (x1=0x0000,x2=0x0000,x3=0x0000)
+> frame_no = (y1=0x00000000,y2=0x00000000,y3=0x00000d56)
+> #...URB:[   0] dev: 0,ep: 0-O,type:CTRL,flags:   0,len:0/0,stat:0(0)
+
+
+The above output comes from this patch to sohci_get_current_frame_number():
+< 
+<       return le16_to_cpu (ohci->hcca->frame_no);
+---
+>       u16 x1, x2, x3;
+>       u32 y1, y2, y3;
+> 
+>       {
+>               u32 i, l;
+>               u32* p;
+>               l = sizeof(struct ohci_hcca)/4;
+>               p = ohci->hcca;
+>               for ( i = 0; i < l; i++ )
+>               {
+>                       printk( "hcc[%02d]:0x%08x=0x%08x\n", 
+>                               i, p, *p );
+>                       p++;
+>               }
+>       }
+> 
+>       x1 = ohci->hcca->frame_no;
+>       x2 = le16_to_cpu(x1);
+>       x3 = ((u16*)ohci->hcca)[64];
+> 
+>       y1 = ohci->hcca->frame_no;
+>       y2 = le32_to_cpu(y1);
+>       y3 = ((u32*)ohci->hcca)[32];
+> 
+> printk( "frame_no = (x1=0x%04x,x2=0x%04x,x3=0x%04x)\n",x1,x2,x3 );
+> printk( "frame_no = (y1=0x%08x,y2=0x%08x,y3=0x%08x)\n",y1,y2,y3 );
+> 
+>       return le16_to_cpu(ohci->hcca->frame_no);

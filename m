@@ -1,43 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Feb 2003 18:02:08 +0000 (GMT)
-Received: from imo-d01.mx.aol.com ([IPv6:::ffff:205.188.157.33]:51388 "EHLO
-	imo-d01.mx.aol.com") by linux-mips.org with ESMTP
-	id <S8225205AbTBNSCI>; Fri, 14 Feb 2003 18:02:08 +0000
-Received: from shenminshi@netscape.net
-	by imo-d01.mx.aol.com (mail_out_v34.21.) id l.1b.7654709 (22682)
-	 for <linux-mips@linux-mips.org>; Fri, 14 Feb 2003 13:01:34 -0500 (EST)
-Received: from  netscape.net (mow-d22.webmail.aol.com [205.188.139.138]) by air-in04.mx.aol.com (v90_r2.5) with ESMTP id MAILININ43-0214130134; Fri, 14 Feb 2003 13:01:33 -0500
-Date: Fri, 14 Feb 2003 13:01:33 -0500
-From: shenminshi@netscape.net
-To: linux-mips@linux-mips.org
-Subject: when does "init" become usermode process
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Feb 2003 18:30:00 +0000 (GMT)
+Received: from mms1.broadcom.com ([IPv6:::ffff:63.70.210.58]:63249 "EHLO
+	mms1.broadcom.com") by linux-mips.org with ESMTP
+	id <S8225205AbTBNS37>; Fri, 14 Feb 2003 18:29:59 +0000
+Received: from 63.70.210.1 by mms1.broadcom.com with ESMTP (Broadcom
+ MMS1 SMTP Relay (MMS v5.5.0)); Fri, 14 Feb 2003 10:29:36 -0700
+Received: from mail-sj1-5.sj.broadcom.com (mail-sj1-5.sj.broadcom.com
+ [10.16.128.236]) by mon-irva-11.broadcom.com (8.9.1/8.9.1) with ESMTP
+ id KAA19738; Fri, 14 Feb 2003 10:29:45 -0800 (PST)
+Received: from dt-sj3-158.sj.broadcom.com (dt-sj3-158 [10.21.64.158]) by
+ mail-sj1-5.sj.broadcom.com (8.12.4/8.12.4/SSF) with ESMTP id
+ h1EITqER009680; Fri, 14 Feb 2003 10:29:52 -0800 (PST)
+Received: from broadcom.com (IDENT:kwalker@localhost [127.0.0.1]) by
+ dt-sj3-158.sj.broadcom.com (8.9.3/8.9.3) with ESMTP id KAA12577; Fri,
+ 14 Feb 2003 10:29:52 -0800
+Message-ID: <3E4D35A0.7BCC13C4@broadcom.com>
+Date: Fri, 14 Feb 2003 10:29:52 -0800
+From: "Kip Walker" <kwalker@broadcom.com>
+Organization: Broadcom Corp. BPBU
+X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.5-beta4va3.20 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Message-ID: <6105D94A.6A2BDDA3.10683EB2@netscape.net>
-X-Mailer: Atlas Mailer 2.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Return-Path: <shenminshi@netscape.net>
+To: shenminshi@netscape.net
+cc: linux-mips@linux-mips.org
+Subject: Re: when does "init" become usermode process
+References: <6105D94A.6A2BDDA3.10683EB2@netscape.net>
+X-WSS-ID: 1253EA1A796604-01-01
+Content-Type: text/plain;
+ charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <kwalker@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1427
+X-archive-position: 1428
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: shenminshi@netscape.net
+X-original-sender: kwalker@broadcom.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
-  I was reading the kernel boot code toward the end where kernel's init thread execve("/sbin/init",x,x). Execve() calls sys_execve() and do_execve(). All the manpage and kernel document told us the init is the first usermode process running in the system. However, when the execve("/sbin/init",x,x) runs in the kernel (init/main.c), I believe we are still in the kernel mode, aren't we? Unless execve() does the trick to turn init into usermode by setting the KU bit in the STATUS register. I checked the execve() code and its not obvious whether it does this or not. I then check the init source code and it does not mess around the KU bit either.
+shenminshi@netscape.net wrote:
+> 
+> My question is when and how does init turn itself into usermode.
 
-My question is when and how does init turn itself into usermode.
+Look at 'start_thread' in arch/mips/kernel/process.c, which is called
+from load_elf_binary in fs/binfmt_elf.c (as a result of the execve
+syscall).
 
-
-Thanks
-
-sms
-
-__________________________________________________________________
-The NEW Netscape 7.0 browser is now available. Upgrade now! http://channels.netscape.com/ns/browsers/download.jsp 
-
-Get your own FREE, personal Netscape Mail account today at http://webmail.netscape.com/
+Kip

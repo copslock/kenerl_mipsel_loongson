@@ -1,68 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Jan 2005 23:28:51 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:2814 "EHLO
-	prometheus.mvista.com") by linux-mips.org with ESMTP
-	id <S8225426AbVALX2p>; Wed, 12 Jan 2005 23:28:45 +0000
-Received: from prometheus.mvista.com (localhost.localdomain [127.0.0.1])
-	by prometheus.mvista.com (8.12.8/8.12.8) with ESMTP id j0CNShdh006160
-	for <linux-mips@linux-mips.org>; Wed, 12 Jan 2005 15:28:43 -0800
-Received: (from mlachwani@localhost)
-	by prometheus.mvista.com (8.12.8/8.12.8/Submit) id j0CNSho0006158
-	for linux-mips@linux-mips.org; Wed, 12 Jan 2005 15:28:43 -0800
-Date: Wed, 12 Jan 2005 15:28:43 -0800
-From: Manish Lachwani <mlachwani@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Jan 2005 07:43:56 +0000 (GMT)
+Received: from vsmtp14.tin.it ([IPv6:::ffff:212.216.176.118]:60317 "EHLO
+	vsmtp14.tin.it") by linux-mips.org with ESMTP id <S8224829AbVAMHnv>;
+	Thu, 13 Jan 2005 07:43:51 +0000
+Received: from eppesuigoccas.homedns.org (80.117.81.199) by vsmtp14.tin.it (7.0.027) (authenticated as giuseppe.sacco17@tin.it)
+        id 41E4571F000BA55C for linux-mips@linux-mips.org; Thu, 13 Jan 2005 08:43:44 +0100
+Received: from eppesuig3wifi ([192.168.2.51] ident=giuseppe)
+	by eppesuigoccas.homedns.org with asmtp (Exim 3.35 #1 (Debian))
+	id 1Cozdu-0005RD-00
+	for <linux-mips@linux-mips.org>; Thu, 13 Jan 2005 08:43:42 +0100
+Subject: O2 and 128Mb
+From: Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
 To: linux-mips@linux-mips.org
-Subject: [PATCH] Minor patch to build kernel for Ocelot-3
-Message-ID: <20050112232843.GA6151@prometheus.mvista.com>
+Content-Type: text/plain
+Organization: Giuseppe Sacco Consulting
+Date: Thu, 13 Jan 2005 08:42:14 +0100
+Message-Id: <1105602134.10493.23.camel@localhost>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="pWyiEgJYm5f9v55/"
-Content-Disposition: inline
-User-Agent: Mutt/1.4.1i
-Return-Path: <mlachwani@prometheus.mvista.com>
+X-Mailer: Evolution 2.0.3 
+Content-Transfer-Encoding: 7bit
+Return-Path: <giuseppe@eppesuigoccas.homedns.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6895
+X-archive-position: 6896
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mlachwani@mvista.com
+X-original-sender: giuseppe@eppesuigoccas.homedns.org
 Precedence: bulk
 X-list: linux-mips
 
+[Hope this isn't OT]
+Hi,
+I have an O2 with 128Mb and I cannot boot any of the latest kernels (CVS
+form december up to now.) If I remember right, I was told that the
+problem is in arcboot, but it might be in the kernel too.
 
---pWyiEgJYm5f9v55/
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Does anyone else have the same problem here? Where do I find CVS for
+arcboot in order to get a newer version?
 
-Hello !
-
-Attached patch is needed to build the kernel for Ocelot-3. Please apply
-
-Thanks
-Manish Lachwani
-
-
---pWyiEgJYm5f9v55/
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline; filename=patch-build-ocelot3
-
---- arch/mips/mm/sc-rm7k.c.orig	2005-01-12 15:25:06.000000000 -0800
-+++ arch/mips/mm/sc-rm7k.c	2005-01-12 14:03:11.000000000 -0800
-@@ -127,13 +127,13 @@
- 		      ".set mips0\n\t"
- 		      ".set reorder"
- 		      :
--		      : "r" (KSEG0ADDR(i)), "i" (Index_Store_Tag_SD));
-+		      : "r" (CKSEG0ADDR(i)), "i" (Index_Store_Tag_SD));
- 	}
- }
- 
- static __init void rm7k_sc_enable(void)
- {
--	void (*func)(void) = (void *) KSEG1ADDR(&__rm7k_sc_enable);
-+	void (*func)(void) = (void *) CKSEG1ADDR(&__rm7k_sc_enable);
- 
- 	if (read_c0_config() & 0x08)			/* CONF_SE */
- 		return;
-
---pWyiEgJYm5f9v55/--
+Thanks,
+Giuseppe

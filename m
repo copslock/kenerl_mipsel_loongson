@@ -1,41 +1,46 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1PJaKB27379
-	for linux-mips-outgoing; Mon, 25 Feb 2002 11:36:20 -0800
-Received: from ayrnetworks.com (earth.ayrnetworks.com [64.166.72.139])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1PJaI927376
-	for <linux-mips@oss.sgi.com>; Mon, 25 Feb 2002 11:36:18 -0800
-Received: from [192.168.1.5] (IDENT:root@localhost.localdomain [127.0.0.1])
-	by  ayrnetworks.com (8.11.6/8.11.2) with ESMTP id g1PIZ5e03585;
-	Mon, 25 Feb 2002 10:35:05 -0800
+	by oss.sgi.com (8.11.2/8.11.3) id g1PJdjU27473
+	for linux-mips-outgoing; Mon, 25 Feb 2002 11:39:45 -0800
+Received: from dea.linux-mips.net (a1as07-p84.stg.tli.de [195.252.188.84])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1PJde927470
+	for <linux-mips@oss.sgi.com>; Mon, 25 Feb 2002 11:39:41 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.1) id g1PIdSf04410;
+	Mon, 25 Feb 2002 19:39:28 +0100
+Date: Mon, 25 Feb 2002 19:39:28 +0100
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Johannes Stezenbach <js@convergence.de>, Hartvig Ekner <hartvige@mips.com>,
+   linux-mips@oss.sgi.com
+Subject: Re: Setting up of GP in static, non-PIC version of glibc?
+Message-ID: <20020225193928.A4385@dea.linux-mips.net>
+References: <200202251516.QAA22570@copsun18.mips.com> <20020225173433.B3680@dea.linux-mips.net> <20020225183141.GA3560@convergence.de>
 Mime-Version: 1.0
-X-Sender: kph@127.0.0.1
-Message-Id: <a05100303b8a033ebf33b@[192.168.1.5]>
-In-Reply-To: <NEBBLJGMNKKEEMNLHGAICELKCFAA.mdharm@momenco.com>
-References: <NEBBLJGMNKKEEMNLHGAICELKCFAA.mdharm@momenco.com>
-Date: Mon, 25 Feb 2002 10:36:09 -0800
-To: "Matthew Dharm" <mdharm@momenco.com>,
-   "Linux-MIPS" <linux-mips@oss.sgi.com>
-From: Kevin Paul Herbert <kph@ayrnetworks.com>
-Subject: Re: Is this a toolchain bug?
-Content-Type: text/plain; charset="us-ascii" ; format="flowed"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20020225183141.GA3560@convergence.de>; from js@convergence.de on Mon, Feb 25, 2002 at 07:31:41PM +0100
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-At 5:57 PM -0800 2/22/02, Matthew Dharm wrote:
->
->The toolchain I'm using is the one from oss.sgi.com by H.J. Liu
->(toolchain-20011020-1).  Because of the way the e1000 driver Makefile
->works, I'm actually compiling it using the native compiler on-target.
-I just tossed out most of intel's makefile so that I could build it 
-as part of our cross-build (hosted on RedHat i386), building it as a 
-module. When I was using the 3.0 driver, I hacked it to be built with 
-the kernel (not a module at all). It was just a few minutes of 
-makefile hacking, and may save you some grief.
+On Mon, Feb 25, 2002 at 07:31:41PM +0100, Johannes Stezenbach wrote:
 
-There is a driver V4.0.7? I *just* picked up 3.5 a little while 
-ago... can you point me at where on intel's website you got your 
-driver?
+> > 
+> > Non-PIC code doesn't use $gp, so any reference to $gp is a bug.  Note
+> > that we don't support global data optimization for ELF either that is,
+> > -G 0 is the default.
+> 
+> I recently experimented with dietlibc and tried to create
+> static, non-PIC binaries, with some success.
+> Contradicting the docs (gcc info), -G 0 is not the default but
+> has to be passed explicitely (even when using the GNU assembler).
 
-Thanks,
-Kevin
--- 
+It always was until somebody broke gcc.
+
+> BTW: Who is "we"? Do you mean global data optimization is broken
+> in gcc/binutils or just that no one at SGI is using it?
+
+It's an ECOFF specific optimization that just has been forward ported into
+the ELF world.  And what does this have to do with SGI anyway?
+
+  Ralf

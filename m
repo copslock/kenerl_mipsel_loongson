@@ -1,87 +1,247 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9CGPBA24680
-	for linux-mips-outgoing; Fri, 12 Oct 2001 09:25:11 -0700
-Received: from [64.152.86.3] (unknown.Level3.net [64.152.86.3] (may be forged))
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9CGP4D24677
-	for <linux-mips@oss.sgi.com>; Fri, 12 Oct 2001 09:25:04 -0700
-Received: from mail.esstech.com by [64.152.86.3]
-          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 12 Oct 2001 16:26:32 UT
-Received: from bud.austin.esstech.com ([193.5.206.3])
-	by mail.esstech.com (8.8.8+Sun/8.8.8) with SMTP id JAA20790;
-	Fri, 12 Oct 2001 09:23:36 -0700 (PDT)
-Received: from esstech.com by bud.austin.esstech.com (SMI-8.6/SMI-SVR4)
-	id LAA18851; Fri, 12 Oct 2001 11:23:03 -0500
-Message-ID: <3BC719CD.8060303@esstech.com>
-Date: Fri, 12 Oct 2001 11:26:53 -0500
-From: Gerald Champagne <gerald.champagne@esstech.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.3) Gecko/20010801
-X-Accept-Language: en-us
+	by oss.sgi.com (8.11.2/8.11.3) id f9CGQYo24774
+	for linux-mips-outgoing; Fri, 12 Oct 2001 09:26:34 -0700
+Received: from quicklogic.com (quick1.quicklogic.com [206.184.225.224])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9CGQGD24767
+	for <linux-mips@oss.sgi.com>; Fri, 12 Oct 2001 09:26:16 -0700
+Received: from enghanks
+	([207.81.96.51])
+	by quicklogic.com; Fri, 12 Oct 2001 09:26:03 -0700
+From: "Hanks Li" <hli@quicklogic.com>
+To: <linux-mips@oss.sgi.com>
+Subject: Big endian problem
+Date: Fri, 12 Oct 2001 12:26:07 -0400
+Message-ID: <APEOLACBIPNAFKJDDFIIIEBLCBAA.hli@quicklogic.com>
 MIME-Version: 1.0
-To: Jeff Harrell <jharrell@telogy.com>
-CC: linux-mips@oss.sgi.com
-Subject: Re: VisionClick debugger with Linux kernel
-References: <3BC36684.6020609@esstech.com> <3BC6F26B.E386F412@telogy.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4807.1700
+Importance: Normal
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Thanks for the response.  I just found the problem last night.  Their
-convert utility was screwing up on files that had module_init and
-module_exit routines in them, even though it wasn't compiled as a module.
-I fixed it by replacing the __init and __exit macros with nothing so
-the code is placed in a normal .text segment.
+Hi,
 
-Gerald
+Has anyone tried to compile in Big Endian mode? When I compile the code in
+big endian, I got the following message. Does anybody know how to solve this
+problem? The assembler I'm using is "GNU assembler 2.11.90.0.27". I have no
+problem compiling the code in little endian at all.
 
+Thanks
 
-Jeff Harrell wrote:
-> Gerald Champagne wrote:
-> 
->     Has anyone used the Wind River VisionClick debugger with the Linux
->     kernel?
->     I'm using this debugger and works great except it thinks that the
->     symbols
->     for some files start at address zero instead of the proper offset. 
->     Has anyone
->     else seen this and were you able to get it to work?  I'm using the
->     latest tools
->     from:
-> 
->     ftp://oss.sgi.com/pub/linux/mips/redhat/7.1/RPMS/i386/toolchain-mips-20010830-1.i386.rpm
-> 
-> 
->     I can't find any differences between the files that work and the
->     files that
->     don't work and the symbols look correct in the System.map file.
-> 
->     Yeah, I'm working with Wind River, but I haven't gotten a solution yet.
->     You know how that 8-5 centralized corporate support is though. :)
-> 
->     Thanks!
-> 
->     Gerald
-> 
-> We are using a VisionIce debugger from the linux-mips kernel, although I 
-> am using the
-> MontaVista Hardhat 2.0 tools.   I am able to load the symbols after they 
-> have been
-> generated from the Convert utility.  It seems to work fine except for 
-> modules...haven't
-> had much luck with that.  Had to get a patch to view TLB mapped memory 
-> properly
-> though.
-> 
-> Jeff
-> 
-> -- 
-> ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> \ Jeff Harrell  (jharrell@telogy.com)               \
-> \ Telogy Networks                                   \
-> \ Broadband Access Group                            \
-> \                                                   \
-> \ Work: (301) 515-6537                              \
-> \ Fax:  (301) 515-6637                              \
-> \~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> 
->  
+Hanshi Li
+
+----------------------------------------------------------------------------
+------------------------------------
+mips-linux-gcc -I
+/home/hli/linux/include/asm/gcc -D__KERNEL__ -I/home/hli/linux/include -Wall
+ -Wstrict-prototypes -Wno-trigraphs -O2 -fomit-frame-pointer -fno-strict-ali
+asing -fno-common -G
+0 -mno-abicalls -fno-pic -mcpu=r5000 -mips2 -Wa,--trap -pipe -DEXPORT_SYMTAB
+ -c time.c
+Assembler messages:
+Warning: The -mcpu option is deprecated. Please use -march and -mtune
+instead.
+time.c: In function `calibrate_div32_gettimeoffset':
+time.c:225: Unrecognizable insn:
+(insn 60 144 66 (parallel[
+(set (reg:SI 8 t0)
+(asm_operands (".set push
+.set noat
+.set noreorder
+b 1f
+li %4,0x21
+0:
+sll $1,%0,0x1
+srl %3,%0,0x1f
+or %0,$1,$2
+sll %1,%1,0x1
+sll %2,%2,0x1
+1:
+bnez %3,2f
+sltu $2,%0,%z5
+bnez $2,3f
+2:
+addiu %4,%4,-1
+subu %0,%0,%z5
+addiu %2,%2,1
+3:
+bnez %4,0b
+srl $2,%1,0x1f
+.set pop") ("=&r") 0[
+(reg/v:SI 4 a0)
+(reg:SI 8 t0)
+(reg:DI 6 a2)
+(reg/v:SI 5 a1)
+(reg:SI 9 t1)
+]
+[
+(asm_input:SI ("Jr"))
+(asm_input:SI ("0"))
+(asm_input:DI ("1"))
+(asm_input:SI ("2"))
+(asm_input:SI ("3"))
+] ("time.c") 201))
+(set (reg:SI 6 a2)
+(asm_operands (".set push
+.set noat
+.set noreorder
+b 1f
+li %4,0x21
+0:
+sll $1,%0,0x1
+srl %3,%0,0x1f
+or %0,$1,$2
+sll %1,%1,0x1
+sll %2,%2,0x1
+1:
+bnez %3,2f
+sltu $2,%0,%z5
+bnez $2,3f
+2:
+addiu %4,%4,-1
+subu %0,%0,%z5
+addiu %2,%2,1
+3:
+bnez %4,0b
+srl $2,%1,0x1f
+.set pop") ("=&r") 1[
+(reg/v:SI 4 a0)
+(reg:SI 8 t0)
+(reg:DI 6 a2)
+(reg/v:SI 5 a1)
+(reg:SI 9 t1)
+]
+[
+(asm_input:SI ("Jr"))
+(asm_input:SI ("0"))
+(asm_input:DI ("1"))
+(asm_input:SI ("2"))
+(asm_input:SI ("3"))
+] ("time.c") 201))
+(set (reg/v:SI 5 a1)
+(asm_operands (".set push
+.set noat
+.set noreorder
+b 1f
+li %4,0x21
+0:
+sll $1,%0,0x1
+srl %3,%0,0x1f
+or %0,$1,$2
+sll %1,%1,0x1
+sll %2,%2,0x1
+1:
+bnez %3,2f
+sltu $2,%0,%z5
+bnez $2,3f
+2:
+addiu %4,%4,-1
+subu %0,%0,%z5
+addiu %2,%2,1
+3:
+bnez %4,0b
+srl $2,%1,0x1f
+.set pop") ("=&r") 2[
+(reg/v:SI 4 a0)
+(reg:SI 8 t0)
+(reg:DI 6 a2)
+(reg/v:SI 5 a1)
+(reg:SI 9 t1)
+]
+[
+(asm_input:SI ("Jr"))
+(asm_input:SI ("0"))
+(asm_input:DI ("1"))
+(asm_input:SI ("2"))
+(asm_input:SI ("3"))
+] ("time.c") 201))
+(set (reg:SI 9 t1)
+(asm_operands (".set push
+.set noat
+.set noreorder
+b 1f
+li %4,0x21
+0:
+sll $1,%0,0x1
+srl %3,%0,0x1f
+or %0,$1,$2
+sll %1,%1,0x1
+sll %2,%2,0x1
+1:
+bnez %3,2f
+sltu $2,%0,%z5
+bnez $2,3f
+2:
+addiu %4,%4,-1
+subu %0,%0,%z5
+addiu %2,%2,1
+3:
+bnez %4,0b
+srl $2,%1,0x1f
+.set pop") ("=&r") 3[
+(reg/v:SI 4 a0)
+(reg:SI 8 t0)
+(reg:DI 6 a2)
+(reg/v:SI 5 a1)
+(reg:SI 9 t1)
+]
+[
+(asm_input:SI ("Jr"))
+(asm_input:SI ("0"))
+(asm_input:DI ("1"))
+(asm_input:SI ("2"))
+(asm_input:SI ("3"))
+] ("time.c") 201))
+(set (reg:SI 14 t6)
+(asm_operands (".set push
+.set noat
+.set noreorder
+b 1f
+li %4,0x21
+0:
+sll $1,%0,0x1
+srl %3,%0,0x1f
+or %0,$1,$2
+sll %1,%1,0x1
+sll %2,%2,0x1
+1:
+bnez %3,2f
+sltu $2,%0,%z5
+bnez $2,3f
+2:
+addiu %4,%4,-1
+subu %0,%0,%z5
+addiu %2,%2,1
+3:
+bnez %4,0b
+srl $2,%1,0x1f
+.set pop") ("=&r") 4[
+(reg/v:SI 4 a0)
+(reg:SI 8 t0)
+(reg:DI 6 a2)
+(reg/v:SI 5 a1)
+(reg:SI 9 t1)
+]
+[
+(asm_input:SI ("Jr"))
+(asm_input:SI ("0"))
+(asm_input:DI ("1"))
+(asm_input:SI ("2"))
+(asm_input:SI ("3"))
+] ("time.c") 201))
+(clobber (reg:QI 2 v0))
+(clobber (reg:QI 1 at))
+] ) -1 (insn_list:REG_DEP_OUTPUT 13 (insn_list 38 (insn_list 53 (insn_list
+51 (insn_list 41 (nil))))))
+(nil))
+time.c:225: confused by earlier errors, bailing out
+make[1]: *** [time.o] Error 1
+make[1]: Leaving directory `/home/hli/linux/arch/mips/kernel'
+make: *** [_dir_arch/mips/kernel] Error 2
+----------------------------------------------------------------------------
+---------------------------------

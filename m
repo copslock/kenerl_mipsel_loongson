@@ -1,37 +1,54 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id SAA20565; Mon, 16 Jun 1997 18:13:12 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id SAA22123; Mon, 16 Jun 1997 18:54:30 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id SAA05507 for linux-list; Mon, 16 Jun 1997 18:12:57 -0700
-Received: from titian.engr.sgi.com (titian.engr.sgi.com [150.166.240.38]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id SAA05500; Mon, 16 Jun 1997 18:12:54 -0700
-Received: from localhost by titian.engr.sgi.com via SMTP (950413.SGI.8.6.12/940406.SGI.AUTO)
-	 id SAA10919; Mon, 16 Jun 1997 18:12:54 -0700
-Message-Id: <199706170112.SAA10919@titian.engr.sgi.com>
-To: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
-cc: linux@cthulhu.engr.sgi.com
-Subject: Re: A pointed question about endianness... 
-In-reply-to: Your message of "Tue, 17 Jun 1997 02:57:04 +0200."
-             <199706170057.CAA18692@informatik.uni-koblenz.de> 
-Date: Mon, 16 Jun 1997 18:12:43 -0700
-From: Mike McDonald <mikemac@titian.engr.sgi.com>
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id SAA14829 for linux-list; Mon, 16 Jun 1997 18:54:14 -0700
+Received: from yon.engr.sgi.com (yon.engr.sgi.com [150.166.61.32]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id SAA14822 for <linux@cthulhu.engr.sgi.com>; Mon, 16 Jun 1997 18:54:12 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by yon.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id SAA20454 for <linux@yon.engr.sgi.com>; Mon, 16 Jun 1997 18:54:11 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id SAA14804 for <linux@yon.engr.sgi.com>; Mon, 16 Jun 1997 18:54:10 -0700
+Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id SAA10215
+	for <linux@yon.engr.sgi.com>; Mon, 16 Jun 1997 18:54:08 -0700
+	env-from (adevries@engsoc.carleton.ca)
+Received: from localhost (adevries@localhost)
+          by lager.engsoc.carleton.ca (8.8.5/8.8.4) with SMTP
+	  id VAA01209; Mon, 16 Jun 1997 21:53:16 -0400
+Date: Mon, 16 Jun 1997 21:53:16 -0400 (EDT)
+From: Alex deVries <adevries@engsoc.carleton.ca>
+To: Ariel Faigon <ariel@sgi.com>
+cc: Ralf Baechle <ralf@mailhost.uni-koblenz.de>, linux@yon.engr.sgi.com
+Subject: Re: Good news: no more begging for HW
+In-Reply-To: <199706170106.SAA19946@yon.engr.sgi.com>
+Message-ID: <Pine.LNX.3.95.970616213559.28820C-100000@lager.engsoc.carleton.ca>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
 
->From: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
->Subject: Re: A pointed question about endianness...
->To: mikemac (Mike McDonald)
->Date: Tue, 17 Jun 1997 02:57:04 +0200 (MET DST)
->
->>   Is anyone working on the Algorithmics boards? We have 5 of them over
->> here currently being used with VxWorks (which isn't officially
->> supported on these boards). I could cause lots of trouble over here if
->> Linux did work on them. :-)
->
->Me, I've got a P4032 donated by Algorithmics here.  The port hasn't yet
->reached a state where I'd be pround of it, but bascially it works
->diskless.  
 
-  That's the beast. So, when are you going to stop messing around with
-those Indies and start doing some real work? :-)
+Ariel wrote:
+> I think the fairest way would be to publish all these
+> requests on this forum and have the people who care (us)
+> vote on who should get them.  I certainly don't want to
+> be the fascist person who decides who gets what.
 
-  Mike McDonald
-  mikemac@engr.sgi.com
+Well... I hate to be the first to jump in pleading for hardware, but I
+could really use it. To date, the only SGI I have access to is
+bogomips.ingenia.ca, which is Mike Shaver's machine in Ottawa. This is
+difficult, as I can't do anything hardware related, or anything involving
+rebooting, etc. Plus, bandwidth is a frequent problem.
+
+I've always been interested in working with the application side of things
+(particularly, porting all of RedHat 4.2), but I'd like to get involved in
+other things, such as an X server and filesystem support.
+
+Despite my email address, I actually reside in Boston.  I just administer
+engsoc.carleton.ca in Ottawa remotely in my spare time (and quite
+creatively, too, might I add). 
+
+Oh, and my vote is on getting Ralf an SGI, if he doesn't have one already.
+I'm not quite sure what the future is like for bogomips.ingenia.com.
+
+- Alex
+
+      Alex deVries           "Alex can cut a mean rug."
+  System Administrator       - M. Dittberner <shabby@engsoc.carleton.ca>
+   The EngSoc Project     

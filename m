@@ -1,67 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Dec 2002 21:40:35 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:51704 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225304AbSLQVke>;
-	Tue, 17 Dec 2002 21:40:34 +0000
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id gBHLeB207386;
-	Tue, 17 Dec 2002 13:40:11 -0800
-Date: Tue, 17 Dec 2002 13:40:11 -0800
-From: Jun Sun <jsun@mvista.com>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-	jsun@mvista.com
-Subject: Re: [PATCH] add dispatch_i8259_irq() to i8259.c
-Message-ID: <20021217134011.M11575@mvista.com>
-References: <20021216124009.D10178@mvista.com> <Pine.GSO.3.96.1021217131352.7289A-100000@delta.ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Dec 2002 22:30:21 +0000 (GMT)
+Received: from nixon.xkey.com ([IPv6:::ffff:209.245.148.124]:31105 "HELO
+	nixon.xkey.com") by linux-mips.org with SMTP id <S8225304AbSLQWaU>;
+	Tue, 17 Dec 2002 22:30:20 +0000
+Received: (qmail 6686 invoked from network); 17 Dec 2002 22:30:15 -0000
+Received: from localhost (HELO localhost.conservativecomputer.com) (127.0.0.1)
+  by localhost with SMTP; 17 Dec 2002 22:30:15 -0000
+Received: (from lindahl@localhost)
+	by localhost.conservativecomputer.com (8.11.6/8.11.0) id gBHMTDL02135
+	for linux-mips@linux-mips.org; Tue, 17 Dec 2002 14:29:13 -0800
+X-Authentication-Warning: localhost.localdomain: lindahl set sender to lindahl@keyresearch.com using -f
+Date: Tue, 17 Dec 2002 14:29:13 -0800
+From: Greg Lindahl <lindahl@keyresearch.com>
+To: linux-mips <linux-mips@linux-mips.org>
+Subject: Re: PATCH
+Message-ID: <20021217142913.A1921@wumpus.internal.keyresearch.com>
+Mail-Followup-To: linux-mips <linux-mips@linux-mips.org>
+References: <1039841567.25391.13.camel@adsl.pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.GSO.3.96.1021217131352.7289A-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Tue, Dec 17, 2002 at 02:39:21PM +0100
-Return-Path: <jsun@orion.mvista.com>
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <1039841567.25391.13.camel@adsl.pacbell.net>; from ppopov@mvista.com on Fri, Dec 13, 2002 at 08:52:47PM -0800
+Return-Path: <lindahl@keyresearch.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 919
+X-archive-position: 920
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: lindahl@keyresearch.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Dec 17, 2002 at 02:39:21PM +0100, Maciej W. Rozycki wrote:
-> > No MIPS boards are using do_slow_gettimeoffset().  We really should get
-> > rid of it.
-> 
->  I know none does at the moment.  But are you sure there is no system that
-> would need it and might be supported one day?
->
+On Fri, Dec 13, 2002 at 08:52:47PM -0800, Pete Popov wrote:
 
-I serisouly don't think so.  Moving forward every CPU will have a CPU counter,
-which can be used for timeoffset purpose.  Even if it does not have one,
-it will surely have some onboard high resolution timer, which can be used
-to intra-jiffy offset purpose.
+> This patch was sent to the RageXL maintainer but I don't think he was
+> interested in it. Others might find it useful on embedded systems. It
+> initializes the RageXL card when there is no system bios to initialize
+> it from the video bios.  Tested on the Pb1500; makes a really good
+> workstation.
 
-Anyway, this function is only defined in old-time.c, which will go away 
-soon (hopefully). :-)
+Pete,
 
- 
->  Here is an example (untested) code that I would recommend.  It sends
-> explicit ACKs to the i8259As, which has the following advantages:
-> 
-<snip>
+Is there a website with info about graphics cards on non-x86
+architectures? Most cards require their own BIOS to be run at boot
+time. This issue ought to be of interest to lots of other communities
+than MIPS.
 
-Cool.  This code works for me.
-
-I studied it a little bit and I am convinced it is a better choice.
-It should work for MIPS in general.
-
-In my original code I did verify that the IRR bit is not cleared,
-which apparently will be a problem in cases.
-
-The only catch with your code is that we don't have iob() macro (which 
-apparently is very useful).  Any suggestions on this?  Otherwise  
-I will probably remove it.
-
-Jun
+-- greg

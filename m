@@ -1,82 +1,31 @@
-Received:  by oss.sgi.com id <S553852AbRAJVOE>;
-	Wed, 10 Jan 2001 13:14:04 -0800
-Received: from woody.ichilton.co.uk ([216.29.174.40]:62470 "HELO
-        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553724AbRAJVNn>;
-	Wed, 10 Jan 2001 13:13:43 -0800
-Received: by woody.ichilton.co.uk (Postfix, from userid 1000)
-	id 7E71C7CF5; Wed, 10 Jan 2001 21:13:41 +0000 (GMT)
-Date:   Wed, 10 Jan 2001 21:13:41 +0000
-From:   Ian Chilton <ian@ichilton.co.uk>
-To:     linux-mips@oss.sgi.com
-Subject: R4X00 Kernel
-Message-ID: <20010110211341.A26347@woody.ichilton.co.uk>
-Reply-To: Ian Chilton <ian@ichilton.co.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=unknown-8bit
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-User-Agent: Mutt/1.3.12i
+Received:  by oss.sgi.com id <S553791AbRAJWDG>;
+	Wed, 10 Jan 2001 14:03:06 -0800
+Received: from gateway-1237.mvista.com ([12.44.186.158]:54267 "EHLO
+        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553687AbRAJWCo>;
+	Wed, 10 Jan 2001 14:02:44 -0800
+Received: from mvista.com (IDENT:ppopov@zeus.mvista.com [10.0.0.112])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f0AM09C21716
+	for <linux-mips@oss.sgi.com>; Wed, 10 Jan 2001 14:00:09 -0800
+Message-ID: <3A5CDC3A.FE21F363@mvista.com>
+Date:   Wed, 10 Jan 2001 14:03:38 -0800
+From:   Pete Popov <ppopov@mvista.com>
+Organization: Monta Vista Software
+X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.17 i586)
+X-Accept-Language: bg, en
+MIME-Version: 1.0
+To:     "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: CPU Nevada
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hello,
 
-I just compiled a kernel with my new toolchain...
+I can't find any information on a CPU Nevada, which supposedly is a 56x0
+type. Is "R56x0 CONFIG_CPU_NEVADA" really meant to be "R52x0
+CONFIG_CPU_NEVADA"?  The product id code of 0x2800 matches the QED 52xx
+processors (at least the 5231) -- I can't find anything on a 56x0 CPU.
 
-I it using gcc 2.95.2 + binutils 2.10.1 and the kernel from today's cvs
-(10/01/01) which is just after Ralf checked in test12...
-
-
-08:58PM <quintela> Exception: <vector=Normal>
-08:58PM <quintela> Status register:
-0x10044803<CU0,CH,IM7,IM4,IPL=???,MODE=KERNEL,EXL,IE>
-08:58PM <quintela> Cause register: 0x3000c000<CE=3,IP8,IP7,EXC=INT>
-08:58PM <quintela> Exception PC: 0x8814c7b4
-08:58PM <quintela> Interrupt exception
-08:58PM <quintela> CPU Parity Error Interrupt
-08:58PM <quintela> Local I/O interrupt register 2: 0xc8
-<EISA,SLOT0,SLOT1>
-08:58PM <quintela> CPU parity error register: 0x302<B1,MEM_PAR>
-08:59PM <quintela> CPU parity error: address: 0xa572f88
-08:59PM <quintela>   Saved user regs in hex (&gpda 0xa8740e48, &_regs
-0xa8741048):
-08:59PM <quintela>   arg: 8a572fc0 0 2530044 881d8000
-08:59PM ð penguin42/#mipslinux has sore fingers
-08:59PM <Spock> Opening an Indy is easy
-08:59PM <quintela>   tmp: 4 8ad30040 1000 0 0 881b591f fffffff6
-ffffffff
-08:59PM <quintela>   sve: 8ad31 88800000 881bb280 8ad31 1 2530044 20 1
-08:59PM <quintela>   t8 88009dd5 t9 a at 10044800 v0 88800000 v1 0 k1
-bad11bad
-08:59PM <quintela>   gp 88008000 fp 1f sp 88009e70 ra 881921ec
-08:59PM <quintela>
-08:59PM <quintela> PANIC: Unexpected exception
-08:59PM <quintela>
-08:59PM <quintela> [Press reset or ENTER to restart.]
-
-
-This is on an I2..
-
-
-Any ideas?
-
-
-Thanks!
-
-
-Bye for Now,
-
-Ian
-
-
-                                \|||/ 
-                                (o o)
- /---------------------------ooO-(_)-Ooo---------------------------\
- |  Ian Chilton        (IRC Nick - GadgetMan)     ICQ #: 16007717  |
- |-----------------------------------------------------------------|
- |  E-Mail: ian@ichilton.co.uk     Web: http://www.ichilton.co.uk  |
- |-----------------------------------------------------------------|
- |         Budget: A method for going broke methodically.          |
- \-----------------------------------------------------------------/
+Pete

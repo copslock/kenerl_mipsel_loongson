@@ -1,55 +1,45 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fB48EqT16686
-	for linux-mips-outgoing; Tue, 4 Dec 2001 00:14:52 -0800
-Received: from topsns.toshiba-tops.co.jp (topsns.toshiba-tops.co.jp [202.230.225.5])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fB48Elo16683;
-	Tue, 4 Dec 2001 00:14:47 -0800
-Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for [216.32.174.27]) with SMTP; 4 Dec 2001 07:14:46 UT
-Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP
-	id A84D8B46D; Tue,  4 Dec 2001 16:14:44 +0900 (JST)
-Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
-	id QAA44223; Tue, 4 Dec 2001 16:14:44 +0900 (JST)
-Date: Tue, 04 Dec 2001 16:19:28 +0900 (JST)
-Message-Id: <20011204.161928.28780490.nemoto@toshiba-tops.co.jp>
-To: brad@ltc.com
-Cc: ralf@oss.sgi.com, linux-mips@oss.sgi.com
-Subject: Re: PATCH: spurious_count cleanup
-From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
-In-Reply-To: <20011201004526.A22248@dev1.ltc.com>
-References: <20011201004526.A22248@dev1.ltc.com>
-X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
-X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
-Organization: TOSHIBA Personal Computer System Corporation
-X-Mailer: Mew version 2.1 on Emacs 20.7 / Mule 4.1 (AOI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+	by oss.sgi.com (8.11.2/8.11.3) id fB48g3V17421
+	for linux-mips-outgoing; Tue, 4 Dec 2001 00:42:03 -0800
+Received: from hlubocky.del.cz (hlubocky.del.cz [212.27.221.67])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fB48fxo17417
+	for <linux-mips@oss.sgi.com>; Tue, 4 Dec 2001 00:41:59 -0800
+Received: from ladis (helo=localhost)
+	by hlubocky.del.cz with local-esmtp (Exim 3.12 #1 (Debian))
+	id 16BACz-0003Eo-00; Tue, 04 Dec 2001 08:41:41 +0100
+Date: Tue, 4 Dec 2001 08:41:40 +0100 (CET)
+From: Ladislav Michl <ladislav.michl@hlubocky.del.cz>
+To: Florian Lohoff <flo@rfc822.org>
+cc: Ian Chilton <ian@ichilton.co.uk>, linux-mips@oss.sgi.com
+Subject: Re: 2.4.16 success on Indy (was Re: 2.4.16 success on Decstation
+ 5000/150)
+In-Reply-To: <20011203192543.A10394@paradigm.rfc822.org>
+Message-ID: <Pine.LNX.4.21.0112040829360.12262-100000@hlubocky.del.cz>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=iso-8859-2
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from QUOTED-PRINTABLE to 8bit by oss.sgi.com id fB48g0o17419
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-BTW, ".set noreorder" in this code seems dangerous while the jump
-instruction is not followed by nop...
+On Mon, 3 Dec 2001, Florian Lohoff wrote:
 
+> Ok - the IRQ8 get enabled because i have CONFIG_RTC set and in
+> drivers/char/rtc.c around line 730 it requests:
+> 
+> if(request_irq(RTC_IRQ, rtc_interrupt, SA_INTERRUPT, "rtc", NULL))
 
-> --- arch/mips/kernel/entry.S	2001/11/27 01:26:46	1.32
-> +++ arch/mips/kernel/entry.S	2001/11/30 18:42:07
-> @@ -95,12 +95,12 @@
->  		 * Someone tried to fool us by sending an interrupt but we
->  		 * couldn't find a cause for it.
->  		 */
-> -		lui     t1,%hi(spurious_count)
-> +		lui     t1,%hi(irq_err_count)
->  		.set	reorder
-> -		lw      t0,%lo(spurious_count)(t1)
-> +		lw      t0,%lo(irq_err_count)(t1)
->  		.set	noreorder
->  		addiu   t0,1
-> -		sw      t0,%lo(spurious_count)(t1)
-> +		sw      t0,%lo(irq_err_count)(t1)
->  		j	ret_from_irq
->  		END(spurious_interrupt)
->  
----
-Atsushi Nemoto
+ehh, you compiled MC146818 driver for Indy... that's not good idea - IP22
+uses Dallas DS1286 RAMified Watcgdog Timekeeper. Enable CONFIG_SGI_DS1286
+if you want RTC driver.
+
+> Immediatly afterwards the massive ammount of IRQs. With 100Hz and 160
+> Chars across the screen - I would expect 1-2 lines/s on the screen.
+> Instead the screen fills up within tens of seconds which seems to me
+> like non acked IRQ.
+
+strange... you enabled FIFO full interrupt and it really arrived!(?) I'm
+really curious what that means. Unfortunately only few SGI engeneers know
+how Indy works and they don't tell it anyone :-(
+
+	laïa

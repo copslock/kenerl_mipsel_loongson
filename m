@@ -1,58 +1,41 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA03325; Tue, 24 Jun 1997 09:54:37 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA04067; Tue, 24 Jun 1997 10:04:21 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id JAA08336 for linux-list; Tue, 24 Jun 1997 09:54:20 -0700
-Received: from sgiger.munich.sgi.com (sgiger.munich.sgi.com [144.253.192.2]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA08289 for <linux@cthulhu.engr.sgi.com>; Tue, 24 Jun 1997 09:54:13 -0700
-Received: from knobi.munich.sgi.com by sgiger.munich.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1502/940406.SGI)
-	 id SAA07715; Tue, 24 Jun 1997 18:54:06 +0200
-Received: from knobi (localhost [127.0.0.1]) by knobi.munich.sgi.com (950413.SGI.8.6.12/951220.SGI.AUTOCF.knobi) via SMTP id SAA07013; Tue, 24 Jun 1997 18:54:05 +0200
-Message-ID: <33AFFBAD.773C@munich.sgi.com>
-Date: Tue, 24 Jun 1997 18:54:05 +0200
-From: Martin Knoblauch <knobi@munich.sgi.com>
-Organization: Silicon Graphics GmbH, Am-Hochacker 3, D-85630 Grasbrunn
-X-Mailer: Mozilla 3.01SC-SGI (X11; I; IRIX 6.3 IP22)
-MIME-Version: 1.0
-To: "David S. Miller" <davem@jenolan.rutgers.edu>
-CC: adevries@engsoc.carleton.ca, linux@cthulhu.engr.sgi.com
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id KAA11140 for linux-list; Tue, 24 Jun 1997 10:03:34 -0700
+Received: from fir.engr.sgi.com (fir.engr.sgi.com [150.166.49.183]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA11087; Tue, 24 Jun 1997 10:03:26 -0700
+Received: (from wje@localhost) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id KAA24742; Tue, 24 Jun 1997 10:03:24 -0700
+Date: Tue, 24 Jun 1997 10:03:24 -0700
+Message-Id: <199706241703.KAA24742@fir.engr.sgi.com>
+From: "William J. Earl" <wje@fir.engr.sgi.com>
+To: Alex deVries <adevries@engsoc.carleton.ca>
+Cc: linux@cthulhu.engr.sgi.com
 Subject: Re: Some simple hardware questions...
-References: <199706241644.MAA25791@jenolan.caipgeneral>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <Pine.LNX.3.95.970624123035.406E-100000@lager.engsoc.carleton.ca>
+References: <199706201842.UAA31057@kernel.panic.julia.de>
+	<Pine.LNX.3.95.970624123035.406E-100000@lager.engsoc.carleton.ca>
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-David S. Miller wrote:
-> 
->    Date: Tue, 24 Jun 1997 12:38:39 -0400 (EDT)
->    From: Alex deVries <adevries@engsoc.carleton.ca>
-> 
->    1. Do Indy's come equipped with floppy drives?  What are they?
->       Is it possible to boot from them?
-> 
-> Yes, they are SCSI floppy drives.
->
+Alex deVries writes:
+ > 
+ > I have some ultra simple hardware questions that I couldn't find answers
+ > to.  Excuse the noviceness of it all, I haven't touched SGI hardware in
+ > quite some time.
+ > 
+ > 1. Do Indy's come equipped with floppy drives?  What are they?  Is it
+ > possible to boot from them?
 
- As I said: optional. No boot guarantee.
- 
->    2. I know O2's have PCI busses with a custom controller.
->       Do Indy's have  this too? What is the name of this
->       controller? It would seem reasonably easy to slap a
->       PCI VGA card in there and port XFree86 to run on it.
-> 
-> No, but I believe some models were produced with EISA slots
-> on the motherboard.
-> 
+     An Indy does not come with a floppy drive standard, but it does support
+both a floppy and a floptical drive.  Both are SCSI drives, and you should 
+be able to boot from them, since the boot software does not distinguish
+among drive types.
 
-  That is the Indigo2/Challenge-M series. Our first attempt
-on open expansion busses.
+ > 2. I know O2's have PCI busses with a custom controller.  Do Indy's have
+ > this too? What is the name of this controller? It would seem reasonably
+ > easy to slap a PCI VGA card in there and port XFree86 to run on it.
 
-Martin
--- 
-+---------------------------------+-----------------------------------+
-|Martin Knoblauch                 | Silicon Graphics GmbH             |
-|Manager Technical Marketing      | Am Hochacker 3 - Technopark       |
-|Silicon Graphics Computer Systems| D-85630 Grasbrunn-Neukeferloh, FRG|
-|---------------------------------| Phone: (+int) 89 46108-179 or -0  |
-|http://reality.sgi.com/knobi     | Fax:   (+int) 89 46107-179        |
-+---------------------------------+-----------------------------------+
-|e-mail: <knobi@munich.sgi.com>   | VM: 6-333-8197 | M/S: IDE-3150    |
-+---------------------------------------------------------------------+
+     No, the Indy has the SGI-specific GIO bus.
+
+ > 3. Do Indy's ship with CDROMs?
+
+     An Indy does not come with a CDROM by default, but most SCSI CDROM
+drives should work.  (There is a supported SGI CDROM drive.)

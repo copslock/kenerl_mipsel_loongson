@@ -1,47 +1,28 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8ALrKK29517
-	for linux-mips-outgoing; Mon, 10 Sep 2001 14:53:20 -0700
-Received: from web14001.mail.yahoo.com (web14001.mail.yahoo.com [216.136.175.92])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8ALrBd29503
-	for <linux-mips@oss.sgi.com>; Mon, 10 Sep 2001 14:53:11 -0700
-Message-ID: <20010910215311.19039.qmail@web14001.mail.yahoo.com>
-Received: from [132.170.193.142] by web14001.mail.yahoo.com via HTTP; Mon, 10 Sep 2001 14:53:11 PDT
-Date: Mon, 10 Sep 2001 14:53:11 -0700 (PDT)
-From: Eugenio Diaz <getnito@yahoo.com>
-Subject: Re: O2 Linux
-To: linux-mips@oss.sgi.com
-Cc: linux-mips@oss.sgi.com
-In-Reply-To: <Pine.LNX.4.21.0109032232360.9003-100000@ns>
+	by oss.sgi.com (8.11.2/8.11.3) id f8B9IBD12263
+	for linux-mips-outgoing; Tue, 11 Sep 2001 02:18:11 -0700
+Received: from zh.t2-design.com ([210.14.211.66])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8B9I9d12260
+	for <linux-mips@oss.sgi.com>; Tue, 11 Sep 2001 02:18:10 -0700
+Received: from zh.t2-design.com ([210.14.211.118])
+	by zh.t2-design.com (8.9.3/8.9.3) with ESMTP id RAA27104
+	for <linux-mips@oss.sgi.com>; Tue, 11 Sep 2001 17:25:21 +0800
+Message-ID: <3B9DD766.846D94C4@zh.t2-design.com>
+Date: Tue, 11 Sep 2001 17:20:38 +0800
+From: william <william@zh.t2-design.com>
+Organization: t2-design
+X-Mailer: Mozilla 4.76 [en] (X11; U; Linux 2.4.2-2 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+To: linux-mips@oss.sgi.com
+Subject: Help about MIPS16
+Content-Type: text/plain; charset=gb2312
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
---- nick@snowman.net wrote:
-> Actually if I may add to this we are desperately looking for developers
-> and testers.  One of our main contributers (who the port is pretty much
-> due to) no longer has time to help, and I am very inexperienced at linux
-> kernel development.
-> 	Nick
-
-I have an O2 at home and I can help with testing (I am very good at picking up
-problems) since I don't have much time for development. I also have 10 Indys at
-work waiting for me to have some time to do something with them, possibly a
-Linux cluster to play with "PAPERS" (http://www.aggregate.org) ...
-
-I am new to the list (since about month ago), but due to lack of time I have
-not read it much and have a backlog of about 600 messages ;-)
-
-I keep mentioning that I don't have time, well, for Linux on the O2 I am wiling
-to steal 2 hours from my sleep to work on it ;-)
-
-=====
-________________________
-Eugenio Diaz, BSEE/BSCE   
-Linux Engineer
-getnito@yahoo.com
-
-__________________________________________________
-Do You Yahoo!?
-Get email alerts & NEW webcam video instant messaging with Yahoo! Messenger
-http://im.yahoo.com
+Hi,
+        Does anyone know about porting Linux on Mips16?How to and how
+it's going?
+Best regards
+william  11/9/2001

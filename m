@@ -1,61 +1,40 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id XAA66125 for <linux-archive@neteng.engr.sgi.com>; Thu, 2 Jul 1998 23:48:10 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id EAA29241 for <linux-archive@neteng.engr.sgi.com>; Fri, 3 Jul 1998 04:40:25 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id XAA45203
+	id EAA54441
 	for linux-list;
-	Thu, 2 Jul 1998 23:47:43 -0700 (PDT)
+	Fri, 3 Jul 1998 04:39:40 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id XAA42977
+	via ESMTP id EAA69455
 	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 2 Jul 1998 23:47:40 -0700 (PDT)
-	mail_from (adevries@engsoc.carleton.ca)
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) 
+	Fri, 3 Jul 1998 04:39:38 -0700 (PDT)
+	mail_from (alan@lxorguk.ukuu.org.uk)
+Received: from snowcrash.cymru.net (snowcrash.cymru.net [163.164.160.3]) 
 	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id XAA07364
-	for <linux@cthulhu.engr.sgi.com>; Thu, 2 Jul 1998 23:47:39 -0700 (PDT)
-	mail_from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id CAA26883
-	for <linux@cthulhu.engr.sgi.com>; Fri, 3 Jul 1998 02:47:38 -0400
-X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
-Date: Fri, 3 Jul 1998 02:47:38 -0400 (EDT)
-From: Alex deVries <adevries@engsoc.carleton.ca>
-To: SGI Linux <linux@cthulhu.engr.sgi.com>
-Subject: initrd...
-Message-ID: <Pine.LNX.3.95.980703024308.19406E-100000@lager.engsoc.carleton.ca>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	via ESMTP id EAA04479
+	for <linux@cthulhu.engr.sgi.com>; Fri, 3 Jul 1998 04:39:37 -0700 (PDT)
+	mail_from (alan@lxorguk.ukuu.org.uk)
+Received: from the-village.bc.nu (the-village.bc.nu [163.164.160.21]) by snowcrash.cymru.net (8.8.7/8.7.1) with SMTP id MAA13717; Fri, 3 Jul 1998 12:39:23 +0100
+Received: by the-village.bc.nu (Smail3.1.29.1 #2)
+	id m0ys4HJ-000aOnC; Fri, 3 Jul 98 12:45 BST
+Message-Id: <m0ys4HJ-000aOnC@the-village.bc.nu>
+From: alan@lxorguk.ukuu.org.uk (Alan Cox)
+Subject: Re: CREDITS...
+To: adevries@engsoc.carleton.ca (Alex deVries)
+Date: Fri, 3 Jul 1998 12:45:20 +0100 (BST)
+Cc: linux@cthulhu.engr.sgi.com
+In-Reply-To: <Pine.LNX.3.95.980703023709.19406B-100000@lager.engsoc.carleton.ca> from "Alex deVries" at Jul 3, 98 02:41:00 am
+Content-Type: text
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+> Alan Cox - various kernel issues
 
-Well, the good news is that I can now convince the kernel to load an
-initrd.  The bad news is that I ended up hardcoding the ramdisk into the
-kernel.  Bleah. 
-
-It wasa bit weird to have to override the error detection mechanism that
-prevents you from mounting a ramdisk that is within kernel space (so that
-you can't write on top of th ekernel).
-
-Anyway, this means that in theory we should be able to get the install to
-work:
-- on a machine with Irix
-- on a machine without Irix, but with another machine
-
-This also opens up the possibility of things like an FTP install. 
-
-In my mind that expands the number of installations considerably.
-
-As I said, this is a huge hack; this is only meant for the installer.
-
-- Alex
-
--- 
-Alex deVries, puffin on LinuxNet.
-http://www.engsoc.carleton.ca/~adevries/ .
+I think closer is "building RPM packages and answering questions" with
+maybe "Initial installer, but we will forgive him for that"

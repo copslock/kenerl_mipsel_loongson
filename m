@@ -1,76 +1,86 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4TKwdnC029062
-	for <linux-mips-outgoing@oss.sgi.com>; Wed, 29 May 2002 13:58:39 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4TL6pnC029218
+	for <linux-mips-outgoing@oss.sgi.com>; Wed, 29 May 2002 14:06:51 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4TKwdkp029061
-	for linux-mips-outgoing; Wed, 29 May 2002 13:58:39 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4TL6p6f029217
+	for linux-mips-outgoing; Wed, 29 May 2002 14:06:51 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4TKwTnC029041;
-	Wed, 29 May 2002 13:58:29 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id XAA28092;
-	Wed, 29 May 2002 23:00:21 +0200 (MET DST)
-Date: Wed, 29 May 2002 23:00:21 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4TL6inC029214
+	for <linux-mips@oss.sgi.com>; Wed, 29 May 2002 14:06:44 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.1) id g4TL7xP01136;
+	Wed, 29 May 2002 14:07:59 -0700
+Date: Wed, 29 May 2002 14:07:59 -0700
+From: Ralf Baechle <ralf@oss.sgi.com>
 To: Justin Carlson <justinca@cs.cmu.edu>
-cc: linux-mips@oss.sgi.com, ralf@oss.sgi.com
+Cc: linux-mips@oss.sgi.com
 Subject: Re: __flush_cache_all() miscellany
-In-Reply-To: <1022703646.7643.175.camel@ldt-sj3-022.sj.broadcom.com>
-Message-ID: <Pine.GSO.3.96.1020529222325.17584N-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Message-ID: <20020529140759.A888@dea.linux-mips.net>
+References: <1022691053.7644.16.camel@ldt-sj3-022.sj.broadcom.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <1022691053.7644.16.camel@ldt-sj3-022.sj.broadcom.com>; from justinca@cs.cmu.edu on Wed, May 29, 2002 at 09:50:52AM -0700
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On 29 May 2002, Justin Carlson wrote:
+On Wed, May 29, 2002 at 09:50:52AM -0700, Justin Carlson wrote:
 
-> Are the general semantics of the thing just broken, then?  We already
-> ignore the arguments to sys_cacheflush; would redefining the syscall to
-> mean "flush the caches in such a way that I won't get stale instructions
-> from this address range" actually break any current programs? 
-> (Evidently not, if several ports are already doing it that way)...
+> Looking at the cache routines, I've noticed that there's been a
+> relatively recent introduction of a __flush_cache_all() routine. 
+> Looking at oss.sgi.com's cvs logs, I see this comment:
+> 
+> >Introduce __flush_cache_all() which flushes the cache no matter if
+> >this operation is necessary from the mm point of view or not.
+> 
+> Some questions:
+> 
+> Which caches does this apply to?  It looks like the current
+> implementations assume L1 only.
 
- You mean removing the DCACHE operation?  The overlying _flush_cache() 
-library function is specified by the MIPS ABI supplement, so we shouldn't
-really redefine it.  Also a reasonable use for it may exist -- a userland
-program touching hardware directly (say X11) may want to use cached
-accesses for performance reasons (e.g. because cache can do prefetches on
-reads).
+The operation got introduced for the R10000 where we only need to flush
+the caches during initialization or the (unlikely on Origin) case of
 
- I guess the intent for the ICACHE operation is to assure ICACHE vs DCACHE
-coherency and the intent for the DCACHE operation is to assure DCACHE vs
-RAM coherency.  If the operations do not work in this way for a given
-backend, then there is a bug in it. 
+> Would anyone have a problem with renaming this function?  To me, at
+> least, it's rather confusing to have all of:
 
-> More to the point, does __flush_cache_all() serve any useful purpose at
-> all, or can it just be replaced with appropriate invocations of
-> flush_icache_range()?   Other than internal use for the individual port
-> cache routines, it's *only* used in the syscalls and the gdb stub. 
+No.  You may have noticed that I already introduced a bunch of local_*()
+functions for the TLB stuff for the same reason - the old functions had
+poor names.  The common Linux conventions to use extra underscores for a
+more basic version of a function (like get_user vs __get_user etc.) is
+frequently not expressive enough.
 
- It does serve a useful purpose.  Or at least it should.  This reminds me
-of adding flushing of WB caches at a system shutdown.  The function should
-remain at least for this purpose. 
+> flush_cache_all()
+> _flush_cache_all()
+> __flush_cache_all()
+> ___flush_cache_all()
 
- If there are places you are absolutely sure flush_icache_range() would
-suffice, feel free to replace the call.  There are not many
-__flush_cache_all() invocations.
+Odd number of underscores means it's a pointer ;)
 
-> I'd like to hear the rationale for __flush_cache_all() from the original
-> author; it appears to have shown up in CVS a little more than a year
-> ago, but I don't know who sent the patch to Ralf.  Ralf, do you
-> remember?
+> defined, especially when the latter two mean something significantly
+> different from the former two.  I'd prefer calling the new one
+> {_}force_flush_l1_caches() or somesuch.
 
- I converted a few flush_cache_all() invocations to __flush_cache_all() 
-where appropriate late last year, but the function is a bit older.  I
-think you might dig the linux-kernel list archives for a discussion on the
-semantics of flush_cache_all() (it's a nop for many MIPS CPUs) and
-friends.  The short description in Documentation/cachetlb.txt is a bit
-insufficient, I'm afraid. 
+Ok.
 
-  Maciej
+> In a related note, one of the few places this routine is called is the
+> kgdb stub routines (in arch/mips/kernel/gdb-stub.c):
+> 
+> void set_async_breakpoint(unsigned int epc)
+> {
+> 	int cpu = smp_processor_id();
+> 
+> 	async_bp[cpu].addr = epc;
+> 	async_bp[cpu].val  = *(unsigned *)epc;
+> 	*(unsigned *)epc = BP;
+> 	__flush_cache_all();
+> }
+> 
+> Shouldn't that be a flush_icache_range() call anyways?
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Yes.
+
+  Ralf

@@ -1,44 +1,40 @@
-Received:  by oss.sgi.com id <S42258AbQGSEeT>;
-	Tue, 18 Jul 2000 21:34:19 -0700
-Received: from rotor.chem.unr.edu ([134.197.32.176]:34570 "EHLO
-        rotor.chem.unr.edu") by oss.sgi.com with ESMTP id <S42235AbQGSEdy>;
-	Tue, 18 Jul 2000 21:33:54 -0700
-Received: (from wesolows@localhost)
-	by rotor.chem.unr.edu (8.9.3/8.9.3) id VAA27188;
-	Tue, 18 Jul 2000 21:33:16 -0700
-Date:   Tue, 18 Jul 2000 21:33:15 -0700
-From:   Keith M Wesolowski <wesolows@chem.unr.edu>
+Received:  by oss.sgi.com id <S42266AbQGSOHC>;
+	Wed, 19 Jul 2000 07:07:02 -0700
+Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:53935 "EHLO
+        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S42257AbQGSOGc>;
+	Wed, 19 Jul 2000 07:06:32 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id QAA23335;
+	Wed, 19 Jul 2000 16:04:58 +0200 (MET DST)
+Date:   Wed, 19 Jul 2000 16:04:58 +0200 (MET DST)
+From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
 To:     Ralf Baechle <ralf@oss.sgi.com>
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: Analysis of Samba configure oops
-Message-ID: <20000718213310.A27016@chem.unr.edu>
-References: <20000716182428.A972@foobazco.org> <20000717100534.D6424@chem.unr.edu> <20000718051828.A12440@bacchus.dhis.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2i
-In-Reply-To: <20000718051828.A12440@bacchus.dhis.org>; from ralf@oss.sgi.com on Tue, Jul 18, 2000 at 05:18:28AM +0200
-X-Complaints-To: postmaster@chem.unr.edu
+cc:     "J. Scott Kasten" <jsk@tetracon-eng.net>,
+        Keith M Wesolowski <wesolows@foobazco.org>,
+        linux-mips@oss.sgi.com
+Subject: Re: Simple Linux/MIPS 0.2b
+In-Reply-To: <20000714005155.C8972@bacchus.dhis.org>
+Message-ID: <Pine.GSO.3.96.1000719160110.21239D-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, Jul 18, 2000 at 05:18:28AM +0200, Ralf Baechle wrote:
+On Fri, 14 Jul 2000, Ralf Baechle wrote:
 
-> Indeed, it does.  I've commited a patch for this bug to cvs and would like
-> to hear reports.
+> We have various known problems with the various binutils version around.
+> We're working on getting a current snapshot of binutils working
+> properly but right now we still have various problems, therefore
+> egcs 1.0.3a + binutils 2.8.1 is still the recommended version.
 
-I am pleased to report that without this fix I observe the
-oft-reported problem when using two disks simultaneously on IP22:
-
-  SCSI disk error : host 0 channel 0 id 2 lun 0 return code = 27010000
-   I/O error: dev 08:11, sector 1885720
-
-but with this fix I no longer see this. How many more bugs will this
-fix I wonder...
+ I have binutils 2.10 and gcc 2.95.2 which appear to be stable, i.e. I
+haven't observed any problems recently.  I may publish patches if anyone
+is interested.  I may see if I can arrange to publish RPM packages as
+well.
 
 -- 
-Keith M Wesolowski			wesolows@chem.unr.edu
-University of Nevada			http://www.chem.unr.edu
-Chemistry Department Systems and Network Administrator
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

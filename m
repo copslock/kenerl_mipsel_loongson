@@ -1,28 +1,34 @@
-Received:  by oss.sgi.com id <S42231AbQHGV5v>;
-	Mon, 7 Aug 2000 14:57:51 -0700
-Received: from smtpe.casema.net ([195.96.96.172]:42000 "HELO smtpe.casema.net")
-	by oss.sgi.com with SMTP id <S42190AbQHGV5g>;
-	Mon, 7 Aug 2000 14:57:36 -0700
-Received: (qmail 32638 invoked from network); 7 Aug 2000 21:57:04 -0000
-Received: from unknown (HELO penguin.nl) (195.96.116.1)
-  by smtpe.casema.net with SMTP; 7 Aug 2000 21:57:04 -0000
-Message-ID: <398F31FD.8C50931A@penguin.nl>
-Date:   Tue, 08 Aug 2000 00:02:38 +0200
-From:   Richard <richardh@penguin.nl>
-X-Mailer: Mozilla 4.6 [en] (X11; I; Linux 2.2.15 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
+Received:  by oss.sgi.com id <S42271AbQHHU4h>;
+	Tue, 8 Aug 2000 13:56:37 -0700
+Received: from nilpferd.fachschaften.tu-muenchen.de ([129.187.176.79]:28153
+        "HELO nilpferd.fachschaften.tu-muenchen.de") by oss.sgi.com with SMTP
+	id <S42218AbQHHU4H>; Tue, 8 Aug 2000 13:56:07 -0700
+Received: (qmail 1747 invoked from network); 8 Aug 2000 20:55:35 -0000
+Received: from neptun.fachschaften.tu-muenchen.de (129.187.176.23)
+  by nilpferd.fachschaften.tu-muenchen.de with SMTP; 8 Aug 2000 20:55:35 -0000
+Date:   Tue, 8 Aug 2000 22:55:34 +0200 (CEST)
+From:   Adrian Bunk <bunk@fs.tum.de>
+X-Sender: bunk@neptun.fachschaften.tu-muenchen.de
 To:     linux-mips@oss.sgi.com
-Subject: mailinglist 
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Subject: Problem with recent mips kernel from CVS
+Message-ID: <Pine.NEB.4.21.0008082252310.10793-100000@neptun.fachschaften.tu-muenchen.de>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-hi,
+Hi,
 
-how do i get of this mailing list? i've tried about everything.
+I wasn't able to configure the kernel 2.4.0-test6-pre7 from CVS without
+creating the (empty) file linux/drivers/mtd/Config.in . After I created
+this file, configuring worked.
 
-Richard
+cu,
+Adrian
+
+-- 
+A "No" uttered from deepest conviction is better and greater than a
+"Yes" merely uttered to please, or what is worse, to avoid trouble.
+                -- Mahatma Ghandi

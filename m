@@ -1,45 +1,37 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id KAA69143 for <linux-archive@neteng.engr.sgi.com>; Sat, 10 Jan 1998 10:04:58 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id JAA67010 for <linux-archive@neteng.engr.sgi.com>; Sat, 10 Jan 1998 09:59:02 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id KAA04596 for linux-list; Sat, 10 Jan 1998 10:04:37 -0800
-Received: from daddyo.engr.sgi.com (daddyo.engr.sgi.com [150.166.49.110]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA04592; Sat, 10 Jan 1998 10:04:36 -0800
-Received: (from marker@localhost) by daddyo.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) id KAA62540; Sat, 10 Jan 1998 10:04:33 -0800 (PST)
-From: marker@daddyo.engr.sgi.com (Charles Marker)
-Message-Id: <199801101804.KAA62540@daddyo.engr.sgi.com>
-Subject: Re: SGI/Linux on a Challenge S series
-To: bellis@cerf.net (William Ellis)
-Date: Sat, 10 Jan 1998 10:04:32 -0800 (PST)
-Cc: linux@cthulhu.engr.sgi.com, marker@daddyo.engr.sgi.com (Charles Marker)
-In-Reply-To: <Pine.SOL.3.94.980110093122.2895A-100000@maelstrom.cerf.net> from "William Ellis" at Jan 10, 98 09:38:20 am
-X-Mailer: ELM [version 2.4 PL23]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 8bit
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id JAA03554 for linux-list; Sat, 10 Jan 1998 09:54:42 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA03548 for <linux@cthulhu.engr.sgi.com>; Sat, 10 Jan 1998 09:54:40 -0800
+Received: from snowcrash.cymru.net (snowcrash.cymru.net [163.164.160.3]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id JAA23172
+	for <linux@cthulhu.engr.sgi.com>; Sat, 10 Jan 1998 09:54:39 -0800
+	env-from (alan@lxorguk.ukuu.org.uk)
+Received: from lightning.swansea.linux.org.uk (the-village.bc.nu [163.164.160.21]) by snowcrash.cymru.net (8.8.7/8.7.1) with SMTP id RAA04013; Sat, 10 Jan 1998 17:54:19 GMT
+Received: by lightning.swansea.linux.org.uk (Smail3.1.29.1 #2)
+	id m0xr5TY-0005FsC; Sat, 10 Jan 98 18:17 GMT
+Message-Id: <m0xr5TY-0005FsC@lightning.swansea.linux.org.uk>
+From: alan@lxorguk.ukuu.org.uk (Alan Cox)
+Subject: Re: RedHat 5.0 RPMs for SGI...
+To: adevries@engsoc.carleton.ca (Alex deVries)
+Date: Sat, 10 Jan 1998 18:17:40 +0000 (GMT)
+Cc: linux@cthulhu.engr.sgi.com
+In-Reply-To: <Pine.LNX.3.95.980109143918.55A-100000@lager.engsoc.carleton.ca> from "Alex deVries" at Jan 9, 98 02:54:03 pm
+Content-Type: text
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> 
-> 
-> 
-> I just got hold of a spare Challenge S Series(R5000) I was
-> going to attempt putting SGI/Linux on.  I know the porting is
-> basicaly geared for the Indy's but I was going to muck with it
-> a bunch. Then I just saw this post and was wondering if there 
-> was any quick, good heads-up for these machines.  
-> Thanks, Bill 
+> I'm in the middle of churning out the RH 5.0 RPMs, and I'll upload them
+> into a seperate directory on linus than the others. The only difference
+> with these and many of the RPM's already on linus is that they're built
+> against the latest glibc, and they're from the RH 5.0 install, not 4.9.1.
 
-A Challenge S is just an Indy with the graphics, ISDN and some of the
-digital media removed.  As long as the kernel is probing for those
-devices and handling their non existance correctly, this should work
-reasonably well.
+Ok. I'll work with you on that from Monday. Ive got the fixes for several
+RH5 SRPMS to build with mips.  Glibc 2.0.6 should fix the argv[0] bug
+and the -lbsd problems too so much more should build
 
-					Charles
+> Could someone in Europe kindly create a PGP RPM?  I have one here, but I
+> cannot distribute it because of ridiculous laws.
 
-> >> I tried to compile the latest sources for an Indigo R4k .. with minimal
-> [*snip*]
-> > Did you modify the load address of the kernel?  Indy kernels are by
-> > default linked for address 0x88002000 because the Indy has a 128mb
-> > hole in it's address space there.  I assumes (wje???) that your box
-> > has it's memory mapped from 0x80000000 upwards, so this would only
-> > work if you actually have that more than 128mb ...
-> >   Ralf
-> 
+No problem. I can build pgp etc again. I'll build ssh and anything else
+looking fun off replay and upload the stuff back
+
+Alan

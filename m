@@ -1,49 +1,42 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id RAA06752; Tue, 8 Apr 1997 17:01:44 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id RAA07343; Tue, 8 Apr 1997 17:02:54 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id RAA24404 for linux-list; Tue, 8 Apr 1997 17:01:03 -0700
-Received: from ares.esd.sgi.com (fddi-ares.engr.sgi.com [192.26.80.60]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id RAA24390 for <linux@cthulhu.engr.sgi.com>; Tue, 8 Apr 1997 17:01:01 -0700
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id RAA24880 for linux-list; Tue, 8 Apr 1997 17:02:19 -0700
+Received: from ares.esd.sgi.com (fddi-ares.engr.sgi.com [192.26.80.60]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id RAA24870 for <linux@engr.sgi.com>; Tue, 8 Apr 1997 17:02:18 -0700
 Received: from fir.esd.sgi.com by ares.esd.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1042/950213.SGI.AUTOCF)
-	 id RAA02282; Tue, 8 Apr 1997 17:00:51 -0700
-Received: (from wje@localhost) by fir.esd.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id RAA14784; Tue, 8 Apr 1997 17:00:43 -0700
-Date: Tue, 8 Apr 1997 17:00:43 -0700
-Message-Id: <199704090000.RAA14784@fir.esd.sgi.com>
+	for <@ares.esd.sgi.com:linux@engr.sgi.com> id RAA02548; Tue, 8 Apr 1997 17:02:17 -0700
+Received: (from wje@localhost) by fir.esd.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id RAA14801; Tue, 8 Apr 1997 17:02:14 -0700
+Date: Tue, 8 Apr 1997 17:02:14 -0700
+Message-Id: <199704090002.RAA14801@fir.esd.sgi.com>
 From: "William J. Earl" <wje@fir.esd.sgi.com>
-To: "Alistair Lambie" <alambie@wellington.sgi.com>
-Cc: Mike Shaver <shaver@neon.ingenia.ca>, linux@cthulhu.engr.sgi.com,
-        kneedham@ottawa.sgi.com
+To: linux@cthulhu.engr.sgi.com
 Subject: Re: It booooooooooots!
-In-Reply-To: <9704091148.ZM9065@windy.wellington.sgi.com>
+In-Reply-To: <9704091140.ZM8508@windy.wellington.sgi.com>
 References: <199704082223.SAA03675@neon.ingenia.ca>
-	<shaver@neon.ingenia.ca>
-	<9704091148.ZM9065@windy.wellington.sgi.com>
+	<199704082337.QAA14690@fir.esd.sgi.com>
+	<wje@fir.esd.sgi.com>
+	<9704091140.ZM8508@windy.wellington.sgi.com>
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
 Alistair Lambie writes:
- > On Apr 9, 10:27am, Mike Shaver wrote:
- > > Subject: It booooooooooots!
- > > Sending BOOTP and RARP requests............
+ > On Apr 9, 11:38am, William J. Earl wrote:
+ > > Subject: Re: It booooooooooots!
+ > > Mike Shaver writes:
+...
+ > >  > Checking for 'wait' instruction...  unavailable.
+ > > ...
  > >
- > > Doesn't seem to want to find the server again for the NFS root thing,
- > > but that's probably a config problem.
- > >
+ > >      This appears to be a bug.  The R5000 does have the wait instruction.
  > 
- > I used to have that...you probably haven't got a rarp server set up, so it
- > can't find its address.  One of the things David was going to add was that
- > ability to read it out of NVRAM...but that wasn't high on the priority list!
- >  For now, the only way is to have a rarp server.  The other way is to have the
- > root file system on hard disk....but to do that you need to boot linux and copy
- > it across.
- > Kind of the chicken and the egg situation!
+ > I don't think David ever worked on an R5000.  The only platforms were R4600 &
+ > R4400...soooo, there may be some issues to be resolved.
+...
 
-     Can you pass the information to the kernel via the command line arguments
-or the environment variables?  (argc, argv, and environ are passed in $a0, $a1,
-and $a2 by the PROM or sash to the kernel on entry, just as they are passed
-to a main program in a regular process; you can look for the "netaddr" environment
-variable to find your IP address:
-
-	netaddr=192.111.24.24
-
-Set netaddr at the prom this way:
-
-	setenv -p netaddr 192.111.24.24
+     On an Indy, the R5000 and R4600 are basically equivalent, except
+for the MIPS IV extensions and larger caches (32 KB versus 16 KB) on the R5000.
+The R5000 does have built-in secondary cache control, which is used on the O2,
+but it is not used on the Indy.  On the Indy, the R5000 uses the same off-chip
+secondary cache controller as the R4600.  The wait instruction operates the
+same on both processors.  The wait instruction is not really essential in any
+case, since its main purpose is to save power, and the R5000 and R4600 don't
+use much power anyway.

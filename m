@@ -1,125 +1,48 @@
-Received:  by oss.sgi.com id <S42248AbQGIXOX>;
-	Sun, 9 Jul 2000 16:14:23 -0700
-Received: from iglou2.iglou.com ([192.107.41.8]:15019 "EHLO iglou.com")
-	by oss.sgi.com with ESMTP id <S42185AbQGIXOC>;
-	Sun, 9 Jul 2000 16:14:02 -0700
-Received: from [204.255.238.187] (helo=tool.net) 
-	by iglou.com with esmtp (8.9.3/8.9.3)
-	id 13BQGv-0005e8-00; Sun, 09 Jul 2000 19:14:01 -0400
-Message-ID: <396978F7.A309E715@tool.net>
-Date:   Mon, 10 Jul 2000 03:19:19 -0400
-From:   Jason Mesker <jasonm@tool.net>
-Reply-To: jasonm@tool.net
-X-Mailer: Mozilla 4.5 [en] (X11; I; Linux 2.2.15 i586)
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     Ralf Baechle <ralf@uni-koblenz.de>,
-        "debian-mips@lists.debian.org" <debian-mips@lists.debian.org>,
-        "linux-mips@fnet.fr" <linux-mips@fnet.fr>,
-        "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>,
-        "linux-mips@vger.rutgers.edu" <linux-mips@vger.rutgers.edu>
-Subject: Re: R5000 oops
-References: <396971C3.6EB63B13@tool.net> <20000710005215.A24764@bacchus.dhis.org>
+Received:  by oss.sgi.com id <S42251AbQGIXtX>;
+	Sun, 9 Jul 2000 16:49:23 -0700
+Received: from noose.gt.owl.de ([62.52.19.4]:3848 "HELO noose.gt.owl.de")
+	by oss.sgi.com with SMTP id <S42185AbQGIXsz>;
+	Sun, 9 Jul 2000 16:48:55 -0700
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 12D0A959; Mon, 10 Jul 2000 01:49:02 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 900C08F73; Mon, 10 Jul 2000 01:18:46 +0200 (CEST)
+Date:   Mon, 10 Jul 2000 01:18:46 +0200
+From:   Florian Lohoff <flo@rfc822.org>
+To:     linux-mips@oss.sgi.com
+Subject: current cvs binutils and mipsel-linux kernel
+Message-ID: <20000710011846.A1275@paradigm.rfc822.org>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+User-Agent: Mutt/1.0.1i
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-I am running kernel version: 2.4.0 test 3 pre 2.  I am useing wesolows vmlinux-0704b kernel.
+Hi,
+it seems there is a problem in the binutils from current cvs ...
 
-I think I have found the problem though.  I was running the system without swap and with 64Megs of RAM.  I added around 20 megs of swap space and did the
-configure again and it worked fine.  I am actually compiling now and will let the status be known if it completes or not.  As of right now everything looks
-like it is working fine with the swap enabled.
+mipsel-linux-gcc -D__KERNEL__ -I/home/flo/mips/dec/src/linux-2.4.0-test3/include -Wall -Wstrict-prototypes -O2 -fomit-frame-pointer  -G 0 -mno-abicalls -fno-pic -mcpu=r4600 -mips2 -pipe -fno-strict-aliasing -c softfp.S -o softfp.o
+softfp.S: Assembler messages:
+softfp.S:225: Error: illegal operands `la'
+softfp.S:225: Error: unrecognized opcode `cvt'
+softfp.S:225: Error: Rest of line ignored. First ignored character is `.'.
+make[1]: *** [softfp.o] Error 1
+make[1]: Leaving directory `/home/flo/mips/dec/src/linux-2.4.0-test3/arch/mips/kernel'
+make: *** [_dir_arch/mips/kernel] Error 2
 
+(flo@ping)~/mips/dec/src/linux-2.4.0-test3# mipsel-linux-as --version
+GNU assembler 2.10.90
+Copyright 2000 Free Software Foundation, Inc.
+This program is free software; you may redistribute it under the terms of
+the GNU General Public License.  This program has absolutely no warranty.
+This assembler was configured for a target of `mipsel-linux'.
 
+This is cvs checkout as of 20000708
 
-
-Ralf Baechle wrote:
-
-> What kernel version have you been running?
->
->   Ralf
->
-> On Mon, Jul 10, 2000 at 02:48:35AM -0400, Jason Mesker wrote:
->
-> > I am trying to compile vim and during the configure script exec I get an
-> > oops.
-> >
-> >
-> >
->
-> > ksymoops 2.3.4 on sparc64 2.2.16.  Options used
-> >      -v ./vmlinux-0704b (specified)
-> >      -K (specified)
-> >      -L (specified)
-> >      -O (specified)
-> >      -m ./System.map-0704b.foo (specified)
-> >      -t elf32-bigmips -a mips:4600
-> >
-> > checking for opendir... Unable to handle kernel paging request at virtual address 0040dca0, epc == 88043190, ra == 88065748
-> > Warning (Oops_read): Code line not seen, dumping what data is available
-> >
-> > Oops in fault.c:do_page_fault, line 158:
-> > init: 00000000 1000fc00 00000000 8fdc0010
-> >  : 8ac22f80 8ac22f80 0040dca0 8aaf9ee0
-> >  : 886867c4 00000000 ffffffe0 88686720
-> > 2: 00000003 84000000 00000000 00000021
-> > 6: 8853e868 8853e860 1000fc01 00000007
-> > 0: 8aaf9ee0 8aaf9ee8 00000000 00000006
-> > 4: 00000000 2abd4640
-> > 8: 8aaf8000 8aaf9e18 00000180 88065748
-> >
-> > >>RA;  88065748 <d_alloc+30/174>
-> >
-> > epc: 88043190
-> > Status: 1000fc02
-> > Cause: 00000004
-> > Process gcc (pid: 1266, stackpage=8aaf8000)
-> > Stack: 8aaf9ee0 8805a804 00000000 00000000 fffffff4 8be0dd80 8be0dd80 8aaf9ee8
-> >        88065748 00000006 8805a7d8 8ac2d004 8aaf9ef8 8805a804 fffffff4 8be0dd80
-> >        8be067c0 8aaf9ee8 8805b950 8be0dd80 8ac2d000 00000000 00000180 00000503
-> >        8be06818 ffffffeb 8be0dd80 00000503 8805be3c 8805bd74 88195488 00000008
-> >        00000000 88195484 00000001 88195144 00000502 00000502 00000180 8ac2d000
-> >        00413f00 ...
-> > Call Trace: [<8805a804>] [<88065748>] [<8805a7d8>] [<8805a804>] [<8805b950>] [<8805be3c>] [<8805bd74>] [<8804a4d4>] [<8804a94c>] [<88010f68>] [<88010f68>]
-> > Code: 8ca20004  54400025  8e240008 <acc50000> 8e220008  00c28023  40086000  3409ff00  01094024
-> >
-> > >>PC;  0000000088043190 <kmem_cache_alloc+ac/374>   <=====
-> > Trace; 000000008805a804 <cached_lookup+44/7c>
-> > Trace; 0000000088065748 <d_alloc+30/174>
-> > Trace; 000000008805a7d8 <cached_lookup+18/7c>
-> > Trace; 000000008805a804 <cached_lookup+44/7c>
-> > Trace; 000000008805b950 <lookup_hash+90/ec>
-> > Trace; 000000008805be3c <open_namei+198/92c>
-> > Trace; 000000008805bd74 <open_namei+d0/92c>
-> > Trace; 000000008804a4d4 <filp_open+38/5c>
-> > Trace; 000000008804a94c <sys_open+54/188>
-> > Trace; 0000000088010f68 <stack_done+1c/38>
-> > Trace; 0000000088010f68 <stack_done+1c/38>
-> > Code;  0000000088043184 <kmem_cache_alloc+a0/374>
-> > 0000000000000000 <_PC>:
-> > Code;  0000000088043184 <kmem_cache_alloc+a0/374>
-> >    0:   8ca20004  lw      $v0,4($a1)
-> > Code;  0000000088043188 <kmem_cache_alloc+a4/374>
-> >    4:   54400025  0x54400025
-> > Code;  000000008804318c <kmem_cache_alloc+a8/374>
-> >    8:   8e240008  lw      $a0,8($s1)
-> > Code;  0000000088043190 <kmem_cache_alloc+ac/374>   <=====
-> >    c:   acc50000  sw      $a1,0($a2)   <=====
-> > Code;  0000000088043194 <kmem_cache_alloc+b0/374>
-> >   10:   8e220008  lw      $v0,8($s1)
-> > Code;  0000000088043198 <kmem_cache_alloc+b4/374>
-> >   14:   00c28023  subu    $s0,$a2,$v0
-> > Code;  000000008804319c <kmem_cache_alloc+b8/374>
-> >   18:   40086000  mfc0    $t0,$12
-> > Code;  00000000880431a0 <kmem_cache_alloc+bc/374>
-> >   1c:   3409ff00  li      $t1,0xff00
-> > Code;  00000000880431a4 <kmem_cache_alloc+c0/374>
-> >   20:   01094024  and     $t0,$t0,$t1
-> >
-> >
-> > 1 warning issued.  Results may not be reliable.
->
->   Ralf
+Flo
+-- 
+Florian Lohoff		flo@rfc822.org		      	+49-5201-669912
+     "If you're not having fun right now, you're wasting your time."

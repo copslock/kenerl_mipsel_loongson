@@ -1,48 +1,64 @@
-Received:  by oss.sgi.com id <S553884AbQLQAgt>;
-	Sat, 16 Dec 2000 16:36:49 -0800
-Received: from pop3.web.de ([212.227.116.81]:7439 "HELO smtp.web.de")
-	by oss.sgi.com with SMTP id <S553880AbQLQAgc>;
-	Sat, 16 Dec 2000 16:36:32 -0800
-Received: from web.de by smtp.web.de with smtp
-	(freemail 4.2.1.0 #3) id m147RoM-005D7uC; Sun, 17 Dec 2000 01:36 +0100
-Message-ID: <3A3C0ACE.8A13EA97@web.de>
-Date:   Sun, 17 Dec 2000 01:37:34 +0100
-From:   Olaf Zaplinski <olaf.zaplinski@web.de>
-X-Mailer: Mozilla 4.76 [en] (Win98; U)
-X-Accept-Language: de,en
-MIME-Version: 1.0
+Received:  by oss.sgi.com id <S553886AbQLQAl7>;
+	Sat, 16 Dec 2000 16:41:59 -0800
+Received: from air.lug-owl.de ([62.52.24.190]:44039 "HELO air.lug-owl.de")
+	by oss.sgi.com with SMTP id <S553883AbQLQAlm>;
+	Sat, 16 Dec 2000 16:41:42 -0800
+Received: by air.lug-owl.de (Postfix, from userid 1000)
+	id 400478655; Sun, 17 Dec 2000 01:41:37 +0100 (CET)
+Date:   Sun, 17 Dec 2000 01:41:36 +0100
+From:   Jan-Benedict Glaw <jbglaw@lug-owl.de>
 To:     linux-mips@oss.sgi.com
 Subject: Re: FAQ/
-References: <3A36AFFE.51C9F2B@web.de> <20001213135723.B3060@paradigm.rfc822.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Message-ID: <20001217014136.A29250@lug-owl.de>
+Reply-To: jbglaw@lug-owl.de
+Mail-Followup-To: linux-mips@oss.sgi.com
+References: <3A36AFFE.51C9F2B@web.de> <20001213135723.B3060@paradigm.rfc822.org> <3A3C0ACE.8A13EA97@web.de>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="SUOF0GtieIMvvwua"
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3A3C0ACE.8A13EA97@web.de>; from olaf.zaplinski@web.de on Sun, Dec 17, 2000 at 01:37:34AM +0100
+X-Operating-System: Linux air 2.4.0-test8-pre1 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Where do I find it? I saw the debian-mipsel dist on ftp.rfc822.org, but as
-there is no doc at all, this dist is unusuable... perhaps I am lucky with
-that, I strongly dislike the Debian dist.
 
-Olaf
+--SUOF0GtieIMvvwua
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Florian Lohoff wrote:
-> 
-> On Wed, Dec 13, 2000 at 12:08:46AM +0100, Olaf Zaplinski wrote:
-> > Hi all,
-> >
-> > can someone please point me to a Howto/FAQ? I'd like to put Linux on my SNI
-> > RM200 machine (R4600, 64MB). Can I use the Hardhat distribution, or does it
-> > run on SGIs only?
-> 
-> The RM200 was supported only in little endian mode with the Windows NT
-> firmware - Nobody knows (chance is little) if the tree will still work.
-> 
-> You will need the decstation root not the hardhat tarball as that
-> is strictly big endian.
-> 
-> Flo
-> --
-> Florian Lohoff                  flo@rfc822.org             +49-5201-669912
->      Why is it called "common sense" when nobody seems to have any?
+On Sun, Dec 17, 2000 at 01:37:34AM +0100, Olaf Zaplinski wrote:
+> Where do I find it? I saw the debian-mipsel dist on ftp.rfc822.org, but as
+> there is no doc at all, this dist is unusuable... perhaps I am lucky with
+> that, I strongly dislike the Debian dist.
+
+Try searching for 'declinux'.
+
+MfG, JBG
+
+--=20
+Fehler eingestehen, Gr=F6=DFe zeigen: Nehmt die Rechtschreibreform zur=FCck=
+!!!
+/* Jan-Benedict Glaw <jbglaw@lug-owl.de> -- +49-177-5601720 */
+keyID=3D0x8399E1BB fingerprint=3D250D 3BCF 7127 0D8C A444 A961 1DBD 5E75 83=
+99 E1BB
+     "insmod vi.o and there we go..." (Alexander Viro on linux-kernel)
+
+--SUOF0GtieIMvvwua
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.2 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iEYEARECAAYFAjo8C8AACgkQHb1edYOZ4bt8UwCdFbv7j2IKKu+U+wsXbkN0ECDu
+3u4AmwWrC9xIZ7mCk5SwWingXUmJOxwb
+=wAkS
+-----END PGP SIGNATURE-----
+
+--SUOF0GtieIMvvwua--

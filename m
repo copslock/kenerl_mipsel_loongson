@@ -1,76 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 May 2004 09:56:49 +0100 (BST)
-Received: from gw-eur4.philips.com ([IPv6:::ffff:161.85.125.10]:37863 "EHLO
-	gw-eur4.philips.com") by linux-mips.org with ESMTP
-	id <S8225559AbUENI4s>; Fri, 14 May 2004 09:56:48 +0100
-Received: from smtpscan-eur4.philips.com (smtpscan-eur4.mail.philips.com [130.144.57.167])
-	by gw-eur4.philips.com (Postfix) with ESMTP id 5E23649FA7
-	for <linux-mips@linux-mips.org>; Fri, 14 May 2004 08:56:39 +0000 (UTC)
-Received: from smtpscan-eur4.philips.com (localhost [127.0.0.1])
-	by localhost.philips.com (Postfix) with ESMTP id 32307CC
-	for <linux-mips@linux-mips.org>; Fri, 14 May 2004 08:56:39 +0000 (GMT)
-Received: from smtprelay-nl2.philips.com (smtprelay-eur2.philips.com [130.139.36.35])
-	by smtpscan-eur4.philips.com (Postfix) with ESMTP id 165BFB7
-	for <linux-mips@linux-mips.org>; Fri, 14 May 2004 08:56:39 +0000 (GMT)
-Received: from ehvrmh02.diamond.philips.com (ehvrmh02-srv.diamond.philips.com [130.139.27.125]) 
-	by smtprelay-nl2.philips.com (8.9.3p3/8.8.5-1.2.2m-19990317) with ESMTP id KAA04833
-	for <linux-mips@linux-mips.org>; Fri, 14 May 2004 10:56:38 +0200 (MEST)
-From: shiraz.ta@philips.com
-Subject: Porting of Linux on to a MIPS16 Processor. Help required 
-To: linux-mips@linux-mips.org
-X-Mailer: Lotus Notes Release 5.0.9a  January 7, 2002
-Message-ID: <OF9C1094DD.6309A695-ON45256E94.002F4A91-65256E94.00311FA8@philips.com>
-Date: Fri, 14 May 2004 14:24:50 +0530
-X-MIMETrack: Serialize by Router on ehvrmh02/H/SERVER/PHILIPS(Release 6.0.2CF1HF634 | May
- 5, 2004) at 14/05/2004 10:54:55
-MIME-Version: 1.0
-Content-type: text/plain; charset=US-ASCII
-Return-Path: <shiraz.ta@philips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 May 2004 13:12:05 +0100 (BST)
+Received: from p508B62CE.dip.t-dialin.net ([IPv6:::ffff:80.139.98.206]:51744
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225987AbUENMME>; Fri, 14 May 2004 13:12:04 +0100
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i4ECBxxT008541;
+	Fri, 14 May 2004 14:11:59 +0200
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i4ECBxpj008540;
+	Fri, 14 May 2004 14:11:59 +0200
+Date: Fri, 14 May 2004 14:11:58 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: shiraz.ta@philips.com
+Cc: linux-mips@linux-mips.org
+Subject: Re: Porting of Linux on to a MIPS16 Processor. Help required
+Message-ID: <20040514121158.GA5466@linux-mips.org>
+References: <OF9C1094DD.6309A695-ON45256E94.002F4A91-65256E94.00311FA8@philips.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <OF9C1094DD.6309A695-ON45256E94.002F4A91-65256E94.00311FA8@philips.com>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5005
+X-archive-position: 5006
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: shiraz.ta@philips.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Fri, May 14, 2004 at 02:24:50PM +0530, shiraz.ta@philips.com wrote:
 
+> I am new to linux.  I am  in need of porting linux to a MIPS16 based
+> processor.   I need some information regarding the porting. It will be a
+> great help if somebody could answer me.
+>
+> 1) Is there any port available already for this? If available how do i get
+> it along with the development environment.
+> 
+> 2) If the port  is not available  then how much complex (How much effort ?)
+> is it to port it to MIPS 16.
+> 
+> 3) Where can  I get the tool chain on windows and linux kernel source code
+> which can be used .
 
+You forgot to mention the exact processor type but anyway, MIPS16 is
+really just an extension.  As such Linux can run on a system without
+actually knowing anything about MIPS16.  Which is nice, if you intend to
+actually exploit MIPS16 you don't have to have that working right away but
+can introduce support later, as optimization for size.
 
+Windows?  Good luck.  I've seen success reports with Cygwin but if you want
+to keep things sane, use a Linux box for development.
 
-Hi,
+> 6) I would like to know how much would be  the code size for the kernel
+> alone with out any shell and with  the console driver. (Source code and
+> Binary)
 
-I am new to linux.  I am  in need of porting linux to a MIPS16 based
-processor.   I need some information regarding the porting. It will be a
-great help if somebody could answer me.
+To my knowledge nobody has used MIPS16 for Linux so far.  There seems
+little point in that because MIPS16 primarily targets very small systems -
+a class of systems that Linux doesn't tend to run on well.
 
-1) Is there any port available already for this? If available how do i get
-it along with the development environment.
-
-2) If the port  is not available  then how much complex (How much effort ?)
-is it to port it to MIPS 16.
-
-3) Where can  I get the tool chain on windows and linux kernel source code
-which can be used .
-
-4)curently the board uses EJTAG for download and execute. We have a
-uart(serial port) on the board which we use as console connected to the
-hyperterminal on a windows pc.. There is no shell supported. We can compile
-and run  applications on the target.
-
-5) We have the existing BSP  and  custom drivers ported over a OS
-abstraction layer. Once the kernel is ported we have to get the custom
-drivers ported.
-
-6) I would like to know how much would be  the code size for the kernel
-alone with out any shell and with  the console driver. (Source code and
-Binary)
-
-
-Thanks in advance.
-
-
-Warm Regards
-Shiraz
+  Ralf

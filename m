@@ -1,34 +1,29 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f5QJKsh06122
-	for linux-mips-outgoing; Tue, 26 Jun 2001 12:20:54 -0700
-Received: from www.transvirtual.com (root@www.transvirtual.com [206.14.214.140])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5QJKrV06119
-	for <linux-mips@oss.sgi.com>; Tue, 26 Jun 2001 12:20:53 -0700
-Received: from www.transvirtual.com (jsimmons@localhost [127.0.0.1])
-        by localhost (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f5QJKfe9003855;
-	Tue, 26 Jun 2001 12:20:41 -0700
-Received: from localhost (jsimmons@localhost)
-        by www.transvirtual.com (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f5QJKfFF003851;
-	Tue, 26 Jun 2001 12:20:41 -0700
-X-Authentication-Warning: www.transvirtual.com: jsimmons owned process doing -bs
-Date: Tue, 26 Jun 2001 12:20:40 -0700 (PDT)
-From: James Simmons <jsimmons@transvirtual.com>
-To: Pete Popov <ppopov@pacbell.net>
-cc: Scott A McConnell <samcconn@cotw.com>, linux-mips@oss.sgi.com
-Subject: Re: mmap problems ? in 2.4.5
-In-Reply-To: <3B38BB9F.9050203@pacbell.net>
-Message-ID: <Pine.LNX.4.10.10106261218260.30394-100000@transvirtual.com>
+	by oss.sgi.com (8.11.2/8.11.3) id f5QK7IT11929
+	for linux-mips-outgoing; Tue, 26 Jun 2001 13:07:18 -0700
+Received: from cvsftp.cotw.com (cvsftp.cotw.com [208.242.241.39])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5QK7CV11911
+	for <linux-mips@oss.sgi.com>; Tue, 26 Jun 2001 13:07:13 -0700
+Received: from cotw.com (ptecdev3.inter.net [192.168.10.5])
+	by cvsftp.cotw.com (8.9.3/8.9.3) with ESMTP id PAA26100;
+	Tue, 26 Jun 2001 15:05:57 -0500
+Message-ID: <3B390832.815EC58D@cotw.com>
+Date: Tue, 26 Jun 2001 15:09:54 -0700
+From: Scott A McConnell <samcconn@cotw.com>
+X-Mailer: Mozilla 4.76 [en] (X11; U; Linux 2.4.5 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To: Pete Popov <ppopov@pacbell.net>
+CC: linux-mips@oss.sgi.com
+Subject: Re: mmap problems ? in 2.4.5
+References: <3B38CBFF.1BE0FD8C@cotw.com> <3B38BB9F.9050203@pacbell.net>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+I can cat data to /dev/fb and the console works just fine on the fb.
 
-> I believe the frame buffer driver interface changed in 2.4.5. It 
-> supposed to be much cleaner now and the fb driver has to do less than 
-> before.  You'll probably need to port your driver to 2.4.5.  If you have 
-> any problems, I think the fb maintainers can help you out.
+This looks like a mmap problem. Anyone else have problems?
 
-Thats the wrapper I wrote so drivers could be written with the new api
-while using 2.4.X. It hasn't gone in. Plus when/if it does it should have
-a effect on any core code in fbcon. 
+Scott

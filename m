@@ -1,77 +1,46 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5KAP7nC003612
-	for <linux-mips-outgoing@oss.sgi.com>; Thu, 20 Jun 2002 03:25:07 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5KCQ6nC010964
+	for <linux-mips-outgoing@oss.sgi.com>; Thu, 20 Jun 2002 05:26:06 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5KAP7ca003611
-	for linux-mips-outgoing; Thu, 20 Jun 2002 03:25:07 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5KCQ6LJ010963
+	for linux-mips-outgoing; Thu, 20 Jun 2002 05:26:06 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from dea.linux-mips.net (c-180-196-7.ka.dial.de.ignite.net [62.180.196.7])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5KAOwnC003581
-	for <linux-mips@oss.sgi.com>; Thu, 20 Jun 2002 03:25:00 -0700
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id g5KAPQp05042;
-	Thu, 20 Jun 2002 12:25:26 +0200
-Date: Thu, 20 Jun 2002 12:25:26 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Paul Jackson <pj@engr.sgi.com>
-Cc: William Jhun <wjhun@ayrnetworks.com>, linux-mips@oss.sgi.com
-Subject: Re: [PATCH] include/asm-mips/pci.h
-Message-ID: <20020620122525.B4835@dea.linux-mips.net>
-References: <20020619112207.B6057@ayrnetworks.com> <Pine.LNX.4.44.0206191326560.18638-100000@turbo-linux.engr.sgi.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <Pine.LNX.4.44.0206191326560.18638-100000@turbo-linux.engr.sgi.com>; from pj@engr.sgi.com on Wed, Jun 19, 2002 at 01:38:52PM -0700
-X-Accept-Language: de,en,fr
+Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5KCQ1nC010960
+	for <linux-mips@oss.sgi.com>; Thu, 20 Jun 2002 05:26:02 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA20187;
+	Thu, 20 Jun 2002 14:29:27 +0200 (MET DST)
+Date: Thu, 20 Jun 2002 14:29:26 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: "Smith, Todd" <Todd.Smith@camc.org>
+cc: "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
+Subject: RE: Linux and the Sony Playstation 2
+In-Reply-To: <490E0430C3C72046ACF7F18B7CD76A2A568B84@KES.camcare.com>
+Message-ID: <Pine.GSO.3.96.1020620141032.18164A-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, Jun 19, 2002 at 01:38:52PM -0700, Paul Jackson wrote:
+On Wed, 19 Jun 2002, Smith, Todd wrote:
 
-> Yes - leave them out (speaking out of context here - hopefully still
-> useful).
-> 
-> Remove the warnings instead.
-> 
-> I've gotten in the habit of having the following form to
-> optional code logic:
-> 
-> In some header file foobar.h:
-> 
->     #if CONFIG_FOOBAR
->     #define init_foobar(x) do {		\
-> 	    int f = 2 * (x);		\
-> 	    foobar_initialize(f);	\
-> 	| while (0)
->     #else
->     #define init_foobar(x) do {} while (0)
->     #endif
-> 
-> I don't see any warnings from this, and it provides just
-> the right sort of syntax wrapper on the macro init_foobar(),
-> forcing it to be a single statement, regardless of context,
-> while providing a nested block context for any local variables.
+> This list is been pretty quiet lately so I don't really know what is
+> happening on the Linux/MIPS front.  I am hoping that work is still slowly
+> proceeding on the DECstation that I have, but I don't really know.  I agree
+> with you that PS2 offer enormous power to the developer and as a cheap
+> source of computing power to other countries.
 
-Note your variant doesn't deal with side effects of the argument expression
-x (basically none of the equivalent constructions in the kernels do!) which
-is why our code in question does something like this:
+ I'm doing some development on the DECstation -- changes get applied to
+the CVS as they are ready (e.g. I fixed a few bugs in declance yesterday). 
+The last large change was the IRQ handling rewrite (small parts of which
+are still pending awaiting approval of generic bits they depend on).  I'm
+planning another big change soon.
 
-     #if CONFIG_FOOBAR
-     #define init_foobar(x) do {               \
-           int f = 2 * (x);            \
-           foobar_initialize(f);       \
-       | while (0)
-     #else
-     #define init_foobar(x) do { (x); } while (0)
-     #endif
+ If you have any problems, just report them here. 
 
-This can potencially expand into something like:
-
-     do { 42; } while(0)
-
-which will result in warnings.  The solution is:
-
-     #define init_foobar(x) do { (void) (x); } while (0)
-
-  Ralf
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

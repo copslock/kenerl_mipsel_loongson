@@ -1,46 +1,40 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBB14v524928
-	for linux-mips-outgoing; Mon, 10 Dec 2001 17:04:57 -0800
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBB14po24924;
-	Mon, 10 Dec 2001 17:04:51 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id BAA10583;
-	Tue, 11 Dec 2001 01:04:33 +0100 (MET)
-Date: Tue, 11 Dec 2001 01:04:32 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+	by oss.sgi.com (8.11.2/8.11.3) id fBB1KYF25882
+	for linux-mips-outgoing; Mon, 10 Dec 2001 17:20:34 -0800
+Received: from ocean.lucon.org ([12.234.19.19])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBB1KUo25879;
+	Mon, 10 Dec 2001 17:20:30 -0800
+Received: by ocean.lucon.org (Postfix, from userid 1000)
+	id 381D5125C4; Mon, 10 Dec 2001 16:20:29 -0800 (PST)
+Date: Mon, 10 Dec 2001 16:20:28 -0800
+From: "H . J . Lu" <hjl@lucon.org>
 To: Ben Elliston <bje@redhat.com>
-cc: Ralf Baechle <ralf@oss.sgi.com>, "H . J . Lu" <hjl@lucon.org>,
+Cc: Daniel Jacobowitz <dan@debian.org>, Ralf Baechle <ralf@oss.sgi.com>,
    linux-mips@oss.sgi.com
 Subject: Re: PATCH: Handle Linux/mips (Re: Why is byteorder removed from /proc/cpuinfo?)
-In-Reply-To: <Pine.LNX.4.33.0112110939100.17417-100000@hypatia.brisbane.redhat.com>
-Message-ID: <Pine.GSO.3.96.1011211004658.5181B-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Message-ID: <20011210162028.A10675@lucon.org>
+References: <20011210092104.A29953@nevyn.them.org> <Pine.LNX.4.33.0112110933570.17417-100000@hypatia.brisbane.redhat.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.LNX.4.33.0112110933570.17417-100000@hypatia.brisbane.redhat.com>; from bje@redhat.com on Tue, Dec 11, 2001 at 09:34:52AM +1000
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, 11 Dec 2001, Ben Elliston wrote:
-
-> >  Hmm, I don't think config.guess is ever used for cross-compilation as
-> > the script's purpose is to guess the host and you need to specify one
-> > explicitly for a cross-compilation to happen.  Anyway it's saner not
-> > to use build system properties to guess host system ones.
+On Tue, Dec 11, 2001 at 09:34:52AM +1000, Ben Elliston wrote:
+> > > Of course, this needs some refinement.  ;-) Perhaps we need to run
+> > > through $(CC_FOR_BUILD) -E or somesuch; cpp is no good, as it won't
+> > > know all of the magic '*MIPS*' #defines.
 > 
-> You're close, but not quite correct.  In a cross-compilation environment,
-> the job of config.guess is to determine the type of the build system,
+> > HJ's patch didn't compile anything; it ran code through
+> > $(CC_FOR_BUILD) -E :)
+> 
+> I must admit, I missed that.  But I definitely noticed that it created 
+> temporary files, which are more trouble than they're worth.  The number of 
+> people running ./configure as root is frightening.
 
- It actually depends on the autoconf version -- historically it was
-backwards.  Still, even if config.guess is used to determine the build
-system, the script need not care about the host, so there's no problem
-with the cross-compilation (apart from purity).
+I don't want to assume $(CC_FOR_BUILD) can take - as input.
 
-> which may be different to the host and will certainly be different to the
-> target.
 
- Not necessarily, although unlikely, indeed.
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+H.J.

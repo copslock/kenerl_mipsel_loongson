@@ -1,52 +1,748 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Dec 2003 13:35:19 +0000 (GMT)
-Received: from p508B6A83.dip.t-dialin.net ([IPv6:::ffff:80.139.106.131]:2470
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225498AbTLTNfT>; Sat, 20 Dec 2003 13:35:19 +0000
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id hBKDZHoK006953
-	for <linux-mips@linux-mips.org>; Sat, 20 Dec 2003 14:35:18 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id hBKDZHCq006952
-	for linux-mips@linux-mips.org; Sat, 20 Dec 2003 14:35:17 +0100
-Date: Sat, 20 Dec 2003 14:35:16 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: linux-mips@linux-mips.org
-Subject: FYI, misc minors
-Message-ID: <20031220133516.GB5392@linux-mips.org>
-References: <20031220131855Z8225494-16706+1521@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Dec 2003 13:47:06 +0000 (GMT)
+Received: from mo03.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:18635 "EHLO
+	mo03.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225498AbTLTNrF>;
+	Sat, 20 Dec 2003 13:47:05 +0000
+Received: from mdo00.iij4u.or.jp (mdo00.iij4u.or.jp [210.130.0.170])
+	by mo03.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id WAA17217;
+	Sat, 20 Dec 2003 22:47:00 +0900 (JST)
+Received: 4UMDO00 id hBKDl0o13483; Sat, 20 Dec 2003 22:47:00 +0900 (JST)
+Received: 4UMRO00 id hBKDkxB10932; Sat, 20 Dec 2003 22:46:59 +0900 (JST)
+	from stratos.frog (64.43.138.210.xn.2iij.net [210.138.43.64]) (authenticated)
+Date: Sat, 20 Dec 2003 22:46:56 +0900
+From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: yuasa@hh.iij4u.or.jp, linux-mips@linux-mips.org
+Subject: Re: [PATCH][2.4] New key map for IBM WorkPad z50
+Message-Id: <20031220224656.69debdc5.yuasa@hh.iij4u.or.jp>
+In-Reply-To: <20031220123354.GA5392@linux-mips.org>
+References: <20031220142315.38264f62.yuasa@hh.iij4u.or.jp>
+	<20031220123354.GA5392@linux-mips.org>
+X-Mailer: Sylpheed version 0.9.8 (GTK+ 1.2.10; i686-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20031220131855Z8225494-16706+1521@linux-mips.org>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3808
+X-archive-position: 3809
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Dec 20, 2003 at 01:18:51PM +0000, ralf@linux-mips.org wrote:
+Hello Ralf,
 
-> Modified files:
-> 	drivers/char   : Tag: linux_2_4 au1000_gpio.c ite_gpio.c lcd.c 
-> 	include/linux  : Tag: linux_2_4 miscdevice.h 
+On Sat, 20 Dec 2003 13:33:55 +0100
+Ralf Baechle <ralf@linux-mips.org> wrote:
+
+> Yoichia-san,
 > 
-> Log message:
-> 	Time for one of those surprises you all love me for sooo much :-)
-> 	
-> 	Switch au1000_gpio.c, ite_gpio.c and lcd.c to dynamic minors.
+> Please keep keymaps in drivers/char.
+> 
+> Speaking more generally, device drivers should not be kept below arch/
 
-I've removed all MIPS private allocations of misc minor devices.  I'm not
-happy with this change but without this there's no change to ever build
-a driver for the affected systems from a stock kernel.org tree.  This
-change means the minor device numbers of the three affected device
-drivers will change - something that will be very easy to deal with by
-users and distributions.
+Ok, I changed it about directory.
+Please apply.
 
-  Ralf
+Yoichi
+
+diff -urN -X dontdiff linux-orig/arch/mips/config-shared.in linux/arch/mips/config-shared.in
+--- linux-orig/arch/mips/config-shared.in	Sat Dec 20 01:47:02 2003
++++ linux/arch/mips/config-shared.in	Sat Dec 20 21:54:40 2003
+@@ -429,7 +429,6 @@
+    define_bool CONFIG_NEW_TIME_C y
+    define_bool CONFIG_NONCOHERENT_IO y
+    define_bool CONFIG_ISA y
+-   define_bool CONFIG_DUMMY_KEYB y
+    define_bool CONFIG_SCSI n
+ fi
+ if [ "$CONFIG_LASAT" = "y" ]; then
+diff -urN -X dontdiff linux-orig/drivers/char/Makefile linux/drivers/char/Makefile
+--- linux-orig/drivers/char/Makefile	Sat Dec 20 01:47:07 2003
++++ linux/drivers/char/Makefile	Sat Dec 20 22:17:40 2003
+@@ -48,7 +48,9 @@
+     KEYBD    =
+   endif
+   ifeq ($(CONFIG_VR41XX_KIU),y)
+-    KEYMAP   =
++    ifeq ($(CONFIG_IBM_WORKPAD),y)
++      KEYMAP = ibm_workpad_keymap.o
++    endif
+     KEYBD    = vr41xx_keyb.o
+   endif
+ endif
+@@ -349,4 +351,7 @@
+ 	set -e ; loadkeys --mktable $< | sed -e 's/^static *//' > $@
+ 
+ qtronixmap.c: qtronixmap.map
++	set -e ; loadkeys --mktable $< | sed -e 's/^static *//' > $@
++
++ibm_workpad_keymap.c: ibm_workpad_keymap.map
+ 	set -e ; loadkeys --mktable $< | sed -e 's/^static *//' > $@
+diff -urN -X dontdiff linux-orig/drivers/char/ibm_workpad_keymap.c linux/drivers/char/ibm_workpad_keymap.c
+--- linux-orig/drivers/char/ibm_workpad_keymap.c	Thu Jan  1 09:00:00 1970
++++ linux/drivers/char/ibm_workpad_keymap.c	Sat Dec 20 22:25:41 2003
+@@ -0,0 +1,313 @@
++
++/* Do not edit this file! It was automatically generated by   */
++/*    loadkeys --mktable defkeymap.map > defkeymap.c          */
++
++#include <linux/types.h>
++#include <linux/keyboard.h>
++#include <linux/kd.h>
++
++u_short plain_map[NR_KEYS] = {
++	0xf100,	0xf102,	0xf104,	0xf106,	0xf108,	0xf200,	0xf200,	0xf10a,
++	0xf101,	0xf103,	0xf105,	0xf107,	0xf109,	0xf200,	0xf200,	0xf10b,
++	0xf027,	0xf05b,	0xf02d,	0xf030,	0xfb70,	0xf03b,	0xf603,	0xf02f,
++	0xf200,	0xf200,	0xf200,	0xf039,	0xfb6f,	0xfb6c,	0xf02e,	0xf200,
++	0xf601,	0xf05d,	0xf03d,	0xf038,	0xfb69,	0xfb6b,	0xf02c,	0xf200,
++	0xfb68,	0xfb79,	0xf036,	0xf037,	0xfb75,	0xfb6a,	0xfb6d,	0xfb6e,
++	0xf200,	0xf07f,	0xf208,	0xf116,	0xf200,	0xf05c,	0xf201,	0xf020,
++	0xfb67,	0xfb74,	0xf035,	0xf034,	0xfb72,	0xfb66,	0xfb76,	0xfb62,
++	0xf200,	0xf200,	0xf200,	0xf033,	0xfb65,	0xfb64,	0xfb63,	0xf602,
++	0xf200,	0xf200,	0xf200,	0xf032,	0xfb77,	0xfb73,	0xfb78,	0xf600,
++	0xf01b,	0xf009,	0xf060,	0xf031,	0xfb71,	0xfb61,	0xfb7a,	0xf200,
++	0xf210,	0xf700,	0xf702,	0xf702,	0xf703,	0xf701,	0xf705,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++};
++
++u_short shift_map[NR_KEYS] = {
++	0xf10a,	0xf10c,	0xf10e,	0xf110,	0xf112,	0xf200,	0xf200,	0xf10a,
++	0xf10b,	0xf10d,	0xf10f,	0xf111,	0xf113,	0xf200,	0xf200,	0xf10b,
++	0xf022,	0xf07b,	0xf05f,	0xf029,	0xfb50,	0xf03a,	0xf20b,	0xf03f,
++	0xf200,	0xf200,	0xf200,	0xf028,	0xfb4f,	0xfb4c,	0xf03e,	0xf200,
++	0xf210,	0xf07d,	0xf02b,	0xf02a,	0xfb49,	0xfb4b,	0xf03c,	0xf200,
++	0xfb48,	0xfb59,	0xf05e,	0xf026,	0xfb55,	0xfb4a,	0xfb4d,	0xfb4e,
++	0xf200,	0xf07f,	0xf213,	0xf116,	0xf200,	0xf07c,	0xf201,	0xf020,
++	0xfb47,	0xfb54,	0xf025,	0xf024,	0xfb52,	0xfb46,	0xfb56,	0xfb42,
++	0xf200,	0xf200,	0xf200,	0xf023,	0xfb45,	0xfb44,	0xfb43,	0xf211,
++	0xf200,	0xf200,	0xf200,	0xf040,	0xfb57,	0xfb53,	0xfb58,	0xf20a,
++	0xf01b,	0xf009,	0xf07e,	0xf021,	0xfb51,	0xfb41,	0xfb5a,	0xf200,
++	0xf210,	0xf700,	0xf702,	0xf702,	0xf703,	0xf701,	0xf207,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++};
++
++u_short altgr_map[NR_KEYS] = {
++	0xf50c,	0xf50e,	0xf510,	0xf512,	0xf514,	0xf200,	0xf200,	0xf516,
++	0xf50d,	0xf50f,	0xf511,	0xf513,	0xf515,	0xf200,	0xf200,	0xf517,
++	0xf200,	0xf200,	0xf05c,	0xf07d,	0xfb70,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf05d,	0xfb6f,	0xfb6c,	0xf200,	0xf200,
++	0xf200,	0xf07e,	0xf200,	0xf05b,	0xfb69,	0xfb6b,	0xf200,	0xf200,
++	0xfb68,	0xfb79,	0xf200,	0xf07b,	0xfb75,	0xfb6a,	0xfb6d,	0xfb6e,
++	0xf200,	0xf200,	0xf208,	0xf116,	0xf200,	0xf200,	0xf201,	0xf200,
++	0xfb67,	0xfb74,	0xf200,	0xf024,	0xfb72,	0xf919,	0xfb76,	0xf915,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf918,	0xf917,	0xf916,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf040,	0xfb77,	0xfb73,	0xfb78,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xfb71,	0xf914,	0xfb7a,	0xf200,
++	0xf210,	0xf700,	0xf702,	0xf702,	0xf703,	0xf701,	0xf705,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++};
++
++u_short ctrl_map[NR_KEYS] = {
++	0xf100,	0xf102,	0xf104,	0xf106,	0xf108,	0xf200,	0xf200,	0xf10a,
++	0xf101,	0xf103,	0xf105,	0xf107,	0xf109,	0xf200,	0xf200,	0xf10b,
++	0xf007,	0xf01b,	0xf01f,	0xf200,	0xf010,	0xf200,	0xf200,	0xf07f,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf00f,	0xf00c,	0xf20e,	0xf200,
++	0xf200,	0xf01d,	0xf200,	0xf07f,	0xf009,	0xf00b,	0xf200,	0xf200,
++	0xf008,	0xf019,	0xf01e,	0xf01f,	0xf015,	0xf00a,	0xf00d,	0xf00e,
++	0xf200,	0xf008,	0xf208,	0xf116,	0xf200,	0xf01c,	0xf201,	0xf000,
++	0xf007,	0xf014,	0xf01d,	0xf01c,	0xf012,	0xf006,	0xf016,	0xf002,
++	0xf200,	0xf200,	0xf200,	0xf01b,	0xf005,	0xf004,	0xf003,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf000,	0xf017,	0xf013,	0xf018,	0xf200,
++	0xf200,	0xf200,	0xf000,	0xf200,	0xf011,	0xf001,	0xf01a,	0xf200,
++	0xf210,	0xf700,	0xf702,	0xf702,	0xf703,	0xf701,	0xf705,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++};
++
++u_short shift_ctrl_map[NR_KEYS] = {
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf01f,	0xf200,	0xf010,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf00f,	0xf00c,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf009,	0xf00b,	0xf200,	0xf200,
++	0xf008,	0xf019,	0xf200,	0xf200,	0xf015,	0xf00a,	0xf00d,	0xf00e,
++	0xf200,	0xf200,	0xf208,	0xf116,	0xf200,	0xf200,	0xf201,	0xf200,
++	0xf007,	0xf014,	0xf200,	0xf200,	0xf012,	0xf006,	0xf016,	0xf002,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf005,	0xf004,	0xf003,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf000,	0xf017,	0xf013,	0xf018,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf011,	0xf001,	0xf01a,	0xf200,
++	0xf210,	0xf700,	0xf702,	0xf702,	0xf703,	0xf701,	0xf705,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++};
++
++u_short alt_map[NR_KEYS] = {
++	0xf500,	0xf502,	0xf504,	0xf506,	0xf508,	0xf200,	0xf200,	0xf50a,
++	0xf501,	0xf503,	0xf505,	0xf507,	0xf509,	0xf200,	0xf200,	0xf50b,
++	0xf827,	0xf85b,	0xf82d,	0xf830,	0xf870,	0xf83b,	0xf118,	0xf82f,
++	0xf200,	0xf200,	0xf200,	0xf839,	0xf86f,	0xf86c,	0xf82e,	0xf200,
++	0xf114,	0xf85d,	0xf83d,	0xf838,	0xf869,	0xf86b,	0xf82c,	0xf200,
++	0xf868,	0xf879,	0xf836,	0xf837,	0xf875,	0xf86a,	0xf86d,	0xf86e,
++	0xf200,	0xf87f,	0xf208,	0xf116,	0xf200,	0xf85c,	0xf80d,	0xf820,
++	0xf867,	0xf874,	0xf835,	0xf834,	0xf872,	0xf866,	0xf876,	0xf862,
++	0xf200,	0xf200,	0xf200,	0xf833,	0xf865,	0xf864,	0xf863,	0xf117,
++	0xf200,	0xf200,	0xf200,	0xf832,	0xf877,	0xf873,	0xf878,	0xf119,
++	0xf81b,	0xf809,	0xf860,	0xf831,	0xf871,	0xf861,	0xf87a,	0xf200,
++	0xf210,	0xf700,	0xf702,	0xf702,	0xf703,	0xf701,	0xf705,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++};
++
++u_short ctrl_alt_map[NR_KEYS] = {
++	0xf500,	0xf502,	0xf504,	0xf506,	0xf508,	0xf200,	0xf200,	0xf50a,
++	0xf501,	0xf503,	0xf505,	0xf507,	0xf509,	0xf200,	0xf200,	0xf50b,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf810,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf80f,	0xf80c,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf809,	0xf80b,	0xf200,	0xf200,
++	0xf808,	0xf819,	0xf200,	0xf200,	0xf815,	0xf80a,	0xf80d,	0xf80e,
++	0xf200,	0xf200,	0xf208,	0xf20c,	0xf200,	0xf200,	0xf201,	0xf200,
++	0xf807,	0xf814,	0xf200,	0xf200,	0xf812,	0xf806,	0xf816,	0xf802,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf805,	0xf804,	0xf803,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf817,	0xf813,	0xf818,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf811,	0xf801,	0xf81a,	0xf200,
++	0xf210,	0xf700,	0xf702,	0xf702,	0xf703,	0xf701,	0xf705,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++};
++
++u_short shr_map[NR_KEYS] = {
++	0xf10a,	0xf10c,	0xf10e,	0xf110,	0xf112,	0xf200,	0xf200,	0xf10a,
++	0xf10b,	0xf10d,	0xf10f,	0xf111,	0xf113,	0xf200,	0xf200,	0xf10b,
++	0xf022,	0xf07b,	0xf05f,	0xf029,	0xfb50,	0xf03a,	0xf20b,	0xf03f,
++	0xf200,	0xf200,	0xf200,	0xf028,	0xfb4f,	0xfb4c,	0xf03e,	0xf200,
++	0xf210,	0xf07d,	0xf02b,	0xf02a,	0xfb49,	0xfb4b,	0xf03c,	0xf200,
++	0xfb48,	0xfb59,	0xf05e,	0xf026,	0xfb55,	0xfb4a,	0xfb4d,	0xfb4e,
++	0xf200,	0xf07f,	0xf213,	0xf116,	0xf200,	0xf07c,	0xf201,	0xf020,
++	0xfb47,	0xfb54,	0xf025,	0xf024,	0xfb52,	0xfb46,	0xfb56,	0xfb42,
++	0xf200,	0xf200,	0xf200,	0xf023,	0xfb45,	0xfb44,	0xfb43,	0xf211,
++	0xf200,	0xf200,	0xf200,	0xf040,	0xfb57,	0xfb53,	0xfb58,	0xf20a,
++	0xf01b,	0xf009,	0xf07e,	0xf021,	0xfb51,	0xfb41,	0xfb5a,	0xf200,
++	0xf210,	0xf700,	0xf702,	0xf702,	0xf703,	0xf701,	0xf705,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++};
++
++u_short shift_shr_map[NR_KEYS] = {
++	0xf10a,	0xf10c,	0xf10e,	0xf110,	0xf112,	0xf200,	0xf200,	0xf10a,
++	0xf10b,	0xf10d,	0xf10f,	0xf111,	0xf113,	0xf200,	0xf200,	0xf10b,
++	0xf022,	0xf07b,	0xf05f,	0xf029,	0xfb70,	0xf03a,	0xf20b,	0xf03f,
++	0xf200,	0xf200,	0xf200,	0xf028,	0xfb6f,	0xfb6c,	0xf03e,	0xf200,
++	0xf210,	0xf07d,	0xf02b,	0xf02a,	0xfb69,	0xfb6b,	0xf03c,	0xf200,
++	0xfb68,	0xfb79,	0xf05e,	0xf026,	0xfb75,	0xfb6a,	0xfb6d,	0xfb6e,
++	0xf200,	0xf07f,	0xf213,	0xf116,	0xf200,	0xf07c,	0xf201,	0xf020,
++	0xfb67,	0xfb74,	0xf025,	0xf024,	0xfb72,	0xfb66,	0xfb76,	0xfb62,
++	0xf200,	0xf200,	0xf200,	0xf023,	0xfb65,	0xfb64,	0xfb63,	0xf211,
++	0xf200,	0xf200,	0xf200,	0xf040,	0xfb77,	0xfb73,	0xfb78,	0xf20a,
++	0xf01b,	0xf009,	0xf07e,	0xf021,	0xfb71,	0xfb61,	0xfb7a,	0xf200,
++	0xf210,	0xf700,	0xf702,	0xf702,	0xf703,	0xf701,	0xf705,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++};
++
++u_short ctrl_shr_map[NR_KEYS] = {
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf01f,	0xf200,	0xf010,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf00f,	0xf00c,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf009,	0xf00b,	0xf200,	0xf200,
++	0xf008,	0xf019,	0xf200,	0xf200,	0xf015,	0xf00a,	0xf00d,	0xf00e,
++	0xf200,	0xf200,	0xf208,	0xf116,	0xf200,	0xf200,	0xf201,	0xf200,
++	0xf007,	0xf014,	0xf200,	0xf200,	0xf012,	0xf006,	0xf016,	0xf002,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf005,	0xf004,	0xf003,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf000,	0xf017,	0xf013,	0xf018,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf011,	0xf001,	0xf01a,	0xf200,
++	0xf210,	0xf700,	0xf702,	0xf702,	0xf703,	0xf701,	0xf705,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++};
++
++u_short shift_ctrl_shr_map[NR_KEYS] = {
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf01f,	0xf200,	0xf010,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf00f,	0xf00c,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf009,	0xf00b,	0xf200,	0xf200,
++	0xf008,	0xf019,	0xf200,	0xf200,	0xf015,	0xf00a,	0xf00d,	0xf00e,
++	0xf200,	0xf200,	0xf208,	0xf116,	0xf200,	0xf200,	0xf201,	0xf200,
++	0xf007,	0xf014,	0xf200,	0xf200,	0xf012,	0xf006,	0xf016,	0xf002,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf005,	0xf004,	0xf003,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf000,	0xf017,	0xf013,	0xf018,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf011,	0xf001,	0xf01a,	0xf200,
++	0xf210,	0xf700,	0xf702,	0xf702,	0xf703,	0xf701,	0xf705,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++};
++
++ushort *key_maps[MAX_NR_KEYMAPS] = {
++	plain_map, shift_map, altgr_map, 0,
++	ctrl_map, shift_ctrl_map, 0, 0,
++	alt_map, 0, 0, 0,
++	ctrl_alt_map, 0, 0, 0,
++	0, 0, 0, 0,
++	0, 0, 0, 0,
++	0, 0, 0, 0,
++	0, 0, 0, 0,
++	shr_map, shift_shr_map, 0, 0,
++	ctrl_shr_map, shift_ctrl_shr_map,	0
++};
++
++unsigned int keymap_count = 11;
++
++
++/*
++ * Philosophy: most people do not define more strings, but they who do
++ * often want quite a lot of string space. So, we statically allocate
++ * the default and allocate dynamically in chunks of 512 bytes.
++ */
++
++char func_buf[] = {
++	'\033', '[', '[', 'A', 0, 
++	'\033', '[', '[', 'B', 0, 
++	'\033', '[', '[', 'C', 0, 
++	'\033', '[', '[', 'D', 0, 
++	'\033', '[', '[', 'E', 0, 
++	'\033', '[', '1', '7', '~', 0, 
++	'\033', '[', '1', '8', '~', 0, 
++	'\033', '[', '1', '9', '~', 0, 
++	'\033', '[', '2', '0', '~', 0, 
++	'\033', '[', '2', '1', '~', 0, 
++	'\033', '[', '2', '3', '~', 0, 
++	'\033', '[', '2', '4', '~', 0, 
++	'\033', '[', '2', '5', '~', 0, 
++	'\033', '[', '2', '6', '~', 0, 
++	'\033', '[', '2', '8', '~', 0, 
++	'\033', '[', '2', '9', '~', 0, 
++	'\033', '[', '3', '1', '~', 0, 
++	'\033', '[', '3', '2', '~', 0, 
++	'\033', '[', '3', '3', '~', 0, 
++	'\033', '[', '3', '4', '~', 0, 
++	'\033', '[', '1', '~', 0, 
++	'\033', '[', '2', '~', 0, 
++	'\033', '[', '3', '~', 0, 
++	'\033', '[', '4', '~', 0, 
++	'\033', '[', '5', '~', 0, 
++	'\033', '[', '6', '~', 0, 
++	'\033', '[', 'M', 0, 
++	'\033', '[', 'P', 0, 
++};
++
++
++char *funcbufptr = func_buf;
++int funcbufsize = sizeof(func_buf);
++int funcbufleft = 0;          /* space left */
++
++char *func_table[MAX_NR_FUNC] = {
++	func_buf + 0,
++	func_buf + 5,
++	func_buf + 10,
++	func_buf + 15,
++	func_buf + 20,
++	func_buf + 25,
++	func_buf + 31,
++	func_buf + 37,
++	func_buf + 43,
++	func_buf + 49,
++	func_buf + 55,
++	func_buf + 61,
++	func_buf + 67,
++	func_buf + 73,
++	func_buf + 79,
++	func_buf + 85,
++	func_buf + 91,
++	func_buf + 97,
++	func_buf + 103,
++	func_buf + 109,
++	func_buf + 115,
++	func_buf + 120,
++	func_buf + 125,
++	func_buf + 130,
++	func_buf + 135,
++	func_buf + 140,
++	func_buf + 145,
++	0,
++	0,
++	func_buf + 149,
++	0,
++};
++
++struct kbdiacr accent_table[MAX_DIACR] = {
++};
++
++unsigned int accent_table_size = 0;
+diff -urN -X dontdiff linux-orig/drivers/char/ibm_workpad_keymap.map linux/drivers/char/ibm_workpad_keymap.map
+--- linux-orig/drivers/char/ibm_workpad_keymap.map	Thu Jan  1 09:00:00 1970
++++ linux/drivers/char/ibm_workpad_keymap.map	Sat Dec 20 21:46:21 2003
+@@ -0,0 +1,343 @@
++# Keymap for IBM Workpad z50
++# US Mapping
++#
++# by Michael Klar <wyldfier@iname.com>
++#
++# This is a great big mess on account of how the Caps Lock key is handled as
++# LeftShift-RightShift.  Right shift key had to be broken out, so don't use
++# use this map file as a basis for other keyboards that don't do the same
++# thing with Caps Lock.
++#
++# This file is subject to the terms and conditions of the GNU General Public
++# License.  See the file "COPYING" in the main directory of this archive
++# for more details.
++
++keymaps 0-2,4-5,8,12,32-33,36-37
++strings as usual
++
++keycode 0 = F1 F11 Console_13
++	shiftr keycode 0 = F11
++	shift shiftr keycode 0 = F11
++	control keycode 0 = F1
++	alt keycode 0 = Console_1
++	control alt keycode 0 = Console_1
++keycode 1 = F3 F13 Console_15
++	shiftr keycode 1 = F13
++	shift shiftr keycode 1 = F13
++	control keycode 1 = F3
++	alt keycode 1 = Console_3
++	control alt keycode 1 = Console_3
++keycode 2 = F5 F15 Console_17
++	shiftr keycode 2 = F15
++	shift shiftr keycode 2 = F15
++	control keycode 2 = F5
++	alt keycode 2 = Console_5
++	control alt keycode 2 = Console_5
++keycode 3 = F7 F17 Console_19
++	shiftr keycode 3 = F17
++	shift shiftr keycode 3 = F17
++	control keycode 3 = F7
++	alt keycode 3 = Console_7
++	control alt keycode 3 = Console_7
++keycode 4 = F9 F19 Console_21
++	shiftr keycode 4 = F19
++	shift shiftr keycode 4 = F19
++	control keycode 4 = F9
++	alt keycode 4 = Console_9
++	control alt keycode 4 = Console_9
++#keycode 5 is contrast down
++#keycode 6 is contrast up
++keycode 7 = F11 F11 Console_23
++	shiftr keycode 7 = F11
++	shift shiftr keycode 7 = F11
++	control keycode 7 = F11
++	alt keycode 7 = Console_11
++	control alt keycode 7 = Console_11
++keycode 8 = F2 F12 Console_14
++	shiftr keycode 8 = F12
++	shift shiftr keycode 8 = F12
++	control keycode 8 = F2
++	alt keycode 8 = Console_2
++	control alt keycode 8 = Console_2
++keycode 9 = F4 F14 Console_16
++	shiftr keycode 9 = F14
++	shift shiftr keycode 9 = F14
++	control keycode 9 = F4
++	alt keycode 9 = Console_4
++	control alt keycode 9 = Console_4
++keycode 10 = F6 F16 Console_18
++	shiftr keycode 10 = F16
++	shift shiftr keycode 10 = F16
++	control keycode 10 = F6
++	alt keycode 10 = Console_6
++	control alt keycode 10 = Console_6
++keycode 11 = F8 F18 Console_20
++	shiftr keycode 11 = F18
++	shift shiftr keycode 11 = F18
++	control keycode 11 = F8
++	alt keycode 11 = Console_8
++	control alt keycode 11 = Console_8
++keycode 12 = F10 F20 Console_22
++	shiftr keycode 12 = F20
++	shift shiftr keycode 12 = F20
++	control keycode 12 = F10
++	alt keycode 12 = Console_10
++	control alt keycode 12 = Console_10
++#keycode 13 is brightness down
++#keycode 14 is brightness up
++keycode 15 = F12 F12 Console_24
++	shiftr keycode 15 = F12
++	shift shiftr keycode 15 = F12
++	control keycode 15 = F12
++	alt keycode 15 = Console_12
++	control alt keycode 15 = Console_12
++keycode 16 = apostrophe quotedbl
++	shiftr keycode 16 = quotedbl
++	shift shiftr keycode 16 = quotedbl
++	control keycode 16 = Control_g
++	alt keycode 16 = Meta_apostrophe
++keycode 17 = bracketleft braceleft
++	shiftr keycode 17 = braceleft
++	shift shiftr keycode 17 = braceleft
++	control keycode 17 = Escape
++	alt keycode 17 = Meta_bracketleft
++keycode 18 = minus underscore backslash       
++	shiftr keycode 18 = underscore
++	shift shiftr keycode 18 = underscore
++	control keycode 18 = Control_underscore
++	shift control keycode 18 = Control_underscore
++	shiftr control keycode 18 = Control_underscore
++	shift shiftr control keycode 18 = Control_underscore
++	alt keycode 18 = Meta_minus
++keycode 19 = zero parenright braceright
++	shiftr keycode 19 = parenright
++	shift shiftr keycode 19 = parenright
++	alt keycode 19 = Meta_zero
++keycode 20 = p
++	shiftr keycode 20 = +P
++	shift shiftr keycode 20 = +p
++keycode 21 = semicolon colon
++	shiftr keycode 21 = colon
++	shift shiftr keycode 21 = colon
++	alt keycode 21 = Meta_semicolon
++keycode 22 = Up Scroll_Backward
++	shiftr keycode 22 = Scroll_Backward
++	shift shiftr keycode 22 = Scroll_Backward
++	alt keycode 22 = Prior
++keycode 23 = slash question
++	shiftr keycode 23 = question
++	shift shiftr keycode 23 = question
++	control keycode 23 = Delete
++	alt keycode 23 = Meta_slash
++
++keycode 27 = nine parenleft bracketright
++	shiftr keycode 27 = parenleft
++	shift shiftr keycode 27 = parenleft
++	alt keycode 27 = Meta_nine
++keycode 28 = o
++	shiftr keycode 28 = +O
++	shift shiftr keycode 28 = +o
++keycode 29 = l
++	shiftr keycode 29 = +L
++	shift shiftr keycode 29 = +l
++keycode 30 = period greater
++	shiftr keycode 30 = greater
++	shift shiftr keycode 30 = greater
++	control keycode 30 = Compose
++	alt keycode 30 = Meta_period
++
++keycode 32 = Left Decr_Console
++	shiftr keycode 32 = Decr_Console
++	shift shiftr keycode 32 = Decr_Console
++	alt keycode 32 = Home
++keycode 33 = bracketright braceright asciitilde      
++	shiftr keycode 33 = braceright
++	shift shiftr keycode 33 = braceright
++	control keycode 33 = Control_bracketright
++	alt keycode 33 = Meta_bracketright
++keycode 34 = equal plus
++	shiftr keycode 34 = plus
++	shift shiftr keycode 34 = plus
++	alt keycode 34 = Meta_equal
++keycode 35 = eight asterisk bracketleft
++	shiftr keycode 35 = asterisk
++	shift shiftr keycode 35 = asterisk
++	control keycode 35 = Delete
++	alt keycode 35 = Meta_eight
++keycode 36 = i
++	shiftr keycode 36 = +I
++	shift shiftr keycode 36 = +i
++keycode 37 = k
++	shiftr keycode 37 = +K
++	shift shiftr keycode 37 = +k
++keycode 38 = comma less
++	shiftr keycode 38 = less
++	shift shiftr keycode 38 = less
++	alt keycode 38 = Meta_comma
++
++keycode 40 = h
++	shiftr keycode 40 = +H
++	shift shiftr keycode 40 = +h
++keycode 41 = y
++	shiftr keycode 41 = +Y
++	shift shiftr keycode 41 = +y
++keycode 42 = six asciicircum
++	shiftr keycode 42 = asciicircum
++	shift shiftr keycode 42 = asciicircum
++	control keycode 42 = Control_asciicircum
++	alt keycode 42 = Meta_six
++keycode 43 = seven ampersand braceleft
++	shiftr keycode 43 = ampersand
++	shift shiftr keycode 43 = ampersand
++	control keycode 43 = Control_underscore
++	alt keycode 43 = Meta_seven
++keycode 44 = u
++	shiftr keycode 44 = +U
++	shift shiftr keycode 44 = +u
++keycode 45 = j
++	shiftr keycode 45 = +J
++	shift shiftr keycode 45 = +j
++keycode 46 = m
++	shiftr keycode 46 = +M
++	shift shiftr keycode 46 = +m
++keycode 47 = n
++	shiftr keycode 47 = +N
++	shift shiftr keycode 47 = +n
++
++# This is the "Backspace" key:
++keycode 49 = Delete Delete
++	shiftr keycode 49 = Delete
++	shift shiftr keycode 49 = Delete
++	control keycode 49 = BackSpace
++	alt keycode 49 = Meta_Delete
++keycode 50 = Num_Lock
++	shift keycode 50 = Bare_Num_Lock
++	shiftr keycode 50 = Bare_Num_Lock
++	shift shiftr keycode 50 = Bare_Num_Lock
++# This is the "Delete" key:
++keycode 51 = Remove
++	control alt keycode 51 = Boot
++
++keycode 53 = backslash bar
++	shiftr keycode 53 = bar
++	shift shiftr keycode 53 = bar
++	control keycode 53 = Control_backslash
++	alt keycode 53 = Meta_backslash
++keycode 54 = Return
++	alt keycode 54 = Meta_Control_m
++keycode 55 = space space           
++	shiftr keycode 55 = space
++	shift shiftr keycode 55 = space
++	control keycode 55 = nul
++	alt keycode 55 = Meta_space
++keycode 56 = g
++	shiftr keycode 56 = +G
++	shift shiftr keycode 56 = +g
++keycode 57 = t
++	shiftr keycode 57 = +T
++	shift shiftr keycode 57 = +t
++keycode 58 = five percent
++	shiftr keycode 58 = percent
++	shift shiftr keycode 58 = percent
++	control keycode 58 = Control_bracketright
++	alt keycode 58 = Meta_five
++keycode 59 = four dollar dollar
++	shiftr keycode 59 = dollar
++	shift shiftr keycode 59 = dollar
++	control keycode 59 = Control_backslash
++	alt keycode 59 = Meta_four
++keycode 60 = r
++	shiftr keycode 60 = +R
++	shift shiftr keycode 60 = +r
++keycode 61 = f
++	shiftr keycode 61 = +F
++	shift shiftr keycode 61 = +f
++	altgr keycode 61 = Hex_F
++keycode 62 = v
++	shiftr keycode 62 = +V
++	shift shiftr keycode 62 = +v
++keycode 63 = b
++	shiftr keycode 63 = +B
++	shift shiftr keycode 63 = +b
++	altgr keycode 63 = Hex_B
++
++keycode 67 = three numbersign
++	shiftr keycode 67 = numbersign
++	shift shiftr keycode 67 = numbersign
++	control keycode 67 = Escape
++	alt keycode 67 = Meta_three
++keycode 68 = e
++	shiftr keycode 68 = +E
++	shift shiftr keycode 68 = +e
++	altgr keycode 68 = Hex_E
++keycode 69 = d
++	shiftr keycode 69 = +D
++	shift shiftr keycode 69 = +d
++	altgr keycode 69 = Hex_D
++keycode 70 = c
++	shiftr keycode 70 = +C
++	shift shiftr keycode 70 = +c
++	altgr keycode 70 = Hex_C
++keycode 71 = Right Incr_Console
++	shiftr keycode 71 = Incr_Console
++	shift shiftr keycode 71 = Incr_Console
++	alt keycode 71 = End
++
++keycode 75 = two at at
++	shiftr keycode 75 = at
++	shift shiftr keycode 75 = at
++	control keycode 75 = nul
++	shift control keycode 75 = nul
++	shiftr control keycode 75 = nul
++	shift shiftr control keycode 75 = nul
++	alt keycode 75 = Meta_two
++keycode 76 = w
++	shiftr keycode 76 = +W
++	shift shiftr keycode 76 = +w
++keycode 77 = s
++	shiftr keycode 77 = +S
++	shift shiftr keycode 77 = +s
++keycode 78 = x
++	shiftr keycode 78 = +X
++	shift shiftr keycode 78 = +x
++keycode 79 = Down Scroll_Forward
++	shiftr keycode 79 = Scroll_Forward
++	shift shiftr keycode 79 = Scroll_Forward
++	alt keycode 79 = Next
++keycode 80 = Escape Escape
++	shiftr keycode 80 = Escape
++	shift shiftr keycode 80 = Escape
++	alt keycode 80 = Meta_Escape
++keycode 81 = Tab Tab             
++	shiftr keycode 81 = Tab
++	shift shiftr keycode 81 = Tab
++	alt keycode 81 = Meta_Tab
++keycode 82 = grave asciitilde
++	shiftr keycode 82 = asciitilde
++	shift shiftr keycode 82 = asciitilde
++	control keycode 82 = nul
++	alt keycode 82 = Meta_grave
++keycode 83 = one exclam
++	shiftr keycode 83 = exclam
++	shift shiftr keycode 83 = exclam
++	alt keycode 83 = Meta_one
++keycode 84 = q
++	shiftr keycode 84 = +Q
++	shift shiftr keycode 84 = +q
++keycode 85 = a
++	shiftr keycode 85 = +A
++	shift shiftr keycode 85 = +a
++	altgr keycode 85 = Hex_A
++keycode 86 = z
++	shiftr keycode 86 = +Z
++	shift shiftr keycode 86 = +z
++
++# This is the windows key:
++keycode 88 = Decr_Console
++keycode 89 = Shift
++keycode 90 = Control
++keycode 91 = Control
++keycode 92 = Alt
++keycode 93 = AltGr
++keycode 94 = ShiftR
++	shift keycode 94 = Caps_Lock

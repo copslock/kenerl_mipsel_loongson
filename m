@@ -1,78 +1,70 @@
-Received:  by oss.sgi.com id <S305160AbQCNS1H>;
-	Tue, 14 Mar 2000 10:27:07 -0800
-Received: from deliverator.sgi.com ([204.94.214.10]:19776 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305156AbQCNS0t>;
-	Tue, 14 Mar 2000 10:26:49 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id KAA06489; Tue, 14 Mar 2000 10:22:12 -0800 (PST)
+Received:  by oss.sgi.com id <S305160AbQCNTB1>;
+	Tue, 14 Mar 2000 11:01:27 -0800
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:60764 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S305156AbQCNTBN>; Tue, 14 Mar 2000 11:01:13 -0800
+Received: from nodin.corp.sgi.com (fddi-nodin.corp.sgi.com [198.29.75.193]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id LAA03762; Tue, 14 Mar 2000 11:04:35 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id LAA94582; Tue, 14 Mar 2000 11:01:11 -0800 (PST)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id KAA56437
+	id KAA13746
 	for linux-list;
-	Tue, 14 Mar 2000 10:15:16 -0800 (PST)
+	Tue, 14 Mar 2000 10:51:38 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id KAA35131
+	via ESMTP id KAA25052
 	for <linux@cthulhu.engr.sgi.com>;
-	Tue, 14 Mar 2000 10:15:05 -0800 (PST)
-	mail_from (Harald.Koerfgen@home.ivm.de)
-Received: from mail.ivm.net (mail.ivm.net [62.204.1.4]) 
+	Tue, 14 Mar 2000 10:51:29 -0800 (PST)
+	mail_from (andrewb@uab.edu)
+Received: from lilith.dpo.uab.edu (lilith.dpo.uab.edu [138.26.1.128]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id KAA06191
-	for <linux@cthulhu.engr.sgi.com>; Tue, 14 Mar 2000 10:15:02 -0800 (PST)
-	mail_from (Harald.Koerfgen@home.ivm.de)
-Received: from franz.no.dom (port80.duesseldorf.ivm.de [195.247.65.80])
-	by mail.ivm.net (8.8.8/8.8.8) with ESMTP id TAA07588;
-	Tue, 14 Mar 2000 19:14:36 +0100
-X-To:   linux@cthulhu.engr.sgi.com
-Message-ID: <XFMail.000314191529.Harald.Koerfgen@home.ivm.de>
-X-Mailer: XFMail 1.4.0 on Linux
-X-Priority: 3 (Normal)
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 8bit
+	via ESMTP id KAA07544
+	for <linux@cthulhu.engr.sgi.com>; Tue, 14 Mar 2000 10:51:17 -0800 (PST)
+	mail_from (andrewb@uab.edu)
+Received: from lithium (lithium.tucc.uab.edu [138.26.15.219])
+	by lilith.dpo.uab.edu (8.9.3/8.9.3) with SMTP id MAA07263;
+	Tue, 14 Mar 2000 12:50:46 -0600
+Date:   Tue, 14 Mar 2000 12:50:46 -0600 (CST)
+From:   "Andrew R. Baker" <andrewb@uab.edu>
+X-Sender: andrewb@lithium
+To:     Ralf Baechle <ralf@oss.sgi.com>
+cc:     "Kevin D. Kissell" <kevink@mips.com>,
+        Harald Koerfgen <Harald.Koerfgen@home.ivm.de>,
+        linux-mips@vger.rutgers.edu, linux-mips@fnet.fr,
+        Linux SGI <linux@cthulhu.engr.sgi.com>
+Subject: Re: FP emulation patch available
+In-Reply-To: <20000313144657.E845@uni-koblenz.de>
+Message-ID: <Pine.LNX.3.96.1000314123742.24923A-100000@lithium>
 MIME-Version: 1.0
-In-Reply-To: <2472.000314@praim.com>
-Date:   Tue, 14 Mar 2000 19:15:29 +0100 (MET)
-Reply-To: "Harald Koerfgen" <Harald.Koerfgen@home.ivm.de>
-Organization: none
-From:   Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
-To:     < (Andrea Endrizzi) andreae@praim.com>
-Subject: RE: Help mips-tx39-elf-{tool}
-Cc:     Andy <andy@wldorf-gmbh.de>, Cygnus Developers <rth@cygnus.com>,
-        Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>,
-        Dominic Sweetman <dom@algor.co.uk>,
-        Linux SGI <linux@cthulhu.engr.sgi.com>,
-        "linux-mips@vger.rutgers.edu" <linux-mips@vger.rutgers.edu>,
-        "Kevin D. Kissel" <kevink@mips.com>,
-        "linux-mips@fnet.f" <linux-mips@fnet.fr>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-Hi,
 
-On 14-Mar-00 Andrea Endrizzi wrote:
->   Excuse me, i have found your address in my long search in Mips
->   Developers Group. I make my apologies if i have wrong the address.
+
+On Mon, 13 Mar 2000, Ralf Baechle wrote:
+> On Mon, Mar 13, 2000 at 09:33:02AM +0100, Kevin D. Kissell wrote:
 > 
->   I use a TX3927 Board , i try to write some little program ( led on/off )
-> and
->   work fine. I try to compile Mips Linux Kernel ( R3000 ) with mips-tx39-elf
->   compiler and i have some problem ...
+> > Does anyone out there actually need/want an SMP
+> > version of the emulator?   It's not completely trivial,
+> > but it would not be all that difficult to do...
 > 
->   Is There anyone that have some experiences with Cygnus 98r2 for
->   Linux with target mips-tx39-elf-{tool} ???
+> It should be fixed if it's going to be used as the base for the kernel
+> fp support we need also for the Origins.
 
-No, not with that toolchain. Using the "standard" Linux/MIPS toolchain, on the
-other hand, I have been able to make Linux running on my Sharp Mobilon
-(PR31700/TX3912). See http://linux-vr.org for more details or feel free to ask
-me directly.
+This should not be an issue for the design I am using for the hardware fp
+support.  It will have a different entry point into the operation
+emulation code that will use the hardware registers instead of the
+software fpu struct.  It will also only handle operations that should
+produce an unimplemented exception (this is not quite all of the fp ops).
+Ralf, from discussing this with you earlier, this should be SMP safe, but
+it should be checked anyway.  I will try and get some code out this week.
 
--- 
-Regards,
-Harald
+-Andrew

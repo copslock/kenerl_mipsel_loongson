@@ -1,76 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Aug 2003 17:54:50 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:41206 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225294AbTHMQys>;
-	Wed, 13 Aug 2003 17:54:48 +0100
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id h7DGskj09878;
-	Wed, 13 Aug 2003 09:54:46 -0700
-Date: Wed, 13 Aug 2003 09:54:46 -0700
-From: Jun Sun <jsun@mvista.com>
-To: "Sirotkin, Alexander" <demiurg@ti.com>
-Cc: linux-mips@linux-mips.org, jsun@mvista.com
-Subject: Re: tasklet latency and system calls on mips
-Message-ID: <20030813095446.C9655@mvista.com>
-References: <3F3A411C.70603@ti.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Aug 2003 04:04:04 +0100 (BST)
+Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:57189
+	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
+	id <S8225193AbTHNDEC>; Thu, 14 Aug 2003 04:04:02 +0100
+Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
+	by iris1.csv.ica.uni-stuttgart.de with esmtp (Exim 3.35 #1)
+	id 19n8PA-0005pJ-00
+	for linux-mips@linux-mips.org; Thu, 14 Aug 2003 05:04:00 +0200
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
+	id 19n8P9-000837-00
+	for <linux-mips@linux-mips.org>; Thu, 14 Aug 2003 05:03:59 +0200
+Date: Thu, 14 Aug 2003 05:03:59 +0200
+To: linux-mips@linux-mips.org
+Subject: Re: GCCFLAGS for gcc 3.3.x (-march and _MIPS_ISA)
+Message-ID: <20030814030359.GJ10792@rembrandt.csv.ica.uni-stuttgart.de>
+References: <20030812065118.GD23104@rembrandt.csv.ica.uni-stuttgart.de> <20030812.190636.39150536.nemoto@toshiba-tops.co.jp> <20030812101625.GJ23104@rembrandt.csv.ica.uni-stuttgart.de> <20030813.002644.59461513.anemo@mba.ocn.ne.jp>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <3F3A411C.70603@ti.com>; from demiurg@ti.com on Wed, Aug 13, 2003 at 04:46:04PM +0300
-Return-Path: <jsun@mvista.com>
+In-Reply-To: <20030813.002644.59461513.anemo@mba.ocn.ne.jp>
+User-Agent: Mutt/1.5.4i
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3044
+X-archive-position: 3045
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Aug 13, 2003 at 04:46:04PM +0300, Sirotkin, Alexander wrote:
-> Hello dearest all.
+Atsushi Nemoto wrote:
+> >>>>> On Tue, 12 Aug 2003 12:16:25 +0200, Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de> said:
 > 
-> I have a question regarding tasklets on MIPS. I suspect that there is a
-> bug in generic MIPS kernel, but I'm not sure yet.
+> >> Does anybody know why __BUILD_clear_ade uses MFC0 and REG_S
+> >> though other parts using mfc0 and sw ?
 > 
-> Linux kernel has a couple of so called "checkpoints" when the system
-> should check if there are tasklets to
-> run and run them in the following way :
+> Thiemo> Probably because BADVADDR has to be 64bit for 64bit
+> Thiemo> kernels. :-)
 > 
-> if (softirq_pending(cpu))
->                     do_softirq();
-> 
-> One of these places is at the end of interrupt handler (do_IRQ()),
-> however this is not the only place. I was under
-> impression that this code should be called after system call too. The
-> caveat here is that on MIPS (contrary to
-> other architectures, such as x86) system call is not an interrupt (it's
-> a different exception) and has completely
-> different handler. So in x86 it is sufficient to call
-> 
-> if (softirq_pending(cpu))
->                     do_softirq();
-> 
-> at the end of do_IRQ because do_IRQ handles system call too, but on MIPS
-> it is not. Therefore I believe
-> these lines should be added to the end of sys_syscall function on MIPS.
-> 
-> What do you think ?
-> 
+> If so, MFC0 and REG_S should be controlled by __mips64 (or
+> CONFIG_MIPS64) as you and Maciej W. Rozycki said in other mails.  I
+> wonder why currently is not.  Historical reason ? :-)
 
-softirq/tasklet/bottom_half/etc should only be raised from interrupt
-context.  Checking at the end of do_IRQ should be good enough.
+Pre-3.0 gcc used -mips2 instead of -mabi=32 as hint to generate
+32bit code. I guess the defines were affected by this also.
 
-One possible mistake in MIPS porting is that if the board uses its private
-time interrupt routine poeple may forget to put the above two lines
-at the end.  Check against that.
 
-> P.S. The whole issue started when we noticed that user process making
-> many system calls has very
-> significant impact on device drivers running in tasklet mode 
-
-What kind of impact?  On i386? Or on MIPS?
-
-Jun
+Thiemo

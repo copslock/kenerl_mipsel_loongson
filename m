@@ -1,50 +1,44 @@
-Received:  by oss.sgi.com id <S554090AbRBALQF>;
-	Thu, 1 Feb 2001 03:16:05 -0800
-Received: from noose.gt.owl.de ([62.52.19.4]:15121 "HELO noose.gt.owl.de")
-	by oss.sgi.com with SMTP id <S554100AbRBALPz>;
-	Thu, 1 Feb 2001 03:15:55 -0800
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id ACF1A802; Thu,  1 Feb 2001 12:15:40 +0100 (CET)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id C6813EE9C; Thu,  1 Feb 2001 12:02:52 +0100 (CET)
-Date:   Thu, 1 Feb 2001 12:02:52 +0100
-From:   Florian Lohoff <flo@rfc822.org>
-To:     "Dr. David Gilbert" <gilbertd@treblig.org>
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: netbooting indy
-Message-ID: <20010201120252.C3784@paradigm.rfc822.org>
-References: <Pine.GSO.4.30L.0101311648280.22989-100000@home-on-the-dome.mit.edu> <Pine.LNX.4.30.0102010926190.20992-100000@springhead.px.uk.com>
+Received:  by oss.sgi.com id <S554104AbRBALQE>;
+	Thu, 1 Feb 2001 03:16:04 -0800
+Received: from boco.fee.vutbr.cz ([147.229.9.11]:47883 "EHLO boco.fee.vutbr.cz")
+	by oss.sgi.com with ESMTP id <S554090AbRBALPe>;
+	Thu, 1 Feb 2001 03:15:34 -0800
+Received: from fest.stud.fee.vutbr.cz (fest.stud.fee.vutbr.cz [147.229.9.16])
+	by boco.fee.vutbr.cz (8.11.2/8.11.2) with ESMTP id f11BFSo55107
+	(using TLSv1/SSLv3 with cipher EDH-RSA-DES-CBC3-SHA (168 bits) verified OK)
+	for <linux-mips@oss.sgi.com>; Thu, 1 Feb 2001 12:15:29 +0100 (CET)
+Received: (from xjezda00@localhost)
+	by fest.stud.fee.vutbr.cz (8.11.2/8.11.2) id f11BFSh03040
+	for linux-mips@oss.sgi.com; Thu, 1 Feb 2001 12:15:28 +0100 (CET)
+Date:   Thu, 1 Feb 2001 12:15:28 +0100
+From:   David Jez <dave.jez@seznam.cz>
+To:     linux-mips@oss.sgi.com
+Subject: Re: fsck problem - version of ext2fs utils
+Message-ID: <20010201121528.A3010@stud.fee.vutbr.cz>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.LNX.4.30.0102010926190.20992-100000@springhead.px.uk.com>; from gilbertd@treblig.org on Thu, Feb 01, 2001 at 09:26:55AM +0000
-Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Thu, Feb 01, 2001 at 09:26:55AM +0000, Dr. David Gilbert wrote:
-> On Wed, 31 Jan 2001, Kenneth C Barr wrote:
-> 
-> > I finally got bootp/tftp to answer my indy's pleas for an image, but get
-> > the following behavior (with my own IP addr and server, obviously):
-> >
-> > >> boot bootp():/vmlinux
 
-This uses "sash" and says sash to "bootp"
+Hi,
 
-> I haven't seen the error you got - however one thing I do differently is
-> to do
-> 
-> bootp():/vmlinux
-> 
-> without the initial 'boot ' - worth a go?
+>Has anyone seen problems with fsck on the latest 2.4.0 kernel ?
+>My filesystem gets corrupted from time to time when I use the latest
+>2.4.0 kernel.
+OK, you writes that you have this problems with 2.4.0 kernel.
+my ask: have you got newer version of ext2fs utils (1.19)?
 
-This bootps directly from the prom
+read file /usr/src/linux-2.4.0/Documentation/Changes
 
-Flo
+regards
 -- 
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-     Why is it called "common sense" when nobody seems to have any?
+-------------------------------------------------------
+  David "Dave" Jez                Brno, CZ, Europe
+ E-mail: dave.jez@seznam.cz
+PGP key: finger xjezda00@fest.stud.fee.vutbr.cz
+---------=[ ~EOF ]=------------------------------------

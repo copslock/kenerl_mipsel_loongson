@@ -1,43 +1,36 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6LIBbu27321
-	for linux-mips-outgoing; Sat, 21 Jul 2001 11:11:37 -0700
-Received: from earth.ayrnetworks.com (earth.ayrnetworks.com [64.166.72.139])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6LIBXV27312;
-	Sat, 21 Jul 2001 11:11:33 -0700
-Received: from [10.21.56.226] (earth.ayrnetworks.com [10.1.1.24])
-	by earth.ayrnetworks.com (8.11.0/8.8.7) with ESMTP id f6LIAUr24590;
-	Sat, 21 Jul 2001 11:10:30 -0700
-User-Agent: Microsoft-Entourage/9.0.2509
-Date: Sat, 21 Jul 2001 12:12:29 -0600
+	by oss.sgi.com (8.11.2/8.11.3) id f6LIDJX27439
+	for linux-mips-outgoing; Sat, 21 Jul 2001 11:13:19 -0700
+Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6LIDHV27436;
+	Sat, 21 Jul 2001 11:13:17 -0700
+Received: from lucon.org (lake.in.lucon.org [192.168.0.2])
+	by ocean.lucon.org (Postfix) with ESMTP
+	id 788D2125BA; Sat, 21 Jul 2001 11:13:16 -0700 (PDT)
+Received: by lucon.org (Postfix, from userid 1000)
+	id 2E89AEC2D; Sat, 21 Jul 2001 11:13:16 -0700 (PDT)
+Date: Sat, 21 Jul 2001 11:13:16 -0700
+From: "H . J . Lu" <hjl@lucon.org>
+To: Greg Satz <satz@ayrnetworks.com>
+Cc: Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com
 Subject: Re: SHN_MIPS_SCOMMON
-From: Greg Satz <satz@ayrnetworks.com>
-To: "H . J . Lu" <hjl@lucon.org>, Ralf Baechle <ralf@oss.sgi.com>
-CC: <linux-mips@oss.sgi.com>
-Message-ID: <B77F222C.888C%satz@ayrnetworks.com>
-In-Reply-To: <20010721104144.A17894@lucon.org>
-Mime-version: 1.0
-Content-type: text/plain; charset="US-ASCII"
-Content-transfer-encoding: 7bit
+Message-ID: <20010721111315.A9479@lucon.org>
+References: <20010721104144.A17894@lucon.org> <B77F222C.888C%satz@ayrnetworks.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <B77F222C.888C%satz@ayrnetworks.com>; from satz@ayrnetworks.com on Sat, Jul 21, 2001 at 12:12:29PM -0600
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-The problem I ran into was making NFS as a kernel module. The resulting
-sunrpc.o module crashed when insmod was run over it. Ralf's fix that all
-compiles and links use -G 0 worked for me.
+On Sat, Jul 21, 2001 at 12:12:29PM -0600, Greg Satz wrote:
+> The problem I ran into was making NFS as a kernel module. The resulting
+> sunrpc.o module crashed when insmod was run over it. Ralf's fix that all
+> compiles and links use -G 0 worked for me.
 
-Thanks,
-Greg
+In that case, it is no linker bug. I believe -G 0 is required for
+mips kernel modules.
 
-on 7/21/01 11:41 AM, H . J . Lu at hjl@lucon.org wrote:
 
-> On Sat, Jul 21, 2001 at 02:11:20PM +0200, Ralf Baechle wrote:
->> Only if you don't compile / assemble / link with -G 0.
->> 
->> .scommon shouldn't ever be in a kernel object.  It seems that ld started
->> to move .common objects to .scommon from a certain version on, so 2.4.5
-> 
-> Send me a testcase. I will fix the linker.
-> 
-> 
-> H.J.
-> 
+H.J.

@@ -1,54 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Feb 2005 17:13:45 +0000 (GMT)
-Received: from amsfep12-int.chello.nl ([IPv6:::ffff:213.46.243.17]:47656 "EHLO
-	amsfep12-int.chello.nl") by linux-mips.org with ESMTP
-	id <S8225275AbVBHRNZ>; Tue, 8 Feb 2005 17:13:25 +0000
-Received: from [127.0.0.1] (really [62.195.248.222])
-          by amsfep12-int.chello.nl
-          (InterMail vM.6.01.04.01 201-2131-118-101-20041129) with ESMTP
-          id <20050208171318.JKET21348.amsfep12-int.chello.nl@[127.0.0.1]>;
-          Tue, 8 Feb 2005 18:13:18 +0100
-Message-ID: <4208F347.4050304@amsat.org>
-Date:	Tue, 08 Feb 2005 18:13:43 +0100
-From:	Jeroen Vreeken <pe1rxq@amsat.org>
-User-Agent: Mozilla Thunderbird 0.9 (X11/20041103)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	=?ISO-8859-2?Q?Tom_Vr=E1na?= <tom@voda.cz>,
-	linux-mips@linux-mips.org
-Subject: Re: ADM5120: time.c issues ?
-References: <4207C71F.7050204@voda.cz>
-In-Reply-To: <4207C71F.7050204@voda.cz>
-Content-Type: text/plain; charset=ISO-8859-2; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <pe1rxq@amsat.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Feb 2005 00:12:04 +0000 (GMT)
+Received: from alg138.algor.co.uk ([IPv6:::ffff:62.254.210.138]:24038 "EHLO
+	mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225313AbVBIALt>; Wed, 9 Feb 2005 00:11:49 +0000
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id j1906f6x018620;
+	Wed, 9 Feb 2005 00:06:41 GMT
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j1906eBQ018619;
+	Wed, 9 Feb 2005 00:06:40 GMT
+Date:	Wed, 9 Feb 2005 00:06:40 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Rojhalat Ibrahim <ibrahim@schenk.isar.de>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: More than 512MB of memory
+Message-ID: <20050209000640.GA10651@linux-mips.org>
+References: <41ED20E3.60309@schenk.isar.de> <20050204004028.GC22311@linux-mips.org> <42072264.6000001@schenk.isar.de> <20050208001742.GA15336@linux-mips.org> <42088CFA.6090605@schenk.isar.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <42088CFA.6090605@schenk.isar.de>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7208
+X-archive-position: 7210
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pe1rxq@amsat.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Tom Vrána wrote:
+On Tue, Feb 08, 2005 at 10:57:14AM +0100, Rojhalat Ibrahim wrote:
 
-> Using jeroens time.c the system boots painfully slow, sort of loops 
-> int the beginning and the finally freezes on the FPU emulator... any 
-> suggestions ?
->
-The 2.6.10 kernels I compiled don't seem slow to me.. So there is some 
-difference between those two... (Is there a reason you need a 2.4 kernel 
-instead of 2.6?)
+> I presume CKSEG is CKSEG0 in the above patch. With that it works
+> about the same as before. So do you have any clue what the problem
+> behind all that really is? Furthermore I still have all those
+> "Illegal instruction" and "Segmentation fault" messages that
+> shouldn't be there.
 
->
-> ttyS28 at 0x03f8 (irq = 4) is a 16450
-> ttyS29 at 0x02f8 (irq = 3) is a 16450
-> ttyS30 at 0x03e8 (irq = 4) is a 16450
+Sorry, yes I indeed meant CKSEG0. And this version of the patch really was
+only meant to optimize the large performance impact your previous patch
+had; it wasn't meant to fix anything beyond that.
 
-This might have something to do with it... I don't think this serial 
-driver should be used. There might be more unneeded stuff in your kernel 
-that might do funny things.
+As I can't replicate your configuration I'm still starring at the code to
+find what's wrong ...
 
-Jeroen
+  Ralf

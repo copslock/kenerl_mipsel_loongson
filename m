@@ -1,56 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Jun 2004 01:07:36 +0100 (BST)
-Received: from quechua.inka.de ([IPv6:::ffff:193.197.184.2]:56234 "EHLO
-	mail.inka.de") by linux-mips.org with ESMTP id <S8225238AbUFMAHc>;
-	Sun, 13 Jun 2004 01:07:32 +0100
-Received: from pcde.inka.de (uucp@[127.0.0.1])
-	by mail.inka.de with uucp (rmailwrap 0.5) 
-	id 1BZIX4-0000EE-00; Sun, 13 Jun 2004 02:07:30 +0200
-Received: by aton.pcde.inka.de (Postfix, from userid 1001)
-	id 428761E5C7; Sun, 13 Jun 2004 02:04:52 +0200 (CEST)
-Date: Sun, 13 Jun 2004 02:04:52 +0200
-From: Dennis Grevenstein <dennis@pcde.inka.de>
-To: linux-mips@linux-mips.org
-Subject: network problems with cobalt raq2
-Message-ID: <20040613000452.GA3861@aton.pcde.inka.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Jun 2004 06:04:46 +0100 (BST)
+Received: from smtp808.mail.sc5.yahoo.com ([IPv6:::ffff:66.163.168.187]:49062
+	"HELO smtp808.mail.sc5.yahoo.com") by linux-mips.org with SMTP
+	id <S8224915AbUFMFEl>; Sun, 13 Jun 2004 06:04:41 +0100
+Received: from unknown (HELO ?10.2.2.68?) (ppopov@pacbell.net@63.194.214.47 with plain)
+  by smtp808.mail.sc5.yahoo.com with SMTP; 13 Jun 2004 05:04:34 -0000
+Subject: Re: Au1000 AC97 ALSA Driver
+From: Pete Popov <pete_popov@yahoo.com>
+To: charles.eidsness@ieee.org
+Cc: linux-mips@linux-mips.org
+In-Reply-To: <40CB2FAF.3050807@ieee.org>
+References: <40CB2FAF.3050807@ieee.org>
+Content-Type: text/plain
+Organization: 
+Message-Id: <1087103071.1432.3.camel@thinkpad>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.4.1i
-Return-Path: <dennis@pcde.inka.de>
+X-Mailer: Ximian Evolution 1.2.2 (1.2.2-4) 
+Date: 12 Jun 2004 22:04:31 -0700
+Content-Transfer-Encoding: 7bit
+Return-Path: <pete_popov@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5296
+X-archive-position: 5297
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dennis@pcde.inka.de
+X-original-sender: pete_popov@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Sat, 2004-06-12 at 09:30, Charles Eidsness wrote:
+> I've been working on an ALSA driver for the Au1000 processor AC'97 port. 
+> Specifically for the DBAu1000 Merlot eval card. It seems to be working 
+> in OSS emulation mode, I'm having a few problems setting up my system to 
+> work in ALSA native mode, and it contains only a minimum of features. 
+> i.e. it's still a work in progress, but I thought there may be someone 
+> else out there interested in it.
+> 
+> I've posted a patch that should add a mips sub-directory in the sound 
+> directory of the 2.6.6 kernel and add an au1000 sound option to the 
+> kernel configuration menu here: 
+> http://members.rogers.com/charles.eidsness/au1000_alsa.patch
+> 
+> Alternately you can find just the source code here:
+> http://members.rogers.com/charles.eidsness/au1000.c
 
-I've got some problems with my raq2. I want to set up the machine
-as an internet gateway, because it can be perfectly silent if
-you change that little fan.
-The problem is that network performance is extremely bad.
-I can transfer about 1MB/s at the very best. When it runs as
-a masquerading router for my internal network performance
-goes down even more. I can now ftp about 64kb/s to the raq.
-Of course, I didn't expect that this little CPU would be a killer
-router, but:
-tessa:~# uptime
- 02:01:21 up 55 min,  1 user,  load average: 0.00, 0.00, 0.00
+Great -- let me know when the driver is ready to be checked in :)
 
-There is essentially no load.This machine is about 95% idle.
-
-I'm running Debian and the standard 2.4.26-r5k-cobalt.
-I could not compile the current CVS kernel, but any hints
-are greatly appreciated.
-
-TIA
-Dennis
-
--- 
-de-moc-ra-cy (di mok' ra see) n.
-Three wolves and a sheep voting on what's for dinner.
+Pete

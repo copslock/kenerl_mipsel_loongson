@@ -1,44 +1,53 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f4QMZKh15543
-	for linux-mips-outgoing; Sat, 26 May 2001 15:35:20 -0700
-Received: from dea.waldorf-gmbh.de (IDENT:root@localhost [127.0.0.1])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f4QMZId15540
-	for <linux-mips@oss.sgi.com>; Sat, 26 May 2001 15:35:18 -0700
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f4QMNeD01589;
-	Sat, 26 May 2001 19:23:40 -0300
-Date: Sat, 26 May 2001 19:23:40 -0300
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: "Kevin D. Kissell" <kevink@mips.com>
-Cc: Daniel Jacobowitz <dan@debian.org>, linux-mips@oss.sgi.com
-Subject: Re: [PATCH] incorrect asm constraints for ll/sc constructs
-Message-ID: <20010526192340.B1415@bacchus.dhis.org>
-References: <Pine.GSO.3.96.1010525130531.17652A-100000@delta.ds2.pg.gda.pl> <011801c0e55f$e4d39820$0deca8c0@Ulysses> <20010525144937.A28370@nevyn.them.org> <00c901c0e631$4bcebd80$0deca8c0@Ulysses>
+	by oss.sgi.com (8.11.3/8.11.3) id f4R359x21185
+	for linux-mips-outgoing; Sat, 26 May 2001 20:05:09 -0700
+Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
+	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f4R34vd21147;
+	Sat, 26 May 2001 20:04:58 -0700
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 587177F6; Sat, 26 May 2001 15:56:51 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 00718EFDB; Sat, 26 May 2001 15:15:50 +0200 (CEST)
+Date: Sat, 26 May 2001 15:15:50 +0200
+From: Florian Lohoff <flo@rfc822.org>
+To: Joe deBlaquiere <jadb@redhat.com>
+Cc: Jun Sun <jsun@mvista.com>, "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+   ralf@oss.sgi.com, Pete Popov <ppopov@mvista.com>,
+   George Gensure <werkt@csh.rit.edu>, linux-mips@oss.sgi.com,
+   "Kevin D. Kissell" <kevink@mips.com>
+Subject: Re: MIPS_ATOMIC_SET again (Re: newest kernel
+Message-ID: <20010526151550.B611@paradigm.rfc822.org>
+References: <Pine.GSO.3.96.1010523152429.5196A-100000@delta.ds2.pg.gda.pl> <3B0BF7F8.3050306@redhat.com> <3B0C0475.B9ACE682@mvista.com> <20010523205412.A10981@paradigm.rfc822.org> <20010523205552.B10981@paradigm.rfc822.org> <3B0C17D9.3060600@redhat.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <00c901c0e631$4bcebd80$0deca8c0@Ulysses>; from kevink@mips.com on Sun, May 27, 2001 at 12:14:43AM +0200
-X-Accept-Language: de,en,fr
+User-Agent: Mutt/1.3.15i
+In-Reply-To: <3B0C17D9.3060600@redhat.com>; from jadb@redhat.com on Wed, May 23, 2001 at 03:04:41PM -0500
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sun, May 27, 2001 at 12:14:43AM +0200, Kevin D. Kissell wrote:
+On Wed, May 23, 2001 at 03:04:41PM -0500, Joe deBlaquiere wrote:
+> The thing I don't understand is how glibc is going to cleanly decide at 
+> runtime which code to use. It's relatively easy to do something like 
+> that in the kernel, but I can't come up with an elegant solution to make 
+> such a choice at runtime in glibc.
 
-> Fair enough.  It was an offhand remark.  But seriously, what does
-> the "R" constraint mean here?  The only documentation I've got
-> (http://linux.fh-heilbronn.de/doku/GNU/docs/gcc/gcc_163.html#SEC163)
-> says that "Q" through "U" are reserved for use with EXTRA_CONSTRAINT
-> in machine-dependent definitions of arbitrary operand types.  When
-> and where does it get bound for MIPS gcc, and what is it supposed
-> to mean?  If I compile this kind of fragment using a "m" constraint,
-> it seems to do the right thing, at least on my archaic native compiler.
+Export the existance of ll/sc via /proc/cpuinfo or whatever.
 
-Correct, "R" is a machine dependent constraint.  At least when it's working
-right it's supposed to expand into offset(reg) where offset is limited
-to 16 bits.  That's implemented in gcc/config/gcc/mips/mips.h's
-EXTRA_CONSTRAINT macro.  In case of an "R" constraint gcc calls the
-simple_memory_operand() function which will return 1 if the memory operand
-fits into a single instruction.
+> Assuming that we're moving forward (as Kevin points out) the percentage 
+> of systems without ll/sc is going down. While these systems don't have 
+> much CPU power to spare, we should make the baseline implementation have 
+> ll/sc emulation. If somebody wants to make a MIPS I optimized glibc, 
+> then that's fine, but allowing the 'standard' MIPSII glibc to work on 
+> all systems simplifies life ( mine at least ;) ).
 
-  Ralf
+I dont think this is true necessarly - There are still people building
+embedded x86 systems based on 386 cores. Look at the vr41xx systems - They
+do also lack the ll/sc afaik. This is nowadays the most commonly
+used embedded/pda cpu.
+
+Flo
+-- 
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+     Why is it called "common sense" when nobody seems to have any?

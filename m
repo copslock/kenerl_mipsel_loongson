@@ -1,58 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Dec 2003 00:39:09 +0000 (GMT)
-Received: from 50.69-93-10.reverse.theplanet.com ([IPv6:::ffff:69.93.10.50]:55020
-	"EHLO spaghetti.theross.com") by linux-mips.org with ESMTP
-	id <S8225217AbTL2AjG>; Mon, 29 Dec 2003 00:39:06 +0000
-Received: from pcp02792195pcs.roylok01.mi.comcast.net ([68.62.5.21] helo=bitglue.com)
-	by spaghetti.theross.com with smtp (Exim 4.22)
-	id 1AalQy-00007Z-Nq
-	for linux-mips@linux-mips.org; Sun, 28 Dec 2003 19:39:00 -0500
-Received: (qmail 3008 invoked by uid 100); 29 Dec 2003 00:38:58 -0000
-Date: Sun, 28 Dec 2003 19:38:58 -0500
-From: Phil Frost <indigo@bitglue.com>
-To: Maitland Bottoms <bottoms@debian.org>
-Cc: linux-mips@linux-mips.org
-Message-ID: <20031229003858.GA3018@europa.lair>
-Mail-Followup-To: Maitland Bottoms <bottoms@debian.org>,
-	linux-mips@linux-mips.org
-References: <16365.48740.594791.853479@airborne.nrl.navy.mil>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Dec 2003 02:30:23 +0000 (GMT)
+Received: from nevyn.them.org ([IPv6:::ffff:66.93.172.17]:47491 "EHLO
+	nevyn.them.org") by linux-mips.org with ESMTP id <S8225226AbTL2CaW>;
+	Mon, 29 Dec 2003 02:30:22 +0000
+Received: from drow by nevyn.them.org with local (Exim 4.30 #1 (Debian))
+	id 1AanAL-0000xR-6s; Sun, 28 Dec 2003 21:29:57 -0500
+Date: Sun, 28 Dec 2003 21:29:57 -0500
+From: Daniel Jacobowitz <dan@debian.org>
+To: Guido Guenther <agx@sigxcpu.org>, linux-mips@linux-mips.org
+Subject: Re: 2.6 64bit kernels
+Message-ID: <20031229022957.GA3652@nevyn.them.org>
+References: <20031228195433.GH1298@bogon.ms20.nix>
 Mime-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <16365.48740.594791.853479@airborne.nrl.navy.mil>
-User-Agent: Mutt/1.4.1i
-X-SA-Exim-Mail-From: indigo@bitglue.com
-Subject: Re: Origin 200
 Content-Type: text/plain; charset=us-ascii
-X-SA-Exim-Version: 3.1 (built Wed Aug 20 09:38:54 PDT 2003)
-X-SA-Exim-Scanned: Yes
-Return-Path: <indigo@bitglue.com>
+Content-Disposition: inline
+In-Reply-To: <20031228195433.GH1298@bogon.ms20.nix>
+User-Agent: Mutt/1.5.1i
+Return-Path: <drow@crack.them.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3842
+X-archive-position: 3843
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: indigo@bitglue.com
+X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-It can be netbooted. Simply configure a bootp (dhcp) and tftp server, then type
-bootp() at the SGI maintenance prompt.
-
-However, currently the kernel does not run on uniprocessor origins. Someone was
-working on this though...
-
-On Sat, Dec 27, 2003 at 12:16:20PM -0500, Maitland Bottoms wrote:
+On Sun, Dec 28, 2003 at 08:54:34PM +0100, Guido Guenther wrote:
 > Hi,
-> 
-> I would like to bring up Linux on an Origin 200.
-> 
-> Has anyone netbooted one of these? Is there a bootable
-> CDROM image around?
-> 
-> I would prefer to netboot/nfsroot, but if I must I could
-> find a SCSI disk.
-> 
-> Thanks,
-> -Maitland
-> 
+> could anybody explain to me how one builds 2.6 (current CVS) 64bit
+> kernel resulting in a 32bit ELF executable with a current (gcc >= 3.3,
+> bintuils >= 2.14.90.0.5) toolchain.
+> Major showstopper is that -Wa,-mabi=o64 doesn't work anymore, but
+> -Wa,-mabi=32 -Wa,-mgp64 doesn't either since the assembler doesn't
+> accept it.
+> Thanks for any help,
+
+I have found that the best way is to build a 64-bit ELF executable. 
+Then, use:
+  mips64_fp_le-objcopy -O elf32-ntradlittlemips vmlinux vmlinux.32bit
+
+or the equivalent command.
+
+You lose some space (lots) on wasted addressing calculations; no one
+has found a good solution AFAIK.
+
+-- 
+Daniel Jacobowitz
+MontaVista Software                         Debian GNU/Linux Developer

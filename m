@@ -1,101 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Mar 2004 22:21:26 +0000 (GMT)
-Received: from server212.com ([IPv6:::ffff:203.194.159.163]:16000 "HELO
-	server212.com") by linux-mips.org with SMTP id <S8225547AbUCYWVZ>;
-	Thu, 25 Mar 2004 22:21:25 +0000
-Received: (qmail 25908 invoked by uid 501); 25 Mar 2004 22:22:42 -0000
-Message-ID: <20040325222241.3445.qmail@server212.com>
-Reply-To: "wlacey" <wlacey@goldenhindresearch.com>
-From: "wlacey" <wlacey@goldenhindresearch.com>
-To: linux-mips@linux-mips.org
-Subject: RPC: exit -512 [ERESTARTSYS]
-Date: Thu, 25 Mar 2004 22:22:41 
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Mar 2004 23:26:19 +0000 (GMT)
+Received: from Iris.Adtech-Inc.COM ([IPv6:::ffff:63.165.80.18]:8858 "EHLO
+	iris.Adtech-Inc.COM") by linux-mips.org with ESMTP
+	id <S8225547AbUCYX0S> convert rfc822-to-8bit; Thu, 25 Mar 2004 23:26:18 +0000
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6249.0
+content-class: urn:content-classes:message
+Subject: FW: 64 bit operations w/32 bit kernel
+Date: Thu, 25 Mar 2004 13:25:57 -1000
+Message-ID: <DC1BF43A8FAE654DA6B3FB7836DD3A56DEB879@iris.adtech-inc.com>
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="_b381d0372eadef7eeaa16df39eec9e828"
-X-Mailer: WebMail 2.3
-X-Originating-IP: 65.60.157.128
-X-Originating-Email: wlacey@goldenhindresearch.com
-Return-Path: <wlacey@goldenhindresearch.com>
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: 64 bit operations w/32 bit kernel
+Thread-Index: AcOHjA7sF95D5e4BTSOKBvdhe6W5viLMoVcw
+From: "Finney, Steve" <Steve.Finney@SpirentCom.COM>
+To: <linux-mips@linux-mips.org>
+Return-Path: <Steve.Finney@SpirentCom.COM>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4645
+X-archive-position: 4646
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wlacey@goldenhindresearch.com
+X-original-sender: Steve.Finney@SpirentCom.COM
 Precedence: bulk
 X-list: linux-mips
 
---_b381d0372eadef7eeaa16df39eec9e828
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 8bit
+Back in September I was wrestling with the issue of how or
+whether you could do atomic access to 64 bit memory mapped 
+registers from user space running on a 32 bit kernel, and 
+had pretty much concluded (on the basis of discussions here
+and elsewhere) that it was impossible. However, Chris 
+Demetriou from Broadcom provided me with a working solution, 
+which turns out to match Maciej's suggestion below (which I 
+wasn't smart enough to grok at the time). Here's the read, 
+and you can do an equivalent with a write...
 
-I'm bringing up a 2.4.18 version of the kernel on a tx4925 processor, using a NFS'ed root filesystem when the actual mount request RPC call fails w/-512
+sf
 
-About line 662 in function __rpc_execute(), in file net/sunrpc/sched.c
+-----------------------------------------------------
 
-if (task->tk_client->cl_intr && signalled())) {
-        printk("RPC: got signal\n");
-        task->tk_flags |= RPC_TASK_KILLED;
-        rpc_exit(task, -ERESTARTSYS);
-        rpc_wake_up_task(task);
-  }
-  }
-  }
+uint64_t
+read64 (volatile uint64_t *addr)
+{
+     double d;
+     uint64_t rv;
+     __asm__ __volatile__ (".set push            \n\t"
+                           ".set mips32          \n\t"
+                           "ldc1 %0, 0(%2)       \n\t"
+                           "sdc1 %0, %1          \n\t"
+                           ".set pop"
+                           : "=f"(d), "=m"(rv) : "r"(addr));
+     return rv;
+ }
 
-  if (task->tk_exit) {
-     task->tk_exit(task);
-     /* If tk_action is non-null, the user wants us to restart */
-     if (task->tk_action) {
-    ..
-    ..
+------------------------------------------------------------------------
 
-The problems is that rpc_exit() NULLS task->tk_action and I can't see how the task/RPC request gets re-generated.
+On Tue, 30 Sep 2003, Ralf Baechle wrote:
 
-Is anybody familiar w/this area of code? Why is the RPC call apparently not being re-generated?
+> What I called a bug is the necessity to access hardware registers with
+> 64-bit loads and stores in some systems as opposed to of 32-bit
+> instructions - that simply doesn't work from 32-bit universes.
+> 
+> To clarify, it was my understanding of Steve's problem he needs 64-bit
+> loads and stores, not something in the 64-bit physical address space.
+> The later problem obviously would get a different answer.
 
-Any help???
+ I must have missed the detail.  Well, if 64-bit transfers are needed,
+then going for the 64-bit kernel is about the only way.  Or, as a wild
+hack, perhaps "ldc1" and "sdc1" can be used, if it's known the FP is
+present.
 
-Thanks,
-Warrick Lacey
-
-
---_b381d0372eadef7eeaa16df39eec9e828
-Content-Type: text/html;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 8bit
-
-I'm bringing up a 2.4.18 version of the kernel on a tx4925 processor, using a NFS'ed root filesystem when the actual mount request RPC call fails w/-512<br>
-<br>
-About line 662 in function __rpc_execute(), in file net/sunrpc/sched.c<br>
-<br>
-if (task-&gt;tk_client-&gt;cl_intr &amp;&amp; signalled())) {<br>
-        printk(&quot;RPC: got signal\n&quot;);<br>
-        task-&gt;tk_flags |= RPC_TASK_KILLED;<br>
-        rpc_exit(task, -ERESTARTSYS);<br>
-        rpc_wake_up_task(task);<br>
-  }<br>
-  }<br>
-  }<br>
-<br>
-  if (task-&gt;tk_exit) {<br>
-     task-&gt;tk_exit(task);<br>
-     /* If tk_action is non-null, the user wants us to restart */<br>
-     if (task-&gt;tk_action) {<br>
-    ..<br>
-    ..<br>
-<br>
-The problems is that rpc_exit() NULLS task-&gt;tk_action and I can't see how the task/RPC request gets re-generated.<br>
-<br>
-Is anybody familiar w/this area of code? Why is the RPC call apparently not being re-generated?<br>
-<br>
-Any help???<br>
-<br>
-Thanks,<br>
-Warrick Lacey<br>
-<br>
-
-
---_b381d0372eadef7eeaa16df39eec9e828--
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

@@ -1,45 +1,69 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA00164; Thu, 19 Jun 1997 08:44:53 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA00214; Thu, 19 Jun 1997 08:46:47 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id IAA16049 for linux-list; Thu, 19 Jun 1997 08:44:37 -0700
-Received: from morgaine.engr.sgi.com (morgaine.engr.sgi.com [130.62.16.64]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA16042 for <linux@cthulhu.engr.sgi.com>; Thu, 19 Jun 1997 08:44:35 -0700
-Received: from sgiger.munich.sgi.com (sgiger.munich.sgi.com [144.253.192.2]) by morgaine.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA19839 for <linux@morgaine.engr.sgi.com>; Thu, 19 Jun 1997 08:43:49 -0700
-Received: from knobi.munich.sgi.com by sgiger.munich.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1502/940406.SGI)
-	 id RAA22991; Thu, 19 Jun 1997 17:43:47 +0200
-Received: from knobi (localhost [127.0.0.1]) by knobi.munich.sgi.com (950413.SGI.8.6.12/951220.SGI.AUTOCF.knobi) via SMTP id RAA23617; Thu, 19 Jun 1997 17:43:45 +0200
-Message-ID: <33A953B1.2847@munich.sgi.com>
-Date: Thu, 19 Jun 1997 17:43:45 +0200
-From: Martin Knoblauch <knobi@munich.sgi.com>
-Organization: Silicon Graphics GmbH, Am-Hochacker 3, D-85630 Grasbrunn
-X-Mailer: Mozilla 3.01SC-SGI (X11; I; IRIX 6.3 IP22)
-MIME-Version: 1.0
-To: Larry McVoy <lm@neteng.engr.sgi.com>
-CC: richard offer <offer@sgi.com>, linux@morgaine.engr.sgi.com
-Subject: Re: FYI - free Windows API
-References: <199706190242.TAA05701@neteng.engr.sgi.com>
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id IAA16676 for linux-list; Thu, 19 Jun 1997 08:46:36 -0700
+Received: from heaven.newport.sgi.com (heaven.newport.sgi.com [169.238.102.134]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA16663 for <linux@engr.sgi.com>; Thu, 19 Jun 1997 08:46:34 -0700
+Received: by heaven.newport.sgi.com (940816.SGI.8.6.9/940406.SGI)
+	for linux@engr id IAA00782; Thu, 19 Jun 1997 08:46:33 -0700
+From: "Christopher W. Carlson" <carlson@heaven.newport.sgi.com>
+Message-Id: <9706190846.ZM780@heaven.newport.sgi.com>
+Date: Thu, 19 Jun 1997 08:46:33 -0700
+In-Reply-To: Nigel Gamble <nigel@cthulhu.engr.sgi.com>
+        "Re: Getting X on Linux/SGI" (Jun 18,  4:42pm)
+References: <Pine.SGI.3.96.970618162529.1051B-100000@aa5b.engr.sgi.com>
+X-Mailer: Z-Mail-SGI (3.2S.2 10apr95 MediaMail)
+To: linux@cthulhu.engr.sgi.com
+Subject: Re: Getting X on Linux/SGI
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Larry McVoy wrote:
+On Jun 18,  4:42pm, Nigel Gamble wrote:
+> Subject: Re: Getting X on Linux/SGI
+> On Wed, 18 Jun 1997, Larry McVoy wrote:
+> > : On Wed, 18 Jun 1997, Christopher W. Carlson wrote:
+> > : >                            SGI is a hardware company!  It surprises me
+> > : > that much of our company has forgotten that.
+> > : 
+> > : If it was ever true, it's certainly not true any longer.  SGI is
+> > : a systems company.  By which I mean that our "edge" over the
+> > : competition comes from a combination of hardware and software
+> > : working very closely together.
+> > 
+> > We can argue this all day.  It's pointless.
+> 
+> Who is arguing?  I'm just trying to point out that belittling
+> the efforts of all the software engineers at SGI is hardly likely
+> to endear your cause to them.  There are those of us who think
+> there is a place for both Linux and IRIX (although I know that
+> you, Larry, are not one of them); so please try to understand
+> where we are coming from.
 > 
 > 
-> As a friend at DEC said - "we need to grow the pie, not
-> shrink it.  Linux grows it.  We all benefit".  I agree.
+>-- End of excerpt from Nigel Gamble
 
 
- Didn't he say - "We need to grow the pie [against NT],
-not fight over it. Once it is big enough, we can worry
-about cutting it into pieces."?
+Please!  Don't think that I am belittling the software engineers!  I
+had no intent on doing that.  I *am* one of them.
 
-Martin
+My point was that SGI is into making hardware.  That's how it started
+and that is still its main focus.  Yes, it is true that our software
+is very important because it takes advantage of the proprietary stuff
+in the hardware, but the main income for SGI is hardware.  Note in any
+press releases and stock holder's documents how much is said about the
+wonderful software SGI produces (Alias/Wavefront is still a separate
+entity).  You won't find much.
+
 -- 
-+---------------------------------+-----------------------------------+
-|Martin Knoblauch                 | Silicon Graphics GmbH             |
-|Manager Technical Marketing      | Am Hochacker 3 - Technopark       |
-|Silicon Graphics Computer Systems| D-85630 Grasbrunn-Neukeferloh, FRG|
-|---------------------------------| Phone: (+int) 89 46108-179 or -0  |
-|http://reality.sgi.com/knobi     | Fax:   (+int) 89 46107-179        |
-+---------------------------------+-----------------------------------+
-|e-mail: <knobi@munich.sgi.com>   | VM: 6-333-8197 | M/S: IDE-3150    |
-+---------------------------------------------------------------------+
+
+		Chris Carlson
+
+	+------------------------------------------------------+
+	| Also, carlson@sgi.com                                |
+	|   Work:   (714) 224-4530                             |
+	|   Vnet:       6-678-4530     FAX:    (714) 833-9503  |
+	|                                                      |
+	| Trivia fact: an electroencephalogram shows that a    |
+	| human brain and a bowl of quivering lime Jell-O have |
+	| the same waves.  [Time Magazine, Mar 17, 1997]       |
+	+------------------------------------------------------+

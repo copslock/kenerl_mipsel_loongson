@@ -1,84 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Feb 2003 22:39:20 +0000 (GMT)
-Received: from smtp-102.noc.nerim.net ([IPv6:::ffff:62.4.17.102]:3596 "EHLO
-	mallaury.noc.nerim.net") by linux-mips.org with ESMTP
-	id <S8225241AbTBDWjT>; Tue, 4 Feb 2003 22:39:19 +0000
-Received: from melkor (vivienc.net1.nerim.net [213.41.134.233])
-	by mallaury.noc.nerim.net (Postfix) with ESMTP
-	id 2B46C62E5E; Tue,  4 Feb 2003 23:39:16 +0100 (CET)
-Received: from glaurung (helo=localhost)
-	by melkor with local-esmtp (Exim 3.36 #1 (Debian))
-	id 18gBkD-0000b8-00; Tue, 04 Feb 2003 23:40:45 +0100
-Date: Tue, 4 Feb 2003 23:40:45 +0100 (CET)
-From: Vivien Chappelier <vivienc@nerim.net>
-X-Sender: glaurung@melkor
-To: Jun Sun <jsun@mvista.com>
-Cc: linux-mips@linux-mips.org
-Subject: [PATCH 2.5] daily r4k_switch fixes (fwd)
-Message-ID: <Pine.LNX.4.21.0302042339150.31806-100000@melkor>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <vivienc@nerim.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Feb 2003 22:40:49 +0000 (GMT)
+Received: from rj.SGI.COM ([IPv6:::ffff:192.82.208.96]:975 "EHLO rj.sgi.com")
+	by linux-mips.org with ESMTP id <S8225240AbTBDWkt>;
+	Tue, 4 Feb 2003 22:40:49 +0000
+Received: from larry.melbourne.sgi.com (larry.melbourne.sgi.com [134.14.52.130])
+	by rj.sgi.com (8.12.2/8.12.2/linux-outbound_gateway-1.2) with SMTP id h14KeAG8024224;
+	Tue, 4 Feb 2003 12:40:13 -0800
+Received: from pureza.melbourne.sgi.com (pureza.melbourne.sgi.com [134.14.55.244]) by larry.melbourne.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id JAA26579; Wed, 5 Feb 2003 09:39:58 +1100
+Received: from pureza.melbourne.sgi.com (localhost.localdomain [127.0.0.1])
+	by pureza.melbourne.sgi.com (8.12.5/8.12.5) with ESMTP id h14MdWMd028868;
+	Wed, 5 Feb 2003 09:39:32 +1100
+Received: (from clausen@localhost)
+	by pureza.melbourne.sgi.com (8.12.5/8.12.5/Submit) id h14MdU1A028866;
+	Wed, 5 Feb 2003 09:39:30 +1100
+Date: Wed, 5 Feb 2003 09:39:30 +1100
+From: Andrew Clausen <clausen@melbourne.sgi.com>
+To: Guido Guenther <agx@sigxcpu.org>,
+	Linux-MIPS <linux-mips@linux-mips.org>
+Subject: Re: [patch] cmdline.c rewrite
+Message-ID: <20030204223930.GD27302@pureza.melbourne.sgi.com>
+References: <20030204061323.GA27302@pureza.melbourne.sgi.com> <20030204092417.GR16674@bogon.ms20.nix>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20030204092417.GR16674@bogon.ms20.nix>
+User-Agent: Mutt/1.4i
+Return-Path: <clausen@pureza.melbourne.sgi.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1309
+X-archive-position: 1310
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vivienc@nerim.net
+X-original-sender: clausen@melbourne.sgi.com
 Precedence: bulk
 X-list: linux-mips
 
-forgotten Cc:
+On Tue, Feb 04, 2003 at 10:24:17AM +0100, Guido Guenther wrote:
+> On Tue, Feb 04, 2003 at 05:13:23PM +1100, Andrew Clausen wrote:
+> > Some kernel parameters are auto-generated.   eg: root= (always has been
+> > broken).  Anyway, the old version of cmdline.c added these auto-generated
+> Can you explain in what way root= was broken?
 
----------- Forwarded message ----------
-Date: Tue, 4 Feb 2003 22:09:08 +0100 (CET)
-From: Vivien Chappelier <glaurung@vivienc.net1.nerim.net>
-To: Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 2.5] daily r4k_switch fixes
+It was blindly copying from the environment variable a string
+looking like dksc(0,1,2).  This should be translated (somehow)
+to something looking like /dev/sdb1.  This would have to be
+done after the hard disk probes.
 
-Hi,
+Does Linux have some other notation for addressing devices by
+their location on the bus?  (I recall a flamewar on the topic...)
 
-	TIF_USEDFPU and _TIF_USEDFPU are not the same thing at all,
-not surprisingly introducing bugs and confusion in r4k_switch.S
-(mips64) and r2300_switch.S (mips) :)
-
-On Tue, 4 Feb 2003, Ralf Baechle wrote:
-> Ok.  You missed r2300_switch.S though :)
-
-Not this time :)
-
-Vivien.
-
-Index: arch/mips/kernel/r2300_switch.S
-===================================================================
-RCS file: /home/cvs/linux/arch/mips/kernel/r2300_switch.S,v
-retrieving revision 1.28
-diff -u -r1.28 r2300_switch.S
---- arch/mips/kernel/r2300_switch.S	4 Feb 2003 12:53:57 -0000	1.28
-+++ arch/mips/kernel/r2300_switch.S	4 Feb 2003 20:59:01 -0000
-@@ -61,7 +61,7 @@
- 	 */
- 	lw	t3, TASK_THREAD_INFO(a0)
- 	lw	t0, TI_FLAGS(t3)
--	li	t1, TIF_USEDFPU
-+	li	t1, _TIF_USEDFPU
- 	and	t2, t0, t1
- 	beqz	t2, 1f
- 	nor	t1, zero, t1
-Index: arch/mips64/kernel/r4k_switch.S
-===================================================================
-RCS file: /home/cvs/linux/arch/mips64/kernel/r4k_switch.S,v
-retrieving revision 1.23
-diff -u -r1.23 r4k_switch.S
---- arch/mips64/kernel/r4k_switch.S	4 Feb 2003 12:53:57 -0000	1.23
-+++ arch/mips64/kernel/r4k_switch.S	4 Feb 2003 20:59:09 -0000
-@@ -56,7 +56,7 @@
- 	 */
- 	ld	t3, TASK_THREAD_INFO(a0)
- 	ld	t0, TI_FLAGS(t3)
--	li	t1, TIF_USEDFPU
-+	li	t1, _TIF_USEDFPU
- 	and	t2, t0, t1
- 	beqz	t2, 1f
- 	nor	t1, zero, t1
+Cheers,
+Andrew

@@ -1,61 +1,75 @@
-Received:  by oss.sgi.com id <S553739AbQJVKcD>;
-	Sun, 22 Oct 2000 03:32:03 -0700
-Received: from noose.gt.owl.de ([62.52.19.4]:61447 "HELO noose.gt.owl.de")
-	by oss.sgi.com with SMTP id <S553725AbQJVKbi>;
-	Sun, 22 Oct 2000 03:31:38 -0700
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 26D2F7DD; Sun, 22 Oct 2000 12:31:36 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 1ECFC900C; Sun, 22 Oct 2000 12:30:13 +0200 (CEST)
-Date:   Sun, 22 Oct 2000 12:30:13 +0200
-From:   Florian Lohoff <flo@rfc822.org>
-To:     Klaus Naumann <spock@mgnet.de>
-Cc:     Linux/MIPS list <linux-mips@oss.sgi.com>,
+Received:  by oss.sgi.com id <S553746AbQJVKxD>;
+	Sun, 22 Oct 2000 03:53:03 -0700
+Received: from natmail2.webmailer.de ([192.67.198.65]:45960 "EHLO
+        post.webmailer.de") by oss.sgi.com with ESMTP id <S553736AbQJVKwj>;
+	Sun, 22 Oct 2000 03:52:39 -0700
+Received: from scotty.mgnet.de (pD4B89433.dip.t-dialin.net [212.184.148.51])
+	by post.webmailer.de (8.9.3/8.8.7) with SMTP id MAA10977
+	for <linux-mips@oss.sgi.com>; Sun, 22 Oct 2000 12:52:34 +0200 (MET DST)
+Received: (qmail 19905 invoked from network); 22 Oct 2000 10:52:23 -0000
+Received: from spock.mgnet.de (192.168.1.4)
+  by scotty.mgnet.de with SMTP; 22 Oct 2000 10:52:23 -0000
+Date:   Sun, 22 Oct 2000 12:52:23 +0200 (CEST)
+From:   Klaus Naumann <spock@mgnet.de>
+To:     Karel van Houten <K.H.C.vanHouten@research.kpn.com>
+cc:     Linux/MIPS list <linux-mips@oss.sgi.com>,
         "Linux MIPS fnet.fr" <linux-mips@fnet.fr>
 Subject: Re: Bug Tracker online
-Message-ID: <20001022123012.A1564@paradigm.rfc822.org>
-References: <20001021202159.A3619@paradigm.rfc822.org> <Pine.LNX.4.21.0010220951060.4857-100000@spock.mgnet.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-User-Agent: Mutt/1.0.1i
-In-Reply-To: <Pine.LNX.4.21.0010220951060.4857-100000@spock.mgnet.de>; from spock@mgnet.de on Sun, Oct 22, 2000 at 10:04:27AM +0200
-Organization: rfc822 - pure communication
+In-Reply-To: <200010221021.MAA00815@sparta.research.kpn.com>
+Message-ID: <Pine.LNX.4.21.0010221242002.8799-100000@spock.mgnet.de>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Sun, Oct 22, 2000 at 10:04:27AM +0200, Klaus Naumann wrote:
-> Actually writing the bug tracker wasn't an act of boredom 
-> (if you meant it that way). I had the strong feeling that we have
+On Sun, 22 Oct 2000, Karel van Houten wrote:
 
-No - I didnt think of it that way ...
-
-> > The one sending these reports has to give possible additional
-> > hints on what he did/patch/change to get it to work. So probabably
-> > we will than be able to keep track on which kernel versions
-> > worked on which machines.
+> Hi Klaus,
 > 
-> This is indeed a interesting idea. Writing it wouldn't be a big deal.
-> But the question is if it's worth writing it. First we would need
-> some ppl which actally send the info somewhere - I'm pretty
-> much in doubt, that we will find enough so that it rents.
-> Second question is if ppl are actually interested in such a thing.
-> I'll not again waste time writing something where I don't get at least a
-> small ammount of feedback and which noone is using.
+> Klaus wrote:
+> > Actually writing the bug tracker wasn't an act of boredom 
+> > (if you meant it that way). I had the strong feeling that we have
+> > a lot of open problems and we're loosing control which are still open.
+> > Well, in fact your mail is the only comment from the mailinglists on a
+> > project which has taken a week to write and makes sense to me and other 
+> > ppl. I hoped that if ppl don't like the idea or the way I did it, that
+> > they at least would tell me to make it better.
+> > Just not saying anything is pretty lame and to be honest I'm pretty
+> > disappointed about that.
+> > Note that I'm not hunting for a "Hey what a cool idea !" or so -
+> > but I'd have expected at least any comment.
+> You sound a bit disappointed. Well, I can imagine, but you should
+> give people more time. I had planned to look into your bug tracker,
+> but didn't found the time yet (Your mail was still in my inbox).
 
-Right - I just thought as a feedback for the kernel cvs commits the other
-way round that you implemented - Sometimes (most of the time ?) bugs
-keep not found because noone is using some specific feature (Like the
-Timeing stuff in the decstations) and though a lot of people simply
-think its their fault instead of complaining - But with something like
-that and possibly a simple shell script we yould collect not negative
-but positive information on WHAT is actually working. Nevertheless this
-only works for a small subset of the mips stuff (kernel) and though might
-be pretty useless as most of the kernel stuff works and userspace is
-getting the problem.
+Yes, you're right - I was a bit rushing. And it wasn't the first time
+that I got this impression ... so maybe I was a bit to fast.
 
-Flo
+> Concerning the boot output parser:
+
+[snippelip]
+
+> I think it is really useful to know what configurations / kernel versions
+> and hardware other people have. I have published the bootlogs of
+> my DECStations on my website. 
+
+ok, we just need to think about a good way to make the thing happen.
+Anyone with a good idea mail me ;)
+ 
+> By the way, you could update your mips-linux webpages in respect to
+> DECStations from my info: http://www.xs4all.nl/~vhouten/mipsel
+
+Done. :)
+
+> I'm currently running kernel 2.4.0-test9, and I'm in the process
+> of rebuilding RedHat 6.1 packages to get a minimal distribution ready.
+
+Cool :)
+
 -- 
-Florian Lohoff		flo@rfc822.org		      	+49-5201-669912
-      "Write only memory - Oops. Time for my medication again ..."
+Full Name   : Klaus Naumann     | (http://www.mgnet.de/) (Germany)
+Nickname    : Spock             | Org.: Mad Guys Network
+Phone / FAX : ++49/177/7862964  | E-Mail: (spock@mgnet.de)
+PGP Key     : www.mgnet.de/keys/key_spock.txt

@@ -1,60 +1,37 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id RAA20209; Mon, 16 Jun 1997 17:54:27 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id SAA20547; Mon, 16 Jun 1997 18:02:27 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id RAA29968 for linux-list; Mon, 16 Jun 1997 17:53:51 -0700
-Received: from yon.engr.sgi.com (yon.engr.sgi.com [150.166.61.32]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id RAA29951 for <linux@cthulhu.engr.sgi.com>; Mon, 16 Jun 1997 17:53:49 -0700
-Received: (from ariel@localhost) by yon.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id RAA19808; Mon, 16 Jun 1997 17:53:48 -0700
-From: ariel@yon.engr.sgi.com (Ariel Faigon)
-Message-Id: <199706170053.RAA19808@yon.engr.sgi.com>
-Subject: Re: ARC question
-To: ralf@mailhost.uni-koblenz.de (Ralf Baechle)
-Date: Mon, 16 Jun 1997 17:53:47 -0700 (PDT)
-Cc: linux@yon.engr.sgi.com
-In-Reply-To: <199706170012.CAA12560@informatik.uni-koblenz.de> from "Ralf Baechle" at Jun 17, 97 02:12:29 am
-Reply-To: ariel@sgi.com (Ariel Faigon)
-Organization: Silicon Graphics Inc.
-X-Mailer: ELM [version 2.4 PL24 ME5a]
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id SAA02687 for linux-list; Mon, 16 Jun 1997 18:01:49 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id SAA02668; Mon, 16 Jun 1997 18:01:43 -0700
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id SAA00084; Mon, 16 Jun 1997 18:01:33 -0700
+	env-from (ralf@informatik.uni-koblenz.de)
+Received: from thoma (ralf@thoma.uni-koblenz.de [141.26.4.61]) by informatik.uni-koblenz.de (8.8.5/8.6.9) with SMTP id CAA18692; Tue, 17 Jun 1997 02:57:11 +0200 (MEST)
+From: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
+Message-Id: <199706170057.CAA18692@informatik.uni-koblenz.de>
+Received: by thoma (SMI-8.6/KO-2.0)
+	id CAA22488; Tue, 17 Jun 1997 02:57:07 +0200
+Subject: Re: A pointed question about endianness...
+To: mikemac@titian.engr.sgi.com (Mike McDonald)
+Date: Tue, 17 Jun 1997 02:57:04 +0200 (MET DST)
+Cc: ralf@mailhost.uni-koblenz.de, linux@cthulhu.engr.sgi.com
+In-Reply-To: <199706170033.RAA10832@titian.engr.sgi.com> from "Mike McDonald" at Jun 16, 97 05:32:56 pm
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-:
-:Hi,
-:
-:I've got a question about the ARCS firmware as implemented on SGI.  Is
-:there some documentation available for it?  I've got a documentation of
-:the ARC standard v1.0 from the ACE consortium (the document is marked
-:"Microsoft Confidential") as well as the "Portable Bootloader Specification"
-:which again ist M$ confidential.  These documents however don't seem to
-:fit SGI's machines to well as they're refering to EISA slots, little
-:endian byteorder and NT as OS and generally looked a bit outdated even
-:when I got them two years ago.
-:
-:So I suppose there is documention that is more authoritative for the SGI
-:firmware?
-:
-:  Ralf
-:
+>   Is anyone working on the Algorithmics boards? We have 5 of them over
+> here currently being used with VxWorks (which isn't officially
+> supported on these boards). I could cause lots of trouble over here if
+> Linux did work on them. :-)
 
-The documentation that comes with the Indy includes all
-the PROM commands.  I gave my hard-copy "system administration"
-book to Mike when he was visiting here, but it should also be on
-every IRIX CD in "Insight" (SGI old help) format.  Clicking on "Help"
-in the desktop toolchest should lead you to the docs.
+Me, I've got a P4032 donated by Algorithmics here.  The port hasn't yet
+reached a state where I'd be pround of it, but bascially it works
+diskless.  Some guys from a Silicon Valley company are currently also
+porting Linux to that port, supported but otherwise mostly independant
+from me.  They're using similar board from Algorithmics which is based
+on a R5000 derivate.
 
-But, it gets even better (I hope).
-All our docs are online on the web outside the firewall.
+Ok, patch 2.1.43 just has been released.  **Input** ...
 
-	http://www.sgi.com/techpubs/dynaweb_docs/0630/SGIindex/bks.html
-
-Or more specifically (on the ARC PROM):
-
-	http://www.sgi.com/cgi-bin/infosrch.cgi?cmd=getdoc&db=bks&fname=/SGI_Admin/IA_ConfigOps/10117
-
-And also, please check "man prom"
-
-Let me know if you need more than what's in there.
-
--- 
-Peace, Ariel
+  Ralf

@@ -1,236 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Sep 2004 16:08:11 +0100 (BST)
-Received: from mba.ocn.ne.jp ([IPv6:::ffff:210.190.142.172]:48369 "HELO
-	smtp.mba.ocn.ne.jp") by linux-mips.org with SMTP
-	id <S8225198AbUIAPIH>; Wed, 1 Sep 2004 16:08:07 +0100
-Received: from localhost (p6055-ipad204funabasi.chiba.ocn.ne.jp [222.146.93.55])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 03E4A74F3; Thu,  2 Sep 2004 00:08:03 +0900 (JST)
-Date: Thu, 02 Sep 2004 00:16:35 +0900 (JST)
-Message-Id: <20040902.001635.92589944.anemo@mba.ocn.ne.jp>
-To: rsandifo@redhat.com
-Cc: linux-mips@linux-mips.org
-Subject: Re: gcc 3.3.4/3.4.1 and get_user
-From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20040902.001433.59461413.anemo@mba.ocn.ne.jp>
-References: <20040901.012223.59462025.anemo@mba.ocn.ne.jp>
-	<87656yqsmz.fsf@redhat.com>
-	<20040902.001433.59461413.anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 20.7 / Mule 4.0 (HANANOEN)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Sep 2004 23:31:41 +0100 (BST)
+Received: from p508B68F0.dip.t-dialin.net ([IPv6:::ffff:80.139.104.240]:49456
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225220AbUIAW2l>; Wed, 1 Sep 2004 23:28:41 +0100
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i81MSe2V005809
+	for <linux-mips@linux-mips.org>; Thu, 2 Sep 2004 00:28:40 +0200
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i81MSe3t005808
+	for linux-mips@linux-mips.org; Thu, 2 Sep 2004 00:28:40 +0200
+Resent-Message-Id: <200409012228.i81MSe3t005808@fluff.linux-mips.net>
+Received: from baikonur.stro.at ([IPv6:::ffff:213.239.196.228]:51910 "EHLO
+	baikonur.stro.at") by linux-mips.org with ESMTP id <S8225211AbUIAV2T>;
+	Wed, 1 Sep 2004 22:28:19 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by baikonur.stro.at (Postfix) with ESMTP id 98B635C065;
+	Wed,  1 Sep 2004 23:28:15 +0200 (CEST)
+Received: from baikonur.stro.at ([127.0.0.1])
+	by localhost (baikonur [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 09433-01; Wed, 1 Sep 2004 23:28:15 +0200 (CEST)
+Received: from sputnik (M830P021.adsl.highway.telekom.at [62.47.135.181])
+	by baikonur.stro.at (Postfix) with ESMTP id 17AC55C008;
+	Wed,  1 Sep 2004 23:28:15 +0200 (CEST)
+Received: from localhost ([127.0.0.1] helo=localhost.localdomain)
+	by sputnik with esmtp (Exim 4.34)
+	id 1C2ceP-0000Me-GX; Wed, 01 Sep 2004 23:28:17 +0200
+Subject: [patch 1/1]  minmax-removal 	arch/mips/au1000/common/usbdev.c
+To: linux-mips@linux-mips.org
+Cc: ralf@linux-mips.org, janitor@sternwelten.at
+From: janitor@sternwelten.at
+Date: Wed, 01 Sep 2004 23:28:17 +0200
+Message-ID: <E1C2ceP-0000Me-GX@sputnik>
+X-Virus-Scanned: by Amavis (ClamAV) at stro.at
+Resent-From: ralf@linux-mips.org
+Resent-Date: Thu, 2 Sep 2004 00:28:40 +0200
+Resent-To: linux-mips@linux-mips.org
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5763
+X-archive-position: 5764
+X-Approved-By: ralf@linux-mips.org
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Thu, 02 Sep 2004 00:14:33 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> said:
 
-anemo> Thank you.  I create a patch for kernel with this workaround.
-anemo> # This patch assumes gcc 3.5 will be free from this problem :-)
 
-anemo> Could you apply, Ralf?
 
-And this is for 2.4 tree.
+Patch (against 2.6.8.1) removes unnecessary min/max macros and changes
+calls to use kernel.h macros instead.
 
-diff -u linux-mips-2.4-cvs/include/asm-mips/paccess.h linux-mips-2.4/include/asm-mips/paccess.h
---- linux-mips-2.4-cvs/include/asm-mips/paccess.h	Tue Nov 11 21:49:34 2003
-+++ linux-mips-2.4/include/asm-mips/paccess.h	Wed Sep  1 23:21:41 2004
-@@ -14,6 +14,7 @@
- #define _ASM_PACCESS_H
- 
- #include <linux/errno.h>
-+#include <asm/war.h>
- 
- #define put_dbe(x,ptr) __put_dbe((x),(ptr),sizeof(*(ptr)))
- #define get_dbe(x,ptr) __get_dbe((x),(ptr),sizeof(*(ptr)))
-@@ -25,7 +26,7 @@
- int __gu_err; \
- __typeof(*(ptr)) __gu_val; \
- unsigned long __gu_addr; \
--__asm__("":"=r" (__gu_val)); \
-+__asm__ GCC_ASM_PROTECT_DSLOT ("":"=r" (__gu_val)); \
- __gu_addr = (unsigned long) (ptr); \
- __asm__("":"=r" (__gu_err)); \
- switch (size) { \
-@@ -64,7 +65,7 @@
- unsigned long __pu_addr; \
- __pu_val = (x); \
- __pu_addr = (unsigned long) (ptr); \
--__asm__("":"=r" (__pu_err)); \
-+__asm__ GCC_ASM_PROTECT_DSLOT ("":"=r" (__pu_err)); \
- switch (size) { \
- case 1: __put_dbe_asm("sb"); break; \
- case 2: __put_dbe_asm("sh"); break; \
-diff -u linux-mips-2.4-cvs/include/asm-mips/uaccess.h linux-mips-2.4/include/asm-mips/uaccess.h
---- linux-mips-2.4-cvs/include/asm-mips/uaccess.h	Mon Sep 15 10:28:51 2003
-+++ linux-mips-2.4/include/asm-mips/uaccess.h	Wed Sep  1 23:24:00 2004
-@@ -12,6 +12,7 @@
- #include <linux/compiler.h>
- #include <linux/errno.h>
- #include <linux/sched.h>
-+#include <asm/war.h>
- 
- #define STR(x)  __STR(x)
- #define __STR(x)  #x
-@@ -200,9 +201,9 @@
- 	long __gu_err;							\
- 	__typeof(*(ptr)) __gu_val;					\
- 	long __gu_addr;							\
--	__asm__("":"=r" (__gu_val));					\
-+	__asm__ GCC_ASM_PROTECT_DSLOT ("":"=r" (__gu_val));		\
- 	__gu_addr = (long) (ptr);					\
--	__asm__("":"=r" (__gu_err));					\
-+	__asm__ GCC_ASM_PROTECT_DSLOT ("":"=r" (__gu_err));		\
- 	switch (size) {							\
- 		case 1: __get_user_asm("lb"); break;			\
- 		case 2: __get_user_asm("lh"); break;			\
-@@ -218,9 +219,9 @@
- 	long __gu_err;							\
- 	__typeof__(*(ptr)) __gu_val;					\
- 	long __gu_addr;							\
--	__asm__("":"=r" (__gu_val));					\
-+	__asm__ GCC_ASM_PROTECT_DSLOT ("":"=r" (__gu_val));		\
- 	__gu_addr = (long) (ptr);					\
--	__asm__("":"=r" (__gu_err));					\
-+	__asm__ GCC_ASM_PROTECT_DSLOT ("":"=r" (__gu_err));		\
- 	if (access_ok(VERIFY_READ, __gu_addr, size)) {			\
- 		switch (size) {						\
- 		case 1: __get_user_asm("lb"); break;			\
-@@ -294,7 +295,7 @@
- 	long __pu_addr;							\
- 	__pu_val = (x);							\
- 	__pu_addr = (long) (ptr);					\
--	__asm__("":"=r" (__pu_err));					\
-+	__asm__ GCC_ASM_PROTECT_DSLOT ("":"=r" (__pu_err));		\
- 	switch (size) {							\
- 		case 1: __put_user_asm("sb"); break;			\
- 		case 2: __put_user_asm("sh"); break;			\
-@@ -312,7 +313,7 @@
- 	long __pu_addr;							\
- 	__pu_val = (x);							\
- 	__pu_addr = (long) (ptr);					\
--	__asm__("":"=r" (__pu_err));					\
-+	__asm__ GCC_ASM_PROTECT_DSLOT ("":"=r" (__pu_err));		\
- 	if (access_ok(VERIFY_WRITE, __pu_addr, size)) {			\
- 		switch (size) {						\
- 		case 1: __put_user_asm("sb"); break;			\
-diff -u linux-mips-2.4-cvs/include/asm-mips/war.h linux-mips-2.4/include/asm-mips/war.h
---- linux-mips-2.4-cvs/include/asm-mips/war.h	Mon Mar  8 20:21:39 2004
-+++ linux-mips-2.4/include/asm-mips/war.h	Wed Sep  1 23:23:04 2004
-@@ -210,4 +210,10 @@
- #define RM9000_CDEX_SMP_WAR		0
+Since I dont have the hardware those patches are not tested.
+
+Best regards
+Veeck
+
+Signed-off-by: Michael Veeck <michael.veeck@gmx.net>
+Signed-off-by: Maximilian Attems <janitor@sternwelten.at>
+
+
+
+---
+
+ linux-2.6.9-rc1-bk7-max/arch/mips/au1000/common/usbdev.c |    2 --
+ 1 files changed, 2 deletions(-)
+
+diff -puN arch/mips/au1000/common/usbdev.c~min-max-arch_mips_au1000_common_usbdev arch/mips/au1000/common/usbdev.c
+--- linux-2.6.9-rc1-bk7/arch/mips/au1000/common/usbdev.c~min-max-arch_mips_au1000_common_usbdev	2004-09-01 19:38:23.000000000 +0200
++++ linux-2.6.9-rc1-bk7-max/arch/mips/au1000/common/usbdev.c	2004-09-01 19:38:23.000000000 +0200
+@@ -61,8 +61,6 @@
+ #define vdbg(fmt, arg...) do {} while (0)
  #endif
  
-+#if (__GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ > 4))
-+#define GCC_ASM_PROTECT_DSLOT
-+#else
-+#define GCC_ASM_PROTECT_DSLOT	__volatile__
-+#endif
-+
- #endif /* _ASM_WAR_H */
-diff -u linux-mips-2.4-cvs/include/asm-mips64/paccess.h linux-mips-2.4/include/asm-mips64/paccess.h
---- linux-mips-2.4-cvs/include/asm-mips64/paccess.h	Mon Jul  9 09:25:38 2001
-+++ linux-mips-2.4/include/asm-mips64/paccess.h	Wed Sep  1 23:21:41 2004
-@@ -14,6 +14,7 @@
- #define _ASM_PACCESS_H
+-#define MAX(a,b)	(((a)>(b))?(a):(b))
+-
+ #define ALLOC_FLAGS (in_interrupt () ? GFP_ATOMIC : GFP_KERNEL)
  
- #include <linux/errno.h>
-+#include <asm/war.h>
- 
- #define put_dbe(x,ptr) __put_dbe((x),(ptr),sizeof(*(ptr)))
- #define get_dbe(x,ptr) __get_dbe((x),(ptr),sizeof(*(ptr)))
-@@ -25,7 +26,7 @@
- long __gu_err; \
- __typeof(*(ptr)) __gu_val; \
- long __gu_addr; \
--__asm__("":"=r" (__gu_val)); \
-+__asm__ GCC_ASM_PROTECT_DSLOT ("":"=r" (__gu_val)); \
- __gu_addr = (long) (ptr); \
- __asm__("":"=r" (__gu_err)); \
- switch (size) { \
-@@ -61,7 +62,7 @@
- long __pu_addr; \
- __pu_val = (x); \
- __pu_addr = (long) (ptr); \
--__asm__("":"=r" (__pu_err)); \
-+__asm__ GCC_ASM_PROTECT_DSLOT ("":"=r" (__pu_err)); \
- switch (size) { \
- case 1: __put_dbe_asm("sb"); break; \
- case 2: __put_dbe_asm("sh"); break; \
-diff -u linux-mips-2.4-cvs/include/asm-mips64/uaccess.h linux-mips-2.4/include/asm-mips64/uaccess.h
---- linux-mips-2.4-cvs/include/asm-mips64/uaccess.h	Wed Sep 17 23:22:35 2003
-+++ linux-mips-2.4/include/asm-mips64/uaccess.h	Wed Sep  1 23:23:35 2004
-@@ -12,6 +12,7 @@
- #include <linux/compiler.h>
- #include <linux/errno.h>
- #include <linux/sched.h>
-+#include <asm/war.h>
- 
- #define STR(x)  __STR(x)
- #define __STR(x)  #x
-@@ -190,9 +191,9 @@
- 	long __gu_err;							\
- 	__typeof(*(ptr)) __gu_val;					\
- 	long __gu_addr;							\
--	__asm__("":"=r" (__gu_val));					\
-+	__asm__ GCC_ASM_PROTECT_DSLOT ("":"=r" (__gu_val));		\
- 	__gu_addr = (long) (ptr);					\
--	__asm__("":"=r" (__gu_err));					\
-+	__asm__ GCC_ASM_PROTECT_DSLOT ("":"=r" (__gu_err));		\
- 	switch (size) {							\
- 		case 1: __get_user_asm("lb"); break;			\
- 		case 2: __get_user_asm("lh"); break;			\
-@@ -208,9 +209,9 @@
- 	long __gu_err;							\
- 	__typeof__(*(ptr)) __gu_val;					\
- 	long __gu_addr;							\
--	__asm__("":"=r" (__gu_val));					\
-+	__asm__ GCC_ASM_PROTECT_DSLOT ("":"=r" (__gu_val));		\
- 	__gu_addr = (long) (ptr);					\
--	__asm__("":"=r" (__gu_err));					\
-+	__asm__ GCC_ASM_PROTECT_DSLOT ("":"=r" (__gu_err));		\
- 	if (access_ok(VERIFY_READ, __gu_addr, size)) {			\
- 		switch (size) {						\
- 		case 1: __get_user_asm("lb"); break;			\
-@@ -250,7 +251,7 @@
- 	long __pu_addr;							\
- 	__pu_val = (x);							\
- 	__pu_addr = (long) (ptr);					\
--	__asm__("":"=r" (__pu_err));					\
-+	__asm__ GCC_ASM_PROTECT_DSLOT ("":"=r" (__pu_err));		\
- 	switch (size) {							\
- 		case 1: __put_user_asm("sb"); break;			\
- 		case 2: __put_user_asm("sh"); break;			\
-@@ -268,7 +269,7 @@
- 	long __pu_addr;							\
- 	__pu_val = (x);							\
- 	__pu_addr = (long) (ptr);					\
--	__asm__("":"=r" (__pu_err));					\
-+	__asm__ GCC_ASM_PROTECT_DSLOT ("":"=r" (__pu_err));		\
- 	if (access_ok(VERIFY_WRITE, __pu_addr, size)) {			\
- 		switch (size) {						\
- 		case 1: __put_user_asm("sb"); break;			\
-diff -u linux-mips-2.4-cvs/include/asm-mips64/war.h linux-mips-2.4/include/asm-mips64/war.h
---- linux-mips-2.4-cvs/include/asm-mips64/war.h	Mon Mar  8 20:21:39 2004
-+++ linux-mips-2.4/include/asm-mips64/war.h	Wed Sep  1 23:23:12 2004
-@@ -210,4 +210,10 @@
- #define RM9000_CDEX_SMP_WAR		0
- #endif
- 
-+#if (__GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ > 4))
-+#define GCC_ASM_PROTECT_DSLOT
-+#else
-+#define GCC_ASM_PROTECT_DSLOT	__volatile__
-+#endif
-+
- #endif /* _ASM_WAR_H */
+ #define EP_FIFO_DEPTH 8
+
+_

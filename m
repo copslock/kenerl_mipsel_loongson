@@ -1,56 +1,206 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Jun 2004 09:34:01 +0100 (BST)
-Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:14244 "EHLO
-	witte.sonytel.be") by linux-mips.org with ESMTP id <S8225287AbUFMIdu>;
-	Sun, 13 Jun 2004 09:33:50 +0100
-Received: from waterleaf.sonytel.be (localhost [127.0.0.1])
-	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id i5D8XDXK017736;
-	Sun, 13 Jun 2004 10:33:13 +0200 (MEST)
-Date: Sun, 13 Jun 2004 10:33:13 +0200 (MEST)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: David Daney <ddaney@avtrex.com>
-cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>, cgd@broadcom.com,
-	Ralf Baechle <ralf@linux-mips.org>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>,
-	binutils@sources.redhat.com
-Subject: Re: [Patch] (revised patch) / 0 should send SIGFPE not SIGTRAP 
-In-Reply-To: <40CA1FE3.9030507@avtrex.com>
-Message-ID: <Pine.GSO.4.58.0406131032350.85@waterleaf.sonytel.be>
-References: <40C9F5A4.2050606@avtrex.com> <40C9F5FE.8030607@avtrex.com>
- <40C9F7F0.50501@avtrex.com> <Pine.LNX.4.55.0406112039040.13062@jurand.ds.pg.gda.pl>
- <mailpost.1086981251.16853@news-sj1-1> <yov57juduc7q.fsf@ldt-sj3-010.sj.broadcom.com>
- <Pine.LNX.4.55.0406112133380.13062@jurand.ds.pg.gda.pl> <40CA1B35.6010603@avtrex.com>
- <40CA1FE3.9030507@avtrex.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Jun 2004 21:37:09 +0100 (BST)
+Received: from mk-smarthost-5.mail.uk.tiscali.com ([IPv6:::ffff:212.74.114.43]:61456
+	"EHLO mk-smarthost-5.mail.uk.tiscali.com") by linux-mips.org
+	with ESMTP id <S8225905AbUFMUhD>; Sun, 13 Jun 2004 21:37:03 +0100
+Received: from mk-cpfront-11.mail.uk.tiscali.com ([212.74.114.54]:33601 helo=mk-cpfrontend.uk.tiscali.com)
+	by mk-smarthost-5.mail.uk.tiscali.com with esmtp (Exim 4.30)
+	id 1BZbip-0006TT-5E
+	for linux-mips@linux-mips.org; Sun, 13 Jun 2004 21:36:55 +0100
+Received: by mk-cpfrontend.uk.tiscali.com (7.0.024.3-1) id 40C7289C0059185B for linux-mips@linux-mips.org; Sun, 13 Jun 2004 20:36:56 +0000
+From: Mail Delivery Service <postmaster@uk.tiscali.com>
+Subject: Delivery Status Notification
+To: linux-mips@linux-mips.org
+Date: Sun, 13 Jun 2004 20:36:55 +0000
+Message-ID: <40C7289C00591858@mk-cpfrontend-11.mail.uk.tiscali.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <geert@linux-m68k.org>
+Content-Type: Multipart/Report; report-type=delivery-status; boundary="========/40C7289C00591857/mk-cpfrontend.uk.tiscali.com"
+Return-Path: <>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5299
+X-archive-position: 5300
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: postmaster@uk.tiscali.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 11 Jun 2004, David Daney wrote:
-> David Daney wrote:
-> > How about the attached (lightly tested) patch?
-> >
-> I will quit sending patches after this one.  It is equivalent to the
-> previous version, except it uses the symbolic names of the break codes
-> instead of the numeric values.
+This multi-part MIME message contains a Delivery Status Notification.
+If you can see this text, your mail client may not be able to understand MIME
+formatted messages or DSNs (see RFC 2045 through 2049 for general MIME
+information and RFC 1891 through 1894 for DSN specific information).
 
-Please send one more, where you use `diff -up' :-)
+--========/40C7289C00591857/mk-cpfrontend.uk.tiscali.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
 
-Gr{oetje,eeting}s,
+ - These recipients of your message have been processed by the mail server:
+captain.carrott@lineone.net; Failed; 5.2.2 (mailbox full)
 
-						Geert
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+--========/40C7289C00591857/mk-cpfrontend.uk.tiscali.com
+Content-Type: Message/Delivery-Status
+
+Reporting-MTA: dns; mk-cpfrontend.uk.tiscali.com
+Received-from-MTA: dns; lsanca1-ar1-4-12-013-080.dsl-verizon.net (4.12.13.80)
+Arrival-Date: Sun, 13 Jun 2004 20:36:55 +0000
+
+Final-Recipient: rfc822; captain.carrott@lineone.net
+Action: Failed
+Status: 5.2.2 (mailbox full)
+
+--========/40C7289C00591857/mk-cpfrontend.uk.tiscali.com
+Content-Type: Message/RFC822
+
+Return-Path: <linux-mips@linux-mips.org>
+Received: from lsanca1-ar1-4-12-013-080.dsl-verizon.net (4.12.13.80) by mk-cpfrontend.uk.tiscali.com (7.0.024.3-1)
+        id 40C7289C00591857 for captain.carrott@lineone.net; Sun, 13 Jun 2004 20:36:55 +0000
+Received: from 175.30.45.132 by 4.12.13.80; Sun, 13 Jun 2004 18:34:21 -0300
+Message-ID: <YTLLYROPUPPLUVLJVFXZGUY@msn.com>
+From: "admin@ns.edu.gu" <eug@rigel.infonex.com>
+Reply-To: "skrishnan@navini.com" <edi@ka.linux.de>
+To: captain.carrott@lineone.net
+Subject: http://finance.yahoo.com/q?s=CFGC.PK
+Date: Mon, 14 Jun 2004 00:31:21 +0300
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="--00153862427203101"
+X-Priority: 3
+X-MSMail-Priority: Normal
+
+----00153862427203101
+Content-Type: text/plain;
+Content-Transfer-Encoding: base64
+
+ICAgICAgICAgICBHcmVhdCBBbm5vdW5jZW1lbnQgZnJvbSBTQldMDQoNClNCV2wgSGFzIEJl
+ZW4gR3JhbnRlZCBBbm90aGVyIEZDQyAyM0dIeiBPcGVyYXRpbmcgTGljZW5zZSBpbiBMYXMg
+VmVnYXMNCg0KICAgICAgICAgICAgICAgICAgICAgICAgIEdST1VORCBCUkVBS0lORyBORVdT
+DQogICAgICAgICAgIA0KU0JXbCBIYXMgQmVlbiBHcmFudGVkIEFub3RoZXIgRkNDIDIzR0h6
+IE9wZXJhdGluZyBMaWNlbnNlIGluIExhcyBWZWdhcw0KDQoNClJlYWQgdGhlIG5ld3MgYmVs
+b3cgLSBXZSBiZWxpZXZlIHRoaXMgZXhjaXRpbmcgbmV3cyBpbiBhZGRpdGlvbiB0byB0aGUg
+YmlnIFBSDQpjYW1wYWlnbiBpbiB0aGUgbmV4dCA1IGRheXMgd2lsbCBtYWtlIFNCV0wgbW92
+ZSB1cCBhbmQgdXAgYW5kIHVwLi4uLg0KDQogICAgICAgICAgICAgICAgDQogIEV4cGVjdCBI
+dWdlIENvdmVyYWdlIC0gV2UgYmVsaWV2ZSB0aGlzIHN0b2NrIHdpbGwgRXhwbG9kZSBvbiBN
+b25kYXkgSnVuZSAxMHRoDQoNCg0KU0JXTCB3aWxsIGJlIHByb2ZpbGVkIGluIDEwLTE1IGlu
+dmVzdG9yIG5ld3NsZXR0ZXJzIG92ZXIgdGhlIHdlZWtlbmQuLiBBY3QgdG9kYXkgYW5kDQpz
+ZWN1cmUgeW91ciBwb3NpdGlvbiBUb2RheQ0KDQoNCis+Kz4rPiBDb21wYW55IFByb2ZpbGUg
+DQoNClNreUJyaWRnZSBXaXJlbGVzcyBJbmMuIA0KU3ltYm9sOiBCQjogU0JXTA0KQ3VycmVu
+dCBQcmljZTogJDAuMDMNCg0KSW4gb3VyIG9waW5pb24gdGhlIHN0b2NrIHByaWNlIGNvdWxk
+IGdvIHRvICQwLjEzIC0gMC4xNCBpbiB0aGUgbmV4dCAzLTUgZGF5cw0KSW4gb3VyIG9waW5p
+b24gdGhlIHN0b2NrIHByaWNlIGNvdWxkIGdvIHRvICQwLjE2IC0gMC4xOCBpbiB0aGUgbmV4
+dCAxMCAgZGF5cw0KDQpSZWFkIHRoZSBleGNpdGluZyBuZXdzIGJlbG93DQoNCi0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0NCg0KU2t5QnJpZGdlIFdpcmVsZXNzIEluYy4gaXMgcG9zaXRpb25lZCB0
+byBwcm9kdWNlIHNvbGlkIGdyb3d0aCwgcmFwaWRseSBpbmNyZWFzaW5nIHJldmVudWVzIGFu
+ZCBpbXByZXNzaXZlIHNoYXJlIHZhbHVlIGdhaW5zLiBGb2N1c2VkIG9uIEhpZ2ggR3Jvd3Ro
+IEFyZWFzIGluIEhpZ2ggR3Jvd3RoIFNlY3RvcnMsIHRoZSBjb21wYW55IGlzIGZvY3VzZWQg
+b24gaGlnaC1zcGVlZCBmaXhlZCB3aXJlbGVzcyBJbnRlcm5ldCBhY2Nlc3MgdG8gYnVzaW5l
+c3NlcyBhbmQgY29tbXVuaXRpZXMgaW4gc29tZSBvZiB0aGUgbmF0aW9uJ3MgZmFzdGVzdC1n
+cm93aW5nIG1ldHJvcG9saXRhbiBtYXJrZXRzLCB3aXRoIGluaXRpYWwgZWZmb3J0cyBpbiBM
+YXMgVmVnYXMsIGEgdmVyeSBkeW5hbWljIG1hcmtldC4gV2lyZWxlc3Mgc2VydmljZSBhbGxv
+d3MgY3VzdG9tZXJzIHRvIHVzZSB0aGUgSW50ZXJuZXQgYXQgc3BlZWRzIHVwIHRvIDUwIHRp
+bWVzIGZhc3RlciB0aGFuIHRvZGF5J3MgZGlhbC11cCBtb2RlbXMuIEFzIHRoZSBkZXNpcmUg
+Zm9yIG1vcmUgaW5mb3JtYXRpb24sIGNvbW11bmljYXRpb24gYW5kIGVudGVydGFpbm1lbnQg
+Z3Jvd3MsIHNvIGRvZXMgdGhlIG5lZWQgZm9yIHNvbHV0aW9ucyB0byBwcm92aWRlIHRoZXNl
+IHNlcnZpY2VzIGF0IGhpZ2ggc3BlZWQgYW5kIGF0IGFuIGFjY2VwdGFibGUgY29zdC4gU2t5
+QnJpZGdlIFdpcmVsZXNzIGZpeGVkIHdpcmVsZXNzIGJyb2FkYmFuZCBhY2Nlc3MgcHJvdmlk
+ZXMganVzdCB0aGF0LCBvZmZlcmluZyBzb2x1dGlvbnMgdGhhdCBtZWV0IHRoZSByZXF1aXJl
+bWVudHMgb2YgYnVzaW5lc3NlcyBhbmQgZW50ZXJwcmlzZXMgYWxpa2UsIGF0IGEgZnJhY3Rp
+b24gb2YgdGhlIGNvc3Qgb2Ygd2lyZWxpbmUgVC0xIGRhdGEgY29ubmVjdGlvbnMsIGFuZCBj
+YW4gYmUgaW5zdGFsbGVkIGFuZCBvcGVyYXRpb25hbCBpbiBhIG11Y2ggc2hvcnRlciB0aW1l
+IHRoYW4gb3RoZXIgZGF0YSBzb2x1dGlvbnMuIFdpcmVsZXNzIHJlcHJlc2VudHMgb25lIG9m
+IHRvZGF5J3MgZmFzdGVzdC1ncm93aW5nIGluZHVzdHJ5IHNlY3RvcnMuIE5vIGFzc3VyYW5j
+ZSBjYW4gYmUgbWFkZSB0aGF0IFNreUJyaWRnZSBXaXJlbGVzcyB3aWxsIGFjY29tcGxpc2gg
+aXRzIGdvYWxzLiANCg0KDQoNCj09PT09PT09PT09PT09PT09PT09PT09PT09PT09DQogICAg
+ICAqIE5FV1MgUkVMRUFTRSAgKiANCj09PT09PT09PT09PT09PT09PT09PT09PT09PT09DQoN
+CkxBUyBWRUdBUywgSnVuIDgsIDIwMDQgKEJVU0lORVNTIFdJUkUpIC0tIFNreUJyaWRnZSBX
+aXJlbGVzcyBJbmMuIChTQldMKSBhbm5vdW5jZWQgdGhlIEZDQyBoYXMgZ3JhbnRlZCB0aGUg
+Y29tcGFueSBhbm90aGVyIDIzR0h6IG9wZXJhdGluZyBsaWNlbnNlIHRvIGNvbnRpbnVlIHRo
+ZSBleHBhbnNpb24gb2YgaXRzIGhpZ2gtc3BlZWQgd2lyZWxlc3MgYmFja2JvbmUgaW4gTGFz
+IFZlZ2FzLiBUaGlzIDIzR0h6IGZyZXF1ZW5jeSBvcGVyYXRpbmcgbGljZW5zZSB3aWxsIGFs
+bG93IGZvciBhIG1vcmUgcmVsaWFibGUgbmV0d29yayBiYWNrYm9uZSB0cmFuc3BvcnQsIGFz
+IHdlbGwgYXMgaW5jcmVhc2UgbmV0d29yayBjYXBhY2l0eSBncmVhdGx5IGJ5IGFsbG93aW5n
+IGFkZGl0aW9uYWwgQWNjZXNzIFBvaW50cyB0byBiZSBpbnN0YWxsZWQgYXQgdGhlIHZhcmlv
+dXMgc2l0ZXMgU2t5QnJpZGdlIFdpcmVsZXNzIEluYy4gaGFzIGFyb3VuZCBMYXMgVmVnYXMu
+IEphc29uIE5laWJlcmdlciwgU2t5QnJpZGdlIFdpcmVsZXNzIEluYy4gcHJlc2lkZW50LCBz
+dGF0ZWQsICJUaGlzIDIzR0h6IGJhY2tib25lIGNvbm5lY3Rpb24gd2lsbCByZXBsYWNlIGFu
+IHVubGljZW5zZWQgYW5kIGxvd2VyIGNhcGFjaXR5IGxpbmsgYmV0d2VlbiB0aGUgc2l0ZSBh
+dCB0aGUgTGFzIFZlZ2FzIEhpbHRvbiBhbmQgb3VyIEZyb250aWVyIFJhZGlvIHNpdGUgaW4g
+dGhlIHNvdXRoIHNlY3Rpb24gb2YgTGFzIFZlZ2FzLiIgSGUgZnVydGhlciBhZGRlZCwgIldp
+dGggdGhpcyBsaWNlbnNlIGluIHBsYWNlIHdlIHdpbGwgYmUgaW5zdGFsbGluZyB0aGUgbmV4
+dCAyM0dIeiBQcm94aW0gVHN1bmFtaSByYWRpb3Mgd2l0aGluIHRoZSBuZXh0IDE1IHRvIDMw
+IGRheXMsIGFuZCB3aWxsIGJlIGFkZGluZyBhZGRpdGlvbmFsIEFjY2VzcyBQb2ludHMgdG8g
+dGhlc2Ugc2l0ZXMsIGZvciBpbmNyZWFzZWQgY3VzdG9tZXIgY2FwYWNpdHkuIiANCg0KDQoN
+Cj09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09DQor
+Pis+Kz4gRElTQ0xBSU1FUiANCg0KSW5mb3JtYXRpb24gd2l0aGluIHRoaXMgZW1haWwgY29u
+dGFpbnMgImZvcndhcmQgbG9va2luZyBzdGF0ZW1lbnRzIiB3aXRoaW4gdGhlIG1lYW5pbmcg
+b2YgU2VjdGlvbiAyN0Egb2YgdGhlIFNlY3VyaXRpZXMgQWN0IG9mIDE5MzMgYW5kIFNlY3Rp
+b24gMjFCIG9mIHRoZSBTZWN1cml0aWVzIEV4Y2hhbmdlIEFjdCBvZiAxOTM0LiBBbnkgc3Rh
+dGVtZW50cyB0aGF0IGV4cHJlc3Mgb3IgaW52b2x2ZSBkaXNjdXNzaW9ucyB3aXRoIHJlc3Bl
+Y3QgdG8gcHJlZGljdGlvbnMsIGdvYWxzLCBleHBlY3RhdGlvbnMsIGJlbGllZnMsIHBsYW5z
+LCBwcm9qZWN0aW9ucywgb2JqZWN0aXZlcywgYXNzdW1wdGlvbnMgb3IgZnV0dXJlIGV2ZW50
+cyBvciBwZXJmb3JtYW5jZSBhcmUgbm90IHN0YXRlbWVudHMgb2YgaGlzdG9yaWNhbCBmYWN0
+IGFuZCBtYXkgYmUgImZvcndhcmQgbG9va2luZyBzdGF0ZW1lbnRzLiINCiANCkZvcndhcmQg
+bG9va2luZyBzdGF0ZW1lbnRzIGFyZSBiYXNlZCBvbiBleHBlY3RhdGlvbnMsIGVzdGltYXRl
+cyBhbmQgcHJvamVjdGlvbnMgYXQgdGhlIHRpbWUgdGhlIHN0YXRlbWVudHMgYXJlIG1hZGUg
+dGhhdCBpbnZvbHZlIGEgbnVtYmVyIG9mIHJpc2tzIGFuZCB1bmNlcnRhaW50aWVzIHdoaWNo
+IGNvdWxkIGNhdXNlIGFjdHVhbCByZXN1bHRzIG9yIGV2ZW50cyB0byBkaWZmZXIgbWF0ZXJp
+YWxseSBmcm9tIHRob3NlIHByZXNlbnRseSBhbnRpY2lwYXRlZC4gRm9yd2FyZCBsb29raW5n
+IHN0YXRlbWVudHMgaW4gdGhpcyBhY3Rpb24gbWF5IGJlIGlkZW50aWZpZWQgdGhyb3VnaCB0
+aGUgdXNlIG9mIHdvcmRzIHN1Y2ggYXM6ICJpbiBvdXIgb3BpbmlvbiIsInByb2plY3RzIiwg
+ImZvcmVzZWUiLCAiZXhwZWN0cyIsICJlc3RpbWF0ZXMsIiAiYmVsaWV2ZXMsIiAidW5kZXJz
+dGFuZHMiICJ3aWxsLCIgInBhcnQgb2Y6ICJhbnRpY2lwYXRlcywiIG9yIHRoYXQgYnkgc3Rh
+dGVtZW50cyBpbmRpY2F0aW5nIGNlcnRhaW4gYWN0aW9ucyAibWF5LCIgImNvdWxkLCIgb3Ig
+Im1pZ2h0IiBvY2N1ci4gQWxsIGluZm9ybWF0aW9uIHByb3ZpZGVkIHdpdGhpbiB0aGlzIGVt
+YWlsIHBlcnRhaW5pbmcgdG8gaW52ZXN0aW5nLCBzdG9ja3MsIHNlY3VyaXRpZXMgbXVzdCBi
+ZSB1bmRlcnN0b29kIGFzIGluZm9ybWF0aW9uIHByb3ZpZGVkIGFuZCBub3QgaW52ZXN0bWVu
+dCBhZHZpY2UuIHdlIGFkdmlzZSBhbGwgcmVhZGVycyBhbmQgc3Vic2NyaWJlcnMgdG8gc2Vl
+ayBhZHZpY2UgZnJvbSBhIHJlZ2lzdGVyZWQgcHJvZmVzc2lvbmFsIHNlY3VyaXRpZXMgcmVw
+cmVzZW50YXRpdmUgYmVmb3JlIGRlY2lkaW5nIHRvIHRyYWRlIGluIHN0b2NrcyBmZWF0dXJl
+ZCB3aXRoaW4gdGhpcyBlbWFpbC4gTm9uZSBvZiB0aGUgbWF0ZXJpYWwgd2l0aGluIHRoaXMg
+cmVwb3J0IHNoYWxsIGJlIGNvbnN0cnVlZCBhcyBhbnkga2luZCBvZiBpbnZlc3RtZW50IGFk
+dmljZS4gUGxlYXNlIGhhdmUgaW4gbWluZCB0aGF0IHRoZSBpbnRlcnByZXRhdGlvbiBvZiB0
+aGUgd2l0ZXIgb2YgdGhpcyBuZXdzbGV0dGVyIGFib3V0IHRoZSBuZXdzIHB1Ymxpc2hlZCBi
+eSB0aGUgY29tcGFueSBkb2VzIG5vdCByZXByZXNlbnQgdGhlIGNvbXBhbnkgb2ZmaWNpYWwg
+c3RhdGVtZW50IGFuZCBpbiBmYWN0IG1heSBkaWZmZXIgZnJvbSB0aGUgcmVhbCBtZWFuaW5n
+IG9mIHdoYXQgdGhlIG5ld3MgcmVsZWFzZSBtZWFudCB0byBzYXkuIFBsZWFzZSByZWFkIHRo
+ZSBuZXdzIHJlbGVhc2UgYnkgeW91cnNlbGYgYW5kIGp1ZGdlIGJ5IHlvdXJzZWxmIGFib3V0
+IHRoZSBkZXRhaWxzIGluIGl0Lg0KIA0KSW4gY29tcGxpYW5jZSB3aXRoIFNlY3Rpb24gMTco
+YiksIHdlIGRpc2Nsb3NlIHRoZSBob2xkaW5nIG9mIFNCV0wgc2hhcmVzIHByaW9yIHRvIHRo
+ZSBwdWJsaWNhdGlvbiBvZiB0aGlzIHJlcG9ydC4gQmUgYXdhcmUgb2YgYW4gaW5oZXJlbnQg
+Y29uZmxpY3Qgb2YgaW50ZXJlc3QgcmVzdWx0aW5nIGZyb20gc3VjaCBob2xkaW5ncyBkdWUg
+dG8gb3VyIGludGVudCB0byBwcm9maXQgZnJvbSB0aGUgbGlxdWlkYXRpb24gb2YgdGhlc2Ug
+c2hhcmVzLiBTaGFyZXMgbWF5IGJlIHNvbGQgYXQgYW55IHRpbWUsIGV2ZW4gYWZ0ZXIgcG9z
+aXRpdmUgc3RhdGVtZW50cyBoYXZlIGJlZW4gbWFkZSByZWdhcmRpbmcgdGhlIGFib3ZlIGNv
+bXBhbnkuIFNpbmNlIHdlIG93biBzaGFyZXMsIHRoZXJlIGlzIGFuIGluaGVyZW50IGNvbmZs
+aWN0IG9mIGludGVyZXN0IGluIG91ciBzdGF0ZW1lbnRzIGFuZCBvcGluaW9ucy4gUmVhZGVy
+cyBvZiB0aGlzIHB1YmxpY2F0aW9uIGFyZSBjYXV0aW9uZWQgbm90IHRvIHBsYWNlIHVuZHVl
+IHJlbGlhbmNlIG9uIGZvcndhcmQtbG9va2luZyBzdGF0ZW1lbnRzLCB3aGljaCBhcmUgYmFz
+ZWQgb24gY2VydGFpbiBhc3N1bXB0aW9ucyBhbmQgZXhwZWN0YXRpb25zIGludm9sdmluZyB2
+YXJpb3VzIHJpc2tzIGFuZCB1bmNlcnRhaW50aWVzLCB0aGF0IGNvdWxkIGNhdXNlIHJlc3Vs
+dHMgdG8gZGlmZmVyIG1hdGVyaWFsbHkgZnJvbSB0aG9zZSBzZXQgZm9ydGggaW4gdGhlIGZv
+cndhcmQtIGxvb2tpbmcgc3RhdGVtZW50cy4gDQoNClBsZWFzZSBiZSBhZHZpc2VkIHRoYXQg
+bm90aGluZyB3aXRoaW4gdGhpcyBlbWFpbCBzaGFsbCBjb25zdGl0dXRlIGEgc29saWNpdGF0
+aW9uIG9yIGFuIG9mZmVyIHRvIGJ1eSBvciBzZWxsIGFueSBzZWN1cml0eSBtZW50aW9uZWQg
+aGVyZWluLiBUaGlzIG5ld3NsZXR0ZXIgaXMgbmVpdGhlciBhIHJlZ2lzdGVyZWQgaW52ZXN0
+bWVudCBhZHZpc29yIG5vciBhZmZpbGlhdGVkIHdpdGggYW55IGJyb2tlciBvciBkZWFsZXIu
+IEFsbCBzdGF0ZW1lbnRzIG1hZGUgYXJlIG91ciBleHByZXNzIG9waW5pb24gb25seSBhbmQg
+c2hvdWxkIGJlIHRyZWF0ZWQgYXMgc3VjaC4gV2UgbWF5IG93biwgYnV5IGFuZCBzZWxsIGFu
+eSBzZWN1cml0aWVzIG1lbnRpb25lZCBhdCBhbnkgdGltZS4gVGhpcyByZXBvcnQgaW5jbHVk
+ZXMgZm9yd2FyZC1sb29raW5nIHN0YXRlbWVudHMgd2l0aGluIHRoZSBtZWFuaW5nIG9mIFRo
+ZSBQcml2YXRlIFNlY3VyaXRpZXMgTGl0aWdhdGlvbiBSZWZvcm0gQWN0IG9mIDE5OTUuIFRo
+ZXNlIHN0YXRlbWVudHMgbWF5IGluY2x1ZGUgdGVybXMgYXMgImV4cGVjdCIsICJiZWxpZXZl
+IiwgIm1heSIsICJ3aWxsIiwgIm1vdmUiLCJ1bmRlcnZhbHVlZCIgYW5kICJpbnRlbmQiIG9y
+IHNpbWlsYXIgdGVybXMuIFRoaXMgbmV3c2xldHRlciB3YXMgcGFpZCAkMTI1MDAgZnJvbSB0
+aGlyZCBwYXJ0eSB0byBzZW5kIHRoaXMgcmVwb3J0LiBQTEVBU0UgRE8gWU9VUiBPV04gRFVF
+IERJTElHRU5DRSBCRUZPUkUgSU5WRVNUSU5HIElOIEFOWSBQUk9GSUxFRCBDT01QQU5ZLiBZ
+b3UgbWF5IGxvc2UgbW9uZXkgZnJvbSBpbnZlc3RpbmcgaW4gUGVubnkgU3RvY2tzLiANCi0t
+LS0tLS0tLS0tLS0tLS0tLS0tLQ0K
+
+----00153862427203101--
+
+
+--========/40C7289C00591857/mk-cpfrontend.uk.tiscali.com--

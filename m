@@ -1,45 +1,43 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f43AeAk10003
-	for linux-mips-outgoing; Thu, 3 May 2001 03:40:10 -0700
-Received: from mx.mips.com (mx.mips.com [206.31.31.226])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f43Ae9F10000
-	for <linux-mips@oss.sgi.com>; Thu, 3 May 2001 03:40:09 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id DAA28791
-	for <linux-mips@oss.sgi.com>; Thu, 3 May 2001 03:40:14 -0700 (PDT)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id DAA01295
-	for <linux-mips@oss.sgi.com>; Thu, 3 May 2001 03:40:13 -0700 (PDT)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id MAA27644
-	for <linux-mips@oss.sgi.com>; Thu, 3 May 2001 12:39:20 +0200 (MEST)
-Message-ID: <3AF13558.F26941EE@mips.com>
-Date: Thu, 03 May 2001 12:39:20 +0200
-From: Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
+	by oss.sgi.com (8.11.3/8.11.3) id f43Bj9W13174
+	for linux-mips-outgoing; Thu, 3 May 2001 04:45:09 -0700
+Received: from cvsftp.cotw.com (cvsftp.cotw.com [208.242.241.39])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f43Bj7F13170
+	for <linux-mips@oss.sgi.com>; Thu, 3 May 2001 04:45:07 -0700
+Received: from cotw.com (dhcp-050.inter.net [192.168.10.50])
+	by cvsftp.cotw.com (8.9.3/8.9.3) with ESMTP id GAA09498;
+	Thu, 3 May 2001 06:45:04 -0500
+Message-ID: <3AF147E5.F1FA8DDE@cotw.com>
+Date: Thu, 03 May 2001 06:58:29 -0500
+From: "Steven J. Hill" <sjhill@cotw.com>
+Reply-To: sjhill@cotw.com
+X-Mailer: Mozilla 4.73 [en] (X11; I; Linux 2.4.3 i686)
 X-Accept-Language: en
 MIME-Version: 1.0
-To: linux-mips@oss.sgi.com
-Subject: Insertion of die_if_kernel in unaligned.c
-Content-Type: text/plain; charset=iso-8859-15
+To: Jun Sun <jsun@mvista.com>
+CC: linux-mips@oss.sgi.com
+Subject: Re: mp3 player program
+References: <3AF072D8.800C4FB8@mvista.com>
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-In the latest version of arch/mips/kernel/unaligned.c, there has been
-inserted some calls to the die_if_kernel, which check if we are running
-in kernel mode and if so dies.
-I'm not so sure this is the right thing to do, the floating point
-emulator will in some cases generate an address error (e.g. if emulating
-a swc1 to an unaligned address). The result is that an user application
-can crash the kernel.
+Jun Sun wrote:
+> 
+> Does anybody have an MIPS mp3 player program in little endian?  I'd appreciate
+> ...
+> 
+I would check over at <http://handhelds.org/> and troll around in
+the mailing list archives. The iPAQ people have been running that
+sort of stuff. You might also look at the mailing lists from the
+ARM Linux project <http://www.arm.linux.org.uk/> as there are a
+number of people running an MP3 player on their embedded boards.
 
-/Carsten
+-Steve
 
-
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+-- 
+ Steven J. Hill - Embedded SW Engineer
+ Public Key: 'http://www.cotw.com/pubkey.txt'
+ FPR1: E124 6E1C AF8E 7802 A815
+ FPR2: 7D72 829C 3386 4C4A E17D

@@ -1,84 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 May 2004 08:52:52 +0100 (BST)
-Received: from no-dns-yet.demon.co.uk ([IPv6:::ffff:80.176.203.50]:23443 "EHLO
-	pangolin.localnet") by linux-mips.org with ESMTP
-	id <S8225557AbUENHwv>; Fri, 14 May 2004 08:52:51 +0100
-Received: from sprocket.localnet ([192.168.1.27])
-	by pangolin.localnet with esmtp (Exim 3.35 #1 (Debian))
-	id 1BOXUp-0000Ex-00; Fri, 14 May 2004 08:52:43 +0100
-Message-ID: <40A47ACA.1040101@bitbox.co.uk>
-Date: Fri, 14 May 2004 08:52:42 +0100
-From: Peter Horton <phorton@bitbox.co.uk>
-User-Agent: Mozilla Thunderbird 0.6 (Windows/20040502)
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 May 2004 09:56:49 +0100 (BST)
+Received: from gw-eur4.philips.com ([IPv6:::ffff:161.85.125.10]:37863 "EHLO
+	gw-eur4.philips.com") by linux-mips.org with ESMTP
+	id <S8225559AbUENI4s>; Fri, 14 May 2004 09:56:48 +0100
+Received: from smtpscan-eur4.philips.com (smtpscan-eur4.mail.philips.com [130.144.57.167])
+	by gw-eur4.philips.com (Postfix) with ESMTP id 5E23649FA7
+	for <linux-mips@linux-mips.org>; Fri, 14 May 2004 08:56:39 +0000 (UTC)
+Received: from smtpscan-eur4.philips.com (localhost [127.0.0.1])
+	by localhost.philips.com (Postfix) with ESMTP id 32307CC
+	for <linux-mips@linux-mips.org>; Fri, 14 May 2004 08:56:39 +0000 (GMT)
+Received: from smtprelay-nl2.philips.com (smtprelay-eur2.philips.com [130.139.36.35])
+	by smtpscan-eur4.philips.com (Postfix) with ESMTP id 165BFB7
+	for <linux-mips@linux-mips.org>; Fri, 14 May 2004 08:56:39 +0000 (GMT)
+Received: from ehvrmh02.diamond.philips.com (ehvrmh02-srv.diamond.philips.com [130.139.27.125]) 
+	by smtprelay-nl2.philips.com (8.9.3p3/8.8.5-1.2.2m-19990317) with ESMTP id KAA04833
+	for <linux-mips@linux-mips.org>; Fri, 14 May 2004 10:56:38 +0200 (MEST)
+From: shiraz.ta@philips.com
+Subject: Porting of Linux on to a MIPS16 Processor. Help required 
+To: linux-mips@linux-mips.org
+X-Mailer: Lotus Notes Release 5.0.9a  January 7, 2002
+Message-ID: <OF9C1094DD.6309A695-ON45256E94.002F4A91-65256E94.00311FA8@philips.com>
+Date: Fri, 14 May 2004 14:24:50 +0530
+X-MIMETrack: Serialize by Router on ehvrmh02/H/SERVER/PHILIPS(Release 6.0.2CF1HF634 | May
+ 5, 2004) at 14/05/2004 10:54:55
 MIME-Version: 1.0
-To: wuming <wuming@ict.ac.cn>
-CC: linux-mips@linux-mips.org
-Subject: Re: problems on D-cache alias in 2.4.22
-References: <B482D8AA59BF244F99AFE7520D74BF9609D4B1@server1.RightHand.righthandtech.com> <40A43601.70307@ict.ac.cn>
-In-Reply-To: <40A43601.70307@ict.ac.cn>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <phorton@bitbox.co.uk>
+Content-type: text/plain; charset=US-ASCII
+Return-Path: <shiraz.ta@philips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5004
+X-archive-position: 5005
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: phorton@bitbox.co.uk
+X-original-sender: shiraz.ta@philips.com
 Precedence: bulk
 X-list: linux-mips
 
-wuming wrote:
 
-> I have understood the phenomenon, and I think this is a kernel's bug.
-> The real wrong place is not the judgement for condition "PG_dcache_dirty"
-> in function __update_cache( ).
-> in file mm/filemap.c and function filemap_nopage( ):
-> ......
-> success:
->        /*
->         * Try read-ahead for sequential areas.
->         */
->        if (VM_SequentialReadHint(area))
->                nopage_sequential_readahead(area, pgoff, size);
->                                                                               
->        /*
->         * Found the page and have a reference on it, need to check 
-> sharing
->         * and possibly copy it over to another page..
->         */
->        mark_page_accessed(page);
->        flush_page_to_ram(page);
->        return page;
-> ......
->
-> flush_page_to_ram( ) has not been used for a long time, and in kernel 
-> 2.4.22
-> "include/asm-mips/cacheflush.h"
-> #define flush_page_to_ram(page)         do { } while (0)
->
-> so the mapped page has not been flushed to ram, and the user space 
-> will not
-> know the latest data in the page.
-> the flush_page_to_ram( ) should be replaced by flush_dcache_page( ),
-> and if the flush_dcache_page( ) does not really flush the cache, it 
-> will set
-> the PG_dcache_dirty, and the real flush will be postponed to 
-> __update_cache( ).
-> and if there is not the flush_dcache_page( ) here, no one will set the 
-> PG_dcache_dirty,
-> and __update_cache( ) will not flush the page too, so the D-cache 
-> aliasing happens.
->
-> at last, when I replaced flush_page_to_ram( ) with flush_dcache_page( ),
-> the internal compiler error disappeared.
->
-> I hope your problem will be solved by this way too. God bless you! :-)
->
 
-This is probably just hiding your problem. flush_page_to_ram() is not 
-used anymore.
 
-P.
+
+Hi,
+
+I am new to linux.  I am  in need of porting linux to a MIPS16 based
+processor.   I need some information regarding the porting. It will be a
+great help if somebody could answer me.
+
+1) Is there any port available already for this? If available how do i get
+it along with the development environment.
+
+2) If the port  is not available  then how much complex (How much effort ?)
+is it to port it to MIPS 16.
+
+3) Where can  I get the tool chain on windows and linux kernel source code
+which can be used .
+
+4)curently the board uses EJTAG for download and execute. We have a
+uart(serial port) on the board which we use as console connected to the
+hyperterminal on a windows pc.. There is no shell supported. We can compile
+and run  applications on the target.
+
+5) We have the existing BSP  and  custom drivers ported over a OS
+abstraction layer. Once the kernel is ported we have to get the custom
+drivers ported.
+
+6) I would like to know how much would be  the code size for the kernel
+alone with out any shell and with  the console driver. (Source code and
+Binary)
+
+
+Thanks in advance.
+
+
+Warm Regards
+Shiraz

@@ -1,44 +1,40 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1FFJjn22739
-	for linux-mips-outgoing; Fri, 15 Feb 2002 07:19:45 -0800
-Received: from server3.toshibatv.com (mail.toshibatv.com [67.32.37.75])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1FFJf922736
-	for <linux-mips@oss.sgi.com>; Fri, 15 Feb 2002 07:19:42 -0800
-Received: by SERVER3 with Internet Mail Service (5.5.2653.19)
-	id <ZNHAMHQ7>; Fri, 15 Feb 2002 08:19:13 -0600
-Message-ID: <7DF7BFDC95ECD411B4010090278A44CA1B7579@ATVX>
-From: "Siders, Keith" <keith_siders@toshibatv.com>
-To: "'Alan Cox'" <alan@lxorguk.ukuu.org.uk>
-Cc: "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
-Subject: RE: hot patching
-Date: Fri, 15 Feb 2002 08:17:30 -0600
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2653.19)
-Content-Type: text/plain;
-	charset="windows-1252"
+	by oss.sgi.com (8.11.2/8.11.3) id g1FFPd622962
+	for linux-mips-outgoing; Fri, 15 Feb 2002 07:25:39 -0800
+Received: from dea.linux-mips.net (a1as07-p91.stg.tli.de [195.252.188.91])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1FFPZ922959
+	for <linux-mips@oss.sgi.com>; Fri, 15 Feb 2002 07:25:35 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.1) id g1FELWU00640;
+	Fri, 15 Feb 2002 15:21:32 +0100
+Date: Fri, 15 Feb 2002 15:21:32 +0100
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Guido Guenther <agx@sigxcpu.org>, linux-mips@oss.sgi.com
+Subject: Re: ip22 watchdog timer
+Message-ID: <20020215152132.A602@dea.linux-mips.net>
+References: <20020215130613.A301@gandalf.physik.uni-konstanz.de> <Pine.GSO.3.96.1020215150825.29773K-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.GSO.3.96.1020215150825.29773K-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Fri, Feb 15, 2002 at 03:17:17PM +0100
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
--> > I'm attempting to set up a "hot patcher" in an embedded 
--> >product. I'm
-...
--> 
--> You shouldnt even need a driver if you are clever. The 
--> ptrace() functionality
--> for debuggers is sufficient to patch running code, and to do 
--> other interesting
--> things by adding new functions and calling them
--> 
-Well, I never claimed to be terribly clever...
-When I looked at the ptrace code it looked to me like it was intended for
-inserting breakpoints for the most part. Are you saying that I can patch
-into a process and have it vector off to executable code? At this point I've
-identified at least three types of patches: a jump, a call, and simply
-overwrite a few instructions (the easiest and common to all types). I'd love
-to _not_ need a driver.
+On Fri, Feb 15, 2002 at 03:17:17PM +0100, Maciej W. Rozycki wrote:
 
---------------------------------------
-Keith Siders
-Toshiba 
-ATVTC
---------------------------------------
+>  This looks suspicious.  Haven't you meant "dep_tristate"?  Especially as
+> indydog.c doesn't seem to make any effort to validate it's running on the
+> system it thinks it is before poking random memory locations.  It won't
+> probably even compile for a non-MIPS kernel.
+> 
+>  BTW, why do people insist on sending patches as attachments -- it makes
+> commenting them helly twisted, sigh... 
+
+How true.  MIME - broken solution for a broken design ;)  More serious,
+MIME makes sense when using a MUA that garbles patches like Netscape or
+certain versions of Pine.
+
+  Ralf  (Prolly still be using Mutt + vi in 5 years ...)

@@ -1,56 +1,99 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jan 2004 01:04:01 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:8695 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225255AbUAOBEB>;
-	Thu, 15 Jan 2004 01:04:01 +0000
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id i0F13tn16299;
-	Wed, 14 Jan 2004 17:03:55 -0800
-Date: Wed, 14 Jan 2004 17:03:55 -0800
-From: Jun Sun <jsun@mvista.com>
-To: Jim Thompson <jimt@vivato.net>
-Cc: Alan Cox <alan@lxorguk.ukuu.org.uk>, linux-mips@linux-mips.org,
-	Charlie Brady <charlieb-linux-mips@e-smith.com>,
-	jsun@mvista.com
-Subject: Re: Broadcom 4702?
-Message-ID: <20040114170355.G13471@mvista.com>
-References: <Pine.LNX.4.44.0401141546230.21734-100000@allspice.nssg.mitel.com> <61324177-46D5-11D8-9715-000393C30E1E@vivato.net> <1074114950.403.8.camel@dhcp23.swansea.linux.org.uk> <7CB2EF32-46DA-11D8-9715-000393C30E1E@vivato.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jan 2004 01:12:07 +0000 (GMT)
+Received: from fw.osdl.org ([IPv6:::ffff:65.172.181.6]:22765 "EHLO
+	mail.osdl.org") by linux-mips.org with ESMTP id <S8225255AbUAOBMG>;
+	Thu, 15 Jan 2004 01:12:06 +0000
+Received: from akpm.pao.digeo.com (build.pdx.osdl.net [172.20.1.2])
+	by mail.osdl.org (8.11.6/8.11.6) with SMTP id i0F1BXo23771;
+	Wed, 14 Jan 2004 17:11:33 -0800
+Date: Wed, 14 Jan 2004 17:12:52 -0800
+From: Andrew Morton <akpm@osdl.org>
+To: Jun Sun <jsun@mvista.com>
+Cc: linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+	jsun@mvista.com, Russell King <rmk@arm.linux.org.uk>
+Subject: Re: [BUG] 2.6.1/MIPS - missing cache flushing when user program
+ returns pages to kernel
+Message-Id: <20040114171252.4d873c51.akpm@osdl.org>
+In-Reply-To: <20040114163920.E13471@mvista.com>
+References: <20040114163920.E13471@mvista.com>
+X-Mailer: Sylpheed version 0.9.7 (GTK+ 1.2.10; i586-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <7CB2EF32-46DA-11D8-9715-000393C30E1E@vivato.net>; from jimt@vivato.net on Wed, Jan 14, 2004 at 01:42:01PM -0800
-Return-Path: <jsun@mvista.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <akpm@osdl.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3962
+X-archive-position: 3963
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: akpm@osdl.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Jan 14, 2004 at 01:42:01PM -0800, Jim Thompson wrote:
+Jun Sun <jsun@mvista.com> wrote:
+>
+> I have been chasing a nasty memory corruption bug on my MIPS box with
+> 2.6.1 kernel.  In the end it appears the following sequence has
+> happened:
 > 
-> I have binaries.  I asked.  I was told "no".
+> 1. userland gets a page and writes some stuff to it, which dirties
+>    data cache.  In my case, it is actually doing a sys_read() into
+>    that page.  See my kgdb trace attached in the end.
 > 
-> On Jan 14, 2004, at 1:15 PM, Alan Cox wrote:
+> 2. userland returns this page to kernel *without* any cache flushing,
+>    i.e., the dcache is still dirty.
 > 
-> > On Mer, 2004-01-14 at 21:05, Jim Thompson wrote:
-> >> My question is why these patches, which are subject to GPL (it is
-> >> binutils and gcc, after all), haven't been released.
-> >
-> > There is no obligation for anyone to provide the source except to those
-> > they provide the binaries. They just can't stop those people then
-> > redistributing it.
-> >
+> 3. kernel calls kmalloc() to get a block from this page.
+> 
+> 4. the dirty dcache is written back to physical memory some time later,
+>    corrupting the kernel data.
+> 
+> It seems to me the problem is that we should do a cache flush 
+> for all the pages returned to kernel during step 2.
+> 
+> I attached a hack which solves my problem but I am not sure if it is
+> most appropriate.  It looks like the affected user region (start, end)
+> can span over multiple vma areas.  If so, the fix will only flush the first
+> area.
+> 
+> Also, it is hard to find an appropriate place to do the flushing
+> The new 2.6 mm is a confusing maze to me.  I hope someone more
+> knowledgable can come up with a more decent fix for this problem.
+> 
+> BTW, it appears in 2.4 we are doing this flushing in do_zap_page_range()
+> where we call a flush_cache_range(mm, start, end).
 
-Since we are on this subject, I am curious if I buy a Cisco's router
-whether it is considered that Cisco distributs the binaries to me
-and whether I can demand for the source code if they are GPL'ed software.
+That flush_cache_range was removed between 2.5.67 and 2.5.68.  If you put
+it back, does it fix the problem?
 
-I can see arguments go either way.  Do open source community and
-industry have some concensus on this issue?
+It seems from Russell's words here, MIPS should be flushing in
+tlb_start_vma().
 
-Jun
+I think that's wrong, really.  We've discussed this before and decided that
+these flushing operations should be open-coded in the main .c file rather
+than embedded in arch functions which happen to undocumentedly do other
+stuff.
+
+
+# --------------------------------------------
+# 03/04/14	rmk@arm.linux.org.uk	1.1017
+# [PATCH] flush_cache_mm in zap_page_range
+# 
+# unmap_vmas() eventually calls tlb_start_vma(), where most architectures
+# flush caches as necessary.  The flush here seems to make the
+# flush_cache_range() in zap_page_range() redundant, and therefore can be
+# removed.
+# --------------------------------------------
+#
+diff -Nru a/mm/memory.c b/mm/memory.c
+--- a/mm/memory.c	Wed Jan 14 17:09:07 2004
++++ b/mm/memory.c	Wed Jan 14 17:09:07 2004
+@@ -601,7 +601,6 @@
+ 
+ 	lru_add_drain();
+ 	spin_lock(&mm->page_table_lock);
+-	flush_cache_range(vma, address, end);
+ 	tlb = tlb_gather_mmu(mm, 0);
+ 	unmap_vmas(&tlb, mm, vma, address, end, &nr_accounted);
+ 	tlb_finish_mmu(tlb, address, end);

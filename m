@@ -1,49 +1,68 @@
-Received:  by oss.sgi.com id <S554028AbRAQNSM>;
-	Wed, 17 Jan 2001 05:18:12 -0800
-Received: from woody.ichilton.co.uk ([216.29.174.40]:46601 "HELO
-        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S554025AbRAQNR7>;
-	Wed, 17 Jan 2001 05:17:59 -0800
-Received: by woody.ichilton.co.uk (Postfix, from userid 1000)
-	id 491297D0E; Wed, 17 Jan 2001 13:17:58 +0000 (GMT)
-Date:   Wed, 17 Jan 2001 13:17:58 +0000
-From:   Ian Chilton <mailinglist@ichilton.co.uk>
-To:     macro@ds2.pg.gda.pl, ralf@oss.sgi.com, flo@rfc822.org
-Cc:     linux-mips@oss.sgi.com
-Subject: 2.4.0 Kernel - Summary
-Message-ID: <20010117131758.B29427@woody.ichilton.co.uk>
-Reply-To: Ian Chilton <ian@ichilton.co.uk>
-Mime-Version: 1.0
+Received:  by oss.sgi.com id <S554030AbRAQNUV>;
+	Wed, 17 Jan 2001 05:20:21 -0800
+Received: from sgi.SGI.COM ([192.48.153.1]:49681 "EHLO sgi.com")
+	by oss.sgi.com with ESMTP id <S554027AbRAQNUG>;
+	Wed, 17 Jan 2001 05:20:06 -0800
+Received: from google.engr.sgi.com ([163.154.10.145]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id FAA05192; Wed, 17 Jan 2001 05:19:55 -0800 (PST)
+	mail_from (kanoj@google.engr.sgi.com)
+Received: (from kanoj@localhost)
+	by google.engr.sgi.com (SGI-8.9.3/8.9.3) id FAA98450;
+	Wed, 17 Jan 2001 05:15:36 -0800 (PST)
+From:   Kanoj Sarcar <kanoj@google.engr.sgi.com>
+Message-Id: <200101171315.FAA98450@google.engr.sgi.com>
+Subject: Re: crash in __alloc_bootmem_core on SGI current cvs
+To:     ralf@oss.sgi.com (Ralf Baechle)
+Date:   Wed, 17 Jan 2001 05:15:36 -0800 (PST)
+Cc:     macro@ds2.pg.gda.pl (Maciej W. Rozycki),
+        flo@rfc822.org (Florian Lohoff), linux-mips@oss.sgi.com,
+        kanoj@engr.sgi.com (Kanoj Sarcar)
+In-Reply-To: <20010116172235.A1379@bacchus.dhis.org> from "Ralf Baechle" at Jan 16, 2001 05:22:35 PM
+X-Mailer: ELM [version 2.5 PL2]
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.12i
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hello,
+> 
+> On Tue, Jan 16, 2001 at 05:39:40PM +0100, Maciej W. Rozycki wrote:
+> 
+> > > Wouldnt be this correct ? Realsize is size - holes.
+> > > 
+> > > Index: mm/page_alloc.c
+> > > ===================================================================
+> > > RCS file: /cvs/linux/mm/page_alloc.c,v
+> > > retrieving revision 1.49
+> > > diff -u -r1.49 page_alloc.c
+> > > --- mm/page_alloc.c	2001/01/11 04:02:45	1.49
+> > > +++ mm/page_alloc.c	2001/01/16 16:26:55
+> > > @@ -824,7 +824,7 @@
+> > >  		if (zholes_size)
+> > >  			realsize -= zholes_size[j];
+> > >  
+> > > -		printk("zone(%lu): %lu pages.\n", j, size);
+> > > +		printk("zone(%lu): %lu pages.\n", j, realsize);
+> > >  		zone->size = size;
+> > >  		zone->name = zone_names[j];
+> > >  		zone->lock = SPIN_LOCK_UNLOCKED;
+> > 
+> >  It look reasonable but is it what was really intended?  You should ask
+> > the author or linux-kernel, I suppose. 
+> 
+> Which probably is Kanoj who is subscribed to this list.
+> 
+>   Ralf
+> 
 
-So, the outstanding issues so far are:
+realsize is fine, and that is what it is in Linus' tree. We want
+to report actual number of pages, not number of pages including
+the holes in memory.
 
-Major Issues:
-- Hang on swap (I get this, Flo doesn't ?)
-- Can't reboot (Flo and I get this)
-
-Minor Issues:
-- Wierd thing in /proc/cpuinfo (Flo and I get this) 
-- Double output on boot ??
-
-
-Bye for Now,
-
-Ian
-
-                                \|||/
-                                (o o)
- /---------------------------ooO-(_)-Ooo---------------------------\
- |  Ian Chilton        (IRC Nick - GadgetMan)     ICQ #: 16007717  |
- |-----------------------------------------------------------------|
- |  E-Mail: ian@ichilton.co.uk     Web: http://www.ichilton.co.uk  |
- |-----------------------------------------------------------------|
- |        Proofread carefully to see if you any words out.         |
- \-----------------------------------------------------------------/
+Kanoj

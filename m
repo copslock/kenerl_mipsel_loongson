@@ -1,59 +1,52 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id NAA98299; Fri, 15 Aug 1997 13:37:04 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id NAA98356; Fri, 15 Aug 1997 13:39:08 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id NAA07174 for linux-list; Fri, 15 Aug 1997 13:36:46 -0700
-Received: from dragon.engr.sgi.com (dragon.engr.sgi.com [150.166.65.33]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA07123; Fri, 15 Aug 1997 13:36:38 -0700
-Received: (from sr@localhost) by dragon.engr.sgi.com (970321.SGI.8.8.5/970502.SGI.AUTOCF) id NAA03360; Fri, 15 Aug 1997 13:36:37 -0700 (PDT)
-From: sr@dragon.engr.sgi.com (Steve Rikli)
-Message-Id: <199708152036.NAA03360@dragon.engr.sgi.com>
-Subject: Re: Power Series?
-To: shaver@neon.ingenia.ca (Mike Shaver)
-Date: Fri, 15 Aug 1997 13:36:37 -0700 (PDT)
-Cc: linux@cthulhu.engr.sgi.com
-In-Reply-To: <199708152020.QAA24149@neon.ingenia.ca> from "Mike Shaver" at Aug 15, 97 04:20:45 pm
-X-Mailer: ELM [version 2.4 PL24 ME5a]
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id NAA07913 for linux-list; Fri, 15 Aug 1997 13:38:50 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA07875 for <linux@cthulhu.engr.sgi.com>; Fri, 15 Aug 1997 13:38:47 -0700
+Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id NAA27142
+	for <linux@cthulhu.engr.sgi.com>; Fri, 15 Aug 1997 13:38:45 -0700
+	env-from (adevries@engsoc.carleton.ca)
+Received: from localhost (adevries@localhost)
+          by lager.engsoc.carleton.ca (8.8.5/8.8.4) with SMTP
+	  id QAA21985; Fri, 15 Aug 1997 16:38:14 -0400
+Date: Fri, 15 Aug 1997 16:38:14 -0400 (EDT)
+From: Alex deVries <adevries@engsoc.carleton.ca>
+To: Ariel Faigon <ariel@sgi.com>
+cc: SGI/Linux mailing list <linux@cthulhu.engr.sgi.com>
+Subject: Re: boot linux - wish
+In-Reply-To: <199708152017.NAA04153@oz.engr.sgi.com>
+Message-ID: <Pine.LNX.3.95.970815163117.21813A-100000@lager.engsoc.carleton.ca>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Mike Shaver wrote:
+On Fri, 15 Aug 1997, Ariel Faigon wrote:
 > 
-> Are the Power Series boxes of interest to me? =)
-> I may be able to get my hands on a 3-processor fridge-sized Power
-> Series something, and if it's a MIPS system, I just might give it a
-> shot.
+> Could someone rise to the challenge of writing a utility
+> that will install Linux on an IRIX machine?
 
-They're respectable machines, depending on the flavor/color.  ;)
+I don't mind rising to that challenge, but one huge obstacle is how do we
+get the utility to partition the Linux drive? 
 
-Are you sure it's really 3p ?  Most of the fridge-sized POWER Series
-(you might also hear them referred to as "Predators" or "4D" systems)
-had CPU cards which were 2p each, up to a max (AFAIK) of 8p per
-system.  Though there was the 4D/210GTX which were sold in droves,
-from what I hear.
+I'm guessing the solution is to write a utility that from within Irix
+talks directly to the raw SCSI disk to setup the partitions.  I have NO
+idea how to do this as I doubt the raw disk interface is anything like
+that in Linux. Clues accepted.
 
-In general, the 4D/XX0 nomenclature works like this:
+Does anyone have any suggestions to this?
 
-	4D/340 == 4 33MHz R3000 CPUs
-	4D/480 == 8 40MHz R3000 CPUs
-	etc.
+> 	On what partition do you want to install Linux on [/dev/sdb7]?
+> 
+> And give hints like:
+> 	Sorry you don't have the e2fs tools installed on IRIX yet
+> 	should I download them from ftp.linux.sgi.com [y/n]?
 
-You get the idea.  Also in general, the fridge-sized POWER Series
-cards were/are compatible with the deskside POWER Series, though
-there were backplane differences (primarily just the # of slots
-available, but there were a few other subtleties).
+Er, does such a tool in fact exist?
 
-Personally, I'd *love* to see Linux running on the POWER series,
-since I can likely get my hands on a deskside 4D/440 pretty
-easily.  ;-)
 
-If you need more info about the configuration of the POWER series
-systems/chassis let me know and I might be able to help out.
+In any case, I don't mind handling the writing of such a utility so long
+as I get help with the two parts I'm as of yet unable to address:
+partitioning and setting up boot options without entering the boot
+monitor.
 
-cheers,
-sr.
--- 
-|| Steve Rikli <sr@sgi.com> ||| The problem with life is there's no     ||
-|| Systems Administrator    ||| entry fee to keep out the riffraff.     ||
-|| NSD, EIS Infrastructure  |||                                         ||
-|| Silicon Graphics, Inc.   |||               - Calvin                  ||
+- Alex

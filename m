@@ -1,84 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Oct 2004 02:56:44 +0100 (BST)
-Received: from gate.crashing.org ([IPv6:::ffff:63.228.1.57]:3495 "EHLO
-	gate.crashing.org") by linux-mips.org with ESMTP
-	id <S8225228AbUJUB4g>; Thu, 21 Oct 2004 02:56:36 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by gate.crashing.org (8.12.8/8.12.8) with ESMTP id i9L1t3BG020127;
-	Wed, 20 Oct 2004 20:55:04 -0500
-Subject: Re: [discuss] Re: [PATCH] Add key management syscalls to non-i386
-	archs
-From: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-To: "David S. Miller" <davem@davemloft.net>
-Cc: Andi Kleen <ak@suse.de>, Andrew Morton <akpm@osdl.org>,
-	discuss@x86-64.org, linux-m68k@vger.kernel.org,
-	linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
-	linux-sh@m17n.org,
-	Linux Kernel list <linux-kernel@vger.kernel.org>,
-	linux-390@vm.marist.edu, Linus Torvalds <torvalds@osdl.org>,
-	sparclinux@vger.kernel.org,
-	linuxppc64-dev <linuxppc64-dev@ozlabs.org>,
-	linux-arm-kernel@lists.arm.linux.org.uk,
-	parisc-linux@parisc-linux.org
-In-Reply-To: <20041020160450.0914270b.davem@davemloft.net>
-References: <3506.1098283455@redhat.com>
-	 <20041020150149.7be06d6d.davem@davemloft.net>
-	 <20041020225625.GD995@wotan.suse.de>
-	 <20041020160450.0914270b.davem@davemloft.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Oct 2004 03:35:19 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:43249 "EHLO
+	hermes.mvista.com") by linux-mips.org with ESMTP
+	id <S8225230AbUJUCfL>; Thu, 21 Oct 2004 03:35:11 +0100
+Received: from prometheus.mvista.com (prometheus.mvista.com [10.0.0.139])
+	by hermes.mvista.com (Postfix) with ESMTP
+	id 83BC4184F7; Wed, 20 Oct 2004 19:35:09 -0700 (PDT)
+Subject: [PATCH]On PMC Yosemite, get the memory size from PMON
+From: Manish Lachwani <mlachwani@mvista.com>
+To: linux-mips@linux-mips.org
+Cc: ralf@linux-mips.org
 Content-Type: text/plain
-Message-Id: <1098323732.20955.31.camel@gaston>
+Organization: 
+Message-Id: <1098326108.4266.23.camel@prometheus.mvista.com>
 Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.4.6 
-Date: Thu, 21 Oct 2004 11:55:32 +1000
+X-Mailer: Ximian Evolution 1.2.2 (1.2.2-5) 
+Date: 20 Oct 2004 19:35:09 -0700
 Content-Transfer-Encoding: 7bit
-Return-Path: <benh@kernel.crashing.org>
+Return-Path: <mlachwani@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6151
+X-archive-position: 6152
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: benh@kernel.crashing.org
+X-original-sender: mlachwani@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 2004-10-21 at 09:04, David S. Miller wrote:
-> On Thu, 21 Oct 2004 00:56:25 +0200
-> Andi Kleen <ak@suse.de> wrote:
-> 
-> > I don't think that's a good idea.  Normally new system calls 
-> > are relatively obscure and the system works fine without them,
-> > so urgent action is not needed.
-> > 
-> > And I think we can trust architecture maintainers to regularly
-> > sync the system calls with i386.
-> 
-> I disagree quite strongly.  One major frustration for users of
-> non-x86 platforms is that functionality is often missing for some
-> time that we can make trivial to keep in sync.
+Hello Ralf
 
-I agree with David here. It's also easy for arch/platform maintainers to
-"miss" a new syscall too ... for various reasons, we can't all read
-_everything_ that gets posted to lkml and we all do occasionally miss
-some csets going upstream, which means we can very well totally "forget"
-about addint the new syscall to the arch ... until somebody complains,
-which can be 1 or 2 releases later !
+Attached untested patch implements support for getting the memory size
+from PMON.PMON stores the memory size in MB in an env variable called
+memsize. This patch follows the previous hypertransport patch
 
-> I religiously watch what goes into Linus's tree for this purpose,
-> but that is kind of a rediculious burdon to expect every platform
-> maintainer to do.  It's not just system calls, we have signal handling
-> bug fixes, trap handling infrastructure, and now the nice generic
-> IRQ handling subsystem as other examples.
+Thanks
+Manish Lachwani
 
-Right.
-
-> Simply put, if you're not watching the tree in painstaking detail
-> every day, you miss all of these enhancements.
->
-> The knowledge should come from the person putting the changes into
-> the tree, therefore it gets done once and this makes it so that
-> the other platform maintainers will find out about it automatically
-> next time they update their tree.
-
-Agreed,
-Ben.
+--- arch/mips/pmc-sierra/yosemite/setup.c.orig	2004-10-20
+19:09:17.000000000 -0700
++++ arch/mips/pmc-sierra/yosemite/setup.c	2004-10-20 19:11:09.000000000
+-0700
+@@ -59,6 +59,7 @@
+ 
+ unsigned long cpu_clock;
+ unsigned long yosemite_base;
++unsigned long memory_size;
+ 
+ void __init bus_error_init(void)
+ {
+@@ -197,8 +198,12 @@
+ 	board_time_init = yosemite_time_init;
+ 	late_time_init = py_map_ocd;
+ 
+-	/* Add memory regions */
+-	add_memory_region(0x00000000, 0x10000000, BOOT_MEM_RAM);
++	/* 
++	 * Add memory regions. Check what PMON as for us and 
++	 * then config memory. PMON reports the memory config
++	 * in MB
++	 */
++	add_memory_region(0x00000000, memory_size*1024*1024, BOOT_MEM_RAM);
+ 
+ 	if (val & 0x00000020) {
+ 		/*
+--- arch/mips/pmc-sierra/yosemite/prom.c.orig	2004-10-20
+18:55:06.000000000 -0700
++++ arch/mips/pmc-sierra/yosemite/prom.c	2004-10-20 19:08:40.000000000
+-0700
+@@ -27,6 +27,7 @@
+ 
+ extern unsigned long yosemite_base;
+ extern unsigned long cpu_clock;
++extern unsigned long memory_size; /* Get the memory size from PMON */
+ 
+ const char *get_system_type(void)
+ {
+@@ -112,6 +113,11 @@
+ 			    simple_strtol(*env + strlen("cpuclock="), NULL,
+ 					  10);
+ 
++		if (strncmp("memsize", *env, strlen("memsize")) == 0)
++			memory_size =
++			    simple_strtol(*env + strlen("memsize="), NULL,
++					  4);
++
+ 		env++;
+ 	}
+ #endif /* CONFIG_MIPS32 */

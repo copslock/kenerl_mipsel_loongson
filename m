@@ -1,69 +1,71 @@
-Received:  by oss.sgi.com id <S42327AbQFBOtQ>;
-	Fri, 2 Jun 2000 07:49:16 -0700
-Received: from gatekeep.ti.com ([192.94.94.61]:40943 "EHLO gatekeep.ti.com")
-	by oss.sgi.com with ESMTP id <S42275AbQFBOtE>;
-	Fri, 2 Jun 2000 07:49:04 -0700
-Received: from dlep7.itg.ti.com ([157.170.134.103])
-	by gatekeep.ti.com (8.10.1/8.10.1) with ESMTP id e52EnfL26965
-	for <linux-mips@oss.sgi.com>; Fri, 2 Jun 2000 09:49:41 -0500 (CDT)
-Received: from dlep7.itg.ti.com (localhost [127.0.0.1])
-	by dlep7.itg.ti.com (8.9.3/8.9.3) with ESMTP id JAA02943
-	for <linux-mips@oss.sgi.com>; Fri, 2 Jun 2000 09:49:33 -0500 (CDT)
-Received: from dlep4.itg.ti.com (dlep4.itg.ti.com [157.170.188.63])
-	by dlep7.itg.ti.com (8.9.3/8.9.3) with ESMTP id JAA02928
-	for <linux-mips@oss.sgi.com>; Fri, 2 Jun 2000 09:49:33 -0500 (CDT)
-Received: from ti.com (IDENT:jharrell@reddwarf.sc.ti.com [128.247.117.210])
-	by dlep4.itg.ti.com (8.9.3/8.9.3) with ESMTP id JAA08682
-	for <linux-mips@oss.sgi.com>; Fri, 2 Jun 2000 09:49:40 -0500 (CDT)
-Message-ID: <3937C998.5CD7BE81@ti.com>
-Date:   Fri, 02 Jun 2000 08:50:00 -0600
-From:   Jeff Harrell <jharrell@ti.com>
-Organization: Texas Instruments
-X-Mailer: Mozilla 4.73 [en] (X11; U; Linux 2.2.14-5.0 i686)
-X-Accept-Language: en
+Received:  by oss.sgi.com id <S42275AbQFBPOG>;
+	Fri, 2 Jun 2000 08:14:06 -0700
+Received: from mail.exfo.com ([206.191.88.36]:46859 "EHLO mail.exfo.com")
+	by oss.sgi.com with ESMTP id <S42240AbQFBPNx>;
+	Fri, 2 Jun 2000 08:13:53 -0700
+Received: from exfo.com ([172.16.46.216]) by mail.exfo.com
+          (Netscape Messaging Server 3.62)  with ESMTP id 755
+          for <linux-mips@oss.sgi.com>; Fri, 2 Jun 2000 11:13:17 -0400
+Message-ID: <3937CFE8.C1248EC0@exfo.com>
+Date:   Fri, 02 Jun 2000 11:16:56 -0400
+From:   "Philippe Chauvat" <philippe.chauvat@exfo.com>
+X-Mailer: Mozilla 4.7 [en] (WinNT; I)
+X-Accept-Language: fr,en
 MIME-Version: 1.0
-To:     linux-mips@oss.sgi.com
-Subject: Symbol generation with cross compiler tools
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+To:     Linux Mips <linux-mips@oss.sgi.com>
+Subject: [HELP!: Boot Hardrat Pb]
+Content-Type: multipart/mixed;
+ boundary="------------69C24E707A31C1F0746D2134"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-I would like to run a quick question past this news group. I am seeing
-problems
-with symbol generation on the mipsel cross compilation tools.  I am
-using the XRAY debugger
-with a Macgraigor EJTAG pod on a MIPS R4Kc (jade) core.  The XRAY
-documentation says that it
-should be able to recognize the symbols in an ELF executable.  The mips
-tools (Cygnus GCC 2.9.x) that is
-shipped with the development system has no problem generating symbols
-that the XRAY debugger can recognize.  When I attempt to do  a similar
-test with the SGI cross compiler tools, XRAY doesn't
-recognize any of the symbols.  Here are the versions of the
-cross-compiler tools that I am currently using...
+This is a multi-part message in MIME format.
+--------------69C24E707A31C1F0746D2134
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
+Hello,
 
-       binutils-mipsel-linux-2.8.1-1
-       egcs-mipsel-linux-1.0.3a-1
-       egcs-c++-mipsel-linux-1.0.3a-1
-       egcs-libstdc++-mipsel-linux-2.8.0-1
-       egcs-objc-mipsel-linux-1.0.3a-1
-       egcs-g77-mipsel-linux-1.0.3a-1
+Hey ! I've successed with BOOTP and DHCP
+First of all, I've installed the last version of isc DHCP/BOOTP and I've
+corrected a mistake in my inetd.conf file. So I progress... :-)
 
+When my IrixBox boot on my LinuxBox with bootp, something wrong
+happened:
+Kernel Panic due to a /tftpboot/pancake mounting problem (pancake is the
+hostname of IrixBox)
 
-I am using the "-g" command to generate debugging information.
+I'ld precise that in my inetd.conf, tftp is written like the following
+line:
+tftp ..... /usr/sbin/tftp in.tftp /my/local/mount/point
 
-I appreciate any information that anyone might have on similar
-situations.  Thank you in advance
+So what's about this message  (and why) ? What does this directory
+contain ?
 
-Jeff Harrell
+Thanks for your help.
+Philippe
 
---
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Jeff Harrell                    Work:  (801) 619-6104
-Broadband Access group/TI
-jharrell@ti.com
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+--------------69C24E707A31C1F0746D2134
+Content-Type: text/x-vcard; charset=us-ascii;
+ name="pchauvat.vcf"
+Content-Transfer-Encoding: 7bit
+Content-Description: Card for Philippe Chauvat
+Content-Disposition: attachment;
+ filename="pchauvat.vcf"
+
+begin:vcard 
+n:Chauvat;Philippe
+tel;work:+1 (418) 683 0913 #3663
+x-mozilla-html:FALSE
+url:www.exfo.com
+org:Exfo O.E. inc.
+adr:;;465 Avenue Godin;Vanier;Quebec;G1M 3G7;Canada
+version:2.1
+email;internet:philippe.chauvat@exfo.com
+title:Manager, Web Tools Deployment
+fn:Philippe Chauvat
+end:vcard
+
+--------------69C24E707A31C1F0746D2134--

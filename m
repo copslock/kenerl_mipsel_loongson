@@ -1,42 +1,46 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f5PJAJ004590
-	for linux-mips-outgoing; Mon, 25 Jun 2001 12:10:19 -0700
-Received: from mail.foobazco.org (snowman.foobazco.org [198.144.194.230])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5PJAHV04587
-	for <linux-mips@oss.sgi.com>; Mon, 25 Jun 2001 12:10:17 -0700
-Received: by mail.foobazco.org (Postfix, from userid 1014)
-	id 37A6C3E90; Mon, 25 Jun 2001 12:04:57 -0700 (PDT)
-Date: Mon, 25 Jun 2001 12:04:57 -0700
-From: Keith M Wesolowski <wesolows@foobazco.org>
-To: Florian Lohoff <flo@rfc822.org>
-Cc: Barry Wu <wqb123@yahoo.com>, linux-mips@oss.sgi.com
-Subject: Re: about linux mips ext2fs
-Message-ID: <20010625120457.A15950@foobazco.org>
+	by oss.sgi.com (8.11.2/8.11.3) id f5PNsr328487
+	for linux-mips-outgoing; Mon, 25 Jun 2001 16:54:53 -0700
+Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5PNsrV28483
+	for <linux-mips@oss.sgi.com>; Mon, 25 Jun 2001 16:54:53 -0700
+Received: by ocean.lucon.org (Postfix, from userid 1000)
+	id 6F295125BA; Mon, 25 Jun 2001 16:54:52 -0700 (PDT)
+Date: Mon, 25 Jun 2001 16:54:52 -0700
+From: "H . J . Lu" <hjl@lucon.org>
+To: linux-mips@oss.sgi.com
+Subject: RedHat 7.1 for MIPS is available
+Message-ID: <20010625165452.A3723@lucon.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20010625202030.B701@paradigm.rfc822.org>
-User-Agent: Mutt/1.3.18i
+User-Agent: Mutt/1.2.5i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Jun 25, 2001 at 08:20:30PM +0200, Florian Lohoff wrote:
+I have uploaded the mipsel rpms. I will upload the mips rpms once the
+build is finished.
 
-> Linux/mips uses ext2 - Ext2 is per definition little endian and all
-> big endian targets use byteswap mechanisms (All but very old Linux/m68k
-> systems). So - yes - you can read i386 written ext2 on mips machines.
-> 
-> With the partition type - I guess all architectures are able to read
-> dos partition tables allthough they might not be the default (On SGI
-> we mostly use IRIX style partition tables)
 
-All true, though the more standard way to get software onto your
-system is using network booting and nfsroot.  Then you can create
-partition tables and filesystems locally, then copy or install
-appropriate software from the nfsroot onto local disk.
+H.J.
+----
+My mini-port of RedHat 7.1 is at
 
--- 
-Keith M Wesolowski <wesolows@foobazco.org> http://foobazco.org/~wesolows
-------(( Project Foobazco Coordinator and Network Administrator ))------
-	"Nothing motivates a man more than to see his boss put
-	 in an honest day's work." -- The fortune file
+ftp://oss.sgi.com/pub/linux/mips/redhat/7.1/
+
+you should be able to put a small RedHat 7.1 on the mips/mipsel box and
+compile the rest of RedHat 7.1 yourselves.
+
+Here are something you should know:
+
+1. The glibc is compiled with -mips2.
+2. The cross compiler hosted on RedHat 7.1/ia32 is provided as a
+toolchain rpm. The binary rpms for the mips and mipsel cross compilers
+are included.
+3. You have to find a way to put those rpms on your machine. I use
+network boot and NFS root to do it.
+
+Thanks.
+
+
+H.J.

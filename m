@@ -1,61 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Apr 2003 22:46:11 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:7672 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225072AbTDHVqK>;
-	Tue, 8 Apr 2003 22:46:10 +0100
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id h38Ljub21667;
-	Tue, 8 Apr 2003 14:45:56 -0700
-Date: Tue, 8 Apr 2003 14:45:56 -0700
-From: Jun Sun <jsun@mvista.com>
-To: Alan Cox <alan@lxorguk.ukuu.org.uk>
-Cc: Earl Mitchell <earlmips@yahoo.com>, linux-mips@linux-mips.org,
-	jsun@mvista.com
-Subject: Re: pci graphics card for malta running linux
-Message-ID: <20030408144556.E6865@mvista.com>
-References: <20030408175517.66121.qmail@web20708.mail.yahoo.com> <1049833899.8939.9.camel@dhcp22.swansea.linux.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Apr 2003 22:47:42 +0100 (BST)
+Received: from p508B6792.dip.t-dialin.net ([IPv6:::ffff:80.139.103.146]:46566
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225072AbTDHVrm>; Tue, 8 Apr 2003 22:47:42 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id h38LlZV09029;
+	Tue, 8 Apr 2003 23:47:35 +0200
+Date: Tue, 8 Apr 2003 23:47:35 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Hartvig Ekner <hartvig@ekner.info>
+Cc: Linux MIPS mailing list <linux-mips@linux-mips.org>
+Subject: Re: Aliasing in pgtable-bits.h (CONFIG_64BIT_PHYS_ADDR)
+Message-ID: <20030408234735.A7363@linux-mips.org>
+References: <3E9274F0.227008F7@ekner.info>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <1049833899.8939.9.camel@dhcp22.swansea.linux.org.uk>; from alan@lxorguk.ukuu.org.uk on Tue, Apr 08, 2003 at 09:31:40PM +0100
-Return-Path: <jsun@mvista.com>
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <3E9274F0.227008F7@ekner.info>; from hartvig@ekner.info on Tue, Apr 08, 2003 at 09:06:24AM +0200
+Return-Path: <ralf@linux-mips.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1946
+X-archive-position: 1947
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Apr 08, 2003 at 09:31:40PM +0100, Alan Cox wrote:
-> On Maw, 2003-04-08 at 18:55, Earl Mitchell wrote:
-> > Does anybody have any good reccs for PCI graphcis cards I can use with
-> > Malta board running linux? Some linux device drivers assume x86. If
-> > you know some PCI cards that work with linux/mips on malta let me know
-> > (especially nVidia or ATI cards). Also any PCI sound cards that work
-> > too. 
+On Tue, Apr 08, 2003 at 09:06:24AM +0200, Hartvig Ekner wrote:
+
+> #define _PAGE_R4KBUG                (1<<0)  /* workaround for r4k bug  */
+> #define _PAGE_GLOBAL                (1<<0)
 > 
-> Nvidia and ATI cards require you run the BIOS firmware to boot them. 
-> XFree86 can do that for the ATI at least. If you just need to ram 
-> something into a box so you can see what is going up I'd suggest
-> getting an old voodoo1/voodoo2 off ebay. They report as multimedia
-> devices and the current kernel fb driver can bootstrap them from
-> cold on little or big endian systems with no bios support (tested
-> on parisc, x86 etc)
->
+> Is the aliasing between R4KBUG & GLOBAL intentional? This is the only CONFIG case where it
+> is done. Superficially, I can't see R4KBUG used anywhere, so maybe it doesn't matter. But
+> if R4KBUG truly isn't used, why not consider removing it entirely from all PTE layouts?
 
-When I played with voodoo cards, I needed a different voodoo driver
-for fb to work.  See http://www.medex.hu/~danthe/tdfx/.
+It's there for a R4000 bug workaround waiting to be finally written by
+somebody ...
 
-But that patch is very outdated.  Last time when I tried with
-recent 2.4 kernels, it was seriously broken.
-
-The old faithful Matrox Millennium cards still work fine.
-
-Steve Longerbeam has made ATI xpert98 working with non-i386 machines.
-You can poke him for the patch.
-
-Jun
+  Ralf

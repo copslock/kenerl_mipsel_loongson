@@ -1,58 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 May 2004 08:12:42 +0100 (BST)
-Received: from sccrmhc12.comcast.net ([IPv6:::ffff:204.127.202.56]:60365 "EHLO
-	sccrmhc12.comcast.net") by linux-mips.org with ESMTP
-	id <S8225538AbUEOHMl>; Sat, 15 May 2004 08:12:41 +0100
-Received: from gentoo.org (pcp04939029pcs.waldrf01.md.comcast.net[68.48.72.58])
-          by comcast.net (sccrmhc12) with ESMTP
-          id <2004051507123201200l0qo0e>
-          (Authid: kumba12345);
-          Sat, 15 May 2004 07:12:32 +0000
-Message-ID: <40A5C355.3060206@gentoo.org>
-Date: Sat, 15 May 2004 03:14:29 -0400
-From: Kumba <kumba@gentoo.org>
-Reply-To: kumba@gentoo.org
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.6) Gecko/20040113
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 May 2004 11:40:11 +0100 (BST)
+Received: from smtp.seznam.cz ([IPv6:::ffff:212.80.76.43]:20201 "HELO
+	smtp.seznam.cz") by linux-mips.org with SMTP id <S8225201AbUEOKkK>;
+	Sat, 15 May 2004 11:40:10 +0100
+Received: (qmail 21532 invoked from network); 15 May 2004 10:40:02 -0000
+Received: from unknown (HELO umax645sx) (Ladislav.Michl@160.218.40.13)
+  by smtp.seznam.cz with SMTP; 15 May 2004 10:40:02 -0000
+Received: from ladis by umax645sx with local (Exim 3.36 #1 (Debian))
+	id 1BOwaR-0000gV-00; Sat, 15 May 2004 12:40:11 +0200
+Date: Sat, 15 May 2004 12:40:07 +0200
+To: Peter Fuerst <pf@net.alphadv.de>
+Cc: linux-mips@linux-mips.org
 Subject: Re: IP28
+Message-ID: <20040515104007.GA2604@umax645sx>
 References: <Pine.LNX.4.21.0405150832160.747-101000@Opal.Peter>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <Pine.LNX.4.21.0405150832160.747-101000@Opal.Peter>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <kumba@gentoo.org>
+User-Agent: Mutt/1.5.6i
+From: Ladislav Michl <ladis@linux-mips.org>
+Return-Path: <ladis@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5020
+X-archive-position: 5021
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: ladis@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Peter Fuerst wrote:
-> 
-> 
+On Sat, May 15, 2004 at 08:36:35AM +0200, Peter Fuerst wrote:
 > How many Linux logins took place on a IP28-machine before ... ?
-> 
-> 
-> with kind regards
-> 
-> peter fürst
-> 
-> 
-> 
-> attached: dmesg
 
-Did you port linux to the IP28 I2, and if so, you got patches around by 
-chance?  (kinda curious that it's a 2.4.22 kernel)
+Let me answer with question? ;-) Where is the patch?
 
-
---Kumba
-
--- 
-"Such is oft the course of deeds that move the wheels of the world: 
-small hands do them because they must, while the eyes of the great are 
-elsewhere."  --Elrond
+	ladis

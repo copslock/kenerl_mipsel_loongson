@@ -1,45 +1,52 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0SFN6p13396
-	for linux-mips-outgoing; Mon, 28 Jan 2002 07:23:06 -0800
-Received: from real.realitydiluted.com (real.realitydiluted.com [208.242.241.164])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0SFN3P13390
-	for <linux-mips@oss.sgi.com>; Mon, 28 Jan 2002 07:23:03 -0800
-Received: from dsl73.cedar-rapids.net ([208.242.241.39] helo=cotw.com)
-	by real.realitydiluted.com with esmtp (Exim 3.22 #1 (Red Hat Linux))
-	id 16VCgM-0006nP-00; Mon, 28 Jan 2002 08:22:50 -0600
-Message-ID: <3C556CC2.FD6EB35@cotw.com>
-Date: Mon, 28 Jan 2002 09:22:42 -0600
-From: Scott A McConnell <samcconn@cotw.com>
-X-Mailer: Mozilla 4.77 [en] (X11; U; Linux 2.4.17-xfs i686)
-X-Accept-Language: en
+	by oss.sgi.com (8.11.2/8.11.3) id g0SGaao23023
+	for linux-mips-outgoing; Mon, 28 Jan 2002 08:36:36 -0800
+Received: from intotoinc.com (sdsl-66-80-10-146.dsl.sca.megapath.net [66.80.10.146])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0SGaWP23012
+	for <linux-mips@oss.sgi.com>; Mon, 28 Jan 2002 08:36:32 -0800
+Received: from localhost (rajeshbv@localhost)
+	by intotoinc.com (8.11.0/8.11.0) with ESMTP id g0SFZZp06635;
+	Mon, 28 Jan 2002 07:35:35 -0800
+Date: Mon, 28 Jan 2002 07:35:35 -0800 (PST)
+From: Venkata Rajesh Bikkina <rajeshbv@intotoinc.com>
+To: Jon Burgess <Jon_Burgess@eur.3com.com>
+cc: linux-mips@oss.sgi.com
+Subject: Re: INSMOD failing on MIPS
+In-Reply-To: <80256B4F.00416BF5.00@notesmta.eur.3com.com>
+Message-ID: <Pine.LNX.4.21.0201280731550.6584-100000@intotoinc.com>
 MIME-Version: 1.0
-To: "H . J . Lu" <hjl@lucon.org>
-CC: GNU C Library <libc-alpha@sources.redhat.com>, linux-mips@oss.sgi.com
-Subject: Re: A linuxthreads bug on mips?
-References: <20020125234542.A31028@lucon.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-"H . J . Lu" wrote:
+
+Hi Jon,
+
+Thankyou very much for your quick reply.
+And it worked with your suggestion of adding "-G 0" for linking also.
+
+Thanks,
+--Rajesh
+
+
+On Mon, 28 Jan 2002, Jon Burgess wrote:
+
 > 
-> Here is a modified ex2.c which only uses one conditional variable. It
-> works fine on x86. But it leads to dead lock on mips where both
-> producer and consumer are suspended. Is this testcase correct?
-
-H. J.,
-
-I ran the program on the PC and a MIPS le NEC vr5432. It worked fine on
-both machines.
-
-I do not run the pthread library on the SGI site because it dead locks.
-I rebuilt the pthread lib natively on my MIPS box and use that lib in
-place of the lib provided in the RPM on the SGI site.
-(I suspect it is a cross compilation problem rather than a problem in
-the pthread lib.)
-
-I believe others have also posted about deadlocks with the pthread lib
-on the SGI site.
-
-Scott
+> 
+> >But when i link two '.o' files with ld as
+> >"mipsel-linux-ld -r -o temp.o temp.o temp1.o"
+> >and insert the output 'temp.o' it is crashing.
+> 
+> I've seen this before, I think the solution is to use:
+> 
+> mipsel-linux-ld -G 0 -r -o temp.o temp.o temp1.o
+> 
+> Without the '-G0' the linker places small common variables into a '.scommon'
+> section which insmod fails to relocate.
+> 
+> 'insmod' should complain in this situation or try to relocate these symbols
+> properly.
+> 
+>      Jon Burgess
+> 
+> 

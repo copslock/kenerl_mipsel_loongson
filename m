@@ -1,47 +1,51 @@
-Received:  by oss.sgi.com id <S553777AbQKGDkG>;
-	Mon, 6 Nov 2000 19:40:06 -0800
-Received: from u-245.karlsruhe.ipdial.viaginterkom.de ([62.180.10.245]:3080
-        "EHLO u-245.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S553721AbQKGDjn>; Mon, 6 Nov 2000 19:39:43 -0800
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S868617AbQKGDjW>;
-        Tue, 7 Nov 2000 04:39:22 +0100
-Date:   Tue, 7 Nov 2000 04:39:22 +0100
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Alan Cox <alan@lxorguk.ukuu.org.uk>
-Cc:     Keith Owens <kaos@melbourne.sgi.com>, linux-mips@oss.sgi.com,
-        linux-mips@fnet.fr
-Subject: Re: Kernel compiler
-Message-ID: <20001107043922.A31298@bacchus.dhis.org>
-References: <20001104035326.A29005@bacchus.dhis.org> <E13s0ke-0004Sa-00@the-village.bc.nu>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <E13s0ke-0004Sa-00@the-village.bc.nu>; from alan@lxorguk.ukuu.org.uk on Sat, Nov 04, 2000 at 10:40:42AM +0000
-X-Accept-Language: de,en,fr
+Received:  by oss.sgi.com id <S553801AbQKGE4q>;
+	Mon, 6 Nov 2000 20:56:46 -0800
+Received: from [199.239.207.12] ([199.239.207.12]:1523 "EHLO enabtech.com")
+	by oss.sgi.com with ESMTP id <S553795AbQKGE4m>;
+	Mon, 6 Nov 2000 20:56:42 -0800
+Received: from jawad ([206.82.141.26])
+	by enabtech.com (8.9.3/8.9.3) with SMTP id VAA08334;
+	Mon, 6 Nov 2000 21:00:19 -0800 (PST)
+Message-ID: <002101c04877$dbc6a270$2a00a8c0@enabtech>
+From:   "Jawad Qureshi" <jawad@enabtech.com>
+To:     <linux-mips@fnet.fr>
+Cc:     <linux-mips@oss.sgi.com>
+Subject: How to Unsubsribe from this list
+Date:   Tue, 7 Nov 2000 10:01:51 +0500
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_001E_01C048A1.C03E3250"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.2919.6700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Sat, Nov 04, 2000 at 10:40:42AM +0000, Alan Cox wrote:
+This is a multi-part message in MIME format.
 
-> > The reports regarding egcs 2.96 and newer misscompiling the kernel only
-> > affect x86 or are other architecture affected as well?  I don't have any
-> > pending compiler >= 2.96 related bug reports.
-> 
-> The Red Hat 2.96 seems to compile 2.2 correctly when you fix the 2.2 bugs but
-> does miscompile x86 fs/buffers.c on 2.4 according to reports. I think with mips
-> you'd have to experiment. Also AFAIK that tree branch hasn't been tested on
-> mips 
+------=_NextPart_000_001E_01C048A1.C03E3250
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-I asked Cort about their PPC experience and they also got trouble.  Reason
-enough to ignore gcc-current for kernel use for now.  It's doing well
-for userland however so we'll also have to use two compilers from now on,
-one for kernel and one for userland.
 
-Btw, I've now placed srpm and i386-linux rpms of a new release of the
-egcs-1.1.2 Linux/MIPS crosscompiler on oss.sgi.com.  Users of the 64-bit
-kernel, read Origin users should also update as this release has several
-fixes.
 
-  Ralf
+------=_NextPart_000_001E_01C048A1.C03E3250
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META content=3D"text/html; charset=3Diso-8859-1" =
+http-equiv=3DContent-Type>
+<META content=3D"MSHTML 5.00.2920.0" name=3DGENERATOR>
+<STYLE></STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV>&nbsp;</DIV></BODY></HTML>
+
+------=_NextPart_000_001E_01C048A1.C03E3250--

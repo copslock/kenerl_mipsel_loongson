@@ -1,80 +1,97 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Apr 2003 07:42:43 +0100 (BST)
-Received: from [IPv6:::ffff:202.54.110.230] ([IPv6:::ffff:202.54.110.230]:31251
-	"EHLO ngate.noida.hcltech.com") by linux-mips.org with ESMTP
-	id <S8225073AbTDAGmj>; Tue, 1 Apr 2003 07:42:39 +0100
-Received: from exch-01.noida.hcltech.com (exch-01 [204.160.254.29])
-	by ngate.noida.hcltech.com (8.9.3/8.9.3) with ESMTP id MAA00363
-	for <linux-mips@linux-mips.org>; Tue, 1 Apr 2003 12:07:52 +0530
-Received: by exch-01.noida.hcltech.com with Internet Mail Service (5.5.2656.59)
-	id <HPYVLFH5>; Tue, 1 Apr 2003 12:05:20 +0530
-Message-ID: <E04CF3F88ACBD5119EFE00508BBB2121086ED859@exch-01.noida.hcltech.com>
-From: "Neeraj  Garg, Noida" <ngarg@noida.hcltech.com>
-To: linux-mips@linux-mips.org
-Subject: Linux-MIPS compilation
-Date: Tue, 1 Apr 2003 12:05:18 +0530 
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Apr 2003 08:43:53 +0100 (BST)
+Received: from pasmtp.tele.dk ([IPv6:::ffff:193.162.159.95]:1288 "EHLO
+	pasmtp.tele.dk") by linux-mips.org with ESMTP id <S8225073AbTDAHnu>;
+	Tue, 1 Apr 2003 08:43:50 +0100
+Received: from ekner.info (0x83a4a968.virnxx10.adsl-dhcp.tele.dk [131.164.169.104])
+	by pasmtp.tele.dk (Postfix) with ESMTP
+	id 18536B5D6; Tue,  1 Apr 2003 09:43:48 +0200 (CEST)
+Message-ID: <3E8944EA.6E7AE06C@ekner.info>
+Date: Tue, 01 Apr 2003 09:51:06 +0200
+From: Hartvig Ekner <hartvig@ekner.info>
+X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.18-19.7.x i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2656.59)
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Return-Path: <ngarg@noida.hcltech.com>
+To: Pete@ekner.info, Popov@ekner.info
+Cc: Linux MIPS mailing list <linux-mips@linux-mips.org>
+Subject: Re: Au1500 hardware cache coherency
+References: <3E882FB8.BBFDACE2@ekner.info> <3E8853B3.9080902@amd.com>
+		 <3E885B68.6927451E@ekner.info> <3E8883B8.1000000@amd.com>
+		 <3E889602.62B7AB6B@ekner.info> <1049142818.26677.68.camel@zeus.mvista.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <hartvig@ekner.info>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1882
+X-archive-position: 1883
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ngarg@noida.hcltech.com
+X-original-sender: hartvig@ekner.info
 Precedence: bulk
 X-list: linux-mips
 
-Hi all,
-I am trying to compile linux kernel version 2.4.19 and 2.4.20 for a MIPS
-processor. GNU Compiler and linker version is 2.95.4.
+Hi Pete,
 
------------------
-Compilation: 
-------------------
-Using compilation options:
-mips-linux-gcc -D__KERNEL__ -D__linux__ -D_MIPS_SZLONG=32
--I/usr/emb_linux/linux-2.4.20/include -D__linux__ -Wall -Wstrict-prototypes
--Wno-trigraphs -O2 -fno-strict-aliasing -fno-common -fomit-frame-pointer -I
-/usr/emb_linux/linux-2.4.20/include/asm/gcc -G 0 -mno-abicalls -fno-pic
--pipe -g -mcpu=r4600 -mips2 -Wa,--trap  -DUTS_MACHINE='"mips"'
+Pete Popov wrote:
 
-I have got a tons of warnings named as:
-{standard input}: Assembler messages:
-{standard input}:784: Warning: Macro instruction expanded into multiple
-instructions
-{standard input}:784: Warning: No .cprestore pseudo-op used in PIC code
+> On Mon, 2003-03-31 at 11:24, Hartvig Ekner wrote:
+> > Hi Eric,
+> >
+> > I did a quick check of a complete kernel disassembly, and there are
+> > tons of direct or indirect RMW's to config, which do not explicitly
+> > insure that Config[0D] is set.
+> > Pete - are you aware of this?
+>
+> Config[OD] is set in setup.c and should not be cleared afterward.
+>
 
-Can anybody help out to remove these warnings?
+Due to errata #4, it is cleared whenever macroes like set_c0_config or change_c0_config is
+called. This happens in several places:
 
-----------------------
-Linking
--------------------
-Using linking options:
-mips-linux-ld -G 0 -static  -T arch/mips/ld.script
+    au1000_restart (probably doesn't matter?)
+    cache parity error exception (doesn't matter, we're probably dying anyway)
+    ld_mmu_mips32 (in c-mips32.c)
 
-I have got a tons of error messages named as:
-relocation truncated to fit: R_MIPS_PC16 cache_parity_error
-relocation truncated to fit: R_MIPS_PC16 no symbol
-relocation truncated to fit: R_MIPS_PC16 no symbol
-
-I would be obliged if somebody can explain how GNU linker is taking
-R_MIPS_PC16 as relocation type and what is the remedy to remove these error
-messages?
-
-Thanks and regds,
--neeraj
+I'm not quite sure whether ld_mmu_mips32 is called after au1x00 setup, but if it is,
+the bit is cleared, never to be set again. Maybe the c0_config macroes should be changed
+due to errata #4?
 
 
-----------------------------------------------------------------------
-Neeraj Kumar Garg            
-Member Technical Staff
+> > So, to summarize: The first set of problems in my email below seem to
+> > be fully explained by errata #14. Note that any kernel compiled from
+> > the current CVS exhibits this problem:
+> > Because although NONCOHEHENT_IO is set, the NC bit in PCI_CFG is not
+> > set.
+>
+> Hmm, ok, I'll check that out.
 
-HCL Technologies Ltd.
-A-5, Sector 24                Work: 91-11-91-2411502 Ext 2560
-Noida UP - 201301             Fax:  91-11-91-2440155
-India
-----------------------------------------------------------------------
+>
+>
+> > I have verified that the problem occurs when NC is cleared, regardless
+> > of the .config option. So some code needs to be changed in
+> > au1000/xxx/setup.c... (set NC if NONCOHERENT_IO
+> > is enabled).
+>
+> > But - much wore worrisome: I did this modification, and with the NC
+> > bit set, and NONCOHERENT_IO set, I get the second set of errors,
+> > although it takes much longer time. The wback_inv calls are made
+> > through the generic code  in the subroutine
+> > pci_alloc_consistent() (in arch/mips/kernel/pci-dma.c).
+>
+> > So something is wrong.... Anybody at AMD who would care to continue
+> > the debug?
+>
+> Can you send me your test and exact instructions on how you're
+> duplicating the error? I won't have time to look at it until after 4/20
+> though.
+>
+
+Sure. However, I will first try to make sure that the kernel does not have the same problem on another
+non AU1500 platform.
+
+BTW, are you using the HPT onboard IDE controller? Last time I tried, it wasn't functional, the kernel crashed
+during boot when kudzu was doing some HW probing on the IDE stuff. I'm using a plug-in promise card
+(20268 based).
+
+/Hartvig

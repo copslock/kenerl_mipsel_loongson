@@ -1,59 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Feb 2003 15:49:08 +0000 (GMT)
-Received: from mail2.sonytel.be ([IPv6:::ffff:195.0.45.172]:28063 "EHLO
-	mail.sonytel.be") by linux-mips.org with ESMTP id <S8225201AbTBKPtH>;
-	Tue, 11 Feb 2003 15:49:07 +0000
-Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.27])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id QAA08958;
-	Tue, 11 Feb 2003 16:48:52 +0100 (MET)
-Date: Tue, 11 Feb 2003 16:48:56 +0100 (MET)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: Jiahan Chen <jiahanchen@yahoo.com>
-cc: Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: Mips Kernel Build
-In-Reply-To: <20030211153128.41512.qmail@web40804.mail.yahoo.com>
-Message-ID: <Pine.GSO.4.21.0302111647110.13073-100000@vervain.sonytel.be>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <Geert.Uytterhoeven@sonycom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Feb 2003 22:48:36 +0000 (GMT)
+Received: from noose.gt.owl.de ([IPv6:::ffff:62.52.19.4]:61964 "EHLO
+	noose.gt.owl.de") by linux-mips.org with ESMTP id <S8225225AbTBKWsf>;
+	Tue, 11 Feb 2003 22:48:35 +0000
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id D97CC25E4D; Tue, 11 Feb 2003 23:48:33 +0100 (CET)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id EAA02B2AB; Tue, 11 Feb 2003 23:46:22 +0100 (CET)
+Date: Tue, 11 Feb 2003 23:46:22 +0100
+From: Florian Lohoff <flo@rfc822.org>
+To: Andrew Clausen <clausen@melbourne.sgi.com>
+Cc: Guido Guenther <agx@gandalf.physik.uni-konstanz.de>,
+	Linux-MIPS <linux-mips@linux-mips.org>
+Subject: Re: porting arcboot
+Message-ID: <20030211224622.GC1186@paradigm.rfc822.org>
+References: <20030210034549.GA8408@pureza.melbourne.sgi.com> <20030210100319.GA30624@merry> <20030210223955.GF8408@pureza.melbourne.sgi.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="O3RTKUHj+75w1tg5"
+Content-Disposition: inline
+In-Reply-To: <20030210223955.GF8408@pureza.melbourne.sgi.com>
+User-Agent: Mutt/1.3.28i
+Organization: rfc822 - pure communication
+Return-Path: <flo@rfc822.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1391
+X-archive-position: 1392
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: flo@rfc822.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 11 Feb 2003, Jiahan Chen wrote:
-> I'm working on Linux embedded applications with
-> PC (Intel) workstation as Development Host, and
-> Mips as Target. Currently, I have the following
-> questions:
-> 
-> 1. What is a easy way to create a new kernel for Mips?
 
->     I'm wondering if Kernel's 2.4.18 source tree distribution
->     from RedHat CD is working for Mips Kernel creation. 
+--O3RTKUHj+75w1tg5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Most probably not.
+On Tue, Feb 11, 2003 at 09:39:55AM +1100, Andrew Clausen wrote:
+>=20
+> e2fsprogs looks like it resists cross-compiling also :(
+>=20
+> So, the obstacles are:
+>  * e2fsprogs uses libc headers quite extensively, but there is no
+> glibc available for mips64 (right?).  It also seems to make quite a
+> few libc calls?  (How are you planning to deal with that?  Link
+> against it statically?  What about syscalls?)
+>  * e2fsprogs doesn't use autoconf/automake "properly".  It doesn't seem
+> to support cross-compiling.  Adding cross-compile support looks
+> somewhat non-trivial, since it builds it's own tools to compile itself.
+> (A fancy sed replacement, for some reason?)
+>  * there is no toolchain to build e2fsprogs on mips64 cleanly... need
+> to do that objcopy business.  This means hacking the build process?
 
-Get the kernel from Linux/MIPS CVS, cfr. www.linux-mips.org.
+You dont need e2fsprogs - Just certain parts of the libe2fs which itself
+just uses some very basic libc functions like malloc/free/str* which
+we all have within arcboot. So you simple need to cross-compile the
+libe2fs.
 
-> 2. Do you have a simple procedure (scripts) to setup for
-> cross-development environment on the PC Host? 
+Flo
+--=20
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+                        Heisenberg may have been here.
 
-If you run Debian, `apt-get install -t unstable toolchain-source', and read
-/usr/share/doc/toolchain-source/README.
+--O3RTKUHj+75w1tg5
+Content-Type: application/pgp-signature
+Content-Disposition: inline
 
-Gr{oetje,eeting}s,
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.6 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
 
-						Geert
+iD8DBQE+SX0+Uaz2rXW+gJcRArIzAJ9z+iK377OzNujfAnEhj8HhijTiZgCeIgXp
+VRl1Ayxazda6NSzD94Bz3xg=
+=gRjv
+-----END PGP SIGNATURE-----
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+--O3RTKUHj+75w1tg5--

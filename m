@@ -1,44 +1,40 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA15105; Wed, 18 Jun 1997 14:56:06 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id QAA22969; Wed, 18 Jun 1997 16:17:02 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id OAA24647 for linux-list; Wed, 18 Jun 1997 14:55:48 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA24624 for <linux@relay.engr.SGI.COM>; Wed, 18 Jun 1997 14:55:46 -0700
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id OAA01686
-	for <linux@relay.engr.SGI.COM>; Wed, 18 Jun 1997 14:55:42 -0700
-	env-from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-          by lager.engsoc.carleton.ca (8.8.5/8.8.4) with SMTP
-	  id RAA09285 for <linux@relay.engr.SGI.COM>; Wed, 18 Jun 1997 17:34:14 -0400
-Date: Wed, 18 Jun 1997 17:34:14 -0400 (EDT)
-From: Alex deVries <adevries@engsoc.carleton.ca>
-Reply-To: Alex deVries <adevries@engsoc.carleton.ca>
-To: linux@cthulhu.engr.sgi.com
-Subject: http://www.linux.sgi.com?
-In-Reply-To: <Pine.LNX.3.95.970618161248.20293T-100000@lager.engsoc.carleton.ca>
-Message-ID: <Pine.LNX.3.95.970618170905.20293Z-100000@lager.engsoc.carleton.ca>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id QAA16040 for linux-list; Wed, 18 Jun 1997 16:16:37 -0700
+Received: from neteng.engr.sgi.com (neteng.engr.sgi.com [192.26.80.10]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id QAA16019; Wed, 18 Jun 1997 16:16:35 -0700
+Received: from localhost (lm@localhost) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via SMTP id QAA00661; Wed, 18 Jun 1997 16:16:34 -0700
+Message-Id: <199706182316.QAA00661@neteng.engr.sgi.com>
+To: Nigel Gamble <nigel@cthulhu.engr.sgi.com>
+From: lm@neteng.engr.sgi.com (Larry McVoy)
+cc: "Christopher W. Carlson" <carlson@heaven.newport.sgi.com>,
+        linux@cthulhu.engr.sgi.com
+Subject: Re: Getting X on Linux/SGI 
+Date: Wed, 18 Jun 1997 16:16:34 -0700
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+: On Wed, 18 Jun 1997, Christopher W. Carlson wrote:
+: >                            SGI is a hardware company!  It surprises me
+: > that much of our company has forgotten that.
+: 
+: If it was ever true, it's certainly not true any longer.  SGI is
+: a systems company.  By which I mean that our "edge" over the
+: competition comes from a combination of hardware and software
+: working very closely together.
 
-I've had a few bits of email from people asking me about SGI-Linux.  I'm
-thinking as we start to get things off the ground that it would be a good
-idea to publish something at www.linux.sgi.com. As this will reflect on
-SGI, does anyone want to write anything there?
+We can argue this all day.  It's pointless.
 
-Also, have the folks at SGI considered a press release announcing that
-SGI-Linux is being officially sponsored by SGI? This would be _very_
-impressive news to the Linux community, I think.  Certainly mklinux gave
-me a much better view of Apple.
+Something that is not pointless, something that the nay-sayers should
+take to heart, is that more than 10% of Alpha sales last year were Linux.
+I confirmed this with Digital this morning - the number is somewhere
+between 25 and 30 thousand Alphas running Linux.
 
-I'm thinking it would be a good idea to start writing some documentation
-on where we're at, how to get started, what equipment it runs on, etc. I'd
-be happy to start writing an SGI-Linux FAQ and/or HOWTO, if there are no
-objections. I'm well aware that I don't speak on behalf of SGI, so if
-there's someone over there who'd prefer to write it, I understand. 
+Add to that the 4-6 million PCs running Linux and you start to have
+a story.
 
-- Alex
+Add to that the 19 million embedded MIPS chips and you start to ask
+yourself why we aren't more serious about this market.
 
-      Alex deVries           "Alex can cut a mean rug."
-  System Administrator       - M. Dittberner <shabby@engsoc.carleton.ca>
-   The EngSoc Project     
+So, while we could sit around and argue with those who disagree, I say
+that there is more than enough evidence that there is a market there.
+If there's a market, we do it.  That's the SGI way.

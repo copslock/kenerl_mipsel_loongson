@@ -1,56 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Feb 2004 21:20:02 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:33776 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225342AbUBBVUC>;
-	Mon, 2 Feb 2004 21:20:02 +0000
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id i12LJoi19049;
-	Mon, 2 Feb 2004 13:19:50 -0800
-Date: Mon, 2 Feb 2004 13:19:50 -0800
-From: Jun Sun <jsun@mvista.com>
-To: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc: macro@ds2.pg.gda.pl, linux-mips@linux-mips.org, jsun@mvista.com
-Subject: Re: [PATCH 2.6] enable genrtc for MIPS
-Message-ID: <20040202131950.I18155@mvista.com>
-References: <20040130103913.E31937@mvista.com> <Pine.LNX.4.55.0401302012200.10311@jurand.ds.pg.gda.pl> <20040201.203005.74756858.anemo@mba.ocn.ne.jp>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20040201.203005.74756858.anemo@mba.ocn.ne.jp>; from anemo@mba.ocn.ne.jp on Sun, Feb 01, 2004 at 08:30:05PM +0900
-Return-Path: <jsun@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Feb 2004 21:48:48 +0000 (GMT)
+Received: from hnet1.camc.org ([IPv6:::ffff:206.193.127.2]:27596 "EHLO
+	mail2.camcare.com") by linux-mips.org with ESMTP
+	id <S8225342AbUBBVss>; Mon, 2 Feb 2004 21:48:48 +0000
+Received: from KES.camcare.com (hnet1.camc.org [206.193.127.2])
+	by mail2.camcare.com (Postfix) with ESMTP id 5EA806E51
+	for <linux-mips@linux-mips.org>; Mon,  2 Feb 2004 17:42:13 -0500 (EST)
+Received: by KES.camcare.com with Internet Mail Service (5.5.2650.21)
+	id <C9ACSNKF>; Mon, 2 Feb 2004 16:48:44 -0500
+Message-ID: <490E0430C3C72046ACF7F18B7CD76A2A56955E@KES.camcare.com>
+From: "Smith, Todd" <Todd.Smith@camc.org>
+To: "'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
+Subject: RE: MIPS Kernel size
+Date: Mon, 2 Feb 2004 16:48:43 -0500 
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2650.21)
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Return-Path: <Todd.Smith@camc.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4242
+X-archive-position: 4243
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: Todd.Smith@camc.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, Feb 01, 2004 at 08:30:05PM +0900, Atsushi Nemoto wrote:
-> 
-> By the way, with this patch, individual board can not implement it's
-> own genrtc routines.  How about making gen_rtc_time, etc. pointer to
-> functions to allow overrides?
-> 
+Hello Ralf,
 
-Is this necessary?  How about letting us wait until there is a sensible
-need?
+I like the idea of the -tiny tree and I hope that these changes get merged
+back into the main kernel tree.  One of Linux's historic advantages is that
+it can run on older equipment but the trend seems to be supporting only
+current equipment
 
-> I think implementing rtc_get_time (mips specific) with get_rtc_time
-> (genrtc) is more efficient than implementing get_rtc_time with
-> rtc_get_time for most RTC chips.
-> 
+Thanks
 
-If I understand you correctly, you like to have board rtc read routines to 
-return a rtc structure instead of the unsigned long integer.
-
-There are actually boards which makes the current implementation more efficient.  
-See vr4181.
-
-In general, however, this is not a bad idea, just involving a lot more
-board level changes.  I think it deserves another patch or even debate.
-
-Jun
+Todd Smith

@@ -1,78 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Dec 2004 15:25:41 +0000 (GMT)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:53515 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225005AbULOPZg>; Wed, 15 Dec 2004 15:25:36 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 0116FE1CBC; Wed, 15 Dec 2004 16:25:13 +0100 (CET)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 28756-02; Wed, 15 Dec 2004 16:25:12 +0100 (CET)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id A5DE4E1CB3; Wed, 15 Dec 2004 16:25:12 +0100 (CET)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.1/8.13.1) with ESMTP id iBFFPLSX002443;
-	Wed, 15 Dec 2004 16:25:22 +0100
-Date: Wed, 15 Dec 2004 15:25:13 +0000 (GMT)
-From: "Maciej W. Rozycki" <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Dec 2004 16:21:17 +0000 (GMT)
+Received: from pD9562F66.dip.t-dialin.net ([IPv6:::ffff:217.86.47.102]:31940
+	"EHLO pD9562F66.dip.t-dialin.net") by linux-mips.org with ESMTP
+	id <S8225005AbULOQVN>; Wed, 15 Dec 2004 16:21:13 +0000
+Received: from mo00.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:24570 "EHLO
+	mo00.iij4u.or.jp") by linux-mips.net with ESMTP id <S868871AbULOQVB>;
+	Wed, 15 Dec 2004 17:21:01 +0100
+Received: MO(mo00)id iBFGKbZm000953; Thu, 16 Dec 2004 01:20:37 +0900 (JST)
+Received: MDO(mdo00) id iBFGKaRO006393; Thu, 16 Dec 2004 01:20:36 +0900 (JST)
+Received: 4UMRO01 id iBFGKZ3S001846; Thu, 16 Dec 2004 01:20:36 +0900 (JST)
+	from stratos (localhost [127.0.0.1]) (authenticated)
+Date: Thu, 16 Dec 2004 01:20:32 +0900
+From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
 To: Ralf Baechle <ralf@linux-mips.org>
-Cc: wlacey <wlacey@goldenhindresearch.com>, linux-mips@linux-mips.org
-Subject: Re: No PCI_AUTO in 2.6...
-In-Reply-To: <20041215135656.GA28665@linux-mips.org>
-Message-ID: <Pine.LNX.4.58L.0412151456050.2706@blysk.ds.pg.gda.pl>
-References: <20041211134305.22769.qmail@server212.com> <20041215135656.GA28665@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.80/617/Sun Dec  5 16:25:39 2004
-	clamav-milter version 0.80j
-	on piorun.ds.pg.gda.pl
-X-Virus-Status: Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH 2.6.10-rc3] remove duplicate extern in <linux/sched.h>
+Message-Id: <20041216012032.3af62ce1.yuasa@hh.iij4u.or.jp>
+X-Mailer: Sylpheed version 1.0.0beta3 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6676
+X-archive-position: 6677
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 15 Dec 2004, Ralf Baechle wrote:
+Hi Ralf,
 
-> Here's a simplified example from arch/mips/sni/setup.c:
-> 
-> static struct resource sni_io_resource = {
->         "PCIMT IO MEM", 0x00001000UL, 0x03bfffffUL, IORESOURCE_IO,
-> };
-> 
-> static struct resource sni_mem_resource = {
->         "PCIMT PCI MEM", 0x10000000UL, 0xffffffffUL, IORESOURCE_MEM
-> };
+This patch remove duplicate extern in <linux/sched.h>.
+Please apply this patch to v2.6 CVS tree.
 
- I think it's more descriptive to call them "<foo> PCI I/O" and "<foo> PCI
-MEM", respectively, to make it clearer the former expresses I/O port
-addresses (not the associated memory address range for accesses to be
-forwarded as PCI I/O cycles) and that both are PCI bus spaces.
+Yoichi
 
- Also for most PCI systems I/O port space should really start at 0 (for
-"legacy" devices being decoded by the PCI-ISA bridge if there's one in the
-system), but generic code braindamage prevents it currently.  I think
-there was only about a single PCI chipset that had a "reversed"
-architecture and sort-of bridged PCI over ISA -- the Intel i82420EX for
-the i486 processor.  It would need a separate ISA I/O resource for a
-correct view of the system.
+Signed-off-by: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
 
-> That is PCI memory is in the address range of 0x10000000UL - 0xffffffffUL
-> and I/O ports in the range 0x00001000UL - 0x03bfffffUL.  The io_offset
-> rsp. mem_offset values say how much needs to be added rsp. subtracted
-> when converting a PCI bus address into a physical address.  Often these
-> values are either the same a the resource's start address or zero.
-
- Things start being tricky once you have to use such an offset for DMA
-transfers as well...
-
-  Maciej
+diff -urN -X dontdiff a-orig/include/linux/sched.h a/include/linux/sched.h
+--- a-orig/include/linux/sched.h	Sun Dec  5 21:25:05 2004
++++ a/include/linux/sched.h	Thu Dec 16 00:55:42 2004
+@@ -802,8 +802,6 @@
+ extern int in_group_p(gid_t);
+ extern int in_egroup_p(gid_t);
+ 
+-extern void release_task(struct task_struct * p);
+-
+ extern void proc_caches_init(void);
+ extern void flush_signals(struct task_struct *);
+ extern void flush_signal_handlers(struct task_struct *, int force_default);

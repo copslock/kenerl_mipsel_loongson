@@ -1,39 +1,43 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f77EYZQ21447
-	for linux-mips-outgoing; Tue, 7 Aug 2001 07:34:35 -0700
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f77EYVV21429
-	for <linux-mips@oss.sgi.com>; Tue, 7 Aug 2001 07:34:32 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id QAA08486;
-	Tue, 7 Aug 2001 16:36:35 +0200 (MET DST)
-Date: Tue, 7 Aug 2001 16:36:34 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+	by oss.sgi.com (8.11.2/8.11.3) id f77EgSo22173
+	for linux-mips-outgoing; Tue, 7 Aug 2001 07:42:28 -0700
+Received: from tennyson.netexpress.net (IDENT:root@tennyson.netexpress.net [64.22.192.12])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f77EgRV22170
+	for <linux-mips@oss.sgi.com>; Tue, 7 Aug 2001 07:42:27 -0700
+Received: from localhost (vorlon@localhost)
+	by tennyson.netexpress.net (8.9.3/8.9.3) with ESMTP id JAA32724;
+	Tue, 7 Aug 2001 09:42:15 -0500
+X-Authentication-Warning: tennyson.netexpress.net: vorlon owned process doing -bs
+Date: Tue, 7 Aug 2001 09:42:14 -0500 (CDT)
+From: Steve Langasek <vorlon@netexpress.net>
 To: "Bradley D. LaRonde" <brad@ltc.com>
-cc: linux-mips@oss.sgi.com
+cc: <linux-mips@oss.sgi.com>
 Subject: Re: cross-mipsel-linux-ld --prefix library path
-In-Reply-To: <089d01c11f4b$449b4800$3501010a@ltc.com>
-Message-ID: <Pine.GSO.3.96.1010807162531.3289F-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+In-Reply-To: <074001c11ef4$fdbd7530$3501010a@ltc.com>
+Message-ID: <Pine.LNX.4.30.0108070939230.32641-100000@tennyson.netexpress.net>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, 7 Aug 2001, Bradley D. LaRonde wrote:
+On Mon, 6 Aug 2001, Bradley D. LaRonde wrote:
 
-> So if I leave out --prefix alogether, will "make install" overwrite any x86
-> stuff, like that libbfd.la file I mentioned?
+> Another odd thing is that binutils installs:
 
- Well, libbfd and libopcodes do conflict indeed.  In theory they can
-support multiple targets at once, but I'm unsure if that's stable enough. 
-I use "--enable-shared --disable-static
---libdir='${exec_prefix}'/mipsel-linux/i386-linux/lib" in the configure's
-command line for i386-linux-hosted cross-binutils.  As a result the
-libraries get installed out of the way but they are still used by
-cross-binutils thanks to the RPATH tag being set appropriately in ELF
-headers by libtool. 
+>     /usr/mipsel-linux/bin/mipsel-linux-ld
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+> and an identical copy at:
+
+>     /usr/mipsel-linux/mipsel-linux/bin/ld
+
+The places you /want/ these to show up are /usr/mipsel-linux/bin/ld and
+/usr/bin/mipsel-linux-ld.  The reason for having two copies is that when
+you're calling these tools directly (or from a make script), you want them to
+be in your path, so you want them to have a unique name
+(/usr/bin/mipsel-linux-ld); but internally, I believe the tools prefer /not/
+to have to mess with the name mangling used there, so instead they look for a
+tool with the normal name (ld) in an architecture-specific directory
+(/usr/mipsel-linux/bin).
+
+Steve Langasek
+postmodern programmer

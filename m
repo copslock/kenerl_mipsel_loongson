@@ -1,108 +1,57 @@
-Received:  by oss.sgi.com id <S553902AbQLTNav>;
-	Wed, 20 Dec 2000 05:30:51 -0800
-Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:34213 "EHLO
-        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553729AbQLTNad>;
-	Wed, 20 Dec 2000 05:30:33 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA02079;
-	Wed, 20 Dec 2000 14:24:38 +0100 (MET)
-Date:   Wed, 20 Dec 2000 14:24:37 +0100 (MET)
-From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To:     Jun Sun <jsun@mvista.com>
-cc:     Ralf Baechle <ralf@uni-koblenz.de>, linux-mips@oss.sgi.com
-Subject: Re: MIPS_ATOMIC_SET in sys_sysmips()
-In-Reply-To: <3A3FAB2B.35F0148E@mvista.com>
-Message-ID: <Pine.GSO.3.96.1001220141230.846B-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received:  by oss.sgi.com id <S553909AbQLTPFL>;
+	Wed, 20 Dec 2000 07:05:11 -0800
+Received: from router.isratech.ro ([193.226.114.69]:58891 "EHLO
+        router.isratech.ro") by oss.sgi.com with ESMTP id <S553905AbQLTPFJ>;
+	Wed, 20 Dec 2000 07:05:09 -0800
+Received: from isratech.ro (calin.cs.tuiasi.ro [193.231.15.163])
+	by router.isratech.ro (8.10.2/8.10.2) with ESMTP id eBKF41p28098;
+	Wed, 20 Dec 2000 17:04:01 +0200
+Message-ID: <3A4138BF.871CB6C@isratech.ro>
+Date:   Wed, 20 Dec 2000 17:54:55 -0500
+From:   Nicu Popovici <octavp@isratech.ro>
+X-Mailer: Mozilla 4.74 [en] (X11; U; Linux 2.2.15-2.5.0 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To:     kjlin <kj.lin@viditec-netmedia.com.tw>, linux-mips@oss.sgi.com
+Subject: Re: Run the cross-compiled program.
+References: <053601c06a6c$ee66ca60$056aaac0@kjlin>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, 19 Dec 2000, Jun Sun wrote:
+Hello,
 
-> >  There is no problem with using ll/sc in sysmips() itself for machines
-> > that support them.
-> 
-> Sure - but with ll/sc available the user programs don't need to issue
-> sysmip(MIPS_ATOMIC_SET,...) at the first place ...
+I am very interested in getting the latest sources for binutils, gcc and
+glibc working in cross toolchain for mips. PLease tell me from where did
+you took the gcc that you use . Please give me as muche details as you
+can.
 
- You may be running a MIPS I binary on a MIPS II+ SMP system and the
-binary has to run absolutely correctly.  Programs affected include ones
-that use threads or that use locks in shared memory.
+Regards,
+Nicu
 
-> >  I asked Ralf for a clarification of the sysmips(MIPS_ATOMIC_SET, ...)
-> > call before I write better code.  No response so far.  I'm now really
-> > cosidering implementing the Ultrix atomic_op() syscall -- at least it has
-> > a well-known defined behaviour.
-> 
-> Where can I find the definitino of atomic_op()?  Or can you tell us a little
-> more about it? 
 
- You may search the Net for atomic_op -- you should find a couple of
-Ultrix man pages.  A copy is included below for your convenience.
+kjlin wrote:
 
-> >  The previous code was definitely broken -- depending on the path taken it
-> > would return either the value fetched from memory or an error code.  No
-> > way to distinguish between them.
-> 
-> I notice that.  I notice glibc is the only "customer" of the MIPS_SET_ATOMIC
-> call, the bug does not appear to be a big deal because error should not
-> happen.  Of course, it will be nice to fix it.
-
- It is at the moment, but I can see other users once we establish the API. 
-PostgreSQL is one of them.  It would call _test_and_set() but it implies
-the latter should work as expected.  The _test_and_set() function is
-documented in the MIPS ABI supplement and the underlying syscall
-(whichever it is) must provide means for the fuction to behave as
-expected.  Besides, if we want this to be a compatibility call, then we
-should at least make it behave in a compatible way.
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
-
-                                                                 atomic_op(2)
-
-   Name
-     atomic_op - perform test and set operation.
-
-   Syntax
-     #include <sys/lock.h>
-
-     int atomic_op(op, addr)
-     int op;
-     int *addr;
-
-   Arguments
-
-     op             This argument is the operation type.  If the operation
-                    type is ATOMIC_SET, this call specifies the test and set
-                    operation on location addr.  If the operation type is
-                    ATOMIC_CLEAR, this call specifies the clear operation on
-                    location addr.
-
-     addr           This is the target address of the operation.
-
-   Description
-     The atomic_op call provides test and set operation at a user address.
-
-     For RISC systems, atomic_op is executed as a system call.  For VAX sys-
-     tems, a system call is not executed for this library function.
-
-   Return Values
-     If the atomic_op operation succeeds, then 0 is returned.  Otherwise a -1
-     is returned, and a more specific error code is stored in errno.
-
-   Diagnostics
-
-     [EBUSY]        The location specified by addr is already set.
-
-     [EINVAL]       The op is not a valid operation type.
-
-     [EACCES]       The address specified in addr is not write accessible.
-
-     [EALIGN]       The addr is not on an integer boundary.
+> Can anyone point out which step i done wrong in the process of
+> cross-compiling an program with the -static option?
+> I made the cross-compile toolkit by myself.
+> All the source code and patches for cross-compile were downloaded from
+> the SGI ftp site.
+> The version is as following:
+> cross-binutils = version 2.10.90
+> cross-gcc = version 2.96 20000707
+> cross-usable glibc = libc-2.1.90
+> The cross-compile toolkits building process is ok!
+> I used the cross-compiler to compile a program with the " -static "
+> option in the host and then ran it on the target.
+> But i got the error message:# ./a.outFATAL: kernel too old
+> Aborted Where i be trapped?
+> My host system is x86 running linux-2.2.14(Redhat 6.2).
+> My target system is an embedded mips board running linux-2.2.14 and
+> shell is the statically linked ash binary from a lib-2.6.0
+> filesystem(kernel version unknown).
+> By the way, i builded the cross-usable glibc-2.1.90 with configure
+> "--enable-kernel=2.2.14".Thanx,KJ from kj.lin@viditec-netmedia.com.tw

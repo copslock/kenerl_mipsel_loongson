@@ -1,57 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Dec 2004 18:49:38 +0000 (GMT)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:62570
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8225375AbULBSte>; Thu, 2 Dec 2004 18:49:34 +0000
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp
-	id 1CZw1D-0001hB-00; Thu, 02 Dec 2004 19:49:31 +0100
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 1CZw1C-0001SR-00; Thu, 02 Dec 2004 19:49:30 +0100
-Date: Thu, 2 Dec 2004 19:49:30 +0100
-To: "Maciej W. Rozycki" <macro@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Dec 2004 20:18:43 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:1276 "EHLO
+	hermes.mvista.com") by linux-mips.org with ESMTP
+	id <S8225388AbULBUSh>; Thu, 2 Dec 2004 20:18:37 +0000
+Received: from mvista.com (prometheus.mvista.com [10.0.0.139])
+	by hermes.mvista.com (Postfix) with ESMTP
+	id AC9DC1869C; Thu,  2 Dec 2004 12:18:35 -0800 (PST)
+Message-ID: <41AF789B.3030303@mvista.com>
+Date: Thu, 02 Dec 2004 12:18:35 -0800
+From: Manish Lachwani <mlachwani@mvista.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.2) Gecko/20040308
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: "Steven J. Hill" <sjhill@realitydiluted.com>
 Cc: linux-mips@linux-mips.org
-Subject: Re: [PATCH] Label misplacement on an XTLB refill handler split
-Message-ID: <20041202184930.GB3225@rembrandt.csv.ica.uni-stuttgart.de>
-References: <Pine.LNX.4.61.0412021746590.15065@perivale.mips.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.61.0412021746590.15065@perivale.mips.com>
-User-Agent: Mutt/1.5.6i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+Subject: Re: [PATCH] Broadcom SWARM IDE in 2.6
+References: <20041130230022.GA17202@prometheus.mvista.com> <41AE9390.80705@realitydiluted.com>
+In-Reply-To: <41AE9390.80705@realitydiluted.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <mlachwani@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6550
+X-archive-position: 6551
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: mlachwani@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Maciej W. Rozycki wrote:
-> Thiemo,
+Hi Steve,
+
+"ide_init_default_irq" is defined in include/linux/ide.h and in
+include/asm-mips/mach-generic/ide.h.
+
+include/asm-mips/mach-generic/ide.h and include/asm-i386/ide.h are 
+replicas. So, this compiler warning should appear on other platforms as 
+well.
+
+I have sent an email out to Jeff Garzik to understand why 
+"ide_init_default_irq" is redefined
+
+Thanks
+Manish Lachwani
+
+Steven J. Hill wrote:
+> Manish Lachwani wrote:
 > 
->  The XTLB refill handler splitter misplaces labels associated with an
-> instruction that gets placed in the branch delay slot of the splitting 
-> branch.  Here's an example:
-[snip]
-> I've fixed it by separating the label mover (and the reloc mover, for 
-> consistency) and using it to fix up relevant labels.  I'll apply it if 
-> it's OK with you.
-[snip]
-> @@ -1110,6 +1121,7 @@ static void __init build_r4000_tlb_refil
->  			i_nop(&f);
->  		else {
->  			copy_handler(relocs, labels, split, split + 1, f);
-> +			move_labels(labels, f, f + 1, -1);
->  			f++;
->  			split++;
->  		}
-
-Thanks for catching this. Please apply.
-
-
-Thiemo
+>>
+>> I had sent an incomplete patch before. Please try out this new patch, 
+>> attached.
+>> Let me know if it works
+>>
+> Manish,
+> 
+> This patch worked, however you need to fix a compiler warning before I am
+> willing to commit it. Please get rid of the warning shown below and submit
+> a new patch. Thanks!
+> 
+> -Steve
+> 
+> *******************
+> 
+> CC      drivers/ide/ide-generic.o
+> In file included from drivers/ide/ide-generic.c:13:
+> include/linux/ide.h:277:1: warning: "ide_init_default_irq" redefined
+> In file included from include/asm/ide.h:11,
+>                  from include/linux/ide.h:271,
+>                  from drivers/ide/ide-generic.c:13:
+> include/asm-mips/mach-generic/ide.h:64:1: warning: this is the location 
+> of the previous definition

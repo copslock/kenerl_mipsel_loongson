@@ -1,45 +1,38 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0GKELk16241
-	for linux-mips-outgoing; Wed, 16 Jan 2002 12:14:21 -0800
-Received: from oval.algor.co.uk (root@oval.algor.co.uk [62.254.210.250])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0GKEFP16238;
-	Wed, 16 Jan 2002 12:14:15 -0800
-Received: from gladsmuir.algor.co.uk (IDENT:root@gladsmuir.algor.co.uk [192.168.5.75])
-	by oval.algor.co.uk (8.11.6/8.10.1) with ESMTP id g0GJEAt22356;
-	Wed, 16 Jan 2002 19:14:10 GMT
-Received: (from dom@localhost)
-	by gladsmuir.algor.co.uk (8.11.0/8.8.7) id g0GItrJ08836;
-	Wed, 16 Jan 2002 18:55:53 GMT
-From: Dominic Sweetman <dom@algor.co.uk>
+	by oss.sgi.com (8.11.2/8.11.3) id g0GKrx922153
+	for linux-mips-outgoing; Wed, 16 Jan 2002 12:53:59 -0800
+Received: from host099.momenco.com (IDENT:root@www.momenco.com [64.169.228.99])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0GKrsP22150
+	for <linux-mips@oss.sgi.com>; Wed, 16 Jan 2002 12:53:55 -0800
+Received: from beagle (beagle.internal.momenco.com [192.168.0.115])
+	by host099.momenco.com (8.11.6/8.11.6) with SMTP id g0GJroX21311
+	for <linux-mips@oss.sgi.com>; Wed, 16 Jan 2002 11:53:50 -0800
+From: "Matthew Dharm" <mdharm@momenco.com>
+To: "Linux-MIPS" <linux-mips@oss.sgi.com>
+Subject: IDE/Toolchains for MIPS?
+Date: Wed, 16 Jan 2002 11:53:50 -0800
+Message-ID: <NEBBLJGMNKKEEMNLHGAIMENNCEAA.mdharm@momenco.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-Message-ID: <15429.52408.364878.539323@gladsmuir.algor.co.uk>
-Date: Wed, 16 Jan 2002 18:55:52 +0000 (GMT)
-To: John Heil <mipsdev@scsoftware.sc-software.com>
-Cc: Ralf Baechle <ralf@oss.sgi.com>, Jason Gunthorpe <jgg@debian.org>,
-   Matthew Dharm <mdharm@momenco.com>, linux-mips@oss.sgi.com
-Subject: Re: MIPS64 status?
-In-Reply-To: <Pine.LNX.3.95.1020115115824.6855A-100000@scsoftware.sc-software.com>
-References: <20020114150751.B29242@dea.linux-mips.net>
-	<Pine.LNX.3.95.1020115115824.6855A-100000@scsoftware.sc-software.com>
-X-Mailer: VM 6.72 under 21.1 (patch 12) "Channel Islands" XEmacs Lucid
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+Does anyone know of a good IDE for MIPS/Linux?
 
-> Who, if anyone, has a MIPS64 reference design board available ?
+Some people I know are asking, because they're very used to the
+graphical design environments on other platforms.
 
-Algorithmics P-6064 (http://www.algor.co.uk/algor/info/p6064.html) 
+Matt
 
-> ...With >4G memory capacity ?
-
-A mere 2Gbytes today - we've got two DIMM slots and 1Gbyte SDRAM DIMMs
-are readily available.  The 1Gbyte boards have 32 x 256Mbit chips, but
-I think there may even now be boards with more chips "stacked" in
-pairs.
-
-We've got no significant addressing restrictions on the memory
-controller and the existing DIMM modules still have address lines
-remaining...  We can support even larger memories when and if the
-DIMMs show up.
+--
+Matthew D. Dharm                            Senior Software Designer
+Momentum Computer Inc.                      1815 Aston Ave.  Suite 107
+(760) 431-8663 X-115                        Carlsbad, CA 92008-7310
+Momentum Works For You                      www.momenco.com

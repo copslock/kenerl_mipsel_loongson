@@ -1,55 +1,60 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id WAA19895; Wed, 29 May 1996 22:22:26 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id CAA26281; Thu, 30 May 1996 02:49:44 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id FAA27281 for linux-list; Thu, 30 May 1996 05:22:20 GMT
-Received: from neteng.engr.sgi.com (neteng.engr.sgi.com [192.26.80.10]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id WAA27276 for <linux@cthulhu.engr.sgi.com>; Wed, 29 May 1996 22:22:19 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id WAA19892 for <lmlinux@neteng.engr.sgi.com>; Wed, 29 May 1996 22:22:19 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [150.166.76.30]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id WAA27269; Wed, 29 May 1996 22:22:17 -0700
-Received: from porsta.cs.Helsinki.FI by sgi.sgi.com via ESMTP (950405.SGI.8.6.12/910110.SGI)
-	 id WAA29720; Wed, 29 May 1996 22:22:14 -0700
-Received: from linux.cs.Helsinki.FI (linux.cs.Helsinki.FI [128.214.48.39]) by porsta.cs.Helsinki.FI (8.6.10/8.6.9) with SMTP id IAA26571; Thu, 30 May 1996 08:22:12 +0300
-Date: Thu, 30 May 1996 08:21:42 +0300 (EET DST)
-From: Linus Torvalds <torvalds@cs.Helsinki.FI>
-To: Neal Nuckolls <nn@lanta.engr.sgi.com>
-cc: alan@cymru.net, sparclinux-cvs@caipfs.rutgers.edu,
-        lmlinux@neteng.engr.sgi.com
+Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id JAA16929 for linux-list; Thu, 30 May 1996 09:49:38 GMT
+Received: from neteng.engr.sgi.com (neteng.engr.sgi.com [192.26.80.10]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id CAA16924 for <linux@cthulhu.engr.sgi.com>; Thu, 30 May 1996 02:49:36 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id CAA26278 for <lmlinux@neteng.engr.sgi.com>; Thu, 30 May 1996 02:49:36 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [150.166.76.30]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id CAA16917; Thu, 30 May 1996 02:49:34 -0700
+Received: from snowcrash.cymru.net by sgi.sgi.com via ESMTP (950405.SGI.8.6.12/910110.SGI)
+	 id CAA16791; Thu, 30 May 1996 02:49:28 -0700
+Received: (from alan@localhost) by snowcrash.cymru.net (8.7.1/8.7.1) id KAA23935; Thu, 30 May 1996 10:43:44 +0100
+From: Alan Cox <alan@cymru.net>
+Message-Id: <199605300943.KAA23935@snowcrash.cymru.net>
 Subject: Re: linux needs bsd networking stack
-In-Reply-To: <199605292159.OAA09070@lanta.engr.sgi.com>
-Message-ID: <Pine.LNX.3.91.960530080714.20038B-100000@linux.cs.Helsinki.FI>
+To: nn@lanta.engr.sgi.com (Neal Nuckolls)
+Date: Thu, 30 May 1996 10:43:42 +0100 (BST)
+Cc: torvalds@cs.helsinki.fi, alan@cymru.net, sparclinux-cvs@caipfs.rutgers.edu,
+        lmlinux@neteng.engr.sgi.com
+In-Reply-To: <199605292159.OAA09070@lanta.engr.sgi.com> from "Neal Nuckolls" at May 29, 96 02:59:58 pm
+X-Mailer: ELM [version 2.4 PL24]
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-
-
-On Wed, 29 May 1996, Neal Nuckolls wrote:
-> 
-> Silicon Valley is bubbling with networking startups.
-> Many of these new small companies are designing products
-> based on PC motherboards and doing some sw and/or hw
 > customization to turn them into networking switches,
 > routers, firewalls, etc.  Rather than embedding a RTOS,
 > they are choosing a free unix and usually this is FreeBSD
 > since Linux networking is not the de facto BSD stack.
+
+So we should use a defacto BSD stack because its a defacto stack. Ok there is this
+great OS called windows3. See you later
+
 > The "unique" tcp/ip implementation is a liability to linux.
+
+I'm not convinced it is. A whole load of SGI people (LM notably) seem intent on "BSD
+stack, BSD stack, BSD stack". Everyone else I hear is saying "How fast can it go",
+"How stable can we make it", "Will you please make sure its as solid in 2.0 as in 1.2"
+
 > Is anyone working to replace the standard linux stack
 > with port derived from the 4.4BSD code?
 
-Simple answer: it won't happen.
+No -
 
-The _only_ advantage of the BSD stack is the de-facto standard thing, and 
-quite frankly that one doesn't make much of a difference - Linux _will_ 
-be the facto standard in one or two more years if everything goes right. 
-Trying to port the BSD stack would be a major mistake, imho.
+o	The BSD stack doesnt do IPX, AX25, NetROM, Appletalk
+o	There will be no defacto IPv6 for BSD, there are several species
+o	The licensing doesnt permit the two to meet easily
+o	You can't do 400Mbits/second with mbufs so you'd have to break the BSD code
+	anyway
 
-I used to think the BSD stack was an option that we might want to take some
-day, but I don't think so any more. My main concerns were performance and
-compatibility, and we've got them both. The problems we still have in
-networking are not worth worrying about in this context - we'd have a lot
-more problems if we tried to switch and they wouldn't be any easier to solve. 
+Im not convinced about the rest of the argument either. I know one big vendor using
+the BSD stack for a project. I know several using Linux (Things like the firewall
+from Mazama). We are seeing primary rate ISDN support for Linux starting to appear,
+and already have the heavy provider end multiple serial cards.
 
-Note that this doesn't mean we shouldn't look at parts of the BSD stack 
-for interesting things (and the BSD stack has obviously been there as a 
-reference). But a whole-sale BSD stack port is not going to happen.
+For routers, anyone using a PC style architecture is bounding themselves to small
+routers anyway. No matter how good the code is you will soon need fancy hardware to
+handle BGP4, 50,000 routes and fast 100baseT speed switching. And there is no
+defacto BSD IPv6
 
-		Linus
+Alan

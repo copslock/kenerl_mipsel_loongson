@@ -1,65 +1,55 @@
-Received:  by oss.sgi.com id <S553795AbRBHMID>;
-	Thu, 8 Feb 2001 04:08:03 -0800
-Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:9630 "EHLO
-        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553800AbRBHMHz>;
-	Thu, 8 Feb 2001 04:07:55 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id NAA02875;
-	Thu, 8 Feb 2001 13:05:12 +0100 (MET)
-Date:   Thu, 8 Feb 2001 13:05:12 +0100 (MET)
-From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Received:  by oss.sgi.com id <S553804AbRBHMeD>;
+	Thu, 8 Feb 2001 04:34:03 -0800
+Received: from noose.gt.owl.de ([62.52.19.4]:31763 "HELO noose.gt.owl.de")
+	by oss.sgi.com with SMTP id <S553800AbRBHMdo>;
+	Thu, 8 Feb 2001 04:33:44 -0800
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 63ED57DD; Thu,  8 Feb 2001 13:33:33 +0100 (CET)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 58601EEAC; Thu,  8 Feb 2001 13:33:39 +0100 (CET)
+Date:   Thu, 8 Feb 2001 13:33:39 +0100
+From:   Florian Lohoff <flo@rfc822.org>
 To:     "Kevin D. Kissell" <kevink@mips.com>
-cc:     Jun Sun <jsun@mvista.com>, Alan Cox <alan@lxorguk.ukuu.org.uk>,
-        Florian Lohoff <flo@rfc822.org>, linux-mips@oss.sgi.com,
-        ralf@oss.sgi.com
-Subject: Re: NON FPU cpus - way to go
-In-Reply-To: <005901c091c3$ab3c9b60$0deca8c0@Ulysses>
-Message-ID: <Pine.GSO.3.96.1010208125342.29177I-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: [RESUME] fpu emulator
+Message-ID: <20010208133339.B6229@paradigm.rfc822.org>
+References: <20010208122030.A5408@paradigm.rfc822.org> <005d01c091c4$69940620$0deca8c0@Ulysses>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <005d01c091c4$69940620$0deca8c0@Ulysses>; from kevink@mips.com on Thu, Feb 08, 2001 at 12:43:30PM +0100
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Thu, 8 Feb 2001, Kevin D. Kissell wrote:
-
-> Well, in fact it ends up being both.  The compiler substitutes library
-> invocations for FP instructions, one-for-one.
-
- That's a compiler emulator.  You need to generate special code and place
-handlers in libgcc just like it's already being done for integer
-operations not supported by a CPU.  I suppose all necessary glue code is
-already present in gcc.
-
-> The notion of using libc emulation based on catching SIGFP,
-> on the other hand, is so silly that I didn't even understand that
-> that's what you were referring to!  It would be an amazing pig,
-> and there are corner cases, such as the emulation of the
-> instructions in the delay slot of branch-on-floating-condition,
-> that would be damned difficult to handle that way.
-
- How much more difficult than in the kernel?  The kernel needs to take
-care of these case as well.  Do you mean we miss certain information that
-is available for the kernel in the epc register?  Well, we may always make
-the kernel pass it back, if needed. 
-
- I'm not particularly amazed by the idea, but it's certainly doable.
-
-> > > >  You never want to configure glibc with the --without-fp option.
-> > >
-> > > That's certainly what we had to do for OpenBSD without FP
-> > > emulation!  What is the alternative?
-> >
-> >  Write one. ;-)
+On Thu, Feb 08, 2001 at 12:43:30PM +0100, Kevin D. Kissell wrote:
+> > Hi,
+> > just to get it right - As i thought the FPU emulator is not really
+> > optional - It is even required for fpu-enabled devices which means
+> > we should clean the code in that way that if the user decides to 
+> > compile in the fpu emulator into the kernel we do an autodetection 
+> > upfront and change some of the entry/exit/lazy_fpu stuff.
+> > If the user decides not to compile in the FPU Emulator he is on his
+> > own and we ignore the whole FPU stuff and simply send SIGILL/SIGFPE
+> > to the processes causing all fpu binarys to fail on non-fpu enabled
+> > kernels.
 > 
-> I don't understand, the alternative to building a --without-fp
-> glibc (which Carsten and I did for OpenBSD once already)
-> is to write *what*?
+> Not quite.  Unless we create a variant of glibc that neither
+> initializes the FP control register on program startup, nor
+> saves/restores the FP registers in setjmp/longjmp, the
+> model of "simply sending SIGILL/SIGFPE" will result
+> in *all* processes being terminated with extreme prejudice,
+> starting with init!
 
- An FP emulator for OpenBSD.  Not that I care much...
+Which is exactly i was trying to establish as when the fpu emulator
+is not enabled the user should build a complete fp less userspace. And
+when we edstablish the SIGILL/SIGFPE he is forced to do so which is
+a "good thing(tm)"
 
+Flo
 -- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+     Why is it called "common sense" when nobody seems to have any?

@@ -1,85 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Oct 2004 13:03:05 +0100 (BST)
-Received: from bay15-f3.bay15.hotmail.com ([IPv6:::ffff:65.54.185.3]:8667 "EHLO
-	hotmail.com") by linux-mips.org with ESMTP id <S8224787AbUJRMCx>;
-	Mon, 18 Oct 2004 13:02:53 +0100
-Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
-	 Mon, 18 Oct 2004 05:02:02 -0700
-Received: from 82.200.0.252 by by15fd.bay15.hotmail.msn.com with HTTP;
-	Mon, 18 Oct 2004 12:01:30 GMT
-X-Originating-IP: [82.200.0.252]
-X-Originating-Email: [alexshinkin@hotmail.com]
-X-Sender: alexshinkin@hotmail.com
-From: "Alexey Shinkin" <alexshinkin@hotmail.com>
-To: linux-mips@linux-mips.org
-Subject: Question on Au1550 ...
-Date: Mon, 18 Oct 2004 19:01:30 +0700
-Mime-Version: 1.0
-Content-Type: text/plain; format=flowed
-Message-ID: <BAY15-F37yRLVbNDN4C0000d65e@hotmail.com>
-X-OriginalArrivalTime: 18 Oct 2004 12:02:02.0160 (UTC) FILETIME=[472C4300:01C4B50A]
-Return-Path: <alexshinkin@hotmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Oct 2004 13:55:45 +0100 (BST)
+Received: from lennier.cc.vt.edu ([IPv6:::ffff:198.82.162.213]:30987 "EHLO
+	lennier.cc.vt.edu") by linux-mips.org with ESMTP
+	id <S8224787AbUJRMzh>; Mon, 18 Oct 2004 13:55:37 +0100
+Received: from vivi.cc.vt.edu (IDENT:mirapoint@evil-vivi [10.1.1.12])
+	by lennier.cc.vt.edu (8.12.8/8.12.8) with ESMTP id i9ICtC0P089057;
+	Mon, 18 Oct 2004 08:55:12 -0400 (EDT)
+Received: from [127.0.0.1] (68-232-97-125.chvlva.adelphia.net [68.232.97.125])
+	by vivi.cc.vt.edu (MOS 3.4.8-GR)
+	with ESMTP id BUW31750 (AUTH spbecker);
+	Mon, 18 Oct 2004 08:55:10 -0400 (EDT)
+Message-ID: <4173BD42.9050009@gentoo.org>
+Date: Mon, 18 Oct 2004 08:55:30 -0400
+From: "Stephen P. Becker" <geoman@gentoo.org>
+User-Agent: Mozilla Thunderbird 0.8 (Windows/20040913)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: Andre.Messerschmidt@infineon.com
+CC: linux-mips@linux-mips.org
+Subject: Re: Mozilla Firefox compile problem
+References: <34A8108658DCCE4B8595675ABFD8172709FAFE@dusse201.eu.infineon.com>
+In-Reply-To: <34A8108658DCCE4B8595675ABFD8172709FAFE@dusse201.eu.infineon.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <geoman@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6082
+X-archive-position: 6083
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexshinkin@hotmail.com
+X-original-sender: geoman@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi , All !
+Andre.Messerschmidt@infineon.com wrote:
+> Hi,
+> 
+> I am trying to compile Mozilla Firefox 1.0PR with Montavista Pro 3.1 toolchain (I linked mips_fp_be to mips-linux), but I get the following error messages:
+> 
+> ---- snip ---------------------------------------------------
+> mips-linux-g++  -I/opt/mvx/usr/X11R6/include -fno-rtti -fno-exceptions -Wall -Wconversion -Wpointer-arith -Wcast-align -Woverloaded-virtual -Wsynth -Wno-ctor-dtor-privacy -Wno-non-virtual-dtor -Wno-long-long -Wa,-xgot -pthread -pipe  -DDEBUG -D_DEBUG -DDEBUG_am -DTRACING -g -fno-inline -o nsIFileEnumerator nsIFileEnumerator.o           -L../../dist/bin -L../../dist/lib -L../../dist/bin -lxpcom  -L/data2/Sources/inca/mozilla/dist/lib -lplds4 -lplc4 -lnspr4 -lpthread -ldl   -ldl -lm
+> ../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub203()'
+> ../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub156()'
+> ../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub184()'
+> ../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub128()'
+> ../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub226()'
+> ../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub246()'
+> ../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub112()'
+> ../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub180()'
+> ../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub230()'
+> ../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub147()'
+> ../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub151()'
+> ../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub116()'
+> ../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub111()'
+> ../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub231()'
+> ../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub141()'
+> ../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub104()'
+> ../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub58()'
+> ../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub53()'
+> 
+> ...
+> 
 
-I am porting a linux driver for PCI device and some applications form x86 
-platform to  AMD Au1550 MIPS , running MontaVista Linux 2.4.20-mvl31.1550.
+https://bugzilla.mozilla.org/show_bug.cgi?id=71627
 
-I got the  following  problem :
+The patch there will fix the compile, but the resulting binary probably 
+won't run.
 
-The driver allocates some memory (SharedMemory)  for communication with  PCI 
-card , using  function pci_alloc_consistent().  PCI card can write to this 
-memory using DMA .  On  kernel level  driver correctly reads values, written 
-by the board , and the board  correctly reads values, written by driver.
-
-The goal is to make this memoty visible from user level application. The 
-following approach is used on õ86 and works :
-1. Application calls  mmap( 0, Size, PROT_READ|PROT_WRITE, MAP_SHARED, fd, 0 
-) ;
-
-2.  driver implements mmap() function  that just  prepares some vma 
-structure fields for nopage operetions :
-	vma->vm_flags |= VM_RESERVED;	// no swapping
-	vma->vm_ops	= &device_vmops; // contains nopage func
-	vma->vm_file   = filp;
-
-3. Application  gets pointer and accesses all mapped pages (reads a byte 
-from each page) - this  causes call of nopage function in driver .
-The nopage function calculates VirtualAddress from SharedMemory address 
-(received after pci_alloc_consistent()),
-then  does   KernelPage= virt_to_page(VirtualAddress)   ,
-   	get_page(KernelPage)
-   and returns KernelPage.
-
-4. Now Application  reads  from SharedMemory , using a pointer , given by 
-mmap()  .
-This works fine on x86 platform , but on MIPS  application cannot see 
-expected contents of the memory - it reads garbage .
-
-What I have  tried :
-     - to insert   vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot)  
-in driver’s implementation of mmap() ;
-   -  to use  remap_page_range() instead of vm_ops .
-
-Result is the same – application reads garbage . If application write  some 
-values into the memory - it reads garbage . The values written by 
-application are not seen from kernel level .
-
-
-I am new to MIPS so maybe I missed  something obvious ? Is this right 
-approach on this platform at all ?
-
-Thank you in advance!
-
-_________________________________________________________________
-Express yourself instantly with MSN Messenger! Download today it's FREE! 
-http://messenger.msn.com/
+Steve

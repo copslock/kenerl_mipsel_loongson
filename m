@@ -1,44 +1,46 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f33I46S12892
-	for linux-mips-outgoing; Tue, 3 Apr 2001 11:04:06 -0700
-Received: from dea.waldorf-gmbh.de (u-231-18.karlsruhe.ipdial.viaginterkom.de [62.180.18.231])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f33I43M12881
-	for <linux-mips@oss.sgi.com>; Tue, 3 Apr 2001 11:04:03 -0700
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f33FA5x32168;
-	Tue, 3 Apr 2001 17:10:05 +0200
-Date: Tue, 3 Apr 2001 17:10:05 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: Florian Lohoff <flo@rfc822.org>, "Kevin D. Kissell" <kevink@mips.com>,
-   "MIPS/Linux List (SGI)" <linux-mips@oss.sgi.com>
-Subject: Re: Dumb Question on Cross-Development
-Message-ID: <20010403171005.A31953@bacchus.dhis.org>
-References: <20010402234850.B25228@paradigm.rfc822.org> <Pine.GSO.3.96.1010403112218.25523B-100000@delta.ds2.pg.gda.pl>
-Mime-Version: 1.0
+	by oss.sgi.com (8.11.3/8.11.3) id f33IEEx13511
+	for linux-mips-outgoing; Tue, 3 Apr 2001 11:14:14 -0700
+Received: from cvsftp.cotw.com (cvsftp.cotw.com [208.242.241.39])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f33IEDM13508
+	for <linux-mips@oss.sgi.com>; Tue, 3 Apr 2001 11:14:13 -0700
+Received: from cotw.com (dhcp-050.inter.net [192.168.10.50])
+	by cvsftp.cotw.com (8.9.3/8.9.3) with ESMTP id NAA17400
+	for <linux-mips@oss.sgi.com>; Tue, 3 Apr 2001 13:14:12 -0500
+Message-ID: <3ACA07F6.CB1119A4@cotw.com>
+Date: Tue, 03 Apr 2001 12:27:18 -0500
+From: "Steven J. Hill" <sjhill@cotw.com>
+Reply-To: sjhill@cotw.com
+X-Mailer: Mozilla 4.73 [en] (X11; I; Linux 2.4.0 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: linux-mips@oss.sgi.com
+Subject: Re: Binutils fixed to deal with 'insmod' issue and discussion...
+References: <00a901c0bb6f$d3e77820$0deca8c0@Ulysses> <3AC90E16.AEF59359@cotw.com> <20010403041740.G5099@rembrandt.csv.ica.uni-stuttgart.de> <20010403102608.A30531@bacchus.dhis.org>
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.GSO.3.96.1010403112218.25523B-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Tue, Apr 03, 2001 at 11:26:11AM +0200
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Apr 03, 2001 at 11:26:11AM +0200, Maciej W. Rozycki wrote:
-
-> > Cross-compilation is IMHO so broken when it comes to userspace
-> > than noone really thinking of having something reusable would
-> > consider this. It all ends beeing a really ugly hack.
+Ralf Baechle wrote:
 > 
->  I disagree.  It's not that userland cross-compilation is broken.  It's
-> just the matter of certain programmers who do not care to write
-> scripts/Makefiles to support cross-development portably.  They might even
-> not realize there exists such a feature as cross-compilation. 
+> IRIX ELF orders the symbol table of object files in a way that violates
+> the ABI.  Worse, these IRIX specialities are not documented anywhere.
+> 
+> Changing to ABI ELF only makes them look as they're supposed to ...
+> 
+Thanks for backing me up. Also, after discussion with Ralf on IRC,
+the decision has been made to except the patch as the fix. There will
+not be an additional target 'irix[little|big]mips' added. Linux and
+SVR4 will utilize 'trad[little|big]mips' and IRIX and other targets
+will use '[little|big]mips'. Also, when building for Linux targets,
+the 'elf[32|64]_[little|big]mips' targets (IRIX) will not be built as
+emulation targets.
 
-Brokeness starts with autoconf's AC_CHECK_SIZEOF macro implementation
-which is used frequently throughout a whole distribution and there are
-so many test that require actually execution of code on the target that
-fix a whole distribution for crosscompilation and keeping it uptodate
-is seriously double-plus un-fun.
+-Steve
 
-  Ralf
+-- 
+ Steven J. Hill - Embedded SW Engineer
+ Public Key: 'http://www.cotw.com/pubkey.txt'
+ FPR1: E124 6E1C AF8E 7802 A815
+ FPR2: 7D72 829C 3386 4C4A E17D

@@ -1,51 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jan 2005 17:21:06 +0000 (GMT)
-Received: from mail.scs.ch ([IPv6:::ffff:212.254.229.5]:10928 "EHLO
-	mail.scs.ch") by linux-mips.org with ESMTP id <S8225274AbVATRVC>;
-	Thu, 20 Jan 2005 17:21:02 +0000
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.scs.ch (8.12.11/8.12.11) with ESMTP id j0KHKcOW000433;
-	Thu, 20 Jan 2005 18:20:38 +0100
-Received: from mail.scs.ch ([127.0.0.1])
- by localhost (mail.scs.ch [127.0.0.1]) (amavisd-new, port 10024) with LMTP
- id 00395-01; Thu, 20 Jan 2005 18:20:37 +0100 (CET)
-Received: from kronenbourg.scs.ch (190.scs.ch [212.254.229.190])
-	by mail.scs.ch (8.12.11/8.12.11) with ESMTP id j0KHKNrC000420;
-	Thu, 20 Jan 2005 18:20:23 +0100
-Subject: Re: Au1000 Big Endian USB OHCI
-From:	Thomas Sailer <sailer@scs.ch>
-To:	Herbert Valerio Riedel <hvr@inso.tuwien.ac.at>
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <1106239023.4048.13.camel@xterm.intra>
-References: <1106238575.8838.9.camel@kronenbourg.scs.ch>
-	 <1106239023.4048.13.camel@xterm.intra>
-Content-Type: text/plain
-Organization: SCS
-Date:	Thu, 20 Jan 2005 18:20:23 +0100
-Message-Id: <1106241623.8838.13.camel@kronenbourg.scs.ch>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jan 2005 18:14:03 +0000 (GMT)
+Received: from fw.osdl.org ([IPv6:::ffff:65.172.181.6]:44463 "EHLO
+	mail.osdl.org") by linux-mips.org with ESMTP id <S8225274AbVATSN4>;
+	Thu, 20 Jan 2005 18:13:56 +0000
+Received: from build.pdx.osdl.net (build.pdx.osdl.net [172.20.1.2])
+	by mail.osdl.org (8.11.6/8.11.6) with ESMTP id j0KIDpl09021;
+	Thu, 20 Jan 2005 10:13:51 -0800
+Received: (from chrisw@localhost)
+	by build.pdx.osdl.net (8.11.6/8.11.6) id j0KIDp716721;
+	Thu, 20 Jan 2005 10:13:51 -0800
+Date:	Thu, 20 Jan 2005 10:13:51 -0800
+From:	Chris Wright <chrisw@osdl.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Chris Wright <chrisw@osdl.org>, akpm@osdl.org, torvalds@osdl.org,
+	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH] mips default mlock limit fix
+Message-ID: <20050120101351.J24171@build.pdx.osdl.net>
+References: <20050119175945.K469@build.pdx.osdl.net> <20050120160005.GA5672@linux-mips.org>
 Mime-Version: 1.0
-X-Mailer: Evolution 2.0.2 (2.0.2-3) 
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: by amavisd-new at scs.ch
-Return-Path: <sailer@scs.ch>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20050120160005.GA5672@linux-mips.org>; from ralf@linux-mips.org on Thu, Jan 20, 2005 at 05:00:05PM +0100
+Return-Path: <chrisw@osdl.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6968
+X-archive-position: 6969
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sailer@scs.ch
+X-original-sender: chrisw@osdl.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 2005-01-20 at 17:37 +0100, Herbert Valerio Riedel wrote:
+* Ralf Baechle (ralf@linux-mips.org) wrote:
+> On Wed, Jan 19, 2005 at 05:59:45PM -0800, Chris Wright wrote:
+> 
+> > Mips RLIMIT_MEMLOCK incorrectly defaults to unlimited, it was confused
+> > with RLIMIT_NPROC.  Found while consolidating resource.h headers.
+> 
+> Thanks, I applied a recent change off by one line.  To avoid this I've
+> changed the code to use named initializers, see
+> 
+> http://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-cvs-patches&i=95f18dfc8e770c9885b796a676935677%40NO-ID-FOUND.mhonarc.org
 
-> I'm successfully running linux 2.6.10 on an au15xx in big endian mode,
-> with some slight modifications to the usb code, for which I posted a
-> patch on the list some time ago (22 Nov 2004)...
+That works too.  I made a similar change in the consolidation patch.  This
+was just meant to be a very simple stop gap fix, while the consolidation
+bits bake in -mm before they go to Linus.  I prefer to leave it as is,
+only so I don't have to respin the patches, but it's not that big a deal.
+Either way, Linus should pick up one of the mips fixes.
 
-I've seen this patch (thanks...) and applied it (by hand, it doesn't
-quite apply any more), but it didn't help. Btw I have an AMD Pb1000
-Board.
-
-Tom
+thanks,
+-chris
+-- 
+Linux Security Modules     http://lsm.immunix.org     http://lsm.bkbits.net

@@ -1,52 +1,39 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1FKdNY07888
-	for linux-mips-outgoing; Fri, 15 Feb 2002 12:39:23 -0800
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1FKdG907883
-	for <linux-mips@oss.sgi.com>; Fri, 15 Feb 2002 12:39:17 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id UAA14500;
-	Fri, 15 Feb 2002 20:39:11 +0100 (MET)
-Date: Fri, 15 Feb 2002 20:39:09 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Jason Gunthorpe <jgg@debian.org>
-cc: "Kevin D. Kissell" <kevink@mips.com>, linux-mips@fnet.fr,
-   linux-mips@oss.sgi.com
-Subject: Re: [patch] linux 2.4.17: The second mb() rework (final)
-In-Reply-To: <Pine.LNX.3.96.1020215104857.10921A-100000@wakko.debian.net>
-Message-ID: <Pine.GSO.3.96.1020215203113.29773Q-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.2/8.11.3) id g1FKefK08086
+	for linux-mips-outgoing; Fri, 15 Feb 2002 12:40:41 -0800
+Received: from dea.linux-mips.net (a1as10-p172.stg.tli.de [195.252.189.172])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1FKeb908059
+	for <linux-mips@oss.sgi.com>; Fri, 15 Feb 2002 12:40:38 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.1) id g1FJapp20048;
+	Fri, 15 Feb 2002 20:36:51 +0100
+Date: Fri, 15 Feb 2002 20:36:51 +0100
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Robert Rusek <robru@teknuts.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: SGI Question
+Message-ID: <20020215203651.A6491@dea.linux-mips.net>
+References: <000901c1b652$146680c0$631510ac@delllaptop>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <000901c1b652$146680c0$631510ac@delllaptop>; from robru@teknuts.com on Fri, Feb 15, 2002 at 10:53:38AM -0800
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, 15 Feb 2002, Jason Gunthorpe wrote:
+On Fri, Feb 15, 2002 at 10:53:38AM -0800, Robert Rusek wrote:
 
-> Sorry, why? If the TX39 is the only processor in the system then write
-> buffers can be left alone. You can't consider PCI IO devices to be
+> Is it possible to build a linux root from within IRIX?  I created an efs
+> partition on a new drive.  Can I build the root on the new drive then
+> point to it from my Linux kernel?
 
- That depends on the implementation of the buffers.
+Not really.  Linux has only read-only support for EFS filesystems.
 
-> processors because the bus protocols would never allow you to satisfy the
-> requirements for 'sync'.
+>  If not, is there any benefit of running a dual os on the system?
 
- Fully agreed -- I've already expressed that in another mail.
+You have twice as many possibilities to get angry about an OS ;-)
 
-> IMHO the only time *mb should care about a write buffer is if the buffer
-> breaks PCI ordering semantics, by, say returning reads from posted write
-> data, re-ordering, etc.
-
- Well, the "classic" MIPS R2020 and R3220 ones would break PCI (or
-actually any I/O) ordering semantics as they return data from a posted
-write upon a hit.  The affected read never appears at the I/O bus in that
-case.  They never reorder writes though, as they work as FIFOs (the former
-is four stage deep and the latter is six stage deep), so wmb() may be null
-for them.
-
- I've read a suggestion a "bc0f" might be needed for the TX39's write
-buffer as a barrier.  That means the buffer behaves as the "classic" ones. 
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+  Ralf
+> 

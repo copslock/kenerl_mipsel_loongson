@@ -1,47 +1,46 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f4J40dY15820
-	for linux-mips-outgoing; Fri, 18 May 2001 21:00:39 -0700
-Received: from dea.waldorf-gmbh.de (IDENT:root@localhost [127.0.0.1])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f4J40YF15817
-	for <linux-mips@oss.sgi.com>; Fri, 18 May 2001 21:00:35 -0700
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f4J3oI901384;
-	Sat, 19 May 2001 00:50:18 -0300
-Date: Sat, 19 May 2001 00:50:18 -0300
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Wayne Gowcher <wgowcher@yahoo.com>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: Netscape on linux-mipsel ??
-Message-ID: <20010519005018.C1209@bacchus.dhis.org>
-References: <3AFB04FF.353198C6@mvista.com> <20010518202342.25982.qmail@web11908.mail.yahoo.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20010518202342.25982.qmail@web11908.mail.yahoo.com>; from wgowcher@yahoo.com on Fri, May 18, 2001 at 01:23:42PM -0700
-X-Accept-Language: de,en,fr
+	by oss.sgi.com (8.11.3/8.11.3) id f4LAqjG05568
+	for linux-mips-outgoing; Mon, 21 May 2001 03:52:45 -0700
+Received: from mx.mips.com (mx.mips.com [206.31.31.226])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f4LAqiF05565
+	for <linux-mips@oss.sgi.com>; Mon, 21 May 2001 03:52:44 -0700
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id DAA13389
+	for <linux-mips@oss.sgi.com>; Mon, 21 May 2001 03:52:38 -0700 (PDT)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id DAA28882
+	for <linux-mips@oss.sgi.com>; Mon, 21 May 2001 03:52:36 -0700 (PDT)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id MAA18278
+	for <linux-mips@oss.sgi.com>; Mon, 21 May 2001 12:51:49 +0200 (MEST)
+Message-ID: <3B08F344.333B746C@mips.com>
+Date: Mon, 21 May 2001 12:51:48 +0200
+From: Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: linux-mips@oss.sgi.com
+Subject: Memory segments
+Content-Type: text/plain; charset=iso-8859-15
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, May 18, 2001 at 01:23:42PM -0700, Wayne Gowcher wrote:
+In the macros PHYSADDR, KSEG0ADDR, KSEG1ADDR, KSEG2ADDR and KSEG3ADDR in
+include/asm-mips64/addrspace.h the addresses are and'ed with
+0x000000ffffffffffUL, instead of and'ed with 0x000000001fffffffUL why is
+that ?
+I do understand the address space is extended in 64 bit mode, but the
+macros is used to manipulate KSEG0 and KSEG1 addresses, which is located
+between 0xffffffff80000000-0xffffffffbfffffff. So the macros are broken
+if you change an address from KSEG1 to KSEG0.
 
-> Does anyone know if Netscape or any other browser has
-> been compiled to run on linux mipsel ? All I can find
-> so far are "x86" source for netscape.
-> 
-> If it has, care to tell me the links where I may get
-> it ?
-> 
-> Alternatively, if no one knows of anyone having a
-> working linux mipsel Netscape binary / rpm. Anyone
-> care to guess the scope of attempting to modify the
-> x86 or mips-sgi-irix sources to run on mips ?
+/Carsten
 
-If you check more exactly you'll find that all the sources are actually
-binaries ...
 
-I had Mozilla running on Linux/MIPS three years ago but didn't continue
-to debug it.  Getting it to work shouldn't be rocket science.  The text
-mode browsers lynx, w3m or link just work.
-
-  Ralf
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

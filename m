@@ -1,66 +1,64 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4REEFnC006877
-	for <linux-mips-outgoing@oss.sgi.com>; Mon, 27 May 2002 07:14:15 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4RKVCnC015978
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 27 May 2002 13:31:12 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4REEFY4006876
-	for linux-mips-outgoing; Mon, 27 May 2002 07:14:15 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4RKVCvg015977
+	for linux-mips-outgoing; Mon, 27 May 2002 13:31:12 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4REE5nC006872
-	for <linux-mips@oss.sgi.com>; Mon, 27 May 2002 07:14:08 -0700
-Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.27])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id QAA01210;
-	Mon, 27 May 2002 16:14:38 +0200 (MET DST)
-Date: Mon, 27 May 2002 16:14:38 +0200 (MEST)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: "Kevin D. Kissell" <kevink@mips.com>
-cc: "Steven J. Hill" <sjhill@realitydiluted.com>,
-   Linux/MIPS Development <linux-mips@oss.sgi.com>
-Subject: Re: PCI Graphics/Video Card for Malta Board?
-In-Reply-To: <029b01c20588$16335830$10eca8c0@grendel>
-Message-ID: <Pine.GSO.4.21.0205271608040.15706-100000@vervain.sonytel.be>
+Received: from dtla2.teknuts.com (adsl-66-125-62-110.dsl.lsan03.pacbell.net [66.125.62.110])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4RKV7nC015974;
+	Mon, 27 May 2002 13:31:07 -0700
+Received: from sohotower (adsl-66.218.38.74.dslextreme.com [66.218.38.74])
+	(authenticated)
+	by dtla2.teknuts.com (8.11.3/8.10.1) with ESMTP id g4RKWRa02276;
+	Mon, 27 May 2002 13:32:27 -0700
+From: "Robert Rusek" <robru@teknuts.com>
+To: "'Ralf Baechle'" <ralf@oss.sgi.com>
+Cc: <linux-mips@oss.sgi.com>
+Subject: RE: Executing IRIX binary ?
+Date: Mon, 27 May 2002 13:32:43 -0700
+Message-ID: <000701c205bd$adaeff40$0a01a8c0@sohotower>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook, Build 10.0.3416
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Importance: Normal
+In-Reply-To: <20020525154426.A2481@dea.linux-mips.net>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, 27 May 2002, Kevin D. Kissell wrote:
-> > One of the exceptions is matroxfb, which is able to initialize older Matrox
-> > cards. This should cover all their PCI cards (Matrox didn't release any new PCI
-> > cards during the last few years).
-> 
-> They still sell/support the G450PCI, which has TV output support,
-> and a flat-panel transmitter, and which might do the job for me.
+Ralf,
 
-Oh, I didn't know they made PCI cards after the G200 (which was hard to get in
-its PCI variant). In fact they responded negatively when we (the PPC guys,
-thinking about designing our own PPC motherboards) asked them if they intended
-to release other PCI chips after the G200, for platforms that lacked AGP
-support.
+Looks like I have the kernal compiled with the IRIX binary support.  How
+do I go about executing the binaries?  When I try to execute it tells me
+that the file is not found.
 
-BTW, the FAQ on Matrox' website says:
+Thanks in advance,
+Robert.
 
-|  1. What happens if I use the Millennium G450 PCI in a system with a
-|  non-Intel chipset?
-|
-|     1. The G450 PCI does not support bus-mastering with non-Intel chipsets.
-|     While this lowers performance on synthetic benchmarks, it does not hinder
-|     the everyday usability of the card. Additionally, the Millennium G450 PCI
-|     does not support OpenGL acceleration (primarily used for 3D gaming) or
-|     DVDMax with non-Intel chipsets.
-
-> Can anyone confirm that the matroxfb support works for it?
-
-I'm not sure matroxfb support full initialization of the '450. You best ask
-Petr Vandrovec.
-
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+      -----Original Message-----
+      From: owner-linux-mips@oss.sgi.com 
+      [mailto:owner-linux-mips@oss.sgi.com] On Behalf Of Ralf Baechle
+      Sent: Saturday, May 25, 2002 3:44 PM
+      To: robru
+      Cc: linux-mips@oss.sgi.com
+      Subject: Re: Executing IRIX binary ?
+      
+      
+      On Sat, May 25, 2002 at 12:06:29PM -0700, robru wrote:
+      
+      > How can I find out if I compiled my kernel with the 
+      compatibility 
+      > code?
+      
+      Make sure you have CONFIG_BINFMT_IRIX set in the kernel 
+      configuration.
+      
+      You'll also need to install IRIX libraries.
+      
+        Ralf
+      

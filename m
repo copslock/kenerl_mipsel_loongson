@@ -1,43 +1,63 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6R3Ib906665
-	for linux-mips-outgoing; Thu, 26 Jul 2001 20:18:37 -0700
-Received: from dea.waldorf-gmbh.de (u-179-20.karlsruhe.ipdial.viaginterkom.de [62.180.20.179])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6R3IYV06660
-	for <linux-mips@oss.sgi.com>; Thu, 26 Jul 2001 20:18:35 -0700
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f6R3IOC15151;
-	Fri, 27 Jul 2001 05:18:24 +0200
-Date: Fri, 27 Jul 2001 05:18:24 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: [patch] fix profiling in glibc for Linux/MIPS
-Message-ID: <20010727051823.B14716@bacchus.dhis.org>
-References: <20010726103922.A6643@nevyn.them.org> <20010727024820.B27008@rembrandt.csv.ica.uni-stuttgart.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20010727024820.B27008@rembrandt.csv.ica.uni-stuttgart.de>; from ica2_ts@csv.ica.uni-stuttgart.de on Fri, Jul 27, 2001 at 02:48:20AM +0200
-X-Accept-Language: de,en,fr
+	by oss.sgi.com (8.11.2/8.11.3) id f6R3x5a09390
+	for linux-mips-outgoing; Thu, 26 Jul 2001 20:59:05 -0700
+Received: from ms.gv.com.tw (ms.gv.com.tw [203.75.221.23])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6R3x2V09375
+	for <linux-mips@oss.sgi.com>; Thu, 26 Jul 2001 20:59:02 -0700
+Received: from jmt1 ([192.72.4.131])
+	by ms.gv.com.tw (8.9.3/8.9.3) with SMTP id MAA11248;
+	Fri, 27 Jul 2001 12:04:23 +0800
+Message-ID: <004a01c11651$07e206e0$830448c0@gv.com.tw>
+From: "´¿¬L©ú" <kevin@gv.com.tw>
+To: "Siders, Keith" <keith_siders@toshibatv.com>, <linux-mips@oss.sgi.com>
+References: <7DF7BFDC95ECD411B4010090278A44CA0A3BC1@ATVX>
+Subject: Re: Linux 2.4.6
+Date: Fri, 27 Jul 2001 12:03:02 +0800
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="big5"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4522.1200
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4522.1200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, Jul 27, 2001 at 02:48:20AM +0200, Thiemo Seufer wrote:
-> Date: Fri, 27 Jul 2001 02:48:20 +0200
-> To: linux-mips@oss.sgi.com
-> Subject: Re: [patch] fix profiling in glibc for Linux/MIPS
-> From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-> 
-> Daniel Jacobowitz wrote:
-> > _mcount was doing awful things to its caller's stack frame.
-> 
-> Maybe I'm missing something, but both the old and the new code
-> add 8 byte more to sp than they subtracted before. How is this
-> supposed to work?
+bash v2.03 should help
 
-_mcount has some odd special calling convention.  I don't recall any official
-standard that defines _mcount's calling convention but gcc uses it the
-same way as the proprietary compiler I tried.
+----- Original Message ----- 
+From: "Siders, Keith" <keith_siders@toshibatv.com>
+To: <linux-mips@oss.sgi.com>
+Sent: Friday, July 27, 2001 5:02 AM
+Subject: Linux 2.4.6
 
-  Ralf
+
+I've made changes to the plain vanilla Linux 2.4.6 to port to our TX49H2
+core on one of our EVB's. Which version of the compiler and binutils should
+I use? The binutils-xx-2.8.1-2 and egcs-xx-1.1.2-4 worked for the 2.2.19
+port, but I'm getting errors in the shell scripts when I run 'make config'.
+I get the same errors with the same tools with the generic 2.4.6 as well.
+Looks like
+
+bash-2.04$ cd linux
+bash-2.04$ make config
+rm -f include/asm
+( cd include ; ln -sf asm-mips asm)
+/bin/sh scripts/Configure arch/mips/config.in
+: command not found
+'cripts/Configure: line 68: syntax error near unexpected token `{
+'cripts/Configure: line 68: `function mainmenu_option () {
+make: *** [config] Error 2
+bash-2.04$
+
+Not sure where to go from here as the scripts didn't change significantly
+between 2.2.19 and 2.4.6.
+
+Keith Siders
+Software Engineer
+ Toshiba America Consumer Products, Inc.
+Advanced Television Technology Center
+801 Royal Parkway, Suite 100
+Nashville, Tennessee 37214
+Phone: (615) 257-4050
+Fax:   (615) 453-7880

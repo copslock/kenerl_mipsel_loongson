@@ -1,54 +1,66 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA00917; Fri, 7 Mar 1997 12:02:22 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA12611; Fri, 7 Mar 1997 13:41:03 -0800
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id UAA28712 for linux-list; Fri, 7 Mar 1997 20:02:03 GMT
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA28706 for <linux@engr.SGI.COM>; Fri, 7 Mar 1997 12:02:02 -0800
-Received: from athena.nuclecu.unam.mx (athena.nuclecu.unam.mx [132.248.29.9]) by sgi.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id MAA10266 for <linux@engr.SGI.COM>; Fri, 7 Mar 1997 12:01:59 -0800
-Received: (from miguel@localhost) by athena.nuclecu.unam.mx (8.6.12/8.6.11) id NAA10311; Fri, 7 Mar 1997 13:51:32 -0600
-Date: Fri, 7 Mar 1997 13:51:32 -0600
-Message-Id: <199703071951.NAA10311@athena.nuclecu.unam.mx>
-From: Miguel de Icaza <miguel@nuclecu.unam.mx>
-To: linux@cthulhu.engr.sgi.com
-Subject: Linux/SGI
+Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id VAA19630 for linux-list; Fri, 7 Mar 1997 21:40:54 GMT
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA19619 for <linux@relay.engr.SGI.COM>; Fri, 7 Mar 1997 13:40:52 -0800
+Received: from alles.intern.julia.de (loehnberg1.core.julia.de [194.221.49.2]) by sgi.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id NAA03811 for <linux@relay.engr.SGI.COM>; Fri, 7 Mar 1997 13:40:46 -0800
+Received: from kernel.panic.julia.de (kernel.panic.julia.de [194.221.49.153])
+	by alles.intern.julia.de (8.8.5/8.8.5) with ESMTP id WAA04572;
+	Fri, 7 Mar 1997 22:39:43 +0100
+From: Ralf Baechle <ralf@Julia.DE>
+Received: (from ralf@localhost)
+          by kernel.panic.julia.de (8.8.4/8.8.4)
+	  id WAA16621; Fri, 7 Mar 1997 22:38:36 +0100
+Message-Id: <199703072138.WAA16621@kernel.panic.julia.de>
+Subject: Re: Linux/SGI
+To: miguel@nuclecu.unam.mx (Miguel de Icaza)
+Date: Fri, 7 Mar 1997 22:38:35 +0100 (MET)
+Cc: linux@cthulhu.engr.sgi.com
+In-Reply-To: <199703071951.NAA10311@athena.nuclecu.unam.mx> from "Miguel de Icaza" at Mar 7, 97 01:51:32 pm
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-
 Hello,
 
-   This is kind of a test message to see if we are (Ralf and I) are on
-the SGI Linux mailing list.
- 
-   Ralf and I have joined the Linux/SGI project (he will mail his very
-own presentation later).  The idea basically is that we will be
-getting a machine each one to finish the Linux on SGI port.
+>    This is kind of a test message to see if we are (Ralf and I) are on
+> the SGI Linux mailing list.
+>  
+>    Ralf and I have joined the Linux/SGI project (he will mail his very
+> own presentation later).  The idea basically is that we will be
+> getting a machine each one to finish the Linux on SGI port.
 
-   Ralf is the guru behind the original Linux/MIPS, so he will be
-handling most of the low-level code in the port.  And I was part of
-the team that ported Linux to the SPARC.
+   Thanks for the introduction Miguel; I'd like to use the chance to drop
+some words about what I'm doing right now on Linux and what the status
+of this is.
 
-   My experience with MIPS hardware is close to none, so I will be
-doing other parts of the port.  The very first project I have is to
-port the Linux/SPARC SILO boot loader to the SGI.
+   As you know David left SGI again in the late August.  At that time he
+had not only completed a good part of the SGI specific stuff but also
+made a lot of improofments to the generic MIPS parts of the kernel.  At
+that time his kernel was based on Linus' 2.0.14.
 
-   Later, make the libc reliable on the MIPS machines and work on the
-kernel support for your graphics cards.
+  At the same time I was working mostly independend of him; luckily.  My target
+machines were at that time the good old Magnum 4000 and it's OEM variant
+M700-10 from Olivetti, the Magnum based Acer PICA machine and SNI's RM200.
+When Ariel mailed me about working on Linux/SGI my kernel for these
+machines was based on Linux 2.1.21.
 
-   I also would love to get my hands on writing parts of the IRIX
-emulation code (to get all those cute toys you have working on
-Linux/SGI without recompiling them), maybe also learn a bit about isdn
-and your audio chips while writing the drivers for them.
+  It's obvious that our kernels have diverged a good bit from each other
+and right now I'm working on merging both kernel sources into one single
+tree again.
 
-   Once this is done, I would love to write the native/free versions
-for some of your libraries that access the cool video hardware on the
-SGI machines and make Linux/SGI not just another Linux port, but a
-cute port that takes advantage of all of the SGI graphics hardware. 
+  The second most important part of the system is libc.  On MIPS we use
+the GNU which has the enormous advantage of being far more portable and
+cleaner code than the Linux Libc on which most Linux/i386 systems are
+based.  Disadvantage is that GNU libc was much buggier than Linux Libc.
+This has changed a lot and so libc presents itself already quite near
+to a release (*) libc but there is still some work to do.
 
-   So, well, this was like my presentation to the list.  Ahem, now,
-I would like to know more about your video hardware for the kernel
-support, where can I get information on this?  
+  Similar for the other core parts of the system on which David worked but
+right now I'm still busy merging the kernel sources; the next step will
+be libc.
 
-   We don't have the machines just yet, but I have been reading this
-huge R4k book I got for free from www.mips.com :-)
+  Ralf
 
-Best wishes,
-Miguel.
+*) famous last words

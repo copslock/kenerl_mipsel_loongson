@@ -1,65 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Sep 2003 19:17:13 +0100 (BST)
-Received: from nevyn.them.org ([IPv6:::ffff:66.93.172.17]:56284 "EHLO
-	nevyn.them.org") by linux-mips.org with ESMTP id <S8225581AbTIWSRL>;
-	Tue, 23 Sep 2003 19:17:11 +0100
-Received: from drow by nevyn.them.org with local (Exim 4.22 #1 (Debian))
-	id 1A1rid-0007uu-U2; Tue, 23 Sep 2003 14:16:59 -0400
-Date: Tue, 23 Sep 2003 14:16:59 -0400
-From: Daniel Jacobowitz <dan@debian.org>
-To: Eric Christopher <echristo@redhat.com>
-Cc: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>,
-	Alexandre Oliva <aoliva@redhat.com>,
-	"Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-	Atsushi Nemoto <nemoto@toshiba-tops.co.jp>,
-	linux-mips@linux-mips.org, binutils@sources.redhat.com
-Subject: Re: recent binutils and mips64-linux
-Message-ID: <20030923181659.GA30037@nevyn.them.org>
-Mail-Followup-To: Eric Christopher <echristo@redhat.com>,
-	Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>,
-	Alexandre Oliva <aoliva@redhat.com>,
-	"Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-	Atsushi Nemoto <nemoto@toshiba-tops.co.jp>,
-	linux-mips@linux-mips.org, binutils@sources.redhat.com
-References: <Pine.GSO.3.96.1030919144141.9134C-100000@delta.ds2.pg.gda.pl> <1063988420.2537.5.camel@ghostwheel.sfbay.redhat.com> <20030919164119.GH13578@rembrandt.csv.ica.uni-stuttgart.de> <ord6ds346n.fsf@free.redhat.lsd.ic.unicamp.br> <20030922233952.GR13578@rembrandt.csv.ica.uni-stuttgart.de> <1064280106.21720.0.camel@ghostwheel.sfbay.redhat.com> <20030923081447.GS13578@rembrandt.csv.ica.uni-stuttgart.de> <1064340070.21720.14.camel@ghostwheel.sfbay.redhat.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1064340070.21720.14.camel@ghostwheel.sfbay.redhat.com>
-User-Agent: Mutt/1.5.1i
-Return-Path: <drow@crack.them.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Sep 2003 20:07:06 +0100 (BST)
+Received: from 66-152-54-2.ded.btitelecom.net ([IPv6:::ffff:66.152.54.2]:65273
+	"EHLO mmc.atmel.com") by linux-mips.org with ESMTP
+	id <S8225376AbTIWTHD>; Tue, 23 Sep 2003 20:07:03 +0100
+Received: from ares.mmc.atmel.com (ares.mmc.atmel.com [10.127.240.37])
+	by mmc.atmel.com (8.9.3/8.9.3) with ESMTP id PAA20107
+	for <linux-mips@linux-mips.org>; Tue, 23 Sep 2003 15:06:57 -0400 (EDT)
+Received: from localhost (dkesselr@localhost)
+	by ares.mmc.atmel.com (8.9.3/8.9.3) with ESMTP id PAA09823
+	for <linux-mips@linux-mips.org>; Tue, 23 Sep 2003 15:06:56 -0400 (EDT)
+X-Authentication-Warning: ares.mmc.atmel.com: dkesselr owned process doing -bs
+Date: Tue, 23 Sep 2003 15:06:56 -0400 (EDT)
+From: David Kesselring <dkesselr@mmc.atmel.com>
+To: linux-mips@linux-mips.org
+Subject: Malta build 2.4 (fwd)
+Message-ID: <Pine.GSO.4.44.0309231505310.2816-100000@ares.mmc.atmel.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <dkesselr@mmc.atmel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3273
+X-archive-position: 3275
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@debian.org
+X-original-sender: dkesselr@mmc.atmel.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Sep 23, 2003 at 11:01:11AM -0700, Eric Christopher wrote:
-> 
-> > > 
-> > > objcopy?
-> > 
-> > You mean, let gcc generate n64 code, stuff it in n32 objects, and
-> > objcopy it back to n64? Well, it may work, but it looks more like
-> > a test of binutils sign-extension handling than a straightforward
-> > way of creating kernels to me.
-> > 
-> > Besides, as soon as gcc handles 64bit expansions itself we need
-> > such an option anyway.
-> 
-> I'm still trying to figure out why you are going through such weird
-> contortions at all. I understand not having an elf64 loader. That's what
-> the objcopy comment was for, everything else I don't understand. Why not
-> compile for the abi you want?
+The problem is somehow related to "make menuconfig" setting CONFIG_ARC=y.
+When I configured with xconfig the build was ok.
 
-Compare the optimal way to load an address into a register when you
-have a full 64-bit address space and when you know that addresses are
-sign extended.  I'm told it saves over 100K of code.
+David Kesselring
+Atmel MMC
+dkesselr@mmc.atmel.com
+919-462-6587
 
--- 
-Daniel Jacobowitz
-MontaVista Software                         Debian GNU/Linux Developer
+---------- Forwarded message ----------
+Date: Tue, 23 Sep 2003 13:01:41 -0400 (EDT)
+From: David Kesselring <dkesselr@mmc.atmel.com>
+To: linux-mips@linux-mips.org
+Subject: Malta build 2.4
+
+I've just checked out the 2.4 tree from linux-mips cvs and used the Malta
+config file, defconfig-malta. I get the following error. Does anyone know
+if it a Makefile bug or a config file problem?
+
+drivers/char/char.o: In function `console_init':
+drivers/char/char.o(.text.init+0x178): undefined reference to
+`arc_console_init'make: *** [vmlinux] Error 1
+
+Thanks,
+David Kesselring
+Atmel MMC
+dkesselr@mmc.atmel.com
+919-462-6587

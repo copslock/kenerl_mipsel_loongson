@@ -1,85 +1,63 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fAQF83c06913
-	for linux-mips-outgoing; Mon, 26 Nov 2001 07:08:03 -0800
-Received: from pandora.research.kpn.com (IDENT:root@pandora.research.kpn.com [139.63.192.11])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAQF7uo06909
-	for <linux-mips@oss.sgi.com>; Mon, 26 Nov 2001 07:07:56 -0800
-Received: from sparta.research.kpn.com (sparta.research.kpn.com [139.63.192.6])
-	by pandora.research.kpn.com (8.9.3/8.9.3) with ESMTP id PAA23894;
-	Mon, 26 Nov 2001 15:07:54 +0100
-Received: from sparta.research.kpn.com (sparta.research.kpn.com [139.63.192.6])
-	by sparta.research.kpn.com (8.8.8+Sun/8.8.8) with ESMTP id PAA11348;
-	Mon, 26 Nov 2001 15:07:54 +0100 (MET)
-Message-Id: <200111261407.PAA11348@sparta.research.kpn.com>
-X-Mailer: exmh version 1.6.5 12/11/95
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-cc: "Houten K.H.C. van (Karel)" <vhouten@kpn.com>, linux-mips@oss.sgi.com
-Subject: Re: FPU interrupt handler 
-In-reply-to: Your message of "Mon, 26 Nov 2001 14:50:13 +0100."
-             <Pine.GSO.3.96.1011126142508.21598H-100000@delta.ds2.pg.gda.pl> 
-Reply-to: vhouten@kpn.com
-X-Face: ";:TzQQC{mTp~$W,'m4@Lu1Lu$rtG_~5kvYO~F:C'KExk9o1X"iRz[0%{bq?6Aj#>VhSD?v
- 1W9`.Qsf+P&*iQEL8&y,RDj&U.]!(R-?c-h5h%Iw%r$|%6+Jc>GTJe!_1&A0o'lC[`I#={2BzOXT1P
- q366I$WL=;[+SDo1RoIT+a}_y68Y:jQ^xp4=*4-ryiymi>hy
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Date: Mon, 26 Nov 2001 15:07:54 +0100
-From: "Houten K.H.C. van (Karel)" <vhouten@kpn.com>
+	by oss.sgi.com (8.11.2/8.11.3) id fAQFcRB08077
+	for linux-mips-outgoing; Mon, 26 Nov 2001 07:38:27 -0800
+Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAQFbpo08052
+	for <linux-mips@oss.sgi.com>; Mon, 26 Nov 2001 07:37:58 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA00100;
+	Mon, 26 Nov 2001 15:35:18 +0100 (MET)
+Date: Mon, 26 Nov 2001 15:35:17 +0100 (MET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Ralf Baechle <ralf@uni-koblenz.de>
+cc: linux-mips@fnet.fr, linux-mips@oss.sgi.com
+Subject: [patch] linux: A critical DECstation interrupt handler fix
+Message-ID: <Pine.GSO.3.96.1011126151119.21598L-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+Hello,
 
-Hi Maciej,
+ The DECstation's interrupt handler can crash under certain circumstances. 
+Due to a missing masking of the CP0 Cause register, if a spurious
+interrupt is delivered (its deasserted before reading the register), the
+handler may jump to an arbitrary memory location as determined by data
+fetched from an incorrect location.  Due to this problem my new /260
+system used to crash frequently, because Cause.CE is often set to 3 (CE is
+unspecified for all but coprocessor unusable exceptions). 
 
->  Hmm, for R3k gcc 2.95.3 + binutils 2.11.2 as available at my site seem to
-> be rock solid.
-> 
->  For R4k you need binutils 2.11.92, as there is a problem with dla/la
-> expansion in the Ulf's patch for .mips3+.  That actually can be fixed in
-> 2.11.2 easily but I was going to switch to 2.11.92 anyway, as it has more
-> MIPS/Linux support integrated and 2.12 is supposedly soon to be released.
-> Unfortunately 2.11.92 is not as stable as 2.11.2 due to generic ELF code
-> problems, but I'm trying to track changes and spot a more stable snapshot.
+ The following patch masks Cause appropriately.  A small reorganization of
+code was also possible due to changes in the scheduling of delay slots. 
 
-I'm using the RedHat 7.1 packages from oss:
-binutils-2.11.92.0.10-1.mips.rpm
-gcc-2.96-99.1.mips.rpm
-
-
-> > Some kernels don't start-up, others hang just before forking init,
-> > and all have problems with my serial console.
-> 
->  Well, I'm very happy with a /240 running a 2.4.14 snapshot dated
-> 20011123.  For a /260 I need a small, but critical bugfix I'm sending to
-> the list right now.  I wonder how was it possible for the bug to remain
-> uncovered for so long as it's absolutely lethal and often triggered (I've
-> only got my /260 recently and it wasn't even running a few minutes
-> continuously before the fix). 
-My 'main' mips box at home is a /260. I sometimes test things out on
-a /240, but I don't have access to other boxes.
- 
->  I can't comment other models.
-> 
-> > When I get a recent kernel running again, I would love to update my
-> > DECStation Linux Website with newer instructions and a new root FS.
-> 
->  I may upload binaries of my kernels to my site if they are to be useful
-> -- they are fully monolithic (but with kmod support) due to historical
-> reasons.  Only IPv6 is modular due to its unstability -- it freezes the
-> system immediately on my /240 and splashes a bunch of suspicious messages
-> on my /260 (weird, but no time to debug).  They only support /240 and /260
-> due to CONFIG_CPU_HAS_WB unset.
-
-Yes please. I hope to get a new disk this week, so I can build a
-stable development server...
-
-Thanks a lot,
-
+  Maciej
 
 -- 
-Karel van Houten
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
 
-----------------------------------------------------------
-The box said "Requires Windows 95 or better."
-I can't understand why it won't work on my Linux computer. 
-----------------------------------------------------------
+patch-mips-2.4.14-20011123-dec-cause-0
+diff -up --recursive --new-file linux-mips-2.4.14-20011123.macro/arch/mips/dec/int-handler.S linux-mips-2.4.14-20011123/arch/mips/dec/int-handler.S
+--- linux-mips-2.4.14-20011123.macro/arch/mips/dec/int-handler.S	Tue Jul  3 04:27:16 2001
++++ linux-mips-2.4.14-20011123/arch/mips/dec/int-handler.S	Sun Nov 25 00:40:11 2001
+@@ -140,7 +140,7 @@
+ 		 */
+ 		mfc0	t0,CP0_CAUSE		# get pending interrupts
+ 		mfc0	t2,CP0_STATUS
+-		la	t1,cpu_mask_tbl
++		andi	t0,ST0_IM		# CAUSE.CE may be non-zero!
+ 		and	t0,t2			# isolate allowed ones
+ 
+ 		beqz	t0,spurious
+@@ -148,7 +148,8 @@
+ 		/*
+ 		 * Find irq with highest priority
+ 		 */
+-1:		 lw	t2,(t1)
++		 la	t1,cpu_mask_tbl
++1:		lw	t2,(t1)
+ 		move	t3,t0
+ 		and	t3,t2
+ 		beq	t3,zero,1b

@@ -1,80 +1,95 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Dec 2004 00:07:23 +0000 (GMT)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:59995
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8226132AbULBAHS>; Thu, 2 Dec 2004 00:07:18 +0000
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp
-	id 1CZeV8-0007u8-00; Thu, 02 Dec 2004 01:07:14 +0100
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 1CZeV7-000612-00; Thu, 02 Dec 2004 01:07:13 +0100
-Date: Thu, 2 Dec 2004 01:07:13 +0100
-To: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-Cc: Ralf Baechle <ralf@linux-mips.org>,
-	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 2.6] tlbwr hazard for NEC VR4100
-Message-ID: <20041202000713.GO3225@rembrandt.csv.ica.uni-stuttgart.de>
-References: <20041201234943.584d88e8.yuasa@hh.iij4u.or.jp>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20041201234943.584d88e8.yuasa@hh.iij4u.or.jp>
-User-Agent: Mutt/1.5.6i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Dec 2004 00:18:09 +0000 (GMT)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:3344 "EHLO
+	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8226148AbULBAR6>; Thu, 2 Dec 2004 00:17:58 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 341A8E1C94; Thu,  2 Dec 2004 01:17:51 +0100 (CET)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 18455-04; Thu,  2 Dec 2004 01:17:51 +0100 (CET)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id D3067E1C61; Thu,  2 Dec 2004 01:17:50 +0100 (CET)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.1/8.13.1) with ESMTP id iB20I98N013865;
+	Thu, 2 Dec 2004 01:18:09 +0100
+Date: Thu, 2 Dec 2004 00:17:56 +0000 (GMT)
+From: "Maciej W. Rozycki" <macro@linux-mips.org>
+To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Cc: Dominic Sweetman <dom@mips.com>, linux-mips@linux-mips.org,
+	ralf@linux-mips.org, Nigel Stephens <nigel@mips.com>,
+	David Ung <davidu@mips.com>
+Subject: Re: [PATCH] Improve atomic.h implementation robustness
+In-Reply-To: <20041201230332.GM3225@rembrandt.csv.ica.uni-stuttgart.de>
+Message-ID: <Pine.LNX.4.58L.0412020001340.20966@blysk.ds.pg.gda.pl>
+References: <20041201070014.GG3225@rembrandt.csv.ica.uni-stuttgart.de>
+ <16813.39660.948092.328493@doms-laptop.algor.co.uk>
+ <20041201204536.GI3225@rembrandt.csv.ica.uni-stuttgart.de>
+ <Pine.LNX.4.58L.0412012151210.13579@blysk.ds.pg.gda.pl>
+ <20041201230332.GM3225@rembrandt.csv.ica.uni-stuttgart.de>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.80/605/Wed Nov 24 15:09:47 2004
+	clamav-milter version 0.80j
+	on piorun.ds.pg.gda.pl
+X-Virus-Status: Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6533
+X-archive-position: 6534
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Yoichi Yuasa wrote:
-> Hi Ralf,
-> 
-> This patch had added tlbwr hazard for NEC VR4100.
-> Please apply this patch to 2.6.
-> 
-> Yoichi
-> 
-> Signed-off-by: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-> 
-> diff -urN -X dontdiff a-orig/arch/mips/mm/tlbex.c a/arch/mips/mm/tlbex.c
-> --- a-orig/arch/mips/mm/tlbex.c	Tue Nov 30 20:42:08 2004
-> +++ a/arch/mips/mm/tlbex.c	Wed Dec  1 23:23:11 2004
-> @@ -820,6 +820,25 @@
->  		i_ssnop(p);
->  		break;
->  
-> +	case CPU_VR4111:
-> +	case CPU_VR4121:
-> +	case CPU_VR4122:
-> +	case CPU_VR4181:
-> +	case CPU_VR4181A:
-> +		i_nop(p);
-> +		i_nop(p);
-> +		i_tlbwr(p);
-> +		i_nop(p);
-> +		i_nop(p);
-> +		break;
-> +
-> +	case CPU_VR4131:
-> +	case CPU_VR4133:
-> +		i_nop(p);
-> +		i_nop(p);
-> +		i_tlbwr(p);
-> +		break;
+On Thu, 2 Dec 2004, Thiemo Seufer wrote:
 
-If 64bit kernels are ever relevant for VR41xx, you might want to use
-the same branch trick as it is used for R4[04]00. IIRC it reduced the
-handler size from 34 to 30 instructions, saving another branch.
+> >  What do you mean by "the weird code model" and what failures have you 
+> > observed?  I think the bits are worth being done correctly, so I'd like 
+> > to know what problems to address.
+> 
+> I had guessed you already know what i mean. :-)
+> 
+> Current 64bit MIPS kernels run in (C)KSEG0, and exploit sign-extension
+> to optimize symbol loads (2 instead of 6/7 instructions, the same as in
+> 32bit kernels). This optimization relies on an assembler macro
+> expansion mode which was hacked in gas for exactly this purpose. Gcc
+> currently doesn't have something similiar, and would try to do a regular
+> 64bit load with explicit relocs.
 
-(If the XTLB refill handler doesn't fit in 32 instructions, it wraps
-around to the 32bit TLB handler space and continues there. This costs
-1-3 additional instructions.)
+ Ah *that*.  Well, sorry -- I tend to forget about the hack as I've never
+used it.  I think a valid solution is either to use CONFIG_BUILD_ELF64
+(now that it is there) or to modify tools to implement it correctly...
 
+> I discussed this with Richard Sandiford a while ago, and the conclusion
+> was to implement an explicit --msym32 option for both gcc and gas to
+> improve register scheduling and get rid of the gas hack. So far, nobody
+> came around to actually do the work for it.
 
-Thiemo
+ ... like this, for example.  But if nobody has implemented it yet, then 
+perhaps nobody is really interested in it? ;-)
+
+> For the "subtle failures" part, we had some gas failures to handle dla
+> because of the changed arguments. For userland (PIC) code, I've also
+
+ I recall this -- I've thought the more or less agreed consensus was to
+forbid or at least strongly discourage "dla" and "la" macros expanded
+within inline asms and referring to an address operand to be provided by
+GCC based on a constraint.
+
+ Otherwise there is still my patch to gas available as an alternative. ;-)
+
+> seen additional load/store insn creeping in ll/sc loops. I believe
+> there's a large amount of inline assembly code (not necessarily in the
+> kernel) which relies on similiar assumptions.
+
+ With explicit relocs you have no problem with any instructions appearing 
+inside inline asms unexpectedly.  That is if you use the "R" constraint -- 
+the "m" one never guaranteed that.
+
+  Maciej

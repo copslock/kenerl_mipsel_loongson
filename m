@@ -1,77 +1,73 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id DAA23997 for <linux-archive@neteng.engr.sgi.com>; Mon, 13 Jul 1998 03:36:42 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id JAA36825 for <linux-archive@neteng.engr.sgi.com>; Mon, 13 Jul 1998 09:28:26 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id DAA65952
+	id JAA34816
 	for linux-list;
-	Mon, 13 Jul 1998 03:36:02 -0700 (PDT)
+	Mon, 13 Jul 1998 09:27:24 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from wintermute.reading.sgi.com (wintermute.reading.sgi.com [144.253.74.171])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id DAA37150
+	via SMTP id JAA21870
 	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 13 Jul 1998 03:36:00 -0700 (PDT)
-	mail_from (adelton@informatics.muni.cz)
-Received: from aragorn.ics.muni.cz (aragorn.ics.muni.cz [147.251.4.33]) 
-	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id DAA01121
-	for <linux@cthulhu.engr.sgi.com>; Mon, 13 Jul 1998 03:35:55 -0700 (PDT)
-	mail_from (adelton@informatics.muni.cz)
-Received: from anxur.fi.muni.cz (0@anxur.fi.muni.cz [147.251.48.3])
-	by aragorn.ics.muni.cz (8.8.5/8.8.5) with ESMTP id MAA26879
-	for <linux@cthulhu.engr.sgi.com>; Mon, 13 Jul 1998 12:35:46 +0200 (MET DST)
-Received: from aisa.fi.muni.cz (11635@aisa [147.251.48.1])
-	by anxur.fi.muni.cz (8.8.5/8.8.5) with ESMTP id MAA10044
-	for <linux@cthulhu.engr.sgi.com>; Mon, 13 Jul 1998 12:35:45 +0200 (MET DST)
-Received: (from adelton@localhost)
-	by aisa.fi.muni.cz (8.8.5/8.8.5) id MAA25444
-	for linux@cthulhu.engr.sgi.com; Mon, 13 Jul 1998 12:35:43 +0200 (MET DST)
-Message-Id: <199807131035.MAA25444@aisa.fi.muni.cz>
-Subject: 2.1.99 with RH 5.1 A 2 slowing down
-To: linux@cthulhu.engr.sgi.com
-Date: Mon, 13 Jul 1998 12:35:42 +0200 (MET DST)
-From: Honza Pazdziora <adelton@informatics.muni.cz>
-Phone: 420 (5) 415 12345
-X-Mailer: ELM [version 2.4ME+ PL39 (25)]
+	Mon, 13 Jul 1998 09:27:22 -0700 (PDT)
+	mail_from (leon@reading.sgi.com)
+Received: from localhost by wintermute.reading.sgi.com via SMTP (950413.SGI.8.6.12/911001.SGI)
+	 id RAA28150; Mon, 13 Jul 1998 17:27:17 +0100
+Date: Mon, 13 Jul 1998 17:27:17 +0100 (BST)
+From: Leon Verrall <leon@reading.sgi.com>
+To: Shrijeet Mukherjee <shm@cthulhu.engr.sgi.com>
+cc: SGI Linux <linux@cthulhu.engr.sgi.com>
+Subject: Re: 5.1 installation fun & games...
+In-Reply-To: <Pine.SGI.3.96.980709194408.49036B-100000@tantrik.engr.sgi.com>
+Message-ID: <Pine.SGI.3.96.980713172049.28090A-100000@wintermute.reading.sgi.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+On Thu, 9 Jul 1998, Shrijeet Mukherjee wrote:
 
-Hello,
+> ->Ah, a chicken and egg thing. You can nfsroot an SG linux box as long as you
+> ->have a linux box to do it from...
+> 
+> so do I understand correctly that I cannot boot my Indy for setting linux
+> up from another IRIX box (running 6.5) ... but have to go find a Intel box
+> running Linux ?
 
-I'm using RH 5.1 installation with Alpha 1 kernel and installator and
-devel/Alpha 2 RPMs (where available). The system is running fine, but
-seems to slow down during the time.
+Well, here's a funny thing... 
 
-My, maybe naive, observation is that the buffers value from the free
-listing is very high: on 32 MB system, the buffers value is about 13
-to 15 MB, cached about 4 MB and there are like 500 kB freee memory.
-The system doesn't swap, however when I try to run a process, it's
-very slow starting it and running it. I'm for example am not able to
-finish make dep on the kernel tree -- the activity just does to zero
-after 5 minutes or so.
+I now have a debian Linux box in the office configured for bootp and tftp
+etc. It has the manhattan alpha 1 distribution on it. I bootp():/vmlinuz my
+Indy, the kernel boots fine and then:
 
-I've found out that I can force it to free the buffers (while still
-having some free memory to actually start the perl) with something
-like
-	perl -e '$/ = undef; $_ = <>; $a = $_ x 3' /vmlinux
+  Warning: unable to open an initial console. 
 
-that creates a process allocating about 8 MB, but I have to do this
-rather often (in while true ; done loop). I understand that my
-description is rather fuzzy, so the main point is that the system is
-slowing down, doesn't swap but has very low free memory, even if there
-is a lot of memory used by buffers. I can of course send any
-additional info/listings, if you tell me which.
+Where have we seen this before? 
 
-Do you know what I might be doing wrong? Thanks,
+/etc/exports has :
 
-------------------------------------------------------------------------
- Honza Pazdziora | adelton@fi.muni.cz | http://www.fi.muni.cz/~adelton/
-                   I can take or leave it if I please
-------------------------------------------------------------------------
+  /usr/src/sgi/installfs 144.253.75.29(no_root_squash,rw)
+
+I've tried mucking about with permissions on the files in
+/usr/src/sgi/installfs/dev but no dice. And the code it stops at is:
+
+  if (open("/dev/console", O_RDWR, 0) < 0)
+                printk("Warning: unable to open an initial console.\n");
+
+So nothing complicated happening there. It just plain can't open
+/dev/console for read and write... rpc.mountd's debug output doesn't help.
+It just says the mount was sucessful. 
+
+I've also tried a few options like nfsroot=/usr/src/sgi/installfs,flags=dev
+just to make sure...
+
+Anyone else hitting this? 
+
+Leon
+
+-- 
+Leon Verrall - 01189 307734  \ "Don't cut your losses too soon,
+Secondline Software Support  / 'cos you'll only be cutting your throat.
+Silicon Graphics, Forum 1,   \ And answer a call while you still care at all
+Station Rd., Theale, RG7 4RA / 'cos nobody will if you wont" (6:00 - DT)

@@ -1,45 +1,28 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via SMTP id DAA142992 for <linux-archive@neteng.engr.sgi.com>; Sun, 1 Mar 1998 03:16:40 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id IAA199117 for <linux-archive@neteng.engr.sgi.com>; Mon, 2 Mar 1998 08:17:04 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id DAA04124 for linux-list; Sun, 1 Mar 1998 03:15:56 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id DAA04119; Sun, 1 Mar 1998 03:15:54 -0800
-Received: from seaside2.varberg.se (mail.varberg.se [193.13.151.101]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id DAA18883; Sun, 1 Mar 1998 03:15:53 -0800
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id IAA38816 for linux-list; Mon, 2 Mar 1998 08:15:54 -0800 (PST)
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id IAA35850 for <linux@cthulhu.engr.sgi.com>; Mon, 2 Mar 1998 08:15:52 -0800 (PST)
+Received: from seaside2.varberg.se (mail.varberg.se [193.13.151.101]) by sgi.sgi.com (980205.SGI.8.8.8/980301.SGI-antispam) via ESMTP id IAA00561
+	for <linux@cthulhu.engr.sgi.com>; Mon, 2 Mar 1998 08:15:50 -0800 (PST)
 	env-from (grimsy@seaside.se)
-Received: from calypso.saturn (grimsy@dialup156-4-50.swipnet.se [130.244.156.242]) by seaside2.varberg.se (8.8.5/8.6.9) with SMTP id LAA00736; Sun, 1 Mar 1998 11:15:49 GMT
-Date: Sun, 1 Mar 1998 12:17:42 +0100 (CET)
+Received: from calypso.saturn (grimsy@dialup118-2-1.swipnet.se [130.244.118.65]) by seaside2.varberg.se (8.8.5/8.6.9) with SMTP id QAA17834; Mon, 2 Mar 1998 16:16:14 GMT
+Date: Mon, 2 Mar 1998 17:17:35 +0100 (CET)
 From: Ulf Carlsson <grimsy@varberg.se>
 X-Sender: grimsy@calypso.saturn
-To: Alex deVries <adevries@engsoc.carleton.ca>
-cc: Ariel Faigon <ariel@cthulhu.engr.sgi.com>,
-        SGI/Linux mailing list <linux@cthulhu.engr.sgi.com>
+To: ralf@uni-koblenz.de
+cc: linux@cthulhu.engr.sgi.com
 Subject: Re: installation problem.
-In-Reply-To: <Pine.LNX.3.95.980228211156.5143D-100000@lager.engsoc.carleton.ca>
-Message-ID: <Pine.LNX.3.96.980301120628.18899B-100000@calypso.saturn>
+In-Reply-To: <19980228012132.53451@uni-koblenz.de>
+Message-ID: <Pine.LNX.3.96.980302171406.782B-100000@calypso.saturn>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Sat, 28 Feb 1998, Alex deVries wrote:
+Evening.
 
-> On Sat, 28 Feb 1998, Ulf Carlsson wrote:
-> > 1. I know almost nothing about MIPS/Linux. Well, as soon as it boots for
-> >    me will I study all its advantages and disadvantages.
-> > 2. My internet connection is not very fast. Only modem at home. Well, I
-> >    have a faster connection at school, but you know. Serving a ftp
-> >    with 10mb kernels is not a job for me. (well, I may take charge of the
-> >    www site some day in the (near?) future).
-> 
-> That's where SGI comes in nicely, providing us all with ftp.linux.sgi.com.
-> 
-> I actually have some unfinished HOWTO docs you're welcome to have, but the
-> problem with them is that we haven't really realized a viable installation
-> method yet.  Still gotta get the initrd stuff running...
-> 
-> - Alex
+How's it going with the bug in include/asm-mips/r4kcache.h?
+I read the source file, but I didn't understand anything, you know - it's
+azzemblur ;-).
 
-I have been trying to catch up this mailing list today. Reading all the
-postings since the beginning, very interesting. Can't you please send over
-your HOWTO docs and let me see them? I think the hack of the mklinux
-installation tool did its job excellent. I have nothing to complain of. 
-
--Ulf
+- Ulf

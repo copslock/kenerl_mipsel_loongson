@@ -1,65 +1,54 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f35EbdJ28371
-	for linux-mips-outgoing; Thu, 5 Apr 2001 07:37:39 -0700
-Received: from mx.mips.com (mx.mips.com [206.31.31.226])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f35EbSM28363;
-	Thu, 5 Apr 2001 07:37:28 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id HAA28669;
-	Thu, 5 Apr 2001 07:36:39 -0700 (PDT)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id HAA29230;
-	Thu, 5 Apr 2001 07:36:36 -0700 (PDT)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id QAA20302;
-	Thu, 5 Apr 2001 16:35:54 +0200 (MEST)
-Message-ID: <3ACC82C9.7612DCDE@mips.com>
-Date: Thu, 05 Apr 2001 16:35:53 +0200
-From: Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-CC: Ralf Baechle <ralf@oss.sgi.com>, Florian Lohoff <flo@rfc822.org>,
-   "Kevin D. Kissell" <kevink@mips.com>,
-   "MIPS/Linux List (SGI)" <linux-mips@oss.sgi.com>
-Subject: Re: Dumb Question on Cross-Development
-References: <Pine.GSO.3.96.1010405135731.21134B-100000@delta.ds2.pg.gda.pl>
-Content-Type: text/plain; charset=iso-8859-15
-Content-Transfer-Encoding: 7bit
+	by oss.sgi.com (8.11.3/8.11.3) id f35Gm5I00540
+	for linux-mips-outgoing; Thu, 5 Apr 2001 09:48:05 -0700
+Received: from mail.foobazco.org (snowman.foobazco.org [198.144.194.230])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f35Gm4M00537
+	for <linux-mips@oss.sgi.com>; Thu, 5 Apr 2001 09:48:04 -0700
+Received: from galt.foobazco.org (galt.foobazco.org [198.144.194.227])
+	by mail.foobazco.org (Postfix) with ESMTP
+	id F0C6F109DD; Thu,  5 Apr 2001 09:48:03 -0700 (PDT)
+Received: by galt.foobazco.org (Postfix, from userid 1014)
+	id EA8DB1F429; Thu,  5 Apr 2001 09:48:01 -0700 (PDT)
+Date: Thu, 5 Apr 2001 09:48:01 -0700
+From: Keith M Wesolowski <wesolows@foobazco.org>
+To: machael <dony.he@huawei.com.cn>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Does Linux support RC32332 CPU now?
+Message-ID: <20010405094801.A4397@foobazco.org>
+References: <007e01c0bd70$9052b4a0$8021690a@huawei.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <007e01c0bd70$9052b4a0$8021690a@huawei.com>; from dony.he@huawei.com.cn on Thu, Apr 05, 2001 at 09:34:31AM +0800
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I tried the following:
-rpm -ba --rcfile .rpmrc-mipsel SPECS/mipsel-linux-binutils-2.10.91-2.spec
+On Thu, Apr 05, 2001 at 09:34:31AM +0800, machael wrote:
 
-but it fails with
-Architecture is excluded: mipsel
+>      1   Does Linux support RC32332 CPU now?
 
-/Carsten
+No but it wouldn't be hard - it has r4600-style caches with an
+r4k-style tlb (alas, only 32 entries instead of 48, but that's
+insignificant).  See
+http://www.idt.com/products/pages/Processors-79RC32332.html for
+documentation including the pci controller and other bits.
 
-"Maciej W. Rozycki" wrote:
+>      2   I want to build my cross-compile environment  for MIPS target on my
+> X86 host. Are there any documents about how to implement it?
 
-> On Thu, 5 Apr 2001, Carsten Langgaard wrote:
->
-> > I have question about installation of the SRPMs, though.
-> > How can I relocate the packages, so they don't need to reside under
-> > /usr/src/redhat/ ?
->
->  RPM uses the value of the _topdir macro as the root for source handling.
-> You may override the default from /usr/lib/rpm/macros in several places --
-> see the macrofiles tag in /usr/lib/rpm/rpmrc.  I have it overriden to
-> /home/macro/src/redhat in the configuration files I made available at my
-> FTP site.
->
-> --
-> +  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-> +--------------------------------------------------------------+
-> +        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Yes.  Read the archives of this list, or the faq, or
+http://foobazco.org/~wesolows/mips-cross.html, or the cross gcc faq
+easily accessible from google's first page of a search for "how to
+build a cross compiler" at http://www.objsw.com/CrossGCC/.  Or go to
+ftp://oss.sgi.com/pub/linux/mips/mips-linux/simple/crossdev, or the
+/pub/linux/mips directory in general on that server, or any of about
+500 other places.  
 
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+Answering this question is getting REALLY old.  Being a newbie does
+not excuse you from putting in at least minimal effort before asking.
+
+-- 
+Keith M Wesolowski <wesolows@foobazco.org> http://foobazco.org/~wesolows
+------(( Project Foobazco Coordinator and Network Administrator ))------
+"I should have crushed his marketing-addled skull with a fucking bat."

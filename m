@@ -1,78 +1,39 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0F1RAI28966
-	for linux-mips-outgoing; Mon, 14 Jan 2002 17:27:10 -0800
-Received: from host099.momenco.com (IDENT:root@www.momenco.com [64.169.228.99])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0F1R5g28960
-	for <linux-mips@oss.sgi.com>; Mon, 14 Jan 2002 17:27:05 -0800
-Received: from beagle (beagle.internal.momenco.com [192.168.0.115])
-	by host099.momenco.com (8.11.6/8.11.6) with SMTP id g0F0R2X11844;
-	Mon, 14 Jan 2002 16:27:02 -0800
-From: "Matthew Dharm" <mdharm@momenco.com>
-To: "Jason Gunthorpe" <jgg@debian.org>
-Cc: <linux-mips@oss.sgi.com>
-Subject: RE: MIPS64 status?
-Date: Mon, 14 Jan 2002 16:27:02 -0800
-Message-ID: <NEBBLJGMNKKEEMNLHGAIKENDCEAA.mdharm@momenco.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
-In-Reply-To: <Pine.LNX.3.96.1020114165623.28388B-100000@wakko.deltatee.com>
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
-Importance: Normal
+	by oss.sgi.com (8.11.2/8.11.3) id g0FA5BV10951
+	for linux-mips-outgoing; Tue, 15 Jan 2002 02:05:11 -0800
+Received: from dvmwest.gt.owl.de (dvmwest.gt.owl.de [62.52.24.140])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0FA58P10947
+	for <linux-mips@oss.sgi.com>; Tue, 15 Jan 2002 02:05:08 -0800
+Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
+	id D7FBB9F36; Tue, 15 Jan 2002 10:05:03 +0100 (CET)
+Date: Tue, 15 Jan 2002 10:05:03 +0100
+From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+To: linux-mips@oss.sgi.com
+Subject: [OT] NFS locking with NFS-Root
+Message-ID: <20020115100503.K15285@lug-owl.de>
+Mail-Followup-To: linux-mips@oss.sgi.com
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.3.23i
+X-Operating-System: Linux mail 2.4.15-pre2 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hrm...
+Hi!
 
-Were you actually using 64-bit addresses on the PCI bus?
+I've got an Indy now, and I want to make it install (with the current
+debian dbootstrap) on a NFS root. So I first go to mount the NFS server
+to /target and then proceed with the installation. All .deb's get
+downloaded, but they cannot be extracted because dpkg can't lock
+/var/lib/dpkg/lock .
 
-My guess is that with some creative address mappings, this could be
-done.  The PCI bus itself would use only 32-bit address, but the CPU
-would use a base address offset into the >4G range.
+Dumb question: How do I make file locking (via fcntl(F_SETLK))
+functional?
 
-Yeah, I could see how that could get ugly...
+MfG, JBG
 
-Matt
-
---
-Matthew D. Dharm                            Senior Software Designer
-Momentum Computer Inc.                      1815 Aston Ave.  Suite 107
-(760) 431-8663 X-115                        Carlsbad, CA 92008-7310
-Momentum Works For You                      www.momenco.com
-
-> -----Original Message-----
-> From: owner-linux-mips@oss.sgi.com
-> [mailto:owner-linux-mips@oss.sgi.com]On Behalf Of Jason Gunthorpe
-> Sent: Monday, January 14, 2002 4:00 PM
-> To: Matthew Dharm
-> Cc: linux-mips@oss.sgi.com
-> Subject: RE: MIPS64 status?
->
->
->
-> On Mon, 14 Jan 2002, Matthew Dharm wrote:
->
-> > Does this mean we could map PCI memory/IO addresses above
-> 4G and have
-> > it work?
->
-> Ooh, don't go there :> We looked at that and actually did
-> it then backed
-> it out.
->
-> The PCI spec (particuarly PCI-X) tries to make it possible, but in a
-> general system with PCI sockets/etc it is just is not feasible. PCI
-> bridges need to be located below 4G, as do the majority of
-> devices made.
-> There is also a performance hit for having device registers > 4G.
->
-> You'd definately need the mips64 kernel to do that, or use
-> ugly wired TLB
-> entries with normal mips.
->
-> Jason
->
+-- 
+Jan-Benedict Glaw   .   jbglaw@lug-owl.de   .   +49-172-7608481
+	 -- New APT-Proxy written in shell script --
+	   http://lug-owl.de/~jbglaw/software/ap2/

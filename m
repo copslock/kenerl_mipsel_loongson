@@ -1,28 +1,68 @@
-Received:  by oss.sgi.com id <S553840AbQKCNVr>;
-	Fri, 3 Nov 2000 05:21:47 -0800
-Received: from deliverator.sgi.com ([204.94.214.10]:64091 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S553761AbQKCNV1>;
-	Fri, 3 Nov 2000 05:21:27 -0800
-Received: from relay.istanbul.sgi.com (relay.istanbul.sgi.com [144.253.232.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id FAA01872
-	for <linux-mips@oss.sgi.com>; Fri, 3 Nov 2000 05:13:36 -0800 (PST)
-	mail_from (Huseyin@sgi.com)
-Received: from nt-emea-trbdc.istanbul.sgi.com (nt-emea-trbdc.istanbul.sgi.com [144.253.232.21]) by relay.istanbul.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA19979 for <linux-mips@oss.sgi.com>; Fri, 3 Nov 2000 15:02:22 +0200 (MET)
-Received: by nt-emea-trbdc.istanbul.sgi.com with Internet Mail Service (5.5.2650.21)
-	id <VTSW7677>; Fri, 3 Nov 2000 15:03:18 +0200
-Message-ID: <801EE44EFDA5D411AFA90090278610F3019D0B@nt-emea-trbdc.istanbul.sgi.com>
-From:   Huseyin Sasmaz <Huseyin@sgi.com>
-To:     "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
-Subject: linux on Origin200
-Date:   Fri, 3 Nov 2000 15:03:18 +0200 
+Received:  by oss.sgi.com id <S553842AbQKCN06>;
+	Fri, 3 Nov 2000 05:26:58 -0800
+Received: from router.isratech.ro ([193.226.114.69]:23816 "EHLO
+        router.isratech.ro") by oss.sgi.com with ESMTP id <S553839AbQKCN0u>;
+	Fri, 3 Nov 2000 05:26:50 -0800
+Received: from isratech.ro (calin.cs.tuiasi.ro [193.231.15.163])
+	by router.isratech.ro (8.10.2/8.10.2) with ESMTP id eA3DQDA12440
+	for <linux-mips@oss.sgi.com>; Fri, 3 Nov 2000 15:26:14 +0200
+Message-ID: <3A032BBF.4D0613B5@isratech.ro>
+Date:   Fri, 03 Nov 2000 16:18:55 -0500
+From:   Nicu Popovici <octavp@isratech.ro>
+X-Mailer: Mozilla 4.74 [en] (X11; U; Linux 2.2.15-2.5.0 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2650.21)
-Content-Type: text/plain;
-	charset="iso-8859-9"
+To:     linux-mips@oss.sgi.com
+Subject: ATLAS board!
+Content-Type: multipart/mixed;
+ boundary="------------B20037D365E5BA09C0C07B32"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Did anyone try to use linux on Origin 200?
+This is a multi-part message in MIME format.
+--------------B20037D365E5BA09C0C07B32
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-Any feedback will be appreciated
+Hello ,
+
+I have an Atlas board with a mips processor. I managed to cross compile
+a MIPS kernel on our I686 machines but when I try to load the kernel
+image on the mips with the following command ( I do not know other way
+and if there is one please let me know ) "load
+tftp:/linux/mipseb/vmlinux "  I get the following error
+
+About to load tftp://192.168.200.1/linux/mipseb/di_vmlinux5000
+Press Ctrl-C to break
+Error : Line too long
+Diag  : Line 1, ELF
+
+Can anyone help me ?
+
+Regards,
+Nicu
+
+--------------B20037D365E5BA09C0C07B32
+Content-Type: text/x-vcard; charset=us-ascii;
+ name="octavp.vcf"
+Content-Transfer-Encoding: 7bit
+Content-Description: Card for Nicu Popovici
+Content-Disposition: attachment;
+ filename="octavp.vcf"
+
+begin:vcard 
+n:POPOVICI;Nicolae Octavian 
+tel;cell:+40 93 605020
+x-mozilla-html:FALSE
+org:SC Silicon Service SRL;Software
+adr:;;;;;;
+version:2.1
+email;internet:octavp@isratech.ro
+title:Software engineer
+x-mozilla-cpt:;0
+fn:Nicolae Octavian POPOVICI
+end:vcard
+
+--------------B20037D365E5BA09C0C07B32--

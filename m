@@ -1,45 +1,39 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id FAA02491; Thu, 15 May 1997 05:50:04 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id GAA22682; Thu, 15 May 1997 06:11:24 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id FAA01672 for linux-list; Thu, 15 May 1997 05:49:42 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id FAA01664 for <linux@relay.engr.SGI.COM>; Thu, 15 May 1997 05:49:40 -0700
-Received: from alles.intern.julia.de (loehnberg1.core.julia.de [194.221.49.2]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id FAA05379
-	for <linux@relay.engr.SGI.COM>; Thu, 15 May 1997 05:46:04 -0700
-	env-from (ralf@Julia.DE)
-Received: from kernel.panic.julia.de (kernel.panic.julia.de [194.221.49.153])
-	by alles.intern.julia.de (8.8.5/8.8.5) with ESMTP id NAA30816;
-	Thu, 15 May 1997 13:45:01 +0200
-From: Ralf Baechle <ralf@Julia.DE>
-Received: (from ralf@localhost)
-          by kernel.panic.julia.de (8.8.4/8.8.4)
-	  id OAA06555; Thu, 15 May 1997 14:40:48 +0200
-Message-Id: <199705151240.OAA06555@kernel.panic.julia.de>
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id GAA04326 for linux-list; Thu, 15 May 1997 06:10:43 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id GAA04321 for <linux@engr.sgi.com>; Thu, 15 May 1997 06:10:37 -0700
+Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id GAA08826
+	for <linux@engr.sgi.com>; Thu, 15 May 1997 06:10:36 -0700
+	env-from (shaver@neon.ingenia.ca)
+Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id JAA19520; Thu, 15 May 1997 09:21:45 -0400
+From: Mike Shaver <shaver@neon.ingenia.ca>
+Message-Id: <199705151321.JAA19520@neon.ingenia.ca>
 Subject: Re: .36 progresss
-To: knobi@munich.sgi.com (Martin Knoblauch)
-Date: Thu, 15 May 1997 14:40:48 +0200 (MET DST)
+In-Reply-To: <199705151152.NAA00312@pris.intern.julia.de> from Ralf Baechle at "May 15, 97 01:52:15 pm"
+To: ralf@Julia.DE (Ralf Baechle)
+Date: Thu, 15 May 1997 09:21:45 -0400 (EDT)
 Cc: linux@cthulhu.engr.sgi.com
-In-Reply-To: <337B0192.63DE@munich.sgi.com> from "Martin Knoblauch" at May 15, 97 02:29:06 pm
+X-Mailer: ELM [version 2.4ME+ PL28 (25)]
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi,
+Thus spake Ralf Baechle:
+> I've fixed most of the problems in my .37 tree.  An Indy kernel will build
+> now.  More testing will be done when I receive my Indy.  Until then I'll
+> just counting backwards slowly ...
 
-> > [stuff about too many compilation errors in .36 ...]
-> > 
-> > I've fixed most of the problems in my .37 tree.  An Indy kernel
-> > will build now.  More testing will be done when I receive my
-> > Indy.  Until then I'll just counting backwards slowly ...
-> > 
-> >   Ralf
-> 
-> 
->   you are down to "1".
+Cool!
+Can I get my hands on a source tree?
 
-Sounds like you're delivering by parachute drop ;-)
+Mike
 
-Btw, will anybody on this list (aside of David ...) be on the Linux
-Kongress in Wuerzburg next week?  Would be nice to meet there.
-
-  Ralf
+-- 
+#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
+#>                   Welcome to the technocracy.
+#>                                                                     
+#> "you'd be so disappointed
+#>              to find out that the magic was not
+#>                          really meant for you" - OLP

@@ -1,30 +1,39 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8DLQ2c14651
-	for linux-mips-outgoing; Thu, 13 Sep 2001 14:26:02 -0700
-Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8DLQ1e14648
-	for <linux-mips@oss.sgi.com>; Thu, 13 Sep 2001 14:26:01 -0700
-Received: by ocean.lucon.org (Postfix, from userid 1000)
-	id 8639E125C3; Thu, 13 Sep 2001 14:26:00 -0700 (PDT)
-Date: Thu, 13 Sep 2001 14:26:00 -0700
-From: "H . J . Lu" <hjl@lucon.org>
-To: Kjeld Borch Egevang <kjelde@mips.com>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: Error in gcc version 2.96 20000731
-Message-ID: <20010913142600.A31274@lucon.org>
-References: <20010913141454.A30909@lucon.org> <NFBBKGGKGLLGNBGCEPKIKEHDCAAA.kjelde@mips.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <NFBBKGGKGLLGNBGCEPKIKEHDCAAA.kjelde@mips.com>; from kjelde@mips.com on Thu, Sep 13, 2001 at 11:22:46PM +0200
+	by oss.sgi.com (8.11.2/8.11.3) id f8DLfk315151
+	for linux-mips-outgoing; Thu, 13 Sep 2001 14:41:46 -0700
+Received: from [64.152.86.3] (unknown.Level3.net [64.152.86.3] (may be forged))
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8DLfie15148
+	for <linux-mips@oss.sgi.com>; Thu, 13 Sep 2001 14:41:44 -0700
+Received: from mail.esstech.com by [64.152.86.3]
+          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 13 Sep 2001 21:42:47 UT
+Received: from bud.austin.esstech.com ([193.5.206.3])
+	by mail.esstech.com (8.8.8+Sun/8.8.8) with SMTP id OAA19342
+	for <linux-mips@oss.sgi.com>; Thu, 13 Sep 2001 14:40:25 -0700 (PDT)
+Received: from esstech.com by bud.austin.esstech.com (SMI-8.6/SMI-SVR4)
+	id QAA19050; Thu, 13 Sep 2001 16:41:05 -0500
+Message-ID: <3BA12877.6030505@esstech.com>
+Date: Thu, 13 Sep 2001 16:43:19 -0500
+From: Gerald Champagne <gerald.champagne@esstech.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.3) Gecko/20010816
+X-Accept-Language: en-us
+MIME-Version: 1.0
+To: linux-mips@oss.sgi.com
+Subject: How can I determine which files are used?
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, Sep 13, 2001 at 11:22:46PM +0200, Kjeld Borch Egevang wrote:
-> I get your point. A bit suprising though. Do you consider it a bug?
+Is there a recommended method of determining which files in the
+Linux source tree are used with a given .config file?  I've already
+removed the obvious things like unused entries in the arch directory
+and a couple of driver directories, but is there a way to generate a
+list of only the files that are used?
 
-It is an alias bug in your example.
+I know I've read discussions about someday splitting up the source code
+into smaller blocks, but can someone point me towards information on how
+to prune the existing source tree?
 
+Thanks.
 
-H.J.
+Gerald

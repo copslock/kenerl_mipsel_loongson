@@ -1,59 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Dec 2003 16:08:33 +0000 (GMT)
-Received: from nevyn.them.org ([IPv6:::ffff:66.93.172.17]:21905 "EHLO
-	nevyn.them.org") by linux-mips.org with ESMTP id <S8225240AbTL2QIa>;
-	Mon, 29 Dec 2003 16:08:30 +0000
-Received: from drow by nevyn.them.org with local (Exim 4.30 #1 (Debian))
-	id 1AazwN-0003iY-0h; Mon, 29 Dec 2003 11:08:23 -0500
-Date: Mon, 29 Dec 2003 11:08:22 -0500
-From: Daniel Jacobowitz <dan@debian.org>
-To: Mark and Janice Juszczec <juszczec@hotmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Dec 2003 16:27:42 +0000 (GMT)
+Received: from law10-f105.law10.hotmail.com ([IPv6:::ffff:64.4.15.105]:53007
+	"EHLO hotmail.com") by linux-mips.org with ESMTP
+	id <S8224934AbTL2Q1k>; Mon, 29 Dec 2003 16:27:40 +0000
+Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
+	 Mon, 29 Dec 2003 08:27:32 -0800
+Received: from 63.121.54.5 by lw10fd.law10.hotmail.msn.com with HTTP;
+	Mon, 29 Dec 2003 16:27:32 GMT
+X-Originating-IP: [63.121.54.5]
+X-Originating-Email: [juszczec@hotmail.com]
+X-Sender: juszczec@hotmail.com
+From: "Mark and Janice Juszczec" <juszczec@hotmail.com>
+To: dan@debian.org
 Cc: kevink@mips.com, linux-mips@linux-mips.org
 Subject: Re: gdbserver and Re: hardware questions
-Message-ID: <20031229160822.GA14229@nevyn.them.org>
-References: <Law10-F22bcHeTHOF2m00063144@hotmail.com>
+Date: Mon, 29 Dec 2003 16:27:32 +0000
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Law10-F22bcHeTHOF2m00063144@hotmail.com>
-User-Agent: Mutt/1.5.1i
-Return-Path: <drow@crack.them.org>
+Content-Type: text/plain; format=flowed
+Message-ID: <Law10-F10555qtVdTVv000632af@hotmail.com>
+X-OriginalArrivalTime: 29 Dec 2003 16:27:32.0941 (UTC) FILETIME=[A93607D0:01C3CE28]
+Return-Path: <juszczec@hotmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3848
+X-archive-position: 3849
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@debian.org
+X-original-sender: juszczec@hotmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Dec 29, 2003 at 03:31:36PM +0000, Mark and Janice Juszczec wrote:
-> 
-> Kevin, et al
-> 
-> 
-> >
-> >If you want more of a "large format" mipsel platform
-> >to experiment with, you might be able to find an old
-> >"RISC PC" from Siemens or NEC with an R4000
-> >configured little-endian to run NT.  Maybe Ralf has
-> >one in his attic he'd care to sell you. ;o)
-> >
-> 
-> Ralf?
-> 
-> >I don't know that it's the root of your problem, but
-> >you should definitely get getty/shells off of whatever
-> >serial port you're trying to use for debug.
-> 
-> If I have no shell running on the serial port, how would I start gdbserver? 
-> Would I have to hard code it into the kernel somehow?
 
-Try changing /etc/inittab to disable the getty, and starting gdbserver
-from the system startup scripts in /etc/rc*.  I'm assuming you have
-some other way than that shell on ttyS0 to modify the filesystem :)
+Daniel et al
 
--- 
-Daniel Jacobowitz
-MontaVista Software                         Debian GNU/Linux Developer
+
+>
+>Try changing /etc/inittab to disable the getty, and starting gdbserver
+>from the system startup scripts in /etc/rc*.
+
+I'm using busybox since, at the time, it was easier than figuring out what 
+goes on in /etc/rc*
+I'll check if there's a way to disable the busybox init or at least tell it 
+not to start a shell on the serial port.  I suppose I could hack busybox to 
+start gdbserver.    Hmmmmm
+
+>I'm assuming you have
+>some other way than that shell on ttyS0 to modify the filesystem :)
+>
+
+Yes.  I flash a filesystem image to the pda.  I generate the image from 
+files on my laptop.  The problem is squeezing everything into 2mb of flash.  
+I wonder if I can shove stuff in the 8Mb of ram somehow.
+
+Mark
+
+
+>--
+>Daniel Jacobowitz
+>MontaVista Software                         Debian GNU/Linux Developer
+
+_________________________________________________________________
+Working moms: Find helpful tips here on managing kids, home, work —  and 
+yourself.   http://special.msn.com/msnbc/workingmom.armx

@@ -1,36 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Mar 2003 08:33:22 +0000 (GMT)
-Received: from smtp-send.myrealbox.com ([IPv6:::ffff:192.108.102.143]:27241
-	"EHLO smtp-send.myrealbox.com") by linux-mips.org with ESMTP
-	id <S8224851AbTCZIdV> convert rfc822-to-8bit; Wed, 26 Mar 2003 08:33:21 +0000
-Received: from yaelgilad [81.218.95.46] by myrealbox.com
-	with NetMail ModWeb Module; Wed, 26 Mar 2003 08:33:21 +0000
-Subject: Relative Checksum
-From: "Gilad Benjamini" <yaelgilad@myrealbox.com>
-To: linux-mips@linux-mips.org
-Date: Wed, 26 Mar 2003 08:33:21 +0000
-X-Mailer: NetMail ModWeb Module
-X-Sender: yaelgilad
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Mar 2003 16:04:37 +0000 (GMT)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:9193 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8224851AbTCZQEg>; Wed, 26 Mar 2003 16:04:36 +0000
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id RAA23146;
+	Wed, 26 Mar 2003 17:05:04 +0100 (MET)
+Date: Wed, 26 Mar 2003 17:05:04 +0100 (MET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+cc: linux-mips@linux-mips.org, Guido Guenther <agx@sigxcpu.org>
+Subject: Re: -mcpu vs. binutils 2.13.90.0.18
+In-Reply-To: <20030318190841.GO13122@rembrandt.csv.ica.uni-stuttgart.de>
+Message-ID: <Pine.GSO.3.96.1030326170313.20767F-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-Message-ID: <1048667601.7d003520yaelgilad@myrealbox.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-Return-Path: <yaelgilad@myrealbox.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1810
+X-archive-position: 1811
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yaelgilad@myrealbox.com
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
-ip_fast_csum provides an asm version for IP checksum.
-Any available mips-asm implementation out there for 
-a relative checksum?
+On Tue, 18 Mar 2003, Thiemo Seufer wrote:
 
-i.e. I get a packet, change
-a field or two, and want to compute just the 
-change in the checksum.
+> For my private linux kernels, I use a new CONFIG_MIPS_NEW_TOOLCHAIN in the
+> Makefile. I don't see a better way around it.
+
+ An automatic selection between new-style and old-style gcc options is on
+my to-do list.
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

@@ -1,45 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Dec 2004 03:09:09 +0000 (GMT)
-Received: from eth13.com-link.com ([IPv6:::ffff:208.242.241.164]:7326 "EHLO
-	real.realitydiluted.com") by linux-mips.org with ESMTP
-	id <S8225361AbULPDJE>; Thu, 16 Dec 2004 03:09:04 +0000
-Received: from localhost ([127.0.0.1])
-	by real.realitydiluted.com with esmtp (Exim 4.34 #1 (Debian))
-	id 1Cem0b-00048C-BQ; Wed, 15 Dec 2004 21:08:53 -0600
-Message-ID: <41C0FD66.6060206@realitydiluted.com>
-Date: Wed, 15 Dec 2004 21:13:42 -0600
-From: "Steven J. Hill" <sjhill@realitydiluted.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.3) Gecko/20041007 Debian/1.7.3-5
-X-Accept-Language: en
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Dec 2004 03:28:28 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:12537 "EHLO
+	hermes.mvista.com") by linux-mips.org with ESMTP
+	id <S8225321AbULPD2Y>; Thu, 16 Dec 2004 03:28:24 +0000
+Received: from mvista.com (prometheus.mvista.com [10.0.0.139])
+	by hermes.mvista.com (Postfix) with ESMTP
+	id 42EBF1877B; Wed, 15 Dec 2004 19:28:12 -0800 (PST)
+Message-ID: <41C100CB.2070000@mvista.com>
+Date: Wed, 15 Dec 2004 19:28:11 -0800
+From: Manish Lachwani <mlachwani@mvista.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.2) Gecko/20040308
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-To: linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: CVS Update@-mips.org: linux
-References: <20041216030425Z8225321-1751+3720@linux-mips.org>
-In-Reply-To: <20041216030425Z8225321-1751+3720@linux-mips.org>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+To: "Steven J. Hill" <sjhill@realitydiluted.com>
+Cc: linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH] Avoid compile warnings on Sibyte using 2.6.10-rc3
+References: <20041215235632.GA11386@prometheus.mvista.com> <41C0FCFD.9010603@realitydiluted.com>
+In-Reply-To: <41C0FCFD.9010603@realitydiluted.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <sjhill@realitydiluted.com>
+Return-Path: <mlachwani@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6688
+X-archive-position: 6689
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sjhill@realitydiluted.com
+X-original-sender: mlachwani@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-sjhill@linux-mips.org wrote:
-> 
-> Log message:
-> 	Remove obsolete MAX1617 driver code. The 'adm1021' driver handles both
-> 	the 1617 and 1617a with a minor modification. This chip now works properly
-> 	on SiByte Swarm boards.
+Steven J. Hill wrote:
 
-Ralf,
+> Manish Lachwani wrote:
+>
+>>
+>> The attached patch is needed to prevent the compilation warnings that
+>> occur when using 2.6.10-rc3 on Sibyte. Please review
+>
+> I don't ever see any warning associated with this. Can you provide a
+> little more information?
+>
+> -Steve
+>
+Hi Steve,
 
-A lot of the I2C code, specifically the headers files in 'include/linux' need
-to be pushed back to the I2C maintainers. Would you like me to make the patches
-and do that, or do you have time?
+When did you last sync with CVS?  There was a change introduced : 
+http://www.linux-mips.org/cvsweb/linux/include/asm-mips/mach-sibyte/cpu-feature-overrides.h.diff?r1=1.1&r2=1.2
 
--Steve
+There is another #define in include/asm-mips/
+
+#ifdef CONFIG_SMP
+#ifndef cpu_icache_snoops_remote_store
+#define cpu_icache_snoops_remote_store  (cpu_data[0].icache.flags & 
+MIPS_IC_SNOOPS_REMOTE)
+#endif
+#else
+#define cpu_icache_snoops_remote_store  1
+#endif
+
+And if running Sibyte in UP mode, cpu_icache_snoops_remote_store is 
+redefined
+
+Thanks
+Manish

@@ -1,53 +1,39 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g43LkOwJ031764
-	for <linux-mips-outgoing@oss.sgi.com>; Fri, 3 May 2002 14:46:24 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g43NMXwJ032754
+	for <linux-mips-outgoing@oss.sgi.com>; Fri, 3 May 2002 16:22:33 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g43LkOcR031763
-	for linux-mips-outgoing; Fri, 3 May 2002 14:46:24 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g43NMXjV032753
+	for linux-mips-outgoing; Fri, 3 May 2002 16:22:33 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from av.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g43LkKwJ031756
-	for <linux-mips@oss.sgi.com>; Fri, 3 May 2002 14:46:20 -0700
-Received: from mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id OAA00949;
-	Fri, 3 May 2002 14:48:00 -0700
-Message-ID: <3CD3052B.1050400@mvista.com>
-Date: Fri, 03 May 2002 14:46:19 -0700
-From: Jun Sun <jsun@mvista.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.2.1) Gecko/20010901
-X-Accept-Language: en-us
-MIME-Version: 1.0
-To: linux-mips <linux-mips@oss.sgi.com>
-Subject: what is the right behavior of copy_to_user(0x0, ..., ...)?
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g43NMVwJ032750
+	for <linux-mips@oss.sgi.com>; Fri, 3 May 2002 16:22:31 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.1) id g43NNbJ27414;
+	Fri, 3 May 2002 16:23:37 -0700
+Date: Fri, 3 May 2002 16:23:37 -0700
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Jun Sun <jsun@mvista.com>
+Cc: linux-mips <linux-mips@oss.sgi.com>
+Subject: Re: what is the right behavior of copy_to_user(0x0, ..., ...)?
+Message-ID: <20020503162337.A27366@dea.linux-mips.net>
+References: <3CD3052B.1050400@mvista.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <3CD3052B.1050400@mvista.com>; from jsun@mvista.com on Fri, May 03, 2002 at 02:46:19PM -0700
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-When running LTP, I notice that recent kernel has a kernel access fault:
+On Fri, May 03, 2002 at 02:46:19PM -0700, Jun Sun wrote:
 
-<1>Unable to handle kernel paging request at virtual address 00000000, epc
-== 80273860, ra == 80205aa4
-Oops in fault.c:do_page_fault, line 204:
-$0 : 00000000 10001f00 00000002 00000002 00000000 86df5e98 00000001 00000040
-$8 : 00000000 00000000 00000001 ffffffff 00000002 802b4864 00000001 00000001
-$16: 100003d8 00000000 00000002 86df5e98 00401080 10002df8 00000000 00000097
-$24: 0000000a 802e7ab6                   86df4000 86df5e60 7fff7c60 80205aa4
-Hi : 00000000
-Lo : 00000000
-epc  : 80273860    Not tainted
-Status: 10001f03
-Cause : 9080800c
-  ....
+> When running LTP, I notice that recent kernel has a kernel access fault:
+> 
+> <1>Unable to handle kernel paging request at virtual address 00000000, epc
+> == 80273860, ra == 80205aa4
 
-Tracing error reveals that user process passed a NULL buffer pointer to 
-sys_getpeername() syscall, probably intentionally.  Then it goes all the way 
-down to copy_to_user(0x0, ..., ...) and caused a oops as above.
+Well, decode the oops message.  The question is what is at 0x80273860?
 
-As a result of oops the user process is killed.  However I am not sure if this 
-is the right way to respond to an ill argument.  copy_to_user() probably 
-should catch this case and return some meaningful error back to the caller.
-
-I am not sure what is the best way to achieve this.  Any thoughts?
-
-Jun
+  Ralf

@@ -1,69 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 27 Apr 2003 15:50:41 +0100 (BST)
-Received: from honk1.physik.uni-konstanz.de ([IPv6:::ffff:134.34.140.224]:7348
-	"EHLO honk1.physik.uni-konstanz.de") by linux-mips.org with ESMTP
-	id <S8225236AbTD0Oug>; Sun, 27 Apr 2003 15:50:36 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP
-	id 962262BC32; Sun, 27 Apr 2003 16:50:33 +0200 (CEST)
-Received: from honk1.physik.uni-konstanz.de ([127.0.0.1])
- by localhost (honk [127.0.0.1:10024]) (amavisd-new) with ESMTP id 28849-09;
- Sun, 27 Apr 2003 16:50:32 +0200 (CEST)
-Received: from bogon.sigxcpu.org (kons-d9bb54d0.pool.mediaWays.net [217.187.84.208])
-	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP
-	id 15DD02BC31; Sun, 27 Apr 2003 16:50:32 +0200 (CEST)
-Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
-	id 5ED451735D; Sun, 27 Apr 2003 16:47:30 +0200 (CEST)
-Date: Sun, 27 Apr 2003 16:47:30 +0200
-From: Guido Guenther <agx@sigxcpu.org>
-To: ralf@linux-mips.org
-Cc: linux-mips@linux-mips.org
-Subject: [PATCH]: asm-mips/sgi/mc.h register padding broken
-Message-ID: <20030427144730.GB24352@bogon.ms20.nix>
-Mail-Followup-To: Guido Guenther <agx@sigxcpu.org>,
-	ralf@linux-mips.org, linux-mips@linux-mips.org
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.3i
-Return-Path: <agx@sigxcpu.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 27 Apr 2003 21:01:36 +0100 (BST)
+Received: from h0000c06cf87e.ne.client2.attbi.com ([IPv6:::ffff:24.147.212.21]:38152
+	"EHLO compaq.parker.boston.ma.us") by linux-mips.org with ESMTP
+	id <S8225223AbTD0UBc>; Sun, 27 Apr 2003 21:01:32 +0100
+Received: from p2.parker.boston.ma.us (p2 [192.245.5.16])
+	by compaq.parker.boston.ma.us (8.11.6/8.11.6) with ESMTP id h3RK1SH17972;
+	Sun, 27 Apr 2003 16:01:28 -0400
+Received: from p2 (brad@localhost)
+	by p2.parker.boston.ma.us (8.11.2/8.11.2) with ESMTP id h3RK1SV12204;
+	Sun, 27 Apr 2003 16:01:28 -0400
+Message-Id: <200304272001.h3RK1SV12204@p2.parker.boston.ma.us>
+From: Brad Parker <brad@parker.boston.ma.us>
+To: Chip Coldwell <coldwell@frank.harvard.edu>
+cc: Brad Parker <brad@parker.boston.ma.us>, linux-mips@linux-mips.org
+Subject: Re: NCD900 port? 
+In-Reply-To: Message from Chip Coldwell <coldwell@frank.harvard.edu> 
+   of "Thu, 24 Apr 2003 22:17:17 EDT." <Pine.LNX.4.44.0304242215050.20322-100000@frank.harvard.edu> 
+X-Mailer: MH-E 7.2; nmh 1.0.4; GNU Emacs 20.7.1
+Date: Sun, 27 Apr 2003 16:01:28 -0400
+Return-Path: <brad@parker.boston.ma.us>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
 X-Spam-Checker-Version: SpamAssassin 2.50 (1.173-2003-02-20-exp)
-X-archive-position: 2207
+X-archive-position: 2208
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: agx@sigxcpu.org
+X-original-sender: brad@parker.boston.ma.us
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
-the register layout of the IP22s mc is missing some paddings which
-results in some nice bus error exceptions. Please apply this patch
-against 2.4. and 2.5:
 
-diff -u -p -r1.1.2.1 mc.h
---- include/asm-mips/sgi/mc.h	19 Mar 2003 04:23:22 -0000	1.1.2.1
-+++ include/asm-mips/sgi/mc.h	27 Apr 2003 14:41:36 -0000
-@@ -153,7 +153,7 @@ struct sgimc_regs {
- 	volatile u32 elock;		/* Locks EISA from GIO accesses */
- 
- 	/* GIO dma control registers. */
--	u32 _unused22[14];
-+	u32 _unused22[15];
- 	volatile u32 gio_dma_trans;	/* DMA mask to translation GIO addrs */
- 	u32 _unused23;
- 	volatile u32 gio_dma_sbits;	/* DMA GIO addr substitution bits */
-@@ -163,7 +163,7 @@ struct sgimc_regs {
- 	volatile u32 dma_ctrl;		/* Main DMA control reg */
- 
- 	/* DMA TLB entry 0 */
--	u32 _unused26;
-+	u32 _unused26[5];
- 	volatile u32 dtlb_hi0;
- 	u32 _unused27;
- 	volatile u32 dtlb_lo0;
+Chip Coldwell wrote:
+>On Thu, 24 Apr 2003, Brad Parker wrote:
+>> 
+>> It it's anything like the explora 450 you should be able to get it going.
+>> (oh my, did *I* say that?)
+>> 
+>> The 450 has those same two chips with a ppc403.  I managed to hack my
+>> way into their undocumented pci bridge enough to get linux booted and
+>> the ethernet working.  I have yet to get the s3 working but that's only
+>> because I can find a pdf for the chip anywhere.  I can certainly talk to
+>> the s3 (as well as the pcmcia space).
+>
+>That's very interesting.  When you say you don't have the S3 working,
+>do you mean that you can't get a virtual terminal on the display or
+>that you can't get X Windows working?  If the former, do you use a
+>serial console?
 
-Regards,
- -- Guido
+I mean I can't get the existing S3 driver to talk to it at all.  The existing
+driver assumes it's running on a real pc and I can't figure out the mapping.
+
+current I use a serial console.
+
+I can see the S3's pci space through the bridge, but I can't figure out
+how to change the existing driver to talk it.
+
+-brad

@@ -1,40 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 20 Apr 2003 03:30:43 +0100 (BST)
-Received: from kauket.visi.com ([IPv6:::ffff:209.98.98.22]:17314 "HELO
-	mail-out.visi.com") by linux-mips.org with SMTP id <S8225226AbTDTCam>;
-	Sun, 20 Apr 2003 03:30:42 +0100
-Received: from mahes.visi.com (mahes.visi.com [209.98.98.96])
-	by mail-out.visi.com (Postfix) with ESMTP
-	id 083EF36CC; Sat, 19 Apr 2003 21:30:40 -0500 (CDT)
-Received: from mahes.visi.com (localhost [127.0.0.1])
-	by mahes.visi.com (8.12.9/8.12.5) with ESMTP id h3K2Ud9R020654;
-	Sat, 19 Apr 2003 21:30:39 -0500 (CDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 20 Apr 2003 04:38:11 +0100 (BST)
+Received: from kauket.visi.com ([IPv6:::ffff:209.98.98.22]:60834 "HELO
+	mail-out.visi.com") by linux-mips.org with SMTP id <S8225195AbTDTDiI>;
+	Sun, 20 Apr 2003 04:38:08 +0100
+Received: from mehen.visi.com (mehen.visi.com [209.98.98.97])
+	by mail-out.visi.com (Postfix) with ESMTP id 93C8436CC
+	for <linux-mips@linux-mips.org>; Sat, 19 Apr 2003 22:38:06 -0500 (CDT)
+Received: from mehen.visi.com (localhost [127.0.0.1])
+	by mehen.visi.com (8.12.9/8.12.5) with ESMTP id h3K3c66D080069
+	for <linux-mips@linux-mips.org>; Sat, 19 Apr 2003 22:38:06 -0500 (CDT)
 	(envelope-from erik@greendragon.org)
 Received: (from www@localhost)
-	by mahes.visi.com (8.12.9/8.12.5/Submit) id h3K2UQNh020653;
-	Sun, 20 Apr 2003 02:30:26 GMT
-X-Authentication-Warning: mahes.visi.com: www set sender to erik@greendragon.org using -f
-Received: from 170-215-41-223.bras01.mnd.mn.frontiernet.net (170-215-41-223.bras01.mnd.mn.frontiernet.net [170.215.41.223]) 
+	by mehen.visi.com (8.12.9/8.12.5/Submit) id h3K3c5gt080068
+	for linux-mips@linux-mips.org; Sun, 20 Apr 2003 03:38:05 GMT
+X-Authentication-Warning: mehen.visi.com: www set sender to erik@greendragon.org using -f
+Received: from 64-212-122-73.bras01.mnd.mn.frontiernet.net (64-212-122-73.bras01.mnd.mn.frontiernet.net [64.212.122.73]) 
 	by my.visi.com (IMP) with HTTP 
-	for <longshot@imap.visi.com>; Sun, 20 Apr 2003 02:30:26 +0000
-Message-ID: <1050805826.3ea2064281289@my.visi.com>
-Date: Sun, 20 Apr 2003 02:30:26 +0000
+	for <longshot@imap.visi.com>; Sun, 20 Apr 2003 03:38:05 +0000
+Message-ID: <1050809885.3ea2161d7bfc7@my.visi.com>
+Date: Sun, 20 Apr 2003 03:38:05 +0000
 From: "Erik J. Green" <erik@greendragon.org>
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Subject: Re: TLB mapping questions
-References: <1050730370.3ea0df8263a21@my.visi.com> <20030419164854.A15699@linux-mips.org>
-In-Reply-To: <20030419164854.A15699@linux-mips.org>
+To: "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: Re: TLB mapping questions (followup q)
+References: <1050730370.3ea0df8263a21@my.visi.com> <20030419164854.A15699@linux-mips.org> <1050805826.3ea2064281289@my.visi.com>
+In-Reply-To: <1050805826.3ea2064281289@my.visi.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 Content-Disposition: inline
 Content-Transfer-Encoding: 7bit
 User-Agent: Internet Messaging Program (IMP) 4.0-cvs
-X-Originating-IP: 170.215.41.223
+X-Originating-IP: 64.212.122.73
 Return-Path: <erik@greendragon.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2111
+X-archive-position: 2112
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,72 +41,67 @@ X-original-sender: erik@greendragon.org
 Precedence: bulk
 X-list: linux-mips
 
-Quoting Ralf Baechle <ralf@linux-mips.org>:TLB_SE
-> > So if I construct a TLB entry such that cp0_entryhi is 0xffffffffc0002000,
-> and
-> > cp0_entrylo0 has a PFN address of 0x0000000020006, giving it the correct
-> ASID
-> > (0) and valid bitflags(VG), I should be able to access the physical memory
-> > offset above using the ckseg2 virtual address 0xffffffffc0002000?
+Quoting "Erik J. Green" <erik@greendragon.org>:
 > 
-> You also want to set the dirty flag or otherwise the page is not writable.
+> That's ok for the first page, it's code only.  The second page mapped by the
+> entry is data, so I'll set the D bit on that.
 
-That's ok for the first page, it's code only.  The second page mapped by the
-entry is data, so I'll set the D bit on that.
+A followup question:  my stack is working now that I've set the D flag in the
+TLB entry, allowing writes to that page.  From what I can tell, the
+MAPPED_KERNEL_SETUP_TLB macro in head.S actually creates two nearly identical
+halves for the new TLB entry it creates, except the half in ENTRYLO1 has the D
+bit set.  My problem with the stack code was that the address the stack pointer
+was being saved to (ok, really more of an addressing problem than a stack
+problem) was within that first (16MB) page of memory, which couldn't be written
+until I set the D bit.  
 
-> 
-> Which page size have you been using?
-
-16 megabyte
-
-> 
-> The physical address must be a multiple of the page size of the page and
-> the virtual address must be a multiple of the double of the page size of
-> entry - remember that each TLB entry maps a pair of adjacent pages!
-
-This was my main problem - after I rounded my physical load address up to the
-next 16M boundary: 0xa800000021000000 and adjusted the LOADADDRESS in my
-makefile to point to the beginning of ckseg2 (the address of which is a multiple
-of 32M) I am now able to jump into the ckseg2 code successfully.
-
-> The entrylo value is computed by shifting the physical address right by
-> 6 bits then inserting the right flag bits into the low 6 bits.  In your
-> case you want to set the valid, dirty and global bits.  You also need to
-> set the 3 coherency bits.  We want cachable coherent, the same mode as
-> used in the 0xa8... portion of XKPHYS.  So we set them to 5.  So:
-> 
->  c0_entrylo0 = (phyaddr >> 6) | cacheable_coherent | dirty | valid | global
-> 
->  c0_entrylo0 = 0x800180 | 0x28 | 0x4 | 0x2 | 0x1
-> 
->  c0_entrylo0 = 0x8001af
-
-These are the very bits I'm using.  I'm actually using a modded version of the
-MAPPED_KERNEL_SETUP_TLB macro in head.S.
-
-> An extra word about the global bit - there exists only one global bit in
-
-I made a note of this paragraph, will do some reading on it.
-
-> would generated the mapping and make sure the entry won't be overwritten
-> by random TLB writes.
-
-Yes, CP0_WIRED is getting set to 1 to protect this entry.
-
-> 
-> > Of course, the reason I discuss all this is that the above doesn't work. =)
-> 
-> Every Linux port has started in a state as advanced as where you are so
-> keep up :-)
-
-I will do so =)  My next problem is getting the stack working.
+How can this work in the existing head.S for a mapped kernel?  Wouldn't other
+machines have the same problem, where the location for kernelsp is within the
+non-writeable segment? 
 
 Erik
 
 
 
-> 
->   Ralf
+PS: Code from the current (few days old CVS) head.S:
+
+       .macro MAPPED_KERNEL_SETUP_TLB
+#ifdef CONFIG_MAPPED_KERNEL
+        /*
+         * This needs to read the nasid - assume 0 for now.
+         * Drop in 0xffffffffc0000000 in tlbhi, 0+VG in tlblo_0,
+         * 0+DVG in tlblo_1.
+         */
+        dli     t0, 0xffffffffc0000000
+        dmtc0   t0, CP0_ENTRYHI
+        li      t0, 0x1c000             # Offset of text into node memory
+        dsll    t1, NASID_SHFT          # Shift text nasid into place
+        dsll    t2, NASID_SHFT          # Same for data nasid
+        or      t1, t1, t0              # Physical load address of kernel text
+        or      t2, t2, t0              # Physical load address of kernel data
+        dsrl    t1, 12                  # 4K pfn
+        dsrl    t2, 12                  # 4K pfn
+        dsll    t1, 6                   # Get pfn into place
+        dsll    t2, 6                   # Get pfn into place
+        li      t0, ((_PAGE_GLOBAL|_PAGE_VALID| _CACHE_CACHABLE_COW) >> 6)
+        or      t0, t0, t1
+        mtc0    t0, CP0_ENTRYLO0        # physaddr, VG, cach exlwr
+        li      t0, ((_PAGE_GLOBAL|_PAGE_VALID| _PAGE_DIRTY|_CACHE_CACHABLE_COW)
+>> 6)
+        or      t0, t0, t2
+        mtc0    t0, CP0_ENTRYLO1        # physaddr, DVG, cach exlwr
+        li      t0, 0x1ffe000           # MAPPED_KERN_TLBMASK, TLBPGMASK_16M
+        mtc0    t0, CP0_PAGEMASK
+        li      t0, 0                   # KMAP_INX
+        mtc0    t0, CP0_INDEX
+        li      t0, 1
+        mtc0    t0, CP0_WIRED
+        tlbwi
+#else
+        mtc0    zero, CP0_WIRED
+#endif
+        .endm
+
 
 
 -- 

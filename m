@@ -1,46 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Oct 2003 07:57:37 +0100 (BST)
-Received: from dvmwest.gt.owl.de ([IPv6:::ffff:62.52.24.140]:3535 "EHLO
-	dvmwest.gt.owl.de") by linux-mips.org with ESMTP
-	id <S8225296AbTJVG5f>; Wed, 22 Oct 2003 07:57:35 +0100
-Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
-	id 62B124B412; Wed, 22 Oct 2003 08:57:33 +0200 (CEST)
-Date: Wed, 22 Oct 2003 08:57:33 +0200
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Oct 2003 08:15:05 +0100 (BST)
+Received: from semigate.zarlink.com ([IPv6:::ffff:209.226.172.94]:24228 "EHLO
+	semigate.zarlink.com") by linux-mips.org with ESMTP
+	id <S8225296AbTJVHOd> convert rfc822-to-8bit; Wed, 22 Oct 2003 08:14:33 +0100
+Received: from ottmta01.zarlink.com (ottmta01 [134.199.14.110])
+	by semigate.zarlink.com (8.11.6+Sun/8.10.2) with ESMTP id h9M7EQC24505
+	for <linux-mips@linux-mips.org>; Wed, 22 Oct 2003 03:14:26 -0400 (EDT)
 Subject: Re: module dependency files
-Message-ID: <20031022065732.GP20846@lug-owl.de>
-Mail-Followup-To: linux-mips@linux-mips.org
-References: <1066771519.3289.45.camel@localhost.localdomain> <Pine.GSO.4.44.0310211814340.14473-100000@ares.mmc.atmel.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="VC+1dD9mx8z5dlPH"
-Content-Disposition: inline
-In-Reply-To: <Pine.GSO.4.44.0310211814340.14473-100000@ares.mmc.atmel.com>
-X-Operating-System: Linux mail 2.4.18 
-X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
-X-gpg-key: wwwkeys.de.pgp.net
-User-Agent: Mutt/1.5.4i
-Return-Path: <jbglaw@dvmwest.gt.owl.de>
+To: linux-mips@linux-mips.org
+X-Mailer: Lotus Notes Release 5.0.8  June 18, 2001
+Message-ID: <OF86FA85AC.EA0A3B86-ON80256DC7.00270886@zarlink.com>
+From: Colin.Helliwell@Zarlink.Com
+Date: Wed, 22 Oct 2003 08:14:18 +0100
+X-MIMETrack: Serialize by Router on ottmta01/Semi(Release 5.0.12  |February 13, 2003) at
+ 10/22/2003 03:14:26 AM
+MIME-Version: 1.0
+Content-type: text/plain; charset=iso-8859-1
+Content-transfer-encoding: 8BIT
+Return-Path: <Colin.Helliwell@Zarlink.Com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3479
+X-archive-position: 3480
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jbglaw@lug-owl.de
+X-original-sender: Colin.Helliwell@Zarlink.Com
 Precedence: bulk
 X-list: linux-mips
 
 
---VC+1dD9mx8z5dlPH
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+You'd need to do a MIPS cross-compile of modutils, I guess. As an
+alternative there is a perl script (depmod.pl) out there that can handle
+'foreign' binaries. I haven't had cause to use it on MIPS yet, but have
+used it ok PPC. I think it comes with the busybox package.
 
-On Tue, 2003-10-21 18:15:56 -0400, David Kesselring <dkesselr@mmc.atmel.com>
-wrote in message <Pine.GSO.4.44.0310211814340.14473-100000@ares.mmc.atmel.c=
-om>:
+Col
+
+
+
+
+
+                                                                                                                                           
+                      Jan-Benedict Glaw                                                                                                    
+                      <jbglaw@lug-owl.de>          To:       linux-mips@linux-mips.org                                                     
+                      Sent by:                     cc:                                                                                     
+                      linux-mips-bounce@lin        Subject:  Re: module dependency files                                                   
+                      ux-mips.org                                                                                                          
+                                                                                                                                           
+                                                                                                                                           
+                      10/22/03 07:57 AM                                                                                                    
+                                                                                                                                           
+                                                                                                                                           
+
+
+
+
+On Tue, 2003-10-21 18:15:56 -0400, David Kesselring
+<dkesselr@mmc.atmel.com>
+wrote in message
+<Pine.GSO.4.44.0310211814340.14473-100000@ares.mmc.atmel.com>:
 > That's what I did. I defined INSTALL_MOD_PATH as $(TOPDIR)/modules. The
 > modules get put there but depmod fails.
 
@@ -54,24 +72,13 @@ though...
 
 MfG, JBG
 
---=20
+--
    Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481
-   "Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg
-    fuer einen Freien Staat voll Freier B=FCrger" | im Internet! |   im Ira=
-k!
-   ret =3D do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM | TC=
-PA));
+   "Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen
+Krieg
+    fuer einen Freien Staat voll Freier Bürger" | im Internet! |   im Irak!
+   ret = do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM |
+TCPA));
 
---VC+1dD9mx8z5dlPH
-Content-Type: application/pgp-signature
-Content-Disposition: inline
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.3 (GNU/Linux)
-
-iD8DBQE/lipcHb1edYOZ4bsRAul4AJwOqa6JI+ZKcLzgE3pFQqyqGXlGzwCfdn55
-/qo86ST6py2ySZLLc2TdxTw=
-=ydTk
------END PGP SIGNATURE-----
-
---VC+1dD9mx8z5dlPH--
+<< Attachment removed : attxmd4r.dat >>

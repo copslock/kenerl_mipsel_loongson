@@ -1,75 +1,70 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0UMODV24673
-	for linux-mips-outgoing; Wed, 30 Jan 2002 14:24:13 -0800
-Received: from host099.momenco.com (IDENT:root@www.momenco.com [64.169.228.99])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0UMO7d24669
-	for <linux-mips@oss.sgi.com>; Wed, 30 Jan 2002 14:24:07 -0800
-Received: from beagle (beagle.internal.momenco.com [192.168.0.115])
-	by host099.momenco.com (8.11.6/8.11.6) with SMTP id g0ULNuX01124;
-	Wed, 30 Jan 2002 13:23:56 -0800
-From: "Matthew Dharm" <mdharm@momenco.com>
-To: "Justin Carlson" <justincarlson@cmu.edu>
-Cc: <linux-mips@oss.sgi.com>
+	by oss.sgi.com (8.11.2/8.11.3) id g0UMnos25409
+	for linux-mips-outgoing; Wed, 30 Jan 2002 14:49:50 -0800
+Received: from ux3.sp.cs.cmu.edu (UX3.SP.CS.CMU.EDU [128.2.198.103])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0UMnjd25405
+	for <linux-mips@oss.sgi.com>; Wed, 30 Jan 2002 14:49:45 -0800
+Received: from GS256.SP.CS.CMU.EDU ([128.2.199.27]) by ux3.sp.cs.cmu.edu
+          id aa23722; 30 Jan 2002 16:49 EST
 Subject: RE: Does Linux invalidate TLB entries?
-Date: Wed, 30 Jan 2002 13:23:56 -0800
-Message-ID: <NEBBLJGMNKKEEMNLHGAIOECKCFAA.mdharm@momenco.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
-In-Reply-To: <1012423478.2356.9.camel@gs256.sp.cs.cmu.edu>
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
-Importance: Normal
+From: Justin Carlson <justincarlson@cmu.edu>
+To: Matthew Dharm <mdharm@momenco.com>
+Cc: linux-mips@oss.sgi.com
+In-Reply-To: <NEBBLJGMNKKEEMNLHGAIOECKCFAA.mdharm@momenco.com>
+References: <NEBBLJGMNKKEEMNLHGAIOECKCFAA.mdharm@momenco.com>
+Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature";
+	boundary="=-iVNs0ZbwdUGw2DF1COWP"
+X-Mailer: Evolution/0.99.2 (Preview Release)
+Date: 30 Jan 2002 16:49:18 -0500
+Message-Id: <1012427358.2436.13.camel@gs256.sp.cs.cmu.edu>
+Mime-Version: 1.0
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-The errata, unfortunately, doen't say.
 
-It does say that the suggested workaround is to use the TLBP operation
-to look for a matching but invalid entry, and then branch to the
-invalid handler if necessary.
+--=-iVNs0ZbwdUGw2DF1COWP
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-It also says that the CP0 Cause, EPC, BadVaddr and ENHI will wold the
-values for the dstream TLB exception.  In other words, it's all set up
-for the invalid exception, but it jumps to the refill exception
-instead.
+On Wed, 2002-01-30 at 16:23, Matthew Dharm wrote:
+> The errata, unfortunately, doen't say.
+>=20
+> It does say that the suggested workaround is to use the TLBP operation
+> to look for a matching but invalid entry, and then branch to the
+> invalid handler if necessary.
+>=20
+> It also says that the CP0 Cause, EPC, BadVaddr and ENHI will wold the
+> values for the dstream TLB exception.  In other words, it's all set up
+> for the invalid exception, but it jumps to the refill exception
+> instead.
 
-Matt
+Looking at the linux side a bit closer, I don't think this can ever hit
+us.  All the MIPS variants (that I'm familiar with) only use invalid TLB
+entries to flush the TLB, and in that case they set up the entries to be
+in KSEG0. =20
 
---
-Matthew D. Dharm                            Senior Software Designer
-Momentum Computer Inc.                      1815 Aston Ave.  Suite 107
-(760) 431-8663 X-115                        Carlsbad, CA 92008-7310
-Momentum Works For You                      www.momenco.com
+The only way to trigger an invalid TLB op, then, is to try to do a load
+from a proper range in KSEG0 after a flush; in that case the right thing
+for the processor to do not a TLB invalid exception anyways, as there is
+no TLB-based translation required.  We'd still segfault and die as a
+user process, of course, since you can't touch KSEG0, but that's good
+and proper.
 
-> -----Original Message-----
-> From: Justin Carlson [mailto:justincarlson@cmu.edu]
-> Sent: Wednesday, January 30, 2002 12:45 PM
-> To: Matthew Dharm
-> Cc: linux-mips@oss.sgi.com
-> Subject: RE: Does Linux invalidate TLB entries?
->
->
-> On Wed, 2002-01-30 at 14:33, Matthew Dharm wrote:
-> > Damn.  The entire line of processors from the RM7000 to the 7000A,
-> > 7000B, 7061A, and 7065A all have a bug which involves invalid TLB
-> > entries.
-> >
-> > I've sent the errata to Ralf only for review.  Basically, under
-> > certain circumstances the processor will take the "TLB refill"
-> > exception vector instead of the "TLB invalid" vector.
->
-> What's the behavior if the invalid entry is not fixed up
-> and we replay
-> the offending instruction?  If there's a guarantee that it
-> won't take
-> the wrong vector repeatedly, then this would be trivial to
-> fix (and may
-> not need one at all for correctness).
->
-> -Justin
->
->
+Anyone else see another case that would be a problem for us?
+
+-Justin
+
+
+--=-iVNs0ZbwdUGw2DF1COWP
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.6 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iD8DBQA8WGpe47Lg4cGgb74RAj/LAJ9+2zqJ1l7DESYYf39UtVI7tQ+GfgCgyXps
+mhq42ZntdUQK1INcX8a0UmI=
+=bEU4
+-----END PGP SIGNATURE-----
+
+--=-iVNs0ZbwdUGw2DF1COWP--

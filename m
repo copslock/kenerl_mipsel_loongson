@@ -1,74 +1,71 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1QCcc214012
-	for linux-mips-outgoing; Tue, 26 Feb 2002 04:38:38 -0800
-Received: from hotmail.com (f107.law11.hotmail.com [64.4.17.107])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1QCcW914009
-	for <linux-mips@oss.sgi.com>; Tue, 26 Feb 2002 04:38:32 -0800
-Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
-	 Tue, 26 Feb 2002 03:38:27 -0800
-Received: from 203.196.146.27 by lw11fd.law11.hotmail.msn.com with HTTP;
-	Tue, 26 Feb 2002 11:38:26 GMT
-X-Originating-IP: [203.196.146.27]
-From: "Samiran S" <samiran13@hotmail.com>
-To: linux-mips@oss.sgi.com
-Subject: Help about loading the kernel from host PC to board
-Date: Tue, 26 Feb 2002 17:08:26 +0530
-Mime-Version: 1.0
-Content-Type: text/plain; format=flowed
-Message-ID: <F107cS6xopZz8QMeGd100009da8@hotmail.com>
-X-OriginalArrivalTime: 26 Feb 2002 11:38:27.0223 (UTC) FILETIME=[1B2D4270:01C1BEBA]
+	by oss.sgi.com (8.11.2/8.11.3) id g1QCqm514292
+	for linux-mips-outgoing; Tue, 26 Feb 2002 04:52:48 -0800
+Received: from scan2.fhg.de (scan2.fhg.de [153.96.1.37])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1QCqf914285
+	for <linux-mips@oss.sgi.com>; Tue, 26 Feb 2002 04:52:41 -0800
+Received: from scan2.fhg.de (localhost [127.0.0.1])
+	by scan2.fhg.de (8.11.1/8.11.1) with ESMTP id g1QBqUx06679;
+	Tue, 26 Feb 2002 12:52:30 +0100 (MET)
+Received: from esk.esk.fhg.de (esk.esk.fhg.de [153.96.161.2])
+	by scan2.fhg.de (8.11.1/8.11.1) with ESMTP id g1QBqT606669;
+	Tue, 26 Feb 2002 12:52:29 +0100 (MET)
+Received: from esk.fhg.de (host4-40 [192.168.4.40])
+	by esk.esk.fhg.de (8.9.3/8.9.3) with ESMTP id MAA12889;
+	Tue, 26 Feb 2002 12:52:27 +0100 (MET)
+Message-ID: <3C7B76C9.48B9D395@esk.fhg.de>
+Date: Tue, 26 Feb 2002 12:51:37 +0100
+From: Wolfgang Heidrich <wolfgang.heidrich@esk.fhg.de>
+Organization: FhG - ESK
+X-Mailer: Mozilla 4.7 [de] (WinNT; I)
+X-Accept-Language: de
+MIME-Version: 1.0
+To: Samiran S <samiran13@hotmail.com>
+CC: linux-mips@oss.sgi.com
+Subject: Re: Help about loading the kernel from host PC to board
+References: <F107cS6xopZz8QMeGd100009da8@hotmail.com>
+Content-Type: text/plain; charset=iso-8859-1
+X-MIME-Autoconverted: from 8bit to quoted-printable by scan2.fhg.de id g1QBqUx06679
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id g1QCqg914288
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+Hi Samiran,
 
+Samiran S wrote:
+> 
+> Hi all ,
+> 
+> I had the whole set up of MIPS Malta board with its linux OS ,
+> 
+> 1) how can I start Linux on that board ?
+> 
+> I got that monitor program ( YEMMON)
+> 
+> I set the IP addrs. and related things. For loading the linux kernel I am
+> using
+> 
+> load tftp://<ipaddrs of host pc>path of vmlinux
+> 
+> then it is not loading that kernel , it is giving some error it is given
+> below
+> 
+> YAMON> load tftp://175.150.125.170/home/mipsel/vmlinux
+> About to load tftp://175.150.125.170/home/mipsel/vmlinux
 
-Hi all ,
+The slash separates the ip-address and the file. So you chose the file
+ home/mipsel/vmlinux, but probably you want /home/mipsel/vmlinux
+(because 
+home is located in the root-directory).
+So you have to type with two slashes:
+YAMON> load tftp://175.150.125.170//home/mipsel/vmlinux
 
-I had the whole set up of MIPS Malta board with its linux OS ,
+Greetings
+-- 
+Fraunhofer Einrichtung für Systeme der Kommunikationstechnik (ESK)
 
-1) how can I start Linux on that board ?
-
-I got that monitor program ( YEMMON)
-
-I set the IP addrs. and related things. For loading the linux kernel I am 
-using
-
-load tftp://<ipaddrs of host pc>path of vmlinux
-
-then it is not loading that kernel , it is giving some error it is given 
-below
-
-
-YAMON> load tftp://175.150.125.170/home/mipsel/vmlinux
-About to load tftp://175.150.125.170/home/mipsel/vmlinux
-Press Ctrl-C to break
-Error : TFTP READ-REQ ERROR
-Diag  : Host returned: ErrorCode = 1, ErrorMsg = File not found
-Hint  : Check TFTP-server: file-existence, directory/file-attributes
-
-
-if any body can help please reply me
-
-thanks
-Simun
-
-
-
-**** Info cpu ****
-
-Processor Company ID = 0x01 (MIPS Technologies, Inc.)
-ProcessorID/revision = 0x80(MIPS 4Kc) / 0x01
-Endianness = Little
-CPU/Bus frequency =80 MHz / 4 0 MHz
-ICACHE size = 16384bytes
-ICACHE linesize = 16 bytes
-ICACHE associativity= 4-way
-DCACHE size = 16384bytes
-DCACHE linesize = 16 bytes
-DCACHE associativity = 4-way
-TLB entries = 16 ~ ~ ~ ~
-
-
-_________________________________________________________________
-Join the world’s largest e-mail service with MSN Hotmail. 
-http://www.hotmail.com
+Wolfgang Heidrich        	  	Hansastraße 32
+Dipl.-Ing.                      	80686 München / Germany
+                                  	Phone :  +49(0)89-547088-376
+E-Mail: wolfgang.heidrich@esk.fhg.de   	Fax   :  +49(0)89-547088-221

@@ -1,85 +1,106 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Aug 2004 10:19:40 +0100 (BST)
-Received: from smail.alcatel.fr ([IPv6:::ffff:62.23.212.165]:45513 "EHLO
-	smail.alcatel.fr") by linux-mips.org with ESMTP id <S8224772AbUHBJTg>;
-	Mon, 2 Aug 2004 10:19:36 +0100
-Received: from bemail03.netfr.alcatel.fr (bemail03.netfr.alcatel.fr [155.132.251.37])
-	by smail.alcatel.fr (ALCANET/NETFR) with ESMTP id i729JPZv002931
-	for <linux-mips@linux-mips.org>; Mon, 2 Aug 2004 11:19:31 +0200
-Received: from alcatel.be ([172.31.202.2])
-          by bemail03.netfr.alcatel.fr (Lotus Domino Release 5.0.11)
-          with ESMTP id 2004080211192669:1443 ;
-          Mon, 2 Aug 2004 11:19:26 +0200 
-Message-ID: <410E071F.4060907@alcatel.be>
-Date: Mon, 02 Aug 2004 11:19:27 +0200
-From: willem.acke@alcatel.be
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.5) Gecko/20031007
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Aug 2004 21:04:12 +0100 (BST)
+Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:18181 "EHLO
+	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8225002AbUHBUEH>;
+	Mon, 2 Aug 2004 21:04:07 +0100
+Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
+	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
+	id 1BrjDw-0000wY-00; Mon, 02 Aug 2004 21:15:56 +0100
+Received: from highbury.mips.com ([192.168.192.236] helo=mips.com)
+	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1Brj2D-0002WQ-00; Mon, 02 Aug 2004 21:03:49 +0100
+Message-ID: <410E9E25.7080104@mips.com>
+Date: Mon, 02 Aug 2004 21:03:49 +0100
+From: Nigel Stephens <nigel@mips.com>
+Organization: MIPS Technologies
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-GB; rv:1.4) Gecko/20030624
+X-Accept-Language: en-gb, en-us, en
 MIME-Version: 1.0
-To: linux-mips@linux-mips.org
-Subject: RM9000x2 TLB load exception
-X-MIMETrack: Itemize by SMTP Server on BEMAIL03/BE/ALCATEL(Release 5.0.11  |July 24, 2002) at
- 08/02/2004 11:19:26,
-	Serialize by Router on BEMAIL03/BE/ALCATEL(Release 5.0.11  |July 24, 2002) at
- 08/02/2004 11:19:30,
-	Serialize complete at 08/02/2004 11:19:30
+To: "Maciej W. Rozycki" <macro@linux-mips.org>
+CC: Ralf Baechle <ralf@linux-mips.org>,
+	Richard Henderson <rth@redhat.com>,
+	Richard Sandiford <rsandifo@redhat.com>,
+	gcc-patches@gcc.gnu.org, linux-mips@linux-mips.org
+Subject: Re: [patch] MIPS/gcc: Revert removal of DImode shifts for 32-bit
+ targets
+References: <Pine.LNX.4.55.0407191648451.3667@jurand.ds.pg.gda.pl> <87hds49bmo.fsf@redhat.com> <Pine.LNX.4.55.0407191907300.3667@jurand.ds.pg.gda.pl> <20040719213801.GD14931@redhat.com> <Pine.LNX.4.55.0407201505330.14824@jurand.ds.pg.gda.pl> <20040723202703.GB30931@redhat.com> <20040723211232.GB5138@linux-mips.org> <Pine.LNX.4.58L.0407261325470.3873@blysk.ds.pg.gda.pl>
+In-Reply-To: <Pine.LNX.4.58L.0407261325470.3873@blysk.ds.pg.gda.pl>
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-X-Alcanet-MTA-scanned-and-authorized: yes
-Return-Path: <willem.acke@alcatel.be>
+X-MTUK-Scanner: Found to be clean
+X-MTUK-SpamCheck: not spam, SpamAssassin (score=-3.9, required 4, AWL,
+	BAYES_00, USER_AGENT_MOZILLA_UA)
+Return-Path: <nigel@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5578
+X-archive-position: 5579
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: willem.acke@alcatel.be
+X-original-sender: nigel@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-All,
+Maciej W. Rozycki wrote:
 
-I'm trying to port the mips-kernel to a RM9000x2 based custom board.
-The kernel file (mips 32) is loaded using VxWorks boot loader.
-I got the to the point where the kernel starts loading, but exits with a 
-'TLB load exception'.
-After putting in a number of printks, it seems that it fails on 
-'flush_icache_range' in arch/mips/mm/pg-r4k.c -> build_clear_page.
-Since I'm a newbie to this, any pointers to how to tackle this problem 
-would be appreciated.
+>On Fri, 23 Jul 2004, Ralf Baechle wrote:
+>
+>  
+>
+>>With a bit of hand waiving because haven't done benchmarks I guess Richard
+>>might be right.  The subroutine calling overhead on modern processors is
+>>rather low and smaller code means better cache hit rates ...
+>>    
+>>
+>
+> Well, I just worry the call may itself include at least the same number
+>of instructions as the callee if inlined.  There would be no way for it to
+>be faster.
+>
+> That may happen for a leaf function -- the call itself, plus $ra
+>saving/restoration is already four instructions.  Now it's sufficient for
+>two statics to be needed to preserve temporaries across such a call and
+>the size of the caller is already the same.  With three statics, you lose
+>even for a non-leaf function.  That's for a function containing a single
+>call to such a shift -- if there are more, then you may win (but is it
+>common?).
+>
+> So not only it may not be faster, but the resulting code may be bigger as
+>well.  That said, the current GCC's implementation of these operations is
+>not exactly optimal for current MIPS processors.  That's trivial to deal
+>with in Linux, but would it be possible to pick a different implementation
+>from libgcc based on the "-march=" setting, too?
+>
+> 
+>
 
-Exception:
-Tlb Load Exception
-Exception Program Counter: 0x00000000
-Status Register: 0x3404ff00
-Cause Register: 0x01100008
-Access Address : 0x00000000
-Task: 0x83e2c760 ""
+I second Maciej. My own recent experience when tuning the hell out of a 
+software floating-point emulator was that efficient 64-bit shifts were 
+really critical. I have a patch against gcc-3.4 which makes the 64-bit 
+inline shifts somewhat smaller on ISAs which include the conditional 
+move (movz/movn) instructions, but more importantly removes all branches 
+from the inline code - which can be very expensive on long pipeline 
+CPUs, since in this sort of code they tend to cause many branch 
+mispredicts. Let me know if you want me to extract the patch - here's a 
+table of the number of instructions generated by the original md pattern 
+and the patched version:
 
-$0    =                0   t0    =          3ffffff   s0    =         
-24810e00
-at    =         3404ff00   t1    = fffffffffc1fffff   s1    = 
-ffffffffac800000
-v0    =                0   t2    = ffffffffffff0000   s2    = 
-ffffffffac800004
-v1    =                1   t3    =           800000   s3    = 
-ffffffffcc9e0200
-a0    = ffffffff801a6f30   t4    = ffffffffac000000   s4    = 
-ffffffffac800008
-a1    = ffffffff801a6f94   t5    =            40000   s5    = 
-ffffffffac80000c
-a2    = ffffffff801508e8   t6    =             7fff   s6    
-=                0
-a3    = ffffffff80173e84   t7    =         24000000   s7    =         
-24840020
-s8    = ffffffff83e2c268   k0    =                0
-gp    = ffffffff80172000   k1    =                0   t8    
-=                a
-ra    = ffffffff80179254   sp    = ffffffff80173e80   t9    = 
-ffffffffac80fff8
-divlo =             1000   divhi =                0   sr    = 3404ff00
-pc    =        0
+		Instructions
+		Old	New
+ashldi3		12	9
+ashrdi3		12	12
+lshrdi3		12	9
 
-Thanks in advance,
 
-Wim Acke
+If people really don't like the inline expansion, then maybe it could be 
+enabled or disabled by a new -m option.
+
+Nigel
+
+-- 
+                         Nigel Stephens         Mailto:nigel@mips.com
+    _    _ ____  ___     MIPS Technologies      Phone.: +44 1223 706200
+    |\  /|||___)(___     The Fruit Farm         Direct: +44 1223 706207
+    | \/ |||    ____)    Ely Road, Chittering   Fax...: +44 1223 706250
+     TECHNOLOGIES UK     Cambridge CB5 9PH      Cell..: +44 7976 686470
+                         England                http://www.mips.com

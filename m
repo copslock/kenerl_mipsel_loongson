@@ -1,47 +1,29 @@
-Received:  by oss.sgi.com id <S553825AbQKBRkw>;
-	Thu, 2 Nov 2000 09:40:52 -0800
-Received: from rotor.chem.unr.edu ([134.197.32.176]:64011 "EHLO
-        rotor.chem.unr.edu") by oss.sgi.com with ESMTP id <S553647AbQKBRkt>;
-	Thu, 2 Nov 2000 09:40:49 -0800
-Received: (from wesolows@localhost)
-	by rotor.chem.unr.edu (8.9.3/8.9.3) id JAA25909;
-	Thu, 2 Nov 2000 09:39:52 -0800
-Date:   Thu, 2 Nov 2000 09:39:52 -0800
-From:   Keith M Wesolowski <wesolows@chem.unr.edu>
-To:     Nicu Popovici <octavp@isratech.ro>
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: Soon I will give up on MIPS kernel!
-Message-ID: <20001102093952.A25612@chem.unr.edu>
-References: <3A018098.ECB9E20C@isratech.ro>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2i
-In-Reply-To: <3A018098.ECB9E20C@isratech.ro>; from octavp@isratech.ro on Thu, Nov 02, 2000 at 09:56:24AM -0500
-X-Complaints-To: postmaster@chem.unr.edu
+Received:  by oss.sgi.com id <S553837AbQKBS0d>;
+	Thu, 2 Nov 2000 10:26:33 -0800
+Received: from srvntsxconn3.toc.ixl.com ([216.99.0.139]:14600 "HELO
+        srvntsxconn3.toc.ixl.com") by oss.sgi.com with SMTP
+	id <S553834AbQKBS0K>; Thu, 2 Nov 2000 10:26:10 -0800
+Received: from 216.99.0.139 by srvntsxconn3.toc.ixl.com (InterScan E-Mail VirusWall NT); Thu, 02 Nov 2000 13:26:01 -0500 (Eastern Standard Time)
+Received: by srvntsxconn3.toc.ixl.com with Internet Mail Service (5.5.2650.21)
+	id <TMPFKP7D>; Thu, 2 Nov 2000 13:26:00 -0500
+Message-ID: <0A5319EEAF65D411825E00805FBBD8A1209BA6@exchange.clt.ixl.com>
+From:   tmaloney@ixl.com
+To:     linux-mips@oss.sgi.com
+Subject: Indy ram question
+Date:   Thu, 2 Nov 2000 13:24:12 -0500 
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2650.21)
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Thu, Nov 02, 2000 at 09:56:24AM -0500, Nicu Popovici wrote:
+will this work in an Indy? 
 
-> The steps that I did are :
-> 1. made a linux symlink to linux_2_2_CVS
+"8Meg configuration 72pin 50ns Tested Simms. This is a dutch auction and you
+will be bidding for the price of 1 ea. These are all tested and working
+simms. Non-Edo, W-Parity, FPM, all simms have gold fingers."
 
-There is absolutely no reason to do this. In fact, it's death. Put the
-kernel sources in your home directory or a scratch area. Leave
-everything in /usr/src as it was when you installed your system.
-
-> I want to manage to crosscompile this kernel on a i686 machine for a
-> mips machine. So I saw there that it says something  about
-> /usr/include/asm  which is for my i686 machine. I guess that the errors
-> come from here. Can you tell me what I have to do. I have to mention
-
-Yep. Just...don't do that. /usr/src/linux is for your native sources
-and headers. Do not cross-build kernels in /usr/src, ever.
-
--- 
-Keith M Wesolowski			wesolows@chem.unr.edu
-University of Nevada			http://www.chem.unr.edu
-Chemistry Department Systems and Network Administrator
+thanks. 

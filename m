@@ -1,49 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Dec 2003 19:38:02 +0000 (GMT)
-Received: from p508B764E.dip.t-dialin.net ([IPv6:::ffff:80.139.118.78]:36772
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225551AbTLATh7>; Mon, 1 Dec 2003 19:37:59 +0000
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id hB1JbpA0030737;
-	Mon, 1 Dec 2003 20:37:52 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id hB1Jbm59030736;
-	Mon, 1 Dec 2003 20:37:48 +0100
-Date: Mon, 1 Dec 2003 20:37:48 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-Cc: linux-mips@linux-mips.org
-Subject: Re: [patch] NEC VR41xx new timer
-Message-ID: <20031201193748.GA21538@linux-mips.org>
-References: <20031202014935.1b2c796b.yuasa@hh.iij4u.or.jp>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20031202014935.1b2c796b.yuasa@hh.iij4u.or.jp>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Dec 2003 20:34:23 +0000 (GMT)
+Received: from mail.bandspeed.com ([IPv6:::ffff:64.132.226.131]:34230 "EHLO
+	mars.bandspeed.com") by linux-mips.org with ESMTP
+	id <S8225551AbTLAUeU> convert rfc822-to-8bit; Mon, 1 Dec 2003 20:34:20 +0000
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6375.0
+content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="US-ASCII"
+Content-Transfer-Encoding: 8BIT
+Subject: RE: backtrace issues on GDB 5.3
+Date: Mon, 1 Dec 2003 14:34:13 -0600
+Message-ID: <F2DE90354F0ED94EB7061060D9396547B98C58@mars.bandspeed.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: backtrace issues on GDB 5.3
+Thread-Index: AcO1xSYxzC0J+fJuT9ek328zeMIppAChSr3w
+From: "Vince Bridgers" <vbridgers@bandspeed.com>
+To: "Daniel Jacobowitz" <dan@debian.org>
+Cc: <linux-mips@linux-mips.org>
+Return-Path: <vbridgers@bandspeed.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3693
+X-archive-position: 3694
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: vbridgers@bandspeed.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Dec 02, 2003 at 01:49:35AM +0900, Yoichi Yuasa wrote:
+Tried it. It does work "better", but not "much better".
 
-> I updated new timer patches for latest CVS tree.
-> These patches are required for power management.
+Thanks for the tip
+
+
+-----Original Message-----
+From: Daniel Jacobowitz [mailto:dan@debian.org] 
+Sent: Friday, November 28, 2003 9:35 AM
+To: Vince Bridgers
+Cc: linux-mips@linux-mips.org
+Subject: Re: backtrace issues on GDB 5.3
+
+On Thu, Nov 27, 2003 at 07:26:59AM -0600, Vince Bridgers wrote:
+> I'm using GDB 5.3 for mipsel cross-compiled on an x86 box running
+RedHat
+> 7.3. When I try to use the backtrace capability from GDB most of the
+> time I do not get a full stack context - I usually just get the
+function
+> I'm in at the time. I'm using GCC 3.2 to compile the kernel,
+> cross-compiled the same way. I've tried making sure the
+> omit-frame-pointer option and the "no instruction schedule" options
+are
+> on for when we do source level debugging with no joy.  
 > 
-> Please apply these patches.
+> Does backtrace work for GCC and GDB cross compiled for mipsel? If so,
+> can someone briefly outline the "known good" configuration (GCC/GDB
+> versions, + relevant configuration options)?
 
-Applied.  One comment on the new ksym.c file.  In 2.4 we used to have most
-of the EXPORT_SYMBOL calls in a separate file in order to reduce the
-compile time.  With the new kbuild system of 2.6 this is no longer a
-problem so now the prefered way is exporting symbols from the defining
-file itself.  So for example most of the symbol exports left in
-arch/mips/kernel/mips_ksyms.c are for definitions in assembler files.
+Not excellently, but definitely better - try the most recent GDB
+release.
 
-  Ralf
+I have a number of ugly local patches that I hope to clean up for 6.1,
+if I have time.
+
+-- 
+Daniel Jacobowitz
+MontaVista Software                         Debian GNU/Linux Developer

@@ -1,69 +1,59 @@
-Received:  by oss.sgi.com id <S42349AbQJFV5L>;
-	Fri, 6 Oct 2000 14:57:11 -0700
-Received: from saturn.mikemac.com ([216.99.199.88]:65294 "EHLO
-        saturn.mikemac.com") by oss.sgi.com with ESMTP id <S42347AbQJFV5B>;
-	Fri, 6 Oct 2000 14:57:01 -0700
-Received: from Saturn (localhost [127.0.0.1])
-	by saturn.mikemac.com (8.9.3/8.9.3) with ESMTP id IAA31261;
-	Fri, 6 Oct 2000 08:29:35 -0700
-Message-Id: <200010061529.IAA31261@saturn.mikemac.com>
-To:     Hiroshi Kawashima <kei@sm.sony.co.jp>
-cc:     linux-mips@oss.sgi.com
-Subject: Re: Linux-VR test7 hangs when execing init 
-In-Reply-To: Your message of "Fri, 06 Oct 2000 17:00:41 +0900."
-             <200010060755.QAA00127@email.sm.sony.co.jp> 
-Date:   Fri, 06 Oct 2000 08:29:35 -0700
-From:   Mike McDonald <mikemac@mikemac.com>
+Received:  by oss.sgi.com id <S42356AbQJFV6L>;
+	Fri, 6 Oct 2000 14:58:11 -0700
+Received: from gateway-490.mvista.com ([63.192.220.206]:38902 "EHLO
+        hermes.mvista.com") by oss.sgi.com with ESMTP id <S42351AbQJFV6I>;
+	Fri, 6 Oct 2000 14:58:08 -0700
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id e96INcx11110;
+	Fri, 6 Oct 2000 11:23:38 -0700
+Message-ID: <39DE7B4D.8514FC59@mvista.com>
+Date:   Fri, 06 Oct 2000 18:24:29 -0700
+From:   Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-5.0 i586)
+X-Accept-Language: en
+MIME-Version: 1.0
+To:     Ralf Baechle <ralf@oss.sgi.com>
+CC:     "Kevin D. Kissell" <kevink@mips.com>, linux-mips@fnet.fr,
+        linux-mips@oss.sgi.com, Dominic Sweetman <dom@algor.co.uk>
+Subject: Re: load_unaligned() and "uld" instruction
+References: <39CF9DFC.F30B302B@mvista.com> <200009252116.WAA01137@gladsmuir.algor.co.uk> <39CFC567.DD66BC56@mvista.com> <000d01c02782$32d31560$0deca8c0@Ulysses> <39D0E51C.79A0BE50@mvista.com> <20001005141354.E30075@bacchus.dhis.org> <39DD26CC.3805FFE8@mvista.com> <00d101c02f04$3a6d7340$0deca8c0@Ulysses> <39DD55E9.AFCACB0E@mvista.com> <20001006182821.B9061@bacchus.dhis.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+Ralf Baechle wrote:
+> 
+> On Thu, Oct 05, 2000 at 09:32:41PM -0700, Jun Sun wrote:
+> 
+> > > > > > Ralf, before the perfect solution is found, the following patch makes
+> > > > > > the gcc complain go away.  It just use ".set mips3" pragma.
+> > >
+> > > Which, as Ralf correctly observes, will generate code that will
+> > > crash on 32-bit CPUs,
+> >
+> > Why will it crash 32-bit CPUs?  On my R5432 CPU, the lwl/lwr sequence
+> > executes just fine.
+> 
+> That's a 64-bit CPU with a 32-bit bus ...
+> 
 
->To: Mike McDonald <mikemac@mikemac.com>
->Subject: Re: Linux-VR test7 hangs when execing init 
->Date: Fri, 06 Oct 2000 17:00:41 +0900
->From: Hiroshi Kawashima <kei@sm.sony.co.jp>
->
->Hi.
->
->>   Recently the Linux-VR tree synced up with the SGI tree at test7
->> (from test4). As a result of this updating of the Linux-VR tree, my
->> kernels either hang or Oops while execing init. A minimal kernel will
->> hang and a normally config'd kernel will Oops. Does anyone know of any
->> changes in the ELF code or the ext2 filesystem that might be the cause
->> fo this? Any other ideas as to the cause or how to go about tracking
->> it down?
->
->It should be problem around PCMCIA is broken on test7.
->Some are working for fixing this (on linuxce list), but not
->completed yet.
+That is what the manual claims.  However I did find something strange.
 
-  PCMCIA is not configured in my minimal kernel, so that shouldn't be
-it.
+I run the following code on R5432:
 
-  Mike McDonald
-  mikemac@mikemac.com
+0x8019dc34 <my_get_unaligned+4>:        ldl     $a2,7($a0)
+0x8019dc38 <my_get_unaligned+8>:        ldr     $a2,0($a0)
+0x8019dc3c <my_get_unaligned+12>:       srl     $a2,$a2,0x10
 
-------------------
-Uranus=>fgrep "=y" .config | sort 
-CONFIG_BINFMT_ELF=y
-CONFIG_BLK_DEV_INITRD=y
-CONFIG_BLK_DEV_RAM=y
-CONFIG_CLASS_DESKTOP=y
-CONFIG_CPU_LITTLE_ENDIAN=y
-CONFIG_CPU_NO_FPU=y
-CONFIG_CPU_VR4122=y
-CONFIG_CPU_VR41XX=y
-CONFIG_CROSSCOMPILE=y
-CONFIG_ELF_KERNEL=y
-CONFIG_EXPERIMENTAL=y
-CONFIG_EXT2_FS=y
-CONFIG_HAVE_IO_PORTS=y
-CONFIG_KCORE_ELF=y
-CONFIG_MIPS_FPU_EMULATOR=y
-CONFIG_MSDOS_PARTITION=y
-CONFIG_NEC_HARRIER=y
-CONFIG_PROC_FS=y
-CONFIG_SERIAL=y
-CONFIG_SERIAL_CONSOLE=y
+As Kevin has guessed, it actually runs fine.  However, the register
+content in $a2 is not right.  Basically it appears that $a2 is a 32-bit
+register instead of 64-bit register.  I put a srl instruction to make
+sure I was not fooled by gdb.
+
+I know R5432 is derived from R5000 FOR 32-bit systems.  I guess there
+are probably a lot of short-cuts for 64-bit operations.
+
+Jun

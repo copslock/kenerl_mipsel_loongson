@@ -1,73 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Sep 2002 22:08:51 +0200 (CEST)
-Received: from alg133.algor.co.uk ([62.254.210.133]:48625 "EHLO
-	oval.algor.co.uk") by linux-mips.org with ESMTP id <S1122958AbSIDUIu>;
-	Wed, 4 Sep 2002 22:08:50 +0200
-Received: from mudchute.algor.co.uk (pubfw.algor.co.uk [62.254.210.129])
-	by oval.algor.co.uk (8.11.6/8.10.1) with ESMTP id g84K8Or29068;
-	Wed, 4 Sep 2002 21:08:24 +0100 (BST)
-Received: (from dom@localhost)
-	by mudchute.algor.co.uk (8.8.5/8.8.5) id VAA25407;
-	Wed, 4 Sep 2002 21:08:18 +0100 (BST)
-Date: Wed, 4 Sep 2002 21:08:18 +0100 (BST)
-Message-Id: <200209042008.VAA25407@mudchute.algor.co.uk>
-From: Dominic Sweetman <dom@algor.co.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Sep 2002 22:29:36 +0200 (CEST)
+Received: from jeeves.momenco.com ([64.169.228.99]:7688 "EHLO
+	host099.momenco.com") by linux-mips.org with ESMTP
+	id <S1122958AbSIDU3f>; Wed, 4 Sep 2002 22:29:35 +0200
+Received: from beagle (natbox.momenco.com [64.169.228.98])
+	by host099.momenco.com (8.11.6/8.11.6) with SMTP id g84KTO606530;
+	Wed, 4 Sep 2002 13:29:24 -0700
+From: "Matthew Dharm" <mdharm@momenco.com>
+To: "Linux-MIPS" <linux-mips@linux-mips.org>,
+	"Ralf Baechle" <ralf@uni-koblenz.de>
+Subject: PATCH: new probe addresses for M-Systems DiskOnChip for Ocelot-G
+Date: Wed, 4 Sep 2002 13:29:24 -0700
+Message-ID: <NEBBLJGMNKKEEMNLHGAICEMICIAA.mdharm@momenco.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-To: Matthew Dharm <mdharm@momenco.com>
-Cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-	Dominic Sweetman <dom@algor.co.uk>, Jun Sun <jsun@mvista.com>,
-	Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Re: Interrupt handling....
-In-Reply-To: <20020904093627.A5241@momenco.com>
-References: <200209040953.KAA17466@mudchute.algor.co.uk>
-	<Pine.GSO.3.96.1020904144630.10619F-100000@delta.ds2.pg.gda.pl>
-	<20020904093627.A5241@momenco.com>
-X-Mailer: VM 6.34 under 19.16 "Lille" XEmacs Lucid
-Return-Path: <dom@mudchute.algor.co.uk>
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_000_0008_01C25417.15ABB230"
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
+Importance: Normal
+Return-Path: <mdharm@momenco.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 91
+X-archive-position: 92
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dom@algor.co.uk
+X-original-sender: mdharm@momenco.com
 Precedence: bulk
 X-list: linux-mips
 
+This is a multi-part message in MIME format.
 
-Matthew Dharm (mdharm@momenco.com) writes:
+------=_NextPart_000_0008_01C25417.15ABB230
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
 
-> >  As I understand 0xfc00000c is the physical address.  Thus you cannot
-> > reach it via KSEG0/1 (although you may use XKPHYS to get there in the
-> > 64-bit mode).  Still ioremap() already handles the case mapping the area
-> > requested in the KSEG2 space, so it should work just fine. 
-> 
-> This is the case.  The board itself has up to 1G of SDRAM.  Most of the
-> boards we sell have a minimum of 512MB.  So our I/O (PCI, external devices,
-> etc.) all have physical addresses in the high-end of the address space.
+The attached patch adds the probe addresses for the M-Systems
+DiskOnChip which is part of the Ocelot-G board.
 
-Well, next time, get your board designers to think before they map...
+Matt
 
-It's generally better to map some DRAM low (for boot ROMs and other
-stupid programs you don't want to make big-address aware), then remap
-the whole DRAM to some very high address for Linux.  Much better than
-forcing you to use the TLB (or XKPHYS, if you've a 64-bit CPU) to get
-at I/O.
+--
+Matthew D. Dharm                            Senior Software Designer
+Momentum Computer Inc.                      1815 Aston Ave.  Suite 107
+(760) 431-8663 X-115                        Carlsbad, CA 92008-7310
+Momentum Works For You                      www.momenco.com
 
-> 64-bit mode would be great...
+------=_NextPart_000_0008_01C25417.15ABB230
+Content-Type: application/octet-stream;
+	name="patch20020903"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: attachment;
+	filename="patch20020903"
 
-Bear in mind that there *isn't a 64-bit mode*.  Privileged code (which
-is everything except Linux applications) can always run 64-bit
-instructions; all addresses are 64-bits really, it's just the
-sign-extension of the registers which makes you think you've got
-32-bit pointers.  Usually a 64-bit CPU can access XKPHYS any time
-it can access I/O registers.
+Index: drivers/mtd/devices/docprobe.c=0A=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=0A=
+RCS file: /cvs/linux/drivers/mtd/devices/docprobe.c,v=0A=
+retrieving revision 1.3=0A=
+diff -u -u -r1.3 docprobe.c=0A=
+--- drivers/mtd/devices/docprobe.c	2001/11/05 20:15:52	1.3=0A=
++++ drivers/mtd/devices/docprobe.c	2002/09/03 21:37:19=0A=
+@@ -88,6 +88,9 @@=0A=
+ 	0xe4000000,=0A=
+ #elif defined(CONFIG_MOMENCO_OCELOT)=0A=
+ 	0x2f000000,=0A=
++	0xff000000,=0A=
++#elif defined(CONFIG_MOMENCO_OCELOT_G)=0A=
++	0xff000000,=0A=
+ #else=0A=
+ #warning Unknown architecture for DiskOnChip. No default probe =
+locations defined=0A=
+ #endif=0A=
 
--- 
-Dominic Sweetman, 
-MIPS Technologies (UK) - formerly Algorithmics
-The Fruit Farm, Ely Road, Chittering, CAMBS CB5 9PH, ENGLAND
-phone: +44 1223 706200 / fax: +44 1223 706250 / direct: +44 1223 706205
-http://www.algor.co.uk
+------=_NextPart_000_0008_01C25417.15ABB230--

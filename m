@@ -1,129 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Sep 2004 07:15:03 +0100 (BST)
-Received: from futarque.com ([IPv6:::ffff:212.242.80.58]:41631 "HELO
-	mail.futarque.com") by linux-mips.org with SMTP id <S8224838AbUI2GO6>;
-	Wed, 29 Sep 2004 07:14:58 +0100
-Received: (qmail 8986 invoked by uid 64014); 29 Sep 2004 06:14:50 -0000
-Received: from smm@futarque.com by mail by uid 64011 with qmail-scanner-1.16 
- (uvscan: v4.1.60/v4278. spamassassin: 2.63.   Clear:. 
- Processed in 0.245475 secs); 29 Sep 2004 06:14:50 -0000
-Received: from excalibur.futarque.com (192.168.2.15)
-  by mail.futarque.com with SMTP; 29 Sep 2004 06:14:50 -0000
-Subject: Re: Problem debugging multi-threaded app
-From: Steffen Malmgaard Mortensen <smm@futarque.com>
-To: linux-mips@linux-mips.org
-In-Reply-To: <1096362700.5227.19.camel@localhost>
-References: <1096362700.5227.19.camel@localhost>
-Content-Type: multipart/alternative; boundary="=-gh6R7eefsOFBcBFX4ZAh"
-Message-Id: <1096438490.5227.24.camel@localhost>
-Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.4.6 
-Date: Wed, 29 Sep 2004 08:14:50 +0200
-Return-Path: <smm@futarque.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Sep 2004 09:05:50 +0100 (BST)
+Received: from web60707.mail.yahoo.com ([IPv6:::ffff:216.109.117.230]:33129
+	"HELO web60707.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S8224920AbUI2IFn>; Wed, 29 Sep 2004 09:05:43 +0100
+Message-ID: <20040929080531.85660.qmail@web60707.mail.yahoo.com>
+Received: from [61.11.17.69] by web60707.mail.yahoo.com via HTTP; Wed, 29 Sep 2004 01:05:31 PDT
+Date: Wed, 29 Sep 2004 01:05:31 -0700 (PDT)
+From: Shantanu Gogate <sagogate@yahoo.com>
+Subject: MIPS kernel emulator issues
+To: baitisj@evolution.org, jdl@vivato.net
+Cc: uclibc@uclibc.org, linux-mips@linux-mips.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <sagogate@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5911
+X-archive-position: 5912
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: smm@futarque.com
+X-original-sender: sagogate@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
+Guys,
 
---=-gh6R7eefsOFBcBFX4ZAh
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Any pointers which will lead to explaining why I am getting segmentation fault and kernel
+stacktraces on floating point instructions being generated through uClibc would be appreciated.
 
-Hi again,
-Sorry - I know I shouldn't even be allowed to ask questions...... It was
-another old, known bug - I was running with stripped libpthread......
-/Steffen
+I found this thread involving Jeff and Jon a bit relevant to my problem. Hence mailing them
+directly.
+http://www.uclibc.org/lists/uclibc/2003-June/006379.html
 
+This thread started by Jon is almost exactly my problem, but I dont see any replies to that post.
+http://www.uclibc.org/lists/uclibc/2003-May/006182.html
+Both these posts are over an year old.
 
-On Tue, 2004-09-28 at 11:11, Steffen Malmgaard Mortensen wrote:
+The situation here is as follows:
 
-> Hi all,
-> 
-> I'm trying to debug a multi-threaded app using gdbserver/gdb. I see the
-> same problems as described in
-> http://www.linux-mips.org/archives/linux-mips/2002-09/msg00155.html -
-> the program receives SIG32, but gdb doesn't associate that with thread
-> creation. The solution back in 2002 was to upgrade the tool-chain, but
-> I'm not sure what versions I should use today (and what patches). I'm
-> currently using:
-> 
-> CPU: Ati X225 (mips4kc - little endian)
-> kernel: linux 2.4.18 + vendor patches
-> 
-> glibc: 2.3.2
-> gcc: 3.3.2
-> binutils: 2.14
-> (the three above from crosstool 0.27)
-> 
-> gdb/gdbserver: 6.2
-> 
-> According to strace gdbserver loads libthread_db as it should, but gdb
-> on my host doesn't load libthread_db.
-> 
-> Any help/suggestions will be greatly appriciated...
-> 
-> Best regards,
-> Steffen
-> 
-> 
-> 
+I have 2 boards based on a 4Kc MIPS core. One on which we have
+successfully ported everything from booloader to applications. The other
+is almost similar to this one (the Processor core is the same), just the
+things around like RAM,Flash chip, ENET PHY are different. We are using
+cross compiler gcc (version 3.3.4) along with uClibc, kernel 2.4.25. Everything is working fine on
+platform #1. The kernel as well as the userland applications are all compiled with the same gcc
+cross compiler (version 3.3.4)
 
---=-gh6R7eefsOFBcBFX4ZAh
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: 7bit
+a) on platform #2 when I run any program which calls any function from
+uClibc which uses floating point numbers you get a kernel stack trace
+saying "Reserved instruction in kernel code in traps.c::do_ri, line 663"
+and a lengthy stack trace follows.
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 TRANSITIONAL//EN">
-<HTML>
-<HEAD>
-  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=UTF-8">
-  <META NAME="GENERATOR" CONTENT="GtkHTML/3.0.10">
-</HEAD>
-<BODY>
-Hi again,<BR>
-Sorry - I know I shouldn't even be allowed to ask questions...... It was another old, known bug - I was running with stripped libpthread......<BR>
-/Steffen<BR>
-<BR>
-<BR>
-On Tue, 2004-09-28 at 11:11, Steffen Malmgaard Mortensen wrote:
-<BLOCKQUOTE TYPE=CITE>
-<PRE><FONT COLOR="#737373"><I>Hi all,
+b) the same static binary which just does z = x *y, where x,y,z are floats and prints two floating
+point numbers runs fine on platform #1.
 
-I'm trying to debug a multi-threaded app using gdbserver/gdb. I see the
-same problems as described in</FONT>
-<A HREF="http://www.linux-mips.org/archives/linux-mips/2002-09/msg00155.html"><U>http://www.linux-mips.org/archives/linux-mips/2002-09/msg00155.html</U></A><FONT COLOR="#737373"> -
-the program receives SIG32, but gdb doesn't associate that with thread
-creation. The solution back in 2002 was to upgrade the tool-chain, but
-I'm not sure what versions I should use today (and what patches). I'm
-currently using:
+c) If I remove the "printf" and just write the floating point arithmetic
+instructions ( i.e something like z = x*y ). I dont get the stack trace on platform #2 or #1
 
-CPU: Ati X225 (mips4kc - little endian)
-kernel: linux 2.4.18 + vendor patches
+d) If I statically link this small program with glibc instead, it works
+fine on platform #2 _and_ #1.
 
-glibc: 2.3.2
-gcc: 3.3.2
-binutils: 2.14
-(the three above from crosstool 0.27)
+e) If I load the platform #2 with a kernel image over tftp from a remote machine
+where the rootfs is embedded inside the kernel image itself, then the
+dummy program linked with uClibc or glibc works fine ..no stacktrace !!!
 
-gdb/gdbserver: 6.2
+If "e)" was not happening i.e the embedded ramdisk rootfs was also giving same
+problems then one could have said that it was something to do with
+incorrect compilation of uClibc itself, which is why it was working with
+glibc but not with uClibc. However programs linked with the same uClibc
+are working when the embedded rootfs kernel is loaded. How ?!? Why ?!! 
 
-According to strace gdbserver loads libthread_db as it should, but gdb
-on my host doesn't load libthread_db.
-
-Any help/suggestions will be greatly appriciated...
-
-Best regards,
-Steffen
+uClibc configuration is to have floating point support and "HAS_FPU=y". If I change "HAS_FPU=n"
+then it does compile with "-msoft-float", however the printf output from the dummy program is just
+"nan".
 
 
-</I></FONT></PRE>
-</BLOCKQUOTE>
-</BODY>
-</HTML>
+Regards,
+Shantanu
 
---=-gh6R7eefsOFBcBFX4ZAh--
+
+
+
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around 
+http://mail.yahoo.com 

@@ -1,51 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Dec 2003 22:19:50 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:36595 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225388AbTLIWTt>;
-	Tue, 9 Dec 2003 22:19:49 +0000
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id hB9MJek07169;
-	Tue, 9 Dec 2003 14:19:40 -0800
-Date: Tue, 9 Dec 2003 14:19:40 -0800
-From: Jun Sun <jsun@mvista.com>
-To: Brad Parker <brad@parker.boston.ma.us>
-Cc: linux-mips@linux-mips.org, jsun@mvista.com
-Subject: Re: to_tm() in kernel/time.c?
-Message-ID: <20031209141940.A7038@mvista.com>
-References: <200312092058.hB9Kw6t31608@p2.parker.boston.ma.us>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <200312092058.hB9Kw6t31608@p2.parker.boston.ma.us>; from brad@parker.boston.ma.us on Tue, Dec 09, 2003 at 03:58:06PM -0500
-Return-Path: <jsun@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Dec 2003 22:29:40 +0000 (GMT)
+Received: from rwcrmhc13.comcast.net ([IPv6:::ffff:204.127.198.39]:34226 "EHLO
+	rwcrmhc13.comcast.net") by linux-mips.org with ESMTP
+	id <S8225388AbTLIW3j>; Tue, 9 Dec 2003 22:29:39 +0000
+Received: from gentoo.org (pcp04939029pcs.waldrf01.md.comcast.net[68.48.72.58])
+          by comcast.net (rwcrmhc13) with SMTP
+          id <2003120922293201500boimge>
+          (Authid: kumba12345);
+          Tue, 9 Dec 2003 22:29:32 +0000
+Message-ID: <3FD64CE1.8030907@gentoo.org>
+Date: Tue, 09 Dec 2003 17:29:53 -0500
+From: Kumba <kumba@gentoo.org>
+Reply-To: kumba@gentoo.org
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.5) Gecko/20031007
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: linux-mips@linux-mips.org
+Subject: Re: Kernel 2.4.23 on Cobalt Qube2
+References: <ML-3.4.1071007431.886.canavan@morannon.nonet>
+In-Reply-To: <ML-3.4.1071007431.886.canavan@morannon.nonet>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3726
+X-archive-position: 3727
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Dec 09, 2003 at 03:58:06PM -0500, Brad Parker wrote:
-> 
-> Can anyone tell me if to_tm() in kernel/time.c returns months as 0-11?
-> (in the current mips tree, that is)
-> 
+Rainer Canavan wrote:
 
-It is 0-11.  See the code
+> I haven't tried my Qube2 yet, since that one's already wrapped up and
+> ready for Karsten Merker to pick up - he's going to send it to the 
+> Tulip Expert, so those problems may go away soon, hopefully. As to 
+> kernel versions starting about 2.4.17, I've never had the tulip driver
+> running reliably on my Qube2, but always got at least 2.4.18 and later 
+> working properly on my nasRaq (there was some patching involved at times, 
+> if I recall correctly).
 
-        tm->tm_mon = i - 1;             /* tm_mon starts from 0 to 11 */
+Are these patches lying around someplace by chance?  I've used the 
+patches on Paul Martin's site (which enables detection of the cobalt's 
+"modified" tulip), as well as a patch from Karsten which fixed serial 
+console and also enabled the tulip driver.  Both of those patches don't 
+seem to fix the tulip's issue of halting though, so either I have broken 
+hardware, or I've done something unique in my setup that triggers the issue.
 
-> I'm curious if the to_tm() in the ppc tree is the same as the to_tm()
-> in the mips tree.  In the ppc tree it returns 1-12.
->
+I'd like to get ahold of any patches that I haven't tried yet in an 
+attempt to either nail the problem or isolate the cause.
 
-The routine was copied from PPC.  I think tm_mon is set to 0-11 so as to match
-struct rtc_time usage when it is exported to userland.
+btw, anyone ever gotten tulip-diag to compile on mips?
 
-I will check with PPC folks to see why they changed it.
 
-Jun
+--Kumba
+
+-- 
+"Such is oft the course of deeds that move the wheels of the world: 
+small hands do them because they must, while the eyes of the great are 
+elsewhere."  --Elrond

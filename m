@@ -1,47 +1,75 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fAOCsig05045
-	for linux-mips-outgoing; Sat, 24 Nov 2001 04:54:44 -0800
-Received: from holomorphy (mail@holomorphy.com [216.36.33.161])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAOCsgo05036
-	for <linux-mips@oss.sgi.com>; Sat, 24 Nov 2001 04:54:42 -0800
-Received: from wli by holomorphy with local (Exim 3.31 #1 (Debian))
-	id 167bO4-0004LE-00
-	for <linux-mips@oss.sgi.com>; Sat, 24 Nov 2001 03:54:24 -0800
-Date: Sat, 24 Nov 2001 03:54:24 -0800
-From: William Lee Irwin III <wli@holomorphy.com>
-To: linux-mips@oss.sgi.com
-Subject: Re: advice on dz.c
-Message-ID: <20011124035424.F1048@holomorphy.com>
-References: <20011123162710.D1048@holomorphy.com> <Pine.LNX.4.32.0111241140030.16093-100000@skynet>
+	by oss.sgi.com (8.11.2/8.11.3) id fAOKRlG03180
+	for linux-mips-outgoing; Sat, 24 Nov 2001 12:27:47 -0800
+Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAOKRfo03167
+	for <linux-mips@oss.sgi.com>; Sat, 24 Nov 2001 12:27:41 -0800
+Received: by ocean.lucon.org (Postfix, from userid 1000)
+	id BC8F4125C3; Sat, 24 Nov 2001 11:25:47 -0800 (PST)
+Date: Sat, 24 Nov 2001 11:25:47 -0800
+From: "H . J . Lu" <hjl@lucon.org>
+To: Carsten Langgaard <carstenl@mips.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: FPU test on RedHat7.1
+Message-ID: <20011124112547.A22621@lucon.org>
+References: <3BFD1BA7.C4490465@mips.com> <20011122103930.A2007@lucon.org> <3BFE6327.986D490C@mips.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Description: brief message
+Content-Type: multipart/mixed; boundary="sm4nu43k4a2Rpi4c"
 Content-Disposition: inline
-User-Agent: Mutt/1.3.17i
-In-Reply-To: <Pine.LNX.4.32.0111241140030.16093-100000@skynet>; from airlied@csn.ul.ie on Sat, Nov 24, 2001 at 11:44:40AM +0000
-Organization: The Domain of Holomorphy
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3BFE6327.986D490C@mips.com>; from carstenl@mips.com on Fri, Nov 23, 2001 at 03:54:31PM +0100
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sat, Nov 24, 2001 at 11:44:40AM +0000, Dave Airlie wrote:
-> This is unusual I've just taken a run down through a diff of 1.17 and 1.22
-> from the MIPS CVS tree and I can't see anything that could cause breakage
-> that has been changed... I'd try commentined out the DZ_DEBUG stuff.. this
-> isn't meant to be called... unless someone wants to specifically debug
-> their dz.c on a decstation.... otherwise it should be switched off..
+
+--sm4nu43k4a2Rpi4c
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Fri, Nov 23, 2001 at 03:54:31PM +0100, Carsten Langgaard wrote:
+> The file sysdeps/ieee754/dbl-64/e_remainder.c seems to have changed since
+> glibc-2.2.2.
+> I have attached the glibc-2.2.2 remainder file, which seems to work
+> better.
 > 
-> Granted to code doesn't look like it would compile with it off..
-> 
-> Dave.
 
-I took a day out to look at it, I can spend more time on debugging it,
-as hacking the kernel into shape on this box is somewhat of a hobby
-project for me.
+I believe it is a MIPS FPU related issue. glibc tries to do
 
-I think the one thing I didn't take a look at was the copy_to_user()
-changes, so it could be useful to explore that, and I've got a couple
-of other tricks up my sleeve.
+1.7976931348623157e+308 - 8.5720688574901386e+301 * 2097152
+
+and expects -1.9958403095e+292. However, on mips, I got -inf. Could you
+please look into it?
+
+Thanks.
 
 
-Cheers,
-Bill
+H.J.
+
+--sm4nu43k4a2Rpi4c
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename="ieee.c"
+
+#include <stdio.h>
+
+int main( int argc,char * argv[ ] )
+{
+
+  double res, d;
+  
+  union {
+    unsigned long long l;
+    double d;
+  } op1, op2;
+
+  op1.l = 0x7fefffffffffffffLL;
+  op2.l = 0x7ea0000000000000LL;
+
+  d = 2097152;
+  res = op1.d - d * op2.d;
+
+  printf("%llx\n", res);
+  printf("%20.10e\n", res);
+
+}
+
+--sm4nu43k4a2Rpi4c--

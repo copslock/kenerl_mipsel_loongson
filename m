@@ -1,39 +1,45 @@
-Received:  by oss.sgi.com id <S553787AbQJZOs7>;
-	Thu, 26 Oct 2000 07:48:59 -0700
-Received: from noose.gt.owl.de ([62.52.19.4]:1029 "HELO noose.gt.owl.de")
-	by oss.sgi.com with SMTP id <S553782AbQJZOsr>;
+Received:  by oss.sgi.com id <S553782AbQJZOtI>;
+	Thu, 26 Oct 2000 07:49:08 -0700
+Received: from noose.gt.owl.de ([62.52.19.4]:773 "HELO noose.gt.owl.de")
+	by oss.sgi.com with SMTP id <S553779AbQJZOsr>;
 	Thu, 26 Oct 2000 07:48:47 -0700
 Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id B71898F3; Thu, 26 Oct 2000 16:48:43 +0200 (CEST)
+	id D4CEB8F5; Thu, 26 Oct 2000 16:48:43 +0200 (CEST)
 Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id A01BC900C; Thu, 26 Oct 2000 14:15:15 +0200 (CEST)
-Date:   Thu, 26 Oct 2000 14:15:15 +0200
+	id 42060900C; Thu, 26 Oct 2000 14:19:08 +0200 (CEST)
+Date:   Thu, 26 Oct 2000 14:19:08 +0200
 From:   Florian Lohoff <flo@rfc822.org>
-To:     James McD <vile8@hotmail.com>
-Cc:     rsanders@conejo.engr.sgi.com, linux-mips@oss.sgi.com
-Subject: Re: indy gr3-xz support
-Message-ID: <20001026141515.E399@paradigm.rfc822.org>
-References: <F251SCeX8KShPdHfKsp00001138@hotmail.com>
+To:     Keith M Wesolowski <wesolows@chem.unr.edu>
+Cc:     Guido Guenther <guido.guenther@gmx.net>, linux-mips@oss.sgi.com
+Subject: Re: fdisk/kernel oddity
+Message-ID: <20001026141908.F399@paradigm.rfc822.org>
+References: <20001025190129.A28426@bilbo.physik.uni-konstanz.de> <20001025101453.A11789@chem.unr.edu>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 User-Agent: Mutt/1.0.1i
-In-Reply-To: <F251SCeX8KShPdHfKsp00001138@hotmail.com>; from vile8@hotmail.com on Wed, Oct 25, 2000 at 07:05:46PM +0000
+In-Reply-To: <20001025101453.A11789@chem.unr.edu>; from wesolows@chem.unr.edu on Wed, Oct 25, 2000 at 10:14:53AM -0700
 Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, Oct 25, 2000 at 07:05:46PM +0000, James McD wrote:
-> Hey, I feel your pain. I too have recently acquired the same machine with no 
-> ram etc.
-> You are in luck though, all you need is some 72 pin parity ram, if you look 
-> up DMT technologies they have it in sticks of 8megs each for about 32 bucks 
-> for 64 megs.
+On Wed, Oct 25, 2000 at 10:14:53AM -0700, Keith M Wesolowski wrote:
+> 
+> I rather suspect that this is the same problem that causes the request
+> for the out-of-bounds block in the first place: kernel memory
+> corruption. Unfortunately I have few ideas as to what the specific
+> problem is. I would start bug-hunting in the sgi disklabel kernel
+> parts. Make sure that it's compatible with what fdisk is doing.
+> 
 
-It is standard Parity SIMM - 72 Pin
+I agree here - This also would fit to the "Illegal Instruction" thing
+he sees afterwards - It seems to be time to debug the kernel SGI Disklabel
+support :)
 
-I used Ram of old RS/6000 (Model 250) which works without problems ...
+Most interestingly i am running on an Indigo2 with 7 Disks attached 
+and they all have SGI Disklabels - And i have no problems (Although
+6 of the 7 have the exatly same geometrie)
 
 Flo
 -- 

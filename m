@@ -1,106 +1,73 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6MGI9Rw026643
-	for <linux-mips-outgoing@oss.sgi.com>; Mon, 22 Jul 2002 09:18:09 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6MGm3Rw027207
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 22 Jul 2002 09:48:03 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6MGI9Pb026642
-	for linux-mips-outgoing; Mon, 22 Jul 2002 09:18:09 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6MGm35F027206
+	for linux-mips-outgoing; Mon, 22 Jul 2002 09:48:03 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6MGHrRw026633
-	for <linux-mips@oss.sgi.com>; Mon, 22 Jul 2002 09:17:54 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id SAA07719;
-	Mon, 22 Jul 2002 18:19:14 +0200 (MET DST)
-Date: Mon, 22 Jul 2002 18:19:13 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-cc: linux-mips@oss.sgi.com
-Subject: Re: [uHOWTO] Booting a DECstation via MOP
-In-Reply-To: <20020722144115.GW8891@lug-owl.de>
-Message-ID: <Pine.GSO.3.96.1020722164338.2373I-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received: from av.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6MGltRw027193
+	for <linux-mips@oss.sgi.com>; Mon, 22 Jul 2002 09:47:56 -0700
+Received: from mvista.com (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id JAA14862;
+	Mon, 22 Jul 2002 09:48:39 -0700
+Message-ID: <3D3C3572.40807@mvista.com>
+Date: Mon, 22 Jul 2002 09:40:18 -0700
+From: Jun Sun <jsun@mvista.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.9) Gecko/20020408
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+CC: linux-mips@oss.sgi.com, Ralf Baechle <ralf@uni-koblenz.de>
+Subject: Re: [PATCH] Let us die more gracefully
+References: <Pine.GSO.3.96.1020722154730.2373E-100000@delta.ds2.pg.gda.pl>
+Content-Type: multipart/mixed;
+ boundary="------------010605000503070205030605"
+X-Spam-Status: No, hits=-5.0 required=5.0 tests=UNIFIED_PATCH version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, 22 Jul 2002, Jan-Benedict Glaw wrote:
 
-> Are you still maintaining it? I see that *one* (really useful) mopd gets
-> more and more important (DECstations, VAXen, ...), but there are so
-> many of them.
+This is a multi-part message in MIME format.
+--------------010605000503070205030605
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 
- Yes, I am maintaining it as my time permits it.  It mostly works for what
-it was designed, so it's not high priority and not much happens these
-days.  But it still needs some work -- I have a few comments with proposed
-fixes from a *BSD user, COFF support changes and also FDDI support is on
-my to-do list.
+Maciej W. Rozycki wrote:
+> On Fri, 19 Jul 2002, Jun Sun wrote:
+> 
+> 
+>>This patch dumps the offending code context rather than dumping the context of 
+>>do_ri() function call itself.
+> 
+> 
+>  The message is misleading -- the reason may be any illegal opcode.
+> 
 
-> 	- One is from you (which is nicely working)
-> 	- One is on linux-vax.sourceforge.net (IIRC)
-> 	- One is 'apt-get install'able
-> 	- One is referenced on decstation.unix-ag.org (IIRC)
+That is true.  Here is the revised one.
 
- This one is a completely different implementation.
+Jun
 
-> 	- Mayby others (smells like Lance implementations...)
+--------------010605000503070205030605
+Content-Type: text/plain;
+ name="020719.b.graceful-death-in-do_ri.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="020719.b.graceful-death-in-do_ri.patch"
 
- The PMAX/NetBSD port has one, also derived from mopd 2.5.3, actively
-maintained.
+diff -Nru linux/arch/mips/kernel/traps.c.orig linux/arch/mips/kernel/traps.c
+--- linux/arch/mips/kernel/traps.c.orig	Thu Jul 18 15:39:50 2002
++++ linux/arch/mips/kernel/traps.c	Thu Jul 18 16:49:32 2002
+@@ -614,8 +614,7 @@
+  */
+ asmlinkage void do_ri(struct pt_regs *regs)
+ {
+-	if (!user_mode(regs))
+-		BUG();
++	die_if_kernel("Reserved instruction in kernel code", regs);
+ 
+ #ifndef CONFIG_CPU_HAS_LLSC
+ 
 
-> Some of them seem to be forked off each other, so it would be a nice
-> thing to unify them again. Anybody interested in having _one_ mopd?
-
- Well, I started with the original 2.5.3 release, then I added fixes and
-updates I found useful from the sources you quote (plus NetBSD).  I
-filtered out questionable changes and whitespace rearrangements, the
-latter not to obfuscate the code until a real release happens.  So as of
-the date of the patches I consider the version a synthesis of all
-available implementations. 
-
-> Anybody willing to do the job? I'll have to ask the VAX people also...
-
- I was considering undertaking a real maintenance but I'm still unsure I
-can fullfill any timeline.  The future maintainer would have to get an
-official statement from Mats as well.
-
- I already talked to VAX/Linux people.  They didn't seem much interested
-in ELF support as it would require changes to their kernel, mostly to the
-ld script (I even wrote an appropriate patch for them; though the syntax
-seems unfriendly and should probably be revised in binutils) as the VAX
-console seems to use physical addressing for loading images and the kernel
-is linked at virtual addresses (naturally).  They seem to exploit a trick
-with faking a DEC proprietary image, by prepending 512 null bytes to a
-kernel image.  It works because the virtual start address of the VAX/Linux
-kernel maps to the physical address zero and the entry point is zero as
-well (some head code takes care of remapping addresses) so the values
-fetched by mopd from the artifical header just work.
-
- BTW, while talking to both NetBSD and VAX/Linux people I was surprised by
-responses like: "MOP-boot an ELF image?  That's impossible, MOP
-specification much predates ELF -- how could an implementation handle
-it?", as if there was any relevance between ELF and MOP...  It looked like
-hardly anyone had an idea of how MOP and mopd work, yet they questioned
-the facts.
-
-> Except VAX and DECstations - who does also use MOP for booting?
-
- I don't know if anyone uses it, but essentially all DEC devices capable
-of network-booting are able to use MOP for it.  A subset of them may be
-able to use other protocols, e.g. BOOTP/TFTP.  Apart from host systems,
-examples of such devices are terminal servers.
-
- BTW, I use this mopd exclusively to boot my DECstations, even though one
-of them supports BOOTP/TFTP just fine and I could swap ROMs to make the
-other work, too.  I just find MOP more suitable for the task and I don't
-need to route BOOTP/TFTP packets across networks (which would exclude MOP
-from possible choices).
-
-  Maciej
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+--------------010605000503070205030605--

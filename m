@@ -1,64 +1,37 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fA627ZV00953
-	for linux-mips-outgoing; Mon, 5 Nov 2001 18:07:35 -0800
-Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA627V000950
-	for <linux-mips@oss.sgi.com>; Mon, 5 Nov 2001 18:07:31 -0800
-Received: from zeus.mvista.com (zeus.mvista.com [10.0.0.112])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id fA628XB30954;
-	Mon, 5 Nov 2001 18:08:33 -0800
-Subject: Re: Arguments for kernel_entry?
-From: Pete Popov <ppopov@mvista.com>
-To: Richard Hodges <rh@matriplex.com>
-Cc: linux-mips <linux-mips@oss.sgi.com>
-In-Reply-To: <Pine.BSF.4.10.10111051736110.600-100000@mail.matriplex.com>
-References: <Pine.BSF.4.10.10111051736110.600-100000@mail.matriplex.com>
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Mailer: Evolution/0.16.100+cvs.2001.11.01.15.16 (Preview Release)
-Date: 05 Nov 2001 18:07:54 -0800
-Message-Id: <1005012474.27128.306.camel@zeus>
+	by oss.sgi.com (8.11.2/8.11.3) id fA67s8607701
+	for linux-mips-outgoing; Mon, 5 Nov 2001 23:54:08 -0800
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id fA67s6007697
+	for <linux-mips@oss.sgi.com>; Mon, 5 Nov 2001 23:54:06 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id fA67rTH28179;
+	Mon, 5 Nov 2001 23:53:29 -0800
+Date: Mon, 5 Nov 2001 23:53:29 -0800
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: "Bradley D. LaRonde" <brad@ltc.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: hz_to_std
+Message-ID: <20011105235329.C18038@dea.linux-mips.net>
+References: <067801c1656e$1f5274b0$3501010a@ltc.com>
 Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <067801c1656e$1f5274b0$3501010a@ltc.com>; from brad@ltc.com on Sun, Nov 04, 2001 at 03:20:03PM -0500
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, 2001-11-05 at 17:44, Richard Hodges wrote:
-> On 5 Nov 2001, Pete Popov wrote:
+On Sun, Nov 04, 2001 at 03:20:03PM -0500, Bradley D. LaRonde wrote:
+> From: "Bradley D. LaRonde" <brad@ltc.com>
+> To: <linux-mips@oss.sgi.com>
+> Subject: hz_to_std
+> Date: Sun, 4 Nov 2001 15:20:03 -0500
 > 
-> > On Mon, 2001-11-05 at 17:09, Richard Hodges wrote:
-> > > Would anyone be able to provide information on the arguments
-> > > to kernel_entry (in head.S)?
-> > > 
-> > > The first two look pretty straightforward, argument count and
-> > > string vectors.  I assume that argument zero is actually the
-> > > first argument, and not "vmlinux"?
-> > > 
-> > > What are the third (ulong) and fourth (int *) arguments?  I have
-> > > read head.S and searched for days trying to find this info :-(
-> > > 
-> > > I thought PMON would be a decent reference, but run_target() only
-> > > seems to set $4 and $5, before calling _go().
->  
-> > That's boot code specific. MIPS Tech's yamon passes:
-> > 
-> > 0: number of arguments
-> > 1: pointer to first arg
-> > 2: pointer to environment variables
-> > 3: pointer to prom routines you can call
-> 
-> Okay, I think I have it now.  It looks like _only_ prom_init() is
-> interested in these arguments.
-> 
-> 1.  kernel_entry() gives them to init_arch(),
-> 2.  init_arch gives them to prom_init(),
-> 3.  prom_init() does whatever it wants (eg, builds arcs_cmdline)
-> 4.  init_arch ends with a call to start_kernel(), and the original
->     arguments are effectively thrown away.
-> 
-> Or put more simply, the kernel_entry arguments are only used by
-> prom_init().  Is this right?
+> What is the intent and purpose of the hz_to_std stuff?
 
-I believe that's correct. arch/mips/kernel/setup.c saves arcs_cmdline in
-command_line and that's the end of arcs_cmdline. 
+DECstation needs to be built with HZ != 100 but we have to keep the API
+uninfluenced by this.
 
-Pete
+  Ralf

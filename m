@@ -1,38 +1,42 @@
-Received:  by oss.sgi.com id <S42248AbQI2Igm>;
-	Fri, 29 Sep 2000 01:36:42 -0700
-Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:31152 "EHLO
-        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S42190AbQI2IgY>;
-	Fri, 29 Sep 2000 01:36:24 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id KAA16029;
-	Fri, 29 Sep 2000 10:36:04 +0200 (MET DST)
-Date:   Fri, 29 Sep 2000 10:36:04 +0200 (MET DST)
-From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To:     Florian Lohoff <flo@rfc822.org>
-cc:     linux-mips@oss.sgi.com
-Subject: Re: R3k Decstation broken
-In-Reply-To: <20000928205359.A767@paradigm.rfc822.org>
-Message-ID: <Pine.GSO.3.96.1000929103323.14990C-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received:  by oss.sgi.com id <S42255AbQI2I4m>;
+	Fri, 29 Sep 2000 01:56:42 -0700
+Received: from [203.244.211.231] ([203.244.211.231]:14608 "EHLO
+        swc.sec.samsung.co.kr") by oss.sgi.com with ESMTP id <S42190AbQI2I42>;
+	Fri, 29 Sep 2000 01:56:28 -0700
+Received: by swc with Internet Mail Service (5.5.2650.21)
+	id <SW1HBK3K>; Fri, 29 Sep 2000 17:54:54 +0900
+Message-ID: <F805AE5A9759D41198BA00A0C985B8FA36D175@swc>
+From:   =?euc-kr?B?wK+xpMf2?= <khyoo@swc.sec.samsung.co.kr>
+To:     linux-mips@oss.sgi.com
+Subject: Help!! My Indy do not want to boot.
+Date:   Fri, 29 Sep 2000 17:54:47 +0900
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Mailer: Internet Mail Service (5.5.2650.21)
+Content-Type: text/plain
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Thu, 28 Sep 2000, Florian Lohoff wrote:
+Hello,
 
-> it seems the r3k decstation stuff is broken 
-> 
-> >>boot 3/tftp console=ttyS2
-> 1532656+0+130384
-> This DECstation is a DS5000/1xx
-[...]
-> Calibrating delay loop... 
+I am building Linux system on my Indy IP22 with egcs 1.0.3a, binutil-2.8.1-
+1.
+Target kernel is fresh one, downloaded from CVS server (oss.sgi.com), 2.4.0-
+test8-pre1.
+The building process was very easy, calm.
+But during the boot process my Indy displays following messages ...
 
- Which is the last version that worked (the date of the snapshot)? 
+	Exception: <vector=UTLB miss>
+	Status register: 0x10004803 <CU0, IM7, IM4, IPL=???, MODE=KERNEL,
+EXL, IE>
+	Cause register: 0x8 <CE=0, EXC=RMISS>
+	Exception PC: 0x8817d730, Exception RA: 0x8817ddfc
+	[....... ]
+	
+	PANIC: Unexpected Exception
+	[Press Reset or ENTER to restart]
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Is there anyone who can help me and let me know why this happens?
+
+PS: I do not use -N flag at file (arch/mips/Makefile LINKFLAGS).

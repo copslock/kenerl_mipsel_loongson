@@ -1,67 +1,66 @@
-Received:  by oss.sgi.com id <S42240AbQGMHQW>;
-	Thu, 13 Jul 2000 00:16:22 -0700
-Received: from rno-dsl0b-218.gbis.net ([216.82.145.218]:40202 "EHLO
-        ozymandias.foobazco.org") by oss.sgi.com with ESMTP
-	id <S42211AbQGMHPx>; Thu, 13 Jul 2000 00:15:53 -0700
-Received: (from wesolows@localhost)
-	by ozymandias.foobazco.org (8.9.3/8.9.3) id AAA27586
-	for linux-mips@oss.sgi.com; Thu, 13 Jul 2000 00:16:01 -0700
-Date:   Thu, 13 Jul 2000 00:16:01 -0700
-From:   Keith M Wesolowski <wesolows@foobazco.org>
-To:     linux-mips@oss.sgi.com
-Subject: Simple Linux/MIPS 0.2b
-Message-ID: <20000713001601.A27565@foobazco.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0pre3us
+Received:  by oss.sgi.com id <S42210AbQGMPH0>;
+	Thu, 13 Jul 2000 08:07:26 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:58892 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42205AbQGMPHB>;
+	Thu, 13 Jul 2000 08:07:01 -0700
+Received: from thor ([207.246.91.243]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via SMTP id HAA28484
+	for <linux-mips@oss.sgi.com>; Thu, 13 Jul 2000 07:59:40 -0700 (PDT)
+	mail_from (jsk@tetracon-eng.net)
+Received: from localhost (localhost [127.0.0.1]) by thor (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id KAA20284; Thu, 13 Jul 2000 10:58:48 -0300
+Date:   Thu, 13 Jul 2000 10:58:48 -0300
+From:   "J. Scott Kasten" <jsk@tetracon-eng.net>
+To:     Keith M Wesolowski <wesolows@foobazco.org>
+cc:     linux-mips@oss.sgi.com
+Subject: Re: Simple Linux/MIPS 0.2b
+In-Reply-To: <20000713001601.A27565@foobazco.org>
+Message-ID: <Pine.SGI.4.10.10007131037590.20247-100000@thor.tetracon-eng.net>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Simple Linux/MIPS 0.2b ``Death on a Stick'' has been released.
 
-*** This is not a production release ***
+On Thu, 13 Jul 2000, Keith M Wesolowski wrote:
+> Simple Linux/MIPS 0.2b ``Death on a Stick'' has been released.
 
-This version runs on big-endian MIPS systems and has been tested on
-R4400 SGI IP22. You can obtain the distribution from the following location:
+Fantastic!  I've had great success with release 0.1 on an Indy.  Perhaps
+it's almost too stable for my blood.  Need to go play with fire!  ;-)
 
-MANDATORY Release Notes:
-ftp://oss.sgi.com/pub/linux/mips/mips-linux/simple/userland-0.2b/RELEASE_NOTES-0.2b
-Binaries:
-ftp://oss.sgi.com/pub/linux/mips/mips-linux/simple/userland-0.2b/bin
+Actually, I do have a question for any of you that have been doing builds.
+I seem to be having some interesting problems with shared object
+libraries.  I'm using S-L-M 0.1 on an Indy as a development/test bed for
+code that will eventually end up in an embedded vrXXXX system.  (I've
+already verified that the binaries are portable.)  However, I am having
+difficulty on the Indy itself.  NONE of the shared objects that I build on
+that box can be used by programs on that box.  Yes, I either placed them
+in /lib or /usr/lib or built a proper ld.so.cache file for them.  The ldd
+utility can resolve the libraries, etc...  However, every program built
+on that box against libraries that I built on that box exits with an
+immediate bus error.  It appears to be an issue with the libraries
+themselves.  If I scavenge the equivalent libraries from the Hard Hat 5.1
+distro and drop them in place, everything seems happy and works fine.
+Thus, there's something funky about the so's I'm building myself.
 
-There are also some patches in the src/ directory. I have lost some of
-my patches but will be recreating them and making them available at
-that location as well. Also included is a summary of the commands used
-to build the distribution.
+I've tried building the XFree 4.0.1 libraries, Lesstiff libraries, and
+libraries from our own code base.  All breaks the same way.
 
-Highlights:
+#1 What form of black magic are you guys using to do this?
 
-- glibc 2.1.90 (000622) based - with empty symbol fix from Maciej
-- gcc 2.96 (000707)
-- binutils 2.10.90 (000707)
-- linux 2.4.0-test3-pre5 (000708)
-- support for profiling
-- full netkit and net-tools
-- gdb 5.0
-- ncurses 5.1
-- kernel debugging tools
-- numerous bugs fixed
-- numerous new bugs
+#2 Are there specific compiler flags/phases that should/shouldn't be used
+with MIPS arch so's that are different than what I'd normally do under
+Linux?
 
-Please read the release notes before using. Installation instructions
-for 0.1, which should still work in general, can be found at
-http://foobazco.org/~wesolows/Install-HOWTO.html.
+#3 Should I be trying to cross compile the so's them selves instead of
+native builds?
 
-Thanks to everyone who has been submitting patches, fixing bugs,
-writing the software, and in general making this distribution
-possible.
+#4 Are you using different flavors of gcc/binutils to do different jobs
+because of known breakages?
 
-This will be the last release for at least 6 weeks. Happy hacking!
+Any tips appreciated here.  In the mean, I'm going to start playing with
+flags.
 
--- 
-Keith M Wesolowski <wesolows@foobazco.org> http://foobazco.org/~wesolows/
-(( Project Foobazco Coordinator and Network Administrator )) aiieeeeeeee!
-"The list of people so amazingly stupid they can't even tie their shoes?"
-"Yeah, you know, /etc/passwd."
+Sincerely,
+
+-JSK-

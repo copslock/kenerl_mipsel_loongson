@@ -1,17 +1,18 @@
-Received:  by oss.sgi.com id <S42363AbQJCKKu>;
-	Tue, 3 Oct 2000 03:10:50 -0700
-Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:14816 "EHLO
-        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S42201AbQJCKKT>;
-	Tue, 3 Oct 2000 03:10:19 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id MAA09153;
-	Tue, 3 Oct 2000 12:08:32 +0200 (MET DST)
-Date:   Tue, 3 Oct 2000 12:08:31 +0200 (MET DST)
+Received:  by oss.sgi.com id <S42459AbQJCKeK>;
+	Tue, 3 Oct 2000 03:34:10 -0700
+Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:25312 "EHLO
+        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S42201AbQJCKd2>;
+	Tue, 3 Oct 2000 03:33:28 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id MAA09734;
+	Tue, 3 Oct 2000 12:31:09 +0200 (MET DST)
+Date:   Tue, 3 Oct 2000 12:31:08 +0200 (MET DST)
 From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To:     Ralf Baechle <ralf@oss.sgi.com>
+Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To:     Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
 cc:     Florian Lohoff <flo@rfc822.org>, linux-mips@oss.sgi.com
-Subject: Re: Decstation broken Was: CVS Update@oss.sgi.com: linux
-In-Reply-To: <20001003014451.B614@bacchus.dhis.org>
-Message-ID: <Pine.GSO.3.96.1001003120613.8359B-100000@delta.ds2.pg.gda.pl>
+Subject: RE: Decstation broken Was: CVS Update@oss.sgi.com: linux
+In-Reply-To: <XFMail.001003114154.Harald.Koerfgen@home.ivm.de>
+Message-ID: <Pine.GSO.3.96.1001003120240.8359A-100000@delta.ds2.pg.gda.pl>
 Organization: Technical University of Gdansk
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
@@ -20,15 +21,15 @@ Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, 3 Oct 2000, Ralf Baechle wrote:
+On Tue, 3 Oct 2000, Harald Koerfgen wrote:
 
-> I have a nice little solution, we can wrap the divide with ll / sc.  If
-> the sc ever fails we took an exception and retry ...
+> > since this commit my machines are all broken (5000/260, 5000/150 
+> > and 5000/125) - They all hang in the "Calibrating delay loop ...".
+> 
+> Fixed.
 
- Could be, but I'm still uncertain whether we want to keep 64-bit code at
-all. 
-
-  Maciej
+ Thanks -- I've found the typo yesterday evening, too.  I knew it must
+have been a stupid error.
 
 -- 
 +  Maciej W. Rozycki, Technical University of Gdansk, Poland   +

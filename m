@@ -1,81 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Feb 2005 01:02:35 +0000 (GMT)
-Received: from adsl-67-116-42-149.dsl.sntc01.pacbell.net ([IPv6:::ffff:67.116.42.149]:5975
-	"EHLO avtrex.com") by linux-mips.org with ESMTP id <S8225329AbVBWBCU>;
-	Wed, 23 Feb 2005 01:02:20 +0000
-Received: from [192.168.0.35] ([192.168.0.35] unverified) by avtrex.com with Microsoft SMTPSVC(5.0.2195.6713);
-	 Tue, 22 Feb 2005 17:02:17 -0800
-Message-ID: <421BD616.4030101@avtrex.com>
-Date:	Tue, 22 Feb 2005 17:02:14 -0800
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Mozilla Thunderbird 1.0 (X11/20041206)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Feb 2005 02:42:33 +0000 (GMT)
+Received: from 64-30-195-78.dsl.linkline.com ([IPv6:::ffff:64.30.195.78]:37554
+	"EHLO jg555.com") by linux-mips.org with ESMTP id <S8225338AbVBWCmT>;
+	Wed, 23 Feb 2005 02:42:19 +0000
+Received: from [172.16.0.150] (w2rz8l4s02.jg555.com [::ffff:172.16.0.150])
+  (AUTH: PLAIN jim, SSL: TLSv1/SSLv3,256bits,AES256-SHA)
+  by jg555.com with esmtp; Tue, 22 Feb 2005 18:42:17 -0800
+  id 00008476.421BED89.00001DD2
+Message-ID: <421BED79.2010305@jg555.com>
+Date:	Tue, 22 Feb 2005 18:42:01 -0800
+From:	Jim Gifford <maillist@jg555.com>
+User-Agent: Mozilla Thunderbird 0.9 (Windows/20041103)
 X-Accept-Language: en-us, en
 MIME-Version: 1.0
-To:	Jim Gifford <maillist@jg555.com>
+To:	David Daney <ddaney@avtrex.com>
 CC:	linux-mips@linux-mips.org
 Subject: Re: Building GLIBC 2.3.4 on MIPS
-References: <421BCF34.90308@jg555.com>
-In-Reply-To: <421BCF34.90308@jg555.com>
+References: <421BCF34.90308@jg555.com> <421BD616.4030101@avtrex.com>
+In-Reply-To: <421BD616.4030101@avtrex.com>
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 23 Feb 2005 01:02:17.0733 (UTC) FILETIME=[51E40B50:01C51943]
-Return-Path: <ddaney@avtrex.com>
+Return-Path: <maillist@jg555.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7314
+X-archive-position: 7315
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: maillist@jg555.com
 Precedence: bulk
 X-list: linux-mips
 
-Jim Gifford wrote:
-> I'm trying to build the current glibc with my RaQ2, everything builds 
-> ok, until I start compiling strace.
-> 
-> syscall.c: In function `dumpio':
-> syscall.c:449: error: `SYS_read' undeclared (first use in this function)
-> syscall.c:449: error: (Each undeclared identifier is reported only once
-> syscall.c:449: error: for each function it appears in.)
-> syscall.c:465: error: `SYS_write' undeclared (first use in this function)
-> syscall.c: In function `syscall_fixup':
-> syscall.c:1265: warning: unused variable `pid'
-> syscall.c: In function `trace_syscall':
-> syscall.c:2481: error: `SYS_exit' undeclared (first use in this function)
-> make[1]: *** [syscall.o] Error 1
-> make[1]: Leaving directory `/usr/src/strace-4.5.9'
-> make: *** [all] Error 2
-> 
-> Which leads me to check syscall.h, then I noticed a big difference from 
-> my x86 version to this version, all the SYS_ entries are missing.  Did I 
-> build it wrong or is this a glibc issue, due to the addition of the 
-> mips32 and mips64 directories.
-> 
-> Here is my bug report with the glibc folks for everyone's reference.
-> http://sources.redhat.com/bugzilla/show_bug.cgi?id=758
-> 
+Thanx Kumba and David I really appreciate the help.
 
+Got one other question for you, this was brought up on my LFS for the RaQ2.
 
-It seems that you might need some (but not all) of the patch I posted here:
+http://sources.redhat.com/ml/libc-alpha/2005-01/msg00063.html
 
-http://www.linux-mips.org/archives/linux-mips/2004-10/msg00068.html
+Here is the message for those who don't want to link.
 
-Specifically I think you will need at least the parts that add
+A user attempting to build glibc kept getting "getconf" missing errors, 
+upon checking /usr/bin/getconf, he found the getconf was a directory 
+with 2 files in it
 
-#include <sgidefs.h>
+POSIX_V6_ILP32_OFFBIG
+POSIX_V6_ILP32_OFF32
 
-To many of the .h files.  Basically any file that uses the symbol 
-_MIPS_SIM and friends needs to either directly or indirectly include 
-sgidefs.h
-
-You may also need:
-
-http://www.linux-mips.org/archives/linux-mips/2004-10/msg00142.html
-
-And something like this:
-
-http://sources.redhat.com/ml/libc-alpha/2004-11/msg00165.html
-
-
-David Daney.
+Now, I've been able to recreate this issue, but haven't figured out the 
+root cause.

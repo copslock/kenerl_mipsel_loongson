@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 May 2003 14:52:57 +0100 (BST)
-Received: from mail2.sonytel.be ([IPv6:::ffff:195.0.45.172]:11651 "EHLO
-	witte.sonytel.be") by linux-mips.org with ESMTP id <S8224861AbTEWNwz>;
-	Fri, 23 May 2003 14:52:55 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 May 2003 14:54:01 +0100 (BST)
+Received: from mail2.sonytel.be ([IPv6:::ffff:195.0.45.172]:4997 "EHLO
+	witte.sonytel.be") by linux-mips.org with ESMTP id <S8224861AbTEWNx7>;
+	Fri, 23 May 2003 14:53:59 +0100
 Received: from vervain.sonytel.be (localhost [127.0.0.1])
-	by witte.sonytel.be (8.12.9/8.12.9) with ESMTP id h4NDqeLT006028;
-	Fri, 23 May 2003 15:52:41 +0200 (MEST)
-Date: Fri, 23 May 2003 15:52:45 +0200 (MEST)
+	by witte.sonytel.be (8.12.9/8.12.9) with ESMTP id h4NDrjLT006185;
+	Fri, 23 May 2003 15:53:45 +0200 (MEST)
+Date: Fri, 23 May 2003 15:53:50 +0200 (MEST)
 From: Geert Uytterhoeven <geert@linux-m68k.org>
 To: Ralf Baechle <ralf@linux-mips.org>
 cc: Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: [PATCH] Embedded ramdisks
-Message-ID: <Pine.GSO.4.21.0305231551110.26586-100000@vervain.sonytel.be>
+Subject: [PATCH] Vr41xx unaligned access update
+Message-ID: <Pine.GSO.4.21.0305231553070.26586-100000@vervain.sonytel.be>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Return-Path: <Geert.Uytterhoeven@sonycom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2432
+X-archive-position: 2433
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -27,20 +27,43 @@ X-list: linux-mips
 
 	Hi Ralf,
 
-Fix the dependency for embedded ramdisks by using the contents of
-CONFIG_EMBEDDED_RAMDISK_IMAGE (after stripping the leading and trailing double
-quotes) instead of using the hardcoded filename `ramdisk.gz'.
+Update fix for some (Vr41xx?) CPUs, where if an unaligned access happens in a
+branch delay slot and the branch is not taken, EPC may point at the branch
+instruction while the BD bit in the cause register is not set:
+  - Remove tests for unconditional jumps, since they are always taken
+  - Add test for a branch in a branch delay slot
 
---- linux-mips-2.4.x/arch/mips/ramdisk/Makefile	Tue Apr  1 16:22:04 2003
-+++ linux/arch/mips/ramdisk/Makefile	Wed Apr  2 18:31:48 2003
-@@ -8,7 +8,7 @@
+--- linux-mips-2.4.x/arch/mips/kernel/unaligned.c	Mon May  5 16:23:43 2003
++++ linux/arch/mips/kernel/unaligned.c	Tue May  6 14:24:56 2003
+@@ -99,6 +99,7 @@
+ 	union mips_instruction insn;
+ 	unsigned long value, fixup;
+ 	unsigned int res;
++	int branch = 0;
  
- O_FORMAT = $(shell $(OBJDUMP) -i | head -2 | grep elf32)
- img = $(CONFIG_EMBEDDED_RAMDISK_IMAGE)
--ramdisk.o: ramdisk.gz ld.script
-+ramdisk.o: $(subst ",,$(img)) ld.script
- 	echo "O_FORMAT:  " $(O_FORMAT)
- 	$(LD) -T ld.script -b binary --oformat $(O_FORMAT) -o $@ $(img)
+ 	regs->regs[0] = 0;
+ 	*regptr=NULL;
+@@ -145,8 +146,6 @@
+ 	 * but the BD bit in the cause register is not set.
+ 	 */
+ 	case bcond_op:
+-	case j_op:
+-	case jal_op:
+ 	case beq_op:
+ 	case bne_op:
+ 	case blez_op:
+@@ -155,7 +154,11 @@
+ 	case bnel_op:
+ 	case blezl_op:
+ 	case bgtzl_op:
+-	case jalx_op:
++		if (branch) {
++		    /* branch in a branch delay slot */
++		    goto sigill;
++		}
++		branch = 1;
+ 		pc += 4;
+ 		goto retry;
  
 
 Gr{oetje,eeting}s,

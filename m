@@ -1,60 +1,49 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id MAA45233 for <linux-archive@neteng.engr.sgi.com>; Wed, 3 Feb 1999 12:52:08 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA42597 for <linux-archive@neteng.engr.sgi.com>; Wed, 3 Feb 1999 15:48:27 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id MAA84550
+	id PAA94200
 	for linux-list;
-	Wed, 3 Feb 1999 12:51:17 -0800 (PST)
+	Wed, 3 Feb 1999 15:47:19 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id MAA24966
+	via ESMTP id PAA98406
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 3 Feb 1999 12:51:15 -0800 (PST)
-	mail_from (ulfc@bun.falkenberg.se)
-Received: from calypso.saturn (dialup252-1-156.swipnet.se [130.244.252.156]) 
+	Wed, 3 Feb 1999 15:47:17 -0800 (PST)
+	mail_from (kuhns@abbatech.com)
+Received: from abbasvr1.abbatech.com (www.abbatech.com [38.184.81.2]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id MAA04556
-	for <linux@cthulhu.engr.sgi.com>; Wed, 3 Feb 1999 12:51:11 -0800 (PST)
-	mail_from (ulfc@bun.falkenberg.se)
-Received: by bun.falkenberg.se
-	via sendmail from stdin
-	id <m10898w-0015A9C@calypso.saturn> (Debian Smail3.2.0.102)
-	for linux@cthulhu.engr.sgi.com; Wed, 3 Feb 1999 21:43:26 +0100 (CET) 
-Date: Wed, 3 Feb 1999 21:43:26 +0100
-From: Ulf Carlsson <ulfc@bun.falkenberg.se>
-To: Alex deVries <adevries@engsoc.carleton.ca>
-Cc: Richard Hartensveld <richard@infopact.nl>,
-        "linux@cthulhu.engr.sgi.com" <linux@cthulhu.engr.sgi.com>
-Subject: Re: Compilation errors
-Message-ID: <19990203214326.A3430@bun.falkenberg.se>
-Mail-Followup-To: Alex deVries <adevries@engsoc.carleton.ca>,
-	Richard Hartensveld <richard@infopact.nl>,
-	"linux@cthulhu.engr.sgi.com" <linux@cthulhu.engr.sgi.com>
-References: <36B85DD8.CCF82EDE@infopact.nl> <Pine.LNX.3.96.990203121206.16014B-100000@lager.engsoc.carleton.ca>
-Mime-Version: 1.0
+	via ESMTP id PAA02280
+	for <linux@cthulhu.engr.sgi.com>; Wed, 3 Feb 1999 15:47:15 -0800 (PST)
+	mail_from (kuhns@abbatech.com)
+Received: from abbasvr1.abbatech.com ([38.184.81.2])
+          by abbasvr1.abbatech.com (Netscape Messaging Server 3.01)
+           with SMTP id AAA7430 for <linux@cthulhu.engr.sgi.com>;
+          Wed, 3 Feb 1999 16:42:02 -0600
+Message-ID: <36B8D0B9.41C6@abbatech.com>
+Date: Wed, 03 Feb 1999 16:42:01 -0600
+From: Victor Kuhns <kuhns@abbatech.com>
+Organization: Abba Technologies
+X-Mailer: Mozilla 3.01SGoldC-SGI (X11; I; IRIX64 6.4 IP27)
+MIME-Version: 1.0
+To: linux@cthulhu.engr.sgi.com
+Subject: Indigo R4K and Linux?
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.1i
-In-Reply-To: <Pine.LNX.3.96.990203121206.16014B-100000@lager.engsoc.carleton.ca>; from Alex deVries on Wed, Feb 03, 1999 at 12:12:47PM -0500
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Wed, Feb 03, 1999 at 12:12:47PM -0500, Alex deVries wrote:
-> On Wed, 3 Feb 1999, Richard Hartensveld wrote:
-> 
-> >                  from init/main.c:15:
-> > /usr/src/linux/include/linux/sched.h:528: `current' undeclared (first
-> > use this function)
-> > /usr/src/linux/include/linux/sched.h:528: (Each undeclared identifier is
-> > reported only once
-> > /usr/src/linux/include/linux/sched.h:528: for each function it appears
-> 
-> Use egcs and you will have no problems.  You'll be a better person, too.
+Hi Guys,
 
-You may update the specs file instead if you want, and gcc will work. Ask me and
-I'll send you the updated specs file.
+	Running Linux on a Indigo R4K.  Has anybody done it?  Our indigo just
+locks up when we try to boot off our machine running RH 5.0.  I have an
+Indy R4k...but have about 10 Indigo R4k's sitting around.  Would be nice
+to get the Indigo working:)
 
-- Ulf
+Thanks...
+
+	-Victor

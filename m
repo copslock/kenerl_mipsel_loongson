@@ -1,63 +1,121 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Oct 2002 20:45:37 +0100 (CET)
-Received: from p508B5FFC.dip.t-dialin.net ([80.139.95.252]:55204 "EHLO
-	p508B5FFC.dip.t-dialin.net") by linux-mips.org with ESMTP
-	id <S1122121AbSJaTpg>; Thu, 31 Oct 2002 20:45:36 +0100
-Received: from [IPv6:::ffff:204.127.202.61] ([IPv6:::ffff:204.127.202.61]:56218
-	"EHLO sccrmhc01.attbi.com") by ralf.linux-mips.org with ESMTP
-	id <S867025AbSJaTpR>; Thu, 31 Oct 2002 20:45:17 +0100
-Received: from lucon.org ([12.234.88.146]) by sccrmhc01.attbi.com
-          (InterMail vM.4.01.03.27 201-229-121-127-20010626) with ESMTP
-          id <20021031194449.FZID8743.sccrmhc01.attbi.com@lucon.org>;
-          Thu, 31 Oct 2002 19:44:49 +0000
-Received: by lucon.org (Postfix, from userid 1000)
-	id 318F52C4EC; Thu, 31 Oct 2002 11:44:49 -0800 (PST)
-Date: Thu, 31 Oct 2002 11:44:49 -0800
-From: "H. J. Lu" <hjl@lucon.org>
-To: "TWEDE,ROGER (HP-Boise,ex1)" <roger_twede@hp.com>
-Cc: 'Ralf Baechle' <ralf@linux-mips.org>,
-	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Oct 2002 20:56:01 +0100 (CET)
+Received: from mailhost.taec.com ([209.243.128.33]:39296 "EHLO
+	mailhost.taec.toshiba.com") by linux-mips.org with ESMTP
+	id <S1122121AbSJaT4A>; Thu, 31 Oct 2002 20:56:00 +0100
+Received: from hdqmta.taec.com (hdqmta.taec.com [209.243.180.59])
+	by mailhost.taec.toshiba.com (8.8.8+Sun/8.8.8) with ESMTP id LAA17639;
+	Thu, 31 Oct 2002 11:55:46 -0800 (PST)
 Subject: Re: NFS Root broken in 2.4.18?  Anyone successfully booted?
-Message-ID: <20021031114449.A20815@lucon.org>
-References: <CBD6266EA291D5118144009027AA63350A68F183@xboi05.boi.hp.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <CBD6266EA291D5118144009027AA63350A68F183@xboi05.boi.hp.com>; from roger_twede@hp.com on Thu, Oct 31, 2002 at 01:28:05PM -0500
-Return-Path: <hjl@lucon.org>
+To: "TWEDE,ROGER (HP-Boise,ex1)" <roger_twede@hp.com>
+Cc: "'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>,
+	linux-mips-bounce@linux-mips.org
+X-Mailer: Lotus Notes Release 5.0.10  March 22, 2002
+Message-ID: <OFEE55B060.FA262D5E-ON88256C63.006BFD0A-88256C63.006D747E@taec.com>
+From: Saugata.Chatterjee@taec.toshiba.com
+Date: Thu, 31 Oct 2002 11:57:03 -0800
+X-MIMETrack: Serialize by Router on HDQMTA/TOSHIBA_TAEC(Release 5.0.8 |June 18, 2001) at
+ 10/31/2002 11:54:58 AM
+MIME-Version: 1.0
+Content-type: text/plain; charset=us-ascii
+Return-Path: <Saugata.Chatterjee@taec.toshiba.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 547
+X-archive-position: 548
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hjl@lucon.org
+X-original-sender: Saugata.Chatterjee@taec.toshiba.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Oct 31, 2002 at 01:28:05PM -0500, TWEDE,ROGER (HP-Boise,ex1) wrote:
-> Ralf et al,
-> 
-> I found that the 2.4.18 system boots fine when booting from standard devices
-> (IDE disks etc.).
-> 
-> Init fails to execute successfully when booting from NFS.  The NFS booting
-> success appears to have died with 2.4.18.
-> 
-> The NFS boot completes fine in 2.4.17 but in 2.4.18 the NFS root is mounted
-> and /sbin/init and the ld.so.1 are at least accessed, but the system never
-> executes far enough in user space to even print a message to the console.
-> 
-> I've tried two different network card types just to be sure it wasn't a
-> single driver issue.
-> 
-> Has anyone noticed this or does anyone know what changes may have caused
-> this in 2.4.18? 
-> I'm curious whether anyone has successfully booted 2.4.18 over NFS.
-> 
 
-Works fine with 2.4.20-pre6 in CVS.
+Roger,
+
+   We do nfsroot mounts with 2.4.18 on our boards here, and it works fine.
+I have used a TC35815 Ethernet chip and a RealTek 8139 card and both are
+okay.
+
+ So your problem is probably something else...
+
+Regards,
+
+-Saugata Chatterjee
 
 
-H.J.
+
+                                                                                                                      
+                    "TWEDE,ROGER                                                                                      
+                    (HP-Boise,ex1)"              To:     "'Ralf Baechle'" <ralf@linux-mips.org>, "TWEDE,ROGER         
+                    <roger_twede@hp.com>          (HP-Boise,ex1)" <roger_twede@hp.com>                                
+                    Sent by:                     cc:     "'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>    
+                    linux-mips-bounce@linu       Subject:     NFS Root broken in 2.4.18?  Anyone successfully booted? 
+                    x-mips.org                                                                                        
+                                                                                                                      
+                                                                                                                      
+                    10/31/2002 10:28 AM                                                                               
+                                                                                                                      
+                                                                                                                      
+
+
+
+
+Ralf et al,
+
+I found that the 2.4.18 system boots fine when booting from standard
+devices
+(IDE disks etc.).
+
+Init fails to execute successfully when booting from NFS.  The NFS booting
+success appears to have died with 2.4.18.
+
+The NFS boot completes fine in 2.4.17 but in 2.4.18 the NFS root is mounted
+and /sbin/init and the ld.so.1 are at least accessed, but the system never
+executes far enough in user space to even print a message to the console.
+
+I've tried two different network card types just to be sure it wasn't a
+single driver issue.
+
+Has anyone noticed this or does anyone know what changes may have caused
+this in 2.4.18?
+I'm curious whether anyone has successfully booted 2.4.18 over NFS.
+
+Thanks,
+
+Roger Twede
+Hewlett Packard
+
+-----Original Message-----
+From: Ralf Baechle [mailto:ralf@linux-mips.org]
+Sent: Wednesday, October 30, 2002 8:06 AM
+To: TWEDE,ROGER (HP-Boise,ex1)
+Cc: 'linux-mips@linux-mips.org'
+Subject: Re: Recent Kernel Page Fault Problems Spawning Init?
+
+
+On Tue, Oct 29, 2002 at 05:53:15PM -0500, TWEDE,ROGER (HP-Boise,ex1) wrote:
+
+> I would be appreciative of any advice anyone can offer in this regard.
+>
+> Were any fundamental kernel changes made in the 2.4.17 through 2.4.19
+> timeframe which could explain why the spawning of init would hang?
+>
+> After mounting a root filesystem and attempting to spawn init, 3 or 4
+page
+> faults occur.  The entry point of init, its bss section and an elf loader
+> .text section get hit, etc.  followed by an endless series of page faults
+to
+> a bad address which just faults repeatedly, never allowing init or the
+elf
+> loader to proceed.
+>
+> I've tried a RM 7000A and 20KC based boards so far with apparently
+identical
+> behavior on both.
+
+Various people have reported this kind of problem in past but so far all of
+them turned out some local problem.  20kc and RM7000 are both supposed to
+be
+working fine.
+
+  Ralf

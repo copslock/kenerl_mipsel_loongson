@@ -1,171 +1,65 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id JAA84997 for <linux-archive@neteng.engr.sgi.com>; Sun, 2 May 1999 09:26:06 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id LAA92525 for <linux-archive@neteng.engr.sgi.com>; Sun, 2 May 1999 11:55:36 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id JAA65992
+	id LAA64515
 	for linux-list;
-	Sun, 2 May 1999 09:24:21 -0700 (PDT)
+	Sun, 2 May 1999 11:53:53 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id JAA41052
+	via ESMTP id LAA14376
 	for <linux@cthulhu.engr.sgi.com>;
-	Sun, 2 May 1999 09:24:19 -0700 (PDT)
-	mail_from (andrewb@uab.edu)
-Received: from vera.dpo.uab.edu (Vera.dpo.uab.edu [138.26.1.12]) 
+	Sun, 2 May 1999 11:53:51 -0700 (PDT)
+	mail_from (ulfc@thepuffingroup.com)
+Received: from calypso (dialup251-1-97.swipnet.se [130.244.251.97]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id MAA04575
-	for <linux@cthulhu.engr.sgi.com>; Sun, 2 May 1999 12:24:18 -0400 (EDT)
-	mail_from (andrewb@uab.edu)
-Received: from mdk187.tucc.uab.edu by vera.dpo.uab.edu (LSMTP for Windows NT v1.1a) with SMTP id <0.50F0D560@vera.dpo.uab.edu>; 2 May 1999 11:24:17 -0500
-Date: Sun, 2 May 1999 11:24:54 -0500 (CDT)
-From: "Andrew R. Baker" <andrewb@uab.edu>
-X-Sender: andrewb@mdk187.tucc.uab.edu
-To: Linux SGI <linux@cthulhu.engr.sgi.com>
-Subject: Indigo2 patch
-Message-ID: <Pine.LNX.3.96.990502111429.14447B-200000@mdk187.tucc.uab.edu>
-MIME-Version: 1.0
-Content-Type: MULTIPART/MIXED; BOUNDARY="445303055-1485092934-925662294=:14447"
+	via ESMTP id OAA06781
+	for <linux@cthulhu.engr.sgi.com>; Sun, 2 May 1999 14:53:49 -0400 (EDT)
+	mail_from (ulfc@thepuffingroup.com)
+Received: by calypso (Linux Smail3.2.0.101 #1)
+	id m10e1N5-003LodC; Sun, 2 May 1999 20:53:47 +0200 (CEST)
+Date: Sun, 2 May 1999 20:53:47 +0200
+From: Ulf Carlsson <ulfc@thepuffingroup.com>
+To: "Andrew R. Baker" <andrewb@uab.edu>
+Cc: Linux SGI <linux@cthulhu.engr.sgi.com>
+Subject: Re: Indigo2 patch
+Message-ID: <19990502205347.A7346@thepuffingroup.com>
+Mail-Followup-To: "Andrew R. Baker" <andrewb@uab.edu>,
+	Linux SGI <linux@cthulhu.engr.sgi.com>
+References: <Pine.LNX.3.96.990502111429.14447B-200000@mdk187.tucc.uab.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.95.4i
+In-Reply-To: <Pine.LNX.3.96.990502111429.14447B-200000@mdk187.tucc.uab.edu>; from Andrew R. Baker on Sun, May 02, 1999 at 11:24:54AM -0500
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
-  Send mail to mime@docserver.cac.washington.edu for more info.
+> OK, since this is my first time making a patch I am not sure I got
+> everything quite right.  This will let people with an Indigo2 actually
+> boot into Linux.  However, they probably won't be able to do much
 
---445303055-1485092934-925662294=:14447
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Cool!
 
+> thereafter (I get the kernel to die while doing a 'cat README' in the root
+> directory).  Unfortunately, this won't print the console boot messages to
+> the screen either.  To do this, I replaced the printk code in
+> kernel/printk.c with the printf code in arch/mips/arc/printf.c.  I'm sure
+> there is a better way, but I haven't found it yet.  These were made
 
+Yes, there's a better way. A PROM console can be implemented. I have hacked some
+code for this PROM console for this purpose. I can't get it to open the initial
+console though. I'll send it to you, maybe you have time to figure out what's
+wrong...
 
-OK, since this is my first time making a patch I am not sure I got
-everything quite right.  This will let people with an Indigo2 actually
-boot into Linux.  However, they probably won't be able to do much
-thereafter (I get the kernel to die while doing a 'cat README' in the root
-directory).  Unfortunately, this won't print the console boot messages to
-the screen either.  To do this, I replaced the printk code in
-kernel/printk.c with the printf code in arch/mips/arc/printf.c.  I'm sure
-there is a better way, but I haven't found it yet.  These were made
-against the yesterday's (1999.05.01) version of the CVS tree. 
+> -LINKFLAGS	= -static -N
+> +# having -N in LINKFLAGS causes my Indigo2 not to boot
+> +LINKFLAGS	= -static
 
--Andrew
+This is a problem with the cross linker and not with the kernel itself, it's the
+same for Indy's. The code in the CVS tree should remain as it is.
 
-P.S.  It would be nice to get someone to make sure this doesn't break
-anything on the Indy.  I don't have one to test things on.
- 
-
---445303055-1485092934-925662294=:14447
-Content-Type: TEXT/PLAIN; charset=US-ASCII; name="indigo2.patch"
-Content-Transfer-Encoding: BASE64
-Content-ID: <Pine.LNX.3.96.990502112454.14447C@mdk187.tucc.uab.edu>
-Content-Description: indigo2.patch
-
-ZGlmZiAtLWV4Y2x1ZGU9KkNWUyogLXIgLXUgc3JjL2xpbnV4L2FyY2gvbWlw
-cy9NYWtlZmlsZSBzcmMyL2xpbnV4L2FyY2gvbWlwcy9NYWtlZmlsZQ0KLS0t
-IHNyYy9saW51eC9hcmNoL21pcHMvTWFrZWZpbGUJVHVlIEZlYiAgOSAxNzox
-MTozMCAxOTk5DQorKysgc3JjMi9saW51eC9hcmNoL21pcHMvTWFrZWZpbGUJ
-U2F0IE1heSAgMSAyMTozNTowMSAxOTk5DQpAQCAtNiw2ICs2LDcgQEANCiAj
-DQogIyBDb3B5cmlnaHQgKEMpIDE5OTQsIDE5OTUsIDE5OTYgYnkgUmFsZiBC
-YWVjaGxlDQogIyBERUNTdGF0aW9uIG1vZGlmaWNhdGlvbnMgYnkgUGF1bCBN
-LiBBbnRvaW5lLCAxOTk2DQorIyBMSU5LRkxBR1MgY2hhbmdlZCBieSBBbmRy
-ZXcgUi4gQmFrZXIsIDE5OTkNCiAjDQogIyBUaGlzIGZpbGUgaXMgaW5jbHVk
-ZWQgYnkgdGhlIGdsb2JhbCBtYWtlZmlsZSBzbyB0aGF0IHlvdSBjYW4gYWRk
-IHlvdXIgb3duDQogIyBhcmNoaXRlY3R1cmUtc3BlY2lmaWMgZmxhZ3MgYW5k
-IGRlcGVuZGVuY2llcy4gUmVtZW1iZXIgdG8gZG8gaGF2ZSBhY3Rpb25zDQpA
-QCAtMzYsNyArMzcsOCBAQA0KIENST1NTX0NPTVBJTEUgID0gJCh0b29sLXBy
-ZWZpeCkNCiBlbmRpZg0KIA0KLUxJTktGTEFHUwk9IC1zdGF0aWMgLU4NCisj
-IGhhdmluZyAtTiBpbiBMSU5LRkxBR1MgY2F1c2VzIG15IEluZGlnbzIgbm90
-IHRvIGJvb3QNCitMSU5LRkxBR1MJPSAtc3RhdGljDQogTU9ERkxBR1MJKz0g
-LW1sb25nLWNhbGxzDQogDQogIw0KZGlmZiAtLWV4Y2x1ZGU9KkNWUyogLXIg
-LXUgc3JjL2xpbnV4L2FyY2gvbWlwcy9zZ2kva2VybmVsL2luZHlfaHBjLmMg
-c3JjMi9saW51eC9hcmNoL21pcHMvc2dpL2tlcm5lbC9pbmR5X2hwYy5jDQot
-LS0gc3JjL2xpbnV4L2FyY2gvbWlwcy9zZ2kva2VybmVsL2luZHlfaHBjLmMJ
-VHVlIEF1ZyAyNSAwNDoxNDo0OCAxOTk4DQorKysgc3JjMi9saW51eC9hcmNo
-L21pcHMvc2dpL2tlcm5lbC9pbmR5X2hwYy5jCVNhdCBNYXkgIDEgMjE6NTA6
-NDIgMTk5OQ0KQEAgLTQzLDcgKzQzLDggQEANCiAJcHJvbV9wcmludGYoInNn
-aWhwY19pbml0OiAiKTsNCiAjZW5kaWYNCiANCi0JaWYoc2lkICYgMSkgew0K
-KwkvKiBUaGlzIHRlc3Qgd29ya3Mgbm93IHRoYW5rcyB0byBXaWxsaWFtIEou
-IEVhcmwgKi8NCisJaWYgKChzaWQgJiAxKSA9PSAwICkgew0KICNpZmRlZiBE
-RUJVR19TR0lIUEMNCiAJCXByb21fcHJpbnRmKCJHVUlORVNTICIpOw0KICNl
-bmRpZg0KZGlmZiAtLWV4Y2x1ZGU9KkNWUyogLXIgLXUgc3JjL2xpbnV4L2Fy
-Y2gvbWlwcy9zZ2kva2VybmVsL2luZHlfaW50LmMgc3JjMi9saW51eC9hcmNo
-L21pcHMvc2dpL2tlcm5lbC9pbmR5X2ludC5jDQotLS0gc3JjL2xpbnV4L2Fy
-Y2gvbWlwcy9zZ2kva2VybmVsL2luZHlfaW50LmMJTW9uIEphbiAgNCAxMDow
-Mzo1NiAxOTk5DQorKysgc3JjMi9saW51eC9hcmNoL21pcHMvc2dpL2tlcm5l
-bC9pbmR5X2ludC5jCVNhdCBNYXkgIDEgMjE6NDM6MTUgMTk5OQ0KQEAgLTUs
-NiArNSw3IEBADQogICoNCiAgKiBDb3B5cmlnaHQgKEMpIDE5OTYgRGF2aWQg
-Uy4gTWlsbGVyIChkbUBlbmdyLnNnaS5jb20pDQogICogQ29weXJpZ2h0IChD
-KSAxOTk3LCAxOTk4IFJhbGYgQmFlY2hsZSAocmFsZkBnbnUub3JnKQ0KKyAq
-IENvcHlyaWdodCAoQykgMTk5OSBBbmRyZXcgUi4gQmFrZXIgKGFuZHJld2JA
-dWFiLmVkdSkgLSBJbmRpZ28yIGNoYW5nZXMNCiAgKi8NCiAjaW5jbHVkZSA8
-bGludXgvY29uZmlnLmg+DQogI2luY2x1ZGUgPGxpbnV4L2luaXQuaD4NCkBA
-IC01NjMsOSArNTY0LDE2IEBADQogCQl9DQogCX0NCiANCi0JaW9jX2ljb250
-cm9sID0gJnNnaV9pM3JlZ3MtPmludHM7DQotCWlvY190aW1lcnMgPSAmc2dp
-X2kzcmVncy0+dGltZXJzOw0KLQlpb2NfdGNsZWFyID0gJnNnaV9pM3JlZ3Mt
-PnRjbGVhcjsNCisJLyogSW5keSB1c2VzIGFuIElOVDMsIEluZGlnbzIgdXNl
-cyBhbiBJTlQyICovDQorCWlmIChzZ2lfZ3VpbmVzcykgew0KKwkJaW9jX2lj
-b250cm9sID0gJnNnaV9pM3JlZ3MtPmludHM7DQorCQlpb2NfdGltZXJzID0g
-JnNnaV9pM3JlZ3MtPnRpbWVyczsNCisJCWlvY190Y2xlYXIgPSAmc2dpX2kz
-cmVncy0+dGNsZWFyOw0KKwl9IGVsc2Ugew0KKwkJaW9jX2ljb250cm9sID0g
-JnNnaV9pMnJlZ3MtPmludHM7DQorCQlpb2NfdGltZXJzID0gJnNnaV9pMnJl
-Z3MtPnRpbWVyczsNCisJCWlvY190Y2xlYXIgPSAmc2dpX2kycmVncy0+dGNs
-ZWFyOw0KKwl9DQogDQogCS8qIE1hc2sgb3V0IGFsbCBpbnRlcnJ1cHRzLiAq
-Lw0KIAlpb2NfaWNvbnRyb2wtPmltYXNrMCA9IDA7DQpkaWZmIC0tZXhjbHVk
-ZT0qQ1ZTKiAtciAtdSBzcmMvbGludXgvYXJjaC9taXBzL3NnaS9rZXJuZWwv
-aW5keV9tYy5jIHNyYzIvbGludXgvYXJjaC9taXBzL3NnaS9rZXJuZWwvaW5k
-eV9tYy5jDQotLS0gc3JjL2xpbnV4L2FyY2gvbWlwcy9zZ2kva2VybmVsL2lu
-ZHlfbWMuYwlNb24gTWF5ICA0IDA0OjEyOjU3IDE5OTgNCisrKyBzcmMyL2xp
-bnV4L2FyY2gvbWlwcy9zZ2kva2VybmVsL2luZHlfbWMuYwlTYXQgTWF5ICAx
-IDIxOjM5OjA5IDE5OTkNCkBAIC0yLDYgKzIsNyBAQA0KICAqIGluZHlfbWMu
-YzogUm91dGluZXMgZm9yIG1hbmlwdWxhdGluZyB0aGUgSU5EWSBtZW1vcnkg
-Y29udHJvbGxlci4NCiAgKg0KICAqIENvcHlyaWdodCAoQykgMTk5NiBEYXZp
-ZCBTLiBNaWxsZXIgKGRtQGVuZ3Iuc2dpLmNvbSkNCisgKiBDb3B5cmlnaHQg
-KEMpIDE5OTkgQW5kcmV3IFIuIEJha2VyIChhbmRyZXdiQHVhYi5lZHUpIC0g
-SW5kaWdvMiBjaGFuZ2VzDQogICoNCiAgKiAkSWQ6IGluZHlfbWMuYyx2IDEu
-MyAxOTk4LzA1LzA0IDA5OjEyOjU3IHJhbGYgRXhwICQNCiAgKi8NCkBAIC0x
-NTAsNiArMTUxLDggQEANCiAJCQl0bXByZWcgfD0gU0dJTUNfR0lPUEFSTV9Q
-TElORUVYUDA7IC8qIGV4cFswMV0gcGlwZWxpbmVkICovDQogCQkJdG1wcmVn
-IHw9IFNHSU1DX0dJT1BBUk1fUExJTkVFWFAxOw0KIAkJCXRtcHJlZyB8PSBT
-R0lNQ19HSU9QQVJNX01BU1RFUkVJU0E7LyogRUlTQSBtYXN0ZXJzICovDQor
-CQkJLyogc29tZW9uZSBmb3Jnb3QgdGhpcyBwb29yIGxpdHRsZSBndXkuLi4g
-Ki8NCisJCQl0bXByZWcgfD0gU0dJTUNfR0lPUEFSTV9HRlg2NDsgCS8qIEdG
-WCBhdCA2NCBiaXRzICovDQogCQl9DQogCX0NCiAJbWNtaXNjX3JlZ3MtPmdp
-b3Bhcm0gPSB0bXByZWc7IC8qIHBvb2YgKi8NCmRpZmYgLS1leGNsdWRlPSpD
-VlMqIC1yIC11IHNyYy9saW51eC9pbmNsdWRlL2FzbS1taXBzL3NnaW50MjMu
-aCBzcmMyL2xpbnV4L2luY2x1ZGUvYXNtLW1pcHMvc2dpbnQyMy5oDQotLS0g
-c3JjL2xpbnV4L2luY2x1ZGUvYXNtLW1pcHMvc2dpbnQyMy5oCVdlZCBNYXIg
-MTEgMDk6MjE6NDUgMTk5OA0KKysrIHNyYzIvbGludXgvaW5jbHVkZS9hc20t
-bWlwcy9zZ2ludDIzLmgJU2F0IE1heSAgMSAyMTo0NDo1NiAxOTk5DQpAQCAt
-Miw2ICsyLDcgQEANCiAgKiBzZ2ludDIzLmg6IERlZmluZXMgZm9yIHRoZSBT
-R0kgSU5UMiBhbmQgSU5UMyBjaGlwc2V0cy4NCiAgKg0KICAqIENvcHlyaWdo
-dCAoQykgMTk5NiBEYXZpZCBTLiBNaWxsZXIgKGRtQGVuZ3Iuc2dpLmNvbSkN
-CisgKiBDb3B5cmlnaHQgKEMpIDE5OTkgQW5kcmV3IFIuIEJha2VyIChhbmRy
-ZXdiQHVhYi5lZHUpIC0gSU5UMiBjb3JyZWN0aW9ucw0KICAqLw0KICNpZm5k
-ZWYgX01JUFNfU0dJTlQyM19IDQogI2RlZmluZSBfTUlQU19TR0lOVDIzX0gN
-CkBAIC0yMCw3ICsyMSw3IEBADQogI2RlZmluZSBTR0lOVF9FTkQgICAgICA1
-MiAgLyogRW5kIG9mICdzcGFjZXMnICovDQogDQogLyogSU5UMiBvY2N1cGll
-cyBIUEMgUEJVUyBzbG90IDQsIElOVDMgdXNlcyBzbG90IDYuICovDQotI2Rl
-ZmluZSBTR0lfSU5UMl9CQVNFIDB4MWZiODAxMDAgLyogcGh5c2ljYWwgKi8N
-CisjZGVmaW5lIFNHSV9JTlQyX0JBU0UgMHgxZmJkOTAwMCAvKiBwaHlzaWNh
-bCAqLw0KICNkZWZpbmUgU0dJX0lOVDNfQkFTRSAweDFmYmQ5ODgwIC8qIHBo
-eXNpY2FsICovDQogDQogc3RydWN0IHNnaV9pb2NfaW50cyB7DQpAQCAtMTI4
-LDYgKzEyOSwxMCBAQA0KIA0KICNkZWZpbmUgU0dJTlRfVENTQU1QX0NPVU5U
-RVIgIDEwMjU1DQogDQorLyogRklYTUU6IFdoYXQgZG9lcyB0aGlzIHJlYWxs
-eSBsb29rIGxpa2U/ICBJdCB3YXMgd3JpdHRlbiB0byBoYXZlDQorICogMTcg
-cmVnaXN0ZXJzLCBidXQgdGhlcmUgYXJlIG9ubHkgMTYgaW4gbXkgSW5kaWdv
-Mi4NCisgKiBJIGd1ZXNzZWQgYXQgd2hpY2ggb25lIHRvIHJlbW92ZS4uLiAg
-CS0gYW5kcmV3Yg0KKyAqLw0KIHN0cnVjdCBzZ2lfaW50Ml9yZWdzIHsNCiAJ
-c3RydWN0IHNnaV9pb2NfaW50cyBpbnRzOw0KIA0KQEAgLTE0Nyw4ICsxNTIs
-MTEgQEANCiAjZW5kaWYNCiAjZGVmaW5lIElOVDJfVENMRUFSX1QwQ0xSICAg
-ICAgMHgxICAgICAgICAvKiBDbGVhciB0aW1lcjAgSVJRICovDQogI2RlZmlu
-ZSBJTlQyX1RDTEVBUl9UMUNMUiAgICAgIDB4MiAgICAgICAgLyogQ2xlYXIg
-dGltZXIxIElSUSAqLw0KLQ0KLQl1bnNpZ25lZCBsb25nIF91bnVzZWRbM107
-DQorLyogSSBhbSBndWVzaW5nIHRoZXJlIGFyZSBvbmx5IHR3byB1bnVzZWQg
-cmVnaXN0ZXJzIGhlcmUgDQorICogYnV0IEkgY291bGQgYmUgd3JvbmcuLi4J
-CQktIGFuZHJld2INCisgKi8NCisvKgl1bnNpZ25lZCBsb25nIF91bnVzZWRb
-M107ICovDQorCXVuc2lnbmVkIGxvbmcgX3VudXNlZFsyXTsNCiAJc3RydWN0
-IHNnaV9pb2NfdGltZXJzIHRpbWVyczsNCiB9Ow0KIA0K
---445303055-1485092934-925662294=:14447--
+- Ulf

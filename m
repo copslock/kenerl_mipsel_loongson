@@ -1,75 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Oct 2002 07:01:22 +0200 (CEST)
-Received: from nat-pool-rdu.redhat.com ([66.187.233.200]:30630 "EHLO
-	lacrosse.corp.redhat.com") by linux-mips.org with ESMTP
-	id <S1123944AbSJOFBV>; Tue, 15 Oct 2002 07:01:21 +0200
-Received: from free.redhat.lsd.ic.unicamp.br (aoliva2.cipe.redhat.com [10.0.1.156])
-	by lacrosse.corp.redhat.com (8.11.6/8.9.3) with ESMTP id g9F51BP32662;
-	Tue, 15 Oct 2002 01:01:11 -0400
-Received: from free.redhat.lsd.ic.unicamp.br (localhost.localdomain [127.0.0.1])
-	by free.redhat.lsd.ic.unicamp.br (8.12.5/8.12.5) with ESMTP id g9F51AxB011078;
-	Tue, 15 Oct 2002 03:01:10 -0200
-Received: (from aoliva@localhost)
-	by free.redhat.lsd.ic.unicamp.br (8.12.5/8.12.5/Submit) id g9F51Ai9011074;
-	Tue, 15 Oct 2002 02:01:10 -0300
-To: Eric Christopher <echristo@redhat.com>
-Cc: "H. J. Lu" <hjl@lucon.org>, "David S. Miller" <davem@redhat.com>,
-	rsandifo@redhat.com, linux-mips@linux-mips.org, gcc@gcc.gnu.org,
-	binutils@sources.redhat.com
-Subject: Re: MIPS gas relaxation still doesn't work
-References: <20021014123940.A32333@lucon.org>
-	<20021014.123510.00003943.davem@redhat.com>
-	<20021014125549.A32575@lucon.org>
-	<20021014.125134.98070597.davem@redhat.com>
-	<20021014130932.A32693@lucon.org>
-	<orwuokzs9k.fsf@free.redhat.lsd.ic.unicamp.br>
-	<20021014132352.A489@lucon.org> <1034630700.18841.0.camel@ghostwheel>
-From: Alexandre Oliva <aoliva@redhat.com>
-Organization: GCC Team, Red Hat
-Date: 15 Oct 2002 02:01:10 -0300
-In-Reply-To: <1034630700.18841.0.camel@ghostwheel>
-Message-ID: <or7kgkz46h.fsf@free.redhat.lsd.ic.unicamp.br>
-User-Agent: Gnus/5.09 (Gnus v5.9.0) Emacs/21.2
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <aoliva@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Oct 2002 08:57:50 +0200 (CEST)
+Received: from h24-83-212-10.vc.shawcable.net ([24.83.212.10]:31476 "EHLO
+	bard.illuminatus.org") by linux-mips.org with ESMTP
+	id <S1122978AbSJOG5t>; Tue, 15 Oct 2002 08:57:49 +0200
+Received: from templar ([10.0.0.2])
+	by bard.illuminatus.org with esmtp (Exim 3.35 #1 (Debian))
+	id 181Krv-0005OO-00; Mon, 14 Oct 2002 23:07:51 -0700
+Subject: Re: Indigo2 GUI1-Extreme Documentation
+From: Mike Nugent <mips@illuminatus.org>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: "Matthew H. Ray" <matthewhray@yahoo.com>, linux-mips@linux-mips.org
+In-Reply-To: <20021008052152.B8115@linux-mips.org>
+References: <20021007233953.66195.qmail@web21003.mail.yahoo.com> 
+	<20021008052152.B8115@linux-mips.org>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Mailer: Ximian Evolution 1.0.3 (1.0.3-6) 
+Date: 14 Oct 2002 23:55:54 -0700
+Message-Id: <1034664955.12679.3.camel@templar>
+Mime-Version: 1.0
+Return-Path: <mips@illuminatus.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 431
+X-archive-position: 432
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aoliva@redhat.com
+X-original-sender: mips@illuminatus.org
 Precedence: bulk
 X-list: linux-mips
 
-On Oct 14, 2002, Eric Christopher <echristo@redhat.com> wrote:
 
-> On Mon, 2002-10-14 at 13:23, H. J. Lu wrote:
->> On Mon, Oct 14, 2002 at 05:20:55PM -0300, Alexandre Oliva wrote:
->> > On Oct 14, 2002, "H. J. Lu" <hjl@lucon.org> wrote:
->> > 
->> > > If gcc just emits
->> > 
->> > > 	bne     $2,$0,$L7493
->> > > 	j       $L2
->> > 
->> > IIRC, that's exactly what GCC will emit if you don't tell it to try to
->> > fill delay slots.  If it tries to fill delay slots and fails, I doubt
->> > the assembler is going to succeed at that.
->> 
->> Is that a way to tell gcc not to fill the delay slots with nop? If gcc
->> has nothing else to fill, do nothing and let gas do its thing.
+How would these be accessible then?  I was told that there are no specs
+for the Extreme card anywhere.  If we have something on this archived
+somewhere, I'd love to take a peek.
 
-> Read mips_output_conditional_branch ()
+Thanks.
 
-That part I'm familiar with.  The part I'm not familiar with is
-whether this would trigger problems in say the SGI assembler, or
-whether such reordering of .sets would violate some MIPS assembler
-specification I'm not familiar with.
-
+On Mon, 2002-10-07 at 20:21, Ralf Baechle wrote:
+> On Mon, Oct 07, 2002 at 04:39:53PM -0700, Matthew H. Ray wrote:
+> 
+> > I've installed Debian on my Indigo2 and I'm interested
+> > in hacking on the video card in my system (a
+> > GUI1-Extreme with the HQ 2.1 chipset).  I've searched
+> > around quite a bit and have found little if any
+> > documentation.  Can anyone direct me to any
+> > documentation I might have missed, or is there simply
+> > none to be found whatsoever?  Is there any chance of
+> > the mailing list archive being resurrected?  Nothing
+> > but broken links from the linux-mips.org webpage.
+> 
+> linux-mips.org moved to it's own machine.  We do keep archives on the
+> machine but atm they're not accessible as HTML.
+> 
+>   Ralf
+> 
+> 
 -- 
-Alexandre Oliva   Enjoy Guarana', see http://www.ic.unicamp.br/~oliva/
-Red Hat GCC Developer                 aoliva@{redhat.com, gcc.gnu.org}
-CS PhD student at IC-Unicamp        oliva@{lsd.ic.unicamp.br, gnu.org}
-Free Software Evangelist                Professional serial bug killer
+Mike Nugent
+Programmer/Author
+mike@illuminatus.org
+"I believe the use of noise to make music will increase until we reach a
+music produced through the aid of electrical instruments which will make
+available for musical purposes any and all sounds that can be heard."
+ -- composer John Cage, 1937

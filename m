@@ -1,38 +1,72 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fAO41BB20806
-	for linux-mips-outgoing; Fri, 23 Nov 2001 20:01:11 -0800
-Received: from real.realitydiluted.com (real.realitydiluted.com [208.242.241.164])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAO418o20802
-	for <linux-mips@oss.sgi.com>; Fri, 23 Nov 2001 20:01:08 -0800
-Received: from localhost.localdomain ([127.0.0.1] helo=cotw.com)
-	by real.realitydiluted.com with esmtp (Exim 3.22 #1 (Red Hat Linux))
-	id 167T3p-0002gZ-00; Fri, 23 Nov 2001 21:00:57 -0600
-Message-ID: <3BFF1941.6421DBFB@cotw.com>
-Date: Fri, 23 Nov 2001 21:51:29 -0600
-From: "Steven J. Hill" <sjhill@cotw.com>
-Reply-To: sjhill@cotw.com
-X-Mailer: Mozilla 4.77 [en] (X11; U; Linux 2.4.12-xfs i686)
-X-Accept-Language: en
+	by oss.sgi.com (8.11.2/8.11.3) id fAOCiqh04297
+	for linux-mips-outgoing; Sat, 24 Nov 2001 04:44:52 -0800
+Received: from holly.csn.ul.ie (holly.csn.ul.ie [136.201.105.4])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAOCilo04286
+	for <linux-mips@oss.sgi.com>; Sat, 24 Nov 2001 04:44:47 -0800
+Received: from skynet.csn.ul.ie (skynet [136.201.105.2])
+	by holly.csn.ul.ie (Postfix) with ESMTP
+	id 29D2E2B4BE; Sat, 24 Nov 2001 11:44:40 +0000 (GMT)
+Received: by skynet.csn.ul.ie (Postfix, from userid 2139)
+	id D237AC8CA; Sat, 24 Nov 2001 11:44:40 +0000 (GMT)
+Received: from localhost (localhost [127.0.0.1])
+	by skynet.csn.ul.ie (Postfix) with ESMTP
+	id C0488E8C4; Sat, 24 Nov 2001 11:44:40 +0000 (GMT)
+Date: Sat, 24 Nov 2001 11:44:40 +0000 (GMT)
+From: Dave Airlie <airlied@csn.ul.ie>
+X-X-Sender:  <airlied@skynet>
+To: William Lee Irwin III <wli@holomorphy.com>
+Cc: <linux-mips@oss.sgi.com>
+Subject: Re: advice on dz.c
+In-Reply-To: <20011123162710.D1048@holomorphy.com>
+Message-ID: <Pine.LNX.4.32.0111241140030.16093-100000@skynet>
 MIME-Version: 1.0
-To: linux-mips@oss.sgi.com, debian-mips@lists.debian.org
-Subject: Philips Nino pre-compiled kernel image available...
-References: <3A2FB3CB.3566F805@mips.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Greetings.
 
-I have uploaded a pre-compiled kernel image for the Philips Nino to
-my FTP site. It is the most recent kernel from the SGI MIPS kernel
-with a 512KB ramdisk image linked into it containing a stand alone
-shell. Simply upload to your Nino and use the PocketBSD bootloader
-to boot with. It is available at:
+This is unusual I've just taken a run down through a diff of 1.17 and 1.22
+from the MIPS CVS tree and I can't see anything that could cause breakage
+that has been changed... I'd try commentined out the DZ_DEBUG stuff.. this
+isn't meant to be called... unless someone wants to specifically debug
+their dz.c on a decstation.... otherwise it should be switched off..
 
-    ftp://ftp.cotw.com/Nino/kernel/vmlinux.bz2
+Granted to code doesn't look like it would compile with it off..
 
--Steve
+Dave.
+
+On Fri, 23 Nov 2001, William Lee Irwin III wrote:
+
+> startup() in the 2.4.14 dz.c appears to either not terminate or to
+> bring down the kernel on a DecStation 5000/200. The 2.4.5 dz.c when
+> put it in its place appears to work properly, modulo some strangeness
+> in terminal emulation at runtime.
+>
+> Unfortunately, attempts to isolate what difference creates the problem
+> failed to reveal the true cause of this. The kernel appears to die
+> immediately after restore_flags(). This appears unusual to me as the
+> changes are largely cosmetic.
+>
+> I also tried extending the extent of the code over which interrupts
+> are disabled, to no avail. After extending it to what apparently was
+> the entire extent of the driver's ->open code the kernel died somewhere
+> between enabling interrupts again and the printk immediately after
+> the return to tty_open(). It did not appear that the driver was
+> re-entered at this point, as printk's for the other entry points
+> failed to trigger.
+>
+>
+> I am interested in suggestions as to what code changes I should make
+> in order to bring this driver into a more robust state so that I myself
+> can repair the code for use on one of my own personal machines.
+>
+>
+> Thanks,
+> Bill
+>
 
 -- 
- Steven J. Hill - Embedded SW Engineer
+David Airlie, Software Engineer
+http://www.skynet.ie/~airlied / airlied@skynet.ie
+pam_smb / Linux DecStation / Linux VAX / ILUG person

@@ -1,37 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Mar 2005 15:11:40 +0000 (GMT)
-Received: from no-dns-yet.demon.co.uk ([IPv6:::ffff:83.104.11.251]:55097 "EHLO
-	exterity.co.uk") by linux-mips.org with ESMTP id <S8225762AbVCHPLZ>;
-	Tue, 8 Mar 2005 15:11:25 +0000
-Received: from [192.168.0.85] ([192.168.0.85]) by exterity.co.uk with Microsoft SMTPSVC(6.0.3790.211);
-	 Tue, 8 Mar 2005 15:12:49 +0000
-Subject: Re: clear_user_page in page.h
-From:	JP Foster <jp.foster@exterity.co.uk>
-To:	linux-mips <linux-mips@linux-mips.org>
-In-Reply-To: <20050308140747.GC9811@linux-mips.org>
-References: <1110287573.30647.16.camel@localhost.localdomain>
-	 <20050308140747.GC9811@linux-mips.org>
-Content-Type: text/plain
-Date:	Tue, 08 Mar 2005 15:11:20 +0000
-Message-Id: <1110294681.30647.44.camel@localhost.localdomain>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.1.6 
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Mar 2005 16:31:10 +0000 (GMT)
+Received: from 64-30-195-78.dsl.linkline.com ([IPv6:::ffff:64.30.195.78]:26791
+	"EHLO jg555.com") by linux-mips.org with ESMTP id <S8225770AbVCHQay>;
+	Tue, 8 Mar 2005 16:30:54 +0000
+Received: from [172.16.0.150] (w2rz8l4s02.jg555.com [::ffff:172.16.0.150])
+  (AUTH: PLAIN root, TLS: TLSv1/SSLv3,256bits,AES256-SHA)
+  by jg555.com with esmtp; Tue, 08 Mar 2005 08:30:52 -0800
+  id 000084E8.422DD33C.0000110B
+Message-ID: <422DD318.9020804@jg555.com>
+Date:	Tue, 08 Mar 2005 08:30:16 -0800
+From:	Jim Gifford <maillist@jg555.com>
+User-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	Ralf Baechle <ralf@linux-mips.org>
+CC:	Kumba <kumba@gentoo.org>,
+	Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Re: IPTables 1.3.x fails on RaQ2
+References: <422C8D6A.6060904@jg555.com> <422C9142.8090007@gmx.net> <422D0D64.2080402@gentoo.org> <422D2801.2060903@jg555.com> <422D3AC9.4020601@gentoo.org> <422D4A49.9020504@gmx.net> <422D55B6.4010300@jg555.com> <20050308132408.GB9811@linux-mips.org>
+In-Reply-To: <20050308132408.GB9811@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 08 Mar 2005 15:12:50.0015 (UTC) FILETIME=[4ADF0EF0:01C523F1]
-Return-Path: <jpfoster@exterity.co.uk>
+Return-Path: <maillist@jg555.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7403
+X-archive-position: 7404
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jp.foster@exterity.co.uk
+X-original-sender: maillist@jg555.com
 Precedence: bulk
 X-list: linux-mips
 
-Great, that's what I did here. 
-When you say the code in question do you mean the v4l stuff or page.h?
+Ralf and other Linux-MIPS readers,
+    I checked the linux-libc-headers for those files, and they are not 
+there. I'm tried fighting this battle with netfilter before and they 
+won't budge from the fact that they build iptables from the headers in 
+/usr/src/linux, if you use my make KERNEL_DIR=/usr, the problem doesn't 
+exist it's only when we build from the raw kernel headers. So what 
+method is the proper method, building from the raw headers or santized 
+ones like linux-libc?
 
 -- 
-jp.foster@exterity.co.uk
-Digital Simplicity
+----
+Jim Gifford
+maillist@jg555.com

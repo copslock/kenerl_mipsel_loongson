@@ -1,62 +1,33 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6K2YYT07661
-	for linux-mips-outgoing; Thu, 19 Jul 2001 19:34:34 -0700
-Received: from cool.coventive.com (cool.coventive.com [211.79.9.188])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6K2YWV07654
-	for <linux-mips@oss.sgi.com>; Thu, 19 Jul 2001 19:34:32 -0700
-Received: from jefflee (jungle.coventive.com [211.79.9.189])
-	by cool.coventive.com (8.10.2/8.10.2) with SMTP id f6K2XqR15865;
-	Fri, 20 Jul 2001 10:33:56 +0800
-Message-ID: <008101c110c4$de161c70$9400a8c0@jefflee>
-From: "jeff_lee" <jeff_lee@coventive.com>
-To: <ppopov@pacbell.net>, <linux-mips-kernel@lists.sourceforge.net>,
-   <linux-mips@oss.sgi.com>
-References: <3B572EFC.9090903@pacbell.net>
+	by oss.sgi.com (8.11.2/8.11.3) id f6K2bPD07902
+	for linux-mips-outgoing; Thu, 19 Jul 2001 19:37:25 -0700
+Received: from www.transvirtual.com (root@www.transvirtual.com [206.14.214.140])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6K2bOV07899
+	for <linux-mips@oss.sgi.com>; Thu, 19 Jul 2001 19:37:24 -0700
+Received: from www.transvirtual.com (jsimmons@localhost [127.0.0.1])
+        by localhost (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f6K2atc1009792;
+	Thu, 19 Jul 2001 19:36:55 -0700
+Received: from localhost (jsimmons@localhost)
+        by www.transvirtual.com (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f6K2arSr009788;
+	Thu, 19 Jul 2001 19:36:53 -0700
+X-Authentication-Warning: www.transvirtual.com: jsimmons owned process doing -bs
+Date: Thu, 19 Jul 2001 19:36:53 -0700 (PDT)
+From: James Simmons <jsimmons@transvirtual.com>
+To: jeff_lee <jeff_lee@coventive.com>
+cc: ppopov@pacbell.net, linux-mips-kernel@lists.sourceforge.net,
+   linux-mips@oss.sgi.com
 Subject: Re: hard hat linux 2.0
-Date: Fri, 20 Jul 2001 10:37:02 +0800
-Organization: hardware
+In-Reply-To: <008101c110c4$de161c70$9400a8c0@jefflee>
+Message-ID: <Pine.LNX.4.10.10107191935430.9174-100000@transvirtual.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="big5"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.00.2919.6700
-X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6700
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi ,
-    How can I ftp the site ??
-Do I need the user name or passward ?? 
-Or how is the port number ??
 
-Thanks !!!
------ Original Message ----- 
-From: "Pete Popov" <ppopov@pacbell.net>
-To: <linux-mips-kernel@lists.sourceforge.net>; <linux-mips@oss.sgi.com>
-Sent: Friday, July 20, 2001 3:03 AM
-Subject: hard hat linux 2.0
+>     How can I ftp the site ??
 
+ftp ftp.mvista.com
 
-> Looks like ftp.mvista.com was updated last night to include the mips 
-> journeyman edition. The images of interest would be 
-> ftp.mvista.com:/pub/Journeyman/cdimages/{je-d1-hhl2.0.cdimage, 
-> je-src-hhl2.0.cdimage}.  They are rather large so it takes a while to 
-> download them.
-> 
-> In addition to the userland packages, there is an up to date cross 
-> toolchain which can build the kernel as well as useland apps. There is 
-> also a native toolchain.  The toolchain is 2.95.3 based; glibc is 2.2.3. 
->   Since there was some perl interest recently, perl is included. 
-> Rebuilding any of the userland packages, for those interested in doing 
-> that, is pretty trivial (cross based building!).
-> 
-> This is an embedded linux distribution so it's not as large as a RedHat 
-> desktop system. For embedded work though, I think it's more than 
-> sufficient.  One note, to anyone trying it.  A number of binaries are 
-> linked with pthreads, so you'll need either the new sysmips fix that 
-> Ralf is working on, when he completes it, or the patch from Florian. 
-> Otherwise binaries like ls, tar, and many others will seg fault.
-> 
-> Pete
+No password. Its in pub/JourneyMan directory. Note it is a CD image and
+its big. It toke me a hour for each image and this is with a T1 line.

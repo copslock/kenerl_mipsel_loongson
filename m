@@ -1,51 +1,57 @@
-Received:  by oss.sgi.com id <S553801AbQKGE4q>;
-	Mon, 6 Nov 2000 20:56:46 -0800
-Received: from [199.239.207.12] ([199.239.207.12]:1523 "EHLO enabtech.com")
-	by oss.sgi.com with ESMTP id <S553795AbQKGE4m>;
-	Mon, 6 Nov 2000 20:56:42 -0800
-Received: from jawad ([206.82.141.26])
-	by enabtech.com (8.9.3/8.9.3) with SMTP id VAA08334;
-	Mon, 6 Nov 2000 21:00:19 -0800 (PST)
-Message-ID: <002101c04877$dbc6a270$2a00a8c0@enabtech>
-From:   "Jawad Qureshi" <jawad@enabtech.com>
-To:     <linux-mips@fnet.fr>
-Cc:     <linux-mips@oss.sgi.com>
-Subject: How to Unsubsribe from this list
-Date:   Tue, 7 Nov 2000 10:01:51 +0500
-MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="----=_NextPart_000_001E_01C048A1.C03E3250"
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.00.2919.6700
-X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6700
+Received:  by oss.sgi.com id <S553946AbQKGLG3>;
+	Tue, 7 Nov 2000 03:06:29 -0800
+Received: from woody.ichilton.co.uk ([216.29.174.40]:60684 "HELO
+        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553909AbQKGLGL>;
+	Tue, 7 Nov 2000 03:06:11 -0800
+Received: by woody.ichilton.co.uk (Postfix, from userid 0)
+	id 2FC137CD4; Tue,  7 Nov 2000 11:06:10 +0000 (GMT)
+Date:   Tue, 7 Nov 2000 11:06:10 +0000
+From:   Ian Chilton <mailinglist@ichilton.co.uk>
+To:     linux-mips@oss.sgi.com, lfs-discuss@linuxfromscratch.org
+Subject: User/Group Problem
+Message-ID: <20001107110610.A8074@woody.ichilton.co.uk>
+Reply-To: Ian Chilton <ian@ichilton.co.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.3.11i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-This is a multi-part message in MIME format.
+Hello,
 
-------=_NextPart_000_001E_01C048A1.C03E3250
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+I am building a Linux system on an SGI I2 (MIPS) with glibc 2.2
+
+I am having the following problem....any ideas?
+
+bash-2.04# chown root test.c 
+chown: root: invalid user
+
+bash-2.04# chgrp root test.c 
+chgrp: invalid group name `root'
 
 
 
-------=_NextPart_000_001E_01C048A1.C03E3250
-Content-Type: text/html;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+bash-2.04# cat /etc/passwd
+root:1D0t80HeWTfNE:0:0:root:/root:/bin/bash
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD>
-<META content=3D"text/html; charset=3Diso-8859-1" =
-http-equiv=3DContent-Type>
-<META content=3D"MSHTML 5.00.2920.0" name=3DGENERATOR>
-<STYLE></STYLE>
-</HEAD>
-<BODY bgColor=3D#ffffff>
-<DIV>&nbsp;</DIV></BODY></HTML>
+bash-2.04# cat /etc/group 
+root:x:0:
+ 
 
-------=_NextPart_000_001E_01C048A1.C03E3250--
+Thanks!
+
+
+Bye for Now,
+
+Ian
+
+
+                     \|||/ 
+                     (o o)
+ /----------------ooO-(_)-Ooo----------------\
+ |  Ian Chilton                              |
+ |  E-Mail : ian@ichilton.co.uk              |
+ \-------------------------------------------/

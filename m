@@ -1,47 +1,40 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f5LIdv616448
-	for linux-mips-outgoing; Thu, 21 Jun 2001 11:39:57 -0700
-Received: from cassidy.nuernberg.linuxtag.net (cassidy.nuernberg.linuxtag.net [212.204.83.80])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5LIdtV16445
-	for <linux-mips@oss.sgi.com>; Thu, 21 Jun 2001 11:39:56 -0700
-Received: from hydra.linuxtag.uni-kl.de (hydra.hq.linuxtag.net [192.168.0.1])
-	by cassidy.nuernberg.linuxtag.net (Postfix) with ESMTP id BB151EC2AB
-	for <linux-mips@oss.sgi.com>; Thu, 21 Jun 2001 20:39:25 +0200 (CEST)
-Received: by hydra.linuxtag.uni-kl.de (Postfix, from userid 1034)
-	id 30CCD4FDB; Thu, 21 Jun 2001 20:36:18 +0200 (CEST)
-Date: Thu, 21 Jun 2001 20:36:18 +0200
-From: Karsten Merker <karsten@excalibur.cologne.de>
+	by oss.sgi.com (8.11.2/8.11.3) id f5LIsv316745
+	for linux-mips-outgoing; Thu, 21 Jun 2001 11:54:57 -0700
+Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5LIsuV16742
+	for <linux-mips@oss.sgi.com>; Thu, 21 Jun 2001 11:54:57 -0700
+Received: by ocean.lucon.org (Postfix, from userid 1000)
+	id 2DDB1125BA; Thu, 21 Jun 2001 11:54:55 -0700 (PDT)
+Date: Thu, 21 Jun 2001 11:54:55 -0700
+From: "H . J . Lu" <hjl@lucon.org>
 To: linux-mips@oss.sgi.com
-Subject: Developer's meeting at LinuxTag?
-Message-ID: <20010621203618.B4805@linuxtag.org>
-Mail-Followup-To: Karsten Merker <karsten@excalibur.cologne.de>,
-	linux-mips@oss.sgi.com
+Subject: The new home of the new mips toolchain and RedHat 7.1
+Message-ID: <20010621115455.A2678@lucon.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.3.15i
-X-No-Archive: yes
+User-Agent: Mutt/1.2.5i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hallo everybody,
+Thanks to Ralf and SGI, I am putting the new mips toolchain and my mini
+port of RedHat 7.1 for mips/mipsel at 
 
-from July, 5th to July, 8th this year's LinuxTag will take place at the
-Stuttgart Exhibition Centre in Germany. Many Linux developers will be
-there and I would find it nice to get to know some of the Linux/MIPS people
-in person, so I wanted to ask if somebody of you is planning to visit
-LinuxTag this year. The Linux-Ports-booth (among other things showing
-Linux/MIPS) would be a nice meeting point in case somebody is interested.
+ftp://oss.sgi.com/pub/linux/mips/redhat/7.1/
 
-There is no entrance fee for LinuxTag, if you need further information,
-please take a look at http://www.linuxtag.org/ (german version) or
-http://www.linuxtag.org/2001/english/ (english version) or feel free to
-ask me by email.
+I will upload binutils, gcc andd glibc rpms first, followed by a subset
+of RedHat 7.1. The whole process may take a few weeks since my network
+connection is not very fast. Once the upload is done, you should be
+able to put a small RedHat 7.1 on the mips/mipsel box and compile the
+rest of RedHat 7.1 yourselves.
 
-Greetings,
-Karsten
--- 
-#include <standard_disclaimer>
-Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der Nutzung
-oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die Markt- oder
-Meinungsforschung.
+BTW, the new mips toolchain has gcc-2.96-88.1, binutils-2.11.90.0.19-1
+and glibc-2.2.3-11.3. They are as good as the x86 version in RedHat
+7.1. The only thing missing is gdb. I am looking forward to Daniel's
+mips port.
+
+Thanks.
+
+
+H.J.

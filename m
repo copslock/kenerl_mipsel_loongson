@@ -1,169 +1,78 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g3ODCJwJ021271
-	for <linux-mips-outgoing@oss.sgi.com>; Wed, 24 Apr 2002 06:12:19 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g3ODZwwJ021829
+	for <linux-mips-outgoing@oss.sgi.com>; Wed, 24 Apr 2002 06:35:58 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g3ODCJSS021270
-	for linux-mips-outgoing; Wed, 24 Apr 2002 06:12:19 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g3ODZwjd021828
+	for linux-mips-outgoing; Wed, 24 Apr 2002 06:35:58 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from mail.ict.ac.cn ([159.226.39.4])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g3ODC1wJ021266
-	for <linux-mips@oss.sgi.com>; Wed, 24 Apr 2002 06:12:01 -0700
-Message-Id: <200204241312.g3ODC1wJ021266@oss.sgi.com>
-Received: (qmail 27258 invoked from network); 24 Apr 2002 13:09:14 -0000
-Received: from unknown (HELO foxsen) (159.226.40.150)
-  by 159.226.39.4 with SMTP; 24 Apr 2002 13:09:14 -0000
-Date: Wed, 24 Apr 2002 21:11:20 +0800
-From: Zhang Fuxin <fxzhang@ict.ac.cn>
-To: Girish Gulawani <girishvg@yahoo.com>
-CC: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: Re: vga initialization
-X-mailer: FoxMail 3.11 Release [cn]
-Mime-Version: 1.0
-Content-Type: text/plain; charset="GB2312"
-Content-Transfer-Encoding: 8bit
-X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id g3ODC2wJ021267
+Received: from mx2.mips.com (mx2.mips.com [206.31.31.227])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g3ODZrwJ021825
+	for <linux-mips@oss.sgi.com>; Wed, 24 Apr 2002 06:35:53 -0700
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.9.3/8.9.0) with ESMTP id GAA14093;
+	Wed, 24 Apr 2002 06:36:10 -0700 (PDT)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id GAA11195;
+	Wed, 24 Apr 2002 06:36:09 -0700 (PDT)
+Received: from copsun17.mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g3ODZHA07656;
+	Wed, 24 Apr 2002 15:35:17 +0200 (MEST)
+From: Hartvig Ekner <hartvige@mips.com>
+Received: (from hartvige@localhost)
+	by copsun17.mips.com (8.9.1/8.9.0) id PAA02613;
+	Wed, 24 Apr 2002 15:35:16 +0200 (MET DST)
+Message-Id: <200204241335.PAA02613@copsun17.mips.com>
+Subject: Re: Updates for RedHat 7.1/mips
+To: hjl@lucon.org (H . J . Lu)
+Date: Wed, 24 Apr 2002 15:35:16 +0200 (MET DST)
+Cc: linux-mips@oss.sgi.com
+In-Reply-To: <20020423155925.A8846@lucon.org> from "H . J . Lu" at Apr 23, 2002 03:59:25 PM
+X-Mailer: ELM [version 2.5 PL1]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-hi,
-  I don't have that card at hand:(. But if you have tried this emulation
-code,please give more detailed message:
-  1. what you do
-  2. output (dmesg,or captured from your serial console).
-  3. your platform,esp. whether it has pc legacy hardware support. 
-    For example,a PIIX4 or via686a southbridge will give you 
-    functionality of the legacy vga support,8254 timer and standard io ports
-    (0x41-0x43 timer,0x61->timer 2 enable,0x3c0-0x3cf ->vga ports etc.)
+All the problems I reported are fixed (only tested LE so far). Thanks.
 
+Currently recompiling glibc natively for the installation images.
+We'll post a message here when our new installation images are ready.
 
-ÔÚ 2002-04-24 20:15:00 you wrote£º
->would you by any chance try this emulation on AOpen's PT80 card? i failed to
->fire up this card. any clues?
->
->
->----- Original Message -----
->From: "Zhang Fuxin" <fxzhang@ict.ac.cn>
->To: <linux-mips@oss.sgi.com>
->Sent: Wednesday, April 24, 2002 10:11 AM
->Subject: vga initialization
->
->
->> hi,
->>   I find most code is already there in scitech's x86emu-0.8.
->> in one day it is adapted into linux kernel.
->>
->>   If anybody is interested,my code can be fetched from
->> ftp://ftp.gnuchina.org/incoming/mips-vga-init/freebiosvga.tar.gz
->>
->> For a short description,the READ in the package is paste here:
->>
->> This is x86/bios emulator adapted for used in 2.4 kernel
->> to do initialize pc VGA cards.
->>
->> Port it to pmon/yamon should be easy,if you want an userland
->> executable,please download the original x86emu-0.8 from SciTech
->> Software, Inc.
->>
->> Usage:
->>  here is my choice:
->>   1.add code in new directory arch/mips/freebiosvga/
->>   2.arch/mips/config.in:
->>      add config option CONFIG_VGA_POST to proper place
->>          bool '  Support for VGA POST' CONFIG_VGA_POST
->>
->>   3.arch/mips/Makefile
->>      add directory and target objects of freevgabios
->>
->>      ifdef CONFIG_VGA_POST
->>      SUBDIRS      += arch/mips/freebiosvga
->>      LIBS         += arch/mips/freebiosvga/vga.o
->>      SUBDIRS      += arch/mips/freebiosvga/x86emu
->>      LIBS         += arch/mips/freebiosvga/x86emu/x86emu.o
->>      endif
->>
->>   4.init/main.c:
->>     add call to vgabios_init (right after pci_init)
->>     #ifdef CONFIG_VGA_POST
->>       vgabios_init();
->>     #endif
->>
->>   5.select 'VGA text console' or proper framebuffer, you may need to
->>   slightly modify the code,because many of them is for x86
->>
->>     for 'VGA text console',the file is drivers/video/vgacon.c,propably
->>   you need to comment out the check for card's presence in vgacon_startup.
->>   Because card initialization is later than console_init,so at that time
->>   pci address 0xa0000-0xc0000 may not response to your requests.
->>
->>
->> Problems & limits:
->>   1.currently the code rely on system's pci resource allocator to assign
->>     a valid address to rom base register(offset 0x30 in pci header).
->>     I have modified the pci_auto.c to handle rom. Patch is here:
->>
->>      diff -r1.2 pci_auto.c
->>      107a108,110
->>      >       u32 bases[7] =
->{PCI_BASE_ADDRESS_0,PCI_BASE_ADDRESS_1,PCI_BASE_ADDRESS_2,
->>      >
->PCI_BASE_ADDRESS_3,PCI_BASE_ADDRESS_4,PCI_BASE_ADDRESS_5,
->>      >                       PCI_ROM_ADDRESS};
->>      110c113,116
->>      <       for (bar = PCI_BASE_ADDRESS_0; bar <= PCI_BASE_ADDRESS_5;
->bar+=4) {
->>      ---
->>      >       for (bar_nr=0; bar_nr<7; bar_nr++) {
->>      >
->>      >               bar = bases[bar_nr];
->>      >
->>      137c143
->>      <               if (bar_response & PCI_BASE_ADDRESS_SPACE) {
->>      ---
->>      >               if (bar_nr != 6 && (bar_response &
->PCI_BASE_ADDRESS_SPACE)) {
->>      209d214
->>      <               bar_nr++;
->>      349,350d353
->>      <
->>      <                       DBG("Skipping legacy mode IDE controller\n");
->>
->>    if you don't use pci_auto,then make sure your pmon/yamon do it.
->>
->>    Of course,you can write an absolute,safe value for your specific
->platform
->>    to see it works:)
->>
->>    If the base address read from your card is invalid,you will get message
->>    like:
->>      "No address assigned to rom" or "No valid bios found"
->>
->>  2. i am assuming ioremap(a_pci_address) will return a valid cpu virtue
->>    address for accessing memory located at 'a_pci_address'.
->>
->>
->>  3. Multiple cards are not supported currently,though it may be a piece of
->>  cake.Complex cards,e.g. those contain bridges,may fail.
->>
->>  4. cards tested here include:
->>    trident 3Dimage9750,S3virge,Riva TNT2
->>
->> DISCLAIMER:
->>   It is provided "as is" without express or implied warranty.
->>
->>   Any problems you can contact fxzhang@ict.ac.cn.
->>
->>
->> Happy hacking and good luck.
->
->
->
->
->_________________________________________________________
->
->Do You Yahoo!?
->
->Get your free @yahoo.com address at http://mail.yahoo.com
+/Hartvig
 
-Regards
-            Zhang Fuxin
-            fxzhang@ict.ac.cn
+H . J . Lu writes:
+> 
+> On Mon, Apr 22, 2002 at 08:38:49PM +0200, Hartvig Ekner wrote:
+> > Hi,
+> > 
+> > H . J . Lu writes:
+> > > 
+> > > On Mon, Apr 22, 2002 at 06:55:14PM +0200, Hartvig Ekner wrote:
+> > > > Hi H.J,
+> > > > 
+> > > > No, I did not compile myself, but used your binary (except for cracklib,
+> > > > where I used our natively compiled package instead). But I did replace
+> > > > ALL new updated packages at once during the upgrade.
+> > > > 
+> > > > However, I have also tried to install (-U) rpm*rpm and the popt rpm on a
+> > > > working system based on your original packages, and voila: the same error
+> > > > appears. So it does appear to be linked to the rpm RPM package.
+> > > > 
+> > > > The grep you asked for returns:
+> > > 
+> > > Thanks. I will fix those among other bugs I have been working on.
+> > 
+> > Great, thanks. Can you let me know as soon as the RPM problem has been fixed,
+> > so that I can continue the update of the installation images? BTW, are the
+> > other bugs you're working on something to wait for in this regard or not?
+> > 
+> 
+> I updated glibc, python, gcc, gdb, rpm, openssl, binutils and toolchain at
+> 
+> ftp://oss.sgi.com/pub/linux/mips/redhat/7.1/
+> 
+> Let know know if there are any problems.
+> 
+> 
+> H.J.

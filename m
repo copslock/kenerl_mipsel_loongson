@@ -1,66 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Aug 2003 20:37:42 +0100 (BST)
-Received: from bay1-f6.bay1.hotmail.com ([IPv6:::ffff:65.54.245.6]:16659 "EHLO
-	hotmail.com") by linux-mips.org with ESMTP id <S8225201AbTHOThk>;
-	Fri, 15 Aug 2003 20:37:40 +0100
-Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
-	 Fri, 15 Aug 2003 12:37:22 -0700
-Received: from 207.13.167.2 by by1fd.bay1.hotmail.msn.com with HTTP;
-	Fri, 15 Aug 2003 19:37:22 GMT
-X-Originating-IP: [207.13.167.2]
-X-Originating-Email: [michaelanburaj@hotmail.com]
-From: "Michael Anburaj" <michaelanburaj@hotmail.com>
-To: linux-mips@linux-mips.org
-Subject: RTL8139 -- Link status change
-Date: Fri, 15 Aug 2003 12:37:22 -0700
-Mime-Version: 1.0
-Content-Type: text/plain; format=flowed
-Message-ID: <BAY1-F65q4IaYZVCA1G0003fe37@hotmail.com>
-X-OriginalArrivalTime: 15 Aug 2003 19:37:22.0566 (UTC) FILETIME=[A5C6E260:01C36364]
-Return-Path: <michaelanburaj@hotmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Aug 2003 13:32:37 +0100 (BST)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:14720 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225303AbTHPMcc>; Sat, 16 Aug 2003 13:32:32 +0100
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA15430;
+	Sat, 16 Aug 2003 14:32:18 +0200 (MET DST)
+X-Authentication-Warning: delta.ds2.pg.gda.pl: macro owned process doing -bs
+Date: Sat, 16 Aug 2003 14:32:17 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Jun Sun <jsun@mvista.com>
+cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [patch] Generic time trailing clean-ups
+In-Reply-To: <20030814095246.C1203@mvista.com>
+Message-ID: <Pine.GSO.3.96.1030816142004.15339A-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3060
+X-archive-position: 3061
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: michaelanburaj@hotmail.com
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Thu, 14 Aug 2003, Jun Sun wrote:
 
-Setup: MIPS board -> Hub <- RH 9 (DHCP server)
+> > > 1) get rid of calibrate_*() function
+> > > 2) introduce a generic counter frequence calibration routine, which
+> > >    is only invoked when mips_counter_frequency is 0.
+> > > 3) If any board is not happy with this calibration, it is free to
+> > >    do its calibration in board_timer_init(), which would set
+> > >    mips_counter_frequency to be non-zero.
+> > 
+> >  So I am lost, too.  What I proposed with the patch is exactly what you
+> > describe above.  So what's wrong with it?
+> >
+> 
+> Oh, really? :)
+> 
+> 1) I don't see you " get rid of calibrate_*() function"
 
-I have a RTL8139 based PCI NIC inserted on the MIPS’s PCI (2.1) slot. The
-WAL on the NIC is left floating (Is that a problem?). I am able to send
-packets from the MIPS board to RH 9, but the packets sent from the RH 9 is
-not reaching the MIPS board.
+ The patch is for 2.4.  I won't cook a patch for 2.6 before applying this
+one, sorry.  Feel free to do that yourself, based on my proposal.  If the
+plan I've presented was unclear, then please tell me exactly, where. 
 
-Even if the DHCP server is not connected, I see the Link status change
-interrupt (status) bit of ISR going high after every packet sent from the
-MIPS board. Seems like the cause for the problem I see, am I right?
-Can somebody tell me why the link status is changing after a packet is sent
-out?
+> 2) oh, why? because your "generic counter frequence" is not generic -
+>    it requires board-specific routines.  I was referring to using
+>    jiffies to calibrate frequency.
 
-Sample at every change in ISR:
------------------------------
-BMCR = 0x1100
-BMSR = 0x782d
-ANAR = 0x01e1
-ANLPAR = 0x45e1
-ANER = 0x0001
-DIS = 0x0000
-FCSC = 0x0000
+ The calibration routine is generic -- every backend can use it without
+duplicating the code privately.  You cannot throw all platforms into a
+single bag because of different timer IRQ sources.
 
+ I have already written why jiffies cannot be used directly. 
 
-Is there a register to look at, for the cause to this link status change
-<The above registers don't change at all>? Please suggest me a way to debug
-this issue.
+> 3) I also don't see picky boards "do its calibration in board_timer_init()".
 
-Thanks,
--Mike.
+ If mips_hpt_frequency is non zero after calling board_time_init(), it's
+not recalibrated -- have you actually read the code???
 
-_________________________________________________________________
-Protect your PC - get McAfee.com VirusScan Online  
-http://clinic.mcafee.com/clinic/ibuy/campaign.asp?cid=3963
+> Your proposal differs in every count. :)
+
+ The details may differ a bit.  The principles are the same.
+
+  Maciej
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

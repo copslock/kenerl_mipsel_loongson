@@ -1,68 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Dec 2003 00:22:19 +0000 (GMT)
-Received: from palrel11.hp.com ([IPv6:::ffff:156.153.255.246]:21407 "EHLO
-	palrel11.hp.com") by linux-mips.org with ESMTP id <S8225385AbTLJAWS>;
-	Wed, 10 Dec 2003 00:22:18 +0000
-Received: from tomil.hpl.hp.com (tomil.hpl.hp.com [15.0.152.100])
-	by palrel11.hp.com (Postfix) with ESMTP
-	id 81F771C001EF; Tue,  9 Dec 2003 16:22:15 -0800 (PST)
-Received: from bougret.hpl.hp.com (bougret.hpl.hp.com [15.4.92.227])
-	by tomil.hpl.hp.com (8.9.3 (PHNE_28810+JAGae91741+JAGae92668)/8.9.3 HPLabs Timeshare Server) with ESMTP id QAA00525;
-	Tue, 9 Dec 2003 16:22:14 -0800 (PST)
-Received: from jt by bougret.hpl.hp.com with local (Exim 3.35 #1 (Debian))
-	id 1ATs7K-0003CA-00; Tue, 09 Dec 2003 16:22:14 -0800
-Date: Tue, 9 Dec 2003 16:22:14 -0800
-To: Stephen Hemminger <shemminger@osdl.org>
-Cc: Jeff Garzik <jgarzik@pobox.com>, Ralf Baechle <ralf@gnu.org>,
-	linux-mips@linux-mips.org, irda-users@sourceforge.net
-Subject: Re: [PATCH] au1k_ir - fix for 2.6
-Message-ID: <20031210002214.GA12272@bougret.hpl.hp.com>
-Reply-To: jt@hpl.hp.com
-References: <20031209155440.2615b9cc.shemminger@osdl.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Dec 2003 04:09:19 +0000 (GMT)
+Received: from mo03.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:62965 "EHLO
+	mo03.iij4u.or.jp") by linux-mips.org with ESMTP id <S8224939AbTLJEJR>;
+	Wed, 10 Dec 2003 04:09:17 +0000
+Received: from mdo01.iij4u.or.jp (mdo01.iij4u.or.jp [210.130.0.171])
+	by mo03.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id NAA15844
+	for <linux-mips@linux-mips.org>; Wed, 10 Dec 2003 13:09:12 +0900 (JST)
+Received: 4UMDO01 id hBA49Cc25712; Wed, 10 Dec 2003 13:09:12 +0900 (JST)
+Received: 4UMRO00 id hBA49BK06363; Wed, 10 Dec 2003 13:09:11 +0900 (JST)
+	from rally.montavista.co.jp (sonicwall.montavista.co.jp [202.232.97.131])
+	for <linux-mips@linux-mips.org>; (authenticated)
+Date: Wed, 10 Dec 2003 13:09:16 +0900
+From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+To: linux-mips@linux-mips.org
+Subject: compile error in __cmpxchg_u32
+Message-Id: <20031210130916.555732f4.yuasa@hh.iij4u.or.jp>
+X-Mailer: Sylpheed version 0.9.7 (GTK+ 1.2.10; i686-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20031209155440.2615b9cc.shemminger@osdl.org>
-User-Agent: Mutt/1.3.28i
-Organisation: HP Labs Palo Alto
-Address: HP Labs, 1U-17, 1501 Page Mill road, Palo Alto, CA 94304, USA.
-E-mail: jt@hpl.hp.com
-From: Jean Tourrilhes <jt@bougret.hpl.hp.com>
-Return-Path: <jt@bougret.hpl.hp.com>
+Content-Type: multipart/mixed;
+ boundary="Multipart=_Wed__10_Dec_2003_13_09_16_+0900_0vnanPSD5ZWOAY.a"
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3729
+X-archive-position: 3730
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jt@bougret.hpl.hp.com
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Dec 09, 2003 at 03:54:40PM -0800, Stephen Hemminger wrote:
-> This fixes some of the issues with the Alchemy irda driver for MIPS on
-> 2.6.0-test11.  Tested with cross compile.  This driver is probably obsolete
-> but it is one of the two remaining users of dev_alloc
-> 
-> Changes:
-> 	* irqreturn_t for irq routine
-> 	* alloc_irdadev instead of dev_alloc
-> 	* should work as non module
-> 
-> Some mips build notes:
-> 	* no way to enable the device at present since drivers/net/irda/Kconfig
-> 	  expects MIPS_A1000 and arch/mips/Kconfig defines SOC_AU1000!
-> 	* include/asm-mips/timex.h does not define CLOCK_TICK_RATE for this
-> 	  that type.  Code should probably be:
-> 
-> #ifdef CONFIG_SGI_IP22
-> #define CLOCK_TICK_RATE		1000000
-> #else
-> #define CLOCK_TICK_RATE		1193182
-> #endif
+This is a multi-part message in MIME format.
 
-	I don't have the hardware and I'm not familiar with MIPS, so
-if the authors doesn't answer, we will merge your patch as is.
-	Thanks...
+--Multipart=_Wed__10_Dec_2003_13_09_16_+0900_0vnanPSD5ZWOAY.a
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-	Jean
+Hi,
+
+I found following error in 2.6, when I compiled.
+
+include/asm/system.h: In function `__cmpxchg_u32':
+include/asm/system.h:407: error: `val' undeclared (first use in this function)
+include/asm/system.h:407: error: (Each undeclared identifier is reported only once
+include/asm/system.h:407: error: for each function it appears in.)
+
+I made patch. Is this patch right?
+
+Yoichi
+
+
+--Multipart=_Wed__10_Dec_2003_13_09_16_+0900_0vnanPSD5ZWOAY.a
+Content-Type: text/plain;
+ name="cmpxchg-v26.diff"
+Content-Disposition: attachment;
+ filename="cmpxchg-v26.diff"
+Content-Transfer-Encoding: 7bit
+
+diff -aruN --exclude=CVS --exclude=.cvsignore linux.orig/include/asm-mips/system.h linux/include/asm-mips/system.h
+--- linux.orig/include/asm-mips/system.h	2003-12-03 11:30:36.000000000 +0900
++++ linux/include/asm-mips/system.h	2003-12-09 11:21:08.000000000 +0900
+@@ -404,7 +404,8 @@
+ 
+ 	local_irq_save(flags);
+ 	retval = *m;
+-	*m = val;
++	if (retval == old)
++		*m = new;
+ 	local_irq_restore(flags);	/* implies memory barrier  */
+ #endif
+ 
+@@ -440,7 +441,8 @@
+ 
+ 	local_irq_save(flags);
+ 	retval = *m;
+-	*m = val;
++	if (retval == old)
++		*m = new;
+ 	local_irq_restore(flags);	/* implies memory barrier  */
+ #endif
+ 
+
+--Multipart=_Wed__10_Dec_2003_13_09_16_+0900_0vnanPSD5ZWOAY.a--

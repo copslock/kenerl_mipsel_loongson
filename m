@@ -1,25 +1,34 @@
-Received:  by oss.sgi.com id <S553790AbQJYNTa>;
-	Wed, 25 Oct 2000 06:19:30 -0700
-Received: from srvntsxconn3.toc.ixl.com ([216.99.0.139]:48911 "HELO
-        srvntsxconn3.toc.ixl.com") by oss.sgi.com with SMTP
-	id <S553785AbQJYNTT>; Wed, 25 Oct 2000 06:19:19 -0700
-Received: from 216.99.0.139 by srvntsxconn3.toc.ixl.com (InterScan E-Mail VirusWall NT); Wed, 25 Oct 2000 09:19:06 -0400 (Eastern Daylight Time)
-Received: by srvntsxconn3.toc.ixl.com with Internet Mail Service (5.5.2650.21)
-	id <TMPFHS93>; Wed, 25 Oct 2000 09:19:05 -0400
-Message-ID: <0A5319EEAF65D411825E00805FBBD8A1209A65@exchange.clt.ixl.com>
-From:   tmaloney@ixl.com
+Received:  by oss.sgi.com id <S553793AbQJYN0a>;
+	Wed, 25 Oct 2000 06:26:30 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:64076 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S553788AbQJYN0N>;
+	Wed, 25 Oct 2000 06:26:13 -0700
+Received: from conejo.engr.sgi.com (conejo.engr.sgi.com [130.62.50.34]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id GAA27727
+	for <linux-mips@oss.sgi.com>; Wed, 25 Oct 2000 06:18:25 -0700 (PDT)
+	mail_from (rsanders@conejo.engr.sgi.com)
+Received: (from rsanders@localhost)
+	by conejo.engr.sgi.com (SGI-8.9.3/8.9.3) id GAA01942
+	for linux-mips@oss.sgi.com; Wed, 25 Oct 2000 06:24:56 -0700 (PDT)
+Date:   Wed, 25 Oct 2000 06:24:56 -0700 (PDT)
+From:   "Robert M. Sanders" <rsanders@conejo.engr.sgi.com>
+Message-Id: <200010251324.GAA01942@conejo.engr.sgi.com>
 To:     linux-mips@oss.sgi.com
-Subject: RE: putting together an Indy
-Date:   Wed, 25 Oct 2000 09:17:30 -0400
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2650.21)
-Content-Type: text/plain;
-	charset="iso-8859-1"
+Subject: Re: RE: putting together an Indy
+In-Reply-To: <0A5319EEAF65D411825E00805FBBD8A1209A65@exchange.clt.ixl.com>
+X-Status: N
+X-Mailer: Applixware 4.41 (1021.286.3)
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-http://cgi.ebay.com/aw-cgi/eBayISAPI.dll?ViewItem&item=474141593
+> http://cgi.ebay.com/aw-cgi/eBayISAPI.dll?ViewItem&item=474141593
+> 
+> will this work in an Indy?
+> 
 
-will this work in an Indy?
+No an Indy uses standard SIMMS, ECC style and requires them in groups of 4.  
+However, due to timing considerations the SIMMS need to be of good quality 70 ns 
+or better and must be ECC, ie. 72 bit.
+
+Bob

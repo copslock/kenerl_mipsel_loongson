@@ -1,52 +1,54 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id MAA27550 for <linux-archive@neteng.engr.sgi.com>; Sun, 28 Jun 1998 12:02:37 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id IAA57283 for <linux-archive@neteng.engr.sgi.com>; Mon, 29 Jun 1998 08:48:52 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id MAA02689
+	id IAA70478
 	for linux-list;
-	Sun, 28 Jun 1998 12:02:30 -0700 (PDT)
+	Mon, 29 Jun 1998 08:47:34 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id MAA65078
+	via ESMTP id IAA14416
 	for <linux@cthulhu.engr.sgi.com>;
-	Sun, 28 Jun 1998 12:02:27 -0700 (PDT)
+	Mon, 29 Jun 1998 08:47:31 -0700 (PDT)
 	mail_from (mjhsieh@helix.life.nthu.edu.tw)
 Received: from helix.life.nthu.edu.tw (helix.life.nthu.edu.tw [140.114.98.34]) 
 	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id MAA22448
-	for <linux@cthulhu.engr.sgi.com>; Sun, 28 Jun 1998 12:02:25 -0700 (PDT)
+	via ESMTP id IAA14615
+	for <linux@cthulhu.engr.sgi.com>; Mon, 29 Jun 1998 08:47:30 -0700 (PDT)
 	mail_from (mjhsieh@helix.life.nthu.edu.tw)
 Received: (from mjhsieh@localhost)
-	by helix.life.nthu.edu.tw (8.8.7/8.8.7) id VAA01210;
-	Mon, 29 Jun 1998 21:27:24 +0800
-Message-ID: <19980629212724.A1205@life.nthu.edu.tw>
-Date: Mon, 29 Jun 1998 21:27:24 +0800
+	by helix.life.nthu.edu.tw (8.8.7/8.8.7) id XAA01632;
+	Mon, 29 Jun 1998 23:47:08 +0800
+Message-ID: <19980629234708.A1627@life.nthu.edu.tw>
+Date: Mon, 29 Jun 1998 23:47:08 +0800
 From: "Francis M. J. Hsieh" <mjhsieh@life.nthu.edu.tw>
 To: linux@cthulhu.engr.sgi.com
-Subject: [fun] /etc/issue
+Subject: Re: hmmmm.... nice job!!
+References: <19980629205224.A1023@life.nthu.edu.tw> <Pine.LNX.3.95.980628145721.10146B-100000@lager.engsoc.carleton.ca>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
 X-Mailer: Mutt 0.91.1
+In-Reply-To: <Pine.LNX.3.95.980628145721.10146B-100000@lager.engsoc.carleton.ca>; from Alex deVries on Sun, Jun 28, 1998 at 02:58:20PM -0400
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+On Sun, Jun 28, 1998 at 02:58:20PM -0400, Alex deVries wrote:
+> >  - Sometimes after closing telnet connection, it shows
+> > 	bpti [/home/mjhsieh] -mjhsieh- logout
+> > 	tput: tgetent failure: No such file or directory
+> > 	tput: tgetent failure: No such file or directory
+> > 	Connection closed by foreign host."
+> 
+> Hm.  That's new to me.  I look at it.
 
-=1B[2J=1B[2;1H=1B(0lqwqwqwqwqwqwqwqwqk
-x x x x x x x x x x
-mqvqvqvqvqvqvqvqvqj =1B(B
-=1B[3;2H=1B[1;5mL=1B[3;4Hi=1B[3;6Hn=1B[3;8Hu=1B[3;10Hx=1B[3;12H/=1B[3;14HS=
-=1B[3;16HG=1B[3;18HI=1B[3;35H=1B[0m
-=1B[0m
-=20
-=1B[4mBioinformatics Center, Life Science Dept.=1B[0m
-=20
-System     : Red Hat Linux release 5.1 (Manhattan)
-Kernel     : Kernel 2.1.99 on a mips
-IP address : 140.114.98.34
-Domain name: helix.life.nthu.edu.tw
-Service    : +886 3 571-5131 x3482 / x2772
+Seems to be a small problem of term emulation (I guessed.)
+
+After some observation, I found it only occurs on console
+telneting to some certain host. I will check it, too.
+
+--
+Francis M. J. Hsieh

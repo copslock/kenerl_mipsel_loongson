@@ -1,60 +1,89 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Aug 2003 03:42:44 +0100 (BST)
-Received: from sccrmhc11.comcast.net ([IPv6:::ffff:204.127.202.55]:3813 "EHLO
-	sccrmhc11.comcast.net") by linux-mips.org with ESMTP
-	id <S8225213AbTHBCmm>; Sat, 2 Aug 2003 03:42:42 +0100
-Received: from gentoo.org (pcp02545003pcs.waldrf01.md.comcast.net[68.48.92.102](untrusted sender))
-          by comcast.net (sccrmhc11) with SMTP
-          id <2003080202423601100pmjp2e>
-          (Authid: kumba12345);
-          Sat, 2 Aug 2003 02:42:36 +0000
-Message-ID: <3F2B2521.2060508@gentoo.org>
-Date: Fri, 01 Aug 2003 22:42:41 -0400
-From: Kumba <kumba@gentoo.org>
-Reply-To: kumba@gentoo.org
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.4) Gecko/20030624
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Aug 2003 12:54:24 +0100 (BST)
+Received: from [IPv6:::ffff:203.197.124.190] ([IPv6:::ffff:203.197.124.190]:17677
+	"EHLO alumnux.com") by linux-mips.org with ESMTP
+	id <S8225343AbTHBLyV>; Sat, 2 Aug 2003 12:54:21 +0100
+Received: from mamata (mamata.alumnus.co.in [192.168.10.121])
+	by alumnux.com (8.9.3/8.9.3) with SMTP id WAA11295
+	for <linux-mips@linux-mips.org>; Sat, 2 Aug 2003 22:58:43 +0530
+From: "debashis" <debashis@alumnux.com>
+To: <linux-mips@linux-mips.org>
+Subject: Mlata: Problem with Flash Write
+Date: Sat, 2 Aug 2003 17:24:11 +0530
+Message-ID: <HPEELEDLLMNGNMNENADLKEDHCAAA.debashis@alumnux.com>
 MIME-Version: 1.0
-To: linux-mips@linux-mips.org
-Subject: Re: udelay
-References: <1059788948.9224.62.camel@zeus.mvista.com>
-In-Reply-To: <1059788948.9224.62.camel@zeus.mvista.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain;
+	charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Return-Path: <kumba@gentoo.org>
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Importance: Normal
+Return-Path: <debashis@alumnux.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2966
+X-archive-position: 2967
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: debashis@alumnux.com
 Precedence: bulk
 X-list: linux-mips
 
-Pete Popov wrote:
+Hi,
+I have a problem with writing into the FLASH of Malta board. I am trying to
+describe the problem bellow. Please help me. I am using Malta 4KC box and
+running Linux Kernel 2.4.18.
 
-> Looks like the latest udelay in 2.4 is borked. Anyway else notice that
-> problem?  I did a 10 sec test: mdelay works, udelay is broken, at least
-> for the CPU and toolchain I'm using.
-> 
-> Pete
+I have writen a File System (ext2) into Flash address 0x9E100000 using
+Yamon's 'load' command.
 
-What's one way of testing this brokeness?  I've been trying to find some 
-explanation for a bug of some sort in a cobalt RaQ2 in which the tulip 
-driver (eth0) just stops dead after several minutes of use.  One of the 
-notable features of the tulip driver patch needed to work on the RaQ2 
-adds a "udelay(1000)" into the tulip source.  Without it, the eth0 on 
-the RaQ2 is dead, so I wonder if these are related.
+I have also loaded my Vmlinux into RAM using Yamon's 'load' command. Now I
+am trying to access the File System written into Flash (Loaded at address
+0x9E100000) from vmlinux code. I am actually enabled the MTD support and
+using Test RAM driver(linux/drivers/mtd/devices/mtdram.c) to get a MTD
+device. The portion of the configuration is given bellow -
 
-If they are related, then this behavior has been slowly getting worse it 
-seems, as eth0 on the RaQ2 apparently has had smaller and smaller 
-amounts of time needed before the interface died.  2.4.18, it took most 
-of a day, by 2.4.21, it happens within seconds.
+#
+# Memory Technology Devices (MTD)
+#
+CONFIG_MTD=y
+CONFIG_MTD_DEBUG=y
+CONFIG_MTD_DEBUG_VERBOSE=3
+# CONFIG_MTD_PARTITIONS is not set
+# CONFIG_MTD_REDBOOT_PARTS is not set
+# CONFIG_MTD_CHAR is not set
+CONFIG_MTD_BLOCK=y
+# CONFIG_FTL is not set
+# CONFIG_NFTL is not set
+......
 
---Kumba
+#
+# Self-contained MTD device drivers
+#
+# CONFIG_MTD_PMC551 is not set
+# CONFIG_MTD_SLRAM is not set
+CONFIG_MTD_MTDRAM=y
+CONFIG_MTDRAM_TOTAL_SIZE=1024
+CONFIG_MTDRAM_ERASE_SIZE=128
+CONFIG_MTDRAM_ABS_POS=1E100000
 
--- 
-"Such is oft the course of deeds that move the wheels of the world: 
-small hands do them because they must, while the eyes of the great are 
-elsewhere."  --Elrond
+Also I did the small change in the mtdram.c file -
+
+	mtd_info->type = MTD_NORFLASH;
+	mtd_info->flags = MTD_CAP_NORFLASH;
+
+
+Now, with the above cofiguration I am able to mount the File System from
+Flash. I am able to read the files. Also I can add/delete files. However,
+once I unmount the File System, none of the changes are reflected into
+Flash. So next time when I mount, I am not able to view my changes. It is
+all old stuff. I saw that the ram_write() function gets called during
+unmount.
+
+Do I need to use some other driver? Any test code/sample code is available
+for this? Any other suggestion are welcome.
+
+Regards,
+debashis

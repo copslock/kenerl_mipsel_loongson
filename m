@@ -1,42 +1,64 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f5E5rmN30692
-	for linux-mips-outgoing; Wed, 13 Jun 2001 22:53:48 -0700
-Received: from foghorn.airs.com (IDENT:qmailr@foghorn.airs.com [63.201.54.26])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5E5rlP30689
-	for <linux-mips@oss.sgi.com>; Wed, 13 Jun 2001 22:53:47 -0700
-Received: (qmail 32124 invoked by uid 10); 14 Jun 2001 05:53:47 -0000
-Received: (qmail 27191 invoked by uid 269); 14 Jun 2001 05:53:42 -0000
-Mail-Followup-To: gcc@gcc.gnu.org,
-  binutils@sourceware.cygnus.com,
-  linux-mips@oss.sgi.com,
-  hjl@lucon.org
-From: Ian Lance Taylor <ian@zembu.com>
-To: "H . J . Lu" <hjl@lucon.org>
-Cc: gcc@gcc.gnu.org, binutils@sourceware.cygnus.com, linux-mips@oss.sgi.com
-Subject: Re: DWARF2 exception doesn't work with gcc and gas on MIPS.
-References: <20010613212940.A22683@lucon.org> <sir8wnvcch.fsf@daffy.airs.com>
-Date: 13 Jun 2001 22:53:42 -0700
-In-Reply-To: <sir8wnvcch.fsf@daffy.airs.com>
-Message-ID: <sin17bvc7t.fsf@daffy.airs.com>
-User-Agent: Gnus/5.0808 (Gnus v5.8.8) Emacs/20.7
+	by oss.sgi.com (8.11.2/8.11.3) id f5E68FK00344
+	for linux-mips-outgoing; Wed, 13 Jun 2001 23:08:15 -0700
+Received: from op.teknuts.com (139.muba.lsan.lsancass.dsl.att.net [12.98.69.139])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5E68DP00337
+	for <linux-mips@oss.sgi.com>; Wed, 13 Jun 2001 23:08:14 -0700
+Received: from sohorob (sc-66-27-45-152.socal.rr.com [66.27.45.152])
+	(authenticated)
+	by op.teknuts.com (8.11.3/8.10.1) with ESMTP id f5E68Bo04318
+	for <linux-mips@oss.sgi.com>; Wed, 13 Jun 2001 23:08:12 -0700
+From: "Robert Rusek" <robru@ruseks.com>
+To: <linux-mips@oss.sgi.com>
+Subject: RedHat test-7.0
+Date: Wed, 13 Jun 2001 23:08:20 -0700
+Message-ID: <000701c0f498$69d77c70$6400a8c0@sohorob>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_0008_01C0F45D.BD78A470"
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook, Build 10.0.2616
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4522.1200
+Importance: Normal
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Ian Lance Taylor <ian@zembu.com> writes:
+This is a multi-part message in MIME format.
 
-> "H . J . Lu" <hjl@lucon.org> writes:
-> 
-> > In the MIPS gas, there is
-> > 
-> >     case M_JAL_A:
-> 
-> Not the relevant bit of code, not that it matters much.  The
-> instruction
->       jal     $31,$25
-> will be handled by the M_JAL_1 case in gas/config/tc-mips.c.
+------=_NextPart_000_0008_01C0F45D.BD78A470
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-Sorry, M_JAL_2.
+Has anyone successfully installed Red Hat test-7.0 and got the compilers
+working?
+--
+Robert Rusek
+ 
 
-Ian
+------=_NextPart_000_0008_01C0F45D.BD78A470
+Content-Type: text/html;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Dus-ascii">
+<TITLE>Message</TITLE>
+
+<META content=3D"MSHTML 5.50.4611.1300" name=3DGENERATOR></HEAD>
+<BODY>
+<DIV><SPAN class=3D145410406-14062001><FONT face=3D"Comic Sans MS" =
+color=3D#008000=20
+size=3D2>Has anyone successfully installed Red Hat test-7.0 and got the =
+compilers=20
+working?</FONT></SPAN></DIV>
+<DIV><FONT face=3D"Comic Sans MS" color=3D#008000 =
+size=3D2>--</FONT></DIV>
+<DIV><FONT face=3D"Comic Sans MS" color=3D#008000 size=3D2>Robert =
+Rusek</FONT></DIV>
+<DIV>&nbsp;</DIV></BODY></HTML>
+
+------=_NextPart_000_0008_01C0F45D.BD78A470--

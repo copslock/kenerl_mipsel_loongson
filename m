@@ -1,34 +1,32 @@
-Received:  by oss.sgi.com id <S553797AbQJYNwK>;
-	Wed, 25 Oct 2000 06:52:10 -0700
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:40239 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S553779AbQJYNvu>; Wed, 25 Oct 2000 06:51:50 -0700
-Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id GAA01726
-	for <linux-mips@oss.sgi.com>; Wed, 25 Oct 2000 06:59:14 -0700 (PDT)
-	mail_from (rsanders@conejo.engr.sgi.com)
-Received: from conejo.engr.sgi.com (conejo.engr.sgi.com [130.62.50.34]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id GAA33856 for <linux-mips@oss.sgi.com>; Wed, 25 Oct 2000 06:51:49 -0700 (PDT)
-Received: (from rsanders@localhost)
-	by conejo.engr.sgi.com (SGI-8.9.3/8.9.3) id GAA02341
-	for linux-mips@oss.sgi.com; Wed, 25 Oct 2000 06:49:17 -0700 (PDT)
-Date:   Wed, 25 Oct 2000 06:49:17 -0700 (PDT)
-From:   "Robert M. Sanders" <rsanders@conejo.engr.sgi.com>
-Message-Id: <200010251349.GAA02341@conejo.engr.sgi.com>
-To:     linux-mips@oss.sgi.com
+Received:  by oss.sgi.com id <S553799AbQJYOwu>;
+	Wed, 25 Oct 2000 07:52:50 -0700
+Received: from gandalf1.physik.uni-konstanz.de ([134.34.144.69]:23303 "EHLO
+        gandalf.physik.uni-konstanz.de") by oss.sgi.com with ESMTP
+	id <S553782AbQJYOwb>; Wed, 25 Oct 2000 07:52:31 -0700
+Received: from agx by gandalf.physik.uni-konstanz.de with local (Exim 3.12 #1 (Debian))
+	id 13oRuI-0007oM-00; Wed, 25 Oct 2000 16:51:58 +0200
+Date:   Wed, 25 Oct 2000 16:51:58 +0200
+From:   Guido Guenther <guido.guenther@gmx.net>
+To:     wdmgds@xs4all.nl
+Cc:     linux-mips@oss.sgi.com
 Subject: Re: indy gr3-xz support
-In-Reply-To: <Pine.BSI.4.10.10010251535430.15635-100000@xs4.xs4all.nl>
-X-Status: N
-X-Mailer: Applixware 4.41 (1021.286.3)
+Message-ID: <20001025165158.A29999@gandalf.physik.uni-konstanz.de>
+References: <Pine.BSI.4.10.10010251535430.15635-100000@xs4.xs4all.nl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+User-Agent: Mutt/1.0.1i
+In-Reply-To: <Pine.BSI.4.10.10010251535430.15635-100000@xs4.xs4all.nl>; from wdmgds@xs4all.nl on Wed, Oct 25, 2000 at 03:37:05PM +0200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+On Wed, Oct 25, 2000 at 03:37:05PM +0200, wdmgds@xs4all.nl wrote:
 > 
 > Is the Gr3-XZ supported (24bp / opengl) under mips-linux?
-> 
-> And the indy-sound system?
-> 
-> 
-For sound, see - http://www.alsa-project.org/
+There's no support for the XZ board since there's no documentation for
+it available. The XL boards work both in 8 & 24 bit.
+ -- Guido
 
-Bob
+-- 
+GPG-Public Key: finger agx@debian.org

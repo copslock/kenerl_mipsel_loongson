@@ -1,67 +1,82 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5ULOfnC025415
-	for <linux-mips-outgoing@oss.sgi.com>; Sun, 30 Jun 2002 14:24:41 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g6199jnC018508
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 1 Jul 2002 02:09:45 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5ULOfrl025414
-	for linux-mips-outgoing; Sun, 30 Jun 2002 14:24:41 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g6199jVK018507
+	for linux-mips-outgoing; Mon, 1 Jul 2002 02:09:45 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from erebor.lep.brno.cas.cz (erebor.lep.brno.cas.cz [195.178.65.162])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5ULOWnC025405
-	for <linux-mips@oss.sgi.com>; Sun, 30 Jun 2002 14:24:34 -0700
-Received: from ladis by erebor.lep.brno.cas.cz with local (Exim 3.12 #1 (Debian))
-	id 17OmOE-0001g3-00; Sun, 30 Jun 2002 23:37:50 +0200
-Date: Sun, 30 Jun 2002 23:37:50 +0200
-To: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: [RFC][PATCH]
-Message-ID: <20020630233750.C6248@erebor.psi.cz>
-References: <20020629184128.GX17216@lug-owl.de> <20020630144238.A342@dea.linux-mips.net> <20020630132020.GF17216@lug-owl.de>
+Received: from dvmwest.gt.owl.de (dvmwest.gt.owl.de [62.52.24.140])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g6199YnC017601;
+	Mon, 1 Jul 2002 02:09:34 -0700
+Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
+	id 4F458133AA; Mon,  1 Jul 2002 11:13:22 +0200 (CEST)
+Date: Mon, 1 Jul 2002 11:13:22 +0200
+From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+To: linux-mips@oss.sgi.com
+Cc: Ralf Baechle <ralf@oss.sgi.com>
+Subject: Re: [Oops] Indy R4600 Oops(es) w/ 2.4.19-rc1
+Message-ID: <20020701091321.GO17216@lug-owl.de>
+Mail-Followup-To: linux-mips@oss.sgi.com,
+	Ralf Baechle <ralf@oss.sgi.com>
+References: <20020629220513.GC17216@lug-owl.de> <20020630174717.GI17216@lug-owl.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="0Wg1ddIY7KV0vpwL"
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20020630132020.GF17216@lug-owl.de>; from jbglaw@lug-owl.de on Sun, Jun 30, 2002 at 03:20:20PM +0200
-From: Ladislav Michl <ladis@psi.cz>
+In-Reply-To: <20020630174717.GI17216@lug-owl.de>
+User-Agent: Mutt/1.4i
+X-Operating-System: Linux mail 2.4.18 
 X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sun, Jun 30, 2002 at 03:20:20PM +0200, Jan-Benedict Glaw wrote:
-> On Sun, 2002-06-30 14:42:38 +0200, Ralf Baechle <ralf@oss.sgi.com>
-> wrote in message <20020630144238.A342@dea.linux-mips.net>:
-> > On Sat, Jun 29, 2002 at 08:41:29PM +0200, Jan-Benedict Glaw wrote:
-> > > Please give me a comment on this patch. I'm currently tryin' to make the
-> > > HAL2 driver work (yes, I've got my Indy out of the edge again and I'm
-> > > going to use it as my desktop machine).
-> > > 
-> > > It fixes a compilation problem on dmabuf.c. There, DMA_AUTOINIT isn't
-> > > defined. As ./include/asm-mips/dma.h looks like the asm-i386 file in
-> > > general, I've copied the #define from the i386 port (and reformated the
-> > > passus...).
-> > > 
-> > > If you think it'o okay, please apply it (and drop me a note:-p)
-> > 
-> > Sort of the right thing - why the heck does the Indy sound code have to
-> > rely on code for the that antique PC DMA controller ...
-> 
-> Well, OSS has some 'soundbase.o', in which dmabuf.o is linked into.
 
-you need soundcore.o and hal2.o only.
+--0Wg1ddIY7KV0vpwL
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> Possibly which code path is not used at all on Indy, but the #define has
-> to be there... So there's no real answer, but running 2.4.16 (from
+On Sun, 2002-06-30 19:47:17 +0200, Jan-Benedict Glaw <jbglaw@lug-owl.de>
+wrote in message <20020630174717.GI17216@lug-owl.de>:
+> On Sun, 2002-06-30 00:05:13 +0200, Jan-Benedict Glaw <jbglaw@lug-owl.de>
+> wrote in message <20020629220513.GC17216@lug-owl.de>:
+> [...]
+> >   10:   bc600060  0xbc600060
+> > Code;  88016ce0 <r4k_flush_cache_range_d32i32+e4/16c>
+> >   14:   bc600080  0xbc600080
+>=20
+> Well, I've bulid the same kernel with CONFIG_MIPS_UNCACHED and the box
+> is running^Wsnailing fine with it. I'm experiencing a little peformance
+> drop (100 BogoMips -> 2.79 BogoMips), but it comes up in finite time:-)
 
-the real answer is that you are trying to build support for OSS drivers,
-which has definitely nothing to do with HAL2 driver. disable it.
+I've got some mail that support for my early R4600 (well, the bug fixes
+for it...) got removed some time ago. I've looked at the diff of r1.3
+(2.4.16) and r1.3.2.3 (2.4.19-rc1) and it seems that mostly calls to
+__save_and_cli() and __restore_flags() got removed. Reading <asm/war.h>,
+it really seems that this is causing my problem.
 
-> Debian installer) and 'insmod -f'ing the just compiled 2.4.19-rc1 hal2.o
-> into that kernel ends up in useable sound. So this is some working way
-> of doing sound.
-> 
-> Btw., I think I'll have a deeper look at hal2.o - the smallest load lets
-> sound proceed in snail mode:-(
+Ralf, would you accept a patch adding these lines again surrounded by
+#ifdef CONFIG_CPU_R4X00 ... #endif /* CONFIG_CPU_R4X00 */? The current
+state however isn't that fine: running uncached is no fun:-(
 
-can you describe it better? (it has always worked for me ;-))
+MfG, JBG
 
-	ladis
+--=20
+Jan-Benedict Glaw   .   jbglaw@lug-owl.de   .   +49-172-7608481
+	 -- New APT-Proxy written in shell script --
+	   http://lug-owl.de/~jbglaw/software/ap2/
+
+--0Wg1ddIY7KV0vpwL
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.7 (GNU/Linux)
+
+iD8DBQE9IB0wHb1edYOZ4bsRAs6oAJ47OhWL/0AShhQPW+rUSmBeTLsJVgCeJsHg
+HpoWThOHhN1lSyMS2Ksosos=
+=VToj
+-----END PGP SIGNATURE-----
+
+--0Wg1ddIY7KV0vpwL--

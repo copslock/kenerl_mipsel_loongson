@@ -1,57 +1,53 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBRH13i25431
-	for linux-mips-outgoing; Thu, 27 Dec 2001 09:01:03 -0800
-Received: from firewall.i-data.com (firewall.i-data.com [195.24.22.194])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBRH0xX25417
-	for <linux-mips@oss.sgi.com>; Thu, 27 Dec 2001 09:00:59 -0800
-Received: (qmail 5545 invoked from network); 27 Dec 2001 16:00:55 -0000
-Received: from idahub2000.i-data.com (HELO idanshub.i-data.com) (172.16.1.8)
-  by firewall.i-data.com with SMTP; 27 Dec 2001 16:00:55 -0000
-Received: from eicon.com ([172.16.2.227])
-          by idanshub.i-data.com (Lotus Domino Release 5.0.8)
-          with ESMTP id 2001122717005390:44752 ;
-          Thu, 27 Dec 2001 17:00:53 +0100 
-Message-ID: <3C2B45D3.B938CA44@eicon.com>
-Date: Thu, 27 Dec 2001 17:01:23 +0100
-From: "Tommy S. Christensen" <tommy.christensen@eicon.com>
-X-Mailer: Mozilla 4.76 [en] (X11; U; Linux 2.2.17-14 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: Ralf Baechle <ralf@oss.sgi.com>
-CC: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>, dony.he@huawei.com,
-   linux-mips@oss.sgi.com
-Subject: Re: vmalloc bugs in 2.4.5???
-References: <20011226013221.A737@dea.linux-mips.net> <20011227.105518.74756316.nemoto@toshiba-tops.co.jp> <20011227011222.A16695@dea.linux-mips.net> <20011227.125122.71082554.nemoto@toshiba-tops.co.jp> <20011227022936.A19397@dea.linux-mips.net>
-X-MIMETrack: Itemize by SMTP Server on idaHUB2000/INT(Release 5.0.8 |June 18, 2001) at
- 27-12-2001 17:00:54,
-	Serialize by Router on idaHUB2000/INT(Release 5.0.8 |June 18, 2001) at 27-12-2001
- 17:00:55,
-	Serialize complete at 27-12-2001 17:00:55
-Content-Transfer-Encoding: 7bit
+	by oss.sgi.com (8.11.2/8.11.3) id fBRIrCL27115
+	for linux-mips-outgoing; Thu, 27 Dec 2001 10:53:12 -0800
+Received: from ocean.lucon.org (12-234-19-19.client.attbi.com [12.234.19.19])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBRIr9X27112
+	for <linux-mips@oss.sgi.com>; Thu, 27 Dec 2001 10:53:09 -0800
+Received: by ocean.lucon.org (Postfix, from userid 1000)
+	id 52C57125C3; Thu, 27 Dec 2001 09:53:06 -0800 (PST)
+Date: Thu, 27 Dec 2001 09:53:06 -0800
+From: "H . J . Lu" <hjl@lucon.org>
+To: Ryan Murray <rmurray@debian.org>
+Cc: linux-mips@oss.sgi.com, config-patches@gnu.org
+Subject: Re: config.guess changs
+Message-ID: <20011227095306.A16072@lucon.org>
+References: <20011227020844.U29645@cyberhqz.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20011227020844.U29645@cyberhqz.com>; from rmurray@debian.org on Thu, Dec 27, 2001 at 02:08:44AM -0800
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id fBRIr9X27113
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Ralf Baechle wrote:
+On Thu, Dec 27, 2001 at 02:08:44AM -0800, Ryan Murray wrote:
+> The config.guess rework of 12/12/2001 doesn't work on big endian machines,
+> as the preprocessor defines "mips" to be " 1", so the cpp -E output ends
+> up being "CPU= 1".
 > 
-> On Thu, Dec 27, 2001 at 12:51:22PM +0900, Atsushi Nemoto wrote:
-> 
-> > >>>>> On Thu, 27 Dec 2001 01:12:22 -0200, Ralf Baechle <ralf@oss.sgi.com> said:
-> > ralf> Yes, you're right as for the cache.  But there is no reason for
-> > ralf> the TLB flush, right?
-> >
-> > Yes, I agree.
-> 
-> Ok, I'll make a patch for Marcelo.  Being in Brazil right now is useful,
-> I can beat him into accepting it ;-)
-> 
->   Ralf
 
-Great! But please make sure that the cache is flushed after the pages
-are allocated instead of before.
+Try this patch.
 
-With 2.4.9 that still had the cache-flushing in vmalloc_area_pages(), I
-got cache aliasing problems in low memory situations (since alloc_page()
-will re-schedule when no pages are available).
 
--Tommy
+H.J.
+----
+2001-12-27  H.J. Lu  <hjl@gnu.org>
+
+	* config.guess (mips:Linux:*:*): Undefine CPU, mips and mipsel
+	first.
+
+--- config.guess	Wed Dec 12 19:53:12 2001
++++ config.guess	Thu Dec 27 09:51:18 2001
+@@ -770,6 +770,9 @@ EOF
+     mips:Linux:*:*)
+ 	eval $set_cc_for_build
+ 	sed 's/^	//' << EOF >$dummy.c
++	#undef CPU
++	#undef mips
++	#undef mipsel
+ 	#if defined(__MIPSEL__) || defined(__MIPSEL) || defined(_MIPSEL) || defined(MIPSEL) 
+ 	CPU=mipsel 
+ 	#else

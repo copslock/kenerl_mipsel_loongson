@@ -1,46 +1,48 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA80354 for <linux-archive@neteng.engr.sgi.com>; Mon, 25 Jan 1999 14:34:21 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id HAA31659 for <linux-archive@neteng.engr.sgi.com>; Tue, 26 Jan 1999 07:10:02 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id OAA87722
+	id HAA23180
 	for linux-list;
-	Mon, 25 Jan 1999 14:33:15 -0800 (PST)
+	Tue, 26 Jan 1999 07:09:18 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from dragon.engr.sgi.com (dragon.engr.sgi.com [150.166.75.63])
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id OAA95912
+	via ESMTP id HAA25599
 	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 25 Jan 1999 14:33:14 -0800 (PST)
-	mail_from (sr@dragon.engr.sgi.com)
-Received: (from sr@localhost) by dragon.engr.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) id OAA14443 for linux@relay.engr.sgi.com; Mon, 25 Jan 1999 14:33:13 -0800 (PST)
-From: sr@dragon.engr.sgi.com (Steve Rikli)
-Message-Id: <199901252233.OAA14443@dragon.engr.sgi.com>
-Subject: Re: connectivity to linus...
+	Tue, 26 Jan 1999 07:09:16 -0800 (PST)
+	mail_from (root@ammi.mclink.it)
+Received: from ammi.mclink.it (ammi.mclink.it [195.110.128.1]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id HAA01789
+	for <linux@cthulhu.engr.sgi.com>; Tue, 26 Jan 1999 07:09:10 -0800 (PST)
+	mail_from (root@ammi.mclink.it)
+Received: by ammi.mclink.it (8.9.1/8.9.0) id QAA29951;
+	Tue, 26 Jan 1999 16:09:02 +0100 (CET)
+Date: Tue, 26 Jan 1999 16:09:02 +0100 (CET)
+From: Marco Masotti <masotti@mclink.it>
 To: linux@cthulhu.engr.sgi.com
-Date: Mon, 25 Jan 1999 14:33:13 -0800 (PST)
-In-Reply-To: <199901252226.OAA07774@piecomputer.engr.sgi.com> from "Bob Mende Pie" at Jan 25, 99 02:26:12 pm
-X-Mailer: ELM [version 2.4 PL25]
+Subject: An X server for the  1600SW Flat Panel (Or just to get X right away)
+Message-Id: 1.0.1.199901261608.8803@mclink.it
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: 8bit
+X-Mailer: Easy-MAIL v1.01
+Organization: MC-link the world online
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Bob Mende Pie wrote:
-> 
->    I just check on linus and was able to access the web server.  I was able
-> to do it from both SGI and from Rutgers.   Are you still seeing problems.
 
-We just swapped out the flakey hub that services that external
-network -- we tried to be quick but obviously not quick enough ...
-sorry 'bout that.
 
-It should be good to go again, but if not please let us know.
+Hi,
 
-cheers,
-sr.
--- 
-|| Steve Rikli <sr@sgi.com> |||                                         ||
-|| Systems Administrator    ||| You never want the one you can afford.  ||
-|| NSD/SNS/ASD/SSBU/CSBU/...|||                                         ||
-|| Silicon Graphics, Inc.   |||                                         ||
+I just was wondering whether this option would be a thinkable way to an  X server, of course in case one would go for the LCD Flat Panel onto the Visual WS.
+
+I mean, putting the Number Nine card in a Pci slot and then running the commercial X server off the current ported Linux.
+
+  http://www.accelerated-x.com/media/announce.html
+
+ Thanks, Marco

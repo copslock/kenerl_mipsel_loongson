@@ -1,52 +1,38 @@
-Received:  by oss.sgi.com id <S42530AbQJFK5f>;
-	Fri, 6 Oct 2000 03:57:35 -0700
-Received: from ppp0.ocs.com.au ([203.34.97.3]:57355 "HELO mail.ocs.com.au")
-	by oss.sgi.com with SMTP id <S42529AbQJFK5K>;
-	Fri, 6 Oct 2000 03:57:10 -0700
-Received: (qmail 4730 invoked from network); 6 Oct 2000 10:57:04 -0000
-Received: from ocs3.ocs-net (192.168.255.3)
-  by mail.ocs.com.au with SMTP; 6 Oct 2000 10:57:03 -0000
-X-Mailer: exmh version 2.1.1 10/15/1999
-From:   Keith Owens <kaos@melbourne.sgi.com>
-To:     "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Received:  by oss.sgi.com id <S42210AbQJFMM0>;
+	Fri, 6 Oct 2000 05:12:26 -0700
+Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:6532 "EHLO
+        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S42201AbQJFMMA>;
+	Fri, 6 Oct 2000 05:12:00 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA01333;
+	Fri, 6 Oct 2000 14:05:13 +0200 (MET DST)
+Date:   Fri, 6 Oct 2000 14:05:13 +0200 (MET DST)
+From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To:     Keith Owens <kaos@melbourne.sgi.com>
 cc:     linux-mips@oss.sgi.com, linux-mips@fnet.fr
 Subject: Re: insmod hates RELA? 
-In-reply-to: Your message of "Fri, 06 Oct 2000 12:26:28 +0200."
-             <Pine.GSO.3.96.1001006121819.26752C-100000@delta.ds2.pg.gda.pl> 
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Date:   Fri, 06 Oct 2000 21:57:02 +1100
-Message-ID: <22488.970829822@ocs3.ocs-net>
+In-Reply-To: <22488.970829822@ocs3.ocs-net>
+Message-ID: <Pine.GSO.3.96.1001006135933.1204A-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Fri, 6 Oct 2000 12:26:28 +0200 (MET DST), 
-"Maciej W. Rozycki" <macro@ds2.pg.gda.pl> wrote:
-> The linker tends to create empty .rela sections even if there is no input
->for them.  This actually is a minor error and until (unless) we modify the
->linker just use the quick fix for modutils that is available from my FTP
->site (not that these modutils actually work ;-) ). 
+On Fri, 6 Oct 2000, Keith Owens wrote:
 
-Against modutils 2.3.17.  Does 2.3.17+this patch work on mips?
+> Against modutils 2.3.17.  Does 2.3.17+this patch work on mips?
 
-Index: 18.2/obj/obj_load.c
---- 18.2/obj/obj_load.c Fri, 08 Sep 2000 16:46:27 +1100 kaos (modutils-2.3/21_obj_load.c 1.7 644)
-+++ 18.2(w)/obj/obj_load.c Fri, 06 Oct 2000 21:45:44 +1100 kaos (modutils-2.3/21_obj_load.c 1.7 644)
-@@ -151,11 +151,13 @@ obj_load (int fp, Elf32_Half e_type, con
- 
- #if SHT_RELM == SHT_REL
- 	case SHT_RELA:
--	  error("RELA relocations not supported on this architecture");
-+	  if (sec->header.sh_size)
-+	    error("RELA relocations not supported on this architecture");
- 	  return NULL;
- #else
- 	case SHT_REL:
--	  error("REL relocations not supported on this architecture");
-+	  if (sec->header.sh_size)
-+	    error("REL relocations not supported on this architecture");
- 	  return NULL;
- #endif
- 
+ That's exactly my patch. ;-)  Yes -- it stops complaining, but it doesn't
+make it load the ipv6 module (the only one I have) successfully (the
+kernel crashes, IIRC). I suppose it's not a modutils' fault, though -- my
+development environment is not as stable as I wish so this may actually be
+a gcc, binutils or kernel issue.  Unfortunately I cannot afford tracking
+it down at the moment, but I'll look into it when I can.  Anyone feel free
+to study the case independently.
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

@@ -1,74 +1,45 @@
-Received:  by oss.sgi.com id <S553790AbRBSItv>;
-	Mon, 19 Feb 2001 00:49:51 -0800
-Received: from ezksun.unizh.ch ([130.60.20.131]:7044 "EHLO geo.umnw.ethz.ch")
-	by oss.sgi.com with ESMTP id <S553784AbRBSIts>;
-	Mon, 19 Feb 2001 00:49:48 -0800
-Received: from geo.umnw.ethz.ch (ezges53d [130.60.20.135])
-	by geo.umnw.ethz.ch (8.8.8/8.8.8) with ESMTP id JAA04368;
-	Mon, 19 Feb 2001 09:49:45 +0100 (MET)
-Message-ID: <3A90DE28.FCDE8CB8@geo.umnw.ethz.ch>
-Date:   Mon, 19 Feb 2001 09:49:44 +0100
-From:   Stockli Reto <stockli@geo.umnw.ethz.ch>
-Organization: Institute for Climate Research, ETH Zuerich
-X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     Ralf Baechle <ralf@oss.sgi.com>
-CC:     Keith M Wesolowski <wesolows@chem.unr.edu>, linux-mips@oss.sgi.com
-Subject: Re: R10000 SGI O2
-References: <3A895FF4.B627089E@geo.umnw.ethz.ch> <20010213190716.A29070@chem.unr.edu> <20010216175902.C2233@bacchus.dhis.org>
-Content-Type: text/plain; charset=iso-8859-2
-Content-Transfer-Encoding: 7bit
+Received:  by oss.sgi.com id <S553837AbRBSNeb>;
+	Mon, 19 Feb 2001 05:34:31 -0800
+Received: from home174.liacs.nl ([132.229.210.174]:16134 "EHLO
+        fog.mors.wiggy.net") by oss.sgi.com with ESMTP id <S553815AbRBSNeL>;
+	Mon, 19 Feb 2001 05:34:11 -0800
+Received: (from wichert@localhost)
+	by fog.mors.wiggy.net (8.11.2/8.11.2/Debian 8.11.2-1) id f1JDBUg17443
+	for linux-mips@oss.sgi.com; Mon, 19 Feb 2001 14:11:30 +0100
+Date:   Mon, 19 Feb 2001 14:11:30 +0100
+From:   Wichert Akkerman <wichert@cistron.nl>
+To:     linux-mips@oss.sgi.com
+Subject: strace sysmips support (was: Re: [FIX] sysmips(MIPS_ATMIC_SET, ...) ret_from_sys_call vs. o32_ret_from_sys_call)
+Message-ID: <20010219141130.C17354@cistron.nl>
+Mail-Followup-To: linux-mips@oss.sgi.com
+References: <20010124163048.B15348@paradigm.rfc822.org> <20010124165919.C15348@paradigm.rfc822.org> <20010125165530.B12576@paradigm.rfc822.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.3.15i
+In-Reply-To: <20010125165530.B12576@paradigm.rfc822.org>; from flo@rfc822.org on Thu, Jan 25, 2001 at 04:55:31PM +0100
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hi There
-
+Previously Florian Lohoff wrote:
+> From the strace i find
 > 
-> On Tue, Feb 13, 2001 at 07:07:16PM -0800, Keith M Wesolowski wrote:
-> 
-> > > For not repeating here what has already been done:
-> > > Has anyone ever tried the same before and what are the problems to
-> > > encounter? I will most likely boot from a bootp linux server. Is there a
-> > > chance that I get a console on my O2 or do I only have a serial
-> > > connection.
-> >
-> > There is no chance whatever that you will get anything.  If you want
-> > to have any chance at all of getting this to work I would recommend
-> > you ask Harald for his latest patch; it provides some level of support
-> > for r5k-based IP32 (O2) systems.  r10k O2 suffers from the same
-> > cache-noncoherency problem as r10k I2 does, and to the best of my
-> > knowledge nobody has ever really tried to even boot one.
-> >
-> > Not to discourage you at all...there's just a lot of work to do.
-> 
-> It's really hard work to do.  R12000 O2s however should be much easier to
-> do; the processor feature which causes so much grief in the O2 can be
-> disabled there.
-> 
->   Ralf
+> sysmips(0x7d1, 0x2ac95d24, 0x1, 0)      = 4149
 
-Thanks Keith and Ralf for your information on running a R10000 O2 with
-Linux. I knew that the video and sound HW as well as some of the
-machine's graphics features were not supported by any linux drivers,
-because it's even hard on SGI/Irix to find useful documentation about
-this hardware! I guess this is the point why so few developers have
-programmed applications that would take advantage of the very nice
-capabilities of the machine.
+FWIW, I've just put code in strace CVS to decode this properly. Looking
+in my (stock Linus) kerneltree I noticed the sys_sysmips code assumes
+it can get away with converting an int to a char*, which seems like a
+wrong assumption to me..
 
-So, I still would like to contribute something to the implementation of
-Linux on SGI machines and I have this O2 standing on my desk. I have
-installed and maintained some I386 based linux systems, but am not
-really into fixing kernels. As I see there's no kernel that will boot
-rightaway (with or without screen console). Let me know if the situation
-is hopeless or if I can make a step taking a current mips-kernel (any
-specific R10000-patch around there?) and start to consult R10000/ SGI O2
-manuals.
+I don't have my indy up and running at the moment, so the code is
+completely untested. Feedback is welcomed :)
 
-It would be nice, but maybe I'm too much on the admin/user side and for
-sure I am not into developing kernels. Anyway, curious I am...
+Wichert.
 
-Cheers,
-Reto
+-- 
+  _________________________________________________________________
+ /       Nothing is fool-proof to a sufficiently talented fool     \
+| wichert@cistron.nl                  http://www.liacs.nl/~wichert/ |
+| 1024D/2FA3BC2D 576E 100B 518D 2F16 36B0  2805 3CB8 9250 2FA3 BC2D |

@@ -1,76 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Nov 2003 08:59:25 +0000 (GMT)
-Received: from dvmwest.gt.owl.de ([IPv6:::ffff:62.52.24.140]:50354 "EHLO
-	dvmwest.gt.owl.de") by linux-mips.org with ESMTP
-	id <S8225373AbTKMI7N>; Thu, 13 Nov 2003 08:59:13 +0000
-Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
-	id 6579E4B456; Thu, 13 Nov 2003 09:59:09 +0100 (CET)
-Date: Thu, 13 Nov 2003 09:59:08 +0100
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To: Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Re: Patch for ALI15x3 - Linux-MIPS kernel 2.4.22-rc3
-Message-ID: <20031113085908.GV17497@lug-owl.de>
-Mail-Followup-To: Linux-MIPS <linux-mips@linux-mips.org>
-References: <1068684992.13276.17.camel@dhcp23.swansea.linux.org.uk> <JCELLCFDJLFKPOBFKGFNEENFCHAA.jack.miller@pioneer-pdt.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Nov 2003 17:33:38 +0000 (GMT)
+Received: from p508B57E5.dip.t-dialin.net ([IPv6:::ffff:80.139.87.229]:49883
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225412AbTKMRd1>; Thu, 13 Nov 2003 17:33:27 +0000
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id hADH3HA0032719
+	for <linux-mips@linux-mips.org>; Thu, 13 Nov 2003 18:03:18 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id hADH3G22032718
+	for linux-mips@linux-mips.org; Thu, 13 Nov 2003 18:03:16 +0100
+Date: Thu, 13 Nov 2003 18:03:15 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: linux-mips@linux-mips.org
+Subject: Cobalt kernel for 2.6
+Message-ID: <20031113170315.GA32644@linux-mips.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="32KBALpRDK42x9o9"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <JCELLCFDJLFKPOBFKGFNEENFCHAA.jack.miller@pioneer-pdt.com>
-X-Operating-System: Linux mail 2.4.18 
-X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
-X-gpg-key: wwwkeys.de.pgp.net
-User-Agent: Mutt/1.5.4i
-Return-Path: <jbglaw@dvmwest.gt.owl.de>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3614
+X-archive-position: 3615
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jbglaw@lug-owl.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+the Cobalt kernel, in particular the 2.6 port needs somebody to look after.
+In 2.4 problems with the ethernet driver were reported and in 2.6 the
+kernel builds but would need somebody with actual hardware to debug it.
+An additional problem with 2.6 on Cobalt hardware are the size limits
+for the booted kernel which would need to be worked around; various
+solutions such as a two stage bootloader are thinkable.
 
---32KBALpRDK42x9o9
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Volunteers?
 
-On Wed, 2003-11-12 17:13:53 -0800, Jack Miller <jack.miller@pioneer-pdt.com>
-wrote in message <JCELLCFDJLFKPOBFKGFNEENFCHAA.jack.miller@pioneer-pdt.com>:
->   Alan,
->     I am not so sure of that.  If you look at ide-disk.c:__ide_do_rw_disk=
-(),
-> there is a local variable assignment statement:
->=20
->   u8 lba48 =3D (drive->addressing =3D 1) ? 1 : 0;
-                                 ^^^
-
-Explode. Now, lba48 would _always_ be 1.
-
-MfG, JBG
-
---=20
-   Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481
-   "Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg
-    fuer einen Freien Staat voll Freier B=FCrger" | im Internet! |   im Ira=
-k!
-   ret =3D do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM | TC=
-PA));
-
---32KBALpRDK42x9o9
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.3 (GNU/Linux)
-
-iD8DBQE/s0fcHb1edYOZ4bsRAgVcAJ9NKlBambfYInuCATuRKSVs6/J5oQCcD1ll
-vSOzicsoASnk2gLBmn+w6TM=
-=dEC5
------END PGP SIGNATURE-----
-
---32KBALpRDK42x9o9--
+  Ralf

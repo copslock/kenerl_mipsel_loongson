@@ -1,48 +1,49 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id BAA15921 for <linux-archive@neteng.engr.sgi.com>; Sun, 4 Apr 1999 01:36:24 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id HAA27897 for <linux-archive@neteng.engr.sgi.com>; Sun, 4 Apr 1999 07:31:15 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id BAA15842
+	id HAA64303
 	for linux-list;
-	Sun, 4 Apr 1999 01:35:01 -0800 (PST)
+	Sun, 4 Apr 1999 07:29:50 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id BAA42390
+	via ESMTP id HAA49044
 	for <linux@cthulhu.engr.sgi.com>;
-	Sun, 4 Apr 1999 01:34:59 -0800 (PST)
-	mail_from (ulfc@bun.falkenberg.se)
-Received: from bun.falkenberg.se (dialup71-2-10.swipnet.se [130.244.71.26]) 
+	Sun, 4 Apr 1999 07:29:47 -0700 (PDT)
+	mail_from (tnik@hol.gr)
+Received: from mail.hol.gr (mail.hol.gr [194.30.192.21]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id BAA02741
-	for <linux@cthulhu.engr.sgi.com>; Sun, 4 Apr 1999 01:34:56 -0800 (PST)
-	mail_from (ulfc@bun.falkenberg.se)
-Received: (from ulfc@localhost)
-	by bun.falkenberg.se (8.8.7/8.8.7) id LAA01719
-	for linux@cthulhu.engr.sgi.com; Sun, 4 Apr 1999 11:24:42 -0400
-Date: Sun, 4 Apr 1999 11:24:42 -0400
-From: Ulf Carlsson <ulfc@bun.falkenberg.se>
-To: Linux SGI <linux@cthulhu.engr.sgi.com>
-Subject: PBUS bugs smashed
-Message-ID: <19990404112442.A1700@bun.falkenberg.se>
-Mail-Followup-To: Linux SGI <linux@cthulhu.engr.sgi.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.4i
+	via SMTP id HAA01570
+	for <linux@cthulhu.engr.sgi.com>; Sun, 4 Apr 1999 07:29:46 -0700 (PDT)
+	mail_from (tnik@hol.gr)
+Received: (qmail 19349 invoked from network); 4 Apr 1999 14:27:15 -0000
+Received: from async063.ath05.tlc.hol.gr (HELO hol.gr) (firewall-user@194.30.244.66)
+  by mail.hol.gr with SMTP; 4 Apr 1999 14:27:15 -0000
+Message-ID: <37079331.ECE91CB4@hol.gr>
+Date: Sun, 04 Apr 1999 19:28:33 +0300
+From: Theodoros Nikitopoulos <tnik@hol.gr>
+X-Mailer: Mozilla 4.05 [en] (X11; I; Linux 2.1.24 ppc)
+MIME-Version: 1.0
+To: linux@cthulhu.engr.sgi.com
+Subject: Mungi OS on the R4x00 Indy ..
+Content-Type: text/plain; charset=iso-8859-7
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi,
+There seems to exist another effort to create an open-source
+OS for the Indy workstation, called Mungi. In case anyone is
+interested there exist a status report available at
 
-I can happily report perfect sound in my Indy. :-)
+      http://www.cse.unsw.EDU.AU/~disy/Mungi.html
 
-The last bug was quite tricky. I had to reboot the machine after every playback,
-otherwise I got noise in the DMA channels.
+The R4x00 version of its 'L4 microkernel' (L4/MIPS) is freely
+available in source form under the terms of the GNU General
+Public License.
 
-I could obviously not set the configuration bits in the pbus ctrl register at
-the same write as I wrote the activation bits..
-
-- Ulf
+Best regards,
+Theodore Nikitopoulos

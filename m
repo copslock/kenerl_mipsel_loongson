@@ -1,53 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Jun 2004 00:45:57 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:10991 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225609AbUFXXpx>;
-	Fri, 25 Jun 2004 00:45:53 +0100
-Received: from orion.mvista.com (localhost.localdomain [127.0.0.1])
-	by orion.mvista.com (8.12.8/8.12.8) with ESMTP id i5ONjp4O001493;
-	Thu, 24 Jun 2004 16:45:51 -0700
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.12.8/8.12.8/Submit) id i5ONjpT5001492;
-	Thu, 24 Jun 2004 16:45:51 -0700
-Date: Thu, 24 Jun 2004 16:45:51 -0700
-From: Jun Sun <jsun@mvista.com>
-To: linux-mips@linux-mips.org
-Cc: jsun@mvista.com
-Subject: IDE woos in BE mode 2.6 kernel
-Message-ID: <20040624164551.H29225@mvista.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-Return-Path: <jsun@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Jun 2004 09:45:11 +0100 (BST)
+Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:31658 "EHLO
+	witte.sonytel.be") by linux-mips.org with ESMTP id <S8225237AbUFYIpH>;
+	Fri, 25 Jun 2004 09:45:07 +0100
+Received: from waterleaf.sonytel.be (localhost [127.0.0.1])
+	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id i5P8j3XK025858;
+	Fri, 25 Jun 2004 10:45:03 +0200 (MEST)
+Date: Fri, 25 Jun 2004 10:45:03 +0200 (MEST)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: Jun Sun <jsun@mvista.com>
+cc: Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: Re: IDE woos in BE mode 2.6 kernel
+In-Reply-To: <20040624164551.H29225@mvista.com>
+Message-ID: <Pine.GSO.4.58.0406251044140.23072@waterleaf.sonytel.be>
+References: <20040624164551.H29225@mvista.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5361
+X-archive-position: 5362
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
+On Thu, 24 Jun 2004, Jun Sun wrote:
+> I suppose this problem really should exist for other arches
+> with BE support.  Anybody knows how other arches deal with this?
 
-Anybody has tried IDE disks in big endian mode with 2.6 kernel?
-I seem to have troubles with Malta board.
+My Amiga is happily running 2.6.7 and doesn't have problems with IDE, so m68k
+is not affected.
 
-Current malta board has CONFIG_SWAP_IO_SPACE defined and therefore
-all inw, inl and their friends are byte-swapped in BE mode.  As a
-results all IDE IO ops (such as ide_inw, etc) do swapping too.
+Gr{oetje,eeting}s,
 
-A quick experiement shows those IDE IO ops should not do swapping.
-Anybody knows why?
+						Geert
 
-Apparently fixing the above is not enough.  I either encountered
-failure to read partition table or having DMA error.  Any clues
-here?
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-I suppose this problem really should exist for other arches
-with BE support.  Anybody knows how other arches deal with this?
-
-Thanks.
-
-Jun
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

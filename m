@@ -1,50 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Nov 2002 17:16:59 +0100 (MET)
-Received: from onda.linux-mips.net ([IPv6:::ffff:192.168.169.2]:16801 "EHLO
-	dea.linux-mips.net") by ralf.linux-mips.org with ESMTP
-	id <S869533AbSK1QQs>; Thu, 28 Nov 2002 17:16:48 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id gASGFJh18257;
-	Thu, 28 Nov 2002 17:15:19 +0100
-Date: Thu, 28 Nov 2002 17:15:19 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: atul srivastava <atulsrivastava9@rediffmail.com>,
-	linux-mips@linux-mips.org
-Subject: Re: a quick question regarding CONFIG_MIPS_UNCACHED..
-Message-ID: <20021128171519.A18165@linux-mips.org>
-References: <20021127091114.27117.qmail@webmail24.rediffmail.com> <Pine.GSO.3.96.1021128164709.8C-100000@delta.ds2.pg.gda.pl>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Nov 2002 21:35:16 +0100 (MET)
+Received: from ftp.mips.com ([IPv6:::ffff:206.31.31.227]:5853 "EHLO
+	mx2.mips.com") by ralf.linux-mips.org with ESMTP id <S869542AbSK1UfC>;
+	Thu, 28 Nov 2002 21:35:02 +0100
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id gASKapNf026683
+	for <linux-mips@linux-mips.org>; Thu, 28 Nov 2002 12:36:51 -0800 (PST)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id MAA00473
+	for <linux-mips@linux-mips.org>; Thu, 28 Nov 2002 12:36:53 -0800 (PST)
+Received: from coplin09.mips.com (IDENT:root@coplin09 [192.168.205.79])
+	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id gASKaqb21980
+	for <linux-mips@linux-mips.org>; Thu, 28 Nov 2002 21:36:53 +0100 (MET)
+Received: (from hartvige@localhost)
+	by coplin09.mips.com (8.11.6/8.11.6) id gASKaqD24646
+	for linux-mips@linux-mips.org; Thu, 28 Nov 2002 21:36:52 +0100
+From: Hartvig Ekner <hartvige@mips.com>
+Message-Id: <200211282036.gASKaqD24646@coplin09.mips.com>
+Subject: New 7.3 installation kit for MIPS dev boards
+To: linux-mips@linux-mips.org
+Date: Thu, 28 Nov 2002 21:36:52 +0100 (CET)
+X-Mailer: ELM [version 2.5 PL5]
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <Pine.GSO.3.96.1021128164709.8C-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Thu, Nov 28, 2002 at 04:51:57PM +0100
-Return-Path: <ralf@linux-mips.org>
+Content-Transfer-Encoding: 7bit
+Return-Path: <hartvige@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 735
+X-archive-position: 736
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: hartvige@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Nov 28, 2002 at 04:51:57PM +0100, Maciej W. Rozycki wrote:
+On our FTP site, you will now be able to find a MIPS RedHat 7.3 
+installation kit (for Malta boards) which contains all of the latest
+RPM's from both H.J.'s 7.3 port as well as some extras. The kernel
+is 2.4.18++. The complete kit is provided in both LE and BE versions.
 
->  You are looking at obsolete code -- unless you have specific conditions
-> to use an explicit caching attribute for KSEG0, you should set it like the
-> rest of the code does it, i.e.:
-> 
-> change_cp0_config(CONF_CM_CMASK, CONF_CM_DEFAULT);
-> 
-> To avoid surprises here and elsewhere, you should make sure
-> CONFIG_NONCOHERENT_IO is set appropriately, too.
+It also includes the new SDE/Linux compiler provided by MIPS, both 
+as a native toolchain, as well as a x86 cross version which has been
+used for generating the kernels (kernels provided both as precompiled
+binaries and complete source tree).
 
-We've talked about this before - the specification of the ll/sc
-instructions says they only work ok on cached memory.  In the real world
-they seem to work also in uncached memory but I'd not bet the farm on
-that, too many implementations out there, too many chances for subtle
-bugs.
+>From ftp.mips.com:
 
-  Ralf
+ftp> pwd
+257 "/pub/linux/mips/installation/redhat7.3/01.00" is current directory.
+ftp> dir
+227 Entering Passive Mode (206,31,31,227,157,169)
+150 Opening ASCII mode data connection for /bin/ls.
+total 985416
+-rw-r--r--   1 9618     40          15352 Nov 27 02:31 INSTALL
+-rw-r--r--   1 9618     40       535359488 Nov 26 09:17 MIPS_RedHat7.3_Release-01.00.iso
+-rw-r--r--   1 9618     40       473165864 Nov 26 06:42 MIPS_RedHat7.3_Release-01.00.tar.gz
+-rw-r--r--   1 9618     40            589 Nov 27 02:31 README
+226 Transfer complete.
+
+Get the .tar file for an NFS install, and the .iso file for a CDROM install
+directly on the Malta. It's all explained in the README and INSTALL files.
+
+/Hartvig
+
+-- 
+ _    _   _____  ____     Hartvig Ekner        Mailto:hartvige@mips.com
+ |\  /| | |____)(____                          Direct: +45 4486 5503
+ | \/ | | |     _____)    MIPS Denmark         Switch: +45 4486 5555
+T E C H N O L O G I E S   http://www.mips.com  Fax...: +45 4486 5556

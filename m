@@ -1,89 +1,105 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id SAA10803 for <linux-archive@neteng.engr.sgi.com>; Tue, 20 Oct 1998 18:32:20 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id MAA65990 for <linux-archive@neteng.engr.sgi.com>; Wed, 21 Oct 1998 12:31:27 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id SAA53974
+	id MAA22506
 	for linux-list;
-	Tue, 20 Oct 1998 18:31:40 -0700 (PDT)
+	Wed, 21 Oct 1998 12:30:47 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id SAA53650
-	for <linux@engr.sgi.com>;
-	Tue, 20 Oct 1998 18:31:37 -0700 (PDT)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
+	via ESMTP id MAA62334
+	for <linux@cthulhu.engr.sgi.com>;
+	Wed, 21 Oct 1998 12:30:44 -0700 (PDT)
+	mail_from (harald.koerfgen@netcologne.de)
+Received: from mail2.netcologne.de (mail2.netcologne.de [194.8.194.103]) 
 	by sgi.sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id SAA09257
-	for <linux@engr.sgi.com>; Tue, 20 Oct 1998 18:31:32 -0700 (PDT)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from lappi.waldorf-gmbh.de (pmport-09.uni-koblenz.de [141.26.249.9])
-	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id DAA27303
-	for <linux@engr.sgi.com>; Wed, 21 Oct 1998 03:31:29 +0200 (MET DST)
-Received: (from ralf@localhost)
-	by lappi.waldorf-gmbh.de (8.8.7/8.8.7) id BAA02181;
-	Wed, 21 Oct 1998 01:50:47 +0200
-Message-ID: <19981021015047.G1830@uni-koblenz.de>
-Date: Wed, 21 Oct 1998 01:50:47 +0200
-From: ralf@uni-koblenz.de
-To: linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
-        linux-mips@vger.rutgers.edu
-Subject: Haifa scheduler bug in egcs 1.0.2
-Mime-Version: 1.0
+	via ESMTP id MAA06740
+	for <linux@cthulhu.engr.sgi.com>; Wed, 21 Oct 1998 12:30:37 -0700 (PDT)
+	mail_from (harald.koerfgen@netcologne.de)
+Received: from franz.no.dom (dial1-22.netcologne.de [194.8.196.22])
+	by mail2.netcologne.de (8.8.8/8.8.8) with ESMTP id VAA09382;
+	Wed, 21 Oct 1998 21:30:05 +0200 (MET DST)
+X-Ncc-Regid: de.netcologne
+Message-ID: <XFMail.981021213140.harald.koerfgen@netcologne.de>
+X-Mailer: XFMail 1.2 [p0] on Linux
+X-Priority: 3 (Normal)
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.91.1
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+In-Reply-To: <19981019121804.F387@uni-koblenz.de>
+Date: Wed, 21 Oct 1998 21:31:40 +0200 (MEST)
+Reply-To: "Harald Koerfgen" <harald.koerfgen@netcologne.de>
+Organization: none
+From: Harald Koerfgen <harald.koerfgen@netcologne.de>
+To: linux-mips@fnet.fr
+Subject: Re: get_mmu_context()
+Cc: Vladimir Roganov <roganov@niisi.msk.ru>, linux@cthulhu.engr.sgi.com
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi all,
-
-I've resolved a bug report of Ulf Carlson whose kernel compiles resulted
-died with:
-
-gcc -D__KERNEL__ -I/home/ulfc/kernels/sgi-lin/linux/include -Wall \
--Wstrict-prototypes -O2 -fomit-frame-pointer -G 0 -mno-abicalls -fno-pic \
--mcpu=r4600 -mips2 -pipe    arch/mips/mm/r6000.c   -o arch/mips/mm/r6000
-
-{standard input}: Assembler messages:
-{standard input}:385: Warning: Unmatched %hi reloc
-{standard input}:488: Internal error!
-Assertion failure in tc_gen_reloc at ./config/tc-mips.c line 10203.
-Please report this bug.
-make: *** [arch/mips/mm/r6000] Error 1
-
-This is caused by bad assembler code like:
+On 19-Oct-98 ralf@uni-koblenz.de wrote:
+> On Sun, Oct 18, 1998 at 09:53:18PM +0200, Harald Koerfgen wrote:
 
 [...]
-        lui     $11,%hi(r6000_flush_cache_mm) # high
-        lui     $12,%hi(r6000_flush_cache_range) # high
-        lui     $17,%hi(r6000_flush_tlb_all) # high
-        lui     $2,%hi(r6000_flush_tlb_mm) # high
-        lui     $3,%hi(r6000_flush_tlb_range) # high
-        lui     $4,%hi(r6000_flush_tlb_page) # high
-        lui     $5,%hi(r6000_load_pgd) # high
-        lui     $6,%hi(r6000_pgd_init) # high
-        lui     $7,%hi(r6000_update_mmu_cache) # high
-        lui     $8,%hi(r6000_show_regs) # high
-        lui     $9,%hi(r6000_add_wired_entry) # high
-        lui     $10,%hi(r6000_user_mode) # high
-[...]
+> There is a number of machines, most popular some DECstation, which are
+> available with both CPU architectures.
 
-Relocating the code generated from this source later on will not be
-possible for ld.  As knows this and dies ungracefully.
+Yup.
+ 
+> The other location for which patching might be useful are primarily the
+> differences between the R3000 and R4000 status register, especially the
+> KU rsp. KSU bits.  What other places do you have in mind?
 
-I was able to track this down to the Haifa scheduler which seems to be
-incompatible with the -msplit-addresses used for kernel compiles.  For
-now I suggest to recompile egcs without the Haifa scheduler.  Egcs by
-default doesn't enable the Haifa scheduler and there is a reason why.
+Agreed. There are indeed other places where code could be reintegrated,
+r2300_switch.S and r4k_switch.S come to mind.
 
-This egcs 1.0.2 bug is a platform independent bug.  Since currently
-egcs does not support -msplit-addresses for PIC code, that is all userland
-this bug will only hit some low level stuff.
+On the other hand, there is code which should be seperated for performance reasons,
+mainly the RESTORE_ALL macros thus affecting entry.S and scall_o32.S. Actually these
+problems are solved by conditional compiling.
+ 
+>> To make those changes generic needs either a reasonable amount of hacking or
+>> avoidable code duplication. In fact, if we really don't care about self
+>> modifying code we should be able to remove some code duplication, for
+>> example in the fpu stuff.
+> 
+> People should consider that we'll be able to hide the self modifications
+> in C code very nicely.  I would not go for anything which I consider a
+> maintenance problem or major uglyness.
 
-Alex or somebody else, could you make an update to the egcs package
-with the haifa scheduler disabled?  Thanks!
+Good.
+ 
+> Let me explain how the approach from my recent patch works:
 
-  Ralf
+[explanation snipped]
+ 
+> Todo: we don't want a separate section per patched instruction.  Easy to
+> fix.  We also want to get rid of the special section just like other
+> initfunc stuff.
+
+That sounds great. We could even put all ISA dependant code into seperate
+sections and get rid of all the ISA sections, which aren't needed.
+ 
+> The next class of things to patch are the zillion of function calls using
+> function pointers.  We can insert a jal instruction and patch it's
+> destination address.  Candidates for that include calls to flush_cache_all,
+> flush_cache_mm, flush_cache_range, flush_cache_page, flush_cache_sigtramp,
+> flush_tlb_all, flush_tlb_mm, flush_tlb_range, flush_tlb_page, add_wired_entry,
+> clear_page, copy_page.
+> 
+> Both parts, patching immediate opperands and function calls can be dealt
+> with similar to the approach in the userland dynamic linker, that initially
+> the function called is the dynamic linker's kernel equivalent which will
+> choose the right thing to do.
+> 
+> Extra goodie for the R3000 fraction: Many functions called via above
+> mentioned pointers are empty, calls to them may be eleminated by overwriting
+> the calling jal with nops.  Say goodbye to another hand full of cycles.
+
+That sounds even better :-).
+---
+Regards,
+Harald

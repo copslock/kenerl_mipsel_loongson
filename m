@@ -1,59 +1,53 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id MAA63804 for <linux-archive@neteng.engr.sgi.com>; Sat, 1 May 1999 12:18:51 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id MAA75278 for <linux-archive@neteng.engr.sgi.com>; Sat, 1 May 1999 12:44:33 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id MAA77021
+	id MAA82427
 	for linux-list;
-	Sat, 1 May 1999 12:14:07 -0700 (PDT)
+	Sat, 1 May 1999 12:41:40 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id MAA60009
-	for <linux@engr.sgi.com>;
-	Sat, 1 May 1999 12:14:04 -0700 (PDT)
-	mail_from (neuroinc@unidial.com)
-Received: from mail.unidial.com (unidial.com [206.112.0.9]) 
+	via ESMTP id MAA10324
+	for <linux@cthulhu.engr.sgi.com>;
+	Sat, 1 May 1999 12:41:38 -0700 (PDT)
+	mail_from (jcoffin@sv.usweb.com)
+Received: from lil.brown-dog.org ([209.249.199.162]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id PAA00931
-	for <linux@engr.sgi.com>; Sat, 1 May 1999 15:14:03 -0400 (EDT)
-	mail_from (neuroinc@unidial.com)
-Received: from unidial.com (root@pool-209-138-15-160.ipls.grid.net [209.138.15.160])
-	by mail.unidial.com (8.8.7/ntr.net 3.0.0) with ESMTP id TAA01840;
-	Sat, 1 May 1999 19:13:26 GMT
-Message-ID: <372B4C6F.6EB74AD8@unidial.com>
-Date: Sat, 01 May 1999 18:48:16 +0000
-From: Alan Hoyt <neuroinc@unidial.com>
-X-Mailer: Mozilla 4.5 [en] (X11; I; Linux 2.0.36 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: Charles Lepple <clepple@foo.tho.org>,
-        Linux SGI <linux@cthulhu.engr.sgi.com>
-Subject: Re: Indigo2 port status?
-References: <37293607.392B2C56@foo.tho.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+	via ESMTP id PAA03297
+	for <linux@cthulhu.engr.sgi.com>; Sat, 1 May 1999 15:41:37 -0400 (EDT)
+	mail_from (jcoffin@sv.usweb.com)
+From: jcoffin@sv.usweb.com
+Received: (from jcoffin@localhost)
+	by lil.brown-dog.org (8.8.7/8.8.7) id MAA23712;
+	Sat, 1 May 1999 12:39:44 -0700
+Date: Sat, 1 May 1999 12:39:44 -0700
+Message-Id: <199905011939.MAA23712@lil.brown-dog.org>
+X-Authentication-Warning: lil.brown-dog.org: jcoffin set sender to jcoffin@sv.usweb.com using -f
+To: linux@cthulhu.engr.sgi.com
+Subject: Yet closer
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Charles Lepple wrote:
+Hi all, 
 
-> Ok, so does anyone know what happened to the Indigo2 porting project? I
-> tried to get in touch with someone at UAB but to no avail.
->
-> Sorry to bother the rest of you...
->
-> --
-> Charles Lepple
-> System Administrator, Virginia Tech EE Workstation Labs
-> clepple@ee.vt.edu || http://www.foo.tho.org/charles/
+I have SGI-Linux up on my headless Indy R5000, but I stupidly forgot
+to "change setup-1.9.1-2.noarch.rpm to add some securetty's so that
+you can log in over the network as root.", so I can't get in.  I tried
+all the recent kernels to see if one had a serial console, but no
+luck.
 
-I don't know what's going on with UAB - but I just started working on a
-port to the Indigo2 this April after receiving some hardware specs.
-Needless to say with school and work, progress is a tad bit slow.
-Hopefully, once finals are behind me - I can focus more energy on the
-task.
+Is there a kernel around that has a serial console enabled so I can fix
+my situation or do I have to re-install?
 
-Alan Hoyt
+Any suggestions as to other ways to get in and add securetty's?
+
+In any event, what do I need to do to "change setup-1.9.1-2.noarch.rpm
+to add some securetty's"?
+
+
+
+--jeff

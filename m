@@ -1,49 +1,43 @@
-Received:  by oss.sgi.com id <S553864AbRADRcX>;
-	Thu, 4 Jan 2001 09:32:23 -0800
-Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:32430 "EHLO
-        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553692AbRADRcM>;
-	Thu, 4 Jan 2001 09:32:12 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id SAA13739;
-	Thu, 4 Jan 2001 18:18:42 +0100 (MET)
-Date:   Thu, 4 Jan 2001 18:18:41 +0100 (MET)
-From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To:     Joe deBlaquiere <jadb@redhat.com>
-cc:     Ralf Baechle <ralf@oss.sgi.com>,
-        John Van Horne <JohnVan.Horne@cosinecom.com>,
-        "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>,
-        "'wesolows@foobazco.org'" <wesolows@foobazco.org>
-Subject: Re: your mail
-In-Reply-To: <3A54A789.1070608@redhat.com>
-Message-ID: <Pine.GSO.3.96.1010104180809.4624G-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received:  by oss.sgi.com id <S553866AbRADRfD>;
+	Thu, 4 Jan 2001 09:35:03 -0800
+Received: from brutus.conectiva.com.br ([200.250.58.146]:25597 "EHLO
+        dhcp046.distro.conectiva") by oss.sgi.com with ESMTP
+	id <S553845AbRADRex>; Thu, 4 Jan 2001 09:34:53 -0800
+Received: (ralf@lappi) by bacchus.dhis.org id <S869731AbRADRZx>;
+	Thu, 4 Jan 2001 15:25:53 -0200
+Date:	Thu, 4 Jan 2001 15:25:53 -0200
+From:	Ralf Baechle <ralf@oss.sgi.com>
+To:	Jun Sun <jsun@mvista.com>
+Cc:	linux-mips@oss.sgi.com
+Subject: Re: missing data cache flush in trap_init?
+Message-ID: <20010104152553.D2525@bacchus.dhis.org>
+References: <3A5277C6.89170BAD@mvista.com> <20010103150535.B904@bacchus.dhis.org> <3A53ED5F.EC5E936F@mvista.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <3A53ED5F.EC5E936F@mvista.com>; from jsun@mvista.com on Wed, Jan 03, 2001 at 07:26:23PM -0800
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Thu, 4 Jan 2001, Joe deBlaquiere wrote:
+On Wed, Jan 03, 2001 at 07:26:23PM -0800, Jun Sun wrote:
 
-> If the BFD stuff is built with any support for 64 bit (even as an 
-> optional target) it will maintain all addresses as 64-bit values, even 
-> if the file is 32 bit.
+> Aside of that, the name of flush_icache_range() seems to be misleading.  Also
+> in general how does it know which part of dcache to flush() without a given
+> process mm struct?
 
- I do consider it fine BFD handles all addresses as 64-bit internally.  I
-just think it should truncate them to 32-bits upon printing (and always
-whenever appropriate) when the selected target is 32-bit.  It does so (it
-has to!) for output anyway, so what's the deal? 
+The function is only intended to flush kernel addresses for which no mm
+exists.  Yes, it's being abused in creative ways but that's the purpose
+it was designed for ...
 
-> If you're really only doing 32-bit mips you might consider removing the 
-> 64 bit targets in the config.bfd... I think that will solve the problems.
+>  If it does not know, the only choice is to flush the whole
+> dcache, which seems to make this function very close to flush_all().  
+> 
+> Is this function introduced by other CPU platforms?  How would it make a
+> difference there?  I am just curious ...
 
- Nope, I insist 32-bit targets need to work correctly regardless of
-whether there are any 64-bit ones supported by a particular BFD binary or
-not.  Do you think elf32-i386 should switch to printing 64-bit addresses
-if elf64-alpha is also supported by a given configuration of BFD?  I
-don't.
+Others such as for example m68k need it as well.
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+  Ralf

@@ -1,94 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Oct 2004 07:34:32 +0100 (BST)
-Received: from smtp-send.myrealbox.com ([IPv6:::ffff:192.108.102.143]:33366
-	"EHLO smtp-send.myrealbox.com") by linux-mips.org with ESMTP
-	id <S8224858AbUJ0Ge1>; Wed, 27 Oct 2004 07:34:27 +0100
-Received: from narendra narendradv [202.88.156.133]
-	by smtp-send.myrealbox.com with NetMail SMTP Agent $Revision: 1.1.1.1 $ on Novell NetWare;
-	Wed, 27 Oct 2004 00:34:23 -0600
-Message-ID: <000e01c4bbee$8ba25a20$0e00a8c0@narendra>
-From: "Narendra Kulkarni" <narendradv@myrealbox.com>
-To: "Ralf Baechle" <ralf@linux-mips.org>
-Cc: <linux-mips@linux-mips.org>
-References: <000b01c4bb6a$f87b1580$0e00a8c0@narendra> <20041026150433.GA30620@linux-mips.org>
-Subject: Re: errors while  insmoding usb-skeleton.o (changed to suit our requirements)
-Date: Wed, 27 Oct 2004 12:00:17 +0530
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1437
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1441
-Return-Path: <narendradv@myrealbox.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Oct 2004 07:10:27 +0100 (BST)
+Received: from imfep06.dion.ne.jp ([IPv6:::ffff:210.174.120.157]:19221 "EHLO
+	imfep06.dion.ne.jp") by linux-mips.org with ESMTP
+	id <S8224913AbUJ1GKW>; Thu, 28 Oct 2004 07:10:22 +0100
+Received: from webmail.dion.ne.jp ([210.196.2.172]) by imfep06.dion.ne.jp
+          (InterMail vM.4.01.03.31 201-229-121-131-20020322) with SMTP
+          id <20041028061017.CMDT23095.imfep06.dion.ne.jp@webmail.dion.ne.jp>;
+          Thu, 28 Oct 2004 15:10:17 +0900
+From: ichinoh@mb.neweb.ne.jp
+To: linux-mips@linux-mips.org
+Date: Thu, 28 Oct 2004 15:10:17 +0900
+Message-Id: <1098943817.20703@157.120.127.3.DIONWebMail>
+Subject: Link error gcc3.3.1
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-2022-jp
+X-Mailer: DION Web mail version 1.03
+X-Originating-IP: 157.120.127.3(*)
+Return-Path: <ichinoh@mb.neweb.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6222
+X-archive-position: 6223
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: narendradv@myrealbox.com
+X-original-sender: ichinoh@mb.neweb.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+Hello,
 
-I have used the functions copy_to_user and copy_from_user in the driver to
-get and send data to user space. If  I comment the above statements,  i dont
-get the errors when i insmod usb-skeleton.o which i get when i use the
-copy_to_user and copy _from_user functions.
-errors --->
+I have a question about gcc3.3.1.
 
-Using usb-skeleton.o
-insmod: Relocation overflow of type 4 for __copy_user
-insmod: Relocation overflow of type 4 for __copy_user
-insmod: Relocation overflow of type 4 for __copy_user
+Compiling source codes when using gcc3.3.1, I encounter the link error.
 
-Narendra
-
-
------ Original Message ----- 
-From: "Ralf Baechle" <ralf@linux-mips.org>
-To: "Narendra Kulkarni" <narendra@econtek.com>
-Cc: "'Narendra Kulkarni'" <narendra@spacomp.com>;
-<linux-mips@linux-mips.org>
-Sent: Tuesday, October 26, 2004 8:34 PM
-Subject: Re: errors while insmoding usb-skeleton.o (changed to suit our
-requirements)
+<<< error messages >>>
+make[1]: Leaving directory `/home/mvista/u-boot-1.1.1-mips1022/post/cpu'
+mips_fp_le-gcc -Wa,-gstabs -D__ASSEMBLY__ -g -DDEBUG -Os   -D__KERNEL__ 
+-DTEXT_BASE=0xbfc00000 -I/home/mvista/u-boot-1.1.1-mips1022/include -fno-builtin 
+-ffreestanding -nostdinc -isystem /usr/lib/gcc-lib/i386-redhat-linux/3.2.2/include -pipe 
+-DCONFIG_MIPS -D__MIPS__  -march=4kc -mabicalls -c -o cpu/mips/start.o 
+/home/mvista/u-boot-1.1.1-mips1022/cpu/mips/start.S
+/home/mvista/u-boot-1.1.1-mips1022/cpu/mips/start.S: Assembler messages:
+/home/mvista/u-boot-1.1.1-mips1022/cpu/mips/start.S:247: Error: Cannot branch to undefined symbol.
+/home/mvista/u-boot-1.1.1-mips1022/cpu/mips/start.S:252: Error: Cannot branch to undefined symbol.
+/home/mvista/u-boot-1.1.1-mips1022/cpu/mips/start.S:264: Error: Cannot branch to undefined symbol.
+make: *** [cpu/mips/start.o] Error 1
 
 
-> On Tue, Oct 26, 2004 at 08:19:14PM +0530, Narendra Kulkarni wrote:
->
-> > I am building a module usb-skeleton.o with following compiler options
-(The
-> > complier options are same as the options of used for building kernel)
-> >
-> >
-opt/brcm/hndtools-mipsel-linux-3.2.3/bin/mipsel-linux-gcc -D__KERNEL__  -I/
-> >
-usr/src/mipslinux/src/linux/linux/include -Wall -Wstrict-prototypes -Wno-tri
-> >
-graphs -O2 -fno-strict-aliasing -fno-common -fomit-frame-pointer -I/usr/src/
-> >
-mipslinux/src/linux/linux/../../include -I/usr/src/mipslinux/src/linux/linux
-> > /include/asm/gcc -G
->
->  -mno-abicalls -fno-pic -pipe -mips2  -mlong-calls  -nostdinc -iwithprefix
-> > include -DKBUILD_BASENAME=usb-skeleton  -c -o usb-skeleton.o
-usb-skeleton.c
-> >
-> >  When insmoding the usb-skeleton.o,  insmod usb-skeleton.o
-> > I am getting the following erros
-> >  Using usb-skeleton.o
-> >  insmod: Relocation overflow of type 4 for __copy_user
-> >  insmod: Relocation overflow of type 4 for __copy_user
-> >  insmod: Relocation overflow of type 4 for __copy_user
-> >
-> > Where am i going wrong.  Help would be appreciated.
->
-> Seems your compiler command line is missing -DMODULE.
->
->   Ralf
->
->
+However, ".globl memsetup" is defined by the source code of (*2).
+Did anyone encounter the same error ?
+In addition, this error is not generated in gcc3.2.3.
+
+
+(*1):u-boot-1.1.1/cpu/mips/start.S
+	/* Initialize any external memory.
+	 */
+	bal	memsetup  /* <<< error occured */
+	nop
+
+(*2):u-boot-1.1.1/board/dbau1x00/memsetup.S
+
+	.text
+	.set noreorder
+	.set mips32
+
+	.globl	memsetup
+memsetup:
+	/*
+	 * Step 1) Establish CPU endian mode.
+	 * Db1500-specific:
+	 * Switch S1.1 Off(bit7 reads 1) is Little Endian
+	 * Switch S1.1 On (bit7 reads 0) is Big Endian
+	 */
+	li	t0, MEM_STCFG1
+
+Best regards,
+Nyauyama.

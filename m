@@ -1,95 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Feb 2003 03:00:16 +0000 (GMT)
-Received: from sonicwall.montavista.co.jp ([IPv6:::ffff:202.232.97.131]:47134
-	"EHLO yuubin.montavista.co.jp") by linux-mips.org with ESMTP
-	id <S8225207AbTBZDAP>; Wed, 26 Feb 2003 03:00:15 +0000
-Received: from pudding.montavista.co.jp ([10.200.0.40])
-	by yuubin.montavista.co.jp (8.12.5/8.12.5) with SMTP id h1Q36G44016051;
-	Wed, 26 Feb 2003 12:06:17 +0900
-Date: Wed, 26 Feb 2003 11:54:05 +0900
-From: Yoichi Yuasa <yoichi_yuasa@montavista.co.jp>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: yoichi_yuasa@montavista.co.jp, ralf@linux-mips.org,
-	linux-mips@linux-mips.org
-Subject: Re: Change -mcpu option for VR41xx
-Message-Id: <20030226115405.057a61b9.yoichi_yuasa@montavista.co.jp>
-In-Reply-To: <Pine.GSO.3.96.1030225135016.14659C-100000@delta.ds2.pg.gda.pl>
-References: <20030225124850.32cfa6f5.yoichi_yuasa@montavista.co.jp>
-	<Pine.GSO.3.96.1030225135016.14659C-100000@delta.ds2.pg.gda.pl>
-Organization: MontaVista Software Japan, Inc.
-X-Mailer: Sylpheed version 0.8.10 (GTK+ 1.2.10; i686-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@montavista.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Feb 2003 03:06:44 +0000 (GMT)
+Received: from web40804.mail.yahoo.com ([IPv6:::ffff:66.218.78.181]:4487 "HELO
+	web40804.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S8225236AbTBZDGo>; Wed, 26 Feb 2003 03:06:44 +0000
+Message-ID: <20030226030636.95154.qmail@web40804.mail.yahoo.com>
+Received: from [67.29.236.2] by web40804.mail.yahoo.com via HTTP; Tue, 25 Feb 2003 19:06:36 PST
+Date: Tue, 25 Feb 2003 19:06:36 -0800 (PST)
+From: Jiahan Chen <jiahanchen@yahoo.com>
+Subject: CVS Usage and Kernel Build
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: linux-mips@linux-mips.org
+In-Reply-To: <Pine.GSO.4.21.0302251805071.15407-100000@vervain.sonytel.be>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <jiahanchen@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1562
+X-archive-position: 1563
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@montavista.co.jp
+X-original-sender: jiahanchen@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 25 Feb 2003 14:18:38 +0100 (MET)
-"Maciej W. Rozycki" <macro@ds2.pg.gda.pl> wrote:
 
-> On Tue, 25 Feb 2003, Yoichi Yuasa wrote:
-> 
-> > binutils -mcpu option for VR4100 series
 > > 
-> > 2.10:
-> >         * VR4100
-> >         * vr4100
-> >         * 4100
-> >         * mips64vr4100
-> >         * r4100
-> > 
-> > 2.11:
-> > 2.12:
-> > 2.13:
-> >         * VR4100
-> >         * 4100
-> >         * mips64vr4100
-> >         * r4100
+> > Where and how can I get CVS source tree to build customized 
+> > Linux kernel for Mips?
 > 
->  They are case insensitive, which is why the redundancy was removed.
+> http://www.google.com/search?q=Linux+MIPS+CVS
 > 
-> > In addition for the VR4100 series, there is an -m4100 option.
-> 
->  Which is deprecated and scheduled for removal in the future.
-> 
-> > As for us, it is best to use the following option.
-> > 
-> > GCCFLAGS        += -mcpu=r4100 -mips2 -Wa,-m4100,--trap
-> > 
-> > Would you apply this patch to CVS?
-> 
->  The trunk version of gas only supports "-m4100" and "vr4100" (but leading
-> letters are dropped if no exact match happens) for "-mcpu=" (which is also
-> deprecated), "-march=" and "-mtune=".  Additionally it supports "vr4111",
-> "vr4111", "vr4120", "vr4130" and "vr4181".  I suggest you go for: 
-> 
-> GCCFLAGS	+= -mcpu=vr4100 -mips2 -Wa,--trap
-> 
-> for now as other options may trigger an error depending on the version of
-> tools used ("-mcpu=" is passed down to gas).
+> Gr{oetje,eeting}s,
+>
 
-With the following versions.
-I cannot compile with an instruction peculiar to VR4100, if there is no -m4100.
+From Mips web-site, I read:
+ 
+cvs -d :pserver:cvs@ftp.linux-mips.org:/home/cvs login
+(Only needed the first time you use anonymous CVS, the password is "cvs")
+cvs -d :pserver:cvs@ftp.linux-mips.org:/home/cvs co <repository>
 
-GNU ld version 2.12.90.0.1 20020307
-GNU ld version 2.12.1
+I have a few questions:
+1. There should be a client "cvs" in my linux PC, then to use 
+   above command to get CVS source files INDIVIDUALLY?
+2. After get everything from ftp site as above, do we use
+   the similar procedure to re-build linux kernel for MIPS, such as
+   make config; make dep; make vmlinux
+3. Does this source tree support R3000 (CPU) and USB?
+4. In order to add a new USB device driver, do I need update
+   drivers/usb/Config.In and drivers/usb/Makefile manully?
 
-We need to add -m4100 option.
-
-GCCFLAGS	+= -mcpu=vr4100 -mips2 -Wa,-m4100,--trap
-
->  I think we'll soon have to cook up a run-time gcc check for what is
-> accepted and use the "-march=" and "-mtune=" options preferably and
-> failing that, revert to legacy options like above.
+Currently, I am in the initial phase for development, the Network
+card is not available and Winmoden doesn't work with Linux,
+so I have no ftp connection from my Linux box to get
+CVS. In this case, is there any alternative to get CVS source
+tree?
 
 Thanks,
 
-Yoichi
+Jiahan
+
+ 
+
+
+__________________________________________________
+Do you Yahoo!?
+Yahoo! Tax Center - forms, calculators, tips, more
+http://taxes.yahoo.com/

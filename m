@@ -1,39 +1,97 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7ECjB608195
-	for linux-mips-outgoing; Tue, 14 Aug 2001 05:45:11 -0700
-Received: from dea.waldorf-gmbh.de (u-244-21.karlsruhe.ipdial.viaginterkom.de [62.180.21.244])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7ECj9j08192
-	for <linux-mips@oss.sgi.com>; Tue, 14 Aug 2001 05:45:09 -0700
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f7E88C106241;
-	Tue, 14 Aug 2001 10:08:12 +0200
-Date: Tue, 14 Aug 2001 10:08:12 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Ilya Volynets <ilya@theIlya.com>
-Cc: Keith M Wesolowski <wesolows@foobazco.org>,
-   Mark Nellemann <mark@nellemann.nu>,
-   linux-mips mail list <linux-mips@oss.sgi.com>
-Subject: Re: Is it possible to boot linux on an O2 r5k ?
-Message-ID: <20010814100812.D5928@bacchus.dhis.org>
-References: <20010812215442.C24560@foobazco.org> <0108122213530C.07543@gateway>
-Mime-Version: 1.0
+	by oss.sgi.com (8.11.2/8.11.3) id f7EFTac12128
+	for linux-mips-outgoing; Tue, 14 Aug 2001 08:29:36 -0700
+Received: from web11904.mail.yahoo.com (web11904.mail.yahoo.com [216.136.172.188])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7EFTXj12123
+	for <linux-mips@oss.sgi.com>; Tue, 14 Aug 2001 08:29:33 -0700
+Message-ID: <20010814152933.67337.qmail@web11904.mail.yahoo.com>
+Received: from [209.243.184.191] by web11904.mail.yahoo.com; Tue, 14 Aug 2001 08:29:33 PDT
+Date: Tue, 14 Aug 2001 08:29:33 -0700 (PDT)
+From: Wayne Gowcher <wgowcher@yahoo.com>
+Subject: Re: Benchmark performance
+To: Ralf Baechle <ralf@oss.sgi.com>
+Cc: linux-mips@oss.sgi.com
+In-Reply-To: <20010814095152.A5928@bacchus.dhis.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <0108122213530C.07543@gateway>; from ilya@theIlya.com on Sun, Aug 12, 2001 at 10:13:53PM -0700
-X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sun, Aug 12, 2001 at 10:13:53PM -0700, Ilya Volynets wrote:
+Ralf,
 
-> I don't know if this discussion should be started again, but I can't
-> stop myself from saing that having Linux supporting SGI MIPS
-> machines as well as it does SPARC64 machines would be very pleasant
-> thing to have. Everyone knows that Slowlaris is rock-solid OS, but I am
-> yet to see a person that doesn't like Linux on SUN machines.
+Thanks for the input.
 
-Talk to sun4c users.  The performance suck rocks and in general at time
-the maintenance of the 32-bit Sparc kernel left alot of desires open.
+> > a 3 % reduction in the Memory Index benchmark
+> > a 2 % increase in the Integer Index benchmark
+> > a 23 % reduction in the Floating Point Index
+> benchmark
+> 
+> Small fluctuations in the range of 2 or 3 percent
+> are usually explained
+> by a changing usage pattern of the caches. 
+> Therefore rerunning a the
+> benchmarks is a good idea.  Especially
+> microbenchmarks a la lmbench on
+> caches of low associativity like the direct mapped
+> R4k caches are extremly
+> easily affected by cache usage patterns.
 
-  Ralf
+I messed up the figures for the redhat 7.1 case They
+should have been :
+
+Memory Index   6.7 % decrease
+Integer Index  2 % decrease
+Floating Point 27 % decrease
+
+And it was the progressive reduction in performance of
+the Memory Index that was raising a red flag to me.
+Especially the big hit in floating point performance.
+
+> Did you get any kernel messages during the Floating
+> Point Index benchmark
+> on the older kernel?
+
+No, everything ran fine.
+
+> > newer kernel and with a newer distribution ? newer
+> > compiler ?
+> 
+> Gcc 3.0 has been reported to produce slightly slower
+> code than it's
+> predecessor by many people on various architecture. 
+> I'm sad to find that
+> MIPS is also one of them.
+
+OK. That's one to remember.
+
+> As for the kernel - I don't really know; your
+> analysis isn't fine grained
+> enough.
+
+I didn't do any performance tweaking with the kernel
+itself as I wouldn't really know how to go about it. I
+was more trying to use a base kernel and then see how
+I could improve the benchmark performance by using
+compile options on the benchmark program only.
+Admittedly improving kernel performance is a far more
+efficient way of improving the benchmark scores.
+
+> Successful tuning requires a detailed analysis
+> first.
+
+I read an article recently in Linux Journal on
+tweaking an Alpha kernel. I suppose the same general
+principles can be applied to MIPS. Alternatively, do
+you ( or anyone else ) know of a howto or even a
+general article on how to do this ?
+
+I downloaded the benchmark from :
+
+http://www.tux.org/~mayer/linux/bmark.html
+
+Wayne
+
+__________________________________________________
+Do You Yahoo!?
+Make international calls for as low as $.04/minute with Yahoo! Messenger
+http://phonecard.yahoo.com/

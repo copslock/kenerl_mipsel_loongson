@@ -1,78 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Sep 2003 15:05:16 +0100 (BST)
-Received: from moutng.kundenserver.de ([IPv6:::ffff:212.227.126.171]:39141
-	"EHLO moutng.kundenserver.de") by linux-mips.org with ESMTP
-	id <S8225370AbTIKOFQ> convert rfc822-to-8bit; Thu, 11 Sep 2003 15:05:16 +0100
-Received: from [212.227.126.162] (helo=mrelayng.kundenserver.de)
-	by moutng.kundenserver.de with esmtp (Exim 3.35 #1)
-	id 19xS4Q-0001to-00
-	for linux-mips@linux-mips.org; Thu, 11 Sep 2003 16:05:14 +0200
-Received: from [80.129.137.45] (helo=192.168.1.21)
-	by mrelayng.kundenserver.de with asmtp (Exim 3.35 #1)
-	id 19xS4Q-0000SI-00
-	for linux-mips@linux-mips.org; Thu, 11 Sep 2003 16:05:14 +0200
-From:	Bruno Randolf <bruno.randolf@4g-systems.biz>
-Organization: 4G Mobile Systeme
-To:	linux-mips@linux-mips.org
-Subject: cache coherent io on au1500
-Date:	Thu, 11 Sep 2003 16:05:12 +0200
-User-Agent: KMail/1.5.3
-MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Content-Description: clearsigned data
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Sep 2003 15:06:25 +0100 (BST)
+Received: from p508B58B4.dip.t-dialin.net ([IPv6:::ffff:80.139.88.180]:22446
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225370AbTIKOGZ>; Thu, 11 Sep 2003 15:06:25 +0100
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h8BE6BLT015678;
+	Thu, 11 Sep 2003 16:06:11 +0200
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h8BE69Ad015677;
+	Thu, 11 Sep 2003 16:06:09 +0200
+Date:	Thu, 11 Sep 2003 16:06:08 +0200
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	durai <durai@isofttech.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: unresolved symbol dptoli
+Message-ID: <20030911140608.GA15365@linux-mips.org>
+References: <BLEMJDCPNEFOILECKALMMEDICAAA.durai@isofttech.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Message-Id: <200309111605.13050.bruno.randolf@4g-systems.biz>
-Return-Path: <bruno.randolf@4g-systems.biz>
+In-Reply-To: <BLEMJDCPNEFOILECKALMMEDICAAA.durai@isofttech.com>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3163
+X-archive-position: 3164
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bruno.randolf@4g-systems.biz
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA1
+On Thu, Sep 11, 2003 at 11:33:07AM +0530, durai wrote:
 
-hello!
+> i compiled a wireless lan driver using the mips-linux-gcc compiler 2.95.3.
+> When i try to insmod the driver i got the following errors. any ideas?
+> 
+> insmod: unresolved symbol dptoli
+> insmod: unresolved symbol dpmul
+> insmod: unresolved symbol litodp
+> 
+> Note that, i havent used any of these above functions in my code. It appears
+> only in the .o files
 
-i have an Au1500, silicon stepping AD (mtx-1 board) which as far as i 
-understand should be able to do cache coherent io. but if i change 
-CONFIG_NONCOHERENT_IO to "n" compilation of 2.4.21 fails with 
+These are symbols used by gcc's software fp code.  Don't use floating
+point in kernel code.
 
-mipsel-linux-gcc -D__KERNEL__ -I/data/kernel/mtx-2.4.21/include -Wall 
-- -Wstrict-prototypes -Wno-trigraphs -O2 -fno-strict-aliasing -fno-common 
-- -fomit-frame-pointer -I /data/kernel/mtx-2.4.21/include/asm/gcc -G 0 
-- -mno-abicalls -fno-pic -pipe -mcpu=r4600 -mips2 -Wa,--trap   -nostdinc 
-- -iwithprefix include -DKBUILD_BASENAME=fork  -c -o fork.o fork.c
-In file included from fork.c:20:
-/data/kernel/mtx-2.4.21/include/linux/vmalloc.h: In function `vmalloc':
-/data/kernel/mtx-2.4.21/include/linux/vmalloc.h:36: `_CACHE_CACHABLE_COW' 
-undeclared (first use in this function)
-/data/kernel/mtx-2.4.21/include/linux/vmalloc.h:36: (Each undeclared 
-identifier is reported only once
-/data/kernel/mtx-2.4.21/include/linux/vmalloc.h:36: for each function it 
-appears in.)
-/data/kernel/mtx-2.4.21/include/linux/vmalloc.h: In function `vmalloc_dma':
-/data/kernel/mtx-2.4.21/include/linux/vmalloc.h:45: `_CACHE_CACHABLE_COW' 
-undeclared (first use in this function)
-/data/kernel/mtx-2.4.21/include/linux/vmalloc.h: In function `vmalloc_32':
-/data/kernel/mtx-2.4.21/include/linux/vmalloc.h:54: `_CACHE_CACHABLE_COW' 
-undeclared (first use in this function)
-make[2]: *** [fork.o] Error 1
-
-how could i fix that?
-
-thanks,
-bruno
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.3 (GNU/Linux)
-
-iD8DBQE/YIEZfg2jtUL97G4RAm0pAJ47FLT9fJaNWIqE0gHJ5zsPlZhPngCfY+AY
-ZOEDI2hvDJ/zbdk98TzCm9k=
-=FcHD
------END PGP SIGNATURE-----
+  Ralf

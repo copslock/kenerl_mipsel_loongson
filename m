@@ -1,44 +1,46 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id JAA24795 for <linux-archive@neteng.engr.sgi.com>; Mon, 24 May 1999 09:41:21 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id LAA61579 for <linux-archive@neteng.engr.sgi.com>; Mon, 24 May 1999 11:11:31 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id JAA26916
+	id LAA00653
 	for linux-list;
-	Mon, 24 May 1999 09:38:15 -0700 (PDT)
+	Mon, 24 May 1999 11:10:11 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from mailbox.esd.sgi.com (mailbox.esd.sgi.com [130.62.72.15])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id JAA55203
-	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 24 May 1999 09:38:13 -0700 (PDT)
-	mail_from (dcsmith@belgarath.rutgers.edu)
-Received: from belgarath.rutgers.edu (belgarath.rutgers.edu [128.6.1.235]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id JAA03840
-	for <linux@cthulhu.engr.sgi.com>; Mon, 24 May 1999 09:38:12 -0700 (PDT)
-	mail_from (dcsmith@belgarath.rutgers.edu)
-From: dcsmith@belgarath.rutgers.edu
-Received: from localhost (dcsmith@localhost)
-	by belgarath.rutgers.edu (8.8.7/8.8.7) with ESMTP id MAA06931
-	for <linux@cthulhu.engr.sgi.com>; Mon, 24 May 1999 12:40:17 -0400
-Date: Mon, 24 May 1999 12:40:16 -0400 (EDT)
-To: Linux SGI <linux@cthulhu.engr.sgi.com>
-Subject: SGI Distribution?
-In-Reply-To: <Pine.LNX.3.96.990521163431.21287A-100000@caligula.madhouse.org>
-Message-ID: <Pine.LNX.4.04.9905241238080.6929-100000@belgarath.rutgers.edu>
+	via ESMTP id LAA06131;
+	Mon, 24 May 1999 11:10:09 -0700 (PDT)
+	mail_from (kck@mailbox.esd.sgi.com)
+Received: by mailbox.esd.sgi.com (980427.SGI.8.8.8/950213.SGI.AUTOCF)
+	 id LAA54685; Mon, 24 May 1999 11:10:09 -0700 (PDT)
+From: kck@mailbox.esd.sgi.com (Ken Klingman)
+Message-Id: <199905241810.LAA54685@mailbox.esd.sgi.com>
+Subject: Re: SGI Distribution?
+To: dcsmith@belgarath.rutgers.edu
+Date: Mon, 24 May 1999 11:10:09 -0700 (PDT)
+Cc: linux@cthulhu.engr.sgi.com
+In-Reply-To: <Pine.LNX.4.04.9905241238080.6929-100000@belgarath.rutgers.edu> from "dcsmith@belgarath.rutgers.edu" at May 24, 99 12:40:16 pm
+X-Mailer: ELM [version 2.4 PL24 ME5a]
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-With last week's announcement, is SGI planning a full linux distribution
-for the visual workstations? 
+We have not made any formal announcements regarding our plans for
+Linux on the visual workstation.  You should be able to get an NDA
+disclosure from your salesman.
 
-Is this the appropriate place to ask this question, if not, where?
-
-Thanks
-
-Don Smith
+Ken
+> 
+> With last week's announcement, is SGI planning a full linux distribution
+> for the visual workstations? 
+> 
+> Is this the appropriate place to ask this question, if not, where?
+> 
+> Thanks
+> 
+> Don Smith
+> 
+> 
+> 

@@ -1,70 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Aug 2003 00:16:45 +0100 (BST)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:5468
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8225218AbTHKXQk>; Tue, 12 Aug 2003 00:16:40 +0100
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp (Exim 3.35 #1)
-	id 19mLtz-00055o-00; Tue, 12 Aug 2003 01:16:35 +0200
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 19mLtz-00067j-00; Tue, 12 Aug 2003 01:16:35 +0200
-Date: Tue, 12 Aug 2003 01:16:35 +0200
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Chip Coldwell <coldwell@frank.harvard.edu>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: load/store address overflow on binutils 2.14
-Message-ID: <20030811231635.GB23104@rembrandt.csv.ica.uni-stuttgart.de>
-References: <20030810145425.GE22977@rembrandt.csv.ica.uni-stuttgart.de> <Pine.GSO.4.21.0308112257180.20421-100000@vervain.sonytel.be>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Aug 2003 07:25:42 +0100 (BST)
+Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:50962
+	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
+	id <S8225193AbTHLGZe>; Tue, 12 Aug 2003 07:25:34 +0100
+Received: from no.name.available by topsns.toshiba-tops.co.jp
+          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 12 Aug 2003 06:25:33 UT
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.9/8.12.9) with ESMTP id h7C6PKDV005922
+	for <linux-mips@linux-mips.org>; Tue, 12 Aug 2003 15:25:22 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date: Tue, 12 Aug 2003 15:26:54 +0900 (JST)
+Message-Id: <20030812.152654.74756131.nemoto@toshiba-tops.co.jp>
+To: linux-mips@linux-mips.org
+Subject: GCCFLAGS for gcc 3.3.x (-march and _MIPS_ISA)
+From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+Organization: TOSHIBA Personal Computer System Corporation
+X-Mailer: Mew version 2.2 on Emacs 21.2 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.GSO.4.21.0308112257180.20421-100000@vervain.sonytel.be>
-User-Agent: Mutt/1.5.4i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3022
+X-archive-position: 3023
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Geert Uytterhoeven wrote:
-[snip]
-> > > Strangely, this is actually "correct" behavior.  Arguments on
-> > > variable-length argument lists are implicitly "promoted" to unsigned
-> > > int at the widest.  See K&R 2nd ed. A6.1 and A7.3.2.
-> > 
-> > Ugh. Thanks for pointing this out. I wasn't aware of it.
-> > 
-> > 	printf("%016Lx\n", ~a);
-> > 
-> > Produces the expected output. So it is actually an implementation
-> > bug in binutils, which isn't fixable for 2.14 and earlier, because
-> > those have to remain at K&R C level. The K&R requirement was only
-> > recenly loosened.
-> 
-> How can it print the correct output if ~a is `promoted' to unsigned int, while
-> you specify %Lx in the format string?
+I'm trying to compile kernel with gcc 3.3.1 and binutils 2.14.  I
+found this report on this ML:
 
-From 'info gcc':
+>>>>> On Tue, 13 May 2003 13:33:16 +0200, Guido Guenther <agx@sigxcpu.org> said:
+Guido> Just for completeness: I had to use:
+Guido>  GCCFLAGS += -mabi=32 -march=r4600 -mtune=r4600 -Wa,--trap
+Guido> to make gcc-3.3 happy (note the 32 instead of o32). gcc-3.2
+Guido> doesn't seem to handle these options correctly at all.
 
-Double-Word Integers
-====================
+It can compile the kernel, but handle_adel_int (and handle_ades_int)
+contain wrong codes.
 
-   ISO C99 supports data types for integers that are at least 64 bits
-wide, and as an extension GCC supports them in C89 mode and in C++.
-[...]
-   There may be pitfalls when you use `long long' types for function
-arguments, unless you declare function prototypes.  If a function
-expects type `int' for its argument, and you pass a value of type `long
-long int', confusion will result because the caller and the subroutine
-will disagree about the number of bytes for the argument.  Likewise, if
-the function expects `long long int' and you pass `int'.  The best way
-to avoid such problems is to use prototypes.
+8002630c <handle_adel_int> 40284000 	dmfc0	t0,$8
+80026310 <handle_adel_int+0x4> 00000000 	nop
+80026314 <handle_adel_int+0x8> ffa800a4 	sd	t0,164(sp)
 
+The source code for this instructions are:
 
-Thiemo
+#define __BUILD_clear_ade(exception)                                    \
+		.set	reorder;					\
+		MFC0	t0,CP0_BADVADDR;                                \
+		.set	noreorder;					\
+		REG_S	t0,PT_BVADDR(sp);                               \
+		KMODE
+
+The macro MFC0 and REG_S are defined asm.h and depend on _MIPS_ISA.
+
+#if (_MIPS_ISA == _MIPS_ISA_MIPS1) || (_MIPS_ISA == _MIPS_ISA_MIPS2) || \
+    (_MIPS_ISA == _MIPS_ISA_MIPS32)
+#define MFC0		mfc0
+#define MTC0		mtc0
+#endif
+#if (_MIPS_ISA == _MIPS_ISA_MIPS3) || (_MIPS_ISA == _MIPS_ISA_MIPS4) || \
+    (_MIPS_ISA == _MIPS_ISA_MIPS5) || (_MIPS_ISA == _MIPS_ISA_MIPS64)
+#define MFC0		dmfc0
+#define MTC0		dmtc0
+#endif
+
+The option -march=r4600 seems to make gcc 3.3.x choose MIPS_ISA_MIPS3.
+
+So, the right options is:
+
+	GCCFLAGS += -mabi=32 -march=mips2 -mtune=r4600 -Wa,--trap
+(or	GCCFLAGS += $(call check_gcc, -mcpu=r4600 -mips2, -mabi=32 -march=mips2 -mtune=r4600) -Wa,--trap)
+
+Isn't it?
+
+---
+Atsushi Nemoto

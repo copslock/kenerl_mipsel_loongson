@@ -1,46 +1,36 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id WAA31901 for <linux-archive@neteng.engr.sgi.com>; Wed, 14 Jan 1998 22:15:46 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id FAA37959 for <linux-archive@neteng.engr.sgi.com>; Thu, 15 Jan 1998 05:46:53 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id WAA26367 for linux-list; Wed, 14 Jan 1998 22:10:57 -0800
-Received: from fir.engr.sgi.com (fir.engr.sgi.com [150.166.49.183]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id WAA26361; Wed, 14 Jan 1998 22:10:55 -0800
-Received: (from wje@localhost) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id WAA18877; Wed, 14 Jan 1998 22:10:45 -0800
-Date: Wed, 14 Jan 1998 22:10:45 -0800
-Message-Id: <199801150610.WAA18877@fir.engr.sgi.com>
-From: "William J. Earl" <wje@fir.engr.sgi.com>
-To: ralf@uni-koblenz.de
-Cc: "William J. Earl" <wje@fir.engr.sgi.com>, William Ellis <bellis@cerf.net>,
-        Linux porting team <linux@cthulhu.engr.sgi.com>
-Subject: Re: boot problem
-In-Reply-To: <19980115061519.46558@uni-koblenz.de>
-References: <34BD4F3E.7F86@cerf.net>
-	<19980115012622.51359@uni-koblenz.de>
-	<199801150056.QAA17975@fir.engr.sgi.com>
-	<19980115061519.46558@uni-koblenz.de>
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id FAA15558 for linux-list; Thu, 15 Jan 1998 05:41:37 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id FAA15553 for <linux@cthulhu.engr.sgi.com>; Thu, 15 Jan 1998 05:41:27 -0800
+Received: from mdhill.interlog.com ([199.212.154.112]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id FAA18338
+	for <linux@cthulhu.engr.sgi.com>; Thu, 15 Jan 1998 05:41:21 -0800
+	env-from (mike@mdhill.interlog.com)
+Received: (from mike@localhost) by mdhill.interlog.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id IAA03707; Thu, 15 Jan 1998 08:40:32 -0500
+Date: Thu, 15 Jan 1998 08:40:32 -0500
+Message-Id: <199801151340.IAA03707@mdhill.interlog.com>
+From: Michael Hill <mdhill@interlog.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+To: linux@cthulhu.engr.sgi.com
+Subject: Follow-up:  Hard Drive Problems
+X-Mailer: VM 6.34 under 20.3 "Vatican City" XEmacs  Lucid
+Reply-To: mdhill@interlog.com
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-ralf@uni-koblenz.de writes:
- > On Wed, Jan 14, 1998 at 04:56:38PM -0800, William J. Earl wrote:
- > 
- > >  > Thinking about it, the kernel should only try to touch the gfx hardware
- > >  > at all, if the ARC environment variable ``console'' is unset.  If you
- > >  > want to run from a serial console, then the variable's value should be
- > >  > either ``d1'' or ``d2'' for the first rsp. second serial interface.
- > >  > I suppose IRIX just defaults to serial console because it knows that
- > >  > a Challenge S is headless or after a failed probe for gfx hardware.
- > > 
- > >      IRIX probes for the graphics card.  If the probe fails, it
- > > assumes this is not one.  If there is no graphics, or if console != g,
- > > it sets the system console to the serial port.  Note, however, that
- > > IRIX normally puts up an X login on the graphics head even if
- > > console=d and thus the console is on the serial port.  This seems
- > > like a reasonable approach for linux as well.
- > 
- > Indeed, this is how Linux will behave after the probe / console env
- > thing is fixed.  I assume your more than minimal necessary probe has the
- > purpose to make shut that the machine does not only have gfx but also
- > that the gfx found in the address space is not something else like the
- > XZ for example?
-...
+Modifications to /var/sysgen/master.d/wd93 (courtesy of dealer tech
+support) have permitted my hard drive to be recognized by IRIX.  I
+successfully ran mke2fs on it and I'm trying to figure out what to do
+next.  Is there any further news on Mike Shaver's installer script?
 
-      Yes, that is correct.  Also, it means that the system will
-come up with a serial console if the graphics board is completely dead.
+Barring that, what would be the next step in installing Alex'
+root-be-0.02 from IRIX?
+
+Thanks,
+
+Mike
+-- 
+Michael Hill
+Toronto, Canada
+mdhill@interlog.com

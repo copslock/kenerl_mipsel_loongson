@@ -1,75 +1,56 @@
-Received: from pneumatic-tube.sgi.com (pneumatic-tube.sgi.com [204.94.214.22])
-	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id CAA28226
-	for <pstadt@stud.fh-heilbronn.de>; Fri, 23 Jul 1999 02:14:29 +0200
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id RAA6905149; Thu, 22 Jul 1999 17:12:16 -0700 (PDT)
+Received: from deliverator.sgi.com (deliverator.sgi.com [204.94.214.10])
+	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id DAA08275
+	for <pstadt@stud.fh-heilbronn.de>; Fri, 23 Jul 1999 03:05:53 +0200
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id SAA16167; Thu, 22 Jul 1999 18:04:17 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id RAA83652
+	id SAA33421
 	for linux-list;
-	Thu, 22 Jul 1999 17:04:35 -0700 (PDT)
+	Thu, 22 Jul 1999 18:00:30 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id RAA46402
+	via ESMTP id SAA29643
 	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 22 Jul 1999 17:04:26 -0700 (PDT)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1] (may be forged)) 
+	Thu, 22 Jul 1999 18:00:28 -0700 (PDT)
+	mail_from (duke@frodo.heloc.com)
+Received: from fire.heloc.com (wally.heloc.com [209.47.200.155]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id RAA06318
-	for <linux@cthulhu.engr.sgi.com>; Thu, 22 Jul 1999 17:04:24 -0700 (PDT)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from lappi.waldorf-gmbh.de (cacc-8.uni-koblenz.de [141.26.131.8])
-	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id CAA21455
-	for <linux@cthulhu.engr.sgi.com>; Fri, 23 Jul 1999 02:04:21 +0200 (MET DST)
-Received: (from ralf@localhost)
-	by lappi.waldorf-gmbh.de (8.9.3/8.9.3) id CAA23770;
-	Fri, 23 Jul 1999 02:04:03 +0200
-Date: Fri, 23 Jul 1999 02:04:03 +0200
-From: Ralf Baechle <ralf@uni-koblenz.de>
-To: Masami Komiya <mkomiya@crossnet.co.jp>
-Cc: linux@cthulhu.engr.sgi.com
-Subject: Re: glibc cross-compile error
-Message-ID: <19990723020403.Z14367@uni-koblenz.de>
-References: <37946628.F2D5BA61@crossnet.co.jp>
-Mime-Version: 1.0
+	via ESMTP id SAA00097
+	for <linux@cthulhu.engr.sgi.com>; Thu, 22 Jul 1999 18:00:27 -0700 (PDT)
+	mail_from (duke@frodo.heloc.com)
+Received: from drugs.heloc.com (drugs.heloc.com [192.168.1.24])
+	by fire.heloc.com (8.9.3/8.9.2) with ESMTP id VAA11839
+	for <linux@cthulhu.engr.sgi.com>; Thu, 22 Jul 1999 21:00:25 -0400 (EDT)
+Received: from frodo.heloc.com (frodo.heloc.com [192.168.1.21])
+	by drugs.heloc.com (8.9.3/8.9.2) with ESMTP id VAA89089
+	for <@relay.heloc.com:linux@cthulhu.engr.sgi.com>; Thu, 22 Jul 1999 21:00:11 -0400 (EDT)
+Received: (from duke@localhost) by frodo.heloc.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) id VAA50473 for linux@cthulhu.engr.sgi.com; Thu, 22 Jul 1999 21:00:58 -0400 (EDT)
+From: "Rob Dueckman" <duke@heloc.com>
+Message-Id: <990722210058.ZM50511@frodo.heloc.com>
+Date: Thu, 22 Jul 1999 21:00:57 -0400
+X-Mailer: Z-Mail (5.0.0 30July97)
+To: linux@cthulhu.engr.sgi.com
+Subject: RedHat 6.0 (SMP) on 540
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.4us
-In-Reply-To: <37946628.F2D5BA61@crossnet.co.jp>; from Masami Komiya on Tue, Jul 20, 1999 at 09:06:00PM +0900
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 8bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 20, 1999 at 09:06:00PM +0900, Masami Komiya wrote:
+I've got this new box here at the office which I've installed RedHat 6.0.  It
+is a VisWis 540 with 4 processors.
 
-> I could not cross-compile glibc using Linux/MIPS-2.2.10 sources
-> because of asm-mips/timex.h.
+After downloading  the 2.2.10 kernel, applying the patches and installing the
+new kernel, Linux only sees 2 of the 4 processors...
 
-> *** timex.h.org	Fri Jun 11 11:18:29 1999
-> --- timex.h	Tue Jul 20 20:34:59 1999
-> ***************
-> *** 31,36 ****
-> --- 31,40 ----
->   typedef unsigned int cycles_t;
->   extern cycles_t cacheflush_time;
->   
-> + #ifndef __ASM_MIPS_MIPSREGS_H
-> + #include <asm/mipsregs.h>
-> + #endif
-> + 
->   static inline cycles_t get_cycles (void)
->   {
->   	return read_32bit_cp0_register(CP0_COUNT);
-> 
-> I afraid this workarround will be the cause of the another.
-> Does anyone has the better solution ?
+I havn't spent a huge amount of time looking at the source, but is there a flag
+during the build that tells now many processors to support?  If not, is this a
+bug?
 
-Wrap all the C-code in that file with #ifdef __KERNEL__ ... #endif.
-
-It's fixed in my development sources.
-
-  Ralf
+Thanks.

@@ -1,42 +1,47 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0HIYgI26169
-	for linux-mips-outgoing; Thu, 17 Jan 2002 10:34:42 -0800
-Received: from ocean.lucon.org (12-234-19-19.client.attbi.com [12.234.19.19])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0HIYbP26166
-	for <linux-mips@oss.sgi.com>; Thu, 17 Jan 2002 10:34:37 -0800
-Received: by ocean.lucon.org (Postfix, from userid 1000)
-	id 20776125C1; Thu, 17 Jan 2002 09:34:33 -0800 (PST)
-Date: Thu, 17 Jan 2002 09:34:32 -0800
-From: "H . J . Lu" <hjl@lucon.org>
-To: Torsten Weber <t.weber@hhi.de>
-Cc: Linux MIPS <linux-mips@oss.sgi.com>
-Subject: Re: -O2 in gcc 2.96 buggy?
-Message-ID: <20020117093432.A995@lucon.org>
-References: <3C46C2D5.F191DC26@hhi.de>
+	by oss.sgi.com (8.11.2/8.11.3) id g0HJdgg27905
+	for linux-mips-outgoing; Thu, 17 Jan 2002 11:39:42 -0800
+Received: from post.webmailer.de (natpost.webmailer.de [192.67.198.65])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0HJddP27902
+	for <linux-mips@oss.sgi.com>; Thu, 17 Jan 2002 11:39:39 -0800
+Received: from excalibur.cologne.de (p5085141E.dip.t-dialin.net [80.133.20.30])
+	by post.webmailer.de (8.9.3/8.8.7) with ESMTP id TAA29392;
+	Thu, 17 Jan 2002 19:39:34 +0100 (MET)
+Received: from karsten by excalibur.cologne.de with local (Exim 3.12 #1 (Debian))
+	id 16RH3q-00008x-00; Thu, 17 Jan 2002 19:14:50 +0100
+Date: Thu, 17 Jan 2002 19:14:50 +0100
+From: Karsten Merker <karsten@excalibur.cologne.de>
+To: "Houten K.H.C. van (Karel)" <vhouten@kpn.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: DECStation debian CD's
+Message-ID: <20020117191450.A253@excalibur.cologne.de>
+Mail-Followup-To: Karsten Merker <karsten@excalibur.cologne.de>,
+	"Houten K.H.C. van (Karel)" <vhouten@kpn.com>,
+	linux-mips@oss.sgi.com
+References: <200201170937.KAA28900@sparta.research.kpn.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <3C46C2D5.F191DC26@hhi.de>; from t.weber@hhi.de on Thu, Jan 17, 2002 at 01:25:57PM +0100
+In-Reply-To: <200201170937.KAA28900@sparta.research.kpn.com>; from vhouten@kpn.com on Thu, Jan 17, 2002 at 10:37:30AM +0100
+X-No-Archive: yes
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, Jan 17, 2002 at 01:25:57PM +0100, Torsten Weber wrote:
-> On a RedHat 7.1 installation I compiled gawk (3.1.0),  but gawk crashed
-> (gawk couldn't run glibc-2.2.4/scripts/firstversions.awk, it resulted
-> in:
->        > (FILENAME=- FNR=1) fatal error: internal error
->        > Aborted (core dumped)
-> )
-> The gawk problem disappeares if I compile without optimizing with -O2
-> (i.e. optimizing with -O works).
-> 
-> gcc version is 2.96 20000731 (Red Hat Linux 7.1 2.96-99.1)
-> 
-> Is this problem already known, or where is my mistake?
+On Thu, Jan 17, 2002 at 10:37:30AM +0100, Houten K.H.C. van (Karel) wrote:
 
-I know a kernel bug caused this problem.
+> I've installed a 5000/240 using your debian-mipsel images. The install
+> procedure needs some fixes, but I was able to create a bootable system.
+> You can have a look at the system and the bootlog at
+> http://www.xs4all.nl/~vhouten/mipsel/dior.html
 
+Thanks for testing the installer. Do you have a list of the particular
+problems you had with it?
 
-
-H.J.
+Greetings,
+Karsten
+-- 
+#include <standard_disclaimer>
+Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der Nutzung
+oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die Markt- oder
+Meinungsforschung.

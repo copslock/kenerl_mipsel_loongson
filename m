@@ -1,38 +1,42 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f5DF8Uh08117
-	for linux-mips-outgoing; Wed, 13 Jun 2001 08:08:30 -0700
-Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5DF8TP08114
-	for <linux-mips@oss.sgi.com>; Wed, 13 Jun 2001 08:08:30 -0700
-Received: by ocean.lucon.org (Postfix, from userid 1000)
-	id 54FE3125BA; Wed, 13 Jun 2001 08:08:29 -0700 (PDT)
-Date: Wed, 13 Jun 2001 08:08:29 -0700
-From: "H . J . Lu" <hjl@lucon.org>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+	by oss.sgi.com (8.11.2/8.11.3) id f5DFGwc08899
+	for linux-mips-outgoing; Wed, 13 Jun 2001 08:16:58 -0700
+Received: from mail.foobazco.org (snowman.foobazco.org [198.144.194.230])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5DFGvP08892
+	for <linux-mips@oss.sgi.com>; Wed, 13 Jun 2001 08:16:57 -0700
+Received: from galt.foobazco.org (galt.foobazco.org [198.144.194.227])
+	by mail.foobazco.org (Postfix) with ESMTP
+	id E6C183E90; Wed, 13 Jun 2001 08:13:17 -0700 (PDT)
+Received: by galt.foobazco.org (Postfix, from userid 1014)
+	id 50CAF14059; Wed, 13 Jun 2001 08:14:35 -0700 (PDT)
+Date: Wed, 13 Jun 2001 08:14:35 -0700
+From: Keith M Wesolowski <wesolows@foobazco.org>
+To: Bartosch Pixa <bartosch.pixa@infopark.de>
 Cc: linux-mips@oss.sgi.com
-Subject: Re: A new mips toolchain is available
-Message-ID: <20010613080829.A9739@lucon.org>
-References: <20010611210311.A8768@lucon.org> <Pine.GSO.3.96.1010613094949.9854A-100000@delta.ds2.pg.gda.pl>
+Subject: Re: Newbie question...
+Message-ID: <20010613081435.A722@foobazco.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.GSO.3.96.1010613094949.9854A-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Wed, Jun 13, 2001 at 09:57:52AM +0200
+In-Reply-To: <3B2771BE.4030401@infopark.de>
+User-Agent: Mutt/1.3.18i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, Jun 13, 2001 at 09:57:52AM +0200, Maciej W. Rozycki wrote:
-> On Mon, 11 Jun 2001, H . J . Lu wrote:
-> 
-> > don't know abour the IRIX ABI DSOs. Also my glibc is compiled with
-> > -mmips2 since kernel cannot handle mips I glibc.
-> 
->  What's the problem with the kernel?  It works fine for my R3400A
-> DECstation.  Glibc is 2.2.3 as released.  If there is something wrong, I
-> definitely want to know. 
-> 
+On Wed, Jun 13, 2001 at 03:59:26PM +0200, Bartosch Pixa wrote:
 
-It has something to do with the atomic emulation in kernel for mips I.
+> i'm quite new to the mips architecture so sorry if i ask dumb/useless
+> questions. i just bought a used Octane (IP30 R10K ...) and now i'm 
+> curious if it's possible to get linux on it ;)
 
+Not at this time, though a few people have started to look at it.  If
+you have irix headers and an ability to mangle the kernel for the
+better you should probably coordinate with Ralf and get started.  IP30
+is not very different from IP27, so the port should not be excessively
+difficult.
 
-H.J.
+-- 
+Keith M Wesolowski <wesolows@foobazco.org> http://foobazco.org/~wesolows
+------(( Project Foobazco Coordinator and Network Administrator ))------
+	"Nothing motivates a man more than to see his boss put
+	 in an honest day's work." -- The fortune file

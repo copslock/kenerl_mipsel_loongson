@@ -1,87 +1,95 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Jan 2004 19:21:17 +0000 (GMT)
-Received: from ns1.xeneris.net ([IPv6:::ffff:195.49.173.97]:31106 "HELO
-	superfix.xeneris.net") by linux-mips.org with SMTP
-	id <S8224954AbUAFTVQ>; Tue, 6 Jan 2004 19:21:16 +0000
-Received: (qmail 684 invoked by uid 64014); 6 Jan 2004 19:21:19 -0000
-Received: from joe@jorrit.de by superfix by uid 64011 with qmail-scanner-1.15 
- (clamscan: 0.54. spamassassin: 2.50-cvs.  Clear:. 
- Processed in 0.58116 secs); 06 Jan 2004 19:21:19 -0000
-Received: from localhost (HELO jupiter.planets) (127.0.0.1)
-  by localhost with SMTP; 6 Jan 2004 19:21:18 -0000
-Received: from joe by jupiter.planets with local (Exim 3.36 #1 (Debian))
-	id 1AdwlI-00024J-00; Tue, 06 Jan 2004 20:21:08 +0100
-Date: Tue, 6 Jan 2004 20:21:08 +0100
-From: =?iso-8859-1?Q?J=F6?= Fahlke <jorrit@jorrit.de>
-To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Cc: Linux on Mips Mailinglist <linux-mips@linux-mips.org>,
-	Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: Assembler error in arch/mips/kernel/entry.S
-Message-ID: <20040106192107.GB7342@fsk.uni-heidelberg.de>
-Mail-Followup-To: =?iso-8859-1?Q?J=F6?= Fahlke <jorrit@jorrit.de>,
-	Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>,
-	Linux on Mips Mailinglist <linux-mips@linux-mips.org>,
-	Ralf Baechle <ralf@linux-mips.org>
-References: <20040106163925.GA7342@fsk.uni-heidelberg.de> <20040106181456.GH13721@rembrandt.csv.ica.uni-stuttgart.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Jan 2004 20:58:05 +0000 (GMT)
+Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:21135 "EHLO
+	witte.sonytel.be") by linux-mips.org with ESMTP id <S8224954AbUAFU6C>;
+	Tue, 6 Jan 2004 20:58:02 +0000
+Received: from teasel.sonytel.be (localhost [127.0.0.1])
+	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id i06KvwQF006888;
+	Tue, 6 Jan 2004 21:57:58 +0100 (MET)
+Received: (from dimitri@localhost)
+	by teasel.sonytel.be (8.9.3+Sun/8.9.3) id VAA19546;
+	Tue, 6 Jan 2004 21:57:59 +0100 (MET)
+Date: Tue, 6 Jan 2004 21:57:59 +0100
+From: Dimitri Torfs <dimitri@sonycom.com>
+To: ralf@linux-mips.org
+Cc: linux-mips@linux-mips.org
+Subject: [PATCH][2.6] Fix Makefiles for CONFIG_EMBEDDED_RAMDISK
+Message-ID: <20040106205758.GA19525@sonycom.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="TakKZr9L6Hm6aLOc"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20040106181456.GH13721@rembrandt.csv.ica.uni-stuttgart.de>
-User-Agent: Mutt/1.5.4i
-Return-Path: <joe@jorrit.de>
+User-Agent: Mutt/1.4.1i
+Return-Path: <dimitri@sonycom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3873
+X-archive-position: 3874
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jorrit@jorrit.de
+X-original-sender: dimitri@sonycom.com
 Precedence: bulk
 X-list: linux-mips
 
+Hi,
 
---TakKZr9L6Hm6aLOc
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+  here are patches that fix the arch/mips/Makefile and
+  arch/mips/ramdisk/Makefile when an embedded ramdisk image needs to
+  be included through the CONFIG_EMBEDDED_RAMDISK option.
 
-Am Di,  6. Jan 2004, 19:14:56 +0100 schrieb Thiemo Seufer:
-> -       beqz    restore_all
-> -       if (in_exception_path)
-> -               goto restore_all;
-> +       beqz    t1, restore_all
->         li      t0, PREEMPT_ACTIVE
 
-Thanks, that helped a bit, but still I get:
+--- linux-mips-2.6.orig/arch/mips/Makefile	2004-01-06 21:17:57.000000000 +0100
++++ linux.work/arch/mips/Makefile	2004-01-06 21:43:33.000000000 +0100
+@@ -187,13 +187,11 @@
+ 
+ #
+ # ramdisk/initrd support
+-# You need a compressed ramdisk image, named ramdisk.gz in
+-# arch/mips/ramdisk
++# You need a compressed ramdisk image, named
++# CONFIG_EMBEDDED_RAMDISK_IMAGE. Relative pathnames 
++# are relative to arch/mips/ramdisk/.
+ #
+-ifdef CONFIG_EMBEDDED_RAMDISK
+-CORE_FILES	+= arch/mips/ramdisk/ramdisk.o
+-SUBDIRS		+= arch/mips/ramdisk
+-endif
++core-$(CONFIG_EMBEDDED_RAMDISK)	+= arch/mips/ramdisk/
+ 
+ #
+ # Firmware support
 
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-  AS      arch/mips/kernel/entry.o
-arch/mips/kernel/entry.S: Assembler messages:
-arch/mips/kernel/entry.S:56: Error: absolute expression required `li'
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
 
-J=F6.
 
---=20
-oil -- operation iraqi liberation
-http://www.mo.tecsamples.de/mahnwache/index.html
+--- linux-mips-2.6.orig/arch/mips/ramdisk/Makefile	2003-07-29 16:26:23.000000000 +0200
++++ linux.work/arch/mips/ramdisk/Makefile	2004-01-06 21:40:50.000000000 +0100
+@@ -2,8 +2,19 @@
+ # Makefile for a ramdisk image
+ #
+ 
++obj-y += ramdisk.o
++
++
+ O_FORMAT = $(shell $(OBJDUMP) -i | head -n 2 | grep elf32)
+-img = $(CONFIG_EMBEDDED_RAMDISK_IMAGE)
+-ramdisk.o: $(subst ",,$(img)) ld.script
+-	echo "O_FORMAT:  " $(O_FORMAT)
+-	$(LD) -T ld.script -b binary --oformat $(O_FORMAT) -o $@ $(img)
++img := $(subst ",,$(CONFIG_EMBEDDED_RAMDISK_IMAGE))
++# add $(src) when $(img) is relative
++img := $(subst $(src)//,/,$(src)/$(img))
++
++quiet_cmd_ramdisk = LD      $@
++define cmd_ramdisk
++	$(LD) -T $(src)/ld.script -b binary --oformat $(O_FORMAT) -o $@ $(img)
++endef
++
++$(obj)/ramdisk.o: $(img) $(src)/ld.script
++	$(call cmd,ramdisk)
++
 
---TakKZr9L6Hm6aLOc
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.3 (GNU/Linux)
-
-iD8DBQE/+wqj9pw8d07v1OsRAsoAAKCtaeZyi0oqRVp+XyqAKOwwq1KYAgCggu4Y
-VJTwZfQe5NoJpH50faPfhcs=
-=b+0/
------END PGP SIGNATURE-----
-
---TakKZr9L6Hm6aLOc--
+-- 
+Dimitri Torfs             |  NSCE 
+dimitri.torfs@sonycom.com |  Sint Stevens Woluwestraat 55
+tel: +32 2 2908451        |  1130 Brussel
+fax: +32 2 7262686        |  Belgium

@@ -1,87 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Aug 2003 21:00:31 +0100 (BST)
-Received: from ftp.mips.com ([IPv6:::ffff:206.31.31.227]:26836 "EHLO
-	mx2.mips.com") by linux-mips.org with ESMTP id <S8225202AbTHKUA0>;
-	Mon, 11 Aug 2003 21:00:26 +0100
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id h7BJxlMO007981;
-	Mon, 11 Aug 2003 12:59:47 -0700 (PDT)
-Received: from uhler-linux.mips.com (uhler-linux [192.168.65.120])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id NAA15351;
-	Mon, 11 Aug 2003 13:00:30 -0700 (PDT)
-Subject: Re: C0 config reg for 5k core
-From: Mike Uhler <uhler@mips.com>
-To: David Kesselring <dkesselr@mmc.atmel.com>
-Cc: linux-mips@linux-mips.org
-In-Reply-To: <Pine.GSO.4.44.0308111556500.4643-100000@ares.mmc.atmel.com>
-References: <Pine.GSO.4.44.0308111556500.4643-100000@ares.mmc.atmel.com>
-Content-Type: text/plain
-Organization: MIPS Technologies, Inc.
-Message-Id: <1060632030.1071.29.camel@uhler-linux.mips.com>
-Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.4.0 
-Date: 11 Aug 2003 13:00:30 -0700
-Content-Transfer-Encoding: 7bit
-Return-Path: <uhler@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Aug 2003 21:59:05 +0100 (BST)
+Received: from mail2.sonytel.be ([IPv6:::ffff:195.0.45.172]:30949 "EHLO
+	witte.sonytel.be") by linux-mips.org with ESMTP id <S8225202AbTHKU64>;
+	Mon, 11 Aug 2003 21:58:56 +0100
+Received: from vervain.sonytel.be (localhost [127.0.0.1])
+	by witte.sonytel.be (8.12.9/8.12.9) with ESMTP id h7BKwDlW013978;
+	Mon, 11 Aug 2003 22:58:13 +0200 (MEST)
+Date: Mon, 11 Aug 2003 22:58:13 +0200 (MEST)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+cc: Chip Coldwell <coldwell@frank.harvard.edu>,
+	Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: Re: load/store address overflow on binutils 2.14
+In-Reply-To: <20030810145425.GE22977@rembrandt.csv.ica.uni-stuttgart.de>
+Message-ID: <Pine.GSO.4.21.0308112257180.20421-100000@vervain.sonytel.be>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <Geert.Uytterhoeven@sonycom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3019
+X-archive-position: 3020
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: uhler@mips.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-For MIPS32 and MIPS64 processors (the 5K is MIPS64), it is
-architecturally defined and required, and the compatibility
-verification testing verifies it (and, yes, we do run compatibility
-verification testing on our own cores).
-
-/gmu
-
-On Mon, 2003-08-11 at 12:57, David Kesselring wrote:
-> Is this reg, supposed to be the same among all processor or does it
-> differ?
+On Sun, 10 Aug 2003, Thiemo Seufer wrote:
+> Chip Coldwell wrote:
+> [snip]
+> > >         printf("%016x\n", ~a);
+> > > 
+> > >         return 0;
+> > > }
+> > > 
+> > > outputs
+> > > 
+> > > 00000000ffffffff
+> > > 
+> > > on my i386-linux system.
+> > 
+> > Strangely, this is actually "correct" behavior.  Arguments on
+> > variable-length argument lists are implicitly "promoted" to unsigned
+> > int at the widest.  See K&R 2nd ed. A6.1 and A7.3.2.
 > 
-> On 11 Aug 2003, Mike Uhler wrote:
+> Ugh. Thanks for pointing this out. I wasn't aware of it.
 > 
-> > Bit 0 of Config1 is FPU-present.  Bit 4 is "Performance counters
-> > present".  I guarantee you that the 5K family implements this
-> > pattern.
-> >
-> > /gmu
-> >
-> >
-> > On Mon, 2003-08-11 at 11:28, David Kesselring wrote:
-> > > Has anyone else built linux 2.4 for a 5k or 5kf core? When comparing cpu.h
-> > > and the MIPS64 5K Processor Core Family Software Users Manual it doesn't
-> > > look to me that the c0-config1 reg is defined the same way. Am I reading
-> > > something wrong? For example in the spec FPU flag is bit0 while in cpu.h
-> > > it is bit4. Seems pretty basic.
-> > >
-> > > David Kesselring
-> > > Atmel MMC
-> > > dkesselr@mmc.atmel.com
-> > > 919-462-6587
-> > --
-> >
-> > Michael Uhler, Chief Technology Officer
-> > MIPS Technologies, Inc.  Email: uhler@mips.com  Pager:uhler_p@mips.com
-> > 1225 Charleston Road     Voice:  (650)567-5025  FAX:   (650)567-5225
-> > Mountain View, CA 94043  Mobile: (650)868-6870  Admin: (650)567-5085
-> >
-> >
-> >
-> >
+> 	printf("%016Lx\n", ~a);
 > 
-> David Kesselring
-> Atmel MMC
-> dkesselr@mmc.atmel.com
-> 919-462-6587
--- 
+> Produces the expected output. So it is actually an implementation
+> bug in binutils, which isn't fixable for 2.14 and earlier, because
+> those have to remain at K&R C level. The K&R requirement was only
+> recenly loosened.
 
-Michael Uhler, Chief Technology Officer
-MIPS Technologies, Inc.  Email: uhler@mips.com  Pager:uhler_p@mips.com
-1225 Charleston Road     Voice:  (650)567-5025  FAX:   (650)567-5225
-Mountain View, CA 94043  Mobile: (650)868-6870  Admin: (650)567-5085
+How can it print the correct output if ~a is `promoted' to unsigned int, while
+you specify %Lx in the format string?
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

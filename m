@@ -1,41 +1,41 @@
-Received:  by oss.sgi.com id <S553874AbQLPSE5>;
-	Sat, 16 Dec 2000 10:04:57 -0800
+Received:  by oss.sgi.com id <S553876AbQLPSEr>;
+	Sat, 16 Dec 2000 10:04:47 -0800
 Received: from wn42-146.sdc.org ([209.155.42.146]:54255 "EHLO lappi")
-	by oss.sgi.com with ESMTP id <S553871AbQLPSEb>;
-	Sat, 16 Dec 2000 10:04:31 -0800
-Received: (ralf@lappi) by bacchus.dhis.org id <S870675AbQLPLpj>;
-	Sat, 16 Dec 2000 04:45:39 -0700
-Date:	Sat, 16 Dec 2000 12:45:39 +0100
+	by oss.sgi.com with ESMTP id <S553874AbQLPSEc>;
+	Sat, 16 Dec 2000 10:04:32 -0800
+Received: (ralf@lappi) by bacchus.dhis.org id <S870677AbQLPLrG>;
+	Sat, 16 Dec 2000 04:47:06 -0700
+Date:	Sat, 16 Dec 2000 12:47:06 +0100
 From:	Ralf Baechle <ralf@oss.sgi.com>
-To:	"Kevin D. Kissell" <kevink@mips.com>
-Cc:	Nicu Popovici <octavp@isratech.ro>, linux-mips@oss.sgi.com
-Subject: Re: Little endian.
-Message-ID: <20001216124539.A6896@bacchus.dhis.org>
-References: <3A3ABFA9.8608799D@isratech.ro> <001301c066c4$d2b9f7c0$0deca8c0@Ulysses>
+To:	James McD <vile8@hotmail.com>
+Cc:	linux-mips@oss.sgi.com
+Subject: Re: memory hog
+Message-ID: <20001216124705.B6896@bacchus.dhis.org>
+References: <F2413yMJiQTyfPefLJG0000066a@hotmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 X-Mailer: Mutt 1.0.1i
-In-Reply-To: <001301c066c4$d2b9f7c0$0deca8c0@Ulysses>; from kevink@mips.com on Fri, Dec 15, 2000 at 07:28:15PM +0100
+In-Reply-To: <F2413yMJiQTyfPefLJG0000066a@hotmail.com>; from vile8@hotmail.com on Fri, Dec 15, 2000 at 04:10:56PM +0000
 X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Fri, Dec 15, 2000 at 07:28:15PM +0100, Kevin D. Kissell wrote:
+On Fri, Dec 15, 2000 at 04:10:56PM +0000, James McD wrote:
 
-> If you want to run little-endian, you need to install
-> the little-endian binaries and libraries.  Since I needed
-> to "swing both ways", I put both a big-endian root and
-> a little-endian root partition on my Atlas disk, with user/data 
-> partitions that can be mounted on either one - fortunately, 
-> the Ext2FS metadata seems to be consistent regardless 
-> of endianness.
+> I have an SGI INDY r4600 133 with 64 megs of ram and a 1 gig drive. I have 
+> simple linux and the 2.4test9 kernel running on it. Thank you for the advice 
+> on getting it booting from the hard drive btw Guido!
+>    Here is my dilema. It has nothing running other than standard services 
+> ie. login, networking. No web server, none of the goodies yet, and I am 
+> consuming 60 out of my 64 megs of available ram. I do not even have X 
+> installed yet. I know 64 megs isnt alot, but it seems to be quite a high 
+> consumption for no services being run. Please let me know if anybody knows 
+> if an SGI handles memory differently, or if I should just get more and quit 
+> whining.
 
-Ext2fs on-disk data structures are defined to be little endian.  Some very
-old ext2 filesystems which afaik where all created on Linux/M68K were big
-endian; for those e2fsck has the option to change the endianess of the
-filesystem during a fsck run; the current kernel will refuse to accept
-such big endian ext2 filesystems.
+That's a classic one - Linux uses most of it's `free' memory as disk cache,
+so it doesn't show up as `free' in the free output.
 
   Ralf

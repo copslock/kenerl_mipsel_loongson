@@ -1,52 +1,100 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Sep 2002 01:33:43 +0200 (CEST)
-Received: from pc1-cwma1-5-cust128.swa.cable.ntl.com ([80.5.120.128]:10998
-	"EHLO irongate.swansea.linux.org.uk") by linux-mips.org with ESMTP
-	id <S1122958AbSIDXdm>; Thu, 5 Sep 2002 01:33:42 +0200
-Received: from irongate.swansea.linux.org.uk (localhost [127.0.0.1])
-	by irongate.swansea.linux.org.uk (8.12.5/8.12.5) with ESMTP id g84NYN30004596;
-	Thu, 5 Sep 2002 00:34:24 +0100
-Received: (from alan@localhost)
-	by irongate.swansea.linux.org.uk (8.12.5/8.12.5/Submit) id g84NYLur004593;
-	Thu, 5 Sep 2002 00:34:21 +0100
-X-Authentication-Warning: irongate.swansea.linux.org.uk: alan set sender to alan@lxorguk.ukuu.org.uk using -f
-Subject: Re: patch to kaweth.c to align IP header
-From: Alan Cox <alan@lxorguk.ukuu.org.uk>
-To: Quinn Jensen <jensenq@Lineo.COM>
-Cc: linux-mips@linux-mips.org
-In-Reply-To: <3D765072.60208@Lineo.COM>
-References: <3D765072.60208@Lineo.COM>
-Content-Type: text/plain
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Sep 2002 08:41:34 +0200 (CEST)
+Received: from ftp.mips.com ([206.31.31.227]:34018 "EHLO mx2.mips.com")
+	by linux-mips.org with ESMTP id <S1122958AbSIEGld>;
+	Thu, 5 Sep 2002 08:41:33 +0200
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id g856emXb012593;
+	Wed, 4 Sep 2002 23:40:49 -0700 (PDT)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id XAA00256;
+	Wed, 4 Sep 2002 23:40:44 -0700 (PDT)
+Received: from mips.com (IDENT:carstenl@coplin20 [192.168.205.90])
+	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g856eib08243;
+	Thu, 5 Sep 2002 08:40:44 +0200 (MEST)
+Message-ID: <3D76FC6B.C9AA72F3@mips.com>
+Date: Thu, 05 Sep 2002 08:40:43 +0200
+From: Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.9-31-P3-UP-WS-jg i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+CC: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: 64-bit and N32 kernel interfaces
+References: <Pine.GSO.3.96.1020904170056.10619H-100000@delta.ds2.pg.gda.pl>
+Content-Type: text/plain; charset=iso-8859-15
 Content-Transfer-Encoding: 7bit
-X-Mailer: Ximian Evolution 1.0.8 (1.0.8-6) 
-Date: 05 Sep 2002 00:34:21 +0100
-Message-Id: <1031182461.3017.137.camel@irongate.swansea.linux.org.uk>
-Mime-Version: 1.0
-Return-Path: <alan@lxorguk.ukuu.org.uk>
+Return-Path: <carstenl@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 93
+X-archive-position: 94
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alan@lxorguk.ukuu.org.uk
+X-original-sender: carstenl@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 2002-09-04 at 19:26, Quinn Jensen wrote:
-> All,
-> 
-> The Kawasaki LSI USB Ethernet driver was causing a crash
-> in ipt_do_table() on mips because the address fields in
-> the IP header were not word aligned.  Many (all?) other
+"Maciej W. Rozycki" wrote:
 
-You -must- handle alignment traps in the kernel for networking. The
-network code assumes and relies on this property and there are plenty of
-other ways to get misaligned datagrams through things like ip in ip.
+> On Wed, 4 Sep 2002, Ralf Baechle wrote:
+>
+> > >  It would be nice if we could keep a single set of syscalls for both (n)64
+> > > and n32.  The address crop for n32 may be handled the Alpha way.  I will
+> > > investigate the topic soon.
+> >
+> > Can you describe how this is handled on the  Alpha?
+>
+>  I'm referring mostly to OSF/1 here as it was first to implement it.
+> Linux followed it in the sense it is able to execute OSF/1 binaries marked
+> as "32-bit", but native ELF binaries used to be fully 64-bit always.  I
+> think by a popular demand GNU binutils are now able to create "cropped"
+> Alpha/Linux ELF binaries as well, but this is unverified for sure.  The
+> implementation is two-fold.
+>
+>  First, the static linker (if given the "-taso" option) maps an executable
+> into the low 31-bit address space (coincidentally, this will probably be
+> suitable for MIPS as well) and sets a special flag in the executable (it
+> does it in a weird place, but this is ECOFF and we have suitable flags in
+> the ELF header already).
+>
+>  Second, seeing the "31-bit" flag set, the kernel returns any maps
+> requested within the low 31-bit address space.  This way both shared
+> libraries (which thus need not be special, i.e. may be regular 64-bit
+> ones) and areas allocated by mmap() are addressable by the executable.
+>
+>  To summarize, nothing much complicated.
+>
+> > The primary problem is the differnet calling sequence for o32 and N64.
+>
+>  But we handle that already.
+>
+> > As it looks we'll be able to use either the o32 function or the native
+> > syscall to implement all of the necessary N32 syscalls.
+>
+>  The (n)64 versions seem suitable and the o32 ones do not as n32 only
+> crops addresses to 32-bit -- data may still be 64-bit (e.g. file position
+> pointers).
+>
 
-> ethernet drivers do an skb_reserve of 2 to word align
-> the address fields, and doing this in kaweth.c fixed
-> my crash.
+Please notice, that a 'long' is 32-bit for n32, so we need to do the same
+conversion for a lot of syscalls, as we already do for o32.
 
-Its not the crash fix, its however right in the sense its a good
-performance optimisation for most platforms
+
+>
+> > The question is if we want to reserve another 1000 entries in our already
+> > huge syscall table for N32 or if we got a better solution ...
+>
+>  Aaarrgh, no more entries, please...
+>
+> --
+> +  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
+> +--------------------------------------------------------------+
+> +        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

@@ -1,36 +1,31 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id PAA136025 for <linux-archive@neteng.engr.sgi.com>; Sun, 11 Jan 1998 15:44:42 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id QAA132384 for <linux-archive@neteng.engr.sgi.com>; Sun, 11 Jan 1998 16:25:34 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA19130 for linux-list; Sun, 11 Jan 1998 15:41:18 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA19122 for <linux@cthulhu.engr.sgi.com>; Sun, 11 Jan 1998 15:41:12 -0800
-Received: from note.orchestra.cse.unsw.EDU.AU (note.orchestra.cse.unsw.EDU.AU [129.94.242.29]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via SMTP id PAA06405
-	for <linux@cthulhu.engr.sgi.com>; Sun, 11 Jan 1998 15:41:10 -0800
-	env-from (andrewo@cse.unsw.edu.au)
-Received: From dizzy With LocalMail ; Mon, 12 Jan 98 10:40:37 +1100 
-From: "Andrew O'Brien" <andrewo@cse.unsw.edu.au>
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id QAA23114 for linux-list; Sun, 11 Jan 1998 16:20:16 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id QAA23078 for <linux@cthulhu.engr.sgi.com>; Sun, 11 Jan 1998 16:20:08 -0800
+Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id QAA12591
+	for <linux@cthulhu.engr.sgi.com>; Sun, 11 Jan 1998 16:20:05 -0800
+	env-from (adevries@engsoc.carleton.ca)
+Received: from localhost (adevries@localhost)
+	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id TAA16190
+	for <linux@cthulhu.engr.sgi.com>; Sun, 11 Jan 1998 19:22:45 -0500
+Date: Sun, 11 Jan 1998 19:22:44 -0500 (EST)
+From: Alex deVries <adevries@engsoc.carleton.ca>
 To: SGI/Linux mailing list <linux@cthulhu.engr.sgi.com>
-Date: Sun, 11 Jan 1998 23:40:34 +0000 (GMT)
-X-Sender: andrewo@dizzy.disy.cse.unsw.EDU.AU
-Reply-To: andrewo@cse.unsw.edu.au
-Subject: Update on no L2 cache kernel binary.
-Message-ID: <Pine.SGI.3.95.980111233324.3828C-100000@dizzy.disy.cse.unsw.EDU.AU>
+Subject: Re: Update on no L2 cache kernel binary.
+In-Reply-To: <Pine.SGI.3.95.980111233324.3828C-100000@dizzy.disy.cse.unsw.EDU.AU>
+Message-ID: <Pine.LNX.3.95.980111192126.26800G-100000@lager.engsoc.carleton.ca>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
 
-Grab it from
-ftp://ftp.cse.unsw.edu.au/pub/users/andrewo/vmlinux-indy-noL2-971208.tar.gz
-if you want it.
+On Sun, 11 Jan 1998, Andrew O'Brien wrote:
+> Grab it from
+> ftp://ftp.cse.unsw.edu.au/pub/users/andrewo/vmlinux-indy-noL2-971208.tar.gz
+> if you want it.
 
-Let me know if you grab it, so I know how useful this actually is ... ;)
+With permission from Andrew, I've mirrored this at
+ftp://ftp.linux.sgi.com/pub/test/vmlinux-indy-noL2-971208.tar.gz
 
-cya
-
-
---___________________________________________________________________
- /  Andrew O'Brien       andrewo@cse.unsw.edu.au   bbq@mindless.com  \
-/  Student, Faculty of CSE       http://www.cse.unsw.edu.au/~andrewo  \
->  UNSW, Australia           President COMPSOC   http://www/~compsoc  <
-\  BE (Comp)/BA (Psych)      Student Representative   stu-reps@cse..  /
- \___ "finger -l andrewo@cse.unsw.edu.au" for my current location ___/
+- Alex

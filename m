@@ -1,67 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Sep 2004 09:21:42 +0100 (BST)
-Received: from grey.subnet.at ([IPv6:::ffff:193.170.141.20]:18448 "EHLO
-	grey.subnet.at") by linux-mips.org with ESMTP id <S8224841AbUIXIVi>;
-	Fri, 24 Sep 2004 09:21:38 +0100
-Received: from ip6-localhost ([193.170.141.4]) by grey.subnet.at ; Fri, 24 Sep 2004 10:21:23 +0200
-From: Bruno Randolf <bruno.randolf@4g-systems.biz>
-To: Dominik Brodowski <linux@dominikbrodowski.de>
-Subject: Re: CPU frequency scaling on MIPS (au1000/common/power.c)
-Date: Fri, 24 Sep 2004 10:15:57 +0200
-User-Agent: KMail/1.7
-Cc: ralf@linux-mips.org, linux-mips@linux-mips.org,
-	cpufreq@www.linux.org.uk
-References: <20040923194829.GA32270@dominikbrodowski.de>
-In-Reply-To: <20040923194829.GA32270@dominikbrodowski.de>
-Organization: 4G Systems
-MIME-Version: 1.0
-Content-Type: multipart/signed;
-  boundary="nextPart5505897.fSDApoSRUS";
-  protocol="application/pgp-signature";
-  micalg=pgp-sha1
-Content-Transfer-Encoding: 7bit
-Message-Id: <200409241016.05381.bruno.randolf@4g-systems.biz>
-Return-Path: <bruno.randolf@4g-systems.biz>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Sep 2004 09:52:50 +0100 (BST)
+Received: from the-doors.enix.org ([IPv6:::ffff:62.210.169.120]:55961 "EHLO
+	the-doors.enix.org") by linux-mips.org with ESMTP
+	id <S8224841AbUIXIwq>; Fri, 24 Sep 2004 09:52:46 +0100
+Received: by the-doors.enix.org (Postfix, from userid 1105)
+	id 3D1291EFB0; Fri, 24 Sep 2004 10:52:40 +0200 (CEST)
+Date: Fri, 24 Sep 2004 10:52:40 +0200
+From: Thomas Petazzoni <thomas.petazzoni@enix.org>
+To: linux-mips@linux-mips.org
+Cc: mentre@tcl.ite.mee.com
+Subject: "Can't analyze prologue code ..." at boot time
+Message-ID: <20040924085240.GP24730@enix.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.4i
+Return-Path: <thomas@the-doors.enix.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5879
+X-archive-position: 5880
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bruno.randolf@4g-systems.biz
+X-original-sender: thomas.petazzoni@enix.org
 Precedence: bulk
 X-list: linux-mips
 
---nextPart5505897.fSDApoSRUS
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+Hello,
 
-On Thursday 23 September 2004 21:48, Dominik Brodowski wrote:
+In arch/mips/kernel/process.c, the function frame_info_init() called
+at boot time, calls the get_frame_info() to a analyze the prologue of
+a few functions (I don't know why, does anyone know ?).
 
-> As I don't have MIPS hardware [well, I do, inside a WRT54G router, but
-> that's besides the point], don't have and don't want to have a
-> cross-compiling infrastructure here, I can neither compile-test nor
-> real-life-test any patches I submit. Nonetheless I'd be willing to write
-> a "suggestion" on how to update arch/mips/au1000/common/power.c, and
-> somebody with compiler and hardware could test it then.
+At boot time, I have the following message on the console :
 
-i would be happy to cross-compile & test them on a meshcube (mtx-1), but i'=
-m=20
-afraid i cant help too much with coding.
+Can't analyze prologue code at 80315308
 
-bruno
+At 80315308 is the beginning of the schedule_timeout() function which
+is one of the functions analyzed by the frame_info_init().
 
---nextPart5505897.fSDApoSRUS
-Content-Type: application/pgp-signature
+The get_frame_info() seems to search a sw or sd instruction, but here
+is the beginning of the schedule_timeout() function :
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.4 (GNU/Linux)
+80315308 <schedule_timeout>:
+80315308:       3c027fff        lui     v0,0x7fff
+8031530c:       27bdffc0        addiu   sp,sp,-64
+80315310:       3442ffff        ori     v0,v0,0xffff
+80315314:       afb10034        sw      s1,52(sp)
+80315318:       afbf003c        sw      ra,60(sp)
+8031531c:       afb20038        sw      s2,56(sp)
+80315320:       afb00030        sw      s0,48(sp)
+80315324:       1082002c        beq     a0,v0,803153d8 <schedule_timeout+0xd0>
+80315328:       00808821        move    s1,a0
 
-iD8DBQBBU9fFfg2jtUL97G4RAsduAJ9NVhGINZaEdlt+JeB2xuI9i6y9ugCePfBN
-kWxQkGJesskpU44MuZgqllk=
-=WmWE
------END PGP SIGNATURE-----
+This error isn't fatal, the kernel perfectly boots, and I can use my
+shell perfectly. I just wanted to know why it is reporting a problem,
+why the kernel needs to analyze the prologues of a couple of
+functions, and maybe report a possible problem ?
 
---nextPart5505897.fSDApoSRUS--
+I'm using a quite outdated linux-mips CVS (from the beginning of the
+month, a 2.6.9-rc1). I compiled using gcc 3.3.4, for an RM9000
+processor.
+
+Don't hesitate to ask for details,
+
+Thomas
+-- 
+PETAZZONI Thomas - thomas.petazzoni@enix.org 
+http://thomas.enix.org - Jabber: kos_tom@sourcecode.de
+KOS: http://kos.enix.org/ - Lolut: http://lolut.utbm.info
+Fingerprint : 0BE1 4CF3 CEA4 AC9D CC6E  1624 F653 CB30 98D3 F7A7

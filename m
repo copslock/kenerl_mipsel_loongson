@@ -1,61 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Mar 2004 14:43:02 +0000 (GMT)
-Received: from grey.subnet.at ([IPv6:::ffff:193.170.141.20]:25608 "EHLO
-	grey.subnet.at") by linux-mips.org with ESMTP id <S8225263AbUCYOnB> convert rfc822-to-8bit;
-	Thu, 25 Mar 2004 14:43:01 +0000
-Received: from localhost ([193.170.141.4]) by grey.subnet.at ; Thu, 25 Mar 2004 14:00:57 +0100
-From: Bruno Randolf <bruno.randolf@4g-systems.biz>
-To: Pete Popov <ppopov@mvista.com>
-Subject: patch: au1000_eth vlan
-Date: Thu, 25 Mar 2004 13:42:18 +0100
-User-Agent: KMail/1.6.1
-Cc: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Mar 2004 14:50:23 +0000 (GMT)
+Received: from no-dns-yet.demon.co.uk ([IPv6:::ffff:80.176.203.50]:40147 "EHLO
+	pangolin.localnet") by linux-mips.org with ESMTP
+	id <S8225618AbUCYOuW>; Thu, 25 Mar 2004 14:50:22 +0000
+Received: from sprocket.localnet ([192.168.1.27] helo=bitbox.co.uk)
+	by pangolin.localnet with esmtp (Exim 3.35 #1 (Debian))
+	id 1B6WBP-0007i9-00; Thu, 25 Mar 2004 14:50:11 +0000
+Message-ID: <4062F1A1.9070005@bitbox.co.uk>
+Date: Thu, 25 Mar 2004 14:50:09 +0000
+From: Peter Horton <phorton@bitbox.co.uk>
+User-Agent: Mozilla Thunderbird 0.5 (Windows/20040207)
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Disposition: inline
-Content-Type: Text/Plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Message-Id: <200403251342.18945.bruno.randolf@4g-systems.biz>
-Return-Path: <bruno.randolf@4g-systems.biz>
+To: anemo@mba.ocn.ne.jp
+CC: linux-mips@linux-mips.org
+Subject: Re: missing flush_dcache_page call in 2.4 kernel
+References: <20040325.224229.112629304.nemoto@toshiba-tops.co.jp> <20040325143319.GA873@linux-mips.org>
+In-Reply-To: <20040325143319.GA873@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <phorton@bitbox.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4640
+X-archive-position: 4641
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bruno.randolf@4g-systems.biz
+X-original-sender: phorton@bitbox.co.uk
 Precedence: bulk
 X-list: linux-mips
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA1
+Ralf Baechle wrote:
 
-hello pete!
+>On Thu, Mar 25, 2004 at 10:42:29PM +0900, Atsushi Nemoto wrote:
+>
+>  
+>
+>>I noticed that reading from file with mmap sometimes return wrong data
+>>on 2.4 kernel.
+>>
+>>This is a test program to reproduce the problem.
+>>    
+>>
+>
+>This seems to be the same problem as reported by Peter Horton as while
+>ago; in his case that was with PIO IDE.
+>
+>  
+>
+Looks like it.
 
-please consider adding the following patch to support 802.1Q VLAN tagged 
-ethernet frames in the au1000_eth driver.
+The fix we're using on Cobalt's at the moment is below (required for 
+2.4.x and 2.6.x).
 
-thanks,
-bruno
+Fixing it this way fixes the problem with both page cache pages and swap 
+pages.
 
+For more details see the threads "Kernel 2.4.23 on Cobalt Qube2 - area 
+of problem" and "Instability / caching problems on Qube 2 - solved ?" 
+from December last year.
 
-diff -Nurb linux-2.4.24-isl/drivers/net/au1000_eth.c 
-linux/drivers/net/au1000_eth.c
-- --- linux-2.4.24-isl/drivers/net/au1000_eth.c   2004-03-14 20:01:45.000000000 
-+0100
-+++ linux/drivers/net/au1000_eth.c      2004-03-25 12:36:27.290599896 +0100
-@@ -1384,6 +1384,7 @@
-                control |= MAC_FULL_DUPLEX;
-        }
-        aup->mac->control = control;
-+       aup->mac->vlan1_tag = 0x8100; /* vlan */
-        au_sync();
+P.
 
-        spin_unlock_irqrestore(&aup->lock, flags);
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.3 (GNU/Linux)
-
-iD8DBQFAYtOqfg2jtUL97G4RAj3dAJ0XraGIkpZGXBUONKzXrDs/HVYwzwCgglyC
-CPsIhh1Wjo+F1WPyOu9AbxY=
-=93l6
------END PGP SIGNATURE-----
+diff -urN linux.cvs/arch/mips/mm/c-r4k.c linux/arch/mips/mm/c-r4k.c
+--- linux.cvs/arch/mips/mm/c-r4k.c	Mon Jan 12 18:19:51 2004
++++ linux/arch/mips/mm/c-r4k.c	Sun Feb  1 13:35:55 2004
+@@ -400,8 +400,10 @@
+ 	 * If there's no context yet, or the page isn't executable, no icache
+ 	 * flush is needed.
+ 	 */
++#ifndef CONFIG_MIPS_COBALT
+ 	if (!(vma->vm_flags & VM_EXEC))
+ 		return;
++#endif
+ 
+ 	/*
+ 	 * Tricky ...  Because we don't know the virtual address we've got the
+@@ -425,6 +427,11 @@
+ 		r4k_blast_dcache_page(addr);
+ 		ClearPageDcacheDirty(page);
+ 	}
++
++#ifdef CONFIG_MIPS_COBALT
++	if (!(vma->vm_flags & VM_EXEC))
++		return;
++#endif
+ 
+ 	/*
+ 	 * We're not sure of the virtual address(es) involved here, so

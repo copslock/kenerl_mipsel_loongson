@@ -1,52 +1,48 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5703InC029779
-	for <linux-mips-outgoing@oss.sgi.com>; Thu, 6 Jun 2002 17:03:18 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g57F9mnC011768
+	for <linux-mips-outgoing@oss.sgi.com>; Fri, 7 Jun 2002 08:09:48 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5703Iro029778
-	for linux-mips-outgoing; Thu, 6 Jun 2002 17:03:18 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g57F9mga011767
+	for linux-mips-outgoing; Fri, 7 Jun 2002 08:09:48 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from sgi.com (sgi-too.SGI.COM [204.94.211.39])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5703FnC029775
-	for <linux-mips@oss.sgi.com>; Thu, 6 Jun 2002 17:03:15 -0700
-Received: from iris1.csv.ica.uni-stuttgart.de (iris1.csv.ica.uni-stuttgart.de [129.69.118.2]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id RAB02202
-	for <linux-mips@oss.sgi.com>; Thu, 6 Jun 2002 17:05:25 -0700 (PDT)
-	mail_from (ica2_ts@csv.ica.uni-stuttgart.de)
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp (Exim 3.36 #2)
-	id 17G74T-000NB7-00; Fri, 07 Jun 2002 01:53:37 +0200
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 17G75i-0001ln-00; Fri, 07 Jun 2002 01:54:54 +0200
-Date: Fri, 7 Jun 2002 01:54:54 +0200
-To: Ilya Volynets <ilya@theIlya.com>
-Cc: nick@snowman.net, linux-mips@oss.sgi.com
-Subject: Re: 3 questions about linux-2.4.18 and R3000
-Message-ID: <20020606235453.GA5079@rembrandt.csv.ica.uni-stuttgart.de>
-References: <20020603235311.GJ23411@rembrandt.csv.ica.uni-stuttgart.de> <Pine.LNX.4.21.0206041341130.31816-100000@ns> <20020605223736.GN23411@rembrandt.csv.ica.uni-stuttgart.de> <20020605235041.7895.qmail@gateway.total-knowledge.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20020605235041.7895.qmail@gateway.total-knowledge.com>
-User-Agent: Mutt/1.3.28i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Received: from e1.ny.us.ibm.com (e1.ny.us.ibm.com [32.97.182.101])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g57F9inC011764
+	for <linux-mips@oss.sgi.com>; Fri, 7 Jun 2002 08:09:45 -0700
+Received: from northrelay02.pok.ibm.com (northrelay02.pok.ibm.com [9.56.224.150])
+	by e1.ny.us.ibm.com (8.12.2/8.12.2) with ESMTP id g57FBjg5058614
+	for <linux-mips@oss.sgi.com>; Fri, 7 Jun 2002 11:11:45 -0400
+Received: from d01ml076.pok.ibm.com (d01ml076.pok.ibm.com [9.117.250.6])
+	by northrelay02.pok.ibm.com (8.11.1m3/NCO/VER6.1) with ESMTP id g57FBhl70304
+	for <linux-mips@oss.sgi.com>; Fri, 7 Jun 2002 11:11:43 -0400
+Subject: LTP RPM maintainers wanted
+To: linux-mips@oss.sgi.com
+Cc: lindajs@us.ibm.com
+X-Mailer: Lotus Notes Release 5.0.7  March 21, 2001
+Message-ID: <OFB2AC7242.770001EE-ON85256BD1.00528812@pok.ibm.com>
+From: "Robert Williamson" <robbiew@us.ibm.com>
+Date: Fri, 7 Jun 2002 10:11:00 -0500
+X-MIMETrack: Serialize by Router on D01ML076/01/M/IBM(Release 5.0.10 |March 28, 2002) at
+ 06/07/2002 11:11:44 AM
+MIME-Version: 1.0
+Content-type: text/plain; charset=us-ascii
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Ilya Volynets wrote:
-[snip]
-> > > Is it also an R10k system, or are
-> > > you useing an r4k system?
-> >
-> > IT's r10k. AFAIH the r4k systems have still ARCS32 and should be
-> > able to boot a 32 bit kernel.
-> And how are you dealing with R10K speculative execution
-> in non-cache-coherent systems problem?
+Hi all,
 
-Not yet. I plan to modify the assembler for it.
+  The Linux Test Project is looking for a volunteer to maintain a MIPS
+binary RPM.  All this person would have to do is build the binary RPM, from
+the source RPM and spec file supplied each month, and send this back to me.
+I would take care of the rest.  The releases are once a month, and that's
+it.  The maintainer would not be responsible for any problems that arise
+from installing the RPM.  We basically just want to be able to provide the
+option of installing a pre-compiled testsuite...if problems arise, the
+source is installed as well, so users can always re-compile.
 
+- Robbie
 
-Thiemo
+Robert V. Williamson <robbiew@us.ibm.com>
+Linux Test Project
+IBM Linux Technology Center
+Phone: (512) 838-9295   T/L: 638-9295
+http://ltp.sourceforge.net

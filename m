@@ -1,276 +1,323 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 07 Mar 2004 03:37:36 +0000 (GMT)
-Received: from [IPv6:::ffff:221.216.244.239] ([IPv6:::ffff:221.216.244.239]:1545
-	"HELO zbrtest") by linux-mips.org with SMTP id <S8225299AbUCGDhf>;
-	Sun, 7 Mar 2004 03:37:35 +0000
-Date: Sun, 07 Mar 2004 11:35:23 +0800
-To: linux-mips@linux-mips.org
-Subject: E-mail account disabling warning.
-From: noreply@linux-mips.org
-Message-ID: <newrqpvhevdsmknmbet@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: multipart/mixed;
-        boundary="--------xdmvwkkfyonswyvhbdno"
-Return-Path: <linux-cvs@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 07 Mar 2004 16:55:43 +0000 (GMT)
+Received: from mo03.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:52984 "EHLO
+	mo03.iij4u.or.jp") by linux-mips.org with ESMTP id <S8224954AbUCGQzl>;
+	Sun, 7 Mar 2004 16:55:41 +0000
+Received: from mdo00.iij4u.or.jp (mdo00.iij4u.or.jp [210.130.0.170])
+	by mo03.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id BAA00290;
+	Mon, 8 Mar 2004 01:55:36 +0900 (JST)
+Received: 4UMDO00 id i27GtaO03370; Mon, 8 Mar 2004 01:55:36 +0900 (JST)
+Received: 4UMRO01 id i27GtZb29810; Mon, 8 Mar 2004 01:55:36 +0900 (JST)
+	from stratos.frog (64.43.138.210.xn.2iij.net [210.138.43.64]) (authenticated)
+Date: Mon, 8 Mar 2004 01:55:26 +0900
+From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH][2.6] Update fixup-eagle.c
+Message-Id: <20040308015526.19d7484b.yuasa@hh.iij4u.or.jp>
+X-Mailer: Sylpheed version 0.9.10 (GTK+ 1.2.10; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4491
+X-archive-position: 4492
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: noreply@linux-mips.org
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
-----------xdmvwkkfyonswyvhbdno
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Hi Ralf,
 
-Hello  user of Linux-mips.org  e-mail server,
+This patch updates a vrc4173 pre-fixup function.
+Please apply this patch to v2.6.
 
-Your  e-mail account has been  temporary disabled because of unauthorized access.
+Yoichi
 
-For further details see  the  attach.
-
-Attached file  protected with the password for security reasons.  Password is 85877.
-
-Cheers,
-    The Linux-mips.org team                                  http://www.linux-mips.org
-
-----------xdmvwkkfyonswyvhbdno
-Content-Type: application/octet-stream; name="MoreInfo.zip"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="MoreInfo.zip"
-
-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
-
-----------xdmvwkkfyonswyvhbdno--
+diff -urN -X dontdiff linux-orig/arch/mips/pci/Makefile linux/arch/mips/pci/Makefile
+--- linux-orig/arch/mips/pci/Makefile	Sat Jan 31 01:46:15 2004
++++ linux/arch/mips/pci/Makefile	Mon Mar  8 01:19:08 2004
+@@ -35,7 +35,7 @@
+ obj-$(CONFIG_MOMENCO_OCELOT)	+= fixup-ocelot.o pci-ocelot.o
+ obj-$(CONFIG_MOMENCO_OCELOT_C)	+= pci-ocelot-c.o
+ obj-$(CONFIG_MOMENCO_OCELOT_G)	+= pci-ocelot-g.o
+-obj-$(CONFIG_NEC_EAGLE)		+= fixup-eagle.o ops-vrc4173.o
++obj-$(CONFIG_NEC_EAGLE)		+= fixup-eagle.o
+ obj-$(CONFIG_PMC_YOSEMITE)	+= fixup-yosemite.o ops-titan.o
+ obj-$(CONFIG_SGI_IP27)		+= pci-ip27.o
+ obj-$(CONFIG_SGI_IP32)		+= fixup-ip32.o ops-mace.o pci-ip32.o
+diff -urN -X dontdiff linux-orig/arch/mips/pci/fixup-eagle.c linux/arch/mips/pci/fixup-eagle.c
+--- linux-orig/arch/mips/pci/fixup-eagle.c	Fri Feb 20 00:49:46 2004
++++ linux/arch/mips/pci/fixup-eagle.c	Mon Mar  8 01:46:15 2004
+@@ -1,15 +1,26 @@
+ /*
+- * arch/mips/vr41xx/nec-eagle/pci_fixup.c
++ *  fixup-eagle.c, The NEC Eagle/Hawk Board specific PCI fixups.
+  *
+- * The NEC Eagle/Hawk Board specific PCI fixups.
+  *
+- * Author: Yoichi Yuasa <you@mvista.com, or source@mvista.com>
++ *  Copyright (C) 2001-2002,2004  MontaVista Software, Inc.
++ *    Author: Yoichi Yuasa <yyuasa@mvista.com, or source@mvista.com>
++ *  Copyright (C) 2004  Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+  *
+- * 2001-2002,2004 (c) MontaVista, Software, Inc. This file is licensed under
+- * the terms of the GNU General Public License version 2. This program
+- * is licensed "as is" without any warranty of any kind, whether express
+- * or implied.
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
++ *
++ *  This program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
++ *
++ *  You should have received a copy of the GNU General Public License
++ *  along with this program; if not, write to the Free Software
++ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+  */
++#include <linux/config.h>
+ #include <linux/init.h>
+ #include <linux/pci.h>
+ 
+@@ -58,3 +69,98 @@
+ struct pci_fixup pcibios_fixups[] __initdata = {
+ 	{	.pass = 0,	},
+ };
++
++#ifdef CONFIG_VRC4173
++/*
++ * PCI configuration registers
++ */
++#define PCI_CONFIG_ADDR	KSEG1ADDR(0x0f000c18)
++#define PCI_CONFIG_DATA	KSEG1ADDR(0x0f000c14)
++
++static inline void config_writeb(u8 reg, u8 val)
++{
++	u32 data;
++	int shift;
++
++	writel((1UL << 0x1e) | (reg & 0xfc), PCI_CONFIG_ADDR);
++	data = readl(PCI_CONFIG_DATA);
++
++	shift = (reg & 3) << 3;
++	data &= ~(0xff << shift);
++	data |= (((u32) val) << shift);
++
++	writel(data, PCI_CONFIG_DATA);
++}
++
++static inline u16 config_readw(u8 reg)
++{
++	u32 data;
++
++	writel(((1UL << 30) | (reg & 0xfc)), PCI_CONFIG_ADDR);
++	data = readl(PCI_CONFIG_DATA);
++
++	return (u16) (data >> ((reg & 2) << 3));
++}
++
++static inline u32 config_readl(u8 reg)
++{
++	writel(((1UL << 30) | (reg & 0xfc)), PCI_CONFIG_ADDR);
++
++	return readl(PCI_CONFIG_DATA);
++}
++
++static inline void config_writel(u8 reg, u32 val)
++{
++	writel((1UL << 0x1e) | (reg & 0xfc), PCI_CONFIG_ADDR);
++	writel(val, PCI_CONFIG_DATA);
++}
++
++/*
++ * Pre-fixup for AC97U/CARDU/USBU of VRC4173
++ */
++static int __init vrc4173_prefixup(void)
++{
++	u32 cmdsts, base;
++	u16 cmu_mask;
++
++
++	if ((config_readw(PCI_VENDOR_ID) == PCI_VENDOR_ID_NEC) &&
++	    (config_readw(PCI_DEVICE_ID) == PCI_DEVICE_ID_NEC_VRC4173)) {
++		/*
++		 * Initialized NEC VRC4173 Bus Control Unit
++		 */
++		cmdsts = config_readl(PCI_COMMAND);
++		config_writel(PCI_COMMAND,
++			      cmdsts |
++			      PCI_COMMAND_IO |
++			      PCI_COMMAND_MEMORY | PCI_COMMAND_MASTER);
++
++		config_writeb(PCI_LATENCY_TIMER, 0x80);
++
++		config_writel(PCI_BASE_ADDRESS_0, VR41XX_PCI_IO_START);
++		base = config_readl(PCI_BASE_ADDRESS_0);
++		base &= PCI_BASE_ADDRESS_IO_MASK;
++		config_writeb(0x40, 0x01);
++
++		/* CARDU1 IDSEL = AD12, CARDU2 IDSEL = AD13 */
++		config_writeb(0x41, 0);
++
++		cmu_mask = 0x1000;
++		outw(cmu_mask, base + 0x040);
++		cmu_mask |= 0x0800;
++		outw(cmu_mask, base + 0x040);
++
++		outw(0x000f, base + 0x042);	/* Soft reset of CMU */
++		cmu_mask |= 0x05e0;
++		outw(cmu_mask, base + 0x040);
++		cmu_mask = inw(base + 0x040);	/* dummy read */
++		outw(0x0000, base + 0x042);
++
++		return 0;
++	}
++
++	return -ENODEV;
++}
++
++early_initcall(vrc4173_prefixup);
++#endif
+diff -urN -X dontdiff linux-orig/arch/mips/pci/ops-vrc4173.c linux/arch/mips/pci/ops-vrc4173.c
+--- linux-orig/arch/mips/pci/ops-vrc4173.c	Fri Jun 13 23:19:56 2003
++++ linux/arch/mips/pci/ops-vrc4173.c	Thu Jan  1 09:00:00 1970
+@@ -1,120 +0,0 @@
+-/*
+- * FILE NAME
+- *	arch/mips/vr41xx/nec-eagle/vrc4173.c
+- *
+- * BRIEF MODULE DESCRIPTION
+- *	Pre-setup for NEC VRC4173.
+- *
+- * Author: Yoichi Yuasa
+- *         yyuasa@mvista.com or source@mvista.com
+- *
+- * Copyright 2001,2002 MontaVista Software Inc.
+- *
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License as published by the
+- *  Free Software Foundation; either version 2 of the License, or (at your
+- *  option) any later version.
+- *
+- *  THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED
+- *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+- *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+- *  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+- *  OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+- *  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
+- *  TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+- *  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the GNU General Public License along
+- *  with this program; if not, write to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- */
+-#include <linux/init.h>
+-#include <linux/pci.h>
+-#include <linux/module.h>
+-
+-#include <asm/io.h>
+-#include <asm/vr41xx/eagle.h>
+-#include <asm/vr41xx/vrc4173.h>
+-
+-#define PCI_CONFIG_ADDR	KSEG1ADDR(0x0f000c18)
+-#define PCI_CONFIG_DATA	KSEG1ADDR(0x0f000c14)
+-
+-static inline void config_writeb(u8 reg, u8 val)
+-{
+-	u32 data;
+-	int shift;
+-
+-	writel((1UL << 0x1e) | (reg & 0xfc), PCI_CONFIG_ADDR);
+-	data = readl(PCI_CONFIG_DATA);
+-
+-	shift = (reg & 3) << 3;
+-	data &= ~(0xff << shift);
+-	data |= (((u32) val) << shift);
+-
+-	writel(data, PCI_CONFIG_DATA);
+-}
+-
+-static inline u16 config_readw(u8 reg)
+-{
+-	u32 data;
+-
+-	writel(((1UL << 30) | (reg & 0xfc)), PCI_CONFIG_ADDR);
+-	data = readl(PCI_CONFIG_DATA);
+-
+-	return (u16) (data >> ((reg & 2) << 3));
+-}
+-
+-static inline u32 config_readl(u8 reg)
+-{
+-	writel(((1UL << 30) | (reg & 0xfc)), PCI_CONFIG_ADDR);
+-
+-	return readl(PCI_CONFIG_DATA);
+-}
+-
+-static inline void config_writel(u8 reg, u32 val)
+-{
+-	writel((1UL << 0x1e) | (reg & 0xfc), PCI_CONFIG_ADDR);
+-	writel(val, PCI_CONFIG_DATA);
+-}
+-
+-void __init vrc4173_preinit(void)
+-{
+-	u32 cmdsts, base;
+-	u16 cmu_mask;
+-
+-
+-	if ((config_readw(PCI_VENDOR_ID) == PCI_VENDOR_ID_NEC) &&
+-	    (config_readw(PCI_DEVICE_ID) == PCI_DEVICE_ID_NEC_VRC4173)) {
+-		/*
+-		 * Initialized NEC VRC4173 Bus Control Unit
+-		 */
+-		cmdsts = config_readl(PCI_COMMAND);
+-		config_writel(PCI_COMMAND,
+-			      cmdsts |
+-			      PCI_COMMAND_IO |
+-			      PCI_COMMAND_MEMORY | PCI_COMMAND_MASTER);
+-
+-		config_writeb(PCI_LATENCY_TIMER, 0x80);
+-
+-		config_writel(PCI_BASE_ADDRESS_0, VR41XX_PCI_IO_START);
+-		base = config_readl(PCI_BASE_ADDRESS_0);
+-		base &= PCI_BASE_ADDRESS_IO_MASK;
+-		config_writeb(0x40, 0x01);
+-
+-		/* CARDU1 IDSEL = AD12, CARDU2 IDSEL = AD13 */
+-		config_writeb(0x41, 0);
+-
+-		cmu_mask = 0x1000;
+-		outw(cmu_mask, base + 0x040);
+-		cmu_mask |= 0x0800;
+-		outw(cmu_mask, base + 0x040);
+-
+-		outw(0x000f, base + 0x042);	/* Soft reset of CMU */
+-		cmu_mask |= 0x05e0;
+-		outw(cmu_mask, base + 0x040);
+-		cmu_mask = inw(base + 0x040);	/* dummy read */
+-		outw(0x0000, base + 0x042);
+-	}
+-}
+diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/nec-eagle/setup.c linux/arch/mips/vr41xx/nec-eagle/setup.c
+--- linux-orig/arch/mips/vr41xx/nec-eagle/setup.c	Thu Feb 26 07:05:00 2004
++++ linux/arch/mips/vr41xx/nec-eagle/setup.c	Mon Mar  8 01:10:18 2004
+@@ -86,8 +86,6 @@
+ 
+ #ifdef CONFIG_PCI
+ 	vr41xx_pciu_init(&pci_address_map);
+-
+-	vrc4173_preinit();
+ #endif
+ 
+ 	return 0;

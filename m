@@ -1,74 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Jan 2003 20:43:22 +0000 (GMT)
-Received: from mx2.mips.com ([IPv6:::ffff:206.31.31.227]:12193 "EHLO
-	mx2.mips.com") by linux-mips.org with ESMTP id <S8226246AbTALS4H>;
-	Sun, 12 Jan 2003 18:56:07 +0000
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id h0CItu67013021;
-	Sun, 12 Jan 2003 10:55:56 -0800 (PST)
-Received: from grendel (grendel [192.168.236.16])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id KAA24683;
-	Sun, 12 Jan 2003 10:55:51 -0800 (PST)
-Message-ID: <003b01c2ba6c$f64ef840$10eca8c0@grendel>
-From: "Kevin D. Kissell" <kevink@mips.com>
-To: "Ralf Baechle" <ralf@linux-mips.org>,
-	"Krishnakumar. R" <krishnakumar@naturesoft.net>
-Cc: <linux-mips@linux-mips.org>
-References: <200301101600.26246.krishnakumar@naturesoft.net> <20030112180917.A18654@linux-mips.org>
-Subject: Re: Cpu frequency scaling
-Date: Sun, 12 Jan 2003 20:01:02 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Jan 2003 23:30:55 +0000 (GMT)
+Received: from postfix4-2.free.fr ([IPv6:::ffff:213.228.0.176]:30175 "EHLO
+	postfix4-2.free.fr") by linux-mips.org with ESMTP
+	id <S8226252AbTALXay>; Sun, 12 Jan 2003 23:30:54 +0000
+Received: from free.fr (lns-p19-22-81-56-92-102.adsl.proxad.net [81.56.92.102])
+	by postfix4-2.free.fr (Postfix) with ESMTP id 5B307C0F1
+	for <linux-mips@linux-mips.org>; Mon, 13 Jan 2003 00:30:51 +0100 (CET)
+Message-ID: <3E21FAC0.E69BD643@free.fr>
+Date: Mon, 13 Jan 2003 00:31:12 +0100
+From: jmjsgi <jmjsgi@free.fr>
+X-Mailer: Mozilla 4.5 [fr]C-CCK-MCD SGI  (WinNT; I)
+X-Accept-Language: fr
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+To: "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: sgi O2 linux
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4807.1700
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4910.0300
-Return-Path: <kevink@mips.com>
+Return-Path: <jmjsgi@free.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1135
-X-Approved-By: ralf@linux-mips.org
+X-archive-position: 1136
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@mips.com
+X-original-sender: jmjsgi@free.fr
 Precedence: bulk
 X-list: linux-mips
 
-> > Can frequency scaling (through software) 
-> > be done on mips using linux ?
-> > 
-> > Is  such a feature feasible in mips ??
-> > 
-> > I could not find any documentation nor patches 
-> > for  frequency
-> > scaling on mips at 
-> > http://www.brodo.de/cpufreq/
-> > :-(
-> 
-> None of the currently supported MIPS CPUs support such a feature in
-> hardware as such our support is already complete and by definition
-> bug free ;-)
-
-Actually, that's not *quite* true.  A number of MIPS CPUs and
-cores that are otherwise supported by Linux (e.g. 4K, 5K) have
-a "reduced power" mode which is modulated by the CP0 "RP"
-bit. In general, this bit does nothing in the CPU itself, however.
-It was intended that it be connected to system-level logic for
-frequency scaling (1/n normal clock, or CPU=Bus).  So on
-most systems it does nothing, and on the ones where it does
-do something, it's entirely system dependent.  I don't have an
-Alchemy AU1000 spec handy, but since they've integrated
-a lot of other logic with their CPU, and since they designed
-their component to go into low-power devices, it wouldn't
-surprise me in the least if they do something well-defined
-with the RP bit.
-
-So, to get back to the original question, something highly
-platform dependent *could* be done using MIPS/Linux, 
-via /proc/cpu or some kind of system call, but I don't believe 
-anyone has made such a hook generally available as yet.
-
-            Kevin K.
+Hi, i'm french and i woold like install linux on my SGI O2 R5000, but i
+dont know wath version of linux i can take. Can you help me.
+Thank

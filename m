@@ -1,34 +1,38 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id NAA07675; Tue, 5 Aug 1997 13:38:39 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id CAA31465; Wed, 6 Aug 1997 02:27:02 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id MAA14662 for linux-list; Tue, 5 Aug 1997 12:20:35 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA14632 for <linux@cthulhu.engr.sgi.com>; Tue, 5 Aug 1997 12:20:31 -0700
-Received: from athena.nuclecu.unam.mx (athena.nuclecu.unam.mx [132.248.29.9]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id MAA22371
-	for <linux@cthulhu.engr.sgi.com>; Tue, 5 Aug 1997 12:20:29 -0700
-	env-from (miguel@athena.nuclecu.unam.mx)
-Received: (from miguel@localhost)
-	by athena.nuclecu.unam.mx (8.8.5/8.8.5) id OAA29577;
-	Tue, 5 Aug 1997 14:19:27 -0500
-Date: Tue, 5 Aug 1997 14:19:27 -0500
-Message-Id: <199708051919.OAA29577@athena.nuclecu.unam.mx>
-From: Miguel de Icaza <miguel@nuclecu.unam.mx>
-To: schaefer@dsai.com
-CC: linux@cthulhu.engr.sgi.com
-In-reply-to: <9708050920.ZM6923@ratbert.daic.dsai.com> (schaefer@dsai.com)
-Subject: Re: Kernel instructions...
-X-Mexico: Este es un pais de orates, un pais amateur.
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id CAA12529 for linux-list; Wed, 6 Aug 1997 02:26:43 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id CAA12518 for <linux@cthulhu.engr.sgi.com>; Wed, 6 Aug 1997 02:26:39 -0700
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id CAA23516
+	for <linux@cthulhu.engr.sgi.com>; Wed, 6 Aug 1997 02:26:28 -0700
+	env-from (ralf@informatik.uni-koblenz.de)
+Received: from thoma (ralf@thoma.uni-koblenz.de [141.26.4.61]) by informatik.uni-koblenz.de (8.8.5/8.6.9) with SMTP id LAA11554; Wed, 6 Aug 1997 11:25:58 +0200 (MEST)
+From: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
+Message-Id: <199708060925.LAA11554@informatik.uni-koblenz.de>
+Received: by thoma (SMI-8.6/KO-2.0)
+	id LAA07231; Wed, 6 Aug 1997 11:25:55 +0200
+Subject: Re: indyIRQ.S
+To: tsbogend@alpha.franken.de (Thomas Bogendoerfer)
+Date: Wed, 6 Aug 1997 11:25:54 +0200 (MET DST)
+Cc: shaver@neon.ingenia.ca, linux@cthulhu.engr.sgi.com
+In-Reply-To: <199708052111.XAA01741@alpha.franken.de> from "Thomas Bogendoerfer" at Aug 5, 97 11:11:49 pm
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+> > mips-linux-gcc -D__KERNEL__ -I/export/sgi-linux/kernel/linux/include -D__GOGOGO__ -c indyIRQ.S -o indyIRQ.o
+> > indyIRQ.S: Assembler messages:
+> > indyIRQ.S:72: Warning: No .cprestore pseudo-op used in PIC code
+> > [...] 
+> > Any ideas?
+> 
+> yes, add a -fno-pic to your CFLAGS. The default for the current mips-linux-gcc
+> is to produce PIC code and most of the .S files aren't prepared to be compiled
+> this way.
 
-> 	  Are there any further instructions on how to install the Linux kernel
-> after it's been compiled?  I know IRIX will automatically install unix.new on
-> bootup, is there some method like that to use?  Is there a reason MILO is
-> included on the ftp site?
+None will compile not will the linker accept mixtures of PIC and non-PIC
+object files.  I suppose the cause is didling with the makefiles since
+-G 0 -mno-abicalls -fno-pic is default for MIPS.
 
-Just copy your kernel to an EFS/XFS accessible partition and then when
-booting your Indy, go to the mainteinance mode, from there go to the
-monitor and type:
-
-	boot /vmlinux
-
-Miguel.
+  Ralf

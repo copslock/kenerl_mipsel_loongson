@@ -1,66 +1,44 @@
-Received:  by oss.sgi.com id <S553711AbQJYUqd>;
-	Wed, 25 Oct 2000 13:46:33 -0700
-Received: from natmail2.webmailer.de ([192.67.198.65]:49300 "EHLO
-        post.webmailer.de") by oss.sgi.com with ESMTP id <S553675AbQJYUqQ>;
-	Wed, 25 Oct 2000 13:46:16 -0700
-Received: from scotty.mgnet.de (p3E9ECD26.dip.t-dialin.net [62.158.205.38])
-	by post.webmailer.de (8.9.3/8.8.7) with SMTP id WAA21780
-	for <linux-mips@oss.sgi.com>; Wed, 25 Oct 2000 22:46:13 +0200 (MET DST)
-Received: (qmail 554 invoked from network); 25 Oct 2000 20:45:27 -0000
-Received: from spock.mgnet.de (192.168.1.4)
-  by scotty.mgnet.de with SMTP; 25 Oct 2000 20:45:27 -0000
-Date:   Wed, 25 Oct 2000 22:46:12 +0200 (CEST)
-From:   Klaus Naumann <spock@mgnet.de>
-To:     Guido Guenther <guido.guenther@gmx.net>
-cc:     Keith M Wesolowski <wesolows@chem.unr.edu>, linux-mips@oss.sgi.com
+Received:  by oss.sgi.com id <S553765AbQJYWde>;
+	Wed, 25 Oct 2000 15:33:34 -0700
+Received: from gandalf1.physik.uni-konstanz.de ([134.34.144.69]:51721 "EHLO
+        gandalf.physik.uni-konstanz.de") by oss.sgi.com with ESMTP
+	id <S553757AbQJYWdL>; Wed, 25 Oct 2000 15:33:11 -0700
+Received: from bilbo.physik.uni-konstanz.de [134.34.144.81] 
+	by gandalf.physik.uni-konstanz.de with esmtp (Exim 3.12 #1 (Debian))
+	id 13oZ6O-0001m9-00; Thu, 26 Oct 2000 00:32:56 +0200
+Received: from agx by bilbo.physik.uni-konstanz.de with local (Exim 3.12 #1 (Debian))
+	id 13oZ6O-0007WV-00; Thu, 26 Oct 2000 00:32:56 +0200
+Date:   Thu, 26 Oct 2000 00:32:56 +0200
+From:   Guido Guenther <guido.guenther@gmx.net>
+To:     Klaus Naumann <spock@mgnet.de>
+Cc:     Keith M Wesolowski <wesolows@chem.unr.edu>, linux-mips@oss.sgi.com
 Subject: Re: fdisk/kernel oddity
-In-Reply-To: <20001025194348.A1164@gandalf.physik.uni-konstanz.de>
-Message-ID: <Pine.LNX.4.21.0010252242560.726-100000@spock.mgnet.de>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Message-ID: <20001026003256.A28902@bilbo.physik.uni-konstanz.de>
+References: <20001025194348.A1164@gandalf.physik.uni-konstanz.de> <Pine.LNX.4.21.0010252242560.726-100000@spock.mgnet.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+User-Agent: Mutt/1.0.1i
+In-Reply-To: <Pine.LNX.4.21.0010252242560.726-100000@spock.mgnet.de>; from spock@mgnet.de on Wed, Oct 25, 2000 at 10:46:12PM +0200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, 25 Oct 2000, Guido Guenther wrote:
-
-> On Wed, Oct 25, 2000 at 10:14:53AM -0700, Keith M Wesolowski wrote:
-> > On Wed, Oct 25, 2000 at 07:01:29PM +0200, Guido Guenther wrote:
-> > Not to sound defensive, but I'm fairly sure this isn't an
-> > fdisk-related problem. The partitions that fdisk creates follow the
-> > spec as far as I can see.
-> I didn't want to blame fdisk for that(how could I, I want you to send
-> the patches upstream ASAP :)
-> > 
-> > > What puzzles me even more is that I get illegal instructions for almost 
-> > > all commands I execute afterwards. Any comments on this one?
-> > 
-> > I rather suspect that this is the same problem that causes the request
-> > for the out-of-bounds block in the first place: kernel memory
-> > corruption. Unfortunately I have few ideas as to what the specific
-> > problem is. I would start bug-hunting in the sgi disklabel kernel
-> > parts. Make sure that it's compatible with what fdisk is doing.
-> That's a starting point - thanks. Ian pointed out that it might be
-> related to the fact that I use two harddisks which is interesting since
-> I see the problems only when writing on sda, sdb seems to be o.k.
-> Regards,
->  -- Guido
-
-This is a problem which I'm seeing for a loooooong time now.
-I've been geeting this correuption a while back too - look at the mailing
-list archives. The problem seems to be cache corruption as far as I can
-see. Since Ralf checked in some small fixes for the cache handling it's a
-bit better - but not completely fixed.
-The Problem is also tracked on the buc tracker btw (#5) .
-
-I have seen this only when copying from one harddisk to another.
-Especialy if one wants to copy the kernel sources it will messup.
-
-	CU, Klaus
-
--- 
-Full Name   : Klaus Naumann     | (http://www.mgnet.de/) (Germany)
-Nickname    : Spock             | Org.: Mad Guys Network
-Phone / FAX : ++49/177/7862964  | E-Mail: (spock@mgnet.de)
-PGP Key     : www.mgnet.de/keys/key_spock.txt
+On Wed, Oct 25, 2000 at 10:46:12PM +0200, Klaus Naumann wrote:
+> I've been geeting this correuption a while back too - look at the mailing
+> list archives. The problem seems to be cache corruption as far as I can
+> see. Since Ralf checked in some small fixes for the cache handling it's a
+> bit better - but not completely fixed.
+Can you explain in what sense it is "a bit better" now. 
+> The Problem is also tracked on the buc tracker btw (#5) .
+Ian was so kind to but it into the BTS after he told me that this is a
+known problem. 
+> 
+> I have seen this only when copying from one harddisk to another.
+> Especialy if one wants to copy the kernel sources it will messup.
+I also see problems when dd'ing from /dev/sda to e.g. /dev/null, 
+so this does not only occur when copying between disks. Also in this
+case I don't get the illegal instructions but rather strange
+"/etc/shadow file not found" messages.
+Regards,
+ -- Guido

@@ -1,36 +1,35 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8HN6XY16003
-	for linux-mips-outgoing; Mon, 17 Sep 2001 16:06:33 -0700
-Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8HN6Te16000;
-	Mon, 17 Sep 2001 16:06:29 -0700
-Received: by ocean.lucon.org (Postfix, from userid 1000)
-	id 08467125C6; Mon, 17 Sep 2001 16:06:29 -0700 (PDT)
-Date: Mon, 17 Sep 2001 16:06:28 -0700
-From: "H . J . Lu" <hjl@lucon.org>
-To: Richard Henderson <rth@redhat.com>
-Cc: Ralf Baechle <ralf@oss.sgi.com>, Ryan Murray <rmurray@cyberhqz.com>,
-   linux-mips@oss.sgi.com, binutils@sourceware.cygnus.com, gcc@gcc.gnu.org
-Subject: Re: linker problem: relocation truncated to fit
-Message-ID: <20010917160628.B25204@lucon.org>
-References: <20010916091654.C1812@lucon.org> <Pine.BSO.4.33.0109161323280.14503-100000@oddbox.cn> <20010917000719.B25531@false.linpro.no> <20010916153857.H22750@cyberhqz.com> <20010916155003.B1446@lucon.org> <20010917035509.B24278@dea.linux-mips.net> <20010917154001.D30386@redhat.com> <20010917155325.A25017@lucon.org> <20010917155616.H30386@redhat.com>
-Mime-Version: 1.0
+	by oss.sgi.com (8.11.2/8.11.3) id f8I3lMh20791
+	for linux-mips-outgoing; Mon, 17 Sep 2001 20:47:22 -0700
+Received: from groucho.maths.monash.edu.au (groucho.maths.monash.edu.au [130.194.160.211])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8I3lKe20788
+	for <linux-mips@oss.sgi.com>; Mon, 17 Sep 2001 20:47:20 -0700
+Received: (from rjh@localhost)
+	by groucho.maths.monash.edu.au (8.8.8/8.8.8) id DAA01979
+	for linux-mips@oss.sgi.com; Tue, 18 Sep 2001 03:47:16 GMT
+From: Robin Humble <rjh@groucho.maths.monash.edu.au>
+Message-Id: <200109180347.DAA01979@groucho.maths.monash.edu.au>
+Subject: Re: openssh probs
+To: linux-mips@oss.sgi.com
+Date: Tue, 18 Sep 2001 13:47:16 +1000 (EST)
+In-Reply-To: <Pine.SOL.4.31.0109171218020.15630-100000@fury.csh.rit.edu> from "George Gensure" at Sep 17, 2001 12:20:54 PM
+X-Mailer: ELM [version 2.5 PL1]
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20010917155616.H30386@redhat.com>; from rth@redhat.com on Mon, Sep 17, 2001 at 03:56:16PM -0700
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Sep 17, 2001 at 03:56:16PM -0700, Richard Henderson wrote:
-> On Mon, Sep 17, 2001 at 03:53:25PM -0700, H . J . Lu wrote:
-> > Can you mix object files compiled with -fPIC/-fpic on Sparc/Alpha?
-> 
-> Yes, but of course the total GOT/small data area is constrained
-> by the size allowed by -fpic.
 
-It doesn't help much if you do need -fPIC on some Qt code. Since I
-don't use Qt on mips, I will let others work on it.
+>Yeah, should've mentioned the version.  I'm already running 2.9p2.  The
 
+It's an endian build problem in the openssl library. Are you running
+the H. J. Lu  RH7.1 distro? If so then this was a week or so ago and
+the updated rpm and srpm on the site now work fine on my R4600 Indy.
 
-H.J.
+If you want to recompile the openssl library yourself then find the
+L_ENDIAN in the Configure file entry for linux-mips, change it to
+B_ENDIAN and rebuild.
+
+cheers,
+robin

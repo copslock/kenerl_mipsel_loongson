@@ -1,48 +1,66 @@
-Received:  by oss.sgi.com id <S42250AbQIYUPr>;
-	Mon, 25 Sep 2000 13:15:47 -0700
-Received: from u-53.karlsruhe.ipdial.viaginterkom.de ([62.180.20.53]:9222 "EHLO
-        u-53.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com with ESMTP
-	id <S42201AbQIYUP0>; Mon, 25 Sep 2000 13:15:26 -0700
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S869558AbQIYUOP>;
-        Mon, 25 Sep 2000 22:14:15 +0200
-Date:   Mon, 25 Sep 2000 22:14:14 +0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Florian Lohoff <flo@rfc822.org>
-Cc:     linux-mips@oss.sgi.com, linux-mips@fnet.fr,
-        linux-origin@oss.sgi.com
-Subject: Re: libc upgrade
-Message-ID: <20000925221414.A6190@bacchus.dhis.org>
-References: <20000922152604.A2627@bacchus.dhis.org> <20000925112413.B3247@paradigm.rfc822.org> <20000925132056.A7598@bacchus.dhis.org> <20000925161500.A4773@paradigm.rfc822.org>
-Mime-Version: 1.0
+Received:  by oss.sgi.com id <S42275AbQIYVGr>;
+	Mon, 25 Sep 2000 14:06:47 -0700
+Received: from smtp.algor.co.uk ([62.254.210.199]:31718 "EHLO
+        kenton.algor.co.uk") by oss.sgi.com with ESMTP id <S42201AbQIYVGV>;
+	Mon, 25 Sep 2000 14:06:21 -0700
+Received: from gladsmuir.algor.co.uk (dom@gladsmuir.algor.co.uk [192.168.5.75])
+	by kenton.algor.co.uk (8.9.3/8.8.8) with ESMTP id WAA21144;
+	Mon, 25 Sep 2000 22:05:45 +0100 (GMT/BST)
+Received: (from dom@localhost)
+	by gladsmuir.algor.co.uk (8.8.5/8.8.5) id WAA01137;
+	Mon, 25 Sep 2000 22:16:33 +0100 (GMT/BST)
+Date:   Mon, 25 Sep 2000 22:16:33 +0100 (GMT/BST)
+Message-Id: <200009252116.WAA01137@gladsmuir.algor.co.uk>
+From:   Dominic Sweetman <dom@algor.co.uk>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <20000925161500.A4773@paradigm.rfc822.org>; from flo@rfc822.org on Mon, Sep 25, 2000 at 04:15:00PM +0200
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 7bit
+To:     Jun Sun <jsun@mvista.com>
+Cc:     linux-mips@oss.sgi.com, linux-mips@fnet.fr
+Subject: Re: load_unaligned() and "uld" instruction
+In-Reply-To: <39CF9DFC.F30B302B@mvista.com>
+References: <39CF9DFC.F30B302B@mvista.com>
+X-Mailer: VM 6.34 under 19.16 "Lille" XEmacs Lucid
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Mon, Sep 25, 2000 at 04:15:00PM +0200, Florian Lohoff wrote:
 
-> > > Build fails on mipsel ...
-> > 
-> > These messages look like file corruption.  Maybe one of the `features'
-> > of the 2.4.0-test kernels and not libc at all?
-> 
-> I dont think so - I succeeded to compile ~2000 Packages of debian
-> on this kernel and its noticeably the first execution with the "new" ld.so
+Jun Sun (jsun@mvista.com) writes:
 
-I week of CPU time on an Origin building packages:  No problems ...  I'm
-actually fairly close to get a RH 6.2 built - as far as that is possible
-with glibc 2.0.
+> The USB sub-system uses "unaligned.h" file to access unaligned data. 
+> All the unaligned data access functions depend on "uld" and "usw"
+> instructions, which are not available on many CPUs.
 
-> LD_LIBRARY_PATH=..:../elf:../nss ../elf/ld.so.1 ./rpcgen -c rpcsvc/bootparam.x -o xbootparam.T
-> /bin/sh: invalid character 45 in exportstr for full-config-sysdirs
-> make[1]: *** [xbootparam.stmp] Segmentation fault
+You won't find the instruction 'uld' in *any* MIPS CPU.
 
-Ok, second theory.  What linker where you using to build all this programs?
-The new ld.so needs to know what ld has built programs due to some pretty
-stupid pre-2.9.something brokeness in R_MIPS_32 reloction handling.
+uld is an assembler macro-instruction translating into a 
 
-  Ralf
+  ldl
+  ldr
+
+pair (the instructions are called load-double-left and
+load-double-right).  The exact translation depends on whether you're
+running big-endian or little-endian... but the 32-bit version on a
+big-endian CPU is that 
+
+  ulw $1, <address>
+
+is assembled as
+
+  lwl $1, <address>
+  lwr $1, <address+3>
+
+The way that the load-left and load-right work together is kind of
+tricky to get your head round.  
+
+So far as I know, all 64-bit MIPS CPUs implement ldl/ldr and the store
+equivalents.  MIPS patented these instructions, so clones like Lexra's
+don't implement the 32-bit versions (lwl, lwr etc).
+
+-- 
+Dominic Sweetman
+Algorithmics Ltd
+The Fruit Farm, Ely Road, Chittering, CAMBS CB5 9PH, ENGLAND
+phone: +44 1223 706200 / fax: +44 1223 706250 / http://www.algor.co.uk

@@ -1,69 +1,51 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id KAA51875 for <linux-archive@neteng.engr.sgi.com>; Mon, 22 Feb 1999 10:15:41 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA92172 for <linux-archive@neteng.engr.sgi.com>; Mon, 22 Feb 1999 15:02:27 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id KAA58384
+	id PAA97936
 	for linux-list;
-	Mon, 22 Feb 1999 10:14:32 -0800 (PST)
+	Mon, 22 Feb 1999 15:01:28 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from otg.dallas.sgi.com (roctane.dallas.sgi.com [169.238.83.62])
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id KAA99534
+	via ESMTP id PAA96111
 	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 22 Feb 1999 10:14:30 -0800 (PST)
-	mail_from (chad@dallas.sgi.com)
-Received: from dallas.sgi.com (localhost [127.0.0.1]) by otg.dallas.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id KAA17544 for <linux@cthulhu.engr.sgi.com>; Mon, 22 Feb 1999 10:14:23 -0800 (PST)
-Message-ID: <36D19E7E.955F66EC@dallas.sgi.com>
-Date: Mon, 22 Feb 1999 12:14:22 -0600
-From: Chad Carlin <chad@dallas.sgi.com>
-Reply-To: chad@sgi.com
-Organization: Silicon Graphics Inc.
-X-Mailer: Mozilla 4.5C-SGI [en] (X11; I; IRIX64 6.5 IP30)
-X-Accept-Language: en
-MIME-Version: 1.0
-CC: SGI Linux <linux@cthulhu.engr.sgi.com>
-Subject: Re: able to bootp/NFS-install/reboot R4400SC Indy
-References: <Pine.LNX.3.96.990217020751.6350A-100000@lager.engsoc.carleton.ca>
+	Mon, 22 Feb 1999 15:01:25 -0800 (PST)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1] (may be forged)) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id PAA08809
+	for <linux@cthulhu.engr.sgi.com>; Mon, 22 Feb 1999 15:01:23 -0800 (PST)
+	mail_from (ralf@lappi.waldorf-gmbh.de)
+Received: from lappi.waldorf-gmbh.de (pmport-01.uni-koblenz.de [141.26.249.1])
+	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id AAA17271
+	for <linux@cthulhu.engr.sgi.com>; Tue, 23 Feb 1999 00:01:20 +0100 (MET)
+Received: (from ralf@localhost)
+	by lappi.waldorf-gmbh.de (8.8.7/8.8.7) id XAA00604;
+	Mon, 22 Feb 1999 23:27:24 +0100
+Message-ID: <19990222232723.A502@uni-koblenz.de>
+Date: Mon, 22 Feb 1999 23:27:23 +0100
+From: ralf@uni-koblenz.de
+To: Russell E Glaue <RE-Glaue@wiu.edu>, linux@cthulhu.engr.sgi.com,
+        linux-mips@fnet.fr, linux-mips@vger.rutgers.edu
+Subject: Re: R4600 MIPS/Linux
+References: <19990215013210.A2910@alpha.franken.de> <Pine.SOL.3.95.990216085734.25445A-100000@ecom5>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-Mailer: Mutt 0.93.2
+In-Reply-To: <Pine.SOL.3.95.990216085734.25445A-100000@ecom5>; from Russell E Glaue on Tue, Feb 16, 1999 at 08:43:34PM -0600
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-I got my 200MHz R4400 working too. Yes it actually boots. I guess you guys
-weren't making all this stuff up after all.
+On Tue, Feb 16, 1999 at 08:43:34PM -0600, Russell E Glaue wrote:
 
-I have one problem though. Something is broken in modules. The networking
-stuff is working incorrectly because of this. When I try to telnet in from
-another host, the linux-indy panics. I can hand copy more verbose
-information when I get home if this is not a common problem that everyone
-else knows the answer to.
+> Does anyone have a running Linux system on the Deststation Tyne  R4600
+> MIPS/133MHz machine?
 
-Almost there.
-Chad
+No, since my Tyne died in late '94 we don't support this machine anymore.
+It'll take a kernel hacker to bring it back to live.
 
-
-Alex deVries wrote:
-
-> On Tue, 16 Feb 1999, Joan Eslinger wrote:
-> > Anyway, vmlinux-indy-990212 was the winner: it booted up into the
-> > installer, I was able to do a complete install (ignoring swap, as web
-> > page says), and it's up and running. I'm sending this out to let those
-> > who've been having trouble with Indy/R4400SC know that it can be done
-> > now!
->
-> Okay, that's cool.  Could you give us an output from your irix's hinv?
->
-> - Alex
->
-> --
-> Alex deVries, puffin on LinuxNet.
-> I know exactly what I want in life.
-
---
-           -----------------------------------------------------
-            Chad Carlin                          Special Systems
-            Silicon Graphics Inc.                   972.205.5911
-            Pager 888.754.1597          VMail 800.414.7994 X5344
-            chad@sgi.com             http://reality.sgi.com/chad
-           -----------------------------------------------------
-        "flying through hyper space ain't like dusting crops, boy"
+  Ralf

@@ -1,43 +1,50 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g2N1pVX03288
-	for linux-mips-outgoing; Fri, 22 Mar 2002 17:51:31 -0800
-Received: from ns1.ltc.com (vsat-148-63-243-254.c004.g4.mrt.starband.net [148.63.243.254])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2N1pPq03278
-	for <linux-mips@oss.sgi.com>; Fri, 22 Mar 2002 17:51:26 -0800
-Received: from prefect (prefect.local [10.1.1.86])
-	by ns1.ltc.com (Postfix) with SMTP
-	id 5FA56590B2; Fri, 22 Mar 2002 20:48:29 -0500 (EST)
-Message-ID: <04c901c1d20d$bfb061e0$5601010a@prefect>
-From: "Bradley D. LaRonde" <brad@ltc.com>
-To: "Pete Popov" <ppopov@mvista.com>, <linux-mips@oss.sgi.com>
-References: <1016845916.24217.298.camel@zeus>
+	by oss.sgi.com (8.11.2/8.11.3) id g2N1t9L03398
+	for linux-mips-outgoing; Fri, 22 Mar 2002 17:55:09 -0800
+Received: from av.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2N1t6q03395
+	for <linux-mips@oss.sgi.com>; Fri, 22 Mar 2002 17:55:06 -0800
+Received: from zeus.mvista.com (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id CAA23331;
+	Sat, 23 Mar 2002 02:08:41 -0800
 Subject: Re: [Linux-mips-kernel]io.h patch
-Date: Fri, 22 Mar 2002 20:55:02 -0500
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="Windows-1252"
+From: Pete Popov <ppopov@mvista.com>
+To: "Bradley D. LaRonde" <brad@ltc.com>
+Cc: linux-mips <linux-mips@oss.sgi.com>
+In-Reply-To: <04c901c1d20d$bfb061e0$5601010a@prefect>
+References: <1016845916.24217.298.camel@zeus> 
+	<04c901c1d20d$bfb061e0$5601010a@prefect>
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MIMEOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+X-Mailer: Evolution/1.0.2 
+Date: 22 Mar 2002 18:02:12 -0800
+Message-Id: <1016848932.24387.317.camel@zeus>
+Mime-Version: 1.0
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Fri, 2002-03-22 at 17:55, Bradley D. LaRonde wrote:
+> 
+> ----- Original Message -----
+> From: "Pete Popov" <ppopov@mvista.com>
+> To: "sforge" <linux-mips-kernel@lists.sourceforge.net>
+> Sent: Friday, March 22, 2002 8:11 PM
+> Subject: [Linux-mips-kernel]io.h patch
+> 
+> 
+> > Some of the macros in io.h cause compile problems in some of the drivers
+> > because of the do while syntax.  I don't see any good reason why we
+> > can't make those macros inline functions.  Any objections to this patch?
+> 
+> I pester Ralf about this from time to time.  The standing objection is that
+> some older gccs don't do inline well.
 
------ Original Message -----
-From: "Pete Popov" <ppopov@mvista.com>
-To: "sforge" <linux-mips-kernel@lists.sourceforge.net>
-Sent: Friday, March 22, 2002 8:11 PM
-Subject: [Linux-mips-kernel]io.h patch
+That's all true and, in fact, I had run into a compiler problem some
+time ago.  However, even then I was able to simply rearrange my C
+routine a bit and then the compiler was happy.
 
+Having pci-cardbus support on mips is kind of cool. Running wireless
+cards off of it is even better.  Not being able to compile the drivers
+because of io.h isn't.
 
-> Some of the macros in io.h cause compile problems in some of the drivers
-> because of the do while syntax.  I don't see any good reason why we
-> can't make those macros inline functions.  Any objections to this patch?
-
-I pester Ralf about this from time to time.  The standing objection is that
-some older gccs don't do inline well.
-
-Regards,
-Brad
+Pete

@@ -1,59 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Aug 2003 13:02:00 +0100 (BST)
-Received: from mail2.sonytel.be ([IPv6:::ffff:195.0.45.172]:2264 "EHLO
-	witte.sonytel.be") by linux-mips.org with ESMTP id <S8225343AbTHBMB4>;
-	Sat, 2 Aug 2003 13:01:56 +0100
-Received: from vervain.sonytel.be (localhost [127.0.0.1])
-	by witte.sonytel.be (8.12.9/8.12.9) with ESMTP id h72C1m1W012821;
-	Sat, 2 Aug 2003 14:01:48 +0200 (MEST)
-Date: Sat, 2 Aug 2003 14:01:48 +0200 (MEST)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: Kumba <kumba@gentoo.org>
-cc: Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: udelay
-In-Reply-To: <3F2B2521.2060508@gentoo.org>
-Message-ID: <Pine.GSO.4.21.0308021401150.543-100000@vervain.sonytel.be>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <Geert.Uytterhoeven@sonycom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Aug 2003 17:52:58 +0100 (BST)
+Received: from p508B60FA.dip.t-dialin.net ([IPv6:::ffff:80.139.96.250]:10166
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225344AbTHBQwy>; Sat, 2 Aug 2003 17:52:54 +0100
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h72GqqpR004831;
+	Sat, 2 Aug 2003 18:52:52 +0200
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h72GqpRe004830;
+	Sat, 2 Aug 2003 18:52:51 +0200
+Date: Sat, 2 Aug 2003 18:52:50 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: David Kesselring <dkesselr@mmc.atmel.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: sead_int.c
+Message-ID: <20030802165250.GA3697@linux-mips.org>
+References: <Pine.GSO.4.44.0308011043090.7852-100000@ares.mmc.atmel.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.GSO.4.44.0308011043090.7852-100000@ares.mmc.atmel.com>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2968
+X-archive-position: 2969
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 1 Aug 2003, Kumba wrote:
-> Pete Popov wrote:
-> > Looks like the latest udelay in 2.4 is borked. Anyway else notice that
-> > problem?  I did a 10 sec test: mdelay works, udelay is broken, at least
-> > for the CPU and toolchain I'm using.
+On Fri, Aug 01, 2003 at 10:47:51AM -0400, David Kesselring wrote:
+
+> Tell me if I'm incorrect but it looks like this for condition is wrong.
+> There are only 2 defined irqs.
 > 
-> What's one way of testing this brokeness?  I've been trying to find some 
-> explanation for a bug of some sort in a cobalt RaQ2 in which the tulip 
-> driver (eth0) just stops dead after several minutes of use.  One of the 
-> notable features of the tulip driver patch needed to work on the RaQ2 
-> adds a "udelay(1000)" into the tulip source.  Without it, the eth0 on 
-> the RaQ2 is dead, so I wonder if these are related.
-> 
-> If they are related, then this behavior has been slowly getting worse it 
-> seems, as eth0 on the RaQ2 apparently has had smaller and smaller 
-> amounts of time needed before the interface died.  2.4.18, it took most 
-> of a day, by 2.4.21, it happens within seconds.
+> 	for (i = 0; i <= SEADINT_END; i++)
+> 	              ^^	should be just < ??
 
-Any kernel messages (e.g. transmit timed out) from the tulip driver when it
-dies?
+Looks like you're right ...
 
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+  Ralf

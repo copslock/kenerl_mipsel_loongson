@@ -1,75 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Nov 2002 22:28:57 +0100 (CET)
-Received: from palrel11.hp.com ([156.153.255.246]:18883 "HELO palrel11.hp.com")
-	by linux-mips.org with SMTP id <S1121744AbSKAV24>;
-	Fri, 1 Nov 2002 22:28:56 +0100
-Received: from xparelay1.ptp.hp.com (xparelay1.ptp.hp.com [15.1.28.62])
-	by palrel11.hp.com (Postfix) with ESMTP
-	id 0E99E600BE3; Fri,  1 Nov 2002 13:28:42 -0800 (PST)
-Received: from xpabh3.ptp.hp.com (xpabh3.ptp.hp.com [15.1.28.63])
-	by xparelay1.ptp.hp.com (Postfix) with ESMTP
-	id CA332E0009C; Fri,  1 Nov 2002 13:28:41 -0800 (PST)
-Received: by xpabh3.ptp.hp.com with Internet Mail Service (5.5.2655.55)
-	id <V5H0G19N>; Fri, 1 Nov 2002 13:28:41 -0800
-Message-ID: <CBD6266EA291D5118144009027AA63350A68F189@xboi05.boi.hp.com>
-From: "TWEDE,ROGER (HP-Boise,ex1)" <roger_twede@hp.com>
-To: 'Ralf Baechle' <ralf@linux-mips.org>,
-	"TWEDE,ROGER (HP-Boise,ex1)" <roger_twede@hp.com>
-Cc: "'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
-Subject: RE: NFS Root failure in 2.4.18 - Traced to 256k COLOUR_ALIGN
-Date: Fri, 1 Nov 2002 13:28:32 -0800 
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Nov 2002 21:12:38 +0100 (CET)
+Received: from mail2.sonytel.be ([195.0.45.172]:53417 "EHLO mail.sonytel.be")
+	by linux-mips.org with ESMTP id <S1122037AbSKBUMh>;
+	Sat, 2 Nov 2002 21:12:37 +0100
+Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.27])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id VAA29999
+	for <linux-mips@linux-mips.org>; Sat, 2 Nov 2002 21:12:26 +0100 (MET)
+Date: Sat, 2 Nov 2002 21:12:27 +0100 (MET)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: Re: CVS Update@-mips.org: linux 
+In-Reply-To: <20021102200215Z1123906-9213+801@linux-mips.org>
+Message-ID: <Pine.GSO.4.21.0211022110440.12247-100000@vervain.sonytel.be>
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2655.55)
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Return-Path: <roger_twede@hp.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <Geert.Uytterhoeven@sonycom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 551
+X-archive-position: 552
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: roger_twede@hp.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-I traced the NFS root boot failure to a change made in the the function
-arch_get_unmapped_area(...).  The system goes from functional to
-non-functional with a single function change made in 2.4.18.
-linux/arch/mips/kernel/syscall.c :: arch_get_unmapped_area(...),
-COLOUR_ALIGN 
+On Sat, 2 Nov 2002 ralf@linux-mips.org wrote:
+> Log message:
+> 	Merge with Linux 2.5.45.
 
-The virtual mappings are now aligned on a 256k boundary instead of a page
-boundary whenever the mapping is to be shared (as in an executable file
-mapping).  The COLOUR_ALIGN macro was added and is used in place of
-PAGE_ALIGN as found in the file arch/mips/kernel/syscall.c.
+Congratulations!!! That was a very fast merge cycle!
 
-As our system boots from a disk such as ide, all calls to this function pass
-in a requested address of 0x0.  The function then chooses a free virtual
-address space accordingly.  Upon nfsroot booting, calls to this function
-pass in a requested address that is non-zero (such as 0x0fb60000).  This
-address is page aligned, so in the old version of
-arch_get_unmapped_area(...) the exact requested address was fine and
-returned from the get_unmapped_area().  In the new version of the function,
-the alignment requirement is 256k, however the nfs requested address is not
-aligned on a 256k boundary, and is therefore pushed up to the next 256k
-boundary.  The system does not like this and fails. (the function is never
-called again, further booting does not take place)
+Gr{oetje,eeting}s,
 
-Several questions that arise:
-- In the nfs case, should the file structure have its
-file->f_op->get_unmapped_area() member assigned, causing a file specific
-get_unmapped_area to be called instead of this arch_get_unmapped_area?
-- Or should the mapping request pass in a requested address which already
-has valid 256k alignment?
-- Or should requested addresses that are misaligned be handled well by the
-calling code once the translated/aligned address is returned to the calller?
+						Geert
 
-And generally:
-- Why does nfsroot booting cause apecific non-zero virtual addresses to be
-requested, whereas in the ide disk booting case, addressed are left
-unspecified (0x0) (no requested mapping)?
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-Thanks for any information anyone might lend.
-
-Roger
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

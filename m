@@ -1,53 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Dec 2004 03:58:11 +0000 (GMT)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:32267 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225321AbULPD56>; Thu, 16 Dec 2004 03:57:58 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 25F18F5995; Thu, 16 Dec 2004 04:57:47 +0100 (CET)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 29221-03; Thu, 16 Dec 2004 04:57:47 +0100 (CET)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id CF755F5994; Thu, 16 Dec 2004 04:57:46 +0100 (CET)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.1/8.13.1) with ESMTP id iBG3vkLU014618;
-	Thu, 16 Dec 2004 04:57:47 +0100
-Date: Thu, 16 Dec 2004 03:57:45 +0000 (GMT)
-From: "Maciej W. Rozycki" <macro@linux-mips.org>
-To: "Steven J. Hill" <sjhill@realitydiluted.com>
-Cc: Manish Lachwani <mlachwani@mvista.com>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] Avoid compile warnings on Sibyte using 2.6.10-rc3
-In-Reply-To: <41C105BB.9020402@realitydiluted.com>
-Message-ID: <Pine.LNX.4.58L.0412160354190.26904@blysk.ds.pg.gda.pl>
-References: <20041215235632.GA11386@prometheus.mvista.com>
- <41C0FCFD.9010603@realitydiluted.com> <41C100CB.2070000@mvista.com>
- <41C105BB.9020402@realitydiluted.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.80/617/Sun Dec  5 16:25:39 2004
-	clamav-milter version 0.80j
-	on piorun.ds.pg.gda.pl
-X-Virus-Status: Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Dec 2004 08:06:29 +0000 (GMT)
+Received: from rproxy.gmail.com ([IPv6:::ffff:64.233.170.192]:43950 "EHLO
+	rproxy.gmail.com") by linux-mips.org with ESMTP id <S8224990AbULPIGY>;
+	Thu, 16 Dec 2004 08:06:24 +0000
+Received: by rproxy.gmail.com with SMTP id j1so1068074rnf
+        for <linux-mips@linux-mips.org>; Thu, 16 Dec 2004 00:06:12 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding;
+        b=UNtRTampy3MNEU+xRTOCvQalhhgsNjPE/8UlO3N49FALIq5WyQHoHOXuuEt6MxoKK8yy7c+vY6t5yo/1Ej1pplSg6XF7wk3BpHh5+YAWLdcF69V7wqtAdFDWH1D8nW8zxYImgRHoUJjypCeqMD6lx/BawcGSKmCq7cr5j1ov16c=
+Received: by 10.38.89.5 with SMTP id m5mr2239930rnb;
+        Thu, 16 Dec 2004 00:06:12 -0800 (PST)
+Received: by 10.38.66.71 with HTTP; Thu, 16 Dec 2004 00:06:12 -0800 (PST)
+Message-ID: <73e6204504121600066a2ce0b1@mail.gmail.com>
+Date: Thu, 16 Dec 2004 16:06:12 +0800
+From: zhan rongkai <zhanrk@gmail.com>
+Reply-To: zhan rongkai <zhanrk@gmail.com>
+To: linux-mips@linux-mips.org
+Subject: About task->used_math and TIF_USEDFPU
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <zhanrk@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6694
+X-archive-position: 6695
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: zhanrk@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 15 Dec 2004, Steven J. Hill wrote:
+hi all,
 
-> I do not run in UP mode, so that is why I did not see it. I suggest
-> a different version attached. How does that work for you?
+I am a little confused about the task_struct member 'used_math', and
+thread_info flag TIF_USEDFPU.
 
- This begs for indentation. ;-)
+What are their meaning, and what is the difference between them?
 
-  Maciej
+thanks.

@@ -1,67 +1,73 @@
-Received: from sgi.com (sgi.SGI.COM [192.48.153.1])
-	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id BAA10730
-	for <pstadt@stud.fh-heilbronn.de>; Tue, 3 Aug 1999 01:23:42 +0200
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id QAA05935; Mon, 2 Aug 1999 16:20:45 -0700 (PDT)
+Received: from deliverator.sgi.com (deliverator.sgi.com [204.94.214.10])
+	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id UAA23062
+	for <pstadt@stud.fh-heilbronn.de>; Mon, 2 Aug 1999 20:05:15 +0200
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id LAA19944; Mon, 2 Aug 1999 11:00:48 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id QAA49476
+	id KAA92377
 	for linux-list;
-	Mon, 2 Aug 1999 16:17:47 -0700 (PDT)
+	Mon, 2 Aug 1999 10:54:49 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id QAA72913;
-	Mon, 2 Aug 1999 16:17:42 -0700 (PDT)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
+	via ESMTP id KAA18536
+	for <linux@cthulhu.engr.sgi.com>;
+	Mon, 2 Aug 1999 10:54:45 -0700 (PDT)
+	mail_from (andrewb@uab.edu)
+Received: from lilith.dpo.uab.edu (lilith.dpo.uab.edu [138.26.1.128]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id QAA03806; Mon, 2 Aug 1999 16:17:36 -0700 (PDT)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from lappi.waldorf-gmbh.de (cacc-22.uni-koblenz.de [141.26.131.22])
-	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id BAA18597;
-	Tue, 3 Aug 1999 01:17:31 +0200 (MET DST)
-Received: (from ralf@localhost)
-	by lappi.waldorf-gmbh.de (8.9.3/8.9.3) id BAA30417;
-	Tue, 3 Aug 1999 01:17:20 +0200
-Date: Tue, 3 Aug 1999 01:17:20 +0200
-From: Ralf Baechle <ralf@uni-koblenz.de>
-To: "William J. Earl" <wje@fir.engr.sgi.com>
-Cc: "Andrew R. Baker" <andrewb@uab.edu>,
-        Linux SGI <linux@cthulhu.engr.sgi.com>
-Subject: Re: EISA support
-Message-ID: <19990803011720.C29946@uni-koblenz.de>
-References: <14246.1339.269402.396117@fir.engr.sgi.com> <Pine.LNX.3.96.990803003314.15805B-100000@mdk187.tucc.uab.edu> <14246.7994.461082.434930@fir.engr.sgi.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.4us
-In-Reply-To: <14246.7994.461082.434930@fir.engr.sgi.com>; from William J. Earl on Mon, Aug 02, 1999 at 03:44:10PM -0700
-X-Accept-Language: de,en,fr
+	via ESMTP id KAA06547
+	for <linux@cthulhu.engr.sgi.com>; Mon, 2 Aug 1999 10:54:41 -0700 (PDT)
+	mail_from (andrewb@uab.edu)
+Received: from mdk187.tucc.uab.edu (mdk187.tucc.uab.edu [138.26.15.201])
+	by lilith.dpo.uab.edu (8.9.3/8.9.3) with SMTP id MAA21375
+	for <linux@cthulhu.engr.sgi.com>; Mon, 2 Aug 1999 12:54:40 -0500
+Date: Mon, 2 Aug 1999 20:51:06 -0500 (CDT)
+From: "Andrew R. Baker" <andrewb@uab.edu>
+X-Sender: andrewb@mdk187.tucc.uab.edu
+To: Linux SGI <linux@cthulhu.engr.sgi.com>
+Subject: EISA support
+Message-ID: <Pine.LNX.3.96.990802203514.15805A-100000@mdk187.tucc.uab.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Mon, Aug 02, 1999 at 03:44:10PM -0700, William J. Earl wrote:
 
->        I see that some drivers use NR_IRQS to form an IRQ_ports[] array,
-> to map from IRQ to board object, as in serial.c, whereas others, such as
-> riscom8.c, wire in 16 as the limit.   Still, you could make
-> probe_irq_on() and probe_irq_off() actually work for an Indy and Indigo2,
-> and simply declare broken any drives which do not use NR_IRQS and probe
-> using the probe_irq_* routines.  The biggest problem with that approach
-> is that NR_IRQS is 64 on mips, which means that probe_irq_on() and probe_irq_off()
-> would need a different interface (long long instead of int, to allow 64-bit
-> IRQ bit maps on 32-bit kernel).  
+While working in EISA support for the Indigo2 I have run across some
+interesting design decisions and I would like to get some feedback.
 
-probe_irq_{on,off} are being used for interrupt probing only and that's
-an art only practiced for ISA.  So we don't even want to support these
-functions for interupts >= 16, that is non (E)ISA interrupts.
+First is interupt handling.  On the Indigo2 all the EISA interupts and
+mapped down to a single INT2 interrupt.  In other words, an [E]ISA card
+generates an interrupt, which in turn, generates an INT2 interrupt, which
+generates a CPU interrupt.  This causes a problem because current device
+drivers do a "request_irq" call to allocate an interrupt, on the Indy and
+Indigo2, this procedure allocates an INT2/3 irq.  ASFAIK, this means that
+to be supported on the Indigo2, the device driver needs to call something
+else like "request_isa_irq", so that it can be allocated properly.  I see
+two ways of implementing this.  The first is easier to implement, but
+looks slightly grotesque and would involve lines like:
 
-  Ralf
+#ifndef CONFIG_SGI_EISA
+request_irq(....);
+#else
+request_isa_irq(....);
+#endif
+
+the other would be to create a "request_isa_irq" procedure that defaults
+to "request_irq" in most architectures.
+
+Does anyone have any comments or suggestions on this?
+
+
+
+The second is a request for comments on the advantages/disadvantages of
+implementing EISA support as a loadable module?  There is nothing in the
+running system that actually requires it to be available, and I think it
+would be neat to have bus support as a module.
+
+-Andrew

@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Dec 2003 09:55:24 +0000 (GMT)
-Received: from mo03.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:56303 "EHLO
-	mo03.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225807AbTLWJzV>;
-	Tue, 23 Dec 2003 09:55:21 +0000
-Received: from mdo01.iij4u.or.jp (mdo01.iij4u.or.jp [210.130.0.171])
-	by mo03.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id SAA12707;
-	Tue, 23 Dec 2003 18:55:16 +0900 (JST)
-Received: 4UMDO01 id hBN9tGl17791; Tue, 23 Dec 2003 18:55:16 +0900 (JST)
-Received: 4UMRO01 id hBN9tEV26182; Tue, 23 Dec 2003 18:55:15 +0900 (JST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Dec 2003 09:57:38 +0000 (GMT)
+Received: from mo02.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:46037 "EHLO
+	mo02.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225807AbTLWJ5f>;
+	Tue, 23 Dec 2003 09:57:35 +0000
+Received: from mdo00.iij4u.or.jp (mdo00.iij4u.or.jp [210.130.0.170])
+	by mo02.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id SAA08920;
+	Tue, 23 Dec 2003 18:57:31 +0900 (JST)
+Received: 4UMDO00 id hBN9vVZ12096; Tue, 23 Dec 2003 18:57:31 +0900 (JST)
+Received: 4UMRO01 id hBN9vTV26339; Tue, 23 Dec 2003 18:57:29 +0900 (JST)
 	from stratos.frog (64.43.138.210.xn.2iij.net [210.138.43.64]) (authenticated)
-Date: Tue, 23 Dec 2003 18:55:11 +0900
+Date: Tue, 23 Dec 2003 18:57:26 +0900
 From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
 To: Ralf Baechle <ralf@linux-mips.org>
 Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH][2.4] New NEC VRC4171 PCMCIA driver
-Message-Id: <20031223185511.4dc7bd5c.yuasa@hh.iij4u.or.jp>
+Subject: [PATCH][2.6] New NEC VRC4171 PCMCIA driver
+Message-Id: <20031223185726.510bc3a4.yuasa@hh.iij4u.or.jp>
 X-Mailer: Sylpheed version 0.9.8a (GTK+ 1.2.10; i686-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -22,7 +22,7 @@ Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3825
+X-archive-position: 3826
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,42 +34,40 @@ Hello Ralf,
 
 I made the patch for VRC4171 PCMCIA driver.
 
-The VRC4171 is companion chip for NEC VR4111 and VR4121.
-The VRC4171 includes in the PCMCIA controller.
-
-This patch exists for linux_2_4 tag of linux-mips.org CVS.
+This patch exists for HEAD of linux-mips.org CVS.
 Please apply this patch.
 
 Yoichi
 
-diff -urN -X dontdiff linux-orig/drivers/pcmcia/Config.in linux/drivers/pcmcia/Config.in
---- linux-orig/drivers/pcmcia/Config.in	Sun Dec 21 10:27:50 2003
-+++ linux/drivers/pcmcia/Config.in	Tue Dec 23 18:44:20 2003
-@@ -40,6 +40,9 @@
-    if [ "$CONFIG_SIBYTE_SB1xxx_SOC" = "y" ]; then
-       dep_bool '  SiByte PCMCIA support' CONFIG_PCMCIA_SIBYTE $CONFIG_PCMCIA $CONFIG_BLK_DEV_IDE_SIBYTE
-    fi
-+   if [ "$CONFIG_VRC4171" = "y" -o "$CONFIG_VRC4171" = "m" ]; then
-+      dep_tristate '  NEC VRC4171 Card Controllers support' CONFIG_PCMCIA_VRC4171 $CONFIG_PCMCIA
-+   fi
-    if [ "$CONFIG_VRC4173" = "y" -o "$CONFIG_VRC4173" = "m" ]; then
-       dep_tristate '  NEC VRC4173 CARDU support' CONFIG_PCMCIA_VRC4173 $CONFIG_PCMCIA
-    fi
+diff -urN -X dontdiff linux-orig/drivers/pcmcia/Kconfig linux/drivers/pcmcia/Kconfig
+--- linux-orig/drivers/pcmcia/Kconfig	2003-09-30 23:27:25.000000000 +0900
++++ linux/drivers/pcmcia/Kconfig	2003-12-19 19:58:55.000000000 +0900
+@@ -113,6 +113,10 @@
+ 	bool
+ 	default y if ISA && !ARCH_SA1100 && !ARCH_CLPS711X
+ 
++config PCMCIA_VRC4171
++	tristate "NEC VRC4171 Card Controllers support"
++	depends on VRC4171 && PCMCIA
++
+ config PCMCIA_VRC4173
+ 	tristate "NEC VRC4173 CARDU support"
+ 	depends on CPU_VR41XX && PCI && PCMCIA
 diff -urN -X dontdiff linux-orig/drivers/pcmcia/Makefile linux/drivers/pcmcia/Makefile
---- linux-orig/drivers/pcmcia/Makefile	Tue Jul 15 01:14:06 2003
-+++ linux/drivers/pcmcia/Makefile	Tue Dec 23 18:44:42 2003
-@@ -89,6 +89,7 @@
- sa1100_cs-objs-$(CONFIG_SA1100_XP860)		+= sa1100_xp860.o sa1111_generic.o
- sa1100_cs-objs-$(CONFIG_SA1100_YOPY)		+= sa1100_yopy.o
+--- linux-orig/drivers/pcmcia/Makefile	2003-06-23 10:23:06.000000000 +0900
++++ linux/drivers/pcmcia/Makefile	2003-12-19 19:58:55.000000000 +0900
+@@ -11,6 +11,7 @@
+ obj-$(CONFIG_HD64465_PCMCIA)		+= hd64465_ss.o
+ obj-$(CONFIG_PCMCIA_SA1100)		+= sa1100_cs.o
+ obj-$(CONFIG_PCMCIA_SA1111)		+= sa1111_cs.o
++obj-$(CONFIG_PCMCIA_VRC4171)		+= vrc4171_card.o
+ obj-$(CONFIG_PCMCIA_VRC4173)		+= vrc4173_cardu.o
  
-+obj-$(CONFIG_PCMCIA_VRC4171)	+= vrc4171_card.o
- obj-$(CONFIG_PCMCIA_VRC4173)	+= vrc4173_cardu.o
- 
- include $(TOPDIR)/Rules.make
+ pcmcia_core-objs-y				:= cistpl.o rsrc_mgr.o bulkmem.o cs.o
 diff -urN -X dontdiff linux-orig/drivers/pcmcia/vrc4171_card.c linux/drivers/pcmcia/vrc4171_card.c
---- linux-orig/drivers/pcmcia/vrc4171_card.c	Thu Jan  1 09:00:00 1970
-+++ linux/drivers/pcmcia/vrc4171_card.c	Tue Dec 23 18:44:20 2003
-@@ -0,0 +1,886 @@
+--- linux-orig/drivers/pcmcia/vrc4171_card.c	1970-01-01 09:00:00.000000000 +0900
++++ linux/drivers/pcmcia/vrc4171_card.c	2003-12-19 19:58:55.000000000 +0900
+@@ -0,0 +1,885 @@
 +/*
 + * vrc4171_card.c, NEC VRC4171 Card Controller driver for Socket Services.
 + *
@@ -159,7 +157,7 @@ diff -urN -X dontdiff linux-orig/drivers/pcmcia/vrc4171_card.c linux/drivers/pcm
 +	spinlock_t event_lock;
 +	uint16_t events;
 +	struct socket_info_t *pcmcia_socket;
-+	struct tq_struct tq_task;
++	struct work_struct tq_work;
 +	char name[24];
 +	int csc_irq;
 +	int io_irq;
@@ -736,15 +734,14 @@ diff -urN -X dontdiff linux-orig/drivers/pcmcia/vrc4171_card.c linux/drivers/pcm
 +{
 +	uint16_t events;
 +
-+	socket->tq_task.routine = pccard_bh;
-+	socket->tq_task.data = socket;
++	INIT_WORK(&socket->tq_work, pccard_bh, socket);
 +
 +	events = get_events(slot);
 +	if (events) {
 +		spin_lock(&socket->event_lock);
 +		socket->events |= events;
 +		spin_unlock(&socket->event_lock);
-+		schedule_task(&socket->tq_task);
++		schedule_work(&socket->tq_task);
 +	}
 +}
 +

@@ -1,41 +1,52 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g23CD6m13348
-	for linux-mips-outgoing; Sun, 3 Mar 2002 04:13:06 -0800
-Received: from mx2.mips.com (ftp.mips.com [206.31.31.227])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g23CD4913345
-	for <linux-mips@oss.sgi.com>; Sun, 3 Mar 2002 04:13:04 -0800
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.9.3/8.9.0) with ESMTP id DAA25617;
-	Sun, 3 Mar 2002 03:12:55 -0800 (PST)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id DAA18679;
-	Sun, 3 Mar 2002 03:12:54 -0800 (PST)
-Received: from mips.com ([172.18.27.100])
-	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g23BCEA05678;
-	Sun, 3 Mar 2002 12:12:19 +0100 (MET)
-Message-ID: <3C82059D.A8DF389E@mips.com>
-Date: Sun, 03 Mar 2002 12:14:37 +0100
-From: Carsten Langgaard <carstenl@mips.com>
-Organization: MIPS Technologies
-X-Mailer: Mozilla 4.76 [en] (Windows NT 5.0; U)
-X-Accept-Language: en
+	by oss.sgi.com (8.11.2/8.11.3) id g23ENE919517
+	for linux-mips-outgoing; Sun, 3 Mar 2002 06:23:14 -0800
+Received: from oval.algor.co.uk (root@oval.algor.co.uk [62.254.210.250])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g23EN7919513
+	for <linux-mips@oss.sgi.com>; Sun, 3 Mar 2002 06:23:07 -0800
+Received: from gladsmuir.algor.co.uk.algor.co.uk (IDENT:dom@gladsmuir.algor.co.uk [192.168.5.75])
+	by oval.algor.co.uk (8.11.6/8.10.1) with ESMTP id g23DN0403097;
+	Sun, 3 Mar 2002 13:23:01 GMT
+From: Dominic Sweetman <dom@algor.co.uk>
 MIME-Version: 1.0
-To: Muthukumar Ratty <muthur@paul.rutgers.edu>
-CC: linux-mips@oss.sgi.com
+Message-ID: <15490.9137.106468.837502@gladsmuir.algor.co.uk>
+Date: Sun, 3 Mar 2002 13:22:57 +0000
+To: Carsten Langgaard <carstenl@mips.com>
+Cc: Muthukumar Ratty <muthur@paul.rutgers.edu>, linux-mips@oss.sgi.com
 Subject: Re: Cross toolchain problem??
+In-Reply-To: <3C82059D.A8DF389E@mips.com>
 References: <Pine.SOL.4.10.10203020958400.27103-100000@paul.rutgers.edu>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+	<3C82059D.A8DF389E@mips.com>
+X-Mailer: VM 6.89 under 21.1 (patch 14) "Cuyahoga Valley" XEmacs Lucid
+User-Agent: SEMI/1.13.7 (Awazu) CLIME/1.13.6 (=?ISO-2022-JP?B?GyRCQ2YbKEI=?=
+ =?ISO-2022-JP?B?GyRCJU4+MRsoQg==?=) MULE XEmacs/21.1 (patch 14) (Cuyahoga
+ Valley) (i386-redhat-linux)
+Content-Type: text/plain; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hopefully not with the Algorithmics toolchain, otherwise we will like to
-know.
 
-/Carsten
+Carsten Langgaard (carstenl@mips.com) writes:
 
-Muthukumar Ratty wrote:
+> Hopefully not with the Algorithmics toolchain, otherwise we will like to
+> know.
 
-> Thanks Carsten,
-> But wont it produce any buggy kernel as the warning says?
-> Muthu
+Speaking for Algorithmics: I suspect there may be problems building a
+2.4+ kernel with SDE-MIPS v4.0c.  The people who made 2.4 were very
+enthusiastic about the latest and greatest language extensions in GCC,
+and SDE-MIPS v4.0c is based on quite an old compiler.
+
+2.2 should be fine with SDE-MIPS v4.0c; 2.4+ is known to work with
+SDE-MIPS v5.0, which is only in beta so far.  With some makefile
+tweaks that should build kernels with no trouble.
+
+Soon there should be a compiler distribution from Algorithmics which
+is based on the v5.0 sources, but configured for Linux.  That should
+be best.
+
+-- 
+Dominic Sweetman
+Algorithmics Ltd
+The Fruit Farm, Ely Road, Chittering, CAMBS CB5 9PH, ENGLAND
+phone +44 1223 706200/fax +44 1223 706250/direct +44 1223 706205
+http://www.algor.co.uk

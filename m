@@ -1,45 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Apr 2003 14:23:44 +0100 (BST)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:30949 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225204AbTDWNXn>; Wed, 23 Apr 2003 14:23:43 +0100
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA06597;
-	Wed, 23 Apr 2003 15:24:10 +0200 (MET DST)
-Date: Wed, 23 Apr 2003 15:24:09 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Ralf Baechle <ralf@linux-mips.org>
-cc: Jun Sun <jsun@mvista.com>, Jeff Baitis <baitisj@evolution.com>,
-	Pete Popov <ppopov@mvista.com>, linux-mips@linux-mips.org,
-	Matthew Dharm <mdharm@momenco.com>
-Subject: Re: Improperly handled case in arch/mips/au1000/common/time.c
-In-Reply-To: <20030423022953.B5843@linux-mips.org>
-Message-ID: <Pine.GSO.3.96.1030423151038.6238A-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Apr 2003 16:32:29 +0100 (BST)
+Received: from p508B7F62.dip.t-dialin.net ([IPv6:::ffff:80.139.127.98]:33226
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225219AbTDWPc3>; Wed, 23 Apr 2003 16:32:29 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id h3NFWJP03361;
+	Wed, 23 Apr 2003 17:32:19 +0200
+Date: Wed, 23 Apr 2003 17:32:19 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc: linux-mips@linux-mips.org, nemoto@toshiba-tops.co.jp
+Subject: Re: TX39 fixes and cleanups
+Message-ID: <20030423173218.A3329@linux-mips.org>
+References: <20030421.191436.78702188.nemoto@toshiba-tops.co.jp> <20030423.004210.74756161.anemo@mba.ocn.ne.jp>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <20030423.004210.74756161.anemo@mba.ocn.ne.jp>; from anemo@mba.ocn.ne.jp on Wed, Apr 23, 2003 at 12:42:10AM +0900
+Return-Path: <ralf@linux-mips.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2154
+X-archive-position: 2155
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 23 Apr 2003, Ralf Baechle wrote:
+On Wed, Apr 23, 2003 at 12:42:10AM +0900, Atsushi Nemoto wrote:
 
-> That's basically the old situation again, just in disguise this time.  In
-> practice I fear that's going to be used to keep inferior copies of some
-> code alive so let's see if we can avoid it.
+> And this is a 2.5 version (untested).
 
- Board-specific variations are unavoidable.  I'll see how to deal with
-that as I want to merge the DECstation code (which already supports three
-configuration variations) with the generic one.  It needs to be done for
-2.5 and shouldn't hurt for 2.4, either. 
+Applied,
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+  Ralf

@@ -1,71 +1,55 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id OAA127115 for <linux-archive@neteng.engr.sgi.com>; Thu, 22 Jan 1998 14:25:07 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id OAA125255 for <linux-archive@neteng.engr.sgi.com>; Thu, 22 Jan 1998 14:09:21 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id OAA01345 for linux-list; Thu, 22 Jan 1998 14:20:48 -0800
-Received: from soyuz.wellington.sgi.com (soyuz.wellington.sgi.com [134.14.64.194]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA01257 for <linux@cthulhu.engr.sgi.com>; Thu, 22 Jan 1998 14:20:35 -0800
-Received: from wellington.sgi.com by soyuz.wellington.sgi.com via ESMTP (950413.SGI.8.6.12/940406.SGI)
-	 id LAA20456; Fri, 23 Jan 1998 11:18:16 +1300
-Message-ID: <34C7C5A8.83866A47@wellington.sgi.com>
-Date: Fri, 23 Jan 1998 11:18:16 +1300
-From: Alistair Lambie <alambie@wellington.sgi.com>
-X-Mailer: Mozilla 4.03C-SGI [en] (X11; I; IRIX 6.5-ALPHA-1274191040 IP22)
-MIME-Version: 1.0
-To: "William J. Earl" <wje@fir.engr.sgi.com>
-CC: Alistair Lambie <alambie@wellington.sgi.com>,
-        SGI Linux <linux@cthulhu.engr.sgi.com>
-Subject: Re: root-be-0.03.tar.gz
-References: <Pine.LNX.3.95.980122005800.20627E-100000@lager.engsoc.carleton.ca>
-		<34C7AE9F.25A38E49@wellington.sgi.com> <199801222137.NAA24653@fir.engr.sgi.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id OAA26323 for linux-list; Thu, 22 Jan 1998 14:04:47 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id OAA26314 for <linux@cthulhu.engr.sgi.com>; Thu, 22 Jan 1998 14:04:45 -0800
+Received: from snowcrash.cymru.net (snowcrash.cymru.net [163.164.160.3]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id OAA24761
+	for <linux@cthulhu.engr.sgi.com>; Thu, 22 Jan 1998 14:04:44 -0800
+	env-from (alan@lxorguk.ukuu.org.uk)
+Received: from lightning.swansea.linux.org.uk (the-village.bc.nu [163.164.160.21]) by snowcrash.cymru.net (8.8.7/8.7.1) with SMTP id WAA11762; Thu, 22 Jan 1998 22:04:13 GMT
+Received: by lightning.swansea.linux.org.uk (Smail3.1.29.1 #2)
+	id m0xvVCP-0005FsC; Thu, 22 Jan 98 22:34 GMT
+Message-Id: <m0xvVCP-0005FsC@lightning.swansea.linux.org.uk>
+From: alan@lxorguk.ukuu.org.uk (Alan Cox)
+Subject: Re: wd33c93 errors.
+To: adevries@engsoc.carleton.ca (Alex deVries)
+Date: Thu, 22 Jan 1998 22:34:13 +0000 (GMT)
+Cc: linux@cthulhu.engr.sgi.com
+In-Reply-To: <Pine.LNX.3.95.980122162527.21753E-100000@lager.engsoc.carleton.ca> from "Alex deVries" at Jan 22, 98 04:50:16 pm
+Content-Type: text
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-William J. Earl wrote:
+> repartitioned it from Irix, and mounted it as an EFS partition under Irix
+> just fine.  That would seem to indicate that everything is alright with
+
+Including rewriting it ?
+
+> SCSI disk error : host 0 channel 0 id 6 lun 0 return code 2800000
+> Current error sd08:21: sense key Hardware Error
+> Additional sense indicates Address mark not found for id field
+> scsidisk I/O error: dev 08:21, sector 10
+> scsi0: MEDIUM ERROR on channel 0, id 6, lun 0, CDB: Request Sense 00 00 00
+> 10 00
+
+Thats the SCSI verbage for bad block
+
+> Current error sd08:21: sense key Medium Error
+> Additional sense indicates Recorded entity not found
+
+no address mark generally
+
+> scsidisk I/O error: dev 08:21, sector 108
+> scsi : aborting command due to timeout : pid 17577, scsi0, id 6, lun 0
+> Write (6) 12 bb a2 f4 00
+> scsi0: Aborting connected command 17577 - stopping DMA - sending wd33c93
+> ABORT command - flushing fifo - asr = 25, sr=ff, 16777215 bytes
+> un-transferred (timeout=-1) - sending wd33c93 DISCONNECT command = asr=00,
+> sr=18.
 > 
-> Alistair Lambie writes:
->  > Alex deVries wrote:
->  > >
->  > > On Wed, 21 Jan 1998, Mike Shaver wrote:
->  > > > Alex deVries wrote:
->  > > > I _must_ start working on EFS again.  I assume I've missed the 2.2
->  > > > freeze, but I could still help a lot of people by getting off my a** and
->  > > > finishing it.  My apologies to those who are waiting on it.
->  > >
->  > > Let me know if I can help.
->  > >
->  > > Here's a question:  is it possible to boot off of the local disk without
->  > > the image being on an EFS partition? Will I ever be able to have my
->  > > machine have no EFS partition? How will ARC find the image?
->  > >
->  > Couldn't we just put the vmlinux in the volume header and load it from
->  > there....in fact you probably wouldn't even need sash.  Use dvhtool under irix
->  > to add the image.  You may need to make a bigger volume header to fit it.  I'm
->  > not 100% sure if this will work, but it's worth a try.
-> ...
-> 
->        vmlinux probably will not fit without repartitioning.  Also, except
-> for early development, that is pretty tedious.  I would assume that production
-> Indy linux systems would have just the volume header and linux partitions,
-> with no IRIX.
+> And the whole thing is hung, hard.
 
-Pro's and Con's:
+Thats a bug. 
 
-1. You don't need any boot loader...no sash etc, just use the PROM to load
-direct from the volume header.
+> surprised as it seems to work just fine under Irix.
 
-2. You need to repartition....is that a big problem (and I'm not sure you would
-need to repartition if you strip the other stuff out of the vh).
-
-3. We need to 'clone' dvhtool for linux...only needs the ability to move the
-vmlinux image to the vh.  Would this be hard?
-
-My assumptions are that you can actually load the kernel from PROM (?) and that
-it wouldn't be too hard to clone dvhtool.  
-
-Cheers, Alistair
-
--- 
-Alistair Lambie                         alambie@wellington.sgi.com
-Silicon Graphics New Zealand                SGI Voicemail: 2431455
-Level 5, Cigna House,                           Ph: +64-4-494 6325
-40 Mercer St, Wellington, NZ                   Fax: +64-4-494 6321
+See if you can rewrite every sector of it under Irix ..

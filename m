@@ -1,78 +1,58 @@
-Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.6/8.11.3) id g31MCtJ01475
-	for linux-mips-outgoing; Mon, 1 Apr 2002 14:12:55 -0800
-Received: from deliverator.sgi.com (deliverator.sgi.com [204.94.214.10])
-	by oss.sgi.com (8.11.6/8.11.3) with SMTP id g31MCjo01432;
-	Mon, 1 Apr 2002 14:12:45 -0800
-Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id LAA21785; Mon, 1 Apr 2002 11:39:03 -0800 (PST)
-	mail_from (flo@rfc822.org)
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 623A97F6; Mon,  1 Apr 2002 21:30:22 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 85A573704F; Mon,  1 Apr 2002 21:29:57 +0200 (CEST)
-Date: Mon, 1 Apr 2002 21:29:57 +0200
-From: Florian Lohoff <flo@rfc822.org>
-To: Raoul Borenius <raoul@shuttle.de>
-Cc: Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com, devfs@oss.sgi.com
-Subject: Re: broken devfs-support in SGI Zilog8530 serial driver
-Message-ID: <20020401192957.GA1389@paradigm.rfc822.org>
-References: <20020329103244.GA15765@bunny.shuttle.de> <20020329233559.A31160@dea.linux-mips.net> <20020330132856.GA24305@bunny.shuttle.de> <20020331150023.GA30224@bunny.shuttle.de>
+Received: from oss.sgi.com (localhost.localdomain [127.0.0.1])
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g388RcVK022601
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 8 Apr 2002 01:27:38 -0700
+Received: (from mail@localhost)
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g388Rcwh022600
+	for linux-mips-outgoing; Mon, 8 Apr 2002 01:27:38 -0700
+X-Authentication-Warning: oss.sgi.com: mail set sender to owner-linux-mips@oss.sgi.com using -f
+Received: from mx15.freecom.ne.jp (mx15.freecom.ne.jp [210.235.164.100])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g388RXVK022594
+	for <linux-mips@oss.sgi.com>; Mon, 8 Apr 2002 01:27:33 -0700
+Received: (qmail 24422 invoked by alias); 8 Apr 2002 16:45:55 +0900
+Received: (qmail 27433 invoked from network); 8 Apr 2002 16:20:44 +0900
+Received: from unknown (HELO jobin.mx15.freecom.ne.jp) (203.104.146.240)
+  by mx15.freecom.ne.jp with SMTP; 8 Apr 2002 16:20:44 +0900
+Message-Id: <5.0.2.5.2.20020408155359.00c5fd00@mx15.freecom.ne.jp>
+X-Sender: asdd@mx15.freecom.ne.jp
+X-Mailer: QUALCOMM Windows Eudora Version 5.0.2-J
+Date: Mon, 08 Apr 2002 15:54:00 +0900
+To: (Recipient list suppressed)
+From: sender <asdd@mx15.freecom.ne.jp>
+Subject: =?ISO-2022-JP?B?GyRCISo5LTlwISpFPj8mJTUhPCVTJTkbKEI=?=
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="ew6BAiZeqk4r7MaW"
-Content-Disposition: inline
-In-Reply-To: <20020331150023.GA30224@bunny.shuttle.de>
-User-Agent: Mutt/1.3.28i
-Organization: rfc822 - pure communication
+Content-Type: text/plain; charset="ISO-2022-JP"; format=flowed
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+--------------------------------
+■全国の人材バンクへ転職の
+  一括エントリー登録受付け！
+http://hellobank.sub4you.net
 
---ew6BAiZeqk4r7MaW
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+※完全なる【無償サービス】です。
 
-On Sun, Mar 31, 2002 at 05:00:23PM +0200, Raoul Borenius wrote:
-> Thanks for including the changes fr the ttyS's. But it seems you forgot t=
-he
-> callout-devices:
->=20
-> > @@ -1911,7 +1915,11 @@
-> >          * major number and the subtype code.
-> >          */
-> >         callout_driver =3D serial_driver;
-> > +#ifdef CONFIG_DEVFS_FS
-> > +       callout_driver.name =3D "cua/%d";
-> > +#else
-> >         callout_driver.name =3D "cua";
-> > +#endif
-> >         callout_driver.major =3D TTYAUX_MAJOR;
-> >         callout_driver.subtype =3D SERIAL_TYPE_CALLOUT;
-> >=20
->=20
-> Could you commit that too?
->=20
+--------------------------------
+■転職サイトの報酬制バナー提携も
+募集中です。転職求職者の登録承認
+数に応じて『1000円/件』更に転職決
+定で基本的に『1O万円/件』をお支払
+い致します。
 
-I thought the callout devices are officially "dead" and should disappear
-"Real Soon Now(tm)" as beeing a locking hell and unneeded.
+※運営者様の方でかかる費用等は一切
+ございません。
 
-Flo
---=20
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-Nine nineth on september the 9th              Welcome to the new billenium
+※ご提携金3000円を進呈致します。
 
---ew6BAiZeqk4r7MaW
-Content-Type: application/pgp-signature
-Content-Disposition: inline
+※『ご返信ではなく』こちらの別アド
+レスにメールを頂ければ詳細をお送り
+致します。＜詳細希望＞
+bancom@bigfoot.com　
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iD8DBQE8qLU1Uaz2rXW+gJcRAjZpAJ9uVKLMj8Wgx6VQgc9W9IrpM7c+kACeMD0q
-BPbPAsgBEFTXxJrcTz2tUeQ=
-=QeeF
------END PGP SIGNATURE-----
-
---ew6BAiZeqk4r7MaW--
+コムプラン企画(ジョブサービス)
+--------------------------------
+※【解除】は申し訳ございませんが
+　下記へ【空メール】をお送りくだ
+　さるようお願い申しあげます。
+dm_delet@bigfoot.com
+-------------------------------- 

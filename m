@@ -1,47 +1,49 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1PLdqK29878
-	for linux-mips-outgoing; Mon, 25 Feb 2002 13:39:52 -0800
-Received: from dea.linux-mips.net (a1as07-p84.stg.tli.de [195.252.188.84])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1PLdl929874
-	for <linux-mips@oss.sgi.com>; Mon, 25 Feb 2002 13:39:48 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.1) id g1PKdcQ06718;
-	Mon, 25 Feb 2002 21:39:38 +0100
-Date: Mon, 25 Feb 2002 21:39:38 +0100
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Johannes Stezenbach <js@convergence.de>, Hartvig Ekner <hartvige@mips.com>,
-   linux-mips@oss.sgi.com
-Subject: Re: Setting up of GP in static, non-PIC version of glibc?
-Message-ID: <20020225213938.D4935@dea.linux-mips.net>
-References: <200202251516.QAA22570@copsun18.mips.com> <20020225173433.B3680@dea.linux-mips.net> <20020225183141.GA3560@convergence.de> <20020225193928.A4385@dea.linux-mips.net> <20020225193250.GA3789@convergence.de>
+	by oss.sgi.com (8.11.2/8.11.3) id g1Q2E9R03884
+	for linux-mips-outgoing; Mon, 25 Feb 2002 18:14:09 -0800
+Received: from nevyn.them.org (mail@NEVYN.RES.CMU.EDU [128.2.145.6])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1Q2E3903880
+	for <linux-mips@oss.sgi.com>; Mon, 25 Feb 2002 18:14:03 -0800
+Received: from drow by nevyn.them.org with local (Exim 3.34 #1 (Debian))
+	id 16fWBL-0000dx-00; Mon, 25 Feb 2002 20:13:27 -0500
+Date: Mon, 25 Feb 2002 20:13:27 -0500
+From: Daniel Jacobowitz <dan@debian.org>
+To: Matthew Dharm <mdharm@momenco.com>
+Cc: Kevin Paul Herbert <kph@ayrnetworks.com>,
+   Linux-MIPS <linux-mips@oss.sgi.com>
+Subject: Re: Is this a toolchain bug?
+Message-ID: <20020225201327.A2427@nevyn.them.org>
+References: <a05100303b8a033ebf33b@[192.168.1.5]> <NEBBLJGMNKKEEMNLHGAIGEMACFAA.mdharm@momenco.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20020225193250.GA3789@convergence.de>; from js@convergence.de on Mon, Feb 25, 2002 at 08:32:50PM +0100
-X-Accept-Language: de,en,fr
+In-Reply-To: <NEBBLJGMNKKEEMNLHGAIGEMACFAA.mdharm@momenco.com>
+User-Agent: Mutt/1.3.23i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Feb 25, 2002 at 08:32:50PM +0100, Johannes Stezenbach wrote:
-
-> > It's an ECOFF specific optimization that just has been forward ported into
-> > the ELF world.  And what does this have to do with SGI anyway?
+On Mon, Feb 25, 2002 at 12:30:38PM -0800, Matthew Dharm wrote:
+> Well, that fixes it.  The driver works out-of-the-box with just some
+> minor makefile modifications.
 > 
-> I was wondering who you speak for when you say "we don't
-> support foobar", and your email is @oss.sgi.com.
-
-You seem to be unaware that half of oss users are ex-sgi employees :-)
-
-> I was just trying to decode the meaning of what you said.
-> Like, did you mean "I don't care about it" or "The tools are
-> totally broken and you have to go along way to use it"?
+> So, we've got a problem somewhere in the module handling.  Either the
+> symbol wasn't being relocated properly, or it wasn't being allocated
+> properly, or something.  I'm not an expert in this region of the
+> kernel, but my guess is that we're going to see this more and more
+> often, so someone with a clue should take a look at this.
 > 
-> The global data optimization would fit dietlibc's goal
-> of as-small-as-possible, statically linked binaries. But
-> from what you said I gather I would have to fix gcc and
-> binutils first.
+> I'm more than willing to help, as I seem to be the only person with a
+> 100% reproducable situation.  But I really have no idea even where to
+> begin looking... my expertise ends right about at objdump, and even
+> then I'm not certain how some of that data should look for loadable
+> modules.
 
-See also my other email about the status of -G.
+Silly question... was the module built with the correct flags?  Look at
+a command line; does it have all the same options as when you build a
+module in the kernel source?
 
-  Ralf
+I bet something's missing.  Probably -G 0...
+
+-- 
+Daniel Jacobowitz                           Carnegie Mellon University
+MontaVista Software                         Debian GNU/Linux Developer

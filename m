@@ -1,74 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Mar 2005 13:47:09 +0000 (GMT)
-Received: from sccrmhc11.comcast.net ([IPv6:::ffff:204.127.202.55]:56986 "EHLO
-	sccrmhc11.comcast.net") by linux-mips.org with ESMTP
-	id <S8225750AbVCHNqy>; Tue, 8 Mar 2005 13:46:54 +0000
-Received: from [192.168.1.4] (pcp05077810pcs.waldrf01.md.comcast.net[68.54.246.193])
-          by comcast.net (sccrmhc11) with ESMTP
-          id <20050308134648011005nv4re>; Tue, 8 Mar 2005 13:46:48 +0000
-Message-ID: <422DACBF.4040108@gentoo.org>
-Date:	Tue, 08 Mar 2005 08:46:39 -0500
-From:	Kumba <kumba@gentoo.org>
-User-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: IPTables 1.3.x fails on RaQ2
-References: <422C8D6A.6060904@jg555.com> <422C9142.8090007@gmx.net> <422D0D64.2080402@gentoo.org> <422D2801.2060903@jg555.com> <422D3AC9.4020601@gentoo.org> <422D4A49.9020504@gmx.net> <422D55B6.4010300@jg555.com>
-In-Reply-To: <422D55B6.4010300@jg555.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <kumba@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Mar 2005 14:09:19 +0000 (GMT)
+Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:9489 "EHLO
+	mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225755AbVCHOJF>; Tue, 8 Mar 2005 14:09:05 +0000
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id j28E7lFx015431;
+	Tue, 8 Mar 2005 14:07:47 GMT
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j28E7lRg015409;
+	Tue, 8 Mar 2005 14:07:47 GMT
+Date:	Tue, 8 Mar 2005 14:07:47 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	JP Foster <jp.foster@exterity.co.uk>
+Cc:	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: clear_user_page in page.h
+Message-ID: <20050308140747.GC9811@linux-mips.org>
+References: <1110287573.30647.16.camel@localhost.localdomain>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1110287573.30647.16.camel@localhost.localdomain>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7401
+X-archive-position: 7402
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Jim Gifford wrote:
-> I found the culprit, but don't know what the proper fix is.
+On Tue, Mar 08, 2005 at 01:12:52PM +0000, JP Foster wrote:
+
+> Hi all,
+> I'm building the video4linux drivers as modules and the video-buf driver
+> can't load as it has no reference to shm_align_mask and
+> flush_data_cache_page. 
 > 
-> File - What to remove or comment out
-> /usr/src/linux/include/asm/cpu-features.h - #include 
-> <cpu-feature-overrides.h>
-> /usr/src/linux/include/asm/addrspace.h -  #include <spaces.h>
+> These are needed by asm-mips/page.h for the inline funcs, pages_do_alias
+> and clear/copy_user_page.
+> How should shm_align_mask and flush_data_cache_page. be exported to
+> modules?
 > 
-> But it still fails, because it looks at the headers in /usr/include and 
-> the ones is /usr/src/linux/include, which is what the problem is. Namely 
-> socket.h
+> Most other asm-xxx/page.h doesn't need any externs, all is #defined
+> within page.h or files included by it.
 > 
-> What I noticed is some of the mips architectures includes have these 
-> files and some do not.
-> 
-> A workaround for those who use the linux-libc-headers to build iptables 
-> with the following commands, but I would still comment out those files 
-> to prevent other build issues later
-> 
-> make KERNEL_DIR=/usr
-> 
-> But I'm not sure of the stability and the functionality.
+> Any ideas how I deal with this? Presumably other modules will be 
+> affected by this.
 
-You need to patch the headers for these things -- i.e.:
+The code in question should be considered broken anyway but for the
+time being until this is actually fixed I'm going to add the two symbol
+exports.
 
-#include <cpu-feature-overrides.h>
-
-becomes
-
-#include <asm/mach-generic/cpu-feature-overrides.h>
-
-Same goes for references to spaces.h, and most other files directly referenced 
-as '#include <file.h>' in 'include/asm-mips/*'.  mach-generic is best suited 
-for this despite the actual machine because these are geared for userland, and 
-userland shouldn't really care about what particular mips machine it's running on.
-
-
---Kumba
-
--- 
-"Such is oft the course of deeds that move the wheels of the world: small 
-hands do them because they must, while the eyes of the great are elsewhere." 
---Elrond
+  Ralf

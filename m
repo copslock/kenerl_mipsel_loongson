@@ -1,42 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Jun 2003 04:49:56 +0100 (BST)
-Received: from [IPv6:::ffff:203.145.184.221] ([IPv6:::ffff:203.145.184.221]:30482
-	"EHLO naturesoft.net") by linux-mips.org with ESMTP
-	id <S8225192AbTFDDty> convert rfc822-to-8bit; Wed, 4 Jun 2003 04:49:54 +0100
-Received: from [192.168.0.15] (helo=cork.royalchallenge.com)
-	by naturesoft.net with esmtp (Exim 3.35 #1)
-	id 19NPDN-0002Xr-00; Wed, 04 Jun 2003 09:15:29 +0530
-Content-Type: text/plain;
-  charset="us-ascii"
-From: "Krishnakumar. R" <krishnakumar@naturesoft.net>
-To: Ralf Baechle <ralf@linux-mips.org>
-Subject: Single stepping in mips
-Date: Wed, 4 Jun 2003 09:18:01 +0530
-User-Agent: KMail/1.4.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Jun 2003 05:20:44 +0100 (BST)
+Received: from 12-234-207-60.client.attbi.com ([IPv6:::ffff:12.234.207.60]:36489
+	"HELO gateway.total-knowledge.com") by linux-mips.org with SMTP
+	id <S8225244AbTFDEUm>; Wed, 4 Jun 2003 05:20:42 +0100
+Received: (qmail 15856 invoked by uid 502); 4 Jun 2003 04:20:38 -0000
+Date: Tue, 3 Jun 2003 21:20:38 -0700
+From: ilya@theIlya.com
+To: ralf@linux-mips.org
 Cc: linux-mips@linux-mips.org
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Message-Id: <200306040918.01943.krishnakumar@naturesoft.net>
-Return-Path: <krishnakumar@naturesoft.net>
+Subject: [PATCH] vmlinux.lds.S
+Message-ID: <20030604042037.GD7624@gateway.total-knowledge.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4i
+Return-Path: <ilya@gateway.total-knowledge.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2510
+X-archive-position: 2511
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: krishnakumar@naturesoft.net
+X-original-sender: ilya@theIlya.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+Without this generated image is weired, and cannot be loaded.
 
-How can we single step through an instruction 
-in mips architecture. 
-
-In intel 386 architecture if we set TF flag
-of the EFLAGS register a trap will be generated
-after every instruction. Is there a way in 
-mips to do the same. 
-
-Regards and Thanks
-KK
+Index: arch/mips64/vmlinux.lds.S
+===================================================================
+RCS file: /home/cvs/linux/arch/mips64/vmlinux.lds.S,v
+retrieving revision 1.11
+diff -u -r1.11 vmlinux.lds.S
+--- arch/mips64/vmlinux.lds.S   3 Jun 2003 17:04:11 -0000       1.11
++++ arch/mips64/vmlinux.lds.S   4 Jun 2003 04:18:05 -0000
+@@ -46,6 +46,7 @@
+   __kallsyms : { *(__kallsyms) }
+   __stop___kallsyms = .;
+ 
++  RODATA
+   . = ALIGN(64);
+ 
+   /* writeable */

@@ -1,39 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Oct 2002 11:41:31 +0200 (CEST)
-Received: from p508B682B.dip.t-dialin.net ([80.139.104.43]:59283 "EHLO
-	dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S1123926AbSJCJla>; Thu, 3 Oct 2002 11:41:30 +0200
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id g939fBN13750;
-	Thu, 3 Oct 2002 11:41:11 +0200
-Date: Thu, 3 Oct 2002 11:41:11 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
-Cc: linux-mips@linux-mips.org
-Subject: Re: CVS Update@ftp.linux-mips.org: linux
-Message-ID: <20021003114111.A13703@linux-mips.org>
-References: <20020930165347Z1122169-9213+249@linux-mips.org> <20021003.121705.74756199.nemoto@toshiba-tops.co.jp>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <20021003.121705.74756199.nemoto@toshiba-tops.co.jp>; from nemoto@toshiba-tops.co.jp on Thu, Oct 03, 2002 at 12:17:05PM +0900
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Oct 2002 13:39:12 +0200 (CEST)
+Received: from delta.ds2.pg.gda.pl ([213.192.72.1]:23020 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S1123930AbSJCLjL>; Thu, 3 Oct 2002 13:39:11 +0200
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id NAA07121;
+	Thu, 3 Oct 2002 13:39:34 +0200 (MET DST)
+Date: Thu, 3 Oct 2002 13:39:33 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Ralf Baechle <ralf@linux-mips.org>
+cc: Carsten Langgaard <carstenl@mips.com>, linux-mips@linux-mips.org
+Subject: Re: 64-bit kernel patch.
+In-Reply-To: <20021002160948.F16482@linux-mips.org>
+Message-ID: <Pine.GSO.3.96.1021003133548.7000A-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 348
+X-archive-position: 349
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Oct 03, 2002 at 12:17:05PM +0900, Atsushi Nemoto wrote:
+On Wed, 2 Oct 2002, Ralf Baechle wrote:
 
-> This commit contains following change.  It seems 'addr' argument is
-> not used.  Isn't this a mistake?
+> > Ok, here is the next patch.
+> > It fixes the sys32_sendmsg and sys32_recvmsg.
+> 
+> Ok, in.  Maciej, you can start the chainsawing ;-)
 
-Yes, it is.  Fixed,
+ Hmm, I couldn't test it as init now crashes with a SIGSEGV soon after
+starting.  I had no time to investigate it further.  I fear it might be
+related, though -- /dev/initctl communication? 
 
-  Ralf
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

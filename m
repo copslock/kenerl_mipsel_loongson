@@ -1,65 +1,99 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Dec 2004 17:48:36 +0000 (GMT)
-Received: from gw02.mail.saunalahti.fi ([IPv6:::ffff:195.197.172.116]:39874
-	"EHLO gw02.mail.saunalahti.fi") by linux-mips.org with ESMTP
-	id <S8225196AbULCRsb>; Fri, 3 Dec 2004 17:48:31 +0000
-Received: from fairytale.tal.org (cruel.tal.org [195.16.220.85])
-	by gw02.mail.saunalahti.fi (Postfix) with ESMTP id A1A8F856BC
-	for <linux-mips@linux-mips.org>; Fri,  3 Dec 2004 19:48:26 +0200 (EET)
-Received: from amos (unknown [195.16.220.84])
-	by fairytale.tal.org (Postfix) with SMTP id 57CA88DC3
-	for <linux-mips@linux-mips.org>; Fri,  3 Dec 2004 19:48:38 +0200 (EET)
-Message-ID: <001301c4d960$382122c0$54dc10c3@amos>
-From: "Kaj-Michael Lang" <milang@tal.org>
-To: "linux-mips" <linux-mips@linux-mips.org>
-Subject: arcboot initrd+iso9660+shell patch
-Date: Fri, 3 Dec 2004 19:47:53 +0200
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1437
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1441
-Return-Path: <milang@tal.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Dec 2004 20:26:39 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:15613 "EHLO
+	prometheus.mvista.com") by linux-mips.org with ESMTP
+	id <S8225196AbULCU0d>; Fri, 3 Dec 2004 20:26:33 +0000
+Received: from prometheus.mvista.com (localhost.localdomain [127.0.0.1])
+	by prometheus.mvista.com (8.12.8/8.12.8) with ESMTP id iB3KQVdh019863
+	for <linux-mips@linux-mips.org>; Fri, 3 Dec 2004 12:26:31 -0800
+Received: (from mlachwani@localhost)
+	by prometheus.mvista.com (8.12.8/8.12.8/Submit) id iB3KQVBs019861
+	for linux-mips@linux-mips.org; Fri, 3 Dec 2004 12:26:31 -0800
+Date: Fri, 3 Dec 2004 12:26:31 -0800
+From: Manish Lachwani <mlachwani@mvista.com>
+To: linux-mips@linux-mips.org
+Subject: [PATCH] Build fixes for Broadcom DMA Pageops in 2.6
+Message-ID: <20041203202631.GA19855@prometheus.mvista.com>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="5mCyUwZo2JvN/JJP"
+Content-Disposition: inline
+User-Agent: Mutt/1.4.1i
+Return-Path: <mlachwani@prometheus.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6562
+X-archive-position: 6563
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: milang@tal.org
+X-original-sender: mlachwani@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi
 
-The patch is kinda large so I won't send it to the list, unless
-it's ok? It is about 73k.
+--5mCyUwZo2JvN/JJP
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-The patch does:
-- Add initrd support (arcboot.conf: initrd=/ramdisk.gz)
-- Add interactive/shell mode
-  - Load kernel
-  - Load ramdisk
-  - Edit kernel cmdline arguments
-  - ls
-  - help for list of commands
-- Add working iso9660 support
-- Unfinished romfs support
-- It's probably a mess
-- Probably has many bugs here and there
-- To start interactive mode boot with -i as parameter:
-  "arcboot -i"
-- Tested on IP32 only (and patch changes default to IP32 :)
+Hello !
 
-http://home.tal.org/~milang/o2/patches/arcboot_onion_iso_shell_initrd-1.patch
+Attached patch incorporates build related fixes to the Broadcom DMA Pageops
+in 2.6. Please review ...
 
-A binary for IP32 is also available:
-http://home.tal.org/~milang/o2/patches/arcboot-patched-1.ip32
+Thanks
+Manish Lachwani
 
-Enjoy!
+--5mCyUwZo2JvN/JJP
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline; filename="common_mips_broadcom_dmapageops.patch"
 
--- 
-Kaj-Michael Lang , milang@tal.org
+Source: MontaVista Software, Inc. | URL | Manish Lachwani <mlachwani@mvista.com>
+Type: Defect Fix
+Disposition: Submitted to Linux-MIPS
+Description:
+	Build fixes for Broadcom DMA Page Ops
+
+Index: linux/arch/mips/mm/pg-sb1.c
+===================================================================
+--- linux.orig/arch/mips/mm/pg-sb1.c
++++ linux/arch/mips/mm/pg-sb1.c
+@@ -162,7 +162,7 @@
+ void sb1_dma_init(void)
+ {
+ 	int cpu = smp_processor_id();
+-	uint64_t base_val = PHYSADDR(&page_descr[cpu]) | V_DM_DSCR_BASE_RINGSZ(1);
++	uint64_t base_val = CPHYSADDR(&page_descr[cpu]) | V_DM_DSCR_BASE_RINGSZ(1);
+ 
+ 	__raw_writeq(base_val,
+ 		     IOADDR(A_DM_REGISTER(cpu, R_DM_DSCR_BASE)));
+@@ -180,7 +180,7 @@
+ 	if (KSEGX(page) != CAC_BASE)
+ 		return clear_page_cpu(page);
+ 
+-	page_descr[cpu].dscr_a = PHYSADDR(page) | M_DM_DSCRA_ZERO_MEM | M_DM_DSCRA_L2C_DEST | M_DM_DSCRA_INTERRUPT;
++	page_descr[cpu].dscr_a = CPHYSADDR(page) | M_DM_DSCRA_ZERO_MEM | M_DM_DSCRA_L2C_DEST | M_DM_DSCRA_INTERRUPT;
+ 	page_descr[cpu].dscr_b = V_DM_DSCRB_SRC_LENGTH(PAGE_SIZE);
+ 	__raw_writeq(1, IOADDR(A_DM_REGISTER(cpu, R_DM_DSCR_COUNT)));
+ 
+@@ -195,16 +195,16 @@
+ 
+ void copy_page(void *to, void *from)
+ {
+-	unsigned long from_phys = PHYSADDR(from);
+-	unsigned long to_phys = PHYSADDR(to);
++	unsigned long from_phys = CPHYSADDR(from);
++	unsigned long to_phys = CPHYSADDR(to);
+ 	int cpu = smp_processor_id();
+ 
+ 	/* if either page is above Kseg0, use old way */
+ 	if ((KSEGX(to) != CAC_BASE) || (KSEGX(from) != CAC_BASE))
+ 		return copy_page_cpu(to, from);
+ 
+-	page_descr[cpu].dscr_a = PHYSADDR(to_phys) | M_DM_DSCRA_L2C_DEST | M_DM_DSCRA_INTERRUPT;
+-	page_descr[cpu].dscr_b = PHYSADDR(from_phys) | V_DM_DSCRB_SRC_LENGTH(PAGE_SIZE);
++	page_descr[cpu].dscr_a = CPHYSADDR(to_phys) | M_DM_DSCRA_L2C_DEST | M_DM_DSCRA_INTERRUPT;
++	page_descr[cpu].dscr_b = CPHYSADDR(from_phys) | V_DM_DSCRB_SRC_LENGTH(PAGE_SIZE);
+ 	__raw_writeq(1, IOADDR(A_DM_REGISTER(cpu, R_DM_DSCR_COUNT)));
+ 
+ 	/*
+
+--5mCyUwZo2JvN/JJP--

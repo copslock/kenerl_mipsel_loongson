@@ -1,66 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Mar 2004 02:24:07 +0100 (BST)
-Received: from p508B71D0.dip.t-dialin.net ([IPv6:::ffff:80.139.113.208]:2872
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225471AbUC3BYG>; Tue, 30 Mar 2004 02:24:06 +0100
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i2U1O5oM012160;
-	Tue, 30 Mar 2004 03:24:05 +0200
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i2U1O3uT012159;
-	Tue, 30 Mar 2004 03:24:03 +0200
-Date: Tue, 30 Mar 2004 03:24:03 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: "Kevin D. Kissell" <kevink@mips.com>
-Cc: "Steven J. Hill" <sjhill@realitydiluted.com>,
-	Brian Murphy <brian@murphy.dk>, linux-mips@linux-mips.org
-Subject: Re: BUG in pcnet32.c?
-Message-ID: <20040330012403.GB4068@linux-mips.org>
-References: <4068809F.8070103@murphy.dk> <4068864D.1020209@realitydiluted.com> <008901c415d0$3a94d5f0$10eca8c0@grendel>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Mar 2004 02:26:15 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:61433 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225471AbUC3B0P>;
+	Tue, 30 Mar 2004 02:26:15 +0100
+Received: from orion.mvista.com (localhost.localdomain [127.0.0.1])
+	by orion.mvista.com (8.12.8/8.12.8) with ESMTP id i2U1QCx6008245;
+	Mon, 29 Mar 2004 17:26:12 -0800
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.12.8/8.12.8/Submit) id i2U1QCqQ008243;
+	Mon, 29 Mar 2004 17:26:12 -0800
+Date: Mon, 29 Mar 2004 17:26:12 -0800
+From: Jun Sun <jsun@mvista.com>
+To: Lijun Chen <chenli@nortelnetworks.com>
+Cc: linux-mips@linux-mips.org, jsun@mvista.com
+Subject: Re: NMI handling in MIPS64
+Message-ID: <20040329172612.K1639@mvista.com>
+References: <4068B3A4.4000204@americasm01.nt.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <008901c415d0$3a94d5f0$10eca8c0@grendel>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <4068B3A4.4000204@americasm01.nt.com>; from chenli@nortelnetworks.com on Mon, Mar 29, 2004 at 06:39:16PM -0500
+Return-Path: <jsun@orion.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4685
+X-archive-position: 4686
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Mar 29, 2004 at 10:55:52PM +0200, Kevin D. Kissell wrote:
-
-> Which reminds me of something I've been meaning to mention for a while.
-> Back in the dark days of Linux 2.2 on MIPS, I discovered that a number
-> of network drivers were subtly broken for MIPS because they allocated
-> enough extra space for IP header alignment, but not for cache line alignment.
-> Particularly on CPUs with write-back caches, it can be a Bad Thing if a cache 
-> line straddles two packet buffers, as the flush of one can cause the other
-> to be clobbered.  I had to redefine the alignment constant for MIPS to be
-> a function of the line size to have 100% solid operation of the Tulip and
-> pcnet32 drivers.
+On Mon, Mar 29, 2004 at 06:39:16PM -0500, Lijun Chen wrote:
+> Hi,
 > 
-> The whole network driver cache management paradigm was redone for 2.4,
-> and I've often wondered whether the same potential problem exists, but never
-> had the time to go in and check.
+> I noticed there is a NMI handler in mips32 kernel tree (arch/mips/kernel/head.S and traps.c).
+> But there is not a counterpart in mips64. Do we need one?
 
-The change goes beyond just cache managment; the API also abstracts away
-I/O MMUs which so far are quite rare on MIPS systems - but I really hope
-they're going to establish themselves asap.
+Personally I don't see much need of this.  Even if firmware redirect
+NMI to the linux handler, you would die anyway.
 
-The Documentation/DMA-API.txt also documents how properly deal with cache
-alignment when using this API.
+> >From Ralf's earlier emails, the execution of NMI will pass through the firmware. Does that
+> mean just the firmware handles the NMI? 
 
-Steven, maybe that we should add another assertion to make sure we don't
-run into trouble with missaligned cachelines?
+Yes.
 
-> There, I've mentioned it.  My conscience is clear.  ;o)
+> And if the NMI can be enabled/disabled?
 
-Ommmmm ;))
+The NMI on CPU can't be disabled.  Of course you can always have extra
+PIC in front of the NMI signal and you are free to enable/disable 
+there.
 
-  Ralf
+Jun

@@ -1,43 +1,49 @@
-Received:  by oss.sgi.com id <S553714AbRBGX4s>;
-	Wed, 7 Feb 2001 15:56:48 -0800
-Received: from sgigate.SGI.COM ([204.94.209.1]:48352 "EHLO dea.waldorf-gmbh.de")
-	by oss.sgi.com with ESMTP id <S553687AbRBGX4e>;
-	Wed, 7 Feb 2001 15:56:34 -0800
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f17NoIS24931;
-	Wed, 7 Feb 2001 15:50:18 -0800
-Date:   Wed, 7 Feb 2001 15:50:17 -0800
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Jim Freeman <jfree@sovereign.org>
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: merges into stock kernel tree
-Message-ID: <20010207155017.A24908@bacchus.dhis.org>
-References: <20010207111342.A27046@sovereign.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20010207111342.A27046@sovereign.org>; from jfree@sovereign.org on Wed, Feb 07, 2001 at 11:13:42AM -0700
-X-Accept-Language: de,en,fr
+Received:  by oss.sgi.com id <S553743AbRBHIsN>;
+	Thu, 8 Feb 2001 00:48:13 -0800
+Received: from mail.sonytel.be ([193.74.243.200]:33923 "EHLO mail.sonytel.be")
+	by oss.sgi.com with ESMTP id <S553738AbRBHIrt>;
+	Thu, 8 Feb 2001 00:47:49 -0800
+Received: from escobaria.sonytel.be (escobaria.sonytel.be [10.34.80.3])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id JAA00884;
+	Thu, 8 Feb 2001 09:45:57 +0100 (MET)
+Date:   Thu, 8 Feb 2001 09:45:57 +0100 (MET)
+From:   Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
+To:     Joe deBlaquiere <jadb@redhat.com>
+cc:     Jun Sun <jsun@mvista.com>, Alan Cox <alan@lxorguk.ukuu.org.uk>,
+        "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+        Florian Lohoff <flo@rfc822.org>, linux-mips@oss.sgi.com,
+        ralf@oss.sgi.com
+Subject: Re: NON FPU cpus - way to go
+In-Reply-To: <3A81B388.1090806@redhat.com>
+Message-ID: <Pine.GSO.4.10.10102080944510.23477-100000@escobaria.sonytel.be>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, Feb 07, 2001 at 11:13:42AM -0700, Jim Freeman wrote:
-
-> Not having a variety of mips hw to play with, what is the functional
-> status of mips as shipped in the mainstream kernel?
+On Wed, 7 Feb 2001, Joe deBlaquiere wrote:
+> Jun Sun wrote:
+> > Alan Cox wrote:
+> >> Also we missed a trick on the x86 and I want to fix that one day, which is
+> >> to have an __fpu ELF segment so if you boot an FPU emu kernel on an fpu
+> >> box you regain 47K
+> > 
+> > 
+> > Ironically for MIPS you MUST have the FPU emulater when the CPU actually has a
+> > FPU. :-)
 > 
-> How does that status compare to the functional status of the
-> current mips in cvs?
+> I'm confused here... why is this?
 
-32-bit kernel was never functional; 64-bit kernel should compile again
-if Linus accepts my latest batch of patches.
+Because a MIPS CPU may implement only some functionality with some operands,
+and decide to throw an `unsupported' exception if the operation is too complex.
 
-> What's on the todo list prior to another merge into the upstream?
+Gr{oetje,eeting}s,
 
-As usual - rework anything that isn't suitable to be merged into Linus'
-tree.
+						Geert
 
-  Ralf
+--
+Geert Uytterhoeven ------------- Sony Software Development Center Europe (SDCE)
+Geert.Uytterhoeven@sonycom.com ------------------- Sint-Stevens-Woluwestraat 55
+Voice +32-2-7248626 Fax +32-2-7262686 ---------------- B-1130 Brussels, Belgium

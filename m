@@ -1,48 +1,71 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6C3eqRw007855
-	for <linux-mips-outgoing@oss.sgi.com>; Thu, 11 Jul 2002 20:40:52 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6C7s0Rw015708
+	for <linux-mips-outgoing@oss.sgi.com>; Fri, 12 Jul 2002 00:54:00 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6C3eqxQ007854
-	for linux-mips-outgoing; Thu, 11 Jul 2002 20:40:52 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6C7s05b015707
+	for linux-mips-outgoing; Fri, 12 Jul 2002 00:54:00 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from perninha.conectiva.com.br (perninha.conectiva.com.br [200.250.58.156])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6C3ekRw007843
-	for <linux-mips@oss.sgi.com>; Thu, 11 Jul 2002 20:40:47 -0700
-Received: from burns.conectiva (burns.conectiva [10.0.0.4])
-	by perninha.conectiva.com.br (Postfix) with SMTP id 65FDF38DC6
-	for <linux-mips@oss.sgi.com>; Fri, 12 Jul 2002 00:45:21 -0300 (EST)
-Received: (qmail 25748 invoked by uid 0); 12 Jul 2002 03:45:37 -0000
-Received: from freak.distro.conectiva (10.0.17.22)
-  by burns.conectiva with SMTP; 12 Jul 2002 03:45:37 -0000
-Date: Thu, 11 Jul 2002 23:51:10 -0300 (BRT)
-From: Marcelo Tosatti <marcelo@conectiva.com.br>
-X-X-Sender: marcelo@freak.distro.conectiva
-To: Alan Cox <alan@lxorguk.ukuu.org.uk>
-Cc: Jun Sun <jsun@mvista.com>, <linux-mips@oss.sgi.com>,
-   Ralf Baechle <ralf@oss.sgi.com>, Jeff Garzik <jgarzik@mandrakesoft.com>
-Subject: Re: [2.4 PATCH] pcnet32.c - tx underflow error
-In-Reply-To: <E17SRFB-00087H-00@the-village.bc.nu>
-Message-ID: <Pine.LNX.4.44.0207112350440.21590-100000@freak.distro.conectiva>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
+Received: from mail.gmx.net (sproxy.gmx.net [213.165.64.20])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6C7rqRw015698
+	for <linux-mips@oss.sgi.com>; Fri, 12 Jul 2002 00:53:53 -0700
+Received: (qmail 30946 invoked by uid 0); 12 Jul 2002 07:58:23 -0000
+Received: from unknown (HELO bogon.ms20.nix) (134.34.147.122)
+  by mail.gmx.net (mp001-rz3) with SMTP; 12 Jul 2002 07:58:23 -0000
+Received: by bogon.ms20.nix (Postfix, from userid 1000)
+	id 9C2C43646B; Fri, 12 Jul 2002 09:55:50 +0200 (CEST)
+Date: Fri, 12 Jul 2002 09:55:50 +0200
+From: Guido Guenther <agx@sigxcpu.org>
+To: Michael Hill <mikehill@hgeng.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: X server blanking out virtual consoles?
+Message-ID: <20020712075549.GA1569@bogon.ms20.nix>
+Mail-Followup-To: Michael Hill <mikehill@hgeng.com>,
+	linux-mips@oss.sgi.com
+References: <1025794188.10696.205.camel@dilbert> <1026416316.1138.59.camel@dilbert>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="45Z9DzgjV8m4Oswq"
+Content-Disposition: inline
+In-Reply-To: <1026416316.1138.59.camel@dilbert>
+User-Agent: Mutt/1.3.28i
+X-Spam-Status: No, hits=-4.5 required=5.0 tests=IN_REP_TO,SUBJ_ENDS_IN_Q_MARK version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
 
+--45Z9DzgjV8m4Oswq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On Thu, 11 Jul 2002, Alan Cox wrote:
+Hi Micheal,
+On Thu, Jul 11, 2002 at 03:38:36PM -0400, Michael Hill wrote:
+> /usr/bin/WindowMaker warning: could not allocate color "rgb:93/0d/29"
+> /usr/bin/WindowMaker warning: could not get color for key
+> "CClipTitleColor"
+> /usr/bin/WindowMaker warning: using default "#454045" instead
+> /usr/bin/WindowMaker warning: could not allocate color "#454045"
+> /usr/bin/WindowMaker warning: could not get color for key
+> "CClipTitleColor"
+> /usr/bin/WindowMaker warning: could not allocate color "#73091d"
+> /usr/bin/WindowMaker warning: could not get color for key
+> "IconTitleBack"
+> /usr/bin/WindowMaker warning: using default "black" instead
+This is possibly as close as one can get with 8bpp. You can try to edit
+GNUstep/defaults/WindowMaker to reduce the needed colors further.
+thanks a lot for the report,
+ -- Guido
 
-> > This patch fixes a tx underflow error for 79c973 chip.  It essentially delay
-> > the transmission until the whole packet is received into the on-chip sdram.
-> >
-> > The patch is already accepted by Marcelo for the 2.4 tree, I think.
->
-> Which slows the stuff down for people with real computers. Please apply
-> some kind of heuristic to this - eg switch to delaying if you exceed
-> 50 failures in a 60 second period.
+--45Z9DzgjV8m4Oswq
+Content-Type: application/pgp-signature
+Content-Disposition: inline
 
-I haven't applied it yet.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.7 (GNU/Linux)
 
-I'll let it come to me throught Jeff Garzik after the issues are resolved.
+iD8DBQE9LouFn88szT8+ZCYRAvQZAJ4s+2uNoKG+5pXAH10cQWssDQ1LWwCfTXN5
+EGknYQsHOegpYy+0Jf8BiXk=
+=xezG
+-----END PGP SIGNATURE-----
+
+--45Z9DzgjV8m4Oswq--

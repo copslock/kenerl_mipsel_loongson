@@ -1,75 +1,98 @@
-Received:  by oss.sgi.com id <S305160AbQBOTWO>;
-	Tue, 15 Feb 2000 11:22:14 -0800
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:56698 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S305156AbQBOTV6>; Tue, 15 Feb 2000 11:21:58 -0800
-Received: from nodin.corp.sgi.com (fddi-nodin.corp.sgi.com [198.29.75.193]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id LAA05146; Tue, 15 Feb 2000 11:24:50 -0800 (PST)
+Received:  by oss.sgi.com id <S305160AbQBOXTQ>;
+	Tue, 15 Feb 2000 15:19:16 -0800
+Received: from deliverator.sgi.com ([204.94.214.10]:59225 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305156AbQBOXSq>;
+	Tue, 15 Feb 2000 15:18:46 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id PAA07408; Tue, 15 Feb 2000 15:14:15 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id LAA31613; Tue, 15 Feb 2000 11:21:57 -0800 (PST)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id LAA71787
+	id OAA54855
 	for linux-list;
-	Tue, 15 Feb 2000 11:01:26 -0800 (PST)
+	Tue, 15 Feb 2000 14:28:56 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from liveoak.engr.sgi.com (liveoak.engr.sgi.com [163.154.5.24])
+Received: from deliverator.sgi.com (deliverator.sgi.com [150.166.91.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id LAA97829;
-	Tue, 15 Feb 2000 11:01:20 -0800 (PST)
-	mail_from (wje@liveoak.engr.sgi.com)
-Received: (from wje@localhost)
-	by liveoak.engr.sgi.com (8.9.3/8.8.7) id LAA16636;
-	Tue, 15 Feb 2000 11:01:13 -0800
-X-Authentication-Warning: liveoak.engr.sgi.com: wje set sender to wje@liveoak.engr.sgi.com using -f
-From:   "William J. Earl" <wje@cthulhu.engr.sgi.com>
+	via ESMTP id OAA88401
+	for <linux@cthulhu.engr.sgi.com>;
+	Tue, 15 Feb 2000 14:28:52 -0800 (PST)
+	mail_from (kevink@mips.com)
+Received: from mx.mips.com (mx.mips.com [206.31.31.226]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id OAA22358
+	for <linux@cthulhu.engr.sgi.com>; Tue, 15 Feb 2000 14:24:21 -0800 (PST)
+	mail_from (kevink@mips.com)
+Received: from newman.mips.com (newman [206.31.31.8])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id OAA17249;
+	Tue, 15 Feb 2000 14:21:55 -0800 (PST)
+Received: from satanas (satanas [192.168.236.12])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id OAA03662;
+	Tue, 15 Feb 2000 14:21:53 -0800 (PST)
+Message-ID: <006501bf7803$59855ad0$0ceca8c0@satanas.mips.com>
+From:   "Kevin D. Kissell" <kevink@mips.com>
+To:     "Geert Uytterhoeven" <Geert.Uytterhoeven@sonycom.com>
+Cc:     "Ralf Baechle" <ralf@oss.sgi.com>, <linux@cthulhu.engr.sgi.com>,
+        <linux-mips@fnet.fr>, <linux-mips@vger.rutgers.edu>
+Subject: Re: Indy crashes
+Date:   Tue, 15 Feb 2000 23:23:49 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-Message-ID: <14505.41593.247197.385716@liveoak.engr.sgi.com>
-Date:   Tue, 15 Feb 2000 11:01:13 -0800 (PST)
-To:     "Harald Koerfgen" <Harald.Koerfgen@home.ivm.de>
-Cc:     "Kevin D. Kissell" <kevink@mips.com>, linux@cthulhu.engr.sgi.com,
-        Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
-Subject: Re: ioremap() broken?
-In-Reply-To: <XFMail.000215181433.Harald.Koerfgen@home.ivm.de>
-References: <00f001bf77a7$01e6cd10$0ceca8c0@satanas.mips.com>
-	<XFMail.000215181433.Harald.Koerfgen@home.ivm.de>
-X-Mailer: VM 6.74 under Emacs 20.3.1
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 4.72.3110.5
+X-MimeOLE: Produced By Microsoft MimeOLE V4.72.3110.3
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-Harald Koerfgen writes:
- > 
- > On 15-Feb-00 Kevin D. Kissell wrote:
-...
- > > It is a coincidence that ioremap() is so simple on most current MIPS 
- > > platforms.  On some systems, and on MIPS systems with more than 
- > > 512M of combined memory and mapped I/O, it would be necessary
- > > to invoke VM functions to create (and possibly wire) a kernel address
- > > mapping, and on such systems ioremap() would have some real work
- > > to do.
- > 
- > Yes, indeed. The Philips PR31700/Toshiba TMPR3912 is such a beast and I could
- > imagine that other MIPS based embedded CPUs tend to be similar.
- > 
- > On this particular CPU PCMCIA memory is accessed through *physical* addresses
- > 0x64000000-0x6bffffff, and thus unreachable through KSEG0 or KSEG1. To make
- > things even more delicate, this CPU is based on a R3000 core and supports 4kB
- > pages only, so even ye olde "let's create a wired TLB entry with 16 MB page
- > size"-trick will not work. 
-...
+>> The problem may be in the assumption made even in the
+>> most recent 2.3.x code that a hit-writeback-invalidate cache
+>> operation on the secondary cache automagically affects the
+>> primary.  That's the way it is on the R4000/4400, but that's
+>
+>In that case it doesn't affect the NEC DDB Vrc-5074, since there's no L2.
 
-     As part of the XFS port to Linux, Steve Lord (lord@sgi.com) has done
-a function to map a set of pages into contiguous kernel virtual space,
-where the kernel virtual space is dynamically allocated and released as
-one acquires and releases the mapping.  (For calls which happen to resolve
-to a single, statically-mapped page, the call can use the static mapping.)
-This is presently embedded in a higher-level module, but it could be made
-a separate facility.  The present implementation is inefficient, as it uses
-an inefficient underlying Linux facility, but that could be fixed if there
-much need for it.  Check with Steve Lord if interested.  The XFS source
-is trickling out onto oss.sgi.com as we finished the encumbrance reviews,
-but it will be at least a few weeks more before a compilable patch is
-available.
+
+If it isn't the cache, and it tracks the CPU type, the next thing
+I suspect is a pipe hazard.   The R5000 manual states that there
+should be "at least two integer instructions between" any
+instruction modifying the PageMask, EntryHi, or EntryLo[01]
+registers and the subsequent tlbw[ir] or tlbp.  That's different
+from the R4000.  In the current Linux arch/mips/head.S file, 
+this interval does not seem to be respected by any of the TLB 
+miss handlers.  Indeed, the default except_vec0_r4000 handler,
+which I believe is what is used if an R5000 is detected, has 
+the sequence
+
+        mtc0    k1, CP0_ENTRYLO1                # load it
+        b       1f
+         tlbwr                                  # write random tlb entry
+1:
+        nop
+        eret
+
+wherin the purpose of the branch is obscure (I imagine
+it fixed a bug seen somewhere on some CPU but it
+makes me rather queasy)  but wherein in any case we 
+do not seem to be assured 2 issues between the mtc0 
+and the tlbwr.  It should be OK for an R4000, but not for 
+an R5000.
+
+So someone with the ability to reproduce the R5000
+problem should really try sticking a nop between the
+mtc0 and the branch (sigh) to see if that stabilizes 
+the system.
+
+            Regards,
+
+            Kevin K.
+__
+
+Kevin D. Kissell
+MIPS Technologies European Architecture Lab
+kevink@mips.com
+Tel. +33.4.78.38.70.67
+FAX. +33.4.78.38.70.68
+
+    

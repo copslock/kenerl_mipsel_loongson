@@ -1,233 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Mar 2005 22:26:18 +0000 (GMT)
-Received: from mail-relay.infostations.net ([IPv6:::ffff:69.19.152.5]:53161
-	"EHLO mail-relay.infostations.net") by linux-mips.org with ESMTP
-	id <S8225747AbVCBW0A>; Wed, 2 Mar 2005 22:26:00 +0000
-Received: from seriyu.infostations.net (seriyu.infostations.net [71.4.40.35])
-	by mail-relay.infostations.net (Postfix) with ESMTP id EF02D9F7CB
-	for <linux-mips@linux-mips.org>; Wed,  2 Mar 2005 14:25:53 -0800 (PST)
-Received: from host-66-81-128-16.rev.o1.com ([66.81.128.16])
-	by seriyu.infostations.net with esmtp (Exim 4.41 #1)
-	id 1D6cHz-0007Hz-Kl
-	for <linux-mips@linux-mips.org>; Wed, 02 Mar 2005 14:25:58 -0800
-Subject: iptable_nat oops
-From:	Josh Green <jgreen@users.sourceforge.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Mar 2005 10:37:46 +0000 (GMT)
+Received: from wproxy.gmail.com ([IPv6:::ffff:64.233.184.207]:17210 "EHLO
+	wproxy.gmail.com") by linux-mips.org with ESMTP id <S8225271AbVCCKha>;
+	Thu, 3 Mar 2005 10:37:30 +0000
+Received: by wproxy.gmail.com with SMTP id 37so380370wra
+        for <linux-mips@linux-mips.org>; Thu, 03 Mar 2005 02:37:24 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding;
+        b=sZxwz3zFfe9CWtjKdwvAbX4IB1X9pUrstvq9+J15l6lgApidQ/Z/ZiyhmbfZb8QXH29s9BUtld60uv0gJyl1uNyfDDOt3nD6sZ1yKNUHyTEuClbAtBGr4oJNWFaCpK0mRRN6FxDjEMG817Xv3sZLe69PXvETB3zr6TMWx4fm1A4=
+Received: by 10.54.65.4 with SMTP id n4mr22347wra;
+        Thu, 03 Mar 2005 02:37:24 -0800 (PST)
+Received: by 10.54.25.31 with HTTP; Thu, 3 Mar 2005 02:37:22 -0800 (PST)
+Message-ID: <ace3f33d050303023754d9217f@mail.gmail.com>
+Date:	Thu, 3 Mar 2005 16:07:22 +0530
+From:	srinivas naga vutukuri <srinivas.vutukuri@gmail.com>
+Reply-To: srinivas naga vutukuri <srinivas.vutukuri@gmail.com>
 To:	linux-mips@linux-mips.org
-Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature"; boundary="=-xfbS5sb98PjtsvN8jDwx"
-Date:	Wed, 02 Mar 2005 14:27:51 -0800
-Message-Id: <1109802471.13452.20.camel@SillyPuddy.localdomain>
+Subject: HOWTO load and run the kernel image using redboot?
 Mime-Version: 1.0
-X-Mailer: Evolution 2.0.2 
-Return-Path: <jgreen@users.sourceforge.net>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <srinivas.vutukuri@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7355
+X-archive-position: 7356
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jgreen@users.sourceforge.net
+X-original-sender: srinivas.vutukuri@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
+Hi,
+          I have compiled the mips kernel image, and got vmlinux. And
+how can load image into the ram run using redboot, my board is running
+with the redboot.
+I followed the steps, after i got the vmlinux
 
---=-xfbS5sb98PjtsvN8jDwx
-Content-Type: multipart/mixed; boundary="=-KD1/v3f9wG6oAY/fk5cb"
+1. mips-linux-objcopy -O binary -g vmlinux vmlinux.bin
+2. gzip vmlinux.bin
+3. mips-linux-objdump -f vmlinux | grep start
+    shows the entry point, which is say ENTRY
+4. mips-linux-nm vmlinux | grep _ftext
+    which is say MEMADDR.
+5. Load the image into memory
+    At a RedBoot prompt, type:
+    load -r -b %{FREEMEMLO} vmlinux.bin.gz
+6. Copy the compressed image from memory to flash
+    fis create -e ENTRY -r MEMADDR vmlinux.bin.gz
+and  once i do  go/exec, garbage is showing at the Redboot> prompt...
 
+Can help the way of loading the kernel image using redboot and boot it.
 
---=-KD1/v3f9wG6oAY/fk5cb
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-
-I sent an email a few weeks back about a problem with iptables and NAT.
-This problem appears to be related to what order I insert modules, so
-its likely a memory location issue.  I've attached a couple of oops
-output dumps.  I gave up on trying to get ksymoops to function
-completely (no /proc/ksyms on my target and I read something about it
-being deprecated??), still I hope these dumps are useful.  I'm not sure
-yet whether its a mips specific problem, but I thought maybe I'd see if
-anyone else has experienced this.
-
-My target system is an AMD Alchemy db1100, I'm using mips-linux CVS from
-a month ago or so (2.6.11 rc2), gcc 3.4.3 and uclibc.
-In the problem case I get the following output when trying to modify the
-'nat' table with iptables:
-
-# iptables -t nat -F
-iptables v1.3.0: can't initialize iptables table `nat': Memory
-allocation problem
-Perhaps iptables or your kernel needs to be upgraded.
-
-strace output of iptables shows that there is an attempt to mmap over
-1.6GB of memory.
-
-old_mmap(NULL, 1651212288, PROT_READ|PROT_WRITE, MAP_PRIVATE|
-MAP_ANONYMOUS, 0, 0) =3D -1 ENOMEM (Cannot allocate memory)
-
-
-Oops occur as soon as any IP traffic is attempted over the interfaces.
-I've attached 2 variations, the first 'nat2_oops.txt' occurred after a
-client machine attempted to get a DHCP lease, the second 'nat3_oops.txt'
-is when attempting a ping from the target system.  In both cases it
-seems ip_nat_rule_find() and ip_nat_fn() are common functions, so I
-suspect the nat table hasn't been initialized correctly or something
-else is trashing some memory.  Let me know if there is a more
-appropriate place for this bug report.
-	Josh Green
-
-
---=-KD1/v3f9wG6oAY/fk5cb
-Content-Disposition: attachment; filename=nat2_oops.txt
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; name=nat2_oops.txt; charset=ISO-8859-1
-
-IyBDUFUgMCBVbmFibGUgdG8gaGFuZGxlIGtlcm5lbCBwYWdpbmcgcmVxdWVzdCBhdCB2aXJ0dWFs
-IGFkZHJlc3MgMjE4YTc2MDgsIGVwYw0KPT0gYzAwNzUxMTAsIHJhID09IGMwMThiZDEwDQpPb3Bz
-IGluIGFyY2gvbWlwcy9tbS9mYXVsdC5jOjpkb19wYWdlX2ZhdWx0LCBsaW5lIDE2NlsjMV06DQpD
-cHUgMA0KJCAwICAgOiAwMDAwMDAwMCAxMDAwZmMwMCBjMDE4MTAwMCAyOTg2N2ZiMg0KJCA0ICAg
-OiA4MTBjN2FlMCBjMDE4MTAwMCA4M2M0NzAwMCAwMDAwMDAwMA0KJCA4ICAgOiA4MTBjN2FlMCBm
-ZmZmZmZmZiA4MDMzYmMwMCBjMDFlYTkyOA0KJDEyICAgOiAwMDAwMDAwMCAwMDIwMDIwMCAwMDEw
-MDEwMCA4MTE5YjlmNA0KJDE2ICAgOiAyMThhNzViNCA4MTJjN2QyMCA4M2NmMzg1NCA4MDMzYmNl
-MA0KJDIwICAgOiA4MDMzYmNlMCA4M2M0NzAwMCBjMDE4MTA0MCBjMDA3Y2VhMA0KJDI0ICAgOiAw
-MDAwMDAwMSBjMDFlNTgzMA0KJDI4ICAgOiA4MDMzYTAwMCA4MDMzYmI1MCA4M2M0NzAwMCBjMDE4
-YmQxMA0KSGkgICAgOiAwMDAwMDAwMA0KTG8gICAgOiAwMDAwMGNlNA0KZXBjICAgOiBjMDA3NTEx
-MCBpcHRfZG9fdGFibGUrMHhiOC8weDQ3OCBbaXBfdGFibGVzXSAgICAgTm90IHRhaW50ZWQNCnJh
-ICAgIDogYzAxOGJkMTAgaXBfbmF0X3J1bGVfZmluZCsweDM0LzB4ZjggW2lwdGFibGVfbmF0XQ0K
-U3RhdHVzOiAxMDAwZmMwMyAgICBLRVJORUwgRVhMIElFDQpDYXVzZSA6IDAwODAwMDA4DQpCYWRW
-QSA6IDIxOGE3NjA4DQpQcklkICA6IDAyMDMwMjA0DQpNb2R1bGVzIGxpbmtlZCBpbjogaXB0X01B
-U1FVRVJBREUgaXB0X3N0YXRlIGlwX25hdF9pcmMgaXBfbmF0X2Z0cCBpcF9jb25udHJhY2tfaXJj
-IGlwX2Nvbm50cmFja19mdHAgaXB0YWJsZV9uYXQgaXBfY29ubnRyYWNrIGJyaWRnZSBpcHRhYmxl
-X2ZpbHRlciBob3N0YXBfY3MgaXBfdGFibGVzIGhvc3RhcF9jcnlwdF93ZXAgaG9zdGFwIHBjbWNp
-YSBhdTF4MDBfc3MgcGNtY2lhX2NvcmUNClByb2Nlc3Mgc3dhcHBlciAocGlkOiAwLCB0aHJlYWRp
-bmZvPTgwMzNhMDAwLCB0YXNrPTgwMzNjMDAwKQ0KU3RhY2sgOiAwMDAwZmZmZiAwMDIwMDIwMCAw
-MDEwMDEwMCA4MTE5YjlmNCAxMDAwZmMwMSA4MDMzYmMxOCAwMDAwMDAwMCAwMDAwMDAwMA0KICAg
-ICAgICAwMDAwMDAwMCAyOTg2N2ZiMiAwMDAwMDAwMCA4MTJjN2QyMCAwMDAwMDAwMSA4MDMzYmNl
-MCAwMDAwMDAwMCAwMDAwMDAwMA0KICAgICAgICA4M2M0NzAwMCAwMDAwMDAwMiBjMDFkODhiNCBj
-MDE4YmQxMCAxMDAwZmMwMyAwMDAwMDAwMCA4MTJjN2QyMCAwMDAwMDAwMA0KICAgICAgICBjMDE5
-MDZjMCAwMDAwMDAwMCBjMDFlYWMzMCAwMDAwMDAwMCA4MDMzYmMxYyA4MDMzYmJlOCA4MTJjN2Qy
-MCAwMDAwMDAwMg0KICAgICAgICBjMDE4YjE0YyBmZmZmZmZmZiAzNjZmMDIwMCAwMjAwYjU1NSBj
-MDFlYWMzMCAwMDAwMDAwMCA4MTJjN2QyMCA4MTJjN2Q5OA0KICAgICAgICAuLi4NCkNhbGwgVHJh
-Y2U6DQogWzxjMDFkODhiND5dIGJyX25mX3ByZV9yb3V0aW5nX2ZpbmlzaCsweDAvMHg1NjAgW2Jy
-aWRnZV0NCiBbPGMwMThiZDEwPl0gaXBfbmF0X3J1bGVfZmluZCsweDM0LzB4ZjggW2lwdGFibGVf
-bmF0XQ0KIFs8YzAxOGIxNGM+XSBpcF9uYXRfZm4rMHgxNGMvMHgyYWMgW2lwdGFibGVfbmF0XQ0K
-IFs8YzAxOGIyZWM+XSBpcF9uYXRfaW4rMHg0MC8weDE3NCBbaXB0YWJsZV9uYXRdDQogWzxjMDFk
-ODhiND5dIGJyX25mX3ByZV9yb3V0aW5nX2ZpbmlzaCsweDAvMHg1NjAgW2JyaWRnZV0NCiBbPDgw
-MjdmOGI0Pl0gbmZfaXRlcmF0ZSsweGJjLzB4MTVjDQogWzw4MDI3ZjhiND5dIG5mX2l0ZXJhdGUr
-MHhiYy8weDE1Yw0KIFs8YzAxZDg4YjQ+XSBicl9uZl9wcmVfcm91dGluZ19maW5pc2grMHgwLzB4
-NTYwIFticmlkZ2VdDQogWzxjMDFkODhiND5dIGJyX25mX3ByZV9yb3V0aW5nX2ZpbmlzaCsweDAv
-MHg1NjAgW2JyaWRnZV0NCiBbPDgwMjgwMjA4Pl0gbmZfaG9va19zbG93KzB4OWMvMHgyMDANCiBb
-PDgwMjcwNDcwPl0gZGV2X3F1ZXVlX3htaXQrMHgyZTgvMHgzM2MNCiBbPDgwMjY4YzU0Pl0ga2Zy
-ZWVfc2tibWVtKzB4MTQvMHgzMA0KIFs8ODAyNjc5OTg+XSBhbGxvY19za2IrMHg1OC8weGY0DQog
-WzxjMDFkODhiND5dIGJyX25mX3ByZV9yb3V0aW5nX2ZpbmlzaCsweDAvMHg1NjAgW2JyaWRnZV0N
-CiBbPGMwMWQzOGRjPl0gYnJfaGFuZGxlX2ZyYW1lX2ZpbmlzaCsweDAvMHgyMDQgW2JyaWRnZV0N
-CiBbPGMwMWQ5NzA0Pl0gYnJfbmZfcHJlX3JvdXRpbmcrMHg4N2MvMHg5MjAgW2JyaWRnZV0NCiBb
-PGMwMWQ4OGI0Pl0gYnJfbmZfcHJlX3JvdXRpbmdfZmluaXNoKzB4MC8weDU2MCBbYnJpZGdlXQ0K
-IFs8ODAyN2Y4YjQ+XSBuZl9pdGVyYXRlKzB4YmMvMHgxNWMNCiBbPDgwMjA3Njg4Pl0gbWVtY21w
-KzB4MC8weDMwDQogWzxjMDFkMzhkYz5dIGJyX2hhbmRsZV9mcmFtZV9maW5pc2grMHgwLzB4MjA0
-IFticmlkZ2VdDQogWzxjMDFkMzhkYz5dIGJyX2hhbmRsZV9mcmFtZV9maW5pc2grMHgwLzB4MjA0
-IFticmlkZ2VdDQogWzw4MDI4MDIwOD5dIG5mX2hvb2tfc2xvdysweDljLzB4MjAwDQogWzxjMDFk
-NjA1MD5dIGJyX3NlbmRfY29uZmlnX2JwZHUrMHgxZGMvMHgyMDAgW2JyaWRnZV0NCiBbPGMwMWQz
-OGRjPl0gYnJfaGFuZGxlX2ZyYW1lX2ZpbmlzaCsweDAvMHgyMDQgW2JyaWRnZV0NCiBbPGMwMWQz
-ZDRjPl0gYnJfaGFuZGxlX2ZyYW1lKzB4MjZjLzB4MjkwIFticmlkZ2VdDQogWzxjMDFkNGViOD5d
-IGJyX3RyYW5zbWl0X2NvbmZpZysweDAvMHgxNzggW2JyaWRnZV0NCiBbPGMwMWQzOGRjPl0gYnJf
-aGFuZGxlX2ZyYW1lX2ZpbmlzaCsweDAvMHgyMDQgW2JyaWRnZV0NCiBbPDgwMjcwZGIwPl0gbmV0
-aWZfcmVjZWl2ZV9za2IrMHgxZTQvMHg0ZTQNCiBbPGMwMTlhZDEwPl0gaGZhMzg0eF9jbWRfY2Fs
-bGJhY2srMHg1Yy8weDQ2NCBbaG9zdGFwX2NzXQ0KIFs8ODAyNzExYzA+XSBwcm9jZXNzX2JhY2ts
-b2crMHgxMTAvMHgyZjANCiBbPGMwMTljOTZjPl0gaG9zdGFwX3J4X3Rhc2tsZXQrMHgyMjgvMHgy
-YmMgW2hvc3RhcF9jc10NCiBbPDgwMjcxNDZjPl0gbmV0X3J4X2FjdGlvbisweGNjLzB4Mjk0DQog
-Wzw4MDEyYzgxOD5dIHRhc2tsZXRfYWN0aW9uKzB4YzQvMHgxOTQNCiBbPDgwMTQ3NmQ0Pl0gaGFu
-ZGxlX0lSUV9ldmVudCsweDdjLzB4MTM0DQogWzw4MDEyYzFkYz5dIF9fZG9fc29mdGlycSsweDhj
-LzB4MTRjDQogWzw4MDE0NzkyMD5dIF9fZG9fSVJRKzB4MTk0LzB4MWI0DQogWzw4MDM4MDAwMD5d
-IGlnbXBfbWNfcHJvY19pbml0KzB4NGMvMHg3NA0KIFs8ODAzODAwMDA+XSBpZ21wX21jX3Byb2Nf
-aW5pdCsweDRjLzB4NzQNCiBbPDgwMTJjMzI4Pl0gZG9fc29mdGlycSsweDhjLzB4YjgNCiBbPDgw
-MzgwMDAwPl0gaWdtcF9tY19wcm9jX2luaXQrMHg0Yy8weDc0DQogWzw4MDEwMGUyYz5dIGF1MTAw
-MF9JUlErMHgxNmMvMHgxYTANCiBbPDgwMzdjNmEwPl0gdnR5X2luaXQrMHhmYy8weDEyOA0KIFs8
-ODAzODAwMDA+XSBpZ21wX21jX3Byb2NfaW5pdCsweDRjLzB4NzQNCiBbPDgwMjZiN2I4Pl0gZGF0
-YWdyYW1fcG9sbCsweDAvMHgxOTgNCiBbPDgwMTA0YTkwPl0gY3B1X2lkbGUrMHg0OC8weDUwDQog
-Wzw4MDEwNGE2ND5dIGNwdV9pZGxlKzB4MWMvMHg1MA0KIFs8ODAyMDM1ZDA+XSBpZHJfY2FjaGVf
-Y3RvcisweDAvMHhjDQogWzw4MDM4MDAwMD5dIGlnbXBfbWNfcHJvY19pbml0KzB4NGMvMHg3NA0K
-IFs8ODAzNjU3YWM+XSBzdGFydF9rZXJuZWwrMHgyMDAvMHgyYzANCiBbPDgwMzY1MGZjPl0gdW5r
-bm93bl9ib290b3B0aW9uKzB4MC8weDMxMA0KDQoNCkNvZGU6IGFmYTMwMDI0ICAwMmM0ODAyMSAg
-OGU4NDAwMDAgPDhlMDMwMDU0PiA4YzgyMDA4NCAgMDA0MzEwMjUgIGFjODIwMDg0ICA5MjA5MDA1
-MyAgMDAwOTEwYzINCktlcm5lbCBwYW5pYyAtIG5vdCBzeW5jaW5nOiBBaWVlLCBraWxsaW5nIGlu
-dGVycnVwdCBoYW5kbGVyIQ0KIDw2PndpZmkxOiBTVyBUSUNLIHN0dWNrPyBiaXRzPTB4MCBFdlN0
-YXQ9ODAwMCBJbnRFbj1lMDlmDQo=
-
-
---=-KD1/v3f9wG6oAY/fk5cb
-Content-Disposition: attachment; filename=nat3_oops.txt
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; name=nat3_oops.txt; charset=ISO-8859-1
-
-VW5oYW5kbGVkIGtlcm5lbCB1bmFsaWduZWQgYWNjZXNzIGluIGFyY2gvbWlwcy9rZXJuZWwvdW5h
-bGlnbmVkLmM6OmVtdWxhdGVfbG9hZF9zdG9yZV9pbnNuLCBsaW5lIDQ3NVsjMV06DQpDcHUgMA0K
-JCAwICAgOiAwMDAwMDAwMCAxMDAwZmMwMCBjMDE4MTAwYyA0MDUyNTA0MA0KJCA0ICAgOiA4M2Vl
-N2JjMCBjMDE4MTAwMCAwMDAwMDAwMCA4M2NkMWMwMA0KJCA4ICAgOiAwMDAwMDAwMSAwMTAxYThj
-MCA4M2VkZGI2MCBjMDFlZTkyOA0KJDEyICAgOiAwMDAwMDAwMCAwMDIwMDIwMCAwMDEwMDEwMCA4
-MTE5YjlmNA0KJDE2ICAgOiAzMzE4ODBiNSA4M2VkYWQyMCA4MTMxY2ExMCA4M2VkZGM0MA0KJDIw
-ICAgOiA4M2VkZGM0MCBjMDA3Y2VhMCBjMDE4MTA0MCA4M2NkMWMwMA0KJDI0ICAgOiAwMDAwMDAw
-MSBjMDFlOWQyOA0KJDI4ICAgOiA4M2VkYzAwMCA4M2VkZGFiMCAwMDAwMDAwMCBjMDE4YmQxMA0K
-SGkgICAgOiAwMDAwMDAwMA0KTG8gICAgOiAwMDAwMGNlNA0KZXBjICAgOiBjMDA3NTExMCBpcHRf
-ZG9fdGFibGUrMHhiOC8weDQ3OCBbaXBfdGFibGVzXSAgICAgTm90IHRhaW50ZWQNCnJhICAgIDog
-YzAxOGJkMTAgaXBfbmF0X3J1bGVfZmluZCsweDM0LzB4ZjggW2lwdGFibGVfbmF0XQ0KU3RhdHVz
-OiAxMDAwZmMwMyAgICBLRVJORUwgRVhMIElFDQpDYXVzZSA6IDAwODAwMDEwDQpCYWRWQSA6IDMz
-MTg4MTA5DQpQcklkICA6IDAyMDMwMjA0DQpNb2R1bGVzIGxpbmtlZCBpbjogaXB0X01BU1FVRVJB
-REUgaXB0X3N0YXRlIGlwX25hdF9pcmMgaXBfbmF0X2Z0cCBpcF9jb25udHJhY2tfaXJjIGlwX2Nv
-bm50cmFja19mdHAgaXB0YWJsZV9uYXQgaXBfY29ubnRyYWNrIGJyaWRnZSBob3N0YXBfY3MgaXB0
-YWJsZV9maWx0ZXIgaXBfdGFibGVzIGhvc3RhcF9jcnlwdF93ZXAgaG9zdGFwIHBjbWNpYSBhdTF4
-MDBfc3MgcGNtY2lhX2NvcmUNClByb2Nlc3MgcGluZyAocGlkOiAxMDI5LCB0aHJlYWRpbmZvPTgz
-ZWRjMDAwLCB0YXNrPTgxM2JmNDg4KQ0KU3RhY2sgOiAwMDAwMDAyMCAwMDAwMDAwMyAwMDAwMDAy
-MCA4MDE1MTA5NCAwMDAwMDAwMCA4MDI3N2EyMCAwMDAwMDAwMCAwMDAwMDAwMA0KICAgICAgICAw
-MDAwMDAwMCA0MDUyNTA0MCAwMDAwMDAwMyA4M2VkYWQyMCAwMDAwMDAwMSA4M2VkZGM0MCAwMDAw
-MDAwMyA4M2NkMWMwMA0KICAgICAgICAwMDAwMDAwMCAwMDAwMDAwMiA4MDI5ODdhMCBjMDE4YmQx
-MCBjMDFlZWM3MCAwMDAwMDAwMyA4M2VkYWQyMCA4M2NkMWMwMA0KICAgICAgICBjMDE5MDZjMCAw
-MDAwMDAwMCBjMDFlZWM3MCAwMDAwMDAwMyA4M2VkZGI3YyA4M2VkZGI0OCA4M2VkYWQyMCAwMDAw
-MDAwMg0KICAgICAgICBjMDE4YjE0YyA4M2VkZGI1OCA4M2VkZGJkOCA4MDI4ZmNjYyBjMDFlZWM3
-MCAwMDAwMGUwMCA4M2VkYWQyMCA4M2VkYWQ5OA0KICAgICAgICAuLi4NCkNhbGwgVHJhY2U6DQog
-Wzw4MDE1MTA5ND5dIF9fZ2V0X2ZyZWVfcGFnZXMrMHgyYy8weDZjDQogWzw4MDI3N2EyMD5dIG5l
-aWdoX2NyZWF0ZSsweDYwNC8weDg3MA0KIFs8ODAyOTg3YTA+XSBkc3Rfb3V0cHV0KzB4MC8weDUw
-DQogWzxjMDE4YmQxMD5dIGlwX25hdF9ydWxlX2ZpbmQrMHgzNC8weGY4IFtpcHRhYmxlX25hdF0N
-CiBbPGMwMThiMTRjPl0gaXBfbmF0X2ZuKzB4MTRjLzB4MmFjIFtpcHRhYmxlX25hdF0NCiBbPDgw
-MjhmY2NjPl0gcnRfc2V0X25leHRob3ArMHg0OC8weDFhMA0KIFs8YzAxOGI1OWM+XSBpcF9uYXRf
-bG9jYWxfZm4rMHg4OC8weGZjIFtpcHRhYmxlX25hdF0NCiBbPDgwMjk4N2EwPl0gZHN0X291dHB1
-dCsweDAvMHg1MA0KIFs8ODAyN2Y4YjQ+XSBuZl9pdGVyYXRlKzB4YmMvMHgxNWMNCiBbPDgwMjdm
-OGI0Pl0gbmZfaXRlcmF0ZSsweGJjLzB4MTVjDQogWzw4MDI5ODdhMD5dIGRzdF9vdXRwdXQrMHgw
-LzB4NTANCiBbPDgwMjk4N2EwPl0gZHN0X291dHB1dCsweDAvMHg1MA0KIFs8ODAyODAyMDg+XSBu
-Zl9ob29rX3Nsb3crMHg5Yy8weDIwMA0KIFs8ODAyOWI1NmM+XSBpcF9hcHBlbmRfZGF0YSsweDY4
-MC8weGEyNA0KIFs8ODAyOTg3YTA+XSBkc3Rfb3V0cHV0KzB4MC8weDUwDQogWzw4MDI5YzNhND5d
-IGlwX3B1c2hfcGVuZGluZ19mcmFtZXMrMHg1YjgvMHg2NzANCiBbPDgwMjk4N2EwPl0gZHN0X291
-dHB1dCsweDAvMHg1MA0KIFs8ODAyYmMzNmM+XSByYXdfc2VuZG1zZysweDFjNC8weDlhOA0KIFs8
-ODAyYmMzNDg+XSByYXdfc2VuZG1zZysweDFhMC8weDlhOA0KIFs8ODAyOWFlMzA+XSBpcF9nZW5l
-cmljX2dldGZyYWcrMHgwLzB4YmMNCiBbPDgwMTRiYzg4Pl0gZmlsZW1hcF9ub3BhZ2UrMHg1ZDQv
-MHg2ZTANCiBbPDgwMjYxOWZjPl0gc29ja19zZW5kbXNnKzB4YWMvMHhmMA0KIFs8ODAxNjE0ZWM+
-XSBkb19ub19wYWdlKzB4NTY4LzB4YmM0DQogWzw4MDM3YzFhOD5dIGtiZF9pbml0KzB4YzQvMHgx
-YzANCiBbPDgwMjM3YTU4Pl0gc2VyaWFsODI1MF9zdGFydF90eCsweDAvMHgyYw0KIFs8ODAyMWVh
-Y2M+XSB3cml0ZV9jaGFuKzB4NDA4LzB4NGE0DQogWzw4MDM3YzA0MD5dIHZjc19pbml0KzB4Nzgv
-MHhhMA0KIFs8ODAxNDEwODA+XSBhdXRvcmVtb3ZlX3dha2VfZnVuY3Rpb24rMHgwLzB4NDQNCiBb
-PDgwMTYxZjFjPl0gaGFuZGxlX21tX2ZhdWx0KzB4M2Q0LzB4NGYwDQogWzw4MDEyMGEwOD5dIF9f
-d2FrZV91cCsweDQwLzB4N2MNCiBbPDgwMjYzOTE4Pl0gc3lzX3NlbmR0bysweGMwLzB4ZjQNCiBb
-PDgwMjE1YWI4Pl0gdHR5X3dyaXRlKzB4MmIwLzB4NDQ0DQogWzw4MDIxNWI4MD5dIHR0eV93cml0
-ZSsweDM3OC8weDQ0NA0KIFs8ODAxMDg1OWM+XSBkb19nZXR0aW1lb2ZkYXkrMHg3OC8weDE2MA0K
-IFs8ODAxMzY5YmM+XSBzeXNfcnRfc2lnYWN0aW9uKzB4ODQvMHhjYw0KIFs8ODAxMGI4ZTA+XSBz
-dGFja19kb25lKzB4MjAvMHgzYw0KIFs8ODAxMGI4ZTA+XSBzdGFja19kb25lKzB4MjAvMHgzYw0K
-DQoNCkNvZGU6IGFmYTMwMDI0ICAwMmM0ODAyMSAgOGU4NDAwMDAgPDhlMDMwMDU0PiA4YzgyMDA4
-NCAgMDA0MzEwMjUgIGFjODIwMDg0ICA5MjA5MDA1MyAgMDAwOTEwYzINCjIuMTY4LjEuMSk6IDU2
-IGRLZXJuZWwgcGFuaWMgLSBub3Qgc3luY2luZzogQWllZSwga2lsbGluZyBpbnRlcnJ1cHQgaGFu
-ZGxlciENCmF0YSBieXRlcw0KIDw2PndpZmkwOiBTVyBUSUNLIHN0dWNrPyBiaXRzPTB4MCBFdlN0
-YXQ9ODAwMCBJbnRFbj1lMDlmDQo=
-
-
---=-KD1/v3f9wG6oAY/fk5cb--
-
---=-xfbS5sb98PjtsvN8jDwx
-Content-Type: application/pgp-signature; name=signature.asc
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.6 (GNU/Linux)
-
-iD8DBQBCJj3nRoMuWKCcbgQRAkJQAJ9kTMGrTxvD6K04XxoqqvN1j7QEpQCeLE1r
-YKEAgBgCjArV7AhC9gfI2cM=
-=aktd
------END PGP SIGNATURE-----
-
---=-xfbS5sb98PjtsvN8jDwx--
+Best Regards,
+srinivas.

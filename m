@@ -1,52 +1,73 @@
-Received:  by oss.sgi.com id <S553808AbQJYPHA>;
-	Wed, 25 Oct 2000 08:07:00 -0700
-Received: from woody.ichilton.co.uk ([216.29.174.40]:33796 "HELO
-        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553805AbQJYPGw>;
-	Wed, 25 Oct 2000 08:06:52 -0700
-Received: by woody.ichilton.co.uk (Postfix, from userid 0)
-	id 8321E7CD4; Wed, 25 Oct 2000 16:06:51 +0100 (BST)
-Date:   Wed, 25 Oct 2000 16:06:51 +0100
-From:   Ian Chilton <mailinglist@ichilton.co.uk>
-To:     linux-mips@oss.sgi.com
-Subject: Glibc Problem
-Message-ID: <20001025160651.C17228@woody.ichilton.co.uk>
-Mime-Version: 1.0
+Received:  by oss.sgi.com id <S553811AbQJYPkv>;
+	Wed, 25 Oct 2000 08:40:51 -0700
+Received: from mailout1-1.nyroc.rr.com ([24.92.226.146]:63230 "EHLO
+        mailout1-1.nyroc.rr.com") by oss.sgi.com with ESMTP
+	id <S553807AbQJYPkm>; Wed, 25 Oct 2000 08:40:42 -0700
+Received: from rochester.rr.com (d1818233d.rochester.rr.com [24.24.35.61])
+	by mailout1-1.nyroc.rr.com (8.9.3/8.9.3) with ESMTP id LAA20188
+	for <linux-mips@oss.sgi.com>; Wed, 25 Oct 2000 11:37:04 -0400 (EDT)
+Message-ID: <39F6FE50.257FC297@rochester.rr.com>
+Date:   Wed, 25 Oct 2000 11:37:52 -0400
+From:   Pedro Ugalde <pugalde1@rochester.rr.com>
+X-Mailer: Mozilla 4.7 [en] (Win95; U)
+X-Accept-Language: en
+MIME-Version: 1.0
+To:     "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Re: putting together an Indy
+References: <0A5319EEAF65D411825E00805FBBD8A1209A63@exchange.clt.ixl.com>
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.9i
-Fcc:    /var/mail/sent-mail-oct2000
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hello,
+check this site, they have a long explanation for it all.
 
-I am having this problem cross-compiling todays CVS glibc:
+http://www.reputable.com/indytech.html
 
-../sysdeps/generic/dl-cache.c: In function `_dl_load_cache_lookup':
-../sysdeps/generic/dl-cache.c:177: warning: large integer implicitly truncated to unsigned type
-../sysdeps/generic/dl-cache.c:181: `CACHEMAGIC_VERSION_NEW' undeclared (first use in this function)
-../sysdeps/generic/dl-cache.c:181: (Each undeclared identifier is reported only once
-../sysdeps/generic/dl-cache.c:181: for each function it appears in.)
-make[2]: *** [/crossdev-build/mips-linux/glibc-001025-obj/elf/dl-cache.o] Error 1
-make[2]: Leaving directory `/crossdev-build/src/glibc-001025/elf'
-make[1]: *** [elf/subdir_lib] Error 2
-make[1]: Leaving directory `/crossdev-build/src/glibc-001025'
-make: *** [all] Error 2
+Pedro Ugalde
 
+tmaloney@ixl.com wrote:
 
-It worked the other day  :-)
- 
-
-Bye for Now,
-
-Ian
-
-
-                     \|||/ 
-                     (o o)
- /----------------ooO-(_)-Ooo----------------\
- |  Ian Chilton                              |
- |  E-Mail : ian@ichilton.co.uk              |
- \-------------------------------------------/
+> > hey everyone,
+> >
+> > here is a description of the SGI Indy i just bought. can anyone look at
+> > this and tell me, with the exceptions of a hard drive and some ram, what i
+> > need to get this working?
+> > i think all the video hardware is there, but i'm not sure if what is
+> > listed is all i need. that is a main question. any other suggestions are
+> > welcome. i am a mac user with some linux and solaris experience. i hope to
+> > get linux on this machine when the sgi port is ready. meanwhile, i am
+> > getting the machine itself together. got this much for less than 65.00 on
+> > ebay.
+> >
+> > SGI Indy system complete with a R4600 133MHz Processor Module
+> > NG1 8-bit Graphics Frame Buffer for fast color graphics with resolutions
+> > of up to 1280x1024 @ 76Hz
+> > OnBoard 10Base-T/ISDN/Audio/S-Video
+> > Key Features: Proven MIPS R4600 133MHz Processor Module.
+> > worth ) A Internal Instruction/Data Caches Maximum expandability with GIO
+> > expansion ports "NG1" 8-bit 3D Accelerated Frame Buffer for Fast Color
+> > Graphics.
+> > Expandable to 256MB Internal/External mini-50 SCSI-2 Ports Two Integrated
+> > RS-232/422 Serial Ports
+> > Macintosh Compatible in RS-422 Mode Integrated Bidirectional Parallel Port
+> > Integrated Ethernet 10Base-T and AUI Port Integrated ISDN Basic Rate Port
+> > Integrated Iris CD Quality Audio Processor System Integrated Vino
+> > S-Video,Composite, Analog Processor System NTSC or PAL StereoView hardware
+> > Interface for Virtual Reality and Advanced Graphics Dual Drive Capacity
+> > with an addtional bracket
+> >
+> >
+> > thanks alot.
+> >
+> > Tim Maloney
+> > Senior Developer
+> > iXL, Inc.
+> > 1930 Camden Road, Suite 2070
+> > Charlotte, NC 28203
+> > 704 943-7193 phone
+> > tmaloney@ixl.com
+> > www.ixl.com
+> >

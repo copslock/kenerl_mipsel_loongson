@@ -1,51 +1,41 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f4BGlVb10850
-	for linux-mips-outgoing; Fri, 11 May 2001 09:47:31 -0700
-Received: from mail.kdt.de (mail.kdt.de [195.8.224.4])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f4BGlTF10846
-	for <linux-mips@oss.sgi.com>; Fri, 11 May 2001 09:47:29 -0700
-Received: from arthur.inka.de (arthur.kdt.de [195.8.250.5])
-	by mail.kdt.de (8.11.1/8.11.0) with ESMTP id f4BGl5U00904;
-	Fri, 11 May 2001 18:47:05 +0200
-Received: from gromit.moeb ([192.168.27.3] ident=postfix)
-	by arthur.inka.de with esmtp (Exim 3.14 #1)
-	id 14yG21-0004C7-00; Fri, 11 May 2001 18:44:45 +0200
-Received: by gromit.moeb (Postfix, from userid 207)
-	id 55EB41EA2E; Fri, 11 May 2001 18:44:44 +0200 (CEST)
-Mail-Copies-To: never
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: sjhill@cotw.com, libc-alpha@sources.redhat.com, linux-mips@oss.sgi.com
-Subject: Re: glibc MIPS patch to check for binutils version...
-References: <Pine.GSO.3.96.1010511182140.23383A-100000@delta.ds2.pg.gda.pl>
-From: Andreas Jaeger <aj@suse.de>
-Date: 11 May 2001 18:44:44 +0200
-In-Reply-To: <Pine.GSO.3.96.1010511182140.23383A-100000@delta.ds2.pg.gda.pl> ("Maciej W. Rozycki"'s message of "Fri, 11 May 2001 18:26:51 +0200 (MET DST)")
-Message-ID: <u8r8xvrg1v.fsf@gromit.moeb>
-User-Agent: Gnus/5.090004 (Oort Gnus v0.04) XEmacs/21.1 (Channel Islands)
-MIME-Version: 1.0
+	by oss.sgi.com (8.11.3/8.11.3) id f4CIitG07959
+	for linux-mips-outgoing; Sat, 12 May 2001 11:44:55 -0700
+Received: from e67205.upc-e.chello.nl (e67205.upc-e.chello.nl [213.93.67.205])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f4CIisF07956
+	for <linux-mips@oss.sgi.com>; Sat, 12 May 2001 11:44:54 -0700
+Received: by e67205.upc-e.chello.nl (Postfix, from userid 1000)
+	id 699361C2E7; Sat, 12 May 2001 20:44:01 +0200 (CEST)
+Date: Sat, 12 May 2001 20:44:01 +0200
+From: peter.zijlstra@chello.nl
+To: linux-mips@oss.sgi.com
+Subject: Where to start with a R4000 Indigo
+Message-ID: <20010512204401.D6072@e67205.upc-e.chello.nl>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-"Maciej W. Rozycki" <macro@ds2.pg.gda.pl> writes:
+Hi,.
 
-> On 11 May 2001, Andreas Jaeger wrote:
-> 
-> > 2001-05-11  Andreas Jaeger  <aj@suse.de>
-> > 
-> > 	* sysdeps/unix/sysv/linux/configure.in: Check binutils version on
-> > 	MIPS.
-> 
->  Wouldn't it be cleaner if the check was placed in
-> sysdeps/unix/sysv/linux/mips/configure.in instead, like it's done for
-> Alpha?
+I recently acquired a R4000 50MHz Indigo without an IRIX install nor CD
+with it. No CD-Rom player either, however I did order one, network however
+does seem to work. And as I am a linux fanatic and professional programmer 
+myself I would like to see whether I could help a bit with bringing linux to
+this system.
 
-That would be better - I'll move it later,
+As Indigo support isn't finished and I have nothing but a bare BIOS
+to start with; and have no experience with the machine to begin with;
+I have to ask for _help_ :)
 
-Thanks,
-Andreas
--- 
- Andreas Jaeger
-  SuSE Labs aj@suse.de
-   private aj@arthur.inka.de
-    http://www.suse.de/~aj
+Where do I start reading and tinkering to get linux; for as far as it's
+sort of running; on my system ?
+
+Are there any specs for the machine, especially for those parts that need
+most urgent development and which parts are that ?
+
+
+kind regards,
+	Peter Zijlstra

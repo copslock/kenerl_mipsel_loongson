@@ -1,61 +1,60 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g2HIe6E05151
-	for linux-mips-outgoing; Sun, 17 Mar 2002 10:40:06 -0800
-Received: from rwcrmhc51.attbi.com (rwcrmhc51.attbi.com [204.127.198.38])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2HIe2905148
-	for <linux-mips@oss.sgi.com>; Sun, 17 Mar 2002 10:40:02 -0800
-Received: from ocean.lucon.org ([12.234.143.38]) by rwcrmhc51.attbi.com
-          (InterMail vM.4.01.03.27 201-229-121-127-20010626) with ESMTP
-          id <20020317184126.JUYU2626.rwcrmhc51.attbi.com@ocean.lucon.org>;
-          Sun, 17 Mar 2002 18:41:26 +0000
-Received: by ocean.lucon.org (Postfix, from userid 1000)
-	id 4B83C125C7; Sun, 17 Mar 2002 10:41:25 -0800 (PST)
-Date: Sun, 17 Mar 2002 10:41:24 -0800
-From: "H . J . Lu" <hjl@lucon.org>
-To: Hartvig Ekner <hartvige@mips.com>
-Cc: user alias <linux-mips@oss.sgi.com>
-Subject: Re: Compiler problem in glibc
-Message-ID: <20020317104124.A4002@lucon.org>
-References: <200203171052.g2HAqGb27844@coplin09.mips.com>
+	by oss.sgi.com (8.11.2/8.11.3) id g2HKWkq07920
+	for linux-mips-outgoing; Sun, 17 Mar 2002 12:32:46 -0800
+Received: from dvmwest.gt.owl.de (dvmwest.gt.owl.de [62.52.24.140])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2HKWf907916
+	for <linux-mips@oss.sgi.com>; Sun, 17 Mar 2002 12:32:41 -0800
+Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
+	id 723AF9F03; Sun, 17 Mar 2002 21:34:07 +0100 (CET)
+Date: Sun, 17 Mar 2002 21:34:06 +0100
+From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+To: SGI MIPS list <linux-mips@oss.sgi.com>
+Subject: Toolchain question
+Message-ID: <20020317203406.GG25044@lug-owl.de>
+Mail-Followup-To: SGI MIPS list <linux-mips@oss.sgi.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="Fhv9pqL4KIX+q4y7"
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <200203171052.g2HAqGb27844@coplin09.mips.com>; from hartvige@mips.com on Sun, Mar 17, 2002 at 11:52:15AM +0100
+User-Agent: Mutt/1.3.27i
+X-Operating-System: Linux mail 2.4.15-pre2 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sun, Mar 17, 2002 at 11:52:15AM +0100, Hartvig Ekner wrote:
-> I have found a problem in glibc caused by the gcc-2.96-99.1 compiler
-> from H.J's miniport.
-> 
-> in the exp() function (file w_expf.c), there is code like: 
-> 
-> #ifdef __STDC__
->         float __expf(float x)           /* wrapper expf */
-> #else
->         float __expf(x)                 /* wrapper expf */
->         float x;
-> #endif
-> {
-> #ifdef _IEEE_LIBM
->         return __ieee754_expf(x);
-> #else
->         float z;
->         z = __ieee754_expf(x);
->         if(_LIB_VERSION == _IEEE_) return z;
-> 
->         if(__finitef(x)) {
->             if(x>o_threshold)
-> 
-> 
-> (IEEE_LIBM is not set). Note that there are two function calls (ieee754_expf
-> and finitef()) followed by a FP if-statement (x>o_threshold). This 
-> translates into:
-> 
 
-I believe it has been reported before and is fixed in gcc 3.1 at the
-time.
+--Fhv9pqL4KIX+q4y7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+Hi!
 
-H.J.
+Which cross compiler and binutils are currently known to be good for
+kernel compilation? I'm (for both LE and BE) currently still using
+this gcc-3.0 snapshot from the simple/crossdev "package". It's a
+bit old, but working quite good.
+
+What compiler/binutils are currently advisable? Current CVS from
+binutils, current gcc 3.0 branch from CVS?
+
+MfG, JBG
+
+--=20
+Jan-Benedict Glaw   .   jbglaw@lug-owl.de   .   +49-172-7608481
+	 -- New APT-Proxy written in shell script --
+	   http://lug-owl.de/~jbglaw/software/ap2/
+
+--Fhv9pqL4KIX+q4y7
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.6 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iEYEARECAAYFAjyU/b0ACgkQHb1edYOZ4buVowCfVOfhWCYQHNk6bp1hTDINYc5g
+X4AAnjfBR0EFB93hxKvKbYR3RDLbn9Vp
+=vI/3
+-----END PGP SIGNATURE-----
+
+--Fhv9pqL4KIX+q4y7--

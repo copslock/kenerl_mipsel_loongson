@@ -1,38 +1,45 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f3KK6sK06833
-	for linux-mips-outgoing; Fri, 20 Apr 2001 13:06:54 -0700
-Received: from ayr-74.ayrnetworks.com (64-166-72-137.ayrnetworks.com [64.166.72.137])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3KK6sM06830
-	for <linux-mips@oss.sgi.com>; Fri, 20 Apr 2001 13:06:54 -0700
-Received: from ayrnetworks.com (IDENT:chua@localhost.localdomain [127.0.0.1])
-	by ayr-74.ayrnetworks.com (8.11.0/8.11.0) with ESMTP id f3KK6q211501;
-	Fri, 20 Apr 2001 13:06:52 -0700
-Message-ID: <3AE096DC.ECB49D19@ayrnetworks.com>
-Date: Fri, 20 Apr 2001 13:06:52 -0700
-From: Bryan Chua <chua@ayrnetworks.com>
-X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.16-22enterprise i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: "George Gensure,,," <werkt@csh.rit.edu>
-CC: linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.3/8.11.3) id f3KKLLP07558
+	for linux-mips-outgoing; Fri, 20 Apr 2001 13:21:21 -0700
+Received: from mcp.csh.rit.edu (mcp.csh.rit.edu [129.21.60.9])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3KKLLM07555
+	for <linux-mips@oss.sgi.com>; Fri, 20 Apr 2001 13:21:21 -0700
+Received: from fury.csh.rit.edu (fury.csh.rit.edu [129.21.60.5])
+	by mcp.csh.rit.edu (Postfix) with ESMTP
+	id 1FBD2109F; Fri, 20 Apr 2001 16:21:20 -0400 (EDT)
+Date: Fri, 20 Apr 2001 16:21:20 -0400 (EDT)
+From: George Gensure <werkt@csh.rit.edu>
+To: Bryan Chua <chua@ayrnetworks.com>
+Cc: <linux-mips@oss.sgi.com>
 Subject: Re: glibc build
-References: <3AE08A99.50201@csh.rit.edu>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <3AE096DC.ECB49D19@ayrnetworks.com>
+Message-ID: <Pine.SOL.4.31.0104201612540.3449-100000@fury.csh.rit.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-CFLAGS=-D__PIC__ make all [check] install
+I went throught and deleted all of those entries in assembly files which
+caused problems, but I end up with similar problems later, only the
+assembler seems to have been running from standard input..
 
-the target "check" will not work if you are cross compiling, so you
-might as well install...  You end up coming across this in several
-places.
+George
+werkt@csh.rit.edu
 
--- bryan
+On Fri, 20 Apr 2001, Bryan Chua wrote:
 
-"George Gensure,,," wrote:
-
-> Where is the CFLAGS that I should add to? In the Subdirectories?
+> CFLAGS=-D__PIC__ make all [check] install
 >
-> George
-> werkt@csh.rit.edu
+> the target "check" will not work if you are cross compiling, so you
+> might as well install...  You end up coming across this in several
+> places.
+>
+> -- bryan
+>
+> "George Gensure,,," wrote:
+>
+> > Where is the CFLAGS that I should add to? In the Subdirectories?
+> >
+> > George
+> > werkt@csh.rit.edu
+>

@@ -1,72 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Oct 2004 09:25:33 +0100 (BST)
-Received: from smtp5.infineon.com ([IPv6:::ffff:217.10.50.127]:60539 "EHLO
-	smtp5.infineon.com") by linux-mips.org with ESMTP
-	id <S8224772AbUJRIZ2> convert rfc822-to-8bit; Mon, 18 Oct 2004 09:25:28 +0100
-Received: from unknown (HELO mucse211.eu.infineon.com) (172.29.27.228)
-  by smtp5.infineon.com with ESMTP; 18 Oct 2004 10:28:06 +0200
-X-SBRS: None
-Received: from dusse201.eu.infineon.com ([172.29.128.17]) by mucse211.eu.infineon.com over TLS secured channel with Microsoft SMTPSVC(5.0.2195.6713);
-	 Mon, 18 Oct 2004 10:25:11 +0200
-content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Oct 2004 09:44:37 +0100 (BST)
+Received: from vanessarodrigues.com ([IPv6:::ffff:192.139.46.150]:34019 "EHLO
+	jaguar.mkp.net") by linux-mips.org with ESMTP id <S8224791AbUJRIob>;
+	Mon, 18 Oct 2004 09:44:31 +0100
+Received: by jaguar.mkp.net (Postfix, from userid 1655)
+	id 72605286D1B; Mon, 18 Oct 2004 04:44:17 -0400 (EDT)
+To: "Maciej W. Rozycki" <macro@linux-mips.org>
+Cc: Ralf Baechle <ralf@linux-mips.org>,
+	Manish Lachwani <mlachwani@mvista.com>,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH]PCI on SWARM
+References: <416DE31E.90509@mvista.com>
+	<20041014191754.GB30516@linux-mips.org>
+	<Pine.LNX.4.58L.0410142305380.25607@blysk.ds.pg.gda.pl>
+	<416EFBAB.8050600@mvista.com>
+	<Pine.LNX.4.58L.0410142327530.25607@blysk.ds.pg.gda.pl>
+	<20041014225553.GA13597@linux-mips.org>
+	<Pine.LNX.4.58L.0410150311370.25607@blysk.ds.pg.gda.pl>
+From: Jes Sorensen <jes@wildopensource.com>
+Date: 18 Oct 2004 04:44:17 -0400
+In-Reply-To: <Pine.LNX.4.58L.0410150311370.25607@blysk.ds.pg.gda.pl>
+Message-ID: <yq0zn2ks9em.fsf@jaguar.mkp.net>
+User-Agent: Gnus/5.09 (Gnus v5.9.0) Emacs/21.3
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-X-MimeOLE: Produced By Microsoft Exchange V6.0.6603.0
-Subject: Mozilla Firefox compile problem
-Date: Mon, 18 Oct 2004 10:24:59 +0200
-Message-ID: <34A8108658DCCE4B8595675ABFD8172709FAFE@dusse201.eu.infineon.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: Mozilla Firefox compile problem
-Thread-Index: AcS06/SMnXbopdclShajbRG+NznO6g==
-From: <Andre.Messerschmidt@infineon.com>
-To: <linux-mips@linux-mips.org>
-X-OriginalArrivalTime: 18 Oct 2004 08:25:11.0452 (UTC) FILETIME=[FC2FC5C0:01C4B4EB]
-Return-Path: <Andre.Messerschmidt@infineon.com>
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <jes@trained-monkey.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6079
+X-archive-position: 6080
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Andre.Messerschmidt@infineon.com
+X-original-sender: jes@wildopensource.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+>>>>> "Maciej" == Maciej W Rozycki <macro@linux-mips.org> writes:
 
-I am trying to compile Mozilla Firefox 1.0PR with Montavista Pro 3.1 toolchain (I linked mips_fp_be to mips-linux), but I get the following error messages:
+Maciej> On Fri, 15 Oct 2004, Ralf Baechle wrote:
+>> Sure, go ahead.  This btw should match with the pci_controller
+>> definition which is looking fishy also.
 
----- snip ---------------------------------------------------
-mips-linux-g++  -I/opt/mvx/usr/X11R6/include -fno-rtti -fno-exceptions -Wall -Wconversion -Wpointer-arith -Wcast-align -Woverloaded-virtual -Wsynth -Wno-ctor-dtor-privacy -Wno-non-virtual-dtor -Wno-long-long -Wa,-xgot -pthread -pipe  -DDEBUG -D_DEBUG -DDEBUG_am -DTRACING -g -fno-inline -o nsIFileEnumerator nsIFileEnumerator.o           -L../../dist/bin -L../../dist/lib -L../../dist/bin -lxpcom  -L/data2/Sources/inca/mozilla/dist/lib -lplds4 -lplc4 -lnspr4 -lpthread -ldl   -ldl -lm
-../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub203()'
-../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub156()'
-../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub184()'
-../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub128()'
-../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub226()'
-../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub246()'
-../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub112()'
-../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub180()'
-../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub230()'
-../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub147()'
-../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub151()'
-../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub116()'
-../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub111()'
-../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub231()'
-../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub141()'
-../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub104()'
-../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub58()'
-../../dist/bin/libxpcom.so: undefined reference to `nsXPTCStubBase::Stub53()'
+Maciej>  Tough.  Both the PCI memory and the PCI I/O spaces are mapped
+Maciej> in several areas, depending on the byte lane swapping policy
+Maciej> needed and whether 64-bit addressing is feasible or not.  We'd
+Maciej> need two areas for I/O and four for memory (plus another one
+Maciej> for the 40-bit HT address space).
 
-...
+Dual address cycles, ie. 64 bit addressing is fscked on the 1250 from
+what I remember. Correct way to work around this is to stick all
+physical memory outside the 32 bit space into ZONE_HIGHMEM - had a
+patch for 2.4, but I lost it ages ago ;-(
 
----- snap ---------------------------------------------------
+One can just hope Broadcom will learn how to make chips some day ;-(
 
-I found some similar error messages from 2002 via Google, but the provided patches were for PPC and I do not know how to port them to MIPS. (Also i assume that such patches would have made it into the main branch by now)
-
-Has anybody compiled Firefox successfully with Montavista and can give me some hints on how to proceed?
-
-Thanks and regards 
-André Messerschmidt
+Regards,
+Jes

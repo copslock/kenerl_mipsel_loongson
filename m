@@ -1,55 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Apr 2004 17:46:01 +0100 (BST)
-Received: from p508B6C3A.dip.t-dialin.net ([IPv6:::ffff:80.139.108.58]:1359
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225794AbUDWQp7>; Fri, 23 Apr 2004 17:45:59 +0100
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i3NGjcxT016564;
-	Fri, 23 Apr 2004 18:45:38 +0200
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i3NGjHmc016563;
-	Fri, 23 Apr 2004 18:45:17 +0200
-Date: Fri, 23 Apr 2004 18:45:17 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Apr 2004 18:11:45 +0100 (BST)
+Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:49798 "EHLO
+	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225805AbUDWRLo>; Fri, 23 Apr 2004 18:11:44 +0100
+Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
+	id 9F03C4AEA0; Fri, 23 Apr 2004 19:11:36 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by jurand.ds.pg.gda.pl (Postfix) with ESMTP
+	id 8B39B47C6D; Fri, 23 Apr 2004 19:11:36 +0200 (CEST)
+Date: Fri, 23 Apr 2004 19:11:36 +0200 (CEST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Ralf Baechle <ralf@linux-mips.org>
 Cc: Florian Lohoff <flo@rfc822.org>, linux-mips@linux-mips.org
 Subject: Re: MC Parity Error
-Message-ID: <20040423164517.GA16401@linux-mips.org>
-References: <20040423080247.GC5814@paradigm.rfc822.org> <Pine.LNX.4.55.0404231509190.14494@jurand.ds.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.55.0404231509190.14494@jurand.ds.pg.gda.pl>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20040423164517.GA16401@linux-mips.org>
+Message-ID: <Pine.LNX.4.55.0404231849480.14494@jurand.ds.pg.gda.pl>
+References: <20040423080247.GC5814@paradigm.rfc822.org>
+ <Pine.LNX.4.55.0404231509190.14494@jurand.ds.pg.gda.pl>
+ <20040423164517.GA16401@linux-mips.org>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4856
+X-archive-position: 4857
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Apr 23, 2004 at 03:11:19PM +0200, Maciej W. Rozycki wrote:
+On Fri, 23 Apr 2004, Ralf Baechle wrote:
 
-> > success report for the MC Bus Error handler :)
+> > > success report for the MC Bus Error handler :)
+> > > 
+> > > Apr 19 23:17:32 resume kernel: MC Bus Error
+> > > Apr 19 23:17:32 resume kernel: CPU error 0x380<RD PAR > @ 0x0f4c6308
+> > > Apr 19 23:17:32 resume kernel: Instruction bus error, epc == 2accf310, ra == 2accf2c8
+> > > 
+> > > I guess i have bad memory. The interesting point is that the machine
+> > > continued to run for another 2 days. Shouldnt a memory error halt the
+> > > machine ?
 > > 
-> > Apr 19 23:17:32 resume kernel: MC Bus Error
-> > Apr 19 23:17:32 resume kernel: CPU error 0x380<RD PAR > @ 0x0f4c6308
-> > Apr 19 23:17:32 resume kernel: Instruction bus error, epc == 2accf310, ra == 2accf2c8
-> > 
-> > I guess i have bad memory. The interesting point is that the machine
-> > continued to run for another 2 days. Shouldnt a memory error halt the
-> > machine ?
+> >  As it happened in the user mode, I'd expect only the victim process to be
+> > killed.
 > 
->  As it happened in the user mode, I'd expect only the victim process to be
-> killed.
+> The KSU bits are meaningless.  On Indy like most other MIPS systems a
+> bus error exception may be delayed.  So the generic solution requires
 
-The KSU bits are meaningless.  On Indy like most other MIPS systems a
-bus error exception may be delayed.  So the generic solution requires
-tracking down the actual user, something which in the current kernel is
-relativly easy due to rmap.
+ I beg your pardon?  AFAIK, bus errors are documented to be reported
+precisely and my past experience with the systems I use confirms this.  
+Otherwise bits in <asm/paccess.h> wouldn't work, but they do.  Of course
+this is true for errors happening on read transactions (I have troubles
+imagining a delayed read), but the semantics of the exception is defined
+only for reads anyway.  For other transactions a general-purpose interrupt
+should be used (and normally is).  Such an interrupt can happen any time,
+indeed (but here it was an IBE, not an interrupt).
 
-  Ralf
+> tracking down the actual user, something which in the current kernel is
+> relativly easy due to rmap.
+
+ Well, that may be tough anyway -- imagine an uncorrectable memory error 
+on a DMA transaction. ;-)
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

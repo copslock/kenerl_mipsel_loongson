@@ -1,73 +1,75 @@
-Received:  by oss.sgi.com id <S305159AbQCPVWV>;
-	Thu, 16 Mar 2000 13:22:21 -0800
-Received: from deliverator.sgi.com ([204.94.214.10]:33600 "EHLO convert rfc822-to-8bit
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305156AbQCPVWA>;
-	Thu, 16 Mar 2000 13:22:00 -0800
-Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id NAA04237; Thu, 16 Mar 2000 13:17:22 -0800 (PST)
+Received:  by oss.sgi.com id <S305157AbQCQQ3Z>;
+	Fri, 17 Mar 2000 08:29:25 -0800
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:49001 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S305156AbQCQQ3J>; Fri, 17 Mar 2000 08:29:09 -0800
+Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id IAA03327; Fri, 17 Mar 2000 08:32:35 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id NAA97007
+	id IAA70388
 	for linux-list;
-	Thu, 16 Mar 2000 13:07:31 -0800 (PST)
+	Fri, 17 Mar 2000 08:18:13 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id NAA38387
+	via ESMTP id IAA68876
 	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 16 Mar 2000 13:07:28 -0800 (PST)
-	mail_from (roehrig@cwi.nl)
-Received: from hera.cwi.nl (hera.cwi.nl [192.16.191.1]) 
+	Fri, 17 Mar 2000 08:18:10 -0800 (PST)
+	mail_from (kevink@mips.com)
+Received: from mx.mips.com (mx.mips.com [206.31.31.226]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id NAA09971
-	for <linux@cthulhu.engr.sgi.com>; Thu, 16 Mar 2000 13:07:22 -0800 (PST)
-	mail_from (roehrig@cwi.nl)
-Received: from godot.normed.de (hydra0.cwi.nl [192.16.191.10]) by hera.cwi.nl with ESMTP
-	id WAA05385 for <linux@cthulhu.engr.sgi.com>; Thu, 16 Mar 2000 22:06:30 +0100 (MET)
-Received: from localhost ([127.0.0.1] helo=godot.normed.de)
-	by godot.normed.de with esmtp (Exim 3.12 #1 (Debian))
-	id 12VhSa-00024k-00
-	for <linux@cthulhu.engr.sgi.com>; Thu, 16 Mar 2000 22:05:36 +0100
-X-Mailer: exmh version 2.1.1 10/15/1999 (debian)
-From:   Hein Roehrig <hein@acm.org>
-X-url:  http://www.cwi.nl/~roehrig
-To:     linux@cthulhu.engr.sgi.com
-Subject: Indy
-Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Date:   Thu, 16 Mar 2000 22:05:36 +0100
-Message-Id: <E12VhSa-00024k-00@godot.normed.de>
+	via ESMTP id IAA00833
+	for <linux@cthulhu.engr.sgi.com>; Fri, 17 Mar 2000 08:18:09 -0800 (PST)
+	mail_from (kevink@mips.com)
+Received: from newman.mips.com (newman [206.31.31.8])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id IAA10351
+	for <linux@cthulhu.engr.sgi.com>; Fri, 17 Mar 2000 08:18:08 -0800 (PST)
+Received: from satanas (satanas [192.168.236.12])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id IAA12642
+	for <linux@cthulhu.engr.sgi.com>; Fri, 17 Mar 2000 08:18:06 -0800 (PST)
+Message-ID: <00b801bf902c$ddb30140$0ceca8c0@satanas.mips.com>
+From:   "Kevin D. Kissell" <kevink@mips.com>
+To:     "SGI Linux Alias" <linux@cthulhu.engr.sgi.com>
+Subject: Include coherency problem, sigaction and otherwise
+Date:   Fri, 17 Mar 2000 17:21:29 +0100
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 4.72.3110.5
+X-MimeOLE: Produced By Microsoft MimeOLE V4.72.3110.3
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-Hello *, 
+Invesitgating some non-fatal but odd behaviour, we
+have traced it to the fact that the defintions of various
+sigaction flags are defined for MIPS/Linux user code
+in /usr/include/sigaction.h, but defined for the kernel in
+/usr/include/asm/signal.h, and that the two definitions
+are not consistent.  Does anyone know how this
+came about?  
 
-I got Linux to run on an Indy workstation. Thanks for your great 
-work! 
+I have the impresson that the /usr/include stuff in the 
+"Hard Hat" distribution for MIPS is keyed to a 2.0.x kernel, 
+and that an update of /usr/include (as opposed to a downgrade 
+of the kernel headers) may be in order.    Frankly, I don't like 
+the fact that the user and kernel includes don't pull everything 
+out of common files in include/linux and include/asm - I suppose 
+it must have been to reduce the number of compilations
+that depend on kernel includes - but I don't see that
+we can do much about that from here in MIPS-land.
+__
 
-I have a few newbie questions though:
-
-. is there anonymous CVS access to the repository on oss.sgi.com?
-
-. are binutils-mips-linux-2.9.5-1.i386.rpm and 
-  egcs-mips-linux-1.1.2-1.i386.rpm the most current tools, fit
-  for (cross-)compiling development kernels?
-
-. I don't have IRIX. Currently I am booting off the network, but I 
-  would like to make the machine standalone. Is there a way to 
-  install the Linux kernel on the local harddisk in a way that it
-  can be loaded by the firmware without using IRIX?
-
-Thanks a lot in advance for any advice,
-Hein
-
-PS: of course I am also curious about what happend to the IRIX 
-Xsgi on Linux... but reading the archives of this list, mentioning 
-the X server seems to be a guarantee not to get a response...
+Kevin D. Kissell
+MIPS Technologies European Architecture Lab
+kevink@mips.com
+Tel. +33.4.78.38.70.67
+FAX. +33.4.78.38.70.68

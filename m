@@ -1,42 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 May 2003 17:12:41 +0100 (BST)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:6569 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225192AbTEQQMj>; Sat, 17 May 2003 17:12:39 +0100
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id SAA23804;
-	Sat, 17 May 2003 18:13:14 +0200 (MET DST)
-Date: Sat, 17 May 2003 18:13:13 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-cc: linux-mips@linux-mips.org
-Subject: Re: CVS Update@-mips.org: linux
-In-Reply-To: <20030516222748.GU8833@rembrandt.csv.ica.uni-stuttgart.de>
-Message-ID: <Pine.GSO.3.96.1030517181052.23610C-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 May 2003 17:45:43 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:56050 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225218AbTESQpk>;
+	Mon, 19 May 2003 17:45:40 +0100
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.11.6/8.11.6) id h4JGjYx01511;
+	Mon, 19 May 2003 09:45:34 -0700
+Date: Mon, 19 May 2003 09:45:34 -0700
+From: Jun Sun <jsun@mvista.com>
+To: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc: linux-mips@linux-mips.org, ralf@linux-mips.org,
+	nemoto@toshiba-tops.co.jp, jsun@mvista.com
+Subject: Re: please give ieee1394 a chance
+Message-ID: <20030519094534.C32567@mvista.com>
+References: <20030517.215806.92590717.anemo@mba.ocn.ne.jp>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20030517.215806.92590717.anemo@mba.ocn.ne.jp>; from anemo@mba.ocn.ne.jp on Sat, May 17, 2003 at 09:58:06PM +0900
+Return-Path: <jsun@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2413
+X-archive-position: 2414
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 17 May 2003, Thiemo Seufer wrote:
 
-> > Log message:
-> > 	Remove egcs 1.1.2 workarounds from 32-bit compat code.
+Indeed.  This option should be there.
+
+I have heard people get it working or at least trying to get
+it working on MIPS.
+
+Jun
+
+On Sat, May 17, 2003 at 09:58:06PM +0900, Atsushi Nemoto wrote:
+> Now ieee1394 drivers (at least ohci1394 and sbp2) will work on mips.
+> Please give them a chance.
 > 
-> Ah, endlich! Welche gcc Version wird nun die empfohlene?
-
- Marvelous, indeed.  You should be satisfied with patched 2.95.x as I am
-so far, or if you are brave enough, you may try 3.3.
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+> diff -u linux-mips-cvs/arch/mips/config-shared.in linux.new/arch/mips/
+> --- linux-mips-cvs/arch/mips/config-shared.in	Mon May  5 21:31:50 2003
+> +++ linux.new/arch/mips/config-shared.in	Sat May 17 21:50:35 2003
+> @@ -876,6 +876,8 @@
+>  fi
+>  endmenu
+>  
+> +source drivers/ieee1394/Config.in
+> +
+>  if [ "$CONFIG_PCI" = "y" ]; then
+>     source drivers/message/i2o/Config.in
+>  fi
+> ---
+> Atsushi Nemoto
+> 

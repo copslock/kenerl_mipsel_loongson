@@ -1,26 +1,31 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id KAA11312 for <linux-archive@neteng.engr.sgi.com>; Fri, 15 Jan 1999 10:34:10 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id KAA14981 for <linux-archive@neteng.engr.sgi.com>; Fri, 15 Jan 1999 10:41:46 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id KAA84156
+	id KAA65291
 	for linux-list;
-	Fri, 15 Jan 1999 10:32:25 -0800 (PST)
+	Fri, 15 Jan 1999 10:40:43 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from dataserv.detroit.sgi.com (dataserv.detroit.sgi.com [169.238.128.2])
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id KAA72359
+	via ESMTP id KAA82496
 	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 15 Jan 1999 10:32:23 -0800 (PST)
-	mail_from (eak@detroit.sgi.com)
-Received: from mail128.detroit.sgi.com (mail128.detroit.sgi.com [169.238.128.42]) by dataserv.detroit.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via SMTP id NAA15044; Fri, 15 Jan 1999 13:32:21 -0500 (EST)
-Received: from detroit.sgi.com (cx1.detroit.sgi.com [169.238.130.4]) by mail128.detroit.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id NAA29709; Fri, 15 Jan 1999 13:32:19 -0500
-Message-ID: <369F88B7.4950FEA4@detroit.sgi.com>
-Date: Fri, 15 Jan 1999 13:28:07 -0500
-From: Eric Kimminau <eak@detroit.sgi.com>
-Reply-To: eak@detroit.sgi.com
-Organization: Silicon Graphics, Inc
-X-Mailer: Mozilla 4.51C-SGI [en] (X11; I; IRIX 6.2 IP22)
-X-Accept-Language: en
+	Fri, 15 Jan 1999 10:40:41 -0800 (PST)
+	mail_from (richard@infopact.nl)
+Received: from smtp1.casema.net (sun4000.casema.net [195.96.96.97]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id KAA06686
+	for <linux@cthulhu.engr.sgi.com>; Fri, 15 Jan 1999 10:40:40 -0800 (PST)
+	mail_from (richard@infopact.nl)
+Received: from infopact.nl (9dyn182.breda.casema.net [195.96.116.182]) by smtp1.casema.net (8.9.1/CASEMA) with ESMTP id TAA26380; Fri, 15 Jan 1999 19:39:53 +0100 (MET)
+Posted-Date: Fri, 15 Jan 1999 19:39:53 +0100 (MET)
+Message-ID: <369F8C88.39CC6B03@infopact.nl>
+Date: Fri, 15 Jan 1999 10:44:25 -0800
+From: Richard Hartensveld <richard@infopact.nl>
+X-Mailer: Mozilla 4.05C-SGI [en] (X11; I; IRIX 6.5 IP22)
 MIME-Version: 1.0
 To: Alex deVries <adevries@engsoc.carleton.ca>
 CC: SGI Linux <linux@cthulhu.engr.sgi.com>
@@ -32,30 +37,26 @@ Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
 Alex deVries wrote:
-> 
+
 > I don't mean to seem like a bother, but what is the deal with
 > linus.linux.sgi.com? We really need that machine for development.  I think
 > it's been a week now.
-> 
+>
 > If SGI isn't going to be able to support that service, that's fine.  Could
 > you let us know so we can make other arrangements?
-> 
-> --
-> Alex deVries, puffin on LinuxNet.
-> I know exactly what I want in life.
+>
 
-Im probably poking my nose in where Im not needed but Im digging in to see if
-I can find the problem. 
+I've got a challenge S connected to the internet on a 34mbit connection,
+running the (somewhat modificated) hardhat distribution.
 
-EAK.
+I am more then willing to host the linux/SGI pages on this machine, and put
+the machine up
+for development if people are intrested.
 
+I don't know if the www.linux.sgi.com machine is ever going to get back up,
+but if it isn't,
+this is maybe a solution?
 
--- 
----------1---------2---------3---------4---------5---------6---------7
-Eric Kimminau        eak@detroit.sgi.com      Field Technical Support
-       SGI 39001 W. 12 Mile Rd.  Farmington, MI 48331-2903
-      Vox:(248)848-4455  Fax:(248)848-5600  VNET:6-327-4455  
+Greetz,
 
-              "I speak my mind and no one else's."
- "I am a bomb technician. If you see me running, try to keep up..."
-                    http://support.sgi.com
+Richard

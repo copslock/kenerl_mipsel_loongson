@@ -1,195 +1,120 @@
-Received:  by oss.sgi.com id <S305185AbQDWV5C>;
-	Sun, 23 Apr 2000 14:57:02 -0700
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:21353 "EHLO
+Received:  by oss.sgi.com id <S305185AbQDXDbO>;
+	Sun, 23 Apr 2000 20:31:14 -0700
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:59502 "EHLO
         pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S305161AbQDWV4r>; Sun, 23 Apr 2000 14:56:47 -0700
-Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id PAA09128; Sun, 23 Apr 2000 15:00:52 -0700 (PDT)
+	id <S305161AbQDXDay>; Sun, 23 Apr 2000 20:30:54 -0700
+Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id UAA01164; Sun, 23 Apr 2000 20:35:00 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id OAA64497; Sun, 23 Apr 2000 14:56:16 -0700 (PDT)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id OAA45139
+	id UAA83420
 	for linux-list;
-	Sun, 23 Apr 2000 14:40:42 -0700 (PDT)
+	Sun, 23 Apr 2000 20:17:32 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id OAA32564
+	via ESMTP id UAA03570
 	for <linux@cthulhu.engr.sgi.com>;
-	Sun, 23 Apr 2000 14:40:40 -0700 (PDT)
-	mail_from (geert@linux-m68k.org)
-Received: from styx.cs.kuleuven.ac.be (styx.cs.kuleuven.ac.be [134.58.40.3]) 
+	Sun, 23 Apr 2000 20:17:31 -0700 (PDT)
+	mail_from (machida@sm.sony.co.jp)
+Received: from ns4.sony.co.jp (ns4.Sony.CO.JP [202.238.80.4]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id OAA05734
-	for <linux@cthulhu.engr.sgi.com>; Sun, 23 Apr 2000 14:40:38 -0700 (PDT)
-	mail_from (geert@linux-m68k.org)
-Received: from cassiopeia.home (geert@dialup006.cs.kuleuven.ac.be [134.58.47.135])
-	by styx.cs.kuleuven.ac.be (8.9.3/8.9.3) with ESMTP id XAA14755;
-	Sun, 23 Apr 2000 23:40:31 +0200 (MET DST)
-Received: from localhost (geert@localhost)
-	by cassiopeia.home (8.9.3/8.9.3/Debian/GNU) with ESMTP id XAA01852;
-	Sun, 23 Apr 2000 23:40:26 +0200
-X-Authentication-Warning: cassiopeia.home: geert owned process doing -bs
-Date:   Sun, 23 Apr 2000 23:40:26 +0200 (CEST)
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     "Kevin D. Kissell" <kevink@mips.com>
-cc:     Florian Lohoff <flo@rfc822.org>, linux@cthulhu.engr.sgi.com
-Subject: Re: /usr/include/asm/io.h:308: undefined reference to `mips_io_port_base'
-In-Reply-To: <000d01bfad56$7541c320$0ceca8c0@satanas.mips.com>
-Message-ID: <Pine.LNX.4.10.10004232224240.801-100000@cassiopeia.home>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	via ESMTP id UAA07255
+	for <linux@cthulhu.engr.sgi.com>; Sun, 23 Apr 2000 20:17:25 -0700 (PDT)
+	mail_from (machida@sm.sony.co.jp)
+Received: from mail3.sony.co.jp (gatekeeper7.Sony.CO.JP [202.238.80.21])
+	by ns4.sony.co.jp (04/18/00) with ESMTP id MAA47600;
+	Mon, 24 Apr 2000 12:17:23 +0900 (JST)
+Received: from smail1.sm.sony.co.jp (smail1.sm.sony.co.jp [43.11.253.1])
+	by mail3.sony.co.jp (3.7W99051310c) with ESMTP id MAA24951;
+	Mon, 24 Apr 2000 12:17:23 +0900 (JST)
+Received: from imail.sm.sony.co.jp (imail.sm.sony.co.jp [43.27.209.5]) by smail1.sm.sony.co.jp (8.8.8/3.6W) with ESMTP id MAA29716; Mon, 24 Apr 2000 12:16:39 +0900 (JST)
+Received: from mach0.sm.sony.co.jp (mach0.sm.sony.co.jp [43.27.210.135]) by imail.sm.sony.co.jp (8.8.8/3.7W) with ESMTP id MAA00528; Mon, 24 Apr 2000 12:16:52 +0900 (JST)
+Received: from localhost by mach0.sm.sony.co.jp (8.8.8/FreeBSD) with ESMTP id MAA04425; Mon, 24 Apr 2000 12:16:52 +0900 (JST)
+xTo:    binutils@sourceware.cygnus.com
+Cc:     linux@cthulhu.engr.sgi.com, debian-mips@lists.debian.org
+Subject: Re: MIPS gas problem
+In-Reply-To: <20000421154859.3820.qmail@daffy.airs.com>
+References: <20000420164812.17210.qmail@daffy.airs.com>
+	<20000421123014J.machida@sm.sony.co.jp>
+	<20000421154859.3820.qmail@daffy.airs.com>
+X-Mailer: Mew version 1.94.1 on Emacs 19.34 / Mule 2.3 (SUETSUMUHANA)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-Id: <20000424121651S.machida@sm.sony.co.jp>
+Date:   Mon, 24 Apr 2000 12:16:51 +0900
+From:   Hiroyuki Machida <machida@sm.sony.co.jp>
+X-Dispatcher: imput version 990905(IM130)
+To:     unlisted-recipients:; (no To-header on input)
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On Sun, 23 Apr 2000, Kevin D. Kissell wrote:
-> >i am trying to build "pileup" which is a "SoundBlaster" morse trainer.
-> >As it directly accesses hardware it seems to include some files which
-> >aehm - dont seem to work for userspace :)
-> >
-> >Does someone have an idea what goes wrong here ?
+
+Thank you Ian and Alan.
+
+From: Ian Lance Taylor <ian@zembu.com>
+Subject: Re: MIPS gas problem
+Date: 21 Apr 2000 08:48:59 -0700
+
+>    Date: Fri, 21 Apr 2000 12:30:14 +0900
+>    From: Hiroyuki Machida <machida@sm.sony.co.jp>
 > 
-> Sure.  The "IN" and "OUT" macros used to simulate x86
-> I/O instructions operating on ISA I/O space use
-> mips_io_port_base as the base address for the
-> memory-mapped I/O access to "non memory-mapped I/O"
-> (in the PC sense) addresses.  Since MIPS platforms don't
-> always have the same address space layout as a standard PC,
-> mips_io_port_base is not a constant, but a variable declared
-> in arch/mips/kernel/setup.c and initialized (if a non-zero value
-> is required) in the platform setup code.
+>    This message is a gcc issue, as you said. 
 > 
-> So arguably, what you need to do to make those macros
-> work in user mode, is to have some kind of library module
-> that you can link into the application that contains a declaration
-> of mips_io_port_base, initialized to the correct value for
-> your platform.
+>    But, my reported plobelm is really binutils issue.
+> 
+> I know.  I didn't mean to imply otherwise.  Alan Modra's suggested
+> patch was the right one.
+> 
+> Ian
 
-This is similar like on other platforms, like e.g. PPC.
+I summarize the problem and attach patch. Please install it, if you
+can. I don't know what procedure is required to install the patch to
+CVS tree. 
 
-I think the best solution is to provide the value of mips_io_port_base through
-some /proc interface, so userspace knows where ISA I/O space is located.
-Of course this is best coordinated across the different architectures where
-this problem occurs (e.g. PPC).
+*Problem Description:
+Current tc-mips.c:s_change_sec() always sets '.rdata' and '.sdata'
+section alignments to 2**4, even if those contain over 2**4 aligned 
+objects.
 
-> >[...]
-> >make CFLAGS="-O2 -g -Wall -D_REENTRANT"
-> >make[1]: Entering directory `/home/builder/build/pileup-1.1'
-> >gcc -O2 -g -Wall -D_REENTRANT -c  AdLib.c
-> >gcc -O2 -g -Wall -D_REENTRANT -c pileup.c
-> >gcc -O2 -g -Wall -D_REENTRANT -o pileup pileup.o AdLib.o -lm -lpthread
-> >pileup.o: In function `stop_thread':
-> >/home/builder/build/pileup-1.1/pileup.c:229: undefined reference to `ioperm'
 
-And we don't have ioperm() on architectures that don't have special I/O
-instructions.
+*Solution:
+Tc-mips.c:s_change_sec() should use record_alignment(), not
+bfd_set_section_alignment(), for preventing  reset section
+alignments.
 
-Just for reference, this is an example of what I use on PPC to access ISA I/O
-space (please also look at include/asm-ppc/io.h, which resembles a bit to the
-MIPS version).
 
---- tulip/tulip-diag.c.orig	Wed Mar 22 09:30:07 2000
-+++ tulip/tulip-diag.c	Wed Mar 22 18:18:22 2000
-@@ -42,6 +42,7 @@
- #include <string.h>
- #include <strings.h>
- #include <errno.h>
-+#include <sys/mman.h>
- 
- #include <asm/types.h>
- #include <asm/unaligned.h>
-@@ -168,6 +169,56 @@
- static int scan_proc_pci(int card_num);
- static int parse_media_type(const char *capabilities);
- static int get_media_index(const char *name);
-+
-+#ifdef __powerpc__
-+unsigned long isa_io_base;
-+static int io_fd = -1;
-+
-+#define REAL_ISA_IO_BASE	0xf8000000	/* for CHRP LongTrail */
-+#define REAL_ISA_IO_SIZE	0x01000000
-+
-+#warning Make sure REAL_ISA_IO_BASE is the correct base address for ISA I/O space!
-+
-+static void enable_isa_io(void)
-+{
-+    if ((io_fd = open("/dev/mem", O_RDWR)) == -1) {
-+	perror("open /dev/mem");
-+	exit(1);
-+    }
-+    isa_io_base = (unsigned long)mmap(0, REAL_ISA_IO_SIZE,
-+	    			      PROT_READ | PROT_WRITE, MAP_SHARED,
-+				      io_fd, REAL_ISA_IO_BASE);
-+    if (isa_io_base == (unsigned long)-1) {
-+	fprintf(stderr, "mmap 0x%08x: %s", REAL_ISA_IO_BASE, strerror(errno));
-+	exit(1);
-+    }
-+}
-+
-+static void disable_isa_io(void)
-+{
-+    if (isa_io_base != (unsigned long)-1) {
-+	munmap((caddr_t)isa_io_base, REAL_ISA_IO_SIZE);
-+	isa_io_base = (unsigned long)-1;
-+    }
-+    if (io_fd != -1) {
-+	close(io_fd);
-+	io_fd = -1;
-+    }
-+}
-+#else
-+static void enable_isa_io(void)
-+{
-+    /* Get access to all of I/O space. */
-+    if (iopl(3) < 0) {
-+	perror("Network adapter diagnostic: iopl()");
-+	fprintf(stderr, "This program must be run as root.\n");
-+	exit(1);
-+    }
-+}
-+
-+#define disable_isa_io()	do { } while (0)
-+#endif /* !__powerpc__ */
-+
- 
- int
- main(int argc, char **argv)
-@@ -244,12 +295,7 @@
- 		return 3;
+*Patch:
+
+2000-04-24	Machida Hiroyuki <machida@sm.sony.co.jp>
+
+tc-mips.c (s_change_sec): Use record_alignment(), not 
+  bfd_set_section_alignment() to preserve section aligenments. 
+
+
+--- tc-mips.c.ORG	Mon Apr 24 11:22:39 2000
++++ tc-mips.c	Mon Apr 24 11:24:48 2000
+@@ -10045,7 +10045,7 @@ s_change_sec (sec)
+ 				      | SEC_RELOC
+ 				      | SEC_DATA));
+ 	      if (strcmp (TARGET_OS, "elf") != 0)
+-		bfd_set_section_alignment (stdoutput, seg, 4);
++		record_alignment (stdoutput, seg, 4);
+ 	    }
+ 	  demand_empty_rest_of_line ();
  	}
- 
--	/* Get access to all of I/O space. */
--	if (iopl(3) < 0) {
--		perror("Network adapter diagnostic: iopl()");
--		fprintf(stderr, "This program must be run as root.\n");
--		return 2;
--	}
-+	enable_isa_io();
- 
- 	/* Try to read a likely port_base value from /proc/pci. */
- 	if (port_base) {
-@@ -270,6 +316,7 @@
- 			   "     '-e' to show EEPROM contents, -ee for parsed contents,\n"
- 			   "  or '-m' or '-mm' to show MII management registers.\n");
- 
-+	disable_isa_io();
- 	return 0;
- }
- 
-
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- Linux/{m68k~Amiga,PPC~CHRP} -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+@@ -10067,7 +10067,7 @@ s_change_sec (sec)
+ 				     SEC_ALLOC | SEC_LOAD | SEC_RELOC
+ 				     | SEC_DATA);
+ 	      if (strcmp (TARGET_OS, "elf") != 0)
+-		bfd_set_section_alignment (stdoutput, seg, 4);
++		record_alignment (stdoutput, seg, 4);
+ 	    }
+ 	  demand_empty_rest_of_line ();
+ 	  break;

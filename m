@@ -1,51 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Jul 2003 22:17:25 +0100 (BST)
-Received: from mail2.sonytel.be ([IPv6:::ffff:195.0.45.172]:64246 "EHLO
-	witte.sonytel.be") by linux-mips.org with ESMTP id <S8224802AbTGEVRX>;
-	Sat, 5 Jul 2003 22:17:23 +0100
-Received: from vervain.sonytel.be (localhost [127.0.0.1])
-	by witte.sonytel.be (8.12.9/8.12.9) with ESMTP id h65LGn1W013410;
-	Sat, 5 Jul 2003 23:16:49 +0200 (MEST)
-Date: Sat, 5 Jul 2003 23:16:49 +0200 (MEST)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: Ralf Baechle <ralf@linux-mips.org>
-cc: Brian Murphy <brm@murphy.dk>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Jul 2003 23:55:16 +0100 (BST)
+Received: from p508B5C15.dip.t-dialin.net ([IPv6:::ffff:80.139.92.21]:15571
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8224802AbTGEWzN>; Sat, 5 Jul 2003 23:55:13 +0100
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h65MsoDB029046;
+	Sun, 6 Jul 2003 00:54:50 +0200
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h65MsjVP029042;
+	Sun, 6 Jul 2003 00:54:45 +0200
+Date: Sun, 6 Jul 2003 00:54:45 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Brian Murphy <brm@murphy.dk>,
 	Linux/MIPS Development <linux-mips@linux-mips.org>
 Subject: Re: [PATCH 2.4] ndelay typo?
-In-Reply-To: <20030705133426.GA3750@linux-mips.org>
-Message-ID: <Pine.GSO.4.21.0307052305180.23796-100000@vervain.sonytel.be>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <Geert.Uytterhoeven@sonycom.com>
+Message-ID: <20030705225445.GA26533@linux-mips.org>
+References: <20030705133426.GA3750@linux-mips.org> <Pine.GSO.4.21.0307052305180.23796-100000@vervain.sonytel.be>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.GSO.4.21.0307052305180.23796-100000@vervain.sonytel.be>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2773
+X-archive-position: 2774
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 5 Jul 2003, Ralf Baechle wrote:
-> On Sat, Jul 05, 2003 at 03:22:22PM +0200, Brian Murphy wrote:
-> > 	I presume you meant this?
+On Sat, Jul 05, 2003 at 11:16:49PM +0200, Geert Uytterhoeven wrote:
+
+> And don't you want to rename the `usecs' parameter of ndelay() to `nsecs'?
+
+You've not looked at what I actually checked in, I renamed the argument.
+
+> > I'm wondering about the Nile4 support btw.   Vrc5074 == NILE4, right?
 > 
-> Yes, thanks, will fix.
+> Yep.
 
-And don't you want to rename the `usecs' parameter of ndelay() to `nsecs'?
+Well, I was wondering because the code in arch/mips/pci/ops-nile4.c which
+was extraced from the lasat code is completly different from
+ddb5xxx/ddb5074/pci_ops.c, so it's hard to extract the commonc code into
+a shared file.
 
-> I'm wondering about the Nile4 support btw.   Vrc5074 == NILE4, right?
-
-Yep.
-
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+  Ralf

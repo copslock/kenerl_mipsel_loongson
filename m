@@ -1,50 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Oct 2003 22:37:33 +0100 (BST)
-Received: from p508B65AB.dip.t-dialin.net ([IPv6:::ffff:80.139.101.171]:2207
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225470AbTJMVha>; Mon, 13 Oct 2003 22:37:30 +0100
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h9DLbQNK026680;
-	Mon, 13 Oct 2003 23:37:26 +0200
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h9DLbQjO026679;
-	Mon, 13 Oct 2003 23:37:26 +0200
-Date: Mon, 13 Oct 2003 23:37:26 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Thomas Horsten <thomas@horsten.com>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
-	"Liu Hongming (Alan)" <alanliu@trident.com.cn>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: need help on unaligned loads,stores!
-Message-ID: <20031013213726.GA25414@linux-mips.org>
-References: <200310131927.07171.thomas@horsten.com> <Pine.GSO.4.21.0310132132550.26520-100000@starflower.sonytel.be> <20031013204906.GA21100@linux-mips.org> <200310132215.59826.thomas@horsten.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <200310132215.59826.thomas@horsten.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Oct 2003 00:15:57 +0100 (BST)
+Received: from mx20a.rmci.net ([IPv6:::ffff:205.162.184.37]:48014 "HELO
+	mx20a.rmci.net") by linux-mips.org with SMTP id <S8225475AbTJMXPZ>;
+	Tue, 14 Oct 2003 00:15:25 +0100
+Received: (qmail 30812 invoked from network); 13 Oct 2003 23:15:19 -0000
+Received: from webmailb.rmci.net (HELO velocitus.net) (205.162.184.93)
+  by mx20.rmci.net with SMTP; 13 Oct 2003 23:15:19 -0000
+Received: from 156.153.254.10
+        (SquirrelMail authenticated user exister99@velocitus.net)
+        by webmail.rmci.net with HTTP;
+        Mon, 13 Oct 2003 17:15:19 -0600 (MDT)
+Message-ID: <38866.156.153.254.10.1066086919.squirrel@webmail.rmci.net>
+Date: Mon, 13 Oct 2003 17:15:19 -0600 (MDT)
+Subject: 64 bit kernel in the name of HIGHMEM
+From: <exister99@velocitus.net>
+To: <ralf@linux-mips.org>
+In-Reply-To: <20031009140319.GA17647@linux-mips.org>
+References: <5334.156.153.254.2.1065650433.squirrel@webmail.rmci.net>
+        <20031009140319.GA17647@linux-mips.org>
+X-Priority: 3
+Importance: Normal
+X-MSMail-Priority: Normal
+Cc: <linux-mips@linux-mips.org>
+X-Mailer: SquirrelMail (version 1.2.7)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <exister99@velocitus.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3432
+X-archive-position: 3433
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: exister99@velocitus.net
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Oct 13, 2003 at 10:15:59PM +0100, Thomas Horsten wrote:
+Hi Ralf,
 
-> > That correct.  Unfortunately emulating of these instructions in exception
-> > handlers would also be covered by the patents, so rewriting which would
-> > be rather easy in all cases I can think of is the way to go ...
-> 
-> Surely not in Europe (yet), at least?
+Thanks for the prompt response.
 
-The patent itself is a hardware patent and those also cover software
-implementations by interpretation of US, European and various national
-European patent offices.  Otoh the patent will expire in like a year or
-two anyway :-)
+> Reminds me of the HP Laserjet code in the kernel.  Anybody still using
+> or testing that?
 
-  Ralf
+Yes, the code I am working with is basically a snapshot of the kernel
+source with /arch/mips/hp-lj etc.
+
+> Anyway, for a 64-bit processor such as the 20Kc I suggest a 64-bit
+> kernel. Highmem is a pain and 64-bit is the cure.
+
+To that end I have been trying to build a 64 bit kernel.  I think I am
+going about it correctly.  Got ahold of
+
+mips64el-linux-binutils-2.14-3.i386.rpm 
+mips64el-linux-boot-gcc-2.95.4-9.i386.rpm
+
+and got cranking.  Currently make is dying with the following output:
+
+
+[root@l51dhcp252 ljlinux]# make ARCH=mips64 CROSS_COMPILE=mips64el-linux-
+. scripts/mkversion > .tmpversion
+mips64el-linux-gcc -D__KERNEL__ -I/home/astone/cf_burn_64/ljlinux/include
+-Wall -Wstrict-prototypes -Wno-trigraphs -O2 -fno-strict-aliasing
+-fno-common -I/usr/lib/gcc-lib/mips64el-linux/2.95.4/include
+-fomit-frame-pointer -Dx_unity_x -I
+/home/astone/cf_burn_64/ljlinux/include/asm/gcc -mabi=64 -G 0
+-mno-abicalls -fno-pic -Wa,--trap -pipe  -DUTS_MACHINE='"mips64"'
+-DKBUILD_BASENAME=version -c -o init/version.o init/version.c
+mips64el-linux-gcc -D__KERNEL__ -I/home/astone/cf_burn_64/ljlinux/include
+-Wall -Wstrict-prototypes -Wno-trigraphs -O2 -fno-strict-aliasing
+-fno-common -I/usr/lib/gcc-lib/mips64el-linux/2.95.4/include
+-fomit-frame-pointer -Dx_unity_x -I
+/home/astone/cf_burn_64/ljlinux/include/asm/gcc -mabi=64 -G 0
+-mno-abicalls -fno-pic -Wa,--trap -pipe   -DKBUILD_BASENAME=do_mounts -c
+-o init/do_mounts.o init/do_mounts.c
+cpp0: output pipe has been closed
+mips64el-linux-gcc: Internal compiler error: program cc1 got fatal signal 11
+make: *** [init/do_mounts.o] Error 1
+
+
+Initial searches claim this is a bug in the compiler.  Could it be due to
+something I am doing wrong?  Any guidance on building a 64 bit kernel
+would be greatly appreciated.
+
+Best Regards, Andrew Stone

@@ -1,43 +1,67 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5HMYAnC031402
-	for <linux-mips-outgoing@oss.sgi.com>; Mon, 17 Jun 2002 15:34:10 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g5HMtVnC031625
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 17 Jun 2002 15:55:31 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5HMYAem031401
-	for linux-mips-outgoing; Mon, 17 Jun 2002 15:34:10 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g5HMtVmW031624
+	for linux-mips-outgoing; Mon, 17 Jun 2002 15:55:31 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from iris1.csv.ica.uni-stuttgart.de (iris1.csv.ica.uni-stuttgart.de [129.69.118.2])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5HMY4nC031397;
-	Mon, 17 Jun 2002 15:34:05 -0700
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp (Exim 3.36 #2)
-	id 17K55X-000axA-00; Tue, 18 Jun 2002 00:35:07 +0200
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 17K57C-0005rW-00; Tue, 18 Jun 2002 00:36:50 +0200
-Date: Tue, 18 Jun 2002 00:36:50 +0200
-To: Ralf Baechle <ralf@oss.sgi.com>
-Cc: linux-mips@oss.sgi.com
+Received: from localhost.localdomain (ip68-6-25-170.hu.sd.cox.net [68.6.25.170])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g5HMtQnC031620
+	for <linux-mips@oss.sgi.com>; Mon, 17 Jun 2002 15:55:26 -0700
+Received: (from justin@localhost)
+	by localhost.localdomain (8.11.6/8.11.6) id g5HMv9u03463;
+	Mon, 17 Jun 2002 15:57:09 -0700
+X-Authentication-Warning: localhost.localdomain: justin set sender to justin@cs.cmu.edu using -f
 Subject: Re: system.h asm fixes
-Message-ID: <20020617223650.GD20335@rembrandt.csv.ica.uni-stuttgart.de>
-References: <1024338042.1463.21.camel@localhost.localdomain> <20020617224452.C27009@dea.linux-mips.net>
+From: Justin Carlson <justin@cs.cmu.edu>
+To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Cc: linux-mips@oss.sgi.com
+In-Reply-To: <20020617223650.GD20335@rembrandt.csv.ica.uni-stuttgart.de>
+References: <1024338042.1463.21.camel@localhost.localdomain>
+	<20020617224452.C27009@dea.linux-mips.net> 
+	<20020617223650.GD20335@rembrandt.csv.ica.uni-stuttgart.de>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Mailer: Ximian Evolution 1.0.7 
+Date: 17 Jun 2002 15:57:08 -0700
+Message-Id: <1024354629.3160.8.camel@xyzzy.rlson.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20020617224452.C27009@dea.linux-mips.net>
-User-Agent: Mutt/1.3.28i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Ralf Baechle wrote:
-[snip]
-> > Looks to me like we're missing some proper asm clobber markers:
+On Mon, 2002-06-17 at 15:36, Thiemo Seufer wrote:
+> Ralf Baechle wrote:
+> [snip]
+> > > Looks to me like we're missing some proper asm clobber markers:
+> > 
+> > No, as per convention $1 is never used by the compiler per convention,
+> > so clobbering not necessary.  I recently removed all "$1" clobbers to
+> > make the code a bit easier to read.
 > 
-> No, as per convention $1 is never used by the compiler per convention,
-> so clobbering not necessary.  I recently removed all "$1" clobbers to
-> make the code a bit easier to read.
+> How can this work? A grep shows many instances of $1 usage,
+> I don't think all of this code is interrupt safe.
+> 
 
-How can this work? A grep shows many instances of $1 usage,
-I don't think all of this code is interrupt safe.
+The "$x" clobber markers exist so that the *compiler* won't expect
+values in those registers to be preserved across the asm call.  It has
+nothing to do with safety across interrupts.  In other words, it's there
+to prevent something like this:
 
+	foo = 2;   // Compiler sticks foo a register, say, $2	
+	asm (
+		"  lw $2, baz\n"
+		"  sw $2, (%0)\n"
+		::"r" (sna));   // Assembly code uses $2 as a temp reg
+	(*bar) = foo;      // Compiler erroneously does (*bar) = baz;
 
-Thiemo
+In terms of interrupt safety, there is no issue with $1; any interrupt
+would save the register before mucking with it, and restore it before
+returning.  The only registers for which this is not true are k0 and k1.
+
+As others have rightly pointed out, the compiler isn't allowed to muck
+with $1 anyways, as it is defined to be a temporary register for the
+assembler.  So the clobber notation isn't necessary.
+
+Make sense?
+
+-Justin

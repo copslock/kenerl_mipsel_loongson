@@ -1,65 +1,87 @@
-Received:  by oss.sgi.com id <S305163AbQDQLhx>;
-	Mon, 17 Apr 2000 04:37:53 -0700
-Received: from deliverator.sgi.com ([204.94.214.10]:39996 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305161AbQDQLhh>;
-	Mon, 17 Apr 2000 04:37:37 -0700
-Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id EAA19929; Mon, 17 Apr 2000 04:32:52 -0700 (PDT)
+Received:  by oss.sgi.com id <S305167AbQDQQyN>;
+	Mon, 17 Apr 2000 09:54:13 -0700
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:60760 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S305163AbQDQQx6>; Mon, 17 Apr 2000 09:53:58 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id JAA09054; Mon, 17 Apr 2000 09:57:57 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id EAA46046
+	id JAA24514
 	for linux-list;
-	Mon, 17 Apr 2000 04:25:14 -0700 (PDT)
+	Mon, 17 Apr 2000 09:35:03 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id EAA53730
+	via ESMTP id JAA82964
 	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 17 Apr 2000 04:25:12 -0700 (PDT)
-	mail_from (flo@rfc822.org)
-Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4]) 
+	Mon, 17 Apr 2000 09:34:56 -0700 (PDT)
+	mail_from (Harald.Koerfgen@home.ivm.de)
+Received: from mail.ivm.net (mail.ivm.net [62.204.1.4]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id EAA09012
-	for <linux@cthulhu.engr.sgi.com>; Mon, 17 Apr 2000 04:25:11 -0700 (PDT)
-	mail_from (flo@rfc822.org)
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id DBB6B7D9; Mon, 17 Apr 2000 13:25:12 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id BC0028FC4; Mon, 17 Apr 2000 13:17:01 +0200 (CEST)
-Date:   Mon, 17 Apr 2000 13:17:01 +0200
-From:   Florian Lohoff <flo@rfc822.org>
-To:     linux@cthulhu.engr.sgi.com
-Subject: sys_chown vs. sys_lchown
-Message-ID: <20000417131701.A4840@paradigm.rfc822.org>
-Mime-Version: 1.0
+	via ESMTP id JAA09669
+	for <linux@cthulhu.engr.sgi.com>; Mon, 17 Apr 2000 09:34:54 -0700 (PDT)
+	mail_from (Harald.Koerfgen@home.ivm.de)
+Received: from franz.no.dom (port184.duesseldorf.ivm.de [195.247.65.184])
+	by mail.ivm.net (8.8.8/8.8.8) with ESMTP id SAA25123;
+	Mon, 17 Apr 2000 18:34:34 +0200
+X-To:   linux@cthulhu.engr.sgi.com
+Message-ID: <XFMail.000417183336.Harald.Koerfgen@home.ivm.de>
+X-Mailer: XFMail 1.4.0 on Linux
+X-Priority: 3 (Normal)
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.3i
-Organization: rfc822 - pure communication
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+In-Reply-To: <200004162112.XAA02036@jordan.numerik.math.uni-siegen.de>
+Date:   Mon, 17 Apr 2000 18:33:36 +0200 (CEST)
+Reply-To: Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
+Organization: none
+From:   Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
+To:     Michael Engel <engel@math.uni-siegen.de>
+Subject: RE: Indigo R3000 PROM calls /
+Cc:     linux@cthulhu.engr.sgi.com
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-Hi,
-i have discovered some interesting things concerning the chown/lchown
-syscall:
 
-gcc -O2 -s -o usermod usermod.o ../libmisc/libmisc.a ../lib/libshadow.a -lcrypt
-../libmisc/libmisc.a(chowndir.o): In function `chown_tree':
-chowndir.c(.text+0x248): warning: lchown is not implemented and will always fail
+On 16-Apr-00 Michael Engel wrote:
+> I had some time over the weekend and started to hack on Linux for my
+> good old R3000 Indigo (oh yeah, I should better try to write drivers
+> for the PMAG-F and the FDDI adapter in my DECstations but Indigo 
+> hacking seemed to be more fun ;-)). I can load the kernel from sash 
+> and it actually starts at kernel_entry (whow) and - no wonder - crashes 
+> somewhere in init_arch (because I didn't change anything there ...).
+> 
+> Now, it would of course be nice to have some kind of debugging output
+> early on. Does anyone know if the R3k Indigo has the same ARCS console 
+> semantics as the Indy ? I.e. there is a PROMBLOCK struct at address 
+> 0xa0001000 (as defined in include/asm-mips/sgiarcs.h) which points to 
+> romvec which I can then use to dereference PROM functions ? Or is it 
+> something completely different ? 
 
-I discovered a anomaly there when trying to compile current strace
-which has sys_lchown which is sys_chown in current glibc and fails
-to compile thereof.
+Well, as you can imagine I have absolutely no idea, but if you have a chance to
+disassemble the beginning of the PROM (0xbfc00000) you can easily check if the
+Indigo provides callbacks a la MIPS (very much like the DS3100).
 
-I am not shure where the actual problem is but there
-is someone more knowledged ...
+If you find something like:
 
-Flo
+       0:       0bf0008a        j       fc00228
+       4:       00000000        nop
+       8:       0bf0012a        j       fc004a8
+       c:       00000000        nop
+      10:       0bf0013f        j       fc004fc
+      14:       00000000        nop
+      18:       0bf0012c        j       fc004b0
+      1c:       00000000        nop
+
+(and I wouldn't be surprised if you did) then you should have a look at
+include/asm-mips/mipsprom.h and the startup code in arch/mips/dec/prom.
+
 -- 
-Florian Lohoff		flo@rfc822.org		      	+49-subject-2-change
-"Technology is a constant battle between manufacturers producing bigger and
-more idiot-proof systems and nature producing bigger and better idiots."
+Regards,
+Harald

@@ -1,70 +1,54 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA2291026 for <linux-archive@neteng.engr.sgi.com>; Sun, 29 Mar 1998 14:41:23 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id XAA2303363 for <linux-archive@neteng.engr.sgi.com>; Sun, 29 Mar 1998 23:44:20 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id OAA5333483
+	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id XAA5347025
 	for linux-list;
-	Sun, 29 Mar 1998 14:40:48 -0800 (PST)
+	Sun, 29 Mar 1998 23:43:50 -0800 (PST)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id OAA5207906
+	via ESMTP id XAA5448303
 	for <linux@cthulhu.engr.sgi.com>;
-	Sun, 29 Mar 1998 14:40:46 -0800 (PST)
-Received: from MajorD.xtra.co.nz (terminator.xtra.co.nz [202.27.184.5]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id OAA28682
-	for <linux@cthulhu.engr.sgi.com>; Sun, 29 Mar 1998 14:40:44 -0800 (PST)
-	mail_from (ratfink@xtra.co.nz)
-Received: from xtra.co.nz (xtra185187.xtra.co.nz [202.27.185.187])
-	by MajorD.xtra.co.nz (8.8.8/8.8.6) with ESMTP id KAA18155;
-	Mon, 30 Mar 1998 10:40:00 +1200 (NZST)
-Message-ID: <351ECDC0.D0E3BC60@xtra.co.nz>
-Date: Mon, 30 Mar 1998 10:40:00 +1200
-From: Brendan Black <ratfink@xtra.co.nz>
-Organization: Acess Denied...
-X-Mailer: Mozilla 4.04 [en] (X11; U; Linux 2.0.33 i586)
+	Sun, 29 Mar 1998 23:43:48 -0800 (PST)
+Received: from aec.at (web.aec.at [193.170.192.5]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id XAA01385
+	for <linux@cthulhu.engr.sgi.com>; Sun, 29 Mar 1998 23:43:45 -0800 (PST)
+	mail_from (oliver@web.aec.at)
+Received: from localhost (oliver@localhost) by aec.at (8.8.3/8.7) with SMTP id JAA20841 for <linux@cthulhu.engr.sgi.com>; Mon, 30 Mar 1998 09:42:59 +0200
+Date: Mon, 30 Mar 1998 09:42:56 +0200 (MET DST)
+From: Oliver Frommel <oliver@aec.at>
+To: linux@cthulhu.engr.sgi.com
+Subject: compile problem with kernel
+Message-ID: <Pine.LNX.3.96.980330093827.20663A-100000@web.aec.at>
 MIME-Version: 1.0
-To: ralf@uni-koblenz.de
-CC: Dong Liu <dliu@npiww.com>, linux@cthulhu.engr.sgi.com
-Subject: Re: new to sgi linux
-References: <199803272025.PAA16215@pluto.npiww.com> <19980327220550.50946@uni-koblenz.de> <199803272159.QAA18195@pluto.npiww.com> <19980328055201.31189@uni-koblenz.de>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-ralf@uni-koblenz.de wrote:
-> 
-> On Fri, Mar 27, 1998 at 04:59:26PM -0500, Dong Liu wrote:
-> 
-> >  > > Another thing it didn't get the right capacity of scsi disk.
-> >  >
-> >  > Are you shure?  Some peopple got fooled by the 1024 vs. 1024 bytes per
-> >  > kb isue ...  Or are the numbers way off?
-> >
-> > This what I got
-> >
-> > sda: sector size 0 reported, assume 512
-> > SCSI device sda: hdwr sector= 512 bytes, Sectors=1 [0 MB][0.0 GB]
-> >
-> > :=)
-> 
-> Hmmm...  I speculate we misstreat R4000MC / R4400MC CPUs :-(
-> 
-> >  > There is a command named ``hinv'' under IRIX.  Can you mail me the output?
-> 
-> > FPU: MIPS R4010 Floating Point Chip Revision: 0.0
-> > CPU: MIPS R4000 Processor Chip Revision: 3.0
-> > Secondary unified instruction/data cache size: 1 Mbyte
-> 
-> Sigh, was suspecting that.  Actually handling of these CPUs should be
-> fixed in current kernels ...
-> 
->   Ralf
+hello,
 
-seeeing I am having exactly the same problem, it might fix me too
--- 
-Brendan Black - Network Engineer, Telecom Internet Services
-email:	ratfink@xtra.co.nz (personal)	phone: +-649 3555238
-	                                mob:   +-6425 2752667
-"Waving away a cloud of smoke, I look up, and am blinded by a bright, white
-light. It's God. No, not Richard Stallman, or Linus Torvalds, but God. In
-a booming voice, He says: "THIS IS A SIGN. USE LINUX, THE FREE UNIX SYSTEM
-FOR THE 386." -- Matt Welsh
+i got the kernel (linux-980326) from linux.sgi.com and had the following
+problems crosscompiling it from intel-linux (which appeared on list once, but
+without any answer/solution as far as i remember):
+
+mips-linux-gcc -D__KERNEL__ -I/mnt/dsk1/devel/mips/linux-980326/include -Wall -Wstrict-prototypes -O2 -fomit-frame-pointer -G 0 -mno-abicalls -fno-pic -mcpu=r4600 -mips2 -pipe -c entry.S -o entry.o
+entry.S: Assembler messages:
+entry.S:147: Error: .previous without corresponding .section; ignored
+entry.S:147: Error: .previous without corresponding .section; ignored
+entry.S:148: Error: .previous without corresponding .section; ignored
+entry.S:148: Error: .previous without corresponding .section; ignored
+entry.S:154: Error: .previous without corresponding .section; ignored
+entry.S:154: Error: .previous without corresponding .section; ignored
+entry.S:156: Error: .previous without corresponding .section; ignored
+entry.S:156: Error: .previous without corresponding .section; ignored
+entry.S:157: Error: .previous without corresponding .section; ignored
+entry.S:157: Error: .previous without corresponding .section; ignored
+entry.S:158: Error: .previous without corresponding .section; ignored
+entry.S:158: Error: .previous without corresponding .section; ignored
+make[1]: *** [entry.o] Error 1
+make[1]: Leaving directory `/mnt/dsk1/devel/mips/linux-980326/arch/mips/kernel'
+make: *** [linuxsubdirs] Error 2
+
+
+i'd appreciate an explanation what's happening here very much ..
+
+thanks
+-oliver

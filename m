@@ -1,51 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Dec 2002 17:20:18 +0000 (GMT)
-Received: from delta.ds2.pg.gda.pl ([213.192.72.1]:14791 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225241AbSLKRUR>; Wed, 11 Dec 2002 17:20:17 +0000
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id SAA27314;
-	Wed, 11 Dec 2002 18:20:30 +0100 (MET)
-Date: Wed, 11 Dec 2002 18:20:30 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Jun Sun <jsun@mvista.com>
-cc: linux-mips@linux-mips.org
-Subject: Re: IDE module problem
-In-Reply-To: <20021211084914.A6755@mvista.com>
-Message-ID: <Pine.GSO.3.96.1021211181032.22157L-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Dec 2002 17:24:58 +0000 (GMT)
+Received: from alg133.algor.co.uk ([62.254.210.133]:19693 "EHLO
+	oalggw.algor.co.uk") by linux-mips.org with ESMTP
+	id <S8225241AbSLKRY5>; Wed, 11 Dec 2002 17:24:57 +0000
+Received: from mips.com (pubfw.algor.co.uk [62.254.210.129])
+	by oalggw.algor.co.uk (8.11.6/8.10.1) with ESMTP id gBBHOnW05984;
+	Wed, 11 Dec 2002 17:24:49 GMT
+Message-ID: <3DF774DC.3010607@mips.com>
+Date: Wed, 11 Dec 2002 17:24:44 +0000
+From: Nigel Stephens <nigel@mips.com>
+Organization: MIPS Technologies (UK)
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-GB; rv:1.0.0) Gecko/20020529
+X-Accept-Language: en-gb, en-us, en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+To: Daniel Jacobowitz <dan@debian.org>
+CC: Carsten Langgaard <carstenl@mips.com>,
+	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: GDB patch
+References: <15862.15924.283825.28108@hendon.algor.co.uk> <20021210193241.GA15908@nevyn.them.org> <3DF6514E.8040100@mips.com> <20021211165218.GA11767@nevyn.them.org>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <nigel@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 862
+X-archive-position: 863
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: nigel@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 11 Dec 2002, Jun Sun wrote:
+Daniel Jacobowitz wrote:
 
-> > > This is because arch/mips/lib/Makefile says:
-> > > 
-> > > obj-$(CONFIG_IDE)               += ide-std.o ide-no.o
-> > [...]
-> > > 3) use some smart trick in Makefile so that we include those
-> > > two files only if CONFIG_IDE is 'y' or 'm'.  (How?)
-> > 
-> >  obj-$(CONFIG_IDE_MODULE)
-> 
-> This does not work.  Apparently, CONFIG_IDE_MODULE is not created 
-> for makefile part.
+>>Certainly 'p' is the logical inverse of 'P', so we'll change our gdb 
+>>remote stub to use that. So how about accepting Carsten's change, with 
+>>the 'R' case removed, and 'r' changed to 'p'?
+>>    
+>>
+>
+>Can't do it.  I strongly suspect that it will render the stub unusable
+>with current versions of FSF GDB.  Your tools add an explicit size to
+>the packet and the community tools do not; so when they probe for and
+>discover the P packet, they will probably try to use it and get
+>confused.  That's why I'd like to discuss this on the GDB list first.
+>  
+>
 
- Indeed -- my fault.  Variables such as $(CONFIG_IDE) are four-state and
-for the module case they are simply set to "m".  But then you can use
-"ifeq ($(CONFIG_IDE),m)".  Another approach is to invent an additional
-variable automatically set to "y" whenever CONFIG_IDE is enabled. 
+I don't see why it wouldn't work:
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+1) Existing FSF gdb doesn't use 'p' yet anyway - it will continue to 
+work as before, using the 'g' request to fetch all the registers.
+
+2) If and when gdb does use 'p', then there's still no problem - if the 
+kernel gdb stub sees a 'p' request without the ":SIZE" extension, it can 
+just treat it like the FSF protocol and use the "default" register size.
+
+Nigel

@@ -1,67 +1,58 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fAJDVMM25683
-	for linux-mips-outgoing; Mon, 19 Nov 2001 05:31:22 -0800
-Received: from sgi.com (sgi.SGI.COM [192.48.153.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAJDVEW25675;
-	Mon, 19 Nov 2001 05:31:14 -0800
-Received: from wine.digital-digital.com ([210.122.73.240]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id EAA00373; Mon, 19 Nov 2001 04:31:12 -0800 (PST)
-	mail_from (khs@digital-digital.com)
-Received: from khs ([210.122.73.37])
-	by wine.digital-digital.com (8.11.0/8.11.0) with SMTP id fAJCB9Q16460;
-	Mon, 19 Nov 2001 21:11:09 +0900
-Reply-To: <khs@digital-digital.com>
-From: "Han-Seong Kim" <khs@digital-digital.com>
-To: "'Ralf Baechle'" <ralf@oss.sgi.com>
-Cc: <linux-mips@fnet.fr>, <linux-mips@oss.sgi.com>
-Subject: RE: Power MGMT on mips
-Date: Mon, 19 Nov 2001 21:13:08 +0900
-Message-ID: <000001c170f3$8d784d80$cbadfea9@khs>
+	by oss.sgi.com (8.11.2/8.11.3) id fAJHJp609099
+	for linux-mips-outgoing; Mon, 19 Nov 2001 09:19:51 -0800
+Received: from server3.toshibatv.com ([207.152.29.75])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAJHJiW09085
+	for <linux-mips@oss.sgi.com>; Mon, 19 Nov 2001 09:19:44 -0800
+Received: by SERVER3 with Internet Mail Service (5.5.2653.19)
+	id <VJ2W6XMC>; Mon, 19 Nov 2001 10:19:23 -0600
+Message-ID: <7DF7BFDC95ECD411B4010090278A44CA1B743F@ATVX>
+From: "Siders, Keith" <keith_siders@toshibatv.com>
+To: "Linux-Mips (E-mail)" <linux-mips@oss.sgi.com>
+Subject: Memory mapping
+Date: Mon, 19 Nov 2001 10:18:23 -0600
 MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2653.19)
 Content-Type: text/plain;
-	charset="us-ascii"
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook CWS, Build 9.0.2416 (9.0.2910.0)
-Importance: Normal
-In-Reply-To: <20011112233031.A6493@dea.linux-mips.net>
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4522.1200
-Content-Transfer-Encoding: 8bit
-X-MIME-Autoconverted: from base64 to 8bit by oss.sgi.com id fAJDVFW25676
+	charset="iso-8859-1"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi Ralf,
+OK, now that I've spent a couple weeks looking at Linux memory management,
+can someone please help me straighten this out. First, I have a requirement
+to "unobtrusively" hot-patch instruction code ( and probably data also )
+segments in memory. I've decided that the best way to do this is to mmap
+device memory of a pseudo-device module to both the patching process and the
+target process. To the patching process it can be viewed as just RW data
+memory, but to the target process it must look like read-only executable. In
+addition I have found the find_task_by_pid() for getting the process
+descriptor for the target process. So...
 
-I reviewed the data sheet of Mips CPU - QED RM5231.
-There is a wait instruction.
-But when the SysAD bus goes to idle, the wait instruction is valid.
-How can I SysAD bus make idle state?
+1. Can I copy off the current task pointer and substitute the task pointer
+returned by find_task_by_pid() (in the pseudo-device mmap() call), and do
+remap_page_range() to map the memory to the target process?
 
-Han-Seong
+2. Do I need to set task->has_cpu or any other controls to have the remap
+work?
 
------Original Message-----
-From: Ralf Baechle [mailto:ralf@oss.sgi.com]
-Sent: Monday, November 12, 2001 9:31 PM
-To: Han-Seong Kim
-Cc: linux-mips@fnet.fr; linux-mips@oss.sgi.com
-Subject: Re: Power MGMT on mips
+3. The book "Understanding the Linux Kernel" has so many references to
+vm_area_struct that I'm confused as to when this memory area gets allocated,
+let alone who it belongs to in the mmap() call. I had thought I'd just do
+get_free_page() and mmap that address, but everything seems very convoluted
+with so many references in the API's to vm_area_struct: I can't seem to keep
+straight just what VM is supposed to be passed in the mmap() call, where it
+comes from, etc. Is this the [task]->active_mm->mmap vm_area_struct or
+should I look for another? 
 
+HELP! Code deadline was supposed to be noon today ( I'm screwed ) and this
+is the main hitch holding me back. BTW, I can't tell why I'm doing this, so
+please don't ask...
 
-On Mon, Nov 12, 2001 at 05:13:40PM +0900, Han-Seong Kim wrote:
-
-> I want to ask about Power-Mnagement on mips.
-> 1. Is it possible to use power mgnt (ex. apm,acpi) features of linux kernel?
-
-Both are PC stuff, so no.
-
-> 2.If no, how can manage CPU and Bidge chips for power mgnt ?
-
-Right now Linux/MIPS will only use the CPU's power managment features, that
-is the wait instruction or similar.
-
-  Ralf
+Keith Siders
+Software Engineer
+ Toshiba America Consumer Products, Inc.
+Advanced Television Technology Center
+801 Royal Parkway, Suite 100
+Nashville, Tennessee 37214
+Phone: (615) 257-4050
+Fax:   (615) 453-7880

@@ -1,51 +1,61 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fAR04Iv29638
-	for linux-mips-outgoing; Mon, 26 Nov 2001 16:04:18 -0800
+	by oss.sgi.com (8.11.2/8.11.3) id fAR12lI30990
+	for linux-mips-outgoing; Mon, 26 Nov 2001 17:02:47 -0800
 Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAR04Eo29627
-	for <linux-mips@oss.sgi.com>; Mon, 26 Nov 2001 16:04:14 -0800
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAR12fo30984
+	for <linux-mips@oss.sgi.com>; Mon, 26 Nov 2001 17:02:41 -0800
 Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id A7A07848; Tue, 27 Nov 2001 00:04:08 +0100 (CET)
+	id 2E385853; Tue, 27 Nov 2001 01:02:36 +0100 (CET)
 Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 788773F45; Tue, 27 Nov 2001 00:00:11 +0100 (CET)
-Date: Tue, 27 Nov 2001 00:00:11 +0100
+	id B399C3F45; Tue, 27 Nov 2001 01:02:14 +0100 (CET)
+Date: Tue, 27 Nov 2001 01:02:14 +0100
 From: Florian Lohoff <flo@rfc822.org>
-To: Martin Schulze <joey@infodrom.org>
-Cc: Karsten Merker <karsten@excalibur.cologne.de>, linux-mips@oss.sgi.com
-Subject: Re: Status RM200
-Message-ID: <20011127000011.F13081@paradigm.rfc822.org>
-References: <20011126204509.A10341@paradigm.rfc822.org> <20011126213450.B943@excalibur.cologne.de> <20011126231737.B13081@paradigm.rfc822.org> <20011126233548.D26510@finlandia.infodrom.north.de>
+To: linux-mips@oss.sgi.com
+Subject: [PATCH] const mips_io_port_base !?
+Message-ID: <20011127010214.B21296@paradigm.rfc822.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="bGR76rFJjkSxVeRa"
+	protocol="application/pgp-signature"; boundary="p4qYPpj5QlsIQJ0K"
 Content-Disposition: inline
-In-Reply-To: <20011126233548.D26510@finlandia.infodrom.north.de>
 User-Agent: Mutt/1.3.23i
 Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
 
---bGR76rFJjkSxVeRa
+--p4qYPpj5QlsIQJ0K
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 26, 2001 at 11:35:48PM +0100, Martin Schulze wrote:
->=20
-> As I remember, you can't switch to "the right" endianess without a support
-> drivers f*ckup disk - which hasn't appeared on the stage yet.
->=20
 
-If you have the PartNo of the machine i might be able to get some
-system boot-floppies.
+
+For the reason of compilability one should build a consensus ...
+
+
+
+diff -u -r1.29 io.h
+--- include/asm-mips/io.h	2001/11/26 11:14:37	1.29
++++ include/asm-mips/io.h	2001/11/27 01:00:07
+@@ -60,7 +60,7 @@
+  * instruction, so the lower 16 bits must be zero.  Should be true on
+  * on any sane architecture; generic code does not use this assumption.
+  */
+-extern const unsigned long mips_io_port_base;
++extern unsigned long mips_io_port_base;
+=20
+ #define set_io_port_base(base)	\
+ 	do { * (unsigned long *) &mips_io_port_base =3D (base); } while (0)
+
+
+Or the other way round ...
 
 Flo
 --=20
 Florian Lohoff                  flo@rfc822.org             +49-5201-669912
 Nine nineth on september the 9th              Welcome to the new billenium
 
---bGR76rFJjkSxVeRa
+--p4qYPpj5QlsIQJ0K
 Content-Type: application/pgp-signature
 Content-Disposition: inline
 
@@ -53,9 +63,9 @@ Content-Disposition: inline
 Version: GnuPG v1.0.6 (GNU/Linux)
 Comment: For info see http://www.gnupg.org
 
-iD8DBQE8Asl7Uaz2rXW+gJcRAmCEAJ9KAm11apV3dxaEMjoCpwjIXREgYACgoDs2
-N1OBwcTYKDbm+3655THFsGY=
-=XwKe
+iD8DBQE8AtgGUaz2rXW+gJcRAhI1AKCNArDW/o66KzcT6+Br1tmzrvL3UQCgsjqf
+6cZ7+gE8sH0DyIPEXnqyegA=
+=/qVC
 -----END PGP SIGNATURE-----
 
---bGR76rFJjkSxVeRa--
+--p4qYPpj5QlsIQJ0K--

@@ -1,87 +1,41 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f5Q8kZ724192
-	for linux-mips-outgoing; Tue, 26 Jun 2001 01:46:35 -0700
-Received: from mx.mips.com (mx.mips.com [206.31.31.226])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5Q8kXV24189
-	for <linux-mips@oss.sgi.com>; Tue, 26 Jun 2001 01:46:33 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id BAA01081;
-	Tue, 26 Jun 2001 01:46:26 -0700 (PDT)
-Received: from Ulysses (ulysses [192.168.236.13])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id BAA24707;
-	Tue, 26 Jun 2001 01:46:23 -0700 (PDT)
-Message-ID: <008a01c0fe1d$1fbd9a00$0deca8c0@Ulysses>
-From: "Kevin D. Kissell" <kevink@mips.com>
-To: <carlson@sibyte.com>
-Cc: <linux-mips@oss.sgi.com>
-References: <3B34BE3B.B72D40F1@mvista.com> <20010624214232.A18389@mvista.com> <001f01c0fd43$3865b680$0deca8c0@Ulysses> <0106251042380I.00703@plugh.sibyte.com>
+	by oss.sgi.com (8.11.2/8.11.3) id f5QD9qe29192
+	for linux-mips-outgoing; Tue, 26 Jun 2001 06:09:52 -0700
+Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5QD9oV29189
+	for <linux-mips@oss.sgi.com>; Tue, 26 Jun 2001 06:09:51 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA17610;
+	Tue, 26 Jun 2001 15:11:42 +0200 (MET DST)
+Date: Tue, 26 Jun 2001 15:11:41 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: "Kevin D. Kissell" <kevink@mips.com>
+cc: carlson@sibyte.com, linux-mips@oss.sgi.com
 Subject: Re: CONFIG_MIPS_UNCACHED
-Date: Tue, 26 Jun 2001 10:50:50 +0200
+In-Reply-To: <008a01c0fe1d$1fbd9a00$0deca8c0@Ulysses>
+Message-ID: <Pine.GSO.3.96.1010626145139.11763B-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 5.50.4133.2400
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-> > That's a position that would sound reasonable to someone working
-> > on Linux for legacy DEC/SGI systems, but not one that I would
-> > expect to satisfy someone working on embedded Linux.  It would
-> > need to be governed by a config option, but I would think
-> > that ultimately we need to have a Linux that can be ROMed
-> > and branched to directly from the reset vector.  Why force
-> > everyone doing an embedded MIPS/Linux widget to re-invent
-> > the wheel?
->
-> Because there are very good reasons for having a firmware seperate from
-> the OS.
+On Tue, 26 Jun 2001, Kevin D. Kissell wrote:
 
-Yes, and there are also very good reasons for minimizing
-the size and functionality of that bootloader.  One could have
-a minimalist but functional MIPS bootloader that runs in kseg1
-and hasn't the faintest idea what a cache is.  As I said in
-an earlier message on this thread, we should either be explicit
-about what we assume the bootloader will have done for us, or
-prepare to have the relevant CPU/cache intitialization done
-by the kernel.
+> code into every MIPS/Linux kernel!  I wouldn't dream of preventing
+> some one else from putting their full faith in the perfectly understood
+> and well-documented bootloaders on their Indy or DECstation. ;-)
 
-> Otherwise, you're more or less proposing a new run-time-environment
-> that has to do all the hardware sanitizations and initializations before
-we
-> get to the bootstrap environment. That's going to be so system-specific
-and
-> disparate from the kernel that it doesn't, IMHO, make any sense to put it
-> there.
+ With functions like malloc(), strlen(), strcpy(), printf(), getenv(),
+etc. I wouldn't name the DECstation's firmware (the REX one) just a
+bootloader.  It's more like a minimal libc with additional functionality
+to interface to hw, it's very well documented indeed (as opposed to most
+of DECstations' hw, sigh...) and it appears to present a kernel an
+interface that conforms to published docs.
 
-Cache tag initialization is CPU-specific, not system specific.
+ Of course, I don't expect anyone to put a libc into their embedded
+system's ROM.
 
->              This is especially true since *not* having it in the kernel
-gives you
-> the chance to exploit the same firmware environment for non-linux OS'es.
-
-The systems I'm worried about don't *have* any non-Linux OSes.
-I do not advocate unconditionally putting proper cache initialization
-code into every MIPS/Linux kernel!  I wouldn't dream of preventing
-some one else from putting their full faith in the perfectly understood
-and well-documented bootloaders on their Indy or DECstation. ;-)
-And people who have otherwise found it to be a reasonable design
-trade off to build a cache-aware bootloader should not have to pay
-the time or footprint to initialize the cache twice.
-
-But so long as there are people who want to build new, specialized devices
-running embedded Linux, it is in their interest that the MIPS/Linux kernel
-distribution provide them with as much of the generic processor startup
-functionality as possible, so that they can concentrate their energies
-on making their products different and better instead of re-re-implementing
-cache initialization code (and maybe getting it wrong).
-
-But in any case, have no fear, I'm unlikely to be submitting
-any such patch any time soon!
-
-            Regards,
-
-            Kevin K.
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

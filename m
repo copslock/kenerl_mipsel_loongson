@@ -1,36 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 26 Mar 2005 00:38:55 +0000 (GMT)
-Received: from rwcrmhc13.comcast.net ([IPv6:::ffff:204.127.198.39]:56255 "EHLO
-	rwcrmhc13.comcast.net") by linux-mips.org with ESMTP
-	id <S8229684AbVCZAil>; Sat, 26 Mar 2005 00:38:41 +0000
-Received: from [192.168.1.4] (pcp0011842295pcs.waldrf01.md.comcast.net[69.251.97.45])
-          by comcast.net (rwcrmhc13) with ESMTP
-          id <2005032600383301500p3gjme>; Sat, 26 Mar 2005 00:38:34 +0000
-Message-ID: <4244AEF3.7010201@gentoo.org>
-Date:	Fri, 25 Mar 2005 19:38:11 -0500
-From:	Kumba <kumba@gentoo.org>
-User-Agent: Mozilla Thunderbird 1.0.2 (Windows/20050317)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 26 Mar 2005 09:13:05 +0000 (GMT)
+Received: from i-83-67-53-76.freedom2surf.net ([IPv6:::ffff:83.67.53.76]:60309
+	"EHLO skeleton-jack.localnet") by linux-mips.org with ESMTP
+	id <S8225552AbVCZJMu>; Sat, 26 Mar 2005 09:12:50 +0000
+Received: from pdh by skeleton-jack.localnet with local (Exim 3.36 #1 (Debian))
+	id 1DF7L8-0000fF-00; Sat, 26 Mar 2005 09:12:18 +0000
+Date:	Sat, 26 Mar 2005 09:12:18 +0000
 To:	Jim Gifford <maillist@jg555.com>
-CC:	Linux MIPS List <linux-mips@linux-mips.org>
+Cc:	Linux MIPS List <linux-mips@linux-mips.org>
 Subject: Re: Build 64bit on RaQ2
+Message-ID: <20050326091218.GA2471@skeleton-jack>
 References: <42449F47.8010002@jg555.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <42449F47.8010002@jg555.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <kumba@gentoo.org>
+User-Agent: Mutt/1.5.6+20040907i
+From:	Peter Horton <pdh@colonel-panic.org>
+Return-Path: <pdh@colonel-panic.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7532
+X-archive-position: 7533
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: pdh@colonel-panic.org
 Precedence: bulk
 X-list: linux-mips
 
-Jim Gifford wrote:
+On Fri, Mar 25, 2005 at 03:31:19PM -0800, Jim Gifford wrote:
 >   Has anyone had any luck compiling a 64 bit version on the RaQ2. I can 
 > get it to compile but, it locks up during boot up.
 > 
@@ -38,20 +36,11 @@ Jim Gifford wrote:
 > elf64: ffffffff,80080000 (8008000) 3731589t + 134331t
 > 
 > That's all I got during bootup, no error messages or anything.
+> 
 
-Peter Horton had some experimental code in the kernel at one point to try 
-this.  I managed to get a 2.6.9 (I think, maybe 2.6.10) mips64 kernel to boot 
-on cobalt, but it was pretty useless.  Poor machine was slower than molasses 
-uphill in winter.
+As a starting point you need to ensure the "cpu_has_llsc" is false for
+64-bit Cobalt kernels. LLD/SCD is broken on RM5230/5231. There is an
+experimental patch for 2.6.9 on
+http://www.colonel-panic.org/cobalt-mips.
 
-I believe cobalt would run better using the o64 kernel hack than pure n64 
-kernel (-mabi=64), but cobalt needs some fixups to its spaces.h before an o64 
-kernel will build on it.
-
-
---Kumba
-
--- 
-"Such is oft the course of deeds that move the wheels of the world: small 
-hands do them because they must, while the eyes of the great are elsewhere." 
---Elrond
+P.

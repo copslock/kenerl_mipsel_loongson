@@ -1,64 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Aug 2004 17:24:03 +0100 (BST)
-Received: from web8201.mail.in.yahoo.com ([IPv6:::ffff:203.199.70.114]:38314
-	"HELO web8201.mail.in.yahoo.com") by linux-mips.org with SMTP
-	id <S8225238AbUHXQX7>; Tue, 24 Aug 2004 17:23:59 +0100
-Message-ID: <20040824132249.79568.qmail@web8201.mail.in.yahoo.com>
-Received: from [202.41.227.188] by web8201.mail.in.yahoo.com via HTTP; Tue, 24 Aug 2004 14:22:49 BST
-Date: Tue, 24 Aug 2004 14:22:49 +0100 (BST)
-From: =?iso-8859-1?q?Arravind=20babu?= <aravindforl@yahoo.co.in>
-Subject: Testing File systmes and drivers in linux kernel 2.4.20 
-To: binutils@sources.redhat.com
-Cc: linux-mips@linux-mips.org
-MIME-Version: 1.0
-Content-Type: multipart/alternative; boundary="0-1315701508-1093353769=:72915"
-Content-Transfer-Encoding: 8bit
-Return-Path: <aravindforl@yahoo.co.in>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Aug 2004 17:33:29 +0100 (BST)
+Received: from nevyn.them.org ([IPv6:::ffff:66.93.172.17]:25552 "EHLO
+	nevyn.them.org") by linux-mips.org with ESMTP id <S8225238AbUHXQdR>;
+	Tue, 24 Aug 2004 17:33:17 +0100
+Received: from drow by nevyn.them.org with local (Exim 4.34 #1 (Debian))
+	id 1BzeEK-0007wu-Px; Tue, 24 Aug 2004 12:33:04 -0400
+Date: Tue, 24 Aug 2004 12:33:04 -0400
+From: Daniel Jacobowitz <dan@debian.org>
+To: Arravind babu <aravindforl@yahoo.co.in>
+Cc: binutils@sources.redhat.com, linux-mips@linux-mips.org
+Subject: Re: Testing File systmes and drivers in linux kernel 2.4.20
+Message-ID: <20040824163304.GA30528@nevyn.them.org>
+Mail-Followup-To: Arravind babu <aravindforl@yahoo.co.in>,
+	binutils@sources.redhat.com, linux-mips@linux-mips.org
+References: <20040824132249.79568.qmail@web8201.mail.in.yahoo.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20040824132249.79568.qmail@web8201.mail.in.yahoo.com>
+User-Agent: Mutt/1.5.5.1+cvs20040105i
+Return-Path: <drow@nevyn.them.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5729
+X-archive-position: 5730
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aravindforl@yahoo.co.in
+X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
---0-1315701508-1093353769=:72915
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
+On Tue, Aug 24, 2004 at 02:22:49PM +0100, Arravind babu wrote:
+> Hi all,
+>  
+>        We upgraded the linux kernel 2.4.14 to 2.4.20 in our MIPS based embedded device.So we are planning to test the kernel stability.For this we have to test 
+>  
+> File systems (RAMdisk , ROMFS , JFFS , CRAMFS) ,
+> NAND driver ,
+> Ethernet driver.
+>  
+> Is there any tools available freely to test the above things? Pls tell me if there are any tools or links todo these tasks?
 
-Hi all,
- 
-       We upgraded the linux kernel 2.4.14 to 2.4.20 in our MIPS based embedded device.So we are planning to test the kernel stability.For this we have to test 
- 
-File systems (RAMdisk , ROMFS , JFFS , CRAMFS) ,
-NAND driver ,
-Ethernet driver.
- 
-Is there any tools available freely to test the above things? Pls tell me if there are any tools or links todo these tasks?
- 
-Thanks in advance,
-Aravind.
+Why are you sending this to the binutils list?  Don't.
 
-Yahoo! India Matrimony: Find your life partneronline.
---0-1315701508-1093353769=:72915
-Content-Type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-
-<DIV>Hi all,</DIV>
-<DIV>&nbsp;</DIV>
-<DIV>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; We upgraded the linux kernel 2.4.14 to 2.4.20 in our <STRONG>MIPS</STRONG> based embedded device.So we are planning to test the kernel stability.For this we have to test </DIV>
-<DIV>&nbsp;</DIV>
-<DIV><STRONG>File systems</STRONG> (RAMdisk , ROMFS , JFFS , CRAMFS) ,</DIV>
-<DIV><STRONG>NAND </STRONG>driver ,</DIV>
-<DIV><STRONG>Ethernet</STRONG> driver.</DIV>
-<DIV>&nbsp;</DIV>
-<DIV>Is there any tools available freely to test the above things? Pls tell me if there are any tools or links todo these tasks?</DIV>
-<DIV>&nbsp;</DIV>
-<DIV>Thanks in advance,</DIV>
-<DIV>Aravind.</DIV><p><font face=arial size=-1>
-<a href="http://in.rd.yahoo.com/specials/mailtg/*http://yahoo.shaadi.com/india-matrimony/" target="_blank">
-<b>Yahoo! India Matrimony</a>:</b> Find your life partner
-<a href="http://in.rd.yahoo.com/specials/mailtg2/*http://yahoo.shaadi.com/india-matrimony/" target="_blank">online</a>.</font>
---0-1315701508-1093353769=:72915--
+-- 
+Daniel Jacobowitz

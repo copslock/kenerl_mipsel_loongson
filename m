@@ -1,163 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jan 2003 22:37:30 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:61181 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225222AbTAUWh3>;
-	Tue, 21 Jan 2003 22:37:29 +0000
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id h0LMbQC17344;
-	Tue, 21 Jan 2003 14:37:26 -0800
-Date: Tue, 21 Jan 2003 14:37:26 -0800
-From: Jun Sun <jsun@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Jan 2003 07:30:58 +0000 (GMT)
+Received: from rj.SGI.COM ([IPv6:::ffff:192.82.208.96]:492 "EHLO rj.sgi.com")
+	by linux-mips.org with ESMTP id <S8225229AbTAVHa5>;
+	Wed, 22 Jan 2003 07:30:57 +0000
+Received: from larry.melbourne.sgi.com (larry.melbourne.sgi.com [134.14.52.130])
+	by rj.sgi.com (8.12.2/8.12.2/linux-outbound_gateway-1.2) with SMTP id h0M5V3G8006400
+	for <@external-mail-relay.sgi.com:linux-mips@linux-mips.org>; Tue, 21 Jan 2003 21:31:04 -0800
+Received: from pureza.melbourne.sgi.com (pureza.melbourne.sgi.com [134.14.55.244]) by larry.melbourne.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id SAA21283; Wed, 22 Jan 2003 18:30:53 +1100
+Received: from pureza.melbourne.sgi.com (localhost.localdomain [127.0.0.1])
+	by pureza.melbourne.sgi.com (8.12.5/8.12.5) with ESMTP id h0M7U6HJ008281;
+	Wed, 22 Jan 2003 18:30:06 +1100
+Received: (from clausen@localhost)
+	by pureza.melbourne.sgi.com (8.12.5/8.12.5/Submit) id h0M7U682008279;
+	Wed, 22 Jan 2003 18:30:06 +1100
+Date: Wed, 22 Jan 2003 18:30:06 +1100
+From: Andrew Clausen <clausen@melbourne.sgi.com>
 To: linux-mips@linux-mips.org
-Cc: jsun@mvista.com
-Subject: [RFC & PATCH]  fixing tlb flush race problem on smp
-Message-ID: <20030121143726.C16939@mvista.com>
+Cc: gnb@melbourne.sgi.com
+Subject: debian's mips userland on mips64
+Message-ID: <20030122073006.GF6262@pureza.melbourne.sgi.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="AqsLC8rIMeq19msA"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-Return-Path: <jsun@orion.mvista.com>
+User-Agent: Mutt/1.4i
+Return-Path: <clausen@pureza.melbourne.sgi.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1200
+X-archive-position: 1201
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: clausen@melbourne.sgi.com
 Precedence: bulk
 X-list: linux-mips
 
+Hi all,
 
---AqsLC8rIMeq19msA
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+I'm playing with Debian on an Origin 200 (aka ip27 - 64-bit mips).
+The current setup in the mips64-linux world is 64bit kernel +
+32bit userland.  So, a mips64-linux kernel can be mostly run a
+mips32-linux userland out of the box.
 
+Unfortunately, this doesn't apply to strace, as this play with
+the 64bit kernel's stack (eg: struct pt_regs), which is different in
+mips32 and mips64.
 
-Many of us are aware of a hole in current TLB flushing code that
-could cause processes using the same ASID for a SMP machine.
+So, I guess the solution is to hack (it's ugly as hell already...)
+strace to detect and understand the 64 bit stack from a 32 bit
+userland?
 
-Actually there are several problems:
-
-1) get_new_mmu_context() and following set_entryhi, etc are
-not called automically in switch_mm() and active_mm().  If
-an IPI happens and request to flush local tlb, bad things happen.
-
-2) if local_flush_tlb_range() and local_flush_tlb_mm() are 
-called from an IPI, they may call get_new_mmu_context() which
-can bump up the ASID generation number with current active_mm
-totally not aware of it.  Bad things will happen later.
-
-3) during the time window after schedule() calling switch_mm()
-before switch_to(), current->active_mm may be valid but does
-really mean "current->active_mm" anymore.  This is because
-the "current" process will soon become "prev".  The real active_mm
-is actually "next->active_mm".  Because of this, it is not
-enough for those two IPI'ed flushing routines to just check
-again current->active_mm.  Long story made short - bad
-things will happen.
-
-It turns out that other arches have similar problems and solved
-it in various ways.  Unfortunely I like none of them.
-
-Here is one I am pretty happy with.  It is very small and efficient.
-And conceptually it is clean too.  We basically keep the semantics
-of ->mm and ->active_mm unchanged and only introduce a new bit
-to mark which mm is the true owner of mmu hardware on a cpu.
-
-The only downside is that cpu_vm_mask variable does not really
-mean "mask for blocking IPI" in this approach.  It actually 
-indicates whether current->active_mm is really active or not.  
-
-Tested and passed the notorious fork/malloc test.
-
-Let me know what you think.
-
-Jun
-
-
---AqsLC8rIMeq19msA
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename=junk
-
-diff -Nru link/arch/mips/mm/tlb-sb1.c.orig link/arch/mips/mm/tlb-sb1.c
---- link/arch/mips/mm/tlb-sb1.c.orig	Tue Jan 21 13:54:59 2003
-+++ link/arch/mips/mm/tlb-sb1.c	Tue Jan 21 13:58:50 2003
-@@ -172,9 +172,13 @@
- 			}
- 			write_c0_entryhi(oldpid);
- 		} else {
--			get_new_mmu_context(mm, cpu);
--			if (mm == current->active_mm)
-+			if (mm == current->active_mm) {
-+				get_new_mmu_context(mm, cpu);
- 				write_c0_entryhi(cpu_asid(cpu, mm));
-+			} else {
-+				/* drop the current context completely */
-+				CPU_CONTEXT(cpu, mm) = 0;
-+			}
- 		}
- 	}
- 	__restore_flags(flags);
-@@ -258,9 +262,12 @@
- 	__save_and_cli(flags);
- 	cpu = smp_processor_id();
- 	if (cpu_context(cpu, mm) != 0) {
--		get_new_mmu_context(mm, smp_processor_id());
- 		if (mm == current->active_mm) {
-+			get_new_mmu_context(mm, smp_processor_id());
- 			write_c0_entryhi(cpu_asid(cpu, mm));
-+		} else {
-+			/* drop the current context completely */
-+			CPU_CONTEXT(cpu, mm) = 0;
- 		}
- 	}
- 	__restore_flags(flags);
-diff -Nru link/include/asm-mips/mmu_context.h.orig link/include/asm-mips/mmu_context.h
---- link/include/asm-mips/mmu_context.h.orig	Tue Jan 21 13:55:43 2003
-+++ link/include/asm-mips/mmu_context.h	Tue Jan 21 14:01:19 2003
-@@ -89,12 +89,25 @@
- static inline void switch_mm(struct mm_struct *prev, struct mm_struct *next,
-                              struct task_struct *tsk, unsigned cpu)
- {
-+	unsigned long flags;
-+
-+	__save_and_cli(flags);
-+
- 	/* Check if our ASID is of an older version and thus invalid */
- 	if ((cpu_context(cpu, next) ^ asid_cache(cpu)) & ASID_VERSION_MASK)
- 		get_new_mmu_context(next, cpu);
- 
- 	write_c0_entryhi(cpu_context(cpu, next));
- 	TLBMISS_HANDLER_SETUP_PGD(next->pgd);
-+
-+	/*
-+	 * Mark current->active_mm as not "active" anymore.
-+	 * We don't want to mislead possible IPI tlb flush routines.
-+	 */
-+	clear_bit(cpu, &prev->cpu_vm_mask);
-+	set_bit(cpu, &next->cpu_vm_mask);
-+
-+	__restore_flags(flags);
- }
- 
- /*
-@@ -112,11 +125,17 @@
- static inline void
- activate_mm(struct mm_struct *prev, struct mm_struct *next)
- {
-+	unsigned long flags;
-+
-+	__save_and_cli(flags);
-+
- 	/* Unconditionally get a new ASID.  */
- 	get_new_mmu_context(next, smp_processor_id());
- 
- 	write_c0_entryhi(cpu_context(smp_processor_id(), next));
- 	TLBMISS_HANDLER_SETUP_PGD(next->pgd);
-+	
-+	__restore_flags(flags);
- }
- 
- #endif /* _ASM_MMU_CONTEXT_H */
-
---AqsLC8rIMeq19msA--
+Cheers,
+Andrew

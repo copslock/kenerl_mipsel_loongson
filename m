@@ -1,43 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Apr 2003 14:14:26 +0100 (BST)
-Received: from mail.stellartec.com ([IPv6:::ffff:65.107.16.99]:22280 "EHLO
-	nt_server.stellartec.com") by linux-mips.org with ESMTP
-	id <S8225204AbTDWNOZ>; Wed, 23 Apr 2003 14:14:25 +0100
-Received: from wssseeger ([192.168.1.53]) by nt_server.stellartec.com
-          (Post.Office MTA v3.1.2 release (PO205-101c)
-          ID# 568-43562U100L2S100) with SMTP id AAA127;
-          Wed, 23 Apr 2003 06:14:15 -0700
-Reply-To: <sseeger@stellartec.com>
-From: sseeger@stellartec.com (Steven Seeger)
-To: <linux-mips@linux-mips.org>
-Cc: <stevep@metrowerks.com>
-Subject: rtai part 2
-Date: Wed, 23 Apr 2003 06:20:09 -0700
-Message-ID: <06fd01c3099b$1125b2d0$3501a8c0@wssseeger>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Apr 2003 14:23:44 +0100 (BST)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:30949 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225204AbTDWNXn>; Wed, 23 Apr 2003 14:23:43 +0100
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA06597;
+	Wed, 23 Apr 2003 15:24:10 +0200 (MET DST)
+Date: Wed, 23 Apr 2003 15:24:09 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Ralf Baechle <ralf@linux-mips.org>
+cc: Jun Sun <jsun@mvista.com>, Jeff Baitis <baitisj@evolution.com>,
+	Pete Popov <ppopov@mvista.com>, linux-mips@linux-mips.org,
+	Matthew Dharm <mdharm@momenco.com>
+Subject: Re: Improperly handled case in arch/mips/au1000/common/time.c
+In-Reply-To: <20030423022953.B5843@linux-mips.org>
+Message-ID: <Pine.GSO.3.96.1030423151038.6238A-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook CWS, Build 9.0.2416 (9.0.2911.0)
-In-Reply-To: <20030423101533Z8225213-1272+1514@linux-mips.org>
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Importance: Normal
-Return-Path: <sseeger@stellartec.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2153
+X-archive-position: 2154
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sseeger@stellartec.com
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-Just to clarify. The reason I mentioned 2.4.18 is because that's the last
-linux-mips kernel I patched. I haven't done any stress testing with
-2.4.21-pre4. Now I hope to keep the patch current with CVS in the 2.4
-branch.
+On Wed, 23 Apr 2003, Ralf Baechle wrote:
 
-Steve
+> That's basically the old situation again, just in disguise this time.  In
+> practice I fear that's going to be used to keep inferior copies of some
+> code alive so let's see if we can avoid it.
+
+ Board-specific variations are unavoidable.  I'll see how to deal with
+that as I want to merge the DECstation code (which already supports three
+configuration variations) with the generic one.  It needs to be done for
+2.5 and shouldn't hurt for 2.4, either. 
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

@@ -1,72 +1,61 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4V0u3nC010514
-	for <linux-mips-outgoing@oss.sgi.com>; Thu, 30 May 2002 17:56:03 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4V0vWnC010590
+	for <linux-mips-outgoing@oss.sgi.com>; Thu, 30 May 2002 17:57:32 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4V0u3ql010513
-	for linux-mips-outgoing; Thu, 30 May 2002 17:56:03 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4V0vWNS010589
+	for linux-mips-outgoing; Thu, 30 May 2002 17:57:32 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from mail.ict.ac.cn ([159.226.39.4])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4V0tunC010509
-	for <linux-mips@oss.sgi.com>; Thu, 30 May 2002 17:55:57 -0700
-Message-Id: <200205310055.g4V0tunC010509@oss.sgi.com>
-Received: (qmail 10240 invoked from network); 31 May 2002 00:48:18 -0000
-Received: from unknown (HELO foxsen) (159.226.40.150)
-  by 159.226.39.4 with SMTP; 31 May 2002 00:48:18 -0000
-Date: Fri, 31 May 2002 8:56:47 +0800
-From: "Zhang Fuxin" <fxzhang@ict.ac.cn>
-To: William Jhun <wjhun@ayrnetworks.com>
-CC: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: Re: Re: pcnet32.c bug?
-X-mailer: Foxmail 4.1 [cn]
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4V0vVnC010586
+	for <linux-mips@oss.sgi.com>; Thu, 30 May 2002 17:57:31 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.1) id g4V0wl002329
+	for linux-mips@oss.sgi.com; Thu, 30 May 2002 17:58:47 -0700
+Received: from sgi.com (sgi-too.SGI.COM [204.94.211.39])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4UDhNnC003555
+	for <linux-mips@oss.sgi.com>; Thu, 30 May 2002 06:43:23 -0700
+Received: from mailout07.sul.t-online.com (mailout07.sul.t-online.com [194.25.134.83]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id GAA00228
+	for <linux-mips@oss.sgi.com>; Thu, 30 May 2002 06:44:53 -0700 (PDT)
+	mail_from (florian@void.s.bawue.de)
+Received: from fwd00.sul.t-online.de 
+	by mailout07.sul.t-online.com with smtp 
+	id 17DQ4m-0000O4-08; Thu, 30 May 2002 15:34:48 +0200
+Received: from void.s.bawue.de (520095841842-0001@[62.155.180.20]) by fmrl00.sul.t-online.com
+	with esmtp id 17DQ4c-1yhO1QC; Thu, 30 May 2002 15:34:38 +0200
+Received: from florian by void.s.bawue.de with local (Exim 3.33 #1 (Debian))
+	id 17DP5M-0002Bk-00; Thu, 30 May 2002 14:31:20 +0200
+Date: Thu, 30 May 2002 14:31:20 +0200
+To: linux-mips@oss.sgi.com
+Subject: Re: __flush_cache_all() miscellany
+Message-ID: <20020530123120.GB1203@void.s.bawue.de>
+Mail-Followup-To: Florian Laws <florian@void.s.bawue.de>,
+	linux-mips@oss.sgi.com
+References: <1022691053.7644.16.camel@ldt-sj3-022.sj.broadcom.com> <20020529140759.A888@dea.linux-mips.net>
 Mime-Version: 1.0
-Content-Type: text/plain;
-      charset="GB2312"
-Content-Transfer-Encoding: 8bit
-X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id g4V0tvnC010510
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20020529140759.A888@dea.linux-mips.net>
+User-Agent: Mutt/1.3.28i
+From: Florian Laws <florian@void.s.bawue.de>
+X-Sender: 520095841842-0001@t-dialin.net
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-hi,
->> 
->> so,the problem is,can we use wback_inv instead of inv in pci_dma_sync_single
->> when the direction is FROMDEVICE? I don't think so,but that would mean many
->> current drivers are broken...
->
->If I understand this correctly, a writeback means only modified
->cachelines (i.e. data cache lines with a dirty bit, like 'W', set) will
->be written back to main memory.  Since the driver never actually writes
->to any of these buffers (and their contents are invalidated on the
->pci_map_single()), nothing should ever be written back to main memory.
->If this were not the case, you would surely see packet corruption as the
->stale cachelines from a re-used buffer would be written back. I tend not
->to think that it's just coincidence and that MIPS caches tend to be
->small...
-Oh,yes,thank you.
->
->So, writeback-invalidate is not incorrect, but it's not efficient for
->all platforms. Ralf explained to me that some CPUs cannot do indexed
->invalidates separately from writebacks.
->
->I think all three (dma_cache_wback, dma_cache_wback_inv,
->dma_cache_inv) of these calls should be implemented for all CPUs and
->default to dma_cache_wback_inv() if not available. I can come up with a
->patch if people agree (that wback_inv is a suitable replacement for
->either _inv or _wback; MIPS-specific code than can be written to use
->whatever is most optimal if present on that architecture...
-Why not? We have many different c-xxx.c for caches anyway.
->
->Thanks,
->Will
+On Wed, May 29, 2002 at 02:07:59PM -0700, Ralf Baechle wrote:
+> > 
+> > Which caches does this apply to?  It looks like the current
+> > implementations assume L1 only.
+> 
+> The operation got introduced for the R10000 where we only need to flush
+> the caches during initialization or the (unlikely on Origin) case of
 
-= = = = = = = = = = = = = = = = = = = =
-			
+Which case?
 
-Best Regards
----------------------------------------
-Zhang Fuxin
-System Architecture Lab
-Institute of Computing Technology
-Chinese Academy of Sciences,China
-http://www.ict.ac.cn
- 
-			　　　　　　　　　2002-05-31
+Thanks,
+
+Florian

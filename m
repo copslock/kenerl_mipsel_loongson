@@ -1,80 +1,36 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f3JMnXM29087
-	for linux-mips-outgoing; Thu, 19 Apr 2001 15:49:33 -0700
-Received: from rhenium (rhenium.btinternet.com [194.73.73.93])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3JMnSM29083
-	for <linux-mips@oss.sgi.com>; Thu, 19 Apr 2001 15:49:32 -0700
-Received: from [213.122.145.111] (helo=tardis)
-	by rhenium with esmtp (Exim 3.03 #83)
-	id 14qNEr-00032J-00; Thu, 19 Apr 2001 23:49:26 +0100
-Date: Thu, 19 Apr 2001 23:45:08 +0100 (BST)
-From: Dave Gilbert <gilbertd@treblig.org>
-X-Sender: gilbertd@tardis.home.dave
-To: Guido Guenther <guido.guenther@gmx.net>
-cc: linux-mips@oss.sgi.com
-Subject: Re: Passing kernel args
-In-Reply-To: <20010419224030.A19856@bilbo.physik.uni-konstanz.de>
-Message-ID: <Pine.LNX.4.10.10104192336540.894-100000@tardis.home.dave>
+	by oss.sgi.com (8.11.3/8.11.3) id f3K5AxW09642
+	for linux-mips-outgoing; Thu, 19 Apr 2001 22:10:59 -0700
+Received: from mcp.csh.rit.edu (mcp.csh.rit.edu [129.21.60.9])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3K5AwM09639
+	for <linux-mips@oss.sgi.com>; Thu, 19 Apr 2001 22:10:58 -0700
+Received: from csh.rit.edu (anna.csh.rit.edu [129.21.60.133])
+	by mcp.csh.rit.edu (Postfix) with ESMTP id 37134107E
+	for <linux-mips@oss.sgi.com>; Fri, 20 Apr 2001 01:10:57 -0400 (EDT)
+Message-ID: <3ADFC5C9.6060906@csh.rit.edu>
+Date: Fri, 20 Apr 2001 01:14:49 -0400
+From: "George Gensure,,," <werkt@csh.rit.edu>
+User-Agent: Mozilla/5.0 (X11; U; Linux 2.4.4-pre3 i686; en-US; m18) Gecko/20010131 Netscape6/6.01
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To: linux-mips@oss.sgi.com
+Subject: glibc build
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, 19 Apr 2001, Guido Guenther wrote:
+I get the following error while trying to cross-build glibc for mips on 
+an i686.  Can anyone give any insight?
 
-> OSLoadOptions
-> See 
-> http://honk.physik.uni-konstanz.de/linux-mips/indy-boot/indy-hd-boot-micro-howto.html
-> (at the bottom) for an example.
+../sysdeps/mips/setjmp.S: Assembler messages:
+../sysdeps/mips/setjmp.S:43: Error: Can not represent 
+BFD_RELOC_16_PCREL_S2 relocation in this object file format
+make[2]: *** [/usr/local/crossbuild/glibc-build/setjmp/setjmp.o] Error 1
+make[2]: Leaving directory `/usr/local/crossbuild/glibc-2.2/setjmp'
+make[1]: *** [setjmp/subdir_lib] Error 2
+make[1]: Leaving directory `/usr/local/crossbuild/glibc-2.2'
+make: *** [install] Error 2
 
-Ah thanks - that would have helped a lot if I'd seen that before :-)
-However there are a couple of points which don't seem to have matched my
-experience:
-
-  1) Disk partitioning.  I had a disk that had Irix on, however my first
-problem was that the volume header wasn't big enough for a Linux kernel.
-You state that you can use x and then g in fdisk to create a new partition
-table, however that only works if the disc is clean and doesn't already
-have an Irix partition on it.  In my case since it already did have, x
-just gave 'sorry there is no expert mode for SG partitions' (or something
-similar).   Having wiped the disc clean with:
-
-dd if=/dev/zero of=/dev/sda
-
-for a few moments I could then do the x and g (thanks to someone on the
-IRC channel for pointing the x, g thing out prior to you giving me that
-document).
-
-  2) OSLoadPartition - it seems to look at this a little late; i.e. if you
-have an NFS Root kernel it ignores OSLoadPartition and still NFS roots -
-so I needed to pass a root= option.
-
-  2) OSLoadOptions - the kernel I have (a 2.4.0) gets a string which is:
-
-      OSLoadOptions=whatEverYouSet
-
-    So if you:
-
-       setenv OSLoadOptions "root=/dev/sda1 ro"
-
-    The kernel actually sees:
-       OSLoadOptions=root=/dev/sda1 ro
-
-    So I had to do:
-
-       setenv OSLoadOptions " root=/dev/sda1 ro"
-
-    Which works like a dream. (Note the trailing space after the first " )
-
-It is also useful to point out that it is the partition(8) in the options
-that corresponds to the /dev/sda9 in the fdisk output.
-
-Thanks again,
-
-Dave (Whose Indy, dino, now boots off its disc)
-
--- 
- ---------------- Have a happy GNU millennium! ----------------------   
-/ Dr. David Alan Gilbert      | Running GNU/Linux on Alpha, | Happy  \ 
-\   gro.gilbert @ treblig.org | 68K,MIPS,x86,ARM and SPARC  | In Hex /
- \ ___________________________|___ http://www.treblig.org   |_______/
+George
+werkt@csh.rit.edu

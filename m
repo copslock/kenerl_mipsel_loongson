@@ -1,79 +1,94 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 29 Mar 2003 14:41:04 +0000 (GMT)
-Received: from cm19173.red.mundo-r.com ([IPv6:::ffff:213.60.19.173]:10873 "EHLO
-	trasno.mitica") by linux-mips.org with ESMTP id <S8225072AbTC2OlD>;
-	Sat, 29 Mar 2003 14:41:03 +0000
-Received: by trasno.mitica (Postfix, from userid 1001)
-	id DACAE6EE; Sat, 29 Mar 2003 15:41:01 +0100 (CET)
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-	mipslist <linux-mips@linux-mips.org>
-Subject: Re: [PATCH]: c-r4k.c 4/7 flush_cache_mm cleanup
-X-Url: http://people.mandrakesoft.com/~quintela
-From: Juan Quintela <quintela@mandrakesoft.com>
-In-Reply-To: <20030328195953.A17890@linux-mips.org> (Ralf Baechle's message
- of "Fri, 28 Mar 2003 19:59:53 +0100")
-References: <m2smt89ut8.fsf@neno.mitica>
-	<Pine.GSO.3.96.1030328175039.26178B-100000@delta.ds2.pg.gda.pl>
-	<20030328195953.A17890@linux-mips.org>
-Date: Sat, 29 Mar 2003 15:41:01 +0100
-Message-ID: <867kaii6bm.fsf@trasno.mitica>
-User-Agent: Gnus/5.090015 (Oort Gnus v0.15) Emacs/21.2.93
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <quintela@mandrakesoft.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 30 Mar 2003 20:33:15 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:9468 "EHLO
+	av.mvista.com") by linux-mips.org with ESMTP id <S8225072AbTC3TdN>;
+	Sun, 30 Mar 2003 20:33:13 +0100
+Received: from [10.2.2.20] (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id LAA01684;
+	Sun, 30 Mar 2003 11:33:05 -0800
+Subject: Re: IDE initialization on AU1500?
+From: Pete Popov <ppopov@mvista.com>
+To: Hartvig Ekner <hartvig@ekner.info>
+Cc: linux-mips <linux-mips@linux-mips.org>
+In-Reply-To: <3E873DA0.A8B9B807@ekner.info>
+References: <3E873DA0.A8B9B807@ekner.info>
+Content-Type: text/plain
+Organization: MontaVista Software
+Message-Id: <1049052911.1919.11.camel@adsl.pacbell.net>
+Mime-Version: 1.0
+X-Mailer: Ximian Evolution 1.2.1 
+Date: 30 Mar 2003 11:35:11 -0800
+Content-Transfer-Encoding: 7bit
+Return-Path: <ppopov@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1862
+X-archive-position: 1863
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: quintela@mandrakesoft.com
+X-original-sender: ppopov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
->>>>> "ralf" == Ralf Baechle <ralf@linux-mips.org> writes:
+Hi Hartvig,
 
-ralf> On Fri, Mar 28, 2003 at 06:51:57PM +0100, Maciej W. Rozycki wrote:
->> > 	flush_cache_mm can use __flush_cache_all.
->> 
->> Wrong, it should use r4k_flush_pcache_all() unconditionally, but I'm told
->> such a setup triggers a bug somewhere, that needs to be tracked down
->> before committing that change to the CVS.
+I added the mailing list to the CC because someone else might have a
+better answer.
 
-ralf> Now that the problem is mentioned on the list lemme elaborate a bit.  The
-ralf> problem mentioned only affects R4000SC and R4400SC processors.
-ralf> Flush_cache_mm is only used when a mm is either copied on fork or when
-ralf> it's finally destroyed.  Because the S-cache is is physically indexed
-ralf> and the P-cache is refilled from the S-cache if data should be still in
-ralf> there we don't need to flush the S-cache ever for any of the mm's
-ralf> cacheflushing functions.  So the observation that things are only
-ralf> working properly if we do flush the S-cache also suggest we're either
-ralf> having a bug elsewhere in the cache code or we're hitting a hardware
-ralf> problem.
+On Sun, 2003-03-30 at 10:55, Hartvig Ekner wrote:
+> Hi Pete,
+> 
+> I upgraded to the latest 2.4, and all the end_irq warnings which were there a few
+> weeks back are gone. 
 
-Just to add some more data points. flush_cache_mm() is only called
-from two places:
+Yep, I got rid of the debug print :). I had put that print in irq.c a
+long time ago, and it never caused any problems. But back then, the irq
+probing routines were null in MIPS, so we never saw the print.
 
-- kernel/fork.c::dup_mmap()
-- mm/mmap.c::exit_mmap()
+> Now it looks like this:
+> 
+> Uniform Multi-Platform E-IDE driver Revision: 7.00beta-2.4
+> ide: Assuming 33MHz system bus speed for PIO modes; override with idebus=xx
+> PDC20268: IDE controller at PCI slot 00:0d.0
+> PDC20268: chipset revision 2
+> PDC20268: not 100% native mode: will probe irqs later
+> PDC20268: ROM enabled at 0x000dc000
+>     ide0: BM-DMA at 0x0520-0x0527, BIOS settings: hda:pio, hdb:pio
+>     ide1: BM-DMA at 0x0528-0x052f, BIOS settings: hdc:pio, hdd:pio
+> hdc: IBM-DTLA-307030, ATA DISK drive
+> blk: queue 802f7a58, I/O limit 4095Mb (mask 0xffffffff)
+> hdg: IRQ probe failed (0xfffbfffe)
+> hdg: IRQ probe failed (0xfffbbffe)
+> hdi: probing with STATUS(0x24) instead of ALTSTATUS(0x00)
+> hdi: IRQ probe failed (0xfffbfffe)
+> hdi: IRQ probe failed (0xfffbbffe)
+> hdk: probing with STATUS(0x24) instead of ALTSTATUS(0x00)
+> ide1 at 0x510-0x517,0x51a on irq 1
+> hdc: host protected area => 1
+> hdc: 60036480 sectors (30739 MB) w/1916KiB Cache, CHS=59560/16/63, UDMA(100)
+> Partition check:
+>  hdc: hdc1 hdc2 hdc3 hdc4
+> 
+> Are the "IRQ probe failed" and "probing with ..." messages expected and ok?  
 
-I just changed flush_cache_mm() to be r4k_flush_pcache_all() and put
-after the two calls a __flush_cache_all().  As expected everything
-worked :)
+Well, since the ide subsystem is probing all the drives, and there are
+no drives to be found, I would have to say that the failures are to be
+expected.
 
-Now if I removed teh __flush_cache_all() for any of the callers,
-everything goes well.  But if I remove it for both of them things
-crashed during boot.  I am looking at the code of both functions, and
-can't see a good reason for them to fail :(
+> Is there something platform
+> specific which tells the IDE driver to look for 11 drives (hda-hdk) or what is 
+> going on here? 
 
-Does that ring any bells on you?
+include/asm-mips/ide.h defines MAX_HWIFS 10, if not already defined.
 
-I am still investigating that one.
+> As you can probably tell, I don't have any specific knowledge about
+> how the IDE initialization works and how it interacts with the
+> platform specific code (if at all), but I would somehow imagine that
+> unless the IDE drivers detect an IDE controller (as done above: ide0,
+> ide1) no probing should be performed for drives outside the possible
+> range of the detected IDE controllers (hda-hdd in this case).
 
-Later, Juan.
+That's a good point. I don't know what's going on, which is why I added
+the mailing list to the CC. Something seems not quite right.
 
-
--- 
-In theory, practice and theory are the same, but in practice they 
-are different -- Larry McVoy
+Pete

@@ -1,42 +1,37 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f44ClrQ08310
-	for linux-mips-outgoing; Fri, 4 May 2001 05:47:53 -0700
-Received: from dea.waldorf-gmbh.de (IDENT:root@localhost [127.0.0.1])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f44ClpF08306
-	for <linux-mips@oss.sgi.com>; Fri, 4 May 2001 05:47:51 -0700
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f44CkYY01667;
-	Fri, 4 May 2001 09:46:34 -0300
-Date: Fri, 4 May 2001 09:46:34 -0300
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Jun Sun <jsun@mvista.com>
-Cc: nick@snowman.net, Matthew Dharm <mdharm@momenco.com>,
-   Linux-MIPS <linux-mips@oss.sgi.com>
-Subject: Re: Endianness...
-Message-ID: <20010504094634.B1257@bacchus.dhis.org>
-References: <Pine.LNX.4.21.0105021603030.22170-100000@ns> <3AF0724B.D74D9AF9@mvista.com>
+	by oss.sgi.com (8.11.3/8.11.3) id f44Cqsn08761
+	for linux-mips-outgoing; Fri, 4 May 2001 05:52:54 -0700
+Received: from gandalf.physik.uni-konstanz.de (gandalf.physik.uni-konstanz.de [134.34.144.69])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f44CqqF08756
+	for <linux-mips@oss.sgi.com>; Fri, 4 May 2001 05:52:53 -0700
+Received: from bilbo.physik.uni-konstanz.de [134.34.144.81] (8)
+	by gandalf.physik.uni-konstanz.de with esmtp (Exim 3.12 #1 (Debian))
+	id 14vf4i-0000Ls-00; Fri, 04 May 2001 14:52:48 +0200
+Received: from agx by bilbo.physik.uni-konstanz.de with local (Exim 3.12 #1 (Debian))
+	id 14vf4d-0005WE-00; Fri, 04 May 2001 14:52:43 +0200
+Date: Fri, 4 May 2001 14:52:43 +0200
+From: Guido Guenther <guido.guenther@uni-konstanz.de>
+To: "John D. Davis" <johnd@stanford.edu>
+Cc: linux-mips <linux-mips@oss.sgi.com>
+Subject: Re: NFS -13 error
+Message-ID: <20010504145243.B21147@bilbo.physik.uni-konstanz.de>
+Mail-Followup-To: "John D. Davis" <johnd@stanford.edu>,
+	linux-mips <linux-mips@oss.sgi.com>
+References: <20010502155424.A9256@bilbo.physik.uni-konstanz.de> <Pine.GSO.4.31.0105031707340.14342-100000@myth1.Stanford.EDU>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <3AF0724B.D74D9AF9@mvista.com>; from jsun@mvista.com on Wed, May 02, 2001 at 01:47:07PM -0700
-X-Accept-Language: de,en,fr
+In-Reply-To: <Pine.GSO.4.31.0105031707340.14342-100000@myth1.Stanford.EDU>; from johnd@stanford.edu on Thu, May 03, 2001 at 05:15:59PM -0700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, May 02, 2001 at 01:47:07PM -0700, Jun Sun wrote:
-
-> BE is better known perhaps because all SGI workstations are BE.  Generally I
-> found networking systems tend to use BE while consumer electronic devices tend
-> to use LE (which means there are probably more MIPS CPUs running in LE.)
-> 
-> So far I have not found much difference in terms of endianess, although
-> occassionaly you have to IO swap in drivers for BE machine.
-
-The difference is mostly of religious nature even though I've been told
-that various embedded apps can show noticable performance difference due
-to byteswapping.  In general I prefer big endian because it tends to
-trigger certain bugs in software more than little endian, such as accessing
-a memory object with different sizes.
-
-  Ralf
+On Thu, May 03, 2001 at 05:15:59PM -0700, John D. Davis wrote:
+[..snip..] 
+> >Kernel panic: I have no root and I want to scream.
+You can try to give the rootfs on the prom command line e.g.:
+bootp(): nfsroot=ip.of.your.nfsserver:/path/to/rootfs
+See Documentation/nfsroot.txt in the kernel source for details.
+[..snip..]
+Regards, 
+ -- Guido

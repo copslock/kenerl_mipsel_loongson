@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Jan 2003 02:20:57 +0000 (GMT)
-Received: from p508B5ED1.dip.t-dialin.net ([IPv6:::ffff:80.139.94.209]:30421
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Jan 2003 09:48:24 +0000 (GMT)
+Received: from p508B5ED1.dip.t-dialin.net ([IPv6:::ffff:80.139.94.209]:18651
 	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225256AbTAaCU4>; Fri, 31 Jan 2003 02:20:56 +0000
+	id <S8225229AbTAaJsX>; Fri, 31 Jan 2003 09:48:23 +0000
 Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id h0V2KqJ08008;
-	Fri, 31 Jan 2003 03:20:52 +0100
-Date: Fri, 31 Jan 2003 03:20:52 +0100
+	by dea.linux-mips.net (8.11.6/8.11.6) id h0V9mE720685;
+	Fri, 31 Jan 2003 10:48:15 +0100
+Date: Fri, 31 Jan 2003 10:48:14 +0100
 From: Ralf Baechle <ralf@linux-mips.org>
-To: Long Li <long21st@yahoo.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: register declared variable for no optimization
-Message-ID: <20030131032052.A7245@linux-mips.org>
-References: <20030130231119.65802.qmail@web40412.mail.yahoo.com>
+To: ilya@theIlya.com
+Cc: Skippie <skippie@skynet.be>, linux-mips@linux-mips.org
+Subject: Re: XFree XZ support
+Message-ID: <20030131104814.A31631@linux-mips.org>
+References: <20030129143237.8D59413EC09@crassus.kulnet.kuleuven.ac.be> <20030130024611.GG15214@gateway.total-knowledge.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <20030130231119.65802.qmail@web40412.mail.yahoo.com>; from long21st@yahoo.com on Thu, Jan 30, 2003 at 03:11:19PM -0800
+In-Reply-To: <20030130024611.GG15214@gateway.total-knowledge.com>; from ilya@theIlya.com on Wed, Jan 29, 2003 at 06:46:11PM -0800
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1280
+X-archive-position: 1281
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -29,17 +29,17 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jan 30, 2003 at 03:11:19PM -0800, Long Li wrote:
+On Wed, Jan 29, 2003 at 06:46:11PM -0800, ilya@theIlya.com wrote:
 
-> Why the gcc-3.0.4 did the weird stuff? Do I have to
-> use at least level 1 to make the register declared
-> work for it?
+> Hold it there. I thought Impacts are the ones with i860...
+> You were either lying to me back then, or now.
 
-Most modern C compilers simply ignore the register specifier because in
-practice it would result in worse code and as for code quality the
-result of -O0 are not of interest anyway.
+Watch your words.
 
-Linux code must be optmized at least -O1 or it probably won't build or
-work properly.
+The Reality series are using upto about a dozen i860s in the gfx pipeline.
+XZ and Impact is a relativly simple gfx in comparison - I'm told there is
+about a dozen different graphics platforms that share nothing but the
+basic architecture and all are marketed as XZ.  I just hope that isn't
+true ...
 
   Ralf

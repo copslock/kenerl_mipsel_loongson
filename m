@@ -1,56 +1,59 @@
-Received:  by oss.sgi.com id <S553679AbQJVWyx>;
-	Sun, 22 Oct 2000 15:54:53 -0700
-Received: from skynet.csn.ul.ie ([136.201.105.2]:30481 "EHLO skynet.csn.ul.ie")
-	by oss.sgi.com with ESMTP id <S553660AbQJVWyg>;
-	Sun, 22 Oct 2000 15:54:36 -0700
-Received: from localhost (airlied@localhost)
-	by skynet.csn.ul.ie (8.9.3/8.9.3) with ESMTP id XAA26444;
-	Sun, 22 Oct 2000 23:53:06 +0100
-Date:   Sun, 22 Oct 2000 23:53:06 +0100 (IST)
-From:   Dave Airlie <airlied@csn.ul.ie>
-To:     Linux/MIPS list <linux-mips@oss.sgi.com>,
-        "Linux MIPS fnet.fr" <linux-mips@fnet.fr>
-Subject: quicky patch for dz.c
-Message-ID: <Pine.LNX.4.10.10010222351240.13056-100000@skynet.csn.ul.ie>
+Received:  by oss.sgi.com id <S553780AbQJWLV5>;
+	Mon, 23 Oct 2000 04:21:57 -0700
+Received: from router.isratech.ro ([193.226.114.69]:27402 "EHLO
+        router.isratech.ro") by oss.sgi.com with ESMTP id <S553777AbQJWLVc>;
+	Mon, 23 Oct 2000 04:21:32 -0700
+Received: from isratech.ro (calin.cs.tuiasi.ro [193.231.15.163])
+	by router.isratech.ro (8.10.2/8.10.2) with ESMTP id e9NBL3Z23998
+	for <linux-mips@oss.sgi.com>; Mon, 23 Oct 2000 09:21:15 -0200
+Message-ID: <39F47FF3.863BC2F9@isratech.ro>
+Date:   Mon, 23 Oct 2000 14:14:11 -0400
+From:   Nicu Popovici <octavp@isratech.ro>
+X-Mailer: Mozilla 4.7 [en] (X11; I; Linux 2.2.15-2.5.0 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To:     linux-mips@oss.sgi.com
+Subject: Hello!
+Content-Type: multipart/mixed;
+ boundary="------------68D0A09B9D2CE6579C61E58A"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+This is a multi-part message in MIME format.
+--------------68D0A09B9D2CE6579C61E58A
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-Hi,
+Hello,
 
-Just read Karel's site about dz.c not working ...
+>From where can I read the mail archive ? Can anyone tell me that ?
+I lost all my mails since 20-october 200 until today. So I do not know
+any other way in which I can read all  mails from there .
 
-not sure if this helps (haven't had time to test it ... VAX is plugged
-in.. need to get time to setup the DS5000 again..)
+Regards,
+Nicu
 
-info->magic is never used, anyways.
+--------------68D0A09B9D2CE6579C61E58A
+Content-Type: text/x-vcard; charset=us-ascii;
+ name="octavp.vcf"
+Content-Transfer-Encoding: 7bit
+Content-Description: Card for Nicu Popovici
+Content-Disposition: attachment;
+ filename="octavp.vcf"
 
-Dave.
+begin:vcard 
+n:POPOVICI;Nicolae Octavian 
+tel;cell:+40 93 605020
+x-mozilla-html:FALSE
+org:SC Silicon Service SRL;Software
+adr:;;;;;;
+version:2.1
+email;internet:octavp@isratech.ro
+title:Software engineer
+x-mozilla-cpt:;0
+fn:Nicolae Octavian POPOVICI
+end:vcard
 
-Index: dz.c
-===================================================================
-RCS file: /cvs/linux/drivers/char/dz.c,v
-retrieving revision 1.11
-diff -u -r1.11 dz.c
---- dz.c	2000/10/03 11:49:16	1.11
-+++ dz.c	2000/10/22 22:51:57
-@@ -1350,7 +1350,6 @@
-     {
-       info = &multi[i]; 
-       lines[i] = info;
--    info->magic = SERIAL_MAGIC;
- 
-       if ((mips_machtype == MACH_DS23100) || (mips_machtype ==
-MACH_DS5100)) 
-       info->port = (unsigned long) KN01_DZ11_BASE;
-
-
-
--- 
-David Airlie, Software Engineer
-http://www.skynet.ie/~airlied / airlied@skynet.ie
-pam_smb / Linux DecStation / Linux VAX / ILUG person
+--------------68D0A09B9D2CE6579C61E58A--

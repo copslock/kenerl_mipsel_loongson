@@ -1,46 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Nov 2004 00:57:13 +0000 (GMT)
-Received: from nevyn.them.org ([IPv6:::ffff:66.93.172.17]:20672 "EHLO
-	nevyn.them.org") by linux-mips.org with ESMTP id <S8225288AbUKIA5I>;
-	Tue, 9 Nov 2004 00:57:08 +0000
-Received: from drow by nevyn.them.org with local (Exim 4.34 #1 (Debian))
-	id 1CRKJj-0008Ad-83; Mon, 08 Nov 2004 19:57:03 -0500
-Date: Mon, 8 Nov 2004 19:57:03 -0500
-From: Daniel Jacobowitz <dan@debian.org>
-To: Yoni Rabinovitch <Yoni.Rabinovich@Teledata-Networks.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: Problems debugging multithreaded program wirh gdbserver via ser ial port
-Message-ID: <20041109005703.GA31331@nevyn.them.org>
-References: <D6FAAE89E48C5B488B41BEBBDCD746CD09E7CF@tndcmail.Teledata.Local>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Nov 2004 12:24:39 +0000 (GMT)
+Received: from mail.baslerweb.com ([IPv6:::ffff:145.253.187.130]:51534 "EHLO
+	mail.baslerweb.com") by linux-mips.org with ESMTP
+	id <S8225326AbUKIMYc>; Tue, 9 Nov 2004 12:24:32 +0000
+Received: (from mail@localhost)
+	by mail.baslerweb.com (8.12.10/8.12.10) id iA9CNJAE001081
+	for <linux-mips@linux-mips.org>; Tue, 9 Nov 2004 13:23:19 +0100
+Received: from unknown by gateway id /var/KryptoWall/smtpp/kwk4WLSI; Tue Nov 09 13:23:10 2004
+Received: from vclinux-1.basler.corp (localhost [172.16.13.253]) by comm1.baslerweb.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2657.72)
+	id WHM64HZP; Tue, 9 Nov 2004 13:24:22 +0100
+From: Thomas Koeller <thomas.koeller@baslerweb.com>
+Organization: Basler AG
+To: linux-mips@linux-mips.org
+Subject: [PATCH] Function / prototype mismatch
+Date: Tue, 9 Nov 2004 13:28:42 +0100
+User-Agent: KMail/1.6.2
+MIME-Version: 1.0
+Message-Id: <200411091328.42360.thomas.koeller@baslerweb.com>
 Content-Disposition: inline
-In-Reply-To: <D6FAAE89E48C5B488B41BEBBDCD746CD09E7CF@tndcmail.Teledata.Local>
-User-Agent: Mutt/1.5.5.1+cvs20040105i
-Return-Path: <drow@nevyn.them.org>
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Return-Path: <thomas.koeller@baslerweb.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6280
+X-archive-position: 6281
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@debian.org
+X-original-sender: thomas.koeller@baslerweb.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Nov 08, 2004 at 05:53:40PM +0200, Yoni Rabinovitch wrote:
-> Running with "set debug serial 1" gives me the following:
-> 
-> In the gdb session,I see lots of the following messages:
-> [O][K][#][9][a][$]Packet instead of Ack, ignoring it
-> 
-> Simultaneously, in the gdbserver session (via minicom) I see:
-> +$OK#9a
+The definition of do_IRQ() in arch/mips/kernel/irq.c
+does not match the prototype in include/asm-mips/irq.h,
+resulting in a compile error.
 
-Um.... you're running with a serial port open on the same port you're
-trying to debug on?  That can't work.  Use one for console and the
-other for gdbserver, or come to some other arrangement if your board
-only has one.
+tk
+
+Signed-off-by: Thomas Koeller <thomas.koeller@baslerweb.com>
+
+
+--- linux-mips-cvs/arch/mips/kernel/irq.c	2004-11-09 11:43:46.921669824 +0100
++++ linux-mips-basler/arch/mips/kernel/irq.c	2004-11-09 13:18:46.496202792 +0100
+@@ -45,7 +45,7 @@
+  * SMP cross-CPU interrupts have their own specific
+  * handlers).
+  */
+-asmlinkage unsigned int do_IRQ(unsigned int irq, struct pt_regs *regs)
++asmlinkage unsigned int do_IRQ(int irq, struct pt_regs *regs)
+ {
+ 	irq_enter();
+ 
 
 -- 
-Daniel Jacobowitz
+--------------------------------------------------
+
+Thomas Koeller, Software Development
+Basler Vision Technologies
+
+thomas dot koeller at baslerweb dot com
+http://www.baslerweb.com
+
+==============================

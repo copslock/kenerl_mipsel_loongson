@@ -1,134 +1,82 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id VAA34045 for <linux-archive@neteng.engr.sgi.com>; Sun, 22 Mar 1998 21:02:29 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id VAA34664 for <linux-archive@neteng.engr.sgi.com>; Sun, 22 Mar 1998 21:16:21 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id VAA2585681
+	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id VAA2587975
 	for linux-list;
-	Sun, 22 Mar 1998 21:01:58 -0800 (PST)
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
+	Sun, 22 Mar 1998 21:15:49 -0800 (PST)
+Received: from dataserv.detroit.sgi.com (dataserv.detroit.sgi.com [169.238.128.2])
 	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id VAA2530338
+	via SMTP id VAA2528440
 	for <linux@cthulhu.engr.sgi.com>;
-	Sun, 22 Mar 1998 21:01:56 -0800 (PST)
-Received: from MajorD.xtra.co.nz (terminator.xtra.co.nz [202.27.184.5]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id VAA19551
-	for <linux@cthulhu.engr.sgi.com>; Sun, 22 Mar 1998 21:01:54 -0800 (PST)
-	mail_from (ratfink@xtra.co.nz)
-Received: from xtra.co.nz (xtra185187.xtra.co.nz [202.27.185.187])
-	by MajorD.xtra.co.nz (8.8.8/8.8.6) with ESMTP id RAA27079
-	for <linux@cthulhu.engr.sgi.com>; Mon, 23 Mar 1998 17:01:52 +1200 (NZST)
-Message-ID: <3515ECBF.B46B0714@xtra.co.nz>
-Date: Mon, 23 Mar 1998 17:01:51 +1200
-From: Brendan Black <ratfink@xtra.co.nz>
-Organization: Acess Denied...
-X-Mailer: Mozilla 4.04 [en] (X11; U; Linux 2.0.33 i586)
+	Sun, 22 Mar 1998 21:15:45 -0800 (PST)
+Received: from cygnus.detroit.sgi.com by dataserv.detroit.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1502/930416.SGI)
+	 id AAA25984; Mon, 23 Mar 1998 00:15:43 -0500
+Received: from detroit.sgi.com (cx1.detroit.sgi.com [169.238.130.4]) by cygnus.detroit.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id AAA26339; Mon, 23 Mar 1998 00:15:40 -0500 (EST)
+Message-ID: <3515EEF2.7A9D75A8@detroit.sgi.com>
+Date: Mon, 23 Mar 1998 00:11:14 -0500
+From: Eric Kimminau <eak@detroit.sgi.com>
+Reply-To: eak@detroit.sgi.com
+Organization: Silicon Graphics, Inc
+X-Mailer: Mozilla 4.05C-SGI [en] (X11; I; IRIX 6.2 IP22)
 MIME-Version: 1.0
-To: Linux SGI <linux@cthulhu.engr.sgi.com>
-Subject: experiences...
-Content-Type: text/plain; charset=x-UNICODE-2-0-UTF-7
+To: Brendan Black <ratfink@xtra.co.nz>
+CC: Linux SGI <linux@cthulhu.engr.sgi.com>
+Subject: Re: experiences...
+References: <3515ECBF.B46B0714@xtra.co.nz>
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-I've been watching the list for a while now, originally with the
-intention of trying out LinuxSGI on a Challenge S, well there ain't one
-spare anymore, but there is this indy :)
+Brendan Black wrote:
+> The disk is id=2, so irix sits on an efs partition on /dev/dsk/s0d2s0,
+> swap on /dev/dsk/s0d2s1, with my e2fs partition on /dev/dsk/s0d2s2,
+> which all installed without a hitch, once I had learned the vagaries of
+> fx first and the installer second. I may have a hardware problem though,
+> on first turning the machine on, it tries accessing scsi device (0,1,0)
+> on the diagnostics, which as far as I can tell doesn't exist, and then
+> fails diagnostics, then if you hit start system, it boots off (0,2,0)
+> >:-|
+> 
+> I am intending on documenting everything I have to do to get this
+> machine working, hopefully with a full install, and submit this to the
+> project, so - any ideas on the above lockup/errors ??
+> 
+> cheers
 
-to cut a long story short, I grabbed the installer from linus, went
-through the instructions, and tried various different kernels with the
-following results:
-(you'll have to excuse any typing mistakes, I handwrote the boot
-messages)
+There is a SCSI ID jumper on the back of the disk (I believe) - binary
+code (as ar emost SCSI devices). You should be able to move the jumpte
+but you will have to boot miniroot, check your nvram settings to reflect
+booting off of the correct drive and then probably modify /etc/fstab so
+that it mounts the right things (all of this for IRIX).
 
-2.1.55 (vmlinux-970916-efs.gz)
+I don't know about anyone else, but the only way I could get things
+working at all was to have Linux on a completely seperate disk from my
+IRIX drive. YMMV.
 
-PROMLIB: SGI ARCS firmware Version 1 Revision 10
-PROMLIB: Total free ram 64622592 bytes (63108K, 61MB)
-ARCH: SGI-IP22
-CPU: MIPS-R4400 FPU<MIPS-R4400FPC> ICACHE DCACHE SCACHE
-Loading R4000 MMU routines
-CPU revision is: 00000450
-Primary ICACHE 16K (linesize 16 bytes)
-Primary DCACHE 16K (linesize 16 bytes)
-Secondary cache sized at 1024K linesize 128
-MC: SGI memory controller Revision 3
-calculating r4koff... 000bcf0c(773900)
-GFX INIT: SHMIQ setup
-usemaclone misc device registered (minor: 151)
-usema device registered (major 86)
-Video screen size is 00004c88 at 883a5b90
-Console: 16 point font, 992 scans
-Console: colour NEWPORT 158x62, 1 virtual console (max 63)
-Calibrating delay loop.. ok - 77.21 BogoMIPS
-Memory: 60544k/196180k available (1020k kernel code, 2768k data)
-Swansea University Computer Society NET3.039 for Linux 2.1
-NET3: Unix Domain sockets 0.16 for Linux NET3.038.
-Swansea University Computer Society TCP/IP for NET3.037
-IP Protocols: IGMP, ICMP, UDP, TCP
-Checking for 'wait' instruction.. unavailable
-Linux version 2.1.55 (shaver@neon.ingenia.ca) (gcc version 2.7.2) #121
-Tue Sep 16 16:30:52 EDT 1997
-POSIX conformance testing by UNIFIX
-starting kswapd v 1.23
-SGI Zilog8530 serial driver version 1.00
-tty00 at 0xbfbd9838 (irq=21) is a Zilog8530
-tty01 at 0xbfbd9830 (irq=21) is a Zilog8530
-WD93: Driver version 1.25 complied on Sep 13 1997 at 19:13:34
-debug_flags=0x00
-wd33c93-0: chip=WD33c93B/13 no_sync=0xff no_dma=0scsi0 : SGI WD93
-scsi : 1 host
-   sending SDTR
+I still haven't gotten past booting with / mounted read only and then
+re-mounting it read/write. The current basic root disk is missing rc
+scripts and most of the networking stuff so getting it on the net wasn't
+possible. Lots of people offered me places to go and grab a full copy of
+their installed systems to yank down but Ive been traveling too much
+lately to get to it. Maybe this week...
 
-it stops at this point and this happens no matter what options I give
-the kernel (root=/dev/sd??)
+Eric.
 
-2.1.67 (from linus) stops at same point (has a few different devices,
-but essentially the same)
-2.1.72 (from linus) gives me a blank screen (no messages whatsoever :()
 
-aside from the hardware messages above, heres an hinv:
 
-penguin 3% hinv
-Iris Audio Processor: version A2 revision 4.1.0
-1 150 MHZ IP22 Processor
-FPU: MIPS R4000 Floating Point Coprocessor Revision: 0.0
-CPU: MIPS R4400 Processor Chip Revision: 5.0
-On-board serial ports: 2
-On-board bi-directional parallel port
-Data cache size: 16 Kbytes
-Instruction cache size: 16 Kbytes
-Secondary unified instruction/data cache size: 1 Mbyte
-Main memory size: 64 Mbytes
-Integral ISDN: Basic Rate Interface unit 0, revision 1.0
-Integral Ethernet: ec0, version 1
-Integral SCSI controller 0: Version WD33C93B, revision D
-Disk drive: unit 2 on SCSI controller 0
-Graphics board: Indy 8-bit
-Vino video: unit 0, revision 0, IndyCam not connected
-
-I had to install Irix 5.3 myself on the machine, as someone had
-completely screwed the volume header.
-
-The disk is id=2, so irix sits on an efs partition on /dev/dsk/s0d2s0,
-swap on /dev/dsk/s0d2s1, with my e2fs partition on /dev/dsk/s0d2s2,
-which all installed without a hitch, once I had learned the vagaries of
-fx first and the installer second. I may have a hardware problem though,
-on first turning the machine on, it tries accessing scsi device (0,1,0)
-on the diagnostics, which as far as I can tell doesn't exist, and then
-fails diagnostics, then if you hit start system, it boots off (0,2,0)
->:-|
-
-I am intending on documenting everything I have to do to get this
-machine working, hopefully with a full install, and submit this to the
-project, so - any ideas on the above lockup/errors ??
-
-cheers
 -- 
-Brendan Black - Network Engineer, Telecom Internet Services
-email:	ratfink@xtra.co.nz (personal)	phone: +-649 3555238
-	                                mob:   +-6425 2752667
-"Waving away a cloud of smoke, I look up, and am blinded by a bright,
-white
-light. It's God. No, not Richard Stallman, or Linus Torvalds, but God.
-In
-a booming voice, He says: "THIS IS A SIGN. USE LINUX, THE FREE UNIX
-SYSTEM
-FOR THE 386." -- Matt Welsh
+---------1---------2---------3---------4---------5---------6---------7---------8
+Eric Kimminau                           RTA/RSA
+eak@detroit.sgi.com                     Silicon Graphics, Inc
+Voice: (248) 848-4455                   39001 West 12 Mile Rd.
+Fax:   (248) 848-5600                   Farmington, MI 48331-2903
+
+                 VNet Extension - 6-327-4455
+              "I speak my mind and no one else's."
+       http://www.dcs.ex.ac.uk/~aba/rsa/perl-rsa-sig.html
+
+    When confronted by a difficult problem, solve it by reducing 
+    it to the question, "How would the Lone Ranger handle this?"
+	
+         "I am the great supportfolio, do you have http?"

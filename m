@@ -1,35 +1,39 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g25KTo017019
-	for linux-mips-outgoing; Tue, 5 Mar 2002 12:29:50 -0800
-Received: from www.transvirtual.com (root@www.transvirtual.com [206.14.214.140])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g25KTn917016
-	for <linux-mips@oss.sgi.com>; Tue, 5 Mar 2002 12:29:49 -0800
-Received: from www.transvirtual.com (jsimmons@localhost [127.0.0.1])
-        by localhost (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id g25JTWn4002206;
-	Tue, 5 Mar 2002 11:29:32 -0800
-Received: from localhost (jsimmons@localhost)
-        by www.transvirtual.com (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id g25JTWpL002202;
-	Tue, 5 Mar 2002 11:29:32 -0800
-X-Authentication-Warning: www.transvirtual.com: jsimmons owned process doing -bs
-Date: Tue, 5 Mar 2002 11:29:32 -0800 (PST)
-From: James Simmons <jsimmons@transvirtual.com>
-To: Andre.Messerschmidt@infineon.com
-cc: linux-mips@oss.sgi.com
-Subject: Re: Console problem
-In-Reply-To: <86048F07C015D311864100902760F1DD01B5E74B@dlfw003a.dus.infineon.com>
-Message-ID: <Pine.LNX.4.10.10203051129070.29682-100000@www.transvirtual.com>
+	by oss.sgi.com (8.11.2/8.11.3) id g25KtTw18329
+	for linux-mips-outgoing; Tue, 5 Mar 2002 12:55:29 -0800
+Received: from fenris.scrooge.dk (213.237.12.36.adsl.ynoe.worldonline.dk [213.237.12.36])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g25KtL918307
+	for <linux-mips@oss.sgi.com>; Tue, 5 Mar 2002 12:55:22 -0800
+Received: from athlon-800 (athlon-pc [10.0.0.2])
+	by fenris.scrooge.dk (8.12.1/8.8.7) with ESMTP id g25JtSAT016316;
+	Tue, 5 Mar 2002 20:55:28 +0100
+From: "Soeren Laursen" <soeren.laursen@scrooge.dk>
+To: nsauzede@yahoo.com
+Date: Tue, 5 Mar 2002 20:54:39 +0100
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Subject: Re: device support on indy WS !?
+Reply-to: soeren.laursen@scrooge.dk
+CC: linux-mips@oss.sgi.com
+Message-ID: <3C85308F.32143.32967F@localhost>
+In-reply-to: <20020305132731.81589.qmail@web13006.mail.yahoo.com>
+References: <3C84D1FC.2273.520DA2@localhost>
+X-mailer: Pegasus Mail for Windows (v4.01)
+Content-type: text/plain; charset=US-ASCII
+Content-transfer-encoding: 7BIT
+Content-description: Mail message body
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+> BTW, in this page, the author chose to install packages from the
+> internet, but I would rather prefer download all the install distro (is
+> there some big tarball containing every packages) in the afternoon, and
+> put it on some HD I can mount as nfs from some linux server ??
+There are some root.tar.gz that I used in the "old days". Where they  
+are now - no clue!
 
-> I wrote my own console driver based on the ARC console driver (to keep it
-> simple). When I am booting my modified 2.4.3 kernel, I get an "unable to
-> open initial console" error (code: No such device). I have tracked it down
-> to the point where the kernel searches for a valid TTY device with major and
-> minor ID 4:64. 
-> All devices that are present at this time are: 3:0-3:256 2:0-2:256 5:0 5:1.
-> Obviously there is no 4:64 device.
+> To conclude : do you know if it is possible to get the whole
+> debian-mips bin distro in one file ??
+You should also be able to download the debian-mips packages and 
+place it on you own ftp/http server.
 
-Did you call register_console ?
+Soeren,

@@ -1,51 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Apr 2005 17:50:02 +0100 (BST)
-Received: from embeddededge.com ([IPv6:::ffff:209.113.146.155]:24331 "EHLO
-	penguin.netx4.com") by linux-mips.org with ESMTP
-	id <S8225308AbVDEQtr>; Tue, 5 Apr 2005 17:49:47 +0100
-Received: from [192.168.87.101] (pool-151-203-225-221.bos.east.verizon.net [151.203.225.221])
-	by penguin.netx4.com (8.12.8/8.12.9) with ESMTP id j35GkTqB008058;
-	Tue, 5 Apr 2005 12:46:29 -0400
-In-Reply-To: <200504041717.29098.eckhardt@satorlaser.com>
-References: <200504041717.29098.eckhardt@satorlaser.com>
-Mime-Version: 1.0 (Apple Message framework v619.2)
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Message-Id: <de11cd376cdc88e9c292ae7e204e2de9@embeddededge.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Apr 2005 18:41:26 +0100 (BST)
+Received: from mail.timesys.com ([IPv6:::ffff:65.117.135.102]:55528 "EHLO
+	exchange.timesys.com") by linux-mips.org with ESMTP
+	id <S8225296AbVDERlL>; Tue, 5 Apr 2005 18:41:11 +0100
+Received: from [192.168.2.27] ([192.168.2.27]) by exchange.timesys.com with Microsoft SMTPSVC(5.0.2195.6713);
+	 Tue, 5 Apr 2005 13:37:01 -0400
+Message-ID: <4252CDB1.9060809@timesys.com>
+Date:	Tue, 05 Apr 2005 13:41:05 -0400
+From:	Greg Weeks <greg.weeks@timesys.com>
+User-Agent: Mozilla Thunderbird 1.0 (X11/20041206)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	Ralf Baechle <ralf@linux-mips.org>
+CC:	linux-mips@linux-mips.org
+Subject: Re: malta 4kc bus error
+References: <425277B1.7080501@timesys.com> <20050405162725.GB16601@linux-mips.org> <4252C51F.6040907@timesys.com> <20050405172933.GH16601@linux-mips.org>
+In-Reply-To: <20050405172933.GH16601@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc:	linux-mips@linux-mips.org
-From:	Dan Malek <dan@embeddededge.com>
-Subject: Re: Au1100 FB driver uplift for 2.6
-Date:	Tue, 5 Apr 2005 12:49:41 -0400
-To:	Ulrich Eckhardt <eckhardt@satorlaser.com>
-X-Mailer: Apple Mail (2.619.2)
-Return-Path: <dan@embeddededge.com>
+X-OriginalArrivalTime: 05 Apr 2005 17:37:01.0609 (UTC) FILETIME=[13308990:01C53A06]
+Return-Path: <greg.weeks@timesys.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7597
+X-archive-position: 7598
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@embeddededge.com
+X-original-sender: greg.weeks@timesys.com
 Precedence: bulk
 X-list: linux-mips
 
+Ralf Baechle wrote:
 
-On Apr 4, 2005, at 11:17 AM, Ulrich Eckhardt wrote:
+>On Tue, Apr 05, 2005 at 01:04:31PM -0400, Greg Weeks wrote:
+>
+>  
+>
+>>It appears to be turned on always now.
+>>    
+>>
+>
+>Correct.
+>
+>  
+>
+>>From arch/mips/Kconfig
+>>
+>>config CPU_MIPS32
+>>   bool "MIPS32"
+>>   select CPU_SUPPORTS_32BIT_KERNEL
+>>   select CPU_HAS_PREFETCH
+>>
+>>I'll try turning it off directly in the memcpy function.
+>>    
+>>
+>
+>That's certainly a hack - but likely to result in the best performance.
+>  
+>
+It's the quickest way to find out if it's the problem I'm seeing. It 
+appears to be. Now, what's the best way to fix this for real?
 
-> Am I on the wrong way or should I just reimplement it and send a patch?
-
-If you an test it, do it and send a patch.
-
-> [2] Based on DB1100. Are there any pointers on how to port to a new 
-> board,
-> btw?
-
-One of the discussion items is always how to keep a "generic"
-driver and still provide unique setup/control for different types of
-boards.  I guess if we can discuss other board ports, it will be
-more clear how to do this.
-
-Thanks.
-
-
-	-- Dan
+Greg Weeks

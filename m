@@ -1,68 +1,72 @@
-Received:  by oss.sgi.com id <S42202AbQFVFnL>;
-	Wed, 21 Jun 2000 22:43:11 -0700
-Received: from deliverator.sgi.com ([204.94.214.10]:65148 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42190AbQFVFmy>;
-	Wed, 21 Jun 2000 22:42:54 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id WAA07945
-	for <linux-mips@oss.sgi.com>; Wed, 21 Jun 2000 22:37:54 -0700 (PDT)
-	mail_from (mlan@cpu.lu)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received:  by oss.sgi.com id <S42371AbQFVGxw>;
+	Wed, 21 Jun 2000 23:53:52 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:43288 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42190AbQFVGxe>;
+	Wed, 21 Jun 2000 23:53:34 -0700
+Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id XAA12420
+	for <linux-mips@oss.sgi.com>; Wed, 21 Jun 2000 23:48:37 -0700 (PDT)
+	mail_from (roald@stavanger.sgi.com)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id XAA31939 for <linux-mips@oss.sgi.com>; Wed, 21 Jun 2000 23:53:03 -0700 (PDT)
+Received: from sgstv.stavanger.sgi.com (sgstv.stavanger.sgi.com [144.253.219.2])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id WAA41828
+	via ESMTP id XAA53946
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 21 Jun 2000 22:42:21 -0700 (PDT)
-	mail_from (mlan@cpu.lu)
-Received: from mcp.cpu.lu (mcp.cpu.lu [193.168.2.34]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id WAA02303
-	for <linux@cthulhu.engr.sgi.com>; Wed, 21 Jun 2000 22:42:19 -0700 (PDT)
-	mail_from (mlan@cpu.lu)
-Received: from piglet.grunz.lu (mfp [193.168.2.96])
-	by mcp.cpu.lu (8.8.6 (PHNE_14041)/8.8.6) with ESMTP id HAA17559;
-	Thu, 22 Jun 2000 07:42:26 +0200 (METDST)
-Received: from cpu.lu (localhost [127.0.0.1])
-	by piglet.grunz.lu (8.9.3/8.9.3) with ESMTP id XAA01021;
-	Wed, 21 Jun 2000 23:47:04 +0200
-Message-Id: <200006212147.XAA01021@piglet.grunz.lu>
-Date:   Wed, 21 Jun 2000 23:47:01 +0200 (CEST)
-From:   Michel Lanners <mlan@cpu.lu>
-Reply-To: mlan@cpu.lu
-Subject: Re: Proposal: non-PC ISA bus support
-To:     bh40@calva.net
-cc:     Geert.Uytterhoeven@sonycom.com, linuxppc-dev@lists.linuxppc.org,
-        linux@cthulhu.engr.sgi.com
-In-Reply-To: <20000620122329.13473@mailhost.mipsys.com>
-MIME-Version: 1.0
-Content-Type: TEXT/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8BIT
+	Wed, 21 Jun 2000 23:51:15 -0700 (PDT)
+	mail_from (roald@stavanger.sgi.com)
+Received: by sgstv.stavanger.sgi.com (980427.SGI.8.8.8/940406.SGI)
+	 id IAA32492; Thu, 22 Jun 2000 08:51:16 +0200 (MEST)
+From:   "Roald Lygre" <roald@stavanger.sgi.com>
+Message-Id: <10006220851.ZM533158@sgstv.stavanger.sgi.com>
+Date:   Thu, 22 Jun 2000 08:51:15 +0200
+In-Reply-To: Paul Jakma <paul@clubi.ie>
+        "RE: Problems with multiple harddisks on my Indigo2" (Jun 21, 10:38pm)
+References: <Pine.LNX.4.21.0006212234190.5050-100000@fogarty.jakma.org>
+Reply_To: roald@stavanger.sgi.com
+X-Mailer: Z-Mail (3.2.3 08feb96 MediaMail)
+To:     Paul Jakma <paul@clubi.ie>,
+        Ian Chilton <mailinglist@ichilton.co.uk>
+Subject: Re: Problems with multiple harddisks on my Indigo2
+Cc:     spock@mgnet.de, Linux Debian MIPS <debian-mips@lists.debian.org>,
+        Linux MIPS cthulhu <linux@cthulhu.engr.sgi.com>,
+        Linux MIPS <linux-mips@fnet.fr>,
+        MIPS vger <linux-mips@vger.rutgers.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hi all,
+On Jun 21, 10:38pm, Paul Jakma wrote:
+> Subject: RE: Problems with multiple harddisks on my Indigo2
+> On Wed, 21 Jun 2000, Ian Chilton wrote:
+>
+>
+> 3. Perhaps cause the outboard SCSI port is not terminated. (least not
+> on my indy)
+>
 
-On  20 Jun, this message from Benjamin Herrenschmidt echoed through cyberspace:
-> We still can decide (and that's what I currently do in the kernel) that
-> IO space is only supported on one of those 3 busses (the one on which the
-> external PCI is). This prevents however use of IOs on the AGP slot,
+The SCSI port should be terminated with an active terminator on the Indy,
+regardless of if you have 1 or 2 drives installed.
 
-... and multiple host bridges, like on the 9x00 (bad, two separate buses
-    à 3 slots) and 7x00/8x00 (no problem, second (fixed, video
-    subsys) bus doesn't have IO devices).
+-Roald
 
-struct pci_dev has void *sysdata. Can we use that for something
-reasonable here? Like additional info (iobase per device, set by fixup
-code)?
 
-Michel
 
--------------------------------------------------------------------------
-Michel Lanners                 |  " Read Philosophy.  Study Art.
-23, Rue Paul Henkes            |    Ask Questions.  Make Mistakes.
-L-1710 Luxembourg              |
-email   mlan@cpu.lu            |
-http://www.cpu.lu/~mlan        |                     Learn Always. "
+-- 
+    
+---------------------------------------------------------------
+| Company: SGI Norge A/S                                      |
+| Email:   roald@sgi.com          Tlf:          +47 5163 4183 |
+| Addr:    Luramyrveien 79        Mobil:        +47 909 33 903|
+|          N-4313 Sandnes         VMail (SGI):  870-4679      |
+|          NORWAY                 VMail(ext):   +47 6711 4679 |
+---------------------------------------------------------------
+Essential SGI Websites:
+http://www.sgi.com/             SGI
+http://www.sgi.no/              SGI Norge
+http://support-europe.sgi.com/  Log calls, patches+overlays, ++
+http://freeware.sgi.com/        Freeware - "ready-to-eat"
+http://oss.sgi.com/mips/        Linux for SGI (Mips/Intel)
+http://www.sgi.com/developers/  Developer Central
+http://www.sgi.com/Products/Evaluation/   Evaluation Software

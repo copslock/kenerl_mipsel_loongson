@@ -1,34 +1,24 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA20413; Mon, 12 May 1997 09:31:45 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA20840; Mon, 12 May 1997 09:33:42 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id JAA07833 for linux-list; Mon, 12 May 1997 09:31:08 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA07781 for <linux@relay.engr.SGI.COM>; Mon, 12 May 1997 09:31:01 -0700
-Received: from athena.nuclecu.unam.mx (athena.nuclecu.unam.mx [132.248.29.9]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id JAA17180
-	for <linux@relay.engr.SGI.COM>; Mon, 12 May 1997 09:30:52 -0700
-	env-from (miguel@athena.nuclecu.unam.mx)
-Received: (from miguel@localhost)
-	by athena.nuclecu.unam.mx (8.8.5/8.8.5) id LAA14272;
-	Mon, 12 May 1997 11:25:05 -0500
-Date: Mon, 12 May 1997 11:25:05 -0500
-Message-Id: <199705121625.LAA14272@athena.nuclecu.unam.mx>
-From: Miguel de Icaza <miguel@nuclecu.unam.mx>
-To: shaver@neon.ingenia.ca
-CC: davem@jenolan.rutgers.edu, linux@cthulhu.engr.sgi.com
-In-reply-to: <199705120056.UAA14117@neon.ingenia.ca> (message from Mike Shaver
-	on Sun, 11 May 1997 20:56:15 -0400 (EDT))
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id JAA08747 for linux-list; Mon, 12 May 1997 09:33:30 -0700
+Received: from xtp.engr.sgi.com (xtp.engr.sgi.com [150.166.75.34]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA08734 for <linux@cthulhu.engr.sgi.com>; Mon, 12 May 1997 09:33:28 -0700
+Received: by xtp.engr.sgi.com (950413.SGI.8.6.12/911001.SGI)
+	 id JAA23954; Mon, 12 May 1997 09:33:26 -0700
+From: "Greg Chesson" <greg@xtp.engr.sgi.com>
+Message-Id: <9705120933.ZM23952@xtp.engr.sgi.com>
+Date: Mon, 12 May 1997 09:33:25 -0700
+In-Reply-To: "David S. Miller" <davem@jenolan.rutgers.edu>
+        "Re: Almost there..." (May 11, 11:34pm)
+References: <199705120334.XAA11599@jenolan.caipgeneral>
+X-Mailer: Z-Mail (3.2.3 08feb96 MediaMail)
+To: "David S. Miller" <davem@jenolan.rutgers.edu>, lm@neteng.engr.sgi.com
 Subject: Re: Almost there...
-X-Unix: is friendly, it is just selective about who its friends are.
+Cc: shaver@neon.ingenia.ca, linux@cthulhu.engr.sgi.com
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+restores my faith in the power of the human spirit (over the dark side).
 
-> > Nope he didn't, import laws in Mexico got the machine before he did...
-> 
-> Is that a permanent failure, or just Yet Another Bureaucratic
-> Delay(tm)?
-
-the machine went back to the US after the customs episode.  Now we are
-now going to bring the machine trough the embassy (no way the customs
-will ever have a chance to touch it), should be here real soon now
-:-).
-
-Miguel.
+g

@@ -1,64 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Apr 2003 19:10:28 +0100 (BST)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:27553 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8224827AbTDGSK1>; Mon, 7 Apr 2003 19:10:27 +0100
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id UAA28081;
-	Mon, 7 Apr 2003 20:10:50 +0200 (MET DST)
-Date: Mon, 7 Apr 2003 20:10:49 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: "Erik J. Green" <erik@greendragon.org>
-cc: "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: Re: 64 to 32 bit jr
-In-Reply-To: <1049735885.3e91b2cd7366f@my.visi.com>
-Message-ID: <Pine.GSO.3.96.1030407195354.24634H-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Apr 2003 23:07:39 +0100 (BST)
+Received: from mms2.broadcom.com ([IPv6:::ffff:63.70.210.59]:18698 "EHLO
+	mms2.broadcom.com") by linux-mips.org with ESMTP
+	id <S8224827AbTDGWHi>; Mon, 7 Apr 2003 23:07:38 +0100
+Received: from 63.70.210.1 by mms2.broadcom.com with ESMTP (Broadcom
+ MMS1 SMTP Relay (MMS v5.5.2)); Mon, 07 Apr 2003 15:04:29 -0700
+Received: from mail-sj1-5.sj.broadcom.com (mail-sj1-5.sj.broadcom.com
+ [10.16.128.236]) by mon-irva-11.broadcom.com (8.9.1/8.9.1) with ESMTP
+ id PAA17725; Mon, 7 Apr 2003 15:07:14 -0700 (PDT)
+Received: from dt-sj3-158.sj.broadcom.com (dt-sj3-158 [10.21.64.158]) by
+ mail-sj1-5.sj.broadcom.com (8.12.4/8.12.4/SSF) with ESMTP id
+ h37M7TER017598; Mon, 7 Apr 2003 15:07:29 -0700 (PDT)
+Received: from broadcom.com (IDENT:kwalker@localhost [127.0.0.1]) by
+ dt-sj3-158.sj.broadcom.com (8.9.3/8.9.3) with ESMTP id PAA02138; Mon, 7
+ Apr 2003 15:07:30 -0700
+Message-ID: <3E91F6A1.4080AF05@broadcom.com>
+Date: Mon, 07 Apr 2003 15:07:29 -0700
+From: "Kip Walker" <kwalker@broadcom.com>
+Organization: Broadcom Corp. BPBU
+X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.5-beta4va3.20 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+To: "Hartvig Ekner" <hartvig@ekner.info>
+cc: "Linux MIPS mailing list" <linux-mips@linux-mips.org>
+Subject: Re: Patch to include/asm-mips/processor.h
+References: <3E917AA1.13694D03@ekner.info>
+X-WSS-ID: 128F2A6763771-01-01
+Content-Type: text/plain;
+ charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <kwalker@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1936
+X-archive-position: 1937
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: kwalker@broadcom.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 7 Apr 2003, Erik J. Green wrote:
-
-> According to my current understanding, the base of each of 8 segments in xkphys
-> maps to the start of physical memory, so offset 0 in kseg0 should be the same
-> data as at offset 0 of the a800...0000 segment in xkphys.  So, if I load code
-> starting at offset 0 in xkphys, I should be able to jump to the 32-bit part of
-> the xkphys address and end up at the same offset in kseg0, provided the target
-> address is sign-extended properly.
-
- As long as your offset into XPHYS fits within the KSEG0 size.
-
-> the code in xkphys and kseg0 have the same offsets.  Objcopy seems to have some
-> non-obvious rules for doing address calculations, IE objcopy using
-> --change-addresses=X
+Hartvig Ekner wrote:
 > 
-> 0xa800000000000000 + 0x20004000
+> I have no idea whether what I did was correct, but at least it is no less incorrect than the code currently
+> in there, which coredumps now for some reason (I wonder why it never crashed before). The test-bit macro
+> expects a bit-number, and not a mask which it is given in the current code.
 > 
-> gives something close to (not near my MIPS system atm)
+> So while fixing this, I also used the normal cpu_data macro for the cpu_has_watch() macro, instead of
+> looking at CPU(0).
 > 
-> 0xa7ffffff2001c000
+> /Hartvig
 
- Hmm, the option seems to work for me as expected.  What version of
-objcopy?  What do you use for "X"?  What does `readelf -l' report before
-and after copying? 
+The second argument to test_bit ought to have been an address, not a
+value.  Why didn't this crash before?  I just ran into it too...
 
-> So, I'm thinking constructing the address in a register might be easier for now.
-
- But your kernel really needs to be linked at a KSEG0 address -- if you
-are to construct the address manually, the resulting kernel won't work. 
-
-  Maciej
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Kip

@@ -1,43 +1,63 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0RMeXr28154
-	for linux-mips-outgoing; Sun, 27 Jan 2002 14:40:33 -0800
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id g0RMeUP28151
-	for <linux-mips@oss.sgi.com>; Sun, 27 Jan 2002 14:40:30 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id g0RLeRu16334;
-	Sun, 27 Jan 2002 13:40:27 -0800
-Date: Sun, 27 Jan 2002 13:40:27 -0800
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Soeren Laursen <soeren.laursen@scrooge.dk>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: SMP support challenge L
-Message-ID: <20020127134027.A2129@dea.linux-mips.net>
-References: <3C53FC3D.10933.55876D@localhost>
+	by oss.sgi.com (8.11.2/8.11.3) id g0RNOCi00884
+	for linux-mips-outgoing; Sun, 27 Jan 2002 15:24:12 -0800
+Received: from host099.momenco.com (IDENT:root@www.momenco.com [64.169.228.99])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0RNO7P00871
+	for <linux-mips@oss.sgi.com>; Sun, 27 Jan 2002 15:24:07 -0800
+Received: (from mdharm@localhost)
+	by host099.momenco.com (8.11.6/8.11.6) id g0RMO4Y18080;
+	Sun, 27 Jan 2002 14:24:04 -0800
+Date: Sun, 27 Jan 2002 14:24:04 -0800
+From: Matthew Dharm <mdharm@momenco.com>
+To: Pete Popov <ppopov@mvista.com>
+Cc: linux-mips <linux-mips@oss.sgi.com>
+Subject: Re: Help with OOPSes, anyone?
+Message-ID: <20020127142404.B18041@momenco.com>
+References: <20020127002242.A11373@momenco.com> <1012152783.2026.7.camel@localhost.localdomain>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <3C53FC3D.10933.55876D@localhost>; from soeren.laursen@scrooge.dk on Sun, Jan 27, 2002 at 01:10:21PM +0100
-X-Accept-Language: de,en,fr
+In-Reply-To: <1012152783.2026.7.camel@localhost.localdomain>; from ppopov@mvista.com on Sun, Jan 27, 2002 at 09:33:02AM -0800
+Organization: Momentum Computer, Inc.
+X-Copyright: (C) 2002 Matthew Dharm, all rights reserved.
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sun, Jan 27, 2002 at 01:10:21PM +0100, Soeren Laursen wrote:
+Well, we're using very late RM7000 silicon, so I doubt that's the problem.
+But it's a good thing to look at, anyway.
 
-> Just wondering if the SMP support is working at all. Sometimes
-> there are patches that affect the SMP support.
+Tho it kinda conflicts with the datapoint that we actually had a stable
+kernel on this hardware before.  Tho, like I said, that's not much of a
+datapoint -- more testing coming!
+
+Matt
+
+On Sun, Jan 27, 2002 at 09:33:02AM -0800, Pete Popov wrote:
 > 
-> Got a challenge L with two R4xxx cpu's. Could start working on it
->  via a nft root and give some feed back, fixes etc.
+> > But, under certain conditions, the kernel OOPSes.  Attached to this message
+> > are a few of those OOPSes (serial console is wonderful!) along with the
+> > ksymoops output.  I think the read_lsmod() warning is bogus, because there
+> > are, actually, no modules loaded.
+> > 
+> > My instincts are telling me that these are all being caused by the same
+> > problem, but I'll be damned if I can figure out what that is.  Caching is a
+> > good suspect, but that's just because it's always a good suspect.
 > 
-> Just one question. The terminal is broken and a guy at SGI Denmark 
-> told me how to create a null modem that worked on the challenge L but 
-> I have lost the paper. Any one got a clue?
+> Native compiles have indeed proven a great way to shake out hardware and
+> software bugs. 
+> 
+> One suggestion. The rm7k, at least some of the silicon versions, have
+> hardware erratas with the 'wait' instruction, used in the cpu_idle()
+> loop.  The CPU I have on one of the EV96100 boards, in combination with
+> the gt96100, will hang hard every time if I don't disable the use of
+> 'wait'.  So while this bug might not have anything to do with what
+> you're observing, I would ifdef-out the 'wait' instruction in
+> check_wait(), just to be sure that that's not the cause or one of the
+> problems.
+> 
+> Pete
 
-Null modems are described in a FAQ about the serial interface written by
-Christian Blum and others.  Just google for it.  The pinout as used on
-various SGI systems is described in IRIX's serial man page which if not
-on your system you can also find somewhere online.
-
-  Ralf
+-- 
+Matthew Dharm                              Work: mdharm@momenco.com
+Senior Software Designer, Momentum Computer

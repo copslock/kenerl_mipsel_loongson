@@ -1,20 +1,19 @@
-Received:  by oss.sgi.com id <S305176AbQC3MsB>;
-	Thu, 30 Mar 2000 04:48:01 -0800
-Received: from deliverator.sgi.com ([204.94.214.10]:46641 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305168AbQC3Mro>;
-	Thu, 30 Mar 2000 04:47:44 -0800
-Received: from nodin.corp.sgi.com (fddi-nodin.corp.sgi.com [198.29.75.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id EAA27678; Thu, 30 Mar 2000 04:43:03 -0800 (PST)
+Received:  by oss.sgi.com id <S305200AbQC3Myk>;
+	Thu, 30 Mar 2000 04:54:40 -0800
+Received: from deliverator.sgi.com ([204.94.214.10]:17458 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305168AbQC3MyT>;
+	Thu, 30 Mar 2000 04:54:19 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id EAA27979; Thu, 30 Mar 2000 04:49:38 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id EAA54718; Thu, 30 Mar 2000 04:47:13 -0800 (PST)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id EAA63179
+	id EAA90979
 	for linux-list;
-	Thu, 30 Mar 2000 04:36:01 -0800 (PST)
+	Thu, 30 Mar 2000 04:36:05 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id EAA62401
+	via ESMTP id EAA14888
 	for <linux@cthulhu.engr.sgi.com>;
 	Thu, 30 Mar 2000 04:35:59 -0800 (PST)
 	mail_from (flo@rfc822.org)
@@ -23,18 +22,18 @@ Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4])
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id EAA05757
+	via ESMTP id EAA00308
 	for <linux@cthulhu.engr.sgi.com>; Thu, 30 Mar 2000 04:35:57 -0800 (PST)
 	mail_from (flo@rfc822.org)
 Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id D14E67F6; Thu, 30 Mar 2000 14:35:56 +0200 (CEST)
+	id 5B0967F4; Thu, 30 Mar 2000 14:35:56 +0200 (CEST)
 Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 51E3B8FC3; Thu, 30 Mar 2000 14:27:05 +0200 (CEST)
-Date:   Thu, 30 Mar 2000 14:27:05 +0200
+	id E85448FC3; Thu, 30 Mar 2000 14:22:56 +0200 (CEST)
+Date:   Thu, 30 Mar 2000 14:22:56 +0200
 From:   Florian Lohoff <flo@rfc822.org>
 To:     linux@cthulhu.engr.sgi.com
-Subject: resources.h patch / RLIM_INFINITY __KERNEL__ depend ?
-Message-ID: <20000330142705.B3530@paradigm.rfc822.org>
+Subject: timex.h patch / CP0 undefined
+Message-ID: <20000330142256.A3530@paradigm.rfc822.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 X-Mailer: Mutt 0.95.3i
@@ -46,36 +45,31 @@ X-Orcpt: rfc822;linuxmips-outgoing
 
 
 Hi,
-again - short patch - RLIM_INFINITY - This is also defined in
-both glibc 2.0 and glibc 2.1 headers so it should be __KERNEL__
-dependend - Shouldnt it ?
+could someone apply this patch to the cvs archive.
+This bites me everytime i am trying to build "ntp" or "xntp".
 
-
-Index: resource.h
+Index: timex.h
 ===================================================================
-RCS file: /cvs/linux/include/asm-mips/resource.h,v
-retrieving revision 1.5
-diff -u -r1.5 resource.h
---- resource.h	2000/02/04 07:40:53	1.5
-+++ resource.h	2000/03/30 12:19:42
-@@ -25,13 +25,13 @@
- 
- #define RLIM_NLIMITS 10			/* Number of limit flavors.  */
+RCS file: /cvs/linux/include/asm-mips/timex.h,v
+retrieving revision 1.2
+diff -u -r1.2 timex.h
+--- timex.h	1999/02/15 02:22:14	1.2
++++ timex.h	2000/03/30 12:16:47
+@@ -17,6 +17,8 @@
+ 	(1000000/CLOCK_TICK_FACTOR) / (CLOCK_TICK_RATE/CLOCK_TICK_FACTOR)) \
+ 		<< (SHIFT_SCALE-SHIFT_HZ)) / HZ)
  
 +#ifdef __KERNEL__
 +
  /*
-  * SuS says limits have to be unsigned.
-  * Which makes a ton more sense anyway.
-  */
- #define RLIM_INFINITY	0x7fffffffUL
--
--#ifdef __KERNEL__
+  * Standard way to access the cycle counter.
+  * Currently only used on SMP for scheduling.
+@@ -36,4 +38,5 @@
+ 	return read_32bit_cp0_register(CP0_COUNT);
+ }
  
- #define INIT_RLIMITS					\
- {							\
-
-
++#endif /* __KERNEL__ */
+ #endif /*  __ASM_MIPS_TIMEX_H */
 
 Flo
 -- 

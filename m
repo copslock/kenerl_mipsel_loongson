@@ -1,72 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Apr 2003 13:10:52 +0100 (BST)
-Received: from p508B7FA0.dip.t-dialin.net ([IPv6:::ffff:80.139.127.160]:32692
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225199AbTDKMKw>; Fri, 11 Apr 2003 13:10:52 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id h3BCAjA25350;
-	Fri, 11 Apr 2003 14:10:45 +0200
-Date: Fri, 11 Apr 2003 14:10:45 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: "Kevin D. Kissell" <kevink@mips.com>
-Cc: Dominic Sweetman <dom@mips.com>, Mike Uhler <uhler@mips.com>,
-	Jun Sun <jsun@mvista.com>, linux-mips@linux-mips.org
-Subject: Re: way selection bit for multi-way cache
-Message-ID: <20030411141045.A24953@linux-mips.org>
-References: <20030410220906.B519@linux-mips.org><200304102028.h3AKSf211575@uhler-linux.mips.com><20030410225212.A3294@linux-mips.org> <16022.24992.314581.716649@gladsmuir.mips.com> <004a01c30002$b3b19480$10eca8c0@grendel>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Apr 2003 14:27:38 +0100 (BST)
+Received: from natsmtp01.webmailer.de ([IPv6:::ffff:192.67.198.81]:1484 "EHLO
+	post.webmailer.de") by linux-mips.org with ESMTP
+	id <S8225256AbTDKN1h>; Fri, 11 Apr 2003 14:27:37 +0100
+Received: from excalibur.cologne.de (pD95119F9.dip.t-dialin.net [217.81.25.249])
+	by post.webmailer.de (8.12.8/8.8.7) with ESMTP id h3BDRYjd024869
+	for <linux-mips@linux-mips.org>; Fri, 11 Apr 2003 15:27:35 +0200 (MEST)
+Received: from karsten by excalibur.cologne.de with local (Exim 3.35 #1 (Debian))
+	id 193ygu-0000Dm-00
+	for <linux-mips@linux-mips.org>; Fri, 11 Apr 2003 15:35:40 +0200
+Date: Fri, 11 Apr 2003 15:35:34 +0200
+From: Karsten Merker <karsten@excalibur.cologne.de>
+To: Linux MIPS mailing list <linux-mips@linux-mips.org>
+Subject: Re: ext3 under MIPS?
+Message-ID: <20030411133534.GB418@excalibur.cologne.de>
+Mail-Followup-To: Karsten Merker <karsten@excalibur.cologne.de>,
+	Linux MIPS mailing list <linux-mips@linux-mips.org>
+References: <3E954651.C7AECB90@ekner.info> <20030410154050.GI5242@lug-owl.de> <3E95D16D.1671BA5A@ekner.info> <20030411064754.GM5242@lug-owl.de> <3E969362.B50934A@ekner.info>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <004a01c30002$b3b19480$10eca8c0@grendel>; from kevink@mips.com on Fri, Apr 11, 2003 at 10:15:06AM +0200
-Return-Path: <ralf@linux-mips.net>
+In-Reply-To: <3E969362.B50934A@ekner.info>
+User-Agent: Mutt/1.3.28i
+X-No-Archive: yes
+Return-Path: <karsten@excalibur.cologne.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1993
+X-archive-position: 1994
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: karsten@excalibur.cologne.de
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Apr 11, 2003 at 10:15:06AM +0200, Kevin D. Kissell wrote:
+On Fri, Apr 11, 2003 at 12:05:22PM +0200, Hartvig Ekner wrote:
 
-> > > > I'm not sure what you mean by TLB translations required for hit
-> > > > cacheops.  If you mean the Index Writeback or Index Invalidate
-> > > > functions, note that you can (and should) use a kseg0 address to
-> > > > do this.
-> > 
-> > Mike was proposing a kseg0 address translating to the right physical
-> > address, and used with a hit-type cacheop.  I believe Ralf (and Linux)
-> > are just assuming that's no good because it doesn't work if you have
-> > cacheable memory above 512Mbytes physical address.
-> 
-> More importantly, it doesn't work in the case of virtually tagged caches,
-> such as those in the SB-1 and MIPS 20K.
+> Now I'm beginning to suspect that my conversion from ext2 to ext3 (tune2fs -j on a running system, and
+> just modifying ext2 to ext3 in fstab) is somehow not correct, or something else which I overlooked?
+> How did you guys (the ones without any ext3 problems) initially get the ext3 root partition in place
+> (was it born as ext3 or converted from ext2?) and anything special one needs to do in fstab?
 
-On SB1 we just switch to a new ASID which effectivly is a cheap way to
-invalidate the entire I-cache.  Assuming the other process has at most
-4k of code resident in the I-cache from it's previous timeslice this
-even is the optimal solution.  But this optimization is a heuristic that
-hasn't been verified to be optimal for performance.
+On my mipsel box it was created as ext3 from scratch, on i386 it was
+converted from ext2.
 
-> > I wonder whether anything really bad would happen if you temporarily
-> > changed the (machine) ASID to that of the address space you wanted to
-> > invalidate?
-> 
-> I looked at that when we were investigating the aforementioned
-> issues with virtually-tagged I-caches.  It looked to me as if exceptions
-> can occur during the invalidation, and that processing those exceptions
-> can cause signals to be raised to the current process in a manner that 
-> assumes that the TLB and ASID are coherent and in sync with 
-> the scheduler.  It may be that just changing the ASID temporarily
-> would work - most of the time.  It may even be that, with a bit
-> of lashing down of state, disabling of interrupts, setting of flags
-> to be read by traps.c/signal.c, etc, etc, it could be made bulletproof.
-> But I don't think that the simple, obvious hack is safe.
-
-Yep - it seems like a can of worms sufficiently large to be left closed
-for 2.4 ...
-
-  Ralf
+Regards,
+Karsten
+-- 
+#include <standard_disclaimer>
+Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der Nutzung
+oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die Markt- oder
+Meinungsforschung.

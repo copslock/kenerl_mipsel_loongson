@@ -1,122 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Feb 2005 17:26:45 +0000 (GMT)
-Received: from smtp005.bizmail.sc5.yahoo.com ([IPv6:::ffff:66.163.175.82]:33470
-	"HELO smtp005.bizmail.sc5.yahoo.com") by linux-mips.org with SMTP
-	id <S8225284AbVBUR03>; Mon, 21 Feb 2005 17:26:29 +0000
-Received: from unknown (HELO ?10.2.2.62?) (ppopov@embeddedalley.com@63.194.214.47 with plain)
-  by smtp005.bizmail.sc5.yahoo.com with SMTP; 21 Feb 2005 17:26:26 -0000
-Message-ID: <421A19B6.6050102@embeddedalley.com>
-Date:	Mon, 21 Feb 2005 09:26:14 -0800
-From:	Pete Popov <ppopov@embeddedalley.com>
-Reply-To:  ppopov@embeddedalley.com
-Organization: Embedded Alley Solutions, Inc
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.3) Gecko/20040913
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Feb 2005 18:15:33 +0000 (GMT)
+Received: from mail.romat.com ([IPv6:::ffff:212.143.245.3]:61448 "EHLO
+	mail.romat.com") by linux-mips.org with ESMTP id <S8225287AbVBUSPS>;
+	Mon, 21 Feb 2005 18:15:18 +0000
+Received: from localhost (localhost.lan [127.0.0.1])
+	by mail.romat.com (Postfix) with ESMTP id 0CEB8EB2D3;
+	Mon, 21 Feb 2005 20:15:12 +0200 (IST)
+Received: from mail.romat.com ([127.0.0.1])
+ by localhost (mail.romat.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 15326-01; Mon, 21 Feb 2005 20:15:05 +0200 (IST)
+Received: from [192.168.1.199] (linux.lan [192.168.1.199])
+	by mail.romat.com (Postfix) with ESMTP id 7F53CEB2B6;
+	Mon, 21 Feb 2005 20:15:05 +0200 (IST)
+Message-ID: <421A2526.6020806@romat.com>
+Date:	Mon, 21 Feb 2005 20:15:02 +0200
+From:	Gilad Rom <gilad@romat.com>
+User-Agent: Mozilla Thunderbird 1.0 (X11/20041206)
 X-Accept-Language: en-us, en
 MIME-Version: 1.0
-To:	Ulrich Eckhardt <eckhardt@satorlaser.com>
-CC:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [patch]small bug in PCMCIA on DB1x00 boards
-References: <200502211609.42963.eckhardt@satorlaser.com>
-In-Reply-To: <200502211609.42963.eckhardt@satorlaser.com>
-X-Enigmail-Version: 0.86.1.0
-X-Enigmail-Supports: pgp-inline, pgp-mime
-Content-Type: text/plain; charset=us-ascii; format=flowed
+To:	Clem Taylor <clem.taylor@gmail.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: compiling yamon for Au1550 with a recent toolchain?
+References: <ecb4efd1050221083348d1f90b@mail.gmail.com>
+In-Reply-To: <ecb4efd1050221083348d1f90b@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@embeddedalley.com>
+X-Virus-Scanned: by amavisd-new at romat.com
+Return-Path: <gilad@romat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7299
+X-archive-position: 7300
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@embeddedalley.com
+X-original-sender: gilad@romat.com
 Precedence: bulk
 X-list: linux-mips
 
-Ulrich Eckhardt wrote:
-> Hello!
-> 
-> Another patch that fixes some small glitches in the PCMCIA code.
-> 
-> Note: I have not (yet) been able to get the compact-flash card to be 
-> recognised on my board (it is supposed to appear as PCMCIA/IDE device, 
-> right?) but this patch addresses three things that should be obvious without 
-> testing. Yes, I know, those are famous last words, but look yourselves. ;)
-> 
-> BTW: I found that au1000_xxs1500.c and au1000_pb1x00.c can't compile due 
-> changed PCMCIA interfaces,
+I have. I can tell you it required a lot of hacking, most of which
+I haven't written down.
 
-I've updated the db1x00 driver only. It should be easy to update the 
-rest of the boards, using the db1x as an example.
+I can send you my sources if you'd like. They're hardwired for
+Au1500/Little Endian, but they build ;)
+Shoudn't take long to change the actual build type.
 
-Pete
+Gilad.
 
-  some functions (socket_state, configure_socket)
-> were changed from returning void to returning int and changed their 
-> parameters. These two are also the last two files that use struct 
-> pcmcia_configure. Maybe copying that struct to the .c files and adding an 
-> #error with a proper comment would be a good idea?
+Clem Taylor wrote:
+> This isn't completely on topic, but it is a step on the way. I'm
+> getting ready for my Au1550 based hardware that will be back from
+> assembly soon. I'm trying to get the AMD provided yamon source to
+> compile. I'm using gcc 3.4.3 and bintools 2.15.94.0.2. After a few
+> tweeks to the makefile, yamon compiles but fails to link:
 > 
-> Uli
+> mips-ld -G 0 -T ./../link/link_el.xn -o ./yamon-02.23DB1550_el.elf -Map ...
+> mips-ld: section .data [000000009fc3d650 -> 000000009fc40faf] overlaps
+> section .rodata.str1.4 [000000009fc3d650 -> 000000009fc47197]
+> mips-ld: ./yamon-02.23DB1550_el.elf: section .rodata.str1.4 lma
+> 0x9fc3d650 overlaps previous sections
+> mips-ld: ./yamon-02.23DB1550_el.elf: section .rodata.cst4 lma
+> 0x9fc47198 overlaps previous sections
 > 
+> The linker command file (bin/link/link_el.xn) puts .data and .rodata
+> in _etext. I changed the *(.rodata) to *(.rodata*) in the link_el.xn,
+> but that didn't help.
 > 
-> Changes:
->  * removed struct pcmcia_irqs, which was unused
->  * added an explicit BUG() in a place marked with "should never happen"
->  * added a missing early return when the card-voltage could not be
->    detected, as a comment above already says.
+> Any ideas what might be going on? Has anyone tried compiling this
+> yamon with a recent gcc/bintools?
 > 
-> ---
-> 
-> Index: au1000_db1x00.c
-> ===================================================================
-> RCS file: /home/cvs/linux/drivers/pcmcia/au1000_db1x00.c,v
-> retrieving revision 1.6
-> diff -u -r1.6 au1000_db1x00.c
-> --- au1000_db1x00.c 14 Oct 2004 06:24:25 -0000 1.6
-> +++ au1000_db1x00.c 21 Feb 2005 14:13:21 -0000
-> @@ -91,7 +91,9 @@
->    vs = (bcsr->status & 0xC)>>2;
->    inserted = !(bcsr->status & (1<<5));
->    break;
-> - default:/* should never happen */
-> + default:
-> +  /* should never happen */
-> +  BUG();
->    return;
->   }
->  
-> @@ -109,8 +111,8 @@
->      break;
->     default:
->      /* return without setting 'detect' */
-> -    printk(KERN_ERR "db1x00 bad VS (%d)\n",
-> -      vs);
-> +    printk(KERN_ERR "db1x00 bad VS (%d)\n", vs);
-> +    return;
->    }
->    state->detect = 1;
->    state->ready = 1;
-> Index: au1000_generic.h
-> ===================================================================
-> RCS file: /home/cvs/linux/drivers/pcmcia/au1000_generic.h,v
-> retrieving revision 1.4
-> diff -u -r1.4 au1000_generic.h
-> --- au1000_generic.h 19 Oct 2004 07:26:37 -0000 1.4
-> +++ au1000_generic.h 21 Feb 2005 14:13:21 -0000
-> @@ -78,13 +78,6 @@
->            reset: 1;
->  };
->  
-> -struct pcmcia_irqs {
-> - int sock;
-> - int irq;
-> - const char *str;
-> -};
-> -
-> -
->  struct au1000_pcmcia_socket {
->   struct pcmcia_socket socket;
->  
+>                                   Thanks,
+>                                   Clem
 > 
 > 

@@ -1,31 +1,21 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA05544; Fri, 20 Jun 1997 08:49:23 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA06783; Fri, 20 Jun 1997 09:40:57 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id IAA01637 for linux-list; Fri, 20 Jun 1997 08:47:52 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA01616 for <linux@engr.sgi.com>; Fri, 20 Jun 1997 08:47:49 -0700
-Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id IAA02133
-	for <linux@engr.sgi.com>; Fri, 20 Jun 1997 08:47:48 -0700
-	env-from (shaver@neon.ingenia.ca)
-Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id LAA25039 for linux@engr.sgi.com; Fri, 20 Jun 1997 11:24:09 -0400
-From: Mike Shaver <shaver@neon.ingenia.ca>
-Message-Id: <199706201524.LAA25039@neon.ingenia.ca>
-Subject: CONFIG_REMOTE_DEBUG
-To: linux@cthulhu.engr.sgi.com
-Date: Fri, 20 Jun 1997 11:24:09 -0400 (EDT)
-X-Mailer: ELM [version 2.4ME+ PL28 (25)]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id JAA14359 for linux-list; Fri, 20 Jun 1997 09:40:32 -0700
+Received: from neteng.engr.sgi.com (neteng.engr.sgi.com [192.26.80.10]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id JAA14348; Fri, 20 Jun 1997 09:40:28 -0700
+Received: from localhost (lm@localhost) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via SMTP id JAA06720; Fri, 20 Jun 1997 09:40:27 -0700
+Message-Id: <199706201640.JAA06720@neteng.engr.sgi.com>
+To: Steve Alexander <sca@refugee.engr.sgi.com>
+From: lm@neteng.engr.sgi.com (Larry McVoy)
+cc: "David S. Miller" <davem@jenolan.rutgers.edu>, lm@neteng.engr.sgi.com,
+        carlson@heaven.newport.sgi.com, linux@cthulhu.engr.sgi.com
+Subject: Re: Getting X on Linux/SGI 
+Date: Fri, 20 Jun 1997 09:40:27 -0700
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Is this something that's useful enough to warrant me digging up the
-cabling and software that I'd need to make it work?
+: Personally, I wouldn't buy an O2 to run Linux.
 
-Mike
+OK, we won't try and sell you one.  What about the people that would buy
+an O2 to run Linux?  
 
--- 
-#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
-#>                 UNIX medicine man -- dark magick, cheap!            
-#>                                                                     
-#>  When the going gets tough, the tough give cryptic error messages.  
-#>          "We believe in rough consensus and running code."          
+You != <the entire customer base>.

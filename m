@@ -1,51 +1,70 @@
-Received:  by oss.sgi.com id <S553743AbQJQNae>;
-	Tue, 17 Oct 2000 06:30:34 -0700
-Received: from styx.cs.kuleuven.ac.be ([134.58.40.3]:9161 "EHLO
-        styx.cs.kuleuven.ac.be") by oss.sgi.com with ESMTP
-	id <S553709AbQJQNaQ>; Tue, 17 Oct 2000 06:30:16 -0700
-Received: from cassiopeia.home (root@dialup005.cs.kuleuven.ac.be [134.58.47.134])
-	by styx.cs.kuleuven.ac.be (8.10.1/8.10.1) with ESMTP id e9HDU3n23665;
-	Tue, 17 Oct 2000 15:30:03 +0200 (MET DST)
-Received: from localhost (geert@localhost)
-	by cassiopeia.home (8.9.3/8.9.3/Debian/GNU) with ESMTP id NAA00702;
-	Tue, 17 Oct 2000 13:20:04 +0200
-X-Authentication-Warning: cassiopeia.home: geert owned process doing -bs
-Date:   Tue, 17 Oct 2000 13:20:04 +0200 (CEST)
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     Jan-Benedict Glaw <jbglaw@lug-owl.de>
-cc:     linux-mips@oss.sgi.com
-Subject: Re: base.tgz
-In-Reply-To: <20001017041449.A17546@lug-owl.de>
-Message-ID: <Pine.LNX.4.10.10010171318580.394-100000@cassiopeia.home>
+Received:  by oss.sgi.com id <S553738AbQJQODN>;
+	Tue, 17 Oct 2000 07:03:13 -0700
+Received: from router.isratech.ro ([193.226.114.69]:18692 "EHLO
+        router.isratech.ro") by oss.sgi.com with ESMTP id <S553691AbQJQOCy>;
+	Tue, 17 Oct 2000 07:02:54 -0700
+Received: from isratech.ro (calin.cs.tuiasi.ro [193.231.15.163])
+	by router.isratech.ro (8.10.2/8.10.2) with ESMTP id e9HE2EZ28778
+	for <linux-mips@oss.sgi.com>; Tue, 17 Oct 2000 12:02:31 -0200
+Message-ID: <39EC5A4A.DFE3EAD7@isratech.ro>
+Date:   Tue, 17 Oct 2000 16:55:25 +0300
+From:   Nicu Popovici <octavp@isratech.ro>
+X-Mailer: Mozilla 4.74 [en] (X11; U; Linux 2.2.16 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To:     linux-mips@oss.sgi.com
+Subject: CrossCompiler.
+Content-Type: multipart/mixed;
+ boundary="------------BB949592EC280934EBE83FEE"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, 17 Oct 2000, Jan-Benedict Glaw wrote:
-> On Mon, Oct 16, 2000 at 04:33:47AM +0200, Jan-Benedict Glaw wrote:
-> > My next goal is to cleanly build something like base.tgz. Maybe
-> > we can get a smooth debian installation in some days;)
-> 
-> Okay, I took the package list off potato's base.tgz. Please comment
-> on the missing packets or which files to take instead. Please also
-> have a look at the perl packages...
-> 
-> Packages which seem to be not used/useable. They'll not be included:
-> ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> Package: pciutils
-  ^^^^^^^^^^^^^^^^^
-I prefer to have pciutils. It's very handy for debugging PCI problems.
+This is a multi-part message in MIME format.
+--------------BB949592EC280934EBE83FEE
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-Gr{oetje,eeting}s,
+Hello you all,
 
-						Geert
+  I am new in this field so if I will make mistakes please be patient
+and I will try to not repeat myself.
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+So my task is to setup a gcc crosscompiler which will make code for a
+mips machine. The crosscompiler will run on a i686-pc-linux machine. I
+downloaded the latest stuff from oss.sgi.com ( I read the foozbar
+project which was to setup a crosscompiler on a Indy machine also for
+mips ) but I got an error  .
+Something  with signal 11. Can any of you have any ideea of what to do
+to setupsuch a crosscompiler ?
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+Thanks for all the help that I will get from you .
+
+Regards,
+Nicu
+
+
+
+--------------BB949592EC280934EBE83FEE
+Content-Type: text/x-vcard; charset=us-ascii;
+ name="octavp.vcf"
+Content-Transfer-Encoding: 7bit
+Content-Description: Card for Nicu Popovici
+Content-Disposition: attachment;
+ filename="octavp.vcf"
+
+begin:vcard 
+n:Popovici;Nicu
+tel;cell:+40 93 605020
+x-mozilla-html:FALSE
+org:SC Silicon Service SRL;software 
+adr:;;;IASI;IASI;6600;ROMANIA
+version:2.1
+email;internet:octavp@isratech.ro
+title:software engineer
+x-mozilla-cpt:;0
+fn:Nicu Popovici
+end:vcard
+
+--------------BB949592EC280934EBE83FEE--

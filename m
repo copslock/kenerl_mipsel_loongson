@@ -1,98 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Dec 2002 20:00:49 +0000 (GMT)
-Received: from mailout09.sul.t-online.com ([IPv6:::ffff:194.25.134.84]:29836
-	"EHLO mailout09.sul.t-online.com") by linux-mips.org with ESMTP
-	id <S8225289AbSLQUAs> convert rfc822-to-8bit; Tue, 17 Dec 2002 20:00:48 +0000
-Received: from fwd00.sul.t-online.de 
-	by mailout09.sul.t-online.com with smtp 
-	id 18ONtV-0006Ol-01; Tue, 17 Dec 2002 21:00:45 +0100
-Received: from juli.scheel-home.de (320039238345-0001@[217.227.24.202]) by fmrl00.sul.t-online.com
-	with esmtp id 18ONtE-0GAaJcC; Tue, 17 Dec 2002 21:00:28 +0100
-From: Julian Scheel <jscheel@activevb.de>
-To: linux-mips@linux-mips.org
-Subject: MIPS64 kernel cross-compiling
-Date: Tue, 17 Dec 2002 21:00:27 +0100
-User-Agent: KMail/1.5
-MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-15"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Dec 2002 21:40:35 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:51704 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225304AbSLQVke>;
+	Tue, 17 Dec 2002 21:40:34 +0000
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.11.6/8.11.6) id gBHLeB207386;
+	Tue, 17 Dec 2002 13:40:11 -0800
+Date: Tue, 17 Dec 2002 13:40:11 -0800
+From: Jun Sun <jsun@mvista.com>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+	jsun@mvista.com
+Subject: Re: [PATCH] add dispatch_i8259_irq() to i8259.c
+Message-ID: <20021217134011.M11575@mvista.com>
+References: <20021216124009.D10178@mvista.com> <Pine.GSO.3.96.1021217131352.7289A-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Message-Id: <200212172100.27296.jscheel@activevb.de>
-X-Sender: 320039238345-0001@t-dialin.net
-Return-Path: <jscheel@activevb.de>
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.GSO.3.96.1021217131352.7289A-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Tue, Dec 17, 2002 at 02:39:21PM +0100
+Return-Path: <jsun@orion.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 918
+X-archive-position: 919
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jscheel@activevb.de
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Tue, Dec 17, 2002 at 02:39:21PM +0100, Maciej W. Rozycki wrote:
+> > No MIPS boards are using do_slow_gettimeoffset().  We really should get
+> > rid of it.
+> 
+>  I know none does at the moment.  But are you sure there is no system that
+> would need it and might be supported one day?
+>
 
-we're trying to compile a kernel for an embedded system with a 
-MIPS64-processor on it.
-We tried first with your CVS-sources, but there we get this error:
+I serisouly don't think so.  Moving forward every CPU will have a CPU counter,
+which can be used for timeoffset purpose.  Even if it does not have one,
+it will surely have some onboard high resolution timer, which can be used
+to intra-jiffy offset purpose.
 
------
-  Generating include/linux/version.h (unchanged)
-make[1]: Nothing to be done for `__build'.
-  SPLIT  include/linux/autoconf.h -> include/config/*
-make -f scripts/Makefile.build obj=arch/mips64/kernel 
-arch/mips64/kernel/offset.s
-make[1]: `arch/mips64/kernel/offset.s' is up to date.
-/bin/sh: arch/mips64/kernel/offset.s: Datei oder Verzeichnis nicht gefunden
------
+Anyway, this function is only defined in old-time.c, which will go away 
+soon (hopefully). :-)
 
-Afterwards we changed to the 2.4.20 stock kernel, there we have managed to get 
-the kernel compiling the first steps. We're using the algor SDE-Toolchain and 
-on make vmlinux, we get masses of parse-errors.
-Our point of view is, that the compiler tries to link to include/asm instead 
-of include/asm-mips64, but doing a dirty simlink from asm to asm-mips64 
-didn't really improve our situation.
-Here are some of the errors we get:
+ 
+>  Here is an example (untested) code that I would recommend.  It sends
+> explicit ACKs to the i8259As, which has the following advantages:
+> 
+<snip>
 
-----
-sde-gcc -D__KERNEL__ -I/usr/src/linux-2.4.20/include -Wall -Wstrict-prototypes 
--Wno-trigraphs -O2 -fno-strict-aliasing -fno-common -fomit-frame-pointer 
--mips64    -I /usr/src/linux-2.4.20/include/asm-mips64/gcc -mabi=64 -G 0 
--mno-abicalls -fno-pic -Wa,--trap -pipe   -DKBUILD_BASENAME=main -c -o 
-init/main.o init/main.c
-In file included from /usr/src/linux-2.4.20/include/asm/system.h:14,
-                 from /usr/src/linux-2.4.20/include/asm/processor.h:36,
-                 from /usr/src/linux-2.4.20/include/linux/prefetch.h:13,
-                 from /usr/src/linux-2.4.20/include/linux/list.h:6,
-                 from /usr/src/linux-2.4.20/include/linux/wait.h:14,
-                 from /usr/src/linux-2.4.20/include/linux/fs.h:12,
-                 from /usr/src/linux-2.4.20/include/linux/capability.h:17,
-                 from /usr/src/linux-2.4.20/include/linux/binfmts.h:5,
-                 from /usr/src/linux-2.4.20/include/linux/sched.h:9,
-                 from /usr/src/linux-2.4.20/include/linux/mm.h:4,
-                 from /usr/src/linux-2.4.20/include/linux/slab.h:14,
-                 from /usr/src/linux-2.4.20/include/linux/proc_fs.h:5,
-                 from init/main.c:15:
-/usr/src/linux-2.4.20/include/asm/sgidefs.h:18:39: #error Use a Linux compiler 
-or give up.
-[...]
-In file included from /usr/src/linux-2.4.20/include/linux/pagemap.h:16,
-                 from /usr/src/linux-2.4.20/include/linux/locks.h:8,
-                 from /usr/src/linux-2.4.20/include/linux/blk.h:5,
-                 from init/main.c:25:
-/usr/src/linux-2.4.20/include/linux/highmem.h: In function `kmap':
-/usr/src/linux-2.4.20/include/linux/highmem.h:68: `PAGE_OFFSET' undeclared 
-(first use in this function)
-/usr/src/linux-2.4.20/include/linux/highmem.h:68: warning: control reaches end 
-of non-void function
-init/main.c: In function `start_kernel':
-init/main.c:383: `PAGE_OFFSET' undeclared (first use in this function)
-make: *** [init/main.o] Error 1
-----
+Cool.  This code works for me.
 
-hoping for a bit of help (c:
+I studied it a little bit and I am convinced it is a better choice.
+It should work for MIPS in general.
 
--- 
-Grüße,
-Julian, Paco
+In my original code I did verify that the IRR bit is not cleared,
+which apparently will be a problem in cases.
+
+The only catch with your code is that we don't have iob() macro (which 
+apparently is very useful).  Any suggestions on this?  Otherwise  
+I will probably remove it.
+
+Jun

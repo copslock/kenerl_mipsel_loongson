@@ -1,99 +1,167 @@
-Received:  by oss.sgi.com id <S553714AbRCHLOe>;
-	Thu, 8 Mar 2001 03:14:34 -0800
-Received: from mx.mips.com ([206.31.31.226]:19420 "EHLO mx.mips.com")
-	by oss.sgi.com with ESMTP id <S553700AbRCHLOK>;
-	Thu, 8 Mar 2001 03:14:10 -0800
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id DAA03014;
-	Thu, 8 Mar 2001 03:13:55 -0800 (PST)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id DAA21134;
-	Thu, 8 Mar 2001 03:13:52 -0800 (PST)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id MAA26053;
-	Thu, 8 Mar 2001 12:13:25 +0100 (MET)
-Message-ID: <3AA76955.2819476F@mips.com>
-Date:   Thu, 08 Mar 2001 12:13:25 +0100
-From:   Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
+Received:  by oss.sgi.com id <S553711AbRCHQTj>;
+	Thu, 8 Mar 2001 08:19:39 -0800
+Received: from jester.ti.com ([192.94.94.1]:34704 "EHLO jester.ti.com")
+	by oss.sgi.com with ESMTP id <S553679AbRCHQTS>;
+	Thu, 8 Mar 2001 08:19:18 -0800
+Received: from dlep7.itg.ti.com ([157.170.134.103])
+	by jester.ti.com (8.11.1/8.11.1) with ESMTP id f28GJCD03514
+	for <linux-mips@oss.sgi.com>; Thu, 8 Mar 2001 10:19:12 -0600 (CST)
+Received: from dlep7.itg.ti.com (localhost [127.0.0.1])
+	by dlep7.itg.ti.com (8.9.3/8.9.3) with ESMTP id KAA13440
+	for <linux-mips@oss.sgi.com>; Thu, 8 Mar 2001 10:19:12 -0600 (CST)
+Received: from dlep4.itg.ti.com (dlep4-maint.itg.ti.com [157.170.133.17])
+	by dlep7.itg.ti.com (8.9.3/8.9.3) with ESMTP id KAA13395
+	for <linux-mips@oss.sgi.com>; Thu, 8 Mar 2001 10:19:11 -0600 (CST)
+Received: from ti.com (reddwarf.sc.ti.com [158.218.100.143])
+	by dlep4.itg.ti.com (8.9.3/8.9.3) with ESMTP id KAA22243
+	for <linux-mips@oss.sgi.com>; Thu, 8 Mar 2001 10:19:10 -0600 (CST)
+Message-ID: <3AA7B13F.F918E1F8@ti.com>
+Date:   Thu, 08 Mar 2001 09:20:15 -0700
+From:   Jeff Harrell <jharrell@ti.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-5.0 i686)
 X-Accept-Language: en
 MIME-Version: 1.0
-To:     ppopov@pacbell.net
-CC:     Pete Popov <ppopov@mvista.com>, Ralf Baechle <ralf@oss.sgi.com>,
-        David Jez <dave.jez@seznam.cz>, linux-mips@oss.sgi.com
-Subject: Re: redhat 7.0
-References: <3A901B3F.ADADC601@pacbell.net>
-	 <20010220074903.A68652@stud.fee.vutbr.cz>
-	 <20010220215616.F2086@bacchus.dhis.org> <3A930AB3.3AEAE5BF@mvista.com>
-	 <3AA5FA06.D9D5277@mips.com> <3AA63113.45430090@pacbell.net>
-Content-Type: text/plain; charset=iso-8859-15
-Content-Transfer-Encoding: 7bit
+To:     linux-mips@oss.sgi.com
+Subject: Question concerning Assembler error
+Content-Type: multipart/mixed;
+ boundary="------------45CDACA24C63474FA77065DA"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Please Ralf, could you help me here.
-I did the same as Pete describe below, and I got the same result.
-
-When I tried "rpm --rebuilddb" it fails because it couldn't find some libraries.
-The rpm-tarball contains a statically linked rpm binary, but rpmdb is dynamically
-linked, could you please provide me with a statically linked rpmdb binary, that would
-be great.
-
-/Carsten
+This is a multi-part message in MIME format.
+--------------45CDACA24C63474FA77065DA
+Content-Type: multipart/alternative;
+ boundary="------------B15A6BD89F9960B889747A5E"
 
 
-ppopov@pacbell.net wrote:
+--------------B15A6BD89F9960B889747A5E
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-> Carsten Langgaard wrote:
-> >
-> > Hi Pete
-> >
-> > Did you managed to get through the installation of the RedHat 7.0 packages ?
-> > I would like to do something similar.
->
-> I haven't had time to try again. I tried the debian 2_2 tar ball, went
-> through the partitioning and dvhtool exersize and managed to setup all
-> of that.  If I try RedHat 7.0 again and manage to install it before
-> someone else does, I'll send instructions.
->
-> Pete
->
-> > Pete Popov wrote:
-> >
-> > > Ralf Baechle wrote:
-> > > >
-> > > > On Tue, Feb 20, 2001 at 07:49:04AM +0100, David Jez wrote:
-> > > >
-> > > > > > Has anyone tried installing 7.0 that's on oss.sgi.com?  The problem I'm
-> > > > > > running into is that after I netboot and mount simple-0.2b as the root
-> > > > > > fs, and install the rpm-4.0 tarball, rpm doesn't work with the
-> > > > > > libraries, or lack of, of that root fs.  It looks like I need an fs with
-> > > > > > a working rpm-4.0, so that I can mount my second disk somewhere and
-> > > > > > install the 7.0 packages.  Any suggestions?
-> > > > > Yes,
-> > > > > If you download rpm-3.0 (I'm not sure, try get newer version) you'll should
-> > > > > be able to work with rpm 4 packages.
-> > > >
-> > > > Oss has a tarball with statically linked rpm 4 binaries.  Use that to
-> > > > convert your rpm database and then install the rpm 4 rpm package for real.
-> > >
-> > > I tried that; "rpm --rebuilddb" failed because it couldn't find some
-> > > library.  I'll try again.
-> > >
-> > > Pete
-> >
-> > --
-> > _    _ ____  ___   Carsten Langgaard  Mailto:carstenl@mips.com
-> > |\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-> > | \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-> >   TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-> >                    Denmark            http://www.mips.com
+I am getting a strange error from the assembler that I am not quite sure
+what to make of it.  Here
+is the  Error and code snippet:
+
+
+     >make
+     mipsel-linux-gcc -D_ASSEMBLER_ -mcpu=r4600 -mips2 -Wall
+     -Wstrict-prototypes -O2 -fomit-frame-pointer -G -0
+     -mno-abicalls -fno-pic -pipe -mlong-calls -Wimplicit -c
+     avreset.S
+     avreset.S: Assembler messages:
+     avreset.S:262: Error: Rest of line ignored. First ignored
+     character is `0'.
+     avreset.S:1006: Error: Rest of line ignored. First ignored
+     character is `0'.
+     gmake: *** [avreset.o] Error 1
+     gmake: Target `all' not remade because of errors.
+
+
+     And here is the code that seems to be causing the problem:
+
+        /* Interrupt : For now we simply disable interrupts and
+     return */
+
+             MFC0(   k0, C0_STATUS)
+             srl     k0, 1
+             sll     k0, 1
+             MTC0(   k0, C0_STATUS)
+             nop
+             .set    mips3
+     ==>  eret   <==
+             .set    mips2
+             nop
+
+
+Any information that anyone might have would be greatly appreciated.
+
+Regards,
+Jeff Harrell
 
 --
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Jeff Harrell                    Work:  (801) 619-6104
+Broadband Access group/TI
+jharrell@ti.com
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+--------------B15A6BD89F9960B889747A5E
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+I am getting a strange error from the assembler that I am not quite sure
+what to make of it.&nbsp; Here
+<br>is the&nbsp; Error and code snippet:
+<br>&nbsp;
+<blockquote>>make
+<br>mipsel-linux-gcc -D_ASSEMBLER_ -mcpu=r4600 -mips2 -Wall -Wstrict-prototypes
+-O2 -fomit-frame-pointer -G -0 -mno-abicalls -fno-pic -pipe -mlong-calls
+-Wimplicit -c avreset.S
+<br>avreset.S: Assembler messages:
+<br>avreset.S:262: Error: Rest of line ignored. First ignored character
+is `0'.
+<br>avreset.S:1006: Error: Rest of line ignored. First ignored character
+is `0'.
+<br>gmake: *** [avreset.o] Error 1
+<br>gmake: Target `all' not remade because of errors.
+<br>&nbsp;
+<p>And here is the code that seems to be causing the problem:
+<p>&nbsp;&nbsp; /* Interrupt : For now we simply disable interrupts and
+return */
+<br>&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MFC0(&nbsp;&nbsp; k0, C0_STATUS)
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; srl&nbsp;&nbsp;&nbsp;&nbsp;
+k0, 1
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sll&nbsp;&nbsp;&nbsp;&nbsp;
+k0, 1
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MTC0(&nbsp;&nbsp; k0, C0_STATUS)
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nop
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .set&nbsp;&nbsp;&nbsp; mips3
+<br>==>&nbsp; eret&nbsp;&nbsp; &lt;==
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .set&nbsp;&nbsp;&nbsp; mips2
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nop
+<br>&nbsp;</blockquote>
+Any information that anyone might have would be greatly appreciated.
+<p>Regards,
+<br>Jeff Harrell
+<pre>--&nbsp;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Jeff Harrell&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Work:&nbsp; (801) 619-6104&nbsp;
+Broadband Access group/TI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+jharrell@ti.com
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</pre>
+&nbsp;</html>
+
+--------------B15A6BD89F9960B889747A5E--
+
+--------------45CDACA24C63474FA77065DA
+Content-Type: text/x-vcard; charset=us-ascii;
+ name="jharrell.vcf"
+Content-Transfer-Encoding: 7bit
+Content-Description: Card for Jeff Harrell
+Content-Disposition: attachment;
+ filename="jharrell.vcf"
+
+begin:vcard 
+n:Harrell;Jeff
+tel;cell:(801) 597-6268
+tel;fax:(801) 619-6150
+tel;work:(801) 619-6104
+x-mozilla-html:TRUE
+url:http://www.ti.com
+org:Broadband Access Group
+version:2.1
+email;internet:jharrell@ti.com
+title:Texas Instruments
+adr;quoted-printable:;;170 West Election Rd. Suite 100	=0D=0AMS 4106		;Draper;Utah;84020-6410;USA
+x-mozilla-cpt:;0
+fn:Jeff Harrell
+end:vcard
+
+--------------45CDACA24C63474FA77065DA--

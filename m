@@ -1,63 +1,67 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g78JwhRw022889
-	for <linux-mips-outgoing@oss.sgi.com>; Thu, 8 Aug 2002 12:58:44 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g798bYRw001875
+	for <linux-mips-outgoing@oss.sgi.com>; Fri, 9 Aug 2002 01:37:34 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g78JwhiL022888
-	for linux-mips-outgoing; Thu, 8 Aug 2002 12:58:43 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g798bYRR001874
+	for linux-mips-outgoing; Fri, 9 Aug 2002 01:37:34 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from mx2.mips.com (mx2.mips.com [206.31.31.227])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g78JwaRw022860;
-	Thu, 8 Aug 2002 12:58:36 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id g78K02Xb021952;
-	Thu, 8 Aug 2002 13:00:02 -0700 (PDT)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id NAA02336;
-	Thu, 8 Aug 2002 13:00:03 -0700 (PDT)
-Received: from mips.com ([172.18.27.100])
-	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id g78K02b14116;
-	Thu, 8 Aug 2002 22:00:02 +0200 (MEST)
-Message-ID: <3D52CF03.4173541D@mips.com>
-Date: Thu, 08 Aug 2002 22:05:23 +0200
-From: Carsten Langgaard <carstenl@mips.com>
-Organization: MIPS Technologies
-X-Mailer: Mozilla 4.76 [en] (Windows NT 5.0; U)
-X-Accept-Language: en
+Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g798bMRw001862;
+	Fri, 9 Aug 2002 01:37:23 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id KAA00579;
+	Fri, 9 Aug 2002 10:39:57 +0200 (MET DST)
+Date: Fri, 9 Aug 2002 10:39:57 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Carsten Langgaard <carstenl@mips.com>
+cc: Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com
+Subject: Re: siginfo structure in 64-bit kernel
+In-Reply-To: <3D52CE5B.CD8C72C4@mips.com>
+Message-ID: <Pine.GSO.3.96.1020809102112.29687D-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-CC: Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com
-Subject: Re: memcpy.S patch in 64-bit
-References: <Pine.GSO.3.96.1020808170518.13783D-100000@delta.ds2.pg.gda.pl>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, hits=0.0 required=5.0 tests= version=2.20
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-"Maciej W. Rozycki" wrote:
+On Thu, 8 Aug 2002, Carsten Langgaard wrote:
 
-> On Thu, 8 Aug 2002, Carsten Langgaard wrote:
->
-> > The __copy_user function (in arch/mips64/lib/memcpy.S) calls __bzero.
-> > We can't do that because __bzero might modify len, which we want to
-> > return in case of an error.
-> > The following patch take care of the problem.
->
->  Hmm, how about simply cloning arch/mips/lib/memcpy.S?  It seems:
->
-> 1. Designed to work on mips64 as well.
->
-> 2. More up to date.
->
-> And it would ease maintenance.
->
+> >  I checked the patch and discovered you somehow made the order of struct
+> > members wrong.
+> 
+> Good spotted, that's what happens when MIPS is the only one that put
+> 'si_code' before 'si_errno' in the structure. 
 
-If it works then it's the right thing to do, so please go a head :-)
+ That's why I'm always using MIPS-specific definitions as a reference
+first.  The actual reason of the differences is the SysV ABI supplement
+for MIPS which defines things a bit differently than the others here and
+there, often with no justified reason (well, the reason is really Irix,
+but then again, there is no justified reason for Irix to be different
+there).
 
+> >  Here is an updated version that works for me.  It includes
+> > both the ordering fix and unsigned type changes I suggested before.
+> 
+> With your sign changes we are doing things a little bit different than
+> others, I know that's not really an argument, but does the unsigned
+> types not work for you ? 
 
->
-> --
-> +  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-> +--------------------------------------------------------------+
-> +        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+ Others are different here, actually.  With a signed type if a 32-bit
+address is cast to "long" or "void *" implicitly (the latter is normally
+spotted by the compiler and marked with a warning; the former is usually
+silent), it becomes a valid 64-bit address that still refers to the same
+location.  With an unsigned one it doesn't work for KSEG addresses
+anymore.  That's because addresses are signed on MIPS -- 32-bit addresses
+are sign-extended (as opposed to zero-extended) by the hardware the 32-bit
+address space is in the middle of the 64-bit one (and not at the bottom as
+in the zero-extension variant). 
+
+ I suppose the unsigned types would usually work if casts were applied
+carefully everywhere.  I'd prefer code to work automatically, though,
+without corner cases triggered every now and then. 
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

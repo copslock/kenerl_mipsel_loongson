@@ -1,38 +1,73 @@
-Received:  by oss.sgi.com id <S553690AbRAXS0r>;
-	Wed, 24 Jan 2001 10:26:47 -0800
-Received: from miners.utep.edu ([129.108.1.219]:14352 "EHLO
-        itdsrvowa00.utep.edu") by oss.sgi.com with ESMTP id <S553685AbRAXS0X>;
-	Wed, 24 Jan 2001 10:26:23 -0800
-Received: from ASSEMBLY ([129.108.54.72]) by itdsrvowa00.utep.edu with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2653.13)
-	id D2MF4AVH; Wed, 24 Jan 2001 11:28:04 -0700
-Reply-To: <duranr@utep.edu>
-From:   "Richard Duran" <duranr@utep.edu>
-To:     <linux-mips@oss.sgi.com>
-Subject: Linux/MIPS installation (FAQ? HOWTO?)
-Date:   Wed, 24 Jan 2001 11:21:34 -0700
-Message-ID: <NEBBJGDLLNKPFBKNBIEDMEOGCAAA.duranr@utep.edu>
+Received:  by oss.sgi.com id <S553799AbRAXTZs>;
+	Wed, 24 Jan 2001 11:25:48 -0800
+Received: from mail.cosinecom.com ([63.88.104.16]:34316 "EHLO
+        exchsrv1.cosinecom.com") by oss.sgi.com with ESMTP
+	id <S553748AbRAXTZX>; Wed, 24 Jan 2001 11:25:23 -0800
+Received: by exchsrv1.cosinecom.com with Internet Mail Service (5.5.2650.21)
+	id <DGPMMRFR>; Wed, 24 Jan 2001 11:23:01 -0800
+Message-ID: <7EB7C6B62C4FD41196A80090279A29113D7399@exchsrv1.cosinecom.com>
+From:   John Van Horne <JohnVan.Horne@cosinecom.com>
+To:     "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
+Cc:     Paul Lambert <Paul.Lambert@cosinecom.com>
+Subject: MIPS platform recommendations
+Date:   Wed, 24 Jan 2001 11:23:00 -0800
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
-Importance: Normal
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4522.1200
+X-Mailer: Internet Mail Service (5.5.2650.21)
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C0863B.10598AB0"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+This message is in MIME format. Since your mail reader does not understand
+this format, some or all of this message may not be legible.
+
+------_=_NextPart_001_01C0863B.10598AB0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+
 Hello,
 
-I know this has got to be a FAQ of some sort, but I can't find
-the answer (and I _have_ looked everywhere!): How do I go about
-installing Linux on my Indy? Does it have to co-exist w/ IRIX?
+Can anyone recommend an R5000/R7000 machine
+which can run Linux 2.4 and would be an appropriate
+platform on which to build the libraries for an R5000/R7000
+embedded Linux application? Which platform has the
+most stable version of Linux 2.4 available?
 
-Please point me to any document offering step-by-step instructions
-(if that exists).
+Thanks in advance,
+-John Van Horne
+jvhorne@cosinecom.com
 
-Regards,
-Richard Duran
+
+------_=_NextPart_001_01C0863B.10598AB0
+Content-Type: text/html;
+	charset="iso-8859-1"
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="MS Exchange Server version 5.5.2652.35">
+<TITLE>MIPS platform recommendations</TITLE>
+</HEAD>
+<BODY>
+
+<P><FONT SIZE=2 FACE="Arial">Hello,</FONT>
+</P>
+
+<P><FONT SIZE=2 FACE="Arial">Can anyone recommend an R5000/R7000 machine</FONT>
+<BR><FONT SIZE=2 FACE="Arial">which can run Linux 2.4 and would be an appropriate</FONT>
+<BR><FONT SIZE=2 FACE="Arial">platform on which to build the libraries for an R5000/R7000</FONT>
+<BR><FONT SIZE=2 FACE="Arial">embedded Linux application? Which platform has the</FONT>
+<BR><FONT SIZE=2 FACE="Arial">most stable version of Linux 2.4 available?</FONT>
+</P>
+
+<P><FONT SIZE=2 FACE="Arial">Thanks in advance,</FONT>
+<BR><FONT SIZE=2 FACE="Arial">-John Van Horne</FONT>
+<BR><FONT SIZE=2 FACE="Arial">jvhorne@cosinecom.com</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C0863B.10598AB0--

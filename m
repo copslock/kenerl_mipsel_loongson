@@ -1,51 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jan 2003 19:51:16 +0000 (GMT)
-Received: from mail2.sonytel.be ([IPv6:::ffff:195.0.45.172]:10672 "EHLO
-	mail.sonytel.be") by linux-mips.org with ESMTP id <S8225694AbTABTvQ>;
-	Thu, 2 Jan 2003 19:51:16 +0000
-Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.27])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id UAA07041;
-	Thu, 2 Jan 2003 20:47:50 +0100 (MET)
-Date: Thu, 2 Jan 2003 20:47:49 +0100 (MET)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: Juan Quintela <quintela@mandrakesoft.com>
-cc: Ralf Baechle <ralf@linux-mips.org>,
-	mipslist <linux-mips@linux-mips.org>
-Subject: Re: [PATCH]: fix possible buffer overflow problem in promlib
-In-Reply-To: <m2hecrbb3p.fsf@demo.mitica>
-Message-ID: <Pine.GSO.4.21.0301022047090.4873-100000@vervain.sonytel.be>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <Geert.Uytterhoeven@sonycom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Jan 2003 10:27:48 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:20206 "EHLO
+	av.mvista.com") by linux-mips.org with ESMTP id <S8225702AbTACK1r>;
+	Fri, 3 Jan 2003 10:27:47 +0000
+Received: from localhost (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id CAA26202
+	for <linux-mips@linux-mips.org>; Fri, 3 Jan 2003 02:27:26 -0800
+Subject: unaligned handler problem
+From: Pete Popov <ppopov@mvista.com>
+To: linux-mips <linux-mips@linux-mips.org>
+Content-Type: text/plain
+Organization: MontaVista Software
+Message-Id: <1041589762.18883.4.camel@adsl.pacbell.net>
+Mime-Version: 1.0
+X-Mailer: Ximian Evolution 1.2.1 
+Date: 03 Jan 2003 02:29:22 -0800
+Content-Transfer-Encoding: 7bit
+Return-Path: <ppopov@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1079
+X-archive-position: 1080
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: ppopov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On 2 Jan 2003, Juan Quintela wrote:
->         as the issue about prom.h is still not clear, please aply the
->         trivial part.
+The changes betwen rev 1.23 and 1.24 in unaligned.c, to replace
+check_axs() with verify_area(), causes any unaligned access from within
+a kernel module to crash. access_ok() returns -EFAULT as the
+__access_mask is 0xffffffff so __access_ok evaluates to > 0.  It's too
+late for me to look into it any further but perhaps the problem will be
+obvious to someone else. I'm not sure what get_fs() should return in
+this case (again, the access is from within a kernel module) but it
+returns 0xffffffff.
 
->  void prom_printf(char *fmt, ...)
->  {
->  	va_list args;
-> -	char ppbuf[1024];
-> +	char ppbuf[BUFSIZE];
-
-What about making ppbuf static, to reduce stack usage?
-
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+Pete

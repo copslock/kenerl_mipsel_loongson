@@ -1,44 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Jul 2004 16:06:48 +0100 (BST)
-Received: from mba.ocn.ne.jp ([IPv6:::ffff:210.190.142.172]:12525 "HELO
-	smtp.mba.ocn.ne.jp") by linux-mips.org with SMTP
-	id <S8225474AbUGGPGo>; Wed, 7 Jul 2004 16:06:44 +0100
-Received: from localhost (p4055-ipad01funabasi.chiba.ocn.ne.jp [61.207.78.55])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP id DF3736F74
-	for <linux-mips@linux-mips.org>; Thu,  8 Jul 2004 00:06:41 +0900 (JST)
-Date: Thu, 08 Jul 2004 00:12:07 +0900 (JST)
-Message-Id: <20040708.001207.74754796.anemo@mba.ocn.ne.jp>
-To: linux-mips@linux-mips.org
-Subject: Re: possible overflow in __udelay
-From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20040707.235723.74756758.anemo@mba.ocn.ne.jp>
-References: <20040701.211456.59461492.anemo@mba.ocn.ne.jp>
-	<20040707.235723.74756758.anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 20.7 / Mule 4.0 (HANANOEN)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jul 2004 01:49:58 +0100 (BST)
+Received: from p508B762C.dip.t-dialin.net ([IPv6:::ffff:80.139.118.44]:46972
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8226166AbUGHAty>; Thu, 8 Jul 2004 01:49:54 +0100
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.11/8.12.8) with ESMTP id i680nq4w017081;
+	Thu, 8 Jul 2004 02:49:52 +0200
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.11/8.12.11/Submit) id i680np0X017080;
+	Thu, 8 Jul 2004 02:49:51 +0200
+Date: Thu, 8 Jul 2004 02:49:51 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: "Randy.Dunlap" <rddunlap@osdl.org>
+Cc: linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS getdomainname() off by 1;
+Message-ID: <20040708004951.GA17045@linux-mips.org>
+References: <20040531202101.4ace5e95.rddunlap@osdl.org>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20040531202101.4ace5e95.rddunlap@osdl.org>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5418
+X-archive-position: 5419
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Wed, 07 Jul 2004 23:57:23 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> said:
+On Mon, May 31, 2004 at 08:21:01PM -0700, Randy.Dunlap wrote:
 
-anemo> I believe, for example, mdelay(10) does not work properly on
-anemo> most MIPS ports (except for DECSTATION and JAZZ which have
-anemo> smaller HZ value).
+> irix_getdomainname() max size appears to be off by 1;
+> other similar code in kernel uses __NEW_UTS_LEN as the max size,
+> and <domainname> includes an extra byte for the terminating
+> null character.
+> 
+> Does sysirix.c need to limit <len> to 63 instead of 64 for some
+> reason?
 
-Oops, mdelay(10) should work.  But mdelay(5) (mdelay(MAX_UDELAY_MS))
-does not work.
+I would know why - and it has other bugs also, so I removed it by the
+normal Linux getdomainname(2) for SysV flavour syscalls, too.
 
----
-Atsushi Nemoto
+  Ralf

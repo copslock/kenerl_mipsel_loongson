@@ -1,36 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Jan 2005 04:55:07 +0000 (GMT)
-Received: from adsl-67-116-42-149.dsl.sntc01.pacbell.net ([IPv6:::ffff:67.116.42.149]:6862
-	"EHLO avtrex.com") by linux-mips.org with ESMTP id <S8224790AbVA1Eyv>;
-	Fri, 28 Jan 2005 04:54:51 +0000
-Subject: RE: Why does MIPS/Linux always reserve 32 bytes in the top of each process's kernel stack space
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="UTF-8"
-Content-Transfer-Encoding: base64
-Date:	Thu, 27 Jan 2005 20:54:48 -0800
-content-class: urn:content-classes:message
-Message-ID: <69397FFCADEFD94F8D5A0FC0FDBCBBDEF53B@avtrex-server.hq.avtrex.com>
-X-MimeOLE: Produced By Microsoft Exchange V6.0.6487.1
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: Why does MIPS/Linux always reserve 32 bytes in the top of each process's kernel stack space
-Thread-Index: AcUE5XzG74m1xiQ4QIOuuXmJmbA9FQAD13N+
-From:	"David Daney" <ddaney@avtrex.com>
-To:	"zhan rongkai" <zhanrk@gmail.com>, <linux-mips@linux-mips.org>
-Return-Path: <ddaney@avtrex.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Jan 2005 06:59:56 +0000 (GMT)
+Received: from orb.pobox.com ([IPv6:::ffff:207.8.226.5]:21412 "EHLO
+	orb.pobox.com") by linux-mips.org with ESMTP id <S8224893AbVA1G7k>;
+	Fri, 28 Jan 2005 06:59:40 +0000
+Received: from orb (localhost [127.0.0.1])
+	by orb.pobox.com (Postfix) with ESMTP id B9AA195
+	for <linux-mips@linux-mips.org>; Fri, 28 Jan 2005 01:59:37 -0500 (EST)
+Received: from troglodyte.asianpear (c-24-21-141-200.client.comcast.net [24.21.141.200])
+	(using SSLv3 with cipher RC4-MD5 (128/128 bits))
+	(No client certificate requested)
+	by orb.sasl.smtp.pobox.com (Postfix) with ESMTP id 6812489
+	for <linux-mips@linux-mips.org>; Fri, 28 Jan 2005 01:59:37 -0500 (EST)
+Subject: pcmcia on au1x00
+From:	Kevin Turner <kevin.m.turner@pobox.com>
+To:	linux-mips <linux-mips@linux-mips.org>
+Content-Type: text/plain
+Date:	Thu, 27 Jan 2005 22:59:35 -0800
+Message-Id: <1106895575.4059.42.camel@troglodyte.asianpear>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.0.3 
+Content-Transfer-Encoding: 7bit
+Return-Path: <kevin.m.turner@pobox.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7054
+X-archive-position: 7055
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: kevin.m.turner@pobox.com
 Precedence: bulk
 X-list: linux-mips
 
-emhhbiByb25na2FpIHdyb3RlOg0KDQo+V2h5IGRvZXMgTUlQUy9MaW51eCBhbHdheXMgcmVzZXJ2
-ZSAzMiBieXRlcyBpbiB0aGUgdG9wIG9mIGVhY2gNCj5wcm9jZXNzJ3Mga2VybmVsIHN0YWNrIHNw
-YWNlLg0KDQpQZXJoYXBzIGJlY2F1c2UgdGhlICBrZXJuZWwncyBBQkkgcmVxdWlyZXMgaXQ/ICAg
-SSBiZWxlaXZlIHRoYXQgbzY0IHJlcXVpcmVzIHN0YWNrIHNwYWNlIGZvciBhMCAtIGEzIHRvIGJl
-IHN0b3JlZCB0aGVyZS4NCiANCkRhdmlkIERhbmV5DQogDQo=
+Compiling from current CVS:
+
+  CC [M]  drivers/pcmcia/au1000_pb1x00.o
+drivers/pcmcia/au1000_pb1x00.c:29:26: linux/tqueue.h: No such file or directory
+drivers/pcmcia/au1000_pb1x00.c:42:28: pcmcia/bus_ops.h: No such file or directory
+drivers/pcmcia/au1000_pb1x00.c:49:24: asm/au1000.h: No such file or directory
+drivers/pcmcia/au1000_pb1x00.c:50:31: asm/au1000_pcmcia.h: No such file or directory
+drivers/pcmcia/au1000_pb1x00.c:58:24: asm/pb1500.h: No such file or directory
+
+What's the status of pcmcia on au1x00?
+Selecting db1x00 instead of pb1x00 seems to compile cleanly.
+
+Can you give me an idea of what'll be necessary to do to get pcmcia
+working on a new Au1500-based board?
+
+Thanks,
+
+ - Kevin T.
+
+-- 
+The moon is waning gibbous, 94.6% illuminated, 17.0 days old.

@@ -1,49 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Nov 2004 19:47:38 +0000 (GMT)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:64018 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225304AbUK2TrY>; Mon, 29 Nov 2004 19:47:24 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id B073DF5990; Mon, 29 Nov 2004 20:47:17 +0100 (CET)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 17423-05; Mon, 29 Nov 2004 20:47:17 +0100 (CET)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 700EAE1C80; Mon, 29 Nov 2004 20:47:17 +0100 (CET)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.1/8.13.1) with ESMTP id iATJlSC6020170;
-	Mon, 29 Nov 2004 20:47:32 +0100
-Date: Mon, 29 Nov 2004 19:47:17 +0000 (GMT)
-From: "Maciej W. Rozycki" <macro@linux-mips.org>
-To: Brad Larson <Brad_Larson@pmc-sierra.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Nov 2004 19:58:01 +0000 (GMT)
+Received: from father.pmc-sierra.com ([IPv6:::ffff:216.241.224.13]:46266 "HELO
+	father.pmc-sierra.bc.ca") by linux-mips.org with SMTP
+	id <S8225312AbUK2T54>; Mon, 29 Nov 2004 19:57:56 +0000
+Received: (qmail 27966 invoked by uid 101); 29 Nov 2004 19:57:49 -0000
+Received: from unknown (HELO ogmios.pmc-sierra.bc.ca) (216.241.226.59)
+  by father.pmc-sierra.com with SMTP; 29 Nov 2004 19:57:49 -0000
+Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
+	by ogmios.pmc-sierra.bc.ca (8.12.9/8.12.7) with ESMTP id iATJvhJv008935;
+	Mon, 29 Nov 2004 11:57:49 -0800
+Received: by bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca with Internet Mail Service (5.5.2656.59)
+	id <XDTAHNMT>; Mon, 29 Nov 2004 11:57:43 -0800
+Message-ID: <04781D450CFF604A9628C8107A62FCCF013DDA21@sjc1exm01.pmc_nt.nt.pmc-sierra.bc.ca>
+From: Brad Larson <Brad_Larson@pmc-sierra.com>
+To: "'Maciej W. Rozycki'" <macro@linux-mips.org>
 Cc: "'Ralf Baechle'" <ralf@linux-mips.org>,
 	Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>,
 	Manish Lachwani <mlachwani@mvista.com>,
 	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Linux/MIPS Development <linux-mips@linux-mips.org>
 Subject: RE: [PATCH] Synthesize TLB refill handler at runtime
-In-Reply-To: <04781D450CFF604A9628C8107A62FCCF013DDA1C@sjc1exm01.pmc_nt.nt.pmc-sierra.bc.ca>
-Message-ID: <Pine.LNX.4.58L.0411291924160.27863@blysk.ds.pg.gda.pl>
-References: <04781D450CFF604A9628C8107A62FCCF013DDA1C@sjc1exm01.pmc_nt.nt.pmc-sierra.bc.ca>
+Date: Mon, 29 Nov 2004 11:57:39 -0800
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.80/605/Wed Nov 24 15:09:47 2004
-	clamav-milter version 0.80j
-	on piorun.ds.pg.gda.pl
-X-Virus-Status: Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+X-Mailer: Internet Mail Service (5.5.2656.59)
+Content-Type: text/plain
+Return-Path: <Brad_Larson@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6494
+X-archive-position: 6495
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: Brad_Larson@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
+
+hmm, the original email left the impression that its desirable for the firmware to be available after kernel handoff.  Looks like the current status is fine for those who need it.
+
+--Brad
+
+-----Original Message-----
+From: macro@blysk.ds.pg.gda.pl [mailto:macro@blysk.ds.pg.gda.pl]On
+Behalf Of Maciej W. Rozycki
+Sent: Monday, November 29, 2004 11:47 AM
+To: Brad Larson
+Cc: 'Ralf Baechle'; Thiemo Seufer; Manish Lachwani; Geert Uytterhoeven;
+Linux/MIPS Development
+Subject: RE: [PATCH] Synthesize TLB refill handler at runtime
+
 
 On Mon, 29 Nov 2004, Brad Larson wrote:
 

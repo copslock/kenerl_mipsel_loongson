@@ -1,51 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Mar 2004 15:30:46 +0000 (GMT)
-Received: from mo03.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:57343 "EHLO
-	mo03.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225236AbUCQPap>;
-	Wed, 17 Mar 2004 15:30:45 +0000
-Received: from mdo00.iij4u.or.jp (mdo00.iij4u.or.jp [210.130.0.170])
-	by mo03.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id AAA26267;
-	Thu, 18 Mar 2004 00:30:43 +0900 (JST)
-Received: 4UMDO00 id i2HFUgW18644; Thu, 18 Mar 2004 00:30:42 +0900 (JST)
-Received: 4UMRO01 id i2HFUfd29265; Thu, 18 Mar 2004 00:30:42 +0900 (JST)
-	from stratos.frog (64.43.138.210.xn.2iij.net [210.138.43.64]) (authenticated)
-Date: Thu, 18 Mar 2004 00:30:39 +0900
-From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-To: ralf@linux-mips.org
-Cc: yuasa@hh.iij4u.or.jp, linux-mips@linux-mips.org
-Subject: Re: [PATCH][2.6] Fixed PCI fixup for vr41xx
-Message-Id: <20040318003039.327124bc.yuasa@hh.iij4u.or.jp>
-In-Reply-To: <20040318002527.413195ce.yuasa@hh.iij4u.or.jp>
-References: <20040318002527.413195ce.yuasa@hh.iij4u.or.jp>
-X-Mailer: Sylpheed version 0.9.10 (GTK+ 1.2.10; i686-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yuasa@hh.iij4u.or.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Mar 2004 15:37:38 +0000 (GMT)
+Received: from pop.gmx.de ([IPv6:::ffff:213.165.64.20]:25479 "HELO
+	mail.gmx.net") by linux-mips.org with SMTP id <S8225236AbUCQPhi>;
+	Wed, 17 Mar 2004 15:37:38 +0000
+Received: (qmail 8526 invoked by uid 0); 17 Mar 2004 15:37:31 -0000
+Received: from 80.61.177.241 by www48.gmx.net with HTTP;
+	Wed, 17 Mar 2004 16:37:31 +0100 (MET)
+Date: Wed, 17 Mar 2004 16:37:31 +0100 (MET)
+From: "freshy98" <freshy98@gmx.net>
+To: linux-mips@linux-mips.org
+MIME-Version: 1.0
+References: <20040317153023Z8225229-9616+3963@linux-mips.org>
+Subject: Re: CVS Update@-mips.org: linux
+X-Priority: 3 (Normal)
+X-Authenticated: #11016536
+Message-ID: <7747.1079537851@www48.gmx.net>
+X-Mailer: WWW-Mail 1.6 (Global Message Exchange)
+X-Flags: 0001
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+Return-Path: <freshy98@gmx.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4556
+X-archive-position: 4557
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuasa@hh.iij4u.or.jp
+X-original-sender: freshy98@gmx.net
 Precedence: bulk
 X-list: linux-mips
 
-Oops,
+Ralf,
 
-On Thu, 18 Mar 2004 00:25:27 +0900
-Yoichi Yuasa <yuasa@hh.iij4u.or.jp> wrote:
+Is this made from the error message I had the day before yesterday?
+If so, I will try to build a new vmlinux.64 tonight and retry it.
 
-> Hi Ralf,
+With kind regards,
+
+freshy98
+
+
 > 
-> These patches fix PCI fixup function about vr41xx.
-> Please apply these patches to v2.6.
-<snip>
-> [PATCH][2.6] Update TB0229+TB0219 support
-> http://www.hh.iij4u.or.jp/~yuasa/linux-vr/v26/03-eagle-fixup-pci.diff
+> CVSROOT:	/home/cvs
+> Module name:	linux
+> Changes by:	ralf@ftp.linux-mips.org	04/03/17 15:30:19
+> 
+> Modified files:
+> 	arch/mips/mm   : Tag: linux_2_4 sc-rm7k.c 
+> 	arch/mips64/mm : Tag: linux_2_4 sc-rm7k.c 
+> 
+> Log message:
+> 	RM7000 second level cache was likely to nuke the system if it was
+> 	called with caches already enabled.
+> 
+> 
 
-It's right here.
-http://www.hh.iij4u.or.jp/~yuasa/linux-vr/v26/04-tb0219.diff
-
-Yoichi
+-- 
++++ NEU bei GMX und erstmalig in Deutschland: TÜV-geprüfter Virenschutz +++
+100% Virenerkennung nach Wildlist. Infos: http://www.gmx.net/virenschutz

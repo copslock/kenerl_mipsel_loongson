@@ -1,72 +1,80 @@
-Received:  by oss.sgi.com id <S305191AbQBJDyC>;
-	Wed, 9 Feb 2000 19:54:02 -0800
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:51070 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S305155AbQBJDxm>; Wed, 9 Feb 2000 19:53:42 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id TAA02448; Wed, 9 Feb 2000 19:56:27 -0800 (PST)
+Received:  by oss.sgi.com id <S305193AbQBJKfL>;
+	Thu, 10 Feb 2000 02:35:11 -0800
+Received: from deliverator.sgi.com ([204.94.214.10]:12908 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305155AbQBJKex>;
+	Thu, 10 Feb 2000 02:34:53 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id CAA27082; Thu, 10 Feb 2000 02:30:23 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id TAA00098
+	id CAA68783
 	for linux-list;
-	Wed, 9 Feb 2000 19:37:15 -0800 (PST)
+	Thu, 10 Feb 2000 02:14:03 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id TAA93597
-	for <linux@engr.sgi.com>;
-	Wed, 9 Feb 2000 19:37:00 -0800 (PST)
-	mail_from (jgentry@swcp.com)
-Received: from taka.swcp.com (taka.swcp.com [198.59.115.12]) 
+	via ESMTP id CAA74197
+	for <linux@cthulhu.engr.sgi.com>;
+	Thu, 10 Feb 2000 02:13:58 -0800 (PST)
+	mail_from (kevink@mips.com)
+Received: from mx.mips.com (mx.mips.com [206.31.31.226]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id TAA04319
-	for <linux@engr.sgi.com>; Wed, 9 Feb 2000 19:36:58 -0800 (PST)
-	mail_from (jgentry@swcp.com)
-Received: from swcp.com (dpm7-16.swcp.com [204.134.12.80])
-	by taka.swcp.com (8.10.0.Beta12/8.10.0.Beta12) with ESMTP id e1A3awU62630;
-	Wed, 9 Feb 2000 20:36:58 -0700 (MST)
-Message-ID: <38A2157E.E30EDA2C@swcp.com>
-Date:   Wed, 09 Feb 2000 20:33:50 -0500
-From:   Josh Gentry <jgentry@swcp.com>
-X-Mailer: Mozilla 4.61 [en] (X11; I; Linux 2.2.12-20 i586)
-X-Accept-Language: en
+	via ESMTP id CAA06649
+	for <linux@cthulhu.engr.sgi.com>; Thu, 10 Feb 2000 02:13:57 -0800 (PST)
+	mail_from (kevink@mips.com)
+Received: from newman.mips.com (newman [206.31.31.8])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id CAA01307;
+	Thu, 10 Feb 2000 02:13:53 -0800 (PST)
+Received: from satanas (satanas [192.168.236.12])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id CAA06439;
+	Thu, 10 Feb 2000 02:13:48 -0800 (PST)
+Message-ID: <00bc01bf73af$c7b19bc0$0ceca8c0@satanas.mips.com>
+From:   "Kevin D. Kissell" <kevink@mips.com>
+To:     "Gleb O. Raiko" <raiko@niisi.msk.ru>
+Cc:     <linux@cthulhu.engr.sgi.com>, <linux-mips@fnet.fr>
+Subject: Re: Enhanced 2.2.12 MIPS Kernel Sources  Available
+Date:   Thu, 10 Feb 2000 11:15:32 +0100
 MIME-Version: 1.0
-To:     linux@cthulhu.engr.sgi.com, jhart@tvi.cc.nm.us
-Subject: SGI/MIPS Linux
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain;
+	charset="koi8-r"
 Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 4.72.3110.5
+X-MimeOLE: Produced By Microsoft MimeOLE V4.72.3110.3
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-Folks,
+>"Kevin D. Kissell" wrote:
+>> 
+>> This code is NOT a supported product of MIPS
+>> Technologies Inc.   It is being made available on an
+>> "as is" basis subject to the ususal GPL.  It should be
+>> accessible via anonymous (and blind) FTP for a while at
+>> ftp://ftp.mips.com/incoming/linux.mips.src.01.01.tar.gz
+>> and is archived on the Paralogos MIPS/Linux web site at
+>> http://www.paralogos.com/mipslinux/.  We'd be very interested
+>> in any feedback, experimental results, and enhancements
+>> that any of you may wish to provide, and I will answer
+>> email questions to the extent that my time allows.
+>> 
+>
+>It'll be great if you would put just patches too. I guess, it'll be easy
+>for us to look through set of patches instead of downloading entire
+>2.2.12 and making diff -ruN on it. Then, there might be a core patch
+>that decribes changes in machine independent part of the kernel and the
+>rest might cover specific boards. Most of developers here will be
+>interested in the core patch, I guess.
+>
+>Regards,
+>Gleb.
 
-I am a student at a community college.  Our networking lab is slated to
-receive some SGI servers as donations.  I have not been able to find out
-the model of server, but I am sure it is a server, not a workstation.
-
-We desperately want to run Linux (or any of the free BSD distributions)
-on these machines.  My digging has turned up Linux/MIPS ports that say
-they run on certain processors.  I  do not know if that means they will
-run on these SGI machines if they have those processors, etc.  I just
-not knowledgeable enough about the way operating systems work to know if
-that is the case.
-
-Also, I have found that there is a port to the SGI Indy machines, but
-those seem to be workstations, so not what we will be getting.
-
-My question is, is there likely a port that we can run on these SGI
-servers?  If a port does not specify that it runs on SGI machines, what
-do we have to look for to determine if it will?
-
-Thank you for any advice.
-
-Josh
--- 
-Josh
-jgentry@swcp.com
-Linux Dialin Server Setup Guide, http://www.swcp.com/~jgentry/pers.html
+The thought had certainly occurred to me to generate the patch
+relative to the 2.2.12 baseline - it would certainly be more compact
+than the whole source tree!   I'll try and find the time to do so, but
+it probably won't be any time this week...

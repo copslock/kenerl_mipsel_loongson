@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 Mar 2005 10:47:43 +0000 (GMT)
-Received: from coderock.org ([IPv6:::ffff:193.77.147.115]:15787 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 Mar 2005 10:48:26 +0000 (GMT)
+Received: from coderock.org ([IPv6:::ffff:193.77.147.115]:17835 "EHLO
 	trashy.coderock.org") by linux-mips.org with ESMTP
-	id <S8225458AbVCFKqE>; Sun, 6 Mar 2005 10:46:04 +0000
+	id <S8225459AbVCFKqN>; Sun, 6 Mar 2005 10:46:13 +0000
 Received: by trashy.coderock.org (Postfix, from userid 780)
-	id DAED01F23F; Sun,  6 Mar 2005 11:46:02 +0100 (CET)
+	id 6BFCE1F241; Sun,  6 Mar 2005 11:46:12 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
-	by trashy.coderock.org (Postfix) with ESMTP id D00A11F23D;
-	Sun,  6 Mar 2005 11:46:01 +0100 (CET)
+	by trashy.coderock.org (Postfix) with ESMTP id 91E7D1F23F;
+	Sun,  6 Mar 2005 11:46:10 +0100 (CET)
 Received: from localhost.localdomain (localhost [127.0.0.1])
-	by trashy.coderock.org (Postfix) with ESMTP id 4D2161F1F0;
-	Sun,  6 Mar 2005 11:45:54 +0100 (CET)
-Subject: [patch 3/8] delete unused file include_asm_mips_gfx.h
+	by trashy.coderock.org (Postfix) with ESMTP id 6D0E51F204;
+	Sun,  6 Mar 2005 11:46:00 +0100 (CET)
+Subject: [patch 5/8] delete unused file include_asm_mips_mipsprom.h
 To:	ralf@linux-mips.org
 Cc:	linux-mips@linux-mips.org, domen@coderock.org
 From:	domen@coderock.org
-Date:	Sun, 06 Mar 2005 11:45:53 +0100
-Message-Id: <20050306104554.4D2161F1F0@trashy.coderock.org>
+Date:	Sun, 06 Mar 2005 11:46:00 +0100
+Message-Id: <20050306104600.6D0E51F204@trashy.coderock.org>
 Return-Path: <domen@coderock.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7377
+X-archive-position: 7378
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,66 +35,85 @@ Signed-off-by: Domen Puncer <domen@coderock.org>
 ---
 
 
- kj/include/asm-mips/gfx.h |   55 ----------------------------------------------
- 1 files changed, 55 deletions(-)
+ kj/include/asm-mips/mipsprom.h |   74 -----------------------------------------
+ 1 files changed, 74 deletions(-)
 
-diff -L include/asm-mips/gfx.h -puN include/asm-mips/gfx.h~remove_file-include_asm_mips_gfx.h /dev/null
---- kj/include/asm-mips/gfx.h
+diff -L include/asm-mips/mipsprom.h -puN include/asm-mips/mipsprom.h~remove_file-include_asm_mips_mipsprom.h /dev/null
+--- kj/include/asm-mips/mipsprom.h
 +++ /dev/null	2005-03-02 11:34:59.000000000 +0100
-@@ -1,55 +0,0 @@
--/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
-- *
-- * This is the user-visible SGI GFX interface.
-- *
-- * This must be used verbatim into the GNU libc.  It does not include
-- * any kernel-only bits on it.
-- *
-- * miguel@nuclecu.unam.mx
-- */
--#ifndef _ASM_GFX_H
--#define _ASM_GFX_H
+@@ -1,74 +0,0 @@
+-#ifndef __ASM_MIPS_PROM_H
+-#define __ASM_MIPS_PROM_H
 -
--/* The iocls, yes, they do not make sense, but such is life */
--#define GFX_BASE             100
--#define GFX_GETNUM_BOARDS    (GFX_BASE + 1)
--#define GFX_GETBOARD_INFO    (GFX_BASE + 2)
--#define GFX_ATTACH_BOARD     (GFX_BASE + 3)
--#define GFX_DETACH_BOARD     (GFX_BASE + 4)
--#define GFX_IS_MANAGED       (GFX_BASE + 5)
+-#define PROM_RESET		0
+-#define PROM_EXEC		1
+-#define PROM_RESTART		2
+-#define PROM_REINIT		3
+-#define PROM_REBOOT		4
+-#define PROM_AUTOBOOT		5
+-#define PROM_OPEN		6
+-#define PROM_READ		7
+-#define PROM_WRITE		8
+-#define PROM_IOCTL		9
+-#define PROM_CLOSE		10
+-#define PROM_GETCHAR		11
+-#define PROM_PUTCHAR		12
+-#define PROM_SHOWCHAR		13	/* XXX */
+-#define PROM_GETS		14	/* XXX */
+-#define PROM_PUTS		15	/* XXX */
+-#define PROM_PRINTF		16	/* XXX */
 -
--#define GFX_MAPALL           (GFX_BASE + 10)
--#define GFX_LABEL            (GFX_BASE + 11)
+-/* What are these for? */
+-#define PROM_INITPROTO		17	/* XXX */
+-#define PROM_PROTOENABLE	18	/* XXX */
+-#define PROM_PROTODISABLE	19	/* XXX */
+-#define PROM_GETPKT		20	/* XXX */
+-#define PROM_PUTPKT		21	/* XXX */
 -
--#define GFX_INFO_NAME_SIZE  16
--#define GFX_INFO_LABEL_SIZE 16
+-/* More PROM shit.  Probably has to do with VME RMW cycles??? */
+-#define PROM_ORW_RMW		22	/* XXX */
+-#define PROM_ORH_RMW		23	/* XXX */
+-#define PROM_ORB_RMW		24	/* XXX */
+-#define PROM_ANDW_RMW		25	/* XXX */
+-#define PROM_ANDH_RMW		26	/* XXX */
+-#define PROM_ANDB_RMW		27	/* XXX */
 -
--struct gfx_info {
--	char name  [GFX_INFO_NAME_SIZE];  /* board name */
--	char label [GFX_INFO_LABEL_SIZE]; /* label name */
--	unsigned short int xpmax, ypmax;  /* screen resolution */
--	unsigned int lenght;	          /* size of a complete gfx_info for this board */
--};
+-/* Cache handling stuff */
+-#define PROM_FLUSHCACHE		28	/* XXX */
+-#define PROM_CLEARCACHE		29	/* XXX */
 -
--struct gfx_getboardinfo_args {
--	unsigned int board;     /* board number.  starting from zero */
--	void *buf;              /* pointer to gfx_info */
--	unsigned int len;       /* buffer size of buf */
--};
+-/* Libc alike stuff */
+-#define PROM_SETJMP		30	/* XXX */
+-#define PROM_LONGJMP		31	/* XXX */
+-#define PROM_BEVUTLB		32	/* XXX */
+-#define PROM_GETENV		33	/* XXX */
+-#define PROM_SETENV		34	/* XXX */
+-#define PROM_ATOB		35	/* XXX */
+-#define PROM_STRCMP		36	/* XXX */
+-#define PROM_STRLEN		37	/* XXX */
+-#define PROM_STRCPY		38	/* XXX */
+-#define PROM_STRCAT		39	/* XXX */
 -
--struct gfx_attach_board_args {
--	unsigned int board;	/* board number, starting from zero */
--	void        *vaddr;	/* address where the board registers should be mapped */
--};
+-/* Misc stuff */
+-#define PROM_PARSER		40	/* XXX */
+-#define PROM_RANGE		41	/* XXX */
+-#define PROM_ARGVIZE		42	/* XXX */
+-#define PROM_HELP		43	/* XXX */
 -
--#ifdef __KERNEL__
--/* umap.c */
--extern void remove_mapping (struct vm_area_struct *vma, struct task_struct *, unsigned long, unsigned long);
--extern void *vmalloc_uncached (unsigned long size);
--extern int vmap_page_range (struct vm_area_struct *vma, unsigned long from, unsigned long size, unsigned long vaddr);
--#endif
+-/* Entry points for some PROM commands */
+-#define PROM_DUMPCMD		44	/* XXX */
+-#define PROM_SETENVCMD		45	/* XXX */
+-#define PROM_UNSETENVCMD	46	/* XXX */
+-#define PROM_PRINTENVCMD	47	/* XXX */
+-#define PROM_BEVEXCEPT		48	/* XXX */
+-#define PROM_ENABLECMD		49	/* XXX */
+-#define PROM_DISABLECMD		50	/* XXX */
 -
--#endif /* _ASM_GFX_H */
+-#define PROM_CLEARNOFAULT	51	/* XXX */
+-#define PROM_NOTIMPLEMENT	52	/* XXX */
+-
+-#define PROM_NV_GET		53	/* XXX */
+-#define PROM_NV_SET		54	/* XXX */
+-
+-#endif /* __ASM_MIPS_PROM_H */
 _

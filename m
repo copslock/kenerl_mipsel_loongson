@@ -1,61 +1,59 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f2GJZq313409
-	for linux-mips-outgoing; Fri, 16 Mar 2001 11:35:52 -0800
-Received: from dea.waldorf-gmbh.de (u-210-18.karlsruhe.ipdial.viaginterkom.de [62.180.18.210])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f2GJZlM13406
-	for <linux-mips@oss.sgi.com>; Fri, 16 Mar 2001 11:35:48 -0800
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f2GJZe214975;
-	Fri, 16 Mar 2001 20:35:40 +0100
-Date: Fri, 16 Mar 2001 20:35:40 +0100
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: "Kevin D. Kissell" <kevink@mips.com>
-Cc: <linux-mips@oss.sgi.com>
-Subject: Re: Can't build a CONFIG_CPU_NEVADA kernel
-Message-ID: <20010316203540.D2857@bacchus.dhis.org>
-References: <20010314084633.A25674@nevyn.them.org> <20010314195919.A1911@bacchus.dhis.org> <20010314140529.A29525@nevyn.them.org> <20010314202058.B1911@bacchus.dhis.org> <00fc01c0acd3$c881ca80$0deca8c0@Ulysses> <20010316150423.A3529@bacchus.dhis.org> <010201c0ae49$6df089e0$0deca8c0@Ulysses>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <010201c0ae49$6df089e0$0deca8c0@Ulysses>; from kevink@mips.com on Fri, Mar 16, 2001 at 07:46:23PM +0100
-X-Accept-Language: de,en,fr
+	by oss.sgi.com (8.11.3/8.11.3) id f2GKwOe14826
+	for linux-mips-outgoing; Fri, 16 Mar 2001 12:58:24 -0800
+Received: from pobox.sibyte.com (pobox.sibyte.com [208.12.96.20])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f2GKwOM14823
+	for <linux-mips@oss.sgi.com>; Fri, 16 Mar 2001 12:58:24 -0800
+Received: from postal.sibyte.com (moat.sibyte.com [208.12.96.21])
+	by pobox.sibyte.com (Postfix) with SMTP id 0B5B7205FD
+	for <linux-mips@oss.sgi.com>; Fri, 16 Mar 2001 12:58:18 -0800 (PST)
+Received: from SMTP agent by mail gateway 
+ Fri, 16 Mar 2001 12:51:24 -0800
+Received: from plugh.sibyte.com (plugh.sibyte.com [10.21.64.158])
+	by postal.sibyte.com (Postfix) with ESMTP id 597831595F
+	for <linux-mips@oss.sgi.com>; Fri, 16 Mar 2001 12:58:18 -0800 (PST)
+Received: by plugh.sibyte.com (Postfix, from userid 61017)
+	id 14731686D; Fri, 16 Mar 2001 13:00:51 -0800 (PST)
+From: Justin Carlson <carlson@sibyte.com>
+Reply-To: carlson@sibyte.com
+Organization: Sibyte
+To: linux-mips@oss.sgi.com
+Subject: mips64 pgd_current
+Date: Fri, 16 Mar 2001 12:55:18 -0800
+X-Mailer: KMail [version 1.0.29]
+Content-Type: text/plain
+MIME-Version: 1.0
+Message-Id: <01031613005000.00780@plugh.sibyte.com>
+Content-Transfer-Encoding: 8bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, Mar 16, 2001 at 07:46:23PM +0100, Kevin D. Kissell wrote:
 
-> > GCC to schedule instructions for a certain processor xxx.  This does not
-> > enable the full use of it's instruction set.  Back in time when I choose
-> > these options I choose because GCC didn't know -mcpu=r5000 but the R8000
-> > was supported and it was the closest fit.  Gcc 1.1.2 knows this option
-> > so I just changed all instances of -mcpu=r8000 into -mcpu=r5000.
-> 
-> As I understand it, the original intention behind -mcpu was to optimise 
-> instruction scheduling, but it got perverted over time to enable 
-> instructions as well.  In any case, the R5000 and R8000 have the 
-> same ISA, but the pipelines are radically different.  The R8K is 
-> 4-way superscalar, with a 2-cycle branch penalty and branch 
-> prediction.  The R5K is two way supercalar (Int/FP pairs only) 
-> with classic MIPS branch behavior, etc.
+Doing some more code trolling here; am looking at the MP 
+parts of the TLB refill code in the mips64 tree, and I'm a bit
+confused.
 
-Gcc's knowledge about MIPS architecture is so limited that an R5000 isn't
-very much different from an R8000 ...
+It looks to me like pgd_current[] is indexed by CP0_CONTEXT
+and the resulting pointer is supposed to be the base of the
+page tables for that particular process.  This makes sense.
 
-> > Unfortunately true but there is a reason that QED's manual marks it as an
-> > proprietary extension ...
-> 
-> Yup.  The quesiton is, does gcc's -mmad option actually
-> select based on -mcpu or some other variable which
-> semantics to use, or does it assume R4650 semantics
+However, I see this in mmu_context.h:
 
-If you have a collection which of the CPUs have implemented mmad in what
-way I'd like to use that to put it into gcc.
+#define TLBMISS_HANDLER_SETUP_PGD(pgd) \
+	pgd_current[smp_processor_id()] = (unsigned long)(pgd)
+#define TLBMISS_HANDLER_SETUP() \
+	set_context((unsigned long) smp_processor_id() << (23 + 3)); \
+	TLBMISS_HANDLER_SETUP_PGD(swapper_pg_dir)
+extern unsigned long pgd_current[];
 
-> (I had the impression that it was the R4650 that drove
-> the implementation of MIPS madd's into gcc - correct
-> me if I'm wrong).
+so pgd_current[smp_processor_id()] is hard coded to be set to
+swapper_pg_dir, which, insofar as I can tell, is not a per-cpu structure.  
 
-Guess that's right.
+It looks to me like this will end up with pgd_current[] being an
+array of NR_CPUS pointers all of which point to the same pgd table.  
 
-  Ralf
+I know I must be misunderstanding this code.  Any suggestions as to what I'm
+missing?
+
+Thanks,
+  Justin

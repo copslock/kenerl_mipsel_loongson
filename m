@@ -1,49 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Apr 2004 09:39:04 +0100 (BST)
-Received: from p508B7001.dip.t-dialin.net ([IPv6:::ffff:80.139.112.1]:3686
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225248AbUDBIjC>; Fri, 2 Apr 2004 09:39:02 +0100
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i328d1oM019720;
-	Fri, 2 Apr 2004 10:39:01 +0200
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i328d0P0019719;
-	Fri, 2 Apr 2004 10:39:00 +0200
-Date: Fri, 2 Apr 2004 10:39:00 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Brian Murphy <brian@murphy.dk>
-Cc: linux-mips@linux-mips.org
-Subject: Re: BUG in pcnet32.c?
-Message-ID: <20040402083900.GB19375@linux-mips.org>
-References: <4068809F.8070103@murphy.dk> <4068864D.1020209@realitydiluted.com> <406B2E90.5060307@murphy.dk> <20040401173154.GA30634@linux-mips.org> <406D240C.8020208@murphy.dk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <406D240C.8020208@murphy.dk>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Apr 2004 10:44:12 +0100 (BST)
+Received: from [IPv6:::ffff:193.232.173.111] ([IPv6:::ffff:193.232.173.111]:57700
+	"EHLO t111.niisi.ras.ru") by linux-mips.org with ESMTP
+	id <S8225254AbUDBJoL>; Fri, 2 Apr 2004 10:44:11 +0100
+Received: from t06.niisi.ras.ru (t06.niisi.ras.ru [193.232.173.6])
+	by t111.niisi.ras.ru (8.11.7/8.11.7) with ESMTP id i329irV27376
+	for <linux-mips@linux-mips.org>; Fri, 2 Apr 2004 13:44:53 +0400
+Received: from t06.niisi.ras.ru (localhost.localdomain [127.0.0.1])
+	by t06.niisi.ras.ru (8.12.8/8.12.8) with ESMTP id i329fwFi004708
+	for <linux-mips@linux-mips.org>; Fri, 2 Apr 2004 13:41:59 +0400
+Received: (from uucp@localhost)
+	by t06.niisi.ras.ru (8.12.8/8.12.8/Submit) with UUCP id i329fwor004706
+	for linux-mips@linux-mips.org; Fri, 2 Apr 2004 13:41:58 +0400
+Received: from niisi.msk.ru (aa01 [172.16.0.1])
+	by aa19.niisi.msk.ru (8.12.8/8.12.8) with ESMTP id i329dxUY018426
+	for <linux-mips@linux-mips.org>; Fri, 2 Apr 2004 13:39:59 +0400
+Received: from niisi.msk.ru (t34 [193.232.173.34])
+	by niisi.msk.ru (8.12.5/8.12.5) with ESMTP id i329dvuj018401
+	for <linux-mips@linux-mips.org>; Fri, 2 Apr 2004 13:39:57 +0400 (MSK)
+Message-ID: <406D3566.3FC6067C@niisi.msk.ru>
+Date: Fri, 02 Apr 2004 13:41:58 +0400
+From: "Gleb O. Raiko" <raiko@niisi.msk.ru>
+Organization: NIISI RAN
+X-Mailer: Mozilla 4.8 [en] (Windows NT 5.0; U)
+X-Accept-Language: en,ru
+MIME-Version: 1.0
+To: linux-mips@linux-mips.org
+Subject: strace on a linux/mips
+Content-Type: text/plain; charset=koi8-r
+Content-Transfer-Encoding: 7bit
+Return-Path: <raiko@niisi.msk.ru>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4719
+X-archive-position: 4720
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: raiko@niisi.msk.ru
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Apr 02, 2004 at 10:27:56AM +0200, Brian Murphy wrote:
+Hello,
 
-> >The more information BUG or BUG_ON provide the bigger the kernel gets.
-> >Using a simple break instruction was simply the smallest thing.  The
-> >previous, just slightly more verbose BUG() implementation did result
-> >in ~ 87k of bloat ...
-> > 
-> >
-> Perhaps you could mention this usage of break explicitly in the message 
-> in do_bp.
+Strace can't follow fork on a linux/mips (on all kernels, mips, mips64,
+o32, n32, etc).
 
-That's easy, BUG() and BUG_ON() if the condition was met use a break
-instruction.
+When fork occurs, strace changes syscall number from fork to clone in v0
+and sets CLONE_PTRACE in a0.
+Unfortunately, a kernel forms an address of a syscall routine before
+strace performs its dirty tricks. Thus, only thing strace can do is
+playing with syscall routine's address via t2. It's not so useful
+because strace doesn't know where a syscall table is in. Strace is still
+able to change first 4 arguments, though.
 
-  Ralf
+BTW, opening t2 to the ptrace(2) interface isn't good thing too. I am
+not sure I can gain root by pondering t2, but I'm sure it's a hole for a
+DoS attack, at least. (For lazy people, a kernel restores t2 from the
+stack and does jalr t2 after the process being traced is resumed.)
+
+The solution is to repeat parsing syscall number (and number of
+arguments) on return from syscall_trace.
+Another solution is to call syscall_trace early, before parsing.
+
+Have somebody got yet another idea?
+
+Regards,
+Gleb.

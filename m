@@ -1,51 +1,42 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id TAA341897; Thu, 21 Aug 1997 19:45:00 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id DAA371943; Fri, 22 Aug 1997 03:46:43 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id TAA09709 for linux-list; Thu, 21 Aug 1997 19:43:38 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id TAA09699 for <linux@cthulhu.engr.sgi.com>; Thu, 21 Aug 1997 19:43:36 -0700
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id TAA25439
-	for <linux@relay.engr.sgi.com>; Thu, 21 Aug 1997 19:43:32 -0700
-	env-from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-          by lager.engsoc.carleton.ca (8.8.5/8.8.4) with SMTP
-	  id WAA08505 for <linux@relay.engr.sgi.com>; Thu, 21 Aug 1997 22:43:00 -0400
-Date: Thu, 21 Aug 1997 22:43:00 -0400 (EDT)
-From: Alex deVries <adevries@engsoc.carleton.ca>
-To: linux@cthulhu.engr.sgi.com
-Subject: Kernel compile errors...
-Message-ID: <Pine.LNX.3.95.970821222908.6393A-100000@lager.engsoc.carleton.ca>
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id DAA12948 for linux-list; Fri, 22 Aug 1997 03:45:42 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id DAA12936 for <linux@cthulhu.engr.sgi.com>; Fri, 22 Aug 1997 03:45:35 -0700
+Received: from aec.at (web.aec.at [193.170.192.5]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id DAA26567
+	for <linux@cthulhu.engr.sgi.com>; Fri, 22 Aug 1997 03:45:32 -0700
+	env-from (oliver@aec.at)
+Received: (from oliver@localhost) by aec.at (8.8.3/8.7) id MAA26641; Fri, 22 Aug 1997 12:45:19 +0200
+Date: Fri, 22 Aug 1997 12:45:18 +0200 (MET DST)
+From: Oliver Frommel <oliver@aec.at>
+To: Miguel de Icaza <miguel@nuclecu.unam.mx>
+cc: eak@detroit.sgi.com, linux@cthulhu.engr.sgi.com
+Subject: Re: "unable to handle kernel paging request" at boot
+In-Reply-To: <199708211605.LAA08758@athena.nuclecu.unam.mx>
+Message-ID: <Pine.LNX.3.91.970822124206.26560A-100000@web.aec.at>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+> 
+> Can you both guys fetch this kernel:
+> 
+> 	ftp://ftp.nuclecu.unam.mx/incoming/vmlinux 
+> 
+> and send me the output of the crash? 
+>
 
-I just checked out the latest kernel, and I get the following errors when
-I try to compile. Uh, what am I doing wrong?  I'm afraid MIPS assembler is
-above me.
+now i get 
 
-make[1]: Entering directory `/usr/src/adevries/linux/arch/mips/kernel'
-mips-linux-gcc -D__KERNEL__ -I/usr/src/adevries/linux/include -Wall
--Wstrict-prototypes -O2 -fomit-frame-pointer -D__GOGOGO__ -G 0
--mno-abicalls -fno-pic -mcpu=r4600 -mips2 -pipe -c entry.S -o entry.o
-entry.S: Assembler messages:
-entry.S:208: Error: .previous without corresponding .section; ignored
-entry.S:208: Error: .previous without corresponding .section; ignored
-entry.S:209: Error: .previous without corresponding .section; ignored
-entry.S:209: Error: .previous without corresponding .section; ignored
-entry.S:216: Error: .previous without corresponding .section; ignored
-entry.S:216: Error: .previous without corresponding .section; ignored
-entry.S:218: Error: .previous without corresponding .section; ignored
-entry.S:218: Error: .previous without corresponding .section; ignored
-entry.S:219: Error: .previous without corresponding .section; ignored
-entry.S:219: Error: .previous without corresponding .section; ignored
-entry.S:220: Error: .previous without corresponding .section; ignored
-entry.S:220: Error: .previous without corresponding .section; ignored
-make[1]: *** [entry.o] Error 1
-make[1]: Leaving directory `/usr/src/adevries/linux/arch/mips/kernel'
-make: *** [linuxsubdirs] Error 2
+"Unable to handle kernel paging request at virtual address 00003004, epc == 
+ 880cb0d4, ra == 880cb698"
 
-- Alex
+funny, i now get a scsi error after successfully (?) passing the eth driver 
+init:
 
-      Alex deVries              Success is realizing 
-  System Administrator          attainable dreams.
-   The EngSoc Project     
+sda: scsi disk I/O error dev 08:00, sector 0
+unable to read part. table
+
+i guess that'd impose some problems to fdisk, too :)
+
+o. 

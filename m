@@ -1,48 +1,38 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id AAA493668 for <linux-archive@neteng.engr.sgi.com>; Tue, 10 Mar 1998 00:23:27 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id HAA502051 for <linux-archive@neteng.engr.sgi.com>; Tue, 10 Mar 1998 07:41:49 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id AAA2595269 for linux-list; Tue, 10 Mar 1998 00:22:32 -0800 (PST)
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id AAA2609326 for <linux@cthulhu.engr.sgi.com>; Tue, 10 Mar 1998 00:22:30 -0800 (PST)
-Received: from sparc.life.nthu.edu.tw ([140.114.98.21]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id AAA15903
-	for <linux@cthulhu.engr.sgi.com>; Tue, 10 Mar 1998 00:22:21 -0800 (PST)
-	mail_from (tonywu@life.nthu.edu.tw)
-Received: from localhost (tonywu@localhost)
-	by sparc.life.nthu.edu.tw (8.8.8/8.8.8) with SMTP id QAA04044;
-	Tue, 10 Mar 1998 16:11:26 +0800 (CST)
-Date: Tue, 10 Mar 1998 16:11:25 +0800 (CST)
-From: "Tony C. Wu" <tonywu@life.nthu.edu.tw>
-X-Sender: tonywu@sparc
-To: Alex deVries <adevries@engsoc.carleton.ca>
-cc: linux@cthulhu.engr.sgi.com
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id HAA2692458 for linux-list; Tue, 10 Mar 1998 07:41:00 -0800 (PST)
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id HAA2714009 for <linux@cthulhu.engr.sgi.com>; Tue, 10 Mar 1998 07:40:59 -0800 (PST)
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id HAA21508
+	for <linux@cthulhu.engr.sgi.com>; Tue, 10 Mar 1998 07:40:55 -0800 (PST)
+	mail_from (ralf@uni-koblenz.de)
+From: ralf@uni-koblenz.de
+Received: from uni-koblenz.de (pmport-27.uni-koblenz.de [141.26.249.27])
+	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id QAA08182
+	for <linux@cthulhu.engr.sgi.com>; Tue, 10 Mar 1998 16:40:47 +0100 (MET)
+Received: (from ralf@localhost)
+	by uni-koblenz.de (8.8.7/8.8.7) id QAA05310;
+	Tue, 10 Mar 1998 16:37:35 +0100
+Message-ID: <19980310163735.18802@uni-koblenz.de>
+Date: Tue, 10 Mar 1998 16:37:35 +0100
+To: "Tony C. Wu" <tonywu@life.nthu.edu.tw>
+Cc: Alex deVries <adevries@engsoc.carleton.ca>, linux@cthulhu.engr.sgi.com
 Subject: Re: Linux for SGI
-In-Reply-To: <Pine.LNX.3.95.980309115358.778E-100000@lager.engsoc.carleton.ca>
-Message-ID: <Pine.GSO.3.96.980310160942.4017A-100000@sparc>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+References: <Pine.LNX.3.95.980309115358.778E-100000@lager.engsoc.carleton.ca> <Pine.GSO.3.96.980310160942.4017A-100000@sparc>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.85e
+In-Reply-To: <Pine.GSO.3.96.980310160942.4017A-100000@sparc>; from Tony C. Wu on Tue, Mar 10, 1998 at 04:11:25PM +0800
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+On Tue, Mar 10, 1998 at 04:11:25PM +0800, Tony C. Wu wrote:
 
-We have the same problem on Indy, IP22. The error msg is: bus error,
-should not happen yet blahblah
+> We have the same problem on Indy, IP22. The error msg is: bus error,
+> should not happen yet blahblah
 
---
-Tony C. Wu 
-System administrator            Email: tonywu@life.nthu.edu.tw
-Dept. of Life Sciences          Voice: +886-3-574-2772
-NTHU, Hsin-Chu, Taiwan            Fax: +886-3-571-5934
+Which kernel?
 
-On Mon, 9 Mar 1998, Alex deVries wrote:
+The bug which started this thread was caused by an unsupported gfx card,
+the Elan GFX.  Not much I can do about it.
 
-> 
-> On Mon, 9 Mar 1998 ralf@uni-koblenz.de wrote:
-> > On Mon, Mar 09, 1998 at 08:40:51AM -0800, //\/\ario Tomaseli wrote:
-> > > I got the 'GettingStarted software' from the ftp-server, I followed all
-> > > the intractions and everythings goes fine but starting the vmlinux
-> > > kernel.
-> > > Could you help me to find out what I does wrong ??
-> > Kannst Du mir die Ausgabe des hinv-Kommandos unter IRIX schicken?
-> 
-> Can you also tell us what errors you're getting?
-> 
-> - Alex "see? my Dutch heritage is paying off" deVries
-> 
+  Ralf

@@ -1,52 +1,46 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id TAA50965 for <linux-archive@neteng.engr.sgi.com>; Wed, 24 Jun 1998 19:24:10 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id NAA93974 for <linux-archive@neteng.engr.sgi.com>; Thu, 25 Jun 1998 13:27:15 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id TAA59027
+	id NAA61676
 	for linux-list;
-	Wed, 24 Jun 1998 19:23:38 -0700 (PDT)
+	Thu, 25 Jun 1998 13:26:29 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from rock.csd.sgi.com ([150.166.9.10])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id TAA64699
+	via ESMTP id NAA33657
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 24 Jun 1998 19:23:36 -0700 (PDT)
-	mail_from (adevries@engsoc.carleton.ca)
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam: SGI does not authorize the use of its proprietary systems or networks for unsolicited or bulk email from the Internet.) via ESMTP id TAA08849
-	for <linux@cthulhu.engr.sgi.com>; Wed, 24 Jun 1998 19:23:31 -0700 (PDT)
-	mail_from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id WAA02028
-	for <linux@cthulhu.engr.sgi.com>; Wed, 24 Jun 1998 22:23:27 -0400
-X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
-Date: Wed, 24 Jun 1998 22:23:27 -0400 (EDT)
-From: Alex deVries <adevries@engsoc.carleton.ca>
-To: SGI Linux <linux@cthulhu.engr.sgi.com>
-Subject: Some new RPM uploads...
-Message-ID: <Pine.LNX.3.95.980624221902.939A-100000@lager.engsoc.carleton.ca>
+	Thu, 25 Jun 1998 13:26:27 -0700 (PDT)
+	mail_from (jesseba@rock.csd.sgi.com)
+Received: from diverge.csd.sgi.com (diverge.csd.sgi.com [150.166.153.87])
+	by rock.csd.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	via SMTP id NAA15372
+	for <@rock.csd.sgi.com:linux@cthulhu.engr.sgi.com>;
+	Thu, 25 Jun 1998 13:26:27 -0700 (PDT)
+	mail_from (jesseba@rock.csd.sgi.com)
+Received: from csd.sgi.com by diverge.csd.sgi.com via ESMTP (950413.SGI.8.6.12/911001.SGI)
+	for <linux@engr> id NAA21538; Thu, 25 Jun 1998 13:26:25 -0700
+Message-ID: <3592B271.14F268F4@csd.sgi.com>
+Date: Thu, 25 Jun 1998 13:26:25 -0700
+From: Jesse Barnes <jesseba@rock.csd.sgi.com>
+Organization: CPS Logistics
+X-Mailer: Mozilla 4.05 [en] (X11; I; IRIX 6.3 IP32)
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To: linux@cthulhu.engr.sgi.com
+Subject: New 2.0.107 console scheme
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+Does the main kernel source tree have support for Indys natively, and
+if so, is the new fbcon method supported for the console?  
 
+Also, what's preventing Linux/SGI from running on O2s?  I've got an
+R10k O2 sitting on my desk and I'd really like to see Linux running on
+it.  I have device driver writing experience on PCs under DOS and NT,
+but I've never written one for a Unix type system.  If there's
+something small that I could tackle to start out, that would be great.
 
-I've uploaded a lot of new RPMS; most of them are just rebuilds of the
-existing RPMS, but now they have dependancy information in them.  I've
-redone nearly everything from RH 5.1.
-
-There's still a problem with glibc that prevents me from releasing Alpha 2
-of the installation; glibc has too many dependancies that creates a
-circular dependancy issue in the installer that can't be resolved without
-fixing glibc.
-
-You can find it in
-ftp://ftp.linux.sgi.com/pub/redhat/devel/redhat5.1alpha2 or similiar.
-
-I'd work on this, but I'm in NYC on business until at least Friday.
-
-- Alex
-
--- 
-Alex deVries, puffin on LinuxNet.
-http://www.engsoc.carleton.ca/~adevries/ .
+Thanks,
+Jesse Barnes

@@ -1,60 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Nov 2004 16:37:56 +0000 (GMT)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:26628 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225251AbUK3Qho>; Tue, 30 Nov 2004 16:37:44 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 70896E1CA8; Tue, 30 Nov 2004 17:37:37 +0100 (CET)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 08787-06; Tue, 30 Nov 2004 17:37:37 +0100 (CET)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 16CF8E1CA7; Tue, 30 Nov 2004 17:37:37 +0100 (CET)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.1/8.13.1) with ESMTP id iAUGbmfD029852;
-	Tue, 30 Nov 2004 17:37:49 +0100
-Date: Tue, 30 Nov 2004 16:37:40 +0000 (GMT)
-From: "Maciej W. Rozycki" <macro@linux-mips.org>
-To: Gilad Rom <gilad@romat.com>
-Cc: "'Dominic Sweetman'" <dom@mips.com>, linux-mips@linux-mips.org
-Subject: RE: CP0 EntryLo
-In-Reply-To: <20041130162659.BA5FAEB2A9@mail.romat.com>
-Message-ID: <Pine.LNX.4.58L.0411301635590.31151@blysk.ds.pg.gda.pl>
-References: <20041130162659.BA5FAEB2A9@mail.romat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Nov 2004 18:02:02 +0000 (GMT)
+Received: from pimout2-ext.prodigy.net ([IPv6:::ffff:207.115.63.101]:51355
+	"EHLO pimout2-ext.prodigy.net") by linux-mips.org with ESMTP
+	id <S8225251AbUK3SB5>; Tue, 30 Nov 2004 18:01:57 +0000
+Received: from 127.0.0.1 (adsl-68-124-224-225.dsl.snfc21.pacbell.net [68.124.224.225])
+	by pimout2-ext.prodigy.net (8.12.10 milter /8.12.10) with ESMTP id iAUI1nL6119994;
+	Tue, 30 Nov 2004 13:01:50 -0500
+Received: from  [63.194.214.47] by 127.0.0.1
+  (ArGoSoft Mail Server Pro for WinNT/2000/XP, Version 1.8 (1.8.6.7)); Tue, 30 Nov 2004 10:01:44 -0800
+Message-ID: <41ACB576.6000501@embeddedalley.com>
+Date: Tue, 30 Nov 2004 10:01:26 -0800
+From: Pete Popov <ppopov@embeddedalley.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.3) Gecko/20040913
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.80/605/Wed Nov 24 15:09:47 2004
-	clamav-milter version 0.80j
-	on piorun.ds.pg.gda.pl
-X-Virus-Status: Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+To: Gilad Rom <gilad@romat.com>
+CC: "Maciej W. Rozycki" <macro@linux-mips.org>,
+	linux-mips@linux-mips.org
+Subject: Re: CP0 EntryLo
+References: <20041130162659.BA5FAEB2A9@mail.romat.com> <Pine.LNX.4.58L.0411301635590.31151@blysk.ds.pg.gda.pl>
+In-Reply-To: <Pine.LNX.4.58L.0411301635590.31151@blysk.ds.pg.gda.pl>
+X-Enigmail-Version: 0.86.1.0
+X-Enigmail-Supports: pgp-inline, pgp-mime
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ArGoMail-Authenticated: ppopov@embeddedalley.com
+Return-Path: <ppopov@embeddedalley.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6508
+X-archive-position: 6509
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: ppopov@embeddedalley.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 30 Nov 2004, Gilad Rom wrote:
-
-> So, what I need to do, if I understand correctly, is to create a fixed
-> mapping
-> >From a virtual address to a physical address on the tlb, and use this
-> Virtual address to change the values of EntryLo to 0xD in order to 
-> Access the device on the address range I mapped Chip-select 1 to?
+Maciej W. Rozycki wrote:
+> On Tue, 30 Nov 2004, Gilad Rom wrote:
 > 
-> (Excuse my poor phrasing, I've been googling all day...)
 > 
-> Any idea on how I might accomplish that from a driver?
-> I've found a function called add_wired_entry(...), is this
-> What I should be using?
+>>So, what I need to do, if I understand correctly, is to create a fixed
+>>mapping
+>>>From a virtual address to a physical address on the tlb, and use this
+>>Virtual address to change the values of EntryLo to 0xD in order to 
+>>Access the device on the address range I mapped Chip-select 1 to?
+>>
+>>(Excuse my poor phrasing, I've been googling all day...)
+>>
+>>Any idea on how I might accomplish that from a driver?
+>>I've found a function called add_wired_entry(...), is this
+>>What I should be using?
+> 
+> 
+>  ioremap()
 
- ioremap()
+Exactly. You program the CS with a physical address. Make sure that 
+address does not overlap with anything else. Then you call ioremap 
+from your driver and you get back a virtual address. You use that 
+virtual address to access the peripheral.
 
-  Maciej
+At this stage I would say that probably reading something like the 
+Linux Kernel book or Linux Device Drivers both by Oreilly will 
+really help you.
+
+Pete

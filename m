@@ -1,36 +1,34 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id PAA363729; Sun, 20 Jul 1997 15:19:15 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id PAA364379; Sun, 20 Jul 1997 15:41:00 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA09413 for linux-list; Sun, 20 Jul 1997 15:18:59 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA09409 for <linux@cthulhu.engr.sgi.com>; Sun, 20 Jul 1997 15:18:56 -0700
-Received: from athena.nuclecu.unam.mx (athena.nuclecu.unam.mx [132.248.29.9]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id PAA23854
-	for <linux@cthulhu.engr.sgi.com>; Sun, 20 Jul 1997 15:18:54 -0700
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA10880 for linux-list; Sun, 20 Jul 1997 15:40:34 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA10875 for <linux@cthulhu.engr.sgi.com>; Sun, 20 Jul 1997 15:40:31 -0700
+Received: from athena.nuclecu.unam.mx (athena.nuclecu.unam.mx [132.248.29.9]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id PAA25975
+	for <linux@cthulhu.engr.sgi.com>; Sun, 20 Jul 1997 15:40:28 -0700
 	env-from (miguel@athena.nuclecu.unam.mx)
 Received: (from miguel@localhost)
-	by athena.nuclecu.unam.mx (8.8.5/8.8.5) id VAA25613;
-	Sun, 20 Jul 1997 21:22:35 -0500
-Date: Sun, 20 Jul 1997 21:22:35 -0500
-Message-Id: <199707210222.VAA25613@athena.nuclecu.unam.mx>
+	by athena.nuclecu.unam.mx (8.8.5/8.8.5) id WAA26037;
+	Sun, 20 Jul 1997 22:36:45 -0500
+Date: Sun, 20 Jul 1997 22:36:45 -0500
+Message-Id: <199707210336.WAA26037@athena.nuclecu.unam.mx>
 From: Miguel de Icaza <miguel@nuclecu.unam.mx>
-To: shaver@neon.ingenia.ca
-CC: linux@cthulhu.engr.sgi.com
-In-reply-to: <199707171728.NAA08651@neon.ingenia.ca> (message from Mike Shaver
-	on Thu, 17 Jul 1997 13:28:43 -0400 (EDT))
-Subject: Re: strace
-X-Mexico: Este es un pais de orates, un pais amateur.
+To: adevries@engsoc.carleton.ca
+CC: mgix@nothingreal.com, linux@cthulhu.engr.sgi.com
+In-reply-to: 
+	<Pine.LNX.3.95.970718132141.27101H-100000@lager.engsoc.carleton.ca>
+	(message from Alex deVries on Fri, 18 Jul 1997 13:32:57 -0400 (EDT))
+Subject: Re: Pointers on how to get started
+X-Unix: is friendly, it is just selective about who its friends are.
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
 
-> Anyone know what state the strace stuff in the CVS tree is in?
+> How are things on the native booting front?
+> 
+> I had mailed Erik Troan a couple of days ago w.r.t. getting the RH install
+> code for Alan and myself, but I haven't heard anything yet.
 
-It compiles and works just fine on IRIX.
+The source code for the Red Hat install program is included in every
+mirror of the distribution.
 
-> (Also, remind me to work on fdisk when I get back[*] -- I don't like
-> fx very much.)
-
-Actually -as I mentioned in a previous mail- we should probably add
-some of fx's features into fdisk.  
-
-The Red Hat people are working on a newt-bassed fdisk as of now.
-
+Cheers,
 Miguel.

@@ -1,38 +1,37 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0GKrx922153
-	for linux-mips-outgoing; Wed, 16 Jan 2002 12:53:59 -0800
-Received: from host099.momenco.com (IDENT:root@www.momenco.com [64.169.228.99])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0GKrsP22150
-	for <linux-mips@oss.sgi.com>; Wed, 16 Jan 2002 12:53:55 -0800
-Received: from beagle (beagle.internal.momenco.com [192.168.0.115])
-	by host099.momenco.com (8.11.6/8.11.6) with SMTP id g0GJroX21311
-	for <linux-mips@oss.sgi.com>; Wed, 16 Jan 2002 11:53:50 -0800
-From: "Matthew Dharm" <mdharm@momenco.com>
-To: "Linux-MIPS" <linux-mips@oss.sgi.com>
-Subject: IDE/Toolchains for MIPS?
-Date: Wed, 16 Jan 2002 11:53:50 -0800
-Message-ID: <NEBBLJGMNKKEEMNLHGAIMENNCEAA.mdharm@momenco.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
-Importance: Normal
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
+	by oss.sgi.com (8.11.2/8.11.3) id g0GNQXj26404
+	for linux-mips-outgoing; Wed, 16 Jan 2002 15:26:33 -0800
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id g0GNQVP26401
+	for <linux-mips@oss.sgi.com>; Wed, 16 Jan 2002 15:26:31 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id g0GMQS023775;
+	Wed, 16 Jan 2002 14:26:28 -0800
+Date: Wed, 16 Jan 2002 14:26:28 -0800
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Carsten Langgaard <carstenl@mips.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: fsck fails on latest 2.4 kernel
+Message-ID: <20020116142628.D20408@dea.linux-mips.net>
+References: <3C454D61.ACF98623@mips.com> <3C459383.5C8A6C8B@mips.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3C459383.5C8A6C8B@mips.com>; from carstenl@mips.com on Wed, Jan 16, 2002 at 03:51:47PM +0100
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Does anyone know of a good IDE for MIPS/Linux?
+On Wed, Jan 16, 2002 at 03:51:47PM +0100, Carsten Langgaard wrote:
 
-Some people I know are asking, because they're very used to the
-graphical design environments on other platforms.
+> ftp://oss.sgi.com/pub/linux/mips/crossdev/i386-linux/mipsel-linux/binutils-mipsel-linux-2.9.5-3.i386.rpm
+> and
+>  ftp://oss.sgi.com/pub/linux/mips/crossdev/i386-linux/mipsel-linux/egcs-mipsel-linux-1.1.2-4.i386.rpm
+> , which seems to be the latest on the SGI FTP server.
+> 
+> What are the recommended toolchain ?
 
-Matt
+Don't use these for building userspace apps.
 
---
-Matthew D. Dharm                            Senior Software Designer
-Momentum Computer Inc.                      1815 Aston Ave.  Suite 107
-(760) 431-8663 X-115                        Carlsbad, CA 92008-7310
-Momentum Works For You                      www.momenco.com
+  Ralf

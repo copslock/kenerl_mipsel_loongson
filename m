@@ -1,54 +1,50 @@
-Received:  by oss.sgi.com id <S554193AbRBEVP0>;
-	Mon, 5 Feb 2001 13:15:26 -0800
-Received: from stereotomy.lineo.com ([64.50.107.151]:57359 "HELO
-        stereotomy.lineo.com") by oss.sgi.com with SMTP id <S554184AbRBEVPA>;
-	Mon, 5 Feb 2001 13:15:00 -0800
-Received: from Lineo.COM (localhost.localdomain [127.0.0.1])
-	by stereotomy.lineo.com (Postfix) with ESMTP
-	id 2C41B4CE9E; Mon,  5 Feb 2001 14:14:48 -0700 (MST)
-Message-ID: <3A7F17C7.4070406@Lineo.COM>
-Date:   Mon, 05 Feb 2001 14:14:47 -0700
-From:   Quinn Jensen <jensenq@Lineo.COM>
-Organization: Lineo, Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux 2.2.16-9mdk i686; en-US; m18) Gecko/20001107 Netscape6/6.0
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     jsun@hermes.mvista.com
-Cc:     Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com
-Subject: Re: NFS root with cache on
-References: <3A79C869.2040001@Lineo.COM> <20010204194451.A26868@bacchus.dhis.org> <3A7ED9EB.6080801@Lineo.COM> <3A7EEBD6.F4743A97@mvista.com> <3A7EF431.2060903@Lineo.COM> <3A7EFBC7.9B7D6AF9@mvista.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
+Received:  by oss.sgi.com id <S554269AbRBEVRr>;
+	Mon, 5 Feb 2001 13:17:47 -0800
+Received: from PACIFIC-CARRIER-ANNEX.MIT.EDU ([18.69.0.28]:274 "HELO MIT.EDU")
+	by oss.sgi.com with SMTP id <S554190AbRBEVRb>;
+	Mon, 5 Feb 2001 13:17:31 -0800
+Received: from GRAND-CENTRAL-STATION.MIT.EDU by MIT.EDU with SMTP
+	id AA22760; Mon, 5 Feb 01 16:19:32 EST
+Received: from melbourne-city-street.MIT.EDU (MELBOURNE-CITY-STREET.MIT.EDU [18.69.0.45])
+	by grand-central-station.MIT.EDU (8.9.2/8.9.2) with ESMTP id QAA21591
+	for <linux-mips@oss.sgi.com>; Mon, 5 Feb 2001 16:13:25 -0500 (EST)
+Received: from w20-575-66.mit.edu (W20-575-66.MIT.EDU [18.187.1.21])
+	by melbourne-city-street.MIT.EDU (8.9.3/8.9.2) with ESMTP id QAA05137
+	for <linux-mips@oss.sgi.com>; Mon, 5 Feb 2001 16:13:25 -0500 (EST)
+Received: from localhost (kbarr@localhost) by w20-575-66.mit.edu (8.9.3) with ESMTP
+	id QAA195850; Mon, 5 Feb 2001 16:13:24 -0500 (EST)
+Date:   Mon, 5 Feb 2001 16:13:23 -0500
+From:   Kenneth C Barr <kbarr@MIT.EDU>
+To:     <linux-mips@oss.sgi.com>
+Subject: netbooting indy - update, elf2ecoff?
+In-Reply-To: <20010205115026.C2487@bacchus.dhis.org>
+Message-Id: <Pine.SGI.4.30L.0102051604550.234337-100000@w20-575-66.mit.edu>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-jsun@hermes.mvista.com wrote:
+Thank you very much for your help so far!  Here's an update and another
+question:
 
->> 
->> I have tried that in this case but it didn't help,
->> because the receive skb data pointers all point to
->> the KSEG0 view of the data anyway. 
-> 
-> 
-> I looked into similar problems a while back.  If I remeber correctly, the data
-> pointers do point to kseg0.  It is up to the driver to do appropriate
-> dma_cache_invalidate() (or some functions to that effect) at certain places.
+Updates:
+1.  Had to attach a console (we have XZ graphics not XL)
+2.  An ecoff kernel image downloaded fine.  The ELF ones download halfway
+and fail silently (even with the console attached)
 
-Yes, the tulip driver calls pci_unmap_single() on the receive
-buffer, but for mips (in asm-mips/pci.h) this call does
-nothing.  And this is what is so confusing.  Only if the
-receive buffer was forced to be in KSEG1 would this make
-sense.
+Question: As the vmlinux-indy-2.2.1-990226.ecoff kernel begins the boot
+sequence, it hangs at "unable to open initial console."  I had unpacked
+the filesystem on linux as the FAQ suggests, and my device files look
+right.  So, on the NFS server, I symlinked /dev/console to /dev/ttyS0.
+Now the message is replaced with a cryptic: "S<<<<<"
 
-> 
-> What is the CPU?  It seems logical to suspect about the dma cache routines.
+Perhaps that kernel doesn't have console support?  Is there any other
+explanation for the "S<<<<<" failure where I used to see "...initial
+console?"
 
-Yes, I have scrubbed over my patch to the cache routines
-many times, especially since on the IDT 334 the cache-way
-selection for indexed cache ops is weird--they left the
-way-bit up at bit 12 as if it were an 8KB cache, when
-in reality it is only a 2KB cache.
+I'd like to try a different kernel but I can't find an elf2ecoff binary.
+Does anyone have this converted or a known-good ecoff kernel?
 
-Quinn
+Ken

@@ -1,79 +1,60 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id JAA29683 for <linux-archive@neteng.engr.sgi.com>; Wed, 3 Feb 1999 09:38:47 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id MAA45233 for <linux-archive@neteng.engr.sgi.com>; Wed, 3 Feb 1999 12:52:08 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id JAA59177
+	id MAA84550
 	for linux-list;
-	Wed, 3 Feb 1999 09:37:27 -0800 (PST)
+	Wed, 3 Feb 1999 12:51:17 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgidal.dallas.sgi.com (sgidal.dallas.sgi.com [169.238.80.130])
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via SMTP id JAA03410
+	via ESMTP id MAA24966
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 3 Feb 1999 09:37:24 -0800 (PST)
-	mail_from (chad@otg.dallas.sgi.com)
-Received: from roctane.dallas.sgi.com by sgidal.dallas.sgi.com via ESMTP (950413.SGI.8.6.12/911001.SGI)
-	for <@sgidal.dallas.sgi.com:linux@cthulhu.engr.sgi.com> id LAA22602; Wed, 3 Feb 1999 11:37:23 -0600
-Received: from roctane.dallas.sgi.com (localhost [127.0.0.1]) by roctane.dallas.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id JAA18570 for <linux@cthulhu.engr.sgi.com>; Wed, 3 Feb 1999 09:37:22 -0800 (PST)
-Message-ID: <36B88952.4F3E1CAE@roctane.dallas.sgi.com>
-Date: Wed, 03 Feb 1999 11:37:22 -0600
-From: Chad Carlin <chad@otg.dallas.sgi.com>
-Reply-To: chad@sgi.com
-Organization: Silicon Graphics Inc.
-X-Mailer: Mozilla 4.5C-SGI [en] (X11; I; IRIX64 6.5 IP30)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: linux@cthulhu.engr.sgi.com
-Subject: Re: What kernel to use to install RH on a R4400 ?
-References: <19990202155147.A1565@ganymede> <19990203043951.D3920@uni-koblenz.de>
+	Wed, 3 Feb 1999 12:51:15 -0800 (PST)
+	mail_from (ulfc@bun.falkenberg.se)
+Received: from calypso.saturn (dialup252-1-156.swipnet.se [130.244.252.156]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id MAA04556
+	for <linux@cthulhu.engr.sgi.com>; Wed, 3 Feb 1999 12:51:11 -0800 (PST)
+	mail_from (ulfc@bun.falkenberg.se)
+Received: by bun.falkenberg.se
+	via sendmail from stdin
+	id <m10898w-0015A9C@calypso.saturn> (Debian Smail3.2.0.102)
+	for linux@cthulhu.engr.sgi.com; Wed, 3 Feb 1999 21:43:26 +0100 (CET) 
+Date: Wed, 3 Feb 1999 21:43:26 +0100
+From: Ulf Carlsson <ulfc@bun.falkenberg.se>
+To: Alex deVries <adevries@engsoc.carleton.ca>
+Cc: Richard Hartensveld <richard@infopact.nl>,
+        "linux@cthulhu.engr.sgi.com" <linux@cthulhu.engr.sgi.com>
+Subject: Re: Compilation errors
+Message-ID: <19990203214326.A3430@bun.falkenberg.se>
+Mail-Followup-To: Alex deVries <adevries@engsoc.carleton.ca>,
+	Richard Hartensveld <richard@infopact.nl>,
+	"linux@cthulhu.engr.sgi.com" <linux@cthulhu.engr.sgi.com>
+References: <36B85DD8.CCF82EDE@infopact.nl> <Pine.LNX.3.96.990203121206.16014B-100000@lager.engsoc.carleton.ca>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-Mailer: Mutt 0.95.1i
+In-Reply-To: <Pine.LNX.3.96.990203121206.16014B-100000@lager.engsoc.carleton.ca>; from Alex deVries on Wed, Feb 03, 1999 at 12:12:47PM -0500
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Ralf,
+On Wed, Feb 03, 1999 at 12:12:47PM -0500, Alex deVries wrote:
+> On Wed, 3 Feb 1999, Richard Hartensveld wrote:
+> 
+> >                  from init/main.c:15:
+> > /usr/src/linux/include/linux/sched.h:528: `current' undeclared (first
+> > use this function)
+> > /usr/src/linux/include/linux/sched.h:528: (Each undeclared identifier is
+> > reported only once
+> > /usr/src/linux/include/linux/sched.h:528: for each function it appears
+> 
+> Use egcs and you will have no problems.  You'll be a better person, too.
 
-Got a chance to try again last night using a i686 as a bootserver. I got the
-same aieee message. Will get you my hinv and my particular register dump.
+You may update the specs file instead if you want, and gcc will work. Ask me and
+I'll send you the updated specs file.
 
-Chad
-
-
-ralf@uni-koblenz.de wrote:
-
-> On Tue, Feb 02, 1999 at 03:51:47PM +0100, Alexander Graefe wrote:
->
-> > I got as far as booting Linux via bootp on my Indy, but after the
-> > remote root-fs is mounted, the kernel dies with an "Aieee" and
-> > something about irq request handler.
->
-> Ouch.  It was actually supposed to work on Indys, regardless of the processor
-> type.  Since it's no longer working things must somewhow got broken again.
-> I'll try to fix it but it's going to be hairy since I don't have an R4400SC
-> processor module.
->
-> > I tried booting with the 2.1.131-Kernel from ftp.linux.sgi.com, but
-> > that one doesn't try to mount the root-fs via NFS.
-> >
-> > What kernel should I use to actually see a prompt on my Indy ?
->
-> Can you send me:
->
->  - the exact screen output.  Especially the register dump following the
->    Aiee message is important.
->  - the output of the hinv command.  Hinv is an IRIX command.
->
-> > Quidquid latine dictum sit, altum viditur.
->
-> In nomeni patrii et filiae et spiritus pinguini ;-)
->
->   Ralf
-
---
-           -----------------------------------------------------
-            Chad Carlin                          Special Systems
-            Silicon Graphics Inc.                   972.205.5911
-            Pager 888.754.1597          VMail 800.414.7994 X5344
-            chad@sgi.com             http://reality.sgi.com/chad
-           -----------------------------------------------------
-        "flying through hyper space ain't like dusting crops, boy"
+- Ulf

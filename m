@@ -1,120 +1,90 @@
-Received:  by oss.sgi.com id <S305185AbQDXDbO>;
-	Sun, 23 Apr 2000 20:31:14 -0700
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:59502 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S305161AbQDXDay>; Sun, 23 Apr 2000 20:30:54 -0700
-Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id UAA01164; Sun, 23 Apr 2000 20:35:00 -0700 (PDT)
+Received:  by oss.sgi.com id <S305185AbQDXFSI>;
+	Sun, 23 Apr 2000 22:18:08 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:87 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305161AbQDXFRl>;
+	Sun, 23 Apr 2000 22:17:41 -0700
+Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id WAA16793; Sun, 23 Apr 2000 22:12:55 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id UAA83420
+	id WAA26138
 	for linux-list;
-	Sun, 23 Apr 2000 20:17:32 -0700 (PDT)
+	Sun, 23 Apr 2000 22:04:38 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id UAA03570
+	via ESMTP id WAA36848
 	for <linux@cthulhu.engr.sgi.com>;
-	Sun, 23 Apr 2000 20:17:31 -0700 (PDT)
-	mail_from (machida@sm.sony.co.jp)
-Received: from ns4.sony.co.jp (ns4.Sony.CO.JP [202.238.80.4]) 
+	Sun, 23 Apr 2000 22:04:35 -0700 (PDT)
+	mail_from (kk@ddeorg.soft.net)
+Received: from firewall.ddeorg.soft.net (firewall.ddeorg.soft.net [164.164.74.3]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id UAA07255
-	for <linux@cthulhu.engr.sgi.com>; Sun, 23 Apr 2000 20:17:25 -0700 (PDT)
-	mail_from (machida@sm.sony.co.jp)
-Received: from mail3.sony.co.jp (gatekeeper7.Sony.CO.JP [202.238.80.21])
-	by ns4.sony.co.jp (04/18/00) with ESMTP id MAA47600;
-	Mon, 24 Apr 2000 12:17:23 +0900 (JST)
-Received: from smail1.sm.sony.co.jp (smail1.sm.sony.co.jp [43.11.253.1])
-	by mail3.sony.co.jp (3.7W99051310c) with ESMTP id MAA24951;
-	Mon, 24 Apr 2000 12:17:23 +0900 (JST)
-Received: from imail.sm.sony.co.jp (imail.sm.sony.co.jp [43.27.209.5]) by smail1.sm.sony.co.jp (8.8.8/3.6W) with ESMTP id MAA29716; Mon, 24 Apr 2000 12:16:39 +0900 (JST)
-Received: from mach0.sm.sony.co.jp (mach0.sm.sony.co.jp [43.27.210.135]) by imail.sm.sony.co.jp (8.8.8/3.7W) with ESMTP id MAA00528; Mon, 24 Apr 2000 12:16:52 +0900 (JST)
-Received: from localhost by mach0.sm.sony.co.jp (8.8.8/FreeBSD) with ESMTP id MAA04425; Mon, 24 Apr 2000 12:16:52 +0900 (JST)
-xTo:    binutils@sourceware.cygnus.com
-Cc:     linux@cthulhu.engr.sgi.com, debian-mips@lists.debian.org
-Subject: Re: MIPS gas problem
-In-Reply-To: <20000421154859.3820.qmail@daffy.airs.com>
-References: <20000420164812.17210.qmail@daffy.airs.com>
-	<20000421123014J.machida@sm.sony.co.jp>
-	<20000421154859.3820.qmail@daffy.airs.com>
-X-Mailer: Mew version 1.94.1 on Emacs 19.34 / Mule 2.3 (SUETSUMUHANA)
+	via ESMTP id WAA07969
+	for <linux@cthulhu.engr.sgi.com>; Sun, 23 Apr 2000 22:04:19 -0700 (PDT)
+	mail_from (kk@ddeorg.soft.net)
+Received: by firewall.ddeorg.soft.net (8.8.8/9.7) 
+	id KAA04138; Mon, 24 Apr 2000 10:37:29 +0530 (IST)
+Received: from madras.ddeorg.soft.net by ddeorg.soft.net (8.8.8/9.6) with ESMTP 
+	id KAA20530; Mon, 24 Apr 2000 10:37:24 +0530 (IST)
+Received: from localhost by madras.ddeorg.soft.net (8.8.5/9.7) with SMTP 
+	id KAA01485; Mon, 24 Apr 2000 10:36:38 +0530 (IST)
+Message-Id: <200004240506.KAA01485@madras.ddeorg.soft.net>
+X-Mailer: exmh version 2.0.1 12/23/97
+To:     Hiroyuki Machida <machida@sm.sony.co.jp>
+cc:     flo@rfc822.org, ian@zembu.com, binutils@sourceware.cygnus.com,
+        linux@cthulhu.engr.sgi.com, debian-mips@lists.debian.org
+Subject: Re: MIPS gas problem 
+In-reply-to: Your message of "Fri, 21 Apr 2000 10:52:25 +0900."
+             <20000421105225J.machida@sm.sony.co.jp> 
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-Id: <20000424121651S.machida@sm.sony.co.jp>
-Date:   Mon, 24 Apr 2000 12:16:51 +0900
-From:   Hiroyuki Machida <machida@sm.sony.co.jp>
-X-Dispatcher: imput version 990905(IM130)
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=us-ascii
+Date:   Mon, 24 Apr 2000 10:36:37 +0530
+From:   "Koundinya.K" <kk@ddeorg.soft.net>
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
+Hi,
+machida@sm.sony.co.jp said:
+-> I rewrite the test program which is not depending your gcc version or
+-> config. Please try this.
 
-Thank you Ian and Alan.
+-> #define P1  10 #define P2  12
 
-From: Ian Lance Taylor <ian@zembu.com>
-Subject: Re: MIPS gas problem
-Date: 21 Apr 2000 08:48:59 -0700
+Sorry for the delay in trying out this test case. I was over the edge for 
+the past 3 days :-)
 
->    Date: Fri, 21 Apr 2000 12:30:14 +0900
->    From: Hiroyuki Machida <machida@sm.sony.co.jp>
-> 
->    This message is a gcc issue, as you said. 
-> 
->    But, my reported plobelm is really binutils issue.
-> 
-> I know.  I didn't mean to imply otherwise.  Alan Modra's suggested
-> patch was the right one.
-> 
-> Ian
+O.K, There were no warnings with this test case unlike the previous one.
 
-I summarize the problem and attach patch. Please install it, if you
-can. I don't know what procedure is required to install the patch to
-CVS tree. 
+[~] gcc -c rotest1.c -o rotest1.o
 
-*Problem Description:
-Current tc-mips.c:s_change_sec() always sets '.rdata' and '.sdata'
-section alignments to 2**4, even if those contain over 2**4 aligned 
-objects.
+[~] objdump -h objtest1.o
 
+otest1.o:     file format elf32-tradbigmips
 
-*Solution:
-Tc-mips.c:s_change_sec() should use record_alignment(), not
-bfd_set_section_alignment(), for preventing  reset section
-alignments.
-
-
-*Patch:
-
-2000-04-24	Machida Hiroyuki <machida@sm.sony.co.jp>
-
-tc-mips.c (s_change_sec): Use record_alignment(), not 
-  bfd_set_section_alignment() to preserve section aligenments. 
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000320  00000000  00000000  00000040  2**4
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+  1 .data         00000010  00000000  00000000  00000360  2**4
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000000  00000000  00000000  00000370  2**4
+                  ALLOC
+  3 .reginfo      00000018  00000000  00000000  00000370  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA, LINK_ONCE_SAME_SIZE
+  4 .mdebug       00000240  00000000  00000000  00000388  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  5 .note         00000014  00000000  00000000  000005c8  2**0
+                  CONTENTS, READONLY
+  6 .comment      00000035  00000000  00000000  000005dc  2**0
+                  CONTENTS, READONLY
+  7 .rodata       00001060  00000000  00000000  00000620  2**4
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
 
 
---- tc-mips.c.ORG	Mon Apr 24 11:22:39 2000
-+++ tc-mips.c	Mon Apr 24 11:24:48 2000
-@@ -10045,7 +10045,7 @@ s_change_sec (sec)
- 				      | SEC_RELOC
- 				      | SEC_DATA));
- 	      if (strcmp (TARGET_OS, "elf") != 0)
--		bfd_set_section_alignment (stdoutput, seg, 4);
-+		record_alignment (stdoutput, seg, 4);
- 	    }
- 	  demand_empty_rest_of_line ();
- 	}
-@@ -10067,7 +10067,7 @@ s_change_sec (sec)
- 				     SEC_ALLOC | SEC_LOAD | SEC_RELOC
- 				     | SEC_DATA);
- 	      if (strcmp (TARGET_OS, "elf") != 0)
--		bfd_set_section_alignment (stdoutput, seg, 4);
-+		record_alignment (stdoutput, seg, 4);
- 	    }
- 	  demand_empty_rest_of_line ();
- 	  break;
+
+koundinya

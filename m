@@ -1,51 +1,69 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8E4S8u21966
-	for linux-mips-outgoing; Thu, 13 Sep 2001 21:28:08 -0700
-Received: from nevyn.them.org (mail@NEVYN.RES.CMU.EDU [128.2.145.6])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8E4S3e21963
-	for <linux-mips@oss.sgi.com>; Thu, 13 Sep 2001 21:28:04 -0700
-Received: from drow by nevyn.them.org with local (Exim 3.32 #1 (Debian))
-	id 15hkaZ-0000bd-00; Fri, 14 Sep 2001 00:28:27 -0400
-Date: Fri, 14 Sep 2001 00:28:27 -0400
-From: Daniel Jacobowitz <dan@debian.org>
-To: "Steven J. Hill" <sjhill@cotw.com>
-Cc: binutils@sources.redhat.com, gdb@sourceware.cygnus.com,
-   linux-mips@oss.sgi.com
-Subject: Re: Continued MIPS kernel debugging symbols problem...
-Message-ID: <20010914002827.A2305@nevyn.them.org>
-Mail-Followup-To: "Steven J. Hill" <sjhill@cotw.com>,
-	binutils@sources.redhat.com, gdb@sourceware.cygnus.com,
-	linux-mips@oss.sgi.com
-References: <3BA16CAA.6B4DF4A1@cotw.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.16i
-In-Reply-To: <3BA16CAA.6B4DF4A1@cotw.com>; from sjhill@cotw.com on Thu, Sep 13, 2001 at 09:34:18PM -0500
+	by oss.sgi.com (8.11.2/8.11.3) id f8E7qp125517
+	for linux-mips-outgoing; Fri, 14 Sep 2001 00:52:51 -0700
+Received: from mx.mips.com (mx.mips.com [206.31.31.226])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8E7qme25514
+	for <linux-mips@oss.sgi.com>; Fri, 14 Sep 2001 00:52:48 -0700
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id AAA22147;
+	Fri, 14 Sep 2001 00:52:37 -0700 (PDT)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id AAA10053;
+	Fri, 14 Sep 2001 00:52:38 -0700 (PDT)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id f8E7qca28443;
+	Fri, 14 Sep 2001 09:52:39 +0200 (MEST)
+Message-ID: <3BA1B747.834A875A@mips.com>
+Date: Fri, 14 Sep 2001 09:52:39 +0200
+From: Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: "H . J . Lu" <hjl@lucon.org>
+CC: linux-mips@oss.sgi.com
+Subject: Re: Update for RedHat 7.1
+References: <20010907230009.A1705@lucon.org> <3BA0CB8D.ED5AB42B@mips.com> <20010913081450.B24910@lucon.org>
+Content-Type: text/plain; charset=iso-8859-15
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, Sep 13, 2001 at 09:34:18PM -0500, Steven J. Hill wrote:
->     configure --prefix=/opt/tools --target=mipsel-linux-elf
-> 
-> since my target is a NEC 5432 running in LE mode. I had
-> also tried 'mips-linux-elf' targets earlier in the day
-> with no difference. I am still getting the following
-> mismatch in symbols:
+"H . J . Lu" wrote:
 
-(Could you try building a mipsel-unknown-linux-gnu debugger/compiler
-instead?  Does it make any difference?  I don't expect it to.)
+> On Thu, Sep 13, 2001 at 05:06:53PM +0200, Carsten Langgaard wrote:
+> > I now tried to installing the bigendian RedHat7.1 RPMs and I noticed the
+> > following.
+> >
+> > /etc/localtime is lacking in glibc-2.2.4-11.2.mips.rpm (but it's contain
+> > in the little endian version).
+> > All the timezone information is lacking under /usr/share/zoneinfo in
+> > glibc-common-2.2.4-11.2 (but it's in the little endian version).
+>
+> Everything is cross compiled. Since x86 is little endian, I don't
+> cross compile big endian data files, like locale and timezone. You
+> can rebuild glibc natively to get all those data files.
+>
+> >
+> > I can't changes the root password, I get the following:
+> > # passwd root
+> > Changing password for user root
+> > New UNIX password:
+> > /usr/lib/cracklib_dict: magic mismatch
+> > PWOpen: Success
+> >
+>
+> It may be the endian issue. Please recompile cracklib natively and let
+> me know if it fixes the problem for you.
 
-> I compiled my kernel with a toolchain that used the following
-> versions of tools:
-> 
->     binutils-2.11.90.0.31 (HJLu patches applied)
->     gcc-3.0.1 (stock)
->     glibc-2.2.3 (minor build patches)
+I recompiled cracklib natively and yes it works, thanks a lot.
+Do you want the RPM binaries for your distribution ?
 
-If you'll post a binary that you're having trouble debugging, I'll try
-to find time in the next couple of days to see what GDB is doing wrong.
+>
+> H.J.
 
--- 
-Daniel Jacobowitz                           Carnegie Mellon University
-MontaVista Software                         Debian GNU/Linux Developer
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

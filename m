@@ -1,99 +1,209 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id HAA24667; Mon, 13 May 1996 07:28:57 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id SAA02898; Mon, 13 May 1996 18:24:17 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id OAA18053 for linux-list; Mon, 13 May 1996 14:27:32 GMT
-Received: from neteng.engr.sgi.com (neteng.engr.sgi.com [192.26.80.10]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id HAA18044 for <linux@cthulhu.engr.sgi.com>; Mon, 13 May 1996 07:27:30 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id HAA24594 for <lmlinux@neteng.engr.sgi.com>; Mon, 13 May 1996 07:27:29 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [150.166.76.30]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id HAA18037 for <lmlinux@neteng.engr.sgi.com>; Mon, 13 May 1996 07:27:28 -0700
-Received: from caipfs.rutgers.edu by sgi.sgi.com via ESMTP (950405.SGI.8.6.12/910110.SGI)
-	for <lmlinux@neteng.engr.sgi.com> id HAA02189; Mon, 13 May 1996 07:27:26 -0700
-Received: from huahaga.rutgers.edu (huahaga.rutgers.edu [128.6.155.53]) by caipfs.rutgers.edu (8.6.9+bestmx+oldruq+newsunq+grosshack/8.6.9) with ESMTP id AAA28631; Mon, 13 May 1996 00:05:06 -0400
-Received: (davem@localhost) by huahaga.rutgers.edu (8.6.9+bestmx+oldruq+newsunq+grosshack/8.6.9) id AAA05898; Mon, 13 May 1996 00:05:04 -0400
-Date: Mon, 13 May 1996 00:05:04 -0400
-Message-Id: <199605130405.AAA05898@huahaga.rutgers.edu>
-From: "David S. Miller" <davem@caip.rutgers.edu>
-To: tridge@cs.anu.edu.au
-CC: lmlinux@neteng.engr.sgi.com, torvalds@cs.helsinki.fi
-Subject: wicked checksum optimization...
+Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id BAA11019 for linux-list; Tue, 14 May 1996 01:22:53 GMT
+Received: from neteng.engr.sgi.com (neteng.engr.sgi.com [192.26.80.10]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id SAA11014 for <linux@cthulhu.engr.sgi.com>; Mon, 13 May 1996 18:22:52 -0700
+Received: from localhost (lm@localhost) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via SMTP id SAA02367 for <lmlinux>; Mon, 13 May 1996 18:22:51 -0700
+Message-Id: <199605140122.SAA02367@neteng.engr.sgi.com>
+To: lmlinux@neteng.engr.sgi.com
+Subject: Uselinux and the Linux/SPARC port (forwarded)
+Date: Mon, 13 May 1996 18:22:51 -0700
+From: Larry McVoy <lm@neteng.engr.sgi.com>
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
 
-I think I figured out how to do it all "the right way(tm)"
+------- Forwarded Message
 
-The big problem is alignment, but %97 of the time the buffer is
-aligned how we like.  I've decided it is ok to take the hit of an
-unaligned access trap for the %3 cases, but not that much of a hit.
-The implementation looks like this:
+Date:    Sat, 11 May 1996 10:52:53 -0500
+From:    Miguel de Icaza <miguel@roxanne.nuclecu.unam.mx>
+To:      sparclinux-cvs@caipfs.rutgers.edu
+cc:      davem@caip.rutgers.edu, tridge@cs.anu.edu.au
+Subject: Uselinux and the Linux/SPARC port
 
-All loads and stores in the ip checksum routines will look the same,
-the only time we do stores is for the csum/copy routines.  Anyways the
-eight instruction codes recognized will be for:
 
-	ld	[%o0 + offset], %o4
-	ld	[%o0 + offset], %o5
-	lduh	[%o0 + offset], %o4
-	lduh	[%o0 + offset], %o5
-	st	%o4, [%g3 + offset]
-	st	%o5, [%g3 + offset]
-	sth	%o4, [%g3 + offset]
-	sth	%o5, [%g3 + offset]
+Hello guys, 
 
-The unaligned trap handler (before it even tries to save any state)
-will look something like:
+   On Jannuary the Uselinux conference will be help together with the
+Usenix technical conference (http://www.usenix.org).  David and I had
+plans to make a technical presentation on the Linux/SPARC port.  I
+think Linux/SPARC is not just another port, but a port that has some
+unique features not found on other ports.
 
-mna_trap:
-	andcc	%l0, PSR_PS, %g0
-	be,a	mna_fromuser
+   The idea is to co-author this paper with those of you wanting to
+help/contribute to the article.
 
-	ld	[%l1], %l5
-	sethi	%hi(LOAD_O4), %l4
-	and	%l5, %l4, %l6
-	cmp	%l6, %l4
-	bne	1f
-	 sethi	%hi(LOAD_O5), %l4
-	mov	%l1, %g6				! %pc
-	sethi	%hi(C_LABEL(csum_ldo4_fixup)), %l1
-	or	%l1, %lo(C_LABEL(csum_ldo4_fixup)), %l1
-	wr	%l0, 0x0, %psr				! fix cond-codes
-	and	%l5, LOAD_IMMEDIATE_FIELD, %g7
-	srl	%g7, LOAD_IMMEDIATE_SHIFT, %g7		! offset
-	jmp	%l1
-	rett	%l1 + 0x4
+   I have assembled a list of things I think are interesting on
+Linux/SPARC, I guess that before we can make a presentation on why we
+find Linux/SPARC to be a unique port we will have to massage this
+quite a bit.  I have already mailed this one to Michael Johnson (He is
+the technical session chair I think), if you want to co-author this
+with David and I please, contact me (and CC the sparclinux-cvs list.
+David will be very busy before leaving to SGI, so I'm doing the
+coordination for this).
 
-1:
-	/* etc. for other instructions recognized */
+Best wishes,
+Miguel.
 
-mna_fromuser:
-	SAVE_ALL
-	/* From user mode or something we don't handle for the
-	 * kernel.
-	 */
-	call	C_LABEL(do_mna)
-	 nop
-	RESTORE_ALL
+* MMU/cache
 
-Ok, now the fixup routines just look like:
+   Sparc have 3 types of MMU -- this is easy to plug into Linux.
+   
+   Sparc have Virtual Addressed Caches (VAC) and Physical caches --
+   these require changes to Linux kernel.  With the VACs, one must be
+   careful to not complete flush the caches as it was being done
+   initially, because they damage performace quite a bit.
+   
+   As an extra challenge, some MMU are buggy, MMUs are accessed in
+   different ways.
 
-csum_ldo4_fixup:
-	ldub	[%o0 + %g7], %g4
-	add	%g7, 1, %g7
-	ldub	[%o0 + %g7], %g5
-	sll	%g4, 24, %g4
-	add	%g7, 1, %g7
-	sll	%g5, 16, %g5
-	or	%g4, %g5, %o4
-	ldub	[%o0 + %g7], %g4
-	add	%g7, 1, %g7
-	ldub	[%o0 + %g7], %g5
-	sll	%g4, 8, %g4
-	or	%g5, %g4, %g4
-	jmp	%g6		! wheee...
-	or	%o4, %g4, %o4
+   Linux/SPARC uses pointer functions for most MMU/cache manipulation 
 
-and so on...  then csum_parial and friends can just blaze through
-assuming proper alignment for all pointers to the packet contents
-etc.  Nifty eh?  Sparc is fun...
+* SunOS compatibility.
 
-Later,
-David S. Miller
-davem@caip.rutgers.edu
+   We use the model that Linus used to get OSF/1 compatibility.
+   (we use same constants, and same structures for the kernel, 
+   thus no need to translate anything).
+
+   This model lets us have a userland ready early during the port and
+   the code is written when something fails to run properly.
+   
+   Compare this to NetBSD, 4114 lines of code for Sparc code plus 2753
+   lines of generic emulation "libraries"; compare this to Linux: 1140
+   lines.  We think this is the right way to future ports.  
+
+   Linux emulation code is mostly related to features not found
+   usually in Linux (like assumption from SunOS applications on the
+   OS), while NetBSD's emulation code is spent on doing conversions
+   in/from each OS constants and data structures, so Linux does not
+   have a runtime performance penalty for running SunOS applications.
+
+   Sparc drivers have to support the Linux interface and the SunOS
+   interface to make some programs happy (X-Window), the mouse driver,
+   keyboard driver and frame buffer drivers provide SunOS interfaces.
+   The mouse and keyboard driver provide the same interface to Linux
+   applications as it is found on original i386 port.
+
+* Drivers for undocumented hardware.
+
+   Getting information out of Sun is not very easy.  Documentation for
+   some hardware came from the vendor that makes the chips (scsi and
+   lance drivers), sources for the NetBSD, Sprite and the Xinu
+   operating system were used as references at the beginning of the
+   port to understand the architecture.  
+
+   bwtwo, cg3 and cg6 drivers were based on existing NetBSD drivers
+   and a generic frame buffer interface for Linux/SPARC was coded.  A
+   driver for the cg14 has been written using only Solaris include
+   file for the video card and some poking at the rom letting us
+   emulate a lowend graphics card on it.
+
+* Stability and performance.
+
+   During the port the use of crashme has been constantly used to avoid
+   the same mistakes on Sun operating system.  
+
+   lmbench has been used to test the performance of the operating
+   system.  It was not just used as a benchmarking tool, but also to
+   pinpoint weaknesses in the port.  After a couple of weeks tunning
+   the port, Linux/SPARC was able to keep up against SunOS and Solaris
+   on the same hardware and in some cases outperforming them.
+
+   The lmbench results are more interesting than they may appear at
+   first sight: They do not only reflect that Linux is a great
+   operating system, but most sadly it reflects the fact that
+   corporate operating systems are sometimes bloated and slow.  The
+   reason for bloated operating systemd may come from different
+   sources, as documented in the 4.3BSD book, there were 13 memory
+   allocators on the BSD kernel in 1986, at that point they were aware
+   of the problem: code is being rewritten over and over.  This in my
+   opinion means that most kernel programmers lack a deep knowledge on
+   the operating system and may be writting thing that are not
+   completely clean   
+
+   (anecdote: over the past two weeks I made one remark and one
+   suggestion to the kernel to Linus, and even when they looked fine
+   to me and many people agree they are Linus quickly pointed me out
+   where the design flaws were in; it was related rfork, btw).
+
+* SMP
+
+   Problems encountered when porting Linux to the Sparc.  Not all SMP
+   machines are born the same, there are some hacks required to get
+   SMP working on the Sparc.  
+
+   [Ufinished section I will complete this section later]
+
+* Portability and the AP+
+
+   The Linux/SPARC port is itself a relatively easy to port to non Sun
+   hardware.  Andrew Tridgell and his hackers team in Canberra have
+   ported Linux/SPARC to the AP+ multiprocessor.
+
+   [ This section is still  not finished ]
+
+* Bootstraping the SPARC.
+
+   Booting the SPARC required: a) cleaning up the ext2fs to make it
+   aware of the endianess of the SPARC;  b) the merging into the
+   kernel of the nfsroot allowed one of the developers to work without
+   a hard disk, and let people test drive Linux kernel without needing
+   to reformat their disks.
+
+   Jay Eastabrook's Alpha console code split was used as the second
+   attempt at the Linux console code.  Once we had this one, we got
+   the same functionality of Linux/i386 on the sparc.
+
+* SILO.
+ 
+   SILO is unique in one aspect:  It is the first Linux boot loader
+   that uses the ext2fs library from the ext2fs tool suite by Remy
+   Card and Ted Tso.  This is a good thing because it let us write the
+   boot loader in a very short time frame.  
+
+   The SILO bootloader fully understands the ext2fs and thus does not
+   require a special boot loader installer for each kernel image that
+   is made available.  There is still work in progress on LILO to make
+   it work with iso9660 cdroms and boot loading.
+
+* The port
+
+   David Miller setup an account for the developers on vger to have
+   access to his CVS tree so that we could make changes directly to
+   the source tree without taking time from him.  Simple rules were
+   set: test before you commit your code.
+
+   Another idea that was pushed since the beginning was to keep track
+   of current kernel developement.  Even if this would imply that we
+   had to spend some time merging and fixing sparc stuff on our
+   kernels, it helped us to merge our tree faster and easier than the
+   other ports.  Letting versions slip proved to be not a very good
+   idea, and the MkLinux people will suffer with it as did the m68k
+   guys some months ago. 
+
+* Userland
+
+   The first attempt at a Libc port was done by porting Linux's a.out
+   Libc4 to the SPARC.  Later a GNU libc port was attempted, but
+   because of the adapting nature of the kernel to the host OS for
+   binary compatibility, the GNU libc port was found to not be
+   possible at the time, we may try again as soon as some issues are
+   hashed out on glibc.  
+
+   Currently the Linux Libc 5 is in use and ELF loading has been fixed
+   into the kernel.  Eric Youngdale is making the elf loader less
+   i386-centric, and thus our patches will go in easier.
+
+   The libc5 supports shared executables and Eric's ld.so linker has
+   been ported to the SPARC, as well as adapting it to Linux
+   (originally it was written and tested on Solaris).  What is amazing
+   is that this linker is quite portable nowadays.
+
+   RedHat and Debian are both working on Linux distributions for the
+   SPARC.  The goal is to have the same interface on all different
+   architectures and in the future encourage commercial software
+   companies to compile with a cross compiler versions of their
+   software for all the available platforms of Linux.
+
+   
+
+------- End of Forwarded Message

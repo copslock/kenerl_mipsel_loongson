@@ -1,88 +1,78 @@
-Received:  by oss.sgi.com id <S42244AbQHBRJn>;
-	Wed, 2 Aug 2000 10:09:43 -0700
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:47115 "EHLO
+Received:  by oss.sgi.com id <S42284AbQHBSOE>;
+	Wed, 2 Aug 2000 11:14:04 -0700
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:39960 "EHLO
         pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S42225AbQHBRJO>; Wed, 2 Aug 2000 10:09:14 -0700
-Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id KAA04140
-	for <linux-mips@oss.sgi.com>; Wed, 2 Aug 2000 10:14:38 -0700 (PDT)
-	mail_from (jsun@mvista.com)
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id KAA87606 for <linux-mips@oss.sgi.com>; Wed, 2 Aug 2000 10:08:11 -0700 (PDT)
+	id <S42282AbQHBSNo>; Wed, 2 Aug 2000 11:13:44 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id LAA05838
+	for <linux-mips@oss.sgi.com>; Wed, 2 Aug 2000 11:19:05 -0700 (PDT)
+	mail_from (dom@mudchute.algor.co.uk)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id KAA72901
-	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 2 Aug 2000 10:06:26 -0700 (PDT)
-	mail_from (jsun@mvista.com)
-Received: from hermes.mvista.com (gateway-490.mvista.com [63.192.220.206]) 
+	via ESMTP id LAA42365
+	for <linux@engr.sgi.com>;
+	Wed, 2 Aug 2000 11:12:45 -0700 (PDT)
+	mail_from (dom@mudchute.algor.co.uk)
+Received: from kenton.algor.co.uk (kenton.algor.co.uk [193.117.190.25]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id KAA02205
-	for <linux@cthulhu.engr.sgi.com>; Wed, 2 Aug 2000 10:06:17 -0700 (PDT)
-	mail_from (jsun@mvista.com)
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.9.3/8.9.3) with ESMTP id KAA14494;
-	Wed, 2 Aug 2000 10:05:58 -0700
-Message-ID: <398854F5.EB3E73D6@mvista.com>
-Date:   Wed, 02 Aug 2000 10:05:57 -0700
-From:   Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.7 [en] (X11; I; Linux 2.2.12-20b i586)
-X-Accept-Language: en
+	via ESMTP id LAA02652
+	for <linux@engr.sgi.com>; Wed, 2 Aug 2000 11:12:43 -0700 (PDT)
+	mail_from (dom@mudchute.algor.co.uk)
+Received: from mudchute.algor.co.uk (dom@mudchute.algor.co.uk [193.117.190.19])
+	by kenton.algor.co.uk (8.8.8/8.8.8) with ESMTP id TAA01458;
+	Wed, 2 Aug 2000 19:12:38 +0100 (GMT/BST)
+Received: (from dom@localhost)
+	by mudchute.algor.co.uk (8.8.5/8.8.5) id TAA11550;
+	Wed, 2 Aug 2000 19:12:34 +0100 (BST)
+Date:   Wed, 2 Aug 2000 19:12:34 +0100 (BST)
+Message-Id: <200008021812.TAA11550@mudchute.algor.co.uk>
+From:   Dominic Sweetman <dom@algor.co.uk>
 MIME-Version: 1.0
-To:     "Kevin D. Kissell" <kevink@mips.com>
-CC:     linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr, ralf@oss.sgi.com
-Subject: Re: PROPOSAL : multi-way cache support in Linux/MIPS
-References: <008601bffc5b$6714c0a0$0deca8c0@Ulysses>
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
+To:     Jun Sun <jsun@mvista.com>
+Cc:     linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr, ralf@oss.sgi.com
+Subject: Re: PROPOSAL : multi-way cache support in Linux/MIPS
+In-Reply-To: <398762B9.D8507860@mvista.com>
+References: <398762B9.D8507860@mvista.com>
+X-Mailer: VM 6.34 under 19.16 "Lille" XEmacs Lucid
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
 
-Kevin,
+Jun Sun (jsun@mvista.com) writes:
 
-This looks great, something exactly I was hoping for!
-
-A couple of questions :
-
-. What about the actual cache operation routines (flush_cache_page,
-...)?  Are they divided into R4xxx, R3xx, etc?  I guess I am curious how
-the code is organized.
-
-. Your structure gives the number of ways, but no info about how to
-select a way.  How would do an index-based cache operation?  It seems to
-me you probably need something like cache_way_selection_offset in the
-cpu table.
-
-Jun
-
-"Kevin D. Kissell" wrote:
+> The first issue is multi-way cache support.  DDB5476 uses R5432 CPU
+> which has two-way set-associative cache.  The problematic part is
+> the index-based cache operations in r4xxcache.h does not cover all
+> ways in a set.
 > 
-> Rather than re-invent the wheel, please consider the
-> cache descriptor data structures we developed at
-> MIPS to deal with this problem.  I believe that the
-> updated cache.h file, and maybe even the cpu_probe.c
-> file, was checked into the 2.2 repository at SGI long ago.
-> There are also a set of initialisation and invalidation routines
-> that key off the cache descriptor structure, but those aren't
-> in the SGI  repository (though anyone can get them from
-> ftp.mips.com or www.paralogos.com).  The CPU probe
-> logic (also on those sites, and already integrated
-> into several variants because it also supports setting
-> up state needed by the software FPU emulation)
-> is table-based, and for each PrID value, there is
-> a template for the cache characteristics, which
-> can either be taken "as is" or probed, depending
-> on a flag in the descriptor.  Since the number of
-> "ways" cannot always be determined by probing,
-> if the number of ways is specified, it is preserved
-> even if a cache probe is performed.   I won't attach the
-> full set of cache probe routines (which would only confuse
-> things), but here is the cache data structure definition
-> and the CPU descriptor template table that we use.
-> 
+> I think this is a problem in general.  So far I have seen MIPS
+> processors with 2-way, 4-way and 8-way sets.  And I have seen them
+> using ether least- significant-addressing-bits or
+> most-significant-addressing-bits within a cache line to select ways.
 
-...
+So far as I know the Vr5432 is the only CPU to do anything so silly as
+using the lowest index bits to select the "way".  Certainly most CPUs
+put the "way" bits above the cache-store-index; and MIPS now require
+it to be done like that for MIPS32 and MIPS64 compatible parts.
+
+The MS-selects-way organisation permits the cache to be initialised
+without the software ever needing to know how many ways it has (just
+crank the index up, but being careful about the tendency to recycle
+the same way when pre-filling cache data).
+
+Cache maintenance should always use "hit" type instructions, and you
+don't need to know the cache organisation for those, even with the
+Vr5432. 
+
+I suggest you should implement the don't-care method, and then have a
+cpu_info-driven special case for the unique and deprecated Vr5432.
+
+Dominic Sweetman
+Algorithmics Ltd
+dom@algor.co.uk

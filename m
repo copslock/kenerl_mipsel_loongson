@@ -1,60 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Feb 2003 16:29:01 +0000 (GMT)
-Received: from t111.niisi.ras.ru ([IPv6:::ffff:193.232.173.111]:13832 "EHLO
-	t111.niisi.ras.ru") by linux-mips.org with ESMTP
-	id <S8225212AbTBGQ3A>; Fri, 7 Feb 2003 16:29:00 +0000
-Received: from t06.niisi.ras.ru (t06.niisi.ras.ru [193.232.173.6])
-	by t111.niisi.ras.ru (8.9.1/8.9.1) with ESMTP id TAA32085;
-	Fri, 7 Feb 2003 19:29:08 +0300
-Received: (from uucp@localhost) by t06.niisi.ras.ru (8.7.6/8.7.3) with UUCP id TAA23604; Fri, 7 Feb 2003 19:29:43 +0300
-Received: from niisi.msk.ru (t34 [193.232.173.34])
-	by niisi.msk.ru (8.12.5/8.12.5) with ESMTP id h17GKTxl013989;
-	Fri, 7 Feb 2003 19:20:30 +0300 (MSK)
-Message-ID: <3E440894.1060509@niisi.msk.ru>
-Date: Fri, 07 Feb 2003 19:27:16 +0000
-From: Alexandr Andreev <andreev@niisi.msk.ru>
-Organization: niisi
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.9) Gecko/20020513
-X-Accept-Language: ru, en
-MIME-Version: 1.0
-To: Guido Guenther <agx@sigxcpu.org>
-CC: linux-mips@linux-mips.org
-Subject: Re: Endianity problems in XFree86-4.2 XAA on MIPSEB
-References: <3E43ECC6.8090109@niisi.msk.ru> <20030207154539.GA748@bogon.ms20.nix>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <andreev@niisi.msk.ru>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Feb 2003 18:45:30 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:12795 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225222AbTBGSpa>;
+	Fri, 7 Feb 2003 18:45:30 +0000
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.11.6/8.11.6) id h17IeKV04962;
+	Fri, 7 Feb 2003 10:40:20 -0800
+Date: Fri, 7 Feb 2003 10:40:20 -0800
+From: Jun Sun <jsun@mvista.com>
+To: Vivien Chappelier <vivienc@nerim.net>
+Cc: Ralf Baechle <ralf@oss.sgi.com>, linux-mips@linux-mips.org,
+	jsun@mvista.com
+Subject: Re: [PATCH 2.5] r4k_switch task_struct/thread_info fixes
+Message-ID: <20030207104020.K13258@mvista.com>
+References: <20030206163647.F13258@mvista.com> <Pine.LNX.4.21.0302071019550.1913-100000@melkor>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.LNX.4.21.0302071019550.1913-100000@melkor>; from vivienc@nerim.net on Fri, Feb 07, 2003 at 10:29:16AM +0100
+Return-Path: <jsun@orion.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1365
+X-archive-position: 1367
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andreev@niisi.msk.ru
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Guido Guenther wrote:
-> On Fri, Feb 07, 2003 at 05:28:38PM +0000, Alexandr Andreev wrote:
+On Fri, Feb 07, 2003 at 10:29:16AM +0100, Vivien Chappelier wrote:
+> On Thu, 6 Feb 2003, Jun Sun wrote:
 > 
->>We have a MipsEB machine and a video card which has a 2D BitBLT engine.
+> > Actually the following hunks are not right.  ST_OFF
+> > should be applied against the task_struct, which is a0,
+> > not thread_info (t3).
 > 
-> It would help a lot if you'd tell us what card you're using. Some of the
-> drivers are more endian clean then others.
+> In 2.4 yes, not in 2.5.
+> 
 
-We have got our own card and our own driver, but it looks like this problem
-is driver independant, because patterns are maked up in different ways 
-for BE.
+You are right.  I got misled.  I thought task struct has 2 page 
+size and thread_info is allocated from slab.  It should be reverse.
 
+> include/linux/sched.h:469
+> > union thread_union {
+> >         struct thread_info thread_info;
+> >         unsigned long stack[INIT_THREAD_SIZE/sizeof(long)];
+> > };
+> 
+> That means the top of the stack is actually at (task->thread_info +
+> KERNEL_STACK_SIZE) in 2.5. See for example arch/mips64/kernel/ptrace.c:107
+> 
+> > Also see my next email before you rush into trying :-)
+> 
+> Ok, I'll look at it later.
+>
 
-> Did you have a look at the XAA.HOWTO at:
->  xc/programs/Xserver/hw/xfree86/xaa
-> especially the
->   BIT_ORDER_IN_BYTE_MSBFIRST
->   BIT_ORDER_IN_BYTE_LSBFIRST
-> flags?
->  --Guido
+It turns I made a rather stupid comment there as well.  See it there.  :-)
 
-Yes, but these flags specify bit ordering, not byte. And these flags 
-work fine for
-MipsEB.
+Jun

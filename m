@@ -1,79 +1,69 @@
-Received:  by oss.sgi.com id <S553809AbRAYDNU>;
-	Wed, 24 Jan 2001 19:13:20 -0800
-Received: from pobox.sibyte.com ([208.12.96.20]:13328 "HELO pobox.sibyte.com")
-	by oss.sgi.com with SMTP id <S553805AbRAYDNJ>;
-	Wed, 24 Jan 2001 19:13:09 -0800
+Received:  by oss.sgi.com id <S553939AbRAYDRU>;
+	Wed, 24 Jan 2001 19:17:20 -0800
+Received: from pobox.sibyte.com ([208.12.96.20]:16144 "HELO pobox.sibyte.com")
+	by oss.sgi.com with SMTP id <S553813AbRAYDRO>;
+	Wed, 24 Jan 2001 19:17:14 -0800
 Received: from postal.sibyte.com (moat.sibyte.com [208.12.96.21])
 	by pobox.sibyte.com (Postfix) with SMTP
-	id EE675205FB; Wed, 24 Jan 2001 19:13:03 -0800 (PST)
+	id 9DD36205FA; Wed, 24 Jan 2001 19:17:08 -0800 (PST)
 Received: from SMTP agent by mail gateway 
- Wed, 24 Jan 2001 19:07:21 -0800
+ Wed, 24 Jan 2001 19:11:26 -0800
 Received: from plugh.sibyte.com (plugh.sibyte.com [10.21.64.158])
 	by postal.sibyte.com (Postfix) with ESMTP
-	id 57E601595F; Wed, 24 Jan 2001 19:13:04 -0800 (PST)
+	id 08DBE1595F; Wed, 24 Jan 2001 19:17:09 -0800 (PST)
 Received: by plugh.sibyte.com (Postfix, from userid 61017)
-	id 9C430686D; Wed, 24 Jan 2001 19:13:29 -0800 (PST)
+	id 7C3F7686D; Wed, 24 Jan 2001 19:17:34 -0800 (PST)
 From:   Justin Carlson <carlson@sibyte.com>
 Reply-To: carlson@sibyte.com
 Organization: Sibyte
 To:     Pete Popov <ppopov@mvista.com>
 Subject: Re: floating point on Nevada cpu
-Date:   Wed, 24 Jan 2001 18:57:04 -0800
+Date:   Wed, 24 Jan 2001 19:16:04 -0800
 X-Mailer: KMail [version 1.0.29]
 Content-Type: text/plain
-References: <3A6F8F66.6258801@mvista.com> <0101241833281Q.00834@plugh.sibyte.com> <3A6F94E0.4AB07CEB@mvista.com>
-In-Reply-To: <3A6F94E0.4AB07CEB@mvista.com>
-Cc:     linux-mips@oss.sgi.com <linux-mips@oss.sgi.com>
+Cc:     "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+References: <3A6F8F66.6258801@mvista.com> <0101241833281Q.00834@plugh.sibyte.com> <3A6F9814.3E39027@mvista.com>
+In-Reply-To: <3A6F9814.3E39027@mvista.com>
 MIME-Version: 1.0
-Message-Id: <0101241913291R.00834@plugh.sibyte.com>
+Message-Id: <0101241917341S.00834@plugh.sibyte.com>
 Content-Transfer-Encoding: 8bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, 24 Jan 2001, you wrote:
-> Justin Carlson wrote:
-> > 
-> > On Wed, 24 Jan 2001, Pete Popov wrote:
-> > > This simple test fails on a Nevada (5231) cpu:
-> > >
-> > > int main()
-> > > {
-> > >     float x1,x2,x3;
-> > >
-> > >     x1 = 7.5;
-> > >     x2 = 2.0;
-> > >     x3 = x1/x2;
-> > >     printf("x3 = %f\n", x3);
-> > > }
-> > >
-> > 
-> > Ummm...care to tell *how* it fails?
+On Wed, 24 Jan 2001, Pete Popov wrote:
+
+> Looks like there's something more basic that fails here.  This:
 > 
-> Here it is:
+> #include <stdio.h>
+> int main()
+> {
+>     float x1,x2,x3,x4,x5;
 > 
-> sh-2.03# ./fl
-> x3 = 0.000000
+>     x1 = 7.5;
+>     x2 = 2.0;
+>     x3 = x1/x2;
+>     x4 = x1*x2;
+>     x5 = x1-x2;
+>     printf("x1 %f x2 %f x3 %f x4 %f x5 %f\n", x1, x2, x3, x4, x5);
+> }
 > 
 > 
-> I'm running a test9 based kernel, but the same kernel compiled for my
-> Indigo2 produces the right result.  
+> produces this:
+> 
+> sh-2.03# ./fl 
+> x1 0.000000 x2 0.000000 x3 0.000000 x4 0.000000 x5 0.000000
+> 
 
-Hmmm...the only thing here that should involve kernel support is the lazy FPU
-register saving.   I'm not terribly familiar with that portion of the kernel,
-but it should take an unimplemented instruction trap on the first fpu op, set
-up a flag for saving FP state on context switches, enable the FPU, then let the
-program run.  From what I *have* seen of that code, it's shared between many
-processors; doesn't seem like a likely candidate for such a simple problem.
+Try this:
 
-If you compile that code snippet and optimize it with gcc, you actually won't
-invoke any fpu ops, as gcc is smart enough to precalculate the result, and
-just load that before jumping to printf().
+int main()
+{
+	printf("%f\n", (float)3.14159);
+}
 
-How are you compiling the code?  And are you compiling it the same way on both
-platforms?  Do you have fpu emulation enabled on a kernel that doesn't need it? 
-
-These are the potential problems that jump to mind...
+If *that* fails, check your libraries and make sure the calling conventions,
+etc. match what you think they should be...
 
 -Justin

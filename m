@@ -1,42 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Aug 2004 05:01:25 +0100 (BST)
-Received: from nwd2mail2.analog.com ([IPv6:::ffff:137.71.25.51]:47051 "EHLO
-	nwd2mail2.analog.com") by linux-mips.org with ESMTP
-	id <S8224896AbUHFEBV>; Fri, 6 Aug 2004 05:01:21 +0100
-Received: from nwd2mhb1.analog.com (nwd2mhb1.analog.com [137.71.5.12])
-	by nwd2mail2.analog.com (8.12.10/8.12.10) with ESMTP id i7641GfT001707
-	for <linux-mips@linux-mips.org>; Fri, 6 Aug 2004 00:01:16 -0400
-Received: from jasmine.cpgindia.analog.com ([10.121.13.30])
-	by nwd2mhb1.analog.com (8.9.3 (PHNE_28810+JAGae91741)/8.9.3) with ESMTP id AAA09577
-	for <linux-mips@linux-mips.org>; Fri, 6 Aug 2004 00:01:07 -0400 (EDT)
-Received: from asingh2d01 ([10.121.13.93])
-	by jasmine.cpgindia.analog.com (8.9.1/8.9.1) with SMTP id JAA04143
-	for <linux-mips@linux-mips.org>; Fri, 6 Aug 2004 09:31:04 +0530 (IST)
-From: "akshay" <akshay.singh@analog.com>
-To: <linux-mips@linux-mips.org>
-Subject: pthread uClibc
-Date: Fri, 6 Aug 2004 09:43:03 +0530
-Message-ID: <006101c47b6b$abbd6610$5d0d790a@asingh2d01>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Aug 2004 07:30:53 +0100 (BST)
+Received: from host73.ipowerweb.com ([IPv6:::ffff:12.129.211.254]:57566 "EHLO
+	host73.ipowerweb.com") by linux-mips.org with ESMTP
+	id <S8224844AbUHFGas> convert rfc822-to-8bit; Fri, 6 Aug 2004 07:30:48 +0100
+Received: from c-67-170-233-233.client.comcast.net ([67.170.233.233] helo=ratwin1)
+	by host73.ipowerweb.com with asmtp (Exim 3.36 #1)
+	id 1BsyER-0008LJ-00; Thu, 05 Aug 2004 23:29:35 -0700
+Reply-To: <ratin@koperasw.com>
+From: "Ratin Kumar" <ratin@koperasw.com>
+To: "'akshay'" <akshay.singh@analog.com>, <linux-mips@linux-mips.org>
+Subject: RE: pthread uClibc
+Date: Thu, 5 Aug 2004 23:30:22 -0700
+Organization: Kopera Software Inc.
+Message-ID: <00bc01c47b7e$de436130$6401a8c0@ratwin1>
 MIME-Version: 1.0
 Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 X-Priority: 3 (Normal)
 X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook CWS, Build 9.0.2416 (9.0.2911.0)
+X-Mailer: Microsoft Outlook, Build 10.0.4510
 Importance: Normal
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1409
-X-Scanned-By: MIMEDefang 2.41
-Return-Path: <akshay.singh@analog.com>
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1441
+In-Reply-To: <006101c47b6b$abbd6610$5d0d790a@asingh2d01>
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - host73.ipowerweb.com
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [0 0] / [0 0]
+X-AntiAbuse: Sender Address Domain - koperasw.com
+Return-Path: <ratin@koperasw.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5611
+X-archive-position: 5612
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: akshay.singh@analog.com
+X-original-sender: ratin@koperasw.com
 Precedence: bulk
 X-list: linux-mips
+
+It might make a bit more sense if you talk a bit about your setup/toolchain
+(cross??) and version of libraries used....
+
+-----Original Message-----
+From: linux-mips-bounce@linux-mips.org
+[mailto:linux-mips-bounce@linux-mips.org] On Behalf Of akshay
+Sent: Thursday, August 05, 2004 9:13 PM
+To: linux-mips@linux-mips.org
+Subject: pthread uClibc
 
 
 Hi,

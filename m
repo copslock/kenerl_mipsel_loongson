@@ -1,90 +1,62 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id MAA85274 for <linux-archive@neteng.engr.sgi.com>; Thu, 5 Nov 1998 12:53:50 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id NAA82139 for <linux-archive@neteng.engr.sgi.com>; Thu, 5 Nov 1998 13:05:45 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id MAA63215
+	id NAA63413
 	for linux-list;
-	Thu, 5 Nov 1998 12:53:06 -0800 (PST)
+	Thu, 5 Nov 1998 13:04:58 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from oz.engr.sgi.com (oz.engr.sgi.com [150.166.42.13])
+Received: from dataserv.columbus.sgi.com (dataserv.columbus.sgi.com [169.238.139.130])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id MAA60312
-	for <linux@engr.sgi.com>;
-	Thu, 5 Nov 1998 12:53:05 -0800 (PST)
-	mail_from (ariel@oz.engr.sgi.com)
-Received: (from ariel@localhost) by oz.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) id MAA55262 for linux@engr.sgi.com; Thu, 5 Nov 1998 12:53:05 -0800 (PST)
-From: ariel@oz.engr.sgi.com (Ariel Faigon)
-Message-Id: <199811052053.MAA55262@oz.engr.sgi.com>
-Subject: Halloween doc II
+	via SMTP id NAA82147
+	for <linux@cthulhu.engr.sgi.com>;
+	Thu, 5 Nov 1998 13:04:56 -0800 (PST)
+	mail_from (david@carrera.columbus.sgi.com)
+Received: from carrera.columbus.sgi.com by dataserv.columbus.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1502/930416.SGI)
+	 id QAA26722; Thu, 5 Nov 1998 16:02:02 -0500
+Received: (from david@localhost) by carrera.columbus.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) id QAA02095; Thu, 5 Nov 1998 16:00:23 -0500 (EST)
+Date: Thu, 5 Nov 1998 16:00:23 -0500 (EST)
+From: david@carrera.columbus.sgi.com (David Watters)
+Message-Id: <9811051600.ZM2221@carrera.columbus.sgi.com>
+In-Reply-To: ariel@oz.engr.sgi.com (Ariel Faigon)
+        "Halloween doc II" (Nov  5, 12:53pm)
+References: <199811052053.MAA55262@oz.engr.sgi.com>
+X-Mailer: Z-Mail-SGI (3.2S.3 08feb96 MediaMail)
 To: linux@cthulhu.engr.sgi.com (SGI/Linux mailing list)
-Date: Thu, 5 Nov 1998 12:53:04 -0800 (PST)
-Reply-To: ariel@cthulhu.engr.sgi.com (Ariel Faigon)
-Organization: Silicon Graphics Inc.
-X-Mailer: ELM [version 2.4 PL25]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Subject: Re: Halloween doc II
+Cc: nafose@palladium.corp.sgi.com
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi,
 
-A second "what is Linux and how to combat it" document
-just came out the Microsoft leak factory:
 
-        http://www.opensource.org/halloween2.html
+It also made some high visibility press:
 
-It is a followup doc to the infamous "Halloween Doc"
-(now renamed "Halloween I").   It was leaked by an MS
-employee as a reaction to the recent publicity for
-Halloween-I.  It adds the threat of Linux as a client
-and gives a very positive evaluation of Linux (coming
-from within MS, this is telling).
+http://www.news.com/News/Item/0,4,28397,00.html?st.ne.ni.lh
 
-It concludes again, with the sinister suggestions to
-"de-commoditize" open protocols, plus (surprise) ways
-to attack Linux via litigation (if you can't beat them
-on merit, there are always the nukes, Bill).
 
-		---
-There's specific interest to this community: David Miller
-and Miguel de Icaza are both mentioned and their SPARC
-comparison docs are linked from this document.  No doubt,
-the MS guys did a great research job.
 
-There's a lot the Linux community learn from this document.
-Just read the "what's missing in Linux compared to NT"
-part and make sure it is implemented. It doesn't appear
-too hard.  Some points which are definitely geared towards
-the non sophisticated users include:
+On Nov 5, 12:53pm, Ariel Faigon wrote:
+> Subject: Halloween doc II
+> Hi,
+>
+> A second "what is Linux and how to combat it" document
+> just came out the Microsoft leak factory:
+>
+>         http://www.opensource.org/halloween2.html
 
-	1) Automounting a floppy/CD when it is inserted
-	   (BTW: IRIX mediad has been doing this for quite a while)
 
-	2) Simpler installation: e.g. rather than asking 30
-	   questions, provide a menu like:
-		1) Express install: don't ask me anything,
-		   just go ahead and fill my disk.
-		2) Pick and chose: let me select
-		...
 
-	3) XFree86 installation: don't ask me what chipset I have
-	   and what's the scan rates etc.  Instead have an internal
-	   mapping table between well known brand names (e.g. ATI Mach64)
-	   and the details of the card.  People usually know the latter
-	   (what's written on the box, but rarely the former)
 
-	4) Simpler Network config:  DHCP client installed by default
-	   Again saving complex questions to the simple user
 
-	5) Of course, a coherent consistent GUI to manage everything
-	   from HW devices to access to files etc.  Those who need
-	   the simplicity, will never be willing to do command line
-	   stuff.
 
-	6) Development tools like VB/VC++ :-)
 
-Someone forward this to Red Hat / Gnome and the XFree86 teams ...
 
 -- 
-Peace, Ariel
+David Watters         |                 Silicon*Graphics 
+Systems Engineer      |                http://www.sgi.com/ 
+Silicon Graphics, Inc.|    http://reality.sgi.com/davester/  (6/13/97) 
+david.watters@sgi.com |  1.800.800.SGI1 (Sales) 1.800.800.4SGI (Support) 
+DID 1.614.844.3820    |   http://www.nintendo.com/ (N64, the $130 SGI!) 

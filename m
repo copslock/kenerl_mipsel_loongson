@@ -1,64 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Apr 2004 23:19:08 +0100 (BST)
-Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:55969 "EHLO
-	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8224802AbUDPWTG>; Fri, 16 Apr 2004 23:19:06 +0100
-Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
-	id 5FB414787C; Sat, 17 Apr 2004 00:19:00 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by jurand.ds.pg.gda.pl (Postfix) with ESMTP
-	id 4E130474E9; Sat, 17 Apr 2004 00:19:00 +0200 (CEST)
-Date: Sat, 17 Apr 2004 00:19:00 +0200 (CEST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
-Cc: linux-mips@linux-mips.org
-Subject: Re: IP30 goes relatively far now
-In-Reply-To: <Pine.LNX.4.55.0404162332150.24278@jurand.ds.pg.gda.pl>
-Message-ID: <Pine.LNX.4.55.0404170000540.24278@jurand.ds.pg.gda.pl>
-References: <Pine.GSO.4.10.10404162305570.25696-100000@helios.et.put.poznan.pl>
- <Pine.LNX.4.55.0404162332150.24278@jurand.ds.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Apr 2004 04:31:59 +0100 (BST)
+Received: from [IPv6:::ffff:65.82.153.254] ([IPv6:::ffff:65.82.153.254]:14760
+	"HELO mail.seefried.com") by linux-mips.org with SMTP
+	id <S8224898AbUDQDb6>; Sat, 17 Apr 2004 04:31:58 +0100
+Received: (qmail 14459 invoked by uid 1000); 17 Apr 2004 03:31:54 -0000
+Message-ID: <20040417033154.14458.qmail@mail.seefried.com>
+From: "Ken Seefried" <ken@seefried.com>
+To: linux-mips@linux-mips.org
+Subject: IDT 7RS385 Eval Board Manual
+Date: Fri, 16 Apr 2004 23:31:54 -0400
+Mime-Version: 1.0
+Content-Type: text/plain; format=flowed; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Return-Path: <ken@mail.seefried.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4798
+X-archive-position: 4799
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: ken@seefried.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 16 Apr 2004, Maciej W. Rozycki wrote:
+ 
 
-> > I don't know if it's been already fixed in >2.6.1, but in genex.S there
-> > should be a 'nop' between 'jal do_\handler' and 'ret_from_exception'. The
-> > symptom is a hang on 'Checking for the daddi bug...'. Somebody apparently
-> > got used to '.set reorder' :P
-> 
->  The bug is elsewhere -- there's an incorrect extraneous ".set push" in
-> the file.  I'll commit a fix immediately.
+Does anyone have the hardware manual for an IDT 7RS385 MIPS 3052E (79R3052E) 
+Evaluation Board?  I'd *really* appreciate a copy... 
 
- I must have been blind -- there's a matching ".set pop" elsewhere.  Is a 
-"nop" really missing in the output?  I've assembled the file and I can't 
-see any problem:
-
-000000000000022c <handle_daddi_ov_int>:
- 22c:	0c000000 	jal	0 <except_vec0_generic>
-			22c: R_MIPS_26	do_daddi_ov
-			22c: R_MIPS_NONE	*ABS*
-			22c: R_MIPS_NONE	*ABS*
- 230:	03a0202d 	move	a0,sp
- 234:	08000000 	j	0 <except_vec0_generic>
-			234: R_MIPS_26	ret_from_exception
-			234: R_MIPS_NONE	*ABS*
-			234: R_MIPS_NONE	*ABS*
- 238:	00000000 	nop
- 23c:	00000000 	nop
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Ken

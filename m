@@ -1,30 +1,40 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id EAA09697 for <linux-archive@neteng.engr.sgi.com>; Wed, 4 Mar 1998 04:01:00 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id DAA08311 for <linux-archive@neteng.engr.sgi.com>; Wed, 4 Mar 1998 03:21:56 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id EAA539893 for linux-list; Wed, 4 Mar 1998 04:00:33 -0800 (PST)
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id EAA573184 for <linux@engr.sgi.com>; Wed, 4 Mar 1998 04:00:31 -0800 (PST)
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (980304.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id EAA19378
-	for <linux@engr.sgi.com>; Wed, 4 Mar 1998 04:00:30 -0800 (PST)
-	mail_from (ralf@uni-koblenz.de)
-From: ralf@uni-koblenz.de
-Received: from uni-koblenz.de (pmport-13.uni-koblenz.de [141.26.249.13])
-	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id NAA01878
-	for <linux@engr.sgi.com>; Wed, 4 Mar 1998 13:00:28 +0100 (MET)
-Received: (from ralf@localhost)
-	by uni-koblenz.de (8.8.7/8.8.7) id JAA15909;
-	Wed, 4 Mar 1998 09:53:57 +0100
-Message-ID: <19980304095356.13782@uni-koblenz.de>
-Date: Wed, 4 Mar 1998 09:53:56 +0100
-To: linux@cthulhu.engr.sgi.com, tsbogend@alpha.franken.de
-Subject: ESP driver changes
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.85e
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id DAA540300 for linux-list; Wed, 4 Mar 1998 03:21:27 -0800 (PST)
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id DAA561193 for <linux@cthulhu.engr.sgi.com>; Wed, 4 Mar 1998 03:21:25 -0800 (PST)
+Received: from ballyhoo.ml.org ([194.236.80.80]) by sgi.sgi.com (980304.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id DAA11246
+	for <linux@cthulhu.engr.sgi.com>; Wed, 4 Mar 1998 03:21:23 -0800 (PST)
+	mail_from (grimsy@zigzegv.ml.org)
+Received: from calypso.saturn ([130.244.178.130]) by ballyhoo.ml.org
+	 with smtp (ident grimsy using rfc1413) id m0yACD8-000xjYC
+	(Debian Smail-3.2 1996-Jul-4 #2); Wed, 4 Mar 1998 12:19:42 +0100 (CET)
+Date: Wed, 4 Mar 1998 12:23:17 +0100 (CET)
+From: Ulf Carlsson <grimsy@zigzegv.ml.org>
+X-Sender: grimsy@calypso.saturn
+To: linux@cthulhu.engr.sgi.com
+Subject: Re: R4000SC / R4400SC
+In-Reply-To: <19980304063814.53262@uni-koblenz.de>
+Message-ID: <Pine.LNX.3.96.980304121841.211D-100000@calypso.saturn>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Thomas,
+On Wed, 4 Mar 1998 ralf@uni-koblenz.de wrote:
 
-what is the status of your ESP driver changes?  Can we eventually merge
-them back to Vger / Linus?
+> Hi all,
+> 
+> I've commited my cache fixes into the CVS.  I'm especially interested
+> in test results on R4000SC / R4400SC CPUs.  I'll also put source
+> snapshot online in a couple of minutes.
+> 
+>   Ralf
 
-  Ralf
+Great :-)
+
+Please upload the precompiled kernel if you (someone) succeed with the
+compilation.
+
+I'm so curious.
+
+- Ulf

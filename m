@@ -1,53 +1,147 @@
-Received:  by oss.sgi.com id <S42207AbQGFQMI>;
-	Thu, 6 Jul 2000 09:12:08 -0700
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:46902 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S42203AbQGFQLs>; Thu, 6 Jul 2000 09:11:48 -0700
-Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id JAA06945
-	for <linux-mips@oss.sgi.com>; Thu, 6 Jul 2000 09:17:23 -0700 (PDT)
-	mail_from (flo@rfc822.org)
-Received: from deliverator.sgi.com (deliverator.sgi.com [150.166.91.37])
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id JAA92958
-	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 6 Jul 2000 09:11:13 -0700 (PDT)
-	mail_from (flo@rfc822.org)
-Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id JAA19359
-	for <linux@cthulhu.engr.sgi.com>; Thu, 6 Jul 2000 09:06:38 -0700 (PDT)
-	mail_from (flo@rfc822.org)
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id E95DE7F5; Thu,  6 Jul 2000 18:11:32 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 45DAA8F73; Thu,  6 Jul 2000 18:11:19 +0200 (CEST)
-Date:   Thu, 6 Jul 2000 18:11:19 +0200
-From:   Florian Lohoff <flo@rfc822.org>
-To:     Fredrik.Rovik@sas.no
-Cc:     linux@cthulhu.engr.sgi.com
-Subject: Re: Alive/indigo2 status
-Message-ID: <20000706181119.A3241@paradigm.rfc822.org>
-References: <72FEABC40CA6D311B2E40008C78AB8AA1DD532@oslmsg0111.net.sas.no>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-User-Agent: Mutt/1.0.1i
-In-Reply-To: <72FEABC40CA6D311B2E40008C78AB8AA1DD532@oslmsg0111.net.sas.no>; from Fredrik.Rovik@sas.no on Thu, Jul 06, 2000 at 02:36:58PM +0200
-Organization: rfc822 - pure communication
+Received:  by oss.sgi.com id <S42209AbQGFRMt>;
+	Thu, 6 Jul 2000 10:12:49 -0700
+Received: from tower.ti.com ([192.94.94.5]:22004 "EHLO tower.ti.com")
+	by oss.sgi.com with ESMTP id <S42203AbQGFRMj>;
+	Thu, 6 Jul 2000 10:12:39 -0700
+Received: from dlep7.itg.ti.com ([157.170.134.103])
+	by tower.ti.com (8.10.1/8.10.1) with ESMTP id e66HChH12412
+	for <linux-mips@oss.sgi.com>; Thu, 6 Jul 2000 12:12:43 -0500 (CDT)
+Received: from dlep7.itg.ti.com (localhost [127.0.0.1])
+	by dlep7.itg.ti.com (8.9.3/8.9.3) with ESMTP id MAA27964
+	for <linux-mips@oss.sgi.com>; Thu, 6 Jul 2000 12:12:36 -0500 (CDT)
+Received: from dlep4.itg.ti.com (dlep4.itg.ti.com [157.170.188.63])
+	by dlep7.itg.ti.com (8.9.3/8.9.3) with ESMTP id MAA27958
+	for <linux-mips@oss.sgi.com>; Thu, 6 Jul 2000 12:12:35 -0500 (CDT)
+Received: from ti.com (jharrell.sc.ti.com [158.218.100.143])
+	by dlep4.itg.ti.com (8.9.3/8.9.3) with ESMTP id MAA13460;
+	Thu, 6 Jul 2000 12:12:42 -0500 (CDT)
+Message-ID: <3964C025.623F7F5@ti.com>
+Date:   Thu, 06 Jul 2000 11:21:41 -0600
+From:   Jeff Harrell <jharrell@ti.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-5.0 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To:     linux-mips@oss.sgi.com
+CC:     bbrown@ti.com
+Subject: Question concerning necessary libraries for 2.4.x kernel upgrade
+Content-Type: multipart/mixed;
+ boundary="------------8CD11C396949D39314900462"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Thu, Jul 06, 2000 at 02:36:58PM +0200, Fredrik.Rovik@sas.no wrote:
-> Hi,
-> 
->  first of all I wanted to know if this mailinglist is
-> alive at all.. and, if anyone have some status information
-> on the port to indigo2. I've got an Extreme which i'd love
-> running linux with X and GL (wishing)
+This is a multi-part message in MIME format.
+--------------8CD11C396949D39314900462
+Content-Type: multipart/alternative;
+ boundary="------------0909E811D85527F63F2E0482"
 
-Indigo2 Yes
-Extreme No
 
-Flo
--- 
-Florian Lohoff		flo@rfc822.org		      	+49-5201-669912
-     "If you're not having fun right now, you're wasting your time."
+--------------0909E811D85527F63F2E0482
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+I am currently upgrading my MIPS development board (Atlas) that contains
+a R4Kc (jade core)
+and version 2.2.12 of the Linux kernel to a 2.4.x series kernel.   I
+believe the  libraries and applications
+were built off of the hardhat distribution.  We are able to run the
+2.4.x version of the kernel on the Atlas
+board but are seeing problems with some of the executables.  I examined
+the Changes file and am in the
+process of upgrading the following binaries/libraries..
+
+GNU C  2.7.2.3
+binutils 2.9.1.0.22
+util-linux 2.10g
+modutils 2.3.0
+e2fsprogs 1.18
+pcmcia-cs 3.1.13
+ppp 2.4.0b1
+
+I am seeing problems with executables such as awk, groff, troff, etc.
+Will I need to rebuild each of these
+applications  against the new libraries to run or should they still
+function after I have upgraded the previously
+mentioned packages?  Are there mipsel version of these packages (either
+source or binaries) available somewhere?
+Any information would be greatly appreciated.
+
+Jeff
+
+
+
+--
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Jeff Harrell                    Work:  (801) 619-6104
+Broadband Access group/TI
+jharrell@ti.com
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+--------------0909E811D85527F63F2E0482
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+I am currently upgrading my MIPS development board (Atlas) that contains
+a R4Kc (jade core)
+<br>and version 2.2.12 of the Linux kernel to a 2.4.x series kernel.&nbsp;&nbsp;
+I believe the&nbsp; libraries and applications
+<br>were built off of the hardhat distribution.&nbsp; We are able to run
+the 2.4.x version of the kernel on the Atlas
+<br>board but are seeing problems with some of the executables.&nbsp; I
+examined the Changes file and am in the
+<br>process of upgrading the following binaries/libraries..
+<p>GNU C&nbsp; 2.7.2.3
+<br>binutils 2.9.1.0.22
+<br>util-linux 2.10g
+<br>modutils 2.3.0
+<br>e2fsprogs 1.18
+<br>pcmcia-cs 3.1.13
+<br>ppp 2.4.0b1
+<p>I am seeing problems with executables such as awk, groff, troff, etc.&nbsp;&nbsp;
+Will I need to rebuild each of these
+<br>applications&nbsp; against the new libraries to run or should they
+still function after I have upgraded the previously
+<br>mentioned packages?&nbsp; Are there mipsel version of these packages
+(either source or binaries) available somewhere?
+<br>Any information would be greatly appreciated.
+<p>Jeff
+<br>&nbsp;
+<br>&nbsp;
+<pre>--&nbsp;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Jeff Harrell&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Work:&nbsp; (801) 619-6104&nbsp;
+Broadband Access group/TI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+jharrell@ti.com
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</pre>
+</html>
+
+--------------0909E811D85527F63F2E0482--
+
+--------------8CD11C396949D39314900462
+Content-Type: text/x-vcard; charset=us-ascii;
+ name="jharrell.vcf"
+Content-Transfer-Encoding: 7bit
+Content-Description: Card for Jeff Harrell
+Content-Disposition: attachment;
+ filename="jharrell.vcf"
+
+begin:vcard 
+n:Harrell;Jeff
+tel;cell:(801) 597-6268
+tel;fax:(801) 619-6150
+tel;work:(801) 619-6104
+x-mozilla-html:TRUE
+url:http://www.ti.com
+org:Broadband Access Group
+version:2.1
+email;internet:jharrell@ti.com
+title:Texas Instruments
+adr;quoted-printable:;;170 West Election Rd. Suite 100	=0D=0AMS 4106		;Draper;Utah;84020-6410;USA
+x-mozilla-cpt:;0
+fn:Jeff Harrell
+end:vcard
+
+--------------8CD11C396949D39314900462--

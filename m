@@ -1,38 +1,47 @@
-Received:  by oss.sgi.com id <S42374AbQI0XjP>;
-	Wed, 27 Sep 2000 16:39:15 -0700
-Received: from u-141.karlsruhe.ipdial.viaginterkom.de ([62.180.18.141]:62980
-        "EHLO u-141.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S42375AbQI0Xi6>; Wed, 27 Sep 2000 16:38:58 -0700
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S869612AbQI0XDl>;
-        Thu, 28 Sep 2000 01:03:41 +0200
-Date:   Thu, 28 Sep 2000 01:03:41 +0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Ian Chilton <mailinglist@ichilton.co.uk>
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: Problem with the new glibc-2.0.6
-Message-ID: <20000928010341.A1834@bacchus.dhis.org>
-References: <20000927214754.A20741@woody.ichilton.co.uk>
+Received:  by oss.sgi.com id <S42380AbQI1TEc>;
+	Thu, 28 Sep 2000 12:04:32 -0700
+Received: from noose.gt.owl.de ([62.52.19.4]:48146 "HELO noose.gt.owl.de")
+	by oss.sgi.com with SMTP id <S42347AbQI1TES>;
+	Thu, 28 Sep 2000 12:04:18 -0700
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id C5F437DD; Thu, 28 Sep 2000 21:04:16 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 3DF3F9014; Thu, 28 Sep 2000 20:53:59 +0200 (CEST)
+Date:   Thu, 28 Sep 2000 20:53:59 +0200
+From:   Florian Lohoff <flo@rfc822.org>
+To:     linux-mips@oss.sgi.com
+Subject: R3k Decstation broken
+Message-ID: <20000928205359.A767@paradigm.rfc822.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <20000927214754.A20741@woody.ichilton.co.uk>; from mailinglist@ichilton.co.uk on Wed, Sep 27, 2000 at 09:47:54PM +0100
-X-Accept-Language: de,en,fr
+User-Agent: Mutt/1.0.1i
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, Sep 27, 2000 at 09:47:54PM +0100, Ian Chilton wrote:
+Hi,
+it seems the r3k decstation stuff is broken 
 
-> I built the older glibc 2.0.6 fine, but had problems with egcs when I built dynamically, and ldconfig would not work...so, I started again...
-> 
-> However, the new glibc that was released the other day, does not work :(
-> 
-> I am using binutils 2.8.1 and egcs 1.0.3a
-> 
-> Any ideas?
+>>boot 3/tftp console=ttyS2
+1532656+0+130384
+This DECstation is a DS5000/1xx
+Loading R[23]00 MMU routines.
+CPU revision is: 00000230
+Primary instruction cache 64kb, linesize 4 bytes
+Primary data cache 64kb, linesize 4 bytes
+Linux version 2.4.0-test8-pre1 (flo@slimer.rfc822.org) (gcc version egcs-2.90.29 980515 (egcs-1.0.3 release)) #3 Thu Sep 28 18:40:38 GMT 2000
+On node 0 totalpages: 4096
+zone(0): 4096 pages.
+zone(1): 0 pages.
+zone(2): 0 pages.
+Kernel command line: console=ttyS2
+Calibrating delay loop... 
 
-The common dominator of the bug reports I have is building with binutils
-2.8.1, so I'll have to take another look at this piece of sh^H^Hpleasure.
+Full Stop !
 
-  Ralf
+Flo
+-- 
+Florian Lohoff		flo@rfc822.org		      	+49-5201-669912
+      "Write only memory - Oops. Time for my medication again ..."

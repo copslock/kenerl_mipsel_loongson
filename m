@@ -1,29 +1,30 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g04I8OL13349
-	for linux-mips-outgoing; Fri, 4 Jan 2002 10:08:24 -0800
+	by oss.sgi.com (8.11.2/8.11.3) id g04IXAL13933
+	for linux-mips-outgoing; Fri, 4 Jan 2002 10:33:10 -0800
 Received: from laposte.enst-bretagne.fr (laposte.enst-bretagne.fr [192.108.115.3])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g04I8Dg13346;
-	Fri, 4 Jan 2002 10:08:14 -0800
-Received: from resel.enst-bretagne.fr (maisel-gw.enst-bretagne.fr [192.44.76.8])
-	by laposte.enst-bretagne.fr (8.11.6/8.11.6) with ESMTP id g04H81b22909;
-	Fri, 4 Jan 2002 18:08:01 +0100
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g04IX1g13930;
+	Fri, 4 Jan 2002 10:33:01 -0800
+Received: from resel.enst-bretagne.fr (user92826@maisel-gw.enst-bretagne.fr [192.44.76.8])
+	by laposte.enst-bretagne.fr (8.11.6/8.11.6) with ESMTP id g04HWqb30062;
+	Fri, 4 Jan 2002 18:32:52 +0100
 Received: from melkor (mail@melkor.maisel.enst-bretagne.fr [172.16.20.65])
-	by resel.enst-bretagne.fr (8.9.3/8.9.3/Debian 8.9.3-21) with ESMTP id SAA08775;
-	Fri, 4 Jan 2002 18:08:02 +0100
+	by resel.enst-bretagne.fr (8.9.3/8.9.3/Debian 8.9.3-21) with ESMTP id SAA15603;
+	Fri, 4 Jan 2002 18:32:52 +0100
 X-Authentication-Warning: maisel-gw.enst-bretagne.fr: Host mail@melkor.maisel.enst-bretagne.fr [172.16.20.65] claimed to be melkor
 Received: from glaurung (helo=localhost)
 	by melkor with local-esmtp (Exim 3.33 #1 (Debian))
-	id 16MTVn-0000K9-00; Fri, 04 Jan 2002 13:31:51 +0100
-Date: Fri, 4 Jan 2002 13:30:55 +0100 (CET)
+	id 16MYD6-0000xh-00; Fri, 04 Jan 2002 18:32:52 +0100
+Date: Fri, 4 Jan 2002 18:32:52 +0100 (CET)
 From: Vivien Chappelier <vivien.chappelier@enst-bretagne.fr>
 X-Sender: glaurung@melkor
-To: Alan Cox <alan@lxorguk.ukuu.org.uk>
-cc: Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com
+To: Ralf Baechle <ralf@oss.sgi.com>
+cc: Alan Cox <alan@lxorguk.ukuu.org.uk>, linux-mips@oss.sgi.com
 Subject: Re: aic7xxx (O2 scsi) DMA coherency
-In-Reply-To: <E16MFrP-00018Z-00@the-village.bc.nu>
-Message-ID: <Pine.LNX.4.21.0201041324560.639-200000@melkor>
+In-Reply-To: <20020103215215.A1186@dea.linux-mips.net>
+Message-ID: <Pine.LNX.4.21.0201041830450.3669-200000@melkor>
 MIME-Version: 1.0
-Content-Type: MULTIPART/MIXED; BOUNDARY="279724308-637116453-1010147455=:639"
+Content-Type: MULTIPART/MIXED; BOUNDARY="279724308-311915002-1010165488=:3669"
+Content-ID: <Pine.LNX.4.21.0201041831480.3669@melkor>
 X-Virus-Scanned: by amavisd-milter (http://amavis.org/) at enst-bretagne.fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
@@ -32,35 +33,39 @@ Precedence: bulk
   while the remaining parts are likely unreadable without MIME-aware tools.
   Send mail to mime@docserver.cac.washington.edu for more info.
 
---279724308-637116453-1010147455=:639
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+--279724308-311915002-1010165488=:3669
+Content-Type: TEXT/PLAIN; CHARSET=US-ASCII
+Content-ID: <Pine.LNX.4.21.0201041831481.3669@melkor>
 
-Hello,
+On Thu, 3 Jan 2002, Ralf Baechle wrote:
 
-On Thu, 3 Jan 2002, Alan Cox wrote:
-
-> > 	This tells the aic7xxx to use DMA safe memory for I/O.
+> On Thu, Jan 03, 2002 at 10:51:51PM +0100, Vivien Chappelier wrote:
 > 
-> That seems totally inappropriate. The unchecked dma option is for
-> ancient ISA DMA controllers that didnt do the 16Mb check.
+> > > > 	This tells the aic7xxx to use DMA safe memory for I/O.
+> > > 
+> > > That seems totally inappropriate. The unchecked dma option is for
+> > > ancient ISA DMA controllers that didnt do the 16Mb check. If you
+> > > find you need it debug your pci remapper
+> > 
+> > This is used when scaning for devices (drivers/scsi/scsi_scan.c) . When
+> > this flag is not set, the code uses memory from the stack (unsigned char
+> > scsi_result0[256]; in scan_scsis) instead of kmallocating it DMA safe as
+> > it should on non-coherent systems. Maybe this is the thing to change?
 > 
+> Indeed, it is.  I thought this one died ages ago.
 
-Maybe this is more appropriate then :)
-It tells the scsi scanner to always use DMA safe memory when doing its
-INQUIRY commands...
-On the O2, kernel is running in cacheable, non-coherent memory. kmalloc,
-with GFP_DMA flag will return a piece of uncacheable memory which is safe
-for I/O with devices.
+Here is a patch to fix that then. It forces allocation of DMA safe
+memory in any case. I've not looked at the PPC64 patch however.
 
 regards,
-Vivien Chappelier
+Vivien Chappelier.
 
---279724308-637116453-1010147455=:639
-Content-Type: TEXT/plain; name="linux-scsi_scan.diff"
+--279724308-311915002-1010165488=:3669
+Content-Type: TEXT/PLAIN; NAME="linux-scsi_scan.diff"
 Content-Transfer-Encoding: BASE64
-Content-ID: <Pine.LNX.4.21.0201041330550.639@melkor>
+Content-ID: <Pine.LNX.4.21.0201041831280.3669@melkor>
 Content-Description: 
-Content-Disposition: attachment; filename="linux-scsi_scan.diff"
+Content-Disposition: ATTACHMENT; FILENAME="linux-scsi_scan.diff"
 
 LS0tIGxpbnV4L2RyaXZlcnMvc2NzaS9zY3NpX3NjYW4uYwlUaHUgRGVjIDIw
 IDE4OjMxOjA5IDIwMDENCisrKyBsaW51eC5wYXRjaC9kcml2ZXJzL3Njc2kv
@@ -84,4 +89,4 @@ Y3NpX3Jlc3VsdCAhPSAmc2NzaV9yZXN1bHQwWzBdICYmIHNjc2lfcmVzdWx0
 ICE9IE5VTEwpIHsNCisJaWYgKHNjc2lfcmVzdWx0ICE9IE5VTEwpIHsNCiAJ
 CWtmcmVlKHNjc2lfcmVzdWx0KTsNCiAJfSB7DQogCQlTY3NpX0RldmljZSAq
 c2RldjsNCg==
---279724308-637116453-1010147455=:639--
+--279724308-311915002-1010165488=:3669--

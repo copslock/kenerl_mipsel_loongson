@@ -1,72 +1,53 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8T8Zu331282
-	for linux-mips-outgoing; Sat, 29 Sep 2001 01:35:56 -0700
-Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8T8ZqD31275
-	for <linux-mips@oss.sgi.com>; Sat, 29 Sep 2001 01:35:52 -0700
-Received: from lucon.org (lake.in.lucon.org [192.168.0.2])
-	by ocean.lucon.org (Postfix) with ESMTP
-	id EE041125C6; Sat, 29 Sep 2001 01:35:50 -0700 (PDT)
-Received: by lucon.org (Postfix, from userid 1000)
-	id 82F86EBA5; Sat, 29 Sep 2001 01:35:49 -0700 (PDT)
-Date: Sat, 29 Sep 2001 01:35:49 -0700
-From: "H . J . Lu" <hjl@lucon.org>
-To: Kjeld Borch Egevang <kjelde@mips.com>
-Cc: linux-mips mailing list <linux-mips@oss.sgi.com>
-Subject: Re: gcc crash
-Message-ID: <20010929013549.A4044@lucon.org>
-References: <Pine.LNX.4.30.0109271657250.1742-100000@coplin19.mips.com>
+	by oss.sgi.com (8.11.2/8.11.3) id f8T9Hfk31867
+	for linux-mips-outgoing; Sat, 29 Sep 2001 02:17:41 -0700
+Received: from post.webmailer.de (natpost.webmailer.de [192.67.198.65])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8T9HcD31863
+	for <linux-mips@oss.sgi.com>; Sat, 29 Sep 2001 02:17:38 -0700
+Received: from excalibur.cologne.de (lt200001.hrz.uni-oldenburg.de [134.106.156.150])
+	by post.webmailer.de (8.9.3/8.8.7) with ESMTP id LAA01166;
+	Sat, 29 Sep 2001 11:17:20 +0200 (MET DST)
+Received: from karsten by excalibur.cologne.de with local (Exim 3.12 #1 (Debian))
+	id 15nGK1-00009z-00; Sat, 29 Sep 2001 11:22:09 +0200
+Date: Sat, 29 Sep 2001 11:22:09 +0200
+From: Karsten Merker <karsten@excalibur.cologne.de>
+To: machael <dony.he@huawei.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: What is the latest stable kernel version for MIPS?
+Message-ID: <20010929112208.A466@excalibur.cologne.de>
+Mail-Followup-To: Karsten Merker <karsten@excalibur.cologne.de>,
+	machael <dony.he@huawei.com>, linux-mips@oss.sgi.com
+References: <003101c147f5$a6fc5980$921c690a@huawei.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.LNX.4.30.0109271657250.1742-100000@coplin19.mips.com>; from kjelde@mips.com on Thu, Sep 27, 2001 at 04:59:47PM +0200
+In-Reply-To: <003101c147f5$a6fc5980$921c690a@huawei.com>; from dony.he@huawei.com on Fri, Sep 28, 2001 at 04:14:53PM +0800
+X-No-Archive: yes
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, Sep 27, 2001 at 04:59:47PM +0200, Kjeld Borch Egevang wrote:
-> When I compile the following function with "gcc -O2" the compiler crashes.
-> Is this a known problem?
-> 
-> static float sp_f2l(float x)
-> {
->     long l, *xl;
->     float y;
-> 
->     xl = (void *)&y;
->     l = x;
->     *xl = l;
->     return y;
-> }
-> 
-> I use gcc version 2.96 20000731 (Red Hat Linux 7.1 2.96-97.2)
-> 
+On Fri, Sep 28, 2001 at 04:14:53PM +0800, machael wrote:
 
-I back ported this from gcc in CVS to gcc 2.96. It works for me. It
-will be in the next RedHat 7.1/mips update.
+> What is the latest stable kernel version for MIPS? And where can I download
+> it?
 
+Well, there is no really "stable" kernel :-).
+Linux/MIPS does not have formal kernel releases, you can check out the 
+current cvs version by using
 
-H.J.
------
-2001-09-29  H.J. Lu <hjl@gnu.org>
+cvs -d :pserver:cvs@oss.sgi.com:/cvs login
+Password is "cvs"
+cvs -z4 -d :pserver:cvs@oss.sgi.com:/cvs co linux
 
-	* gcc/emit-rtl.c (subreg_hard_regno): Comment out dubious code.
+For more information, please see the Linux-MIPS-HOWTO on
 
---- gcc/emit-rtl.c.subreg	Sat Sep 29 01:21:24 2001
-+++ gcc/emit-rtl.c	Sat Sep 29 01:22:06 2001
-@@ -734,6 +734,7 @@ subreg_hard_regno (x, check_mode)
- 
-   final_regno = SUBREG_REGNO (x);
- 
-+#if 0
-   /* Punt if what we end up with is not a valid regno in
-      the SUBREG's mode, or we went past the end of the inner
-      REG's mode, or we overflow past the last hard regno.  */
-@@ -743,6 +744,7 @@ subreg_hard_regno (x, check_mode)
- 	   HARD_REGNO_NREGS (base_regno, GET_MODE (reg)))
-        || final_regno >= FIRST_PSEUDO_REGISTER)
-     abort ();
-+#endif
- 
-   return final_regno;
- }
+http://oss.sgi.com/mips/mips-howto.html
+
+HTH,
+Karsten
+-- 
+#include <standard_disclaimer>
+Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der Nutzung
+oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die Markt- oder
+Meinungsforschung.

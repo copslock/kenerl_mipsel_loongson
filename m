@@ -1,38 +1,42 @@
-Received:  by oss.sgi.com id <S553781AbQLOQLN>;
-	Fri, 15 Dec 2000 08:11:13 -0800
-Received: from f241.law3.hotmail.com ([209.185.241.241]:63243 "EHLO
-        hotmail.com") by oss.sgi.com with ESMTP id <S553762AbQLOQLC>;
-	Fri, 15 Dec 2000 08:11:02 -0800
-Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
-	 Fri, 15 Dec 2000 08:10:56 -0800
-Received: from 207.175.43.231 by lw3fd.law3.hotmail.msn.com with HTTP;	Fri, 15 Dec 2000 16:10:56 GMT
-X-Originating-IP: [207.175.43.231]
-From:   "James McD" <vile8@hotmail.com>
+Received:  by oss.sgi.com id <S553771AbQLOROn>;
+	Fri, 15 Dec 2000 09:14:43 -0800
+Received: from router.isratech.ro ([193.226.114.69]:44806 "EHLO
+        router.isratech.ro") by oss.sgi.com with ESMTP id <S553767AbQLOROf>;
+	Fri, 15 Dec 2000 09:14:35 -0800
+Received: from isratech.ro (calin.cs.tuiasi.ro [193.231.15.163])
+	by router.isratech.ro (8.10.2/8.10.2) with ESMTP id eBFHEI609804
+	for <linux-mips@oss.sgi.com>; Fri, 15 Dec 2000 19:14:19 +0200
+Message-ID: <3A3ABFA9.8608799D@isratech.ro>
+Date:   Fri, 15 Dec 2000 20:04:42 -0500
+From:   Nicu Popovici <octavp@isratech.ro>
+X-Mailer: Mozilla 4.74 [en] (X11; U; Linux 2.2.15-2.5.0 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
 To:     linux-mips@oss.sgi.com
-Subject: memory hog
-Date:   Fri, 15 Dec 2000 16:10:56 
-Mime-Version: 1.0
-Content-Type: text/plain; format=flowed
-Message-ID: <F2413yMJiQTyfPefLJG0000066a@hotmail.com>
-X-OriginalArrivalTime: 15 Dec 2000 16:10:56.0843 (UTC) FILETIME=[9B60C9B0:01C066B1]
+Subject: Little endian.
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-I have an SGI INDY r4600 133 with 64 megs of ram and a 1 gig drive. I have 
-simple linux and the 2.4test9 kernel running on it. Thank you for the advice 
-on getting it booting from the hard drive btw Guido!
-   Here is my dilema. It has nothing running other than standard services 
-ie. login, networking. No web server, none of the goodies yet, and I am 
-consuming 60 out of my 64 megs of available ram. I do not even have X 
-installed yet. I know 64 megs isnt alot, but it seems to be quite a high 
-consumption for no services being run. Please let me know if anybody knows 
-if an SGI handles memory differently, or if I should just get more and quit 
-whining.
+Hello ,
 
-Thanks,
+I have the follwing problem. I setup a HardHat distribution on a mips
+machine ( an ATLAS board) and everithing runs fine in big-endian mode.
+Now I want to run the board inlittle endian mode so I took the
+linux/mipsel distribution , I did the same steps as with big-endian
+distribution. I run load tftp:/linux/mipsel/vmlinux-el.srec and it works
+fine . Then I issue the command go . root=/dev/sda1 ( I do not install
+the HardHat again ???? maybe here it is the problem ) I get the
+following error.
+==========================================================
+VFS: Mounted root (ext2 filesystem) readonly.
+Freeing prom memory: 1020k freed
+Freeing unused kernel memory: 68k freed
+Kernel panic: No init found.  Try passing init= option to kernel.
+==========================================================
+So please tell me where did I go wrong ?
 
-James McDermott
-_________________________________________________________________
-Get your FREE download of MSN Explorer at http://explorer.msn.com
+Nicu

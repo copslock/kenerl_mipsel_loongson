@@ -1,32 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Mar 2005 23:59:41 +0000 (GMT)
-Received: from rproxy.gmail.com ([IPv6:::ffff:64.233.170.199]:47506 "EHLO
-	rproxy.gmail.com") by linux-mips.org with ESMTP id <S8225430AbVCGX7Y>;
-	Mon, 7 Mar 2005 23:59:24 +0000
-Received: by rproxy.gmail.com with SMTP id y7so1297847rne
-        for <linux-mips@linux-mips.org>; Mon, 07 Mar 2005 15:59:21 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Mar 2005 00:00:25 +0000 (GMT)
+Received: from rproxy.gmail.com ([IPv6:::ffff:64.233.170.202]:29080 "EHLO
+	rproxy.gmail.com") by linux-mips.org with ESMTP id <S8225430AbVCHAAH>;
+	Tue, 8 Mar 2005 00:00:07 +0000
+Received: by rproxy.gmail.com with SMTP id y7so1298024rne
+        for <linux-mips@linux-mips.org>; Mon, 07 Mar 2005 16:00:06 -0800 (PST)
 DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
         s=beta; d=gmail.com;
-        h=received:message-id:date:from:reply-to:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:references;
-        b=iclVCWtmoix40bCcSMeZ4LGEKKwOwTgs0ymduKTEQHOeyYPWzH3KcWeOUxehTyNffJv8EKuKA0mUziOlA5SFid4wCikDuVqdK2Yc9Pm9TbKptBjlh10BbLvX8sufJKoHjCseSRD7FnaIgSo3z1z9fOtRILM7bdEgiitIgxZ7hQM=
-Received: by 10.39.2.65 with SMTP id e65mr37369rni;
-        Mon, 07 Mar 2005 15:58:33 -0800 (PST)
-Received: by 10.38.104.32 with HTTP; Mon, 7 Mar 2005 15:58:33 -0800 (PST)
-Message-ID: <6a95eefb050307155815cf14fb@mail.gmail.com>
-Date:	Mon, 7 Mar 2005 15:58:33 -0800
+        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding;
+        b=QvaJKQEGtb/71Rx+Xsn9911sm8vCQTgj+W79tBvgttwQj6iAwqom1uIQrKqpduQ6SDWdqKGTAhOGE0ok1Zt23ZRbvZ2gBBwj3JOmSSD0pSsqfYzuNqA6RYvo4YijYkn5wr5DUNbcGHn405uPtrc7ciqEu8EyLSEP0cszX/5nlnM=
+Received: by 10.38.164.40 with SMTP id m40mr100036rne;
+        Mon, 07 Mar 2005 16:00:02 -0800 (PST)
+Received: by 10.38.104.32 with HTTP; Mon, 7 Mar 2005 16:00:02 -0800 (PST)
+Message-ID: <6a95eefb05030716005d634fd1@mail.gmail.com>
+Date:	Mon, 7 Mar 2005 16:00:02 -0800
 From:	Siva Prasad <rsivaprasad@gmail.com>
 Reply-To: Siva Prasad <rsivaprasad@gmail.com>
 To:	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 2.6] update PCI code for VR41xx
-In-Reply-To: <20050308012815.0a02095e.yuasa@hh.iij4u.or.jp>
+Subject: Linux distribution on Atheros AR5312
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-References: <20050308012815.0a02095e.yuasa@hh.iij4u.or.jp>
 Return-Path: <rsivaprasad@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7392
+X-archive-position: 7393
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

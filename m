@@ -1,57 +1,111 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6L9LAu16639
-	for linux-mips-outgoing; Sat, 21 Jul 2001 02:21:10 -0700
-Received: from earth.ayrnetworks.com (earth.ayrnetworks.com [64.166.72.139])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6L9L1V16635;
-	Sat, 21 Jul 2001 02:21:01 -0700
-Received: from [10.21.56.226] (earth.ayrnetworks.com [10.1.1.24])
-	by earth.ayrnetworks.com (8.11.0/8.8.7) with ESMTP id f6L9KKr10694;
-	Sat, 21 Jul 2001 02:20:20 -0700
-User-Agent: Microsoft-Entourage/9.0.2509
-Date: Sat, 21 Jul 2001 03:22:17 -0600
-Subject: Re: SHN_MIPS_SCOMMON
-From: Greg Satz <satz@ayrnetworks.com>
-To: Ralf Baechle <ralf@oss.sgi.com>
-CC: <linux-mips@oss.sgi.com>
-Message-ID: <B77EA5E8.883E%satz@ayrnetworks.com>
-In-Reply-To: <20010721033019.A22637@bacchus.dhis.org>
-Mime-version: 1.0
-Content-type: text/plain; charset="US-ASCII"
-Content-transfer-encoding: 7bit
+	by oss.sgi.com (8.11.2/8.11.3) id f6L9RP116732
+	for linux-mips-outgoing; Sat, 21 Jul 2001 02:27:25 -0700
+Received: from fe040.worldonline.dk (fe040.worldonline.dk [212.54.64.205])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6L9RMV16729
+	for <linux-mips@oss.sgi.com>; Sat, 21 Jul 2001 02:27:22 -0700
+Received: (qmail 11697 invoked by uid 0); 21 Jul 2001 09:27:16 -0000
+Received: from 213.237.49.98.skovlyporten.dk (HELO tuxedo.skovlyporten.dk) (213.237.49.98)
+  by fe040.worldonline.dk with SMTP; 21 Jul 2001 09:27:16 -0000
+Received: by tuxedo.skovlyporten.dk (Postfix, from userid 501)
+	id 54DEE2608A; Sat, 21 Jul 2001 11:27:15 +0200 (CEST)
+Date: Sat, 21 Jul 2001 11:27:15 +0200
+From: Lars Munch Christensen <c948114@student.dtu.dk>
+To: linux-mips@oss.sgi.com
+Subject: mips64 linker bug?
+Message-ID: <20010721112715.C2335@tuxedo.skovlyporten.dk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hi Ralf, maybe I am missing something but after downloading and some perusal
-I don't see where the newer (2.4.5) kernel addresses this problem. At the
-risk of being redundant, the issue, as I see it, is the use of SCOMMON
-symbols in ELF section SHN_MIPS_SCOMMON (0xff03). These symbols are
-overlooked when insmod relocates symbols in the SHN_COMMON ELF section. They
-end up in the kernel with a value of 4. Upon being referenced, the module
-gets a page fault opps.
+Hi All
 
-The file obj/obj_reloc.c in the modutils package is where the SHN_COMMON
-symbol relocation work is performed. Using the gcc flag -fno-common forces
-all commons info bss thus preventing the problem. We do this as a
-work-around now.
+I think I have found a linker bug!
 
-The question is whether the gcc -fno-common flag is the real fix or is
-obj/obj_reloc.c deficient. I have a patch that appears to work for
-obj/obj_reloc.c
+I use the following cross compilers from sgi's ftp:
 
-We create the problem situation by declaring variables in one file as extern
-and defining them in another. The compiler puts these variables in the
-SCOMMON segment instead of the COMMON segment.
+binutils-mips64-linux-2.9.5-3.i386.rpm
+egcs-mips64-linux-1.1.2-4.i386.rpm
+binutils-mips64el-linux-2.9.5-3.i386.rpm
+egcs-mips64el-linux-1.1.2-4.i386.rpm
 
-Thanks,
-Greg
+Anyway the bug is that static functions get linked wrongly.
+Test program:
+---------------------
+/* This function has to be here to get the error */
+int test1(void) {
+	return 1;
+}
 
-on 7/20/01 7:30 PM, Ralf Baechle at ralf@oss.sgi.com wrote:
+static int test2(void) { /* <---- notice this static */
+	return 2;
+}
 
-> On Fri, Jul 20, 2001 at 04:15:28PM -0600, Greg Satz wrote:
-> 
->> When making modules for the 2.4.2 kernel, gcc and friends will generate
-> 
-> Rotten kernel error.  Upgrade to >= 2.4.5.
-> 
-> Ralf
-> 
+int main() {
+
+	test2();
+	return 1;
+}
+
+---------------------
+
+Compile and link with:
+
+mips64-linux-gcc -mcpu=r4600 -mabi=64 -mips3 -g -c -O2  -o main.o main.c
+mips64-linux-ld -m elf64btsmip  -nostdlib -e main main.o -o main.elf
+
+Now I see the bug where main calls test2:
+
+Doing a 'mips64-linux-objdump -S test.elf' gives me:
+
+main.elf:     file format elf64-bigmips
+
+Disassembly of section .text:
+
+00000000100000f0 <test1>:
+        return 1;
+    100000f0:   03e00008        jr      $ra
+    100000f4:   24020001        li      $v0,1
+
+00000000100000f8 <test2>:
+}
+
+static int test2(void) {
+        return 2;
+    100000f8:   03e00008        jr      $ra
+    100000fc:   24020002        li      $v0,2
+
+0000000010000100 <main>:
+}
+
+int main() {
+    10000100:   67bdfff0        0x67bdfff0
+    10000104:   ffbf0000        0xffbf0000
+
+0000000010000108 <$LM6>:
+
+        test2();
+    10000108:   0c000044        jal     10000110 <$LM7> <-- 110 ????????????
+    1000010c:   00000000        nop
+
+0000000010000110 <$LM7>:
+        return 1;
+    10000110:   dfbf0000        0xdfbf0000
+    10000114:   24020001        li      $v0,1
+    10000118:   03e00008        jr      $ra
+    1000011c:   67bd0010        0x67bd0010
+
+
+When removing the static I get the correct address 100000f8 ?!?
+
+Am I missing something. Please help me, I have spend 3 days
+chasing this bug, until I figures out it was related to 
+static functions.
+
+btw why isn't everything disassembled?
+
+Thanks
+Lars Munch

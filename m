@@ -1,68 +1,84 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980327.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id JAA35831 for <linux-archive@neteng.engr.sgi.com>; Mon, 6 Apr 1998 09:37:31 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980327.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id MAA292887 for <linux-archive@neteng.engr.sgi.com>; Mon, 6 Apr 1998 12:40:14 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id JAA8462252
+	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id MAA8065684
 	for linux-list;
-	Mon, 6 Apr 1998 09:35:55 -0700 (PDT)
-Received: from fir.engr.sgi.com (fir.engr.sgi.com [150.166.49.183])
+	Mon, 6 Apr 1998 12:37:54 -0700 (PDT)
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF)
-	via SMTP id JAA8369741
-	for <linux@engr.sgi.com>;
-	Mon, 6 Apr 1998 09:35:51 -0700 (PDT)
-Received: (from wje@localhost) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id JAA08082; Mon, 6 Apr 1998 09:35:12 -0700
-Date: Mon, 6 Apr 1998 09:35:12 -0700
-Message-Id: <199804061635.JAA08082@fir.engr.sgi.com>
-From: "William J. Earl" <wje@fir.engr.sgi.com>
-To: ralf@uni-koblenz.de
-Cc: linux-mips@fnet.fr, linux-mips@vger.rutgers.edu,
-        linux@cthulhu.engr.sgi.com
-Subject: Re: Lmbench results for Linux/MIPS 2.1.90
-In-Reply-To: <19980405120602.27673@uni-koblenz.de>
-References: <19980322075452.09681@uni-koblenz.de>
-	<199803230530.VAA12819@fir.engr.sgi.com>
-	<19980405120602.27673@uni-koblenz.de>
+	via ESMTP id MAA8477750
+	for <linux@cthulhu.engr.sgi.com>;
+	Mon, 6 Apr 1998 12:37:52 -0700 (PDT)
+Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id MAA15873
+	for <linux@cthulhu.engr.sgi.com>; Mon, 6 Apr 1998 12:37:50 -0700 (PDT)
+	mail_from (adevries@engsoc.carleton.ca)
+Received: from localhost (adevries@localhost)
+	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id PAA03385
+	for <linux@cthulhu.engr.sgi.com>; Mon, 6 Apr 1998 15:37:49 -0400
+X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
+Date: Mon, 6 Apr 1998 15:37:49 -0400 (EDT)
+From: Alex deVries <adevries@engsoc.carleton.ca>
+To: SGI Linux <linux@cthulhu.engr.sgi.com>
+Subject: Stuff I'm looking for. 
+Message-ID: <Pine.LNX.3.95.980406153705.19893Q-100000@lager.engsoc.carleton.ca>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-ralf@uni-koblenz.de writes:
-...
- > That's implemented now.  I'm also pulling another trick.  Why the hell
- > should be save all the s-registers during system calls?  The MIPS calling
- > sequence guarantees to us that they will not be destroyed.  Whoops,
- > another 150us or so.  It's what brought us down to 861ns, faster than
- > big bad Pentium from Borg.  All that it takes is adding some extra code;
- > sys_fork(), sys_clone() and do_signal expect the s-registers to be in
- > the stackframe, so I save them only in these routines.
 
-     Yes, UMIPS-BSD (but not IRIX or RISC/os) did that too.  The 861 ns.
-also means that you are not getting any cache misses at all, which is very
-nice.  (Some systems seem to think a system call without a cache miss
-is a day without sunshine.  :-) )
+Some weirdness happened to my subscription to the mailing list; here's my
+mail from yesterday.
 
- > I'm thinking about changing the calling sequence of syscalls as well.
- > When we get more than four arguments passed, we have to dig them out of
- > the userstack.  While this is fast on Linux we still need time for the
- > safety checks.  The t registers which are being clobbered anyway would
- > be sooo nice to pass them.
- > 
- > (Hey people, remember I told ya static linking is evil?  That change would
- > fry all your binaries ...  still time to relink :-)
+-- 
+Alex deVries
+http://www.engsoc.carleton.ca/~adevries/ .
+EngSoc, US National Headquarters
 
-      You could or some suitable higher-order bit into the system call number
-to distinguish the two cases (and mask it off in syscall before indexing
-the system call table).  Since you have the system call number in a register,
-that should be pretty cheap to check.
-
-     Instead of changing the calling sequence, perhaps you could
-do the fetching in a special assembly subroutine, and have the trap
-handler notice if $epc is in the routine at the instruction which fetches
-from the user space.  If so, it could change $epc to some recovery address
-in the assembly routine, which would return the fault indication.
-(There would probably be multiple load instructions in a fully
-unrolled routine, but that would just be more locations to accept 
-as valid exception points.)  This takes cycles out of the normal
-path, at the cost of cycles in the trap path (for kernel traps only,
-and then only for cases which are going to turn into EFAULT anyway).
+---------- Forwarded message ----------
+Date: Sun, 5 Apr 1998 18:25:37 -0400 (EDT)
+From: Alex deVries <adevries@engsoc.carleton.ca>
+To: SGI Linux <linux@cthulhu.engr.sgi.com>
+Subject: Stuff I'm looking for.
 
 
-	
+
+I'm interested in finding the following things, before I invest time in
+recreating them:
+
+1. XFree stuff.
+Somewhere, somehow, I picked up a copy of /usr/X11R6/lib/libXaw.so.6.1,
+but I no longer remember who compiled it for SGI/Linux. Alan, maybe? In
+any case, when I try to run 'xterm' (which came in the same tarball,
+IIRC), I get a:
+libXaw.so.6: cannot open shared object file: No such file or directory
+
+although the file exists.
+
+Does anyone have source patched I could turn into an RPM, or is this all
+pretty much just from the source?
+
+2. binutils
+
+I think my sdb has taken a bit of a crash, since I can compile properly
+only at certain times of the day.  Is there a binutils RPM out there
+anywhere, and if not, can people tell me a list of the required patches
+and latest version?
+
+Other notes:
+- When rpm 2.5 comes out later this week (possibly today), it'll have the
+problems with mipseb/mipsel sorted out.  Eventually all the RPMs on Linus
+in the mipsel are going to have to be replaced with repackaged ones.  When
+RedHat 5.1 comes out (my guess: early next month), I'll compile the mipseb
+packages.  In any case, I'll get mipsel RPMs out when 2.5 comes out for
+easy upgrading.
+
+- I'm going to be in Raleigh-Durham for LinuxExpo May 28-30.  Is there any
+chance of us having an informal get together? 
+
+- Alex
+
+-- 
+Alex deVries
+http://www.engsoc.carleton.ca/~adevries/ .
+EngSoc, US National Headquarters

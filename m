@@ -1,83 +1,63 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8DF7No08496
-	for linux-mips-outgoing; Thu, 13 Sep 2001 08:07:23 -0700
-Received: from mx.mips.com (mx.mips.com [206.31.31.226])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8DF7Je08490
-	for <linux-mips@oss.sgi.com>; Thu, 13 Sep 2001 08:07:19 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id IAA11202;
-	Thu, 13 Sep 2001 08:06:56 -0700 (PDT)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id IAA20769;
-	Thu, 13 Sep 2001 08:06:55 -0700 (PDT)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id f8DF6sa14950;
-	Thu, 13 Sep 2001 17:06:55 +0200 (MEST)
-Message-ID: <3BA0CB8D.ED5AB42B@mips.com>
-Date: Thu, 13 Sep 2001 17:06:53 +0200
-From: Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: "H . J . Lu" <hjl@lucon.org>
-CC: linux-mips@oss.sgi.com
-Subject: Re: Update for RedHat 7.1
-References: <20010907230009.A1705@lucon.org>
-Content-Type: text/plain; charset=iso-8859-15
-Content-Transfer-Encoding: 7bit
+	by oss.sgi.com (8.11.2/8.11.3) id f8DFAnM08600
+	for linux-mips-outgoing; Thu, 13 Sep 2001 08:10:49 -0700
+Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8DFAke08596
+	for <linux-mips@oss.sgi.com>; Thu, 13 Sep 2001 08:10:46 -0700
+Received: by ocean.lucon.org (Postfix, from userid 1000)
+	id 7DD10125C3; Thu, 13 Sep 2001 08:10:40 -0700 (PDT)
+Date: Thu, 13 Sep 2001 08:10:40 -0700
+From: "H . J . Lu" <hjl@lucon.org>
+To: Kjeld Borch Egevang <kjelde@mips.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Error in gcc version 2.96 20000731
+Message-ID: <20010913081040.A24910@lucon.org>
+References: <3BA0BF6E.2010300@mips.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3BA0BF6E.2010300@mips.com>; from kjelde@mips.com on Thu, Sep 13, 2001 at 04:15:10PM +0200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I now tried to installing the bigendian RedHat7.1 RPMs and I noticed the
-following.
+On Thu, Sep 13, 2001 at 04:15:10PM +0200, Kjeld Borch Egevang wrote:
+> Hi all.
+> 
+> I discovered an optimization error in the current gcc for MIPS.
+> 
+> When I compile the code below with -O2 it clears the code-field just 
+> after setting it. The instructions are mixed up. It works fine with -O1 
+> and -O0.
+> 
+> If the "//" is removed in front of the first printf, it works too.
+> 
 
-/etc/localtime is lacking in glibc-2.2.4-11.2.mips.rpm (but it's contain
-in the little endian version).
-All the timezone information is lacking under /usr/share/zoneinfo in
-glibc-common-2.2.4-11.2 (but it's in the little endian version).
+The code isn't ISO C. You cannot declare something as short and then
+access it as int. On x86:
 
-I can't changes the root password, I get the following:
-# passwd root
-Changing password for user root
-New UNIX password:
-/usr/lib/cracklib_dict: magic mismatch
-PWOpen: Success
+# gcc alias.c -O
+put_code after, code=5 5
+gen_rtx, code=5
+# gcc alias.c -O2
+put_code after, code=5 0
+gen_rtx, code=0
 
-/Carsten
+On mips,
+
+# gcc alias.c -O
+put_code after, code=5 5
+gen_rtx, code=5
+# gcc alias.c -O2
+put_code after, code=5 5
+gen_rtx, code=0
+
+You can fix the code or add -fno-strict-aliasing
+
+# gcc alias.c -O2 -fno-strict-aliasing
+put_code after, code=5 5
+gen_rtx, code=5
 
 
-"H . J . Lu" wrote:
 
-> I updated a few packages, fixed a linker bug and rebuilt everything.
->
-> H.J.
-> ----
-> My mini-port of RedHat 7.1 is at
->
-> ftp://oss.sgi.com/pub/linux/mips/redhat/7.1/
->
-> you should be able to put a small RedHat 7.1 on the mips/mipsel box and
-> compile the rest of RedHat 7.1 yourselves.
->
-> Here are something you should know:
->
-> 1. The cross compiler hosted on RedHat 7.1/ia32 is provided as a
-> toolchain rpm. The binary rpms for the mips and mipsel cross compilers
-> are included. You will need glibc 2.2.3-11 or above to use those
-> rpms. The glibc x86 binary rpms under RPMS/i386 should be ok.
-> 2. You have to find a way to put those rpms on your machine. I use
-> network boot and NFS root to do it.
-> 3. install.tar.bz2 has some scripts to prepare NFS root and install
-> RedHat 7.1 on a hard drive.
-> 4. baseline.tar.bz2 contains the cross build tree.
->
-> Thanks.
->
-> H.J.
-
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+H.J.

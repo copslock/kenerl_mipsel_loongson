@@ -1,41 +1,40 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1BNMjI18900
-	for linux-mips-outgoing; Mon, 11 Feb 2002 15:22:45 -0800
-Received: from dea.linux-mips.net (a1as09-p62.stg.tli.de [195.252.189.62])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1BNMe918896
-	for <linux-mips@oss.sgi.com>; Mon, 11 Feb 2002 15:22:40 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.1) id g1BMK1U05333;
-	Mon, 11 Feb 2002 23:20:01 +0100
-Date: Mon, 11 Feb 2002 23:20:01 +0100
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Johannes Stezenbach <js@convergence.de>
-Cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>, Florian Lohoff <flo@rfc822.org>,
-   linux-mips@oss.sgi.com
-Subject: Re: gcc include strangeness
-Message-ID: <20020211232001.G4623@dea.linux-mips.net>
-References: <20020211142708.GA2577@convergence.de> <Pine.GSO.3.96.1020211155920.18917F-100000@delta.ds2.pg.gda.pl> <20020211162844.GD2918@convergence.de>
+	by oss.sgi.com (8.11.2/8.11.3) id g1C302C23164
+	for linux-mips-outgoing; Mon, 11 Feb 2002 19:00:02 -0800
+Received: from topsns.toshiba-tops.co.jp (topsns.toshiba-tops.co.jp [202.230.225.5])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1C2x3923115
+	for <linux-mips@oss.sgi.com>; Mon, 11 Feb 2002 18:59:04 -0800
+Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for oss.sgi.com [216.32.174.27]) with SMTP; 12 Feb 2002 01:59:03 UT
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP
+	id AB49FB46D; Tue, 12 Feb 2002 10:59:01 +0900 (JST)
+Received: by srd2sd.toshiba-tops.co.jp (8.9.3/3.5Wbeta-srd2sd) with ESMTP
+	id KAA41913; Tue, 12 Feb 2002 10:59:01 +0900 (JST)
+Date: Tue, 12 Feb 2002 11:03:33 +0900 (JST)
+Message-Id: <20020212.110333.41627061.nemoto@toshiba-tops.co.jp>
+To: hjl@lucon.org
+Cc: linux-mips@oss.sgi.com
+Subject: Re: gcc-2.96-99 optimization bug?
+From: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
+In-Reply-To: <20020208103047.A6079@lucon.org>
+References: <20020208.193731.48536791.nemoto@toshiba-tops.co.jp>
+	<20020208103047.A6079@lucon.org>
+X-Fingerprint: EC 9D B9 17 2E 89 D2 25  CE F5 5D 3D 12 29 2A AD
+X-Pgp-Public-Key: http://pgp.nic.ad.jp/cgi-bin/pgpsearchkey.pl?op=get&search=0xB6D728B1
+Organization: TOSHIBA Personal Computer System Corporation
+X-Mailer: Mew version 2.1 on Emacs 20.7 / Mule 4.1 (AOI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20020211162844.GD2918@convergence.de>; from js@convergence.de on Mon, Feb 11, 2002 at 05:28:44PM +0100
-X-Accept-Language: de,en,fr
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Feb 11, 2002 at 05:28:44PM +0100, Johannes Stezenbach wrote:
+>>>>> On Fri, 8 Feb 2002 10:30:47 -0800, "H . J . Lu" <hjl@lucon.org> said:
+hjl> gcc 3.1 seems fine. No one is working on gcc 2.96. I am working
+hjl> on a new Linuxx/mips which will use gcc 3.1.
 
-> >  Is gcc 3.x already stable enough to be used by people not directly
-> > involved in gcc development?  More specifically for MIPS/Linux and
-> > i386/Linux, for both the kernel and the userland?  I'm told it is not.
-> 
-> I'm reading about gcc 3.x code generation bugs every now and then,
-> but so far I did not hit any of them.
+Thank you.  I will wait for your new package and try it.
 
-I've fixed several kernel bugs that got triggered by building with 3.0.
-We've got an a piece of inline assembler where a constraint gets ignored
-by 3.0 resulting in bad code.  Add slow compilation and slow code.  3.0?
-No way.  Yet.
-
-  Ralf
+---
+Atsushi Nemoto

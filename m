@@ -1,99 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Oct 2004 10:20:38 +0100 (BST)
-Received: from the-doors.enix.org ([IPv6:::ffff:62.210.169.120]:1250 "EHLO
-	the-doors.enix.org") by linux-mips.org with ESMTP
-	id <S8224948AbUJZJUd>; Tue, 26 Oct 2004 10:20:33 +0100
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	by the-doors.enix.org (Postfix) with ESMTP
-	id 777AF1EFFA; Tue, 26 Oct 2004 11:20:26 +0200 (CEST)
-Message-ID: <417E1747.9020603@enix.org>
-Date: Tue, 26 Oct 2004 11:22:15 +0200
-From: Thomas Petazzoni <thomas.petazzoni@enix.org>
-User-Agent: Mozilla Thunderbird 0.8 (Windows/20040913)
-X-Accept-Language: fr, en
-MIME-Version: 1.0
-To: uclibc@uclibc.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Oct 2004 11:31:31 +0100 (BST)
+Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:19748
+	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
+	id <S8224948AbUJZKb0>; Tue, 26 Oct 2004 11:31:26 +0100
+Received: from newms.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 26 Oct 2004 10:31:24 UT
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by newms.toshiba-tops.co.jp (Postfix) with ESMTP
+	id BE07C239E3F; Tue, 26 Oct 2004 19:31:21 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id i9QAVL3i065443;
+	Tue, 26 Oct 2004 19:31:21 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date: Tue, 26 Oct 2004 19:30:11 +0900 (JST)
+Message-Id: <20041026.193011.35362756.nemoto@toshiba-tops.co.jp>
+To: ralf@linux-mips.org
 Cc: linux-mips@linux-mips.org
-Subject: [buildroot] Compilation failure on MIPS with 2.6.9.1 kernel headers
-X-Enigmail-Version: 0.86.1.0
-X-Enigmail-Supports: pgp-inline, pgp-mime
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="------------enig0A49C883E08FDECCA5A1C600"
-Return-Path: <thomas.petazzoni@enix.org>
+Subject: Re: socket.h patch (SOCK_XXX break glibc build)
+From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20041026015036.GA26841@linux-mips.org>
+References: <20041026.101226.70226592.nemoto@toshiba-tops.co.jp>
+	<20041026015036.GA26841@linux-mips.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.2 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6209
+X-archive-position: 6210
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas.petazzoni@enix.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---------------enig0A49C883E08FDECCA5A1C600
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+>>>>> On Tue, 26 Oct 2004 03:50:36 +0200, Ralf Baechle <ralf@linux-mips.org> said:
+>> On 2.6.9, SOCK_DGRAM, etc. in asm-mips/socket.h are visible from
+>> userland.  It will break glibc build.  For other archs,
+>> include/linux/net.h uses "#ifdef __KERNEL__" for SOCK_XXX
+>> definitions, so asm-mips/socket.h should use "#ifdef __KERNEL__"
+>> too?
 
-Hello,
+ralf> Ok ...
 
-The compilation fails on MIPS with the new 2.6.9.1 kernel headers :
+Sorry, there was a garbage character (':') in my patch.  Please remove
+it.  Thank you.
 
-================================================================
-In file included from ../../../include/bits/socket.h:305,
-                  from ../../../include/netinet/in.h:212,
-                  from ../../../include/netdb.h:28,
-                  from __h_errno_location.c:3:
-../../../include/asm/socket.h:86: error: conflicting types for 'SOCK_DGRAM'
-../../../include/bits/socket.h:43: error: previous definition of 
-'SOCK_DGRAM' was here
-../../../include/asm/socket.h:87: error: conflicting types for 'SOCK_STREAM'
-../../../include/bits/socket.h:46: error: previous definition of 
-'SOCK_STREAM' was here
-../../../include/asm/socket.h:88: error: conflicting types for 'SOCK_RAW'
-../../../include/bits/socket.h:49: error: previous definition of 
-'SOCK_RAW' was here
-../../../include/asm/socket.h:89: error: conflicting types for 'SOCK_RDM'
-../../../include/bits/socket.h:51: error: previous definition of 
-'SOCK_RDM' was here
-../../../include/asm/socket.h:90: error: conflicting types for 
-'SOCK_SEQPACKET'
-../../../include/bits/socket.h:53: error: previous definition of 
-'SOCK_SEQPACKET' was here
-../../../include/asm/socket.h:91: error: conflicting types for 'SOCK_PACKET'
-../../../include/bits/socket.h:60: error: previous definition of 
-'SOCK_PACKET' was here
-================================================================
+> @@ -68,6 +68,8 @@
+>  
+>  #define SO_PEERSEC		30
+>  
+> +#ifdef __KERNEL__
+> +:
+>  /** sock_type - Socket types
+>   *
+>   * Please notice that for binary compat reasons MIPS has to
 
-I think this issue has been discussed (and fixed) in the Linux MIPS CVS, 
-see :
-  http://www.linux-mips.org/archives/linux-mips/2004-10/msg00286.html
-  http://www.linux-mips.org/archives/linux-cvs/2004-10/msg00120.html
-
-As I understand it, #ifdef __KERNEL__ conditionnal is missing, leading 
-to SOCK_* being visible to the userspace, and conflicting with libc 
-definitions.
-
-Thomas
--- 
-PETAZZONI Thomas - thomas.petazzoni@enix.org
-http://thomas.enix.org - Jabber: kos_tom@sourcecode.de
-KOS: http://kos.enix.org/ - Lolut: http://lolut.utbm.info
-Fingerprint : 0BE1 4CF3 CEA4 AC9D CC6E  1624 F653 CB30 98D3 F7A7
-
---------------enig0A49C883E08FDECCA5A1C600
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.5 (MingW32)
-Comment: Using GnuPG with Thunderbird - http://enigmail.mozdev.org
-
-iD8DBQFBfhdK9lPLMJjT96cRAm5FAJ0XH7MQxAy86hmNIh26P3MIS8Gt+ACeLFEO
-+Zvdgl+/CF/mkSOvenvOe3w=
-=wR2l
------END PGP SIGNATURE-----
-
---------------enig0A49C883E08FDECCA5A1C600--
+---
+Atsushi Nemoto

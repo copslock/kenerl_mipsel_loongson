@@ -1,130 +1,352 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Oct 2003 15:26:36 +0100 (BST)
-Received: from mba.ocn.ne.jp ([IPv6:::ffff:210.190.142.172]:8934 "HELO
-	smtp.mba.ocn.ne.jp") by linux-mips.org with SMTP
-	id <S8225402AbTJBO0E>; Thu, 2 Oct 2003 15:26:04 +0100
-Received: from localhost (p7045-ip01funabasi.chiba.ocn.ne.jp [219.162.24.45])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id C105147BF; Thu,  2 Oct 2003 23:25:01 +0900 (JST)
-Date: Thu, 02 Oct 2003 23:41:16 +0900 (JST)
-Message-Id: <20031002.234116.74756712.anemo@mba.ocn.ne.jp>
-To: macro@ds2.pg.gda.pl
-Cc: linux-mips@linux-mips.org
-Subject: Re: time(2) for mips64
-From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <Pine.GSO.3.96.1031002150528.15189A-100000@delta.ds2.pg.gda.pl>
-References: <20031002.144508.122621824.nemoto@toshiba-tops.co.jp>
-	<Pine.GSO.3.96.1031002150528.15189A-100000@delta.ds2.pg.gda.pl>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 2.2 on Emacs 20.7 / Mule 4.0 (HANANOEN)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Oct 2003 15:45:33 +0100 (BST)
+Received: from mail.bandspeed.com ([IPv6:::ffff:64.132.226.131]:4847 "EHLO
+	mars.bandspeed.com") by linux-mips.org with ESMTP
+	id <S8225454AbTJCOp3>; Fri, 3 Oct 2003 15:45:29 +0100
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6249.0
+Content-Class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C389BC.F8A1C4CB"
+Subject: RE: Kernel Profile Patch for Au1x00?
+Date: Fri, 3 Oct 2003 09:45:21 -0500
+Message-ID: <F2DE90354F0ED94EB7061060D9396547B98A6B@mars.bandspeed.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Kernel Profile Patch for Au1x00?
+thread-index: AcOJuuK1Rc+kCj4jRhGnkbSO/46gVQAAC4Ow
+From: "Vince Bridgers" <vbridgers@bandspeed.com>
+To: <linux-mips@linux-mips.org>
+Cc: "Eric DeVolder" <eric.devolder@amd.com>
+Return-Path: <vbridgers@bandspeed.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3360
+X-archive-position: 3361
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: vbridgers@bandspeed.com
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Thu, 2 Oct 2003 15:07:20 +0200 (MET DST), "Maciej W. Rozycki" <macro@ds2.pg.gda.pl> said:
+This is a multi-part message in MIME format.
 
-macro>  time(2) is obsolete (by gettimeofday(2)) and should be removed
-macro> for new implementations.
+------_=_NextPart_001_01C389BC.F8A1C4CB
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 
-Then could you apply these patches?
-
-for 2.4:
-
-diff -ur linux-mips-cvs/arch/mips64/kernel/scall_64.S linux.new/arch/mips64/kernel/scall_64.S
---- linux-mips-cvs/arch/mips64/kernel/scall_64.S	Tue Aug 26 23:41:57 2003
-+++ linux.new/arch/mips64/kernel/scall_64.S	Thu Oct  2 23:15:23 2003
-@@ -326,7 +326,7 @@
- 	PTR	sys_lremovexattr		/* 5190 */
- 	PTR	sys_fremovexattr
- 	PTR	sys_tkill
--	PTR	sys_time
-+	PTR	sys_ni_syscall
- 	PTR	sys_ni_syscall			/* res. for futex */
- 	PTR	sys_ni_syscall			/* 5195 rs. sched_setaffinity */
- 	PTR	sys_ni_syscall			/* res. f. sched_getaffinity */
-diff -ur linux-mips-cvs/arch/mips64/kernel/scall_n32.S linux.new/arch/mips64/kernel/scall_n32.S
---- linux-mips-cvs/arch/mips64/kernel/scall_n32.S	Tue Aug 26 23:41:58 2003
-+++ linux.new/arch/mips64/kernel/scall_n32.S	Thu Oct  2 23:15:40 2003
-@@ -326,7 +326,7 @@
- 	PTR	sys_lremovexattr		/* 6190 */
- 	PTR	sys_fremovexattr
- 	PTR	sys_tkill
--	PTR	sys_time
-+	PTR	sys_ni_syscall
- 	PTR	sys_ni_syscall			/* res. for futex */
- 	PTR	sys_ni_syscall			/* 6195 rs. sched_setaffinity */
- 	PTR	sys_ni_syscall			/* res. f. sched_getaffinity */
-diff -ur linux-mips-cvs/include/asm-mips64/unistd.h linux.new/include/asm-mips64/unistd.h
---- linux-mips-cvs/include/asm-mips64/unistd.h	Wed Sep 17 23:22:41 2003
-+++ linux.new/include/asm-mips64/unistd.h	Thu Oct  2 23:13:19 2003
-@@ -461,7 +461,7 @@
- #define __NR_lremovexattr		(__NR_Linux + 190)
- #define __NR_fremovexattr		(__NR_Linux + 191)
- #define __NR_tkill			(__NR_Linux + 192)
--#define __NR_time			(__NR_Linux + 193)
-+#define __NR_unused193			(__NR_Linux + 193)
- #define __NR_futex			(__NR_Linux + 194)
- #define __NR_sched_setaffinity		(__NR_Linux + 195)
- #define __NR_sched_getaffinity		(__NR_Linux + 196)
+Thanks, Eric.=20
+=20
+I was looking for something more simple, like kernel-based statistical
+hit profiling - for example: a timer interrupt that fires at some
+regular rate, collects the current Program Counter value, bucket-izes
+that data and does a symbol lookup on those buckets when queried. I'll
+take a look at LTT to see if I can get it to work for my purposes.
+=20
+I sent an email to pcs.support previously, and Gerado told me there was
+no patch available. I'll check with them again.
+=20
+Cheers!
+=20
+-----Original Message-----
+From: Eric DeVolder [mailto:eric.devolder@amd.com]=20
+Sent: Friday, October 03, 2003 9:30 AM
+To: Vince Bridgers
+Subject: Re: Kernel Profile Patch for Au1x00?
+=20
+There is the LTT, Linux Trace Toolkit, which can be used for profiling.
+If you send email to pcs.support@amd.com, they should be able to
+get you the files...
 
 
-And for 2.6:
+Vince Bridgers wrote:
 
-diff -ur linux-mips-2.6-cvs/arch/mips/kernel/scall64-64.S linux-2.6.new/arch/mips/kernel/scall64-64.S
---- linux-mips-2.6-cvs/arch/mips/kernel/scall64-64.S	Sun Aug 31 20:14:45 2003
-+++ linux-2.6.new/arch/mips/kernel/scall64-64.S	Thu Oct  2 23:21:18 2003
-@@ -398,7 +398,7 @@
- 	PTR	sys_lremovexattr		/* 5190 */
- 	PTR	sys_fremovexattr
- 	PTR	sys_tkill
--	PTR	sys_time
-+	PTR	sys_ni_syscall
- 	PTR	sys_futex
- 	PTR	sys_sched_setaffinity		/* 5195 */
- 	PTR	sys_sched_getaffinity
-diff -ur linux-mips-2.6-cvs/arch/mips/kernel/scall64-n32.S linux-2.6.new/arch/mips/kernel/scall64-n32.S
---- linux-mips-2.6-cvs/arch/mips/kernel/scall64-n32.S	Sun Aug 31 20:14:45 2003
-+++ linux-2.6.new/arch/mips/kernel/scall64-n32.S	Thu Oct  2 23:21:55 2003
-@@ -303,7 +303,7 @@
- 	PTR	sys_lremovexattr		/* 6190 */
- 	PTR	sys_fremovexattr
- 	PTR	sys_tkill
--	PTR	sys_time
-+	PTR	sys_ni_syscall
- 	PTR	compat_sys_futex
- 	PTR	sys32_sched_setaffinity		/* 6195 */
- 	PTR	sys32_sched_getaffinity
-diff -ur linux-mips-2.6-cvs/include/asm-mips/unistd.h linux-2.6.new/include/asm-mips/unistd.h
---- linux-mips-2.6-cvs/include/asm-mips/unistd.h	Thu Jul 31 22:55:59 2003
-+++ linux-2.6.new/include/asm-mips/unistd.h	Thu Oct  2 23:20:02 2003
-@@ -498,7 +498,7 @@
- #define __NR_lremovexattr		(__NR_Linux + 190)
- #define __NR_fremovexattr		(__NR_Linux + 191)
- #define __NR_tkill			(__NR_Linux + 192)
--#define __NR_time			(__NR_Linux + 193)
-+#define __NR_reserved193		(__NR_Linux + 193)
- #define __NR_futex			(__NR_Linux + 194)
- #define __NR_sched_setaffinity		(__NR_Linux + 195)
- #define __NR_sched_getaffinity		(__NR_Linux + 196)
-@@ -742,7 +742,7 @@
- #define __NR_lremovexattr		(__NR_Linux + 190)
- #define __NR_fremovexattr		(__NR_Linux + 191)
- #define __NR_tkill			(__NR_Linux + 192)
--#define __NR_time			(__NR_Linux + 193)
-+#define __NR_reserved193		(__NR_Linux + 193)
- #define __NR_futex			(__NR_Linux + 194)
- #define __NR_sched_setaffinity		(__NR_Linux + 195)
- #define __NR_sched_getaffinity		(__NR_Linux + 196)
----
-Atsushi Nemoto
+
+Is there a kernel profile patch that anyone is aware of for the AMD
+(Alchemy) part Au1000/Au1500? If not, can anyone provide info on a good
+starting point to start a port?
+=20
+TIA,
+=20
+Vince
+=20
+=20
+
+------_=_NextPart_001_01C389BC.F8A1C4CB
+Content-Type: text/html;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns:v=3D"urn:schemas-microsoft-com:vml" =
+xmlns:o=3D"urn:schemas-microsoft-com:office:office" =
+xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns=3D"http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Dus-ascii">
+<meta name=3DProgId content=3DWord.Document>
+<meta name=3DGenerator content=3D"Microsoft Word 10">
+<meta name=3DOriginator content=3D"Microsoft Word 10">
+<link rel=3DFile-List href=3D"cid:filelist.xml@01C38993.0FE3EFE0">
+<!--[if gte mso 9]><xml>
+ <o:OfficeDocumentSettings>
+  <o:DoNotRelyOnCSS/>
+ </o:OfficeDocumentSettings>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:SpellingState>Clean</w:SpellingState>
+  <w:GrammarState>Clean</w:GrammarState>
+  <w:DocumentKind>DocumentEmail</w:DocumentKind>
+  <w:EnvelopeVis/>
+  <w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Tahoma;
+	panose-1:2 11 6 4 3 5 4 4 2 4;
+	mso-font-charset:0;
+	mso-generic-font-family:swiss;
+	mso-font-pitch:variable;
+	mso-font-signature:553679495 -2147483648 8 0 66047 0;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	color:black;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+span.EmailStyle17
+	{mso-style-type:personal;
+	mso-style-noshow:yes;
+	mso-ansi-font-size:10.0pt;
+	mso-bidi-font-size:10.0pt;
+	font-family:Arial;
+	mso-ascii-font-family:Arial;
+	mso-hansi-font-family:Arial;
+	mso-bidi-font-family:Arial;
+	color:windowtext;}
+span.EmailStyle18
+	{mso-style-type:personal-reply;
+	mso-style-noshow:yes;
+	mso-ansi-font-size:10.0pt;
+	mso-bidi-font-size:10.0pt;
+	font-family:Arial;
+	mso-ascii-font-family:Arial;
+	mso-hansi-font-family:Arial;
+	mso-bidi-font-family:Arial;
+	color:navy;}
+span.SpellE
+	{mso-style-name:"";
+	mso-spl-e:yes;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+<!--[if gte mso 10]>
+<style>
+ /* Style Definitions */=20
+ table.MsoNormalTable
+	{mso-style-name:"Table Normal";
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-noshow:yes;
+	mso-style-parent:"";
+	mso-padding-alt:0in 5.4pt 0in 5.4pt;
+	mso-para-margin:0in;
+	mso-para-margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";}
+</style>
+<![endif]--><!--[if gte mso 9]><xml>
+ <o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <o:shapelayout v:ext=3D"edit">
+  <o:idmap v:ext=3D"edit" data=3D"1" />
+ </o:shapelayout></xml><![endif]-->
+</head>
+
+<body bgcolor=3Dwhite lang=3DEN-US link=3Dblue vlink=3Dpurple =
+style=3D'tab-interval:.5in'>
+
+<div class=3DSection1>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+style=3D'font-size:
+10.0pt;font-family:Arial;color:navy'>Thanks, Eric. =
+<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+style=3D'font-size:
+10.0pt;font-family:Arial;color:navy'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+style=3D'font-size:
+10.0pt;font-family:Arial;color:navy'>I was looking for something more =
+simple,
+like kernel-based statistical hit profiling &#8211; for example: a timer
+interrupt that fires at some regular rate, collects the current Program =
+Counter
+value, bucket-<span class=3DSpellE>izes</span> that data and does a =
+symbol lookup
+on those buckets when queried. I&#8217;ll take a look at LTT to see if I =
+can
+get it to work for my purposes.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+style=3D'font-size:
+10.0pt;font-family:Arial;color:navy'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+style=3D'font-size:
+10.0pt;font-family:Arial;color:navy'>I sent an email to <span =
+class=3DSpellE>pcs.support</span>
+previously, and <span class=3DSpellE>Gerado</span> told me there was no =
+patch
+available. I&#8217;ll check with them =
+again.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+style=3D'font-size:
+10.0pt;font-family:Arial;color:navy'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+style=3D'font-size:
+10.0pt;font-family:Arial;color:navy'>Cheers!<o:p></o:p></span></font></p>=
+
+
+<p class=3DMsoNormal><font size=3D2 color=3Dnavy face=3DArial><span =
+style=3D'font-size:
+10.0pt;font-family:Arial;color:navy'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal style=3D'margin-left:.5in'><font size=3D2 =
+color=3Dblack
+face=3DTahoma><span =
+style=3D'font-size:10.0pt;font-family:Tahoma;color:windowtext'>-----Origi=
+nal
+Message-----<br>
+<b><span style=3D'font-weight:bold'>From:</span></b> Eric DeVolder
+[mailto:eric.devolder@amd.com] <br>
+<b><span style=3D'font-weight:bold'>Sent:</span></b> Friday, October 03, =
+2003
+9:30 AM<br>
+<b><span style=3D'font-weight:bold'>To:</span></b> Vince Bridgers<br>
+<b><span style=3D'font-weight:bold'>Subject:</span></b> Re: Kernel =
+Profile Patch
+for Au1x00?</span></font></p>
+
+<p class=3DMsoNormal style=3D'margin-left:.5in'><font size=3D3 =
+color=3Dblack
+face=3D"Times New Roman"><span =
+style=3D'font-size:12.0pt'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal style=3D'margin-left:.5in'><font size=3D3 =
+color=3Dblack
+face=3D"Times New Roman"><span style=3D'font-size:12.0pt'>There is the =
+LTT, Linux
+Trace Toolkit, which can be used for profiling.<br>
+If you send email to <a =
+href=3D"mailto:pcs.support@amd.com">pcs.support@amd.com</a>,
+they should be able to<br>
+get you the files...<br>
+<br>
+<br>
+Vince Bridgers wrote:<br style=3D'mso-special-character:line-break'>
+<![if !supportLineBreakNewLine]><br =
+style=3D'mso-special-character:line-break'>
+<![endif]><o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal style=3D'margin-left:.5in'><font size=3D2 =
+color=3Dblack
+face=3DArial><span style=3D'font-size:10.0pt;font-family:Arial'><!--[if =
+gte mso 9]><xml>
+ <u1:OfficeDocumentSettings>
+  <u1:DoNotRelyOnCSS/>
+ </u1:OfficeDocumentSettings>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <u2:WordDocument>
+  <u2:SpellingState>Clean</u2:SpellingState>
+  <u2:GrammarState>Clean</u2:GrammarState>
+  <u2:DocumentKind>DocumentEmail</u2:DocumentKind>
+  <u2:EnvelopeVis/>
+  <u2:Compatibility>
+   <u2:BreakWrappedTables/>
+   <u2:SnapToGridInCell/>
+   <u2:WrapTextWithPunct/>
+   <u2:UseAsianBreakRules/>
+  </u2:Compatibility>
+  <u2:BrowserLevel>MicrosoftInternetExplorer4</u2:BrowserLevel>
+ </u2:WordDocument>
+</xml><![endif]-->Is there a kernel profile patch that anyone is aware =
+of for
+the AMD (Alchemy) part Au1000/Au1500? If not, can anyone provide info on =
+a good
+starting point to start a =
+port?<u3:p></u3:p></span></font><o:p></o:p></p>
+
+<p class=3DMsoNormal style=3D'margin-left:.5in'><font size=3D2 =
+color=3Dblack
+face=3DArial><span =
+style=3D'font-size:10.0pt;font-family:Arial'><u3:p>&nbsp;</u3:p></span></=
+font><o:p></o:p></p>
+
+<p class=3DMsoNormal style=3D'margin-left:.5in'><font size=3D2 =
+color=3Dblack
+face=3DArial><span =
+style=3D'font-size:10.0pt;font-family:Arial'>TIA,<u3:p></u3:p></span></fo=
+nt><o:p></o:p></p>
+
+<p class=3DMsoNormal style=3D'margin-left:.5in'><font size=3D2 =
+color=3Dblack
+face=3DArial><span =
+style=3D'font-size:10.0pt;font-family:Arial'><u3:p>&nbsp;</u3:p></span></=
+font><o:p></o:p></p>
+
+<p class=3DMsoNormal style=3D'margin-left:.5in'><font size=3D2 =
+color=3Dblack
+face=3DArial><span =
+style=3D'font-size:10.0pt;font-family:Arial'>Vince<u3:p></u3:p></span></f=
+ont><o:p></o:p></p>
+
+<p class=3DMsoNormal style=3D'margin-left:.5in'><font size=3D2 =
+color=3Dblack
+face=3DArial><span =
+style=3D'font-size:10.0pt;font-family:Arial'><u3:p>&nbsp;</u3:p></span></=
+font><o:p></o:p></p>
+
+<p class=3DMsoNormal style=3D'margin-left:.5in'><font size=3D2 =
+color=3Dblack
+face=3DArial><span =
+style=3D'font-size:10.0pt;font-family:Arial'><u3:p>&nbsp;</u3:p></span></=
+font><o:p></o:p></p>
+
+</div>
+
+</body>
+
+</html>
+=00
+------_=_NextPart_001_01C389BC.F8A1C4CB--

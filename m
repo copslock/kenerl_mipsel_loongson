@@ -1,77 +1,64 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id EAA290765 for <linux-archive@neteng.engr.sgi.com>; Sun, 8 Mar 1998 04:53:25 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id IAA351073 for <linux-archive@neteng.engr.sgi.com>; Mon, 9 Mar 1998 08:40:56 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id EAA1866563 for linux-list; Sun, 8 Mar 1998 04:52:54 -0800 (PST)
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id EAA1577278 for <linux@cthulhu.engr.sgi.com>; Sun, 8 Mar 1998 04:52:52 -0800 (PST)
-Received: from ballyhoo.ml.org ([194.236.80.80]) by sgi.sgi.com (980305.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id EAA25113
-	for <linux@cthulhu.engr.sgi.com>; Sun, 8 Mar 1998 04:52:51 -0800 (PST)
-	mail_from (grimsy@zigzegv.ml.org)
-Received: from calypso.saturn ([130.244.187.51]) by ballyhoo.ml.org
-	 with smtp (ident grimsy using rfc1413) id m0yBfWQ-000xjYC
-	(Debian Smail-3.2 1996-Jul-4 #2); Sun, 8 Mar 1998 13:49:42 +0100 (CET)
-Date: Sun, 8 Mar 1998 13:54:50 +0100 (CET)
-From: Ulf Carlsson <grimsy@zigzegv.ml.org>
-X-Sender: grimsy@calypso.saturn
-To: linux@cthulhu.engr.sgi.com
-Subject: paging requests again.
-In-Reply-To: <Pine.LNX.3.96.980308125517.1691A-100000@web.aec.at>
-Message-ID: <Pine.LNX.3.96.980308133524.14385B-100000@calypso.saturn>
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id IAA2065010 for linux-list; Mon, 9 Mar 1998 08:40:16 -0800 (PST)
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id IAA2208810 for <linux@engr.sgi.com>; Mon, 9 Mar 1998 08:40:14 -0800 (PST)
+Received: from grz1.fh-albsig.de (grz1.fh-albsig.de [141.87.110.2]) by sgi.sgi.com (980308.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id IAA07356
+	for <linux@engr.sgi.com>; Mon, 9 Mar 1998 08:39:35 -0800 (PST)
+	mail_from (nice@fh-albsig.de)
+Received: from fh-albsig.de (indy3.tin.fh-albsig.de [141.87.172.65]) by grz1.fh-albsig.de (8.7.5/8.6.9) with ESMTP id RAA04239; Mon, 9 Mar 1998 17:39:27 +0100 (MET)
+Message-ID: <35041B93.BCDE1B46@fh-albsig.de>
+Date: Mon, 09 Mar 1998 08:40:51 -0800
+From: "//\\/\\ario Tomaseli" <nice@fh-albsig.de>
+X-Mailer: Mozilla 4.04 [en] (X11; I; IRIX 6.2 IP22)
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To: linux@cthulhu.engr.sgi.com, adevries@engsoc.carleton.ca
+Subject: Linux for SGI
+Content-Type: multipart/alternative; boundary="------------6A85D27434270187EDF87527"
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-I got a compiled kernel from Oliver (greetings to him). I recieve almost
-the same error messages as before. 
 
-Obviously worked the kernel with Oliver's Indy:
+--------------6A85D27434270187EDF87527
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-> PROMLIB: SGI ARCS firmware Version 1 Revision 10
-> PROMLIB: Total free ram 64589824 bytes (63076K,61MB)
-> ARCH: SGI-IP22
-> CPU: MIPS-R5000 FPU<MIPS-R5000FPC> ICACHE DCACHE SCACHE 
-> Loading R4000 MMU routines.
-> CPU revision is: 00002310
-> Primary instruction cache 32768kb, linesize 32 bytes)
-> Primary data cache 32768kb, linesize 32 bytes)
-> MC: SGI memory controller Revision 3
-> R4600/R5000 SCACHE size 512K linesize 128 bytes
-> Enabling R4600 SCACHE
-> calculating r4koff... 000e3328(930600)
+Hallo,
+my name ist Mario I'm a student of computer science from Germany. I
+usually used to work with linux, now I have to do my diploma on a
+SGI/Indigo2 R4400. Because I have all my software under linux, I would
+like to work with linux for SGI..
 
-But here's the output I got from my Indy. (reserved for misspellings :)
+I got the 'GettingStarted software' from the ftp-server, I followed all
+the intractions and everythings goes fine but starting the vmlinux
+kernel.
 
-PROMLIB: SGI ARCS firmware Version 1 Revision 10
-PROMLIB: Total free ram 32284672 bytes (31528K,30MB)
-RCH: SGI-IP22
-CPU: MIPS-R4000 FPU<MIPS-R400FPC> ICACHE DCACHE SCACHE
-Loading R4000 MMU routines
-CPU revision is: 00000430
-Primary instruction cache 8192kb, linesize 16 bytes)
-Primary data cache 8192kb, linesize 16 bytes)
-Secondary cache sized at 1024K linesize 128
-MC: SGI memory controller Revision 3
-R4600/R5000 SCACHE size 0K linesize 128 bytes
-calculating r4koff... 0003fd7c(261500)
-GFX INIT: SHMIQ setup
-...
-Memory: 28104k/163372k available (1068k kernel code, 2352 data)
-...
-Checking for 'wait' instruction... unavailable.
-...
-loop: registered device at major 7
-WD93: Driver version 1.25 compiled on ...
- debug_flags=0x00
-wd33c93-0: chip=WD33c93B/13 no_sync=0xff no_dma=0scsi0 : SGI WD93
-scsi : 1 host.
-  sending SDTR 0103013f0csync_xfer=2c<1>Unable to handle kernel paging
-request at virtual address c0000068, epc == 88022ec0, ra == 880dccf4
-Aiee, killing interrupt handler
-Kernel panic: Attempted to kill the idle task
-In swapper task - not syncing
+Could you help me to find out what I does wrong ??
 
-Puh..
 
-BTW, isn't this kernel supposed to work on my Indy?
 
-Thank you very much.
-- Ulf
+        ................//\/\ario..
+
+
+
+--------------6A85D27434270187EDF87527
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+<HTML>
+Hallo,
+<BR>my name ist Mario I'm a student of computer science from Germany. I
+usually used to work with linux, now I have to do my diploma on a SGI/Indigo2
+R4400. Because I have all my software under linux, I would like to work
+with linux for SGI..
+
+<P>I got the 'GettingStarted software' from the ftp-server, I followed
+all the intractions and everythings goes fine but starting the vmlinux
+kernel.
+
+<P>Could you help me to find out what I does wrong ??
+<BR>&nbsp;
+<PRE>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ................//\/\ario..</PRE>
+&nbsp;</HTML>
+
+--------------6A85D27434270187EDF87527--

@@ -1,30 +1,30 @@
-Received:  by oss.sgi.com id <S42234AbQFIUNY>;
-	Fri, 9 Jun 2000 13:13:24 -0700
-Received: from mta03-svc.ntlworld.com ([62.253.162.43]:46791 "EHLO
-        mta03-svc.ntlworld.com") by oss.sgi.com with ESMTP
-	id <S42199AbQFIUNM>; Fri, 9 Jun 2000 13:13:12 -0700
-Received: from icserver.ichilton.co.uk ([62.252.238.188])
-          by mta03-svc.ntlworld.com
+Received:  by oss.sgi.com id <S42219AbQFIWzf>;
+	Fri, 9 Jun 2000 15:55:35 -0700
+Received: from mta02-svc.ntlworld.com ([62.253.162.42]:32203 "EHLO
+        mta02-svc.server.ntlworld.com") by oss.sgi.com with ESMTP
+	id <S42199AbQFIWzT>; Fri, 9 Jun 2000 15:55:19 -0700
+Received: from icserver.ichilton.co.uk ([62.252.237.236])
+          by mta02-svc.server.ntlworld.com
           (InterMail vM.4.01.02.27 201-229-119-110) with ESMTP
-          id <20000609201306.HNZG290.mta03-svc.ntlworld.com@icserver.ichilton.co.uk>;
-          Fri, 9 Jun 2000 21:13:06 +0100
+          id <20000609235453.EEHR10065.mta02-svc.server.ntlworld.com@icserver.ichilton.co.uk>;
+          Fri, 9 Jun 2000 23:54:53 +0000
 Received: from ian (ian.ichilton.local [192.168.0.8])
-	by icserver.ichilton.co.uk (8.10.2/8.10.1) with SMTP id e59KALN03847;
-	Fri, 9 Jun 2000 21:10:23 +0100
+	by icserver.ichilton.co.uk (8.10.2/8.10.1) with SMTP id e59MrkN04819;
+	Fri, 9 Jun 2000 23:53:46 +0100
 From:   "Ian Chilton" <mailinglist@ichilton.co.uk>
 To:     "Ken Wills" <kenwills@tds.net>
-Cc:     <linux-mips@oss.sgi.com>
+Cc:     "Linux-MIPS Mailing List" <linux-mips@oss.sgi.com>
 Subject: RE: Linux on Indy
-Date:   Fri, 9 Jun 2000 21:10:25 +0100
-Message-ID: <NAENLMKGGBDKLPONCDDOGECPCMAA.mailinglist@ichilton.co.uk>
+Date:   Fri, 9 Jun 2000 23:53:51 +0100
+Message-ID: <NAENLMKGGBDKLPONCDDOIEDGCMAA.mailinglist@ichilton.co.uk>
 MIME-Version: 1.0
 Content-Type: text/plain;
-	charset="us-ascii"
+	charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
 X-Priority: 3 (Normal)
 X-MSMail-Priority: Normal
 X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
-In-Reply-To: <20000609120146.A1019@zebedee.workpc.tds.net>
+In-Reply-To: <20000609161436.A2098@zebedee.workpc.tds.net>
 X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4132.2800
 Importance: Normal
 Sender: owner-linux-mips@oss.sgi.com
@@ -34,15 +34,21 @@ X-Orcpt: rfc822;linux-mips-outgoing
 
 Hello,
 
-> If you don't know the device names under irix,
-> user the system manager to install and partition your new disk -
-> then you'll see it's device name in the disk-manager app thingy
 
-When I go into Disk Manager, I only see SystemDisk(0,1) 4.04GB, which is my
-normal IRIX disk......does this mean my 2nd disk isn't working?
+OK...got the 2nd hard disk (/dev/dsk/dsk0d2s7) initialised and mounted
+(every time at boot) into /hd2 by using System Manager..
 
-The 2nd disk I put in was a 1GB, straight out of my Linux box, still with an
-EXT2 partition on....does this matter?
+
+Now, do I copy the hardhat tar.gz file to the Indy, and un-tar it into this
+directory??
+Am I correct?
+
+
+Then what?
+
+
+Sorry to be a pain......i'm looking at the hardhat instructions now, and
+they are not making much sense  :(
 
 
 Thanks!

@@ -1,68 +1,37 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8JJl5l03282
-	for linux-mips-outgoing; Wed, 19 Sep 2001 12:47:05 -0700
-Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8JJl2e03279
-	for <linux-mips@oss.sgi.com>; Wed, 19 Sep 2001 12:47:02 -0700
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f8JJoNA03779;
-	Wed, 19 Sep 2001 12:50:23 -0700
-Message-ID: <3BA8F45D.21347CD@mvista.com>
-Date: Wed, 19 Sep 2001 12:39:09 -0700
-From: Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
-X-Accept-Language: en
+	by oss.sgi.com (8.11.2/8.11.3) id f8JKIMA04198
+	for linux-mips-outgoing; Wed, 19 Sep 2001 13:18:22 -0700
+Received: from blueyonder.co.uk (pcow029o.blueyonder.co.uk [195.188.53.123])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8JKIJe04194
+	for <linux-mips@oss.sgi.com>; Wed, 19 Sep 2001 13:18:20 -0700
+Received: from rogue ([62.31.4.162]) by blueyonder.co.uk  with Microsoft SMTPSVC(5.5.1877.687.68);
+	 Wed, 19 Sep 2001 21:18:32 +0100
+Content-Type: text/plain;
+  charset="iso-8859-1"
+From: "Luke A. Guest" <laguest@nebulas.demon.co.uk>
+To: linux-mips@oss.sgi.com
+Subject: Indigo2
+Date: Wed, 19 Sep 2001 21:16:55 +0100
+X-Mailer: KMail [version 1.2]
 MIME-Version: 1.0
-To: Zhang Fuxin <fxzhang@ict.ac.cn>
-CC: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: 8259 spurious interrupt (IRQ1,IRQ7,IRQ12..)
-References: <200109190838.f8J8cIe21408@oss.sgi.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Message-Id: <01091921165502.25510@rogue>
+Content-Transfer-Encoding: 8bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Zhang Fuxin wrote:
-> 
->  My irq dispatching code is very simple,it just read the IRR,count the first
-> irq number and call do_IRQ.
->   /*
->  * the first level int-handler will jump here if it is a 8259A irq
->  */
-> asmlinkage void i8259A_irqdispatch(struct pt_regs *regs)
-> {
->         int isr, irq;
-> 
->         isr = inb(0x20);
-> 
->         irq = ffz (~isr);
-> 
->         if (irq == 2) {
->                 isr = inb(0xa0);
->                 irq = 8 + ffz(~isr);
->         }
-> 
->         do_IRQ(irq,regs);
-> }
-> 
+Hi,
 
-OK, so the problem is not what I was thinking.
+I'm considering buying an (purple) Indigo2 and was wondering what kind of 
+help I could get regarding the hardware of this machine? Would it be possible 
+to liaise with people at SGI for the relevant information?
 
-I don't have much clue here.  I remember old i8259As have some timing issues
-on fast cpus.  Hopefully all the bridge chips are set up correctly ...
+I *have* read the archives and I know that I2's only boot via serial console 
+at the moment, but I would like to try and get something else working as I 
+want some experience with MIPS and this seems to be the best way forward.
 
-> >It is typically much easier to modify PCI device BARS so that they do coincide
-> >with the same physical address.   You can control that by using the correct
-> >starting address for PCI MEM space in pci_auto.c resource assignment.
-> It seems a good way to solve the ioremap problem and X problem.But virt_to_bus
-> & bus_to_virt problem remains?
-> 
+Any advice would be appreciated.
 
-What is the virt_to_bus() problem?  Is the address beyond 512MB (phy addr)? 
-If PCI mem (BUS) address is identical to phy addr, you should not have problem
-unless the address is beyond 512MB.
+Thanks in advance,
+Luke A. Guest
 
-BTW, virt_to_bus()/bus_to_virt() are deprecicated.  See
-Documentation/DMA-mapping.txt.
-
-Jun
+P.S: Any buying advice would also be appreciated ;-)

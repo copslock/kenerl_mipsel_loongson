@@ -1,91 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Mar 2005 18:57:13 +0000 (GMT)
-Received: from 67-129-173-8.dia.cust.qwest.net ([IPv6:::ffff:67.129.173.8]:37913
-	"EHLO alfalfa.fortresstech.com") by linux-mips.org with ESMTP
-	id <S8227821AbVCWS44> convert rfc822-to-8bit; Wed, 23 Mar 2005 18:56:56 +0000
-X-MimeOLE: Produced By Microsoft Exchange V6.0.6487.1
-content-class: urn:content-classes:message
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-Subject: defkeymap.c Compile Warnings . . .
-Date:	Wed, 23 Mar 2005 13:56:50 -0500
-Message-ID: <54AC63178735ED46BAC5F5E668A9F224046AAC@alfalfa.fortresstech.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: defkeymap.c Compile Warnings . . .
-Thread-Index: AcUv2hGp4A8rhlYBSRyM+bTUV7W0Ig==
-From:	"Dennis Daniels" <ddaniels@fortresstech.com>
-To:	<linux-mips@linux-mips.org>
-Return-Path: <ddaniels@fortresstech.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Mar 2005 19:14:17 +0000 (GMT)
+Received: from natnoddy.rzone.de ([IPv6:::ffff:81.169.145.166]:13018 "EHLO
+	natnoddy.rzone.de") by linux-mips.org with ESMTP
+	id <S8227840AbVCWTOC>; Wed, 23 Mar 2005 19:14:02 +0000
+Received: from excalibur.cologne.de (cable-195-14-198-241.netcologne.de [195.14.198.241])
+	by post.webmailer.de (8.13.1/8.13.1) with ESMTP id j2NJE0i2028093
+	for <linux-mips@linux-mips.org>; Wed, 23 Mar 2005 20:14:01 +0100 (MET)
+Received: from karsten by excalibur.cologne.de with local (Exim 3.36 #1 (Debian))
+	id 1DEBIn-0001b2-00
+	for <linux-mips@linux-mips.org>; Wed, 23 Mar 2005 20:14:01 +0100
+Date:	Wed, 23 Mar 2005 20:14:01 +0100
+From:	Karsten Merker <karsten@excalibur.cologne.de>
+To:	linux-mips@linux-mips.org
+Subject: Re: defkeymap.c Compile Warnings . . .
+Message-ID: <20050323191400.GA6038@excalibur.cologne.de>
+Mail-Followup-To: Karsten Merker <karsten@excalibur.cologne.de>,
+	linux-mips@linux-mips.org
+References: <54AC63178735ED46BAC5F5E668A9F224046AAC@alfalfa.fortresstech.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <54AC63178735ED46BAC5F5E668A9F224046AAC@alfalfa.fortresstech.com>
+X-No-Archive: yes
+User-Agent: Mutt/1.5.6+20040907i
+Return-Path: <karsten@excalibur.cologne.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7515
+X-archive-position: 7516
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaniels@fortresstech.com
+X-original-sender: karsten@excalibur.cologne.de
 Precedence: bulk
 X-list: linux-mips
 
-I'm having a compile problem with the generated file defkeymap.c for Linux 64-bit MIPS on the BCM1250, and was wondering if anyone has seen or heard of it. The structures in defkeymap.c are all coming out 2x what they should be . . .
+On Wed, Mar 23, 2005 at 01:56:50PM -0500, Dennis Daniels wrote:
 
-Thanks ahead of time,
-Dennis
+> I'm having a compile problem with the generated file defkeymap.c for Linux
+> 64-bit MIPS on the BCM1250, and was wondering if anyone has seen or heard
+> of it. The structures in defkeymap.c are all coming out 2x what they
+> should be . . .
 
-Target:              BCM1250/64-bit
-Linux kernel:      2.4.20
-gcc:                  3.3.1
+AFAICS the reason is a change in the kernel headers between 2.4 and 2.6.
 
-The warnings I'm getting are:
+In 2.4, the file linux/keyboard.h has 
 
-mips64_fp_be-gcc -D__KERNEL__ -I/ws/ddaniels/projects/ddaniels-01/Arch_2/Patriot/SQA/Main/Applications/thirdparty/kernel/linux/include -Wall -Wstrict-prototypes -Wno-trigraphs -O2 -fnostrict-aliasing -fno-common -fomit-frame-pointer -I /ws
-/ddaniels/projects/ddaniels-01/Arch_2/Patriot/SQA/Main/Applications/thirdparty/kernel/linux/include/asm/gcc -mabi=64 -G 0 -mno-abicalls -fno-pic -Wa,--trap -pip
-e -mtune=sb1 -mips64   -nostdinc -iwithprefix include -DKBUILD_BASENAME=defkeymap  -c -o defkeymap.o defkeymap.c
-defkeymap.c:25: warning: excess elements in array initializer
-defkeymap.c:25: warning: (near initialization for `plain_map')
-defkeymap.c:25: warning: excess elements in array initializer
-defkeymap.c:25: warning: (near initialization for `plain_map')
-:
-:
-defkeymap.c:250: warning: excess elements in array initializer
-defkeymap.c:250: warning: (near initialization for `ctrl_alt_map')
-defkeymap.c:250: warning: excess elements in array initializer
-defkeymap.c:250: warning: (near initialization for `ctrl_alt_map'
+#define NR_KEYS         128
 
-and the structure looks like:
-u_short plain_map[NR_KEYS] = {
-            0xf200,  0xf01b,  0xf031,  0xf032,  0xf033,  0xf034,  0xf035,  0xf036,
-            0xf037,  0xf038,  0xf039,  0xf030,  0xf02d,  0xf03d,  0xf07f,   0xf009,
-            0xfb71,  0xfb77,  0xfb65,  0xfb72,  0xfb74,  0xfb79,  0xfb75,  0xfb69,
-            0xfb6f,  0xfb70,  0xf05b,  0xf05d,  0xf201,  0xf702,  0xfb61,  0xfb73,
-            0xfb64,  0xfb66,  0xfb67,  0xfb68,  0xfb6a,  0xfb6b,  0xfb6c,  0xf03b,
-            0xf027,  0xf060,  0xf700,  0xf05c,  0xfb7a,  0xfb78,  0xfb63,  0xfb76,
-            0xfb62,  0xfb6e,  0xfb6d,  0xf02c,  0xf02e,  0xf02f,  0xf700,  0xf30c,
-            0xf703,  0xf020,  0xf207,  0xf100,  0xf101,  0xf102,  0xf103,  0xf104,
-            0xf105,  0xf106,  0xf107,  0xf108,  0xf109,  0xf208,  0xf209,  0xf307,
-            0xf308,  0xf309,  0xf30b,  0xf304,  0xf305,  0xf306,  0xf30a,  0xf301,
-            0xf302,  0xf303,  0xf300,  0xf310,  0xf206,  0xf200,  0xf03c,  0xf10a,
-            0xf10b,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,
-            0xf30e,  0xf702,  0xf30d,  0xf01c,  0xf701,  0xf205,  0xf114,  0xf603,
-            0xf118,  0xf601,  0xf602,  0xf117,  0xf600,  0xf119,  0xf115,  0xf116,
-            0xf11a,  0xf10c,  0xf10d,  0xf11b,  0xf11c,  0xf110,  0xf311,  0xf11d,
-            0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,
-            0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,
-            0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,
-            0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,
-            0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,
-            0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,
-            0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,
-            0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,
-            0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,
-            0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,
-            0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,
-            0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,
-            0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,
-            0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,
-            0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,
-            0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,
-            0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,  0xf200,
-};  
+while in 2.6 it has
+
+#define NR_KEYS         256
+
+The loadkeys command that is used to generate the defkeymap.c
+file has probably been built against 2.6 headers -> it generates
+arrays with 256 instead of 128 entries, which would lead to the
+"excess elements in array initializer" error you are
+experiencing.
+
+Regards,
+Karsten
+-- 
+#include <standard_disclaimer>
+Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der Nutzung
+oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die Markt- oder
+Meinungsforschung.

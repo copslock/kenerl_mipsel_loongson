@@ -1,41 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Feb 2003 10:55:09 +0000 (GMT)
-Received: from gandalf.physik.uni-konstanz.de ([IPv6:::ffff:134.34.144.69]:41913
-	"EHLO gandalf.physik.uni-konstanz.de") by linux-mips.org with ESMTP
-	id <S8225194AbTBKKzJ>; Tue, 11 Feb 2003 10:55:09 +0000
-Received: from merry.physik.uni-konstanz.de (merry.physik.uni-konstanz.de [134.34.144.91])
-	by gandalf.physik.uni-konstanz.de (Postfix) with ESMTP
-	id 9414A90; Tue, 11 Feb 2003 11:55:06 +0100 (CET)
-Received: from agx by merry.physik.uni-konstanz.de with local (Exim 3.35 #1 (Debian))
-	id 18iY4A-0004fU-00; Tue, 11 Feb 2003 11:55:06 +0100
-Date: Tue, 11 Feb 2003 11:55:06 +0100
-From: Guido Guenther <agx@gandalf.physik.uni-konstanz.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Feb 2003 11:39:21 +0000 (GMT)
+Received: from alg129.algor.co.uk ([IPv6:::ffff:62.254.210.129]:13323 "EHLO
+	dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225194AbTBKLjU>; Tue, 11 Feb 2003 11:39:20 +0000
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id h1A9NwU00882;
+	Mon, 10 Feb 2003 09:23:58 GMT
+Date: Mon, 10 Feb 2003 09:23:57 +0000
+From: Ralf Baechle <ralf@linux-mips.org>
 To: Andrew Clausen <clausen@melbourne.sgi.com>
-Cc: Linux-MIPS <linux-mips@linux-mips.org>
+Cc: Linux-MIPS <linux-mips@linux-mips.org>,
+	Guido Guenther <agx@sigxcpu.org>
 Subject: Re: porting arcboot
-Message-ID: <20030211105506.GA17935@merry>
-References: <20030210034549.GA8408@pureza.melbourne.sgi.com> <20030210100319.GA30624@merry> <20030210223955.GF8408@pureza.melbourne.sgi.com>
+Message-ID: <20030210092357.A879@linux-mips.org>
+References: <20030210034549.GA8408@pureza.melbourne.sgi.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20030210223955.GF8408@pureza.melbourne.sgi.com>
-User-Agent: Mutt/1.3.28i
-Return-Path: <agx@mittelerde.physik.uni-konstanz.de>
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <20030210034549.GA8408@pureza.melbourne.sgi.com>; from clausen@melbourne.sgi.com on Mon, Feb 10, 2003 at 02:45:49PM +1100
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1388
+X-archive-position: 1389
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: agx@gandalf.physik.uni-konstanz.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Feb 11, 2003 at 09:39:55AM +1100, Andrew Clausen wrote:
->  * e2fsprogs uses libc headers quite extensively, but there is no
-> glibc available for mips64 (right?).  It also seems to make quite a
-> few libc calls?  (How are you planning to deal with that?  Link
-> against it statically?  What about syscalls?)
-e2fsprogs doesn't call glibc (in fact in can't since we don't link
-arcboot against non PIC glibc). It calls arclib.
- -- Guido
+On Mon, Feb 10, 2003 at 02:45:49PM +1100, Andrew Clausen wrote:
+
+> I'm planning to try porting arcboot to ip27 (mips64).
+> 
+> I plan to do this by cross-compiling... this is actually the only
+> option since there's no 64 bit userland yet.
+> 
+> Some issues:
+> 
+>  * I'll be cross-compiling (using the mips64-linux-gcc & friends that
+> are provided on ftp.linux-mips.org), which means some makefile hacking...
+> 
+>  * there's no mips64-linux glibc, which means no libc headers are
+> available.  So I need to either cut&paste libc headers, or remove
+> dependencies on them.  This affects lots of code.
+> 
+>  * the e2fs stuff... how is this being maintained?  It uses libc
+> headers a bit... can I kill them?  Or will this make it hard to update
+> to new upstream e2fsprogs releases?
+> 
+> Anything else?
+
+Arcboot is a standalone program.  As such it shouldn't use anything from
+glibc or it's going to be a royal pain in the lower back extension.
+Look at Milo, spit and say no.  So keeping a private copy of the necessary
+headers is the only sane way to get things to work.
+
+  Ralf

@@ -1,44 +1,42 @@
-Received:  by oss.sgi.com id <S42193AbQJKRSv>;
-	Wed, 11 Oct 2000 10:18:51 -0700
-Received: from woody.ichilton.co.uk ([216.29.174.40]:59396 "HELO
-        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S42180AbQJKRSa>;
-	Wed, 11 Oct 2000 10:18:30 -0700
-Received: by woody.ichilton.co.uk (Postfix, from userid 0)
-	id DD1747C75; Wed, 11 Oct 2000 18:17:38 +0100 (BST)
-Date:   Wed, 11 Oct 2000 18:17:38 +0100
-From:   Ian Chilton <mailinglist@ichilton.co.uk>
-To:     linux-mips@oss.sgi.com
-Subject: Patches for CVS Glibc, Binutils, GCC
-Message-ID: <20001011181738.A22525@woody.ichilton.co.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.9i
+Received:  by oss.sgi.com id <S42187AbQJKT2w>;
+	Wed, 11 Oct 2000 12:28:52 -0700
+Received: from [206.207.108.63] ([206.207.108.63]:49964 "HELO
+        ridgerun-lx.ridgerun.cxm") by oss.sgi.com with SMTP
+	id <S42180AbQJKT2R>; Wed, 11 Oct 2000 12:28:17 -0700
+Received: (qmail 15014 invoked from network); 11 Oct 2000 13:19:27 -0600
+Received: from randys-personal.ridgerun.cxm (HELO randyspersonal) (192.168.1.216)
+  by ridgerun-lx.ridgerun.cxm with SMTP; 11 Oct 2000 13:19:27 -0600
+From:   "Randy Sartin" <randys@ridgerun.com>
+To:     <linux-mips@oss.sgi.com>
+Subject: rs_ioctl() in sgiserial.c info/help needed
+Date:   Wed, 11 Oct 2000 13:28:05 -0600
+Message-ID: <NEBBLGAKILMAGOFHJDNNGEJMCAAA.randys@ridgerun.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hello,
+Background:
+I am trying to get the Indy's serial port to drive a dongle and am having
+some trouble getting the dongle to work. The problem seems to be in
+rs_ioctl() in sgiserial.c - it doesn't handle the TIOCMSET command. The
+TIOCMSET command allows control over the DTR and RTS lines.
 
-Does anyone have the patches required for the latest CVS glibc/gcc/binutils?
+The "standard" rs_ioctl() in serial.c does support TIOCMSET. It calls
+set_modem_info() to control the UART (I think) to then control DTR and RTS.
 
-I have the GCC patch from early last week that Ralf sent out, but I don't know whether that is still relevenet, or whether there is a new one etc..
+So - my question is...
+Can I control DTR and RTS on Indy or is this a software feature that hasn't
+been implemented yet?
 
-Also I have no patches for glibc / binutils..do I need any?
-
-
-Thanks!
-
-
-Bye for Now,
-
-Ian
-
-
-                     \|||/ 
-                     (o o)
- /----------------ooO-(_)-Ooo----------------\
- |  Ian Chilton                              |
- |  E-Mail : ian@ichilton.co.uk              |
- \-------------------------------------------/
+Thanks,
+Randy Sartin

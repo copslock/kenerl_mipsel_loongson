@@ -1,58 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Apr 2004 17:04:45 +0100 (BST)
-Received: from ftpbox.mot.com ([IPv6:::ffff:129.188.136.101]:43947 "EHLO
-	ftpbox.mot.com") by linux-mips.org with ESMTP id <S8225794AbUDWQEo>;
-	Fri, 23 Apr 2004 17:04:44 +0100
-Received: from il06exr06.mot.com (il06exr06.mot.com [129.188.137.136])
-	by ftpbox.mot.com (Motorola/Ftpbox) with ESMTP id i3NG4gXU028857
-	for <linux-mips@linux-mips.org>; Fri, 23 Apr 2004 09:04:42 -0700 (MST)
-Received: from ca25exm01.GI.COM (ca25exm01.w1.bcs.mot.com [168.84.84.121])
-	by il06exr06.mot.com (Motorola/il06exr06) with ESMTP id i3NG4BXP019479
-	for <linux-mips@linux-mips.org>; Fri, 23 Apr 2004 11:04:41 -0500
-Received: by ca25exm01 with Internet Mail Service (5.5.2657.2)
-	id <F55XWC98>; Fri, 23 Apr 2004 09:04:10 -0700
-Message-ID: <D5A7E45D575DD61180130002A5DB377C04E48C99@ca25exm01>
-From: Stephens Tim-MGI1634 <Tim.Stephens@motorola.com>
-To: linux-mips@linux-mips.org
-Subject: Why does serial.c not allow you to share the serial console port 
-	 interrupt?
-Date: Fri, 23 Apr 2004 09:04:02 -0700
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2657.2)
-Content-Type: text/plain
-Return-Path: <Tim.Stephens@motorola.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Apr 2004 17:46:01 +0100 (BST)
+Received: from p508B6C3A.dip.t-dialin.net ([IPv6:::ffff:80.139.108.58]:1359
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225794AbUDWQp7>; Fri, 23 Apr 2004 17:45:59 +0100
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i3NGjcxT016564;
+	Fri, 23 Apr 2004 18:45:38 +0200
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i3NGjHmc016563;
+	Fri, 23 Apr 2004 18:45:17 +0200
+Date: Fri, 23 Apr 2004 18:45:17 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Florian Lohoff <flo@rfc822.org>, linux-mips@linux-mips.org
+Subject: Re: MC Parity Error
+Message-ID: <20040423164517.GA16401@linux-mips.org>
+References: <20040423080247.GC5814@paradigm.rfc822.org> <Pine.LNX.4.55.0404231509190.14494@jurand.ds.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.55.0404231509190.14494@jurand.ds.pg.gda.pl>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4855
+X-archive-position: 4856
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Tim.Stephens@motorola.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+On Fri, Apr 23, 2004 at 03:11:19PM +0200, Maciej W. Rozycki wrote:
 
-I'm trying to understand why the serial.c driver does not allow the sharing of the serial console interrupt.  There are several places on the net the mention you cannot share the console interrupt, however there is no explaination why.  I assume it has something to do with OOPS reporting.  Please advise.
+> > success report for the MC Bus Error handler :)
+> > 
+> > Apr 19 23:17:32 resume kernel: MC Bus Error
+> > Apr 19 23:17:32 resume kernel: CPU error 0x380<RD PAR > @ 0x0f4c6308
+> > Apr 19 23:17:32 resume kernel: Instruction bus error, epc == 2accf310, ra == 2accf2c8
+> > 
+> > I guess i have bad memory. The interesting point is that the machine
+> > continued to run for another 2 days. Shouldnt a memory error halt the
+> > machine ?
+> 
+>  As it happened in the user mode, I'd expect only the victim process to be
+> killed.
 
-I'm trying to enable the second serial port on a MIPS based embedded system.  Both serial ports (16550 type) are attached to the same MIPS interrupt.  The console is attached to ttyS0, which shares the MIPS interrupt with ttyS1.
+The KSU bits are meaningless.  On Indy like most other MIPS systems a
+bus error exception may be delayed.  So the generic solution requires
+tracking down the actual user, something which in the current kernel is
+relativly easy due to rmap.
 
-The code in question is:
-
-#ifdef CONFIG_SERIAL_CONSOLE
-    /*
-     *    The interrupt of the serial console port
-     *    can't be shared.
-     */
-    if (sercons.flags & CON_CONSDEV) {
-        for(i = 0; i < NR_PORTS; i++)
-            if (i != sercons.index &&
-                rs_table[i].irq == rs_table[sercons.index].irq)
-                rs_table[i].irq = 0;
-    }
-#endif
-
-If I change the #ifdef to #if 0 both the console and ttyS1 seem to work ok.
-
-Thanks,
-Tim
+  Ralf

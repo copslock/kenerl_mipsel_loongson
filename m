@@ -1,50 +1,58 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0SLQir06747
-	for linux-mips-outgoing; Mon, 28 Jan 2002 13:26:44 -0800
-Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0SLQeP06737
-	for <linux-mips@oss.sgi.com>; Mon, 28 Jan 2002 13:26:40 -0800
-Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.26])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id VAA22777;
-	Mon, 28 Jan 2002 21:26:23 +0100 (MET)
-Date: Mon, 28 Jan 2002 21:26:24 +0100 (MET)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: Jun Sun <jsun@mvista.com>
-cc: Phil Thompson <phil@river-bank.demon.co.uk>,
-   Linux/MIPS Development <linux-mips@oss.sgi.com>
-Subject: Re: pgd_init() Patch
-In-Reply-To: <3C55AEEA.EC76C0D4@mvista.com>
-Message-ID: <Pine.GSO.4.21.0201282125380.2836-100000@vervain.sonytel.be>
+	by oss.sgi.com (8.11.2/8.11.3) id g0T0VuI28351
+	for linux-mips-outgoing; Mon, 28 Jan 2002 16:31:56 -0800
+Received: from host099.momenco.com (IDENT:root@www.momenco.com [64.169.228.99])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0T0VqP28337
+	for <linux-mips@oss.sgi.com>; Mon, 28 Jan 2002 16:31:52 -0800
+Received: from beagle (beagle.internal.momenco.com [192.168.0.115])
+	by host099.momenco.com (8.11.6/8.11.6) with SMTP id g0SNVnX23399
+	for <linux-mips@oss.sgi.com>; Mon, 28 Jan 2002 15:31:49 -0800
+From: "Matthew Dharm" <mdharm@momenco.com>
+To: <linux-mips@oss.sgi.com>
+Subject: RE: Help with OOPSes, anyone?
+Date: Mon, 28 Jan 2002 15:31:49 -0800
+Message-ID: <NEBBLJGMNKKEEMNLHGAIAEBJCFAA.mdharm@momenco.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
+In-Reply-To: <Pine.LNX.3.96.1020127163608.6344C-100000@wakko.deltatee.com>
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
+Importance: Normal
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, 28 Jan 2002, Jun Sun wrote:
-> Geert Uytterhoeven wrote:
-> > On Mon, 28 Jan 2002, Phil Thompson wrote:
-> > > Should USER_PTRS_PER_PGD be defined as (TASK_SIZE/PGDIR_SIZE) + 1?
-> > 
-> > You mean ((TASK_SIZE)+1)/PGDIR_SIZE?
-> > 
-> 
-> No.  It should be
-> 
-> +#define USER_PTRS_PER_PGD      ((TASK_SIZE-1)/PGDIR_SIZE + 1)
-> 
-> Mathmatically, 
-> 
-> USER_PTRS_PER_PGD=ceil(TASK_SIZE/PGDIR_SIZE)
+Well, here's the latest test results...
 
-OK, ((TASK_SIZE+PGDIR_SIZE-1)/PGDIR_SIZE) in that case :-)
+The 2.4.0 kernel from MontaVista seems to work just fine.  Of course,
+it doesn't have support for the full range of interrupts, but that's a
+separate matter.  But it doesn't crash under big compiles.
 
-Gr{oetje,eeting}s,
+2.4.17 with CONFIG_MIPS_UNCACHED crashes.  It takes longer, but that
+may just be a function of it running so much slower.  The BogoMIPS
+drops by a factor of 100.  Ouch.
 
-						Geert
+So it doesn't look like a cache problem after all.  And it does
+suggest that something introduced between 2.4.0 and .17 is what broke
+things.  But what that is, I have no idea.
+
+I'm going to try Jason's modified cache code just in case, but I doubt
+that will change anything.  We'll have to see, tho.
+
+Does anyone have any other suggestions to try?  I'm starting to wonder
+if perhaps the PROM isn't setting up the SDRAM properly, but that
+conflicts with the working 2.4.0 kernel -- the PROM is the same in
+both cases, so I would expect a PROM error to affect both versions.
+
+I'm running out of ideas here... anyone?
+
+Matt
 
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+Matthew D. Dharm                            Senior Software Designer
+Momentum Computer Inc.                      1815 Aston Ave.  Suite 107
+(760) 431-8663 X-115                        Carlsbad, CA 92008-7310
+Momentum Works For You                      www.momenco.com

@@ -1,95 +1,115 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Dec 2004 17:56:28 +0000 (GMT)
-Received: from [IPv6:::ffff:68.145.108.97] ([IPv6:::ffff:68.145.108.97]:58124
-	"EHLO mail.otii.com") by linux-mips.org with ESMTP
-	id <S8224923AbULUR4W>; Tue, 21 Dec 2004 17:56:22 +0000
-Received: from [192.168.7.50] (unknown [68.145.108.98])
-	by mail.otii.com (Postfix) with ESMTP id ECA35B03A
-	for <linux-mips@linux-mips.org>; Tue, 21 Dec 2004 11:09:08 -0700 (MST)
-Mime-Version: 1.0 (Apple Message framework v619)
-Content-Transfer-Encoding: 7bit
-Message-Id: <9040F8C6-5379-11D9-944D-000393DBC6BE@otii.com>
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-To: linux-mips@linux-mips.org
-From: =?ISO-8859-1?Q?S=E9bastien_Taylor?= <sebastient@otii.com>
-Subject: Problem registering interrupt
-Date: Tue, 21 Dec 2004 10:55:56 -0700
-X-Mailer: Apple Mail (2.619)
-Return-Path: <sebastient@otii.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Dec 2004 19:39:32 +0000 (GMT)
+Received: from mail-relay.infostations.net ([IPv6:::ffff:69.19.152.5]:41346
+	"EHLO mail-relay.infostations.net") by linux-mips.org with ESMTP
+	id <S8224932AbULUTj0>; Tue, 21 Dec 2004 19:39:26 +0000
+Received: from kei.infostations.net (kei.infostations.net [71.4.40.33])
+	by mail-relay.infostations.net (Postfix) with ESMTP id 8B2FBF7D1E;
+	Tue, 21 Dec 2004 19:38:42 +0000 (Local time zone must be set--see zic manual page)
+Received: from host-69-19-171-25.rev.o1.com ([69.19.171.25])
+	by kei.infostations.net with esmtp (Exim 4.42 #1 (Gentoo))
+	id 1CgprA-00025A-0Q; Tue, 21 Dec 2004 11:39:41 -0800
+Subject: Re: Problems with PCMCIA on AMD dbau1100
+From: Josh Green <jgreen@users.sourceforge.net>
+To: Pete Popov <ppopov@embeddedalley.com>
+Cc: linux-mips@linux-mips.org
+In-Reply-To: <41C8536E.5060507@embeddedalley.com>
+References: <1103628665.22113.16.camel@SillyPuddy.localdomain>
+	 <41C8536E.5060507@embeddedalley.com>
+Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature"; boundary="=-qPk91WBxOCDOPIJcnU7a"
+Date: Tue, 21 Dec 2004 11:38:52 -0800
+Message-Id: <1103657932.12558.7.camel@SillyPuddy.localdomain>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.0.2 
+Return-Path: <jgreen@users.sourceforge.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6729
+X-archive-position: 6730
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sebastient@otii.com
+X-original-sender: jgreen@users.sourceforge.net
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
 
-I am porting my driver from 2.4 to 2.6 and am having an issue with 
-interrupts, I've updated my interrupt handler to return irqreturn_t 
-instead of void and it looks like it should be ok, but on init, when I 
-call request_irq it blows up in my face (trace bellow).
+--=-qPk91WBxOCDOPIJcnU7a
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-Now, if I request_irq with SA_SHIRQ it does boot up fine, but when I 
-try to use the driver it blows up again. Now, I'm guessing that means 
-something else is requesting my irq number first which is why it works 
-with SA_SHIRQ but why would that cause a crash?  Should it not just 
-return an error message?
+On Tue, 2004-12-21 at 08:46 -0800, Pete Popov wrote:
+> If all the config files are setup properly, you should start pcmcia=20
+> with /etc/rc.d/init.d/pcmcia start. That will also run the cardmgr.=20
+> Without the cardmgr, nothing will happen. If you're loading the=20
+> modules manuall, modprobe au1x00_ss, then ds.o, the execute cardmgr=20
+> and at that point the card should be detected.
+>=20
 
-Wasn't sure what code would be relevant so hopefully that explaination 
-helps,
-Any help would be greatly appreciated.
+Ok, so there should be a ds.ko compiled then, which I'm not getting
+(there is a ds.o in the build tree, but it doesn't get installed as a
+module).  I'm still trying to figure out why this is.
+
+> > One thing to note is that I get a few warnings during the PCMCIA build:
+> >=20
+> >   CC [M]  drivers/pcmcia/au1000_generic.o
+> > drivers/pcmcia/au1000_generic.c: In function
+> > `au1x00_pcmcia_socket_probe':
+> > drivers/pcmcia/au1000_generic.c:425: warning: integer constant is too
+> > large for "long" type
+> > drivers/pcmcia/au1000_generic.c:433: warning: integer constant is too
+> > large for "long" type
+> >=20
+> > The first warning is related to the following code (second is similar
+> > but for socket 1):
+> >=20
+> > 	skt->virt_io =3D (void *)
+> > 		((u32)ioremap((ioaddr_t)AU1X_SOCK0_IO, 0x1000) -
+> > 		(u32)mips_io_port_base);
+> >=20
+> >=20
+> > AU1X_SOCK0_IO is defined as 0xF00000000 which is a 36 bit number, not
+> > sure if that will cause a problem or not (since ioremap is using phys_t
+> > which is 32 bit).=20
+>=20
+> phys_t is 64 bit if 64BIT is enabled. Make sure you have the 36bit=20
+> I/O support enabled. CONFIG_64BIT_PHYS_ADDR has to be defined.
+>=20
+
+I made sure that was enabled (it isn't very evident that it has to be, I
+found that out from the code), but still got the same warnings.  I don't
+suppose there is the possibility that 'unsigned long long' isn't 64 bit
+on MIPS?  I changed the #ifdef CONFIG_64BIT_PHYS_ADDR to '#if 1' in
+include/asm/types.h (for the typedef phys_t) just to make sure, and got
+the same result (those warnings).
+
+> > Perhaps this truncation is intentional though.
+> >=20
+> > Thanks in advance for any helpful pointers. Best regards,
+> > 	Josh Green
+>=20
+> I tested pcmcia a couple of months ago when I updated the driver.=20
+> I'll retest it in the next few days and send you additional=20
+> instructions.
+>=20
+> Pete
+>=20
+
+Thank you very much for the info, it gives me a better idea of what I
+should be seeing.  I'll keep probing to see if I can figure out whats
+going on.  Best regards,
+	Josh Green
 
 
-CPU 0 Unable to handle kernel paging request at virtual address 
-00000004, epc =4
-Oops in arch/mips/mm/fault.c::do_page_fault, line 166[#1]:
-Cpu 0
-$ 0   : 00000000 1000fc00 00000000 803382d8
-$ 4   : 803382d8 80340000 00000001 804e92a8
-$ 8   : 80340000 00000a35 80510000 80510000
-$12   : 80510000 8113f074 8113f07c 0000ffff
-$16   : 80367620 80367628 1000fc01 00000031
-$20   : 805bef28 00000000 00000000 00000000
-$24   : 00000000 00000078
-$28   : 80570000 80571f20 00000000 801430c4
-Hi    : 000000a1
-Lo    : 47ad5a00
-epc   : 801430c8 setup_irq+0x148/0x224     Not tainted
-ra    : 801430c4 setup_irq+0x144/0x224
-Status: 1000fc02    KERNEL EXL
-Cause : 00808008
-BadVA : 000000e1
-PrId  : 03030200
-Process swapper (pid: 1, threadinfo=80570000, task=80554b48)
-Stack : 805bef28 80340000 00000001 804e92a8 805bef28 80217188 00000000 
-00000000
-         00000031 803250e8 801433b4 80143368 00000000 80340000 00000001 
-804e92a8
-         00000000 80320000 80380000 00000000 00000000 00000000 8037a958 
-8037a56c
-         00000000 00000001 80808081 00000000 00000000 00000000 80382fec 
-00000000
-         80380000 80100518 00000000 00000000 00000000 00000000 00000000 
-00000000
-         ...
-Call Trace:
-  [<80217188>] mc2interrupt+0x0/0x368
-  [<801433b4>] request_irq+0xd0/0x12c
-  [<80143368>] request_irq+0x84/0x12c
-  [<80380000>] init+0x38/0xe0
-  [<8037a958>] mc2init+0x80/0x1d4
-  [<8037a56c>] tty_init+0x160/0x184
-  [<80380000>] init+0x38/0xe0
-  [<80100518>] init+0xbc/0x1f8
-  [<80104de0>] kernel_thread_helper+0x10/0x18
-  [<80104dd0>] kernel_thread_helper+0x0/0x18
+--=-qPk91WBxOCDOPIJcnU7a
+Content-Type: application/pgp-signature; name=signature.asc
+Content-Description: This is a digitally signed message part
 
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.6 (GNU/Linux)
 
-Code: 0c049dad  ae00000c  8e020004 <8c420004> 1040000a  00000000  
-3c048032  0c0
-Kernel panic - not syncing: Attempted to kill init! 
-                             
+iD8DBQBByHvMRoMuWKCcbgQRAmV5AJ43GvLiWHqDCHAX5ZrfTLKpt/0srgCePRPQ
+ziNvPZiWKbXLDJCR+Hs/nUU=
+=VTwo
+-----END PGP SIGNATURE-----
+
+--=-qPk91WBxOCDOPIJcnU7a--

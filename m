@@ -1,48 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 May 2003 19:00:07 +0100 (BST)
-Received: from p508B56B7.dip.t-dialin.net ([IPv6:::ffff:80.139.86.183]:13288
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225242AbTENSAF>; Wed, 14 May 2003 19:00:05 +0100
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h4EI0a4P026324;
-	Wed, 14 May 2003 20:00:36 +0200
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h4EI0YNg026323;
-	Wed, 14 May 2003 20:00:34 +0200
-Date: Wed, 14 May 2003 20:00:34 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Robin Humble <rjh@cita.utoronto.ca>
-Cc: Achim Hensel <achim.hensel@ruhr-uni-bochum.de>,
-	linux-mips@linux-mips.org
-Subject: Re: r4k Indigo 1 (was Re: Branch relocation fixing at Kernel-compiling with Debian-toolchain)
-Message-ID: <20030514180034.GA13328@linux-mips.org>
-References: <20030514123144.52da1d81.achim.hensel@ruhr-uni-bochum.de> <20030514110227.GA8503@falcon.cita.utoronto.ca>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20030514110227.GA8503@falcon.cita.utoronto.ca>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 May 2003 19:09:03 +0100 (BST)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:18399 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225242AbTENSJB>; Wed, 14 May 2003 19:09:01 +0100
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id UAA02257;
+	Wed, 14 May 2003 20:09:42 +0200 (MET DST)
+Date: Wed, 14 May 2003 20:09:41 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+cc: linux-mips@linux-mips.org
+Subject: Re: -mcpu vs. binutils 2.13.90.0.18
+In-Reply-To: <20030514175011.GD8833@rembrandt.csv.ica.uni-stuttgart.de>
+Message-ID: <Pine.GSO.3.96.1030514195854.26213L-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2375
+X-archive-position: 2376
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, May 14, 2003 at 07:02:27AM -0400, Robin Humble wrote:
+On Wed, 14 May 2003, Thiemo Seufer wrote:
 
-> On Wed, May 14, 2003 at 12:31:44PM +0200, Achim Hensel wrote:
-> >[I try to build Linux for a R4k Indigo1. I'm using as and ld of the
+> >  Well, "32" is 32-bit address/data and "64" is 64-bit address/data. 
+> > That's essentially pure 32-bit and 64-bit, respectively.  Of course some
+> > data format has to be emitted by tools, so there has to be an ABI
+> > associated with each of these variants. 
 > 
-> Please let me know how you go with this... I'd like to try it too.
-> Are you compiling a generic r4k kernel? Is there much chipset
-> documentation available?
+> That's just backwards. An ABI defines much more, e.g. calling
+> conventions and GOT sizes. The register size is just another
+> property of the ABI.
 
-Little; however it's know that the machine is relativly similar to the
-Indy for example so it seems doable for somebody with enough time.
+ OK -- maybe I am biased because there is only a single ABI for 32-bit and
+64-bit binaries each.  So please just forget it.
 
-  Ralf
+> What's desireable here depends on the target system. For Linux,
+> the current way is IMHO the best: o32 only for mips-linux, and
+> o32, n32 and n64 for mips64-linux, with n32 as default.
+
+ Of course the choice of the default should be configurable (for binutils
+it probably already is -- I recall Richard Sandiford making changes in
+this area, for gcc -- no idea).
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

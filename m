@@ -1,98 +1,60 @@
-Received:  by oss.sgi.com id <S305165AbQBORbc>;
-	Tue, 15 Feb 2000 09:31:32 -0800
-Received: from deliverator.sgi.com ([204.94.214.10]:40214 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305156AbQBORbZ>;
-	Tue, 15 Feb 2000 09:31:25 -0800
-Received: from nodin.corp.sgi.com (fddi-nodin.corp.sgi.com [198.29.75.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id JAA01852; Tue, 15 Feb 2000 09:26:55 -0800 (PST)
+Received:  by oss.sgi.com id <S305160AbQBOSEC>;
+	Tue, 15 Feb 2000 10:04:02 -0800
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:19566 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S305156AbQBOSDi>; Tue, 15 Feb 2000 10:03:38 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id KAA09849; Tue, 15 Feb 2000 10:06:30 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id JAA28107; Tue, 15 Feb 2000 09:31:25 -0800 (PST)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id JAA06839
+	id JAA48143
 	for linux-list;
-	Tue, 15 Feb 2000 09:14:21 -0800 (PST)
+	Tue, 15 Feb 2000 09:51:05 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from liveoak.engr.sgi.com (liveoak.engr.sgi.com [163.154.5.24])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id JAA66838
-	for <linux@cthulhu.engr.sgi.com>;
-	Tue, 15 Feb 2000 09:14:18 -0800 (PST)
-	mail_from (Harald.Koerfgen@home.ivm.de)
-Received: from mail.ivm.net (mail.ivm.net [62.204.1.4]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id JAA01942
-	for <linux@cthulhu.engr.sgi.com>; Tue, 15 Feb 2000 09:16:40 -0800 (PST)
-	mail_from (Harald.Koerfgen@home.ivm.de)
-Received: from franz.no.dom (port44.duesseldorf.ivm.de [195.247.65.44])
-	by mail.ivm.net (8.8.8/8.8.8) with ESMTP id SAA26476;
-	Tue, 15 Feb 2000 18:13:52 +0100
-X-To:   linux@cthulhu.engr.sgi.com
-Message-ID: <XFMail.000215181433.Harald.Koerfgen@home.ivm.de>
-X-Mailer: XFMail 1.3 [p0] on Linux
-X-Priority: 3 (Normal)
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 8bit
+	via ESMTP id JAA36528;
+	Tue, 15 Feb 2000 09:49:26 -0800 (PST)
+	mail_from (wje@liveoak.engr.sgi.com)
+Received: (from wje@localhost)
+	by liveoak.engr.sgi.com (8.9.3/8.8.7) id JAA11519;
+	Tue, 15 Feb 2000 09:49:19 -0800
+X-Authentication-Warning: liveoak.engr.sgi.com: wje set sender to wje@liveoak.engr.sgi.com using -f
+From:   "William J. Earl" <wje@cthulhu.engr.sgi.com>
 MIME-Version: 1.0
-In-Reply-To: <00f001bf77a7$01e6cd10$0ceca8c0@satanas.mips.com>
-Date:   Tue, 15 Feb 2000 18:14:33 +0100 (MET)
-Reply-To: "Harald Koerfgen" <Harald.Koerfgen@home.ivm.de>
-Organization: none
-From:   Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
-To:     "Kevin D. Kissell" <kevink@mips.com>
-Subject: Re: ioremap() broken?
-Cc:     linux@cthulhu.engr.sgi.com
-Cc:     linux@cthulhu.engr.sgi.com,
-        Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID: <14505.37279.164044.582169@liveoak.engr.sgi.com>
+Date:   Tue, 15 Feb 2000 09:49:19 -0800 (PST)
+To:     Ralf Baechle <ralf@oss.sgi.com>
+Cc:     "Kevin D. Kissell" <kevink@mips.com>, geert@linux-m68k.org,
+        linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
+        linux-mips@vger.rutgers.edu
+Subject: Re: Indy crashes
+In-Reply-To: <20000215011346.D828@uni-koblenz.de>
+References: <022301bf7730$92b87180$0ceca8c0@satanas.mips.com>
+	<20000215011346.D828@uni-koblenz.de>
+X-Mailer: VM 6.74 under Emacs 20.3.1
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
+Ralf Baechle writes:
+ > On Mon, Feb 14, 2000 at 10:15:02PM +0100, Kevin D. Kissell wrote:
+...
+ > > not the way the R5000 is specified.  So rather than set
+ > > dma_cache_wback_inv to r4k_dma_cache_wback_inv_sc
+ > > or r4k_dma_cache_wback_inv_pc, depending on the
+ > > presence or absence of a primary cache,  in the MIPS 
+ > > Technologies I bound it to a function:
+ > 
+ > I don't even pretend that Linux is running on a R5000 with L2 except on
+ > Indy R5000SC's.  These R5000 modules are different in that they don't use
+ > the L2 support which is part of the processor but rather use the same
+ > external cache implementation as the R4600SC CPU modules do.
+...
 
-On 15-Feb-00 Kevin D. Kissell wrote:
->>> > 1. Is it really necessary to add anything to the addr in the readb() et
->>> > al.
->>> >    macros? ioremap() already takes care of that.
->>> 
->>> There is something of an "embarassment of riches" in the kernel
->>> code in terms of mechanism for getting at I/O resources.  I don't
->>> think it was ever intended that people use readb() on addresses
->>> that had already been massaged with ioremap().  ioremap() is
->>> used where the driver *expects* an memory-mapped I/O model,
->>> and is applied to pointers that will be used to directly reference
->>> the device.  readb/writeb et. al. are for drivers that think that expect
->>> a more peek/poke like model.  I don't think it was ever intended that
->>> someone apply both at once!
->>
->>Yes it is! Please read Documentation/IO-mapping.txt. To access PCI memory
->>space, you have to use ioremap() and readb() and friends. If PCI drivers have
->>to work across differen architectures, this has to be fixed.
-> 
-> It is a coincidence that ioremap() is so simple on most current MIPS 
-> platforms.  On some systems, and on MIPS systems with more than 
-> 512M of combined memory and mapped I/O, it would be necessary
-> to invoke VM functions to create (and possibly wire) a kernel address
-> mapping, and on such systems ioremap() would have some real work
-> to do.
-
-Yes, indeed. The Philips PR31700/Toshiba TMPR3912 is such a beast and I could
-imagine that other MIPS based embedded CPUs tend to be similar.
-
-On this particular CPU PCMCIA memory is accessed through *physical* addresses
-0x64000000-0x6bffffff, and thus unreachable through KSEG0 or KSEG1. To make
-things even more delicate, this CPU is based on a R3000 core and supports 4kB
-pages only, so even ye olde "let's create a wired TLB entry with 16 MB page
-size"-trick will not work. 
-
-Before you're beginning to ask, yes, I *do* have Linux/MIPS running on a Sharp
-Mobilon HC-4500 :-), and, no, PCMCIA is not working yet :-(
-
-What I am trying to say is that sooner or later we may have to deal with this
-case as well.
-
----
-Regards,
-Harald
+     If someone wants to do the real R5000SC (and RM5271 and RM7000)
+cache routines, for some other platform, I can supply the required 
+details.

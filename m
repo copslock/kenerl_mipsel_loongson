@@ -1,59 +1,69 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA11808; Wed, 18 Jun 1997 00:33:48 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id BAA12236; Wed, 18 Jun 1997 01:22:51 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id AAA22595 for linux-list; Wed, 18 Jun 1997 00:33:34 -0700
-Received: from sgiger.munich.sgi.com (sgiger.munich.sgi.com [144.253.192.2]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA22584 for <linux@cthulhu.engr.sgi.com>; Wed, 18 Jun 1997 00:33:29 -0700
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id BAA28351 for linux-list; Wed, 18 Jun 1997 01:22:29 -0700
+Received: from morgaine.engr.sgi.com (morgaine.engr.sgi.com [130.62.16.64]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id BAA28341 for <linux@cthulhu.engr.sgi.com>; Wed, 18 Jun 1997 01:22:27 -0700
+Received: from sgiger.munich.sgi.com (sgiger.munich.sgi.com [144.253.192.2]) by morgaine.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id BAA16059 for <linux@morgaine.engr.sgi.com>; Wed, 18 Jun 1997 01:21:33 -0700
 Received: from knobi.munich.sgi.com by sgiger.munich.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1502/940406.SGI)
-	 id JAA18543; Wed, 18 Jun 1997 09:33:05 +0200
-Received: from knobi (localhost [127.0.0.1]) by knobi.munich.sgi.com (950413.SGI.8.6.12/951220.SGI.AUTOCF.knobi) via SMTP id JAA10165; Wed, 18 Jun 1997 09:33:03 +0200
-Message-ID: <33A78F2E.794B@munich.sgi.com>
-Date: Wed, 18 Jun 1997 09:33:02 +0200
+	 id KAA20664; Wed, 18 Jun 1997 10:21:31 +0200
+Received: from knobi (localhost [127.0.0.1]) by knobi.munich.sgi.com (950413.SGI.8.6.12/951220.SGI.AUTOCF.knobi) via SMTP id KAA12442; Wed, 18 Jun 1997 10:21:29 +0200
+Message-ID: <33A79A89.1CFB@munich.sgi.com>
+Date: Wed, 18 Jun 1997 10:21:29 +0200
 From: Martin Knoblauch <knobi@munich.sgi.com>
 Organization: Silicon Graphics GmbH, Am-Hochacker 3, D-85630 Grasbrunn
 X-Mailer: Mozilla 3.01SC-SGI (X11; I; IRIX 6.3 IP22)
 MIME-Version: 1.0
-To: "Christopher W. Carlson" <carlson@heaven.newport.sgi.com>
-CC: linux@cthulhu.engr.sgi.com
-Subject: Re: (Fwd) Re: SGI machine
-References: <9706171302.ZM27101@heaven.newport.sgi.com>
+To: Larry McVoy <lm@neteng.engr.sgi.com>
+CC: John Wiederhirn <jwiede@blammo.engr.sgi.com>, linux@morgaine.engr.sgi.com
+Subject: Getting X on Linux/SGI (2)
+References: <199706180637.XAA09017@neteng.engr.sgi.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Christopher W. Carlson wrote:
-> 
-> Just thought I'd pass on the response that I received from
-> Richard Stallman.
-> 
-> --- Forwarded mail from Richard Stallman <rms@gnu.ai.mit.edu>
-> 
-> Date: Tue, 17 Jun 1997 15:17:06 -0400
-> From: Richard Stallman <rms@gnu.ai.mit.edu>
-> To: carlson
-> Subject: Re: SGI machine
-> 
-> We now have free systems running on all our machines, so we
-> could not accept a machine that runs a non-free system like IRIX.
->
+[also changeing the subject]
 
- So, does this mean they are no longer interested in supporting
-GNU stuff on non-free systems?
- 
-> Once you have a GNU/Linux system running, that problem would be
-> solved.  But usable machines have become pretty cheap--we could buy a
-> 686 for the cost of paying a programmer for 2 weeks--and we have more
-> than enough machines now for the people we have.  What we mainly need
-> nowadays is money to pay programmers.
+Larry McVoy wrote:
 > 
-> Is there any chance you could convince some part of SGI to make a
-> donation?  Or at least buy a Deluxe Distribution?
+> : There are some very serious issues which come up even getting
+> : Xfree to a moderate level of acceleration.
 > 
-> We can hire a programmer for a year for just $35000 or so.
+> How about to a simple level of working?  Without any acceleration?
+> For most people, just having xterms and netscape working is enough.
+> 
+> I'm not a graphics or X person.  Could someone who knows SGI's gfx
+> devices tell us how hard it would be to make the basics work?
 > 
 
-  Besides our GNU effort, any chance that we can get someone
-to donate a considerable amount of money to the FSF? Just
-to make a point that we are not against free software.
+  Probably not that hard if we gave away the documentation
+(do we have *documentation*) on the GFX cards low level interfaces.
+The major problem to me seems that each different architecture
+(XL, XZ/Elan/Extreme, IMPACT, CRM) has different interfaces.
+I am not sure that you can find a minimal subset of calls
+to make a very simple Xserver work (is Peter Daifuku on this
+list ? Mark Kilgard?).
+
+  Personally I think that we don't loose anything if we give away
+the stuff for the older boards (Newport, Express). I am not
+sure, what we loose if we do the same for IMPACT/IR (OK, IR
+is probably not such a big deal :-)
+
+
+ Questions:
+
+- How much HW dependent stuff is in Xsgi itself?
+- Which of the DSOs in /usr/lib/X11/dyDDX are minimally
+  needed to bring up an non-GLX Xserver?
+- How much efforts would it cost to compile the dyDDX
+  stuff for Linux and distribute the binaries only
+  (assuming that there is not to much HW stuff in Xsgi itself)?
+
+
+ And of course, we probably have to provide the microcode and
+loader for the different GFX cards.
+
+ I definitely agree with Ariel, that this is the most important
+topic once we have Linux running stable.
 
 Martin
 -- 

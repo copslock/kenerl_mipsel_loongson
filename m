@@ -1,69 +1,53 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g18GGs704840
-	for linux-mips-outgoing; Fri, 8 Feb 2002 08:16:54 -0800
-Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g18GGkA04835
-	for <linux-mips@oss.sgi.com>; Fri, 8 Feb 2002 08:16:47 -0800
-Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.26])
-	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id RAA21330;
-	Fri, 8 Feb 2002 17:15:59 +0100 (MET)
-Date: Fri, 8 Feb 2002 17:16:00 +0100 (MET)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: "Steven J. Hill" <sjhill@realitydiluted.com>
-cc: Linux/MIPS Development <linux-mips@oss.sgi.com>
-Subject: Re: [PATCH] Removal of warning messages for gdb-stub.c
-In-Reply-To: <E16ZD2B-0003iv-00@real.realitydiluted.com>
-Message-ID: <Pine.GSO.4.21.0202081713590.19681-100000@vervain.sonytel.be>
+	by oss.sgi.com (8.11.2/8.11.3) id g18GGvj04853
+	for linux-mips-outgoing; Fri, 8 Feb 2002 08:16:57 -0800
+Received: from Cantor.suse.de (ns.suse.de [213.95.15.193])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g18GGrA04839
+	for <linux-mips@oss.sgi.com>; Fri, 8 Feb 2002 08:16:54 -0800
+Received: from Hermes.suse.de (Hermes.suse.de [213.95.15.136])
+	by Cantor.suse.de (Postfix) with ESMTP
+	id 248B21E9B8; Fri,  8 Feb 2002 17:15:46 +0100 (MET)
+X-Authentication-Warning: gee.suse.de: aj set sender to aj@suse.de using -f
+Mail-Copies-To: never
+To: "H . J . Lu" <hjl@lucon.org>
+Cc: linux-mips@oss.sgi.com, GNU C Library <libc-alpha@sources.redhat.com>
+Subject: Re: PATCH: Not use branch likely on mips
+References: <20020205180243.A11993@lucon.org> <hoadulk25q.fsf@gee.suse.de>
+	<20020207091327.B15331@lucon.org>
+From: Andreas Jaeger <aj@suse.de>
+Date: Fri, 08 Feb 2002 17:15:45 +0100
+In-Reply-To: <20020207091327.B15331@lucon.org> ("H . J . Lu"'s message of
+ "Thu, 7 Feb 2002 09:13:27 -0800")
+Message-ID: <hod6zgq79q.fsf@gee.suse.de>
+User-Agent: Gnus/5.090006 (Oort Gnus v0.06) XEmacs/21.4 (Artificial
+ Intelligence, i386-suse-linux)
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, 8 Feb 2002, Steven J. Hill wrote:
-> Just more clean ups. I tested it, it works.
-> 
-> -Steve
-> 
-> diff -urN -X cvs-exc.txt mipslinux-2.4.17-xfs/arch/mips/kernel/gdb-stub.c settop/arch/mips/kernel/gdb-stub.c
-> --- mipslinux-2.4.17-xfs/arch/mips/kernel/gdb-stub.c	Thu Nov 29 09:13:08 2001
-> +++ settop/arch/mips/kernel/gdb-stub.c	Fri Feb  8 09:14:52 2002
-> @@ -306,7 +306,7 @@
->  	unsigned char ch;
->  
->  	while (count-- > 0) {
-> -		if (kgdb_read_byte(mem++, &ch) != 0)
-> +		if (kgdb_read_byte((unsigned *) mem++, (unsigned *) &ch) != 0)
->  			return 0;
->  		*buf++ = hexchars[ch >> 4];
->  		*buf++ = hexchars[ch & 0xf];
-> @@ -332,7 +332,7 @@
->  	{
->  		ch = hex(*buf++) << 4;
->  		ch |= hex(*buf++);
-> -		if (kgdb_write_byte(ch, mem++) != 0)
-> +		if (kgdb_write_byte((unsigned) ch, (unsigned *) mem++) != 0)
->  			return 0;
->  	}
->  
+"H . J . Lu" <hjl@lucon.org> writes:
 
-Wouldn't it be better to change the prototypes
+> On Thu, Feb 07, 2002 at 11:38:09AM +0100, Andreas Jaeger wrote:
+>> "H . J . Lu" <hjl@lucon.org> writes:
+>> 
+>> > This patch removes branch likely.
+>> 
+>> Please update the copyright years next time.
+>> 
+>> I've committed the patch,
+>> 
+>
+> Here is a new patch. I have checked in a gcc patch which makes
+> ".set noreorder" unnecessary even with "gcc -g".
+>
+> Thanks.
 
-| int kgdb_read_byte(unsigned *address, unsigned *dest);
-| int kgdb_write_byte(unsigned val, unsigned *dest);
+Thanks, committed,
 
-instead?
-
-If these routines work on bytes, why have them taking unsigned (wasn't plain
-`unsigned' deprecated in some recent C standard?) parameters instead of char
-parameters?
-
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+Andreas
+-- 
+ Andreas Jaeger
+  SuSE Labs aj@suse.de
+   private aj@arthur.inka.de
+    http://www.suse.de/~aj

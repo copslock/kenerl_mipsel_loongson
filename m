@@ -1,50 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Mar 2003 08:20:59 +0000 (GMT)
-Received: from [IPv6:::ffff:203.197.124.190] ([IPv6:::ffff:203.197.124.190]:5134
-	"EHLO alumnux.com") by linux-mips.org with ESMTP
-	id <S8225218AbTCSIU6>; Wed, 19 Mar 2003 08:20:58 +0000
-Received: from alumnux.com (mamata.alumnus.co.in [192.168.10.121])
-	by alumnux.com (8.9.3/8.9.3) with ESMTP id TAA10147
-	for <linux-mips@linux-mips.org>; Wed, 19 Mar 2003 19:28:50 +0530
-Message-ID: <3E78284D.9BE358B2@alumnux.com>
-Date: Wed, 19 Mar 2003 13:50:29 +0530
-From: debashis <debashis@alumnux.com>
-Organization: Alumnus Software Ltd
-X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.18-3 i686)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Mar 2003 19:42:13 +0000 (GMT)
+Received: from real.realitydiluted.com ([IPv6:::ffff:208.242.241.164]:52164
+	"EHLO real.realitydiluted.com") by linux-mips.org with ESMTP
+	id <S8225221AbTCSTmM>; Wed, 19 Mar 2003 19:42:12 +0000
+Received: from localhost ([127.0.0.1] helo=realitydiluted.com)
+	by real.realitydiluted.com with esmtp (Exim 3.36 #1 (Debian))
+	id 18vjRy-0005bH-00; Wed, 19 Mar 2003 13:42:10 -0600
+Message-ID: <3E78C814.6000607@realitydiluted.com>
+Date: Wed, 19 Mar 2003 14:42:12 -0500
+From: "Steven J. Hill" <sjhill@realitydiluted.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.2.1) Gecko/20030311 Debian/1.2.1-10
 X-Accept-Language: en
 MIME-Version: 1.0
-To: linux-mips@linux-mips.org
-Subject: compressed image for mips:malta
-Content-Type: text/plain; charset=us-ascii
+To: port-sgimips@netbsd.org, linux-mips@linux-mips.org
+Subject: Mirrored pages of old 'reality.sgi.com' webserver...
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <debashis@alumnux.com>
+Return-Path: <sjhill@realitydiluted.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1775
+X-archive-position: 1776
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: debashis@alumnux.com
+X-original-sender: sjhill@realitydiluted.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
-I am working with a mips malta 4KC box. It supports vmlinux. The linux
-kernel version that I am using is 2.4.18
+Greetings.
 
-However the size of the vmlinux image looks high (more than 1M).  I am
-trying to get a smaller image (with neworking). Need some help :
+I had done a massive mirror of webpages from the old 'reality.sgi.com'
+server about a year ago before it disappeared. I mirrored all of the
+people's pages that had real content. I just finished uploading it to
+my server a few days ago and thought I would share it with people so
+that some good content did not die. Please note, if SGI or the owners
+of the content contact me and ask me to remove some or all of the
+content, I will immediately comply. Until then, enjoy. Cheers.
 
-Is their any compressed image is supported for this particular board?
+    http://www.realitydiluted.com/mirrors/reality.sgi.com/
 
-Does the loader need some change to support compressed image?
-
-In case I need to provide support for the compressed image, is there any
-similar board on which the compressed image support is present?
-
-Any suggession is welcome.
-
-Thanks in advance.
-
-Regards,
-debashis
+-Steve

@@ -1,59 +1,90 @@
-Received:  by oss.sgi.com id <S305162AbQBUVvJ>;
-	Mon, 21 Feb 2000 13:51:09 -0800
-Received: from deliverator.sgi.com ([204.94.214.10]:43032 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305159AbQBUVut>;
-	Mon, 21 Feb 2000 13:50:49 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id NAA03042; Mon, 21 Feb 2000 13:46:17 -0800 (PST)
+Received:  by oss.sgi.com id <S305164AbQBVC7m>;
+	Mon, 21 Feb 2000 18:59:42 -0800
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:20841 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S305159AbQBVC7U>; Mon, 21 Feb 2000 18:59:20 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id TAA09728; Mon, 21 Feb 2000 19:02:15 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id NAA97608
+	id SAA74829
 	for linux-list;
-	Mon, 21 Feb 2000 13:38:43 -0800 (PST)
+	Mon, 21 Feb 2000 18:45:38 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from liveoak.engr.sgi.com (liveoak.engr.sgi.com [163.154.5.24])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id NAA77173
-	for <linux@engr.sgi.com>;
-	Mon, 21 Feb 2000 13:38:14 -0800 (PST)
-	mail_from (ralf@oss.sgi.com)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id NAA08773
-	for <linux@engr.sgi.com>; Mon, 21 Feb 2000 13:38:09 -0800 (PST)
-	mail_from (ralf@oss.sgi.com)
-Received: from cacc-13.uni-koblenz.de (cacc-13.uni-koblenz.de [141.26.131.13])
-	by mailhost.uni-koblenz.de (8.9.3/8.9.3) with ESMTP id WAA11990;
-	Mon, 21 Feb 2000 22:37:49 +0100 (MET)
-Received:  by lappi.waldorf-gmbh.de id <S407897AbQBUSDw>;
-	Mon, 21 Feb 2000 19:03:52 +0100
-Date:   Mon, 21 Feb 2000 19:03:52 +0100
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
-Cc:     linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
+	via ESMTP id SAA67878
+	for <linux@relay.engr.sgi.com>;
+	Mon, 21 Feb 2000 18:45:35 -0800 (PST)
+	mail_from (wje@liveoak.engr.sgi.com)
+Received: (from wje@localhost)
+	by liveoak.engr.sgi.com (8.9.3/8.8.7) id SAA01121
+	for linux@engr.sgi.com; Mon, 21 Feb 2000 18:45:30 -0800
+Date:   Mon, 21 Feb 2000 18:45:30 -0800
+Message-Id: <200002220245.SAA01121@liveoak.engr.sgi.com>
+X-Authentication-Warning: liveoak.engr.sgi.com: wje set sender to wje@liveoak.engr.sgi.com using -f
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+From:   Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
+To:     Ralf Baechle <ralf@oss.sgi.com>
+cc:     linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
         linux-mips@vger.rutgers.edu
 Subject: Re: CVS Update@oss.sgi.com: linux
-Message-ID: <20000221190352.B15668@uni-koblenz.de>
-References: <20000221125820.A11469@uni-koblenz.de> <Pine.GSO.4.10.10002211634260.4234-100000@dandelion.sonytel.be>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0pre3us
-In-Reply-To: <Pine.GSO.4.10.10002211634260.4234-100000@dandelion.sonytel.be>
-X-Accept-Language: de,en,fr
+In-Reply-To: <20000221125820.A11469@uni-koblenz.de>
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On Mon, Feb 21, 2000 at 04:46:52PM +0100, Geert Uytterhoeven wrote:
+On Mon, 21 Feb 2000, Ralf Baechle wrote:
+> On Mon, Feb 21, 2000 at 10:54:45AM +0100, Geert Uytterhoeven wrote:
+> > > Modified files:
+> > > 	include/asm-mips: uaccess.h 
+> > > 	include/asm-mips64: uaccess.h 
+> > > 
+> > > Log message:
+> > > 	Fix copy_from_user() in modules and 64-bit kernel.
+> > 
+> > Now the assembler complains with
+> > 
+> >     Warning: Used $at without ".set noat"
+> 
+> I just tried to build an Indy kernel and did not get this warning.
 
-> I guess the problem is the nested .set noat/at construct, where __MODULE_JAL
-> does .set at while copy_from_user() assumes we're still in noat mode?
+I guess it depends on the configuration. From looking at the list of files I
+got complaints for, I do believe you didn't get them when building for an Indy.
 
-Yep, looking at the assembler code your report immediately made sense.
-Fix going to CVS as I write this.
+Can you try to compile the module for the loop block device? The problem
+happens near the call to copy_from_user() in loop_set_status(). The generated
+code is (warning position indicated with `>>>'):
 
-  Ralf
+	    .set    noreorder
+	    .set    noat
+	    .set    noat
+	    la      $1, __copy_user
+	    jalr    $1
+	    .set    at
+>>>	    addu    $1, $13, $7
+	    .set    at
+	    .set    reorder
+	    move    $7, $6
+     #NO_APP
+    $L1492:
+	    .set    noreorder
+	    .set    nomacro
+	    bne     $7,$0,$L1502
+	    li      $2,-14                  # 0xfffffff2
+	    .set    macro
+	    .set    reorder
+
+I guess the problem is the nested .set noat/at construct, where __MODULE_JAL
+does .set at while copy_from_user() assumes we're still in noat mode?
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven ------------- Sony Software Development Center Europe (SDCE)
+Geert.Uytterhoeven@sonycom.com ------------------- Sint-Stevens-Woluwestraat 55
+Voice +32-2-7248638 Fax +32-2-7262686 ---------------- B-1130 Brussels, Belgium

@@ -1,52 +1,46 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f34GCne22644
-	for linux-mips-outgoing; Wed, 4 Apr 2001 09:12:49 -0700
-Received: from iris1.csv.ica.uni-stuttgart.de (iris1.csv.ica.uni-stuttgart.de [129.69.118.2])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f34GCmM22641
-	for <linux-mips@oss.sgi.com>; Wed, 4 Apr 2001 09:12:48 -0700
-Received: from rembrandt.csv.ica.uni-stuttgart.de (rembrandt.csv.ica.uni-stuttgart.de [129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de (8.9.3/8.9.3) with ESMTP id SAA89916
-	for <linux-mips@oss.sgi.com>; Wed, 4 Apr 2001 18:12:47 +0200 (MDT)
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.12 #1 (Debian))
-	id 14kpti-0002Xi-00
-	for <linux-mips@oss.sgi.com>; Wed, 04 Apr 2001 18:12:42 +0200
-Date: Wed, 4 Apr 2001 18:12:42 +0200
-To: linux-mips@oss.sgi.com
-Subject: Re: Binutils fixed to deal with 'insmod' issue and discussion...
-Message-ID: <20010404181242.H5099@rembrandt.csv.ica.uni-stuttgart.de>
-References: <00a901c0bb6f$d3e77820$0deca8c0@Ulysses> <3AC90E16.AEF59359@cotw.com> <20010403041740.G5099@rembrandt.csv.ica.uni-stuttgart.de> <20010403102608.A30531@bacchus.dhis.org>
+	by oss.sgi.com (8.11.3/8.11.3) id f34GG5j22954
+	for linux-mips-outgoing; Wed, 4 Apr 2001 09:16:05 -0700
+Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f34GG3M22945
+	for <linux-mips@oss.sgi.com>; Wed, 4 Apr 2001 09:16:04 -0700
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 7A0A47F7; Wed,  4 Apr 2001 18:16:02 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 717F2EE85; Wed,  4 Apr 2001 18:05:38 +0200 (CEST)
+Date: Wed, 4 Apr 2001 18:05:38 +0200
+From: Florian Lohoff <flo@rfc822.org>
+To: Alan Cox <alan@lxorguk.ukuu.org.uk>
+Cc: Jun Sun <jsun@mvista.com>, "Kevin D. Kissell" <kevink@mips.com>,
+   "\"MIPS/Linux List (SGI)\"" <linux-mips@oss.sgi.com>
+Subject: Re: Dumb Question on Cross-Development
+Message-ID: <20010404180538.G25870@paradigm.rfc822.org>
+References: <20010404120211.C11161@paradigm.rfc822.org> <E14klMh-0001kx-00@the-village.bc.nu>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.3.15i
-In-Reply-To: <20010403102608.A30531@bacchus.dhis.org>; from ralf@oss.sgi.com on Tue, Apr 03, 2001 at 10:26:09AM +0200
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+In-Reply-To: <E14klMh-0001kx-00@the-village.bc.nu>; from alan@lxorguk.ukuu.org.uk on Wed, Apr 04, 2001 at 12:22:16PM +0100
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Ralf Baechle wrote:
->On Tue, Apr 03, 2001 at 04:17:40AM +0200, Thiemo Seufer wrote:
->
->> >Without the binutils patch, all binaries compiled for MIPS/Linux
->> >will be IRIX flavored which was the whole problem.
->> 
->> Please may You elaborate about this? AFAICS, the IRIX flavour
->> can't be a problem by itself.
->
->> Changing the MIPS/Linux ABI to circumvent a toolchain bug seems
->> to be a bit extremistic. Am I missing some important details?
->
->IRIX ELF orders the symbol table of object files in a way that violates
->the ABI.  Worse, these IRIX specialities are not documented anywhere.
+On Wed, Apr 04, 2001 at 12:22:16PM +0100, Alan Cox wrote:
+> Or a flawed packaging tool. RPM allows you to force noarch and you can use it
+> to get around this precise problem. Its also useful when you want to force
+> an x86 package onto an Alpha with em86.
+> 
+> I find it hard to believe dpkg lacks such a feature.
+> 
 
-That would be ok, but, according to the source, there are also
-different maximum offsets for ELF_MIPS_GP_OFFSET, which is hardcoded
-to IRIX standard in gas, and different section namings like
-.MIPS.options vs. .options. 
+Just had a look - One can install them 
 
->Changing to ABI ELF only makes them look as they're supposed to ...
+dpkg --force-architecture -i --root=/nfsexport
 
-At least the section naming is specified different.
+But i was arguing against compiling the packages as "noarch" not installing
+them with noarch.
 
-
-Thiemo
+Flo
+-- 
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+     Why is it called "common sense" when nobody seems to have any?

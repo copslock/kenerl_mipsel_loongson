@@ -1,56 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Jan 2005 14:51:42 +0000 (GMT)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:25650
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8225203AbVAFOvi>; Thu, 6 Jan 2005 14:51:38 +0000
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp
-	id 1CmYyu-0005Jb-00; Thu, 06 Jan 2005 15:51:20 +0100
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 1CmYyt-00078U-00; Thu, 06 Jan 2005 15:51:19 +0100
-Date: Thu, 6 Jan 2005 15:51:19 +0100
-To: Mudeem Iqbal <mudeem@Quartics.com>
-Cc: "'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
-Subject: Re: mipes-linux-ld: final link failed: Bad value
-Message-ID: <20050106145119.GN4017@rembrandt.csv.ica.uni-stuttgart.de>
-References: <1B701004057AF74FAFF851560087B16106469D@1aurora.enabtech>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Jan 2005 15:39:03 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([IPv6:::ffff:210.190.142.172]:15306 "HELO
+	smtp.mba.ocn.ne.jp") by linux-mips.org with SMTP
+	id <S8225227AbVAFPi6>; Thu, 6 Jan 2005 15:38:58 +0000
+Received: from localhost (p4111-ipad29funabasi.chiba.ocn.ne.jp [221.184.71.111])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id ABB5E167A; Fri,  7 Jan 2005 00:38:54 +0900 (JST)
+Date: Fri, 07 Jan 2005 00:45:21 +0900 (JST)
+Message-Id: <20050107.004521.74752947.anemo@mba.ocn.ne.jp>
+To: macro@mips.com
+Cc: ralf@linux-mips.org, linux-mips@linux-mips.org,
+	macro@linux-mips.org
+Subject: Re: [PATCH] I/O helpers rework
+From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <Pine.LNX.4.61.0412151936460.14855@perivale.mips.com>
+References: <Pine.LNX.4.61.0412151936460.14855@perivale.mips.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1B701004057AF74FAFF851560087B16106469D@1aurora.enabtech>
-User-Agent: Mutt/1.5.6+20040907i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6813
+X-archive-position: 6814
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Mudeem Iqbal wrote:
-> hi,
-> 
-> I have built a toolchain using the following combination
-> 
-> binutils-2.15
-> gcc-3.4.3
-> glibc-2.3.3
-> linux-2.6.9	(from linux-mips.org)
-> 
-> I am cross compiling linux kernel for mips. I think the toolchain has been
-> successfully built. But when cross compiling the kernel I get the following
-> error
-> 
->   CC      mm/fremap.o
-> mipsel-linux-ld: final link failed: Bad value
-> make[1]: *** [mm/fremap.o] Error 1
+>>>>> On Wed, 15 Dec 2004 21:13:37 +0000 (GMT), "Maciej W. Rozycki" <macro@mips.com> said:
 
-A _final_ link for mm/fremap.o sounds like a broken cc invocation
-in mm/Makefile (does it miss the '-c' somehow?).
+macro>  As the whole file seemed a bit messy to me I decided to
+macro> rewrite these functions/macros completely.  To ease long-term
+macro> maintenance I created common templates for all classes of
+macro> accesses which expand to appropriate code for different
+macro> transfer unit width.  I made all operations to be expressed as
+macro> inline functions to catch dangerous/incorrect uses.  The result
+macro> are the following function classes:
+
+Thanks for your good job.  I have a few comments/requests.
+
+1. How about adding 'volatile' and '__iomem' to *read*()/*write*() ?
+   While some archs use 'volatile void __iomem *' and some are not, I
+   think *read*()/*write*()/ioremap()/iounmap() should use same type.
+   This will remove some compiler warnings.
+
+2. How about using 'const void *' for outs*()?  This will remove some
+   compiler warnings too.
+
+3. In *in*()/*out*(), it would be better to call __swizzle_addr*()
+   AFTER adding mips_io_port_base.  This unifies the meaning of the
+   argument of __swizzle_addr*() (always virtual address).  Then,
+   mach-specific __swizzle_addr*() can to every evil thing based on
+   the argument.
+
+4. How about enclosing all *ioswab*() by '#ifndef' ?  Also how about
+   passing virtual address to *ioswab*() ?  I mean something like:
+
+# ifndef ioswabw
+#  define ioswabw(a,x)		le16_to_cpu(x)
+# endif
+# ifndef __raw_ioswabw
+#  define __raw_ioswabw(a,x)	(x)
+# endif
+...
+	__val = pfx##ioswab##bwlq(__mem, val);				\
+
+  Then we can provide mach-specific *ioswab*() in mach-*/mangle-port.h
+  and can do every evil thing based on its argument.  It is usefull on
+  machines which have regions with defirrent endian conversion scheme.
+  Also, this can clean up CONFIG_SGI_IP22 from io.h
+  (mach-ip22/mangle-port.h can provide its own *ioswabw*()).
 
 
-Thiemo
+---
+Atsushi Nemoto

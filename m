@@ -1,44 +1,30 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA02934; Fri, 26 Apr 1996 15:24:27 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id RAA04933; Fri, 26 Apr 1996 17:03:20 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: by cthulhu.engr.sgi.com (950511.SGI.8.6.12.PATCH526/911001.SGI)
-	for linux-list id PAA05014; Fri, 26 Apr 1996 15:24:21 -0700
+	for linux-list id RAA15651; Fri, 26 Apr 1996 17:03:06 -0700
 Received: from neteng.engr.sgi.com by cthulhu.engr.sgi.com via ESMTP (950511.SGI.8.6.12.PATCH526/911001.SGI)
-	for <linux@cthulhu.engr.sgi.com> id PAA05009; Fri, 26 Apr 1996 15:24:20 -0700
-Received: (from lm@localhost) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA02924 for linux; Fri, 26 Apr 1996 15:24:15 -0700
-Date: Fri, 26 Apr 1996 15:24:15 -0700
-From: lm@neteng.engr.sgi.com (Larry McVoy)
-Message-Id: <199604262224.PAA02924@neteng.engr.sgi.com>
-To: linux@neteng.engr.sgi.com
-Subject: machine resource?
+	for <linux@cthulhu.engr.sgi.com> id RAA15638; Fri, 26 Apr 1996 17:03:05 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id RAA04910 for <lmlinux@neteng.engr.sgi.com>; Fri, 26 Apr 1996 17:02:58 -0700
+Received: from sgi.sgi.com by cthulhu.engr.sgi.com via ESMTP (950511.SGI.8.6.12.PATCH526/911001.SGI)
+	for <lmlinux@neteng.engr.sgi.com> id RAA15614; Fri, 26 Apr 1996 17:02:57 -0700
+Received: from caipfs.rutgers.edu by sgi.sgi.com via ESMTP (950405.SGI.8.6.12/910110.SGI)
+	for <lmlinux@neteng.engr.sgi.com> id RAA14141; Fri, 26 Apr 1996 17:02:54 -0700
+Received: from huahaga.rutgers.edu (huahaga.rutgers.edu [128.6.155.53]) by caipfs.rutgers.edu (8.6.9+bestmx+oldruq+newsunq+grosshack/8.6.9) with ESMTP id UAA21442 for <lmlinux@neteng.engr.sgi.com>; Fri, 26 Apr 1996 20:02:52 -0400
+Received: (davem@localhost) by huahaga.rutgers.edu (8.6.9+bestmx+oldruq+newsunq+grosshack/8.6.9) id UAA25342; Fri, 26 Apr 1996 20:02:52 -0400
+Date: Fri, 26 Apr 1996 20:02:52 -0400
+Message-Id: <199604270002.UAA25342@huahaga.rutgers.edu>
+From: "David S. Miller" <davem@caip.rutgers.edu>
+To: lmlinux@neteng.engr.sgi.com
+Subject: command line typo of the day...
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Hi-
-	I've been talking to one of the Linux/MIPs guys in Europe and a 
-couple of things came up:
 
-	1. We should get a box up outside the firewall to act as a 
-	source repository.  We have space (a small amount) and a
-	drop in my lab here in B9.
+? egrep SGISEGV *.c
+? whoops
+whoops: command not found
+? egrep SIGSEGV *.c
 
-	2. This guy offered to get a cross development environment
-	set up if we gave him a login on a machine.
-
-I'd like to kill two birds here and stick something like a challenge/s
-or an indy or whatever the new R5000 is called out there.  
-
-Does anyone have access to some hardware that we could use for this?
-If you come up with the hardware, I'll get it installed on the net
-(linux.sgi.com?), and help maintain it.
-
-Any ideas?
-
-Thanks,
-
---lm
----
-Larry McVoy     lm@sgi.com     http://reality.sgi.com/lm     (415) 933-1804
-Copyright 1996, all rights reserved.   Microsoft Network is prohibited from
-redistributing this work in any form, in whole or in part without license.
-License to distribute this work is available to Microsoft at $500.
-Transmission without permission constitutes an agreement to these terms.
+Later,
+David S. Miller
+davem@caip.rutgers.edu

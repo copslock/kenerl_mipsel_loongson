@@ -1,83 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jan 2004 06:23:31 +0000 (GMT)
-Received: from rth.ninka.net ([IPv6:::ffff:216.101.162.244]:3712 "EHLO
-	rth.ninka.net") by linux-mips.org with ESMTP id <S8224893AbUAOGXa>;
-	Thu, 15 Jan 2004 06:23:30 +0000
-Received: from rth.ninka.net (localhost.localdomain [127.0.0.1])
-	by rth.ninka.net (8.12.10/8.12.10) with SMTP id i0F6NGX6011727;
-	Wed, 14 Jan 2004 22:23:16 -0800
-Date: Wed, 14 Jan 2004 22:23:16 -0800
-From: "David S. Miller" <davem@redhat.com>
-To: Jun Sun <jsun@mvista.com>
-Cc: akpm@osdl.org, linux-mips@linux-mips.org,
-	linux-kernel@vger.kernel.org, rmk@arm.linux.org.uk, jsun@mvista.com
-Subject: Re: [BUG] 2.6.1/MIPS - missing cache flushing when user program
- returns pages to kernel
-Message-Id: <20040114222316.25276f12.davem@redhat.com>
-In-Reply-To: <20040114174012.H13471@mvista.com>
-References: <20040114163920.E13471@mvista.com>
-	<20040114171252.4d873c51.akpm@osdl.org>
-	<20040114172946.03e54706.akpm@osdl.org>
-	<20040114174012.H13471@mvista.com>
-X-Mailer: Sylpheed version 0.9.7 (GTK+ 1.2.10; i386-redhat-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jan 2004 09:10:41 +0000 (GMT)
+Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:26891 "EHLO
+	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8225198AbUAOJKk>;
+	Thu, 15 Jan 2004 09:10:40 +0000
+Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
+	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
+	id 1Ah3Ro-0001mu-00; Thu, 15 Jan 2004 09:05:52 +0000
+Received: from olympia.mips.com ([192.168.192.128] helo=doms-laptop.algor.co.uk)
+	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1Ah3W4-0002JS-00; Thu, 15 Jan 2004 09:10:17 +0000
+From: Dominic Sweetman <dom@mips.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <davem@redhat.com>
+Message-ID: <16390.22845.838720.511263@doms-laptop.algor.co.uk>
+Date: Thu, 15 Jan 2004 09:11:25 +0000
+To: Charlie Brady <charlieb-linux-mips@e-smith.com>
+Cc: Jun Sun <jsun@mvista.com>, linux-mips@linux-mips.org
+Subject: Re: Broadcom 4702?
+In-Reply-To: <Pine.LNX.4.44.0401142235300.17500-100000@allspice.nssg.mitel.com>
+References: <20040114170355.G13471@mvista.com>
+	<Pine.LNX.4.44.0401142235300.17500-100000@allspice.nssg.mitel.com>
+X-Mailer: VM 7.07 under 21.4 (patch 10) "Military Intelligence (RC5 Windows)" XEmacs Lucid
+X-MTUK-Scanner: Found to be clean
+X-MTUK-SpamCheck: not spam, SpamAssassin (score=-4.9, required 4, BAYES_00)
+Return-Path: <dom@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3967
+X-archive-position: 3968
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: davem@redhat.com
+X-original-sender: dom@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 14 Jan 2004 17:40:12 -0800
-Jun Sun <jsun@mvista.com> wrote:
 
-> Looking at my tree (which is from linux-mips.org), it appears
-> arm, sparc, sparc64, and sh have tlb_start_vma() defined to call
-> cache flushing.
+> On Wed, 14 Jan 2004, Jun Sun wrote:
+> 
+> > Since we are on this subject, I am curious if I buy a Cisco's router
+> > whether it is considered that Cisco distributs the binaries to me
+> > and whether I can demand for the source code if they are GPL'ed software.
+> ...
+> > I can see arguments go either way.  Do open source community and
+> > industry have some concensus on this issue?
 
-Correct, in fact every platform where cache flushing matters
-at all (ie. where flush_cache_*() routines actually need to
-flush a cpu cache), they should have tlb_start_vma() do such
-a flush.
+Charlie replied...
 
-> What exactly does tlb_start_vma()/tlb_end_vma() mean?  There is
-> only one invocation instance, which is significant enough to infer
-> the meaning.  :)
+> Please read the various licenses (GPL and other), and consult your
+> lawyer.  And if you want a definitive answer (in your jurisdiction)
+> get the license tested in Court (and subsequent Appeals Courts). :-)
 
-When the kernel unmaps a mmap region of a process (either for the
-sake of munmap() or tearing down all mapping during exit()) tlb_start_vma()
-is called, the page table mappings in the region are torn down one by
-one, then a tlb_end_vma() call is made.
+But Jun Sun asked whether distribution of a binary in a ROM inside a
+black box might not really count as distribution.  I don't think you
+need a lawyer to resolve that.  If the software was a computer game
+(for example) I can't quite see its commercial owners smiling
+indulgently and saying "it's only a ROM, carry on...", and I don't see
+them having trouble over their position in court.
 
-At the top level, ie. whoever invokes unmap_page_range(), there will
-be a tlb_gather_mmu() call.
+So yes, binary code distributed in a black box is still distributed,
+and if it was GPL software you are entitled to the source code.  It's
+sensible of Cisco to put it quietly on a web site somewhere.
 
-In order to properly optimize the cache flushes, most platforms do the
-following:
-
-1) The tlb->fullmm boolean keeps trap of whether this is just a munmap()
-   unmapping operation (if zero) or a full address space teardown
-   (if non-zero).
-
-2) In the full address space teardown case, and thus tlb->fullmm is
-   non-zero, the top level will do the explict flush_cache_mm()
-   (see mm/mmap.c:exit_mmap()), therefore the tlb_start_vma()
-   implementation need not do the flush, otherwise it does.
-
-   This is why sparc64 and friends implement it like this:
-
-#define tlb_start_vma(tlb, vma) \
-do {    if (!(tlb)->fullmm)     \
-                flush_cache_range(vma, vma->vm_start, vma->vm_end); \
-} while (0)
-
-Hope this clears things up.
-
-Someone should probably take what I just wrote, expand and organize it,
-then add such content to Documentation/cachetlb.txt
+--
+Dominic Sweetman
+(not necessarily the view of MIPS Technologies)

@@ -1,49 +1,37 @@
-Received:  by oss.sgi.com id <S553864AbRAPQ5p>;
-	Tue, 16 Jan 2001 08:57:45 -0800
-Received: from srvntsxconn3.toc.ixl.com ([216.99.0.139]:54276 "HELO
-        srvntsxconn3.toc.ixl.com") by oss.sgi.com with SMTP
-	id <S553858AbRAPQ5a>; Tue, 16 Jan 2001 08:57:30 -0800
-Received: from 216.99.0.139 by srvntsxconn3.toc.ixl.com (InterScan E-Mail VirusWall NT); Tue, 16 Jan 2001 11:55:36 -0500 (Eastern Standard Time)
-Received: by srvntsxconn3.toc.ixl.com with Internet Mail Service (5.5.2650.21)
-	id <CZFB905L>; Tue, 16 Jan 2001 11:55:35 -0500
-Message-ID: <0A5319EEAF65D411825E00805FBBD8A120A204@exchange.clt.ixl.com>
-From:   tmaloney@ixl.com
-To:     linux-mips@oss.sgi.com
-Subject: RE: crash in __alloc_bootmem_core on SGI current cvs
-Date:   Tue, 16 Jan 2001 11:56:12 -0500
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2650.21)
-Content-Type: text/plain;
-	charset="iso-8859-1"
+Received:  by oss.sgi.com id <S553865AbRAPRAP>;
+	Tue, 16 Jan 2001 09:00:15 -0800
+Received: from woody.ichilton.co.uk ([216.29.174.40]:5129 "HELO
+        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553858AbRAPQ77>;
+	Tue, 16 Jan 2001 08:59:59 -0800
+Received: by woody.ichilton.co.uk (Postfix, from userid 1000)
+	id 153C87D10; Tue, 16 Jan 2001 16:59:57 +0000 (GMT)
+Date:   Tue, 16 Jan 2001 16:59:56 +0000
+From:   Ian Chilton <mailinglist@ichilton.co.uk>
+To:     tmaloney@ixl.com
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: crash in __alloc_bootmem_core on SGI current cvs
+Message-ID: <20010116165956.B26392@woody.ichilton.co.uk>
+Reply-To: Ian Chilton <ian@ichilton.co.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.3.12i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-anyone know a source of monitor parts? i need two bezels(front pieces) for
-two Sony GDM-20D11's.
-
-thanks
-
------Original Message-----
-From: Ian Chilton [mailto:mailinglist@ichilton.co.uk]
-Sent: Tuesday, January 16, 2001 11:56 AM
-To: Ralf Baechle
-Cc: macro@ds2.pg.gda.pl; linux-mips@oss.sgi.com
-Subject: Re: crash in __alloc_bootmem_core on SGI current cvs
-
-
 Hello,
 
-> mem=0x07800000@0x08800000
+> anyone know a source of monitor parts? i need two bezels(front pieces) for
 
-What will I use with 96MB RAM please ?
+For starters, why ask this question under the heading " Re: crash in
+__alloc_bootmem_core on SGI current cvs"
 
-
-Is someone going to fix it so this param is not needed?
- 
-
-*Tootles off and posts to the news page @ http://linuxmips.ichilton.co.uk*
+And secondary, I seem to recall you already posted this question. If
+you didn't get an answer, it will be becasue no one knows. Posting the
+same question again is just annoying and will not get you an answer if
+you didn't the 1st time.
 
 
 Bye for Now,

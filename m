@@ -1,55 +1,121 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jan 2004 19:14:18 +0000 (GMT)
-Received: from mail.lvl7.com ([IPv6:::ffff:66.21.69.202]:41645 "EHLO
-	lvl7ser4.lvl7.com") by linux-mips.org with ESMTP
-	id <S8225470AbUAOTOR>; Thu, 15 Jan 2004 19:14:17 +0000
-Received: from savage.dyndns.pengo.lvl7.com (grantc-cd310vm [192.168.77.181]) by lvl7ser4.lvl7.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2655.55)
-	id C7DFXPDC; Thu, 15 Jan 2004 14:17:25 -0500
-Received: from lvl7.com (localhost.localdomain [127.0.0.1])
-	by savage.dyndns.pengo.lvl7.com (8.11.6/8.11.6) with ESMTP id i0FJE9X17410;
-	Thu, 15 Jan 2004 14:14:10 -0500
-Message-ID: <4006E67F.7010906@lvl7.com>
-Date: Thu, 15 Jan 2004 14:14:07 -0500
-From: "John W. Linville" <linville@lvl7.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.3.1) Gecko/20030425
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: Charlie Brady <charlieb-linux-mips@e-smith.com>
-CC: linux-mips@linux-mips.org
-Subject: Re: Broadcom 4702?
-References: <Pine.LNX.4.44.0401151343460.17500-100000@allspice.nssg.mitel.com>
-In-Reply-To: <Pine.LNX.4.44.0401151343460.17500-100000@allspice.nssg.mitel.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <linville@lvl7.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jan 2004 19:22:04 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:1533 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8225470AbUAOTWD>;
+	Thu, 15 Jan 2004 19:22:03 +0000
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.11.6/8.11.6) id i0FJM1C21272;
+	Thu, 15 Jan 2004 11:22:01 -0800
+Date: Thu, 15 Jan 2004 11:22:01 -0800
+From: Jun Sun <jsun@mvista.com>
+To: linux-mips@linux-mips.org
+Cc: jsun@mvista.com
+Subject: [PATCH 2.6] DEBUG_INFO, KGDB and etc...
+Message-ID: <20040115112201.E18368@mvista.com>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="cmJC7u66zC7hs+87"
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+Return-Path: <jsun@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3980
+X-archive-position: 3981
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linville@lvl7.com
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Charlie Brady wrote:
 
->+ifdef CONFIG_BCM4710
->+GCCFLAGS       += -m4710a0kern
-> endif
->
->I haven't tried building and running a kernel built without the gcc 
->workarounds, so I don't know whether they are only required for early 
->  
->
-I don't know about the 4710 or 4702 (I haven't got around to that yet), 
-but the 4704 doesn't seem to need any special flags for building the 
-kernel (or anything else).
+--cmJC7u66zC7hs+87
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Of course, YMMV...
 
-John
+This patch adds the missing "-g" gcc option when kgdb is configure.
+Clean up some debugging related options (DEBUG_INFO really should
+go under KGDB and depends its not being selected)
 
--- 
-John W. Linville
-LVL7 Systems, Inc.
+If no objection, will check it in later.
+
+And yes, the good news is that kgdb works in 2.6.
+
+Jun
+
+--cmJC7u66zC7hs+87
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename=junk1
+
+diff -Nru link/arch/mips/Makefile.orig link/arch/mips/Makefile
+--- link/arch/mips/Makefile.orig	Thu Jan 15 10:55:57 2004
++++ link/arch/mips/Makefile	Thu Jan 15 10:59:19 2004
+@@ -60,6 +60,7 @@
+ LDFLAGS_vmlinux			+= -G 0 -static # -N
+ MODFLAGS			+= -mlong-calls
+ 
++cflags-$(CONFIG_DEBUG_INFO)     += -g
+ cflags-$(CONFIG_SB1XXX_CORELIS)	+= -mno-sched-prolog -fno-omit-frame-pointer
+ 
+ check_warning = $(shell if $(CC) $(1) -c -o /dev/null -xc /dev/null > /dev/null 2>&1; then echo "$(1)"; else echo "$(2)"; fi)
+diff -Nru link/arch/mips/Kconfig.orig link/arch/mips/Kconfig
+--- link/arch/mips/Kconfig.orig	Thu Jan 15 10:55:57 2004
++++ link/arch/mips/Kconfig	Thu Jan 15 11:12:23 2004
+@@ -1233,23 +1233,6 @@
+ 	  This allows applications to run more reliably even when the system is
+ 	  under load.
+ 
+-config DEBUG_INFO
+-	bool "Compile the kernel with debug info"
+-	depends on DEBUG_KERNEL
+-	default y if KGDB
+-	help
+-	  If you say Y here the resulting kernel image will include
+-	  debugging info resulting in a larger kernel image.
+-	  Say Y here only if you plan to use gdb to debug the kernel.
+-	  If you don't debug the kernel, you can say N.
+-
+-config SB1XXX_CORELIS
+-	bool "Corelis Debugger"
+-	depends on SIBYTE_SB1xxx_SOC && DEBUG_INFO
+-	help
+-	  Select compile flags that produce code that can be processed by the
+-	  Corelis mksym utility and UDB Emulator.
+-
+ config DEBUG_SPINLOCK
+ 	bool "Spinlock debugging"
+ 	depends on DEBUG_KERNEL
+@@ -1471,6 +1454,7 @@
+ config KGDB
+ 	bool "Remote GDB kernel debugging"
+ 	depends on DEBUG_KERNEL
++	select DEBUG_INFO
+ 	help
+ 	  If you say Y here, it will be possible to remotely debug the MIPS
+ 	  kernel using gdb. This enlarges your kernel image disk size by
+@@ -1486,6 +1470,23 @@
+ 	  would like kernel messages to be formatted into GDB $O packets so
+ 	  that GDB prints them as program output, say 'Y'.
+ 
++config DEBUG_INFO
++	bool "Compile the kernel with debug info"
++	depends on DEBUG_KERNEL && !KGDB
++	default y if KGDB
++	help
++	  If you say Y here the resulting kernel image will include
++	  debugging info resulting in a larger kernel image.
++	  Say Y here only if you plan to use gdb to debug the kernel.
++	  If you don't debug the kernel, you can say N.
++
++config SB1XXX_CORELIS
++	bool "Corelis Debugger"
++	depends on SIBYTE_SB1xxx_SOC && DEBUG_INFO
++	help
++	  Select compile flags that produce code that can be processed by the
++	  Corelis mksym utility and UDB Emulator.
++
+ config RUNTIME_DEBUG
+ 	bool "Enable run-time debugging"
+ 	depends on DEBUG_KERNEL
+
+--cmJC7u66zC7hs+87--

@@ -1,62 +1,84 @@
-Received:  by oss.sgi.com id <S305163AbQCRW12>;
-	Sat, 18 Mar 2000 14:27:28 -0800
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:26202 "EHLO
+Received:  by oss.sgi.com id <S305163AbQCSVRe>;
+	Sun, 19 Mar 2000 13:17:34 -0800
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:50959 "EHLO
         pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S305156AbQCRW1H>; Sat, 18 Mar 2000 14:27:07 -0800
-Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id OAA08417; Sat, 18 Mar 2000 14:30:34 -0800 (PST)
+	id <S305156AbQCSVRI>; Sun, 19 Mar 2000 13:17:08 -0800
+Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id NAA07131; Sun, 19 Mar 2000 13:20:36 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id OAA72675
+	id MAA71951
 	for linux-list;
-	Sat, 18 Mar 2000 14:04:19 -0800 (PST)
+	Sun, 19 Mar 2000 12:45:56 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from liveoak.engr.sgi.com (liveoak.engr.sgi.com [163.154.5.24])
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id OAA56749;
-	Sat, 18 Mar 2000 14:02:43 -0800 (PST)
-	mail_from (wje@liveoak.engr.sgi.com)
-Received: (from wje@localhost)
-	by liveoak.engr.sgi.com (8.9.3/8.8.7) id OAA26916;
-	Sat, 18 Mar 2000 14:02:42 -0800
-X-Authentication-Warning: liveoak.engr.sgi.com: wje set sender to wje@liveoak.engr.sgi.com using -f
-From:   "William J. Earl" <wje@cthulhu.engr.sgi.com>
-MIME-Version: 1.0
+	via ESMTP id MAA35870
+	for <linux@cthulhu.engr.sgi.com>;
+	Sun, 19 Mar 2000 12:45:47 -0800 (PST)
+	mail_from (flo@rfc822.org)
+Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id MAA06704
+	for <linux@cthulhu.engr.sgi.com>; Sun, 19 Mar 2000 12:45:46 -0800 (PST)
+	mail_from (flo@rfc822.org)
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id D7C6C7F6; Sun, 19 Mar 2000 21:45:44 +0100 (CET)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id A4F578FC3; Sun, 19 Mar 2000 21:45:10 +0100 (CET)
+Date:   Sun, 19 Mar 2000 21:45:10 +0100
+From:   Florian Lohoff <flo@rfc822.org>
+To:     linux@cthulhu.engr.sgi.com
+Subject: header files state
+Message-ID: <20000319214510.B1365@paradigm.rfc822.org>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-ID: <14547.64770.154305.606794@liveoak.engr.sgi.com>
-Date:   Sat, 18 Mar 2000 14:02:42 -0800 (PST)
-To:     "Kevin D. Kissell" <kevink@mips.com>
-Cc:     "Ralf Baechle" <ralf@oss.sgi.com>,
-        "SGI Linux Alias" <linux@cthulhu.engr.sgi.com>
-Subject: Re: Include coherency problem, sigaction and otherwise
-In-Reply-To: <005901bf90d1$269b2690$0ceca8c0@satanas.mips.com>
-References: <005901bf90d1$269b2690$0ceca8c0@satanas.mips.com>
-X-Mailer: VM 6.74 under Emacs 20.3.1
+X-Mailer: Mutt 0.95.3i
+Organization: rfc822 - pure communication
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-Kevin D. Kissell writes:
-...
- > >The whole inconsistence was a stupid accident.  Since apparently only very
- > >little software was affected negativly (read: no known problems)  we didn't
- > >try to come up with some genious compatibility hacks but just fixed the
- > >definitions the hard way.
- > 
- > Having two independent sets of include files between kernel and userland
- > is always a bad idea, but is not *necessarily* broken, and sometimes
- > cannot be avoided.   The problem is not that the definitions are seperately
- > wired, but that they are incompatible - the risk one takes when one creates
- > multiple independent definitions.
+Hi,
+I am currently trying to waste some cpu cycles with blindly compiling
+packages instead of leaving the machine idle.
 
-      In this case the definitions are supposed to match the MIPS ABI.
-That the glibc definitions (at least as of 2.1.1) do not is just a glibc bug.
-This is no different that having Linux and FreeBSD header files for some
-I/O controller, with one of them having incorrect values for some field
-definitions.  The one which does not match the standard (the ABI or the
-I/O controller hardware) is simply wrong.
+Most of the packages (~1/3) fail because of the already discussed problems
+with the headers.
 
-     Since glibc is shared among a great many operating systems, it really
-needs to be self-contained in regard to the C and POSIX and UNIX98 standards.
+gcc -c  -g -O2 -Wall  -MD  -DHAVE_SYS_SELECT_H -DFLICK_VERSION=\"2.1\" -I. -I../
+../../../runtime/libraries/link/iiop -I- -I../../../../runtime/headers -I../../.
+./../runtime/headers -I../../../../runtime/libraries/link -I../../../.. -I../../
+../..  communication.c
+communication.c: In function `flick_client_send_request':
+communication.c:390: `SOCK_STREAM' undeclared (first use this function)
+communication.c:390: (Each undeclared identifier is reported only once
+communication.c:390: for each function it appears in.)
+
+
+gcc -O2 -g -I. -DHAVE_CONFIG_H -DPREFIX=\"/usr\"  -c -o additional.o additional.
+c
+In file included from /usr/include/sys/resource.h:27,
+                 from additional.c:14:
+/usr/include/resourcebits.h:103: warning: `RLIM_INFINITY' redefined
+/usr/include/asm/resource.h:32: warning: this is the location of the previous de
+finition
+In file included from /usr/include/sys/resource.h:27,
+                 from additional.c:14:
+/usr/include/resourcebits.h:102: parse error before `0x7fffffffUL'
+
+
+I am unsure where the problem is located exactly and how to fix it
+correctly - So probably somebody else more knowledged and timely equipped
+might fix this in the CVS (probably it is alread fixed ? - My CVS kernel
+is 3-5 days old)
+
+Flo
+-- 
+Florian Lohoff		flo@rfc822.org		      	+49-5241-470566
+"Technology is a constant battle between manufacturers producing bigger and
+more idiot-proof systems and nature producing bigger and better idiots."

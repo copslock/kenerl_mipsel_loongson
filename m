@@ -1,55 +1,67 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id GAA88820 for <linux-archive@neteng.engr.sgi.com>; Sat, 27 Jun 1998 06:10:08 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id LAA12841 for <linux-archive@neteng.engr.sgi.com>; Sun, 28 Jun 1998 11:59:26 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id GAA07346
+	id LAA77250
 	for linux-list;
-	Sat, 27 Jun 1998 06:09:30 -0700 (PDT)
+	Sun, 28 Jun 1998 11:58:57 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id GAA57043
+	via ESMTP id LAA53001
 	for <linux@cthulhu.engr.sgi.com>;
-	Sat, 27 Jun 1998 06:09:26 -0700 (PDT)
-	mail_from (ralf@uni-koblenz.de)
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) 
+	Sun, 28 Jun 1998 11:58:55 -0700 (PDT)
+	mail_from (adevries@engsoc.carleton.ca)
+Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) 
 	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id GAA22056
-	for <linux@cthulhu.engr.sgi.com>; Sat, 27 Jun 1998 06:09:24 -0700 (PDT)
-	mail_from (ralf@uni-koblenz.de)
-From: ralf@uni-koblenz.de
-Received: from uni-koblenz.de (ralf@pmport-21.uni-koblenz.de [141.26.249.21])
-	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id PAA00492
-	for <linux@cthulhu.engr.sgi.com>; Sat, 27 Jun 1998 15:09:22 +0200 (MEST)
-Received: (from ralf@localhost)
-	by uni-koblenz.de (8.8.7/8.8.7) id PAA02023;
-	Sat, 27 Jun 1998 15:09:17 +0200
-Message-ID: <19980627150916.B484@uni-koblenz.de>
-Date: Sat, 27 Jun 1998 15:09:16 +0200
-To: Oliver Frommel <oliver@aec.at>, linux@cthulhu.engr.sgi.com
-Subject: Re: fs full on linus?
-References: <Pine.LNX.3.96.980626175710.17397B-100000@web.aec.at>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.91.1
-In-Reply-To: <Pine.LNX.3.96.980626175710.17397B-100000@web.aec.at>; from Oliver Frommel on Fri, Jun 26, 1998 at 05:58:51PM +0200
+	via ESMTP id LAA20641
+	for <linux@cthulhu.engr.sgi.com>; Sun, 28 Jun 1998 11:58:54 -0700 (PDT)
+	mail_from (adevries@engsoc.carleton.ca)
+Received: from localhost (adevries@localhost)
+	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id OAA12544;
+	Sun, 28 Jun 1998 14:58:20 -0400
+X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
+Date: Sun, 28 Jun 1998 14:58:20 -0400 (EDT)
+From: Alex deVries <adevries@engsoc.carleton.ca>
+To: "Francis M. J. Hsieh" <mjhsieh@life.nthu.edu.tw>
+cc: linux@cthulhu.engr.sgi.com
+Subject: Re: hmmmm.... nice job!!
+In-Reply-To: <19980629205224.A1023@life.nthu.edu.tw>
+Message-ID: <Pine.LNX.3.95.980628145721.10146B-100000@lager.engsoc.carleton.ca>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Fri, Jun 26, 1998 at 05:58:51PM +0200, Oliver Frommel wrote:
 
-> while trying to check out the kernel from linus.linux.sgi.com i got the 
-> following message:
+On Mon, 29 Jun 1998, Francis M. J. Hsieh wrote:
+> I just installed this nice/impressive OS in our indy, the network speed
+> is faster than it is on irix6.2. And it had a huge screen :-)
+
+Good!
+
+> I have setup a ftp service and one www service on this linux, it works
+> fine. :-)
 > 
-> [oliver@baal sgi]$ cvs -z 9 -d oliver@linus.linux.sgi.com:/src/cvs update linux
-> Enter passphrase for RSA key 'oliver@zero': 
-> cvs [server aborted]: cannot open /tmp/cvs-serv13160/linux/drivers/sbus/CVS: No
->  space left on device
+> here are some small problems :-)
+>  - Sometimes after closing telnet connection, it shows
+> 	bpti [/home/mjhsieh] -mjhsieh- logout
+> 	tput: tgetent failure: No such file or directory
+> 	tput: tgetent failure: No such file or directory
+> 	Connection closed by foreign host."
 
-I zapped a collection of old logfile and moved my home to /work, so we now
-have about 76mb free again.
+Hm.  That's new to me.  I look at it.
 
-  Ralf
+>  - possible no sound support (beep ?)
+
+No, no sound support yet.
+
+>  - (sometimes) a strange garbage image, about 1 character size in the
+>    lowerleft corner of the screen
+
+Yup, that's a console bug, I get that too.
+
+- Alex

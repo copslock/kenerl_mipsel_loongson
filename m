@@ -1,59 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Oct 2002 14:07:08 +0100 (CET)
-Received: from delta.ds2.pg.gda.pl ([213.192.72.1]:37534 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S1122117AbSJ3NHH>; Wed, 30 Oct 2002 14:07:07 +0100
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA04038;
-	Wed, 30 Oct 2002 14:07:25 +0100 (MET)
-Date: Wed, 30 Oct 2002 14:07:25 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Jun Sun <jsun@mvista.com>
-cc: Karsten Merker <karsten@excalibur.cologne.de>,
-	linux-mips@linux-mips.org
-Subject: Re: make xmenuconfig is broken
-In-Reply-To: <20021029133021.D18288@mvista.com>
-Message-ID: <Pine.GSO.3.96.1021030135048.1859E-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Oct 2002 16:06:47 +0100 (CET)
+Received: from p508B539B.dip.t-dialin.net ([80.139.83.155]:64235 "EHLO
+	dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S1122117AbSJ3PGr>; Wed, 30 Oct 2002 16:06:47 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id g9UF65D19951;
+	Wed, 30 Oct 2002 16:06:05 +0100
+Date: Wed, 30 Oct 2002 16:06:04 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: "TWEDE,ROGER (HP-Boise,ex1)" <roger_twede@hp.com>
+Cc: "'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
+Subject: Re: Recent Kernel Page Fault Problems Spawning Init?
+Message-ID: <20021030160604.A19907@linux-mips.org>
+References: <CBD6266EA291D5118144009027AA63353F9412@xboi05.boi.hp.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <CBD6266EA291D5118144009027AA63353F9412@xboi05.boi.hp.com>; from roger_twede@hp.com on Tue, Oct 29, 2002 at 05:53:15PM -0500
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 538
+X-archive-position: 539
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 29 Oct 2002, Jun Sun wrote:
+On Tue, Oct 29, 2002 at 05:53:15PM -0500, TWEDE,ROGER (HP-Boise,ex1) wrote:
 
-> > Why do you want to move the config? Is there any technical reason besides
-> > grouping the subarch specific character devices below the generic
-> > character devices instead of having a subarch specific menu ("DECstation
-> > character devices")?
+> I would be appreciative of any advice anyone can offer in this regard.
 > 
-> My limited xconfig knowledge seems to tell me that moving to the generic
-> config file is the only way to make it work.  If you know a better way to fix
-> this, I will be happy to see it.
+> Were any fundamental kernel changes made in the 2.4.17 through 2.4.19
+> timeframe which could explain why the spawning of init would hang?
+> 
+> After mounting a root filesystem and attempting to spawn init, 3 or 4 page
+> faults occur.  The entry point of init, its bss section and an elf loader
+> .text section get hit, etc.  followed by an endless series of page faults to
+> a bad address which just faults repeatedly, never allowing init or the elf
+> loader to proceed.
+> 
+> I've tried a RM 7000A and 20KC based boards so far with apparently identical
+> behavior on both.
 
- The DECstation setup is plain broken.  I've promised to look into it
-once, but I haven't looked into it yet, sorry.  I'll see what I can do --
-it shouldn't be hard.  I'll make a fix and ask you to test if it makes
-your problems go away.  The submenu for "DECstation character devices" is
-going to remain where it is now for 2.4, as the devices are (incorrectly)
-scattered across directories.  For 2.5 they are going to be moved to
-"drivers/serial" where they belong.  Especially as they are not really
-DECstation-specific -- the VAX and Alpha (DEC 3000) ports may want to use
-them as well. 
+Various people have reported this kind of problem in past but so far all of
+them turned out some local problem.  20kc and RM7000 are both supposed to be
+working fine.
 
- The problem is CONFIG_SERIAL having different meanings for the MIPS port. 
-It causes annoyance with dynamic parsers (like `make config') and I'm not
-surprised it breaks the xconfig static parser. 
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+  Ralf

@@ -1,19 +1,19 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9SKmOa05631
-	for linux-mips-outgoing; Sun, 28 Oct 2001 12:48:24 -0800
+	by oss.sgi.com (8.11.2/8.11.3) id f9SLLFg06240
+	for linux-mips-outgoing; Sun, 28 Oct 2001 13:21:15 -0800
 Received: from ns1.ltc.com (ns1.ltc.com [38.149.17.165])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9SKmI005628;
-	Sun, 28 Oct 2001 12:48:18 -0800
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9SLL5006237;
+	Sun, 28 Oct 2001 13:21:06 -0800
 Received: from dev1 (gw1.ltc.com [38.149.17.163])
 	by ns1.ltc.com (Postfix) with ESMTP
-	id 15636590B4; Sun, 28 Oct 2001 11:45:15 -0500 (EST)
+	id D65FB590B4; Sun, 28 Oct 2001 12:18:02 -0500 (EST)
 Received: from brad by dev1 with local (Exim 3.32 #1 (Debian))
-	id 15xwqQ-0002ne-00; Sun, 28 Oct 2001 15:47:46 -0500
-Date: Sun, 28 Oct 2001 15:47:46 -0500
+	id 15xxMA-00030D-00; Sun, 28 Oct 2001 16:20:34 -0500
+Date: Sun, 28 Oct 2001 16:20:34 -0500
 To: ralf@oss.sgi.com
 Cc: linux-mips@oss.sgi.com
-Subject: PATCH: require dev_id for shared irq
-Message-ID: <20011028154746.A10762@dev1.ltc.com>
+Subject: PATCH: keyboard share irqs
+Message-ID: <20011028162034.A11542@dev1.ltc.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -24,30 +24,52 @@ Precedence: bulk
 
 2001-10-28  Bradley D. LaRonde <brad@ltc.com>
 
-- Require a dev_id for shared interrupts.
+- Allow sharing of keyboard/aux irqs.
+- Add Rockhopper BB 2.0 keyboard suport.
 
---- arch/mips/kernel/irq.c	2001/10/12 01:41:17	1.36
-+++ arch/mips/kernel/irq.c	2001/10/28 20:43:19
-@@ -350,18 +350,12 @@
- 	int retval;
- 	struct irqaction * action;
+--- arch/mips/lib/kbd-std.c	2001/09/06 13:12:02	1.5
++++ arch/mips/lib/kbd-std.c	2001/10/28 21:16:53
+@@ -7,14 +7,20 @@
+  *
+  * Copyright (C) 1998, 1999 by Ralf Baechle
+  */
++#include <linux/config.h>
+ #include <linux/ioport.h>
+ #include <linux/sched.h>
+ #include <linux/pc_keyb.h>
+ #include <asm/keyboard.h>
+ #include <asm/io.h>
  
--#if 1
- 	/*
--	 * Sanity-check: shared interrupts should REALLY pass in
--	 * a real dev-ID, otherwise we'll have trouble later trying
--	 * to figure out which interrupt is which (messes up the
--	 * interrupt freeing logic etc).
-+	 * Shared interrupts require a dev_id, otherwise we can't
-+	 * later figure out which interrupt to free.
- 	 */
--	if (irqflags & SA_SHIRQ) {
--		if (!dev_id)
--			printk("Bad boy: %s (at 0x%x) called us without a dev_id!\n", devname, (&irq)[-1]);
--	}
--#endif
-+	if ((irqflags & SA_SHIRQ) && !dev_id)
-+		return -EINVAL;
+-#define KEYBOARD_IRQ 1
+-#define AUX_IRQ 12
++#ifdef CONFIG_DDB5477
++#define KEYBOARD_IRQ  18
++#define AUX_IRQ       KEYBOARD_IRQ
++#else
++#define KEYBOARD_IRQ  1
++#define AUX_IRQ       12
++#endif
  
- 	if (irq >= NR_IRQS)
- 		return -EINVAL;
+ static void std_kbd_request_region(void)
+ {
+@@ -27,17 +33,17 @@
+ 
+ static int std_kbd_request_irq(void (*handler)(int, void *, struct pt_regs *))
+ {
+-	return request_irq(KEYBOARD_IRQ, handler, 0, "keyboard", NULL);
++	return request_irq(KEYBOARD_IRQ, handler, SA_SHIRQ, "keyboard", &std_kbd_request_irq);
+ }
+ 
+ static int std_aux_request_irq(void (*handler)(int, void *, struct pt_regs *))
+ {
+-	return request_irq(AUX_IRQ, handler, 0, "PS/2 Mouse", NULL);
++	return request_irq(AUX_IRQ, handler, SA_SHIRQ, "PS/2 Mouse", &std_aux_request_irq);
+ }
+ 
+ static void std_aux_free_irq(void)
+ {
+-	free_irq(AUX_IRQ, NULL);
++	free_irq(AUX_IRQ, &std_aux_request_irq);
+ }
+ 
+ static unsigned char std_kbd_read_input(void)

@@ -1,71 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jan 2004 17:21:13 +0000 (GMT)
-Received: from host-65-122-203-2.quicklogic.com ([IPv6:::ffff:65.122.203.2]:12429
-	"EHLO mail.Quicklogic.com") by linux-mips.org with ESMTP
-	id <S8225256AbUAMRVK>; Tue, 13 Jan 2004 17:21:10 +0000
-Received: from quicklogic.com
-	([192.168.1.153])
-	by mail.Quicklogic.com; Tue, 13 Jan 2004 09:23:47 -0800
-Message-ID: <4004295F.9060104@quicklogic.com>
-Date: Tue, 13 Jan 2004 12:22:39 -0500
-From: Dan Aizenstros <dan@quicklogic.com>
-Organization: QuickLogic Canada
-User-Agent: Mozilla/5.0 (Windows; U; WinNT4.0; en-US; rv:1.5b) Gecko/20030901 Thunderbird/0.2
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: linux-mips@linux-mips.org
-Subject: Re: CVS Update@-mips.org: linux
-References: <20040113080926Z8225270-16706+2387@linux-mips.org>
-In-Reply-To: <20040113080926Z8225270-16706+2387@linux-mips.org>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <dan@quicklogic.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jan 2004 17:27:59 +0000 (GMT)
+Received: from hermes.fachschaften.tu-muenchen.de ([IPv6:::ffff:129.187.202.12]:58088
+	"HELO hermes.fachschaften.tu-muenchen.de") by linux-mips.org
+	with SMTP id <S8225336AbUAMR16>; Tue, 13 Jan 2004 17:27:58 +0000
+Received: (qmail 22352 invoked from network); 13 Jan 2004 17:25:12 -0000
+Received: from mimas.fachschaften.tu-muenchen.de (129.187.202.58)
+  by hermes.fachschaften.tu-muenchen.de with QMQP; 13 Jan 2004 17:25:12 -0000
+Date: Tue, 13 Jan 2004 18:27:51 +0100
+From: Adrian Bunk <bunk@fs.tum.de>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [2.6 patch] fix DECSTATION depends
+Message-ID: <20040113172751.GN9677@fs.tum.de>
+References: <20040113015202.GE9677@fs.tum.de> <20040113022826.GC1646@linux-mips.org> <Pine.LNX.4.55.0401131401300.21962@jurand.ds.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.55.0401131401300.21962@jurand.ds.pg.gda.pl>
+User-Agent: Mutt/1.4.1i
+Return-Path: <bunk@fs.tum.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3920
+X-archive-position: 3921
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@quicklogic.com
+X-original-sender: bunk@fs.tum.de
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
-
-You broke any build that does not define CONFIG_SERIAL_AU1X00
-by adding an #error in the include/asm-mips/serial.h file.
-
--- Dan A.
-
-ppopov@linux-mips.org wrote:
-
-> CVSROOT:	/home/cvs
-> Module name:	linux
-> Changes by:	ppopov@ftp.linux-mips.org	04/01/13 08:09:22
+On Tue, Jan 13, 2004 at 02:07:54PM +0100, Maciej W. Rozycki wrote:
+> On Tue, 13 Jan 2004, Ralf Baechle wrote:
 > 
-> Modified files:
-> 	arch/mips      : Kconfig Makefile 
-> 	arch/mips/au1000/common: clocks.c dbg_io.c dma.c irq.c pci.c 
-> 	                         power.c puts.c reset.c setup.c time.c 
-> 	arch/mips/au1000/pb1500: board_setup.c irqmap.c 
-> 	arch/mips/configs: pb1500_defconfig 
-> 	drivers/net    : au1000_eth.c 
-> 	drivers/serial : au1x00_uart.c 
-> 	include/asm-mips: serial.h 
-> Added files:
-> 	include/asm-mips/mach-au1x00: au1000.h au1000_dma.h 
-> 	                              au1000_gpio.h au1000_pcmcia.h 
-> 	                              au1000_usbdev.h 
-> 	include/asm-mips/mach-db1x00: db1x00.h 
-> 	include/asm-mips/mach-pb1x00: pb1000.h pb1100.h pb1500.h 
-> Removed files:
-> 	include/asm-mips: au1000.h au1000_dma.h au1000_gpio.h 
-> 	                  au1000_pcmcia.h au1000_usbdev.h db1x00.h 
-> 	                  pb1000.h pb1100.h pb1500.h 
+> > > it seems the following is required in Linus' tree to get correct depends 
+> > > for DECSTATION:
+> > 
+> > Thanks,  applied.
 > 
-> Log message:
-> 	- moved .h files to appropriate include/asm-mips/mach-xxxx directories
-> 	- fixed .c files to pick up new .h path name
-> 	- fixed the serial console
+>  The dependency was intentional: stable for 32-bit, experimental for
+> 64-bit.  I'm reverting the change immediately.  Please always contact me
+> before applying non-obvious changes for the DECstation.
 > 
-> 
+>  If there's anything wrong with the depends, it should be fixed elsewhere.  
+> Details, please.
+
+Does -mabi=64 really work on any DECstation?
+
+AFAIK none of the R2000, R3x00 and the R4x00 do support the 64bit ABI.
+
+>   Maciej
+
+cu
+Adrian
+
+-- 
+
+       "Is there not promise of rain?" Ling Tan asked suddenly out
+        of the darkness. There had been need of rain for many days.
+       "Only a promise," Lao Er said.
+                                       Pearl S. Buck - Dragon Seed

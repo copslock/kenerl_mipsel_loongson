@@ -1,82 +1,53 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id AAA53005 for <linux-archive@neteng.engr.sgi.com>; Fri, 27 Nov 1998 00:15:52 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id PAA79011 for <linux-archive@neteng.engr.sgi.com>; Fri, 27 Nov 1998 15:02:23 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id AAA22023
+	id PAA98006
 	for linux-list;
-	Fri, 27 Nov 1998 00:15:11 -0800 (PST)
+	Fri, 27 Nov 1998 15:01:25 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id AAA32956
-	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 27 Nov 1998 00:15:08 -0800 (PST)
-	mail_from (torbjorn.gannholm@fra.se)
-Received: from x.fra.se (x.fra.se [193.12.220.1]) 
+	via ESMTP id PAA98022;
+	Fri, 27 Nov 1998 15:01:21 -0800 (PST)
+	mail_from (Olivier.Galibert@loria.fr)
+Received: from lorraine.loria.fr (lorraine.loria.fr [152.81.1.17]) 
 	by sgi.sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via SMTP id AAA07132
-	for <linux@cthulhu.engr.sgi.com>; Fri, 27 Nov 1998 00:15:05 -0800 (PST)
-	mail_from (torbjorn.gannholm@fra.se)
-Received: from fra.se by x.fra.se via ESMTP (940816.SGI.8.6.9/940406.SGI.AUTO)
-	 id JAA04177; Fri, 27 Nov 1998 09:21:20 +0100
-Message-ID: <365E60FE.F12615EC@fra.se>
-Date: Fri, 27 Nov 1998 09:21:19 +0100
-From: "Torbjörn Gannholm" <torbjorn.gannholm@fra.se>
-X-Mailer: Mozilla 4.05 [en] (X11; I; IRIX 5.3 IP12)
-MIME-Version: 1.0
-To: Alan Cox <alan@lxorguk.ukuu.org.uk>
-CC: "linux@cthulhu.engr.sgi.com" <linux@cthulhu.engr.sgi.com>
-Subject: Re: GNU/Hurd
-References: <m0zj1Bg-0007U2C@the-village.bc.nu>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
+	via ESMTP id PAA04761; Fri, 27 Nov 1998 15:01:19 -0800 (PST)
+	mail_from (Olivier.Galibert@loria.fr)
+Received: from renaissance.loria.fr (renaissance.loria.fr [152.81.4.102])
+	by lorraine.loria.fr (8.8.7/8.8.7/8.8.7/JCG) with ESMTP id XAA26206;
+	Fri, 27 Nov 1998 23:59:20 +0100 (MET)
+Received: (from galibert@localhost) by renaissance.loria.fr (8.8.2/8.8.2) id XAA20211; Fri, 27 Nov 1998 23:59:18 +0100 (MET)
+Message-ID: <19981127235918.A20200@loria.fr>
+Date: Fri, 27 Nov 1998 23:59:18 +0100
+From: Olivier Galibert <galibert@pobox.com>
+To: ralf@uni-koblenz.de, Ariel Faigon <ariel@oz.engr.sgi.com>
+Cc: linux@cthulhu.engr.sgi.com
+Subject: Re: help offered
+Mail-Followup-To: ralf@uni-koblenz.de, Ariel Faigon <ariel@oz.engr.sgi.com>,
+	linux@cthulhu.engr.sgi.com
+References: <19981125204900.A4692@loria.fr> <199811252037.MAA37649@oz.engr.sgi.com> <19981126062837.A1134@uni-koblenz.de> <19981126085407.A2201@uni-koblenz.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.91.1i
+In-Reply-To: <19981126085407.A2201@uni-koblenz.de>; from ralf@uni-koblenz.de on Thu, Nov 26, 1998 at 08:54:07AM -0600
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Alan Cox wrote:
+On Thu, Nov 26, 1998 at 08:54:07AM -0600, ralf@uni-koblenz.de wrote:
+> On Thu, Nov 26, 1998 at 06:28:37AM -0600, ralf@uni-koblenz.de wrote:
+> 
+> > The big ones which still need a lot of work are
+> > 
+> >  - VFS and lower layers are protected by the big kernel lock.
+> 
+> Talked with Stephen Tweedie about this, it's considered a tough job to
+> multithread that right.
 
-> > A possible minus is the message-passing between the servers which might
-> > be time-consuming.
->
-> "Yesterdays technology, next week" to quote an OSI saying
+Afaik, the main problem is avoiding deadlocks.  Tough job.
 
-Possibly, but maybe Unix and Linux also are yesterdays technology in some sense,
-but cooperative development is the future (and a small bit of the present) and I
-think it's sad that science is held back because of money and prestige
-(Although, mind you, I don't mind paying for software and giving credit where
-it's due, but I want to know what it does and be able to change it if I think I
-can do something better).
-
->
->
-> > Still, my feeling is that this could be a real winner on flexibility and
-> > performance. Any comments?
->
-> If you want a pre-emptible OS core its not HURD. Being pre-emptible without
-> deadlocks or other interesting suprises is a very very hard problem. Consider
-> things like disk sorting algorithms when you have 40 blocks for a low pri
-> process queued up with 2 for a real time one.
-
- Actually, for the most part I couldn't care less about preemptible or
-real-time. I just want to get maximum cream out of my system (scaled to a
-zillion cpus), and I want it to run until I kill it. Maybe I'm being boring, but
-to watch video I use a TV, to listen to music I use a HiFi, reality is a lot
-more interesting than virtual, and to run a nuclear power station I have
-dedicated machines. And if I did want to use my computer for any of this I could
-probably load the appropriate mechanisms if they existed and everything else is
-nicely designed.
-
-IMHO, maybe preemptibility is a fix rather than a solution and the solution lies
-in another dimension.
-
-But still, why wouldn't some implementation of HURD (or mach) be able to be
-preemptible?
-
---
-/Torbjörn
-
-This message is a personal message from Torbjörn Gannholm
-and does not necessarily represent the opinion of my employer.
+  OG.

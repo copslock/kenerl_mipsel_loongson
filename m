@@ -1,48 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Oct 2002 19:07:11 +0200 (CEST)
-Received: from delta.ds2.pg.gda.pl ([213.192.72.1]:64238 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S1123253AbSJYRHK>; Fri, 25 Oct 2002 19:07:10 +0200
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id TAA02561;
-	Fri, 25 Oct 2002 19:06:51 +0200 (MET DST)
-Date: Fri, 25 Oct 2002 19:06:50 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Oct 2002 19:50:57 +0200 (CEST)
+Received: from p508B69CC.dip.t-dialin.net ([80.139.105.204]:38800 "EHLO
+	p508B69CC.dip.t-dialin.net") by linux-mips.org with ESMTP
+	id <S1123253AbSJYRu4>; Fri, 25 Oct 2002 19:50:56 +0200
+Received: from sccrmhc01.attbi.com ([IPv6:::ffff:204.127.202.61]:14738 "EHLO
+	sccrmhc01.attbi.com") by ralf.linux-mips.org with ESMTP
+	id <S867025AbSJYRuu>; Fri, 25 Oct 2002 19:50:50 +0200
+Received: from lucon.org ([12.234.88.146]) by sccrmhc01.attbi.com
+          (InterMail vM.4.01.03.27 201-229-121-127-20010626) with ESMTP
+          id <20021025175035.HITW27756.sccrmhc01.attbi.com@lucon.org>;
+          Fri, 25 Oct 2002 17:50:35 +0000
+Received: by lucon.org (Postfix, from userid 1000)
+	id 289E32C4EC; Fri, 25 Oct 2002 10:50:34 -0700 (PDT)
+Date: Fri, 25 Oct 2002 10:50:34 -0700
+From: "H. J. Lu" <hjl@lucon.org>
 To: "Steven J. Hill" <sjhill@realitydiluted.com>
-cc: Daniel Jacobowitz <dan@debian.org>, linux-mips@linux-mips.org,
-	binutils@sources.redhat.com
+Cc: linux-mips@linux-mips.org, binutils@sources.redhat.com
 Subject: Re: Problems generating shared library for MIPS using binutils-2.13...
-In-Reply-To: <3DB97744.2010707@realitydiluted.com>
-Message-ID: <Pine.GSO.3.96.1021025185639.1121A-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Message-ID: <20021025105034.A16528@lucon.org>
+References: <3DB97381.8070501@realitydiluted.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <3DB97381.8070501@realitydiluted.com>; from sjhill@realitydiluted.com on Fri, Oct 25, 2002 at 11:38:25AM -0500
+Return-Path: <hjl@lucon.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 511
+X-archive-position: 512
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: hjl@lucon.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 25 Oct 2002, Steven J. Hill wrote:
+On Fri, Oct 25, 2002 at 11:38:25AM -0500, Steven J. Hill wrote:
+> Greetings.
+> 
+> I'm doing something stupid here, so please help me out. I am trying
+> to create a shared library with gcc passing parameters to the linker
+> and it is not working.
+> 
+> I compiled all the object files with '-mips2' and then I attempt to
+> create the shared library with:
+> 
+>     mipsel-linux-gcc -shared -Wl,-Amips2,-soname,libz.so.1 \
+>        -o libz.so.1.1.4 adler32.o compress.o crc32.o gzio.o \
+>        uncompr.o deflate.o trees.o zutil.o inflate.o infblock.o \
+>        inftrees.o infcodes.o infutil.o inffast.o
+> 
+> The object files are all mips2, but the generated '.so' object
+> is mips1?! What am I not understanding? I am using binutils-2.13,
+> gcc-3.2 and uClibc-0.9.15. The use of uClibc is not the problem.
+> 
 
-> > Is every object or library mentioned on that line already marked as
-> > MIPS-2 by readelf?  Even crt*, libc*?
-> >
-> I knew I was being stupid, crt* and libc* are mips1 *sigh*. Looks
-> like I have more work to do for my build system. Below is the verbose
-> output, but I think that's the problem for sure.
+That is a bug in the FSF binutils. I believe I fixed it in my Linux
+binutils:
 
- Hmm, that's strange as a single mips2 object among mips1 ones should make
-an executable/shared library be marked as mips2 and not mips1.  I wouldn't
-worry in the long run, though, as I think this should be fixed in the
-trunk as Richard Sandiford was working in these areas recently.  You might
-want to do a verification to be sure, though. 
+http://sources.redhat.com/ml/binutils/2001-10/msg00526.html
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Please try my Linux binutils. 
+
+
+H.J.

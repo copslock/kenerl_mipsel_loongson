@@ -1,31 +1,51 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id LAA32810 for <linux-archive@neteng.engr.sgi.com>; Mon, 12 Jan 1998 11:33:45 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id MAA55457 for <linux-archive@neteng.engr.sgi.com>; Mon, 12 Jan 1998 12:44:44 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA12178 for linux-list; Mon, 12 Jan 1998 11:28:40 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA12108 for <linux@cthulhu.engr.sgi.com>; Mon, 12 Jan 1998 11:28:28 -0800
-Received: from snowcrash.cymru.net (snowcrash.cymru.net [163.164.160.3]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id LAA22722
-	for <linux@cthulhu.engr.sgi.com>; Mon, 12 Jan 1998 11:28:27 -0800
-	env-from (alan@lxorguk.ukuu.org.uk)
-Received: from lightning.swansea.linux.org.uk (the-village.bc.nu [163.164.160.21]) by snowcrash.cymru.net (8.8.7/8.7.1) with SMTP id TAA10347; Mon, 12 Jan 1998 19:27:49 GMT
-Received: by lightning.swansea.linux.org.uk (Smail3.1.29.1 #2)
-	id m0xrpuB-0005FsC; Mon, 12 Jan 98 19:52 GMT
-Message-Id: <m0xrpuB-0005FsC@lightning.swansea.linux.org.uk>
-From: alan@lxorguk.ukuu.org.uk (Alan Cox)
-Subject: Re: BlueBelt Linux for SGI
-To: miguel@nuclecu.unam.mx (Miguel de Icaza)
-Date: Mon, 12 Jan 1998 19:52:15 +0000 (GMT)
-Cc: adevries@engsoc.carleton.ca, linux@cthulhu.engr.sgi.com
-In-Reply-To: <199801121847.MAA01817@athena.nuclecu.unam.mx> from "Miguel de Icaza" at Jan 12, 98 12:47:58 pm
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id MAA08413 for linux-list; Mon, 12 Jan 1998 12:41:02 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA08367 for <Linux@cthulhu.engr.sgi.com>; Mon, 12 Jan 1998 12:40:56 -0800
+Received: from zaphod.et.tudelft.nl (zaphod.et.tudelft.nl [130.161.38.84]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id MAA15836
+	for <Linux@cthulhu.engr.sgi.com>; Mon, 12 Jan 1998 12:40:55 -0800
+	env-from (ednes@zaphod.et.tudelft.nl)
+Received: (from ednes@localhost)
+	by zaphod.et.tudelft.nl (8.8.7/8.8.7) id VAA20724;
+	Mon, 12 Jan 1998 21:40:53 +0100
+Message-Id: <199801122040.VAA20724@zaphod.et.tudelft.nl>
+Subject: booting linux
+To: Linux@cthulhu.engr.sgi.com
+Date: Mon, 12 Jan 1998 21:40:53 +0100 (CET)
+Cc: E.Hakkennes@ET.TUDelft.NL (Edwin Hakkennes)
+In-Reply-To:  
+From: Edwin Hakkennes <E.Hakkennes@ET.TUDelft.NL>
 Content-Type: text
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> > A lot of those failures are simply because of the order I built
-> > everything in;  eg. I built gpm-devel late in the game, so things like mc
-> > didn't compile. 
-> 
-> Oh, but this is such an important tool.  
-> 
-> We need mc ;-)
+Hi all
 
-I've filled in a pile of the obvious blanks and a few spec file fixes
-- ftp.uk.linux.org as usual
+I reinstalled Irix 5.3 on our indy, and put the vmlinux-indy-2.1.67.tar.gz
+kernel on the irix root as vmlinux. There is no root-file-system yet. I need 
+to bring a disk...
+
+When booting using 
+stop for maintainance,
+boot
+(sash) boot -f /vmlinux /dev/sda1
+it starts to boot, but it hangs after the following message:
+Got a bus error IRQ, shouldn't happen yet.
+
+This comes just after the serial devices probe and the registering of the
+loop device.
+
+Is this something releted to a missing root-file-system? I was expecting
+something like
+Panic, unable to mount root-fs
+
+I'll bring a disk tomorrow and try to unpack the file-system there, but in 
+the meantime, I'm curious what causes this error.
+
+I'm also curious where to fined the installer program which is mentioned in 
+Linux-installer.tgz/INSTALL and whether there is a solution to the rpm-binary
+that is supposed not to work (as per th INSTALL doc)
+
+Thanks for any insight! and for porting Linux/RedHat 5.0!
+
+Edwin Hakkennes

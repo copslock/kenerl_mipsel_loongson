@@ -1,57 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Apr 2003 02:25:41 +0100 (BST)
-Received: from p508B52B7.dip.t-dialin.net ([IPv6:::ffff:80.139.82.183]:2705
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225205AbTDJBZk>; Thu, 10 Apr 2003 02:25:40 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id h3A1PUn03299;
-	Thu, 10 Apr 2003 03:25:30 +0200
-Date: Thu, 10 Apr 2003 03:25:29 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Michael Anburaj <michaelanburaj@hotmail.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: Linux for MIPS Atlas 4Kc board
-Message-ID: <20030410032529.A1493@linux-mips.org>
-References: <BAY1-F817dKwKkLxFjj00070900@hotmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <BAY1-F817dKwKkLxFjj00070900@hotmail.com>; from michaelanburaj@hotmail.com on Wed, Apr 09, 2003 at 02:32:03PM -0700
-Return-Path: <ralf@linux-mips.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Apr 2003 06:42:17 +0100 (BST)
+Received: from ftp-xb.sasken.com ([IPv6:::ffff:164.164.56.3]:63208 "EHLO
+	sandesha.sasken.com") by linux-mips.org with ESMTP
+	id <S8225205AbTDJFmQ>; Thu, 10 Apr 2003 06:42:16 +0100
+Received: from sunsv2.sasken.com (localhost [127.0.0.1])
+	by sandesha.sasken.com (8.12.8/8.12.8) with ESMTP id h3A5fwWY029539
+	for <linux-mips@linux-mips.org>; Thu, 10 Apr 2003 11:12:00 +0530 (IST)
+Received: from pcz-madhavis.sasken.com (IDENT:madhavis@pcz-madhavis.sasken.com [10.1.64.210])
+	by sunsv2.sasken.com (8.11.6/8.11.6) with ESMTP id h3A5g6w16430
+	for <linux-mips@linux-mips.org>; Thu, 10 Apr 2003 11:12:06 +0530 (IST)
+Date: Thu, 10 Apr 2003 11:12:06 +0530 (IST)
+From: Madhavi <madhavis@sasken.com>
+To: <linux-mips@linux-mips.org>
+Subject: Kernel compilation for MIPS
+Message-ID: <Pine.LNX.4.33.0304101106270.2692-100000@pcz-madhavis.sasken.com>
+MIME-Version: 1.0
+Content-type: multipart/mixed; boundary="=_IS_MIME_Boundary"
+Return-Path: <madhavis@sasken.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1964
+X-archive-position: 1965
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: madhavis@sasken.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Apr 09, 2003 at 02:32:03PM -0700, Michael Anburaj wrote:
+--=_IS_MIME_Boundary
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 
-> I am new to Linux. But I have a strong ARM & MIPS background with kernel 
-> porting & other stuff.
-> 
-> I want to get a higher-level view of the essential components of Linux for 
-> MIPS & documentation about the kernel. Please point me to documents on the 
-> net.
 
-I suggest http://www.linux-mips.org to get started.
+Hi
 
-> Question 2:
-> Does Linux-MIPS support the MIPS Atlas board with 4Kc processor using 
-> mipsisa32-elf build tool chain (Contain the appropriate HAL or BSP)? Is so, 
-> please point me to documents that gives the exact build steps for the same.
+During my kernel compilation for MIPS (R5432) using the MIPS
+cross-compiler, I am getting the following error.
 
-No.  You must use a Linux configuration of the tools, that's mips-linux.
+mipsel-linux-ld:arch/mips/ld.script:6: parse error
 
-> Also do let me know if Cygwin over Win98 dev. environment is good for 
-> building & developing with Linux-MIPS or do I need to have Linux installed 
-> on my dev. machine?
+The line 6 in ld.script is:
+	. = ;
 
-I've never use Cygwin myself.  The reports I've received are a mixed bag
-ranging from extremly bad to very good.
+I have seen in the arch/mips/Makefile that sed is replacing @@LOADADDR@@
+by $LOADADDR in ld.script.in. Hence the line, . = @@LOADADDR@@; is getting
+converted to . = ;.
 
-  Ralf
+Do I need to assign the LOADADDR somewhere.
+
+Thank you in advance.
+
+regards
+Madhavi.
+
+Madhavi Suram
+Software Engineer
+Customer Delivery / Networks
+Sasken Communication Technologies Limited
+139/25, Ring Road, Domlur
+Bangalore - 560071 India
+Email: madhavis@sasken.com
+Tel: + 91 80 5355501 Extn: 8062
+Fax: + 91 80 5351133
+URL: www.sasken.com
+
+
+--=_IS_MIME_Boundary
+Content-Type: text/plain;charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+************************************************************************
+
+SASKEN BUSINESS DISCLAIMER
+
+This message may contain confidential, proprietary or legally Privileged information. In case you are not the original intended Recipient of the message, you must not, directly or indirectly, use, Disclose, distribute, print, or copy any part of this message and you are requested to delete it and inform the sender. Any views expressed in this message are those of the individual sender unless otherwise stated. Nothing contained in this message shall be construed as an offer or acceptance of any offer by Sasken Communication Technologies Limited ("Sasken") unless sent with that express intent and with due authority of Sasken. Sasken accepts no liability for any loss or damage, which may be caused by viruses.
+
+***********************************************************************
+
+--=_IS_MIME_Boundary--

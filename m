@@ -1,98 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Dec 2002 15:14:31 +0100 (CET)
-Received: from p508B5AAD.dip.t-dialin.net ([80.139.90.173]:26259 "EHLO
-	dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8224847AbSLDOOa>; Wed, 4 Dec 2002 15:14:30 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id gB4EEG232413;
-	Wed, 4 Dec 2002 15:14:16 +0100
-Date: Wed, 4 Dec 2002 15:14:16 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: atul srivastava <atulsrivastava9@rediffmail.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: hazards during DO_FAULT macro..
-Message-ID: <20021204151416.A31089@linux-mips.org>
-References: <20021204101741.8326.qmail@webmail24.rediffmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <20021204101741.8326.qmail@webmail24.rediffmail.com>; from atulsrivastava9@rediffmail.com on Wed, Dec 04, 2002 at 10:17:41AM -0000
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Dec 2002 16:06:45 +0100 (CET)
+Received: from mx2.mips.com ([206.31.31.227]:15826 "EHLO mx2.mips.com")
+	by linux-mips.org with ESMTP id <S8224847AbSLDPGo>;
+	Wed, 4 Dec 2002 16:06:44 +0100
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id gB4F6TNf023205;
+	Wed, 4 Dec 2002 07:06:29 -0800 (PST)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id HAA18802;
+	Wed, 4 Dec 2002 07:06:21 -0800 (PST)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id gB4F6Kb27587;
+	Wed, 4 Dec 2002 16:06:21 +0100 (MET)
+Message-ID: <3DEE19EC.DD007304@mips.com>
+Date: Wed, 04 Dec 2002 16:06:20 +0100
+From: Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.77 [en] (X11; U; SunOS 5.8 sun4u)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: Ralf Baechle <ralf@uni-koblenz.de>
+CC: linux-mips@linux-mips.org, dom@mips.com, chris@mips.com,
+	kevink@mips.com
+Subject: Re: Prefetches in memcpy
+References: <3DC7CB8B.E2C1D4E5@mips.com> <20021105163806.A24996@bacchus.dhis.org>
+Content-Type: text/plain; charset=iso-8859-15
+Content-Transfer-Encoding: 7bit
+Return-Path: <carstenl@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 747
+X-archive-position: 748
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: carstenl@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Dec 04, 2002 at 10:17:41AM -0000, atul srivastava wrote:
+I would like to open this thread again, since nothing has been done about it.
+I think we should get rid of the prefetches until someone comes up with a
+version that doesn't prefetch beyond the copy destination/source area.
 
-> macro Do_FAULt(write) expands like..
-> 
-> #define DO_FAULT(write) \
->          .set    noreorder; \
->          .set    noat; \
->          SAVE_ALL; \
->          STI; \
->          nop; \
+/Carsten
 
-Unnecessary nop.
 
->          .set    at; \
->          move a0, sp; \
->          jal     do_page_fault; \
->          li     a1, write; \
->          nop; \
+Ralf Baechle wrote:
 
-Unnecessary nop.
+> On Tue, Nov 05, 2002 at 02:45:47PM +0100, Carsten Langgaard wrote:
+>
+> > The problem is the prefetches in the memcpy function in the kernel.
+> > There is spread a number of PREF instructions in the memcpy function,
+> > but there is no check if we are prefetching out-side the areas we are
+> > copying to/from. This is extremely dangerous because we might prefetch
+> > out-side the physical memory area, causing e.g. a bus error or something
+> > even more nasty.
+> >
+> > I recently found something even nastier, it could also hit a DMA buffer
+> > region, and thereby break the PCI DMA flushing scheme.
+> > For example if the kernel is doing a memcpy from an area that's next to
+> > a DMA buffer area, we could end up in a situation where, we are
+> > prefetching
+> > data into the cache from a memory location that is used for DMA transfer
+> > and owned by the device, but the DMA transfer has not yet completed.
+> > We then end up in a situation, where the memory and cache is out of sync
+> > and the cache is containing some old data.
+> >
+> > So we definitely need to do something about the prefetches in the memcpy
+> > function.  We can either get rid of all the prefetches or make sure we
+> > don't prefetch out side the "memcpy" area.
+>
+> We could fix the prefetch into DMA buffer problem with an extra flush but
+> that's going to be expensive, I rather think we should avoid prefetches.
+> As Kevin explained KSEG1 is a loophole in the spec so we can't really say
+> what the behaviour of memcpy will be in KSEG1.
+>
+> So I think the fix will have to be:
+>
+>  - Avoid prefetching beyond the end of the copy area in memcpy and memmove.
+>  - Introduce a second variant of memcpy that never does prefetching.  This
+>    one will be safe to use in KSEG1 / uncached XKPHYS also and will be used
+>    for memcpy_fromio, memcpy_toio and friends.
+>
+>   Ralf
 
->          j       ret_from_sys_call; \
-
-This is ret_from_exception since about 14 months.
-
->          nop; \
->         .set    noat;
-> 
-> this macro is called by handle_tlbx() routines.
-> when I tracked this problem and i observed my pt_regs address
-> looked o.k. and apparently right till after STI; \ and just before 
-> instruction     mfc0    a2, CP0_BADVADDR;
-> this i found by putting following instructions,
-> 
-> move  a0,sp; \
-> jal show_regs; \
-> nop; \
-> 
-> later it jumps to do_page_fault() ,and pt_regs address there 
-> equals unexpectedly to envp_init and from thereon everythings goes 
-> wrong..
-
-This would means something like your user process was running with
-c0_status.cu0 = 1 which is forbidden.  If that happens the kernel wouldn't
-load a new stack pointer on kerne entry.
-
-> I also tried with negating STI; \ , but same result.
-
-This would means something like your user process was running with
-c0_status.cu0 = 1 which is forbidden.  If that happens the kernel wouldn't
-load a new stack pointer on kerne entry.
-
-> 8001e6ac:	01094025 	or	$t0,$t0,$t1     STI macro code , though i 
-
-The function there has doesn't have STI but KMODE since almost half a
-year.  Time to upgrade.
-
-And our code never had the mfc0 from the badvaddr register after the STI /
-KMODE, so it seems you kernel tree is a) antique b) seems hacked beyond
-recognition.
-
-Moving the mfc0 behind the sti would be valid as long as we know there's
-always a hazard of at least one cycle before interrupts get activated.  That
-was true for the initially supported processors like R4000 (3 cycles) or
-R4600 (1 cycle) but no longer for modern processors.
-
-  Ralf
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

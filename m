@@ -1,55 +1,33 @@
-Received:  by oss.sgi.com id <S553801AbRALOl1>;
-	Fri, 12 Jan 2001 06:41:27 -0800
-Received: from mailgate1.zdv.Uni-Mainz.DE ([134.93.8.56]:7042 "EHLO
-        mailgate1.zdv.Uni-Mainz.DE") by oss.sgi.com with ESMTP
-	id <S553797AbRALOlC>; Fri, 12 Jan 2001 06:41:02 -0800
-Received: from arthur.zdv.Uni-Mainz.DE (arthur.zdv.Uni-Mainz.DE [134.93.8.145])
-	by mailgate1.zdv.Uni-Mainz.DE (8.11.0/8.10.2) with ESMTP id f0CEf0M28592;
-	Fri, 12 Jan 2001 15:41:00 +0100 (MET)
-Received: (from martin@localhost)
-	by arthur.zdv.Uni-Mainz.DE (8.10.2/8.10.2) id f0CEf0R09870;
-	Fri, 12 Jan 2001 15:41:00 +0100 (MET)
-To:     Joe deBlaquiere <jadb@redhat.com>
-Cc:     "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>,
-        linux-mips <linux-mips@fnet.fr>
-Subject: Re: strace package
-References: <3A5E75C4.2020203@redhat.com>
-From:   Christoph Martin <martin@uni-mainz.de>
-Date:   12 Jan 2001 15:40:59 +0100
-In-Reply-To: Joe deBlaquiere's message of Thu, 11 Jan 2001 21:11:00 -0600
-Message-ID: <wwgvgrkesuc.fsf@arthur.zdv.Uni-Mainz.DE>
-X-Mailer: Gnus v5.3/Emacs 19.34
+Received:  by oss.sgi.com id <S553809AbRALPL2>;
+	Fri, 12 Jan 2001 07:11:28 -0800
+Received: from brutus.conectiva.com.br ([200.250.58.146]:47613 "EHLO
+        lappi.waldorf-gmbh.de") by oss.sgi.com with ESMTP
+	id <S553803AbRALPLI>; Fri, 12 Jan 2001 07:11:08 -0800
+Received: (ralf@lappi.waldorf-gmbh.de) by bacchus.dhis.org
+	id <S867213AbRALO6T>; Fri, 12 Jan 2001 12:58:19 -0200
+Date:	Fri, 12 Jan 2001 12:58:10 -0200
+From:	Ralf Baechle <ralf@oss.sgi.com>
+To:	"Kelly, George" <George.Kelly@jacobs.com>
+Cc:	linux-mips@oss.sgi.com
+Subject: Re: New to the list - is there a kernel available for O2s
+Message-ID: <20010112125810.B6788@bacchus.dhis.org>
+References: <E7A7908C953FD311A21E0050049C4A990205675A@phint16.jacobs.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <E7A7908C953FD311A21E0050049C4A990205675A@phint16.jacobs.com>; from George.Kelly@jacobs.com on Fri, Jan 12, 2001 at 09:11:36AM -0500
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Joe deBlaquiere <jadb@redhat.com> writes:
+On Fri, Jan 12, 2001 at 09:11:36AM -0500, Kelly, George wrote:
 
-> 
-> Has anybody done a port of strace for linux/mips 2.4??? I'm trying to 
-> debug something and need something simple.
-> -- 
-> Joe deBlaquiere
-> Red Hat, Inc.
-> 307 Wynn Drive
-> Huntsville AL, 35805
-> voice : (256)-704-9257
-> fax   : (256)-837-3839
-> 
+> New to the list, is there a kernel available for O2s.  I have about 11 O2s
+> and an O200 that I want to test with Linux.
 
-There is a debian package of strace for mips in
-ftp://ftp.rfc822.org/pub/local/debian-mips/packages/. It is working
-with linux 2.4.
+No kernel for O2 - yet.
 
-C
-
--- 
-============================================================================
-Christoph Martin, Uni-Mainz, Germany
- Internet-Mail:  Christoph.Martin@Uni-Mainz.DE
---------------export-a-crypto-system-sig -RSA-3-lines-PERL------------------
-#!/usr/bin/perl -sp0777i<X+d*lMLa^*lN%0]dsXx++lMlN/dsM0<j]dsj
-$/=unpack('H*',$_);$_=`echo 16dio\U$k"SK$/SM$n\EsN0p[lN*1
-lK[d2%Sa2/d0$^Ixp"|dc`;s/\W//g;$_=pack('H*',/((..)*)$/)
-#what's this? see http://www.dcs.ex.ac.uk/~aba/rsa/
+  Ralf

@@ -1,35 +1,28 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f92GENo19311
-	for linux-mips-outgoing; Tue, 2 Oct 2001 09:14:23 -0700
-Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f92GELD19308
-	for <linux-mips@oss.sgi.com>; Tue, 2 Oct 2001 09:14:21 -0700
-Received: by ocean.lucon.org (Postfix, from userid 1000)
-	id 4BBF1125C8; Tue,  2 Oct 2001 09:14:20 -0700 (PDT)
-Date: Tue, 2 Oct 2001 09:14:19 -0700
-From: "H . J . Lu" <hjl@lucon.org>
-To: Robin Humble <rjh@groucho.maths.monash.edu.au>
-Cc: linux-mips@oss.sgi.com, roger_twede@hp.com
-Subject: Re: Bug in pthread glibc 7.0 & 7.1
-Message-ID: <20011002091419.B32338@lucon.org>
-References: <20011001171003.A18883@lucon.org> <200110021209.MAA23706@groucho.maths.monash.edu.au>
+	by oss.sgi.com (8.11.2/8.11.3) id f93EVj015538
+	for linux-mips-outgoing; Wed, 3 Oct 2001 07:31:45 -0700
+Received: from its.it-academy.bg ([194.12.242.98])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f93EVeD15530
+	for <linux-mips@oss.sgi.com>; Wed, 3 Oct 2001 07:31:42 -0700
+Received: from prometric3.it-academy.bg ([192.168.32.8]) by its.it-academy.bg with Microsoft SMTPSVC(5.0.2195.3779);
+	 Wed, 3 Oct 2001 17:28:57 +0300
+Message-Id: <5.1.0.14.2.20011003172659.00a6c4a8@mail.it-academy.bg>
+X-Sender: mkafadarov@mail.it-academy.bg
+X-Mailer: QUALCOMM Windows Eudora Version 5.1
+Date: Wed, 03 Oct 2001 17:28:15 +0300
+To: linux-mips@oss.sgi.com
+From: Marian Kafadarov <mkafadarov@it-academy.bg>
+Subject: 
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <200110021209.MAA23706@groucho.maths.monash.edu.au>; from rjh@groucho.maths.monash.edu.au on Tue, Oct 02, 2001 at 10:09:25PM +1000
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+X-OriginalArrivalTime: 03 Oct 2001 14:28:57.0686 (UTC) FILETIME=[BCB28760:01C14C17]
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Oct 02, 2001 at 10:09:25PM +1000, Robin Humble wrote:
-> Also I found I could only build X natively on the Indy by disabling the
-> pthreads parts; and maybe it's a similar 'Illegal Instruction' error in
-> the 'conftest' program that seems to be stopping mozilla from building??
-> (at least under kernel 2.4.3 which otherwise seems more stable than 2.4.8)
-> 
-
-My impression is 2.4.3 is more stable than 2.4.5. I haven't tried
-2.4.8 yet.
-
-
-H.J.
+Hello,
+We have DEC station 5000 / 240
+ From were we can download Linux distribution and documentation for it and
+what we can do on it.
+                                    Best regards: Marian Kafadarov
+                                                         Technical 
+university of Plovdiv

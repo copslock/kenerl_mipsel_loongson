@@ -1,36 +1,49 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1MF8CP11931
-	for linux-mips-outgoing; Fri, 22 Feb 2002 07:08:12 -0800
-Received: from dea.linux-mips.net (a1as04-p242.stg.tli.de [195.252.186.242])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1MF88911928
-	for <linux-mips@oss.sgi.com>; Fri, 22 Feb 2002 07:08:09 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.1) id g1ME7jv28928;
-	Fri, 22 Feb 2002 15:07:45 +0100
-Date: Fri, 22 Feb 2002 15:07:45 +0100
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Venkatesh M R <venkatesh@multitech.co.in>
-Cc: Linux-MIPS <linux-mips@oss.sgi.com>
-Subject: Re: How To Remove Write Protection
-Message-ID: <20020222150745.A28918@dea.linux-mips.net>
-References: <3C763244.5030206@multitech.co.in>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <3C763244.5030206@multitech.co.in>; from venkatesh@multitech.co.in on Fri, Feb 22, 2002 at 05:27:56PM +0530
-X-Accept-Language: de,en,fr
+	by oss.sgi.com (8.11.2/8.11.3) id g1MFGXY12108
+	for linux-mips-outgoing; Fri, 22 Feb 2002 07:16:33 -0800
+Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1MFGH912102
+	for <linux-mips@oss.sgi.com>; Fri, 22 Feb 2002 07:16:18 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA08019;
+	Fri, 22 Feb 2002 15:10:55 +0100 (MET)
+Date: Fri, 22 Feb 2002 15:10:55 +0100 (MET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>
+cc: kevink@mips.com, mdharm@momenco.com, ralf@uni-koblenz.de,
+   linux-mips@fnet.fr, linux-mips@oss.sgi.com
+Subject: Re: [patch] linux 2.4.17: The second mb() rework (final)
+In-Reply-To: <20020222.113634.45519920.nemoto@toshiba-tops.co.jp>
+Message-ID: <Pine.GSO.3.96.1020222150523.5266E-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, Feb 22, 2002 at 05:27:56PM +0530, Venkatesh M R wrote:
+On Fri, 22 Feb 2002, Atsushi Nemoto wrote:
 
->    I am presently porting RTLinux to MIPS Atlas board ( with 4Kc core ).
-> Can you please tell me how to remove the write protection of the Linux 
-> kernel (2.4.3) .
-> Because I am getting the page fault when i am trying to insert the 
-> Rtlinux module.
+> The contradiction is came from some confusion about usage of a word
+> "Core" in TX39 manual.  Maybe a writer of the quoted statements
+> assumes a write buffer is outside of a "R3900 Processor Core".  So if
+> he said "operation is completed" it means "data are sent to a write
 
-Modules aren't write protected.
+ That's how I understand it.
 
-  Ralf
+> buffer".  Of course this point of view is not acceptable for software
+> programmers...
+
+ If we handle it for the DECstation, we can do so for the TX39 as well.
+
+> macro> It's clear "sync" is strong on the TX39, stronger then required
+> macro> by MIPS II.
+> 
+> So unfortunately this is not true.
+
+ It is, considering the write buffer is actually external to the CPU. 
+It's even required to be executed before checking the write buffer, as
+otherwise you may get a false positive result. 
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

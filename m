@@ -1,56 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Jun 2004 23:27:00 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:63222 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225787AbUFJW04>;
-	Thu, 10 Jun 2004 23:26:56 +0100
-Received: from orion.mvista.com (localhost.localdomain [127.0.0.1])
-	by orion.mvista.com (8.12.8/8.12.8) with ESMTP id i5AMQqx6019684;
-	Thu, 10 Jun 2004 15:26:52 -0700
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.12.8/8.12.8/Submit) id i5AMQqe5019683;
-	Thu, 10 Jun 2004 15:26:52 -0700
-Date: Thu, 10 Jun 2004 15:26:52 -0700
-From: Jun Sun <jsun@mvista.com>
-To: S C <theansweriz42@hotmail.com>
-Cc: linux-mips@linux-mips.org, jsun@mvista.com
-Subject: Re: Kernel and monitor program
-Message-ID: <20040610152652.J10411@mvista.com>
-References: <BAY99-F42680lFxUe9t00012257@hotmail.com>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Jun 2004 12:49:59 +0100 (BST)
+Received: from web12006.mail.yahoo.com ([IPv6:::ffff:216.136.172.214]:46776
+	"HELO web12006.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S8225924AbUFKLtz>; Fri, 11 Jun 2004 12:49:55 +0100
+Message-ID: <20040611114948.22634.qmail@web12006.mail.yahoo.com>
+Received: from [128.107.253.44] by web12006.mail.yahoo.com via HTTP; Fri, 11 Jun 2004 04:49:48 PDT
+Date: Fri, 11 Jun 2004 04:49:48 -0700 (PDT)
+From: "Ashok.A" <ashok_kumar_ak@yahoo.com>
+Subject: Is "memory" clobber required for all inline asm which does atomic operation???
+To: linux-mips@linux-mips.org
+Cc: ashok_kumar_ak@yahoo.com
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <BAY99-F42680lFxUe9t00012257@hotmail.com>; from theansweriz42@hotmail.com on Thu, Jun 10, 2004 at 10:17:52PM +0000
-Return-Path: <jsun@orion.mvista.com>
+Return-Path: <ashok_kumar_ak@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5282
+X-archive-position: 5283
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: ashok_kumar_ak@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jun 10, 2004 at 10:17:52PM +0000, S C wrote:
-> Hello all,
-> 
-> Please pardon the newbie question, but I was wondering what a kernel in 
-> general expects a monitor program/bootloader like YAMON to do for it 
-> beforehand, if anything at all. I know the answer is very board specific, 
-> but if there are any generic things that a kernel expects ready for it 
-> before it starts running (caches initialized already? SDRAM control regs set 
-> up? Or maybe the kernel has no expectations at all?), I'd be grateful if 
-> someone could point them out.
+Hello Folks,
 
-This is almost an FAQ.  (although I don't know if I am giving the
-same answer each time ;0)
+I am working on inline asm related staff. I couldn't
+get proper answer for this question. So posting this
+question here..... Expecting good response from you.
 
-. initialize system RAM and its controller
-. copy kernel to RAM (in normal cases, unless you do XIP)
-. initialize and enable cache
-. (optionally) pass some args to kernel
-. (optionally) initial some board hw.  This is really a negotiation 
-   between loader and linux board setup routine.
+* Should we use "memory" clobber in *every* inline asm
+  which does atomic operation? (In MIPS, 'll'/'sc'
+  instructions are used to provide atomic operation)
 
-Jun
+As per my understanding, "memory" clobber will be
+required for inline asm only if the corresponding
+functions can be used to implement *lock* and *unlock*
+primitives (or) memory modified by the inline asm
+is *unknown*. Please correct me if I am wrong.
+
+In the following URL, "memory" clobber has been
+specified in the functions 'atomic_add_return' and
+'atomic_sub_return'. But it is *not* specified in
+the functions 'atomic_add' and 'atomic_sub'. WHY?
+
+http://lxr.linux.no/source/include/asm-mips/atomic.h?v=2.6.5
+
+Does it mean that 'atomic_add'/'atomic_sub' (which
+returns 'void') can't be used to implement *lock*
+and *unlock* primitives?
+
+Please clarify it. Thanks in advance!
+
+Expecting your responses ...
+
+-AshokA
+
+
+	
+		
+__________________________________
+Do you Yahoo!?
+Friends.  Fun.  Try the all-new Yahoo! Messenger.
+http://messenger.yahoo.com/ 

@@ -1,46 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Sep 2002 09:37:13 +0200 (CEST)
-Received: from mail.linuxcare.com ([216.88.157.164]:10476 "EHLO
-	mail.linuxcare.com") by linux-mips.org with ESMTP
-	id <S1123904AbSIZHhM>; Thu, 26 Sep 2002 09:37:12 +0200
-Received: from linuxcare.com (dmz-gw.linuxcare.com [216.88.157.161])
-	by mail.linuxcare.com (Postfix) with ESMTP id E3BDE8FBC2
-	for <linux-mips@linux-mips.org>; Thu, 26 Sep 2002 00:31:41 -0700 (PDT)
-Message-ID: <3D92B80A.3080802@linuxcare.com>
-Date: Thu, 26 Sep 2002 03:32:26 -0400
-From: Alex deVries <adevries@linuxcare.com>
-Organization: Linuxcare
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.9) Gecko/20020408
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: linux-mips@linux-mips.org
-Subject: Format of bootable Indy CDs?
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <adevries@linuxcare.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Sep 2002 19:11:18 +0200 (CEST)
+Received: from noose.gt.owl.de ([62.52.19.4]:1298 "HELO noose.gt.owl.de")
+	by linux-mips.org with SMTP id <S1123905AbSIZRLR>;
+	Thu, 26 Sep 2002 19:11:17 +0200
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 572C5843; Thu, 26 Sep 2002 19:11:10 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 23A9D3717F; Thu, 26 Sep 2002 19:10:33 +0200 (CEST)
+Date: Thu, 26 Sep 2002 19:10:33 +0200
+From: Florian Lohoff <flo@rfc822.org>
+To: Alex deVries <adevries@linuxcare.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: Format of bootable Indy CDs?
+Message-ID: <20020926171033.GA13337@paradigm.rfc822.org>
+References: <3D92B80A.3080802@linuxcare.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="SUOF0GtieIMvvwua"
+Content-Disposition: inline
+In-Reply-To: <3D92B80A.3080802@linuxcare.com>
+User-Agent: Mutt/1.3.28i
+Organization: rfc822 - pure communication
+Return-Path: <flo@rfc822.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 269
+X-archive-position: 270
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: adevries@linuxcare.com
+X-original-sender: flo@rfc822.org
 Precedence: bulk
 X-list: linux-mips
 
 
-I'm curious about the possibility of making a Linux installer for the 
-Indy that boots from CD; is there any description of the format of 
-bootable IRIX CDs out there?  What does the firmware expect?
+--SUOF0GtieIMvvwua
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I know that sash is involved somehow...
+On Thu, Sep 26, 2002 at 03:32:26AM -0400, Alex deVries wrote:
+> I'm curious about the possibility of making a Linux installer for the=20
+> Indy that boots from CD; is there any description of the format of=20
+> bootable IRIX CDs out there?  What does the firmware expect?
 
+The firmware loads an ecoff file from a volume header - The volume
+header is a special partition with a "minimalistic" filesystem
+in it - This can be modified by "dvhtool".=20
 
-- Alex
+I succeeded in booting an indy by creating a fake "volume header"
+on the ISO filesystem CD. (ISO Specifies the first 8k of an image
+to be for the bootloader and partitioning etc). Then i created
+directory entrys for the kernels on the iso in the pseudo
+volume header. As the ISO filesystems needs all files to be
+contigues (same for the volume header) the machine was able
+to boot from the cd although booting the ecoff kernel image
+including the ramdisk directly. Having a bootloader would
+be much nicer.
 
--- 
-Alex deVries
-Principal Architect, Linuxcare Canada, Inc.
-(613) 562 2759
+> I know that sash is involved somehow...
 
-Linuxcare. Simplifying Server Consolidation.
+"sash" is proprietary IRIX. The IRIX CDs are EFS BTW.
+
+If you plan to work on this - Feel free to come around in
+Oldenburg this weekend - We will have a Kernel Hacker meeting
+in the University Oldenburg. I'll bring a Burner and CD-RW's=20
+with me to test this.
+
+Flo
+--=20
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+                        Heisenberg may have been here.
+
+--SUOF0GtieIMvvwua
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.6 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iD8DBQE9kz+JUaz2rXW+gJcRAkXxAJ4vsPIdarEZp/TI7piUGcPdxZy5TQCcC/yf
+P7lJoos9PlbsMwMxFrzNpIQ=
+=PE4N
+-----END PGP SIGNATURE-----
+
+--SUOF0GtieIMvvwua--

@@ -1,67 +1,46 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id SAA84313 for <linux-archive@neteng.engr.sgi.com>; Wed, 14 Apr 1999 18:21:41 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id SAA86089 for <linux-archive@neteng.engr.sgi.com>; Wed, 14 Apr 1999 18:39:11 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id SAA26003
+	id SAA14767
 	for linux-list;
-	Wed, 14 Apr 1999 18:20:07 -0700 (PDT)
+	Wed, 14 Apr 1999 18:38:13 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from fir.engr.sgi.com (fir.engr.sgi.com [150.166.40.90])
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via SMTP id SAA62155;
-	Wed, 14 Apr 1999 18:20:04 -0700 (PDT)
-	mail_from (wje@fir.engr.sgi.com)
-Received: (from wje@localhost) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id SAA06008; Wed, 14 Apr 1999 18:20:04 -0700
-Date: Wed, 14 Apr 1999 18:20:04 -0700
-Message-Id: <199904150120.SAA06008@fir.engr.sgi.com>
-From: "William J. Earl" <wje@fir.engr.sgi.com>
-To: Charles Lepple <clepple@foo.tho.org>
-Cc: Linux/SGI list <linux@cthulhu.engr.sgi.com>
-Subject: Re: installation problem
-In-Reply-To: <37151B2A.C230B4A4@foo.tho.org>
-References: <37151B2A.C230B4A4@foo.tho.org>
+	via ESMTP id SAA52944
+	for <linux@cthulhu.engr.sgi.com>;
+	Wed, 14 Apr 1999 18:38:11 -0700 (PDT)
+	mail_from (adevries@engsoc.carleton.ca)
+Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id SAA03444
+	for <linux@cthulhu.engr.sgi.com>; Wed, 14 Apr 1999 18:37:54 -0700 (PDT)
+	mail_from (adevries@engsoc.carleton.ca)
+Received: from localhost (adevries@localhost)
+	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id VAA31437;
+	Wed, 14 Apr 1999 21:37:50 -0400
+X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
+Date: Wed, 14 Apr 1999 21:37:50 -0400 (EDT)
+From: Alex deVries <adevries@engsoc.carleton.ca>
+To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+cc: SGI Linux <linux@cthulhu.engr.sgi.com>
+Subject: Re: Errors building...
+In-Reply-To: <19990414231550.A3227@alpha.franken.de>
+Message-ID: <Pine.LNX.3.96.990414213624.29768B-100000@lager.engsoc.carleton.ca>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Charles Lepple writes:
- > After successfully (though not uneventfully ;-) installing HardHat on an
- > Indy/r5k, I am now faced with the quandry of installing to another
- > nearly identical machine. The only difference is that the second
- > machine's IRIX partitions were blown away when I tried to use fdisk (no,
- > I didn't finish reading the installation instructions at this point...).
- > 
- > All of the SGI employees out there are probably saying, "Reinstall
- > IRIX", but (it's a long story) I'd rather do this the Linux way. Any
- > suggestions? I looked at the prom man page, and I can get the box to
- > boot the kernel with a 'setenv diskless y' and 'setenv OSLoader
- > /var/boot/vmlinux' (and then some... I'm not in front of the machine at
- > the moment). However, with the IRIX dhcp_bootp daemon, I can't seem to
- > set the suggested nfs root partition, and now that sash is gone, I can't
- > seem to get command line parameters to work anymore (vmlinux is the
- > OSLoader, and it's not doing the sash thing), and hence, the kernel
- > won't boot.
 
-      Try 
+Somehow my egcs was corrupt, so I reinstalled it and life is much better.
 
-	boot -f bootp()boothost:vmlinux xxx yyy
+- Alex "back in the game" deVries
 
-where boothost is the host from which you want ot boot, and
-xxx and yyy are your vmlinux options.  The "-f" avoids using OSLoader.
-
-...
- > Also, on the working machine, is there a better way to boot it than
- > telling it to 'boot bootp():vmlinux' each time? Again, working with one
- > disk per machine, IRIX is gone (but I didn't blow sash away on this
- > one).
-
-      You should be able to do something like:
-
-	setenv -p OSLoadPartition bootp()
-	setenv -p OSLoadFilename :vmlinux
-	setenv -p OSLoadOptions auto
-	setenv -p AutoLoad Y	
-
-Without the system partition, you might be able to do
-
-	setenv -p SystemPartition bootp()
-	setenv -p OSLoader :vmlinux
+-- 
+Alex deVries, puffin on LinuxNet.
+Linux on HP PA RISC. The final frontier.

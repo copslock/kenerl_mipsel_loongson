@@ -1,66 +1,69 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id SAA09680; Tue, 30 Apr 1996 18:31:32 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id TAA11656; Tue, 30 Apr 1996 19:33:39 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: by cthulhu.engr.sgi.com (950511.SGI.8.6.12.PATCH526/911001.SGI)
-	for linux-list id SAA26901; Tue, 30 Apr 1996 18:31:28 -0700
+	for linux-list id TAA01966; Tue, 30 Apr 1996 19:33:33 -0700
 Received: from neteng.engr.sgi.com by cthulhu.engr.sgi.com via ESMTP (950511.SGI.8.6.12.PATCH526/911001.SGI)
-	for <linux@cthulhu.engr.sgi.com> id SAA26890; Tue, 30 Apr 1996 18:31:26 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id SAA09668 for <lmlinux@neteng.engr.sgi.com>; Tue, 30 Apr 1996 18:31:16 -0700
+	for <linux@cthulhu.engr.sgi.com> id TAA01942; Tue, 30 Apr 1996 19:33:31 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id TAA11650 for <linux@neteng.engr.sgi.com>; Tue, 30 Apr 1996 19:33:30 -0700
 Received: from sgi.sgi.com by cthulhu.engr.sgi.com via ESMTP (950511.SGI.8.6.12.PATCH526/911001.SGI)
-	for <lmlinux@neteng.engr.sgi.com> id SAA26820; Tue, 30 Apr 1996 18:31:15 -0700
-Received: from caipfs.rutgers.edu by sgi.sgi.com via ESMTP (950405.SGI.8.6.12/910110.SGI)
-	for <lmlinux@neteng.engr.sgi.com> id SAA16437; Tue, 30 Apr 1996 18:31:13 -0700
-Received: from huahaga.rutgers.edu (huahaga.rutgers.edu [128.6.155.53]) by caipfs.rutgers.edu (8.6.9+bestmx+oldruq+newsunq+grosshack/8.6.9) with ESMTP id VAA01363 for <lmlinux@neteng.engr.sgi.com>; Tue, 30 Apr 1996 21:31:10 -0400
-Received: (davem@localhost) by huahaga.rutgers.edu (8.6.9+bestmx+oldruq+newsunq+grosshack/8.6.9) id VAA05228; Tue, 30 Apr 1996 21:31:10 -0400
-Date: Tue, 30 Apr 1996 21:31:10 -0400
-Message-Id: <199605010131.VAA05228@huahaga.rutgers.edu>
-From: "David S. Miller" <davem@caip.rutgers.edu>
-To: lmlinux@neteng.engr.sgi.com
-Subject: whee
+	for <linux@neteng.engr.sgi.com> id TAA01926; Tue, 30 Apr 1996 19:33:28 -0700
+Received: from informatik.uni-koblenz.de by sgi.sgi.com via ESMTP (950405.SGI.8.6.12/910110.SGI)
+	for <linux@neteng.engr.sgi.com> id TAA22209; Tue, 30 Apr 1996 19:33:25 -0700
+Received: from grass (grass.uni-koblenz.de [141.26.4.65]) by informatik.uni-koblenz.de (8.7.4/8.6.9) with SMTP id EAA26130; Wed, 1 May 1996 04:33:21 +0200 (MET DST)
+From: Ralf Baechle <ralf@informatik.uni-koblenz.de>
+Message-Id: <199605010233.EAA26130@informatik.uni-koblenz.de>
+Received: by grass (5.x/KO-2.0)
+	id AA01190; Wed, 1 May 1996 04:30:58 +0200
+Subject: Re: scope of this mailing list
+To: ewt@redhat.com (Erik Troan)
+Date: Wed, 1 May 1996 04:30:58 +0200 (MET DST)
+Cc: linux@neteng.engr.sgi.com
+In-Reply-To: <Pine.LNX.3.91.960429200526.3781C-100000@redhat.com> from "Erik Troan" at Apr 29, 96 08:06:49 pm
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+Hi,
 
-Syscalls are a bit faster, just started optimizing again
+> > to get a Linux/MIPs distribution.  Furthermore, givem that Linux/MIPs
+> > will run IRIX elf binaries, we might be able to merge the Freeware and
+> > Linux/MIPs efforts - they have a lot of overlap.  Something to think 
+> > about.
+> 
+> This raises a good question - what is the relationship between the SGI port,
+> a port to Digital MIPS/TurboChannel machines, and the MIPS/PC port (that
+> works on MIPS machines with PCI/EISA buses)? Will they all be the same
+> endian? Should binarises be comaptible? What about sources such as libc
+> and the kernel syscall interface?
 
-                    L M B E N C H  1 . 0   S U M M A R Y
-                    ------------------------------------
+The main issue in achieving binary compatibility accross all Linux/MIPS
+targets is the byte order.  For some machines (Mips Magnum 4000, Olivetti
+M700-10, SNI RM series and others more) the byte order for the kernel is
+configurable.  For other it is fixed.  This is often the case for machines
+that were built with NT in mind.
 
-            Processor, Processes - times in microseconds
-            --------------------------------------------
-Host                 OS  Mhz    Null    Null  Simple /bin/sh Mmap 2-proc 8-proc
-                             Syscall Process Process Process  lat  ctxsw  ctxsw
---------- ------------- ---- ------- ------- ------- ------- ---- ------ ------
-trombetas  Linux 1.3.90   50      17    9.3K   38.6K     58K  370     88    109
-trombetas  Linux 1.3.97   50      14    8.9K   38.3K     56K  354     86    101
-negro.rut SunOS 4.1.3_U   49     124   18.3K   63.9K    110K  470    152    262
-geneva.ru     SunOS 5.5   50      31   33.7K  148.2K    274K  596    174    205
+The MIPS architecture offers us the nice feature of switchable byteorder
+for usermode.  Thus we have a way to run software from other systems with
+differing native byte order.  In other words: it's technological possible
+but it's not implemented yet.
 
-            *Local* Communication latencies in microseconds
-            -----------------------------------------------
-Host                 OS  Pipe       UDP    RPC/     TCP    RPC/
-                                            UDP             TCP
---------- ------------- ------- ------- ------- ------- -------
-trombetas  Linux 1.3.90     285    1028    1754    1368    2610
-trombetas  Linux 1.3.97     300    1016    1752    1376    2598
-negro.rut SunOS 4.1.3_U     890    1375    2287    1573    2804
-geneva.ru     SunOS 5.5     530    1563    2080    1354    2398
+The MIPS ABI which to support is one design goal for Linux/MIPS supports
+only big endian systems while current Linux/MIPS implementations are all
+little endian.  This single fact shows Linux/MIPS doesn't currently
+conform to the ABI but it will be relativly easy to do so in the future.
 
-            *Local* Communication bandwidths in megabytes/second
-            ----------------------------------------------------
-Host                 OS Pipe  TCP  File   Mmap  Bcopy  Bcopy  Mem   Mem
-                                  reread reread (libc) (hand) read write
---------- ------------- ---- ---- ------ ------ ------ ------ ---- -----
-trombetas  Linux 1.3.90    8  4.0   23.5   17.4     18     25   42    37
-trombetas  Linux 1.3.97    8  4.0   23.5   17.4     18     25   41    37
-negro.rut SunOS 4.1.3_U    4  2.0   19.5    8.2     18     24   41    36
-geneva.ru     SunOS 5.5    8  7.0   12.6   19.5     18     18   40    36
+The ABI explicitly forbids direct syscalls from the usercode into the
+kernel.  Instead every program is supposed to be linked with the shared
+library libc.so.1 which contains the actual interface to the kernel.
+Linux/MIPS currently uses the GNU libc which is far being compliant
+to the ABI.
 
-            Memory latencies in nanoseconds
-            (WARNING - may not be correct, check graphs)
-            --------------------------------------------
-Host                 OS   Mhz  L1 $   L2 $    Main mem    TLB    Guesses
---------- -------------   ---  ----   ----    --------    ---    -------
-trombetas  Linux 1.3.90    50    20    170         180     -1    No L2 cache?
-trombetas  Linux 1.3.97    50    20    170         180    659    No L2 cache?
-negro.rut SunOS 4.1.3_U    49    20    175         183     -1    No L2 cache?
-geneva.ru     SunOS 5.5    49     -      -           -      -    Bad mhz?
+Nevertheless Linux/MIPS contains an (currently on partial implemented)
+syscall interface that provides not only the syscalls known from the
+Linux/i386 implementation - it also features the same syscall conventions,
+numbers and more as implemented in IRIX and other MIPS UNIX systems.
+Call it a kludge but it can make things easier.
+
+   Ralf

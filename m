@@ -1,67 +1,65 @@
-Received: from sgi.com (sgi.SGI.COM [192.48.153.1])
-	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id DAA11436
-	for <pstadt@stud.fh-heilbronn.de>; Fri, 16 Jul 1999 03:40:18 +0200
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id SAA02257; Thu, 15 Jul 1999 18:39:15 -0700 (PDT)
+Received: from deliverator.sgi.com (deliverator.sgi.com [204.94.214.10])
+	by lara.stud.fh-heilbronn.de (8.9.1a/8.9.1) with ESMTP id VAA11929
+	for <pstadt@stud.fh-heilbronn.de>; Sun, 18 Jul 1999 21:32:44 +0200
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id MAA05626; Sun, 18 Jul 1999 12:28:10 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id SAA02371
+	id MAA74071
 	for linux-list;
-	Thu, 15 Jul 1999 18:36:24 -0700 (PDT)
+	Sun, 18 Jul 1999 12:22:34 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id SAA83194
+	via ESMTP id MAA76424
 	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 15 Jul 1999 18:36:21 -0700 (PDT)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from mailhost.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.64.1]) 
+	Sun, 18 Jul 1999 12:22:31 -0700 (PDT)
+	mail_from (m_thrope@rigelfore.com)
+Received: from slug.rigelfore.com (c69494-a.plstn1.sfba.home.com [24.2.21.88]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id SAA04193
-	for <linux@cthulhu.engr.sgi.com>; Thu, 15 Jul 1999 18:36:19 -0700 (PDT)
-	mail_from (ralf@lappi.waldorf-gmbh.de)
-Received: from lappi.waldorf-gmbh.de (cacc-30.uni-koblenz.de [141.26.131.30])
-	by mailhost.uni-koblenz.de (8.9.1/8.9.1) with ESMTP id DAA22160
-	for <linux@cthulhu.engr.sgi.com>; Fri, 16 Jul 1999 03:36:17 +0200 (MET DST)
-Received: (from ralf@localhost)
-	by lappi.waldorf-gmbh.de (8.9.3/8.9.3) id DAA04810;
-	Fri, 16 Jul 1999 03:35:36 +0200
-Date: Fri, 16 Jul 1999 03:35:36 +0200
-From: Ralf Baechle <ralf@uni-koblenz.de>
-To: Tim Hockin <thockin@cobaltnet.com>
-Cc: linux@cthulhu.engr.sgi.com
-Subject: Re: gp
-Message-ID: <19990716033536.A4133@uni-koblenz.de>
-References: <378E2FEF.6E82871A@cobaltnet.com>
-Mime-Version: 1.0
+	via SMTP id MAA05027
+	for <linux@cthulhu.engr.sgi.com>; Sun, 18 Jul 1999 12:22:30 -0700 (PDT)
+	mail_from (m_thrope@rigelfore.com)
+Received: (qmail 13651 invoked from network); 18 Jul 1999 19:35:29 -0000
+Received: from unknown (HELO rigelfore.com) (192.168.42.2)
+  by 192.168.42.1 with SMTP; 18 Jul 1999 19:35:29 -0000
+Message-ID: <37922879.C3136AE3@rigelfore.com>
+Date: Sun, 18 Jul 1999 12:18:17 -0700
+From: Eric Melville <m_thrope@rigelfore.com>
+Organization: iLL
+X-Mailer: Mozilla 4.5 [en] (Win95; U)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: sgi <linux@cthulhu.engr.sgi.com>
+Subject: Re: 200mhz indy
+References: <3773BD69.DF77FC27@rigelfore.com> <19990628131216.C735@uni-koblenz.de>
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.95.4us
-In-Reply-To: <378E2FEF.6E82871A@cobaltnet.com>; from Tim Hockin on Thu, Jul 15, 1999 at 12:01:03PM -0700
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jul 15, 1999 at 12:01:03PM -0700, Tim Hockin wrote:
+ok, this morning i successfully booted my r4400 rev. 6.0 indy! thanks
+for the help... but now i've got a problem installing it. i'm a little
+low on disk space for the whole hardhat archive. i was thinking i could
+dump the rpms to a cd and then hook me external scsi cdrom to the indy,
+however the root fs for hardhat setup seems to be missing mount, plus i
+don't know if the redhat installer can be "tricked" like that (i have NO
+redhat experience).
 
-> just playing around with kernel, and wondering what (if any) work has
-> been done to use gp within the kernel.  I know it is built with -G 0
-> now.
+-E
+
+> > i have an r4400 revision 6 200mhz indy. i tried to get linux working at
+> > about the time the 2.2.1 kernel was released, but it wouldn't go. any
+> > chance i'd have better luck now?
 > 
-> I looked into it, and made sure that gp got saved and restored correctly
-> (I think), but when I compile with -G > 0 gcc (or egcs) gets signal 11 -
-> ideas?
-
-In Linux 2.1 / 2.2 we have an other use of the gp; it contains the
-current variable.  See include/asm-mips/current.h.  It's been on my to do
-list for a long time to check if -G > 0 will be a better use of $28 than
-putting the current variable there.
-
-  Ralf
+> Yes, we've fixed a bug freeing memory used by the PROMs and I'm almost
+> certain that this bug caused your 6.0 machine to freeze.
+> 
+> Iff that still doesn't help, could you do some experiment for me?  I want
+> to know if the problem is really related to the CPU version 6.0 and you
+> seem to have multiple Indys.  Could just try and put the R4400 6.0 module
+> into the Indy which seems to be fine with Linux and report your findings?

@@ -1,40 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Sep 2003 19:00:15 +0100 (BST)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:11157 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225526AbTIVSAN>; Mon, 22 Sep 2003 19:00:13 +0100
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id UAA28873;
-	Mon, 22 Sep 2003 20:00:09 +0200 (MET DST)
-X-Authentication-Warning: delta.ds2.pg.gda.pl: macro owned process doing -bs
-Date: Mon, 22 Sep 2003 20:00:09 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-cc: linux-mips@linux-mips.org
-Subject: Re: [PATCH] Fix unused variable warning in drivers/char/dz.c
-In-Reply-To: <20030921213547.GP13578@rembrandt.csv.ica.uni-stuttgart.de>
-Message-ID: <Pine.GSO.3.96.1030922195924.25762D-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Sep 2003 21:19:58 +0100 (BST)
+Received: from Iris.Adtech-Inc.COM ([IPv6:::ffff:63.165.80.18]:52435 "EHLO
+	iris.Adtech-Inc.COM") by linux-mips.org with ESMTP
+	id <S8225530AbTIVUTz> convert rfc822-to-8bit; Mon, 22 Sep 2003 21:19:55 +0100
+content-class: urn:content-classes:message
+Subject: User-mode drivers and TLB
+Date: Mon, 22 Sep 2003 10:19:47 -1000
+Message-ID: <DC1BF43A8FAE654DA6B3FB7836DD3A56DEB750@iris.adtech-inc.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: User-mode drivers and TLB
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6249.0
+Thread-Index: AcOBRuDKdEBlxua2SZqQUES1OY/Qig==
+From: "Finney, Steve" <Steve.Finney@SpirentCom.COM>
+To: <linux-mips@linux-mips.org>
+Return-Path: <Steve.Finney@SpirentCom.COM>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3254
+X-archive-position: 3255
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: Steve.Finney@SpirentCom.COM
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, 21 Sep 2003, Thiemo Seufer wrote:
+I am working on an app where I want to give one or more 
+user processes access to a largish range of physical 
+address space (specifically, this is a Broadcom 1125 
+running a 32 bit kernel, and for now the region is 
+accessible via KSEG0/1 (physical address < 512 MB)). 
+mmap() on /dev/mem does this just fine, and setting 
+(or not setting) O_SYNC on open seems to control caching. 
+But I just realized a disadvantage to doing this in user 
+space: the user process accesses have to be mapped (since a
+user process can't, I believe, use KSEG0 or KSEG1 addresses),
+so you have to go through the (64 entry) TLB, and if 
+you had signficant non-locality of reference, you'd
+possibly risk thrashing the TLB (which doesn't happen
+in kernel space, since the region can be directly 
+accessed). One approach would be to wire a TLB entry 
+to handle the large region so you never get a TLB miss, 
+but this might not work well for multi-process access,
+since (normally) you can't guarantee that the multiple
+processes doing mmap's will get the same virtual address.
 
-> this fixes an unused variable warning.
+Is this  correct? Is there some other clever approach I
+haven't thought of? Should I even be worrying about TLB usage?
 
- Thanks for the report.  Since the variable isn't really needed at all,
-I've removed it altogether.
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Thanks,
+sf

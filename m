@@ -1,159 +1,107 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Apr 2003 11:15:35 +0100 (BST)
-Received: from [IPv6:::ffff:218.19.117.167] ([IPv6:::ffff:218.19.117.167]:62225
-	"EHLO w0q7s5") by linux-mips.org with ESMTP id <S8225213AbTDWKPd>;
-	Wed, 23 Apr 2003 11:15:33 +0100
-From: "adstone" <adstone@cern.ch>
-Subject: The Uncertainty Principle Is Untenable
-To: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Apr 2003 14:13:23 +0100 (BST)
+Received: from mail.stellartec.com ([IPv6:::ffff:65.107.16.99]:14856 "EHLO
+	nt_server.stellartec.com") by linux-mips.org with ESMTP
+	id <S8225204AbTDWNNS>; Wed, 23 Apr 2003 14:13:18 +0100
+Received: from wssseeger ([192.168.1.53]) by nt_server.stellartec.com
+          (Post.Office MTA v3.1.2 release (PO205-101c)
+          ID# 568-43562U100L2S100) with SMTP id AAA470;
+          Wed, 23 Apr 2003 06:13:05 -0700
+Reply-To: <sseeger@stellartec.com>
+From: sseeger@stellartec.com (Steven Seeger)
+To: <linux-mips@linux-mips.org>
+Cc: <stevep@metrowerks.com>
+Subject: rtai kernel patch
+Date: Wed, 23 Apr 2003 06:19:00 -0700
+Message-ID: <06fc01c3099a$e7c81950$3501a8c0@wssseeger>
+MIME-Version: 1.0
 Content-Type: text/plain;
-	charset="us-ascii"
-Date: Wed, 23 Apr 2003 18:18:37 +0800
-X-Priority: 3
-X-Mailer: jpfree Group Mail Express V1.0
-Message-Id: <20030423101533Z8225213-1272+1514@linux-mips.org>
-Return-Path: <adstone@cern.ch>
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook CWS, Build 9.0.2416 (9.0.2911.0)
+In-Reply-To: <Law11-F23vBGtWva7DY00002848@hotmail.com>
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Importance: Normal
+Return-Path: <sseeger@stellartec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2151
+X-archive-position: 2152
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: adstone@cern.ch
+X-original-sender: sseeger@stellartec.com
 Precedence: bulk
 X-list: linux-mips
 
-please reply to hdgbyi@public.guangzhou.gd.cn
-thank you.
+Hey guys. I have patched (successfully so far) RTAI into the latest
+linux_2_4 tree on cvs. The patch is for mips32, which I guess is what falls
+under arch/mips.
 
- 
-THE UNCERTAINTY PRINCIPLE IS UNTENABLE
+There are a couple of rules you must follow and these may require mods in
+your board specific setup. The patch will include the proper patches for the
+VR4181, since that is my only mips board.
 
- 
-By re-analysing Heisenberg's Gamma-Ray Microscope experiment and the ideal experiment from which the uncertainty principle is derived, it is actually found that the uncertainty principle can not be obtained from them. It is therefore found to be untenable. 
+1) Must use the cycle counter. (CP0_COUNT/CPO_COMPARE on IRQ 7(int 5))
+2) Must have an interrupt handler that correctly passes irq numbers at the
+low level.
+3) Your int handler must not clobber v0 after calls to do_IRQ because
+ret_from_irq and restore_all need to know what's up.
+4) The linux timer interrupt handler must be set with setup_irq
+5) In order to not crash, you may need to stick a litle magic in the
+tlb-xk.c file for your CPU. I did this for the 4k already. 	Look at that
+file in my patch. (when I submit it)
+6) This will only work with the latest rtai cvs currently, at least once I
+clean it up and check it in to their CVS later today. :)
+7) Must set up mips_counter_frequency with correct cycle count for RTAI to
+use.
+8) If you use a wrapper for the timer interrupt, be sure it returns a 1.
+(for rtai's sake) If it returns nothing or a zero, you will incur wrath so
+great you'll be hoping for plagues or floods. You should not need a wrapper
+if using the cycle counter, however.
 
-Key words: 
-uncertainty principle; Heisenberg's Gamma-Ray Microscope Experiment; ideal experiment 
+The patching is done in:
 
-Ideal Experiment 1
+include/asm/system.h
+arch/mips/mm/tlb-r4k.c
+arch/mips/kernel/irq.c
+arch/mips/kernel/time.c
+arch/mips/kernel/scall_o32.S
+arch/mips/kernel/mips_ksyms.c
+arch/mips/kernel/entry.S
+arch/mips/vr4181/whatever to make it use the counter for the system timer,
+plus taking a real command line on a0 for my board.
 
-                 Heisenberg's Gamma-Ray Microscope Experiment
+This kernel I am using here also currently has the VR41XX sound driver in
+it, as well as the old /dev/rom driver. If I should include those let me
+know. The drivers and the RTAI patch can be turned on and off from make
+menuconfig of course. :)
 
+Anyhow, I am wondering if anyone has a 5k board they'd like to try this on.
+I can help with patching for that board, but I have no way to test it. Would
+anyone else like to try rtai on a 4k board or anything else that falls under
+arch/mips?
 
-A free electron sits directly beneath the center of the microscope's lens (please see AIP page http://www.aip.org/history/heisenberg/p08b.htm or diagram below) . The circular lens forms a cone of angle 2A from the electron. The electron is then illuminated from the left by gamma rays--high energy light which has the shortest wavelength. These yield the highest resolution, for according to a principle of wave optics, the microscope can resolve (that is, "see" or distinguish) objects to a size of dx, which is related to and to the wavelength L of the gamma ray, by the expression: 
+Let me know!
 
-dx = L/(2sinA) (1) 
+For those who don't know what RTAI is, check out
+http://www.aero.polimi.it/~rtai/
 
-However, in quantum mechanics, where a light wave can act like a particle, a gamma ray striking an electron gives it a kick. At the moment the light is diffracted by the electron into the microscope lens, the electron is thrust to the right. To be observed by the microscope, the gamma ray must be scattered into any angle within the cone of angle 2A. In quantum mechanics, the gamma ray carries momentum as if it were a particle. The total momentum p is related to the wavelength by the formula, 
+On my wussy crappy sissy POS VR4181 my worst case interrupt latency on a
+GPIO interrupt was 46 uS on 2.4.18 at 400 hz. Also running was an rtai
+thread at 1000 khz. The stress test was repeated cat /dev/rom > /dev/null
+and running a userland program that continues to allocate memory until it's
+OOM'd.
 
-p = h / L, where h is Planck's constant. (2) 
+For those who do know what RTAI is, there is currently no LXRT support and I
+forget if there is SHM support or not. I only use interrupt handlers, timed
+tasks (periodic and one-shot) and fifos.
 
-In the extreme case of diffraction of the gamma ray to the right edge of the lens, the total momentum would be the sum of the electron's momentum P'x in the x direction and the gamma ray's momentum in the x direction: 
+If anyone has any requests or instructions on how I should submit the patch
+other than my current plan (attached to a list message once I make the
+patch) let me know.
 
-P' x + (h sinA) / L', where L' is the wavelength of the deflected gamma ray. 
+Thanks guys.
 
-In the other extreme, the observed gamma ray recoils backward, just hitting the left edge of the lens. In this case, the total momentum in the x direction is: 
-
-P''x - (h sinA) / L''. 
-
-The final x momentum in each case must equal the initial x momentum, since momentum is conserved. Therefore, the final x momenta are equal to each other: 
-
-P'x + (h sinA) / L' = P''x - (h sinA) / L'' (3) 
-
-If A is small, then the wavelengths are approximately the same, 
-
-L' ~ L" ~ L. So we have 
-
-P''x - P'x = dPx ~ 2h sinA / L (4) 
-
-Since dx = L/(2 sinA), we obtain a reciprocal relationship between the minimum uncertainty in the measured position, dx, of the electron along the x axis and the uncertainty in its momentum, dPx, in the x direction: 
-
-dPx ~ h / dx or dPx dx ~ h. (5) 
-
-For more than minimum uncertainty, the "greater than" sign may added. 
-
-Except for the factor of 4pi and an equal sign, this is Heisenberg's uncertainty relation for the simultaneous measurement of the position and momentum of an object. 
-
-Re-analysis
-
-To be seen by the microscope, the gamma ray must be scattered into any angle within the cone of angle 2A. 
-
-The microscope can resolve (that is, "see" or distinguish) objects to a size of dx, which is related to and to the wavelength L of the gamma ray, by the expression: 
-
-dx = L/(2sinA) (1) 
-
-This is the resolving limit of the microscope and it is the uncertain quantity of the object's position. 
-
-The microscope can not see the object whose size is smaller than its resolving limit, dx. Therefore, to be seen by the microscope, the size of the electron must be larger than or equal to the resolving limit. 
-
-But if the size of the electron is larger than or equal to the resolving limit dx, the electron will not be in the range dx. Therefore, dx can not be deemed to be the uncertain quantity of the electron's position which can be seen by the microscope, but deemed to be the uncertain quantity of the electron's position which can not be seen by the microscope. To repeat, dx is uncertainty in the electron's position which can not be seen by the microscope. 
-
-To be seen by the microscope, the gamma ray must be scattered into any angle within the cone of angle 2A, so we can measure the momentum of the electron. 
-
-dPx is the uncertainty in the electron's momentum which can be seen by microscope. 
-
-What relates to dx is the electron where the size is smaller than the resolving limit. When the electron is in the range dx, it can not be seen by the microscope, so its position is uncertain. 
-
-What relates to dPx is the electron where the size is larger than or equal to the resolving limit .The electron is not in the range dx, so it can be seen by the microscope and its position is certain. 
-
-Therefore, the electron which relates to dx and dPx respectively is not the same. What we can see is the electron where the size is larger than or equal to the resolving limit dx and has a certain position, dx = 0. 
-
-Quantum mechanics does not rely on the size of the object, but on Heisenberg's Gamma-Ray Microscope experiment. The use of the microscope must relate to the size of the object. The size of the object which can be seen by the microscope must be larger than or equal to the resolving limit dx of the microscope, thus the uncertain quantity of the electron's position does not exist. The gamma ray which is diffracted by the electron can be scattered into any angle within the cone of angle 2A, where we can measure the momentum of the electron. 
-
-What we can see is the electron which has a certain position, dx = 0, so that in no other position can we measure the momentum of the electron. In Quantum mechanics, the momentum of the electron can be measured accurately when we measure the momentum of the electron only, therefore, we have gained dPx = 0. 
-
-And, 
-
-dPx dx =0. (6) 
-
-Ideal experiment 2
-
-Single Slit Diffraction Experiment
-
-
-Suppose a particle moves in the Y direction originally and then passes a slit with width dx(Please see diagram below) . The uncertain quantity of the particle's position in the X direction is dx, and interference occurs at the back slit . According to Wave Optics , the angle where No.1 min of interference pattern is can be calculated by following formula: 
-
-sinA=L/2dx (1) 
-
-and L=h/p where h is Planck's constant. (2) 
-
-So the uncertainty principle can be obtained 
-
-dPx dx ~ h (5) 
-
-Re-analysis
-
-According to Newton first law , if an external force in the X direction does not affect the particle, it will move in a uniform straight line, ( Motion State or Static State) , and the motion in the Y direction is unchanged .Therefore , we can learn its position in the slit from its starting point. 
-
-The particle can have a certain position in the slit and the uncertain quantity of the position is dx =0. According to Newton first law , if the external force at the X direction does not affect particle, and the original motion in the Y direction is not changed , the momentum of the particle int the X direction will be Px=0 and the uncertain quantity of the momentum will be dPx =0. 
-
-This gives: 
-
-dPx dx =0. (6) 
-
-No experiment negates NEWTON FIRST LAW. Whether in quantum mechanics or classical mechanics, it applies to the microcosmic world and is of the form of the Energy-Momentum conservation laws. If an external force does not affect the particle and it does not remain static or in uniform motion, it has disobeyed the Energy-Momentum conservation laws. Under the above ideal experiment , it is considered that the width of the slit is the uncertain quantity of the particle's position. But there is certainly no reason for us to consider that the particle in the above experiment has an uncertain position, and no reason for us to consider that the slit's width is the uncertain quantity of the particle. Therefore, the uncertainty principle, 
-
-dPx dx ~ h (5) 
-
-which is derived from the above experiment is unreasonable. 
-
-Conclusion
-
-
-From the above re-analysis , it is realized that the ideal experiment demonstration for the uncertainty principle is untenable. Therefore, the uncertainty principle is untenable. 
-
- 
-
-Reference:
-1. Max Jammer. (1974) The philosophy of quantum mechanics (John wiley & sons , Inc New York ) Page 65
-2. Ibid, Page 67
-3. http://www.aip.org/history/heisenberg/p08b.htm 
-
- 
-
-Author : BingXin Gong
-Postal address : P.O.Box A111 YongFa XiaoQu XinHua HuaDu
-               GuangZhou 510800 P.R.China
-
-E-mail: hdgbyi@public.guangzhou.gd.cn
-Tel: 86---20---86856616 
+Steve

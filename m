@@ -1,43 +1,69 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6B88VRw016464
-	for <linux-mips-outgoing@oss.sgi.com>; Thu, 11 Jul 2002 01:08:31 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6B8UbRw016608
+	for <linux-mips-outgoing@oss.sgi.com>; Thu, 11 Jul 2002 01:30:37 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6B88VaM016463
-	for linux-mips-outgoing; Thu, 11 Jul 2002 01:08:31 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6B8Ubp0016607
+	for linux-mips-outgoing; Thu, 11 Jul 2002 01:30:37 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from elvis.franken.de (mail@dns.franken.de [193.175.24.33])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6B88NRw016454;
-	Thu, 11 Jul 2002 01:08:24 -0700
-Received: from tsbogend by elvis.franken.de with local (Exim 3.22 #1)
-	id 17SZ47-0003wd-00; Thu, 11 Jul 2002 10:12:43 +0200
-Date: Thu, 11 Jul 2002 10:12:43 +0200
-From: Thomas Bogendoerfer <tsbogend@elvis.franken.de>
-To: Alan Cox <alan@lxorguk.ukuu.org.uk>
-Cc: Jun Sun <jsun@mvista.com>, linux-mips@oss.sgi.com,
-   Ralf Baechle <ralf@oss.sgi.com>, marcelo@conectiva.com.br
-Subject: Re: [2.4 PATCH] pcnet32.c - tx underflow error
-Message-ID: <20020711081243.GA14912@elvis.franken.de>
-Reply-To: tsbogend@alpha.franken.de
-References: <3D2CCC83.6090304@mvista.com> <E17STUx-0008LR-00@the-village.bc.nu>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <E17STUx-0008LR-00@the-village.bc.nu>
-User-Agent: Mutt/1.3.25i
-X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
+Received: from mx2.mips.com (mx2.mips.com [206.31.31.227])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6B8UVRw016597
+	for <linux-mips@oss.sgi.com>; Thu, 11 Jul 2002 01:30:31 -0700
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id g6B8YoXb011163;
+	Thu, 11 Jul 2002 01:34:50 -0700 (PDT)
+Received: from grendel (grendel [192.168.236.16])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id BAA03975;
+	Thu, 11 Jul 2002 01:34:49 -0700 (PDT)
+Message-ID: <009001c228b5$e87e0600$10eca8c0@grendel>
+From: "Kevin D. Kissell" <kevink@mips.com>
+To: "Geert Uytterhoeven" <geert@linux-m68k.org>
+Cc: "Linux/MIPS Development" <linux-mips@oss.sgi.com>
+References: <Pine.GSO.4.21.0207110854250.8371-100000@vervain.sonytel.be>
+Subject: Re: Malta crashes on the latest 2.4 kernel
+Date: Thu, 11 Jul 2002 10:35:12 +0200
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4807.1700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4910.0300
+X-Spam-Status: No, hits=0.1 required=5.0 tests=PORN_10 version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, Jul 11, 2002 at 03:16:03AM +0100, Alan Cox wrote:
-> > I even suspect this is the default setting on PCI cards on PC.  Can someone 
-> > verify?  If that is the case, that will explain why driver never sets this 
-> > bit.  Maybe we don't have any "real computers" after all. :-)
+> On Thu, 11 Jul 2002, Kevin D. Kissell wrote:
+> > I note that Ralf has, in fact, applied the fix to the
+> > OSS CVS repository.  I also note that "BARRIER"
+> > is still defined to be a string of 6 nops.  I would argue
+> > (again) that those really, really ought to be ssnops,
+> > and that if they *were* ssnops, one could probably
+> > have fewer of them.
 > 
-> Most PC hardware can deliver that kind of DMA guarantee. UDMA100 doesn't
-> work very well otherwise.
+> Sorry for being ignorant, but what's the difference between nop and ssnop?
+> 
+> I see that SSNOP is defined to be `sll zero,zero,1' in <asm/asm.h>, but that
+> doesn't give me any clue.
 
-I've seen this problem on a lot of PC hardware, too. The best fix would
-be to enable full packet mode, when the driver sees too much TX underruns.
+SSNOPs are "super-scalar NOPs", which were first
+invented (but not documented at the time) for the 
+R8000, which was the first superscalar MIPS
+implementation.  They wanted to be able to absorb
+the standard "overhead" NOPS associated with
+unfilled branch delay slots, etc, in the dual-issue
+mechanism, but still have some means to handle
+CP0 hazards such that it could be assured to force
+a 1 cycle stall per instruction.  While it wasn't officially
+a part of the architecture until the late 1990's, the
+convention was carried forward by the R5xxx
+and R1xxxx families. There have been rumours of 
+superscalar MIPS processors that do not enforce 
+single-issue on SSNOPs, but I don't know of any 
+offhand, and the MIPS32/MIPS64 specs formalize 
+the definition.
 
-Thomas.
+            Regards,
+
+            Kevin K.

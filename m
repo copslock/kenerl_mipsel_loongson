@@ -1,55 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Jan 2004 12:40:34 +0000 (GMT)
-Received: from gateway.heeltoe.com ([IPv6:::ffff:66.134.219.32]:8251 "HELO
-	gateway.heeltoe.com") by linux-mips.org with SMTP
-	id <S8225235AbUAJMkd>; Sat, 10 Jan 2004 12:40:33 +0000
-Received: (qmail 17053 invoked from network); 10 Jan 2004 12:40:26 -0000
-Received: from mwave.heeltoe.com (192.245.4.20)
-  by clunker.heeltoe.com with SMTP; 10 Jan 2004 12:40:26 -0000
-Received: from mwave (brad@localhost)
-	by mwave.heeltoe.com (8.11.6/8.11.6) with ESMTP id i0ACePX01584;
-	Sat, 10 Jan 2004 07:40:25 -0500
-Message-Id: <200401101240.i0ACePX01584@mwave.heeltoe.com>
-X-Mailer: exmh version 2.4 06/23/2000 with nmh-1.0.4
-To: Adam Nielsen <a.nielsen@optushome.com.au>
-cc: linux-mips@linux-mips.org
-Subject: Re: Running Linux on an NCD HMX X-Terminal 
-In-Reply-To: Message from Adam Nielsen <a.nielsen@optushome.com.au> 
-   of "Sat, 10 Jan 2004 15:05:04 +1000." <200401101505.04453@korath> 
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Date: Sat, 10 Jan 2004 07:40:25 -0500
-From: Brad Parker <brad@heeltoe.com>
-Return-Path: <brad@heeltoe.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Jan 2004 02:05:22 +0000 (GMT)
+Received: from mail006.syd.optusnet.com.au ([IPv6:::ffff:211.29.132.63]:12690
+	"EHLO mail006.syd.optusnet.com.au") by linux-mips.org with ESMTP
+	id <S8224936AbUAKCFV>; Sun, 11 Jan 2004 02:05:21 +0000
+Received: from korath.adamsrealm.net.au (c210-49-87-133.rochd3.qld.optusnet.com.au [210.49.87.133])
+	by mail006.syd.optusnet.com.au (8.11.6p2/8.11.6) with ESMTP id i0B25F620960
+	for <linux-mips@linux-mips.org>; Sun, 11 Jan 2004 13:05:16 +1100
+From: Adam Nielsen <a.nielsen@optushome.com.au>
+To: linux-mips@linux-mips.org
+Subject: Re: Running Linux on an NCD HMX X-Terminal
+Date: Sun, 11 Jan 2004 12:04:23 +1000
+User-Agent: KMail/1.5
+References: <200401101240.i0ACePX01584@mwave.heeltoe.com>
+In-Reply-To: <200401101240.i0ACePX01584@mwave.heeltoe.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Message-Id: <200401111204.23752@korath>
+Return-Path: <a.nielsen@optushome.com.au>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3897
+X-archive-position: 3898
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: brad@heeltoe.com
+X-original-sender: a.nielsen@optushome.com.au
 Precedence: bulk
 X-list: linux-mips
 
+> I brought up linux on the PPC403 version of an NCD x-terminal.  As I recall
+> I had to write program to hack the elf header to get kernels to load.
+> The project is at http://sourceforge.net/projects/explora-linux/
 
-Adam Nielsen wrote:
-...
->Does anyone know what my chances would be of getting a Linux kernel on it?  I 
->found a couple of precompiled MIPS kernel images (one was ELF32 but the other 
->was ELF64), however when I tried to boot them the terminal simply said "Load 
->address out of range" and aborted.  I was using the precompiled images 
->because I really want to know whether it'll work before I go to the trouble 
->of installing all the cross-compilation tools.
+Hmm...this looks interesting!
 
-I brought up linux on the PPC403 version of an NCD x-terminal.  As I recall I
-had to write program to hack the elf header to get kernels to load.
+> You may get lucky and find they used the same format for MIPS...
 
-The project is at http://sourceforge.net/projects/explora-linux/
+Well I am hopeful, given that they use the same manual for the HMX and the 
+Explora, but running ncdhack on the kernel didn't seem to have any effect :-(
 
-And the program to hack the kernel elf file is 
+I did try some fiddling with the ELF files, just to see what would happen (but 
+not having any experience with this, I was just guessing ;-))  The load 
+address for the proper boot image is 0x40020000 but the kernel is 0x88002000 
+which I think is partly why it doesn't work.  If I shrink the ELF file a 
+little by removing a couple of the sections (by telling objcopy to ignore 
+them) *and* I change the load address to 0x40020000 then the xterm actually 
+downloads the image but then gives a "File corrupted CRC error" just as it 
+goes to boot it.
 
-http://cvs.sourceforge.net/viewcvs.py/explora-linux/ncdhack/ncdhack.c
+I'm not sure why that happens, because manipulating the file properly with 
+objcopy should adjust any CRC checksums accordingly.  I wonder whether the 
+xterm is checking that the image is 'official'?
 
-You may get lucky and find they used the same format for MIPS...
-
--brad
+Cheers,
+Adam.

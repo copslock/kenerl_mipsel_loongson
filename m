@@ -1,52 +1,49 @@
-Received:  by oss.sgi.com id <S42222AbQGFBZf>;
-	Wed, 5 Jul 2000 18:25:35 -0700
-Received: from u-69.karlsruhe.ipdial.viaginterkom.de ([62.180.21.69]:28932
-        "EHLO u-69.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S42203AbQGFBZd>; Wed, 5 Jul 2000 18:25:33 -0700
-Received:  by lappi.waldorf-gmbh.de id <S407622AbQGFBZK>;
-	Wed, 5 Jul 2000 18:25:10 -0700
-Date:   Thu, 6 Jul 2000 03:25:10 +0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Erik Niessen <erik_niessen@hotmail.com>
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: Doing DMA with the ide-driver
-Message-ID: <20000706032510.A5122@bacchus.dhis.org>
-References: <20000706002824.64367.qmail@hotmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <20000706002824.64367.qmail@hotmail.com>; from erik_niessen@hotmail.com on Thu, Jul 06, 2000 at 02:28:24AM +0200
-X-Accept-Language: de,en,fr
+Received:  by oss.sgi.com id <S42207AbQGFMhs>;
+	Thu, 6 Jul 2000 05:37:48 -0700
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:22048 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S42203AbQGFMh0>; Thu, 6 Jul 2000 05:37:26 -0700
+Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id FAA07373
+	for <linux-mips@oss.sgi.com>; Thu, 6 Jul 2000 05:43:01 -0700 (PDT)
+	mail_from (Fredrik.Rovik@sas.no)
+From:   Fredrik.Rovik@sas.no
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	via ESMTP id FAA12223
+	for <linux@cthulhu.engr.sgi.com>;
+	Thu, 6 Jul 2000 05:36:51 -0700 (PDT)
+	mail_from (Fredrik.Rovik@sas.no)
+Received: from mailgw.sas.no (mailgw.sas.no [193.215.242.134]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id FAA07044
+	for <linux@cthulhu.engr.sgi.com>; Thu, 6 Jul 2000 05:36:44 -0700 (PDT)
+	mail_from (Fredrik.Rovik@sas.no)
+Received: from oslmsg0101.net.sas.no (unverified) by mailgw.sas.no
+ (Content Technologies SMTPRS 4.1.5) with ESMTP id <Tc0a82f0be34d3d624838@mailgw.sas.no> for <linux@cthulhu.engr.sgi.com>;
+ Thu, 6 Jul 2000 14:38:53 +0200
+Received: by oslmsg0101.net.sas.no with Internet Mail Service (5.5.2650.21)
+	id <3M1APBXD>; Thu, 6 Jul 2000 14:37:00 +0200
+Message-ID: <72FEABC40CA6D311B2E40008C78AB8AA1DD532@oslmsg0111.net.sas.no>
+To:     linux@cthulhu.engr.sgi.com
+Subject: Alive/indigo2 status
+Date:   Thu, 6 Jul 2000 14:36:58 +0200 
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2650.21)
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Thu, Jul 06, 2000 at 02:28:24AM +0200, Erik Niessen wrote:
+Hi,
 
-> I am trying to get an external ide-pci controller (CMD 646) working on an 
-> embedded mips board. The kernel-source is based on a 2.2.12 source tree.
-> 
-> The problem is doing DMA. I receive address (0x80ff0000) for my dmatable in 
-> the function ide_setup_dma (__get_free_pages). Then in ide_buildtable it 
-> sets up the dmatable. Address 0x80376000 and a count of 0x400 
-> (check_partition reads 2 sectors from the harddrive). These are all virtual 
-> addresses. For setting up the dmatable I use physical addresses. On the 
-> embedded board there is a 1:1 map of i/o bus to main memory so 
-> platform_mem_iobus_base is 0.
-> 
-> So after doing the DMA read, I read only zero's at address 0x80376000 and 
-> the kernel hangs. But the harddrive is ready and I can't find any errors. It 
-> seems that it writes the data to a different memory location. After 
-> searching the memory the data is written at address 0x80000000??  Is the 
-> memory manager somewhere in between???
-> 
-> The next thing I did was reserving a piece of physical memory for DMA and 
-> fill in the dmatable myself. So that it uses my piece of reserved memory. 
-> After I did this, the data was at the correct address and the kernel didn't 
-> crash. Is this the solution???
+ first of all I wanted to know if this mailinglist is
+alive at all.. and, if anyone have some status information
+on the port to indigo2. I've got an Extreme which i'd love
+running linux with X and GL (wishing)
 
-What you're observing can be explained by caches not being flushed properly.
-What kernel versions are you using?
-
-  Ralf
+Fredrik Rovik

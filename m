@@ -1,80 +1,92 @@
-Received:  by oss.sgi.com id <S42281AbQH0RU2>;
-	Sun, 27 Aug 2000 10:20:28 -0700
-Received: from mail.ivm.net ([62.204.1.4]:3954 "EHLO mail.ivm.net")
-	by oss.sgi.com with ESMTP id <S42253AbQH0RT6>;
-	Sun, 27 Aug 2000 10:19:58 -0700
-Received: from franz.no.dom (port89.duesseldorf.ivm.de [195.247.65.89])
-	by mail.ivm.net (8.8.8/8.8.8) with ESMTP id TAA07373;
-	Sun, 27 Aug 2000 19:19:06 +0200
-X-To:   linux-mips@oss.sgi.com
-Message-ID: <XFMail.000827191949.Harald.Koerfgen@home.ivm.de>
-X-Mailer: XFMail 1.4.0 on Linux
-X-Priority: 3 (Normal)
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 8bit
-MIME-Version: 1.0
-In-Reply-To: <20000826220608.J3009@paradigm.rfc822.org>
-Date:   Sun, 27 Aug 2000 19:19:49 +0200 (CEST)
-Reply-To: Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
-Organization: none
-From:   Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
-To:     Florian Lohoff <flo@rfc822.org>
-Subject: RE: decstation boot loader
+Received:  by oss.sgi.com id <S42399AbQH0Rj6>;
+	Sun, 27 Aug 2000 10:39:58 -0700
+Received: from noose.gt.owl.de ([62.52.19.4]:2573 "HELO noose.gt.owl.de")
+	by oss.sgi.com with SMTP id <S42253AbQH0Rjb>;
+	Sun, 27 Aug 2000 10:39:31 -0700
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id E130E82E; Sun, 27 Aug 2000 19:42:45 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 7AA688FF5; Sun, 27 Aug 2000 19:38:20 +0200 (CEST)
+Date:   Sun, 27 Aug 2000 19:38:20 +0200
+From:   Florian Lohoff <flo@rfc822.org>
+To:     Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
 Cc:     linux-mips@oss.sgi.com
+Subject: Re: decstation boot loader
+Message-ID: <20000827193820.B325@paradigm.rfc822.org>
+References: <20000826220608.J3009@paradigm.rfc822.org> <XFMail.000827191949.Harald.Koerfgen@home.ivm.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+User-Agent: Mutt/1.0.1i
+In-Reply-To: <XFMail.000827191949.Harald.Koerfgen@home.ivm.de>; from Harald.Koerfgen@home.ivm.de on Sun, Aug 27, 2000 at 07:19:49PM +0200
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Hi Flo,
-
-On 26-Aug-00 Florian Lohoff wrote:
-> i sat down a couple of hours and had a look at current possibilities
-> of booting the decstations from HD. I am not much further than
-> i was was before - And now i got a couple of questions probably one
-> of the more specialised mips hackers might answer.
+On Sun, Aug 27, 2000 at 07:19:49PM +0200, Harald Koerfgen wrote:
 > 
-> - The bootblock of the decstation might contain up to 51 extents
->   to load from the disks.
->
->   1. Do these extents refer to the start of the disk or the start
->      of the probably first partition.
+> The PROM knows nothing about partitions or such so these extends refer
+> obviously to the start of the disk.
+> 
 
-The PROM knows nothing about partitions or such so these extends refer obviously
-to the start of the disk.
- 
->   2. Do i have to set a checksum in the bootblock or does the checksom
->      only apply to the disklabel
+Good
 
-The PROM doesn't even know anything about a checksum.
- 
->   3. What binarys is the bootloader able to load. From the BSD sources
->      i guess its only raw instructions.
+> 
+> Yes. "mipsel-linux-objcopy --output-target=binary" is your friend.
+>  
 
-Yes. "mipsel-linux-objcopy --output-target=binary" is your friend.
- 
->   4. Does the MS-DOS disklabel and the DEC bootblock interfer in any
->      kind that its impossible to have a diskloader with MS-DOS Disklabels 
+Even worse ...
 
-No, that should work as long as the the the boot map is short enough not to
-overwrite the partition information.
- 
-> I rewrote the bootprep.c today to play around with loading different binarys.
-> I added the honor of partition information meaning - The new (i call
-> it writeboot) looks at the start of the partition and calculates
-> the extents relativ to the start of the disk. But still i dont get any
-> results. When trying to boot those partitions with any kind of combination
-> the prompt only returns to the prom command line.
+Compilation - Relocation - Stripping - 
 
-I have successfully booted Linux kernels with bootprep. Depending on the code you
-want to load, for example a second stage bootloader, you may need to adjust
-"boot_block->loadAddr" and "boot_block->execAddr".
- 
-> I thought of a bootloader much like the silo - Capable of reading
-> an ext2 filesystem via libext2 etc.
+start.b: start.r
+        objcopy --remove-section=.bss \
+                --remove-section=.data \
+                --remove-section=.reginfo \
+                --remove-section=.mdebug \
+                --output-target=binary start.r start.b 
 
-That's what I always wanted to do but I never found the time...
+start.r: start.o
+        ld -Ttext=0x80020000 -Tdata=0x80020000 -Tbss=0x80020000 \
+                start.o -o start.r
 
+start.o: start.S        
+        gcc -fomit-frame-pointer -G 0 -mno-abicalls -fno-pic -c start.S
+
+
+> >   4. Does the MS-DOS disklabel and the DEC bootblock interfer in any
+> >      kind that its impossible to have a diskloader with MS-DOS Disklabels 
+> 
+> No, that should work as long as the the the boot map is short enough not to
+> overwrite the partition information.
+>  
+
+Does that mean that the limit of the boot_map in the bootprep
+is arbitrary and the DEC firmware bootloader would continue
+read/process boot_maps in the whole first block ?
+
+> I have successfully booted Linux kernels with bootprep. Depending on
+> the code you want to load, for example a second stage bootloader, you
+> may need to adjust "boot_block->loadAddr" and "boot_block->execAddr".
+
+Yep - I guessed so - loadAddr hasnt changed but i guess execAddr
+needs to point to kernel_entry ...
+
+> > I thought of a bootloader much like the silo - Capable of reading
+> > an ext2 filesystem via libext2 etc.
+> 
+> That's what I always wanted to do but I never found the time...
+
+:) - Well see - I got someone else i donated a Decstation to
+whom i gave the first goal of writing a boot loader for the donation :)
+
+The problem right now which i have is that i cant seem to load
+ANYTHING - Not raw instructions not elf not ecoff - Even simplest
+instruction like a tight loop (Wouldnt go back into prom)
+dont seem to get executed. 
+
+Flo
 -- 
-Regards,
-Harald
+Florian Lohoff		flo@rfc822.org		      	+49-5201-669912
+      "Write only memory - Oops. Time for my medication again ..."

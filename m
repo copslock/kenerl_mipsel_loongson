@@ -1,42 +1,47 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8AIUuL24092
-	for linux-mips-outgoing; Mon, 10 Sep 2001 11:30:56 -0700
-Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8AIUsd24089
-	for <linux-mips@oss.sgi.com>; Mon, 10 Sep 2001 11:30:54 -0700
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f8AIYZA32122;
-	Mon, 10 Sep 2001 11:34:36 -0700
-Message-ID: <3B9D0527.5B1451BF@mvista.com>
-Date: Mon, 10 Sep 2001 11:23:35 -0700
-From: Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
-X-Accept-Language: en
+	by oss.sgi.com (8.11.2/8.11.3) id f8ALrKK29517
+	for linux-mips-outgoing; Mon, 10 Sep 2001 14:53:20 -0700
+Received: from web14001.mail.yahoo.com (web14001.mail.yahoo.com [216.136.175.92])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8ALrBd29503
+	for <linux-mips@oss.sgi.com>; Mon, 10 Sep 2001 14:53:11 -0700
+Message-ID: <20010910215311.19039.qmail@web14001.mail.yahoo.com>
+Received: from [132.170.193.142] by web14001.mail.yahoo.com via HTTP; Mon, 10 Sep 2001 14:53:11 PDT
+Date: Mon, 10 Sep 2001 14:53:11 -0700 (PDT)
+From: Eugenio Diaz <getnito@yahoo.com>
+Subject: Re: O2 Linux
+To: linux-mips@oss.sgi.com
+Cc: linux-mips@oss.sgi.com
+In-Reply-To: <Pine.LNX.4.21.0109032232360.9003-100000@ns>
 MIME-Version: 1.0
-To: Fuxin Zhang <fxzhang@ict.ac.cn>
-CC: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: kernel test & benchmark tools?
-References: <200109031754.f83Hsod32239@oss.sgi.com>
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Fuxin Zhang wrote:
-> 
-> hello,linux-mips
->     I have barely finished porting 2.4 kernel to Algorithmics P6032 board.Now I want
-> to make it more stable and run faster,is there any well-known test or benchmark tools used
-> by mips kernel group? There are too many benchmark around,I don't know which is better suit
-> for kernel test. I heard that linus use lmbench?
->     Thanks in advance.
-> Regards
+--- nick@snowman.net wrote:
+> Actually if I may add to this we are desperately looking for developers
+> and testers.  One of our main contributers (who the port is pretty much
+> due to) no longer has time to help, and I am very inexperienced at linux
+> kernel development.
+> 	Nick
 
+I have an O2 at home and I can help with testing (I am very good at picking up
+problems) since I don't have much time for development. I also have 10 Indys at
+work waiting for me to have some time to do something with them, possibly a
+Linux cluster to play with "PAPERS" (http://www.aggregate.org) ...
 
-In addition to lmbench, we have also used PCTS, a POSIX compliant test suite. 
-There are some issues in cross-compiling environment, but it should be
-straightforward if you do a native build.
+I am new to the list (since about month ago), but due to lack of time I have
+not read it much and have a backlog of about 600 messages ;-)
 
-http://www.itl.nist.gov/div897/ctg/posix_form.htm
+I keep mentioning that I don't have time, well, for Linux on the O2 I am wiling
+to steal 2 hours from my sleep to work on it ;-)
 
-Jun
+=====
+________________________
+Eugenio Diaz, BSEE/BSCE   
+Linux Engineer
+getnito@yahoo.com
+
+__________________________________________________
+Do You Yahoo!?
+Get email alerts & NEW webcam video instant messaging with Yahoo! Messenger
+http://im.yahoo.com

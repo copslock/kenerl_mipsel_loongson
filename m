@@ -1,42 +1,41 @@
-Received:  by oss.sgi.com id <S553777AbRAIKUO>;
-	Tue, 9 Jan 2001 02:20:14 -0800
-Received: from dorian.blic.net ([217.23.192.5]:58377 "EHLO dorian.blic.net")
-	by oss.sgi.com with ESMTP id <S553763AbRAIKT6>;
-	Tue, 9 Jan 2001 02:19:58 -0800
-Received: from quake.blic.net (pmalic@quake.blic.net [217.23.192.7])
-	by dorian.blic.net (8.9.3/8.9.3) with ESMTP id LAA08675;
-	Tue, 9 Jan 2001 11:04:12 +0100
-Date:   Tue, 9 Jan 2001 11:23:17 +0100 (CET)
-From:   Predrag Malicevic <pmalic@blic.net>
-To:     Ralf Baechle <ralf@oss.sgi.com>
-cc:     <linux-mips@oss.sgi.com>
-Subject: Re: O200 problem...
-In-Reply-To: <20010109004138.A12181@bacchus.dhis.org>
-Message-ID: <Pine.LNX.4.30.0101091053100.11171-100000@quake.blic.net>
+Received:  by oss.sgi.com id <S553779AbRAIKvY>;
+	Tue, 9 Jan 2001 02:51:24 -0800
+Received: from mx.mips.com ([206.31.31.226]:46807 "EHLO mx.mips.com")
+	by oss.sgi.com with ESMTP id <S553770AbRAIKvD>;
+	Tue, 9 Jan 2001 02:51:03 -0800
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id CAA27789
+	for <linux-mips@oss.sgi.com>; Tue, 9 Jan 2001 02:50:58 -0800 (PST)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id CAA25195
+	for <linux-mips@oss.sgi.com>; Tue, 9 Jan 2001 02:50:55 -0800 (PST)
+Received: from mips.com (copsun17 [192.168.205.27])
+	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id LAA17080
+	for <linux-mips@oss.sgi.com>; Tue, 9 Jan 2001 11:50:21 +0100 (MET)
+Message-ID: <3A5AECED.99A9C4A1@mips.com>
+Date:   Tue, 09 Jan 2001 11:50:21 +0100
+From:   Carsten Langgaard <carstenl@mips.com>
+X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To:     linux-mips@oss.sgi.com
+Subject: 64bit TLB refill handler
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, 9 Jan 2001, Ralf Baechle wrote:
+The XTLB refill handler in the 64bit code is for the R10000, is there
+any reason that it shouldn't work on R4000's ?
 
-> > CPU 0 clock is 65535MHz.
->
-> Something's fishy.  I guess ;-)
+/Carsten
 
-It is really strange... 65 GHz? ;)
 
-> Thanks for sending the oops message; however without additional data
-> provided I can't use it.  Can you please point please put the kernel image
-> that resulted in the oops online?
-
-Ok, I'll put it by Thursday (I can't come to the machines earlier).
-
-P.S. I was first building kernels on an i386 system running RedHat 7.0,
-but later on I switched to a faster machine running Slackware 7.0. In both
-cases I used binutils-mips64-linux-2.9.5-3/egcs-mips64-linux-1.1.2-3 RPMs
-from oss.sgi.com. Kernels from both machines behaved the same way.
-
---pm
+--
+_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
+|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
+| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
+  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
+                   Denmark             http://www.mips.com

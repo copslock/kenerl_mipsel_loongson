@@ -1,36 +1,37 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9J6brn17747
-	for linux-mips-outgoing; Thu, 18 Oct 2001 23:37:53 -0700
-Received: from dea.linux-mips.net (a1as03-p59.stg.tli.de [195.252.186.59])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9J6boD17744
-	for <linux-mips@oss.sgi.com>; Thu, 18 Oct 2001 23:37:51 -0700
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id f9J6bd327148;
-	Fri, 19 Oct 2001 08:37:39 +0200
-Date: Fri, 19 Oct 2001 08:37:39 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Peter Andersson <peter@dark-past.mine.nu>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: Linux 2.4 kernel with sound support
-Message-ID: <20011019083739.A26998@dea.linux-mips.net>
-References: <5.1.0.14.0.20011016193856.00a518e0@192.168.1.5>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <5.1.0.14.0.20011016193856.00a518e0@192.168.1.5>; from peter@dark-past.mine.nu on Tue, Oct 16, 2001 at 07:42:38PM +0200
-X-Accept-Language: de,en,fr
+	by oss.sgi.com (8.11.2/8.11.3) id f9J9ID021532
+	for linux-mips-outgoing; Fri, 19 Oct 2001 02:18:13 -0700
+Received: from t111.niisi.ras.ru (t111.niisi.ras.ru [193.232.173.111])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9J9I9D21526
+	for <linux-mips@oss.sgi.com>; Fri, 19 Oct 2001 02:18:10 -0700
+Received: from t06.niisi.ras.ru (t06.niisi.ras.ru [193.232.173.6])
+	by t111.niisi.ras.ru (8.9.1/8.9.1) with ESMTP id NAA31634;
+	Fri, 19 Oct 2001 13:18:12 +0300
+Received: (from uucp@localhost) by t06.niisi.ras.ru (8.7.6/8.7.3) with UUCP id NAA15576; Fri, 19 Oct 2001 13:16:35 +0300
+Received: from niisi.msk.ru (t34 [193.232.173.34]) by niisi.msk.ru (8.8.8/8.8.8) with ESMTP id KAA26371; Fri, 19 Oct 2001 10:29:02 +0300 (MSK)
+Message-ID: <3BCFD6C0.6035210C@niisi.msk.ru>
+Date: Fri, 19 Oct 2001 11:31:12 +0400
+From: "Gleb O. Raiko" <raiko@niisi.msk.ru>
+Organization: NIISI RAN
+X-Mailer: Mozilla 4.77 [en] (WinNT; U)
+X-Accept-Language: en,ru
+MIME-Version: 1.0
+To: Gerald Champagne <gerald.champagne@esstech.com>
+CC: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Re: Moving kernel_entry to LOADADDR
+References: <3BCF7AD2.2000000@esstech.com>
+Content-Type: text/plain; charset=koi8-r
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Oct 16, 2001 at 07:42:38PM +0200, Peter Andersson wrote:
+Gerald Champagne wrote:
+> Is this worth changing in cvs, or did I miss something?
 
-> Does anyone know where i can find a mips linux 2.4 kernel with audio 
-> support? I am running an sgi indy with a R5000 processor, but kernels 
-> compiled for R4400 works great.
+Embed your kernel in your own bootloader, load the bootloader from fixed
+addr. In the bootloader move the kernel at any location you want and
+jump to the kernel entry. The kernel entry is known at compile time, so
+you can teach the bootloader. This way you won't disturb others.
 
-R4x00 / R5000 difference are very minor.  A sound driver only exists in
-ALSA but that one is for a pretty dated kernel; somebody is currently
-trying himself on updating it for a current kernel.
-
-  Ralf
+Regards,
+Gleb.

@@ -1,16 +1,16 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0FImln28939
-	for linux-mips-outgoing; Tue, 15 Jan 2002 10:48:47 -0800
+	by oss.sgi.com (8.11.2/8.11.3) id g0FJ5Kv29384
+	for linux-mips-outgoing; Tue, 15 Jan 2002 11:05:20 -0800
 Received: from dvmwest.gt.owl.de (dvmwest.gt.owl.de [62.52.24.140])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0FImhP28936
-	for <linux-mips@oss.sgi.com>; Tue, 15 Jan 2002 10:48:44 -0800
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0FJ5HP29380
+	for <linux-mips@oss.sgi.com>; Tue, 15 Jan 2002 11:05:17 -0800
 Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
-	id B6DC3A092; Tue, 15 Jan 2002 18:48:39 +0100 (CET)
-Date: Tue, 15 Jan 2002 18:48:39 +0100
+	id 87872A092; Tue, 15 Jan 2002 19:05:14 +0100 (CET)
+Date: Tue, 15 Jan 2002 19:05:14 +0100
 From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
 To: linux-mips@oss.sgi.com
-Subject: -ELOOP: Problem during package installation
-Message-ID: <20020115184839.M15285@lug-owl.de>
+Subject: Perl on R4k6 (_not_ the segfault problem)
+Message-ID: <20020115190514.N15285@lug-owl.de>
 Mail-Followup-To: linux-mips@oss.sgi.com
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -22,14 +22,15 @@ Precedence: bulk
 
 Hi!
 
-I'm running the standard debian kernel that comes with a plain
-installation on a R4k6 Indy. When installing packages (dpkg --install
-....) I sometimes get error messages that there have been too
-many links in file name chain (-ELOOP). This only happens sometimes,
-and is not reproduceable. So, if a package failed to install, I
-can try it again, any may have success...
+I'm facing another problem with Perl. (Again, this is on nfsroot.)
+Some perl scripts ( notably update-info) stall, they do not(!)
+segfault). I strace'd it a time, last operation was a munmap().
 
-Oh, this is on nfsroot...
+The problem appears independend of the settings for LD_BIND_NOW,
+so it's different from the problem described on Debian's
+Ports pages.
+
+Is anybody working on this, or is anything known about this?
 
 MfG, JBG
 

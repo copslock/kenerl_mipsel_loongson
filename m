@@ -1,68 +1,86 @@
-Received:  by oss.sgi.com id <S553712AbQJXBTh>;
-	Mon, 23 Oct 2000 18:19:37 -0700
-Received: from u-50.karlsruhe.ipdial.viaginterkom.de ([62.180.19.50]:23300
-        "EHLO u-50.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S553686AbQJXBTS>; Mon, 23 Oct 2000 18:19:18 -0700
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S870343AbQJXBS2>;
-        Tue, 24 Oct 2000 03:18:28 +0200
-Date:   Tue, 24 Oct 2000 03:18:28 +0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Jun Sun <jsun@mvista.com>
-Cc:     Keith Owens <kaos@melbourne.sgi.com>, linux-mips@oss.sgi.com
-Subject: Re: problems with insmod ...
-Message-ID: <20001024031828.A2816@bacchus.dhis.org>
-References: <39F48742.933941B8@mvista.com> <7690.972340323@ocs3.ocs-net> <20001024024040.D1009@bacchus.dhis.org> <39F4E113.6BC85A5C@mvista.com>
-Mime-Version: 1.0
+Received:  by oss.sgi.com id <S553716AbQJXBW5>;
+	Mon, 23 Oct 2000 18:22:57 -0700
+Received: from gateway-490.mvista.com ([63.192.220.206]:26097 "EHLO
+        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553679AbQJXBWz>;
+	Mon, 23 Oct 2000 18:22:55 -0700
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id e9O1LP303349;
+	Mon, 23 Oct 2000 18:21:25 -0700
+Message-ID: <39F4E4C2.A9570003@mvista.com>
+Date:   Mon, 23 Oct 2000 18:24:18 -0700
+From:   Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-5.0 i586)
+X-Accept-Language: en
+MIME-Version: 1.0
+To:     Ralf Baechle <ralf@oss.sgi.com>
+CC:     linux-mips@oss.sgi.com
+Subject: Re: pthread_create() gets BUS ERROR
+References: <39EF765A.EC787ED6@mvista.com> <20001020003946.E20887@bacchus.dhis.org>
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <39F4E113.6BC85A5C@mvista.com>; from jsun@mvista.com on Mon, Oct 23, 2000 at 06:08:35PM -0700
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Mon, Oct 23, 2000 at 06:08:35PM -0700, Jun Sun wrote:
-
-> > > Jun Sun <jsun@mvista.com> wrote:
-> > > >I tried with 2.3.19, and now I am having problem with out of bound index
-> > > >in symbol table.  See the output below.
-> > > >
-> > > >---------
-> > > >sh-2.03# insmod hello.o
-> > > >hello.o: local symbol gcc2_compiled. with index 10 exceeds
-> > > >local_symtab_size 10
-> > > >hello.o: local symbol __gnu_compiled_c with index 11 exceeds
-> > > >local_symtab_size 10
-> > > >---------
-> > >
-> > > It is a toolchain bug, I think it is in the assembler.  I have a dim
-> > > distant memory from about a month ago that somebody on linux-mips found
-> > > the problem.  Ask the toolchain experts.
-> > 
-> > It's a bug bug in ld, one in BFD and a sillyness in IRIX ELF which the linker
-> > uses.  IRIX ELF uses different sorting rules for the symbol table, see
-> > mips_elf_sym_is_global in bfd/elf32-mips.c.
-> > 
-> >  - Bug one: ld generated output should follow the same rules as assembler
-> >    generated output.
-> >  - Bug two is more a design flaw - why does Linux/MIPS and most other
-> >    MIPS ELF configurations use IRIX and not ABI ELF?
-> >  - Bug three is that mips_elf_sym_is_global applies these IRIX ELF sorting
-> >    rules even to ABI ELF.
-> > 
-> >   Ralf
+Ralf Baechle wrote:
 > 
-> This sounds like a serious problem to me.  So here are the questions : 
+> On Thu, Oct 19, 2000 at 03:31:54PM -0700, Jun Sun wrote:
 > 
-> 1) is it fixed in the latest binutils?
+> > I am running a simple pthread_create() test.  The thread gets created,
+> > but the creating thread gets BUS error after the function call.  In
+> > fact, it gets SIGUSR1 signal.  Does anybody know what is wrong here?
+> >
+> > It looks to me that creating thread is waiting for the created thread to
+> > start up, but somehow did not install the signal handler correctly!?
+> >
+> > I am running with the "stable" toolchain that I generated recently,
+> > i.e., binutil 2.8.1, egcs 1.0.3a and glibc2.0.6.
+> 
+> Which libc release exactly?
+> 
+> I've uploaded another release glibc-2.0.6-7lm to oss:/pub/linux/mips/glibc/.
+> In case you're running big endian, could you try that release?
+> 
+> (Sorry, no source, will upload the srpm tomorrow.)
+> 
+>   Ralf
 
-No, all binutils ever are affected.
 
-> 2) is it worth fixed for binutil v2.8.1?
+Since Ralf has not posted his patch for glibc yet, I looked into the
+problem a little bit more.
 
-Probably not.  I believe modulo some testing current CVS binutils are ready
-for more serious use than just binutils fixing.  In any case fixing should
-be easy.
+It appears to be another toolchain related problem, instead of a glibc
+problem.
 
-  Ralf
+In linuxthread/pthread.c:pthread_initialize_manager(), it accesses a
+global variable __pthread_initial_thread_bos in pthread shared library. 
+Apparently the code finds out the address of the variable through some
+table (why is that?).  It looks like the offset for variable is off by
+8.  Another ld problem?
+
+I am using the "old but stable" toolchains, as I stated in an earlier
+email. :-9
+
+Jun
+
+======
+
+"...
+I finally settled down with the old but deemed reliable versions :
+
+a) binutils v2.8.1 + mips patch 
+
+ftp://sourceware.cygnus.com/pub/binutils/releases/
+ftp://oss.sgi.com/pub/linux/mips/binutils/binutils-2.8.1-3.diff.gz
+
+b) egcs 1.0.3a + mips patch
+
+ftp://ftp.mvista.com/pub/Area51/mips_le/misc/egcs-1.0.3a.tar.gz
+ftp://oss.sgi.com/pub/linux/mips/egcs/egcs-1.0.3a-2.diff.gz
+
+
+c) glibc 2.0.6 + mips patch
+
+ftp://oss.sgi.com/pub/linux/mips/glibc/srpms/glibc-2.0.6-5lm.src.rpm
+..."

@@ -1,47 +1,53 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980327.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id XAA3710847 for <linux-archive@neteng.engr.sgi.com>; Sun, 3 May 1998 23:59:00 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980327.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id KAA3426401 for <linux-archive@neteng.engr.sgi.com>; Mon, 4 May 1998 10:16:12 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF)
-	id XAA20007465
+	id KAA20163973
 	for linux-list;
-	Sun, 3 May 1998 23:57:42 -0700 (PDT)
+	Mon, 4 May 1998 10:14:35 -0700 (PDT)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id XAA19976141
+	via ESMTP id KAA20102643
 	for <linux@engr.sgi.com>;
-	Sun, 3 May 1998 23:57:39 -0700 (PDT)
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id XAA06266
-	for <linux@engr.sgi.com>; Sun, 3 May 1998 23:57:28 -0700 (PDT)
-	mail_from (ralf@uni-koblenz.de)
-From: ralf@uni-koblenz.de
-Received: from uni-koblenz.de (ralf@pmport-18.uni-koblenz.de [141.26.249.18])
-	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id IAA17638
-	for <linux@engr.sgi.com>; Mon, 4 May 1998 08:57:26 +0200 (MEST)
-Received: (from ralf@localhost)
-	by uni-koblenz.de (8.8.7/8.8.7) id IAA06913;
-	Mon, 4 May 1998 08:57:12 +0200
-Message-ID: <19980504085711.44483@uni-koblenz.de>
-Date: Mon, 4 May 1998 08:57:11 +0200
-To: Alex deVries <adevries@engsoc.carleton.ca>
-Cc: linux@cthulhu.engr.sgi.com
+	Mon, 4 May 1998 10:14:32 -0700 (PDT)
+Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id KAA11585
+	for <linux@engr.sgi.com>; Mon, 4 May 1998 10:14:31 -0700 (PDT)
+	mail_from (adevries@engsoc.carleton.ca)
+Received: from localhost (adevries@localhost)
+	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id NAA16103;
+	Mon, 4 May 1998 13:14:21 -0400
+X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
+Date: Mon, 4 May 1998 13:14:21 -0400 (EDT)
+From: Alex deVries <adevries@engsoc.carleton.ca>
+To: ralf@uni-koblenz.de
+cc: linux@cthulhu.engr.sgi.com
 Subject: Re: Hanging.
-References: <19980503204000.44125@uni-koblenz.de> <Pine.LNX.3.95.980503221332.26416C-100000@lager.engsoc.carleton.ca>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.85e
-In-Reply-To: <Pine.LNX.3.95.980503221332.26416C-100000@lager.engsoc.carleton.ca>; from Alex deVries on Sun, May 03, 1998 at 10:15:27PM -0400
+In-Reply-To: <19980504085711.44483@uni-koblenz.de>
+Message-ID: <Pine.LNX.3.95.980504130914.11760G-100000@lager.engsoc.carleton.ca>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Sun, May 03, 1998 at 10:15:27PM -0400, Alex deVries wrote:
 
-> On Sun, 3 May 1998 ralf@uni-koblenz.de wrote:
-> > I think you got trapped by one of those generic mm bugs in .91.  Will
-> > probably go away once we've upgraded to something newer.
-> 
-> Alright. I got it about once an hour today, which is tough to live with.
-> I think I'll go and compile RPMs on Zach's Qube instead...
+On Mon, 4 May 1998 ralf@uni-koblenz.de wrote:
+> On Sun, May 03, 1998 at 10:15:27PM -0400, Alex deVries wrote:
+> > Alright. I got it about once an hour today, which is tough to live with.
+> > I think I'll go and compile RPMs on Zach's Qube instead...
+> Cobalt Qube is little endian ...
 
-Cobalt Qube is little endian ...
+I stand corrected, I'd misunderstood.
 
-  Ralf
+There'll be a pretty large problem with Qube users using the version of
+RPM that ships with it, since those think they're 'mips', which is
+actually 'mipseb' now. 
+
+Anyone know anybody at Cobalt Micro who does their distribution
+development? We need to sort this problem out somehow. Their machines
+should ship with a later release of RPM, and their packages should ship
+as mipsel.
+
+Oh, and there'll be a huge batch of mipseb binary RPMs ported from the
+contrib directory on ftp.redhat.com.  Details later. 
+
+- Alex

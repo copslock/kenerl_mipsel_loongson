@@ -1,78 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Feb 2004 20:46:59 +0000 (GMT)
-Received: from NAT.office.mind.be ([IPv6:::ffff:62.166.230.82]:55940 "EHLO
-	codecarver.intern.mind.be") by linux-mips.org with ESMTP
-	id <S8225340AbUBWUq4>; Mon, 23 Feb 2004 20:46:56 +0000
-Received: from p2 by codecarver with local (Exim 3.36 #1 (Debian))
-	id 1AvMyY-0000Ss-00; Mon, 23 Feb 2004 21:46:50 +0100
-Date:	Mon, 23 Feb 2004 21:46:50 +0100
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Joost <Joost@stack.nl>, linux-mips@linux-mips.org
-Subject: Re: fore atm card in indy?
-Message-ID: <20040223204649.GF1046@mind.be>
-Mail-Followup-To: peter.de.schrijver@mind.be,
-	Ralf Baechle <ralf@linux-mips.org>, Joost <Joost@stack.nl>,
-	linux-mips@linux-mips.org
-References: <Pine.LNX.4.58.0402181631050.30510@brilsmurf.chem.tue.nl> <20040220142138.GD23404@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Feb 2004 20:48:50 +0000 (GMT)
+Received: from law10-f101.law10.hotmail.com ([IPv6:::ffff:64.4.15.101]:11783
+	"EHLO hotmail.com") by linux-mips.org with ESMTP
+	id <S8225542AbUBWUsr>; Mon, 23 Feb 2004 20:48:47 +0000
+Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
+	 Mon, 23 Feb 2004 12:48:39 -0800
+Received: from 63.121.54.5 by lw10fd.law10.hotmail.msn.com with HTTP;
+	Mon, 23 Feb 2004 20:48:39 GMT
+X-Originating-IP: [63.121.54.5]
+X-Originating-Email: [juszczec@hotmail.com]
+X-Sender: juszczec@hotmail.com
+From:	"Mark and Janice Juszczec" <juszczec@hotmail.com>
+To:	kevink@mips.com, linux-mips@linux-mips.org
+Cc:	uhler@mips.com, dom@mips.com, echristo@redhat.com
+Subject: Re: r3000 instruction set
+Date:	Mon, 23 Feb 2004 20:48:39 +0000
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="SxgehGEc6vB0cZwN"
-Content-Disposition: inline
-In-Reply-To: <20040220142138.GD23404@linux-mips.org>
-X-Answer: 42
-X-Operating-system: Debian GNU/Linux
-X-Message-Flag:	Get yourself a real email client. http://www.mutt.org/
-X-mate:	Mate, man gewoehnt sich an alles
-User-Agent: Mutt/1.5.5.1+cvs20040105i
-From:	Peter 'p2' De Schrijver <p2@mind.be>
-Return-Path: <p2@mind.be>
+Content-Type: text/plain; format=flowed
+Message-ID: <Law10-F10138dWMJ69i0000d0f4@hotmail.com>
+X-OriginalArrivalTime: 23 Feb 2004 20:48:39.0906 (UTC) FILETIME=[6A952C20:01C3FA4E]
+Return-Path: <juszczec@hotmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4415
+X-archive-position: 4416
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: p2@mind.be
+X-original-sender: juszczec@hotmail.com
 Precedence: bulk
 X-list: linux-mips
 
 
---SxgehGEc6vB0cZwN
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Kevin
 
-On Fri, Feb 20, 2004 at 03:21:38PM +0100, Ralf Baechle wrote:
-> On Wed, Feb 18, 2004 at 04:35:31PM +0100, Joost wrote:
->=20
-> > My indy seems to be equipped with a Fore ATM device (GIA-200).
-> > Would someone know if there is a way to get it back into action?
->=20
-> You'll not like this answer ...  but write a driver :-)
->=20
-> It seems many GIO cards are based on already Linux-supported PCI chips,
-> so there's a certain chance this won't even be hard.
->=20
+Its been a few weeks since I built this version of kaffe.  The configure 
+output says I did specify --with-engine=intrp.  I'll delete the compiled 
+stuff, reconfigure (double checking that I give it --with-engine=intrp), 
+recompile and retest.
 
-There is already a driver for the PCI and SBUS versions of this card. It
-lives in drivers/atm/fore200e*. You 'only' need to add code for the
-GIO32 specifics.
+I'll post my results.
 
-Cheers,
+Mark
 
-Peter.
 
---SxgehGEc6vB0cZwN
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.4 (GNU/Linux)
+>From: "Kevin D. Kissell" <kevink@mips.com>
+>To: "Mark and Janice Juszczec" <juszczec@hotmail.com>,        
+><linux-mips@linux-mips.org>
+>CC: <uhler@mips.com>, <dom@mips.com>, <echristo@redhat.com>
+>Subject: Re: r3000 instruction set
+>Date: Mon, 23 Feb 2004 18:21:19 +0100
+>
+> > Someone suggested posting the message I get.  Here it is:
+> >
+> > >./kaffe-bin FirstClass
+> > [kaffe-bin:6] Illgal instruction 674696a at 2abb034, ra=2adbffd0,
+> > P0_STATUS=0000500
+> > pid 6: killed (signal 4)
+> > >Reading command line: Try again
+> > Kernel panic: Attmpted to kill int!
+>
+>Let me guess.  You are running little-endian.  The instruction word
+>in memory would be 0x6a697406.  Do you think it's a coincidence
+>that 0x6a6974 spells "jit" in ASCII?  ;o)
+>
+>The reported address range looks like that where kaffe builds its
+>JITted instruciton buffers in MIPS/Linux.  And, like I say, JIT is
+>somewhat broken for MIPS in Kaffe.  Which version of the kaffe sources
+>are you building, and have you tried configuring with --with-engine=intrp
+>as I suggested?
+>
+>             Regards,
+>
+>             Kevin K.
 
-iD8DBQFAOma5KLKVw/RurbsRAkpVAJwP3byUqlKkb9jxIbUT8LhwSA3dUACfeeNX
-Sz4h7iVf0ZpWbG5FB94lL5M=
-=00w0
------END PGP SIGNATURE-----
-
---SxgehGEc6vB0cZwN--
+_________________________________________________________________
+Click, drag and drop. My MSN is the simple way to design your homepage. 
+http://click.atdmt.com/AVE/go/onm00200364ave/direct/01/

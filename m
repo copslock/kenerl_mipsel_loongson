@@ -1,46 +1,61 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f3O8kOq05801
-	for linux-mips-outgoing; Tue, 24 Apr 2001 01:46:24 -0700
-Received: from mailgw3.netvision.net.il (mailgw3.netvision.net.il [194.90.1.11])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3O8kKM05797
-	for <linux-mips@oss.sgi.com>; Tue, 24 Apr 2001 01:46:21 -0700
-Received: from jungo.com ([194.90.113.98])
-	by mailgw3.netvision.net.il (8.9.3/8.9.3) with ESMTP id LAA03274;
-	Tue, 24 Apr 2001 11:44:41 +0300 (IDT)
-Message-ID: <3AE53D4E.2010803@jungo.com>
-Date: Tue, 24 Apr 2001 11:46:06 +0300
-From: Michael Shmulevich <michaels@jungo.com>
-Organization: Jungo LTD
-User-Agent: Mozilla/5.0 (X11; U; Linux 2.2.17-21mdk i686; en-US; 0.8.1) Gecko/20010326
+	by oss.sgi.com (8.11.3/8.11.3) id f3O90pn06520
+	for linux-mips-outgoing; Tue, 24 Apr 2001 02:00:51 -0700
+Received: from colo.asti-usa.com (IDENT:root@colo.asti-usa.com [205.252.89.99])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3O90oM06517
+	for <linux-mips@oss.sgi.com>; Tue, 24 Apr 2001 02:00:50 -0700
+Received: from lineo.com (hal.uk.zentropix.com [212.74.13.151])
+	by colo.asti-usa.com (8.9.3/8.9.3) with ESMTP id FAA26907;
+	Tue, 24 Apr 2001 05:09:12 -0400
+Message-ID: <3AE541B0.410FDF8A@lineo.com>
+Date: Tue, 24 Apr 2001 10:04:48 +0100
+From: Ian Soanes <ians@lineo.com>
+Organization: Lineo UK
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.4.0-test12 i686)
 X-Accept-Language: en
 MIME-Version: 1.0
-To: Ryan Murray <rmurray@debian.org>
-CC: linux-mips@oss.sgi.com
-Subject: Re: ld.so-1.9.x for mips
-References: <3AE44D0A.9080003@jungo.com> <20010423170302.E4623@bacchus.dhis.org> <3AE52A87.9050403@jungo.com> <20010424012409.A17800@cyberhqz.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+To: Fabrice Bellard <bellard@email.enst.fr>
+CC: linux-mips@oss.sgi.com, rivers@lexmark.com
+Subject: Re: gdb single step ?
+References: <3AE44D0A.9080003@jungo.com> <Pine.GSO.4.02.10104231829020.19846-100000@chimene.enst.fr> <20010423170425.F4623@bacchus.dhis.org>
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Ryan,
+Ralf Baechle wrote:
+> 
+> On Mon, Apr 23, 2001 at 06:31:20PM +0200, Fabrice Bellard wrote:
+> 
+> > Did someone make a patch so that gdb can do single step on mips-linux ? If
+> > not, do you prefer a patch to gdb or a patch in the kernel to support the
+> > PTRACE_SINGLESTEP command ?
+> 
+> Last I used GDB single stepping has been working fine for me, so I wonder
+> what is broken?
+> 
 
-Ryan Murray wrote:
+Hi Fabrice,
 
-> the binary package has already been removed from Debian for almost
-> every arch (including mips).  You can find the latest source on any
-> debian mirror, in the pool/main/l/ld.so directory.
+This may not be totally relevant, but I'm currently trying to get
+gdbserver working on a RC32334 IDT board. I've been having some issues
+with single stepping, but am making a bit of progress.
 
-The ld.so-1.9.11-15 that is on debian FTP site does not have any support 
-for mips ELF. This is the reason why I was asking Florian, how did he 
-manage to compile it for MIPS.
+1/ I started with a mips gdbserver port kindly supplied by Martin
+Rivers. It mostly works well but had some problems single stepping
+through conditional branches (the problem may have been due to a
+different target than Martin was using, or me... I am kind of new to
+this :)
 
-Sincerely yours,
-Michael Shmulevich
-______________________________________
-Software Developer
-Jungo - R&D
-email: michaels@jungo.com
-web: http://www.jungo.com
-Phone: 1-877-514-0537(USA)  +972-9-8859365(Worldwide) ext. 233
-Fax:   1-877-514-0538(USA)  +972-9-8859366(Worldwide)
+2/ Previously I've had some luck single stepping kernel and module code
+with the kernel gdbstub (arch/mips/kernel/gdb-stub.c), so I ported the
+relevant single stepping code into gdbserver. The results were much
+better. The only thing that seems to be wrong now is stepping over
+function calls isn't working quite right. I can step into functions OK
+though.
+
+If you're interested I'll let you know how I get on over the next few
+days. If not, I won't be offended :)
+
+Best regards,
+Ian

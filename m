@@ -1,46 +1,56 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f2HF17d27366
-	for linux-mips-outgoing; Sat, 17 Mar 2001 07:01:07 -0800
-Received: from mailout02.sul.t-online.com (mailout02.sul.t-online.com [194.25.134.17])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f2HF14M27362
-	for <linux-mips@oss.sgi.com>; Sat, 17 Mar 2001 07:01:04 -0800
-Received: from fwd03.sul.t-online.com 
-	by mailout02.sul.t-online.com with smtp 
-	id 14eICT-0002it-01; Sat, 17 Mar 2001 16:01:01 +0100
-Received: from void.s.bawue.de (520095841842-0001@[62.158.213.107]) by fmrl03.sul.t-online.com
-	with esmtp id 14eICC-1IlheSC; Sat, 17 Mar 2001 16:00:44 +0100
-Received: from florian by void.s.bawue.de with local (Exim 3.16 #1 (Debian))
-	id 14eELB-0000RL-00; Sat, 17 Mar 2001 11:53:45 +0100
-Date: Sat, 17 Mar 2001 11:53:45 +0100
-To: linux-mips@oss.sgi.com
-Subject: Re: machines available to porters
-Message-ID: <20010317115345.B623@void.s.bawue.de>
-Mail-Followup-To: Florian Laws <florian@void.s.bawue.de>,
-	linux-mips@oss.sgi.com
-References: <3AB21608.5030007@medicalmedia.com>
+	by oss.sgi.com (8.11.3/8.11.3) id f2HFlUs28067
+	for linux-mips-outgoing; Sat, 17 Mar 2001 07:47:30 -0800
+Received: from boco.fee.vutbr.cz (boco.fee.vutbr.cz [147.229.9.11])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f2HFlTM28064
+	for <linux-mips@oss.sgi.com>; Sat, 17 Mar 2001 07:47:29 -0800
+Received: from fest.stud.fee.vutbr.cz (fest.stud.fee.vutbr.cz [147.229.9.16])
+	by boco.fee.vutbr.cz (8.11.3/8.11.3) with ESMTP id f2HFlQt47888
+	(using TLSv1/SSLv3 with cipher EDH-RSA-DES-CBC3-SHA (168 bits) verified OK);
+	Sat, 17 Mar 2001 16:47:27 +0100 (CET)
+Received: (from xjezda00@localhost)
+	by fest.stud.fee.vutbr.cz (8.11.2/8.11.2) id f2HFlQF86608;
+	Sat, 17 Mar 2001 16:47:26 +0100 (CET)
+Date: Sat, 17 Mar 2001 16:47:26 +0100
+From: David Jez <dave.jez@seznam.cz>
+To: Karel van Houten <K.H.C.vanHouten@kpn.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: rpm crashing on RH 7.0 indy
+Message-ID: <20010317164726.B86495@stud.fee.vutbr.cz>
+References: <200103171051.LAA04852@pandora.research.kpn.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <3AB21608.5030007@medicalmedia.com>; from mcgonigle@medicalmedia.com on Fri, Mar 16, 2001 at 08:32:56AM -0500
-From: Florian Laws <florian@void.s.bawue.de>
-X-Sender: 520095841842-0001@t-dialin.net
+In-Reply-To: <200103171051.LAA04852@pandora.research.kpn.com>; from K.H.C.vanHouten@kpn.com on Sat, Mar 17, 2001 at 11:51:19AM +0100
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, Mar 16, 2001 at 08:32:56AM -0500, Bill McGonigle wrote:
+On Sat, Mar 17, 2001 at 11:51:19AM +0100, Karel van Houten wrote:
+> Hi all,
 > 
-> u5 - Indigo 2 "Impact 10000" (purple)
->      scsi disk 0,1 2.27 GB
->      scsi disk 0,2 9.15 GB
->      scsi disk 0,3 cdrom
->       Irix Audio Processor: Version A2
->       1 195 MHZ IP22 Processor
-                  ^^^^
->       FPU: MIPS R10010 Floating Point Coprocessor 0.0
->       CPU: MIPS R10000 Processor Chip rev. 2.5
-                  ^^^^^^
+> I hope someone can help me with this problem...
+> 
+> I've installed an Indy with Ralfs Redhat/test-7.0 packages.
+> Most things work OK, but rpm itself crashes when installing
+> a package. Here is a trace of what happens:
+> 
+> This is a static rpm binary, so I don't understand why it tries
+> do dynaload anything at all...
+  Hi,
 
-Can this be possible?
+Ooops, i think: haven't you got broken rpm? Have you downloaded the rpm
+complete? Try checksum or md5.
 
-Florian
+> 
+> Thanks in advance,
+> -- 
+> Karel van Houten
+Hope you will be succeded,
+Dave
+-- 
+-------------------------------------------------------
+  David "Dave" Jez                Brno, CZ, Europe
+ E-mail: dave.jez@seznam.cz
+PGP key: finger xjezda00@fest.stud.fee.vutbr.cz
+---------=[ ~EOF ]=------------------------------------

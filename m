@@ -1,50 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Sep 2003 17:41:33 +0100 (BST)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:11310
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8225469AbTISQla>; Fri, 19 Sep 2003 17:41:30 +0100
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp
-	id 1A0OJs-00036g-00; Fri, 19 Sep 2003 18:41:20 +0200
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 1A0OJr-0003ca-00; Fri, 19 Sep 2003 18:41:19 +0200
-Date: Fri, 19 Sep 2003 18:41:19 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Sep 2003 17:42:25 +0100 (BST)
+Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:15745 "EHLO
+	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225469AbTISQmX>; Fri, 19 Sep 2003 17:42:23 +0100
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id SAA15739;
+	Fri, 19 Sep 2003 18:42:12 +0200 (MET DST)
+X-Authentication-Warning: delta.ds2.pg.gda.pl: macro owned process doing -bs
+Date: Fri, 19 Sep 2003 18:42:11 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
 To: Eric Christopher <echristo@redhat.com>
-Cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-	Atsushi Nemoto <nemoto@toshiba-tops.co.jp>,
+cc: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>,
 	Daniel Jacobowitz <dan@debian.org>, linux-mips@linux-mips.org,
 	binutils@sources.redhat.com
 Subject: Re: recent binutils and mips64-linux
-Message-ID: <20030919164119.GH13578@rembrandt.csv.ica.uni-stuttgart.de>
-References: <Pine.GSO.3.96.1030919144141.9134C-100000@delta.ds2.pg.gda.pl> <1063988420.2537.5.camel@ghostwheel.sfbay.redhat.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 In-Reply-To: <1063988420.2537.5.camel@ghostwheel.sfbay.redhat.com>
-User-Agent: Mutt/1.5.4i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+Message-ID: <Pine.GSO.3.96.1030919182314.9134K-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@ds2.pg.gda.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3231
+X-archive-position: 3232
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: macro@ds2.pg.gda.pl
 Precedence: bulk
 X-list: linux-mips
 
-Eric Christopher wrote:
-> On Fri, 2003-09-19 at 05:52, Maciej W. Rozycki wrote:
-> > On Thu, 18 Sep 2003, Eric Christopher wrote:
-> > 
-> > > > But mips64 kernel assumes that the kernel itself is compiled with
-> > > > "-mabi=64".  For example, some asm routines pass more than 4 arguments
-> > > > via aN registers.
-> > > 
-> > > Yes, but then you aren't abi compliant are you? If you want n64 then say
-> > > n64. If you want o32 extended to 64-bit registers then use o64.
-> > 
+On Fri, 19 Sep 2003, Eric Christopher wrote:
+
 > >  I think "-mabi=64" is OK (I use it for over a year now) and for those
 > > worried of every byte of precious memory, "-mabi=n32 -mlong64" might be
 > > the right long-term answer (although it might require verifying if tools
@@ -52,16 +38,22 @@ Eric Christopher wrote:
 > > should be OK to be less forgiving on a requirement for recent tools. 
 > 
 > OK as in "it works for me", and OK as in "this is the correct usage" are
+
+ Well, my "OK" is of both kinds. 8-) 
+
 > two different things. I believe that for a 64-bit kernel either -mabi=64
-> or -mabi=n32 (-mlong64) are the right long term answer,
-
-A third answer is to add a -msign-extend-addresses switch in the assembler.
-Together with -mabi=64 this would produce optimized ELF64 output.
-
-> part of Daniel's
+> or -mabi=n32 (-mlong64) are the right long term answer, part of Daniel's
 > problem was that his bootloader couldn't deal with ELF64.
 
-Well, implementing an ELF64 bootloader ins't that hard. :-)
+ I've successfully converted ELF64 Linux images to o32 ELF32, with
+`objcopy' and then to COFF even, with `elf2ecoff' (provided with the Linux
+sources).  The resulting COFF image used to work with the DECstation's
+firmware.  I suppose the intermediate ELF32 one would work with
+ELF-capable firmware, too.  Of course I had to make sure the addresses
+seen by the firmware in the file headers fit the 32-bit address space
+(KSEG0, actually; KSEG1 might work, too). 
 
-
-Thiemo
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

@@ -1,41 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Mar 2005 11:35:49 +0000 (GMT)
-Received: from moutng.kundenserver.de ([IPv6:::ffff:212.227.126.186]:43233
-	"EHLO moutng.kundenserver.de") by linux-mips.org with ESMTP
-	id <S8225311AbVCCLfe>; Thu, 3 Mar 2005 11:35:34 +0000
-Received: from [213.39.254.66] (helo=tuxator.satorlaser-intern.com)
-	by mrelayeu.kundenserver.de with ESMTP (Nemesis),
-	id 0ML21M-1D6oc90jYK-0006vz; Thu, 03 Mar 2005 12:35:33 +0100
-From:	Ulrich Eckhardt <eckhardt@satorlaser.com>
-Organization: Sator Laser GmbH
-To:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Mar 2005 11:50:52 +0000 (GMT)
+Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:38922 "EHLO
+	mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225321AbVCCLuh>; Thu, 3 Mar 2005 11:50:37 +0000
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id j23BoKDP011397;
+	Thu, 3 Mar 2005 11:50:20 GMT
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j23BoKDG011396;
+	Thu, 3 Mar 2005 11:50:20 GMT
+Date:	Thu, 3 Mar 2005 11:50:20 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Ulrich Eckhardt <eckhardt@satorlaser.com>
+Cc:	linux-mips@linux-mips.org
 Subject: Re: sparse and mips
-Date:	Thu, 3 Mar 2005 12:38:38 +0100
-User-Agent: KMail/1.7.1
-References: <422256A3.2030407@amsat.org> <4223240C.4010207@amsat.org> <20050303104654.GB5457@linux-mips.org>
-In-Reply-To: <20050303104654.GB5457@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
+Message-ID: <20050303115020.GB10556@linux-mips.org>
+References: <422256A3.2030407@amsat.org> <4223240C.4010207@amsat.org> <20050303104654.GB5457@linux-mips.org> <200503031238.38363.eckhardt@satorlaser.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Message-Id: <200503031238.38363.eckhardt@satorlaser.com>
-X-Provags-ID: kundenserver.de abuse@kundenserver.de login:e35cee35a663f5c944b9750a965814ae
-Return-Path: <eckhardt@satorlaser.com>
+In-Reply-To: <200503031238.38363.eckhardt@satorlaser.com>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7359
+X-archive-position: 7360
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: eckhardt@satorlaser.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
-> CHECKFLAGS-$(CONFIG_CPU_BIG_ENDIAN)     += -D__MIPSEL__
-> CHECKFLAGS-$(CONFIG_CPU_LITTLE_ENDIAN)  += -D__MIPSEL__
+On Thu, Mar 03, 2005 at 12:38:38PM +0100, Ulrich Eckhardt wrote:
 
-typo? ;)
+> Ralf Baechle wrote:
+> > CHECKFLAGS-$(CONFIG_CPU_BIG_ENDIAN)     += -D__MIPSEL__
+> > CHECKFLAGS-$(CONFIG_CPU_LITTLE_ENDIAN)  += -D__MIPSEL__
+> 
+> typo? ;)
 
-Uli
+Guess I've been assimilated ;)
+
+  Ralf

@@ -1,46 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Apr 2004 20:29:11 +0100 (BST)
-Received: from p508B663E.dip.t-dialin.net ([IPv6:::ffff:80.139.102.62]:47382
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8226052AbUD0T3K>; Tue, 27 Apr 2004 20:29:10 +0100
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i3RJSmxT009432
-	for <linux-mips@linux-mips.org>; Tue, 27 Apr 2004 21:28:48 +0200
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i3RJSSSI009428;
-	Tue, 27 Apr 2004 21:28:28 +0200
-Date: Tue, 27 Apr 2004 21:28:28 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
-Cc: linux-mips@linux-mips.org
-Subject: Re: TLB on R10k
-Message-ID: <20040427192828.GA7739@linux-mips.org>
-References: <Pine.GSO.4.10.10404272004460.14972-100000@helios.et.put.poznan.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.GSO.4.10.10404272004460.14972-100000@helios.et.put.poznan.pl>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Apr 2004 03:17:33 +0100 (BST)
+Received: from eastgate.starhub.net.sg ([IPv6:::ffff:203.116.1.189]:33542 "EHLO
+	eastgate.starhub.net.sg") by linux-mips.org with ESMTP
+	id <S8226067AbUD1CRc>; Wed, 28 Apr 2004 03:17:32 +0100
+Received: from support.antlabs.com (ant1-suntec.starhub.net.sg [203.118.8.2] (may be forged))
+	by eastgate.starhub.net.sg (8.12.5/8.12.5) with SMTP id i3S2HT4F027678
+	for <linux-mips@linux-mips.org>; Wed, 28 Apr 2004 10:17:29 +0800 (SST)
+Received: (qmail 8581 invoked from network); 28 Apr 2004 02:17:28 -0000
+Received: from unknown (HELO ispworkshop.com) (203.118.8.181)
+  by 0 with SMTP; 28 Apr 2004 02:17:28 -0000
+Message-ID: <408F141B.5010805@ispworkshop.com>
+Date: Wed, 28 Apr 2004 10:16:59 +0800
+From: Ong Beng Hui <ongbh@ispworkshop.com>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.4) Gecko/20030624 Netscape/7.1 (ax)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: linux-mips@linux-mips.org
+Subject: broadcom sibyte reference board
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ongbh@ispworkshop.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4915
+X-archive-position: 4916
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ongbh@ispworkshop.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Apr 27, 2004 at 08:07:23PM +0200, Stanislaw Skowronek wrote:
+Hi,
 
-> Why, in tlb-andes.c, all exception handlers are prefixed with an
-> ampersand (&) when copying them to main memory, only the r10k fill handler
-> isn't? I'm getting a blackhole-style crash (no messages, no panic,
-> interrupts dead as a doornail, nobody knows what is happening) as soon as
-> I try to jump to usermode.
+If there any way for me to get a broadcom sibyte reference board ?
 
-Have you verified that the UX bit is set correctly by your kernel?  BEV
-also plays a role but since you survive BogoMIPS it should be right.
-
-  Ralf
+I called up the local office, and they refuse to get for me, been, I just
+going use it for personal.

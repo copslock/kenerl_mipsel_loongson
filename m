@@ -1,37 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Sep 2003 18:32:11 +0100 (BST)
-Received: from Iris.Adtech-Inc.COM ([IPv6:::ffff:63.165.80.18]:6910 "EHLO
-	iris.Adtech-Inc.COM") by linux-mips.org with ESMTP
-	id <S8225436AbTI2RcI> convert rfc822-to-8bit; Mon, 29 Sep 2003 18:32:08 +0100
-content-class: urn:content-classes:message
-Subject: 64 bit operations w/32 bit kernel
-Date: Mon, 29 Sep 2003 07:31:57 -1000
-Message-ID: <DC1BF43A8FAE654DA6B3FB7836DD3A56DEB75C@iris.adtech-inc.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Sep 2003 18:45:39 +0100 (BST)
+Received: from 66-152-54-2.ded.btitelecom.net ([IPv6:::ffff:66.152.54.2]:39578
+	"EHLO mmc.atmel.com") by linux-mips.org with ESMTP
+	id <S8225436AbTI2RpZ>; Mon, 29 Sep 2003 18:45:25 +0100
+Received: from ares.mmc.atmel.com (ares.mmc.atmel.com [10.127.240.37])
+	by mmc.atmel.com (8.9.3/8.9.3) with ESMTP id NAA07416
+	for <linux-mips@linux-mips.org>; Mon, 29 Sep 2003 13:45:18 -0400 (EDT)
+Received: from localhost (dkesselr@localhost)
+	by ares.mmc.atmel.com (8.9.3/8.9.3) with ESMTP id NAA04465
+	for <linux-mips@linux-mips.org>; Mon, 29 Sep 2003 13:45:18 -0400 (EDT)
+X-Authentication-Warning: ares.mmc.atmel.com: dkesselr owned process doing -bs
+Date: Mon, 29 Sep 2003 13:45:18 -0400 (EDT)
+From: David Kesselring <dkesselr@mmc.atmel.com>
+To: linux-mips@linux-mips.org
+Subject: failed build of Mips for 2.4.22
+Message-ID: <Pine.GSO.4.44.0309291339570.4225-100000@ares.mmc.atmel.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-X-MimeOLE: Produced By Microsoft Exchange V6.0.6249.0
-Thread-Topic: 64 bit operations w/32 bit kernel
-Thread-Index: AcOGr5RuaH2Cp/S8QqaiUMNpsQeklA==
-From: "Finney, Steve" <Steve.Finney@SpirentCom.COM>
-To: <linux-mips@linux-mips.org>
-Return-Path: <Steve.Finney@SpirentCom.COM>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <dkesselr@mmc.atmel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3318
+X-archive-position: 3319
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Steve.Finney@SpirentCom.COM
+X-original-sender: dkesselr@mmc.atmel.com
 Precedence: bulk
 X-list: linux-mips
 
-What would be the downside to enabling 64 bit operations in user space on a 32 bit kernel (setting the PX bit in the status register?). The particular issue is that I want to access 64 bit-memory mapped registers, and I really need to do it as an atomic operation. I tried borrowing sibyte/64bit.h from the kernel, but I get an illegal instruction on the double ops.
+When I tried to build 2.4.22 (including patch-2.4.22-ac4) for Malta, the
+build failed when compiling offset.c. It looks like several things changed
+in the base code that caused the failure. Does anyone have a patch for the
+MIPS build on 2.4.22. I need to use this because a required driver is
+already built for 2.4.22. The crux of the problem is the new DFU
+stuff(whatever that is).
+Thanks for any input.
 
-Also, assuming this isn't a horrible idea, is there any obvious single place where "default" values in the CP0 status register get set?
-
-Thanks,
-sf
+David Kesselring
+Atmel MMC
+dkesselr@mmc.atmel.com
+919-462-6587

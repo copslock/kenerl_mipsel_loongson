@@ -1,48 +1,57 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBRC6Lv10785
-	for linux-mips-outgoing; Thu, 27 Dec 2001 04:06:21 -0800
-Received: from mx.mips.com (mx.mips.com [206.31.31.226])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBRC6GX10782
-	for <linux-mips@oss.sgi.com>; Thu, 27 Dec 2001 04:06:16 -0800
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id DAA16118
-	for <linux-mips@oss.sgi.com>; Thu, 27 Dec 2001 03:06:08 -0800 (PST)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id DAA16511
-	for <linux-mips@oss.sgi.com>; Thu, 27 Dec 2001 03:06:07 -0800 (PST)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.11.4/8.9.0) with ESMTP id fBRB5tA23330
-	for <linux-mips@oss.sgi.com>; Thu, 27 Dec 2001 12:05:55 +0100 (MET)
-Message-ID: <3C2B0093.3AFC80A9@mips.com>
-Date: Thu, 27 Dec 2001 12:05:55 +0100
-From: Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
+	by oss.sgi.com (8.11.2/8.11.3) id fBRH13i25431
+	for linux-mips-outgoing; Thu, 27 Dec 2001 09:01:03 -0800
+Received: from firewall.i-data.com (firewall.i-data.com [195.24.22.194])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBRH0xX25417
+	for <linux-mips@oss.sgi.com>; Thu, 27 Dec 2001 09:00:59 -0800
+Received: (qmail 5545 invoked from network); 27 Dec 2001 16:00:55 -0000
+Received: from idahub2000.i-data.com (HELO idanshub.i-data.com) (172.16.1.8)
+  by firewall.i-data.com with SMTP; 27 Dec 2001 16:00:55 -0000
+Received: from eicon.com ([172.16.2.227])
+          by idanshub.i-data.com (Lotus Domino Release 5.0.8)
+          with ESMTP id 2001122717005390:44752 ;
+          Thu, 27 Dec 2001 17:00:53 +0100 
+Message-ID: <3C2B45D3.B938CA44@eicon.com>
+Date: Thu, 27 Dec 2001 17:01:23 +0100
+From: "Tommy S. Christensen" <tommy.christensen@eicon.com>
+X-Mailer: Mozilla 4.76 [en] (X11; U; Linux 2.2.17-14 i686)
 X-Accept-Language: en
 MIME-Version: 1.0
-To: linux-mips@oss.sgi.com
-Subject: Signals
-Content-Type: text/plain; charset=iso-8859-15
+To: Ralf Baechle <ralf@oss.sgi.com>
+CC: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>, dony.he@huawei.com,
+   linux-mips@oss.sgi.com
+Subject: Re: vmalloc bugs in 2.4.5???
+References: <20011226013221.A737@dea.linux-mips.net> <20011227.105518.74756316.nemoto@toshiba-tops.co.jp> <20011227011222.A16695@dea.linux-mips.net> <20011227.125122.71082554.nemoto@toshiba-tops.co.jp> <20011227022936.A19397@dea.linux-mips.net>
+X-MIMETrack: Itemize by SMTP Server on idaHUB2000/INT(Release 5.0.8 |June 18, 2001) at
+ 27-12-2001 17:00:54,
+	Serialize by Router on idaHUB2000/INT(Release 5.0.8 |June 18, 2001) at 27-12-2001
+ 17:00:55,
+	Serialize complete at 27-12-2001 17:00:55
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Why is the signals definition (in include/asm-mips/signal.h) for MIPS
-different from everybody else ?
-For example:
+Ralf Baechle wrote:
+> 
+> On Thu, Dec 27, 2001 at 12:51:22PM +0900, Atsushi Nemoto wrote:
+> 
+> > >>>>> On Thu, 27 Dec 2001 01:12:22 -0200, Ralf Baechle <ralf@oss.sgi.com> said:
+> > ralf> Yes, you're right as for the cache.  But there is no reason for
+> > ralf> the TLB flush, right?
+> >
+> > Yes, I agree.
+> 
+> Ok, I'll make a patch for Marcelo.  Being in Brazil right now is useful,
+> I can beat him into accepting it ;-)
+> 
+>   Ralf
 
-#define SIGBUS      10    (MIPS)
-#define SIGBUS        7    (I386)
+Great! But please make sure that the cache is flushed after the pages
+are allocated instead of before.
 
-#define SIGSTKFLT       16   (I386, doesn't exist on MIPS)
+With 2.4.9 that still had the cache-flushing in vmalloc_area_pages(), I
+got cache aliasing problems in low memory situations (since alloc_page()
+will re-schedule when no pages are available).
 
-Is there any reason for this ?
-
-/Carsten
-
-
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+-Tommy

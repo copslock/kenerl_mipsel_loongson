@@ -1,58 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Nov 2004 12:59:39 +0000 (GMT)
-Received: from [IPv6:::ffff:80.122.96.210] ([IPv6:::ffff:80.122.96.210]:64683
-	"EHLO fwswe.inso.tuwien.ac.at") by linux-mips.org with ESMTP
-	id <S8224872AbUKKM7f>; Thu, 11 Nov 2004 12:59:35 +0000
-Received: from s052.inso.tuwien.ac.at ([128.130.59.52])
-	by fwswe.inso.tuwien.ac.at with esmtp (Exim 3.36 #1 (Debian))
-	id 1CSEXS-0002FT-00; Thu, 11 Nov 2004 13:58:58 +0100
-Subject: Re: ohci-au1xxx.c cleanups and fix for 2.6.10-rc1
-From: Herbert Valerio Riedel <hvr@inso.tuwien.ac.at>
-To: Matt Porter <mporter@kernel.crashing.org>
-Cc: Pete Popov <ppopov@embeddedalley.com>, linux-mips@linux-mips.org
-In-Reply-To: <20041105071817.A19291@home.com>
-References: <1099642775.9984.16.camel@s052.inso.tuwien.ac.at>
-	 <20041105071817.A19291@home.com>
-Content-Type: text/plain
-Date: Thu, 11 Nov 2004 13:58:55 +0100
-Message-Id: <1100177936.17620.32.camel@s052.inso.tuwien.ac.at>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Nov 2004 15:30:10 +0000 (GMT)
+Received: from fed1rmmtao09.cox.net ([IPv6:::ffff:68.230.241.30]:3477 "EHLO
+	fed1rmmtao09.cox.net") by linux-mips.org with ESMTP
+	id <S8224893AbUKKPaF>; Thu, 11 Nov 2004 15:30:05 +0000
+Received: from opus ([68.107.143.141]) by fed1rmmtao09.cox.net
+          (InterMail vM.6.01.04.00 201-2131-117-20041022) with ESMTP
+          id <20041111152955.VGOH14545.fed1rmmtao09.cox.net@opus>
+          for <linux-mips@linux-mips.org>; Thu, 11 Nov 2004 10:29:55 -0500
+Date: Thu, 11 Nov 2004 08:29:55 -0700
+From: Tom Rini <trini@kernel.crashing.org>
+To: linux-mips@linux-mips.org
+Subject: [PATCH] Remove duplicates from drivers/mtd/maps/Makefile
+Message-ID: <20041111152955.GF3815@smtp.west.cox.net>
 Mime-Version: 1.0
-X-Mailer: Evolution 2.0.2 
-Content-Transfer-Encoding: 7bit
-Return-Path: <hvr@inso.tuwien.ac.at>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.6+20040907i
+Return-Path: <trini@kernel.crashing.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6305
+X-archive-position: 6306
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hvr@inso.tuwien.ac.at
+X-original-sender: trini@kernel.crashing.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 2004-11-05 at 07:18 -0700, Matt Porter wrote:
-> On Fri, Nov 05, 2004 at 09:19:34AM +0100, Herbert Valerio Riedel wrote:
-> > 
-> > below just a patch to have usb working again for 2.6.10-rc1 and
-> > some minor cleanups...
-> > (alas usb still doesn't work on big endian...)
-> 
-> The patches to support BE OHCI operation were posted months ago on
-> the USB list.  GregKH recently picked them up and I just saw the
-> first of them merged to the mainline tree. You should have better
-> luck with BE OHCI soon. :)
+There are 2 duplicate entries in drivers/mtd/maps/Makefile only found in
+CVS.
 
-I've played w/ the upcoming patches for 2.6.10-rc2 contained in the bk
-snapshots, and was able to confirm that better luck is really in sight
-for me (wrt to USB/BE)  :-) 
+Signed-off-by: Tom Rini <trini@kernel.crashing.org>
 
-USB worked fine w/ mouse and some usb-storage ram module, I'd be glad to
-provide you w/ the required modifications (if necessary) as soon as
-2.6.10-rc2 comes out and get merged into linux-mips cvs...
+--- drivers/mtd/maps/Makefile	25 Oct 2004 20:44:27 -0000	1.19
++++ drivers/mtd/maps/Makefile	11 Nov 2004 15:28:11 -0000
+@@ -42,11 +42,9 @@ obj-$(CONFIG_MTD_VMAX)		+= vmax301.o
+ obj-$(CONFIG_MTD_SCx200_DOCFLASH)+= scx200_docflash.o
+ obj-$(CONFIG_MTD_DBOX2)		+= dbox2-flash.o
+ obj-$(CONFIG_MTD_OCELOT)	+= ocelot.o
+-obj-$(CONFIG_MTD_LASAT)		+= lasat.o
+ obj-$(CONFIG_MTD_SOLUTIONENGINE)+= solutionengine.o
+ obj-$(CONFIG_MTD_PCI)		+= pci.o
+ obj-$(CONFIG_MTD_LASAT)		+= lasat.o
+-obj-$(CONFIG_MTD_DB1X00)	+= db1x00-flash.o
+ obj-$(CONFIG_MTD_PB1550)	+= pb1550-flash.o
+ obj-$(CONFIG_MTD_DB1550)	+= db1550-flash.o
+ obj-$(CONFIG_MTD_AUTCPU12)	+= autcpu12-nvram.o
 
-now I just need to find how to fix that subtle pci w/ BE issue I'm
-having w/ pci-device subfunctions disappearing in BE mode...
-
-greetings,
 -- 
-Herbert Valerio Riedel <hvr@inso.tuwien.ac.at>
+Tom Rini
+http://gate.crashing.org/~trini/

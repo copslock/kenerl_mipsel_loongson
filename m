@@ -1,45 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Mar 2004 00:39:27 +0100 (BST)
-Received: from zcars04e.nortelnetworks.com ([IPv6:::ffff:47.129.242.56]:47014
-	"EHLO zcars04e.nortelnetworks.com") by linux-mips.org with ESMTP
-	id <S8225462AbUC2Xj0>; Tue, 30 Mar 2004 00:39:26 +0100
-Received: from zcard307.ca.nortel.com (zcard307.ca.nortel.com [47.129.242.67])
-	by zcars04e.nortelnetworks.com (Switch-2.2.6/Switch-2.2.0) with ESMTP id i2TNdHR13909
-	for <linux-mips@linux-mips.org>; Mon, 29 Mar 2004 18:39:17 -0500 (EST)
-Received: from zcard0k6.ca.nortel.com ([47.129.242.158]) by zcard307.ca.nortel.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2653.13)
-	id GXWMPHD9; Mon, 29 Mar 2004 18:39:17 -0500
-Received: from americasm01.nt.com (wcary3hh.ca.nortel.com [47.129.112.118]) by zcard0k6.ca.nortel.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2653.13)
-	id DNVQH3W0; Mon, 29 Mar 2004 18:39:17 -0500
-Message-ID: <4068B3A4.4000204@americasm01.nt.com>
-Date: Mon, 29 Mar 2004 18:39:16 -0500
-X-Sybari-Space: 00000000 00000000 00000000 00000000
-From: "Lijun Chen" <chenli@nortelnetworks.com>
-Organization: Nortel Networks
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.0.2) Gecko/20021120 Netscape/7.01
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To: linux-mips@linux-mips.org
-Subject: NMI handling in MIPS64
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <chenli@nortelnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Mar 2004 02:24:07 +0100 (BST)
+Received: from p508B71D0.dip.t-dialin.net ([IPv6:::ffff:80.139.113.208]:2872
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225471AbUC3BYG>; Tue, 30 Mar 2004 02:24:06 +0100
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i2U1O5oM012160;
+	Tue, 30 Mar 2004 03:24:05 +0200
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i2U1O3uT012159;
+	Tue, 30 Mar 2004 03:24:03 +0200
+Date: Tue, 30 Mar 2004 03:24:03 +0200
+From: Ralf Baechle <ralf@linux-mips.org>
+To: "Kevin D. Kissell" <kevink@mips.com>
+Cc: "Steven J. Hill" <sjhill@realitydiluted.com>,
+	Brian Murphy <brian@murphy.dk>, linux-mips@linux-mips.org
+Subject: Re: BUG in pcnet32.c?
+Message-ID: <20040330012403.GB4068@linux-mips.org>
+References: <4068809F.8070103@murphy.dk> <4068864D.1020209@realitydiluted.com> <008901c415d0$3a94d5f0$10eca8c0@grendel>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <008901c415d0$3a94d5f0$10eca8c0@grendel>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4684
+X-archive-position: 4685
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenli@nortelnetworks.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Mon, Mar 29, 2004 at 10:55:52PM +0200, Kevin D. Kissell wrote:
 
-I noticed there is a NMI handler in mips32 kernel tree (arch/mips/kernel/head.S and traps.c).
-But there is not a counterpart in mips64. Do we need one?
-From Ralf's earlier emails, the execution of NMI will pass through the firmware. Does that
-mean just the firmware handles the NMI? And if the NMI can be enabled/disabled?
-My testing system is BCM1250 with SB1 cores.
+> Which reminds me of something I've been meaning to mention for a while.
+> Back in the dark days of Linux 2.2 on MIPS, I discovered that a number
+> of network drivers were subtly broken for MIPS because they allocated
+> enough extra space for IP header alignment, but not for cache line alignment.
+> Particularly on CPUs with write-back caches, it can be a Bad Thing if a cache 
+> line straddles two packet buffers, as the flush of one can cause the other
+> to be clobbered.  I had to redefine the alignment constant for MIPS to be
+> a function of the line size to have 100% solid operation of the Tulip and
+> pcnet32 drivers.
+> 
+> The whole network driver cache management paradigm was redone for 2.4,
+> and I've often wondered whether the same potential problem exists, but never
+> had the time to go in and check.
 
-Thanks in advance,
-Lijun
+The change goes beyond just cache managment; the API also abstracts away
+I/O MMUs which so far are quite rare on MIPS systems - but I really hope
+they're going to establish themselves asap.
+
+The Documentation/DMA-API.txt also documents how properly deal with cache
+alignment when using this API.
+
+Steven, maybe that we should add another assertion to make sure we don't
+run into trouble with missaligned cachelines?
+
+> There, I've mentioned it.  My conscience is clear.  ;o)
+
+Ommmmm ;))
+
+  Ralf

@@ -1,112 +1,103 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Aug 2004 07:30:53 +0100 (BST)
-Received: from host73.ipowerweb.com ([IPv6:::ffff:12.129.211.254]:57566 "EHLO
-	host73.ipowerweb.com") by linux-mips.org with ESMTP
-	id <S8224844AbUHFGas> convert rfc822-to-8bit; Fri, 6 Aug 2004 07:30:48 +0100
-Received: from c-67-170-233-233.client.comcast.net ([67.170.233.233] helo=ratwin1)
-	by host73.ipowerweb.com with asmtp (Exim 3.36 #1)
-	id 1BsyER-0008LJ-00; Thu, 05 Aug 2004 23:29:35 -0700
-Reply-To: <ratin@koperasw.com>
-From: "Ratin Kumar" <ratin@koperasw.com>
-To: "'akshay'" <akshay.singh@analog.com>, <linux-mips@linux-mips.org>
-Subject: RE: pthread uClibc
-Date: Thu, 5 Aug 2004 23:30:22 -0700
-Organization: Kopera Software Inc.
-Message-ID: <00bc01c47b7e$de436130$6401a8c0@ratwin1>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Aug 2004 17:34:56 +0100 (BST)
+Received: from [IPv6:::ffff:145.253.187.130] ([IPv6:::ffff:145.253.187.130]:39689
+	"EHLO proxy.baslerweb.com") by linux-mips.org with ESMTP
+	id <S8224931AbUHFQew>; Fri, 6 Aug 2004 17:34:52 +0100
+Received: from comm1.baslerweb.com (proxy.baslerweb.com [172.16.13.2])
+          by proxy.baslerweb.com (Post.Office MTA v3.5.3 release 223
+          ID# 0-0U10L2S100V35) with ESMTP id com
+          for <linux-mips@linux-mips.org>; Fri, 6 Aug 2004 18:34:04 +0200
+Received: from [172.16.13.253] (localhost [172.16.13.253]) by comm1.baslerweb.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2657.72)
+	id PLG5QZ4Y; Fri, 6 Aug 2004 18:34:50 +0200
+From: Thomas Koeller <thomas.koeller@baslerweb.com>
+Organization: Basler AG
+To: linux-mips@linux-mips.org
+Subject: [PATCH] yosemite serial support
+Date: Fri, 6 Aug 2004 18:36:24 +0200
+User-Agent: KMail/1.6.2
 MIME-Version: 1.0
+Content-Disposition: inline
 Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook, Build 10.0.4510
-Importance: Normal
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1441
-In-Reply-To: <006101c47b6b$abbd6610$5d0d790a@asingh2d01>
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - host73.ipowerweb.com
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [0 0] / [0 0]
-X-AntiAbuse: Sender Address Domain - koperasw.com
-Return-Path: <ratin@koperasw.com>
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Message-Id: <200408061836.24385.thomas.koeller@baslerweb.com>
+Return-Path: <thomas.koeller@baslerweb.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5612
+X-archive-position: 5613
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ratin@koperasw.com
+X-original-sender: thomas.koeller@baslerweb.com
 Precedence: bulk
 X-list: linux-mips
 
-It might make a bit more sense if you talk a bit about your setup/toolchain
-(cross??) and version of libraries used....
-
------Original Message-----
-From: linux-mips-bounce@linux-mips.org
-[mailto:linux-mips-bounce@linux-mips.org] On Behalf Of akshay
-Sent: Thursday, August 05, 2004 9:13 PM
-To: linux-mips@linux-mips.org
-Subject: pthread uClibc
-
-
 Hi,
 
-I am trying to use pthread on mips based platform.
+the patch below adds support for the second serial
+port on the PMC-Sierra Yosemite board.
 
-I have simple program to just create pthreads and when I run my program, it
-goes in infinite loop and never comes back.
-Though when I hit enter on console, I see following message on console.
+tk
 
-pt: assertion failed in manager.c:154.
+--- linux-mips/arch/mips/pmc-sierra/yosemite/setup.c    2004-07-20 11:43:44.000000000 +0200
++++ linux-mips-work/arch/mips/pmc-sierra/yosemite/setup.c       2004-08-06 18:30:55.518022384 +0200
+@@ -156,11 +156,13 @@
+ #define TITAN_UART_CLK         3686400
+ #define TITAN_SERIAL_BASE_BAUD (TITAN_UART_CLK / 16)
+ #define TITAN_SERIAL_IRQ       4
+-#define TITAN_SERIAL_BASE      0xfd000008UL
++#define TITAN_SERIAL_BASE      0xfd000000UL
++#define TITAN_SERIAL_REG_SIZE  8
 
-pt: assertion failed in manager.c:193.
+ static void __init py_map_ocd(void)
+ {
+-        struct uart_port up;
++       struct uart_port up;
++       static const char serr[] = KERN_ERR "Early serial init of port %u failed\n";
 
-Can someone plz help me here .
+        /*
+         * Not specifically interrupt stuff but in case of SMP core_send_ipi
+@@ -171,20 +173,26 @@
+                panic("Mapping OCD failed - game over.  Your score is 0.");
 
+        /*
+-        * Register to interrupt zero because we share the interrupt with
+-        * the serial driver which we don't properly support yet.
++        * Set up serial port #1. Do not use autodetection; the result is
++        * not what we want.
+         */
+        memset(&up, 0, sizeof(up));
+-       up.membase      = (unsigned char *) ioremap(TITAN_SERIAL_BASE, 8);
++       up.membase      = (unsigned char *) ioremap(TITAN_SERIAL_BASE, TITAN_SERIAL_REG_SIZE * 2);
+        up.irq          = TITAN_SERIAL_IRQ;
+        up.uartclk      = TITAN_UART_CLK;
+        up.regshift     = 0;
+        up.iotype       = UPIO_MEM;
+-       up.flags        = ASYNC_BOOT_AUTOCONF | ASYNC_SKIP_TEST;
+-       up.line         = 0;
++       up.flags        = UPF_SHARE_IRQ;
++       up.line         = 1;
++       up.type         = PORT_16550A;
++       if (!up.membase || early_serial_setup(&up))
++               printk(serr, up.line);
 
++       /* And now for port #0. */
++       up.membase      += TITAN_SERIAL_REG_SIZE;
++       up.line         = 0;
+        if (early_serial_setup(&up))
+-               printk(KERN_ERR "Early serial init of port 0 failed\n");
++               printk(serr, up.line);
+ }
 
-Here is the code for my program.
-==============================================================
-#include <stdio.h>
-#include <pthread.h>
+ static int __init pmc_yosemite_setup(void)
 
-void print_message_function( void *ptr );
+-- 
+--------------------------------------------------
 
-     pthread_t thread1;
-     char *message1 = "Thread 1";
+Thomas Koeller, Software Development
+Basler Vision Technologies
 
-main()
-{
-     int  iret1, iret2;
+thomas dot koeller at baslerweb dot com
+http://www.baslerweb.com
 
-    /* Create independant threads each of which will execute function */
-
-     iret1 = pthread_create( &thread1, NULL, (void*)&print_message_function,
-(v
-oid*) message1);
-
-printf("threads created ....\n");
-     /* Wait till threads are complete before main continues. Unless we  */
-     /* wait we run the risk of executing an exit which will terminate   */
-     /* the process and all threads before the threads have completed.   */
-
-     pthread_join( thread1, NULL);
-
-     printf("Thread 1 returns: %d\n",iret1);
-     exit(0);
-}
-
-void print_message_function( void *ptr )
-{
-     char *message;
-     message = (char *) ptr;
-     printf("%s \n", message);
-}
-
-
-
-
-
-Thanks,
-Akshay
+==============================

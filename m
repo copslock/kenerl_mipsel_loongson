@@ -1,91 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Jan 2005 04:42:21 +0000 (GMT)
-Received: from mo00.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:13556 "EHLO
-	mo00.iij4u.or.jp") by linux-mips.org with ESMTP id <S8224788AbVASEmP>;
-	Wed, 19 Jan 2005 04:42:15 +0000
-Received: MO(mo00)id j0J4gCfU020116; Wed, 19 Jan 2005 13:42:12 +0900 (JST)
-Received: MDO(mdo01) id j0J4gBan021252; Wed, 19 Jan 2005 13:42:12 +0900 (JST)
-Received: 4UMRO00 id j0J4gBnn004808; Wed, 19 Jan 2005 13:42:11 +0900 (JST)
-	from rally (localhost [127.0.0.1]) (authenticated)
-Date: Wed, 19 Jan 2005 13:42:11 +0900
-From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-To: ralf@linux-mips.org
-Cc: yuasa@hh.iij4u.or.jp, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Jan 2005 05:04:40 +0000 (GMT)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:41220 "EHLO
+	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8224788AbVASFEe>; Wed, 19 Jan 2005 05:04:34 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 6CB7BE1D10; Wed, 19 Jan 2005 06:04:32 +0100 (CET)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 08058-02; Wed, 19 Jan 2005 06:04:32 +0100 (CET)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 3FBA9E1CB9; Wed, 19 Jan 2005 06:04:32 +0100 (CET)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.1/8.13.1) with ESMTP id j0J54VTX002641;
+	Wed, 19 Jan 2005 06:04:32 +0100
+Date: Wed, 19 Jan 2005 05:04:32 +0000 (GMT)
+From: "Maciej W. Rozycki" <macro@linux-mips.org>
+To: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+Cc: ralf@linux-mips.org, linux-mips@linux-mips.org
 Subject: Re: CVS Update@linux-mips.org: linux
-Message-Id: <20050119134211.2c0e24f5.yuasa@hh.iij4u.or.jp>
-In-Reply-To: <20050115013112Z8225557-1340+1316@linux-mips.org>
+In-Reply-To: <20050119134211.2c0e24f5.yuasa@hh.iij4u.or.jp>
+Message-ID: <Pine.LNX.4.61L.0501190502070.26851@blysk.ds.pg.gda.pl>
 References: <20050115013112Z8225557-1340+1316@linux-mips.org>
-X-Mailer: Sylpheed version 1.0.0 (GTK+ 1.2.10; i386-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yuasa@hh.iij4u.or.jp>
+ <20050119134211.2c0e24f5.yuasa@hh.iij4u.or.jp>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.80/661/Tue Jan 11 02:44:13 2005
+	clamav-milter version 0.80j
+	on piorun.ds.pg.gda.pl
+X-Virus-Status: Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6943
+X-archive-position: 6944
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuasa@hh.iij4u.or.jp
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
+On Wed, 19 Jan 2005, Yoichi Yuasa wrote:
 
-On Sat, 15 Jan 2005 01:31:06 +0000
-ralf@linux-mips.org wrote:
+> arch/mips/vr41xx/common/giu.c and icu.c need <linux/config.h>
+> I,m going to update 2 files soon.
 
-> 
-> CVSROOT:	/home/cvs
-> Module name:	linux
-> Changes by:	ralf@ftp.linux-mips.org	05/01/15 01:31:06
-> 
-> Modified files:
-> 	drivers/net    : big_sur_ge.h gt64240eth.h 
-> 	include/asm-mips: gt64120.h hardirq.h spinlock.h unistd.h 
-> 	include/asm-mips/mach-atlas: mc146818rtc.h 
-> 	include/asm-mips/mach-au1x00: au1000.h au1xxx_dbdma.h 
-> 	                              au1xxx_psc.h 
-> 	include/asm-mips/mach-db1x00: db1x00.h 
-> 	include/asm-mips/mach-ip32: cpu-feature-overrides.h spaces.h 
-> 	include/asm-mips/mach-mips: cpu-feature-overrides.h 
-> 	include/asm-mips/mach-pb1x00: pb1550.h 
-> 	include/asm-mips/vr41xx: cmbvr4133.h vrc4173.h 
-> 	arch/mips/au1000/common: au1xxx_irqmap.c cputable.c dbdma.c 
-> 	                         dma.c platform.c sleeper.S 
-> 	arch/mips/au1000/mtx-1: init.c 
-> 	arch/mips/au1000/pb1550: board_setup.c 
-> 	arch/mips/ddb5xxx/ddb5074: irq.c setup.c 
-> 	arch/mips/ddb5xxx/ddb5476: setup.c 
-> 	arch/mips/dec  : setup.c 
-> 	arch/mips/dec/boot: decstation.c 
-> 	arch/mips/galileo-boards/ev96100: time.c 
-> 	arch/mips/gt64120/momenco_ocelot: irq.c 
-> 	arch/mips/ite-boards/generic: irq.c 
-> 	arch/mips/kernel: binfmt_elfn32.c binfmt_elfo32.c mips_ksyms.c 
-> 	                  semaphore.c smp.c time.c 
-> 	arch/mips/mips-boards/atlas: atlas_int.c 
-> 	arch/mips/mips-boards/generic: gdb_hook.c 
-> 	arch/mips/mips-boards/malta: malta_int.c 
-> 	arch/mips/mm   : cex-sb1.S dma-ip32.c pg-r4k.c pgtable.c 
-> 	                 tlb-andes.c tlb-sb1.c 
-> 	arch/mips/momentum/ocelot_3: reset.c setup.c 
-> 	arch/mips/momentum/ocelot_c: irq.c 
-> 	arch/mips/momentum/ocelot_g: gt-irq.c irq.c 
-> 	arch/mips/pci  : fixup-atlas.c ops-msc.c 
-> 	arch/mips/pmc-sierra/yosemite: atmel_read_eeprom.h irq.c 
-> 	arch/mips/sgi-ip27: ip27-memory.c ip27-timer.c 
-> 	arch/mips/vr4181/common: irq.c 
-> 	arch/mips/vr4181/osprey: setup.c 
-> 	arch/mips/vr41xx/common: giu.c icu.c ksyms.c vrc4173.c 
-> 	drivers/scsi   : wd33c93.h 
-> 
-> Log message:
-> 	Fix use rsp. non-use of <linux/config.h>.
+ Neither of these uses any CONFIG_* macros.
 
-arch/mips/vr41xx/common/giu.c and icu.c need <linux/config.h>
-I,m going to update 2 files soon.
- 
-Please get back 2 files.
-
-Yoichi
+  Maciej

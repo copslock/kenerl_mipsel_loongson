@@ -1,16 +1,17 @@
-Received:  by oss.sgi.com id <S554258AbRBEPnq>;
-	Mon, 5 Feb 2001 07:43:46 -0800
-Received: from sovereign.org ([209.180.91.170]:27526 "EHLO lux.homenet")
-	by oss.sgi.com with ESMTP id <S554255AbRBEPnd>;
-	Mon, 5 Feb 2001 07:43:33 -0800
-Received: (from jfree@localhost)
-	by lux.homenet (8.11.2/8.11.2/Debian 8.11.2-1) id f15Fhdd07846
-	for linux-mips@oss.sgi.com; Mon, 5 Feb 2001 08:43:39 -0700
-From:   Jim Freeman <jfree@sovereign.org>
-Date:   Mon, 5 Feb 2001 08:43:38 -0700
-To:     linux-mips@oss.sgi.com
-Subject: mips/config.in: CONFIG_SMP ?
-Message-ID: <20010205084338.A7739@sovereign.org>
+Received:  by oss.sgi.com id <S554262AbRBEP7Y>;
+	Mon, 5 Feb 2001 07:59:24 -0800
+Received: from woody.ichilton.co.uk ([216.29.174.40]:7941 "HELO
+        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S554259AbRBEP7F>;
+	Mon, 5 Feb 2001 07:59:05 -0800
+Received: by woody.ichilton.co.uk (Postfix, from userid 1000)
+	id 8DA227D16; Mon,  5 Feb 2001 16:00:07 +0000 (GMT)
+Date:   Mon, 5 Feb 2001 16:00:07 +0000
+From:   Ian Chilton <ian@ichilton.co.uk>
+To:     "J. Scott Kasten" <jsk@tetracon-eng.net>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: Filesystem corruption
+Message-ID: <20010205160007.A31490@woody.ichilton.co.uk>
+Reply-To: Ian Chilton <ian@ichilton.co.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -20,31 +21,29 @@ Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-One of the following patches should be applied (parisc/config.in
-does the former ...) ?
+Hello,
+
+> If you're worried about it, do what I do.  Pick one server that always
+> runs a known stable release and keep your working/home directories on it
+> as NFS exports.  Run your development kernel/tools on an NFS client box.
+> That way when it croaks, you don't wast a lot of you time fscking and
+> possibly loosing files.
 
 
---- linux/arch/mips/config.in	2001/02/05 15:17:46	1.1
-+++ linux/arch/mips/config.in	2001/02/05 15:40:52
-@@ -3,6 +3,7 @@
- # see Documentation/kbuild/config-language.txt.
- #
- define_bool CONFIG_MIPS y
-+define_bool CONFIG_SMP n
- 
- mainmenu_name "Linux Kernel Configuration"
- 
+That's basically what I do..
 
 
+Bye for Now,
 
---- linux/arch/mips/config.in	2001/02/05 15:17:46	1.1
-+++ linux/arch/mips/config.in	2001/02/05 15:18:06
-@@ -460,7 +460,5 @@
-   bool 'Remote GDB kernel debugging' CONFIG_REMOTE_DEBUG
- fi
- bool 'Magic SysRq key' CONFIG_MAGIC_SYSRQ
--if [ "$CONFIG_SMP" != "y" ]; then
--   bool 'Run uncached' CONFIG_MIPS_UNCACHED
--fi
-+bool 'Run uncached' CONFIG_MIPS_UNCACHED
- endmenu
+Ian
+
+
+                                \|||/ 
+                                (o o)
+ /---------------------------ooO-(_)-Ooo---------------------------\
+ |  Ian Chilton        (IRC Nick - GadgetMan)     ICQ #: 16007717  |
+ |-----------------------------------------------------------------|
+ |  E-Mail: ian@ichilton.co.uk     Web: http://www.ichilton.co.uk  |
+ |-----------------------------------------------------------------|
+ |         Budget: A method for going broke methodically.          |
+ \-----------------------------------------------------------------/

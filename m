@@ -1,50 +1,63 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f3GKt8H04113
-	for linux-mips-outgoing; Mon, 16 Apr 2001 13:55:08 -0700
-Received: from sprint02.rtmx.net (IDENT:qmailr@sprint02.RTMX.NET [208.31.160.2])
-	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f3GKt7M04110
-	for <linux-mips@oss.sgi.com>; Mon, 16 Apr 2001 13:55:07 -0700
-Received: (qmail 10206 invoked by uid 102); 16 Apr 2001 20:55:06 -0000
-Received: from host098.momenco.com (HELO beagle) (64.169.228.98)
-  by 208.31.160.29 with SMTP; 16 Apr 2001 20:55:06 -0000
-From: "Matthew Dharm" <mdharm@momenco.com>
-To: "Linux-MIPS" <linux-mips@oss.sgi.com>
-Subject: CVS access?
-Date: Mon, 16 Apr 2001 13:55:06 -0700
-Message-ID: <NEBBLJGMNKKEEMNLHGAIEEAICBAA.mdharm@momenco.com>
+	by oss.sgi.com (8.11.3/8.11.3) id f3H2jfD16286
+	for linux-mips-outgoing; Mon, 16 Apr 2001 19:45:41 -0700
+Received: from viditec-netmedia.com.tw ([210.241.238.126])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3H2jeM16283
+	for <linux-mips@oss.sgi.com>; Mon, 16 Apr 2001 19:45:40 -0700
+Received: from kjlin ([210.241.238.122])
+	by viditec-netmedia.com.tw (8.9.3/8.8.7) with SMTP id LAA14865
+	for <linux-mips@oss.sgi.com>; Tue, 17 Apr 2001 11:49:34 +0800
+Message-ID: <00b801c0c6de$7781ab80$056aaac0@kjlin>
+From: "kjlin" <kj.lin@viditec-netmedia.com.tw>
+To: <linux-mips@oss.sgi.com>
+References: <001f01c0c651$00a2e520$056aaac0@kjlin> <3ADB54EE.1090406@jungo.com>
+Subject: Re: linux-2.4.0.0-test5 for MIPS
+Date: Tue, 17 Apr 2001 09:33:54 +0800
 MIME-Version: 1.0
 Content-Type: text/plain;
-	charset="iso-8859-1"
+	charset="big5"
 Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
+X-Priority: 3
 X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
-Importance: Normal
+X-Mailer: Microsoft Outlook Express 5.00.2919.6600
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6600
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I'd like to ask the powers that be for CVS repository access.
+But i could not find any ftp site named ftp.mips.org !!
+In the oss.sgi.com, i just saw the linux-2.4.0-test4 and test9.
+For some reasons, i need linux-2.4.0-test5 for mips!!
+Which one can help??
 
-I currently am employed (my day job) by a company that makes
-RM7000-based single-board computers.  MonteVista has already done
-quite a bit of work to port linux to these boards, and we're
-interested in continuing development and improving support for our
-product line.  I understand that the CVS repository is the best place
-to go for the latest material.
+----- Original Message -----
+From: "Michael Shmulevich" <michaels@jungo.com>
+To: "kjlin" <kj.lin@viditec-netmedia.com.tw>
+Sent: Tuesday, April 17, 2001 4:24 AM
+Subject: Re: linux-2.4.0.0-test5 for MIPS
 
-I'm also an experienced kernel developer.  I'm the author and
-maintainer of the USB Mass Storage driver for linux.  So I'm not just
-another corporate weenie who doesn't understand open-source. :)  I
-actually do this because I like to.
 
-The web pages and FAQs suggest that this is the right place to ask for
-access... is there anything I'm missing?
-
-Matt
-
---
-Matthew D. Dharm                            Senior Software Designer
-Momentum Computer Inc.                      1815 Aston Ave.  Suite 107
-(760) 431-8663 X-115                        Carlsbad, CA 92008-7310
-Momentum Works For You                      www.momenco.com
+> Probably at ftp.mips.org
+>
+> kjlin wrote:
+>
+> > Maybe it is not a good question here.....
+> >
+> > But......
+> >
+> > Can anybody tell me where to download the linux-2.4.0.0-test5 for MIPS??
+> >
+> > Thanx!
+> >
+> >
+>
+>
+> --
+> Sincerely yours,
+> Michael Shmulevich
+> ______________________________________
+> Software Developer
+> Jungo - R&D
+> email: michaels@jungo.com
+> web: http://www.jungo.com
+> Phone: 1-877-514-0537(USA)  +972-9-8859365(Worldwide) ext. 233
+> Fax:   1-877-514-0538(USA)  +972-9-8859366(Worldwide)

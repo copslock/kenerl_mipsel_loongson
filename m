@@ -1,44 +1,30 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g3OGvPwJ026824
-	for <linux-mips-outgoing@oss.sgi.com>; Wed, 24 Apr 2002 09:57:25 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g3OI5fwJ002466
+	for <linux-mips-outgoing@oss.sgi.com>; Wed, 24 Apr 2002 11:05:41 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g3OGvPPZ026823
-	for linux-mips-outgoing; Wed, 24 Apr 2002 09:57:25 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g3OI5f9P002465
+	for linux-mips-outgoing; Wed, 24 Apr 2002 11:05:41 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from lahoo.mshome.net (vsat-148-63-243-254.c004.g4.mrt.starband.net [148.63.243.254])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g3OGv0wJ026819
-	for <linux-mips@oss.sgi.com>; Wed, 24 Apr 2002 09:57:11 -0700
-Received: from prefect.mshome.net ([192.168.0.76] helo=prefect)
-	by lahoo.mshome.net with smtp (Exim 3.12 #1 (Debian))
-	id 170Q3k-0000vc-00; Wed, 24 Apr 2002 12:56:00 -0400
-Message-ID: <013401c1ebb1$12e39cd0$4c00a8c0@prefect>
-From: "Bradley D. LaRonde" <brad@ltc.com>
-To: <michael_pruznick@mvista.com>, <linux-mips@oss.sgi.com>
-References: <3CC6CC21.45E7ABB1@mvista.com>
+Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g3OI5ZwJ002462
+	for <linux-mips@oss.sgi.com>; Wed, 24 Apr 2002 11:05:36 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id UAA25301;
+	Wed, 24 Apr 2002 20:06:21 +0200 (MET DST)
+Date: Wed, 24 Apr 2002 20:06:21 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Michael Pruznick <michael_pruznick@mvista.com>
+cc: linux-mips@oss.sgi.com
 Subject: Re: ps2 keyboard -- no key down events
-Date: Wed, 24 Apr 2002 12:57:09 -0400
+In-Reply-To: <3CC6CC21.45E7ABB1@mvista.com>
+Message-ID: <Pine.GSO.3.96.1020424194125.23744D-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Could it be a level-trigger versus edge-trigger interrupt setting?
-
-Regards,
-Brad
-
------ Original Message ----- 
-From: "Michael Pruznick" <michael_pruznick@mvista.com>
-To: <linux-mips@oss.sgi.com>
-Sent: Wednesday, April 24, 2002 11:15 AM
-Subject: ps2 keyboard -- no key down events
-
+On Wed, 24 Apr 2002, Michael Pruznick wrote:
 
 > I'm working on this mips board with a smsc 90e66 south bridge and
 > fdc37m812 super io.  I'm using the standard pc_keyb.c driver.  I only
@@ -51,12 +37,23 @@ Subject: ps2 keyboard -- no key down events
 > to work with the super io's ps2 controller.  The smsc doc only covers
 > programming the plug and play registers and doesn't give any info about
 > programming the ps2 controller.
-> 
-> I've looked around the web, but haven't found anything useful.
-> 
-> Can anyone point me towards some resources that might help out?
-> 
-> -- 
-> Michael Pruznick, michael_pruznick@mvista.com, www.mvista.com
-> MontaVista Software, 1237 East Arques Ave, Sunnyvale, CA 94085
-> 
+
+ An 8042-compatible microcontroller (actually the firmware it runs) may
+need to be programmed to a PC/AT-compatible mode.  On an i386 it is
+typically done by the BIOS.  Try dumping configuration data from your chip
+and compare it with what is set up in an i386 system.  You can dump 32
+bytes of configuration data with the 0x20 command of the 8042 (5 low-order
+bits of a command byte specify an address).  Writing can be performed
+using the 0x60 command (the same semantics). 
+
+ Some data is available in the Ralf Brown's interrupt list (look for
+"inter60*.zip" files on a SimTel DOS collection's mirror).  I have an old
+Intel hardcopy document somewhere that describes to some extent the
+IBM-defined locations of the configuration data -- I may try to dig it out
+and see if I could help you.  Anyway, you should probably contact the
+chip's manufacturer.
+
+-- 
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

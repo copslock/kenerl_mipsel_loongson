@@ -1,86 +1,90 @@
-Received:  by oss.sgi.com id <S305170AbQDQX77>;
-	Mon, 17 Apr 2000 16:59:59 -0700
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:65037 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S305167AbQDQX7b>; Mon, 17 Apr 2000 16:59:31 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id RAA09888; Mon, 17 Apr 2000 17:03:30 -0700 (PDT)
+Received:  by oss.sgi.com id <S305180AbQDRJLF>;
+	Tue, 18 Apr 2000 02:11:05 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:53873 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305161AbQDRJKw>;
+	Tue, 18 Apr 2000 02:10:52 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id CAA08326; Tue, 18 Apr 2000 02:06:07 -0700 (PDT)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id QAA63743
+	id BAA02690
 	for linux-list;
-	Mon, 17 Apr 2000 16:46:41 -0700 (PDT)
+	Tue, 18 Apr 2000 01:57:51 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from dhcp-163-154-5-221.engr.sgi.com (dhcp-163-154-5-221.engr.sgi.com [163.154.5.221])
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id QAA42007
+	via ESMTP id BAA91506
 	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 17 Apr 2000 16:46:40 -0700 (PDT)
-	mail_from (ralf@oss.sgi.com)
-Received:  by lappi.waldorf-gmbh.de id <S1405571AbQDQXnd>;
-	Mon, 17 Apr 2000 16:43:33 -0700
-Date:   Mon, 17 Apr 2000 16:43:33 -0700
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Mike Klar <mfklar@ponymail.com>
-Cc:     linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr
-Subject: Re: Unaligned address handling, and the cause of that login problem
-Message-ID: <20000417164333.B3123@uni-koblenz.de>
-References: <NDBBIDGAOKMNJNDAHDDMAEGGCJAA.mfklar@ponymail.com>
+	Tue, 18 Apr 2000 01:57:46 -0700 (PDT)
+	mail_from (flo@rfc822.org)
+Received: from noose.gt.owl.de (noose.gt.owl.de [62.52.19.4]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id BAA06395
+	for <linux@cthulhu.engr.sgi.com>; Tue, 18 Apr 2000 01:57:45 -0700 (PDT)
+	mail_from (flo@rfc822.org)
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 8A60F848; Tue, 18 Apr 2000 10:57:46 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id AB62C8FC4; Tue, 18 Apr 2000 10:53:48 +0200 (CEST)
+Date:   Tue, 18 Apr 2000 10:53:48 +0200
+From:   Florian Lohoff <flo@rfc822.org>
+To:     Harald Koerfgen <Harald.Koerfgen@home.ivm.de>
+Cc:     Mike Klar <mfklar@ponymail.com>, linux-mips@fnet.fr,
+        linux@cthulhu.engr.sgi.com, Ralf Baechle <ralf@oss.sgi.com>
+Subject: Re: Unaligned address handling, and the cause of that login prob
+Message-ID: <20000418105348.A1247@paradigm.rfc822.org>
+References: <NDBBIDGAOKMNJNDAHDDMAEGGCJAA.mfklar@ponymail.com> <XFMail.000417183334.Harald.Koerfgen@home.ivm.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <NDBBIDGAOKMNJNDAHDDMAEGGCJAA.mfklar@ponymail.com>; from mfklar@ponymail.com on Sun, Apr 16, 2000 at 03:19:01PM -0700
-X-Accept-Language: de,en,fr
+X-Mailer: Mutt 0.95.3i
+In-Reply-To: <XFMail.000417183334.Harald.Koerfgen@home.ivm.de>; from Harald Koerfgen on Mon, Apr 17, 2000 at 06:33:34PM +0200
+Organization: rfc822 - pure communication
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-On Sun, Apr 16, 2000 at 03:19:01PM -0700, Mike Klar wrote:
-
-> While tracking down a random memory corruption bug, I stumbled across the
-> cause of that telnet/ssh problem in recent kernels reported about a month
-> ago:
+On Mon, Apr 17, 2000 at 06:33:34PM +0200, Harald Koerfgen wrote:
+> Good spotted. This is perfectly in line with my observation that telnet/ssh
+> worked perfectly well if you built a kernel without CONFIG_CPU_HAS_LLSC.
 > 
-> The version of down_trylock() for CPUs with support LL/SC assumes that
-> struct semaphore is 64-bit aligned, since it accesses count and waking as a
-> single dualword (with lld/scd).  Nothing in struct semaphore guarantees this
-> alignment, and in fact, struct tty_struct has a struct semaphore that is not
-> 64-bit aligned.  Depending on how a tty is used (I think it's a non-blocking
-> read that triggers the problem, in drivers/char/n_tty.c), the kernel will
-> attempt an unaligned lld, it will cause an address error, and the handler in
-> arch/mips/kernel/unaligned.c will kill current with SIGBUS (since lld/scd
-> cannot be properly simulated).
+> The attached patch seems to fix this, and another bug in
+> waking_non_zero_interruptible() as well.
 > 
-> The quick-and-dirty workaround is to put 32 bits of padding before the
-> atomic_read member of struct tty_struct.  Of course, that doesn't fix the
-> real problem, and there may well be other non-64-bit aligned struct
-> semaphore's out there.  A proper fix would be to either hack up struct
-> semaphore to guarantee dualword alignment, or rework the was down_trylock
-> does its thing.
+> Telnet is working again :)
 
-I'll put __attribute__ ((aligned(64))) to the structure which will fix this.
-This will have to be changed again when we add support for 32-bit processors
-with ll / sc instructions but for now we don't support them, so it's the
-right thing.
+Many thanks - It works :)
 
-> While I'm on the topic of unaligned handling, this behavior of sending
-> SIGBUS, SIGSEGV, or SIGILL to current on unaligned accesses seems to me like
-> incorrect behavior if the original fault happened in kernel mode.
+(root@193)~# cat /proc/cpuinfo 
+cpu                     : MIPS
+cpu model               : R4000SC V3.0
+system type             : Digital DECstation 5000/1xx
+BogoMIPS                : 49.81
+byteorder               : little endian
+unaligned accesses      : 0
+wait instruction        : no
+microsecond timers      : yes
+extra interrupt vector  : no
+hardware watchpoint     : yes
+VCED exceptions         : 13636
+VCEI exceptions         : 113050
 
-> The above
-> example of an unaligned lld sending SIGBUS is not too bad, since the fault
-> does happen while doing something on behalf of the current process.
+(root@193)~# uname -a
+Linux repeat.rfc822.org 2.3.99-pre3 #3 Tue Apr 18 10:31:47 CEST 2000 mips unknown
 
-The assumption is that the kernel should never ever use ll, lld, sc and scd
-on improperly aligned memory objects, so not checking is ok.  In other
-words it's it's perfectly ok if the kernel dies or behaves silly following
-such a can-not-happen case.
+But the (kernel) fix from Ralph concerning the sleep? syscalls seems
+to be incorrect or buggy - When calling top the display refreshes
+multiple times a second without a sleep and on the console i get
+an.
 
-Note that while we don't attemt to handle missaligned ll/sc/lld/scd
-instructions because that would break atomicity on SMP machines.  On the
-other side again emulating them on CPUs that don't have them at all like
-the R3000 is ok because those are not used on SMP systems.  That is not
-counting the oddball SMP systems which we'll probably not support ever.
+Setting flush to zero for top.
+schedule_timeout: wrong timeout value fffbd0b2 from 800942b8 
 
-  Ralf
+Flo
+-- 
+Florian Lohoff		flo@rfc822.org		      	+49-subject-2-change
+"Technology is a constant battle between manufacturers producing bigger and
+more idiot-proof systems and nature producing bigger and better idiots."

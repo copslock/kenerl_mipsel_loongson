@@ -1,50 +1,37 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f4UGF0J00600
-	for linux-mips-outgoing; Wed, 30 May 2001 09:15:00 -0700
-Received: from gateway.total-knowledge.com (c1213523-b.smateo1.sfba.home.com [24.1.66.97])
-	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f4UGEuh00597
-	for <linux-mips@oss.sgi.com>; Wed, 30 May 2001 09:14:56 -0700
-Received: (qmail 7976 invoked by uid 502); 30 May 2001 16:14:50 -0000
-Content-Type: text/plain;
-  charset="iso-8859-1"
-From: Ilya Volynets <ilya@theIlya.com>
-Reply-To: ilya@theIlya.com
-Organization: Total knowledge
+	by oss.sgi.com (8.11.3/8.11.3) id f4UHDi705113
+	for linux-mips-outgoing; Wed, 30 May 2001 10:13:44 -0700
+Received: from iris1.csv.ica.uni-stuttgart.de (iris1.csv.ica.uni-stuttgart.de [129.69.118.2])
+	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f4UHDeh05104
+	for <linux-mips@oss.sgi.com>; Wed, 30 May 2001 10:13:41 -0700
+Received: from rembrandt.csv.ica.uni-stuttgart.de (rembrandt.csv.ica.uni-stuttgart.de [129.69.118.42])
+	by iris1.csv.ica.uni-stuttgart.de (8.9.3/8.9.3) with ESMTP id SAA185634
+	for <linux-mips@oss.sgi.com>; Wed, 30 May 2001 18:43:46 +0200 (MDT)
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.22 #1 (Debian))
+	id 15594U-0004Io-00
+	for <linux-mips@oss.sgi.com>; Wed, 30 May 2001 18:43:46 +0200
+Date: Wed, 30 May 2001 18:43:46 +0200
 To: linux-mips@oss.sgi.com
-Subject: Toolchain patches
-Date: Wed, 30 May 2001 09:14:43 -0700
-X-Mailer: KMail [version 1.2]
-MIME-Version: 1.0
-Message-Id: <01053009144307.01259@gateway>
-Content-Transfer-Encoding: 8bit
+Subject: Re: Toolchain patches
+Message-ID: <20010530184346.A16307@rembrandt.csv.ica.uni-stuttgart.de>
+References: <01053009144307.01259@gateway>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.3.15i
+In-Reply-To: <01053009144307.01259@gateway>; from ilya@theIlya.com on Wed, May 30, 2001 at 09:14:43AM -0700
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA1
+Ilya Volynets wrote:
+[snip]
+>Now, one of the reasons for this is that maintainers of some important
+>tools (like gcc :-) are little bit too concentrated on Inhell architecture.
+>They do not apply our patches, they do not fix bugs reported by us,
 
-Hey people.
-As we all well know, toolchain is one of major issues for Linux/MIPS.
-Probably the worst one. Personally I had just gone through getting it
-at least semi-straight, and blood, sweat, tears, and peaces of raw flesh
-are still lying arround. I don't think I'd like my enemies to go through this.
-Now, one of the reasons for this is that maintainers of some important
-tools (like gcc :-) are little bit too concentrated on Inhell architecture.
-They do not apply our patches, they do not fix bugs reported by us,
-and in general hurt our feelings :). Of course we could start maintaining our
-own trees for respective tools, but unfortunately we simply do not have
-manpower right now for that (and many people would give lots of other
-good arguments against this). So, I decided to put together at least
-a page with collection of patches to toolchain, that didn't go into tree
-to make life at least a bit easier.
-Send comments, patches, and anything else, you see appropriate to me.
-I hope to get initial page up in couple of days.
-	Ilya.
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.4 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
+I don't know about gcc, but with binutils I haven't such problems
+so far. Which of Your patches were rejected (and for what reason)?
 
-iEYEARECAAYFAjsVHHoACgkQtKh84cA8u2k+rQCeLHzpSVBroqru0g95cyo5uJbB
-askAnRmYdw28hSC06Sp/aYk1AbbTJzCX
-=a6hH
------END PGP SIGNATURE-----
+
+Thiemo

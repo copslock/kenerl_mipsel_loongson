@@ -1,60 +1,62 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id IAA996531 for <linux-archive@neteng.engr.sgi.com>; Wed, 1 Oct 1997 08:56:57 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id KAA874063 for <linux-archive@neteng.engr.sgi.com>; Wed, 1 Oct 1997 10:21:22 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id IAA10344 for linux-list; Wed, 1 Oct 1997 08:56:38 -0700
-Received: from heaven.newport.sgi.com (heaven.newport.sgi.com [169.238.102.134]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA10338 for <linux@cthulhu.engr.sgi.com>; Wed, 1 Oct 1997 08:56:35 -0700
-Received: (from carlson@localhost) by heaven.newport.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id IAA13078 for linux@cthulhu.engr.sgi.com; Wed, 1 Oct 1997 08:56:30 -0700
-From: "Christopher W. Carlson" <carlson@heaven.newport.sgi.com>
-Message-Id: <9710010856.ZM13076@heaven.newport.sgi.com>
-Date: Wed, 1 Oct 1997 08:56:30 -0700
-In-Reply-To: "William J. Earl" <wje@fir.engr.sgi.com>
-        "Re: IRIX ELF docs" (Sep 30,  4:42pm)
-References: <199709302336.QAA22417@dns.cobaltmicro.com> 
-	<199709302342.QAA14355@fir.engr.sgi.com>
-X-Mailer: Z-Mail (3.2.3 08feb96 MediaMail)
-To: linux@cthulhu.engr.sgi.com
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id KAA24384 for linux-list; Wed, 1 Oct 1997 10:20:58 -0700
+Received: from oz.engr.sgi.com (oz.engr.sgi.com [150.166.61.27]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA24353 for <linux@cthulhu.engr.sgi.com>; Wed, 1 Oct 1997 10:20:57 -0700
+Received: (from ariel@localhost) by oz.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) id KAA13138; Wed, 1 Oct 1997 10:20:39 -0700 (PDT)
+From: ariel@oz.engr.sgi.com (Ariel Faigon)
+Message-Id: <199710011720.KAA13138@oz.engr.sgi.com>
 Subject: Re: IRIX ELF docs
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+To: carlson@heaven.newport.sgi.com (Christopher W. Carlson)
+Date: Wed, 1 Oct 1997 10:20:38 -0700 (PDT)
+Cc: linux@cthulhu.engr.sgi.com
+In-Reply-To: <9710010856.ZM13076@heaven.newport.sgi.com> from "Christopher W. Carlson" at Oct 1, 97 08:56:30 am
+Reply-To: ariel@cthulhu.engr.sgi.com (Ariel Faigon)
+Organization: Silicon Graphics Inc.
+X-Mailer: ELM [version 2.4 PL24 ME5a]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Sep 30,  4:42pm, William J. Earl wrote:
-> Subject: Re: IRIX ELF docs
-> Ralf Baechle writes:
->  > Hi all,
->  >
->  > our current linker is producing IRIX flavored ELF binaries, not MIPS
->  > ABI.  We still seem to have some bugs in the dynamic linker and these
->  > are now pretty close to the top on my to do list.  However I've got
->  > not documentation about the IRIX binary format, so I'm pretty much
->  > relying on reverse engineering for fixing them.  Does anybody have
->  > a pointer to documentation or documentation about IRIX ELF flavoured
->  > o32 bit object file format?
->
->       IRIX ELF O32 (dynamic) object files are MIPS ABI object files.
-> There are optional extra sections, to support features such as "quickstart"
-> (which allows RLD to skip some of the fixups at startup time), but the
-> required parts are as defined by the MIPS ABI.
->-- End of excerpt from William J. Earl
+Chris wrote:
+:
+:I recently went to the local technical bookstore and found that AT&T
+:no longer publishes the ABI books (the blue covered books describing
+:the ELF format).  The bookstore was, thus, unable to even order them
+:for me.
+:
+:Does anybody know where to buy these books?
+:
 
+Not specifically on the ABI, but a search for "MIPS" on www.amazon.com
+gives only 4 hits, two of which are out-of-print/hard-to-find and
+probably irrelevant, and two that on the architecture only:
 
-I recently went to the local technical bookstore and found that AT&T
-no longer publishes the ABI books (the blue covered books describing
-the ELF format).  The bookstore was, thus, unable to even order them
-for me.
+	Mips R4000 User's Manual
+	Joseph Heinrich / Paperback / Published 1993 
+	Our Price: $44.00 
 
-Does anybody know where to buy these books?
+	Mips Risc Architecture ~ Ships in 2-3 days
+	Gerry Kane, Joe Heinrich / Paperback / Published 1991 
+	Our Price: $46.00 
+	Read more about this title... 
 
+	Mips-X Risc Microprocessor (Kluwer International Series in
+	Engineering and Computer Science) 
+	Paul Chow / Hardcover / Published 1989 
+	(Publisher Out Of Stock)
+
+	Mips Risc Architecture 
+	Published 1991 
+	(Hard to Find)
+
+The canonical place to look for MIPS ABI stuff is:
+	www.mipsabi.org
+
+The SGI specific quickstart stuff and whatever is not published
+on www.mipsabi.org is probably not publicly documented and
+I suspect not even documented much beyond the (rld etc.) source itself.
+I'll be glad to be proven wrong on this.
 -- 
-
-		Chris Carlson
-
-	+------------------------------------------------------+
-	| Also, carlson@sgi.com                                |
-	|   Work:   (714) 224-4530                             |
-	|   Vnet:       6-678-4530     FAX:    (714) 833-9503  |
-	|                                                      |
-	| Trivia fact: an electroencephalogram shows that a    |
-	| human brain and a bowl of quivering lime Jell-O have |
-	| the same waves.  [Time Magazine, Mar 17, 1997]       |
-	+------------------------------------------------------+
+Peace, Ariel

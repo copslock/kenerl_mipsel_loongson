@@ -1,39 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Jan 2005 21:09:17 +0000 (GMT)
-Received: from eth13.com-link.com ([IPv6:::ffff:208.242.241.164]:2753 "EHLO
-	real.realitydiluted.com") by linux-mips.org with ESMTP
-	id <S8225370AbVAVVIv>; Sat, 22 Jan 2005 21:08:51 +0000
-Received: from localhost ([127.0.0.1])
-	by real.realitydiluted.com with esmtp (Exim 4.34 #1 (Debian))
-	id 1CsSV0-0005EU-4l; Sat, 22 Jan 2005 15:08:50 -0600
-Message-ID: <41F2C253.30801@realitydiluted.com>
-Date:	Sat, 22 Jan 2005 15:14:59 -0600
-From:	"Steven J. Hill" <sjhill@realitydiluted.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.5) Gecko/20050105 Debian/1.7.5-1
-X-Accept-Language: en
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 23 Jan 2005 03:36:07 +0000 (GMT)
+Received: from web52809.mail.yahoo.com ([IPv6:::ffff:206.190.39.173]:19627
+	"HELO web52809.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S8224806AbVAWDgA>; Sun, 23 Jan 2005 03:36:00 +0000
+Received: (qmail 6921 invoked by uid 60001); 23 Jan 2005 03:35:53 -0000
+Comment: DomainKeys? See http://antispam.yahoo.com/domainkeys
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  b=3FsJq2N+g00PtyUdA5BIJv3MS5i68kUD+r9F1bQTKxIKASnB/LQDbSHgVhGXsMlhhzKwHWd733dL/kHBxHNuFvv4xD97wo6V3rkNA3jKXmyEvQyAihqkC4iLFPljrJ+iX2mCSzvLUh88tkbTIH8ZccKAkyWSQyqbUq4iuFirbkM=  ;
+Message-ID: <20050123033553.6917.qmail@web52809.mail.yahoo.com>
+Received: from [67.161.34.62] by web52809.mail.yahoo.com via HTTP; Sat, 22 Jan 2005 19:35:53 PST
+Date:	Sat, 22 Jan 2005 19:35:53 -0800 (PST)
+From:	Manish Lachwani <m_lachwani@yahoo.com>
+Subject: Re: [PATCH] Support for backplane on TX4927 based board
+To:	"Steven J. Hill" <sjhill@realitydiluted.com>,
+	Manish Lachwani <mlachwani@mvista.com>
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
+In-Reply-To: <41F2C244.1090701@realitydiluted.com>
 MIME-Version: 1.0
-To:	Manish Lachwani <mlachwani@mvista.com>
-CC:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH] Support 8-bit and 16-bit PCI ops on TX4927 in BE
-References: <20050122175735.GA26945@prometheus.mvista.com>
-In-Reply-To: <20050122175735.GA26945@prometheus.mvista.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sjhill@realitydiluted.com>
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <m_lachwani@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7005
+X-archive-position: 7006
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sjhill@realitydiluted.com
+X-original-sender: m_lachwani@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-Manish Lachwani wrote:
-> 
-> Attached patch supports 8-bit and 16-bit PCI operations on TX4927 in big endian mode. Please review and/or apply
->
-Applied.
+Hi Steve,
 
--Steve
+Thanks for applying the PCI patch. 
+
+This patch is complete as well. This file
+"arch/mips/tx4927/common/tx4927_setup.c" already
+exists in CVS and this specific change below removes a
+couple of lines from the file (uneeded lines). What
+part of the patch is missing? 
+
+Thanks
+Manish Lachwani
+
+--- "Steven J. Hill" <sjhill@realitydiluted.com>
+wrote:
+
+> Manish Lachwani wrote:
+> > 
+> > Attached patch implements support for backplane on
+> TX4927 based board. Please review and/or apply
+> >
+> > Index:
+> linux-2.6.10/arch/mips/tx4927/common/tx4927_setup.c
+> >
+>
+===================================================================
+> > ---
+>
+linux-2.6.10.orig/arch/mips/tx4927/common/tx4927_setup.c
+> > +++
+> linux-2.6.10/arch/mips/tx4927/common/tx4927_setup.c
+> > @@ -129,8 +129,6 @@
+> >  	return;
+> >  }
+> >  
+> > -indent: Standard input:25: Error:Unexpected end
+> of file
+> > -
+> >  void
+> >  dump_cp0(char *key)
+> >  {
+> 
+> Looks like the last part of your patch is missing.
+> Pleae resend and I will
+> go ahead and apply your other big endian patch for
+> TX4927 PCI. Thanks.
+> 
+> -Steve
+> 
+> 
+
+
+=====
+http://www.koffee-break.com

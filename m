@@ -1,53 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Sep 2004 15:31:23 +0100 (BST)
-Received: from mba.ocn.ne.jp ([IPv6:::ffff:210.190.142.172]:27106 "HELO
-	smtp.mba.ocn.ne.jp") by linux-mips.org with SMTP
-	id <S8225254AbUIYObT>; Sat, 25 Sep 2004 15:31:19 +0100
-Received: from localhost (p8149-ipad01funabasi.chiba.ocn.ne.jp [61.207.82.149])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id E44CE7F5D; Sat, 25 Sep 2004 23:31:15 +0900 (JST)
-Date: Sat, 25 Sep 2004 23:41:12 +0900 (JST)
-Message-Id: <20040925.234112.41626050.anemo@mba.ocn.ne.jp>
-To: mlachwani@mvista.com
-Cc: linux-mips@linux-mips.org
-Subject: Re: IDE woos in BE mode 2.6 kernel
-From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <4154B069.8010708@mvista.com>
-References: <414B388D.8060705@mvista.com>
-	<20040918.231947.74754644.anemo@mba.ocn.ne.jp>
-	<4154B069.8010708@mvista.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 20.7 / Mule 4.0 (HANANOEN)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Sep 2004 17:56:40 +0100 (BST)
+Received: from hibernia.jakma.org ([IPv6:::ffff:212.17.55.49]:10884 "EHLO
+	hibernia.jakma.org") by linux-mips.org with ESMTP
+	id <S8225215AbUIYQ4g>; Sat, 25 Sep 2004 17:56:36 +0100
+Received: from hibernia.jakma.org (IDENT:paul@hibernia.jakma.org [192.168.0.3])
+	by hibernia.jakma.org (8.12.11/8.12.11) with ESMTP id i8PGuTxO029761
+	for <linux-mips@linux-mips.org>; Sat, 25 Sep 2004 17:56:30 +0100
+Date: Sat, 25 Sep 2004 17:56:29 +0100 (IST)
+From: Paul Jakma <paul@clubi.ie>
+X-X-Sender: paul@hibernia.jakma.org
+To: Linux MIPS <linux-mips@linux-mips.org>
+Subject: Re: O2/IP32 R10k status / gbefb and LCD
+In-Reply-To: <Pine.LNX.4.61.0409231251580.21165@hibernia.jakma.org>
+Message-ID: <Pine.LNX.4.61.0409251748040.29420@hibernia.jakma.org>
+References: <Pine.LNX.4.61.0409231251580.21165@hibernia.jakma.org>
+X-NSA: arafat al aqsar jihad musharef jet-A1 avgas ammonium qran inshallah allah al-akbar martyr iraq saddam hammas hisballah rabin ayatollah korea vietnam revolt mustard gas british airways washington
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII; format=flowed
+Return-Path: <paul@clubi.ie>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5899
+X-archive-position: 5900
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: paul@clubi.ie
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Fri, 24 Sep 2004 16:40:25 -0700, Manish Lachwani <mlachwani@mvista.com> said:
+On Thu, 23 Sep 2004, Paul Jakma wrote:
 
-mlachwani> These changes below work and attached is the patch based on
-mlachwani> your suggestion. However, I have made changes to
-mlachwani> include/asm-mips/ide.h since I think there may be problems
-mlachwani> with other MIPS boards to in BE mode.  And, I have not
-mlachwani> included the (dma_cache_wback) in the patch.
+> yet have anything to serial console it to, and i'm trying to figure out if 
+> the apparent LCD support in gbefb is working (gbefb=monitor:lcd).
 
-Hmm, I think declaration of mips_io_port_base is not needed since
-asm/io.h must be included before asm/ide.h.  If asm/io.h was not
-included first, ide.h can not override these functions anyway.
+Which it doesnt appear to.
 
-Also, moving the fixup block before "#include <ide.h>" will give a
-chance to override these functions again in mach-dependent ide.h. (for
-more weired hardware)
+Very recent CVS kernel, 8M framebuffer compiled in, it boots 
+(keyboard leds work), but no display (screen is left as is from 
+PROM).
 
----
-Atsushi Nemoto
+regards,
+-- 
+Paul Jakma	paul@clubi.ie	paul@jakma.org	Key ID: 64A2FF6A
+Fortune:
+Everything I like is either illegal, immoral or fattening.
+ 		-- Alexander Woollcott

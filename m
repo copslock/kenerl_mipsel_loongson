@@ -1,36 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Mar 2004 17:17:58 +0000 (GMT)
-Received: from [IPv6:::ffff:145.253.187.130] ([IPv6:::ffff:145.253.187.130]:39429
-	"EHLO proxy.baslerweb.com") by linux-mips.org with ESMTP
-	id <S8225255AbUCZRR4>; Fri, 26 Mar 2004 17:17:56 +0000
-Received: from comm1.baslerweb.com ([172.16.13.2]) by proxy.baslerweb.com
-          (Post.Office MTA v3.5.3 release 223 ID# 0-0U10L2S100V35)
-          with ESMTP id com; Fri, 26 Mar 2004 18:17:56 +0100
-Received: from 172.16.13.253 (localhost [172.16.13.253]) by comm1.baslerweb.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2657.72)
-	id H3NK05VZ; Fri, 26 Mar 2004 18:17:52 +0100
-From: Thomas Koeller <thomas.koeller@baslerweb.com>
-Organization: Basler AG
-To: lachwani@pmc-sierra.com
-Subject: yosemite board
-Date: Fri, 26 Mar 2004 18:19:06 +0100
-User-Agent: KMail/1.5.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Mar 2004 17:44:55 +0000 (GMT)
+Received: from mother.pmc-sierra.com ([IPv6:::ffff:216.241.224.12]:16296 "HELO
+	mother.pmc-sierra.bc.ca") by linux-mips.org with SMTP
+	id <S8225255AbUCZRoy>; Fri, 26 Mar 2004 17:44:54 +0000
+Received: (qmail 20390 invoked from network); 26 Mar 2004 17:44:46 -0000
+Received: from unknown (HELO ogmios.pmc-sierra.bc.ca) (216.241.226.59)
+  by mother.pmc-sierra.com with SMTP; 26 Mar 2004 17:44:46 -0000
+Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
+	by ogmios.pmc-sierra.bc.ca (8.12.9/8.12.7) with ESMTP id i2QHijb6008231;
+	Fri, 26 Mar 2004 09:44:45 -0800
+Received: by bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca with Internet Mail Service (5.5.2656.59)
+	id <GNPZK4JB>; Fri, 26 Mar 2004 09:44:45 -0800
+Message-ID: <9DFF23E1E33391449FDC324526D1F259022534BA@sjc1exm02.pmc_nt.nt.pmc-sierra.bc.ca>
+From: Manish Lachwani <Manish_Lachwani@pmc-sierra.com>
+To: "'Thomas Koeller'" <thomas.koeller@baslerweb.com>
 Cc: linux-mips@linux-mips.org
+Subject: RE: yosemite board
+Date: Fri, 26 Mar 2004 09:38:15 -0800
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200403261819.06904.thomas.koeller@baslerweb.com>
-Return-Path: <thomas.koeller@baslerweb.com>
+X-Mailer: Internet Mail Service (5.5.2656.59)
+Content-Type: text/plain
+Return-Path: <Manish_Lachwani@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4659
+X-archive-position: 4660
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas.koeller@baslerweb.com
+X-original-sender: Manish_Lachwani@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
+
+Hello !
+
+There are several changes to the code that has been checked in. However, these changes have not been put into linux-mips as yet. I have updated copies of the source code with me. I intend to do that sometime soon. If you wish I can send you my copies. Linux is completely working on Yosemite and we have customers using them.
+
+Thanks
+Manish
+
+-----Original Message-----
+From: Thomas Koeller [mailto:thomas.koeller@baslerweb.com]
+Sent: Friday, March 26, 2004 9:19 AM
+To: Manish Lachwani
+Cc: linux-mips@linux-mips.org
+Subject: yosemite board
+
 
 Hi Manish,
 

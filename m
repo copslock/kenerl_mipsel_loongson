@@ -1,46 +1,36 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f3NLn0F14041
-	for linux-mips-outgoing; Mon, 23 Apr 2001 14:49:00 -0700
-Received: from dea.waldorf-gmbh.de (IDENT:root@localhost [127.0.0.1])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3NLmsM14034
-	for <linux-mips@oss.sgi.com>; Mon, 23 Apr 2001 14:48:55 -0700
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f3NLmZE06408;
-	Mon, 23 Apr 2001 18:48:35 -0300
-Date: Mon, 23 Apr 2001 18:48:35 -0300
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Scott A McConnell <samcconn@cotw.com>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: IRQ questions
-Message-ID: <20010423184835.B6109@bacchus.dhis.org>
-References: <3AE081E3.434E9126@cotw.com> <20010420190017.B7282@bacchus.dhis.org> <3AE4B902.C81AB2B9@cotw.com>
+	by oss.sgi.com (8.11.3/8.11.3) id f3NMwb816772
+	for linux-mips-outgoing; Mon, 23 Apr 2001 15:58:37 -0700
+Received: from mail.ocs.com.au (ppp0.ocs.com.au [203.34.97.3])
+	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f3NMwYM16759
+	for <linux-mips@oss.sgi.com>; Mon, 23 Apr 2001 15:58:35 -0700
+Received: (qmail 23824 invoked from network); 23 Apr 2001 22:58:32 -0000
+Received: from ocs3.ocs-net (192.168.255.3)
+  by mail.ocs.com.au with SMTP; 23 Apr 2001 22:58:32 -0000
+X-Mailer: exmh version 2.1.1 10/15/1999
+From: Keith Owens <kaos@melbourne.sgi.com>
+To: linux-mips@oss.sgi.com
+Subject: 2.4.4-pre5 drivers/sgi/char/Makefile
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <3AE4B902.C81AB2B9@cotw.com>; from samcconn@cotw.com on Mon, Apr 23, 2001 at 04:21:38PM -0700
-X-Accept-Language: de,en,fr
+Date: Tue, 24 Apr 2001 08:58:32 +1000
+Message-ID: <12767.988066712@ocs3.ocs-net>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Apr 23, 2001 at 04:21:38PM -0700, Scott A McConnell wrote:
+I am trying to make sense of drivers/sgi/char/Makefile in 2.4.4-pre5.
 
-> > > I have a 2.4.3 kernel booting. I copied the old  arch/mips/kernel/irq.c
-> > > to my target directory and changed
-> >
-> > One valid solution ...  Still.  We want to eleminate all this code
-> > duplication for no good reason.
-> 
-> Would Rotten_IRQ have done the same thing?
+export-objs     := newport.o shmiq.o sgicons.o usema.o
+obj-y           := newport.o shmiq.o sgicons.o usema.o streamable.o
 
-Absolutely not.  The rotten IRQ thing gives you the old irq.c which assumes
-more or less x86 centric interrupt handling, that is a 2 PICs and doesn't
-get SMP right and leaves us a ton of structural problems.  Don't use, it's
-destilled evil ;-)
+obj-$(CONFIG_SGI_SERIAL)        += sgiserial.o
+obj-$(CONFIG_SGI_DS1286)        += ds1286.o
+obj-$(CONFIG_SGI_NEWPORT_GFX)   += graphics.o rrm.o
 
-> Could you name an arch in the cvs distribution that uses the new style IRQ's
+None of newport.o shmiq.o sgicons.o usema.o export any symbols so why
+are they defined as export-objs?  The only object that does export
+symbols is graphics_syms.c and no Makefile refers to that source, it
+appears to be dead.
 
-Interrupt handling is an per architecture thing; currently i386 is coming
-closest to the new design of our future interrupts.
-
-  Ralf
+I recommend removing all export-objs from drivers/sgi/char/Makefile and
+deleting drivers/sgi/char/graphics_syms.c.

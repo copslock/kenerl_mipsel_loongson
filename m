@@ -1,69 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Jan 2004 18:35:56 +0000 (GMT)
-Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:59523 "EHLO
-	witte.sonytel.be") by linux-mips.org with ESMTP id <S8224987AbUAUSf4>;
-	Wed, 21 Jan 2004 18:35:56 +0000
-Received: from teasel.sonytel.be (localhost [127.0.0.1])
-	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id i0LIZrw1007880;
-	Wed, 21 Jan 2004 19:35:53 +0100 (MET)
-Received: (from dimitri@localhost)
-	by teasel.sonytel.be (8.9.3+Sun/8.9.3) id TAA21510;
-	Wed, 21 Jan 2004 19:35:51 +0100 (MET)
-Date: Wed, 21 Jan 2004 19:35:51 +0100
-From: Dimitri Torfs <dimitri@sonycom.com>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Jan 2004 19:16:30 +0000 (GMT)
+Received: from web21601.mail.yahoo.com ([IPv6:::ffff:66.163.169.176]:52659
+	"HELO web21601.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S8224987AbUAUTQ3>; Wed, 21 Jan 2004 19:16:29 +0000
+Message-ID: <20040121191627.27460.qmail@web21601.mail.yahoo.com>
+Received: from [206.31.31.3] by web21601.mail.yahoo.com via HTTP; Wed, 21 Jan 2004 11:16:27 PST
+Date: Wed, 21 Jan 2004 11:16:27 -0800 (PST)
+From: Rajesh Palani <rpalani2@yahoo.com>
+Subject: Re: MIPS PR3940
+To: Ralf Baechle <ralf@linux-mips.org>, kip.r2@free.fr
 Cc: linux-mips@linux-mips.org
-Subject: Re: Support for newer gcc/gas options
-Message-ID: <20040121183551.GA21411@sonycom.com>
-References: <20031223114644.GA5458@sonycom.com> <Pine.LNX.4.55.0312231303030.27594@jurand.ds.pg.gda.pl> <Pine.LNX.4.55.0401201332080.12841@jurand.ds.pg.gda.pl> <20040120204026.GA9470@sonycom.com> <Pine.LNX.4.55.0401211449170.11137@jurand.ds.pg.gda.pl> <20040121145120.GA14288@sonycom.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20040121145120.GA14288@sonycom.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <dimitri@sonycom.com>
+In-Reply-To: <20040120135944.GA25099@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="0-1356285352-1074712587=:27386"
+Return-Path: <rpalani2@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4083
+X-archive-position: 4084
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dimitri@sonycom.com
+X-original-sender: rpalani2@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Jan 21, 2004 at 03:51:20PM +0100, Dimitri Torfs wrote:
-> On Wed, Jan 21, 2004 at 03:09:12PM +0100, Maciej W. Rozycki wrote:
-> >  But do we care of the ISA?  I don't think so -- it's just a leftover from
-> > the days the MIPS world was less complicated.  If gcc 3.2 correctly emits
-> > code for the selected processor and obeys the selected ABI, then
-> > everything is fine.  Are the binaries correct?  If so, I'd like to apply
-> > the patch.
-> 
-> I actually had problems compiling when the -mips3 was not set. The
-> compiler choked on compiling some empty file, if I remember correctly.
-> I will try again later to see what exactly went wrong.
+--0-1356285352-1074712587=:27386
+Content-Type: text/plain; charset=us-ascii
 
-Compiler choked on the first file it tries to compile: gcc added
--mips1 automatically to the as command line which conflicts with the
--Wa,--trap option:
+I had worked on porting Linux on this processor a while ago.  I am not sure if the port is available outside of Philips.
+ 
+-Rajesh
 
-/usr/local/lib/gcc-lib/mips-linux/3.2.2/../../../../mips-linux/bin/as
- -G 0 -O2 -g0 -32 -march=r4100 -v -mips1 -non_shared -32 -march=r4100
- --trap -o scripts/.tmp_empty.o -
-Assembler messages:
-Error: trap exception not supported at ISA 1
+Ralf Baechle <ralf@linux-mips.org> wrote:
+On Tue, Jan 20, 2004 at 02:10:31PM +0100, kip.r2@free.fr wrote:
 
-Removing the line which unsets the gas_isa option makes it work again:
-/usr/local/lib/gcc-lib/mips-linux/3.2.2/../../../../mips-linux/bin/as
--G 0 -O2 -g0 -32 -march=r4100 -v -mips1 -non_shared -32 -march=r4100
--mips3 --trap -o scripts/.tmp_empty.o
+> Hi all,
+> I was wondering if anybody has already work with this processor. I'm expected 
+> to make real-time applications on that platform. Do you think it is possible?
 
-Dimitri
+Forgive I'm too lazy to download documents but in case it's not working
+yet it won't be hard to get Linux to work.
+
+Realtime - depend what exactly you need.
+
+Ralf
 
 
--- 
-Dimitri Torfs       |  NSCE 
-dimitri@sonycom.com |  The Corporate Village
-tel: +32 2 7008541  |  Da Vincilaan 7 - D1 
-fax: +32 2 7008622  |  B-1935 Zaventem - Belgium
+---------------------------------
+Do you Yahoo!?
+Yahoo! Hotjobs: Enter the "Signing Bonus" Sweepstakes
+--0-1356285352-1074712587=:27386
+Content-Type: text/html; charset=us-ascii
+
+<DIV>I had worked on porting Linux on this processor a while ago.&nbsp; I am not sure if the port is available outside of Philips.</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>-Rajesh<BR><BR><B><I>Ralf Baechle &lt;ralf@linux-mips.org&gt;</I></B> wrote:</DIV>
+<BLOCKQUOTE class=replbq style="BORDER-LEFT: #1010ff 2px solid; MARGIN-LEFT: 5px; PADDING-LEFT: 5px">On Tue, Jan 20, 2004 at 02:10:31PM +0100, kip.r2@free.fr wrote:<BR><BR>&gt; Hi all,<BR>&gt; I was wondering if anybody has already work with this processor. I'm expected <BR>&gt; to make real-time applications on that platform. Do you think it is possible?<BR><BR>Forgive I'm too lazy to download documents but in case it's not working<BR>yet it won't be hard to get Linux to work.<BR><BR>Realtime - depend what exactly you need.<BR><BR>Ralf<BR></BLOCKQUOTE><p><hr SIZE=1>
+Do you Yahoo!?<br>
+Yahoo! Hotjobs: <a href="http://pa.yahoo.com/*http://us.rd.yahoo.com/hotjobs/mail_footer_email/evt=21482/*http://hotjobs.sweepstakes.yahoo.com/signingbonus">Enter the "Signing Bonus" Sweepstakes</a>
+--0-1356285352-1074712587=:27386--

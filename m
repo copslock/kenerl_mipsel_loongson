@@ -1,60 +1,44 @@
-Received:  by oss.sgi.com id <S42278AbQGSVpP>;
-	Wed, 19 Jul 2000 14:45:15 -0700
-Received: from deliverator.sgi.com ([204.94.214.10]:1096 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42275AbQGSVop>;
-	Wed, 19 Jul 2000 14:44:45 -0700
-Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id OAA24531
-	for <linux-mips@oss.sgi.com>; Wed, 19 Jul 2000 14:36:52 -0700 (PDT)
-	mail_from (jsun@mvista.com)
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id OAA34455 for <linux-mips@oss.sgi.com>; Wed, 19 Jul 2000 14:43:51 -0700 (PDT)
-Received: from deliverator.sgi.com (deliverator.sgi.com [150.166.91.37])
-	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id OAA77256
-	for <linux@engr.sgi.com>;
-	Wed, 19 Jul 2000 14:42:14 -0700 (PDT)
-	mail_from (jsun@mvista.com)
-Received: from hermes.mvista.com (gateway-490.mvista.com [63.192.220.206]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id OAA24087
-	for <linux@engr.sgi.com>; Wed, 19 Jul 2000 14:34:42 -0700 (PDT)
-	mail_from (jsun@mvista.com)
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.9.3/8.9.3) with ESMTP id OAA10688;
-	Wed, 19 Jul 2000 14:41:41 -0700
-Message-ID: <39762094.9F59676D@mvista.com>
-Date:   Wed, 19 Jul 2000 14:41:40 -0700
-From:   Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.7 [en] (X11; I; Linux 2.2.12-20b i586)
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr
-CC:     Geert.Uytterhoeven@sonycom.com
-Subject: How does PCI device get its interrupt vector?
+Received:  by oss.sgi.com id <S42281AbQGSWr1>;
+	Wed, 19 Jul 2000 15:47:27 -0700
+Received: from u-185.karlsruhe.ipdial.viaginterkom.de ([62.180.21.185]:61702
+        "EHLO u-185.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
+	with ESMTP id <S42275AbQGSWq7>; Wed, 19 Jul 2000 15:46:59 -0700
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S639487AbQGSOIN>;
+        Wed, 19 Jul 2000 16:08:13 +0200
+Date:   Wed, 19 Jul 2000 16:08:13 +0200
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     clemej <clemej@mail.alum.rpi.edu>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: Okay, lost
+Message-ID: <20000719160813.A13006@bacchus.dhis.org>
+References: <200007182323.AA145031220@mail.alum.rpi.edu>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <200007182323.AA145031220@mail.alum.rpi.edu>; from clemej@mail.alum.rpi.edu on Tue, Jul 18, 2000 at 11:23:22PM -0400
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+On Tue, Jul 18, 2000 at 11:23:22PM -0400, clemej wrote:
 
-I am trying to get DDB5476 working and got puzzled by the interrupt
-vector thing.
+> When I was bitten by the infamous '-N' bug, it seems to me the 
+> exception I got said "UTLB" in it somewhere.  This one doesn't.
+> So maybe that's not the problem.
+> 
+> And I think I might be being bitten by the same thing.  All 2.4 
+> kernels I've tried die with what seems to be a similar error on 
+> my Indigo2 (R4400 200Mhz).  I thought I read somewhere something 
+> about XZ graphics causing problems and boards should be 
+> removed... why? Could this be the cause? I have XZ in my 
+> machine.... I want to try a few more things before sounding too 
+> many alarms though...
 
-The on-board ether chip, a PCI device, apparently indicates it generates
-interrupts and has an interrupt vector of 123.  Later on, when
-tulip_open tries to call request_irq(123, ...), it returns with an error
-because the vector is greater than 32.
+The XZ graphics isn't supported nor do we properly detect and avoid it
+which is why the kernel blows up on XZ.  Now, Ulf had the same problem
+and as he knows about this issue I guess there is a real problem
+hidden behind that ...
 
-Here are my questions :
-
-1. Who wrote 123 to the ether chip?  That does not sound right to me at
-first place.
-
-2. Assuming the ether chip returns 0xFF (an invalid interrupt vector,
-which I believe is the correct behavior), which part of Linux is
-responsible to figure out the correct interrupt vector?  Here we do have
-the interrupt pin information and interrupt routing information.  So we
-should be able to tell what is the right interrupt vector number.
-
-Any hints?  Thanks.
-
-Jun
+  Ralf

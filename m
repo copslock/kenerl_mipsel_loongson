@@ -1,51 +1,52 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f4PNxV818238
-	for linux-mips-outgoing; Fri, 25 May 2001 16:59:31 -0700
-Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f4PNxVF18235
-	for <linux-mips@oss.sgi.com>; Fri, 25 May 2001 16:59:31 -0700
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f4PNun028732;
-	Fri, 25 May 2001 16:56:49 -0700
-Message-ID: <3B0EF123.B1C6D480@mvista.com>
-Date: Fri, 25 May 2001 16:56:19 -0700
-From: Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
-X-Accept-Language: en
+	by oss.sgi.com (8.11.3/8.11.3) id f4QMAcV15144
+	for linux-mips-outgoing; Sat, 26 May 2001 15:10:38 -0700
+Received: from mx.mips.com (mx.mips.com [206.31.31.226])
+	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f4QMAbd15141
+	for <linux-mips@oss.sgi.com>; Sat, 26 May 2001 15:10:37 -0700
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id PAA09139;
+	Sat, 26 May 2001 15:10:30 -0700 (PDT)
+Received: from Ulysses (ulysses [192.168.236.13])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id PAA15156;
+	Sat, 26 May 2001 15:10:25 -0700 (PDT)
+Message-ID: <00c901c0e631$4bcebd80$0deca8c0@Ulysses>
+From: "Kevin D. Kissell" <kevink@mips.com>
+To: "Daniel Jacobowitz" <dan@debian.org>
+Cc: <linux-mips@oss.sgi.com>
+References: <Pine.GSO.3.96.1010525130531.17652A-100000@delta.ds2.pg.gda.pl> <011801c0e55f$e4d39820$0deca8c0@Ulysses> <20010525144937.A28370@nevyn.them.org>
+Subject: Re: [PATCH] incorrect asm constraints for ll/sc constructs
+Date: Sun, 27 May 2001 00:14:43 +0200
 MIME-Version: 1.0
-To: Joe deBlaquiere <jadb@redhat.com>,
-   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-   "Kevin D. Kissell" <kevink@mips.com>, linux-mips@oss.sgi.com
-Subject: Re: Surprise! (Re: MIPS_ATOMIC_SET again (Re: newest kernel
-References: <Pine.GSO.3.96.1010524173937.19424A-100000@delta.ds2.pg.gda.pl> <3B0D8F51.6000100@redhat.com> <3B0ED686.C1D85CE1@mvista.com>
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4133.2400
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Oops!  I guess I forgot to include the sysmips.h header file from IRIX.
+> On Fri, May 25, 2001 at 11:15:48PM +0200, Kevin D. Kissell wrote:
+> > >  The following program cannot be compiled with gcc 2.95.3, because the
+> > > offset is out of range (I consider it a bug in gcc -- it should
+allocate
+> > > and load a temporary register itself and pass it appropriately as %0,
+> >
+> > I think gcc can be forgiven for not allocating a temporary,
+> > given the ".set noat"...
+>
+> Except, of course, gcc doesn't even know the set noat is there.  It
+> doesn't parse the interior of asm() statements.
 
-Jun
+Fair enough.  It was an offhand remark.  But seriously, what does
+the "R" constraint mean here?  The only documentation I've got
+(http://linux.fh-heilbronn.de/doku/GNU/docs/gcc/gcc_163.html#SEC163)
+says that "Q" through "U" are reserved for use with EXTRA_CONSTRAINT
+in machine-dependent definitions of arbitrary operand types.  When
+and where does it get bound for MIPS gcc, and what is it supposed
+to mean?  If I compile this kind of fragment using a "m" constraint,
+it seems to do the right thing, at least on my archaic native compiler.
 
-/*      Copyright (c) 1984 AT&T */
-/*        All Rights Reserved   */
-
-/*      THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T     */
-/*      The copyright notice above does not evidence any        */
-/*      actual or intended publication of such source code.     */
-
-#ident "$Revision: 3.12 $"
-
-/*
- * Sysmips() system call commands.
- */
-
-#define SETNAME         1       /* rename the system */
-#define STIME           2       /* set time */
-#define FLUSH_CACHE     3       /* flush caches */
-#define MIPS_FPSIGINTR  5       /* generate a SIGFPE on every fp interrupt */
-#define MIPS_FPU        6       /* turn on/off the fpu */
-#define MIPS_FIXADE     7       /* fix address error (unaligned) */
-#define POSTWAIT        8       /* post wait driver for Oracle */
-#define PPHYSIO         9       /* parallel IO */
-#define PPHYSIO64       10      /* parallel IO - big offsets */
+            Kevin K.

@@ -1,36 +1,60 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id DAA79172 for <linux-archive@neteng.engr.sgi.com>; Fri, 26 Jun 1998 03:58:31 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id GAA40169 for <linux-archive@neteng.engr.sgi.com>; Fri, 26 Jun 1998 06:58:49 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id DAA38278
+	id GAA67947
 	for linux-list;
-	Fri, 26 Jun 1998 03:57:59 -0700 (PDT)
+	Fri, 26 Jun 1998 06:58:10 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from cygnus.rochester.sgi.com (cygnus.rochester.sgi.com [169.238.58.130])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id DAA46117
+	via SMTP id GAA80460
 	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 26 Jun 1998 03:57:57 -0700 (PDT)
-	mail_from (alan@lxorguk.ukuu.org.uk)
-Received: from snowcrash.cymru.net (snowcrash.cymru.net [163.164.160.3]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam: SGI does not authorize the use of its proprietary systems or networks for unsolicited or bulk email from the Internet.) via ESMTP id DAA01538
-	for <linux@cthulhu.engr.sgi.com>; Fri, 26 Jun 1998 03:57:56 -0700 (PDT)
-	mail_from (alan@lxorguk.ukuu.org.uk)
-Received: from the-village.bc.nu (the-village.bc.nu [163.164.160.21]) by snowcrash.cymru.net (8.8.7/8.7.1) with SMTP id LAA12960; Fri, 26 Jun 1998 11:57:38 +0100
-Received: by the-village.bc.nu (Smail3.1.29.1 #2)
-	id m0ypWIG-000aOoC; Fri, 26 Jun 98 12:03 BST
-Message-Id: <m0ypWIG-000aOoC@the-village.bc.nu>
-From: alan@lxorguk.ukuu.org.uk (Alan Cox)
-Subject: Re: possible driver error?
-To: mjhsieh@life.nthu.edu.tw (Francis M.J. Hsieh)
-Date: Fri, 26 Jun 1998 12:03:48 +0100 (BST)
-Cc: linux@cthulhu.engr.sgi.com
-In-Reply-To: <19980626184731.09737@life.nthu.edu.tw> from "Francis M.J. Hsieh" at Jun 26, 98 06:47:31 pm
-Content-Type: text
+	Fri, 26 Jun 1998 06:58:08 -0700 (PDT)
+	mail_from (koz@sgi.com)
+Received: from sgi.com by cygnus.rochester.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1502/930416.SGI)
+	 id JAA04848; Fri, 26 Jun 1998 09:58:04 -0400
+Message-ID: <3593A8B5.640ACFF9@sgi.com>
+Date: Fri, 26 Jun 1998 09:57:09 -0400
+From: Bob Kozdemba <koz@sgi.com>
+Organization: Silicon Graphics
+X-Mailer: Mozilla 4.05C-SGI [en] (X11; I; IRIX 6.5 IP32)
+MIME-Version: 1.0
+To: "Francis M.J. Hsieh" <mjhsieh@life.nthu.edu.tw>
+CC: linux@cthulhu.engr.sgi.com
+Subject: Re: installer swap problem
+References: <3592D796.C43C35C5@sgi.com> <19980626073608.03672@life.nthu.edu.tw>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
->   Here is a possible driver error (but seems harmless, I checked it
->   using network managerment hardware, no transmission error occured)
+Francis M.J. Hsieh wrote:
+> 
+> On Thu, Jun 25, 1998 at 07:04:54PM -0400, Bob Kozdemba wrote:
+> > Does anyone know the trick in getting around the swap problem ?
+> > The installer says I must add a swap partition before continuing.
+> > The only option is "OK"
+> 
+> It seems that the swapon is not working at this stage. I press "OK",
+> too.
+> 
+After pressing OK, I am back to where I started and it will not let
+me continue.
 
-I think someone is shipping old ifconfig tools with Linux/SGI. See if
-"cat /proc/net/dev" makes sense
+How did you manage to get past this point ?
+
+Thanks for the reply,
+Koz
+
+> --
+> Francis M. J. Hsieh      | Email:   mjhsieh@life.nthu.edu.tw
+> Life Science Department, | Webpage: http://www.life.nthu.edu.tw/~mjhsieh/
+> National Tsing Hua Univ, | Voice:   +886 3 5715131 ext 3482
+> HsinChu, Taiwan Republic |          +886 3 5715649
+
+-- 
+Bob Kozdemba - Systems Engineer - Silicon Graphics / Cray Research
+375 Woodcliff Drive Rochester, NY 14450 
+Office: 716-383-4262 * Direct: 716-249-4720 * Fax: 716-383-4265 
+Email: koz@sgi.com * http://reality.sgi.com/koz

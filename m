@@ -1,52 +1,44 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f2RIMXi05279
-	for linux-mips-outgoing; Tue, 27 Mar 2001 10:22:33 -0800
-Received: from appliedmicro.ns.ca (dragon.appliedmicro.ns.ca [24.222.12.66])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f2RIMWM05275
-	for <linux-mips@oss.sgi.com>; Tue, 27 Mar 2001 10:22:32 -0800
-Received: by dragon.appliedmicro.ns.ca id <7308>; Tue, 27 Mar 2001 14:14:32 -0400
-Date: Tue, 27 Mar 2001 14:21:16 -0400
-To: Florian Lohoff <flo@rfc822.org>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: loop stuff
-Message-Id: <01Mar27.141432ast.7308@dragon.appliedmicro.ns.ca>
-References: <20010327200219.B32706@paradigm.rfc822.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.12i
-In-Reply-To: <20010327200219.B32706@paradigm.rfc822.org>; from flo@rfc822.org on Tue, Mar 27, 2001 at 02:02:19PM -0400
-From: fifield@amirix.com (Jamie Fifield)
+	by oss.sgi.com (8.11.3/8.11.3) id f2RIOGx05559
+	for linux-mips-outgoing; Tue, 27 Mar 2001 10:24:16 -0800
+Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f2RIOBM05551
+	for <linux-mips@oss.sgi.com>; Tue, 27 Mar 2001 10:24:14 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id UAA22261;
+	Tue, 27 Mar 2001 20:24:13 +0200 (MET DST)
+Date: Tue, 27 Mar 2001 20:24:12 +0200 (MET DST)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: Keith M Wesolowski <wesolows@foobazco.org>
+cc: David Jez <dave.jez@seznam.cz>, Karel van Houten <K.H.C.vanHouten@kpn.com>,
+   linux-mips@oss.sgi.com
+Subject: Re: rpm crashing on RH 7.0 indy
+In-Reply-To: <20010317093919.A19754@foobazco.org>
+Message-ID: <Pine.GSO.3.96.1010327201744.17103A-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I think Jens' latest loop patches made it into 2.4.3-pre3 (or pre4).
+On Sat, 17 Mar 2001, Keith M Wesolowski wrote:
 
-Anyway, they're working fine for me on my IA32 workstation.
+> That's not the problem.  The problem is that static binaries which use
+> libdl used to be (and perhaps still are) broken.  The reason it's
+> using libdl is that the nss libraries are never truly static, unless
+> you compile glibc with a special non-recommended option.  I have
+> indications that this may be fixed in glibc 2.2.2 using my current
+> toolchain, but my information is not complete.
 
-jamie:~$ uname -a
-Linux jamie 2.4.3-pre8 #1 Mon Mar 26 11:37:58 AST 2001 i686 unknown
+ Glibc is fine; it's the kernel that needs a fix (I've sent it here
+already once or twice).  We might possibly consider putting a workaround
+into glibc as well.
 
-
-On Tue, Mar 27, 2001 at 02:02:19PM -0400, Florian Lohoff wrote:
-> Hi,
-> does anyone know if the 2.4.2 kernel does support loop devices - I mean
-> in the sense of - "It works" - I do have problems with processes like
-> mke2fs getting hung while accessing the loop without any error message.
-> 
-> I am not running 2.4.x on any other platform so i cant verify ...
-> 
-> Flo
-> -- 
-> Florian Lohoff                  flo@rfc822.org             +49-5201-669912
->      Why is it called "common sense" when nobody seems to have any?
-> 
+ The problem is mmap() fails if a non-zero preferred address is given but
+the space is already occupied and no space *above* is available (space
+below is not taken into account).  A glibc workaround might be to call
+mmap() again with no preferred address specified this time. 
 
 -- 
-Jamie Fifield
-
-Software Designer		Jamie.Fifield@amirix.com
-AMIRIX Systems Inc.		http://www.amirix.com/
-Embedded Debian Project		http://www.emdebian.org/
-77 Chain Lake Drive		902-450-1700 x247 (Phone)
-Halifax, N.S. B3S 1E1		902-450-1704 (FAX)
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

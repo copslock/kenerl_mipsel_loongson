@@ -1,73 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Oct 2002 03:27:36 +0200 (CEST)
-Received: from 12-234-207-60.client.attbi.com ([12.234.207.60]:64192 "HELO
-	gateway.total-knowledge.com") by linux-mips.org with SMTP
-	id <S1123396AbSJGB1f>; Mon, 7 Oct 2002 03:27:35 +0200
-Received: (qmail 2865 invoked by uid 502); 7 Oct 2002 01:27:28 -0000
-Received: from localhost (sendmail-bs@127.0.0.1)
-  by localhost with SMTP; 7 Oct 2002 01:27:28 -0000
-Date: Sun, 6 Oct 2002 18:27:23 -0700 (PDT)
-From: ilya@theIlya.com
-X-X-Sender: ilya@ns2.total-knowledge.com
-To: "Matthew H. Ray" <matthewhray@yahoo.com>
-cc: linux-mips@linux-mips.org
-Subject: Re: Indigo 2 PROM question
-In-Reply-To: <20021007003035.52804.qmail@web21008.mail.yahoo.com>
-Message-ID: <Pine.LNX.4.44.0210061827090.2842-100000@ns2.total-knowledge.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Oct 2002 09:48:45 +0200 (CEST)
+Received: from newgate1.zarlink.com ([209.226.172.66]:50309 "EHLO
+	semigate.zarlink.com") by linux-mips.org with ESMTP
+	id <S1123396AbSJGHso>; Mon, 7 Oct 2002 09:48:44 +0200
+Received: from ottmta01.zarlink.com (ottmta01 [134.199.14.110])
+	by semigate.zarlink.com (8.10.2+Sun/8.10.2) with ESMTP id g977mbE24161
+	for <linux-mips@linux-mips.org>; Mon, 7 Oct 2002 03:48:37 -0400 (EDT)
+Subject: MIPS32/MIPS4K kernel compilation settings
+To: linux-mips@linux-mips.org
+X-Mailer: Lotus Notes Release 5.0.8  June 18, 2001
+Message-ID: <OFFFD113F8.B40CC667-ON80256C4B.0028865D@zarlink.com>
+From: Colin.Helliwell@Zarlink.Com
+Date: Mon, 7 Oct 2002 08:48:26 +0100
+X-MIMETrack: Serialize by Router on ottmta01/Semi(Release 5.0.11  |July 24, 2002) at 10/07/2002
+ 03:48:37 AM
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <ilya@theIlya.com>
+Content-type: text/plain; charset=us-ascii
+Return-Path: <Colin.Helliwell@Zarlink.Com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 386
+X-archive-position: 387
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ilya@theIlya.com
+X-original-sender: Colin.Helliwell@Zarlink.Com
 Precedence: bulk
 X-list: linux-mips
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA1
-
-setenv console g
-
-- --------------------------------------------
-Ilya Volynets
-Chief Technology Officer
-Total Knowledge
-http://www.total-knowledge.com/
-|===|
-|?!.|
-|===|
-
-On Sun, 6 Oct 2002, Matthew H. Ray wrote:
-
-> When I first got my Indigo2, it booted to the monitor
-> and keyboard and gave me access to the PROM.  I have
-> since installed Debian over a serial console and I can
-> no longer get it to use the monitor at all at boot
-> time (I'm thinking about trying to get the GU1-Extreme
-> to work).  Over the serial console, I've tried setting
-> the ConsoleOut=monitor(0), but that doesn't seem to do
-> the trick.  Is there a PROM guide written up somewhere
-> (the manuals from SGI are lacking in that feature)?
-> Any suggestions will be appreciated.
->
-> Thanks,
-> Matthew H. Ray
->
-> __________________________________________________
-> Do you Yahoo!?
-> Faith Hill - Exclusive Performances, Videos & More
-> http://faith.yahoo.com
->
->
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.7 (GNU/Linux)
-Comment: pgpenvelope 2.9.0 - http://pgpenvelope.sourceforge.net/
-
-iD8DBQE9oOMA84S94bALfyURAnG9AJ9frIELStlExMIETFWON4SoYY4nUgCfZAtb
-g7ug2kauywEYi5ZmAflTjhU=
-=FLs5
------END PGP SIGNATURE-----
+Was just wondering why the (2.4.19) kernel compilation for MIPS4K systems
+appears to be using the "-mips2" compiler setting - shouldn't it be using
+-mips4 or -mips32 to get the full instruction set?
+Thanks.

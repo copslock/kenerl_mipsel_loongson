@@ -1,45 +1,72 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4VJGWnC011976
-	for <linux-mips-outgoing@oss.sgi.com>; Fri, 31 May 2002 12:16:32 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4VJfLnC012173
+	for <linux-mips-outgoing@oss.sgi.com>; Fri, 31 May 2002 12:41:21 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4VJGWHV011975
-	for linux-mips-outgoing; Fri, 31 May 2002 12:16:32 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4VJfLH6012172
+	for linux-mips-outgoing; Fri, 31 May 2002 12:41:21 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from www.transvirtual.com (root@www.transvirtual.com [206.14.214.140])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4VJGTnC011972
-	for <linux-mips@oss.sgi.com>; Fri, 31 May 2002 12:16:30 -0700
-Received: from www.transvirtual.com (jsimmons@localhost [127.0.0.1])
-        by localhost (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id g4VJHg6F005169;
-	Fri, 31 May 2002 12:17:42 -0700
-Received: from localhost (jsimmons@localhost)
-        by www.transvirtual.com (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id g4VJHfmd005165;
-	Fri, 31 May 2002 12:17:41 -0700
-X-Authentication-Warning: www.transvirtual.com: jsimmons owned process doing -bs
-Date: Fri, 31 May 2002 12:17:41 -0700 (PDT)
-From: James Simmons <jsimmons@transvirtual.com>
-To: Ilya <ilya@theIlya.com>
-cc: Florian Lohoff <flo@rfc822.org>, Brian Murphy <brian@murphy.dk>,
-   linux-mips <linux-mips@oss.sgi.com>
-Subject: Re: New platforms
-In-Reply-To: <Pine.LNX.4.44.0205301532510.9702-100000@ns2.total-knowledge.com>
-Message-ID: <Pine.LNX.4.44.0205311216320.3190-100000@www.transvirtual.com>
+Received: from av.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4VJfFnC012168
+	for <linux-mips@oss.sgi.com>; Fri, 31 May 2002 12:41:15 -0700
+Received: from mvista.com (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id MAA02446;
+	Fri, 31 May 2002 12:41:28 -0700
+Message-ID: <3CF7D235.5@mvista.com>
+Date: Fri, 31 May 2002 12:42:45 -0700
+From: Steve Longerbeam <stevel@mvista.com>
+Organization: MontaVista Software
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.4) Gecko/20011126 Netscape6/6.2.1
+X-Accept-Language: en-us
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To: James Simmons <jsimmons@transvirtual.com>
+CC: linux-mips-kernel@lists.sourceforge.net,
+   linux-mips <linux-mips@oss.sgi.com>
+Subject: Re: [Linux-mips-kernel]TX 3912 framebuffer device
+References: <Pine.LNX.4.44.0205311137230.28854-100000@www.transvirtual.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+Hi James,
 
-> > True. The problem is the slow migration to Linus tree and the slow
-> > migration into the OSS tree.
-> You can always pos your patches to the list, and whatever didn't make it
-> into the tree, can be picked up from there by interested parties.
+There's also a few fb drivers that Pete and I wrote that exist in
+the linux-mips tree, and need porting to the new fbdev api. Are you
+planning to do these also? These are au1100fb.c, epson1356fb.c, and
+it8181fb.c.
 
-Now that I have time I plan to do that.
+Steve
 
-> > Here is a suggestion, how about using the BK
-> > tree at bkbits.net. There is a mips tree there but it has never been used.
-> > The question is who is the admin of that tree so we can have access ?
-> Are you saing "let's make yet another tree"? Ugh...
+James Simmons wrote:
 
-No. I'm talking about having a BK tree to use to sync up to Linus with.
-This way the OSS and SF tree and push into the BK tree and have no issues.
+>Can the video mode of this device be switched at run time or is it a
+>static mode. I'm porting it to the new fbdev api and I want to get it
+>right.
+>
+>   . ---
+>   |o_o |
+>   |:_/ |   Give Micro$oft the Bird!!!!
+>  //   \ \  Use Linux!!!!
+> (|     | )
+> /'\_   _/`\
+> \___)=(___/
+>
+>
+>
+>
+>_______________________________________________________________
+>
+>Don't miss the 2002 Sprint PCS Application Developer's Conference
+>August 25-28 in Las Vegas -- http://devcon.sprintpcs.com/adp/index.cfm
+>
+>_______________________________________________
+>Linux-mips-kernel mailing list
+>Linux-mips-kernel@lists.sourceforge.net
+>https://lists.sourceforge.net/lists/listinfo/linux-mips-kernel
+>
+
+-- 
+Steve Longerbeam
+MontaVista Software, Inc.
+office:408-328-9008, fax:408-328-9204
+http://www.mvista.com

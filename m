@@ -1,65 +1,46 @@
-Received:  by oss.sgi.com id <S42211AbQF3Ple>;
-	Fri, 30 Jun 2000 08:41:34 -0700
-Received: from Cantor.suse.de ([194.112.123.193]:27919 "HELO Cantor.suse.de")
-	by oss.sgi.com with SMTP id <S42194AbQF3PlX>;
-	Fri, 30 Jun 2000 08:41:23 -0700
-Received: from Hermes.suse.de (Hermes.suse.de [194.112.123.136])
-	by Cantor.suse.de (Postfix) with ESMTP
-	id 8AD481E20D; Fri, 30 Jun 2000 17:41:31 +0200 (MEST)
-Received: from arthur.inka.de (Galois.suse.de [10.0.0.1])
-	by Hermes.suse.de (Postfix) with ESMTP
-	id 92E8910A026; Fri, 30 Jun 2000 17:41:30 +0200 (MEST)
-Received: from gromit.rhein-neckar.de ([192.168.27.3] ident=postfix)
-	by arthur.inka.de with esmtp (Exim 3.14 #1)
-	id 1382Py-0008Lk-00; Fri, 30 Jun 2000 17:09:22 +0200
-Received: by gromit.rhein-neckar.de (Postfix, from userid 207)
-	id 8B2C81821; Fri, 30 Jun 2000 17:09:20 +0200 (CEST)
-To:     libc-alpha Mailinglist <libc-alpha@sourceware.cygnus.com>
-Cc:     linux-mips@oss.sgi.com
-Subject: origtest failure with MIPS-Linux glibc
-From:   Andreas Jaeger <aj@suse.de>
-Date:   30 Jun 2000 17:09:20 +0200
-Message-ID: <u8og4j6w9r.fsf@gromit.rhein-neckar.de>
-User-Agent: Gnus/5.0807 (Gnus v5.8.7) XEmacs/21.1 (Capitol Reef)
-MIME-Version: 1.0
+Received:  by oss.sgi.com id <S42213AbQF3QPp>;
+	Fri, 30 Jun 2000 09:15:45 -0700
+Received: from rotor.chem.unr.edu ([134.197.32.176]:38666 "EHLO
+        rotor.chem.unr.edu") by oss.sgi.com with ESMTP id <S42210AbQF3QPY>;
+	Fri, 30 Jun 2000 09:15:24 -0700
+Received: (from wesolows@localhost)
+	by rotor.chem.unr.edu (8.9.3/8.9.3) id JAA32328
+	for linux-mips@oss.sgi.com; Fri, 30 Jun 2000 09:15:24 -0700
+Date:   Fri, 30 Jun 2000 09:15:24 -0700
+From:   Keith M Wesolowski <wesolows@chem.unr.edu>
+To:     linux-mips@oss.sgi.com
+Subject: glibc 2.2 based root fs available
+Message-ID: <20000630091524.A32081@chem.unr.edu>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2i
+X-Complaints-To: postmaster@chem.unr.edu
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+This is the Simple MIPS/Linux 0.2a 'pre-Alpha and we're not joking'
+release. You can obtain the kernel from
+ftp://ftp.foobazco.org/pub/people/wesolows/mips-linux/kernels/vmlinux-24test2
+and the filesystem from .../mips-linux/testing/core-0.2a.tar.gz. This
+is a big-endian filesystem and the kernel is for SGI IP22.
 
-The current glibc testsuite contains in the elf subdirectory a test
-called origtest which loads dynamically (via dlopen) the shared file
-testobj1.so.
+This is a developer release, mainly to help shake out bugs in the
+toolchain and glibc. This release will not run properly on kernel
+2.2. Mandatory release notes are at
+.../mips-linux/testing/README.core-02a. There is still a good deal of
+functionality missing, including the networking utilities, ext2fs
+tools, and a c++ compiler. This release includes the libemptysymbol
+hack to work around the "undefined symbol: " problem until it's fixed.
 
-This test fails on MIPS-Linux since testobj1.so contains an undefined
-reference to foo which can't be fulfilled.  
+Bug reports accepted but in general nothing is patched so you may also
+wish to send reports to the appropriate maintainers.
 
-In elf_machine_runtime_setup (sysdeps/mips/dl-machine.h)
-elf_machine_got_rel is called to relocate the GOT table.  The ABI
-defines that "if an entry correspondends to an undefined symbol and
-the global offset table entry contains a zero, the entry must be
-resolved by the dynamic linker".  foo has a value of 0 and therefore we
-need to relocate it (even if it is not called at all) - but there's no
-reference at all:
+Happy hacking!
 
-Symbol table '.dynsym' contains 50 entries:
-   Num:    Value  Size Type    Bind   Vis      Ndx Name
-[...]
-    48: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND foo
-
-Who's to blame here?  Is this a restriction of the MIPS ELF ABI (I do
-think that glibc's dynamic linker does the right think in this case)?
-Or is there a bug in binutils/gcc which should produce a wrong symbol
-entry?
-
-Is there anything I can do to fix this failure?
-
-Any comments are very welcome.
-
-Andreas
 -- 
- Andreas Jaeger
-  SuSE Labs aj@suse.de
-   private aj@arthur.inka.de
+Keith M Wesolowski			wesolows@chem.unr.edu
+University of Nevada			http://www.chem.unr.edu
+Chemistry Department Systems and Network Administrator

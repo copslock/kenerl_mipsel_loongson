@@ -1,48 +1,60 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6FMNqRw014851
-	for <linux-mips-outgoing@oss.sgi.com>; Mon, 15 Jul 2002 15:23:52 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6G0slRw016570
+	for <linux-mips-outgoing@oss.sgi.com>; Mon, 15 Jul 2002 17:54:47 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6FMNqsZ014850
-	for linux-mips-outgoing; Mon, 15 Jul 2002 15:23:52 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6G0sl5q016569
+	for linux-mips-outgoing; Mon, 15 Jul 2002 17:54:47 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from av.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6FMNlRw014840
-	for <linux-mips@oss.sgi.com>; Mon, 15 Jul 2002 15:23:47 -0700
-Received: from zeus.mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id PAA26471
-	for <linux-mips@oss.sgi.com>; Mon, 15 Jul 2002 15:28:35 -0700
-Subject: PATCH
-From: Pete Popov <ppopov@mvista.com>
-To: linux-mips <linux-mips@oss.sgi.com>
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Mailer: Ximian Evolution 1.0.4 
-Date: 15 Jul 2002 15:29:10 -0700
-Message-Id: <1026772150.15665.145.camel@zeus.mvista.com>
+Received: from myware.mynet (cpe-24-221-190-179.ca.sprintbbd.net [24.221.190.179])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6G0scRw016560
+	for <linux-mips@oss.sgi.com>; Mon, 15 Jul 2002 17:54:40 -0700
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by myware.mynet (8.12.3/8.12.3) with ESMTP id g6G0xOLV005747;
+	Mon, 15 Jul 2002 17:59:25 -0700
+Subject: Re: PATCH: Always use ll/sc for mips
+From: Ulrich Drepper <drepper@redhat.com>
+To: "H. J. Lu" <hjl@lucon.org>
+Cc: linux-mips@oss.sgi.com, GNU C Library <libc-alpha@sources.redhat.com>
+In-Reply-To: <20020702114045.A16197@lucon.org>
+References: <20020702114045.A16197@lucon.org>
+Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature";
+	boundary="=-pu3iGaXCetuK+RR7Gii9"
+X-Mailer: Ximian Evolution 1.0.8 (1.0.8-2) 
+Date: 15 Jul 2002 17:59:24 -0700
+Message-Id: <1026781165.3673.11.camel@myware.mynet>
 Mime-Version: 1.0
-X-Spam-Status: No, hits=-2.5 required=5.0 tests=TO_LOCALPART_EQ_REAL,UNIFIED_PATCH,SUBJ_ALL_CAPS version=2.20
+X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Ralf,
 
-__pte is broken when pte_t is a 64bit type.  I did this to fix the 36
-bit IO support for the Alchemy boards, but it also affects the 64 bit
-mips port.  Apparently it fixed a Xfree problem someone was having.
+--=-pu3iGaXCetuK+RR7Gii9
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-Pete
+On Tue, 2002-07-02 at 11:40, H. J. Lu wrote:
+> The ll/sc emulation is implemented in 2.4.0 and above. This patch makes
+> glibc always use ll/sc.
 
---- include/asm-mips/pgtable.h.old	Fri Jul 12 17:25:19 2002
-+++ include/asm-mips/pgtable.h	Fri Jul 12 17:25:36 2002
-@@ -332,7 +332,9 @@
- 
- static inline pte_t pte_modify(pte_t pte, pgprot_t newprot)
- {
--	return __pte(((pte).pte_low & _PAGE_CHG_MASK) | pgprot_val(newprot));
-+	pte.pte_low &= _PAGE_CHG_MASK;
-+	pte.pte_low |= pgprot_val(newprot);
-+	return pte;
- }
- 
- /*
+Since I haven't seen any objections I've checked this patch in.
+
+--=20
+---------------.                          ,-.   1325 Chesapeake Terrace
+Ulrich Drepper  \    ,-------------------'   \  Sunnyvale, CA 94089 USA
+Red Hat          `--' drepper at redhat.com   `------------------------
+
+--=-pu3iGaXCetuK+RR7Gii9
+Content-Type: application/pgp-signature; name=signature.asc
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.6 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iD8DBQA9M2/s2ijCOnn/RHQRAmmEAJ9gOVWz631kACuhoQOZwzFjYdEIbwCeJmSb
+7Nu/3IYQiH6P6vaRNBK+uIw=
+=6hDg
+-----END PGP SIGNATURE-----
+
+--=-pu3iGaXCetuK+RR7Gii9--

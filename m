@@ -1,46 +1,41 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f4LAqjG05568
-	for linux-mips-outgoing; Mon, 21 May 2001 03:52:45 -0700
-Received: from mx.mips.com (mx.mips.com [206.31.31.226])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f4LAqiF05565
-	for <linux-mips@oss.sgi.com>; Mon, 21 May 2001 03:52:44 -0700
-Received: from newman.mips.com (ns-dmz [206.31.31.225])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id DAA13389
-	for <linux-mips@oss.sgi.com>; Mon, 21 May 2001 03:52:38 -0700 (PDT)
-Received: from copfs01.mips.com (copfs01 [192.168.205.101])
-	by newman.mips.com (8.9.3/8.9.0) with ESMTP id DAA28882
-	for <linux-mips@oss.sgi.com>; Mon, 21 May 2001 03:52:36 -0700 (PDT)
-Received: from mips.com (copsun17 [192.168.205.27])
-	by copfs01.mips.com (8.9.1/8.9.0) with ESMTP id MAA18278
-	for <linux-mips@oss.sgi.com>; Mon, 21 May 2001 12:51:49 +0200 (MEST)
-Message-ID: <3B08F344.333B746C@mips.com>
-Date: Mon, 21 May 2001 12:51:48 +0200
-From: Carsten Langgaard <carstenl@mips.com>
-X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
-X-Accept-Language: en
-MIME-Version: 1.0
+	by oss.sgi.com (8.11.3/8.11.3) id f4LC4AB07513
+	for linux-mips-outgoing; Mon, 21 May 2001 05:04:10 -0700
+Received: from intranet.medialincs.com ([210.126.9.6])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f4LC48F07506
+	for <linux-mips@oss.sgi.com>; Mon, 21 May 2001 05:04:09 -0700
+Received: (from root@localhost)
+          by intranet.medialincs.com (2.5 Build 2630 (Berkeley 8.8.6)/8.8.4)
+	  id VAA12651 for linux-mips@oss.sgi.com; Mon, 21 May 2001 21:07:29 +0900
+Date: Mon, 21 May 2001 21:07:29 +0900
+Message-Id: <200105211207.VAA12651@intranet.medialincs.com>
+From: =?EUC-KR?B?wba+58iv?=<joey@medialincs.com>
 To: linux-mips@oss.sgi.com
-Subject: Memory segments
-Content-Type: text/plain; charset=iso-8859-15
-Content-Transfer-Encoding: 7bit
+Cc: 
+Subject: udp, tcp checksum error?
+MIME-Version: 1.0
+X-Mailer: IntraWorks Mailer 1.0
+X-Deliver-Express: no
+X-Deliver-Reply: no
+X-Deliver-AutoReply: no
+Content-Type: text/plain; charset=EUC-KR
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from base64 to 8bit by oss.sgi.com id f4LC49F07507
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-In the macros PHYSADDR, KSEG0ADDR, KSEG1ADDR, KSEG2ADDR and KSEG3ADDR in
-include/asm-mips64/addrspace.h the addresses are and'ed with
-0x000000ffffffffffUL, instead of and'ed with 0x000000001fffffffUL why is
-that ?
-I do understand the address space is extended in 64 bit mode, but the
-macros is used to manipulate KSEG0 and KSEG1 addresses, which is located
-between 0xffffffff80000000-0xffffffffbfffffff. So the macros are broken
-if you change an address from KSEG1 to KSEG0.
+hello.
+I'm booting up by nfs-root.
 
-/Carsten
+nfs server is RH-7.0 and kernel 2.4.4 , this machine's nfs is good working
 
+but when target mips machine connect to host by UDP, 
+wrong checksum UDP packet  is discarded.
 
---
-_    _ ____  ___   Carsten Langgaard   Mailto:carstenl@mips.com
-|\  /|||___)(___   MIPS Denmark        Direct: +45 4486 5527
-| \/ |||    ____)  Lautrupvang 4B      Switch: +45 4486 5555
-  TECHNOLOGIES     2750 Ballerup       Fax...: +45 4486 5556
-                   Denmark             http://www.mips.com
+i use mips big endian toolchains(20010303), kernel sorce is CVS update version.
+
+I thinks include/asm-mips/checksum.h logic is different from i386's
+
+anyone have idea this problem?
+
+thanx.

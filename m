@@ -1,49 +1,63 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id HAA08508 for <linux-archive@neteng.engr.sgi.com>; Thu, 16 Jul 1998 07:12:58 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id HAA02985 for <linux-archive@neteng.engr.sgi.com>; Thu, 16 Jul 1998 07:32:30 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id HAA60923
+	id HAA36764
 	for linux-list;
-	Thu, 16 Jul 1998 07:12:14 -0700 (PDT)
+	Thu, 16 Jul 1998 07:31:46 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id HAA12022
+	via ESMTP id HAA40776
 	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 16 Jul 1998 07:12:12 -0700 (PDT)
-	mail_from (adevries@engsoc.carleton.ca)
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) 
+	Thu, 16 Jul 1998 07:31:36 -0700 (PDT)
+	mail_from (ralf@mailhost.uni-koblenz.de)
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) 
 	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id HAA01408
-	for <linux@cthulhu.engr.sgi.com>; Thu, 16 Jul 1998 07:12:10 -0700 (PDT)
-	mail_from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id KAA07654;
-	Thu, 16 Jul 1998 10:12:06 -0400
-X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
-Date: Thu, 16 Jul 1998 10:12:06 -0400 (EDT)
-From: Alex deVries <adevries@engsoc.carleton.ca>
+	via ESMTP id HAA06672
+	for <linux@cthulhu.engr.sgi.com>; Thu, 16 Jul 1998 07:29:06 -0700 (PDT)
+	mail_from (ralf@mailhost.uni-koblenz.de)
+Received: from zaphod (ralf@zaphod.uni-koblenz.de [141.26.4.13])
+	by informatik.uni-koblenz.de (8.8.8/8.8.8) with SMTP id QAA24218;
+	Thu, 16 Jul 1998 16:28:58 +0200 (MEST)
+Received: by zaphod (SMI-8.6/KO-2.0)
+	id QAA09600; Thu, 16 Jul 1998 16:28:52 +0200
+Message-ID: <19980716162850.30690@uni-koblenz.de>
+Date: Thu, 16 Jul 1998 16:28:50 +0200
+From: ralf@uni-koblenz.de
 To: Honza Pazdziora <adelton@informatics.muni.cz>
-cc: linux@cthulhu.engr.sgi.com
+Cc: Alex deVries <adevries@engsoc.carleton.ca>, linux@cthulhu.engr.sgi.com
 Subject: Re: The pre-release of Hard Hat Linux for SGI...
-In-Reply-To: <199807161354.PAA09548@aisa.fi.muni.cz>
-Message-ID: <Pine.LNX.3.95.980716101110.6127A-100000@lager.engsoc.carleton.ca>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+References: <Pine.LNX.3.95.980715180435.22020I-100000@lager.engsoc.carleton.ca> <199807161354.PAA09548@aisa.fi.muni.cz>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.84e
+In-Reply-To: <199807161354.PAA09548@aisa.fi.muni.cz>; from Honza Pazdziora on Thu, Jul 16, 1998 at 03:54:50PM +0200
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+On Thu, Jul 16, 1998 at 03:54:50PM +0200, Honza Pazdziora wrote:
 
-Okay, this queston is simple:
+> P.S.: I maybe did not stressed out that some of the packages failed
+> _and_ some gave the following message -- I do not know which gave the
+> message about ldconfig, but certainly not all that failed.
+> 
+> 		During the install of 230 packages there were
+> > > about 20 messages
+> > > 	ldconfig: Exception at [<88109534>] (8810960c)
+> > 
+> > _THAT_ worries me a lot.
 
-are you 100% sure that you're not installing with old packages, and that
-the huge .tar.gz has the same md5sum ?
+That Exception message is just a debug message.  It means that the kernel
+caught a user process passing a bad pointer argument.  This message
+doesn't necessarily mean something fatal happend.
 
-- alex
+> ... and no, no exception, just some messages about some libraries
+> that I decided are harmless. Anyway, after this, I was able to log in
 
--- 
-Alex deVries, puffin on LinuxNet.
-http://www.engsoc.carleton.ca/~adevries/ .
+Harmless -> symlink pointing to nonexisting files?
+
+  Ralf

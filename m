@@ -1,28 +1,41 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g03NO5M04539
-	for linux-mips-outgoing; Thu, 3 Jan 2002 15:24:05 -0800
-Received: from the-village.bc.nu (lightning.swansea.linux.org.uk [194.168.151.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g03NO0g04536;
-	Thu, 3 Jan 2002 15:24:00 -0800
-Received: from alan by the-village.bc.nu with local (Exim 3.22 #1)
-	id 16MGRs-0001If-00; Thu, 03 Jan 2002 22:34:56 +0000
-Subject: Re: aic7xxx (O2 scsi) DMA coherency
-To: vivien.chappelier@enst-bretagne.fr (Vivien Chappelier)
-Date: Thu, 3 Jan 2002 22:34:55 +0000 (GMT)
-Cc: alan@lxorguk.ukuu.org.uk (Alan Cox), ralf@oss.sgi.com (Ralf Baechle),
-   linux-mips@oss.sgi.com
-In-Reply-To: <Pine.LNX.4.21.0201032247490.9064-100000@melkor> from "Vivien Chappelier" at Jan 03, 2002 10:51:51 PM
-X-Mailer: ELM [version 2.5 PL6]
-MIME-Version: 1.0
+	by oss.sgi.com (8.11.2/8.11.3) id g040jk407015
+	for linux-mips-outgoing; Thu, 3 Jan 2002 16:45:46 -0800
+Received: from gandalf.physik.uni-konstanz.de (gandalf.physik.uni-konstanz.de [134.34.144.69])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g040jig07012
+	for <linux-mips@oss.sgi.com>; Thu, 3 Jan 2002 16:45:44 -0800
+Received: from galadriel.physik.uni-konstanz.de [134.34.144.79] (8)
+	by gandalf.physik.uni-konstanz.de with esmtp (Exim 3.12 #1 (Debian))
+	id 16MHYL-0001Vd-00; Fri, 04 Jan 2002 00:45:41 +0100
+Received: from agx by galadriel.physik.uni-konstanz.de with local (Exim 3.12 #1 (Debian))
+	id 16MHX7-0000PS-00; Fri, 04 Jan 2002 00:44:25 +0100
+Date: Fri, 4 Jan 2002 00:44:25 +0100
+From: Guido Guenther <agx@sigxcpu.org>
+To: linux-mips@oss.sgi.com
+Subject: Re: Newport Xserver 2001-11-21
+Message-ID: <20020104004425.B1519@galadriel.physik.uni-konstanz.de>
+Mail-Followup-To: linux-mips@oss.sgi.com
+References: <200201031852.TAA01081@sparta.research.kpn.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-Id: <E16MGRs-0001If-00@the-village.bc.nu>
-From: Alan Cox <alan@lxorguk.ukuu.org.uk>
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <200201031852.TAA01081@sparta.research.kpn.com>; from vhouten@kpn.com on Thu, Jan 03, 2002 at 07:52:13PM +0100
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-> scsi_result0[256]; in scan_scsis) instead of kmallocating it DMA safe as
-> it should on non-coherent systems. Maybe this is the thing to change?
-
-Please fix that - thats a real bug. Actually you may find the PPC64 people
-(Anton and co) already have a patch you can use
+On Thu, Jan 03, 2002 at 07:52:13PM +0100, Houten K.H.C. van (Karel) wrote:
+> 
+> Hi Guido,
+> 
+> I'm experimenting with your Xserver for my indy, currently running
+> the 2.4.16 kernel. I've used a local compiled Xserver before, but that
+> was with an older kernel. Now, using 2.4.16 and your Xserver, I get the
+> following errors:
+Which 2.4.16? The one in the debian archive works. The X-Server
+parses /proc/cpuinfo to check if it runs on an Indy(yes, thats ugly)
+since we still have now proper GIO64 bus interface. Ralf recently
+changed some things in /proc/cpuinfo that broke this parsing. He
+reverted these changes later, so current oss cvs kernels should provide
+the necessary information in /proc/cpuinfo again.
+ -- Guido

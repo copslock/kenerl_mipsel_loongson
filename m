@@ -1,49 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jan 2004 12:13:49 +0000 (GMT)
-Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:20690 "EHLO
-	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225226AbUATMNt>; Tue, 20 Jan 2004 12:13:49 +0000
-Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
-	id 1DFFA4C3BB; Tue, 20 Jan 2004 13:13:43 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by jurand.ds.pg.gda.pl (Postfix) with ESMTP
-	id 1253B47810; Tue, 20 Jan 2004 13:13:43 +0100 (CET)
-Date: Tue, 20 Jan 2004 13:13:43 +0100 (CET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: Ladislav Michl <ladis@linux-mips.org>,
-	Heiko Ronsdorf <hero@tango.eidologic.de>,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH][2.4.24] Indy IP22 compile fixes
-In-Reply-To: <20040119231628.GA30416@linux-mips.org>
-Message-ID: <Pine.LNX.4.55.0401201307190.12841@jurand.ds.pg.gda.pl>
-References: <20040119213154.A30538@tango.eidologic.de> <20040119215138.GA29907@kopretinka>
- <20040119231628.GA30416@linux-mips.org>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jan 2004 12:35:18 +0000 (GMT)
+Received: from p508B6B36.dip.t-dialin.net ([IPv6:::ffff:80.139.107.54]:25629
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225203AbUATMfS>; Tue, 20 Jan 2004 12:35:18 +0000
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i0KCZ8ex017564;
+	Tue, 20 Jan 2004 13:35:08 +0100
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i0KCZ6La017563;
+	Tue, 20 Jan 2004 13:35:06 +0100
+Date: Tue, 20 Jan 2004 13:35:06 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: wei liu <wei.liu@esstech.com>
+Cc: linux-mips@linux-mips.org
+Subject: Re: unaligned problem in linux2.4.18?
+Message-ID: <20040120123506.GA17208@linux-mips.org>
+References: <002d01c3def2$cbc76480$6a0d12ac@ess>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <002d01c3def2$cbc76480$6a0d12ac@ess>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4054
+X-archive-position: 4055
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 20 Jan 2004, Ralf Baechle wrote:
+On Mon, Jan 19, 2004 at 05:14:47PM -0800, wei liu wrote:
 
-> In fact Marcelo already had all the patches then he decieded to screw
-> versin numbering entirely and throw out a 2.4.24 without everything he
-> previously already had accepted for .24.
+> I'm using mips-4kc core and try to port linux2.4.18. When kernel starts, it display the following OOP
 
- Well, the action was justified and it's our (?) business we sync to
-Marcelo early.  Anyway, there's 2.4.25-pre6 out there, so there's no
-problem fixing numbering.  Or is there?
+An oops message is pretty usless unless decoded by ksymoops.  To make
+matters worse, a crash in the unaligned handler is most probably just
+sympthom of a problem elsewhere so having a decoded oops isn't necesarily
+sufficient information to find the problem.
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+  Ralf

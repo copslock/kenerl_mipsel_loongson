@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Dec 2003 05:23:32 +0000 (GMT)
-Received: from mo02.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:48327 "EHLO
-	mo02.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225374AbTLTFXb>;
-	Sat, 20 Dec 2003 05:23:31 +0000
-Received: from mdo00.iij4u.or.jp (mdo00.iij4u.or.jp [210.130.0.170])
-	by mo02.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id OAA20321;
-	Sat, 20 Dec 2003 14:23:27 +0900 (JST)
-Received: 4UMDO00 id hBK5NRm09972; Sat, 20 Dec 2003 14:23:27 +0900 (JST)
-Received: 4UMRO00 id hBK5NQh15992; Sat, 20 Dec 2003 14:23:26 +0900 (JST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Dec 2003 05:24:51 +0000 (GMT)
+Received: from mo02.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:64199 "EHLO
+	mo02.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225374AbTLTFYu>;
+	Sat, 20 Dec 2003 05:24:50 +0000
+Received: from mdo01.iij4u.or.jp (mdo01.iij4u.or.jp [210.130.0.171])
+	by mo02.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id OAA20459;
+	Sat, 20 Dec 2003 14:24:47 +0900 (JST)
+Received: 4UMDO01 id hBK5Olp15821; Sat, 20 Dec 2003 14:24:47 +0900 (JST)
+Received: 4UMRO00 id hBK5Okh16058; Sat, 20 Dec 2003 14:24:46 +0900 (JST)
 	from stratos.frog (64.43.138.210.xn.2iij.net [210.138.43.64]) (authenticated)
-Date: Sat, 20 Dec 2003 14:23:15 +0900
+Date: Sat, 20 Dec 2003 14:24:41 +0900
 From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
 To: Ralf Baechle <ralf@linux-mips.org>
 Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH][2.4] New key map for IBM WorkPad z50
-Message-Id: <20031220142315.38264f62.yuasa@hh.iij4u.or.jp>
+Subject: [PATCH][2.6] New key map for IBM WorkPad z50
+Message-Id: <20031220142441.0ca4e15b.yuasa@hh.iij4u.or.jp>
 X-Mailer: Sylpheed version 0.9.8 (GTK+ 1.2.10; i686-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -22,7 +22,7 @@ Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3801
+X-archive-position: 3802
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,41 +34,39 @@ Hello Ralf,
 
 I made the patch for key map of IBM WorkPad z50.
 
-This patch exists for linux_2_4 tag of linux-mips.org CVS.
+This patch exists for HEAD of linux-mips.org CVS.
 Please apply this patch.
 
 Yoichi
 
 diff -urN -X dontdiff linux-orig/arch/mips/Makefile linux/arch/mips/Makefile
---- linux-orig/arch/mips/Makefile	Thu Oct 23 12:22:18 2003
-+++ linux/arch/mips/Makefile	Sat Dec 20 12:15:03 2003
-@@ -673,6 +673,7 @@
- 	$(MAKE) -C arch/$(ARCH)/tools clean
- 	$(MAKE) -C arch/mips/baget clean
- 	$(MAKE) -C arch/mips/lasat clean
-+	$(MAKE) -C arch/mips/vr41xx/ibm-workpad clean
+--- linux-orig/arch/mips/Makefile	Sat Dec 20 11:52:25 2003
++++ linux/arch/mips/Makefile	Sat Dec 20 12:27:40 2003
+@@ -649,6 +649,7 @@
+ 	@$(MAKE) -f scripts/Makefile.clean obj=arch/mips/boot
+ 	@$(MAKE) -f scripts/Makefile.clean obj=arch/mips/baget
+ 	@$(MAKE) -f scripts/Makefile.clean obj=arch/mips/lasat
++	@$(MAKE) -f scripts/Makefile.clean obj=arch/mips/vr41xx/ibm-workpad
  
- archmrproper:
- 	@$(MAKEBOOT) mrproper
+ # Generate <asm/offset.h 
+ #
 diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/ibm-workpad/Makefile linux/arch/mips/vr41xx/ibm-workpad/Makefile
---- linux-orig/arch/mips/vr41xx/ibm-workpad/Makefile	Wed Jul 30 09:35:38 2003
-+++ linux/arch/mips/vr41xx/ibm-workpad/Makefile	Sat Dec 20 12:15:03 2003
-@@ -14,4 +14,12 @@
+--- linux-orig/arch/mips/vr41xx/ibm-workpad/Makefile	Wed Jul 30 22:36:55 2003
++++ linux/arch/mips/vr41xx/ibm-workpad/Makefile	Sat Dec 20 12:27:40 2003
+@@ -3,3 +3,10 @@
+ #
  
- obj-y	:= init.o setup.o
- 
+ obj-y			+= init.o setup.o
++
 +obj-$(CONFIG_VR41XX_KIU)	+= keymap.o
 +
-+keymap.c: keymap.map
++$(obj)/keymap.c: $(obj)/keymap.map
 +	set -e ; loadkeys --mktable $< | sed -e 's/^static *//' > $@
 +
-+clean:
-+	rm -f keymap.c
-+
- include $(TOPDIR)/Rules.make
++clean-files := keymap.c
 diff -urN -X dontdiff linux-orig/arch/mips/vr41xx/ibm-workpad/keymap.map linux/arch/mips/vr41xx/ibm-workpad/keymap.map
 --- linux-orig/arch/mips/vr41xx/ibm-workpad/keymap.map	Thu Jan  1 09:00:00 1970
-+++ linux/arch/mips/vr41xx/ibm-workpad/keymap.map	Sat Dec 20 12:15:03 2003
++++ linux/arch/mips/vr41xx/ibm-workpad/keymap.map	Sat Dec 20 12:27:40 2003
 @@ -0,0 +1,343 @@
 +# Keymap for IBM Workpad z50
 +# US Mapping

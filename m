@@ -1,61 +1,54 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA03998; Thu, 6 Mar 1997 11:15:27 -0800
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA00917; Fri, 7 Mar 1997 12:02:22 -0800
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id TAA20363 for linux-list; Thu, 6 Mar 1997 19:15:18 GMT
-Received: from yon.engr.sgi.com (yon.engr.sgi.com [150.166.61.32]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA20356 for <linux@cthulhu.engr.sgi.com>; Thu, 6 Mar 1997 11:15:17 -0800
-Received: from storm.corp.sgi.com (storm.corp.sgi.com [150.166.130.77]) by yon.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA26075 for <linux@yon.engr.sgi.com>; Thu, 6 Mar 1997 11:11:56 -0800
-Received: by storm.corp.sgi.com (950413.SGI.8.6.12/930416.SGI)
-	for linux@yon.engr.sgi.com id LAA05819; Thu, 6 Mar 1997 11:14:31 -0800
-From: "Donna Yobs" <yobs@storm.corp.sgi.com>
-Message-Id: <9703061114.ZM5817@storm.corp.sgi.com>
-Date: Thu, 6 Mar 1997 11:14:31 -0800
-In-Reply-To: ariel@yon.engr.sgi.com (Ariel Faigon)
-        "Linus is here" (Feb 26,  3:15pm)
-References: <199702262315.PAA02323@yon.engr.sgi.com>
-X-Mailer: Z-Mail (3.2.3 08feb96 MediaMail)
-To: linux@yon.engr.sgi.com
-Subject: Linus 
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: (from daemon@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id UAA28712 for linux-list; Fri, 7 Mar 1997 20:02:03 GMT
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id MAA28706 for <linux@engr.SGI.COM>; Fri, 7 Mar 1997 12:02:02 -0800
+Received: from athena.nuclecu.unam.mx (athena.nuclecu.unam.mx [132.248.29.9]) by sgi.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id MAA10266 for <linux@engr.SGI.COM>; Fri, 7 Mar 1997 12:01:59 -0800
+Received: (from miguel@localhost) by athena.nuclecu.unam.mx (8.6.12/8.6.11) id NAA10311; Fri, 7 Mar 1997 13:51:32 -0600
+Date: Fri, 7 Mar 1997 13:51:32 -0600
+Message-Id: <199703071951.NAA10311@athena.nuclecu.unam.mx>
+From: Miguel de Icaza <miguel@nuclecu.unam.mx>
+To: linux@cthulhu.engr.sgi.com
+Subject: Linux/SGI
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-http://www.uniforum.org/news/html/publications/uninews/970305/thenews5.html
 
-UniForum Bestows Annual Awards
+Hello,
 
+   This is kind of a test message to see if we are (Ralf and I) are on
+the SGI Linux mailing list.
+ 
+   Ralf and I have joined the Linux/SGI project (he will mail his very
+own presentation later).  The idea basically is that we will be
+getting a machine each one to finish the Linux on SGI port.
 
+   Ralf is the guru behind the original Linux/MIPS, so he will be
+handling most of the low-level code in the port.  And I was part of
+the team that ported Linux to the SPARC.
 
-                      The highest award UniForum presents is The
-                  UniForum Achievement Award which will be presented
-                   to two richly deserving recipients at UniForum '97.
-And the winners are:
+   My experience with MIPS hardware is close to none, so I will be
+doing other parts of the port.  The very first project I have is to
+port the Linux/SPARC SILO boot loader to the SGI.
 
+   Later, make the libc reliable on the MIPS machines and work on the
+kernel support for your graphics cards.
 
-                                     Linus Torvalds, of Transmeta
-                                     Corp, Santa Clara, Calif., is the
-                                     "Father of the LINUX Operating
-                                     System". The award celebrates
-                                     his efforts in creating the LINUX
-                                     kernel and his pioneering efforts
-                                     in making his work available at
-                                     little or no cost to those who
-                                     wish to develop on it. The results
-                                     to date have been the creation of
-                                     new companies and products that
-                                     are using LINUX to bring added
-                                     value to applications for the
-                                     enterprise; and a new
-                                     appreciation for the power of a
-                                     truly open system.
+   I also would love to get my hands on writing parts of the IRIX
+emulation code (to get all those cute toys you have working on
+Linux/SGI without recompiling them), maybe also learn a bit about isdn
+and your audio chips while writing the drivers for them.
 
+   Once this is done, I would love to write the native/free versions
+for some of your libraries that access the cool video hardware on the
+SGI machines and make Linux/SGI not just another Linux port, but a
+cute port that takes advantage of all of the SGI graphics hardware. 
 
-                               James Gosling, Vice president at
-                               SunSoft and a Sun Fellow, is the leader
-                               of the Java development team.
+   So, well, this was like my presentation to the list.  Ahem, now,
+I would like to know more about your video hardware for the kernel
+support, where can I get information on this?  
 
+   We don't have the machines just yet, but I have been reading this
+huge R4k book I got for free from www.mips.com :-)
 
--- 
-
- -------------------------------------------------------------
- Donna Derby Yobs        		     yobs@corp.sgi.com
- Corporate Marketing		Silicon Graphics/Cray Research
+Best wishes,
+Miguel.

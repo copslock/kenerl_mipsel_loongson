@@ -1,53 +1,46 @@
-Received:  by oss.sgi.com id <S42387AbQI1UBO>;
-	Thu, 28 Sep 2000 13:01:14 -0700
-Received: from pC19F6C93.dip.t-dialin.net ([193.159.108.147]:58377 "HELO
-        scotty.mgnet.de") by oss.sgi.com with SMTP id <S42380AbQI1UBA>;
-	Thu, 28 Sep 2000 13:01:00 -0700
-Received: (qmail 13323 invoked from network); 28 Sep 2000 20:00:46 -0000
-Received: from spock.mgnet.de (HELO scotty.mgnet.de) (192.168.1.4)
-  by scotty.mgnet.de with SMTP; 28 Sep 2000 20:00:46 -0000
-Date:   Thu, 28 Sep 2000 22:00:46 +0200
-From:   Klaus Naumann <spock@mgnet.de>
-To:     Florian Lohoff <flo@rfc822.org>
-Cc:     Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com,
+Received:  by oss.sgi.com id <S42398AbQI1Xk7>;
+	Thu, 28 Sep 2000 16:40:59 -0700
+Received: from u-123.karlsruhe.ipdial.viaginterkom.de ([62.180.19.123]:6662
+        "EHLO u-123.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
+	with ESMTP id <S42190AbQI1Xkg>; Thu, 28 Sep 2000 16:40:36 -0700
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S869544AbQI1Xjy>;
+        Fri, 29 Sep 2000 01:39:54 +0200
+Date:   Fri, 29 Sep 2000 01:39:54 +0200
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Klaus Naumann <spock@mgnet.de>
+Cc:     Florian Lohoff <flo@rfc822.org>, linux-mips@oss.sgi.com,
         "Maciej W . Rozycki" <macro@ds2.pg.gda.pl>
 Subject: Re: Decstation broken Was: CVS Update@oss.sgi.com: linux
-Message-ID: <20000928220046.A22513@spock>
-Reply-To: spock@mgnet.de
-References: <20000928214002.B767@paradigm.rfc822.org>
+Message-ID: <20000929013954.A8494@bacchus.dhis.org>
+References: <20000928214002.B767@paradigm.rfc822.org> <20000928220046.A22513@spock>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20000928214002.B767@paradigm.rfc822.org>; from flo@rfc822.org on Thu, Sep 28, 2000 at 21:40:02 +0200
-X-Mailer: Balsa 0.8.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <20000928220046.A22513@spock>; from spock@mgnet.de on Thu, Sep 28, 2000 at 10:00:46PM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+On Thu, Sep 28, 2000 at 10:00:46PM +0200, Klaus Naumann wrote:
 
-On Thu, 28 Sep 2000 21:40:02 Florian Lohoff wrote:
-> Hi,
-> since this commit my machines are all broken (5000/260, 5000/150 
-> and 5000/125) - They all hang in the "Calibrating delay loop ...".
-> 
-> Reverting it let me boot the current kernels ...
-> 
-> Maciej ?
+> BTW: What did you actually fix ? ntpdate still doesn't work
+> while ntpd seems to work ok.
 
-BTW: What did you actually fix ? ntpdate still doesn't work
-while ntpd seems to work ok.
-But ntpdate would be a very good idea because ntpd doesn't handle
-large offsets ...
-And obviously the realtime clock of the Indigo2 doesn't work 
-correctly. So I was calling ntpdate at every bootup to get my 
-system in a usable state. Maciej, can you take a look at ntpdate 
-please ?
+The NTP API was outdated.
 
-	TIA, Klaus
+What is the sympthom you observe with ntpdate?
 
--- 
-Full Name   : Klaus Naumann     | (http://www.mgnet.de/) (Germany)
-Nickname    : Spock             | Org.: Mad Guys Network
-Phone / FAX : ++49/177/7862964  | E-Mail: (spock@mgnet.de)
-PGP Key     : www.mgnet.de/keys/key_spock.txt
+> But ntpdate would be a very good idea because ntpd doesn't handle
+> large offsets ...
+> And obviously the realtime clock of the Indigo2 doesn't work 
+> correctly. So I was calling ntpdate at every bootup to get my 
+> system in a usable state. Maciej, can you take a look at ntpdate 
+> please ?
+
+I recently found that the Indigo2 apparently has a different realtime
+clock from the Indy.  If that's true it explains your observation and
+is unrelated the other problems.
+
+  Ralf

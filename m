@@ -1,104 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Jul 2004 17:15:05 +0100 (BST)
-Received: from host73.ipowerweb.com ([IPv6:::ffff:12.129.211.254]:33119 "EHLO
-	host73.ipowerweb.com") by linux-mips.org with ESMTP
-	id <S8224943AbUGVQPA> convert rfc822-to-8bit; Thu, 22 Jul 2004 17:15:00 +0100
-Received: from c-67-170-233-233.client.comcast.net ([67.170.233.233] helo=ratwin1)
-	by host73.ipowerweb.com with asmtp (Exim 3.36 #1)
-	id 1BngDT-0001tJ-00; Thu, 22 Jul 2004 09:14:43 -0700
-Reply-To: <ratin@koperasw.com>
-From: "Ratin Kumar" <ratin@koperasw.com>
-To: "'Ralf Ackermann'" <rac@KOM.tu-darmstadt.de>,
-	<linux-mips@linux-mips.org>
-Subject: RE: (cross)compiling for the Meshcube  (fwd)
-Date: Thu, 22 Jul 2004 09:14:37 -0700
-Organization: Kopera Software Inc.
-Message-ID: <000201c47007$0010cec0$6401a8c0@ratwin1>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="US-ASCII"
-Content-Transfer-Encoding: 8BIT
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook, Build 10.0.4510
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1409
-Importance: Normal
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Jul 2004 17:41:52 +0100 (BST)
+Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:36660
+	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
+	id <S8224943AbUGVQlr>; Thu, 22 Jul 2004 17:41:47 +0100
+Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42] ident=mail)
+	by iris1.csv.ica.uni-stuttgart.de with esmtp
+	id 1Bngdd-0006MC-00; Thu, 22 Jul 2004 18:41:45 +0200
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
+	id 1Bngdc-0006fQ-00; Thu, 22 Jul 2004 18:41:44 +0200
+Date: Thu, 22 Jul 2004 18:41:44 +0200
+To: Ralf Ackermann <rac@KOM.tu-darmstadt.de>
+Cc: linux-mips@linux-mips.org
+Subject: Re: Q: (cross)compiling for the Meshcube  (fwd)
+Message-ID: <20040722164144.GG965@rembrandt.csv.ica.uni-stuttgart.de>
+References: <Pine.LNX.4.58.0407221756020.4845@shofar.kom.e-technik.tu-darmstadt.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <Pine.LNX.4.58.0407221756020.4845@shofar.kom.e-technik.tu-darmstadt.de>
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - host73.ipowerweb.com
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [0 0] / [0 0]
-X-AntiAbuse: Sender Address Domain - koperasw.com
-Return-Path: <ratin@koperasw.com>
+User-Agent: Mutt/1.5.6i
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5539
+X-archive-position: 5540
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ratin@koperasw.com
+X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
 Precedence: bulk
 X-list: linux-mips
 
-You don't mention installing libc for the platform. You will need libraries
-for the MIPS(el) target to be present in the cross-compile path.
-Try ftp://ftp.linux-mips.org/pub/linux/mips/glibc/mipsel-linux/
+Ralf Ackermann wrote:
+[snip]
+>  - Is there any chance to use a native gcc on the cube itself?
+> 	(could this e.g. been done by chrooting into a (which?)
+> 	existing MIPS Linux distribution that is mounted via NFS)
 
-On doing Native build, if your platform supports tftp loading of boot kernel
-(or if it has a boot kernel which you can pass parameter to), load the
-kernel with nfsroot="IP-Address-of-server:/path" ip=ip-address-of-target
-
-This requires an NFS image to be kept somewhere reachable by your target.
-There is a tarball of RH7.1(mipsel) NFS dump at MIPS ftp for which worked
-for my MALTA.
-
-I did (sometime) ago produce NFS image of RH7.3 for my MALTA board. I can
-upload it if you can tell me a location where to put it.
-
------Original Message-----
-From: linux-mips-bounce@linux-mips.org
-[mailto:linux-mips-bounce@linux-mips.org] On Behalf Of Ralf Ackermann
-Sent: Thursday, July 22, 2004 8:56 AM
-To: linux-mips@linux-mips.org
-Cc: Ralf Ackermann
-Subject: Q: (cross)compiling for the Meshcube (fwd)
+Native compiles should work. AFAIK the Meshcube uses a customized
+debian, most likely a testing/unstable mix. If you have a debian system
+around, you can install the "debootstrap" package there and use it to
+create a mips chroot, configure it, export it to the Meshcube, and
+install the "build-essential" package there. This gives you the usual
+native debian development environment.
 
 
-Hello,
-
-I'm trying to (cross)compile some more modules/applications for the 
-meshcube - but failed so far.
-
-I installed (on an i386 system):
-	binutils-mipsel-linux-2.13.2.1-3.i386.rpm
-	gcc-mipsel-linux-2.95.4-1.i386.rpm
-(from ftp://ftp.linux-mips.org/pub/linux/mips/crossdev/)
-
-Making a hello world program fails with:
-	mipsel-linux-gcc hello.c -o hello
-	/usr/mipsel-linux/bin/ld: cannot open crt1.o: No such file or
-directory
-	collect2: ld returned 1 exit status
-
-My questions:
- - Are there any specific hints for the cross-compile environment
-	(or: "What are you using ... and would therefore suggest ?)
- - Is there any chance to use a native gcc on the cube itself?
-	(could this e.g. been done by chrooting into a (which?)
-	existing MIPS Linux distribution that is mounted via NFS)
-
-Any hints are highly appreciated (I have worked with crosscompile/native 
-environments for ARM so far, but these are my first experiences in the 
-MIPS world).
-
-regards
- Ralf
- 
----------------------------------------------------------------
-Dr. Ralf Ackermann            _         rac@KOM.tu-darmstadt.de
-Multimedia Communications |/ | | |\/|           Merckstrasse 25
-                          |\ |_| |  |  64283 Darmstadt, Germany
-Tel.: (+49) 6151 16-6138                Fax: (+49) 6151 16-6152
----------------------------------------------------------------
-             http://www.kom.tu-darmstadt.de/~rac
----------------------------------------------------------------
+Thiemo

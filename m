@@ -1,62 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Jun 2004 04:25:00 +0100 (BST)
-Received: from fw.osdl.org ([IPv6:::ffff:65.172.181.6]:3240 "EHLO
-	mail.osdl.org") by linux-mips.org with ESMTP id <S8224930AbUFADYz>;
-	Tue, 1 Jun 2004 04:24:55 +0100
-Received: from midway.verizon.net (build.pdx.osdl.net [172.20.1.2])
-	by mail.osdl.org (8.11.6/8.11.6) with SMTP id i513Opr15187;
-	Mon, 31 May 2004 20:24:52 -0700
-Date: Mon, 31 May 2004 20:21:01 -0700
-From: "Randy.Dunlap" <rddunlap@osdl.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Jun 2004 06:23:29 +0100 (BST)
+Received: from ns2.dnsjunction.com ([IPv6:::ffff:216.193.201.5]:1801 "EHLO
+	cuba.globat.com") by linux-mips.org with ESMTP id <S8224918AbUFAFXX>;
+	Tue, 1 Jun 2004 06:23:23 +0100
+Received: from stmaarten.globat.com (stmaarten.inside.globat.com [10.1.1.23])
+	by cuba.globat.com (8.12.9p2/8.12.9) with SMTP id i515NEYk044389
+	for <linux-mips@linux-mips.org>; Mon, 31 May 2004 22:23:14 -0700 (PDT)
+	(envelope-from jurij@wooyd.org)
+Received: (qmail 1334 invoked from network); 1 Jun 2004 05:20:06 -0000
+Received: from d141-170-139.home.cgocable.net (HELO ?192.168.0.101?) (24.141.170.139)
+  by stmaarten.globat.com with SMTP; 1 Jun 2004 05:20:06 -0000
+Date: Tue, 1 Jun 2004 01:21:33 -0400 (EDT)
+From: Jurij Smakov <jurij@wooyd.org>
+Reply-To: jurij@wooyd.org
 To: linux-mips@linux-mips.org
-Cc: ralf@gnu.org, rddunlap <rddunlap@osdl.org>
-Subject: [PATCH] MIPS getdomainname() off by 1;
-Message-Id: <20040531202101.4ace5e95.rddunlap@osdl.org>
-Organization: OSDL
-X-Mailer: Sylpheed version 0.9.8a (GTK+ 1.2.10; i686-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <rddunlap@osdl.org>
+Subject: Indigo2 Power up for donation 
+Message-ID: <Pine.LNX.4.58.0406010051020.9458@bobcat>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <jurij@wooyd.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5228
+X-archive-position: 5229
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rddunlap@osdl.org
+X-original-sender: jurij@wooyd.org
 Precedence: bulk
 X-list: linux-mips
 
+Hello,
 
-irix_getdomainname() max size appears to be off by 1;
-other similar code in kernel uses __NEW_UTS_LEN as the max size,
-and <domainname> includes an extra byte for the terminating
-null character.
+[Please CC the replies to me, I am not on linux-mips list]
 
-Does sysirix.c need to limit <len> to 63 instead of 64 for some
-reason?
+I have recently acquired an Indigo2 machine, which turned out to be the
+IP26-based Power version, with 75 MHz R8000 processor. My main interest
+was running Linux on it, however it seems like there is currently no
+support for that particular machine due to its relative rarity and lack
+of documentation. If there is any effort to make Linux run on it, I would
+be glad to donate it to one of the linux-mips developers, who could
+benefit from owning it, at no cost (modulo possible shipping charges from
+Hamilton, Ontario, Canada). Machine has 128MB of RAM, 1GB SCSI hard drive
+and is in good working condition.
 
-
-diffstat:=
- arch/mips/kernel/sysirix.c |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
-
-
-diff -Naurp ./arch/mips/kernel/sysirix.c~uts_len_off1 ./arch/mips/kernel/sysirix.c
---- ./arch/mips/kernel/sysirix.c~uts_len_off1	2004-05-31 13:58:24.000000000 -0700
-+++ ./arch/mips/kernel/sysirix.c	2004-05-31 20:11:42.000000000 -0700
-@@ -913,8 +913,8 @@ asmlinkage int irix_getdomainname(char *
- 		return error;
- 
- 	down_read(&uts_sem);
--	if(len > (__NEW_UTS_LEN - 1))
--		len = __NEW_UTS_LEN - 1;
-+	if (len > __NEW_UTS_LEN)
-+		len = __NEW_UTS_LEN;
- 	error = 0;
- 	if (copy_to_user(name, system_utsname.domainname, len))
- 		error = -EFAULT;
-
---
-~Randy
+Jurij Smakov                                        jurij@wooyd.org
+Key: http://www.wooyd.org/pgpkey/                   KeyID: C99E03CC

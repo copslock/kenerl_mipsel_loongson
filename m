@@ -1,56 +1,60 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id EAA970278 for <linux-archive@neteng.engr.sgi.com>; Wed, 1 Oct 1997 04:01:46 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id IAA996531 for <linux-archive@neteng.engr.sgi.com>; Wed, 1 Oct 1997 08:56:57 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id EAA19540 for linux-list; Wed, 1 Oct 1997 04:01:08 -0700
-Received: from dataserv.detroit.sgi.com (dataserv.detroit.sgi.com [169.238.128.2]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id EAA19530 for <linux@cthulhu.engr.sgi.com>; Wed, 1 Oct 1997 04:01:04 -0700
-Received: from cygnus.detroit.sgi.com by dataserv.detroit.sgi.com via ESMTP (940816.SGI.8.6.9/930416.SGI)
-	 id GAA02065; Wed, 1 Oct 1997 06:59:43 -0400
-Message-ID: <34322D1F.8AEDE04@cygnus.detroit.sgi.com>
-Date: Wed, 01 Oct 1997 06:59:43 -0400
-From: Eric Kimminau <eak@cygnus.detroit.sgi.com>
-Reply-To: eak@detroit.sgi.com
-Organization: Silicon Graphics, Inc
-X-Mailer: Mozilla 4.03C-SGI [en] (X11; I; IRIX 6.3 IP32)
-MIME-Version: 1.0
-To: Ralf Baechle <ralf@cobaltmicro.com>
-CC: linux-mips@fnet.fr, linux@cthulhu.engr.sgi.com
-Subject: Re: For stability freaks ...
-References: <199710010102.SAA22736@dns.cobaltmicro.com>
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id IAA10344 for linux-list; Wed, 1 Oct 1997 08:56:38 -0700
+Received: from heaven.newport.sgi.com (heaven.newport.sgi.com [169.238.102.134]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA10338 for <linux@cthulhu.engr.sgi.com>; Wed, 1 Oct 1997 08:56:35 -0700
+Received: (from carlson@localhost) by heaven.newport.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id IAA13078 for linux@cthulhu.engr.sgi.com; Wed, 1 Oct 1997 08:56:30 -0700
+From: "Christopher W. Carlson" <carlson@heaven.newport.sgi.com>
+Message-Id: <9710010856.ZM13076@heaven.newport.sgi.com>
+Date: Wed, 1 Oct 1997 08:56:30 -0700
+In-Reply-To: "William J. Earl" <wje@fir.engr.sgi.com>
+        "Re: IRIX ELF docs" (Sep 30,  4:42pm)
+References: <199709302336.QAA22417@dns.cobaltmicro.com> 
+	<199709302342.QAA14355@fir.engr.sgi.com>
+X-Mailer: Z-Mail (3.2.3 08feb96 MediaMail)
+To: linux@cthulhu.engr.sgi.com
+Subject: Re: IRIX ELF docs
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Ralf Baechle wrote:
-> 
-> Ok, I said I'd touch 2.0.x for MIPS again when hell freezes.  It was
-> damn cold weather the last days and hell has froozen ...
-> 
-> [root@(none) /]# uname -a
-> Linux (none) 2.0.30 #389 Tue Sep 30 17:47:39 PDT 1997 mips unknown
-> [root@(none) /]# cat /proc/cpuinfo
-> cpu                     : MIPS
-> cpu model               : Nevada V1.0
-> system type             : Cray YMP  [just kidding ...]
-> BogoMIPS                : 131.89
-> byteorder               : little endian
-> unaligned accesses      : 0
-> wait instruction        : yes
-> microsecond timers      : yes
-> extra interrupt vector  : yes
-> 
->   Ralf
+On Sep 30,  4:42pm, William J. Earl wrote:
+> Subject: Re: IRIX ELF docs
+> Ralf Baechle writes:
+>  > Hi all,
+>  >
+>  > our current linker is producing IRIX flavored ELF binaries, not MIPS
+>  > ABI.  We still seem to have some bugs in the dynamic linker and these
+>  > are now pretty close to the top on my to do list.  However I've got
+>  > not documentation about the IRIX binary format, so I'm pretty much
+>  > relying on reverse engineering for fixing them.  Does anybody have
+>  > a pointer to documentation or documentation about IRIX ELF flavoured
+>  > o32 bit object file format?
+>
+>       IRIX ELF O32 (dynamic) object files are MIPS ABI object files.
+> There are optional extra sections, to support features such as "quickstart"
+> (which allows RLD to skip some of the fixups at startup time), but the
+> required parts are as defined by the MIPS ABI.
+>-- End of excerpt from William J. Earl
 
-Thats quite an impressive BogoMips number for a machine that old...
+
+I recently went to the local technical bookstore and found that AT&T
+no longer publishes the ABI books (the blue covered books describing
+the ELF format).  The bookstore was, thus, unable to even order them
+for me.
+
+Does anybody know where to buy these books?
 
 -- 
-Eric Kimminau                           System Engineer/RSA
-eak@detroit.sgi.com                     Silicon Graphics, Inc
-Voice: (248) 848-4455                   39001 West 12 Mile Rd.
-Fax:   (248) 848-5600                   Farmington, MI 48331-2903
 
-                 VNet Extension - 6-327-4455
-              "I speak my mind and no one else's."
-       http://www.dcs.ex.ac.uk/~aba/rsa/perl-rsa-sig.html
+		Chris Carlson
 
-    When confronted by a difficult problem, solve it by reducing 
-    it to the question, "How would the Lone Ranger handle this?"
+	+------------------------------------------------------+
+	| Also, carlson@sgi.com                                |
+	|   Work:   (714) 224-4530                             |
+	|   Vnet:       6-678-4530     FAX:    (714) 833-9503  |
+	|                                                      |
+	| Trivia fact: an electroencephalogram shows that a    |
+	| human brain and a bowl of quivering lime Jell-O have |
+	| the same waves.  [Time Magazine, Mar 17, 1997]       |
+	+------------------------------------------------------+

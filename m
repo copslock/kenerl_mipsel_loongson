@@ -1,54 +1,113 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id FAA93556 for <linux-archive@neteng.engr.sgi.com>; Wed, 17 Jun 1998 05:42:15 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id IAA35613 for <linux-archive@neteng.engr.sgi.com>; Wed, 17 Jun 1998 08:43:42 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id FAA78213
+	id IAA33725
 	for linux-list;
-	Wed, 17 Jun 1998 05:41:41 -0700 (PDT)
+	Wed, 17 Jun 1998 08:43:13 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from oz.engr.sgi.com (oz.engr.sgi.com [150.166.42.13])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id FAA90195
+	via ESMTP id IAA74834
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 17 Jun 1998 05:41:39 -0700 (PDT)
-	mail_from (adelton@informatics.muni.cz)
-Received: from aragorn.ics.muni.cz ([147.251.4.33]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam: SGI does not authorize the use of its proprietary systems or networks for unsolicited or bulk email from the Internet.) via ESMTP id FAA14225
-	for <linux@cthulhu.engr.sgi.com>; Wed, 17 Jun 1998 05:41:33 -0700 (PDT)
-	mail_from (adelton@informatics.muni.cz)
-Received: from anxur.fi.muni.cz (0@anxur.fi.muni.cz [147.251.48.3])
-	by aragorn.ics.muni.cz (8.8.5/8.8.5) with ESMTP id OAA03295
-	for <linux@cthulhu.engr.sgi.com>; Wed, 17 Jun 1998 14:40:54 +0200 (MET DST)
-Received: from aisa.fi.muni.cz (11635@aisa [147.251.48.1])
-	by anxur.fi.muni.cz (8.8.5/8.8.5) with ESMTP id OAA13018
-	for <linux@cthulhu.engr.sgi.com>; Wed, 17 Jun 1998 14:40:52 +0200 (MET DST)
-Received: (from adelton@localhost)
-	by aisa.fi.muni.cz (8.8.5/8.8.5) id OAA04748
-	for linux@cthulhu.engr.sgi.com; Wed, 17 Jun 1998 14:40:48 +0200 (MET DST)
-Message-Id: <199806171240.OAA04748@aisa.fi.muni.cz>
-Subject: ssh 1.2.25 mipseb rpm
-In-Reply-To: <Pine.LNX.3.95.980616120817.26590C-100000@lager.engsoc.carleton.ca> from Alex deVries at "Jun 16, 98 12:10:08 pm"
-To: linux@cthulhu.engr.sgi.com
-Date: Wed, 17 Jun 1998 14:40:48 +0200 (MET DST)
-From: Honza Pazdziora <adelton@informatics.muni.cz>
-Phone: 420 (5) 415 12345
-X-Mailer: ELM [version 2.4ME+ PL39 (25)]
+	Wed, 17 Jun 1998 08:43:11 -0700 (PDT)
+	mail_from (ariel@oz.engr.sgi.com)
+Received: (from ariel@localhost) by oz.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) id IAA95711 for linux@engr.sgi.com; Wed, 17 Jun 1998 08:43:11 -0700 (PDT)
+From: ariel@oz.engr.sgi.com (Ariel Faigon)
+Message-Id: <199806171543.IAA95711@oz.engr.sgi.com>
+Subject: (fwd) linux SEGV details
+To: linux@cthulhu.engr.sgi.com (SGI/Linux mailing list)
+Date: Wed, 17 Jun 1998 08:43:11 -0700 (PDT)
+Reply-To: ariel@cthulhu.engr.sgi.com (Ariel Faigon)
+Organization: Silicon Graphics Inc.
+X-Mailer: ELM [version 2.4 PL24 ME5a]
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+[forwarding bounced message from non subscriber]
 
-Hello,
+----- Forwarded message from owner-linux@cthulhu -----
+To: adelton@informatics.muni.cz (Honza Pazdziora)
+Date: Wed, 17 Jun 1998 09:18:17 +0200 (MET DST)
+Cc: adevries@engsoc.carleton.ca, adelton@informatics.muni.cz,
+        linux@cthulhu.engr.sgi.com
+X-Mailer: ELM [version 2.4ME+ PL39 (25)]
 
-I've displayed mipseb rpms of ssh on
+Honza Pazdziora wrote:
+> > Do you mean that mkswap segfaulted during install, or after?  I'll have a
+> > closer look.  The util-linux we're using is a little old.
 
-ftp://ftp.fi.muni.cz/pub/ssh/local-fi.muni.cz/linux/
+It segfault during install _and_ after install when we tried to set up
+swap space manualy.
 
-You need all four rpms for complete system. The rpms were compiled
-without the X11 support.
+> 
+> I'm not sure what happened during install -- I just wanted to have it
+> done to see the real prompt ;-) But when I tried mkswap /dev/sdb2 on
+> the prompt, it said something about freeing free buffer? (or whatever)
+> and then gave register dump. Sorry, I'm at home and can't get to the
+> machine because sshd isn't running there yet, so I will send the exact
+> output tomorrow.
 
-------------------------------------------------------------------------
- Honza Pazdziora | adelton@fi.muni.cz | http://www.fi.muni.cz/~adelton/
-                   I can take or leave it if I please
-------------------------------------------------------------------------
+Honza is not yet here, so there is the output:
+
+#mkswap /dev/sdb2
+Segmentation fault
+#
+
+and on console (there is no syslogd :( ) is:
+
+#dmesg
+[...skipped...]
+VFS: brelse: Trying to free free buffer
+Unable to handle kernel paging request at virtual address 00050040,
+epc == 88041e7c, ra == 880464e0
+Oops: 0000
+$0 : 00000000 88140000 00000028 00000009
+$4 : 00050028 00000001 bf0f0000 00000000
+$8 : 00000720 00000000 00000000 00000000
+$12: 00000008 000003e2 8836e59c 7ffffcf0
+$16: 00050028 894c7c88 894c7d80 00000001
+$20: 00000000 00000000 894c7c80 00000000
+$24: 00000001 7ffffcf1
+$28: 894c6000 894c7c58 00000000 880464e0
+epc   : 88041e7c
+Status: 3000fc03
+Cause : 00000008
+
+
+[and just another attempt to mkswap...]
+VFS: brelse: Trying to free free buffer
+Unable to handle kernel paging request at virtual address 00050040,
+epc == 88041e7c, ra == 880464e0
+Oops: 0000
+$0 : 00000000 88140000 00000028 00000009
+$4 : 00050028 00000001 bf0f0000 00000000
+$8 : 00000720 00000000 00000000 00000000
+$12: 00000008 000003e2 8836e59c 7ffffcf0
+$16: 00050028 894c7c88 894c7d80 00000001
+$20: 00000000 00000000 894c7c80 00000000
+$24: 00000001 7ffffcf1
+$28: 894c6000 894c7c58 00000000 880464e0
+epc   : 88041e7c
+Status: 3000fc03
+Cause : 00000008
+
+The same with recompiled mkswap.
+
+Hope it helps.
+
+I tried to compile our (international) ssh, but it ends with "not
+enough memory" :( This indy has 32MB ram, maybe I will shut down our
+web server and boot linux there, it has little bit more RAM and is
+faster...
+No, that's not goot idea :-(
+
+david kostal (kron@fi.muni.cz)
+----+
+----- End of forwarded message from owner-linux@cthulhu -----
+
+-- 
+Peace, Ariel

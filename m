@@ -1,36 +1,41 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9QN7Mk15906
-	for linux-mips-outgoing; Fri, 26 Oct 2001 16:07:22 -0700
-Received: from hell.ascs.muni.cz (hell.ascs.muni.cz [147.251.60.186])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9QN7F015902;
-	Fri, 26 Oct 2001 16:07:15 -0700
-Received: (from xhejtman@localhost)
-	by hell.ascs.muni.cz (8.11.6/8.11.6) id f9QN9w906252;
-	Sat, 27 Oct 2001 01:09:58 +0200
-Date: Sat, 27 Oct 2001 01:09:58 +0200
-From: Lukas Hejtmanek <xhejtman@mail.muni.cz>
-To: nick@snowman.net
-Cc: Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com
-Subject: Re: Origin 200
-Message-ID: <20011027010958.B24376@mail.muni.cz>
-References: <20011026163117.B27258@mail.muni.cz> <Pine.LNX.4.21.0110261813050.17972-100000@ns>
+	by oss.sgi.com (8.11.2/8.11.3) id f9R0Y7G18984
+	for linux-mips-outgoing; Fri, 26 Oct 2001 17:34:07 -0700
+Received: from mail.ocs.com.au (mail.ocs.com.au [203.34.97.2])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9R0Y3018981
+	for <linux-mips@oss.sgi.com>; Fri, 26 Oct 2001 17:34:04 -0700
+Received: (qmail 11674 invoked from network); 27 Oct 2001 00:34:01 -0000
+Received: from ocs3.intra.ocs.com.au (192.168.255.3)
+  by mail.ocs.com.au with SMTP; 27 Oct 2001 00:34:01 -0000
+Received: by ocs3.intra.ocs.com.au (Postfix, from userid 16331)
+	id ECD68300095; Sat, 27 Oct 2001 10:34:00 +1000 (EST)
+Received: from ocs3.intra.ocs.com.au (localhost [127.0.0.1])
+	by ocs3.intra.ocs.com.au (Postfix) with ESMTP id D83D398
+	for <linux-mips@oss.sgi.com>; Sat, 27 Oct 2001 10:34:00 +1000 (EST)
+X-Mailer: exmh version 2.2 06/23/2000 with nmh-1.0.4
+From: Keith Owens <kaos@ocs.com.au>
+To: linux-mips@oss.sgi.com
+Subject: Re: [PATCH] exporting PCI dma functions. 
+In-reply-to: Your message of "Fri, 26 Oct 2001 13:13:32 MST."
+             <Pine.LNX.4.10.10110261308470.2184-100000@transvirtual.com> 
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-2
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.LNX.4.21.0110261813050.17972-100000@ns>; from nick@snowman.net on Fri, Oct 26, 2001 at 06:13:24PM -0400
-X-MIME-Autoconverted: from 8bit to quoted-printable by hell.ascs.muni.cz id f9QN9w906252
-Content-Transfer-Encoding: 8bit
-X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id f9QN7G015903
+Content-Type: text/plain; charset=us-ascii
+Date: Sat, 27 Oct 2001 10:33:55 +1000
+Message-ID: <12047.1004142835@ocs3.intra.ocs.com.au>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Fri, Oct 26, 2001 at 06:13:24PM -0400, nick@snowman.net wrote:
-> That was the same "fix" I came across.  I'm still not sure why though.
+On Fri, 26 Oct 2001 13:13:32 -0700 (PDT), 
+James Simmons <jsimmons@transvirtual.com> wrote:
+>--- Makefile.orig	Fri Oct 26 13:08:58 2001
+>+++ Makefile	Fri Oct 26 13:09:24 2001
+>@@ -57,6 +57,7 @@
+> obj-$(CONFIG_BINFMT_IRIX)	+= irixelf.o irixioctl.o irixsig.o sysirix.o \
+> 				   irixinv.o
+> obj-$(CONFIG_REMOTE_DEBUG)	+= gdb-low.o gdb-stub.o 
+>+export-objs			+= pci-dma.o
+> obj-$(CONFIG_PCI)		+= pci-dma.o
+> obj-$(CONFIG_PROC_FS)		+= proc.o
 
-However it should be found with gdb but I don't know how to setup remote
-debugging, gdb always writes that it is unable to connect.
-Is there any remote gdb how-to?
-
--- 
-Luká¹ Hejtmánek
+export-objs should go at the start of the Makefile, that is the
+standard coding style for Makefiles.

@@ -1,66 +1,47 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f326qEi29792
-	for linux-mips-outgoing; Sun, 1 Apr 2001 23:52:14 -0700
-Received: from mail.foobazco.org (snowman.foobazco.org [198.144.194.230])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f326qDM29789
-	for <linux-mips@oss.sgi.com>; Sun, 1 Apr 2001 23:52:13 -0700
-Received: from galt.foobazco.org (galt.foobazco.org [198.144.194.227])
-	by mail.foobazco.org (Postfix) with ESMTP id CE43E109DD
-	for <linux-mips@oss.sgi.com>; Sun,  1 Apr 2001 23:52:12 -0700 (PDT)
-Received: by galt.foobazco.org (Postfix, from userid 1014)
-	id 90D6F1F428; Sun,  1 Apr 2001 23:52:12 -0700 (PDT)
-Date: Sun, 1 Apr 2001 23:52:12 -0700
-From: Keith M Wesolowski <wesolows@foobazco.org>
-To: linux-mips@oss.sgi.com
-Subject: RFC: Cleanup/detection patch
-Message-ID: <20010401235212.B9737@foobazco.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
+	by oss.sgi.com (8.11.3/8.11.3) id f32CKDp10846
+	for linux-mips-outgoing; Mon, 2 Apr 2001 05:20:13 -0700
+Received: from mx.mips.com (mx.mips.com [206.31.31.226])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f32CKDM10843
+	for <linux-mips@oss.sgi.com>; Mon, 2 Apr 2001 05:20:13 -0700
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id FAA19901
+	for <linux-mips@oss.sgi.com>; Mon, 2 Apr 2001 05:20:15 -0700 (PDT)
+Received: from Ulysses (ulysses [192.168.236.13])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id FAA03753
+	for <linux-mips@oss.sgi.com>; Mon, 2 Apr 2001 05:20:14 -0700 (PDT)
+Message-ID: <00a901c0bb6f$d3e77820$0deca8c0@Ulysses>
+From: "Kevin D. Kissell" <kevink@mips.com>
+To: "MIPS/Linux List \(SGI\)" <linux-mips@oss.sgi.com>
+Subject: Dumb Question on Cross-Development
+Date: Mon, 2 Apr 2001 14:24:00 +0200
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4133.2400
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I have posted an initial copy of my patch for machine detection,
-namespace cleanup, and promlib abstraction at
-http://foobazco.org/~wesolows/mips64-machine.diff.  This is against
-2.4.2 CURRENT oss.  It currently passes my regression testsuite which
-unfortunately does not include an ip27 boot test.
+I've historically done all of my MIPS/Linux development
+native, on Indies, P-5064's, Atlas, and Malta.  But now
+that we seem to be in a situation where the latest, 
+greatest, and most correct compilers are x86 cross-dev
+only, I've cut over to building kernels on my Athlon box.
+I'd like to start building apps and benchmarks (not 
+necessarily from srpm's).  Plainly, I need a set of
+libraries (naive attempts at cross-compilation of
+user code with the egcs 1.1.2 compiler results in
+complaints about the missing crt1.o), and possibly
+some variant include files.  Are these packaged
+somewhere, and is there an FAQ/HowTo on how
+to set them up?  This may have been handled in 
+Ralf's HowTo, but that seems to have disappeared
+from the web.
 
-There are several goals to this patch: to be able to support multiple
-machines with a single kernel binary; to reduce code duplication among
-the various machines, and to provide a well-defined architecture for a
-future increase in the number and diversity of systems we support.
+            Regards,
 
-This patch affects mips64 only at this time.  However, it will be
-ported to the 32-bit mips tree following comment.  It is also
-incomplete - I know for a fact that certain pci functions need this
-kind of abstraction as well, and the promlib support is fairly
-minimal.  The accompanying documentation, while useful especially for
-new porters, is slightly out of date already.
-
-For those (embedded systems people) who think the ability to support
-multiple machines in a single kernel is useless bloat, consider
-instead that you will have significantly less code to maintain and to
-write, since more functionality will be provided by generic functions.
-No more copying the generic files, changing three lines, and having to
-maintain the copies forever.  This patch as written adds less than 300
-net lines of code to the kernel (the entire difference is contained in
-__init functions), and when finished will probably result in
-single-machine kernels which are approximately the same size as
-current versions.
-
-Please offer your comments.  Barring a shockingly brutal rejection of
-the fundamental principles, I fully expect this to be integrated by
-2.5.x for mips and mips64.  Speak now or forever hold your peace.
-
-If you are interested, this code is also being maintained in cvs at
-cvs.foobazco.org, username cvs, password cvs, repository linux.  This
-is not a fork; the patches will either be put into oss or dropped.
-This tree also has early 64-bit SGI O2 support based on work by Harald
-Koerfgen, nick@snowman.net, and me.
-
--- 
-Keith M Wesolowski <wesolows@foobazco.org> http://foobazco.org/~wesolows
-------(( Project Foobazco Coordinator and Network Administrator ))------
-"I should have crushed his marketing-addled skull with a fucking bat."
+            Kevin K.

@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Oct 2002 19:58:16 +0200 (CEST)
-Received: from nat-pool-rdu.redhat.com ([66.187.233.200]:26111 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Oct 2002 21:37:55 +0200 (CEST)
+Received: from nat-pool-rdu.redhat.com ([66.187.233.200]:18802 "EHLO
 	lacrosse.corp.redhat.com") by linux-mips.org with ESMTP
-	id <S1122169AbSJNR6P>; Mon, 14 Oct 2002 19:58:15 +0200
+	id <S1122169AbSJNThz>; Mon, 14 Oct 2002 21:37:55 +0200
 Received: from free.redhat.lsd.ic.unicamp.br (aoliva2.cipe.redhat.com [10.0.1.156])
-	by lacrosse.corp.redhat.com (8.11.6/8.9.3) with ESMTP id g9EHw5P05660;
-	Mon, 14 Oct 2002 13:58:05 -0400
+	by lacrosse.corp.redhat.com (8.11.6/8.9.3) with ESMTP id g9EJbgP22805;
+	Mon, 14 Oct 2002 15:37:42 -0400
 Received: from free.redhat.lsd.ic.unicamp.br (localhost.localdomain [127.0.0.1])
-	by free.redhat.lsd.ic.unicamp.br (8.12.5/8.12.5) with ESMTP id g9EHw4xB011031;
-	Mon, 14 Oct 2002 15:58:04 -0200
+	by free.redhat.lsd.ic.unicamp.br (8.12.5/8.12.5) with ESMTP id g9EJbfxB012456;
+	Mon, 14 Oct 2002 17:37:41 -0200
 Received: (from aoliva@localhost)
-	by free.redhat.lsd.ic.unicamp.br (8.12.5/8.12.5/Submit) id g9EHw4TO011027;
-	Mon, 14 Oct 2002 14:58:04 -0300
+	by free.redhat.lsd.ic.unicamp.br (8.12.5/8.12.5/Submit) id g9EJbb6h012452;
+	Mon, 14 Oct 2002 16:37:37 -0300
 To: "H. J. Lu" <hjl@lucon.org>
 Cc: Richard Sandiford <rsandifo@redhat.com>, linux-mips@linux-mips.org,
 	gcc@gcc.gnu.org, binutils@sources.redhat.com
@@ -23,11 +23,13 @@ References: <20021012113423.A27894@lucon.org>
 	<20021014101640.A30133@lucon.org>
 	<orhefo3oht.fsf@free.redhat.lsd.ic.unicamp.br>
 	<20021014105055.B30830@lucon.org>
+	<orzntg298z.fsf@free.redhat.lsd.ic.unicamp.br>
+	<20021014110118.B30940@lucon.org>
 From: Alexandre Oliva <aoliva@redhat.com>
 Organization: GCC Team, Red Hat
-Date: 14 Oct 2002 14:58:04 -0300
-In-Reply-To: <20021014105055.B30830@lucon.org>
-Message-ID: <orzntg298z.fsf@free.redhat.lsd.ic.unicamp.br>
+Date: 14 Oct 2002 16:37:37 -0300
+In-Reply-To: <20021014110118.B30940@lucon.org>
+Message-ID: <orelas24n2.fsf@free.redhat.lsd.ic.unicamp.br>
 User-Agent: Gnus/5.09 (Gnus v5.9.0) Emacs/21.2
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -35,7 +37,7 @@ Return-Path: <aoliva@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 422
+X-archive-position: 423
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,37 +47,12 @@ X-list: linux-mips
 
 On Oct 14, 2002, "H. J. Lu" <hjl@lucon.org> wrote:
 
-> On Mon, Oct 14, 2002 at 02:43:26PM -0300, Alexandre Oliva wrote:
->> On Oct 14, 2002, "H. J. Lu" <hjl@lucon.org> wrote:
->> 
->> > The problem here is when gcc fills the delay slot with nop, it kills
->> > branch relaxation.
->> 
->> It wouldn't if only the delay slot was enclosed in .set nomacro.
+> Why do we need nop? Why do we need noreorder?
 
-> What do you mean by that?
-
-Instead of:
-
-.set noreorder
-.set nomacro
-b foo
-nop
-.set macro
-.set reorder
-
-perhaps we could emit:
-
-.set noreorder
-b foo
-.set nomacro
-nop
-.set macro
-.set reorder
-
-
-Since b foo wouldn't be affected by nomacro, branch relaxing could
-fix it up (the relaxations are delay-slot-safe).
+We need reorder to indicate that the delay slot is already filled.  I
+used nop just because it was the easiest form of delay-slot filling I
+could think of.  Think of any other valid delay-slot filling
+instruction in there.
 
 -- 
 Alexandre Oliva   Enjoy Guarana', see http://www.ic.unicamp.br/~oliva/

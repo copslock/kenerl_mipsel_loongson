@@ -1,62 +1,53 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id XAA38131 for <linux-archive@neteng.engr.sgi.com>; Tue, 16 Feb 1999 23:16:03 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id SAA06804 for <linux-archive@neteng.engr.sgi.com>; Wed, 17 Feb 1999 18:13:45 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id XAA93917
+	id SAA07374
 	for linux-list;
-	Tue, 16 Feb 1999 23:14:36 -0800 (PST)
+	Wed, 17 Feb 1999 18:11:37 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from kilimanjaro.engr.sgi.com (kilimanjaro.engr.sgi.com [150.166.49.139])
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id XAA89025;
-	Tue, 16 Feb 1999 23:14:34 -0800 (PST)
-	mail_from (wombat@kilimanjaro.engr.sgi.com)
-Received: from localhost (localhost [127.0.0.1]) by kilimanjaro.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via SMTP id XAA09589; Tue, 16 Feb 1999 23:14:33 -0800 (PST)
-Message-Id: <199902170714.XAA09589@kilimanjaro.engr.sgi.com>
-To: Alex deVries <adevries@engsoc.carleton.ca>
-cc: SGI Linux <linux@cthulhu.engr.sgi.com>
-Subject: Re: able to bootp/NFS-install/reboot R4400SC Indy 
-In-reply-to: Your message of "Wed, 17 Feb 99 02:08:36 EST."
-             <Pine.LNX.3.96.990217020751.6350A-100000@lager.engsoc.carleton.ca> 
-Date: Tue, 16 Feb 99 23:14:32 -0800
-From: Joan Eslinger <wombat@kilimanjaro.engr.sgi.com>
+	via ESMTP id SAA57508
+	for <linux@cthulhu.engr.sgi.com>;
+	Wed, 17 Feb 1999 18:11:34 -0800 (PST)
+	mail_from (ulfc@bun.falkenberg.se)
+Received: from calypso.saturn (dialup71-1-16.swipnet.se [130.244.71.16]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id SAA04050
+	for <linux@cthulhu.engr.sgi.com>; Wed, 17 Feb 1999 18:11:32 -0800 (PST)
+	mail_from (ulfc@bun.falkenberg.se)
+Received: by bun.falkenberg.se
+	via sendmail from stdin
+	id <m10DIwM-00158eC@calypso.saturn> (Debian Smail3.2.0.102)
+	for linux@cthulhu.engr.sgi.com; Thu, 18 Feb 1999 03:11:46 +0100 (CET) 
+Date: Thu, 18 Feb 1999 03:11:46 +0100
+From: Ulf Carlsson <ulfc@bun.falkenberg.se>
+To: Alan Cox <alan@lxorguk.ukuu.org.uk>
+Cc: ralf@uni-koblenz.de, linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
+        linux-mips@vger.rutgers.edu
+Subject: Re: VID_HARDWARE_VINO
+Message-ID: <19990218031146.A19022@bun.falkenberg.se>
+Mail-Followup-To: Alan Cox <alan@lxorguk.ukuu.org.uk>, ralf@uni-koblenz.de,
+	linux@cthulhu.engr.sgi.com, linux-mips@fnet.fr,
+	linux-mips@vger.rutgers.edu
+References: <19990215014103.D644@uni-koblenz.de> <m10CPiv-0007U1C@the-village.bc.nu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.95.1i
+In-Reply-To: <m10CPiv-0007U1C@the-village.bc.nu>; from Alan Cox on Mon, Feb 15, 1999 at 03:14:12PM +0000
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Right, meant to do that the first time and forgot:
+> > Due to a collission with Linus sources I had to change the value of this
+> > define to 19 in include/linux/videodev.h for the merge.
+> 
+> And you'll continue to get collisions until you submit me a patch to add it
+> to the master set 8)
 
-In IRIX,
-% hinv
-Iris Audio Processor: version A2 revision 4.1.0
-1 175 MHZ IP22 Processor
-FPU: MIPS R4000 Floating Point Coprocessor Revision: 0.0
-CPU: MIPS R4400 Processor Chip Revision: 6.0
-On-board serial ports: 2
-On-board bi-directional parallel port
-Data cache size: 16 Kbytes
-Instruction cache size: 16 Kbytes
-Secondary unified instruction/data cache size: 1 Mbyte on Processor 0
-Main memory size: 64 Mbytes
-Vino video: unit 0, revision 0, IndyCam not connected
-Integral ISDN: Basic Rate Interface unit 0, revision 1.0
-Integral Ethernet: ec0, version 1
-Integral SCSI controller 0: Version WD33C93B, revision D
-  Disk drive: unit 2 on SCSI controller 0
-  Disk drive: unit 1 on SCSI controller 0
-Graphics board: Indy 24-bit
+Has Ralf already done this or should I do it?
 
-
-In Linux,
-% cat /proc/cpuinfo
-cpu                     : MIPS
-cpu model               : R4000SC V6.0
-system type             : SGI Indy
-BogoMIPS                : 87.24
-byteorder               : big endian
-unaligned accesses      : 0
-wait instruction        : no
-microsecond timers      : no
-extra interrupt vector  : no
-hardware watchpoint     : yes
-VCED exceptions         : 12424
-VCEI exceptions         : 37454
+- Ulf

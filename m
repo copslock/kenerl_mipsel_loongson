@@ -1,62 +1,39 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0UJfnE18562
-	for linux-mips-outgoing; Wed, 30 Jan 2002 11:41:49 -0800
-Received: from nevyn.them.org (mail@NEVYN.RES.CMU.EDU [128.2.145.6])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0UJfid18557
-	for <linux-mips@oss.sgi.com>; Wed, 30 Jan 2002 11:41:44 -0800
-Received: from drow by nevyn.them.org with local (Exim 3.34 #1 (Debian))
-	id 16Vzfl-0008Ks-00; Wed, 30 Jan 2002 13:41:29 -0500
-Date: Wed, 30 Jan 2002 13:41:29 -0500
-From: Daniel Jacobowitz <dan@debian.org>
-To: Geoffrey Espin <espin@idiom.com>
+	by oss.sgi.com (8.11.2/8.11.3) id g0UJiwo18690
+	for linux-mips-outgoing; Wed, 30 Jan 2002 11:44:58 -0800
+Received: from idiom.com (espin@idiom.com [216.240.32.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0UJitd18686
+	for <linux-mips@oss.sgi.com>; Wed, 30 Jan 2002 11:44:55 -0800
+Received: (from espin@localhost)
+	by idiom.com (8.9.3/8.9.3) id KAA54812;
+	Wed, 30 Jan 2002 10:44:51 -0800 (PST)
+Date: Wed, 30 Jan 2002 10:44:51 -0800
+From: Geoffrey Espin <espin@idiom.com>
+To: James Simmons <jsimmons@transvirtual.com>
 Cc: "Steven J. Hill" <sjhill@cotw.com>, linux-mips@oss.sgi.com
 Subject: Re: [PATCH] Compiler warnings and remove unused code....
-Message-ID: <20020130134129.A31924@nevyn.them.org>
-References: <3C582D6E.F86FBFE7@cotw.com> <20020130102340.A37609@idiom.com>
+Message-ID: <20020130104450.B49140@idiom.com>
+References: <20020130102340.A37609@idiom.com> <Pine.LNX.4.10.10201301039050.7609-100000@www.transvirtual.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20020130102340.A37609@idiom.com>
-User-Agent: Mutt/1.3.23i
+X-Mailer: Mutt 0.95.1i
+In-Reply-To: <Pine.LNX.4.10.10201301039050.7609-100000@www.transvirtual.com>; from James Simmons on Wed, Jan 30, 2002 at 10:39:27AM -0800
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, Jan 30, 2002 at 10:23:40AM -0800, Geoffrey Espin wrote:
-> Steve,
-> 
-> > Attached is a patch to clean up a bunch of compiler warnings. Specifically
-> > ones associated with gcc-3.x compilers and one use of __FUNCTION__ soon to
-> > be deprecated. Also added some #ifdef's for HIGHMEM and removed unused
-> > 5432 MM code. Please apply.
-> > -Steve
-> 
-> I used your toolset to compile busybox and everything else pretty well.
-> But when I got to the end of "make linux", I got:
-> 
-> mipsel-linux-ld -G 0 -static -T arch/mips/ld.script.0x80002000 arch/mips/kernel/head.o arch/mips/kernel/init_task.o init/main.o init/version.o \
->         --start-group \
->         arch/mips/kernel/kernel.o arch/mips/mm/mm.o kernel/kernel.o mm/mm.o fs/fs.o ipc/ipc.o arch/mips/math-emu/fpu_emulator.o arch/mips/ramdisk/ramdisk.o \
->  drivers/char/char.o drivers/block/block.o drivers/misc/misc.o drivers/net/net.o drivers/media/media.o drivers/atm/atm.o drivers/pci/driver.o drivers/mtd/mtdlink.o drivers/usb/usbdrv.o drivers/input/inputdrv.o \
-> net/network.o \
-> arch/mips/lib/lib.a /home/espin/linux/lib/lib.a arch/mips/korva/korva.a \
->     --end-group \
->     -o vmlinux
-> drivers/char/char.o(.data+0x3958): undefined reference to `local symbols in discarded section .text.exit'
-> drivers/net/net.o(.data+0x17c): undefined reference to `local symbols in discarded section .text.exit'
-> drivers/usb/usbdrv.o(.data+0x4b0): undefined reference to `local symbols in discarded section .text.exit'
-> make: *** [vmlinux] Error 1
-> 
-> 
-> This is linux.2.4.16 + sourceforge/mipslinux (a few weeks old).
-> 
-> Geoff
+James,
 
-These were fixed in the kernel.org tree around 2.4.17 (maybe 2.4.18pre
-for a few of them, too).
+> > This is linux.2.4.16 + sourceforge/mipslinux (a few weeks old).
+> I'm glad you tried it. I was tempted to apply it to CVS. 
 
-If you just want to work around it you can comment out the /DISCARD/ {}
-block in arch/mips/ld.script.
+??? apparently it should work for you at 2.4.17.
 
+Not sure what you mean by "apply it to CVS".
+
+It would be nice to have a newer "recommended/suggested" GCC.
+Though to be honest I've never had any problem with HJ Lu's rh71.
+Just thought I do the favour of "tester", for Steve.
+
+Geoff
 -- 
-Daniel Jacobowitz                           Carnegie Mellon University
-MontaVista Software                         Debian GNU/Linux Developer
+espin@idiom.com

@@ -1,39 +1,49 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f3GHiDx30704
-	for linux-mips-outgoing; Mon, 16 Apr 2001 10:44:13 -0700
-Received: from stereotomy.lineo.com (stereotomy.lineo.com [64.50.107.151])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3GHi1M30700;
-	Mon, 16 Apr 2001 10:44:01 -0700
-Received: from Lineo.COM (localhost.localdomain [127.0.0.1])
-	by stereotomy.lineo.com (Postfix) with ESMTP
-	id F2C034C92E; Mon, 16 Apr 2001 11:43:44 -0600 (MDT)
-Message-ID: <3ADB2F50.80904@Lineo.COM>
-Date: Mon, 16 Apr 2001 11:43:44 -0600
-From: Quinn Jensen <jensenq@Lineo.COM>
-Organization: Lineo, Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux 2.2.16-9mdk i686; en-US; m18) Gecko/20010131 Netscape6/6.01
-X-Accept-Language: en
+	by oss.sgi.com (8.11.3/8.11.3) id f3GIhO200621
+	for linux-mips-outgoing; Mon, 16 Apr 2001 11:43:24 -0700
+Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3GIhMM00616
+	for <linux-mips@oss.sgi.com>; Mon, 16 Apr 2001 11:43:23 -0700
+Received: from rose.sonytel.be (rose.sonytel.be [10.17.0.5])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id UAA14512;
+	Mon, 16 Apr 2001 20:43:00 +0200 (MET DST)
+Date: Mon, 16 Apr 2001 20:42:41 +0200 (MET DST)
+From: Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
+To: Shay Deloya <shay@jungo.com>
+cc: linux-mips@oss.sgi.com
+Subject: Re: Ioctl size mask
+In-Reply-To: <01041612582600.25043@athena.home.krftech.com>
+Message-ID: <Pine.GSO.4.10.10104162042230.10522-100000@rose.sonytel.be>
 MIME-Version: 1.0
-To: linux-mips@oss.sgi.com
-Cc: Ralf Baechle <ralf@oss.sgi.com>, Kanoj Sarcar <kanoj@oss.sgi.com>,
-   linux-origin@oss.sgi.com, linux-mips@oss.sgi.com
-Subject: Re: CVS Update@oss.sgi.com: linux
-References: <200104111800.LAA23131@google.engr.sgi.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-
+On Mon, 16 Apr 2001, Shay Deloya wrote:
+> On asm-mips/ioctl.h , there is a mask on the size transfered to the ioctl , 
+> e.g. : when implementing an ioctl that handles IO , the max size the 
+> supported in mips is 0xff  as defined in the code below: 
 > 
-> receive_chars() was updated to look at ignore_mask ... if CREAD is not
-> set, around the time of opening via ioctls etc, it will not take inputs.
-> I haven't figured the details out, but I believe it is more of a *getty
-> config issue than anything else. 
 > 
-> Kanoj
+> #define _IOWR(type,nr,size) 			
+> 	_IOC(_IOC_READ|_IOC_WRITE,(type),(nr),sizeof(size))                          
+> 
+> 
+> and _IOC uses size in this way:
+> 
+> (((size) & _IOC_SLMASK) << _IOC_SIZESHIFT))           // (_IOC_SLMMASK = 0xff)
+> 
+> 
+> The limited size causes problems on drivers that use size mask to their 
+> needs, while officialy the allowed limit is 2^13 ( 8kB) by definition .
 
-Same thing happens when I bring up 2.4.3 straight
-to a shell w/out any getty, as well.
+This was fixed in the CVS tree some weeks ago.
 
-Quinn
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven ------------- Sony Software Development Center Europe (SDCE)
+Geert.Uytterhoeven@sonycom.com ------------------- Sint-Stevens-Woluwestraat 55
+Voice +32-2-7248626 Fax +32-2-7262686 ---------------- B-1130 Brussels, Belgium

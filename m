@@ -1,58 +1,75 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1BFK5O10583
-	for linux-mips-outgoing; Mon, 11 Feb 2002 07:20:05 -0800
-Received: from post.webmailer.de (natwar.webmailer.de [192.67.198.70])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1BFK1910580
-	for <linux-mips@oss.sgi.com>; Mon, 11 Feb 2002 07:20:01 -0800
-Received: from excalibur.cologne.de (pD9E40306.dip.t-dialin.net [217.228.3.6])
-	by post.webmailer.de (8.9.3/8.8.7) with ESMTP id PAA04904
-	for <linux-mips@oss.sgi.com>; Mon, 11 Feb 2002 15:19:52 +0100 (MET)
-Received: from karsten by excalibur.cologne.de with local (Exim 3.12 #1 (Debian))
-	id 16aHPR-0003jW-00
-	for <linux-mips@oss.sgi.com>; Mon, 11 Feb 2002 15:26:21 +0100
-Date: Mon, 11 Feb 2002 15:26:21 +0100
-From: Karsten Merker <karsten@excalibur.cologne.de>
-To: linux-mips@oss.sgi.com
-Subject: Re: DECstation keyboard mappings and XFree
-Message-ID: <20020211152621.A14342@excalibur.cologne.de>
-Mail-Followup-To: Karsten Merker <karsten@excalibur.cologne.de>,
-	linux-mips@oss.sgi.com
-References: <20020210181718.A641@excalibur.cologne.de> <Pine.GSO.3.96.1020211141453.18917B-100000@delta.ds2.pg.gda.pl>
+	by oss.sgi.com (8.11.2/8.11.3) id g1BFRit10878
+	for linux-mips-outgoing; Mon, 11 Feb 2002 07:27:44 -0800
+Received: from hell (buserror-extern.convergence.de [212.84.236.66])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1BFRc910873
+	for <linux-mips@oss.sgi.com>; Mon, 11 Feb 2002 07:27:38 -0800
+Received: from js by hell with local (Exim 3.33 #1 (Debian))
+	id 16aHQC-0000gD-00; Mon, 11 Feb 2002 15:27:08 +0100
+Date: Mon, 11 Feb 2002 15:27:08 +0100
+From: Johannes Stezenbach <js@convergence.de>
+To: Florian Lohoff <flo@rfc822.org>
+Cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>, linux-mips@oss.sgi.com
+Subject: Re: gcc include strangeness
+Message-ID: <20020211142708.GA2577@convergence.de>
+Mail-Followup-To: Johannes Stezenbach <js@convergence.de>,
+	Florian Lohoff <flo@rfc822.org>,
+	"Maciej W. Rozycki" <macro@ds2.pg.gda.pl>, linux-mips@oss.sgi.com
+References: <20020209150155.GA853@paradigm.rfc822.org> <Pine.GSO.3.96.1020211134516.18917A-100000@delta.ds2.pg.gda.pl> <20020211135302.GB30314@paradigm.rfc822.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.GSO.3.96.1020211141453.18917B-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Mon, Feb 11, 2002 at 03:07:08PM +0100
-X-No-Archive: yes
+In-Reply-To: <20020211135302.GB30314@paradigm.rfc822.org>
+User-Agent: Mutt/1.3.27i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Feb 11, 2002 at 03:07:08PM +0100, Maciej W. Rozycki wrote:
-> On Sun, 10 Feb 2002, Karsten Merker wrote:
-> 
-> > I have modified the keycode remapping table in drivers/tc/lk201-remap.c
-> > to deliver PC compatible keycodes. Aim of this modification is easier
-> > use of XFree86 on DECstations (with the standard PC-keyboard map) and
-> > the possibility to use existing loadable national keymaps for i386.
-> > In theory, this should work, in practice, it does not :-(.
-> 
->  Hmm, why do you need (sh*tty) PC-compatible keycodes for a keaboard that
-> barely resembles a PC keyboard?  AFAIK, XFree86 has appropriate LK201
-> keymaps -- see "/usr/X11R6/lib/X11/xkb/*/digital/*". 
+On Mon, Feb 11, 2002 at 02:53:02PM +0100, Florian Lohoff wrote:
+> On Mon, Feb 11, 2002 at 01:51:47PM +0100, Maciej W. Rozycki wrote:
+> > On Sat, 9 Feb 2002, Florian Lohoff wrote:
+> > 
+> > > i just stumbled when i tried to compile a program (bootloader) with
+> > > gcc which uses varargs. I got the error that "sgidefs.h" was missing.
+> > > sgidefs.h is contained in the glibc which gets included by va-mips.h
+> > > from stdarg.h - I dont think this is correct as i should be able
+> > > to compile programs without glibc.
 
-Because the original code does not deliver LK201 keycodes - LK201 keycodes
-are in the range 0x55 - 0xfb, but the kernel to my knowledge accepts only
-keycodes in the range 0x01 - 0x7f, so the original code already did a
-remapping of the LK201 raw codes (it delivered the key numbers from the 
-top left to the downmost right keys, i.e. F1=1, F2=2, F3=3 etc.).
-This means that the XFree LK201 mapping did not work, and if we have
-to remap keycodes anyway into the range 0x01-0x7f, using a PC-compatible 
-keymap seemed the best solution to me.
+The glibc-2.2.5/FAQ says:
+  1.20.   Which tools should I use for MIPS?
+
+  {AJ} You should use the current development version of gcc 3.0 or newer from
+  CVS.  gcc 2.95.x does not work correctly on mips-linux.
+
+I'm not shure if this only applies to glibc, but the
+gcc-2.95.x I tried to build could not even compile a kernel
+because of:
+  #ifndef __linux__
+  #error Use a Linux compiler or give up.
+  #endif
+in linux/include/asm-mips/sgidefs.h. The gcc-3.0.3 I now use
+has a totally different set of predefines than gcc-2.95.x, and
+it seems to work.
+
+
+> >  Hmm, in 2.95.3 in va-mips.h I see: 
+> > 
+> > /* Get definitions for _MIPS_SIM_ABI64 etc.  */
+> > #ifdef _MIPS_SIM
+> > #include <sgidefs.h>
+> > #endif
+> > 
+> > so you shouldn't need sgidefs.h normally.  Or did something get broken for
+> > 3.x?
+
+sgidefs.h comes from the kernel includes.
+
+gcc-3.x does not use va-mips.h or sgidefs,h, but simply
+has the following in stdarg.h:
+  #define va_start(v,l)   __builtin_stdarg_start((v),l)
+  #define va_end          __builtin_va_end
+  #define va_arg          __builtin_va_arg
+etc.
+
 
 Regards,
-Karsten
--- 
-#include <standard_disclaimer>
-Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der Nutzung
-oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die Markt- oder
-Meinungsforschung.
+Johannes

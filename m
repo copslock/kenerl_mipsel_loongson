@@ -1,59 +1,44 @@
-Received:  by oss.sgi.com id <S42205AbQGKWoE>;
-	Tue, 11 Jul 2000 15:44:04 -0700
-Received: from inet-tsb.toshiba.co.jp ([202.33.96.40]:57254 "EHLO
-        inet-tsb.toshiba.co.jp") by oss.sgi.com with ESMTP
-	id <S42190AbQGKWnn>; Tue, 11 Jul 2000 15:43:43 -0700
-Received: from tis2.tis.toshiba.co.jp (tis2 [133.199.160.66])
-	by inet-tsb.toshiba.co.jp (3.7W:TOSHIBA-ISC-2000030918) with ESMTP id VAA00445;
-	Tue, 11 Jul 2000 21:58:54 +0900 (JST)
-Received: from mx.toshiba.co.jp by tis2.tis.toshiba.co.jp (8.8.4+2.7Wbeta4/3.3W9-95082317)
-	id VAA09717; Tue, 11 Jul 2000 21:58:53 +0900 (JST)
-Received: by toshiba.co.jp (8.7.1+2.6Wbeta4/3.3W9-TOSHIBA-GLOBAL SERVER) id VAA23473; Tue, 11 Jul 2000 21:58:52 +0900 (JST)
-To:     linux-mips@oss.sgi.com, linux-mips@vger.rutgers.edu,
+Received:  by oss.sgi.com id <S42220AbQGKX5e>;
+	Tue, 11 Jul 2000 16:57:34 -0700
+Received: from u-215.karlsruhe.ipdial.viaginterkom.de ([62.180.10.215]:31751
+        "EHLO u-215.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
+	with ESMTP id <S42190AbQGKX5S>; Tue, 11 Jul 2000 16:57:18 -0700
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S639437AbQGKX5Q>;
+        Wed, 12 Jul 2000 01:57:16 +0200
+Date:   Wed, 12 Jul 2000 01:57:16 +0200
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Tor Arntsen <tor@spacetec.no>
+Cc:     linux-mips@oss.sgi.com, linux-mips@vger.rutgers.edu,
         linux-mips@fnet.fr
-Subject: div overflow
-X-Mailer: Mew version 1.94.2 on Emacs 20.6 / Mule 4.0 (HANANOEN)
+Subject: Re: Kernel boot tips.
+Message-ID: <20000712015716.C4606@bacchus.dhis.org>
+References: <ralf@oss.sgi.com> <200007111419.QAA08466@pallas.spacetec.no>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-Id: <200007111258.VAA23473@toshiba.co.jp>
-Date:   Tue, 11 Jul 2000 21:58:47 +0900
-From:   Hiroo HAYASHI <hiroo.hayashi@toshiba.co.jp>
-X-Dispatcher: imput version 20000228(IM140)
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <200007111419.QAA08466@pallas.spacetec.no>; from tor@spacetec.no on Tue, Jul 11, 2000 at 04:19:18PM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-In MIPS architecture, is the result of 0x80000000/-1 undefined?
+On Tue, Jul 11, 2000 at 04:19:18PM +0200, Tor Arntsen wrote:
 
-The operands of DIV instruction 32bit signed int.
+> On Jul 10, 23:53, Ralf Baechle wrote:
+> [...]
+> >It's a while that I last worked on it but as I remember --vh-to-unix was
+> >actually working while the other direction was work in progress.
+> 
+> It is indeed working, I was merely using it incorrectly (I had specified 
+> the device as I do with the SGI dvhtool instead of using -d).
+> 
+> >Maybe some nroff fan also wants to provide a manpage?
+> 
+> I can do it if nobody else beats me to it.
 
-	 0x7fff_ffff =  2,147,483,647 (INT_MAX)
-	 0x8000_0000 = -2,147,483,648 (INT_MIN)
+While still somewhat inaccurate the manpage is still a big improvment
+over the current Read-The-Fucking-Source state of things, so I've applied
+it.
 
-limits.h defines them as;
-
-> /* Minimum and maximum values a `signed int' can hold.  */
-> #  define INT_MIN       (- INT_MAX - 1)
-> #  define INT_MAX       2147483647
-
-0x8000_0000 / 0xffff_ffff = -2,147,483,648 / -1 = 2,147,483,648 > INT_MAX
-
-But the description of the DIV instruction of MIPS RISC Architecture
-(Kane and Heinrich) says;
-
-	No overflow exception occurs under any circumstances, and the
-	result of this operation is undefined when the divisor is zero.
-
-According to 'See MIPS Run', P.186, MIPS assembler expands a div
-instruction to an instruction sequence in which these condition are
-checked.  Do all MIPS assemblers do this?
-
-Any information is welcome.
-
-Thank you.
--------------
-Hiroo Hayashi	System LSI Architecture Dept.
-		Computer on Silicon Development Center
-		TOSHIBA Corporation
+  Ralf

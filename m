@@ -1,39 +1,34 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9JFtMo31739
-	for linux-mips-outgoing; Fri, 19 Oct 2001 08:55:22 -0700
-Received: from deliverator.sgi.com (deliverator.sgi.com [204.94.214.10])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9JFtKD31736
-	for <linux-mips@oss.sgi.com>; Fri, 19 Oct 2001 08:55:20 -0700
-Received: from preferredlease.com ([208.144.232.216]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via SMTP id IAA18896
-	for <linux-mips@oss.sgi.com>; Fri, 19 Oct 2001 08:55:15 -0700 (PDT)
-	mail_from (rclarke2@preferredlease.com)
-Date: Fri, 19 Oct 2001 08:55:15 -0700 (PDT)
-From: rclarke2@preferredlease.com
-Message-Id: <200110191555.IAA18896@deliverator.sgi.com>
+	by oss.sgi.com (8.11.2/8.11.3) id f9JGrvo00705
+	for linux-mips-outgoing; Fri, 19 Oct 2001 09:53:57 -0700
+Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9JGrtD00702
+	for <linux-mips@oss.sgi.com>; Fri, 19 Oct 2001 09:53:55 -0700
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f9JGu5B09897;
+	Fri, 19 Oct 2001 09:56:05 -0700
+Message-ID: <3BD05A9A.BD06491C@mvista.com>
+Date: Fri, 19 Oct 2001 09:53:46 -0700
+From: Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="=200110190759="
-To: linux-mips@oss.sgi.com
-X-Mailer: 32E56E9A.7DD4A151.58b6c3aba7825091358b7c94e2a8dfa5
-Subject: Quick Question
-Organization: Preferred Lease, A CapitalWerks Company
+To: "H . J . Lu" <hjl@lucon.org>
+CC: linux-mips@oss.sgi.com
+Subject: Re: Strange behavior of serial console under 2.4.9
+References: <20011018185717.A8135@lucon.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
---=200110190759=
-Content-Type: text/plain;charset=US-ASCII
+"H . J . Lu" wrote:
+> 
+> The serial console under 2.4.9 is very strange. It is very slow. I have
+> no such problem with 2.4.3/2.4.5. Telnet is fine.
+> 
 
-TO: linux-mips@oss.sgi.com
-I hope I'm contacting the right person here. My name is Randell Clarke and I wanted to ask if you were looking for any equipment, new or used, for either yourself or for your customers that I might help finance. My company, Preferred Lease, does anything from company vehicles, to printing and industrial equipment, to construction equipment and heavy machinery, to computers, software and furniture-- basically anything you can use for your business, and work with the "tough credits" that a lot of banks and financial companies do not want to spend time on, in addition to the "A" credits. Please give me a call or e-mail me if there's anything on the agenda/wishlist in the next couple months or if you had any questions or just wanted a quick quote. I thank you for your time.
+That is usually a symptom when the serial interrupts are not correctly
+delivered.
 
-Best Regards,
-
-Randell Clarke
-Sales Manager
-Preferred Lease, A CapitalWerks Company
-Direct Line- (949) 270-2170
-Direct Fax - (949) 270-2171
-rclarke2@preferredlease.com
-www.preferredlease.com
-www.capitalwerks.com
---=200110190759=--
+Jun

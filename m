@@ -1,70 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Jan 2004 02:53:39 +0000 (GMT)
-Received: from mo02.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:10442 "EHLO
-	mo02.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225214AbUARCxi>;
-	Sun, 18 Jan 2004 02:53:38 +0000
-Received: from mdo01.iij4u.or.jp (mdo01.iij4u.or.jp [210.130.0.171])
-	by mo02.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id LAA08099;
-	Sun, 18 Jan 2004 11:53:28 +0900 (JST)
-Received: 4UMDO01 id i0I2rRY11278; Sun, 18 Jan 2004 11:53:27 +0900 (JST)
-Received: 4UMRO00 id i0I2rOj29259; Sun, 18 Jan 2004 11:53:25 +0900 (JST)
-	from stratos.frog (64.43.138.210.xn.2iij.net [210.138.43.64]) (authenticated)
-Date: Sun, 18 Jan 2004 11:53:21 +0900
-From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-To: Christoph Hellwig <hch@lst.de>
-Cc: yuasa@hh.iij4u.or.jp, ralf@linux-mips.org,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH][2.6] Update NEC VRC4171 PCMCIA driver
-Message-Id: <20040118115321.5ab75e5e.yuasa@hh.iij4u.or.jp>
-In-Reply-To: <20040116123352.GA13006@lst.de>
-References: <20040116083821.6b65c69f.yuasa@hh.iij4u.or.jp>
-	<20040116123352.GA13006@lst.de>
-X-Mailer: Sylpheed version 0.9.8a (GTK+ 1.2.10; i686-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Jan 2004 03:46:17 +0000 (GMT)
+Received: from p508B6259.dip.t-dialin.net ([IPv6:::ffff:80.139.98.89]:25724
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225214AbUARDqJ>; Sun, 18 Jan 2004 03:46:09 +0000
+Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
+	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i0I3k84P019665;
+	Sun, 18 Jan 2004 04:46:08 +0100
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i0I3k7Vu019664;
+	Sun, 18 Jan 2004 04:46:07 +0100
+Date: Sun, 18 Jan 2004 04:46:07 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Adam Nielsen <a.nielsen@optushome.com.au>
+Cc: linux-mips@linux-mips.org
+Subject: Re: Trouble compiling MIPS cross-compiler
+Message-ID: <20040118034607.GB1347@linux-mips.org>
+References: <200401171711.34964@korath> <20040117163355.GE5288@linux-mips.org> <200401181119.15234@korath> <200401181154.22007@korath>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yuasa@hh.iij4u.or.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <200401181154.22007@korath>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4010
+X-archive-position: 4011
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuasa@hh.iij4u.or.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 16 Jan 2004 13:33:52 +0100
-Christoph Hellwig <hch@lst.de> wrote:
+On Sun, Jan 18, 2004 at 11:54:22AM +1000, Adam Nielsen wrote:
 
-> On Fri, Jan 16, 2004 at 08:38:21AM +0900, Yoichi Yuasa wrote:
-> > +static int pccard_register_callback(unsigned int slot,
-> > +                                    void (*handler)(void *, unsigned int),
-> > +                                    void *info)
-> > +{
-> > +	vrc4171_socket_t *socket;
-> > +
-> > +	if (slot >= CARD_MAX_SLOTS)
-> > +		return -EINVAL;
-> > +
-> > +	socket = &vrc4171_sockets[slot];
-> > +
-> > +	socket->handler = handler;
-> > +	socket->info = info;
-> > +
-> > +	if (handler)
-> > +		MOD_INC_USE_COUNT;
-> > +	else
-> > +		MOD_DEC_USE_COUNT;
-> > +
-> > +	return 0;
-> > +}
+> > I'll try an older version of the binutils and see if that fixes it.
 > 
-> This is most certainly wrong.  Module refcounting handling has moved one
-> layer up in 2.6.
+> Well, I downgraded to binutils 2.13.2.1 and it got past the -mcpu error, but 
+> now I get this error instead (I'm compiling a stock 2.6.0 kernel with gcc 
+> 2.95.3):
 > 
+> include/asm/sgidefs.h:18: #error Use a Linux compiler or give up.
+> 
+> followed by hundreds of other various errors.  So I'm stuck again ;-)  Any 
+> ideas?  I'm guessing I need to get a newer compiler...?
 
-Oops, I sent old one.
-Wait a moment.
+No, a Linux compiler, not the one from the corn flakes package ;-)
 
-Yoichi
+  Ralf

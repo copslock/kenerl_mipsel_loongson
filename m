@@ -1,46 +1,36 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g7KG17EC031756
-	for <linux-mips-outgoing@oss.sgi.com>; Tue, 20 Aug 2002 09:01:07 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g7KG27EC031946
+	for <linux-mips-outgoing@oss.sgi.com>; Tue, 20 Aug 2002 09:02:07 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g7KG17Yj031755
-	for linux-mips-outgoing; Tue, 20 Aug 2002 09:01:07 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g7KG27ai031945
+	for linux-mips-outgoing; Tue, 20 Aug 2002 09:02:07 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from mta7.pltn13.pbi.net (mta7.pltn13.pbi.net [64.164.98.8])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g7KG12EC031738
-	for <linux-mips@oss.sgi.com>; Tue, 20 Aug 2002 09:01:02 -0700
-Received: from localhost ([63.194.214.47])
- by mta7.pltn13.pbi.net (iPlanet Messaging Server 5.1 (built May  7 2001))
- with ESMTP id <0H15006E7GM1ON@mta7.pltn13.pbi.net> for linux-mips@oss.sgi.com;
- Tue, 20 Aug 2002 09:03:38 -0700 (PDT)
-Date: Tue, 20 Aug 2002 08:54:41 -0700
-From: Pete Popov <ppopov@mvista.com>
-Subject: Re: Mips cross toolchain
-In-reply-to: <NCBBKGDBOEEBDOELAFOFKEGGCPAA.lyle@zevion.com>
+Received: from crack.them.org (mail@crack.them.org [65.125.64.184])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g7KG22EC031919
+	for <linux-mips@oss.sgi.com>; Tue, 20 Aug 2002 09:02:02 -0700
+Received: from nevyn.them.org ([66.93.61.169] ident=mail)
+	by crack.them.org with asmtp (Exim 3.12 #1 (Debian))
+	id 17hBV3-0005QS-00; Tue, 20 Aug 2002 11:04:57 -0500
+Received: from drow by nevyn.them.org with local (Exim 3.35 #1 (Debian))
+	id 17hBVc-0006lY-00; Tue, 20 Aug 2002 12:05:32 -0400
+Date: Tue, 20 Aug 2002 12:05:32 -0400
+From: Daniel Jacobowitz <dan@debian.org>
 To: Lyle Bainbridge <lyle@zevion.com>
-Cc: linux-mips <linux-mips@oss.sgi.com>
-Message-id: <1029858882.13494.22.camel@localhost.localdomain>
-MIME-version: 1.0
-X-Mailer: Ximian Evolution 1.0.8
-Content-type: text/plain
-Content-transfer-encoding: 7bit
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Mips cross toolchain
+Message-ID: <20020820160532.GA25800@nevyn.them.org>
 References: <NCBBKGDBOEEBDOELAFOFKEGGCPAA.lyle@zevion.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <NCBBKGDBOEEBDOELAFOFKEGGCPAA.lyle@zevion.com>
+User-Agent: Mutt/1.5.1i
 X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Just FYI, the oss code for the Alchemy boards is out of date. The latest
-code is in the sourceforge.net mips tree.  I meant to create patches and
-send them to Ralf but I'm doing less and less dev work these days and
-haven't been able to find the time.
-
-As far as your toolchain, the last MontaVista release which included the
-Alchemy boards was 2.95.3 based.  I can also tell you that gcc 3.2 works
-fine, but I'm not sure if we needed any patches.
-
-Pete
-
-On Tue, 2002-08-20 at 08:58, Lyle Bainbridge wrote:
+On Tue, Aug 20, 2002 at 10:58:13AM -0500, Lyle Bainbridge wrote:
 > Hi,
 > 
 > I'm a linux kernel newbie, and this is my first linux-mips posting.
@@ -54,8 +44,11 @@ On Tue, 2002-08-20 at 08:58, Lyle Bainbridge wrote:
 > need? So far I've used the stock distributions from gnu.org.
 > 
 > Any advice would be most appreciated.
-> 
-> Thanks,
-> Lyle Bainbridge
-> Minneapolis, MN
-> 
+
+You'll have better luck if you use the current releases.  That's 3.2
+and 2.13 and (I think) 1.10.0.  Not sure if newlib 1.10.0 is released
+or not.
+
+-- 
+Daniel Jacobowitz
+MontaVista Software                         Debian GNU/Linux Developer

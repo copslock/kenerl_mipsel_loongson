@@ -1,69 +1,84 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f7NGpBV31530
-	for linux-mips-outgoing; Thu, 23 Aug 2001 09:51:11 -0700
-Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7NGp6d31527
-	for <linux-mips@oss.sgi.com>; Thu, 23 Aug 2001 09:51:07 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id SAA23857;
-	Thu, 23 Aug 2001 18:52:45 +0200 (MET DST)
-Date: Thu, 23 Aug 2001 18:52:45 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Keith Owens <kaos@ocs.com.au>
-cc: Ralf Baechle <ralf@uni-koblenz.de>, linux-mips@fnet.fr,
-   linux-mips@oss.sgi.com
-Subject: Re: [patch] linux 2.4.5: __dbe_table iteration #2 
-In-Reply-To: <19339.998531393@kao2.melbourne.sgi.com>
-Message-ID: <Pine.GSO.3.96.1010823164555.21718C-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+	by oss.sgi.com (8.11.2/8.11.3) id f7NHDDg32014
+	for linux-mips-outgoing; Thu, 23 Aug 2001 10:13:13 -0700
+Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f7NHDAd32010
+	for <linux-mips@oss.sgi.com>; Thu, 23 Aug 2001 10:13:10 -0700
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f7NHFfA26332;
+	Thu, 23 Aug 2001 10:15:41 -0700
+Message-ID: <3B8537C2.E18E5125@mvista.com>
+Date: Thu, 23 Aug 2001 10:05:06 -0700
+From: Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+CC: "Gleb O. Raiko" <raiko@niisi.msk.ru>, linux-mips@fnet.fr,
+   linux-mips@oss.sgi.com
+Subject: Re: [patch] linux 2.4.5: Export mips_machtype
+References: <Pine.GSO.3.96.1010823174707.21718F-100000@delta.ds2.pg.gda.pl>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, 23 Aug 2001, Keith Owens wrote:
-
-> The definition of struct archdata in kernel and modutils can be
-> different, a new kernel layout with an old modutils is legal but fatal
-> unless you code for it.  The correct test for archdata is
+"Maciej W. Rozycki" wrote:
 > 
-> if (!mod_member_present(mp, archdata_start) ||
->     (mp->archdata_end - mp->archdata_start) <=
->      offsetof(struct archdata, dbe_table_end))
-> 	continue;
+> On Thu, 23 Aug 2001, Gleb O. Raiko wrote:
 > 
-> Do not use archdata unless it is at least large enough to contain
-> dbe_table_end.  That test also takes care of NULL pointers, end - start
-> == 0 for NULL.
+> > In order to read a PCI ID, you need to know how to do it. In pc world,
+> > you may rely on configuation access types, at least, ports are known. On
+> > other arches, you need to know where such "ports" are. Even if hardware
+> > supports, say, configuration type 1 accesses, developers are free to put
+> > port addresses anywhere.
+> 
+>  Yep, I see.  MIPS is quite special here, because, unlike for Alphas,
+> PowerPCs, SPARCs, etc. there is a couple of independend vendors making
+> systems, so there is no single way of obtaining a system ID.  So you need
+> to know how to access chipset from elsewhere.
+> 
+> > >  How do you set up mips_machtype on your system in the first place?  At
+> > > kernel_entry the code does not know what machine it's running on anyway,
+> > > so it has to set mips_machtype based on a detection algorithm.
+> >
+> > First, mips_machtype is accessed far later than kernel_entry is
+> 
+>  That's quite obvious -- nothing can be done in Linux earlier. ;-)  But
+> you need to initialize mips_machtype somehow.
+> 
+> > executed. Personally, I am lucky :-), I may read firmware environment
+> > variables.
+> 
+>  Well, other system might as well (e.g. DECstations can), but that doesn't
+> solve the problem -- to access firmware variables you need to know which
+> kind of firmware you are on.
+> 
 
- Hmm, your suggested code checks if the passed struct is long enough for
-dbe_table_start only -- what about dbe_table_end?  The following code: 
+I talked about machine detection a while back.  My idea is following:
 
-ap = (struct archdata *)(mod->archdata_start);
-if (!mod_member_present(mp, archdata_start) ||
-    (mp->archdata_end - mp->archdata_start) <
-     offsetof(struct archdata, dbe_table_end) + sizeof(ap->dbe_table_end))
-      continue;
+0. all machines that are *configured* into the image will supply <my>_detect()
+and <my>_setup() functions.
 
-should be stricter.  While modutils as released won't ever pass a smaller
-struct, someone may modify them or use another program to invoke
-init_module(), so we need to protect the kernel against bogus data. 
+1. at MIPS start up, we loop through all <my>_detect(), which returns three
+values, a) run-time detection negative, b) run-time detection positive, and c)
+no run-time detection code, but I return positive because I am configured in.
 
-> The rest of the code looks OK, except it needs a global change of
-> arch_init_module: to module_arch_init: to match the macro name.
+2. the startup code resolves conflicts (which sometimes may panic); and decide
+on one machine.
 
- OK, I'll do it.  It should have been done for ia64 in the first place.
-Or should it be changed into "<arch>_init_module" to match functions' real
-names?
+3. then the startup code calls the right <my>_setup() code which will set up
+the mach_type and other stuff. 
 
-> Do you have the corresponding modutils patch or shall I do it? 
+BTW, a side benenfit of doing this is that we can remove all the machine
+specific code in common files such as bootinfo.h, setup.c, etc, which are
+getting harder and harder to maintain as we are adding more and more embedded
+boards to the tree.  
 
- I've send it to you separately just after the kernel patch.  Should I
-resend it? 
+If we push it to an extreme by using mechnism like do_initcalls(), we can
+achieve zero common source file modification when adding a new a machine. 
+This will greatly facilitate embedded development as it allows more parallel
+development and allow people to maintain their own board code much easier
+before the code is submitted to the tree.
 
-  Maciej
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Jun

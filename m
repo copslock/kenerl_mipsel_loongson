@@ -1,60 +1,94 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 25 Jul 2004 19:59:37 +0100 (BST)
-Received: from athena.et.put.poznan.pl ([IPv6:::ffff:150.254.29.137]:24806
-	"EHLO athena.et.put.poznan.pl") by linux-mips.org with ESMTP
-	id <S8224986AbUGYS7c>; Sun, 25 Jul 2004 19:59:32 +0100
-Received: from athena (athena.et.put.poznan.pl [150.254.29.137])
-	by athena.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id i6PIxUF21097
-	for <linux-mips@linux-mips.org>; Sun, 25 Jul 2004 20:59:30 +0200 (MET DST)
-Received: from helios.et.put.poznan.pl ([150.254.29.65])
-	by athena.et.put.poznan.pl (MailMonitor for SMTP v1.2.2 ) ;
-	Sun, 25 Jul 2004 20:59:30 +0200 (MET DST)
-Received: from localhost (sskowron@localhost)
-	by helios.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id i6PIxTb27964
-	for <linux-mips@linux-mips.org>; Sun, 25 Jul 2004 20:59:30 +0200 (MET DST)
-X-Authentication-Warning: helios.et.put.poznan.pl: sskowron owned process doing -bs
-Date: Sun, 25 Jul 2004 20:59:29 +0200 (MET DST)
-From: Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Jul 2004 11:35:50 +0100 (BST)
+Received: from [IPv6:::ffff:145.253.187.130] ([IPv6:::ffff:145.253.187.130]:9988
+	"EHLO proxy.baslerweb.com") by linux-mips.org with ESMTP
+	id <S8224921AbUGZKfp>; Mon, 26 Jul 2004 11:35:45 +0100
+Received: from comm1.baslerweb.com (proxy.baslerweb.com [172.16.13.2])
+          by proxy.baslerweb.com (Post.Office MTA v3.5.3 release 223
+          ID# 0-0U10L2S100V35) with ESMTP id com
+          for <linux-mips@linux-mips.org>; Mon, 26 Jul 2004 12:35:16 +0200
+Received: from [172.16.13.253] (localhost [172.16.13.253]) by comm1.baslerweb.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2657.72)
+	id PLG5MTZ1; Mon, 26 Jul 2004 12:35:42 +0200
+From: Thomas Koeller <thomas.koeller@baslerweb.com>
+Organization: Basler AG
 To: linux-mips@linux-mips.org
-Subject: Octane news
-Message-ID: <Pine.GSO.4.10.10407252053250.27616-100000@helios.et.put.poznan.pl>
+Subject: [PATCH] Fix gcc-3.4.x compilation
+Date: Mon, 26 Jul 2004 12:37:09 +0200
+User-Agent: KMail/1.6.2
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <sskowron@ET.PUT.Poznan.PL>
+Content-Disposition: inline
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Message-Id: <200407261237.09965.thomas.koeller@baslerweb.com>
+Return-Path: <thomas.koeller@baslerweb.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5553
+X-archive-position: 5554
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sskowron@ET.PUT.Poznan.PL
+X-original-sender: thomas.koeller@baslerweb.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello all.
+Hi,
 
-After a long delay I can finally announce something important about Octane
-Linux. We are a little nearer to having accelerated graphics support on
-IP30.
+compilation of the kernel with a 3.4.x compiler does not
+work, because that compiler does no longer recognize
+the 'accum' register pair specifier. This can easily be
+fixed (patch attached). Since the meaning of 'accum'
+used to be 'hi' and 'lo', all its uses were clearly
+redundant.
 
-I managed to set the card into 24-bit RGB pixel format.
-I can draw accelerated lines.
-I can draw arbitrary accelerated Gouraud-shaded (or not) triangles.
-I can draw accelerated characters and bitmaps.
 
-I can't read anything from the frame buffer.
-I can't effectively draw pixmaps.
-I can't change video mode (however, I'm working on it).
-I can't take advantage of the GE11 Geometry Engines, so all triangle
-setups and transforms are performed in software.
+--- linux-mips/arch/mips/kernel/time.c	2004-07-26 12:15:25.302897080 +0200
++++ linux-mips-work/arch/mips/kernel/time.c	2004-07-15 14:52:18.000000000 +0200
+@@ -278,7 +278,7 @@
+ 	__asm__("multu	%1,%2"
+ 		: "=h" (res)
+ 		: "r" (count), "r" (sll32_usecs_per_cycle)
+-		: "lo", "accum");
++		: "lo");
+ 
+ 	/*
+ 	 * Due to possible jiffies inconsistencies, we need to check
+@@ -333,7 +333,7 @@
+ 	__asm__("multu  %1,%2"
+ 		: "=h" (res)
+ 		: "r" (count), "r" (quotient)
+-		: "lo", "accum");
++		: "lo");
+ 
+ 	/*
+ 	 * Due to possible jiffies inconsistencies, we need to check
+@@ -375,7 +375,7 @@
+ 				: "r" (timerhi), "m" (timerlo),
+ 				  "r" (tmp), "r" (USECS_PER_JIFFY),
+ 				  "r" (USECS_PER_JIFFY_FRAC)
+-				: "hi", "lo", "accum");
++				: "hi", "lo");
+ 			cached_quotient = quotient;
+ 		}
+ 	}
+@@ -389,7 +389,7 @@
+ 	__asm__("multu	%1,%2"
+ 		: "=h" (res)
+ 		: "r" (count), "r" (quotient)
+-		: "lo", "accum");
++		: "lo");
+ 
+ 	/*
+ 	 * Due to possible jiffies inconsistencies, we need to check
 
-If anyone has *any* information that might be helpful in achieving the
-mentioned goals (especially the GE11 support), please help me.
 
-Thanks for your attention,
+-- 
+--------------------------------------------------
 
-Stanislaw Skowronek
+Thomas Koeller, Software Development
+Basler Vision Technologies
 
---<=>--
-  "You're not as old as the trees, not as young as the leaves.
-   Not as free as the breeze, not as open as the seas."
+thomas dot koeller at baslerweb dot com
+http://www.baslerweb.com
+
+==============================

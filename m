@@ -1,50 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Apr 2004 15:00:15 +0100 (BST)
-Received: from p508B5E7C.dip.t-dialin.net ([IPv6:::ffff:80.139.94.124]:28389
-	"EHLO p508B5E7C.dip.t-dialin.net") by linux-mips.org with ESMTP
-	id <S8225286AbUDVOAO>; Thu, 22 Apr 2004 15:00:14 +0100
-Received: from mo02.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:28663 "EHLO
-	mo02.iij4u.or.jp") by linux-mips.net with ESMTP id <S869009AbUDVNwX>;
-	Thu, 22 Apr 2004 15:52:23 +0200
-Received: from mdo01.iij4u.or.jp (mdo01.iij4u.or.jp [210.130.0.171])
-	by mo02.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id WAA21970;
-	Thu, 22 Apr 2004 22:51:44 +0900 (JST)
-Received: 4UMDO01 id i3MDpiR28649; Thu, 22 Apr 2004 22:51:44 +0900 (JST)
-Received: 4UMRO00 id i3MDpgF04690; Thu, 22 Apr 2004 22:51:43 +0900 (JST)
-	from stratos.frog (64.43.138.210.xn.2iij.net [210.138.43.64]) (authenticated)
-Date: Thu, 22 Apr 2004 22:51:42 +0900
-From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-To: Surej Anwar <surej@mistralsoftware.com>
-Cc: yuasa@hh.iij4u.or.jp, linux-mips@linux-mips.org
-Subject: Re: CF Ethernet support on mips
-Message-Id: <20040422225142.07c93ed9.yuasa@hh.iij4u.or.jp>
-In-Reply-To: <408796AD.4000208@mistralsoftware.com>
-References: <408796AD.4000208@mistralsoftware.com>
-X-Mailer: Sylpheed version 0.9.10 (GTK+ 1.2.10; i686-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yuasa@hh.iij4u.or.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Apr 2004 18:49:20 +0100 (BST)
+Received: from web11309.mail.yahoo.com ([IPv6:::ffff:216.136.129.26]:12164
+	"HELO web11309.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S8225308AbUDVRtT>; Thu, 22 Apr 2004 18:49:19 +0100
+Message-ID: <20040422174916.42579.qmail@web11309.mail.yahoo.com>
+Received: from [66.93.100.212] by web11309.mail.yahoo.com via HTTP; Thu, 22 Apr 2004 10:49:16 PDT
+Date: Thu, 22 Apr 2004 10:49:16 -0700 (PDT)
+From: Alex Deucher <agd5f@yahoo.com>
+Subject: few questions about linux on sgi machines
+To: linux-mips@linux-mips.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <agd5f@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4841
+X-archive-position: 4842
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuasa@hh.iij4u.or.jp
+X-original-sender: agd5f@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 22 Apr 2004 15:25:57 +0530
-Surej Anwar <surej@mistralsoftware.com> wrote:
+Is the PCI slot supported on the o2 (i.e., could I put a linux
+supported pci card in and use it)?  Also is the o2 AV IO board
+supported?  Is that encompassed by VICE or is that separate?
 
-> Hi,
-> 
->     I need to use a CF Ethernet card on a VR4131 based system. Could 
-> anyone suggest one, which is well supported on linux 2.4.18 ? Also are 
-> there any drivers available for the same?
+What about the PCI slots on o200?  Are they supported?
 
-Which PCMCIA controller do you use?
-I think that it has no problem.
+Also, out of curiosity, is there a list somewhere of all the asics in
+the Octane?  e.g., sound chip(s), ethernet, parallel/serial, etc.
 
-Yoichi
+Thanks,
+
+Alex
+
+
+	
+		
+__________________________________
+Do you Yahoo!?
+Yahoo! Photos: High-quality 4x6 digital prints for 25¢
+http://photos.yahoo.com/ph/print_splash

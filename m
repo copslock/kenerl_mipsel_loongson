@@ -1,40 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jan 2003 23:32:59 +0000 (GMT)
-Received: from mail.ocs.com.au ([IPv6:::ffff:203.34.97.2]:55046 "HELO
-	mail.ocs.com.au") by linux-mips.org with SMTP id <S8224939AbTAWXc7>;
-	Thu, 23 Jan 2003 23:32:59 +0000
-Received: (qmail 24049 invoked from network); 23 Jan 2003 23:32:48 -0000
-Received: from ocs3.intra.ocs.com.au (192.168.255.3)
-  by mail.ocs.com.au with SMTP; 23 Jan 2003 23:32:48 -0000
-Received: by ocs3.intra.ocs.com.au (Postfix, from userid 16331)
-	id C99813000B8; Fri, 24 Jan 2003 10:32:38 +1100 (EST)
-Received: from ocs3.intra.ocs.com.au (localhost [127.0.0.1])
-	by ocs3.intra.ocs.com.au (Postfix) with ESMTP
-	id 12B4D85; Fri, 24 Jan 2003 10:32:37 +1100 (EST)
-X-Mailer: exmh version 2.4 06/23/2000 with nmh-1.0.4
-From: Keith Owens <kaos@sgi.com>
-To: Adam Kiepul <Adam_Kiepul@pmc-sierra.com>
-Cc: "'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
-Subject: Re: A question on Linux SMP and cache coherency 
-In-reply-to: Your message of "Thu, 23 Jan 2003 15:21:01 -0800."
-             <71690137A786F7428FF9670D47CB95ED10DF71@SJE4EXM01> 
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Jan 2003 01:49:14 +0000 (GMT)
+Received: from p508B6290.dip.t-dialin.net ([IPv6:::ffff:80.139.98.144]:36827
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8225245AbTAXBtB>; Fri, 24 Jan 2003 01:49:01 +0000
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id h0O1ms221934;
+	Fri, 24 Jan 2003 02:48:54 +0100
+Date: Fri, 24 Jan 2003 02:48:54 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Vivien Chappelier <vivienc@nerim.net>
+Cc: Andrew Clausen <clausen@melbourne.sgi.com>,
+	linux-mips@linux-mips.org
+Subject: Re: sigset_t32 broken?
+Message-ID: <20030124024854.B9031@linux-mips.org>
+References: <20030123071753.GA996@pureza.melbourne.sgi.com> <Pine.LNX.4.21.0301231044270.22634-100000@melkor>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Date: Fri, 24 Jan 2003 10:32:31 +1100
-Message-ID: <7650.1043364751@ocs3.intra.ocs.com.au>
-Return-Path: <kaos@sgi.com>
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <Pine.LNX.4.21.0301231044270.22634-100000@melkor>; from vivienc@nerim.net on Thu, Jan 23, 2003 at 10:59:29AM +0100
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1213
+X-archive-position: 1214
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kaos@sgi.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 23 Jan 2003 15:21:01 -0800, 
-Adam Kiepul <Adam_Kiepul@pmc-sierra.com> wrote:
->	I would really appreciate if anyone could tell me whether Hardware-maintained cache coherency between processors is required for Linux SMP operation.
+On Thu, Jan 23, 2003 at 10:59:29AM +0100, Vivien Chappelier wrote:
 
-http://www.uwsg.iu.edu/hypermail/linux/kernel/0007.3/1220.html
+> > Shouldn't those two long's be replaced with u64 and u32
+> > respectively?  Is the second struct really meant to be twice the
+> > size the first?
+> 
+> They should be the same size, otherwise sys32_rt_sigsuspend and
+> sys32_rt_sigaction will return EINVAL. As the comment says:
+> /* XXX: Don't preclude handling different sized sigset_t's.  */
+> 
+> I've posted a patch to fix that earlier this month (Monday 13 Jan
+> 2003 "[2.5 PATCH] signal handling").
+
+Most of what your patch does is undoing an accidental commit of a signal
+rework that wasn't yet supposed to go out.
+
+  Ralf

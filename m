@@ -1,63 +1,64 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f4AKFbw13097
-	for linux-mips-outgoing; Thu, 10 May 2001 13:15:37 -0700
-Received: from mail.foobazco.org (snowman.foobazco.org [198.144.194.230])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f4AKFaF13094
-	for <linux-mips@oss.sgi.com>; Thu, 10 May 2001 13:15:36 -0700
-Received: by mail.foobazco.org (Postfix, from userid 1014)
-	id 689B9F1A9; Thu, 10 May 2001 13:14:31 -0700 (PDT)
-Date: Thu, 10 May 2001 13:14:31 -0700
-From: Keith M Wesolowski <wesolows@foobazco.org>
-To: Pete Popov <ppopov@mvista.com>
-Cc: Wayne Gowcher <wgowcher@yahoo.com>,
-   Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>, linux-mips@oss.sgi.com
-Subject: Re: Configuration of PCI Video card on a BIOS-less board
-Message-ID: <20010510131431.A27228@foobazco.org>
-References: <20010510175339.83183.qmail@web11904.mail.yahoo.com> <3AFADA29.674BA111@mvista.com>
-Mime-Version: 1.0
+	by oss.sgi.com (8.11.3/8.11.3) id f4ALBfW14665
+	for linux-mips-outgoing; Thu, 10 May 2001 14:11:41 -0700
+Received: from bvdexchange.eicon.com (firewall.i-data.com [195.24.22.194])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f4ALBdF14662
+	for <linux-mips@oss.sgi.com>; Thu, 10 May 2001 14:11:39 -0700
+Received: from eicon.com (172.16.2.231 [172.16.2.231]) by bvdexchange.eicon.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.1960.3)
+	id KVL8PZQ1; Thu, 10 May 2001 23:12:27 +0200
+Message-ID: <3AFB03F6.7A3C7847@eicon.com>
+Date: Thu, 10 May 2001 23:11:18 +0200
+From: "Tommy S. Christensen" <tommy.christensen@eicon.com>
+X-Mailer: Mozilla 4.61 [en] (X11; I; Linux 2.2.12-20 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: shay@jungo.com
+CC: linux-mips@oss.sgi.com, michaels@jungo.com
+Subject: Re: No bss cause strange values in insmod and ELF
+References: <01051009104509.01140@athena.home.krftech.com>
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <3AFADA29.674BA111@mvista.com>; from ppopov@mvista.com on Thu, May 10, 2001 at 11:12:57AM -0700
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, May 10, 2001 at 11:12:57AM -0700, Pete Popov wrote:
+Shay Deloya wrote:
+> 
+> Continuing my previous problem...
+> 
+> I have created a module with no bss , and compiled it with kernel 2.2.
+> Comparing this module with same code that has bss and acts OK.
+> 
+> Inserting the module with modutiles 2.2.2/ busybox insmod causes
+> a relocation overflow message , the reasons are:
+> 
+> 1.in function obj_relocate: corrupted intsym->secidx value
+>   (not the needed index in the ELF)
+>    for some .text segments, other segments get their index value OK.
+>   the ELF file seems to be OK.
+> 2. in function arch_apply_relocation: the wrong index (secidx=1006a1e8)
+>    cause R_MIPS_26 symbols (jump commands) to have the value of
+>    obj_reloc_overflow and then causes relocation overflow.
+> 
+> Does anyone knows why same module that has a variable in bss acts fine
+>  and the one without bss causes Relocation overflow in MIPS ? (in x86 there
+> is no problem).
+> 
+> Searching the code I see there is no initialization of the secidx ,
+>  is it a problem of wrong reading of ELF files by insmod ?
+> 
+> Attached the two ELF files , and obj_relocate values.
+> 
 
-> I'm not clear on how this works with the good driver. If you write to
-> 0xC000 0000, that's a mips virtual address in the kseg2 region, which is
-> a mapped region.  So what physical address you put on the bus when you
-> write to 0xC000 0000 depends on the tlb entry you've setup.  If 0xC000
-> 0000 is truly a PCI memory physical address, then you need to setup a
+I had a look at the attachments and I think the cause of your problem is 
+that the module is not a relocatable file!
 
-Repeat after me until done: BAR values have nothing to do with CPU
-addresses.  If your PCI bus happens to map PCI memory location 0 onto
-physical address 0, then they are the same.  That's almost certainly
-not the case.  Otherwise, an address in a BAR is the *PCI bus
-address*, NOT a CPU physical address.
+ld can fix this for you. Try ld -r -o new.o <modulename>.o, and then 
+insert new.o instead.
 
-A simple example: a PCI bridge exists in a system.  It is wired into
-the CPU address bus such that it responds to 0x18000000-0x19ffffff
-physical.  On the other side of the bridge, it maps
-0x00000000-0x7fffffff bus addresses onto physical memory (for DMA),
-and 0x80000000-0xffffffff onto PCI memory space (for PIO).  The bridge
-translates addresses such that:
+Regarding the effect of empty/non-empty .bss section (and of recompiling
+modutils), I think this is just a case of "fix by accident". Meaning
+that
+it's still broke - it just didn't die (this time).
 
-bus_address_for_BARs == 0x80000000 + (cpu_physical_address - 0x18000000)
-bus_address_for_DMA == cpu_physical_address
-
-and, of course,
-
-cpu_virtual_address_for_pointers == KSEG[01]ADDR (cpu_physical_address)
-
-In the example above, the PCI bus is mapped into CPU memory such that
-it can be accessed via ksegX, which is normal.  If it were mapped at,
-for example, 0x40000000, that would not be the case and you would need
-a TLB entry.  Note that for mips64, you can use KPHYS to access any
-physical address; ie it need not be below 0x20000000.
-
--- 
-Keith M Wesolowski <wesolows@foobazco.org> http://foobazco.org/~wesolows
-------(( Project Foobazco Coordinator and Network Administrator ))------
-	"Nothing motivates a man more than to see his boss put
-	 in an honest day's work." -- The fortune file
+Regards,
+Tommy Christensen

@@ -1,83 +1,48 @@
-Received:  by oss.sgi.com id <S553808AbQJ0PYv>;
-	Fri, 27 Oct 2000 08:24:51 -0700
-Received: from [206.207.108.63] ([206.207.108.63]:3964 "HELO
-        ridgerun-lx.ridgerun.cxm") by oss.sgi.com with SMTP
-	id <S553756AbQJ0PY1>; Fri, 27 Oct 2000 08:24:27 -0700
-Received: (qmail 21813 invoked from network); 27 Oct 2000 09:24:17 -0600
-Received: from skranz-lx.ridgerun.cxm (HELO ridgerun.com) (skranz@192.168.1.15)
-  by ridgerun-lx.ridgerun.cxm with SMTP; 27 Oct 2000 09:24:17 -0600
-Message-ID: <39F99E20.8EE47072@ridgerun.com>
-Date:   Fri, 27 Oct 2000 09:24:17 -0600
-From:   Steve Kranz <skranz@ridgerun.com>
-X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.16 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     linux-mips@oss.sgi.com, linux-mips@fnet.fr
-Subject: remote GDB debugging and the __init macro of init.h
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Received:  by oss.sgi.com id <S553815AbQJ0PZL>;
+	Fri, 27 Oct 2000 08:25:11 -0700
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:36378 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S553756AbQJ0PYw>; Fri, 27 Oct 2000 08:24:52 -0700
+Received: from conejo.engr.sgi.com (conejo.engr.sgi.com [130.62.50.34]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id IAA04623
+	for <linux-mips@oss.sgi.com>; Fri, 27 Oct 2000 08:29:31 -0700 (PDT)
+	mail_from (rsanders@conejo.engr.sgi.com)
+Received: (from rsanders@localhost)
+	by conejo.engr.sgi.com (SGI-8.9.3/8.9.3) id IAA02554
+	for linux-mips@oss.sgi.com; Fri, 27 Oct 2000 08:18:00 -0700 (PDT)
+Date:   Fri, 27 Oct 2000 08:18:00 -0700 (PDT)
+From:   "Robert M. Sanders" <rsanders@conejo.engr.sgi.com>
+Message-Id: <200010271518.IAA02554@conejo.engr.sgi.com>
+To:     linux-mips@oss.sgi.com
+Subject: Re: http://cgi.ebay.com/aw-cgi/eBayISAPI.dll?ViewItem&item=480274822
+In-Reply-To: <0A5319EEAF65D411825E00805FBBD8A1209AB8@exchange.clt.ixl.com>
+X-Status: N
+X-Mailer: Applixware 4.41 (1021.286.3)
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Note:
+> http://cgi.ebay.com/aw-cgi/eBayISAPI.dll?ViewItem&item=480274822
+> 
+> do these seem ok for use in an Indy?
+> 
 
-  I had to make a change to allow remote MIPS kernel
-  debugging (GDB). The change I found necessary was in the
-  file:
+Nope.  they must have Gold pins, otherwise there will be metal migration.  Use 
+for a short time might be ok.  Also, there is no statement of their speed they 
+must be 70 ns or faster.
 
-    include/linux/init.h     (2.4.0-test9)
+Best bet is to go to Crucial's or Dataram's website and at least get the spec's 
+for their replacement SIMMs.  Then use those to compare against the stuff on 
+E'bay.
 
-  As you can see from the snippet below the change
-  involves conditionally defining the "__init" macro as
-  a function of whether remote debugging is enabled or
-  not. Am I missing something, or does this seem like a
-  reasonable change?
+Also, consider that unless you're going to run IRIX 6.5.x, 32 Mb or 64 MB is fine 
+for Linux and 2D graphics.  Under IRIX 6.5.x, 64MB is the starting point but the 
+system will be slow.  128MB or 192MB is much better - 128Mb allows Netscape to 
+fire up with swapping.
 
-===========
-Was this...
-===========
-/*
- * Mark functions and data as being only used at initialization
- * or exit time.
- */
-#define __init  __attribute__ ((__section__ (".text.init")))
+Also, flakey memory will cause all sorts of problems and kernel panics.  And not 
+just on SGI hardware, but on a common PC.  Do not use junk memory, you'll be 
+debugging lots of problems that do not appear to be memory related and transient 
+in nature.
 
-==================================
-I changed my local copy to this...
-==================================
-/*
- * Mark functions and data as being only used at initialization
- * or exit time.
- */
-#ifdef CONFIG_REMOTE_DEBUG
-// Note: While running the mips-linux-elf-gdb (GNU gdb 5.0), RidgeRun
-Inc
-// noticed that gdb could not correctly derive the true address of any
-symbol
-// declared with the __init pragma. This prevented being able to
-correctly
-// set breakpoints on any of those functions. So, if we are building
-// with the GDB remote debugger in mind, then null out the __init
-// definition making those functions look like a normal functions
-// since this seems to satisfy things for remote kernel debugging.
-// Incidentally, for reference, the GDB being used at the time of this
-writing
-// was configured as "--host=i686-pc-linux-gnu --target=mips-linux-elf".
-
-// and the mips-linux-gcc crosscompiler being used is egcs-2.90.29
-980515
-// (egcs-1.0.3 release) with binutils version 2.8.1. (These tools
-running on
-// a x86 host producing code for target CONFIG_CPU_R5000).
-#define __init
-#else
-#define __init  __attribute__ ((__section__ (".text.init")))
-#endif
-
-
-Steve Kranz
-skranz@ridgerun.com
-Senior Kernel Developer
-RidgeRun Inc.
+Bob

@@ -1,54 +1,61 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g07NoGM04009
-	for linux-mips-outgoing; Mon, 7 Jan 2002 15:50:16 -0800
-Received: from host099.momenco.com (IDENT:root@www.momenco.com [64.169.228.99])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g07NoCg04002
-	for <linux-mips@oss.sgi.com>; Mon, 7 Jan 2002 15:50:12 -0800
-Received: from beagle (beagle.internal.momenco.com [192.168.0.115])
-	by host099.momenco.com (8.11.6/8.11.6) with SMTP id g07MnxX04725;
-	Mon, 7 Jan 2002 14:49:59 -0800
-From: "Matthew Dharm" <mdharm@momenco.com>
-To: <ellis@spinics.net>, <linux-mips@oss.sgi.com>
-Subject: RE: Galileo 64240 
-Date: Mon, 7 Jan 2002 14:49:59 -0800
-Message-ID: <NEBBLJGMNKKEEMNLHGAIMELECEAA.mdharm@momenco.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
-In-Reply-To: <200201072217.g07MHrY20022@spinics.net>
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
-Importance: Normal
+	by oss.sgi.com (8.11.2/8.11.3) id g083U1Y18852
+	for linux-mips-outgoing; Mon, 7 Jan 2002 19:30:01 -0800
+Received: from ocean.lucon.org (12-234-19-19.client.attbi.com [12.234.19.19])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g083Tvg18844
+	for <linux-mips@oss.sgi.com>; Mon, 7 Jan 2002 19:29:57 -0800
+Received: by ocean.lucon.org (Postfix, from userid 1000)
+	id 4F090125CB; Mon,  7 Jan 2002 18:29:55 -0800 (PST)
+Date: Mon, 7 Jan 2002 18:29:55 -0800
+From: "H . J . Lu" <hjl@lucon.org>
+To: Jakub Jelinek <jakub@redhat.com>
+Cc: GNU libc hacker <libc-hacker@sources.redhat.com>,
+   binutils@sourceware.cygnus.com, linux-mips@oss.sgi.com
+Subject: Re: Prelink for mips (Re: MIPS broken in 2.3)
+Message-ID: <20020107182955.A11352@lucon.org>
+References: <u8ellzsg3q.fsf@gromit.moeb> <20011213093958.A6057@lucon.org> <hou1uqclnk.fsf@gee.suse.de> <20011217123631.G542@sunsite.ms.mff.cuni.cz> <20011217091032.A29014@lucon.org> <20011217185215.K542@sunsite.ms.mff.cuni.cz> <20020107131604.A6383@lucon.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20020107131604.A6383@lucon.org>; from hjl@lucon.org on Mon, Jan 07, 2002 at 01:16:04PM -0800
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-We've got a 64240-based board that we're going to be porting Linux
-to... tho we're not using the on-board MPSC ports.  I doubt anyone is
-building a board using the MPSC ports -- it's just too difficult to
-drive them, and 16550-like parts are too cheap.
+On Mon, Jan 07, 2002 at 01:16:04PM -0800, H . J . Lu wrote:
+> > I know, but from what I understood, quickstart e.g. just assumes there won't
+> > be conflicts and if there are, their handling is very costly (their
+> > conflicts are just symbol indices which need to be checked out).
+> > prelink conflicts are ElfW(Rela) relocs against r_symndx 0.
+> > 
+> > To port prelink to a new architecture, you need basically:
+> > 1) determine what you need to do with relocations and special CPU sections
+> >    when relocating a shared library from one address to another one
+> >    (e.g. you can link a shared libs once at VMA 0, once at VMA 0xdeadb000
+> >    and see what changed) - these are *_adjust_* functions
+> > 2) write routines which apply relocs (*_prelink_rel*)
+> > 3) write routines which create conflict relocs
+> > 4) as MIPS is rel, it needs to be figured out when it is needed to convert
+> >    from Rel to Rela (in i386/arm case in most cases it can be avoided,
+> >    the only relocs which require it are (on i386): R_386_32 with nonzero
+> >    addend (otherwise R_386_GLOB_DAT does exactly the same thing) and
+> >    R_386_PC32). This is needed, because otherwise the information about the
+> >    original addend is lost when the final relocated value is stored at
+> >    r_offset address. Original addend is needed, if prelink cannot be used,
+> >    during dynamic linking. If MIPS has some place where it stashes this
+> >    for Quickstart, then it could be reused, otherwise I'm afraid REL->RELA will
+> >    happen more often on MIPS than on IA-32/ARM.
+> > 5) write routines which apply relocs to a buffer or apply a conflict
+> >    to a buffer (these are used when doing comparisons on relocated content)
+> > 
+> 
+> As I unsterstand, MIPS only has R_MIPS_REL32 for GOT in DSO and EXE. Do you
+> have any suggestions? 
 
-If you're trying to bring up a 64240-based board under linux, perhaps
-sharing work would be good?
+The ld.so relocates R_MIPS_REL32 using GOT which is relocated first by
+a special rule. There is no relocation information for GOT. Also there
+is no symbol lookup for relocating R_MIPS_REL32. I am not sure how
+it will work with the current prelink.
 
-Matt
 
---
-Matthew D. Dharm                            Senior Software Designer
-Momentum Computer Inc.                      1815 Aston Ave.  Suite 107
-(760) 431-8663 X-115                        Carlsbad, CA 92008-7310
-Momentum Works For You                      www.momenco.com
-
-> -----Original Message-----
-> From: owner-linux-mips@oss.sgi.com
-> [mailto:owner-linux-mips@oss.sgi.com]On Behalf Of ellis@spinics.net
-> Sent: Monday, January 07, 2002 2:18 PM
-> To: linux-mips@oss.sgi.com
-> Subject: Galileo 64240
->
->
-> Is there any support code around for the Galileo 64240?  A serial
-> driver would be really nice ;)
->
+H.J.

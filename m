@@ -1,55 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Feb 2003 23:23:11 +0000 (GMT)
-Received: from rj.SGI.COM ([IPv6:::ffff:192.82.208.96]:43672 "EHLO rj.sgi.com")
-	by linux-mips.org with ESMTP id <S8225192AbTBPXXK>;
-	Sun, 16 Feb 2003 23:23:10 +0000
-Received: from larry.melbourne.sgi.com (larry.melbourne.sgi.com [134.14.52.130])
-	by rj.sgi.com (8.12.2/8.12.2/linux-outbound_gateway-1.2) with SMTP id h1GNN6G8003535
-	for <@external-mail-relay.sgi.com:linux-mips@linux-mips.org>; Sun, 16 Feb 2003 15:23:07 -0800
-Received: from pureza.melbourne.sgi.com (pureza.melbourne.sgi.com [134.14.55.244]) by larry.melbourne.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id KAA26502 for <linux-mips@linux-mips.org>; Mon, 17 Feb 2003 10:23:05 +1100
-Received: from pureza.melbourne.sgi.com (localhost.localdomain [127.0.0.1])
-	by pureza.melbourne.sgi.com (8.12.5/8.12.5) with ESMTP id h1GNN18G028430
-	for <linux-mips@linux-mips.org>; Mon, 17 Feb 2003 10:23:01 +1100
-Received: (from clausen@localhost)
-	by pureza.melbourne.sgi.com (8.12.5/8.12.5/Submit) id h1GNN08B028428
-	for linux-mips@linux-mips.org; Mon, 17 Feb 2003 10:23:00 +1100
-Date: Mon, 17 Feb 2003 10:23:00 +1100
-From: Andrew Clausen <clausen@melbourne.sgi.com>
-To: Linux-MIPS <linux-mips@linux-mips.org>
-Subject: bug in ip27 PROM
-Message-ID: <20030216232300.GN8408@pureza.melbourne.sgi.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Feb 2003 01:57:12 +0000 (GMT)
+Received: from sonicwall.montavista.co.jp ([IPv6:::ffff:202.232.97.131]:20036
+	"EHLO yuubin.montavista.co.jp") by linux-mips.org with ESMTP
+	id <S8225192AbTBQB5M>; Mon, 17 Feb 2003 01:57:12 +0000
+Received: from pudding.montavista.co.jp ([10.200.0.40])
+	by yuubin.montavista.co.jp (8.12.5/8.12.5) with SMTP id h1H20V44018395;
+	Mon, 17 Feb 2003 11:00:33 +0900
+Date: Mon, 17 Feb 2003 10:51:15 +0900
+From: Yoichi Yuasa <yoichi_yuasa@montavista.co.jp>
+To: Julian Scheel <jscheel@activevb.de>
+Cc: yoichi_yuasa@montavista.co.jp, linux-mips@linux-mips.org
+Subject: Re: [patch] VR4181A and SMVR4181A
+Message-Id: <20030217105115.093847a8.yoichi_yuasa@montavista.co.jp>
+In-Reply-To: <200302151117.16972.jscheel@activevb.de>
+References: <20030213155833.56019323.yoichi_yuasa@montavista.co.jp>
+	<200302151117.16972.jscheel@activevb.de>
+Organization: MontaVista Software Japan, Inc.
+X-Mailer: Sylpheed version 0.8.9 (GTK+ 1.2.10; i686-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.4i
-Return-Path: <clausen@pureza.melbourne.sgi.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yoichi_yuasa@montavista.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1438
+X-archive-position: 1439
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: clausen@melbourne.sgi.com
+X-original-sender: yoichi_yuasa@montavista.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi all,
+Hi Julian,
 
-I haven't been able to boot a kernel (neither IRIX nor Linux) directly
-from the volume header on the ip27 (Origin 200).  I can only load
-it from XFS partitions.
+On Sat, 15 Feb 2003 11:17:16 +0100
+Julian Scheel <jscheel@activevb.de> wrote:
 
-I've looked at the PROM source, and figured out that the XFS loader
-loads in 64k chunks, but the volume header's loader loads in one
-big read.  So, it's either failing due to a low timeout (old crappy
-hard disks!), or the "large" buffer size isn't supported.
+> Hi,
+> 
+> I'm using the config, which is provided as arch/mips/defconfig-smvr4181a. The 
+> kernel is the 2.4-release (cvs -rlinux_2_4) form linux-mips.org.
+> Compiling works fine for some time, but then I get this error:
+> 
+> jscheel/Programmieren/cmms/linux/include/asm/gcc -G 0 -mno-abicalls -fno-pic 
+> -pipe -mcpu=r4600 -mips2 -Wa,--trap   -nostdinc -iwithprefix include 
+> -DKBUILD_BASENAME=pmu  -c -o pmu.o pmu.c
+> {standard input}: Assembler messages:
+> {standard input}:125: Warning: Tried to set unrecognized symbol: vr4100
+> 
+> {standard input}:126: Error: opcode not supported on this processor `standby'
+> make[1]: *** [pmu.o] Error 1
+> make[1]: Leaving directory 
+> `/home/jscheel/Programmieren/cmms/linux/arch/mips/vr4181a/common'
+> make: *** [_dir_arch/mips/vr4181a/common] Error 2
+> 
+> Is this a problem with your patch or perhaps with my cross-compiler? (Depends 
+> it on GCC 3.x?)
 
-Anyone else experiencing this?
+-m4100 option can be tried supposing you are using gcc
+which has a problem as the present option.
 
-Anyway, the end result of this is it makes Flo's hack for embedding
-a volume header on an ISO more Interesting.  I'll try making
-a partition inside the ISO file system (overlapping with a file)
-which contains an XFS file system containing kernels...
+Please change following line.
 
-Cheers,
-Andrew
+ifdef CONFIG_CPU_VR41XX
+GCCFLAGS        += -mcpu=r4600 -mips2 -Wa,-m4100,--trap
+endif
+
+Please let me know what the result became.
+
+Yoichi

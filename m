@@ -1,41 +1,35 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fA8Kg2u04964
-	for linux-mips-outgoing; Thu, 8 Nov 2001 12:42:02 -0800
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id fA8Kfx004957
-	for <linux-mips@oss.sgi.com>; Thu, 8 Nov 2001 12:41:59 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id fA8KfJg26540;
-	Thu, 8 Nov 2001 12:41:19 -0800
-Date: Thu, 8 Nov 2001 12:41:19 -0800
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: James Simmons <jsimmons@transvirtual.com>
-Cc: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>, linux-mips@oss.sgi.com,
+	by oss.sgi.com (8.11.2/8.11.3) id fA8Lbne08035
+	for linux-mips-outgoing; Thu, 8 Nov 2001 13:37:49 -0800
+Received: from www.transvirtual.com (root@www.transvirtual.com [206.14.214.140])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA8Lbk008031;
+	Thu, 8 Nov 2001 13:37:46 -0800
+Received: from www.transvirtual.com (jsimmons@localhost [127.0.0.1])
+        by localhost (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id fA8LbcjV027651;
+	Thu, 8 Nov 2001 13:37:38 -0800
+Received: from localhost (jsimmons@localhost)
+        by www.transvirtual.com (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id fA8LbbUm027644;
+	Thu, 8 Nov 2001 13:37:37 -0800
+X-Authentication-Warning: www.transvirtual.com: jsimmons owned process doing -bs
+Date: Thu, 8 Nov 2001 13:37:36 -0800 (PST)
+From: James Simmons <jsimmons@transvirtual.com>
+To: Ralf Baechle <ralf@oss.sgi.com>
+cc: Atsushi Nemoto <nemoto@toshiba-tops.co.jp>, linux-mips@oss.sgi.com,
    linux-mips-kernel@lists.sourceforge.net
 Subject: Re: i8259.c in big endian
-Message-ID: <20011108124119.B26083@dea.linux-mips.net>
-References: <20011108121348.A26083@dea.linux-mips.net> <Pine.LNX.4.10.10111081217220.13456-100000@transvirtual.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.LNX.4.10.10111081217220.13456-100000@transvirtual.com>; from jsimmons@transvirtual.com on Thu, Nov 08, 2001 at 12:20:20PM -0800
-X-Accept-Language: de,en,fr
+In-Reply-To: <20011108124119.B26083@dea.linux-mips.net>
+Message-ID: <Pine.LNX.4.10.10111081331170.13456-100000@transvirtual.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, Nov 08, 2001 at 12:20:20PM -0800, James Simmons wrote:
 
-> > > which has a i8259 chip but its io is offseted by 0xb0000000.
-> > 
-> > Then it's almost certainly an legacy ISA device with it's ports in ISA space,
-> > so set mips_io_port_base to an apropriate value or does that not work for
-> > you?
+> > The mips_io_port_base is 0xa0000000. Whereas the i8259 chip is at
+> > 0xb0000000. The 0xa000000 value could be wrong. I will give it a try. 
 > 
-> The mips_io_port_base is 0xa0000000. Whereas the i8259 chip is at
-> 0xb0000000. The 0xa000000 value could be wrong. I will give it a try. 
+> As your board must have RAM at physical address zero 0xa0000000 is almost
+> certainly a wrong value.
 
-As your board must have RAM at physical address zero 0xa0000000 is almost
-certainly a wrong value.
-
-  Ralf
+Your right. The address of 0xb000000 is bogus. This is the value from the
+old code. I will migrate the code over to the i8259.c stuff now. Thanks. 

@@ -1,118 +1,96 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fB66iCi17384
-	for linux-mips-outgoing; Wed, 5 Dec 2001 22:44:12 -0800
-Received: from surfers.oz.agile.tv (fw.oz.agile.tv [210.9.52.165])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fB66hvo17381;
-	Wed, 5 Dec 2001 22:43:57 -0800
-Received: from agile.tv (IDENT:ldavies@tugun.oz.agile.tv [192.168.16.20])
-	by surfers.oz.agile.tv (8.11.2/8.11.2) with ESMTP id fB65hsv11606;
-	Thu, 6 Dec 2001 15:43:54 +1000
-Message-ID: <3C0F059A.30709@agile.tv>
-Date: Thu, 06 Dec 2001 15:43:54 +1000
-From: Liam Davies <ldavies@agile.tv>
-Reply-To: ldavies@agile.tv, ldavies@agile.tv
-Organization: AgileTV Corporation
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.6) Gecko/20011120
-X-Accept-Language: en-us
+	by oss.sgi.com (8.11.2/8.11.3) id fB67V7u18390
+	for linux-mips-outgoing; Wed, 5 Dec 2001 23:31:07 -0800
+Received: from mms1.broadcom.com (mms1.broadcom.com [63.70.210.58])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fB67V0o18387
+	for <linux-mips@oss.sgi.com>; Wed, 5 Dec 2001 23:31:00 -0800
+Received: from 63.70.210.4 by mms1.broadcom.com with ESMTP (Broadcom
+ MMS-1 SMTP Relay (MMS v4.7)); Wed, 05 Dec 2001 22:30:42 -0800
+X-Server-Uuid: 1e1caf3a-b686-11d4-a6a3-00508bfc9ae5
+Received: from dns-blr-2.blr.broadcom.com ([10.132.16.11]) by
+ mon-irva-11.broadcom.com (8.9.1/8.9.1) with ESMTP id WAA25856; Wed, 5
+ Dec 2001 22:30:54 -0800 (PST)
+Received: from adm-blr-001.blr.broadcom.com (adm-blr-001 [10.132.16.111]
+ ) by dns-blr-2.blr.broadcom.com (8.9.1b+Sun/8.9.1) with ESMTP id
+ LAA29883; Thu, 6 Dec 2001 11:53:39 +0530 (IST)
+Received: from broadcom.com ([10.132.64.110]) by
+ adm-blr-001.blr.broadcom.com (8.9.1/8.9.1) with ESMTP id LAA19399; Thu,
+ 6 Dec 2001 11:53:42 +0530 (IST)
+Message-ID: <3C0F119C.95A3B1FF@broadcom.com>
+Date: Thu, 06 Dec 2001 12:05:08 +0530
+From: Nitin <nitin.borle@broadcom.com>
+X-Mailer: Mozilla 4.51 [en] (WinNT; U)
+X-Accept-Language: en
 MIME-Version: 1.0
-To: linux-mips@oss.sgi.com
-CC: ralf@oss.sgi.com
-Subject: [PATCH] mips_atomic_set fixups (with LLSC)
-Content-Type: multipart/mixed;
- boundary="------------080604090303020704070407"
+To: "Mark Salter" <msalter@redhat.com>
+cc: hartvige@mips.com, dant@mips.com, linux-mips@oss.sgi.com
+Subject: Re: Booting from IDE
+References: <200112051510.QAA12575@copsun18.mips.com>
+ <200112051531.fB5FV6N22409@deneb.localdomain>
+X-WSS-ID: 1011CF18264012-01-01
+Content-Type: text/plain; 
+ charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-This is a multi-part message in MIME format.
---------------080604090303020704070407
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
+Thanks Dan, Hartvig and Mark.
 
+I could get the linux prompt according to the instruction given in the Install file Dan has suggested. I will update my Yamon and try auto booting also.
 
-The kernel can be caused to crash when making the following syscall
-sysmips(MIPS_ATOMIC_SET, [unaligned addr], value, 0);
+-Nitin
 
-The latest mips_atomic_set does not use the fixups that are defined
-for the ll/sc instructions.
+Mark Salter wrote:
 
-If an unaligned address is passed in we take the exception and
-unaligned.c:emulate_load_store_insn ignores the fixups for the
-ll/sc and sends a SIGBUS instead, thus causing the kernel to die.
-
-The patch is to make the ll/sc instructions lookup the fixup table
-and do them if present.
-
-Also the fixup for the instructions in scall_o32.S appears to be
-inappropriate, so the fixup is set to be bad_addr and an -EFAULT
-is returned from the syscall.
-
-Cheers
-
-
-----
-Liam Davies
-ldavies@agile.tv
-
-
---------------080604090303020704070407
-Content-Type: text/plain;
- name="atomic_set.patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="atomic_set.patch"
-
---- ../sgi-cvs/arch/mips/kernel/unaligned.c	Mon Dec  3 10:49:23 2001
-+++ arch/mips/kernel/unaligned.c	Thu Dec  6 15:07:00 2001
-@@ -114,12 +114,14 @@
- 	 * These are instructions that a compiler doesn't generate.  We
- 	 * can assume therefore that the code is MIPS-aware and
- 	 * really buggy.  Emulating these instructions would break the
--	 * semantics anyway.
-+	 * semantics anyway. However, we do want to look at the exception
-+	 * table to see if we can exit gracefully.
- 	 */
- 	case ll_op:
- 	case lld_op:
- 	case sc_op:
- 	case scd_op:
-+		goto fault;
- 
- 	/*
- 	 * For these instructions the only way to create an address
---- ../sgi-cvs/arch/mips/kernel/scall_o32.S	Mon Oct  8 09:56:02 2001
-+++ arch/mips/kernel/scall_o32.S	Thu Dec  6 15:34:47 2001
-@@ -201,7 +201,7 @@
- 	or	a0, a0, a1
- 	li	v0, -EFAULT
- 	and	a0, a0, v1
--	bltz	a0, 8f
-+	bltz	a0, bad_address
- 
- #ifdef CONFIG_CPU_HAS_LLSC
- 	/* Ok, this is the ll/sc case.  World is sane :-)  */
-@@ -211,8 +211,8 @@
- 	beqz	a0, 1b
- 
- 	.section __ex_table,"a"
--	PTR	1b, bad_stack
--	PTR	2b, bad_stack
-+	PTR	1b, bad_address
-+	PTR	2b, bad_address
- 	.previous
- #else
- 	sw	a1, 16(sp)
-@@ -256,8 +256,9 @@
- no_mem:	li	v0, -ENOMEM
- 	jr	ra
- 
--8:	li	v0, -EFAULT
--9:	jr	ra
-+bad_address:
-+	li	v0, -EFAULT
-+	jr	ra
- 	END(mips_atomic_set)	
- 
- 	LEAF(sys_sysmips)
-
-
---------------080604090303020704070407--
+> Another possibility is to replace YAMON with RedBoot.
+>
+> http://sources.redhat.com/redboot/
+>
+> RedBoot can load the kernel image directly from an ext2 filesystem
+> on an IDE drive. You can also use it to put the kernel image and
+> JFFS filesystem in flash for a diskless boot.
+>
+> --Mark
+>
+> >>>>> Hartvig Ekner writes:
+>
+> > If you feel lucky, you can also reserve space on your disk for the kernel -
+> > either in a separate partition, or outside the area used by your current
+> > partitions. The YAMON 02.02 or later can read the kernel directly from disk
+> > and execute it.
+>
+> > I do this on my Malta board with one disk.
+>
+> > /Hartvig
+>
+> > Dan Temple writes:
+> >>
+> >> I guess you're installing as per:
+> >>
+> >> ftp://ftp/pub/linux/mips/installation/redhat7.1/INSTALL
+> >>
+> >> (If not, you might want to upgrade to that version).
+> >>
+> >> YAMON can't read the disk file system, so you have to TFTP the kernel to memory from a remote filesystem, and then run it. The instructions are in the above file under "Booting linux on the target".
+> >>
+> >> The latest version (2.02) of YAMON can read and write blocks from an IDE device (not a filesystem) so you could install a CompactFlash card and use that to store the kernel if you don't want to TFTP each time.
+> >>
+> >> There is also a $start environment variable if you want to auto-boot.
+> >>
+> >> /Dan
+> >>
+> >> Nitin wrote:
+> >> >
+> >> > Hi,
+> >> > I have a very basic query. I have a MIPS Malta board. I attached a IDE
+> >> > hard disk to it and installed linux as per the instructions. At the end
+> >> > of the installation, system rebooted and control gone to the board
+> >> > monitor program(Yamon). How can I get the linux prompt? Do I need to
+> >> > write an application program which will read boot sector from hard disk,
+> >> >
+> >> > store it in memory and pass on control to that particular location?(If
+> >> > yes, is such application already available?) Or is there a other way of
+> >> > doing it.
+> >> >
+> >> > Thanks,
+> >> > Nitin

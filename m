@@ -1,135 +1,85 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id AAA202691 for <linux-archive@neteng.engr.sgi.com>; Thu, 4 Dec 1997 00:15:21 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id EAA223320 for <linux-archive@neteng.engr.sgi.com>; Thu, 4 Dec 1997 04:42:04 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id AAA02457 for linux-list; Thu, 4 Dec 1997 00:10:56 -0800
-Received: from oz.engr.sgi.com (oz.engr.sgi.com [150.166.61.27]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA02398; Thu, 4 Dec 1997 00:10:44 -0800
-Received: (from ariel@localhost) by oz.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) id AAA49407; Thu, 4 Dec 1997 00:10:38 -0800 (PST)
-From: ariel@oz.engr.sgi.com (Ariel Faigon)
-Message-Id: <199712040810.AAA49407@oz.engr.sgi.com>
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id EAA02650 for linux-list; Thu, 4 Dec 1997 04:35:27 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id EAA02640 for <linux@cthulhu.engr.sgi.com>; Thu, 4 Dec 1997 04:35:10 -0800
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id EAA24446
+	for <linux@cthulhu.engr.sgi.com>; Thu, 4 Dec 1997 04:35:00 -0800
+	env-from (ralf@uni-koblenz.de)
+From: ralf@uni-koblenz.de
+Received: from uni-koblenz.de (ralf@pmport-19.uni-koblenz.de [141.26.249.19])
+	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id NAA04683
+	for <linux@cthulhu.engr.sgi.com>; Thu, 4 Dec 1997 13:34:58 +0100 (MET)
+Received: (from ralf@localhost)
+	by uni-koblenz.de (8.8.7/8.8.7) id LAA27439;
+	Thu, 4 Dec 1997 11:43:48 +0100
+Message-ID: <19971204114348.10823@uni-koblenz.de>
+Date: Thu, 4 Dec 1997 11:43:48 +0100
+To: Alex deVries <adevries@engsoc.carleton.ca>
+Cc: SGI Linux <linux@cthulhu.engr.sgi.com>, rpm-list@redhat.com
 Subject: Re: A question about architecture and byte order with RPMs
-To: adevries@engsoc.carleton.ca (Alex deVries)
-Date: Thu, 4 Dec 1997 00:10:34 -0800 (PST)
-Cc: linux@cthulhu.engr.sgi.com
-In-Reply-To: <Pine.LNX.3.95.971204003012.3395M-100000@lager.engsoc.carleton.ca> from "Alex deVries" at Dec 4, 97 00:31:05 am
-Reply-To: ariel@cthulhu.engr.sgi.com (Ariel Faigon)
-Organization: Silicon Graphics Inc.
-X-Mailer: ELM [version 2.4 PL24 ME5a]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <Pine.LNX.3.95.971204003012.3395M-100000@lager.engsoc.carleton.ca>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.85
+In-Reply-To: <Pine.LNX.3.95.971204003012.3395M-100000@lager.engsoc.carleton.ca>; from Alex deVries on Thu, Dec 04, 1997 at 12:31:05AM -0500
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-You are correct except the "mips" (big-endian) on SGI situation
-it is even more complex :-)
+On Thu, Dec 04, 1997 at 12:31:05AM -0500, Alex deVries wrote:
 
-Come gcc 2.8 and SGI/Linux could theoretically support
-N32 (the newer MIPS 32-bit ABI) and N64 (64 bits)
-Just like the IRIX native cc compiler.
+> Below is a message I sent off to the RPM development mailing list. The
+> folks at RedHat said it was reasonable, but I just wanted to be sure that
+> I got it right. Many of you understand MIPS architectures better than I,
+> and we don't want to be making a mistake.
+> 
+> Is the creation of a mipsel type reasonable?
 
-Unlike the Alpha which has only one programming model
-	sizeof(long) = sizeof(char *) = 8
+Definately, only the fact that there are more important things to do did
+so far keep me from doing so.
 
---- cut and save ---
-SGI has 2 programming models (source interpretation):
+> ---------- Forwarded message ----------
+> Date: Tue, 2 Dec 1997 11:34:54 -0500 (EST)
+> From: Alex deVries <adevries@engsoc.carleton.ca>
+> To: RPM-List <rpm-list@redhat.com>
+> Subject: A question about architecture and byte order.
+> 
+> 
+> I *think* there might be an issue with MIPS architecture RPMs, but I want
+> to make sure I get things right.
+> 
+> There are two branches of machines that have MIPS processors.  The first
+> is little endian, and it contains things like Acer Pica and Mips Magnum.
+> The second is big endian, and has things like my SGI Indy[1]. I'm unclear
+> if there are some architectures that will run both.
 
-	1) 64 bit (aka N64 or 64)
-	   compiled using "cc -64"
+While almost all MIPS CPUs can run in both byteorder some systems like
+the Acer Pica or DECstations don't support this CPU feature.  There is
+still another CPU feature that allows to run the other flavor of software
+in usermode but supporting it not a Sunday afternoon hack.  It requires
+going through _all_ the kernel code and possibly fixing the byteorder
+handling.
 
-		sizeof(long) = sizeof(char *) = 8
-		sizeof(int) = 4
+> Now, the issue is that there aren't distinct architecture definitions for
+> mips (big endian) and mipsel (little endian). They aren't binary
+> compatible, so it does seem to me that there should be an entry like:
 
-	2) Old 32-bits (aka o32) compiled using "cc -32"
-		And
-	   New 32-bits (aka n32) compiled using "cc -n32"
+> arch_canon:	mipsel:	mipsel	11
+> 
+> in rpmrc. 
+> 
+> Am I wrong on this?
 
-		sizeof(long long) = 8
-		sizeof(int) = sizeof(long) = sizeof(char *) = 4
+Unless the rpm gurus think there is a better way to do things - yes, it
+looks right to me.  The other thing that needs to be done is to teach
+rpm how to recognice the various system flavours.  Currently rpm relies
+on uname() returning "mips" and therefore thinks MIPS is always MIPS.
 
-Going into binaries: o32 and n32 are not the same, the code
-generated by n32 uses more efficient calling conventions
-and more registers and cannot run on old versions of the OS.
-New hardware and versions of the OS can run all of them except
-if your 'uname' says 'IRIX' and not 'IRIX64' it can compile
-(but not run) N64 binaries.
+Have to take a look at the rpm sources - is there an official way to
+teach rpm about incompatible variants of the same CPU architecture?
 
-The advantages of this is that the new models run faster
-since they are utilizing the new hardware better, plus
-that you don't need to make all the apps 64-bits when
-only 1% of them actually need this (a big saving in code
-and data size).
+Modifying uname() to return "mipsel" etc. is a bad choice.  For most
+software it is more important to know the CPU architecture than certain
+specialised details like the byteorder.  So returning "mipsel" would
+break a hell lot of software.
 
-The disadvantage is complexity and confusion...
-Once SGI/Linux becomes stable, if gcc 2.8 is out and stable
-we could try and migrate to supporting n32 (the dynamic linker
-should support it, and a new set of dynamic libraraies should
-be built for this)
-
-So on SGI RPM should probably be named:
-	mips-<abi>.rpm
-
-where <abi> is one of:
-	o32
-	n32
-	64
-
-Currently SGI/Linux is purely o32 since that is the only ABI
-gcc 2.7.x knows about.  The downside is that it is less efficient
-than what it could have been (not utilizing the R4xxx and up
-processors really well).
-
---- cut and save ---
-
-
-:
-:
-:Below is a message I sent off to the RPM development mailing list. The
-:folks at RedHat said it was reasonable, but I just wanted to be sure that
-:I got it right. Many of you understand MIPS architectures better than I,
-:and we don't want to be making a mistake.
-:
-:Is the creation of a mipsel type reasonable?
-:
-:- Alex
-:
-:---------- Forwarded message ----------
-:Date: Tue, 2 Dec 1997 11:34:54 -0500 (EST)
-:From: Alex deVries <adevries@engsoc.carleton.ca>
-:To: RPM-List <rpm-list@redhat.com>
-:Subject: A question about architecture and byte order.
-:
-:
-:I *think* there might be an issue with MIPS architecture RPMs, but I want
-:to make sure I get things right.
-:
-:There are two branches of machines that have MIPS processors.  The first
-:is little endian, and it contains things like Acer Pica and Mips Magnum.
-:The second is big endian, and has things like my SGI Indy[1]. I'm unclear
-:if there are some architectures that will run both.
-:
-:Now, the issue is that there aren't distinct architecture definitions for
-:mips (big endian) and mipsel (little endian). They aren't binary
-:compatible, so it does seem to me that there should be an entry like:
-:
-:arch_canon:	mipsel:	mipsel	11
-:
-:in rpmrc. 
-:
-:Am I wrong on this?
-:
-:- Alex
-:
-:[1] *almost* running srpms of RedHat 5.
-:
-:
-:      Alex deVries          Rent this space for a $5 donation 
-:  System Administrator      to EngSoc per day.
-:   The EngSoc Project       Send spam to spam@engsoc.carleton.ca.
-:
-:
-:
-:
-:
-
-
--- 
-Peace, Ariel
+  Ralf

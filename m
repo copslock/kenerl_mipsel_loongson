@@ -1,41 +1,46 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBILRP815888
-	for linux-mips-outgoing; Tue, 18 Dec 2001 13:27:25 -0800
-Received: from ns1.ltc.com (vsat-148-63-243-254.c3.sb4.mrt.starband.net [148.63.243.254])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBILRIo15885
-	for <linux-mips@oss.sgi.com>; Tue, 18 Dec 2001 13:27:19 -0800
-Received: from prefect (unknown [10.1.1.86])
-	by ns1.ltc.com (Postfix) with SMTP
-	id 104D4590A9; Tue, 18 Dec 2001 15:24:51 -0500 (EST)
-Message-ID: <035001c18802$6af8d8d0$5601010a@prefect>
-From: "Bradley D. LaRonde" <brad@ltc.com>
-To: <jim@jtan.com>, <linux-mips@oss.sgi.com>
-References: <20011218150423.A12143@neurosis.mit.edu>
-Subject: Re: ISA
-Date: Tue, 18 Dec 2001 15:27:29 -0500
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+	by oss.sgi.com (8.11.2/8.11.3) id fBILUV416190
+	for linux-mips-outgoing; Tue, 18 Dec 2001 13:30:31 -0800
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id fBILURo16187
+	for <linux-mips@oss.sgi.com>; Tue, 18 Dec 2001 13:30:27 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id fBIKUPg15856;
+	Tue, 18 Dec 2001 18:30:25 -0200
+Date: Tue, 18 Dec 2001 18:30:25 -0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: "P.S.Santhosh" <ps.santhosh@gda.tech.co.in.sgi.com>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: SiByte SB1250 or Broadcom SBC12500
+Message-ID: <20011218183025.A14945@dea.linux-mips.net>
+References: <01121813364603.01162@gda_Santhosh>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <01121813364603.01162@gda_Santhosh>; from ps.santhosh@gda.tech.co.in.sgi.com on Tue, Dec 18, 2001 at 01:36:46PM +0530
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
------ Original Message ----- 
-From: "Jim Paris" <jim@jtan.com>
-To: <linux-mips@oss.sgi.com>
-Sent: Tuesday, December 18, 2001 3:04 PM
-Subject: ISA
+On Tue, Dec 18, 2001 at 01:36:46PM +0530, P.S.Santhosh wrote:
+> From: "P.S.Santhosh" <ps.santhosh@gda.tech.co.in.sgi.com>
+                                    ^^^^^^^^^^^^^^^^^^^^^^
 
+And once you fix your nameserver you actually have chances of receiving
+mail.
 
-> Okay, so I'll change the i82365 driver to use isa_{read,write}[bwl]
-> instead of ioremap & {read,write}[bwl], when CONFIG_ISA is defined.
-> That shouldn't break other architectures.
+>   Hai..
+> 
+>   My name santhosh I doing one embedded project..
+> shall I get
+> 
+>   1.Linux 64 bit Kernel
+>   2. MIPS Kernel
+>   3. Boot code for SiByte
 
-Admittedly I haven't studied this, but ugh... can't we let isa_* die?
+The 64-bit kernel code for the Sibyte is still in it's early stages.  At
+this time it seems better to try to get away with the 32-bit kernel
+despite the ridiculous small 32-bit address space.
 
-Regards,
-Brad
+  Ralf

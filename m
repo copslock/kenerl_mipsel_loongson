@@ -1,59 +1,42 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6VHfCRw007331
-	for <linux-mips-outgoing@oss.sgi.com>; Wed, 31 Jul 2002 10:41:12 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g6VILoRw008414
+	for <linux-mips-outgoing@oss.sgi.com>; Wed, 31 Jul 2002 11:21:50 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6VHfCnP007330
-	for linux-mips-outgoing; Wed, 31 Jul 2002 10:41:12 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g6VILoYW008413
+	for linux-mips-outgoing; Wed, 31 Jul 2002 11:21:50 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from hermod.qsicorp.com (mail.qsicorp.com [216.190.147.34])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6VHf6Rw007317
-	for <linux-mips@oss.sgi.com>; Wed, 31 Jul 2002 10:41:07 -0700
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by hermod.qsicorp.com (Postfix) with ESMTP id 0F68C17088
-	for <linux-mips@oss.sgi.com>; Wed, 31 Jul 2002 11:42:38 -0600 (MDT)
-Received: from hermod.qsicorp.com ([127.0.0.1]) by localhost (hermod.qsicorp.com [127.0.0.1]) (amavisd-new) with ESMTP id 16726-04 for <linux-mips@oss.sgi.com>; Wed, 31 Jul 2002 11:42:36 -0000 (MDT)
-Received: from qsicorp.com (computer195.qsicorp.com [216.190.147.195])
-	by hermod.qsicorp.com (Postfix) with ESMTP id 4D59F17086
-	for <linux-mips@oss.sgi.com>; Wed, 31 Jul 2002 11:42:36 -0600 (MDT)
-Message-ID: <3D482FF3.11F8CA0B@qsicorp.com>
-Date: Wed, 31 Jul 2002 11:44:03 -0700
-From: Ryan Martindale <ryan@qsicorp.com>
-X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.9-31custom i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: linux-mips@oss.sgi.com
-Subject: Problem with gp
+Received: from dea.linux-mips.net (shaft17-f75.dialo.tiscali.de [62.246.17.75])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g6VILhRw008404
+	for <linux-mips@oss.sgi.com>; Wed, 31 Jul 2002 11:21:45 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id g6VIMxc05139;
+	Wed, 31 Jul 2002 20:22:59 +0200
+Date: Wed, 31 Jul 2002 20:22:59 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: "Kevin D. Kissell" <kevink@mips.com>,
+   Carsten Langgaard <carstenl@mips.com>, linux-mips@fnet.fr,
+   linux-mips@oss.sgi.com
+Subject: Re: [patch] MIPS64 R4k TLB refill CP0 hazards
+Message-ID: <20020731202259.D4892@dea.linux-mips.net>
+References: <005001c23863$e077caa0$10eca8c0@grendel> <Pine.GSO.3.96.1020731133556.10088B-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: by amavisd-new amavisd-new-20020630
-X-Razor-id: 688190f04f48faa4d4b70d3dfe77fb7bc42e500f
-X-Spam-Status: No, hits=0.0 required=5.0 tests= version=2.20
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <Pine.GSO.3.96.1020731133556.10088B-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Wed, Jul 31, 2002 at 01:49:57PM +0200
+X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I seem to be having troubles getting the CVS snapshot up and running.
-I've debugged it, and it seems that the problem stems from the fact that
-$28 (gp) is modified in the SAVE_SOME macro to point to somewhere on the
-stack (not sure why this occurs). Anyways, when I get my first system
-timetick interrupt, the update_process_times function fails to get the a
-valid task structure pointer and wipes out. Why are we adjusting gp
-here, since it is explicitly expected to hold only current_thread_info?
+On Wed, Jul 31, 2002 at 01:49:57PM +0200, Maciej W. Rozycki wrote:
 
-(in stackframe.h)
+>  Hmm, I think that's an overkill, although for debugging purposes, a
+> single extremely conservative handler (possibly with some status output to
+> the log) might be selectable as an alternative.
 
-...
-		.macro	SAVE_SOME
+Look at the C variation of the exception handler in the mips64 code.  It
+was pretty useful to add debugging checks during early mips64 development.
 
-...
-
-		sw	$25, PT_R25(sp)
-		sw	$28, PT_R28(sp)
-		sw	$31, PT_R31(sp)
-		ori	$28, sp, 0x1fff
-		xori	$28, 0x1fff
-
-...
-
-
-Ryan
+  Ralf

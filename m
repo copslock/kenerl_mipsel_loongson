@@ -1,46 +1,64 @@
-Received:  by oss.sgi.com id <S42225AbQGZRNG>;
-	Wed, 26 Jul 2000 10:13:06 -0700
-Received: from deliverator.sgi.com ([204.94.214.10]:43326 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42210AbQGZRMu>;
-	Wed, 26 Jul 2000 10:12:50 -0700
-Received: from thor ([207.246.91.243]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via SMTP id KAA08914
-	for <linux-mips@oss.sgi.com>; Wed, 26 Jul 2000 10:04:55 -0700 (PDT)
-	mail_from (jsk@tetracon-eng.net)
-Received: from localhost (localhost [127.0.0.1]) by thor (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id OAA22788; Wed, 26 Jul 2000 14:10:09 -0300
-Date:   Wed, 26 Jul 2000 14:10:09 -0300
-From:   "J. Scott Kasten" <jsk@tetracon-eng.net>
-To:     Chris Ruvolo <csr6702@grace.rit.edu>
-cc:     linux-mips@oss.sgi.com
-Subject: Re: big endian Debian root image
-In-Reply-To: <Pine.LNX.4.21.0007201012560.12096-100000@hork>
-Message-ID: <Pine.SGI.4.10.10007261409310.22649-100000@thor.tetracon-eng.net>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received:  by oss.sgi.com id <S42210AbQG0EzI>;
+	Wed, 26 Jul 2000 21:55:08 -0700
+Received: from rno-dsl0b-218.gbis.net ([216.82.145.218]:51472 "EHLO
+        ozymandias.foobazco.org") by oss.sgi.com with ESMTP
+	id <S42223AbQG0Eyl>; Wed, 26 Jul 2000 21:54:41 -0700
+Received: (from wesolows@localhost)
+	by ozymandias.foobazco.org (8.9.3/8.9.3) id VAA18408
+	for linux-mips@oss.sgi.com; Wed, 26 Jul 2000 21:54:16 -0700
+Date:   Wed, 26 Jul 2000 21:54:16 -0700
+From:   Keith M Wesolowski <wesolows@foobazco.org>
+To:     linux-mips@oss.sgi.com
+Subject: sgi prom console
+Message-ID: <20000726215416.A18398@foobazco.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0pre3us
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+Hi,
 
-Thanks.  I'll give it a shot in the next few days.
+This patch gets the sgi prom console outputting again, and eliminates
+the "cannot open initial console" error. Unfortunately, all output
+from userland goes to the serial port, not the the prom console.
+Looking at the code, this isn't at all surprising; the prom console
+pretends to be 4,64, ttyS0. It's quite beyond me how the prom console
+could ever have worked for userland.
 
-On Wed, 26 Jul 2000, Chris Ruvolo wrote:
+Index: drivers/char/mem.c
+===================================================================
+RCS file: /cvs/linux/drivers/char/mem.c,v
+retrieving revision 1.35
+diff -u -r1.35 mem.c
+--- drivers/char/mem.c	2000/06/25 01:20:03	1.35
++++ drivers/char/mem.c	2000/07/27 04:48:33
+@@ -49,6 +49,9 @@
+ #ifdef CONFIG_PROM_CONSOLE
+ extern void prom_con_init(void);
+ #endif
++#ifdef CONFIG_SGI_PROM_CONSOLE
++extern void sgi_prom_console_init(void);
++#endif
+ #ifdef CONFIG_MDA_CONSOLE
+ extern void mda_console_init(void);
+ #endif
+@@ -632,6 +635,9 @@
+ #endif
+ #if defined (CONFIG_PROM_CONSOLE)
+ 	prom_con_init();
++#endif
++#if defined (CONFIG_SGI_PROM_CONSOLE)
++	sgi_prom_console_init();
+ #endif
+ #if defined (CONFIG_MDA_CONSOLE)
+ 	mda_console_init();
 
-> On Wed, 19 Jul 2000, J. Scott Kasten wrote:
-> 
-> > Would like to
-> >try the debian distro, but cannot find a big endian root image to install
-> >with,
-> 
-> I've put one together.  Its rather limited and a bit outdated now (doesn't
-> have perl 5.005 nor debconf), but you might want to take a look at it.  
-> It has a working dpkg & apt.  I plan on updating this within the next week
-> or two.
-> 
-> http://ftp.rfc822.org/pub/local/debian-mips/experimental/debian-mips-base-test_0.3.tar
-> 
-> -Chris
-> 
-> 
-> 
-> 
+
+-- 
+Keith M Wesolowski <wesolows@foobazco.org> http://foobazco.org/~wesolows/
+(( Project Foobazco Coordinator and Network Administrator )) aiieeeeeeee!
+"The list of people so amazingly stupid they can't even tie their shoes?"
+"Yeah, you know, /etc/passwd."

@@ -1,65 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Dec 2004 23:57:00 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:25587 "EHLO
-	prometheus.mvista.com") by linux-mips.org with ESMTP
-	id <S8225311AbULOX4q>; Wed, 15 Dec 2004 23:56:46 +0000
-Received: from prometheus.mvista.com (localhost.localdomain [127.0.0.1])
-	by prometheus.mvista.com (8.12.8/8.12.8) with ESMTP id iBFNuXdh012392;
-	Wed, 15 Dec 2004 15:56:33 -0800
-Received: (from mlachwani@localhost)
-	by prometheus.mvista.com (8.12.8/8.12.8/Submit) id iBFNuWju012380;
-	Wed, 15 Dec 2004 15:56:32 -0800
-Date: Wed, 15 Dec 2004 15:56:32 -0800
-From: Manish Lachwani <mlachwani@mvista.com>
-To: linux-mips@linux-mips.org
-Cc: ralf@linux-mips.org, mlachwani@mvista.com
-Subject: [PATCH] Avoid compile warnings on Sibyte using 2.6.10-rc3
-Message-ID: <20041215235632.GA11386@prometheus.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Dec 2004 02:18:08 +0000 (GMT)
+Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:59938
+	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
+	id <S8225321AbULPCSC>; Thu, 16 Dec 2004 02:18:02 +0000
+Received: from newms.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 16 Dec 2004 02:18:00 UT
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by newms.toshiba-tops.co.jp (Postfix) with ESMTP
+	id D19D9239E3C; Thu, 16 Dec 2004 11:17:46 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id iBG2HkdD009839;
+	Thu, 16 Dec 2004 11:17:46 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date: Thu, 16 Dec 2004 11:17:46 +0900 (JST)
+Message-Id: <20041216.111746.25908722.nemoto@toshiba-tops.co.jp>
+To: ralf@linux-mips.org
+Cc: macro@linux-mips.org, wlacey@goldenhindresearch.com,
+	linux-mips@linux-mips.org
+Subject: Re: No PCI_AUTO in 2.6...
+From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20041215184213.GB32491@linux-mips.org>
+References: <20041215164036.GC30130@linux-mips.org>
+	<Pine.LNX.4.58L.0412151648460.2706@blysk.ds.pg.gda.pl>
+	<20041215184213.GB32491@linux-mips.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="OXfL5xGRrasGEqWY"
-Content-Disposition: inline
-User-Agent: Mutt/1.4.1i
-Return-Path: <mlachwani@prometheus.mvista.com>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6684
+X-archive-position: 6685
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mlachwani@mvista.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
+>>>>> On Wed, 15 Dec 2004 19:42:13 +0100, Ralf Baechle <ralf@linux-mips.org> said:
+>> I know and I consider it a bug.  The correct way would be setting
+>> the start at 0 and if avoiding the first kB of space was necessary,
+>> setting PCIBIOS_MIN_IO to 0x1000.
 
---OXfL5xGRrasGEqWY
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+ralf> PCIBIOS_MIN_IO is the same value for all busses.  That can turn
+ralf> out a bit kludgy so I'm not much of a friend of it.
 
-Hi Ralf,
+BTW, yenta_socket driver uses PCIBIOS_MIN_IO and PCIBIOS_MIN_MEM, so
+these variables should be exported?
 
-The attached patch is needed to prevent the compilation warnings that
-occur when using 2.6.10-rc3 on Sibyte. Please review 
-
-Thanks
-Manish Lachwani
-
-
---OXfL5xGRrasGEqWY
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline; filename=patch-2610rc3-sibyte
-
---- include/asm-mips/cpu-features.h.orig	2004-12-15 11:18:23.000000000 -0800
-+++ include/asm-mips/cpu-features.h	2004-12-15 11:18:43.000000000 -0800
-@@ -92,8 +92,10 @@
- #define cpu_icache_snoops_remote_store	(cpu_data[0].icache.flags & MIPS_IC_SNOOPS_REMOTE)
- #endif
- #else
-+#ifndef cpu_icache_snoops_remote_store
- #define cpu_icache_snoops_remote_store	1
- #endif
-+#endif
+--- linux-mips/arch/mips/pci/pci.c	2004-12-13 09:39:09.000000000 +0900
++++ linux/arch/mips/pci/pci.c	2004-12-13 10:02:32.000000000 +0900
+@@ -294,6 +294,8 @@
  
- /*
-  * Certain CPUs may throw bizarre exceptions if not the whole cacheline
+ #ifdef CONFIG_HOTPLUG
+ EXPORT_SYMBOL(pcibios_resource_to_bus);
++EXPORT_SYMBOL(PCIBIOS_MIN_IO);
++EXPORT_SYMBOL(PCIBIOS_MIN_MEM);
+ #endif
+ 
+ char *pcibios_setup(char *str)
 
---OXfL5xGRrasGEqWY--
+---
+Atsushi Nemoto

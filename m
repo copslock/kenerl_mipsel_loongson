@@ -1,59 +1,70 @@
-Received:  by oss.sgi.com id <S42184AbQFXWQL>;
-	Sat, 24 Jun 2000 15:16:11 -0700
-Received: from deliverator.sgi.com ([204.94.214.10]:17006 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42183AbQFXWPl>;
-	Sat, 24 Jun 2000 15:15:41 -0700
-Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id PAA10305
-	for <linux-mips@oss.sgi.com>; Sat, 24 Jun 2000 15:10:13 -0700 (PDT)
-	mail_from (ralf@oss.sgi.com)
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id PAA85464 for <linux-mips@oss.sgi.com>; Sat, 24 Jun 2000 15:14:40 -0700 (PDT)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received:  by oss.sgi.com id <S42187AbQFYBqC>;
+	Sat, 24 Jun 2000 18:46:02 -0700
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:34372 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S42183AbQFYBpb>; Sat, 24 Jun 2000 18:45:31 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id SAA05525
+	for <linux-mips@oss.sgi.com>; Sat, 24 Jun 2000 18:50:14 -0700 (PDT)
+	mail_from (newsletter@IPMailStop.com)
+From:   newsletter@IPMailStop.com
+Received: from deliverator.sgi.com (deliverator.sgi.com [150.166.91.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id PAA02427
-	for <linux@cthulhu.engr.sgi.com>;
-	Sat, 24 Jun 2000 15:12:53 -0700 (PDT)
-	mail_from (ralf@oss.sgi.com)
-Received: from u-150.karlsruhe.ipdial.viaginterkom.de (u-150.karlsruhe.ipdial.viaginterkom.de [62.180.19.150]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id PAA01424
-	for <linux@cthulhu.engr.sgi.com>; Sat, 24 Jun 2000 15:12:50 -0700 (PDT)
-	mail_from (ralf@oss.sgi.com)
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S1405681AbQFXWMz>;
-        Sun, 25 Jun 2000 00:12:55 +0200
-Date:   Sun, 25 Jun 2000 00:12:55 +0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     "Gleb O. Raiko" <raiko@niisi.msk.ru>,
-        "Bradley D. LaRonde" <brad@ltc.com>,
-        linux-mips <linux-mips@fnet.fr>,
-        linux <linux@cthulhu.engr.sgi.com>
-Subject: Re: XFree 4.0.1 on mips, mipsel
-Message-ID: <20000625001255.C894@bacchus.dhis.org>
-References: <20000623181736.A13410@bert.physik.uni-konstanz.de> <014f01bfdd33$8877b3c0$0701010a@ltc.com> <20000623185553.A20888@bert.physik.uni-konstanz.de> <019501bfdd35$bb301940$0701010a@ltc.com> <20000623190723.B20888@bert.physik.uni-konstanz.de> <01cb01bfdd3a$fc43b2c0$0701010a@ltc.com> <39547DB3.4FF35339@niisi.msk.ru> <20000624131218.A17554@bilbo.physik.uni-konstanz.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <20000624131218.A17554@bilbo.physik.uni-konstanz.de>; from guido.guenther@gmx.net on Sat, Jun 24, 2000 at 01:12:18PM +0200
-X-Accept-Language: de,en,fr
+	via ESMTP id SAA43862;
+	Sat, 24 Jun 2000 18:44:30 -0700 (PDT)
+	mail_from (newsletter@IPMailStop.com)
+Received: from www.IPMailStop.com ([192.216.54.83]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via SMTP id SAA24507; Sat, 24 Jun 2000 18:39:44 -0700 (PDT)
+	mail_from (newsletter@IPMailStop.com)
+Subject: ADV: Free Investment Newsletter
+Date:   Sat, 24 Jun 2000 17:09:59
+Message-Id: <667.425812.581765@www.IPMailStop.com>
+To:     unlisted-recipients:; (no To-header on input)
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Sat, Jun 24, 2000 at 01:12:18PM +0200, Guido Guenther wrote:
+Hello, to be removed from our mailing list please visit 
+http://www.stockmarketletter.com/remove.html
 
-> [..snip..] 
-> > If you cross-compile, you just redefine most of the stuff like CcCmd,
-> > ArCmd, etc, anyway.
-> Yes, but you have to make sure the redefinitions don't get redefined
-> again, therefore IMHO an "#ifdef AsCmd" is needed. Otherwise the
-> definition in hosts.def will be overriden by the one in linux.cf.
+This a invitation to join our Free Investment Newsletter. In today's fast moving 
+markets you timely information to make informed decisions.
 
-Does X building ever need the hostcompiler?  If not, then you can easily
-do crossbuilds like:
+Visit http://www.stockmarketletter.com for your Free Subscription.
 
-  PATH=<prefix>/<target>/bin:$PATH make ...
+The Information You Want, When You Want It And it's FREE! 
 
-  Ralf
+We think you will find our newsletter to be your most important research tool. 
+They are e-mailed to subscribers prior to publication on our web site. Our 
+newsletters feature in-depth company profiles, breaking financial news, links to 
+free delayed stock quotes and company news releases and educational articles prior 
+to general publication. We are here to help you identify and track prospering 
+companies. 
+
+Breaking News. We e-mail you information related to the companies we are tracking. 
+Through interviews with the people in charge, you will get the information and 
+clarification you need. 
+
+Fast Information Flow. We deal directly with public companies over the internet -- 
+eliminating the delay of traditional information gathering. 
+
+Background Information. By monitoring message boards and chat rooms we keep track 
+of what investors are interested in. We address everything from changes in 
+regulations, of interest to experienced investors, to the background and 
+educational information new investors need about the numerous exchanges and 
+listings.
+
+The Stock Market Letter is a privately held company specializing in distribution 
+of information about publicly traded companies. Our objective is to identify and 
+track investment opportunities for our subscribers. 
+
+Once again, visit http://www.stockmarketletter.com for your Free Subscription.
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

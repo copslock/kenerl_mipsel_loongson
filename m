@@ -1,65 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Feb 2005 21:26:20 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:5372 "EHLO
-	prometheus.mvista.com") by linux-mips.org with ESMTP
-	id <S8225302AbVBAV0F>; Tue, 1 Feb 2005 21:26:05 +0000
-Received: from prometheus.mvista.com (localhost.localdomain [127.0.0.1])
-	by prometheus.mvista.com (8.12.8/8.12.8) with ESMTP id j11LQ3dh024821;
-	Tue, 1 Feb 2005 13:26:03 -0800
-Received: (from mlachwani@localhost)
-	by prometheus.mvista.com (8.12.8/8.12.8/Submit) id j11LQ3rQ024819;
-	Tue, 1 Feb 2005 13:26:03 -0800
-Date:	Tue, 1 Feb 2005 13:26:03 -0800
-From:	Manish Lachwani <mlachwani@mvista.com>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH] read_can_lock and write_can_lock for MIPS
-Message-ID: <20050201212603.GA24787@prometheus.mvista.com>
-Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="6TrnltStXW4iwmi0"
-Content-Disposition: inline
-User-Agent: Mutt/1.4.1i
-Return-Path: <mlachwani@prometheus.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Feb 2005 22:42:38 +0000 (GMT)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:7945 "EHLO
+	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225302AbVBAWmV>; Tue, 1 Feb 2005 22:42:21 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 51F62E1CAA; Tue,  1 Feb 2005 23:42:08 +0100 (CET)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 30837-05; Tue,  1 Feb 2005 23:42:08 +0100 (CET)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 1FE97E1C6B; Tue,  1 Feb 2005 23:42:08 +0100 (CET)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.1/8.13.1) with ESMTP id j11MgD3P009717;
+	Tue, 1 Feb 2005 23:42:13 +0100
+Date:	Tue, 1 Feb 2005 22:42:27 +0000 (GMT)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Manish Lachwani <mlachwani@mvista.com>
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH] Fix Kconfig for Broadcom SWARM
+In-Reply-To: <20050201202835.GA10788@prometheus.mvista.com>
+Message-ID: <Pine.LNX.4.61L.0502012241010.18883@blysk.ds.pg.gda.pl>
+References: <20050201202835.GA10788@prometheus.mvista.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.80/661/Tue Jan 11 02:44:13 2005
+	clamav-milter version 0.80j
+	on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7104
+X-archive-position: 7105
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mlachwani@mvista.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Tue, 1 Feb 2005, Manish Lachwani wrote:
 
---6TrnltStXW4iwmi0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> Attached patch adds necessary options for Broadcom SWARM. 
 
-Hi Ralf,
+ What is it supposed to do?
 
-With SMP+PREEMPT, read_can_lock() and write_can_lock() need to be defined. Attached
-patch does this. Please review.
-
-Thanks
-Manish Lachwani
-
---6TrnltStXW4iwmi0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline; filename="common_mips_locks_preempt.patch"
-
-Index: linux/include/asm-mips/spinlock.h
-===================================================================
---- linux.orig/include/asm-mips/spinlock.h
-+++ linux/include/asm-mips/spinlock.h
-@@ -140,6 +140,9 @@
- 
- #define rwlock_init(x)  do { *(x) = RW_LOCK_UNLOCKED; } while(0)
- 
-+#define read_can_lock(rw)	((rw)->lock >= 0)
-+#define write_can_lock(rw)	(!(rw)->lock)
-+
- static inline void _raw_read_lock(rwlock_t *rw)
- {
- 	unsigned int tmp;
-
---6TrnltStXW4iwmi0--
+  Maciej

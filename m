@@ -1,44 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 May 2003 03:11:29 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:54779 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225196AbTEUCL0>;
-	Wed, 21 May 2003 03:11:26 +0100
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id h4L2BOZ04265;
-	Tue, 20 May 2003 19:11:24 -0700
-Date: Tue, 20 May 2003 19:11:24 -0700
-From: Jun Sun <jsun@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 May 2003 06:58:00 +0100 (BST)
+Received: from inspiration-98-179-ban.inspiretech.com ([IPv6:::ffff:203.196.179.98]:16003
+	"EHLO smtp.inspirtek.com") by linux-mips.org with ESMTP
+	id <S8225193AbTEUF55>; Wed, 21 May 2003 06:57:57 +0100
+Received: from mail.inspiretech.com (mail.inspiretech.com [192.168.42.3])
+	by smtp.inspirtek.com (8.12.5/8.12.5) with ESMTP id h4L6HqI9006634
+	for <linux-mips@linux-mips.org>; Wed, 21 May 2003 11:48:04 +0530
+Message-Id: <200305210618.h4L6HqI9006634@smtp.inspirtek.com>
+Received: from WorldClient [192.168.42.3] by inspiretech.com [192.168.42.3]
+	with SMTP (MDaemon.v3.5.7.R)
+	for <linux-mips@linux-mips.org>; Wed, 21 May 2003 11:16:50 +0530
+Date: Wed, 21 May 2003 11:16:49 +0530
+From: "Ashish anand" <ashish.anand@inspiretech.com>
 To: linux-mips@linux-mips.org
-Cc: jsun@mvista.com
-Subject: special include/asm/siginfo.h for MIPS
-Message-ID: <20030520191124.N32567@mvista.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-Return-Path: <jsun@mvista.com>
+Subject: Any complications of using CONFIG_MIPS_UNCACHED..?
+X-Mailer: WorldClient Standard 3.5.0e
+X-MDRemoteIP: 192.168.42.3
+X-Return-Path: ashish.anand@inspiretech.com
+X-MDaemon-Deliver-To: linux-mips@linux-mips.org
+Return-Path: <ashish.anand@inspiretech.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2424
+X-archive-position: 2425
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: ashish.anand@inspiretech.com
 Precedence: bulk
 X-list: linux-mips
 
+Hello,
 
-MIPS has different values from all other arches in this file.
-(such as SIGEV_NONE, etc)  Does anybody know why?
+I saw a good bit of discussion about CONFIG_MIPS_UNCACHED but
+still i am yet to know...
 
-Because of this in 2.5 everybody else now goes to use the 
-the generic version of siginfo, while MIPS uses its own special
-version.
+If I want to use CONFIG_MIPS_UNCACHED (ignoring performance)
+what all the side-effects and any restrictions that linux should
+take care in software ?
 
-Even worse the new usage of SIGEV_XXX seems to suggest
-sigev_notify is bitwise-or'ed flag instead of enumeration of integers.
-This is in a direct conflict with current MIPS values.
+I observed something surprising on my R4k mips system(virtually indexed
+caches), after i use this option my driver never got status updation by
+device in transmit and receive decriptors in system memory , Irrespective
+of I (flushed+invalidate) caches or not...
 
-Any thoughts?  Can we just use what other arches are using?
+if i don't use CONFIG_MIPS_UNCACHED then before checking status I need to 
+(flush+invalidate) cache and whole thing works great...
 
-Jun
+Regards,
+Ashish

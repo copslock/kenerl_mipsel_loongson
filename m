@@ -1,106 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Mar 2005 22:39:56 +0000 (GMT)
-Received: from 63-207-7-10.ded.pacbell.net ([IPv6:::ffff:63.207.7.10]:60299
-	"EHLO cassini.enmediainc.com") by linux-mips.org with ESMTP
-	id <S8227075AbVCOWjk>; Tue, 15 Mar 2005 22:39:40 +0000
-Received: from [127.0.0.1] (unknown [192.168.10.203])
-	by cassini.enmediainc.com (Postfix) with ESMTP id 5D3E825C95F
-	for <linux-mips@linux-mips.org>; Tue, 15 Mar 2005 14:39:37 -0800 (PST)
-Message-ID: <423763B9.2000907@c2micro.com>
-Date:	Tue, 15 Mar 2005 14:37:45 -0800
-From:	Ed Martini <martini@c2micro.com>
-User-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Mar 2005 05:54:05 +0000 (GMT)
+Received: from moutng.kundenserver.de ([IPv6:::ffff:212.227.126.184]:37836
+	"EHLO moutng.kundenserver.de") by linux-mips.org with ESMTP
+	id <S8225218AbVCPFxt>; Wed, 16 Mar 2005 05:53:49 +0000
+Received: from [212.227.126.160] (helo=mrelayng.kundenserver.de)
+	by moutng.kundenserver.de with esmtp (Exim 3.35 #1)
+	id 1DBRTY-0007at-00; Wed, 16 Mar 2005 06:53:48 +0100
+Received: from [213.39.155.219] (helo=c155219.adsl.hansenet.de)
+	by mrelayng.kundenserver.de with asmtp (TLSv1:RC4-MD5:128)
+	(Exim 3.35 #1)
+	id 1DBRTX-0007cE-00; Wed, 16 Mar 2005 06:53:48 +0100
+From:	Ulrich Eckhardt <eckhardt@satorlaser.com>
+Organization: Sator Laser GmbH
 To:	linux-mips@linux-mips.org
-Subject: Re: initrd problem
-References: <4230DB4C.7090103@c2micro.com> <20050314110101.GF7759@linux-mips.org>
-In-Reply-To: <20050314110101.GF7759@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Subject: Re: need help with CompactFlash/PCMCIA
+Date:	Wed, 16 Mar 2005 06:51:42 +0100
+User-Agent: KMail/1.7.1
+References: <200503151245.15920.eckhardt@satorlaser.com> <42371C05.7060401@embeddedalley.com>
+In-Reply-To: <42371C05.7060401@embeddedalley.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-Return-Path: <martini@c2micro.com>
+Content-Disposition: inline
+Message-Id: <200503160651.42705.eckhardt@satorlaser.com>
+X-Provags-ID: kundenserver.de abuse@kundenserver.de auth:e35cee35a663f5c944b9750a965814ae
+Return-Path: <eckhardt@satorlaser.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7438
+X-archive-position: 7439
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: martini@c2micro.com
+X-original-sender: eckhardt@satorlaser.com
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
-
->On Thu, Mar 10, 2005 at 03:42:04PM -0800, Ed Martini wrote:
->  
+On Tuesday 15 March 2005 18:31, Pete Popov wrote:
+> > 2. How can I find out if it's looking at the right addresses? I just need
+> > some kind of register which I can probe to find out if the device is
+> > where I think it should be.
+> >
+> > Hmm, in fact I'd be happy about _any_ hint the would get me further. I'm
+> > slightly desparate...
 >
->>Should I put CONFIG_EMBEDDED_RAMDISK and its ilk back into my kernel, or 
->>write an ELF version of addinitrd?  Other ideas?
->>    
->>
->
->Things vanish for a reason ...  Try CONFIG_INITRAMFS_SOURCE instead.
->
->  Ralf
->
-Ok.  Then let's get rid of it completly, and provide a replacement that 
-works.
+> Start with the low level routines that detect the card and set the voltage
+> levels. When you plug in the card, is it detected? Are you setting the
+> correct voltages? What happens next -- is the card at least recognized by 
+> the cardmgr, which means that the attribute memory is read correctly?
 
-There were vestiges of embedded initrd in the ld script that were 
-confusing when trying to sort things out. That, in conjunction with 
-Documentation/initrd.txt made it hard to discover early user space and 
-initramfs when coming from the old world (2.4).
+I don't see any message that something is found, nor can I definitely say 
+where an error happens. I mainly see two parts: one where cardservices are 
+initialised and one where the driver registers itself. The former doesn't say 
+it found anything at all, maybe that is already the problem... I'll 
+investigate further.
 
-Also, unless you move the location of .init.ramfs, it gets freed twice, 
-leading to a panic.
+Could you post the relevant messages of a working system, so I could compare 
+that?
 
- From the documentation alone it's impossible to figure out how to build 
-your initramfs.  In various places the docs refer to the initial 
-executable as /linuxrc, /kinit, /init, and possibly others.  If you read 
-init/main.c you see that for an initramfs, your initial process will be 
-started from /init.
+Hmmm, I just had a scary thought: I don't have any userspace programs running 
+yet, meaning also no cardmgr, because I intend to boot from that CF card - is 
+that possible at all? FYI, I don't need any hotplugging at all.
 
-diff -urN linux-2.6.11-linux-mips.org/arch/mips/kernel/vmlinux.lds.S 
-linux/arch/mips/kernel/vmlinux.lds.S
---- linux-2.6.11-linux-mips.org/arch/mips/kernel/vmlinux.lds.S 
-2005-03-15 13:41:51.000000000 -0800
-+++ linux/arch/mips/kernel/vmlinux.lds.S 2005-03-15 14:34:00.339164936 -0800
-@@ -54,13 +54,6 @@
+thanks
 
-     *(.data)
-
--   /* Align the initial ramdisk image (INITRD) on page boundaries. */
--   . = ALIGN(4096);
--   __rd_start = .;
--   *(.initrd)
--   . = ALIGN(4096);
--   __rd_end = .;
--
-     CONSTRUCTORS
-   }
-   _gp = . + 0x8000;
-@@ -82,6 +75,13 @@
-
-   _edata =  .;   /* End of data section */
-
-+   /* Align the initial ramfs image on page boundaries. */
-+   /* It will be freed by init/initramfs.c */
-+  . = ALIGN(4096);
-+  __initramfs_start = .;
-+  .init.ramfs : { *(.init.ramfs) }
-+  __initramfs_end = .;
-+
-   /* will be freed after init */
-   . = ALIGN(4096);  /* Init code and data */
-   __init_begin = .;
-@@ -118,10 +118,6 @@
-   .con_initcall.init : { *(.con_initcall.init) }
-   __con_initcall_end = .;
-   SECURITY_INIT
--  . = ALIGN(4096);
--  __initramfs_start = .;
--  .init.ramfs : { *(.init.ramfs) }
--  __initramfs_end = .;
-   . = ALIGN(32);
-   __per_cpu_start = .;
-   .data.percpu  : { *(.data.percpu) }
+Uli

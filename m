@@ -1,63 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Feb 2003 21:49:56 +0000 (GMT)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:20299
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8224939AbTBBVtz>; Sun, 2 Feb 2003 21:49:55 +0000
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp (Exim 3.36 #2)
-	id 18fRzs-000rsy-00; Sun, 02 Feb 2003 22:49:52 +0100
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 18fRzs-0007Kb-00; Sun, 02 Feb 2003 22:49:52 +0100
-Date: Sun, 2 Feb 2003 22:49:52 +0100
-To: linux-mips@linux-mips.org
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH] Fix r3k exception handler location
-Message-ID: <20030202214952.GL30469@rembrandt.csv.ica.uni-stuttgart.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Feb 2003 22:08:02 +0000 (GMT)
+Received: from p508B76F7.dip.t-dialin.net ([IPv6:::ffff:80.139.118.247]:49054
+	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8224939AbTBBWIB>; Sun, 2 Feb 2003 22:08:01 +0000
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.6/8.11.6) id h12M80u02256;
+	Sun, 2 Feb 2003 23:08:00 +0100
+Date: Sun, 2 Feb 2003 23:08:00 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Cc: linux-mips@linux-mips.org
+Subject: Re: [PATCH] Fix r3k exception handler location
+Message-ID: <20030202230800.A2213@linux-mips.org>
+References: <20030202214952.GL30469@rembrandt.csv.ica.uni-stuttgart.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.4i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <20030202214952.GL30469@rembrandt.csv.ica.uni-stuttgart.de>; from ica2_ts@csv.ica.uni-stuttgart.de on Sun, Feb 02, 2003 at 10:49:52PM +0100
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1289
+X-archive-position: 1290
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello All,
+On Sun, Feb 02, 2003 at 10:49:52PM +0100, Thiemo Seufer wrote:
 
-this patch is untested, but I just can't see how a r3k can boot without it.
+> this patch is untested, but I just can't see how a r3k can boot without it.
 
+Because it's not a R4000 ;-)
 
-Thiemo
+R3000 has different exception vector locations than R4000.
 
-
-diff -BurpN linux-orig/arch/mips/kernel/traps.c linux-2.4.20/arch/mips/kernel/traps.c
---- linux-orig/arch/mips/kernel/traps.c	Fri Dec 20 04:19:49 2002
-+++ linux-2.4.20/arch/mips/kernel/traps.c	Sun Feb  2 21:57:19 2003
-@@ -1000,7 +1000,7 @@ void __init trap_init(void)
- 	else if (mips_cpu.options & MIPS_CPU_4KEX)
- 		memcpy((void *)(KSEG0 + 0x180), &except_vec3_generic, 0x80);
- 	else
--		memcpy((void *)(KSEG0 + 0x080), &except_vec3_generic, 0x80);
-+		memcpy((void *)(KSEG0 + 0x180), &except_vec3_generic, 0x80);
- 
- 	if (mips_cpu.cputype == CPU_R6000 || mips_cpu.cputype == CPU_R6000A) {
- 		/*
-diff -BurpN linux-orig/arch/mips64/kernel/traps.c linux-2.4.20/arch/mips64/kernel/traps.c
---- linux-orig/arch/mips64/kernel/traps.c	Fri Dec 20 04:19:51 2002
-+++ linux-2.4.20/arch/mips64/kernel/traps.c	Sun Feb  2 21:57:20 2003
-@@ -755,7 +755,7 @@ void __init trap_init(void)
- 	} else if (mips_cpu.options & MIPS_CPU_4KEX)
- 		memcpy((void *)(KSEG0 + 0x180), &except_vec3_generic, 0x80);
- 	else
--		memcpy((void *)(KSEG0 + 0x080), &except_vec3_generic, 0x80);
-+		memcpy((void *)(KSEG0 + 0x180), &except_vec3_generic, 0x80);
- 
- 	if (mips_cpu.cputype == CPU_R6000 || mips_cpu.cputype == CPU_R6000A) {
- 		/*
+  Ralf

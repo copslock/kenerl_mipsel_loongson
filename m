@@ -1,49 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Mar 2005 00:00:25 +0000 (GMT)
-Received: from rproxy.gmail.com ([IPv6:::ffff:64.233.170.202]:29080 "EHLO
-	rproxy.gmail.com") by linux-mips.org with ESMTP id <S8225430AbVCHAAH>;
-	Tue, 8 Mar 2005 00:00:07 +0000
-Received: by rproxy.gmail.com with SMTP id y7so1298024rne
-        for <linux-mips@linux-mips.org>; Mon, 07 Mar 2005 16:00:06 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding;
-        b=QvaJKQEGtb/71Rx+Xsn9911sm8vCQTgj+W79tBvgttwQj6iAwqom1uIQrKqpduQ6SDWdqKGTAhOGE0ok1Zt23ZRbvZ2gBBwj3JOmSSD0pSsqfYzuNqA6RYvo4YijYkn5wr5DUNbcGHn405uPtrc7ciqEu8EyLSEP0cszX/5nlnM=
-Received: by 10.38.164.40 with SMTP id m40mr100036rne;
-        Mon, 07 Mar 2005 16:00:02 -0800 (PST)
-Received: by 10.38.104.32 with HTTP; Mon, 7 Mar 2005 16:00:02 -0800 (PST)
-Message-ID: <6a95eefb05030716005d634fd1@mail.gmail.com>
-Date:	Mon, 7 Mar 2005 16:00:02 -0800
-From:	Siva Prasad <rsivaprasad@gmail.com>
-Reply-To: Siva Prasad <rsivaprasad@gmail.com>
-To:	linux-mips <linux-mips@linux-mips.org>
-Subject: Linux distribution on Atheros AR5312
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Mar 2005 02:27:18 +0000 (GMT)
+Received: from rwcrmhc13.comcast.net ([IPv6:::ffff:204.127.198.39]:1486 "EHLO
+	rwcrmhc13.comcast.net") by linux-mips.org with ESMTP
+	id <S8225525AbVCHC1C>; Tue, 8 Mar 2005 02:27:02 +0000
+Received: from [192.168.1.4] (pcp05077810pcs.waldrf01.md.comcast.net[68.54.246.193])
+          by comcast.net (rwcrmhc13) with ESMTP
+          id <200503080226550150040cc6e>; Tue, 8 Mar 2005 02:26:55 +0000
+Message-ID: <422D0D64.2080402@gentoo.org>
+Date:	Mon, 07 Mar 2005 21:26:44 -0500
+From:	Kumba <kumba@gentoo.org>
+User-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	freshy98 <freshy98@gmx.net>
+CC:	Jim Gifford <maillist@jg555.com>,
+	Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Re: IPTables 1.3.x fails on RaQ2
+References: <422C8D6A.6060904@jg555.com> <422C9142.8090007@gmx.net>
+In-Reply-To: <422C9142.8090007@gmx.net>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <rsivaprasad@gmail.com>
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7393
+X-archive-position: 7394
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rsivaprasad@gmail.com
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+freshy98 wrote:
+> Jim,
+> 
+> I am running iptables-1.2.11-r3 on my Gentoo installed Cobalt Qube2 and 
+> it compiles alright.
+> If I remember correctly I have tried a higher version which failed on 
+> cpu-feature-overrides.h too.
+> 
+> My kernel is linux-2.6.10-20050115 which is in the Portage tree of 
+> Gentoo and is based upon CVS.
+> So far this machines runs for 14 days without a problem.
+> It runs iptables with shorewall.
+> 
+> Regards,
+> 
+> Tom
+> 
+> 
+> Jim Gifford wrote:
+> 
+>> I've been trying to figure out why the current iptables fails on the 
+>> 2.6.9 and 2.6.11 MIPS builds. It seems that a file 
+>> cpu-features-overrides.h is missing for the Cobalt builds. Are their 
+>> plans for one, or is there a patch out there so we can get it added. 
+>> Here is the error message on the IPTables build, I still don't 
+>> understand why they are checking for that myself.
+>>
+>> # ./iptables install
+>>        Verifying iptables-1.3.1.tar.bz2
+>>                Downloading iptables-1.3.1.tar.bz2
+>>                Creating Local SHA1 file for iptables-1.3.1.tar.bz2
+>>                Installing iptables-1.3.1
+>>                        Unpacking iptables-1.3.1.tar.bz2
+>> Making dependencies: please wait...
+>> Something wrong... deleting dependencies.
+>> make: *** [cpu-feature-overrides.h] Error 1
+>>                -----Error at Build has occured-----
+>> Exiting
 
-I am looking for Linux distribution that works on Atheros AR5312 (MIPS
-4kc processor core).
 
-Any pointer towards this direction is appreciated.
+This is a headers problem, mainly in 2.6.  2.6 isn't safe out-of-the-box for 
+userland consumption.  I've been toying with some 2.6.10 headers from LMO cvs 
+on the gentoo side of things, where we have an "appCompat" patch that plugs up 
+a alot of the leaky holes in 2.6.x headers, but I still have to analyze the 
+patch and add in some mips-specific bits before these headers can be 
+considered remotely sane for even testing.
 
-* Boot loader
-* Linux distribution
-* Ethernet driver
+Those running other distros will probably need similar modifications to their 
+headers to make them userland-friendly.
 
-etc.
 
-Thanks
-siva
+--Kumba
+
+-- 
+"Such is oft the course of deeds that move the wheels of the world: small 
+hands do them because they must, while the eyes of the great are elsewhere." 
+--Elrond

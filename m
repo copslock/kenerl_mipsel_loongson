@@ -1,53 +1,112 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4UD2onC002865
-	for <linux-mips-outgoing@oss.sgi.com>; Thu, 30 May 2002 06:02:50 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g4UFknnC015088
+	for <linux-mips-outgoing@oss.sgi.com>; Thu, 30 May 2002 08:46:49 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4UD2oUb002864
-	for linux-mips-outgoing; Thu, 30 May 2002 06:02:50 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g4UFkn9l015087
+	for linux-mips-outgoing; Thu, 30 May 2002 08:46:49 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from av.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4UD2jnC002840
-	for <linux-mips@oss.sgi.com>; Thu, 30 May 2002 06:02:45 -0700
-Received: from aihana (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id GAA22734
-	for <linux-mips@oss.sgi.com>; Thu, 30 May 2002 06:02:59 -0700
-Subject: Re: (Re-Send) shmctl() returns corrupt value on pb1000.
-From: Takeshi Aihana <takeshi_aihana@montavista.co.jp>
-To: linux-mips@oss.sgi.com
-In-Reply-To: <20020530.211902.102583216.nemoto@toshiba-tops.co.jp>
-References: <1022757017.1045.47.camel@aihana> 
-	<20020530.211902.102583216.nemoto@toshiba-tops.co.jp>
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Mailer: Ximian Evolution/1.0.5-build 20020511 
-Date: 30 May 2002 22:02:57 +0900
-Message-Id: <1022763778.1046.71.camel@aihana>
+Received: from mail.ict.ac.cn ([159.226.39.4])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g4UFkbnC015084
+	for <linux-mips@oss.sgi.com>; Thu, 30 May 2002 08:46:38 -0700
+Message-Id: <200205301546.g4UFkbnC015084@oss.sgi.com>
+Received: (qmail 21731 invoked from network); 30 May 2002 15:39:02 -0000
+Received: from unknown (HELO foxsen) (159.226.40.150)
+  by 159.226.39.4 with SMTP; 30 May 2002 15:39:02 -0000
+Date: Thu, 30 May 2002 23:47:26 +0800
+From: "Zhang Fuxin" <fxzhang@ict.ac.cn>
+To: Kevin Paul Herbert <kph@ayrnetworks.com>
+CC: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Re: Re: pcnet32.c bug?
+X-mailer: Foxmail 4.1 [cn]
 Mime-Version: 1.0
+Content-Type: text/plain;
+      charset="GB2312"
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id g4UFkcnC015085
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hello,
+hi,
+>>--- drivers/net/pcnet32.c	19 Mar 2002 16:40:55 -0000	1.1.1.1.2.1.2.6
+>>+++ drivers/net/pcnet32.c	29 May 2002 09:57:33 -0000	1.13.4.2
+>>@@ -1343,6 +1351,10 @@
+>>  		if (!rx_in_place) {
+>>  		    skb_reserve(skb,2); /* 16 byte align */
+>>  		    skb_put(skb,pkt_len);	/* Make room */
+>>+                    pci_dma_sync_single(lp->pci_dev,
+>>+				    lp->rx_skbuff[entry]->tail,
+>>+				    pkt_len,
+>>+				    PCI_DMA_FROMDEVICE);
+>>  		    eth_copy_and_sum(skb,
+>>  				     (unsigned char 
+>>*)(lp->rx_skbuff[entry]->tail),
+>>  				     pkt_len,0);
 
-> >>>>> On 30 May 2002 20:10:16 +0900, Takeshi Aihana <takeshi_aihana@montavista.co.jp> said:
-> takeshi_aihana> I have a problem now about return the segment size of
-> takeshi_aihana> shared memory from shmctl() func.
-> 
-> What version of libc are you using?  It seems your kernel headers and
-> libc headers are inconsistent.
+Because many mips ports do wback_inv for pci_dma_sync_single,how can
+this help?
+I think it just mean to invalidate cache contents the cpu has for this
+buffer,and thus cpu can be sure to read data dmaed to memory by the device
+And now we are doing write back,won't that be overwriting the buffer with 
+stale data in cache?
 
-(A) The version of glibc on x86 is 2.2.4/kernel-2.4.9.
-(B) The version of glibc on pb1000 is 2.2.3/kernel-2.4.17.
+so,the problem is,can we use wback_inv instead of inv in pci_dma_sync_single
+when the direction is FROMDEVICE? I don't think so,but that would mean many
+current drivers are broken...
 
-Is there any inconsistents on those conditions?
-Should be update to 2.2.4 on pb1000?
+i guess the fact that current driver are working is because no mips machine
+has big enough cache to survive the data to the point of the buffer's reuse.
 
-> Please look structures in libc's /usr/include/bits/{ipc,sem,shm,msg}.h
-> and kernel's include/asm-mips/{ipc,sem,shm,msg}buf.h carefully.
+Correct solution should be something like Will Jhun's proposal? 
 
-OK. I will do carefully. 
-It looks like to not any diffs I should observe on both files, now.
+that is:
+  each transition i.e. (FROM_DEVICE operation)
+	pci_map_single()      - device now owns the buffer [invalidate]
+	[DMA]
+	pci_dma_sync_single() - driver now owns it         [no invalidate]
+	[driver touches buffer]
+	pci_dma_prep_single() - device owns it once again  [invalidate]
+	[DMA] ...
 
-Thank you for your help.
+I hope i am totally wrong:)
 
----
-(TAKESHI - MontaVista Software Japan)
+BTW: i am struggling with eepro100 driver these days,and now i have
+got an NAPI version of it running. The rx ring often got messed up
+with the old pci_dma_sync_xx logic,before i change it.
+
+
+
+>
+>Note that there is another problem with cache line invalidation and 
+>the use of pci_dma_sync_single(), where one can get stale entries in 
+>the cache when the buffer is next re-used for DMA.
+>
+>My co-worker Will Jhun <mailto:wjhun@ayrnetworks.com> just sent 
+>e-mail on the subject of problems with the cache invalidation 
+>routines last Saturday, with Message-ID: 
+><20020525131806.A4073@ayrnetworks.com>
+>
+>Kevin
+
+
+
+
+               
+
+
+
+>
+>
+>-- 
+
+= = = = = = = = = = = = = = = = = = = =
+			
+
+Best Regards
+---------------------------------------
+Zhang Fuxin
+System Architecture Lab
+Institute of Computing Technology
+Chinese Academy of Sciences,China
+http://www.ict.ac.cn
+ 
+			　　　　　　　　　2002-05-30

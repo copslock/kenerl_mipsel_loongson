@@ -1,41 +1,44 @@
-Received:  by oss.sgi.com id <S553761AbQLNVCW>;
-	Thu, 14 Dec 2000 13:02:22 -0800
-Received: from wn42-146.sdc.org ([209.155.42.146]:65263 "EHLO lappi")
-	by oss.sgi.com with ESMTP id <S553759AbQLNVB6>;
-	Thu, 14 Dec 2000 13:01:58 -0800
-Received: (ralf@lappi) by bacchus.dhis.org id <S868680AbQLNU7d>;
-	Thu, 14 Dec 2000 13:59:33 -0700
-Date:	Thu, 14 Dec 2000 21:59:33 +0100
-From:	Ralf Baechle <ralf@oss.sgi.com>
-To:	Carsten Langgaard <carstenl@mips.com>
-Cc:	linux-mips@oss.sgi.com
-Subject: Re: 64 bit build fails
-Message-ID: <20001214215933.C28871@bacchus.dhis.org>
-References: <3A379CBC.ED1D9F@mips.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <3A379CBC.ED1D9F@mips.com>; from carstenl@mips.com on Wed, Dec 13, 2000 at 04:58:52PM +0100
-X-Accept-Language: de,en,fr
+Received:  by oss.sgi.com id <S553783AbQLNWQw>;
+	Thu, 14 Dec 2000 14:16:52 -0800
+Received: from mta3-rme.xtra.co.nz ([203.96.92.13]:44381 "EHLO
+        mta3-rme.xtra.co.nz") by oss.sgi.com with ESMTP id <S553781AbQLNWQk>;
+	Thu, 14 Dec 2000 14:16:40 -0800
+Received: from server1.metering.co.nz ([210.55.57.194])
+          by mta3-rme.xtra.co.nz with ESMTP
+          id <20001214221633.WNHI8799530.mta3-rme.xtra.co.nz@server1.metering.co.nz>
+          for <linux-mips@oss.sgi.com>; Fri, 15 Dec 2000 11:16:33 +1300
+Received: by server1.metering.co.nz with Internet Mail Service (5.5.2650.21)
+	id <XYBRPQ9N>; Fri, 15 Dec 2000 11:16:32 +1300
+Message-ID: <8BEF9F7FD6FEA8409D2A706B2D6D32280553FF@server1.metering.co.nz>
+From:   Pete Black <pete.black@metering.co.nz>
+To:     "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
+Subject: Linux/MIPS on quad-R4400 Challenge L
+Date:   Fri, 15 Dec 2000 11:16:31 +1300
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2650.21)
+Content-Type: text/plain
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, Dec 13, 2000 at 04:58:52PM +0100, Carsten Langgaard wrote:
+Hi there,
 
-> I'm trying to build a 64bit kernel, but it fails with following message:
-> 
-> mips64-linux-gcc -D__KERNEL__
-> -I/home/soc/proj/work/carstenl/sw/linux-2.4.0/include -Wall
-> -Wstrict-prototypes -O2 -fomit-frame-pointer -fno-strict-aliasing
-> -mabi=64 -G 0 -mno-abicalls -fno-pic -Wa,--trap -pipe -mcpu=r8000 -mips4
-> -Wa,-32   -c head.S -o head.o
-> head.S: Assembler messages:
-> head.S:69: Error: Missing ')' assumed
+I happen to have acquired a quad-R4400 SGI Challenge-L server.
 
-Looks like an attempt to build a 64-bit Indy kernel.  Various people working
-on the Origin support have completly broken the support for anything else in
-their battle tank-style approach ...
+It's big, it's black, and it seems to run OK.
 
-  Ralf
+Is there any support in Linux/MIPS for a beast like this?
+
+Its currently running IRIX 6.5.9 quite happily, but i'd much rather run
+Linux, since then i have a standard OS across all my machines, and no hefty
+SGI taxes to pay.
+
+>From what i read on the FAQs, the Multi-processor versions of the R4400 are
+not supported.. will there ever be a time when Linux/MIPS will run on a
+machin elike this, or am i stuck with IRIX for the rest of this machine's
+life?
+
+Thanks
+
+-Pete

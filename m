@@ -1,51 +1,321 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Apr 2003 01:56:46 +0100 (BST)
-Received: from p508B65B8.dip.t-dialin.net ([IPv6:::ffff:80.139.101.184]:19910
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225245AbTD1A4o>; Mon, 28 Apr 2003 01:56:44 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id h3S0uef20860;
-	Mon, 28 Apr 2003 02:56:40 +0200
-Date: Mon, 28 Apr 2003 02:56:39 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Kip Walker <kwalker@broadcom.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: [PATCH]: load_mmu for SMP systems
-Message-ID: <20030428025639.A20753@linux-mips.org>
-References: <3EA97D54.6910D49E@broadcom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Apr 2003 08:17:49 +0100 (BST)
+Received: from ftp.ckdenergo.cz ([IPv6:::ffff:80.95.97.155]:16576 "EHLO simek")
+	by linux-mips.org with ESMTP id <S8225072AbTD1HRh>;
+	Mon, 28 Apr 2003 08:17:37 +0100
+Received: from ladis by simek with local (Exim 3.36 #1 (Debian))
+	id 19A2sb-0002PI-00
+	for <linux-mips@linux-mips.org>; Mon, 28 Apr 2003 09:16:49 +0200
+Date: Mon, 28 Apr 2003 09:16:39 +0200
+To: linux-mips@linux-mips.org
+Subject: [PATCH] Highmem detection for Indigo2
+Message-ID: <20030428071639.GA7578@simek>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <3EA97D54.6910D49E@broadcom.com>; from kwalker@broadcom.com on Fri, Apr 25, 2003 at 11:24:20AM -0700
-Return-Path: <ralf@linux-mips.net>
+User-Agent: Mutt/1.5.4i
+From: Ladislav Michl <ladis@linux-mips.org>
+Return-Path: <ladis@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
 X-Spam-Checker-Version: SpamAssassin 2.50 (1.173-2003-02-20-exp)
-X-archive-position: 2213
+X-archive-position: 2214
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ladis@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Apr 25, 2003 at 11:24:20AM -0700, Kip Walker wrote:
+Indigo2 is currently using ARC to build memory map and because ARC can
+deal only with low local memory (MC spec page 22) no more that 256M
+could be detected.
 
-> In SMP systems, each CPU needs to set up "current_cpu_data.tlbsize". 
-> Some CPUs do this initialization in cpu_probe, which is called both by
-> init_arch and start_secondary.  However, some CPUs do this in their TLB
-> setup code, which is called via load_mmu.  The SMP boot code doesn't
-> currently call load_mmu() for the secondary CPUs.  Here's a simple fix
-> for the 2.4 tree.
+Following patch builds whole RAM map based of MC's memory configuration
+registers, does some samity checks adds high system memory (if any) to
+bootmem.
 
-I instead changed cpu-probe to set tlbsize properly.  Nothing wrong with
-your patch, it just fits better into my Grand Plan (TM) :-)
+comments welcome
+	ladis
 
-> TLB flush routines that have loops running up to tlbsize will lose if
-> it's not set properly on all CPUs!
-
-Yeah, they're going to be sort of slow.  There must be a reason for all
-those GHz processors ;-)
-
-  Ralf
+Index: arch/mips/sgi-ip22/ip22-mc.c
+===================================================================
+RCS file: /home/cvs/linux/arch/mips/sgi-ip22/ip22-mc.c,v
+retrieving revision 1.1.2.7
+diff -u -r1.1.2.7 ip22-mc.c
+--- arch/mips/sgi-ip22/ip22-mc.c	6 Apr 2003 01:47:27 -0000	1.1.2.7
++++ arch/mips/sgi-ip22/ip22-mc.c	28 Apr 2003 06:28:45 -0000
+@@ -1,51 +1,114 @@
+ /*
+- * ip22-mc.c: Routines for manipulating the INDY memory controller.
++ * ip22-mc.c: Routines for manipulating SGI Memory Controller.
+  *
+  * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)
+  * Copyright (C) 1999 Andrew R. Baker (andrewb@uab.edu) - Indigo2 changes
++ * Copyright (C) 2003 Ladislav Michl  (ladis@linux-mips.org)
+  */
+ 
+ #include <linux/init.h>
+ #include <linux/kernel.h>
+ 
+ #include <asm/addrspace.h>
++#include <asm/bootinfo.h>
+ #include <asm/ptrace.h>
+ #include <asm/sgialib.h>
+ #include <asm/sgi/mc.h>
+ #include <asm/sgi/hpc3.h>
+ #include <asm/sgi/ip22.h>
+ 
+-/* #define DEBUG_SGIMC */
+-
+ struct sgimc_regs *sgimc;
+ 
+-#ifdef DEBUG_SGIMC
+-static inline char *mconfig_string(unsigned long val)
++static inline unsigned int get_bank_size(unsigned int val)
+ {
+ 	switch(val & SGIMC_MCONFIG_RMASK) {
+-	case SGIMC_MCONFIG_FOURMB:
+-		return "4MB";
+-
+-	case SGIMC_MCONFIG_EIGHTMB:
+-		return "8MB";
+-
+-	case SGIMC_MCONFIG_SXTEENMB:
+-		return "16MB";
++	case SGIMC_MCONFIG_256K: return 4*4*256 * 1024;
++	case SGIMC_MCONFIG_512K: return 4*4*512 * 1024;
++	case SGIMC_MCONFIG_1M:   return 4*4*1024 * 1024;
++	case SGIMC_MCONFIG_2M:   return 4*4*2048 * 1024;
++	case SGIMC_MCONFIG_4M:   return 4*4*4096 * 1024;
++	case SGIMC_MCONFIG_8M:   return 4*4*8192 * 1024;
++	default:                 return 0;
++	}
++}
+ 
+-	case SGIMC_MCONFIG_TTWOMB:
+-		return "32MB";
++static inline unsigned int get_bank_config(int bank)
++{
++	unsigned int res = bank > 1 ? sgimc->mconfig1 : sgimc->mconfig0;
++	return bank % 2 ? res & 0xffff : res >> 16;
++}
+ 
+-	case SGIMC_MCONFIG_SFOURMB:
+-		return "64MB";
++struct mem {
++	unsigned long addr;
++	unsigned long size;
++};
++
++/*
++ * Detect installed memory, do some sanity checks and notify kernel about
++ * high memory if any.
++ */
++static void init_bootmem(void)
++{
++	int i, j, found, cnt = 0;
++	struct mem bank[4];
++	struct mem space[2] = {{SGIMC_SEG0_BADDR, 0}, {SGIMC_SEG1_BADDR, 0}};
++
++	printk(KERN_INFO "MC: Probing memory configuration:\n");
++	for (i = 0; i < 4; i++) {
++		int tmp = get_bank_config(i);
++		if (!(tmp & SGIMC_MCONFIG_BVALID))
++			continue;
++
++		if (!(bank[cnt].size = get_bank_size(tmp))) {
++			printk(KERN_WARNING " Bank%d: unknown, ignored\n", i);
++			continue;
++		}
+ 
+-	case SGIMC_MCONFIG_OTEIGHTMB:
+-		return "128MB";
++		bank[cnt].addr = (tmp & SGIMC_MCONFIG_BASEADDR) << 22;
++		printk(KERN_INFO " Bank%d: %3ldM @ %08lx\n",
++			i, bank[cnt].size / 1024 / 1024, bank[cnt].addr);
++		cnt++;
++	}
+ 
+-	default:
+-		return "wheee, unknown";
++	/* Bubble sort it... ;-) */
++	do {
++		unsigned long addr, size;
++
++		found = 0;
++		for (i = 1; i < cnt; i++)
++			if (bank[i-1].addr > bank[i].addr) {
++				addr = bank[i].addr;
++				size = bank[i].size;
++				bank[i].addr = bank[i-1].addr;
++				bank[i].size = bank[i-1].size;
++				bank[i-1].addr = addr;
++				bank[i-1].size = size;
++				found = 1;
++			}
++	} while (found);
++
++	/* Figure out how are memory banks mapped into spaces */
++	for (i = 0; i < cnt; i++) {
++		found = 0;
++		for (j = 0; j < 2 && !found; j++)
++			if (space[j].addr + space[j].size == bank[i].addr) {
++				space[j].size += bank[i].size;
++				found = 1;
++			}
++		/* There is either hole or overlapping memory */
++		if (!found)
++			printk(KERN_CRIT "MC: Memory configuration mismatch "
++					 "(%08lx), expect Bus Error soon\n",
++					 bank[i].addr);
+ 	}
+-}
++#if 0
++	printk("MC: lo space %08lx (%08lx)\n", space[0].addr, space[0].size);
++	printk("MC: hi space %08lx (%08lx)\n", space[1].addr, space[1].size);
+ #endif
++	/* High memory present? */
++	if (space[1].size)
++		add_memory_region(space[1].addr, space[1].size, BOOT_MEM_RAM);
++}
+ 
+ void __init sgimc_init(void)
+ {
+@@ -56,17 +119,6 @@
+ 	printk(KERN_INFO "MC: SGI memory controller Revision %d\n",
+ 	       (int) sgimc->systemid & SGIMC_SYSID_MASKREV);
+ 
+-#ifdef DEBUG_SGIMC
+-	prom_printf("sgimc_init: memconfig0<%s> mconfig1<%s>\n",
+-		    mconfig_string(sgimc->mconfig0),
+-		    mconfig_string(sgimc->mconfig1));
+-
+-	prom_printf("mcdump: cpuctrl0<%08lx> cpuctrl1<%08lx>\n",
+-		    sgimc->cpuctrl0, sgimc->cpuctrl1);
+-	prom_printf("mcdump: divider<%08lx>, gioparm<%04x>\n",
+-		    sgimc->divider, sgimc->gioparm);
+-#endif
+-
+ 	/* Place the MC into a known state.  This must be done before
+ 	 * interrupts are first enabled etc.
+ 	 */
+@@ -126,27 +178,29 @@
+ 	 */
+ 
+ 	/* First the basic invariants across all GIO64 implementations. */
+-	tmp = SGIMC_GIOPAR_HPC64;    /* All 1st HPC's interface at 64bits. */
+-	tmp |= SGIMC_GIOPAR_ONEBUS;  /* Only one physical GIO bus exists. */
++	tmp = SGIMC_GIOPAR_HPC64;	/* All 1st HPC's interface at 64bits */
++	tmp |= SGIMC_GIOPAR_ONEBUS;	/* Only one physical GIO bus exists */
+ 
+ 	if (ip22_is_fullhouse()) {
+ 		/* Fullhouse specific settings. */
+ 		if (SGIOC_SYSID_BOARDREV(sgioc->sysid) < 2) {
+-			tmp |= SGIMC_GIOPAR_HPC264; /* 2nd HPC at 64bits */
+-			tmp |= SGIMC_GIOPAR_PLINEEXP0; /* exp0 pipelines */
+-			tmp |= SGIMC_GIOPAR_MASTEREXP1;/* exp1 masters */
+-			tmp |= SGIMC_GIOPAR_RTIMEEXP0; /* exp0 is realtime */
++			tmp |= SGIMC_GIOPAR_HPC264;	/* 2nd HPC at 64bits */
++			tmp |= SGIMC_GIOPAR_PLINEEXP0;	/* exp0 pipelines */
++			tmp |= SGIMC_GIOPAR_MASTEREXP1;	/* exp1 masters */
++			tmp |= SGIMC_GIOPAR_RTIMEEXP0;	/* exp0 is realtime */
+ 		} else {
+-			tmp |= SGIMC_GIOPAR_HPC264; /* 2nd HPC 64bits */
+-			tmp |= SGIMC_GIOPAR_PLINEEXP0; /* exp[01] pipelined */
++			tmp |= SGIMC_GIOPAR_HPC264;	/* 2nd HPC 64bits */
++			tmp |= SGIMC_GIOPAR_PLINEEXP0;	/* exp[01] pipelined */
+ 			tmp |= SGIMC_GIOPAR_PLINEEXP1;
+-			tmp |= SGIMC_GIOPAR_MASTEREISA;/* EISA masters */
+-			tmp |= SGIMC_GIOPAR_GFX64; 	/* GFX at 64 bits */
++			tmp |= SGIMC_GIOPAR_MASTEREISA;	/* EISA masters */
++			tmp |= SGIMC_GIOPAR_GFX64;	/* GFX at 64 bits */
+ 		}
+ 	} else {
+ 		/* Guiness specific settings. */
+-		tmp |= SGIMC_GIOPAR_EISA64;     /* MC talks to EISA at 64bits */
+-		tmp |= SGIMC_GIOPAR_MASTEREISA; /* EISA bus can act as master */
++		tmp |= SGIMC_GIOPAR_EISA64;	/* MC talks to EISA at 64bits */
++		tmp |= SGIMC_GIOPAR_MASTEREISA;	/* EISA bus can act as master */
+ 	}
+-	sgimc->giopar = tmp; /* poof */
++	sgimc->giopar = tmp;	/* poof */
++
++	init_bootmem();
+ }
+Index: include/asm-mips/sgi/mc.h
+===================================================================
+RCS file: /home/cvs/linux/include/asm-mips/sgi/mc.h,v
+retrieving revision 1.1.2.2
+diff -u -r1.1.2.2 mc.h
+--- include/asm-mips/sgi/mc.h	27 Apr 2003 22:25:28 -0000	1.1.2.2
++++ include/asm-mips/sgi/mc.h	28 Apr 2003 06:28:45 -0000
+@@ -95,19 +95,22 @@
+ 	u32 _unused10[3];
+ 	volatile u32 lbursttp;	/* Time period for long bursts */
+ 
++	/* MC chip can drive up to 4 bank 4 SIMMs each. All SIMMs in bank must
++	 * be the same size. The size encoding for supported SIMMs is bellow */
+ 	u32 _unused11[9];
+ 	volatile u32 mconfig0;	/* Memory config register zero */
+ 	u32 _unused12;
+ 	volatile u32 mconfig1;	/* Memory config register one */
+-
+-	/* These defines apply to both mconfig registers above. */
+-#define SGIMC_MCONFIG_FOURMB	0x00000000 /* Physical ram = 4megs */
+-#define SGIMC_MCONFIG_EIGHTMB	0x00000100 /* Physical ram = 8megs */
+-#define SGIMC_MCONFIG_SXTEENMB	0x00000300 /* Physical ram = 16megs */
+-#define SGIMC_MCONFIG_TTWOMB	0x00000700 /* Physical ram = 32megs */
+-#define SGIMC_MCONFIG_SFOURMB	0x00000f00 /* Physical ram = 64megs */
+-#define SGIMC_MCONFIG_OTEIGHTMB	0x00001f00 /* Physical ram = 128megs */
++#define SGIMC_MCONFIG_BASEADDR	0x000000ff /* Base address of bank*/
++#define SGIMC_MCONFIG_256K	0x00000000 /* 256k x 36 bits */
++#define SGIMC_MCONFIG_512K	0x00000100 /* 512k x 36 bits, 2 subbanks */
++#define SGIMC_MCONFIG_1M	0x00000300 /* 1M   x 36 bits */
++#define SGIMC_MCONFIG_2M	0x00000700 /* 2M   x 36 bits, 2 subbanks */
++#define SGIMC_MCONFIG_4M	0x00000f00 /* 4M   x 36 bits */
++#define SGIMC_MCONFIG_8M	0x00001f00 /* 8M   x 36 bits, 2 subbanks */
+ #define SGIMC_MCONFIG_RMASK	0x00001f00 /* Ram config bitmask */
++#define SGIMC_MCONFIG_BVALID	0x00002000 /* Bank is valid */
++#define SGIMC_MCONFIG_SBANKS	0x00004000 /* Number of subbanks */
+ 
+ 	u32 _unused13;
+ 	volatile u32 cmacc;        /* Mem access config for CPU */
+Index: include/asm-mips64/sgi/mc.h
+===================================================================
+RCS file: /home/cvs/linux/include/asm-mips64/sgi/mc.h,v
+retrieving revision 1.1.2.2
+diff -u -r1.1.2.2 mc.h
+--- include/asm-mips64/sgi/mc.h	27 Apr 2003 22:25:28 -0000	1.1.2.2
++++ include/asm-mips64/sgi/mc.h	28 Apr 2003 06:28:46 -0000
+@@ -95,19 +95,22 @@
+ 	u32 _unused10[3];
+ 	volatile u32 lbursttp;	/* Time period for long bursts */
+ 
++	/* MC chip can drive up to 4 bank 4 SIMMs each. All SIMMs in bank must
++	 * be the same size. The size encoding for supported SIMMs is bellow */
+ 	u32 _unused11[9];
+ 	volatile u32 mconfig0;	/* Memory config register zero */
+ 	u32 _unused12;
+ 	volatile u32 mconfig1;	/* Memory config register one */
+-
+-	/* These defines apply to both mconfig registers above. */
+-#define SGIMC_MCONFIG_FOURMB	0x00000000 /* Physical ram = 4megs */
+-#define SGIMC_MCONFIG_EIGHTMB	0x00000100 /* Physical ram = 8megs */
+-#define SGIMC_MCONFIG_SXTEENMB	0x00000300 /* Physical ram = 16megs */
+-#define SGIMC_MCONFIG_TTWOMB	0x00000700 /* Physical ram = 32megs */
+-#define SGIMC_MCONFIG_SFOURMB	0x00000f00 /* Physical ram = 64megs */
+-#define SGIMC_MCONFIG_OTEIGHTMB	0x00001f00 /* Physical ram = 128megs */
++#define SGIMC_MCONFIG_BASEADDR	0x000000ff /* Base address of bank*/
++#define SGIMC_MCONFIG_256K	0x00000000 /* 256k x 36 bits */
++#define SGIMC_MCONFIG_512K	0x00000100 /* 512k x 36 bits, 2 subbanks */
++#define SGIMC_MCONFIG_1M	0x00000300 /* 1M   x 36 bits */
++#define SGIMC_MCONFIG_2M	0x00000700 /* 2M   x 36 bits, 2 subbanks */
++#define SGIMC_MCONFIG_4M	0x00000f00 /* 4M   x 36 bits */
++#define SGIMC_MCONFIG_8M	0x00001f00 /* 8M   x 36 bits, 2 subbanks */
+ #define SGIMC_MCONFIG_RMASK	0x00001f00 /* Ram config bitmask */
++#define SGIMC_MCONFIG_BVALID	0x00002000 /* Bank is valid */
++#define SGIMC_MCONFIG_SBANKS	0x00004000 /* Number of subbanks */
+ 
+ 	u32 _unused13;
+ 	volatile u32 cmacc;        /* Mem access config for CPU */

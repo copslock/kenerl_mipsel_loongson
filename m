@@ -1,34 +1,73 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f9HF6w401373
-	for linux-mips-outgoing; Wed, 17 Oct 2001 08:06:58 -0700
-Received: from dandelion.com (IDENT:JTZouzhSpgU/SL1t3lB0l+ud8YVrPkXU@dandelion.com [198.186.200.2])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9HF6uD01370
-	for <linux-mips@oss.sgi.com>; Wed, 17 Oct 2001 08:06:56 -0700
-Received: (from lnz@localhost)
-	by dandelion.com (8.12.1/8.12.1) id f9HF66GW013534;
-	Wed, 17 Oct 2001 08:06:06 -0700
-Date: Wed, 17 Oct 2001 08:06:06 -0700
-Message-Id: <200110171506.f9HF66GW013534@dandelion.com>
-From: "Leonard N. Zubkoff" <lnz@dandelion.com>
-To: hjl@lucon.org
-CC: linux-gcc@vger.kernel.org, kjahds@kjahds.com, mat@lcs.mit.edu,
-   doughera@lafcol.lafayette.edu, imp@village.org, linux-mips@oss.sgi.com,
-   rfg@monkeys.com, linux-binutils-in@polstra.com, galenh@micron.net,
-   ralf@mailhost.uni-koblenz.de, linas@linas.org, aries@hal2000.terra.vein.hu,
-   sjhill@cotw.com, libc-alpha@sourceware.cygnus.com, gcc@gcc.gnu.org
-In-reply-to: <20011016201334.A31989@lucon.org> (hjl@lucon.org)
-Subject: Re: The Linux binutils 2.11.92.0.7 is released.
+	by oss.sgi.com (8.11.2/8.11.3) id f9HHquM05421
+	for linux-mips-outgoing; Wed, 17 Oct 2001 10:52:56 -0700
+Received: from quicklogic.com (quick1.quicklogic.com [206.184.225.224])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f9HHqqD05415
+	for <linux-mips@oss.sgi.com>; Wed, 17 Oct 2001 10:52:52 -0700
+Received: from enghanks
+	([207.81.96.51])
+	by quicklogic.com; Wed, 17 Oct 2001 10:51:56 -0700
+From: "Hanks Li" <hli@quicklogic.com>
+To: "Atsushi Nemoto" <nemoto@toshiba-tops.co.jp>
+Cc: <linux-mips@oss.sgi.com>
+Subject: RE: IDE DMA mode in Big endian for mips
+Date: Wed, 17 Oct 2001 13:52:20 -0400
+Message-ID: <APEOLACBIPNAFKJDDFIICEDCCBAA.hli@quicklogic.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
+Importance: Normal
+In-Reply-To: <20011017.113842.41627007.nemoto@toshiba-tops.co.jp>
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4807.1700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-  Date: Tue, 16 Oct 2001 20:13:34 -0700
-  From: "H . J . Lu" <hjl@lucon.org>
+Thanks Atsushi San, the patch did help. The partition check can pass now.
+But my boot (such as: usb, ethernet, etc.) could not continue after solving
+the IDE problem.
 
-  Please test it as much as you can and report all the regressions.
+Could anybody give me a hint?
 
-H.J.,
+Thanks
 
-I've recompiled my entire system with the new binutils installed and there were
-no errors during the compilation this time.
+Hanks Li
 
-		Leonard
+
+-----Original Message-----
+From: owner-linux-mips@oss.sgi.com
+[mailto:owner-linux-mips@oss.sgi.com]On Behalf Of Atsushi Nemoto
+Sent: Tuesday, October 16, 2001 10:39 PM
+To: hli@quicklogic.com
+Cc: linux-mips@oss.sgi.com
+Subject: Re: IDE DMA mode in Big endian for mips
+
+
+>>>>> On Tue, 16 Oct 2001 10:28:56 -0400, "Hanks Li" <hli@quicklogic.com>
+said:
+hli> We are working on the IDE/ATAPI for mips. When I changed to Big
+hli> endian mode, the following information appared, and the program
+hli> hang.
+
+When I tried PCI-IDE in BigEndian (with 2.4.6 kernel), this patch
+solved my problem.
+
+--- linux/drivers/ide/ide-dma.c:1.1.1.1	Fri Jul  6 11:24:54 2001
++++ linux/drivers/ide/ide-dma.c	Fri Aug 17 20:17:30 2001
+@@ -492,7 +492,11 @@
+ 			SELECT_READ_WRITE(hwif,drive,func);
+ 			if (!(count = ide_build_dmatable(drive, func)))
+ 				return 1;	/* try PIO instead of DMA */
++#if defined(__mips__) && defined(__BIG_ENDIAN) /* XXX mips only? */
++			outl(cpu_to_le32(hwif->dmatable_dma), dma_base + 4); /* PRD table */
++#else
+ 			outl(hwif->dmatable_dma, dma_base + 4); /* PRD table */
++#endif
+ 			outb(reading, dma_base);			/* specify r/w */
+ 			outb(inb(dma_base+2)|6, dma_base+2);		/* clear INTR & ERROR flags */
+ 			drive->waiting_for_dma = 1;
+---
+Atsushi Nemoto

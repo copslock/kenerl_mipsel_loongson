@@ -1,103 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Aug 2003 05:54:26 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:23546 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8225297AbTH1EyY>;
-	Thu, 28 Aug 2003 05:54:24 +0100
-Received: from mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id VAA16109
-	for <linux-mips@linux-mips.org>; Wed, 27 Aug 2003 21:54:12 -0700
-Message-ID: <3F4D8AF3.D9BF7D51@mvista.com>
-Date: Wed, 27 Aug 2003 22:54:11 -0600
-From: Michael Pruznick <michael_pruznick@mvista.com>
-Reply-To: michael_pruznick@mvista.com
-Organization: MontaVista
-X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.4.20 i686)
-X-Accept-Language: en
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Aug 2003 09:05:30 +0100 (BST)
+Received: from ftp.mips.com ([IPv6:::ffff:206.31.31.227]:64175 "EHLO
+	mx2.mips.com") by linux-mips.org with ESMTP id <S8225297AbTH1IE6>;
+	Thu, 28 Aug 2003 09:04:58 +0100
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx2.mips.com (8.12.5/8.12.5) with ESMTP id h7S83MEY001412;
+	Thu, 28 Aug 2003 01:03:22 -0700 (PDT)
+Received: from grendel (grendel [192.168.236.16])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id BAA04101;
+	Thu, 28 Aug 2003 01:04:46 -0700 (PDT)
+Message-ID: <023201c36d3b$5ea07d20$10eca8c0@grendel>
+From: "Kevin D. Kissell" <kevink@mips.com>
+To: "Shalabh Agarwal" <sagarwal10@hotmail.com>,
+	<linux-mips@linux-mips.org>, <java-linux@blackdown.org>
+References: <Law14-F111iAwUI9NC100065ac2@hotmail.com>
+Subject: Re: JVM & JIT for MIPs processors
+Date: Thu, 28 Aug 2003 10:06:49 +0200
 MIME-Version: 1.0
-To: linux-mips@linux-mips.org
-Subject: PATCH:2.4:2.6:compile fails with outw_p() in :?
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-Return-Path: <michael_pruznick@mvista.com>
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4807.1700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4910.0300
+Return-Path: <kevink@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3098
+X-archive-position: 3099
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: michael_pruznick@mvista.com
+X-original-sender: kevink@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-Because mips uses #define with do..while(0) for outw_p (and
-not inline like other arches) herems.h fails to compile.  ?:
-requires and expr and do..while(0) is a statement.  Here are
-the compile errors followed by my proposed patches for both
-2.4 and 2.6.
+Kaffe is the only "free" Java for MIPS/Linux that I have worked with.
+There may be others, but if you don't mind paying for it, your options
+would include the Insignia Jeode technology is now owned by
+Esmertec (www.esmertec.com), and Skelmir's CEE-J (www.skelmir.com).
+I have run both of these successfully on MIPS/Linux platforms.
 
-build errors with CONFIG_HERMES=y
-hermes.h: In function `hermes_set_irqmask':
-hermes.h:337: parse error before "do"
-hermes.h:337: parse error before ';' token
-hermes.h: In function `hermes_write_words':
-
-2.4
-Index: drivers/net/wireless/hermes.h
-===================================================================
-RCS file: /home/cvs/linux/drivers/net/wireless/hermes.h,v
-retrieving revision 1.6.2.4
-diff -u -r1.6.2.4 hermes.h
---- drivers/net/wireless/hermes.h       13 Aug 2003 17:19:20 -0000      1.6.2.4
-+++ drivers/net/wireless/hermes.h       27 Aug 2003 21:37:24 -0000
-@@ -302,12 +302,14 @@
- #define hermes_read_reg(hw, off) ((hw)->io_space ? \
-        inw((hw)->iobase + ( (off) << (hw)->reg_spacing )) : \
-        readw((hw)->iobase + ( (off) << (hw)->reg_spacing )))
--#define hermes_write_reg(hw, off, val) ((hw)->io_space ? \
--       outw_p((val), (hw)->iobase + ( (off) << (hw)->reg_spacing )) : \
--       writew((val), (hw)->iobase + ( (off) << (hw)->reg_spacing )))
--
--#define hermes_read_regn(hw, name) (hermes_read_reg((hw), HERMES_##name))
--#define hermes_write_regn(hw, name, val) (hermes_write_reg((hw), HERMES_##name, (val)))
-+#define hermes_write_reg(hw, off, val) do { \
-+       if ( (hw)->io_space ) \
-+               outw_p((val), (hw)->iobase + ( (off) << (hw)->reg_spacing )); \
-+       else \
-+               writew((val), (hw)->iobase + ( (off) << (hw)->reg_spacing )); \
-+       } while (0)
-+#define hermes_read_regn(hw, name) hermes_read_reg((hw), HERMES_##name)
-+#define hermes_write_regn(hw, name, val) hermes_write_reg((hw), HERMES_##name, (val))
- 
- /* Function prototypes */
- void hermes_struct_init(hermes_t *hw, ulong address, int io_space, int reg_spacing);
+----- Original Message ----- 
+From: "Shalabh Agarwal" <sagarwal10@hotmail.com>
+To: <linux-mips@linux-mips.org>; <java-linux@blackdown.org>
+Sent: Tuesday, August 19, 2003 3:25 AM
+Subject: JVM & JIT for MIPs processors
 
 
-2.6
-Index: drivers/net/wireless/hermes.h
-===================================================================
-RCS file: /home/cvs/linux/drivers/net/wireless/hermes.h,v
-retrieving revision 1.10
-diff -u -r1.10 hermes.h
---- drivers/net/wireless/hermes.h       22 Jun 2003 23:09:54 -0000      1.10
-+++ drivers/net/wireless/hermes.h       27 Aug 2003 21:46:20 -0000
-@@ -302,12 +302,14 @@
- #define hermes_read_reg(hw, off) ((hw)->io_space ? \
-        inw((hw)->iobase + ( (off) << (hw)->reg_spacing )) : \
-        readw((hw)->iobase + ( (off) << (hw)->reg_spacing )))
--#define hermes_write_reg(hw, off, val) ((hw)->io_space ? \
--       outw_p((val), (hw)->iobase + ( (off) << (hw)->reg_spacing )) : \
--       writew((val), (hw)->iobase + ( (off) << (hw)->reg_spacing )))
--
--#define hermes_read_regn(hw, name) (hermes_read_reg((hw), HERMES_##name))
--#define hermes_write_regn(hw, name, val) (hermes_write_reg((hw), HERMES_##name, (val)))
-+#define hermes_write_reg(hw, off, val) do { \
-+       if ( (hw)->io_space ) \
-+               outw_p((val), (hw)->iobase + ( (off) << (hw)->reg_spacing )); \
-+       else \
-+               writew((val), (hw)->iobase + ( (off) << (hw)->reg_spacing )); \
-+       } while (0)
-+#define hermes_read_regn(hw, name) hermes_read_reg((hw), HERMES_##name)
-+#define hermes_write_regn(hw, name, val) hermes_write_reg((hw), HERMES_##name, (val))
- 
- /* Function prototypes */
- void hermes_struct_init(hermes_t *hw, ulong address, int io_space, int reg_spacing);
+> Hi
+> 
+> I was wondering if there are any JVM and JITs on Linux with support for the 
+> extensive Java
+> libraries and would run on MIPs machines?
+> 
+> Kaffe doesn't seem complete enough and Blackdown doesn't have a MIPs 
+> download
+> available.
+> 
+> It doesn't have to be free - we would be ready to license software. If 
+> anyone knows
+> of any companies that do this I'd appreciate the information.
+> 
+> thanks.
+> 
+> _________________________________________________________________
+> <b>MSN 8:</b> Get 6 months for $9.95/month. 
+> http://join.msn.com/?page=dept/dialup
+> 
+> 
+> 

@@ -1,50 +1,41 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id KAA39717; Fri, 18 Jul 1997 10:33:44 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id LAA60754; Fri, 18 Jul 1997 11:18:59 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id KAA27349 for linux-list; Fri, 18 Jul 1997 10:33:32 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA27335 for <linux@cthulhu.engr.sgi.com>; Fri, 18 Jul 1997 10:33:30 -0700
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id KAA18799
-	for <linux@cthulhu.engr.sgi.com>; Fri, 18 Jul 1997 10:33:29 -0700
-	env-from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-          by lager.engsoc.carleton.ca (8.8.5/8.8.4) with SMTP
-	  id NAA03745; Fri, 18 Jul 1997 13:32:57 -0400
-Date: Fri, 18 Jul 1997 13:32:57 -0400 (EDT)
-From: Alex deVries <adevries@engsoc.carleton.ca>
-To: Emmanuel Mogenet <mgix@nothingreal.com>
-cc: linux@cthulhu.engr.sgi.com
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA14564 for linux-list; Fri, 18 Jul 1997 11:18:32 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA14493 for <linux@engr.sgi.com>; Fri, 18 Jul 1997 11:18:22 -0700
+Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id LAA04097
+	for <linux@engr.sgi.com>; Fri, 18 Jul 1997 11:18:20 -0700
+	env-from (shaver@neon.ingenia.ca)
+Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id OAA20228; Fri, 18 Jul 1997 14:13:13 -0400
+From: Mike Shaver <shaver@neon.ingenia.ca>
+Message-Id: <199707181813.OAA20228@neon.ingenia.ca>
 Subject: Re: Pointers on how to get started
-In-Reply-To: <33CF9FCA.41C6@nothingreal.com>
-Message-ID: <Pine.LNX.3.95.970718132141.27101H-100000@lager.engsoc.carleton.ca>
+In-Reply-To: <Pine.LNX.3.95.970718132141.27101H-100000@lager.engsoc.carleton.ca> from Alex deVries at "Jul 18, 97 01:32:57 pm"
+To: adevries@engsoc.carleton.ca (Alex deVries)
+Date: Fri, 18 Jul 1997 14:13:13 -0400 (EDT)
+Cc: linux@cthulhu.engr.sgi.com (Linux/SGI list)
+X-Mailer: ELM [version 2.4ME+ PL28 (25)]
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+Thus spake Alex deVries:
+> How are things on the native booting front?
 
-On Fri, 18 Jul 1997, Emmanuel Mogenet wrote:
+I can boot bogomips off of local disk, but I'm seeing some wierdness
+with users and groups that I can't explain (via NFS and ext2).  I'd
+like to get strace working so I can debug it more.
 
-> Unfortunately, at this point in the project, the "How to get
-> started" part is kind of not written anywhere.
+There are also some moderately serious VFS bugs in 2.1.4[35] that are
+blocking some stuff right now.  (Can't boot diskless with .45, for
+example.)
 
-I had said that I would write this, and I will. It will be written from
-the stance of a relative newbie.
+Mike
 
-As it stands, I have some ideas on how to do this.  What I'm missing is
-the actual hardware to do it on.  As I get my system booting, I will
-document every step.
-
-The *REAL* fun for me starts when my Indy arrives, hopefully next week.
-Thanks, Ariel!
-
-> I have access to a i586-SCSI Linux system on the same network as
-> my Indy, so I guess it should make things easier (booting diskless
-> and/or making an efs filesystem on my SCSI disk on the PC)
-
-Yes, it will help.
-
-How are things on the native booting front?
-
-I had mailed Erik Troan a couple of days ago w.r.t. getting the RH install
-code for Alan and myself, but I haven't heard anything yet.
-
-- Alex
+-- 
+#> Mike Shaver (shaver@ingenia.com)      Information Warfare Division  
+#> Chief Tactical and Strategic Officer         "Saepe fidelis"        
+#>                                                                     
+#> "I like your game, but we have to change the rules." -- Anon        
+#>                                                                     

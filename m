@@ -1,68 +1,53 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id IAA04931 for <linux-archive@neteng.engr.sgi.com>; Fri, 3 Jul 1998 08:01:14 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id KAA88698 for <linux-archive@neteng.engr.sgi.com>; Fri, 3 Jul 1998 10:53:33 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id IAA46313
+	id KAA01708
 	for linux-list;
-	Fri, 3 Jul 1998 08:00:22 -0700 (PDT)
+	Fri, 3 Jul 1998 10:52:49 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id IAA85068
+	via ESMTP id KAA37571
 	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 3 Jul 1998 08:00:17 -0700 (PDT)
-	mail_from (ralf@uni-koblenz.de)
-Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) 
+	Fri, 3 Jul 1998 10:52:46 -0700 (PDT)
+	mail_from (shaver@netscape.com)
+Received: from netscape.com (h-205-217-237-47.netscape.com [205.217.237.47]) 
 	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id IAA14596
-	for <linux@cthulhu.engr.sgi.com>; Fri, 3 Jul 1998 08:00:04 -0700 (PDT)
-	mail_from (ralf@uni-koblenz.de)
-From: ralf@uni-koblenz.de
-Received: from uni-koblenz.de (ralf@dali.uni-koblenz.de [141.26.5.1])
-	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id QAA08316
-	for <linux@cthulhu.engr.sgi.com>; Fri, 3 Jul 1998 16:59:59 +0200 (MEST)
-Received: (from ralf@localhost)
-	by uni-koblenz.de (8.8.7/8.8.7) id QAA00742;
-	Fri, 3 Jul 1998 16:58:56 +0200
-Message-ID: <19980703165855.C435@uni-koblenz.de>
-Date: Fri, 3 Jul 1998 16:58:55 +0200
-To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: linux@cthulhu.engr.sgi.com
-Subject: Re: tcsh
-References: <19980622110139.F418@uni-koblenz.de> <19980703005927.48187@alpha.franken.de>
-Mime-Version: 1.0
+	via ESMTP id KAA21052
+	for <linux@cthulhu.engr.sgi.com>; Fri, 3 Jul 1998 10:52:43 -0700 (PDT)
+	mail_from (shaver@netscape.com)
+Received: from dredd.mcom.com (dredd.mcom.com [205.217.237.54])
+	by netscape.com (8.8.5/8.8.5) with ESMTP id KAA01510
+	for <linux@cthulhu.engr.sgi.com>; Fri, 3 Jul 1998 10:52:38 -0700 (PDT)
+Received: from netscape.com ([205.217.243.67]) by dredd.mcom.com
+          (Netscape Messaging Server 3.52)  with ESMTP id AAA6B8B;
+          Fri, 3 Jul 1998 10:52:37 -0700
+Message-ID: <359D1A59.AEF22BB9@netscape.com>
+Date: Fri, 03 Jul 1998 13:52:25 -0400
+From: Mike Shaver <shaver@netscape.com>
+Organization: Mozilla Dot Weenies
+X-Mailer: Mozilla 4.06 [en] (X11; I; Linux 2.0.34 i686)
+MIME-Version: 1.0
+To: Alex deVries <adevries@engsoc.carleton.ca>
+CC: SGI Linux <linux@cthulhu.engr.sgi.com>
+Subject: Re: CREDITS...
+References: <Pine.LNX.3.95.980703023709.19406B-100000@lager.engsoc.carleton.ca>
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.91.1
-In-Reply-To: <19980703005927.48187@alpha.franken.de>; from Thomas Bogendoerfer on Fri, Jul 03, 1998 at 12:59:27AM +0200
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Fri, Jul 03, 1998 at 12:59:27AM +0200, Thomas Bogendoerfer wrote:
+Alex deVries wrote:
+> Mike Shaver - various kernel work (EFS, XFree86)
 
-> On Mon, Jun 22, 1998 at 11:01:39AM +0200, ralf@uni-koblenz.de wrote:
-> > maybe anybody feels like debugging the tcsh rpm.  The lack of having
-> > a properly working csh keep several other packages from building
-> > without trickery.
-> 
-> ok, I'm pretty close. After debugging tcsh for more than three hours,
-> it looks like this is a kernel bug. I've traced it down to the following
-> code in sh.proc.c:
-> 
-> xprintf ("pp before sigpause %x\n",pp);
->         /* (void) sigpause(sigblock((sigmask_t) 0) &~ sigmask(SIGCHLD)); */
->         (void) sigpause(omask & ~sigmask(SIGCHLD));
-> xprintf ("pp after sigpause %x\n",pp);
-> 
-> pp gets clobbered by sigpause. I'll have a fast look at the kernel, maybe
-> it's easy to spot the bug.
+The only two things I worked on that actually _worked_ so far have been
+some IRIX emulation and the ancient installer.  Oh, and FedEx. =)
 
-Same result here, I found that even minimal modifications make the
-sympthoms go away.
+Mike
 
-Sigpause() is a libc routine in libc/sysdeps/posix/sigpause.c; it's either
-using sigprocmask(2) or sigsuspend(2).
-
-  Ralf
+-- 
+259296.08 216110.18

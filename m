@@ -1,175 +1,383 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Apr 2003 21:40:54 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:56567 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8225193AbTDAUkx>;
-	Tue, 1 Apr 2003 21:40:53 +0100
-Received: from zeus.mvista.com (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id MAA05070;
-	Tue, 1 Apr 2003 12:39:41 -0800
-Subject: Re: Patch to disable PCI coherency on AU1500 platforms
-From: Pete Popov <ppopov@mvista.com>
-To: Hartvig Ekner <hartvig@ekner.info>
-Cc: Linux MIPS mailing list <linux-mips@linux-mips.org>
-In-Reply-To: <3E89F17B.5EFA2E37@ekner.info>
-References: <3E898652.2717AEF2@ekner.info>
-	 <1049221843.26884.256.camel@zeus.mvista.com> <3E89F17B.5EFA2E37@ekner.info>
-Content-Type: text/plain
-Organization: MontaVista Software
-Message-Id: <1049229637.5038.173.camel@zeus.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Apr 2003 00:06:54 +0100 (BST)
+Received: from honk1.physik.uni-konstanz.de ([IPv6:::ffff:134.34.140.224]:32231
+	"EHLO honk1.physik.uni-konstanz.de") by linux-mips.org with ESMTP
+	id <S8225235AbTDAXGx>; Wed, 2 Apr 2003 00:06:53 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP
+	id C3F5F2BC2F; Wed,  2 Apr 2003 01:06:49 +0200 (CEST)
+Received: from honk1.physik.uni-konstanz.de ([127.0.0.1])
+ by localhost (honk [127.0.0.1:10024]) (amavisd-new) with ESMTP id 30039-01;
+ Wed,  2 Apr 2003 01:06:43 +0200 (CEST)
+Received: from bogon.sigxcpu.org (kons-d9bb55f4.pool.mediaWays.net [217.187.85.244])
+	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP
+	id 730BD2BC2D; Wed,  2 Apr 2003 01:06:42 +0200 (CEST)
+Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
+	id DF98C1735C; Wed,  2 Apr 2003 01:04:11 +0200 (CEST)
+Date: Wed, 2 Apr 2003 01:04:11 +0200
+From: Guido Guenther <agx@sigxcpu.org>
+To: linux-mips@linux-mips.org
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH 2.5]: IP32 enable power button
+Message-ID: <20030401230411.GQ31607@bogon.ms20.nix>
+Mail-Followup-To: Guido Guenther <agx@sigxcpu.org>,
+	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+References: <20030323184317.GE26796@bogon.ms20.nix> <20030324004614.GH26796@bogon.ms20.nix> <20030324224041.B16592@linux-mips.org>
 Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.2.3 
-Date: 01 Apr 2003 12:40:44 -0800
-Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@mvista.com>
+Content-Type: multipart/mixed; boundary="BzCohdixPhurzSK4"
+Content-Disposition: inline
+In-Reply-To: <20030324224041.B16592@linux-mips.org>
+User-Agent: Mutt/1.5.3i
+Return-Path: <agx@sigxcpu.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1897
+X-archive-position: 1898
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@mvista.com
+X-original-sender: agx@sigxcpu.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 2003-04-01 at 12:07, Hartvig Ekner wrote:
-> Sure, no problem waiting - I don't have the problem  any more :-)
-> However, if you don't have this
-> fix in your kernel, you should see massive PCI transfer errors (as I
-> did), which can explain why your "cp -a" fails.
-> OTOH, I can't explain why you don't see the same problem on the older
-> 2.4.18 kernel you mentioned was working just fine.
 
-I don't see the errors you describe.  Even if the IDE problem I'm seeing
-is caused by this bug, I still don't see 'massive' pci transfer errors.
+--BzCohdixPhurzSK4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-I'll check the errata again the silicon version I have.
-
-> HPT371 also works here (== it boots without crashing midstream during
-> boot) after updating to the latest CVS with the new IDE code. I will
-> run some stress tests to see if the residual errors (even
-> with PCI_CFG[NC] set) also occur on this controller, or only on the
-> Promise.
-
-Pete
-
-> /Hartvig
+On Mon, Mar 24, 2003 at 10:40:41PM +0100, Ralf Baechle wrote:
+> On Mon, Mar 24, 2003 at 01:46:14AM +0100, Guido Guenther wrote:
 > 
-> Pete Popov wrote:
+> > On Sun, Mar 23, 2003 at 07:43:17PM +0100, Guido Guenther wrote:
+> > > the attached patch enables the power button on IP32 and adds definitions
+> > > for the extra registers of the ds1728[57]. Please apply.
+> > Hmm...the patch that worked without problems all over the day now
+> > refuses to shut of the machine. I'll have to look into that and post a
+> > fixed version when I know whats wrong.
 > 
-> > I have a Pb1500 but like I said, I won't be able to get to it until
-> end
-> > of the month. I would really like to run some stress tests before
-> > applying such core patches.  Can you wait until I get back?
-> >
-> > Pete
-> >
-> > On Tue, 2003-04-01 at 04:30, Hartvig Ekner wrote:
-> > > The patch below sets the NC bit in the PCI_CFG register to disable HW coherency when
-> > > running non-coherent. Until now, this bit was cleared which means corruption when using PCI
-> > > DMA masters, even if the kernel was correctly compiled with CONFIG_NONCOHERENT_IO.
-> > >
-> > > Pb1500 specific notes: I don't have a PB1500, so I cannot test if it works there. Note: I also
-> > > removed what I think was an extraneous write to the PCI_CMEM register, so if somebody
-> > > could test this on a PB1500 it would be great.
-> > >
-> > > /Hartvig
-> > >
-> > >
-> > >
-> > > ______________________________________________________________________
-> > >
-> > > Index: db1x00/setup.c
-> > > ===================================================================
-> > > RCS file: /home/cvs/linux/arch/mips/au1000/db1x00/Attic/setup.c,v
-> > > retrieving revision 1.1.2.4
-> > > diff -u -r1.1.2.4 setup.c
-> > > --- db1x00/setup.c    21 Mar 2003 19:00:46 -0000      1.1.2.4
-> > > +++ db1x00/setup.c    1 Apr 2003 12:14:54 -0000
-> > > @@ -78,9 +78,8 @@
-> > >  void __init au1x00_setup(void)
-> > >  {
-> > >       char *argptr;
-> > > -     u32 pin_func, static_cfg0;
-> > > -     u32 sys_freqctrl, sys_clksrc;
-> > > -     u32 prid = read_c0_prid();
-> > > +     u32 pin_func;
-> > > +//   u32 prid = read_c0_prid();
-> > >
-> > >       argptr = prom_getcmdline();
-> > >
-> > > @@ -187,6 +186,19 @@
-> > >
-> > >  #ifdef CONFIG_BLK_DEV_IDE
-> > >       ide_ops = &std_ide_ops;
-> > > +#endif
-> > > +
-> > > +#ifdef CONFIG_PCI
-> > > +     /* Although YAMON has setup the PCI controller, some things
-> > > +        may need to change. Eventually, all the PCI initialization
-> > > +        should be done here (as in eg. ../pb1500/setup.c)
-> > > +     */
-> > > +
-> > > +#ifdef CONFIG_NONCOHERENT_IO
-> > > +     /* Must disable PCI coherency if running non-coherent */
-> > > +
-> > > +     au_writel(au_readl(Au1500_PCI_CFG) | (1<<16), Au1500_PCI_CFG);
-> > > +#endif
-> > >  #endif
-> > >
-> > >  #if 0
-> > > Index: pb1500/setup.c
-> > > ===================================================================
-> > > RCS file: /home/cvs/linux/arch/mips/au1000/pb1500/setup.c,v
-> > > retrieving revision 1.1.2.12
-> > > diff -u -r1.1.2.12 setup.c
-> > > --- pb1500/setup.c    21 Mar 2003 19:00:47 -0000      1.1.2.12
-> > > +++ pb1500/setup.c    1 Apr 2003 12:14:54 -0000
-> > > @@ -35,6 +35,7 @@
-> > >  #include <linux/console.h>
-> > >  #include <linux/mc146818rtc.h>
-> > >  #include <linux/delay.h>
-> > > +#include <linux/proc_fs.h>
-> > >
-> > >  #include <asm/cpu.h>
-> > >  #include <asm/bootinfo.h>
-> > > @@ -90,6 +91,7 @@
-> > >       char *argptr;
-> > >       u32 pin_func, static_cfg0;
-> > >       u32 sys_freqctrl, sys_clksrc;
-> > > +     u32 pcicfg;
-> > >
-> > >       argptr = prom_getcmdline();
-> > >
-> > > @@ -232,15 +234,25 @@
-> > >
-> > >  #ifdef CONFIG_PCI
-> > >       // Setup PCI bus controller
-> > > -     au_writel(0, Au1500_PCI_CMEM);
-> > > -     au_writel(0x00003fff, Au1500_CFG_BASE);
-> > > +
-> > > +     au_writel(0x00003fff, Au1500_PCI_CMEM);
-> > > +
-> > >  #if defined(__MIPSEB__)
-> > > -     au_writel(0xf | (2<<6) | (1<<4), Au1500_PCI_CFG);
-> > > +     pcicfg = 0xf | (2<<6) | (1<<4);
-> > >  #else
-> > > -     au_writel(0xf, Au1500_PCI_CFG);
-> > > +     pcicfg = 0xf;
-> > >  #endif
-> > > +
-> > > +#ifdef CONFIG_NONCOHERENT_IO
-> > > +     /* Must disable PCI coherency if running non-coherent */
-> > > +
-> > > +     pcicfg |= (1<<16);
-> > > +#endif
-> > > +
-> > > +     au_writel(pcicfg,     Au1500_PCI_CFG);
-> > > +
-> > >       au_writel(0xf0000000, Au1500_PCI_MWMASK_DEV);
-> > > -     au_writel(0, Au1500_PCI_MWBASE_REV_CCL);
-> > > +     au_writel(0,          Au1500_PCI_MWBASE_REV_CCL);
-> > >       au_writel(0x02a00356, Au1500_PCI_STATCMD);
-> > >       au_writel(0x00003c04, Au1500_PCI_HDRTYPE);
-> > >       au_writel(0x00000008, Au1500_PCI_MBAR);
-> 
-> 
+> Ok, will ignore the patch for now,
+I'm running the attached version now for quiet some time without
+problems. Should be o.k. to apply now.
+Regards,
+ -- Guido
+
+--BzCohdixPhurzSK4
+Content-Type: text/plain; charset=us-ascii
+Content-Description: ip32-pwr-button.diff
+Content-Disposition: attachment; filename="ip32-pwr-button.diff"
+
+--- ../o2-2.5.47.glaurung/arch/mips/sgi-ip32/ip32-setup.c	Thu Mar 20 02:15:31 2003
++++ arch/mips/sgi-ip32/ip32-setup.c	Sun Mar 23 19:36:27 2003
+@@ -106,8 +106,6 @@
+ 	conswitchp = &dummy_con;
+ #endif
+ 
+-	ip32_reboot_setup();
+-
+ 	rtc_ops = &ip32_rtc_ops;
+ 	board_time_init = ip32_time_init;
+         board_timer_setup = NULL;
+Index: include/asm-mips64/ip32/mace.h
+===================================================================
+RCS file: /home/cvs/linux/include/asm-mips64/ip32/mace.h,v
+retrieving revision 1.5
+diff -u -p -r1.5 mace.h
+--- include/asm-mips64/ip32/mace.h	6 Aug 2002 00:09:00 -0000	1.5
++++ include/asm-mips64/ip32/mace.h	25 Mar 2003 23:24:48 -0000
+@@ -151,8 +152,8 @@
+ #define MACEISA_PWD_CLEAR      BIT(1) /* 1=> PWD CLEAR jumper detected */
+ #define MACEISA_NIC_DEASSERT   BIT(2)
+ #define MACEISA_NIC_DATA       BIT(3)
+-#define MACEISA_LED_RED        BIT(4) /* 1=> Illuminate RED LED */
+-#define MACEISA_LED_GREEN      BIT(5) /* 1=> Illuminate GREEN LED */
++#define MACEISA_LED_RED        BIT(4) /* 0=> Illuminate RED LED */
++#define MACEISA_LED_GREEN      BIT(5) /* 0=> Illuminate GREEN LED */
+ #define MACEISA_DP_RAM_ENABLE  BIT(6)
+ 
+ /*
+--- /dev/null	Sat Mar 16 18:32:44 2002
++++ include/linux/ds17287rtc.h	Wed Mar 26 22:15:05 2003
+@@ -0,0 +1,68 @@
++/* 
++ * ds17287rtc.h - register definitions for the ds1728[57] RTC / CMOS RAM
++ *
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ * 
++ * (C) 2003 Guido Guenther <agx@sigxcpu.org>
++ *
++ */
++
++#ifndef _DS17287RTC_H
++#define _DS17287RTC_H
++
++#include <asm/io.h>
++#include <linux/rtc.h>			/* get the user-level API */
++#include <linux/spinlock.h>		/* spinlock_t */
++#include <linux/mc146818rtc.h>
++
++/* Register A */
++#define DS_REGA_DV2 0x40		/* countdown chain */
++#define DS_REGA_DV1 0x20		/* oscillator enable */
++#define DS_REGA_DV0 0x10		/* bank select */
++
++/* bank 1 registers */
++#define DS_B1_MODEL	 0x40		/* model number byte */
++#define DS_B1_SN1 	 0x41		/* serial number byte 1 */
++#define DS_B1_SN2 	 0x42		/* serial number byte 2 */
++#define DS_B1_SN3 	 0x43		/* serial number byte 3 */
++#define DS_B1_SN4 	 0x44		/* serial number byte 4 */
++#define DS_B1_SN5 	 0x45		/* serial number byte 5 */
++#define DS_B1_SN6 	 0x46		/* serial number byte 6 */
++#define DS_B1_CRC 	 0x47		/* CRC byte */
++#define DS_B1_CENTURY 	 0x48		/* Century byte */
++#define DS_B1_DALARM 	 0x49		/* date alarm */
++#define DS_B1_XCTRL4A	 0x4a		/* extendec control register 4a */
++#define DS_B1_XCTRL4B	 0x4b		/* extendec control register 4b */
++#define DS_B1_RTCADDR2 	 0x4e		/* rtc address 2 */
++#define DS_B1_RTCADDR3 	 0x4f		/* rtc address 3 */
++#define DS_B1_RAMLSB	 0x50		/* extended ram LSB */
++#define DS_B1_RAMMSB	 0x51		/* extended ram MSB */
++#define DS_B1_RAMDPORT	 0x53		/* extended ram data port */
++
++/* register details */
++/* extended control register 4a */
++#define DS_XCTRL4A_VRT2  0x80 		/* valid ram and time */
++#define DS_XCTRL4A_INCR  0x40		/* increment progress status */
++#define DS_XCTRL4A_BME   0x20		/* burst mode enable */
++#define DS_XCTRL4A_PAB   0x08		/* power active bar ctrl */
++#define DS_XCTRL4A_RF    0x04		/* ram clear flag */
++#define DS_XCTRL4A_WF    0x02		/* wake up alarm flag */
++#define DS_XCTRL4A_KF    0x01		/* kickstart flag */
++/* interrupt causes */
++#define DS_XCTRL4A_IFS	(DS_XCTRL4A_RF|DS_XCTRL4A_WF|DS_XCTRL4A_KF)
++
++/* extended control register 4b */
++#define DS_XCTRL4B_ABE   0x80 		/* auxiliary battery enable */
++#define DS_XCTRL4B_E32K	 0x40		/* enable 32.768 kHz Output */
++#define DS_XCTRL4B_CS    0x20		/* crystal select */
++#define DS_XCTRL4B_RCE   0x10		/* ram clear enable */
++#define DS_XCTRL4B_PRS   0x08		/* PAB resec select */
++#define DS_XCTRL4B_RIE   0x04		/* ram clear interrupt enable */
++#define DS_XCTRL4B_WFE   0x02		/* wake up alarm interrupt enable */
++#define DS_XCTRL4B_KFE   0x01		/* kickstart interrupt enable */
++/* interrupt enable bits */
++#define DS_XCTRL4B_IFES	(DS_XCTRL4B_RIE|DS_XCTRL4B_WFE|DS_XCTRL4B_KFE)
++
++#endif /* _DS17287RTC_H */
+Index: arch/mips/sgi-ip32/ip32-reset.c
+===================================================================
+RCS file: /home/cvs/linux/arch/mips/sgi-ip32/ip32-reset.c,v
+retrieving revision 1.1
+diff -u -p -r1.1 ip32-reset.c
+--- arch/mips/sgi-ip32/ip32-reset.c	25 Jul 2002 19:10:08 -0000	1.1
++++ arch/mips/sgi-ip32/ip32-reset.c	28 Mar 2003 11:28:47 -0000
+@@ -5,30 +5,204 @@
+  *
+  * Copyright (C) 2001 Keith M Wesolowski
+  * Copyright (C) 2001 Paul Mundt
++ * Copyright (C) 2003 Guido Guenther <agx@sigxcpu.org>
+  */
++
+ #include <linux/init.h>
++#include <linux/kernel.h>
++#include <linux/sched.h>
++#include <linux/notifier.h>
++#include <linux/delay.h>
++#include <linux/ds17287rtc.h>
+ 
++#include <asm/irq.h>
+ #include <asm/reboot.h>
+ #include <asm/sgialib.h>
++#include <asm/addrspace.h>
++#include <asm/types.h>
++#include <asm/system.h>
++#include <asm/wbflush.h>
++#include <asm/ip32/ip32_ints.h>
++
++#define POWERDOWN_TIMEOUT	120
++/*
++ * Blink frequency during reboot grace period and when paniced.
++ */
++#define POWERDOWN_FREQ		(HZ / 4)
++#define PANIC_FREQ		(HZ / 8)
++
++static struct timer_list power_timer, blink_timer, debounce_timer;
++static int shuting_down = 0, has_paniced = 0;
++
++static void ip32_machine_restart(char *command) __attribute__((noreturn));
++static void ip32_machine_halt(void) __attribute__((noreturn));
++static void ip32_machine_power_off(void) __attribute__((noreturn));
+ 
+ static void ip32_machine_restart(char *cmd)
+ {
++	if (shuting_down)
++		ip32_machine_power_off();
+ 	ArcReboot();
+ }
+ 
+ static inline void ip32_machine_halt(void)
+ {
++	if (shuting_down)
++		ip32_machine_power_off();
+ 	ArcEnterInteractiveMode();
+ }
+ 
+ static void ip32_machine_power_off(void)
+ {
+-	ip32_machine_halt();
++	volatile unsigned char reg_a, xctrl_a, xctrl_b;
++
++	disable_irq(MACEISA_RTC_IRQ);
++	reg_a = CMOS_READ(RTC_REG_A);
++
++	/* setup for kickstart & wake-up (DS12287 Ref. Man. p. 19) */
++	reg_a &= ~DS_REGA_DV2;
++	reg_a |= DS_REGA_DV1;
++
++	CMOS_WRITE(reg_a | DS_REGA_DV0, RTC_REG_A);
++	wbflush();
++	xctrl_b = CMOS_READ(DS_B1_XCTRL4B)
++		   | DS_XCTRL4B_ABE | DS_XCTRL4B_KFE;
++	CMOS_WRITE(xctrl_b, DS_B1_XCTRL4B);
++	xctrl_a = CMOS_READ(DS_B1_XCTRL4A) & ~DS_XCTRL4A_IFS;
++	CMOS_WRITE(xctrl_a, DS_B1_XCTRL4A);
++	wbflush();
++	/* adios amigos... */
++	CMOS_WRITE(xctrl_a | DS_XCTRL4A_PAB, DS_B1_XCTRL4A);
++	CMOS_WRITE(reg_a, RTC_REG_A);
++	wbflush();
++
++	while(1) {
++	  	printk(KERN_DEBUG "Power off!\n");
++	}
++}
++
++static void power_timeout(unsigned long data)
++{
++	ip32_machine_power_off();
++}
++
++static void blink_timeout(unsigned long data)
++{
++	u64 mc_led =  mace_read_64(MACEISA_FLASH_NIC_REG);
++
++	mc_led ^= MACEISA_LED_RED;
++	mace_write_64(MACEISA_FLASH_NIC_REG, mc_led);
++	mod_timer(&blink_timer, jiffies+data);
++}
++
++static void debounce(unsigned long data)
++{
++	volatile unsigned char reg_a,reg_c,xctrl_a;
++
++	reg_c = CMOS_READ(RTC_INTR_FLAGS);
++	CMOS_WRITE(reg_a | DS_REGA_DV0, RTC_REG_A);
++	wbflush();
++	xctrl_a = CMOS_READ(DS_B1_XCTRL4A);
++	if( (xctrl_a & DS_XCTRL4A_IFS ) || ( reg_c & RTC_IRQF ) ) {
++		/* Interrupt still being sent. */
++		debounce_timer.expires = jiffies + 50;
++		add_timer(&debounce_timer);
++
++		/* clear interrupt source */
++		CMOS_WRITE( xctrl_a & ~DS_XCTRL4A_IFS, DS_B1_XCTRL4A);
++		CMOS_WRITE(reg_a & ~DS_REGA_DV0, RTC_REG_A);
++		return;
++	}
++	CMOS_WRITE(reg_a & ~DS_REGA_DV0, RTC_REG_A);
++
++	if (has_paniced)
++		ArcReboot();
++
++	enable_irq(MACEISA_RTC_IRQ);
+ }
+ 
+-void __init ip32_reboot_setup(void)
++static inline void ip32_power_button(void)
+ {
++	if (has_paniced)
++		return;
++
++	if (shuting_down || kill_proc(1, SIGINT, 1)) {
++		/* No init process or button pressed twice.  */
++		ip32_machine_power_off();
++	}
++
++	shuting_down = 1;
++	blink_timer.data = POWERDOWN_FREQ;
++	blink_timeout(POWERDOWN_FREQ);
++
++	init_timer(&power_timer);
++	power_timer.function = power_timeout;
++	power_timer.expires = jiffies + POWERDOWN_TIMEOUT * HZ;
++	add_timer(&power_timer);
++}
++
++static void ip32_rtc_int(int irq, void *dev_id, struct pt_regs *regs)
++{
++	volatile unsigned char reg_c;
++
++	reg_c = CMOS_READ(RTC_INTR_FLAGS);
++	if( ! (reg_c & RTC_IRQF) ) {
++		printk(KERN_WARNING 
++			"%s: RTC IRQ without RTC_IRQF\n", __FUNCTION__);
++	}
++	/* Wait until interrupt goes away */
++	disable_irq(MACEISA_RTC_IRQ);
++	init_timer(&debounce_timer);
++	debounce_timer.function = debounce;
++	debounce_timer.expires = jiffies + 50;
++	add_timer(&debounce_timer);
++
++	printk(KERN_DEBUG "Power button pressed\n");
++	ip32_power_button();
++}
++
++static int panic_event(struct notifier_block *this, unsigned long event,
++                      void *ptr)
++{
++	u64 mc_led;
++
++	if (has_paniced)
++		return NOTIFY_DONE;
++	has_paniced = 1;
++
++	/* turn off the green LED */
++	mc_led = mace_read_64(MACEISA_FLASH_NIC_REG);
++	mc_led |= MACEISA_LED_GREEN;
++	mace_write_64(MACEISA_FLASH_NIC_REG, mc_led);
++
++	blink_timer.data = PANIC_FREQ;
++	blink_timeout(PANIC_FREQ);
++
++	return NOTIFY_DONE;
++}
++
++static struct notifier_block panic_block = {
++	.notifier_call = panic_event,
++};
++
++static __init int ip32_reboot_setup(void)
++{
++	u64 mc_led =  mace_read_64(MACEISA_FLASH_NIC_REG);
++
+ 	_machine_restart = ip32_machine_restart;
+ 	_machine_halt = ip32_machine_halt;
+ 	_machine_power_off = ip32_machine_power_off;
++	request_irq(MACEISA_RTC_IRQ, ip32_rtc_int, 0, "rtc", NULL);
++	init_timer(&blink_timer);
++	blink_timer.function = blink_timeout;
++	notifier_chain_register(&panic_notifier_list, &panic_block);
++
++	/* turn on the green led only */
++	mc_led |= MACEISA_LED_RED;
++	mc_led &= ~MACEISA_LED_GREEN;
++	mace_write_64(MACEISA_FLASH_NIC_REG, mc_led);
++
++	return 0;
+ }
++
++subsys_initcall(ip32_reboot_setup);
+
+--BzCohdixPhurzSK4--

@@ -1,111 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 May 2003 22:45:41 +0100 (BST)
-Received: from il-la.la.idealab.com ([IPv6:::ffff:63.251.211.5]:4013 "HELO
-	idealab.com") by linux-mips.org with SMTP id <S8225237AbTE3Vpj>;
-	Fri, 30 May 2003 22:45:39 +0100
-Received: (qmail 30151 invoked by uid 6180); 30 May 2003 21:45:35 -0000
-Date: Fri, 30 May 2003 14:45:35 -0700
-From: Jeff Baitis <baitisj@evolution.com>
-To: n_gale@ok.ru
-Cc: linux-mips@linux-mips.org
-Subject: Re: DBAu1500 board flash downloading
-Message-ID: <20030530144535.T29389@luca.pas.lab>
-Reply-To: baitisj@evolution.com
-References: <web-13584424@backend4.aha.ru>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Jun 2003 15:25:58 +0100 (BST)
+Received: from dvmwest.gt.owl.de ([IPv6:::ffff:62.52.24.140]:10258 "EHLO
+	dvmwest.gt.owl.de") by linux-mips.org with ESMTP
+	id <S8224827AbTFAOZ4>; Sun, 1 Jun 2003 15:25:56 +0100
+Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
+	id B0A554ABBC; Sun,  1 Jun 2003 16:25:53 +0200 (CEST)
+Date: Sun, 1 Jun 2003 16:25:53 +0200
+From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+To: linux-mips@linux-mips.org
+Subject: Re: CVS Update@-mips.org: linux
+Message-ID: <20030601142553.GA6935@lug-owl.de>
+Mail-Followup-To: linux-mips@linux-mips.org
+References: <20030601120750Z8225197-1272+2136@linux-mips.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="E8vXRijW3SOTujIP"
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <web-13584424@backend4.aha.ru>; from n_gale@ok.ru on Sat, May 31, 2003 at 12:29:57AM +0400
-Return-Path: <baitisj@idealab.com>
+In-Reply-To: <20030601120750Z8225197-1272+2136@linux-mips.org>
+User-Agent: Mutt/1.4i
+X-Operating-System: Linux mail 2.4.18 
+X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
+X-gpg-key: wwwkeys.de.pgp.net
+Return-Path: <jbglaw@dvmwest.gt.owl.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2484
+X-archive-position: 2485
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: baitisj@evolution.com
+X-original-sender: jbglaw@lug-owl.de
 Precedence: bulk
 X-list: linux-mips
 
-Serguei:
 
-Rather than building an EJTAG interface, I recommend the Raven EJTAG interface.
-It plugs into your LPT port, and will plug into the EJTAG interface on your
-DBAu1500 board.
+--E8vXRijW3SOTujIP
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-The device is available through {http://www.macraigor.com}.
+On Sun, 2003-06-01 13:07:46 +0100, ralf@linux-mips.org <ralf@linux-mips.org>
+wrote in message <20030601120750Z8225197-1272+2136@linux-mips.org>:
 
-Linux software for this device is available at {http://www.ocdemon.com/}.
+> Log message:
+> 	Merge with Linux 2.5.50.
 
-I assume that you will probably be trying to re-load YAMON onto the flash
-device. I never tried re-loading YAMON, so I cannot comment about problems you
-might have hear.
+Today's hero: Bacchus!
 
+MfG, JBG
+PS: Thinking about feeding arch with Linus' tree, the parisc one and
+l-m.org's CVS tree just to evaluate if the holy merge can be done at all
+(cf. http://www.lug-owl.de/~jbglaw/linux-ports/ ).
 
-But here's the path that I essentially followed. I co-authored a bootloader
-that can execute out of RAM, and wrote a driver for the AMD flash device.  My
-bootloader uses a chunk of hacked-up YAMON code so that an SREC can be loaded
-through serial, and I wrote a simple driver for AMD mirror-bit flash.
+Currently, I'm thinking about a 2.5.<x>-port<n> tree which I basically
+plan to feed by CVS/bk/... log mails. While at it, I'm asking for a list
+which gets complete log incl. patch sent to.
 
-The trick was to set the CP0 configuration registers over GDB so that you can
-load a bootloader into RAM, and then jump to the appropriate start address.
+Bacchus?
 
-1. Plug in the RAVEN, turn it on.
+--=20
+   Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481
+   "Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg
+    fuer einen Freien Staat voll Freier B=FCrger" | im Internet! |   im Ira=
+k!
+      ret =3D do_actions((curr | FREE_SPEECH) & ~(IRAQ_WAR_2 | DRM | TCPA));
 
-2. Set the CP0 configuration registers through GDB so that RAM will refresh
-   properly.
+--E8vXRijW3SOTujIP
+Content-Type: application/pgp-signature
+Content-Disposition: inline
 
-3. Load bootloader into uncached RAM through GDB and tell GDB to jump to
-   the bootloader entry point.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.2 (GNU/Linux)
 
-4. Use the bootloader to erase flash.
+iD8DBQE+2gzxHb1edYOZ4bsRAh6FAJ0Z7OQgnkqpO3WPR3UD6VVKC0WScgCbBzxd
+Atl1YlAd55bKpWHnVGziGOQ=
+=FpGS
+-----END PGP SIGNATURE-----
 
-5. The bootloader can also load an SREC through the serial port, and write it
-   to flash. In your case, you would load YAMON.srec, and then write it to
-   flash.
-
-Good luck. Hopefully AMD support will be able to help you, too.
-
--Jeff
-
-
-
-On Sat, May 31, 2003 at 12:29:57AM +0400, n_gale@ok.ru wrote:
-> First Name: Serguei
-> Last Name: Soloviev
-> Email: n_gale@ok.ru
-> Company: 
-> Category: DBAu1500 board question
-> 
-> Dear sirs. Few days ago I started the work with DBAu1500 
-> but unfortunatly among included software toolchain I 
-> didn't find 
-> any utility to download startup code into clean flash.
-> 
-> Does anybody have any flash programming utility wich 
-> probably works via EJTAG to download code to DBAu-flash or 
-> if I have absolutely clean or bad written flash due to 
-> uncleanly interrupted programming process for example due 
-> to power fail I need to insert it to the programmer to 
-> download boot software? 
-> I can not belive that there is no any simple utility 
-> working via LPT-port to do this.
-> Pls. help me find such utility and a primitive sheme with 
-> one HC244 and few resistors how to solder an adapter from 
-> LPT to JTAG.
-> 
->   Thank u in advance.
-> 
-> ---
-> Professional hosting for everyone - http://www.host.ru
-> 
-
--- 
-         Jeffrey Baitis - Associate Software Engineer
-
-                    Evolution Robotics, Inc.
-                     130 West Union Street
-                       Pasadena CA 91103
-
- tel: 626.535.2776  |  fax: 626.535.2777  |  baitisj@evolution.com 
+--E8vXRijW3SOTujIP--

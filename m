@@ -1,106 +1,62 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6K2A4c06165
-	for linux-mips-outgoing; Thu, 19 Jul 2001 19:10:04 -0700
-Received: from snfc21.pbi.net (mta5.snfc21.pbi.net [206.13.28.241])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6K2A2V06159
-	for <linux-mips@oss.sgi.com>; Thu, 19 Jul 2001 19:10:02 -0700
-Received: from pacbell.net ([63.194.214.47])
- by mta5.snfc21.pbi.net (iPlanet Messaging Server 5.1 (built May  7 2001))
- with ESMTP id <0GGR00KD820OL1@mta5.snfc21.pbi.net> for linux-mips@oss.sgi.com;
- Thu, 19 Jul 2001 19:10:00 -0700 (PDT)
-Date: Thu, 19 Jul 2001 19:10:07 -0700
-From: Pete Popov <ppopov@pacbell.net>
-Subject: generic ramdisk support
-To: linux-mips-kernel@lists.sourceforge.net, linux-mips@oss.sgi.com
-Reply-to: ppopov@pacbell.net
-Message-id: <3B5792FF.1030808@pacbell.net>
-MIME-version: 1.0
-Content-type: multipart/mixed; boundary=------------050502010009030901000804
-X-Accept-Language: en-us
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.2) Gecko/20010628
+	by oss.sgi.com (8.11.2/8.11.3) id f6K2YYT07661
+	for linux-mips-outgoing; Thu, 19 Jul 2001 19:34:34 -0700
+Received: from cool.coventive.com (cool.coventive.com [211.79.9.188])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6K2YWV07654
+	for <linux-mips@oss.sgi.com>; Thu, 19 Jul 2001 19:34:32 -0700
+Received: from jefflee (jungle.coventive.com [211.79.9.189])
+	by cool.coventive.com (8.10.2/8.10.2) with SMTP id f6K2XqR15865;
+	Fri, 20 Jul 2001 10:33:56 +0800
+Message-ID: <008101c110c4$de161c70$9400a8c0@jefflee>
+From: "jeff_lee" <jeff_lee@coventive.com>
+To: <ppopov@pacbell.net>, <linux-mips-kernel@lists.sourceforge.net>,
+   <linux-mips@oss.sgi.com>
+References: <3B572EFC.9090903@pacbell.net>
+Subject: Re: hard hat linux 2.0
+Date: Fri, 20 Jul 2001 10:37:02 +0800
+Organization: hardware
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="big5"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.2919.6700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-This is a multi-part message in MIME format.
---------------050502010009030901000804
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
+Hi ,
+    How can I ftp the site ??
+Do I need the user name or passward ?? 
+Or how is the port number ??
 
-Any reason why we don't have a single directory for a ramdisk linker 
-script and Makefile? I've attached that does that. You just put a 
-ramdisk.gz image in arch/mips/ramdisk and turn on initrd support. At 
-somepoint I'll upload some useful ramdisks to the sourceforge linux-mips 
-anonymous ftp site.
+Thanks !!!
+----- Original Message ----- 
+From: "Pete Popov" <ppopov@pacbell.net>
+To: <linux-mips-kernel@lists.sourceforge.net>; <linux-mips@oss.sgi.com>
+Sent: Friday, July 20, 2001 3:03 AM
+Subject: hard hat linux 2.0
 
 
-Pete
-
---------------050502010009030901000804
-Content-Type: text/plain;
- name="ramdisk.patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="ramdisk.patch"
-
-diff -Naur --exclude=CVS linux-mips-dev-orig/arch/mips/Makefile linux-mips-dev/arch/mips/Makefile
---- linux-mips-dev-orig/arch/mips/Makefile	Thu Jul 12 11:41:14 2001
-+++ linux-mips-dev/arch/mips/Makefile	Thu Jul 19 18:54:29 2001
-@@ -90,6 +90,16 @@
- CORE_FILES	+=arch/mips/math-emu/fpu_emulator.o
- SUBDIRS		+=arch/mips/math-emu
- 
-+# 
-+# ramdisk/initrd support
-+# You need a compressed ramdisk image, named ramdisk.gz in
-+# arch/mips/ramdisk
-+#
-+ifdef CONFIG_BLK_DEV_INITRD 
-+CORE_FILES      += arch/mips/ramdisk/ramdisk.o
-+SUBDIRS		+= arch/mips/ramdisk
-+endif
-+
- #
- # Board-dependent options and extra files
- #
-diff -Naur --exclude=CVS linux-mips-dev-orig/arch/mips/ramdisk/Makefile linux-mips-dev/arch/mips/ramdisk/Makefile
---- linux-mips-dev-orig/arch/mips/ramdisk/Makefile	Wed Dec 31 16:00:00 1969
-+++ linux-mips-dev/arch/mips/ramdisk/Makefile	Thu Jul 19 18:07:46 2001
-@@ -0,0 +1,22 @@
-+#
-+# Makefile for a ramdisk image
-+#
-+# Note! Dependencies are done automagically by 'make dep', which also
-+# removes any old dependencies. DON'T put your own dependencies here
-+# unless it's something special (ie not a .c file).
-+#
-+
-+ifdef CONFIG_CPU_LITTLE_ENDIAN
-+output-format   = elf32-tradlittlemips
-+else
-+output-format   = elf32-tradbigmips
-+endif
-+
-+ramdisk.o: ramdisk.gz ld.script
-+	$(LD) -T ld.script -b binary -o $@ ramdisk.gz
-+
-+ld.script: $(TOPDIR)/arch/$(ARCH)/ramdisk/ld.script.in
-+	sed 's/@@OUTPUT_FORMAT@@/$(output-format)/' <$< >$@
-+
-+include $(TOPDIR)/Rules.make
-+
-diff -Naur --exclude=CVS linux-mips-dev-orig/arch/mips/ramdisk/ld.script.in linux-mips-dev/arch/mips/ramdisk/ld.script.in
---- linux-mips-dev-orig/arch/mips/ramdisk/ld.script.in	Wed Dec 31 16:00:00 1969
-+++ linux-mips-dev/arch/mips/ramdisk/ld.script.in	Thu Jul 19 17:36:10 2001
-@@ -0,0 +1,10 @@
-+OUTPUT_FORMAT("@@OUTPUT_FORMAT@@")
-+OUTPUT_ARCH(mips)
-+SECTIONS
-+{
-+  .initrd :
-+  {
-+  	*(.data)
-+  }
-+}
-+
-
---------------050502010009030901000804--
+> Looks like ftp.mvista.com was updated last night to include the mips 
+> journeyman edition. The images of interest would be 
+> ftp.mvista.com:/pub/Journeyman/cdimages/{je-d1-hhl2.0.cdimage, 
+> je-src-hhl2.0.cdimage}.  They are rather large so it takes a while to 
+> download them.
+> 
+> In addition to the userland packages, there is an up to date cross 
+> toolchain which can build the kernel as well as useland apps. There is 
+> also a native toolchain.  The toolchain is 2.95.3 based; glibc is 2.2.3. 
+>   Since there was some perl interest recently, perl is included. 
+> Rebuilding any of the userland packages, for those interested in doing 
+> that, is pretty trivial (cross based building!).
+> 
+> This is an embedded linux distribution so it's not as large as a RedHat 
+> desktop system. For embedded work though, I think it's more than 
+> sufficient.  One note, to anyone trying it.  A number of binaries are 
+> linked with pthreads, so you'll need either the new sysmips fix that 
+> Ralf is working on, when he completes it, or the patch from Florian. 
+> Otherwise binaries like ls, tar, and many others will seg fault.
+> 
+> Pete

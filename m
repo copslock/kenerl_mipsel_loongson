@@ -1,69 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Apr 2003 21:48:23 +0100 (BST)
-Received: from port48.ds1-vbr.adsl.cybercity.dk ([IPv6:::ffff:212.242.58.113]:31016
-	"EHLO brian.localnet") by linux-mips.org with ESMTP
-	id <S8225212AbTDMUsW>; Sun, 13 Apr 2003 21:48:22 +0100
-Received: from brm by brian.localnet with local (Exim 3.36 #1 (Debian))
-	id 194oOe-0006U4-00; Sun, 13 Apr 2003 22:48:16 +0200
-To: linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: [PATCH 2.4] trivial secondary cache probe fix for R5000/NEVADA - v2
-Message-Id: <E194oOe-0006U4-00@brian.localnet>
-From: Brian Murphy <brm@murphy.dk>
-Date: Sun, 13 Apr 2003 22:48:16 +0200
-Return-Path: <brm@murphy.dk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Apr 2003 23:10:20 +0100 (BST)
+Received: from 12-234-207-60.client.attbi.com ([IPv6:::ffff:12.234.207.60]:51176
+	"HELO gateway.total-knowledge.com") by linux-mips.org with SMTP
+	id <S8225212AbTDMWKT>; Sun, 13 Apr 2003 23:10:19 +0100
+Received: (qmail 23153 invoked by uid 502); 13 Apr 2003 22:10:13 -0000
+Date: Sun, 13 Apr 2003 15:10:13 -0700
+From: ilya@theIlya.com
+To: linux-mips@linux-mips.org
+Subject: [PATCH] c-r4k.c
+Message-ID: <20030413221013.GA2217@gateway.total-knowledge.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="TB36FDmn/VVEgNH/"
+Content-Disposition: inline
+User-Agent: Mutt/1.4i
+Return-Path: <ilya@gateway.total-knowledge.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2010
+X-archive-position: 2011
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: brm@murphy.dk
+X-original-sender: ilya@theIlya.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
-How's this then?
 
-/Brian
+--TB36FDmn/VVEgNH/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Index: arch/mips/mm/c-r4k.c
-===================================================================
-RCS file: /cvs/linux/arch/mips/mm/c-r4k.c,v
-retrieving revision 1.3.2.37
-diff -u -r1.3.2.37 c-r4k.c
---- arch/mips/mm/c-r4k.c	13 Apr 2003 00:10:30 -0000	1.3.2.37
-+++ arch/mips/mm/c-r4k.c	13 Apr 2003 20:43:34 -0000
-@@ -1000,6 +1000,14 @@
- 		sc_present = probe_scache_kseg1(config);
- 		break;
- 
-+	case CPU_R5000:
-+	case CPU_NEVADA:
-+		setup_noscache_funcs();
-+#ifdef CONFIG_R5000_CPU_SCACHE
-+		r5k_sc_init();
-+#endif
-+                return;
-+
- 	default:
- 		sc_present = 0;
- 	}
-@@ -1014,17 +1022,7 @@
- 	    !(current_cpu_data.scache.flags & MIPS_CACHE_NOT_PRESENT))
- 		panic("Dunno how to handle MIPS32 / MIPS64 second level cache");
- 
--	switch (current_cpu_data.cputype) {
--	case CPU_R5000:
--	case CPU_NEVADA:
--		setup_noscache_funcs();
--#ifdef CONFIG_R5000_CPU_SCACHE
--		r5k_sc_init();
--#endif
--		break;
--	default:
--		setup_scache_funcs();
--	}
-+        setup_scache_funcs();
- }
- 
- void __init ld_mmu_r4xx0(void)
+It seems like following is needed to get mips64/mm/c-r4k.c to compile:
+
+Index: arch/mips64/mm/c-r4k.c
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+RCS file: /home/cvs/linux/arch/mips64/mm/c-r4k.c,v
+retrieving revision 1.30
+diff -u -r1.30 c-r4k.c
+--- arch/mips64/mm/c-r4k.c      13 Apr 2003 00:10:41 -0000      1.30
++++ arch/mips64/mm/c-r4k.c      13 Apr 2003 22:06:14 -0000
+@@ -1073,7 +1073,7 @@
+             PAGE_SIZE - 1);
+=20
+        flush_cache_sigtramp =3D r4k_flush_cache_sigtramp;
+-       _flush_icache_all =3D r4k_flush_icache_all;
++       flush_icache_all =3D r4k_flush_icache_all;
+        flush_data_cache_page =3D r4k_flush_data_cache_page;
+        flush_icache_range =3D r4k_flush_icache_range;    /* Ouch */
+=20
+
+
+--TB36FDmn/VVEgNH/
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.7 (GNU/Linux)
+
+iD8DBQE+meBF7sVBmHZT8w8RAmv2AKCxfZNP+5RU0jGNsPE8DK43NF6FvgCeLJNU
+HfIPRaPbJh5M1ECChhSCgtM=
+=gi84
+-----END PGP SIGNATURE-----
+
+--TB36FDmn/VVEgNH/--

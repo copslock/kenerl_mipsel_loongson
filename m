@@ -1,43 +1,49 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g2MGlbf25426
-	for linux-mips-outgoing; Fri, 22 Mar 2002 08:47:37 -0800
-Received: from ns1.ltc.com (vsat-148-63-243-254.c004.g4.mrt.starband.net [148.63.243.254])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2MGlLq25408;
-	Fri, 22 Mar 2002 08:47:22 -0800
-Received: from dev1 (unknown [10.1.1.85])
-	by ns1.ltc.com (Postfix) with ESMTP
-	id 09A13590B2; Fri, 22 Mar 2002 11:44:17 -0500 (EST)
-Received: from brad by dev1 with local (Exim 3.34 #1 (Debian))
-	id 16oSDZ-0004x8-00; Fri, 22 Mar 2002 11:48:41 -0500
-Date: Fri, 22 Mar 2002 11:48:37 -0500
-To: ralf@oss.sgi.com
-Cc: linux-mips@oss.sgi.com
-Subject: [PATCH] Clear BEV in init_traps
-Message-ID: <20020322114837.A19038@dev1.ltc.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.20i
-From: "Bradley D. LaRonde" <brad@ltc.com>
+	by oss.sgi.com (8.11.2/8.11.3) id g2MLWoL31212
+	for linux-mips-outgoing; Fri, 22 Mar 2002 13:32:50 -0800
+Received: from mx1.redhat.com (mx1.redhat.com [66.187.233.31])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g2MLWlq31209
+	for <linux-mips@oss.sgi.com>; Fri, 22 Mar 2002 13:32:47 -0800
+Received: from localhost.localdomain (int-mx1.corp.redhat.com [172.16.52.254])
+	by mx1.redhat.com (8.11.6/8.11.6) with ESMTP id g2MLX4923602
+	for <linux-mips@oss.sgi.com>; Fri, 22 Mar 2002 16:33:04 -0500
+Received: from mx.hsv.redhat.com (IDENT:root@spot.hsv.redhat.com [172.16.16.7])
+	by localhost.localdomain (8.11.6/8.11.6) with ESMTP id g2MLZAm02254
+	for <linux-mips@oss.sgi.com>; Fri, 22 Mar 2002 16:35:10 -0500
+Received: from redhat.com (dhcp-166.hsv.redhat.com [172.16.17.166])
+	by mx.hsv.redhat.com (8.11.6/8.11.0) with ESMTP id g2MLZGN08930
+	for <linux-mips@oss.sgi.com>; Fri, 22 Mar 2002 15:35:16 -0600
+Message-ID: <3C9BA339.5030709@redhat.com>
+Date: Fri, 22 Mar 2002 15:33:45 -0600
+From: Lanny DeVaney <ldevaney@redhat.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.5) Gecko/20011012
+X-Accept-Language: en-us
+MIME-Version: 1.0
+To: linux-mips@oss.sgi.com
+Subject: RTC setup
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-This used to happen in head.S, then got moved to per_cpu_trap_init, but
-that only covers secondary cpus.  This takes care of the boot cpu.
+I'm having trouble figuring out how to setup the RTC for my Linux port. 
+ My board has a Dallas DS1501WE chip, and I can't figure out the rhyme 
+or reason for the addr values passed to my rtc_write_data callback from 
+the kernel.  I know my RTC base address, and can in fact go in and look 
+and see the date/time values at that location.
 
-Regards,
-Brad
+It appears for the mips boards that have rtc support in the kernel (some 
+do not), the actual code inside these callbacks differs, but I noted 
+that the DEC references a Dallas chip, others appear to use other rtc chips.
 
-diff -urNbB -X ../diff-linux-exclude ../oss/linux-oss-2.4-2002-03-19/arch/mips/kernel/traps.c linux-encore-oss-merge/arch/mips/kernel/traps.c
---- ../oss/linux-oss-2.4-2002-03-19/arch/mips/kernel/traps.c	Tue Mar 19 20:18:36 2002
-+++ linux-encore-oss-merge/arch/mips/kernel/traps.c	Fri Mar 22 09:58:36 2002
-@@ -852,6 +852,9 @@
- 	extern char except_vec_ejtag_debug;
- 	unsigned long i;
- 
-+	/* Some firmware leaves the BEV flag set, clear it.  */
-+	clear_cp0_status(ST0_BEV);
-+
- 	/* Copy the generic exception handler code to it's final destination. */
- 	memcpy((void *)(KSEG0 + 0x80), &except_vec1_generic, 0x80);
- 	memcpy((void *)(KSEG0 + 0x100), &except_vec2_generic, 0x80);
+I would have assumed that the addr value passed to my rtc_write_data 
+callback would have been sequential in nature and I would simply return 
+the value at the (rtc_base_addr + offset passed in as addr), but the 
+addr values I see coming in are really sporadic.  
+
+Can anybody offer any suggestions, or does anybody know what the addr 
+values pased into the callback refer to?
+
+Thanks,
+Lanny DeVaney
+Red Hat, Inc.

@@ -1,67 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Apr 2004 23:24:48 +0100 (BST)
-Received: from alpha.total-knowledge.com ([IPv6:::ffff:209.157.135.102]:17595
-	"EHLO alpha.total-knowledge.com") by linux-mips.org with ESMTP
-	id <S8226007AbUDZWYq>; Mon, 26 Apr 2004 23:24:46 +0100
-Received: (qmail 13080 invoked from network); 26 Apr 2004 15:24:42 -0700
-Received: from c-67-169-17-108.client.comcast.net (HELO gateway.total-knowledge.com) (67.169.17.108)
-  by alpha.total-knowledge.com with SMTP; 26 Apr 2004 15:24:42 -0700
-Received: (qmail 14523 invoked by uid 502); 26 Apr 2004 15:24:41 -0700
-Date: Mon, 26 Apr 2004 15:24:41 -0700
-From: ilya@theIlya.com
-To: Damian Presswell <damian@clown-fish.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: Linux Mips SGI O2 R5000 IP32 INSTALL
-Message-ID: <20040426222441.GC1276@gateway.total-knowledge.com>
-References: <408D6BFC.6030902@clown-fish.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Apr 2004 02:59:37 +0100 (BST)
+Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:52981 "EHLO
+	orion.mvista.com") by linux-mips.org with ESMTP id <S8226016AbUD0B7g>;
+	Tue, 27 Apr 2004 02:59:36 +0100
+Received: from orion.mvista.com (localhost.localdomain [127.0.0.1])
+	by orion.mvista.com (8.12.8/8.12.8) with ESMTP id i3R1xWx6028466;
+	Mon, 26 Apr 2004 18:59:32 -0700
+Received: (from jsun@localhost)
+	by orion.mvista.com (8.12.8/8.12.8/Submit) id i3R1xWHN028464;
+	Mon, 26 Apr 2004 18:59:32 -0700
+Date: Mon, 26 Apr 2004 18:59:32 -0700
+From: Jun Sun <jsun@mvista.com>
+To: linux-mips@linux-mips.org,
+	high-res-timers-discourse@lists.sourceforge.net
+Cc: jsun@mvista.com
+Subject: [EXPERIMENTAL] 2.6 high resolution timer (HRT) support for MIPS
+Message-ID: <20040426185932.L19558@mvista.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <408D6BFC.6030902@clown-fish.com>
-User-Agent: Mutt/1.5.6i
-Return-Path: <ilya@gateway.total-knowledge.com>
+User-Agent: Mutt/1.2.5i
+Return-Path: <jsun@orion.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4904
+X-archive-position: 4906
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ilya@theIlya.com
+X-original-sender: jsun@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Use Gentoo.
-Also, Glaurung's kernels are bit out-od-date. Use self-built
-kernel from recent linux-mips.org CVS. In worst case, use
-one of Gentoo's kernel binaries.
 
-	Ilya.
+This set of patches add high resolution posix timer support.  
+You need to apply patches in the following order:
 
-On Mon, Apr 26, 2004 at 09:07:24PM +0100, Damian Presswell wrote:
-> My apologies if this is the wrong mailing list for this question -
-> 
-> I have recently aquired an SGI  O2 ip32 R5k box that I am trying to 
-> install linux onto -
-> 
-> I have managed to get a binary 64bit kernel to boot vis nfs and bootp() 
-> that I downloaded from Glaurungs website:
-> 
-> http://www.linux-mips.org/~glaurung/
-> 
-> however I am unsure as to the correct rootfs that I am suposed to use - 
-> I pulled down the redhat 7.1 rootfs from somewhere but it hangs when 
-> trying to start the 'local' service - and wont boot if this service is 
-> switched off -
-> 
-> I would be grateful if you could suggest where I may download a suitable 
-> rootfs and ecoff boot image that will work together on my O2 box - would 
-> hate to give in at this stage - and indeed any other help you may be 
-> able to give me as a linux mips O2 user - I will put together an updated 
-> HOWTO once I am sure exactly what I am supposed to be doing - the 
-> information and resources on this subject do seem to be a little vague -
-> 
-> thanks for your time
-> 
-> Damian
-> 
-> 
+http://linux.junsun.net/patches/oss.sgi.com/experimental/040419.a-cpu-timer.patch
+http://linux.junsun.net/patches/oss.sgi.com/experimental/040420.a-cpu-timer-for-smp.patch
+http://linux.junsun.net/patches/oss.sgi.com/experimental/040426.a-hrtimers-2.6.5-1.0.patch
+http://linux.junsun.net/patches/oss.sgi.com/experimental/040426.b-mips-hrt-2.6.patch
+
+These patches are tested on NEC Rockhopper boards and Broadcom
+bcm1250 boards (in SMP mode) against linux-mips.org CVS tree
+around April 20, 2004 (kernel 2.6.5).
+
+If you want HRT working on other boards, you need
+
+        a) make sure the board is uing cpu timer as system timer
+        b) enable CONFIG_CPU_TIMER for the board
+
+Jun

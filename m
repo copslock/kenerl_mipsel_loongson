@@ -1,39 +1,40 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id SAA767664 for <linux-archive@neteng.engr.sgi.com>; Tue, 21 Oct 1997 18:05:40 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id BAA02653 for <linux-archive@neteng.engr.sgi.com>; Wed, 22 Oct 1997 01:37:59 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id SAA25724 for linux-list; Tue, 21 Oct 1997 18:03:32 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id SAA25700; Tue, 21 Oct 1997 18:03:29 -0700
-Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id SAA12569; Tue, 21 Oct 1997 18:03:27 -0700
-	env-from (shaver@neon.ingenia.ca)
-Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id VAA03679; Tue, 21 Oct 1997 21:01:29 -0400
-From: Mike Shaver <shaver@neon.ingenia.ca>
-Message-Id: <199710220101.VAA03679@neon.ingenia.ca>
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id BAA00583 for linux-list; Wed, 22 Oct 1997 01:37:26 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id BAA00578; Wed, 22 Oct 1997 01:37:23 -0700
+Received: from bentley.socsci.auc.dk (bentley.socsci.auc.dk [130.225.60.48]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id BAA13901; Wed, 22 Oct 1997 01:37:20 -0700
+	env-from (mkp@socsci.auc.dk)
+Received: from jaguar.socsci.auc.dk (jaguar.socsci.auc.dk [130.225.60.49]) by bentley.socsci.auc.dk (8.8.5/8.7.1) with ESMTP id KAA27844; Wed, 22 Oct 1997 10:37:18 +0200
+Received: (from mkp@localhost) by jaguar.socsci.auc.dk (8.8.5/8.6.12) id KAA14967; Wed, 22 Oct 1997 10:35:18 +0200
+To: ariel@cthulhu.engr.sgi.com (Ariel Faigon)
+Cc: linux@cthulhu.engr.sgi.com (SGI/Linux mailing list)
 Subject: Re: SGI/Linux mirrors
-In-Reply-To: <199710220014.RAA05812@oz.engr.sgi.com> from Ariel Faigon at "Oct 21, 97 05:14:23 pm"
-To: ariel@cthulhu.engr.sgi.com
-Date: Tue, 21 Oct 1997 21:01:29 -0400 (EDT)
-Cc: linux@cthulhu.engr.sgi.com
-X-Mailer: ELM [version 2.4ME+ PL28 (25)]
-MIME-Version: 1.0
+References: <199710220014.RAA05812@oz.engr.sgi.com>
+Organization: Computing Dept. 1&2, Aalborg University
+X-Face: ({%T;F${m<}wr[*K`gT|vs1m&kDfl(^PsxTnmb)FL4<KU0dsk*ebU1y~qsqb*yJv1KjHfK: 7:w~Iz''8)risf1f59v:Yfb_lRr1g7>!_$=dj|NG~.SNrq-qxsT]}i>DP.("XEmucViR>9iEl?,!C1 2p,ST@1)zEW+Kb'iJ,c6~O`BWjCoY42jmV
+From: Martin Kasper Petersen <mkp@socsci.auc.dk>
+Date: 22 Oct 1997 10:35:18 +0200
+In-Reply-To: ariel@oz.engr.sgi.com's message of "Tue, 21 Oct 1997 17:14:23 -0700 (PDT)"
+Message-ID: <yq1wwj6i4ah.fsf@jaguar.socsci.auc.dk>
+X-Mailer: Gnus v5.4.65/XEmacs 19.15
+Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Thus spake Ariel Faigon:
-> Anyone has a stable precompiled Kernel we can put on linus ?
-> It seems that someone deleted the old kernel that was there
-> and now people cannot try the stuff.
+>>>>> "Ariel" == Ariel Faigon <ariel@oz.engr.sgi.com> writes:
 
-ftp://ftp.linux.sgi.com/pub/test/vmlinux-970916-efs.gz
-is what I was using for a while before I left.  It doesn't have
-Miguel's fancy graphics stuff, and I'm not putting any bets on the EFS
-code, but the core stuff should work.
+Ariel> Hi, More interest in SGI/Linux around the world.  I was
+Ariel> contacted by admins in three sites (Korea, Poland, and the
+Ariel> Czech republic) who started mirroring our stuff.
 
-Mike
+As promised we will set up a mirror on SunSITE.auc.dk. Our new 7x9GB
+RAID arrived yesterday, and as soon as we've got it up and running
+I'll get back to you.
+
+/Martin
 
 -- 
-#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
-#>       Chief System Architect -- Head geek -- System exorcist        
-#>                                                                     
-#>   "Have you considered a life?  I hear they're quite affordable     
-#>          these days." --- shields@tembel.org                        
+Martin Kasper Petersen			BOFH, IC1&2, Aalborg University, DK
+mailto:mkp@SunSITE.auc.dk		http://www.socsci.auc.dk/~mkp/

@@ -1,30 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Jan 2004 17:32:45 +0000 (GMT)
-Received: from sccrmhc12.comcast.net ([IPv6:::ffff:204.127.202.56]:32227 "EHLO
-	sccrmhc12.comcast.net") by linux-mips.org with ESMTP
-	id <S8225342AbUAWRcp>; Fri, 23 Jan 2004 17:32:45 +0000
-Received: from stretchinc.com (c-24-6-127-138.client.comcast.net[24.6.127.138])
-          by comcast.net (sccrmhc12) with SMTP
-          id <2004012317323801200296t6e>; Fri, 23 Jan 2004 17:32:38 +0000
-Message-ID: <401159BF.6000002@stretchinc.com>
-Date: Fri, 23 Jan 2004 09:28:31 -0800
-From: Bridget McNamara-Yeager <bridget@stretchinc.com>
-User-Agent: Mozilla/5.0 (Windows; U; Win 9x 4.90; en-US; rv:1.0.2) Gecko/20021120 Netscape/7.01
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Jan 2004 18:03:32 +0000 (GMT)
+Received: from web40801.mail.yahoo.com ([IPv6:::ffff:66.218.78.178]:5920 "HELO
+	web40801.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S8225426AbUAWSDc>; Fri, 23 Jan 2004 18:03:32 +0000
+Message-ID: <20040123180324.6255.qmail@web40801.mail.yahoo.com>
+Received: from [12.39.100.98] by web40801.mail.yahoo.com via HTTP; Fri, 23 Jan 2004 10:03:24 PST
+Date: Fri, 23 Jan 2004 10:03:24 -0800 (PST)
+From: Jiahan Chen <jiahanchen@yahoo.com>
+Subject: Re: Unscribe this mail list
 To: linux-mips@linux-mips.org
-Subject: Unscribe this mail list
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <bridget@stretchinc.com>
+In-Reply-To: <401159BF.6000002@stretchinc.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <jiahanchen@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4121
+X-archive-position: 4122
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bridget@stretchinc.com
+X-original-sender: jiahanchen@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-Unscribe this mail list.  This is a second request from me, thank you.
+
+I have sent to this address and management address for
+un-subscription before, however, nothing happens.
+
+The Maillist management person: Please take an action now!
+Thank you!
+ 
+--- Bridget McNamara-Yeager <bridget@stretchinc.com> wrote:
+> Unscribe this mail list.  This is a second request from me, thank you.
+> 
+> 
+> 
+> 
+> 
+
+
+__________________________________
+Do you Yahoo!?
+Yahoo! SiteBuilder - Free web site building tool. Try it!
+http://webhosting.yahoo.com/ps/sb/

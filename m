@@ -1,74 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jul 2004 13:02:27 +0100 (BST)
-Received: from jurand.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.2]:64971 "EHLO
-	jurand.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8224924AbUGNMCW>; Wed, 14 Jul 2004 13:02:22 +0100
-Received: by jurand.ds.pg.gda.pl (Postfix, from userid 1011)
-	id 990AE36DB2; Wed, 14 Jul 2004 14:02:15 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by jurand.ds.pg.gda.pl (Postfix) with ESMTP
-	id B8A3235196; Wed, 14 Jul 2004 14:02:15 +0200 (CEST)
-Date: Wed, 14 Jul 2004 14:02:15 +0200 (CEST)
-From: "Maciej W. Rozycki" <macro@linux-mips.org>
-To: "Kevin D. Kissell" <KevinK@mips.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>,
-	S C <theansweriz42@hotmail.com>, linux-mips@linux-mips.org
-Subject: Re: Strange, strange occurence
-In-Reply-To: <003301c468ee$80c5fa60$0deca8c0@Ulysses>
-Message-ID: <Pine.LNX.4.55.0407141235120.4513@jurand.ds.pg.gda.pl>
-References: <BAY2-F21njXXBARdkfw0003b0c8@hotmail.com> <20040710100412.GA23624@linux-mips.org>
- <00ba01c46823$3729b200$0deca8c0@Ulysses> <20040713003317.GA26715@linux-mips.org>
- <003301c468ee$80c5fa60$0deca8c0@Ulysses>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jul 2004 13:43:25 +0100 (BST)
+Received: from dvmwest.gt.owl.de ([IPv6:::ffff:62.52.24.140]:27309 "EHLO
+	dvmwest.gt.owl.de") by linux-mips.org with ESMTP
+	id <S8224924AbUGNMnU>; Wed, 14 Jul 2004 13:43:20 +0100
+Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
+	id 412764B71B; Wed, 14 Jul 2004 14:43:18 +0200 (CEST)
+Date: Wed, 14 Jul 2004 14:43:18 +0200
+From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+To: linux-mips@linux-mips.org
+Subject: Re: Help with MOP network boot install on DECstation 5000/240
+Message-ID: <20040714124318.GQ2019@lug-owl.de>
+Mail-Followup-To: linux-mips@linux-mips.org
+References: <BAY2-F21njXXBARdkfw0003b0c8@hotmail.com> <20040710100412.GA23624@linux-mips.org> <00ba01c46823$3729b200$0deca8c0@Ulysses> <20040713003317.GA26715@linux-mips.org> <000701c468ae$141c3e50$0a9913ac@swift> <20040713080320.GC18841@lug-owl.de> <000e01c4696f$f65cf4f0$0a9913ac@swift>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="FmdPcZLZZW6lDAYm"
+Content-Disposition: inline
+In-Reply-To: <000e01c4696f$f65cf4f0$0a9913ac@swift>
+X-Operating-System: Linux mail 2.4.18 
+X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
+X-gpg-key: wwwkeys.de.pgp.net
+User-Agent: Mutt/1.5.6i
+Return-Path: <jbglaw@dvmwest.gt.owl.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5468
+X-archive-position: 5469
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: jbglaw@lug-owl.de
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 13 Jul 2004, Kevin D. Kissell wrote:
 
-> > That's a new restriction in MIPS32 v2.0 and you're right, we're not trying
-> > to deal with it yet except for the TX49xx.
-> 
-> I'm pretty sure that restriction is not new to MIPS32 v2.0.  In any
+--FmdPcZLZZW6lDAYm
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
- The restriction was apparently added in revision 1.00 of the MIPS32
-architecture vol.II document.  I don't have that revision -- I have
-versions 0.95 and 2.00 only -- without looking at the revision history in
-2.00 I'd expect the original MIPS32 spec not to enforce such a
-restriction, either.
+On Wed, 2004-07-14 14:57:52 +0800, Collin Baillie <collin@xorotude.com>
+wrote in message <000e01c4696f$f65cf4f0$0a9913ac@swift>:
+> > [Thanks for *not* hijacking threads]
+> > Maybe you'd try Debian's install image?
+>=20
+> Maybe, but on a _shared_ 31.2k dialup link, it takes a while to download.=
+=2E.
+> and other people tend to get upset... I am using jigdo to get the 4 - 6 I=
+SO
 
-> case, there are pre-MIPS32/MIPS64 chips in current mass production
-> and use, under Linux among other OSes, which specify in their user
-> manuals that one should not invalidate the Icache line from which one
-> is currently executing.  The clause about unpredictable behavior in
-> that case went into the MIPS32 spec because it was known that such
-> parts existed, and we wanted to make it as easy as possible for such 
-> designs to be made compliant
+It's only a couple of megabytes, not a number of CD images.
 
- Ugh, although I can imagine valid arguments for such a decision.
+> I've read that MOP images usually have some special header in them (NetBSD
+> website) and someone mentioned that mopd-linux will fudge those headers if
+> the kernel doesn't have them... or something...
 
-> Invalidating the entire Icache with a routine executing out of the Icache
-> is a Bad Idea, and will almost certainly cause problems some of the time
-> on some MIPS processors.  Reasonable people could disagree on whether
-> we want to handle that in the generic code, or create a variant icache flush 
-> routine which gets plugged in only for those parts that really need it.
+Right, eg. Maciej's MOPD does that.
 
- As executing code from an uncached space is terribly slow, there are at
-least two points of optimization:
+MfG, JBG
 
-1. The Icache invalidation handler should run cached on processors known
-to handle it gracefully.
+--=20
+   Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481
+   "Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg
+    fuer einen Freien Staat voll Freier B=FCrger" | im Internet! |   im Ira=
+k!
+   ret =3D do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM | TC=
+PA));
 
-2. For others, as you suggest, it should attempt to figure out whether its
-code may invalidate itself and run uncached then, perhaps for the
-problematic lines only.
+--FmdPcZLZZW6lDAYm
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
 
-  Maciej
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.4 (GNU/Linux)
+
+iD8DBQFA9SplHb1edYOZ4bsRArbnAJ95Lq0KBZFfoI/fSXFeQCt1jW4usgCfR5bs
+h18Nq15W9aCl+Fy8T66112w=
+=WaV8
+-----END PGP SIGNATURE-----
+
+--FmdPcZLZZW6lDAYm--

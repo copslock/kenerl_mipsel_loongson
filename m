@@ -1,63 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Feb 2004 22:57:45 +0000 (GMT)
-Received: from mail.convergence.de ([IPv6:::ffff:212.84.236.4]:21223 "EHLO
-	mail.convergence.de") by linux-mips.org with ESMTP
-	id <S8225268AbUBCW5p>; Tue, 3 Feb 2004 22:57:45 +0000
-Received: from pd9e71b79.dip.t-dialin.net ([217.231.27.121] helo=abc.local)
-	by mail.convergence.de with asmtp (TLSv1:DES-CBC3-SHA:168)
-	(Exim 4.30)
-	id 1Ao9SW-0003v4-JV
-	for linux-mips@linux-mips.org; Tue, 03 Feb 2004 23:55:56 +0100
-Received: from js by abc.local with local (Exim 3.35 #1 (Debian))
-	id 1Ao9WT-00013d-00
-	for <linux-mips@linux-mips.org>; Wed, 04 Feb 2004 00:00:01 +0100
-Date: Wed, 4 Feb 2004 00:00:01 +0100
-From: Johannes Stezenbach <js@convergence.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Feb 2004 13:36:45 +0000 (GMT)
+Received: from law10-f113.law10.hotmail.com ([IPv6:::ffff:64.4.15.113]:29188
+	"EHLO hotmail.com") by linux-mips.org with ESMTP
+	id <S8225217AbUBDNgo>; Wed, 4 Feb 2004 13:36:44 +0000
+Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
+	 Wed, 4 Feb 2004 05:36:37 -0800
+Received: from 63.121.54.5 by lw10fd.law10.hotmail.msn.com with HTTP;
+	Wed, 04 Feb 2004 13:36:37 GMT
+X-Originating-IP: [63.121.54.5]
+X-Originating-Email: [juszczec@hotmail.com]
+X-Sender: juszczec@hotmail.com
+From: "Mark and Janice Juszczec" <juszczec@hotmail.com>
 To: linux-mips@linux-mips.org
-Subject: Re: dietlibc nash  pic/non-pic errors
-Message-ID: <20040203230001.GB1667@convergence.de>
-Mail-Followup-To: Johannes Stezenbach <js@convergence.de>,
-	linux-mips@linux-mips.org
-References: <4020137E.9020005@savages.net>
+Subject: FW: Ecartis command results: No commands found
+Date: Wed, 04 Feb 2004 13:36:37 +0000
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4020137E.9020005@savages.net>
-User-Agent: Mutt/1.5.5.1+cvs20040105i
-Return-Path: <js@convergence.de>
+Content-Type: text/plain; format=flowed
+Message-ID: <Law10-F1136sJ9amqkh00004c6e@hotmail.com>
+X-OriginalArrivalTime: 04 Feb 2004 13:36:37.0773 (UTC) FILETIME=[E9F053D0:01C3EB23]
+Return-Path: <juszczec@hotmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4272
+X-archive-position: 4273
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: js@convergence.de
+X-original-sender: juszczec@hotmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Shaun Savage wrote:
-> I am want to cross compile dietlibc and nash(mkinitrd).
-> 
-> I can cross compile static mipsel dietlibc libs
-> but when I try to link it with nash I get
->   the pic and non-pic error,  can't merge
-> 
-> I have gotten QPDF, SD on linux, busybox and ulibc cross compiled and 
-> working, so I sort of know what I am doing.
-> 
-> I am using Maciej toolchain
 
-- check that everything is compiled with '-fno-pic -mno-abicalls -G 0'
-- you must have either a non-pic libgcc or make sure your programs
-  don't need libgcc
 
-The standard configuration of gcc for mipsel-linux creates a
-PIC libgcc only, so if you need a non-pic libgcc you must hack
-the gcc configuration and rebuild your toolchain.
 
-Or alternatively you can compile dietlibc as PIC
-(remove '-fno-pic -mno-abicalls' from mips/Makefile.add
-and diet.c).
+Hi folks
 
-HTH,
-Johannes
+What does -msoft-float do on the r3912 processesor? Some programs I cross
+compile must have it specified, others don't. I can't figure out why.
+
+Mark
+
+_________________________________________________________________
+Let the new MSN Premium Internet Software make the most of your high-speed 
+experience. http://join.msn.com/?pgmarket=en-us&page=byoa/prem&ST=1

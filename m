@@ -1,33 +1,66 @@
-Received:  by oss.sgi.com id <S553809AbRALPL2>;
-	Fri, 12 Jan 2001 07:11:28 -0800
-Received: from brutus.conectiva.com.br ([200.250.58.146]:47613 "EHLO
-        lappi.waldorf-gmbh.de") by oss.sgi.com with ESMTP
-	id <S553803AbRALPLI>; Fri, 12 Jan 2001 07:11:08 -0800
-Received: (ralf@lappi.waldorf-gmbh.de) by bacchus.dhis.org
-	id <S867213AbRALO6T>; Fri, 12 Jan 2001 12:58:19 -0200
-Date:	Fri, 12 Jan 2001 12:58:10 -0200
-From:	Ralf Baechle <ralf@oss.sgi.com>
-To:	"Kelly, George" <George.Kelly@jacobs.com>
-Cc:	linux-mips@oss.sgi.com
-Subject: Re: New to the list - is there a kernel available for O2s
-Message-ID: <20010112125810.B6788@bacchus.dhis.org>
-References: <E7A7908C953FD311A21E0050049C4A990205675A@phint16.jacobs.com>
-Mime-Version: 1.0
+Received:  by oss.sgi.com id <S553673AbRALS6j>;
+	Fri, 12 Jan 2001 10:58:39 -0800
+Received: from gateway-1237.mvista.com ([12.44.186.158]:19958 "EHLO
+        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553652AbRALS6S>;
+	Fri, 12 Jan 2001 10:58:18 -0800
+Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
+	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f0CItcC30970;
+	Fri, 12 Jan 2001 10:55:38 -0800
+Message-ID: <3A5F53CB.F8EC3947@mvista.com>
+Date:   Fri, 12 Jan 2001 10:58:19 -0800
+From:   Jun Sun <jsun@mvista.com>
+X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-5.0 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To:     "Kevin D. Kissell" <kevink@mips.com>
+CC:     linux-mips@oss.sgi.com
+Subject: Re: broken RM7000 in CVS ...
+References: <3A5E7FFB.79925DF9@mvista.com> <001e01c07c68$96155f80$0deca8c0@Ulysses>
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <E7A7908C953FD311A21E0050049C4A990205675A@phint16.jacobs.com>; from George.Kelly@jacobs.com on Fri, Jan 12, 2001 at 09:11:36AM -0500
-X-Accept-Language: de,en,fr
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Fri, Jan 12, 2001 at 09:11:36AM -0500, Kelly, George wrote:
+"Kevin D. Kissell" wrote:
+> 
+> Yes, arguably the mips_cpu structure could also contain
+> a descriptor of the MMU routines to bind, and it probably
+> would have if it would have been a simple matter of an
+> address/length of a vector to copy.  But heck, it could
+> be a function pointer as well, I suppose.
+> 
 
-> New to the list, is there a kernel available for O2s.  I have about 11 O2s
-> and an O200 that I want to test with Linux.
+I think that is a good idea.  I suggest we have two more pointers in the
+mips_cpu strcuture : one to mips_mmu_ops structure, and the other to
+setup_exception_vectors() function.
 
-No kernel for O2 - yet.
+BTW, I have a question about MIPS32 (or 4KC).  Do all MIPS32 CPUs have the
+same PRID?  Or all "incarnations" of 4KC have the same PRID?  I suppose MIPS32
+CPUs have a more complete config register where you can probe for all the
+options.  For others we can use a table-like structure to fill in the options.
 
-  Ralf
+Along this line, it probably makes sense to have another pointer to
+mips_cpu_config() function, where for MIPS32 it is the standard MIPS32 config
+probing function and for most others it is NULL.
+
+Now the mips_cpu_table looks like :
+
+struct mips_cpu mips_cpu_table[]={
+	{ PRID_IMP_4KC, mips32_cpu_config},
+	{ PRID_IMP_RM7K, null, 0xaaa, {...}}
+	.....
+};
+
+The cpu_probe() routine will now look like:
+{
+   read prid register
+   find mips_cpu_table[i] with matching PRID.
+   mips_cpu = &mips_cpu_table[i];
+   if (mips_cpu->mips_cpu_config) mips_cpu->mips_cpu_config();
+}
+
+To me this is beautiful. Am I dreaming? :-)
+
+Jun

@@ -1,33 +1,47 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f33A1P629304
-	for linux-mips-outgoing; Tue, 3 Apr 2001 03:01:25 -0700
-Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f339xuM29260
-	for <linux-mips@oss.sgi.com>; Tue, 3 Apr 2001 03:00:27 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id LAA26637;
-	Tue, 3 Apr 2001 11:52:18 +0200 (MET DST)
-Date: Tue, 3 Apr 2001 11:52:18 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
-cc: Florian Lohoff <flo@rfc822.org>, "Kevin D. Kissell" <kevink@mips.com>,
-   "MIPS/Linux List (SGI)" <linux-mips@oss.sgi.com>
-Subject: Re: Dumb Question on Cross-Development
-In-Reply-To: <Pine.GSO.4.10.10104030810220.11969-100000@escobaria.sonytel.be>
-Message-ID: <Pine.GSO.3.96.1010403115056.25523D-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.3/8.11.3) id f33Flw006621
+	for linux-mips-outgoing; Tue, 3 Apr 2001 08:47:58 -0700
+Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f33FlvM06618
+	for <linux-mips@oss.sgi.com>; Tue, 3 Apr 2001 08:47:57 -0700
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 991317F7; Tue,  3 Apr 2001 17:47:55 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 71A3EF035; Tue,  3 Apr 2001 17:47:49 +0200 (CEST)
+Date: Tue, 3 Apr 2001 17:47:49 +0200
+From: Florian Lohoff <flo@rfc822.org>
+To: linux-mips@oss.sgi.com
+Subject: sgiwd93 multiple disk problem
+Message-ID: <20010403174749.B4135@paradigm.rfc822.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.3.15i
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, 3 Apr 2001, Geert Uytterhoeven wrote:
 
-> So if you would have a `cross ldd', things would be better?
+Hi,
+i guess Ryan Murray has stumbled over the multiple disk problem
+on one of my machines again - I would like to fix that bug if i am able to.
 
- Everything is already in place -- readelf might be used, for example. 
-See my other letter. 
+My first suspicion was garbled DMA transfers which might happen if starting
+a new DMA transfer when thge last is still running. So i tried
+to add this to 
 
+drivers/scsi/sgiwd93.c:dma_setup
+
+    105 
+    106         if (hregs->ctrl & HPC3_SCTRL_ACTIVE)
+    107                 BUG();
+    108 
+
+This doesnt seem to get triggered. 
+
+Does anyone have another idea what happens ?
+
+Flo
 -- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+     Why is it called "common sense" when nobody seems to have any?

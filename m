@@ -1,80 +1,64 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0UKngn21677
-	for linux-mips-outgoing; Wed, 30 Jan 2002 12:49:42 -0800
-Received: from sgi.com (sgi-too.SGI.COM [204.94.211.39])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0UKnYd21673;
-	Wed, 30 Jan 2002 12:49:35 -0800
-Received: from host099.momenco.com (www.momenco.com [64.169.228.99]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id LAB02959; Wed, 30 Jan 2002 11:47:20 -0800 (PST)
-	mail_from (mdharm@momenco.com)
-Received: from beagle (beagle.internal.momenco.com [192.168.0.115])
-	by host099.momenco.com (8.11.6/8.11.6) with SMTP id g0UJX6X00553;
-	Wed, 30 Jan 2002 11:33:06 -0800
-From: "Matthew Dharm" <mdharm@momenco.com>
-To: "Ralf Baechle" <ralf@oss.sgi.com>
-Cc: "Linux-MIPS" <linux-mips@oss.sgi.com>
-Subject: RE: Does Linux invalidate TLB entries?
-Date: Wed, 30 Jan 2002 11:33:06 -0800
-Message-ID: <NEBBLJGMNKKEEMNLHGAIOECICFAA.mdharm@momenco.com>
+	by oss.sgi.com (8.11.2/8.11.3) id g0UL2VH22374
+	for linux-mips-outgoing; Wed, 30 Jan 2002 13:02:31 -0800
+Received: from skip-ext.ab.videon.ca (skip-ext.ab.videon.ca [206.75.216.36])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0UL2Qd22367
+	for <linux-mips@oss.sgi.com>; Wed, 30 Jan 2002 13:02:26 -0800
+Received: (qmail 26816 invoked from network); 30 Jan 2002 20:02:23 -0000
+Received: from unknown (HELO wakko.deltatee.com) ([24.86.210.128]) (envelope-sender <jgg@debian.org>)
+          by skip-ext.ab.videon.ca (qmail-ldap-1.03) with SMTP
+          for <macro@ds2.pg.gda.pl>; 30 Jan 2002 20:02:23 -0000
+Received: from localhost
+	([127.0.0.1] helo=wakko.deltatee.com ident=jgg)
+	by wakko.deltatee.com with smtp (Exim 3.16 #1 (Debian))
+	id 16W0w2-0002vS-00; Wed, 30 Jan 2002 13:02:22 -0700
+Date: Wed, 30 Jan 2002 13:02:21 -0700 (MST)
+From: Jason Gunthorpe <jgg@debian.org>
+X-Sender: jgg@wakko.deltatee.com
+Reply-To: Jason Gunthorpe <jgg@debian.org>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+cc: linux-mips@fnet.fr, linux-mips@oss.sgi.com
+Subject: Re: [patch] linux 2.4.17: An mb() rework
+In-Reply-To: <Pine.GSO.3.96.1020130151155.2880D-100000@delta.ds2.pg.gda.pl>
+Message-ID: <Pine.LNX.3.96.1020130123109.11192A-100000@wakko.deltatee.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
-In-Reply-To: <20020130120250.C3313@dea.linux-mips.net>
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
-Importance: Normal
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Damn.  The entire line of processors from the RM7000 to the 7000A,
-7000B, 7061A, and 7065A all have a bug which involves invalid TLB
-entries.
 
-I've sent the errata to Ralf only for review.  Basically, under
-certain circumstances the processor will take the "TLB refill"
-exception vector instead of the "TLB invalid" vector.
+On Wed, 30 Jan 2002, Maciej W. Rozycki wrote:
 
-Matt
+> worse, recently I've identified a case it doesn't work at all on an
+> R4400SC CPU -- values written to an i/o memory resource were not committed
+> to the device even after executing over 40 subsequent instructions. 
 
---
-Matthew D. Dharm                            Senior Software Designer
-Momentum Computer Inc.                      1815 Aston Ave.  Suite 107
-(760) 431-8663 X-115                        Carlsbad, CA 92008-7310
-Momentum Works For You                      www.momenco.com
+Nice patch!
 
-> -----Original Message-----
-> From: Ralf Baechle [mailto:ralf@oss.sgi.com]
-> Sent: Wednesday, January 30, 2002 3:03 AM
-> To: Matthew Dharm
-> Cc: Linux-MIPS
-> Subject: Re: Does Linux invalidate TLB entries?
->
->
-> On Tue, Jan 29, 2002 at 05:03:42PM -0800, Matthew Dharm wrote:
->
-> > I'm still trying to track down the cause of all my
-> problems, so I'm
-> > going over the RM7000 errata.
-> >
-> > I see one here that I'm not sure if it's a problem or
-> not.  It only
-> > applies to OSes which invalidate TLB entries and thus
-> will cause TLB
-> > Invalid exceptions (as opposed to a TLB refill exception,
-> I think).
-> >
-> > So, does Linux invalidate TLBs?  I've been looking at the
-> code, and I
-> > think the answer is 'no', but I'm not really sure.
->
-> Yes, Linux may create TLB entries with V=0.
->
->   Ralf
->
+I was under the impression that the mb() functions existed to maintain
+order of memory access and were not defined as flushes per say - so is
+the time delay a concern (perhaps sticking a sync before ERET is
+appropriate?)
+
+I spent some time talking with the Sandcraft people about memory barrier
+issues, and it turns out that at least on the SR71000 (and in most cases
+the RM7K) the order of SysAD transactions will always match the order of
+the instruction stream, but all writes are posted and all reads are split
+- that is the CPU can execute two back to back uncached loads and several
+back to back uncached stores without stalling the pipeline, or getting the
+IO's out of order. Adding sync's and uncached loads only slows things down
+for these chips. 
+
+I understand this is because the CPUs have a single load/store unit and do
+not do out of order execution. Many older/embedded MIPS designs probably
+have a similar configuration, they could likely also run with out the
+syncs. 
+
+So - could you add something like CONFIG_IN_ORDER_IO which would nullify
+the syncs for these processors?
+
+BTW, does anyone know what CONFIG_WB is ment to mean? The CPU has a write
+buffer that does not preserve order? 
+
+Thanks,
+Jason

@@ -1,57 +1,37 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f4SKKIq02722
-	for linux-mips-outgoing; Mon, 28 May 2001 13:20:18 -0700
-Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f4SKJkd02699
-	for <linux-mips@oss.sgi.com>; Mon, 28 May 2001 13:19:47 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA23240;
-	Mon, 28 May 2001 15:59:30 +0200 (MET DST)
-Date: Mon, 28 May 2001 15:59:29 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: "Kevin D. Kissell" <kevink@mips.com>
-cc: Daniel Jacobowitz <dan@debian.org>, linux-mips@oss.sgi.com
-Subject: Re: [PATCH] incorrect asm constraints for ll/sc constructs
-In-Reply-To: <005901c0e77c$dae9f2e0$0deca8c0@Ulysses>
-Message-ID: <Pine.GSO.3.96.1010528155039.15200F-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+	by oss.sgi.com (8.11.3/8.11.3) id f4T1dTO09528
+	for linux-mips-outgoing; Mon, 28 May 2001 18:39:29 -0700
+Received: from smtp.huawei.com ([202.96.135.132])
+	by oss.sgi.com (8.11.3/8.11.3) with SMTP id f4T1dQd09524
+	for <linux-mips@oss.sgi.com>; Mon, 28 May 2001 18:39:26 -0700
+Received: from hechendong11752 ([10.105.33.128]) by
+          smtp.huawei.com (Netscape Messaging Server 4.15) with SMTP id
+          GE2POQ00.P0F for <linux-mips@oss.sgi.com>; Tue, 29 May 2001
+          09:34:02 +0800 
+Message-ID: <002501c0e7e0$7fba9a00$8021690a@huawei.com>
+From: "machael thailer" <dony.he@huawei.com>
+To: <linux-mips@oss.sgi.com>
+Subject: Does Linux support RC32332 CPU now?
+Date: Tue, 29 May 2001 09:41:36 +0800
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4522.1200
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4522.1200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, 28 May 2001, Kevin D. Kissell wrote:
+Hi, folks:
 
-> I'd been disassembling the resulting .o files, as I didn't care whether
-> it's the compiler or the assembler that ultimately makes things right.
+     I am a newbie in linux-mips. I have questions to ask:
 
- It's good to check the generated assembly if you suspect a tool bug.
+     1   Does Linux support RC32332 CPU now?
+     2   I want to build my cross-compile environment  for MIPS target on my
+X86 host. Are there any documents about how to implement it?
 
-> Repeating your experiment using -S gives the following results:
+Thank you very much.
 
- Thanks for testing other versions.
-
-> However, if one compiles all the way to object code and looks
-> at what the assembler is actually doing with those "impossible"
-> offsets under gcc 2.90 and 2.91, technically, it's not violating ".noat"
-> in the "m" and "o" constraint  cases.   It is *not* using the "at" register.
-> It is, however, cleverly using the load destination  register as a temporary
-> to calculate  the correct address.  As there are no memory operations,
-
- That's clever, indeed...
-
-> these instructions should have no effect  on the correct execution
-> of the ll/sc sequence  (though they will  increase the statistical
-> probability
-> of a context  switch between ll and sc).
-
- ... but that won't work for a lone store, so we need a properly working
-'R' constraint in the compiler.  Since 3.0 works, as you report, there is
-no need to worry (but I might consider backporting changes to 2.95.3).
-
-  Maciej
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+machael thailer

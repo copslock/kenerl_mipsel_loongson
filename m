@@ -1,56 +1,45 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0F0jmQ27841
-	for linux-mips-outgoing; Mon, 14 Jan 2002 16:45:48 -0800
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id g0F0jig27837
-	for <linux-mips@oss.sgi.com>; Mon, 14 Jan 2002 16:45:44 -0800
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.1/8.11.1) id g0ENjgu30346;
-	Mon, 14 Jan 2002 15:45:42 -0800
-Date: Mon, 14 Jan 2002 15:45:42 -0800
-From: Ralf Baechle <ralf@oss.sgi.com>
+	by oss.sgi.com (8.11.2/8.11.3) id g0F0xof28455
+	for linux-mips-outgoing; Mon, 14 Jan 2002 16:59:50 -0800
+Received: from crack-ext.ab.videon.ca (crack-ext.ab.videon.ca [206.75.216.33])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0F0xmg28446
+	for <linux-mips@oss.sgi.com>; Mon, 14 Jan 2002 16:59:48 -0800
+Received: (qmail 9564 invoked from network); 14 Jan 2002 23:59:45 -0000
+Received: from unknown (HELO wakko.deltatee.com) ([24.82.81.190]) (envelope-sender <jgg@debian.org>)
+          by crack-ext.ab.videon.ca (qmail-ldap-1.03) with SMTP
+          for <mdharm@momenco.com>; 14 Jan 2002 23:59:45 -0000
+Received: from localhost
+	([127.0.0.1] helo=wakko.deltatee.com ident=jgg)
+	by wakko.deltatee.com with smtp (Exim 3.16 #1 (Debian))
+	id 16QH0y-0007OI-00; Mon, 14 Jan 2002 16:59:45 -0700
+Date: Mon, 14 Jan 2002 16:59:44 -0700 (MST)
+From: Jason Gunthorpe <jgg@debian.org>
+X-Sender: jgg@wakko.deltatee.com
 To: Matthew Dharm <mdharm@momenco.com>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: MIPS64 status?
-Message-ID: <20020114154542.A29462@dea.linux-mips.net>
-References: <20020114150554.A29242@dea.linux-mips.net> <NEBBLJGMNKKEEMNLHGAICENCCEAA.mdharm@momenco.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <NEBBLJGMNKKEEMNLHGAICENCCEAA.mdharm@momenco.com>; from mdharm@momenco.com on Mon, Jan 14, 2002 at 03:25:44PM -0800
-X-Accept-Language: de,en,fr
+cc: linux-mips@oss.sgi.com
+Subject: RE: MIPS64 status?
+In-Reply-To: <NEBBLJGMNKKEEMNLHGAICENCCEAA.mdharm@momenco.com>
+Message-ID: <Pine.LNX.3.96.1020114165623.28388B-100000@wakko.deltatee.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Jan 14, 2002 at 03:25:44PM -0800, Matthew Dharm wrote:
 
-> Thanks for the info.  Too bad "MIPS64" and "mips64" sound exactly the
-> same on the telephone.
-> 
-> But, I need to be pedantic, just to be clear on a couple of
-> questions...
-> 
-> So, the "mips64" kernel can use 64-bits of address, for RAM >4G?
-> But, the apps running are always 32-bit?
-
-In theory the kernel has the capability to run 64-bit applications.  In
-practice that doesn't work due to the lack of 64-bit apps and stuff.
-
-> Does this mean that any individual application can only use 4G of
-> memory, tho you could have several applications in physical memory
-> doing this? (i.e. multiple applications using 1G of RAM each, but not
-> swapping to disk?)
-
-In theory we don't limit the address space of 32-bit applications in 64-bit
-mode so they could go and use all memory and syscalls on the 64-bit
-address space also.  In practice that's just too ugly to be usable so
-consider 32-bit apps on the 64-bit kernel as limited to 2gb as they are
-currently.  You can however run an arbitrary number of these processes.
+On Mon, 14 Jan 2002, Matthew Dharm wrote:
 
 > Does this mean we could map PCI memory/IO addresses above 4G and have
 > it work?
 
-Sure.
+Ooh, don't go there :> We looked at that and actually did it then backed
+it out.
 
-  Ralf
+The PCI spec (particuarly PCI-X) tries to make it possible, but in a
+general system with PCI sockets/etc it is just is not feasible. PCI
+bridges need to be located below 4G, as do the majority of devices made. 
+There is also a performance hit for having device registers > 4G.
+
+You'd definately need the mips64 kernel to do that, or use ugly wired TLB
+entries with normal mips.
+
+Jason

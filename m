@@ -1,64 +1,64 @@
-Received:  by oss.sgi.com id <S553724AbQLVKrH>;
-	Fri, 22 Dec 2000 02:47:07 -0800
-Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:59594 "EHLO
-        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553695AbQLVKqu>;
-	Fri, 22 Dec 2000 02:46:50 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id LAA25883;
-	Fri, 22 Dec 2000 11:44:33 +0100 (MET)
-Date:   Fri, 22 Dec 2000 11:44:32 +0100 (MET)
-From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To:     Martin Michlmayr <tbm@cyrius.com>
-cc:     Florian Lohoff <flo@rfc822.org>, linux-mips@oss.sgi.com
-Subject: Re: Kernel Oops when booting on DECstation
-In-Reply-To: <20001219134828.A361@katze.cyrius.com>
-Message-ID: <Pine.GSO.3.96.1001222114052.24791E-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received:  by oss.sgi.com id <S553793AbQLXL0U>;
+	Sun, 24 Dec 2000 03:26:20 -0800
+Received: from air.lug-owl.de ([62.52.24.190]:17683 "HELO air.lug-owl.de")
+	by oss.sgi.com with SMTP id <S553788AbQLXLZv>;
+	Sun, 24 Dec 2000 03:25:51 -0800
+Received: by air.lug-owl.de (Postfix, from userid 1000)
+	id 91DA78041; Sun, 24 Dec 2000 12:25:40 +0100 (CET)
+Date:   Sun, 24 Dec 2000 12:25:39 +0100
+From:   Jan-Benedict Glaw <jbglaw@lug-owl.de>
+To:     linux-mips@oss.sgi.com
+Subject: External SCSI connector on DECstations
+Message-ID: <20001224122539.B25473@lug-owl.de>
+Reply-To: jbglaw@lug-owl.de
+Mail-Followup-To: linux-mips@oss.sgi.com
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="neYutvxvOLaeuPCA"
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+X-Operating-System: Linux air 2.4.0-test8-pre1 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, 19 Dec 2000, Martin Michlmayr wrote:
 
-> Unable to handle kernel paging request at virtual address 00000004, epc == 8005a16c, ra == 8005a124
-> Oops in fault.c:do_page_fault, line 172:
-> $0 : 00000000 10002000 80720410 00000000 80720410 00000000 81088460 10002000
-> $8 : 00000000 00000000 00000000 00000000 00bc8000 fffffff7 ffffffff 8021f180
-> $16: 00010f00 8021c000 00000000 80048000 30464354 a0002f88 fffffff4 00010f00
-> $24: 00000001 0000000a                   80720000 80720f58 80721090 8005a124
-> epc  : 8005a16c
-> Status: 10002004
-> Cause : 30000008
-> Process  (pid: 0, stackpage=80720000)
-> Stack: 80061d94 00000001 000000c0 80061a58 801e0eec 800f82fc 00000000 00000000
->        00000000 80720f7c 80720f7c 00000023 00000000 00000000 00000000 80720f7c
->        80720f7c 00000023 00010f00 00010000 00000000 80048000 30464354 a0002f88
->        bfc00cbc a000f404 40208a0a 8004e1a8 00000000 00000020 80720fe0 00000000
->        8004b46c 00002617 00010f00 00000000 80721090 00002617 00bc8000 fffffff7
->        00000000 ...
-> Call Trace: [<80061d94>] [<80061a58>] [<800f82fc>] [<80048000>] [<8004e1a8>] [<8004b46c>]
-> Code: 24630010  8e2501d4  8e230218 <8ca20004> 00000000  0043102b  10400431  2416fff5  40046000
-> 
-> sym2call says:
-> 
-> Address		Function
-> 
-> 80061d94	tasklet_hi_action
-> 80061a58	do_softirq
-> 800f82fc	do_IRQ
-> 80048000	init
-> 8004e1a8	_sys_clone
-> 8004b46c	stack_done
+--neYutvxvOLaeuPCA
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
- Could you please decode your oops with ksymoops or, better yet, send me
-the object (*.o) file the oops is happening?  I tried to match the code
-above with my kernel binary but I failed.
+Hi!
 
-  Maciej
+I've got some trouble attaching devices to DECstation's external
+SCSI connector. Is there any additional jumper (or sth like
+that) on the mobo I need to remove in order to not automatically
+terminate the bus (inside the DS) before the connector?
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+=2E..or do I do something completely wrong?
+
+MfG, JBG
+
+--=20
+Fehler eingestehen, Gr=F6=DFe zeigen: Nehmt die Rechtschreibreform zur=FCck=
+!!!
+/* Jan-Benedict Glaw <jbglaw@lug-owl.de> -- +49-177-5601720 */
+keyID=3D0x8399E1BB fingerprint=3D250D 3BCF 7127 0D8C A444 A961 1DBD 5E75 83=
+99 E1BB
+     "insmod vi.o and there we go..." (Alexander Viro on linux-kernel)
+
+--neYutvxvOLaeuPCA
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.2 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iEYEARECAAYFAjpF3TMACgkQHb1edYOZ4btTCgCfZkPjSyUdbECjNIm9rcNNeZQp
+W6QAnR/cFsXQgcZvTTAU8yQq+CTwPYyx
+=LoJD
+-----END PGP SIGNATURE-----
+
+--neYutvxvOLaeuPCA--

@@ -1,52 +1,37 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id LAA23978 for <linux-archive@neteng.engr.sgi.com>; Fri, 19 Jun 1998 11:49:28 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id SAA59286 for <linux-archive@neteng.engr.sgi.com>; Fri, 19 Jun 1998 18:59:11 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id LAA06530
+	id SAA69479
 	for linux-list;
-	Fri, 19 Jun 1998 11:48:59 -0700 (PDT)
+	Fri, 19 Jun 1998 18:58:33 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from oz.engr.sgi.com (oz.engr.sgi.com [150.166.42.13])
+Received: from piecomputer.engr.sgi.com (piecomputer.engr.sgi.com [150.166.105.8])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id LAA66452
-	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 19 Jun 1998 11:48:58 -0700 (PDT)
-	mail_from (ariel@oz.engr.sgi.com)
-Received: (from ariel@localhost) by oz.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) id LAA07014 for linux@engr.sgi.com; Fri, 19 Jun 1998 11:48:57 -0700 (PDT)
-From: ariel@oz.engr.sgi.com (Ariel Faigon)
-Message-Id: <199806191848.LAA07014@oz.engr.sgi.com>
-Subject: Great www.linux.sgi.com (at last)
-To: linux@cthulhu.engr.sgi.com (SGI/Linux mailing list)
-Date: Fri, 19 Jun 1998 11:48:57 -0700 (PDT)
-Reply-To: ariel@cthulhu.engr.sgi.com (Ariel Faigon)
-Organization: Silicon Graphics Inc.
-X-Mailer: ELM [version 2.4 PL24 ME5a]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	via ESMTP id SAA21583;
+	Fri, 19 Jun 1998 18:58:31 -0700 (PDT)
+	mail_from (mende@piecomputer.engr.sgi.com)
+Received: (from mende@localhost) by piecomputer.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) id SAA29080; Fri, 19 Jun 1998 18:58:31 -0700 (PDT)
+Date: Fri, 19 Jun 1998 18:58:31 -0700 (PDT)
+Message-Id: <199806200158.SAA29080@piecomputer.engr.sgi.com>
+From: Bob Mende Pie <mende@piecomputer.engr.sgi.com>
+To: linux@cthulhu.engr.sgi.com, dmk@cthulhu.engr.sgi.com
+Subject: more changes on linus.linux.sgi.com
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-[Cc'ing the Linux list]
+  The system linus.linux.sgi.com now has a new disk configuration for /src.
+It is now a pair of high speed 4g drives mirrored (via xlv).   The old disk
+array is offline, but will not be recycled for at least a week.  Please let
+me know if you see any problems or data discrepencies.   
 
-Hi Honza,
+   The system is now a 150Mhz R4400 running on a Challenge/S.   Before we
+consider upgrading linus to run linux, we should have support for the
+Challenge/S.  I have a IO+ card free, but the backplate of the indy does
+not allow for it to fit into a box.  I am seeing if I can get a Challenge/S
+for loan for a few months so we can get it someone who can do the HW port
+for it.   It should be close to a no brainer since it is just a few more WD
+scsi chains and another ethernet (just like the internal one).
 
-I see that you've updated the www.linux.sgi.com site now.
-Very very nice, and lot and lots of thanks.
-
-I think you can proudly add your name to the list of
-contributors on:  http://www.linux.sgi.com/faq.html
-You really really helped us a lot.  BTW: you did a great job
-in xpaint to reverse the Linux/SGi to SGI/Linux the GIF
-looks perfect to me :-)
-
-I think with all the recent work by Alex, Ralf and
-others we now have an up-to-date site with up-to-date
-RedHat dist and even up-to-date installation instructions.
-I also feel the latest changes in hardware and set up
-(Thanks to dmk + mende) actually made it respond faster.
-
-Thanks to everyone who helped!
-
--- 
-Peace, Ariel
+                    /Bob...                    mailto:mende@sgi.com
+              http://reality.sgi.com/mende            KF6EID

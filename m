@@ -1,41 +1,53 @@
-Received:  by oss.sgi.com id <S42308AbQFMVlc>;
-	Tue, 13 Jun 2000 14:41:32 -0700
-Received: from hibernia.clubi.ie ([212.17.32.129]:22283 "EHLO
-        hibernia.jakma.org") by oss.sgi.com with ESMTP id <S42289AbQFMVlW>;
-	Tue, 13 Jun 2000 14:41:22 -0700
-Received: from fogarty.jakma.org (IDENT:root@fogarty.jakma.org [192.168.0.4])
-	by hibernia.jakma.org (8.10.0/8.10.0) with ESMTP id e5DLfFk25703
-	for <linux-mips@oss.sgi.com>; Tue, 13 Jun 2000 22:41:15 +0100
-Received: from localhost (paul@localhost)
-	by fogarty.jakma.org (8.10.0/8.10.0) with ESMTP id e5DLfFZ12877
-	for <linux-mips@oss.sgi.com>; Tue, 13 Jun 2000 22:41:15 +0100
-X-Authentication-Warning: fogarty.jakma.org: paul owned process doing -bs
-Date:   Tue, 13 Jun 2000 22:41:15 +0100 (IST)
-From:   Paul Jakma <paul@clubi.ie>
-X-Sender: paul@fogarty.jakma.org
-To:     Linux MIPS <linux-mips@oss.sgi.com>
-Subject: precompiled kernels
-Message-ID: <Pine.LNX.4.21.0006132235180.2589-100000@fogarty.jakma.org>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received:  by oss.sgi.com id <S42314AbQFNK61>;
+	Wed, 14 Jun 2000 03:58:27 -0700
+Received: from deliverator.sgi.com ([204.94.214.10]:6254 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S42289AbQFNK6G>;
+	Wed, 14 Jun 2000 03:58:06 -0700
+Received: from nodin.corp.sgi.com (fddi-nodin.corp.sgi.com [198.29.75.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id DAA16220
+	for <linux-mips@oss.sgi.com>; Wed, 14 Jun 2000 03:53:09 -0700 (PDT)
+	mail_from (guido.guenther@gmx.net)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id DAA10368 for <linux-mips@oss.sgi.com>; Wed, 14 Jun 2000 03:56:19 -0700 (PDT)
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
+	via ESMTP id DAA44830
+	for <linux@cthulhu.engr.sgi.com>;
+	Wed, 14 Jun 2000 03:54:37 -0700 (PDT)
+	mail_from (guido.guenther@gmx.net)
+Received: from gandalf.physik.uni-konstanz.de (gandalf.physik.uni-konstanz.de [134.34.144.30]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id DAA07234
+	for <linux@cthulhu.engr.sgi.com>; Wed, 14 Jun 2000 03:54:27 -0700 (PDT)
+	mail_from (guido.guenther@gmx.net)
+Received: from bert.physik.uni-konstanz.de [134.34.144.20] 
+	by gandalf.physik.uni-konstanz.de with smtp (Exim 2.05 #1 (Debian))
+	id 132Aoc-0002cj-00; Wed, 14 Jun 2000 12:54:34 +0200
+Received: by bert.physik.uni-konstanz.de (sSMTP sendmail emulation); Wed, 14 Jun 2000 12:53:52 +0200
+Date:   Wed, 14 Jun 2000 12:53:52 +0200
+From:   Guido Guenther <guido.guenther@gmx.net>
+To:     linux@cthulhu.engr.sgi.com
+Subject: newport: glyph cursor and cmap
+Message-ID: <20000614125351.A24432@bert.physik.uni-konstanz.de>
+Mail-Followup-To: Guido Guenther <guido.guenther@gmx.net>,
+	linux@cthulhu.engr.sgi.com
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.1.9i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-hi,
+I'm currently trying to add a hw-cursor to the xserver. As far as I
+understand the xmap9 docs the cursor has its own colormap on the cmap
+chip sperate from the "normal" colormap. Can someone provide a small
+codepiece or docs on how two manipulate this part of the cmap chip(via the
+dcb)?  (i didn't find anything about the cmap chips on oss.sgi.com).
+Regards,
+ -- Guido
 
-where can i get precompiled kernels? i see there are precompiled
-2.2.13 and 2.3.47 kernels on ftp.oss.sgi.com, are these the latest -
-least bug free?
-
-also, i don't have fast net access. does anyone sell any linux-mips
-binary/install CD's?
-
-regards,
 -- 
-Paul Jakma	paul@clubi.ie
-PGP5 key: http://www.clubi.ie/jakma/publickey.txt
--------------------------------------------
-Fortune:
-In order to get a loan you must first prove you don't need it.
+GPG-Public Key: http://honk.physik.uni-konstanz.de/~agx/guenther.gpg.asc

@@ -1,47 +1,76 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id JAA65133 for <linux-archive@neteng.engr.sgi.com>; Mon, 14 Jun 1999 09:20:28 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id IAA57370 for <linux-archive@neteng.engr.sgi.com>; Wed, 16 Jun 1999 08:21:26 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id JAA17476
+	id IAA53730
 	for linux-list;
-	Mon, 14 Jun 1999 09:18:29 -0700 (PDT)
+	Wed, 16 Jun 1999 08:17:42 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from eurohub.neu.sgi.com (gate2-eurohub.neu.sgi.com [144.253.133.139])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id JAA53560
-	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 14 Jun 1999 09:18:26 -0700 (PDT)
-	mail_from (jmacnish@creativecorp.com)
-Received: from creativecorp.com (glue.creativecorp.com [204.132.166.11]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via SMTP id JAA04819
-	for <linux@cthulhu.engr.sgi.com>; Mon, 14 Jun 1999 09:18:25 -0700 (PDT)
-	mail_from (jmacnish@creativecorp.com)
-Received: by creativecorp.com from localhost
-    (router,SLMail V3.1); Mon, 14 Jun 1999 10:18:23 -0600
-Received: by creativecorp.com from ragnarok [204.132.166.123]
-    (SLmail 3.1.2961 (Release Build-B)); Mon, 14 Jun 1999 10:18:23 -0600
-Message-Id: <3.0.32.19990614101822.00fb32c0@creativecorp.com>
-X-Sender: "Jesse MacNish" <jmacnish@creativecorp.com>
-X-Mailer: Windows Eudora Pro Version 3.0 (32)
-Date: Mon, 14 Jun 1999 10:18:24 -0600
-To: SGI Mailing List <linux@cthulhu.engr.sgi.com>
-From: "Jesse MacNish" <jmacnish@creativecorp.com>
-Subject: Spare Indigo2 system?
+	via ESMTP id IAA94530
+	for <linux@engr.sgi.com>;
+	Wed, 16 Jun 1999 08:17:37 -0700 (PDT)
+	mail_from (youssef@neu.sgi.com)
+Received: from magic.neu.sgi.com (magic.neu.sgi.com [144.253.142.146]) by eurohub.neu.sgi.com (980427.SGI.8.8.8/19990607.SGI.cwilson.europe.hoststrip) via ESMTP id RAA68943 for <@eurohub.neu.sgi.com:linux@engr.sgi.com>; Wed, 16 Jun 1999 17:17:36 +0200 (MDT)
+Received: (from youssef@localhost) by magic.neu.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) id RAA15372 for linux@engr.sgi.com; Wed, 16 Jun 1999 17:17:23 +0200 (MDT)
+Date: Wed, 16 Jun 1999 17:17:23 +0200 (MDT)
+From: youssef@neu.sgi.com (Youssef Benyahia)
+Message-Id: <9906161717.ZM55097@magic.neu.sgi.com>
+X-Mailer: Z-Mail-SGI (3.2S.3 08feb96 MediaMail)
+To: linux@cthulhu.engr.sgi.com
+Subject: glibc & phreads
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-I don't know if this is the right place for it, but I have a spare Indigo2
-box with extra disk and a monitor.  I know somebody's working on an Indigo2
-port--I can offer my hardware as a test bed?
+Hi there,
+
+I'm trying to compile a threaded program on my LindyX and I ran in the
+following known bug :
+
+30-[diags](~/test) > cc -o thread thread.c -D_REENTRANT -lpthread
+/usr/lib/libpthread.so: undefined reference to `__libc_accept'
+/usr/lib/libpthread.so: undefined reference to `__libc_send'
+/usr/lib/libpthread.so: undefined reference to `__libc_recvfrom'
+/usr/lib/libpthread.so: undefined reference to `__libc_recvmsg'
+/usr/lib/libpthread.so: undefined reference to `__libc_sendmsg'
+/usr/lib/libpthread.so: undefined reference to `__libc_recv'
+/usr/lib/libpthread.so: undefined reference to `__libc_sendto'
+/usr/lib/libpthread.so: undefined reference to `__libc_connect'
+
+Looks like the answer would be to have "more recent libc versions as you have
+installed." [Ralf, 10 Feb 1999]. But no way to get a hand on the desired
+rpm/binary/source  on ftp.linux.sgi.com.
+
+Is there a sgi-linux thread-ok glibc somewhere ?
+
+What would be the sgi-linux thread-ok glibc version ?
+
+Thanks in advance,
+
+Y.
+
+PS: Great porting job ! Cool to see an Indy running something else than Irix.
 
 
-Jesse MacNish
-jmacnish@creativecorp.com
-Development Staff and Systems Administration, Creative Concepts Corporation
-"Boulder.  25 square miles surrounded by reality."
+cpu                     : MIPS
+cpu model               : R4600 V1.0
+system type             : SGI Indy
+BogoMIPS                : 99.94
+byteorder               : big endian
+unaligned accesses      : 0
+wait instruction        : yes
+microsecond timers      : no
+extra interrupt vector  : no
+hardware watchpoint     : no
+VCED exceptions         : not available
+VCEI exceptions         : not available
+
+-- 
+-------------------------------------------------------------------
+Youssef Benyahia         		eMail : youssef@neu.sgi.com 
+EMC ME Engineer 			Tel   : (++41 32) 843 37 59
+SGI					vMail : 476-3759
+-------------------------------------------------------------------

@@ -1,58 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 May 2004 13:36:34 +0100 (BST)
-Received: from [IPv6:::ffff:212.105.56.244] ([IPv6:::ffff:212.105.56.244]:22984
-	"EHLO dmz.lumentis.net") by linux-mips.org with ESMTP
-	id <S8225267AbUEJMgd>; Mon, 10 May 2004 13:36:33 +0100
-Received: from jockewin (fw [172.31.1.1])
-	(authenticated bits=0)
-	by dmz.lumentis.net (8.12.8/8.12.8) with ESMTP id i4ACaPvC029223
-	(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NO);
-	Mon, 10 May 2004 14:36:25 +0200
-From: "Joakim Tjernlund" <joakim.tjernlund@lumentis.se>
-To: "Bradley D. LaRonde" <brad@laronde.org>,
-	"Richard Sandiford" <rsandifo@redhat.com>
-Cc: <uclibc@uclibc.org>, <linux-mips@linux-mips.org>
-Subject: RE: [uClibc] Re: uclibc mips ld.so and undefined symbols with nonzerosymbol table entry st_value
-Date: Mon, 10 May 2004 14:36:20 +0200
-Message-ID: <JPEALJAFNGDDLOPNDIEEEEEJCIAA.joakim.tjernlund@lumentis.se>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 May 2004 14:26:43 +0100 (BST)
+Received: from mba.ocn.ne.jp ([IPv6:::ffff:210.190.142.172]:13545 "HELO
+	smtp.mba.ocn.ne.jp") by linux-mips.org with SMTP
+	id <S8225562AbUEJN0l>; Mon, 10 May 2004 14:26:41 +0100
+Received: from localhost (p4173-ipad29funabasi.chiba.ocn.ne.jp [221.184.71.173])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id BAFA266D6; Mon, 10 May 2004 22:26:34 +0900 (JST)
+Date: Mon, 10 May 2004 22:28:45 +0900 (JST)
+Message-Id: <20040510.222845.78701815.anemo@mba.ocn.ne.jp>
+To: ralf@linux-mips.org
+Cc: geert@linux-m68k.org, jsun@mvista.com, linux-mips@linux-mips.org
+Subject: Re: semaphore woes in 2.6, 32bit
+From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20040509164835.GA28011@linux-mips.org>
+References: <20040509125750.GA19225@linux-mips.org>
+	<20040509.225637.92590265.anemo@mba.ocn.ne.jp>
+	<20040509164835.GA28011@linux-mips.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 20.7 / Mule 4.0 (HANANOEN)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.6604 (9.0.2911.0)
-In-Reply-To: <JPEALJAFNGDDLOPNDIEEIEEICIAA.joakim.tjernlund@lumentis.se>
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1409
-Importance: Normal
-Return-Path: <joakim.tjernlund@lumentis.se>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4956
+X-archive-position: 4957
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: joakim.tjernlund@lumentis.se
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-> 
-> This looks like the problem we had with dlopen() and friends when introducing
-> the new WEAK symbol handling.
-> 
-> in libc/misc/pthread/weaks.c you have stuff like:
-> weak_alias(__phtread_return_0, __phtread_once);
-> 
-> where __phtread_return_0 is non NULL:
-> int __phtread_return_0(void)
-> {
->  return 0;
-> }
-> 
+>>>>> On Sun, 9 May 2004 18:48:35 +0200, Ralf Baechle <ralf@linux-mips.org> said:
+>> Hmm, many drivers use kmalloc and pci_map_single for DMA buffer.
+>> So ARCH_KMALLOC_MINALIGN should be L1_CACHE_BYTES for non-coherent
+>> system?
 
-Changing the alias for __phtread_once to
-extern int __phtread_once(void) __attribute__ ((weak));
-makes st_value=0 in libc, making the entry
-look the same as in glibc.
+ralf> No, those drivers are simply broken.  dma_get_cache_alignment()
+ralf> gives the mimimum alignment and width for DMA mappings and that
+ralf> value is larger than kmalloc alignment in almost all cases.
 
- Jocke
+I see.  Thank you for pointing out it.  I must learn 2.6 DMA API
+quickly ...
+
+---
+Atsushi Nemoto

@@ -1,77 +1,77 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g18Deui31505
-	for linux-mips-outgoing; Fri, 8 Feb 2002 05:40:56 -0800
-Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g18DeZA31471;
-	Fri, 8 Feb 2002 05:40:36 -0800
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 2A08D859; Fri,  8 Feb 2002 14:40:13 +0100 (CET)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 96FD03FB4; Fri,  8 Feb 2002 14:40:23 +0100 (CET)
-Date: Fri, 8 Feb 2002 14:40:23 +0100
-From: Florian Lohoff <flo@rfc822.org>
+	by oss.sgi.com (8.11.2/8.11.3) id g18FYAp01127
+	for linux-mips-outgoing; Fri, 8 Feb 2002 07:34:10 -0800
+Received: from real.realitydiluted.com (real.realitydiluted.com [208.242.241.164])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g18FY3A01123
+	for <linux-mips@oss.sgi.com>; Fri, 8 Feb 2002 07:34:03 -0800
+Received: from sjhill by real.realitydiluted.com with local (Exim 3.22 #1 (Red Hat Linux))
+	id 16ZD2B-0003iv-00
+	for <linux-mips@oss.sgi.com>; Fri, 08 Feb 2002 09:33:55 -0600
 To: linux-mips@oss.sgi.com
-Cc: ralf@oss.sgi.com
-Subject: [PATCH] /proc/cpuinfo endianess
-Message-ID: <20020208134023.GB29298@paradigm.rfc822.org>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="CdrF4e02JqNVZeln"
-Content-Disposition: inline
-User-Agent: Mutt/1.3.25i
-Organization: rfc822 - pure communication
+Subject: [PATCH] Removal of warning messages for gdb-stub.c
+Message-Id: <E16ZD2B-0003iv-00@real.realitydiluted.com>
+From: "Steven J. Hill" <sjhill@realitydiluted.com>
+Date: Fri, 08 Feb 2002 09:33:55 -0600
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+Just more clean ups. I tested it, it works.
 
---CdrF4e02JqNVZeln
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+-Steve
 
-
-Again a LTPDS solution:
-
-
-Index: arch/mips/kernel/proc.c
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-RCS file: /cvs/linux/arch/mips/kernel/proc.c,v
-retrieving revision 1.27.2.6
-diff -u -r1.27.2.6 proc.c
---- arch/mips/kernel/proc.c	2002/01/07 01:16:33	1.27.2.6
-+++ arch/mips/kernel/proc.c	2002/02/08 13:37:18
-@@ -97,6 +97,11 @@
- 	seq_printf(m, "BogoMIPS\t\t: %lu.%02lu\n",
- 	              loops_per_jiffy / (500000/HZ),
- 	              (loops_per_jiffy / (5000/HZ)) % 100);
-+#ifdef __MIPSEB__
-+	seq_printf(m, "byteorder\t\t: big endian\n");
-+#else
-+	seq_printf(m, "byteorder\t\t: little endian\n");
-+#endif
- 	seq_printf(m, "wait instruction\t: %s\n", cpu_wait ? "yes" : "no");
- 	seq_printf(m, "microsecond timers\t: %s\n",
- 	              (mips_cpu.options & MIPS_CPU_COUNTER) ? "yes" : "no");
-
-
-Flo
---=20
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-Nine nineth on september the 9th              Welcome to the new billenium
-
---CdrF4e02JqNVZeln
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.0.6 (GNU/Linux)
-Comment: For info see http://www.gnupg.org
-
-iD8DBQE8Y9VHUaz2rXW+gJcRAivqAKCgpv1mKbIZ7AxE747a6D2L4z8R0gCfeLRo
-6Q1V4AihstNEHDD+imm0h1g=
-=mtj2
------END PGP SIGNATURE-----
-
---CdrF4e02JqNVZeln--
+diff -urN -X cvs-exc.txt mipslinux-2.4.17-xfs/arch/mips/kernel/gdb-stub.c settop/arch/mips/kernel/gdb-stub.c
+--- mipslinux-2.4.17-xfs/arch/mips/kernel/gdb-stub.c	Thu Nov 29 09:13:08 2001
++++ settop/arch/mips/kernel/gdb-stub.c	Fri Feb  8 09:14:52 2002
+@@ -306,7 +306,7 @@
+ 	unsigned char ch;
+ 
+ 	while (count-- > 0) {
+-		if (kgdb_read_byte(mem++, &ch) != 0)
++		if (kgdb_read_byte((unsigned *) mem++, (unsigned *) &ch) != 0)
+ 			return 0;
+ 		*buf++ = hexchars[ch >> 4];
+ 		*buf++ = hexchars[ch & 0xf];
+@@ -332,7 +332,7 @@
+ 	{
+ 		ch = hex(*buf++) << 4;
+ 		ch |= hex(*buf++);
+-		if (kgdb_write_byte(ch, mem++) != 0)
++		if (kgdb_write_byte((unsigned) ch, (unsigned *) mem++) != 0)
+ 			return 0;
+ 	}
+ 
+@@ -902,23 +902,21 @@
+ 	if (!initialized)
+ 		return;
+ 
+-	__asm__ __volatile__("
+-			.globl	breakinst
+-			.set	noreorder
+-			nop
+-breakinst:		break
+-			nop
+-			.set	reorder
+-	");
++	__asm__ __volatile__(
++		".globl\tbreakinst\n\t"
++		".set\tnoreorder\n\t"
++		"nop\n\t"
++		"breakinst:\tbreak\n\t"
++		"nop\n\t"
++		".set\treorder\n\t");
+ }
+ 
+ void adel(void)
+ {
+-	__asm__ __volatile__("
+-			.globl	adel
+-			la	$8,0x80000001
+-			lw	$9,0($8)
+-	");
++	__asm__ __volatile__(
++		".globl\tadel\n\t"
++		"la\t$8,0x80000001\n\t"
++		"lw\t$9,0($8)\n\t");
+ }
+ 
+ #ifdef CONFIG_GDB_CONSOLE

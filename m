@@ -1,72 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Mar 2005 17:35:31 +0000 (GMT)
-Received: from mail.gmx.net ([IPv6:::ffff:213.165.64.20]:4235 "HELO
-	mail.gmx.net") by linux-mips.org with SMTP id <S8225313AbVCGRfQ>;
-	Mon, 7 Mar 2005 17:35:16 +0000
-Received: (qmail invoked by alias); 07 Mar 2005 17:35:09 -0000
-Received: from kf-pij-tg01-0933.dial.kabelfoon.nl (EHLO [192.168.1.61]) (62.45.179.166)
-  by mail.gmx.net (mp027) with SMTP; 07 Mar 2005 18:35:09 +0100
-X-Authenticated: #11016536
-Message-ID: <422C9142.8090007@gmx.net>
-Date:	Mon, 07 Mar 2005 18:37:06 +0100
-From:	freshy98 <freshy98@gmx.net>
-User-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	Jim Gifford <maillist@jg555.com>
-CC:	Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: IPTables 1.3.x fails on RaQ2
-References: <422C8D6A.6060904@jg555.com>
-In-Reply-To: <422C8D6A.6060904@jg555.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Mar 2005 23:59:41 +0000 (GMT)
+Received: from rproxy.gmail.com ([IPv6:::ffff:64.233.170.199]:47506 "EHLO
+	rproxy.gmail.com") by linux-mips.org with ESMTP id <S8225430AbVCGX7Y>;
+	Mon, 7 Mar 2005 23:59:24 +0000
+Received: by rproxy.gmail.com with SMTP id y7so1297847rne
+        for <linux-mips@linux-mips.org>; Mon, 07 Mar 2005 15:59:21 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:reply-to:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:references;
+        b=iclVCWtmoix40bCcSMeZ4LGEKKwOwTgs0ymduKTEQHOeyYPWzH3KcWeOUxehTyNffJv8EKuKA0mUziOlA5SFid4wCikDuVqdK2Yc9Pm9TbKptBjlh10BbLvX8sufJKoHjCseSRD7FnaIgSo3z1z9fOtRILM7bdEgiitIgxZ7hQM=
+Received: by 10.39.2.65 with SMTP id e65mr37369rni;
+        Mon, 07 Mar 2005 15:58:33 -0800 (PST)
+Received: by 10.38.104.32 with HTTP; Mon, 7 Mar 2005 15:58:33 -0800 (PST)
+Message-ID: <6a95eefb050307155815cf14fb@mail.gmail.com>
+Date:	Mon, 7 Mar 2005 15:58:33 -0800
+From:	Siva Prasad <rsivaprasad@gmail.com>
+Reply-To: Siva Prasad <rsivaprasad@gmail.com>
+To:	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 2.6] update PCI code for VR41xx
+In-Reply-To: <20050308012815.0a02095e.yuasa@hh.iij4u.or.jp>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Y-GMX-Trusted: 0
-Return-Path: <freshy98@gmx.net>
+References: <20050308012815.0a02095e.yuasa@hh.iij4u.or.jp>
+Return-Path: <rsivaprasad@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7391
+X-archive-position: 7392
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: freshy98@gmx.net
+X-original-sender: rsivaprasad@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Jim,
+Hello,
 
-I am running iptables-1.2.11-r3 on my Gentoo installed Cobalt Qube2 and 
-it compiles alright.
-If I remember correctly I have tried a higher version which failed on 
-cpu-feature-overrides.h too.
+I am looking for Linux distribution that works on Atheros AR5312 (MIPS
+4kc processor core).
 
-My kernel is linux-2.6.10-20050115 which is in the Portage tree of 
-Gentoo and is based upon CVS.
-So far this machines runs for 14 days without a problem.
-It runs iptables with shorewall.
+Any pointer towards this direction is appreciated.
 
-Regards,
+* Boot loader
+* Linux distribution
+* Ethernet driver
 
-Tom
+etc.
 
-
-Jim Gifford wrote:
-
-> I've been trying to figure out why the current iptables fails on the 
-> 2.6.9 and 2.6.11 MIPS builds. It seems that a file 
-> cpu-features-overrides.h is missing for the Cobalt builds. Are their 
-> plans for one, or is there a patch out there so we can get it added. 
-> Here is the error message on the IPTables build, I still don't 
-> understand why they are checking for that myself.
->
-> # ./iptables install
->        Verifying iptables-1.3.1.tar.bz2
->                Downloading iptables-1.3.1.tar.bz2
->                Creating Local SHA1 file for iptables-1.3.1.tar.bz2
->                Installing iptables-1.3.1
->                        Unpacking iptables-1.3.1.tar.bz2
-> Making dependencies: please wait...
-> Something wrong... deleting dependencies.
-> make: *** [cpu-feature-overrides.h] Error 1
->                -----Error at Build has occured-----
-> Exiting
->
+Thanks
+siva

@@ -1,52 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Feb 2003 19:37:50 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:6396 "EHLO
-	av.mvista.com") by linux-mips.org with ESMTP id <S8225192AbTBQTht>;
-	Mon, 17 Feb 2003 19:37:49 +0000
-Received: from localhost (av [127.0.0.1])
-	by av.mvista.com (8.9.3/8.9.3) with ESMTP id LAA03324;
-	Mon, 17 Feb 2003 11:37:19 -0800
-Subject: Re: CVS Update@-mips.org: linux
-From: Pete Popov <ppopov@mvista.com>
-To: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips <linux-mips@linux-mips.org>
-In-Reply-To: <20030217144652.C31781@linux-mips.org>
-References: <20030216062530Z8224847-1272+556@linux-mips.org>
-	 <20030217144652.C31781@linux-mips.org>
-Content-Type: text/plain
-Organization: MontaVista Software
-Message-Id: <1045510730.6765.19.camel@adsl.pacbell.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Feb 2003 06:54:41 +0000 (GMT)
+Received: from zok.SGI.COM ([IPv6:::ffff:204.94.215.101]:48014 "EHLO
+	zok.sgi.com") by linux-mips.org with ESMTP id <S8225192AbTBRGyk>;
+	Tue, 18 Feb 2003 06:54:40 +0000
+Received: from larry.melbourne.sgi.com (larry.melbourne.sgi.com [134.14.52.130])
+	by zok.sgi.com (8.12.2/8.12.2/linux-outbound_gateway-1.2) with SMTP id h1I6sYKp018554
+	for <@external-mail-relay.sgi.com:linux-mips@linux-mips.org>; Mon, 17 Feb 2003 22:54:35 -0800
+Received: from pureza.melbourne.sgi.com (pureza.melbourne.sgi.com [134.14.55.244]) by larry.melbourne.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id RAA09355 for <linux-mips@linux-mips.org>; Tue, 18 Feb 2003 17:54:32 +1100
+Received: from pureza.melbourne.sgi.com (localhost.localdomain [127.0.0.1])
+	by pureza.melbourne.sgi.com (8.12.5/8.12.5) with ESMTP id h1I6sSuP006378
+	for <linux-mips@linux-mips.org>; Tue, 18 Feb 2003 17:54:29 +1100
+Received: (from clausen@localhost)
+	by pureza.melbourne.sgi.com (8.12.5/8.12.5/Submit) id h1I6sRK8006376
+	for linux-mips@linux-mips.org; Tue, 18 Feb 2003 17:54:27 +1100
+Date: Tue, 18 Feb 2003 17:54:27 +1100
+From: Andrew Clausen <clausen@melbourne.sgi.com>
+To: Linux-MIPS <linux-mips@linux-mips.org>
+Subject: weirdness in bootmem_init(), arch/mips64/kernel/setup.c
+Message-ID: <20030218065427.GA915@pureza.melbourne.sgi.com>
 Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.2.1 
-Date: 17 Feb 2003 11:38:50 -0800
-Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@mvista.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4i
+Return-Path: <clausen@pureza.melbourne.sgi.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1452
+X-archive-position: 1453
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@mvista.com
+X-original-sender: clausen@melbourne.sgi.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 2003-02-17 at 05:46, Ralf Baechle wrote:
-> On Sun, Feb 16, 2003 at 06:25:24AM +0000, ppopov@linux-mips.org wrote:
-> 
-> > Modified files:
-> > 	drivers/mtd/maps: Tag: linux_2_4 Config.in Makefile 
-> > Added files:
-> > 	drivers/mtd/maps: Tag: linux_2_4 db1x00-flash.c 
-> > 
-> > Log message:
-> > 	Added Db1x00 mtd driver support. The driver supports all supported
-> > 	flash densities, but only the default 64Mb has been tested at this
-> > 	time.
-> 
-> #include <stdrant.h> you forgot 2.5 :-)
+Hi all,
 
-Sorry. Dan _is_ working on 2.5. I'll start testing the builds on 2.4 and
-2.5 before committing the patches.
+This code isn't really relevant to what I'm working on (it isn't compiled
+in to kernels for the ip27), but I just noticed it, and it looks broken:
 
-Pete
+        /* Find the highest page frame number we have available.  */
+        max_pfn = 0;
+        for (i = 0; i < boot_mem_map.nr_map; i++) {
+                unsigned long start, end;
+
+                if (boot_mem_map.map[i].type != BOOT_MEM_RAM)
+                        continue;
+
+*****           start = PFN_UP(boot_mem_map.map[i].addr);
+*****           end = PFN_DOWN(boot_mem_map.map[i].addr
+                      + boot_mem_map.map[i].size);
+
+*****           if (start >= end)
+                        continue;
+                if (end > max_pfn)
+                        max_pfn = end;
+        }
+
+
+That test looks like it will always succeed... and it looks like the
+author wanted it to be a sanity check.
+
+Why all this business with PFN_UP and PFN_DOWN?  (They are bit
+shifts... PFN_UP shifts left, PFN_DOWN shifts right)
+
+Cheers,
+Andrew

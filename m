@@ -1,18 +1,18 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0V3ex702313
-	for linux-mips-outgoing; Wed, 30 Jan 2002 19:40:59 -0800
+	by oss.sgi.com (8.11.2/8.11.3) id g0V3kJt02432
+	for linux-mips-outgoing; Wed, 30 Jan 2002 19:46:19 -0800
 Received: from host099.momenco.com (IDENT:root@www.momenco.com [64.169.228.99])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0V3eod02310
-	for <linux-mips@oss.sgi.com>; Wed, 30 Jan 2002 19:40:50 -0800
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0V3k7d02427
+	for <linux-mips@oss.sgi.com>; Wed, 30 Jan 2002 19:46:07 -0800
 Received: from beagle (beagle.internal.momenco.com [192.168.0.115])
-	by host099.momenco.com (8.11.6/8.11.6) with SMTP id g0V2elX02633;
-	Wed, 30 Jan 2002 18:40:47 -0800
+	by host099.momenco.com (8.11.6/8.11.6) with SMTP id g0V2jeX02652;
+	Wed, 30 Jan 2002 18:45:40 -0800
 From: "Matthew Dharm" <mdharm@momenco.com>
 To: "Pete Popov" <ppopov@pacbell.net>
 Cc: "linux-mips" <linux-mips@oss.sgi.com>
 Subject: RE: More data: I've made a CVS build that doesn't crash!
-Date: Wed, 30 Jan 2002 18:40:47 -0800
-Message-ID: <NEBBLJGMNKKEEMNLHGAIMECPCFAA.mdharm@momenco.com>
+Date: Wed, 30 Jan 2002 18:45:40 -0800
+Message-ID: <NEBBLJGMNKKEEMNLHGAIEEDACFAA.mdharm@momenco.com>
 MIME-Version: 1.0
 Content-Type: text/plain;
 	charset="iso-8859-1"
@@ -25,6 +25,10 @@ Importance: Normal
 X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
+
+(I aplogize for the duplicate... this message has more information
+than the other one... Outlook decided that I meant "send" not
+"paste"... grr...)
 
 Well, I've figured out my crashing problem, but I'm not certain how to
 fix it... I've got a couple of choices, and my first choice doesn't
@@ -54,6 +58,30 @@ Which looks okay to me.  The problem is, my ethernet driver has gone
 to the dogs.  It works, but it's _really_ slow and the console is
 printing out messages like:
 
+eth0: Transmit timed out: status 0050  0c00 at 9710/9738 command
+00000c00.
+eth0: Transmit timed out: status 0050  0c00 at 9745/9773 command
+00000c00.
+eth0: Transmit timed out: status 0050  0c00 at 9801/9829 command
+00000c00.
+
+I'm guessing that something bad has happened in terms of what part of
+memory the ethernet controller allocates for it's descriptors... or
+something like that.  The fact that it works at all is puzzling.. I
+would have expected a more fatal mode of failure.
+
+So, am I doing something wrong in setting up my memory map?  Is there
+something else I need to do when calling add_memory_region()?
+
+Also, how are DMAable addresses handed out?  I'm wondering if the
+conversion between CPU address and PCI address is working correctly...
+I'm going to try to get a PCI analyizer, but I don't know how long
+that will take.
+
+Thanks everyone for all your help... hopefully, I'll have this problem
+put to bed soon.
+
+Matthew Dharm
 
 --
 Matthew D. Dharm                            Senior Software Designer

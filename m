@@ -1,39 +1,44 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA08600; Tue, 27 May 1997 13:10:14 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA13731; Tue, 27 May 1997 13:41:24 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id NAA14217 for linux-list; Tue, 27 May 1997 13:09:22 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA14193; Tue, 27 May 1997 13:09:15 -0700
-Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id NAA08172; Tue, 27 May 1997 13:09:10 -0700
-	env-from (shaver@neon.ingenia.ca)
-Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id QAA21739; Tue, 27 May 1997 16:01:19 -0400
-From: Mike Shaver <shaver@neon.ingenia.ca>
-Message-Id: <199705272001.QAA21739@neon.ingenia.ca>
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id NAA20943 for linux-list; Tue, 27 May 1997 13:41:10 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id NAA20926 for <linux@relay.engr.SGI.COM>; Tue, 27 May 1997 13:41:08 -0700
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id NAA17607
+	for <linux@relay.engr.SGI.COM>; Tue, 27 May 1997 13:41:01 -0700
+	env-from (ralf@informatik.uni-koblenz.de)
+Received: from thoma (ralf@thoma.uni-koblenz.de [141.26.4.61]) by informatik.uni-koblenz.de (8.8.5/8.6.9) with SMTP id WAA12797; Tue, 27 May 1997 22:37:12 +0200 (MEST)
+From: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
+Message-Id: <199705272037.WAA12797@informatik.uni-koblenz.de>
+Received: by thoma (SMI-8.6/KO-2.0)
+	id WAA07439; Tue, 27 May 1997 22:37:11 +0200
 Subject: Re: strace/truss equiv?
-In-Reply-To: <199705271942.MAA11080@machine.engr.sgi.com> from "John E. Schimmel" at "May 27, 97 12:42:30 pm"
-To: jes@machine.engr.sgi.com (John E. Schimmel)
-Date: Tue, 27 May 1997 16:01:19 -0400 (EDT)
+To: shaver@neon.ingenia.ca (Mike Shaver)
+Date: Tue, 27 May 1997 22:37:11 +0200 (MET DST)
 Cc: linux@cthulhu.engr.sgi.com
-X-Mailer: ELM [version 2.4ME+ PL28 (25)]
+In-Reply-To: <199705271919.PAA21206@neon.ingenia.ca> from "Mike Shaver" at May 27, 97 03:19:29 pm
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Thus spake John E. Schimmel:
-> The equivelant is par.  You may also want to take a look at
-> elfdump which will tell you what libraries you are linked with, etc.
+> OK, I'll bite.
+> What's the strace/truss equivalent under IRIX?
+> 
+> I'm trying to figure out why my "dynamically-linked" hello world
+> binaries are 115K, and I can't tell where the heck the linker is
+> finding the static libs.
 
-par was what I was looking for.
+The GNU linker has a verbose option which will make it print all the
+files as it tries to open them.  Check the docs.  You should have
 
-elfdump doesn't seem to tell me anything about the -b mips-linux
-stuff.  Oversight on SGI's part, no doubt. =)
+<prefix>/mips-linux/lib/libc.so             (A linker script)
+<prefix>/mips-linux/lib/libc.so.6           (A symlink to the acutal shlib)
+<prefix>/mips-linux/lib/libc-<version>.so   (The actual shared library image)
+<prefix>/mips-linux/lib/libc.a              (The static libc)
 
-Mike
+Note that libc.so is an ASCII file containing a short linker script
+unlike Linux libc.
 
--- 
-#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
-#>           Resident Linux bigot and kernel hacker. (OOPS!)           
-#> `If you get bitten by a bug, tough luck...the one thing I won't do  
-#> is feel sorry for you.  In fact, I might ask you to do it all over  
-#> again, just to get more information.  I'm a heartless bastard.'     
-#>                       -- Linus Torvalds (on development kernels)    
+Does that help?
+
+  Ralf

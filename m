@@ -1,44 +1,40 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA16484; Thu, 26 Jun 1997 11:46:43 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA16742; Thu, 26 Jun 1997 11:59:57 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA17963 for linux-list; Thu, 26 Jun 1997 11:46:26 -0700
-Received: from oz.engr.sgi.com (oz.engr.sgi.com [150.166.61.27]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA17934 for <linux@engr.sgi.com>; Thu, 26 Jun 1997 11:46:22 -0700
-Received: (from ariel@localhost) by oz.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA11570 for linux@engr.sgi.com; Thu, 26 Jun 1997 11:46:22 -0700
-From: ariel@oz.engr.sgi.com (Ariel Faigon)
-Message-Id: <199706261846.LAA11570@oz.engr.sgi.com>
-Subject: anon-ftp enabled on linus
-To: linux@cthulhu.engr.sgi.com (SGI/Linux mailing list)
-Date: Thu, 26 Jun 1997 11:46:22 -0700 (PDT)
-Reply-To: ariel@sgi.com (Ariel Faigon)
-Organization: Silicon Graphics Inc.
-X-Mailer: ELM [version 2.4 PL24 ME5a]
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA22044 for linux-list; Thu, 26 Jun 1997 11:59:31 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA22023 for <linux@cthulhu.engr.sgi.com>; Thu, 26 Jun 1997 11:59:27 -0700
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id LAA26528
+	for <linux@cthulhu.engr.sgi.com>; Thu, 26 Jun 1997 11:59:12 -0700
+	env-from (ralf@informatik.uni-koblenz.de)
+Received: from dali..uni-koblenz (ralf@dali.uni-koblenz.de [141.26.5.1]) by informatik.uni-koblenz.de (8.8.5/8.6.9) with SMTP id UAA00700; Thu, 26 Jun 1997 20:58:20 +0200 (MEST)
+From: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
+Message-Id: <199706261858.UAA00700@informatik.uni-koblenz.de>
+Subject: Re: anon-ftp enabled on linus
+To: ariel@sgi.com
+Date: Thu, 26 Jun 1997 20:55:56 +0200 (MET DST)
+Cc: linux@cthulhu.engr.sgi.com
+In-Reply-To: <199706261846.LAA11570@oz.engr.sgi.com> from "Ariel Faigon" at Jun 26, 97 11:46:22 am
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-FYI:
+Hi,
 
-I just enabled public ftp access to linus.linux.sgi.com
-ftpd runs as user/group  ftp/ftp.
+> Since IRIX comes only with a dynamically liked '/bin/ls'
+> I had to add /lib/rld libc.so and /dev/zero rooted at /src
+> for dir to work.
 
-The chroot'ed location (~ftp) is /src (where the CVS tree resides)
+> If anyone feels like building the latest wu-ftpd (with all security
+> patches) and replace the SGI ftpd - welcome.
 
-I made sure that the source tree has no world write permissions
-or ftp group write permissions anywhere.
+If someone wants do work on this - I've got an modified wu-ftpd 2.4
+with a builtin ls command.  Would be nice to have that in linus' ftpd,
+too.
 
-Since IRIX comes only with a dynamically liked '/bin/ls'
-I had to add /lib/rld libc.so and /dev/zero rooted at /src
-for dir to work.  I made all the permissions secure but
-another check would be appreciated.
+> A web site is planned too.  I hope we got a volunteer to set it up.
 
-If anyone feels like building the latest wu-ftpd (with all security
-patches) and replace the SGI ftpd - welcome.
+Alan is already complaining.  I told him that I consider port 80
+burned land ;-)
 
-A web site is planned too.  I hope we got a volunteer to set it up.
-
-Let's keep the public areas only on the /src partition. I suggest
-/src/www (or some such) for the web doc root.
-
--- 
-Peace, Ariel
+  Ralf

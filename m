@@ -1,39 +1,36 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f5A3jjU10742
-	for linux-mips-outgoing; Sat, 9 Jun 2001 20:45:45 -0700
-Received: from dea.waldorf-gmbh.de (u-121-20.karlsruhe.ipdial.viaginterkom.de [62.180.20.121])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5A3jgV10739
-	for <linux-mips@oss.sgi.com>; Sat, 9 Jun 2001 20:45:42 -0700
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f5A3jaX25446;
-	Sun, 10 Jun 2001 05:45:36 +0200
-Date: Sun, 10 Jun 2001 05:45:36 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Justin Carlson <carlson@sibyte.com>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: mips64 SMP for non-ip27 platforms
-Message-ID: <20010610054536.C13553@bacchus.dhis.org>
-References: <01060918561505.00831@plugh.sibyte.com>
+	by oss.sgi.com (8.11.2/8.11.3) id f5A3wq211009
+	for linux-mips-outgoing; Sat, 9 Jun 2001 20:58:52 -0700
+Received: from mail.foobazco.org (snowman.foobazco.org [198.144.194.230])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f5A3wqV11006
+	for <linux-mips@oss.sgi.com>; Sat, 9 Jun 2001 20:58:52 -0700
+Received: from galt.foobazco.org (galt.foobazco.org [198.144.194.227])
+	by mail.foobazco.org (Postfix) with ESMTP id 5F3D63E90
+	for <linux-mips@oss.sgi.com>; Sat,  9 Jun 2001 20:55:39 -0700 (PDT)
+Received: by galt.foobazco.org (Postfix, from userid 1014)
+	id 7F23114181; Sat,  9 Jun 2001 20:56:42 -0700 (PDT)
+Date: Sat, 9 Jun 2001 20:56:41 -0700
+From: Keith M Wesolowski <wesolows@foobazco.org>
+To: linux-mips@oss.sgi.com
+Subject: gcc 3.0 sig11
+Message-ID: <20010609205641.A27425@foobazco.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <01060918561505.00831@plugh.sibyte.com>; from carlson@sibyte.com on Sat, Jun 09, 2001 at 06:53:53PM -0700
-X-Accept-Language: de,en,fr
+User-Agent: Mutt/1.3.18i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sat, Jun 09, 2001 at 06:53:53PM -0700, Justin Carlson wrote:
+For the past few weeks (0422 is ok, 0528 and 0609 are not) gcc built
+for mips-linux takes sig11 during build.  Specifically at
+/s/crossdev-build/src/gcc-3.0-20010609/gcc/unwind-dw2-fde.c:1001:
+Internal error: Segmentation fault.
 
-> A while back someone mentioned that they were doing some
-> work on the mips64 SMP front to seperate the ip27 specific
-> code from the platform-independent code.  I'm doing some similar
-> things and would like to coordinate, but I can't find the original
-> mail, nor remember who the sender was.
-> 
-> So, anyone doing stuff like this, I'd enjoy hearing from you.
+I know at least one other person has seen this.  Anybody produced a
+patch or done any debugging on this?
 
-We're painfully aware that the mips64 port is currently fairly
-IP27-centric at some points ...
-
-  Ralf
+-- 
+Keith M Wesolowski <wesolows@foobazco.org> http://foobazco.org/~wesolows
+------(( Project Foobazco Coordinator and Network Administrator ))------
+	"Nothing motivates a man more than to see his boss put
+	 in an honest day's work." -- The fortune file

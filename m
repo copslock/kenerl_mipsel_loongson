@@ -1,45 +1,41 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fBJ3AcF28584
-	for linux-mips-outgoing; Tue, 18 Dec 2001 19:10:38 -0800
-Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fBJ3AZo28572
-	for <linux-mips@oss.sgi.com>; Tue, 18 Dec 2001 19:10:35 -0800
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id fBJ29lB09183;
-	Tue, 18 Dec 2001 18:09:47 -0800
-Message-ID: <3C1FF6F0.B8834B75@mvista.com>
-Date: Tue, 18 Dec 2001 18:09:52 -0800
-From: Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.18 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-CC: jim@jtan.com, linux-mips@oss.sgi.com
-Subject: Re: ISA
-References: <Pine.GSO.3.96.1011219023325.16267B-100000@delta.ds2.pg.gda.pl>
+	by oss.sgi.com (8.11.2/8.11.3) id fBJ3V6t28776
+	for linux-mips-outgoing; Tue, 18 Dec 2001 19:31:06 -0800
+Received: from dea.linux-mips.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.11.2/8.11.3) with ESMTP id fBJ3V2o28773
+	for <linux-mips@oss.sgi.com>; Tue, 18 Dec 2001 19:31:02 -0800
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id fBJ2UiK03083;
+	Wed, 19 Dec 2001 00:30:44 -0200
+Date: Wed, 19 Dec 2001 00:30:44 -0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: CVS Update@oss.sgi.com: linux
+Message-ID: <20011219003044.H2717@dea.linux-mips.net>
+References: <200112171934.fBHJYx328839@oss.sgi.com> <Pine.GSO.4.21.0112181044300.15364-100000@vervain.sonytel.be>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.GSO.4.21.0112181044300.15364-100000@vervain.sonytel.be>; from geert@linux-m68k.org on Tue, Dec 18, 2001 at 11:23:32AM +0100
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-"Maciej W. Rozycki" wrote:
+On Tue, Dec 18, 2001 at 11:23:32AM +0100, Geert Uytterhoeven wrote:
 
->  Hmm, I believe there should be no such problem.  For systems equipped
-> with the PCI bus we may just assume the low 16MB of PCI memory address
-> space is reserved for ISA memory addresses (it's hardwired for many
-> platforms, so there should be no problem with it), i.e. avoid programming
-> BARs to point to that space and make ioremap() (or __ioremap(), actually)
-> act accordingly, i.e. assume a 1:1 mapping for addresses above 16MB and
-> perform an ISA mapping for ones below 16MB.
+> > Log message:
+> > 	Rewrite ffz().  Now compiles into code without any branches.
+> 
+> Depending on your compiler. Gcc seems to be smarter than GreenHills here :-)
 
-I see.  I missed that part where you have a pivoting point at 16MB.
+I'd rather call this piece of code to be written around the compiler.
+Credits for this nice piece of code btw go to Carsten of MIPS who used
+this in the Atlas code where I discovered it two days ago.
 
-That sounds like a working solution to me.
+The old variant of this routine came from the Origin code and produces
+60% longer code with ~ 5 branches.  Probably wrapped around the SGI
+compiler.
 
-Overall, I still feel using isa_xxx() macros in the driver seems like a
-cleaner solution.  That essentially treats ISA memory space as a separate
-space.  The ioremap/readb/writeb approach tries to lump ISA memory and PCI
-memory space together but in fact we still have treat them differently (based
-on whether the address is greater than 16MB, which is a little hackish.)
-
-Jun
+  Ralf

@@ -1,34 +1,34 @@
-Received:  by oss.sgi.com id <S553742AbRBQJjE>;
-	Sat, 17 Feb 2001 01:39:04 -0800
-Received: from kuolema.Infodrom.North.DE ([195.27.69.163]:34825 "HELO
-        kuolema.infodrom.north.de") by oss.sgi.com with SMTP
-	id <S553663AbRBQJih>; Sat, 17 Feb 2001 01:38:37 -0800
-Received: from finladia.infodrom.north.de (finlandia.Infodrom.North.DE [195.27.69.162])
-	by kuolema.infodrom.north.de (Postfix) with ESMTP
-	id C774F4D73F; Sat, 17 Feb 2001 10:37:14 +0100 (CET)
-Received: by finladia.infodrom.north.de (Postfix, from userid 501)
-	id 7949210983; Sat, 17 Feb 2001 10:36:34 +0100 (CET)
-Date:   Sat, 17 Feb 2001 10:36:34 +0100
-From:   Martin Schulze <joey@finlandia.infodrom.north.de>
-To:     Ian Chilton <ian@ichilton.co.uk>
-Cc:     linux-mips@oss.sgi.com
+Received:  by oss.sgi.com id <S553736AbRBQKZp>;
+	Sat, 17 Feb 2001 02:25:45 -0800
+Received: from hermes.research.kpn.com ([139.63.192.8]:53767 "EHLO
+        hermes.research.kpn.com") by oss.sgi.com with ESMTP
+	id <S553645AbRBQKZf>; Sat, 17 Feb 2001 02:25:35 -0800
+Received: from sparta.research.kpn.com (sparta.research.kpn.com [139.63.192.6])
+ by research.kpn.com (PMDF V5.2-31 #42699)
+ with ESMTP id <01K07R6NTFO6000E6N@research.kpn.com> for
+ linux-mips@oss.sgi.com; Sat, 17 Feb 2001 11:25:33 +0100
+Received: (from karel@localhost)	by sparta.research.kpn.com (8.8.8+Sun/8.8.8)
+ id LAA13892; Sat, 17 Feb 2001 11:25:32 +0100 (MET)
+X-URL:  http://www-lsdm.research.kpn.com/~karel
+Date:   Sat, 17 Feb 2001 11:25:32 +0100 (MET)
+From:   Karel van Houten <K.H.C.vanHouten@research.kpn.com>
 Subject: Re: DECstation Hardware
-Message-ID: <20010217103634.M25990@finlandia.infodrom.north.de>
-Reply-To: Martin Schulze <joey@infodrom.north.de>
-References: <20010217002929.B24746@woody.ichilton.co.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.12i
-In-Reply-To: <20010217002929.B24746@woody.ichilton.co.uk>; from ian@ichilton.co.uk on Sat, Feb 17, 2001 at 12:29:29AM +0000
+In-reply-to: <20010217002929.B24746@woody.ichilton.co.uk>
+To:     ian@ichilton.co.uk
+Cc:     linux-mips@oss.sgi.com
+Message-id: <200102171025.LAA13892@sparta.research.kpn.com>
+MIME-version: 1.0
+X-Mailer: ELM [version 2.5 PL2]
+Content-type: text/plain; charset=us-ascii
+Content-transfer-encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Ian Chilton wrote:
-> Hello,
-> 
+Hi Ian,
+
+You wrote:
 > My MIPS boxes are SGI Big Endian machines, but I have been offered some
 > DECstation hardware for FREE, excpet for shipping costs.
 > 
@@ -41,28 +41,20 @@ Ian Chilton wrote:
 > 1 x Digital VAX station 4000 - 60
 > 1 x DEC station 3100
 > 2 x DEC station 2100
-
-Maybe this helps:
-
-From: http://decstation.unix-ag.org/status/
-
-   System support status:
-   System                                    Ethernet SCSI serial console TurboChannel keyboard/mouse
-   DECstation 2100/3100                      yes      ?    yes            n/a          no
-   Personal DECstation 5000/xx (20,25,33,50) yes      yes  yes            yes          yes
-   DECstation 5000/1xx (120,125,133,150)     yes      yes  yes            yes          no
-   DECstation 5000/200                       yes      yes  yes            yes          no
-   DECstation 5000/240,/260                  yes      yes  yes            yes          no
-   DECstation 5100                           ?        ?    ?              ?            ?
-
 > 4 x DEC Storage Expansion (Disk)
 
-These are just hard disk cases of 19" width for two 5 1/4" full height
-disks.  Stacking them gives nice towers. :)
+As I told you in a private mail some time ago ;-),
+all info about linux on DECStations can be found at:
+http://www.xs4all.nl/~vhouten/mipsel
 
-Regards,
-
-	Joey
+The 5000/25 should work OK, the 2100/3100 might have some problems
+with the current kernels.
+The VAX station is not a MIPS cpu, but a vax.
 
 -- 
-It's time to close the windows.
+Karel van Houten
+
+----------------------------------------------------------
+The box said "Requires Windows 95 or better."
+I can't understand why it won't work on my Linux computer. 
+----------------------------------------------------------

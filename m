@@ -1,71 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Dec 2002 08:27:37 +0000 (GMT)
-Received: from [IPv6:::ffff:209.226.172.94] ([IPv6:::ffff:209.226.172.94]:11416
-	"EHLO semigate.zarlink.com") by linux-mips.org with ESMTP
-	id <S8225263AbSLQI1g>; Tue, 17 Dec 2002 08:27:36 +0000
-Received: from ottmta01.zarlink.com (ottmta01 [134.199.14.110])
-	by semigate.zarlink.com (8.10.2+Sun/8.10.2) with ESMTP id gBH8RNL16854;
-	Tue, 17 Dec 2002 03:27:23 -0500 (EST)
-Subject: Re: Problems with CONFIG_PREEMPT
-To: Jun Sun <jsun@mvista.com>
-Cc: linux-mips@linux-mips.org
-X-Mailer: Lotus Notes Release 5.0.8  June 18, 2001
-Message-ID: <OF78526308.B4153FAC-ON80256C92.002B416F@zarlink.com>
-From: Colin.Helliwell@Zarlink.Com
-Date: Tue, 17 Dec 2002 08:27:16 +0000
-X-MIMETrack: Serialize by Router on ottmta01/Semi(Release 5.0.11  |July 24, 2002) at 12/17/2002
- 03:27:23 AM
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Dec 2002 08:43:36 +0000 (GMT)
+Received: from web40407.mail.yahoo.com ([IPv6:::ffff:66.218.78.104]:7452 "HELO
+	web40407.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S8225263AbSLQInf>; Tue, 17 Dec 2002 08:43:35 +0000
+Message-ID: <20021217084303.20121.qmail@web40407.mail.yahoo.com>
+Received: from [12.234.201.50] by web40407.mail.yahoo.com via HTTP; Tue, 17 Dec 2002 00:43:03 PST
+Date: Tue, 17 Dec 2002 00:43:03 -0800 (PST)
+From: Long Li <long21st@yahoo.com>
+Subject: .reginfo and .mdebug section
+To: linux-mips@linux-mips.org
 MIME-Version: 1.0
-Content-type: text/plain; charset=us-ascii
-Return-Path: <Colin.Helliwell@Zarlink.Com>
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <long21st@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 901
+X-archive-position: 902
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Colin.Helliwell@Zarlink.Com
+X-original-sender: long21st@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
+Hi, 
 
-NEW_TIME_C is set. URL to the patch is:
-http://www.kernel.org/pub/linux/kernel/people/rml/preempt-kernel/v2.4/preempt-kernel-rml-2.4.19-2.patch
+I have some problems after building a linux-mips cross
+compiler on Red Hat7.1. 
 
-We ultimately want to add in real-time support, such as Ingo's O(1)
-scheduler - if this is 'complete' for MIPS. I don't know if it would be
-better just to go for this in one hit, or if we'd need the preemption
-sorted out anyway first. Or should we just go to a 2.5.x kernel instead?
+1. I tried to compile some c code targetting mips4k,
+which is 32-bit ISA. However, the map file tells me
+that the compiled code are 64-bit, since the address
+are 64-bit.
 
-Colin
-
-
-
-
-                                                                                                                                       
-                      Jun Sun                                                                                                          
-                      <jsun@mvista.com>        To:       Colin.Helliwell@Zarlink.Com                                                   
-                                               cc:       linux-mips@linux-mips.org, jsun@mvista.com                                    
-                      16-Dec-2002 08:45        Subject:  Re: Problems with CONFIG_PREEMPT                                              
-                      PM                                                                                                               
-                                                                                                                                       
-                                                                                                                                       
+2. When I compiled the c code, I found in the mapfile
+that there are some sections called .reginfo and
+.mdebug. What are those sections? I would like to get
+rid of them. However, they still exists even if I
+deleted the '-g' option for gcc. Is there a way I can
+avoid the .reginfo and .mdebug sections?
 
 
+Thanks a lot!
 
 
+Long
 
-Several possibilities:
 
-1) Not all MIPS boards can run pre-k.  At minimum, you need to use
-NEW_TIME_C, Or else you have to take a lot of stuff youself.
-
-2) Not sure if all MIPS patches are in RML's patch.  If you pass the URL
-pointer, I can take a look.
-
-3) Even with all above taken care of, there are still unsolved issues
-(such as math emul not pre-k safe, some cache operations, etc).
-However, these problems usually are much harder to show up.  You won't
-see them unless you delibrately want to. :-)
-
-Jun
+__________________________________________________
+Do you Yahoo!?
+Yahoo! Mail Plus - Powerful. Affordable. Sign up now.
+http://mailplus.yahoo.com

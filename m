@@ -1,112 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Dec 2003 03:10:45 +0000 (GMT)
-Received: from nevyn.them.org ([IPv6:::ffff:66.93.172.17]:39837 "EHLO
-	nevyn.them.org") by linux-mips.org with ESMTP id <S8225205AbTLHDKo>;
-	Mon, 8 Dec 2003 03:10:44 +0000
-Received: from drow by nevyn.them.org with local (Exim 4.24 #1 (Debian))
-	id 1ATBnD-0004gT-Qa; Sun, 07 Dec 2003 22:10:39 -0500
-Date: Sun, 7 Dec 2003 22:10:39 -0500
-From: Daniel Jacobowitz <dan@debian.org>
-To: Mark and Janice Juszczec <juszczec@hotmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Dec 2003 12:48:58 +0000 (GMT)
+Received: from law10-f52.law10.hotmail.com ([IPv6:::ffff:64.4.15.52]:48649
+	"EHLO hotmail.com") by linux-mips.org with ESMTP
+	id <S8225301AbTLHMsz>; Mon, 8 Dec 2003 12:48:55 +0000
+Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
+	 Mon, 8 Dec 2003 04:48:45 -0800
+Received: from 63.121.54.5 by lw10fd.law10.hotmail.msn.com with HTTP;
+	Mon, 08 Dec 2003 12:48:44 GMT
+X-Originating-IP: [63.121.54.5]
+X-Originating-Email: [juszczec@hotmail.com]
+X-Sender: juszczec@hotmail.com
+From: "Mark and Janice Juszczec" <juszczec@hotmail.com>
+To: dan@debian.org
 Cc: linux-mips@linux-mips.org
 Subject: Re: cross debugging r3912 cpu with gdb
-Message-ID: <20031208031039.GA17991@nevyn.them.org>
-References: <Law10-F80XN3su1U6s400015b8a@hotmail.com>
+Date: Mon, 08 Dec 2003 12:48:44 +0000
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Law10-F80XN3su1U6s400015b8a@hotmail.com>
-User-Agent: Mutt/1.5.1i
-Return-Path: <drow@crack.them.org>
+Content-Type: text/plain; format=flowed
+Message-ID: <LAW10-F527kP31wEf2X00017cd3@hotmail.com>
+X-OriginalArrivalTime: 08 Dec 2003 12:48:45.0362 (UTC) FILETIME=[9DE3B120:01C3BD89]
+Return-Path: <juszczec@hotmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3709
+X-archive-position: 3710
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@debian.org
+X-original-sender: juszczec@hotmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Dec 08, 2003 at 12:02:14AM +0000, Mark and Janice Juszczec wrote:
-> 
-> Daniel
-> 
-> you wrote:
-> >
-> >You left out lots of details.
-> >
-> 
->  Oops.  My bad.
-> 
-> >What operating system is the r3900 running?
-> 
->  Yes its linux.  kernel v2.4.0-test1-acc22
-> 
-> >From the list name, I assume it's Linux/MIPS.  So why did you configure 
-> >for mips-idt-ecoff?
-> >
->  Hmmmmm.  Good question.  The gdb docs say I have to if I want to use the 
-> MIPS remote debugging protocol.
-> 
->  I did try --target=mipsel-elf-linux and --target-mipsel-linux.  I got the 
-> following targets:
-> 
-> (gdb) help target
-> Connect to a target machine or process.
-> The first argument is the type or protocol of the target machine.
-> Remaining arguments are interpreted by the target protocol.  For more
-> information on the arguments for a particular protocol, type
-> `help target ' followed by the protocol name.
-> 
-> List of target subcommands:
-> 
-> target async -- Use a remote computer via a serial line
-> target cisco -- Use a remote machine via TCP
-> target core -- Use a core file as a target
-> target exec -- Use an executable file as a target
-> target extended-async -- Use a remote computer via a serial line
-> target extended-remote -- Use a remote computer via a serial line
-> target remote -- Use a remote computer via a serial line
-> target sim -- Use the compiled-in simulator
-> 
->  I figured mips should show up, so I guessed they were incorrect.  Even so, 
-> I tried connecting with both and got the same results:
-> 
-> (gdb) target async /dev/ttyUSB0
-> Remote debugging using /dev/ttyUSB0
-> Sending packet: $Hc-1#09...Sending packet: $Hc-1#09...Sending packet: 
-> $Hc-1#09...Sending packet: $Hc-1#09...Timed out.
-> Timed out.
-> Timed out.
-> Ignoring packet error, continuing...
-> Sending packet: $qC#b4...Sending packet: $qC#b4...Sending packet: 
-> $qC#b4...Sending packet: $qC#b4...Timed out.
-> Timed out.
-> Timed out.
-> Ignoring packet error, continuing...
-> Sending packet: $qOffsets#4b...Sending packet: $qOffsets#4b...Sending 
-> packet: $qOffsets#4b...Sending packet: $qOffsets#4b...Timed out.
-> Timed out.
-> Timed out.
-> Ignoring packet error, continuing...
-> Couldn't establish connection to remote target
-> Malformed response to offset query, timeout
-> 
->  Any idea what that all means?
-> 
-> >If you're using gdbserver, then you want target=mips-linux and "target
-> >remote", not "target mips".
-> >
-> 
->  I'm not using gdbserver.  It won't fit on my pda if I include kaffe and 
-> its associated files.
 
-Then what ARE you using on the target?
+Daniel
 
-You have to connect to some particular debug stub.  That determines
-what protocol to use.
+>
+>Then what ARE you using on the target?
+>
 
--- 
-Daniel Jacobowitz
-MontaVista Software                         Debian GNU/Linux Developer
+I have a kernel, busybox (for init and sh) and kaffe+associated files.  
+These have all been cross compiled from i386 for mipsel-linux using gcc 
+(2.95 or 3.0).
+
+>You have to connect to some particular debug stub.  That determines
+>what protocol to use.
+>
+
+
+I wanted to test starting the whole thing up and connecting with gdb before 
+trying to actually debug anything.  So, I haven't begun to worry about debug 
+stubs.
+
+Frankly, I'm confused as to where they'd go.  It seems to me I want to let 
+the kernel start up on the pda and then use gdb to tell it to start running 
+kaffe.  If that's true, I need debug stubs in kaffe.  Am I completely wrong 
+with this idea?
+
+Mark
+
+>--
+>Daniel Jacobowitz
+>MontaVista Software                         Debian GNU/Linux Developer
+
+_________________________________________________________________
+Browse styles for all ages, from the latest looks to cozy weekend wear at 
+MSN Shopping.  And check out the beauty products! http://shopping.msn.com

@@ -1,48 +1,54 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fARHuoM26408
-	for linux-mips-outgoing; Tue, 27 Nov 2001 09:56:50 -0800
-Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fARHuho26405
-	for <linux-mips@oss.sgi.com>; Tue, 27 Nov 2001 09:56:44 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id RAA10679;
-	Tue, 27 Nov 2001 17:55:01 +0100 (MET)
-Date: Tue, 27 Nov 2001 17:55:00 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+	by oss.sgi.com (8.11.2/8.11.3) id fARHwdu26499
+	for linux-mips-outgoing; Tue, 27 Nov 2001 09:58:39 -0800
+Received: from www.transvirtual.com (root@www.transvirtual.com [206.14.214.140])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fARHwao26496
+	for <linux-mips@oss.sgi.com>; Tue, 27 Nov 2001 09:58:36 -0800
+Received: from www.transvirtual.com (jsimmons@localhost [127.0.0.1])
+        by localhost (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id fARGwFh7021779;
+	Tue, 27 Nov 2001 08:58:15 -0800
+Received: from localhost (jsimmons@localhost)
+        by www.transvirtual.com (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id fARGwEHx021775;
+	Tue, 27 Nov 2001 08:58:15 -0800
+X-Authentication-Warning: www.transvirtual.com: jsimmons owned process doing -bs
+Date: Tue, 27 Nov 2001 08:58:14 -0800 (PST)
+From: James Simmons <jsimmons@transvirtual.com>
 To: Florian Lohoff <flo@rfc822.org>
-cc: debian-mips@lists.debian.org, debian-boot@lists.debian.org,
-   linux-mips@oss.sgi.com
-Subject: Re: failed installation debian-mipsel (Decstation 5000/150)
-In-Reply-To: <20011127163854.D9282@paradigm.rfc822.org>
-Message-ID: <Pine.GSO.3.96.1011127175326.440J-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+cc: linux-mips@oss.sgi.com
+Subject: Re: [PATCH] NONCOHERENT_IO Decstation ?!
+In-Reply-To: <20011127122152.F27987@paradigm.rfc822.org>
+Message-ID: <Pine.LNX.4.10.10111270855180.21131-100000@www.transvirtual.com>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, 27 Nov 2001, Florian Lohoff wrote:
 
-> >  I see.  I haven't used TFTP on the DECstation ever.  I think the default
-> > timeout is too low anyway.  RFC826 does not specify any timeouts but
-> > keeping them below 2 minutes is pointless IMO.  If an interface assigned
-> > to an IP address changes its MAC address, it will start to use the new one
-> > for ARP requests immetiately and all caches in the LAN will have a chance
-> > to get updated.
+> Without:
 > 
-> IIRC the kernel refreshes the timeout on communication - But only on
-> TCP not UDP ...
-
- Weird.
-
-> >  Weird -- the read should time out after 10000 loops...  It definitely
-> > needs to be checked. 
 > 
-> Did this change lately - The kernel of the boot-floppies is a little
-> old.
+> Index: arch/mips/config.in
+> ===================================================================
+> RCS file: /cvs/linux/arch/mips/config.in,v
+> retrieving revision 1.151
+> diff -u -r1.151 config.in
+> --- arch/mips/config.in	2001/11/26 12:01:08	1.151
+> +++ arch/mips/config.in	2001/11/27 12:17:26
+> @@ -292,6 +292,10 @@
+>         define_bool CONFIG_PC_KEYB y
+>  fi                             
+>  
+> +if [ "$CONFIG_DECSTATION" = "y" ]; then
+> +       define_bool CONFIG_NONCOHERENT_IO y
+> +fi
+> +
+>  if [ "$CONFIG_ISA" != "y" ]; then
+>     define_bool CONFIG_ISA n
+>     define_bool CONFIG_EISA n
 
- I don't think so.
+We got nailed by this to. Ralph I like to suggest that we add 
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+set CONFIG_NONCOHERENT_IO 
+
+to arch/mips/Config.in since most devices of this type don't support 
+IO coherency. 

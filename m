@@ -1,68 +1,165 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id QAA19199 for <linux-archive@neteng.engr.sgi.com>; Wed, 14 Jan 1998 16:59:55 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id UAA30061 for <linux-archive@neteng.engr.sgi.com>; Wed, 14 Jan 1998 20:00:06 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id QAA27870 for linux-list; Wed, 14 Jan 1998 16:56:59 -0800
-Received: from fir.engr.sgi.com (fir.engr.sgi.com [150.166.49.183]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id QAA27844; Wed, 14 Jan 1998 16:56:50 -0800
-Received: (from wje@localhost) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id QAA17975; Wed, 14 Jan 1998 16:56:38 -0800
-Date: Wed, 14 Jan 1998 16:56:38 -0800
-Message-Id: <199801150056.QAA17975@fir.engr.sgi.com>
-From: "William J. Earl" <wje@fir.engr.sgi.com>
-To: ralf@uni-koblenz.de
-Cc: William Ellis <bellis@cerf.net>,
-        Linux porting team <linux@cthulhu.engr.sgi.com>
-Subject: Re: boot problem
-In-Reply-To: <19980115012622.51359@uni-koblenz.de>
-References: <34BD4F3E.7F86@cerf.net>
-	<19980115012622.51359@uni-koblenz.de>
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id TAA11467 for linux-list; Wed, 14 Jan 1998 19:55:03 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id TAA11458 for <linux@cthulhu.engr.sgi.com>; Wed, 14 Jan 1998 19:54:57 -0800
+Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id TAA25666
+	for <linux@cthulhu.engr.sgi.com>; Wed, 14 Jan 1998 19:54:52 -0800
+	env-from (adevries@engsoc.carleton.ca)
+Received: from localhost (adevries@localhost)
+	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id WAA15565;
+	Wed, 14 Jan 1998 22:56:59 -0500
+Date: Wed, 14 Jan 1998 22:56:58 -0500 (EST)
+From: Alex deVries <adevries@engsoc.carleton.ca>
+To: ewt@redhat.com
+cc: ralf@uni-koblenz.de, SGI Linux <linux@cthulhu.engr.sgi.com>
+Subject: mipseb and mipsel patches to RPM...
+In-Reply-To: <19980115010335.21821@uni-koblenz.de>
+Message-ID: <Pine.LNX.3.95.980114214632.6815B-100000@lager.engsoc.carleton.ca>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-ralf@uni-koblenz.de writes:
-...
- > No, the FDDI card is just being ignored by Linux.  The problem is
- > indeed the fact that the newport GFX card isn't installed.  I'll
- > take a look at it when I have time for more than one breath
- > per minute ...
- > 
- > Thinking about it, the kernel should only try to touch the gfx hardware
- > at all, if the ARC environment variable ``console'' is unset.  If you
- > want to run from a serial console, then the variable's value should be
- > either ``d1'' or ``d2'' for the first rsp. second serial interface.
- > I suppose IRIX just defaults to serial console because it knows that
- > a Challenge S is headless or after a failed probe for gfx hardware.
 
-     IRIX probes for the graphics card.  If the probe fails, it
-assumes this is not one.  If there is no graphics, or if console != g,
-it sets the system console to the serial port.  Note, however, that
-IRIX normally puts up an X login on the graphics head even if
-console=d and thus the console is on the serial port.  This seems
-like a reasonable approach for linux as well.
+On Thu, 15 Jan 1998 ralf@uni-koblenz.de wrote:
+> Ah, you were the volunteer :-)  Recently I fixed RPM already, so we should
+> somewhen deciede who's patch is the nicer.
 
- > William, what is the recommended way to recognice whethere a machine
- > is a Indy or Challenge S?  Probing for a GFX card or checking via
- > ARC firmware?
+Erik,
 
-       I would probe for the graphics card.  If you try to fetch
-from the configuration register and get a bus error, or if the
-returned value is wrong, assume no graphics. 
+	Feel free to apply either Ralf's or my patch (below my .sig).  It
+supports auto-byte order detection in defaultMachine(), and patches to the
+rpmrc and rpm.magic files to change the name to mipseb and mipsel.
 
-       You can check that you can read from the first register
-location (0x1f0f0000); if there is a bus error, there is no graphics.
-Then check that the GFXBUSY bit (0x8) in the status register at 
-0x1f0f1338 turns off within about 300 ms.  The IRIX driver also
-does this to check that the card is alive:
+	I've made little-endian mips 11, and renamed the existing mips to
+mipseb.
 
-	/*
-	 * Write an int into the 16-bit xstarti register.
-	 * Read it back from the fixed-point xstartf register.
-	 * The format is 16 bits of integer, 4 bits of fraction,
-	 * all << 7.  In this case, the fraction is 0, so we expect
-	 * to read (0x12348765 & 0xffff) << 11.
-	 */
+- Alex
 
-	rex3->set.xstarti = 0x12348765;
-	if ( rex3->set._xstart.word == ((0x12348765 & 0xffff) << 11) ) {
-		ng1_probed[index] = NG1_FOUND;
-		return 1;
-	}
+-- 
+      Alex deVries          Run Linux on everything,
+  System Administrator      run everything on Linux.
+   The EngSoc Project       Send spam to spam@engsoc.carleton.ca.
+z
 
-set.xstarti is 0x1f0f0148 and set._xstart.word is 0x1f0f0100.
+diff -rc rpm-2.4.99.orig/lib/rpmrc.c rpm-2.4.99/lib/rpmrc.c
+*** rpm-2.4.99.orig/lib/rpmrc.c	Tue Jan 13 16:08:24 1998
+--- rpm-2.4.99/lib/rpmrc.c	Wed Jan 14 19:07:28 1998
+***************
+*** 669,674 ****
+--- 669,681 ----
+      char * chptr;
+      struct canonEntry * canon;
+  
++ #if defined (__mips)
++     union {
++       long l;
++       char c[sizeof (long)];
++     } u;
++ #endif
++ 
+      if (!gotDefaults) {
+  	uname(&un);
+  	if (!strcmp(un.sysname, "AIX")) {
+***************
+*** 681,686 ****
+--- 688,702 ----
+  	chptr = un.machine;
+  	while (*chptr++)
+  	    if (*chptr == '/') *chptr = '-';
++ 
++ #if defined(__mips)
++             u.l = 1;
++             if (u.c[sizeof (long) - 1] == 1) {
++ 		    strcpy(un.machine, "mipseb");
++             } else {
++ 		    strcpy(un.machine, "mipsel");
++            }
++ #endif
+  
+  	#if defined(__hpux) && defined(_SC_CPU_VERSION)
+  	{
+diff -rc rpm-2.4.99.orig/lib-rpmrc.in rpm-2.4.99/lib-rpmrc.in
+*** rpm-2.4.99.orig/lib-rpmrc.in	Tue Jan 13 16:08:23 1998
+--- rpm-2.4.99/lib-rpmrc.in	Wed Jan 14 18:41:13 1998
+***************
+*** 41,47 ****
+  arch_canon: 	sun4c:	sparc	3
+  arch_canon:     sun4d:  sparc   3
+  # This is really a place holder for MIPS.
+! arch_canon:	mips:	mips	4
+  arch_canon:	ppc:	ppc	5
+  arch_canon:	m68k:	m68k	6
+  arch_canon:	IP:	sgi	7
+--- 41,47 ----
+  arch_canon: 	sun4c:	sparc	3
+  arch_canon:     sun4d:  sparc   3
+  # This is really a place holder for MIPS.
+! arch_canon:	mipseb:	mipseb	4
+  arch_canon:	ppc:	ppc	5
+  arch_canon:	m68k:	m68k	6
+  arch_canon:	IP:	sgi	7
+***************
+*** 50,55 ****
+--- 50,56 ----
+  arch_canon:    9000/712:       hppa1.1 9
+  
+  arch_canon:    sun4u:   usparc  10
++ arch_canon:	mipsel:	mipsel	11
+  
+  #############################################################
+  # Canonical OS names and numbers
+***************
+*** 118,124 ****
+  arch_compat: sparc: noarch
+  
+  arch_compat: ppc: noarch
+! arch_compat: mips: noarch
+  
+  arch_compat: hppa1.1: hppa1.0
+  arch_compat: hppa1.0: noarch
+--- 119,126 ----
+  arch_compat: sparc: noarch
+  
+  arch_compat: ppc: noarch
+! arch_compat: mipseb: noarch
+! arch_compat: mipsel: noarch
+  
+  arch_compat: hppa1.1: hppa1.0
+  arch_compat: hppa1.0: noarch
+***************
+*** 137,140 ****
+  buildarch_compat: alpha: noarch
+  buildarch_compat: m68k: noarch
+  buildarch_compat: ppc: noarch
+! buildarch_compat: mips: noarch
+--- 139,144 ----
+  buildarch_compat: alpha: noarch
+  buildarch_compat: m68k: noarch
+  buildarch_compat: ppc: noarch
+! buildarch_compat: mipsel: noarch
+! buildarch_compat: mipseb: noarch
+! 
+diff -rc rpm-2.4.99.orig/rpm.magic rpm-2.4.99/rpm.magic
+*** rpm-2.4.99.orig/rpm.magic	Tue Jan 13 16:08:23 1998
+--- rpm-2.4.99/rpm.magic	Wed Jan 14 16:43:43 1998
+***************
+*** 10,17 ****
+  >>8	beshort		1		i386
+  >>8	beshort		2		Alpha
+  >>8	beshort		3		Sparc
+! >>8	beshort		4		MIPS
+  >>8	beshort		5		PowerPC
+  >>8	beshort		6		68000
+  >>8	beshort		7		SGI
+  >>10	string		x		%s
+--- 10,18 ----
+  >>8	beshort		1		i386
+  >>8	beshort		2		Alpha
+  >>8	beshort		3		Sparc
+! >>8	beshort		4		MIPS big endian
+  >>8	beshort		5		PowerPC
+  >>8	beshort		6		68000
+  >>8	beshort		7		SGI
++ >>8	beshort		11		MIPS little endian
+  >>10	string		x		%s

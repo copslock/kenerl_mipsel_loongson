@@ -1,77 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Jan 2003 01:26:44 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:63989 "EHLO
-	orion.mvista.com") by linux-mips.org with ESMTP id <S8225234AbTA2B0n>;
-	Wed, 29 Jan 2003 01:26:43 +0000
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.11.6/8.11.6) id h0T1QV028031;
-	Tue, 28 Jan 2003 17:26:31 -0800
-Date: Tue, 28 Jan 2003 17:26:31 -0800
-From: Jun Sun <jsun@mvista.com>
-To: Vivien Chappelier <vivienc@nerim.net>
-Cc: Ralf Baechle <ralf@oss.sgi.com>, linux-mips@linux-mips.org,
-	jsun@mvista.com
-Subject: Re: [PATCH 2.5] FPU
-Message-ID: <20030128172631.E11633@mvista.com>
-References: <Pine.LNX.4.21.0301260251300.15950-100000@melkor> <20030127102929.N11633@mvista.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20030127102929.N11633@mvista.com>; from jsun@mvista.com on Mon, Jan 27, 2003 at 10:29:29AM -0800
-Return-Path: <jsun@orion.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Jan 2003 01:39:08 +0000 (GMT)
+Received: from h0000c06cf87e.ne.client2.attbi.com ([IPv6:::ffff:24.147.212.21]:59911
+	"EHLO compaq.parker.boston.ma.us") by linux-mips.org with ESMTP
+	id <S8225234AbTA2BjH>; Wed, 29 Jan 2003 01:39:07 +0000
+Received: from p2.parker.boston.ma.us (p2 [192.245.5.16])
+	by compaq.parker.boston.ma.us (8.11.6/8.11.6) with ESMTP id h0T1d3M06983;
+	Tue, 28 Jan 2003 20:39:04 -0500
+Received: from p2 (brad@localhost)
+	by p2.parker.boston.ma.us (8.11.2/8.11.2) with ESMTP id h0T1d3R01891;
+	Tue, 28 Jan 2003 20:39:03 -0500
+Message-Id: <200301290139.h0T1d3R01891@p2.parker.boston.ma.us>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+cc: Ralf Baechle <ralf@linux-mips.org>, Mike Uhler <uhler@mips.com>,
+	Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: Re: unaligned load in branch delay slot 
+In-Reply-To: Message from Geert Uytterhoeven <geert@linux-m68k.org> 
+   of "Tue, 28 Jan 2003 13:27:42 +0100." <Pine.GSO.4.21.0301281315380.9269-100000@vervain.sonytel.be> 
+Date: Tue, 28 Jan 2003 20:39:03 -0500
+From: Brad Parker <brad@parker.boston.ma.us>
+Return-Path: <brad@parker.boston.ma.us>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1260
+X-archive-position: 1261
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsun@mvista.com
+X-original-sender: brad@parker.boston.ma.us
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jan 27, 2003 at 10:29:29AM -0800, Jun Sun wrote:
-> On Sun, Jan 26, 2003 at 02:58:09AM +0100, Vivien Chappelier wrote:
-> > Hi,
-> > 
-> > 	At various places in the 2.5 kernel, the fpu is accessed in
-> > kernel mode with CU1 not set, causing an unexpected exception. This patch
-> > makes sure FPU can be accessed by the kernel, though it may only
-> > be a workaround. Any comment from someone with a better understanding of
-> > the FPU access/context switching code?
-> > 
-> > Vivien.
-> > 
-> > --- include/asm-mips64/fpu.h	2002-12-11 20:44:20.000000000 +0100
-> > +++ include/asm-mips64/fpu.h	2002-12-11 21:51:44.000000000 +0100
-> > @@ -109,6 +109,7 @@
-> >  
-> >  static inline void save_fp(struct task_struct *tsk)
-> >  {
-> > +	enable_fpu();
-> >  	if (mips_cpu.options & MIPS_CPU_FPU) 
-> >  		_save_fp(tsk);
-> >  }
-> > --- include/asm-mips/fpu.h	2002-12-11 20:44:20.000000000 +0100
-> > +++ include/asm-mips/fpu.h	2002-12-11 21:51:44.000000000 +0100
-> > @@ -109,6 +109,7 @@
-> >  
-> >  static inline void save_fp(struct task_struct *tsk)
-> >  {
-> > +	enable_fpu();
-> >  	if (mips_cpu.options & MIPS_CPU_FPU) 
-> >  		_save_fp(tsk);
-> >  }
-> 
-> The above two hunks seem to be right.
+
+Geert Uytterhoeven wrote:
+>On Tue, 28 Jan 2003, Ralf Baechle wrote:
+>> On Tue, Jan 28, 2003 at 10:30:20AM +0100, Geert Uytterhoeven wrote:
+>> > If it happens, I should get a SIGILL, right?
+>> 
+>> Right.
+>> 
+>> Hmm...  If you can't reproduce this anymore I guess we should pull this
+>> patch again?  Despite Mike basically acknowledging that such behaviour
 >
+>I cannot reproduce it in user space. I can still reproduce it in kernel space
+>when an incoming TCP connection is accepted:
+>
+>| 8034d568 <tcp_v4_conn_request>:
 
-There are two places which call save_fp().  Just verified that in
-both places current process should be fpu owner and therefore
-FPU *should* be enabled.
+I had a problem in tcp_rcv_established() where this "if" would trigger
+even though "th->syn" was zero:
 
-Basically whenever current process is fpu owner, the FPU should be
-enabled.  Apparently something in 2.5 breaks that fundamental assumption.
-Will look into it later.
+...
+	if (th->syn && !before(TCP_SKB_CB(skb)->seq, tp->rcv_nxt)) {
+...
 
-Jun
+It turned out the tcp header was 'misaligned' after coming across a
+usb link.  I never figured out why it was failing, but it was clearly
+the emulation code which was doing the wrong thing.  This was on an
+alchemy au1000 (MIPS32).
+
+also in the kernel...
+
+-brad

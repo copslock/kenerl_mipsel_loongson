@@ -1,28 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Apr 2003 16:55:37 +0100 (BST)
-Received: from p508B5EC1.dip.t-dialin.net ([IPv6:::ffff:80.139.94.193]:59009
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Apr 2003 17:01:09 +0100 (BST)
+Received: from p508B5EC1.dip.t-dialin.net ([IPv6:::ffff:80.139.94.193]:65153
 	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225202AbTDNPzh>; Mon, 14 Apr 2003 16:55:37 +0100
+	id <S8225202AbTDNQBI>; Mon, 14 Apr 2003 17:01:08 +0100
 Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id h3EFtSp18708;
-	Mon, 14 Apr 2003 17:55:28 +0200
-Date: Mon, 14 Apr 2003 17:55:28 +0200
+	by dea.linux-mips.net (8.11.6/8.11.6) id h3EFmQF18553;
+	Mon, 14 Apr 2003 17:48:26 +0200
+Date: Mon, 14 Apr 2003 17:48:25 +0200
 From: Ralf Baechle <ralf@linux-mips.org>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: Karsten Merker <karsten@excalibur.cologne.de>,
-	linux-mips@linux-mips.org
-Subject: Re: CVS Update@-mips.org: linux
-Message-ID: <20030414175528.C9808@linux-mips.org>
-References: <20030413152226.GB1968@excalibur.cologne.de> <Pine.GSO.3.96.1030414134631.24742A-100000@delta.ds2.pg.gda.pl>
+To: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc: nemoto@toshiba-tops.co.jp, linux-mips@linux-mips.org
+Subject: Re: End c-tx49.c's misserable existence
+Message-ID: <20030414174825.A9808@linux-mips.org>
+References: <20030412163215Z8225197-1272+1264@linux-mips.org> <20030414.123514.74756574.nemoto@toshiba-tops.co.jp> <20030414055038.A29923@linux-mips.org> <20030414.152903.41628304.nemoto@toshiba-tops.co.jp>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <Pine.GSO.3.96.1030414134631.24742A-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Mon, Apr 14, 2003 at 01:57:01PM +0200
+In-Reply-To: <20030414.152903.41628304.nemoto@toshiba-tops.co.jp>; from anemo@mba.ocn.ne.jp on Mon, Apr 14, 2003 at 03:29:03PM +0900
 Return-Path: <ralf@linux-mips.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2024
+X-archive-position: 2025
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,15 +29,23 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Apr 14, 2003 at 01:57:01PM +0200, Maciej W. Rozycki wrote:
+On Mon, Apr 14, 2003 at 03:29:03PM +0900, Atsushi Nemoto wrote:
 
->  I find it bogus to include <linux/smp.h> in code that has no slightest
-> possibility to ever meet an SMP configuration.  I think <asm/processor.h>
-> should be fixed instead.
+> >>>>> On Mon, 14 Apr 2003 05:50:38 +0200, Ralf Baechle <ralf@linux-mips.org> said:
+> ralf> Excellent.  This should provide a good performance boost for the
+> ralf> TX49 also as disabling the I-cache during the flush made the
+> ralf> operation even slower than it has to be.
 > 
->  Following is a fix -- Ralf, I hope that's OK.
+> Thank you for quick response.
+> 
+> One more request.  Please enclose R4600_V1_HIT_CACHEOP_WAR and
+> R4600_V2_HIT_CACHEOP_WAR with appropriate CONFIG_CPU_XXX.  I do not
+> know what CPUs need this workaround... (at least TX49 does not need
+> this)
 
-I completly agree.  Without your patch it's just a question of time until
-we hit more build problems.
+I'll leave it unconditionally enabled for now because the Makefiles could
+behave in undefined ways if multiple CONFIG_CPU_* options are selected
+and quite a few systems support both the R4600 and other processors like
+the Indy.  Another day.
 
   Ralf

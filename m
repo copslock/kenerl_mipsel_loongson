@@ -1,135 +1,117 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Apr 2004 20:58:47 +0100 (BST)
-Received: from NAT.office.mind.be ([IPv6:::ffff:62.166.230.82]:53123 "EHLO
-	codecarver.intern.mind.be") by linux-mips.org with ESMTP
-	id <S8225747AbUDNT6o>; Wed, 14 Apr 2004 20:58:44 +0100
-Received: from p2 by codecarver with local (Exim 3.36 #1 (Debian))
-	id 1BDqTd-0001LQ-00
-	for <linux-mips@linux-mips.org>; Wed, 14 Apr 2004 21:55:17 +0200
-Date: Wed, 14 Apr 2004 21:55:17 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Apr 2004 21:18:30 +0100 (BST)
+Received: from mailout2.echostar.com ([IPv6:::ffff:204.76.128.102]:50951 "EHLO
+	mailout2.echostar.com") by linux-mips.org with ESMTP
+	id <S8225747AbUDNUS1>; Wed, 14 Apr 2004 21:18:27 +0100
+Received: by riv-exchcon.echostar.com with Internet Mail Service (5.5.2653.19)
+	id <2LYLSY2W>; Wed, 14 Apr 2004 14:18:20 -0600
+Message-ID: <F71A246055866844B66AFEB10654E7860F1B0B@riv-exchb6.echostar.com>
+From: "Xu, Jiang" <Jiang.Xu@echostar.com>
 To: linux-mips@linux-mips.org
-Subject: TIOCGSERIAL for SB1250 UARTs
-Message-ID: <20040414195517.GA1615@mind.be>
-Mail-Followup-To: peter.de.schrijver@mind.be, linux-mips@linux-mips.org
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Bn2rw/3z4jIqBvZU"
-Content-Disposition: inline
-X-Answer: 42
-X-Operating-system: Debian GNU/Linux
-X-Message-Flag: Get yourself a real email client. http://www.mutt.org/
-X-mate: Mate, man gewoehnt sich an alles
-User-Agent: Mutt/1.5.5.1+cvs20040105i
-From: Peter 'p2' De Schrijver <p2@mind.be>
-Return-Path: <p2@mind.be>
+Subject: questions about keyboard
+Date: Wed, 14 Apr 2004 14:18:18 -0600
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C4225D.9FF8CAD9"
+Return-Path: <Jiang.Xu@echostar.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4777
+X-archive-position: 4778
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: p2@mind.be
+X-original-sender: Jiang.Xu@echostar.com
 Precedence: bulk
 X-list: linux-mips
 
+This message is in MIME format. Since your mail reader does not understand
+this format, some or all of this message may not be legible.
 
---Bn2rw/3z4jIqBvZU
-Content-Type: multipart/mixed; boundary="sm4nu43k4a2Rpi4c"
-Content-Disposition: inline
+------_=_NextPart_001_01C4225D.9FF8CAD9
+Content-Type: text/plain
 
+Hi,  All,
+ 
+I tried couple places and hope can get some help here.
+ 
+I try to connect a USB keyboard device to a mips embedded system.
+There is no console or X Window or any type of the graphic system
+configured.
+All I want to do is to:
+The user can dynamically connect the USB keyboard to the device. The device
+will listen to the key event from the keyboard and response by doing certain
+things.
+ 
+I believe I successfully configured the USB keyboard.  I verified this by
+put "printk" at the first line of the function handle_scancode in
+keyboard.c.  Everytime when I push the key on the keyboard, I see that
+printk.
+ 
+However, what I don't get is how can I get the key event from the kernel?  I
+tried to listen to all the ttyN, but none of them connect to the keyboard.  
+I wonder how I can write a user space application that can get the key
+event?  Could somebody help me out?  Because it is an embedded device, there
+is no X.
+ 
+Thanks
+ 
+John
+ 
 
---sm4nu43k4a2Rpi4c
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+------_=_NextPart_001_01C4225D.9FF8CAD9
+Content-Type: text/html
 
-Hi,
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=us-ascii">
+<TITLE>Message</TITLE>
 
-The attached patch implements the TIOCGSERIAL ioctl for the SB1250
-DUART.=20
+<META content="MSHTML 5.50.4937.800" name=GENERATOR></HEAD>
+<BODY>
+<DIV><FONT face=Arial size=2><SPAN class=640081020-14042004>Hi,&nbsp; 
+All,</SPAN></FONT></DIV>
+<DIV><FONT face=Arial size=2><SPAN 
+class=640081020-14042004></SPAN></FONT>&nbsp;</DIV>
+<DIV><FONT face=Arial size=2><SPAN class=640081020-14042004>I tried couple 
+places and hope can get some help here.</SPAN></FONT></DIV>
+<DIV><FONT face=Arial size=2><SPAN 
+class=640081020-14042004></SPAN></FONT>&nbsp;</DIV>
+<DIV><FONT face=Arial size=2><SPAN class=640081020-14042004>I try to connect a 
+USB keyboard device to a mips embedded system.</SPAN></FONT></DIV>
+<DIV><FONT face=Arial size=2><SPAN class=640081020-14042004>There is no console 
+or X Window or any type of the graphic system configured.</SPAN></FONT></DIV>
+<DIV><FONT face=Arial size=2><SPAN class=640081020-14042004>All I want to do is 
+to:</SPAN></FONT></DIV>
+<DIV><FONT face=Arial size=2><SPAN class=640081020-14042004>The user can 
+dynamically connect the USB keyboard to the device.&nbsp;The device will listen 
+to the key event from the keyboard and response by doing certain 
+things.</SPAN></FONT></DIV>
+<DIV><FONT face=Arial size=2><SPAN 
+class=640081020-14042004></SPAN></FONT>&nbsp;</DIV>
+<DIV><FONT face=Arial size=2><SPAN class=640081020-14042004>I believe I 
+successfully configured the USB keyboard.&nbsp; I verified this by put "printk" 
+at the first line of the function handle_scancode in keyboard.c.&nbsp; Everytime 
+when I push the key on the keyboard, I see that printk.</SPAN></FONT></DIV>
+<DIV><FONT face=Arial size=2><SPAN 
+class=640081020-14042004></SPAN></FONT>&nbsp;</DIV>
+<DIV><FONT face=Arial size=2><SPAN class=640081020-14042004>However, what I 
+don't get&nbsp;is how can I get the key event from the kernel?&nbsp; I tried to 
+listen to all the ttyN, but none of them connect to the keyboard.&nbsp; 
+</SPAN></FONT></DIV>
+<DIV><FONT face=Arial size=2><SPAN class=640081020-14042004>I wonder how I can 
+write a user space application that can get the key event?&nbsp; <SPAN 
+class=640081020-14042004>Could somebody help me out?&nbsp; Because it is an 
+embedded device, there is no X.</SPAN></SPAN></FONT></DIV>
+<DIV><FONT face=Arial size=2><SPAN class=640081020-14042004><SPAN 
+class=640081020-14042004></SPAN></SPAN></FONT>&nbsp;</DIV>
+<DIV><FONT face=Arial size=2><SPAN class=640081020-14042004><SPAN 
+class=640081020-14042004>Thanks</SPAN></SPAN></FONT></DIV>
+<DIV><FONT face=Arial size=2><SPAN class=640081020-14042004><SPAN 
+class=640081020-14042004></SPAN></SPAN></FONT>&nbsp;</DIV>
+<DIV><FONT face=Arial size=2><SPAN class=640081020-14042004><SPAN 
+class=640081020-14042004>John</SPAN></SPAN></FONT></DIV>
+<DIV><FONT face=Arial size=2><SPAN 
+class=640081020-14042004></SPAN></FONT>&nbsp;</DIV></BODY></HTML>
 
-Thanks,
-
-Peter (p2).
-
---sm4nu43k4a2Rpi4c
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename=sb1250-serial-patch-1
-Content-Transfer-Encoding: quoted-printable
-
---- linux-2.4.24/drivers/char/sb1250_duart.c	2003-08-25 13:44:41.000000000 =
-+0200
-+++ linux-qube/linux-2.4.24/linux/drivers/char/sb1250_duart.c	2004-04-03 20=
-:40:05.000000000 +0200
-@@ -498,9 +498,31 @@
- 	duart_set_cflag(us->line, tty->termios->c_cflag);
- }
-=20
-+static int get_serial_info(uart_state_t *us, struct serial_struct * retinf=
-o) {
-+
-+	struct serial_struct tmp;
-+
-+	memset(&tmp, 0, sizeof(tmp));
-+
-+	tmp.type=3DPORT_SB1250;
-+	tmp.line=3Dus->line;
-+	tmp.port=3DA_DUART_CHANREG(tmp.line,0);
-+	tmp.irq=3DK_INT_UART_0 + tmp.line;
-+	tmp.xmit_fifo_size=3D16; /* fixed by hw */
-+	tmp.baud_base=3D5000000;
-+	tmp.io_type=3DSERIAL_IO_MEM;
-+
-+	if (copy_to_user(retinfo,&tmp,sizeof(*retinfo)))
-+		return -EFAULT;
-+
-+	return 0;
-+}
-+
- static int duart_ioctl(struct tty_struct *tty, struct file * file,
- 		       unsigned int cmd, unsigned long arg)
- {
-+	uart_state_t *us =3D (uart_state_t *) tty->driver_data;
-+
- /*	if (serial_paranoia_check(info, tty->device, "rs_ioctl"))
- 	return -ENODEV;*/
- 	switch (cmd) {
-@@ -517,7 +539,7 @@
- 		printk("Ignoring TIOCMSET\n");
- 		break;
- 	case TIOCGSERIAL:
--		printk("Ignoring TIOCGSERIAL\n");
-+		return get_serial_info(us,(struct serial_struct *) arg);
- 		break;
- 	case TIOCSSERIAL:
- 		printk("Ignoring TIOCSSERIAL\n");
---- linux-2.4.24/include/linux/serial.h	2002-08-03 02:39:45.000000000 +0200
-+++ linux-qube/linux-2.4.24/linux/include/linux/serial.h	2004-04-03 20:14:3=
-7.000000000 +0200
-@@ -75,7 +75,8 @@
- #define PORT_16654	11
- #define PORT_16850	12
- #define PORT_RSA	13	/* RSA-DV II/S card */
--#define PORT_MAX	13
-+#define PORT_SB1250	14
-+#define PORT_MAX	14
-=20
- #define SERIAL_IO_PORT	0
- #define SERIAL_IO_HUB6	1
-
---sm4nu43k4a2Rpi4c--
-
---Bn2rw/3z4jIqBvZU
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.4 (GNU/Linux)
-
-iD8DBQFAfZclKLKVw/RurbsRAvQzAJoDRsaOVlHuc7qFAgu62kEOv3tgcACfdmQk
-SaxGh0AimGqI3r9DpypyH6I=
-=uWhe
------END PGP SIGNATURE-----
-
---Bn2rw/3z4jIqBvZU--
+------_=_NextPart_001_01C4225D.9FF8CAD9--

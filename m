@@ -1,43 +1,40 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA05717; Mon, 16 Jun 1997 00:31:02 -0700
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id BAA08355; Mon, 16 Jun 1997 01:03:32 -0700
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id AAA27803 for linux-list; Mon, 16 Jun 1997 00:30:39 -0700
-Received: from sgiger.munich.sgi.com (sgiger.munich.sgi.com [144.253.192.2]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id AAA27792 for <linux@cthulhu.engr.sgi.com>; Mon, 16 Jun 1997 00:30:36 -0700
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id BAA05629 for linux-list; Mon, 16 Jun 1997 01:03:07 -0700
+Received: from sgiger.munich.sgi.com (sgiger.munich.sgi.com [144.253.192.2]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id BAA05610 for <linux@cthulhu.engr.sgi.com>; Mon, 16 Jun 1997 01:03:02 -0700
 Received: from knobi.munich.sgi.com by sgiger.munich.sgi.com via ESMTP (951211.SGI.8.6.12.PATCH1502/940406.SGI)
-	 id JAA20094; Mon, 16 Jun 1997 09:30:33 +0200
-Received: from knobi (localhost [127.0.0.1]) by knobi.munich.sgi.com (950413.SGI.8.6.12/951220.SGI.AUTOCF.knobi) via SMTP id JAA00979; Mon, 16 Jun 1997 09:30:23 +0200
-Message-ID: <33A4EB8F.237C@munich.sgi.com>
-Date: Mon, 16 Jun 1997 09:30:23 +0200
+	 id KAA20818; Mon, 16 Jun 1997 10:02:59 +0200
+Received: from knobi (localhost [127.0.0.1]) by knobi.munich.sgi.com (950413.SGI.8.6.12/951220.SGI.AUTOCF.knobi) via SMTP id KAA02461; Mon, 16 Jun 1997 10:02:46 +0200
+Message-ID: <33A4F325.7DE1@munich.sgi.com>
+Date: Mon, 16 Jun 1997 10:02:45 +0200
 From: Martin Knoblauch <knobi@munich.sgi.com>
 Organization: Silicon Graphics GmbH, Am-Hochacker 3, D-85630 Grasbrunn
 X-Mailer: Mozilla 3.01SC-SGI (X11; I; IRIX 6.3 IP22)
 MIME-Version: 1.0
-To: Miguel de Icaza <miguel@nuclecu.unam.mx>
-CC: linux@cthulhu.engr.sgi.com
+To: "David S. Miller" <davem@jenolan.rutgers.edu>
+CC: ariel@sgi.com, carlson@heaven.newport.sgi.com, linux@cthulhu.engr.sgi.com
 Subject: Re: gcc for Irix.
-References: <199706131455.JAA11578@athena.nuclecu.unam.mx>
+References: <199706141735.NAA04790@jenolan.caipgeneral>
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Miguel de Icaza wrote:
+David S. Miller wrote:
 > 
-> Hello guys,
+>    From: ariel@yon.engr.sgi.com (Ariel Faigon)
+>    Date: Sat, 14 Jun 1997 10:21:07 -0700 (PDT)
 > 
->    I am running into a little problem.  The binary gcc that is
-> available on the free software collection is for Irix 5.3 and the
-> include files that are packaged with it are not quite ok for Irix 6.2
+>    And finally there's "fix_headers" - the utility that comes with gcc
+>    and fixes headers so they can be used with some gcc conventions and
+>    extensions to C.  Combine this with our multi-standard headers
+>    which I suspect the designers of "fix_headers" never thought of and
+>    you get a pretty cool mess :-)
 > 
->    I do not have a native cc, so this is kind of problematic :-)
-> 
-> Miguel.
-Miguel,
+> Which is why in gcc-2.8.0 a completely new fix_headers.irix will
+> exist which handles it all properly...
 
- if you took the stuff from Ariels home page, don't worry
-about the "5.3" stuff. It is basically the only way to build
-an "official" gcc for 6.x. Otherwise, the stuff is binary
-compatible. As for the header files, what is the problem?
-Errors, or incompleteness?
+ This is why we all eagerly wait to see an official release of 2.8 :-)
 
 Martin
 -- 

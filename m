@@ -1,65 +1,71 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f8DKDV612945
-	for linux-mips-outgoing; Thu, 13 Sep 2001 13:13:31 -0700
-Received: from ocean.lucon.org (c1473286-a.stcla1.sfba.home.com [24.176.137.160])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8DKDSe12942
-	for <linux-mips@oss.sgi.com>; Thu, 13 Sep 2001 13:13:28 -0700
-Received: by ocean.lucon.org (Postfix, from userid 1000)
-	id B80C9125C3; Thu, 13 Sep 2001 13:13:27 -0700 (PDT)
-Date: Thu, 13 Sep 2001 13:13:27 -0700
-From: "H . J . Lu" <hjl@lucon.org>
-To: "Steven J. Hill" <sjhill@cotw.com>
-Cc: binutils@sourceware.cygnus.com, linux-mips@oss.sgi.com
-Subject: Re: Corrupted symbols for MIPS debugging...
-Message-ID: <20010913131327.A29874@lucon.org>
-References: <3BA10C29.713DB745@cotw.com> <20010913130354.A29649@lucon.org> <3BA1107B.B585E570@cotw.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <3BA1107B.B585E570@cotw.com>; from sjhill@cotw.com on Thu, Sep 13, 2001 at 03:00:59PM -0500
+	by oss.sgi.com (8.11.2/8.11.3) id f8DKm6D13581
+	for linux-mips-outgoing; Thu, 13 Sep 2001 13:48:06 -0700
+Received: from mx.mips.com (mx.mips.com [206.31.31.226])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f8DKm3e13578
+	for <linux-mips@oss.sgi.com>; Thu, 13 Sep 2001 13:48:03 -0700
+Received: from newman.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id NAA16147
+	for <linux-mips@oss.sgi.com>; Thu, 13 Sep 2001 13:47:54 -0700 (PDT)
+Received: from copfs01.mips.com (copfs01 [192.168.205.101])
+	by newman.mips.com (8.9.3/8.9.0) with ESMTP id NAA00546
+	for <linux-mips@oss.sgi.com>; Thu, 13 Sep 2001 13:47:54 -0700 (PDT)
+Received: from kjelde (coppckbe [172.17.85.2])
+	by copfs01.mips.com (8.11.4/8.9.0) with SMTP id f8DKlsa27633
+	for <linux-mips@oss.sgi.com>; Thu, 13 Sep 2001 22:47:55 +0200 (MEST)
+From: "Kjeld Borch Egevang" <kjelde@mips.com>
+To: <linux-mips@oss.sgi.com>
+Subject: RE: Error in gcc version 2.96 20000731
+Date: Thu, 13 Sep 2001 22:47:25 +0200
+Message-ID: <NFBBKGGKGLLGNBGCEPKIAEHDCAAA.kjelde@mips.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
+In-Reply-To: <Pine.GSO.3.96.1010913171138.4511A-100000@delta.ds2.pg.gda.pl>
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
+Importance: Normal
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Thu, Sep 13, 2001 at 03:00:59PM -0500, Steven J. Hill wrote:
-> "H . J . Lu" wrote:
-> > 
-> > > (gdb) target remote /dev/ttyS1
-> > > Remote debugging using /dev/ttyS1
-> > > 0x80012828 in breakinst () at af_packet.c:1879
-> > > 1879            sock_unregister(PF_PACKET);
-> > > (gdb) bt
-> > > #0  0x80012828 in breakinst () at af_packet.c:1879
-> > > #1  0x8001a0d4 in sys_create_module (name_user=0x10001dc8 "cfi_probe",
-> > >     size=8176) at module.c:305
-> > 
-> > Please provide
-> > 
-> > (gdb) list breakinst
-> > (gdb) print breakinst
-> > 
-> (gdb) target remote /dev/ttyS1
-> Remote debugging using /dev/ttyS1
-> 0x80012828 in breakinst () at af_packet.c:1879
-> 1879            sock_unregister(PF_PACKET);
-> (gdb) list breakinst
-> 1874
-> 1875    static void __exit packet_exit(void)
-> 1876    {
-> 1877            remove_proc_entry("net/packet", 0);
-> 1878            unregister_netdevice_notifier(&packet_netdev_notifier);
-> 1879            sock_unregister(PF_PACKET);
-> 1880            return;
-> 1881    }
-> 1882
-> 1883    static int __init packet_init(void)
-> (gdb) print breakinst
-> $1 = {<text variable, no debug info>} 0x80012824 <breakinst>
-> (gdb) c
-> Continuing.
+Thanks for your reply.
 
-It sounds like the bug we have fixed. Please try my current gcc,
-binutils and gdb binary rpms on oss.sgi.com. They work for me.
+I was trying to port SPEC CPU 2000 (benchmarks), and one of the tests
+failed. I boiled it down to the attached program. For performance reasons it
+could be perfectly valid not to use memset(), but I agree that the code
+looks a bit odd.
 
 
-H.J.
+/Kjeld
+
+-----Original Message-----
+From: Maciej W. Rozycki [mailto:macro@ds2.pg.gda.pl]
+Sent: 13. september 2001 17:15
+To: Kjeld Borch Egevang
+Cc: linux-mips@oss.sgi.com
+Subject: Re: Error in gcc version 2.96 20000731
+
+
+On Thu, 13 Sep 2001, Kjeld Borch Egevang wrote:
+
+> I discovered an optimization error in the current gcc for MIPS.
+
+ Is 2.96 20000731 current?  I thought 3.0.1 is.
+
+> When I compile the code below with -O2 it clears the code-field just
+> after setting it. The instructions are mixed up. It works fine with -O1
+> and -O0.
+
+ Use "-fno-strict-aliasing"?
+
+> If the "//" is removed in front of the first printf, it works too.
+
+ Why don't you use memset() to clear the struct in the first place?
+
+--
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

@@ -1,57 +1,64 @@
-Received:  by oss.sgi.com id <S553757AbRAICwJ>;
-	Mon, 8 Jan 2001 18:52:09 -0800
-Received: from brutus.conectiva.com.br ([200.250.58.146]:57846 "EHLO
-        dhcp046.distro.conectiva") by oss.sgi.com with ESMTP
-	id <S553751AbRAICvs>; Mon, 8 Jan 2001 18:51:48 -0800
-Received: (ralf@lappi.waldorf-gmbh.de) by bacchus.dhis.org
-	id <S869786AbRAICli>; Tue, 9 Jan 2001 00:41:38 -0200
-Date:	Tue, 9 Jan 2001 00:41:38 -0200
-From:	Ralf Baechle <ralf@oss.sgi.com>
-To:	Predrag Malicevic <pmalic@blic.net>
-Cc:	<linux-mips@oss.sgi.com>
-Subject: Re: O200 problem...
-Message-ID: <20010109004138.A12181@bacchus.dhis.org>
-References: <Pine.LNX.4.30.0101090210460.10752-100000@quake.blic.net>
+Received:  by oss.sgi.com id <S553756AbRAII5x>;
+	Tue, 9 Jan 2001 00:57:53 -0800
+Received: from noose.gt.owl.de ([62.52.19.4]:51729 "HELO noose.gt.owl.de")
+	by oss.sgi.com with SMTP id <S553751AbRAII52>;
+	Tue, 9 Jan 2001 00:57:28 -0800
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 050A07DD; Tue,  9 Jan 2001 09:57:26 +0100 (CET)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 4F282F44C; Tue,  9 Jan 2001 09:58:04 +0100 (CET)
+Date:   Tue, 9 Jan 2001 09:54:38 +0100
+From:   Florian Lohoff <flo@rfc822.org>
+To:     "Kevin D. Kissell" <kevink@mips.com>
+Subject: Re: MIPS32 patches breaking DecStation
+Message-ID: <20010109095438.A10683@paradigm.rfc822.org>
+References: <20010109004101.B27674@paradigm.rfc822.org> <000501c079d3$fefe1a60$0deca8c0@Ulysses>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <Pine.LNX.4.30.0101090210460.10752-100000@quake.blic.net>; from pmalic@blic.net on Tue, Jan 09, 2001 at 03:16:20AM +0100
-X-Accept-Language: de,en,fr
+In-Reply-To: <000501c079d3$fefe1a60$0deca8c0@Ulysses>; from kevink@mips.com on Tue, Jan 09, 2001 at 01:34:47AM +0100
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, Jan 09, 2001 at 03:16:20AM +0100, Predrag Malicevic wrote:
+On Tue, Jan 09, 2001 at 01:34:47AM +0100, Kevin D. Kissell wrote:
+> Florian,
+> 
+> Could you do me a huge favor and try a build that
+> uses 3 or 4 nops instead of the branch to the instruction
+> after the delay slot?   There was a reason that I eliminated
 
-> I'm trying to install Linux on an Origin 200 and I'm having problems with
-> booting the kernel (CVS tree linux from oss.sgi.com).  I've included below
-> a console session of my tries to boot the kernel.  In two cases below I
-> used the default kernel configuration but without the SCSI driver.  In the
-> first case I used parameters root=/dev/nfs and nfsroot=.... It reached
-> 'Calibrating delay loop' and then 'Got dbe at 0xffffffff8013e970'.  After
-> that, I guess, some kind of register dump followed (I'm working with MIPS
-> architecture for the first time).  In the second case it reached "TCP:
-> Hash tables configured". Besides these two tries, I've tried using
-> different kernel configuration options in the machine selection category
-> and besides the obvious ones (IP27, IP27 N-Mode and Multi-Processing), I'm
-> clueless about the meaning of other options.
+No problem - Done - doesnt work
 
-> CPU 0 clock is 65535MHz.
+> the branch construct from the MIPS internal Linux source
+> base - it's a hack that works perfectly on R4000's, but
+> it's pretty much a coincidence that it does so.  Yes,
+> the code fragment in question is R4K-specific, but
+> we really need to migrate towards the use of consistent
+> mechanisms that work across the full range of MIPS
+> CPUs.  Ideally, *all* CP0 hazards should some day be 
+> padded out with "ssnops" (sll $0,$0,1, if I recall), which 
+> force a 1 cycle delay per instruction even on superscalar 
+> MIPS CPUs.
 
-Something's fishy.  I guess ;-)
+It immediatly after starting init goes crazy with "Illegal instruction"
+and dies like this:
 
-> [ Here the machines hangs again. I've tried many more times with different kernel configurations, but it's the same thing. It either "gets a dbe" or just stops after "TCP: Hash tables ..." ]
+[ ... a couple hundret Illegal instruction ... ]
+[init:1] Illegal instruction 8f9983d4 at 0fb68df8 ra=0fb68a20
+[init:1] Illegal instruction 8fbc0018 at 0fb68e08 ra=0fb68a20
+[init:1] Illegal instruction 02402021 at 0fb68e10 ra=0fb68a20
+[init:1] Illegal instruction 00000000 at 0fb68e18 ra=0fb68a20
+Kernel panic: Attempted to kill init!
+BUG IN DYNAMIC LINKER ld.so: dl-minimal.c: 67: malloc: Assertion `n <= _dl_page!
 
-I assume it's your specific configuration that's triggering the problem.
-I've got the current CVS kernel running on 2 dual processor O200 and a
-32 processor Origin 2000, so it can't be all broken.  I think all known
-to be working configuratons are machines with significantly more memory;
-dunno if that's really related or not.
+It seems we need a R4000 2.0/3.0 special except_vec_r4000 like we already
+have for the R4600 and some other kinds of mips CPUs.
 
-Thanks for sending the oops message; however without additional data
-provided I can't use it.  Can you please point please put the kernel image
-that resulted in the oops online?
-
-  Ralf
+Flo
+-- 
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+     Why is it called "common sense" when nobody seems to have any?

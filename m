@@ -1,41 +1,48 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id FAA532830 for <linux-archive@neteng.engr.sgi.com>; Fri, 28 Nov 1997 05:40:42 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970903.SGI.8.8.7/960327.SGI.AUTOCF) via SMTP id FAA534200 for <linux-archive@neteng.engr.sgi.com>; Fri, 28 Nov 1997 05:58:32 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id FAA07319 for linux-list; Fri, 28 Nov 1997 05:35:56 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id FAA07314 for <linux@cthulhu.engr.sgi.com>; Fri, 28 Nov 1997 05:35:54 -0800
-Received: from snowcrash.cymru.net (snowcrash.cymru.net [163.164.160.3]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id FAA18234
-	for <linux@cthulhu.engr.sgi.com>; Fri, 28 Nov 1997 05:35:53 -0800
-	env-from (alan@lxorguk.ukuu.org.uk)
-Received: from lightning.swansea.linux.org.uk (the-great-packet-bucket-in-the-sky [163.164.160.21] (may be forged)) by snowcrash.cymru.net (8.8.7/8.7.1) with SMTP id NAA14743; Fri, 28 Nov 1997 13:35:24 GMT
-Received: by lightning.swansea.linux.org.uk (Smail3.1.29.1 #2)
-	id m0xbQZf-0005FsC; Fri, 28 Nov 97 13:35 GMT
-Message-Id: <m0xbQZf-0005FsC@lightning.swansea.linux.org.uk>
-From: alan@lxorguk.ukuu.org.uk (Alan Cox)
-Subject: Bintuils
-To: ralf@uni-koblenz.de
-Date: Fri, 28 Nov 1997 13:35:14 +0000 (GMT)
-Cc: linux@cthulhu.engr.sgi.com
-In-Reply-To: <19971128004706.49234@uni-koblenz.de> from "ralf@uni-koblenz.de" at Nov 28, 97 00:47:06 am
-Content-Type: text
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id FAA08512 for linux-list; Fri, 28 Nov 1997 05:54:29 -0800
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id FAA08505 for <linux@cthulhu.engr.sgi.com>; Fri, 28 Nov 1997 05:54:19 -0800
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id FAA20835
+	for <linux@cthulhu.engr.sgi.com>; Fri, 28 Nov 1997 05:54:17 -0800
+	env-from (ralf@mailhost.uni-koblenz.de)
+Received: from thoma (ralf@thoma.uni-koblenz.de [141.26.4.61])
+	by informatik.uni-koblenz.de (8.8.8/8.8.8) with SMTP id OAA12103;
+	Fri, 28 Nov 1997 14:54:14 +0100 (MET)
+Received: by thoma (SMI-8.6/KO-2.0)
+	id OAA12843; Fri, 28 Nov 1997 14:54:12 +0100
+Message-ID: <19971128145410.36065@thoma.uni-koblenz.de>
+Date: Fri, 28 Nov 1997 14:54:11 +0100
+From: Ralf Baechle <ralf@uni-koblenz.de>
+To: Alan Cox <alan@lxorguk.ukuu.org.uk>
+Cc: ralf@mailhost.uni-koblenz.de, linux@cthulhu.engr.sgi.com
+Subject: Re: Bintuils
+References: <19971128004706.49234@uni-koblenz.de> <m0xbQZf-0005FsC@lightning.swansea.linux.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.84e
+In-Reply-To: <m0xbQZf-0005FsC@lightning.swansea.linux.org.uk>; from Alan Cox on Fri, Nov 28, 1997 at 01:35:14PM +0000
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Ralf:
-	Has anyone attempted to build the binutils fixed RPM with the old
-buggy binutils. Im trying this right now and Im getting
+On Fri, Nov 28, 1997 at 01:35:14PM +0000, Alan Cox wrote:
 
-1.	build the srpm
-	all the tools die with segv on load
+> 	Has anyone attempted to build the binutils fixed RPM with the old
+> buggy binutils. Im trying this right now and Im getting
 
-2.	build the srpm static
-	tools seem to work
+> Im now off to rebuild it from scratch with the static new linker to see what
+> occurs
 
-3.	link the stuff again with the static srpm but dynamic
-	dies
+I just checked the binutils on my (Intel ...) laptop.  Libbfd contains
+DT_NEEDED entries for libc.so.6.  This means that libbfd was linked
+against libc which will make binutils 2.7 produce bad executables.
 
-All the binaries crash at the same reference (000000d0 from a fixed address
-so I guess its a dynamic linker error).
+Suggested bootstrap procedure:
 
-Im now off to rebuild it from scratch with the static new linker to see what
-occurs
+  - restore your old binutils 2.7 binaries
+  - manually rebuild binutils 2.8.1 + patch.  When configuring binutils
+    2.8.1 do not use the --enable-shared option, it will make binutils
+    2.7 generate bad libraries.
+  - install the binutils just built
+  - You should now be able to rebuild the rpm without problems
 
-Alan
+  Ralf

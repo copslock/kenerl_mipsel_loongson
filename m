@@ -1,84 +1,48 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g67KXURw000784
-	for <linux-mips-outgoing@oss.sgi.com>; Sun, 7 Jul 2002 13:33:31 -0700
+	by oss.sgi.com (8.12.5/8.12.5) with ESMTP id g67KceRw000910
+	for <linux-mips-outgoing@oss.sgi.com>; Sun, 7 Jul 2002 13:38:40 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.5/8.12.3/Submit) id g67KXUJN000783
-	for linux-mips-outgoing; Sun, 7 Jul 2002 13:33:30 -0700
+	by oss.sgi.com (8.12.5/8.12.3/Submit) id g67Kcdf8000909
+	for linux-mips-outgoing; Sun, 7 Jul 2002 13:38:39 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from post.webmailer.de (natpost.webmailer.de [192.67.198.65])
-	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g67KXLRw000774
-	for <linux-mips@oss.sgi.com>; Sun, 7 Jul 2002 13:33:22 -0700
-Received: from excalibur.cologne.de (pD9E402E2.dip.t-dialin.net [217.228.2.226])
-	by post.webmailer.de (8.9.3/8.8.7) with ESMTP id WAA02961
-	for <linux-mips@oss.sgi.com>; Sun, 7 Jul 2002 22:37:32 +0200 (MET DST)
-Received: from karsten by excalibur.cologne.de with local (Exim 3.12 #1 (Debian))
-	id 17RIog-0003bw-00
-	for <linux-mips@oss.sgi.com>; Sun, 07 Jul 2002 22:39:34 +0200
-Date: Sun, 7 Jul 2002 22:39:34 +0200
-From: Karsten Merker <karsten@excalibur.cologne.de>
-To: linux-mips@oss.sgi.com
-Subject: Linux-Kongress 2002: Call for Workshops
-Message-ID: <20020707223934.A13872@excalibur.cologne.de>
-Mail-Followup-To: Karsten Merker <karsten@excalibur.cologne.de>,
-	linux-mips@oss.sgi.com
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-X-No-Archive: yes
-X-Spam-Status: No, hits=0.0 required=5.0 tests= version=2.20
+Received: from pimout4-int.prodigy.net (pimout4-ext.prodigy.net [207.115.63.103])
+	by oss.sgi.com (8.12.5/8.12.5) with SMTP id g67KcZRw000900
+	for <linux-mips@oss.sgi.com>; Sun, 7 Jul 2002 13:38:36 -0700
+Received: from Muruga.localdomain (adsl-63-201-59-18.dsl.snfc21.pacbell.net [63.201.59.18])
+	by pimout4-int.prodigy.net (8.11.0/8.11.0) with ESMTP id g67KgpO193098;
+	Sun, 7 Jul 2002 16:42:51 -0400
+Received: from localhost (muthu@localhost)
+	by Muruga.localdomain (8.11.2/8.11.2) with ESMTP id g67KaiY26329;
+	Sun, 7 Jul 2002 13:36:44 -0700
+X-Authentication-Warning: Muruga.localdomain: muthu owned process doing -bs
+Date: Sun, 7 Jul 2002 13:36:44 -0700 (PDT)
+From: Muthukumar Ratty <muthu5@sbcglobal.net>
+X-X-Sender: <muthu@Muruga.localdomain>
+To: <linux-mips@oss.sgi.com>
+cc: <kevink@mips.com>
+Subject: Re: MIPS Atlas board
+In-Reply-To: <02a401c225f2$1ef39b30$10eca8c0@grendel>
+Message-ID: <Pine.LNX.4.33.0207071333390.26311-100000@Muruga.localdomain>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Spam-Status: No, hits=-4.4 required=5.0 tests=IN_REP_TO version=2.20
 X-Spam-Level: 
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hallo everybody,
 
-I am forwarding this in case some of you are interested. The official
-deadline is tomorrow, but later applications may also be accepted.
+Thanks kevin, I will use the PCI slot then.
 
-Regards,
-Karsten
-
------ Forwarded message  -----
-
-			    Linux-Kongress 2002
-			    -------------------
-
-			     Call for Workshops
-
-As in the last two years the German Unix User Group (GUUG) with the support
-of the German Ministry of Education and Research (BMBF) is planning to hold
-five 3-day workshops from Sunday, September 1, to Wednesday, September 4 just
-before the Linux-Kongress. The workshops will give Open Source developers
-from around the world the chance to meet in person and work on their
-projects. All Open Source projects are encouraged to apply for sponsorship.
-All expenses, including travel, accommodation and conference fees for the
-Linux-Kongress will be paid for participating projects.
-
-This is a unique chance for people who have been working together over the
-Internet but never seen each other to meet face-to-face and give their
-common project a push. Maybe you can use this workshop to finally get the
-1.0 version done, or you need to come together to redesign your API, or
-maybe you just want to write some code non-stop for a few days.
-
-Workshops will take place at the "Kloster Walberberg", a former medieval
-castle and now a monastery and conference hotel set in a beautiful park.
-Everything, food, drinks, Internet connection will be provided for, so you
-can really concentrate on the job. Meeting rooms will be open 24h a day for
-your hacking pleasure.
-
-Please see the FAQ at http://www.linux-kongress.org/2002/workshops/faq.html
-for all the details and information about how to apply.
-
-Please make sure to apply soon as the planning time is quite short.
-
-If you have any questions don't hesitate to contact Jochen Topf at
-jochen.topf@guug.de.
-
------ End forwarded message -----
-
--- 
-#include <standard_disclaimer>
-Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der Nutzung
-oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die Markt- oder
-Meinungsforschung.
+>
+> If you're using the on-board multi-I/O wonder chip
+> (serial, ethernet, etc) there are some serious problems
+> with it that limit both the serial line and ethernet
+> performance.  It's good for downloading, and
+> that's about it.  Most of us at MIPS put an AMD
+> PCnet card in the PCI slot to make the system
+> usable for NFS, FTP, etc.
+>
+>             Regards,
+>
+>             Kevin K.
+>

@@ -1,63 +1,51 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fAQFcRB08077
-	for linux-mips-outgoing; Mon, 26 Nov 2001 07:38:27 -0800
-Received: from delta.ds2.pg.gda.pl (delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAQFbpo08052
-	for <linux-mips@oss.sgi.com>; Mon, 26 Nov 2001 07:37:58 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA00100;
-	Mon, 26 Nov 2001 15:35:18 +0100 (MET)
-Date: Mon, 26 Nov 2001 15:35:17 +0100 (MET)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Ralf Baechle <ralf@uni-koblenz.de>
-cc: linux-mips@fnet.fr, linux-mips@oss.sgi.com
-Subject: [patch] linux: A critical DECstation interrupt handler fix
-Message-ID: <Pine.GSO.3.96.1011126151119.21598L-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.2/8.11.3) id fAQForr08541
+	for linux-mips-outgoing; Mon, 26 Nov 2001 07:50:53 -0800
+Received: from holomorphy (mail@holomorphy.com [216.36.33.161])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fAQFono08536
+	for <linux-mips@oss.sgi.com>; Mon, 26 Nov 2001 07:50:49 -0800
+Received: from wli by holomorphy with local (Exim 3.31 #1 (Debian))
+	id 168N41-0000Nw-00; Mon, 26 Nov 2001 06:48:53 -0800
+Date: Mon, 26 Nov 2001 06:48:53 -0800
+From: William Lee Irwin III <wli@holomorphy.com>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+Cc: linux-mips@oss.sgi.com
+Subject: Re: FPU interrupt handler
+Message-ID: <20011126064853.K1048@holomorphy.com>
+References: <20011125002352.G1048@holomorphy.com> <Pine.GSO.3.96.1011126124533.21598D-100000@delta.ds2.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Description: brief message
+Content-Disposition: inline
+User-Agent: Mutt/1.3.17i
+In-Reply-To: <Pine.GSO.3.96.1011126124533.21598D-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Mon, Nov 26, 2001 at 12:57:23PM +0100
+Organization: The Domain of Holomorphy
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hello,
+On Mon, Nov 26, 2001 at 12:57:23PM +0100, Maciej W. Rozycki wrote:
+>  Nope, R3k DECstations used to use the FPU emulator unconditionally. :-(
+> This would have never got triggered.  An FPU interrupt-to-exception glue
+> was non-existent.
 
- The DECstation's interrupt handler can crash under certain circumstances. 
-Due to a missing masking of the CP0 Cause register, if a spurious
-interrupt is delivered (its deasserted before reading the register), the
-handler may jump to an arbitrary memory location as determined by data
-fetched from an incorrect location.  Due to this problem my new /260
-system used to crash frequently, because Cause.CE is often set to 3 (CE is
-unspecified for all but coprocessor unusable exceptions). 
+Okay, that is at least some relief.
 
- The following patch masks Cause appropriately.  A small reorganization of
-code was also possible due to changes in the scheduling of delay slots. 
+On Mon, Nov 26, 2001 at 12:57:23PM +0100, Maciej W. Rozycki wrote:
+>  No need to do anything -- I happened to work on the FPU a bit recently
+> and I sent a patch here on Friday that adds the glue, enables the FPU and
+> rips the broken code off.  Ralf has already applied the patch. 
 
-  Maciej
+Excellent! I'll apply it as well.
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+On Mon, Nov 26, 2001 at 12:57:23PM +0100, Maciej W. Rozycki wrote:
+>  I would *really* appreciate any feedback on DECstation patches I'm
+> sending here -- for quite some time I have a feeling I'm the last one to
+> run Linux on a DECstation... :-(
 
-patch-mips-2.4.14-20011123-dec-cause-0
-diff -up --recursive --new-file linux-mips-2.4.14-20011123.macro/arch/mips/dec/int-handler.S linux-mips-2.4.14-20011123/arch/mips/dec/int-handler.S
---- linux-mips-2.4.14-20011123.macro/arch/mips/dec/int-handler.S	Tue Jul  3 04:27:16 2001
-+++ linux-mips-2.4.14-20011123/arch/mips/dec/int-handler.S	Sun Nov 25 00:40:11 2001
-@@ -140,7 +140,7 @@
- 		 */
- 		mfc0	t0,CP0_CAUSE		# get pending interrupts
- 		mfc0	t2,CP0_STATUS
--		la	t1,cpu_mask_tbl
-+		andi	t0,ST0_IM		# CAUSE.CE may be non-zero!
- 		and	t0,t2			# isolate allowed ones
- 
- 		beqz	t0,spurious
-@@ -148,7 +148,8 @@
- 		/*
- 		 * Find irq with highest priority
- 		 */
--1:		 lw	t2,(t1)
-+		 la	t1,cpu_mask_tbl
-+1:		lw	t2,(t1)
- 		move	t3,t0
- 		and	t3,t2
- 		beq	t3,zero,1b
+Well, I'm a more than willing tester, and perhaps I can even bring some
+code to the table in my spare time at some point for the drivers my
+system needs help with.
+
+
+Cheers,
+Bill

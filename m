@@ -1,46 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Mar 2003 12:44:27 +0000 (GMT)
-Received: from p508B6693.dip.t-dialin.net ([IPv6:::ffff:80.139.102.147]:39627
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8224827AbTC0Mo0>; Thu, 27 Mar 2003 12:44:26 +0000
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.11.6/8.11.6) id h2RCiG526597;
-	Thu, 27 Mar 2003 13:44:16 +0100
-Date: Thu, 27 Mar 2003 13:44:16 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Juan Quintela <quintela@mandrakesoft.com>
-Cc: mipslist <linux-mips@linux-mips.org>
-Subject: Re: [PATCH]: sgiserial 1/7: flags are unsigned long
-Message-ID: <20030327134416.B26267@linux-mips.org>
-References: <m2adfheczs.fsf@mandrakesoft.com>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Mar 2003 00:52:54 +0000 (GMT)
+Received: from cm19173.red.mundo-r.com ([IPv6:::ffff:213.60.19.173]:3461 "EHLO
+	neno.mitica") by linux-mips.org with ESMTP id <S8224827AbTC1Aww>;
+	Fri, 28 Mar 2003 00:52:52 +0000
+Received: by neno.mitica (Postfix, from userid 501)
+	id 2305C46BA4; Fri, 28 Mar 2003 01:51:20 +0100 (CET)
+To: Ralf Baechle <ralf@linux-mips.org>,
+	mipslist <linux-mips@linux-mips.org>
+Subject: [PATCH]: no way to build pg.o
+X-Url: http://people.mandrakesoft.com/~quintela
+From: Juan Quintela <quintela@mandrakesoft.com>
+Date: Fri, 28 Mar 2003 01:51:20 +0100
+Message-ID: <m265q4b9fb.fsf@neno.mitica>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <m2adfheczs.fsf@mandrakesoft.com>; from quintela@mandrakesoft.com on Thu, Mar 27, 2003 at 03:53:43AM +0100
-Return-Path: <ralf@linux-mips.net>
+Return-Path: <quintela@mandrakesoft.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1837
+X-archive-position: 1838
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: quintela@mandrakesoft.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Mar 27, 2003 at 03:53:43AM +0100, Juan Quintela wrote:
 
-> Subject: [PATCH]: sgiserial 1/7: flags are unsigned long
+Hi
+	There is no file from which generate pg.o
 
-I applied the whole series of sgiserial patches.
+Later, Juan.
 
-I'm tired of maintaining the dead support for running IRIX's X server on
-Linux.  It was never working more than marginally and since Miguel de
-Icaza has given up working on that in favor of Gnome the code is just a
-maintenance pain.  Worse, probably there's haven a dozen bad bugs hidden
-in there allowing users to crash the system or do other sinister stuff.
-So if you want to continue your cleanup cruzade by eleminating
-drivers/sgi/ - I'm all for it :-)
 
-  Ralf
+
+ build/arch/mips/mm/Makefile |    2 +-
+ 1 files changed, 1 insertion(+), 1 deletion(-)
+
+diff -puN build/arch/mips/mm/Makefile~pg.c_dont_exist build/arch/mips/mm/Makefile
+--- 24/build/arch/mips/mm/Makefile~pg.c_dont_exist	2003-03-28 00:19:04.000000000 +0100
++++ 24-quintela/build/arch/mips/mm/Makefile	2003-03-28 00:19:18.000000000 +0100
+@@ -12,7 +12,7 @@ O_TARGET := mm.o
+ 
+ export-objs			+= ioremap.o loadmmu.o
+ obj-y				+= extable.o init.o ioremap.o fault.o \
+-				   pg.o loadmmu.o
++				   loadmmu.o
+ 
+ obj-$(CONFIG_CPU_R3000)		+= pg-r3k.o c-r3k.o tlb-r3k.o tlbex-r3k.o
+ obj-$(CONFIG_CPU_TX39XX)	+= pg-r3k.o c-tx39.o tlb-r3k.o tlbex-r3k.o
+
+_
+
+
+-- 
+In theory, practice and theory are the same, but in practice they 
+are different -- Larry McVoy

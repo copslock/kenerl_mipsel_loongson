@@ -1,54 +1,61 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fA54Win08196
-	for linux-mips-outgoing; Sun, 4 Nov 2001 20:32:44 -0800
-Received: from ns1.ltc.com (ns1.ltc.com [38.149.17.165])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA54Wd008193
-	for <linux-mips@oss.sgi.com>; Sun, 4 Nov 2001 20:32:40 -0800
-Received: from prefect (gw1.ltc.com [38.149.17.163])
-	by ns1.ltc.com (Postfix) with SMTP
-	id F30EF590A9; Sun,  4 Nov 2001 19:28:45 -0500 (EST)
-Message-ID: <07b401c165b2$f981ec30$3501010a@ltc.com>
-From: "Bradley D. LaRonde" <brad@ltc.com>
-To: "Green" <greeen@iii.org.tw>, "Linux-mips" <linux-mips@oss.sgi.com>,
-   "MipsMailList" <linux-mips@fnet.fr>
-References: <008701c165ac$1a49a9a0$4c0c5c8c@trd.iii.org.tw>
-Subject: Re: do_ri( )
-Date: Sun, 4 Nov 2001 23:33:10 -0500
+	by oss.sgi.com (8.11.2/8.11.3) id fA58A7111917
+	for linux-mips-outgoing; Mon, 5 Nov 2001 00:10:07 -0800
+Received: from smtp.huawei.com ([61.144.161.21])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fA58A0011903
+	for <linux-mips@oss.sgi.com>; Mon, 5 Nov 2001 00:10:00 -0800
+Received: from hcdong11752a ([10.105.28.74]) by smtp.huawei.com
+          (Netscape Messaging Server 4.15) with SMTP id GMBGV800.C8L for
+          <linux-mips@oss.sgi.com>; Mon, 5 Nov 2001 15:30:45 +0800 
+Message-ID: <013301c165cc$5d030fa0$4a1c690a@huawei.com>
+From: "machael" <dony.he@huawei.com>
+To: <linux-mips@oss.sgi.com>
+Subject: vmalloc bugs in 2.4.5???
+Date: Mon, 5 Nov 2001 15:34:44 +0800
 MIME-Version: 1.0
 Content-Type: text/plain;
-	charset="Windows-1252"
+	charset="gb2312"
 Content-Transfer-Encoding: 7bit
 X-Priority: 3
 X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+X-Mailer: Microsoft Outlook Express 5.00.2615.200
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2615.200
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I've seen the same thing but on a different processor (VR5432).  gcc 3.0.1,
-glibc 2.2.3.  I suspect stack/register corruption.
+hello:
+    I use linux-2.4.5 and I think VMALLOC may have some bugs which i don't
+know how to fixup.
+    I try to replace some kernel functions with my own implementations.I
+will explain it in the following:
+    Let's say:
+        void (*my_func)(void)=func1;
+     where "my_func" is a function pointer defined in kernel, and "func1" is
+ a function(void func1(void)) implemented in kernel.And "my_func" is an
+ EXPORTED SYMBOL in mips_ksyms.c.
 
-Regards,
-Brad
+    Now I want to replace "func1" with my own "func2" in a module
+ my_module.o:
+     extern void (*my_func)(void);
+     my_func = func2;
+     where "func2" is a function (void fun2(void)) implemented in
+ "my_module.o".
 
------ Original Message -----
-From: Green
-To: Linux-mips ; MipsMailList
-Sent: Sunday, November 04, 2001 10:43 PM
-Subject: do_ri( )
+     If I do "insmod my_module.o", the kernel should run OK. In fact, it is
+ often met an "unhandled kernel unaligned access" or "do_page_fault"
+ exception and then panics.
 
-Dear all,
+     We know "func1" should be in KSEG0(unmapped , cached) ,So it's address
+should be 0x8XXXXXXX.And "my_func" should also pointed to this same address
+before inserting
+ my_module.o.  "func2" should be in KSEG2(mapped, cached) since it is
+ implemented in module, So it's address should be 0xCXXXXXXX.After inserting
+ my_module.o, "my_func" should be changed to pointed to this new address in
+ KSEG2. But kernel panics......
+    If I change "module_map()" in include/asm/module.h from vmalloc to
+kmalloc, kernel runs ok after inserting my module. So I think vmalloc may
+have some bugs.
 
-    I often get into trouble executing multithread application.
-    Sometimes it will appear the message " Illegal instruction = 0xXXXX " in
-    do_ri() function in /arch/mips/kernel/traps.c.
-    It happened randomly.
+    Anyone knows how to fixup it?
 
-    Up to now, I still didn't know how to fix bug.
-    If any one know how to fix it, please reply me.
-    Appreciate in sincerely.
-
-    P.S  My mips bos is R3912.
-
-~~
-Green  greeen@iii.org.tw
+    machael

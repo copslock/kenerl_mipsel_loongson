@@ -1,47 +1,52 @@
-Received:  by oss.sgi.com id <S42228AbQJJAVc>;
-	Mon, 9 Oct 2000 17:21:32 -0700
-Received: from u-240.karlsruhe.ipdial.viaginterkom.de ([62.180.18.240]:28421
-        "EHLO u-240.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
-	with ESMTP id <S42213AbQJJAU6>; Mon, 9 Oct 2000 17:20:58 -0700
-Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S870064AbQJJATx>;
-        Tue, 10 Oct 2000 02:19:53 +0200
-Date:   Tue, 10 Oct 2000 02:19:53 +0200
-From:   Ralf Baechle <ralf@oss.sgi.com>
-To:     Florian Lohoff <flo@rfc822.org>
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: BFD: bfd assertion fail elfcode.h:1205
-Message-ID: <20001010021953.E25504@bacchus.dhis.org>
-References: <20001009175032.B7288@paradigm.rfc822.org>
+Received:  by oss.sgi.com id <S42231AbQJJDOm>;
+	Mon, 9 Oct 2000 20:14:42 -0700
+Received: from wo1133.wohnheim.uni-wuerzburg.de ([132.187.221.133]:58407 "EHLO
+        wo1133.wohnheim.uni-wuerzburg.de") by oss.sgi.com with ESMTP
+	id <S42230AbQJJDO2>; Mon, 9 Oct 2000 20:14:28 -0700
+Received: (from rhoenie@localhost)
+	by wo1133.wohnheim.uni-wuerzburg.de (SGI-8.9.3/8.9.3) id FAA36565
+	for linux-mips@oss.sgi.com; Tue, 10 Oct 2000 05:13:48 +0200 (CEST)
+Date:   Tue, 10 Oct 2000 05:13:48 +0200
+From:   Marcus Herbert <rhoenie@spam-filter.de>
+To:     Linux on MIPS <linux-mips@oss.sgi.com>
+Subject: Re: sgiserial.c
+Message-ID: <20001010051348.A36498@wo1133.wohnheim.uni-wuerzburg.de>
+Mail-Followup-To: Marcus Herbert <rhoenie@spam-filter.de>,
+	Linux on MIPS <linux-mips@oss.sgi.com>
+References: <39E22B5A.66587B5A@ridgerun.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 1.0.1i
-In-Reply-To: <20001009175032.B7288@paradigm.rfc822.org>; from flo@rfc822.org on Mon, Oct 09, 2000 at 05:50:32PM +0200
-X-Accept-Language: de,en,fr
+Content-Disposition: inline
+User-Agent: Mutt/1.2.2i
+In-Reply-To: <39E22B5A.66587B5A@ridgerun.com>; from gmcnutt@ridgerun.com on Mon, Oct 09, 2000 at 02:32:26PM -0600
+X-Wisdom: Do not dangle the mouse by its cable or throw the mouse at co-workers.
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Mon, Oct 09, 2000 at 05:50:32PM +0200, Florian Lohoff wrote:
+On Mon, Oct 09, 2000 at 02:32:26PM -0600, Gordon McNutt wrote:
+> I'm trying to get the Indy's serial port to drive a peripheral card at
+> 115200 baud. It appears to work OK at 9600 baud (the serial port that is
+> -- the card expects 115200 baud).
 
-> Hi,
-> while building glibc 2.2 for mips with cvs gcc/binutils as
-> of 20001007 i get the following - multiple times ( >1000 ) when
-> building the package (probably while stripping the binarys)
-> 
-> BFD: bfd assertion fail elfcode.h:1205
-> BFD: bfd assertion fail elfcode.h:1205
-> BFD: bfd assertion fail elfcode.h:1205
-> BFD: bfd assertion fail elfcode.h:1205
-> BFD: bfd assertion fail elfcode.h:1205
-> BFD: bfd assertion fail elfcode.h:1205
-> BFD: bfd assertion fail elfcode.h:1205
-> BFD: bfd assertion fail elfcode.h:1205
-> BFD: bfd assertion fail elfcode.h:1205
+It is limited to 38400 bit/second on hardware side. Read IRIX serial 
+manpage:
 
-In my source tree from cvs line 1205 is empty and there have not been changes
-to elfcode.h since September 27 so it seems we're looking at different
-trees.  Also I haven't observed these assertions.  Can you isolate the
-changes triggering them?
+[..]
+SUPPORTED SPEEDS
+     The serial ports of all SGI systems support several standard rates
+     up through 38400 bps (see termio(7) for these standard rates).
+     The serial ports on O2, OCTANE, Origin2000, Onyx2 and Origin200
+     systems also support
+     
+                                31250   57600
+                                76800   115200
+[..]
 
-  Ralf
+This is common knowlegde btw ;-)
+
+-- 
+      PGP2 Key-ID: 666/36540865 1997/06/09 <rhoenie@spam-filter.de>
+       GPG Key-ID: 1024D/2E2DAB44 2000-01-30 <rhoenie@spam-filter.de>
+        Geek-Code: GCS b O e+ h

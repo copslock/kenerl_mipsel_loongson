@@ -1,18 +1,17 @@
-Received:  by oss.sgi.com id <S42248AbQI2Jgo>;
-	Fri, 29 Sep 2000 02:36:44 -0700
-Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:53424 "EHLO
-        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S42190AbQI2JgS>;
-	Fri, 29 Sep 2000 02:36:18 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id LAA17242;
-	Fri, 29 Sep 2000 11:36:07 +0200 (MET DST)
-Date:   Fri, 29 Sep 2000 11:36:07 +0200 (MET DST)
+Received:  by oss.sgi.com id <S42392AbQI2JsY>;
+	Fri, 29 Sep 2000 02:48:24 -0700
+Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:58544 "EHLO
+        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S42190AbQI2JsJ>;
+	Fri, 29 Sep 2000 02:48:09 -0700
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id LAA17417;
+	Fri, 29 Sep 2000 11:46:57 +0200 (MET DST)
+Date:   Fri, 29 Sep 2000 11:46:57 +0200 (MET DST)
 From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To:     Florian Lohoff <flo@rfc822.org>
+To:     Klaus Naumann <spock@mgnet.de>
 cc:     Ralf Baechle <ralf@oss.sgi.com>, linux-mips@oss.sgi.com
 Subject: Re: Decstation broken Was: CVS Update@oss.sgi.com: linux
-In-Reply-To: <20000928214002.B767@paradigm.rfc822.org>
-Message-ID: <Pine.GSO.3.96.1000929112103.16748A-100000@delta.ds2.pg.gda.pl>
+In-Reply-To: <20000929075035.A23290@spock>
+Message-ID: <Pine.GSO.3.96.1000929113820.16748B-100000@delta.ds2.pg.gda.pl>
 Organization: Technical University of Gdansk
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
@@ -21,32 +20,32 @@ Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Thu, 28 Sep 2000, Florian Lohoff wrote:
+On Fri, 29 Sep 2000, Klaus Naumann wrote:
 
-> since this commit my machines are all broken (5000/260, 5000/150 
-> and 5000/125) - They all hang in the "Calibrating delay loop ...".
+> When I call it it's sleeping for several seconds.
+> And after that I get
+> 
+> 29 Sep 07:49:37 ntpdate[10880]: poll(): nfound = 0, error: Operation not
+> permitted
+> 
+> which seems to loop then.
+> If I would have a working strace on my box I could tell you more :/
 
- Well, I asked for testing before the commit, but nobody bothered to write
-anything, so I assumed everything is correct, sigh...
+ But gdb works -- try this one instead.
 
- OK, the /240 is definitely tested (the uptime of my -test7 was three
-weeks before I rebooted to test NFS problems) so /260 should work for you. 
-But the latter is R4K.  As Ralf already remarked me in a separate mail,
-64-bit registers can get corrupted for the 32-bit kernel (but 64-bit code
-is used throughout the kernel, strange), so please change the "#if
-_MIPS_ISA" at the beginning of include/asm-mips/div64.h into "#if 1" and
-tell me if it works for the /260. 
+> > I recently found that the Indigo2 apparently has a different realtime
+> > clock from the Indy.  If that's true it explains your observation and
+> > is unrelated the other problems.
+> 
+> Yes, it's of course unrelated to the other problem - it's just
+> an explanation why ntpdate is of real use.
 
- As for the rest -- /125 is R3K, right?  Chances are I made a stupid
-mistake and defined an address macro wrong.  I'll dig through the changes
-and see (/150 should be no problem once /125 works, as it's the same issue
-as /240 vs /260).  If I can't find anything relevant, please expect
-certain debugging patches from me for the /125 path.
+ Well, all programs from the xntp3 distribution do work for me.  This may
+also be a glibc issue -- I'm using glibc 2.2 only and this provides a
+better API for NTP (clock_settime() and friends).  I'll double-check that
+settimeofday() works right, too.
 
- Note that these are hi-res timer changes rather than NTP fixes, BTW -- my
-communication channel with Ralf got corrupted somehow at one time. 
-Although the code affects the performance of NTP handling, there were
-separate NTP changes, as well. 
+ But note that my patches do really affect only the DEC tree.
 
   Maciej
 

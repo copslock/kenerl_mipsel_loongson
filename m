@@ -1,35 +1,35 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id PAA29411 for <linux-archive@neteng.engr.sgi.com>; Wed, 21 Jan 1998 15:55:00 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (971110.SGI.8.8.8/960327.SGI.AUTOCF) via SMTP id TAA60400 for <linux-archive@neteng.engr.sgi.com>; Wed, 21 Jan 1998 19:18:47 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id PAA23578 for linux-list; Wed, 21 Jan 1998 15:51:05 -0800
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id PAA23556 for <linux@cthulhu.engr.sgi.com>; Wed, 21 Jan 1998 15:51:00 -0800
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id PAA24902
-	for <linux@cthulhu.engr.sgi.com>; Wed, 21 Jan 1998 15:49:49 -0800
-	env-from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id SAA16490
-	for <linux@cthulhu.engr.sgi.com>; Wed, 21 Jan 1998 18:49:28 -0500
-X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
-Date: Wed, 21 Jan 1998 18:49:28 -0500 (EST)
-From: Alex deVries <adevries@engsoc.carleton.ca>
-To: SGI Linux <linux@cthulhu.engr.sgi.com>
-Subject: Console problems...
-Message-ID: <Pine.LNX.3.95.980121184153.22712G-100000@lager.engsoc.carleton.ca>
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id TAA13768 for linux-list; Wed, 21 Jan 1998 19:15:59 -0800
+Received: from tantrik.engr.sgi.com (tantrik.engr.sgi.com [192.26.72.25]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id TAA13764 for <linux@cthulhu.engr.sgi.com>; Wed, 21 Jan 1998 19:15:58 -0800
+Received: from localhost (shm@localhost) by tantrik.engr.sgi.com (971110.SGI.8.8.8/970903.SGI.AUTOCF) via SMTP id TAA03951 for <linux@cthulhu>; Wed, 21 Jan 1998 19:15:57 -0800 (PST)
+Date: Wed, 21 Jan 1998 19:15:56 -0800 (PST)
+From: Shrijeet Mukherjee <shm@cthulhu.engr.sgi.com>
+To: Linux porting team <linux@cthulhu.engr.sgi.com>
+Subject: lame question ...
+Message-ID: <Pine.SGI.3.94.980121191445.3895A-100000@tantrik.engr.sgi.com>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
 
-Okay. I have a self-compiled kernel (like the vmlinux 2.1.72 kernel that
-is on linus), and it actually boots fine for me.  The problem is that it
-doesn't display the bootup.  The console output starts at the "INIT..."
-line.
+but in the indy low-level startup code, there seems to be 2 major
+functions .. 
 
-Any ideas?
+1> init the MC .. I believe that is the Memory Controller ..
+2> init the HPC .. anyone out there know what that is  .. so that I can
+put in the right functionality in the correspoding file for the indigo ??
 
-- A
 
--- 
-      Alex deVries          Run Linux on everything,
-  System Administrator      run everything on Linux.
-   The EngSoc Project       Send spam to spam@engsoc.carleton.ca.
+
+--
+--------------------------------------------------------------------------
+Shrijeet Mukherjee,    			Member of Technical Staff (MTS)
+					Advanced Graphics Division 
+                     			Silicon Graphics Computer Systems
+
+http://reality.sgi.com/shm_engr     	phone: 650-933-5312
+email: shm@engr.sgi.com, shm@sgi.com, shm@cs.uoregon.edu
+--------------------------------------------------------------------------
+Life is a comedy to those that think, a tragedy to those that feel.

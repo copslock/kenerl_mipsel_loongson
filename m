@@ -1,67 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2003 16:49:56 +0000 (GMT)
-Received: from mailout05.sul.t-online.com ([IPv6:::ffff:194.25.134.82]:24720
-	"EHLO mailout05.sul.t-online.com") by linux-mips.org with ESMTP
-	id <S8225446AbTKLQtY>; Wed, 12 Nov 2003 16:49:24 +0000
-Received: from fwd03.aul.t-online.de 
-	by mailout05.sul.t-online.com with smtp 
-	id 1AJyBG-0004Yh-01; Wed, 12 Nov 2003 17:49:22 +0100
-Received: from denx.de (rA1f6TZrweG7Og87rFMH3DH4zFkNPq+OLjzNCimfi0gmbACxB96Xr5@[217.235.231.185]) by fmrl03.sul.t-online.com
-	with esmtp id 1AJyAD-16xyVc0; Wed, 12 Nov 2003 17:48:17 +0100
-Received: from atlas.denx.de (atlas.denx.de [10.0.0.14])
-	by denx.de (Postfix) with ESMTP
-	id 2D5F842ACF; Wed, 12 Nov 2003 17:48:16 +0100 (MET)
-Received: by atlas.denx.de (Postfix, from userid 15)
-	id 355ECC5F59; Wed, 12 Nov 2003 17:48:10 +0100 (MET)
-Received: from atlas.denx.de (localhost [127.0.0.1])
-	by atlas.denx.de (Postfix) with ESMTP
-	id 303F3C5F58; Wed, 12 Nov 2003 17:48:10 +0100 (MET)
-To: David Kesselring <dkesselr@mmc.atmel.com>
-Cc: linux-mips@linux-mips.org
-From: Wolfgang Denk <wd@denx.de>
-Subject: Re: snapgear and uClinux 
-X-Mailer: exmh version 1.6.4 10/10/1995
-Mime-version: 1.0
-Content-type: text/plain; charset=ISO-8859-1
-Content-transfer-encoding: 8bit
-In-reply-to: Your message of "Wed, 12 Nov 2003 11:36:14 EST."
-             <Pine.GSO.4.44.0311121132480.5676-100000@ares.mmc.atmel.com> 
-Date: Wed, 12 Nov 2003 17:48:05 +0100
-Message-Id: <20031112164810.355ECC5F59@atlas.denx.de>
-X-Seen: false
-X-ID: rA1f6TZrweG7Og87rFMH3DH4zFkNPq+OLjzNCimfi0gmbACxB96Xr5@t-dialin.net
-Return-Path: <wd@denx.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Nov 2003 18:44:02 +0000 (GMT)
+Received: from stork.mail.pas.earthlink.net ([IPv6:::ffff:207.217.120.188]:18591
+	"EHLO stork.mail.pas.earthlink.net") by linux-mips.org with ESMTP
+	id <S8225455AbTKLSna>; Wed, 12 Nov 2003 18:43:30 +0000
+Received: from [207.215.131.7] (helo=jaco)
+	by stork.mail.pas.earthlink.net with asmtp (Exim 3.33 #1)
+	id 1AJzxf-0000Uz-00; Wed, 12 Nov 2003 10:43:28 -0800
+Subject: Patch for ALI15x3 - Linux-MIPS kernel 2.4.22-rc3
+From: Jack Miller <jvmiller@earthlink.net>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: Linux-MIPS <linux-mips@linux-mips.org>
+Content-Type: multipart/mixed; boundary="=-XMwbFPDN0Ikw4P9BYAnN"
+X-Mailer: Ximian Evolution 1.0.8 (1.0.8-9.7x.1) 
+Date: 12 Nov 2003 10:43:03 -0800
+Message-Id: <1068662598.2185.2.camel@jaco>
+Mime-Version: 1.0
+X-ELNK-Trace: 00c7b4e377e67b8a1aa676d7e74259b7b3291a7d08dfec79a2dd1171d5a8c90bc7f803517eebc3bf350badd9bab72f9c350badd9bab72f9c350badd9bab72f9c
+Return-Path: <jvmiller@earthlink.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3608
+X-archive-position: 3609
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wd@denx.de
+X-original-sender: jvmiller@earthlink.net
 Precedence: bulk
 X-list: linux-mips
 
-In message <Pine.GSO.4.44.0311121132480.5676-100000@ares.mmc.atmel.com> you wrote:
-> Has anyone out there used uClinux or snapgear's distro with a mips
-> processor? Did you have any unexpected suprises? Do these tools help get
-> the footprint smaller or is it easier to do something with the linux-mips
-> tree?
 
-I have seen uCLinux running on the Purple board (MIPS 5Kc CPU core).
+--=-XMwbFPDN0Ikw4P9BYAnN
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-If you have a MMU on your chip you should always go for the "real" Linux.
+  Ralf,
+    Please apply this patch for the file drivers/ide/pci/alim15x3.c.  It
+fixes the LBA addressing mode for chip revisions <= 0xC4.  Thank-You.
 
-Reducing the memory footprint is not so much a kernel issue  but  one
-of  the application level - using standard tools linked against glibc
-vs. busybox with uClibc for example.
+  Regards,
+    Jack
 
 
-Best regards,
 
-Wolfgang Denk
 
--- 
-Software Engineering:  Embedded and Realtime Systems,  Embedded Linux
-Phone: (+49)-8142-4596-87  Fax: (+49)-8142-4596-88  Email: wd@denx.de
-It is easier to change the specification to fit the program than vice
-versa.
+--=-XMwbFPDN0Ikw4P9BYAnN
+Content-Disposition: attachment; filename=patch
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; name=patch; charset=ISO-8859-15
+
+--- alim15x3.c.orig	2003-11-12 10:32:04.000000000 -0800
++++ alim15x3.c	2003-11-12 08:18:08.000000000 -0800
+@@ -760,7 +760,7 @@
+ 	hwif->speedproc =3D &ali15x3_tune_chipset;
+=20
+ 	/* Don't use LBA48 on ALi devices before rev 0xC5 */
+-	hwif->addressing =3D (m5229_revision <=3D 0xC4) ? 1 : 0;
++	hwif->addressing =3D (m5229_revision <=3D 0xC4) ? 0 : 1;
+=20
+ 	if (!hwif->dma_base) {
+ 		hwif->drives[0].autotune =3D 1;
+
+--=-XMwbFPDN0Ikw4P9BYAnN--

@@ -1,62 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Apr 2004 14:51:01 +0100 (BST)
-Received: from web11302.mail.yahoo.com ([IPv6:::ffff:216.136.131.205]:14898
-	"HELO web11302.mail.yahoo.com") by linux-mips.org with SMTP
-	id <S8225753AbUDWNvA>; Fri, 23 Apr 2004 14:51:00 +0100
-Message-ID: <20040423135056.68405.qmail@web11302.mail.yahoo.com>
-Received: from [66.93.100.212] by web11302.mail.yahoo.com via HTTP; Fri, 23 Apr 2004 06:50:56 PDT
-Date: Fri, 23 Apr 2004 06:50:56 -0700 (PDT)
-From: Alex Deucher <agd5f@yahoo.com>
-Subject: Re: few questions about linux on sgi machines
-To: Ladislav Michl <ladis@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-In-Reply-To: <20040422204013.GA2506@kopretinka>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Apr 2004 17:04:45 +0100 (BST)
+Received: from ftpbox.mot.com ([IPv6:::ffff:129.188.136.101]:43947 "EHLO
+	ftpbox.mot.com") by linux-mips.org with ESMTP id <S8225794AbUDWQEo>;
+	Fri, 23 Apr 2004 17:04:44 +0100
+Received: from il06exr06.mot.com (il06exr06.mot.com [129.188.137.136])
+	by ftpbox.mot.com (Motorola/Ftpbox) with ESMTP id i3NG4gXU028857
+	for <linux-mips@linux-mips.org>; Fri, 23 Apr 2004 09:04:42 -0700 (MST)
+Received: from ca25exm01.GI.COM (ca25exm01.w1.bcs.mot.com [168.84.84.121])
+	by il06exr06.mot.com (Motorola/il06exr06) with ESMTP id i3NG4BXP019479
+	for <linux-mips@linux-mips.org>; Fri, 23 Apr 2004 11:04:41 -0500
+Received: by ca25exm01 with Internet Mail Service (5.5.2657.2)
+	id <F55XWC98>; Fri, 23 Apr 2004 09:04:10 -0700
+Message-ID: <D5A7E45D575DD61180130002A5DB377C04E48C99@ca25exm01>
+From: Stephens Tim-MGI1634 <Tim.Stephens@motorola.com>
+To: linux-mips@linux-mips.org
+Subject: Why does serial.c not allow you to share the serial console port 
+	 interrupt?
+Date: Fri, 23 Apr 2004 09:04:02 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <agd5f@yahoo.com>
+X-Mailer: Internet Mail Service (5.5.2657.2)
+Content-Type: text/plain
+Return-Path: <Tim.Stephens@motorola.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4854
+X-archive-position: 4855
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: agd5f@yahoo.com
+X-original-sender: Tim.Stephens@motorola.com
 Precedence: bulk
 X-list: linux-mips
 
+Hello,
 
---- Ladislav Michl <ladis@linux-mips.org> wrote:
-> On Thu, Apr 22, 2004 at 10:49:16AM -0700, Alex Deucher wrote:
-> > Is the PCI slot supported on the o2 (i.e., could I put a linux
-> > supported pci card in and use it)?  Also is the o2 AV IO board
-> > supported?  Is that encompassed by VICE or is that separate?
-> 
-> PCI is supported with some limitations. MMIO doesn't work for certain
-> endianess combinations, but PIO should be okay.
-> 
-> O2's AV IO is part of VICE. Vivien Chappelier wrote original ALSA
-> driver
-> and I did some work on it later, but stopped due to some buzz world
-> stuff (am I shy to show unfinished code ;-)). You may find Vivien's
-> patches here: http://www.linux-mips.org/~glaurung/
-> Video input is currently unsupported (no video4linux driver)
+I'm trying to understand why the serial.c driver does not allow the sharing of the serial console interrupt.  There are several places on the net the mention you cannot share the console interrupt, however there is no explaination why.  I assume it has something to do with OOPS reporting.  Please advise.
 
-Are there databooks floating around for the AV stuff or does it have to
-be reverse engineered?  Does it use standard chips or is it custom sgi
-stuff?
+I'm trying to enable the second serial port on a MIPS based embedded system.  Both serial ports (16550 type) are attached to the same MIPS interrupt.  The console is attached to ttyS0, which shares the MIPS interrupt with ttyS1.
+
+The code in question is:
+
+#ifdef CONFIG_SERIAL_CONSOLE
+    /*
+     *    The interrupt of the serial console port
+     *    can't be shared.
+     */
+    if (sercons.flags & CON_CONSDEV) {
+        for(i = 0; i < NR_PORTS; i++)
+            if (i != sercons.index &&
+                rs_table[i].irq == rs_table[sercons.index].irq)
+                rs_table[i].irq = 0;
+    }
+#endif
+
+If I change the #ifdef to #if 0 both the console and ttyS1 seem to work ok.
 
 Thanks,
-
-Alex
-
-> 
-> 	ladis
-
-
-
-	
-		
-__________________________________
-Do you Yahoo!?
-Yahoo! Photos: High-quality 4x6 digital prints for 25¢
-http://photos.yahoo.com/ph/print_splash
+Tim

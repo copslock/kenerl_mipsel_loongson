@@ -1,60 +1,102 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Sep 2003 18:34:48 +0100 (BST)
-Received: from mo02.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:23495 "EHLO
-	mo02.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225351AbTILRep>;
-	Fri, 12 Sep 2003 18:34:45 +0100
-Received: from mdo00.iij4u.or.jp (mdo00.iij4u.or.jp [210.130.0.170])
-	by mo02.iij4u.or.jp (8.8.8/MFO1.5) with ESMTP id CAA11289;
-	Sat, 13 Sep 2003 02:34:31 +0900 (JST)
-Received: 4UMDO00 id h8CHYVu04706; Sat, 13 Sep 2003 02:34:31 +0900 (JST)
-Received: 4UMRO00 id h8CHYTa21466; Sat, 13 Sep 2003 02:34:29 +0900 (JST)
-	from stratos.frog (64.43.138.210.xn.2iij.net [210.138.43.64]) (authenticated)
-Date: Sat, 13 Sep 2003 02:34:28 +0900
-From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-To: James Simmons <jsimmons@infradead.org>
-Cc: ralf@linux-mips.org, linux-mips@linux-mips.org,
-	yuasa@hh.iij4u.or.jp
-Subject: Re: [patch] NEC VR4100 KIU support
-Message-Id: <20030913023428.7fa72ac3.yuasa@hh.iij4u.or.jp>
-In-Reply-To: <Pine.LNX.4.44.0309121827180.5017-100000@phoenix.infradead.org>
-References: <20030912004420.4d7e0091.yuasa@hh.iij4u.or.jp>
-	<Pine.LNX.4.44.0309121827180.5017-100000@phoenix.infradead.org>
-X-Mailer: Sylpheed version 0.9.4 (GTK+ 1.2.10; i686-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Sep 2003 19:05:18 +0100 (BST)
+Received: from orngca-mls01.socal.rr.com ([IPv6:::ffff:66.75.160.16]:22210
+	"EHLO orngca-mls01.socal.rr.com") by linux-mips.org with ESMTP
+	id <S8225392AbTILSFQ>; Fri, 12 Sep 2003 19:05:16 +0100
+Received: from PEPELEPEW (66-75-23-214.san.rr.com [66.75.23.214])
+	by orngca-mls01.socal.rr.com (8.11.4/8.11.3) with SMTP id h8CI1b406738
+	for <linux-mips@linux-mips.org>; Fri, 12 Sep 2003 11:01:37 -0700 (PDT)
+From: "Craig Mautner" <craig.mautner@alumni.ucsd.edu>
+To: <linux-mips@linux-mips.org>
+Subject: schedule() BUG
+Date: Fri, 12 Sep 2003 11:04:16 -0700
+Message-ID: <JKEMLDJFFLGLICKLLEFJMEEOCOAA.craig.mautner@alumni.ucsd.edu>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-Return-Path: <yuasa@hh.iij4u.or.jp>
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4927.1200
+Return-Path: <craig.mautner@alumni.ucsd.edu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3175
+X-archive-position: 3176
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuasa@hh.iij4u.or.jp
+X-original-sender: craig.mautner@alumni.ucsd.edu
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 12 Sep 2003 18:27:38 +0100 (BST)
-James Simmons <jsimmons@infradead.org> wrote:
+We are using mips-linux 2.4.17, gcc 3.2.1 (MontaVista) and crashing in
+schedule():
 
-> 
-> Nice. Would you consider porting that to the input api for 2.6.X?
+kernel BUG at sched.c:784!
+Unable to handle kernel paging request at virtual address 00000000, epc ==
+800153c0, ra == 800153c0
+$0 : 00000000 9001f800 0000001b 00000000 0000001a 83f56000 8298f4a0 0000001f
+$8 : 00000001 ffffe2e0 000022e0 00000000 fffffff9 ffffffff 0000000a 00000002
+$16: 00000000 00000000 82af0000 8298f4a0 83f56000 00000000 80008000 00000000
+$24: 82af1dc2 00000002                   82af0000 82af1ef8 82af1ef8 800153c0
+epc  : 800153c0    Not tainted
 
-Yes, of course.
+The code is:
 
-Yoichi
+    {
+      struct mm_struct *mm = next->mm;
+      struct mm_struct *oldmm = prev->active_mm;
+      if (!mm) {
+           if (next->active_mm) BUG();   <- this is where we crash
+           next->active_mm = oldmm;
+           atomic_inc(&oldmm->mm_count);
+           enter_lazy_tlb(oldmm, next, this_cpu);
+      }
+        .
+        .
+        .
 
-> 
-> On Fri, 12 Sep 2003, Yoichi Yuasa wrote:
-> 
-> > Hello Ralf,
-> > 
-> > I rewrote NEC VR4100 KIU driver for v2.4.
-> > This driver adds keyboard support to IBM WorkPad z50 and Victor MP-C303/304.
-> > 
-> > Please apply this patch to v2.4 tree.
-> > 
-> > Yoichi
-> > 
-> 
-> 
+This seems to happen in our case when 'next' points to 'kswapd' although we
+think it could happen when switching to any kernel task (i.e. those tasks
+with mm==NULL).
+
+We think the culprit is that we are taking an interrupt and rescheduling
+while at a vulnerable point in 'schedule()'. Interrupts are enabled in line
+743. If we get an interrupt any time after line 785:
+
+           next->active_mm = oldmm;
+
+but before line 806
+
+	__schedule_tail()
+
+completes the swap, the interrupt can force 'schedule()' to be reentered via
+'ret_from_intr()'.
+
+If so, 'kswapd's 'active_mm' field will be left non-zero, but 'current' will
+not have been set to point to 'kswapd'. The next time 'schedule()' tries to
+switch to 'kswapd', 'next' points to 'kswapd', and
+
+        next->mm == NULL
+        next->active_mm != NULL
+
+which is detected as an invalid state, so we hit the BUG.
+
+Some questions:
+	Are we looking at this correctly?
+	Has anyone ever seen this before?
+	Is there a published fix?
+
+Thanks,
+
+-Craig
+
+-.     .-.     .-_     Craig Mautner
+  \   /   \   / / `    Coastal Sr. Consulting, Inc.
+   `-'     `-'  `---   (858)361-2683
+                       (858)581-0542 (fax)
+5580 La Jolla Blvd. #308 La Jolla, CA 92037
+mailto:craig.mautner@alumni.ucsd.edu
+http://home.san.rr.com/cmautner/csc/craig/

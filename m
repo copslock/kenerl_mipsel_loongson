@@ -1,44 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 23 Feb 2003 16:47:44 +0000 (GMT)
-Received: from [IPv6:::ffff:203.200.144.45] ([IPv6:::ffff:203.200.144.45]:7693
-	"EHLO mx-out-01.nestec.net") by linux-mips.org with ESMTP
-	id <S8224939AbTBWQrn>; Sun, 23 Feb 2003 16:47:43 +0000
-Received: from pdc2.nest.stpt.soft.net (pdc2 [192.168.192.43])
-	by mx-out-01.nestec.net (8.11.3/8.11.3) with ESMTP id h1NH05E80853
-	for <linux-mips@linux-mips.org>; Sun, 23 Feb 2003 22:30:05 +0530 (IST)
-	(envelope-from santhoshk@nestec.net)
-Organization: NeST-India
-Received: by pdc2.nestec.net with Internet Mail Service (5.5.2653.19)
-	id <YLQ1VK77>; Sun, 23 Feb 2003 21:58:09 +0530
-Message-ID: <F6E1228667B6D411BAAA00306E00F2A5153A6F@pdc2.nestec.net>
-From: SANTHOSH K <santhoshk@nestec.net>
-To: "'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
-Subject: QUERY: Porting Linux kernel to Toshiba TX4927
-Date: Sun, 23 Feb 2003 21:58:08 +0530
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Feb 2003 04:07:34 +0000 (GMT)
+Received: from webmail17.rediffmail.com ([IPv6:::ffff:203.199.83.27]:34749
+	"HELO rediffmail.com") by linux-mips.org with SMTP
+	id <S8224939AbTBXEHe>; Mon, 24 Feb 2003 04:07:34 +0000
+Received: (qmail 612 invoked by uid 510); 24 Feb 2003 04:06:47 -0000
+Date: 24 Feb 2003 04:06:47 -0000
+Message-ID: <20030224040647.611.qmail@webmail17.rediffmail.com>
+Received: from unknown (194.175.117.86) by rediffmail.com via HTTP; 24 feb 2003 04:06:47 -0000
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2653.19)
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Return-Path: <santhoshk@nestec.net>
+From: "santosh kumar gowda" <ipv6_san@rediffmail.com>
+Reply-To: "santosh kumar gowda" <ipv6_san@rediffmail.com>
+To: "Maciej W.Rozycki" <macro@ds2.pg.gda.pl>
+Cc: netdev@oss.sgi.com, linux-mips@linux-mips.org
+Subject: Re: Re: (no subject)
+Content-type: text/plain;
+	format=flowed
+Content-Disposition: inline
+Return-Path: <ipv6_san@rediffmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1527
+X-archive-position: 1528
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: santhoshk@nestec.net
+X-original-sender: ipv6_san@rediffmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi all,
 
-I need to clarify the following points.
 
-1. Has somone already ported Linux to TX4927 chip?
-2. If not, what is the complexity of this wor?
-3. If yes, then who is maintaining it. We could not get any information from
-the source tree.
-4. If yes, is it an open source? where can I get the source code.
+On Sat, 22 Feb 2003 Maciej W. Rozycki wrote :
+>On 21 Feb 2003, santosh kumar gowda wrote:
+>
+> > Following message is produced at the IAD terminal.....
+> >
+> > # Unable to handle kernel paging request at virtual address
+> > 00000000, epc == 802
+> > 4ce74, ra == 802592a8
+> > Oops in fault.c:do_page_fault, line 172:
+>[...]
+> > Suggestions/Tips are welcome.
+>
+>  Decode the oops first or nobody will be able to give any 
+>help.
 
-Thanks in advance
-Santhosh K
+how do i decode the oops ??? help pls.
+
+-San
+--------------------------------------

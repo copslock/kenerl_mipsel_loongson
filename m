@@ -1,44 +1,91 @@
-Received:  by oss.sgi.com id <S553824AbQJYRoc>;
-	Wed, 25 Oct 2000 10:44:32 -0700
-Received: from gandalf1.physik.uni-konstanz.de ([134.34.144.69]:22024 "EHLO
-        gandalf.physik.uni-konstanz.de") by oss.sgi.com with ESMTP
-	id <S553818AbQJYRoR>; Wed, 25 Oct 2000 10:44:17 -0700
-Received: from agx by gandalf.physik.uni-konstanz.de with local (Exim 3.12 #1 (Debian))
-	id 13oUaa-0000Kc-00; Wed, 25 Oct 2000 19:43:48 +0200
-Date:   Wed, 25 Oct 2000 19:43:48 +0200
-From:   Guido Guenther <guido.guenther@gmx.net>
-To:     Keith M Wesolowski <wesolows@chem.unr.edu>
+Received:  by oss.sgi.com id <S553826AbQJYTGD>;
+	Wed, 25 Oct 2000 12:06:03 -0700
+Received: from f25.law3.hotmail.com ([209.185.241.25]:27148 "EHLO hotmail.com")
+	by oss.sgi.com with ESMTP id <S553820AbQJYTFz>;
+	Wed, 25 Oct 2000 12:05:55 -0700
+Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
+	 Wed, 25 Oct 2000 12:05:46 -0700
+Received: from 207.175.42.105 by lw3fd.law3.hotmail.msn.com with HTTP;	Wed, 25 Oct 2000 19:05:46 GMT
+X-Originating-IP: [207.175.42.105]
+From:   "James McD" <vile8@hotmail.com>
+To:     rsanders@conejo.engr.sgi.com
 Cc:     linux-mips@oss.sgi.com
-Subject: Re: fdisk/kernel oddity
-Message-ID: <20001025194348.A1164@gandalf.physik.uni-konstanz.de>
-References: <20001025190129.A28426@bilbo.physik.uni-konstanz.de> <20001025101453.A11789@chem.unr.edu>
+Subject: Re: indy gr3-xz support
+Date:   Wed, 25 Oct 2000 19:05:46 GMT
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-User-Agent: Mutt/1.0.1i
-In-Reply-To: <20001025101453.A11789@chem.unr.edu>; from wesolows@chem.unr.edu on Wed, Oct 25, 2000 at 10:14:53AM -0700
+Content-Type: text/plain; format=flowed
+Message-ID: <F251SCeX8KShPdHfKsp00001138@hotmail.com>
+X-OriginalArrivalTime: 25 Oct 2000 19:05:46.0404 (UTC) FILETIME=[94938640:01C03EB6]
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Wed, Oct 25, 2000 at 10:14:53AM -0700, Keith M Wesolowski wrote:
-> On Wed, Oct 25, 2000 at 07:01:29PM +0200, Guido Guenther wrote:
-> Not to sound defensive, but I'm fairly sure this isn't an
-> fdisk-related problem. The partitions that fdisk creates follow the
-> spec as far as I can see.
-I didn't want to blame fdisk for that(how could I, I want you to send
-the patches upstream ASAP :)
-> 
-> > What puzzles me even more is that I get illegal instructions for almost 
-> > all commands I execute afterwards. Any comments on this one?
-> 
-> I rather suspect that this is the same problem that causes the request
-> for the out-of-bounds block in the first place: kernel memory
-> corruption. Unfortunately I have few ideas as to what the specific
-> problem is. I would start bug-hunting in the sgi disklabel kernel
-> parts. Make sure that it's compatible with what fdisk is doing.
-That's a starting point - thanks. Ian pointed out that it might be
-related to the fact that I use two harddisks which is interesting since
-I see the problems only when writing on sda, sdb seems to be o.k.
-Regards,
- -- Guido
+Hey, I feel your pain. I too have recently acquired the same machine with no 
+ram etc.
+You are in luck though, all you need is some 72 pin parity ram, if you look 
+up DMT technologies they have it in sticks of 8megs each for about 32 bucks 
+for 64 megs.
+The hard drive is also an easy to come by item, from what I have heard watch 
+out when purchasing too fast a drive though...ie 7200 rpm or better since 
+the drive can create a large quantity of heat in the small case.
+You will also need something to view the display with, dmt also has 
+monitors, but if you look around you may be able to find something bigger or 
+you could get the converter cable to use a normal peecee style monitor. Be 
+careful to check scan rates when purchasing old sgi monitors as I burnt one 
+up in the blink of a screen.
+Once all is said and done as far as the hardware goes then set yourself up a 
+network and check out:  
+http://reality.sgi.com/raju/SGI-Linux-mini-HOWTO.html
+or just do a search off google for <sgi indy linux howto> and you will find 
+many documents on getting Linux fired up on your indy!
+
+
+
+>From: "Robert M. Sanders" <rsanders@conejo.engr.sgi.com>
+>To: linux-mips@oss.sgi.com
+>Subject: Re: indy gr3-xz support
+>Date: Wed, 25 Oct 2000 06:49:17 -0700 (PDT)
+>Received: from [216.32.174.190] by hotmail.com (3.2) with ESMTP id 
+>MHotMailBBC030CC00AAD820F3DBD820AEBE10F90; Wed Oct 25 06:53:16 2000
+>Received: by oss.sgi.com id <S553797AbQJYNwK>;Wed, 25 Oct 2000 06:52:10 
+>-0700
+>Received: from pneumatic-tube.sgi.com ([204.94.214.22]:40239 "EHLO        
+>pneumatic-tube.sgi.com") by oss.sgi.com with ESMTPid <S553779AbQJYNvu>; 
+>Wed, 25 Oct 2000 06:51:50 -0700
+>Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by 
+>pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP 
+>id GAA01726for <linux-mips@oss.sgi.com>; Wed, 25 Oct 2000 06:59:14 -0700 
+>(PDT)mail_from (rsanders@conejo.engr.sgi.com)
+>Received: from conejo.engr.sgi.com (conejo.engr.sgi.com [130.62.50.34]) by 
+>nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id 
+>GAA33856 for <linux-mips@oss.sgi.com>; Wed, 25 Oct 2000 06:51:49 -0700 
+>(PDT)
+>Received: (from rsanders@localhost)by conejo.engr.sgi.com (SGI-8.9.3/8.9.3) 
+>id GAA02341for linux-mips@oss.sgi.com; Wed, 25 Oct 2000 06:49:17 -0700 
+>(PDT)
+>From owner-linux-mips@oss.sgi.com Wed Oct 25 06:56:50 2000
+>Message-Id: <200010251349.GAA02341@conejo.engr.sgi.com>
+>In-Reply-To: <Pine.BSI.4.10.10010251535430.15635-100000@xs4.xs4all.nl>
+>X-Status: N
+>X-Mailer: Applixware 4.41 (1021.286.3)
+>X-Orcpt: rfc822;linux-mips@oss.sgi.com
+>Sender: owner-linux-mips@oss.sgi.com
+>Precedence: bulk
+>
+> >
+> > Is the Gr3-XZ supported (24bp / opengl) under mips-linux?
+> >
+> > And the indy-sound system?
+> >
+> >
+>For sound, see - http://www.alsa-project.org/
+>
+>Bob
+>
+
+_________________________________________________________________________
+Get Your Private, Free E-mail from MSN Hotmail at http://www.hotmail.com.
+
+Share information about yourself, create your own public profile at 
+http://profiles.msn.com.

@@ -1,48 +1,54 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980327.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id IAA351332 for <linux-archive@neteng.engr.sgi.com>; Thu, 14 May 1998 08:14:24 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980327.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id MAA666362 for <linux-archive@neteng.engr.sgi.com>; Sat, 16 May 1998 12:45:25 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id IAA72084
+	id MAA80234
 	for linux-list;
-	Thu, 14 May 1998 08:13:49 -0700 (PDT)
+	Sat, 16 May 1998 12:44:16 -0700 (PDT)
+	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id IAA80898
+	via ESMTP id MAA79728
 	for <linux@cthulhu.engr.sgi.com>;
-	Thu, 14 May 1998 08:13:47 -0700 (PDT)
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id IAA04709
-	for <linux@cthulhu.engr.sgi.com>; Thu, 14 May 1998 08:13:46 -0700 (PDT)
-	mail_from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id LAA13555;
-	Thu, 14 May 1998 11:13:41 -0400
-X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
-Date: Thu, 14 May 1998 11:13:41 -0400 (EDT)
-From: Alex deVries <adevries@engsoc.carleton.ca>
-To: Alistair Lambie <alambie@wellington.sgi.com>
-cc: linux@cthulhu.engr.sgi.com
-Subject: Re: Installer changes...
-In-Reply-To: <355AD84E.F197D39E@wellington.sgi.com>
-Message-ID: <Pine.LNX.3.95.980514111211.11757A-100000@lager.engsoc.carleton.ca>
+	Sat, 16 May 1998 12:44:14 -0700 (PDT)
+	mail_from (mike@mdhill.interlog.com)
+Received: from mdhill.interlog.com (mdhill.interlog.com [199.212.154.112]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via SMTP id MAA22202
+	for <linux@cthulhu.engr.sgi.com>; Sat, 16 May 1998 12:44:11 -0700 (PDT)
+	mail_from (mike@mdhill.interlog.com)
+Received: (from mike@localhost) by mdhill.interlog.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id PAA01410; Sat, 16 May 1998 15:43:07 -0400
+From: Michael Hill <mdhill@interlog.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Date: Sat, 16 May 1998 15:43:05 -0400 (EDT)
+To: linux@cthulhu.engr.sgi.com
+Subject: Re: Evidence of Drive Activity to Report
+In-Reply-To: <19980511093314.12884@uni-koblenz.de>
+References: <13652.59663.188834.236218@mdhill.interlog.com>
+	<13653.59491.302730.251578@mdhill.interlog.com>
+	<35566E3B.109CCAA3@detroit.sgi.com>
+	<19980511093314.12884@uni-koblenz.de>
+X-Mailer: VM 6.43 under 20.4 "Emerald" XEmacs  Lucid
+Message-ID: <13661.60018.777703.724185@mdhill.interlog.com>
+Reply-To: mdhill@interlog.com
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+ralf@uni-koblenz.de writes:
+ > 
+ > Both cases sound like a bad /etc/fstab.  Try adding init=/bin/sh to your
+ > firmware command like arguments.  You'll get a completly uninitialized
+ > system.   Run e2fsck, then you should be able to remount / rw and fix
+ > the fstab.
+ > 
 
-On Thu, 14 May 1998, Alistair Lambie wrote:
-> It stops right at the file /dev/need_disks_created.  There are a bunch
-> of errors before this.  The /dev/need_disks_created file does not seem
-> to get written to disk correctly....the e2fsck cleans it up by the looks
-> of things.  I guess there is something about the cpio that the installer
-> doesn't like.
+What should fstab look like?  Mine has a single entry (with
+root-be-0.03) for /proc.
 
-Wow.  I really messed it up badly somehow.
+I get a bash prompt but e2fsck hangs.
 
-I suspect it's having a problem writing a file that's 0 bytes long.  Let
-me repackage it, and make the file 1 byte.
-
-As we speak, I'm debugging the initrd stuff in the kernel to sort out why
-initial ramdisks don't get loaded.
-
-- Alex
+Mike
+-- 
+Michael Hill
+Toronto, Canada
+mdhill@interlog.com

@@ -1,70 +1,39 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f4NDxdp08072
-	for linux-mips-outgoing; Wed, 23 May 2001 06:59:39 -0700
-Received: from delta.ds2.pg.gda.pl (root@delta.ds2.pg.gda.pl [213.192.72.1])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f4NDx3F08049;
-	Wed, 23 May 2001 06:59:05 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id PAA04954;
-	Wed, 23 May 2001 15:18:39 +0200 (MET DST)
-Date: Wed, 23 May 2001 15:18:39 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Reply-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Jun Sun <jsun@mvista.com>
-cc: Florian Lohoff <flo@rfc822.org>, ralf@oss.sgi.com,
-   Pete Popov <ppopov@mvista.com>, George Gensure <werkt@csh.rit.edu>,
-   linux-mips@oss.sgi.com
-Subject: Re: MIPS_ATOMIC_SET again (Re: newest kernel
-In-Reply-To: <3B0AEC51.B0C477E1@mvista.com>
-Message-ID: <Pine.GSO.3.96.1010523145044.3890B-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.3/8.11.3) id f4NEcCB09362
+	for linux-mips-outgoing; Wed, 23 May 2001 07:38:12 -0700
+Received: from iris1.csv.ica.uni-stuttgart.de (iris1.csv.ica.uni-stuttgart.de [129.69.118.2])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f4NEcAF09359
+	for <linux-mips@oss.sgi.com>; Wed, 23 May 2001 07:38:11 -0700
+Received: from rembrandt.csv.ica.uni-stuttgart.de (rembrandt.csv.ica.uni-stuttgart.de [129.69.118.42])
+	by iris1.csv.ica.uni-stuttgart.de (8.9.3/8.9.3) with ESMTP id QAA58094
+	for <linux-mips@oss.sgi.com>; Wed, 23 May 2001 16:38:09 +0200 (MDT)
+Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.22 #1 (Debian))
+	id 152Zm5-000351-00
+	for <linux-mips@oss.sgi.com>; Wed, 23 May 2001 16:38:09 +0200
+Date: Wed, 23 May 2001 16:38:09 +0200
+To: linux-mips <linux-mips@oss.sgi.com>
+Subject: Re: n64
+Message-ID: <20010523163809.B11643@rembrandt.csv.ica.uni-stuttgart.de>
+References: <3B0ABCD8.6080906@csh.rit.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.3.15i
+In-Reply-To: <3B0ABCD8.6080906@csh.rit.edu>; from werkt@csh.rit.edu on Tue, May 22, 2001 at 03:24:08PM -0400
+From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, 22 May 2001, Jun Sun wrote:
+George Gensure wrote:
+>I remember seeing something about having an n64 run a port of linux, 
+>since it ran (correct me if i'm wrong) an R4400 mips... has anything 
+>been done on that?
 
-> I took a look of MIPS ABI in system V and found that the spec only specifies
-> this extended call in C prototype:
-> 
-> int _test_and_set(int *p, int v);
-> 
-> It seems perfectly legal for us to add one more argument to store the return
-> value while still have the function returns error.  Of course, doing that will
-> break binary compatibility.
+I currently do, based on the existing source under arch/mips64 with
+Indigo2 R10000 Impact as target. No, it isn't working yet.
 
- We have _test_and_set() in the library.  Implementing a clean underlying
-_test_and_set() syscall is very high on my to-do list -- lack of time
-prevents me from finishing it, unfortunately.
+A recent kernel and it's bootlog can be found at
+http://www.csv.ica.uni-stuttgart.de/homes/ths/linux-mips/
 
- There is no point to mess with sysmips() any further, I think.  The
-library's _test_and_set() only calls sysmips() if the library was compiled
-for ISA I systems.  As I guess from reports on the list, ISA I systems are
-a minority, mostly DECstations and possibly a few embedded systems.  Most
-people have ISA II+ and they do not need to call any syscall from
-_test_and_set() at all.  For ISA II+ systems the library implements
-_test_and_set() in the userland, using ll/sc appropriately. 
 
- Anyone having ISA II+ systems only, please do yourself a favour and set
-"-mips2" (or maybe even "-mips3") somewhere in your CFLAGS for all
-compilations -- not only you'll get better optimized binaries, but you'll
-get rid of this sysmips() problem as well. 
-
-> Otherwise, I think Flo's patch is the best fix to satisfy the spec and binary
-> compatibility although it is a little clunky.
-
- I'll have yet to look at the patch, but what I think is, we should get
-sysmips() work as defined by the original spec (or as reverse-engineered,
-as the real spec seems to be out of reach).  Everything else belong to a
-separate implementation. 
-
- Binary compatibility is not a necessity here.  The only sysmips() client
-is glibc at the moment, and it can be updated to use a new syscall at any
-time. 
-
- In short: let's leave sysmips() semantics alone.
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Thiemo

@@ -1,51 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Feb 2004 13:12:26 +0000 (GMT)
-Received: from cpe-68-118-232-104.ma.charter.com ([IPv6:::ffff:68.118.232.104]:17288
-	"EHLO shuttle") by linux-mips.org with ESMTP id <S8225545AbUBVNMX>;
-	Sun, 22 Feb 2004 13:12:23 +0000
-Received: by shuttle (Postfix, from userid 1000)
-	id BA82F92C010; Sun, 22 Feb 2004 08:12:20 -0500 (EST)
-Date:	Sun, 22 Feb 2004 08:12:20 -0500
-From:	Daniel Walton <dwalton+mips@ddtsm.com>
-To:	linux-mips@linux-mips.org
-Subject: Re: MIPS SMP Linux
-Message-ID: <20040222131219.GA28782@ddtsm.com>
-Reply-To: Daniel Walton <dwalton+mips@ddtsm.com>
-References: <20040220214022.71153.qmail@web41504.mail.yahoo.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Feb 2004 19:14:49 +0000 (GMT)
+Received: from mx2.redhat.com ([IPv6:::ffff:66.187.237.31]:39430 "EHLO
+	mx2.redhat.com") by linux-mips.org with ESMTP id <S8225604AbUBVTOe>;
+	Sun, 22 Feb 2004 19:14:34 +0000
+Received: from int-mx2.corp.redhat.com (int-mx2.corp.redhat.com [172.16.27.26])
+	by mx2.redhat.com (8.11.6/8.11.6) with ESMTP id i1MImgi01698;
+	Sun, 22 Feb 2004 13:48:42 -0500
+Received: from potter.sfbay.redhat.com (potter.sfbay.redhat.com [172.16.27.15])
+	by int-mx2.corp.redhat.com (8.11.6/8.11.6) with ESMTP id i1MJDUM10909;
+	Sun, 22 Feb 2004 14:13:30 -0500
+Received: from [192.168.123.101] (vpn26-9.sfbay.redhat.com [172.16.26.9])
+	by potter.sfbay.redhat.com (8.11.6/8.11.6) with ESMTP id i1MJDTX10744;
+	Sun, 22 Feb 2004 11:13:29 -0800
+Subject: Re: r3000 instruction set
+From:	Eric Christopher <echristo@redhat.com>
+To:	Mark and Janice Juszczec <juszczec@hotmail.com>
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <Law10-F39hgbi1Kigvf000046ac@hotmail.com>
+References: <Law10-F39hgbi1Kigvf000046ac@hotmail.com>
+Content-Type: text/plain
+Message-Id: <1077477186.3636.34.camel@dzur.sfbay.redhat.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20040220214022.71153.qmail@web41504.mail.yahoo.com>
-User-Agent: Mutt/1.5.4i
-Return-Path: <dwalton@ddtsm.com>
+X-Mailer: Ximian Evolution 1.4.5 (1.4.5-7) 
+Date:	Sun, 22 Feb 2004 11:13:06 -0800
+Content-Transfer-Encoding: 7bit
+Return-Path: <echristo@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4398
+X-archive-position: 4400
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dwalton+mips@ddtsm.com
+X-original-sender: echristo@redhat.com
 Precedence: bulk
 X-list: linux-mips
 
-> I would like to know if any one is using MIPS SMP
-> Linux in the realworld(i.e., more than just for mips
-> SMP linux development work)? I am specifically
-> interested in broadcom BCM12500s running SMP Linux.
 
-We have been using it on commercially deployed telco grade products
-for 18 months or more. If you have been talking with Broadcom they can
-probably provide references for you. I believe a large proportion of
-their designs are Linux based now.
+> So, can someone recommend a definitive list of r3000 assembler instructions?
 
-> If yes, I would like to know their experience in terms
-> of stability and performance.
+Other than the responses you've already gotten, likely you'll need to
+compile with -march=r3900(or -mcpu=r3900 if it's an old toolchain) since
+the 3900 is missing a couple of r3000 instructions iirc.
 
-It's stability is fine with SMP. You application code will (should?)
-crash much more than the kernel will :-)
+If it's the 3912 I remember it also doesn't have an fpu, but I could be
+wrong there. If it is, then you need -msoft-float as well.
 
-Performance is relative to a lot of factors (board space/power/thermal
-budget available). It's hard to beat the size/performance offered by
-the 1250. 
+-eric
 
-Daniel
+-- 
+Eric Christopher <echristo@redhat.com>

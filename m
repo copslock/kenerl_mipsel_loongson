@@ -1,45 +1,45 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id LAA20186 for <linux-archive@neteng.engr.sgi.com>; Fri, 11 Jun 1999 11:33:32 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id MAA25763 for <linux-archive@neteng.engr.sgi.com>; Fri, 11 Jun 1999 12:17:14 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id LAA39858
+	id MAA63063
 	for linux-list;
-	Fri, 11 Jun 1999 11:31:36 -0700 (PDT)
+	Fri, 11 Jun 1999 12:14:46 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from anchor.engr.sgi.com (anchor.engr.sgi.com [150.166.49.42])
+Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id LAA68176;
-	Fri, 11 Jun 1999 11:31:26 -0700 (PDT)
-	mail_from (olson@anchor.engr.sgi.com)
-Received: (from olson@localhost) by anchor.engr.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) id LAA05198; Fri, 11 Jun 1999 11:31:26 -0700 (PDT)
-From: olson@anchor.engr.sgi.com (Dave Olson)
-Message-Id: <199906111831.LAA05198@anchor.engr.sgi.com>
-Subject: Re: Belated Feedback:  HAL2
-In-Reply-To: <19990611202821.C22699@thepuffingroup.com> from Ulf Carlsson at "Jun 11, 99 08:28:21 pm"
-To: ulfc@thepuffingroup.com (Ulf Carlsson)
-Date: Fri, 11 Jun 1999 11:31:26 -0700 (PDT)
-Cc: mikehill@hgeng.com, linux@cthulhu.engr.sgi.com
-Organization: Silicon Graphics, Inc.  Mt. View, CA
-X-Mailer: ELM [version 2.4ME+ PL35 (25)]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	via ESMTP id MAA58868
+	for <linux@cthulhu.engr.sgi.com>;
+	Fri, 11 Jun 1999 12:14:44 -0700 (PDT)
+	mail_from (imp@harmony.village.org)
+Received: from rover.village.org (rover.village.org [204.144.255.49]) 
+	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
+       SGI does not authorize the use of its proprietary
+       systems or networks for unsolicited or bulk email
+       from the Internet.) 
+	via ESMTP id MAA02877
+	for <linux@cthulhu.engr.sgi.com>; Fri, 11 Jun 1999 12:14:42 -0700 (PDT)
+	mail_from (imp@harmony.village.org)
+Received: from harmony.village.org (harmony.village.org [10.0.0.6])
+	by rover.village.org (8.9.3/8.9.3) with ESMTP id NAA36085;
+	Fri, 11 Jun 1999 13:14:41 -0600 (MDT)
+	(envelope-from imp@harmony.village.org)
+Received: from harmony.village.org (localhost.village.org [127.0.0.1]) by harmony.village.org (8.9.3/8.8.3) with ESMTP id NAA49703; Fri, 11 Jun 1999 13:13:43 -0600 (MDT)
+Message-Id: <199906111913.NAA49703@harmony.village.org>
+To: TIm Hockin <thockin@cobaltnet.com>
+Subject: Re: PIC code 
+Cc: linux@cthulhu.engr.sgi.com
+In-reply-to: Your message of "Thu, 10 Jun 1999 15:31:07 PDT."
+		<37603CAB.8094D1CD@cobaltnet.com> 
+References: <37603CAB.8094D1CD@cobaltnet.com>  
+Date: Fri, 11 Jun 1999 13:13:43 -0600
+From: Warner Losh <imp@harmony.village.org>
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Ulf Carlsson wrote: 
-|  We beat IRIX, that sound great to me ;-)
+In message <37603CAB.8094D1CD@cobaltnet.com> TIm Hockin writes:
+: Thanks (pardon my ignorance - I am 4 days old with MIPS  Linux :)
 
-The singlespeed cdrom drive was very touchy; it was the first generation
-drive to support audio data over scsi.  It's unlikely to be a RAM limitation,
-but who knows, at this point...
+The MIPS ABI requires this.
 
-|  I'm interested in how this CD playback works. Does it read raw data from the CD
-|  drive and just play it on the HAL2 or are there some other and smarter ways of
-
-It reads the audio data over scsi, converts it if needed, and sends it
-through the audio system.
-
-
-Dave Olson, Silicon Graphics
-http://reality.sgi.com/olson   olson@sgi.com
+Warner

@@ -1,76 +1,63 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980327.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id CAA56151 for <linux-archive@neteng.engr.sgi.com>; Fri, 8 May 1998 02:50:43 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980327.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id EAA63739 for <linux-archive@neteng.engr.sgi.com>; Fri, 8 May 1998 04:01:07 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF)
-	id CAA21461866
+	id DAA21846606
 	for linux-list;
-	Fri, 8 May 1998 02:49:33 -0700 (PDT)
+	Fri, 8 May 1998 03:58:38 -0700 (PDT)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id CAA22106595
+	via ESMTP id DAA22113885
 	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 8 May 1998 02:49:30 -0700 (PDT)
-Received: from mdhill.interlog.com (mdhill.interlog.com [199.212.154.112]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via SMTP id CAA17220
-	for <linux@cthulhu.engr.sgi.com>; Fri, 8 May 1998 02:49:27 -0700 (PDT)
-	mail_from (mike@mdhill.interlog.com)
-Received: (from mike@localhost) by mdhill.interlog.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id FAA01399; Fri, 8 May 1998 05:48:27 -0400
-From: Michael Hill <mdhill@interlog.com>
+	Fri, 8 May 1998 03:58:37 -0700 (PDT)
+Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id DAA00311
+	for <linux@cthulhu.engr.sgi.com>; Fri, 8 May 1998 03:58:35 -0700 (PDT)
+	mail_from (adevries@engsoc.carleton.ca)
+Received: from localhost (adevries@localhost)
+	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id GAA21159
+	for <linux@cthulhu.engr.sgi.com>; Fri, 8 May 1998 06:58:34 -0400
+X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
+Date: Fri, 8 May 1998 06:58:34 -0400 (EDT)
+From: Alex deVries <adevries@engsoc.carleton.ca>
+To: SGI Linux <linux@cthulhu.engr.sgi.com>
+Subject: My .99 oops...
+Message-ID: <Pine.LNX.3.95.980508065104.20848B-100000@lager.engsoc.carleton.ca>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Date: Fri,  8 May 1998 05:48:26 -0400 (EDT)
-To: linux@cthulhu.engr.sgi.com
-Subject: RE: Making Progress
-In-Reply-To: <Pine.LNX.3.95.980507131537.20653F-100000@lager.engsoc.carleton.ca>
-References: <60222E63C9F4D011915F00A02435011C126253@BART>
-	<Pine.LNX.3.95.980507131537.20653F-100000@lager.engsoc.carleton.ca>
-X-Mailer: VM 6.43 under 20.4 "Emerald" XEmacs  Lucid
-Message-ID: <13650.53876.373554.664836@mdhill.interlog.com>
-Reply-To: mdhill@interlog.com
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Alex deVries writes:
- > 
- > Hmmm.  Odd.  Can you give us the results of a 'hinv'?
- > 
-Iris Audio Processor: version A2 revision 4.1.0
-1 133 MHZ IP22 Processor
-FPU: MIPS R4600 Floating Point Coprocessor Revision: 2.0
-CPU: MIPS R4600 Processor Chip Revision: 2.0
-On-board serial ports: 2
-On-board bi-directional parallel port
-Data cache size: 16 Kbytes
-Instruction cache size: 16 Kbytes
-Main memory size: 32 Mbytes
-Vino video: unit 0, revision 0
-Integral ISDN: Basic Rate Interface unit 0, revision 1.0
-Integral Ethernet: ec0, version 1
-Integral SCSI controller 0: Version WD33C93B, revision D
-  Disk drive: unit 4 on SCSI controller 0
-  Disk drive: unit 1 on SCSI controller 0
-Graphics board: Indy 8-bit
 
-Here's this morning's result from 'boot /vmlinux root=/dev/sdb
-ip=none':
+Alright.  I rebooted with my home grown version of .99, and here's what I
+got on bootup:
 
-[snip]
-scsi : detected 2 SCSI disks total.
-SCSI device sda: hdwr sector= 512 bytes. Sectors= 1070496 [522 MB]
-[0.5 GB]
-SCSI device sdb: hdwr sector= 512 bytes. Sectors= 2400302 [1172 MB]
-[1.2 GB]
-sgiseeq.c: David S. Miller (dm@engr.sgi.com)
-eth0: SGI Seeq8003 08:00:69:07:e3:0d
-Sending BOOTP and RARP requests............. timed out!
-IP-Config: Auto-configuration of network failed.
-Partition check:
-[end]
+...
+Checking for 'wait' instruction...  available
+POSIX conformance testing by UNIFIX
+Starting kswapd v 1.5
+Floppy drive(s): fd0 is 1.44M
+Unable to handle kernel paging request at virtual address 00000000, epc ==
+00000000, ra == 880d0cb8
+Oops: 0000
+$0 : 00000000 88120018 00000000 00000040
+$4 : 00000002 00000006 01000004 8811d080
+$8 : 00000020 881064f0 00000000 00000000
+$12: 00000008 000001c2 883c56d4 883dea4c
+$16: 00000001 8817206c 8817204c 00000004
+$20: ffffffff 9fc56394 00000000 9fc56394
+$24: 00000001 0000000f
+$28: 883dc000 883dde10 9fc4be88 880d0cb8
+epc   : 000000000
+Status: 1000fc03
+Cause : 00000008
 
-Next I'll try adding a partition to be checked.
+My guess is it's that I enabled the floppy drive (as it came as the
+default).  I'll remove that, recompile and reboot.
 
-Mike
+- A
+
+
 -- 
-Michael Hill
-Toronto, Canada
-mdhill@interlog.com
+Alex deVries
+"romantic engsoc guy who runs marathons" - csilcock@chat.carleton.ca
+http://www.engsoc.carleton.ca/~adevries/ .

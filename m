@@ -1,50 +1,39 @@
-Received:  by oss.sgi.com id <S553815AbQJ0CIH>;
-	Thu, 26 Oct 2000 19:08:07 -0700
-Received: from gateway-490.mvista.com ([63.192.220.206]:46844 "EHLO
-        hermes.mvista.com") by oss.sgi.com with ESMTP id <S553796AbQJ0CHq>;
-	Thu, 26 Oct 2000 19:07:46 -0700
-Received: from mvista.com (IDENT:jsun@orion.mvista.com [10.0.0.75])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id e9R269326679;
-	Thu, 26 Oct 2000 19:06:09 -0700
-Message-ID: <39F8E3C7.57C6D1DE@mvista.com>
-Date:   Thu, 26 Oct 2000 19:09:11 -0700
-From:   Jun Sun <jsun@mvista.com>
-X-Mailer: Mozilla 4.72 [en] (X11; U; Linux 2.2.14-5.0 i586)
-X-Accept-Language: en
-MIME-Version: 1.0
-To:     linux-mips@oss.sgi.com
-Subject: gdb bus error for unaligned access
+Received:  by oss.sgi.com id <S553818AbQJ0Cf1>;
+	Thu, 26 Oct 2000 19:35:27 -0700
+Received: from u-208.karlsruhe.ipdial.viaginterkom.de ([62.180.19.208]:41222
+        "EHLO u-208.karlsruhe.ipdial.viaginterkom.de") by oss.sgi.com
+	with ESMTP id <S553816AbQJ0CfC>; Thu, 26 Oct 2000 19:35:02 -0700
+Received: (ralf@lappi) by lappi.waldorf-gmbh.de id <S870424AbQJ0Ced>;
+        Fri, 27 Oct 2000 04:34:33 +0200
+Date:   Fri, 27 Oct 2000 04:34:33 +0200
+From:   Ralf Baechle <ralf@oss.sgi.com>
+To:     Pete Popov <ppopov@mvista.com>
+Cc:     "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
+Subject: Re: userland packages
+Message-ID: <20001027043432.F6628@bacchus.dhis.org>
+References: <39F8CE01.3782BBF5@mvista.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <39F8CE01.3782BBF5@mvista.com>; from ppopov@mvista.com on Thu, Oct 26, 2000 at 05:36:17PM -0700
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+On Thu, Oct 26, 2000 at 05:36:17PM -0700, Pete Popov wrote:
 
-Ralf,
+> Is there a guide on how to rebuild userland packages from source code? 
+> I've installed the cross compiler and can compile a kernel, but when I
+> try to build a simple userland app, the compiler can't find libraries,
+> include files, etc.
 
-This is the long-overdue patch for kgdb.  It gets rid of "BUS signal"
-for unaligned accesses in kgdb mode.
+You have to copy all the includes and libraries to
+/usr/mips-linux/{include,lib}/, then fixup linker scripts that disguise
+themselfes as .so files like libc.so and you can start.
 
-Jun
+Getting everything to crosscompile is a hard job, I really recomend
+native builds.
 
-
-diff -Nru linux/arch/mips/kernel/gdb-stub.c.orig
-linux/arch/mips/kernel/gdb-stub.c
---- linux/arch/mips/kernel/gdb-stub.c.orig      Wed Oct 25 11:08:20 2000
-+++ linux/arch/mips/kernel/gdb-stub.c   Thu Oct 26 19:05:07 2000
-@@ -320,8 +320,9 @@
-        unsigned char tt;               /* Trap type code for MIPS R3xxx
-and R4xxx */
-        unsigned char signo;            /* Signal that we map this trap
-into */
- } hard_trap_info[] = {
--       { 4, SIGBUS },                  /* address error (load) */
--       { 5, SIGBUS },                  /* address error (store) */
-+/* [jsun] kernel emulates unaligned access */
-+/*     { 4, SIGBUS },          */      /* address error (load) */
-+/*     { 5, SIGBUS },          */      /* address error (store) */
-        { 6, SIGBUS },                  /* instruction bus error */
-        { 7, SIGBUS },                  /* data bus error */
-        { 9, SIGTRAP },                 /* break */
+  Ralf

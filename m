@@ -1,34 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Oct 2004 07:27:05 +0100 (BST)
-Received: from rproxy.gmail.com ([IPv6:::ffff:64.233.170.200]:63752 "EHLO
-	mproxy.gmail.com") by linux-mips.org with ESMTP id <S8225472AbUJNG1A>;
-	Thu, 14 Oct 2004 07:27:00 +0100
-Received: by mproxy.gmail.com with SMTP id 76so616812rnk
-        for <linux-mips@linux-mips.org>; Wed, 13 Oct 2004 23:26:58 -0700 (PDT)
-Received: by 10.38.152.63 with SMTP id z63mr2783021rnd;
-        Wed, 13 Oct 2004 23:26:58 -0700 (PDT)
-Received: by 10.38.86.14 with HTTP; Wed, 13 Oct 2004 23:26:58 -0700 (PDT)
-Message-ID: <2e3403ba041013232655d10bf1@mail.gmail.com>
-Date: Thu, 14 Oct 2004 11:26:58 +0500
-From: Ammar Ahmed <ammar.ahmed@gmail.com>
-Reply-To: Ammar Ahmed <ammar.ahmed@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Oct 2004 08:53:17 +0100 (BST)
+Received: from dfpost.ru ([IPv6:::ffff:194.85.103.225]:20912 "EHLO
+	mail.dfpost.ru") by linux-mips.org with ESMTP id <S8225551AbUJNHxM>;
+	Thu, 14 Oct 2004 08:53:12 +0100
+Received: from toch.dfpost.ru (toch.dfpost.ru [192.168.7.60])
+	by mail.dfpost.ru (Postfix) with SMTP id 488553E4DF
+	for <linux-mips@linux-mips.org>; Thu, 14 Oct 2004 11:51:29 +0400 (MSD)
+Date: Thu, 14 Oct 2004 11:53:04 +0000
+From: Dmitriy Tochansky <toch@dfpost.ru>
 To: linux-mips@linux-mips.org
-Subject: Help needed!!
+Subject: Strange instruction
+Message-Id: <20041014115304.3edbe141.toch@dfpost.ru>
+Organization: Special Technology Center
+X-Mailer: Sylpheed version 0.9.12 (GTK+ 1.2.10; i686-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <ammar.ahmed@gmail.com>
+Return-Path: <toch@dfpost.ru>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6027
+X-archive-position: 6028
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ammar.ahmed@gmail.com
+X-original-sender: toch@dfpost.ru
 Precedence: bulk
 X-list: linux-mips
 
-Can anyone help me find free linux for porting to MIPS r4k, any other
-issues invovled..
-Regards,
-Ammar Ahmed
+Hello!
+
+When starts kernel for my au1500 board reseting board. After disassembling I found instruction
+which reseting board. Here is few strings of "mipsel-linux-objdump -D vmlinux" output:
+
+---
+
+a0000650:       07400003        bltz    k0,a0000660 <nmi_handler+0x1c>          
+a0000654:       03a0d82d        0x3a0d82d                                       
+a0000658:       3c1ba020        lui     k1,0xa020 
+
+---
+
+Base address changed by me.
+
+What is A0000654? There is board resets.

@@ -1,43 +1,96 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Oct 2003 14:23:19 +0100 (BST)
-Received: from p508B6977.dip.t-dialin.net ([IPv6:::ffff:80.139.105.119]:32472
-	"EHLO dea.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225420AbTJJNXP>; Fri, 10 Oct 2003 14:23:15 +0100
-Received: from dea.linux-mips.net (localhost [127.0.0.1])
-	by dea.linux-mips.net (8.12.8/8.12.8) with ESMTP id h9ADNENK004278;
-	Fri, 10 Oct 2003 15:23:14 +0200
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.12.8/8.12.8/Submit) id h9ADNCiJ004277;
-	Fri, 10 Oct 2003 15:23:12 +0200
-Date: Fri, 10 Oct 2003 15:23:12 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Steve Scott <steve.scott@pioneer-pdt.com>
-Cc: linux-mips@linux-mips.org
-Subject: Re: bug in kernel_entry?
-Message-ID: <20031010132312.GB27103@linux-mips.org>
-References: <5334.156.153.254.2.1065650433.squirrel@webmail.rmci.net> <20031009140319.GA17647@linux-mips.org> <021e01c38eb2$4e95f840$2256fea9@janelle>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <021e01c38eb2$4e95f840$2256fea9@janelle>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Oct 2003 14:59:43 +0100 (BST)
+Received: from [IPv6:::ffff:203.199.202.17] ([IPv6:::ffff:203.199.202.17]:22535
+	"EHLO pub.isofttechindia.com") by linux-mips.org with ESMTP
+	id <S8225398AbTJJN7i>; Fri, 10 Oct 2003 14:59:38 +0100
+Received: from DURAI ([192.168.0.107])
+	by pub.isofttechindia.com (8.11.0/8.11.0) with SMTP id h9ADsbj06936
+	for <linux-mips@linux-mips.org>; Fri, 10 Oct 2003 19:24:37 +0530
+Message-ID: <02d001c38f36$ba4a8e00$6b00a8c0@DURAI>
+From: "durai" <durai@isofttech.com>
+To: "mips" <linux-mips@linux-mips.org>
+Subject: unresolved symbol litodp,dptoli,dpmul - floating point operations in kernel
+Date: Fri, 10 Oct 2003 19:29:30 +0530
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_02CD_01C38F64.D399F610"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2800.1106
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1106
+Return-Path: <durai@isofttech.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3416
+X-archive-position: 3417
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: durai@isofttech.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Oct 09, 2003 at 03:11:36PM -0700, Steve Scott wrote:
+This is a multi-part message in MIME format.
 
-> kernel_entry initializes the kernel stack pointer 'kernelsp'. But then
-> immediately after this clears the bss, which has the side effect of setting
-> kernelsp to 0. In our system, on initial entry to cpu_idle(), kernelsp is 0.
+------=_NextPart_000_02CD_01C38F64.D399F610
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-Funny this wasn't noticed for so long.  Fix is in CVS, thanks for reporting.
+hello,
+I am using a mips cross compiler (mips-linux-gcc, version 2.95.3) to =
+build my driver
+I am using some floating point operations in a wireless lan driver for a =
+mips platform in ucLinux, When i load the driver I am getting unresolved =
+symbols
 
-  Ralf
+>=20
+> insmod: unresolved symbol dptoli
+> insmod: unresolved symbol dpmul
+> insmod: unresolved symbol litodp
+
+And somebody told me that we cannot use floating point operations in =
+kernel code, but i desperately need to use floating point operations.=20
+please tell me how to use floating point operations in kernel code.
+
+thanks & regards
+durai
+------=_NextPart_000_02CD_01C38F64.D399F610
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Diso-8859-1">
+<META content=3D"MSHTML 6.00.2800.1106" name=3DGENERATOR>
+<STYLE></STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV><FONT face=3DArial size=3D2>hello,</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>I am using a mips cross compiler=20
+(mips-linux-gcc,&nbsp;version 2.95.3) to build my driver</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>I am using&nbsp;some floating point =
+operations in a=20
+wireless lan driver for a mips platform in ucLinux, When i load the =
+driver I am=20
+getting unresolved symbols</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
+<DIV>&gt;<I> </I><BR>&gt;<I> insmod: unresolved symbol =
+dptoli</I><BR>&gt;<I>=20
+insmod: unresolved symbol dpmul</I><BR>&gt;<I> insmod: unresolved symbol =
+
+litodp</I><BR></DIV>
+<DIV><FONT face=3DArial size=3D2>And somebody told me that we cannot use =
+floating=20
+point operations in kernel code, but i desperately need to use floating =
+point=20
+operations. </FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>please tell me how to use floating =
+point operations=20
+in kernel code.</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>thanks &amp; regards</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>durai</FONT></DIV></BODY></HTML>
+
+------=_NextPart_000_02CD_01C38F64.D399F610--

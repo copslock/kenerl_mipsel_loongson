@@ -1,39 +1,30 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6AG5Tq29451
-	for linux-mips-outgoing; Tue, 10 Jul 2001 09:05:29 -0700
-Received: from dea.waldorf-gmbh.de (u-58-19.karlsruhe.ipdial.viaginterkom.de [62.180.19.58])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6AG5RV29448
-	for <linux-mips@oss.sgi.com>; Tue, 10 Jul 2001 09:05:27 -0700
-Received: (from ralf@localhost)
-	by dea.waldorf-gmbh.de (8.11.1/8.11.1) id f6AFvWD31134;
-	Tue, 10 Jul 2001 17:57:32 +0200
-Date: Tue, 10 Jul 2001 17:57:32 +0200
-From: Ralf Baechle <ralf@oss.sgi.com>
-To: Barry Wu <wqb123@yahoo.com>
-Cc: linux-mips@oss.sgi.com
-Subject: Re: Can mipsel linux support module?
-Message-ID: <20010710175732.B29473@bacchus.dhis.org>
-References: <20010707234715.80453.qmail@web13903.mail.yahoo.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20010707234715.80453.qmail@web13903.mail.yahoo.com>; from wqb123@yahoo.com on Sat, Jul 07, 2001 at 04:47:15PM -0700
-X-Accept-Language: de,en,fr
+	by oss.sgi.com (8.11.2/8.11.3) id f6AGSFc30471
+	for linux-mips-outgoing; Tue, 10 Jul 2001 09:28:15 -0700
+Received: from mail.ivivity.com (user-vc8ftn3.biz.mindspring.com [216.135.246.227])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6AGSBV30467
+	for <linux-mips@oss.sgi.com>; Tue, 10 Jul 2001 09:28:12 -0700
+Received: by ATLOPS with Internet Mail Service (5.5.2448.0)
+	id <3GNKV5MK>; Tue, 10 Jul 2001 12:27:52 -0400
+Message-ID: <25369470B6F0D41194820002B328BDD27D22@ATLOPS>
+From: Marc Karasek <marc_karasek@ivivity.com>
+To: "'linux-mips@oss.sgi.com'" <linux-mips@oss.sgi.com>
+Subject: MIPS Cross Compiler Tools
+Date: Tue, 10 Jul 2001 12:27:43 -0400
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2448.0)
+Content-Type: text/plain
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Sat, Jul 07, 2001 at 04:47:15PM -0700, Barry Wu wrote:
+I had a question about the cross compiler tools for MIPS, specifically
+glibc.  I d/l the rpms from oss.sgi.com,  but they are only binutils, and
+the compiler (C, C++).  
 
-> I just port mipsel linux 2.2.12 to our hardware
-> evaluation board. I want to modify a module
-> to a character device driver. But I do not know
-> how to do and which files to update. 
-> Can mipsel linux support module? If so, which rpm
-> do I have to download and where can I find them?
-> If not, how can I  change a module to a character 
-> device driver?
+Are most people building glibc against these or are you building the tools
+completely from scratch?  As glibc is needed to compile anything else other
+than the kernel. 
 
-Latest modutils package from ftp.kernel.org should work out of the box.
-
-  Ralf
+Marc Karasek 
+Sr. Firmware Eng
+iVivity Inc

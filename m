@@ -1,51 +1,50 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f93Fr5l17314
-	for linux-mips-outgoing; Wed, 3 Oct 2001 08:53:05 -0700
-Received: from kuolema.infodrom.north.de (kuolema.infodrom.north.de [217.89.86.35])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f93Fr0D17311
-	for <linux-mips@oss.sgi.com>; Wed, 3 Oct 2001 08:53:01 -0700
-Received: from finlandia.infodrom.north.de (finlandia.Infodrom.North.DE [217.89.86.34])
-	by kuolema.infodrom.north.de (Postfix) with ESMTP
-	id 051894D73C; Wed,  3 Oct 2001 17:52:45 +0200 (CEST)
-Received: by finlandia.infodrom.north.de (Postfix, from userid 501)
-	id C509310977; Wed,  3 Oct 2001 17:52:43 +0200 (CEST)
-Date: Wed, 3 Oct 2001 17:52:43 +0200
-From: Martin Schulze <joey@finlandia.infodrom.north.de>
-To: Marian Kafadarov <mkafadarov@it-academy.bg>
+	by oss.sgi.com (8.11.2/8.11.3) id f93Hqtc20158
+	for linux-mips-outgoing; Wed, 3 Oct 2001 10:52:55 -0700
+Received: from dea.linux-mips.net (a1as01-p32.stg.tli.de [195.252.185.32])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f93HqoD20155
+	for <linux-mips@oss.sgi.com>; Wed, 3 Oct 2001 10:52:51 -0700
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.11.1/8.11.1) id f93Hoxv28341;
+	Wed, 3 Oct 2001 19:50:59 +0200
+Date: Wed, 3 Oct 2001 19:50:59 +0200
+From: Ralf Baechle <ralf@oss.sgi.com>
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
 Cc: linux-mips@oss.sgi.com
-Subject: Re: your mail
-Message-ID: <20011003175243.A18353@finlandia.infodrom.north.de>
-Reply-To: Martin Schulze <joey@infodrom.north.de>
-References: <5.1.0.14.2.20011003172659.00a6c4a8@mail.it-academy.bg>
+Subject: Re: CVS Update@oss.sgi.com: linux
+Message-ID: <20011003195059.A28205@dea.linux-mips.net>
+References: <200109300029.f8U0TZv12410@oss.sgi.com> <Pine.GSO.3.96.1011003125730.15867A-100000@delta.ds2.pg.gda.pl>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5.1.0.14.2.20011003172659.00a6c4a8@mail.it-academy.bg>
-User-Agent: Mutt/1.3.20i
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.GSO.3.96.1011003125730.15867A-100000@delta.ds2.pg.gda.pl>; from macro@ds2.pg.gda.pl on Wed, Oct 03, 2001 at 01:02:56PM +0200
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Marian Kafadarov wrote:
-> Hello,
-> We have DEC station 5000 / 240
-> From were we can download Linux distribution and documentation for it and
-> what we can do on it.
+On Wed, Oct 03, 2001 at 01:02:56PM +0200, Maciej W. Rozycki wrote:
 
-You could wait until we have finished boot-floppies for this machine
-(1-3 weeks) or bootstrap from scratch by using a kernel and a Debian
-base system.  Both is available, Karsten can also provide a correct
-2.4.x kernel.
+> > Modified files:
+> > 	arch/mips/kernel: scall_o32.S sysmips.c 
+> > 
+> > Log message:
+> > 	Barf.
+> 
+>  The new mips_atomic_set() doesn't mask interrupts in the non-ll/sc case. 
+> Thus it may fail to keep coherency.  Is it intentional? 
 
-I'd rather like to ask you to wait a couple of days/weeks until
-boot-floppies are available for this machine and you can use the
-regular Debian installation process which will be less painful
-than the other.  If you do so, please come back to us in some
-days/weeks to find out if things are ready already.
+Yes.  Assuming do_page_fault did it's job successfully the address which
+has been passed as argument to sysmips() is now writable and thus we
+won't take any pagefaults.
 
-Regards,
+There are two remaining failure scenarios which probably are't very
+interesting for practical usage.  It's when an interrupt is accessing
+the same address.  This could be fixed by disabling interrupts.
+The other case is missaligned words.
 
-	Joey
+>  Also the bad_stack exit point for the ll/sc case looks suspicient to me.
 
--- 
-All language designers are arrogant.  Goes with the territory...
-	-- Larry Wall
+Indeed, the symbol deserves a better name.  Cut'n'paste happens ;-)
+
+  Ralf

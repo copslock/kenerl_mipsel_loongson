@@ -1,63 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Sep 2003 20:10:36 +0100 (BST)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:38855 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225474AbTI3TKe>; Tue, 30 Sep 2003 20:10:34 +0100
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id VAA13711;
-	Tue, 30 Sep 2003 21:10:28 +0200 (MET DST)
-X-Authentication-Warning: delta.ds2.pg.gda.pl: macro owned process doing -bs
-Date: Tue, 30 Sep 2003 21:10:28 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Michael Uhler <uhler@mips.com>
-cc: Ralf Baechle <ralf@linux-mips.org>,
-	"Finney, Steve" <Steve.Finney@spirentcom.com>,
-	linux-mips@linux-mips.org
-Subject: Re: 64 bit operations w/32 bit kernel
-In-Reply-To: <1064946568.13742.51.camel@uhler-linux.mips.com>
-Message-ID: <Pine.GSO.3.96.1030930205322.11368E-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Sep 2003 20:15:02 +0100 (BST)
+Received: from avtrex.com ([IPv6:::ffff:216.102.217.178]:49067 "EHLO
+	avtrex.com") by linux-mips.org with ESMTP id <S8225483AbTI3TPA>;
+	Tue, 30 Sep 2003 20:15:00 +0100
+Received: from avtrex.com ([192.168.0.111] RDNS failed) by avtrex.com with Microsoft SMTPSVC(5.0.2195.6713);
+	 Tue, 30 Sep 2003 12:14:55 -0700
+Message-ID: <3F79D62F.5070901@avtrex.com>
+Date: Tue, 30 Sep 2003 12:14:55 -0700
+From: David Daney <ddaney@avtrex.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.2.1) Gecko/20021130
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+To: Sudeep Kottilingal <skottilingal@kinetowireless.com>
+CC: linux-mips@linux-mips.org,
+	Joe Baranowski <jbaranowski@kinetowireless.com>
+Subject: Re: Backtrace capability
+References: <2EEAE99C5AA0B14BB6A0BBB4ABF8D1E117960E@blunote.bluzona.com>
+In-Reply-To: <2EEAE99C5AA0B14BB6A0BBB4ABF8D1E117960E@blunote.bluzona.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 8bit
+X-OriginalArrivalTime: 30 Sep 2003 19:14:55.0675 (UTC) FILETIME=[21F820B0:01C38787]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3335
+X-archive-position: 3336
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-On 30 Sep 2003, Michael Uhler wrote:
+Sudeep Kottilingal wrote:
 
-> > What you want really is a 64-bit kernel.  On a 64-bit kernel even for
-> > processes running in 32-bit address spaces (o32, N32) the processor
-> > will run with the UX bit enabled.  o32 userspace still lives in the
-> > assumption that registers are 32-bit so only those bits will be restored
-> > in function calls etc.  N32 (where userspace isn't ready for prime time
-> > yet) does guarantee that.  And N64 (userspace similarly not ready for
-> > prime time) obviously is fully 64-bit everything.
-> 
-> I don't think you want to run o32 processes with the UX bit set.  UX not
-> only enables 64-bit addressing (which you can, in software, make look
-> like 32-bit addressing), it also enables access to the 64-bit opcodes.
-> This means that you are going to get unexpected and potentially
-> unreproducible results.
+> Hi all,
+>
+> I am trying to debug some SIGSEGV when I leave my system ON for a few 
+> days. At the time of the
+>
+> Crash I am not able to get a nice back-trace/stack trace yet. (I do 
+> not see the execinfo.h file on my uclibc toolchain
+>
+> Which implies its not supported yet on my toolchain release).
+>
+> *Has anyone had success in incorporating backtrace capability into a 
+> uclibc binary yet …?*
+>
+> *If your answer is yes, could u give me some pointers on how to do it 
+> and set it up ..?*
+>
+> *If your answer is no is there any other alternative set up to get 
+> more information.*
+>
+> I do not run an ICD or ICE on my board. Neither do I have a serial 
+> console. My console is redirected via Telnet.
+>
+> Currently I am running the application which crashes on the linux PC 
+> through totalview debugger.
+>
+> Waiting for it to crash.
+>
+> sudeep
+>
+I hacked together a backtrace that you may be able to adapt. It was 
+originally for gcj, but we use several variations for other things as 
+well. It kind of relies on an o32 ABI calling convention.
 
- Well, I think this is OK -- 64-bit opcodes are generally useless for
-software built for the o32 ABI, so they should not normally happen in
-regular code.  Perhaps some fancy hand-coded assembly might try to use
-them to get unusual results, including an invalid opcode trap handler for
-the processors that do not support them at all.  But I don't think we
-should try to work hard to prevent broken software from shooting into its
-foot.
+The code is in this mail message:
 
- And the advantage is we have a single TLB refill handler.
+http://gcc.gnu.org/ml/java-patches/2003-q3/msg00584.html
 
-  Maciej
+Look at:
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+libjava/sysdep/mips/mipsel-backtracer.c
+libjava/sysdep/mips/mipsel-backtracer.h
+libjava/sysdep/mips/mipsel-bthelper.S
+
+David Daney

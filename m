@@ -1,56 +1,40 @@
-Received:  by oss.sgi.com id <S42310AbQI0KIN>;
-	Wed, 27 Sep 2000 03:08:13 -0700
-Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:58531 "EHLO
-        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S42278AbQI0KHn>;
-	Wed, 27 Sep 2000 03:07:43 -0700
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id MAA26405;
-	Wed, 27 Sep 2000 12:06:32 +0200 (MET DST)
-Date:   Wed, 27 Sep 2000 12:06:31 +0200 (MET DST)
-From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To:     Jun Sun <jsun@mvista.com>
-cc:     "Kevin D. Kissell" <kevink@mips.com>, ralf@oss.sgi.com,
-        Dominic Sweetman <dom@algor.co.uk>, linux-mips@oss.sgi.com,
-        linux-mips@fnet.fr
-Subject: Re: load_unaligned() and "uld" instruction
-In-Reply-To: <39D0E51C.79A0BE50@mvista.com>
-Message-ID: <Pine.GSO.3.96.1000927112232.25150A-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received:  by oss.sgi.com id <S42351AbQI0R3D>;
+	Wed, 27 Sep 2000 10:29:03 -0700
+Received: from rotor.chem.unr.edu ([134.197.32.176]:19464 "EHLO
+        rotor.chem.unr.edu") by oss.sgi.com with ESMTP id <S42278AbQI0R2f>;
+	Wed, 27 Sep 2000 10:28:35 -0700
+Received: (from wesolows@localhost)
+	by rotor.chem.unr.edu (8.9.3/8.9.3) id KAA14545;
+	Wed, 27 Sep 2000 10:27:53 -0700
+Date:   Wed, 27 Sep 2000 10:27:53 -0700
+From:   Keith M Wesolowski <wesolows@chem.unr.edu>
+To:     Erik Aderstedt <erik@ic.chalmers.se>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: Getting started
+Message-ID: <20000927102753.C13870@chem.unr.edu>
+References: <D1E34549DAC3D311A05D0020940F00FF62D460@exchmail.velocityenterprises.net> <20000926103313.B15401@chem.unr.edu> <000e01c02840$8285f910$a3291081@mc2.chalmers.se>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2i
+In-Reply-To: <000e01c02840$8285f910$a3291081@mc2.chalmers.se>; from erik@ic.chalmers.se on Wed, Sep 27, 2000 at 07:05:09AM +0200
+X-Complaints-To: postmaster@chem.unr.edu
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Tue, 26 Sep 2000, Jun Sun wrote:
+On Wed, Sep 27, 2000 at 07:05:09AM +0200, Erik Aderstedt wrote:
 
-> --- linux/include/asm-mips/unaligned.h.orig     Mon Sep 25 14:02:52 2000
-> +++ linux/include/asm-mips/unaligned.h  Tue Sep 26 10:53:31 2000
-> @@ -19,7 +19,7 @@
->  {
->         unsigned long long __res;
->  
-> -       __asm__("uld\t%0,(%1)"
-> +       __asm__(".set\tmips3\n\tuld\t%0,(%1)"
->                 :"=&r" (__res)
->                 :"r" (__addr));
->  
-[etc.]
+> I'd really like to try out your distribution (I want to use a diskless Indy
+> as an X terminal) but the latest version I can find at your FTP site is 0.2a
+> and there are messages all over the place saying "0.2a is broken, don't use
+> it!". What gives?
 
- Please don't.  Gcc already has means to generate proper unaligned
-accesses.  See include/asm-alpha/unaligned.h for how to achieve them in a
-portable way (i.e. using packed structs) without the problematic inline
-asm.
-
- And please use ".set mips0" (or ".set push" and ".set pop",
-appropriately) after using any ".set mips*" directive (or any other ".set"
-directive to that matter) not to adversly affect any other code.  Improper
-coding of such constructs bites R3K people badly.
-
- Better yet, configure your compiler appropriately and avoid switching ISA
-levels in the code if at all possible.
+Hmmm, poor documentation. All the more recent stuff is now at
+ftp://oss.sgi.com/pub/linux/mips/mips-linux/simple/.
 
 -- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Keith M Wesolowski			wesolows@chem.unr.edu
+University of Nevada			http://www.chem.unr.edu
+Chemistry Department Systems and Network Administrator

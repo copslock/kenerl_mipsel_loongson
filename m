@@ -1,48 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Mar 2003 10:28:31 +0000 (GMT)
-Received: from ftp.ckdenergo.cz ([IPv6:::ffff:80.95.97.155]:58033 "EHLO simek")
-	by linux-mips.org with ESMTP id <S8225223AbTCMK2X>;
-	Thu, 13 Mar 2003 10:28:23 +0000
-Received: from ladis by simek with local (Exim 3.36 #1 (Debian))
-	id 18tPvs-0001JV-00; Thu, 13 Mar 2003 11:27:28 +0100
-Date: Thu, 13 Mar 2003 11:27:18 +0100
-To: Vincent =?iso-8859-2?Q?Stehl=E9?= <vincent.stehle@stepmind.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Mar 2003 11:28:30 +0000 (GMT)
+Received: from [IPv6:::ffff:133.36.48.43] ([IPv6:::ffff:133.36.48.43]:40875
+	"EHLO cat.os-omicron.org") by linux-mips.org with ESMTP
+	id <S8225223AbTCML23>; Thu, 13 Mar 2003 11:28:29 +0000
+Received: from wl04.sys.cs.tuat.ac.jp (pisces.sys.cs.tuat.ac.jp [165.93.162.82])
+	by cat.os-omicron.org (Postfix) with SMTP
+	id C4619A4E4; Thu, 13 Mar 2003 20:30:19 +0900 (JST)
+Date: Thu, 13 Mar 2003 20:27:27 +0900
+From: TAKANO Ryousei <takano@os-omicron.org>
+To: Zhang Fuxin <fxzhang@ict.ac.cn>
 Cc: linux-mips@linux-mips.org
-Subject: Re: PROM variables
-Message-ID: <20030313102718.GA5032@simek>
-References: <3E7057A6.60007@stepmind.com>
+Subject: Re: linux/mips on simos
+Message-Id: <20030313202727.627e65ce.takano@os-omicron.org>
+In-Reply-To: <3E70A805.1030007@ict.ac.cn>
+References: <3E70A805.1030007@ict.ac.cn>
+Organization: OS/omicron Project
+X-Mailer: Sylpheed version 0.8.6 (GTK+ 1.2.10; i386-vine-linux)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-2
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <3E7057A6.60007@stepmind.com>
-User-Agent: Mutt/1.5.3i
-From: Ladislav Michl <ladis@linux-mips.org>
-Return-Path: <ladis@linux-mips.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <takano@os-omicron.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1721
+X-archive-position: 1722
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ladis@linux-mips.org
+X-original-sender: takano@os-omicron.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Mar 13, 2003 at 11:04:22AM +0100, Vincent Stehlé wrote:
-> Hi all,
+Hi Zhang,
+
+> Recently i am working on stanford SIMOS and trying to make it
+> run linux/mips kernel.
 > 
-> Is there a way to get/set PROM variables under Linux ?
+I am interesting in your work.
+I found the following paper about Linux/SimOS.
+http://academic.csuohio.edu/yuc/papers/Ben-ICPP2002.pdf
 
-no.
-
-> I have an indigo2 with no display, and setting the variables without 
-> reverting to the monitor through the serial line would be very handy.
-> 
-> As I doubt there is currently a solution, I was thinking about 
-> implementing this as a /proc subdir. What do you think ?
-
-we discussed this issue on #irc yesterday. it seems that conclusion was
-implement it as ioctl on some /dev/prom (?).
-
-	ladis
+Thanks,
+TAKANO Ryousei

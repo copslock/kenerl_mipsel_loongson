@@ -1,204 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Apr 2005 05:39:42 +0100 (BST)
-Received: from 64-30-195-78.dsl.linkline.com ([IPv6:::ffff:64.30.195.78]:51412
-	"EHLO jg555.com") by linux-mips.org with ESMTP id <S8224948AbVDBEjZ>;
-	Sat, 2 Apr 2005 05:39:25 +0100
-Received: from [172.16.0.150] (w2rz8l4s02.jg555.com [::ffff:172.16.0.150])
-  (AUTH: PLAIN root, TLS: TLSv1/SSLv3,256bits,AES256-SHA)
-  by jg555.com with esmtp; Fri, 01 Apr 2005 20:39:22 -0800
-  id 0000846A.424E21FA.000053E0
-Message-ID: <424E21F0.5080308@jg555.com>
-Date:	Fri, 01 Apr 2005 20:39:12 -0800
-From:	Jim Gifford <maillist@jg555.com>
-User-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Apr 2005 11:11:58 +0100 (BST)
+Received: from mx01.qsc.de ([IPv6:::ffff:213.148.129.14]:47828 "EHLO
+	mx01.qsc.de") by linux-mips.org with ESMTP id <S8225213AbVDBKLm>;
+	Sat, 2 Apr 2005 11:11:42 +0100
+Received: from port-195-158-169-58.dynamic.qsc.de ([195.158.169.58] helo=hattusa.textio)
+	by mx01.qsc.de with esmtp (Exim 3.35 #1)
+	id 1DHfbM-0001F5-00; Sat, 02 Apr 2005 12:11:36 +0200
+Received: from ths by hattusa.textio with local (Exim 4.50)
+	id 1DHfbM-0008AG-3X; Sat, 02 Apr 2005 12:11:36 +0200
+Date:	Sat, 2 Apr 2005 12:11:36 +0200
+To:	macro@linux-mips.org
+Cc:	linux-mips@linux-mips.org
+Subject: Re: CVS Update@linux-mips.org: linux
+Message-ID: <20050402101135.GB1641@hattusa.textio>
+References: <20050401175340Z8226142-1340+5040@linux-mips.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="=_server-21472-1112416762-0001-2"
-To:	Peter Horton <pdh@colonel-panic.org>
-CC:	Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: Build 64bit on RaQ2
-References: <42449F47.8010002@jg555.com> <20050326091218.GA2471@skeleton-jack> <42488DFC.20408@jg555.com> <20050329214641.GA5152@skeleton-jack>
-In-Reply-To: <20050329214641.GA5152@skeleton-jack>
-Return-Path: <maillist@jg555.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20050401175340Z8226142-1340+5040@linux-mips.org>
+User-Agent: Mutt/1.5.8i
+From:	Thiemo Seufer <ths@networkno.de>
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7568
+X-archive-position: 7569
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: maillist@jg555.com
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-This is a MIME-formatted message.  If you see this text it means that your
-E-mail software does not support MIME-formatted messages.
+macro@linux-mips.org wrote:
+> 
+> CVSROOT:	/home/cvs
+> Module name:	linux
+> Changes by:	macro@ftp.linux-mips.org	05/04/01 18:53:33
+> 
+> Modified files:
+> 	arch/mips/mm   : pg-sb1.c 
+> 
+> Log message:
+> 	Remove useless casts.  Fix formatting.
 
---=_server-21472-1112416762-0001-2
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+This patch leads for 64bit kernels to:
 
-Peter Horton wrote:
-
->
->Tulip driver gave me problems also. I landed up inserting a printk()
->which made it work, see the patch. I didn't get round to debugging it
->any further, sorry.
->
->P.
->
->  
->
-Peter here is the fix for the linux-mips version of kernel and the tulip 
-driver. Thanx again for you help
-
-
-
--- 
-----
-Jim Gifford
-maillist@jg555.com
-
-
---=_server-21472-1112416762-0001-2
-Content-Type: text/x-diff; name="tulip-mips[1].patch"; charset=iso-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="tulip-mips[1].patch"
-
-diff -Naurp linux.orig/drivers/net/tulip/de2104x.c linux/drivers/net/tulip/de2104x.c
---- linux.orig/drivers/net/tulip/de2104x.c	2005-03-18 09:37:38.000000000 -0800
-+++ linux/drivers/net/tulip/de2104x.c	2005-04-01 20:10:25.323550440 -0800
-@@ -1787,15 +1787,10 @@ static void __init de21041_get_srom_info
- 	/* DEC now has a specification but early board makers
- 	   just put the address in the first EEPROM locations. */
- 	/* This does  memcmp(eedata, eedata+16, 8) */
--
--#ifndef CONFIG_MIPS_COBALT
--
- 	for (i = 0; i < 8; i ++)
- 		if (ee_data[i] != ee_data[16+i])
- 			sa_offset = 20;
- 
--#endif
--
- 	/* store MAC address */
- 	for (i = 0; i < 6; i ++)
- 		de->dev->dev_addr[i] = ee_data[i + sa_offset];
-@@ -1932,7 +1927,7 @@ bad_srom:
- 	goto fill_defaults;
- }
- 
--static int __init de_init_one (struct pci_dev *pdev,
-+static int __devinit de_init_one (struct pci_dev *pdev,
- 				  const struct pci_device_id *ent)
- {
- 	struct net_device *dev;
-diff -Naurp linux.orig/drivers/net/tulip/de4x5.c linux/drivers/net/tulip/de4x5.c
---- linux.orig/drivers/net/tulip/de4x5.c	2005-03-18 09:37:38.000000000 -0800
-+++ linux/drivers/net/tulip/de4x5.c	2005-04-01 20:10:25.854469728 -0800
-@@ -2124,7 +2124,6 @@ static struct eisa_driver de4x5_eisa_dri
-                 .remove  = __devexit_p (de4x5_eisa_remove),
-         }
- };
--MODULE_DEVICE_TABLE(eisa, de4x5_eisa_ids);
- #endif
- 
- #ifdef CONFIG_PCI
-diff -Naurp linux.orig/drivers/net/tulip/media.c linux/drivers/net/tulip/media.c
---- linux.orig/drivers/net/tulip/media.c	2005-03-18 09:37:38.000000000 -0800
-+++ linux/drivers/net/tulip/media.c	2005-04-01 20:10:26.553363480 -0800
-@@ -44,8 +44,10 @@ static const unsigned char comet_miireg2
- 
- /* MII transceiver control section.
-    Read and write the MII registers using software-generated serial
--   MDIO protocol.  See the MII specifications or DP83840A data sheet
--   for details. */
-+   MDIO protocol.
-+   See IEEE 802.3-2002.pdf (Section 2, Chapter "22.2.4 Management functions")
-+   or DP83840A data sheet for more details.
-+   */
- 
- int tulip_mdio_read(struct net_device *dev, int phy_id, int location)
- {
-@@ -307,13 +309,29 @@ void tulip_select_media(struct net_devic
- 				int reset_length = p[2 + init_length];
- 				misc_info = (u16*)(reset_sequence + reset_length);
- 				if (startup) {
-+					int timeout = 10;	/* max 1 ms */
- 					iowrite32(mtable->csr12dir | 0x100, ioaddr + CSR12);
- 					for (i = 0; i < reset_length; i++)
- 						iowrite32(reset_sequence[i], ioaddr + CSR12);
-+
-+					/* flush posted writes */
-+					ioread32(ioaddr + CSR12);
-+
-+					/* Sect 3.10.3 in DP83840A.pdf (p39) */
-+					udelay(500);
-+
-+					/* Section 4.2 in DP83840A.pdf (p43) */
-+					/* and IEEE 802.3 "22.2.4.1.1 Reset" */
-+					while (timeout-- &&
-+						(tulip_mdio_read (dev, phy_num, MII_BMCR) & BMCR_RESET))
-+						udelay(100);
- 				}
- 				for (i = 0; i < init_length; i++)
- 					iowrite32(init_sequence[i], ioaddr + CSR12);
-+
-+				ioread32(ioaddr + CSR12);	/* flush posted writes */
- 			}
-+
- 			tmp_info = get_u16(&misc_info[1]);
- 			if (tmp_info)
- 				tp->advertising[phy_num] = tmp_info | 1;
-@@ -399,9 +417,6 @@ void tulip_select_media(struct net_devic
- 	}
- 
- 	tp->csr6 = new_csr6 | (tp->csr6 & 0xfdff) | (tp->full_duplex ? 0x0200 : 0);
--
--	udelay(1000);
--
- 	return;
- }
- 
-diff -Naurp linux.orig/drivers/net/tulip/tulip_core.c linux/drivers/net/tulip/tulip_core.c
---- linux.orig/drivers/net/tulip/tulip_core.c	2005-03-18 09:37:38.000000000 -0800
-+++ linux/drivers/net/tulip/tulip_core.c	2005-04-01 20:10:27.003295080 -0800
-@@ -22,7 +22,7 @@
- #else
- #define DRV_VERSION	"1.1.13"
- #endif
--#define DRV_RELDATE	"May 11, 2002"
-+#define DRV_RELDATE	"December 15, 2004"
- 
- 
- #include <linux/module.h>
-@@ -1514,8 +1514,8 @@ static int __devinit tulip_init_one (str
-                     (PCI_SLOT(pdev->devfn) == 12))) {
-                        /* Cobalt MAC address in first EEPROM locations. */
-                        sa_offset = 0;
--		       /* Ensure our media table fixup get's applied */
--		       memcpy(ee_data + 16, ee_data, 8);
-+                       /* No media table either */
-+                       tp->flags &= ~HAS_MEDIA_TABLE;
-                }
- #endif
- #ifdef CONFIG_GSC
-diff -Naurp linux.orig/drivers/net/tulip/tulip.h linux/drivers/net/tulip/tulip.h
---- linux.orig/drivers/net/tulip/tulip.h	2005-03-18 09:37:38.000000000 -0800
-+++ linux/drivers/net/tulip/tulip.h	2005-04-01 20:10:26.851318184 -0800
-@@ -475,8 +475,11 @@ static inline void tulip_stop_rxtx(struc
- 			udelay(10);
- 
- 		if (!i)
--			printk(KERN_DEBUG "%s: tulip_stop_rxtx() failed\n",
--					pci_name(tp->pdev));
-+			printk(KERN_DEBUG "%s: tulip_stop_rxtx() failed"
-+					" (CSR5 0x%x CSR6 0x%x)\n",
-+					pci_name(tp->pdev),
-+					ioread32(ioaddr + CSR5),
-+					ioread32(ioaddr + CSR6));
- 	}
- }
- 
-
---=_server-21472-1112416762-0001-2--
+  CC      arch/mips/mm/pg-sb1.o
+arch/mips/mm/pg-sb1.c: In function `sb1_dma_init':
+arch/mips/mm/pg-sb1.c:220: warning: cast from pointer to integer of different size
+arch/mips/mm/pg-sb1.c:225: warning: passing arg 2 of `__raw_writeq' discards qualifiers from pointer target type
+arch/mips/mm/pg-sb1.c:226: warning: passing arg 2 of `__raw_writeq' discards qualifiers from pointer target type
+arch/mips/mm/pg-sb1.c:227: warning: passing arg 2 of `__raw_writeq' discards qualifiers from pointer target type
+arch/mips/mm/pg-sb1.c: In function `clear_page':
+arch/mips/mm/pg-sb1.c:233: warning: cast from pointer to integer of different size
+arch/mips/mm/pg-sb1.c:237: warning: cast from pointer to integer of different size
+arch/mips/mm/pg-sb1.c: In function `copy_page':
+arch/mips/mm/pg-sb1.c:257: warning: cast from pointer to integer of different size
+arch/mips/mm/pg-sb1.c:258: warning: cast from pointer to integer of different size
+arch/mips/mm/pg-sb1.c:262: warning: cast from pointer to integer of different size
+arch/mips/mm/pg-sb1.c:263: warning: cast from pointer to integer of different size

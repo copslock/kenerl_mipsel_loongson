@@ -1,38 +1,88 @@
-Received:  by oss.sgi.com id <S553855AbQJ3LoD>;
-	Mon, 30 Oct 2000 03:44:03 -0800
-Received: from natmail2.webmailer.de ([192.67.198.65]:32980 "EHLO
-        post.webmailer.de") by oss.sgi.com with ESMTP id <S553852AbQJ3Lnp>;
-	Mon, 30 Oct 2000 03:43:45 -0800
-Received: from scotty.mgnet.de (p3E9EC9F2.dip.t-dialin.net [62.158.201.242])
-	by post.webmailer.de (8.9.3/8.8.7) with SMTP id MAA02561
-	for <linux-mips@oss.sgi.com>; Mon, 30 Oct 2000 12:43:40 +0100 (MET)
-Received: (qmail 20857 invoked from network); 30 Oct 2000 11:43:37 -0000
-Received: from spock.mgnet.de (192.168.1.4)
-  by scotty.mgnet.de with SMTP; 30 Oct 2000 11:43:37 -0000
-Date:   Mon, 30 Oct 2000 12:45:11 +0100 (CET)
-From:   Klaus Naumann <spock@mgnet.de>
-To:     Nicu Popovici <octavp@isratech.ro>
-cc:     linux-mips@oss.sgi.com
-Subject: Re: Still cannot compile the KERNEL!!!
-In-Reply-To: <39FDAE22.7626E6E@isratech.ro>
-Message-ID: <Pine.LNX.4.21.0010301244250.4786-100000@spock.mgnet.de>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received:  by oss.sgi.com id <S553857AbQJ3LuW>;
+	Mon, 30 Oct 2000 03:50:22 -0800
+Received: from woody.ichilton.co.uk ([216.29.174.40]:12552 "HELO
+        woody.ichilton.co.uk") by oss.sgi.com with SMTP id <S553854AbQJ3LuM>;
+	Mon, 30 Oct 2000 03:50:12 -0800
+Received: by woody.ichilton.co.uk (Postfix, from userid 0)
+	id EF7427CEC; Mon, 30 Oct 2000 11:50:10 +0000 (GMT)
+Date:   Mon, 30 Oct 2000 11:50:10 +0000
+From:   Ian Chilton <mailinglist@ichilton.co.uk>
+To:     linux-mips@oss.sgi.com
+Subject: GCC Problem
+Message-ID: <20001030115010.A18728@woody.ichilton.co.uk>
+Reply-To: ian@ichilton.co.uk
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.3.9i
+Fcc:    /var/mail/sent-mail-oct2000
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Mon, 30 Oct 2000, Nicu Popovici wrote:
+Hello,
+
+I had a problem compiling egcs 1.0.3a nativly. I had it a few weeks ago, and fixed it, and it worked. Now, I am having exactly the same problem again, and I can't seem to fix it...annoying..
+
+The system has glibc-2.0.6-7lm and binutils-2.8.1. I am using the egcs-1.0.3a-3 patch
+Last time I did it, I was using -5lm and the egcs -2 patch..
+
+Here is the problem:
+
+/lfstmp/egcs-1.0.3a/gcc-build/gcc/xgcc -B/lfstmp/egcs-1.0.3a/gcc-build/gcc/ -g -O2 -fno-implicit-templates  -EL -Wl,-soname,libstdc++.so.`echo 2.8.0 | sed 's/\([0-9][.][0-9]\).*/\1/'` -shared -o libstdc++.so.2.8.0 `cat piclist` -lm
+/usr/lib/libm.so: could not read symbols: Invalid operation
+collect2: ld returned 1 exit status
+make[4]: *** [libstdc++.so.2.8.0] Error 1
+make[4]: Leaving directory `/lfstmp/egcs-1.0.3a/gcc-build/libraries/el/libstdc++'
+make[3]: *** [multi-do] Error 1
+make[3]: Leaving directory `/lfstmp/egcs-1.0.3a/gcc-build/libraries/libstdc++'
+make[2]: *** [multi-all] Error 2
+make[2]: Leaving directory `/lfstmp/egcs-1.0.3a/gcc-build/libraries/libstdc++'
+make[1]: *** [all-target-libstdc++] Error 2
+make[1]: Leaving directory `/lfstmp/egcs-1.0.3a/gcc-build'
+make: *** [bootstrap] Error 2
 
 
-Sounds really like you have /usr/src/linux linked to your intel
-kernel and not to the mips kernel - check that first.
+I seem to remember the fix was something like creating symlinks. In /usr/lib, I only had libstdc++.a, so I copied libstdc++.so.2.8.0 from my working /usr/lib dir and made some symlinks as below:
 
-	HTH, Klaus
+bash-2.04# ls -l /usr/lib/libstdc*
+-rw-r--r--   1 root     root      1852098 Oct 28 20:28 /usr/lib/libstdc++.a
+lrwxrwxrwx   1 root     root           18 Oct 29 15:40 /usr/lib/libstdc++.so -> libstdc++.so.2.8.0
+lrwxrwxrwx   1 root     root           18 Oct 29 15:40 /usr/lib/libstdc++.so.2.8 -> libstdc++.so.2.8.0
+-r-xr-xr-x   1 root     root       510594 Oct 29 12:53 /usr/lib/libstdc++.so.2.8.0
 
--- 
-Full Name   : Klaus Naumann     | (http://www.mgnet.de/) (Germany)
-Nickname    : Spock             | Org.: Mad Guys Network
-Phone / FAX : ++49/177/7862964  | E-Mail: (spock@mgnet.de)
-PGP Key     : www.mgnet.de/keys/key_spock.txt
+
+I also seem to have all of these OK:
+
+bash-2.04# ls -l /usr/lib/libm*
+-rw-r--r--   1 root     root      1240434 Oct 29 15:29 /usr/lib/libm.a
+lrwxrwxrwx   1 root     root           19 Oct 29 15:29 /usr/lib/libm.so -> ../../lib/libm.so.6
+-rw-r--r--   1 root     root      1255528 Oct 29 15:29 /usr/lib/libm_p.a
+-rw-r--r--   1 root     root         3764 Oct 29 15:29 /usr/lib/libmcheck.a
+bash-2.04# 
+
+bash-2.04# /sbin/ldconfig
+bash-2.04# 
+ 
+
+Can someone help me out here, bcause I have had it working, and know it works, but it is frustrating  :)
+
+
+Just to let you know what I am working on....I hope to have a glibc-2.0.6/egcs 1.0.3a/2.2.14 system AND a glibc-2.2/new gcc/2.4pre9 system available for download in the next week or 2....
+
+
+Thanks!
+
+
+Bye for Now,
+
+Ian
+
+
+                     \|||/ 
+                     (o o)
+ /----------------ooO-(_)-Ooo----------------\
+ |  Ian Chilton                              |
+ |  E-Mail : ian@ichilton.co.uk              |
+ \-------------------------------------------/

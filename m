@@ -1,37 +1,43 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g51JgmnC029987
-	for <linux-mips-outgoing@oss.sgi.com>; Sat, 1 Jun 2002 12:42:48 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g52AxinC006589
+	for <linux-mips-outgoing@oss.sgi.com>; Sun, 2 Jun 2002 03:59:44 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g51JgmtD029986
-	for linux-mips-outgoing; Sat, 1 Jun 2002 12:42:48 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g52AxiYm006588
+	for linux-mips-outgoing; Sun, 2 Jun 2002 03:59:44 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from real.realitydiluted.com (real.realitydiluted.com [208.242.241.164])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g51JgjnC029983
-	for <linux-mips@oss.sgi.com>; Sat, 1 Jun 2002 12:42:46 -0700
-Received: from localhost.localdomain ([127.0.0.1] helo=realitydiluted.com)
-	by real.realitydiluted.com with esmtp (Exim 3.22 #1 (Red Hat Linux))
-	id 17EEmw-0000hQ-00; Sat, 01 Jun 2002 14:43:46 -0500
-Message-ID: <3CF923DB.6020906@realitydiluted.com>
-Date: Sat, 01 Jun 2002 14:43:23 -0500
-From: "Steven J. Hill" <sjhill@realitydiluted.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.0rc2) Gecko/20020520 Debian/1.0rc2-3
+Received: from mail.sonytel.be (mail.sonytel.be [193.74.243.200])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g52AxenC006583
+	for <linux-mips@oss.sgi.com>; Sun, 2 Jun 2002 03:59:40 -0700
+Received: from vervain.sonytel.be (mail.sonytel.be [10.17.0.26])
+	by mail.sonytel.be (8.9.0/8.8.6) with ESMTP id MAA05572;
+	Sun, 2 Jun 2002 12:57:53 +0200 (MET DST)
+Date: Sun, 2 Jun 2002 12:57:54 +0200 (MEST)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: Brian Murphy <brian@murphy.dk>
+cc: linux-mips <linux-mips@oss.sgi.com>
+Subject: Re: Patch for support of Lasat 100 and 200 machines (~60k)
+In-Reply-To: <3CF7C9B0.20808@murphy.dk>
+Message-ID: <Pine.GSO.4.21.0206021256440.13419-100000@vervain.sonytel.be>
 MIME-Version: 1.0
-To: James Simmons <jsimmons@transvirtual.com>
-CC: linux-mips-kernel@lists.sourceforge.net,
-   linux-mips
- <linux-mips@oss.sgi.com>
-Subject: Re: TX 3912 framebuffer device
-References: <Pine.LNX.4.44.0205311137230.28854-100000@www.transvirtual.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-James Simmons wrote:
-> Can the video mode of this device be switched at run time or is it a
-> static mode. I'm porting it to the new fbdev api and I want to get it
-> right.
-> 
- From my work on the 3912, my answer would be yes.
+On Fri, 31 May 2002, Brian Murphy wrote:
+> The files not patched (not existing in the oss CVS) are
+> in lasat.tar.gz. This includes arch/mips/lasat and
+> include/asm-mips/lasat - one file to support r5000 cache
 
--Steve
+About <asm/lasat/vrc5074.h>: Vrc-5074 definitions already exist in
+<asm/nile4.h>.
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

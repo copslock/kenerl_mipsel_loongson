@@ -1,73 +1,91 @@
-Received:  by oss.sgi.com id <S305157AbQCGWO2>;
-	Tue, 7 Mar 2000 14:14:28 -0800
-Received: from deliverator.sgi.com ([204.94.214.10]:56929 "EHLO
-        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305154AbQCGWOJ>;
-	Tue, 7 Mar 2000 14:14:09 -0800
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id OAA06396; Tue, 7 Mar 2000 14:09:34 -0800 (PST)
+Received:  by oss.sgi.com id <S305156AbQCHKEk>;
+	Wed, 8 Mar 2000 02:04:40 -0800
+Received: from pneumatic-tube.sgi.com ([204.94.214.22]:1796 "EHLO
+        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
+	id <S305154AbQCHKEL>; Wed, 8 Mar 2000 02:04:11 -0800
+Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id CAA02564; Wed, 8 Mar 2000 02:07:27 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id CAA14604; Wed, 8 Mar 2000 02:03:40 -0800 (PST)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id OAA50659
+	id BAA71390
 	for linux-list;
-	Tue, 7 Mar 2000 14:05:28 -0800 (PST)
+	Wed, 8 Mar 2000 01:47:31 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from deliverator.sgi.com (deliverator.sgi.com [150.166.91.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id OAA35548
+	via ESMTP id BAA63510
 	for <linux@cthulhu.engr.sgi.com>;
-	Tue, 7 Mar 2000 14:05:25 -0800 (PST)
-	mail_from (andrewb@uab.edu)
-Received: from lilith.dpo.uab.edu (lilith.dpo.uab.edu [138.26.1.128]) 
-	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id OAA05319
-	for <linux@cthulhu.engr.sgi.com>; Tue, 7 Mar 2000 14:05:11 -0800 (PST)
-	mail_from (andrewb@uab.edu)
-Received: from lithium (lithium.tucc.uab.edu [138.26.15.219])
-	by lilith.dpo.uab.edu (8.9.3/8.9.3) with SMTP id QAA21654
-	for <linux@cthulhu.engr.sgi.com>; Tue, 7 Mar 2000 16:05:07 -0600
-Date:   Tue, 7 Mar 2000 16:05:07 -0600 (CST)
-From:   "Andrew R. Baker" <andrewb@uab.edu>
-X-Sender: andrewb@lithium
-To:     Linux SGI <linux@cthulhu.engr.sgi.com>
-Subject: problem with most recent 2.3 CVS kernel
-Message-ID: <Pine.LNX.3.96.1000307160335.13309I-100000@lithium>
+	Wed, 8 Mar 2000 01:47:28 -0800 (PST)
+	mail_from (kevink@mips.com)
+Received: from mx.mips.com (mx.mips.com [206.31.31.226]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id BAA24975
+	for <linux@cthulhu.engr.sgi.com>; Wed, 8 Mar 2000 01:42:52 -0800 (PST)
+	mail_from (kevink@mips.com)
+Received: from newman.mips.com (newman [206.31.31.8])
+	by mx.mips.com (8.9.3/8.9.0) with ESMTP id BAA23029;
+	Wed, 8 Mar 2000 01:40:38 -0800 (PST)
+Received: from satanas (satanas [192.168.236.12])
+	by newman.mips.com (8.9.3/8.9.0) with SMTP id BAA27977;
+	Wed, 8 Mar 2000 01:40:26 -0800 (PST)
+Message-ID: <025701bf88e2$c648a7e0$0ceca8c0@satanas.mips.com>
+From:   "Kevin D. Kissell" <kevink@mips.com>
+To:     "Harald Koerfgen" <Harald.Koerfgen@home.ivm.de>,
+        "Andrew R. Baker" <andrewb@uab.edu>
+Cc:     <linux-mips@vger.rutgers.edu>, <linux-mips@fnet.fr>,
+        "Linux SGI" <linux@cthulhu.engr.sgi.com>,
+        "Gleb O. Raiko" <raiko@niisi.msk.ru>
+Subject: Re: FP emulation patch available
+Date:   Wed, 8 Mar 2000 10:43:23 +0100
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 4.72.3110.5
+X-MimeOLE: Produced By Microsoft MimeOLE V4.72.3110.3
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-
-Everything goes well until just after the SCSI disk detection.  Then I
-get:
-
-
-scsi : detected 2 SCSI disks total.                                             
-scsi::resize_dma_pool: WARNING, dma_sectors=0, wanted=160, scaling              
-scsi::resize_dma_pool: WARNING, dma_sectors=0, wanted=128, scaling              
-scsi::resize_dma_pool: WARNING, dma_sectors=0, wanted=96, scaling               
-scsi::resize_dma_pool: WARNING, dma_sectors=0, wanted=80, scaling               
-scsi::resize_dma_pool: WARNING, dma_sectors=0, wanted=64, scaling               
-scsi::resize_dma_pool: WARNING, dma_sectors=0, wanted=48, scaling               
-      WARNING, not enough memory, pool not expanded
-Unable to handle kernel paging request at virtual address 00000000, epc ==
-880a4
-Oops in fault.c:do_page_fault, line 153:                                        
-$0 : 00000000 881100e0 00000000 00000021                                        
-$4 : 00000019 00000008 00000008 00000001                                        
-$8 : 1004fc00 1000001f 00000003 88631e54                                        
-$12: 00000000 0000000a 00000000 88115840                                        
-$16: 00000000 bfbc0003 00000008 00000001                                        
-$20: 00000080 00000049 0000003a 1004fc00                                        
-$24: 00000020 bfbd9833                                                          
-$28: 88008000 88009e08 88635800 880a7714                                        
-epc   : 880a77a4
+Hearald Koerfgen wrote:
+>
+>On 07-Mar-00 Andrew R. Baker wrote:
+>> 
+>> 
+>> On Tue, 7 Mar 2000, Gleb O. Raiko wrote:
+>>> "Bradley D. LaRonde" wrote:
+>>> > 
+>>> > I would jump right on this but I really need it for 2.3.47+.
+>>> > 
+>>> > Regards,
+>>> > Brad
+>>> 
+>>> I vote for 2.3 too. It seems 2.2 will vanish soon anyway.
+>> 
+>> Working on it.
+>
+>Me too. Compiles and links but doesn't work. I guess the cpu detection doesn't
+>work properly for my Mobilon yet. I am actually compiling it for a DECstation
+>:-)
 
 
-Any hints on this one?
+It's odd - I'm on at least one of the mailing lists in question, but I missed
+part of this thread yesterday - such as Bradley's message, and another
+that must have come from someone (Dom?) at Algorithmics.  
 
--Andrew
+Anyway, the my CPU detection would certainly not have worked for
+a Mobilon.   But it ought to have worked for a DECstation.  What
+CPU does it have?   In addition to the cpu_probe() routine itself,
+arch/mips/kernel/cpu_probe.c contains a table that describes the
+CPU's that are recognized, and in principle it "knows" all the CPUs
+that were recognized by the old assembler code in head.S, plus
+a couple more (R4300 and MIPS 4Kc/5Kc).   The problem may
+be a CPU that is mis-identified, or it may be that the options in the
+table associated with that CPU are incorrectly defined.  Please
+let me know what CPU and "PrID" the system has.
+
+            Regards,
+
+            Kevin K.

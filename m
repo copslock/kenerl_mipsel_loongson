@@ -1,63 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Nov 2004 09:46:31 +0000 (GMT)
-Received: from pD9562327.dip.t-dialin.net ([IPv6:::ffff:217.86.35.39]:16164
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8224991AbUKXJq0>; Wed, 24 Nov 2004 09:46:26 +0000
-Received: from fluff.linux-mips.net (localhost [127.0.0.1])
-	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id iAO9iN5W021636;
-	Wed, 24 Nov 2004 10:44:23 +0100
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.13.1/8.13.1/Submit) id iAO9iNMa021635;
-	Wed, 24 Nov 2004 10:44:23 +0100
-Date: Wed, 24 Nov 2004 10:44:23 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Cc: "Maciej W. Rozycki" <macro@linux-mips.org>,
-	Manish Lachwani <mlachwani@mvista.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] Synthesize TLB refill handler at runtime
-Message-ID: <20041124094423.GB21039@linux-mips.org>
-References: <20041121170242.GR20986@rembrandt.csv.ica.uni-stuttgart.de> <Pine.GSO.4.61.0411212048520.26374@waterleaf.sonytel.be> <20041121203757.GS20986@rembrandt.csv.ica.uni-stuttgart.de> <20041122070117.GB25433@linux-mips.org> <41A283BD.3080300@mvista.com> <Pine.LNX.4.58L.0411230036310.31113@blysk.ds.pg.gda.pl> <41A29DCF.8030308@mvista.com> <Pine.LNX.4.58L.0411232018390.19941@blysk.ds.pg.gda.pl> <20041124014057.GE902@rembrandt.csv.ica.uni-stuttgart.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20041124014057.GE902@rembrandt.csv.ica.uni-stuttgart.de>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Nov 2004 11:11:48 +0000 (GMT)
+Received: from the-doors.enix.org ([IPv6:::ffff:62.210.169.120]:45714 "EHLO
+	the-doors.enix.org") by linux-mips.org with ESMTP
+	id <S8225004AbUKXLLn>; Wed, 24 Nov 2004 11:11:43 +0000
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	by the-doors.enix.org (Postfix) with ESMTP id E4DF21ED57;
+	Wed, 24 Nov 2004 12:11:36 +0100 (CET)
+Message-ID: <41A46CE6.7040000@enix.org>
+Date: Wed, 24 Nov 2004 12:13:42 +0100
+From: Thomas Petazzoni <thomas.petazzoni@enix.org>
+User-Agent: Mozilla Thunderbird 0.8 (Windows/20040913)
+X-Accept-Language: fr, en
+MIME-Version: 1.0
+To: TheNop <TheNop@gmx.net>
+Cc: linux-mips@linux-mips.org
+Subject: Re: Cross tool chain based on gcc-3.4.x
+References: <41A3CE25.7040406@gmx.net>
+In-Reply-To: <41A3CE25.7040406@gmx.net>
+X-Enigmail-Version: 0.86.1.0
+X-Enigmail-Supports: pgp-inline, pgp-mime
+Content-Type: multipart/signed; micalg=pgp-sha1;
+ protocol="application/pgp-signature";
+ boundary="------------enig2817651C44514CE6A534CC2A"
+Content-Transfer-Encoding: 8bit
+Return-Path: <thomas.petazzoni@enix.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6432
+X-archive-position: 6433
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: thomas.petazzoni@enix.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Nov 24, 2004 at 02:40:57AM +0100, Thiemo Seufer wrote:
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--------------enig2817651C44514CE6A534CC2A
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 8bit
 
-> >  	default:
-> >  		/*
-> >  		 * Others are assumed to have one cycle mtc0 hazard,
-> > -		 * and one cycle tlbwr hazard.
-> > +		 * and one cycle tlbwr hazard or to understand ehb.
-> >  		 * XXX: This might be overly general.
-> >  		 */
-> > -		i_nop(p);
-> > +		i_ehb(p);
-> >  		i_tlbwr(p);
-> > -		i_nop(p);
-> > +		i_ehb(p);
-> >  		break;
-> 
-> Does r24k really need both delays? If not, it should get its own case.
-> Probably it should be separated even if it is identical, the code above
-> is nothing but a guess based on preexisting code.
+Hello,
 
-I would suggest to default to EHB only for architecture revision 2.  For
-any pre-V2 processor the outcome of a default case is basically luck and
-so I would suggest to just panic and force people to read their CPU
-manual.
+TheNop a écrit :
 
-  Ralf
+> Is anyone using a cross compiler base on  gcc-3.4.x for a mips big 
+> endian target?
+
+Yes. Using buildroot (the tool provided by uclibc guys), I successfully 
+generated tool chains for MIPS Big Endian with both Gcc 3.3.x et Gcc 
+3.4.x. C and C++ programs, dynamically linked with uclibc work fine. 
+However, with Gcc 3.4.x, my version of the Linux MIPS kernel (a more 
+than one month old CVS checkout, heavily tuned for my platform) doesn't 
+compile.
+
+Thomas
+-- 
+PETAZZONI Thomas - thomas.petazzoni@enix.org
+http://thomas.enix.org - Jabber: thomas.petazzoni@jabber.dk
+KOS: http://kos.enix.org/ - Lolut: http://lolut.utbm.info
+Fingerprint : 0BE1 4CF3 CEA4 AC9D CC6E  1624 F653 CB30 98D3 F7A7
+
+--------------enig2817651C44514CE6A534CC2A
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.5 (MingW32)
+Comment: Using GnuPG with Thunderbird - http://enigmail.mozdev.org
+
+iD8DBQFBpGzp9lPLMJjT96cRAjW6AKCv8Otp9KuU9r3FA08ult6oF8LJ+QCeNLlW
+7/2jIY1NApt67cuUtOLNek4=
+=4Kab
+-----END PGP SIGNATURE-----
+
+--------------enig2817651C44514CE6A534CC2A--

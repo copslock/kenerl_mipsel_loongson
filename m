@@ -1,34 +1,34 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g11MNlT19457
-	for linux-mips-outgoing; Fri, 1 Feb 2002 14:23:47 -0800
-Received: from cygnus.com (runyon.sfbay.redhat.com [205.180.230.5] (may be forged))
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g11MNid19454
-	for <linux-mips@oss.sgi.com>; Fri, 1 Feb 2002 14:23:44 -0800
-Received: from localhost.localdomain (taarna.sfbay.redhat.com [205.180.230.102])
-	by runyon.cygnus.com (8.8.7-cygnus/8.8.7) with ESMTP id NAA10372;
-	Fri, 1 Feb 2002 13:23:35 -0800 (PST)
-Subject: Re: me vs gas mips64 relocation
-From: Eric Christopher <echristo@redhat.com>
-To: weasel@cs.stanford.edu
-Cc: binutils@sources.redhat.com, linux-mips@oss.sgi.com
-In-Reply-To: <m2pu3o6i1g.fsf@meer.net>
-References: <m2vgdh5n9s.fsf@meer.net>  <m2pu3o6i1g.fsf@meer.net>
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Mailer: Evolution/1.0.2 
-Date: 01 Feb 2002 13:23:12 -0800
-Message-Id: <1012598592.1689.33.camel@ghostwheel.cygnus.com>
-Mime-Version: 1.0
+	by oss.sgi.com (8.11.2/8.11.3) id g11Mfvs19769
+	for linux-mips-outgoing; Fri, 1 Feb 2002 14:41:57 -0800
+Received: from delta.ds2.pg.gda.pl (macro@delta.ds2.pg.gda.pl [213.192.72.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g11Mfsd19761
+	for <linux-mips@oss.sgi.com>; Fri, 1 Feb 2002 14:41:54 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id WAA10068;
+	Fri, 1 Feb 2002 22:41:17 +0100 (MET)
+Date: Fri, 1 Feb 2002 22:41:17 +0100 (MET)
+From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To: "H . J . Lu" <hjl@lucon.org>
+cc: Hiroyuki Machida <machida@sm.sony.co.jp>, libc-alpha@sources.redhat.com,
+   linux-mips@oss.sgi.com
+Subject: Re: PATCH: Fix ll/sc for mips
+In-Reply-To: <20020201094025.A10392@lucon.org>
+Message-ID: <Pine.GSO.3.96.1020201223721.9982A-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+On Fri, 1 Feb 2002, H . J . Lu wrote:
 
-> ideas? (other than for me to take the crack pipe out of my ass)
+> Here is the updated patch.
 
-You can try to help Thiemo Seufer finish n32 and n64 support in
-binutils...
-
--eric
+ Please do indent instructions in branch delay slots like it's done in
+other code (and here originally as well).  It much improves the perception
+of what exactly is going on. 
 
 -- 
-I will not use abbrev.
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

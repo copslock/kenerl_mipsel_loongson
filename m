@@ -1,51 +1,40 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f4CKDpM09405
-	for linux-mips-outgoing; Sat, 12 May 2001 13:13:51 -0700
-Received: from hermes.mvista.com (gateway-1237.mvista.com [12.44.186.158])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f4CKDoF09402
-	for <linux-mips@oss.sgi.com>; Sat, 12 May 2001 13:13:50 -0700
-Received: from mvista.com (IDENT:ppopov@zeus.mvista.com [10.0.0.112])
-	by hermes.mvista.com (8.11.0/8.11.0) with ESMTP id f4CKDm020012;
-	Sat, 12 May 2001 13:13:48 -0700
-Message-ID: <3AFD98E5.9090907@mvista.com>
-Date: Sat, 12 May 2001 13:11:17 -0700
-From: Pete Popov <ppopov@mvista.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux 2.2.16-22 i586; en-US; rv:0.9) Gecko/20010507
-X-Accept-Language: en
-MIME-Version: 1.0
-To: peter.zijlstra@chello.nl
-CC: linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.3/8.11.3) id f4CKR6809735
+	for linux-mips-outgoing; Sat, 12 May 2001 13:27:06 -0700
+Received: from mail.foobazco.org (snowman.foobazco.org [198.144.194.230])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f4CKR5F09732
+	for <linux-mips@oss.sgi.com>; Sat, 12 May 2001 13:27:05 -0700
+Received: from galt.foobazco.org (galt.foobazco.org [198.144.194.227])
+	by mail.foobazco.org (Postfix) with ESMTP
+	id 207F5F1A9; Sat, 12 May 2001 13:25:57 -0700 (PDT)
+Received: by galt.foobazco.org (Postfix, from userid 1014)
+	id 942381F42B; Sat, 12 May 2001 13:26:32 -0700 (PDT)
+Date: Sat, 12 May 2001 13:26:32 -0700
+From: Keith M Wesolowski <wesolows@foobazco.org>
+To: Pete Popov <ppopov@mvista.com>
+Cc: peter.zijlstra@chello.nl, linux-mips@oss.sgi.com
 Subject: Re: Where to start with a R4000 Indigo
-References: <20010512204401.D6072@e67205.upc-e.chello.nl>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
+Message-ID: <20010512132632.B3092@foobazco.org>
+References: <20010512204401.D6072@e67205.upc-e.chello.nl> <3AFD98E5.9090907@mvista.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3AFD98E5.9090907@mvista.com>; from ppopov@mvista.com on Sat, May 12, 2001 at 01:11:17PM -0700
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-peter.zijlstra@chello.nl wrote:
+On Sat, May 12, 2001 at 01:11:17PM -0700, Pete Popov wrote:
 
->Hi,.
->
->I recently acquired a R4000 50MHz Indigo without an IRIX install nor CD
->with it. No CD-Rom player either, however I did order one, network however
->does seem to work. And as I am a linux fanatic and professional programmer 
->myself I would like to see whether I could help a bit with bringing linux to
->this system.
->
->As Indigo support isn't finished and I have nothing but a bare BIOS
->to start with; and have no experience with the machine to begin with;
->I have to ask for _help_ :)
->
->Where do I start reading and tinkering to get linux; for as far as it's
->sort of running; on my system ?
->
->Are there any specs for the machine, especially for those parts that need
->most urgent development and which parts are that ?
->
-Are you sure this system is an Indigo and not an Indigo2? I thought the 
-Indigo's are R3000 based and the Indigo2 is R4000 based. If it's an 
-Indigo2, linux already runs on it. I've got our HardHat Linux 2.0 
-booting and running of the hard drive. There's also a port of RedHat7.1. 
-on oss.sgi.com.
+> Are you sure this system is an Indigo and not an Indigo2? I thought the 
+> Indigo's are R3000 based and the Indigo2 is R4000 based. If it's an 
 
-Pete
+Indigo initially had R3000 and later had R4000, offered as both an
+upgrade board and a new system.  Indigo2 came with various R4000 and
+R4400 CPUs (and then R8k and R10k later).
+
+-- 
+Keith M Wesolowski <wesolows@foobazco.org> http://foobazco.org/~wesolows
+------(( Project Foobazco Coordinator and Network Administrator ))------
+	"Nothing motivates a man more than to see his boss put
+	 in an honest day's work." -- The fortune file

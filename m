@@ -1,92 +1,101 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 Mar 2005 20:01:50 +0000 (GMT)
-Received: from mailfe04.swip.net ([IPv6:::ffff:212.247.154.97]:2298 "EHLO
-	swip.net") by linux-mips.org with ESMTP id <S8224833AbVCFUBf>;
-	Sun, 6 Mar 2005 20:01:35 +0000
-X-T2-Posting-ID: g63wq726D5fsXb2UbU6LU0KOXzHnTHjCzHZ35sC2MDs=
-Received: from [83.177.235.13] (HELO [192.168.0.32])
-  by mailfe04.swip.net (CommuniGate Pro SMTP 4.2.9)
-  with ESMTP id 313604262; Sun, 06 Mar 2005 21:01:29 +0100
-Message-ID: <422B6192.2080801@astek.fr>
-Date:	Sun, 06 Mar 2005 21:01:22 +0100
-From:	Frederic TEMPORELLI - astek <ftemporelli@astek.fr>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.7.3) Gecko/20040910
-X-Accept-Language: fr, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Mar 2005 12:20:54 +0000 (GMT)
+Received: from mail.soc-soft.com ([IPv6:::ffff:202.56.254.199]:3597 "EHLO
+	IGateway.soc-soft.com") by linux-mips.org with ESMTP
+	id <S8225261AbVCGMUf>; Mon, 7 Mar 2005 12:20:35 +0000
+Received: from soc-mail.soc-soft.com ([192.168.4.25]) by IGateway with trend_isnt_name_B; Mon, 07 Mar 2005 17:52:15 +0530
+content-class: urn:content-classes:message
 MIME-Version: 1.0
-To:	"Ilya A. Volynets-Evenbakh" <ilya@total-knowledge.com>
-CC:	linux-mips@linux-mips.org
-Subject: Re: SGI IP32 and 2.6.11
-References: <422B3C74.9090706@laposte.net> <422B5676.7090207@total-knowledge.com>
-In-Reply-To: <422B5676.7090207@total-knowledge.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <ftemporelli@astek.fr>
+Content-Type: multipart/mixed;
+	boundary="----_=_NextPart_001_01C52310.4C19A488"
+Subject: How /sbin/init is executed
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6249.0
+Date:	Mon, 7 Mar 2005 17:52:15 +0530
+Message-ID: <4BF47D56A0DD2346A1B8D622C5C5902C5F282A@soc-mail.soc-soft.com>
+X-MS-Has-Attach: yes
+X-MS-TNEF-Correlator: 
+Thread-Topic: How /sbin/init is executed
+Thread-Index: AcUjEEucnsXfHjuVQ/67k31nFnx8OQ==
+From:	<Rishabh@soc-soft.com>
+To:	<linux-mips@linux-mips.org>
+Return-Path: <Rishabh@soc-soft.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7385
+X-archive-position: 7387
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ftemporelli@astek.fr
+X-original-sender: Rishabh@soc-soft.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello Ilya,
+This is a multi-part message in MIME format.
 
-yep, following my mail I just try to rebuild the kernel with more 
-drivers and reboot on this kernel failed.
-Now, same kernel but without the 64MB dimms, boot on this kernel is 
-working fine.
-
-thanks !!!
-
-for information, 64 MB dimms are "transtec" with s/n DRA0SM1 (nothing 
-about them on google :-( ).
-These dimms where installed on an other IP32 (I just add them in my O2)
-and hinv was reporting 320MB with all dimms installed (6*32MB + these 2 
-dimms)
+------_=_NextPart_001_01C52310.4C19A488
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 
 
-Best regards
 
-Frederic
+Hi,
+
+I am working on HIGHMEM implementation on Monta Vista Linux 3.1. I am
+able to boot the kernel till "/sbin/init".=0D
+
+I am getting stuck with How /sbin/init is fetched and executed from
+Target ROOT Dir.=0D
+
+Is it that a part of /sbin/init file is fetched and executed and then
+the other part of the file is fetched?
+
+If I want to debug the progress of /sbin/init execution then how can I
+proceed in this direction?
 
 
-Ilya A. Volynets-Evenbakh a écrit :
+Rishabh Kumar Goel
+Software Engineer
+=0D
+SoCrates Software India Pvt. Ltd.
+a TOSHIBA Group Company
+#10, Industrial Layout,
+Prestige Atlanta,
+III Block, Koramangala,
+Bangalore - 560034
+=0D
+Ph. 080-51101669
 
-> There is no such thing as 64M DIMM for O2. Put correct memory into 
-> your machine and
-> both of these problems will be solved.
->
-> Frederic TEMPORELLI wrote:
->
->> Hello,
->>
->> I've just been able to start 2.6.11 from my own compilation on IP32.
->>
->> Can I have some help about following problems/comments ?
->>
->> 1/ It was really difficult because kernel was falling in breakpoint 
->> call (BUG macro) in free_bootmem_core.
->> => I've successfully try to comment this BUG macro in 
->> free_bootmem_core (bootmem.c)
->> Of course, I'm thinking this is really sad... but I've a really poor 
->> knowledge in kernel development...
->> may someone can explain how to solve such issue in a better way ?
->> This breakpoint was boring me since 2.6.10...
->>
->> 2/ There's also a problem with ip32-memory.c, which isn't able to 
->> detect 64MB dimm.
->> Yet, not enough knowledge for processing bankctl (prom_meminit) in 
->> the nice way for detecting 64MB dimms...
->> (All memory slots are used on my O2: slots 1 to 6 with 32MB dimms and 
->> slots 7 & 8 with  64MB dimms) .
->>
->> Best regards
->>
->> Frederic TEMPORELLI
->>
->>
->>
->
->
+
+
+The information contained in this e-mail message and in any annexure is
+confidential to the  recipient and may contain privileged information. If=
+ you are not
+the intended recipient, please notify the sender and delete the message=
+ along with
+any annexure. You should not disclose, copy or otherwise use the=
+ information contained
+in the message or any annexure. Any views expressed in this e-mail are=
+ those of the
+individual sender except where the sender specifically states them to be=
+ the views of
+SoCrates Software India Pvt Ltd., Bangalore.
+------_=_NextPart_001_01C52310.4C19A488
+Content-Type: text/x-vcard;
+	name="Rishabh Kumar Goel.vcf"
+Content-Transfer-Encoding: base64
+Content-Description: Rishabh Kumar Goel.vcf
+Content-Disposition: attachment;
+	filename="Rishabh Kumar Goel.vcf"
+
+QkVHSU46VkNBUkQNClZFUlNJT046Mi4xDQpOOkdvZWw7UmlzaGFiaCBLdW1hcg0KRk46UmlzaGFi
+aCBLdW1hciBHb2VsDQpPUkc6U29jcmF0ZXMgU29mdHdhcmUgSW5kaWEgUHZ0IEx0ZC47T1MgJiBE
+RA0KVElUTEU6U0UNClRFTDtXT1JLO1ZPSUNFOjUxMTAxNjY5ICAgIEV4dDoyNjY5DQpBRFI7V09S
+SztFTkNPRElORz1RVU9URUQtUFJJTlRBQkxFOjtTb2NyYXRlcyBTb2Z0d2FyZSBJbmRpYSBQdnQu
+IEx0ZC47MTAgQnJpZGUgU3RyZWV0LCA9MEQ9MEFMYW5nZm9yZCBUb3duO0Jhbmc9DQphbG9yZTtL
+YXJuYXRha2E7NTYwMDI1O0lORElBDQpMQUJFTDtXT1JLO0VOQ09ESU5HPVFVT1RFRC1QUklOVEFC
+TEU6U29jcmF0ZXMgU29mdHdhcmUgSW5kaWEgUHZ0LiBMdGQuPTBEPTBBMTAgQnJpZGUgU3RyZWV0
+LCA9MEQ9MEFMYW5nZm9yZCBUb3duPQ0KPTBEPTBBQmFuZ2Fsb3JlLCBLYXJuYXRha2EgNTYwMDI1
+PTBEPTBBSU5ESUENCkVNQUlMO1BSRUY7SU5URVJORVQ6UmlzaGFiaEBzb2Mtc29mdC5jb20NClJF
+VjoyMDA1MDIxN1QwNjA4NDJaDQpFTkQ6VkNBUkQNCg==
+
+------_=_NextPart_001_01C52310.4C19A488--

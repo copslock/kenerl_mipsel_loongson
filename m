@@ -1,52 +1,36 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1O8H6E23250
-	for linux-mips-outgoing; Sun, 24 Feb 2002 00:17:06 -0800
-Received: from mail.ict.ac.cn ([159.226.39.4])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1O8H2923246
-	for <linux-mips@oss.sgi.com>; Sun, 24 Feb 2002 00:17:02 -0800
-Message-Id: <200202240817.g1O8H2923246@oss.sgi.com>
-Received: (qmail 19959 invoked from network); 24 Feb 2002 07:20:38 -0000
-Received: from unknown (HELO foxsen) (@159.226.40.150)
-  by 159.226.39.4 with SMTP; 24 Feb 2002 07:20:38 -0000
-Date: Sun, 24 Feb 2002 15:13:50 +0800
-From: Zhang Fuxin <fxzhang@ict.ac.cn>
-To: "H . J . Lu" <hjl@lucon.org>
-CC: "linux-mips@oss.sgi.com" <linux-mips@oss.sgi.com>
-Subject: Re: Re: Re: pthread support in mipsel-linux
-X-mailer: FoxMail 3.11 Release [cn]
-Mime-Version: 1.0
-Content-Type: text/plain; charset="GB2312"
-Content-Transfer-Encoding: 8bit
-X-MIME-Autoconverted: from quoted-printable to 8bit by oss.sgi.com id g1O8H3923247
+	by oss.sgi.com (8.11.2/8.11.3) id g1O8Mj023350
+	for linux-mips-outgoing; Sun, 24 Feb 2002 00:22:45 -0800
+Received: from dtla2.teknuts.com (adsl-66-125-62-110.dsl.lsan03.pacbell.net [66.125.62.110])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1O8Mh923347
+	for <linux-mips@oss.sgi.com>; Sun, 24 Feb 2002 00:22:43 -0800
+Received: from delllaptop ([208.187.134.66])
+	(authenticated)
+	by dtla2.teknuts.com (8.11.3/8.10.1) with ESMTP id g1O7MhC03802
+	for <linux-mips@oss.sgi.com>; Sat, 23 Feb 2002 23:22:44 -0800
+From: "Robert Rusek" <robru@teknuts.com>
+To: <linux-mips@oss.sgi.com>
+Subject: Working kernel 2.4.x for IP22
+Date: Sat, 23 Feb 2002 23:18:13 -0800
+Message-ID: <001501c1bd03$6ca133e0$6601a8c0@delllaptop>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook, Build 10.0.3416
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-hi,
+Does anyone know of a 2.4.x working kernel for IP22?  If so where do I
+get the source or the binary?  I am currently using 2.4.3, but it seems
+to have a bug, that if you are doing heavy IO operations on a filesystem
+other then the root, the machine completely locks up.  
 
-  finally i manage to compile glibc-2.2.5 with gcc-3.1(both from latest cvs,
-with some patches for glibc),and 'make check' finish successfully after i 
-comment out some math tests.
-
-ÔÚ 2002-02-22 22:11:00 you wrote£º
->On Sat, Feb 23, 2002 at 11:12:06AM +0800, Zhang Fuxin wrote:
->> hi,
->> 
->> >
->> >Mutex is now implemented with spin lock by default. BTW, how many
->> >people have run "make check" on glibc compiled -mips1?
->> I did with glibc-2.2.4 natively compiled,no failure till libm-test
->
->The linuxthreads test comes after math.
->
->> (i configured it by default,then it used -mips1?)
->> 
->
->Yes. BTW, I found the ll/sc bug by doing "make check" on gcc 3.1 in
->CVS.
->
->
->H.J.
-
-Regards
-            Zhang Fuxin
-            fxzhang@ict.ac.cn
+Any help would be greatly appreciated.
+Thanks
+--
+Robert Rusek

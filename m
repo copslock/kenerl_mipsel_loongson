@@ -1,41 +1,28 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f4LC4AB07513
-	for linux-mips-outgoing; Mon, 21 May 2001 05:04:10 -0700
-Received: from intranet.medialincs.com ([210.126.9.6])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f4LC48F07506
-	for <linux-mips@oss.sgi.com>; Mon, 21 May 2001 05:04:09 -0700
-Received: (from root@localhost)
-          by intranet.medialincs.com (2.5 Build 2630 (Berkeley 8.8.6)/8.8.4)
-	  id VAA12651 for linux-mips@oss.sgi.com; Mon, 21 May 2001 21:07:29 +0900
-Date: Mon, 21 May 2001 21:07:29 +0900
-Message-Id: <200105211207.VAA12651@intranet.medialincs.com>
-From: =?EUC-KR?B?wba+58iv?=<joey@medialincs.com>
+	by oss.sgi.com (8.11.3/8.11.3) id f4LMST821945
+	for linux-mips-outgoing; Mon, 21 May 2001 15:28:29 -0700
+Received: from chmls20.mediaone.net (chmls20.mediaone.net [24.147.1.156])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f4LMSTF21941
+	for <linux-mips@oss.sgi.com>; Mon, 21 May 2001 15:28:29 -0700
+Received: from [192.168.1.3] (h00104b670a0d.ne.mediaone.net [65.96.137.220])
+	by chmls20.mediaone.net (8.11.1/8.11.1) with ESMTP id f4LMSR613462
+	for <linux-mips@oss.sgi.com>; Mon, 21 May 2001 18:28:27 -0400 (EDT)
+Mime-Version: 1.0
+X-Sender: mjpento@pop.ne.mediaone.net
+Message-Id: <p05001901b72f47224dcd@[192.168.1.3]>
+Date: Mon, 21 May 2001 18:30:01 -0400
 To: linux-mips@oss.sgi.com
-Cc: 
-Subject: udp, tcp checksum error?
-MIME-Version: 1.0
-X-Mailer: IntraWorks Mailer 1.0
-X-Deliver-Express: no
-X-Deliver-Reply: no
-X-Deliver-AutoReply: no
-Content-Type: text/plain; charset=EUC-KR
-Content-Transfer-Encoding: 8bit
-X-MIME-Autoconverted: from base64 to 8bit by oss.sgi.com id f4LC49F07507
+From: mjpento <mjpento@mediaone.net>
+Subject: Elan in R3000???
+Content-Type: text/plain; charset="us-ascii" ; format="flowed"
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-hello.
-I'm booting up by nfs-root.
+Hi Folks,
 
-nfs server is RH-7.0 and kernel 2.4.4 , this machine's nfs is good working
+	My apologies if this is off topic a bit. Does anyone know if 
+an Elan graphics subsystem will work in an Indigo R3000? Or is that 
+something for the R4000 only?
 
-but when target mips machine connect to host by UDP, 
-wrong checksum UDP packet  is discarded.
-
-i use mips big endian toolchains(20010303), kernel sorce is CVS update version.
-
-I thinks include/asm-mips/checksum.h logic is different from i386's
-
-anyone have idea this problem?
-
-thanx.
+Thanks,
+Mike

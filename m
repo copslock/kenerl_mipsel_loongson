@@ -1,37 +1,55 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id VAA01175 for <linux-archive@neteng.engr.sgi.com>; Mon, 22 Sep 1997 21:09:25 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id DAA14093 for <linux-archive@neteng.engr.sgi.com>; Tue, 23 Sep 1997 03:49:00 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id VAA03497 for linux-list; Mon, 22 Sep 1997 21:09:01 -0700
-Received: from fir.engr.sgi.com (fir.engr.sgi.com [150.166.49.183]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id VAA03481 for <linux@cthulhu.engr.sgi.com>; Mon, 22 Sep 1997 21:08:56 -0700
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id VAA26845 for <linux@fir.engr.sgi.com>; Mon, 22 Sep 1997 21:08:52 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id VAA03471 for <linux@fir.engr.sgi.com>; Mon, 22 Sep 1997 21:08:51 -0700
-Received: from dns.cobaltmicro.com ([209.19.61.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id VAA25930
-	for <linux@fir.engr.sgi.com>; Mon, 22 Sep 1997 21:08:50 -0700
-	env-from (ralf@dns.cobaltmicro.com)
-Received: (from ralf@localhost)
-	by dns.cobaltmicro.com (8.8.5/8.8.5) id VAA15154;
-	Mon, 22 Sep 1997 21:09:11 -0700
-From: Ralf Baechle <ralf@cobaltmicro.com>
-Message-Id: <199709230409.VAA15154@dns.cobaltmicro.com>
+Received: (from majordomo-owner@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id DAA24829 for linux-list; Tue, 23 Sep 1997 03:48:39 -0700
+Received: from fir.engr.sgi.com (fir.engr.sgi.com [150.166.49.183]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id DAA24818 for <linux@cthulhu.engr.sgi.com>; Tue, 23 Sep 1997 03:48:36 -0700
+Received: from dataserv.detroit.sgi.com (dataserv.detroit.sgi.com [169.238.128.2]) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) via ESMTP id DAA07935 for <linux@fir.engr.sgi.com>; Tue, 23 Sep 1997 03:48:34 -0700
+Received: from cygnus.detroit.sgi.com by dataserv.detroit.sgi.com via ESMTP (940816.SGI.8.6.9/930416.SGI)
+	 id GAA18850; Tue, 23 Sep 1997 06:48:23 -0400
+Message-ID: <34279E77.E01AED70@cygnus.detroit.sgi.com>
+Date: Tue, 23 Sep 1997 06:48:23 -0400
+From: Eric Kimminau <eak@cygnus.detroit.sgi.com>
+Reply-To: eak@detroit.sgi.com
+Organization: Silicon Graphics, Inc
+X-Mailer: Mozilla 4.03C-SGI [en] (X11; I; IRIX 6.3 IP32)
+MIME-Version: 1.0
+To: Ralf Baechle <ralf@cobaltmicro.com>
+CC: linux-mips@fnet.fr, miguel@nuclecu.unam.mx, linux@fir.engr.sgi.com
 Subject: Re: Task list --preliminary list
-To: linux-mips@fnet.fr
-Date: Mon, 22 Sep 1997 21:09:11 -0700 (PDT)
-Cc: miguel@nuclecu.unam.mx, linux@fir.engr.sgi.com
-In-Reply-To: <34273C4E.9AD0AB2F@detroit.sgi.com> from "Eric Kimminau" at Sep 22, 97 11:49:34 pm
-Content-Type: text
+References: <199709230409.VAA15154@dns.cobaltmicro.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-> PRI 10
-> Howto updated so it show how to take a system currently running IRIX and
-> get it to a point where it is running Linux. I know it isn't truly
-> development work, but Ive been stuck with a non-functional Indy for most
-> of a month.My problems seem to be related to trying to NFS boot off of a
-> remote XFS file system but I could be wrong. I haven't grabbed the
-> latest kernel to try so that could resolve my issue.
+Ralf Baechle wrote:
+> 
+> > PRI 10
+> > Howto updated so it show how to take a system currently running IRIX and
+> > get it to a point where it is running Linux. I know it isn't truly
+> > development work, but Ive been stuck with a non-functional Indy for most
+> > of a month.My problems seem to be related to trying to NFS boot off of a
+> > remote XFS file system but I could be wrong. I haven't grabbed the
+> > latest kernel to try so that could resolve my issue.
+> 
+> This issues might have been resolved by Miguel's latest CVS commit.
+> Your NFS problems might also have been cause by the VFS rewrite which
+> was essentially turning the filesystems into an inferno for a limited
+> time.
+> 
+>   Ralf
 
-This issues might have been resolved by Miguel's latest CVS commit.
-Your NFS problems might also have been cause by the VFS rewrite which
-was essentially turning the filesystems into an inferno for a limited
-time.
+Agreed. Im going to re-try boot later this afternoon with the new
+kernel.
 
-  Ralf
+-- 
+Eric Kimminau                           System Engineer/RSA
+eak@detroit.sgi.com                     Silicon Graphics, Inc
+Voice: (248) 848-4455                   39001 West 12 Mile Rd.
+Fax:   (248) 848-5600                   Farmington, MI 48331-2903
+
+                 VNet Extension - 6-327-4455
+              "I speak my mind and no one else's."
+       http://www.dcs.ex.ac.uk/~aba/rsa/perl-rsa-sig.html
+
+    When confronted by a difficult problem, solve it by reducing 
+    it to the question, "How would the Lone Ranger handle this?"

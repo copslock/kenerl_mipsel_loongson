@@ -1,66 +1,28 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id IAA75349; Fri, 8 Aug 1997 08:25:15 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id KAA81511; Fri, 8 Aug 1997 10:42:14 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id IAA14407 for linux-list; Fri, 8 Aug 1997 08:23:37 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id IAA14364 for <linux@engr.sgi.com>; Fri, 8 Aug 1997 08:23:34 -0700
-Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id IAA29160
-	for <linux@engr.sgi.com>; Fri, 8 Aug 1997 08:23:32 -0700
-	env-from (shaver@neon.ingenia.ca)
-Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id LAA06545 for linux@engr.sgi.com; Fri, 8 Aug 1997 11:19:35 -0400
-From: Mike Shaver <shaver@neon.ingenia.ca>
-Message-Id: <199708081519.LAA06545@neon.ingenia.ca>
-Subject: par and us*
-To: linux@cthulhu.engr.sgi.com (Linux/SGI list)
-Date: Fri, 8 Aug 1997 11:19:35 -0400 (EDT)
-X-Mailer: ELM [version 2.4ME+ PL28 (25)]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id KAA03278 for linux-list; Fri, 8 Aug 1997 10:41:49 -0700
+Received: from blammo.engr.sgi.com (blammo.engr.sgi.com [130.62.15.51]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id KAA03264 for <linux@cthulhu.engr.sgi.com>; Fri, 8 Aug 1997 10:41:46 -0700
+Received: (from jwiede@localhost) by blammo.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id KAA01322 for linux@cthulhu; Fri, 8 Aug 1997 10:41:46 -0700
+Date: Fri, 8 Aug 1997 10:41:46 -0700
+From: jwiede@blammo.engr.sgi.com (John Wiederhirn)
+Message-Id: <9708081041.ZM971@blammo.engr.sgi.com>
+X-Face: 'rEN+vrv,h:"?|h{Q,A@Is5T#VUFb=Kp>c]5sK@![sLA$9^UoAtgryPHsqEOv5p&09H\E:p
+                   )h:LCq-vz/dWH?Kn#A334hP4mM/**@..@TF($8<2LyeDSJqsnEnZ~O{>`EWm]QQ\>aSm9j,J_t0NF`
+                   Rt`td=N-r1R~c2}l+Q^q[bYP0d_bzVWox>.pWNi$75*m,BlJ4-X"Q`x`OUCkz/gg>pIUf|KWs6{r=J
+                   zE7[.14o:oq9Du"#C`^(MM_`?#!k:5%P4:Pfpy)5X7@fE|gq0XV(s/jUG?[>#ldY_4tG(Ng$:DRC
+X-Mailer: Z-Mail-SGI (3.2S.3 08feb96 MediaMail)
+To: linux@cthulhu.engr.sgi.com
+Subject: Linux GGI and Linux/SGI
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-I've got a simple lock-contention program that I'm using to see how
-the usema stuff works.
+Are there any plans to move (maybe it's already there) the
+SGI version of Linux to a GGI-model design?
+(see http://synergy.foo.net/~ggi/)
 
-When I try to run the program under par, though, it only lets me trace
-one of the invocations:
-
-1 [shaver@linus ~/work/usema]$ par -s -SS -l -o lock-p.par ./lock p
-1 Creating new lock.
-1 Storing lock.
-1 Getting lock.
-1 Waiting...
-
-(now I start the second one)
-2 [shaver@linus ~/work/usema]$ par -s -SS -l -o lock-c2.par ./lock c
-2 Cannot syscall trace pid 23779:Resource busy
-2 Finding existing lock.
-2 Getting lock.
-2 [shaver@linus ~/work/usema]$
-
-(back to the shell!)
-(release the lock on the first invocation)
-1 
-1 Releasing lock.
-1 Exiting
-1 [shaver@linus ~/work/usema]$ 
-
-(and now I get more output from the second invocation)
-2 [shaver@linus ~/work/usema]$ Waiting...
-2 Releasing lock.
-2 Exiting
-
-Under normal circumstances (no par), I have to press enter on the
-second one as well for it to release the lock and exit.  When par is
-doing its (arguably weird, maybe broken) thing, I don't have to do
-that...
-
-Is this a known problem?
-
-Mike
 
 -- 
-#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
-#>              Linux: because every cycle counts.
-#>
-#> "I don't know what you do for a living[...]" -- perry@piermont.com
-#>        "I change the world." -- davem@caip.rutgers.edu
+John Wiederhirn (DSD, Graphics Kernel MTS)        jwiede@engr.sgi.com
+       "Smithers, unleash the human insight and creativity."

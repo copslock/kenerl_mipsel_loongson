@@ -1,74 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Jan 2005 21:25:18 +0000 (GMT)
-Received: from e6.ny.us.ibm.com ([IPv6:::ffff:32.97.182.146]:40147 "EHLO
-	e6.ny.us.ibm.com") by linux-mips.org with ESMTP id <S8225348AbVAFVZM>;
-	Thu, 6 Jan 2005 21:25:12 +0000
-Received: from d01relay02.pok.ibm.com (d01relay02.pok.ibm.com [9.56.227.234])
-	by e6.ny.us.ibm.com (8.12.10/8.12.10) with ESMTP id j06LP6gg023088;
-	Thu, 6 Jan 2005 16:25:06 -0500
-Received: from d01av02.pok.ibm.com (d01av02.pok.ibm.com [9.56.224.216])
-	by d01relay02.pok.ibm.com (8.12.10/NCO/VER6.6) with ESMTP id j06LP615275568;
-	Thu, 6 Jan 2005 16:25:06 -0500
-Received: from d01av02.pok.ibm.com (loopback [127.0.0.1])
-	by d01av02.pok.ibm.com (8.12.11/8.12.11) with ESMTP id j06LP530021843;
-	Thu, 6 Jan 2005 16:25:06 -0500
-Received: from echidna.beaverton.ibm.com (echidna.beaverton.ibm.com [9.47.21.82])
-	by d01av02.pok.ibm.com (8.12.11/8.12.11) with ESMTP id j06LP5iD021720;
-	Thu, 6 Jan 2005 16:25:05 -0500
-Received: from greg by echidna.kroah.org with local (masqmail 0.2.19)
- id 1Cmdao-1jK-00; Thu, 06 Jan 2005 11:46:46 -0800
-Date: Thu, 6 Jan 2005 11:46:46 -0800
-From: Greg KH <greg@kroah.com>
-To: "Ilya A. Volynets-Evenbakh" <ilya@total-knowledge.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>, Adrian Bunk <bunk@stusta.de>,
-	Andrew Morton <akpm@osdl.org>,
-	Ladislav Michl <ladis@linux-mips.org>,
-	linux-kernel@vger.kernel.org, sensors@stimpy.netroedge.com,
-	linux-mips@linux-mips.org
-Subject: Re: [2.6 patch] 2.6.10-mm2: let I2C_ALGO_SGI depend on MIPS
-Message-ID: <20050106194646.GB5481@kroah.com>
-References: <20050106002240.00ac4611.akpm@osdl.org> <20050106181519.GG3096@stusta.de> <20050106192701.GA13955@linux-mips.org> <41DD9313.4030105@total-knowledge.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <41DD9313.4030105@total-knowledge.com>
-User-Agent: Mutt/1.5.6i
-Return-Path: <greg@kroah.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Jan 2005 22:20:25 +0000 (GMT)
+Received: from [IPv6:::ffff:68.145.108.97] ([IPv6:::ffff:68.145.108.97]:35952
+	"EHLO mail.otii.com") by linux-mips.org with ESMTP
+	id <S8225348AbVAFWUU> convert rfc822-to-8bit; Thu, 6 Jan 2005 22:20:20 +0000
+Received: from [192.168.7.50] (unknown [68.145.108.98])
+	by mail.otii.com (Postfix) with ESMTP id EC4A8B018
+	for <linux-mips@linux-mips.org>; Thu,  6 Jan 2005 15:34:40 -0700 (MST)
+Mime-Version: 1.0 (Apple Message framework v619)
+In-Reply-To: <20041222104457.GR2460@lug-owl.de>
+References: <41C947CC.20709@innova-card.com> <20041222101906.27137.qmail@web25109.mail.ukl.yahoo.com> <20041222104457.GR2460@lug-owl.de>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Message-Id: <11829755-6031-11D9-A1F1-000393DBC6BE@otii.com>
+Content-Transfer-Encoding: 8BIT
+From: =?ISO-8859-1?Q?S=E9bastien_Taylor?= <sebastient@otii.com>
+Subject: Re: Problem registering interrupt
+Date: Thu, 6 Jan 2005 15:19:44 -0700
+To: linux-mips@linux-mips.org
+X-Mailer: Apple Mail (2.619)
+Return-Path: <sebastient@otii.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6825
+X-archive-position: 6826
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: greg@kroah.com
+X-original-sender: sebastient@otii.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jan 06, 2005 at 11:35:47AM -0800, Ilya A. Volynets-Evenbakh wrote:
-> Ralf Baechle wrote:
-> 
-> >On Thu, Jan 06, 2005 at 07:15:20PM +0100, Adrian Bunk wrote:
-> >
-> > 
-> >
-> >>There's no reason for offering a MIPS-only driver on other architectures 
-> >>(even though it does compile).
-> >>
-> >>Even better dependencies on specific MIPS variables might be possible 
-> >>that obsolete this patch, but this patch fixes at least the !MIPS case.
-> >>   
-> >>
-> >
-> >Please make that depend on SGI_IP22 || SGI_IP32 instead; the only machines
-> >actually using it.
-> >
-> >Ladis, is VisWS using this algo also?
-> > 
-> >
-> Since MACE is common part, it most likely does.
+So the crash is happening because the handler pointer is null in the 
+irq_desc for interrupt 49.  Is there something that I was supposed to 
+do to setup that handler before registering my interrupt?  This was 
+working fine under 2.4, is it a change in 2.6 or just in the alchemy 
+port specifically?
 
-Ok, can someone send me the proper patch then?
+Thanks for the help and happy new years,
+Sébastien
 
-thanks,
 
-greg k-h
+Le 04-12-22, à 03:44, Jan-Benedict Glaw a écrit :
+
+> On Wed, 2004-12-22 11:19:06 +0100, moreau francis 
+> <francis_moreau2000@yahoo.fr>
+> wrote in message 
+> <20041222101906.27137.qmail@web25109.mail.ukl.yahoo.com>:
+>>
+>>> CPU 0 Unable to handle kernel paging request at
+>>> virtual address 00000004, epc =4
+>>
+>> Well it suggests me that your driver is trying to
+>> access a really nasty pointer: 0x00000004...
+>> How did you get this address ? From user space ?
+>
+> Accesses to nearly NULL are normally structure accesses where a pointer
+> to a given struct was supplied as a NULL pointer.
+>
+> So an access to 0x00000004 is most probably an access to the second
+> element of a struct, given/expected that all fields are usually 4-byte
+> aligned.
+>
+>> From looking at ./kernel/irq/manage.c:setup_irq(), I guess that you
+> supply NULL as the "struct irqaction *", which is the 2nd argument of
+> setup_irq(). It's 2nd structure element is "flags" then... This is the
+> first thing accessed by the "new" pointer in setup_irq().
+>
+> MfG, JBG
+>
+> -- 
+> Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481         
+>     _ O _
+> "Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen 
+> Krieg  _ _ O
+>  fuer einen Freien Staat voll Freier Bürger" | im Internet! |   im 
+> Irak!   O O O
+> ret = do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM | 
+> TCPA));

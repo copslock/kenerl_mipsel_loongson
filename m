@@ -1,44 +1,80 @@
-Received:  by oss.sgi.com id <S553958AbQKLVhY>;
-	Sun, 12 Nov 2000 13:37:24 -0800
-Received: from bender.bawue.de ([193.197.13.1]:41999 "HELO bender.bawue.de")
-	by oss.sgi.com with SMTP id <S553942AbQKLVhA>;
-	Sun, 12 Nov 2000 13:37:00 -0800
-Received: from void.s.bawue.de (virtual2.lb.bawue.de [193.197.8.130])
-	by bender.bawue.de (Postfix) with ESMTP id 002DA82B
-	for <linux-mips@oss.sgi.com>; Sun, 12 Nov 2000 22:36:56 +0100 (CET)
-Received: from florian by void.s.bawue.de with local (Exim 3.16 #1 (Debian))
-	id 13v3My-0000TA-00; Sun, 12 Nov 2000 21:04:52 +0100
-Date:   Sun, 12 Nov 2000 21:04:52 +0100
-To:     linux-mips@oss.sgi.com
-Subject: Re: will this work in an Indy?
-Message-ID: <20001112210451.A1799@void.s.bawue.de>
-Mail-Followup-To: Florian Laws <florian@void.s.bawue.de>,
-	linux-mips@oss.sgi.com
-References: <20001110101206.A3273@paradigm.rfc822.org> <Pine.SGI.4.10.10011101226270.20121-100000@thor.tetracon-eng.net> <20001110185259.A721@paradigm.rfc822.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20001110185259.A721@paradigm.rfc822.org>; from flo@rfc822.org on Fri, Nov 10, 2000 at 06:52:59PM +0100
-From:   Florian Laws <florian@void.s.bawue.de>
+Received:  by oss.sgi.com id <S553963AbQKMCs1>;
+	Sun, 12 Nov 2000 18:48:27 -0800
+Received: from [159.226.39.1] ([159.226.39.1]:56077 "HELO ns.ict.ac.cn")
+	by oss.sgi.com with SMTP id <S553953AbQKMCsD>;
+	Sun, 12 Nov 2000 18:48:03 -0800
+Received: (qmail 26586 invoked from network); 13 Nov 2000 02:43:02 -0000
+Received: from unknown (HELO bjzheng) (159.226.39.167)
+  by ns.ict.ac.cn with SMTP; 13 Nov 2000 02:43:02 -0000
+Message-ID: <002801c04d1b$c1adc320$a727e29f@ict.ac.cn>
+From:   "Zheng Baojian" <bjzheng@ict.ac.cn>
+To:     <linux-mips@oss.sgi.com>
+Subject: Can you help me?
+Date:   Mon, 13 Nov 2000 10:45:17 +0800
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_0025_01C04D5E.CFC1C0E0"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.2314.1300
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2314.1300
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Fri, Nov 10, 2000 at 06:52:59PM +0100, Florian Lohoff wrote:
-> On Fri, Nov 10, 2000 at 12:32:11PM -0400, J. Scott Kasten wrote:
-> > 
-> > I suppose then that you have some constructive comments on where that
-> > fellow should go to ask such questions???  I for one have been answering
-> 
-> Asking the same question over and over again is very anoying - A couple
-> of people have answered already that ANY SCSI Drive/CD-Rom will do fine
-> but it doesnt seem to reach the originator.
-> 
-> There have been lists concerning all aspects of SGI Systems
-> which should be called sgi-managers IIRC. 
+This is a multi-part message in MIME format.
 
-The newsgroup comp.sys.sgi.hardware should be appropraite, too.
+------=_NextPart_000_0025_01C04D5E.CFC1C0E0
+Content-Type: text/plain;
+	charset="gb2312"
+Content-Transfer-Encoding: base64
 
-Florian
+SGVsbG86DQogICAgIEknbSBhIENoaW5lc2Ugc3R1ZGVudCxpIHdhbnQgdG8gcnVuIGxpbnV4IG9u
+IFNHSSBPMiB3b3Jrc3RhdGlvbi4NCkkgc2VlIHRoYXQgTzIgbm90IHN1cHBvcnQgbGludXggbm93
+IG9uIHlvdXIgd2ViLGNhbiB5b3UgdGVsbCBtZSB0aGUNCnJlYXNvbj9BcyBzZXJpZXMgb2YgU0dJ
+IHdvcmtzdGF0aW9ucyxPMixJbmR5LE9ueXggLE9yaWdpbix0aGV5IGhhdmUgc2FtZQ0KYXJjaGl0
+ZWN0dXJlLHNhbWUgY3B1LHdoeSBvdGhlcnMgc3VwcG9ydCBsaW51eCxPMiBub3Qgc3VwcG9ydC4N
+CiAgICAgICAgQmVzdCByZWdhcmRzLg0KQmp6aGVuZw0K
+
+------=_NextPart_000_0025_01C04D5E.CFC1C0E0
+Content-Type: text/html;
+	charset="gb2312"
+Content-Transfer-Encoding: base64
+
+PCFET0NUWVBFIEhUTUwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMCBUcmFuc2l0aW9uYWwv
+L0VOIj4NCjxIVE1MPjxIRUFEPg0KPE1FVEEgY29udGVudD0idGV4dC9odG1sOyBjaGFyc2V0PWdi
+MjMxMiIgaHR0cC1lcXVpdj1Db250ZW50LVR5cGU+DQo8TUVUQSBjb250ZW50PSJNU0hUTUwgNS4w
+MC4yMzE0LjEwMDAiIG5hbWU9R0VORVJBVE9SPg0KPFNUWUxFPjwvU1RZTEU+DQo8L0hFQUQ+DQo8
+Qk9EWSBiZ0NvbG9yPSNjMGMwYzA+DQo8RElWPjxGT05UIHNpemU9Mj4NCjxESVY+PEZPTlQgc2l6
+ZT0yPkhlbGxvOjwvRk9OVD48L0RJVj4NCjxESVY+PEZPTlQgc2l6ZT0yPiZuYnNwOyZuYnNwOyZu
+YnNwOyZuYnNwOyZuYnNwO0knbSBhIENoaW5lc2Ugc3R1ZGVudCxpIHdhbnQgdG8gDQpydW4gbGlu
+dXggb24gU0dJIE8yIHdvcmtzdGF0aW9uLjwvRk9OVD48L0RJVj4NCjxESVY+PEZPTlQgc2l6ZT0y
+Pkkgc2VlIHRoYXQgTzIgbm90IHN1cHBvcnQgbGludXggbm93IG9uIHlvdXIgd2ViLGNhbiB5b3Ug
+dGVsbCANCm1lIHRoZTwvRk9OVD48L0RJVj4NCjxESVY+PEZPTlQgc2l6ZT0yPnJlYXNvbj9BcyBz
+ZXJpZXMgb2YgU0dJIHdvcmtzdGF0aW9ucyxPMixJbmR5LDxTUEFOIGxhbmc9RU4tVVMgDQpzdHls
+ZT0iRk9OVC1GQU1JTFk6ICdUaW1lcyBOZXcgUm9tYW4nOyBGT05ULVNJWkU6IDEwLjVwdDsgbXNv
+LWJpZGktZm9udC1zaXplOiAxMi4wcHQ7IG1zby1mYXJlYXN0LWZvbnQtZmFtaWx5OiDLzszlOyBt
+c28tZm9udC1rZXJuaW5nOiAxLjBwdDsgbXNvLWFuc2ktbGFuZ3VhZ2U6IEVOLVVTOyBtc28tZmFy
+ZWFzdC1sYW5ndWFnZTogWkgtQ047IG1zby1iaWRpLWxhbmd1YWdlOiBBUi1TQSI+T255eCZuYnNw
+OyxPcmlnaW4sdGhleSANCmhhdmUgc2FtZTwvU1BBTj48L0ZPTlQ+PC9ESVY+DQo8RElWPjxGT05U
+IHNpemU9Mj48U1BBTiBsYW5nPUVOLVVTIA0Kc3R5bGU9IkZPTlQtRkFNSUxZOiAnVGltZXMgTmV3
+IFJvbWFuJzsgRk9OVC1TSVpFOiAxMC41cHQ7IG1zby1iaWRpLWZvbnQtc2l6ZTogMTIuMHB0OyBt
+c28tZmFyZWFzdC1mb250LWZhbWlseTogy87M5TsgbXNvLWZvbnQta2VybmluZzogMS4wcHQ7IG1z
+by1hbnNpLWxhbmd1YWdlOiBFTi1VUzsgbXNvLWZhcmVhc3QtbGFuZ3VhZ2U6IFpILUNOOyBtc28t
+YmlkaS1sYW5ndWFnZTogQVItU0EiPmFyY2hpdGVjdHVyZSxzYW1lIA0KY3B1LHdoeSBvdGhlcnMg
+c3VwcG9ydCBsaW51eCxPMiBub3Qgc3VwcG9ydC48L1NQQU4+PC9GT05UPjwvRElWPg0KPERJVj48
+Rk9OVCBzaXplPTI+PFNQQU4gbGFuZz1FTi1VUyANCnN0eWxlPSJGT05ULUZBTUlMWTogJ1RpbWVz
+IE5ldyBSb21hbic7IEZPTlQtU0laRTogMTAuNXB0OyBtc28tYmlkaS1mb250LXNpemU6IDEyLjBw
+dDsgbXNvLWZhcmVhc3QtZm9udC1mYW1pbHk6IMvOzOU7IG1zby1mb250LWtlcm5pbmc6IDEuMHB0
+OyBtc28tYW5zaS1sYW5ndWFnZTogRU4tVVM7IG1zby1mYXJlYXN0LWxhbmd1YWdlOiBaSC1DTjsg
+bXNvLWJpZGktbGFuZ3VhZ2U6IEFSLVNBIj4mbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsm
+bmJzcDsmbmJzcDsgDQpCZXN0IHJlZ2FyZHMuPC9TUEFOPjwvRk9OVD48L0RJVj4NCjxESVY+PEZP
+TlQgc2l6ZT0yPjxTUEFOIGxhbmc9RU4tVVMgDQpzdHlsZT0iRk9OVC1GQU1JTFk6ICdUaW1lcyBO
+ZXcgUm9tYW4nOyBGT05ULVNJWkU6IDEwLjVwdDsgbXNvLWJpZGktZm9udC1zaXplOiAxMi4wcHQ7
+IG1zby1mYXJlYXN0LWZvbnQtZmFtaWx5OiDLzszlOyBtc28tZm9udC1rZXJuaW5nOiAxLjBwdDsg
+bXNvLWFuc2ktbGFuZ3VhZ2U6IEVOLVVTOyBtc28tZmFyZWFzdC1sYW5ndWFnZTogWkgtQ047IG1z
+by1iaWRpLWxhbmd1YWdlOiBBUi1TQSI+Qmp6aGVuZzwvU1BBTj48L0ZPTlQ+PC9ESVY+PC9GT05U
+PjwvRElWPjwvQk9EWT48L0hUTUw+DQo=
+
+------=_NextPart_000_0025_01C04D5E.CFC1C0E0--

@@ -1,43 +1,120 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f78NNZ704086
-	for linux-mips-outgoing; Wed, 8 Aug 2001 16:23:35 -0700
-Received: from noose.gt.owl.de (postfix@noose.gt.owl.de [62.52.19.4])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f78NNXV04077
-	for <linux-mips@oss.sgi.com>; Wed, 8 Aug 2001 16:23:33 -0700
-Received: by noose.gt.owl.de (Postfix, from userid 10)
-	id 5F8661184; Thu,  9 Aug 2001 01:23:32 +0200 (CEST)
-Received: by paradigm.rfc822.org (Postfix, from userid 1000)
-	id 8A5403F1C; Thu,  9 Aug 2001 01:23:18 +0200 (CEST)
-Date: Thu, 9 Aug 2001 01:23:18 +0200
-From: Florian Lohoff <flo@rfc822.org>
-To: Ian <ian@WPI.EDU>
-Cc: Guido Guenther <guido.guenther@gmx.net>,
-   Soeren Laursen <soeren.laursen@scrooge.dk>,
-   linux-mips <linux-mips@oss.sgi.com>
-Subject: Re: HELP can't boot
-Message-ID: <20010809012318.A23123@paradigm.rfc822.org>
-References: <20010808174351.C17694@paradigm.rfc822.org> <Pine.OSF.4.33.0108081532180.2274-100000@grover.WPI.EDU>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.17i
-In-Reply-To: <Pine.OSF.4.33.0108081532180.2274-100000@grover.WPI.EDU>; from ian@WPI.EDU on Wed, Aug 08, 2001 at 03:35:22PM -0400
-Organization: rfc822 - pure communication
+	by oss.sgi.com (8.11.2/8.11.3) id f78NeWO06518
+	for linux-mips-outgoing; Wed, 8 Aug 2001 16:40:32 -0700
+Received: from ns1.ltc.com (ns1.ltc.com [38.149.17.165])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f78NeTV06509
+	for <linux-mips@oss.sgi.com>; Wed, 8 Aug 2001 16:40:29 -0700
+Received: from prefect (gw1.ltc.com [38.149.17.163])
+	by ns1.ltc.com (Postfix) with SMTP id 2C0F1590AC
+	for <linux-mips@oss.sgi.com>; Wed,  8 Aug 2001 19:37:47 -0400 (EDT)
+Message-ID: <02a401c12063$cde1e830$3501010a@ltc.com>
+From: "Bradley D. LaRonde" <brad@ltc.com>
+To: <linux-mips@oss.sgi.com>
+Subject: gcc 3.0 / glibc 2.2.3 cross-toolchain
+Date: Wed, 8 Aug 2001 19:42:17 -0400
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.2919.6600
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6600
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Wed, Aug 08, 2001 at 03:35:22PM -0400, Ian wrote:
-> > tftp/nfs-root boot ? The prom is enough.
-> 
-> When I type "boot bootp():/tftpboot/kernel-hardhat" at the PROM command
-> monitor, I get an error that it can't find Sash (the Irix [6.2]
-> bootloader).  Sash appears to be necessary to do a netboot.
+I have spent quite a bit of time trying to get a gcc 3.0 / glibc 2.2.3
+cross-toolchain working.  I am not a Toolchain Builder, but I really wanted
+to try this combo and I don't see any way around building it myself.
 
-Try to delete the "boot" at the beginning - That means to start the
-sash bootloader which will do the bootp request which the prom is
-able to do itself.
+I've had some success.  Everything seems to build fine.  However, when I try
+to run a simple "hello world" dynamically linked with glibc, I get this:
 
-Flo
--- 
-Florian Lohoff                  flo@rfc822.org             +49-5201-669912
-     Why is it called "common sense" when nobody seems to have any?
+    <myprogram>: error while loading shared libraries: failed to map
+    segment from shared object: cannot load shared object file: Invalid
+argument
+
+I think it is trying to load libc.so.6, which is in my root in /lib/,
+symlinked to libc-2.2.3.so, and so is ld.so.1, symlinked to ld-2.2.3.so.
+
+I feel like I am pretty close, but I am starting to get discouraged and
+could really use some help.  I really am clueless about what
+should/shouldn't work.  I'm trying to do this based on bits and pieces of
+information that I've collected from countless sources.  I have heard that
+gcc 3.0 isn't really "working", but I still want to try.
+
+Here is what I've used:
+
+   * binutils-2.11.90.0.25.tar.gz (extracted from H. J. Lu's
+     srpm on oss.sgi.com; I've tried others also)
+   * gcc-3.0.tar.gz (released version - no patches)
+   * glibc-linuxthreads-2.2.3.tar.gz (released version - no
+     patches; glibc didn't want to configure without this)
+   * glibc-2.2.3.tar.gz (released version)
+
+plus a tiny patch to glibc that looks like:
+
+--- libc-04052001/sysdeps/mips/mipsel/rtld-parms Sat Jul 12 18:26:15 1997
++++ libc-04052001-patched/sysdeps/mips/mipsel/rtld-parms Fri Apr  6 09:23:27
+2001
+@@ -1,3 +1,3 @@
+ ifndef rtld-oformat
+-rtld-oformat = elf32-littlemips
++rtld-oformat = elf32-tradlittlemips
+ endif
+
+I built everything on my i386 Debian 2.2 box as follows:
+
+Build the mipsel cross-binutils
+
+  tar -xzf binutils-2.11.90.0.25.tar.gz
+  mkdir mipsel-binutils
+  cd mipsel-binutils
+
+  ../binutils-2.11.2/configure --target=mipsel-linux \
+    --libdir='${exec_prefix}'/mipsel-linux/i386-linux/lib
+
+  make
+  make install
+  cd ..
+
+Build the mipsel cross-gcc:
+
+  tar -xzf gcc-3.0.tar.gz
+  mkdir mipsel-gcc
+  cd mipsel-gcc
+
+  ../gcc-3.0/configure --target=mipsel-linux \
+     --enable-languages=c --disable-shared
+
+  make
+  make install
+  cd ..
+
+Install the kernel headers
+
+  mkdir /usr/local/mipsel-linux/include
+  cp -r $LINUX_SRC/include/linux /usr/local/mipsel-linux/include
+  cp -r $LINUX_SRC/include/asm-mips /usr/local/mipsel-linux/include/asm
+
+Build glibc:
+
+  tar -xzf glibc-2.2.3
+  cd glibc-2.2.3
+  patch -p1 -i../elf32-tradlittlemips.diff
+  tar -xzf ../glibc-linuxthreads-2.2.3.tar.gz
+  cd ..
+  mkdir mipsel-glibc
+  cd mipsel-glibc
+
+  ../glibc-2.2.3/configure --build=i686-linux --host=mipsel-linux \
+    --enable-add-ons --prefix=/usr/local/mipsel-linux
+
+  make
+  make install
+  cd ..
+
+Thanks.
+
+Regards,
+Brad

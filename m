@@ -1,58 +1,53 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980327.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id UAA2315508 for <linux-archive@neteng.engr.sgi.com>; Wed, 22 Apr 1998 20:31:34 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980327.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id WAA2317473 for <linux-archive@neteng.engr.sgi.com>; Wed, 22 Apr 1998 22:02:45 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
-	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id UAA15382610
+	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF) id WAA15447085
 	for linux-list;
-	Wed, 22 Apr 1998 20:29:49 -0700 (PDT)
+	Wed, 22 Apr 1998 22:01:31 -0700 (PDT)
 Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980205.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id UAA15401870
+	via ESMTP id WAA15279823
 	for <linux@cthulhu.engr.sgi.com>;
-	Wed, 22 Apr 1998 20:29:47 -0700 (PDT)
-Received: from lager.engsoc.carleton.ca (lager.engsoc.carleton.ca [134.117.69.26]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id UAA19420
-	for <linux@cthulhu.engr.sgi.com>; Wed, 22 Apr 1998 20:29:37 -0700 (PDT)
-	mail_from (adevries@engsoc.carleton.ca)
-Received: from localhost (adevries@localhost)
-	by lager.engsoc.carleton.ca (8.8.7/8.8.7) with SMTP id XAA16862;
-	Wed, 22 Apr 1998 23:28:52 -0400
-X-Authentication-Warning: lager.engsoc.carleton.ca: adevries owned process doing -bs
-Date: Wed, 22 Apr 1998 23:28:52 -0400 (EDT)
-From: Alex deVries <adevries@engsoc.carleton.ca>
-To: ralf@uni-koblenz.de
-cc: linux@cthulhu.engr.sgi.com
-Subject: Re: glibc problem
-In-Reply-To: <19980423051757.03333@uni-koblenz.de>
-Message-ID: <Pine.LNX.3.95.980422232333.13362D-100000@lager.engsoc.carleton.ca>
+	Wed, 22 Apr 1998 22:01:29 -0700 (PDT)
+Received: from MajorD.xtra.co.nz (terminator.xtra.co.nz [202.27.184.5]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam) via ESMTP id WAA08993
+	for <linux@cthulhu.engr.sgi.com>; Wed, 22 Apr 1998 22:01:26 -0700 (PDT)
+	mail_from (ratfink@xtra.co.nz)
+Received: from xtra.co.nz (xtra185187.xtra.co.nz [202.27.185.187])
+	by MajorD.xtra.co.nz (8.8.8/8.8.6) with ESMTP id RAA13739
+	for <linux@cthulhu.engr.sgi.com>; Thu, 23 Apr 1998 17:01:25 +1200 (NZST)
+Message-ID: <353ECB23.2AA34FBF@xtra.co.nz>
+Date: Thu, 23 Apr 1998 17:01:23 +1200
+From: Brendan Black <ratfink@xtra.co.nz>
+Organization: Acess Denied...
+X-Mailer: Mozilla 4.05 [en] (X11; U; Linux 2.0.33 i586)
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+To: linux@cthulhu.engr.sgi.com
+Subject: VCE exceptions
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+ok I am unashamedly bringing up an old thread again...:-)
 
-On Thu, 23 Apr 1998 ralf@uni-koblenz.de wrote:
-> > > Alex, still working on porting Redhat 5.0?  5.1 ante portas ...
-> > When the 5.1 SRPMs start rolling out by the end of the month, I'll start
-> > building them. I'vea 'spare' 3GB SCSI disk, so things should be a lot
-> > easier to do than last time. It would be ultra cool if we could get the
-> > whole thing ported over a number of days after RH 5.1 comes out.
-> 
-> Ok.  In that case we should add a fat readme that RH 5.0 is incomplete and
-> 4.9.1 should be used or maybe even rm -rf redhat-5.0/.  It's confusing
-> people.
+I read back over the mailing list & found that Ralf wanted people to test this,
+so I am hereby volunteering to test anything, as the indy I have is showing this
+lovely trait:
 
-Yes, it is confusing.  Especially because there are just gaping holes in
-packages (like glibc) for 5.0.  
+booting with the latest kernel from zero.aec.at comes up with
 
-But I wouldn't say that 5.0 is broken, just that the missing things need
-to come from 4.9.1.
+Got vced at 8801a2a4.
+Kernel panic: Caught VCE exception - should not happen
 
-Anyway, it'll all be fixed when we go through and redo all of 5.1.  We can
-make sure that we include everything like glibc.
+it does this when either mounting root from a local disk (/dev/sda3) or mounting
+root via nfs
 
-> > Hm.  I also have a Mac IIcx to distract me.
-> Your Indy is _way_ faster than that brick ;-)
+I now have a console cable wired up & running to my laptop, which works for
+irix, and requires tweaking to get working in linux I beleive (any ideas on this
+would be great too...)
 
-It's amazing how hack value can outshine performance. Some people think
-it's what keeps the i386 port of Linux alive.
+I am happy to provide more info on my system setup
 
-- Alex
+cheers
+
+brendan

@@ -1,73 +1,66 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id CAA01056 for <linux-archive@neteng.engr.sgi.com>; Mon, 22 Jun 1998 02:08:55 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id CAA04358 for <linux-archive@neteng.engr.sgi.com>; Mon, 22 Jun 1998 02:12:27 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id CAA78206
+	id CAA69027
 	for linux-list;
-	Mon, 22 Jun 1998 02:08:28 -0700 (PDT)
+	Mon, 22 Jun 1998 02:12:13 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from wintermute.reading.sgi.com (wintermute.reading.sgi.com [144.253.74.171])
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via SMTP id CAA92802
+	via ESMTP id CAA70886
 	for <linux@cthulhu.engr.sgi.com>;
-	Mon, 22 Jun 1998 02:08:25 -0700 (PDT)
-	mail_from (leon@reading.sgi.com)
-Received: from localhost by wintermute.reading.sgi.com via SMTP (950413.SGI.8.6.12/911001.SGI)
-	for <linux@cthulhu.engr.sgi.com> id KAA12887; Mon, 22 Jun 1998 10:08:22 +0100
-Date: Mon, 22 Jun 1998 10:08:21 +0100 (BST)
-From: Leon Verrall <leon@reading.sgi.com>
-To: SGI Linux <linux@cthulhu.engr.sgi.com>
-Subject: 5.1 installation fun & games...
-Message-ID: <Pine.SGI.3.96.980622095548.12756A-100000@wintermute.reading.sgi.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	Mon, 22 Jun 1998 02:12:11 -0700 (PDT)
+	mail_from (ralf@uni-koblenz.de)
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam: SGI does not authorize the use of its proprietary systems or networks for unsolicited or bulk email from the Internet.) via ESMTP id CAA26795
+	for <linux@cthulhu.engr.sgi.com>; Mon, 22 Jun 1998 02:12:01 -0700 (PDT)
+	mail_from (ralf@uni-koblenz.de)
+From: ralf@uni-koblenz.de
+Received: from uni-koblenz.de (ralf@pmport-03.uni-koblenz.de [141.26.249.3])
+	by informatik.uni-koblenz.de (8.8.8/8.8.8) with ESMTP id LAA11880
+	for <linux@cthulhu.engr.sgi.com>; Mon, 22 Jun 1998 11:11:59 +0200 (MEST)
+Received: (from ralf@localhost)
+	by uni-koblenz.de (8.8.7/8.8.7) id LAA01353;
+	Mon, 22 Jun 1998 11:11:54 +0200
+Message-ID: <19980622111154.I418@uni-koblenz.de>
+Date: Mon, 22 Jun 1998 11:11:54 +0200
+To: LetherGlov@aol.com, linux@cthulhu.engr.sgi.com
+Subject: Re: Running Linux on Linus
+References: <f48fe728.358c76bd@aol.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.91.1
+In-Reply-To: <f48fe728.358c76bd@aol.com>; from LetherGlov@aol.com on Sat, Jun 20, 1998 at 10:58:04PM -0400
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
+On Sat, Jun 20, 1998 at 10:58:04PM -0400, LetherGlov@aol.com wrote:
 
-'lo all,
+>        In response to the ideas floating around about running Linux on Linus,
+> I think that before you give Bob Mende and William Earl tons of work
+> configuring it (and rebooting), that If I understand things correctly it is a
+> good idea to enable the Watchdog features of the Dallas 1386 clock, so that if
+> there are any kernel panics or troubles or whatever may occur that the
+> watchdog would automatically restart linus in the event that the kernel was
+> no-longer updating the timer.
 
-I've tripped over something trying to install the 5.1 distribution on a
-spare indy. I have a second Indy acting as a bootp server for the nfs-root
-installation. The nfs-root filesystem came from installfs.tgz on linus.
+Talking about the Dallas chip, we still don't have proper Dallas RTC
+support (/proc/rtc rsp. /dev/rtc), so we currently cannot even adjust
+the rtc under Linux.  Definately a must before we switch.
 
-The machines are both on a segmented network with the netmask 0xffffff80 so
-I had to muck about with nfsroot= and nfsaddrs= . The boot command I'm using
-is:
+I had my headaches about the stability of the kernel - I should probably 
+given them up.  I'm running crashless and hickupless since two weeks
+even though I've been trying hard to stress the system and trigger the
+one known problem causing a bus error.  Probably time for wider testing.
 
-  boot bootp():vmlinux nfsroot=/scratch/linux/installfs \
-  nfsaddrs=:::0xffffff80:misfit::
+> If I am just completely off on the whole general concept of a Watchdog please
+> tell me, but I think that(if I'm right) it might be a good idea for everybody
+> to have that feature available to them :-) The documentation that I was
+> reading at Dallas' website implied that the only thing involved was to have
+> the clock stuff to reset, or update, the reset time of the timer every xxx
+> seconds to prevent it from restarting an out-of-control processor.
 
-Anyway, this boots the kernel, mounts the root fs and then stops with the
-message:
+The idea of a software watchdog is good, it's somewhere on the bottom of
+my to do list since quite some time.
 
-  Warning: unable to open an initial console
-
-This turns up if I use any type of console (gfx or vt100 terminal). Perhaps
-that was too literal an interpretation but I'd have kicked myself if it was
-the problem :)
-
-I suspect my bootp setup could be more robust or nfs root isn't mounting
-properly...
-
-BTW, small tip I found useful. Instead of typing:
-
-  boot bootp():vmlinux nfsroot=/scratch/linux/installfs etc. etc. 
-
-everytime to boot, on an SG machine use:
-
-  setenv -p linux "a_very_long_command_its_a_pain_to_keep_typing"
-
-and boot the machine with 
-
-  $linux
-
-at the console prompt :)
-
-Leon
-
--- 
-Leon Verrall - 01189 307734  \ "Don't cut your losses too soon,
-Secondline Software Support  / 'cos you'll only be cutting your throat.
-Silicon Graphics, Forum 1,   \ And answer a call while you still care at all
-Station Rd., Theale, RG7 4RA / 'cos nobody will if you wont" (6:00 - DT)
+  Ralf

@@ -1,50 +1,71 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fADEjQW14964
-	for linux-mips-outgoing; Tue, 13 Nov 2001 06:45:26 -0800
-Received: from opus.bloom.county (cpe-24-221-152-185.az.sprintbbd.net [24.221.152.185])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fADEjN014961
-	for <linux-mips@oss.sgi.com>; Tue, 13 Nov 2001 06:45:23 -0800
-Received: from tmrini by opus.bloom.county with local (Exim 3.32 #1 (Debian))
-	id 163enY-0004mV-00; Tue, 13 Nov 2001 07:44:24 -0700
-Date: Tue, 13 Nov 2001 07:44:24 -0700
-From: Tom Rini <trini@kernel.crashing.org>
-To: Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
-Cc: Roman Zippel <zippel@linux-m68k.org>, Jun Sun <jsun@mvista.com>,
-   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-   Linux/MIPS Development <linux-mips@oss.sgi.com>,
-   Linux/m68k <linux-m68k@lists.linux-m68k.org>,
-   Linux/PPC Development <linuxppc-dev@lists.linuxppc.org>, rz@linux-m68k.org
-Subject: Re: [RFC] generic MIPS RTC driver
-Message-ID: <20011113074424.A16723@cpe-24-221-152-185.az.sprintbbd.net>
-References: <20011112183158.C16490@cpe-24-221-152-185.az.sprintbbd.net> <Pine.GSO.4.21.0111130720400.10875-100000@mullein.sonytel.be>
+	by oss.sgi.com (8.11.2/8.11.3) id fADEmfN15068
+	for linux-mips-outgoing; Tue, 13 Nov 2001 06:48:41 -0800
+Received: from mail.ivivity.com (user-vc8ftn3.biz.mindspring.com [216.135.246.227])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fADEmX015065
+	for <linux-mips@oss.sgi.com>; Tue, 13 Nov 2001 06:48:34 -0800
+Received: from [192.168.1.179] (192.168.1.179 [192.168.1.179]) by mail.ivivity.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2448.0)
+	id QMJCN57D; Tue, 13 Nov 2001 09:48:20 -0500
+Subject: Re: BE Toolchain
+From: Marc Karasek <marc_karasek@ivivity.com>
+To: Dan Temple <dant@mips.com>
+Cc: Linux MIPS <linux-mips@oss.sgi.com>
+In-Reply-To: <3BE2A852.AFF0D905@mips.com>
+References: <1004708261.31067.6.camel@localhost.localdomain> 
+	<3BE2A852.AFF0D905@mips.com>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Mailer: Evolution/0.16.99+cvs.2001.10.18.15.19 (Preview Release)
+Date: 13 Nov 2001 09:49:20 -0500
+Message-Id: <1005662974.10352.2.camel@localhost.localdomain>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.GSO.4.21.0111130720400.10875-100000@mullein.sonytel.be>
-User-Agent: Mutt/1.3.23i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Tue, Nov 13, 2001 at 07:20:51AM +0100, Geert Uytterhoeven wrote:
-> On Mon, 12 Nov 2001, Tom Rini wrote:
-> > On Mon, Nov 12, 2001 at 09:54:55PM +0100, Roman Zippel wrote:
-> > > Geert Uytterhoeven wrote:
-> > > > > Geert, what is the abstraction they used?
-> > > >
-> > > > At first sight, we only use get_rtc_time() and mach_hwclk().
-> > >
-> > > Over the weekend I changed it into set_rtc_time()/get_rtc_time(), which
-> > > are now defined in <asm/rtc.h>, so mach_hwclk() is gone in the generic
-> > > part.
-> >
-> > Could you please post a copy of this?  I wanna go and try and get the
-> > rest of the PPC world going on it, if you didn't do that already.
+I have one question:  I did not know that RH had a MIPS dist for 7.1. 
+Is this something MIPS has done from the RH sources?  Or is RH planning
+on supporting MIPS now?
+
+On Fri, 2001-11-02 at 09:06, Dan Temple wrote:
+> Marc Karasek wrote:
+> > 
+> > Has anyone got the toolchain (binutils, gcc, glibc) to compile under
+> > BE?  I followed the instructions at Bradley D. LaRonde has put together
+> > and got the LE to work w/o a prolem.  I then proceeded to try the BE.
+> > Binutils compiled ok, gcc says that mipseb-linux is not a valid target.
+> > Looking in config.sub I saw a mips-linux, is this the BE option?
 > 
-> http://linux-m68k-cvs.apia.dhs.org/
-
-That's the non-generic m68k version tho, yes?  Or did Roman do it in
-that tree too?
-
+> If you can wait a day, here's what we use - which is compilable both BE and LE:
+> 
+> We are going to release a complete RH7.1/MIPS installation image for the Atlas/Malta board on our FTP site, identical to what we use in MIPS engineering.All of our compiles for Linux/MIPS (except the kernel, which is probably irrelevant here) are done natively on Malta boards running Linux. We are using the compiler from the RedHat 7.1/MIPS Linux distribution. 
+> 
+> The toolchains on this distribution are (all commands run natively on
+> the installation on a Malta board):
+> 
+> > uname -a
+> Linux copmld07.mips.com 2.4.3-MIPS-01.02
+> 
+> > gcc -v
+> Reading specs from /usr/lib/gcc-lib/mipsel-redhat-linux/2.96/specs
+> gcc version 2.96 20000731 (Red Hat Linux 7.1 2.96-99.1)
+> 
+> > rpm -qf /usr/bin/ld
+> binutils-2.11.92.0.10-1
+> 
+> > rpm -qa | grep glibc
+> glibc-2.2.4-19.4
+> glibc-common-2.2.4-19.4
+> glibc-devel-2.2.4-19.4
+> glibc-profile-2.2.4-19.4
+>  
+>   Dan Temple
+>   MIPS Denmark
 -- 
-Tom Rini (TR1265)
-http://gate.crashing.org/~trini/
+/*************************
+Marc Karasek
+Sr. Firmware Engineer
+iVivity Inc.
+marc_karasek@ivivity.com
+(770) 986-8925
+(770) 986-8926 Fax
+*************************/

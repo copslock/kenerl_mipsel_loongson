@@ -1,62 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Mar 2004 21:26:01 +0100 (BST)
-Received: from eth13.com-link.com ([IPv6:::ffff:208.242.241.164]:32957 "EHLO
-	real.realitydiluted.com") by linux-mips.org with ESMTP
-	id <S8225458AbUC2U0A>; Mon, 29 Mar 2004 21:26:00 +0100
-Received: from localhost ([127.0.0.1] helo=realitydiluted.com)
-	by real.realitydiluted.com with esmtp (Exim 3.36 #1 (Debian))
-	id 1B83KU-0005ys-00; Mon, 29 Mar 2004 14:25:54 -0600
-Message-ID: <4068864D.1020209@realitydiluted.com>
-Date: Mon, 29 Mar 2004 15:25:49 -0500
-From: "Steven J. Hill" <sjhill@realitydiluted.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.6) Gecko/20040312 Debian/1.6-3
-X-Accept-Language: en
-MIME-Version: 1.0
-To: Brian Murphy <brian@murphy.dk>
-CC: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Mar 2004 21:54:06 +0100 (BST)
+Received: from mx.mips.com ([IPv6:::ffff:206.31.31.226]:46294 "EHLO
+	mx.mips.com") by linux-mips.org with ESMTP id <S8225458AbUC2Ux5>;
+	Mon, 29 Mar 2004 21:53:57 +0100
+Received: from mercury.mips.com (ns-dmz [206.31.31.225])
+	by mx.mips.com (8.12.11/8.12.11) with ESMTP id i2TKiFUr024693;
+	Mon, 29 Mar 2004 12:44:15 -0800 (PST)
+Received: from grendel (grendel [192.168.236.16])
+	by mercury.mips.com (8.12.11/8.12.11) with SMTP id i2TKriO4009385;
+	Mon, 29 Mar 2004 12:53:45 -0800 (PST)
+Message-ID: <008901c415d0$3a94d5f0$10eca8c0@grendel>
+From: "Kevin D. Kissell" <kevink@mips.com>
+To: "Steven J. Hill" <sjhill@realitydiluted.com>,
+	"Brian Murphy" <brian@murphy.dk>
+Cc: <linux-mips@linux-mips.org>
+References: <4068809F.8070103@murphy.dk> <4068864D.1020209@realitydiluted.com>
 Subject: Re: BUG in pcnet32.c?
-References: <4068809F.8070103@murphy.dk>
-In-Reply-To: <4068809F.8070103@murphy.dk>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Date: Mon, 29 Mar 2004 22:55:52 +0200
+Organization: MIPS Technologies Inc.
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-Return-Path: <sjhill@realitydiluted.com>
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2800.1158
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1165
+X-Scanned-By: MIMEDefang 2.39
+Return-Path: <kevink@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4681
+X-archive-position: 4682
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sjhill@realitydiluted.com
+X-original-sender: kevink@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-Brian Murphy wrote:
-> In pcnet32.c where the driver writer sets up her receive buffers there 
-> is this line
-> 
-> lp->rx_dma_addr[i] = pci_map_single(lp->pci_dev, rx_skbuff->tail, 
-> rx_skbuff->len, PCI_DMA_FROMDEVICE);
-> 
-> the length value turns out to be 0 and crashes the running 
-> process,ifconfig.
-> Is making a map for a buffer of length 0 valid at all? If not what the 
-> hell is going on here.
-> 
-> I feel this should say PKT_BUF_SZ instead of rx_skbuff->len which is the 
-> length of skbuff which has been
-> allocated at this point in the code, this is line 986 in todays checkout.
-> 
-> Something is wrong in any case, any pointers?
-> 
-Excellent. So my new BUG code detected another bad network driver. Your network
-driver is broken and it needs fixed. I will refer you to these posts between
-Jeff Garzik and myself when I found a similar issue on the 'natsemi.c' driver.
-Mapping a PCI address with length zero is a BUG, period. You length should
-be the maximum RX buffer length + 2. You will see from the patches in the
-messages below that this is for IP header alignment. Good luck and please let
-use know how it turns out.
+> Excellent. So my new BUG code detected another bad network driver. Your network
+> driver is broken and it needs fixed. I will refer you to these posts between
+> Jeff Garzik and myself when I found a similar issue on the 'natsemi.c' driver.
+> Mapping a PCI address with length zero is a BUG, period. You length should
+> be the maximum RX buffer length + 2. You will see from the patches in the
+> messages below that this is for IP header alignment. Good luck and please let
+> use know how it turns out.
 
--Steve
+Which reminds me of something I've been meaning to mention for a while.
+Back in the dark days of Linux 2.2 on MIPS, I discovered that a number
+of network drivers were subtly broken for MIPS because they allocated
+enough extra space for IP header alignment, but not for cache line alignment.
+Particularly on CPUs with write-back caches, it can be a Bad Thing if a cache 
+line straddles two packet buffers, as the flush of one can cause the other to be
+clobbered.  I had to redefine the alignment constant for MIPS to be a function
+of the line size to have 100% solid operation of the Tulip and pcnet32 drivers.
 
-http://lkml.org/lkml/2004/3/16/218
-http://lkml.org/lkml/2004/3/16/244
+The whole network driver cache management paradigm was redone for 2.4,
+and I've often wondered whether the same potential problem exists, but never
+had the time to go in and check.
+
+There, I've mentioned it.  My conscience is clear.  ;o)

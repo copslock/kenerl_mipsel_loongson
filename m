@@ -1,137 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Mar 2003 10:21:46 +0000 (GMT)
-Received: from sonicwall.montavista.co.jp ([IPv6:::ffff:202.232.97.131]:22548
-	"EHLO yuubin.montavista.co.jp") by linux-mips.org with ESMTP
-	id <S8225227AbTCCKVp>; Mon, 3 Mar 2003 10:21:45 +0000
-Received: from pudding.montavista.co.jp ([10.200.0.40])
-	by yuubin.montavista.co.jp (8.12.5/8.12.5) with SMTP id h23ATX44006663;
-	Mon, 3 Mar 2003 19:29:35 +0900
-Date: Mon, 3 Mar 2003 19:21:37 +0900
-From: Yoichi Yuasa <yoichi_yuasa@montavista.co.jp>
-To: ralf@linux-mips.org
-Cc: yoichi_yuasa@montavista.co.jp, linux-mips@linux-mips.org,
-	jsun@mvista.com
-Subject: [patch] simulate_ll and simulate_sc(resend)
-Message-Id: <20030303192137.34d21352.yoichi_yuasa@montavista.co.jp>
-Organization: MontaVista Software Japan, Inc.
-X-Mailer: Sylpheed version 0.8.10 (GTK+ 1.2.10; i686-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="Multipart_Mon__3_Mar_2003_19:21:37_+0900_08290030"
-Return-Path: <yoichi_yuasa@montavista.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Mar 2003 11:54:58 +0000 (GMT)
+Received: from inspiration-98-179-ban.inspiretech.com ([IPv6:::ffff:203.196.179.98]:24458
+	"EHLO smtp.inspirtek.com") by linux-mips.org with ESMTP
+	id <S8225227AbTCCLy5>; Mon, 3 Mar 2003 11:54:57 +0000
+Received: from mail.inspiretech.com (mail.inspiretech.com [150.1.1.1])
+	by smtp.inspirtek.com (8.12.5/8.12.5) with ESMTP id h23C3XcY014663
+	for <linux-mips@linux-mips.org>; Mon, 3 Mar 2003 17:33:39 +0530
+Message-Id: <200303031203.h23C3XcY014663@smtp.inspirtek.com>
+Received: from WorldClient [150.1.1.1] by inspiretech.com [150.1.1.1]
+	with SMTP (MDaemon.v3.5.7.R)
+	for <linux-mips@linux-mips.org>; Mon, 03 Mar 2003 17:21:49 +0530
+Date: Mon, 03 Mar 2003 17:21:47 +0530
+From: "Avinash S." <avinash.s@inspiretech.com>
+To: linux-mips@linux-mips.org
+Subject: Re: Ecartis command results: No commands found
+X-Mailer: WorldClient Standard 3.5.0e
+In-Reply-To: <ecartis-03032003113240.835.1@ftp.linux-mips.org>
+X-MDRemoteIP: 150.1.1.1
+X-Return-Path: avinash.s@inspiretech.com
+X-MDaemon-Deliver-To: linux-mips@linux-mips.org
+Return-Path: <avinash.s@inspiretech.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 1596
+X-archive-position: 1598
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@montavista.co.jp
+X-original-sender: avinash.s@inspiretech.com
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
+hi ,
+could some try and explain the booting process for a mips based kernel. 
+eg for a i386 the first thing that gets loaded is the bootsect.s
+and then setup.s and so on and so forth. I would like to know the entry
+point in a mips based kernel. im a newbie, and new to the kernel!
 
---Multipart_Mon__3_Mar_2003_19:21:37_+0900_08290030
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+thanks
 
-Hi Ralf,
-
-I found a bug in simulate_ll and simulate_sc.
-The board that uses ll/sc emulation is not started.
-
-When send_sig in these, in order not to operate the value of EPC correctly,
-simulate_* happens continuously.
-
-The previous patches were not perfect, I changed more.
-Please apply these patches to CVS tree.
-
-Thanks,
-
-Yoichi
-
---Multipart_Mon__3_Mar_2003_19:21:37_+0900_08290030
-Content-Type: text/plain;
- name="llsc-v24-0303.diff"
-Content-Disposition: attachment;
- filename="llsc-v24-0303.diff"
-Content-Transfer-Encoding: 7bit
-
-diff -aruN --exclude=CVS --exclude=.cvsignore linux.orig/arch/mips/kernel/traps.c linux/arch/mips/kernel/traps.c
---- linux.orig/arch/mips/kernel/traps.c	Tue Feb 11 07:50:48 2003
-+++ linux/arch/mips/kernel/traps.c	Mon Mar  3 17:52:16 2003
-@@ -140,6 +140,7 @@
- 	return;
- 
- sig:
-+	compute_return_epc(regs);
- 	send_sig(signal, current, 1);
- }
- 
-@@ -172,18 +173,19 @@
- 	}
- 	if (ll_bit == 0 || ll_task != current) {
- 		regs->regs[reg] = 0;
--		goto sig;
- 	}
- 
--	if (put_user(regs->regs[reg], vaddr))
-+	if (put_user(regs->regs[reg], vaddr)) {
- 		signal = SIGSEGV;
--	else
-+		goto sig;
-+	} else
- 		regs->regs[reg] = 1;
- 
- 	compute_return_epc(regs);
- 	return;
- 
- sig:
-+	compute_return_epc(regs);
- 	send_sig(signal, current, 1);
- }
- 
-
---Multipart_Mon__3_Mar_2003_19:21:37_+0900_08290030
-Content-Type: text/plain;
- name="llsc-v25-0303.diff"
-Content-Disposition: attachment;
- filename="llsc-v25-0303.diff"
-Content-Transfer-Encoding: 7bit
-
-diff -aruN --exclude=CVS --exclude=.cvsignore linux.orig/arch/mips/kernel/traps.c linux/arch/mips/kernel/traps.c
---- linux.orig/arch/mips/kernel/traps.c	Wed Feb 12 13:26:43 2003
-+++ linux/arch/mips/kernel/traps.c	Mon Mar  3 17:48:11 2003
-@@ -135,6 +135,7 @@
- 	return;
- 
- sig:
-+	compute_return_epc(regs);
- 	send_sig(signal, current, 1);
- }
- 
-@@ -167,18 +168,19 @@
- 	}
- 	if (ll_bit == 0 || ll_task != current) {
- 		regs->regs[reg] = 0;
--		goto sig;
- 	}
- 
--	if (put_user(regs->regs[reg], vaddr))
-+	if (put_user(regs->regs[reg], vaddr)) {
- 		signal = SIGSEGV;
--	else
-+		goto sig;
-+	} else
- 		regs->regs[reg] = 1;
- 
- 	compute_return_epc(regs);
- 	return;
- 
- sig:
-+	compute_return_epc(regs);
- 	send_sig(signal, current, 1);
- }
- 
-
---Multipart_Mon__3_Mar_2003_19:21:37_+0900_08290030--
+Avinash

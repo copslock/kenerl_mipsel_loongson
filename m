@@ -1,53 +1,70 @@
-Received:  by oss.sgi.com id <S305176AbQCVJeN>;
-	Wed, 22 Mar 2000 01:34:13 -0800
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:62517 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S305174AbQCVJdl>; Wed, 22 Mar 2000 01:33:41 -0800
-Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id BAA06520; Wed, 22 Mar 2000 01:37:12 -0800 (PST)
+Received:  by oss.sgi.com id <S305177AbQCVNUe>;
+	Wed, 22 Mar 2000 05:20:34 -0800
+Received: from deliverator.sgi.com ([204.94.214.10]:13674 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305174AbQCVNUM>;
+	Wed, 22 Mar 2000 05:20:12 -0800
+Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id FAA00385; Wed, 22 Mar 2000 05:15:32 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id BAA94607
+	id FAA46095
 	for linux-list;
-	Wed, 22 Mar 2000 01:09:25 -0800 (PST)
+	Wed, 22 Mar 2000 05:00:30 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id BAA58939
-	for <linux@engr.sgi.com>;
-	Wed, 22 Mar 2000 01:09:23 -0800 (PST)
-	mail_from (knix_erik@hotmail.com)
-Received: from hotmail.com (f279.law7.hotmail.com [216.33.236.157]) 
+	via ESMTP id FAA37456
+	for <linux@cthulhu.engr.sgi.com>;
+	Wed, 22 Mar 2000 05:00:27 -0800 (PST)
+	mail_from (richardh@penguin.nl)
+Received: from smtpf.casema.net (smtpf.casema.net [195.96.96.173]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via SMTP id BAA02715
-	for <linux@engr.sgi.com>; Wed, 22 Mar 2000 01:09:04 -0800 (PST)
-	mail_from (knix_erik@hotmail.com)
-Received: (qmail 13006 invoked by uid 0); 22 Mar 2000 09:08:57 -0000
-Message-ID: <20000322090857.13005.qmail@hotmail.com>
-Received: from 212.110.32.58 by www.hotmail.com with HTTP;
-	Wed, 22 Mar 2000 01:08:56 PST
-X-Originating-IP: [212.110.32.58]
-From:   "Enrico Canardi" <knix_erik@hotmail.com>
-To:     linux@cthulhu.engr.sgi.com
-Subject: Challenge
-Date:   Wed, 22 Mar 2000 01:08:56 PST
-Mime-Version: 1.0
-Content-Type: text/plain; format=flowed
+	via SMTP id FAA02973
+	for <linux@cthulhu.engr.sgi.com>; Wed, 22 Mar 2000 05:00:26 -0800 (PST)
+	mail_from (richardh@penguin.nl)
+Received: (qmail 28990 invoked by uid 0); 22 Mar 2000 13:00:18 -0000
+Received: from unknown (HELO penguin.nl) (195.96.116.192)
+  by smtpf.casema.net with SMTP; 22 Mar 2000 13:00:18 -0000
+Message-ID: <38D8C418.FAA1CC71@penguin.nl>
+Date:   Wed, 22 Mar 2000 14:01:13 +0100
+From:   Richard <richardh@penguin.nl>
+X-Mailer: Mozilla 4.6 [en] (X11; I; Linux 2.2.9 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To:     "linux@cthulhu.engr.sgi.com" <linux@cthulhu.engr.sgi.com>
+Subject: homemade kernel
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-Hi all
+Hi,
 
-I also Have A Challenge L with two R4400.
+Why is it, that with the latest repository sources,  i still get this:
 
-I read that it's not currently supported but if there's anythink that i can 
-do for the port let me know.
+  Exception: <vector=UTLB Miss>
+   Status register: 0x300004803<CU1,CU0,IM4,IPL=???,MODE=KERNEL,EXL,IE>
+   Cause register: 0x8008<CE=0,IP8,EXC=RMISS>
+   Exception PC: 0x881385cc, Exception RA: 0x88002614
+   exception, bad address: 0x47c4
+   Local I/O interrupt register 1: 0x80 <VR/GIO2>
+   Saved user regs in hex (&gpda 0xa8740e48, &_regs 0xa8741048):
+     arg: 7 8bfff938 8bfffc4d 880025dc
+     tmp: 8818c14c 8818c14c 10 881510c4 14 8bfad9e0 0 48
+     sve: 8bfdf3e8 8bfffc40 8bfb2720 8bfff938 a8747420 9fc56394 0
+9fc56394
+     t8 48 t9 8bfffee66 at 1 v0 0 v1 8bfff890 k1 bad11bad
+     gp 881dfd90 fp 9fc4be88 sp 8bfff8b8 ra 88002614
 
-Regards Enrico Canardi
-______________________________________________________
-Get Your Private, Free Email at http://www.hotmail.com
+   PANIC: Unexpected exception
+
+
+I checked the arch/mips/Makefile for the linkflags, but there's no -N
+there. Has it gone to some other place ?
+
+Richard

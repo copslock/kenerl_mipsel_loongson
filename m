@@ -1,53 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Sep 2004 15:58:37 +0100 (BST)
-Received: from c2ce9fba.adsl.oleane.fr ([IPv6:::ffff:194.206.159.186]:54966
-	"EHLO nikita.france.sdesigns.com") by linux-mips.org with ESMTP
-	id <S8224933AbUIKO62>; Sat, 11 Sep 2004 15:58:28 +0100
-Received: from nikita.france.sdesigns.com (localhost.localdomain [127.0.0.1])
-	by nikita.france.sdesigns.com (8.12.11/8.12.11) with ESMTP id i8BEwIpW004146;
-	Sat, 11 Sep 2004 16:58:18 +0200
-Received: (from michon@localhost)
-	by nikita.france.sdesigns.com (8.12.11/8.12.11/Submit) id i8BEwHdc004145;
-	Sat, 11 Sep 2004 16:58:17 +0200
-X-Authentication-Warning: nikita.france.sdesigns.com: michon set sender to em@realmagic.fr using -f
-Subject: RE: ...cache dimensioning ;-)
-From: Emmanuel Michon <em@realmagic.fr>
-To: Adrian Hulse <adrian.hulse@lantronix.com>
-Cc: linux-mips@linux-mips.org
-In-Reply-To: <2F0FC2A92C0B154BB406D5E74CB3E6930B7EAC@3putt.int.lantronix.com>
-References: <2F0FC2A92C0B154BB406D5E74CB3E6930B7EAC@3putt.int.lantronix.com>
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-Organization: REALmagic France SAS
-Message-Id: <1094914697.29872.8811.camel@nikita.france.sdesigns.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Sep 2004 08:49:07 +0100 (BST)
+Received: from bay19-f29.bay19.hotmail.com ([IPv6:::ffff:64.4.53.79]:34310
+	"EHLO hotmail.com") by linux-mips.org with ESMTP
+	id <S8224988AbUILHtC>; Sun, 12 Sep 2004 08:49:02 +0100
+Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
+	 Sun, 12 Sep 2004 00:48:55 -0700
+Received: from 218.75.247.251 by by19fd.bay19.hotmail.msn.com with HTTP;
+	Sun, 12 Sep 2004 07:48:54 GMT
+X-Originating-IP: [218.75.247.251]
+X-Originating-Email: [paozhaokeats@hotmail.com]
+X-Sender: paozhaokeats@hotmail.com
+From: "Bao zhao" <paozhaokeats@hotmail.com>
+To: linux-mips@linux-mips.org
+Subject: Cannot find the source code of handle_tlbl
+Date: Sun, 12 Sep 2004 15:48:54 +0800
 Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.4.6 (1.4.6-2) 
-Date: Sat, 11 Sep 2004 16:58:17 +0200
-Return-Path: <em@realmagic.fr>
+Content-Type: text/plain; format=flowed
+Message-ID: <BAY19-F29WOApQF88Un00011c0a@hotmail.com>
+X-OriginalArrivalTime: 12 Sep 2004 07:48:55.0376 (UTC) FILETIME=[F445ED00:01C4989C]
+Return-Path: <paozhaokeats@hotmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 5823
+X-archive-position: 5824
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: em@realmagic.fr
+X-original-sender: paozhaokeats@hotmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 2004-09-10 at 20:41, Adrian Hulse wrote:
-> >If I consider a platform like Toshiba TX39 which has d-cache four ways
-> >with total 32KBytes, it must already have the problems above. I'd like
-> >to get some more clues though...
-> 
-> You probably meant to say Tx49 no ? The Tx39 has 16/8 k Instruction
-> Cache, 8/4 k Data cache.
+   hi, I am a newbie to learn mips kernel.  As I know,there is no hardware 
+support for pagetable,only has support for tlb miss. Following is my 
+question:
+   (1) In entry.S.   I found the following exception's handlers:
+                 BUILD_HANDLER(adel,ade,ade,silent)		/* #4  */
+	BUILD_HANDLER(ades,ade,ade,silent)		/* #5  */
+	BUILD_HANDLER(ibe,ibe,cli,verbose)		/* #6  */
+	BUILD_HANDLER(dbe,dbe,cli,silent)		/* #7  */
+	BUILD_HANDLER(bp,bp,sti,silent)			/* #9  */
+	BUILD_HANDLER(ri,ri,sti,silent)			/* #10 */
+	...
+         but not all of exception's handlers are there.I cannot find 
+handlers such as  handle_mod, handle_tlb,handle_tlbs;
 
-Sorry, yes, TX4938 (so far I could not boot linux from linux-mips cvs
-tag 2_4_26 on this (I chose TX49[23]7 platform))
+  (2)do_page_fault should be called by tlb miss handler, but I cannot find 
+which function called it.
 
-> 
-> 
-> 
-> **********************************************************************
-> This e-mail is the property of Lantronix. It is intended only for the person or entity to which it is addressed and may contain information that is privileged, confidential, or otherwise protected from disclosure. Distribution or copying of this e-mail, or the information contained herein, to anyone other than the intended recipient is prohibited. 
-> 
+btw, Is there any documentations about mips-kernel's implementaion?
+
+Any help would be greatly appreciated.
+
+                                                       Keats
+
+_________________________________________________________________
+MSN 8 with e-mail virus protection service: 2 months FREE* 
+http://join.msn.com/?page=features/virus

@@ -1,55 +1,43 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id BAA17811 for <linux-archive@neteng.engr.sgi.com>; Fri, 17 Jul 1998 01:23:41 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id HAA25523 for <linux-archive@neteng.engr.sgi.com>; Fri, 17 Jul 1998 07:12:32 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id BAA04340
+	id HAA69624
 	for linux-list;
-	Fri, 17 Jul 1998 01:23:10 -0700 (PDT)
+	Fri, 17 Jul 1998 07:11:56 -0700 (PDT)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37])
+Received: from fir.engr.sgi.com (fir.engr.sgi.com [150.166.49.183])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id BAA03708
-	for <linux@cthulhu.engr.sgi.com>;
-	Fri, 17 Jul 1998 01:23:08 -0700 (PDT)
-	mail_from (mjhsieh@helix.life.nthu.edu.tw)
-Received: from helix.life.nthu.edu.tw (helix.life.nthu.edu.tw [140.114.98.34]) 
-	by sgi.sgi.com (980309.SGI.8.8.8-aspam-6.2/980304.SGI-aspam:
-       SGI does not authorize the use of its proprietary
-       systems or networks for unsolicited or bulk email
-       from the Internet.) 
-	via ESMTP id BAA12184
-	for <linux@cthulhu.engr.sgi.com>; Fri, 17 Jul 1998 01:23:04 -0700 (PDT)
-	mail_from (mjhsieh@helix.life.nthu.edu.tw)
-Received: (from mjhsieh@localhost)
-	by helix.life.nthu.edu.tw (8.8.7/8.8.7) id QAA00558;
-	Fri, 17 Jul 1998 16:23:01 +0800
-Message-ID: <19980717162300.A535@life.nthu.edu.tw>
-Date: Fri, 17 Jul 1998 16:23:00 +0800
-From: "Francis M. J. Hsieh" <mjhsieh@life.nthu.edu.tw>
-To: Linux <linux@cthulhu.engr.sgi.com>
-Subject: Re: apache and other problems (fwd)
-References: <199807161853.LAA91562@oz.engr.sgi.com> <Pine.LNX.3.95.980717012901.5792D-100000@lager.engsoc.carleton.ca>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Mailer: Mutt 0.91.1
-In-Reply-To: <Pine.LNX.3.95.980717012901.5792D-100000@lager.engsoc.carleton.ca>; from Alex deVries on Fri, Jul 17, 1998 at 01:32:29AM -0400
+	via SMTP id HAA34220;
+	Fri, 17 Jul 1998 07:11:53 -0700 (PDT)
+	mail_from (wje@fir.engr.sgi.com)
+Received: (from wje@localhost) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id HAA11412; Fri, 17 Jul 1998 07:11:42 -0700
+Date: Fri, 17 Jul 1998 07:11:42 -0700
+Message-Id: <199807171411.HAA11412@fir.engr.sgi.com>
+From: "William J. Earl" <wje@fir.engr.sgi.com>
+To: Alex deVries <adevries@engsoc.carleton.ca>,
+        Igor Loncarevic <anubis@BanjaLuka.NET>,
+        SGI Linux <linux@cthulhu.engr.sgi.com>
+Subject: Re: What about...
+In-Reply-To: <9807162230.ZM17359@xtp.engr.sgi.com>
+References: <Pine.LNX.3.95.980717012356.5792A-100000@lager.engsoc.carleton.ca>
+	<adevries@engsoc.carleton.ca>
+	<9807162230.ZM17359@xtp.engr.sgi.com>
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-On Fri, Jul 17, 1998 at 01:32:29AM -0400, Alex deVries wrote:
-> On Thu, 16 Jul 1998, "Francis M.J. Hsieh" <mjhsieh@life.nthu.edu.tw> wrote:
-> > I got some problem here.
-> > - apache httpd is still buggy (can't deliver text/html correctly)
-> 
-> I don't know what that problem is; mine works fine.  Does it accept a TCP
-> connection properly? 
+Greg Chesson writes:
+ > Alex is right.
+ > Linux on Origin 2000 would be a huge project - not just a port.
+...
 
-oh, it fixed in vmlinux-2.1.100
-
-> > - mouse doesn't work?
-> In the HH install, there's a package called 'kernel-2.1.100-2'.  If you
-> install this, you'll have something like /boot/vmlinux-2.1.100.  That
-> kernel (2.1.100) should have mouse support in it.  you'll have to make a
-> symbolic link from /dev/psaux to /dev/mouse.
-
-well, how can I get gpm work? I had ln -s it, and it didn't work.
+     Note that the reason it would be a big project is not so much the
+hardware itself, but rather the scale of the system.  IRIX needed a lot
+of infrastructure work to be useful on very large system with a very large
+number of I/O buses and devices.  That is, a toy port would not be all
+that giant a project, but it would not be particularly useful.  If there
+were a good linux on some other very large ccNUMA machine, then an Origin
+port would be much simpler.  By "good", I mean a linux which scale well
+for large (greater than 32) processor and I/O count (many I/O buses
+and thousands of disk).  It expect such a linux will happen eventually,
+but not yet.

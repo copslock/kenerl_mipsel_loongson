@@ -1,37 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Nov 2003 05:22:48 +0000 (GMT)
-Received: from [IPv6:::ffff:203.82.55.162] ([IPv6:::ffff:203.82.55.162]:3552
-	"EHLO 1aurora.enabtech") by linux-mips.org with ESMTP
-	id <S8225361AbTKKFWg>; Tue, 11 Nov 2003 05:22:36 +0000
-Received: by 1aurora.enabtech with Internet Mail Service (5.5.2650.21)
-	id <WHAQ22D7>; Tue, 11 Nov 2003 10:21:56 +0500
-Message-ID: <10C6C1971DA00C4BB87AC0206E3CA38264F662@1aurora.enabtech>
-From: Adeel Malik <AdeelM@quartics.com>
-To: "Liu Hongming (Alan)" <alanliu@trident.com.cn>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Nov 2003 05:35:03 +0000 (GMT)
+Received: from [IPv6:::ffff:202.96.215.33] ([IPv6:::ffff:202.96.215.33]:60936
+	"EHLO tmtms.trident.com.cn") by linux-mips.org with ESMTP
+	id <S8225361AbTKKFev>; Tue, 11 Nov 2003 05:34:51 +0000
+Received: by TMTMS with Internet Mail Service (5.5.2653.19)
+	id <WT9PVVPG>; Tue, 11 Nov 2003 13:27:48 +0800
+Message-ID: <15F9E1AE3207D6119CEA00D0B7DD5F6801C9949F@TMTMS>
+From: "Liu Hongming (Alan)" <alanliu@trident.com.cn>
+To: Adeel Malik <AdeelM@quartics.com>,
+	"Liu Hongming (Alan)" <alanliu@trident.com.cn>
 Cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
 Subject: RE: How to request an IRQ for NMI on MIPS Processor
-Date: Tue, 11 Nov 2003 10:21:52 +0500
+Date: Tue, 11 Nov 2003 13:26:53 +0800
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2650.21)
+X-Mailer: Internet Mail Service (5.5.2653.19)
 Content-Type: multipart/alternative;
-	boundary="----_=_NextPart_001_01C3A813.B8F095B0"
-Return-Path: <AdeelM@quartics.com>
+	boundary="----_=_NextPart_001_01C3A814.6A4B7C10"
+Return-Path: <alanliu@trident.com.cn>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 3598
+X-archive-position: 3599
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: AdeelM@quartics.com
+X-original-sender: alanliu@trident.com.cn
 Precedence: bulk
 X-list: linux-mips
 
 This message is in MIME format. Since your mail reader does not understand
 this format, some or all of this message may not be legible.
 
-------_=_NextPart_001_01C3A813.B8F095B0
+------_=_NextPart_001_01C3A814.6A4B7C10
 Content-Type: text/plain;
-	charset="iso-8859-1"
+	charset="ISO-8859-1"
+
+ 
+Hi Adeel,
+ 
+I have understood your situation.
+ 
+Under this situation,I think you need not use request_irq.
+Just keep your 'interrupt' handler in BIOS or bootloader,
+of course,it is different with Rest Exception,since 
+many registers' status are not the same as hardware-reseting.
+You could detect the difference.Right?
+ 
+ 
+Alan Liu
+ 
+-----Original Message-----
+From: Adeel Malik [mailto:AdeelM@quartics.com]
+Sent: Tuesday, November 11, 2003 1:22 PM
+To: Liu Hongming (Alan)
+Cc: Ralf Baechle; linux-mips@linux-mips.org
+Subject: RE: How to request an IRQ for NMI on MIPS Processor
+
 
 Liu,
       In my board the interrupt was routed directly to an NMI line of MIPS
@@ -144,17 +167,53 @@ NMI for anything else than catastrophic events.
   Ralf 
 
 
-------_=_NextPart_001_01C3A813.B8F095B0
+------_=_NextPart_001_01C3A814.6A4B7C10
 Content-Type: text/html;
-	charset="iso-8859-1"
+	charset="ISO-8859-1"
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <HTML><HEAD>
-<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
 <TITLE>RE: How to request an IRQ for NMI on MIPS Processor</TITLE>
 
 <META content="MSHTML 6.00.2600.0" name=GENERATOR></HEAD>
 <BODY hb_focus_attach="true">
+<DIV><SPAN class=495232905-11112003><FONT face=&#23435;&#20307; color=#0000ff 
+size=2></FONT></SPAN>&nbsp;</DIV>
+<DIV><SPAN class=495232905-11112003><FONT face=&#23435;&#20307; color=#0000ff size=2>Hi 
+Adeel,</FONT></SPAN></DIV>
+<DIV><SPAN class=495232905-11112003><FONT face=&#23435;&#20307; color=#0000ff 
+size=2></FONT></SPAN>&nbsp;</DIV>
+<DIV><SPAN class=495232905-11112003><FONT face=&#23435;&#20307; color=#0000ff size=2>I have 
+understood your situation.</FONT></SPAN></DIV>
+<DIV><SPAN class=495232905-11112003><FONT face=&#23435;&#20307; color=#0000ff 
+size=2></FONT></SPAN>&nbsp;</DIV>
+<DIV><SPAN class=495232905-11112003><FONT face=&#23435;&#20307; color=#0000ff size=2>Under 
+this situation,I think you need not use request_irq.</FONT></SPAN></DIV>
+<DIV><SPAN class=495232905-11112003><FONT face=&#23435;&#20307; color=#0000ff size=2>Just 
+</FONT></SPAN><SPAN class=495232905-11112003><FONT face=&#23435;&#20307; color=#0000ff 
+size=2>keep your 'interrupt' handler in BIOS or bootloader,</FONT></SPAN></DIV>
+<DIV><SPAN class=495232905-11112003><FONT face=&#23435;&#20307; color=#0000ff size=2>of 
+course,it is different with Rest Exception,since </FONT></SPAN></DIV>
+<DIV><SPAN class=495232905-11112003><FONT face=&#23435;&#20307; color=#0000ff size=2>many 
+registers' status&nbsp;are not the same as 
+hardware-reseting.</FONT></SPAN></DIV>
+<DIV><SPAN class=495232905-11112003><FONT face=&#23435;&#20307; color=#0000ff size=2>You could 
+detect the difference.</FONT></SPAN><SPAN class=495232905-11112003><FONT face=&#23435;&#20307; 
+color=#0000ff size=2>Right?</FONT></SPAN></DIV>
+<DIV><SPAN class=495232905-11112003></SPAN>&nbsp;</DIV>
+<DIV><SPAN class=495232905-11112003><FONT face=&#23435;&#20307; color=#0000ff 
+size=2></FONT></SPAN>&nbsp;</DIV>
+<DIV><SPAN class=495232905-11112003><FONT face=&#23435;&#20307; color=#0000ff size=2>Alan 
+Liu</FONT></SPAN></DIV>
+<DIV><SPAN class=495232905-11112003><FONT face=&#23435;&#20307; color=#0000ff 
+size=2></FONT></SPAN>&nbsp;</DIV>
+<DIV class=OutlookMessageHeader><FONT face="Times New Roman" 
+size=2>-----Original Message-----<BR><B>From:</B> Adeel Malik 
+[mailto:AdeelM@quartics.com]<BR><B>Sent:</B> Tuesday, November 11, 2003 1:22 
+PM<BR><B>To:</B> Liu Hongming (Alan)<BR><B>Cc:</B> Ralf Baechle; 
+linux-mips@linux-mips.org<BR><B>Subject:</B> RE: How to request an IRQ for NMI 
+on MIPS Processor<BR><BR></FONT></DIV>
 <DIV><FONT face=Arial color=#0000ff size=2><SPAN 
 class=118040205-11112003>Liu,</SPAN></FONT></DIV>
 <DIV><FONT size=2><FONT face=Arial color=#0000ff><SPAN 
@@ -187,7 +246,7 @@ possible at all.</FONT></DIV>
 <DIV><FONT size=2></FONT>&nbsp;</DIV>
 <DIV><FONT size=2>Thatswhy we don't find much code related to NMIs in 
 Linux.</FONT></DIV>
-<DIV>&nbsp;</DIV>
+<DIV><FONT face=&#23435;&#20307; color=#0000ff size=2></FONT>&nbsp;</DIV>
 <DIV><FONT face=Georgia color=#0000ff size=2><EM>ADEEL MALIK,</EM></FONT></DIV>
 <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
   <DIV class=OutlookMessageHeader dir=ltr align=left><FONT face=Tahoma 
@@ -269,4 +328,4 @@ Linux.</FONT></DIV>
   <P><FONT size=2>&nbsp; Ralf</FONT> </P></BLOCKQUOTE>
 <P></P></BODY></HTML>
 
-------_=_NextPart_001_01C3A813.B8F095B0--
+------_=_NextPart_001_01C3A814.6A4B7C10--

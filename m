@@ -1,44 +1,62 @@
 Received: from oss.sgi.com (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g48HLtwJ003572
-	for <linux-mips-outgoing@oss.sgi.com>; Wed, 8 May 2002 10:21:55 -0700
+	by oss.sgi.com (8.12.3/8.12.3) with ESMTP id g48IH4wJ004345
+	for <linux-mips-outgoing@oss.sgi.com>; Wed, 8 May 2002 11:17:04 -0700
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.12.3/8.12.3/Submit) id g48HLtoe003571
-	for linux-mips-outgoing; Wed, 8 May 2002 10:21:55 -0700
+	by oss.sgi.com (8.12.3/8.12.3/Submit) id g48IH4Bl004344
+	for linux-mips-outgoing; Wed, 8 May 2002 11:17:04 -0700
 X-Authentication-Warning: oss.sgi.com: majordomo set sender to owner-linux-mips@oss.sgi.com using -f
-Received: from dtla2.teknuts.com (adsl-66-125-62-110.dsl.lsan03.pacbell.net [66.125.62.110])
-	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g48HLqwJ003567
-	for <linux-mips@oss.sgi.com>; Wed, 8 May 2002 10:21:52 -0700
-Received: from whrrusek (whnat1.weiderpub.com [65.115.104.67])
-	(authenticated)
-	by dtla2.teknuts.com (8.11.3/8.10.1) with ESMTP id g48HNJF01827
-	for <linux-mips@oss.sgi.com>; Wed, 8 May 2002 10:23:19 -0700
-From: "Robert Rusek" <rrusek@teknuts.com>
-To: <linux-mips@oss.sgi.com>
-Subject: Indy SCSI Errors
-Date: Wed, 8 May 2002 10:23:18 -0700
-Message-ID: <C0F41630CD8B9C4680F2412914C1CF070164BD@WH-EXCHANGE1.AD.WEIDERPUB.COM>
+Received: from av.mvista.com (gateway-1237.mvista.com [12.44.186.158])
+	by oss.sgi.com (8.12.3/8.12.3) with SMTP id g48IGwwJ004341
+	for <linux-mips@oss.sgi.com>; Wed, 8 May 2002 11:16:58 -0700
+Received: from mvista.com (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id LAA13302;
+	Wed, 8 May 2002 11:17:54 -0700
+Message-ID: <3CD96B76.5090506@mvista.com>
+Date: Wed, 08 May 2002 11:16:22 -0700
+From: Jun Sun <jsun@mvista.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.2.1) Gecko/20010901
+X-Accept-Language: en-us
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
+To: Daniel Jacobowitz <dan@debian.org>
+CC: Geoffrey Espin <espin@idiom.com>,
+   "Siders, Keith" <keith_siders@toshibatv.com>,
+   "Linux-Mips (E-mail)" <linux-mips@oss.sgi.com>
+Subject: Re: Debugging of embedded target applications
+References: <7DF7BFDC95ECD411B4010090278A44CA379AA1@ATVX> <20020507221512.GA22326@nevyn.them.org> <20020507154427.D12509@idiom.com> <20020508014314.GA30243@nevyn.them.org> <20020507192523.A73748@idiom.com> <20020508023236.GA31840@nevyn.them.org>
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook, Build 10.0.3416
-X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4910.0300
-Importance: Normal
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-I am currently running kernel 2.4.17 and am getting sparatice errors
-like the following.  I seen that there had been bugs in the scsi driver
-in the earlier kernel versions.  Has anyone encountered this?  Is there
-a newer kernal that maybe addresses this?
+Daniel Jacobowitz wrote:
+
+> On Tue, May 07, 2002 at 07:25:23PM -0700, Geoffrey Espin wrote:
+> 
+>>On Tue, May 07, 2002 at 09:43:14PM -0400, Daniel Jacobowitz wrote:
+>>
+>>>>Does work it for kernel type debugging over *Ethernet*?
+>>>>I see some docs saying "TCP/IP" connection... but does that
+>>>>mean a special kind of network driver?  Or a gdbstub/agent
+>>>>outside the kernel in a special monitor?
+>>>>
+>>>What do you mean by kernel type debugging?  It's not a kernel stub.  It
+>>>can debug user programs over TCP/IP or a serial line.
+>>>
+>>In traditional embedded RTOS land, "system-level debugging".
+>>In the olden days one had to have BDM/JTAG hardware assist
+>>to step thru truly arbitary bits of code, like interrupt handlers,
+>>scheduler.
+>>
+>>The original question was about using using a hardware debugger.
+>>Clearly using gdb/gdbserver is for apps only, AFAIK.  Does one
+>>bother with a h/w debugger for apps?  Using kgdb with some kind
+>>
+> 
+> Actually, yes, you can.  I believe at least the Abatron BDI can do
+> this.  Could be wrong, though.
+> 
 
 
-EXT2-fs error (device sd(8,1)): ext2_check_page: bad entry in directory
-#110030: unaligned
- directory entry - offset=0, inode=6226015, rec_len=95, name_len=95
+I have used kgdb over JTAG.
 
-Thank you in advance,
---
-Robert Rusek
+Jun

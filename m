@@ -1,63 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jan 2005 17:30:36 +0000 (GMT)
-Received: from web25110.mail.ukl.yahoo.com ([IPv6:::ffff:217.12.10.58]:46452
-	"HELO web25110.mail.ukl.yahoo.com") by linux-mips.org with SMTP
-	id <S8225399AbVANRac>; Fri, 14 Jan 2005 17:30:32 +0000
-Received: (qmail 95444 invoked by uid 60001); 14 Jan 2005 17:30:25 -0000
-Message-ID: <20050114173025.95442.qmail@web25110.mail.ukl.yahoo.com>
-Received: from [80.14.198.143] by web25110.mail.ukl.yahoo.com via HTTP; Fri, 14 Jan 2005 18:30:25 CET
-Date: Fri, 14 Jan 2005 18:30:25 +0100 (CET)
-From: moreau francis <francis_moreau2000@yahoo.fr>
-Subject: Re: initrd support.
-To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Cc: linux-mips@linux-mips.org
-In-Reply-To: <20050114154147.GM31149@rembrandt.csv.ica.uni-stuttgart.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jan 2005 19:58:35 +0000 (GMT)
+Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:56072 "EHLO
+	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8225438AbVANT62>;
+	Fri, 14 Jan 2005 19:58:28 +0000
+Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
+	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
+	id 1CpXg4-00022z-00; Fri, 14 Jan 2005 20:04:12 +0000
+Received: from [192.168.192.200] (helo=perivale.mips.com)
+	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1CpXZl-0002sR-00; Fri, 14 Jan 2005 19:57:41 +0000
+Received: from macro (helo=localhost)
+	by perivale.mips.com with local-esmtp (Exim 3.36 #1 (Debian))
+	id 1CpXZl-0005sO-00; Fri, 14 Jan 2005 19:57:41 +0000
+Date: Fri, 14 Jan 2005 19:57:41 +0000 (GMT)
+From: "Maciej W. Rozycki" <macro@mips.com>
+To: Richard Sandiford <rsandifo@redhat.com>
+cc: Atsushi Nemoto <anemo@mba.ocn.ne.jp>, ralf@linux-mips.org,
+	linux-mips@linux-mips.org, macro@linux-mips.org
+Subject: Re: [PATCH] I/O helpers rework
+In-Reply-To: <87k6qh2e6j.fsf@redhat.com>
+Message-ID: <Pine.LNX.4.61.0501141956520.21179@perivale.mips.com>
+References: <Pine.LNX.4.61.0412151936460.14855@perivale.mips.com>
+ <20050107.004521.74752947.anemo@mba.ocn.ne.jp> <Pine.LNX.4.61.0501101503020.18023@perivale.mips.com>
+ <20050111.022138.25909508.anemo@mba.ocn.ne.jp> <Pine.LNX.4.61.0501101750420.18023@perivale.mips.com>
+ <874qhltcyv.fsf@redhat.com> <Pine.LNX.4.61.0501131824350.21179@perivale.mips.com>
+ <87k6qh2e6j.fsf@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Return-Path: <francis_moreau2000@yahoo.fr>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-MTUK-Scanner: Found to be clean
+X-MTUK-SpamCheck: not spam (whitelisted), SpamAssassin (score=-4.715,
+	required 4, AWL, BAYES_00)
+Return-Path: <macro@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6919
+X-archive-position: 6920
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: francis_moreau2000@yahoo.fr
+X-original-sender: macro@mips.com
 Precedence: bulk
 X-list: linux-mips
 
- --- Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-a écrit : 
-> Actually, there are three:
-> - the generic initramfs method for compiled in
-> initrds
-what's the difference with the rd_start/rd_size method
-?
+On Thu, 13 Jan 2005, Richard Sandiford wrote:
 
-> - the addinitrd method to attach a initrd to a
-> precompiled kernel
->   image (which is old, and essentially unmaintained)
-why is it still in kernel's tree ? Is it going to be
-removed ?
+> You can't dereference it, obviously, just like you can't deference a
+> normal "void *".  But you can assign it to any "volatile T *" without
+> an explicit cast.  I assumed that's what was happening in this case?
 
-> - the rd_start/rd_size method, which allows a
-> bootloader to load both
->   kernel and initrd images into memory and then
-> tells the kernel via
->   the rd_start/rd_size parameters where the initrd
-> is located
-Why do I need to provide rd_start/ rd_size setup
-parameters ? It's already provided by vmlinux.lds.S.
+ That's useful, indeed, and I've missed it.  Thanks for the tip.
 
-thanks,
-
-Francis.
-
-
-
-	
-
-	
-		
-Découvrez le nouveau Yahoo! Mail : 250 Mo d'espace de stockage pour vos mails ! 
-Créez votre Yahoo! Mail sur http://fr.mail.yahoo.com/
+  Maciej

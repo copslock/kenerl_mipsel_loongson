@@ -1,76 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Sep 2002 20:19:10 +0200 (CEST)
-Received: from place.org ([65.163.18.18]:26772 "EHLO zachs.place.org")
-	by linux-mips.org with ESMTP id <S1122958AbSIDSTJ>;
-	Wed, 4 Sep 2002 20:19:09 +0200
-Received: by zachs.place.org (Postfix, from userid 1002)
-	id BA443181F4; Wed,  4 Sep 2002 13:19:00 -0500 (CDT)
-Received: from localhost (localhost [127.0.0.1])
-	by zachs.place.org (Postfix) with ESMTP
-	id B87F8180FD; Wed,  4 Sep 2002 13:19:00 -0500 (CDT)
-Date: Wed, 4 Sep 2002 13:19:00 -0500 (CDT)
-From: Jay Carlson <nop@nop.com>
-X-X-Sender: nop@zachs.place.org
-To: Daniel Jacobowitz <dan@debian.org>
-Cc: linux-mips@linux-mips.org
-Subject: Re: soft-float defines in mips-linux gcc config
-In-Reply-To: <20020903191536.GA28999@nevyn.them.org>
-Message-ID: <Pine.LNX.4.44.0209041310310.19597-100000@zachs.place.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Sep 2002 20:27:34 +0200 (CEST)
+Received: from gk2-ext.lineo.com ([64.50.107.253]:6926 "HELO
+	stereotomy.lineo.com") by linux-mips.org with SMTP
+	id <S1122958AbSIDS1d>; Wed, 4 Sep 2002 20:27:33 +0200
+Received: from Lineo.COM (vpn1 [10.9.8.1])
+	by stereotomy.lineo.com (Postfix) with ESMTP id 9AD2F4C2C0
+	for <linux-mips@linux-mips.org>; Wed,  4 Sep 2002 12:27:21 -0600 (MDT)
+Message-ID: <3D765072.60208@Lineo.COM>
+Date: Wed, 04 Sep 2002 12:26:58 -0600
+From: Quinn Jensen <jensenq@Lineo.COM>
+Organization: Lineo, Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.8) Gecko/20020204
+X-Accept-Language: en-us
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <nop@nop.com>
+To: linux-mips@linux-mips.org
+Subject: patch to kaweth.c to align IP header
+Content-Type: multipart/mixed;
+ boundary="------------010208040308010206050609"
+Return-Path: <jensenq@Lineo.COM>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 87
+X-archive-position: 88
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nop@nop.com
+X-original-sender: jensenq@Lineo.COM
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 3 Sep 2002, Daniel Jacobowitz wrote:
+This is a multi-part message in MIME format.
+--------------010208040308010206050609
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 
-> On Tue, Sep 03, 2002 at 08:26:37AM -0400, Jay Carlson wrote:
-> > Right now there is a small bug in how mips-linux configures gcc for
-> > softfloat.
-> >
-> > In gcc/config/mips/t-linux, we set up libgcc to include the soft
-> > floating point code, using the GNU names, like __addsi3.  But because
-> > mips/linux.h includes mips/ecoff.h, gcc produces calls to the GOFAST
-> > style names (like dpmul, very namespace-contaminating.)
-> >
-> > mips/netbsd.h cleans up after mips/elf.h by doing:
-> >
-> > #undef US_SOFTWARE_GOFAST
-> > #undef INIT_SUBTARGET_OPTABS
-> > #define INIT_SUBTARGET_OPTABS
-> >
-> > which would fix the problem for mips/linux.h as well.
->
-> When commenting on GCC issues, please say which version you're talking
-> about -
+All,
 
-It was 3.2; was in a hurry to get this written down before I commuted
-and forgot about it.
+The Kawasaki LSI USB Ethernet driver was causing a crash
+in ipt_do_table() on mips because the address fields in
+the IP header were not word aligned.  Many (all?) other
+ethernet drivers do an skb_reserve of 2 to word align
+the address fields, and doing this in kaweth.c fixed
+my crash.
 
-> I'm pretty sure this is fixed in 3.2,
+kernel: 2.4.17
+hardware: Netgear EA101 USB Ethernet
 
-Scene: Jay, the cartoon character, chasing cartoon bug.  Bug runs off
-cliff, disappears from thin air.  Jay keeps on running, until he
-notices the bug's gone, and he's standing on thin air.  Oops.
+Quinn
 
-After I actually peered at the output of cc1 from 3.2, I agree, you're
-right, the bug is fixed.  I was so used to forward-porting this patch
-from revision to revision that I applied this without even checking
-whether it was necessary.
 
-What I don't understand is *how* the bug got fixed.  It looks like the
-OPTABS should still set us up for the GOFAST library.  Oh well, can't
-argue with working code.
 
-I wish the "-fdata-sections doesn't apply to C++ .bss" bug would get
-fixed while I'm not looking too...although that one might take some
-arguing about for people who are stuck on truly ancient binutils.
+--------------010208040308010206050609
+Content-Type: text/plain;
+ name="linuxtx-kaweth.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="linuxtx-kaweth.patch"
 
-Jay
+diff -puN -r -X - linux/drivers/usb/kaweth.c linux.modified/drivers/usb/kaweth.c
+--- linux/drivers/usb/kaweth.c	Tue Nov 13 10:19:41 2001
++++ linux.modified/drivers/usb/kaweth.c	Tue Sep  3 16:07:08 2002
+@@ -514,6 +514,7 @@ static void kaweth_usb_receive(struct ur
+ 
+ 		skb->dev = net;
+ 
++		skb_reserve(skb, 2);    /* Align IP on 16 byte boundaries */
+ 		eth_copy_and_sum(skb, kaweth->rx_buf + 2, pkt_len, 0);
+ 		
+ 		skb_put(skb, pkt_len);
+
+
+--------------010208040308010206050609--

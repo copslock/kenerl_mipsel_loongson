@@ -1,73 +1,55 @@
-Received:  by oss.sgi.com id <S305157AbQCQSgI>;
-	Fri, 17 Mar 2000 10:36:08 -0800
-Received: from pneumatic-tube.sgi.com ([204.94.214.22]:7545 "EHLO
-        pneumatic-tube.sgi.com") by oss.sgi.com with ESMTP
-	id <S305156AbQCQSfh>; Fri, 17 Mar 2000 10:35:37 -0800
-Received: from cthulhu.engr.sgi.com (gate3-relay.engr.sgi.com [130.62.1.234]) by pneumatic-tube.sgi.com (980327.SGI.8.8.8-aspam/980310.SGI-aspam) via ESMTP id KAA05715; Fri, 17 Mar 2000 10:39:02 -0800 (PST)
+Received:  by oss.sgi.com id <S305158AbQCQVjR>;
+	Fri, 17 Mar 2000 13:39:17 -0800
+Received: from deliverator.sgi.com ([204.94.214.10]:63533 "EHLO
+        deliverator.sgi.com") by oss.sgi.com with ESMTP id <S305156AbQCQVjA>;
+	Fri, 17 Mar 2000 13:39:00 -0800
+Received: from nodin.corp.sgi.com (nodin.corp.sgi.com [192.26.51.193]) by deliverator.sgi.com (980309.SGI.8.8.8-aspam-6.2/980310.SGI-aspam) via ESMTP id NAA00538; Fri, 17 Mar 2000 13:34:22 -0800 (PST)
 	mail_from (owner-linux@cthulhu.engr.sgi.com)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by nodin.corp.sgi.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id NAA38777; Fri, 17 Mar 2000 13:38:29 -0800 (PST)
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id KAA24444
+	id NAA67828
 	for linux-list;
-	Fri, 17 Mar 2000 10:25:20 -0800 (PST)
+	Fri, 17 Mar 2000 13:25:15 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
 Received: from sgi.com (sgi.engr.sgi.com [192.26.80.37])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via ESMTP id KAA76791;
-	Fri, 17 Mar 2000 10:25:17 -0800 (PST)
-	mail_from (kevink@mips.com)
-Received: from mx.mips.com (mx.mips.com [206.31.31.226]) 
+	via ESMTP id NAA70993
+	for <linux@cthulhu.engr.sgi.com>;
+	Fri, 17 Mar 2000 13:25:11 -0800 (PST)
+	mail_from (natorro@adem.fciencias.unam.mx)
+Received: from adem.fciencias.unam.mx (adem.fciencias.unam.mx [132.248.28.57]) 
 	by sgi.com (980327.SGI.8.8.8-aspam/980304.SGI-aspam:
        SGI does not authorize the use of its proprietary
        systems or networks for unsolicited or bulk email
        from the Internet.) 
-	via ESMTP id KAA00351; Fri, 17 Mar 2000 10:25:17 -0800 (PST)
-	mail_from (kevink@mips.com)
-Received: from newman.mips.com (newman [206.31.31.8])
-	by mx.mips.com (8.9.3/8.9.0) with ESMTP id KAA12859;
-	Fri, 17 Mar 2000 10:25:15 -0800 (PST)
-Received: from satanas (satanas [192.168.236.12])
-	by newman.mips.com (8.9.3/8.9.0) with SMTP id KAA15321;
-	Fri, 17 Mar 2000 10:25:14 -0800 (PST)
-Message-ID: <000e01bf903e$a0e864a0$0ceca8c0@satanas.mips.com>
-From:   "Kevin D. Kissell" <kevink@mips.com>
-To:     "William J. Earl" <wje@cthulhu.engr.sgi.com>
-Cc:     "SGI Linux Alias" <linux@cthulhu.engr.sgi.com>
-Subject: Re: Include coherency problem, sigaction and otherwise
-Date:   Fri, 17 Mar 2000 19:28:38 +0100
+	via ESMTP id NAA05697
+	for <linux@cthulhu.engr.sgi.com>; Fri, 17 Mar 2000 13:25:10 -0800 (PST)
+	mail_from (natorro@adem.fciencias.unam.mx)
+From:   natorro@adem.fciencias.unam.mx
+Received: from localhost (natorro@localhost)
+	by adem.fciencias.unam.mx (8.8.7/8.8.7) with SMTP id PAA00823
+	for <linux@cthulhu.engr.sgi.com>; Fri, 17 Mar 2000 15:22:22 -0600
+Date:   Fri, 17 Mar 2000 15:22:22 -0600 (CST)
+To:     linux@cthulhu.engr.sgi.com
+Subject: One more :-)
+In-Reply-To: <200003172121.NAA76616@cthulhu.engr.sgi.com>
+Message-ID: <Pine.LNX.3.96.1000317152030.821A-100000@adem.fciencias.unam.mx>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 4.72.3110.5
-X-MimeOLE: Produced By Microsoft MimeOLE V4.72.3110.3
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linuxmips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linuxmips@oss.sgi.com>
 X-Orcpt: rfc822;linuxmips-outgoing
 
-William J. Earl writes:
->Kevin D. Kissell writes:
-...
-> > I have the impresson that the /usr/include stuff in the 
-> > "Hard Hat" distribution for MIPS is keyed to a 2.0.x kernel, 
-> > and that an update of /usr/include (as opposed to a downgrade 
-> > of the kernel headers) may be in order.
-...
->
->      As near as I can tell, at least for glibc-2.1.1-7, there
->is not machine-dependent <bits/sigaction.h> for mips, so the
->generic one is used, and the definitions are incompatible with the
->MIPS ABI.  The Linux kernel, on the other hand, is compatible with the
->MIPS ABI.  The cure is to supply a MIPS-specific <bits/sigaction.h>.
+Just to tell everybody I finally install linux on the Indy...
+it runs sooo cool :-)
+Thanks to everybody for the help, as they said I just had
+to change my kernel image and that was it.
 
-It's worse than that - the "Hard Hat" 5.1 distribution that serves
-as the reference userland for most SGI/MIPS/Linux platforms
-doesn't even have a /usr/include/bits directory, which seems
-to have been a more recent invention.
+Does anyone know how can I run X on my Indy/Linux box now???
+someone told me I can run the Irix server on linux, can I???
 
-            Regards,
 
-            Kevin K.
+Thanks a lot
+natorro

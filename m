@@ -1,49 +1,36 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1GCHDb27315
-	for linux-mips-outgoing; Sat, 16 Feb 2002 04:17:13 -0800
-Received: from ull.minus-9.com (IDENT:postfix@ull.minus-9.com [195.26.34.2])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1GCH9927312
-	for <linux-mips@oss.sgi.com>; Sat, 16 Feb 2002 04:17:09 -0800
-Received: by ull.minus-9.com (Postfix, from userid 500)
-	id DE43336C922; Sat, 16 Feb 2002 11:20:58 +0000 (GMT)
-Date: Sat, 16 Feb 2002 11:20:58 +0000
-From: Mat Withers <mat@minus-9.com>
-To: Timothy Daly <remote_bob@yahoo.com>
-Cc: linux-mips@oss.sgi.com
+	by oss.sgi.com (8.11.2/8.11.3) id g1GIWbn30505
+	for linux-mips-outgoing; Sat, 16 Feb 2002 10:32:37 -0800
+Received: from localhost (adsl-64-166-230-246.dsl.snfc21.pacbell.net [64.166.230.246])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1GIWW930502
+	for <linux-mips@oss.sgi.com>; Sat, 16 Feb 2002 10:32:35 -0800
+Received: from localhost ([127.0.0.1] helo=snort.org)
+	by localhost with esmtp (Exim 3.34 #1 (Debian))
+	id 16c8g9-0005bX-00; Sat, 16 Feb 2002 09:31:17 -0800
+Message-ID: <3C6E9764.31A271D8@snort.org>
+Date: Sat, 16 Feb 2002 09:31:16 -0800
+From: "Andrew R. Baker" <andrewb@snort.org>
+X-Mailer: Mozilla 4.77 [en] (X11; U; Linux 2.4.17 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: Mat Withers <mat@minus-9.com>
+CC: Timothy Daly <remote_bob@yahoo.com>, linux-mips@oss.sgi.com
 Subject: Re: indigo2 video
-Message-ID: <20020216112058.C8787@minus-9.com>
-References: <20020216105239.5160.qmail@web10208.mail.yahoo.com>
-Mime-Version: 1.0
+References: <20020216105239.5160.qmail@web10208.mail.yahoo.com> <20020216112058.C8787@minus-9.com>
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5.1i
-In-Reply-To: <20020216105239.5160.qmail@web10208.mail.yahoo.com>; from remote_bob@yahoo.com on Sat, Feb 16, 2002 at 02:52:39 -0800
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Timothy Daly (remote_bob@yahoo.com) wrote:
+Mat Withers wrote:
 > 
-> Hi all. :)  
-> 
-> AFAIK, none of the SGI graphics cards for the indigo2 are yet
-> supported by linux or X.  However, it recently struck me, these
-> machines have EISA slots.  It might be pretty straightforward to use
-> an old EISA card like an ATI Mach32 instead.  Sure, it's not as cool
-> as an Impact card, but it's perfectly adequate for emacs.
-> 
-> Is this a good idea? How would you estimate the effort involved?
->
+> I was also wondering this. On the intel architecture EISA slots also
+> supported ISA cards. Is this also the case on the Indigo 2 ? or are the 
+> EISA slots a bit more "non-standard".
 
-I was also wondering this. On the intel architecture EISA slots also supported ISA cards. Is this also the case on the Indigo 2 ? or are the EISA slots a bit more "non-standard".
+The EISA slots on the Indigo2 do support ISA cards.  I was running an
+old 3Com Etherlink III card in a Linux Indigo2 several years ago. 
+Running a video card on one of them may be a bit more tricky, but should
+be possible.
 
-Just a thought
-
-Mat
-
--- 
-
-Mat Withers
-mat@minus-9.com
-http://minus-9.com
-phone/fax: +44 7092 375299
-"a sarcasm detector, *that's* a real useful invention."
+-Andrew

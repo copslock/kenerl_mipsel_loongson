@@ -1,443 +1,56 @@
-Received:  by oss.sgi.com id <S553720AbQLSMrr>;
-	Tue, 19 Dec 2000 04:47:47 -0800
-Received: from viemta06.chello.at ([195.34.133.56]:54779 "EHLO
-        viemta06.chello.at") by oss.sgi.com with ESMTP id <S553657AbQLSMrb>;
-	Tue, 19 Dec 2000 04:47:31 -0800
-Received: from katze.cyrius.com ([213.47.247.121]) by viemta06.chello.at
-          (InterMail vK.4.02.00.10 201-232-116-110 license 9caa03a7df1d31c048ffcc0d31ac5855)
-          with ESMTP
-          id <20001219124728.EJOX16613.viemta06@katze.cyrius.com>;
-          Tue, 19 Dec 2000 13:47:28 +0100
-Received: by katze.cyrius.com (Postfix, from userid 1000)
-	id 5BD2318198; Tue, 19 Dec 2000 13:48:29 +0100 (MET)
-Date:   Tue, 19 Dec 2000 13:48:29 +0100
-From:   Martin Michlmayr <tbm@cyrius.com>
-To:     Florian Lohoff <flo@rfc822.org>
-Cc:     linux-mips@oss.sgi.com
-Subject: Re: Kernel Oops when booting on DECstation
-Message-ID: <20001219134828.A361@katze.cyrius.com>
-References: <20001216085603.A514@sumpf.cyrius.com> <20001218120714.C401@paradigm.rfc822.org>
-Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="MGYHOYXEY6WxJCY8"
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20001218120714.C401@paradigm.rfc822.org>; from flo@rfc822.org on Mon, Dec 18, 2000 at 12:07:14PM +0100
+Received:  by oss.sgi.com id <S553729AbQLSNaG>;
+	Tue, 19 Dec 2000 05:30:06 -0800
+Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:30611 "EHLO
+        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553700AbQLSN3v>;
+	Tue, 19 Dec 2000 05:29:51 -0800
+Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id OAA13387;
+	Tue, 19 Dec 2000 14:25:34 +0100 (MET)
+Date:   Tue, 19 Dec 2000 14:25:33 +0100 (MET)
+From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+To:     Jun Sun <jsun@mvista.com>, Ralf Baechle <ralf@uni-koblenz.de>
+cc:     linux-mips@oss.sgi.com
+Subject: Re: MIPS_ATOMIC_SET in sys_sysmips()
+In-Reply-To: <3A3EC1FF.9B86E2AC@mvista.com>
+Message-ID: <Pine.GSO.3.96.1001219140739.10024F-100000@delta.ds2.pg.gda.pl>
+Organization: Technical University of Gdansk
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
+On Mon, 18 Dec 2000, Jun Sun wrote:
 
---MGYHOYXEY6WxJCY8
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-* Florian Lohoff <flo@rfc822.org> [20001218 12:07]:
-> I have the suspicion that you are running into a bug Harald and me
-> solved when booting my /150 from Disk. It seems the Firmware KN04 V2.1k
+> It looks like sometime after test5 the MIPS_ATOMIC_SET case in sys_sysmips()
+> function in the CVS tree is changed.  The new code now uses ll/sc instructions
+> and handles syscall trace, etc.. 
 > 
-> I guess the backtrace is bogus but i might be wrong. I would recommend
-> trying to compile a current cvs kernel yourself and retry.
+> This change does not make sense to me.  The userland typically uses
+> MIPS_ATOMIC_SET when ll/sc instructions are not available.  But the new code
+> itself uses ll/sc, which pretty much forfeit the purpose.  Or do I miss
+> something else?
 
-I compiled a current CVS kernel (as of 2000-Dec-18) and I still get
-the same problem:
+ There is no problem with using ll/sc in sysmips() itself for machines
+that support them. 
 
-KN02-BA V5.7e    (PC: 0xbfc00cbc, SP: 0xa000f404)
-^C
->>boot 3/rz2/vmlinux root=/dev/sda1 console=ttyS2
->> NetBSD/pmax Secondary Boot, Revision 1.0
->> (root@vlad, Sat Mar  4 14:34:30 EST 2000)
-Boot: 3/rz2/vmlinux
-1589960+134048+142976 [204+126192+119611]=0x205ebc
-Starting at 0x800405ac
+> What do we offer to machines without ll/sc?
 
-This DECstation is a DS5000/1xx
-Loading R[23]00 MMU routines.
-CPU revision is: 00000230
-Primary instruction cache 64kb, linesize 4 bytes
-Primary data cache 64kb, linesize 4 bytes
-Linux version 2.4.0-test11 (tbm@katze.cyrius.com) (gcc version egcs-2.91.66 19990314 (egcs-1.1.2 release)) #6 Mon Dec 18 18:47:44 MET 2000
-Determined physical RAM map:
- memory: 02000000 @ 00000000 (usable)
-On node 0 totalpages: 8192
-zone(0): 8192 pages.
-zone(1): 0 pages.
-zone(2): 0 pages.
-Kernel command line: console=ttyS2
-Calibrating delay loop... 24.71 BogoMIPS
-Memory: 30128k/32768k available (1552k kernel code, 2640k reserved, 70k data, 60k init)
-Dentry-cache hash table entries: 4096 (order: 3, 32768 bytes)
-Buffer-cache hash table entries: 1024 (order: 0, 4096 bytes)
-Page-cache hash table entries: 8192 (order: 3, 32768 bytes)
-Inode-cache hash table entries: 2048 (order: 2, 16384 bytes)
-Checking for 'wait' instruction...  unavailable.
-POSIX conformance testing by UNIFIX
-Unable to handle kernel paging request at virtual address 00000004, epc == 8005a16c, ra == 8005a124
-Oops in fault.c:do_page_fault, line 172:
-$0 : 00000000 10002000 80720410 00000000 80720410 00000000 81088460 10002000
-$8 : 00000000 00000000 00000000 00000000 00bc8000 fffffff7 ffffffff 8021f180
-$16: 00010f00 8021c000 00000000 80048000 30464354 a0002f88 fffffff4 00010f00
-$24: 00000001 0000000a                   80720000 80720f58 80721090 8005a124
-epc  : 8005a16c
-Status: 10002004
-Cause : 30000008
-Process  (pid: 0, stackpage=80720000)
-Stack: 80061d94 00000001 000000c0 80061a58 801e0eec 800f82fc 00000000 00000000
-       00000000 80720f7c 80720f7c 00000023 00000000 00000000 00000000 80720f7c
-       80720f7c 00000023 00010f00 00010000 00000000 80048000 30464354 a0002f88
-       bfc00cbc a000f404 40208a0a 8004e1a8 00000000 00000020 80720fe0 00000000
-       8004b46c 00002617 00010f00 00000000 80721090 00002617 00bc8000 fffffff7
-       00000000 ...
-Call Trace: [<80061d94>] [<80061a58>] [<800f82fc>] [<80048000>] [<8004e1a8>] [<8004b46c>]
-Code: 24630010  8e2501d4  8e230218 <8ca20004> 00000000  0043102b  10400431  2416fff5  40046000
+ I asked Ralf for a clarification of the sysmips(MIPS_ATOMIC_SET, ...) 
+call before I write better code.  No response so far.  I'm now really
+cosidering implementing the Ultrix atomic_op() syscall -- at least it has
+a well-known defined behaviour. 
 
-sym2call says:
+> BTW, what is the wrong with previous code?  I understand it may be broken in
+> SMP case, but I think that is fixable.  Comments?
 
-Address		Function
+ The previous code was definitely broken -- depending on the path taken it
+would return either the value fetched from memory or an error code.  No
+way to distinguish between them. 
 
-80061d94	tasklet_hi_action
-80061a58	do_softirq
-800f82fc	do_IRQ
-80048000	init
-8004e1a8	_sys_clone
-8004b46c	stack_done
+  Maciej
 
-The config file used to build the kernel is enclosed below.
 -- 
-Martin Michlmayr
-tbm@cyrius.com
-
---MGYHOYXEY6WxJCY8
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename=config
-
-#
-# Automatically generated by make menuconfig: don't edit
-#
-
-#
-# Code maturity level options
-#
-CONFIG_EXPERIMENTAL=y
-
-#
-# Machine selection
-#
-# CONFIG_ACER_PICA_61 is not set
-# CONFIG_ALGOR_P4032 is not set
-# CONFIG_BAGET_MIPS is not set
-CONFIG_DECSTATION=y
-# CONFIG_DDB5074 is not set
-# CONFIG_DDB5476 is not set
-# CONFIG_MIPS_EV96100 is not set
-# CONFIG_MIPS_EV64120 is not set
-# CONFIG_MIPS_ATLAS is not set
-# CONFIG_MIPS_MALTA is not set
-# CONFIG_MIPS_MAGNUM_4000 is not set
-# CONFIG_OLIVETTI_M700 is not set
-# CONFIG_PMC_CP7000 is not set
-# CONFIG_SGI_IP22 is not set
-# CONFIG_SNI_RM200_PCI is not set
-# CONFIG_MCA is not set
-# CONFIG_SBUS is not set
-# CONFIG_ISA is not set
-# CONFIG_EISA is not set
-# CONFIG_PCI is not set
-# CONFIG_I8259 is not set
-
-#
-# Loadable module support
-#
-CONFIG_MODULES=y
-# CONFIG_MODVERSIONS is not set
-CONFIG_KMOD=y
-
-#
-# CPU selection
-#
-CONFIG_CPU_R3000=y
-# CONFIG_CPU_R6000 is not set
-# CONFIG_CPU_R4300 is not set
-# CONFIG_CPU_R4X00 is not set
-# CONFIG_CPU_R5000 is not set
-# CONFIG_CPU_R5432 is not set
-# CONFIG_CPU_RM7000 is not set
-# CONFIG_CPU_NEVADA is not set
-# CONFIG_CPU_R8000 is not set
-# CONFIG_CPU_R10000 is not set
-# CONFIG_CPU_MIPS32 is not set
-# CONFIG_CPU_ADVANCED is not set
-# CONFIG_CPU_HAS_LLSC is not set
-CONFIG_CPU_HAS_WB=y
-
-#
-# General setup
-#
-CONFIG_CPU_LITTLE_ENDIAN=y
-CONFIG_MIPS_FPU_EMULATOR=y
-CONFIG_KCORE_ELF=y
-CONFIG_ELF_KERNEL=y
-# CONFIG_BINFMT_AOUT is not set
-CONFIG_BINFMT_ELF=y
-# CONFIG_BINFMT_MISC is not set
-CONFIG_NET=y
-CONFIG_SYSVIPC=y
-# CONFIG_BSD_PROCESS_ACCT is not set
-CONFIG_SYSCTL=y
-
-#
-# Parallel port support
-#
-# CONFIG_PARPORT is not set
-CONFIG_TC=y
-# CONFIG_PCMCIA is not set
-
-#
-# Memory Technology Devices (MTD)
-#
-# CONFIG_MTD is not set
-
-#
-# Block devices
-#
-# CONFIG_BLK_DEV_FD is not set
-# CONFIG_BLK_DEV_XD is not set
-# CONFIG_PARIDE is not set
-# CONFIG_BLK_CPQ_DA is not set
-# CONFIG_BLK_CPQ_CISS_DA is not set
-# CONFIG_BLK_DEV_DAC960 is not set
-CONFIG_BLK_DEV_LOOP=y
-CONFIG_BLK_DEV_NBD=m
-# CONFIG_BLK_DEV_RAM is not set
-# CONFIG_BLK_DEV_INITRD is not set
-
-#
-# Multi-device support (RAID and LVM)
-#
-# CONFIG_MD is not set
-# CONFIG_BLK_DEV_MD is not set
-# CONFIG_MD_LINEAR is not set
-# CONFIG_MD_RAID0 is not set
-# CONFIG_MD_RAID1 is not set
-# CONFIG_MD_RAID5 is not set
-# CONFIG_BLK_DEV_LVM is not set
-# CONFIG_LVM_PROC_FS is not set
-
-#
-# Networking options
-#
-CONFIG_PACKET=y
-# CONFIG_PACKET_MMAP is not set
-# CONFIG_NETLINK is not set
-# CONFIG_NETFILTER is not set
-# CONFIG_FILTER is not set
-CONFIG_UNIX=y
-CONFIG_INET=y
-# CONFIG_IP_MULTICAST is not set
-# CONFIG_IP_ADVANCED_ROUTER is not set
-CONFIG_IP_PNP=y
-CONFIG_IP_PNP_BOOTP=y
-# CONFIG_IP_PNP_RARP is not set
-# CONFIG_NET_IPIP is not set
-# CONFIG_NET_IPGRE is not set
-# CONFIG_INET_ECN is not set
-# CONFIG_SYN_COOKIES is not set
-# CONFIG_IPV6 is not set
-# CONFIG_KHTTPD is not set
-# CONFIG_ATM is not set
-# CONFIG_IPX is not set
-# CONFIG_ATALK is not set
-# CONFIG_DECNET is not set
-# CONFIG_BRIDGE is not set
-# CONFIG_X25 is not set
-# CONFIG_LAPB is not set
-# CONFIG_LLC is not set
-# CONFIG_NET_DIVERT is not set
-# CONFIG_ECONET is not set
-# CONFIG_WAN_ROUTER is not set
-# CONFIG_NET_FASTROUTE is not set
-# CONFIG_NET_HW_FLOWCONTROL is not set
-
-#
-# QoS and/or fair queueing
-#
-# CONFIG_NET_SCHED is not set
-
-#
-# SCSI support
-#
-CONFIG_SCSI=y
-CONFIG_BLK_DEV_SD=y
-CONFIG_SD_EXTRA_DEVS=40
-# CONFIG_CHR_DEV_ST is not set
-CONFIG_BLK_DEV_SR=y
-# CONFIG_BLK_DEV_SR_VENDOR is not set
-CONFIG_SR_EXTRA_DEVS=2
-# CONFIG_CHR_DEV_SG is not set
-# CONFIG_SCSI_DEBUG_QUEUES is not set
-# CONFIG_SCSI_MULTI_LUN is not set
-CONFIG_SCSI_CONSTANTS=y
-# CONFIG_SCSI_LOGGING is not set
-
-#
-# SCSI low-level drivers
-#
-CONFIG_SCSI_DECNCR=y
-# CONFIG_SCSI_DECSII is not set
-# CONFIG_SCSI_7000FASST is not set
-# CONFIG_SCSI_ACARD is not set
-# CONFIG_SCSI_AHA152X is not set
-# CONFIG_SCSI_AHA1542 is not set
-# CONFIG_SCSI_AHA1740 is not set
-# CONFIG_SCSI_AIC7XXX is not set
-# CONFIG_SCSI_ADVANSYS is not set
-# CONFIG_SCSI_IN2000 is not set
-# CONFIG_SCSI_AM53C974 is not set
-# CONFIG_SCSI_MEGARAID is not set
-# CONFIG_SCSI_BUSLOGIC is not set
-# CONFIG_SCSI_DMX3191D is not set
-# CONFIG_SCSI_DTC3280 is not set
-# CONFIG_SCSI_EATA is not set
-# CONFIG_SCSI_EATA_DMA is not set
-# CONFIG_SCSI_EATA_PIO is not set
-# CONFIG_SCSI_FUTURE_DOMAIN is not set
-# CONFIG_SCSI_GDTH is not set
-# CONFIG_SCSI_GENERIC_NCR5380 is not set
-# CONFIG_SCSI_INITIO is not set
-# CONFIG_SCSI_INIA100 is not set
-# CONFIG_SCSI_NCR53C406A is not set
-# CONFIG_SCSI_NCR53C7xx is not set
-# CONFIG_SCSI_PAS16 is not set
-# CONFIG_SCSI_PCI2000 is not set
-# CONFIG_SCSI_PCI2220I is not set
-# CONFIG_SCSI_PSI240I is not set
-# CONFIG_SCSI_QLOGIC_FAS is not set
-# CONFIG_SCSI_SIM710 is not set
-# CONFIG_SCSI_SYM53C416 is not set
-# CONFIG_SCSI_T128 is not set
-# CONFIG_SCSI_U14_34F is not set
-# CONFIG_SCSI_DEBUG is not set
-
-#
-# Network device support
-#
-CONFIG_NETDEVICES=y
-# CONFIG_DUMMY is not set
-# CONFIG_SLIP is not set
-# CONFIG_PPP is not set
-CONFIG_DECLANCE=y
-
-#
-# DECStation Character devices
-#
-# CONFIG_VT is not set
-CONFIG_SERIAL=y
-# CONFIG_DZ is not set
-CONFIG_ZS=y
-CONFIG_SERIAL_CONSOLE=y
-# CONFIG_UNIX98_PTYS is not set
-CONFIG_RTC=y
-
-#
-# File systems
-#
-# CONFIG_QUOTA is not set
-CONFIG_AUTOFS_FS=y
-CONFIG_AUTOFS4_FS=y
-# CONFIG_ADFS_FS is not set
-# CONFIG_ADFS_FS_RW is not set
-# CONFIG_AFFS_FS is not set
-# CONFIG_HFS_FS is not set
-# CONFIG_BFS_FS is not set
-# CONFIG_FAT_FS is not set
-# CONFIG_MSDOS_FS is not set
-# CONFIG_UMSDOS_FS is not set
-# CONFIG_VFAT_FS is not set
-# CONFIG_EFS_FS is not set
-# CONFIG_JFFS_FS is not set
-# CONFIG_CRAMFS is not set
-# CONFIG_RAMFS is not set
-CONFIG_ISO9660_FS=y
-# CONFIG_JOLIET is not set
-# CONFIG_MINIX_FS is not set
-# CONFIG_NTFS_FS is not set
-# CONFIG_NTFS_RW is not set
-# CONFIG_HPFS_FS is not set
-CONFIG_PROC_FS=y
-# CONFIG_DEVFS_FS is not set
-# CONFIG_DEVFS_MOUNT is not set
-# CONFIG_DEVFS_DEBUG is not set
-# CONFIG_DEVPTS_FS is not set
-# CONFIG_QNX4FS_FS is not set
-# CONFIG_QNX4FS_RW is not set
-# CONFIG_ROMFS_FS is not set
-CONFIG_EXT2_FS=y
-# CONFIG_SYSV_FS is not set
-# CONFIG_SYSV_FS_WRITE is not set
-# CONFIG_UDF_FS is not set
-# CONFIG_UDF_RW is not set
-# CONFIG_UFS_FS is not set
-# CONFIG_UFS_FS_WRITE is not set
-
-#
-# Network File Systems
-#
-# CONFIG_CODA_FS is not set
-CONFIG_NFS_FS=y
-# CONFIG_NFS_V3 is not set
-CONFIG_ROOT_NFS=y
-CONFIG_NFSD=y
-# CONFIG_NFSD_V3 is not set
-CONFIG_SUNRPC=y
-CONFIG_LOCKD=y
-# CONFIG_SMB_FS is not set
-# CONFIG_NCP_FS is not set
-# CONFIG_NCPFS_PACKET_SIGNING is not set
-# CONFIG_NCPFS_IOCTL_LOCKING is not set
-# CONFIG_NCPFS_STRONG is not set
-# CONFIG_NCPFS_NFS_NS is not set
-# CONFIG_NCPFS_OS2_NS is not set
-# CONFIG_NCPFS_SMALLDOS is not set
-# CONFIG_NCPFS_MOUNT_SUBDIR is not set
-# CONFIG_NCPFS_NDS_DOMAINS is not set
-# CONFIG_NCPFS_NLS is not set
-# CONFIG_NCPFS_EXTRAS is not set
-
-#
-# Partition Types
-#
-CONFIG_PARTITION_ADVANCED=y
-# CONFIG_ACORN_PARTITION is not set
-CONFIG_OSF_PARTITION=y
-# CONFIG_AMIGA_PARTITION is not set
-# CONFIG_ATARI_PARTITION is not set
-# CONFIG_MAC_PARTITION is not set
-CONFIG_MSDOS_PARTITION=y
-CONFIG_BSD_DISKLABEL=y
-# CONFIG_SOLARIS_X86_PARTITION is not set
-# CONFIG_UNIXWARE_DISKLABEL is not set
-# CONFIG_SGI_PARTITION is not set
-CONFIG_ULTRIX_PARTITION=y
-CONFIG_SUN_PARTITION=y
-# CONFIG_NLS is not set
-
-#
-# USB support
-#
-# CONFIG_USB is not set
-
-#
-# Input core support
-#
-# CONFIG_INPUT is not set
-
-#
-# Kernel hacking
-#
-CONFIG_CROSSCOMPILE=y
-# CONFIG_MIPS_FPE_MODULE is not set
-# CONFIG_REMOTE_DEBUG is not set
-# CONFIG_MAGIC_SYSRQ is not set
-# CONFIG_MIPS_UNCACHED is not set
-
---MGYHOYXEY6WxJCY8--
++  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
++--------------------------------------------------------------+
++        e-mail: macro@ds2.pg.gda.pl, PGP key available        +

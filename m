@@ -1,94 +1,92 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 May 2004 22:49:30 +0100 (BST)
-Received: from p508B5AFA.dip.t-dialin.net ([IPv6:::ffff:80.139.90.250]:64600
-	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8225783AbUEJVt3>; Mon, 10 May 2004 22:49:29 +0100
-Received: from fluff.linux-mips.net (fluff.linux-mips.net [127.0.0.1])
-	by mail.linux-mips.net (8.12.8/8.12.8) with ESMTP id i4ALnRxT012350;
-	Mon, 10 May 2004 23:49:27 +0200
-Received: (from ralf@localhost)
-	by fluff.linux-mips.net (8.12.8/8.12.8/Submit) id i4ALnR38012349;
-	Mon, 10 May 2004 23:49:27 +0200
-Date: Mon, 10 May 2004 23:49:27 +0200
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Emmanuel Michon <em@realmagic.fr>
-Cc: linux-mips@linux-mips.org
-Subject: Re: new platform
-Message-ID: <20040510214927.GB22442@linux-mips.org>
-References: <1084199090.12536.1314.camel@avalon.france.sdesigns.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1084199090.12536.1314.camel@avalon.france.sdesigns.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 May 2004 04:39:53 +0100 (BST)
+Received: from ispmxmta09-srv.alltel.net ([IPv6:::ffff:166.102.165.170]:18606
+	"EHLO ispmxmta09-srv.alltel.net") by linux-mips.org with ESMTP
+	id <S8224769AbUEKDjw>; Tue, 11 May 2004 04:39:52 +0100
+Received: from lahoo.priv ([69.40.149.10]) by ispmxmta09-srv.alltel.net
+          with ESMTP
+          id <20040511033942.OZXT13302.ispmxmta09-srv.alltel.net@lahoo.priv>;
+          Mon, 10 May 2004 22:39:42 -0500
+Received: from prefect.priv ([10.1.1.141] helo=prefect)
+	by lahoo.priv with smtp (Exim 3.36 #1 (Debian))
+	id 1BNO3k-0002P8-00; Mon, 10 May 2004 23:36:00 -0400
+Message-ID: <02fd01c43709$981a24a0$8d01010a@prefect>
+From: "Bradley D. LaRonde" <brad@laronde.org>
+To: "Richard Sandiford" <rsandifo@redhat.com>
+Cc: <uclibc@uclibc.org>, <linux-mips@linux-mips.org>
+References: <045b01c43155$1e06cd80$8d01010a@prefect><874qqpg2ti.fsf@redhat.com> <012701c43607$83aa65f0$8d01010a@prefect><87pt9cwwzu.fsf@redhat.com> <00e201c436b9$5fa0f450$8d01010a@prefect><878yg0m9db.fsf@redhat.com> <01a901c436ce$7029d890$8d01010a@prefect> <87oeowkoa6.fsf@redhat.com>
+Subject: Re: uclibc mips ld.so and undefined symbols with nonzero symbol table entry st_value
+Date: Mon, 10 May 2004 23:39:41 -0400
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2800.1409
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1409
+Return-Path: <brad@laronde.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4970
+X-archive-position: 4971
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: brad@laronde.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, May 10, 2004 at 04:24:51PM +0200, Emmanuel Michon wrote:
+----- Original Message ----- 
+From: "Richard Sandiford" <rsandifo@redhat.com>
+To: "Bradley D. LaRonde" <brad@laronde.org>
+Cc: <uclibc@uclibc.org>; <linux-mips@linux-mips.org>
+Sent: Monday, May 10, 2004 4:41 PM
+Subject: Re: uclibc mips ld.so and undefined symbols with nonzero symbol
+table entry st_value
 
-> I plan to port linux-mips to a a 32bit 4KEc based (little endian)
-> hardware design.
-> 
-> I have three questions:
-> 
-> Q1- The nice book `see mips run' states that it's better that the
-> physical address map fits entirely in kseg1 (in 0x0-0x2000_0000).
-> 
-> I would not be the first to plan for a lot of RAM and I understand
-> HIGHMEM patch is ok if an extra RAM area is out of reach of kseg1.
 
-Using highmem in general is a baaad idea.  The option only exists at all
-for MIPS because of a user who didn't want to try something as unorthodox
-as 64-bit kernels ...
+> "Bradley D. LaRonde" <brad@laronde.org> writes:
+> > I read this in the spec:
+> >
+> >     All externally visible symbols, both defined and undefined,
+> >     must be hashed into the hash table.
+> >
+> > Should libpthread's malloc stub be added to the hash table?
+>
+> Yes.
+>
+> > I guess not, but I think that might be happening (haven't verified),
+> > and libdl finding it in there and thinking it is the real deal, not
+> > realizing it is just a stub.
+>
+> If you have an undefined function symbol with st_value != 0, then
+> that st_value must be for a stub.  That's how the loader can (and is
+> supposed to) tell the difference.
+>
+> It's probably a good idea to look at how glibc handles this.
 
-Highmem implies significant extra overhead and complexity for software
-that runs in kernel space.  Avoid like the plague if you can.
+uClibc/ldso/ldso/mips/elfinterp.c around line 288 looks like this:
 
-> But what if my PCI devices I/O do not lie in kseg1? I may program the
-> TLB to see them thru kseg2 (but kseg2 seems to be the place where page
-> tables are stored...)
 
-Doesn't really matter.  It's nice to have devices in the lower 512MB of
-physical address space because that means the TLB will not be used - a
-nice performance bonus.
+    /* Relocate the global GOT entries for the object */
+    while(i--) {
+      if (sym->st_shndx == SHN_UNDEF) {
+        if (ELF32_ST_TYPE(sym->st_info) == STT_FUNC && sym->st_value)
+          *got_entry = sym->st_value + (unsigned long) tpnt->loadaddr;
+        else {
+          *got_entry = (unsigned long) _dl_find_hash(strtab +
+             sym->st_name, tpnt->symbol_scope, ELF_RTYPE_CLASS_COPY);
+        }
+     }
 
-Whatever - the driver API to use is ioremap.
 
-> Q2- Most hardware platforms have their SDRAM chips mapped at
-> physical address 0x0. Mine does not. Am I going ahead of problems?
+If I change that ELF_RTYPE_CLASS_COPY to ELF_RTYPE_CLASS_PLT to tell
+_dl_find_hash to ignore stubs when resolving undefined functions without
+stubs, the dlopen tests all pass.  dlopen gets a pointer to the libc.so
+malloc instead of a pointer to the libpthread malloc stub.  Yay!  :-)
 
-It won't work ;-)
+Does that look like the correct fix?
 
-You at least need some memory at physical address zero because exception
-vectors are located in the first few k of physical address space.  Of
-course you could avoid that by having the BEV bit set in the status
-register so exceptions would go via 0xbfc00000 - but that's an uncached
-address, likely even in a flash so performance would go down the drain ...
 
-> It seems to be assumed at a lot of places (I have already ported YAMON).
-> 
-> Q3- I'd rather stick to a 2.4.x linux port. But... should I use:
-
-Depending on what exactly you want to do you should take a look at 2.6.
-
-> a- the latest official 2.4.x kernel
-> b- the latest 2.4.x-preY kernel
-
-kernel.org kernels won't work out of the box or at least your chances
-are worse due to the lag in merging MIPS code from to kernel.org.
-
-> c- the latest linux-mips.org 2.4.x kernel
-> d- cvs -z3 -d :pserver:cvs@ftp.linux-mips.org:/home/cvs co -r linux_2_4
-
-D - where C and D are the basically the same anyway - I've stopped making
-snapshot tarballs years ago, so you'll have to fetch from cvs.
-
-  Ralf
+Regards,
+Brad

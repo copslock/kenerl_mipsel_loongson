@@ -1,55 +1,41 @@
-Received:  by oss.sgi.com id <S553755AbQLNS7v>;
-	Thu, 14 Dec 2000 10:59:51 -0800
-Received: from delta.ds2.pg.gda.pl ([153.19.144.1]:4046 "EHLO
-        delta.ds2.pg.gda.pl") by oss.sgi.com with ESMTP id <S553747AbQLNS7o>;
-	Thu, 14 Dec 2000 10:59:44 -0800
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id TAA28285;
-	Thu, 14 Dec 2000 19:49:39 +0100 (MET)
-Date:   Thu, 14 Dec 2000 19:49:38 +0100 (MET)
-From:   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To:     Karel van Houten <K.H.C.vanHouten@research.kpn.com>
-cc:     Martin Michlmayr <tbm@lanscape.net>, linux-mips@oss.sgi.com
-Subject: Re: Cannot type on DECstation prom
-In-Reply-To: <200012141830.TAA01589@sparta.research.kpn.com>
-Message-ID: <Pine.GSO.3.96.1001214194542.22290J-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Received:  by oss.sgi.com id <S553761AbQLNVCW>;
+	Thu, 14 Dec 2000 13:02:22 -0800
+Received: from wn42-146.sdc.org ([209.155.42.146]:65263 "EHLO lappi")
+	by oss.sgi.com with ESMTP id <S553759AbQLNVB6>;
+	Thu, 14 Dec 2000 13:01:58 -0800
+Received: (ralf@lappi) by bacchus.dhis.org id <S868680AbQLNU7d>;
+	Thu, 14 Dec 2000 13:59:33 -0700
+Date:	Thu, 14 Dec 2000 21:59:33 +0100
+From:	Ralf Baechle <ralf@oss.sgi.com>
+To:	Carsten Langgaard <carstenl@mips.com>
+Cc:	linux-mips@oss.sgi.com
+Subject: Re: 64 bit build fails
+Message-ID: <20001214215933.C28871@bacchus.dhis.org>
+References: <3A379CBC.ED1D9F@mips.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0.1i
+In-Reply-To: <3A379CBC.ED1D9F@mips.com>; from carstenl@mips.com on Wed, Dec 13, 2000 at 04:58:52PM +0100
+X-Accept-Language: de,en,fr
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Thu, 14 Dec 2000, Karel van Houten wrote:
+On Wed, Dec 13, 2000 at 04:58:52PM +0100, Carsten Langgaard wrote:
 
-> These DECStations require full modem control signals on the
-> prom console. I would build a D25 serial modem-faker cable:
+> I'm trying to build a 64bit kernel, but it fails with following message:
 > 
->  1 ------------------- 1
-> 
->  2 -------\ /--------- 2
->            X
->  3 -------/ \--------- 3
-> 
->  4 -+               +- 4
->     |               |
->  5 -+               +- 5
-> 
->  6 -+               +- 6
->     |               |
->  7 -)---------------)- 7
->     |               |
->  8 -+               +- 8
->     |               |
-> 20 -+               +- 20
-> 
-> This should work.
+> mips64-linux-gcc -D__KERNEL__
+> -I/home/soc/proj/work/carstenl/sw/linux-2.4.0/include -Wall
+> -Wstrict-prototypes -O2 -fomit-frame-pointer -fno-strict-aliasing
+> -mabi=64 -G 0 -mno-abicalls -fno-pic -Wa,--trap -pipe -mcpu=r8000 -mips4
+> -Wa,-32   -c head.S -o head.o
+> head.S: Assembler messages:
+> head.S:69: Error: Missing ')' assumed
 
- It would work for firmware, but it would break for RTS/CTS hanshaking
-(the standard one these days).  At 9600bps you may well live with it, but
-for anything faster you'll likely lose characters. 
+Looks like an attempt to build a 64-bit Indy kernel.  Various people working
+on the Origin support have completly broken the support for anything else in
+their battle tank-style approach ...
 
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+  Ralf

@@ -1,26 +1,34 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g0LJwvs10055
-	for linux-mips-outgoing; Mon, 21 Jan 2002 11:58:57 -0800
-Received: from ocean.lucon.org (12-234-19-19.client.attbi.com [12.234.19.19])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0LJwsP10048
-	for <linux-mips@oss.sgi.com>; Mon, 21 Jan 2002 11:58:54 -0800
-Received: by ocean.lucon.org (Postfix, from userid 1000)
-	id 06BDE125C0; Mon, 21 Jan 2002 10:58:50 -0800 (PST)
-Date: Mon, 21 Jan 2002 10:58:50 -0800
-From: "H . J . Lu" <hjl@lucon.org>
-To: Ulrich Drepper <drepper@redhat.com>
-Cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+	by oss.sgi.com (8.11.2/8.11.3) id g0LK12Y10216
+	for linux-mips-outgoing; Mon, 21 Jan 2002 12:01:02 -0800
+Received: from nevyn.them.org (mail@NEVYN.RES.CMU.EDU [128.2.145.6])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g0LK0wP10202
+	for <linux-mips@oss.sgi.com>; Mon, 21 Jan 2002 12:00:59 -0800
+Received: from drow by nevyn.them.org with local (Exim 3.33 #1 (Debian))
+	id 16Sjew-0006z3-00; Mon, 21 Jan 2002 13:59:10 -0500
+Date: Mon, 21 Jan 2002 13:59:10 -0500
+From: Daniel Jacobowitz <dan@debian.org>
+To: "H . J . Lu" <hjl@lucon.org>
+Cc: Ulrich Drepper <drepper@redhat.com>,
+   "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
    "Kevin D. Kissell" <kevink@mips.com>,
    Machida Hiroyuki <machida@sm.sony.co.jp>,
    GNU C Library <libc-alpha@sources.redhat.com>, linux-mips@oss.sgi.com
 Subject: Re: thread-ready ABIs
-Message-ID: <20020121105850.A28350@lucon.org>
+Message-ID: <20020121135910.A26790@nevyn.them.org>
+Mail-Followup-To: "H . J . Lu" <hjl@lucon.org>,
+	Ulrich Drepper <drepper@redhat.com>,
+	"Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
+	"Kevin D. Kissell" <kevink@mips.com>,
+	Machida Hiroyuki <machida@sm.sony.co.jp>,
+	GNU C Library <libc-alpha@sources.redhat.com>,
+	linux-mips@oss.sgi.com
 References: <003701c1a25f$8abfc120$0deca8c0@Ulysses> <Pine.GSO.3.96.1020121144413.22392C-100000@delta.ds2.pg.gda.pl> <20020121102455.A27606@lucon.org> <m3zo37tutx.fsf@myware.mynet> <20020121105253.B28087@lucon.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <20020121105253.B28087@lucon.org>; from hjl@lucon.org on Mon, Jan 21, 2002 at 10:52:53AM -0800
+In-Reply-To: <20020121105253.B28087@lucon.org>
+User-Agent: Mutt/1.3.23i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
@@ -42,9 +50,13 @@ On Mon, Jan 21, 2002 at 10:52:53AM -0800, H . J . Lu wrote:
 > register. We don't have to change anything when compiling applications.
 > We only need to compile glibc with $23 reserved as the thread register.
 
-In another word, is a thread register purely a convention within glibc
-as long as it doesn't change when entering glibc?
+That's not right.  If it is call-saved in the application, that means
+the application can use it.  Main may have to restore it before it
+returns to __libc_start_main, but that doesn't do you any good.
 
+It doesn't change across function calls, but it does change inside
+function calls.
 
-
-H.J.
+-- 
+Daniel Jacobowitz                           Carnegie Mellon University
+MontaVista Software                         Debian GNU/Linux Developer

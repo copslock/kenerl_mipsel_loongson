@@ -1,84 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Nov 2004 06:16:29 +0000 (GMT)
-Received: from mail.baslerweb.com ([IPv6:::ffff:145.253.187.130]:41675 "EHLO
-	mail.baslerweb.com") by linux-mips.org with ESMTP
-	id <S8224898AbUKVGQY>; Mon, 22 Nov 2004 06:16:24 +0000
-Received: (from mail@localhost)
-	by mail.baslerweb.com (8.12.10/8.12.10) id iAM6E4HN012332
-	for <linux-mips@linux-mips.org>; Mon, 22 Nov 2004 07:14:04 +0100
-Received: from unknown by gateway id /var/KryptoWall/smtpp/kwL0JuON; Mon Nov 22 07:13:05 2004
-From: Thomas Koeller <thomas.koeller@baslerweb.com>
-Organization: Basler AG
-To: Manish Lachwani <mlachwani@mvista.com>
-Subject: titan code question
-Date: Fri, 19 Nov 2004 16:23:14 +0100
-User-Agent: KMail/1.6.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Nov 2004 06:21:02 +0000 (GMT)
+Received: from p508B767E.dip.t-dialin.net ([IPv6:::ffff:80.139.118.126]:1577
+	"EHLO mail.linux-mips.net") by linux-mips.org with ESMTP
+	id <S8224902AbUKVGUz>; Mon, 22 Nov 2004 06:20:55 +0000
+Received: from fluff.linux-mips.net (localhost [127.0.0.1])
+	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id iAM6Isbu025583;
+	Mon, 22 Nov 2004 07:18:54 +0100
+Received: (from ralf@localhost)
+	by fluff.linux-mips.net (8.13.1/8.13.1/Submit) id iAM6IsF4025582;
+	Mon, 22 Nov 2004 07:18:54 +0100
+Date: Mon, 22 Nov 2004 07:18:54 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
 Cc: linux-mips@linux-mips.org
-MIME-Version: 1.0
-X-KMail-Identity: 87982748
-Message-Id: <200411191623.14760.thomas.koeller@baslerweb.com>
-X-KMail-EncryptionState: N
-X-KMail-SignatureState: N
-X-KMail-MDN-Sent: 
+Subject: Re: [PATCH] Improve o32 syscall handling
+Message-ID: <20041122061854.GA25433@linux-mips.org>
+References: <20041121164557.GQ20986@rembrandt.csv.ica.uni-stuttgart.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Type: text/plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Return-Path: <Thomas.Koeller@baslerweb.com>
+In-Reply-To: <20041121164557.GQ20986@rembrandt.csv.ica.uni-stuttgart.de>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6393
+X-archive-position: 6394
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas.koeller@baslerweb.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Manish & Ralf,
+On Sun, Nov 21, 2004 at 05:45:57PM +0100, Thiemo Seufer wrote:
 
-the code below is from tian_ge.c:
+> For the 64bit Kernel, it
+>  - checks for unaligned user stack
 
-	/*
-	 * This is the 1.2 revision of the chip. It has fix for the
-	 * IP header alignment. Now, the IP header begins at an
-	 * aligned address and this wont need an extra copy in the
-	 * driver. This performance drawback existed in the previous
-	 * versions of the silicon
-	 */
-	reg_data_1 = TITAN_GE_READ(0x103c + (port_num << 12));
-	reg_data_1 |= 0x40000000;
-	TITAN_GE_WRITE((0x103c + (port_num << 12)), reg_data_1);
+Why bother, the unaligned exception handler should take care of this.
 
-	reg_data_1 |= 0x04000000;
-	TITAN_GE_WRITE((0x103c + (port_num << 12)), reg_data_1);
+>  - also allows now up to 8 arguments
 
-	mdelay(5);
+Quite frankly I'd prefer to see this being handle in userspace.  For o32
+it's too late to go for that but for N32 / N64 we still may have a chance.
 
-	reg_data_1 &= ~(0x04000000);
-	TITAN_GE_WRITE((0x103c + (port_num << 12)), reg_data_1);
+> -	LONG_L	a2, TI_FLAGS($28)	# current->work
+> +	lw	a2, TI_FLAGS($28)	# current->work
 
-	mdelay(5);
+Flags is a long variable.
 
-
-According to the RM9000 user manual, register 0x103c (and 0x203c
-and 0x303c), named TTPRI0, contains eight four-bit fields, each
-of which is a packet priority value. This would be used to find
-the priority for incoming packets.
-
-Given the register description in the cpu manual, I cannot make
-any sense of the code above. Whoever did that, would you care to
-explain?
-
-thanks,
-Thomas
--- 
---------------------------------------------------
-
-Thomas Koeller, Software Development
-Basler Vision Technologies
-
-thomas dot koeller at baslerweb dot com
-http://www.baslerweb.com
-
-==============================
+  Ralf

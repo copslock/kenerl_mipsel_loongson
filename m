@@ -1,49 +1,44 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id fB2B1Z521830
-	for linux-mips-outgoing; Sun, 2 Dec 2001 03:01:35 -0800
-Received: from satisfactory.karma (c3379.eburwd3.vic.optusnet.com.au [203.164.215.77])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fB2B1Vo21826
-	for <linux-mips@oss.sgi.com>; Sun, 2 Dec 2001 03:01:31 -0800
-Received: by satisfactory.karma (Postfix, from userid 500)
-	id 302AB33A4E; Sun,  2 Dec 2001 21:01:24 +1100 (EST)
-Date: Sun, 2 Dec 2001 21:01:24 +1100
-From: Andrew Clausen <clausen@gnu.org>
-To: linux-mips@oss.sgi.com
-Cc: bug-parted@gnu.org
-Subject: Call for GNU Parted / MIPS partition table testers
-Message-ID: <20011202210124.E1073@gnu.org>
+	by oss.sgi.com (8.11.2/8.11.3) id fB2CAGd24036
+	for linux-mips-outgoing; Sun, 2 Dec 2001 04:10:16 -0800
+Received: from pandora.research.kpn.com (IDENT:root@pandora.research.kpn.com [139.63.192.11])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id fB2CADo24032
+	for <linux-mips@oss.sgi.com>; Sun, 2 Dec 2001 04:10:13 -0800
+Received: from sparta.research.kpn.com (sparta.research.kpn.com [139.63.192.6])
+	by pandora.research.kpn.com (8.9.3/8.9.3) with ESMTP id MAA09715;
+	Sun, 2 Dec 2001 12:10:03 +0100
+Received: from sparta.research.kpn.com (sparta.research.kpn.com [139.63.192.6])
+	by sparta.research.kpn.com (8.8.8+Sun/8.8.8) with ESMTP id MAA15571;
+	Sun, 2 Dec 2001 12:10:03 +0100 (MET)
+Message-Id: <200112021110.MAA15571@sparta.research.kpn.com>
+X-Mailer: exmh version 1.6.5 12/11/95
+To: flo@rfc822.org, linux-mips@oss.sgi.com, linux-mips@fnet.fr
+Reply-to: vhouten@kpn.com
+Subject: New delo RPMs for RH7.x and recent 2.4.x kernels
+X-Face: ";:TzQQC{mTp~$W,'m4@Lu1Lu$rtG_~5kvYO~F:C'KExk9o1X"iRz[0%{bq?6Aj#>VhSD?v
+ 1W9`.Qsf+P&*iQEL8&y,RDj&U.]!(R-?c-h5h%Iw%r$|%6+Jc>GTJe!_1&A0o'lC[`I#={2BzOXT1P
+ q366I$WL=;[+SDo1RoIT+a}_y68Y:jQ^xp4=*4-ryiymi>hy
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.17i
-X-Accept-Language: en,pt
+Date: Sun, 02 Dec 2001 12:10:03 +0100
+From: "Houten K.H.C. van (Karel)" <vhouten@kpn.com>
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Dear Sir/Madam,
 
-Do you feel lost?  Lonely in the modern world?
-Or perhaps you're just figuring out your role in life.
+Hi,
 
-If this sounds like you, then Clausen Profit Systems can help!
+I've uploaded new delo (DECStation bootloader) RPMs that contain
+Florian latest patch, and can be compiled by H.J.Lu's RH7.1
+toolchain (native).
 
-Follow these 4 easy steps:
+It is available at: ftp://oss.sgi.com/pub/linux/mips/mipsel-linux/delo
 
-(1) download GNU Parted 1.5.5-pre5:
+Regards,
+-- 
+Karel van Houten
 
-	ftp://ftp.gnu.org/gnu/parted/devel/parted-1.5.5-pre5.tar.gz
-
-(you might want to check for a newer version, in case I find some
-obvious bugs)
-
-(2) compile, and test it - preferrably on a spare disk! ;)  Note: Parted
-can run even if it has read-only permission
-
-(3) send bug reports to bug-parted@gnu.org
-
-(4) rm /sbin/fdisk
-
-Andrew Clausen
-General Managing Marketing Director
-Clausen Profit Systems, Inc.
-members.optushome.com.au/clausen/profit
+----------------------------------------------------------
+The box said "Requires Windows 95 or better."
+I can't understand why it won't work on my Linux computer. 
+----------------------------------------------------------

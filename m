@@ -1,39 +1,28 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id WAA210944; Tue, 22 Jul 1997 22:45:05 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id LAA257309; Wed, 23 Jul 1997 11:37:26 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id WAA03857 for linux-list; Tue, 22 Jul 1997 22:44:53 -0700
-Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id WAA03848; Tue, 22 Jul 1997 22:44:49 -0700
-Received: from neon.ingenia.ca (neon.ingenia.ca [205.207.220.57]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id WAA03948; Tue, 22 Jul 1997 22:44:47 -0700
-	env-from (shaver@neon.ingenia.ca)
-Received: (from shaver@localhost) by neon.ingenia.ca (8.8.5/8.7.3) id BAA03684; Wed, 23 Jul 1997 01:43:51 -0400
-From: Mike Shaver <shaver@neon.ingenia.ca>
-Message-Id: <199707230543.BAA03684@neon.ingenia.ca>
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA23101 for linux-list; Wed, 23 Jul 1997 11:37:13 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA23069 for <linux@cthulhu.engr.sgi.com>; Wed, 23 Jul 1997 11:37:09 -0700
+Received: from swan.ml.org (eerandy.swan.ac.uk [137.44.4.77]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id LAA16381
+	for <linux@cthulhu.engr.sgi.com>; Wed, 23 Jul 1997 11:36:12 -0700
+	env-from (alan@lxorguk.ukuu.org.uk)
+Received: from lightning.swansea.linux.org.uk (surd [137.44.10.205]) by swan.ml.org (8.7.4/8.7.3) with SMTP id TAA13865; Wed, 23 Jul 1997 19:34:48 +0100
+Received: by lightning.swansea.linux.org.uk (Smail3.1.29.1 #2)
+	id m0wr7AY-0005FiC; Wed, 23 Jul 97 20:33 BST
+Message-Id: <m0wr7AY-0005FiC@lightning.swansea.linux.org.uk>
+From: alan@lxorguk.ukuu.org.uk (Alan Cox)
 Subject: Re: Interest in SGI/Linux
-In-Reply-To: <199707230518.WAA04735@piecomputer.engr.sgi.com> from Bob Mende Pie at "Jul 22, 97 10:18:04 pm"
-To: mende@piecomputer.engr.sgi.com (Bob Mende Pie)
-Date: Wed, 23 Jul 1997 01:43:51 -0400 (EDT)
-Cc: linux@cthulhu.engr.sgi.com (Linux/SGI list)
-X-Mailer: ELM [version 2.4ME+ PL28 (25)]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+To: ralf@mailhost.uni-koblenz.de (Ralf Baechle)
+Date: Wed, 23 Jul 1997 20:33:53 +0100 (BST)
+Cc: ariel@sgi.com, linux@cthulhu.engr.sgi.com
+In-Reply-To: <199707230249.EAA22451@informatik.uni-koblenz.de> from "Ralf Baechle" at Jul 23, 97 04:49:10 am
+Content-Type: text
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Thus spake Bob Mende Pie:
-> > >         snafu.rutgers.edu
-> > 
-> > This is suspicious.
-> > Should we be controlling access to linus?
-> 
-> This is most likely davem ...
+> I'm also surprised, especially because a search on Altavista found just
+> one single reference to *.linux.sgi.com in a German newgroup, Dejanews
+> didn't find any references.
 
-My point exactly.
+Altavista doesnt archive linuxnet:#linux
 
-Mike
-
--- 
-#> Mike Shaver (shaver@ingenia.com) Ingenia Communications Corporation 
-#>            Chief System Architect and Herder of Bits                
-#>                                                                     
-#> "Yoda say, `Just slap a little public key crypto into it' does not  
-#>      a secure system make." -- Marcus J. Ranum (mjr@clark.net)      
+Alan

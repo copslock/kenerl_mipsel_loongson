@@ -1,32 +1,45 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id f6JHOTx14528
-	for linux-mips-outgoing; Thu, 19 Jul 2001 10:24:29 -0700
-Received: from www.transvirtual.com (root@www.transvirtual.com [206.14.214.140])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6JHOSV14519
-	for <linux-mips@oss.sgi.com>; Thu, 19 Jul 2001 10:24:28 -0700
-Received: from www.transvirtual.com (jsimmons@localhost [127.0.0.1])
-        by localhost (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f6JHNfc1023220;
-	Thu, 19 Jul 2001 10:23:41 -0700
-Received: from localhost (jsimmons@localhost)
-        by www.transvirtual.com (8.12.0.Beta7/8.12.0.Beta7/Debian 8.12.0.Beta7-1) with ESMTP id f6JHNEtc023164;
-	Thu, 19 Jul 2001 10:23:39 -0700
-X-Authentication-Warning: www.transvirtual.com: jsimmons owned process doing -bs
-Date: Thu, 19 Jul 2001 10:23:13 -0700 (PDT)
-From: James Simmons <jsimmons@transvirtual.com>
-To: "H . J . Lu" <hjl@lucon.org>
-cc: John Heil <mipsdev@scsoftware.sc-software.com>,
-   linux-mips-kernel@lists.sourceforge.net, linux-mips@oss.sgi.com,
-   cobalt-22@devel.alal.com
-Subject: Re: Any old Cobalt Qube2 kernel src around?
-In-Reply-To: <20010718160757.A19581@lucon.org>
-Message-ID: <Pine.LNX.4.10.10107191022550.19020-100000@transvirtual.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+	by oss.sgi.com (8.11.2/8.11.3) id f6JHQJQ15044
+	for linux-mips-outgoing; Thu, 19 Jul 2001 10:26:19 -0700
+Received: from chakotay.allgaeu.org (chakotay.allgaeu.org [213.182.8.1])
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id f6JHQHV15041
+	for <linux-mips@oss.sgi.com>; Thu, 19 Jul 2001 10:26:18 -0700
+Received: from tuvok.allgaeu.org (tuvok.allgaeu.org [213.182.8.4])
+	by chakotay.allgaeu.org (8.9.3/8.9.3) with ESMTP id TAA21632
+	for <linux-mips@oss.sgi.com>; Thu, 19 Jul 2001 19:26:15 +0200
+Received: by tuvok.allgaeu.org (Postfix, from userid 1000)
+	id D312A327; Thu, 19 Jul 2001 19:26:14 +0200 (CEST)
+Date: Thu, 19 Jul 2001 19:26:14 +0200
+From: Robert Einsle <robert@einsle.de>
+To: linux-mips@oss.sgi.com
+Subject: Probs running ntp on an indy
+Message-ID: <20010719192614.A22495@tuvok.allgaeu.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.3.18i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
+Hy
 
-> How can I get a working 2.4 kernel for raq2 with serial console and
-> NFS root? I tried that kernel with Linux 2.4.5. It doesn't work.
+Is it possible to run ntp on an indy??
 
-Can you tell me what happens so I can fix it.
+while running ntpdate i got the error
+
+ntpdate[621]: poll(): nfound = 0, error: Operation not permitted
+
+the same thing happens while running ntpd
+
+Thanks for your help
+
+
+-- 
+MFG
+
+Robert Einsle
+BNA Technik, Postmaster
+
+>>Warum muss ich bei "Verwaltung von Problemloesungen
+fuer eine EDV-Abteilung" an einen Waffenschrank denken?<<
+(Robin S. Socha in de.comp.os.unix.linux.misc)

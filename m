@@ -1,33 +1,59 @@
-Received:  by oss.sgi.com id <S553735AbQK2AOh>;
-	Tue, 28 Nov 2000 16:14:37 -0800
-Received: from NS.CenSoft.COM ([208.219.23.2]:61199 "EHLO
-        ns.centurysoftware.com") by oss.sgi.com with ESMTP
-	id <S553716AbQK2AOM>; Tue, 28 Nov 2000 16:14:12 -0800
-Received: from censoft.com (IDENT:jordanc@cen94.censoft.com [208.219.23.94])
-	by ns.centurysoftware.com (8.9.3/8.9.3) with ESMTP id SAA06943
-	for <linux-mips@oss.sgi.com>; Tue, 28 Nov 2000 18:28:31 -0700 (MST)
-Message-ID: <3A244A2C.5C648B27@censoft.com>
-Date:   Tue, 28 Nov 2000 17:13:32 -0700
-From:   Jordan Crouse <jordanc@Censoft.com>
-Organization: Century Software
-X-Mailer: Mozilla 4.75 [en] (X11; U; Linux 2.2.17 i686)
-X-Accept-Language: en
-MIME-Version: 1.0
+Received:  by oss.sgi.com id <S553661AbQK2BzI>;
+	Tue, 28 Nov 2000 17:55:08 -0800
+Received: from pobox.sibyte.com ([208.12.96.20]:33284 "HELO pobox.sibyte.com")
+	by oss.sgi.com with SMTP id <S553653AbQK2Byo>;
+	Tue, 28 Nov 2000 17:54:44 -0800
+Received: from baton.sibyte.com (moat.sibyte.com [208.12.96.21])
+	by pobox.sibyte.com (Postfix) with SMTP id D469D205FA
+	for <linux-mips@oss.sgi.com>; Tue, 28 Nov 2000 17:54:38 -0800 (PST)
+Received: from SMTP agent by mail gateway 
+ Tue, 28 Nov 2000 17:50:16 -0800
+Received: by baton.sibyte.com (Postfix, from userid 1017)
+	id 2B9F25703; Tue, 28 Nov 2000 17:54:23 -0800 (PST)
+From:   Justin Carlson <carlson@sibyte.com>
+Reply-To: carlson@sibyte.com
+Organization: Sibyte
 To:     linux-mips@oss.sgi.com
-Subject: DNS 
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Subject: Boot ordering quandry for time_init()
+Date:   Tue, 28 Nov 2000 17:38:56 -0800
+X-Mailer: KMail [version 1.0.28]
+Content-Type: text/plain
+MIME-Version: 1.0
+Message-Id: <0011281754234M.11653@baton.sibyte.com>
+Content-Transfer-Encoding: 8bit
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-Has anyone encountered peculiar happenings with the 2.0.7 glibc and
-resolving names via DNS?  It is simply *NOT* going out to the specifiec
-nameserver (verified via line sniffer), even though /etc/resolv.conf is
-present and correct.  Any lookups with the /etc/hosts file work great,
-its just when I try to go out on the network.
 
-Has anyone noticed any strangeness with this????
+Looking for some advice from some mips boot gurus.
 
-Jordan
+I'm bringing up an SB1/SB1250 port of the mips/ arch
+tree.  In particular, I'm in time_init() bringing up the
+general purpose timer that's going to be used for 
+the 100Hz clock.  The interrupt seems to be the rub. 
+
+I've basically copied the request_irq() code from other
+ports, but it uses kmalloc(), which I can't use at this point
+in the boot sequence since we haven't yet initialized
+the allocator (I believe it's done in mem_init()?  escapes 
+me at the moment).  
+
+The 4k way around this is to hook its timer interrupt handling
+routing up directly to the interrupt handling stub  in indyIRQ.S.  This
+certainly works, but seems somewhat messy to me in that it's a
+ special case provided only to avoid ordering constraints. 
+
+I could hack request_irq to use the boot memory allocator
+than reallocate properly after kmalloc is available, but this
+is even worse in terms of added complexity.
+
+Anyone know a "better" way to do this that I'm missing?
+
+Thanks, 
+  Justin
+
+------
+Justin Carlson
+carlson@sibyte.com

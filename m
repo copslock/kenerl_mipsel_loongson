@@ -1,149 +1,53 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id LAA12517; Thu, 14 Aug 1997 11:33:25 -0700 (PDT)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (970321.SGI.8.8.5/960327.SGI.AUTOCF) via SMTP id QAA16377; Thu, 14 Aug 1997 16:18:18 -0700 (PDT)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
-Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA11320 for linux-list; Thu, 14 Aug 1997 11:32:55 -0700
-Received: from oz.engr.sgi.com (oz.engr.sgi.com [150.166.61.27]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id LAA11308 for <linux@cthulhu.engr.sgi.com>; Thu, 14 Aug 1997 11:32:53 -0700
-Received: (from ariel@localhost) by oz.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id LAA29943; Thu, 14 Aug 1997 11:32:41 -0700
-From: ariel@oz.engr.sgi.com (Ariel Faigon)
-Message-Id: <199708141832.LAA29943@oz.engr.sgi.com>
-Subject: Re: linus accessible from within SGI
-To: mjo@sgi.com (Michael O'Connor)
-Date: Thu, 14 Aug 1997 11:32:41 -0700 (PDT)
-Cc: eak@detroit.sgi.com, ariel@sgi.com, linux@cthulhu.engr.sgi.com,
-        comm-tech@rock.csd.sgi.com
-In-Reply-To: <199708141315.JAA20926@dormammu.detroit.sgi.com> from "Michael O'Connor" at Aug 14, 97 09:15:30 am
-Reply-To: ariel@sgi.com (Ariel Faigon)
-Organization: Silicon Graphics Inc.
-X-Mailer: ELM [version 2.4 PL24 ME5a]
+Received: (from majordomo@localhost) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) id QAA11276 for linux-list; Thu, 14 Aug 1997 16:16:54 -0700
+Received: from sgi.sgi.com (sgi.engr.sgi.com [192.26.80.37]) by cthulhu.engr.sgi.com (950413.SGI.8.6.12/960327.SGI.AUTOCF) via ESMTP id QAA11237 for <linux@cthulhu.engr.sgi.com>; Thu, 14 Aug 1997 16:16:41 -0700
+Received: from informatik.uni-koblenz.de (mailhost.uni-koblenz.de [141.26.4.1]) by sgi.sgi.com (950413.SGI.8.6.12/970507) via ESMTP id QAA00021
+	for <linux@cthulhu.engr.sgi.com>; Thu, 14 Aug 1997 16:16:17 -0700
+	env-from (ralf@informatik.uni-koblenz.de)
+Received: from thoma (ralf@thoma.uni-koblenz.de [141.26.4.61]) by informatik.uni-koblenz.de (8.8.6/8.6.9) with SMTP id BAA06429; Fri, 15 Aug 1997 01:15:42 +0200 (MEST)
+From: Ralf Baechle <ralf@mailhost.uni-koblenz.de>
+Message-Id: <199708142315.BAA06429@informatik.uni-koblenz.de>
+Received: by thoma (SMI-8.6/KO-2.0)
+	id BAA02579; Fri, 15 Aug 1997 01:15:22 +0200
+Subject: Re: clock skew and ethernet timeouts
+To: marks@sun470.sun470.rd.qms.com (Mark Salter)
+Date: Fri, 15 Aug 1997 01:15:22 +0200 (MET DST)
+Cc: linux@cthulhu.engr.sgi.com
+In-Reply-To: <199708132209.RAA31518@speedy.rd.qms.com> from "Mark Salter" at Aug 13, 97 05:09:32 pm
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-:
-:
-:|Has anyone been able to get "mirror" work via socks through our
-:|firewall?
-:
-:By 'mirror', I take it you mean the perl mirror program.  :)
-:
-:The more general question is:  How do you get perl TCP/IP programs
-:to work over SOCKS?  It appears that Simon Cooper, sc@sgi.com, is
-:working on a perl module to do that.  Suggest you talk with him, or
-:use something else to mirror -- some of the nouveau FTP clients
-:do this, and could probably be easily SOCKSified.  
-:
-In the case of perl it is easy to cross the firewall by simply
-using a proxy. i.e. you don't need to SOCSify you perl since
-the proxy (which is SOCKsified) does the job for you.
+> I also noticed that the linux time of day clock falls behind
+> real time whenever these timeouts occur. I decided to take a
+> look at this side of the problem and discovered that interrupts
+> are being turned off for extended periods of time. I modified
+> the timer interrupt handler to print a message if it detects
+> a missed system tick. Sure enough, every ethernet timeout is
+> accompanied by a message coming from the timer interrupt. The
+> message indicates that the timer interrupt was held off for
+> as much as 45ms!
 
-Enclosed below is a (http) 'GET' script that uses one possible
-SGI proxy when given the -e option. The method uses is the name
-of the script so you may symlink it to 'HEAD' for example.
+I've never seen these problems in my configurations.  However I've fixed
+a couple of interrupt realted things which I'll commit into the CVS
+as soon as I'm in Mountain View.  One of these, a console bug might
+actually have been the cause of the extreme long interrupt disable time
+you have seen.
 
--- 
-Peace, Ariel
+There are more thing which need to be reworked with resprect to interrupts.
+For example cache flushing turns interrupts off for sometimes several
+thousand cycles even though this is only required for certain buggy CPUs
+like the R4600 v1.x.  And even there are better workarounds.  General
+rule about cli():  Think about it if you really need it.  Then think again
+about it.  If you're finished wnd still think cli() might be a good solution,
+then think once again about it ...
 
-#!/usr/bin/perl5
-#
-# perl5+LWP script to fetch a URL
-#
-# Usage:
-#	Get [-e] [-t<timeout>] <URL>
-#
-# Author:
-#	ariel@sgi.com, 1996
-#
-use HTTP::Status;
-use LWP::UserAgent;
-use LWP::Protocol;
+For me the "most wanted - fix on sight" bug is currently a memory corruption
+problem.  Other than that I was able to compile >92mb RPM binaries several
+times in a row.  It's just that that memory corruption problem corrupts
+disk data structures in memory which might be written back later ...
 
-{
-	#
-	# Override these methods. Their default behavior is bad for us.
-	#
-	package LWP::Protocol; sub use_alarm { shift->_elem('use_alarm', 0); }
-	package LWP::UserAgent; sub redirect_ok { 0; }
-}
-
-
-require 'getopts.pl';
-&Getopts('t:m:e');
-
-$0 =~ s,.*/,,;
-
-unless ($ARGV[0]) {
-    die "Usage: $0 [-e -tTIMEOUT -mMETHOD] URL
-	-e	Use a proxy for [e]xternal accesses
-	default METHOD is program name
-	default TIMEOUT is 7 sec for internal, 14 for external\n";
-}
-
-if ($opt_t =~ /^\d+$/) {
-    $get_timeout = $opt_t;
-} else {
-    $get_timeout = 7;
-    $get_timeout *= 2 if ($opt_e);
-}
-($method = $opt_m) || ($method = $0);
-$method =~ tr,a-z,A-Z,;
-
-# print "get started\n";
-&get($method, $ARGV[0], $get_timeout);
-
-
-# get($method, $from_url, $timeout)
-#       Fetches $url into a $get_contents. Gives up after $timeout sec.
-#       returns the HTTP get code (200 for OK etc.)
-#
-sub get {
-    my($method, $url, $timeout) = @_;
-    my ($ua, $request, $response);    
-    my ($key, $get_rc, $lf);
-
-    $ua = new LWP::UserAgent;
-    $ua->use_alarm(1);
-    $ua->timeout($timeout);
-    $ua->agent("Get-perl5/v1.0");
-    if ($opt_e) {
-	$ua->proxy([ 'http' ], 'http://www-dms.esd.sgi.com:8080/');
-    }
-
-    if ($url =~ m,^/,) {
-	$url = 'localhost' . $url;
-    }
-    unless ($url =~ /^[a-z]+:/) {
-	$url = 'http://' . $url;
-    }
-    $get_content = '';
-    $Content_length = '';
-
-    $request = new HTTP::Request($method, $url);
-    # $request->push_header('If-Modified-Since' => 'Thu, 01-Jan-70 00:00:00 GMT');
-
-    print STDERR $method, ' ', $url, ': ';
-
-    $response = $ua->request($request);
-
-    $get_rc = $response->code;
-    $get_content = $response->content if $response->is_success;
-    $error_msg = status_message($get_rc);
-
-    if ($get_rc == 200) {                       # 200: OK
-	$Content_length = $response->header('Content-length');
-    }
-    # Some servers do not send the content length...
-    if ($Content_length eq '' &&  $get_content) {
-	$Content_length = length($get_content);
-    }
-
-    print STDERR $error_msg,
-        ($Content_length ? " ($Content_length)" : ''), "\n";
-
-    print STDERR $response->headers_as_string;
-    print $get_content;
-
-    $get_rc;
-}
-
-__END__
+  Ralf

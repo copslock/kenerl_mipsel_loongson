@@ -1,38 +1,50 @@
-Received:  by oss.sgi.com id <S554101AbRAZUCq>;
-	Fri, 26 Jan 2001 12:02:46 -0800
-Received: from gateway-1237.mvista.com ([12.44.186.158]:11517 "EHLO
-        orion.mvista.com") by oss.sgi.com with ESMTP id <S553779AbRAZUCa>;
-	Fri, 26 Jan 2001 12:02:30 -0800
-Received: (from jsun@localhost)
-	by orion.mvista.com (8.9.3/8.9.3) id MAA09403;
-	Fri, 26 Jan 2001 12:01:40 -0800
-Date:   Fri, 26 Jan 2001 12:01:40 -0800
-From:   Jun Sun <jsun@mvista.com>
-To:     Joe deBlaquiere <jadb@redhat.com>
-Cc:     Ralf Baechle <ralf@oss.sgi.com>, Florian Lohoff <flo@rfc822.org>,
-        linux-mips@oss.sgi.com
-Subject: Re: [FIX] sysmips(MIPS_ATMIC_SET, ...) ret_from_sys_call vs. o32_ret_from_sys_call
-Message-ID: <20010126120140.E9325@mvista.com>
-References: <20010124163048.B15348@paradigm.rfc822.org> <20010124165919.C15348@paradigm.rfc822.org> <20010125165530.B12576@paradigm.rfc822.org> <3A70705C.5020600@redhat.com> <3A707FFB.60802@redhat.com> <20010125141952.C2311@bacchus.dhis.org> <3A70CA98.102@redhat.com>
+Received:  by oss.sgi.com id <S554102AbRAZUYr>;
+	Fri, 26 Jan 2001 12:24:47 -0800
+Received: from noose.gt.owl.de ([62.52.19.4]:27910 "HELO noose.gt.owl.de")
+	by oss.sgi.com with SMTP id <S553783AbRAZUY2>;
+	Fri, 26 Jan 2001 12:24:28 -0800
+Received: by noose.gt.owl.de (Postfix, from userid 10)
+	id 2B44F7FF; Fri, 26 Jan 2001 21:24:24 +0100 (CET)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 5F9A5EE9C; Fri, 26 Jan 2001 21:23:41 +0100 (CET)
+Date:   Fri, 26 Jan 2001 21:23:41 +0100
+From:   Florian Lohoff <flo@rfc822.org>
+To:     Pete Popov <ppopov@mvista.com>
+Cc:     linux-mips@oss.sgi.com
+Subject: Re: Cross compiling RPMs
+Message-ID: <20010126212341.A26384@paradigm.rfc822.org>
+References: <200101261815.KAA08917@saturn.mikemac.com> <3A71C3CF.A179113@mvista.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.2.5i
-In-Reply-To: <3A70CA98.102@redhat.com>; from jadb@redhat.com on Thu, Jan 25, 2001 at 06:53:44PM -0600
+In-Reply-To: <3A71C3CF.A179113@mvista.com>; from ppopov@mvista.com on Fri, Jan 26, 2001 at 10:37:03AM -0800
+Organization: rfc822 - pure communication
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 Return-Path: <owner-linux-mips@oss.sgi.com>
 X-Orcpt: rfc822;linux-mips-outgoing
 
-On Thu, Jan 25, 2001 at 06:53:44PM -0600, Joe deBlaquiere wrote:
-> 
-> The end goal of this is to make pthreads work on the Vr4181...it's 
-> certainly an interesting task so far...
-> 
+On Fri, Jan 26, 2001 at 10:37:03AM -0800, Pete Popov wrote:
+> glibc.  Others might have similar toolchains they can point you at. 
+> Another option is native builds, which I personally don't like.
 
-We have got pthreads working on Vr4181 for a couple of months already.
-What version of kernel are you using?  The toughest problem is not
-MIPS_AUTOMIC_SET.  It is a kernel s0 register corruption bug, which is
-already fixed in the current CVS tree.
+Cross compiling is definitly no option for debian as the dependencies
+etc are all made from "ldd binary" which has to fail for cross-compiling.
+I guess this also happens to rpm packages so cross-compiling to really
+get a correct distribution is definitly no option.
 
-Jun
+The larger the packages are the harder it is to get them cross-compiled
+correctly as they run nifty little check programs from configure which
+cant work. I guess you had similar problems as all rpms are
+"noarch" which is definitly - ummm - interesting.
+
+I definitly go for native builds - Once you have a working stable 
+base you can set up debian autobuilders which will do nearly 
+everything for you except signing and uploading the package into
+the main repository.
+
+Flo
+-- 
+Florian Lohoff                  flo@rfc822.org             +49-5201-669912
+     Why is it called "common sense" when nobody seems to have any?

@@ -1,81 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Apr 2004 08:46:54 +0100 (BST)
-Received: from shawidc-mo1.cg.shawcable.net ([IPv6:::ffff:24.71.223.10]:5426
-	"EHLO pd2mo3so.prod.shaw.ca") by linux-mips.org with ESMTP
-	id <S8224898AbUDQHqx>; Sat, 17 Apr 2004 08:46:53 +0100
-Received: from pd5mr5so.prod.shaw.ca
- (pd5mr5so-qfe3.prod.shaw.ca [10.0.141.181]) by l-daemon
- (iPlanet Messaging Server 5.2 HotFix 1.18 (built Jul 28 2003))
- with ESMTP id <0HWB009J50V1TX@l-daemon> for linux-mips@linux-mips.org; Sat,
- 17 Apr 2004 01:30:37 -0600 (MDT)
-Received: from pn2ml4so.prod.shaw.ca ([10.0.121.148])
- by pd5mr5so.prod.shaw.ca (Sun ONE Messaging Server 6.0 HotFix 1.01 (built Mar
- 15 2004)) with ESMTP id <0HWB007KK0XXUWM0@pd5mr5so.prod.shaw.ca> for
- linux-mips@linux-mips.org; Sat, 17 Apr 2004 01:32:21 -0600 (MDT)
-Received: from curie.orbis-terrarum.net
- (S01060050da688d47.vc.shawcable.net [24.84.49.144])
- by l-daemon (iPlanet Messaging Server 5.2 HotFix 1.18 (built Jul 28 2003))
- with ESMTP id <0HWB0032G0V0LQ@l-daemon> for linux-mips@linux-mips.org; Sat,
- 17 Apr 2004 01:30:37 -0600 (MDT)
-Received: (qmail 10224 invoked by uid 10000); Sat, 17 Apr 2004 00:28:43 -0700
-Date: Sat, 17 Apr 2004 00:28:43 -0700
-From: "Robin H. Johnson" <robbat2@gentoo.org>
-Subject: Re: IP30 goes relatively far now (photos)
-In-reply-to: <Pine.GSO.4.10.10404170649270.12038-100000@helios.et.put.poznan.pl>
-To: linux-mips@linux-mips.org
-Mail-followup-to: linux-mips@linux-mips.org
-Message-id: <20040417072843.GA9762@curie-int.orbis-terrarum.net>
-MIME-version: 1.0
-Content-type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature"; boundary=LQksG6bCIzRHxTLp
-Content-disposition: inline
-User-Agent: Mutt/1.5.6i
-References: <Pine.LNX.4.55.0404170000540.24278@jurand.ds.pg.gda.pl>
- <Pine.GSO.4.10.10404170649270.12038-100000@helios.et.put.poznan.pl>
-Return-Path: <robbat2@orbis-terrarum.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Apr 2004 03:39:33 +0100 (BST)
+Received: from eth13.com-link.com ([IPv6:::ffff:208.242.241.164]:46804 "EHLO
+	real.realitydiluted.com") by linux-mips.org with ESMTP
+	id <S8224923AbUDRCjb>; Sun, 18 Apr 2004 03:39:31 +0100
+Received: from localhost ([127.0.0.1] helo=realitydiluted.com)
+	by real.realitydiluted.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1BF2Cy-0000JZ-00; Sat, 17 Apr 2004 21:39:00 -0500
+Message-ID: <4081EA5F.5000802@realitydiluted.com>
+Date: Sat, 17 Apr 2004 22:39:27 -0400
+From: "Steven J. Hill" <sjhill@realitydiluted.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.6) Gecko/20040413 Debian/1.6-5
+X-Accept-Language: en
+MIME-Version: 1.0
+To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
+CC: "Bradley D. LaRonde" <brad@laronde.org>, linux-mips@linux-mips.org,
+	Eric Christopher <echristo@redhat.com>,
+	Daniel Jacobowitz <dan@debian.org>
+Subject: Re: [PATCH] gcc 3.4 drops "accum" clobber, replace with "hi" intime.c
+References: <Pine.GSO.4.10.10404122244110.8735-100000@helios.et.put.poznan.pl> <20040412231309.GA702@linux-mips.org> <03f301c420e7$d8de2d70$8d01010a@prefect> <048e01c420f1$ad4ae3b0$8d01010a@prefect> <1081818125.19719.14.camel@dzur.sfbay.redhat.com> <04d501c420f3$6c836a30$8d01010a@prefect> <20040413010732.GA7560@nevyn.them.org> <04f501c420f4$5563f620$8d01010a@prefect> <053c01c420f5$ec230190$8d01010a@prefect> <Pine.LNX.4.55.0404131451200.15949@jurand.ds.pg.gda.pl>
+In-Reply-To: <Pine.LNX.4.55.0404131451200.15949@jurand.ds.pg.gda.pl>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sjhill@realitydiluted.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 4804
+X-archive-position: 4805
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robbat2@gentoo.org
+X-original-sender: sjhill@realitydiluted.com
 Precedence: bulk
 X-list: linux-mips
 
+Maciej W. Rozycki wrote:
+> 
+>  There are more places this should be dealt with and I have the following 
+> preliminary patch for this, but I'm unsure about removal of "accum" being 
+> completely safe for older compilers.
+> 
+Works fine for gcc-3.1.1 and my Swarm board boots just fine with this
+change and it seems stable. I vote for you to go ahead and commit the
+fixes to CVS. Thanks Maciej.
 
---LQksG6bCIzRHxTLp
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Sat, Apr 17, 2004 at 06:50:59AM +0200, Stanislaw Skowronek wrote:
-> For the little unbeliever in all of us:
-> http://www.et.put.poznan.pl/~sskowron/ip30/
-Really nice, esp. the 1GB of ram in there and the logo ;-).
-
-What CPU is in your octane tho? I've got access to an R12k Octane that
-could be ripe for linux if R10/12k is ever made to work (I'm waiting for
-a book from Barnes+Noble so I can try to do an O2 R12k).
-
---=20
-Robin Hugh Johnson
-E-Mail     : robbat2@orbis-terrarum.net
-Home Page  : http://www.orbis-terrarum.net/?l=3Dpeople.robbat2
-ICQ#       : 30269588 or 41961639
-GnuPG FP   : 11AC BA4F 4778 E3F6 E4ED  F38E B27B 944E 3488 4E85
-
---LQksG6bCIzRHxTLp
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.4 (GNU/Linux)
-Comment: Robbat2 @ Orbis-Terrarum Networks
-
-iD8DBQFAgNyrsnuUTjSIToURAjA/AJwOYuc7DtXd28+oK70MLh29Ks6xsgCeMUg8
-9J7IkVwzvoKIfI1KwZ6ZhOk=
-=yNu6
------END PGP SIGNATURE-----
-
---LQksG6bCIzRHxTLp--
+-Steve

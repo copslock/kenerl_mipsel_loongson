@@ -1,54 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jun 2003 21:47:15 +0100 (BST)
-Received: from delta.ds2.pg.gda.pl ([IPv6:::ffff:213.192.72.1]:5602 "EHLO
-	delta.ds2.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225215AbTF0UrN>; Fri, 27 Jun 2003 21:47:13 +0100
-Received: from localhost by delta.ds2.pg.gda.pl (8.9.3/8.9.3) with SMTP id WAA02723;
-	Fri, 27 Jun 2003 22:48:12 +0200 (MET DST)
-X-Authentication-Warning: delta.ds2.pg.gda.pl: macro owned process doing -bs
-Date: Fri, 27 Jun 2003 22:48:12 +0200 (MET DST)
-From: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-To: Kip Walker <kwalker@broadcom.com>
-cc: linux-mips@linux-mips.org
-Subject: Re: CVS Update@-mips.org: linux
-In-Reply-To: <3EFCA9E8.D08AAA3A@broadcom.com>
-Message-ID: <Pine.GSO.3.96.1030627223600.27044Q-100000@delta.ds2.pg.gda.pl>
-Organization: Technical University of Gdansk
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jun 2003 22:12:05 +0100 (BST)
+Received: from [IPv6:::ffff:207.215.131.7] ([IPv6:::ffff:207.215.131.7]:55528
+	"EHLO ns.pioneer-pdt.com") by linux-mips.org with ESMTP
+	id <S8225248AbTF0VMD>; Fri, 27 Jun 2003 22:12:03 +0100
+Received: from philt.mrp.pioneer-pdt.com ([172.30.2.110])
+          by ns.pioneer-pdt.com (Post.Office MTA v3.5.3 release 223
+          ID# 0-68491U100L2S100V35) with ESMTP id com
+          for <linux-mips@linux-mips.org>; Fri, 27 Jun 2003 14:14:19 -0700
+From: patrick.hilt@pioneer-pdt.com (Patrick Hilt)
+Organization: Pioneer
+To: linux-mips@linux-mips.org
+Subject: KGDB problem
+Date: Fri, 27 Jun 2003 14:11:18 -0400
+User-Agent: KMail/1.5
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@ds2.pg.gda.pl>
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Message-Id: <200306271411.18555.philt@pioneer-pdt.com>
+Return-Path: <patrick.hilt@pioneer-pdt.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2712
+X-archive-position: 2713
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@ds2.pg.gda.pl
+X-original-sender: patrick.hilt@pioneer-pdt.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 27 Jun 2003, Kip Walker wrote:
+Hello!
+I just recently started working on Broadcom MIPS32 architecture (7115 chipset 
+based STB, Broadcom modified 2.4.18 kernel) and have been trying to get kgdb 
+setup to do some kernel source level debugging... with little success I might 
+add ;-|. I compiled remote debug support in to the kernel, added kernel 
+command line parameters and tried a dozen different configurations... but 
+never got a "Wait for gdb client connection..." message at boot time. The box 
+happily continues to boot on. On the other hand, there seems to be support 
+for debugging in the kernel source since there is a .../dbg_io.c 
+implementation.
 
-> >  There's still missing a load delay slot filler there.  I'm checking in an
-> > obvious fix immediately.
-> 
-> What about the other back-to-back loads in that file (9 lines above)? 
+I guess I am not really sure what to do with it at this point... I read 
+documentation and mailing list archives... no joy!
 
- Oops -- I've missed that one even though I've browsed through the file. 
-Thanks for pointing it out. 
+If anyone on this list would have some pointers and/or suggestions I'd greatly 
+appreciate that :-)!!!
 
-> My CPU doesn't care about the load delay slot, so I didn't think to add
+Thanks a lot,
 
- I hope you haven't realized of the problem rather than ignored it.  I
-think the nops should eventually be replaced with macros that would
-conditionally expand to nothing.  But correctness first and performance
-later. 
-
-> the nop.  At least my patch didn't introduce the problem ;-)
-
- But it let me notice it.  Better late than never. 
-
--- 
-+  Maciej W. Rozycki, Technical University of Gdansk, Poland   +
-+--------------------------------------------------------------+
-+        e-mail: macro@ds2.pg.gda.pl, PGP key available        +
+Patrick

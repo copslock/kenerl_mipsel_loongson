@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Oct 2002 13:30:46 +0100 (CET)
-Received: from webmail24.rediffmail.com ([203.199.83.146]:22763 "HELO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Oct 2002 13:33:56 +0100 (CET)
+Received: from webmail24.rediffmail.com ([203.199.83.146]:9708 "HELO
 	webmail24.rediffmail.com") by linux-mips.org with SMTP
-	id <S1122133AbSJaMap>; Thu, 31 Oct 2002 13:30:45 +0100
-Received: (qmail 6537 invoked by uid 510); 31 Oct 2002 12:32:14 -0000
-Date: 31 Oct 2002 12:32:14 -0000
-Message-ID: <20021031123214.6536.qmail@webmail24.rediffmail.com>
-Received: from unknown (203.200.7.157) by rediffmail.com via HTTP; 31 Oct 2002 12:32:14 -0000
+	id <S1122133AbSJaMdz>; Thu, 31 Oct 2002 13:33:55 +0100
+Received: (qmail 12394 invoked by uid 510); 31 Oct 2002 12:35:43 -0000
+Date: 31 Oct 2002 12:35:43 -0000
+Message-ID: <20021031123543.12393.qmail@webmail24.rediffmail.com>
+Received: from unknown (203.200.7.157) by rediffmail.com via HTTP; 31 Oct 2002 12:35:43 -0000
 MIME-Version: 1.0
 From: "atul srivastava" <atulsrivastava9@rediffmail.com>
 Reply-To: "atul srivastava" <atulsrivastava9@rediffmail.com>
@@ -20,7 +20,7 @@ Return-Path: <atulsrivastava9@rediffmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 542
+X-archive-position: 543
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

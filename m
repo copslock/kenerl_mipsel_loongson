@@ -1,46 +1,51 @@
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id NAA08351 for <linux-archive@neteng.engr.sgi.com>; Thu, 11 Mar 1999 13:31:37 -0800 (PST)
+Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [192.26.80.2]) by neteng.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) via ESMTP id OAA14454 for <linux-archive@neteng.engr.sgi.com>; Thu, 11 Mar 1999 14:26:15 -0800 (PST)
 Return-Path: <owner-linux@cthulhu.engr.sgi.com>
 Received: (from majordomo-owner@localhost)
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	id NAA39945
+	id OAA35391
 	for linux-list;
-	Thu, 11 Mar 1999 13:29:22 -0800 (PST)
+	Thu, 11 Mar 1999 14:24:26 -0800 (PST)
 	mail_from (owner-linux@relay.engr.sgi.com)
-Received: from fir.engr.sgi.com (fir.engr.sgi.com [150.166.40.90])
+Received: from oz.engr.sgi.com (oz.engr.sgi.com [150.166.42.13])
 	by cthulhu.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF)
-	via SMTP id NAA85618;
-	Thu, 11 Mar 1999 13:29:21 -0800 (PST)
-	mail_from (wje@fir.engr.sgi.com)
-Received: (from wje@localhost) by fir.engr.sgi.com (950413.SGI.8.6.12/950213.SGI.AUTOCF) id NAA22834; Thu, 11 Mar 1999 13:29:15 -0800
-Date: Thu, 11 Mar 1999 13:29:15 -0800
-Message-Id: <199903112129.NAA22834@fir.engr.sgi.com>
-From: "William J. Earl" <wje@fir.engr.sgi.com>
-To: darkaeon@cubicsky.com
-Cc: linux@cthulhu.engr.sgi.com
+	via ESMTP id OAA74831;
+	Thu, 11 Mar 1999 14:24:24 -0800 (PST)
+	mail_from (ariel@oz.engr.sgi.com)
+Received: (from ariel@localhost) by oz.engr.sgi.com (980427.SGI.8.8.8/970903.SGI.AUTOCF) id OAA54631; Thu, 11 Mar 1999 14:24:23 -0800 (PST)
+From: ariel@oz.engr.sgi.com (Ariel Faigon)
+Message-Id: <199903112224.OAA54631@oz.engr.sgi.com>
 Subject: Re: Indigo2 & Linux
-In-Reply-To: <36E85AC2.25F7C9B0@kotetsu.cubicsky.com>
-References: <36E85AC2.25F7C9B0@kotetsu.cubicsky.com>
+To: darkaeon@cubicsky.com
+Date: Thu, 11 Mar 1999 14:24:23 -0800 (PST)
+Cc: linux@cthulhu.engr.sgi.com
+In-Reply-To: <36E85AC2.25F7C9B0@kotetsu.cubicsky.com> from "Steve Martin" at Mar 11, 99 04:07:30 pm
+Reply-To: ariel@cthulhu.engr.sgi.com (Ariel Faigon)
+Organization: Silicon Graphics Inc.
+X-Mailer: ELM [version 2.4 PL25]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: owner-linux@cthulhu.engr.sgi.com
 Precedence: bulk
 
-Steve Martin writes:
- > I'm curious as to what the current progress is with Linux and the
- > Indigo2(R4400SC 150Mhz Elan)
- > Also, I remember hearing something about running Xsgi on Linux, has that
- > been successfully(not stable, just enough to see it start up, maybe not
- > usable) done yet?
+Steve Martin wrote:
+:
+:I'm curious as to what the current progress is with Linux and the
+:Indigo2(R4400SC 150Mhz Elan)
+:Also, I remember hearing something about running Xsgi on Linux, has that
+:been successfully(not stable, just enough to see it start up, maybe not
+:usable) done yet?
+:
+Thanks to Bill for answering the documentation part.
+Just to add something on the Xsgi part.
 
-     One recent change is that I and other SGI engineers now have
-authorization to release interface details of the system and graphics
-hardware for Indigo2, as we have previously had authorization for
-Indy.  Unfortunately, I have not yet had time to locate the additional
-documentation (where Indigo2 differs from Indy).  Also, the policy
-for source code disclosure is still not settled, and being able
-to release selected bits of low-level IRIX code would make the whole
-effort much simpler.  (Everyone is agreed in principle that SGI should
-release some such source code to interested Linux developers, but we
-need a formal policy to authorize people to, in effect, give away
-SGI intellectual property.  Admittedly, the value of the relevant
-code is small, but individual employees are not ordinarily authorized
-to make such contributions, although that is obviously changing in
-respect to Linux-based work.)
+Miguel got Xsgi to a point where it was starting without being
+very useful (e.g. no functioning mouse) and went to work on much
+more important stuff (GNOME) where he made a much bigger impact on
+the future of Linux as a whole.  Miguel did an amazing job
+considering that he practically reverse engineered everything.
+
+So the short answer is: No. We don't have X on Indy/Linux yet.
+
+--
+Peace, Ariel

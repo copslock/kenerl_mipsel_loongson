@@ -1,58 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Jan 2005 14:04:41 +0000 (GMT)
-Received: from iris1.csv.ica.uni-stuttgart.de ([IPv6:::ffff:129.69.118.2]:31348
-	"EHLO iris1.csv.ica.uni-stuttgart.de") by linux-mips.org with ESMTP
-	id <S8225305AbVAJOEd>; Mon, 10 Jan 2005 14:04:33 +0000
-Received: from rembrandt.csv.ica.uni-stuttgart.de ([129.69.118.42])
-	by iris1.csv.ica.uni-stuttgart.de with esmtp
-	id 1Co09m-0008UR-00; Mon, 10 Jan 2005 15:04:30 +0100
-Received: from ica2_ts by rembrandt.csv.ica.uni-stuttgart.de with local (Exim 3.35 #1 (Debian))
-	id 1Co09l-00065l-00; Mon, 10 Jan 2005 15:04:29 +0100
-Date: Mon, 10 Jan 2005 15:04:29 +0100
-To: Rojhalat Ibrahim <ibrahim@schenk.isar.de>
-Cc: linux-mips@linux-mips.org
-Subject: Re: [PATCH] Further TLB handler optimizations
-Message-ID: <20050110140429.GC15344@rembrandt.csv.ica.uni-stuttgart.de>
-References: <20041223202526.GA2254@deprecation.cyrius.com> <20041224040051.93587.qmail@web52806.mail.yahoo.com> <20041224085645.GJ3539@rembrandt.csv.ica.uni-stuttgart.de> <20050107190605.GG31335@rembrandt.csv.ica.uni-stuttgart.de> <41E27A6A.5060204@schenk.isar.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Jan 2005 14:25:24 +0000 (GMT)
+Received: from mo01.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:44514 "EHLO
+	mo01.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225305AbVAJOZU>;
+	Mon, 10 Jan 2005 14:25:20 +0000
+Received: MO(mo01)id j0AEPGT7024551; Mon, 10 Jan 2005 23:25:16 +0900 (JST)
+Received: MDO(mdo00) id j0AEPFeq025707; Mon, 10 Jan 2005 23:25:16 +0900 (JST)
+Received: 4UMRO00 id j0AEPEjx029050; Mon, 10 Jan 2005 23:25:15 +0900 (JST)
+	from stratos (localhost [127.0.0.1]) (authenticated)
+Date: Mon, 10 Jan 2005 23:25:13 +0900
+From: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+To: Ralf Baechle <ralf@linux-mips.org>
+Cc: yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH 2.6] vr41xx: fixed gettimeoffset
+Message-Id: <20050110232513.3296883a.yuasa@hh.iij4u.or.jp>
+X-Mailer: Sylpheed version 1.0.0rc (GTK+ 1.2.10; i386-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <41E27A6A.5060204@schenk.isar.de>
-User-Agent: Mutt/1.5.6+20040907i
-From: Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
-Return-Path: <ica2_ts@csv.ica.uni-stuttgart.de>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 6859
+X-archive-position: 6860
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ica2_ts@csv.ica.uni-stuttgart.de
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
-Rojhalat Ibrahim wrote:
-> Thiemo Seufer wrote:
-> >
-> >I updated the patch now and checked it in. Please test, especially
-> >for cases I couldn't do, like R3000-style TLB handling and MIPS32
-> >CPUs with 64bit physaddr.
-> >
-> 
-> My Yosemite board (RM9000 processor) does not boot anymore with
-> CONFIG_64BIT_PHYS_ADDR. Without that option it seems to be working
-> as before. I tried to define cpu_has_64bit_gp_regs.
+Hi Ralf,
 
-Correct, this should always be defined for 64bit capable CPUs.
+My vr41xx gettimeoffset is wrong.
+This patch changes vr41xx gettimeoffset to fixed rate gettimeoffset.
 
-> With that it boots partly.
+Please apply this patch to v2.6.
 
-Where does it fail?
+Yoichi
 
-> When I also define cpu_has_64bit_addresses it stops working again.
+Signed-off-by: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
 
-cpu_has_64bit_addresses is roughly the same as CONFIG_MIPS64,
-so it's unsurprising that it breaks 32bit kernels.
-
-
-Thiemo
+diff -urN -X dontdiff a-orig/arch/mips/vr41xx/common/rtc.c a/arch/mips/vr41xx/common/rtc.c
+--- a-orig/arch/mips/vr41xx/common/rtc.c	Thu May 27 02:11:11 2004
++++ a/arch/mips/vr41xx/common/rtc.c	Mon Jan 10 22:30:21 2005
+@@ -1,7 +1,7 @@
+ /*
+  *  rtc.c, RTC(has only timer function) routines for NEC VR4100 series.
+  *
+- *  Copyright (C) 2003-2004  Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
++ *  Copyright (C) 2003-2005  Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+  *
+  *  This program is free software; you can redistribute it and/or modify
+  *  it under the terms of the GNU General Public License as published by
+@@ -188,7 +188,7 @@
+ 
+ 	if (cycles_per_sec >= CLOCK_TICK_RATE) {
+ 		cycles_per_sec = 0;
+-		remainder_per_sec = REMAINDER_PER_SEC;
++		remainder_per_sec += REMAINDER_PER_SEC;
+ 	}
+ 
+ 	cycles_per_jiffy = 0;
+@@ -219,18 +219,6 @@
+ 	return (unsigned int)cur;
+ }
+ 
+-static unsigned long vr41xx_gettimeoffset(void)
+-{
+-	uint64_t cur;
+-	unsigned long gap;
+-
+-	cur = read_elapsedtime_counter();
+-	gap = (unsigned long)(cur - previous_elapsedtime);
+-	gap = gap / CYCLES_PER_100USEC * 100;	/* usec */
+-
+-	return gap;
+-}
+-
+ static unsigned long vr41xx_get_time(void)
+ {
+ 	uint64_t counts;
+@@ -293,8 +281,6 @@
+ 
+ static void __init vr41xx_timer_setup(struct irqaction *irq)
+ {
+-	do_gettimeoffset = vr41xx_gettimeoffset;
+-
+ 	remainder_per_sec = REMAINDER_PER_SEC;
+ 	cycles_per_jiffy = CYCLES_PER_JIFFY;
+ 

@@ -1,107 +1,89 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 May 2003 11:30:15 +0100 (BST)
-Received: from dvmwest.gt.owl.de ([IPv6:::ffff:62.52.24.140]:18184 "EHLO
-	dvmwest.gt.owl.de") by linux-mips.org with ESMTP
-	id <S8225278AbTEJKaN>; Sat, 10 May 2003 11:30:13 +0100
-Received: by dvmwest.gt.owl.de (Postfix, from userid 1001)
-	id 4835D4ABBB; Sat, 10 May 2003 12:30:10 +0200 (CEST)
-Date: Sat, 10 May 2003 12:30:10 +0200
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 May 2003 12:21:34 +0100 (BST)
+Received: from nx5.HRZ.Uni-Dortmund.DE ([IPv6:::ffff:129.217.131.21]:44151
+	"EHLO nx5.hrz.uni-dortmund.de") by linux-mips.org with ESMTP
+	id <S8225278AbTEJLVb>; Sat, 10 May 2003 12:21:31 +0100
+Received: from unimail.uni-dortmund.de (mx1.HRZ.Uni-Dortmund.DE [129.217.128.51])
+	by nx5.hrz.uni-dortmund.de (Postfix) with ESMTP id 245314AA2B9
+	for <linux-mips@linux-mips.org>; Sat, 10 May 2003 13:21:29 +0200 (MET DST)
+Received: from linuxpc1 (p508EFB9C.dip.t-dialin.net [80.142.251.156])
+	(authenticated (0 bits))
+	by unimail.uni-dortmund.de (8.12.9+Sun/8.11.6) with ESMTP id h4ABLMtC014169
+	(using TLSv1/SSLv3 with cipher RC4-MD5 (128 bits) verified NOT)
+	for <linux-mips@linux-mips.org>; Sat, 10 May 2003 13:21:23 +0200 (MEST)
+From: Benjamin =?iso-8859-1?q?Menk=FCc?= <benmen@gmx.de>
+Reply-To: menkuec@auto-intern.com
 To: linux-mips@linux-mips.org
-Subject: Re: Linux for MIPS Atlas 4Kc board
-Message-ID: <20030510103009.GF27494@lug-owl.de>
-Mail-Followup-To: linux-mips@linux-mips.org
-References: <BAY1-F45jlKqwWil63h0000a6fd@hotmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="EhL9IO3QiJLbitD/"
+Subject: Re: compiling glibc
+Date: Sat, 10 May 2003 13:21:21 +0200
+User-Agent: KMail/1.5.1
+References: <200305092145.43690.benmen@gmx.de> <20030510042535.GA2336@nevyn.them.org> <200305101156.08254.benmen@gmx.de>
+In-Reply-To: <200305101156.08254.benmen@gmx.de>
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <BAY1-F45jlKqwWil63h0000a6fd@hotmail.com>
-User-Agent: Mutt/1.4i
-X-Operating-System: Linux mail 2.4.18 
-X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
-X-gpg-key: wwwkeys.de.pgp.net
-Return-Path: <jbglaw@dvmwest.gt.owl.de>
+Message-Id: <200305101321.21232.benmen@gmx.de>
+X-MailScanner-Information: UniDo-UniMail
+X-MailScanner: Found to be clean
+Return-Path: <benmen@gmx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 2337
+X-archive-position: 2338
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jbglaw@lug-owl.de
+X-original-sender: benmen@gmx.de
 Precedence: bulk
 X-list: linux-mips
 
+Okay, I fixed this problem by adding --disable-profile:
 
---EhL9IO3QiJLbitD/
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+[benmen@linuxpc1 mipsel-glibc] LD_LIBRARY_PATH="" CFLAGS="-O2 -g 
+-finline-limit=10000" CC="mipsel-linux-gcc" AS="mipsel-linux-as" 
+../glibc-2.3.2/configure --build=i686-linux --host=mipsel-linux 
+--enable-add-ons --prefix=/home/benmen/mipsel 
+--with-headers=/home/benmen/mips/kernel/mips-2.4.20/include --disable-profile
 
-On Fri, 2003-05-09 21:57:46 -0700, Michael Anburaj <michaelanburaj@hotmail.=
-com>
-wrote in message <BAY1-F45jlKqwWil63h0000a6fd@hotmail.com>:
->=20
-> Warning: unable to open an initial console.
-> Kernel panic: No init found.  Try passing init=3D option to kernel.
->=20
-> in src/linux/init/main.c
->=20
-> open("/dev/console", O_RDWR, 0) is returning a negative value. I don't ha=
-ve=20
-> a video device on board., required? Will /dev/console open a UART port=20
-> (/dev/ttyS0 or /dev/tty0)? Why am I getting this error?
+...
 
-/dev/console (within your NFS root) should be a char device with 0x05 as
-major and 0x01 as minor.
+Now I can compile until this comes:
 
-If you want so use serial console, you need to pass "console=3D/dev/ttyS0"
-(or similar if your serial devices use a different naming scheme) along
-with kernel's command line.
+[benmen@linuxpc1 mipsel-glibc] BUILD_CC=gcc CC=mipsel-linux-gcc ma
 
-"init" is another thing. Your NFS root should include a /sbin/init or
-or /etc/init or /bin/init or /bin/sh. If none of those exists, you
-loose. Somewhere, you told that you get -5 as error code. This is EIO
-IIRC so maybe your network card's driver is buggy. For debugging this,
-you should use tcpdump (or ethereal) as well as userspace NFS server and
-attach a strace to it:)
+...
 
-> 1. Is the kernel not build properly (did not include console driver)?
+make[3]: Leaving directory `/home/benmen/mips/glibc-2.3.2/elf'
+mipsel-linux-gcc   -nostdlib -nostartfiles -r -o 
+/home/benmen/mips/mipsel-glibc/elf/librtld.os '-Wl,-(' 
+/home/benmen/mips/mipsel-glibc/elf/dl-allobjs.os 
+/home/benmen/mips/mipsel-glibc/elf/rtld-libc.a -lgcc '-Wl,-)'
+mipsel-linux-gcc   -nostdlib -nostartfiles -shared                      \
+   -Wl,-z,defs -Wl,--verbose 2>&1 |     \
+          sed -e '/^=========/,/^=========/!d;/^=========/d'    \
+              -e 's/\. = 0 + SIZEOF_HEADERS;/& _begin = . - SIZEOF_HEADERS;/' 
+\
+          > /home/benmen/mips/mipsel-glibc/elf/ld.so.lds
+mipsel-linux-gcc   -nostdlib -nostartfiles -shared -o 
+/home/benmen/mips/mipsel-glibc/elf/ld.so                  \
+           -Wl,-z,defs                          \
+          /home/benmen/mips/mipsel-glibc/elf/librtld.os 
+-Wl,--version-script=/home/benmen/mips/mipsel-glibc/ld.map    \
+          -Wl,-soname=ld.so.1 -T /home/benmen/mips/mipsel-glibc/elf/ld.so.lds
+/home/benmen/mips/mipsel-glibc/elf/librtld.os: In function 
+`_dl_resolve_conflicts':
+/home/benmen/mips/glibc-2.3.2/elf/dl-conflict.c:65: undefined reference to 
+`elf_machine_rela.7'
+collect2: ld returned 1 exit status
+make[2]: *** [/home/benmen/mips/mipsel-glibc/elf/ld.so] Fehler 1
+make[2]: Leaving directory `/home/benmen/mips/glibc-2.3.2/elf'
+make[1]: *** [elf/subdir_lib] Fehler 2
+make[1]: Leaving directory `/home/benmen/mips/glibc-2.3.2'
+make: *** [all] Fehler 2
+Verzeichnis: ~/mips/mipsel-glibc
+[benmen@linuxpc1 mipsel-glibc]
 
-You need serial drivers compiled in and you need to configure them as
-console drivers (serial console). Additionally, you need to pass
-"console=3DttyS0" as kernel command line option.
+regards,
 
-> 2. Should I pass init=3Dblablabla as a parameter? <but nothing like that =
-is=20
-> specified in the doc.>.
-
-In normal cases, you don't need to pass that. Kernel should just pick
-/sbin/init and execute it. /sbin/init will then start everything needed.
-Could you please do this:
-
-$ cd /path/to/nfsroot
-$ file sbin/inint
-
-MfG, JBG
-
---=20
-   Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481
-   "Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg
-    fuer einen Freien Staat voll Freier B=FCrger" | im Internet! |   im Ira=
-k!
-      ret =3D do_actions((curr | FREE_SPEECH) & ~(IRAQ_WAR_2 | DRM | TCPA));
-
---EhL9IO3QiJLbitD/
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.1 (GNU/Linux)
-
-iD8DBQE+vNSxHb1edYOZ4bsRAhM+AJ9G9Ksz9aNWsGz48mYZ/TmjFrxwiwCdG31a
-44xZ42+81I+pzNqxPPId1cI=
-=gBm4
------END PGP SIGNATURE-----
-
---EhL9IO3QiJLbitD/--
+Ben

@@ -1,48 +1,36 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.3/8.11.3) id f3AF0ap06593
-	for linux-mips-outgoing; Tue, 10 Apr 2001 08:00:36 -0700
-Received: from buzz.ichilton.co.uk (pc147-stockton2.mid.cable.ntl.com [62.254.91.147])
-	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3AF0ZM06590
-	for <linux-mips@oss.sgi.com>; Tue, 10 Apr 2001 08:00:36 -0700
-Received: by buzz.ichilton.co.uk (Postfix, from userid 100)
-	id 1C5021CE31A; Tue, 10 Apr 2001 16:00:28 +0100 (BST)
-Date: Tue, 10 Apr 2001 16:00:28 +0100
-From: Ian Chilton <ian@ichilton.co.uk>
-To: linux-mips@oss.sgi.com
-Subject: Linux/MIPS Website - Please change your links!
-Message-ID: <20010410160028.C14758@buzz.ichilton.local>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.3.15i
+	by oss.sgi.com (8.11.3/8.11.3) id f3AF7s507012
+	for linux-mips-outgoing; Tue, 10 Apr 2001 08:07:54 -0700
+Received: from sark.rillanon.org (cr287730-a.poco1.bc.wave.home.com [24.112.115.105])
+	by oss.sgi.com (8.11.3/8.11.3) with ESMTP id f3AF7rM07009
+	for <linux-mips@oss.sgi.com>; Tue, 10 Apr 2001 08:07:53 -0700
+Received: from kesh (pc3 [10.0.1.35])
+	by sark.rillanon.org (8.9.3/8.9.3) with SMTP id HAA17223
+	for <linux-mips@oss.sgi.com>; Tue, 10 Apr 2001 07:59:57 -0700
+Message-ID: <001101c0c1cd$87d4caa0$2301000a@rillanon.org>
+Reply-To: "Bruce Balden" <balden@lineo.com>
+From: "Bruce Balden" <balden@lineo.com>
+To: <linux-mips@oss.sgi.com>
+References: <20010410160028.C14758@buzz.ichilton.local>
+Subject: GDB/JTAG support
+Date: Tue, 10 Apr 2001 07:50:04 -0700
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4133.2400
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-Hello,
+Hi.
 
-The unofficial Linux/MIPS web site has changed it's URL.
+Can someone tell me the state of gdb/JTAG support for MIPS processors?
 
-It is now at: http://www.linuxmips.net
-
-Please update your bookmarks and the links on any sites you run.
-
-If you should come across a site with the old link, please let me know.
+Thanks,
 
 
-Thanks!
-
-
-Bye for Now,
-
-Ian
-
-
-                                  \|||/ 
-                                  (o o)
- /-----------------------------ooO-(_)-Ooo----------------------------\
- |  Ian Chilton                    E-Mail: ian@ichilton.co.uk         |
- |  IRC Nick: GadgetMan            Backup: ichilton@www.linux.org.uk  |
- |  ICQ: 16007717 / 104665842      Web   : http://www.ichilton.co.uk  |
- |--------------------------------------------------------------------|
- |       For people who like peace and quiet: a phoneless cord        |
- \--------------------------------------------------------------------/
+Bruce Balden
+balden@lineo.com

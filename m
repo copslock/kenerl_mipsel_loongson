@@ -1,48 +1,46 @@
 Received: (from majordomo@localhost)
-	by oss.sgi.com (8.11.2/8.11.3) id g1BHTEA13946
-	for linux-mips-outgoing; Mon, 11 Feb 2002 09:29:14 -0800
+	by oss.sgi.com (8.11.2/8.11.3) id g1BHrbW15206
+	for linux-mips-outgoing; Mon, 11 Feb 2002 09:53:37 -0800
 Received: from hell (buserror-extern.convergence.de [212.84.236.66])
-	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1BHT9913943
-	for <linux-mips@oss.sgi.com>; Mon, 11 Feb 2002 09:29:09 -0800
+	by oss.sgi.com (8.11.2/8.11.3) with SMTP id g1BHrY915197
+	for <linux-mips@oss.sgi.com>; Mon, 11 Feb 2002 09:53:34 -0800
 Received: from js by hell with local (Exim 3.33 #1 (Debian))
-	id 16aJJs-0000nH-00; Mon, 11 Feb 2002 17:28:44 +0100
-Date: Mon, 11 Feb 2002 17:28:44 +0100
+	id 16aJhl-0000rU-00; Mon, 11 Feb 2002 17:53:25 +0100
+Date: Mon, 11 Feb 2002 17:53:25 +0100
 From: Johannes Stezenbach <js@convergence.de>
-To: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>
-Cc: Florian Lohoff <flo@rfc822.org>, linux-mips@oss.sgi.com
+To: Florian Lohoff <flo@rfc822.org>
+Cc: "Maciej W. Rozycki" <macro@ds2.pg.gda.pl>, linux-mips@oss.sgi.com
 Subject: Re: gcc include strangeness
-Message-ID: <20020211162844.GD2918@convergence.de>
+Message-ID: <20020211165325.GB3261@convergence.de>
 Mail-Followup-To: Johannes Stezenbach <js@convergence.de>,
-	"Maciej W. Rozycki" <macro@ds2.pg.gda.pl>,
-	Florian Lohoff <flo@rfc822.org>, linux-mips@oss.sgi.com
-References: <20020211142708.GA2577@convergence.de> <Pine.GSO.3.96.1020211155920.18917F-100000@delta.ds2.pg.gda.pl>
+	Florian Lohoff <flo@rfc822.org>,
+	"Maciej W. Rozycki" <macro@ds2.pg.gda.pl>, linux-mips@oss.sgi.com
+References: <20020209150155.GA853@paradigm.rfc822.org> <Pine.GSO.3.96.1020211134516.18917A-100000@delta.ds2.pg.gda.pl> <20020211135302.GB30314@paradigm.rfc822.org> <20020211142708.GA2577@convergence.de> <20020211153732.GA31248@paradigm.rfc822.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Pine.GSO.3.96.1020211155920.18917F-100000@delta.ds2.pg.gda.pl>
+In-Reply-To: <20020211153732.GA31248@paradigm.rfc822.org>
 User-Agent: Mutt/1.3.27i
 Sender: owner-linux-mips@oss.sgi.com
 Precedence: bulk
 
-On Mon, Feb 11, 2002 at 04:10:34PM +0100, Maciej W. Rozycki wrote:
+On Mon, Feb 11, 2002 at 04:37:32PM +0100, Florian Lohoff wrote:
+> On Mon, Feb 11, 2002 at 03:27:08PM +0100, Johannes Stezenbach wrote:
+> > 
+> > The glibc-2.2.5/FAQ says:
+> >   1.20.   Which tools should I use for MIPS?
+> > 
+> >   {AJ} You should use the current development version of gcc 3.0 or newer from
+> >   CVS.  gcc 2.95.x does not work correctly on mips-linux.
+> > 
 > 
->  Is gcc 3.x already stable enough to be used by people not directly
-> involved in gcc development?  More specifically for MIPS/Linux and
-> i386/Linux, for both the kernel and the userland?  I'm told it is not.
+> Its not about gcc development but rather keeping a distribution in
+> sync. All Debian archs try to use the same compiler which is currently
+> 2.95.4 which we are happy with right now - Except some minor issues
+> breaking 2-3 Packages ...
 
-I'm reading about gcc 3.x code generation bugs every now and then,
-but so far I did not hit any of them.
-I would prefer gcc 2.95.x though, if I only could get it
-to work on MIPS.
-
->  Gcc 2.95.x as distributed certainly doesn't work.  With a set of patches
-> it appears rock solid.  For MIPS/Linux I'm using it for over two years for
-> both the kernel and the userland.  The last time I found bug and needed to
-> apply a fix to gcc 2.95.3 for MIPS/Linux was in April 2001. 
-
-I would certainly be interested in getting my hands on those
-patches. Do you mind if I ask why they did not go into
-gcc-2_95-branch CVS?
+So does this mean that Debian's gcc 2.95.4 works on MIPS?
+Does it include patches which are not in CVS (gcc-2_95-branch)?
 
 
 Regards,

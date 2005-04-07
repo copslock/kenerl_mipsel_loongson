@@ -1,92 +1,97 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Apr 2005 16:19:50 +0100 (BST)
-Received: from web26503.mail.ukl.yahoo.com ([IPv6:::ffff:217.146.176.40]:62629
-	"HELO web26503.mail.ukl.yahoo.com") by linux-mips.org with SMTP
-	id <S8225219AbVDGPTb>; Thu, 7 Apr 2005 16:19:31 +0100
-Received: (qmail 54327 invoked by uid 60001); 7 Apr 2005 15:19:24 -0000
-Message-ID: <20050407151924.54325.qmail@web26503.mail.ukl.yahoo.com>
-Received: from [213.136.104.118] by web26503.mail.ukl.yahoo.com via HTTP; Thu, 07 Apr 2005 17:19:24 CEST
-Date:	Thu, 7 Apr 2005 17:19:24 +0200 (CEST)
-From:	pascal fonga <fonga_pascal2@yahoo.fr>
-Subject: Economiser ma vie, De: Pascal Fonga
-To:	fonga_pascal2@yahoo.fr
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Apr 2005 16:25:05 +0100 (BST)
+Received: from krt.tmd.ns.ac.yu ([IPv6:::ffff:147.91.177.65]:18884 "EHLO
+	krt.neobee.net") by linux-mips.org with ESMTP id <S8225221AbVDGPYu>;
+	Thu, 7 Apr 2005 16:24:50 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by krt.neobee.net (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id j37FNnZF025417;
+	Thu, 7 Apr 2005 17:23:50 +0200
+Received: from krt.neobee.net ([127.0.0.1])
+ by localhost (krt.neobee.net [127.0.0.1]) (amavisd-new, port 10024) with LMTP
+ id 25091-02; Thu,  7 Apr 2005 17:23:49 +0200 (CEST)
+Received: from davidovic ([192.168.0.89])
+	by krt.neobee.net (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id j37FNd1p025409;
+	Thu, 7 Apr 2005 17:23:39 +0200
+Message-Id: <200504071523.j37FNd1p025409@krt.neobee.net>
+Reply-To: <mile.davidovic@micronasnit.com>
+From:	"Mile Davidovic" <mile.davidovic@micronasnit.com>
+To:	"'Geert Uytterhoeven'" <geert@linux-m68k.org>
+Cc:	"'Linux/MIPS Development'" <linux-mips@linux-mips.org>
+Subject: RE: Porting new board
+Date:	Thu, 7 Apr 2005 17:23:54 +0200
+Organization: MicronasNIT
 MIME-Version: 1.0
-Content-Type: multipart/alternative; boundary="0-1861327577-1112887164=:44495"
-Content-Transfer-Encoding: 8bit
-Return-Path: <fonga_pascal2@yahoo.fr>
+Content-Type: text/plain;
+	charset="iso-8859-2"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Office Outlook, Build 11.0.6353
+In-Reply-To: <Pine.LNX.4.62.0504071603460.9236@numbat.sonytel.be>
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2527
+Thread-Index: AcU7esi/O6dyZaWpQ5q7Jj6TSPEDBQACmO5Q
+X-Virus-Scanned: by amavisd-new at krt.neobee.net
+Return-Path: <mile.davidovic@micronasnit.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7630
+X-archive-position: 7631
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fonga_pascal2@yahoo.fr
+X-original-sender: mile.davidovic@micronasnit.com
 Precedence: bulk
 X-list: linux-mips
 
---0-1861327577-1112887164=:44495
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
+Thank for Your comment. Yes this was obviouse error but unfortunately it
+does not work.
 
+Best regards mile
 
-De : Pascal Fonga
+-----Original Message-----
+From: linux-mips-bounce@linux-mips.org
+[mailto:linux-mips-bounce@linux-mips.org] On Behalf Of Geert Uytterhoeven
+Sent: Thursday, April 07, 2005 4:05 PM
+To: Mile Davidovic
+Cc: Linux/MIPS Development
+Subject: Re: Porting new board
 
-Cher, 
+On Thu, 7 Apr 2005, Mile Davidovic wrote:
+> I try to port new board (MIPS 4KEC processor) to latest version of 
+> linux-mips kernel. I have question regarding Kconfig and adding new 
+> board.
+> In arch/mips/Kconfig I add next lines:
+> 
+> config MIPS_VGCA_EVA
+>   bool "Support for VGCA-Eva board"
+>   select SYS_SUPPORTS_BIG_ENDIAN
+>   help
+> 	  This enables support for the VGCA-EVA board.
+> 
+> and in arch/mips/Makefile I add next lines:
+> core-$(MIPS_VGCA_EVA)	+= arch/mips/vgca-eva/
+         ^^^^^^^^^^^^^
+> cflags-$(MIPS_VGCA_EVA)   += -Iinclude/asm-mips/vgca-eva
+           ^^^^^^^^^^^^^
+> load-$(MIPS_VGCA_EVA)	+= 0xffffffff80100000
+         ^^^^^^^^^^^^^
 
-Ceci est très urgent, mon nom est Pascal Fonga, j'ai 24 ans , le fils du défunt M. Laurent Fonga, je souhaite vous informer que je suis intéressé à faire des affaires avec vous, en particulier des affaires dans l'immobilier comme produit de placement ou n'importe quelles affaires qui sont profitables dans votre pays. Je vous prie de ne pas trahir  la confiance qui  repose sur vous en tant que mon associé d'affaires si vous êtes disposé à m'aider dans cette proposition. 
+All of these should be `CONFIG_MIPS_VGCA_EVA' instead of `MIPS_VGCA_EVA'.
 
-Je suis en possession de la somme d' US$12.5 (douze millions de cinq cents mille dollars américains) que je souhaite investir d'urgence par vous dans votre pays. La source des fonds, mon défunt M. Laurent Fonga de père, était un homme d'affaires réussi avant sa mort prématurée en juin 2003, l était un négociant de cacao et  de diamant basé ici à Abidjan, en Cote d'lvoire . Mon père et ma mère ont été empoisonnés par une partie organisée par un de ses associés d'affaires. Avant qu'il ne meurt, il m'a appelé à son chevet malade et m'a secrètement informé qu'il a déposé la somme d'US$12.5  Millions  à une banque ici, qu'il avait l'habitude d'utiliser mon nom en tant que proche parents pour déposer les fonds, et puisque je suis le seul fils. 
+> But when I try to build kernel with:
+> 	make menuconfig  		---> choose VGCA-Eva board
+> 	make arch=mips V=1 CROSS_COMPILE=mips-linux-
+> 
+> it stop forever. When I try to choose some other board it work nice. 
+> Any comment?
 
-Il m'a averti sérieusement, de faire très attention  et de ne pas perdre pas les fonds, que c'était à cause de ces fonds que ses associés d'affaires ont prévu l' empoisonner. Par conséquent, avec des larmes il m'a conseillé de chercher pour un associé étranger de confiance dans votre pays pou m'aider à investir les fonds dans n'importe quelles affaires lucratives, telles que l'investissement dans tout domaine ou toute affaire qui sont profitables dans votre pays. Il m'a conseillé de prendre ma plus jeune soeur Elizabeth et de me déplacer hors de ce pays, après que les fonds aient été transférés. 
+Gr{oetje,eeting}s,
 
-Mon plan était que nous devrions finir nos études ici d'abord, avant que je commence à projeter comment investir les fonds dans n'importe quelle entreprise d'affaires. Mais deux hommes qui réclament être les associés d'affaires de mon défunt père, sont récemment venus à notre maison et ont exigés tous les documents au sujet des fonds. J'ai nié que je ne sais rien au sujet des fonds ou autre document. Avant qu'ils soient partis, ils ont menacé de me tuer si je ne leur donne pas la fois prochaine qu'ils viennent. Basé sur ceci, j'ai décidé de transférer les fonds hrs d'ici immédiatement et de les replacer dans  votre pays. Avant de vous contacter, j'ai parlé avec le directeur d'agence de la banque et les modalités à établir sur la façon dont transférer les fonds. 
+						Geert
 
-S'il vous plait, nous cherchons humblement votre aide de la manières suivante : 
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 --
+geert@linux-m68k.org
 
-1. Pour nous aider en transférant les fonds tranquillement dans votre compte dans votre pays. 
-
-2. Pour servir de gardien des fonds puisque je suis toujours à l'université et à ma plus jeune soeur est toujours à l'école secondaire. 
-
-3. Pour faire l'arrangement approprié pour que nous venons dans votre pays, dans d'autres écoles n et pour nous aident à trouver une autorisation résidentielle dans votre pays. 
-
-Avec l'esprit propre, je vous offre 15% de tous les fonds, comme compensation pour votre efforts, après que le transfert réussi des fonds dans  votre compte dans votre pays. Je crois qu'on conclurait cette transaction dans le temps le plus court possible. J'espère que je recevrai une réponse favorable de vous instamment et je vous donnerai davantage sur les détails d'information, comment cette transaction à effectuer. 
-
-Dieu vous bénissent. 
-Pascal Fonga et sœur.
-
-
-
-		
----------------------------------
- Découvrez le nouveau Yahoo! Mail : 250 Mo d'espace de stockage pour vos mails !
-Créez votre Yahoo! Mail
-		
----------------------------------
- Découvrez le nouveau Yahoo! Mail : 250 Mo d'espace de stockage pour vos mails !
-Créez votre Yahoo! Mail
---0-1861327577-1112887164=:44495
-Content-Type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-
-<DIV>
-<DIV>
-<DIV>
-<P style="MARGIN: 12pt 0cm; LINE-HEIGHT: 121%"><SPAN>De : Pascal Fonga</SPAN></P>
-<P style="MARGIN-BOTTOM: 12pt; LINE-HEIGHT: 121%"><SPAN>Cher, <?xml:namespace prefix = o ns = "urn:schemas-microsoft-com:office:office" /><o:p></o:p></SPAN></P>
-<P style="MARGIN-BOTTOM: 12pt; LINE-HEIGHT: 121%"><SPAN>Ceci est très urgent, mon nom est Pascal Fonga, j'ai 24 ans , le fils du défunt M. Laurent Fonga, je souhaite vous informer que je suis intéressé à faire des affaires avec vous, en particulier des affaires dans l'immobilier comme produit de placement ou n'importe quelles affaires qui sont profitables dans votre pays. Je vous prie de ne pas trahir&nbsp; la confiance qui&nbsp; repose sur vous en tant que mon associé d'affaires si vous êtes disposé à m'aider dans cette proposition. <o:p></o:p></SPAN></P>
-<P style="MARGIN-BOTTOM: 12pt; LINE-HEIGHT: 121%"><SPAN>Je suis en possession de la somme d' US$12.5 (douze millions de cinq cents mille dollars américains) que je souhaite investir d'urgence par vous dans votre pays. La source des fonds, mon défunt M. Laurent Fonga de père, était un homme d'affaires réussi avant sa mort prématurée en juin 2003, l était un négociant de cacao et&nbsp; de diamant basé ici&nbsp;à Abidjan, en Cote d'lvoire . Mon père et ma mère ont été empoisonnés&nbsp;par une partie organisée par un de ses associés d'affaires. Avant qu'il ne&nbsp;meurt, il m'a appelé à son chevet malade et m'a secrètement informé qu'il a déposé la somme d'US$12.5<SPAN style="mso-spacerun: yes">&nbsp; </SPAN>Millions &nbsp;à une banque ici, qu'il avait l'habitude d'utiliser mon nom en tant que proche parents pour déposer les fonds,&nbsp;et puisque je suis&nbsp;le seul fils. <o:p></o:p></SPAN></P>
-<P style="MARGIN-BOTTOM: 12pt; LINE-HEIGHT: 121%"><SPAN>Il m'a averti sérieusement, de faire très attention&nbsp; et de ne pas perdre pas les fonds, que c'était&nbsp;à cause de&nbsp;ces fonds que ses associés d'affaires ont prévu l'&nbsp;empoisonner. Par conséquent, avec des larmes il m'a conseillé de chercher pour un associé étranger de confiance dans votre pays&nbsp;pou m'aider à investir les fonds dans n'importe quelles affaires lucratives, telles que l'investissement dans tout domaine ou toute affaire qui sont profitables dans votre pays. Il m'a conseillé de prendre ma plus jeune soeur Elizabeth et de me déplacer hors de ce pays, après que les fonds aient été transférés. <o:p></o:p></SPAN></P>
-<P style="MARGIN-BOTTOM: 12pt; LINE-HEIGHT: 121%"><SPAN>Mon plan était que nous devrions finir&nbsp;nos études&nbsp;ici d'abord, avant que je commence à projeter comment investir les fonds dans n'importe quelle entreprise d'affaires. Mais deux hommes qui réclament être les associés d'affaires de mon défunt père,&nbsp;sont récemment venus à notre maison et ont exigés tous les documents au sujet des fonds. J'ai nié que je ne sais rien au sujet des fonds ou&nbsp;autre document. Avant qu'ils soient partis, ils ont menacé de me tuer si je ne leur donne pas la fois prochaine qu'ils viennent. Basé sur ceci, j'ai décidé de transférer les fonds&nbsp;hrs d'ici&nbsp;immédiatement et de les replacer dans &nbsp;votre pays. Avant de vous contacter, j'ai parlé avec le directeur d'agence de la banque et les modalités à établir sur la façon dont transférer les fonds. <o:p></o:p></SPAN></P>
-<P style="MARGIN-BOTTOM: 12pt; LINE-HEIGHT: 121%"><SPAN>S'il vous plait, nous cherchons humblement votre aide de la&nbsp;manières suivante : <o:p></o:p></SPAN></P>
-<P style="MARGIN-BOTTOM: 12pt; LINE-HEIGHT: 121%"><SPAN>1. Pour nous aider en transférant les fonds tranquillement&nbsp;dans votre compte dans votre pays. <o:p></o:p></SPAN></P>
-<P style="MARGIN-BOTTOM: 12pt; LINE-HEIGHT: 121%"><SPAN>2. Pour servir de gardien des fonds puisque&nbsp;je suis&nbsp;toujours à l'université et à ma plus jeune soeur est toujours&nbsp;à l'école secondaire. <o:p></o:p></SPAN></P>
-<P style="MARGIN-BOTTOM: 12pt; LINE-HEIGHT: 121%"><SPAN>3. Pour faire l'arrangement approprié pour que nous venons dans votre pays, dans d'autres écoles n et pour nous aident à trouver une autorisation résidentielle dans votre pays. <o:p></o:p></SPAN></P>
-<P style="MARGIN-BOTTOM: 12pt; LINE-HEIGHT: 121%"><SPAN>Avec l'esprit propre, je vous offre 15% de tous les fonds, comme compensation pour votre efforts, après que le transfert réussi des fonds&nbsp;dans &nbsp;votre compte dans votre pays. Je crois qu'on conclurait cette transaction dans le temps le plus court possible. J'espère que je recevrai une réponse favorable de vous instamment et je vous donnerai davantage sur les détails&nbsp;d'information, comment cette transaction&nbsp;à effectuer. <o:p></o:p></SPAN></P>
-<P style="MARGIN-BOTTOM: 12pt; LINE-HEIGHT: 121%"><SPAN>Dieu vous bénissent. <o:p></o:p></SPAN></P><SPAN style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: Arial; mso-fareast-font-family: 'Times New Roman'; mso-ansi-language: FR; mso-fareast-language: FR; mso-bidi-language: AR-SA">Pascal Fonga et sœur.</SPAN></DIV></DIV></DIV><p>
-		<hr size=1> 
-Découvrez le nouveau Yahoo! Mail : <font color="red">250 Mo d'espace</font> de stockage pour vos mails !<br><a href="http://us.rd.yahoo.com/evt=25917/*http://us.rd.yahoo.com/mail_fr/mail_campaigns/splash/taglines_250/hotmailcom/*http://fr.promotions.yahoo.com/mail/creer28.html" target="_blank">Créez votre Yahoo! Mail</a>
-<p>
-		<hr size=1> 
-Découvrez le nouveau Yahoo! Mail : <font color="red">250 Mo d'espace</font> de stockage pour vos mails !<br><a href="http://us.rd.yahoo.com/evt=25917/*http://us.rd.yahoo.com/mail_fr/mail_campaigns/splash/taglines_250/hotmailcom/*http://fr.promotions.yahoo.com/mail/creer28.html" target="_blank">Créez votre Yahoo! Mail</a>
-
---0-1861327577-1112887164=:44495--
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like
+that.
+							    -- Linus
+Torvalds

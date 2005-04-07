@@ -1,114 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Apr 2005 16:38:39 +0100 (BST)
-Received: from krt.tmd.ns.ac.yu ([IPv6:::ffff:147.91.177.65]:34759 "EHLO
-	krt.neobee.net") by linux-mips.org with ESMTP id <S8225234AbVDGPiY>;
-	Thu, 7 Apr 2005 16:38:24 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by krt.neobee.net (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id j37FbUZF025791;
-	Thu, 7 Apr 2005 17:37:30 +0200
-Received: from krt.neobee.net ([127.0.0.1])
- by localhost (krt.neobee.net [127.0.0.1]) (amavisd-new, port 10024) with LMTP
- id 25054-07; Thu,  7 Apr 2005 17:37:30 +0200 (CEST)
-Received: from davidovic ([192.168.0.89])
-	by krt.neobee.net (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id j37FbS1p025786;
-	Thu, 7 Apr 2005 17:37:28 +0200
-Message-Id: <200504071537.j37FbS1p025786@krt.neobee.net>
-Reply-To: <mile.davidovic@micronasnit.com>
-From:	"Mile Davidovic" <mile.davidovic@micronasnit.com>
-To:	"'Geert Uytterhoeven'" <geert@linux-m68k.org>
-Cc:	"'Linux/MIPS Development'" <linux-mips@linux-mips.org>
-Subject: RE: Porting new board
-Date:	Thu, 7 Apr 2005 17:37:45 +0200
-Organization: MicronasNIT
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-2"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Office Outlook, Build 11.0.6353
-In-Reply-To: <200504071523.j37FNd1p025409@krt.neobee.net>
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2527
-Thread-Index: AcU7esi/O6dyZaWpQ5q7Jj6TSPEDBQACmO5QAACXuKA=
-X-Virus-Scanned: by amavisd-new at krt.neobee.net
-Return-Path: <mile.davidovic@micronasnit.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Apr 2005 18:32:54 +0100 (BST)
+Received: from bay101-f35.bay101.hotmail.com ([IPv6:::ffff:64.4.56.45]:23676
+	"EHLO hotmail.com") by linux-mips.org with ESMTP
+	id <S8225273AbVDGRc1>; Thu, 7 Apr 2005 18:32:27 +0100
+Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
+	 Thu, 7 Apr 2005 10:32:20 -0700
+Message-ID: <BAY101-F35417F4A22F1FC159B196ADC3E0@phx.gbl>
+Received: from 64.4.56.200 by by101fd.bay101.hotmail.msn.com with HTTP;
+	Thu, 07 Apr 2005 17:32:19 GMT
+X-Originating-IP: [64.4.56.200]
+X-Originating-Email: [danieljlaird@hotmail.com]
+X-Sender: danieljlaird@hotmail.com
+From:	"Daniel Laird" <danieljlaird@hotmail.com>
+To:	linux-mips@linux-mips.org
+Subject: mipsel-linux-ld:arch/mips/kernel/vmlinux.lds:*: parse error
+Date:	Thu, 07 Apr 2005 17:32:19 +0000
+Mime-Version: 1.0
+Content-Type: text/plain; format=flowed
+X-OriginalArrivalTime: 07 Apr 2005 17:32:20.0331 (UTC) FILETIME=[C05C6BB0:01C53B97]
+Return-Path: <danieljlaird@hotmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7632
+X-archive-position: 7633
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mile.davidovic@micronasnit.com
+X-original-sender: danieljlaird@hotmail.com
 Precedence: bulk
 X-list: linux-mips
 
- 
-I found what cause my problem after adding 
-  select SYS_SUPPORTS_BIG_ENDIAN
-  select SYS_SUPPORTS_32BIT_KERNEL
-in Kconfig compilation start.
+I am trying to build a linux kernel and gcc etc.
 
-Sorry for posting stupid questions..
+I have tried the following combo
+gcc-3.4.3
+glibc-2.3.4
+binutils-2.15.96
+linux-2.6.11.6
 
-Best regards Mile
------Original Message-----
-From: linux-mips-bounce@linux-mips.org
-[mailto:linux-mips-bounce@linux-mips.org] On Behalf Of Mile Davidovic
-Sent: Thursday, April 07, 2005 5:24 PM
-To: 'Geert Uytterhoeven'
-Cc: 'Linux/MIPS Development'
-Subject: RE: Porting new board
+I egt everything built and then see the following error
 
-Thank for Your comment. Yes this was obviouse error but unfortunately it
-does not work.
+mipsel-linux-ld:arch/mips/kernel/vmlinux.lds:6: parse error
 
-Best regards mile
+I can see that people have told someone else to edit the file vmlinux.lds 
+manually
+http://www.linux-mips.org/archives/linux-mips/2005-01/msg00059.html
 
------Original Message-----
-From: linux-mips-bounce@linux-mips.org
-[mailto:linux-mips-bounce@linux-mips.org] On Behalf Of Geert Uytterhoeven
-Sent: Thursday, April 07, 2005 4:05 PM
-To: Mile Davidovic
-Cc: Linux/MIPS Development
-Subject: Re: Porting new board
+and try again but in a complete build environment so does anyone know what 
+causes the bug in the first place
 
-On Thu, 7 Apr 2005, Mile Davidovic wrote:
-> I try to port new board (MIPS 4KEC processor) to latest version of 
-> linux-mips kernel. I have question regarding Kconfig and adding new 
-> board.
-> In arch/mips/Kconfig I add next lines:
-> 
-> config MIPS_VGCA_EVA
->   bool "Support for VGCA-Eva board"
->   select SYS_SUPPORTS_BIG_ENDIAN
->   help
-> 	  This enables support for the VGCA-EVA board.
-> 
-> and in arch/mips/Makefile I add next lines:
-> core-$(MIPS_VGCA_EVA)	+= arch/mips/vgca-eva/
-         ^^^^^^^^^^^^^
-> cflags-$(MIPS_VGCA_EVA)   += -Iinclude/asm-mips/vgca-eva
-           ^^^^^^^^^^^^^
-> load-$(MIPS_VGCA_EVA)	+= 0xffffffff80100000
-         ^^^^^^^^^^^^^
-
-All of these should be `CONFIG_MIPS_VGCA_EVA' instead of `MIPS_VGCA_EVA'.
-
-> But when I try to build kernel with:
-> 	make menuconfig  		---> choose VGCA-Eva board
-> 	make arch=mips V=1 CROSS_COMPILE=mips-linux-
-> 
-> it stop forever. When I try to choose some other board it work nice. 
-> Any comment?
-
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 --
-geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like
-that.
-							    -- Linus
-Torvalds
+Please help
+Dan

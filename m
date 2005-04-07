@@ -1,69 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Apr 2005 20:53:09 +0100 (BST)
-Received: from gw.voda.cz ([IPv6:::ffff:212.24.154.90]:15824 "EHLO
-	smtp.voda.cz") by linux-mips.org with ESMTP id <S8224902AbVDGTwy>;
-	Thu, 7 Apr 2005 20:52:54 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by smtp.voda.cz (Postfix) with ESMTP id 655C51380B;
-	Thu,  7 Apr 2005 21:52:44 +0200 (CEST)
-Received: from smtp.voda.cz ([127.0.0.1])
- by localhost (gw [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 09982-01; Thu,  7 Apr 2005 21:52:29 +0200 (CEST)
-Received: from [10.1.1.77] (unknown [10.1.1.77])
-	by smtp.voda.cz (Postfix) with ESMTP id DDECC14729;
-	Thu,  7 Apr 2005 21:52:24 +0200 (CEST)
-Message-ID: <42558F78.7060407@voda.cz>
-Date:	Thu, 07 Apr 2005 21:52:24 +0200
-From:	=?ISO-8859-1?Q?Tom_Vr=E1na?= <tom@voda.cz>
-Organization: VODA IT consulting
-User-Agent: Mozilla Thunderbird 0.6 (X11/20040502)
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Apr 2005 21:43:54 +0100 (BST)
+Received: from web40914.mail.yahoo.com ([IPv6:::ffff:66.218.78.211]:23680 "HELO
+	web40914.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S8224920AbVDGUni>; Thu, 7 Apr 2005 21:43:38 +0100
+Received: (qmail 51805 invoked by uid 60001); 7 Apr 2005 20:43:29 -0000
+Comment: DomainKeys? See http://antispam.yahoo.com/domainkeys
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  b=q6JxWqdT3s6sZ1pKsID379kO74F+SYB+HjcYz34S/IZq7z/pDIDdKVovSXTcLg+SMsXRtIJ+KHPlpu4zQyY6UBNItGxsuUNNd4V3sSPLCkD5cF8VcIN5u+4NiSLX2e96a8OQQ78+2ny3Bh0JVkD4YHqd3NZAWwSiN7FB0MX2XuQ=  ;
+Message-ID: <20050407204329.51803.qmail@web40914.mail.yahoo.com>
+Received: from [65.205.244.66] by web40914.mail.yahoo.com via HTTP; Thu, 07 Apr 2005 13:43:29 PDT
+Date:	Thu, 7 Apr 2005 13:43:29 -0700 (PDT)
+From:	Brian Kuschak <bkuschak@yahoo.com>
+Subject: Re: gdb backtrace with core files
+To:	Daniel Jacobowitz <dan@debian.org>, linux-mips@linux-mips.org
+In-Reply-To: 6667
 MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Pratik Patel <pratikgpatel@gmail.com>, linux-mips@linux-mips.org
-Subject: Re: need libpcap.a for mipsel platform
-References: <fda764b0504071230516cde06@mail.gmail.com> <20050407194109.GA27344@linux-mips.org>
-In-Reply-To: <20050407194109.GA27344@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: by amavisd-new at voda.cz
-Return-Path: <tom@voda.cz>
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <bkuschak@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7646
+X-archive-position: 7647
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tom@voda.cz
+X-original-sender: bkuschak@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
 
-> <>On Thu, Apr 07, 2005 at 12:30:26PM -0700, Pratik Patel wrote:
->
->
-> If anyone has the pre-compiled libpcap.a file for MIPSEL platform,
-> please mail it to me.
->
->
->I suggest you get that from your favorite Linux distribution.
->
->As a guess on a small system like the WRT54G you're using uclibc and I'd
->expect some problem when building libpcap against uclibc.
->
->  Ralf
->  
->
-AFAIK there is no major problem with compiling recent libpcap using 
-uclibc for the mipsel platform. Just get you favorite cross-compiler, 
-sources and you're done...
+> > OK, tried again with version (GNU gdb
+> > 6.3.50.20050407-cvs.)  Same result.
+> > 
+> > I'm running gdb on x86 host, debugging a binary
+> for a
+> > MIPS target.  I configured gdb as
+> > ./configure --target mipsel-linux-gnu
+> --enable-shared
+> > --enable-threads 
+> > 
+> > Perhaps gdb isn't getting the right kernel headers
+> > when built?  I added the configure options
+> > --includedir and --oldincludedir to point to my
+> > linux-mips kernel tree, but that didn't help
+> either.  
+> 
+> It does not use the kernel headers to work out the
+> layout.  Are you
+> using a current kernel?  I tested core dump support
+> only a couple weeks
+> ago.
 
-       Tom
+I'm using a 2.4.25 vendor-patched kernel from
+Broadcom.  I can poke around and compare the
+core-dumping code to the latest mips-linux tree to see
+if anything is different.
 
--- 
- Tomas Vrana  <tom@voda.cz>
- --------------------------
- VODA IT consulting, Borkovany 48, 691 75
- http://www.voda.cz/
- phone: +420 519 419 416 mobile: +420 603 469 305 UIN: 105142752
+Brian
+ 
+
+
+		
+__________________________________ 
+Do you Yahoo!? 
+Yahoo! Small Business - Try our new resources site!
+http://smallbusiness.yahoo.com/resources/ 

@@ -1,44 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Apr 2005 16:25:05 +0100 (BST)
-Received: from krt.tmd.ns.ac.yu ([IPv6:::ffff:147.91.177.65]:18884 "EHLO
-	krt.neobee.net") by linux-mips.org with ESMTP id <S8225221AbVDGPYu>;
-	Thu, 7 Apr 2005 16:24:50 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Apr 2005 16:38:39 +0100 (BST)
+Received: from krt.tmd.ns.ac.yu ([IPv6:::ffff:147.91.177.65]:34759 "EHLO
+	krt.neobee.net") by linux-mips.org with ESMTP id <S8225234AbVDGPiY>;
+	Thu, 7 Apr 2005 16:38:24 +0100
 Received: from localhost (localhost [127.0.0.1])
-	by krt.neobee.net (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id j37FNnZF025417;
-	Thu, 7 Apr 2005 17:23:50 +0200
+	by krt.neobee.net (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id j37FbUZF025791;
+	Thu, 7 Apr 2005 17:37:30 +0200
 Received: from krt.neobee.net ([127.0.0.1])
  by localhost (krt.neobee.net [127.0.0.1]) (amavisd-new, port 10024) with LMTP
- id 25091-02; Thu,  7 Apr 2005 17:23:49 +0200 (CEST)
+ id 25054-07; Thu,  7 Apr 2005 17:37:30 +0200 (CEST)
 Received: from davidovic ([192.168.0.89])
-	by krt.neobee.net (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id j37FNd1p025409;
-	Thu, 7 Apr 2005 17:23:39 +0200
-Message-Id: <200504071523.j37FNd1p025409@krt.neobee.net>
+	by krt.neobee.net (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id j37FbS1p025786;
+	Thu, 7 Apr 2005 17:37:28 +0200
+Message-Id: <200504071537.j37FbS1p025786@krt.neobee.net>
 Reply-To: <mile.davidovic@micronasnit.com>
 From:	"Mile Davidovic" <mile.davidovic@micronasnit.com>
 To:	"'Geert Uytterhoeven'" <geert@linux-m68k.org>
 Cc:	"'Linux/MIPS Development'" <linux-mips@linux-mips.org>
 Subject: RE: Porting new board
-Date:	Thu, 7 Apr 2005 17:23:54 +0200
+Date:	Thu, 7 Apr 2005 17:37:45 +0200
 Organization: MicronasNIT
 MIME-Version: 1.0
 Content-Type: text/plain;
 	charset="iso-8859-2"
 Content-Transfer-Encoding: 7bit
 X-Mailer: Microsoft Office Outlook, Build 11.0.6353
-In-Reply-To: <Pine.LNX.4.62.0504071603460.9236@numbat.sonytel.be>
+In-Reply-To: <200504071523.j37FNd1p025409@krt.neobee.net>
 X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2527
-Thread-Index: AcU7esi/O6dyZaWpQ5q7Jj6TSPEDBQACmO5Q
+Thread-Index: AcU7esi/O6dyZaWpQ5q7Jj6TSPEDBQACmO5QAACXuKA=
 X-Virus-Scanned: by amavisd-new at krt.neobee.net
 Return-Path: <mile.davidovic@micronasnit.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7631
+X-archive-position: 7632
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
 X-original-sender: mile.davidovic@micronasnit.com
 Precedence: bulk
 X-list: linux-mips
+
+ 
+I found what cause my problem after adding 
+  select SYS_SUPPORTS_BIG_ENDIAN
+  select SYS_SUPPORTS_32BIT_KERNEL
+in Kconfig compilation start.
+
+Sorry for posting stupid questions..
+
+Best regards Mile
+-----Original Message-----
+From: linux-mips-bounce@linux-mips.org
+[mailto:linux-mips-bounce@linux-mips.org] On Behalf Of Mile Davidovic
+Sent: Thursday, April 07, 2005 5:24 PM
+To: 'Geert Uytterhoeven'
+Cc: 'Linux/MIPS Development'
+Subject: RE: Porting new board
 
 Thank for Your comment. Yes this was obviouse error but unfortunately it
 does not work.

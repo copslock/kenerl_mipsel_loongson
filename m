@@ -1,69 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Apr 2005 14:36:03 +0100 (BST)
-Received: from krt.tmd.ns.ac.yu ([IPv6:::ffff:147.91.177.65]:58544 "EHLO
-	krt.neobee.net") by linux-mips.org with ESMTP id <S8225073AbVDGNfs>;
-	Thu, 7 Apr 2005 14:35:48 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by krt.neobee.net (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id j37DYrZF021718
-	for <linux-mips@linux-mips.org>; Thu, 7 Apr 2005 15:34:54 +0200
-Received: from krt.neobee.net ([127.0.0.1])
- by localhost (krt.neobee.net [127.0.0.1]) (amavisd-new, port 10024) with LMTP
- id 20943-08 for <linux-mips@linux-mips.org>;
- Thu,  7 Apr 2005 15:34:53 +0200 (CEST)
-Received: from davidovic ([192.168.0.89])
-	by krt.neobee.net (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id j37DYp1p021714
-	for <linux-mips@linux-mips.org>; Thu, 7 Apr 2005 15:34:51 +0200
-Message-Id: <200504071334.j37DYp1p021714@krt.neobee.net>
-Reply-To: <mile.davidovic@micronasnit.com>
-From:	"Mile Davidovic" <mile.davidovic@micronasnit.com>
-To:	<linux-mips@linux-mips.org>
-Subject: Porting new board
-Date:	Thu, 7 Apr 2005 15:35:08 +0200
-Organization: MicronasNIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Apr 2005 15:05:00 +0100 (BST)
+Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:35466 "EHLO
+	witte.sonytel.be") by linux-mips.org with ESMTP id <S8225207AbVDGOEp>;
+	Thu, 7 Apr 2005 15:04:45 +0100
+Received: from numbat.sonytel.be (mail.sonytel.be [43.221.60.197])
+	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id j37E4iGU010658;
+	Thu, 7 Apr 2005 16:04:44 +0200 (MEST)
+Date:	Thu, 7 Apr 2005 16:04:38 +0200 (CEST)
+From:	Geert Uytterhoeven <geert@linux-m68k.org>
+To:	Mile Davidovic <mile.davidovic@micronasnit.com>
+cc:	Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: Re: Porting new board
+In-Reply-To: <200504071334.j37DYp1p021714@krt.neobee.net>
+Message-ID: <Pine.LNX.4.62.0504071603460.9236@numbat.sonytel.be>
+References: <200504071334.j37DYp1p021714@krt.neobee.net>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="ISO-8859-2"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Office Outlook, Build 11.0.6353
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2527
-Thread-Index: AcU7dpzZ8ihBrbxxTjyEF7iZyq+Drw==
-X-Virus-Scanned: by amavisd-new at krt.neobee.net
-Return-Path: <mile.davidovic@micronasnit.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7626
+X-archive-position: 7627
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mile.davidovic@micronasnit.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello all
-I try to port new board (MIPS 4KEC processor) to latest version
-of linux-mips kernel. I have question regarding Kconfig and adding
-new board.
-In arch/mips/Kconfig I add next lines:
+On Thu, 7 Apr 2005, Mile Davidovic wrote:
+> I try to port new board (MIPS 4KEC processor) to latest version
+> of linux-mips kernel. I have question regarding Kconfig and adding
+> new board.
+> In arch/mips/Kconfig I add next lines:
+> 
+> config MIPS_VGCA_EVA
+>   bool "Support for VGCA-Eva board"
+>   select SYS_SUPPORTS_BIG_ENDIAN
+>   help
+> 	  This enables support for the VGCA-EVA board.
+> 
+> and in arch/mips/Makefile I add next lines:
+> core-$(MIPS_VGCA_EVA)	+= arch/mips/vgca-eva/
+         ^^^^^^^^^^^^^
+> cflags-$(MIPS_VGCA_EVA)   += -Iinclude/asm-mips/vgca-eva
+           ^^^^^^^^^^^^^
+> load-$(MIPS_VGCA_EVA)	+= 0xffffffff80100000
+         ^^^^^^^^^^^^^
 
-config MIPS_VGCA_EVA
-  bool "Support for VGCA-Eva board"
-  select SYS_SUPPORTS_BIG_ENDIAN
-  help
-	  This enables support for the VGCA-EVA board.
+All of these should be `CONFIG_MIPS_VGCA_EVA' instead of `MIPS_VGCA_EVA'.
 
-and in arch/mips/Makefile I add next lines:
-core-$(MIPS_VGCA_EVA)	+= arch/mips/vgca-eva/
-cflags-$(MIPS_VGCA_EVA)   += -Iinclude/asm-mips/vgca-eva
-load-$(MIPS_VGCA_EVA)	+= 0xffffffff80100000
+> But when I try to build kernel with:
+> 	make menuconfig  		---> choose VGCA-Eva board
+> 	make arch=mips V=1 CROSS_COMPILE=mips-linux- 
+> 
+> it stop forever. When I try to choose some other board it work nice. 
+> Any comment?
 
-But when I try to build kernel with:
-	make menuconfig  		---> choose VGCA-Eva board
-	make arch=mips V=1 CROSS_COMPILE=mips-linux- 
+Gr{oetje,eeting}s,
 
-it stop forever. When I try to choose some other board it work nice. 
-Any comment?
+						Geert
 
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-
-Thanks a lot.
-Best regards Mile
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

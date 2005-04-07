@@ -1,65 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Apr 2005 13:25:27 +0100 (BST)
-Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:31510 "EHLO
-	mail.linux-mips.net") by linux-mips.org with ESMTP
-	id <S8224939AbVDGMZN>; Thu, 7 Apr 2005 13:25:13 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by mail.linux-mips.net (8.13.1/8.13.1) with ESMTP id j37CP7UH013177;
-	Thu, 7 Apr 2005 13:25:07 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j37CP4OK013176;
-	Thu, 7 Apr 2005 13:25:04 +0100
-Date:	Thu, 7 Apr 2005 13:25:04 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Greg Weeks <greg.weeks@timesys.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: memcpy prefetch
-Message-ID: <20050407122504.GY4948@linux-mips.org>
-References: <4253D67C.4010705@timesys.com> <20050406200848.GB4978@linux-mips.org> <4255240E.4050701@timesys.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Apr 2005 13:26:09 +0100 (BST)
+Received: from 209-232-97-206.ded.pacbell.net ([IPv6:::ffff:209.232.97.206]:24228
+	"EHLO dns0.mips.com") by linux-mips.org with ESMTP
+	id <S8224942AbVDGMZ0> convert rfc822-to-8bit; Thu, 7 Apr 2005 13:25:26 +0100
+Received: from mercury.mips.com (sbcns-dmz [209.232.97.193])
+	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id j37CPHlu014455;
+	Thu, 7 Apr 2005 05:25:17 -0700 (PDT)
+Received: from laptopuhler4 (laptop-uhler4.mips.com [192.168.2.2])
+	by mercury.mips.com (8.12.9/8.12.11) with ESMTP id j37CPIGl003354;
+	Thu, 7 Apr 2005 05:25:18 -0700 (PDT)
+From:	"Michael Uhler" <uhler@mips.com>
+To:	"'Greg Weeks'" <greg.weeks@timesys.com>,
+	"'Ralf Baechle'" <ralf@linux-mips.org>
+Cc:	<linux-mips@linux-mips.org>
+Subject: RE: memcpy prefetch
+Date:	Thu, 7 Apr 2005 05:25:15 -0700
+Organization: MIPS Technologies, Inc.
+Message-ID: <003901c53b6c$da8938e0$cf14a8c0@MIPS.COM>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook, Build 10.0.6626
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2527
+Importance: Normal
 In-Reply-To: <4255240E.4050701@timesys.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+X-Scanned-By: MIMEDefang 2.39
+Return-Path: <uhler@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7623
+X-archive-position: 7624
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: uhler@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Apr 07, 2005 at 08:14:06AM -0400, Greg Weeks wrote:
-
 > What's the performance hit for doing a pref on a cache line that is 
-> already pref'd?
-
-A wasted instruction.
-
-(More complicated on certain multi-issue in-order processors such as the
-SB1 CPU core.  Mentioning this for completeness; we shouldn't worry about
-it here.)
-
->  Does it turn into a nop, or do we get some horrible 
+> already pref'd? Does it turn into a nop, or do we get some horrible 
 > degenerate case? Are 64 bit processors always at least 32 byte cache 
-> line size?
-
-The smallest D-cache line I know of is 16 bytes.
-
-> I don't really expect anyone to know the answers right now. I 
-> expect I'll need to time code to tell. This makes generating them at run 
+> line size? I don't really expect anyone to know the answers 
+> right now. I 
+> expect I'll need to time code to tell. This makes generating 
+> them at run 
 > time look better and better.
 
-Indeed.  Initially when we started doing such things some people felt it
-might be really bad to debug and everything but in practice it's been a
-relativly minor problem, so I guess the resistance against yet another
-run-time generated group of functions is getting less.
+As very general rules of thumb:
 
-One interesting issue to solve - memcpy, memmove and copy_user are combined
-into a single big function, so the fixups for userspace accesses need to
-be handled at runtime as well.
+- A pref to a line which is already in the cache take a cycle in the
+load/store unit and does not go back out to the memory subsystem.  There are
+some possible ships-passing-in-the-night scenarios, but most processors do
+what you'd expect.
 
-  Ralf
+- Most 64-bit processors are built for high-end applications, and most
+high-end processors most likely have at least 32-bit lines.  One usually has
+smaller line sizes when the processor is intended for lower-end
+applications, or where the memory subsystem isn't all that good.
+
+/gmu
+
+---
+Michael Uhler, Chief Technology Officer
+MIPS Technologies, Inc.   Email: uhler at mips.com
+1225 Charleston Road
+Mountain View, CA 94043

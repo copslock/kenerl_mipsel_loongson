@@ -1,52 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Apr 2005 18:32:54 +0100 (BST)
-Received: from bay101-f35.bay101.hotmail.com ([IPv6:::ffff:64.4.56.45]:23676
-	"EHLO hotmail.com") by linux-mips.org with ESMTP
-	id <S8225273AbVDGRc1>; Thu, 7 Apr 2005 18:32:27 +0100
-Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
-	 Thu, 7 Apr 2005 10:32:20 -0700
-Message-ID: <BAY101-F35417F4A22F1FC159B196ADC3E0@phx.gbl>
-Received: from 64.4.56.200 by by101fd.bay101.hotmail.msn.com with HTTP;
-	Thu, 07 Apr 2005 17:32:19 GMT
-X-Originating-IP: [64.4.56.200]
-X-Originating-Email: [danieljlaird@hotmail.com]
-X-Sender: danieljlaird@hotmail.com
-From:	"Daniel Laird" <danieljlaird@hotmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Apr 2005 18:45:15 +0100 (BST)
+Received: from web40909.mail.yahoo.com ([IPv6:::ffff:66.218.78.206]:54434 "HELO
+	web40909.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S8225273AbVDGRpB>; Thu, 7 Apr 2005 18:45:01 +0100
+Received: (qmail 77211 invoked by uid 60001); 7 Apr 2005 17:44:54 -0000
+Comment: DomainKeys? See http://antispam.yahoo.com/domainkeys
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  b=NB3KsAKgKp4H1Dio2l6xaJt7OmqL+O8OCq14EgKJwgXcA/GxfWVHW1v4FrK3dHOd43nYfHmdEjd9nTgTRO84eOgzNV/ppEk+VycJXQvuzgji1ZFPHf/mgBqsJ08HXsM3ohUKNUuK1cnOgsYKPXvFEwfzB2YLqKAvAOzP6sb9kvw=  ;
+Message-ID: <20050407174454.77209.qmail@web40909.mail.yahoo.com>
+Received: from [65.205.244.66] by web40909.mail.yahoo.com via HTTP; Thu, 07 Apr 2005 10:44:54 PDT
+Date:	Thu, 7 Apr 2005 10:44:54 -0700 (PDT)
+From:	Brian Kuschak <bkuschak@yahoo.com>
+Subject: gdb backtrace with core files
 To:	linux-mips@linux-mips.org
-Subject: mipsel-linux-ld:arch/mips/kernel/vmlinux.lds:*: parse error
-Date:	Thu, 07 Apr 2005 17:32:19 +0000
-Mime-Version: 1.0
-Content-Type: text/plain; format=flowed
-X-OriginalArrivalTime: 07 Apr 2005 17:32:20.0331 (UTC) FILETIME=[C05C6BB0:01C53B97]
-Return-Path: <danieljlaird@hotmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <bkuschak@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7633
+X-archive-position: 7634
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: danieljlaird@hotmail.com
+X-original-sender: bkuschak@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-I am trying to build a linux kernel and gcc etc.
+Is anyone succesfully using gdb for mipsel to debug
+core dumps?  If so, can you share your secrets for
+success?  I tried various recent versions (6.3,
+6.1.1), but backtrace never works right, even though
+the stack pointer appears to be valid.  gdb-5.3
+partially works, but not completely.  
 
-I have tried the following combo
-gcc-3.4.3
-glibc-2.3.4
-binutils-2.15.96
-linux-2.6.11.6
+Forcing gdb to use a specific stack pointer and PC
+(frame <sp> <pc>) doesn't seem to help either.  
 
-I egt everything built and then see the following error
+Using linux 2.4.25 and gcc 3.3.3.
 
-mipsel-linux-ld:arch/mips/kernel/vmlinux.lds:6: parse error
+Regards,
+Brian 
 
-I can see that people have told someone else to edit the file vmlinux.lds 
-manually
-http://www.linux-mips.org/archives/linux-mips/2005-01/msg00059.html
 
-and try again but in a complete build environment so does anyone know what 
-causes the bug in the first place
 
-Please help
-Dan
+
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around 
+http://mail.yahoo.com 

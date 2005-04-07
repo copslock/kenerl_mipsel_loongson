@@ -1,48 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Apr 2005 20:30:48 +0100 (BST)
-Received: from wproxy.gmail.com ([IPv6:::ffff:64.233.184.199]:7948 "EHLO
-	wproxy.gmail.com") by linux-mips.org with ESMTP id <S8224902AbVDGTad>;
-	Thu, 7 Apr 2005 20:30:33 +0100
-Received: by wproxy.gmail.com with SMTP id 36so870050wra
-        for <linux-mips@linux-mips.org>; Thu, 07 Apr 2005 12:30:26 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding;
-        b=PCCzryLb6DN8o4BeCW3gGFmjTm4ln7PuvX9BSN1sVlCNn5PW3OSgJNmHmCTFNpR5X3b49zR2Qrx3jt9LxgyaDxvCCLZcrgITbNUQJbyR3PTCDgLfREu0a3fhBB1C2r6sZ0tuyuLuTmStVpHoKJMnJPtklgt3par+s0O8WyviZzY=
-Received: by 10.54.25.60 with SMTP id 60mr1209344wry;
-        Thu, 07 Apr 2005 12:30:26 -0700 (PDT)
-Received: by 10.54.53.56 with HTTP; Thu, 7 Apr 2005 12:30:26 -0700 (PDT)
-Message-ID: <fda764b0504071230516cde06@mail.gmail.com>
-Date:	Thu, 7 Apr 2005 12:30:26 -0700
-From:	Pratik Patel <pratikgpatel@gmail.com>
-Reply-To: Pratik Patel <pratikgpatel@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: need libpcap.a for mipsel platform
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Apr 2005 20:38:23 +0100 (BST)
+Received: from mail.timesys.com ([IPv6:::ffff:65.117.135.102]:39572 "EHLO
+	exchange.timesys.com") by linux-mips.org with ESMTP
+	id <S8224902AbVDGTiI>; Thu, 7 Apr 2005 20:38:08 +0100
+Received: from [192.168.2.27] ([192.168.2.27]) by exchange.timesys.com with Microsoft SMTPSVC(5.0.2195.6713);
+	 Thu, 7 Apr 2005 15:33:56 -0400
+Message-ID: <42558C1E.4020906@timesys.com>
+Date:	Thu, 07 Apr 2005 15:38:06 -0400
+From:	Greg Weeks <greg.weeks@timesys.com>
+User-Agent: Mozilla Thunderbird 1.0 (X11/20041206)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	Brian Kuschak <bkuschak@yahoo.com>
+CC:	linux-mips@linux-mips.org
+Subject: Re: gdb backtrace with core files
+References: <20050407190327.21692.qmail@web40905.mail.yahoo.com>
+In-Reply-To: <20050407190327.21692.qmail@web40905.mail.yahoo.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <pratikgpatel@gmail.com>
+X-OriginalArrivalTime: 07 Apr 2005 19:33:56.0187 (UTC) FILETIME=[BD07B2B0:01C53BA8]
+Return-Path: <greg.weeks@timesys.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7643
+X-archive-position: 7644
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pratikgpatel@gmail.com
+X-original-sender: greg.weeks@timesys.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+Brian Kuschak wrote:
 
-I wanted the libpcap.a file compiled for the MIPSEL flatform. I am
-working on Linksys WRT54GS router and I have problems compiling
-libpcap for target platform. I tried many different ways but no
-success!
+>Greg,
+>
+>Is your GDB hosted on MIPS or another machine?  Are
+>those patches freely available?  If so, can you
+>  
+>
+OK, I checked.
 
-If anyone has the pre-compiled libpcap.a file for MIPSEL platform,
-please mail it to me.
+Most of what's in our patches should be in gdb HEAD. We're currently at 
+6.2.1 and don't want to take the time to move to head. If you're 
+interested and no one objects I can post them to the mips list. There 
+are 37 patches totaling 285K. Not all are mips related and gdb isn't 
+totally working for me yet.
 
-Thanks in advance!
-
-Cheers,
-Pratik
+Greg Weeks

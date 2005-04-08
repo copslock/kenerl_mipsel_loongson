@@ -1,56 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Apr 2005 18:25:49 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:60665 "EHLO
-	hermes.mvista.com") by linux-mips.org with ESMTP
-	id <S8225417AbVDHRZe>; Fri, 8 Apr 2005 18:25:34 +0100
-Received: from [10.0.0.139] (prometheus.mvista.com [10.0.0.139])
-	by hermes.mvista.com (Postfix) with ESMTP
-	id 8B5F618C23; Fri,  8 Apr 2005 10:25:32 -0700 (PDT)
-Message-ID: <4256BE8C.4060607@mvista.com>
-Date:	Fri, 08 Apr 2005 10:25:32 -0700
-From:	Manish Lachwani <mlachwani@mvista.com>
-User-Agent: Mozilla Thunderbird 1.0.2 (X11/20050317)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Apr 2005 19:19:00 +0100 (BST)
+Received: from nevyn.them.org ([IPv6:::ffff:66.93.172.17]:32185 "EHLO
+	nevyn.them.org") by linux-mips.org with ESMTP id <S8225428AbVDHSSp>;
+	Fri, 8 Apr 2005 19:18:45 +0100
+Received: from drow by nevyn.them.org with local (Exim 4.50 #1 (Debian))
+	id 1DJy40-00036U-La; Fri, 08 Apr 2005 14:18:40 -0400
+Date:	Fri, 8 Apr 2005 14:18:40 -0400
+From:	Daniel Jacobowitz <dan@debian.org>
 To:	sjhill@realitydiluted.com
 Cc:	Greg Weeks <greg.weeks@timesys.com>, linux-mips@linux-mips.org
 Subject: Re: NPTL
-References: <E1DJx9N-0000KA-M7@real.realitydiluted.com>
-In-Reply-To: <E1DJx9N-0000KA-M7@real.realitydiluted.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <mlachwani@mvista.com>
+Message-ID: <20050408181840.GA11886@nevyn.them.org>
+References: <20050408172146.GA9192@nevyn.them.org> <E1DJxCh-0000Kd-Kt@real.realitydiluted.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <E1DJxCh-0000Kd-Kt@real.realitydiluted.com>
+User-Agent: Mutt/1.5.8i
+Return-Path: <drow@nevyn.them.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7661
+X-archive-position: 7662
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mlachwani@mvista.com
+X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-sjhill@realitydiluted.com wrote:
+On Fri, Apr 08, 2005 at 12:23:35PM -0500, sjhill@realitydiluted.com wrote:
+> > > The kernel patch has not gone in and probably will not until a lot more
+> > > testing has been done.
+> > 
+> > Why do you say that?
+> > 
+> I just made that assumption based on the fact that it is not in CVS
+> yet, at least it was not yesterday. Did I mis-speak?
 
->>I saw the kernel support patch (TLS) a while back and ment to ask what 
->>state the gcc/glibc patches were in. Has either been picked up into the 
->>gnu projects yet? If they're close I might try building a toolchain and 
->>root file system with NPTL to try our test suite on.
->>
->>    
->>
->The kernel patch has not gone in and probably will not until a lot more
->testing has been done. All of the changes to binutils, gcc and glibc
->have been checked in and are available from HEAD of cvs for respective
->repositories.
->
->-Steve
->
->  
->
-Steve,
+I imagine it will go in exactly when Ralf and Maciej are ready for it
+to :-)  It is extremely well tested already.
 
-I thought the kernel patch was well tested by Daniel.
-
-Thanks
-Manish Lachwani
+-- 
+Daniel Jacobowitz
+CodeSourcery, LLC

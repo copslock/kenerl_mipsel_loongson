@@ -1,62 +1,146 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Apr 2005 21:07:50 +0100 (BST)
-Received: from wproxy.gmail.com ([IPv6:::ffff:64.233.184.192]:7860 "EHLO
-	wproxy.gmail.com") by linux-mips.org with ESMTP id <S8225435AbVDHUHa>;
-	Fri, 8 Apr 2005 21:07:30 +0100
-Received: by wproxy.gmail.com with SMTP id 37so1218007wra
-        for <linux-mips@linux-mips.org>; Fri, 08 Apr 2005 13:07:23 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding;
-        b=etJww7Xry8D27KfwnTPw3zry3jwLO7hFbNnG5O9GW6zNUVp5w3GCJSPvX9s52oPKnEyNk0cKAUn6ULVx7rJqMpnk9lWjAR2eVuknK3Rf20tSICXJ5XcK2EIWwP7oahatW9gcnDqrDaQjkc3oHclLIaaK18qUzjLNI9QyaeWTJrg=
-Received: by 10.54.34.64 with SMTP id h64mr2056893wrh;
-        Fri, 08 Apr 2005 13:07:23 -0700 (PDT)
-Received: by 10.54.53.56 with HTTP; Fri, 8 Apr 2005 13:07:23 -0700 (PDT)
-Message-ID: <fda764b050408130730e74576@mail.gmail.com>
-Date:	Fri, 8 Apr 2005 13:07:23 -0700
-From:	Pratik Patel <pratikgpatel@gmail.com>
-Reply-To: Pratik Patel <pratikgpatel@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: problems compiling libpcap programs for mipsel
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <pratikgpatel@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Apr 2005 22:38:18 +0100 (BST)
+Received: from borg.juniper.net ([IPv6:::ffff:207.17.137.119]:57117 "EHLO
+	borg.juniper.net") by linux-mips.org with ESMTP id <S8225457AbVDHViD>;
+	Fri, 8 Apr 2005 22:38:03 +0100
+Received: from unknown (HELO gamma.jnpr.net) (172.24.245.25)
+  by borg.juniper.net with ESMTP; 08 Apr 2005 14:37:59 -0700
+X-BrightmailFiltered: true
+X-Brightmail-Tracker: AAAAAA==
+X-IronPort-AV: i="3.92,89,1112598000"; 
+   d="scan'208,217"; a="253521821:sNHT43100636"
+Received: from electron.jnpr.net ([172.24.15.21]) by gamma.jnpr.net with Microsoft SMTPSVC(6.0.3790.211);
+	 Fri, 8 Apr 2005 14:37:57 -0700
+x-mimeole: Produced By Microsoft Exchange V6.5.7226.0
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C53C83.3A82BFF8"
+Subject: MIPS TLS support 
+Date:	Fri, 8 Apr 2005 14:37:56 -0700
+Message-ID: <27BCF2C7355655439636003CC56C152C051BEFDC@electron.jnpr.net>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: MIPS TLS support 
+Thread-Index: AcU8gzo6jG3CSwjkQn+I8PW2/1+nLA==
+From:	"David Yu" <dyu@juniper.net>
+To:	<linux-mips@linux-mips.org>
+X-OriginalArrivalTime: 08 Apr 2005 21:37:57.0285 (UTC) FILETIME=[3AAEE550:01C53C83]
+Return-Path: <dyu@juniper.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7663
+X-archive-position: 7664
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pratikgpatel@gmail.com
+X-original-sender: dyu@juniper.net
 Precedence: bulk
 X-list: linux-mips
 
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C53C83.3A82BFF8
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
 Hi,
 
-Finally I was able to compile libpcap for mipsel platform. Now I have
-the proper libpcap.a file. I had to bring the .h files from different
-versions/cross-compilers of mipsel platform libraries.
+=20
 
-Even after doing this, I get the following output.
+Anyone know if MIPS TLS support is available in any of the recent Linux
+kernel release? Any patches available?
 
-[pratik@Akshar libpcap_samples]$ mipsel-uclibc-gcc ldev.c -lpcap
-/opt/brcm/hndtools-mipsel-uclibc-0.9.19/lib/libpcap.a(fad-getad.o): In
-function `pcap_findalldevs':
-fad-getad.c(.text+0xa4): undefined reference to `getifaddrs'
-fad-getad.c(.text+0x2e0): undefined reference to `freeifaddrs'
-/opt/brcm/hndtools-mipsel-uclibc-0.9.19/lib/libpcap.a(nametoaddr.o):
-In function `pcap_ether_hostton':
-nametoaddr.c(.text+0x764): undefined reference to `ether_hostton'
-collect2: ld returned 1 exit status
-[pratik@Akshar libpcap_samples]$
+=20
 
-The ldev.c is the simplest libpcap program available at:
-http://www.cet.nau.edu/~mc8/Socket/Tutorials/section1.html
+Thanks
 
-Are there any patches available that I need to take care of?
+David=20
 
-Any pointers to suggestions/pathces are welcome.
 
-Cheers,
-Pratik
+------_=_NextPart_001_01C53C83.3A82BFF8
+Content-Type: text/html;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:o=3D"urn:schemas-microsoft-com:office:office" =
+xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns=3D"http://www.w3.org/TR/REC-html40">
+
+<head>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Dus-ascii">
+<meta name=3DGenerator content=3D"Microsoft Word 11 (filtered medium)">
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:SimSun;
+	panose-1:2 1 6 0 3 1 1 1 1 1;}
+@font-face
+	{font-family:"\@SimSun";
+	panose-1:2 1 6 0 3 1 1 1 1 1;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+span.EmailStyle17
+	{mso-style-type:personal-compose;
+	font-family:Arial;
+	color:windowtext;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+
+</head>
+
+<body lang=3DEN-US link=3Dblue vlink=3Dpurple>
+
+<div class=3DSection1>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Hi,<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Anyone know if MIPS TLS support is available in any =
+of the recent
+Linux kernel release? Any patches =
+available?<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Thanks<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>David <o:p></o:p></span></font></p>
+
+</div>
+
+</body>
+
+</html>
+
+------_=_NextPart_001_01C53C83.3A82BFF8--

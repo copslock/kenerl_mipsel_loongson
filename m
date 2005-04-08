@@ -1,76 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Apr 2005 13:59:39 +0100 (BST)
-Received: from web25106.mail.ukl.yahoo.com ([IPv6:::ffff:217.12.10.54]:27986
-	"HELO web25106.mail.ukl.yahoo.com") by linux-mips.org with SMTP
-	id <S8225393AbVDHM7F>; Fri, 8 Apr 2005 13:59:05 +0100
-Received: (qmail 26390 invoked by uid 60001); 8 Apr 2005 12:58:56 -0000
-Message-ID: <20050408125856.26388.qmail@web25106.mail.ukl.yahoo.com>
-Received: from [80.14.198.143] by web25106.mail.ukl.yahoo.com via HTTP; Fri, 08 Apr 2005 14:58:56 CEST
-Date:	Fri, 8 Apr 2005 14:58:56 +0200 (CEST)
-From:	moreau francis <francis_moreau2000@yahoo.fr>
-Subject: [PATCH] Physical mem start different from 0 
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Apr 2005 15:10:21 +0100 (BST)
+Received: from moutng.kundenserver.de ([IPv6:::ffff:212.227.126.177]:57555
+	"EHLO moutng.kundenserver.de") by linux-mips.org with ESMTP
+	id <S8225403AbVDHOKF>; Fri, 8 Apr 2005 15:10:05 +0100
+Received: from [213.39.254.66] (helo=tuxator.satorlaser-intern.com)
+	by mrelayeu.kundenserver.de with ESMTP (Nemesis),
+	id 0MKxQS-1DJuBO1uU0-0001bP; Fri, 08 Apr 2005 16:10:02 +0200
+From:	Ulrich Eckhardt <eckhardt@satorlaser.com>
+Organization: Sator Laser GmbH
 To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
+Subject: CompactFlash on PCMCIA problems
+Date:	Fri, 8 Apr 2005 16:10:30 +0200
+User-Agent: KMail/1.7.2
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="0-754048015-1112965136=:26360"
-Content-Transfer-Encoding: 8bit
-Return-Path: <francis_moreau2000@yahoo.fr>
+Content-Type: text/plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Message-Id: <200504081610.32088.eckhardt@satorlaser.com>
+X-Provags-ID: kundenserver.de abuse@kundenserver.de login:e35cee35a663f5c944b9750a965814ae
+Return-Path: <eckhardt@satorlaser.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7650
+X-archive-position: 7651
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: francis_moreau2000@yahoo.fr
+X-original-sender: eckhardt@satorlaser.com
 Precedence: bulk
 X-list: linux-mips
 
---0-754048015-1112965136=:26360
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Content-Id: 
-Content-Disposition: inline
+Hi!
 
-Ralf,
+I'm trying to code the glue to connect the vanilla ATA drivers with a CF card 
+connected to an Au1100. I managed to access the CIS parts of the card but 
+then the problems start: the area where I'd expect to find the ATA 
+controller's registers mirrors every byte twice, just as if the address used 
+was first shifted by one.
 
-I'm sending to you a very trivial patch.
-It's related to memory start address that does not
-start at 0. This can easily be handled with uses of
-"pfn_to_phys" and "virt_to_phys" macros. But some
-parts of the kernel don't use them, and do for
-instance
-"addr << PAGE_SHIFT".
-The patch deals with such cases in pgtable-32.h. If
-you agree with, I'll send others patches to remove
-them from every places I found.
+Here's a sketch of what I'm doing:
 
-     Francis
+1. Setup SYS_PINFUNC so the PCMCIA interface is used
+2. Setup GPIO and GPIO2, they are used for e.g. card detection and power
+3. apply power to card via GPIO
+4. reset card via GPIO, waiting for it to finish
+5. ioremap all three PCMCIA_*_PHYS_ADDR ranges[1]
+6. parse CIS in ioremapped PCMCIA_ATTR_PHYS_ADDR
+7. setup CISREG_CCSR with 0x00, in particular to reset CCSR_POWER_DOWN
+8. setup CISREG_COR with 0x01, configuration #1 is the contiguous memory[1] 
+configuration parsed from the CIS
+
+At this moment, I think I should be able to talk to the ATA controller via the 
+first few bytes of the ioremapped PCMCIA_IO_PHYS_ADDR, but that area has this 
+weird mirrored byte behaviour which I don't understand.
 
 
-	
+Another thing I don't fully understand yet is the meaning of the three memory 
+areas. These are called 'IO', 'attrib' and 'mem'. The 'attrib' area contains 
+the CIS and presents no problem. The 'IO' area is where I'd expect to find 
+the ATA controller's registers. Now, what I don't understand is the meaning 
+of the 'mem' area (PCMCIA_MEM_PHYS_ADDR). The documents I found on the web 
+always referred to a 'common memory' area, but funnily they also only 
+distinguished between two areas!?
 
-	
-		
-__________________________________________________________________
-Découvrez le nouveau Yahoo! Mail : 250 Mo d'espace de stockage pour vos mails ! 
-Créez votre Yahoo! Mail sur http://fr.mail.yahoo.com/
---0-754048015-1112965136=:26360
-Content-Type: text/x-patch; name="pgtable-32.h.patch"
-Content-Description: pgtable-32.h.patch
-Content-Disposition: inline; filename="pgtable-32.h.patch"
+Yet another thing I'm missing is the meaning of CISREG_IOBASE_* and 
+CISREG_IOSIZE. When exactly and how do I have to setup those?
 
---- pgtable-32.h.old	2005-04-08 14:37:00.231705720 +0200
-+++ pgtable-32.h	2005-04-08 14:24:24.360615592 +0200
-@@ -136,8 +136,8 @@ pfn_pte(unsigned long pfn, pgprot_t prot
- #define pte_pfn(x)		((unsigned long)((x).pte >> (PAGE_SHIFT + 2)))
- #define pfn_pte(pfn, prot)	__pte(((pfn) << (PAGE_SHIFT + 2)) | pgprot_val(prot))
- #else
--#define pte_pfn(x)		((unsigned long)((x).pte >> PAGE_SHIFT))
--#define pfn_pte(pfn, prot)	__pte(((pfn) << PAGE_SHIFT) | pgprot_val(prot))
-+#define pte_pfn(x)		((unsigned long)(phys_to_pfn((x).pte)))
-+#define pfn_pte(pfn, prot)	__pte((pfn_to_phys(pfn) | pgprot_val(prot)))
- #endif
- #endif /* defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_CPU_MIPS32) */
- 
+I'm pretty lost, I have tried everything I could think of without any success. 
+I'll also send this to the PCMCIA mailinglist at sourceforge's, in case it is 
+not related to MIPS but rather to PCMCIA.
 
---0-754048015-1112965136=:26360--
+greetings
+
+Uli
+
+[1] is a particular size required? Also, I used ioremap_nocache(), does that 
+matter or should I use plain ioremap()?
+[2] yes, it might be more interesting to use one of the non-contiguous modes, 
+but that still doesn't solve my problems.

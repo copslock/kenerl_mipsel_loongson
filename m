@@ -1,59 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 10 Apr 2005 00:29:18 +0100 (BST)
-Received: from wproxy.gmail.com ([IPv6:::ffff:64.233.184.207]:34844 "EHLO
-	wproxy.gmail.com") by linux-mips.org with ESMTP id <S8225769AbVDIX3D>;
-	Sun, 10 Apr 2005 00:29:03 +0100
-Received: by wproxy.gmail.com with SMTP id 68so2279380wra
-        for <linux-mips@linux-mips.org>; Sat, 09 Apr 2005 16:28:57 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding;
-        b=EZFh78IPnapODGNy5OgMIqyalsG4XuJofV7d7gh13mLHhsWTGpeMySzh0JzWUkC9n89RDbnjPT9g4hhMfeCekcSC9WvdrjQzOpkGddfVlisxf3PqnYp4FJO+7+qHyBVhMecJOw9SRyxndcgoa7ukogbS06XGimsDwJpONZwJnyA=
-Received: by 10.54.53.38 with SMTP id b38mr841805wra;
-        Sat, 09 Apr 2005 16:28:56 -0700 (PDT)
-Received: by 10.54.53.56 with HTTP; Sat, 9 Apr 2005 16:28:56 -0700 (PDT)
-Message-ID: <fda764b0504091628158f8f39@mail.gmail.com>
-Date:	Sat, 9 Apr 2005 16:28:56 -0700
-From:	Pratik Patel <pratikgpatel@gmail.com>
-Reply-To: Pratik Patel <pratikgpatel@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: problems compiling prog. for mipsel platform
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 10 Apr 2005 14:06:49 +0100 (BST)
+Received: from i-83-67-53-76.freedom2surf.net ([IPv6:::ffff:83.67.53.76]:27265
+	"EHLO skeleton-jack.localnet") by linux-mips.org with ESMTP
+	id <S8225942AbVDJNGd>; Sun, 10 Apr 2005 14:06:33 +0100
+Received: from pdh by skeleton-jack.localnet with local (Exim 3.36 #1 (Debian))
+	id 1DKc95-0005MS-00; Sun, 10 Apr 2005 14:06:35 +0100
+Date:	Sun, 10 Apr 2005 14:06:35 +0100
+To:	ralf@linux-mips.org
+Cc:	linux-mips@linux-mips.org
+Subject: [PATCH Cobalt 1/3] fix hang on Qube2700 boot
+Message-ID: <20050410130635.GA20589@skeleton-jack>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <pratikgpatel@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.6+20040907i
+From:	Peter Horton <pdh@colonel-panic.org>
+Return-Path: <pdh@colonel-panic.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7668
+X-archive-position: 7669
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pratikgpatel@gmail.com
+X-original-sender: pdh@colonel-panic.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+The Qube2700 boot hangs because the old "prom" style console is
+unconditionally enabled. Drop the "prom" console code from the build. It
+would only be used if no "console=" line was supplied and in that case
+the current 8250 code defaults to using ttyS0 at 9600 anyway (assuming a
+port exists).
 
-I compiled libpcap for mipsel platform. Now I have the proper
-libpcap.a file. I had to bring the ifaddrs.h file from /usr/bin/
-folder.
+--
 
-When I compile a simple program (ldev.c) available at:
-http://www.cet.nau.edu/~mc8/Socket/Tutorials/section1.html
-
-Output of the program:
-[pratik@Akshar libpcap_samples]$ mipsel-uclibc-gcc ldev.c -lpcap
-/opt/brcm/hndtools-mipsel-uclibc-0.9.19/lib/libpcap.a(fad-getad.o): In
-function `pcap_findalldevs':
-fad-getad.c(.text+0xa4): undefined reference to `getifaddrs'
-fad-getad.c(.text+0x2e0): undefined reference to `freeifaddrs'
-/opt/brcm/hndtools-mipsel-uclibc-0.9.19/lib/libpcap.a(nametoaddr.o):
-In function `pcap_ether_hostton':
-nametoaddr.c(.text+0x764): undefined reference to `ether_hostton'
-collect2: ld returned 1 exit status
-[pratik@Akshar libpcap_samples]$
-
-Are ther any patches for the ifaddrs.h file?
-
-Cheers,
-Pratik
+Index: linux/arch/mips/cobalt/Makefile
+===================================================================
+--- linux.orig/arch/mips/cobalt/Makefile	2003-11-13 14:30:45.000000000 +0000
++++ linux/arch/mips/cobalt/Makefile	2005-04-10 13:16:58.000000000 +0100
+@@ -2,6 +2,6 @@
+ # Makefile for the Cobalt micro systems family specific parts of the kernel
+ #
+ 
+-obj-y	 := irq.o int-handler.o reset.o setup.o promcon.o
++obj-y	 := irq.o int-handler.o reset.o setup.o
+ 
+ EXTRA_AFLAGS := $(CFLAGS)

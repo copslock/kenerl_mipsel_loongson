@@ -1,65 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Apr 2005 17:33:48 +0100 (BST)
-Received: from bay101-f10.bay101.hotmail.com ([IPv6:::ffff:64.4.56.20]:59732
-	"EHLO hotmail.com") by linux-mips.org with ESMTP
-	id <S8226124AbVDKQdd>; Mon, 11 Apr 2005 17:33:33 +0100
-Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
-	 Mon, 11 Apr 2005 09:33:25 -0700
-Message-ID: <BAY101-F104C615D4EA1DBF2A3064DDC320@phx.gbl>
-Received: from 64.4.56.208 by by101fd.bay101.hotmail.msn.com with HTTP;
-	Mon, 11 Apr 2005 16:33:25 GMT
-X-Originating-IP: [64.4.56.208]
-X-Originating-Email: [danieljlaird@hotmail.com]
-X-Sender: danieljlaird@hotmail.com
-In-Reply-To: <Pine.LNX.4.61L.0504111659410.31547@blysk.ds.pg.gda.pl>
-From:	"Daniel Laird" <danieljlaird@hotmail.com>
-To:	macro@linux-mips.org
-Cc:	libc-alpha@sources.redhat.com, linux-mips@linux-mips.org
-Subject: Re: Building GLIBC 2.3.4 on MIPS
-Date:	Mon, 11 Apr 2005 16:33:25 +0000
-Mime-Version: 1.0
-Content-Type: text/plain; format=flowed
-X-OriginalArrivalTime: 11 Apr 2005 16:33:25.0434 (UTC) FILETIME=[2F0CF1A0:01C53EB4]
-Return-Path: <danieljlaird@hotmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Apr 2005 18:04:35 +0100 (BST)
+Received: from 64-30-195-78.dsl.linkline.com ([IPv6:::ffff:64.30.195.78]:24978
+	"EHLO jg555.com") by linux-mips.org with ESMTP id <S8226126AbVDKRET>;
+	Mon, 11 Apr 2005 18:04:19 +0100
+Received: from [172.16.0.55] ([::ffff:172.16.0.55])
+  (AUTH: PLAIN root, TLS: TLSv1/SSLv3,256bits,AES256-SHA)
+  by jg555.com with esmtp; Mon, 11 Apr 2005 10:04:15 -0700
+  id 001E0181.425AAE0F.0000412E
+Message-ID: <425AAE00.9080406@jg555.com>
+Date:	Mon, 11 Apr 2005 10:04:00 -0700
+From:	Jim Gifford <maillist@jg555.com>
+User-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	Daniel Laird <danieljlaird@hotmail.com>
+CC:	linux-mips@linux-mips.org
+Subject: Re: Building Glibc-2.3.4 for mipsel
+References: <BAY101-F34FE6C8FFEB4555FB1EE0BDC320@phx.gbl>
+In-Reply-To: <BAY101-F34FE6C8FFEB4555FB1EE0BDC320@phx.gbl>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <maillist@jg555.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7689
+X-archive-position: 7690
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: danieljlaird@hotmail.com
+X-original-sender: maillist@jg555.com
 Precedence: bulk
 X-list: linux-mips
 
-I am using crosstool to help me build!
+Daniel,
+   I have gotten this to work, using my build method from LFS. There are 
+a few patches needed, here is my information about the patches location.
 
-I have a problem when i compile that it seems to include a file 
-sysdeps/mips/mips32/Makefile.  This has the option -mabi=32.  When it does 
-the install-headers target in crosstool it passes this flag to the host 
-compiler.  This causes an error.
+http://documents.jg555.com/lfs-raq2
+http://documents.jg555.com/lfs-raq2/chapter03/patches.html
 
-I get around this my removing this flag for the install header target and 
-then putting it back for the rest of the crosstool script.
+The patches in particular are
 
-this results in a complete toolchain and a 2.6.11.6 kernel which is running 
-on my target.
+http://www.linuxfromscratch.org/patches/downloads/linux-libc-headers/linux-libc-headers-2.6.11.2-mips_fix-1.patch 
 
-I then try to build busybox1.00 and i get the error
-In file included from 
-/home/laird/ccm_wa/ipstb/ipstb_laird/ipstb/build/packages/busybox-1.00/libbb/module_syscalls.c:26:
-/opt/nxlinux/gcc/gcc-3.4.3-glibc-2.3.4/lib/gcc/mipsel-linux-gnu/3.4.3/../../../../mipsel-linux-gnu/sys-include/sys/syscall.h:39:27: 
-bits/syscall.h: No such file or directory
-make[1]: *** 
-[/home/laird/ccm_wa/ipstb/ipstb_laird/ipstb/build/packages/busybox-1.00/libbb/module_syscalls.o] 
-Error 1
-make[1]: Leaving directory 
-`/home/laird/ccm_wa/ipstb/ipstb_laird/ipstb/build/packages/busybox-1.00'
+This fixes a compile issue with sysklogd
 
-When i check it is missing.
+http://www.linuxfromscratch.org/patches/downloads/glibc/glibc-2.3.4-mips_syscall-2.patch
+Fixes various syscall issues
 
-I am presuming my hack to get the install-headers target may be breaking 
-things but how else do i get round this.
 
-Are you guys using crosstool?
-
-Thanks for the help
+-- 
+----
+Jim Gifford
+maillist@jg555.com

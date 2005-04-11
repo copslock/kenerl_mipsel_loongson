@@ -1,47 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Apr 2005 16:58:10 +0100 (BST)
-Received: from bay101-f5.bay101.hotmail.com ([IPv6:::ffff:64.4.56.15]:48186
-	"EHLO hotmail.com") by linux-mips.org with ESMTP
-	id <S8226117AbVDKP5x>; Mon, 11 Apr 2005 16:57:53 +0100
-Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
-	 Mon, 11 Apr 2005 08:57:45 -0700
-Message-ID: <BAY101-F54440B7BD61E4D879501FDC320@phx.gbl>
-Received: from 64.4.56.208 by by101fd.bay101.hotmail.msn.com with HTTP;
-	Mon, 11 Apr 2005 15:57:44 GMT
-X-Originating-IP: [64.4.56.208]
-X-Originating-Email: [danieljlaird@hotmail.com]
-X-Sender: danieljlaird@hotmail.com
-From:	"Daniel Laird" <danieljlaird@hotmail.com>
-To:	macro@linux-mips.org
-Cc:	libc-alpha@sources.redhat.com, linux-mips@linux-mips.org
-Subject: Re: Building GLIBC 2.3.4 on MIPS
-Date:	Mon, 11 Apr 2005 15:57:44 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Apr 2005 17:06:24 +0100 (BST)
+Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:29446 "EHLO
+	bacchus.net.dhis.org") by linux-mips.org with ESMTP
+	id <S8226119AbVDKQGI>; Mon, 11 Apr 2005 17:06:08 +0100
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.1/8.13.1) with ESMTP id j3BG60e5027709;
+	Mon, 11 Apr 2005 17:06:00 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j3BG5wAh027708;
+	Mon, 11 Apr 2005 17:05:58 +0100
+Date:	Mon, 11 Apr 2005 17:05:58 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+Cc:	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 2.6] vr41xx: bcu update
+Message-ID: <20050411160558.GG7038@linux-mips.org>
+References: <20050411235443.2f80fe64.yuasa@hh.iij4u.or.jp>
 Mime-Version: 1.0
-Content-Type: text/plain; format=flowed
-X-OriginalArrivalTime: 11 Apr 2005 15:57:45.0140 (UTC) FILETIME=[3355FF40:01C53EAF]
-Return-Path: <danieljlaird@hotmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20050411235443.2f80fe64.yuasa@hh.iij4u.or.jp>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7684
+X-archive-position: 7685
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: danieljlaird@hotmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-I am trying to build glibc-2.3.4 (gcc-3.4.3, binutils-2.15.96) with 
-linux-2.6.11.6 on mips.
+On Mon, Apr 11, 2005 at 11:54:43PM +0900, Yoichi Yuasa wrote:
 
-I am having problems with bits/syscalls.h whereas yours seem to be empty 
-mine just does not exist???
-Any reason for this?
-I have applied your patches but they do not seem to correct this error have 
-you seen this.
+> This patch had added EXPORT_SYMBOL() and had removed early_initcall().
 
-Its just that when i try to compile busybox i get an error as bits/syscall.h 
-is missing and obviously means my cross compiler toolchain is not quite 
-correct.
+Applied.  Thanks Yoichi,
 
-Hope you can help
-Daniel Laird
+  Ralf

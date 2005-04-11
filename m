@@ -1,45 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Apr 2005 17:10:11 +0100 (BST)
-Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:59148 "EHLO
-	bacchus.net.dhis.org") by linux-mips.org with ESMTP
-	id <S8226119AbVDKQJ4>; Mon, 11 Apr 2005 17:09:56 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.1/8.13.1) with ESMTP id j3BG9lcc027870;
-	Mon, 11 Apr 2005 17:09:47 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j3BG9lKZ027869;
-	Mon, 11 Apr 2005 17:09:47 +0100
-Date:	Mon, 11 Apr 2005 17:09:47 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Sergio Ruiz <quekio@gmail.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Linking assembled PIC code with Linux libc library
-Message-ID: <20050411160947.GH7038@linux-mips.org>
-References: <e02bc66105040905091efb3dc6@mail.gmail.com> <20050409134919.GA4738@nevyn.them.org> <e02bc661050409113820cceae3@mail.gmail.com> <20050409215140.GA15253@nevyn.them.org> <e02bc66105041012091afdf306@mail.gmail.com> <e02bc661050410122733e21927@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Apr 2005 17:26:31 +0100 (BST)
+Received: from bay101-f34.bay101.hotmail.com ([IPv6:::ffff:64.4.56.44]:60829
+	"EHLO hotmail.com") by linux-mips.org with ESMTP
+	id <S8226124AbVDKQ0Q>; Mon, 11 Apr 2005 17:26:16 +0100
+Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
+	 Mon, 11 Apr 2005 09:26:09 -0700
+Message-ID: <BAY101-F34FE6C8FFEB4555FB1EE0BDC320@phx.gbl>
+Received: from 64.4.56.208 by by101fd.bay101.hotmail.msn.com with HTTP;
+	Mon, 11 Apr 2005 16:26:08 GMT
+X-Originating-IP: [64.4.56.208]
+X-Originating-Email: [danieljlaird@hotmail.com]
+X-Sender: danieljlaird@hotmail.com
+From:	"Daniel Laird" <danieljlaird@hotmail.com>
+To:	linux-mips@linux-mips.org
+Subject: Building Glibc-2.3.4 for mipsel
+Date:	Mon, 11 Apr 2005 16:26:08 +0000
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e02bc661050410122733e21927@mail.gmail.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain; format=flowed
+X-OriginalArrivalTime: 11 Apr 2005 16:26:09.0028 (UTC) FILETIME=[2AEEAC40:01C53EB3]
+Return-Path: <danieljlaird@hotmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7687
+X-archive-position: 7688
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: danieljlaird@hotmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, Apr 10, 2005 at 09:27:58PM +0200, Sergio Ruiz wrote:
+I am trying to get Glibc-2.3.4 to build for mipsel.
 
-> But if I use GCC with my assembler code, and I use a simple 'printf'
-> function, the assembler code I get is totally different than the
-> original one, so I cant debug it.
+I am using crosstool to help me do this
+I am using 2.6.11.6 kernel
+I am using 2.15.96 binutils
+I am using Glibc-2.3.4
+I am using 3.4.3 Gcc
 
-Sounds like you're being surprised by the gcc 3.4 optimization where gcc
-may replace certain functions such as printf with a whole sequence of
-calls to more basic stdio functions?
+I try to compile it and i get a problem in the install-headers target where 
+it tries to pass -mabi=32 to a host compile.  This will obviously not work.
 
-  Ralf
+To get round this i comment out the offending line in 
+sysdeps/mips/mips32/Makefile.
+
+And pass in EXTRA_TARGET_CFLAGS="-mips32 -mtune=r4600"
+
+This succesfuly builds me a toolchain and a kernel and the kernel runs on my 
+target
+
+I then try to compile BUSYBox-1.00 and it errors with a missing 
+bits/syscall.h.  I check and it is correct this is missing .
+I have seen some patches to do in this area and have tried them all but it 
+makes no difference.
+
+Has anyone used crosstool and GLibc-2-3-4 etc and built a tollchain where 
+bits/syscall.h exists?
+
+I think the problem may lie in my editing of the makefile before 
+install-headers and then the editing it back.  But i want to know if anyone 
+has done what i am trying.
+
+Please help!!
+
+DJL

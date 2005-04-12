@@ -1,43 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Apr 2005 20:12:48 +0100 (BST)
-Received: from mail.timesys.com ([IPv6:::ffff:65.117.135.102]:57381 "EHLO
-	exchange.timesys.com") by linux-mips.org with ESMTP
-	id <S8225209AbVDLTMd>; Tue, 12 Apr 2005 20:12:33 +0100
-Received: from [192.168.2.27] ([192.168.2.27]) by exchange.timesys.com with Microsoft SMTPSVC(5.0.2195.6713);
-	 Tue, 12 Apr 2005 15:08:05 -0400
-Message-ID: <425C1D9D.2070608@timesys.com>
-Date:	Tue, 12 Apr 2005 15:12:29 -0400
-From:	Greg Weeks <greg.weeks@timesys.com>
-User-Agent: Mozilla Thunderbird 1.0 (X11/20041206)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Apr 2005 21:57:19 +0100 (BST)
+Received: from wproxy.gmail.com ([IPv6:::ffff:64.233.184.206]:25610 "EHLO
+	wproxy.gmail.com") by linux-mips.org with ESMTP id <S8225219AbVDLU5E>;
+	Tue, 12 Apr 2005 21:57:04 +0100
+Received: by wproxy.gmail.com with SMTP id 57so1612650wri
+        for <linux-mips@linux-mips.org>; Tue, 12 Apr 2005 13:56:57 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:reply-to:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:references;
+        b=EXANG0ewYmVxOUmh9+F2NCgFYdaOBWQVX7p9N5RQSweNNejEpdm+zrTNllh7jk9hakE7VZreU+9Zi02r2kkFs5Brh19DO7VQpabYC2l0mS28sgoU6x/GN7xPpPV4tzK6mfMjeBBMZL0V7JiGz7e1CNPRkkUB8qlca2VNjRB3rFA=
+Received: by 10.54.13.77 with SMTP id 77mr395014wrm;
+        Tue, 12 Apr 2005 13:56:56 -0700 (PDT)
+Received: by 10.54.41.29 with HTTP; Tue, 12 Apr 2005 13:56:56 -0700 (PDT)
+Message-ID: <ecb4efd10504121356194d4d9f@mail.gmail.com>
+Date:	Tue, 12 Apr 2005 16:56:56 -0400
+From:	Clem Taylor <clem.taylor@gmail.com>
+Reply-To: Clem Taylor <clem.taylor@gmail.com>
 To:	linux-mips@linux-mips.org
-CC:	"Kevin D. Kissell" <kevink@mips.com>,
-	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: another 4kc machine check.
-References: <42553E49.7080004@timesys.com> <4256991C.4020601@timesys.com> <20050408161357.GB19166@linux-mips.org> <4256B524.2080509@timesys.com> <425AD440.5050600@timesys.com> <004a01c53ed4$dab12b00$10eca8c0@grendel> <Pine.LNX.4.61L.0504121610500.18606@blysk.ds.pg.gda.pl> <00c701c53f7e$09ec56c0$10eca8c0@grendel> <425BFCC2.9060901@timesys.com>
-In-Reply-To: <425BFCC2.9060901@timesys.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Subject: Re: troubles mmaping PCI device on Au1550
+In-Reply-To: <479d91035fe1567525659393491e7ab9@embeddedalley.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 12 Apr 2005 19:08:05.0656 (UTC) FILETIME=[F4E83180:01C53F92]
-Return-Path: <greg.weeks@timesys.com>
+References: <ecb4efd10504101516482a9785@mail.gmail.com>
+	 <479d91035fe1567525659393491e7ab9@embeddedalley.com>
+Return-Path: <clem.taylor@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7712
+X-archive-position: 7713
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: greg.weeks@timesys.com
+X-original-sender: clem.taylor@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Greg Weeks wrote:
+On Apr 12, 2005 11:22 AM, Dan Malek <dan@embeddedalley.com> wrote:
+> The Au15xx uses 36-bit addressing for the PCI (among other) physical
+> addresses.  The mmap() in your driver is the right thing, but you need
+> to use io_remap_page_range() where the 2nd parameter is a phys_t.
+> Your offset should be a phys_t type, and pci_resource_start() also
+> returns a phys_t.
 
-> No, it adds it before the TLBWR where there shouldn't be a hazard.
+Yeah, this was exactly my problem. Last night I managed to find the
+comment about this in au1000.h. Now I can happily mmap() the PCI
+devices memory. Thanks!
 
-On the off chance that the hazard between the TLBWR and the ERET might 
-be coming into play I tried a kernel with 3 nops between the TLBWR and 
-ERET and no EHB before the TLBWR and it still machine checks for me.
-
-Greg Weeks
+                                --Clem

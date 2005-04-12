@@ -1,34 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Apr 2005 11:07:04 +0100 (BST)
-Received: from host62-164.pool80181.interbusiness.it ([IPv6:::ffff:80.181.164.62]:2544
-	"EHLO localhost.localdomain") by linux-mips.org with ESMTP
-	id <S8224855AbVDLKGt>; Tue, 12 Apr 2005 11:06:49 +0100
-Received: by localhost.localdomain (Postfix, from userid 501)
-	id 20BFC10F004; Tue, 12 Apr 2005 14:08:21 +0200 (CEST)
-Subject: menet
-From:	Michele Carla` <goldfinger@member.fsf.org>
-To:	linux-mips@linux-mips.org
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-Date:	Tue, 12 Apr 2005 14:08:20 +0200
-Message-Id: <1113307700.3163.8.camel@localhost>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Apr 2005 11:44:52 +0100 (BST)
+Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:10267 "EHLO
+	bacchus.net.dhis.org") by linux-mips.org with ESMTP
+	id <S8224913AbVDLKoi>; Tue, 12 Apr 2005 11:44:38 +0100
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.1/8.13.1) with ESMTP id j3CAiVdu013716;
+	Tue, 12 Apr 2005 11:44:31 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j3CAiVJ3013706;
+	Tue, 12 Apr 2005 11:44:31 +0100
+Date:	Tue, 12 Apr 2005 11:44:30 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Michele Carla` <goldfinger@member.fsf.org>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: menet
+Message-ID: <20050412104430.GA5573@linux-mips.org>
+References: <1113307700.3163.8.camel@localhost>
 Mime-Version: 1.0
-X-Mailer: Evolution 2.0.4 
-Return-Path: <goldfinger@member.fsf.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1113307700.3163.8.camel@localhost>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7697
+X-archive-position: 7698
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: goldfinger@member.fsf.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-what about "menet" xio-board and origin-2000, is it supported... or can
-I help in this work ?
+On Tue, Apr 12, 2005 at 02:08:20PM +0200, Michele Carla` wrote:
 
-Thanks
+> what about "menet" xio-board and origin-2000, is it supported... or can
+> I help in this work ?
 
-Michele Carla`
-goldfinger@member.fsf.org
+It's supposed to work - but I don't recall any MENET reports in a few
+years so no way to be sure if it still does.
+
+  Ralf

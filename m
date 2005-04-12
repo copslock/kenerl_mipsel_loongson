@@ -1,57 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Apr 2005 19:28:19 +0100 (BST)
-Received: from mx02.qsc.de ([IPv6:::ffff:213.148.130.14]:3809 "EHLO
-	mx02.qsc.de") by linux-mips.org with ESMTP id <S8225204AbVDLS2E>;
-	Tue, 12 Apr 2005 19:28:04 +0100
-Received: from port-195-158-168-78.dynamic.qsc.de ([195.158.168.78] helo=hattusa.textio)
-	by mx02.qsc.de with esmtp (Exim 3.35 #1)
-	id 1DLQ77-0007t1-00; Tue, 12 Apr 2005 20:27:53 +0200
-Received: from ths by hattusa.textio with local (Exim 4.50)
-	id 1DLPVE-0007G3-Pl; Tue, 12 Apr 2005 19:48:44 +0200
-Date:	Tue, 12 Apr 2005 19:48:44 +0200
-To:	Christoph Hellwig <hch@lst.de>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: CVS Update@linux-mips.org: linux
-Message-ID: <20050412174844.GD12375@hattusa.textio>
-References: <20050412140045Z8224988-1340+5602@linux-mips.org> <20050412165728.GA22407@lst.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20050412165728.GA22407@lst.de>
-User-Agent: Mutt/1.5.8i
-From:	Thiemo Seufer <ths@networkno.de>
-Return-Path: <ths@networkno.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Apr 2005 20:12:48 +0100 (BST)
+Received: from mail.timesys.com ([IPv6:::ffff:65.117.135.102]:57381 "EHLO
+	exchange.timesys.com") by linux-mips.org with ESMTP
+	id <S8225209AbVDLTMd>; Tue, 12 Apr 2005 20:12:33 +0100
+Received: from [192.168.2.27] ([192.168.2.27]) by exchange.timesys.com with Microsoft SMTPSVC(5.0.2195.6713);
+	 Tue, 12 Apr 2005 15:08:05 -0400
+Message-ID: <425C1D9D.2070608@timesys.com>
+Date:	Tue, 12 Apr 2005 15:12:29 -0400
+From:	Greg Weeks <greg.weeks@timesys.com>
+User-Agent: Mozilla Thunderbird 1.0 (X11/20041206)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	linux-mips@linux-mips.org
+CC:	"Kevin D. Kissell" <kevink@mips.com>,
+	"Maciej W. Rozycki" <macro@linux-mips.org>,
+	Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: another 4kc machine check.
+References: <42553E49.7080004@timesys.com> <4256991C.4020601@timesys.com> <20050408161357.GB19166@linux-mips.org> <4256B524.2080509@timesys.com> <425AD440.5050600@timesys.com> <004a01c53ed4$dab12b00$10eca8c0@grendel> <Pine.LNX.4.61L.0504121610500.18606@blysk.ds.pg.gda.pl> <00c701c53f7e$09ec56c0$10eca8c0@grendel> <425BFCC2.9060901@timesys.com>
+In-Reply-To: <425BFCC2.9060901@timesys.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 12 Apr 2005 19:08:05.0656 (UTC) FILETIME=[F4E83180:01C53F92]
+Return-Path: <greg.weeks@timesys.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7711
+X-archive-position: 7712
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: greg.weeks@timesys.com
 Precedence: bulk
 X-list: linux-mips
 
-Christoph Hellwig wrote:
-> On Tue, Apr 12, 2005 at 03:00:38PM +0100, ths@linux-mips.org wrote:
-> > 
-> > CVSROOT:	/home/cvs
-> > Module name:	linux
-> > Changes by:	ths@ftp.linux-mips.org	05/04/12 15:00:38
-> > 
-> > Modified files:
-> > 	drivers/scsi   : sgiwd93.c 
-> > Removed files:
-> > 	drivers/scsi   : sgiwd93.h 
-> > 
-> > Log message:
-> > 	Enable proc support, minor code cleanup.
-> 
-> Haven't seen the diffs, but please don't add new ->proc_info methods.
-> It's deprecated and will go away in the not very distant future.
+Greg Weeks wrote:
 
-The comments in scsi_host.s leave no doubt about that. :-)
-The function isn't exactly new, the sgiwd driver reuses the generic
-wd function.
+> No, it adds it before the TLBWR where there shouldn't be a hazard.
 
+On the off chance that the hazard between the TLBWR and the ERET might 
+be coming into play I tried a kernel with 3 nops between the TLBWR and 
+ERET and no EHB before the TLBWR and it still machine checks for me.
 
-Thiemo
+Greg Weeks

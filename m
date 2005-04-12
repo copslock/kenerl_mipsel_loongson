@@ -1,54 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Apr 2005 21:42:05 +0100 (BST)
-Received: from 209-232-97-206.ded.pacbell.net ([IPv6:::ffff:209.232.97.206]:56267
-	"EHLO dns0.mips.com") by linux-mips.org with ESMTP
-	id <S8226136AbVDKUlv>; Mon, 11 Apr 2005 21:41:51 +0100
-Received: from mercury.mips.com (sbcns-dmz [209.232.97.193])
-	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id j3BKfgqb013711;
-	Mon, 11 Apr 2005 13:41:43 -0700 (PDT)
-Received: from grendel (grendel [192.168.236.16])
-	by mercury.mips.com (8.12.9/8.12.11) with SMTP id j3BKfdGl001729;
-	Mon, 11 Apr 2005 13:41:39 -0700 (PDT)
-Message-ID: <007101c53ed7$44a71ae0$10eca8c0@grendel>
-From:	"Kevin D. Kissell" <kevink@mips.com>
-To:	"Greg Weeks" <greg.weeks@timesys.com>,
-	"Ralf Baechle" <ralf@linux-mips.org>
-Cc:	<linux-mips@linux-mips.org>
-References: <42553E49.7080004@timesys.com> <4256991C.4020601@timesys.com> <20050408161357.GB19166@linux-mips.org> <4256B524.2080509@timesys.com> <425AD440.5050600@timesys.com>
-Subject: Re: another 4kc machine check.
-Date:	Mon, 11 Apr 2005 22:42:57 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Apr 2005 06:00:42 +0100 (BST)
+Received: from news.ti.com ([IPv6:::ffff:192.94.94.33]:52136 "EHLO
+	dragon.ti.com") by linux-mips.org with ESMTP id <S8225563AbVDLFA1> convert rfc822-to-8bit;
+	Tue, 12 Apr 2005 06:00:27 +0100
+Received: from dlep30.itg.ti.com ([157.170.139.157])
+	by dragon.ti.com (8.13.1/8.13.1) with ESMTP id j3C50H9D014914;
+	Tue, 12 Apr 2005 00:00:21 -0500 (CDT)
+Received: from dlep90.itg.ti.com (localhost [127.0.0.1])
+	by dlep30.itg.ti.com (8.12.11/8.12.11) with ESMTP id j3C50GUK006119;
+	Tue, 12 Apr 2005 00:00:16 -0500 (CDT)
+Received: from dbde2k01.ent.ti.com (localhost [127.0.0.1])
+	by dlep90.itg.ti.com (8.12.11/8.12.11) with ESMTP id j3C50EeA012746;
+	Tue, 12 Apr 2005 00:00:15 -0500 (CDT)
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6603.0
+content-class: urn:content-classes:message
 MIME-Version: 1.0
 Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1437
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1441
-X-Scanned-By: MIMEDefang 2.39
-Return-Path: <kevink@mips.com>
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: RE: Toolchain question
+Date:	Tue, 12 Apr 2005 10:29:09 +0530
+Message-ID: <F6B01C6242515443BB6E5DDD63AE935F046867@dbde2k01.itg.ti.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Toolchain question
+Thread-Index: AcU+nAQ3JjPZAH9aS8y/Jeca90og7QAfeyyw
+From:	"Nori, Soma Sekhar" <nsekhar@ti.com>
+To:	"Ralf Baechle" <ralf@linux-mips.org>,
+	"Mile Davidovic" <mile.davidovic@micronasnit.com>
+Cc:	"Linux/MIPS Development" <linux-mips@linux-mips.org>
+Return-Path: <nsekhar@ti.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7695
+X-archive-position: 7696
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@mips.com
+X-original-sender: nsekhar@ti.com
 Precedence: bulk
 X-list: linux-mips
 
-One further comment:
+> 
+> Less than a week ago SDE 5 was released which is based on gcc 3.4 and
+> similarly contains a large number of mostly MIPS-specific improvments.
+> 
+>   Ralf
 
+Can you let know where I can get it from? The mips.com ftp site informs
+The latest SDE as 5.03.06
+(ftp://ftp.mips.com/pub/tools/software/sde-for-linux/sdelinux-mipsel-lat
+est/) 
+which linux-mips.org
+(http://www.linux-mips.org/wiki/index.php/Toolchains) informs is based
+on gcc 2.96
 
-> This patch appears to fix my machine check problem on the 4kc. The 4kc 
-> shouldn't need an ssnop here, but this appears to fix it.
-
-
-The 4Kc shouldn't need an ssnop/ehb for the purposes of a *load*, but
-if the exception was on an instruction fetch, the documentation is reasonably
-clear that there's a hazard of 3 cycles before the new entry can be used for
-a fetch - which is what ERET will do in the case of a instruction fetch miss.
-
-            Regards,
-
-            Kevin K.
+-
+Sekhar Nori.

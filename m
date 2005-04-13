@@ -1,139 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Apr 2005 14:21:40 +0100 (BST)
-Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:29206 "EHLO
-	bacchus.net.dhis.org") by linux-mips.org with ESMTP
-	id <S8225808AbVDMNVY>; Wed, 13 Apr 2005 14:21:24 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.1/8.13.1) with ESMTP id j3DDLIFR012899;
-	Wed, 13 Apr 2005 14:21:18 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j3DDLIVG012891;
-	Wed, 13 Apr 2005 14:21:18 +0100
-Date:	Wed, 13 Apr 2005 14:21:18 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Greg Weeks <greg.weeks@timesys.com>
-Cc:	Stuart Longland <stuartl@longlandclan.hopto.org>,
-	linux-mips@linux-mips.org
-Subject: Re: BogoMIPS
-Message-ID: <20050413132118.GG5253@linux-mips.org>
-References: <425BDCE4.6070708@timesys.com> <425C9DBF.6090807@longlandclan.hopto.org> <425D0448.6010700@timesys.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Apr 2005 14:32:13 +0100 (BST)
+Received: from idmailgate1.unizh.ch ([IPv6:::ffff:130.60.68.105]:39468 "EHLO
+	idmailgate1.unizh.ch") by linux-mips.org with ESMTP
+	id <S8225808AbVDMNb5>; Wed, 13 Apr 2005 14:31:57 +0100
+Received: from localhost ([130.60.169.171])
+	by idmailgate1.unizh.ch (8.13.1/8.13.1/SuSE Linux 0.7) with ESMTP id j3DDVsLw008833;
+	Wed, 13 Apr 2005 15:31:54 +0200
+Date:	Wed, 13 Apr 2005 15:31:52 +0200
+From:	Tobias Klauser <tklauser@nuerscht.ch>
+To:	kernel-janitors@lists.osdl.org
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: [PATCH] net/ioc3-eth: Use the DMA_{32,64}BIT_MASK constants
+Message-ID: <20050413133147.GA9864@argon.tklauser.home>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <425D0448.6010700@timesys.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+X-GPG-Key: 0x3A445520
+X-OS:	GNU/Linux
+User-Agent: Mutt/1.5.6+20040907i
+X-Virus-Scanned: by amavisd-new
+Return-Path: <tklauser@access.unizh.ch>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7717
+X-archive-position: 7718
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: tklauser@nuerscht.ch
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Apr 13, 2005 at 07:36:40AM -0400, Greg Weeks wrote:
+Use the DMA_{32,64}BIT_MASK constants from dma-mapping.h when calling
+pci_set_dma_mask() or pci_set_consistent_dma_mask()
+This patch includes dma-mapping.h explicitly because patches caused
+errors on some architectures otherwise.
+See http://marc.theaimsgroup.com/?t=108001993000001&r=1&w=2 for details
 
-> >So honestly, I don't know what's happening with BogoMIPS. :-)  What I do
-> >know however, it isn't worth a cracker in terms of benchmarking value. 
-> >;-)
-> 
-> I could care less about it as a benchmarking value, but it's used to do 
-> calibrated udelays.  If mips doesn't need it because it calibrates some 
-> other way then fine. I suspect not though and we're probably using an 
-> initial works everywhere value. I don't know though.
+Signed-off-by: Tobias Klauser <tklauser@nuerscht.ch>
 
-The bugs is the result of the somewhat messy way the calibration code is
-working.  calibrate_delay() puts it's result into a global variable,
-loops_per_jiffy.  The value is CPU-specific not global, so we need to
-copy it to a per-processor data structure which we do on SMP but forget
-to do on uniprocessor.  At the same time the actual delay loop code in
-delay.h knew to use loops_per_jiffy on uniprocessor, so it was actually
-working ok.
-
-   Ralf
-
-Index: arch/mips/kernel/cpu-probe.c
-===================================================================
-RCS file: /home/cvs/linux/arch/mips/kernel/cpu-probe.c,v
-retrieving revision 1.43
-diff -u -r1.43 cpu-probe.c
---- arch/mips/kernel/cpu-probe.c	8 Apr 2005 20:36:05 -0000	1.43
-+++ arch/mips/kernel/cpu-probe.c	13 Apr 2005 13:19:11 -0000
-@@ -17,7 +17,6 @@
- #include <linux/ptrace.h>
- #include <linux/stddef.h>
+diff -urpN linux-2.6.12-rc2-mm3/drivers/net/ioc3-eth.c linux-2.6.12-rc2-mm3-tk/drivers/net/ioc3-eth.c
+--- linux-2.6.12-rc2-mm3/drivers/net/ioc3-eth.c	2005-04-12 16:56:40.000000000 +0200
++++ linux-2.6.12-rc2-mm3-tk/drivers/net/ioc3-eth.c	2005-04-12 17:28:55.470878176 +0200
+@@ -38,6 +38,7 @@
+ #include <linux/errno.h>
+ #include <linux/module.h>
+ #include <linux/pci.h>
++#include <linux/dma-mapping.h>
+ #include <linux/crc32.h>
+ #include <linux/mii.h>
+ #include <linux/in.h>
+@@ -1193,17 +1194,17 @@ static int ioc3_probe(struct pci_dev *pd
+ 	int err, pci_using_dac;
  
--#include <asm/bugs.h>
- #include <asm/cpu.h>
- #include <asm/fpu.h>
- #include <asm/mipsregs.h>
-Index: arch/mips/kernel/smp.c
-===================================================================
-RCS file: /home/cvs/linux/arch/mips/kernel/smp.c,v
-retrieving revision 1.77
-diff -u -r1.77 smp.c
---- arch/mips/kernel/smp.c	18 Mar 2005 17:36:53 -0000	1.77
-+++ arch/mips/kernel/smp.c	13 Apr 2005 13:19:11 -0000
-@@ -226,7 +226,6 @@
- /* called from main before smp_init() */
- void __init smp_prepare_cpus(unsigned int max_cpus)
- {
--	cpu_data[0].udelay_val = loops_per_jiffy;
- 	init_new_context(current, &init_mm);
- 	current_thread_info()->cpu = 0;
- 	smp_tune_scheduling();
-Index: include/asm-mips/bugs.h
-===================================================================
-RCS file: /home/cvs/linux/include/asm-mips/bugs.h,v
-retrieving revision 1.10
-diff -u -r1.10 bugs.h
---- include/asm-mips/bugs.h	25 Jul 2003 22:49:24 -0000	1.10
-+++ include/asm-mips/bugs.h	13 Apr 2005 13:19:12 -0000
-@@ -8,12 +8,17 @@
- #define _ASM_BUGS_H
- 
- #include <linux/config.h>
-+#include <asm/cpu.h>
-+#include <asm/cpu-info.h>
- 
- extern void check_bugs32(void);
- extern void check_bugs64(void);
- 
- static inline void check_bugs(void)
- {
-+	unsigned int cpu = smp_processor_id();
-+
-+	cpu_data[cpu].udelay_val = loops_per_jiffy;
- 	check_bugs32();
- #ifdef CONFIG_MIPS64
- 	check_bugs64();
-Index: include/asm-mips/delay.h
-===================================================================
-RCS file: /home/cvs/linux/include/asm-mips/delay.h,v
-retrieving revision 1.16
-diff -u -r1.16 delay.h
---- include/asm-mips/delay.h	8 Oct 2004 02:41:17 -0000	1.16
-+++ include/asm-mips/delay.h	13 Apr 2005 13:19:12 -0000
-@@ -15,8 +15,6 @@
- 
- #include <asm/compiler.h>
- 
--extern unsigned long loops_per_jiffy;
--
- static inline void __delay(unsigned long loops)
- {
- 	if (sizeof(long) == 4)
-@@ -82,11 +80,7 @@
- 	__delay(usecs);
- }
- 
--#ifdef CONFIG_SMP
- #define __udelay_val cpu_data[smp_processor_id()].udelay_val
--#else
--#define __udelay_val loops_per_jiffy
--#endif
- 
- #define udelay(usecs) __udelay((usecs),__udelay_val)
- 
+ 	/* Configure DMA attributes. */
+-	err = pci_set_dma_mask(pdev, 0xffffffffffffffffULL);
++	err = pci_set_dma_mask(pdev, DMA_64BIT_MASK);
+ 	if (!err) {
+ 		pci_using_dac = 1;
+-		err = pci_set_consistent_dma_mask(pdev, 0xffffffffffffffffULL);
++		err = pci_set_consistent_dma_mask(pdev, DMA_64BIT_MASK);
+ 		if (err < 0) {
+ 			printk(KERN_ERR "%s: Unable to obtain 64 bit DMA "
+ 			       "for consistent allocations\n", pci_name(pdev));
+ 			goto out;
+ 		}
+ 	} else {
+-		err = pci_set_dma_mask(pdev, 0xffffffffULL);
++		err = pci_set_dma_mask(pdev, DMA_32BIT_MASK);
+ 		if (err) {
+ 			printk(KERN_ERR "%s: No usable DMA configuration, "
+ 			       "aborting.\n", pci_name(pdev));

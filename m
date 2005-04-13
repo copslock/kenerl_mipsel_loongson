@@ -1,45 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Apr 2005 12:37:02 +0100 (BST)
-Received: from mail.timesys.com ([IPv6:::ffff:65.117.135.102]:549 "EHLO
-	exchange.timesys.com") by linux-mips.org with ESMTP
-	id <S8225795AbVDMLgr>; Wed, 13 Apr 2005 12:36:47 +0100
-Received: from [192.168.2.27] ([192.168.2.27]) by exchange.timesys.com with Microsoft SMTPSVC(5.0.2195.6713);
-	 Wed, 13 Apr 2005 07:32:14 -0400
-Message-ID: <425D0448.6010700@timesys.com>
-Date:	Wed, 13 Apr 2005 07:36:40 -0400
-From:	Greg Weeks <greg.weeks@timesys.com>
-User-Agent: Mozilla Thunderbird 1.0 (X11/20041206)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Apr 2005 13:47:34 +0100 (BST)
+Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:21258 "EHLO
+	bacchus.net.dhis.org") by linux-mips.org with ESMTP
+	id <S8225800AbVDMMrT>; Wed, 13 Apr 2005 13:47:19 +0100
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.1/8.13.1) with ESMTP id j3DClEXu011665;
+	Wed, 13 Apr 2005 13:47:14 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j3DClC7F011664;
+	Wed, 13 Apr 2005 13:47:12 +0100
+Date:	Wed, 13 Apr 2005 13:47:12 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
 To:	Stuart Longland <stuartl@longlandclan.hopto.org>
-CC:	linux-mips@linux-mips.org
+Cc:	Greg Weeks <greg.weeks@timesys.com>, linux-mips@linux-mips.org
 Subject: Re: BogoMIPS
+Message-ID: <20050413124712.GF5253@linux-mips.org>
 References: <425BDCE4.6070708@timesys.com> <425C9DBF.6090807@longlandclan.hopto.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <425C9DBF.6090807@longlandclan.hopto.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 13 Apr 2005 11:32:14.0656 (UTC) FILETIME=[70DA8C00:01C5401C]
-Return-Path: <greg.weeks@timesys.com>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7715
+X-archive-position: 7716
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: greg.weeks@timesys.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Stuart Longland wrote:
+On Wed, Apr 13, 2005 at 02:19:11PM +1000, Stuart Longland wrote:
 
->
-> So honestly, I don't know what's happening with BogoMIPS. :-)  What I do
-> know however, it isn't worth a cracker in terms of benchmarking value. 
-> ;-)
+> Probably, because it's no longer relevant these days.  It doesn't say
+> anything special.
 
-I could care less about it as a benchmarking value, but it's used to do 
-calibrated udelays.  If mips doesn't need it because it calibrates some 
-other way then fine. I suspect not though and we're probably using an 
-initial works everywhere value. I don't know though.
+Nonsense.  It's just not printed to the screen by default.
 
-Greg Weeks
+> Interestingly, my IP28 still shows the BogoMIPS reading in /proc/cpuinfo:
+> >stuartl@indigo ~ $ uname -a
+> >Linux indigo 2.6.10-mipscvs-20050115-ip28 #2 Sun Apr 3 08:24:18 EST 2005 
+
+Because you're running a vintage kernel.  The 0 BogoMIPS bug was
+introduced by this CVS change:
+
+  revision 1.54
+  date: 2005/02/21 21:34:24;  author: ralf;  state: Exp;  lines: +2 -2
+  On multiprocessor systems the BogoMIPS for each CPU was reported was
+  the value for the last CPU having calibrated it's delay loop.
+
+Only the value shown in /proc/cpuinfo on UP kernel was affected, so the
+effect should be purely psychologic - I know what negative impact low
+BogoMIPS may have on some people ;-)
+
+  Ralf

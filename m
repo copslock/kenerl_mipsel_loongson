@@ -1,49 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Apr 2005 14:36:48 +0100 (BST)
-Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:39454 "EHLO
-	bacchus.net.dhis.org") by linux-mips.org with ESMTP
-	id <S8225808AbVDMNgd>; Wed, 13 Apr 2005 14:36:33 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.1/8.13.1) with ESMTP id j3DDaSY5013480;
-	Wed, 13 Apr 2005 14:36:28 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j3DDaRAn013470;
-	Wed, 13 Apr 2005 14:36:27 +0100
-Date:	Wed, 13 Apr 2005 14:36:27 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Tobias Klauser <tklauser@nuerscht.ch>
-Cc:	kernel-janitors@lists.osdl.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] net/ioc3-eth: Use the DMA_{32,64}BIT_MASK constants
-Message-ID: <20050413133627.GI5253@linux-mips.org>
-References: <20050413133147.GA9864@argon.tklauser.home>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Apr 2005 15:51:33 +0100 (BST)
+Received: from moutng.kundenserver.de ([IPv6:::ffff:212.227.126.183]:29159
+	"EHLO moutng.kundenserver.de") by linux-mips.org with ESMTP
+	id <S8225851AbVDMOvS>; Wed, 13 Apr 2005 15:51:18 +0100
+Received: from [212.227.126.155] (helo=mrelayng.kundenserver.de)
+	by moutng.kundenserver.de with esmtp (Exim 3.35 #1)
+	id 1DLjCD-0003gx-00
+	for linux-mips@linux-mips.org; Wed, 13 Apr 2005 16:50:25 +0200
+Received: from [213.39.254.66] (helo=tuxator.satorlaser-intern.com)
+	by mrelayng.kundenserver.de with asmtp (TLSv1:RC4-MD5:128)
+	(Exim 3.35 #1)
+	id 1DLjCC-0004Nt-00
+	for linux-mips@linux-mips.org; Wed, 13 Apr 2005 16:50:24 +0200
+From:	Ulrich Eckhardt <eckhardt@satorlaser.com>
+Organization: Sator Laser GmbH
+To:	linux-mips@linux-mips.org
+Subject: Re: CompactFlash on PCMCIA problems
+Date:	Wed, 13 Apr 2005 16:51:04 +0200
+User-Agent: KMail/1.7.2
+References: <200504081610.32088.eckhardt@satorlaser.com>
+In-Reply-To: <200504081610.32088.eckhardt@satorlaser.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <20050413133147.GA9864@argon.tklauser.home>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Message-Id: <200504131651.05113.eckhardt@satorlaser.com>
+X-Provags-ID: kundenserver.de abuse@kundenserver.de auth:e35cee35a663f5c944b9750a965814ae
+Return-Path: <eckhardt@satorlaser.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7719
+X-archive-position: 7720
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: eckhardt@satorlaser.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Apr 13, 2005 at 03:31:52PM +0200, Tobias Klauser wrote:
+Ulrich Eckhardt wrote:
+> I'm trying to code the glue to connect the vanilla ATA drivers with a CF
+> card connected to an Au1100. I managed to access the CIS parts of the card
+> but then the problems start: the area where I'd expect to find the ATA
+> controller's registers mirrors every byte twice, just as if the address
+> used was first shifted by one.
+>
+> Here's a sketch of what I'm doing:
+>
+> 1. Setup SYS_PINFUNC so the PCMCIA interface is used
 
-> Use the DMA_{32,64}BIT_MASK constants from dma-mapping.h when calling
-> pci_set_dma_mask() or pci_set_consistent_dma_mask()
-> This patch includes dma-mapping.h explicitly because patches caused
-> errors on some architectures otherwise.
-> See http://marc.theaimsgroup.com/?t=108001993000001&r=1&w=2 for details
-> 
-> Signed-off-by: Tobias Klauser <tklauser@nuerscht.ch>
+Well, at least I tried to...
 
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+[...]
+> At this moment, I think I should be able to talk to the ATA controller via
+> the first few bytes of the ioremapped PCMCIA_IO_PHYS_ADDR, but that area
+> has this weird mirrored byte behaviour which I don't understand.
 
-Looks good,
+Setting the PC flag in SYS_PINFUNC in fact DISables the PCMCIA driver, leaving 
+PREG, PCE1, PCE2 and PWE as GPIO pins. These seem unused for 16 bit accesses 
+to the attribute memory but required for the 8 bit accesses to the ATA 
+controller's registers, causing the funny behaviour.
 
-  Ralf
+"Principle of maximum surprise."
+
+oh, well....
+
+Uli

@@ -1,52 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Apr 2005 10:20:18 +0100 (BST)
-Received: from kilimandjaro.dyndns.org ([IPv6:::ffff:212.85.147.17]:25608 "EHLO
-	kilimandjaro.dyndns.org") by linux-mips.org with ESMTP
-	id <S8226222AbVDOJUC>; Fri, 15 Apr 2005 10:20:02 +0100
-Received: by kilimandjaro.dyndns.org (Postfix, from userid 500)
-	id 38919BE85D; Fri, 15 Apr 2005 11:19:53 +0200 (CEST)
-Received: from saperlipopette ([127.0.0.1] helo=kilimandjaro.dyndns.org)
-	by saperlipopette with esmtp (Exim 4.22)
-	id 1DMN0R-0002Jy-7k; Fri, 15 Apr 2005 11:20:55 +0200
-Message-ID: <425F8776.6080703@kilimandjaro.dyndns.org>
-Date:	Fri, 15 Apr 2005 11:20:54 +0200
-From:	Dominique Quatravaux <dom@kilimandjaro.dyndns.org>
-User-Agent: Mozilla Thunderbird 0.4 (X11/20040306)
-X-Accept-Language: fr, en
-MIME-Version: 1.0
-To:	Peter Horton <pdh@colonel-panic.org>
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: [OFF-TOPIC] Cobalt 64-bit, what for? (was: 64-bit fix)
-References: <20050414185949.GA5578@skeleton-jack>
-In-Reply-To: <20050414185949.GA5578@skeleton-jack>
-X-Enigmail-Version: 0.83.2.0
-X-Enigmail-Supports: pgp-inline, pgp-mime
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <dom@kilimandjaro.dyndns.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Apr 2005 11:14:47 +0100 (BST)
+Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:63510 "EHLO
+	bacchus.net.dhis.org") by linux-mips.org with ESMTP
+	id <S8226231AbVDOKOd>; Fri, 15 Apr 2005 11:14:33 +0100
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.1/8.13.1) with ESMTP id j3FAENrI007330;
+	Fri, 15 Apr 2005 11:14:23 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j3FAEMxL007329;
+	Fri, 15 Apr 2005 11:14:22 +0100
+Date:	Fri, 15 Apr 2005 11:14:22 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Dominique Quatravaux <dom@kilimandjaro.dyndns.org>
+Cc:	Peter Horton <pdh@colonel-panic.org>, linux-mips@linux-mips.org
+Subject: Re: [OFF-TOPIC] Cobalt 64-bit, what for? (was: 64-bit fix)
+Message-ID: <20050415101422.GB5414@linux-mips.org>
+References: <20050414185949.GA5578@skeleton-jack> <425F8776.6080703@kilimandjaro.dyndns.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <425F8776.6080703@kilimandjaro.dyndns.org>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7733
+X-archive-position: 7734
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dom@kilimandjaro.dyndns.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Peter Horton wrote:
+On Fri, Apr 15, 2005 at 11:20:54AM +0200, Dominique Quatravaux wrote:
 
->This patch adds detection of broken 64-bit mode LL/SC on Cobalt units.
->With this patch my Qube2700 boots a 64-bit build fine. The later units
->have some problems with the Tulip driver.
->  
->
-Just out of curiosity, is there any practical interest in going 64bit on 
-Cobalt besides the fun of it? One cannot possibly squeeze more than 4 Gb 
-of RAM into a Cobalt box right? And doesn't 64 bit mode have costs of 
-its own (doubled i-fetch bandwidth for starters)?
+> Just out of curiosity, is there any practical interest in going 64bit on 
+> Cobalt besides the fun of it?
 
--- 
-<< Tout n'y est pas parfait, mais on y honore certainement les jardiniers >>
+Second hand Cobalt MIPS hardware is available fairly cheaply so it's being
+used by various Linux developers for doing development work, including
+64-bit work.
 
-			Dominique Quatravaux <dom@kilimandjaro.dyndns.org>
+> One cannot possibly squeeze more than 4 Gb of RAM into a Cobalt box right?
+
+No, the limit is significantly less.  64-bit kernels are advantagous if
+
+ - running N32 or N64 software is desired
+ - anything that takes advantage of 64-bit registers or the 32/32 fpr model
+ - software is using large amounts of virtual address space.  Process size
+   is limited to 2GB which is tight for some of todays codes which do their
+   I/O by memory mapping files.
+ - and of the course there is the "more inches" factor ;-)
+
+> And doesn't 64 bit mode have costs of its own (doubled i-fetch bandwidth
+> for starters)?
+
+Fortunately not double and caches will further blurr the picture - but on
+a system with a 32-bit processor and memory bus there will be very
+noticable impact.  We're using a bunch of tricks to keep the overhead under
+control.
+
+  Ralf

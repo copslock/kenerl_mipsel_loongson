@@ -1,41 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Apr 2005 16:21:49 +0100 (BST)
-Received: from corvus.et.put.poznan.pl ([IPv6:::ffff:150.254.11.9]:2446 "EHLO
-	corvus.et.put.poznan.pl") by linux-mips.org with ESMTP
-	id <S8226085AbVDPPVe>; Sat, 16 Apr 2005 16:21:34 +0100
-Received: from corvus (corvus.et.put.poznan.pl [150.254.11.9])
-	by corvus.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id j3GFLWj29392
-	for <linux-mips@linux-mips.org>; Sat, 16 Apr 2005 17:21:32 +0200 (MET DST)
-Received: from helios.et.put.poznan.pl ([150.254.29.65])
-	by corvus.et.put.poznan.pl (MailMonitor for SMTP v1.2.2 ) ;
-	Sat, 16 Apr 2005 17:21:31 +0200 (MET DST)
-Received: from localhost (sskowron@localhost)
-	by helios.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id j3GFLTR16019
-	for <linux-mips@linux-mips.org>; Sat, 16 Apr 2005 17:21:29 +0200 (MET DST)
-X-Authentication-Warning: helios.et.put.poznan.pl: sskowron owned process doing -bs
-Date:	Sat, 16 Apr 2005 17:21:28 +0200 (MET DST)
-From:	Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
-To:	linux-mips@linux-mips.org
-Subject: Re: Linux for RouterBoard532 - CPU MIPS32 4Kc - IDT 79RC32434.
-In-Reply-To: <20050416145809.GS9461@lug-owl.de>
-Message-ID: <Pine.GSO.4.10.10504161719570.15889-100000@helios.et.put.poznan.pl>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <sskowron@ET.PUT.Poznan.PL>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Apr 2005 23:59:56 +0100 (BST)
+Received: from mailout05.sul.t-online.com ([IPv6:::ffff:194.25.134.82]:26528
+	"EHLO mailout05.sul.t-online.com") by linux-mips.org with ESMTP
+	id <S8226111AbVDPW7k>; Sat, 16 Apr 2005 23:59:40 +0100
+Received: from fwd28.aul.t-online.de 
+	by mailout05.sul.t-online.com with smtp 
+	id 1DMwGH-0001BB-00; Sun, 17 Apr 2005 00:59:37 +0200
+Received: from denx.de (GiQXaTZSZeaW4SMdMrc4MKQooUrETCOudjwNTK8+NJO3qNM+HFmJE+@[84.150.88.129]) by fwd28.sul.t-online.de
+	with esmtp id 1DMwGD-1rOUTI0; Sun, 17 Apr 2005 00:59:33 +0200
+Received: from atlas.denx.de (atlas.denx.de [10.0.0.14])
+	by denx.de (Postfix) with ESMTP
+	id ED1F542BB0; Sun, 17 Apr 2005 00:59:32 +0200 (MEST)
+Received: by atlas.denx.de (Postfix, from userid 15)
+	id D620AC108D; Sun, 17 Apr 2005 00:59:31 +0200 (MEST)
+Received: from atlas.denx.de (localhost [127.0.0.1])
+	by atlas.denx.de (Postfix) with ESMTP
+	id D3C5E13D94A; Sun, 17 Apr 2005 00:59:31 +0200 (MEST)
+To:	cordova@uninet.com.br
+Cc:	linux-mips@linux-mips.org
+From:	Wolfgang Denk <wd@denx.de>
+Subject: Re: Linux for RouterBoard532 - CPU MIPS32 4Kc - IDT 79RC32434. 
+Mime-version: 1.0
+Content-type: text/plain; charset=ISO-8859-1
+Content-transfer-encoding: 8bit
+In-reply-to: Your message of "Sat, 16 Apr 2005 11:33:45 -0300."
+             <42612249.1fb.7a40.2093672349@uninet.com.br> 
+Date:	Sun, 17 Apr 2005 00:59:26 +0200
+Message-Id: <20050416225931.D620AC108D@atlas.denx.de>
+X-ID:	GiQXaTZSZeaW4SMdMrc4MKQooUrETCOudjwNTK8+NJO3qNM+HFmJE+@t-dialin.net
+X-TOI-MSGID: e97210a2-b8df-4123-a062-a181e822e096
+Return-Path: <wd@denx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7739
+X-archive-position: 7740
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sskowron@ET.PUT.Poznan.PL
+X-original-sender: wd@denx.de
 Precedence: bulk
 X-list: linux-mips
 
-> He needs to supply these to you, as forced by the GPLv2...
+In message <42612249.1fb.7a40.2093672349@uninet.com.br> you wrote:
+> 
+> I´d just bought Routerboard532 (
+> http://www.routerboard.com/rb500.html ) and I want to port
+> linux to this board. The vendor has just an linux image on
+> the web site.
 
-You don't even need to point that out. IDT is quite pleasant to work with
-as a company, I can say that even as a hobbyist. They don't make problems
-about Linux kernel source. I just wonder why don't they let us merge it.
+This is not correct. If you just scroll  down  the  page  you  listed
+yoursself,   then   you   should   easily  find  the  section  titled
+"RouterBOARD 500 GNU/Linux support files" which includes  a  link  to
+"Patch for Linux 2.4.29 kernel".
 
-Stanislaw
+> Anyone could help me we some info or "HOWTO" ?
+
+Download the patch, download the corresponding  kernel  source  tree,
+apply  patch,  copy  "config.mipsel"  to  ".config"  to get a default
+configuration, build the kernel, download it, run it.
+
+So far I haven't been able to find out how to pass  kernel  arguments
+with their boot loader, so you may have to hack rc32434/rb500/prom.c
+
+I used the mips_4KCle packages of the ELDK to build the kernel and to
+provide a root filesystem over NFS - this worked fine. There are some
+problems (like not being able to switch the CPU clock and NAND  flash
+support not working at all), but it boots and runs.
+
+Best regards,
+
+Wolfgang Denk
+
+-- 
+Software Engineering:  Embedded and Realtime Systems,  Embedded Linux
+Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email: wd@denx.de
+The IQ of the group is the lowest IQ of a member of the group divided
+by the number of people in the group.

@@ -1,98 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Apr 2005 10:45:46 +0100 (BST)
-Received: from mail.ultranet.ru ([IPv6:::ffff:213.33.170.34]:36528 "EHLO
-	mail.ultranet.ru") by linux-mips.org with ESMTP id <S8225477AbVDRJpb>;
-	Mon, 18 Apr 2005 10:45:31 +0100
-Received: from [194.154.83.194] ([194.154.83.194] verified)
-  by mail.ultranet.ru (CommuniGate Pro SMTP 4.2.9)
-  with ESMTP id 24748302; Mon, 18 Apr 2005 13:30:57 +0400
-Date:	Mon, 18 Apr 2005 13:32:46 +0400
-From:	Pavel Kiryukhin <vksavl@cityline.ru>
-X-Mailer: The Bat! (v2.10) UNREG / CD5BF9353B3B7091
-Reply-To: Pavel Kiryukhin <vksavl@cityline.ru>
-X-Priority: 3 (Normal)
-Message-ID: <1807918959.20050418133246@cityline.ru>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Apr 2005 10:46:27 +0100 (BST)
+Received: from moutng.kundenserver.de ([IPv6:::ffff:212.227.126.176]:41466
+	"EHLO moutng.kundenserver.de") by linux-mips.org with ESMTP
+	id <S8225474AbVDRJpg>; Mon, 18 Apr 2005 10:45:36 +0100
+Received: from [212.227.126.208] (helo=mrelayng.kundenserver.de)
+	by moutng.kundenserver.de with esmtp (Exim 3.35 #1)
+	id 1DNSox-0004du-00; Mon, 18 Apr 2005 11:45:35 +0200
+Received: from [213.39.254.66] (helo=tuxator.satorlaser-intern.com)
+	by mrelayng.kundenserver.de with asmtp (TLSv1:RC4-MD5:128)
+	(Exim 3.35 #1)
+	id 1DNSox-00073V-00; Mon, 18 Apr 2005 11:45:35 +0200
+From:	Ulrich Eckhardt <eckhardt@satorlaser.com>
+Organization: Sator Laser GmbH
 To:	linux-mips@linux-mips.org
-CC:	Manish Lachwani <mlachwani@mvista.com>
-Subject: Preemption in do_cpu      (Re: [PATCH]Preemption patch for 2.6)
-In-Reply-To: <1098468403.4266.42.camel@prometheus.mvista.com>
-References: <1098468403.4266.42.camel@prometheus.mvista.com>
+Subject: [patch] add missing declaration of smp_processor_id
+Date:	Mon, 18 Apr 2005 11:46:26 +0200
+User-Agent: KMail/1.7.2
+Cc:	ralf@linux-mips.org
 MIME-Version: 1.0
-Content-Type: text/plain; charset=Windows-1251
-Content-Transfer-Encoding: 8bit
-Return-Path: <vksavl@cityline.ru>
+Content-Type: text/plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Message-Id: <200504181146.26588.eckhardt@satorlaser.com>
+X-Provags-ID: kundenserver.de abuse@kundenserver.de auth:e35cee35a663f5c944b9750a965814ae
+Return-Path: <eckhardt@satorlaser.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7742
+X-archive-position: 7743
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vksavl@cityline.ru
+X-original-sender: eckhardt@satorlaser.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
-the preempt_disable/preempt_enable sequence in do_cpu() [traps.c]
-exists quite long (patch submitted in Oct. 2004), so it should be nothing
-wrong there.
+The missing declaration leads to warnings during compilation for Alchemy 
+boards.
 
-Can somebody please comment why use of preempt_disable/enable in do_cpu
-will not result in "scheduling while atomic" for fpu-less cpu (with enabled
-preemption).
+Changes
+ * include <linux/smp.h> because udelay() needs smp_processor_id
 
-The sequence looks like
+cheers
 
-do_cpu()
-| preempt_disable()
-| fpu_emulator_cop1Handler()
-| | cond_reshed()
-| | | schedule()  <------ scheduling while atomic
+Uli
+---
 
-
-The proposed patch was tested for Sibyte, but it has fpu (AFAIK) and has no
-fpu_emulator_cop1Handler called.
-
---
-Thank you,
-Pavel Kiryukhin                   mailto:vksavl@cityline.ru
-
-
-
-Friday, October 22, 2004, 10:06:43 PM, you wrote:
-
-ML> Hello !
-
-ML> The attached patch incorporates preemption enable/disable in some parts
-ML> of the kernel. I have tested this on the Broadcom Sibyte. Please review
-ML> ...
-
-ML> Thanks
-ML> Manish Lachwani
-
-
-<skip>
-
-ML> Index: linux-2.6.8.1/arch/mips/kernel/traps.c
-ML> ===================================================================
-ML> --- linux-2.6.8.1.orig/arch/mips/kernel/traps.c
-ML> +++ linux-2.6.8.1/arch/mips/kernel/traps.c
-
-<skip>
-
-ML>  case 1:
-ML> +preempt_disable();
-ML> +
-ML>  own_fpu();
-ML>  if (current->used_math) {	/* Using the FPU again.  */
-ML>  restore_fp(current);
-ML> @@ -674,6 +690,8 @@
-ML>  force_sig(sig, current);
-ML>  }
+Index: include/asm-mips/delay.h
+===================================================================
+RCS file: /home/cvs/linux/include/asm-mips/delay.h,v
+retrieving revision 1.17
+diff -u -w -r1.17 delay.h
+--- include/asm-mips/delay.h	13 Apr 2005 13:37:32 -0000	1.17
++++ include/asm-mips/delay.h	18 Apr 2005 09:38:25 -0000
+@@ -12,7 +12,7 @@
  
-ML> +preempt_enable();
-ML> +
-ML>  return;
+ #include <linux/config.h>
+ #include <linux/param.h>
+-
++#include <linux/smp.h>
+ #include <asm/compiler.h>
  
-ML>  case 2:
-
-<skip>
+ static inline void __delay(unsigned long loops)

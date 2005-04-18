@@ -1,54 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Apr 2005 11:45:42 +0100 (BST)
-Received: from host51-186.pool80204.interbusiness.it ([IPv6:::ffff:80.204.186.51]:55189
-	"EHLO gate.exadron.com") by linux-mips.org with ESMTP
-	id <S8225530AbVDRKp2>; Mon, 18 Apr 2005 11:45:28 +0100
-Received: from 10.0.10.210 ([10.0.10.210])
-	by gate.exadron.com (8.12.7/8.12.7) with ESMTP id j3IAgQjG027120
-	for <linux-mips@linux-mips.org>; Mon, 18 Apr 2005 12:42:54 +0200
-Subject: Bug detection and correction on Alchemy au1x00_uart.c serial driver
-From:	"d.piccolo" <d.piccolo@exadron.com>
-To:	linux-mips@linux-mips.org
-Content-Type: text/plain
-Date:	Mon, 18 Apr 2005 13:02:08 +0200
-Message-Id: <1113822129.3261.42.camel@localhost.localdomain>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Apr 2005 12:54:58 +0100 (BST)
+Received: from verein.lst.de ([IPv6:::ffff:213.95.11.210]:51133 "EHLO
+	mail.lst.de") by linux-mips.org with ESMTP id <S8225534AbVDRLyn>;
+	Mon, 18 Apr 2005 12:54:43 +0100
+Received: from verein.lst.de (localhost [127.0.0.1])
+	by mail.lst.de (8.12.3/8.12.3/Debian-7.1) with ESMTP id j3IBsg6t029142
+	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
+	Mon, 18 Apr 2005 13:54:42 +0200
+Received: (from hch@localhost)
+	by verein.lst.de (8.12.3/8.12.3/Debian-6.6) id j3IBsg62029140;
+	Mon, 18 Apr 2005 13:54:42 +0200
+Date:	Mon, 18 Apr 2005 13:54:41 +0200
+From:	Christoph Hellwig <hch@lst.de>
+To:	Ulrich Eckhardt <eckhardt@satorlaser.com>
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [patch] some cleanups for Alchemy processors
+Message-ID: <20050418115441.GA29116@lst.de>
+References: <200504181137.49593.eckhardt@satorlaser.com>
 Mime-Version: 1.0
-X-Mailer: Evolution 2.0.2 (2.0.2-3) 
-Content-Transfer-Encoding: 7bit
-Return-Path: <d.piccolo@exadron.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <200504181137.49593.eckhardt@satorlaser.com>
+User-Agent: Mutt/1.3.28i
+X-Scanned-By: MIMEDefang 2.39
+Return-Path: <hch@lst.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7745
+X-archive-position: 7746
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: d.piccolo@exadron.com
+X-original-sender: hch@lst.de
 Precedence: bulk
 X-list: linux-mips
 
-Hi Everybody
+On Mon, Apr 18, 2005 at 11:37:48AM +0200, Ulrich Eckhardt wrote:
+>  * replace three evil macros used to alias fields of a structure 
+>    with an anonymous union
 
-I've found a bug in the  au1x00_uart.c file in the drivers/serial/
-directory of the 2.6.10 linux kernel. There is only possible to change
-the speed of the communication but not to update other parameters of the
-serial link, like the number of bits involved, stop bits and parity.
-  Comparing the code of this source file with the code of the standard
-8250 driver (8250.c also present in the same directory) I've found the
-problem:  au1x00_uart.c never updates the LCR register  (Line Control
-Register) of the serial controller at runtime, it happens only at first
-setup. The problem is solved by adding the line
-
-	serial_out(up, UART_LCR, cval);
-
-just before the line 
- 
-	up->lcr = cval;	  /* Save LCR */
-
-(there is only one position in all the source code where is written
-"Save LCR")
-
-I hope it could be useful.
-                              David Piccolo
-
-
-    
+In general we try to still support gcc 2.95 for compiling the kernel,
+which doesn't support anonymous unions.

@@ -1,79 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Apr 2005 22:35:38 +0100 (BST)
-Received: from gateway-1237.mvista.com ([IPv6:::ffff:12.44.186.158]:56826 "EHLO
-	hermes.mvista.com") by linux-mips.org with ESMTP
-	id <S8225746AbVDRVfX>; Mon, 18 Apr 2005 22:35:23 +0100
-Received: from mvista.com (prometheus.mvista.com [10.0.0.139])
-	by hermes.mvista.com (Postfix) with ESMTP
-	id DDDE218C23; Mon, 18 Apr 2005 14:35:16 -0700 (PDT)
-Message-ID: <42642814.8040701@mvista.com>
-Date:	Mon, 18 Apr 2005 14:35:16 -0700
-From:	Manish Lachwani <mlachwani@mvista.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4.2) Gecko/20040308
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	Jun Sun <jsun@junsun.net>
-Cc:	Pavel Kiryukhin <vksavl@cityline.ru>, linux-mips@linux-mips.org
-Subject: Re: Preemption in do_cpu      (Re: [PATCH]Preemption patch for 2.6)
-References: <1098468403.4266.42.camel@prometheus.mvista.com> <1807918959.20050418133246@cityline.ru> <20050418212021.GA12996@gw.junsun.net>
-In-Reply-To: <20050418212021.GA12996@gw.junsun.net>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <mlachwani@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Apr 2005 00:17:59 +0100 (BST)
+Received: from mailout02.sul.t-online.com ([IPv6:::ffff:194.25.134.17]:9395
+	"EHLO mailout02.sul.t-online.com") by linux-mips.org with ESMTP
+	id <S8225753AbVDRXRm>; Tue, 19 Apr 2005 00:17:42 +0100
+Received: from fwd34.aul.t-online.de 
+	by mailout02.sul.t-online.com with smtp 
+	id 1DNfUn-0002Jh-00; Tue, 19 Apr 2005 01:17:37 +0200
+Received: from denx.de (bpRcT8ZHYeoV+4PIzmI31n+ZYprjwvWwNcOr+Z-Y6jOc1Smtp84rcb@[84.150.101.52]) by fwd34.sul.t-online.de
+	with esmtp id 1DNfUa-0tXbSy0; Tue, 19 Apr 2005 01:17:24 +0200
+Received: from atlas.denx.de (atlas.denx.de [10.0.0.14])
+	by denx.de (Postfix) with ESMTP
+	id A3C0C42C64; Tue, 19 Apr 2005 01:17:23 +0200 (MEST)
+Received: by atlas.denx.de (Postfix, from userid 15)
+	id CFEAFC1519; Tue, 19 Apr 2005 01:17:22 +0200 (MEST)
+Received: from atlas.denx.de (localhost [127.0.0.1])
+	by atlas.denx.de (Postfix) with ESMTP
+	id BAA0613D94A; Tue, 19 Apr 2005 01:17:22 +0200 (MEST)
+To:	John Tully <tully@mikrotik.com>
+Cc:	linux-mips@linux-mips.org, cordova@uninet.com.br
+From:	Wolfgang Denk <wd@denx.de>
+Subject: Re: Linux for RouterBoard532 - CPU MIPS32 4Kc - IDT 79RC32434. 
+Mime-version: 1.0
+Content-type: text/plain; charset=ISO-8859-1
+Content-transfer-encoding: 8bit
+In-reply-to: Your message of "Mon, 18 Apr 2005 17:54:05 +0300."
+             <6.2.1.2.0.20050418174810.0382e410@frog.mt.lv> 
+Date:	Tue, 19 Apr 2005 01:17:17 +0200
+Message-Id: <20050418231722.CFEAFC1519@atlas.denx.de>
+X-ID:	bpRcT8ZHYeoV+4PIzmI31n+ZYprjwvWwNcOr+Z-Y6jOc1Smtp84rcb@t-dialin.net
+X-TOI-MSGID: d42a9de3-b727-4231-aa93-5a7d00f45f3e
+Return-Path: <wd@denx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7755
+X-archive-position: 7756
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mlachwani@mvista.com
+X-original-sender: wd@denx.de
 Precedence: bulk
 X-list: linux-mips
 
-Jun Sun wrote:
+In message <6.2.1.2.0.20050418174810.0382e410@frog.mt.lv> you wrote:
+> I work for MikroTik and we make the RB500.  We are trying to add more 
+> documentation to make it easy to do more things with Linux.  At the moment, 
+> the CF image at least lets you quickly start on developing Linux 
+> applications.  Allot of what you need can be figured out from the kernel 
+> patch on the specs page for the RB500 at www.routerboard.com , but that is 
+> not so much fun.  We will add more documentation on the NAND device and 
+> such features.  So, please check the site and I can also write to this list 
+> as we add more info.
 
->On Mon, Apr 18, 2005 at 01:32:46PM +0400, Pavel Kiryukhin wrote:
->  
->
->>Hi,
->>the preempt_disable/preempt_enable sequence in do_cpu() [traps.c]
->>exists quite long (patch submitted in Oct. 2004), so it should be nothing
->>wrong there.
->>
->>Can somebody please comment why use of preempt_disable/enable in do_cpu
->>will not result in "scheduling while atomic" for fpu-less cpu (with enabled
->>preemption).
->>
->>The sequence looks like
->>
->>do_cpu()
->>| preempt_disable()
->>| fpu_emulator_cop1Handler()
->>| | cond_reshed()
->>| | | schedule()  <------ scheduling while atomic
->>
->>
->>The proposed patch was tested for Sibyte, but it has fpu (AFAIK) and has no
->>fpu_emulator_cop1Handler called.
->>
->>    
->>
->
->fpu_emulator maintains global variables and in general is dangerous
->to be preempted in the middle of processing.
->
->The quick fix for this problem is probably to move preemption disabling/
->enabling inside fpu_emulator_cop1Handler().
->
->Better fix is probably to modify fpu emulator so that it is preemption
->safe overall.
->
->Jun
->  
->
-Missed this one ! I had a patch that enables preemption before the 
-cond_resched and disables right after it. I forgot to send it to 
-linux-mips though. But, I needed it to work on fpu-less CPU. My bad.
+Thanks. Just two more questions now:
 
-Thanks
-Manish Lachwani
+* Are you working on a 2.6.x version ?
+
+* Is the NAND flash support supposed to be working?  All  I  can  get
+  from it is only error messages.
+
+Best regards,
+
+Wolfgang Denk
+
+-- 
+Software Engineering:  Embedded and Realtime Systems,  Embedded Linux
+Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email: wd@denx.de
+Anyone can count the seeds in an apple.
+No one can count the apples in a seed.

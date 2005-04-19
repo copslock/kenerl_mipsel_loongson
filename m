@@ -1,50 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Apr 2005 16:23:33 +0100 (BST)
-Received: from nevyn.them.org ([IPv6:::ffff:66.93.172.17]:1711 "EHLO
-	nevyn.them.org") by linux-mips.org with ESMTP id <S8226155AbVDSPXQ>;
-	Tue, 19 Apr 2005 16:23:16 +0100
-Received: from drow by nevyn.them.org with local (Exim 4.50 #1 (Debian))
-	id 1DNuZE-0007u8-De; Tue, 19 Apr 2005 11:23:12 -0400
-Date:	Tue, 19 Apr 2005 11:23:12 -0400
-From:	Daniel Jacobowitz <dan@debian.org>
-To:	Thiemo Seufer <ths@networkno.de>
-Cc:	Greg Weeks <greg.weeks@timesys.com>, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Apr 2005 16:52:30 +0100 (BST)
+Received: from mail.timesys.com ([IPv6:::ffff:65.117.135.102]:60400 "EHLO
+	exchange.timesys.com") by linux-mips.org with ESMTP
+	id <S8226197AbVDSPwP>; Tue, 19 Apr 2005 16:52:15 +0100
+Received: from [192.168.2.27] ([192.168.2.27]) by exchange.timesys.com with Microsoft SMTPSVC(5.0.2195.6713);
+	 Tue, 19 Apr 2005 11:47:30 -0400
+Message-ID: <4265292D.5040704@timesys.com>
+Date:	Tue, 19 Apr 2005 11:52:13 -0400
+From:	Greg Weeks <greg.weeks@timesys.com>
+User-Agent: Mozilla Thunderbird 1.0 (X11/20041206)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	Daniel Jacobowitz <dan@debian.org>
+CC:	linux-mips@linux-mips.org
 Subject: Re: sysv ipc msg functions
-Message-ID: <20050419152312.GA30205@nevyn.them.org>
-References: <426518D0.5080506@timesys.com> <20050419143543.GB3300@hattusa.textio>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20050419143543.GB3300@hattusa.textio>
-User-Agent: Mutt/1.5.8i
-Return-Path: <drow@nevyn.them.org>
+References: <426518D0.5080506@timesys.com> <20050419150549.GA29564@nevyn.them.org>
+In-Reply-To: <20050419150549.GA29564@nevyn.them.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 19 Apr 2005 15:47:30.0109 (UTC) FILETIME=[180DB6D0:01C544F7]
+Return-Path: <greg.weeks@timesys.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7765
+X-archive-position: 7766
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@debian.org
+X-original-sender: greg.weeks@timesys.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Apr 19, 2005 at 04:35:43PM +0200, Thiemo Seufer wrote:
-> Greg Weeks wrote:
-> > I needed this glibc patch to get the sysv ipc msgctl functions to work 
-> > correctly. This looks a bit hackish to me, so I wanted to run it past 
-> > everybody here before filing it with glibc.
-> 
-> The Debian glibc has a similiar patch, see
-> http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=200215&archive=yes
-> for a discussion.
+Daniel Jacobowitz wrote:
 
-Last thing I see there was:
+>On Tue, Apr 19, 2005 at 10:42:24AM -0400, Greg Weeks wrote:
+>  
+>
+>>I needed this glibc patch to get the sysv ipc msgctl functions to work 
+>>correctly. This looks a bit hackish to me, so I wanted to run it past 
+>>everybody here before filing it with glibc.
+>>    
+>>
+>
+>What's your configuration?  Big or little endian, userland ABI, kernel
+>ABI.  Glibc version.  Kernel version.  What specific things don't work. 
+>Not even enough information here to make a guess.
+>
+>You're updating the userspace msqid_ds to match the kernel's
+>msqid64_ds.  They're not normally the same type.  Rather, see
+><linux/msg.h> for the type o32 generally uses.
+>
+>  
+>
 
-  Okay, I suggest you send this patch to Uli for libc and I'll prepare a
-  patch for the kernel, will post here later.
+glibc-2.3.3-200407050320
+2.6.11.7 kernel but it's the issue is the same on the 2.6.12-rc from cvs.
+The board is a malta 4kc in LE mode.
+If you want to see a failure the LTP msgctl/msgsnd tests fail.
 
-Anything ever come of that?
-
--- 
-Daniel Jacobowitz
-CodeSourcery, LLC
+Greg Weeks

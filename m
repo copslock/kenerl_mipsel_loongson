@@ -1,57 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Apr 2005 15:55:06 +0100 (BST)
-Received: from mail.timesys.com ([IPv6:::ffff:65.117.135.102]:5838 "EHLO
-	exchange.timesys.com") by linux-mips.org with ESMTP
-	id <S8226122AbVDSOyv>; Tue, 19 Apr 2005 15:54:51 +0100
-Received: from [192.168.2.27] ([192.168.2.27]) by exchange.timesys.com with Microsoft SMTPSVC(5.0.2195.6713);
-	 Tue, 19 Apr 2005 10:50:06 -0400
-Message-ID: <42651BB9.4050609@timesys.com>
-Date:	Tue, 19 Apr 2005 10:54:49 -0400
-From:	Greg Weeks <greg.weeks@timesys.com>
-User-Agent: Mozilla Thunderbird 1.0 (X11/20041206)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	sjhill@realitydiluted.com
-CC:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Apr 2005 16:06:18 +0100 (BST)
+Received: from nevyn.them.org ([IPv6:::ffff:66.93.172.17]:6597 "EHLO
+	nevyn.them.org") by linux-mips.org with ESMTP id <S8226144AbVDSPFx>;
+	Tue, 19 Apr 2005 16:05:53 +0100
+Received: from drow by nevyn.them.org with local (Exim 4.50 #1 (Debian))
+	id 1DNuIP-0007lP-Px; Tue, 19 Apr 2005 11:05:49 -0400
+Date:	Tue, 19 Apr 2005 11:05:49 -0400
+From:	Daniel Jacobowitz <dan@debian.org>
+To:	Greg Weeks <greg.weeks@timesys.com>
+Cc:	linux-mips@linux-mips.org
 Subject: Re: sysv ipc msg functions
-References: <E1DNu4q-0000da-T3@real.realitydiluted.com>
-In-Reply-To: <E1DNu4q-0000da-T3@real.realitydiluted.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 19 Apr 2005 14:50:06.0312 (UTC) FILETIME=[1363FE80:01C544EF]
-Return-Path: <greg.weeks@timesys.com>
+Message-ID: <20050419150549.GA29564@nevyn.them.org>
+References: <426518D0.5080506@timesys.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <426518D0.5080506@timesys.com>
+User-Agent: Mutt/1.5.8i
+Return-Path: <drow@nevyn.them.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7762
+X-archive-position: 7763
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: greg.weeks@timesys.com
+X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-sjhill@realitydiluted.com wrote:
+On Tue, Apr 19, 2005 at 10:42:24AM -0400, Greg Weeks wrote:
+> I needed this glibc patch to get the sysv ipc msgctl functions to work 
+> correctly. This looks a bit hackish to me, so I wanted to run it past 
+> everybody here before filing it with glibc.
 
->[ Charset ISO-8859-1 unsupported, converting... ]
->  
->
->>I needed this glibc patch to get the sysv ipc msgctl functions to work 
->>correctly. This looks a bit hackish to me, so I wanted to run it past 
->>everybody here before filing it with glibc.
->>
->>    
->>
->Perhaps is ignorance on my part, but I thought the compiler would
->handle the endianness with regards to the structure members. Did
->you have problems with big and little endian such that you had to
->do all of the ugly #ifdef'ing? 
->  
->
-yes. Take a look at the kernel structure it is mapping to.
+What's your configuration?  Big or little endian, userland ABI, kernel
+ABI.  Glibc version.  Kernel version.  What specific things don't work. 
+Not even enough information here to make a guess.
 
-in
-asm-mips/msgbuf.h
+You're updating the userspace msqid_ds to match the kernel's
+msqid64_ds.  They're not normally the same type.  Rather, see
+<linux/msg.h> for the type o32 generally uses.
 
-struct msqid64_ds
 
-Greg Weeks
+-- 
+Daniel Jacobowitz
+CodeSourcery, LLC

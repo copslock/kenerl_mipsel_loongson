@@ -1,60 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Apr 2005 16:52:30 +0100 (BST)
-Received: from mail.timesys.com ([IPv6:::ffff:65.117.135.102]:60400 "EHLO
-	exchange.timesys.com") by linux-mips.org with ESMTP
-	id <S8226197AbVDSPwP>; Tue, 19 Apr 2005 16:52:15 +0100
-Received: from [192.168.2.27] ([192.168.2.27]) by exchange.timesys.com with Microsoft SMTPSVC(5.0.2195.6713);
-	 Tue, 19 Apr 2005 11:47:30 -0400
-Message-ID: <4265292D.5040704@timesys.com>
-Date:	Tue, 19 Apr 2005 11:52:13 -0400
-From:	Greg Weeks <greg.weeks@timesys.com>
-User-Agent: Mozilla Thunderbird 1.0 (X11/20041206)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	Daniel Jacobowitz <dan@debian.org>
-CC:	linux-mips@linux-mips.org
-Subject: Re: sysv ipc msg functions
-References: <426518D0.5080506@timesys.com> <20050419150549.GA29564@nevyn.them.org>
-In-Reply-To: <20050419150549.GA29564@nevyn.them.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Apr 2005 17:50:49 +0100 (BST)
+Received: from smtp.uk.colt.net ([IPv6:::ffff:195.110.64.125]:30662 "EHLO
+	smtp.uk.colt.net") by linux-mips.org with ESMTP id <S8226243AbVDSQue>;
+	Tue, 19 Apr 2005 17:50:34 +0100
+Received: from euskadi.packetvision (unknown [213.86.106.84])
+	by smtp.uk.colt.net (Postfix) with ESMTP id 01819E7077
+	for <linux-mips@linux-mips.org>; Tue, 19 Apr 2005 17:42:53 +0100 (BST)
+Subject: Re: Building native binutils/gcc/glibc
+From:	Alex Gonzalez <alex.gonzalez@packetvision.com>
+To:	linux-mips@linux-mips.org
+In-Reply-To: <Pine.LNX.4.61L.0504191214580.14774@blysk.ds.pg.gda.pl>
+References: <1113843806.4266.20.camel@euskadi.packetvision>
+	 <Pine.LNX.4.61L.0504191214580.14774@blysk.ds.pg.gda.pl>
+Content-Type: text/plain
+Message-Id: <1113929447.31725.1.camel@euskadi.packetvision>
+Mime-Version: 1.0
+X-Mailer: Ximian Evolution 1.4.5 (1.4.5-9) 
+Date:	Tue, 19 Apr 2005 17:50:47 +0100
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 19 Apr 2005 15:47:30.0109 (UTC) FILETIME=[180DB6D0:01C544F7]
-Return-Path: <greg.weeks@timesys.com>
+Return-Path: <alex.gonzalez@packetvision.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7766
+X-archive-position: 7767
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: greg.weeks@timesys.com
+X-original-sender: alex.gonzalez@packetvision.com
 Precedence: bulk
 X-list: linux-mips
 
-Daniel Jacobowitz wrote:
+Thanks a lot, binutils-2.15 worked.
+Alex
 
->On Tue, Apr 19, 2005 at 10:42:24AM -0400, Greg Weeks wrote:
->  
->
->>I needed this glibc patch to get the sysv ipc msgctl functions to work 
->>correctly. This looks a bit hackish to me, so I wanted to run it past 
->>everybody here before filing it with glibc.
->>    
->>
->
->What's your configuration?  Big or little endian, userland ABI, kernel
->ABI.  Glibc version.  Kernel version.  What specific things don't work. 
->Not even enough information here to make a guess.
->
->You're updating the userspace msqid_ds to match the kernel's
->msqid64_ds.  They're not normally the same type.  Rather, see
-><linux/msg.h> for the type o32 generally uses.
->
->  
->
-
-glibc-2.3.3-200407050320
-2.6.11.7 kernel but it's the issue is the same on the 2.6.12-rc from cvs.
-The board is a malta 4kc in LE mode.
-If you want to see a failure the LTP msgctl/msgsnd tests fail.
-
-Greg Weeks
+On Tue, 2005-04-19 at 12:16, Maciej W. Rozycki wrote:
+> On Mon, 18 Apr 2005, Alex Gonzalez wrote:
+> 
+> > I am trying to cross compile native binutils/gcc and glibc to be able to
+> > build on the target, using:
+> > 
+> > binutils 2.14
+> > gcc 3.3.5
+> > glibc 2.3.5
+> [...]
+> > /bin/../lib/gcc-lib/mips-linux-gnu/3.3.5/../../../../mips-linux-gnu/bin/ld: ./ccYlX6Ij.o: linking abicalls files with non-abicalls files
+> > Bad value: failed to merge target specific data of file ./ccYlX6Ij.o
+> > collect2: ld returned 1 exit status
+> 
+>  Update binutils.
+> 
+>   Maciej
+> 

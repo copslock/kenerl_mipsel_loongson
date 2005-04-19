@@ -1,68 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Apr 2005 09:36:35 +0100 (BST)
-Received: from frog.mt.lv ([IPv6:::ffff:159.148.172.197]:48326 "EHLO
-	frog.mt.lv") by linux-mips.org with ESMTP id <S8225799AbVDSIgT>;
-	Tue, 19 Apr 2005 09:36:19 +0100
-Received: from [10.5.17.206] (helo=your-lnsz0iqs6f.mikrotik.com)
-	by frog.mt.lv with esmtp (Exim 4.44)
-	id 1DNoIH-0005FH-Rs
-	for linux-mips@linux-mips.org; Tue, 19 Apr 2005 11:41:18 +0300
-Message-Id: <6.2.1.2.0.20050419113317.026ad010@frog.mt.lv>
-X-Mailer: QUALCOMM Windows Eudora Version 6.2.1.2
-Date:	Tue, 19 Apr 2005 11:35:28 +0300
-To:	linux-mips@linux-mips.org
-From:	John Tully <tully@mikrotik.com>
-Subject: Re: Linux for RouterBoard532 - CPU MIPS32 4Kc - IDT 79RC32434.
-In-Reply-To: <20050418231722.CFEAFC1519@atlas.denx.de>
-References: <Your message of "Mon, 18 Apr 2005 17:54:05 +0300." <6.2.1.2.0.20050418174810.0382e410@frog.mt.lv>
- <20050418231722.CFEAFC1519@atlas.denx.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"; format=flowed
-Return-Path: <tully@mikrotik.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Apr 2005 12:16:26 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:24334 "EHLO
+	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225845AbVDSLQK>; Tue, 19 Apr 2005 12:16:10 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 488D6F597E; Tue, 19 Apr 2005 13:16:00 +0200 (CEST)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 02129-02; Tue, 19 Apr 2005 13:16:00 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 8FD0DE1C7A; Tue, 19 Apr 2005 13:15:59 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.1/8.13.1) with ESMTP id j3JBG04M016736;
+	Tue, 19 Apr 2005 13:16:01 +0200
+Date:	Tue, 19 Apr 2005 12:16:06 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Alex Gonzalez <alex.gonzalez@packetvision.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Building native binutils/gcc/glibc
+In-Reply-To: <1113843806.4266.20.camel@euskadi.packetvision>
+Message-ID: <Pine.LNX.4.61L.0504191214580.14774@blysk.ds.pg.gda.pl>
+References: <1113843806.4266.20.camel@euskadi.packetvision>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.83/840/Tue Apr 19 03:42:09 2005 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7758
+X-archive-position: 7759
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tully@mikrotik.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-At 02:17 AM 4/19/2005, Wolfgang Denk wrote:
->In message <6.2.1.2.0.20050418174810.0382e410@frog.mt.lv> you wrote:
-> > I work for MikroTik and we make the RB500.  We are trying to add more
-> > documentation to make it easy to do more things with Linux.  At the 
-> moment,
-> > the CF image at least lets you quickly start on developing Linux
-> > applications.  Allot of what you need can be figured out from the kernel
-> > patch on the specs page for the RB500 at www.routerboard.com , but that is
-> > not so much fun.  We will add more documentation on the NAND device and
-> > such features.  So, please check the site and I can also write to this 
-> list
-> > as we add more info.
->
->Thanks. Just two more questions now:
->
->* Are you working on a 2.6.x version ?
+On Mon, 18 Apr 2005, Alex Gonzalez wrote:
 
-No, maybe you would like to work on that.
+> I am trying to cross compile native binutils/gcc and glibc to be able to
+> build on the target, using:
+> 
+> binutils 2.14
+> gcc 3.3.5
+> glibc 2.3.5
+[...]
+> /bin/../lib/gcc-lib/mips-linux-gnu/3.3.5/../../../../mips-linux-gnu/bin/ld: ./ccYlX6Ij.o: linking abicalls files with non-abicalls files
+> Bad value: failed to merge target specific data of file ./ccYlX6Ij.o
+> collect2: ld returned 1 exit status
 
->* Is the NAND flash support supposed to be working?  All  I  can  get
->   from it is only error messages.
+ Update binutils.
 
-Yes, it works.  I will try to organize some more docs on this in a week or so.
-
-John
-www.mikrotik.com
-
-
->Best regards,
->
->Wolfgang Denk
->
->--
->Software Engineering:  Embedded and Realtime Systems,  Embedded Linux
->Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email: wd@denx.de
->Anyone can count the seeds in an apple.
->No one can count the apples in a seed.
+  Maciej

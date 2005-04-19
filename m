@@ -1,57 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Apr 2005 12:16:26 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:24334 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225845AbVDSLQK>; Tue, 19 Apr 2005 12:16:10 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 488D6F597E; Tue, 19 Apr 2005 13:16:00 +0200 (CEST)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 02129-02; Tue, 19 Apr 2005 13:16:00 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 8FD0DE1C7A; Tue, 19 Apr 2005 13:15:59 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.1/8.13.1) with ESMTP id j3JBG04M016736;
-	Tue, 19 Apr 2005 13:16:01 +0200
-Date:	Tue, 19 Apr 2005 12:16:06 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Alex Gonzalez <alex.gonzalez@packetvision.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Building native binutils/gcc/glibc
-In-Reply-To: <1113843806.4266.20.camel@euskadi.packetvision>
-Message-ID: <Pine.LNX.4.61L.0504191214580.14774@blysk.ds.pg.gda.pl>
-References: <1113843806.4266.20.camel@euskadi.packetvision>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Apr 2005 15:42:43 +0100 (BST)
+Received: from mail.timesys.com ([IPv6:::ffff:65.117.135.102]:13253 "EHLO
+	exchange.timesys.com") by linux-mips.org with ESMTP
+	id <S8226066AbVDSOm1>; Tue, 19 Apr 2005 15:42:27 +0100
+Received: from [192.168.2.27] ([192.168.2.27]) by exchange.timesys.com with Microsoft SMTPSVC(5.0.2195.6713);
+	 Tue, 19 Apr 2005 10:37:42 -0400
+Message-ID: <426518D0.5080506@timesys.com>
+Date:	Tue, 19 Apr 2005 10:42:24 -0400
+From:	Greg Weeks <greg.weeks@timesys.com>
+User-Agent: Mozilla Thunderbird 1.0 (X11/20041206)
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.83/840/Tue Apr 19 03:42:09 2005 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+To:	linux-mips@linux-mips.org
+Subject: sysv ipc msg functions
+Content-Type: multipart/mixed;
+ boundary="------------080106050706080303090605"
+X-OriginalArrivalTime: 19 Apr 2005 14:37:42.0031 (UTC) FILETIME=[57C3B9F0:01C544ED]
+Return-Path: <greg.weeks@timesys.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7759
+X-archive-position: 7760
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: greg.weeks@timesys.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 18 Apr 2005, Alex Gonzalez wrote:
+This is a multi-part message in MIME format.
+--------------080106050706080303090605
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 
-> I am trying to cross compile native binutils/gcc and glibc to be able to
-> build on the target, using:
-> 
-> binutils 2.14
-> gcc 3.3.5
-> glibc 2.3.5
-[...]
-> /bin/../lib/gcc-lib/mips-linux-gnu/3.3.5/../../../../mips-linux-gnu/bin/ld: ./ccYlX6Ij.o: linking abicalls files with non-abicalls files
-> Bad value: failed to merge target specific data of file ./ccYlX6Ij.o
-> collect2: ld returned 1 exit status
+I needed this glibc patch to get the sysv ipc msgctl functions to work 
+correctly. This looks a bit hackish to me, so I wanted to run it past 
+everybody here before filing it with glibc.
 
- Update binutils.
+Greg Weeks
 
-  Maciej
+--------------080106050706080303090605
+Content-Type: text/x-patch;
+ name="glibc-2.3.3-timesys-mips-msq.h.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="glibc-2.3.3-timesys-mips-msq.h.patch"
+
+--- glibc-2.3.3-200407050320/sysdeps/unix/sysv/linux/mips/bits/msq.h.orig	2005-04-19 09:04:15.000000000 -0400
++++ glibc-2.3.3-200407050320/sysdeps/unix/sysv/linux/mips/bits/msq.h	2005-04-19 09:22:21.000000000 -0400
+@@ -38,9 +38,27 @@ typedef unsigned long int msglen_t;
+ struct msqid_ds
+ {
+   struct ipc_perm msg_perm;	/* structure describing operation permission */
++#if __WORDSIZE == 32 && defined(__MIPSEB__)
++   unsigned long	__unused3;
++#endif
+   __time_t msg_stime;		/* time of last msgsnd command */
++#if __WORDSIZE == 32 && defined(__MIPSEL__)
++   unsigned long	__unused3;
++#endif
++#if __WORDSIZE == 32 && defined(__MIPSEB__)
++  unsigned long	__unused4;
++#endif
+   __time_t msg_rtime;		/* time of last msgrcv command */
++#if __WORDSIZE == 32 && defined(__MIPSEL__)
++  unsigned long	__unused4;
++#endif
++#if __WORDSIZE == 32 && defined(__MIPSEB__)
++  unsigned long	__unused5;
++#endif
+   __time_t msg_ctime;		/* time of last change */
++#if __WORDSIZE == 32 && defined(__MIPSEL__)
++  unsigned long	__unused5;
++#endif
+   unsigned long int __msg_cbytes; /* current number of bytes on queue */
+   msgqnum_t msg_qnum;		/* number of messages currently on queue */
+   msglen_t msg_qbytes;		/* max number of bytes allowed on queue */
+
+--------------080106050706080303090605--

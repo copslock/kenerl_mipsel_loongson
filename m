@@ -1,64 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Apr 2005 11:28:00 +0100 (BST)
-Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:3594 "EHLO
-	bacchus.net.dhis.org") by linux-mips.org with ESMTP
-	id <S8226057AbVDTK1k>; Wed, 20 Apr 2005 11:27:40 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.1/8.13.1) with ESMTP id j3KARPrY009172;
-	Wed, 20 Apr 2005 11:27:25 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j3KARO7p009171;
-	Wed, 20 Apr 2005 11:27:24 +0100
-Date:	Wed, 20 Apr 2005 11:27:24 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Andy Isaacson <adi@hexapodia.org>
-Cc:	Henk <Henk.Vergonet@gmail.com>,
-	Waldemar Brodkorb <wbx@openbsd-geek.de>,
-	linux-mips@linux-mips.org
-Subject: Re: Porting mips based routers
-Message-ID: <20050420102724.GD5212@linux-mips.org>
-References: <20050414210645.GB30585@god.dyndns.org> <20050415065558.GD25962@openbsd-geek.de> <20050418124809.GA27967@god.dyndns.org> <20050419183259.GA623@hexapodia.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20050419183259.GA623@hexapodia.org>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Apr 2005 13:23:23 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:15879 "EHLO
+	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8226086AbVDTMXI>; Wed, 20 Apr 2005 13:23:08 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id BC789F59C0; Wed, 20 Apr 2005 14:23:02 +0200 (CEST)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 14944-04; Wed, 20 Apr 2005 14:23:02 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 7CF98E1C92; Wed, 20 Apr 2005 14:23:02 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.1/8.13.1) with ESMTP id j3KCN4sW015386;
+	Wed, 20 Apr 2005 14:23:05 +0200
+Date:	Wed, 20 Apr 2005 13:23:11 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: ieee754[sd]p_neg workaround
+In-Reply-To: <20050420.174023.113589096.nemoto@toshiba-tops.co.jp>
+Message-ID: <Pine.LNX.4.61L.0504201312520.7109@blysk.ds.pg.gda.pl>
+References: <20050420.174023.113589096.nemoto@toshiba-tops.co.jp>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV version 0.83, clamav-milter version 0.83 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7772
+X-archive-position: 7773
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Apr 19, 2005 at 11:32:59AM -0700, Andy Isaacson wrote:
+On Wed, 20 Apr 2005, Atsushi Nemoto wrote:
 
-> > General comments on the WRT code:
+> I have a long standing patch for FPU emulator to fix a segmentation
+> fault in pow() library function.
 > 
-> The code is full of "Broadcom Proprietary" and "All Rights Reserved"
-> notices.  Does anyone have a clear written statement from Broadcom that
-> it's redistributable?  (If you're depending on the GPL release
-> requirements to justify relicensing, clear documentation of the chain of
-> release would be helpful.)
-
-Broadcom's interpretation of these comments is that they don't contradict
-the GPL.
-
-> I think there are other OCP busses supported in the kernel; ISTR seeing
-> some PPC SoC from IBM that uses OCP... so perhaps this should be brought
-> up on l-k for general discussion.
+> Here is a test program to reproduce it.
 > 
-> But it's challenging to come up with a useful abstraction that covers
-> both the b44 scenario and the SoC scenario.
+> main()
+> {
+> 	union {
+> 		double d;
+> 		struct {
+> #ifdef __MIPSEB
+> 			unsigned int high, low;
+> #else
+> 			unsigned int low, high;
+> #endif
+> 		} i;
+> 	} x, y, z;
+>         x.i.low = 0x00000000;
+>         x.i.high = 0xfff00001;
+>         y.i.low = 0x80000000;
+>         y.i.high = 0xcff00000;
+>         z.d = pow(x.d, y.d);
+>         printf("%x %x\n", z.i.high, z.i.low);
+>         return 0;
+> }
+> 
+> 
+> If you run this program, you will get segmentation fault (unless your
+> FPU does not raise Unimplemented exception for NaN operands).  The
+> segmentation fault is caused by endless recursion in __ieee754_pow().
+> 
+> It looks glibc's pow() assume unary '-' operation for any number
+> (including NaN) always invert its sign bit.
 
-OCP is basically ISA on steroids - no configuration space, no nothing so
-there is not terribly much OCP code that could potencially be shared.
-Right now we treat OCP devices such as on PMC-Sierra's RM9000 series as
-platform devices.
+ AFAICS, the IEEE 754 standard explicitly leaves interpretation of the 
+sign bit for NaNs as unspecified.  Therefore our implementation is correct 
+and its glibc that should be fixed instead.  Please file a bug report 
+against glibc.
 
-I'm clearly less than impressed by OCP ...
-
-  Ralf
+  Maciej

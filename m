@@ -1,106 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Apr 2005 22:35:49 +0100 (BST)
-Received: from god.demon.nl ([IPv6:::ffff:83.160.164.11]:17097 "EHLO
-	god.dyndns.org") by linux-mips.org with ESMTP id <S8226333AbVDSVfd>;
-	Tue, 19 Apr 2005 22:35:33 +0100
-Received: by god.dyndns.org (Postfix, from userid 1005)
-	id 029664EBE8; Tue, 19 Apr 2005 23:35:29 +0200 (CEST)
-Date:	Tue, 19 Apr 2005 23:35:29 +0200
-From:	Henk <Henk.Vergonet@gmail.com>
-To:	Andy Isaacson <adi@hexapodia.org>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Porting mips based routers
-Message-ID: <20050419213529.GA6447@god.dyndns.org>
-References: <20050414210645.GB30585@god.dyndns.org> <20050415065558.GD25962@openbsd-geek.de> <20050418124809.GA27967@god.dyndns.org> <20050419183259.GA623@hexapodia.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Apr 2005 08:53:42 +0100 (BST)
+Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:21775
+	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
+	id <S8226042AbVDTHx0>; Wed, 20 Apr 2005 08:53:26 +0100
+Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 20 Apr 2005 07:53:25 UT
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id A3B131F2CD;
+	Wed, 20 Apr 2005 16:53:21 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 8F6E918E0C;
+	Wed, 20 Apr 2005 16:53:21 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id j3K7rKoj004534;
+	Wed, 20 Apr 2005 16:53:21 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Wed, 20 Apr 2005 16:53:20 +0900 (JST)
+Message-Id: <20050420.165320.42204293.nemoto@toshiba-tops.co.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: CFC1 instruction in compute_return_epc
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20050419183259.GA623@hexapodia.org>
-User-Agent: Mutt/1.5.6i
-Return-Path: <spam@god.dyndns.org>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7769
+X-archive-position: 7770
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Henk.Vergonet@gmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Apr 19, 2005 at 11:32:59AM -0700, Andy Isaacson wrote:
-> On Mon, Apr 18, 2005 at 02:48:09PM +0200, Henk wrote:
-> > 
-> > See section 1.3 on the wiki page:
-> > http://openwrt.org/Kernel26Firmware
-> > Feel free to comment here on the list.
-> 
-> One comment:
-> 
-> # - Migrate: Should we cluster this with the sibyte stuf? Probably
-> # there's some shared code....
-> 
-> SiByte and the 47xx don't share anything significant beyond both being
-> MIPS, and both running CFE.  And people (including Ralf) actually have
-> SiByte hardware that they test on.  So not breaking SiByte would be a
-> good thing.
-> 
-> Because there's no technical connection between SiByte and 47xx I'd lean
-> towards leaving the SiByte stuff alone, and clean up the 47xx code on
-> its own.
-> 
-Point taken, we should have a seperate broadcom branch.
-I will update this on the wiki.
+The __compute_return_epc() uses CFC1 instruction but it might cause a
+coprocessor unusable exception since the process can lose its fpu
+context by preemption.  The coprocessor unusable exception is not
+allowed in kernel context.
 
-> > General comments on the WRT code:
-> 
-> The code is full of "Broadcom Proprietary" and "All Rights Reserved"
-> notices.  Does anyone have a clear written statement from Broadcom that
-> it's redistributable?  (If you're depending on the GPL release
-> requirements to justify relicensing, clear documentation of the chain of
-> release would be helpful.)
+Here is a patch.  Please review.  Thank you.
 
-Maybe we should create patch sets that will transform the original wrt
-branch into 2.6 code.
+--- linux-mips/arch/mips/kernel/branch.c	2004-08-14 19:55:32.000000000 +0900
++++ linux/arch/mips/kernel/branch.c	2005-04-20 16:33:24.662914765 +0900
+@@ -12,6 +12,7 @@
+ #include <asm/branch.h>
+ #include <asm/cpu.h>
+ #include <asm/cpu-features.h>
++#include <asm/fpu.h>
+ #include <asm/inst.h>
+ #include <asm/ptrace.h>
+ #include <asm/uaccess.h>
+@@ -163,8 +164,14 @@
+ 	case cop1_op:
+ 		if (!cpu_has_fpu)
+ 			fcr31 = current->thread.fpu.soft.fcr31;
+-		else
+-			asm volatile("cfc1\t%0,$31" : "=r" (fcr31));
++		else {
++			preempt_disable();
++			if (is_fpu_owner())
++				asm volatile("cfc1\t%0,$31" : "=r" (fcr31));
++			else
++				fcr31 = current->thread.fpu.hard.fcr31;
++			preempt_enable();
++		}
+ 		bit = (insn.i_format.rt >> 2);
+ 		bit += (bit != 0);
+ 		bit += 23;
 
-Anyway I don't think broadcom is a criminal company, I think it is obliged
-by law to comply with the requirements of the GPL ;)
-
-> >  - We should probably make some abstraction/API of the so called Silicon
-> >   Backplane bus that broadcom defined. I see allot of drivers, even in
-> >   the mainline kernel (b44 ethernet driver) that use this.
-> 
-> The Silicon Backplane bus actually came from another company, it wasn't
-> defined by Broadcom; google knows all:
-> http://www.ocpip.org/socket/adoption/sonics
-> 
-> I think there are other OCP busses supported in the kernel; ISTR seeing
-> some PPC SoC from IBM that uses OCP... so perhaps this should be brought
-> up on l-k for general discussion.
-> 
-> But it's challenging to come up with a useful abstraction that covers
-> both the b44 scenario and the SoC scenario.
-> 
->  - for b44, OCP is on the far side of the PCI bus, and is used only to
->    access a single core (ethernet MAC).
-> 
->  - for bcm947xx (and ppc SoC, I guess), OCP is the system bus, and is
->    used to access everything from PCI to DRAM.
-> 
-> grep grep grep... Take a look at include/asm-ppc/ocp.h and
-> arch/ppc/platforms/*.c, it looks like the PowerPC people have already
-> done a bunch of work here.
->
-Also of interest may be the new SOC abstraction on the hh.org branch, see
-http://handhelds.org/cgi-bin/cvsweb.cgi/linux/kernel26/Documentation/soc.txt
-
-Thanks for your comments, greatly appreciated, I will update the OCP stuff
-on the wiki.
-
-The task seems a little more challenging than a week ago, anyway I will
-focus on the boot code for a while so I can boot test kernels without
-the need for reflashing...
-
-regards,
-
-Henk
+---
+Atsushi Nemoto

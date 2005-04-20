@@ -1,44 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Apr 2005 14:13:23 +0100 (BST)
-Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:22800 "EHLO
-	bacchus.net.dhis.org") by linux-mips.org with ESMTP
-	id <S8226106AbVDTNNJ>; Wed, 20 Apr 2005 14:13:09 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.1/8.13.1) with ESMTP id j3KDD5XV016057;
-	Wed, 20 Apr 2005 14:13:05 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j3KDD41l016056;
-	Wed, 20 Apr 2005 14:13:04 +0100
-Date:	Wed, 20 Apr 2005 14:13:04 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Dominic Sweetman <dom@mips.com>
-Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
-Subject: Re: ieee754[sd]p_neg workaround
-Message-ID: <20050420131304.GF5212@linux-mips.org>
-References: <20050420.174023.113589096.nemoto@toshiba-tops.co.jp> <Pine.LNX.4.61L.0504201312520.7109@blysk.ds.pg.gda.pl> <16998.20933.14301.397793@arsenal.mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Apr 2005 18:50:33 +0100 (BST)
+Received: from wproxy.gmail.com ([IPv6:::ffff:64.233.184.201]:37057 "EHLO
+	wproxy.gmail.com") by linux-mips.org with ESMTP id <S8224850AbVDTRuR> convert rfc822-to-8bit;
+	Wed, 20 Apr 2005 18:50:17 +0100
+Received: by wproxy.gmail.com with SMTP id 57so353884wri
+        for <linux-mips@linux-mips.org>; Wed, 20 Apr 2005 10:50:11 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=gCSxb683HoWwmCGfeE3ly8p1NeiISGcj9nHOFMJjWwzY4n1hNRph2Ko3zPbbBODOJJxd1mO5oBoNalMtI7YgHLYl3/Pg9VN8dma4R0RRqWpg3ZQEybVaQNEW5/N+09N1MRz7THoHtvK/0zH/j853ipZl/whoQ3aqEvjCYtMeylY=
+Received: by 10.54.73.10 with SMTP id v10mr892528wra;
+        Wed, 20 Apr 2005 10:50:10 -0700 (PDT)
+Received: by 10.54.41.29 with HTTP; Wed, 20 Apr 2005 10:50:10 -0700 (PDT)
+Message-ID: <ecb4efd10504201050a00f941@mail.gmail.com>
+Date:	Wed, 20 Apr 2005 13:50:10 -0400
+From:	Clem Taylor <clem.taylor@gmail.com>
+Reply-To: Clem Taylor <clem.taylor@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: mdelay() from board_setup() [is default value for loops_per_jiffy way off?]
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
 Content-Disposition: inline
-In-Reply-To: <16998.20933.14301.397793@arsenal.mips.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Return-Path: <clem.taylor@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7775
+X-archive-position: 7776
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: clem.taylor@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Apr 20, 2005 at 01:57:41PM +0100, Dominic Sweetman wrote:
+Hi,
 
-> So file a bug against glibc, but we should fix the emulator so it
-> correctly imitates the MIPS instruction set...
+I'm working on a linux port for a custom Au1550 based board. Inside of
+board_setup() I need to wait for some hardware to power up. So, I
+called mdelay(), but it seems to wait for far too short a time. It
+seems that loops_per_jiffy still has the default value (4096) in
+board_setup(), the computed value is more like 245248. So, what is the
+proper way to spin wait this early in the startup process? Also, isn't
+the default value for loops_per_jiffy off by quite a bit? I'm running
+the Au1550 at 492MHz, so that would make the default value good for a
+~8MHz processor?
 
-As a matter of defensive design I think we should try to follow the
-establish behaviour if nothing more specific is defined anywhere.
-
-  Ralf
+                               --Clem

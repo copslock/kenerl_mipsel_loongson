@@ -1,278 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Apr 2005 06:33:26 +0100 (BST)
-Received: from smtp008.bizmail.sc5.yahoo.com ([IPv6:::ffff:66.163.170.74]:20156
-	"HELO smtp008.bizmail.sc5.yahoo.com") by linux-mips.org with SMTP
-	id <S8224992AbVDUFdA>; Thu, 21 Apr 2005 06:33:00 +0100
-Received: from unknown (HELO ?192.168.1.100?) (ppopov@embeddedalley.com@63.194.214.47 with plain)
-  by smtp008.bizmail.sc5.yahoo.com with SMTP; 21 Apr 2005 05:32:52 -0000
-Message-ID: <42673AF7.9000604@embeddedalley.com>
-Date:	Wed, 20 Apr 2005 22:32:39 -0700
-From:	Pete Popov <ppopov@embeddedalley.com>
-Reply-To:  ppopov@embeddedalley.com
-Organization: Embedded Alley Solutions, Inc
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.3) Gecko/20041020
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	Ulrich Eckhardt <eckhardt@satorlaser.com>
-CC:	linux-mips@linux-mips.org
-Subject: Re: [patch] some cleanups for Alchemy processors
-References: <200504181137.49593.eckhardt@satorlaser.com> <200504181727.22299.eckhardt@satorlaser.com>
-In-Reply-To: <200504181727.22299.eckhardt@satorlaser.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Apr 2005 08:20:07 +0100 (BST)
+Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:24593
+	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
+	id <S8225072AbVDUHTu>; Thu, 21 Apr 2005 08:19:50 +0100
+Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 21 Apr 2005 07:19:48 UT
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id B0FC21F30A;
+	Thu, 21 Apr 2005 16:19:45 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id A4EC51F2F4;
+	Thu, 21 Apr 2005 16:19:45 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id j3L7Jjoj008950;
+	Thu, 21 Apr 2005 16:19:45 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Thu, 21 Apr 2005 16:19:45 +0900 (JST)
+Message-Id: <20050421.161945.79301612.nemoto@toshiba-tops.co.jp>
+To:	ralf@linux-mips.org
+Cc:	dom@mips.com, macro@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: ieee754[sd]p_neg workaround
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20050420131304.GF5212@linux-mips.org>
+References: <Pine.LNX.4.61L.0504201312520.7109@blysk.ds.pg.gda.pl>
+	<16998.20933.14301.397793@arsenal.mips.com>
+	<20050420131304.GF5212@linux-mips.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@embeddedalley.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7780
+X-archive-position: 7781
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@embeddedalley.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
+>>>>> On Wed, 20 Apr 2005 14:13:04 +0100, Ralf Baechle <ralf@linux-mips.org> said:
+>> So file a bug against glibc, but we should fix the emulator so it
+>> correctly imitates the MIPS instruction set...
 
-Thanks, applied.
+ralf> As a matter of defensive design I think we should try to follow
+ralf> the establish behaviour if nothing more specific is defined
+ralf> anywhere.
 
-Pete
+OK, I sent a bug reoport to glibc bugzilla. (Bug# 864)
 
-Ulrich Eckhardt wrote:
-> OK, here's a new version that fixes the objections raised by Christoph and 
-> Dan.
-> 
-> Uli
-> 
-> 
-> Changes:
->  * use 'unsigned long' as address supplied to au_write[bwl]()
->  * remove two already unused and commented structures
->  * added an ULL suffix to several address constants that use
->    bits 35-32
-> 
-> ---
-> Index: include/asm-mips/mach-au1x00/au1000.h
-> ===================================================================
-> RCS file: /home/cvs/linux/include/asm-mips/mach-au1x00/au1000.h,v
-> retrieving revision 1.16
-> diff -u -r1.16 au1000.h
-> --- include/asm-mips/mach-au1x00/au1000.h	4 Apr 2005 01:06:20 -0000	1.16
-> +++ include/asm-mips/mach-au1x00/au1000.h	18 Apr 2005 15:24:38 -0000
-> @@ -60,34 +60,34 @@
->  	mdelay(ms);
->  }
->  
-> -void static inline au_writeb(u8 val, int reg)
-> +void static inline au_writeb(u8 val, unsigned long reg)
->  {
->  	*(volatile u8 *)(reg) = val;
->  }
->  
-> -void static inline au_writew(u16 val, int reg)
-> +void static inline au_writew(u16 val, unsigned long reg)
->  {
->  	*(volatile u16 *)(reg) = val;
->  }
->  
-> -void static inline au_writel(u32 val, int reg)
-> +void static inline au_writel(u32 val, unsigned long reg)
->  {
->  	*(volatile u32 *)(reg) = val;
->  }
->  
-> -static inline u8 au_readb(unsigned long port)
-> +static inline u8 au_readb(unsigned long reg)
->  {
-> -	return (*(volatile u8 *)port);
-> +	return (*(volatile u8 *)reg);
->  }
->  
-> -static inline u16 au_readw(unsigned long port)
-> +static inline u16 au_readw(unsigned long reg)
->  {
-> -	return (*(volatile u16 *)port);
-> +	return (*(volatile u16 *)reg);
->  }
->  
-> -static inline u32 au_readl(unsigned long port)
-> +static inline u32 au_readl(unsigned long reg)
->  {
-> -	return (*(volatile u32 *)port);
-> +	return (*(volatile u32 *)reg);
->  }
->  
->  /* These next three functions should be a generic part of the MIPS
-> @@ -181,26 +181,6 @@
->  #define MEM_SDSLEEP		(0x0030)
->  #define MEM_SDSMCKE		(0x0034)
->  
-> -#ifndef ASSEMBLER
-> -/*typedef volatile struct
-> -{
-> -	uint32 sdmode0;
-> -	uint32 sdmode1;
-> -	uint32 sdmode2;
-> -	uint32 sdaddr0;
-> -	uint32 sdaddr1;
-> -	uint32 sdaddr2;
-> -	uint32 sdrefcfg;
-> -	uint32 sdautoref;
-> -	uint32 sdwrmd0;
-> -	uint32 sdwrmd1;
-> -	uint32 sdwrmd2;
-> -	uint32 sdsleep;
-> -	uint32 sdsmcke;
-> -
-> -} AU1X00_SDRAM;*/
-> -#endif
-> -
->  /*
->   * MEM_SDMODE register content definitions
->   */
-> @@ -286,49 +266,6 @@
->  #define MEM_SDSREF		(0x08D0)
->  #define MEM_SDSLEEP		MEM_SDSREF
->  
-> -#ifndef ASSEMBLER
-> -/*typedef volatile struct
-> -{
-> -	uint32 sdmode0;
-> -	uint32 reserved0;
-> -	uint32 sdmode1;
-> -	uint32 reserved1;
-> -	uint32 sdmode2;
-> -	uint32 reserved2[3];
-> -	uint32 sdaddr0;
-> -	uint32 reserved3;
-> -	uint32 sdaddr1;
-> -	uint32 reserved4;
-> -	uint32 sdaddr2;
-> -	uint32 reserved5[3];
-> -	uint32 sdconfiga;
-> -	uint32 reserved6;
-> -	uint32 sdconfigb;
-> -	uint32 reserved7;
-> -	uint32 sdstat;
-> -	uint32 reserved8;
-> -	uint32 sderraddr;
-> -	uint32 reserved9;
-> -	uint32 sdstride0;
-> -	uint32 reserved10;
-> -	uint32 sdstride1;
-> -	uint32 reserved11;
-> -	uint32 sdstride2;
-> -	uint32 reserved12[3];
-> -	uint32 sdwrmd0;
-> -	uint32 reserved13;
-> -	uint32 sdwrmd1;
-> -	uint32 reserved14;
-> -	uint32 sdwrmd2;
-> -	uint32 reserved15[11];
-> -	uint32 sdprecmd;
-> -	uint32 reserved16;
-> -	uint32 sdautoref;
-> -	uint32 reserved17;
-> -	uint32 sdsref;
-> -
-> -} AU1550_SDRAM;*/
-> -#endif
->  #endif
->  
->  /*
-> @@ -365,9 +302,9 @@
->  #define	SSI0_PHYS_ADDR		0x11600000
->  #define	SSI1_PHYS_ADDR		0x11680000
->  #define	SYS_PHYS_ADDR		0x11900000
-> -#define PCMCIA_IO_PHYS_ADDR   0xF00000000
-> -#define PCMCIA_ATTR_PHYS_ADDR 0xF40000000
-> -#define PCMCIA_MEM_PHYS_ADDR  0xF80000000
-> +#define PCMCIA_IO_PHYS_ADDR   0xF00000000ULL
-> +#define PCMCIA_ATTR_PHYS_ADDR 0xF40000000ULL
-> +#define PCMCIA_MEM_PHYS_ADDR  0xF80000000ULL
->  #endif
->  
->  /********************************************************************/
-> @@ -399,13 +336,13 @@
->  #define	UART3_PHYS_ADDR		0x11400000
->  #define GPIO2_PHYS_ADDR		0x11700000
->  #define	SYS_PHYS_ADDR		0x11900000
-> -#define PCI_MEM_PHYS_ADDR     0x400000000
-> -#define PCI_IO_PHYS_ADDR      0x500000000
-> -#define PCI_CONFIG0_PHYS_ADDR 0x600000000
-> -#define PCI_CONFIG1_PHYS_ADDR 0x680000000
-> -#define PCMCIA_IO_PHYS_ADDR   0xF00000000
-> -#define PCMCIA_ATTR_PHYS_ADDR 0xF40000000
-> -#define PCMCIA_MEM_PHYS_ADDR  0xF80000000
-> +#define PCI_MEM_PHYS_ADDR     0x400000000ULL
-> +#define PCI_IO_PHYS_ADDR      0x500000000ULL
-> +#define PCI_CONFIG0_PHYS_ADDR 0x600000000ULL
-> +#define PCI_CONFIG1_PHYS_ADDR 0x680000000ULL
-> +#define PCMCIA_IO_PHYS_ADDR   0xF00000000ULL
-> +#define PCMCIA_ATTR_PHYS_ADDR 0xF40000000ULL
-> +#define PCMCIA_MEM_PHYS_ADDR  0xF80000000ULL
->  #endif
->  
->  /********************************************************************/
-> @@ -442,9 +379,9 @@
->  #define GPIO2_PHYS_ADDR		0x11700000
->  #define	SYS_PHYS_ADDR		0x11900000
->  #define LCD_PHYS_ADDR		0x15000000
-> -#define PCMCIA_IO_PHYS_ADDR   0xF00000000
-> -#define PCMCIA_ATTR_PHYS_ADDR 0xF40000000
-> -#define PCMCIA_MEM_PHYS_ADDR  0xF80000000
-> +#define PCMCIA_IO_PHYS_ADDR   0xF00000000ULL
-> +#define PCMCIA_ATTR_PHYS_ADDR 0xF40000000ULL
-> +#define PCMCIA_MEM_PHYS_ADDR  0xF80000000ULL
->  #endif
->  
->  /***********************************************************************/
-> @@ -473,13 +410,13 @@
->  #define PSC1_PHYS_ADDR	 	0x11B00000
->  #define PSC2_PHYS_ADDR	 	0x10A00000
->  #define PSC3_PHYS_ADDR	 	0x10B00000
-> -#define PCI_MEM_PHYS_ADDR     0x400000000
-> -#define PCI_IO_PHYS_ADDR      0x500000000
-> -#define PCI_CONFIG0_PHYS_ADDR 0x600000000
-> -#define PCI_CONFIG1_PHYS_ADDR 0x680000000
-> -#define PCMCIA_IO_PHYS_ADDR   0xF00000000
-> -#define PCMCIA_ATTR_PHYS_ADDR 0xF40000000
-> -#define PCMCIA_MEM_PHYS_ADDR  0xF80000000
-> +#define PCI_MEM_PHYS_ADDR     0x400000000ULL
-> +#define PCI_IO_PHYS_ADDR      0x500000000ULL
-> +#define PCI_CONFIG0_PHYS_ADDR 0x600000000ULL
-> +#define PCI_CONFIG1_PHYS_ADDR 0x680000000ULL
-> +#define PCMCIA_IO_PHYS_ADDR   0xF00000000ULL
-> +#define PCMCIA_ATTR_PHYS_ADDR 0xF40000000ULL
-> +#define PCMCIA_MEM_PHYS_ADDR  0xF80000000ULL
->  #endif
->  
->  /***********************************************************************/
-> @@ -500,15 +437,15 @@
->  #define	DDMA_PHYS_ADDR		0x14002000
->  #define PSC0_PHYS_ADDR	 	0x11A00000
->  #define PSC1_PHYS_ADDR	 	0x11B00000
-> -#define PCMCIA_IO_PHYS_ADDR   0xF00000000
-> -#define PCMCIA_ATTR_PHYS_ADDR 0xF40000000
-> -#define PCMCIA_MEM_PHYS_ADDR  0xF80000000
->  #define SD0_PHYS_ADDR		0x10600000
->  #define SD1_PHYS_ADDR		0x10680000
->  #define LCD_PHYS_ADDR		0x15000000
->  #define SWCNT_PHYS_ADDR		0x1110010C
->  #define MAEFE_PHYS_ADDR		0x14012000
->  #define MAEBE_PHYS_ADDR		0x14010000
-> +#define PCMCIA_IO_PHYS_ADDR   0xF00000000ULL
-> +#define PCMCIA_ATTR_PHYS_ADDR 0xF40000000ULL
-> +#define PCMCIA_MEM_PHYS_ADDR  0xF80000000ULL
->  #endif
->  
->  
-> @@ -1788,7 +1725,7 @@
->  #define PCI_IO_START    0
->  #define PCI_IO_END      0
->  #define PCI_MEM_START   0
-> -#define PCI_MEM_END     0 
-> +#define PCI_MEM_END     0
->  #define PCI_FIRST_DEVFN 0
->  #define PCI_LAST_DEVFN  0
->  
-> 
-> 
+---
+Atsushi Nemoto

@@ -1,45 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Apr 2005 19:07:51 +0100 (BST)
-Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:55577 "EHLO
-	bacchus.net.dhis.org") by linux-mips.org with ESMTP
-	id <S8224850AbVDTSHh>; Wed, 20 Apr 2005 19:07:37 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.1/8.13.1) with ESMTP id j3KI7LcG026415;
-	Wed, 20 Apr 2005 19:07:21 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j3KI7Kwa026414;
-	Wed, 20 Apr 2005 19:07:20 +0100
-Date:	Wed, 20 Apr 2005 19:07:20 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Pete Popov <ppopov@embeddedalley.com>
-Cc:	Clem Taylor <clem.taylor@gmail.com>, linux-mips@linux-mips.org
-Subject: Re: mdelay() from board_setup() [is default value for loops_per_jiffy way off?]
-Message-ID: <20050420180720.GK5212@linux-mips.org>
-References: <ecb4efd10504201050a00f941@mail.gmail.com> <42669862.7000405@embeddedalley.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <42669862.7000405@embeddedalley.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Apr 2005 06:08:41 +0100 (BST)
+Received: from smtp007.bizmail.sc5.yahoo.com ([IPv6:::ffff:66.163.170.10]:19812
+	"HELO smtp007.bizmail.sc5.yahoo.com") by linux-mips.org with SMTP
+	id <S8224916AbVDUFIZ>; Thu, 21 Apr 2005 06:08:25 +0100
+Received: from unknown (HELO ?192.168.1.100?) (ppopov@embeddedalley.com@63.194.214.47 with plain)
+  by smtp007.bizmail.sc5.yahoo.com with SMTP; 21 Apr 2005 05:08:20 -0000
+Message-ID: <42673538.90508@embeddedalley.com>
+Date:	Wed, 20 Apr 2005 22:08:08 -0700
+From:	Pete Popov <ppopov@embeddedalley.com>
+Reply-To:  ppopov@embeddedalley.com
+Organization: Embedded Alley Solutions, Inc
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.3) Gecko/20041020
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	"d.piccolo" <d.piccolo@exadron.com>
+CC:	linux-mips@linux-mips.org
+Subject: Re: Bug detection and correction on Alchemy au1x00_uart.c serial
+ driver
+References: <1113822129.3261.42.camel@localhost.localdomain>
+In-Reply-To: <1113822129.3261.42.camel@localhost.localdomain>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ppopov@embeddedalley.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7778
+X-archive-position: 7779
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ppopov@embeddedalley.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Apr 20, 2005 at 10:58:58AM -0700, Pete Popov wrote:
 
-> It's too early in board_setup() to use the standard delay routines. You 
-> can't use those until after calibrate_delay() runs. To do precise delays in 
-> board_setup, you'll have to do something yourself where you read the cp0 
-> timer periodically and wait a certain amount of time.
+Applied, thanks.
 
-And make sure not to be trapped by wrap-arounds of that counter.  Also it
-doesn't count the same speed on all processors ...
+Pete
 
-  Ralf
+d.piccolo wrote:
+> Hi Everybody
+> 
+> I've found a bug in the  au1x00_uart.c file in the drivers/serial/
+> directory of the 2.6.10 linux kernel. There is only possible to change
+> the speed of the communication but not to update other parameters of the
+> serial link, like the number of bits involved, stop bits and parity.
+>   Comparing the code of this source file with the code of the standard
+> 8250 driver (8250.c also present in the same directory) I've found the
+> problem:  au1x00_uart.c never updates the LCR register  (Line Control
+> Register) of the serial controller at runtime, it happens only at first
+> setup. The problem is solved by adding the line
+> 
+> 	serial_out(up, UART_LCR, cval);
+> 
+> just before the line 
+>  
+> 	up->lcr = cval;	  /* Save LCR */
+> 
+> (there is only one position in all the source code where is written
+> "Save LCR")
+> 
+> I hope it could be useful.
+>                               David Piccolo
+> 
+> 
+>     
+> 
+> 
+> 

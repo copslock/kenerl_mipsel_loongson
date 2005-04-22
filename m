@@ -1,82 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Apr 2005 16:03:29 +0100 (BST)
-Received: from mailout08.sul.t-online.com ([IPv6:::ffff:194.25.134.20]:47018
-	"EHLO mailout08.sul.t-online.com") by linux-mips.org with ESMTP
-	id <S8226386AbVDVPDN>; Fri, 22 Apr 2005 16:03:13 +0100
-Received: from fwd20.aul.t-online.de 
-	by mailout08.sul.t-online.com with smtp 
-	id 1DOzgW-00083l-02; Fri, 22 Apr 2005 17:03:12 +0200
-Received: from denx.de (Xp9x+2Zrre2YaWMUYIL3zkdpv0uy-GcNsq-0X+cQeTriInBdNGBogx@[84.150.74.71]) by fwd20.sul.t-online.de
-	with esmtp id 1DOzgI-0WOTDc0; Fri, 22 Apr 2005 17:02:58 +0200
-Received: from atlas.denx.de (atlas.denx.de [10.0.0.14])
-	by denx.de (Postfix) with ESMTP
-	id B6DEB42A2F; Fri, 22 Apr 2005 17:02:57 +0200 (MEST)
-Received: by atlas.denx.de (Postfix, from userid 15)
-	id 4C188C1510; Fri, 22 Apr 2005 17:02:57 +0200 (MEST)
-Received: from atlas.denx.de (localhost [127.0.0.1])
-	by atlas.denx.de (Postfix) with ESMTP
-	id 497E813D94A; Fri, 22 Apr 2005 17:02:57 +0200 (MEST)
-To:	martin.nichols@oxinst.co.uk
-Cc:	linux-mips@linux-mips.org
-From:	Wolfgang Denk <wd@denx.de>
-Subject: Re: Common Flash Memory Interface 
-Mime-version: 1.0
-Content-type: text/plain; charset=ISO-8859-1
-Content-transfer-encoding: 8bit
-In-reply-to: Your message of "Fri, 22 Apr 2005 13:48:02 BST."
-             <DEF431FFDB15C1488464F0E57D5506642AA6B7@MEDNT02> 
-Date:	Fri, 22 Apr 2005 17:02:52 +0200
-Message-Id: <20050422150257.4C188C1510@atlas.denx.de>
-X-ID:	Xp9x+2Zrre2YaWMUYIL3zkdpv0uy-GcNsq-0X+cQeTriInBdNGBogx@t-dialin.net
-X-TOI-MSGID: 220afcf9-6913-4072-ba92-cbfa5de7b3ba
-Return-Path: <wd@denx.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Apr 2005 21:23:18 +0100 (BST)
+Received: from wproxy.gmail.com ([IPv6:::ffff:64.233.184.206]:36400 "EHLO
+	wproxy.gmail.com") by linux-mips.org with ESMTP id <S8225073AbVDVUXA> convert rfc822-to-8bit;
+	Fri, 22 Apr 2005 21:23:00 +0100
+Received: by wproxy.gmail.com with SMTP id 57so972861wri
+        for <linux-mips@linux-mips.org>; Fri, 22 Apr 2005 13:22:53 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:reply-to:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=jgOv23GgDYzMVoBt9g3jg7KUPuNsdZI0z9UhZgjN3kGWAP96OkDO6UUngbicHrGBID1tl9hyS/3aIayDsmuPSpUAS6kJzODhhrc77YoYzE95DtgBJsuOy8Tf2XWSplFAVrMAMC64RoVMiIKX3eyrClx8gAfYwl3+YSoYihTmJ2c=
+Received: by 10.54.10.6 with SMTP id 6mr695461wrj;
+        Fri, 22 Apr 2005 13:22:53 -0700 (PDT)
+Received: by 10.54.41.29 with HTTP; Fri, 22 Apr 2005 13:22:53 -0700 (PDT)
+Message-ID: <ecb4efd105042213221c30cac4@mail.gmail.com>
+Date:	Fri, 22 Apr 2005 16:22:53 -0400
+From:	Clem Taylor <clem.taylor@gmail.com>
+Reply-To: Clem Taylor <clem.taylor@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: Re: troubles writing to a mmapped PCI BAR
+In-Reply-To: <ecb4efd10504211231748d2525@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+References: <ecb4efd10504211231748d2525@mail.gmail.com>
+Return-Path: <clem.taylor@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7786
+X-archive-position: 7787
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wd@denx.de
+X-original-sender: clem.taylor@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-In message <DEF431FFDB15C1488464F0E57D5506642AA6B7@MEDNT02> you wrote:
-> 
-> I've arranged for a pair of Spansion S29GL256N 256Mbit flash roms to be
-> connected to the
-> Au1100 static bus. These devices are each 16bits wide and are connected to
-> upper and lower
-> halves of the 32 bit static bus at an address such that the boot code can
-> reside in them.
-> After boot, we want to use the remainder of the devices as flash disk using
-> one of the wear
-> leveling file systems. Each flash chip implements the Common Flash Memory
-> Interface standard,
+On 4/21/05, Clem Taylor <clem.taylor@gmail.com> wrote:
+> I'm working on a Au1550 driver for a PCI based co-processor. The
+> driver provides mmap() that allows the mapping of a PCI BAR. From
+> userspace I can happily read from the mmaped region, but writes just
+> hang the user space program. gdb shows that the user program is
+> sitting at the write statement. The read() and write() system calls
+> work just fine as well.
 
-OK.
+I saw in drivers/video/epson1356fb.c it was doing:
+        // FIXME: shouldn't have to do this. If the pages are marked writeable,
+        // the TLB fault handlers should set these.
+        pgprot_val(vma->vm_page_prot) |= (_PAGE_DIRTY | _PAGE_VALID);
 
-> but as they are arranged as 32 bits wide the devices are effectively
-> interleaved.
+So I tried adding this before my io_remap_page_range() and it seems to
+have fixed my problem. My mmap() write to a PCI device is working now.
+I tried setting just the _PAGE_DIRTY bit and that seems to be the
+trick. Any ideas why I would need do to this or what is going on?
 
-I'd rather say thay are accesses in parallel.
-
-> Can Linux support this arrangement?
-
-Yes, of course. Such a configurationir more or less standard. The MTD
-drivers will work just fine.
-
-> Finally, this email is not confidential and is for all Linux-Mips
-> addressees.
-
-Then why do you attach such a silly disclaimer?
-
-Best regards,
-
-Wolfgang Denk
-
--- 
-Software Engineering:  Embedded and Realtime Systems,  Embedded Linux
-Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email: wd@denx.de
-"...one of the main causes of the fall of the Roman Empire was  that,
-lacking  zero,  they had no way to indicate successful termination of
-their C programs."                                     - Robert Firth
+                        --Clem

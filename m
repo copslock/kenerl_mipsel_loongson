@@ -1,68 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Apr 2005 20:31:45 +0100 (BST)
-Received: from wproxy.gmail.com ([IPv6:::ffff:64.233.184.205]:31882 "EHLO
-	wproxy.gmail.com") by linux-mips.org with ESMTP id <S8225327AbVDUTb3> convert rfc822-to-8bit;
-	Thu, 21 Apr 2005 20:31:29 +0100
-Received: by wproxy.gmail.com with SMTP id 57so734724wri
-        for <linux-mips@linux-mips.org>; Thu, 21 Apr 2005 12:31:22 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=D60B2tHUFnS9YzRqJ4ivn/4IMygWRZJNG1ZMcldT2w6Tjxpi0Ls+yUhYCSxW5wMkQ5ZI3PFvD3rNVKTVcIjdsjNpemMvUijFs678fZ61ilxD8zdSky46dLyjWtzrZooxKAPrCDr7gf+MOH9GBQwcUB7qttr9tbaceLaqMKAuO3o=
-Received: by 10.54.5.61 with SMTP id 61mr35579wre;
-        Thu, 21 Apr 2005 12:31:21 -0700 (PDT)
-Received: by 10.54.41.29 with HTTP; Thu, 21 Apr 2005 12:31:21 -0700 (PDT)
-Message-ID: <ecb4efd10504211231748d2525@mail.gmail.com>
-Date:	Thu, 21 Apr 2005 15:31:21 -0400
-From:	Clem Taylor <clem.taylor@gmail.com>
-Reply-To: Clem Taylor <clem.taylor@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Apr 2005 11:25:52 +0100 (BST)
+Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:13316
+	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
+	id <S8225875AbVDVKZg>; Fri, 22 Apr 2005 11:25:36 +0100
+Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 22 Apr 2005 10:25:34 UT
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id B9DFD1F325;
+	Fri, 22 Apr 2005 19:25:30 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id A4CC31F2E4;
+	Fri, 22 Apr 2005 19:25:30 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id j3MAPUoj014343;
+	Fri, 22 Apr 2005 19:25:30 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Fri, 22 Apr 2005 19:25:30 +0900 (JST)
+Message-Id: <20050422.192530.65824230.nemoto@toshiba-tops.co.jp>
 To:	linux-mips@linux-mips.org
-Subject: troubles writing to a mmapped PCI BAR
+Cc:	ralf@linux-mips.org
+Subject: 2.4.30 do_readv_writev32 fix
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-Return-Path: <clem.taylor@gmail.com>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7782
+X-archive-position: 7783
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: clem.taylor@gmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-I'm working on a Au1550 driver for a PCI based co-processor. The
-driver provides mmap() that allows the mapping of a PCI BAR. From
-userspace I can happily read from the mmaped region, but writes just
-hang the user space program. gdb shows that the user program is
-sitting at the write statement. The read() and write() system calls
-work just fine as well.
+Hi.  Here is a patch to fix a bug introduced on 2.4.30 ...
 
-In the driver mmap() does:
-vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
-return io_remap_page_range(vma, vma->vm_start,
-    barStart + (vma->vm_pgoff << PAGE_SHIFT),
-    vma->vm_end - vma->vm_start, vma->vm_page_prot);
-
-The user space program does:
-u32 *mem;
-fd = open("/dev/moo-0", O_RDWR);
-mem = mmap(NULL, 4*1024*1024. PROT_READ|PROT_WRITE, MAP_SHARED, fd, 0);
-...
-fprintf(stderr, "mem[42]=0x%08X\n", mem[42]);
-mem[42] = 0xDEADBEEF;
-
-When I run the test, it will print the current value of mem[42], then
-hang on the write to mem[42]. /proc/pid/maps shows the mmap with rw-s
-permissions:
-2abd4000-2afd4000 rw-s 00000000 00:09 134        /dev/moo-0
-top shows that the test process is consuming ~100% of the CPU.
-
-I'm really at a loss as to what is happening. I'd imagine that the
-userspace program is page faulting (not sure how to verify that) and
-the fault handler is not returning. Any ideas what I might be missing?
-
-                       Thanks,
-                       Clem
+--- linux-mips-2.4/arch/mips64/kernel/linux32.c	2005-04-18 11:44:19.000000000 +0900
++++ linux-2.4/arch/mips64/kernel/linux32.c	2005-04-22 19:15:32.358642423 +0900
+@@ -1101,6 +1101,7 @@
+ 	 * specially as they have atomicity guarantees and can handle
+ 	 * iovec's natively
+ 	 */
++	inode = file->f_dentry->d_inode;
+ 	if (inode->i_sock) {
+ 		int err;
+ 		err = sock_readv_writev(type, inode, file, iov, count, tot_len);

@@ -1,47 +1,440 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Apr 2005 21:27:58 +0100 (BST)
-Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:43027 "EHLO
-	bacchus.net.dhis.org") by linux-mips.org with ESMTP
-	id <S8225073AbVDVU1n>; Fri, 22 Apr 2005 21:27:43 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.1/8.13.1) with ESMTP id j3MKRe0t032696;
-	Fri, 22 Apr 2005 21:27:40 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j3MKReKY032695;
-	Fri, 22 Apr 2005 21:27:40 +0100
-Date:	Fri, 22 Apr 2005 21:27:40 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Clem Taylor <clem.taylor@gmail.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: troubles writing to a mmapped PCI BAR
-Message-ID: <20050422202740.GY20252@linux-mips.org>
-References: <ecb4efd10504211231748d2525@mail.gmail.com> <ecb4efd105042213221c30cac4@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 23 Apr 2005 14:54:50 +0100 (BST)
+Received: from mo01.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:16838 "EHLO
+	mo01.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225564AbVDWNyc>;
+	Sat, 23 Apr 2005 14:54:32 +0100
+Received: MO(mo01)id j3NDsRGg026136; Sat, 23 Apr 2005 22:54:27 +0900 (JST)
+Received: MDO(mdo01) id j3NDsRCo013447; Sat, 23 Apr 2005 22:54:27 +0900 (JST)
+Received: from stratos (h042.p502.iij4u.or.jp [210.149.246.42])
+	by mbox.iij4u.or.jp (4U-MR/mbox00) id j3NDsPgR002022
+	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NOT);
+	Sat, 23 Apr 2005 22:54:26 +0900 (JST)
+Date:	Sat, 23 Apr 2005 22:54:25 +0900
+From:	Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH 2.6] vr41xx: remove old rtc driver for vr41xx
+Message-Id: <20050423225425.1b7826c5.yuasa@hh.iij4u.or.jp>
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ecb4efd105042213221c30cac4@mail.gmail.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7788
+X-archive-position: 7789
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Apr 22, 2005 at 04:22:53PM -0400, Clem Taylor wrote:
+Hi,
 
-> So I tried adding this before my io_remap_page_range() and it seems to
-> have fixed my problem. My mmap() write to a PCI device is working now.
-> I tried setting just the _PAGE_DIRTY bit and that seems to be the
-> trick. Any ideas why I would need do to this or what is going on?
+This patch had removed old rtc driver for vr41xx.
 
-Without the process simply won't have access priviledges to that page, see
-the TLB chapter of the CPU manual.
+Yoichi
 
-(I'm simplifying things alot here.)
+Signed-off-by: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
 
-  Ralf
+diff -urN -X dontdiff b-orig/arch/mips/vr41xx/common/Makefile b/arch/mips/vr41xx/common/Makefile
+--- b-orig/arch/mips/vr41xx/common/Makefile	Tue Mar  8 08:10:16 2005
++++ b/arch/mips/vr41xx/common/Makefile	Sat Apr 23 08:50:30 2005
+@@ -2,7 +2,7 @@
+ # Makefile for common code of the NEC VR4100 series.
+ #
+ 
+-obj-y				+= bcu.o cmu.o icu.o init.o int-handler.o ksyms.o pmu.o rtc.o
++obj-y				+= bcu.o cmu.o icu.o init.o int-handler.o pmu.o
+ obj-$(CONFIG_GPIO_VR41XX)	+= giu.o
+ obj-$(CONFIG_SERIAL_8250)	+= serial.o
+ obj-$(CONFIG_VRC4171)		+= vrc4171.o
+diff -urN -X dontdiff b-orig/arch/mips/vr41xx/common/ksyms.c b/arch/mips/vr41xx/common/ksyms.c
+--- b-orig/arch/mips/vr41xx/common/ksyms.c	Sun Jan 16 22:34:31 2005
++++ b/arch/mips/vr41xx/common/ksyms.c	Thu Jan  1 09:00:00 1970
+@@ -1,33 +0,0 @@
+-/*
+- *   ksyms.c, Export NEC VR4100 series specific functions needed for loadable modules.
+- *
+- *  Copyright (C) 2003  Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+- *  Copyright (C) 2005 Ralf Baechle (ralf@linux-mips.org)
+- *
+- *  This program is free software; you can redistribute it and/or modify
+- *  it under the terms of the GNU General Public License as published by
+- *  the Free Software Foundation; either version 2 of the License, or
+- *  (at your option) any later version.
+- *
+- *  This program is distributed in the hope that it will be useful,
+- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- *  GNU General Public License for more details.
+- *
+- *  You should have received a copy of the GNU General Public License
+- *  along with this program; if not, write to the Free Software
+- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+- */
+-#include <linux/module.h>
+-
+-#include <asm/vr41xx/vr41xx.h>
+-
+-EXPORT_SYMBOL(vr41xx_get_vtclock_frequency);
+-EXPORT_SYMBOL(vr41xx_get_tclock_frequency);
+-
+-EXPORT_SYMBOL(vr41xx_set_rtclong1_cycle);
+-EXPORT_SYMBOL(vr41xx_read_rtclong1_counter);
+-EXPORT_SYMBOL(vr41xx_set_rtclong2_cycle);
+-EXPORT_SYMBOL(vr41xx_read_rtclong2_counter);
+-EXPORT_SYMBOL(vr41xx_set_tclock_cycle);
+-EXPORT_SYMBOL(vr41xx_read_tclock_counter);
+diff -urN -X dontdiff b-orig/arch/mips/vr41xx/common/rtc.c b/arch/mips/vr41xx/common/rtc.c
+--- b-orig/arch/mips/vr41xx/common/rtc.c	Thu May 27 02:11:11 2004
++++ b/arch/mips/vr41xx/common/rtc.c	Thu Jan  1 09:00:00 1970
+@@ -1,321 +0,0 @@
+-/*
+- *  rtc.c, RTC(has only timer function) routines for NEC VR4100 series.
+- *
+- *  Copyright (C) 2003-2004  Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+- *
+- *  This program is free software; you can redistribute it and/or modify
+- *  it under the terms of the GNU General Public License as published by
+- *  the Free Software Foundation; either version 2 of the License, or
+- *  (at your option) any later version.
+- *
+- *  This program is distributed in the hope that it will be useful,
+- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- *  GNU General Public License for more details.
+- *
+- *  You should have received a copy of the GNU General Public License
+- *  along with this program; if not, write to the Free Software
+- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+- */
+-#include <linux/init.h>
+-#include <linux/irq.h>
+-#include <linux/smp.h>
+-#include <linux/types.h>
+-
+-#include <asm/io.h>
+-#include <asm/time.h>
+-#include <asm/vr41xx/vr41xx.h>
+-
+-static uint32_t rtc1_base;
+-static uint32_t rtc2_base;
+-
+-static uint64_t previous_elapsedtime;
+-static unsigned int remainder_per_sec;
+-static unsigned int cycles_per_sec;
+-static unsigned int cycles_per_jiffy;
+-static unsigned long epoch_time;
+-
+-#define CYCLES_PER_JIFFY	(CLOCK_TICK_RATE / HZ)
+-#define REMAINDER_PER_SEC	(CLOCK_TICK_RATE - (CYCLES_PER_JIFFY * HZ))
+-#define CYCLES_PER_100USEC	((CLOCK_TICK_RATE + (10000 / 2)) / 10000)
+-
+-#define ETIMELREG_TYPE1		KSEG1ADDR(0x0b0000c0)
+-#define TCLKLREG_TYPE1		KSEG1ADDR(0x0b0001c0)
+-
+-#define ETIMELREG_TYPE2		KSEG1ADDR(0x0f000100)
+-#define TCLKLREG_TYPE2		KSEG1ADDR(0x0f000120)
+-
+-/* RTC 1 registers */
+-#define ETIMELREG		0x00
+-#define ETIMEMREG		0x02
+-#define ETIMEHREG		0x04
+-/* RFU */
+-#define ECMPLREG		0x08
+-#define ECMPMREG		0x0a
+-#define ECMPHREG		0x0c
+-/* RFU */
+-#define RTCL1LREG		0x10
+-#define RTCL1HREG		0x12
+-#define RTCL1CNTLREG		0x14
+-#define RTCL1CNTHREG		0x16
+-#define RTCL2LREG		0x18
+-#define RTCL2HREG		0x1a
+-#define RTCL2CNTLREG		0x1c
+-#define RTCL2CNTHREG		0x1e
+-
+-/* RTC 2 registers */
+-#define TCLKLREG		0x00
+-#define TCLKHREG		0x02
+-#define TCLKCNTLREG		0x04
+-#define TCLKCNTHREG		0x06
+-/* RFU */
+-#define RTCINTREG		0x1e
+- #define TCLOCK_INT		0x08
+- #define RTCLONG2_INT		0x04
+- #define RTCLONG1_INT		0x02
+- #define ELAPSEDTIME_INT	0x01
+-
+-#define read_rtc1(offset)	readw(rtc1_base + (offset))
+-#define write_rtc1(val, offset)	writew((val), rtc1_base + (offset))
+-
+-#define read_rtc2(offset)	readw(rtc2_base + (offset))
+-#define write_rtc2(val, offset)	writew((val), rtc2_base + (offset))
+-
+-static inline uint64_t read_elapsedtime_counter(void)
+-{
+-	uint64_t first, second;
+-	uint32_t first_mid, first_low;
+-	uint32_t second_mid, second_low;
+-
+-	do {
+-		first_low = (uint32_t)read_rtc1(ETIMELREG);
+-		first_mid = (uint32_t)read_rtc1(ETIMEMREG);
+-		first = (uint64_t)read_rtc1(ETIMEHREG);
+-		second_low = (uint32_t)read_rtc1(ETIMELREG);
+-		second_mid = (uint32_t)read_rtc1(ETIMEMREG);
+-		second = (uint64_t)read_rtc1(ETIMEHREG);
+-	} while (first_low != second_low || first_mid != second_mid ||
+-	         first != second);
+-
+-	return (first << 32) | (uint64_t)((first_mid << 16) | first_low);
+-}
+-
+-static inline void write_elapsedtime_counter(uint64_t time)
+-{
+-	write_rtc1((uint16_t)time, ETIMELREG);
+-	write_rtc1((uint16_t)(time >> 16), ETIMEMREG);
+-	write_rtc1((uint16_t)(time >> 32), ETIMEHREG);
+-}
+-
+-static inline void write_elapsedtime_compare(uint64_t time)
+-{
+-	write_rtc1((uint16_t)time, ECMPLREG);
+-	write_rtc1((uint16_t)(time >> 16), ECMPMREG);
+-	write_rtc1((uint16_t)(time >> 32), ECMPHREG);
+-}
+-
+-void vr41xx_set_rtclong1_cycle(uint32_t cycles)
+-{
+-	write_rtc1((uint16_t)cycles, RTCL1LREG);
+-	write_rtc1((uint16_t)(cycles >> 16), RTCL1HREG);
+-}
+-
+-uint32_t vr41xx_read_rtclong1_counter(void)
+-{
+-	uint32_t first_high, first_low;
+-	uint32_t second_high, second_low;
+-
+-	do {
+-		first_low = (uint32_t)read_rtc1(RTCL1CNTLREG);
+-		first_high = (uint32_t)read_rtc1(RTCL1CNTHREG);
+-		second_low = (uint32_t)read_rtc1(RTCL1CNTLREG);
+-		second_high = (uint32_t)read_rtc1(RTCL1CNTHREG);
+-	} while (first_low != second_low || first_high != second_high);
+-
+-	return (first_high << 16) | first_low;
+-}
+-
+-void vr41xx_set_rtclong2_cycle(uint32_t cycles)
+-{
+-	write_rtc1((uint16_t)cycles, RTCL2LREG);
+-	write_rtc1((uint16_t)(cycles >> 16), RTCL2HREG);
+-}
+-
+-uint32_t vr41xx_read_rtclong2_counter(void)
+-{
+-	uint32_t first_high, first_low;
+-	uint32_t second_high, second_low;
+-
+-	do {
+-		first_low = (uint32_t)read_rtc1(RTCL2CNTLREG);
+-		first_high = (uint32_t)read_rtc1(RTCL2CNTHREG);
+-		second_low = (uint32_t)read_rtc1(RTCL2CNTLREG);
+-		second_high = (uint32_t)read_rtc1(RTCL2CNTHREG);
+-	} while (first_low != second_low || first_high != second_high);
+-
+-	return (first_high << 16) | first_low;
+-}
+-
+-void vr41xx_set_tclock_cycle(uint32_t cycles)
+-{
+-	write_rtc2((uint16_t)cycles, TCLKLREG);
+-	write_rtc2((uint16_t)(cycles >> 16), TCLKHREG);
+-}
+-
+-uint32_t vr41xx_read_tclock_counter(void)
+-{
+-	uint32_t first_high, first_low;
+-	uint32_t second_high, second_low;
+-
+-	do {
+-		first_low = (uint32_t)read_rtc2(TCLKCNTLREG);
+-		first_high = (uint32_t)read_rtc2(TCLKCNTHREG);
+-		second_low = (uint32_t)read_rtc2(TCLKCNTLREG);
+-		second_high = (uint32_t)read_rtc2(TCLKCNTHREG);
+-	} while (first_low != second_low || first_high != second_high);
+-
+-	return (first_high << 16) | first_low;
+-}
+-
+-static void vr41xx_timer_ack(void)
+-{
+-	uint64_t cur;
+-
+-	write_rtc2(ELAPSEDTIME_INT, RTCINTREG);
+-
+-	previous_elapsedtime += (uint64_t)cycles_per_jiffy;
+-	cycles_per_sec += cycles_per_jiffy;
+-
+-	if (cycles_per_sec >= CLOCK_TICK_RATE) {
+-		cycles_per_sec = 0;
+-		remainder_per_sec = REMAINDER_PER_SEC;
+-	}
+-
+-	cycles_per_jiffy = 0;
+-
+-	do {
+-		cycles_per_jiffy += CYCLES_PER_JIFFY;
+-		if (remainder_per_sec > 0) {
+-			cycles_per_jiffy++;
+-			remainder_per_sec--;
+-		}
+-
+-		cur = read_elapsedtime_counter();
+-	} while (cur >= previous_elapsedtime + (uint64_t)cycles_per_jiffy);
+-
+-	write_elapsedtime_compare(previous_elapsedtime + (uint64_t)cycles_per_jiffy);
+-}
+-
+-static void vr41xx_hpt_init(unsigned int count)
+-{
+-}
+-
+-static unsigned int vr41xx_hpt_read(void)
+-{
+-	uint64_t cur;
+-
+-	cur = read_elapsedtime_counter();
+-
+-	return (unsigned int)cur;
+-}
+-
+-static unsigned long vr41xx_gettimeoffset(void)
+-{
+-	uint64_t cur;
+-	unsigned long gap;
+-
+-	cur = read_elapsedtime_counter();
+-	gap = (unsigned long)(cur - previous_elapsedtime);
+-	gap = gap / CYCLES_PER_100USEC * 100;	/* usec */
+-
+-	return gap;
+-}
+-
+-static unsigned long vr41xx_get_time(void)
+-{
+-	uint64_t counts;
+-
+-	counts = read_elapsedtime_counter();
+-	counts >>= 15;
+-
+-	return epoch_time + (unsigned long)counts;
+-
+-}
+-
+-static int vr41xx_set_time(unsigned long sec)
+-{
+-	if (sec < epoch_time)
+-		return -EINVAL;
+-
+-	sec -= epoch_time;
+-
+-	write_elapsedtime_counter((uint64_t)sec << 15);
+-
+-	return 0;
+-}
+-
+-void vr41xx_set_epoch_time(unsigned long time)
+-{
+-	epoch_time = time;
+-}
+-
+-static void __init vr41xx_time_init(void)
+-{
+-	switch (current_cpu_data.cputype) {
+-	case CPU_VR4111:
+-	case CPU_VR4121:
+-		rtc1_base = ETIMELREG_TYPE1;
+-		rtc2_base = TCLKLREG_TYPE1;
+-		break;
+-	case CPU_VR4122:
+-	case CPU_VR4131:
+-	case CPU_VR4133:
+-		rtc1_base = ETIMELREG_TYPE2;
+-		rtc2_base = TCLKLREG_TYPE2;
+-		break;
+-	default:
+-		panic("Unexpected CPU of NEC VR4100 series");
+-		break;
+-	}
+-
+-	mips_timer_ack = vr41xx_timer_ack;
+-
+-	mips_hpt_init = vr41xx_hpt_init;
+-	mips_hpt_read = vr41xx_hpt_read;
+-	mips_hpt_frequency = CLOCK_TICK_RATE;
+-
+-	if (epoch_time == 0)
+-		epoch_time = mktime(1970, 1, 1, 0, 0, 0);
+-
+-	rtc_get_time = vr41xx_get_time;
+-	rtc_set_time = vr41xx_set_time;
+-}
+-
+-static void __init vr41xx_timer_setup(struct irqaction *irq)
+-{
+-	do_gettimeoffset = vr41xx_gettimeoffset;
+-
+-	remainder_per_sec = REMAINDER_PER_SEC;
+-	cycles_per_jiffy = CYCLES_PER_JIFFY;
+-
+-	if (remainder_per_sec > 0) {
+-		cycles_per_jiffy++;
+-		remainder_per_sec--;
+-	}
+-
+-	previous_elapsedtime = read_elapsedtime_counter();
+-	write_elapsedtime_compare(previous_elapsedtime + (uint64_t)cycles_per_jiffy);
+-	write_rtc2(ELAPSEDTIME_INT, RTCINTREG);
+-
+-	setup_irq(ELAPSEDTIME_IRQ, irq);
+-}
+-
+-static int __init vr41xx_rtc_init(void)
+-{
+-	board_time_init = vr41xx_time_init;
+-	board_timer_setup = vr41xx_timer_setup;
+-
+-	return 0;
+-}
+-
+-early_initcall(vr41xx_rtc_init);
+diff -urN -X dontdiff b-orig/include/asm-mips/vr41xx/vr41xx.h b/include/asm-mips/vr41xx/vr41xx.h
+--- b-orig/include/asm-mips/vr41xx/vr41xx.h	Tue Apr 19 07:57:50 2005
++++ b/include/asm-mips/vr41xx/vr41xx.h	Sat Apr 23 08:51:00 2005
+@@ -198,22 +198,6 @@
+ extern void vr41xx_disable_bcuint(void);
+ 
+ /*
+- * Power Management Unit
+- */
+-
+-/*
+- * RTC
+- */
+-extern void vr41xx_set_rtclong1_cycle(uint32_t cycles);
+-extern uint32_t vr41xx_read_rtclong1_counter(void);
+-
+-extern void vr41xx_set_rtclong2_cycle(uint32_t cycles);
+-extern uint32_t vr41xx_read_rtclong2_counter(void);
+-
+-extern void vr41xx_set_tclock_cycle(uint32_t cycles);
+-extern uint32_t vr41xx_read_tclock_counter(void);
+-
+-/*
+  * General-Purpose I/O Unit
+  */
+ enum {

@@ -1,64 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Apr 2005 21:47:57 +0100 (BST)
-Received: from embeddededge.com ([IPv6:::ffff:209.113.146.155]:57103 "EHLO
-	penguin.netx4.com") by linux-mips.org with ESMTP
-	id <S8224966AbVDZUrm>; Tue, 26 Apr 2005 21:47:42 +0100
-Received: from [192.168.253.28] (tibook.embeddededge.com [192.168.253.28])
-	by penguin.netx4.com (8.12.8/8.12.9) with ESMTP id j3QKgAfg031907;
-	Tue, 26 Apr 2005 16:42:10 -0400
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Apr 2005 22:53:55 +0100 (BST)
+Received: from smtp001.bizmail.yahoo.com ([IPv6:::ffff:216.136.172.125]:1170
+	"HELO smtp001.bizmail.yahoo.com") by linux-mips.org with SMTP
+	id <S8224983AbVDZVxk>; Tue, 26 Apr 2005 22:53:40 +0100
+Received: from unknown (HELO ?192.168.1.102?) (ppopov@embeddedalley.com@71.128.175.241 with plain)
+  by smtp001.bizmail.yahoo.com with SMTP; 26 Apr 2005 21:53:37 -0000
+Subject: Re: should the kernel be initializing the uarts on the Au1550?
+From:	Pete Popov <ppopov@embeddedalley.com>
+Reply-To: ppopov@embeddedalley.com
+To:	Clem Taylor <clem.taylor@gmail.com>
+Cc:	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
 In-Reply-To: <ecb4efd105042612586d43fcc5@mail.gmail.com>
 References: <ecb4efd105042612586d43fcc5@mail.gmail.com>
-Mime-Version: 1.0 (Apple Message framework v622)
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Message-Id: <322b387146f9931748c566c2f6352746@embeddededge.com>
+Content-Type: text/plain
+Organization: Embedded Alley Solutions, Inc
+Date:	Tue, 26 Apr 2005 14:53:37 -0700
+Message-Id: <1114552417.5524.17.camel@localhost.localdomain>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.0.4 (2.0.4-4) 
 Content-Transfer-Encoding: 7bit
-Cc:	linux-mips@linux-mips.org
-From:	Dan Malek <dan@embeddededge.com>
-Subject: Re: should the kernel be initializing the uarts on the Au1550?
-Date:	Tue, 26 Apr 2005 16:47:43 -0400
-To:	Clem Taylor <clem.taylor@gmail.com>
-X-Mailer: Apple Mail (2.622)
-Return-Path: <dan@embeddededge.com>
+Return-Path: <ppopov@embeddedalley.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7797
+X-archive-position: 7798
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@embeddededge.com
+X-original-sender: ppopov@embeddedalley.com
 Precedence: bulk
 X-list: linux-mips
 
-
-On Apr 26, 2005, at 3:58 PM, Clem Taylor wrote:
-
+On Tue, 2005-04-26 at 15:58 -0400, Clem Taylor wrote:
 > It seems that the kernel (2.6.10) isn't properly initializing the
-> Au1550 serial ports.
+> Au1550 serial ports. All three of the serial ports work, just not at
+> the same time. Linux seems to need yamon to configure the serial port
+> first. Out of the box yamon uses UART0 & UART3 and ttyS0 & ttyS2
+> (UART3, the 1550 doesn't have a UART2) work in linux, but ttyS1
+> doesn't. If I switch yamon to use UART1 & UART3, then ttyS0 doesn't
+> seem to work in linux. The serial port that isn't configured by yamon
+> will hang in an ioctl() on calling tcsetattr().
+> 
+> Before I just cheat and add a third serial port to yamon, should the
+> kernel be initializing the UARTs or does it really expect the yamon to
+> initialize them first? Is anyone using all 3 serial ports on an
+> Au1550?
 
-What do you mean by "initializing"?
+Yes, it should. And we should really rewrite the serial driver from
+scratch. 
 
-> .... Linux seems to need yamon to configure ....
-
-Linux assumes yamon for the Db1xxx and Pb1xxx
-boards will configure nearly all of the IO pins
-properly.  This is quite the opposite of most embedded
-systems that assume nothing and rely on the Linux
-board startup functions to do this.
-
-It is just historical, and could be changed.  First, we
-need to add sufficient configuration information so
-we know what IO is used (serial ports in this case).
-Second we need the functions to do the proper
-set up based upon the selected configuration.
-
-Then, the discussions (arguments) start about what
-should be further assumed about initialization :-)
-My preference is that if we should do all of the
-initialization and assume nothing, because we could
-probably eliminate lots of board specific set up
-files and use more common software.
-
-Thanks.
-
-
-	-- Dan
+Pete

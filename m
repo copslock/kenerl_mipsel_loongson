@@ -1,36 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Apr 2005 11:51:10 +0100 (BST)
-Received: from frog.mt.lv ([IPv6:::ffff:159.148.172.197]:27878 "EHLO
-	frog.mt.lv") by linux-mips.org with ESMTP id <S8225334AbVD0Kuz>;
-	Wed, 27 Apr 2005 11:50:55 +0100
-Received: from [10.5.7.10] (helo=your-lnsz0iqs6f.mikrotik.com)
-	by frog.mt.lv with esmtp (Exim 4.44)
-	id 1DQkEK-0006A6-S1
-	for linux-mips@linux-mips.org; Wed, 27 Apr 2005 13:57:20 +0300
-Message-Id: <6.2.1.2.0.20050427134637.063653a0@frog.mt.lv>
-X-Mailer: QUALCOMM Windows Eudora Version 6.2.1.2
-Date:	Wed, 27 Apr 2005 13:49:49 +0300
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Apr 2005 16:56:33 +0100 (BST)
+Received: from dfpost.ru ([IPv6:::ffff:194.85.103.225]:39360 "EHLO
+	mail.dfpost.ru") by linux-mips.org with ESMTP id <S8225355AbVD0P4S>;
+	Wed, 27 Apr 2005 16:56:18 +0100
+Received: by mail.dfpost.ru (Postfix, from userid 7897)
+	id A112C3E4B1; Wed, 27 Apr 2005 19:54:15 +0400 (MSD)
+Received: from toch.dfpost.ru (toch [192.168.7.60])
+	by mail.dfpost.ru (Postfix) with SMTP id 199E23E4AE
+	for <linux-mips@linux-mips.org>; Wed, 27 Apr 2005 19:54:15 +0400 (MSD)
+Date:	Wed, 27 Apr 2005 19:55:52 +0400
+From:	Dmitriy Tochansky <toch@dfpost.ru>
 To:	linux-mips@linux-mips.org
-From:	John Tully <tully@mikrotik.com>
-Subject: New Forum for support of RB500 (MIPS board)
-In-Reply-To: <20050427.144633.01210513.nemoto@toshiba-tops.co.jp>
-References: <20050427.143622.77402407.nemoto@toshiba-tops.co.jp>
- <20050427.144633.01210513.nemoto@toshiba-tops.co.jp>
+Subject: ramfs
+Message-Id: <20050427195552.41f92184.toch@dfpost.ru>
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i686-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"; format=flowed
-Return-Path: <tully@mikrotik.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Bogosity: No, tests=bogofilter, spamicity=0.000000, version=0.92.8
+Return-Path: <toch@dfpost.ru>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7801
+X-archive-position: 7802
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tully@mikrotik.com
+X-original-sender: toch@dfpost.ru
 Precedence: bulk
 X-list: linux-mips
 
-<http://forum.routerboard.com/>http://forum.routerboard.com/
+Hello!
 
-One interesting topic is that openWRT is being ported to the RB500.
+Im trying to use embedded ramdisk on boot.
+The error is:
 
-John
+[4294668.794000] Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(1,0) 
+
+In make menuconfig I pass to initrdfs directory with my root("/mips/root"),
+there are no errors on make. 
+Ramdisk size set to 7777k
+([4294668.691000] RAMDISK driver initialized: 2 RAM disks of 7777K size 1024 blocksize)
+
+populate_rootfs() works fine:
+
+
+[4294667.502000] init/initramfs.c void __init populate_rootfs(void);
+[4294668.313000] checking if image is initramfs... it is
+
+then on do_mounts in void __init mount_block_root(char *name, int flags)
+it tryes to mount initrd with no result. :( As final:
+
+
+[4294668.794000] Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(1,0)
+
+Any ideas?
+
+Kernel from cvs(yesterday updated).
+
+Which type of fs is initrd? AFAIK gen_init_cpio just generates cpio archive with my root. Seems like it unpacked fine but who did mkfs on /dev/ram0?
+
+
+-- 
+Dmitriy Tochansky
+toch@dfpost.ru
+JID: dtoch@jabber.ru

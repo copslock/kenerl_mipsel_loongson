@@ -1,51 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Apr 2005 20:06:31 +0100 (BST)
-Received: from embeddededge.com ([IPv6:::ffff:209.113.146.155]:41220 "EHLO
-	penguin.netx4.com") by linux-mips.org with ESMTP
-	id <S8225367AbVD0TGQ>; Wed, 27 Apr 2005 20:06:16 +0100
-Received: from [192.168.253.28] (tibook.embeddededge.com [192.168.253.28])
-	by penguin.netx4.com (8.12.8/8.12.9) with ESMTP id j3RJ0Lfg002290;
-	Wed, 27 Apr 2005 15:00:21 -0400
-In-Reply-To: <1114627785.17008.21.camel@SillyPuddy.localdomain>
-References: <1114505009.11315.37.camel@mini.intra> <1114627785.17008.21.camel@SillyPuddy.localdomain>
-Mime-Version: 1.0 (Apple Message framework v622)
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Message-Id: <4bf8c757c3a4d32177ab90b92eace823@embeddededge.com>
-Content-Transfer-Encoding: 7bit
-Cc:	linux-mips@linux-mips.org, Pete Popov <ppopov@embeddedalley.com>,
-	Herbert Valerio Riedel <hvr@hvrlab.org>
-From:	Dan Malek <dan@embeddededge.com>
-Subject: Re: iptables/vmalloc issues on alchemy
-Date:	Wed, 27 Apr 2005 15:06:00 -0400
-To:	Josh Green <jgreen@users.sourceforge.net>
-X-Mailer: Apple Mail (2.622)
-Return-Path: <dan@embeddededge.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Apr 2005 03:14:55 +0100 (BST)
+Received: from ntfw.echelon.com ([IPv6:::ffff:205.229.50.10]:8944 "EHLO
+	[205.229.50.10]") by linux-mips.org with ESMTP id <S8225474AbVD1COk>;
+	Thu, 28 Apr 2005 03:14:40 +0100
+Received: from miles.echelon.com by [205.229.50.10]
+          via smtpd (for mail.linux-mips.org [62.254.210.162]) with ESMTP; Wed, 27 Apr 2005 19:14:38 -0700
+Received: by miles.echelon.echcorp.com with Internet Mail Service (5.5.2653.19)
+	id <JWPMNMC3>; Wed, 27 Apr 2005 19:14:36 -0700
+Message-ID: <5375D9FB1CC3994D9DCBC47C344EEB590165465A@miles.echelon.echcorp.com>
+From:	Prashant Viswanathan <vprashant@echelon.com>
+To:	linux-mips@linux-mips.org
+Subject:  Big Endian au1550
+Date:	Wed, 27 Apr 2005 19:14:35 -0700
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain
+Return-Path: <vprashant@echelon.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7804
+X-archive-position: 7805
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@embeddededge.com
+X-original-sender: vprashant@echelon.com
 Precedence: bulk
 X-list: linux-mips
 
+Is there a reason why the default configuration file doesn't support Big
+Endian for the dbAu1550? 
 
-On Apr 27, 2005, at 2:49 PM, Josh Green wrote:
+Even if I edit .config to set the endianness to "BIG" it seems to change to
+"Little Endian" every time a make is run.
 
-> ...... I was
-> planning on doing some additional gdb debugging of the failure
-> (especially the initial large MMAP attempt by iptables, which was 1.5GB
-> in my case).
-
-Oh wait ....  I found a bug a while ago from someone trying to load
-large modules.  There is a problem if the kernel grows to need
-additional PTE tables, the top level pointers don't get propagated
-correctly and subsequent access by a thread that didn't actually
-do the allocation would fail.  I'm looking into this, including your
-past message about 64-bit PTEs.
-
-Thanks.
-
-
-	-- Dan
+Thanks
+Prashant

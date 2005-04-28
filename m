@@ -1,78 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Apr 2005 22:31:26 +0100 (BST)
-Received: from father.pmc-sierra.com ([IPv6:::ffff:216.241.224.13]:6630 "HELO
-	father.pmc-sierra.bc.ca") by linux-mips.org with SMTP
-	id <S8225780AbVD1VbM>; Thu, 28 Apr 2005 22:31:12 +0100
-Received: (qmail 16336 invoked by uid 101); 28 Apr 2005 21:31:04 -0000
-Received: from unknown (HELO ogmios.pmc-sierra.bc.ca) (216.241.226.59)
-  by father.pmc-sierra.com with SMTP; 28 Apr 2005 21:31:04 -0000
-Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
-	by ogmios.pmc-sierra.bc.ca (8.13.3/8.12.7) with ESMTP id j3SLUv45026981;
-	Thu, 28 Apr 2005 14:31:03 -0700
-Received: by bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca with Internet Mail Service (5.5.2656.59)
-	id <JGC86217>; Thu, 28 Apr 2005 14:30:57 -0700
-Message-ID: <04781D450CFF604A9628C8107A62FCCF0257422D@sjc1exm01.pmc_nt.nt.pmc-sierra.bc.ca>
-From:	Raj Palani <Rajesh_Palani@pmc-sierra.com>
-To:	"'Bryan Althouse'" <bryan.althouse@3phoenix.com>,
-	linux-mips@linux-mips.org
-Cc:	TheNop@gmx.net
-Subject: RE: 
-Date:	Thu, 28 Apr 2005 14:30:55 -0700
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2656.59)
-Content-Type: text/plain
-Return-Path: <Rajesh_Palani@pmc-sierra.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Apr 2005 23:17:12 +0100 (BST)
+Received: from embeddededge.com ([IPv6:::ffff:209.113.146.155]:46856 "EHLO
+	penguin.netx4.com") by linux-mips.org with ESMTP
+	id <S8225786AbVD1WQs>; Thu, 28 Apr 2005 23:16:48 +0100
+Received: from [192.168.253.28] (tibook.embeddededge.com [192.168.253.28])
+	by penguin.netx4.com (8.12.8/8.12.9) with ESMTP id j3SMAsfg005348;
+	Thu, 28 Apr 2005 18:10:55 -0400
+In-Reply-To: <8230E1CC35AF9F43839F3049E930169A137228@yang.LibreStream.local>
+References: <8230E1CC35AF9F43839F3049E930169A137228@yang.LibreStream.local>
+Mime-Version: 1.0 (Apple Message framework v622)
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Message-Id: <c145ddc72b875ec3833ceba1a849b156@embeddedalley.com>
+Content-Transfer-Encoding: 7bit
+Cc:	"Josh Green" <jgreen@users.sourceforge.net>,
+	"Herbert Valerio Riedel" <hvr@hvrlab.org>,
+	<linux-mips@linux-mips.org>,
+	"Pete Popov" <ppopov@embeddedalley.com>
+From:	Dan Malek <dan@embeddedalley.com>
+Subject: Re: iptables/vmalloc issues on alchemy
+Date:	Thu, 28 Apr 2005 18:16:43 -0400
+To:	"Christian Gan" <christian.gan@librestream.com>
+X-Mailer: Apple Mail (2.622)
+Return-Path: <dan@embeddedalley.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7827
+X-archive-position: 7828
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Rajesh_Palani@pmc-sierra.com
+X-original-sender: dan@embeddedalley.com
 Precedence: bulk
 X-list: linux-mips
 
-A quick and dirty fix is to remove CONFIG_HOTPLUG from your .config.  That function needs to be added to the driver code.
 
--Raj
+On Apr 28, 2005, at 5:22 PM, Christian Gan wrote:
 
-> -----Original Message-----
-> From: linux-mips-bounce@linux-mips.org
-> [mailto:linux-mips-bounce@linux-mips.org]On Behalf Of Bryan Althouse
-> Sent: Thursday, April 28, 2005 12:16 PM
-> To: linux-mips@linux-mips.org
-> Cc: TheNop@gmx.net
-> Subject: 
-> 
-> 
-> Hello,
-> 
-> I would like to use a 2.6.x kernel with my Yosemite/HalfDome board.
-> Somehow, I am unable to compile the kernel.  I have tried the 
-> 2.6.10 kernel
-> trees from ftp.pmc-sierra.com and also the latest 2.6.12 snapshot from
-> linux-mips.  I am using the 3.3.x cross compile tools from
-> ftp.pmc-sierra.com .  The 2.4.x kernels from PMC compile fine.
-> 
-> In the case of 2.6.10 from ftp.pmc-sierra.com, my error looks like:
->        Make[3]: *** [drivers/char/agp/backend.o] Error 1
-> 
-> 	
-> In the case of 2.6.12 from linux-mips, my error looks like:
-> 	drivers/net/titan_ge.c1950: error: 
-> 'titan_device_remove"  undeclared
-> here (not in a function)
-> 
-> My compile process is like so:
-> make mrproper
-> make xconfig
-> make oldconfig
-> make ARCH=mips CROSS_COMPILE=/<tool_path>/mips64-linux-gnu-    vmlinux
-> 
-> Could someone share their .config with me, or make some suggestions?
-> 
-> Thank you,
-> Bryan
-> 
-> 
-> 
+> ..... Again it would be okay if I used
+> kmalloc or if I disabled CONFIG_64BIT_PHYS_ADDR.
+
+An Au1500 or Au1550 isn't likely to work with this disabled.
+PCI and other peripherals exist in the 36-bit space, unless you
+disable them.  I suspect all of this got broken with the dynamic
+exception handler building.  Prior to that, I suspect it works
+fine.  I guess we need to do some regression testing ....
+
+Thanks.
+
+
+	-- Dan

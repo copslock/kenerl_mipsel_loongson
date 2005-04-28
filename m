@@ -1,107 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Apr 2005 14:37:43 +0100 (BST)
-Received: from smtp10.wanadoo.fr ([IPv6:::ffff:193.252.22.21]:58318 "EHLO
-	smtp10.wanadoo.fr") by linux-mips.org with ESMTP
-	id <S8225767AbVD1Nh1>; Thu, 28 Apr 2005 14:37:27 +0100
-Received: from me-wanadoo.net (unknown [127.0.0.1])
-	by mwinf1003.wanadoo.fr (SMTP Server) with ESMTP id 1CCB82000359
-	for <linux-mips@linux-mips.org>; Thu, 28 Apr 2005 15:37:20 +0200 (CEST)
-Received: from smtp.innova-card.com (AMarseille-206-1-6-143.w80-14.abo.wanadoo.fr [80.14.198.143])
-	by mwinf1003.wanadoo.fr (SMTP Server) with ESMTP id 9E7DB2000328;
-	Thu, 28 Apr 2005 15:37:19 +0200 (CEST)
-X-ME-UUID: 20050428133719649.9E7DB2000328@mwinf1003.wanadoo.fr
-Received: by smtp.innova-card.com (Postfix, from userid 100)
-	id 195383800A; Thu, 28 Apr 2005 15:37:12 +0200 (CEST)
-Received: from [192.168.0.24] (spoutnik.innova-card.com [192.168.0.24])
-	by smtp.innova-card.com (Postfix) with ESMTP
-	id 709A138009; Thu, 28 Apr 2005 15:37:11 +0200 (CEST)
-Message-ID: <4270E678.7050402@innova-card.com>
-Date:	Thu, 28 Apr 2005 15:34:48 +0200
-From:	Franck Bui-Huu <franck.bui-huu@innova-card.com>
-Reply-To: franck.bui-huu@innova-card.com
-Organization: Innova Card
-User-Agent: Mozilla Thunderbird 1.0.2-1.3.2 (X11/20050324)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	Dmitriy Tochansky <toch@dfpost.ru>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Apr 2005 14:41:26 +0100 (BST)
+Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:32525 "EHLO
+	bacchus.net.dhis.org") by linux-mips.org with ESMTP
+	id <S8225767AbVD1NlL>; Thu, 28 Apr 2005 14:41:11 +0100
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.1/8.13.1) with ESMTP id j3SDfJsn001936;
+	Thu, 28 Apr 2005 14:41:19 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j3SDfIK5001935;
+	Thu, 28 Apr 2005 14:41:18 +0100
+Date:	Thu, 28 Apr 2005 14:41:18 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 Cc:	linux-mips@linux-mips.org
-Subject: Re: ramfs
-References: <20050427195552.41f92184.toch@dfpost.ru>
-In-Reply-To: <20050427195552.41f92184.toch@dfpost.ru>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <franck.bui-huu@innova-card.com>
+Subject: Re: preempt safe fpu-emulator
+Message-ID: <20050428134118.GC1276@linux-mips.org>
+References: <20050427.143622.77402407.nemoto@toshiba-tops.co.jp>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20050427.143622.77402407.nemoto@toshiba-tops.co.jp>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7812
+X-archive-position: 7813
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: franck.bui-huu@innova-card.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi
+On Wed, Apr 27, 2005 at 02:36:22PM +0900, Atsushi Nemoto wrote:
 
-Dmitriy Tochansky wrote:
+> Hi.  Here is a patch to make the fpu-emulator preempt-safe.  It would
+> be SMP-safe also.
+> 
+> The 'ieee754_csr' global variable is removed.  Now the 'ieee754_csr'
+> is an alias of current->thread.fpu.soft.fcr31.  While the fpu-emulator
+> uses different mapping for RM bits (FPU_CSR_Rm vs. IEEE754_Rm), RM
+> bits are converted before (and after) calling of cop1Emulate().  If we
+> adjusted IEEE754_Rm to match with FPU_CSR_Rm, we can remove ieee_rm[]
+> and mips_rm[].  Should we do it?
+> 
+> With this patch, whole fpu-emulator can be run without disabling
+> preempt.  I will post a patch to fix preemption issue soon.
 
->Hello!
->
->Im trying to use embedded ramdisk on boot.
->The error is:
->
->[4294668.794000] Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(1,0) 
->
->In make menuconfig I pass to initrdfs directory with my root("/mips/root"),
->there are no errors on make. 
->Ramdisk size set to 7777k
->([4294668.691000] RAMDISK driver initialized: 2 RAM disks of 7777K size 1024 blocksize)
->
->populate_rootfs() works fine:
->
->
->[4294667.502000] init/initramfs.c void __init populate_rootfs(void);
->[4294668.313000] checking if image is initramfs... it is
->  
->
-why using initramfs with initrd ?
+I applied both your patches with some slight cleanup for the endianess
+stuff in arch/mips/math-emu/ieee754.h and non-Linux stuff.
 
->then on do_mounts in void __init mount_block_root(char *name, int flags)
->it tryes to mount initrd with no result. :( As final:
->
->
->[4294668.794000] Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(1,0)
->
->Any ideas?
->  
->
-maybe try to add in your kernel command option: "rootfstype=ramfs"
-
->Kernel from cvs(yesterday updated).
->
->Which type of fs is initrd? AFAIK gen_init_cpio just generates cpio archive with my root. Seems like it unpacked fine but who did mkfs on /dev/ram0?
->
->
->  
->
-initrd fs depends on how your initrd image is built.
-initramfs fs is ramfs.
-
-cheers,
-
-                Franck
-
-
--------------------------------------------------------------------------------
-Come to visit Innova Card at Cards Asia (Singapore, April 27-29, 2005) on booth 4A04 !
-
-links:
- - www.worldofcards.biz/2005/cardsa_SG/
-
--------------------------------------------------------------------------------
-This message contains confidential information and is intended only for the
-individual named. If you are not the named addressee you should not
-disseminate, distribute or copy this e-mail. Please notify the sender
-immediately by e-mail if you have received this e-mail by mistake and delete
-this e-mail from your system.
-Innova Card will not therefore be liable for the message if modified.
+  Ralf

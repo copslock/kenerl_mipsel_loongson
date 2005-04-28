@@ -1,60 +1,119 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Apr 2005 06:07:21 +0100 (BST)
-Received: from h081217049130.dyn.cm.kabsi.at ([IPv6:::ffff:81.217.49.130]:49583
-	"EHLO phobos.hvrlab.org") by linux-mips.org with ESMTP
-	id <S8225561AbVD1FHG>; Thu, 28 Apr 2005 06:07:06 +0100
-Received: from mini.intra (dhcp-1334-4.blizz.at [213.143.126.4])
-	(authenticated bits=0)
-	by phobos.hvrlab.org (8.13.4/8.13.4/Debian-1) with ESMTP id j3S56ttq006615
-	(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NOT);
-	Thu, 28 Apr 2005 07:06:56 +0200
-Subject: Re: iptables/vmalloc issues on alchemy
-From:	Herbert Valerio Riedel <hvr@hvrlab.org>
-To:	Dan Malek <dan@embeddededge.com>
-Cc:	Josh Green <jgreen@users.sourceforge.net>,
-	linux-mips@linux-mips.org, Pete Popov <ppopov@embeddedalley.com>
-In-Reply-To: <4bf8c757c3a4d32177ab90b92eace823@embeddededge.com>
-References: <1114505009.11315.37.camel@mini.intra>
-	 <1114627785.17008.21.camel@SillyPuddy.localdomain>
-	 <4bf8c757c3a4d32177ab90b92eace823@embeddededge.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Apr 2005 09:56:36 +0100 (BST)
+Received: from smtp-out.hotpop.com ([IPv6:::ffff:38.113.3.51]:7086 "EHLO
+	smtp-out.hotpop.com") by linux-mips.org with ESMTP
+	id <S8225734AbVD1I4U>; Thu, 28 Apr 2005 09:56:20 +0100
+Received: from hotpop.com (kubrick.hotpop.com [38.113.3.103])
+	by smtp-out.hotpop.com (Postfix) with SMTP id 66C5F799AB
+	for <linux-mips@linux-mips.org>; Thu, 28 Apr 2005 08:56:00 +0000 (UTC)
+Received: from [192.168.0.85] (unknown [83.104.11.251])
+	by smtp-1.hotpop.com (Postfix) with ESMTP
+	id 1C83B1A0201; Thu, 28 Apr 2005 08:55:56 +0000 (UTC)
+Subject: Re: Big Endian au1550
+From:	JP <jaypee@hotpop.com>
+To:	ppopov@embeddedalley.com
+Cc:	Prashant Viswanathan <vprashant@echelon.com>,
+	'Manish Lachwani' <mlachwani@mvista.com>,
+	linux-mips@linux-mips.org
+In-Reply-To: <42705F23.3000402@embeddedalley.com>
+References: <5375D9FB1CC3994D9DCBC47C344EEB590165465B@miles.echelon.echcorp.com>
+	 <42705F23.3000402@embeddedalley.com>
 Content-Type: text/plain
-Date:	Thu, 28 Apr 2005 07:06:52 +0200
-Message-Id: <1114664812.4647.6.camel@mini.intra>
+Date:	Thu, 28 Apr 2005 09:56:23 +0100
+Message-Id: <1114678583.2729.10.camel@localhost.localdomain>
 Mime-Version: 1.0
-X-Mailer: Evolution 2.2.2 
+X-Mailer: Evolution 2.2.1.1 
 Content-Transfer-Encoding: 7bit
-Return-Path: <hvr@hvrlab.org>
+X-HotPOP: -----------------------------------------------
+                   Sent By HotPOP.com FREE Email
+             Get your FREE POP email at www.HotPOP.com
+          -----------------------------------------------
+Return-Path: <jaypee@hotpop.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7809
+X-archive-position: 7810
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hvr@hvrlab.org
+X-original-sender: jaypee@hotpop.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 2005-04-27 at 15:06 -0400, Dan Malek wrote:
-> On Apr 27, 2005, at 2:49 PM, Josh Green wrote:
+I can confirm that BE works fine on the db1550 board. Just add line
+
+select SYS_SUPPORTS_BIG_ENDIAN
+
+to the db1550 section of arch/mips/Kconfig. That allows you to choose
+BE.
+
+I guess all the alchemy boards will work LE and BE. At least allowing
+the setting will mean they get tested rather than folk getting put off
+by the fact they can't select it.
+
+JP
+
+On Wed, 2005-04-27 at 20:57 -0700, ppopov@embeddedalley.com wrote:
+> Prashant Viswanathan wrote:
 > 
-> > ...... I was
-> > planning on doing some additional gdb debugging of the failure
-> > (especially the initial large MMAP attempt by iptables, which was 1.5GB
-> > in my case).
+> >>Prashant Viswanathan wrote:
+> >>
+> >>    
+> >>
+> >>>Is there a reason why the default configuration file doesn't support Big
+> >>>Endian for the dbAu1550?
+> >>>
+> >>>Even if I edit .config to set the endianness to "BIG" it seems to change
+> >>>      
+> >>>
+> >>to
+> >>    
+> >>
+> >>>"Little Endian" every time a make is run.
+> >>>
+> >>>Thanks
+> >>>Prashant
+> >>>
+> >>>
+> >>>
+> >>>
+> >>>      
+> >>>
+> >>In arch/mips/Kconfig,
+> >>
+> >>config CPU_LITTLE_ENDIAN
+> >>        bool "Generate little endian code"
+> >>        default y if ACER_PICA_61 || CASIO_E55 || DDB5074 || DDB5476 ||
+> >>DDB5477 || MACH_DECSTATION
+> >>|| IBM_WORKPAD || LASAT || MIPS_COBALT || MIPS_ITE8172 || MIPS_IVR ||
+> >>SOC_AU1X00 || NEC_OSPREY || OLIVETTI_M700 || SNI_RM200_PCI ||
+> >>VICTOR_MPC30X || ZAO_CAPCELLA
+> >>        default n if MIPS_EV64120 || MIPS_EV96100 || MOMENCO_OCELOT ||
+> >>MOMENCO_OCELOT_G || SGI_IP22 || SGI_IP27 || SGI_IP32 || TOSHIBA_JMR3927
+> >>        help
+> >>          Some MIPS machines can be configured for either little or big
+> >>endian
+> >>          byte order. These modes require different kernels. Say Y if your
+> >>          machine is little endian, N if it's a big endian machine.
+> >>
+> >>So, it appears that if you have SOC_AU1X00 set, it will always be
+> >>configured little endian.
+> >>    
+> >>
+> >
+> >Is there a reason for this? 
+> >  
+> >
+> It's the more common configuration.
 > 
-> Oh wait ....  I found a bug a while ago from someone trying to load
-> large modules.  There is a problem if the kernel grows to need
-> additional PTE tables, the top level pointers don't get propagated
-> correctly and subsequent access by a thread that didn't actually
-> do the allocation would fail.  I'm looking into this, including your
-> past message about 64-bit PTEs.
-
-additional note:
-
-the problem only shows up for me only when enabling
-CONFIG_64BIT_PHYS_ADDR, in case someone had problems reproducing the
-issue...
-
-regards,
+> >Many months ago I was able to build a big-endian image and load it on my
+> >dbAu1550 (also configured to be BE). I just decided to update and now I find
+> >that it is almost as if it is not meant to be built BE.
+> >  
+> >
+> BE should be fine too.  We should fix this in Kconfig.
+> 
+> Pete
+> 
 -- 
-Herbert Valerio Riedel <hvr@hvrlab.org>
+mailto:jaypee@hotpop.com
+http://jaypee.org.uk

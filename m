@@ -1,54 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 May 2005 21:10:15 +0100 (BST)
-Received: from embeddededge.com ([IPv6:::ffff:209.113.146.155]:20999 "EHLO
-	penguin.netx4.com") by linux-mips.org with ESMTP
-	id <S8225545AbVECUKA>; Tue, 3 May 2005 21:10:00 +0100
-Received: from [192.168.253.28] (tibook.embeddededge.com [192.168.253.28])
-	by penguin.netx4.com (8.12.8/8.12.9) with ESMTP id j43K3ifg027627;
-	Tue, 3 May 2005 16:03:44 -0400
-In-Reply-To: <e02bc66105050312564d0dacdb@mail.gmail.com>
-References: <e02bc66105050312564d0dacdb@mail.gmail.com>
-Mime-Version: 1.0 (Apple Message framework v622)
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Message-Id: <f2bcc2c8588140446359a0f5f5cf78ca@embeddededge.com>
-Content-Transfer-Encoding: 7bit
-Cc:	linux-mips@linux-mips.org
-From:	Dan Malek <dan@embeddededge.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 May 2005 22:05:04 +0100 (BST)
+Received: from wproxy.gmail.com ([IPv6:::ffff:64.233.184.203]:38420 "EHLO
+	wproxy.gmail.com") by linux-mips.org with ESMTP id <S8225556AbVECVEt> convert rfc822-to-8bit;
+	Tue, 3 May 2005 22:04:49 +0100
+Received: by wproxy.gmail.com with SMTP id 57so1495024wri
+        for <linux-mips@linux-mips.org>; Tue, 03 May 2005 14:04:41 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=ZNDG7UDQQJVXWM9OyMAzFZK/ajdrgFqmaEtvW+NpGPCiSfobTtisXBdC1PM+mdL7zH+5ZsMfIgUccHkcQksn+2T6NpvtfVtAhnB7ozQkSdHPVdDZdglo/MAps/2uBJdjlQDfQmBicfXfEfrxEZ8EkGpsYPcIb/NyJR5h2q8d/To=
+Received: by 10.54.123.20 with SMTP id v20mr1327493wrc;
+        Tue, 03 May 2005 14:04:41 -0700 (PDT)
+Received: by 10.54.38.20 with HTTP; Tue, 3 May 2005 14:04:41 -0700 (PDT)
+Message-ID: <e02bc6610505031404eda9738@mail.gmail.com>
+Date:	Tue, 3 May 2005 23:04:41 +0200
+From:	Sergio Ruiz <quekio@gmail.com>
+Reply-To: Sergio Ruiz <quekio@gmail.com>
+To:	linux-mips@linux-mips.org
 Subject: Re: How to the the physical addresses under linux (au1500)
-Date:	Tue, 3 May 2005 16:09:58 -0400
-To:	Sergio Ruiz <quekio@gmail.com>
-X-Mailer: Apple Mail (2.622)
-Return-Path: <dan@embeddededge.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+Return-Path: <quekio@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7848
+X-archive-position: 7849
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@embeddededge.com
+X-original-sender: quekio@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
+On 5/3/05, Dan Malek <dan@embeddededge.com> wrote:
+>
+> On May 3, 2005, at 3:56 PM, Sergio Ruiz wrote:
+>
+> > I am trying to program  the DMA (with the ac97) in assembler using a
+> > linux kernel module for mips teaching purposes.
+>
+> I think you want to choose a more simple teaching example :-)
 
-On May 3, 2005, at 3:56 PM, Sergio Ruiz wrote:
+Well, in fact we are two the students, the teacher gave us a xxs1500
+and invited us to go as far as we could. It is a computer arquitecture
+subject, so we wanted to use some periferic under linux and
+assembler(requiered) to promote GNU stuff with other students.
 
-> I am trying to program  the DMA (with the ac97) in assembler using a
-> linux kernel module for mips teaching purposes.
+The other alternative was to use YAMON, but we like linux and look
+around YOUR source code ;-)
 
-I think you want to choose a more simple teaching example :-)
+>
+> > Looking at the kernel source code, I found that I can get the physical
+> > address subtracting 0x8000000, but It doesnt seem to work.
+>
+> Not always.  On systems like this one that are not cache coherent,
+> we play games with mapped addresses to get uncached spaces
+> or you need to apply various macros/functions to keep the space
+> coherent.
+>
 
-> Looking at the kernel source code, I found that I can get the physical
-> address subtracting 0x8000000, but It doesnt seem to work.
+We got the ac97 working, so we would make it much cooler if we get the
+DMA working with the ac97. If there is no way, no problem.
 
-Not always.  On systems like this one that are not cache coherent,
-we play games with mapped addresses to get uncached spaces
-or you need to apply various macros/functions to keep the space
-coherent.
-
-> Any idea?
-
-Use a more simple example.  Maybe just update one of the
-LED displays on the board.
+So, If there is a way to get it I would appreciate it a lot. We use a
+char device so I have to make an external program to pass the buffer.
+Using this way, is there any easy way to solve the problem??
 
 
-	-- Dan
+> > Any idea?
+>
+> Use a more simple example.  Maybe just update one of the
+> LED displays on the board.
+>
+>
+>         -- Dan
+>
+>
+
+Thanks a lot! If there is no solution, dont worry,
+
+Thanks again,
+
+Sergio
+
+If anyone is interested, we are documenting what we are doing, but it
+is in spanish :(

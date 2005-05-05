@@ -1,57 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 May 2005 17:43:00 +0100 (BST)
-Received: from smtp007.bizmail.sc5.yahoo.com ([IPv6:::ffff:66.163.170.10]:17335
-	"HELO smtp007.bizmail.sc5.yahoo.com") by linux-mips.org with SMTP
-	id <S8225005AbVEEQmp>; Thu, 5 May 2005 17:42:45 +0100
-Received: from unknown (HELO ?192.168.1.101?) (ppopov@embeddedalley.com@63.194.214.47 with plain)
-  by smtp007.bizmail.sc5.yahoo.com with SMTP; 5 May 2005 16:42:42 -0000
-Subject: Re: USB hangs on AU1100
-From:	Pete Popov <ppopov@embeddedalley.com>
-Reply-To: ppopov@embeddedalley.com
-To:	Rodolfo Giometti <giometti@linux.it>
-Cc:	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
-In-Reply-To: <20050505155435.GA28227@enneenne.com>
-References: <20050505155435.GA28227@enneenne.com>
-Content-Type: text/plain
-Organization: Embedded Alley Solutions, Inc
-Date:	Thu, 05 May 2005 09:42:41 -0700
-Message-Id: <1115311361.1614.6.camel@localhost.localdomain>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 May 2005 18:14:14 +0100 (BST)
+Received: from verein.lst.de ([IPv6:::ffff:213.95.11.210]:53921 "EHLO
+	mail.lst.de") by linux-mips.org with ESMTP id <S8225008AbVEERN7>;
+	Thu, 5 May 2005 18:13:59 +0100
+Received: from verein.lst.de (localhost [127.0.0.1])
+	by mail.lst.de (8.12.3/8.12.3/Debian-7.1) with ESMTP id j45HDi6t012005
+	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
+	Thu, 5 May 2005 19:13:44 +0200
+Received: (from hch@localhost)
+	by verein.lst.de (8.12.3/8.12.3/Debian-6.6) id j45HDhxv012003;
+	Thu, 5 May 2005 19:13:43 +0200
+Date:	Thu, 5 May 2005 19:13:43 +0200
+From:	Christoph Hellwig <hch@lst.de>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Alex Gonzalez <linux-mips@packetvision.com>,
+	Bryan Althouse <bryan.althouse@3phoenix.com>,
+	linux-mips@linux-mips.org, TheNop@gmx.net
+Subject: Re:
+Message-ID: <20050505171343.GA11754@lst.de>
+References: <20050428191608Z8225923-1340+6320@linux-mips.org> <1115214949.13387.13.camel@euskadi.packetvision> <20050505145508.GJ17119@linux-mips.org>
 Mime-Version: 1.0
-X-Mailer: Evolution 2.0.4 (2.0.4-4) 
-Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@embeddedalley.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20050505145508.GJ17119@linux-mips.org>
+User-Agent: Mutt/1.3.28i
+X-Scanned-By: MIMEDefang 2.39
+Return-Path: <hch@lst.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7860
+X-archive-position: 7861
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@embeddedalley.com
+X-original-sender: hch@lst.de
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 2005-05-05 at 17:54 +0200, Rodolfo Giometti wrote:
-> Hello,
+On Thu, May 05, 2005 at 03:55:09PM +0100, Ralf Baechle wrote:
+> On Wed, May 04, 2005 at 02:55:49PM +0100, Alex Gonzalez wrote:
 > 
-> I'm just using USB host support on a AU1100 developing board (DB1100
-> configuration) and i notice that CPU locks in function
-> au1xxx_start_hc():
+> > Do you need AGP support? My kernel is configured without it.
 > 
->         /* wait for reset complete (read register twice; see au1500 errata) */
->         while (au_readl(USB_HOST_CONFIG),
->                 !(au_readl(USB_HOST_CONFIG) & USBH_ENABLE_RD))
->                 udelay(1000);
-> 
-> while waiting for USB controller to reset. I checked it out and I
-> discovered that register USB_HOST_CONFIG is fixed at value 0xe! So the
-> controller never reset...
-> 
-> Linux is 2.6.12-rc3 from CVS.
-> 
-> Someone knows whats wrong?
+> I'm not aware of any AGP bridge for MIPS systems.
 
-It sounds like this is a custom Au1100 based board? What boot code are
-you running?  I'm guessing the SOC isn't setup correctly or you have a
-HW problem.
-
-Pete
+The SGI Onyx 4 and Tezro systems have AGP slots, but they a really
+running as PCI-X with an odd form factor and there's no AGP GART
+(which isn't needed as the systems have a real iommu)

@@ -1,36 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 May 2005 23:47:16 +0100 (BST)
-Received: from smtp007.bizmail.sc5.yahoo.com ([IPv6:::ffff:66.163.170.10]:22442
-	"HELO smtp007.bizmail.sc5.yahoo.com") by linux-mips.org with SMTP
-	id <S8225254AbVEEWrC>; Thu, 5 May 2005 23:47:02 +0100
-Received: from unknown (HELO ?192.168.1.101?) (ppopov@embeddedalley.com@71.128.175.242 with plain)
-  by smtp007.bizmail.sc5.yahoo.com with SMTP; 5 May 2005 22:46:58 -0000
-Subject: Re: pcmcia-cs package for linux-mips 2.6.10?
-From:	Pete Popov <ppopov@embeddedalley.com>
-Reply-To: ppopov@embeddedalley.com
-To:	Kiran Thota <Kiran_Thota@pmc-sierra.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 May 2005 00:32:30 +0100 (BST)
+Received: from father.pmc-sierra.com ([IPv6:::ffff:216.241.224.13]:9606 "HELO
+	father.pmc-sierra.bc.ca") by linux-mips.org with SMTP
+	id <S8225257AbVEEXcP>; Fri, 6 May 2005 00:32:15 +0100
+Received: (qmail 1948 invoked by uid 101); 5 May 2005 23:32:03 -0000
+Received: from unknown (HELO ogyruan.pmc-sierra.bc.ca) (216.241.226.236)
+  by father.pmc-sierra.com with SMTP; 5 May 2005 23:32:03 -0000
+Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
+	by ogyruan.pmc-sierra.bc.ca (8.13.3/8.12.7) with ESMTP id j45NW3jI001058;
+	Thu, 5 May 2005 16:32:03 -0700
+Received: by bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca with Internet Mail Service (5.5.2656.59)
+	id <JGC9B4TB>; Thu, 5 May 2005 16:32:03 -0700
+Message-ID: <9DFF23E1E33391449FDC324526D1F259024380C8@sjc1exm02.pmc_nt.nt.pmc-sierra.bc.ca>
+From:	Kiran Thota <Kiran_Thota@pmc-sierra.com>
+To:	"'ppopov@embeddedalley.com'" <ppopov@embeddedalley.com>
 Cc:	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>,
 	"'linux-pcmcia@lists.infradead.org'" 
 	<linux-pcmcia@lists.infradead.org>
-In-Reply-To: <9DFF23E1E33391449FDC324526D1F259024380C7@sjc1exm02.pmc_nt.nt.pmc-sierra.bc.ca>
-References: <9DFF23E1E33391449FDC324526D1F259024380C7@sjc1exm02.pmc_nt.nt.pmc-sierra.bc.ca>
+Subject: RE: pcmcia-cs package for linux-mips 2.6.10?
+Date:	Thu, 5 May 2005 16:32:02 -0700 
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2656.59)
 Content-Type: text/plain
-Organization: Embedded Alley Solutions, Inc
-Date:	Thu, 05 May 2005 15:46:53 -0700
-Message-Id: <1115333213.5820.104.camel@localhost.localdomain>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.0.4 (2.0.4-4) 
-Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@embeddedalley.com>
+Return-Path: <Kiran_Thota@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7871
+X-archive-position: 7872
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@embeddedalley.com
+X-original-sender: Kiran_Thota@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
+
+I m trying to build memory_cs.o as a module.
+It aint available in kernel. What do i do?
+
+-----Original Message-----
+From: Pete Popov [mailto:ppopov@embeddedalley.com]
+Sent: Thursday, May 05, 2005 3:47 PM
+To: Kiran Thota
+Cc: 'linux-mips@linux-mips.org'; 'linux-pcmcia@lists.infradead.org'
+Subject: Re: pcmcia-cs package for linux-mips 2.6.10?
+
 
 On Thu, 2005-05-05 at 15:43 -0700, Kiran Thota wrote:
 > 

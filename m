@@ -1,49 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 May 2005 16:12:17 +0100 (BST)
-Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:1563 "EHLO
-	bacchus.net.dhis.org") by linux-mips.org with ESMTP
-	id <S8224990AbVEEPMA>; Thu, 5 May 2005 16:12:00 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.1/8.13.1) with ESMTP id j45FBlUs009110;
-	Thu, 5 May 2005 16:11:47 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j45FBlln009109;
-	Thu, 5 May 2005 16:11:47 +0100
-Date:	Thu, 5 May 2005 16:11:47 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Bryan Althouse <bryan.althouse@3phoenix.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re:
-Message-ID: <20050505151147.GK17119@linux-mips.org>
-References: <20050505145508.GJ17119@linux-mips.org> <20050505150853Z8224990-1340+6554@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 May 2005 16:54:55 +0100 (BST)
+Received: from adsl-72-19.38-151.net24.it ([IPv6:::ffff:151.38.19.72]:4009
+	"EHLO zaigor.enneenne.com") by linux-mips.org with ESMTP
+	id <S8225002AbVEEPyk> convert rfc822-to-8bit; Thu, 5 May 2005 16:54:40 +0100
+Received: from giometti by zaigor.enneenne.com with local (Exim 3.36 #1 (Debian))
+	id 1DTigN-0000AR-00
+	for <linux-mips@linux-mips.org>; Thu, 05 May 2005 17:54:35 +0200
+Date:	Thu, 5 May 2005 17:54:35 +0200
+From:	Rodolfo Giometti <giometti@linux.it>
+To:	linux-mips@linux-mips.org
+Subject: USB hangs on AU1100
+Message-ID: <20050505155435.GA28227@enneenne.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20050505150853Z8224990-1340+6554@linux-mips.org>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Transfer-Encoding: 8BIT
+Organization: Programmi e soluzioni GNU/Linux
+X-PGP-Key: gpg --keyserver keyserver.penguin.de --recv-keys D25A5633
+User-Agent: Mutt/1.5.6+20040722i
+Return-Path: <giometti@enneenne.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7857
+X-archive-position: 7858
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: giometti@linux.it
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, May 05, 2005 at 11:08:39AM -0400, Bryan Althouse wrote:
+Hello,
 
-> Right, there is no AGP.  At first, I was unable to locate the
-> yosemite_defconfig, so I was running xconfig without a properly defaulted
-> .config.  I inadvertently left the AGP support enabled.  Now that I am
-> starting with yosemite_defcofig as a base-line, I have no problems compiling
-> the kernel.
+I'm just using USB host support on a AU1100 developing board (DB1100
+configuration) and i notice that CPU locks in function
+au1xxx_start_hc():
 
-Oh, I was pretty sure you'd not have AGP.  However there are a few systems
-which need high graphics performance and that's where AGP would make sense,
-so while it's not very likely I could see some need for AGP for such
-systems and did my posting in the hope somebody would raise his hand in
-case there's AGP for MIPS after all ...
+        /* wait for reset complete (read register twice; see au1500 errata) */
+        while (au_readl(USB_HOST_CONFIG),
+                !(au_readl(USB_HOST_CONFIG) & USBH_ENABLE_RD))
+                udelay(1000);
 
-  Ralf
+while waiting for USB controller to reset. I checked it out and I
+discovered that register USB_HOST_CONFIG is fixed at value 0xe! So the
+controller never reset...
+
+Linux is 2.6.12-rc3 from CVS.
+
+Someone knows whats wrong?
+
+Thanks in advance,
+
+Rodolfo Giometti
+
+-- 
+
+GNU/Linux Solutions                  e-mail:    giometti@linux.it
+Linux Device Driver                             giometti@enneenne.com
+Embedded Systems                     home page: giometti.enneenne.com
+UNIX programming                     phone:     +39 349 2432127

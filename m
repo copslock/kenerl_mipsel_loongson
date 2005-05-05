@@ -1,37 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 May 2005 15:56:01 +0100 (BST)
-Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:40975 "EHLO
-	bacchus.net.dhis.org") by linux-mips.org with ESMTP
-	id <S8224990AbVEEOz0>; Thu, 5 May 2005 15:55:26 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.1/8.13.1) with ESMTP id j45EtAkv008288;
-	Thu, 5 May 2005 15:55:10 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j45Et9TA008287;
-	Thu, 5 May 2005 15:55:09 +0100
-Date:	Thu, 5 May 2005 15:55:09 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Alex Gonzalez <linux-mips@packetvision.com>
-Cc:	Bryan Althouse <bryan.althouse@3phoenix.com>,
-	linux-mips@linux-mips.org, TheNop@gmx.net
-Subject: Re:
-Message-ID: <20050505145508.GJ17119@linux-mips.org>
-References: <20050428191608Z8225923-1340+6320@linux-mips.org> <1115214949.13387.13.camel@euskadi.packetvision>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1115214949.13387.13.camel@euskadi.packetvision>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 May 2005 16:09:09 +0100 (BST)
+Received: from rwcrmhc11.comcast.net ([IPv6:::ffff:204.127.198.35]:9203 "EHLO
+	rwcrmhc11.comcast.net") by linux-mips.org with ESMTP
+	id <S8224990AbVEEPIx>; Thu, 5 May 2005 16:08:53 +0100
+Received: from ba3pi (pcp0010731669pcs.howard01.md.comcast.net[69.243.71.130])
+          by comcast.net (rwcrmhc11) with SMTP
+          id <200505051508450130050on3e>; Thu, 5 May 2005 15:08:45 +0000
+From:	"Bryan Althouse" <bryan.althouse@3phoenix.com>
+To:	"'Ralf Baechle'" <ralf@linux-mips.org>
+Cc:	<linux-mips@linux-mips.org>
+Subject: RE: 
+Date:	Thu, 5 May 2005 11:08:39 -0400
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Office Outlook, Build 11.0.6353
+Thread-Index: AcVRgnWRf9gRuQGhQ7S4aOEaCBKtJAAAJxWQ
+In-Reply-To: <20050505145508.GJ17119@linux-mips.org>
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
+Message-Id: <20050505150853Z8224990-1340+6554@linux-mips.org>
+Return-Path: <bryan.althouse@3phoenix.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7855
+X-archive-position: 7856
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: bryan.althouse@3phoenix.com
 Precedence: bulk
 X-list: linux-mips
+
+Ralf,
+
+Right, there is no AGP.  At first, I was unable to locate the
+yosemite_defconfig, so I was running xconfig without a properly defaulted
+.config.  I inadvertently left the AGP support enabled.  Now that I am
+starting with yosemite_defcofig as a base-line, I have no problems compiling
+the kernel.
+
+Thanks,
+Bryan
+
+-----Original Message-----
+From: Ralf Baechle [mailto:ralf@linux-mips.org] 
+Sent: Thursday, May 05, 2005 10:55 AM
+To: Alex Gonzalez
+Cc: Bryan Althouse; linux-mips@linux-mips.org; TheNop@gmx.net
+Subject: Re:
 
 On Wed, May 04, 2005 at 02:55:49PM +0100, Alex Gonzalez wrote:
 

@@ -1,62 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 May 2005 19:07:16 +0100 (BST)
-Received: from clock-tower.bc.nu ([IPv6:::ffff:81.2.110.250]:29589 "EHLO
-	lxorguk.ukuu.org.uk") by linux-mips.org with ESMTP
-	id <S8225009AbVEESHB>; Thu, 5 May 2005 19:07:01 +0100
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by lxorguk.ukuu.org.uk (8.12.11/8.12.11) with ESMTP id j45I5fGA023909;
-	Thu, 5 May 2005 19:05:41 +0100
-Received: (from alan@localhost)
-	by localhost.localdomain (8.12.11/8.12.11/Submit) id j45I5e9F023908;
-	Thu, 5 May 2005 19:05:40 +0100
-X-Authentication-Warning: localhost.localdomain: alan set sender to alan@lxorguk.ukuu.org.uk using -f
-Subject: Re: ATA devices attached to arbitary busses
-From:	Alan Cox <alan@lxorguk.ukuu.org.uk>
-To:	Bryan Althouse <bryan.althouse@3phoenix.com>
-Cc:	owner-linux-mips@oss.sgi.com, linux-mips@linux-mips.org
-In-Reply-To: <20050505175716Z8225009-1340+6570@linux-mips.org>
-References: <20050505175716Z8225009-1340+6570@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 May 2005 19:50:32 +0100 (BST)
+Received: from smtp005.bizmail.sc5.yahoo.com ([IPv6:::ffff:66.163.175.82]:58276
+	"HELO smtp005.bizmail.sc5.yahoo.com") by linux-mips.org with SMTP
+	id <S8225011AbVEESuS>; Thu, 5 May 2005 19:50:18 +0100
+Received: from unknown (HELO ?192.168.1.101?) (ppopov@embeddedalley.com@71.128.175.242 with plain)
+  by smtp005.bizmail.sc5.yahoo.com with SMTP; 5 May 2005 18:50:14 -0000
+Subject: Re: USB hangs on AU1100
+From:	Pete Popov <ppopov@embeddedalley.com>
+Reply-To: ppopov@embeddedalley.com
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	Thiemo Seufer <ths@networkno.de>,
+	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
+In-Reply-To: <Pine.LNX.4.61L.0505051847410.21387@blysk.ds.pg.gda.pl>
+References: <20050505155435.GA28227@enneenne.com>
+	 <1115311361.1614.6.camel@localhost.localdomain>
+	 <20050505172017.GC1628@hattusa.textio>
+	 <Pine.LNX.4.61L.0505051847410.21387@blysk.ds.pg.gda.pl>
 Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-Message-Id: <1115316338.19844.100.camel@localhost.localdomain>
+Organization: Embedded Alley Solutions, Inc
+Date:	Thu, 05 May 2005 11:50:14 -0700
+Message-Id: <1115319014.5820.1.camel@localhost.localdomain>
 Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.4.6 (1.4.6-2) 
-Date:	Thu, 05 May 2005 19:05:39 +0100
-Return-Path: <alan@lxorguk.ukuu.org.uk>
+X-Mailer: Evolution 2.0.4 (2.0.4-4) 
+Content-Transfer-Encoding: 7bit
+Return-Path: <ppopov@embeddedalley.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7866
+X-archive-position: 7867
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alan@lxorguk.ukuu.org.uk
+X-original-sender: ppopov@embeddedalley.com
 Precedence: bulk
 X-list: linux-mips
 
-> FPGA.  Right now, I'm a bit clueless as to how to get the linux kernel to
-> support this.  Could someone please point me in the right direction?  What
-> kernel source files should I be looking at?  Is there any documentation?
-> Many thanks!
+On Thu, 2005-05-05 at 18:51 +0100, Maciej W. Rozycki wrote:
+> On Thu, 5 May 2005, Thiemo Seufer wrote:
+> 
+> > > > I'm just using USB host support on a AU1100 developing board (DB1100
+> > > > configuration) and i notice that CPU locks in function
+> > > > au1xxx_start_hc():
+> > > > 
+> > > >         /* wait for reset complete (read register twice; see au1500 errata) */
+> > > >         while (au_readl(USB_HOST_CONFIG),
+> > > >                 !(au_readl(USB_HOST_CONFIG) & USBH_ENABLE_RD))
+> > > >                 udelay(1000);
+> > > > 
+> > > > while waiting for USB controller to reset. I checked it out and I
+> > > > discovered that register USB_HOST_CONFIG is fixed at value 0xe! So the
+> > > > controller never reset...
+> > > > 
+> > > > Linux is 2.6.12-rc3 from CVS.
+> > > > 
+> > > > Someone knows whats wrong?
+> > > 
+> > > It sounds like this is a custom Au1100 based board? What 
+> oot code are
+> > > you running?  I'm guessing the SOC isn't setup correctly or you have a
+> > > HW problem.
+> > 
+> > I wonder if the code works reliable. At least, a comma operator isn't a
+> > sequence point, which means the compiler is free to change the execution
+> > order.
+> 
+>  Good point -- even though the code is valid C, it's complete rubbish.  
+> I'd suggest rewriting it to get something readable first.
 
-It really depends on the complexity of your controller. If you are just
-doing PIO with generic IDE interfacing then its simply a matter of
-telling Linux that there is an interface at these addresses with these
-port operations and it'll just do the rest for you, except hotplug.
+Interesting. I hadn't looked at this chunk of code before.
 
-Basically for the standard port layouts.
-
-	hw_regs_t hw;
-	ide_hwif_t *hwif;
-
-	memset(&hw, 0, sizeof(hw));
-	ide_std_init_ports(&hw, base_port_num, ctrl_port);
-	hw.irq = IRQ_LINE;
-	hw.dma = NO_DMA;
-
-	index = ide_register_hw(&hw, &hwif);
-
-If the port layout is non standard and you use mmio etc then you need to
-set hw up by hand. drivers/ide/legacy/macide.c is a good example of
-interfacing a non standard controller.
-
-Alan
+Pete

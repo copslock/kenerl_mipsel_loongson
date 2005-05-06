@@ -1,89 +1,89 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 May 2005 16:20:29 +0100 (BST)
-Received: from rwcrmhc14.comcast.net ([IPv6:::ffff:216.148.227.89]:24481 "EHLO
-	rwcrmhc14.comcast.net") by linux-mips.org with ESMTP
-	id <S8225995AbVEFPUG>; Fri, 6 May 2005 16:20:06 +0100
-Received: from ba3pi (pcp0010731669pcs.howard01.md.comcast.net[69.243.71.130])
-          by comcast.net (rwcrmhc14) with SMTP
-          id <200505061519550140086qe8e>; Fri, 6 May 2005 15:19:55 +0000
-From:	"Bryan Althouse" <bryan.althouse@3phoenix.com>
-To:	"'Alan Cox'" <alan@lxorguk.ukuu.org.uk>
-Cc:	<linux-mips@linux-mips.org>
-Subject: RE: ATA devices attached to arbitary busses
-Date:	Fri, 6 May 2005 11:19:47 -0400
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Office Outlook, Build 11.0.6353
-Thread-Index: AcVRnTpQ2HSr6HCSTjOMsTTmmVOC6gAphcdQ
-In-Reply-To: <1115316338.19844.100.camel@localhost.localdomain>
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
-Message-Id: <20050506152006Z8225995-1340+6646@linux-mips.org>
-Return-Path: <bryan.althouse@3phoenix.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 May 2005 16:46:58 +0100 (BST)
+Received: from smtp002.bizmail.yahoo.com ([IPv6:::ffff:216.136.172.126]:45978
+	"HELO smtp002.bizmail.yahoo.com") by linux-mips.org with SMTP
+	id <S8226007AbVEFPqn>; Fri, 6 May 2005 16:46:43 +0100
+Received: from unknown (HELO ?192.168.1.101?) (ppopov@embeddedalley.com@63.194.214.47 with plain)
+  by smtp002.bizmail.yahoo.com with SMTP; 6 May 2005 15:46:39 -0000
+Subject: Re: dbau1200 ethernet driver?
+From:	Pete Popov <ppopov@embeddedalley.com>
+Reply-To: ppopov@embeddedalley.com
+To:	"Ruslan V.Pisarev" <jerry@izmiran.rssi.ru>
+Cc:	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
+In-Reply-To: <261758805.20050506155322@izmiran.rssi.ru>
+References: <261758805.20050506155322@izmiran.rssi.ru>
+Content-Type: text/plain; charset=utf-8
+Organization: Embedded Alley Solutions, Inc
+Date:	Fri, 06 May 2005 08:46:40 -0700
+Message-Id: <1115394400.5785.3.camel@localhost.localdomain>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.0.4 (2.0.4-4) 
+Content-Transfer-Encoding: 8bit
+Return-Path: <ppopov@embeddedalley.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7884
+X-archive-position: 7885
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bryan.althouse@3phoenix.com
+X-original-sender: ppopov@embeddedalley.com
 Precedence: bulk
 X-list: linux-mips
 
+On Fri, 2005-05-06 at 15:53 +0300, Ruslan V.Pisarev wrote:
+>   Hi!
+> 
+>  I compiled last 2.6 kernel (2-3 weeks ago from cvs@linux-mips) and
+> trying to start it on DBAu1200 development board. First problem I
+> discovered with "nfsroot" configuration - is that kernel cannot find
+> network interface at boot-time.
+>  There is a smc91c111 network chip on board, so my question is - what
+> driver is suitable with him?
 
-Alan,
+The smc91x.c driver. However, I don't remember if that driver was
+tested.  The board was tested with a different smc driver which I
+couldn't push in the tree because it was old and would conflict with the
+smc91x.c.
 
-Thank you, that is very helpful.  I think I understand, but let me ramble a
-bit so that you can correct me if I am wrong.  
+>  Is it "MIPS AU1000 Ethernet support"
+> which fails to compile with "error: `NUM_ETH_INTERFACES' undeclared"
+> (and it must be?) or something different? It seems that I have enabled
+> all other options for ethernet functionality.
 
-All IDE drives should have the identical memory map.  But, the kernel does
-not communicate directly with the drive, it communicates though an IDE host
-adaptor (which may have different implementations).  If the host adaptor's
-memory map "matches" that of the IDE drive spec, then you consider it to be
-a "standard port layout"?  Since my host adaptor will be implemented in an
-FPGA, if I give it the IDE memory map defined in ide.h, then your example
-code will be applicable.
-
-The memory map defined in ide.h makes sense to me (it seems to match the IDE
-drive memory map) until we get down to offset 6 (IDE_SELECT_OFFSET).  From
-here down, I have trouble matching the #define names with the register
-names/descriptions from the IDE spec.  Also, I am puzzled as to why there
-are 10 registers defined in ide.h when my IDE spec only shows 9.  The IDE
-spec that I am referencing looks like this:
-
-CS0   CS1    DA2   DA1   DA0   READ              WRITE
-A     N      0     0     0     Data              Data
-A     N      0     0     1     Error             Features
-A     N      0     1     0     Sector Count      Sector Count
-A     N      0     1     1     Sector Number     Sector Number
-A     N      1     0     0     Cylinder Low      Cylinder Low
-A     N      1     0     1     Cylinder High     Cylinder High
-A     N      1     1     0     Device/Head       Device/Head
-A     N      1     1     1     Status            Command
-N     A      1     1     0     Alternate Status  Device Control (IRQ en/dis)
+Well, that's a different driver.
 
 
-ide.h shows the following offsets:
 
-#define IDE_DATA_OFFSET		(0)
-#define IDE_ERROR_OFFSET	(1)
-#define IDE_NSECTOR_OFFSET	(2)
-#define IDE_SECTOR_OFFSET	(3)
-#define IDE_LCYL_OFFSET		(4)
-#define IDE_HCYL_OFFSET		(5)
-#define IDE_SELECT_OFFSET	(6)
-#define IDE_STATUS_OFFSET	(7)
-#define IDE_CONTROL_OFFSET	(8)
-#define IDE_IRQ_OFFSET		(9)
+Pete
 
-Do you know of an IDE host adapter chipset which is standard?  If someone
-knows of a part number, I could look up its datasheet.  This would probably
-clear up my confusion.  Thanks again!  
-
-Bryan
-
->It really depends on the complexity of your controller. If you are just
->doing PIO with generic IDE interfacing then its simply a matter of
->telling Linux that there is an interface at these addresses with these
->port operations and it'll just do the rest for you, except hotplug.
+> 
+> 
+> the part of boot log is:
+> 
+> loop: loaded (max 8 devices)
+> nbd: registered device at major 43
+> NET: Registered protocol family 2
+> IP: routing cache hash table of 2048 buckets, 16Kbytes
+> TCP established hash table entries: 16384 (order: 5, 131072 bytes)
+> TCP bind hash table entries: 16384 (order: 4, 65536 bytes)
+> TCP: Hash tables configured (established 16384 bind 16384)
+> NET: Registered protocol family 1
+> NET: Registered protocol family 17
+> IP-Config: No network devices available.
+> Looking up port of RPC 100003/2 on 192.168.0.30
+> RPC: sendmsg returned error 128
+> portmap: RPC call returned error 128
+> Root-NFS: Unable to get nfsd port number from server, using default
+> Looking up port of RPC 100005/1 on 192.168.0.30
+> RPC: sendmsg returned error 128
+> portmap: RPC call returned error 128
+> Root-NFS: Unable to get mountd port number from server, using default
+> RPC: sendmsg returned error 128
+> mount: RPC call returned error 128
+> 
+> 
+>    ()_()
+> --( °,° )---[21398845]-[jerry¤wicomtechnologies.com]-
+>   (") (")                 -<The Bat! 3.0.1.33>- -<06/05/2005 15:35>-
+> 
+> 

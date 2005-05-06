@@ -1,65 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 May 2005 18:12:52 +0100 (BST)
-Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:49556 "EHLO
-	witte.sonytel.be") by linux-mips.org with ESMTP id <S8226019AbVEFRMh>;
-	Fri, 6 May 2005 18:12:37 +0100
-Received: from numbat.sonytel.be (mail.sonytel.be [43.221.60.197])
-	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id j46HCXUu014693;
-	Fri, 6 May 2005 19:12:34 +0200 (MEST)
-Date:	Fri, 6 May 2005 19:12:30 +0200 (CEST)
-From:	Geert Uytterhoeven <geert@linux-m68k.org>
-To:	Bryan Althouse <bryan.althouse@3phoenix.com>
-cc:	"'Alan Cox'" <alan@lxorguk.ukuu.org.uk>,
-	"'Linux/MIPS Development'" <linux-mips@linux-mips.org>
-Subject: RE: ATA devices attached to arbitary busses
-In-Reply-To: <200505061709.j46H9L3a021796@nerdnet.nl>
-Message-ID: <Pine.LNX.4.62.0505061911220.5272@numbat.sonytel.be>
-References: <200505061709.j46H9L3a021796@nerdnet.nl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 May 2005 18:33:40 +0100 (BST)
+Received: from mother.pmc-sierra.com ([IPv6:::ffff:216.241.224.12]:23800 "HELO
+	mother.pmc-sierra.bc.ca") by linux-mips.org with SMTP
+	id <S8226009AbVEFRdY>; Fri, 6 May 2005 18:33:24 +0100
+Received: (qmail 23887 invoked by uid 101); 6 May 2005 17:33:13 -0000
+Received: from unknown (HELO ogmios.pmc-sierra.bc.ca) (216.241.226.59)
+  by mother.pmc-sierra.com with SMTP; 6 May 2005 17:33:13 -0000
+Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
+	by ogmios.pmc-sierra.bc.ca (8.13.3/8.12.7) with ESMTP id j46HXCOi015884;
+	Fri, 6 May 2005 10:33:12 -0700
+Received: by bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca with Internet Mail Service (5.5.2656.59)
+	id <JGC9C17D>; Fri, 6 May 2005 10:33:12 -0700
+Message-ID: <9DFF23E1E33391449FDC324526D1F259024380CB@sjc1exm02.pmc_nt.nt.pmc-sierra.bc.ca>
+From:	Kiran Thota <Kiran_Thota@pmc-sierra.com>
+To:	"'Ulrich Eckhardt'" <eckhardt@satorlaser.com>,
+	linux-mips@linux-mips.org
+Subject: RE: CF custom implementation
+Date:	Fri, 6 May 2005 10:32:40 -0700 
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <geert@linux-m68k.org>
+X-Mailer: Internet Mail Service (5.5.2656.59)
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Return-Path: <Kiran_Thota@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7891
+X-archive-position: 7892
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: Kiran_Thota@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 6 May 2005, Bryan Althouse wrote:
-> > This is not the direct `memory map' of the IDE drive's registers! It's an
-> > indirect map, cfr. e.g.
-> >
-> >   #define IDE_DATA_REG            (HWIF(drive)->io_ports[IDE_DATA_OFFSET])
-> >
-> > So the actual register is found by looking up offset IDE_DATA_OFFSET in
-> > the array HWIF(drive)->io_ports[].
-> 
-> Yes, I understand.  This is starting to make more sense.  Here is what I
-> have figured out:  The first 8 offsets are normally 0-7, just like their
-> array indexes.  Index 8 and 9, IDE_CONTROLL_OFFSET and IDE_IRQ_OFFSET, were
-> confusing me because I was expecting them to be the actual offset 8 and 9 --
-> and I could not find any IDE adapter data sheets that showed them located as
-> such.  Now that I take a second look at ide_std_init_ports(), I see that the
-> CONTROL register is treated as a special case, i.e. it is not expected to
-> follow the STATUS register in address space.  This jives with what I have
-> seen in data sheets.  
-> 
-> It looks like the example that Alan contributed does not update
-> HWIF(drive)->io_ports[IDE_IRQ_OFFSET].  Or at least I cant figure out where.
+Ulrich,
+ The ide-patch i took is from ftp://ftp.buici.com/pub/arm/patch-linux-2.6.11/
+Is that good enough?
 
-Indeed, macide passes 0 for ctrlport and irqport to ide_setup_ports(). If you
-need another example, you can look at drivers/ide/legacy/gayle.c.
+Alan was referring to PIO mode in that thread but this implementation doesnt 
+have IO mode and also no IDE support. It only has memory mode and I will 
+have to support it as memory. How do I do that?
 
-Gr{oetje,eeting}s,
+Another question: If I rework the board so that the wires coming to MEMR and MEMW
+are rewired to IOR and IOW respectively, does it work in TrueIDE mode? Just a thought!
 
-						Geert
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Thanks,
+Kiran
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+-----Original Message-----
+From: linux-mips-bounce@linux-mips.org
+[mailto:linux-mips-bounce@linux-mips.org]On Behalf Of Ulrich Eckhardt
+Sent: Friday, May 06, 2005 12:14 AM
+To: linux-mips@linux-mips.org
+Subject: Re: CF custom implementation
+
+
+Kiran Thota wrote:
+> I am working on a MIPS-based processor SoC which has a custom CF
+> implementation over Local Bus. The CF doesnt support IO mode, interrupts, 
+> 32-bit support.
+> It has limited register support [no interface registers to reset the CF]. I
+> am using 2.6.10 from linux-mips. I have already written a PCMCIA/CF socket
+> socket for the same.
+> The goal is to use the CF cards as memoy devices. Advise me on the path to
+> take:
+>
+> PCMCIA/CF ->CS/DS -> IDE [I found a patch to make IDE work in polled mode]
+
+Could you tell me where you found that patch?
+
+> I am currently using Lexar and Hitachi Compact Flash cards.
+
+CF is a standard, so this shouldn't matter.
+
+> The CIS can be read and when the Linux boots up and I invoke cardmgr
+> [v3.2.8], it sees the device as ATA/IDE Fixed Disk [Func = 4 (Fixed Disk) ]
+> Is there a way to force it to come up in memory only mode? Please suggest.
+
+I'm using a CF card attached to the PCMCIA interface of an Alchemy Au1100. 
+Since my board only has a CF slot, I'm not using the whole PCMCIA stack at 
+all - CONFIG_PCMCIA=no and no cardmgr. All I do is detect the card, parse the 
+CIS and register the CF card with the IDE/ATA system of the kernel, just like 
+Alan Cox suggested in the recent thread "ATA devices attached to arbitary 
+busses". One good reason for me doing so is that I need to mount the root 
+filesystem from the CF but the PCMCIA stack requires user-space helpers.
+
+Uli

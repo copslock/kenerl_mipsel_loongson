@@ -1,30 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 May 2005 18:37:09 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:1541 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 May 2005 19:42:01 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:10502 "EHLO
 	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8226009AbVEFRgy>; Fri, 6 May 2005 18:36:54 +0100
+	id <S8226020AbVEFSlp>; Fri, 6 May 2005 19:41:45 +0100
 Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id B937CF59E4; Fri,  6 May 2005 19:36:46 +0200 (CEST)
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id C34E6F5A3F
+	for <linux-mips@linux-mips.org>; Fri,  6 May 2005 20:41:37 +0200 (CEST)
 Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
  by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 28279-10; Fri,  6 May 2005 19:36:46 +0200 (CEST)
+ id 15876-07 for <linux-mips@linux-mips.org>;
+ Fri,  6 May 2005 20:41:37 +0200 (CEST)
 Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id D5659E1C6D; Fri,  6 May 2005 19:36:45 +0200 (CEST)
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 27A70F5A1D
+	for <linux-mips@linux-mips.org>; Fri,  6 May 2005 20:41:37 +0200 (CEST)
 Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.1/8.13.1) with ESMTP id j46HajwP021329;
-	Fri, 6 May 2005 19:36:46 +0200
-Date:	Fri, 6 May 2005 18:36:56 +0100 (BST)
+	by piorun.ds.pg.gda.pl (8.13.1/8.13.1) with ESMTP id j46IfguV024349
+	for <linux-mips@linux-mips.org>; Fri, 6 May 2005 20:41:42 +0200
+Date:	Fri, 6 May 2005 19:41:53 +0100 (BST)
 From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:	Bryan Althouse <bryan.althouse@3phoenix.com>,
-	"'Alan Cox'" <alan@lxorguk.ukuu.org.uk>,
-	"'Linux/MIPS Development'" <linux-mips@linux-mips.org>
-Subject: RE: ATA devices attached to arbitary busses
-In-Reply-To: <Pine.LNX.4.62.0505061911220.5272@numbat.sonytel.be>
-Message-ID: <Pine.LNX.4.61L.0505061832390.25293@blysk.ds.pg.gda.pl>
-References: <200505061709.j46H9L3a021796@nerdnet.nl>
- <Pine.LNX.4.62.0505061911220.5272@numbat.sonytel.be>
+To:	linux-mips@linux-mips.org
+Subject: Re: CVS Update@linux-mips.org: linux
+In-Reply-To: <Pine.LNX.4.61L.0505061540540.25293@blysk.ds.pg.gda.pl>
+Message-ID: <Pine.LNX.4.61L.0505061940470.25293@blysk.ds.pg.gda.pl>
+References: <20050506143118Z8225421-1340+6642@linux-mips.org>
+ <Pine.LNX.4.61L.0505061540540.25293@blysk.ds.pg.gda.pl>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 X-Virus-Scanned: ClamAV 0.83/871/Thu May  5 15:50:45 2005 on piorun.ds.pg.gda.pl
@@ -34,7 +32,7 @@ Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7893
+X-archive-position: 7894
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,15 +40,61 @@ X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 6 May 2005, Geert Uytterhoeven wrote:
+On Fri, 6 May 2005, Maciej W. Rozycki wrote:
 
-> > It looks like the example that Alan contributed does not update
-> > HWIF(drive)->io_ports[IDE_IRQ_OFFSET].  Or at least I cant figure out where.
-> 
-> Indeed, macide passes 0 for ctrlport and irqport to ide_setup_ports(). If you
-> need another example, you can look at drivers/ide/legacy/gayle.c.
+>  Instead of polluting all the cpu_probe_*() functions, it should actually 
+> be moved to decode_config0().  I can apply a suitable fix.
 
- Or perhaps at "drivers/ide/mips/swarm.c" which is nice, being for MIPS, 
-memory-mapped and wired to an "arbitary bus". ;-)  No DMA, though.
+ How about this?
 
   Maciej
+
+patch-mips-2.6.12-rc3-20050506-4ktlb-0
+Index: arch/mips/kernel/cpu-probe.c
+===================================================================
+RCS file: /home/cvs/linux/arch/mips/kernel/cpu-probe.c,v
+retrieving revision 1.46
+diff -u -p -r1.46 cpu-probe.c
+--- arch/mips/kernel/cpu-probe.c	6 May 2005 14:31:13 -0000	1.46
++++ arch/mips/kernel/cpu-probe.c	6 May 2005 18:10:01 -0000
+@@ -429,7 +429,7 @@ static inline unsigned int decode_config
+ 	config0 = read_c0_config();
+ 
+ 	if (((config0 & MIPS_CONF_MT) >> 7) == 1)
+-		c->options |= MIPS_CPU_TLB;
++		c->options |= MIPS_CPU_TLB | MIPS_CPU_4KTLB;
+ 	isa = (config0 & MIPS_CONF_AT) >> 13;
+ 	switch (isa) {
+ 	case 0:
+@@ -515,7 +515,6 @@ static inline void decode_configs(struct
+ static inline void cpu_probe_mips(struct cpuinfo_mips *c)
+ {
+ 	decode_configs(c);
+-	c->options |= MIPS_CPU_4KTLB;
+ 	switch (c->processor_id & 0xff00) {
+ 	case PRID_IMP_4KC:
+ 		c->cputype = CPU_4KC;
+@@ -549,7 +548,6 @@ static inline void cpu_probe_mips(struct
+ static inline void cpu_probe_alchemy(struct cpuinfo_mips *c)
+ {
+ 	decode_configs(c);
+-	c->options |= MIPS_CPU_4KTLB;
+ 	switch (c->processor_id & 0xff00) {
+ 	case PRID_IMP_AU1_REV1:
+ 	case PRID_IMP_AU1_REV2:
+@@ -580,7 +578,6 @@ static inline void cpu_probe_alchemy(str
+ static inline void cpu_probe_sibyte(struct cpuinfo_mips *c)
+ {
+ 	decode_configs(c);
+-	c->options |= MIPS_CPU_4KTLB;
+ 	switch (c->processor_id & 0xff00) {
+ 	case PRID_IMP_SB1:
+ 		c->cputype = CPU_SB1;
+@@ -595,7 +592,6 @@ static inline void cpu_probe_sibyte(stru
+ static inline void cpu_probe_sandcraft(struct cpuinfo_mips *c)
+ {
+ 	decode_configs(c);
+-	c->options |= MIPS_CPU_4KTLB;
+ 	switch (c->processor_id & 0xff00) {
+ 	case PRID_IMP_SR71000:
+ 		c->cputype = CPU_SR71000;

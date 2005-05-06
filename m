@@ -1,52 +1,93 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 May 2005 17:19:08 +0100 (BST)
-Received: from cygnus.izmiran.rssi.ru ([IPv6:::ffff:193.232.24.21]:58039 "EHLO
-	cygnus.izmiran.rssi.ru") by linux-mips.org with ESMTP
-	id <S8226013AbVEFQSx>; Fri, 6 May 2005 17:18:53 +0100
-Received: from [127.0.0.1] (IDENT:10003@localhost [127.0.0.1])
-	by cygnus.izmiran.rssi.ru (8.12.4/8.12.4) with ESMTP id j46GIOcs021931;
-	Fri, 6 May 2005 20:18:31 +0400
-Date:	Fri, 6 May 2005 19:19:49 +0300
-From:	"Ruslan V.Pisarev" <jerry@izmiran.rssi.ru>
-X-Mailer: The Bat! (v3.0.1.33) Professional
-Reply-To: "Ruslan V.Pisarev" <jerry@izmiran.rssi.ru>
-Organization: Home
-X-Priority: 3 (Normal)
-Message-ID: <801670482.20050506191949@izmiran.rssi.ru>
-To:	Pete Popov <ppopov@embeddedalley.com>
-CC:	linux-mips@linux-mips.org
-Subject: Re[2]: dbau1200 ethernet driver?
-In-Reply-To: <1115394400.5785.3.camel@localhost.localdomain>
-References: <261758805.20050506155322@izmiran.rssi.ru>
- <1115394400.5785.3.camel@localhost.localdomain>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 May 2005 17:48:10 +0100 (BST)
+Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:31118 "EHLO
+	witte.sonytel.be") by linux-mips.org with ESMTP id <S8226017AbVEFQry>;
+	Fri, 6 May 2005 17:47:54 +0100
+Received: from numbat.sonytel.be (mail.sonytel.be [43.221.60.197])
+	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id j46GliUu013723;
+	Fri, 6 May 2005 18:47:45 +0200 (MEST)
+Date:	Fri, 6 May 2005 18:47:41 +0200 (CEST)
+From:	Geert Uytterhoeven <geert@linux-m68k.org>
+To:	Bryan Althouse <bryan.althouse@3phoenix.com>
+cc:	"'Alan Cox'" <alan@lxorguk.ukuu.org.uk>,
+	Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: RE: ATA devices attached to arbitary busses
+In-Reply-To: <20050506152006Z8225995-1340+6646@linux-mips.org>
+Message-ID: <Pine.LNX.4.62.0505061846170.5272@numbat.sonytel.be>
+References: <20050506152006Z8225995-1340+6646@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=Windows-1251
-Content-Transfer-Encoding: 8bit
-Return-Path: <jerry@izmiran.rssi.ru>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7888
+X-archive-position: 7889
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jerry@izmiran.rssi.ru
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
->[In reply to "dbau1200 ethernet driver?" from Pete Popov <ppopov@embeddedalley.com> to Ruslan V.Pisarev <jerry@izmiran.rssi.ru>  06/05/2005 18:46]
+On Fri, 6 May 2005, Bryan Althouse wrote:
+> All IDE drives should have the identical memory map.  But, the kernel does
+> not communicate directly with the drive, it communicates though an IDE host
+> adaptor (which may have different implementations).  If the host adaptor's
+> memory map "matches" that of the IDE drive spec, then you consider it to be
+> a "standard port layout"?  Since my host adaptor will be implemented in an
+> FPGA, if I give it the IDE memory map defined in ide.h, then your example
+> code will be applicable.
+> 
+> The memory map defined in ide.h makes sense to me (it seems to match the IDE
+> drive memory map) until we get down to offset 6 (IDE_SELECT_OFFSET).  From
+> here down, I have trouble matching the #define names with the register
+> names/descriptions from the IDE spec.  Also, I am puzzled as to why there
+> are 10 registers defined in ide.h when my IDE spec only shows 9.  The IDE
+> spec that I am referencing looks like this:
+> 
+> CS0   CS1    DA2   DA1   DA0   READ              WRITE
+> A     N      0     0     0     Data              Data
+> A     N      0     0     1     Error             Features
+> A     N      0     1     0     Sector Count      Sector Count
+> A     N      0     1     1     Sector Number     Sector Number
+> A     N      1     0     0     Cylinder Low      Cylinder Low
+> A     N      1     0     1     Cylinder High     Cylinder High
+> A     N      1     1     0     Device/Head       Device/Head
+> A     N      1     1     1     Status            Command
+> N     A      1     1     0     Alternate Status  Device Control (IRQ en/dis)
+> 
+> 
+> ide.h shows the following offsets:
+> 
+> #define IDE_DATA_OFFSET		(0)
+> #define IDE_ERROR_OFFSET	(1)
+> #define IDE_NSECTOR_OFFSET	(2)
+> #define IDE_SECTOR_OFFSET	(3)
+> #define IDE_LCYL_OFFSET		(4)
+> #define IDE_HCYL_OFFSET		(5)
+> #define IDE_SELECT_OFFSET	(6)
+> #define IDE_STATUS_OFFSET	(7)
+> #define IDE_CONTROL_OFFSET	(8)
+> #define IDE_IRQ_OFFSET		(9)
+> 
+> Do you know of an IDE host adapter chipset which is standard?  If someone
+> knows of a part number, I could look up its datasheet.  This would probably
+> clear up my confusion.  Thanks again!  
 
-PP> The smc91x.c driver. However, I don't remember if that driver was
-PP> tested.  The board was tested with a different smc driver which I
-PP> couldn't push in the tree because it was old and would conflict with the
-PP> smc91x.c.
+This is not the direct `memory map' of the IDE drive's registers! It's an
+indirect map, cfr. e.g.
 
-Ok. But as I replied earlier, this driver is not in MIPS architecture
-tree. And I suspect it needs some additional configurations and
-modifications..
-May I expect any solution in the near future or better do some digging by
-myself? (alas I have not much expirience with this stuff)
+    #define IDE_DATA_REG            (HWIF(drive)->io_ports[IDE_DATA_OFFSET])
 
+So the actual register is found by looking up offset IDE_DATA_OFFSET in the
+array HWIF(drive)->io_ports[].
 
-   ()_()
---( °,° )---[21398845]-[jerry¤wicomtechnologies.com]-
-  (") (")                 -<The Bat! 3.0.1.33>- -<06/05/2005 19:07>-
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

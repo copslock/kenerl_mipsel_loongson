@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 May 2005 14:09:07 +0100 (BST)
-Received: from money.ngit.com ([IPv6:::ffff:207.22.44.49]:20148 "EHLO
-	money.ngit.com") by linux-mips.org with ESMTP id <S8226091AbVEGNIv> convert rfc822-to-8bit;
-	Sat, 7 May 2005 14:08:51 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 May 2005 14:51:59 +0100 (BST)
+Received: from money.ngit.com ([IPv6:::ffff:207.22.44.49]:23476 "EHLO
+	money.ngit.com") by linux-mips.org with ESMTP id <S8226090AbVEGNvo> convert rfc822-to-8bit;
+	Sat, 7 May 2005 14:51:44 +0100
 Received: from lithium (router.ngit.com [207.22.44.62])
-	by money.ngit.com (8.11.7p1+Sun/8.11.7) with ESMTP id j47DB2A06638;
-	Sat, 7 May 2005 09:11:02 -0400 (EDT)
+	by money.ngit.com (8.11.7p1+Sun/8.11.7) with ESMTP id j47DrrA06721;
+	Sat, 7 May 2005 09:53:57 -0400 (EDT)
 From:	"Bogdan Vacaliuc" <bvacaliuc@ngit.com>
-To:	<ppopov@embeddedalley.com>,
-	"'Ruslan V.Pisarev'" <jerry@izmiran.rssi.ru>
-Cc:	<linux-mips@linux-mips.org>
-Subject: RE: dbau1200 ethernet driver?
-Date:	Sat, 7 May 2005 09:08:36 -0400
+To:	"'Kiran Thota'" <Kiran_Thota@pmc-sierra.com>,
+	"'Ulrich Eckhardt'" <eckhardt@satorlaser.com>,
+	<linux-mips@linux-mips.org>
+Subject: RE: CF custom implementation
+Date:	Sat, 7 May 2005 09:51:30 -0400
 Organization: NGI Technology, LLC
-Message-ID: <00c801c55305$e3de3660$0b03a8c0@lithium>
+Message-ID: <00c901c5530b$e49542a0$0b03a8c0@lithium>
 MIME-Version: 1.0
 Content-Type: text/plain;
 	charset="us-ascii"
@@ -20,14 +20,14 @@ Content-Transfer-Encoding: 8BIT
 X-Priority: 3 (Normal)
 X-MSMail-Priority: Normal
 X-Mailer: Microsoft Outlook, Build 10.0.6626
-In-Reply-To: <1115394400.5785.3.camel@localhost.localdomain>
+In-Reply-To: <9DFF23E1E33391449FDC324526D1F259024380CB@sjc1exm02.pmc_nt.nt.pmc-sierra.bc.ca>
 X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1441
 Importance: Normal
 Return-Path: <bvacaliuc@ngit.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7896
+X-archive-position: 7897
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,29 +35,41 @@ X-original-sender: bvacaliuc@ngit.com
 Precedence: bulk
 X-list: linux-mips
 
-On Friday, May 06, 2005 11:47 AM, Pete Popov wrote:
+On Friday, May 06, 2005 1:33 PM, Kiran Thota wrote:
 
-> On Fri, 2005-05-06 at 15:53 +0300, Ruslan V.Pisarev wrote:
->>   Hi!
->> 
->>  I compiled last 2.6 kernel (2-3 weeks ago from cvs@linux-mips) and
->> trying to start it on DBAu1200 development board. First problem I
->> discovered with "nfsroot" configuration - is that kernel cannot find
->> network interface at boot-time.  There is a smc91c111 network chip on
->> board, so my question is - what driver is suitable with him?
-> 
-> The smc91x.c driver. However, I don't remember if that driver was
-> tested.  The board was tested with a different smc driver which I
-> couldn't push in the tree because it was old and would conflict with
-> the smc91x.c.   
-> 
->>  Is it "MIPS AU1000 Ethernet support"
->> which fails to compile with "error: `NUM_ETH_INTERFACES' undeclared"
->> (and it must be?) or something different? It seems that I have
->> enabled all other options for ethernet functionality.
-> 
-> Well, that's a different driver.
+> Another question: If I rework the board so that the wires coming to
+> MEMR and MEMW are rewired to IOR and IOW respectively, does it work
+> in TrueIDE mode? Just a thought!  
 
-Yes, and not for Au1200.  The Au1200 does not have an integrated MAC; access to the MAC/PHY is through the static memory controller.
+No.  TrueIDE mode changes the meaning of many input/output pins, and thus is significantly different from PCcard IO mode so that
+this will not work.
+
+Also, you should bear in mind that (P)IO mode is more similar to IDE mode than it is to memory mode.
+
+To operate the CF/CF+ card in memory mapped mode you will need the following signals:
+
+A[0:10]
+D[0:15]
+-CD1, -CD2
+-CE1, -CE2
+-OE
+RDY_BUSY
+-REG
+RESET
+-WE
+WP
+
+Refer to the "CF+ & CF SPECIFICATION REV. 3.0", pg. 24-30 for details.
+http://www.compactflash.org/cfspc3_0.pdf
+
+If your cards are not going to be removable, you can get away with tying up/dn some lines.
+
+Also, please note that on pg. 89, the specification allows for alternate ways that a CF card may 'enter' either trueIDE or memory/io
+mode.  Please be aware of this, because certain software implementations may inadvertently cause -OE to stay asserted for an
+extended period of time, thus causing the card to spontaneously switch modes.  This results in the card seemingly becoming opaque
+until the next reset or power cycle.
+
+
+Best Regards,
 
 -bogdan

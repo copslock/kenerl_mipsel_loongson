@@ -1,54 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 May 2005 15:27:33 +0100 (BST)
-Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:8729 "EHLO
-	bacchus.net.dhis.org") by linux-mips.org with ESMTP
-	id <S8225941AbVEKO1S>; Wed, 11 May 2005 15:27:18 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.1/8.13.1) with ESMTP id j4BERCRH017168;
-	Wed, 11 May 2005 15:27:12 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j4BER7X9017167;
-	Wed, 11 May 2005 15:27:07 +0100
-Date:	Wed, 11 May 2005 15:27:07 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Mile Davidovic <mile.davidovic@micronasnit.com>
-Cc:	"'Linux/MIPS Development'" <linux-mips@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 May 2005 17:13:59 +0100 (BST)
+Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:3343 "EHLO
+	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8226018AbVEKQNl>;
+	Wed, 11 May 2005 17:13:41 +0100
+Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
+	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
+	id 1DVu93-0006LG-00; Wed, 11 May 2005 17:33:13 +0100
+Received: from olympia.mips.com ([192.168.192.128] helo=shoreditch.mips.com)
+	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1DVtpW-0004Uk-00; Wed, 11 May 2005 17:13:02 +0100
+Received: from 127.0.0.1 (ident=unknown) by shoreditch.mips.com with
+ esmtp (masqmail 0.2.20) id 1DVtpW-5nX-00; Wed, 11 May 2005 17:13:02
+ +0100
+Message-ID: <42822F0D.4030602@mips.com>
+Date:	Wed, 11 May 2005 17:13:01 +0100
+From:	Nigel Stephens <nigel@mips.com>
+User-Agent: Debian Thunderbird 1.0.2 (X11/20050331)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	mile.davidovic@micronasnit.com
+CC:	'Linux/MIPS Development' <linux-mips@linux-mips.org>
 Subject: Re: Mips 4KEC
-Message-ID: <20050511142707.GF6072@linux-mips.org>
 References: <200505111424.j4BEOu1p017560@krt.neobee.net>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 In-Reply-To: <200505111424.j4BEOu1p017560@krt.neobee.net>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-2; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MTUK-Scanner:	Found to be clean
+X-MTUK-SpamCheck: not spam (whitelisted), SpamAssassin (score=-4.824,
+	required 4, AWL, BAYES_00)
+Return-Path: <nigel@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7906
+X-archive-position: 7907
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: nigel@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, May 11, 2005 at 04:20:53PM +0200, Mile Davidovic wrote:
+Mile Davidovic wrote:
 
-> 1. I have question regarding toolchain, I use toolchain which came from
-> uclibc buildroot
-> application. Gcc version is 3.4.2, is it ok?
+>
+>
+>2. I tried to use sde-lite 5.03 toolchain but this toolchain (sde-gcc)
+>failed to build kernel. 
+>    Please any comments regarding this issue? 
+>
 
-Yes.
+SDE-lite is a "bare-iron" compiler which isn't very suitable for 
+building the Linux kernel. Instead you could try the version of the SDE 
+toolchain which has been configured as a Linux compiler, as described 
+here http://www.linux-mips.org/wiki/index.php/Toolchains#MIPS_SDE
 
-> 2. I tried to use sde-lite 5.03 toolchain but this toolchain (sde-gcc)
-> failed to build kernel. 
->     Please any comments regarding this issue? 
-
-> 3. I tried to remove optimization from kernel: 
-
-> I tried with googling but it seems that nobody faced similar problem? Is it
-> possible to buidl kernel without optimization?
-
-No.  That's FAQ since 10 years.
-
-  Ralf
+Nigel

@@ -1,45 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 May 2005 12:01:09 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:31503 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225430AbVEPLAy>; Mon, 16 May 2005 12:00:54 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id AD618F5F8E; Mon, 16 May 2005 13:00:44 +0200 (CEST)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 22259-07; Mon, 16 May 2005 13:00:44 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 550ACF5C8A; Mon, 16 May 2005 13:00:44 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.1/8.13.1) with ESMTP id j4GAxu2c027225;
-	Mon, 16 May 2005 13:00:47 +0200
-Date:	Mon, 16 May 2005 12:00:02 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 May 2005 18:49:59 +0100 (BST)
+Received: from p549F5CD4.dip.t-dialin.net ([IPv6:::ffff:84.159.92.212]:50662
+	"EHLO bacchus.net.dhis.org") by linux-mips.org with ESMTP
+	id <S8225730AbVEPRto>; Mon, 16 May 2005 18:49:44 +0100
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.1/8.13.1) with ESMTP id j4GHng53015780;
+	Mon, 16 May 2005 18:49:42 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j4GHnf1T015779;
+	Mon, 16 May 2005 18:49:41 +0100
+Date:	Mon, 16 May 2005 18:49:40 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
 To:	Mile Davidovic <mile.davidovic@micronasnit.com>
 Cc:	"'Linux/MIPS Development'" <linux-mips@linux-mips.org>
-Subject: Re: Mips 4lkecr2 
-In-Reply-To: <200505161001.j4GA1V1p028192@krt.neobee.net>
-Message-ID: <Pine.LNX.4.61L.0505161126220.15490@blysk.ds.pg.gda.pl>
+Subject: Re: Mips 4lkecr2
+Message-ID: <20050516174940.GA31527@linux-mips.org>
 References: <200505161001.j4GA1V1p028192@krt.neobee.net>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.83/879/Sun May 15 15:43:45 2005 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <200505161001.j4GA1V1p028192@krt.neobee.net>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7915
+X-archive-position: 7916
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 16 May 2005, Mile Davidovic wrote:
+On Mon, May 16, 2005 at 11:57:02AM +0200, Mile Davidovic wrote:
 
 > I have embedded processor with MIPS 4KECr2 processor and tried to port
 > linux-2.6.11-mipscvs-20050313.
@@ -54,19 +47,7 @@ On Mon, 16 May 2005, Mile Davidovic wrote:
 > 
 > Is it ok ? Did I forgot something?
 
- Well, the processor is already supported in the current version of Linux.  
-Had you chosen it for your port, you wouldn't have had to change anything.
+To get Linux to work on a 4KEc R2 Malta I only had to to do this change
+so you have an additional problem.
 
-> I have problem with mem_init, here is output log, can You please tell me
-> what is problem with this?
-> Linux version 2.6.11-mipscvs-20050313-md (davidovic@rhel.micronasnit.com)
-> (gcc version 3.4.2) #207 Mon May 16 10:37:55 CEST 2005
-> CPU revision is: 00019064
-[...]
-> Bad page state at __free_pages_ok (in process 'swapper', page 810037c0)
-> flags:0x00000000 mapping:00000004 mapcount:0 count:0
-
- Please retry with the current version and if still failing, then send 
-another report.
-
-  Maciej
+  Ralf

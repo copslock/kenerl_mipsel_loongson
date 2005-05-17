@@ -1,150 +1,124 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 May 2005 10:36:58 +0100 (BST)
-Received: from web32507.mail.mud.yahoo.com ([IPv6:::ffff:68.142.207.217]:58493
-	"HELO web32507.mail.mud.yahoo.com") by linux-mips.org with SMTP
-	id <S8226150AbVEQJgm>; Tue, 17 May 2005 10:36:42 +0100
-Received: (qmail 76785 invoked by uid 60001); 17 May 2005 09:36:33 -0000
-Comment: DomainKeys? See http://antispam.yahoo.com/domainkeys
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.com;
-  b=MJzQhQTcW7MssD9Z5SrYxkHIQGyEb8eaPt1hiNhBVxu3vMUNubDbJ4Oc3IWqhJk8YFd9RcJjRNYNUih7QRf18qlv8SVHOA2Snlnw7rievAf3ATuPV4rsCljEQRAT1BDYcsyporpYIgXAv7DIOj4Ghwr5azszU+Xirhf1ku/asWg=  ;
-Message-ID: <20050517093633.76783.qmail@web32507.mail.mud.yahoo.com>
-Received: from [85.250.113.238] by web32507.mail.mud.yahoo.com via HTTP; Tue, 17 May 2005 02:36:32 PDT
-Date:	Tue, 17 May 2005 02:36:32 -0700 (PDT)
-From:	Michael Belamina <belamina1@yahoo.com>
-Subject: 64 bit kernel for BCM1250
-To:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 May 2005 11:15:49 +0100 (BST)
+Received: from krt.tmd.ns.ac.yu ([IPv6:::ffff:147.91.177.65]:12966 "EHLO
+	krt.neobee.net") by linux-mips.org with ESMTP id <S8226180AbVEQKPd>;
+	Tue, 17 May 2005 11:15:33 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by krt.neobee.net (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id j4HAKoZF031081
+	for <linux-mips@linux-mips.org>; Tue, 17 May 2005 12:20:56 +0200
+Received: from krt.neobee.net ([127.0.0.1])
+ by localhost (krt.neobee.net [127.0.0.1]) (amavisd-new, port 10024) with LMTP
+ id 30287-05 for <linux-mips@linux-mips.org>;
+ Tue, 17 May 2005 12:20:50 +0200 (CEST)
+Received: from davidovic ([192.168.0.89])
+	by krt.neobee.net (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id j4HAKh1p031076
+	for <linux-mips@linux-mips.org>; Tue, 17 May 2005 12:20:43 +0200
+Message-Id: <200505171020.j4HAKh1p031076@krt.neobee.net>
+Reply-To: <mile.davidovic@micronasnit.com>
+From:	"Mile Davidovic" <mile.davidovic@micronasnit.com>
+To:	"'Linux/MIPS Development'" <linux-mips@linux-mips.org>
+Subject: RE: Mips 4lkecr2
+Date:	Tue, 17 May 2005 12:16:07 +0200
+Organization: MicronasNIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <belamina1@yahoo.com>
+Content-Type: text/plain;
+	charset="iso-8859-2"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Office Outlook, Build 11.0.6353
+In-Reply-To: <20050516174940.GA31527@linux-mips.org>
+Thread-Index: AcVaQXwE8CLCWORGTEeQW88iB6fyfAAhu+2g
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2527
+X-Virus-Scanned: by amavisd-new at krt.neobee.net
+Return-Path: <mile.davidovic@micronasnit.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7919
+X-archive-position: 7920
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: belamina1@yahoo.com
+X-original-sender: mile.davidovic@micronasnit.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+Hello all
 
-  I have built a 64 bit kernel for BCM1250.
-  When the kernel is loaded and control is passed to
-kernel_entry there is an exception:
-
-CFE> boot -elf LinuxServer:vmlinux.64
-Loader:elf Filesys:tftp Dev:eth2
-File:LinuxServer:vmlinux.64 Options:(null)
-Loading: 0xffffffff80100000/2162688
-0xffffffff80310000/557344 Entry at 0xffffffff802d0000
-Closing network.
-Starting program at 0xffffffff802d0000
-**Exception 8: EPC=FFFFFFFF802D003C, Cause=0000900C
-(TLBMissWr)
-                RA=FFFFFFFF9FC0086C,
-VAddr=0000000000000000
-
-        0  ($00) = 0000000000000000     AT ($01) =
-0000000000000000
-        v0 ($02) = 0000000000000080     v1 ($03) =
-0000000000000003
-        a0 ($04) = FFFFFFFF81F07FF0     a1 ($05) =
-0000000000000000
-        a2 ($06) = FFFFFFFF9FC008E8     a3 ($07) =
-0000000043464531
-        t0 ($08) = FFFFFFFF802D0000     t1 ($09) =
-FFFFFFFF81F01DB8
-        t2 ($10) = FFFFFFFFA0008000     t3 ($11) =
-0000000000008000
-        t4 ($12) = 0000000000000000     t5 ($13) =
-FFFFFFFF81F18E60
-        t6 ($14) = FFFFFFFF81F14A20     t7 ($15) =
-000000000000000A
-        s0 ($16) = FFFFFFFF9FC0086C     s1 ($17) =
-FFFFFFFF81F01D20
-        s2 ($18) = FFFFFFFF820036F8     s3 ($19) =
-FFFFFFFF81F00000
-        s4 ($20) = FFFFFFFF820036E8     s5 ($21) =
-FFFFFFFFFFFFFFFF
-        s6 ($22) = 0000000000000000     s7 ($23) =
-0000000000000000
-        t8 ($24) = 0000000010000000     t9 ($25) =
-FFFFFFFF9FC46430
-        k0 ($26) = FFFFFFFF81F22E28     k1 ($27) =
-FFFFFFFF81F1F098
-        gp ($28) = FFFFFFFF81F07FF0     sp ($29) =
-FFFFFFFF82003550
-        fp ($30) = 0000000000000000     ra ($31) =
-FFFFFFFF9FC0086C
+Here is output from latest (2.6.12-rc3) linux-mips version. What is problem
+with mem_init function?
 
 
-
-The code where the exception occurs is:
-ffffffff802d0000 <kernel_entry>:
-ffffffff802d0000:       400c6000        mfc0   
-t0,c0_status
-ffffffff802d0004:       3c011000        lui    
-at,0x1000
-ffffffff802d0008:       3421009f        ori    
-at,at,0x9f
-ffffffff802d000c:       01816025        or     
-t0,t0,at
-ffffffff802d0010:       398c001f        xori   
-t0,t0,0x1f
-ffffffff802d0014:       408c6000        mtc0   
-t0,c0_status
-ffffffff802d0018:       000000c0        sll    
-zero,zero,0x3
-ffffffff802d001c:       37bd000f        ori    
-sp,sp,0xf
-ffffffff802d0020:       3bbd000f        xori   
-sp,sp,0xf
-ffffffff802d0024:       3c0c0000        lui     t0,0x0
-ffffffff802d0028:       3c010000        lui     at,0x0
-ffffffff802d002c:       658c0000        daddiu 
-t0,t0,0
-ffffffff802d0030:       64210000        daddiu 
-at,at,0
-ffffffff802d0034:       000c603c        dsll32 
-t0,t0,0x0
-ffffffff802d0038:       0181602d        daddu  
-t0,t0,at
-ffffffff802d003c:       fd800000        sd     
-zero,0(t0) 
-ffffffff802d0040:       3c0d0000        lui     t1,0x0
-ffffffff802d0044:       3c010000        lui     at,0x0
-ffffffff802d0048:       65ad0000        daddiu 
-t1,t1,0
-ffffffff802d004c:       6421fff8        daddiu 
-at,at,-8
-ffffffff802d0050:       000d683c        dsll32 
-t1,t1,0x0
-ffffffff802d0054:       01a1682d        daddu  
-t1,t1,at
-ffffffff802d0058:       658c0008        daddiu 
-t0,t0,8
-ffffffff802d005c:       158dfffe        bne    
-t0,t1,ffffffff802d0058 <__init_begin+0x58>
-ffffffff802d0060:       fd800000        sd     
-zero,0(t0)
-ffffffff802d0064:       3c1c0000        lui     gp,0x0
-ffffffff802d0068:       3c010000        lui     at,0x0
-
-
-A 32 bit kernel loads and boot with no problems on the
-same board. The board design is based on Sentosa. The
-boot loader is CFE. The kernel version is 2.4.28
-
-Please advice.
+ Linux version 2.6.12-rc3-md (davidovic@rhel.micronasnit.com) (gcc version
+3.4.2) #14 Tue May 17 11:06:34 CEST 2005
+ CPU revision is: 00019064
+ Determined physical RAM map:
+  memory: 04000000 @ 00000000 (usable)
+ Built 1 zonelists
+ Kernel command line: 
+ Primary instruction cache 16kB, physically tagged, 4-way, linesize 16
+bytes.
+ Primary data cache 8kB, 2-way, linesize 16 bytes.
+ Synthesized TLB refill handler (20 instructions).
+ Synthesized TLB load handler fastpath (32 instructions).
+ Synthesized TLB store handler fastpath (32 instructions).
+ Synthesized TLB modify handler fastpath (31 instructions).
+ PID hash table entries: 512 (order: 9, 8192 bytes)
+ Dentry cache hash table entries: 16384 (order: 4, 65536 bytes)
+ Inode-cache hash table entries: 8192 (order: 3, 32768 bytes)
+ Bad page state at free_hot_cold_page (in process 'swapper', page 81003180)
+ flags:0x00000000 mapping:00000000 mapcount:-65535 count:0
+ Backtrace:
+ Call Trace:
+  [<80052440>] bad_page+0x70/0xc0
+  [<800296c4>] vprintk+0x38c/0x460
+  [<80162b28>] build_tlb_refill_handler+0xdcc/0xea8
+  [<80052bec>] free_hot_cold_page+0x88/0x284
+  [<80169e48>] free_all_bootmem_core+0x174/0x2d4
+  [<8016ab88>] alloc_large_system_hash+0x28c/0x2fc
+  [<80160868>] mem_init+0x50/0x1b4
+  [<8016bf74>] inode_init_early+0x68/0xbc
+  [<8015e070>] vgca_timer_setup+0xc8/0xfc
+  [<80157910>] start_kernel+0x17c/0x254
+  [<801572e4>] unknown_bootoption+0x0/0x310
  
-Thank,
-  Michael
+ Trying to fix it up, but a reboot is needed
+ Bad page state at free_hot_cold_page (in process 'swapper', page 81003280)
+ flags:0x0000525a mapping:00000000 mapcount:0 count:0
+ Backtrace:
+ Call Trace:
+  [<80052440>] bad_page+0x70/0xc0
+  [<800296c4>] vprintk+0x38c/0x460
+  [<80162b28>] build_tlb_refill_handler+0xdcc/0xea8
+  [<80052bec>] free_hot_cold_page+0x88/0x284
+  [<80169e48>] free_all_bootmem_core+0x174/0x2d4
+  [<8016ab88>] alloc_large_system_hash+0x28c/0x2fc
+  [<80160868>] mem_init+0x50/0x1b4
+  [<8016bf74>] inode_init_early+0x68/0xbc
+  [<8015e070>] vgca_timer_setup+0xc8/0xfc
+  [<80157910>] start_kernel+0x17c/0x254
+  [<801572e4>] unknown_bootoption+0x0/0x310 
 
+-----Original Message-----
+From: Ralf Baechle [mailto:ralf@linux-mips.org] 
+Sent: Monday, May 16, 2005 7:50 PM
+To: Mile Davidovic
+Cc: 'Linux/MIPS Development'
+Subject: Re: Mips 4lkecr2
 
+On Mon, May 16, 2005 at 11:57:02AM +0200, Mile Davidovic wrote:
 
+> I have embedded processor with MIPS 4KECr2 processor and tried to port 
+> linux-2.6.11-mipscvs-20050313.
+> I follow tutorial from linux-mips and add custom code for int handler, 
+> time ...
+> But I have some problem with detecting of cpu. In cpu-probe.c I added:
+> cpu_probe_mips with:
+>        case PRID_IMP_4KEC:
+>        case PRID_IMP_4KECR2:   /* this line is added */
+>         c->cputype = CPU_4KEC;
+> 		c->isa_level = MIPS_CPU_ISA_M32;
+> 
+> Is it ok ? Did I forgot something?
 
-__________________________________________________
-Do You Yahoo!?
-Tired of spam?  Yahoo! Mail has the best spam protection around 
-http://mail.yahoo.com 
+To get Linux to work on a 4KEc R2 Malta I only had to to do this change so
+you have an additional problem.
+
+  Ralf

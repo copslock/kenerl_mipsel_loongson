@@ -1,53 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 May 2005 18:49:59 +0100 (BST)
-Received: from p549F5CD4.dip.t-dialin.net ([IPv6:::ffff:84.159.92.212]:50662
-	"EHLO bacchus.net.dhis.org") by linux-mips.org with ESMTP
-	id <S8225730AbVEPRto>; Mon, 16 May 2005 18:49:44 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.1/8.13.1) with ESMTP id j4GHng53015780;
-	Mon, 16 May 2005 18:49:42 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j4GHnf1T015779;
-	Mon, 16 May 2005 18:49:41 +0100
-Date:	Mon, 16 May 2005 18:49:40 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Mile Davidovic <mile.davidovic@micronasnit.com>
-Cc:	"'Linux/MIPS Development'" <linux-mips@linux-mips.org>
-Subject: Re: Mips 4lkecr2
-Message-ID: <20050516174940.GA31527@linux-mips.org>
-References: <200505161001.j4GA1V1p028192@krt.neobee.net>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <200505161001.j4GA1V1p028192@krt.neobee.net>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 May 2005 07:20:49 +0100 (BST)
+Received: from mta9.adelphia.net ([IPv6:::ffff:68.168.78.199]:26763 "EHLO
+	mta9.adelphia.net") by linux-mips.org with ESMTP
+	id <S8225282AbVEQGUe>; Tue, 17 May 2005 07:20:34 +0100
+Received: from boletus ([69.168.160.197]) by mta9.adelphia.net
+          (InterMail vM.6.01.04.01 201-2131-118-101-20041129) with SMTP
+          id <20050517062022.SUH8952.mta9.adelphia.net@boletus>
+          for <linux-mips@linux-mips.org>; Tue, 17 May 2005 02:20:22 -0400
+Message-ID: <053301c55aa8$887769e0$0300a8c0@boletus>
+From:	"Steve Alexander" <steve-alexander@adelphia.net>
+To:	"linux-mips" <linux-mips@linux-mips.org>
+References: <20050513222528.010b2a4d.yuasa@hh.iij4u.or.jp>
+Subject: help
+Date:	Tue, 17 May 2005 02:20:33 -0400
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2800.1478
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1478
+Return-Path: <steve-alexander@adelphia.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7916
+X-archive-position: 7917
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: steve-alexander@adelphia.net
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, May 16, 2005 at 11:57:02AM +0200, Mile Davidovic wrote:
-
-> I have embedded processor with MIPS 4KECr2 processor and tried to port
-> linux-2.6.11-mipscvs-20050313.
-> I follow tutorial from linux-mips and add custom code for int handler, time
-> ...
-> But I have some problem with detecting of cpu. In cpu-probe.c I added:
-> cpu_probe_mips with:
->        case PRID_IMP_4KEC:
->        case PRID_IMP_4KECR2:   /* this line is added */
->         c->cputype = CPU_4KEC;
-> 		c->isa_level = MIPS_CPU_ISA_M32;
-> 
-> Is it ok ? Did I forgot something?
-
-To get Linux to work on a 4KEc R2 Malta I only had to to do this change
-so you have an additional problem.
-
-  Ralf
+help

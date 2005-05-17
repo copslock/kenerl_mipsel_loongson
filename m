@@ -1,57 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 May 2005 11:50:05 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:39695 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8226195AbVEQKtu>; Tue, 17 May 2005 11:49:50 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id C014EF5A39; Tue, 17 May 2005 12:49:44 +0200 (CEST)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 05584-07; Tue, 17 May 2005 12:49:44 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 8AC03F5A2C; Tue, 17 May 2005 12:49:44 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.1/8.13.1) with ESMTP id j4HAnkls004589;
-	Tue, 17 May 2005 12:49:46 +0200
-Date:	Tue, 17 May 2005 11:49:52 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Michael Belamina <belamina1@yahoo.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: 64 bit kernel for BCM1250
-In-Reply-To: <20050517093633.76783.qmail@web32507.mail.mud.yahoo.com>
-Message-ID: <Pine.LNX.4.61L.0505171145040.17529@blysk.ds.pg.gda.pl>
-References: <20050517093633.76783.qmail@web32507.mail.mud.yahoo.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 May 2005 12:21:25 +0100 (BST)
+Received: from cygnus.izmiran.rssi.ru ([IPv6:::ffff:193.232.24.21]:15796 "EHLO
+	cygnus.izmiran.rssi.ru") by linux-mips.org with ESMTP
+	id <S8226198AbVEQLVK>; Tue, 17 May 2005 12:21:10 +0100
+Received: from [127.0.0.1] (IDENT:10003@localhost [127.0.0.1])
+	by cygnus.izmiran.rssi.ru (8.12.4/8.12.4) with ESMTP id j4HBKscs019966
+	for <linux-mips@linux-mips.org>; Tue, 17 May 2005 15:20:59 +0400
+Date:	Tue, 17 May 2005 14:22:17 +0300
+From:	"Ruslan V.Pisarev" <jerry@izmiran.rssi.ru>
+X-Mailer: The Bat! (v3.0.1.33) Professional
+Reply-To: "Ruslan V.Pisarev" <jerry@izmiran.rssi.ru>
+Organization: Home
+X-Priority: 3 (Normal)
+Message-ID: <1547700103.20050517142217@izmiran.rssi.ru>
+To:	linux-mips <linux-mips@linux-mips.org>
+Subject: au1200 status
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.83/882/Tue May 17 08:48:03 2005 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain; charset=Windows-1251
+Content-Transfer-Encoding: 8bit
+Return-Path: <jerry@izmiran.rssi.ru>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7921
+X-archive-position: 7922
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: jerry@izmiran.rssi.ru
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 17 May 2005, Michael Belamina wrote:
+  Hello all
 
->   I have built a 64 bit kernel for BCM1250.
->   When the kernel is loaded and control is passed to
-> kernel_entry there is an exception:
-> 
-> CFE> boot -elf LinuxServer:vmlinux.64
-[...]
+  Dealing with my new DBau1200 board and last 2.6 kernel I found that
+there's a few things came into from 2.4 kernel, which is distributed
+by AMD with this board. In 2.6 we have no ethernet driver (thanks to
+Pete I solved this issue (temporarily?)), furthermore we have no LCD
+driver, no sound driver, etc... What status of it? Will these drivers
+migrate from 2.4 to 2.6 tree (and how soon?)  Or there's something
+different politics?
 
- I'm assuming vmlinux.64 is a 64-bit ELF file.  If so, then, well, 
-depending on the version of CFE you have, this may or may not work.  The 
-workaround is to always use 32-bit ELF files.  You should get one after 
-your Linux build -- if not (which may depend on how you do builds), then 
-try `make vmlinux.32' and use the result.
+  Some time ago I saw a old report for some au1* boards usability and
+patches for them - maybe I should look for them?
 
-  Maciej
+  In addition, somewhere I met the info that such things like MAE,
+AES, MTD drivers must be done (by AMD?) in 1st quarter 2005. Anyhow, I
+see no any info about them.. Did I missed something?
+
+
+
+   ()_()
+--( °,° )---[21398845]-[jerry¤wicomtechnologies.com]-
+  (") (")                 -<The Bat! 3.0.1.33>- -<17/05/2005 14:05>-

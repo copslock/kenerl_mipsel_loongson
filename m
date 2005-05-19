@@ -1,82 +1,101 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 May 2005 09:40:05 +0100 (BST)
-Received: from grey.subnet.at ([IPv6:::ffff:193.170.141.20]:23818 "EHLO
-	grey.subnet.at") by linux-mips.org with ESMTP id <S8225935AbVESIjs>;
-	Thu, 19 May 2005 09:39:48 +0100
-Received: from ip6-localhost ([193.170.141.4]) by grey.subnet.at ; Thu, 19 May 2005 10:39:35 +0200
-From:	Bruno Randolf <bruno.randolf@4g-systems.biz>
-To:	=?iso-8859-1?q?Ren=E9_Schouten?= <reneschouten@seldi.nl>
-Subject: Re: compiling pcmcia utils for mips
-Date:	Thu, 19 May 2005 10:39:25 +0200
-User-Agent: KMail/1.7.2
-References: <002901c55c4a$2030ede0$0a21a8c0@Rene>
-In-Reply-To: <002901c55c4a$2030ede0$0a21a8c0@Rene>
-Cc:	linux-mips@linux-mips.org
-Organization: 4G Systems
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 May 2005 14:52:36 +0100 (BST)
+Received: from web32510.mail.mud.yahoo.com ([IPv6:::ffff:68.142.207.220]:12475
+	"HELO web32510.mail.mud.yahoo.com") by linux-mips.org with SMTP
+	id <S8225991AbVESNwP>; Thu, 19 May 2005 14:52:15 +0100
+Received: (qmail 7763 invoked by uid 60001); 19 May 2005 13:52:07 -0000
+Comment: DomainKeys? See http://antispam.yahoo.com/domainkeys
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  b=lXetiXazeGIiuYQK8Elb0KEwflTD5c23jCuDBo9kFVAY7dMemAkPo0mmDZlQES8ed+jB+pEBE2QcbzFc6rXIdb4WUPuYA+mp2qW1J5jfXMOUboYBp25GtndLNO1xp84eIoU8BW8/mugBSBh7Qr9mIpC7Jv5i9QBldhnoyDKmVu4=  ;
+Message-ID: <20050519135207.7760.qmail@web32510.mail.mud.yahoo.com>
+Received: from [85.250.113.238] by web32510.mail.mud.yahoo.com via HTTP; Thu, 19 May 2005 06:52:07 PDT
+Date:	Thu, 19 May 2005 06:52:07 -0700 (PDT)
+From:	Michael Belamina <belamina1@yahoo.com>
+Subject: Re: 64 bit kernel for BCM1250
+To:	David Daney <ddaney@avtrex.com>,
+	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	Michael Belamina <belamina1@yahoo.com>, linux-mips@linux-mips.org
+In-Reply-To: 6667
 MIME-Version: 1.0
-Content-Type: multipart/signed;
-  boundary="nextPart1406222.oERCYD85rN";
-  protocol="application/pgp-signature";
-  micalg=pgp-sha1
-Content-Transfer-Encoding: 7bit
-Message-Id: <200505191039.29859.bruno.randolf@4g-systems.biz>
-Return-Path: <bruno.randolf@4g-systems.biz>
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <belamina1@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7931
+X-archive-position: 7932
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bruno.randolf@4g-systems.biz
+X-original-sender: belamina1@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
---nextPart1406222.oERCYD85rN
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+Hi,
 
-hi rene!
+   Thanks very much for your replies and the valuable
+info. 
+   I am still not sure about the following:
 
-you could check how it is done in openembedded:
+   1. Is this problem related only to kernels
+downloaded from linux-mips.org or it is a more general
+one?
 
-http://openembedded.bkbits.net:8080/openembedded/src/packages/pcmcia-cs?nav=
-=3Dindex.html|
-src/.|src/packages
+   2. Can someone point to a known to work 64 bit
+versions of gcc and binutil for BCM1250 (the problem
+that started this thread was actually a problem of the
+mip64-linux-ld I was using).
+    
+Thanks,
+ Michael
 
-this one works for me.
 
-bruno
 
-On Thursday 19 May 2005 10:09, you wrote:
-> Hi,
+--- David Daney <ddaney@avtrex.com> wrote:
+> Maciej W. Rozycki wrote:
+> > On Wed, 18 May 2005, David Daney wrote:
+> > 
+> > 
+> >>I saw this with a 32 bit kernel (for a 32 bit
+> target).  As far as I know, no
+> >>2.4.x kernels from linux-mips.org will work with
+> gcc 3.4.x.
+> > 
+> > 
+> >  That could actually be true -- I've been using
+> GCC 4.0.0 for quite some 
+> > time now (that includes CVS snapshots from before
+> the release), so I have 
+> > no slightest idea whether it's OK to use older
+> versions. ;-)
+> > 
+> > 
+> >>I have previously posted patches to this list that
+> fixed the problem for me.
+> >>Specifically I think the messages in this thread
+> are relevant:
+> >>
 >
-> I want to enable pcmcia on a mips32 processor
->
-> I do have everything exept the cardmgr and cardctl programs that should be
-> in the /sbin directory
->
-> I downloaded the pcmcia-cs-3.2.8.tar.tar., and i'm able to compile it with
-> the standard compiler, but i'm not able to build "cardctl" and "cardmgr"
-> with the crosscomipler.
->
-> My question: Can somebody give a link on where i can download the 2 files
-> already compiled, or tell me what to change in the
-> "pcmcia-cs-3.2.8.tar.tar" files for only compiling the two utilitis with a
-> cross compiler?
->
-> Ren=E9
+>>http://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-mips&i=41AFDA18.2010906%40avtrex.com
+> > 
+> > 
+> >  Hasn't one of the proposed fixes for the bug made
+> its way to Linux in the 
+> > end?  That would be regrettable...
+> > 
+> 
+> WRT the 2.4 kernel the answer seems to be no.  And
+> yes I think it is 
+> regrettable.
+> 
+> If anybody thinks it would be useful, I could post
+> my current patch again.
+> 
+> David Daney.
+> 
 
---nextPart1406222.oERCYD85rN
-Content-Type: application/pgp-signature
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.1 (GNU/Linux)
-
-iD8DBQBCjFDBfg2jtUL97G4RAo8aAJ0VEhnkzx++ydqyRWjCRNPA1BbfmwCeOl+u
-Ar6uFfOKXuTF3pln8oLgD4I=
-=IxvI
------END PGP SIGNATURE-----
-
---nextPart1406222.oERCYD85rN--
+		
+__________________________________ 
+Do you Yahoo!? 
+Yahoo! Mail - Helps protect you from nasty viruses. 
+http://promotions.yahoo.com/new_mail

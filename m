@@ -1,41 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 May 2005 16:43:36 +0100 (BST)
-Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:12806 "EHLO
-	bacchus.net.dhis.org") by linux-mips.org with ESMTP
-	id <S8225999AbVESPnN>; Thu, 19 May 2005 16:43:13 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.1/8.13.1) with ESMTP id j4JFh33P013950;
-	Thu, 19 May 2005 16:43:03 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j4JFh2ri013949;
-	Thu, 19 May 2005 16:43:02 +0100
-Date:	Thu, 19 May 2005 16:43:02 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-Cc:	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 2.6] vr41xx: remove old TB0219 driver
-Message-ID: <20050519154302.GB26592@linux-mips.org>
-References: <20050513222528.010b2a4d.yuasa@hh.iij4u.or.jp>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 May 2005 08:35:48 +0100 (BST)
+Received: from smtp.wicomtechnologies.com ([IPv6:::ffff:195.234.214.162]:4042
+	"EHLO smtp.wicomtechnologies.com") by linux-mips.org with ESMTP
+	id <S8226006AbVETHfc>; Fri, 20 May 2005 08:35:32 +0100
+Received: from jerry (wcm-24.wicom.kiev.ua [192.168.0.24] (may be forged))
+	by smtp.wicomtechnologies.com (8.12.10/8.12.10) with ESMTP id j4K7ZEwK093124;
+	Fri, 20 May 2005 10:35:14 +0300 (EEST)
+	(envelope-from jerry@wicomtechnologies.com)
+Date:	Fri, 20 May 2005 10:36:55 +0300
+From:	"Ruslan V.Pisarev" <jerry@wicomtechnologies.com>
+X-Mailer: The Bat! (v3.0.1.33) Professional
+Reply-To: "Ruslan V.Pisarev" <jerry@izmiran.rssi.ru>
+Organization: Home
+X-Priority: 3 (Normal)
+Message-ID: <1604819837.20050520103655@wicomtechnologies.com>
+To:	Pete Popov <ppopov@embeddedalley.com>
+CC:	linux-mips <linux-mips@linux-mips.org>
+Subject: Re[2]: au1200 status
+In-Reply-To: <1116341942.5802.15.camel@localhost.localdomain>
+References: <1547700103.20050517142217@izmiran.rssi.ru>
+ <1116341942.5802.15.camel@localhost.localdomain>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20050513222528.010b2a4d.yuasa@hh.iij4u.or.jp>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Transfer-Encoding: 7bit
+Return-Path: <jerry@wicomtechnologies.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7935
+X-archive-position: 7936
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: jerry@wicomtechnologies.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, May 13, 2005 at 10:25:28PM +0900, Yoichi Yuasa wrote:
+>[In reply to "au1200 status" from Pete Popov <ppopov@embeddedalley.com> to Ruslan V.Pisarev <jerry@izmiran.rssi.ru>  17/05/2005 17:59]
 
-> This patch had removed old TB0219 driver.
+PP> The Au1200 support will from migrate from 2.4 to 2.6 when either someone
+PP> funds the effort or someone has time to do it for fun.
 
-Applied.  Thanks Yoichi,
+err .. Even noone has in plans to do it ?
 
- Ralf
+
+   ()_()
+--( ^,^ )---[21398845]- -<The Bat! 3.0.1.33>- -<20/05/2005 10:33>-
+  (") (")

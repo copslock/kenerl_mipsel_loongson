@@ -1,96 +1,95 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 May 2005 03:20:52 +0100 (BST)
-Received: from mo01.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:12246 "EHLO
-	mo01.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225234AbVEVCUh>;
-	Sun, 22 May 2005 03:20:37 +0100
-Received: MO(mo01)id j4M2KWCl010683; Sun, 22 May 2005 11:20:32 +0900 (JST)
-Received: MDO(mdo00) id j4M2KWZk007392; Sun, 22 May 2005 11:20:32 +0900 (JST)
-Received: from stratos (h042.p502.iij4u.or.jp [210.149.246.42])
-	by mbox.iij4u.or.jp (4U-MR/mbox01) id j4M2KVk8013775
-	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NOT);
-	Sun, 22 May 2005 11:20:31 +0900 (JST)
-Date:	Sun, 22 May 2005 11:20:30 +0900
-From:	Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH 2.6] vr41xx: update setup functions
-Message-Id: <20050522112030.59e103ec.yuasa@hh.iij4u.or.jp>
-X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yuasa@hh.iij4u.or.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 May 2005 21:32:12 +0100 (BST)
+Received: from web32515.mail.mud.yahoo.com ([IPv6:::ffff:68.142.207.225]:16766
+	"HELO web32515.mail.mud.yahoo.com") by linux-mips.org with SMTP
+	id <S8225002AbVEVUby>; Sun, 22 May 2005 21:31:54 +0100
+Received: (qmail 24630 invoked by uid 60001); 22 May 2005 20:31:46 -0000
+Comment: DomainKeys? See http://antispam.yahoo.com/domainkeys
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  b=jtAqPDI3rbSfflz3tRYrCVGQCmm9WeG9x1GafKlKH/RXvFhYYIMRdshgGJkbb9Yy7puSb4JmxBYqostgXn2SUFdqfaxp+x2T5C72tcTOoUSWUZWGSvcE2zh3MPblZ1azMraeCcMN4AyaPikiVU0qpBkI0nt4MUzAZOy4GpLsoSU=  ;
+Message-ID: <20050522203146.24628.qmail@web32515.mail.mud.yahoo.com>
+Received: from [217.132.151.249] by web32515.mail.mud.yahoo.com via HTTP; Sun, 22 May 2005 13:31:46 PDT
+Date:	Sun, 22 May 2005 13:31:46 -0700 (PDT)
+From:	Michael Belamina <belamina1@yahoo.com>
+Subject: Re: 64 bit kernel for BCM1250
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	David Daney <ddaney@avtrex.com>, linux-mips@linux-mips.org
+In-Reply-To: 6667
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <belamina1@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7941
+X-archive-position: 7942
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuasa@hh.iij4u.or.jp
+X-original-sender: belamina1@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
 
-This patch had updated vr41xx setup functions.
-o add __init
-o change from early_initcall to arch_initcall
+  Thanks you all for your replies.
+  I will check this out and post the outcome.
 
-Please apply.
+ Michael
 
-Yoichi
+  
 
-Signed-off-by: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
 
-diff -urN -X dontdiff b-orig/arch/mips/vr41xx/casio-e55/setup.c b/arch/mips/vr41xx/casio-e55/setup.c
---- b-orig/arch/mips/vr41xx/casio-e55/setup.c	Sat Apr 23 22:59:07 2005
-+++ b/arch/mips/vr41xx/casio-e55/setup.c	Sat Apr 23 23:32:33 2005
-@@ -17,6 +17,7 @@
-  *  along with this program; if not, write to the Free Software
-  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-  */
-+#include <linux/init.h>
- #include <linux/ioport.h>
- 
- #include <asm/io.h>
-@@ -27,7 +28,7 @@
- 	return "CASIO CASSIOPEIA E-11/15/55/65";
- }
- 
--static int casio_e55_setup(void)
-+static int __init casio_e55_setup(void)
- {
- 	set_io_port_base(IO_PORT_BASE);
- 	ioport_resource.start = IO_PORT_RESOURCE_START;
-@@ -36,4 +37,4 @@
- 	return 0;
- }
- 
--early_initcall(casio_e55_setup);
-+arch_initcall(casio_e55_setup);
-diff -urN -X dontdiff b-orig/arch/mips/vr41xx/ibm-workpad/setup.c b/arch/mips/vr41xx/ibm-workpad/setup.c
---- b-orig/arch/mips/vr41xx/ibm-workpad/setup.c	Sat Apr 23 22:59:08 2005
-+++ b/arch/mips/vr41xx/ibm-workpad/setup.c	Sat Apr 23 23:32:33 2005
-@@ -17,6 +17,7 @@
-  *  along with this program; if not, write to the Free Software
-  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-  */
-+#include <linux/init.h>
- #include <linux/ioport.h>
- 
- #include <asm/io.h>
-@@ -27,7 +28,7 @@
- 	return "IBM WorkPad z50";
- }
- 
--static int ibm_workpad_setup(void)
-+static int __init ibm_workpad_setup(void)
- {
- 	set_io_port_base(IO_PORT_BASE);
- 	ioport_resource.start = IO_PORT_RESOURCE_START;
-@@ -36,4 +37,4 @@
- 	return 0;
- }
- 
--early_initcall(ibm_workpad_setup);
-+arch_initcall(ibm_workpad_setup);
+--- "Maciej W. Rozycki" <macro@linux-mips.org> wrote:
+> On Thu, 19 May 2005, Michael Belamina wrote:
+> 
+> >    I am still not sure about the following:
+> > 
+> >    1. Is this problem related only to kernels
+> > downloaded from linux-mips.org or it is a more
+> general
+> > one?
+> 
+>  The problem is Linux 2.4 is generally in the
+> maintenance mode, which 
+> means no new development is done on it (although
+> still an occasional 
+> backport from 2.6 may happen).  As a result
+> maintainers are rather 
+> hesitant about applying changes unless they fix
+> critical bugs.  Bugs 
+> revealed by new versions of build tools are not
+> usually considered as 
+> critical, because you may work them around by using
+> an old version of the 
+> triggering tool.
+> 
+>  Still for the MIPS port what you can get from
+> linux-mips.org is probably 
+> less behind than what there is at kernel.org.
+> 
+> >    2. Can someone point to a known to work 64 bit
+> > versions of gcc and binutil for BCM1250 (the
+> problem
+> > that started this thread was actually a problem of
+> the
+> > mip64-linux-ld I was using).
+> 
+>  For 64-bit builds you probably want to use fairly
+> recent versions or you 
+> risk hitting serious bugs that used to exist in
+> older versions.  Using 
+> David's patch (or preferably mine ;-) -- as
+> available here: 
+>
+"http://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-mips&i=Pine.LNX.4.55.0406281509170.23162%40jurand.ds.pg.gda.pl";
+> 
+> which I keep using with GCC 4.0.0) is probably the
+> lesser evil.
+> 
+>   Maciej
+> 
+
+
+		
+Discover Yahoo! 
+Find restaurants, movies, travel and more fun for the weekend. Check it out! 
+http://discover.yahoo.com/weekend.html 

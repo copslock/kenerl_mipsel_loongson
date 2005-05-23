@@ -1,52 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 May 2005 16:39:43 +0100 (BST)
-Received: from adsl-67-116-42-149.dsl.sntc01.pacbell.net ([IPv6:::ffff:67.116.42.149]:61811
-	"EHLO avtrex.com") by linux-mips.org with ESMTP id <S8225764AbVEWPj1>;
-	Mon, 23 May 2005 16:39:27 +0100
-Received: from [192.168.0.35] ([192.168.0.35] unverified) by avtrex.com with Microsoft SMTPSVC(5.0.2195.6713);
-	 Mon, 23 May 2005 08:39:24 -0700
-Message-ID: <4291F929.9000302@avtrex.com>
-Date:	Mon, 23 May 2005 08:39:21 -0700
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Mozilla Thunderbird 1.0 (X11/20041206)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	Jerry <jerry@wicomtechnologies.com>
-CC:	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: 64 bit kernel for BCM1250
-References: <20050519135207.7760.qmail@web32510.mail.mud.yahoo.com> <Pine.LNX.4.61L.0505191605350.10681@blysk.ds.pg.gda.pl> <27582192.20050523182609@wicomtechnologies.com>
-In-Reply-To: <27582192.20050523182609@wicomtechnologies.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 May 2005 16:52:18 +0100 (BST)
+Received: from mba.ocn.ne.jp ([IPv6:::ffff:210.190.142.172]:62445 "HELO
+	smtp.mba.ocn.ne.jp") by linux-mips.org with SMTP
+	id <S8225781AbVEWPwD>; Mon, 23 May 2005 16:52:03 +0100
+Received: from localhost (p6118-ipad205funabasi.chiba.ocn.ne.jp [222.146.101.118])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP id DEDC084F4
+	for <linux-mips@linux-mips.org>; Tue, 24 May 2005 00:51:59 +0900 (JST)
+Date:	Tue, 24 May 2005 00:54:47 +0900 (JST)
+Message-Id: <20050524.005447.96686952.anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Subject: Re: yenta_socket
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20050523184501.3e733eb3.toch@dfpost.ru>
+References: <20050523184501.3e733eb3.toch@dfpost.ru>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 23 May 2005 15:39:24.0108 (UTC) FILETIME=[986B58C0:01C55FAD]
-Return-Path: <ddaney@avtrex.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7950
+X-archive-position: 7951
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Jerry wrote:
-> Hello Maciej,
-> Thursday, May 19, 2005, 6:19:14 PM, you wrote:
-> 
-> 
->> For 64-bit builds you probably want to use fairly recent versions or you
->>risk hitting serious bugs that used to exist in older versions.  Using
->>David's patch (or preferably mine ;-) -- as available here: 
->>"http://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-mips&i=Pine.LNX.4.55.0406281509170.23162%40jurand.ds.pg.gda.pl";
->>which I keep using with GCC 4.0.0) is probably the lesser evil.
-> 
-> 
->  Without going into details - what difference between your and David's
-> patch ? :) I'm in doubts which one is more suitable for me...
-> 
+>>>>> On Mon, 23 May 2005 18:45:01 +0400, Dmitriy Tochansky <toch@dfpost.ru> said:
 
-FWIW: My current patch is quite similar to Maciej's.
+toch> Im enable cardbus yenta type in kernel config and see the
+toch> follow:
 
-David Daney.
+toch> yenta 0000:00:11.0: Preassigned resource 0 busy, reconfiguring...
+toch> yenta 0000:00:11.0: Preassigned resource 1 busy, reconfiguring...
+
+I think these messages are due to confliction with resource management
+codes in drivers/pci/setup-bus.c.  Though I do not see details yet,
+this quick workaround might solve this issue.
+
+--- linux-mips/drivers/pcmcia/yenta_socket.c	2005-04-18 00:43:34.000000000 +0900
++++ linux/drivers/pcmcia/yenta_socket.c	2005-05-04 00:21:38.000000000 +0900
+@@ -611,10 +611,12 @@
+  */
+ static void yenta_allocate_resources(struct yenta_socket *socket)
+ {
++#if 0
+ 	yenta_allocate_res(socket, 0, IORESOURCE_MEM|IORESOURCE_PREFETCH);
+ 	yenta_allocate_res(socket, 1, IORESOURCE_MEM);
+ 	yenta_allocate_res(socket, 2, IORESOURCE_IO);
+ 	yenta_allocate_res(socket, 3, IORESOURCE_IO);	/* PCI isn't clever enough to use this one yet */
++#endif
+ }
+ 
+ 
+---
+Atsushi Nemoto

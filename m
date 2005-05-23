@@ -1,53 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 May 2005 08:10:49 +0100 (BST)
-Received: from corvus.et.put.poznan.pl ([IPv6:::ffff:150.254.11.9]:64153 "EHLO
-	corvus.et.put.poznan.pl") by linux-mips.org with ESMTP
-	id <S8225240AbVEWHKd>; Mon, 23 May 2005 08:10:33 +0100
-Received: from corvus (corvus.et.put.poznan.pl [150.254.11.9])
-	by corvus.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id j4N7ARe06007
-	for <linux-mips@linux-mips.org>; Mon, 23 May 2005 09:10:28 +0200 (MET DST)
-Received: from helios.et.put.poznan.pl ([150.254.29.65])
-	by corvus.et.put.poznan.pl (MailMonitor for SMTP v1.2.2 ) ;
-	Mon, 23 May 2005 09:10:27 +0200 (MET DST)
-Received: from localhost (sskowron@localhost)
-	by helios.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id j4N7APx04407
-	for <linux-mips@linux-mips.org>; Mon, 23 May 2005 09:10:26 +0200 (MET DST)
-X-Authentication-Warning: helios.et.put.poznan.pl: sskowron owned process doing -bs
-Date:	Mon, 23 May 2005 09:10:25 +0200 (MET DST)
-From:	Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
-To:	linux-mips@linux-mips.org
-Subject: Unmatched R_MIPS_HI16/R_MIPS_LO16 on gcc 3.5
-Message-ID: <Pine.GSO.4.10.10505230905300.4132-100000@helios.et.put.poznan.pl>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <sskowron@ET.PUT.Poznan.PL>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 May 2005 12:10:14 +0100 (BST)
+Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:54285 "EHLO
+	bacchus.net.dhis.org") by linux-mips.org with ESMTP
+	id <S8225538AbVEWLJ7>; Mon, 23 May 2005 12:09:59 +0100
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.1/8.13.1) with ESMTP id j4NB9US5006326;
+	Mon, 23 May 2005 12:09:30 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j4NB9TIn006325;
+	Mon, 23 May 2005 12:09:29 +0100
+Date:	Mon, 23 May 2005 12:09:28 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+Cc:	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 2.6] vr41xx: add resource management to pmu
+Message-ID: <20050523110928.GA6319@linux-mips.org>
+References: <20050522111413.2ad36681.yuasa@hh.iij4u.or.jp>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20050522111413.2ad36681.yuasa@hh.iij4u.or.jp>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7943
+X-archive-position: 7944
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sskowron@ET.PUT.Poznan.PL
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi!
+On Sun, May 22, 2005 at 11:14:13AM +0900, Yoichi Yuasa wrote:
 
-It seems that gcc (with -O; -O0 fixes the issue) will generate R_MIPS_HI16
-without succeeding R_MIPS_LO16 (or the other way - but it's not a real
-problem that way) in '.rel.text' (not '.rela.text'). According to SGI ELF
-spec this combination is invalid (well, addend AHL is created from low 16
-bits from HI16 and low 16 bits from LO16, and the actual result of
-relocation might depend on the LO16 part - at least this is what I
-understood from the specific[a]tion); it also upsets Indy PROM when
-converted into ECOFF.
+> This patch had added resource management to vr41xx's pmu.
+> Please apply.
 
-Gcc 3.4.3 does not exhibit this (wanton) behavior. What the heck?
+Applied,
 
-Stanislaw Skowronek
-
---<=>--
-  "There is no pain, you are receding...
-   A distant ship, smoke on the horizon.
-   You are only coming through in waves,
-   Your lips move, but I can't hear what you're saying."
+  Ralf

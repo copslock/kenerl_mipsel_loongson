@@ -1,81 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 May 2005 16:47:55 +0100 (BST)
-Received: from xizor.is.scarlet.be ([IPv6:::ffff:193.74.71.21]:59792 "EHLO
-	xizor.is.scarlet.be") by linux-mips.org with ESMTP
-	id <S8225291AbVEXPrh> convert rfc822-to-8bit; Tue, 24 May 2005 16:47:37 +0100
-Received: from (everest.is.scarlet.be [193.74.71.40]) 
-	by xizor.is.scarlet.be  with ESMTP id j4OFl1h19253; 
-	Tue, 24 May 2005 17:47:01 +0200
-Date:	Tue, 24 May 2005 16:47:02 +0100
-Message-Id: <IH03UE$F4786E1557576A5F497FC95F9CBA3255@scarlet.be>
-Subject: Re:Unable to handle kernel paging request at virtual address 04000460
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 May 2005 09:50:46 +0100 (BST)
+Received: from smtp.wicomtechnologies.com ([IPv6:::ffff:195.234.214.162]:11714
+	"EHLO smtp.wicomtechnologies.com") by linux-mips.org with ESMTP
+	id <S8225526AbVEYIu2> convert rfc822-to-8bit; Wed, 25 May 2005 09:50:28 +0100
+Received: from jerry (wcm-24.wicom.kiev.ua [192.168.0.24] (may be forged))
+	by smtp.wicomtechnologies.com (8.12.10/8.12.10) with ESMTP id j4P8oK5K010714
+	for <linux-mips@linux-mips.org>; Wed, 25 May 2005 11:50:21 +0300 (EEST)
+	(envelope-from jerry@wicomtechnologies.com)
+Date:	Wed, 25 May 2005 11:51:43 +0300
+From:	Jerry <jerry@wicomtechnologies.com>
+X-Mailer: The Bat! (v3.0.1.33) Professional
+Reply-To: Jerry <jerry@wicomtechnologies.com>
+X-Priority: 3 (Normal)
+Message-ID: <1399568766.20050525115143@wicomtechnologies.com>
+To:	linux-mips <linux-mips@linux-mips.org>
+Subject: relocation truncated to fit
 MIME-Version: 1.0
-X-Sensitivity: 3
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=Windows-1251
 Content-Transfer-Encoding: 8BIT
-From:	"Philippe De Swert" <philippedeswert@scarlet.be>
-To:	"raghunathan\.venkatesan" <raghunathan.venkatesan@wipro.com>
-Cc:	"linux-mips" <linux-mips@linux-mips.org>
-X-XaM3-API-Version: 4.1 (B54)
-X-type:	0
-X-SenderIP: 195.144.76.34
-Return-Path: <philippedeswert@scarlet.be>
+Return-Path: <jerry@wicomtechnologies.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-Envid: <IH03UE$F4786E1557576A5F497FC95F9CBA3255
-Envelope-Id: <IH03UE$F4786E1557576A5F497FC95F9CBA3255
-X-archive-position: 7970
+X-archive-position: 7971
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: philippedeswert@scarlet.be
+X-original-sender: jerry@wicomtechnologies.com
 Precedence: bulk
 X-list: linux-mips
 
-Decode this dump with ksymoops
 
-See here:
-http://freshmeat.net/projects/ksymoops/
+Hello.
+I failed to compile 2.4 kernel with "sound" option, it fails on
+command:
 
-This will help you discover in which function it is dying, on which offset in
-your kernel code etc... Very helpful for debugging. (in 2.6 you can even
-compile something alike in the kernel (kallsyms))
+mipsel-linux-ld -m elf32ltsmip -G 0 -static -n -T arch/mips/ld.script arch/mips/kernel/head.o arch/mips/kernel/init_task.o init/main.o init/version.o init/do_mounts.o \
+        --start-group \
+        arch/mips/kernel/kernel.o arch/mips/mm/mm.o kernel/kernel.o mm/mm.o fs/fs.o ipc/ipc.o arch/mips/math-emu/fpu_emulator.o arch/mips/pci/pci-core.o \
+         drivers/char/char.o drivers/block/block.o drivers/misc/misc.o drivers/net/net.o drivers/sound/sounddrivers.o drivers/pci/driver.o drivers/video/video.o drivers/media/media.o \
+        net/network.o \
+        arch/mips/lib/lib.a /work/video/kernel/lib/lib.a arch/mips/au1000/pb1200/pb1200.o arch/mips/au1000/common/au1000.o \
+        --end-group \
+        -o vmlinux
+drivers/sound/sounddrivers.o: In function `sound_insert_unit':
+sound_core.c:(.text+0x1ac): undefined reference to `strcpy'
+sound_core.c:(.text+0x1ac): relocation truncated to fit: R_MIPS_26 against `strcpy'
+make[1]: *** [vmlinux] Îøèáêà 1
+make[1]: Leaving directory `/work/video/kernel'
+make: *** [vmlinux] Îøèáêà 2
+
+It's not a "sound drivers" problem, howewer without it kernel compiles
+and run succesfully. Seems like gcc/bunitils bug/feature. What have to
+be done to eliminate this error?
+
+GNU ld version 2.15.96 20050308
+gcc version 3.4.3
 
 
----------- Initial header -----------
-
-> We are facing the following crash in custom Linux 2.4.26 kernel, when we
-> run a netperf TCP Stream (sizes varying from 64 to 32586 bytes) test
-> over an IPSEC tunnel created between a host and a VPN server through our
-> box. This is a Au1550 MIPS32 based board (DB1550 Cabernet board from
-> AMD). We observe that crash happens randomly (the PrId keeps changing at
-> each crash), because of burstiness in the netperf tool generated
-> traffic. Please look into the following capture below. I'd like some
-> help in debugging this issue. The same set of IPSEC drivers works fine
-> on a custom Linux 2.4.25 based kernel. Is there a patch that needs to be
-> applied for Linux 2.4.26 ? 
->  
-> Unable to handle kernel paging request at virtual address 04000460, epc
-> == 802501cc, 8Oops in fault.c::do_page_fault, line 206:
-> 
-> $0 : 00000000 1000fc00 00000000 00000001 00000000 8b5f61b2 04000460
-> 00000000
-<SNIP> KERNEL DUMP
-
-CHEERS,
-
-Philippe
- 
-| Philippe De Swert       
-|      
-| Stag developer http://stag.mind.be/  
-| Emdebian developer: http://www.emdebian.org  
-|   
-| Please do not send me documents in a closed 
-| format.(*.doc,*.xls,*.ppt)    
-| Use the open alternatives. (*.pdf,*.ps,*.html,*.txt)    
-| http://www.gnu.org/philosophy/no-word-attachments.html  
-
--------------------------------------------------------
-NOTE! My email address is changing to ... @scarlet.be
-Please make the necessary changes in your address book. 
+   ()_()
+ -( ^,^ )- -[21398845]- -<The Bat! 3.0.1.33>- -<25/05/2005 11:39>-
+  (") (")

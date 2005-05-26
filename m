@@ -1,53 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 May 2005 14:20:34 +0100 (BST)
-Received: from natfrord.rzone.de ([IPv6:::ffff:81.169.145.161]:41156 "EHLO
-	natfrord.rzone.de") by linux-mips.org with ESMTP
-	id <S8225942AbVEZNUR>; Thu, 26 May 2005 14:20:17 +0100
-Received: from tux04 (p548D6BF1.dip.t-dialin.net [84.141.107.241])
-	by post.webmailer.de (8.13.1/8.13.1) with ESMTP id j4QDKFEw004635
-	for <linux-mips@linux-mips.org>; Thu, 26 May 2005 15:20:16 +0200 (MEST)
-From:	Hauke Goos-Habermann <haukeh@pc-kiel.de>
-To:	linux-mips@linux-mips.org
-Subject: CCA4 mapping
-Date:	Thu, 26 May 2005 15:20:34 +0200
-User-Agent: KMail/1.7.2
-MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="us-ascii"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 May 2005 15:51:47 +0100 (BST)
+Received: from mo01.iij4u.or.jp ([IPv6:::ffff:210.130.0.20]:19193 "EHLO
+	mo01.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225960AbVEZOvc>;
+	Thu, 26 May 2005 15:51:32 +0100
+Received: MO(mo01) for <linux-mips@linux-mips.org> id j4QEpSLG028800; Thu, 26 May 2005 23:51:28 +0900 (JST)
+Received: MDO(mdo01) id j4QEpSpr003479; Thu, 26 May 2005 23:51:28 +0900 (JST)
+Received: from stratos (h042.p502.iij4u.or.jp [210.149.246.42])
+	by mbox.iij4u.or.jp (4U-MR/mbox00) id j4QEpQMU016710
+	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NOT)
+	for <linux-mips@linux-mips.org>; Thu, 26 May 2005 23:51:27 +0900 (JST)
+Date:	Thu, 26 May 2005 23:51:25 +0900
+From:	Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+To:	linux-mips <linux-mips@linux-mips.org>
+Subject: [RFC] remove NEC Osprey
+Message-Id: <20050526235125.636bd22a.yuasa@hh.iij4u.or.jp>
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200505261520.34985.haukeh@pc-kiel.de>
-Return-Path: <haukeh@pc-kiel.de>
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7977
+X-archive-position: 7978
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: haukeh@pc-kiel.de
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi all,
+Hi,
 
-I'm trying to make a mapping (with burst mode (CCA4)) from the graphic card 
-memory to the virtual memory space.
+I think that NEC Osprey is not maintained on v2.6.
+If there is no objection, I'll send a patch for removing NEC Osprey next week.
 
-I used the __ioremap with different parameters without success.
+Thanks,
 
-The grafic card memory is 64MB, and can be found at 0x00800000 and should be 
-mapped to a memory space that can be accessed via a kernel module or via user 
-space.
-
-I tried the following mapping:
-
-add_wired_entry((0x00800000 >> 2) | 0x0027, (0x00900000 >> 2) | 0x0027, 
-0x30000000 | 0x0027, 0x01ffe000);
-add_wired_entry((0x00a00000 >> 2) | 0x0027, (0x00a00000 >> 2) | 0x0027, 
-0x32000000 | 0x0027, 0x01ffe000);
-
-This doesn't work either.
-
-Does anybody have an idea how to make the CCA4 mapping?
-
-Cu Hauke
+Yoichi

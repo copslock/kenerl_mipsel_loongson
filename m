@@ -1,64 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 May 2005 16:59:29 +0100 (BST)
-Received: from krt.tmd.ns.ac.yu ([IPv6:::ffff:147.91.177.65]:6352 "EHLO
-	krt.neobee.net") by linux-mips.org with ESMTP id <S8225562AbVEYP7O>;
-	Wed, 25 May 2005 16:59:14 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by krt.neobee.net (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id j4PH8LjX017215
-	for <linux-mips@linux-mips.org>; Wed, 25 May 2005 19:08:21 +0200
-Received: from krt.neobee.net ([127.0.0.1])
- by localhost (krt.neobee.net [127.0.0.1]) (amavisd-new, port 10024) with LMTP
- id 17100-02 for <linux-mips@linux-mips.org>;
- Wed, 25 May 2005 19:08:21 +0200 (CEST)
-Received: from davidovic ([192.168.0.89])
-	by krt.neobee.net (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id j4PH8Jb4017205
-	for <linux-mips@linux-mips.org>; Wed, 25 May 2005 19:08:19 +0200
-Message-Id: <200505251708.j4PH8Jb4017205@krt.neobee.net>
-Reply-To: <mile.davidovic@micronasnit.com>
-From:	"Mile Davidovic" <mile.davidovic@micronasnit.com>
-To:	"'Linux/MIPS Development'" <linux-mips@linux-mips.org>
-Subject: Mips4KECR2
-Date:	Wed, 25 May 2005 18:00:32 +0200
-Organization: MicronasNIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 May 2005 14:20:34 +0100 (BST)
+Received: from natfrord.rzone.de ([IPv6:::ffff:81.169.145.161]:41156 "EHLO
+	natfrord.rzone.de") by linux-mips.org with ESMTP
+	id <S8225942AbVEZNUR>; Thu, 26 May 2005 14:20:17 +0100
+Received: from tux04 (p548D6BF1.dip.t-dialin.net [84.141.107.241])
+	by post.webmailer.de (8.13.1/8.13.1) with ESMTP id j4QDKFEw004635
+	for <linux-mips@linux-mips.org>; Thu, 26 May 2005 15:20:16 +0200 (MEST)
+From:	Hauke Goos-Habermann <haukeh@pc-kiel.de>
+To:	linux-mips@linux-mips.org
+Subject: CCA4 mapping
+Date:	Thu, 26 May 2005 15:20:34 +0200
+User-Agent: KMail/1.7.2
 MIME-Version: 1.0
 Content-Type: text/plain;
-	charset="iso-8859-2"
+  charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Office Outlook, Build 11.0.6353
-Thread-Index: AcVhQuDYchYJkAONS9WjBRBe+vSwhA==
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2527
-X-Virus-Scanned: by amavisd-new at krt.neobee.net
-Return-Path: <mile.davidovic@micronasnit.com>
+Content-Disposition: inline
+Message-Id: <200505261520.34985.haukeh@pc-kiel.de>
+Return-Path: <haukeh@pc-kiel.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7976
+X-archive-position: 7977
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mile.davidovic@micronasnit.com
+X-original-sender: haukeh@pc-kiel.de
 Precedence: bulk
 X-list: linux-mips
 
-Hello all 
+Hi all,
 
-I have problem with MIPS4KECR2 and int handler, MIPS 4KECR2 has support for
-external interrupt controller. 
-AFAIK, conditions for EIC mode are next:
-	Config3(VEIC) = 1
-	IntCtl(VS) != 0
-	Cause(IV) = 1
-	Status(BEV) = 0
+I'm trying to make a mapping (with burst mode (CCA4)) from the graphic card 
+memory to the virtual memory space.
 
-IntCtl(VS) has to be different then zero and this field specifies spacing
-beetween vectored interrupts.
-Interrupt handler for MIPS4KECR2 is placed on 0x80000200 and if I set
-IntCtl(VS) on 0x20 and I want to
-use max number of interrupts (63) I have to place almost 2k from 0x80000200
-and I am afraid that I will
-overwritten something.
+I used the __ioremap with different parameters without success.
 
-I am pretty shure that I do not see obviouse things, but any help/comment
-will be most welcome.
+The grafic card memory is 64MB, and can be found at 0x00800000 and should be 
+mapped to a memory space that can be accessed via a kernel module or via user 
+space.
 
+I tried the following mapping:
 
-Best regards Mile
+add_wired_entry((0x00800000 >> 2) | 0x0027, (0x00900000 >> 2) | 0x0027, 
+0x30000000 | 0x0027, 0x01ffe000);
+add_wired_entry((0x00a00000 >> 2) | 0x0027, (0x00a00000 >> 2) | 0x0027, 
+0x32000000 | 0x0027, 0x01ffe000);
+
+This doesn't work either.
+
+Does anybody have an idea how to make the CCA4 mapping?
+
+Cu Hauke

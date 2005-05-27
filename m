@@ -1,57 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 May 2005 07:20:03 +0100 (BST)
-Received: from sccrmhc12.comcast.net ([IPv6:::ffff:204.127.202.56]:5809 "EHLO
-	sccrmhc12.comcast.net") by linux-mips.org with ESMTP
-	id <S8225987AbVE0GTr>; Fri, 27 May 2005 07:19:47 +0100
-Received: from [192.168.1.4] (pcp0011842295pcs.waldrf01.md.comcast.net[69.251.97.45])
-          by comcast.net (sccrmhc12) with ESMTP
-          id <2005052706194001200ha7i2e>; Fri, 27 May 2005 06:19:40 +0000
-Message-ID: <4296BCA3.7040003@gentoo.org>
-Date:	Fri, 27 May 2005 02:22:27 -0400
-From:	Kumba <kumba@gentoo.org>
-User-Agent: Mozilla Thunderbird 1.0.2 (Windows/20050317)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: Re: Porting To New System
-References: <Pine.GSO.4.10.10505270720390.23050-100000@helios.et.put.poznan.pl>
-In-Reply-To: <Pine.GSO.4.10.10505270720390.23050-100000@helios.et.put.poznan.pl>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <kumba@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 May 2005 11:15:40 +0100 (BST)
+Received: from zproxy.gmail.com ([IPv6:::ffff:64.233.162.198]:53850 "EHLO
+	zproxy.gmail.com") by linux-mips.org with ESMTP id <S8226025AbVE0KPV> convert rfc822-to-8bit;
+	Fri, 27 May 2005 11:15:21 +0100
+Received: by zproxy.gmail.com with SMTP id 13so1390249nzp
+        for <linux-mips@linux-mips.org>; Fri, 27 May 2005 03:15:13 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:reply-to:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=jy4nJr/yDJe+E1jiVaWCSxITziao/z6CWBsVGqakyU7dnxrn/iugAc65+hxikHEhwCTYTT0Ibmy5AK/2KSY3HAw/s7pci/SzoFO0aF2mbu4pY343IuA9T1JFeyNfQUnd5+KNRRN2ssqynWFR5sL9xXfZNXPJ5ju3B/bKfBF/z2Y=
+Received: by 10.36.55.20 with SMTP id d20mr977475nza;
+        Fri, 27 May 2005 03:15:13 -0700 (PDT)
+Received: by 10.36.68.6 with HTTP; Fri, 27 May 2005 03:15:13 -0700 (PDT)
+Message-ID: <6097c4905052703152b50f717@mail.gmail.com>
+Date:	Fri, 27 May 2005 14:15:13 +0400
+From:	Maxim Osipov <maxim.osipov@gmail.com>
+Reply-To: maxim@mox.ru
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Subject: Re: glibc-2.3.4 mips64 compilation failure
+Cc:	Daniel Jacobowitz <dan@debian.org>, linux-mips@linux-mips.org
+In-Reply-To: <Pine.LNX.4.61L.0505261815330.29423@blysk.ds.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+References: <6097c4905052609326a4c1232@mail.gmail.com>
+	 <20050526170603.GA13272@nevyn.them.org>
+	 <Pine.LNX.4.61L.0505261815330.29423@blysk.ds.pg.gda.pl>
+Return-Path: <maxim.osipov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7995
+X-archive-position: 7996
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: maxim.osipov@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Stanislaw Skowronek wrote:
+Hmm... I don't know. Both 2.4.26 and 2.6.10 headers do not contain
+this call number in unistd.h for N64, but glibc tries to generate a
+stub referencing to undefined __NR_sendfile64, and I got this
+assembler error.
+
+I tried various kernel/glibc configurations and result is the same -
+we fail on sendfile64 or time.
+
+Do anyone have a clue what is happening? AFAIK, some people already
+had success building glibc for mips64. Probably I miss something?
+
+Best regards,
+Maxim
+
+
+On 5/26/05, Maciej W. Rozycki <macro@linux-mips.org> wrote:
+> On Thu, 26 May 2005, Daniel Jacobowitz wrote:
 > 
-> That said, they have really hard work to do - I wish them all the luck
-> they need, which is *a lot*. Cracking locked-down systems with proprietary
-> formats is incredibly hard. It's hard enough when they aren't proprietary,
-> or when they aren't deliberately locked-down.
-
-With this in mind, I'm watching the port of Linux to the Nintendo DS.  They 
-apparently just got 2.6 and framebuffer working, so it'll be interesting to see 
-where they go with it.  Given the DS is a far more constrained system, and 
-Nintendo not very forthcoming on their hardware specs, I'm surprised at the 
-speed with which they've gotten things working.
-
-And PSP isn't entirely closed -- it is based to a certain degree off PS2 
-hardware, of which Sony release 6 of a supposed 7 total technical documents 
-regarding the innards of the system.  Now I imagine alot of the custom hacks 
-needed to support the R5900 in PS2 aren't needed in PSP, since it uses a more 
-standard CPU, this might have an impact on how fast or slow they wind up porting 
-the kernel.
-
-
---Kumba
-
--- 
-"Such is oft the course of deeds that move the wheels of the world: small hands 
-do them because they must, while the eyes of the great are elsewhere."  --Elrond
+> > > I am trying to build glibc-2.3.4 using binutils-2.15 and gcc-3.4.3
+> > > from ftp://ftp.linux-mips.org/pub/linux/mips/crossdev/i386-linux/mips64-linux.
+> > > Compilation fails with following messages:
+> >
+> > Looks like your kernel headers are too old.
+> 
+>  Or too new, sigh...  See:
+> "http://sources.redhat.com/bugzilla/show_bug.cgi?id=758".  Unfortunately
+> it's not clear to me what "the 2.3 branch inclusion criteria" are and it's
+> a pity the MIPS port of glibc is unmaintained these days...
+> 
+>   Maciej
+> 
+>

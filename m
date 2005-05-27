@@ -1,72 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 May 2005 11:15:40 +0100 (BST)
-Received: from zproxy.gmail.com ([IPv6:::ffff:64.233.162.198]:53850 "EHLO
-	zproxy.gmail.com") by linux-mips.org with ESMTP id <S8226025AbVE0KPV> convert rfc822-to-8bit;
-	Fri, 27 May 2005 11:15:21 +0100
-Received: by zproxy.gmail.com with SMTP id 13so1390249nzp
-        for <linux-mips@linux-mips.org>; Fri, 27 May 2005 03:15:13 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:reply-to:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=jy4nJr/yDJe+E1jiVaWCSxITziao/z6CWBsVGqakyU7dnxrn/iugAc65+hxikHEhwCTYTT0Ibmy5AK/2KSY3HAw/s7pci/SzoFO0aF2mbu4pY343IuA9T1JFeyNfQUnd5+KNRRN2ssqynWFR5sL9xXfZNXPJ5ju3B/bKfBF/z2Y=
-Received: by 10.36.55.20 with SMTP id d20mr977475nza;
-        Fri, 27 May 2005 03:15:13 -0700 (PDT)
-Received: by 10.36.68.6 with HTTP; Fri, 27 May 2005 03:15:13 -0700 (PDT)
-Message-ID: <6097c4905052703152b50f717@mail.gmail.com>
-Date:	Fri, 27 May 2005 14:15:13 +0400
-From:	Maxim Osipov <maxim.osipov@gmail.com>
-Reply-To: maxim@mox.ru
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Subject: Re: glibc-2.3.4 mips64 compilation failure
-Cc:	Daniel Jacobowitz <dan@debian.org>, linux-mips@linux-mips.org
-In-Reply-To: <Pine.LNX.4.61L.0505261815330.29423@blysk.ds.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-References: <6097c4905052609326a4c1232@mail.gmail.com>
-	 <20050526170603.GA13272@nevyn.them.org>
-	 <Pine.LNX.4.61L.0505261815330.29423@blysk.ds.pg.gda.pl>
-Return-Path: <maxim.osipov@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 May 2005 17:28:42 +0100 (BST)
+Received: from server256.com ([IPv6:::ffff:202.85.141.143]:6080 "HELO
+	server256.com") by linux-mips.org with SMTP id <S8226068AbVE0Q2Z>;
+	Fri, 27 May 2005 17:28:25 +0100
+Received: (qmail 28556 invoked by uid 512); 27 May 2005 16:28:16 -0000
+Message-ID: <20050527162816.31998.qmail@server256.com>
+Reply-To: "Cameron Cooper" <developer@phatlinux.com>
+From:	"Cameron Cooper" <developer@phatlinux.com>
+To:	linux-mips@linux-mips.org
+Subject: Re: Porting To New System
+Date:	Fri, 27 May 2005 16:28:16 +0000
+MIME-Version: 1.0
+X-Mailer: WebMail 2.0
+X-Originating-IP: 128.146.88.154
+X-Originating-Email: developer@phatlinux.com
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+Return-Path: <developer@phatlinux.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 7996
+X-archive-position: 7997
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: maxim.osipov@gmail.com
+X-original-sender: developer@phatlinux.com
 Precedence: bulk
 X-list: linux-mips
 
-Hmm... I don't know. Both 2.4.26 and 2.6.10 headers do not contain
-this call number in unistd.h for N64, but glibc tries to generate a
-stub referencing to undefined __NR_sendfile64, and I got this
-assembler error.
+>  > You should probably have a look at http://www.psp-linux.org/ click on
+>  > messages boards at the top of the page to get to all the action.  I am
+>  > sure these guys can answer all your questions.
+>  
+>  Hurm, hurm. I think that the closed-circle development model is, uhm, less
+>  efficient - there are no tech info on the forums which means nobody can
+>  try and follow. They just finished organizing themselves, and it took them
+>  *three months*. Three months wasted on choosing developers. He he he.
 
-I tried various kernel/glibc configurations and result is the same -
-we fail on sendfile64 or time.
+That project is pretty much a joke. There is literally no work being done there. After three months of selecting developers they chose 12 people, and of those twelve were me and an application someone submitted under the name Dennis Ritchie. Since they have chosen developers over a month ago, they have not done a single thing. Beyond that, I don't like their closed development model. I have started a Sourceforge project for PSP Linux at psplinux.sf.net .
+  
+>  That said, they have really hard work to do - I wish them all the luck
+>  they need, which is *a lot*. Cracking locked-down systems with proprietary
+>  formats is incredibly hard. It's hard enough when they aren't proprietary,
+>  or when they aren't deliberately locked-down.
 
-Do anyone have a clue what is happening? AFAIK, some people already
-had success building glibc for mips64. Probably I miss something?
+I understand that cracking a closed system is very hard, so I would rather not do it that way. I have never ported a kernel, so I don't know what I will suggest is possable, but it seems like it could be. 
 
-Best regards,
-Maxim
+At this time I can write code for the PSP. I have access to the keypad, MemoryStick, and the frame buffer. The programs that I compile can be placed on the memory stick and launched from the PSP's OS. All I/O in the program is done through calls to libraries provided in the firmware, which are part of the PSPs OS. Becuase the PSP makes heavy use of encryption, it has been very hard to reverse engineer the software. We can't simply look at the libraries to understand the hardware better, because they are encrypted. They only way we have been able to discover anything about the libraries is through the small bits of uencrypted code that were extracted from the firmware chip.
 
+What I would like to know is if it would be possable to do what User Mode Linux has done. Would it be possable to run Linux on top of the PSP's current OS, and write drivers for Linux which will use the libraries provided by the firmware? I know that this is not an ideal solution, but when the PSP being as closed as it as, I see it being a very long time until we will know enough about the hardware to do it another way. Mostly because the PSP makes much use of many custom chips and almost every executable is encrypted.
 
-On 5/26/05, Maciej W. Rozycki <macro@linux-mips.org> wrote:
-> On Thu, 26 May 2005, Daniel Jacobowitz wrote:
-> 
-> > > I am trying to build glibc-2.3.4 using binutils-2.15 and gcc-3.4.3
-> > > from ftp://ftp.linux-mips.org/pub/linux/mips/crossdev/i386-linux/mips64-linux.
-> > > Compilation fails with following messages:
-> >
-> > Looks like your kernel headers are too old.
-> 
->  Or too new, sigh...  See:
-> "http://sources.redhat.com/bugzilla/show_bug.cgi?id=758".  Unfortunately
-> it's not clear to me what "the 2.3 branch inclusion criteria" are and it's
-> a pity the MIPS port of glibc is unmaintained these days...
-> 
->   Maciej
-> 
->
+So even if this is a bad way of doing it, is it even possable?
+
+Thanks,
+Cameron Cooper

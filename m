@@ -1,40 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 May 2005 18:31:39 +0100 (BST)
-Received: from corvus.et.put.poznan.pl ([IPv6:::ffff:150.254.11.9]:44175 "EHLO
-	corvus.et.put.poznan.pl") by linux-mips.org with ESMTP
-	id <S8226074AbVE0RbY>; Fri, 27 May 2005 18:31:24 +0100
-Received: from corvus (corvus.et.put.poznan.pl [150.254.11.9])
-	by corvus.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id j4RHVGe26296;
-	Fri, 27 May 2005 19:31:18 +0200 (MET DST)
-Received: from helios.et.put.poznan.pl ([150.254.29.65])
-	by corvus.et.put.poznan.pl (MailMonitor for SMTP v1.2.2 ) ;
-	Fri, 27 May 2005 19:30:20 +0200 (MET DST)
-Received: from localhost (sskowron@localhost)
-	by helios.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id j4RHUCT25120;
-	Fri, 27 May 2005 19:30:12 +0200 (MET DST)
-X-Authentication-Warning: helios.et.put.poznan.pl: sskowron owned process doing -bs
-Date:	Fri, 27 May 2005 19:30:12 +0200 (MET DST)
-From:	Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
-To:	Cameron Cooper <developer@phatlinux.com>
-cc:	Alan Cox <alan@lxorguk.ukuu.org.uk>, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 May 2005 19:15:20 +0100 (BST)
+Received: from [IPv6:::ffff:81.2.110.250] ([IPv6:::ffff:81.2.110.250]:36283
+	"EHLO lxorguk.ukuu.org.uk") by linux-mips.org with ESMTP
+	id <S8224769AbVE0SO5>; Fri, 27 May 2005 19:14:57 +0100
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by lxorguk.ukuu.org.uk (8.12.11/8.12.11) with ESMTP id j4RID8T6030889;
+	Fri, 27 May 2005 19:13:08 +0100
+Received: (from alan@localhost)
+	by localhost.localdomain (8.12.11/8.12.11/Submit) id j4RID7JI030888;
+	Fri, 27 May 2005 19:13:07 +0100
+X-Authentication-Warning: localhost.localdomain: alan set sender to alan@lxorguk.ukuu.org.uk using -f
 Subject: Re: Porting To New System
-In-Reply-To: <20050527165949.17623.qmail@server256.com>
-Message-ID: <Pine.GSO.4.10.10505271929510.25076-100000@helios.et.put.poznan.pl>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <sskowron@ET.PUT.Poznan.PL>
+From:	Alan Cox <alan@lxorguk.ukuu.org.uk>
+To:	Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
+Cc:	Cameron Cooper <developer@phatlinux.com>, linux-mips@linux-mips.org
+In-Reply-To: <Pine.GSO.4.10.10505271929510.25076-100000@helios.et.put.poznan.pl>
+References: <Pine.GSO.4.10.10505271929510.25076-100000@helios.et.put.poznan.pl>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Message-Id: <1117217584.5743.229.camel@localhost.localdomain>
+Mime-Version: 1.0
+X-Mailer: Ximian Evolution 1.4.6 (1.4.6-2) 
+Date:	Fri, 27 May 2005 19:13:07 +0100
+Return-Path: <alan@lxorguk.ukuu.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8000
+X-archive-position: 8001
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sskowron@ET.PUT.Poznan.PL
+X-original-sender: alan@lxorguk.ukuu.org.uk
 Precedence: bulk
 X-list: linux-mips
 
->  Does the firmware give you the ability to control MMU mappings ?
+On Gwe, 2005-05-27 at 18:30, Stanislaw Skowronek wrote:
+> >  Does the firmware give you the ability to control MMU mappings ?
+> 
+> I think we won't - this would be a serious security bug.
 
-I think we won't - this would be a serious security bug.
+That depends who the device is defending against and how. MMU control
+cuts both ways in game consoles (if present) - it makes it harder to
+defend the console from a hostile writer, but it also makes it easier
+for the game authors to debug and to trap/recover from errors when the
+game is deployed.
 
-Stanislaw
+For ucLinux you essentially need a console, an input device (keyboard
+etc), a storage device, the ability to allocate memory and a timer
+interrupt/callback. Absolutely everything else is optional. So you can
+probably run ucLinux as a 'game' which allocates lots of memory,
+requests a timer callback and drives the entire world through the
+firmware. Whether you can do non-ucLinux depends on MMU access and
+control. If you've got some kind of MMU interface then you've probably
+got sufficient to do a full Linux but ucLinux would still be a natural
+stepping stone in exploration.
+
+Alan

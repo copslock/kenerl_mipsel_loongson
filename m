@@ -1,47 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 May 2005 00:42:53 +0100 (BST)
-Received: from clock-tower.bc.nu ([IPv6:::ffff:81.2.110.250]:47806 "EHLO
-	lxorguk.ukuu.org.uk") by linux-mips.org with ESMTP
-	id <S8224922AbVE0Xmi>; Sat, 28 May 2005 00:42:38 +0100
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by lxorguk.ukuu.org.uk (8.12.11/8.12.11) with ESMTP id j4RNenDk031720;
-	Sat, 28 May 2005 00:40:49 +0100
-Received: (from alan@localhost)
-	by localhost.localdomain (8.12.11/8.12.11/Submit) id j4RNenZ6031719;
-	Sat, 28 May 2005 00:40:49 +0100
-X-Authentication-Warning: localhost.localdomain: alan set sender to alan@lxorguk.ukuu.org.uk using -f
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 May 2005 06:08:24 +0100 (BST)
+Received: from corvus.et.put.poznan.pl ([IPv6:::ffff:150.254.11.9]:10406 "EHLO
+	corvus.et.put.poznan.pl") by linux-mips.org with ESMTP
+	id <S8225195AbVE1FII>; Sat, 28 May 2005 06:08:08 +0100
+Received: from corvus (corvus.et.put.poznan.pl [150.254.11.9])
+	by corvus.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id j4S582e01337;
+	Sat, 28 May 2005 07:08:02 +0200 (MET DST)
+Received: from helios.et.put.poznan.pl ([150.254.29.65])
+	by corvus.et.put.poznan.pl (MailMonitor for SMTP v1.2.2 ) ;
+	Sat, 28 May 2005 07:08:00 +0200 (MET DST)
+Received: from localhost (sskowron@localhost)
+	by helios.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id j4S57vW22240;
+	Sat, 28 May 2005 07:07:58 +0200 (MET DST)
+X-Authentication-Warning: helios.et.put.poznan.pl: sskowron owned process doing -bs
+Date:	Sat, 28 May 2005 07:07:57 +0200 (MET DST)
+From:	Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
+To:	Alan Cox <alan@lxorguk.ukuu.org.uk>
+cc:	Cameron Cooper <developer@phatlinux.com>, linux-mips@linux-mips.org
 Subject: Re: Porting To New System
-From:	Alan Cox <alan@lxorguk.ukuu.org.uk>
-To:	Cameron Cooper <developer@phatlinux.com>
-Cc:	Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>,
-	linux-mips@linux-mips.org
-In-Reply-To: <1117223539.2921.15.camel@phatbox>
-References: <Pine.GSO.4.10.10505271929510.25076-100000@helios.et.put.poznan.pl>
-	 <1117217584.5743.229.camel@localhost.localdomain>
-	 <1117223539.2921.15.camel@phatbox>
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-Message-Id: <1117237244.5744.284.camel@localhost.localdomain>
-Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.4.6 (1.4.6-2) 
-Date:	Sat, 28 May 2005 00:40:46 +0100
-Return-Path: <alan@lxorguk.ukuu.org.uk>
+In-Reply-To: <1117235565.5730.255.camel@localhost.localdomain>
+Message-ID: <Pine.GSO.4.10.10505280700460.21819-100000@helios.et.put.poznan.pl>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <sskowron@ET.PUT.Poznan.PL>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8006
+X-archive-position: 8007
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alan@lxorguk.ukuu.org.uk
+X-original-sender: sskowron@ET.PUT.Poznan.PL
 Precedence: bulk
 X-list: linux-mips
 
-On Gwe, 2005-05-27 at 20:52, Cameron Cooper wrote:
-> I've looked into using uClinux, and although it appears as though it
-> does support MIPS, it is very hard to find any information on it. Do you
-> have any information regarding using uClinux with MIPS?
+> You seem remarkably confident for someone who has never taken one apart.
 
-The 2.6 kernel has uclinux merged but that doesn't include MMUless
-support at the moment. The 2.4 uclinux tree is seperate and Xiptech
-released a set of patches for 2.4.19 for the mmuless mips and for the
-ucLibc if the cpu lacks mipsII and FPU instructions.
+Unless it would be very heavily restricted (rather a mmap-style thing than
+a real, direct MMU interface) it would be a serious security breach.
+
+OTOH if the assumption is that PSP is always running trusted code, it is
+possible that the game can influence the MMU and there are no security
+checks at all. I forgot that the whole ability of running untrusted code
+on 1.0 was a bug, and not something planned, so interfaces would not need
+be so tight.
+
+By the way, all PSPs you can buy now, except early Japanese version, are
+1.5 or higher so the whole point of having a MMU interface is moot
+because, as of now, you can't run anything on it at all. Not even a hello
+world.
+
+Anyway, I'm going to take one apart :)
+
+Stanislaw

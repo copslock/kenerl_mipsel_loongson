@@ -1,46 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 May 2005 20:56:30 +0100 (BST)
-Received: from alg138.algor.co.uk ([IPv6:::ffff:62.254.210.138]:42153 "EHLO
-	bacchus.net.dhis.org") by linux-mips.org with ESMTP
-	id <S8225406AbVE1T4P>; Sat, 28 May 2005 20:56:15 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.1/8.13.1) with ESMTP id j4SJt5v8010353;
-	Sat, 28 May 2005 20:55:06 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j4SJt56J010352;
-	Sat, 28 May 2005 20:55:05 +0100
-Date:	Sat, 28 May 2005 20:55:03 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Cameron Cooper <developer@phatlinux.com>
-Cc:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 May 2005 20:57:40 +0100 (BST)
+Received: from ms-smtp-01-smtplb.ohiordc.rr.com ([IPv6:::ffff:65.24.5.135]:58540
+	"EHLO ms-smtp-01-eri0.ohiordc.rr.com") by linux-mips.org with ESMTP
+	id <S8225406AbVE1T5Z>; Sat, 28 May 2005 20:57:25 +0100
+Received: from [192.168.0.3] (cpe-65-24-168-255.columbus.res.rr.com [65.24.168.255])
+	by ms-smtp-01-eri0.ohiordc.rr.com (8.12.10/8.12.7) with ESMTP id j4SJvKWY012312;
+	Sat, 28 May 2005 15:57:21 -0400 (EDT)
 Subject: Re: Porting To New System
-Message-ID: <20050528195503.GB4995@linux-mips.org>
-References: <20050527031123.1327.qmail@server256.com> <20050527225141.GA4575@linux-mips.org> <1117309424.2800.54.camel@phatbox>
+From:	Cameron Cooper <developer@phatlinux.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <20050528195503.GB4995@linux-mips.org>
+References: <20050527031123.1327.qmail@server256.com>
+	 <20050527225141.GA4575@linux-mips.org> <1117309424.2800.54.camel@phatbox>
+	 <20050528195503.GB4995@linux-mips.org>
+Content-Type: text/plain
+Date:	Sat, 28 May 2005 15:55:43 -0400
+Message-Id: <1117310143.2800.65.camel@phatbox>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1117309424.2800.54.camel@phatbox>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+X-Mailer: Evolution 2.0.3 
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: Symantec AntiVirus Scan Engine
+Return-Path: <developer@phatlinux.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8018
+X-archive-position: 8019
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: developer@phatlinux.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, May 28, 2005 at 03:43:44PM -0400, Cameron Cooper wrote:
+> Don't believe everything you read ...  Sony claims the processors are two
+> R4000 32-bit cores.  Which is obvious nonsense, the R4000 is 64-bit.
 
-> > Nitpicking - it's probably an 4K, not R4000 which is ~ '91 vintage.
-> 
-> It's a R4000.
-> 
-> http://www.linux-mips.org/wiki/index.php/PSP
+Thanks, that is very useful to know.
 
-Don't believe everything you read ...  Sony claims the processors are two
-R4000 32-bit cores.  Which is obvious nonsense, the R4000 is 64-bit.
-
-  Ralf
+Cameron

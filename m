@@ -1,100 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 May 2005 15:52:22 +0100 (BST)
-Received: from RT-soft-1.Moscow.itn.ru ([IPv6:::ffff:80.240.96.90]:63375 "EHLO
-	buildserver.ru.mvista.com") by linux-mips.org with ESMTP
-	id <S8225799AbVEaOwH>; Tue, 31 May 2005 15:52:07 +0100
-Received: from 192.168.1.226 ([10.150.0.9])
-	by buildserver.ru.mvista.com (8.11.6/8.11.6) with ESMTP id j4VEq5t06824;
-	Tue, 31 May 2005 19:52:05 +0500
-Subject: [PATCH]  PCI IDs for NEC VR5701-SG2 Board
-From:	Sergey Podstavin <spodstavin@ru.mvista.com>
-Reply-To: spodstavin@ru.mvista.com
-To:	mj@ucw.cz
-Cc:	linux-mips <linux-mips@linux-mips.org>
-Content-Type: multipart/mixed; boundary="=-0N0Ff8XkG2RMe9cCGPzZ"
-Organization: MontaVista
-Date:	Tue, 31 May 2005 18:52:23 +0400
-Message-Id: <1117551143.5564.39.camel@localhost.localdomain>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.0.2 (2.0.2-3) 
-Return-Path: <spodstavin@ru.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 May 2005 15:57:26 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:22536 "EHLO
+	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225796AbVEaO5M>; Tue, 31 May 2005 15:57:12 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 6DFDBF5978; Tue, 31 May 2005 16:57:02 +0200 (CEST)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 16840-07; Tue, 31 May 2005 16:57:02 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 39E20F5977; Tue, 31 May 2005 16:57:02 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j4VEv5LN010300;
+	Tue, 31 May 2005 16:57:05 +0200
+Date:	Tue, 31 May 2005 15:57:13 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Michael Belamina <belamina1@yahoo.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: 64 bit kernel for BCM1250
+In-Reply-To: <20050526185931.58037.qmail@web32510.mail.mud.yahoo.com>
+Message-ID: <Pine.LNX.4.61L.0505311544130.30850@blysk.ds.pg.gda.pl>
+References: <20050526185931.58037.qmail@web32510.mail.mud.yahoo.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.85.1/901/Tue May 31 15:33:04 2005 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8032
+X-archive-position: 8033
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: spodstavin@ru.mvista.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Thu, 26 May 2005, Michael Belamina wrote:
 
---=-0N0Ff8XkG2RMe9cCGPzZ
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+> I have tried the patch on kernel version 2.4.28 and it
+> seems that the fix is not working for this kernel
+> version. I used gcc version 2.95.4 and it is working. 
 
-Hi Martin!
+ Hmm, you may need additional fixes...  How about just switching to 2.6?  
+Currently 2.4 is over 4 years old and it shouldn't be used for new 
+development.
 
-Attached is PCI IDs for NEC VR5701-SG2 Board. The CPU is Vr5701, Vr5500
-core. The CPU has internal IDE interface and USB interface with the same
-device ID - 0000. The internal AC97 interface uses the same device ID as
-VRC5477 system controller for AC97 interface. The board works with
-Lynx3DM SM722 video adapter, Silicon Motion Inc. The Silicon Motion IDs
-had been added to drivers/pci/pci.ids early. Please review it.
+> 1. What is the best way to translate 32 bit ioctl
+> codes to 64 bit?
 
-Best wishes,
-Sergey Podstavin.
+ Use arch/mips64/kernel/ioctl32.c, but in 2.6 there may be a generic 
+solution available.
 
+> 2. How 64 bit kernel space buffers will  be used by a
+> 32 bit application (using mmap)? 
 
+ As usual.  Except you can't get more than 2GB of them.
 
---=-0N0Ff8XkG2RMe9cCGPzZ
-Content-Disposition: attachment; filename=community_mips_nec_vr5701_pci_id.patch
-Content-Type: text/x-patch; name=community_mips_nec_vr5701_pci_id.patch; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+> 3.What is the maximum usable ram out of 2GB I will
+> have if I am using a 32 bit application and 64 bit
+> kernel and the kernel is allocating the buffers using
+> __get_free_pages (I need the buffers for DMA - and I
+> need them to be physically continuous)?
 
-diff -Naurp --exclude=CVS linux_save/drivers/pci/pci.ids linux_mips/drivers/pci/pci.ids
---- linux_save/drivers/pci/pci.ids	2005-04-08 22:58:21.000000000 +0400
-+++ linux_mips/drivers/pci/pci.ids	2005-05-31 18:38:16.000000000 +0400
-@@ -1612,7 +1612,7 @@
- 	6057  MiroVideo DC10/DC30+
- 1032  Compaq
- 1033  NEC Corporation
--	0000  Vr4181A USB Host or Function Control Unit
-+	0000  Vr4181A USB Host or IDE Controller
- 	0001  PCI to 486-like bus Bridge
- 	0002  PCI to VL98 Bridge
- 	0003  ATM Controller
-@@ -1653,7 +1653,7 @@
- 		1033 8014  RCV56ACF 56k Voice Modem
- 	009b  Vrc5476
- 	00a5  VRC4173
--	00a6  VRC5477 AC97
-+	00a6  VRC5477 or VR5701 AC97 Controller
- 	00cd  IEEE 1394 [OrangeLink] Host Controller
- 		12ee 8011  Root hub
- 	00ce  IEEE 1394 Host Controller
-diff -Naurp --exclude=CVS linux_save/include/linux/pci_ids.h linux_mips/include/linux/pci_ids.h
---- linux_save/include/linux/pci_ids.h	2005-05-26 13:12:48.000000000 +0400
-+++ linux_mips/include/linux/pci_ids.h	2005-05-31 18:38:16.000000000 +0400
-@@ -582,6 +582,7 @@
- #define PCI_DEVICE_ID_MIRO_DC30PLUS	0xd801
- 
- #define PCI_VENDOR_ID_NEC		0x1033
-+#define PCI_DEVICE_ID_NEC_USB_AND_IDE	0x0000 /* USB 1.1 or IDE Controller*/
- #define PCI_DEVICE_ID_NEC_CBUS_1	0x0001 /* PCI-Cbus Bridge */
- #define PCI_DEVICE_ID_NEC_LOCAL		0x0002 /* Local Bridge */
- #define PCI_DEVICE_ID_NEC_ATM		0x0003 /* ATM LAN Controller */
-@@ -1787,6 +1788,11 @@
- #define PCI_DEVICE_ID_SATSAGEM_PCR2101	0x5352
- #define PCI_DEVICE_ID_SATSAGEM_TELSATTURBO 0x5a4b
- 
-+#define PCI_VENDOR_ID_SMI		0x126f
-+#define PCI_DEVICE_ID_SMI_LYNX_EM	0x0710
-+#define PCI_DEVICE_ID_SMI_LYNX_EM_PLUS	0x0712
-+#define PCI_DEVICE_ID_SMI_LYNX_3DM	0x0720
-+
- #define PCI_VENDOR_ID_HUGHES		0x1273
- #define PCI_DEVICE_ID_HUGHES_DIRECPC	0x0002
- 
+ 2GB minus what's used by Linux for other purposes.  Physically 
+contiguous?  That sounds like a problem (and broken hardware)...
 
---=-0N0Ff8XkG2RMe9cCGPzZ--
+  Maciej

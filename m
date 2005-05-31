@@ -1,47 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 May 2005 09:57:51 +0100 (BST)
-Received: from zproxy.gmail.com ([IPv6:::ffff:64.233.162.197]:63009 "EHLO
-	zproxy.gmail.com") by linux-mips.org with ESMTP id <S8225736AbVEaI5f> convert rfc822-to-8bit;
-	Tue, 31 May 2005 09:57:35 +0100
-Received: by zproxy.gmail.com with SMTP id 13so2793462nzp
-        for <linux-mips@linux-mips.org>; Tue, 31 May 2005 01:57:28 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=bekF4JTerbktsBY0wzbblmMUGOHjS4YJbccSPQBX18Uy1B75sOdn5y+8ktEIjV1ywb9HE10UHpmdSm0EKnOrIikCGXfwwHR6HcTZTyVe3rm/IQp2CHrMFOspD3lNndrGnxY987FM3QNX9cxxUUMgC0/b42M+UszOHHu2uvDGIzA=
-Received: by 10.36.71.16 with SMTP id t16mr2122236nza;
-        Tue, 31 May 2005 01:57:28 -0700 (PDT)
-Received: by 10.36.68.6 with HTTP; Tue, 31 May 2005 01:57:28 -0700 (PDT)
-Message-ID: <6097c4905053101574dbde215@mail.gmail.com>
-Date:	Tue, 31 May 2005 12:57:28 +0400
-From:	Maxim Osipov <maxim.osipov@gmail.com>
-Reply-To: maxim@mox.ru
-To:	linux-mips@linux-mips.org
-Subject: toolchain sources
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-Return-Path: <maxim.osipov@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 May 2005 10:09:59 +0100 (BST)
+Received: from smtp.wicomtechnologies.com ([IPv6:::ffff:195.234.214.162]:61125
+	"EHLO smtp.wicomtechnologies.com") by linux-mips.org with ESMTP
+	id <S8225741AbVEaJJn>; Tue, 31 May 2005 10:09:43 +0100
+Received: from [192.168.0.24] (wcm-24.wicom.kiev.ua [192.168.0.24] (may be forged))
+	by smtp.wicomtechnologies.com (8.12.10/8.12.10) with ESMTP id j4V99a5K036312
+	for <linux-mips@linux-mips.org>; Tue, 31 May 2005 12:09:36 +0300 (EEST)
+	(envelope-from jerry@wicomtechnologies.com)
+Date:	Tue, 31 May 2005 12:11:04 +0300
+From:	Jerry <jerry@wicomtechnologies.com>
+X-Mailer: The Bat! (v3.0.1.33) Professional
+Reply-To: Jerry <jerry@wicomtechnologies.com>
+X-Priority: 3 (Normal)
+Message-ID: <1117396240.20050531121104@wicomtechnologies.com>
+To:	linux-mips <linux-mips@linux-mips.org>
+Subject: au1200 MAE drivers
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <jerry@wicomtechnologies.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8024
+X-archive-position: 8025
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: maxim.osipov@gmail.com
+X-original-sender: jerry@wicomtechnologies.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
 
-Does anyone know, where can I find SRPMS (or sources + patches) for
-the following toolchains:
+ Hello.
 
-ftp://ftp.linux-mips.org/pub/linux/mips/crossdev/i386-linux/mips64-linux/binutils-2.15/
-ftp://ftp.linux-mips.org/pub/linux/mips/crossdev/i386-linux/mips64-linux/gcc-3.4.3/
+ I found Linux 2.4 binary packages on ftp.amd.com including au1200 MAE
+driver and some video decoders. I see these lines in driver
+"author=Scott Bolton" and "license=GPL", but without any contact info.
+Does anyone have any information about the author, or where these
+sources can be obtained? (excluding official AMD channels, it's
+already in proress without any hope for success)
+  
 
-Thank you in advance!
-
-Best regards,
-Maxim
+   ()_()
+ -( ^,^ )- -[21398845]- -<The Bat! 3.0.1.33>- -<31/05/2005 11:53>-
+  (") (")

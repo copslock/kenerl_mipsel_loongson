@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 May 2005 13:28:19 +0100 (BST)
-Received: from RT-soft-1.Moscow.itn.ru ([IPv6:::ffff:80.240.96.90]:5519 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 May 2005 14:28:08 +0100 (BST)
+Received: from RT-soft-1.Moscow.itn.ru ([IPv6:::ffff:80.240.96.90]:32655 "EHLO
 	buildserver.ru.mvista.com") by linux-mips.org with ESMTP
-	id <S8225765AbVEaM14>; Tue, 31 May 2005 13:27:56 +0100
+	id <S8225784AbVEaN1r>; Tue, 31 May 2005 14:27:47 +0100
 Received: from 192.168.1.226 ([10.150.0.9])
-	by buildserver.ru.mvista.com (8.11.6/8.11.6) with ESMTP id j4VCRpt03727;
-	Tue, 31 May 2005 17:27:52 +0500
-Subject: [PATCH] A sound driver for NEC VR5701-SG2 Board
+	by buildserver.ru.mvista.com (8.11.6/8.11.6) with ESMTP id j4VDRXt04835;
+	Tue, 31 May 2005 18:27:33 +0500
+Subject: [PATCH] A video driver for Lynx3DM on NEC VR5701-SG2 Board.
 From:	Sergey Podstavin <spodstavin@ru.mvista.com>
 Reply-To: spodstavin@ru.mvista.com
-To:	andrewtv@usa.net
+To:	adaplas@pol.net
 Cc:	linux-mips <linux-mips@linux-mips.org>
-Content-Type: multipart/mixed; boundary="=-OPaFC3FnAr8zyaHKvnnd"
+Content-Type: multipart/mixed; boundary="=-GzVKVITUotwBchgfD2st"
 Organization: MontaVista
-Date:	Tue, 31 May 2005 16:28:09 +0400
-Message-Id: <1117542489.5564.11.camel@localhost.localdomain>
+Date:	Tue, 31 May 2005 17:27:51 +0400
+Message-Id: <1117546071.5564.20.camel@localhost.localdomain>
 Mime-Version: 1.0
 X-Mailer: Evolution 2.0.2 (2.0.2-3) 
 Return-Path: <spodstavin@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8026
+X-archive-position: 8027
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -29,57 +29,84 @@ Precedence: bulk
 X-list: linux-mips
 
 
---=-OPaFC3FnAr8zyaHKvnnd
+--=-GzVKVITUotwBchgfD2st
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 
-Hi Andrew!
+Hi Antonio!
 
-Attached is a sound driver for NEC VR5701-SG2 Board. It's a Vr5701 CPU's
-internal AC97 Interface. The driver works with AC97 Codec.
+Attached is a video driver for Lynx3DM SM722, Silicon Motion Inc. It was
+designed for NEC VR5701-SG2 Board, MIPS-CPU Vr5701. Please review it.
 
+Best wishes,
+Sergey Podstavin.
 
---=-OPaFC3FnAr8zyaHKvnnd
-Content-Disposition: attachment; filename=community_mips_nec_vr5701_sound.patch
-Content-Type: text/x-patch; name=community_mips_nec_vr5701_sound.patch; charset=UTF-8
+--=-GzVKVITUotwBchgfD2st
+Content-Disposition: attachment; filename=community_mips_nec_vr5701_video_lynx3dm.patch
+Content-Type: text/x-patch; name=community_mips_nec_vr5701_video_lynx3dm.patch; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-diff -Naurp --exclude=CVS linux_mips_save/sound/oss/Kconfig linux_mips/sound/oss/Kconfig
---- linux_mips_save/sound/oss/Kconfig	2005-04-29 15:15:23.000000000 +0400
-+++ linux_mips/sound/oss/Kconfig	2005-05-31 15:40:52.000000000 +0400
-@@ -216,6 +216,13 @@ config SOUND_VRC5477
- 	  integrated, multi-function controller chip for MIPS CPUs.  Works
- 	  with the AC97 codec.
+diff -Naurp --exclude=CVS linux_save/drivers/video/Kconfig linux_mips/drivers/video/Kconfig
+--- linux_save/drivers/video/Kconfig	2005-05-19 16:08:32.000000000 +0400
++++ linux_mips/drivers/video/Kconfig	2005-05-31 17:00:36.000000000 +0400
+@@ -1027,6 +1027,25 @@ config FB_ATY_GX
+ 	  is at
+ 	  <http://support.ati.com/products/pc/mach64/graphics_xpression.html>.
  
-+config SOUND_VR5701
-+	tristate "NEC VR5701-SG2 AC97 sound"
-+	depends on SOUND_PRIME!=n && TCUBE && SOUND
++config FB_SM
++	tristate "Silicon Motion SM722 support"
++	depends on FB && PCI
 +	help
-+	  Say Y here to enable sound support for the NEC VR5701-SG2 AC97 sound.
-+	  Works with the AC97 codec.
++	  SM722
 +
- config SOUND_AU1000
- 	tristate "Au1000 Sound"
- 	depends on SOUND_PRIME!=n && (SOC_AU1000 || SOC_AU1100 || SOC_AU1500) && SOUND
-diff -Naurp --exclude=CVS linux_mips_save/sound/oss/Makefile linux_mips/sound/oss/Makefile
---- linux_mips_save/sound/oss/Makefile	2005-01-31 08:45:30.000000000 +0300
-+++ linux_mips/sound/oss/Makefile	2005-05-31 15:40:52.000000000 +0400
-@@ -64,6 +64,7 @@ endif
- obj-$(CONFIG_SOUND_ES1370)	+= es1370.o
- obj-$(CONFIG_SOUND_ES1371)	+= es1371.o ac97_codec.o
- obj-$(CONFIG_SOUND_VRC5477)	+= nec_vrc5477.o ac97_codec.o
-+obj-$(CONFIG_SOUND_VR5701)	+= nec_vr5701_sg2.o ac97_codec.o
- obj-$(CONFIG_SOUND_AU1000)	+= au1000.o ac97_codec.o  
- obj-$(CONFIG_SOUND_AU1550_AC97)	+= au1550_ac97.o ac97_codec.o  
- obj-$(CONFIG_SOUND_AU1550_I2S)	+= au1550_i2s.o  
-diff -Naurp --exclude=CVS linux_mips_save/sound/oss/nec_vr5701_sg2.c linux_mips/sound/oss/nec_vr5701_sg2.c
---- linux_mips_save/sound/oss/nec_vr5701_sg2.c	1970-01-01 03:00:00.000000000 +0300
-+++ linux_mips/sound/oss/nec_vr5701_sg2.c	2005-05-31 15:40:52.000000000 +0400
-@@ -0,0 +1,1355 @@
++choice
++	prompt "Display size"
++	depends on FB_SM
++	default DISPLAY_640x480
++
++config DISPLAY_640x480
++	bool "640x480"
++
++config DISPLAY_1024x768
++	bool "1024x768"
++
++endchoice
++
+ config FB_SAVAGE
+ 	tristate "S3 Savage support"
+ 	depends on FB && PCI && EXPERIMENTAL
+diff -Naurp --exclude=CVS linux_save/drivers/video/Makefile linux_mips/drivers/video/Makefile
+--- linux_save/drivers/video/Makefile	2005-05-19 16:08:32.000000000 +0400
++++ linux_mips/drivers/video/Makefile	2005-05-31 17:03:40.000000000 +0400
+@@ -38,6 +38,7 @@ obj-$(CONFIG_FB_KYRO)             += kyr
+ obj-$(CONFIG_FB_SAVAGE)		  += savage/
+ obj-$(CONFIG_FB_GEODE)		  += geode/
+ obj-$(CONFIG_FB_I810)             += vgastate.o
++obj-$(CONFIG_FB_SM)               += smi/ cfbfillrect.o cfbcopyarea.o cfbimgblt.o
+ obj-$(CONFIG_FB_RADEON_OLD)	  += radeonfb.o
+ obj-$(CONFIG_FB_NEOMAGIC)         += neofb.o vgastate.o
+ obj-$(CONFIG_FB_VIRGE)            += virgefb.o
+diff -Naurp --exclude=CVS linux_save/drivers/video/smi/Makefile linux_mips/drivers/video/smi/Makefile
+--- linux_save/drivers/video/smi/Makefile	1970-01-01 03:00:00.000000000 +0300
++++ linux_mips/drivers/video/smi/Makefile	2005-05-31 17:00:36.000000000 +0400
+@@ -0,0 +1,9 @@
++#
++# Makefile for LynxEM+/EM4+(Silicon Motion Inc.) fb driver for VR5701-SG2
++# under Linux.
++#
++
++obj-$(CONFIG_FB_SM)	+= smfb.o
++
++smfb-objs	:= smi_base.o smi_hw.o 
++
+diff -Naurp --exclude=CVS linux_save/drivers/video/smi/smi_base.c linux_mips/drivers/video/smi/smi_base.c
+--- linux_save/drivers/video/smi/smi_base.c	1970-01-01 03:00:00.000000000 +0300
++++ linux_mips/drivers/video/smi/smi_base.c	2005-05-31 17:00:36.000000000 +0400
+@@ -0,0 +1,532 @@
 +/*
-+ * sound/oss/nec_vr5701_sg2.c
++ * drivers/video/smi/smi_base.c
 + *
-+ * An AC97 sounf driver for NEC VR5701-SG2
++ * LynxEM+/EM4+(Silicon Motion Inc.) fb driver	for VR5701-SG2
 + *
 + * Author: Sergey Podstavin <spodstavin@ru.mvista.com>
 + *
@@ -88,1357 +115,534 @@ diff -Naurp --exclude=CVS linux_mips_save/sound/oss/nec_vr5701_sg2.c linux_mips/
 + * is licensed "as is" without any warranty of any kind, whether express
 + * or implied.
 + */
-+#include "nec_vr5701_sg2.h"
 +
-+static LIST_HEAD(devs);
-+
-+static u16 rdcodec(struct ac97_codec *codec, u8 addr)
-+{
-+	struct vr5701_ac97_state *s =
-+	    (struct vr5701_ac97_state *)codec->private_data;
-+	unsigned long flags;
-+	u32 result;
-+
-+	spin_lock_irqsave(&s->lock, flags);
-+
-+	/* wait until we can access codec registers */
-+	while (inl(s->io + vr5701_CODEC_WR) & 0x80000000) ;
-+
-+	/* write the address and "read" command to codec */
-+	addr = addr & 0x7f;
-+	outl((addr << 16) | vr5701_CODEC_WR_RWC, s->io + vr5701_CODEC_WR);
-+
-+	/* get the return result */
-+	udelay(100);		/* workaround hardware bug */
-+	while ((result = inl(s->io + vr5701_CODEC_RD)) &
-+	       (vr5701_CODEC_RD_RRDYA | vr5701_CODEC_RD_RRDYD)) {
-+		/* we get either addr or data, or both */
-+		if (result & vr5701_CODEC_RD_RRDYA) {
-+			ASSERT(addr == ((result >> 16) & 0x7f));
-+		}
-+		if (result & vr5701_CODEC_RD_RRDYD) {
-+			break;
-+		}
-+	}
-+
-+	spin_unlock_irqrestore(&s->lock, flags);
-+
-+	return result & 0xffff;
-+}
-+
-+static void wrcodec(struct ac97_codec *codec, u8 addr, u16 data)
-+{
-+	struct vr5701_ac97_state *s =
-+	    (struct vr5701_ac97_state *)codec->private_data;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&s->lock, flags);
-+
-+	/* wait until we can access codec registers */
-+	while (inl(s->io + vr5701_CODEC_WR) & 0x80000000) ;
-+
-+	/* write the address and value to codec */
-+	outl((addr << 16) | data, s->io + vr5701_CODEC_WR);
-+
-+	spin_unlock_irqrestore(&s->lock, flags);
-+}
-+
-+static void waitcodec(struct ac97_codec *codec)
-+{
-+	struct vr5701_ac97_state *s =
-+	    (struct vr5701_ac97_state *)codec->private_data;
-+
-+	/* wait until we can access codec registers */
-+	while (inl(s->io + vr5701_CODEC_WR) & 0x80000000) ;
-+}
-+
-+static void vr5701_ac97_delay(int msec)
-+{
-+	unsigned long tmo;
-+	signed long tmo2;
-+
-+	if (in_interrupt())
-+		return;
-+
-+	tmo = jiffies + (msec * HZ) / 1000;
-+	for (;;) {
-+		tmo2 = tmo - jiffies;
-+		if (tmo2 <= 0)
-+			break;
-+		schedule_timeout(tmo2);
-+	}
-+}
-+
-+static void set_adc_rate(struct vr5701_ac97_state *s, unsigned rate)
-+{
-+	wrcodec(s->codec, AC97_PCM_LR_ADC_RATE, rate);
-+	s->adcRate = rate;
-+}
-+
-+static void set_dac_rate(struct vr5701_ac97_state *s, unsigned rate)
-+{
-+	if (s->extended_status & AC97_EXTSTAT_VRA) {
-+		wrcodec(s->codec, AC97_PCM_FRONT_DAC_RATE, rate);
-+		s->dacRate = rdcodec(s->codec, AC97_PCM_FRONT_DAC_RATE);
-+	}
-+}
-+
-+static void start_dac(struct vr5701_ac97_state *s)
-+{
-+	struct dmabuf *db = &s->dma_dac;
-+	unsigned long flags;
-+	u32 dmaLength;
-+	u32 temp;
-+
-+	spin_lock_irqsave(&s->lock, flags);
-+
-+	if (!db->stopped) {
-+		spin_unlock_irqrestore(&s->lock, flags);
-+		return;
-+	}
-+
-+	/* we should have some data to do the DMA trasnfer */
-+	ASSERT(db->count >= db->fragSize);
-+
-+	/* clear pending fales interrupts */
-+	outl(vr5701_INT_MASK_DAC1END | vr5701_INT_MASK_DAC2END,
-+	     s->io + vr5701_INT_CLR);
-+
-+	/* enable interrupts */
-+	temp = inl(s->io + vr5701_INT_MASK);
-+	temp |= vr5701_INT_MASK_DAC1END | vr5701_INT_MASK_DAC2END;
-+	outl(temp, s->io + vr5701_INT_MASK);
-+
-+	/* setup dma base addr */
-+	outl(db->lbufDma + db->nextOut, s->io + vr5701_DAC1_BADDR);
-+	if (s->dacChannels == 1) {
-+		outl(db->lbufDma + db->nextOut, s->io + vr5701_DAC2_BADDR);
-+	} else {
-+		outl(db->rbufDma + db->nextOut, s->io + vr5701_DAC2_BADDR);
-+	}
-+
-+	/* set dma length, in the unit of 0x10 bytes */
-+	dmaLength = db->fragSize >> 4;
-+	outl(dmaLength, s->io + vr5701_DAC1L);
-+	outl(dmaLength, s->io + vr5701_DAC2L);
-+
-+	/* activate dma */
-+	outl(vr5701_DMA_ACTIVATION, s->io + vr5701_DAC1_CTRL);
-+	outl(vr5701_DMA_ACTIVATION, s->io + vr5701_DAC2_CTRL);
-+
-+	/* enable dac slots - we should hear the music now! */
-+	temp = inl(s->io + vr5701_CTRL);
-+	temp |= (vr5701_CTRL_DAC1ENB | vr5701_CTRL_DAC2ENB);
-+	outl(temp, s->io + vr5701_CTRL);
-+
-+	/* it is time to setup next dma transfer */
-+	ASSERT(inl(s->io + vr5701_DAC1_CTRL) & vr5701_DMA_WIP);
-+	ASSERT(inl(s->io + vr5701_DAC2_CTRL) & vr5701_DMA_WIP);
-+
-+	temp = db->nextOut + db->fragSize;
-+	if (temp >= db->fragTotalSize) {
-+		ASSERT(temp == db->fragTotalSize);
-+		temp = 0;
-+	}
-+
-+	outl(db->lbufDma + temp, s->io + vr5701_DAC1_BADDR);
-+	if (s->dacChannels == 1) {
-+		outl(db->lbufDma + temp, s->io + vr5701_DAC2_BADDR);
-+	} else {
-+		outl(db->rbufDma + temp, s->io + vr5701_DAC2_BADDR);
-+	}
-+
-+	db->stopped = 0;
-+
-+#if defined(vr5701_AC97_VERBOSE_DEBUG)
-+	outTicket = *(u16 *) (db->lbuf + db->nextOut);
-+	if (db->count > db->fragSize) {
-+		ASSERT((u16) (outTicket + 1) == *(u16 *) (db->lbuf + temp));
-+	}
-+#endif
-+	spin_unlock_irqrestore(&s->lock, flags);
-+}
-+
-+static void start_adc(struct vr5701_ac97_state *s)
-+{
-+	struct dmabuf *db = &s->dma_adc;
-+	unsigned long flags;
-+	u32 dmaLength;
-+	u32 temp;
-+
-+	spin_lock_irqsave(&s->lock, flags);
-+
-+	if (!db->stopped) {
-+		spin_unlock_irqrestore(&s->lock, flags);
-+		return;
-+	}
-+
-+	/* we should at least have some free space in the buffer */
-+	ASSERT(db->count < db->fragTotalSize - db->fragSize * 2);
-+
-+	/* clear pending ones */
-+	outl(vr5701_INT_MASK_ADC1END | vr5701_INT_MASK_ADC2END,
-+	     s->io + vr5701_INT_CLR);
-+
-+	/* enable interrupts */
-+	temp = inl(s->io + vr5701_INT_MASK);
-+	temp |= vr5701_INT_MASK_ADC1END | vr5701_INT_MASK_ADC2END;
-+	outl(temp, s->io + vr5701_INT_MASK);
-+
-+	/* setup dma base addr */
-+	outl(db->lbufDma + db->nextIn, s->io + vr5701_ADC1_BADDR);
-+	outl(db->rbufDma + db->nextIn, s->io + vr5701_ADC2_BADDR);
-+
-+	/* setup dma length */
-+	dmaLength = db->fragSize >> 4;
-+	outl(dmaLength, s->io + vr5701_ADC1L);
-+	outl(dmaLength, s->io + vr5701_ADC2L);
-+
-+	/* activate dma */
-+	outl(vr5701_DMA_ACTIVATION, s->io + vr5701_ADC1_CTRL);
-+	outl(vr5701_DMA_ACTIVATION, s->io + vr5701_ADC2_CTRL);
-+
-+	/* enable adc slots */
-+	temp = inl(s->io + vr5701_CTRL);
-+	temp |= (vr5701_CTRL_ADC1ENB | vr5701_CTRL_ADC2ENB);
-+	outl(temp, s->io + vr5701_CTRL);
-+
-+	/* it is time to setup next dma transfer */
-+	temp = db->nextIn + db->fragSize;
-+	if (temp >= db->fragTotalSize) {
-+		ASSERT(temp == db->fragTotalSize);
-+		temp = 0;
-+	}
-+	outl(db->lbufDma + temp, s->io + vr5701_ADC1_BADDR);
-+	outl(db->rbufDma + temp, s->io + vr5701_ADC2_BADDR);
-+
-+	db->stopped = 0;
-+
-+	spin_unlock_irqrestore(&s->lock, flags);
-+}
-+
-+/* return the total bytes that is copied */
-+static inline int
-+copy_dac_from_user(struct vr5701_ac97_state *s,
-+		   const char *buffer, size_t count, int avail)
-+{
-+	struct dmabuf *db = &s->dma_dac;
-+	int copyCount = 0;
-+	int copyFragCount = 0;
-+	int totalCopyCount = 0;
-+	int totalCopyFragCount = 0;
-+	unsigned long flags;
-+#if defined(vr5701_AC97_VERBOSE_DEBUG)
-+	int i;
-+#endif
-+
-+	/* adjust count to signel channel byte count */
-+	count >>= s->dacChannels - 1;
-+
-+	/* we may have to "copy" twice as ring buffer wraps around */
-+	for (; (avail > 0) && (count > 0);) {
-+		/* determine max possible copy count for single channel */
-+		copyCount = count;
-+		if (copyCount > avail) {
-+			copyCount = avail;
-+		}
-+		if (copyCount + db->nextIn > db->fragTotalSize) {
-+			copyCount = db->fragTotalSize - db->nextIn;
-+			ASSERT(copyCount > 0);
-+		}
-+
-+		copyFragCount = copyCount;
-+		ASSERT(copyFragCount >= copyCount);
-+
-+		/* we copy differently based on the number channels */
-+		if (s->dacChannels == 1) {
-+			if (copy_from_user(db->lbuf + db->nextIn,
-+					   buffer, copyCount))
-+				return -1;
-+			/* fill gaps with 0 */
-+			memset(db->lbuf + db->nextIn + copyCount,
-+			       0, copyFragCount - copyCount);
-+		} else {
-+			/* we have demux the stream into two separate ones */
-+			if (copy_two_channel_dac_from_user
-+			    (s, buffer, copyCount))
-+				return -1;
-+			/* fill gaps with 0 */
-+			memset(db->lbuf + db->nextIn + copyCount,
-+			       0, copyFragCount - copyCount);
-+			memset(db->rbuf + db->nextIn + copyCount,
-+			       0, copyFragCount - copyCount);
-+		}
-+
-+#if defined(vr5701_AC97_VERBOSE_DEBUG)
-+		for (i = 0; i < copyFragCount; i += db->fragSize) {
-+			*(u16 *) (db->lbuf + db->nextIn + i) = inTicket++;
-+		}
-+#endif
-+
-+		count -= copyCount;
-+		totalCopyCount += copyCount;
-+		avail -= copyFragCount;
-+		totalCopyFragCount += copyFragCount;
-+
-+		buffer += copyCount << (s->dacChannels - 1);
-+
-+		db->nextIn += copyFragCount;
-+		if (db->nextIn >= db->fragTotalSize) {
-+			ASSERT(db->nextIn == db->fragTotalSize);
-+			db->nextIn = 0;
-+		}
-+
-+		ASSERT((count == 0) || (copyCount == copyFragCount));
-+	}
-+
-+	spin_lock_irqsave(&s->lock, flags);
-+	db->count += totalCopyFragCount;
-+	if (db->stopped) {
-+		start_dac(s);
-+	}
-+
-+	/* nextIn should not be equal to nextOut unless we are full */
-+	ASSERT(((db->count == db->fragTotalSize) &&
-+		(db->nextIn == db->nextOut)) ||
-+	       ((db->count < db->fragTotalSize) &&
-+		(db->nextIn != db->nextOut)));
-+
-+	spin_unlock_irqrestore(&s->lock, flags);
-+
-+	return totalCopyCount << (s->dacChannels - 1);
-+
-+}
-+
-+static int prog_dmabuf(struct vr5701_ac97_state *s,
-+		       struct dmabuf *db, unsigned rate)
-+{
-+	int order;
-+	unsigned bufsize;
-+
-+	if (!db->lbuf) {
-+		ASSERT(!db->rbuf);
-+
-+		db->ready = 0;
-+		for (order = DMABUF_DEFAULTORDER;
-+		     order >= DMABUF_MINORDER; order--) {
-+			db->lbuf = pci_alloc_consistent(s->dev,
-+							PAGE_SIZE << order,
-+							&db->lbufDma);
-+			db->rbuf = pci_alloc_consistent(s->dev,
-+							PAGE_SIZE << order,
-+							&db->rbufDma);
-+			if (db->lbuf && db->rbuf)
-+				break;
-+			if (db->lbuf) {
-+				ASSERT(!db->rbuf);
-+				pci_free_consistent(s->dev,
-+						    PAGE_SIZE << order,
-+						    db->lbuf, db->lbufDma);
-+			}
-+		}
-+		if (!db->lbuf) {
-+			ASSERT(!db->rbuf);
-+			return -ENOMEM;
-+		}
-+
-+		db->bufOrder = order;
-+	}
-+
-+	db->count = 0;
-+	db->nextIn = db->nextOut = 0;
-+
-+	bufsize = PAGE_SIZE << db->bufOrder;
-+	db->fragShift = ld2(rate * 2 / 100);
-+	if (db->fragShift < 4)
-+		db->fragShift = 4;
-+
-+	db->numFrag = bufsize >> db->fragShift;
-+	while (db->numFrag < 4 && db->fragShift > 4) {
-+		db->fragShift--;
-+		db->numFrag = bufsize >> db->fragShift;
-+	}
-+	db->fragSize = 1 << db->fragShift;
-+	db->fragTotalSize = db->numFrag << db->fragShift;
-+	memset(db->lbuf, 0, db->fragTotalSize);
-+	memset(db->rbuf, 0, db->fragTotalSize);
-+
-+	db->ready = 1;
-+
-+	return 0;
-+}
-+
-+static irqreturn_t vr5701_ac97_interrupt(int irq, void *dev_id,
-+					 struct pt_regs *regs)
-+{
-+	struct vr5701_ac97_state *s = (struct vr5701_ac97_state *)dev_id;
-+	u32 irqStatus;
-+	u32 adcInterrupts, dacInterrupts;
-+
-+	spin_lock(&s->lock);
-+
-+	/* get irqStatus and clear the detected ones */
-+	irqStatus = inl(s->io + vr5701_INT_STATUS);
-+	outl(irqStatus, s->io + vr5701_INT_CLR);
-+
-+	/* let us see what we get */
-+	dacInterrupts = vr5701_INT_MASK_DAC1END | vr5701_INT_MASK_DAC2END;
-+	adcInterrupts = vr5701_INT_MASK_ADC1END | vr5701_INT_MASK_ADC2END;
-+	if (irqStatus & dacInterrupts) {
-+		/* we should get both interrupts, but just in case ...  */
-+		if (irqStatus & vr5701_INT_MASK_DAC1END) {
-+			vr5701_ac97_dac_interrupt(s);
-+		}
-+		if ((irqStatus & dacInterrupts) != dacInterrupts) {
-+			printk(KERN_WARNING
-+			       "vr5701_ac97 : dac interrupts not in sync!!!\n");
-+			stop_dac(s);
-+			start_dac(s);
-+		}
-+	} else if (irqStatus & adcInterrupts) {
-+		/* we should get both interrupts, but just in case ...  */
-+		if (irqStatus & vr5701_INT_MASK_ADC1END) {
-+			vr5701_ac97_adc_interrupt(s);
-+		}
-+		if ((irqStatus & adcInterrupts) != adcInterrupts) {
-+			printk(KERN_WARNING
-+			       "vr5701_ac97 : adc interrupts not in sync!!!\n");
-+			stop_adc(s);
-+			start_adc(s);
-+		}
-+	}
-+
-+	spin_unlock(&s->lock);
-+	return IRQ_HANDLED;
-+}
-+
-+static int vr5701_ac97_open_mixdev(struct inode *inode, struct file *file)
-+{
-+	int minor = iminor(inode);
-+	struct list_head *list;
-+	struct vr5701_ac97_state *s;
-+
-+	for (list = devs.next;; list = list->next) {
-+		if (list == &devs)
-+			return -ENODEV;
-+		s = list_entry(list, struct vr5701_ac97_state, devs);
-+		if (s->codec->dev_mixer == minor)
-+			break;
-+	}
-+	file->private_data = s;
-+	return nonseekable_open(inode, file);
-+}
-+
-+static int vr5701_ac97_release_mixdev(struct inode *inode, struct file *file)
-+{
-+	return 0;
-+}
-+
-+static int mixdev_ioctl(struct ac97_codec *codec, unsigned int cmd,
-+			unsigned long arg)
-+{
-+	return codec->mixer_ioctl(codec, cmd, arg);
-+}
-+
-+static int vr5701_ac97_ioctl_mixdev(struct inode *inode, struct file *file,
-+				    unsigned int cmd, unsigned long arg)
-+{
-+	struct vr5701_ac97_state *s =
-+	    (struct vr5701_ac97_state *)file->private_data;
-+	struct ac97_codec *codec = s->codec;
-+
-+	return mixdev_ioctl(codec, cmd, arg);
-+}
-+
-+static struct file_operations vr5701_ac97_mixer_fops = {
-+	.owner = THIS_MODULE,
-+	.llseek = no_llseek,
-+	.ioctl = vr5701_ac97_ioctl_mixdev,
-+	.open = vr5701_ac97_open_mixdev,
-+	.release = vr5701_ac97_release_mixdev,
++#include <linux/config.h>
++#include <linux/module.h>
++#include <linux/kernel.h>
++#include <linux/errno.h>
++#include <linux/string.h>
++#include <linux/mm.h>
++#include <linux/selection.h>
++#include <linux/tty.h>
++#include <linux/slab.h>
++#include <linux/delay.h>
++#include <linux/fb.h>
++#include <linux/init.h>
++#include <linux/pci.h>
++#include <linux/console.h>
++#include "../console/fbcon.h"
++#include "smifb.h"
++#include "smi_hw.h"
++
++/*
++ * Card Identification
++ *
++ */
++static struct pci_device_id smifb_pci_tbl[] __devinitdata = {
++	{PCI_VENDOR_ID_SMI, PCI_DEVICE_ID_SMI_LYNX_EM_PLUS,
++	 PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0},	/* Lynx EM+/EM4+ */
++	{PCI_VENDOR_ID_SMI, PCI_DEVICE_ID_SMI_LYNX_3DM,
++	 PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0},	/* Lynx 3DM/3DM+/3DM4+ */
++	{0,}			/* terminate list */
 +};
 +
-+static int drain_dac(struct vr5701_ac97_state *s, int nonblock)
-+{
-+	unsigned long flags;
-+	int count, tmo;
++MODULE_DEVICE_TABLE(pci, smifb_pci_tbl);
 +
-+	if (!s->dma_dac.ready)
-+		return 0;
++/*
++ *
++ * global variables
++ *
++ */
 +
-+	for (;;) {
-+		spin_lock_irqsave(&s->lock, flags);
-+		count = s->dma_dac.count;
-+		spin_unlock_irqrestore(&s->lock, flags);
-+		if (count <= 0)
-+			break;
-+		if (signal_pending(current))
-+			break;
-+		if (nonblock)
-+			return -EBUSY;
-+		tmo = 1000 * count / s->dacRate / 2;
-+		vr5701_ac97_delay(tmo);
-+	}
-+	if (signal_pending(current))
-+		return -ERESTARTSYS;
-+	return 0;
-+}
-+
-+static ssize_t
-+vr5701_ac97_read(struct file *file, char *buffer, size_t count, loff_t * ppos)
-+{
-+	struct vr5701_ac97_state *s =
-+	    (struct vr5701_ac97_state *)file->private_data;
-+	struct dmabuf *db = &s->dma_adc;
-+	ssize_t ret = 0;
-+	unsigned long flags;
-+	int copyCount;
-+	size_t avail;
-+
-+	if (!access_ok(VERIFY_WRITE, buffer, count))
-+		return -EFAULT;
-+
-+	ASSERT(db->ready);
-+
-+	while (count > 0) {
-+		do {
-+			spin_lock_irqsave(&s->lock, flags);
-+			if (db->stopped)
-+				start_adc(s);
-+			avail = db->count;
-+			spin_unlock_irqrestore(&s->lock, flags);
-+			if (avail <= 0) {
-+				if (file->f_flags & O_NONBLOCK) {
-+					if (!ret)
-+						ret = -EAGAIN;
-+					return ret;
-+				}
-+				interruptible_sleep_on(&db->wait);
-+				if (signal_pending(current)) {
-+					if (!ret)
-+						ret = -ERESTARTSYS;
-+					return ret;
-+				}
-+			}
-+		} while (avail <= 0);
-+
-+		ASSERT((avail % db->fragSize) == 0);
-+		copyCount = copy_adc_to_user(s, buffer, count, avail);
-+		if (copyCount <= 0) {
-+			if (!ret)
-+				ret = -EFAULT;
-+			return ret;
-+		}
-+
-+		count -= copyCount;
-+		buffer += copyCount;
-+		ret += copyCount;
-+	}
-+
-+	return ret;
-+}
-+
-+static ssize_t vr5701_ac97_write(struct file *file, const char *buffer,
-+				 size_t count, loff_t * ppos)
-+{
-+	struct vr5701_ac97_state *s =
-+	    (struct vr5701_ac97_state *)file->private_data;
-+	struct dmabuf *db = &s->dma_dac;
-+	ssize_t ret;
-+	unsigned long flags;
-+	int copyCount, avail;
-+
-+	if (!access_ok(VERIFY_READ, buffer, count))
-+		return -EFAULT;
-+	ret = 0;
-+
-+	while (count > 0) {
-+		do {
-+			spin_lock_irqsave(&s->lock, flags);
-+			avail = db->fragTotalSize - db->count;
-+			spin_unlock_irqrestore(&s->lock, flags);
-+			if (avail <= 0) {
-+				if (file->f_flags & O_NONBLOCK) {
-+					if (!ret)
-+						ret = -EAGAIN;
-+					return ret;
-+				}
-+				interruptible_sleep_on(&db->wait);
-+				if (signal_pending(current)) {
-+					if (!ret)
-+						ret = -ERESTARTSYS;
-+					return ret;
-+				}
-+			}
-+		} while (avail <= 0);
-+
-+		copyCount = copy_dac_from_user(s, buffer, count, avail);
-+		if (copyCount < 0) {
-+			if (!ret)
-+				ret = -EFAULT;
-+			return ret;
-+		}
-+
-+		count -= copyCount;
-+		buffer += copyCount;
-+		ret += copyCount;
-+	}
-+
-+	return ret;
-+}
-+
-+/* No kernel lock - we have our own spinlock */
-+static unsigned int vr5701_ac97_poll(struct file *file,
-+				     struct poll_table_struct *wait)
-+{
-+	struct vr5701_ac97_state *s =
-+	    (struct vr5701_ac97_state *)file->private_data;
-+	unsigned long flags;
-+	unsigned int mask = 0;
-+
-+	if (file->f_mode & FMODE_WRITE)
-+		poll_wait(file, &s->dma_dac.wait, wait);
-+	if (file->f_mode & FMODE_READ)
-+		poll_wait(file, &s->dma_adc.wait, wait);
-+	spin_lock_irqsave(&s->lock, flags);
-+	if (file->f_mode & FMODE_READ) {
-+		if (s->dma_adc.count >= (signed)s->dma_adc.fragSize)
-+			mask |= POLLIN | POLLRDNORM;
-+	}
-+	if (file->f_mode & FMODE_WRITE) {
-+		if ((signed)s->dma_dac.fragTotalSize >=
-+		    s->dma_dac.count + (signed)s->dma_dac.fragSize)
-+			mask |= POLLOUT | POLLWRNORM;
-+	}
-+	spin_unlock_irqrestore(&s->lock, flags);
-+	return mask;
-+}
-+
-+#ifdef vr5701_AC97_DEBUG
-+static struct ioctl_str_t {
-+	unsigned int cmd;
-+	const char *str;
-+} ioctl_str[] = {
-+	{
-+	SNDCTL_DSP_RESET, "SNDCTL_DSP_RESET"}, {
-+	SNDCTL_DSP_SYNC, "SNDCTL_DSP_SYNC"}, {
-+	SNDCTL_DSP_SPEED, "SNDCTL_DSP_SPEED"}, {
-+	SNDCTL_DSP_STEREO, "SNDCTL_DSP_STEREO"}, {
-+	SNDCTL_DSP_GETBLKSIZE, "SNDCTL_DSP_GETBLKSIZE"}, {
-+	SNDCTL_DSP_SETFMT, "SNDCTL_DSP_SETFMT"}, {
-+	SNDCTL_DSP_SAMPLESIZE, "SNDCTL_DSP_SAMPLESIZE"}, {
-+	SNDCTL_DSP_CHANNELS, "SNDCTL_DSP_CHANNELS"}, {
-+	SOUND_PCM_WRITE_CHANNELS, "SOUND_PCM_WRITE_CHANNELS"}, {
-+	SOUND_PCM_WRITE_FILTER, "SOUND_PCM_WRITE_FILTER"}, {
-+	SNDCTL_DSP_POST, "SNDCTL_DSP_POST"}, {
-+	SNDCTL_DSP_SUBDIVIDE, "SNDCTL_DSP_SUBDIVIDE"}, {
-+	SNDCTL_DSP_SETFRAGMENT, "SNDCTL_DSP_SETFRAGMENT"}, {
-+	SNDCTL_DSP_GETFMTS, "SNDCTL_DSP_GETFMTS"}, {
-+	SNDCTL_DSP_GETOSPACE, "SNDCTL_DSP_GETOSPACE"}, {
-+	SNDCTL_DSP_GETISPACE, "SNDCTL_DSP_GETISPACE"}, {
-+	SNDCTL_DSP_NONBLOCK, "SNDCTL_DSP_NONBLOCK"}, {
-+	SNDCTL_DSP_GETCAPS, "SNDCTL_DSP_GETCAPS"}, {
-+	SNDCTL_DSP_GETTRIGGER, "SNDCTL_DSP_GETTRIGGER"}, {
-+	SNDCTL_DSP_SETTRIGGER, "SNDCTL_DSP_SETTRIGGER"}, {
-+	SNDCTL_DSP_GETIPTR, "SNDCTL_DSP_GETIPTR"}, {
-+	SNDCTL_DSP_GETOPTR, "SNDCTL_DSP_GETOPTR"}, {
-+	SNDCTL_DSP_MAPINBUF, "SNDCTL_DSP_MAPINBUF"}, {
-+	SNDCTL_DSP_MAPOUTBUF, "SNDCTL_DSP_MAPOUTBUF"}, {
-+	SNDCTL_DSP_SETSYNCRO, "SNDCTL_DSP_SETSYNCRO"}, {
-+	SNDCTL_DSP_SETDUPLEX, "SNDCTL_DSP_SETDUPLEX"}, {
-+	SNDCTL_DSP_GETODELAY, "SNDCTL_DSP_GETODELAY"}, {
-+	SNDCTL_DSP_GETCHANNELMASK, "SNDCTL_DSP_GETCHANNELMASK"}, {
-+	SNDCTL_DSP_BIND_CHANNEL, "SNDCTL_DSP_BIND_CHANNEL"}, {
-+	OSS_GETVERSION, "OSS_GETVERSION"}, {
-+	SOUND_PCM_READ_RATE, "SOUND_PCM_READ_RATE"}, {
-+	SOUND_PCM_READ_CHANNELS, "SOUND_PCM_READ_CHANNELS"}, {
-+	SOUND_PCM_READ_BITS, "SOUND_PCM_READ_BITS"}, {
-+	SOUND_PCM_READ_FILTER, "SOUND_PCM_READ_FILTER"}
++#ifdef CONFIG_DISPLAY_1024x768
++/* 1024x768, 16bpp, 60Hz */
++static struct fb_var_screeninfo smifb_default_var = {
++      xres:1024,
++      yres:768,
++      xres_virtual:1024,
++      yres_virtual:768,
++      xoffset:0,
++      yoffset:0,
++      bits_per_pixel:16,
++      grayscale:0,
++      red:{11, 5, 0},
++      green:{5, 6, 0},
++      blue:{0, 5, 0},
++      transp:{0, 0, 0},
++      nonstd:0,
++      activate:0,
++      height:-1,
++      width:-1,
++      accel_flags:0,
++      pixclock:39721,		/* D */
++      left_margin:138,
++      right_margin:24,
++      upper_margin:24,
++      lower_margin:4,
++      hsync_len:160,
++      vsync_len:6,
++      sync:0,
++      vmode:FB_VMODE_NONINTERLACED
++};
++#else
++/* 640x480, 16bpp, 60Hz */
++static struct fb_var_screeninfo smifb_default_var = {
++      xres:640,
++      yres:480,
++      xres_virtual:640,
++      yres_virtual:480,
++      xoffset:0,
++      yoffset:0,
++      bits_per_pixel:16,
++      grayscale:0,
++      red:{11, 5, 0},
++      green:{5, 6, 0},
++      blue:{0, 5, 0},
++      transp:{0, 0, 0},
++      nonstd:0,
++      activate:0,
++      height:-1,
++      width:-1,
++      accel_flags:0,
++      pixclock:39721,		/* D */
++      left_margin:82,
++      right_margin:16,
++      upper_margin:19,
++      lower_margin:1,
++      hsync_len:152,
++      vsync_len:4,
++      sync:0,
++      vmode:FB_VMODE_NONINTERLACED
 +};
 +#endif
 +
-+static int vr5701_ac97_ioctl(struct inode *inode, struct file *file,
-+			     unsigned int cmd, unsigned long arg)
++static char drvrname[] = "NEC video driver for SMI LynxEM+";
++
++/*
++ *
++ * general utility functions
++ *
++ */
++
++static void
++smi_load_video_mode(struct smifb_info *sinfo,
++		    struct fb_var_screeninfo *video_mode)
 +{
-+	struct vr5701_ac97_state *s =
-+	    (struct vr5701_ac97_state *)file->private_data;
-+	unsigned long flags;
-+	audio_buf_info abinfo;
-+	int count;
-+	int val, ret;
++	int bpp, width, height;
++	int hDisplaySize, hDisplay, hStart, hEnd, hTotal;
++	int vDisplay, vStart, vEnd, vTotal;
++	int dotClock;
 +
-+#ifdef vr5701_AC97_DEBUG
-+	for (count = 0; count < sizeof(ioctl_str) / sizeof(ioctl_str[0]);
-+	     count++) {
-+		if (ioctl_str[count].cmd == cmd)
-+			break;
-+	}
-+	if (count < sizeof(ioctl_str) / sizeof(ioctl_str[0]))
-+		printk(KERN_INFO PFX "ioctl %s\n", ioctl_str[count].str);
-+	else
-+		printk(KERN_INFO PFX "ioctl unknown, 0x%x\n", cmd);
-+#endif
++	pr_debug("smi_load_video_mode: video_mode->xres = %d\n",
++		 video_mode->xres);
++	pr_debug("                   :             yres = %d\n",
++		 video_mode->yres);
++	pr_debug("                   :             xres_virtual = %d\n",
++		 video_mode->xres_virtual);
++	pr_debug("                   :             yres_virtual = %d\n",
++		 video_mode->yres_virtual);
++	pr_debug("                   :             xoffset = %d\n",
++		 video_mode->xoffset);
++	pr_debug("                   :             yoffset = %d\n",
++		 video_mode->yoffset);
++	pr_debug("                   :             bits_per_pixel = %d\n",
++		 video_mode->bits_per_pixel);
 +
-+	switch (cmd) {
-+	case OSS_GETVERSION:
-+		return put_user(SOUND_VERSION, (int *)arg);
++	/* smifb_blank(1, (struct fb_info*)sinfo); */
++	bpp = video_mode->bits_per_pixel;
++	if (bpp == 16 && video_mode->green.length == 5)
++		bpp = 15;
 +
-+	case SNDCTL_DSP_SYNC:
-+		if (file->f_mode & FMODE_WRITE)
-+			return drain_dac(s, file->f_flags & O_NONBLOCK);
-+		return 0;
++	/* horizontal params */
++	width = video_mode->xres_virtual;
++	hDisplaySize = video_mode->xres;	/* number of pixels for one horizontal line */
++	hDisplay = (hDisplaySize / 8) - 1;	/* number of character clocks */
++	hStart = (hDisplaySize + video_mode->right_margin) / 8 + 2;	/* h-blank start character clocks */
++	hEnd = (hDisplaySize + video_mode->right_margin + video_mode->hsync_len) / 8 - 1;	/* h-sync end */
++	hTotal = (hDisplaySize + video_mode->right_margin + video_mode->hsync_len + video_mode->left_margin) / 8 - 1;	/* character clock from h-sync to next h-sync */
 +
-+	case SNDCTL_DSP_SETDUPLEX:
-+		return 0;
++	/* vertical params */
++	height = video_mode->yres_virtual;
++	vDisplay = video_mode->yres - 1;	/* number of lines */
++	vStart = video_mode->yres + video_mode->lower_margin - 1;	/* v-sync pulse start */
++	vEnd = video_mode->yres + video_mode->lower_margin + video_mode->vsync_len - 1;	/* v-sync end */
++	vTotal = video_mode->yres + video_mode->lower_margin + video_mode->vsync_len + video_mode->upper_margin + 2;	/* number of scanlines (v-blank end) */
 +
-+	case SNDCTL_DSP_GETCAPS:
-+		return put_user(DSP_CAP_DUPLEX, (int *)arg);
++	dotClock = 1000000000 / video_mode->pixclock;
 +
-+	case SNDCTL_DSP_RESET:
-+		if (file->f_mode & FMODE_WRITE) {
-+			stop_dac(s);
-+			synchronize_irq(s->irq);
-+			s->dma_dac.count = 0;
-+			s->dma_dac.nextIn = s->dma_dac.nextOut = 0;
-+		}
-+		if (file->f_mode & FMODE_READ) {
-+			stop_adc(s);
-+			synchronize_irq(s->irq);
-+			s->dma_adc.count = 0;
-+			s->dma_adc.nextIn = s->dma_adc.nextOut = 0;
-+		}
-+		return 0;
-+
-+	case SNDCTL_DSP_SPEED:
-+		if (get_user(val, (int *)arg))
-+			return -EFAULT;
-+		if (val >= 0) {
-+			if (file->f_mode & FMODE_READ) {
-+				stop_adc(s);
-+				set_adc_rate(s, val);
-+				if ((ret = prog_dmabuf_adc(s)))
-+					return ret;
-+			}
-+			if (file->f_mode & FMODE_WRITE) {
-+				stop_dac(s);
-+				set_dac_rate(s, val);
-+				if ((ret = prog_dmabuf_dac(s)))
-+					return ret;
-+			}
-+		}
-+		return put_user((file->f_mode & FMODE_READ) ?
-+				s->adcRate : s->dacRate, (int *)arg);
-+
-+	case SNDCTL_DSP_STEREO:
-+		if (get_user(val, (int *)arg))
-+			return -EFAULT;
-+		if (file->f_mode & FMODE_READ) {
-+			stop_adc(s);
-+			if (val)
-+				s->adcChannels = 2;
-+			else
-+				s->adcChannels = 1;
-+			if ((ret = prog_dmabuf_adc(s)))
-+				return ret;
-+		}
-+		if (file->f_mode & FMODE_WRITE) {
-+			stop_dac(s);
-+			if (val)
-+				s->dacChannels = 2;
-+			else
-+				s->dacChannels = 1;
-+			if ((ret = prog_dmabuf_dac(s)))
-+				return ret;
-+		}
-+		return 0;
-+
-+	case SNDCTL_DSP_CHANNELS:
-+		if (get_user(val, (int *)arg))
-+			return -EFAULT;
-+		if (val != 0) {
-+			if ((val != 1) && (val != 2))
-+				val = 2;
-+
-+			if (file->f_mode & FMODE_READ) {
-+				stop_adc(s);
-+				s->dacChannels = val;
-+				if ((ret = prog_dmabuf_adc(s)))
-+					return ret;
-+			}
-+			if (file->f_mode & FMODE_WRITE) {
-+				stop_dac(s);
-+				s->dacChannels = val;
-+				if ((ret = prog_dmabuf_dac(s)))
-+					return ret;
-+			}
-+		}
-+		return put_user(val, (int *)arg);
-+
-+	case SNDCTL_DSP_GETFMTS:	/* Returns a mask */
-+		return put_user(AFMT_S16_LE, (int *)arg);
-+
-+	case SNDCTL_DSP_SETFMT:	/* Selects ONE fmt */
-+		if (get_user(val, (int *)arg))
-+			return -EFAULT;
-+		if (val != AFMT_QUERY) {
-+			if (val != AFMT_S16_LE)
-+				return -EINVAL;
-+			if (file->f_mode & FMODE_READ) {
-+				stop_adc(s);
-+				if ((ret = prog_dmabuf_adc(s)))
-+					return ret;
-+			}
-+			if (file->f_mode & FMODE_WRITE) {
-+				stop_dac(s);
-+				if ((ret = prog_dmabuf_dac(s)))
-+					return ret;
-+			}
-+		} else {
-+			val = AFMT_S16_LE;
-+		}
-+		return put_user(val, (int *)arg);
-+
-+	case SNDCTL_DSP_POST:
-+		return 0;
-+
-+	case SNDCTL_DSP_GETTRIGGER:
-+	case SNDCTL_DSP_SETTRIGGER:
-+		/* NO trigger */
-+		return -EINVAL;
-+
-+	case SNDCTL_DSP_GETOSPACE:
-+		if (!(file->f_mode & FMODE_WRITE))
-+			return -EINVAL;
-+		abinfo.fragsize = s->dma_dac.fragSize << (s->dacChannels - 1);
-+		spin_lock_irqsave(&s->lock, flags);
-+		count = s->dma_dac.count;
-+		spin_unlock_irqrestore(&s->lock, flags);
-+		abinfo.bytes = (s->dma_dac.fragTotalSize - count) <<
-+		    (s->dacChannels - 1);
-+		abinfo.fragstotal = s->dma_dac.numFrag;
-+		abinfo.fragments = abinfo.bytes >> s->dma_dac.fragShift >>
-+		    (s->dacChannels - 1);
-+		return copy_to_user((void *)arg, &abinfo,
-+				    sizeof(abinfo)) ? -EFAULT : 0;
-+
-+	case SNDCTL_DSP_GETISPACE:
-+		if (!(file->f_mode & FMODE_READ))
-+			return -EINVAL;
-+		abinfo.fragsize = s->dma_adc.fragSize << (s->adcChannels - 1);
-+		spin_lock_irqsave(&s->lock, flags);
-+		count = s->dma_adc.count;
-+		spin_unlock_irqrestore(&s->lock, flags);
-+		if (count < 0)
-+			count = 0;
-+		abinfo.bytes = count << (s->adcChannels - 1);
-+		abinfo.fragstotal = s->dma_adc.numFrag;
-+		abinfo.fragments = (abinfo.bytes >> s->dma_adc.fragShift) >>
-+		    (s->adcChannels - 1);
-+		return copy_to_user((void *)arg, &abinfo,
-+				    sizeof(abinfo)) ? -EFAULT : 0;
-+
-+	case SNDCTL_DSP_NONBLOCK:
-+		file->f_flags |= O_NONBLOCK;
-+		return 0;
-+
-+	case SNDCTL_DSP_GETODELAY:
-+		if (!(file->f_mode & FMODE_WRITE))
-+			return -EINVAL;
-+		spin_lock_irqsave(&s->lock, flags);
-+		count = s->dma_dac.count;
-+		spin_unlock_irqrestore(&s->lock, flags);
-+		return put_user(count, (int *)arg);
-+
-+	case SNDCTL_DSP_GETIPTR:
-+	case SNDCTL_DSP_GETOPTR:
-+		/* we cannot get DMA ptr */
-+		return -EINVAL;
-+
-+	case SNDCTL_DSP_GETBLKSIZE:
-+		if (file->f_mode & FMODE_WRITE)
-+			return put_user(s->dma_dac.
-+					fragSize << (s->dacChannels - 1),
-+					(int *)arg);
-+		else
-+			return put_user(s->dma_adc.
-+					fragSize << (s->adcChannels - 1),
-+					(int *)arg);
-+
-+	case SNDCTL_DSP_SETFRAGMENT:
-+		/* we ignore fragment size request */
-+		return 0;
-+
-+	case SNDCTL_DSP_SUBDIVIDE:
-+		/* what is this for? [jsun] */
-+		return 0;
-+
-+	case SOUND_PCM_READ_RATE:
-+		return put_user((file->f_mode & FMODE_READ) ?
-+				s->adcRate : s->dacRate, (int *)arg);
-+
-+	case SOUND_PCM_READ_CHANNELS:
-+		if (file->f_mode & FMODE_READ)
-+			return put_user(s->adcChannels, (int *)arg);
-+		else
-+			return put_user(s->dacChannels ? 2 : 1, (int *)arg);
-+
-+	case SOUND_PCM_READ_BITS:
-+		return put_user(16, (int *)arg);
-+
-+	case SOUND_PCM_WRITE_FILTER:
-+	case SNDCTL_DSP_SETSYNCRO:
-+	case SOUND_PCM_READ_FILTER:
-+		return -EINVAL;
-+	}
-+
-+	return mixdev_ioctl(s->codec, cmd, arg);
++	smi_set_moderegs(sinfo, bpp, width, height,
++			 hDisplaySize,
++			 hDisplay, hStart, hEnd, hTotal,
++			 vDisplay, vStart, vEnd, vTotal,
++			 dotClock, video_mode->sync);
 +}
 +
-+static int vr5701_ac97_open(struct inode *inode, struct file *file)
++/*
++ *
++ * framebuffer operations
++ *
++ */
++static int
++smifb_get_fix(struct fb_fix_screeninfo *fix, int con, struct fb_info *info)
 +{
-+	int minor = iminor(inode);
-+	DECLARE_WAITQUEUE(wait, current);
-+	unsigned long flags;
-+	struct list_head *list;
-+	struct vr5701_ac97_state *s;
-+	int ret = 0;
++	struct smifb_info *sinfo = (struct smifb_info *)info;
 +
-+	nonseekable_open(inode, file);
-+	for (list = devs.next;; list = list->next) {
-+		if (list == &devs)
-+			return -ENODEV;
-+		s = list_entry(list, struct vr5701_ac97_state, devs);
-+		if (!((s->dev_audio ^ minor) & ~0xf))
-+			break;
-+	}
-+	file->private_data = s;
++	pr_debug("smifb_get_fix");
++	fix->smem_start = sinfo->fb_base_phys;
++	fix->smem_len = sinfo->fbsize;
++	fix->mmio_start = sinfo->dpr_base_phys;
++	fix->mmio_len = sinfo->dpport_size;
 +
-+	/* wait for device to become free */
-+	down(&s->open_sem);
-+	while (s->open_mode & file->f_mode) {
++	fix->xpanstep = 0;	/* FIXME: no xpanstep for now */
++	fix->ypanstep = 1;	/* FIXME: no ypanstep for now */
++	fix->ywrapstep = 0;	/* FIXME: no ywrap for now */
 +
-+		if (file->f_flags & O_NONBLOCK) {
-+			up(&s->open_sem);
-+			return -EBUSY;
-+		}
-+		add_wait_queue(&s->open_wait, &wait);
-+		__set_current_state(TASK_INTERRUPTIBLE);
-+		up(&s->open_sem);
-+		schedule();
-+		remove_wait_queue(&s->open_wait, &wait);
-+		set_current_state(TASK_RUNNING);
-+		if (signal_pending(current))
-+			return -ERESTARTSYS;
-+		down(&s->open_sem);
-+	}
-+
-+	spin_lock_irqsave(&s->lock, flags);
-+
-+	if (file->f_mode & FMODE_READ) {
-+		/* set default settings */
-+		set_adc_rate(s, 48000);
-+		s->adcChannels = 2;
-+
-+		ret = prog_dmabuf_adc(s);
-+		if (ret)
-+			goto bailout;
-+	}
-+	if (file->f_mode & FMODE_WRITE) {
-+		/* set default settings */
-+		set_dac_rate(s, 48000);
-+		s->dacChannels = 2;
-+
-+		ret = prog_dmabuf_dac(s);
-+		if (ret)
-+			goto bailout;
-+	}
-+
-+	s->open_mode |= file->f_mode & (FMODE_READ | FMODE_WRITE);
-+
-+      bailout:
-+	spin_unlock_irqrestore(&s->lock, flags);
-+
-+	up(&s->open_sem);
-+	return ret;
-+}
-+
-+static int vr5701_ac97_release(struct inode *inode, struct file *file)
-+{
-+	struct vr5701_ac97_state *s =
-+	    (struct vr5701_ac97_state *)file->private_data;
-+
-+	lock_kernel();
-+	if (file->f_mode & FMODE_WRITE)
-+		drain_dac(s, file->f_flags & O_NONBLOCK);
-+	down(&s->open_sem);
-+	if (file->f_mode & FMODE_WRITE) {
-+		stop_dac(s);
-+		dealloc_dmabuf(s, &s->dma_dac);
-+	}
-+	if (file->f_mode & FMODE_READ) {
-+		stop_adc(s);
-+		dealloc_dmabuf(s, &s->dma_adc);
-+	}
-+	s->open_mode &= (~file->f_mode) & (FMODE_READ | FMODE_WRITE);
-+	up(&s->open_sem);
-+	wake_up(&s->open_wait);
-+	unlock_kernel();
 +	return 0;
 +}
 +
-+static struct file_operations vr5701_ac97_audio_fops = {
++static int vgxfb_setcolreg(unsigned regno, unsigned red, unsigned green,
++			   unsigned blue, unsigned transp, struct fb_info *info)
++{
++	if (regno > 15)
++		return 1;
++
++	((u16 *) (info->pseudo_palette))[regno] =
++	    (red & 0xf800) | (green & 0xfc00 >> 5) | (blue & 0xf800 >> 11);
++	return 0;
++}
++
++/*
++ * Initialization helper functions
++ *
++ */
++/* kernel interface */
++static struct fb_ops smifb_ops = {
 +	.owner = THIS_MODULE,
-+	.llseek = no_llseek,
-+	.read = vr5701_ac97_read,
-+	.write = vr5701_ac97_write,
-+	.poll = vr5701_ac97_poll,
-+	.ioctl = vr5701_ac97_ioctl,
-+	.open = vr5701_ac97_open,
-+	.release = vr5701_ac97_release,
++	.fb_setcolreg = vgxfb_setcolreg,
++	.fb_fillrect = cfb_fillrect,
++	.fb_copyarea = cfb_copyarea,
++	.fb_imageblit = cfb_imageblit,
++	.fb_cursor = soft_cursor,
 +};
 +
 +/*
-+ * for debugging purposes, we'll create a proc device that dumps the
-+ * CODEC chipstate
++ * VGA registers
++ *
 + */
++static void Unlock(struct smifb_info *sinfo)
++{
++	pr_debug("Unlock");
++	regSR_write(sinfo->mmio, 0x33, regSR_read(sinfo->mmio, 0x33) & 0x20);
++}
 +
-+#ifdef vr5701_AC97_DEBUG
++static void Lock(struct smifb_info *sinfo)
++{
++	pr_debug("Lock");
++}
 +
-+struct {
-+	const char *regname;
-+	unsigned regaddr;
-+} vr5701_ac97_regs[] = {
-+	{
-+	"vr5701_INT_STATUS", vr5701_INT_STATUS}, {
-+	"vr5701_CODEC_WR", vr5701_CODEC_WR}, {
-+	"vr5701_CODEC_RD", vr5701_CODEC_RD}, {
-+	"vr5701_CTRL", vr5701_CTRL}, {
-+	"vr5701_ACLINK_CTRL", vr5701_ACLINK_CTRL}, {
-+	"vr5701_INT_MASK", vr5701_INT_MASK}, {
-+	"vr5701_DAC1_CTRL", vr5701_DAC1_CTRL}, {
-+	"vr5701_DAC1L", vr5701_DAC1L}, {
-+	"vr5701_DAC1_BADDR", vr5701_DAC1_BADDR}, {
-+	"vr5701_DAC2_CTRL", vr5701_DAC2_CTRL}, {
-+	"vr5701_DAC2L", vr5701_DAC2L}, {
-+	"vr5701_DAC2_BADDR", vr5701_DAC2_BADDR}, {
-+	"vr5701_DAC3_CTRL", vr5701_DAC3_CTRL}, {
-+	"vr5701_DAC3L", vr5701_DAC3L}, {
-+	"vr5701_DAC3_BADDR", vr5701_DAC3_BADDR}, {
-+	"vr5701_ADC1_CTRL", vr5701_ADC1_CTRL}, {
-+	"vr5701_ADC1L", vr5701_ADC1L}, {
-+	"vr5701_ADC1_BADDR", vr5701_ADC1_BADDR}, {
-+	"vr5701_ADC2_CTRL", vr5701_ADC2_CTRL}, {
-+	"vr5701_ADC2L", vr5701_ADC2L}, {
-+	"vr5701_ADC2_BADDR", vr5701_ADC2_BADDR}, {
-+	"vr5701_ADC3_CTRL", vr5701_ADC3_CTRL}, {
-+	"vr5701_ADC3L", vr5701_ADC3L}, {
-+	"vr5701_ADC3_BADDR", vr5701_ADC3_BADDR}, {
-+	NULL, 0x0}
++static void UnlockVGA(struct smifb_info *sinfo)
++{
++	pr_debug("UnlockVGA");
++	regCR_write(sinfo->mmio, 0x11, regCR_read(sinfo->mmio, 0x11) & 0x7f);
++}
++
++static void LockVGA(struct smifb_info *sinfo)
++{
++	pr_debug("LockVGA");
++	regCR_write(sinfo->mmio, 0x11, regCR_read(sinfo->mmio, 0x11) | 0x80);
++}
++
++static struct fb_fix_screeninfo vgxfb_fix = {
++	.id = "vgxFB",
++	.type = FB_TYPE_PACKED_PIXELS,
++	.visual = FB_VISUAL_TRUECOLOR,
++#ifdef CONFIG_DISPLAY_1024x768
++	.line_length = 1024 * 2,
++#else
++	.line_length = 640 * 2,
++#endif
++	.accel = FB_ACCEL_NONE,
 +};
 +
-+static int proc_vr5701_ac97_dump(char *buf, char **start, off_t fpos,
-+				 int length, int *eof, void *data)
++static u32 colreg[17];
++
++/*
++ * PCI bus
++ *
++ */
++static int __devinit
++smifb_probe(struct pci_dev *pd, const struct pci_device_id *ent)
 +{
-+	struct vr5701_ac97_state *s;
-+	int cnt, len = 0;
++	int len;
++	int res;
++	u16 cmd;
++	struct smifb_info *sinfo;
++	struct fb_info *info;
 +
-+	if (list_empty(&devs))
-+		return 0;
-+	s = list_entry(devs.next, struct vr5701_ac97_state, devs);
++	pr_debug("smifb_probe");
 +
-+	/* print out header */
-+	len += sprintf(buf + len, "\n\t\tvr5701 Audio Debug\n\n");
++	pr_debug("vendor id        %04x\n", pd->vendor);
++	pr_debug("device id        %04x\n", pd->device);
++	pr_debug("sub vendor id    %04x\n", pd->subsystem_vendor);
++	pr_debug("sub device id    %04x\n", pd->subsystem_device);
 +
-+	len += sprintf(buf + len, "NEC vr5701 Audio Controller registers\n");
-+	len += sprintf(buf + len, "---------------------------------\n");
-+	for (cnt = 0; vr5701_ac97_regs[cnt].regname != NULL; cnt++) {
-+		len += sprintf(buf + len, "%-20s = %08x\n",
-+			       vr5701_ac97_regs[cnt].regname,
-+			       inl(s->io + vr5701_ac97_regs[cnt].regaddr));
++	pr_debug("base0 start addr %08x\n",
++		 (unsigned int)pci_resource_start(pd, 0));
++	pr_debug("base0 end   addr %08x\n",
++		 (unsigned int)pci_resource_end(pd, 0));
++	pr_debug("base0 region len %08x\n",
++		 (unsigned int)pci_resource_len(pd, 0));
++	pr_debug("base0 flags      %08x\n",
++		 (unsigned int)pci_resource_flags(pd, 0));
++
++	pci_read_config_word(pd, PCI_STATUS, &cmd);
++	pr_debug("PCI status      %04x\n", cmd);
++
++	pci_read_config_word(pd, PCI_COMMAND, &cmd);
++	pr_debug("PCI command      %04x\n", cmd);
++
++	cmd |= PCI_COMMAND_MEMORY | PCI_COMMAND_IO;
++	pci_write_config_word(pd, PCI_COMMAND, cmd);
++
++	pci_read_config_word(pd, PCI_STATUS, &cmd);
++	pr_debug("PCI status      %04x\n", cmd);
++	pci_read_config_word(pd, PCI_COMMAND, &cmd);
++	pr_debug("PCI command      %04x\n", cmd);
++
++	/* allocate memory resources */
++	sinfo = kmalloc(sizeof(struct smifb_info), GFP_KERNEL);
++	if (!sinfo) {
++		goto err_out;
++	}
++	memset(sinfo, 0, sizeof(struct smifb_info));
++
++	/* driver name */
++	sinfo->drvr_name = drvrname;
++
++	sinfo->pd = pd;
++	sinfo->base_phys = pci_resource_start(sinfo->pd, 0);	/* Frame Buffer base address */
++	len = pci_resource_len(sinfo->pd, 0);
++	pr_debug("len = %lX\n", len);
++	if (!request_mem_region(sinfo->base_phys, len, "smifb")) {
++		printk(KERN_ERR "cannot reserve FrameBuffer and MMIO region\n");
++		goto err_out_kfree;
 +	}
 +
-+	/* print out driver state */
-+	len += sprintf(buf + len, "NEC vr5701 Audio driver states\n");
-+	len += sprintf(buf + len, "---------------------------------\n");
-+	len += sprintf(buf + len, "dacChannels  = %d\n", s->dacChannels);
-+	len += sprintf(buf + len, "adcChannels  = %d\n", s->adcChannels);
-+	len += sprintf(buf + len, "dacRate  = %d\n", s->dacRate);
-+	len += sprintf(buf + len, "adcRate  = %d\n", s->adcRate);
-+
-+	len += sprintf(buf + len, "dma_dac is %s ready\n",
-+		       s->dma_dac.ready ? "" : "not");
-+	if (s->dma_dac.ready) {
-+		len += sprintf(buf + len, "dma_dac is %s stopped.\n",
-+			       s->dma_dac.stopped ? "" : "not");
-+		len += sprintf(buf + len, "dma_dac.fragSize = %x\n",
-+			       s->dma_dac.fragSize);
-+		len += sprintf(buf + len, "dma_dac.fragShift = %x\n",
-+			       s->dma_dac.fragShift);
-+		len += sprintf(buf + len, "dma_dac.numFrag = %x\n",
-+			       s->dma_dac.numFrag);
-+		len += sprintf(buf + len, "dma_dac.fragTotalSize = %x\n",
-+			       s->dma_dac.fragTotalSize);
-+		len += sprintf(buf + len, "dma_dac.nextIn = %x\n",
-+			       s->dma_dac.nextIn);
-+		len += sprintf(buf + len, "dma_dac.nextOut = %x\n",
-+			       s->dma_dac.nextOut);
-+		len += sprintf(buf + len, "dma_dac.count = %x\n",
-+			       s->dma_dac.count);
++	if ((res = pci_enable_device(sinfo->pd)) < 0) {
++		printk(KERN_ERR "smifb: failed to enable -- err %d\n", res);
++		goto err_out_free_base;
 +	}
 +
-+	len += sprintf(buf + len, "dma_adc is %s ready\n",
-+		       s->dma_adc.ready ? "" : "not");
-+	if (s->dma_adc.ready) {
-+		len += sprintf(buf + len, "dma_adc is %s stopped.\n",
-+			       s->dma_adc.stopped ? "" : "not");
-+		len += sprintf(buf + len, "dma_adc.fragSize = %x\n",
-+			       s->dma_adc.fragSize);
-+		len += sprintf(buf + len, "dma_adc.fragShift = %x\n",
-+			       s->dma_adc.fragShift);
-+		len += sprintf(buf + len, "dma_adc.numFrag = %x\n",
-+			       s->dma_adc.numFrag);
-+		len += sprintf(buf + len, "dma_adc.fragTotalSize = %x\n",
-+			       s->dma_adc.fragTotalSize);
-+		len += sprintf(buf + len, "dma_adc.nextIn = %x\n",
-+			       s->dma_adc.nextIn);
-+		len += sprintf(buf + len, "dma_adc.nextOut = %x\n",
-+			       s->dma_adc.nextOut);
-+		len += sprintf(buf + len, "dma_adc.count = %x\n",
-+			       s->dma_adc.count);
++	pci_read_config_word(pd, PCI_COMMAND, &cmd);
++	pr_debug(KERN_INFO "PCI command      %04x\n", cmd);
++
++	{
++		unsigned int pseudo_io, pseudo_io_len;
++		unsigned char *pseudo_io_p;
++
++		*(unsigned long *)0xbe000610 = 0x10000012;	/* CHANGE to PCI IO ACCESS */
++		asm("sync");
++		pseudo_io = pci_resource_start(sinfo->pd, 0);
++		pseudo_io_len = pci_resource_len(sinfo->pd, 0);
++		pseudo_io_p = ioremap(pseudo_io, pseudo_io_len);
++
++		VGA_WRITE8(pseudo_io_p, 0x3c3, 0x40);
++		regSR_write(pseudo_io_p, 0x00, 0x00);
++		regSR_write(pseudo_io_p, 0x17, 0xe2);
++		regSR_write(pseudo_io_p, 0x18, 0xff);
++
++		iounmap(pseudo_io_p);
++		*(unsigned long *)0xbe000610 = 0x10000016;	/* PCI MEM ACCESS */
++		asm("sync");
 +	}
-+
-+	/* print out CODEC state */
-+	len += sprintf(buf + len, "\nAC97 CODEC registers\n");
-+	len += sprintf(buf + len, "----------------------\n");
-+	for (cnt = 0; cnt <= 0x7e; cnt = cnt + 2)
-+		len += sprintf(buf + len, "reg %02x = %04x\n",
-+			       cnt, rdcodec(s->codec, cnt));
-+
-+	if (fpos >= len) {
-+		*start = buf;
-+		*eof = 1;
-+		return 0;
++	sinfo->base = ioremap(sinfo->base_phys, len);	/* FB+DPD+DPR+VPR+CPR+MMIO */
++	if (!sinfo->base) {
++		goto err_out_free_base;
 +	}
-+	*start = buf + fpos;
-+	if ((len -= fpos) > length)
-+		return length;
-+	*eof = 1;
-+	return len;
++	switch ((sinfo->pd)->device) {
++	case PCI_DEVICE_ID_SMI_LYNX_EM_PLUS:
++		sinfo->dpport = (caddr_t) (sinfo->base + DPPORT_BASE_OFFSET);
++		sinfo->dpr = (caddr_t) (sinfo->base + DP_BASE_OFFSET);
++		sinfo->vpr = (caddr_t) (sinfo->base + VP_BASE_OFFSET);
++		sinfo->cpr = (caddr_t) (sinfo->base + CP_BASE_OFFSET);
++		sinfo->mmio = (caddr_t) (sinfo->base + IO_BASE_OFFSET);
++		sinfo->fb_base = (caddr_t) (sinfo->base + 0);
++		break;
++	case PCI_DEVICE_ID_SMI_LYNX_3DM:
++		sinfo->dpport =
++		    (caddr_t) (sinfo->base + LYNX3DM_DPPORT_BASE_OFFSET);
++		sinfo->dpr = (caddr_t) (sinfo->base + LYNX3DM_DP_BASE_OFFSET);
++		sinfo->vpr = (caddr_t) (sinfo->base + LYNX3DM_VP_BASE_OFFSET);
++		sinfo->cpr = (caddr_t) (sinfo->base + LYNX3DM_CP_BASE_OFFSET);
++		sinfo->mmio = (caddr_t) (sinfo->base + LYNX3DM_IO_BASE_OFFSET);
++		sinfo->fb_base =
++		    (caddr_t) (sinfo->base + LYNX3DM_FB_BASE_OFFSET);
++		break;
++	}
++	regSR_write(sinfo->mmio, 0x18, 0x11);
 +
++	pr_debug("sinfo->dpport = 0x%08x\n", (u_int32_t) sinfo->dpport);
++	pr_debug("sinfo->dpr  = 0x%08x, sinfo->vpr   = 0x%08x\n",
++		 (unsigned int)sinfo->dpr, (unsigned int)sinfo->vpr);
++	pr_debug("sinfo->cpr  = 0x%08x, sinfo->mmio  = 0x%08x\n",
++		 (unsigned int)sinfo->cpr, (unsigned int)sinfo->mmio);
++
++	/* Set the chip in color mode and unlock the registers */
++	VGA_WRITE8(sinfo->mmio, 0x3c2, 0x2b);	/* Miscellaneous Output Register ( write 0x3c2, read 0x3cc ) */
++
++	Unlock(sinfo);
++	UnlockVGA(sinfo);
++
++	/* save the current chip status */
++	switch ((sinfo->pd)->device) {
++	case PCI_DEVICE_ID_SMI_LYNX_EM_PLUS:
++		regSR_write(sinfo->mmio, 0x62, 0xff);
++		regSR_write(sinfo->mmio, 0x6a, 0x0c);
++		regSR_write(sinfo->mmio, 0x6b, 0x02);
++
++		*(u32 *) (sinfo->fb_base + 4) = 0xaa551133;
++		pr_debug("       *(u32 *)(sinfo->fb_base +4) = 0x%08x\n",
++			 *(u32 *) (sinfo->fb_base + 4));
++		if (*(u32 *) (sinfo->fb_base + 4) != 0xaa551133) {
++			/* Program the MCLK to 130MHz */
++			regSR_write(sinfo->mmio, 0x6a, 0x10);
++			regSR_write(sinfo->mmio, 0x6b, 0x02);
++			regSR_write(sinfo->mmio, 0x62, 0x3e);
++			sinfo->fbsize = 2 * 1024 * 1024;	/* LynxEM+ */
++			pr_debug
++			    ("ChipID = LynxEM+. Force the MCLK to 85MHz and the memory size to 2MiB\n");
++		} else {
++			sinfo->fbsize = 4 * 1024 * 1024;	/* LynxEM4+ */
++			pr_debug
++			    ("ChipID = LynxEM4+. Force the MCLK to 85MHz and the memory size to 4MiB\n");
++		}
++		sinfo->fb_base_phys = sinfo->base_phys;
++		break;
++	case PCI_DEVICE_ID_SMI_LYNX_3DM:
++		{
++			int tmp;
++			int mem_table[4] = { 8, 16, 0, 4 };
++			tmp = (regSR_read(sinfo->mmio, 0x76) & 0xff);
++			pr_debug("%02x\n", tmp);
++			sinfo->fbsize = mem_table[(tmp >> 6)] * 1024 * 1024;
++
++			regSR_write(sinfo->mmio, 0x62, 0xff);
++			regSR_write(sinfo->mmio, 0x6a, 0x0c);
++			regSR_write(sinfo->mmio, 0x6b, 0x02);
++
++			sinfo->fb_base_phys =
++			    sinfo->base_phys + LYNX3DM_FB_BASE_OFFSET;
++		}
++		break;
++	default:
++		/* this driver supports only LynxEM+/EM4+ */
++		goto err_out_free_base;
++	};
++
++	info = &(sinfo->info);
++	smifb_get_fix(&vgxfb_fix, -1, info);
++
++	info->flags = FBINFO_FLAG_DEFAULT;
++	info->fbops = &smifb_ops;
++	info->var = smifb_default_var;
++	info->fix = vgxfb_fix;
++	info->pseudo_palette = colreg;
++	info->screen_base = sinfo->fb_base;
++
++	smi_load_video_mode(sinfo, &smifb_default_var);
++
++	if (register_framebuffer(&sinfo->info) < 0) {
++		goto err_out_free_base;
++	}
++	pci_set_drvdata(pd, sinfo);
++
++	printk(KERN_INFO "smifb: " "framebuffer (%s)\n", sinfo->drvr_name);
++
++	return 0;
++
++      err_out_free_base:
++	release_mem_region(sinfo->base_phys, len);
++      err_out_kfree:
++	kfree(sinfo);
++      err_out:
++	return -ENODEV;
 +}
-+#endif				/* vr5701_AC97_DEBUG */
 +
-+static unsigned int devindex;
++static void __devexit smifb_remove(struct pci_dev *pd)
++{
++	struct smifb_info *sinfo = pci_get_drvdata(pd);
++	pr_debug("smifb_remove");
++
++	if (!sinfo)
++		return;
++
++	unregister_framebuffer(&sinfo->info);
++
++	/* stop the lynx chip */
++	release_mem_region(sinfo->base_phys, pci_resource_len(sinfo->pd, 0));
++	kfree(sinfo);
++	pci_set_drvdata(pd, NULL);
++}
++
++/*
++ * Initialization
++ *
++ */
++#ifndef MODULE
++int __init smifb_setup(char *options)
++{
++	pr_debug("smifb_setup");
++
++	if (!options || options)
++		return 0;
++	return 0;
++}
++#endif				/* not MODULE */
++
++static struct pci_driver smifb_driver = {
++	.name = "smifb",
++	.id_table = smifb_pci_tbl,
++	.probe = smifb_probe,
++	.remove = __devexit_p(smifb_remove),
++};
++
++/*
++ * Driver initialization
++ */
++int __init smifb_init(void)
++{
++	pr_debug("smifb_init");
++	return pci_module_init(&smifb_driver);
++}
++
++/*
++ * modularization
++ *
++ */
++#ifdef MODULE
++static void __exit smifb_exit(void)
++{
++	pci_unregister_driver(&smifb_driver);
++}
++
++module_init(smifb_init);
++module_exit(smifb_exit);
++
++#endif				/* MODULE */
++
++module_init(smifb_init);
 +
 +MODULE_AUTHOR("Sergey Podstavin");
-+MODULE_DESCRIPTION("NEC Vr5701 audio (AC97) Driver");
++MODULE_DESCRIPTION("Framebuffer driver for Silicon Motion Lynx 3DM+");
 +MODULE_LICENSE("GPL");
-+
-+static int __devinit vr5701_ac97_probe(struct pci_dev *pcidev,
-+				       const struct pci_device_id *pciid)
-+{
-+	struct vr5701_ac97_state *s;
-+#ifdef vr5701_AC97_DEBUG
-+	char proc_str[80];
-+#endif
-+
-+	if (pcidev->irq == 0)
-+		return -1;
-+
-+	if (!(s = kmalloc(sizeof(struct vr5701_ac97_state), GFP_KERNEL))) {
-+		printk(KERN_ERR PFX "alloc of device struct failed\n");
-+		return -1;
-+	}
-+	memset(s, 0, sizeof(struct vr5701_ac97_state));
-+
-+	init_waitqueue_head(&s->dma_adc.wait);
-+	init_waitqueue_head(&s->dma_dac.wait);
-+	init_waitqueue_head(&s->open_wait);
-+	init_MUTEX(&s->open_sem);
-+	spin_lock_init(&s->lock);
-+
-+	s->dev = pcidev;
-+	s->io = pci_resource_start(pcidev, 0);
-+	s->irq = pcidev->irq;
-+
-+	s->codec = ac97_alloc_codec();
-+
-+	s->codec->private_data = s;
-+	s->codec->id = 0;
-+	s->codec->codec_read = rdcodec;
-+	s->codec->codec_write = wrcodec;
-+	s->codec->codec_wait = waitcodec;
-+
-+	/* setting some other default values such as
-+	 * adcChannels, adcRate is done in open() so that
-+	 * no persistent state across file opens.
-+	 */
-+
-+	if (!request_region(s->io, pci_resource_len(pcidev, 0),
-+			    vr5701_AC97_MODULE_NAME)) {
-+		printk(KERN_ERR PFX "io ports %#lx->%#lx in use\n",
-+		       s->io, s->io + pci_resource_len(pcidev, 0) - 1);
-+		goto err_region;
-+	}
-+	if (request_irq(s->irq, vr5701_ac97_interrupt, SA_INTERRUPT,
-+			vr5701_AC97_MODULE_NAME, s)) {
-+		printk(KERN_ERR PFX "irq %u in use\n", s->irq);
-+		goto err_irq;
-+	}
-+
-+	printk(KERN_INFO PFX "IO at %#lx, IRQ %d\n", s->io, s->irq);
-+
-+	/* register devices */
-+	if ((s->dev_audio =
-+	     register_sound_dsp(&vr5701_ac97_audio_fops, -1)) < 0)
-+		goto err_dev1;
-+	if ((s->codec->dev_mixer =
-+	     register_sound_mixer(&vr5701_ac97_mixer_fops, -1)) < 0)
-+		goto err_dev2;
-+
-+#ifdef vr5701_AC97_DEBUG
-+	/* initialize the debug proc device */
-+	s->ps = create_proc_read_entry(vr5701_AC97_MODULE_NAME, 0, NULL,
-+				       proc_vr5701_ac97_dump, NULL);
-+#endif				/* vr5701_AC97_DEBUG */
-+
-+	/* enable pci io and bus mastering */
-+	if (pci_enable_device(pcidev))
-+		goto err_dev3;
-+	pci_set_master(pcidev);
-+
-+	/* cold reset the AC97 */
-+	outl(vr5701_ACLINK_CTRL_RST_ON | vr5701_ACLINK_CTRL_RST_TIME,
-+	     s->io + vr5701_ACLINK_CTRL);
-+	while (inl(s->io + vr5701_ACLINK_CTRL) & vr5701_ACLINK_CTRL_RST_ON) ;
-+
-+	/* codec init */
-+	if (!ac97_probe_codec(s->codec))
-+		goto err_dev3;
-+
-+#ifdef vr5701_AC97_DEBUG
-+	sprintf(proc_str, "driver/%s/%d/ac97",
-+		vr5701_AC97_MODULE_NAME, s->codec->id);
-+	s->ac97_ps = create_proc_read_entry(proc_str, 0, NULL,
-+					    ac97_read_proc, s->codec);
-+	/* TODO : why this proc file does not show up? */
-+#endif
-+
-+	/* Try to enable variable rate audio mode. */
-+	wrcodec(s->codec, AC97_EXTENDED_STATUS,
-+		rdcodec(s->codec, AC97_EXTENDED_STATUS) | AC97_EXTSTAT_VRA);
-+	/* Did we enable it? */
-+	if (rdcodec(s->codec, AC97_EXTENDED_STATUS) & AC97_EXTSTAT_VRA)
-+		s->extended_status |= AC97_EXTSTAT_VRA;
-+	else {
-+		s->dacRate = 48000;
-+		printk(KERN_INFO PFX "VRA mode not enabled; rate fixed at %d.",
-+		       s->dacRate);
-+	}
-+
-+	/* let us get the default volumne louder */
-+	wrcodec(s->codec, 0x2, 0x1010);	/* master volume, middle */
-+	wrcodec(s->codec, 0xc, 0x10);	/* phone volume, middle */
-+	wrcodec(s->codec, 0x10, 0x8000);	/* line-in 2 line-out disable */
-+	wrcodec(s->codec, 0x18, 0x0707);	/* PCM out (line out) middle */
-+
-+	/* by default we select line in the input */
-+	wrcodec(s->codec, 0xe, 0x10);	/* misc volume, middle */
-+	wrcodec(s->codec, 0x1a, 0x0000);	/* default line is Line_mic */
-+	/*	wrcodec(s->codec, 0x1a, 0x0404); *//* default line is Line_in */
-+	wrcodec(s->codec, 0x1c, 0x0f0f);
-+	wrcodec(s->codec, 0x1e, 0x07);
-+
-+	/* enable the master interrupt but disable all others */
-+	outl(vr5701_INT_MASK_NMASK, s->io + vr5701_INT_MASK);
-+
-+	/* store it in the driver field */
-+	pci_set_drvdata(pcidev, s);
-+	pcidev->dma_mask = 0xffffffff;
-+	/* put it into driver list */
-+	list_add_tail(&s->devs, &devs);
-+	/* increment devindex */
-+	if (devindex < NR_DEVICE - 1)
-+		devindex++;
-+	return 0;
-+
-+      err_dev3:
-+	unregister_sound_mixer(s->codec->dev_mixer);
-+      err_dev2:
-+	unregister_sound_dsp(s->dev_audio);
-+      err_dev1:
-+	printk(KERN_ERR PFX "cannot register misc device\n");
-+	free_irq(s->irq, s);
-+
-+      err_irq:
-+	release_region(s->io, pci_resource_len(pcidev, 0));
-+      err_region:
-+	ac97_release_codec(s->codec);
-+	kfree(s);
-+	return -1;
-+}
-+
-+static void __devexit vr5701_ac97_remove(struct pci_dev *dev)
-+{
-+	struct vr5701_ac97_state *s = pci_get_drvdata(dev);
-+
-+	if (!s)
-+		return;
-+	list_del(&s->devs);
-+
-+#ifdef vr5701_AC97_DEBUG
-+	if (s->ps)
-+		remove_proc_entry(vr5701_AC97_MODULE_NAME, NULL);
-+#endif				/* vr5701_AC97_DEBUG */
-+
-+	synchronize_irq();
-+	free_irq(s->irq, s);
-+	release_region(s->io, pci_resource_len(dev, 0));
-+	unregister_sound_dsp(s->dev_audio);
-+	unregister_sound_mixer(s->codec->dev_mixer);
-+	ac97_release_codec(s->codec);
-+	kfree(s);
-+	pci_set_drvdata(dev, NULL);
-+}
-+
-+static struct pci_device_id id_table[] = {
-+	{PCI_VENDOR_ID_NEC, PCI_DEVICE_ID_NEC_VRC5477_AC97,
-+	 PCI_ANY_ID, PCI_ANY_ID, 0, 0},
-+	{0,}
-+};
-+
-+MODULE_DEVICE_TABLE(pci, id_table);
-+
-+static struct pci_driver vr5701_ac97_driver = {
-+	.name = vr5701_AC97_MODULE_NAME,
-+	.id_table = id_table,
-+	.probe = vr5701_ac97_probe,
-+	.remove = __devexit_p(vr5701_ac97_remove)
-+};
-+
-+static int __init init_vr5701_ac97(void)
-+{
-+	printk(KERN_INFO "Vr5701 AC97 driver: time " __TIME__ " " __DATE__
-+	       " by Sergey Podstavin\n");
-+	return pci_module_init(&vr5701_ac97_driver);
-+}
-+
-+static void __exit cleanup_vr5701_ac97(void)
-+{
-+	printk(KERN_INFO PFX "unloading\n");
-+	pci_unregister_driver(&vr5701_ac97_driver);
-+}
-+
-+module_init(init_vr5701_ac97);
-+module_exit(cleanup_vr5701_ac97);
-diff -Naurp --exclude=CVS linux_mips_save/sound/oss/nec_vr5701_sg2.h linux_mips/sound/oss/nec_vr5701_sg2.h
---- linux_mips_save/sound/oss/nec_vr5701_sg2.h	1970-01-01 03:00:00.000000000 +0300
-+++ linux_mips/sound/oss/nec_vr5701_sg2.h	2005-05-31 15:40:52.000000000 +0400
-@@ -0,0 +1,530 @@
+diff -Naurp --exclude=CVS linux_save/drivers/video/smi/smifb.h linux_mips/drivers/video/smi/smifb.h
+--- linux_save/drivers/video/smi/smifb.h	1970-01-01 03:00:00.000000000 +0300
++++ linux_mips/drivers/video/smi/smifb.h	2005-05-31 17:00:36.000000000 +0400
+@@ -0,0 +1,89 @@
 +/*
-+ * sound/oss/nec_vr5701_sg2.h
++ * drivers/video/smi/smifb.h
 + *
-+ * An AC97 sounf driver for NEC VR5701-SG2
++ * LynxEM+/EM4+(Silicon Motion Inc.) fb driver	for VR5701-SG2
 + *
 + * Author: Sergey Podstavin <spodstavin@ru.mvista.com>
 + *
@@ -1447,523 +651,921 @@ diff -Naurp --exclude=CVS linux_mips_save/sound/oss/nec_vr5701_sg2.h linux_mips/
 + * is licensed "as is" without any warranty of any kind, whether express
 + * or implied.
 + */
-+#include <linux/module.h>
-+#include <linux/string.h>
-+#include <linux/kernel.h>
-+#include <linux/ioport.h>
-+#include <linux/sched.h>
-+#include <linux/delay.h>
-+#include <linux/sound.h>
-+#include <linux/slab.h>
-+#include <linux/soundcard.h>
-+#include <linux/pci.h>
-+#include <linux/init.h>
-+#include <linux/poll.h>
-+#include <linux/bitops.h>
-+#include <linux/proc_fs.h>
-+#include <linux/spinlock.h>
-+#include <linux/smp_lock.h>
-+#include <linux/ac97_codec.h>
-+#include <linux/interrupt.h>
-+#include <asm/hardirq.h>
-+#include <asm/io.h>
-+#include <asm/dma.h>
-+#include <asm/uaccess.h>
 +
-+#define         vr5701_INT_CLR         0x0
-+#define         vr5701_INT_STATUS	0x0
-+#define         vr5701_CODEC_WR        0x4
-+#define         vr5701_CODEC_RD        0x8
-+#define         vr5701_CTRL            0x18
-+#define         vr5701_ACLINK_CTRL     0x1c
-+#define         vr5701_INT_MASK        0x24
++#ifndef __SMIFB_H__
++#define __SMIFB_H__
 +
-+#define		vr5701_DAC1_CTRL	0x30
-+#define		vr5701_DAC1L		0x34
-+#define		vr5701_DAC1_BADDR	0x38
-+#define		vr5701_DAC2_CTRL	0x3c
-+#define		vr5701_DAC2L		0x40
-+#define		vr5701_DAC2_BADDR	0x44
-+#define		vr5701_DAC3_CTRL	0x48
-+#define		vr5701_DAC3L		0x4c
-+#define		vr5701_DAC3_BADDR	0x50
++#define FBCON_HAS_CFB16
 +
-+#define		vr5701_ADC1_CTRL	0x54
-+#define		vr5701_ADC1L		0x58
-+#define		vr5701_ADC1_BADDR	0x5c
-+#define		vr5701_ADC2_CTRL	0x60
-+#define		vr5701_ADC2L		0x64
-+#define		vr5701_ADC2_BADDR	0x68
-+#define		vr5701_ADC3_CTRL	0x6c
-+#define		vr5701_ADC3L		0x70
-+#define		vr5701_ADC3_BADDR	0x74
-+
-+#define		vr5701_CODEC_WR_RWC	(1 << 23)
-+
-+#define		vr5701_CODEC_RD_RRDYA	(1 << 31)
-+#define		vr5701_CODEC_RD_RRDYD	(1 << 30)
-+
-+#define		vr5701_ACLINK_CTRL_RST_ON	(1 << 15)
-+#define		vr5701_ACLINK_CTRL_RST_TIME	0x7f
-+#define		vr5701_ACLINK_CTRL_SYNC_ON	(1 << 30)
-+#define		vr5701_ACLINK_CTRL_CK_STOP_ON	(1 << 31)
-+
-+#define		vr5701_CTRL_DAC2ENB		(1 << 15)
-+#define		vr5701_CTRL_ADC2ENB		(1 << 14)
-+#define		vr5701_CTRL_DAC1ENB		(1 << 13)
-+#define		vr5701_CTRL_ADC1ENB		(1 << 12)
-+
-+#define		vr5701_INT_MASK_NMASK		(1 << 31)
-+#define		vr5701_INT_MASK_DAC1END	(1 << 5)
-+#define		vr5701_INT_MASK_DAC2END	(1 << 4)
-+#define		vr5701_INT_MASK_DAC3END	(1 << 3)
-+#define		vr5701_INT_MASK_ADC1END	(1 << 2)
-+#define		vr5701_INT_MASK_ADC2END	(1 << 1)
-+#define		vr5701_INT_MASK_ADC3END	(1 << 0)
-+
-+#define		vr5701_DMA_ACTIVATION		(1 << 31)
-+#define		vr5701_DMA_WIP			(1 << 30)
-+
-+#define vr5701_AC97_MODULE_NAME "NEC_vr5701_audio"
-+#define PFX vr5701_AC97_MODULE_NAME ": "
-+#define	WORK_BUF_SIZE	2048
-+
-+#define DMABUF_DEFAULTORDER (16-PAGE_SHIFT)
-+#define DMABUF_MINORDER 1
-+
-+/* maximum number of devices; only used for command line params */
-+#define NR_DEVICE 5
-+/* -------------------debug macros -------------------------------------- */
-+#undef vr5701_AC97_DEBUG
-+
-+#undef vr5701_AC97_VERBOSE_DEBUG
-+
-+#if defined(vr5701_AC97_VERBOSE_DEBUG)
-+#define vr5701_AC97_DEBUG
-+#endif
-+
-+#if defined(vr5701_AC97_DEBUG)
-+#define ASSERT(x)  if (!(x)) { \
-+	panic("assertion failed at %s:%d: %s\n", __FILE__, __LINE__, #x); }
-+#else
-+#define	ASSERT(x)
-+#endif				/* vr5701_AC97_DEBUG */
-+
-+static inline unsigned ld2(unsigned int x)
-+{
-+	unsigned r = 0;
-+
-+	if (x >= 0x10000) {
-+		x >>= 16;
-+		r += 16;
-+	}
-+	if (x >= 0x100) {
-+		x >>= 8;
-+		r += 8;
-+	}
-+	if (x >= 0x10) {
-+		x >>= 4;
-+		r += 4;
-+	}
-+	if (x >= 4) {
-+		x >>= 2;
-+		r += 2;
-+	}
-+	if (x >= 2)
-+		r++;
-+	return r;
-+}
-+
-+#if defined(vr5701_AC97_VERBOSE_DEBUG)
-+static u16 inTicket;		/* check sync between intr & write */
-+static u16 outTicket;
-+#endif
-+
-+#undef OSS_DOCUMENTED_MIXER_SEMANTICS
-+
-+static const unsigned sample_shift[] = { 0, 1, 1, 2 };
-+
-+struct vr5701_ac97_state {
-+	/* list of vr5701_ac97 devices */
-+	struct list_head devs;
-+
-+	/* the corresponding pci_dev structure */
-+	struct pci_dev *dev;
-+
-+	/* soundcore stuff */
-+	int dev_audio;
-+
-+	/* hardware resources */
-+	unsigned long io;
-+	unsigned int irq;
-+
-+#ifdef vr5701_AC97_DEBUG
-+	/* debug /proc entry */
-+	struct proc_dir_entry *ps;
-+	struct proc_dir_entry *ac97_ps;
-+#endif				/* vr5701_AC97_DEBUG */
-+
-+	struct ac97_codec *codec;
-+
-+	unsigned dacChannels, adcChannels;
-+	unsigned short dacRate, adcRate;
-+	unsigned short extended_status;
-+
-+	spinlock_t lock;
-+	struct semaphore open_sem;
-+	mode_t open_mode;
-+	wait_queue_head_t open_wait;
-+
-+	struct dmabuf {
-+		void *lbuf, *rbuf;
-+		dma_addr_t lbufDma, rbufDma;
-+		unsigned bufOrder;
-+		unsigned numFrag;
-+		unsigned fragShift;
-+		unsigned fragSize;	/* redundant */
-+		unsigned fragTotalSize;	/* = numFrag * fragSize(real)  */
-+		unsigned nextIn;
-+		unsigned nextOut;
-+		int count;
-+		unsigned error;	/* over/underrun */
-+		wait_queue_head_t wait;
-+		/* OSS stuff */
-+		unsigned stopped:1;
-+		unsigned ready:1;
-+	} dma_dac, dma_adc;
-+
-+	struct {
-+		u16 lchannel;
-+		u16 rchannel;
-+	} workBuf[WORK_BUF_SIZE / 4];
++enum ScreenModes {
++	DISPLAY_640x480x16,
++	DISPLAY_800x600x16,
++	DISPLAY_1024x768x16,
++	DISPLAY_640x480x24,
++	DISPLAY_800x600x24,
++	DISPLAY_LCD_400x232x16,
++	modeNums,
 +};
-+static inline void stop_dac(struct vr5701_ac97_state *s)
++
++#define SMI_DEFAULT_MODE	DISPLAY_640x480x16
++
++#define SIZE_SR00_SR04		(0x04 - 0x00 + 1)
++#define SIZE_SR10_SR24		(0x24 - 0x10 + 1)
++#define SIZE_SR30_SR75		(0x75 - 0x30 + 1)
++#define SIZE_SR80_SR93		(0x93 - 0x80 + 1)
++#define SIZE_SRA0_SRAF		(0xAF - 0xA0 + 1)
++#define SIZE_GR00_GR08		(0x08 - 0x00 + 1)
++#define SIZE_AR00_AR14		(0x14 - 0x00 + 1)
++#define SIZE_CR00_CR18		(0x18 - 0x00 + 1)
++#define SIZE_CR30_CR4D		(0x4D - 0x30 + 1)
++#define SIZE_CR90_CRA7		(0xA7 - 0x90 + 1)
++
++struct smi_mode_regs {
++	int mode;
++	u8 reg_MISC;
++	u8 reg_SR00_SR04[SIZE_SR00_SR04];	/* SEQ00--04 (SEQ) */
++	u8 reg_SR10_SR24[SIZE_SR10_SR24];	/* SCR10--1F, PDR20--24 (SYS),(PWR) */
++	u8 reg_SR30_SR75[SIZE_SR30_SR75];	/* FPR30--5A, MCR60--62, CCR65--6F  GPR70--75 (LCD),(MEM),(CLK),(GP) */
++	u8 reg_SR80_SR93[SIZE_SR80_SR93];	/* PHR80-81, POP82--86, HCR88-8D, POP90--93 (CURS),(ICON),(CURS),(ICON) */
++	u8 reg_SRA0_SRAF[SIZE_SRA0_SRAF];	/* FPRA0--AF (LCD) */
++	u8 reg_GR00_GR08[SIZE_GR00_GR08];	/* GR00--08 (GC) */
++	u8 reg_AR00_AR14[SIZE_AR00_AR14];	/* ATR00--14 (ATTR) */
++	u8 reg_CR00_CR18[SIZE_CR00_CR18];	/* CRT00--18 (CRTC) */
++	u8 reg_CR30_CR4D[SIZE_CR30_CR4D];	/* CRT30--3F, SVR40--4D (ECRTC),(SHADOW) */
++	u8 reg_CR90_CRA7[SIZE_CR90_CRA7];	/* CRT90--9B,9E,9F,A0--A5,A6,A7, (DDA),(EC2),(EC1)(VCLUT),(VC),(HC) */
++};
++
++typedef struct {
++	unsigned char red, green, blue, transp;
++} smi_cfb8_cmap_t;
++
++struct smifb_info;
++struct smifb_info {
++	struct fb_info info;	/* kernel framebuffer info */
++	const char *drvr_name;	/* Silicon Motion hardware board type */
++	struct pci_dev *pd;	/* descripbe the PCI device */
++	unsigned long base_phys;	/* physical base address                  */
++
++	/* PCI base physical addresses */
++	unsigned long fb_base_phys;	/* physical Frame Buffer base address                  */
++	unsigned long dpr_base_phys;	/* physical Drawing Processor base address             */
++	unsigned long vpr_base_phys;	/* physical Video Processor base address               */
++	unsigned long cpr_base_phys;	/* physical Capture Processor base address             */
++	unsigned long mmio_base_phys;	/* physical MMIO spase (VGA + SMI regs ?) base address */
++	unsigned long dpport_base_phys;	/* physical Drawing Processor Data Port base address   */
++	int dpport_size;	/* size of Drawin Processor Data Port memory space     */
++
++	/* PCI base virtual addresses */
++	caddr_t base;		/* address of base */
++	caddr_t fb_base;	/* address of frame buffer base */
++	caddr_t dpr;		/* Drawing Processor Registers  */
++	caddr_t vpr;		/* Video Processor Registers    */
++	caddr_t cpr;		/* Capture Processor Registers  */
++	caddr_t mmio;		/* Memory Mapped I/O Port       */
++	caddr_t dpport;		/* Drawing Processor Data       */
++
++	int fbsize;		/* Frame-Buffer memory size */
++};
++
++#endif				/* __SMIFB_H__ */
+diff -Naurp --exclude=CVS linux_save/drivers/video/smi/smi_hw.c linux_mips/drivers/video/smi/smi_hw.c
+--- linux_save/drivers/video/smi/smi_hw.c	1970-01-01 03:00:00.000000000 +0300
++++ linux_mips/drivers/video/smi/smi_hw.c	2005-05-31 17:00:36.000000000 +0400
+@@ -0,0 +1,188 @@
++/*
++ * drivers/video/smi/smi_hw.c
++ *
++ * LynxEM+/EM4+(Silicon Motion Inc.) fb driver for VR5701-SG2
++ *
++ * Author: Sergey Podstavin <spodstavin@ru.mvista.com>
++ *
++ * 2005 (c) MontaVista Software, Inc. This file is licensed under
++ * the terms of the GNU General Public License version 2. This program
++ * is licensed "as is" without any warranty of any kind, whether express
++ * or implied.
++ */
++
++#include <linux/config.h>
++#include <linux/kernel.h>
++#include <linux/errno.h>
++#include <linux/fb.h>
++#include "smifb.h"
++#include "smi_hw.h"
++#include "smi_params.h"
++
++/*
++ * set mode registers
++ */
++void
++smi_set_moderegs(struct smifb_info *sinfo,
++		 int bpp, int width, int height,
++		 int hDisplaySize,
++		 int hDisplay, int hStart, int hEnd, int hTotal,
++		 int vDisplay, int vStart, int vEnd, int vTotal,
++		 int dotClock, int sync)
 +{
-+	struct dmabuf *db = &s->dma_dac;
-+	unsigned long flags;
-+	u32 temp;
++	int i;
++	int tmp_mode = SMI_DEFAULT_MODE;
++	int lineLength;
++	struct smi_mode_regs curMode;
 +
-+	spin_lock_irqsave(&s->lock, flags);
++	pr_debug("smi_set_moderegs");
++	pr_debug("bpp = %d, width = %d, height = %d\n", bpp, width, height);
++	pr_debug("hDisplaySize = %d\n", hDisplaySize);
++	pr_debug("hDisplay = %d, hStart = %d, hEnd = %d, hTotal = %d\n",
++		 hDisplay, hStart, hEnd, hTotal);
++	pr_debug("vDisplay = %d, vStart = %d, vEnd = %d, vTotal = %d\n",
++		 vDisplay, vStart, vEnd, vTotal);
++	pr_debug("dotClock = %d\n", dotClock);
 +
-+	if (db->stopped) {
-+		spin_unlock_irqrestore(&s->lock, flags);
-+		return;
++	lineLength = width * bpp / 8;
++
++	switch (bpp) {
++#ifdef FBCON_HAS_CFB8
++	case 8:
++		if (hDisplaySize <= 640)
++			tmp_mode = DISPLAY_640x480x8;
++		else if (width <= 800)
++			tmp_mode = DISPLAY_800x600x8;
++		else if (width <= 1024)
++			tmp_mode = DISPLAY_1024x768x8;
++		else if (width <= 1280)
++			tmp_mode = DISPLAY_1280x1024x8;
++		reg_DPR10(sinfo) = (lineLength << 16) | lineLength;	/* RowPitch */
++		reg_DPR1E(sinfo) = 0x0005;
++		reg_DPR3C(sinfo) = (lineLength << 16) | lineLength;	/* Dst & Src Window Width */
++		reg_VPR00(sinfo) = 0x0 << 16;
++		break;
++#endif
++#ifdef FBCON_HAS_CFB16
++	case 16:
++		if (hDisplaySize <= 400)
++			tmp_mode = DISPLAY_LCD_400x232x16;
++		if (hDisplaySize <= 640)
++			tmp_mode = DISPLAY_640x480x16;
++		else if (width <= 800)
++			tmp_mode = DISPLAY_800x600x16;
++		else if (width <= 1024)
++			tmp_mode = DISPLAY_1024x768x16;
++		reg_DPR10(sinfo) = (lineLength / 2 << 16) | lineLength / 2;	/* RowPitch */
++		reg_DPR1E(sinfo) = 0x0015;
++		reg_DPR3C(sinfo) = (lineLength / 2 << 16) | lineLength / 2;	/* Dst & Src Window Width */
++		reg_VPR00(sinfo) = 0x2 << 16;
++		break;
++#endif
++#ifdef FBCON_HAS_CFB24
++	case 24:
++		if (hDisplaySize <= 640)
++			tmp_mode = DISPLAY_640x480x24;
++		else if (width <= 800)
++			tmp_mode = DISPLAY_800x600x24;
++		reg_DPR10(sinfo) = (lineLength / 3 << 16) | lineLength / 3;	/* RowPitch */
++		reg_DPR1E(sinfo) = 0x0035;
++		reg_DPR3C(sinfo) = (lineLength / 3 << 16) | lineLength / 3;	/* Dst & Src Window Width */
++		reg_VPR00(sinfo) = 0x4 << 16;
++		break;
++#endif
++	};
++
++	for (i = 0; i < modeNums; i++) {
++		if (ModeInitParams[i].mode == tmp_mode)
++			break;
 +	}
++	if (i == modeNums)
++		tmp_mode = SMI_DEFAULT_MODE;
 +
-+	/* deactivate the dma */
-+	outl(0, s->io + vr5701_DAC1_CTRL);
-+	outl(0, s->io + vr5701_DAC2_CTRL);
++	memcpy(&curMode, &ModeInitParams[tmp_mode],
++	       sizeof(struct smi_mode_regs));
 +
-+	/* wait for DAM completely stop */
-+	while (inl(s->io + vr5701_DAC1_CTRL) & vr5701_DMA_WIP) ;
-+	while (inl(s->io + vr5701_DAC2_CTRL) & vr5701_DMA_WIP) ;
-+
-+	/* disable dac slots in aclink */
-+	temp = inl(s->io + vr5701_CTRL);
-+	temp &= ~(vr5701_CTRL_DAC1ENB | vr5701_CTRL_DAC2ENB);
-+	outl(temp, s->io + vr5701_CTRL);
-+
-+	/* disable interrupts */
-+	temp = inl(s->io + vr5701_INT_MASK);
-+	temp &= ~(vr5701_INT_MASK_DAC1END | vr5701_INT_MASK_DAC2END);
-+	outl(temp, s->io + vr5701_INT_MASK);
-+
-+	/* clear pending ones */
-+	outl(vr5701_INT_MASK_DAC1END | vr5701_INT_MASK_DAC2END,
-+	     s->io + vr5701_INT_CLR);
-+
-+	db->stopped = 1;
-+
-+	spin_unlock_irqrestore(&s->lock, flags);
-+}
-+
-+static inline void stop_adc(struct vr5701_ac97_state *s)
-+{
-+	struct dmabuf *db = &s->dma_adc;
-+	unsigned long flags;
-+	u32 temp;
-+
-+	spin_lock_irqsave(&s->lock, flags);
-+
-+	if (db->stopped) {
-+		spin_unlock_irqrestore(&s->lock, flags);
-+		return;
-+	}
-+
-+	/* deactivate the dma */
-+	outl(0, s->io + vr5701_ADC1_CTRL);
-+	outl(0, s->io + vr5701_ADC2_CTRL);
-+
-+	/* disable adc slots in aclink */
-+	temp = inl(s->io + vr5701_CTRL);
-+	temp &= ~(vr5701_CTRL_ADC1ENB | vr5701_CTRL_ADC2ENB);
-+	outl(temp, s->io + vr5701_CTRL);
-+
-+	/* disable interrupts */
-+	temp = inl(s->io + vr5701_INT_MASK);
-+	temp &= ~(vr5701_INT_MASK_ADC1END | vr5701_INT_MASK_ADC2END);
-+	outl(temp, s->io + vr5701_INT_MASK);
-+
-+	/* clear pending ones */
-+	outl(vr5701_INT_MASK_ADC1END | vr5701_INT_MASK_ADC2END,
-+	     s->io + vr5701_INT_CLR);
-+
-+	db->stopped = 1;
-+
-+	spin_unlock_irqrestore(&s->lock, flags);
-+}
-+
-+static inline void dealloc_dmabuf(struct vr5701_ac97_state *s,
-+				  struct dmabuf *db)
-+{
-+	if (db->lbuf) {
-+		ASSERT(db->rbuf);
-+		pci_free_consistent(s->dev, PAGE_SIZE << db->bufOrder,
-+				    db->lbuf, db->lbufDma);
-+		pci_free_consistent(s->dev, PAGE_SIZE << db->bufOrder,
-+				    db->rbuf, db->rbufDma);
-+		db->lbuf = db->rbuf = NULL;
-+	}
-+	db->nextIn = db->nextOut = 0;
-+	db->ready = 0;
-+}
-+
-+static inline int prog_dmabuf_adc(struct vr5701_ac97_state *s)
-+{
-+	stop_adc(s);
-+	return prog_dmabuf(s, &s->dma_adc, s->adcRate);
-+}
-+
-+static inline int prog_dmabuf_dac(struct vr5701_ac97_state *s)
-+{
-+	stop_dac(s);
-+	return prog_dmabuf(s, &s->dma_dac, s->dacRate);
-+}
-+
-+static inline void vr5701_ac97_adc_interrupt(struct vr5701_ac97_state *s)
-+{
-+	struct dmabuf *adc = &s->dma_adc;
-+	unsigned temp;
-+
-+	/* we need two frags avaiable because one is already being used
-+	 * and the other will be used when next interrupt happens.
++	/*
++	 * Override some Mode Params
 +	 */
-+	if (adc->count >= adc->fragTotalSize - adc->fragSize) {
-+		stop_adc(s);
-+		adc->error++;
-+		printk(KERN_INFO PFX "adc overrun\n");
-+		return;
-+	}
++	/* MISC Reg */
++	curMode.reg_MISC = 0x30 | (hDisplay == 640) ? 0x03 : 0x0b;
++	if (sync & FB_SYNC_HOR_HIGH_ACT)
++		curMode.reg_MISC |= 0x40;
++	if (sync & FB_SYNC_VERT_HIGH_ACT)
++		curMode.reg_MISC |= 0x80;
 +
-+	/* set the base addr for next DMA transfer */
-+	temp = adc->nextIn + 2 * adc->fragSize;
-+	if (temp >= adc->fragTotalSize) {
-+		ASSERT((temp == adc->fragTotalSize) ||
-+		       (temp == adc->fragTotalSize + adc->fragSize));
-+		temp -= adc->fragTotalSize;
-+	}
-+	outl(adc->lbufDma + temp, s->io + vr5701_ADC1_BADDR);
-+	outl(adc->rbufDma + temp, s->io + vr5701_ADC2_BADDR);
++	/* CRTC */
++	curMode.reg_CR00_CR18[0x00] = (u8) (hTotal - 4);
++	curMode.reg_CR00_CR18[0x01] = (u8) hDisplay;
++	curMode.reg_CR00_CR18[0x02] = (u8) hDisplay;
++	curMode.reg_CR00_CR18[0x03] = 0x00;
++	curMode.reg_CR00_CR18[0x04] = (u8) hStart;
++	curMode.reg_CR00_CR18[0x05] = (hEnd & 0x1f);
++	curMode.reg_CR00_CR18[0x06] = (u8) (vTotal & 0xff);
++	curMode.reg_CR00_CR18[0x07] = (u8) (((vStart >> 9) & 0x01) << 7)
++	    | (u8) (((vDisplay >> 9) & 0x01) << 6)
++	    | (u8) (((vTotal >> 9) & 0x01) << 5)
++	    | 1 << 4		/* D (LC) */
++	    | (u8) (((vStart >> 8) & 0x01) << 2)
++	    | (u8) (((vDisplay >> 8) & 0x01) << 1)
++	    | (u8) ((vTotal >> 8) & 0x01);
 +
-+	/* adjust nextIn */
-+	adc->nextIn += adc->fragSize;
-+	if (adc->nextIn >= adc->fragTotalSize) {
-+		ASSERT(adc->nextIn == adc->fragTotalSize);
-+		adc->nextIn = 0;
-+	}
++	curMode.reg_CR00_CR18[0x09] = (u8) (vDisplay >> 9) << 5 | 1 << 6;	/* D (LC bit9) */
++	curMode.reg_CR00_CR18[0x10] = (u8) (vStart & 0xff);
++	curMode.reg_CR00_CR18[0x11] = (u8) (vEnd & 0xf);
++	curMode.reg_CR00_CR18[0x12] = (u8) (vDisplay & 0xff);
++	curMode.reg_CR00_CR18[0x13] = ((width / 8) * ((bpp + 1) / 8)) & 0xFF;
++	curMode.reg_CR00_CR18[0x15] = (u8) (vDisplay & 0xff);
++	curMode.reg_CR00_CR18[0x16] = 0x00;
++	curMode.reg_CR00_CR18[0x14] = (hDisplaySize > 1024) ? 0x00 : 0x40;	/* D *//* Underline Location */
 +
-+	/* adjust count */
-+	adc->count += adc->fragSize;
++	/* Extended CRTC */
++	curMode.reg_CR30_CR4D[0x30 - 0x30] = (u8) (((vTotal >> 10) & 0x01) << 3)
++	    | (u8) (((vDisplay >> 10) & 0x01) << 1)
++	    | (u8) ((vStart >> 10) & 0x1);	/* D (CRTD) (CVDER) */
 +
-+	/* wake up anybody listening */
-+	if (waitqueue_active(&adc->wait)) {
-+		wake_up_interruptible(&adc->wait);
++	curMode.reg_SR30_SR75[0x32] = 0xff;	/* (Memory Type and Timig Control Reg) */
++
++	for (i = 0; i <= SIZE_SR00_SR04; i++)
++		regSR_write(sinfo->mmio, 0x00 + i, curMode.reg_SR00_SR04[i]);
++	for (i = 0; i <= SIZE_SR10_SR24; i++)
++		regSR_write(sinfo->mmio, 0x10 + i, curMode.reg_SR10_SR24[i]);
++	for (i = 0; i <= SIZE_SR30_SR75; i++) {
++		regSR_write(sinfo->mmio, 0x30 + i, curMode.reg_SR30_SR75[i]);
 +	}
++	for (i = 0; i <= SIZE_SR80_SR93; i++)
++		regSR_write(sinfo->mmio, 0x80 + i, curMode.reg_SR80_SR93[i]);
++	for (i = 0; i <= SIZE_SRA0_SRAF; i++)
++		regSR_write(sinfo->mmio, 0xA0 + i, curMode.reg_SRA0_SRAF[i]);
++	for (i = 0; i <= SIZE_GR00_GR08; i++)
++		regGR_write(sinfo->mmio, 0x00 + i, curMode.reg_GR00_GR08[i]);
++	for (i = 0; i <= SIZE_AR00_AR14; i++)
++		regAR_write(sinfo->mmio, 0x00 + i, curMode.reg_AR00_AR14[i]);
++	for (i = 0; i <= SIZE_CR00_CR18; i++)
++		regCR_write(sinfo->mmio, 0x00 + i, curMode.reg_CR00_CR18[i]);
++	for (i = 0; i <= SIZE_CR30_CR4D; i++)
++		regCR_write(sinfo->mmio, 0x30 + i, curMode.reg_CR30_CR4D[i]);
++	for (i = 0; i <= SIZE_CR90_CRA7; i++)
++		regCR_write(sinfo->mmio, 0x90 + i, curMode.reg_CR90_CRA7[i]);
++
++	/* SetMemoryMapRegisters */
++	reg_DPR14(sinfo) = 0xffffffff;	/* FG color */
++	reg_DPR18(sinfo) = 0x00000000;	/* BG color */
++	reg_DPR24(sinfo) = 0xffffffff;	/* Color Mask */
++	reg_DPR28(sinfo) = 0xffff;	/* Masks */
++	reg_DPR2C(sinfo) = 0;
++	reg_DPR30(sinfo) = 0;
++	reg_DPR34(sinfo) = 0xffffffff;
++	reg_DPR38(sinfo) = 0xffffffff;
++	reg_DPR40(sinfo) = 0;
++	reg_DPR44(sinfo) = 0;
++	reg_VPR0C(sinfo) = 0;
++	reg_VPR10(sinfo) = ((lineLength / 8 + 2) << 16) | (lineLength / 8);
++	reg_VPR40(sinfo) = 0;
++	reg_VPR28(sinfo) = 0x00000000;
++	reg_VPR2C(sinfo) = ((hDisplaySize - 1) << 16) | (vDisplay);
++	reg_VPR30(sinfo) = 0x00000000;
++	reg_VPR34(sinfo) = (lineLength << 16) | lineLength;
 +}
+diff -Naurp --exclude=CVS linux_save/drivers/video/smi/smi_hw.h linux_mips/drivers/video/smi/smi_hw.h
+--- linux_save/drivers/video/smi/smi_hw.h	1970-01-01 03:00:00.000000000 +0300
++++ linux_mips/drivers/video/smi/smi_hw.h	2005-05-31 17:00:36.000000000 +0400
+@@ -0,0 +1,197 @@
++/*
++ * drivers/video/smi/smi_hw.h
++ *
++ * LynxEM+/EM4+(Silicon Motion Inc.) fb driver	for VR5701-SG2
++ *
++ * Author: Sergey Podstavin <spodstavin@ru.mvista.com>
++ *
++ * 2005 (c) MontaVista Software, Inc. This file is licensed under
++ * the terms of the GNU General Public License version 2. This program
++ * is licensed "as is" without any warranty of any kind, whether express
++ * or implied.
++ */
++#ifndef __SMI_HW_H__
++#define __SMI_HW_H__
 +
-+static inline void vr5701_ac97_dac_interrupt(struct vr5701_ac97_state *s)
++#include "smifb.h"
++
++#define DPPORT_BASE_OFFSET		0x400000
++#define DP_BASE_OFFSET			0x408000
++#define VP_BASE_OFFSET			0x40c000
++#define CP_BASE_OFFSET			0x40e000
++#define IO_BASE_OFFSET			0x700000
++
++#define DPPORT_REGION_SIZE		(32*1024)
++#define DPREG_REGION_SIZE		(16*1024)
++#define VPREG_REGION_SIZE		(8*1024)
++#define CPREG_REGION_SIZE		(8*1024)
++#define MMIO_REGION_SIZE		(1*1024*1024)
++
++#define LYNX3DM_DPPORT_BASE_OFFSET		0x100000
++#define LYNX3DM_DP_BASE_OFFSET			0x000000
++#define LYNX3DM_VP_BASE_OFFSET			0x000800
++#define LYNX3DM_CP_BASE_OFFSET			0x001000
++#define LYNX3DM_IO_BASE_OFFSET			0x0c0000
++#define LYNX3DM_FB_BASE_OFFSET			0x200000
++
++#define LYNX3DM_DPPORT_REGION_SIZE		(1024*1024)
++#define LYNX3DM_DPREG_REGION_SIZE		(2*1024)
++#define LYNX3DM_VPREG_REGION_SIZE		(2*1024)
++#define LYNX3DM_CPREG_REGION_SIZE		(2*1024)
++#define LYNX3DM_MMIO_REGION_SIZE		(256*1024)
++
++extern void smi_set_moderegs(struct smifb_info *sinfo,
++			     int bpp, int width, int height,
++			     int hDisplaySize,
++			     int hDisplay, int hStart, int hEnd, int hTotal,
++			     int vDisplay, int vStart, int vEnd, int vTotal,
++			     int dotClock, int sync);
++
++#define MMIO_OUT8(p, r, d)	(((volatile u8 *)(p))[r] = (d))
++#define MMIO_OUT16(p, r, d)	(((volatile u16 *)(p))[(r)>>1] = (d))
++#define MMIO_OUT32(p, r, d)	(((volatile u32 *)(p))[(r)>>2] = (d))
++#define MMIO_IN8(p, r)		(((volatile u8 *)(p))[(r)])
++#define MMIO_IN16(p, r)		(((volatile u16 *)(p))[(r)>>1])
++#define MMIO_IN32(p, r)		(((volatile u32 *)(p))[(r)>>2])
++
++static inline u8 VGA_READ8(u8 * base, uint reg)
 +{
-+	struct dmabuf *dac = &s->dma_dac;
-+	unsigned temp;
-+
-+	/* let us set for next next DMA transfer */
-+	temp = dac->nextOut + dac->fragSize * 2;
-+	if (temp >= dac->fragTotalSize) {
-+		ASSERT((temp == dac->fragTotalSize) ||
-+		       (temp == dac->fragTotalSize + dac->fragSize));
-+		temp -= dac->fragTotalSize;
-+	}
-+	outl(dac->lbufDma + temp, s->io + vr5701_DAC1_BADDR);
-+	if (s->dacChannels == 1) {
-+		outl(dac->lbufDma + temp, s->io + vr5701_DAC2_BADDR);
-+	} else {
-+		outl(dac->rbufDma + temp, s->io + vr5701_DAC2_BADDR);
-+	}
-+
-+#if defined(vr5701_AC97_VERBOSE_DEBUG)
-+	if (*(u16 *) (dac->lbuf + dac->nextOut) != outTicket) {
-+		printk(KERN_ERR "assert fail: - %d vs %d\n",
-+		       *(u16 *) (dac->lbuf + dac->nextOut), outTicket);
-+		ASSERT(1 == 0);
-+	}
-+#endif
-+
-+	/* adjust nextOut pointer */
-+	dac->nextOut += dac->fragSize;
-+	if (dac->nextOut >= dac->fragTotalSize) {
-+		ASSERT(dac->nextOut == dac->fragTotalSize);
-+		dac->nextOut = 0;
-+	}
-+
-+	/* adjust count */
-+	dac->count -= dac->fragSize;
-+	if (dac->count <= 0) {
-+		/* buffer under run */
-+		dac->count = 0;
-+		dac->nextIn = dac->nextOut;
-+		stop_dac(s);
-+	}
-+#if defined(vr5701_AC97_VERBOSE_DEBUG)
-+	if (dac->count) {
-+		outTicket++;
-+		ASSERT(*(u16 *) (dac->lbuf + dac->nextOut) == outTicket);
-+	}
-+#endif
-+
-+	/* we cannot have both under run and someone is waiting on us */
-+	ASSERT(!(waitqueue_active(&dac->wait) && (dac->count <= 0)));
-+
-+	/* wake up anybody listening */
-+	if (waitqueue_active(&dac->wait))
-+		wake_up_interruptible(&dac->wait);
++	return MMIO_IN8(base, reg);
 +}
 +
-+static inline int
-+copy_two_channel_adc_to_user(struct vr5701_ac97_state *s,
-+			     char *buffer, int copyCount)
++static inline void VGA_WRITE8(u8 * base, uint reg, u8 data)
 +{
-+	struct dmabuf *db = &s->dma_adc;
-+	int bufStart = db->nextOut;
-+	for (; copyCount > 0;) {
-+		int i;
-+		int count = copyCount;
-+		if (count > WORK_BUF_SIZE / 2)
-+			count = WORK_BUF_SIZE / 2;
-+		for (i = 0; i < count / 2; i++) {
-+			s->workBuf[i].lchannel =
-+			    *(u16 *) (db->lbuf + bufStart + i * 2);
-+			s->workBuf[i].rchannel =
-+			    *(u16 *) (db->rbuf + bufStart + i * 2);
-+		}
-+		if (copy_to_user(buffer, s->workBuf, count * 2)) {
-+			return -1;
-+		}
-+
-+		copyCount -= count;
-+		bufStart += count;
-+		ASSERT(bufStart <= db->fragTotalSize);
-+		buffer += count * 2;
-+	}
-+	return 0;
++	MMIO_OUT8(base, reg, data);
 +}
 +
-+/* return the total bytes that is copied */
-+static inline int
-+copy_adc_to_user(struct vr5701_ac97_state *s,
-+		 char *buffer, size_t count, int avail)
++static inline u8 VGA_READ8_INDEX(u8 * base, u8 index)
 +{
-+	struct dmabuf *db = &s->dma_adc;
-+	int copyCount = 0;
-+	int copyFragCount = 0;
-+	int totalCopyCount = 0;
-+	int totalCopyFragCount = 0;
-+	unsigned long flags;
-+
-+	/* adjust count to signel channel byte count */
-+	count >>= s->adcChannels - 1;
-+
-+	/* we may have to "copy" twice as ring buffer wraps around */
-+	for (; (avail > 0) && (count > 0);) {
-+		/* determine max possible copy count for single channel */
-+		copyCount = count;
-+		if (copyCount > avail) {
-+			copyCount = avail;
-+		}
-+		if (copyCount + db->nextOut > db->fragTotalSize) {
-+			copyCount = db->fragTotalSize - db->nextOut;
-+			ASSERT((copyCount % db->fragSize) == 0);
-+		}
-+
-+		copyFragCount = (copyCount - 1) >> db->fragShift;
-+		copyFragCount = (copyFragCount + 1) << db->fragShift;
-+		ASSERT(copyFragCount >= copyCount);
-+
-+		/* we copy differently based on adc channels */
-+		if (s->adcChannels == 1) {
-+			if (copy_to_user(buffer,
-+					 db->lbuf + db->nextOut, copyCount))
-+				return -1;
-+		} else {
-+			/* *sigh* we have to mix two streams into one  */
-+			if (copy_two_channel_adc_to_user(s, buffer, copyCount))
-+				return -1;
-+		}
-+
-+		count -= copyCount;
-+		totalCopyCount += copyCount;
-+		avail -= copyFragCount;
-+		totalCopyFragCount += copyFragCount;
-+
-+		buffer += copyCount << (s->adcChannels - 1);
-+
-+		db->nextOut += copyFragCount;
-+		if (db->nextOut >= db->fragTotalSize) {
-+			ASSERT(db->nextOut == db->fragTotalSize);
-+			db->nextOut = 0;
-+		}
-+
-+		ASSERT((copyFragCount % db->fragSize) == 0);
-+		ASSERT((count == 0) || (copyCount == copyFragCount));
-+	}
-+
-+	spin_lock_irqsave(&s->lock, flags);
-+	db->count -= totalCopyFragCount;
-+	spin_unlock_irqrestore(&s->lock, flags);
-+
-+	return totalCopyCount << (s->adcChannels - 1);
++	VGA_WRITE8(base, 0x3c4, index);
++	return VGA_READ8(base, 0x3c5);
 +}
 +
-+static inline int
-+copy_two_channel_dac_from_user(struct vr5701_ac97_state *s,
-+			       const char *buffer, int copyCount)
++static inline void VGA_WRITE8_INDEX(u8 * base, u8 index, u8 data)
 +{
-+	struct dmabuf *db = &s->dma_dac;
-+	int bufStart = db->nextIn;
-+
-+	ASSERT(db->ready);
-+
-+	for (; copyCount > 0;) {
-+		int i;
-+		int count = copyCount;
-+		if (count > WORK_BUF_SIZE / 2)
-+			count = WORK_BUF_SIZE / 2;
-+		if (copy_from_user(s->workBuf, buffer, count * 2)) {
-+			return -1;
-+		}
-+		for (i = 0; i < count / 2; i++) {
-+			*(u16 *) (db->lbuf + bufStart + i * 2) =
-+			    s->workBuf[i].lchannel;
-+			*(u16 *) (db->rbuf + bufStart + i * 2) =
-+			    s->workBuf[i].rchannel;
-+		}
-+
-+		copyCount -= count;
-+		bufStart += count;
-+		ASSERT(bufStart <= db->fragTotalSize);
-+		buffer += count * 2;
-+	}
-+	return 0;
-+
++	VGA_WRITE8(base, 0x3c4, index);
++	VGA_WRITE8(base, 0x3c5, data);
 +}
++
++static inline u8 regSR_read(u8 * base, u8 index)
++{
++	VGA_WRITE8(base, 0x3c4, index);
++	return VGA_READ8(base, 0x3c5);
++}
++
++static inline void regSR_write(u8 * base, u8 index, u8 data)
++{
++	VGA_WRITE8(base, 0x3c4, index);
++	VGA_WRITE8(base, 0x3c5, data);
++}
++
++static inline u8 regCR_read(u8 * base, u8 index)
++{
++	VGA_WRITE8(base, 0x3d4, index);
++	return VGA_READ8(base, 0x3d5);
++}
++
++static inline void regCR_write(u8 * base, u8 index, u8 data)
++{
++	VGA_WRITE8(base, 0x3d4, index);
++	VGA_WRITE8(base, 0x3d5, data);
++}
++
++static inline u8 regGR_read(u8 * base, u8 index)
++{
++	VGA_WRITE8(base, 0x3ce, index);
++	return VGA_READ8(base, 0x3cf);
++}
++
++static inline void regGR_write(u8 * base, u8 index, u8 data)
++{
++	VGA_WRITE8(base, 0x3ce, index);
++	VGA_WRITE8(base, 0x3cf, data);
++}
++
++static inline u8 regAR_read(u8 * base, u8 index)
++{
++	(void)VGA_READ8(base, 0x3da);	/* reset flip-flop */
++	VGA_WRITE8(base, 0x3c0, index);
++	return VGA_READ8(base, 0x3c1);
++}
++
++static inline void regAR_write(u8 * base, u8 index, u8 data)
++{
++	(void)VGA_READ8(base, 0x3da);	/* reset flip-flop */
++	VGA_WRITE8(base, 0x3c0, index);
++	VGA_WRITE8(base, 0x3c0, data);
++}
++
++/*
++ * LynxEM+ registers
++ */
++
++/* Drawing Engine Control Registers */
++#define reg_DPR00(x)	*(u16 *)((x)->dpr+0x00)	/* Source Y or K2                                       */
++#define reg_DPR02(x)	*(u16 *)((x)->dpr+0x02)	/* Source X or K1                                       */
++#define reg_DPR04(x)	*(u16 *)((x)->dpr+0x04)	/* Destination Y or Start Y                             */
++#define reg_DPR06(x)	*(u16 *)((x)->dpr+0x06)	/* Destination X or Start X                             */
++#define reg_DPR08(x)	*(u16 *)((x)->dpr+0x08)	/* Dimension Y or Error Term                            */
++#define reg_DPR0A(x)	*(u16 *)((x)->dpr+0x0A)	/* Dimension X or Vector Length                         */
++#define reg_DPR0C(x)	*(u16 *)((x)->dpr+0x0C)	/* ROP and Miscellaneous Control                        */
++#define reg_DPR0E(x)	*(u16 *)((x)->dpr+0x0E)	/* Drawing Engine Commands and Control                  */
++#define reg_DPR10(x)	*(u16 *)((x)->dpr+0x10)	/* Source Row Pitch                                     */
++#define reg_DPR12(x)	*(u16 *)((x)->dpr+0x12)	/* Destination Row Picth                                */
++#define reg_DPR14(x)	*(u32 *)((x)->dpr+0x14)	/* Foreground Colors                                    */
++#define reg_DPR18(x)	*(u32 *)((x)->dpr+0x18)	/* Background Colors                                    */
++#define reg_DPR1C(x)	*(u16 *)((x)->dpr+0x1C)	/* Stretch Source Height Y                              */
++#define reg_DPR1E(x)	*(u16 *)((x)->dpr+0x1E)	/* Drawing Engine DataFormat and Location Format Select */
++#define reg_DPR20(x)	*(u32 *)((x)->dpr+0x20)	/* Color Compare                                        */
++#define reg_DPR24(x)	*(u32 *)((x)->dpr+0x24)	/* Color Compare Mask                                   */
++#define reg_DPR28(x)	*(u16 *)((x)->dpr+0x28)	/* Bit Mask                                             */
++#define reg_DPR2A(x)	*(u16 *)((x)->dpr+0x2A)	/* Byte Mask Enable                                     */
++#define reg_DPR2C(x)	*(u16 *)((x)->dpr+0x2C)	/* Scisors Left and Control                             */
++#define reg_DPR2E(x)	*(u16 *)((x)->dpr+0x2E)	/* Scisors Top                                          */
++#define reg_DPR30(x)	*(u16 *)((x)->dpr+0x30)	/* Scisors Right                                        */
++#define reg_DPR32(x)	*(u16 *)((x)->dpr+0x32)	/* Scisors Bottom                                       */
++#define reg_DPR34(x)	*(u32 *)((x)->dpr+0x34)	/* Mono Pattern Low                                     */
++#define reg_DPR38(x)	*(u32 *)((x)->dpr+0x38)	/* Mono Pattern High                                    */
++#define reg_DPR3C(x)	*(u32 *)((x)->dpr+0x3C)	/* XY Addressing Destination & Source Window Widths     */
++#define reg_DPR40(x)	*(u32 *)((x)->dpr+0x40)	/* Source Base Address                                  */
++#define reg_DPR44(x)	*(u32 *)((x)->dpr+0x44)	/* Destination Base Address                             */
++
++/* Video Processor Control Registers */
++#define reg_VPR00(x)	*(u32 *)((x)->vpr+0x00)	/* Miscellaneous Graphics and Video Control                 */
++#define reg_VPR04(x)	*(u32 *)((x)->vpr+0x04)	/* Color Keys                                               */
++#define reg_VPR08(x)	*(u32 *)((x)->vpr+0x08)	/* Color Key Masks                                          */
++#define reg_VPR0C(x)	*(u32 *)((x)->vpr+0x0C)	/* Data Source Start Address for Extended Graphics Modes    */
++#define reg_VPR10(x)	*(u32 *)((x)->vpr+0x10)	/* Data Source Width and Offset for Extended Graphics Modes */
++#define reg_VPR14(x)	*(u32 *)((x)->vpr+0x14)	/* Video Window I Left and Top Boundaries                   */
++#define reg_VPR18(x)	*(u32 *)((x)->vpr+0x18)	/* Video Window I Right and Bottom Boundaries               */
++#define reg_VPR1C(x)	*(u32 *)((x)->vpr+0x1C)	/* Video Window I Source Start Address                      */
++#define reg_VPR20(x)	*(u32 *)((x)->vpr+0x20)	/* Video Window I Source Width and Offset                   */
++#define reg_VPR24(x)	*(u32 *)((x)->vpr+0x24)	/* Video Window I Stretch Factor                            */
++#define reg_VPR28(x)	*(u32 *)((x)->vpr+0x28)	/* Video Window II Left and Top Boundaries              */
++#define reg_VPR2C(x)	*(u32 *)((x)->vpr+0x2C)	/* Video Window II Right and Bottom Boundaries              */
++#define reg_VPR30(x)	*(u32 *)((x)->vpr+0x30)	/* Video Window II Source Start Address                     */
++#define reg_VPR34(x)	*(u32 *)((x)->vpr+0x34)	/* Video Window II Source Width and Offset                  */
++#define reg_VPR38(x)	*(u32 *)((x)->vpr+0x38)	/* Video Window II Stretch Factor                           */
++#define reg_VPR3C(x)	*(u32 *)((x)->vpr+0x3C)	/* Graphics and Video Controll II                           */
++#define reg_VPR40(x)	*(u32 *)((x)->vpr+0x40)	/* Graphic Scale Factor                                     */
++#define reg_VPR54(x)	*(u32 *)((x)->vpr+0x54)	/* FIFO Priority Control                                    */
++#define reg_VPR58(x)	*(u32 *)((x)->vpr+0x58)	/* FIFO Empty Request level Control                         */
++#define reg_VPR5C(x)	*(u32 *)((x)->vpr+0x5C)	/* YUV to RGB Conversion Constant                           */
++#define reg_VPR60(x)	*(u32 *)((x)->vpr+0x60)	/* Current Scan Line Position                               */
++#define reg_VPR64(x)	*(u32 *)((x)->vpr+0x64)	/* Signature Analyzer Control and Status                    */
++#define reg_VPR68(x)	*(u32 *)((x)->vpr+0x68)	/* Video Window I Stretch Factor                            */
++#define reg_VPR6C(x)	*(u32 *)((x)->vpr+0x6C)	/* Video Window II Stretch Factor                           */
++
++/* Capture Processor Control Registers */
++#define reg_CPR00(x)	*(u32 *)((x)->cpr+0x00)	/* Capture Port Control                        */
++#define reg_CPR04(x)	*(u32 *)((x)->cpr+0x04)	/* Video Source Clipping Control               */
++#define reg_CPR08(x)	*(u32 *)((x)->cpr+0x08)	/* Video Source Capture Size Control           */
++#define reg_CPR0C(x)	*(u32 *)((x)->cpr+0x0C)	/* Capture Port Buffer I Source Start Address  */
++#define reg_CPR10(x)	*(u32 *)((x)->cpr+0x10)	/* Capture Port Buffer II Source Start Address */
++#define reg_CPR14(x)	*(u32 *)((x)->cpr+0x14)	/* Capture Port Source Offset Address          */
++#define reg_CPR18(x)	*(u32 *)((x)->cpr+0x18)	/* Capture FIFO Empty Request level Control    */
++
++#endif				/* __SMI_HW_H__ */
+diff -Naurp --exclude=CVS linux_save/drivers/video/smi/smi_params.h linux_mips/drivers/video/smi/smi_params.h
+--- linux_save/drivers/video/smi/smi_params.h	1970-01-01 03:00:00.000000000 +0300
++++ linux_mips/drivers/video/smi/smi_params.h	2005-05-31 17:00:36.000000000 +0400
+@@ -0,0 +1,442 @@
++/*
++ * drivers/video/smi/smi_params.h
++ *
++ * LynxEM+/EM4+(Silicon Motion Inc.) fb driver	for VR5701-SG2
++ *
++ * Author: Sergey Podstavin <spodstavin@ru.mvista.com>
++ *
++ * 2005 (c) MontaVista Software, Inc. This file is licensed under
++ * the terms of the GNU General Public License version 2. This program
++ * is licensed "as is" without any warranty of any kind, whether express
++ * or implied.
++ */
++
++#ifndef __SMI_REGS_H__
++#define __SMI_REGS_H__
++
++/* register settings */
++struct smi_mode_regs ModeInitParams[modeNums] = {
++	/* mode#4 640 x 480 16Bpp 60Hz */
++	{
++	 DISPLAY_640x480x16,
++	 /* reg_MISC */
++	 0xE3,
++	 /* reg_SR00_SR04 */
++	 {
++	  0x03, 0x01, 0x0F, 0x00, 0x0E,
++	  },
++	 /* reg_SR10_SR24 */
++	 {
++	  0x03, 0x00, 0x00, 0x00, 0x00, 0x0E, 0x10, 0x2C,
++	  0x59, 0x00, 0x20, 0x00, 0x00, 0x0F, 0x0F, 0x00,
++	  0xC4, 0x30, 0x02, 0x01, 0x01,
++	  },
++
++	 /* reg_SR30_SR75 */
++	 {
++	  0xAA, 0x03, 0xA0, 0x89, 0xC0, 0xAA, 0xAA, 0xAA,
++	  0xAA, 0xAA, 0xAA, 0xAA, 0x00, 0x00, 0x03, 0xFF,
++	  0x00, 0xFC, 0x00, 0x00, 0x20, 0x38, 0x00, 0xFC,
++	  0x20, 0x0C, 0x44, 0x20, 0x00, 0x00, 0x00, 0xAA,
++	  0x04, 0x24, 0x63, 0x4F, 0x52, 0x0B, 0xDF, 0xEA,
++	  0x04, 0x50, 0x19, 0xAA, 0xAA, 0x00, 0x00, 0xAA,
++	  0x01, 0x80, 0xFF, 0x1A, 0x1A, 0x00, 0x03, 0x00,
++	  0x50, 0x03, 0x0D, 0x02, 0x07, 0x82, 0x07, 0x04,
++	  0x00, 0x45, 0x30, 0x0C, 0x40, 0x30,
++	  },
++	 /* reg_SR80_SR93 */
++	 {
++	  0xFF, 0x07, 0x00, 0x6F, 0x7F, 0x7F, 0xFF, 0xAA,
++	  0x40, 0x01, 0xF0, 0x00, 0xFF, 0x00, 0xAA, 0xAA,
++	  0x00, 0x00, 0x00, 0x00,
++	  },
++	 /* reg_SRA0_SRAF */
++	 {
++	  0x00, 0xFF, 0xBF, 0xFF, 0xFF, 0xED, 0xED, 0xED,
++	  0x7B, 0xFF, 0xFF, 0xFF, 0xBF, 0xEF, 0xFF, 0xDF,
++	  },
++	 /* reg_GR00_GR08 */
++	 {
++	  0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x05, 0x0F,
++	  0xFF,
++	  },
++	 /* reg_AR00_AR14 */
++	 {
++	  0x3F, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
++	  0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
++	  0x10, 0x00, 0x12, 0x00, 0x04,
++	  },
++	 /* reg_CR00_CR18 */
++	 {
++	  0x5F, 0x4F, 0x4F, 0x00, 0x53, 0x1F, 0x0B, 0x3E,
++	  0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++	  0xEA, 0x0C, 0xDF, 0x50, 0x40, 0xDF, 0x00, 0xE3,
++	  0xFF,
++	  },
++	 /* reg_CR30_CR4D */
++	 {
++	  0x00, 0x00, 0x00, 0x00, 0x00, 0x55, 0x03, 0x20,
++	  0x00, 0x00, 0x00, 0x40, 0x00, 0xE7, 0xFF, 0xFD,
++	  0x5F, 0x4F, 0x00, 0x54, 0x00, 0x0B, 0xDF, 0x00,
++	  0xEA, 0x0C, 0x2E, 0x00, 0x4F, 0xDF,
++	  },
++	 /* reg_CR90_CRA7 */
++	 {
++	  0x56, 0xDD, 0x5E, 0xEA, 0x87, 0x44, 0x8F, 0x55,
++	  0x0A, 0x8F, 0x55, 0x0A, 0x00, 0x00, 0x18, 0x00,
++	  0x11, 0x10, 0x0B, 0x0A, 0x0A, 0x0A, 0x0A, 0x00,
++	  },
++	 },
++	/* mode#5 800 x 600 16Bpp 60Hz */
++	{
++	 DISPLAY_800x600x16,
++	 /* reg_MISC */
++	 0x2B,
++	 /* reg_SR00_SR04 */
++	 {
++	  0x03, 0x01, 0x0F, 0x03, 0x0E,
++	  },
++	 /* reg_SR10_SR24 */
++	 {
++	  0xFF, 0xBE, 0xEE, 0xFF, 0x00, 0x0E, 0x17, 0xe2,
++	  0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++	  0xC4, 0x30, 0x02, 0x01, 0x01,
++	  },
++	 /* reg_SR30_SR75 */
++	 {
++	  0x36, 0x03, 0x20, 0x09, 0xC0, 0x36, 0x36, 0x36,
++	  0x36, 0x36, 0x36, 0x36, 0x00, 0x00, 0x03, 0xFF,
++	  0x00, 0xFC, 0x00, 0x00, 0x20, 0x18, 0x00, 0xFC,
++	  0x20, 0x0C, 0x44, 0x20, 0x00, 0x36, 0x36, 0x36,
++	  0x04, 0x48, 0x83, 0x63, 0x68, 0x72, 0x57, 0x58,
++	  0x04, 0x55, 0x59, 0x36, 0x36, 0x00, 0x00, 0x36,
++	  0x01, 0x80, 0x7E, 0x1A, 0x1A, 0x00, 0x00, 0x00,
++	  0x50, 0x03, 0x74, 0x14, 0x1C, 0x85, 0x35, 0x13,
++	  0x02, 0x45, 0x30, 0x30, 0x40, 0x20,
++	  },
++	 /* reg_SR80_SR93 */
++	 {
++	  0xFF, 0x07, 0x00, 0x6F, 0x7F, 0x7F, 0xFF, 0x36,
++	  0xF7, 0x00, 0x00, 0x00, 0xEF, 0xFF, 0x36, 0x36,
++	  0x00, 0x00, 0x00, 0x00,
++	  },
++	 /* reg_SRA0_SRAF */
++	 {
++	  0x00, 0xFF, 0xBF, 0xFF, 0xFF, 0xED, 0xED, 0xED,
++	  0x7B, 0xFF, 0xFF, 0xFF, 0xBF, 0xEF, 0xBF, 0xDF,
++	  },
++	 /* reg_GR00_GR08 */
++	 {
++	  0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x05, 0x0F,
++	  0xFF,
++	  },
++	 /* reg_AR00_AR14 */
++	 {
++	  0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
++	  0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
++	  0x41, 0x00, 0x0F, 0x00, 0x00,
++	  },
++	 /* reg_CR00_CR18 */
++	 {
++	  0x7F, 0x63, 0x63, 0x00, 0x68, 0x18, 0x72, 0xF0,
++	  0x00, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++	  0x58, 0x0C, 0x57, 0x64, 0x40, 0x57, 0x00, 0xE3,
++	  0xFF,
++	  },
++	 /* reg_CR30_CR4D */
++	 {
++	  0x00, 0x00, 0x00, 0x00, 0x00, 0x33, 0x03, 0x20,
++	  0x00, 0x00, 0x00, 0x40, 0x00, 0xE7, 0xBF, 0xFD,
++	  0x7F, 0x63, 0x00, 0x69, 0x18, 0x72, 0x57, 0x00,
++	  0x58, 0x0C, 0xE0, 0x20, 0x63, 0x57,
++	  },
++	 /* reg_CR90_CRA7 */
++	 {
++	  0x56, 0x4B, 0x5E, 0x55, 0x86, 0x9D, 0x8E, 0xAA,
++	  0xDB, 0x2A, 0xDF, 0x33, 0x00, 0x00, 0x18, 0x00,
++	  0x20, 0x1F, 0x1A, 0x19, 0x0F, 0x0F, 0x0F, 0x00,
++	  },
++	 },
++	/* mode#6 1024 x 768 16Bpp 60Hz * */
++	{
++	 DISPLAY_1024x768x16,
++	 /* reg_MISC */
++	 0xEB,
++	 /* reg_SR00_SR04 */
++	 {
++	  0x03, 0x01, 0x0F, 0x03, 0x0E,
++	  },
++	 /* reg_SR10_SR24 */
++	 {
++	  0x03, 0x00, 0x00, 0x00, 0x00, 0x0E, 0x10, 0x2c,
++	  0x59, 0x02, 0x00, 0x00, 0x00, 0x0F, 0x0F, 0x00,
++	  0xC4, 0x30, 0x02, 0x01, 0x01,
++	  },
++	 /* reg_SR30_SR75 */
++	 {
++	  0xAA, 0x03, 0x20, 0x89, 0xC0, 0xAA, 0xAA, 0xAA,
++	  0xAA, 0xAA, 0xAA, 0xAA, 0x00, 0x00, 0x03, 0xFF,
++	  0x00, 0xFC, 0x00, 0x00, 0x20, 0x38, 0x00, 0xFC,
++	  0x20, 0x0C, 0x44, 0x20, 0x00, 0x00, 0x00, 0xAA,
++	  0x06, 0x68, 0xA7, 0x7F, 0x83, 0x24, 0xFF, 0x03,
++	  0x00, 0x60, 0x59, 0xAA, 0xAA, 0x00, 0x00, 0xAA,
++	  0x01, 0x80, 0xFF, 0x1A, 0x1A, 0x00, 0x03, 0x00,
++	  0x50, 0x03, 0x0D, 0x02, 0x12, 0x82, 0x09, 0x02,
++	  0x04, 0x45, 0x30, 0x0C, 0x40, 0x20,
++	  },
++	 /* reg_SR80_SR93 */
++	 {
++	  0xFF, 0x07, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xAA,
++	  0xF7, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xAA, 0xAA,
++	  0x00, 0x00, 0x00, 0x00,
++	  },
++	 /* reg_SRA0_SRAF */
++	 {
++	  0x00, 0xFB, 0x9F, 0x01, 0x00, 0xED, 0xED, 0xED,
++	  0x7B, 0xFB, 0xFF, 0xFF, 0x97, 0xEF, 0xBF, 0xDF,
++	  },
++	 /* reg_GR00_GR08 */
++	 {
++	  0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x05, 0x0F,
++	  0xFF,
++	  },
++	 /* reg_AR00_AR14 */
++	 {
++	  0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
++	  0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
++	  0x41, 0x11, 0x0F, 0x13, 0x00,
++	  },
++	 /* reg_CR00_CR18 */
++	 {
++	  0xA3, 0x7F, 0x7F, 0x00, 0x85, 0x16, 0x24, 0xF5,
++	  0x00, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++	  0x03, 0x09, 0xFF, 0x80, 0x40, 0xFF, 0x00, 0xE3,
++	  0xFF,
++	  },
++	 /* reg_CR30_CR4D */
++	 {
++	  0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x02, 0x20,
++	  0x00, 0x00, 0x00, 0x40, 0x00, 0xFF, 0xBF, 0xFF,
++	  0xA3, 0x7F, 0x00, 0x86, 0x15, 0x24, 0xFF, 0x00,
++	  0x01, 0x07, 0xE5, 0x20, 0x7F, 0xFF,
++	  },
++	 /* reg_CR90_CRA7 */
++	 {
++	  0x55, 0xD9, 0x5D, 0xE1, 0x86, 0x1B, 0x8E, 0x26,
++	  0xDA, 0x8D, 0xDE, 0x94, 0x00, 0x00, 0x18, 0x00,
++	  0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x15, 0x03,
++	  },
++	 },
++	/* mode#7 640 x 480 24Bpp 60Hz */
++	{
++	 DISPLAY_640x480x24,
++	 /* reg_MISC */
++	 0xE3,
++	 /* reg_SR00_SR04 */
++	 {
++	  0x03, 0x01, 0x0F, 0x00, 0x0E,
++	  },
++	 /* reg_SR10_SR24 */
++	 {
++	  0xFF, 0xBE, 0xEF, 0xFF, 0x00, 0x0E, 0x17, 0xe2,
++	  0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++	  0xC4, 0x30, 0x02, 0x01, 0x01,
++	  },
++	 /* reg_SR30_SR75 */
++	 {
++	  0x32, 0x03, 0xA0, 0x09, 0xC0, 0x32, 0x32, 0x32,
++	  0x32, 0x32, 0x32, 0x32, 0x00, 0x00, 0x03, 0xFF,
++	  0x00, 0xFC, 0x00, 0x00, 0x20, 0x18, 0x00, 0xFC,
++	  0x20, 0x0C, 0x44, 0x20, 0x00, 0x32, 0x32, 0x32,
++	  0x04, 0x24, 0x63, 0x4F, 0x52, 0x0B, 0xDF, 0xEA,
++	  0x04, 0x50, 0x19, 0x32, 0x32, 0x00, 0x00, 0x32,
++	  0x01, 0x80, 0x7E, 0x1A, 0x1A, 0x00, 0x00, 0x00,
++	  0x50, 0x03, 0x74, 0x14, 0x07, 0x82, 0x07, 0x04,
++	  0x00, 0x45, 0x30, 0x30, 0x40, 0x30,
++	  },
++	 /* reg_SR80_SR93 */
++	 {
++	  0xFF, 0x07, 0x00, 0x6F, 0x7F, 0x7F, 0xFF, 0x32,
++	  0xF7, 0x00, 0x00, 0x00, 0xEF, 0xFF, 0x32, 0x32,
++	  0x00, 0x00, 0x00, 0x00,
++	  },
++	 /* reg_SRA0_SRAF */
++	 {
++	  0x00, 0xFF, 0xBF, 0xFF, 0xFF, 0xED, 0xED, 0xED,
++	  0x7B, 0xFF, 0xFF, 0xFF, 0xBF, 0xEF, 0xFF, 0xDF,
++	  },
++	 /* reg_GR00_GR08 */
++	 {
++	  0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x05, 0x0F,
++	  0xFF,
++	  },
++	 /* reg_AR00_AR14 */
++	 {
++	  0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
++	  0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
++	  0x41, 0x00, 0x0F, 0x00, 0x00,
++	  },
++	 /* reg_CR00_CR18 */
++	 {
++	  0x5F, 0x4F, 0x4F, 0x00, 0x53, 0x1F, 0x0B, 0x3E,
++	  0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++	  0xEA, 0x0C, 0xDF, 0x50, 0x40, 0xDF, 0x00, 0xE3,
++	  0xFF,
++	  },
++	 /* reg_CR30_CR4D */
++	 {
++	  0x00, 0x00, 0x00, 0x00, 0x00, 0x55, 0x03, 0x20,
++	  0x00, 0x00, 0x00, 0x40, 0x00, 0xE7, 0xFF, 0xFD,
++	  0x5F, 0x4F, 0x00, 0x54, 0x00, 0x0B, 0xDF, 0x00,
++	  0xEA, 0x0C, 0x2E, 0x00, 0x4F, 0xDF,
++	  },
++	 /* reg_CR90_CRA7 */
++	 {
++	  0x56, 0xDD, 0x5E, 0xEA, 0x87, 0x44, 0x8F, 0x55,
++	  0x0A, 0x8F, 0x55, 0x0A, 0x00, 0x00, 0x18, 0x00,
++	  0x11, 0x10, 0x0B, 0x0A, 0x0A, 0x0A, 0x0A, 0x00,
++	  },
++	 },
++	/* mode#8 800 x 600 24Bpp 60Hz */
++	{
++	 DISPLAY_800x600x24,
++	 /* reg_MISC */
++	 0x2B,
++	 /* reg_SR00_SR04 */
++	 {
++	  0x03, 0x01, 0x0F, 0x03, 0x0E,
++	  },
++	 /* reg_SR10_SR24 */
++	 {
++	  0xFF, 0xBE, 0xEE, 0xFF, 0x00, 0x0E, 0x17, 0xe2,
++	  0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++	  0xC4, 0x30, 0x02, 0x01, 0x01,
++	  },
++	 /* reg_SR30_SR75 */
++	 {
++	  0x36, 0x03, 0x20, 0x09, 0xC0, 0x36, 0x36, 0x36,
++	  0x36, 0x36, 0x36, 0x36, 0x00, 0x00, 0x03, 0xFF,
++	  0x00, 0xFC, 0x00, 0x00, 0x20, 0x18, 0x00, 0xFC,
++	  0x20, 0x0C, 0x44, 0x20, 0x00, 0x36, 0x36, 0x36,
++	  0x04, 0x48, 0x83, 0x63, 0x68, 0x72, 0x57, 0x58,
++	  0x04, 0x55, 0x59, 0x36, 0x36, 0x00, 0x00, 0x36,
++	  0x01, 0x80, 0x7E, 0x1A, 0x1A, 0x00, 0x00, 0x00,
++	  0x50, 0x03, 0x74, 0x14, 0x1C, 0x85, 0x35, 0x13,
++	  0x02, 0x45, 0x30, 0x30, 0x40, 0x20,
++	  },
++	 /* reg_SR80_SR93 */
++	 {
++	  0xFF, 0x07, 0x00, 0x6F, 0x7F, 0x7F, 0xFF, 0x36,
++	  0xF7, 0x00, 0x00, 0x00, 0xEF, 0xFF, 0x36, 0x36,
++	  0x00, 0x00, 0x00, 0x00,
++	  },
++	 /* reg_SRA0_SRAF */
++	 {
++	  0x00, 0xFF, 0xBF, 0xFF, 0xFF, 0xED, 0xED, 0xED,
++	  0x7B, 0xFF, 0xFF, 0xFF, 0xBF, 0xEF, 0xBF, 0xDF,
++	  },
++	 /* reg_GR00_GR08 */
++	 {
++	  0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x05, 0x0F,
++	  0xFF,
++	  },
++	 /* reg_AR00_AR14 */
++	 {
++	  0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
++	  0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
++	  0x41, 0x00, 0x0F, 0x00, 0x00,
++	  },
++	 /* reg_CR00_CR18 */
++	 {
++	  0x7F, 0x63, 0x63, 0x00, 0x68, 0x18, 0x72, 0xF0,
++	  0x00, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++	  0x58, 0x0C, 0x57, 0x64, 0x40, 0x57, 0x00, 0xE3,
++	  0xFF,
++	  },
++	 /* reg_CR30_CR4D */
++	 {
++	  0x00, 0x00, 0x00, 0x00, 0x00, 0x33, 0x03, 0x20,
++	  0x00, 0x00, 0x00, 0x40, 0x00, 0xE7, 0xBF, 0xFD,
++	  0x7F, 0x63, 0x00, 0x69, 0x18, 0x72, 0x57, 0x00,
++	  0x58, 0x0C, 0xE0, 0x20, 0x63, 0x57,
++	  },
++	 /* reg_CR90_CRA7 */
++	 {
++	  0x56, 0x4B, 0x5E, 0x55, 0x86, 0x9D, 0x8E, 0xAA,
++	  0xDB, 0x2A, 0xDF, 0x33, 0x00, 0x00, 0x18, 0x00,
++	  0x20, 0x1F, 0x1A, 0x19, 0x0F, 0x0F, 0x0F, 0x00,
++	  },
++	 },
++	/* mode#9 400 x 232 16Bpp 60Hz */
++	{
++	 DISPLAY_LCD_400x232x16,
++	 /* reg_MISC */
++	 0x2B,
++	 /* reg_SR00_SR04 */
++	 {
++	  0x03, 0x01, 0x0F, 0x03, 0x0E,
++	  },
++	 /* reg_SR10_SR24 */
++	 {
++	  0x03, 0x00, 0x00, 0x00, 0x00, 0x08, 0x10, 0x2C,
++	  0x59, 0x00, 0x00, 0x00, 0x00, 0x0F, 0x0F, 0x00,
++	  0x84, 0x00, 0x02, 0x00, 0x31,
++	  },
++	 /* reg_SR30_SR75 */
++	 {
++	  0xB7, 0x43, 0x98, 0x01, 0xC0, 0xB7, 0xB7, 0xB7,
++	  0xB7, 0xB7, 0xB7, 0xB7, 0x00, 0x00, 0x85, 0x2C,
++	  0xC0, 0xE1, 0x00, 0x00, 0x40, 0xF0, 0x80, 0xC4,
++	  0x40, 0x3C, 0xA1, 0x40, 0x00, 0x00, 0x01, 0xB7,
++	  0x02, 0x24, 0xD9, 0xC7, 0xCC, 0x31, 0x2C, 0x2D,
++	  0x07, 0x57, 0x19, 0xB7, 0xB7, 0x00, 0x00, 0xB7,
++	  0x01, 0x00, 0xFF, 0x1A, 0x1A, 0x01, 0x03, 0x00,
++	  0xD4, 0x07, 0x0D, 0x02, 0x23, 0x3F, 0x35, 0x13,
++	  0x83, 0xDD, 0x02, 0x0C, 0x05, 0x00,
++	  },
++	 /* reg_SR80_SR93 */
++	 {
++	  0xFF, 0x0F, 0x00, 0x00, 0x00, 0x00, 0x09, 0xB7,
++	  0x48, 0x00, 0x36, 0x00, 0xFF, 0x00, 0xB7, 0xB7,
++	  0x00, 0x00, 0x00, 0x00,
++	  },
++	 /* reg_SRA0_SRAF */
++	 {
++	  0x00, 0xFF, 0xBF, 0xFF, 0xFF, 0xED, 0xED, 0xED,
++	  0x7B, 0xFF, 0xFF, 0xFF, 0xBF, 0xEF, 0xBF, 0xDF,
++	  },
++	 /* reg_GR00_GR08 */
++	 {
++	  0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x05, 0x0F,
++	  0xFF,
++	  },
++	 /* reg_AR00_AR14 */
++	 {
++	  0x00, 0x02, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
++	  0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
++	  0x10, 0x00, 0x12, 0x00, 0x04,
++	  },
++	 /* reg_CR00_CR18 */
++	 {
++	  0x3B, 0x31, 0x31, 0x00, 0x3A, 0x00, 0x06, 0x11,
++	  0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++	  0xF1, 0x85, 0xE9, 0x32, 0x40, 0xE9, 0x00, 0xEB,
++	  0xFF,
++	  },
++	 /* reg_CR30_CR4D */
++	 {
++	  0x00, 0x00, 0x00, 0x00, 0x00, 0x88, 0x02, 0x10,
++	  0x00, 0x00, 0x00, 0x40, 0x00, 0x20, 0x00, 0x00,
++	  0x3B, 0x31, 0x00, 0x3A, 0x00, 0x06, 0xEA, 0x00,
++	  0xF2, 0x05, 0x01, 0x00, 0x31, 0xE9,
++	  },
++	 /* reg_CR90_CRA7 */
++	 {
++	  0x56, 0x4B, 0x5E, 0x55, 0x86, 0x9D, 0x8E, 0xAA,
++	  0xDB, 0x2A, 0xDF, 0x33, 0xFF, 0xFF, 0x1B, 0x00,
++	  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++	  },
++	 },
++};
++
++#endif				/* __SMI_REGS_H__ */
 
---=-OPaFC3FnAr8zyaHKvnnd--
+--=-GzVKVITUotwBchgfD2st--

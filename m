@@ -1,200 +1,194 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 May 2005 14:46:35 +0100 (BST)
-Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:55721 "EHLO
-	witte.sonytel.be") by linux-mips.org with ESMTP id <S8225785AbVEaNqU>;
-	Tue, 31 May 2005 14:46:20 +0100
-Received: from numbat.sonytel.be (mail.sonytel.be [43.221.60.197])
-	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id j4VDkEEe010341;
-	Tue, 31 May 2005 15:46:16 +0200 (MEST)
-Date:	Tue, 31 May 2005 15:45:48 +0200 (CEST)
-From:	Geert Uytterhoeven <geert@linux-m68k.org>
-To:	Sergey Podstavin <spodstavin@ru.mvista.com>
-cc:	adaplas@pol.net, linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] A video driver for Lynx3DM on NEC VR5701-SG2 Board.
-In-Reply-To: <1117546071.5564.20.camel@localhost.localdomain>
-Message-ID: <Pine.LNX.4.62.0505311537560.15699@numbat.sonytel.be>
-References: <1117546071.5564.20.camel@localhost.localdomain>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <geert@linux-m68k.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 May 2005 15:25:10 +0100 (BST)
+Received: from RT-soft-1.Moscow.itn.ru ([IPv6:::ffff:80.240.96.90]:53135 "EHLO
+	buildserver.ru.mvista.com") by linux-mips.org with ESMTP
+	id <S8225792AbVEaOYz>; Tue, 31 May 2005 15:24:55 +0100
+Received: from 192.168.1.226 ([10.150.0.9])
+	by buildserver.ru.mvista.com (8.11.6/8.11.6) with ESMTP id j4VEOmt06157;
+	Tue, 31 May 2005 19:24:48 +0500
+Subject: [PATCH] An IDE driver for NEC VR5701-SG2 Board
+From:	Sergey Podstavin <spodstavin@ru.mvista.com>
+Reply-To: spodstavin@ru.mvista.com
+To:	B.Zolnierkiewicz@elka.pw.edu.pl
+Cc:	linux-mips <linux-mips@linux-mips.org>
+Content-Type: multipart/mixed; boundary="=-1QT6C8KMS2odChJmeBIX"
+Organization: MontaVista
+Date:	Tue, 31 May 2005 18:25:06 +0400
+Message-Id: <1117549506.5564.25.camel@localhost.localdomain>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.0.2 (2.0.2-3) 
+Return-Path: <spodstavin@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8028
+X-archive-position: 8029
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: spodstavin@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 31 May 2005, Sergey Podstavin wrote:
-> Attached is a video driver for Lynx3DM SM722, Silicon Motion Inc. It was
-> designed for NEC VR5701-SG2 Board, MIPS-CPU Vr5701. Please review it.
 
-> --- linux_save/drivers/video/Kconfig	2005-05-19 16:08:32.000000000 +0400
-> +++ linux_mips/drivers/video/Kconfig	2005-05-31 17:00:36.000000000 +0400
-> @@ -1027,6 +1027,25 @@ config FB_ATY_GX
->  	  is at
->  	  <http://support.ati.com/products/pc/mach64/graphics_xpression.html>.
->  
-> +config FB_SM
-> +	tristate "Silicon Motion SM722 support"
-> +	depends on FB && PCI
-> +	help
-> +	  SM722
-> +
-> +choice
-> +	prompt "Display size"
-> +	depends on FB_SM
-> +	default DISPLAY_640x480
-> +
-> +config DISPLAY_640x480
-> +	bool "640x480"
-> +
-> +config DISPLAY_1024x768
-> +	bool "1024x768"
+--=-1QT6C8KMS2odChJmeBIX
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-Why do you need DISPLAY_640x480 and DISPLAY_1024x768?
+Hi Bartlomiej!
 
-> --- linux_save/drivers/video/smi/smi_base.c	1970-01-01 03:00:00.000000000 +0300
-> +++ linux_mips/drivers/video/smi/smi_base.c	2005-05-31 17:00:36.000000000 +0400
-> @@ -0,0 +1,532 @@
-> +/*
-> + * drivers/video/smi/smi_base.c
-> + *
-> + * LynxEM+/EM4+(Silicon Motion Inc.) fb driver	for VR5701-SG2
-> + *
-> + * Author: Sergey Podstavin <spodstavin@ru.mvista.com>
-> + *
-> + * 2005 (c) MontaVista Software, Inc. This file is licensed under
-> + * the terms of the GNU General Public License version 2. This program
-> + * is licensed "as is" without any warranty of any kind, whether express
-> + * or implied.
-> + */
-> +
-> +#include <linux/config.h>
-> +#include <linux/module.h>
-> +#include <linux/kernel.h>
-> +#include <linux/errno.h>
-> +#include <linux/string.h>
-> +#include <linux/mm.h>
-> +#include <linux/selection.h>
-> +#include <linux/tty.h>
-> +#include <linux/slab.h>
-> +#include <linux/delay.h>
-> +#include <linux/fb.h>
-> +#include <linux/init.h>
-> +#include <linux/pci.h>
-> +#include <linux/console.h>
-> +#include "../console/fbcon.h"
-> +#include "smifb.h"
-> +#include "smi_hw.h"
-> +
-> +/*
-> + * Card Identification
-> + *
-> + */
-> +static struct pci_device_id smifb_pci_tbl[] __devinitdata = {
-> +	{PCI_VENDOR_ID_SMI, PCI_DEVICE_ID_SMI_LYNX_EM_PLUS,
-> +	 PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0},	/* Lynx EM+/EM4+ */
-> +	{PCI_VENDOR_ID_SMI, PCI_DEVICE_ID_SMI_LYNX_3DM,
-> +	 PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0},	/* Lynx 3DM/3DM+/3DM4+ */
-> +	{0,}			/* terminate list */
-> +};
-> +
-> +MODULE_DEVICE_TABLE(pci, smifb_pci_tbl);
-> +
-> +/*
-> + *
-> + * global variables
-> + *
-> + */
-> +
-> +#ifdef CONFIG_DISPLAY_1024x768
-> +/* 1024x768, 16bpp, 60Hz */
-> +static struct fb_var_screeninfo smifb_default_var = {
-> +      xres:1024,
-> +      yres:768,
+Attached is an IDE driver for NEC VR5701-SG2 Board. It works on CPU
+VR5701 internal IDE interface. The IDE has the same vendor ID and Device
+ID for internal USB interface, so the driver check class ID. Please
+review it.
 
-Please use C99-style struct initializers, e.g.
+Best wishes,
+Sergey Podstavin.
 
-	.xres = 1024,
+--=-1QT6C8KMS2odChJmeBIX
+Content-Disposition: attachment; filename=community_mips_nec_vr5701_ide.patch
+Content-Type: text/x-patch; name=community_mips_nec_vr5701_ide.patch; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-> +/*
-> + * VGA registers
-> + *
-> + */
-> +static void Unlock(struct smifb_info *sinfo)
-> +{
-> +	pr_debug("Unlock");
-> +	regSR_write(sinfo->mmio, 0x33, regSR_read(sinfo->mmio, 0x33) & 0x20);
-> +}
-> +
-> +static void Lock(struct smifb_info *sinfo)
-> +{
-> +	pr_debug("Lock");
-> +}
+diff -Naurp --exclude=CVS linux_save/drivers/ide/Kconfig linux_mips/drivers/ide/Kconfig
+--- linux_save/drivers/ide/Kconfig	2005-03-18 20:37:18.000000000 +0300
++++ linux_mips/drivers/ide/Kconfig	2005-05-31 17:58:08.000000000 +0400
+@@ -835,6 +835,12 @@ config BLK_DEV_GAYLE
+ 	  Note that you also have to enable Zorro bus support if you want to
+ 	  use Gayle IDE interfaces on the Zorro expansion bus.
+ 
++config BLK_DEV_NEC_VR5701_SG2
++	bool "NEC VR5701-SG2 IDE interface support"
++	depends on TCUBE
++	help
++	  This is the IDE driver for the NEC VR5701-SG2 IDE interface. 
++
+ config BLK_DEV_IDEDOUBLER
+ 	bool "Amiga IDE Doubler support (EXPERIMENTAL)"
+ 	depends on BLK_DEV_GAYLE && EXPERIMENTAL
+diff -Naurp --exclude=CVS linux_save/drivers/ide/pci/Makefile linux_mips/drivers/ide/pci/Makefile
+--- linux_save/drivers/ide/pci/Makefile	2005-02-13 23:16:22.000000000 +0300
++++ linux_mips/drivers/ide/pci/Makefile	2005-05-31 17:58:08.000000000 +0400
+@@ -27,6 +27,7 @@ obj-$(CONFIG_BLK_DEV_SLC90E66)		+= slc90
+ obj-$(CONFIG_BLK_DEV_TRIFLEX)		+= triflex.o
+ obj-$(CONFIG_BLK_DEV_TRM290)		+= trm290.o
+ obj-$(CONFIG_BLK_DEV_VIA82CXXX)		+= via82cxxx.o
++obj-$(CONFIG_BLK_DEV_NEC_VR5701_SG2)	+= nec_vr5701_sg2.o
+ 
+ # Must appear at the end of the block
+ obj-$(CONFIG_BLK_DEV_GENERIC)          += generic.o
+diff -Naurp --exclude=CVS linux_save/drivers/ide/pci/nec_vr5701_sg2.c linux_mips/drivers/ide/pci/nec_vr5701_sg2.c
+--- linux_save/drivers/ide/pci/nec_vr5701_sg2.c	1970-01-01 03:00:00.000000000 +0300
++++ linux_mips/drivers/ide/pci/nec_vr5701_sg2.c	2005-05-31 17:58:08.000000000 +0400
+@@ -0,0 +1,111 @@
++/*
++ * drivers/ide/pci/nec_vr5701_sg2.c
++ *
++ * NEC VR5701-SG2 IDE controller driver
++ *
++ * Author: Sergey Podstavin <spodstavin@ru.mvista.com>
++ *
++ * 2005 (c) MontaVista Software, Inc. This file is licensed under
++ * the terms of the GNU General Public License version 2. This program
++ * is licensed "as is" without any warranty of any kind, whether express
++ * or implied.
++ */
++#include <linux/config.h>
++#include <linux/pci.h>
++#include <linux/ide.h>
++#include <linux/config.h>
++#include <linux/types.h>
++#include <linux/module.h>
++#include <linux/kernel.h>
++#include <linux/delay.h>
++#include <linux/timer.h>
++#include <linux/mm.h>
++#include <linux/ioport.h>
++#include <linux/blkdev.h>
++#include <linux/hdreg.h>
++#include <linux/pci.h>
++#include <linux/ide.h>
++#include <linux/init.h>
++#include <asm/io.h>
++
++static unsigned int __init init_chipset_nec_vr5701(struct pci_dev *dev,
++						   const char *name)
++{
++	return 0;
++}
++
++static void __init init_hwif_nec_vr5701(ide_hwif_t * hwif)
++{
++	if (!(hwif->dma_base))
++		return;
++
++	hwif->atapi_dma = 1;
++	hwif->ultra_mask = 0x7f;
++	hwif->mwdma_mask = 0x07;
++	hwif->swdma_mask = 0x07;
++
++	if (!noautodma)
++		hwif->autodma = 1;
++	hwif->drives[0].autodma = hwif->autodma;
++	hwif->drives[1].autodma = hwif->autodma;
++}
++
++static ide_pci_device_t nec_vr5701_chipset __devinitdata = {
++	.name = "NEC VR5701",
++	.init_chipset = init_chipset_nec_vr5701,
++	.init_hwif = init_hwif_nec_vr5701,
++	.channels = 2,
++	.autodma = AUTODMA,
++	.bootable = ON_BOARD,
++};
++
++static int __devinit nec_vr5701_init_one(struct pci_dev *dev,
++					 const struct pci_device_id *id)
++{
++	ide_pci_device_t *d = &nec_vr5701_chipset;
++	u16 command;
++
++	if (dev->vendor == PCI_VENDOR_ID_NEC &&
++	    dev->device == PCI_DEVICE_ID_NEC_USB_AND_IDE &&
++	    dev->class == 0x0c0310)
++		return 1;
++	udelay(100);
++	pci_enable_device(dev);
++	*(volatile unsigned char *)0xb9001010 = 6;
++	asm("sync");
++	udelay(100);
++
++	pci_read_config_word(dev, PCI_COMMAND, &command);
++	if (!(command & PCI_COMMAND_IO)) {
++		printk(KERN_INFO "Skipping disabled %s IDE controller.\n",
++		       d->name);
++		return 1;
++	}
++	ide_setup_pci_device(dev, d);
++	return 0;
++}
++
++static struct pci_device_id nec_vr5701_pci_tbl[] = {
++	{PCI_VENDOR_ID_NEC, PCI_DEVICE_ID_NEC_USB_AND_IDE, PCI_ANY_ID,
++	 PCI_ANY_ID, 0x010185, 0xffffff, 0},
++	{0,},
++};
++
++MODULE_DEVICE_TABLE(pci, nec_vr5701_pci_tbl);
++
++static struct pci_driver driver = {
++	.name = "nec_vr5701_IDE",
++	.id_table = nec_vr5701_pci_tbl,
++	.probe = nec_vr5701_init_one,
++};
++
++static int nec_vr5701_ide_init(void)
++{
++	return ide_pci_register_driver(&driver);
++}
++
++module_init(nec_vr5701_ide_init);
++
++MODULE_AUTHOR("Sergey Podstavin");
++MODULE_DESCRIPTION("PCI driver module for nec vr5701 IDE");
++MODULE_LICENSE("GPL");
 
-Hmm, Lock() doesn't do anything, while Unlock() does?
-
-> diff -Naurp --exclude=CVS linux_save/drivers/video/smi/smifb.h linux_mips/drivers/video/smi/smifb.h
-> --- linux_save/drivers/video/smi/smifb.h	1970-01-01 03:00:00.000000000 +0300
-> +++ linux_mips/drivers/video/smi/smifb.h	2005-05-31 17:00:36.000000000 +0400
-> @@ -0,0 +1,89 @@
-> +/*
-> + * drivers/video/smi/smifb.h
-> + *
-> + * LynxEM+/EM4+(Silicon Motion Inc.) fb driver	for VR5701-SG2
-> + *
-> + * Author: Sergey Podstavin <spodstavin@ru.mvista.com>
-> + *
-> + * 2005 (c) MontaVista Software, Inc. This file is licensed under
-> + * the terms of the GNU General Public License version 2. This program
-> + * is licensed "as is" without any warranty of any kind, whether express
-> + * or implied.
-> + */
-> +
-> +#ifndef __SMIFB_H__
-> +#define __SMIFB_H__
-> +
-> +#define FBCON_HAS_CFB16
-
-Relic from 2.4?
-
-> +struct smifb_info;
-> +struct smifb_info {
-
-You don't need a forward declaration just before the real declaration.
-
-> +	/* PCI base physical addresses */
-> +	unsigned long fb_base_phys;	/* physical Frame Buffer base address                  */
-> +	unsigned long dpr_base_phys;	/* physical Drawing Processor base address             */
-> +	unsigned long vpr_base_phys;	/* physical Video Processor base address               */
-> +	unsigned long cpr_base_phys;	/* physical Capture Processor base address             */
-> +	unsigned long mmio_base_phys;	/* physical MMIO spase (VGA + SMI regs ?) base address */
-> +	unsigned long dpport_base_phys;	/* physical Drawing Processor Data Port base address   */
-> +	int dpport_size;	/* size of Drawin Processor Data Port memory space     */
-> +
-> +	/* PCI base virtual addresses */
-> +	caddr_t base;		/* address of base */
-        unsigned long?
-
-> +	caddr_t fb_base;	/* address of frame buffer base */
-> +	caddr_t dpr;		/* Drawing Processor Registers  */
-> +	caddr_t vpr;		/* Video Processor Registers    */
-> +	caddr_t cpr;		/* Capture Processor Registers  */
-> +	caddr_t mmio;		/* Memory Mapped I/O Port       */
-> +	caddr_t dpport;		/* Drawing Processor Data       */
-
-Etc.
-
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+--=-1QT6C8KMS2odChJmeBIX--

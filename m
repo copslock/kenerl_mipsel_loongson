@@ -1,45 +1,1672 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jun 2005 16:33:03 +0100 (BST)
-Received: from moutng.kundenserver.de ([IPv6:::ffff:212.227.126.187]:15304
-	"EHLO moutng.kundenserver.de") by linux-mips.org with ESMTP
-	id <S8226094AbVFBPcp>; Thu, 2 Jun 2005 16:32:45 +0100
-Received: from [213.39.254.68] (helo=tuxator.satorlaser-intern.com)
-	by mrelayeu.kundenserver.de with ESMTP (Nemesis),
-	id 0MKwtQ-1Ddrga0krH-0005HQ; Thu, 02 Jun 2005 17:32:44 +0200
-From:	Ulrich Eckhardt <eckhardt@satorlaser.com>
-Organization: Sator Laser GmbH
-To:	linux-mips@linux-mips.org
-Subject: Re: fb documentation
-Date:	Thu, 2 Jun 2005 17:34:47 +0200
-User-Agent: KMail/1.7.2
-References: <685359936.20050602164049@wicomtechnologies.com>
-In-Reply-To: <685359936.20050602164049@wicomtechnologies.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-1"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jun 2005 23:34:31 +0100 (BST)
+Received: from mo00.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:24522 "EHLO
+	mo00.iij4u.or.jp") by linux-mips.org with ESMTP id <S8226126AbVFBWeE>;
+	Thu, 2 Jun 2005 23:34:04 +0100
+Received: MO(mo00)id j52MXwbV013589; Fri, 3 Jun 2005 07:33:58 +0900 (JST)
+Received: MDO(mdo01) id j52MXv4j000232; Fri, 3 Jun 2005 07:33:57 +0900 (JST)
+Received: from stratos (h042.p502.iij4u.or.jp [210.149.246.42])
+	by mbox.iij4u.or.jp (4U-MR/mbox01) id j52MXtVc006408
+	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NOT);
+	Fri, 3 Jun 2005 07:33:56 +0900 (JST)
+Date:	Fri, 3 Jun 2005 07:33:49 +0900
+From:	Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH 2.6] remove NEC Osprey
+Message-Id: <20050603073349.28f1a533.yuasa@hh.iij4u.or.jp>
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200506021734.47704.eckhardt@satorlaser.com>
-X-Provags-ID: kundenserver.de abuse@kundenserver.de login:e35cee35a663f5c944b9750a965814ae
-Return-Path: <eckhardt@satorlaser.com>
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8039
+X-archive-position: 8040
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: eckhardt@satorlaser.com
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
-Jerry wrote:
->  Can anyone point me out to any available information about writing
-> framebuffer drivers, fb structure, internals, interactions, driver
-> requirements, etc...? 
+Hi,
 
-There is a whole mailinglist devoted to writing framebuffer which is hosted at 
-sourceforge's called fbdev[1], you should try there.
+This patch had removed NEC Opsrey support from v2.6.
+Please apply.
 
-Uli
+Thanks,
 
-[1]: linux-fbdev-devel@lists.sourceforge.net
+Yoichi
+
+
+diff -urN -X dontdiff b-orig/arch/mips/Kconfig b/arch/mips/Kconfig
+--- b-orig/arch/mips/Kconfig	Sat Mar 19 11:14:22 2005
++++ b/arch/mips/Kconfig	Fri Jun  3 07:10:31 2005
+@@ -431,15 +431,6 @@
+ 	  Features : kernel debugging, serial terminal, NFS root fs, on-board
+ 	  ether port USB, AC97, PCI, etc.
+ 
+-config NEC_OSPREY
+-	bool "Support for NEC Osprey board"
+-	select DMA_NONCOHERENT
+-	select IRQ_CPU
+-	select SYS_SUPPORTS_32BIT_KERNEL
+-	select SYS_SUPPORTS_64BIT_KERNEL if EXPERIMENTAL
+-	select SYS_SUPPORTS_LITTLE_ENDIAN
+-	select VR4181
+-
+ config MACH_VR41XX
+ 	bool "Support for NEC VR41XX-based machines"
+ 
+diff -urN -X dontdiff b-orig/arch/mips/Makefile b/arch/mips/Makefile
+--- b-orig/arch/mips/Makefile	Fri May 20 00:18:17 2005
++++ b/arch/mips/Makefile	Fri Jun  3 07:10:31 2005
+@@ -495,13 +495,6 @@
+ load-$(CONFIG_LASAT)		+= 0xffffffff80000000
+ 
+ #
+-# NEC Osprey (vr4181) board
+-#
+-core-$(CONFIG_NEC_OSPREY)	+= arch/mips/vr4181/common/ \
+-				   arch/mips/vr4181/osprey/
+-load-$(CONFIG_NEC_OSPREY)	+= 0xffffffff80002000
+-
+-#
+ # Common VR41xx
+ #
+ core-$(CONFIG_MACH_VR41XX)	+= arch/mips/vr41xx/common/
+diff -urN -X dontdiff b-orig/arch/mips/vr4181/Kconfig b/arch/mips/vr4181/Kconfig
+--- b-orig/arch/mips/vr4181/Kconfig	Sat Mar 19 11:14:31 2005
++++ b/arch/mips/vr4181/Kconfig	Thu Jan  1 09:00:00 1970
+@@ -1,61 +0,0 @@
+-config NEC_CMBVR4133
+-	bool "Support for NEC CMB-VR4133"
+-	depends on MACH_VR41XX
+-	select CPU_VR41XX
+-	select DMA_NONCOHERENT
+-	select IRQ_CPU
+-	select HW_HAS_PCI
+-	select PCI_VR41XX
+-	select SYS_SUPPORTS_32BIT_KERNEL
+-	select SYS_SUPPORTS_64BIT_KERNEL if EXPERIMENTAL
+-
+-config ROCKHOPPER
+-	bool "Support for Rockhopper baseboard"
+-	depends on NEC_CMBVR4133
+-	select I8259
+-	select HAVE_STD_PC_SERIAL_PORT
+-	select SYS_SUPPORTS_32BIT_KERNEL
+-	select SYS_SUPPORTS_64BIT_KERNEL if EXPERIMENTAL
+-
+-config CASIO_E55
+-	bool "Support for CASIO CASSIOPEIA E-10/15/55/65"
+-	depends on MACH_VR41XX
+-	select DMA_NONCOHERENT
+-	select IRQ_CPU
+-	select ISA
+-	select SYS_SUPPORTS_32BIT_KERNEL
+-	select SYS_SUPPORTS_64BIT_KERNEL if EXPERIMENTAL
+-
+-config IBM_WORKPAD
+-	bool "Support for IBM WorkPad z50"
+-	depends on MACH_VR41XX
+-	select DMA_NONCOHERENT
+-	select IRQ_CPU
+-	select ISA
+-	select SYS_SUPPORTS_32BIT_KERNEL
+-	select SYS_SUPPORTS_64BIT_KERNEL if EXPERIMENTAL
+-
+-config TANBAC_TB0226
+-	bool "Support for TANBAC TB0226 (Mbase)"
+-	depends on MACH_VR41XX
+-	select DMA_NONCOHERENT
+-	select HW_HAS_PCI
+-	select IRQ_CPU
+-	select SYS_SUPPORTS_32BIT_KERNEL
+-	select SYS_SUPPORTS_64BIT_KERNEL if EXPERIMENTAL
+-	help
+-	  The TANBAC TB0226 (Mbase) is a MIPS-based platform manufactured by
+-	  TANBAC.  Please refer to <http://www.tanbac.co.jp/> about Mbase.
+-
+-config TANBAC_TB0229
+-	bool "Support for TANBAC TB0229 (VR4131DIMM)"
+-	depends on MACH_VR41XX
+-	select DMA_NONCOHERENT
+-	select HW_HAS_PCI
+-	select IRQ_CPU
+-	select SYS_SUPPORTS_32BIT_KERNEL
+-	select SYS_SUPPORTS_64BIT_KERNEL if EXPERIMENTAL
+-	help
+-	  The TANBAC TB0229 (VR4131DIMM) is a MIPS-based platform manufactured
+-	  by TANBAC.  Please refer to <http://www.tanbac.co.jp/> about
+-	  VR4131DIMM.
+diff -urN -X dontdiff b-orig/arch/mips/vr4181/common/Makefile b/arch/mips/vr4181/common/Makefile
+--- b-orig/arch/mips/vr4181/common/Makefile	Tue Jan  7 22:25:00 2003
++++ b/arch/mips/vr4181/common/Makefile	Thu Jan  1 09:00:00 1970
+@@ -1,7 +0,0 @@
+-#
+-# Makefile for common code of NEC vr4181 based boards
+-#
+-
+-obj-y	 := irq.o int_handler.o serial.o time.o
+-
+-EXTRA_AFLAGS := $(CFLAGS)
+diff -urN -X dontdiff b-orig/arch/mips/vr4181/common/int_handler.S b/arch/mips/vr4181/common/int_handler.S
+--- b-orig/arch/mips/vr4181/common/int_handler.S	Wed Oct  3 08:27:11 2001
++++ b/arch/mips/vr4181/common/int_handler.S	Thu Jan  1 09:00:00 1970
+@@ -1,206 +0,0 @@
+-/*
+- * arch/mips/vr4181/common/int_handler.S
+- *
+- * Adapted to the VR4181 and almost entirely rewritten:
+- * Copyright (C) 1999 Bradley D. LaRonde and Michael Klar
+- *
+- * Clean up to conform to the new IRQ
+- * Copyright (C) 2001 MontaVista Software Inc.
+- * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
+- *
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- *
+- */
+-
+-#include <asm/asm.h>
+-#include <asm/regdef.h>
+-#include <asm/mipsregs.h>
+-#include <asm/stackframe.h>
+-
+-#include <asm/vr4181/vr4181.h>
+-
+-/*
+- * [jsun]
+- * See include/asm/vr4181/irq.h for IRQ assignment and strategy.
+- */
+-
+-	.text
+-	.set	noreorder
+-
+-	.align	5
+-	NESTED(vr4181_handle_irq, PT_SIZE, ra)
+-
+-	.set	noat
+-	SAVE_ALL
+-	CLI
+-
+-	.set	at
+-	.set	noreorder
+-
+-	mfc0	t0, CP0_CAUSE
+-	mfc0	t2, CP0_STATUS
+-
+-	and	t0, t2
+-
+-	/* we check IP3 first; it happens most frequently */
+-	andi	t1, t0, STATUSF_IP3
+-	bnez	t1, ll_cpu_ip3
+-	andi	t1, t0, STATUSF_IP2
+-	bnez	t1, ll_cpu_ip2
+-	andi	t1, t0, STATUSF_IP7	/* cpu timer */
+-	bnez	t1, ll_cputimer_irq
+-	andi	t1, t0, STATUSF_IP4
+-	bnez	t1, ll_cpu_ip4
+-	andi	t1, t0, STATUSF_IP5
+-	bnez	t1, ll_cpu_ip5
+-	andi	t1, t0, STATUSF_IP6
+-	bnez	t1, ll_cpu_ip6
+-	andi	t1, t0, STATUSF_IP0	/* software int 0 */
+-	bnez	t1, ll_cpu_ip0
+-	andi	t1, t0, STATUSF_IP1	/* software int 1 */
+-	bnez	t1, ll_cpu_ip1
+-	nop
+-
+-	.set	reorder
+-do_spurious:
+-	j	spurious_interrupt
+-
+-/*
+- * regular CPU irqs
+- */
+-ll_cputimer_irq:
+-	li	a0, VR4181_IRQ_TIMER
+-	move	a1, sp
+-	jal	do_IRQ
+-	j	ret_from_irq
+-
+-
+-ll_cpu_ip0:
+-	li	a0, VR4181_IRQ_SW1
+-	move	a1, sp
+-	jal	do_IRQ
+-	j	ret_from_irq
+-
+-ll_cpu_ip1:
+-	li	a0, VR4181_IRQ_SW2
+-	move	a1, sp
+-	jal	do_IRQ
+-	j	ret_from_irq
+-
+-ll_cpu_ip3:
+-	li	a0, VR4181_IRQ_INT1
+-	move	a1, sp
+-	jal	do_IRQ
+-	j	ret_from_irq
+-
+-ll_cpu_ip4:
+-	li	a0, VR4181_IRQ_INT2
+-	move	a1, sp
+-	jal	do_IRQ
+-	j	ret_from_irq
+-
+-ll_cpu_ip5:
+-	li	a0, VR4181_IRQ_INT3
+-	move	a1, sp
+-	jal	do_IRQ
+-	j	ret_from_irq
+-
+-ll_cpu_ip6:
+-	li	a0, VR4181_IRQ_INT4
+-	move	a1, sp
+-	jal	do_IRQ
+-	j	ret_from_irq
+-
+-/*
+- *  One of the sys irq has happend.
+- *
+- *  In the interest of speed, we first determine in the following order
+- *  which 16-irq block have pending interrupts:
+- *	sysint1 (16 sources, including cascading intrs from GPIO)
+- *	sysint2
+- *	gpio (16 intr sources)
+- *
+- *  Then we do binary search to find the exact interrupt source.
+- */
+-ll_cpu_ip2:
+-
+-	lui	t3,%hi(VR4181_SYSINT1REG)
+-	lhu	t0,%lo(VR4181_SYSINT1REG)(t3)
+-	lhu	t2,%lo(VR4181_MSYSINT1REG)(t3)
+-	and	t0, 0xfffb		/* hack - remove RTC Long 1 intr */
+-	and	t0, t2
+-	beqz	t0, check_sysint2
+-
+-	/* check for GPIO interrupts */
+-	andi	t1, t0, 0x0100
+-	bnez	t1, check_gpio_int
+-
+-	/* so we have an interrupt in sysint1 which is not gpio int */
+-	li	a0, VR4181_SYS_IRQ_BASE - 1
+-	j	check_16
+-
+-check_sysint2:
+-
+-	lhu	t0,%lo(VR4181_SYSINT2REG)(t3)
+-	lhu	t2,%lo(VR4181_MSYSINT2REG)(t3)
+-	and	t0, 0xfffe		/* hack - remove RTC Long 2 intr */
+-	and	t0, t2
+-	li	a0, VR4181_SYS_IRQ_BASE + 16 - 1
+-	j	check_16
+-
+-check_gpio_int:
+-	lui	t3,%hi(VR4181_GPINTMSK)
+-	lhu	t0,%lo(VR4181_GPINTMSK)(t3)
+-	lhu	t2,%lo(VR4181_GPINTSTAT)(t3)
+-	xori	t0, 0xffff			/* why? reverse logic? */
+-	and	t0, t2
+-	li	a0, VR4181_GPIO_IRQ_BASE - 1
+-	j	check_16
+-
+-/*
+- *  When we reach check_16, we have 16-bit status in t0 and base irq number
+- *  in a0.
+- */
+-check_16:
+-	andi	t1, t0, 0xff
+-	bnez	t1, check_8
+-
+-	srl	t0, 8
+-	addi	a0, 8
+-	j	check_8
+-
+-/*
+- *  When we reach check_8, we have 8-bit status in t0 and base irq number
+- *  in a0.
+- */
+-check_8:
+-	andi	t1, t0, 0xf
+-	bnez	t1, check_4
+-
+-	srl	t0, 4
+-	addi	a0, 4
+-	j	check_4
+-
+-/*
+- *  When we reach check_4, we have 4-bit status in t0 and base irq number
+- *  in a0.
+- */
+-check_4:
+-	andi	t0, t0, 0xf
+-	beqz	t0, do_spurious
+-
+-loop:
+-	andi	t2, t0, 0x1
+-	srl	t0, 1
+-	addi	a0, 1
+-	beqz	t2, loop
+-
+-found_it:
+-	move	a1, sp
+-	jal	do_IRQ
+-
+-	j	ret_from_irq
+-
+-	END(vr4181_handle_irq)
+diff -urN -X dontdiff b-orig/arch/mips/vr4181/common/irq.c b/arch/mips/vr4181/common/irq.c
+--- b-orig/arch/mips/vr4181/common/irq.c	Wed Mar  2 00:15:41 2005
++++ b/arch/mips/vr4181/common/irq.c	Thu Jan  1 09:00:00 1970
+@@ -1,237 +0,0 @@
+-/*
+- * Copyright (C) 2001 MontaVista Software Inc.
+- * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
+- * Copyright (C) 2005 Ralf Baechle (ralf@linux-mips.org)
+- *
+- * linux/arch/mips/vr4181/common/irq.c
+- *	Completely re-written to use the new irq.c
+- *
+- * Credits to Bradley D. LaRonde and Michael Klar for writing the original
+- * irq.c file which was derived from the common irq.c file.
+- *
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- */
+-#include <linux/types.h>
+-#include <linux/init.h>
+-#include <linux/kernel_stat.h>
+-#include <linux/signal.h>
+-#include <linux/sched.h>
+-#include <linux/interrupt.h>
+-#include <linux/slab.h>
+-#include <linux/random.h>
+-
+-#include <asm/irq.h>
+-#include <asm/mipsregs.h>
+-#include <asm/gdb-stub.h>
+-
+-#include <asm/vr4181/vr4181.h>
+-
+-/*
+- * Strategy:
+- *
+- * We essentially have three irq controllers, CPU, system, and gpio.
+- *
+- * CPU irq controller is taken care by arch/mips/kernel/irq_cpu.c and
+- * CONFIG_IRQ_CPU config option.
+- *
+- * We here provide sys_irq and gpio_irq controller code.
+- */
+-
+-static int sys_irq_base;
+-static int gpio_irq_base;
+-
+-/* ---------------------- sys irq ------------------------ */
+-static void
+-sys_irq_enable(unsigned int irq)
+-{
+-	irq -= sys_irq_base;
+-	if (irq < 16) {
+-		*VR4181_MSYSINT1REG |= (u16)(1 << irq);
+-	} else {
+-		irq -= 16;
+-		*VR4181_MSYSINT2REG |= (u16)(1 << irq);
+-	}
+-}
+-
+-static void
+-sys_irq_disable(unsigned int irq)
+-{
+-	irq -= sys_irq_base;
+-	if (irq < 16) {
+-		*VR4181_MSYSINT1REG &= ~((u16)(1 << irq));
+-	} else {
+-		irq -= 16;
+-		*VR4181_MSYSINT2REG &= ~((u16)(1 << irq));
+-	}
+-
+-}
+-
+-static unsigned int
+-sys_irq_startup(unsigned int irq)
+-{
+-	sys_irq_enable(irq);
+-	return 0;
+-}
+-
+-#define sys_irq_shutdown	sys_irq_disable
+-#define sys_irq_ack		sys_irq_disable
+-
+-static void
+-sys_irq_end(unsigned int irq)
+-{
+-	if(!(irq_desc[irq].status & (IRQ_DISABLED | IRQ_INPROGRESS)))
+-		sys_irq_enable(irq);
+-}
+-
+-static hw_irq_controller sys_irq_controller = {
+-	.typename = "vr4181_sys_irq",
+-	.startup = sys_irq_startup,
+-	.shutdown = sys_irq_shutdown,
+-	.enable = sys_irq_enable,
+-	.disable = sys_irq_disable,
+-	.ack = sys_irq_ack,
+-	.end = sys_irq_end,
+-};
+-
+-/* ---------------------- gpio irq ------------------------ */
+-/* gpio irq lines use reverse logic */
+-static void
+-gpio_irq_enable(unsigned int irq)
+-{
+-	irq -= gpio_irq_base;
+-	*VR4181_GPINTMSK &= ~((u16)(1 << irq));
+-}
+-
+-static void
+-gpio_irq_disable(unsigned int irq)
+-{
+-	irq -= gpio_irq_base;
+-	*VR4181_GPINTMSK |= (u16)(1 << irq);
+-}
+-
+-static unsigned int
+-gpio_irq_startup(unsigned int irq)
+-{
+-	gpio_irq_enable(irq);
+-
+-	irq -= gpio_irq_base;
+-	*VR4181_GPINTEN |= (u16)(1 << irq );
+-
+-	return 0;
+-}
+-
+-static void
+-gpio_irq_shutdown(unsigned int irq)
+-{
+-	gpio_irq_disable(irq);
+-
+-	irq -= gpio_irq_base;
+-	*VR4181_GPINTEN &= ~((u16)(1 << irq ));
+-}
+-
+-static void
+-gpio_irq_ack(unsigned int irq)
+-{
+-	u16 irqtype;
+-	u16 irqshift;
+-
+-	gpio_irq_disable(irq);
+-
+-	/* we clear interrupt if it is edge triggered */
+-	irq -= gpio_irq_base;
+-	if (irq < 8) {
+-		irqtype = *VR4181_GPINTTYPL;
+-		irqshift = 2 << (irq*2);
+-	} else {
+-		irqtype = *VR4181_GPINTTYPH;
+-		irqshift = 2 << ((irq-8)*2);
+-	}
+-	if ( ! (irqtype & irqshift) ) {
+-		*VR4181_GPINTSTAT = (u16) (1 << irq);
+-	}
+-}
+-
+-static void
+-gpio_irq_end(unsigned int irq)
+-{
+-	if(!(irq_desc[irq].status & (IRQ_DISABLED | IRQ_INPROGRESS)))
+-		gpio_irq_enable(irq);
+-}
+-
+-static hw_irq_controller gpio_irq_controller = {
+-	.typename = "vr4181_gpio_irq",
+-	.startup = gpio_irq_startup,
+-	.shutdown = gpio_irq_shutdown,
+-	.enable = gpio_irq_enable,
+-	.disable = gpio_irq_disable,
+-	.ack = gpio_irq_ack,
+-	.end = gpio_irq_end,
+-};
+-
+-/* ---------------------  IRQ init stuff ---------------------- */
+-
+-extern asmlinkage void vr4181_handle_irq(void);
+-extern void breakpoint(void);
+-extern int setup_irq(unsigned int irq, struct irqaction *irqaction);
+-extern void mips_cpu_irq_init(u32 irq_base);
+-
+-static struct irqaction cascade =
+-	{ no_action, SA_INTERRUPT, CPU_MASK_NONE, "cascade", NULL, NULL };
+-static struct irqaction reserved =
+-	{ no_action, SA_INTERRUPT, CPU_MASK_NONE, "cascade", NULL, NULL };
+-
+-void __init arch_init_irq(void)
+-{
+-	int i;
+-
+-	set_except_vector(0, vr4181_handle_irq);
+-
+-	/* init CPU irqs */
+-	mips_cpu_irq_init(VR4181_CPU_IRQ_BASE);
+-
+-	/* init sys irqs */
+-	sys_irq_base = VR4181_SYS_IRQ_BASE;
+-	for (i=sys_irq_base; i < sys_irq_base + VR4181_NUM_SYS_IRQ; i++) {
+-		irq_desc[i].status = IRQ_DISABLED;
+-		irq_desc[i].action = NULL;
+-		irq_desc[i].depth = 1;
+-		irq_desc[i].handler = &sys_irq_controller;
+-	}
+-
+-	/* init gpio irqs */
+-	gpio_irq_base = VR4181_GPIO_IRQ_BASE;
+-	for (i=gpio_irq_base; i < gpio_irq_base + VR4181_NUM_GPIO_IRQ; i++) {
+-		irq_desc[i].status = IRQ_DISABLED;
+-		irq_desc[i].action = NULL;
+-		irq_desc[i].depth = 1;
+-		irq_desc[i].handler = &gpio_irq_controller;
+-	}
+-
+-	/* Default all ICU IRQs to off ... */
+-	*VR4181_MSYSINT1REG = 0;
+-	*VR4181_MSYSINT2REG = 0;
+-
+-	/* We initialize the level 2 ICU registers to all bits disabled. */
+-	*VR4181_MPIUINTREG = 0;
+-	*VR4181_MAIUINTREG = 0;
+-	*VR4181_MKIUINTREG = 0;
+-
+-	/* disable all GPIO intrs */
+-	*VR4181_GPINTMSK = 0xffff;
+-
+-	/* vector handler.  What these do is register the IRQ as non-sharable */
+-	setup_irq(VR4181_IRQ_INT0, &cascade);
+-	setup_irq(VR4181_IRQ_GIU, &cascade);
+-
+-	/*
+-	 * RTC interrupts are interesting.  They have two destinations.
+-	 * One is at sys irq controller, and the other is at CPU IP3 and IP4.
+-	 * RTC timer is used as system timer.
+-	 * We enable them here, but timer routine will register later
+-	 * with CPU IP3/IP4.
+-	 */
+-	setup_irq(VR4181_IRQ_RTCL1, &reserved);
+-	setup_irq(VR4181_IRQ_RTCL2, &reserved);
+-}
+diff -urN -X dontdiff b-orig/arch/mips/vr4181/common/serial.c b/arch/mips/vr4181/common/serial.c
+--- b-orig/arch/mips/vr4181/common/serial.c	Tue Aug  6 09:08:57 2002
++++ b/arch/mips/vr4181/common/serial.c	Thu Jan  1 09:00:00 1970
+@@ -1,51 +0,0 @@
+-/*
+- * Copyright 2001 MontaVista Software Inc.
+- * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
+- *
+- * arch/mips/vr4181/common/serial.c
+- *     initialize serial port on vr4181.
+- *
+- * This program is free software; you can redistribute	it and/or modify it
+- * under  the terms of	the GNU General	 Public License as published by the
+- * Free Software Foundation;  either version 2 of the  License, or (at your
+- * option) any later version.
+- *
+- */
+-
+-/*
+- * [jsun, 010925]
+- * You need to make sure rs_table has at least one element in
+- * drivers/char/serial.c file.	There is no good way to do it right
+- * now.	 A workaround is to include CONFIG_SERIAL_MANY_PORTS in your
+- * configure file, which would gives you 64 ports and wastes 11K ram.
+- */
+-
+-#include <linux/types.h>
+-#include <linux/kernel.h>
+-#include <linux/init.h>
+-#include <linux/serial.h>
+-
+-#include <asm/vr4181/vr4181.h>
+-
+-void __init vr4181_init_serial(void)
+-{
+-	struct serial_struct s;
+-
+-	/* turn on UART clock */
+-	*VR4181_CMUCLKMSK |= VR4181_CMUCLKMSK_MSKSIU;
+-
+-	/* clear memory */
+-	memset(&s, 0, sizeof(s));
+-
+-	s.line = 0;			/* we set the first one */
+-	s.baud_base = 1152000;
+-	s.irq = VR4181_IRQ_SIU;
+-	s.flags = ASYNC_BOOT_AUTOCONF | ASYNC_SKIP_TEST; /* STD_COM_FLAGS */
+-	s.iomem_base = (u8*)VR4181_SIURB;
+-	s.iomem_reg_shift = 0;
+-	s.io_type = SERIAL_IO_MEM;
+-	if (early_serial_setup(&s) != 0) {
+-		panic("vr4181_init_serial() failed!");
+-	}
+-}
+-
+diff -urN -X dontdiff b-orig/arch/mips/vr4181/common/time.c b/arch/mips/vr4181/common/time.c
+--- b-orig/arch/mips/vr4181/common/time.c	Fri Jan 14 14:32:38 2005
++++ b/arch/mips/vr4181/common/time.c	Thu Jan  1 09:00:00 1970
+@@ -1,145 +0,0 @@
+-/*
+- * Copyright 2001 MontaVista Software Inc.
+- * Author: jsun@mvista.com or jsun@junsun.net
+- *
+- * rtc and time ops for vr4181.	 Part of code is drived from
+- * linux-vr, originally written	 by Bradley D. LaRonde & Michael Klar.
+- *
+- * This program is free software; you can redistribute	it and/or modify it
+- * under  the terms of	the GNU General	 Public License as published by the
+- * Free Software Foundation;  either version 2 of the  License, or (at your
+- * option) any later version.
+- *
+- */
+-
+-#include <linux/kernel.h>
+-#include <linux/spinlock.h>
+-#include <linux/param.h>			/* for HZ */
+-#include <linux/time.h>
+-#include <linux/interrupt.h>
+-
+-#include <asm/system.h>
+-#include <asm/time.h>
+-
+-#include <asm/vr4181/vr4181.h>
+-
+-#define COUNTS_PER_JIFFY ((32768 + HZ/2) / HZ)
+-
+-/*
+- * RTC ops
+- */
+-
+-DEFINE_SPINLOCK(rtc_lock);
+-
+-/* per VR41xx docs, bad data can be read if between 2 counts */
+-static inline unsigned short
+-read_time_reg(volatile unsigned short *reg)
+-{
+-	unsigned short value;
+-	do {
+-		value = *reg;
+-		barrier();
+-	} while (value != *reg);
+-	return value;
+-}
+-
+-static unsigned long
+-vr4181_rtc_get_time(void)
+-{
+-	unsigned short regh, regm, regl;
+-
+-	// why this crazy order, you ask?  to guarantee that neither m
+-	// nor l wrap before all 3 read
+-	do {
+-		regm = read_time_reg(VR4181_ETIMEMREG);
+-		barrier();
+-		regh = read_time_reg(VR4181_ETIMEHREG);
+-		barrier();
+-		regl = read_time_reg(VR4181_ETIMELREG);
+-	} while (regm != read_time_reg(VR4181_ETIMEMREG));
+-	return ((regh << 17) | (regm << 1) | (regl >> 15));
+-}
+-
+-static int
+-vr4181_rtc_set_time(unsigned long timeval)
+-{
+-	unsigned short intreg;
+-	unsigned long flags;
+-
+-	spin_lock_irqsave(&rtc_lock, flags);
+-	intreg = *VR4181_RTCINTREG & 0x05;
+-	barrier();
+-	*VR4181_ETIMELREG = timeval << 15;
+-	*VR4181_ETIMEMREG = timeval >> 1;
+-	*VR4181_ETIMEHREG = timeval >> 17;
+-	barrier();
+-	// assume that any ints that just triggered are invalid, since the
+-	// time value is written non-atomically in 3 separate regs
+-	*VR4181_RTCINTREG = 0x05 ^ intreg;
+-	spin_unlock_irqrestore(&rtc_lock, flags);
+-
+-	return 0;
+-}
+-
+-
+-/*
+- * timer interrupt routine (wrapper)
+- *
+- * we need our own interrupt routine because we need to clear
+- * RTC1 interrupt.
+- */
+-static void
+-vr4181_timer_interrupt(int irq, void *dev_id, struct pt_regs *regs)
+-{
+-	/* Clear the interrupt. */
+-	*VR4181_RTCINTREG = 0x2;
+-
+-	/* call the generic one */
+-	timer_interrupt(irq, dev_id, regs);
+-}
+-
+-
+-/*
+- * vr4181_time_init:
+- *
+- * We pick the following choices:
+- *   . we use elapsed timer as the RTC.	 We set some reasonable init data since
+- *     it does not persist across reset
+- *   . we use RTC1 as the system timer interrupt source.
+- *   . we use CPU counter for fast_gettimeoffset and we calivrate the cpu
+- *     frequency.  In other words, we use calibrate_div64_gettimeoffset().
+- *   . we use our own timer interrupt routine which clears the interrupt
+- *     and then calls the generic high-level timer interrupt routine.
+- *
+- */
+-
+-extern int setup_irq(unsigned int irq, struct irqaction *irqaction);
+-
+-static void
+-vr4181_timer_setup(struct irqaction *irq)
+-{
+-	/* over-write the handler to be our own one */
+-	irq->handler = vr4181_timer_interrupt;
+-
+-	/* sets up the frequency */
+-	*VR4181_RTCL1LREG = COUNTS_PER_JIFFY;
+-	*VR4181_RTCL1HREG = 0;
+-
+-	/* and ack any pending ints */
+-	*VR4181_RTCINTREG = 0x2;
+-
+-	/* setup irqaction */
+-	setup_irq(VR4181_IRQ_INT1, irq);
+-
+-}
+-
+-void
+-vr4181_init_time(void)
+-{
+-	/* setup hookup functions */
+-	rtc_get_time = vr4181_rtc_get_time;
+-	rtc_set_time = vr4181_rtc_set_time;
+-
+-	board_timer_setup = vr4181_timer_setup;
+-}
+-
+diff -urN -X dontdiff b-orig/arch/mips/vr4181/osprey/Makefile b/arch/mips/vr4181/osprey/Makefile
+--- b-orig/arch/mips/vr4181/osprey/Makefile	Fri Feb 28 01:20:25 2003
++++ b/arch/mips/vr4181/osprey/Makefile	Thu Jan  1 09:00:00 1970
+@@ -1,7 +0,0 @@
+-#
+-# Makefile for common code of NEC Osprey board
+-#
+-
+-obj-y	 := setup.o prom.o reset.o
+-
+-obj-$(CONFIG_KGDB)	+= dbg_io.o
+diff -urN -X dontdiff b-orig/arch/mips/vr4181/osprey/dbg_io.c b/arch/mips/vr4181/osprey/dbg_io.c
+--- b-orig/arch/mips/vr4181/osprey/dbg_io.c	Sun Feb  3 17:09:17 2002
++++ b/arch/mips/vr4181/osprey/dbg_io.c	Thu Jan  1 09:00:00 1970
+@@ -1,136 +0,0 @@
+-/*
+- * kgdb io functions for osprey.  We use the serial port on debug board.
+- *
+- * Copyright (C) 2001 MontaVista Software Inc.
+- * Author: jsun@mvista.com or jsun@junsun.net
+- *
+- * This program is free software; you can redistribute  it and/or modify it
+- * under  the terms of  the GNU General  Public License as published by the
+- * Free Software Foundation;  either version 2 of the  License, or (at your
+- * option) any later version.
+- *
+- */
+-
+-/* ======================= CONFIG ======================== */
+-
+-/* [jsun] we use the second serial port for kdb */
+-#define         BASE                    0xb7fffff0
+-#define         MAX_BAUD                115200
+-
+-/* distance in bytes between two serial registers */
+-#define         REG_OFFSET              1
+-
+-/*
+- * 0 - kgdb does serial init
+- * 1 - kgdb skip serial init
+- */
+-static int remoteDebugInitialized = 1;
+-
+-/*
+- * the default baud rate *if* kgdb does serial init
+- */
+-#define		BAUD_DEFAULT		UART16550_BAUD_38400
+-
+-/* ======================= END OF CONFIG ======================== */
+-
+-typedef unsigned char uint8;
+-typedef unsigned int uint32;
+-
+-#define         UART16550_BAUD_2400             2400
+-#define         UART16550_BAUD_4800             4800
+-#define         UART16550_BAUD_9600             9600
+-#define         UART16550_BAUD_19200            19200
+-#define         UART16550_BAUD_38400            38400
+-#define         UART16550_BAUD_57600            57600
+-#define         UART16550_BAUD_115200           115200
+-
+-#define         UART16550_PARITY_NONE           0
+-#define         UART16550_PARITY_ODD            0x08
+-#define         UART16550_PARITY_EVEN           0x18
+-#define         UART16550_PARITY_MARK           0x28
+-#define         UART16550_PARITY_SPACE          0x38
+-
+-#define         UART16550_DATA_5BIT             0x0
+-#define         UART16550_DATA_6BIT             0x1
+-#define         UART16550_DATA_7BIT             0x2
+-#define         UART16550_DATA_8BIT             0x3
+-
+-#define         UART16550_STOP_1BIT             0x0
+-#define         UART16550_STOP_2BIT             0x4
+-
+-/* register offset */
+-#define         OFS_RCV_BUFFER          0
+-#define         OFS_TRANS_HOLD          0
+-#define         OFS_SEND_BUFFER         0
+-#define         OFS_INTR_ENABLE         (1*REG_OFFSET)
+-#define         OFS_INTR_ID             (2*REG_OFFSET)
+-#define         OFS_DATA_FORMAT         (3*REG_OFFSET)
+-#define         OFS_LINE_CONTROL        (3*REG_OFFSET)
+-#define         OFS_MODEM_CONTROL       (4*REG_OFFSET)
+-#define         OFS_RS232_OUTPUT        (4*REG_OFFSET)
+-#define         OFS_LINE_STATUS         (5*REG_OFFSET)
+-#define         OFS_MODEM_STATUS        (6*REG_OFFSET)
+-#define         OFS_RS232_INPUT         (6*REG_OFFSET)
+-#define         OFS_SCRATCH_PAD         (7*REG_OFFSET)
+-
+-#define         OFS_DIVISOR_LSB         (0*REG_OFFSET)
+-#define         OFS_DIVISOR_MSB         (1*REG_OFFSET)
+-
+-
+-/* memory-mapped read/write of the port */
+-#define         UART16550_READ(y)    (*((volatile uint8*)(BASE + y)))
+-#define         UART16550_WRITE(y, z)  ((*((volatile uint8*)(BASE + y))) = z)
+-
+-void debugInit(uint32 baud, uint8 data, uint8 parity, uint8 stop)
+-{
+-        /* disable interrupts */
+-        UART16550_WRITE(OFS_INTR_ENABLE, 0);
+-
+-        /* set up buad rate */
+-        {
+-                uint32 divisor;
+-
+-                /* set DIAB bit */
+-                UART16550_WRITE(OFS_LINE_CONTROL, 0x80);
+-
+-                /* set divisor */
+-                divisor = MAX_BAUD / baud;
+-                UART16550_WRITE(OFS_DIVISOR_LSB, divisor & 0xff);
+-                UART16550_WRITE(OFS_DIVISOR_MSB, (divisor & 0xff00) >> 8);
+-
+-                /* clear DIAB bit */
+-                UART16550_WRITE(OFS_LINE_CONTROL, 0x0);
+-        }
+-
+-        /* set data format */
+-        UART16550_WRITE(OFS_DATA_FORMAT, data | parity | stop);
+-}
+-
+-
+-uint8 getDebugChar(void)
+-{
+-        if (!remoteDebugInitialized) {
+-                remoteDebugInitialized = 1;
+-                debugInit(BAUD_DEFAULT,
+-                          UART16550_DATA_8BIT,
+-                          UART16550_PARITY_NONE, UART16550_STOP_1BIT);
+-        }
+-
+-        while ((UART16550_READ(OFS_LINE_STATUS) & 0x1) == 0);
+-        return UART16550_READ(OFS_RCV_BUFFER);
+-}
+-
+-
+-int putDebugChar(uint8 byte)
+-{
+-        if (!remoteDebugInitialized) {
+-                remoteDebugInitialized = 1;
+-                debugInit(BAUD_DEFAULT,
+-                          UART16550_DATA_8BIT,
+-                          UART16550_PARITY_NONE, UART16550_STOP_1BIT);
+-        }
+-
+-        while ((UART16550_READ(OFS_LINE_STATUS) & 0x20) == 0);
+-        UART16550_WRITE(OFS_SEND_BUFFER, byte);
+-        return 1;
+-}
+diff -urN -X dontdiff b-orig/arch/mips/vr4181/osprey/prom.c b/arch/mips/vr4181/osprey/prom.c
+--- b-orig/arch/mips/vr4181/osprey/prom.c	Thu Jan 29 23:17:19 2004
++++ b/arch/mips/vr4181/osprey/prom.c	Thu Jan  1 09:00:00 1970
+@@ -1,49 +0,0 @@
+-/*
+- * Copyright 2001 MontaVista Software Inc.
+- * Author: jsun@mvista.com or jsun@junsun.net
+- *
+- * arch/mips/vr4181/osprey/prom.c
+- *     prom code for osprey.
+- *
+- * This program is free software; you can redistribute	it and/or modify it
+- * under  the terms of	the GNU General	 Public License as published by the
+- * Free Software Foundation;  either version 2 of the  License, or (at your
+- * option) any later version.
+- *
+- */
+-#include <linux/init.h>
+-#include <linux/kernel.h>
+-#include <linux/string.h>
+-#include <linux/mm.h>
+-#include <linux/bootmem.h>
+-#include <asm/bootinfo.h>
+-#include <asm/addrspace.h>
+-
+-const char *get_system_type(void)
+-{
+-	return "NEC_Vr41xx Osprey";
+-}
+-
+-/*
+- * [jsun] right now we assume it is the nec debug monitor, which does
+- * not pass any arguments.
+- */
+-void __init prom_init(void)
+-{
+-	// cmdline is now set in default config
+-	// strcpy(arcs_cmdline, "ip=bootp ");
+-	// strcat(arcs_cmdline, "ether=46,0x03fe0300,eth0 ");
+-	// strcpy(arcs_cmdline, "ether=0,0x0300,eth0 "
+-	// strcat(arcs_cmdline, "video=vr4181fb:xres:240,yres:320,bpp:8 ");
+-
+-	mips_machgroup = MACH_GROUP_NEC_VR41XX;
+-	mips_machtype = MACH_NEC_OSPREY;
+-
+-	/* 16MB fixed */
+-	add_memory_region(0, 16 << 20, BOOT_MEM_RAM);
+-}
+-
+-unsigned long __init prom_free_prom_memory(void)
+-{
+-	return 0;
+-}
+diff -urN -X dontdiff b-orig/arch/mips/vr4181/osprey/reset.c b/arch/mips/vr4181/osprey/reset.c
+--- b-orig/arch/mips/vr4181/osprey/reset.c	Sun Dec 29 23:50:55 2002
++++ b/arch/mips/vr4181/osprey/reset.c	Thu Jan  1 09:00:00 1970
+@@ -1,40 +0,0 @@
+-/*
+- * This program is free software; you can redistribute	it and/or modify it
+- * under  the terms of	the GNU General	 Public License as published by the
+- * Free Software Foundation;  either version 2 of the  License, or (at your
+- * option) any later version.
+- *
+- * Copyright (C) 1997, 2001 Ralf Baechle
+- * Copyright 2001 MontaVista Software Inc.
+- * Author: jsun@mvista.com or jsun@junsun.net
+- */
+-#include <linux/sched.h>
+-#include <linux/mm.h>
+-#include <asm/io.h>
+-#include <asm/cacheflush.h>
+-#include <asm/processor.h>
+-#include <asm/reboot.h>
+-#include <asm/system.h>
+-
+-void nec_osprey_restart(char *command)
+-{
+-	set_c0_status(ST0_ERL);
+-	change_c0_config(CONF_CM_CMASK, CONF_CM_UNCACHED);
+-	flush_cache_all();
+-	write_c0_wired(0);
+-	__asm__ __volatile__("jr\t%0"::"r"(0xbfc00000));
+-}
+-
+-void nec_osprey_halt(void)
+-{
+-	printk(KERN_NOTICE "\n** You can safely turn off the power\n");
+-	while (1)
+-		__asm__(".set\tmips3\n\t"
+-			"wait\n\t"
+-			".set\tmips0");
+-}
+-
+-void nec_osprey_power_off(void)
+-{
+-	nec_osprey_halt();
+-}
+diff -urN -X dontdiff b-orig/arch/mips/vr4181/osprey/setup.c b/arch/mips/vr4181/osprey/setup.c
+--- b-orig/arch/mips/vr4181/osprey/setup.c	Sun Jan 16 22:34:31 2005
++++ b/arch/mips/vr4181/osprey/setup.c	Thu Jan  1 09:00:00 1970
+@@ -1,68 +0,0 @@
+-/*
+- * linux/arch/mips/vr4181/setup.c
+- *
+- * VR41xx setup routines
+- *
+- * Copyright (C) 1999 Bradley D. LaRonde
+- * Copyright (C) 1999, 2000 Michael Klar
+- *
+- * Copyright 2001 MontaVista Software Inc.
+- * Author: jsun@mvista.com or jsun@junsun.net
+- * Copyright (C) 2005 Ralf Baechle (ralf@linux-mips.org)
+- *
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- *
+- */
+-
+-#include <linux/ide.h>
+-#include <linux/init.h>
+-#include <linux/delay.h>
+-#include <asm/reboot.h>
+-#include <asm/vr4181/vr4181.h>
+-#include <asm/io.h>
+-
+-
+-extern void nec_osprey_restart(char* c);
+-extern void nec_osprey_halt(void);
+-extern void nec_osprey_power_off(void);
+-
+-extern void vr4181_init_serial(void);
+-extern void vr4181_init_time(void);
+-
+-static void __init nec_osprey_setup(void)
+-{
+-	set_io_port_base(VR4181_PORT_BASE);
+-	isa_slot_offset = VR4181_ISAMEM_BASE;
+-
+-	vr4181_init_serial();
+-	vr4181_init_time();
+-
+-	_machine_restart = nec_osprey_restart;
+-	_machine_halt = nec_osprey_halt;
+-	_machine_power_off = nec_osprey_power_off;
+-
+-	/* setup resource limit */
+-	ioport_resource.end = 0xffffffff;
+-	iomem_resource.end = 0xffffffff;
+-
+-	/* [jsun] hack */
+-	/*
+-	printk("[jsun] hack to change external ISA control register, %x -> %x\n",
+-		(*VR4181_XISACTL),
+-		(*VR4181_XISACTL) | 0x2);
+-	*VR4181_XISACTL |= 0x2;
+-	*/
+-
+-	// *VR4181_GPHIBSTH = 0x2000;
+-	// *VR4181_GPMD0REG = 0x00c0;
+-	// *VR4181_GPINTEN	 = 1<<6;
+-
+-	/* [jsun] I believe this will get the interrupt type right
+-	 * for the ether port.
+-	 */
+-	*VR4181_GPINTTYPL = 0x3000;
+-}
+-
+-early_initcall(nec_osprey_setup);
+diff -urN -X dontdiff b-orig/include/asm-mips/vr4181/irq.h b/include/asm-mips/vr4181/irq.h
+--- b-orig/include/asm-mips/vr4181/irq.h	Tue Aug  6 09:09:00 2002
++++ b/include/asm-mips/vr4181/irq.h	Thu Jan  1 09:00:00 1970
+@@ -1,122 +0,0 @@
+-/*
+- * Macros for vr4181 IRQ numbers.
+- *
+- * Copyright (C) 2001 MontaVista Software Inc.
+- * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
+- *
+- * This program is free software; you can redistribute  it and/or modify it
+- * under  the terms of  the GNU General  Public License as published by the
+- * Free Software Foundation;  either version 2 of the  License, or (at your
+- * option) any later version.
+- *
+- */
+-
+-/*
+- * Strategy:
+- *
+- * Vr4181 has conceptually three levels of interrupt controllers:
+- *  1. the CPU itself with 8 intr level.
+- *  2. system interrupt controller, cascaded from int0 pin in CPU, 32 intrs
+- *  3. GPIO interrupts : forwarding external interrupts to sys intr controller
+- */
+-
+-/* decide the irq block assignment */
+-#define	VR4181_NUM_CPU_IRQ	8
+-#define	VR4181_NUM_SYS_IRQ	32
+-#define	VR4181_NUM_GPIO_IRQ	16
+-
+-#define	VR4181_IRQ_BASE		0
+-
+-#define	VR4181_CPU_IRQ_BASE	VR4181_IRQ_BASE
+-#define	VR4181_SYS_IRQ_BASE	(VR4181_CPU_IRQ_BASE + VR4181_NUM_CPU_IRQ)
+-#define	VR4181_GPIO_IRQ_BASE	(VR4181_SYS_IRQ_BASE + VR4181_NUM_SYS_IRQ)
+-
+-/* CPU interrupts */
+-
+-/*
+-   IP0 - Software interrupt
+-   IP1 - Software interrupt
+-   IP2 - All but battery, high speed modem, and real time clock
+-   IP3 - RTC Long1 (system timer)
+-   IP4 - RTC Long2
+-   IP5 - High Speed Modem (unused on VR4181)
+-   IP6 - Unused
+-   IP7 - Timer interrupt from CPO_COMPARE
+-*/
+-
+-#define VR4181_IRQ_SW1       (VR4181_CPU_IRQ_BASE + 0)
+-#define VR4181_IRQ_SW2       (VR4181_CPU_IRQ_BASE + 1)
+-#define VR4181_IRQ_INT0      (VR4181_CPU_IRQ_BASE + 2)
+-#define VR4181_IRQ_INT1      (VR4181_CPU_IRQ_BASE + 3)
+-#define VR4181_IRQ_INT2      (VR4181_CPU_IRQ_BASE + 4)
+-#define VR4181_IRQ_INT3      (VR4181_CPU_IRQ_BASE + 5)
+-#define VR4181_IRQ_INT4      (VR4181_CPU_IRQ_BASE + 6)
+-#define VR4181_IRQ_TIMER     (VR4181_CPU_IRQ_BASE + 7)
+-
+-
+-/* Cascaded from VR4181_IRQ_INT0 (ICU mapped interrupts) */
+-
+-/*
+-   IP2 - same as VR4181_IRQ_INT1
+-   IP8 - This is a cascade to GPIO IRQ's. Do not use.
+-   IP16 - same as VR4181_IRQ_INT2
+-   IP18 - CompactFlash
+-*/
+-
+-#define VR4181_IRQ_BATTERY   (VR4181_SYS_IRQ_BASE + 0)
+-#define VR4181_IRQ_POWER     (VR4181_SYS_IRQ_BASE + 1)
+-#define VR4181_IRQ_RTCL1     (VR4181_SYS_IRQ_BASE + 2)
+-#define VR4181_IRQ_ETIMER    (VR4181_SYS_IRQ_BASE + 3)
+-#define VR4181_IRQ_RFU12     (VR4181_SYS_IRQ_BASE + 4)
+-#define VR4181_IRQ_PIU       (VR4181_SYS_IRQ_BASE + 5)
+-#define VR4181_IRQ_AIU       (VR4181_SYS_IRQ_BASE + 6)
+-#define VR4181_IRQ_KIU       (VR4181_SYS_IRQ_BASE + 7)
+-#define VR4181_IRQ_GIU       (VR4181_SYS_IRQ_BASE + 8)
+-#define VR4181_IRQ_SIU       (VR4181_SYS_IRQ_BASE + 9)
+-#define VR4181_IRQ_RFU18     (VR4181_SYS_IRQ_BASE + 10)
+-#define VR4181_IRQ_SOFT      (VR4181_SYS_IRQ_BASE + 11)
+-#define VR4181_IRQ_RFU20     (VR4181_SYS_IRQ_BASE + 12)
+-#define VR4181_IRQ_DOZEPIU   (VR4181_SYS_IRQ_BASE + 13)
+-#define VR4181_IRQ_RFU22     (VR4181_SYS_IRQ_BASE + 14)
+-#define VR4181_IRQ_RFU23     (VR4181_SYS_IRQ_BASE + 15)
+-#define VR4181_IRQ_RTCL2     (VR4181_SYS_IRQ_BASE + 16)
+-#define VR4181_IRQ_LED       (VR4181_SYS_IRQ_BASE + 17)
+-#define VR4181_IRQ_ECU       (VR4181_SYS_IRQ_BASE + 18)
+-#define VR4181_IRQ_CSU       (VR4181_SYS_IRQ_BASE + 19)
+-#define VR4181_IRQ_USB       (VR4181_SYS_IRQ_BASE + 20)
+-#define VR4181_IRQ_DMA       (VR4181_SYS_IRQ_BASE + 21)
+-#define VR4181_IRQ_LCD       (VR4181_SYS_IRQ_BASE + 22)
+-#define VR4181_IRQ_RFU31     (VR4181_SYS_IRQ_BASE + 23)
+-#define VR4181_IRQ_RFU32     (VR4181_SYS_IRQ_BASE + 24)
+-#define VR4181_IRQ_RFU33     (VR4181_SYS_IRQ_BASE + 25)
+-#define VR4181_IRQ_RFU34     (VR4181_SYS_IRQ_BASE + 26)
+-#define VR4181_IRQ_RFU35     (VR4181_SYS_IRQ_BASE + 27)
+-#define VR4181_IRQ_RFU36     (VR4181_SYS_IRQ_BASE + 28)
+-#define VR4181_IRQ_RFU37     (VR4181_SYS_IRQ_BASE + 29)
+-#define VR4181_IRQ_RFU38     (VR4181_SYS_IRQ_BASE + 30)
+-#define VR4181_IRQ_RFU39     (VR4181_SYS_IRQ_BASE + 31)
+-
+-/* Cascaded from VR4181_IRQ_GIU */
+-#define VR4181_IRQ_GPIO0     (VR4181_GPIO_IRQ_BASE + 0)
+-#define VR4181_IRQ_GPIO1     (VR4181_GPIO_IRQ_BASE + 1)
+-#define VR4181_IRQ_GPIO2     (VR4181_GPIO_IRQ_BASE + 2)
+-#define VR4181_IRQ_GPIO3     (VR4181_GPIO_IRQ_BASE + 3)
+-#define VR4181_IRQ_GPIO4     (VR4181_GPIO_IRQ_BASE + 4)
+-#define VR4181_IRQ_GPIO5     (VR4181_GPIO_IRQ_BASE + 5)
+-#define VR4181_IRQ_GPIO6     (VR4181_GPIO_IRQ_BASE + 6)
+-#define VR4181_IRQ_GPIO7     (VR4181_GPIO_IRQ_BASE + 7)
+-#define VR4181_IRQ_GPIO8     (VR4181_GPIO_IRQ_BASE + 8)
+-#define VR4181_IRQ_GPIO9     (VR4181_GPIO_IRQ_BASE + 9)
+-#define VR4181_IRQ_GPIO10    (VR4181_GPIO_IRQ_BASE + 10)
+-#define VR4181_IRQ_GPIO11    (VR4181_GPIO_IRQ_BASE + 11)
+-#define VR4181_IRQ_GPIO12    (VR4181_GPIO_IRQ_BASE + 12)
+-#define VR4181_IRQ_GPIO13    (VR4181_GPIO_IRQ_BASE + 13)
+-#define VR4181_IRQ_GPIO14    (VR4181_GPIO_IRQ_BASE + 14)
+-#define VR4181_IRQ_GPIO15    (VR4181_GPIO_IRQ_BASE + 15)
+-
+-
+-// Alternative to above GPIO IRQ defines
+-#define VR4181_IRQ_GPIO(pin) ((VR4181_IRQ_GPIO0) + (pin))
+-
+-#define VR4181_IRQ_MAX       (VR4181_IRQ_BASE + VR4181_NUM_CPU_IRQ + \
+-                              VR4181_NUM_SYS_IRQ + VR4181_NUM_GPIO_IRQ)
+diff -urN -X dontdiff b-orig/include/asm-mips/vr4181/vr4181.h b/include/asm-mips/vr4181/vr4181.h
+--- b-orig/include/asm-mips/vr4181/vr4181.h	Tue Aug  6 09:09:00 2002
++++ b/include/asm-mips/vr4181/vr4181.h	Thu Jan  1 09:00:00 1970
+@@ -1,413 +0,0 @@
+-/*
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- *
+- * Copyright (C) 1999 by Michael Klar
+- *
+- * Copyright 2001 MontaVista Software Inc.
+- * Author: jsun@mvista.com or jsun@junsun.net
+- *
+- */
+-#ifndef __ASM_VR4181_VR4181_H
+-#define __ASM_VR4181_VR4181_H
+-
+-#include <asm/addrspace.h>
+-
+-#include <asm/vr4181/irq.h>
+-
+-#ifndef __ASSEMBLY__
+-#define __preg8		(volatile unsigned char*)
+-#define __preg16	(volatile unsigned short*)
+-#define __preg32	(volatile unsigned int*)
+-#else
+-#define __preg8
+-#define __preg16
+-#define __preg32
+-#endif
+-
+-// Embedded CPU peripheral registers
+-// Note that many of the registers have different physical address for VR4181
+-
+-// Bus Control Unit (BCU)
+-#define VR4181_BCUCNTREG1	__preg16(KSEG1 + 0x0A000000)	/* BCU control register 1 (R/W) */
+-#define VR4181_CMUCLKMSK	__preg16(KSEG1 + 0x0A000004)	/* Clock mask register (R/W) */
+-#define VR4181_CMUCLKMSK_MSKCSUPCLK  0x0040
+-#define VR4181_CMUCLKMSK_MSKAIUPCLK  0x0020
+-#define VR4181_CMUCLKMSK_MSKPIUPCLK  0x0010
+-#define VR4181_CMUCLKMSK_MSKADUPCLK  0x0008
+-#define VR4181_CMUCLKMSK_MSKSIU18M   0x0004
+-#define VR4181_CMUCLKMSK_MSKADU18M   0x0002
+-#define VR4181_CMUCLKMSK_MSKUSB      0x0001
+-#define VR4181_CMUCLKMSK_MSKSIU      VR4181_CMUCLKMSK_MSKSIU18M
+-#define VR4181_BCUSPEEDREG	__preg16(KSEG1 + 0x0A00000C)	/* BCU access time parameter (R/W) */
+-#define VR4181_BCURFCNTREG	__preg16(KSEG1 + 0x0A000010)	/* BCU refresh control register (R/W) */
+-#define VR4181_REVIDREG		__preg16(KSEG1 + 0x0A000014)	/* Revision ID register (R) */
+-#define VR4181_CLKSPEEDREG	__preg16(KSEG1 + 0x0A000018)	/* Clock speed register (R) */
+-#define VR4181_EDOMCYTREG	__preg16(KSEG1 + 0x0A000300)	/* Memory cycle timing register (R/W) */
+-#define VR4181_MEMCFG_REG	__preg16(KSEG1 + 0x0A000304)	/* Memory configuration register (R/W) */
+-#define VR4181_MODE_REG		__preg16(KSEG1 + 0x0A000308)	/* SDRAM mode register (R/W) */
+-#define VR4181_SDTIMINGREG	__preg16(KSEG1 + 0x0A00030C)	/* SDRAM timing register (R/W) */
+-
+-// DMA Control Unit (DCU)
+-#define VR4181_MICDEST1REG1	__preg16(KSEG1 + 0x0A000020)	/* Microphone destination 1 address register 1 (R/W) */
+-#define VR4181_MICDEST1REG2	__preg16(KSEG1 + 0x0A000022)	/* Microphone destination 1 address register 2 (R/W) */
+-#define VR4181_MICDEST2REG1	__preg16(KSEG1 + 0x0A000024)	/* Microphone destination 2 address register 1 (R/W) */
+-#define VR4181_MICDEST2REG2	__preg16(KSEG1 + 0x0A000026)	/* Microphone destination 2 address register 2 (R/W) */
+-#define VR4181_SPKRRC1REG1	__preg16(KSEG1 + 0x0A000028)	/* Speaker Source 1 address register 1 (R/W) */
+-#define VR4181_SPKRRC1REG2	__preg16(KSEG1 + 0x0A00002A)	/* Speaker Source 1 address register 2 (R/W) */
+-#define VR4181_SPKRRC2REG1	__preg16(KSEG1 + 0x0A00002C)	/* Speaker Source 2 address register 1 (R/W) */
+-#define VR4181_SPKRRC2REG2	__preg16(KSEG1 + 0x0A00002E)	/* Speaker Source 2 address register 2 (R/W) */
+-#define VR4181_DMARSTREG	__preg16(KSEG1 + 0x0A000040)	/* DMA Reset register (R/W) */
+-#define VR4181_AIUDMAMSKREG	__preg16(KSEG1 + 0x0A000046)	/* Audio DMA mask register (R/W) */
+-#define VR4181_USBDMAMSKREG	__preg16(KSEG1 + 0x0A000600)	/* USB DMA Mask register (R/W) */
+-#define VR4181_USBRXS1AREG1	__preg16(KSEG1 + 0x0A000602)	/* USB Rx source 1 address register 1 (R/W) */
+-#define VR4181_USBRXS1AREG2	__preg16(KSEG1 + 0x0A000604)	/* USB Rx source 1 address register 2 (R/W) */
+-#define VR4181_USBRXS2AREG1	__preg16(KSEG1 + 0x0A000606)	/* USB Rx source 2 address register 1 (R/W) */
+-#define VR4181_USBRXS2AREG2	__preg16(KSEG1 + 0x0A000608)	/* USB Rx source 2 address register 2 (R/W) */
+-#define VR4181_USBTXS1AREG1	__preg16(KSEG1 + 0x0A00060A)	/* USB Tx source 1 address register 1 (R/W) */
+-#define VR4181_USBTXS1AREG2	__preg16(KSEG1 + 0x0A00060C)	/* USB Tx source 1 address register 2 (R/W) */
+-#define VR4181_USBTXS2AREG1	__preg16(KSEG1 + 0x0A00060E)	/* USB Tx source 2 address register 1 (R/W) */
+-#define VR4181_USBTXS2AREG2	__preg16(KSEG1 + 0x0A000610)	/* USB Tx source 2 address register 2 (R/W) */
+-#define VR4181_USBRXD1AREG1	__preg16(KSEG1 + 0x0A00062A)	/* USB Rx destination 1 address register 1 (R/W) */
+-#define VR4181_USBRXD1AREG2	__preg16(KSEG1 + 0x0A00062C)	/* USB Rx destination 1 address register 2 (R/W) */
+-#define VR4181_USBRXD2AREG1	__preg16(KSEG1 + 0x0A00062E)	/* USB Rx destination 2 address register 1 (R/W) */
+-#define VR4181_USBRXD2AREG2	__preg16(KSEG1 + 0x0A000630)	/* USB Rx destination 2 address register 2 (R/W) */
+-#define VR4181_USBTXD1AREG1	__preg16(KSEG1 + 0x0A000632)	/* USB Tx destination 1 address register 1 (R/W) */
+-#define VR4181_USBTXD1AREG2	__preg16(KSEG1 + 0x0A000634)	/* USB Tx destination 1 address register 2 (R/W) */
+-#define VR4181_USBTXD2AREG1	__preg16(KSEG1 + 0x0A000636)	/* USB Tx destination 2 address register 1 (R/W) */
+-#define VR4181_USBTXD2AREG2	__preg16(KSEG1 + 0x0A000638)	/* USB Tx destination 2 address register 2 (R/W) */
+-#define VR4181_RxRCLENREG	__preg16(KSEG1 + 0x0A000652)	/* USB Rx record length register (R/W) */
+-#define VR4181_TxRCLENREG	__preg16(KSEG1 + 0x0A000654)	/* USB Tx record length register (R/W) */
+-#define VR4181_MICRCLENREG	__preg16(KSEG1 + 0x0A000658)	/* Microphone record length register (R/W) */
+-#define VR4181_SPKRCLENREG	__preg16(KSEG1 + 0x0A00065A)	/* Speaker record length register (R/W) */
+-#define VR4181_USBCFGREG	__preg16(KSEG1 + 0x0A00065C)	/* USB configuration register (R/W) */
+-#define VR4181_MICDMACFGREG	__preg16(KSEG1 + 0x0A00065E)	/* Microphone DMA configuration register (R/W) */
+-#define VR4181_SPKDMACFGREG	__preg16(KSEG1 + 0x0A000660)	/* Speaker DMA configuration register (R/W) */
+-#define VR4181_DMAITRQREG	__preg16(KSEG1 + 0x0A000662)	/* DMA interrupt request register (R/W) */
+-#define VR4181_DMACLTREG	__preg16(KSEG1 + 0x0A000664)	/* DMA control register (R/W) */
+-#define VR4181_DMAITMKREG	__preg16(KSEG1 + 0x0A000666)	/* DMA interrupt mask register (R/W) */
+-
+-// ISA Bridge
+-#define VR4181_ISABRGCTL	__preg16(KSEG1 + 0x0B0002C0)	/* ISA Bridge Control Register (R/W) */
+-#define VR4181_ISABRGSTS	__preg16(KSEG1 + 0x0B0002C2)	/* ISA Bridge Status Register (R/W) */
+-#define VR4181_XISACTL		__preg16(KSEG1 + 0x0B0002C4)	/* External ISA Control Register (R/W) */
+-
+-// Clocked Serial Interface (CSI)
+-#define VR4181_CSIMODE		__preg16(KSEG1 + 0x0B000900)	/* CSI Mode Register (R/W) */
+-#define VR4181_CSIRXDATA	__preg16(KSEG1 + 0x0B000902)	/* CSI Receive Data Register (R) */
+-#define VR4181_CSITXDATA	__preg16(KSEG1 + 0x0B000904)	/* CSI Transmit Data Register (R/W) */
+-#define VR4181_CSILSTAT		__preg16(KSEG1 + 0x0B000906)	/* CSI Line Status Register (R/W) */
+-#define VR4181_CSIINTMSK	__preg16(KSEG1 + 0x0B000908)	/* CSI Interrupt Mask Register (R/W) */
+-#define VR4181_CSIINTSTAT	__preg16(KSEG1 + 0x0B00090a)	/* CSI Interrupt Status Register (R/W) */
+-#define VR4181_CSITXBLEN	__preg16(KSEG1 + 0x0B00090c)	/* CSI Transmit Burst Length Register (R/W) */
+-#define VR4181_CSIRXBLEN	__preg16(KSEG1 + 0x0B00090e)	/* CSI Receive Burst Length Register (R/W) */
+-
+-// Interrupt Control Unit (ICU)
+-#define VR4181_SYSINT1REG	__preg16(KSEG1 + 0x0A000080)	/* Level 1 System interrupt register 1 (R) */
+-#define VR4181_MSYSINT1REG	__preg16(KSEG1 + 0x0A00008C)	/* Level 1 mask system interrupt register 1 (R/W) */
+-#define VR4181_NMIREG		__preg16(KSEG1 + 0x0A000098)	/* NMI register (R/W) */
+-#define VR4181_SOFTINTREG	__preg16(KSEG1 + 0x0A00009A)	/* Software interrupt register (R/W) */
+-#define VR4181_SYSINT2REG	__preg16(KSEG1 + 0x0A000200)	/* Level 1 System interrupt register 2 (R) */
+-#define VR4181_MSYSINT2REG	__preg16(KSEG1 + 0x0A000206)	/* Level 1 mask system interrupt register 2 (R/W) */
+-#define VR4181_PIUINTREGro	__preg16(KSEG1 + 0x0B000082)	/* Level 2 PIU interrupt register (R) */
+-#define VR4181_AIUINTREG	__preg16(KSEG1 + 0x0B000084)	/* Level 2 AIU interrupt register (R) */
+-#define VR4181_MPIUINTREG	__preg16(KSEG1 + 0x0B00008E)	/* Level 2 mask PIU interrupt register (R/W) */
+-#define VR4181_MAIUINTREG	__preg16(KSEG1 + 0x0B000090)	/* Level 2 mask AIU interrupt register (R/W) */
+-#define VR4181_MKIUINTREG	__preg16(KSEG1 + 0x0B000092)	/* Level 2 mask KIU interrupt register (R/W) */
+-#define VR4181_KIUINTREG	__preg16(KSEG1 + 0x0B000198)	/* Level 2 KIU interrupt register (R) */
+-
+-// Power Management Unit (PMU)
+-#define VR4181_PMUINTREG	__preg16(KSEG1 + 0x0B0000A0)	/* PMU Status Register (R/W) */
+-#define VR4181_PMUINT_POWERSW  0x1	/* Power switch */
+-#define VR4181_PMUINT_BATT     0x2	/* Low batt during normal operation */
+-#define VR4181_PMUINT_DEADMAN  0x4	/* Deadman's switch */
+-#define VR4181_PMUINT_RESET    0x8	/* Reset switch */
+-#define VR4181_PMUINT_RTCRESET 0x10	/* RTC Reset */
+-#define VR4181_PMUINT_TIMEOUT  0x20	/* HAL Timer Reset */
+-#define VR4181_PMUINT_BATTLOW  0x100	/* Battery low */
+-#define VR4181_PMUINT_RTC      0x200	/* RTC Alarm */
+-#define VR4181_PMUINT_DCD      0x400	/* DCD# */
+-#define VR4181_PMUINT_GPIO0    0x1000	/* GPIO0 */
+-#define VR4181_PMUINT_GPIO1    0x2000	/* GPIO1 */
+-#define VR4181_PMUINT_GPIO2    0x4000	/* GPIO2 */
+-#define VR4181_PMUINT_GPIO3    0x8000	/* GPIO3 */
+-
+-#define VR4181_PMUCNTREG	__preg16(KSEG1 + 0x0B0000A2)	/* PMU Control Register (R/W) */
+-#define VR4181_PMUWAITREG	__preg16(KSEG1 + 0x0B0000A8)	/* PMU Wait Counter Register (R/W) */
+-#define VR4181_PMUDIVREG	__preg16(KSEG1 + 0x0B0000AC)	/* PMU Divide Mode Register (R/W) */
+-#define VR4181_DRAMHIBCTL	__preg16(KSEG1 + 0x0B0000B2)	/* DRAM Hibernate Control Register (R/W) */
+-
+-// Real Time Clock Unit (RTC)
+-#define VR4181_ETIMELREG	__preg16(KSEG1 + 0x0B0000C0)	/* Elapsed Time L Register (R/W) */
+-#define VR4181_ETIMEMREG	__preg16(KSEG1 + 0x0B0000C2)	/* Elapsed Time M Register (R/W) */
+-#define VR4181_ETIMEHREG	__preg16(KSEG1 + 0x0B0000C4)	/* Elapsed Time H Register (R/W) */
+-#define VR4181_ECMPLREG		__preg16(KSEG1 + 0x0B0000C8)	/* Elapsed Compare L Register (R/W) */
+-#define VR4181_ECMPMREG		__preg16(KSEG1 + 0x0B0000CA)	/* Elapsed Compare M Register (R/W) */
+-#define VR4181_ECMPHREG		__preg16(KSEG1 + 0x0B0000CC)	/* Elapsed Compare H Register (R/W) */
+-#define VR4181_RTCL1LREG	__preg16(KSEG1 + 0x0B0000D0)	/* RTC Long 1 L Register (R/W) */
+-#define VR4181_RTCL1HREG	__preg16(KSEG1 + 0x0B0000D2)	/* RTC Long 1 H Register (R/W) */
+-#define VR4181_RTCL1CNTLREG	__preg16(KSEG1 + 0x0B0000D4)	/* RTC Long 1 Count L Register (R) */
+-#define VR4181_RTCL1CNTHREG	__preg16(KSEG1 + 0x0B0000D6)	/* RTC Long 1 Count H Register (R) */
+-#define VR4181_RTCL2LREG	__preg16(KSEG1 + 0x0B0000D8)	/* RTC Long 2 L Register (R/W) */
+-#define VR4181_RTCL2HREG	__preg16(KSEG1 + 0x0B0000DA)	/* RTC Long 2 H Register (R/W) */
+-#define VR4181_RTCL2CNTLREG	__preg16(KSEG1 + 0x0B0000DC)	/* RTC Long 2 Count L Register (R) */
+-#define VR4181_RTCL2CNTHREG	__preg16(KSEG1 + 0x0B0000DE)	/* RTC Long 2 Count H Register (R) */
+-#define VR4181_RTCINTREG	__preg16(KSEG1 + 0x0B0001DE)	/* RTC Interrupt Register (R/W) */
+-
+-// Deadman's Switch Unit (DSU)
+-#define VR4181_DSUCNTREG	__preg16(KSEG1 + 0x0B0000E0)	/* DSU Control Register (R/W) */
+-#define VR4181_DSUSETREG	__preg16(KSEG1 + 0x0B0000E2)	/* DSU Dead Time Set Register (R/W) */
+-#define VR4181_DSUCLRREG	__preg16(KSEG1 + 0x0B0000E4)	/* DSU Clear Register (W) */
+-#define VR4181_DSUTIMREG	__preg16(KSEG1 + 0x0B0000E6)	/* DSU Elapsed Time Register (R/W) */
+-
+-// General Purpose I/O Unit (GIU)
+-#define VR4181_GPMD0REG		__preg16(KSEG1 + 0x0B000300)	/* GPIO Mode 0 Register (R/W) */
+-#define VR4181_GPMD1REG		__preg16(KSEG1 + 0x0B000302)	/* GPIO Mode 1 Register (R/W) */
+-#define VR4181_GPMD2REG		__preg16(KSEG1 + 0x0B000304)	/* GPIO Mode 2 Register (R/W) */
+-#define VR4181_GPMD3REG		__preg16(KSEG1 + 0x0B000306)	/* GPIO Mode 3 Register (R/W) */
+-#define VR4181_GPDATHREG	__preg16(KSEG1 + 0x0B000308)	/* GPIO Data High Register (R/W) */
+-#define VR4181_GPDATHREG_GPIO16  0x0001
+-#define VR4181_GPDATHREG_GPIO17  0x0002
+-#define VR4181_GPDATHREG_GPIO18  0x0004
+-#define VR4181_GPDATHREG_GPIO19  0x0008
+-#define VR4181_GPDATHREG_GPIO20  0x0010
+-#define VR4181_GPDATHREG_GPIO21  0x0020
+-#define VR4181_GPDATHREG_GPIO22  0x0040
+-#define VR4181_GPDATHREG_GPIO23  0x0080
+-#define VR4181_GPDATHREG_GPIO24  0x0100
+-#define VR4181_GPDATHREG_GPIO25  0x0200
+-#define VR4181_GPDATHREG_GPIO26  0x0400
+-#define VR4181_GPDATHREG_GPIO27  0x0800
+-#define VR4181_GPDATHREG_GPIO28  0x1000
+-#define VR4181_GPDATHREG_GPIO29  0x2000
+-#define VR4181_GPDATHREG_GPIO30  0x4000
+-#define VR4181_GPDATHREG_GPIO31  0x8000
+-#define VR4181_GPDATLREG	__preg16(KSEG1 + 0x0B00030A)	/* GPIO Data Low Register (R/W) */
+-#define VR4181_GPDATLREG_GPIO0   0x0001
+-#define VR4181_GPDATLREG_GPIO1   0x0002
+-#define VR4181_GPDATLREG_GPIO2   0x0004
+-#define VR4181_GPDATLREG_GPIO3   0x0008
+-#define VR4181_GPDATLREG_GPIO4   0x0010
+-#define VR4181_GPDATLREG_GPIO5   0x0020
+-#define VR4181_GPDATLREG_GPIO6   0x0040
+-#define VR4181_GPDATLREG_GPIO7   0x0080
+-#define VR4181_GPDATLREG_GPIO8   0x0100
+-#define VR4181_GPDATLREG_GPIO9   0x0200
+-#define VR4181_GPDATLREG_GPIO10  0x0400
+-#define VR4181_GPDATLREG_GPIO11  0x0800
+-#define VR4181_GPDATLREG_GPIO12  0x1000
+-#define VR4181_GPDATLREG_GPIO13  0x2000
+-#define VR4181_GPDATLREG_GPIO14  0x4000
+-#define VR4181_GPDATLREG_GPIO15  0x8000
+-#define VR4181_GPINTEN		__preg16(KSEG1 + 0x0B00030C)	/* GPIO Interrupt Enable Register (R/W) */
+-#define VR4181_GPINTMSK		__preg16(KSEG1 + 0x0B00030E)	/* GPIO Interrupt Mask Register (R/W) */
+-#define VR4181_GPINTTYPH	__preg16(KSEG1 + 0x0B000310)	/* GPIO Interrupt Type High Register (R/W) */
+-#define VR4181_GPINTTYPL	__preg16(KSEG1 + 0x0B000312)	/* GPIO Interrupt Type Low Register (R/W) */
+-#define VR4181_GPINTSTAT	__preg16(KSEG1 + 0x0B000314)	/* GPIO Interrupt Status Register (R/W) */
+-#define VR4181_GPHIBSTH		__preg16(KSEG1 + 0x0B000316)	/* GPIO Hibernate Pin State High Register (R/W) */
+-#define VR4181_GPHIBSTL		__preg16(KSEG1 + 0x0B000318)	/* GPIO Hibernate Pin State Low Register (R/W) */
+-#define VR4181_GPSICTL		__preg16(KSEG1 + 0x0B00031A)	/* GPIO Serial Interface Control Register (R/W) */
+-#define VR4181_KEYEN		__preg16(KSEG1 + 0x0B00031C)	/* Keyboard Scan Pin Enable Register (R/W) */
+-#define VR4181_PCS0STRA		__preg16(KSEG1 + 0x0B000320)	/* Programmable Chip Select [0] Start Address Register (R/W) */
+-#define VR4181_PCS0STPA		__preg16(KSEG1 + 0x0B000322)	/* Programmable Chip Select [0] Stop Address Register (R/W) */
+-#define VR4181_PCS0HIA		__preg16(KSEG1 + 0x0B000324)	/* Programmable Chip Select [0] High Address Register (R/W) */
+-#define VR4181_PCS1STRA		__preg16(KSEG1 + 0x0B000326)	/* Programmable Chip Select [1] Start Address Register (R/W) */
+-#define VR4181_PCS1STPA		__preg16(KSEG1 + 0x0B000328)	/* Programmable Chip Select [1] Stop Address Register (R/W) */
+-#define VR4181_PCS1HIA		__preg16(KSEG1 + 0x0B00032A)	/* Programmable Chip Select [1] High Address Register (R/W) */
+-#define VR4181_PCSMODE		__preg16(KSEG1 + 0x0B00032C)	/* Programmable Chip Select Mode Register (R/W) */
+-#define VR4181_LCDGPMODE	__preg16(KSEG1 + 0x0B00032E)	/* LCD General Purpose Mode Register (R/W) */
+-#define VR4181_MISCREG0		__preg16(KSEG1 + 0x0B000330)	/* Misc. R/W Battery Backed Registers for Non-Volatile Storage (R/W) */
+-#define VR4181_MISCREG1		__preg16(KSEG1 + 0x0B000332)	/* Misc. R/W Battery Backed Registers for Non-Volatile Storage (R/W) */
+-#define VR4181_MISCREG2		__preg16(KSEG1 + 0x0B000334)	/* Misc. R/W Battery Backed Registers for Non-Volatile Storage (R/W) */
+-#define VR4181_MISCREG3		__preg16(KSEG1 + 0x0B000336)	/* Misc. R/W Battery Backed Registers for Non-Volatile Storage (R/W) */
+-#define VR4181_MISCREG4		__preg16(KSEG1 + 0x0B000338)	/* Misc. R/W Battery Backed Registers for Non-Volatile Storage (R/W) */
+-#define VR4181_MISCREG5		__preg16(KSEG1 + 0x0B00033A)	/* Misc. R/W Battery Backed Registers for Non-Volatile Storage (R/W) */
+-#define VR4181_MISCREG6		__preg16(KSEG1 + 0x0B00033C)	/* Misc. R/W Battery Backed Registers for Non-Volatile Storage (R/W) */
+-#define VR4181_MISCREG7		__preg16(KSEG1 + 0x0B00033D)	/* Misc. R/W Battery Backed Registers for Non-Volatile Storage (R/W) */
+-#define VR4181_MISCREG8		__preg16(KSEG1 + 0x0B000340)	/* Misc. R/W Battery Backed Registers for Non-Volatile Storage (R/W) */
+-#define VR4181_MISCREG9		__preg16(KSEG1 + 0x0B000342)	/* Misc. R/W Battery Backed Registers for Non-Volatile Storage (R/W) */
+-#define VR4181_MISCREG10	__preg16(KSEG1 + 0x0B000344)	/* Misc. R/W Battery Backed Registers for Non-Volatile Storage (R/W) */
+-#define VR4181_MISCREG11	__preg16(KSEG1 + 0x0B000346)	/* Misc. R/W Battery Backed Registers for Non-Volatile Storage (R/W) */
+-#define VR4181_MISCREG12	__preg16(KSEG1 + 0x0B000348)	/* Misc. R/W Battery Backed Registers for Non-Volatile Storage (R/W) */
+-#define VR4181_MISCREG13	__preg16(KSEG1 + 0x0B00034A)	/* Misc. R/W Battery Backed Registers for Non-Volatile Storage (R/W) */
+-#define VR4181_MISCREG14	__preg16(KSEG1 + 0x0B00034C)	/* Misc. R/W Battery Backed Registers for Non-Volatile Storage (R/W) */
+-#define VR4181_MISCREG15	__preg16(KSEG1 + 0x0B00034E)	/* Misc. R/W Battery Backed Registers for Non-Volatile Storage (R/W) */
+-#define VR4181_SECIRQMASKL	VR4181_GPINTEN
+-// No SECIRQMASKH for VR4181
+-
+-// Touch Panel Interface Unit (PIU)
+-#define VR4181_PIUCNTREG	__preg16(KSEG1 + 0x0B000122)	/* PIU Control register (R/W) */
+-#define VR4181_PIUCNTREG_PIUSEQEN	0x0004
+-#define VR4181_PIUCNTREG_PIUPWR		0x0002
+-#define VR4181_PIUCNTREG_PADRST		0x0001
+-
+-#define VR4181_PIUINTREG	__preg16(KSEG1 + 0x0B000124)	/* PIU Interrupt cause register (R/W) */
+-#define VR4181_PIUINTREG_OVP		0x8000
+-#define VR4181_PIUINTREG_PADCMD		0x0040
+-#define VR4181_PIUINTREG_PADADP		0x0020
+-#define VR4181_PIUINTREG_PADPAGE1	0x0010
+-#define VR4181_PIUINTREG_PADPAGE0	0x0008
+-#define VR4181_PIUINTREG_PADDLOST	0x0004
+-#define VR4181_PIUINTREG_PENCHG		0x0001
+-
+-#define VR4181_PIUSIVLREG	__preg16(KSEG1 + 0x0B000126)	/* PIU Data sampling interval register (R/W) */
+-#define VR4181_PIUSTBLREG	__preg16(KSEG1 + 0x0B000128)	/* PIU A/D converter start delay register (R/W) */
+-#define VR4181_PIUCMDREG	__preg16(KSEG1 + 0x0B00012A)	/* PIU A/D command register (R/W) */
+-#define VR4181_PIUASCNREG	__preg16(KSEG1 + 0x0B000130)	/* PIU A/D port scan register (R/W) */
+-#define VR4181_PIUAMSKREG	__preg16(KSEG1 + 0x0B000132)	/* PIU A/D scan mask register (R/W) */
+-#define VR4181_PIUCIVLREG	__preg16(KSEG1 + 0x0B00013E)	/* PIU Check interval register (R) */
+-#define VR4181_PIUPB00REG	__preg16(KSEG1 + 0x0B0002A0)	/* PIU Page 0 Buffer 0 register (R/W) */
+-#define VR4181_PIUPB01REG	__preg16(KSEG1 + 0x0B0002A2)	/* PIU Page 0 Buffer 1 register (R/W) */
+-#define VR4181_PIUPB02REG	__preg16(KSEG1 + 0x0B0002A4)	/* PIU Page 0 Buffer 2 register (R/W) */
+-#define VR4181_PIUPB03REG	__preg16(KSEG1 + 0x0B0002A6)	/* PIU Page 0 Buffer 3 register (R/W) */
+-#define VR4181_PIUPB10REG	__preg16(KSEG1 + 0x0B0002A8)	/* PIU Page 1 Buffer 0 register (R/W) */
+-#define VR4181_PIUPB11REG	__preg16(KSEG1 + 0x0B0002AA)	/* PIU Page 1 Buffer 1 register (R/W) */
+-#define VR4181_PIUPB12REG	__preg16(KSEG1 + 0x0B0002AC)	/* PIU Page 1 Buffer 2 register (R/W) */
+-#define VR4181_PIUPB13REG	__preg16(KSEG1 + 0x0B0002AE)	/* PIU Page 1 Buffer 3 register (R/W) */
+-#define VR4181_PIUAB0REG	__preg16(KSEG1 + 0x0B0002B0)	/* PIU A/D scan Buffer 0 register (R/W) */
+-#define VR4181_PIUAB1REG	__preg16(KSEG1 + 0x0B0002B2)	/* PIU A/D scan Buffer 1 register (R/W) */
+-#define VR4181_PIUAB2REG	__preg16(KSEG1 + 0x0B0002B4)	/* PIU A/D scan Buffer 2 register (R/W) */
+-#define VR4181_PIUAB3REG	__preg16(KSEG1 + 0x0B0002B6)	/* PIU A/D scan Buffer 3 register (R/W) */
+-#define VR4181_PIUPB04REG	__preg16(KSEG1 + 0x0B0002BC)	/* PIU Page 0 Buffer 4 register (R/W) */
+-#define VR4181_PIUPB14REG	__preg16(KSEG1 + 0x0B0002BE)	/* PIU Page 1 Buffer 4 register (R/W) */
+-
+-// Audio Interface Unit (AIU)
+-#define VR4181_SODATREG		__preg16(KSEG1 + 0x0B000166)	/* Speaker Output Data Register (R/W) */
+-#define VR4181_SCNTREG		__preg16(KSEG1 + 0x0B000168)	/* Speaker Output Control Register (R/W) */
+-#define VR4181_MIDATREG		__preg16(KSEG1 + 0x0B000170)	/* Mike Input Data Register (R/W) */
+-#define VR4181_MCNTREG		__preg16(KSEG1 + 0x0B000172)	/* Mike Input Control Register (R/W) */
+-#define VR4181_DVALIDREG	__preg16(KSEG1 + 0x0B000178)	/* Data Valid Register (R/W) */
+-#define VR4181_SEQREG		__preg16(KSEG1 + 0x0B00017A)	/* Sequential Register (R/W) */
+-#define VR4181_INTREG		__preg16(KSEG1 + 0x0B00017C)	/* Interrupt Register (R/W) */
+-#define VR4181_SDMADATREG	__preg16(KSEG1 + 0x0B000160)	/* Speaker DMA Data Register (R/W) */
+-#define VR4181_MDMADATREG	__preg16(KSEG1 + 0x0B000162)	/* Microphone DMA Data Register (R/W) */
+-#define VR4181_DAVREF_SETUP	__preg16(KSEG1 + 0x0B000164)	/* DAC Vref setup register (R/W) */
+-#define VR4181_SCNVC_END	__preg16(KSEG1 + 0x0B00016E)	/* Speaker sample rate control (R/W) */
+-#define VR4181_MIDATREG		__preg16(KSEG1 + 0x0B000170)	/* Microphone Input Data Register (R/W) */
+-#define VR4181_MCNTREG		__preg16(KSEG1 + 0x0B000172)	/* Microphone Input Control Register (R/W) */
+-#define VR4181_MCNVC_END	__preg16(KSEG1 + 0x0B00017E)	/* Microphone sample rate control (R/W) */
+-
+-// Keyboard Interface Unit (KIU)
+-#define VR4181_KIUDAT0		__preg16(KSEG1 + 0x0B000180)	/* KIU Data0 Register (R/W) */
+-#define VR4181_KIUDAT1		__preg16(KSEG1 + 0x0B000182)	/* KIU Data1 Register (R/W) */
+-#define VR4181_KIUDAT2		__preg16(KSEG1 + 0x0B000184)	/* KIU Data2 Register (R/W) */
+-#define VR4181_KIUDAT3		__preg16(KSEG1 + 0x0B000186)	/* KIU Data3 Register (R/W) */
+-#define VR4181_KIUDAT4		__preg16(KSEG1 + 0x0B000188)	/* KIU Data4 Register (R/W) */
+-#define VR4181_KIUDAT5		__preg16(KSEG1 + 0x0B00018A)	/* KIU Data5 Register (R/W) */
+-#define VR4181_KIUSCANREP	__preg16(KSEG1 + 0x0B000190)	/* KIU Scan/Repeat Register (R/W) */
+-#define VR4181_KIUSCANREP_KEYEN      0x8000
+-#define VR4181_KIUSCANREP_SCANSTP    0x0008
+-#define VR4181_KIUSCANREP_SCANSTART  0x0004
+-#define VR4181_KIUSCANREP_ATSTP      0x0002
+-#define VR4181_KIUSCANREP_ATSCAN     0x0001
+-#define VR4181_KIUSCANS		__preg16(KSEG1 + 0x0B000192)	/* KIU Scan Status Register (R) */
+-#define VR4181_KIUWKS		__preg16(KSEG1 + 0x0B000194)	/* KIU Wait Keyscan Stable Register (R/W) */
+-#define VR4181_KIUWKI		__preg16(KSEG1 + 0x0B000196)	/* KIU Wait Keyscan Interval Register (R/W) */
+-#define VR4181_KIUINT		__preg16(KSEG1 + 0x0B000198)	/* KIU Interrupt Register (R/W) */
+-#define VR4181_KIUINT_KDATLOST       0x0004
+-#define VR4181_KIUINT_KDATRDY        0x0002
+-#define VR4181_KIUINT_SCANINT        0x0001
+-#define VR4181_KIUDAT6		__preg16(KSEG1 + 0x0B00018C)	/* Scan Line 6 Key Data Register (R) */
+-#define VR4181_KIUDAT7		__preg16(KSEG1 + 0x0B00018E)	/* Scan Line 7 Key Data Register (R) */
+-
+-// CompactFlash Controller
+-#define VR4181_PCCARDINDEX	__preg8(KSEG1 + 0x0B0008E0)	/* PC Card Controller Index Register */
+-#define VR4181_PCCARDDATA	__preg8(KSEG1 + 0x0B0008E1)	/* PC Card Controller Data Register */
+-#define VR4181_INTSTATREG	__preg16(KSEG1 + 0x0B0008F8)	/* Interrupt Status Register (R/W) */
+-#define VR4181_INTMSKREG	__preg16(KSEG1 + 0x0B0008FA)	/* Interrupt Mask Register (R/W) */
+-#define VR4181_CFG_REG_1	__preg16(KSEG1 + 0x0B0008FE)	/* Configuration Register 1 */
+-
+-// LED Control Unit (LED)
+-#define VR4181_LEDHTSREG	__preg16(KSEG1 + 0x0B000240)	/* LED H Time Set register (R/W) */
+-#define VR4181_LEDLTSREG	__preg16(KSEG1 + 0x0B000242)	/* LED L Time Set register (R/W) */
+-#define VR4181_LEDCNTREG	__preg16(KSEG1 + 0x0B000248)	/* LED Control register (R/W) */
+-#define VR4181_LEDASTCREG	__preg16(KSEG1 + 0x0B00024A)	/* LED Auto Stop Time Count register (R/W) */
+-#define VR4181_LEDINTREG	__preg16(KSEG1 + 0x0B00024C)	/* LED Interrupt register (R/W) */
+-
+-// Serial Interface Unit (SIU / SIU1 and SIU2)
+-#define VR4181_SIURB		__preg8(KSEG1 + 0x0C000010)	/* Receiver Buffer Register (Read) DLAB = 0 (R) */
+-#define VR4181_SIUTH		__preg8(KSEG1 + 0x0C000010)	/* Transmitter Holding Register (Write) DLAB = 0 (W) */
+-#define VR4181_SIUDLL		__preg8(KSEG1 + 0x0C000010)	/* Divisor Latch (Least Significant Byte) DLAB = 1 (R/W) */
+-#define VR4181_SIUIE		__preg8(KSEG1 + 0x0C000011)	/* Interrupt Enable DLAB = 0 (R/W) */
+-#define VR4181_SIUDLM		__preg8(KSEG1 + 0x0C000011)	/* Divisor Latch (Most Significant Byte) DLAB = 1 (R/W) */
+-#define VR4181_SIUIID		__preg8(KSEG1 + 0x0C000012)	/* Interrupt Identification Register (Read) (R) */
+-#define VR4181_SIUFC		__preg8(KSEG1 + 0x0C000012)	/* FIFO Control Register (Write) (W) */
+-#define VR4181_SIULC		__preg8(KSEG1 + 0x0C000013)	/* Line Control Register (R/W) */
+-#define VR4181_SIUMC		__preg8(KSEG1 + 0x0C000014)	/* MODEM Control Register (R/W) */
+-#define VR4181_SIULS		__preg8(KSEG1 + 0x0C000015)	/* Line Status Register (R/W) */
+-#define VR4181_SIUMS		__preg8(KSEG1 + 0x0C000016)	/* MODEM Status Register (R/W) */
+-#define VR4181_SIUSC		__preg8(KSEG1 + 0x0C000017)	/* Scratch Register (R/W) */
+-#define VR4181_SIURESET		__preg8(KSEG1 + 0x0C000019)	/* SIU Reset Register (R/W) */
+-#define VR4181_SIUACTMSK	__preg8(KSEG1 + 0x0C00001C)	/* SIU Activity Mask (R/W) */
+-#define VR4181_SIUACTTMR	__preg8(KSEG1 + 0x0C00001E)	/* SIU Activity Timer (R/W) */
+-#define VR4181_SIURB_2		__preg8(KSEG1 + 0x0C000000)	/* Receive Buffer Register (Read) (R) */
+-#define VR4181_SIUTH_2		__preg8(KSEG1 + 0x0C000000)	/* Transmitter Holding Register (Write) (W) */
+-#define VR4181_SIUDLL_2		__preg8(KSEG1 + 0x0C000000)	/* Divisor Latch (Least Significant Byte) (R/W) */
+-#define VR4181_SIUIE_2		__preg8(KSEG1 + 0x0C000001)	/* Interrupt Enable (DLAB = 0) (R/W) */
+-#define VR4181_SIUDLM_2		__preg8(KSEG1 + 0x0C000001)	/* Divisor Latch (Most Significant Byte) (DLAB = 1) (R/W) */
+-#define VR4181_SIUIID_2		__preg8(KSEG1 + 0x0C000002)	/* Interrupt Identification Register (Read) (R) */
+-#define VR4181_SIUFC_2		__preg8(KSEG1 + 0x0C000002)	/* FIFO Control Register (Write) (W) */
+-#define VR4181_SIULC_2		__preg8(KSEG1 + 0x0C000003)	/* Line Control Register (R/W) */
+-#define VR4181_SIUMC_2		__preg8(KSEG1 + 0x0C000004)	/* Modem Control Register (R/W) */
+-#define VR4181_SIULS_2		__preg8(KSEG1 + 0x0C000005)	/* Line Status Register (R/W) */
+-#define VR4181_SIUMS_2		__preg8(KSEG1 + 0x0C000006)	/* Modem Status Register (R/W) */
+-#define VR4181_SIUSC_2		__preg8(KSEG1 + 0x0C000007)	/* Scratch Register (R/W) */
+-#define VR4181_SIUIRSEL_2	__preg8(KSEG1 + 0x0C000008)	/* SIU IrDA Selectot (R/W) */
+-#define VR4181_SIURESET_2	__preg8(KSEG1 + 0x0C000009)	/* SIU Reset Register (R/W) */
+-#define VR4181_SIUCSEL_2	__preg8(KSEG1 + 0x0C00000A)	/* IrDA Echo-back Control (R/W) */
+-#define VR4181_SIUACTMSK_2	__preg8(KSEG1 + 0x0C00000C)	/* SIU Activity Mask Register (R/W) */
+-#define VR4181_SIUACTTMR_2	__preg8(KSEG1 + 0x0C00000E)	/* SIU Activity Timer Register (R/W) */
+-
+-
+-// USB Module
+-#define VR4181_USBINFIFO	__preg16(KSEG1 + 0x0B000780)	/* USB Bulk Input FIFO (Bulk In End Point) (W) */
+-#define VR4181_USBOUTFIFO	__preg16(KSEG1 + 0x0B000782)	/* USB Bulk Output FIFO (Bulk Out End Point) (R) */
+-#define VR4181_USBCTLFIFO	__preg16(KSEG1 + 0x0B000784)	/* USB Control FIFO (Control End Point) (W) */
+-#define VR4181_USBSTAT		__preg16(KSEG1 + 0x0B000786)	/* Interrupt Status Register (R/W) */
+-#define VR4181_USBINTMSK	__preg16(KSEG1 + 0x0B000788)	/* Interrupt Mask Register (R/W) */
+-#define VR4181_USBCTLREG	__preg16(KSEG1 + 0x0B00078A)	/* Control Register (R/W) */
+-#define VR4181_USBSTPREG	__preg16(KSEG1 + 0x0B00078C)	/* USB Transfer Stop Register (R/W) */
+-
+-// LCD Controller
+-#define VR4181_HRTOTALREG	__preg16(KSEG1 + 0x0A000400)	/* Horizontal total Register (R/W) */
+-#define VR4181_HRVISIBREG	__preg16(KSEG1 + 0x0A000402)	/* Horizontal Visible Register (R/W) */
+-#define VR4181_LDCLKSTREG	__preg16(KSEG1 + 0x0A000404)	/* Load clock start Register (R/W) */
+-#define VR4181_LDCLKNDREG	__preg16(KSEG1 + 0x0A000406)	/* Load clock end Register (R/W) */
+-#define VR4181_VRTOTALREG	__preg16(KSEG1 + 0x0A000408)	/* Vertical Total Register (R/W) */
+-#define VR4181_VRVISIBREG	__preg16(KSEG1 + 0x0A00040A)	/* Vertical Visible Register (R/W) */
+-#define VR4181_FVSTARTREG	__preg16(KSEG1 + 0x0A00040C)	/* FLM vertical start Register (R/W) */
+-#define VR4181_FVENDREG		__preg16(KSEG1 + 0x0A00040E)	/* FLM vertical end Register (R/W) */
+-#define VR4181_LCDCTRLREG	__preg16(KSEG1 + 0x0A000410)	/* LCD control Register (R/W) */
+-#define VR4181_LCDINRQREG	__preg16(KSEG1 + 0x0A000412)	/* LCD Interrupt request Register (R/W) */
+-#define VR4181_LCDCFGREG0	__preg16(KSEG1 + 0x0A000414)	/* LCD Configuration Register 0 (R/W) */
+-#define VR4181_LCDCFGREG1	__preg16(KSEG1 + 0x0A000416)	/* LCD Configuration Register 1 (R/W) */
+-#define VR4181_FBSTAD1REG	__preg16(KSEG1 + 0x0A000418)	/* Frame Buffer Start Address 1 Register (R/W) */
+-#define VR4181_FBSTAD2REG	__preg16(KSEG1 + 0x0A00041A)	/* Frame Buffer Start Address 2 Register (R/W) */
+-#define VR4181_FBNDAD1REG	__preg16(KSEG1 + 0x0A000420)	/* Frame Buffer End Address 1 Register (R/W) */
+-#define VR4181_FBNDAD2REG	__preg16(KSEG1 + 0x0A000422)	/* Frame Buffer End Address 2 register (R/W) */
+-#define VR4181_FHSTARTREG	__preg16(KSEG1 + 0x0A000424)	/* FLM horizontal Start Register (R/W) */
+-#define VR4181_FHENDREG		__preg16(KSEG1 + 0x0A000426)	/* FLM horizontal End Register (R/W) */
+-#define VR4181_PWRCONREG1	__preg16(KSEG1 + 0x0A000430)	/* Power Control register 1 (R/W) */
+-#define VR4181_PWRCONREG2	__preg16(KSEG1 + 0x0A000432)	/* Power Control register 2 (R/W) */
+-#define VR4181_LCDIMSKREG	__preg16(KSEG1 + 0x0A000434)	/* LCD Interrupt Mask register (R/W) */
+-#define VR4181_CPINDCTREG	__preg16(KSEG1 + 0x0A00047E)	/* Color palette Index and control Register (R/W) */
+-#define VR4181_CPALDATREG	__preg32(KSEG1 + 0x0A000480)	/* Color palette data register (32bits Register) (R/W) */
+-
+-// physical address spaces
+-#define VR4181_LCD             0x0a000000
+-#define VR4181_INTERNAL_IO_2   0x0b000000
+-#define VR4181_INTERNAL_IO_1   0x0c000000
+-#define VR4181_ISA_MEM         0x10000000
+-#define VR4181_ISA_IO          0x14000000
+-#define VR4181_ROM             0x18000000
+-
+-// This is the base address for IO port decoding to which the 16 bit IO port address
+-// is added.  Defining it to 0 will usually cause a kernel oops any time port IO is
+-// attempted, which can be handy for turning up parts of the kernel that make
+-// incorrect architecture assumptions (by assuming that everything acts like a PC),
+-// but we need it correctly defined to use the PCMCIA/CF controller:
+-#define VR4181_PORT_BASE	(KSEG1 + VR4181_ISA_IO)
+-#define VR4181_ISAMEM_BASE	(KSEG1 + VR4181_ISA_MEM)
+-
+-#endif /* __ASM_VR4181_VR4181_H */

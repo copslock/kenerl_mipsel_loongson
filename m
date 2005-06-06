@@ -1,78 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Jun 2005 17:00:13 +0100 (BST)
-Received: from mo00.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:54980 "EHLO
-	mo00.iij4u.or.jp") by linux-mips.org with ESMTP id <S8226175AbVFCP7x>;
-	Fri, 3 Jun 2005 16:59:53 +0100
-Received: MO(mo00)id j53FxnXr023885; Sat, 4 Jun 2005 00:59:49 +0900 (JST)
-Received: MDO(mdo01) id j53Fxms7010110; Sat, 4 Jun 2005 00:59:48 +0900 (JST)
-Received: from stratos (h042.p502.iij4u.or.jp [210.149.246.42])
-	by mbox.iij4u.or.jp (4U-MR/mbox01) id j53FxlZ2025863
-	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NOT);
-	Sat, 4 Jun 2005 00:59:48 +0900 (JST)
-Date:	Sat, 4 Jun 2005 00:59:45 +0900
-From:	Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH 2.6] vr41xx: update vr41xx commons
-Message-Id: <20050604005945.278809f7.yuasa@hh.iij4u.or.jp>
-X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2005 13:18:52 +0100 (BST)
+Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:25631 "EHLO
+	bacchus.net.dhis.org") by linux-mips.org with ESMTP
+	id <S8225346AbVFFMSh>; Mon, 6 Jun 2005 13:18:37 +0100
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.1/8.13.1) with ESMTP id j56CGfd1013326
+	for <linux-mips@linux-mips.org>; Mon, 6 Jun 2005 13:16:41 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j56CGegM013325
+	for linux-mips@linux-mips.org; Mon, 6 Jun 2005 13:16:40 +0100
+Date:	Mon, 6 Jun 2005 13:16:40 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	linux-mips@linux-mips.org
+Subject: Re: CVS Update@linux-mips.org: linux
+Message-ID: <20050606121640.GB6651@linux-mips.org>
+References: <20050605035727Z8225003-1340+8177@linux-mips.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yuasa@hh.iij4u.or.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20050605035727Z8225003-1340+8177@linux-mips.org>
+User-Agent: Mutt/1.4.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8050
+X-archive-position: 8051
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuasa@hh.iij4u.or.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Sun, Jun 05, 2005 at 04:57:20AM +0100, sjhill@linux-mips.org wrote:
 
-This patch had updated vr41xx commons.
-o Cleaning of include files
-o add EXPORT_SYMBOL to irq.c
+> Modified files:
+> 	arch/mips      : Kconfig 
+> 
+> Log message:
+> 	The DbAu1500 board also support big endian. Gee, imagine that.
 
-diff -urN -X dontdiff a-orig/arch/mips/vr41xx/common/icu.c a/arch/mips/vr41xx/common/icu.c
---- a-orig/arch/mips/vr41xx/common/icu.c	Fri Jun  3 00:59:04 2005
-+++ a/arch/mips/vr41xx/common/icu.c	Fri Jun  3 23:56:25 2005
-@@ -30,7 +30,6 @@
-  */
- #include <linux/errno.h>
- #include <linux/init.h>
--#include <linux/interrupt.h>
- #include <linux/ioport.h>
- #include <linux/irq.h>
- #include <linux/module.h>
-@@ -39,8 +38,6 @@
- 
- #include <asm/cpu.h>
- #include <asm/io.h>
--#include <asm/irq.h>
--#include <asm/irq_cpu.h>
- #include <asm/vr41xx/vr41xx.h>
- 
- static void __iomem *icu1_base;
-diff -urN -X dontdiff a-orig/arch/mips/vr41xx/common/irq.c a/arch/mips/vr41xx/common/irq.c
---- a-orig/arch/mips/vr41xx/common/irq.c	Thu Jun  2 23:37:13 2005
-+++ a/arch/mips/vr41xx/common/irq.c	Fri Jun  3 23:58:17 2005
-@@ -18,6 +18,7 @@
-  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-  */
- #include <linux/interrupt.h>
-+#include <linux/module.h>
- 
- #include <asm/irq_cpu.h>
- #include <asm/system.h>
-@@ -55,6 +56,8 @@
- 
- 	return retval;
- }
-+
-+EXPORT_SYMBOL_GPL(cascade_irq);
- 
- asmlinkage void irq_dispatch(unsigned int irq, struct pt_regs *regs)
- {
+Maybe.  In the past our Kconfig rsp. Config.in was not endianess-aware,
+so I did make a few mistakes when I added that.
+
+  Ralf

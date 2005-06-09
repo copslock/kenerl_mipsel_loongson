@@ -1,61 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2005 14:00:50 +0100 (BST)
-Received: from zproxy.gmail.com ([IPv6:::ffff:64.233.162.205]:21885 "EHLO
-	zproxy.gmail.com") by linux-mips.org with ESMTP id <S8225609AbVFINAf> convert rfc822-to-8bit;
-	Thu, 9 Jun 2005 14:00:35 +0100
-Received: by zproxy.gmail.com with SMTP id 13so145381nzp
-        for <linux-mips@linux-mips.org>; Thu, 09 Jun 2005 06:00:22 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=EZEf6e5Bm4UrkVqKx+Sz67xDOshjrMN5Opm24C4ecjwQfW4YK9+LDouJF0Juv/lTiengeQgcafUnC6tXuOT65TeJlJeOJ9GJGVe2PFPIGyyc4iz7S7HXyxynlK2s2vDXwjxR4CCLgxvFAbbPtP0kX82htPPYtBHrG13Q3lFDQyg=
-Received: by 10.36.222.24 with SMTP id u24mr411396nzg;
-        Thu, 09 Jun 2005 06:00:22 -0700 (PDT)
-Received: by 10.36.68.6 with HTTP; Thu, 9 Jun 2005 06:00:22 -0700 (PDT)
-Message-ID: <6097c4905060906003ca15ec@mail.gmail.com>
-Date:	Thu, 9 Jun 2005 17:00:22 +0400
-From:	Maxim Osipov <maxim.osipov@gmail.com>
-Reply-To: maxim@mox.ru
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2005 18:38:42 +0100 (BST)
+Received: from mms2.broadcom.com ([IPv6:::ffff:216.31.210.18]:48656 "EHLO
+	MMS2.broadcom.com") by linux-mips.org with ESMTP
+	id <S8225742AbVFIRiT>; Thu, 9 Jun 2005 18:38:19 +0100
+Received: from 10.10.64.121 by MMS2.broadcom.com with SMTP (Broadcom
+ SMTP Relay (Email Firewall v6.1.0)); Thu, 09 Jun 2005 10:37:56 -0700
+X-Server-Uuid: 1F20ACF3-9CAF-44F7-AB47-F294E2D5B4EA
+Received: from mail-irva-8.broadcom.com ([10.10.64.221]) by
+ mail-irva-1.broadcom.com (Post.Office MTA v3.5.3 release 223 ID#
+ 0-72233U7200L2200S0V35) with ESMTP id com for
+ <linux-mips@linux-mips.org>; Thu, 9 Jun 2005 10:37:54 -0700
+Received: from mon-irva-10.broadcom.com (mon-irva-10.broadcom.com
+ [10.10.64.171]) by mail-irva-8.broadcom.com (MOS 3.5.6-GR) with ESMTP
+ id BDD75905; Thu, 9 Jun 2005 10:37:52 -0700 (PDT)
+Received: from pcirvcttruong2 (dhcp-10-3-136-70.broadcom.com
+ [10.3.136.70]) by mon-irva-10.broadcom.com (8.9.1/8.9.1) with ESMTP id
+ KAA22310 for <linux-mips@linux-mips.org>; Thu, 9 Jun 2005 10:37:52
+ -0700 (PDT)
+Message-ID: <200506091737.KAA22310@mon-irva-10.broadcom.com>
+From:	"Ton Truong" <ttruong@broadcom.com>
 To:	linux-mips@linux-mips.org
-Subject: gdb problem
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-Return-Path: <maxim.osipov@gmail.com>
+Subject: Member sc_sigset gone in latest 2.6.12-rc5 breaks strace.
+Date:	Thu, 9 Jun 2005 10:37:49 -0700
+MIME-Version: 1.0
+X-Mailer: Microsoft Office Outlook, Build 11.0.6353
+In-Reply-To: <20050606121640.GB6651@linux-mips.org>
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2527
+Thread-Index: AcVqkgC7jC5qXNd9RRyydNehJKhNKgChoSWg
+X-WSS-ID: 6EB6A1FE1VO7019659-01-01
+Content-Type: text/plain;
+ charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <ttruong@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8060
+X-archive-position: 8061
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: maxim.osipov@gmail.com
+X-original-sender: ttruong@broadcom.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+ 
+I see that in the rc5 update, MIPS codes have now dropped 
+sc_sigset[4] from struct sigcontext, defined in asm-mips/sigcontext.h.  I'd
+appreciate it if someone provide a brief summary of what needs to be changed
+for strace to compile or where I can find an strace port that work with the
+new MIPS codes?
 
-Probably a little off-topic here, but do anyone have a recipe to get
-remote debugging with gdb + gdbserver working?
+Much appreciated.
 
-I have gdb-6.3 build for mips64-linux-gnu and when I try to connect
-the following error appears:
-
-/home/maxim # ./gdbserver 192.168.0.2:5339 /bin/busybox
-Process /bin/busybox created; pid = 34
-Listening on port 5339
-Remote debugging from host 192.168.0.2
-readchar: Got EOF
-Remote side has terminated connection.  GDBserver will reopen the connection.
-Listening on port 5339
-
-(gdb) target remote 192.168.0.10:5339
-Remote debugging using 192.168.0.10:5339
-Couldn't establish connection to remote target
-Reply contains invalid hex digit 59
-
-Googling for similar problem shows, what some people also faced it,
-but no solution.
-
-Thank you,
-Maxim
+//TT

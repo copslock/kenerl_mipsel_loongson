@@ -1,46 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jun 2005 17:39:49 +0100 (BST)
-Received: from ylpvm43-ext.prodigy.net ([IPv6:::ffff:207.115.57.74]:17037 "EHLO
-	ylpvm43.prodigy.net") by linux-mips.org with ESMTP
-	id <S8225339AbVFJQjc>; Fri, 10 Jun 2005 17:39:32 +0100
-Received: from pimout2-ext.prodigy.net (pimout2-int.prodigy.net [207.115.4.217])
-	by ylpvm43.prodigy.net (8.12.10 outbound/8.12.10) with ESMTP id j5AGddKd011675;
-	Fri, 10 Jun 2005 12:39:39 -0400
-X-ORBL:	[63.202.173.158]
-Received: from taniwha.stupidest.org (adsl-63-202-173-158.dsl.snfc21.pacbell.net [63.202.173.158])
-	by pimout2-ext.prodigy.net (8.12.10 milter /8.12.10) with ESMTP id j5AGdOM3371188;
-	Fri, 10 Jun 2005 12:39:24 -0400
-Received: by taniwha.stupidest.org (Postfix, from userid 38689)
-	id 656CC528F22; Fri, 10 Jun 2005 09:39:24 -0700 (PDT)
-Date:	Fri, 10 Jun 2005 09:39:24 -0700
-From:	Chris Wedgwood <cw@f00f.org>
-To:	Greg Weeks <greg.weeks@timesys.com>
-Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: another 4kc machine check.
-Message-ID:  <494028.547d3e99fefb72449a89b8d1daf681ec.ANY@taniwha.stupidest.org>
-References: <42553E49.7080004@timesys.com> <4256991C.4020601@timesys.com> <20050408161357.GB19166@linux-mips.org> <4256B524.2080509@timesys.com> <425AD440.5050600@timesys.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <425AD440.5050600@timesys.com>
-Return-Path: <cw@f00f.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jun 2005 19:18:16 +0100 (BST)
+Received: from corvus.et.put.poznan.pl ([IPv6:::ffff:150.254.11.9]:29153 "EHLO
+	corvus.et.put.poznan.pl") by linux-mips.org with ESMTP
+	id <S8225339AbVFJSSA>; Fri, 10 Jun 2005 19:18:00 +0100
+Received: from corvus (corvus.et.put.poznan.pl [150.254.11.9])
+	by corvus.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id j5AIHvQ11244;
+	Fri, 10 Jun 2005 20:17:57 +0200 (MET DST)
+Received: from helios.et.put.poznan.pl ([150.254.29.65])
+	by corvus.et.put.poznan.pl (MailMonitor for SMTP v1.2.2 ) ;
+	Fri, 10 Jun 2005 20:17:53 +0200 (MET DST)
+Received: from localhost (sskowron@localhost)
+	by helios.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id j5AIHoa19265;
+	Fri, 10 Jun 2005 20:17:50 +0200 (MET DST)
+X-Authentication-Warning: helios.et.put.poznan.pl: sskowron owned process doing -bs
+Date:	Fri, 10 Jun 2005 20:17:50 +0200 (MET DST)
+From:	Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
+To:	Kumba <kumba@gentoo.org>
+cc:	gentoo-mips@gentoo.org, gentoo-dev@gentoo.org,
+	Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Re: Gentoo/MIPS SGI LiveCD RC4 (a.k.a., Round 2)
+In-Reply-To: <42A922A3.9020304@gentoo.org>
+Message-ID: <Pine.GSO.4.10.10506102017190.19209-100000@helios.et.put.poznan.pl>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <sskowron@ET.PUT.Poznan.PL>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8064
+X-archive-position: 8065
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cw@f00f.org
+X-original-sender: sskowron@ET.PUT.Poznan.PL
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Apr 11, 2005 at 03:47:12PM -0400, Greg Weeks wrote:
+ARCLoad 0.41 now supports IP27. Kumba, fix your CD :)
 
-> This patch appears to fix my machine check problem on the 4kc. The
-> 4kc shouldn't need an ssnop here, but this appears to fix it.
+Stanislaw Skowronek
 
-This fix is working for me too --- but I've not heard what the
-official status of this is and what (if anything) will eventually be
-committed.
-
-Does anyone havean update on this from the MIPS people?
+--<=>--
+  "There is no pain, you are receding...
+   A distant ship, smoke on the horizon.
+   You are only coming through in waves,
+   Your lips move, but I can't hear what you're saying."

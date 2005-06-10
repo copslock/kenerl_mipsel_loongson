@@ -1,49 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2005 21:52:19 +0100 (BST)
-Received: from alg138.algor.co.uk ([IPv6:::ffff:62.254.210.138]:55530 "EHLO
-	bacchus.net.dhis.org") by linux-mips.org with ESMTP
-	id <S8225745AbVFIUv4>; Thu, 9 Jun 2005 21:51:56 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.1/8.13.1) with ESMTP id j59Kndpp029474;
-	Thu, 9 Jun 2005 21:49:39 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j59Kncjq029473;
-	Thu, 9 Jun 2005 21:49:38 +0100
-Date:	Thu, 9 Jun 2005 21:49:37 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Ton Truong <ttruong@broadcom.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Member sc_sigset gone in latest 2.6.12-rc5 breaks strace.
-Message-ID: <20050609204937.GK4927@linux-mips.org>
-References: <20050606121640.GB6651@linux-mips.org> <200506091737.KAA22310@mon-irva-10.broadcom.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <200506091737.KAA22310@mon-irva-10.broadcom.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jun 2005 06:15:37 +0100 (BST)
+Received: from sccrmhc12.comcast.net ([IPv6:::ffff:204.127.202.56]:24477 "EHLO
+	sccrmhc12.comcast.net") by linux-mips.org with ESMTP
+	id <S8225214AbVFJFPU>; Fri, 10 Jun 2005 06:15:20 +0100
+Received: from [192.168.1.4] (pcp0011842295pcs.waldrf01.md.comcast.net[69.251.97.45])
+          by comcast.net (sccrmhc12) with ESMTP
+          id <20050610051512012000ute6e>; Fri, 10 Jun 2005 05:15:13 +0000
+Message-ID: <42A922A3.9020304@gentoo.org>
+Date:	Fri, 10 Jun 2005 01:18:27 -0400
+From:	Kumba <kumba@gentoo.org>
+User-Agent: Mozilla Thunderbird 1.0.2 (Windows/20050317)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	gentoo-mips@gentoo.org, gentoo-dev@gentoo.org
+CC:	Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Gentoo/MIPS SGI LiveCD RC4 (a.k.a., Round 2)
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8062
+X-archive-position: 8063
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jun 09, 2005 at 10:37:49AM -0700, Ton Truong wrote:
 
-> I see that in the rc5 update, MIPS codes have now dropped 
-> sc_sigset[4] from struct sigcontext, defined in asm-mips/sigcontext.h.  I'd
-> appreciate it if someone provide a brief summary of what needs to be changed
-> for strace to compile or where I can find an strace port that work with the
-> new MIPS codes?
+Alright ladies and germs^Wgentlemen, here we go, round #2 of the Mips LiveCD 
+attempt.  This time, it works a heck of a lot better than before.
 
-sc_sigset and the other members that were changed have been unused by the
-kernel since a very, very long time so whatever strace may have done with
-that field was probably bogus.
+Most of theory behind this CD is made possible by Stanislaw Skowronek and his 
+rather revolutionary new bootloader, ARCLoad.  Coming soon to a portage tree 
+near you!
 
-Thanks for reporting, something I'm going to look at tomorrow.
+See the README file at the top level of the livecd directory for a far more 
+thorough description of how it works, how it boots, and how it's more or less 
+put together.  the cdboort-ip* files are example sof how the CD boots on my 
+available systems.  Your's should more or less closely follow what's shown there.
 
-  Ralf
+Please report bugs, glitches, feedback, suggestions for improvementm etc, to Bug 
+#95631 at http://bugs.gentoo.org
+
+All that said, you can find everything here:
+http://dev.gentoo.org/~kumba/mips/releases/livecd-rc4/
+
+Tools, mainly just the miniroot (embedded into the kernel) and the CD "real 
+root" can be found in the tools/ subfolder.  Other bits and pieces used to make 
+this CD Image will probably appear there over time as well.
+
+
+--Kumba
+
+-- 
+Gentoo/MIPS Team Lead
+Gentoo Foundation Board of Trustees
+
+"Such is oft the course of deeds that move the wheels of the world: small hands 
+do them because they must, while the eyes of the great are elsewhere."  --Elrond

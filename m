@@ -1,45 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jun 2005 19:18:16 +0100 (BST)
-Received: from corvus.et.put.poznan.pl ([IPv6:::ffff:150.254.11.9]:29153 "EHLO
-	corvus.et.put.poznan.pl") by linux-mips.org with ESMTP
-	id <S8225339AbVFJSSA>; Fri, 10 Jun 2005 19:18:00 +0100
-Received: from corvus (corvus.et.put.poznan.pl [150.254.11.9])
-	by corvus.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id j5AIHvQ11244;
-	Fri, 10 Jun 2005 20:17:57 +0200 (MET DST)
-Received: from helios.et.put.poznan.pl ([150.254.29.65])
-	by corvus.et.put.poznan.pl (MailMonitor for SMTP v1.2.2 ) ;
-	Fri, 10 Jun 2005 20:17:53 +0200 (MET DST)
-Received: from localhost (sskowron@localhost)
-	by helios.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id j5AIHoa19265;
-	Fri, 10 Jun 2005 20:17:50 +0200 (MET DST)
-X-Authentication-Warning: helios.et.put.poznan.pl: sskowron owned process doing -bs
-Date:	Fri, 10 Jun 2005 20:17:50 +0200 (MET DST)
-From:	Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
-To:	Kumba <kumba@gentoo.org>
-cc:	gentoo-mips@gentoo.org, gentoo-dev@gentoo.org,
-	Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: Gentoo/MIPS SGI LiveCD RC4 (a.k.a., Round 2)
-In-Reply-To: <42A922A3.9020304@gentoo.org>
-Message-ID: <Pine.GSO.4.10.10506102017190.19209-100000@helios.et.put.poznan.pl>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <sskowron@ET.PUT.Poznan.PL>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jun 2005 22:06:14 +0100 (BST)
+Received: from orb.pobox.com ([IPv6:::ffff:207.8.226.5]:11718 "EHLO
+	orb.pobox.com") by linux-mips.org with ESMTP id <S8225757AbVFJVF6>;
+	Fri, 10 Jun 2005 22:05:58 +0100
+Received: from orb (localhost [127.0.0.1])
+	by orb.pobox.com (Postfix) with ESMTP id D46161E9D
+	for <linux-mips@linux-mips.org>; Fri, 10 Jun 2005 17:05:48 -0400 (EDT)
+Received: from troglodyte.asianpear (c-24-21-141-200.hsd1.or.comcast.net [24.21.141.200])
+	(using SSLv3 with cipher RC4-MD5 (128/128 bits))
+	(No client certificate requested)
+	by orb.sasl.smtp.pobox.com (Postfix) with ESMTP id 8C7FD8B
+	for <linux-mips@linux-mips.org>; Fri, 10 Jun 2005 17:05:48 -0400 (EDT)
+Subject: [PATCH 2.4] cleanup printk __FUNCTION__ in clocks.c
+From:	Kevin Turner <kevin.m.turner@pobox.com>
+To:	linux-mips <linux-mips@linux-mips.org>
+Content-Type: text/plain
+Date:	Fri, 10 Jun 2005 14:05:53 -0700
+Message-Id: <1118437553.1513.22.camel@troglodyte.asianpear>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.2.2 
+Content-Transfer-Encoding: 7bit
+Return-Path: <kevin.m.turner@pobox.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8065
+X-archive-position: 8066
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sskowron@ET.PUT.Poznan.PL
+X-original-sender: kevin.m.turner@pobox.com
 Precedence: bulk
 X-list: linux-mips
 
-ARCLoad 0.41 now supports IP27. Kumba, fix your CD :)
+The following patch against linux_2_4 cleans up this little compilation error:
 
-Stanislaw Skowronek
+clocks.c: In function `set_au1x00_lcd_clock':
+clocks.c:89: error: parse error before string constant
+clocks.c:90: warning: left-hand operand of comma expression has no effect
+clocks.c:90: error: parse error before ')' token
 
---<=>--
-  "There is no pain, you are receding...
-   A distant ship, smoke on the horizon.
-   You are only coming through in waves,
-   Your lips move, but I can't hear what you're saying."
+
+Index: arch/mips/au1000/common/clocks.c
+===================================================================
+RCS file: /home/kevint/whdd/linux-mips-cvs/linux/arch/mips/au1000/common/clocks.c,v
+retrieving revision 1.2.2.5
+diff -u -r1.2.2.5 clocks.c
+--- arch/mips/au1000/common/clocks.c	12 May 2004 07:31:08 -0000	1.2.2.5
++++ arch/mips/au1000/common/clocks.c	10 Jun 2005 20:55:59 -0000
+@@ -85,9 +85,8 @@
+ 		lcd_clock = sys_busclk / 4;
+ 
+ 	if (lcd_clock > 50000) /* Epson MAX */
+-			printk(__FUNCTION__
+-			       ": warning: LCD clock too high (%d KHz)\n",
+-			       lcd_clock);
++			printk("%s: warning: LCD clock too high (%d KHz)\n",
++			       __FUNCTION__, lcd_clock);
+ }
+ 
+ unsigned int get_au1x00_lcd_clock(void)
+
+
+-- 
+The moon is waxing crescent, 12.3% illuminated, 3.4 days old.

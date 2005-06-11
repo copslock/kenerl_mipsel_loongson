@@ -1,103 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jun 2005 22:22:23 +0100 (BST)
-Received: from orb.pobox.com ([IPv6:::ffff:207.8.226.5]:57543 "EHLO
-	orb.pobox.com") by linux-mips.org with ESMTP id <S8225757AbVFJVWI>;
-	Fri, 10 Jun 2005 22:22:08 +0100
-Received: from orb (localhost [127.0.0.1])
-	by orb.pobox.com (Postfix) with ESMTP id 9FD2D1E12
-	for <linux-mips@linux-mips.org>; Fri, 10 Jun 2005 17:21:59 -0400 (EDT)
-Received: from troglodyte.asianpear (c-24-21-141-200.hsd1.or.comcast.net [24.21.141.200])
-	(using SSLv3 with cipher RC4-MD5 (128/128 bits))
-	(No client certificate requested)
-	by orb.sasl.smtp.pobox.com (Postfix) with ESMTP id 55D498B
-	for <linux-mips@linux-mips.org>; Fri, 10 Jun 2005 17:21:59 -0400 (EDT)
-Subject: [PATCH 2.4] inlines in au1000_eth.c
-From:	Kevin Turner <kevin.m.turner@pobox.com>
-To:	linux-mips <linux-mips@linux-mips.org>
-Content-Type: text/plain
-Date:	Fri, 10 Jun 2005 14:22:04 -0700
-Message-Id: <1118438524.1513.28.camel@troglodyte.asianpear>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.2.2 
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Jun 2005 19:55:13 +0100 (BST)
+Received: from 64-30-195-78.dsl.linkline.com ([IPv6:::ffff:64.30.195.78]:1731
+	"EHLO jg555.com") by linux-mips.org with ESMTP id <S8225206AbVFKSy5>;
+	Sat, 11 Jun 2005 19:54:57 +0100
+Received: from [172.16.0.55] ([::ffff:172.16.0.55])
+  (AUTH: PLAIN root, TLS: TLSv1/SSLv3,256bits,AES256-SHA)
+  by jg555.com with esmtp; Sat, 11 Jun 2005 11:54:53 -0700
+  id 001CCECD.42AB337D.00003CD5
+Message-ID: <42AB3366.8030206@jg555.com>
+Date:	Sat, 11 Jun 2005 11:54:30 -0700
+From:	Jim Gifford <maillist@jg555.com>
+User-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Building o32 glibc on mips64
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <kevin.m.turner@pobox.com>
+Return-Path: <maillist@jg555.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8067
+X-archive-position: 8068
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevin.m.turner@pobox.com
+X-original-sender: maillist@jg555.com
 Precedence: bulk
 X-list: linux-mips
 
-The following patch against linux_2_4 fixes this sort of compilation
-error with gcc 3.4:
+Anyone got any ideas on how to fix this. I'm using binutils 2.16, gcc 
+3.4.4, and glibc-2.3.5 with the syscall patch. Looks like socket.S is 
+not being generated.
 
-au1000_eth.c: In function `au1000_init_module':
-au1000_eth.c:97: sorry, unimplemented: inlining failed in call to 'str2eaddr': function body not available
-au1000_eth.c:1219: sorry, unimplemented: called from here
-
-I'm not wholly sure it's the Right Thing, as I define str2eaddr in
-au1000_eth.c, which makes for more code duplication.
-
-Index: drivers/net/au1000_eth.c
-===================================================================
-RCS file: /home/kevint/whdd/linux-mips-cvs/linux/drivers/net/au1000_eth.c,v
-retrieving revision 1.5.2.33
-diff -u -r1.5.2.33 au1000_eth.c
---- drivers/net/au1000_eth.c	26 Nov 2004 08:40:13 -0000	1.5.2.33
-+++ drivers/net/au1000_eth.c	10 Jun 2005 20:56:19 -0000
-@@ -90,12 +90,12 @@
- static int mdio_read(struct net_device *, int, int);
- static void mdio_write(struct net_device *, int, int, u16);
- static void dump_mii(struct net_device *dev, int phy_id);
-+static inline void str2eaddr(unsigned char *ea, unsigned char *str);
-+static inline unsigned char str2hexnum(unsigned char c);
- 
- // externs
- extern  void ack_rise_edge_irq(unsigned int);
- extern int get_ethernet_addr(char *ethernet_addr);
--extern inline void str2eaddr(unsigned char *ea, unsigned char *str);
--extern inline unsigned char str2hexnum(unsigned char c);
- extern char * __init prom_getcmdline(void);
- 
- /*
-@@ -146,6 +146,32 @@
- 	"100BaseT", "100BaseTX", "100BaseFX"
- 	};
- 
-+static inline void str2eaddr(unsigned char *ea, unsigned char *str)
-+{
-+	int i;
-+
-+	for (i = 0; i < 6; i++) {
-+		unsigned char num;
-+
-+		if ((*str == '.') || (*str == ':'))
-+			str++;
-+		num = str2hexnum(*str++) << 4;
-+		num |= (str2hexnum(*str++));
-+		ea[i] = num;
-+	}
-+}
-+
-+static inline unsigned char str2hexnum(unsigned char c)
-+{
-+	if(c >= '0' && c <= '9')
-+		return c - '0';
-+	if(c >= 'a' && c <= 'f')
-+		return c - 'a' + 10;
-+	if(c >= 'A' && c <= 'F')
-+		return c - 'A' + 10;
-+	return 0; /* foo */
-+}
-+
- int bcm_5201_init(struct net_device *dev, int phy_addr)
- {
- 	s16 data;
-
-
+mips64el-unknown-linux-gnu-gcc  -mabi=32 
+../sysdeps/unix/sysv/linux/recv.S -c  -
+I../include -I. -I/usr/src/glibc-build/socket -I.. -I../libio  
+-I/usr/src/glibc-
+build -I../sysdeps/mips/elf -I../libidn/sysdeps/unix 
+-I../linuxthreads/sysdeps/u
+nix/sysv/linux/mips -I../linuxthreads/sysdeps/unix/sysv/linux 
+-I../linuxthreads/
+sysdeps/pthread -I../sysdeps/pthread -I../linuxthreads/sysdeps/unix/sysv 
+-I../li
+nuxthreads/sysdeps/unix -I../linuxthreads/sysdeps/mips 
+-I../sysdeps/unix/sysv/li
+nux/mips/mips32 -I../sysdeps/unix/sysv/linux/mips 
+-I../sysdeps/unix/sysv/linux -
+I../sysdeps/gnu -I../sysdeps/unix/common -I../sysdeps/unix/mman 
+-I../sysdeps/uni
+x/inet -I../sysdeps/unix/sysv -I../sysdeps/unix/mips/mips32 
+-I../sysdeps/unix/mi
+ps -I../sysdeps/unix -I../sysdeps/posix -I../sysdeps/mips/mips32 
+-I../sysdeps/mi
+ps -I../sysdeps/ieee754/flt-32 -I../sysdeps/ieee754/dbl-64 
+-I../sysdeps/wordsize
+-32 -I../sysdeps/mips/fpu -I../sysdeps/ieee754 -I../sysdeps/generic/elf 
+-I../sys
+deps/generic  -D_LIBC_REENTRANT -include ../include/libc-symbols.h  
+-DPIC     -D
+ASSEMBLER  -g   -o /usr/src/glibc-build/socket/recv.o -MD -MP -MF 
+/usr/src/glibc
+-build/socket/recv.o.dt -MT /usr/src/glibc-build/socket/recv.o
+../sysdeps/unix/sysv/linux/recv.S:5:20: socket.S: No such file or directory
+make[2]: *** [/usr/src/glibc-build/socket/recv.o] Error 1
+make[2]: Leaving directory `/usr/src/glibc-2.3.5/socket'
+make[1]: *** [socket/subdir_lib] Error 2
+make[1]: Leaving directory `/usr/src/glibc-2.3.5'
+make: *** [all] Error 2
+root:/usr/src/glibc-build#
 
 -- 
-The moon is waxing crescent, 12.3% illuminated, 3.4 days old.
+----
+Jim Gifford
+maillist@jg555.com

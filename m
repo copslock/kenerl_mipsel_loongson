@@ -1,45 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Jun 2005 06:15:30 +0100 (BST)
-Received: from gw-eur4.philips.com ([IPv6:::ffff:161.85.125.10]:38048 "EHLO
-	gw-eur4.philips.com") by linux-mips.org with ESMTP
-	id <S8224914AbVFMFPO>; Mon, 13 Jun 2005 06:15:14 +0100
-Received: from smtpscan-eur4.philips.com (smtpscan-eur4.mail.philips.com [130.144.57.167])
-	by gw-eur4.philips.com (Postfix) with ESMTP id F08D74971E
-	for <linux-mips@linux-mips.org>; Mon, 13 Jun 2005 05:15:02 +0000 (UTC)
-Received: from smtpscan-eur4.philips.com (localhost [127.0.0.1])
-	by localhost.philips.com (Postfix) with ESMTP id C7A659C
-	for <linux-mips@linux-mips.org>; Mon, 13 Jun 2005 05:15:02 +0000 (GMT)
-Received: from smtprelay-eur2.philips.com (smtprelay-eur2.philips.com [130.144.57.171])
-	by smtpscan-eur4.philips.com (Postfix) with ESMTP id A6C51A1
-	for <linux-mips@linux-mips.org>; Mon, 13 Jun 2005 05:15:02 +0000 (GMT)
-Received: from ehvrmh02.diamond.philips.com (ehvrmh02-srv.diamond.philips.com [130.139.27.125])
-	by smtprelay-eur2.philips.com (Postfix) with ESMTP id 6FD2940
-	for <linux-mips@linux-mips.org>; Mon, 13 Jun 2005 05:15:02 +0000 (GMT)
-Subject: XIO driver development
-To:	linux-mips@linux-mips.org
-X-Mailer: Lotus Notes Release 6.0.3 September 26, 2003
-Message-ID: <OFF84169A0.52CDF15A-ON6525701F.001BC242-6525701F.001C561E@philips.com>
-From:	Sundarapandian Andithevar <sundarapandian.andithevar@philips.com>
-Date:	Mon, 13 Jun 2005 10:38:48 +0530
-X-MIMETrack: Serialize by Router on ehvrmh02/H/SERVER/PHILIPS(Release 6.5.3FP1HF80 | March
- 11, 2005) at 13/06/2005 07:14:22
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Jun 2005 06:46:54 +0100 (BST)
+Received: from corvus.et.put.poznan.pl ([IPv6:::ffff:150.254.11.9]:3029 "EHLO
+	corvus.et.put.poznan.pl") by linux-mips.org with ESMTP
+	id <S8225219AbVFMFqi>; Mon, 13 Jun 2005 06:46:38 +0100
+Received: from corvus (corvus.et.put.poznan.pl [150.254.11.9])
+	by corvus.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id j5D5kZQ05371;
+	Mon, 13 Jun 2005 07:46:35 +0200 (MET DST)
+Received: from helios.et.put.poznan.pl ([150.254.29.65])
+	by corvus.et.put.poznan.pl (MailMonitor for SMTP v1.2.2 ) ;
+	Mon, 13 Jun 2005 07:46:32 +0200 (MET DST)
+Received: from localhost (sskowron@localhost)
+	by helios.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id j5D5kUX17076;
+	Mon, 13 Jun 2005 07:46:30 +0200 (MET DST)
+X-Authentication-Warning: helios.et.put.poznan.pl: sskowron owned process doing -bs
+Date:	Mon, 13 Jun 2005 07:46:30 +0200 (MET DST)
+From:	Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
+To:	Sundarapandian Andithevar <sundarapandian.andithevar@philips.com>
+cc:	linux-mips@linux-mips.org
+Subject: Re: XIO driver development
+In-Reply-To: <OFF84169A0.52CDF15A-ON6525701F.001BC242-6525701F.001C561E@philips.com>
+Message-ID: <Pine.GSO.4.10.10506130744050.16927-100000@helios.et.put.poznan.pl>
 MIME-Version: 1.0
-Content-type: text/plain; charset=US-ASCII
-Return-Path: <sundarapandian.andithevar@philips.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <sskowron@ET.PUT.Poznan.PL>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8069
+X-archive-position: 8070
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sundarapandian.andithevar@philips.com
+X-original-sender: sskowron@ET.PUT.Poznan.PL
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
-      I came across XIO layer development in MIPS at
-http://www.linux-mips.org/wiki/index.php/XIO. Does anybody know the current
-status of the development???
+Currently - on hold. However, seeing the company you represent... this is
+not the XIO you are looking for (probably). This is SGI XIO, not Philips
+XIO ("Hey, X is a cool letter, how do we call our bus?").
 
-Regards,
-Sundar.
+Stanislaw Skowronek

@@ -1,61 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Jun 2005 21:08:47 +0100 (BST)
-Received: from verein.lst.de ([IPv6:::ffff:213.95.11.210]:56978 "EHLO
-	mail.lst.de") by linux-mips.org with ESMTP id <S8225848AbVFMUIc>;
-	Mon, 13 Jun 2005 21:08:32 +0100
-Received: from verein.lst.de (localhost [127.0.0.1])
-	by mail.lst.de (8.12.3/8.12.3/Debian-7.1) with ESMTP id j5DK8K6t029893
-	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
-	Mon, 13 Jun 2005 22:08:21 +0200
-Received: (from hch@localhost)
-	by verein.lst.de (8.12.3/8.12.3/Debian-6.6) id j5DK8KUn029891;
-	Mon, 13 Jun 2005 22:08:20 +0200
-Date:	Mon, 13 Jun 2005 22:08:20 +0200
-From:	Christoph Hellwig <hch@lst.de>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Jun 2005 21:19:04 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:10756 "EHLO
+	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225884AbVFMUSt>; Mon, 13 Jun 2005 21:18:49 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id D1FEEF598B; Mon, 13 Jun 2005 22:18:38 +0200 (CEST)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 25845-10; Mon, 13 Jun 2005 22:18:38 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 15C17F5981; Mon, 13 Jun 2005 22:18:38 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j5DKIQK4028469;
+	Mon, 13 Jun 2005 22:18:26 +0200
+Date:	Mon, 13 Jun 2005 21:18:38 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Christoph Hellwig <hch@lst.de>
 Cc:	Daniel Jacobowitz <dan@debian.org>,
 	Jim Gifford <maillist@jg555.com>,
 	Linux MIPS List <linux-mips@linux-mips.org>
 Subject: Re: Building o32 glibc on mips64
-Message-ID: <20050613200820.GA29872@lst.de>
-References: <42AB3366.8030206@jg555.com> <20050613195602.GA3739@nevyn.them.org> <Pine.LNX.4.61L.0506132100080.1725@blysk.ds.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.61L.0506132100080.1725@blysk.ds.pg.gda.pl>
-User-Agent: Mutt/1.3.28i
-X-Scanned-By: MIMEDefang 2.39
-Return-Path: <hch@lst.de>
+In-Reply-To: <20050613200820.GA29872@lst.de>
+Message-ID: <Pine.LNX.4.61L.0506132112500.1725@blysk.ds.pg.gda.pl>
+References: <42AB3366.8030206@jg555.com> <20050613195602.GA3739@nevyn.them.org>
+ <Pine.LNX.4.61L.0506132100080.1725@blysk.ds.pg.gda.pl> <20050613200820.GA29872@lst.de>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.85.1/935/Mon Jun 13 18:27:50 2005 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8080
+X-archive-position: 8081
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hch@lst.de
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jun 13, 2005 at 09:05:59PM +0100, Maciej W. Rozycki wrote:
-> On Mon, 13 Jun 2005, Daniel Jacobowitz wrote:
-> 
-> > I have not tried the 2.3.x series glibcs on MIPS64.  I recommend you
-> > use glibc HEAD for now instead, unless you're interested in tracking
-> > down this sort of problem.
-> 
->  FYI, I've been able to build glibc 2.3.5 with GCC 4.0.0 for 
-> mips64el-linux (n64) with minimal patching.  I think what's only really 
-> required is that patch by Richard Sandiford that stays suspended in the 
-> glibc Bugzilla.
-> 
->  For o32 glibc may have to be configured for "mips{,el}-linux" (as o32 
-> isn't MIPS64 at all), but that's a pure guess -- I haven't checked the 
-> scripts for that requirement.
-> 
->  Do you think HEAD is stable enough for a non-glibc developer?  It's soon 
-> after a fork after all, so I'd expect more serious changes to be applied 
-> nowadays.
+On Mon, 13 Jun 2005, Christoph Hellwig wrote:
 
-Btw, what is the chance to see a biarch toolchain for mips?  It seems
-all linux architectures with 32bit and 64bit variants seem to have one
-these days, except mips.
+> >  Do you think HEAD is stable enough for a non-glibc developer?  It's soon 
+> > after a fork after all, so I'd expect more serious changes to be applied 
+> > nowadays.
+> 
+> Btw, what is the chance to see a biarch toolchain for mips?  It seems
+> all linux architectures with 32bit and 64bit variants seem to have one
+> these days, except mips.
+
+ What do you mean?  Multilib, per chance?  If so, please feel free to 
+build one yourself -- as of 4.0.0 GCC will build libraries for all three 
+ABIs (o32, (n)64 and n32) if configured for mips64{,el}-linux and 
+--enable-multilib is in effect (I think it is by default).  Bi-endian is 
+probably tougher, but it should be possible -- GCC itself supports the 
+"-mabi=" and "-mel" and "-meb" switches all the time AFAIK.
+
+ Of course you may need to have system libraries installed in place for 
+all requested configurations as appropriate; at least glibc, but perhaps 
+others as well (gmp, mpfr for Fortran; zlib for Java).
+
+  Maciej

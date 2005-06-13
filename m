@@ -1,64 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Jun 2005 13:59:06 +0100 (BST)
-Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:27929 "EHLO
-	bacchus.net.dhis.org") by linux-mips.org with ESMTP
-	id <S8225804AbVFMM6u>; Mon, 13 Jun 2005 13:58:50 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.1/8.13.1) with ESMTP id j5DCuBD9024666;
-	Mon, 13 Jun 2005 13:56:11 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j5DCuA15024665;
-	Mon, 13 Jun 2005 13:56:10 +0100
-Date:	Mon, 13 Jun 2005 13:56:10 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Dominic Sweetman <dom@mips.com>
-Cc:	qemu-devel@nongnu.org, linux-mips@linux-mips.org,
-	Jocelyn Mayer <l_indien@magic.fr>,
-	Fabrice Bellard <fabrice@bellard.org>
-Subject: Re: Qemu for MIPS
-Message-ID: <20050613125610.GB4890@linux-mips.org>
-References: <20050613105944.GA19704@linux-mips.org> <17069.29065.124810.728626@gargle.gargle.HOWL>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <17069.29065.124810.728626@gargle.gargle.HOWL>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Jun 2005 15:06:58 +0100 (BST)
+Received: from mail.gmx.net ([IPv6:::ffff:213.165.64.20]:20150 "HELO
+	mail.gmx.net") by linux-mips.org with SMTP id <S8225824AbVFMOGl>;
+	Mon, 13 Jun 2005 15:06:41 +0100
+Received: (qmail 28575 invoked by uid 0); 13 Jun 2005 14:06:34 -0000
+Received: from 129.13.186.3 by www68.gmx.net with HTTP;
+	Mon, 13 Jun 2005 16:06:34 +0200 (MEST)
+Date:	Mon, 13 Jun 2005 16:06:34 +0200 (MEST)
+From:	"Mad Props" <madprops@gmx.net>
+To:	linux-mips@linux-mips.org
+MIME-Version: 1.0
+Subject: tlb magic
+X-Priority: 3 (Normal)
+X-Authenticated: #24801140
+Message-ID: <31886.1118671594@www68.gmx.net>
+X-Mailer: WWW-Mail 1.6 (Global Message Exchange)
+X-Flags: 0001
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Return-Path: <madprops@gmx.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8075
+X-archive-position: 8076
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: madprops@gmx.net
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jun 13, 2005 at 12:44:09PM +0100, Dominic Sweetman wrote:
+Hi,
 
-> > Known bugs:
-> > 
-> >  o ll/sc don't use a ll_bit like the real hardware thus right now any atomic
-> >    functions aren't really atomic.
-> 
-> I suppose you know that the CPUs all implement "break link on
-> exception" by zeroing the link bit on an 'eret'?  That doesn't sound
-> too hard...
+I'm trying to understand how to implement an TLB Exception handler for a
+MIPS32 ( 4KC ). As far as I got it, it makes sense to locate the user
+process page tables in kseg2 to save physical memory. The book I'm reading
+states another advantage using kseg2. I'm not quite sure what they mean,
+stating that
 
-It's not hard to add the llbit indeed - maybe I'm trying to hard to be
-obscure use compatible.  Generally Qemu is trading the highest accuracy
-of emulation for speed ...
+"It provides an easy mechanism for remapping a new user page table when
+changing context, without having to find enough virtual addresses in the OS
+to map all the page tables at once. Instead, you just change the ASID value,
+and the kseg2 pointer to the page table is now automatically remapped onto
+the correct page table. It's nearly magic."
 
-> Arguably, an emulator should not provide the LLaddr register at all.
-> It's optional and "only available for debug" - and probably such
-> debugging is possible another way in an emulator.  Robust software
-> shouldn't depend on assuming the contents make sense.
 
-The only use I've seen for this register is having it being used as a
-cp0 scratch register allowing to save the entire 31 GPRs.  Very old
-Linux/MIPS used to do that but it doesn't match the reality of MIPS ABIs,
-so I gave up on that very soon.  Like 11 years agp :)
+1. Is there only one kseg2 containing all page tables for 256 processes,
+i.e. only one ASID is used or
 
-> Not quite there yet... but well done, again.
+2. Has each page table it's own address space ( using different ASID for
+those addresses in kseg2 )
 
-  Ralf
+3. Will I need another untranslated page table in kseg0/kseg1 to translate
+kseg2 addresses ?
+
+4. What is this kseg2 pointer they are talking about ?
+
+5. Are they talking about the ASID in EntryHi ?
+
+6. Where is the magic ?
+
+Would be smashing if anybody could help me out.
+
+Kind regards,
+
+Thomas
+
+ 
+
+-- 
+Geschenkt: 3 Monate GMX ProMail gratis + 3 Ausgaben stern gratis
+++ Jetzt anmelden & testen ++ http://www.gmx.net/de/go/promail ++

@@ -1,70 +1,94 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jun 2005 19:26:14 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:33289 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225617AbVFNSZ5>; Tue, 14 Jun 2005 19:25:57 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id CF991F59DA
-	for <linux-mips@linux-mips.org>; Tue, 14 Jun 2005 20:25:50 +0200 (CEST)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 22814-08 for <linux-mips@linux-mips.org>;
- Tue, 14 Jun 2005 20:25:50 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 9E77FF59D8
-	for <linux-mips@linux-mips.org>; Tue, 14 Jun 2005 20:25:50 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j5EIPtVc032249
-	for <linux-mips@linux-mips.org>; Tue, 14 Jun 2005 20:25:55 +0200
-Date:	Tue, 14 Jun 2005 19:26:05 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	linux-mips@linux-mips.org
-Subject: [announce] GCC 4.0.0 packages available
-Message-ID: <Pine.LNX.4.61L.0506141922040.28607@blysk.ds.pg.gda.pl>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.85.1/939/Tue Jun 14 16:29:23 2005 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jun 2005 07:49:17 +0100 (BST)
+Received: from sonicwall.montavista.co.jp ([IPv6:::ffff:202.232.97.131]:62233
+	"EHLO yuubin.montavista.co.jp") by linux-mips.org with ESMTP
+	id <S8224863AbVFOGtA>; Wed, 15 Jun 2005 07:49:00 +0100
+Received: from localhost.localdomain (oreo.jp.mvista.com [10.200.16.31])
+	by yuubin.montavista.co.jp (8.12.5/8.12.5) with SMTP id j5F6mrS5008043;
+	Wed, 15 Jun 2005 15:48:54 +0900
+Date:	Wed, 15 Jun 2005 15:50:27 +0900
+From:	Hiroshi DOYU <Hiroshi_DOYU@montavista.co.jp>
+To:	ralf@linux-mips.org
+Cc:	linux-mips@linux-mips.org, mlachwani@mvista.com
+Subject: [PATCH 1/1] MIPS 2.6 : NAND on TX4938(RBHMA4500)
+Message-Id: <20050615155027.24c7049e.Hiroshi_DOYU@montavista.co.jp>
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <Hiroshi_DOYU@montavista.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8091
+X-archive-position: 8092
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: Hiroshi_DOYU@montavista.co.jp
 Precedence: bulk
 X-list: linux-mips
 
 Hello,
 
- I have updated my RPM package archive to include sources and binaries of 
-the 4.0.0 release of GCC.  The following compilers are available:
+This patch just enables NAND support on TX4938(RBHMA4500).
+Please review it.
 
-1. A mipsel-linux cross-compiler hosted on i386-linux.
+	Hiroshi DOYU
 
-2. A mips64el-linux cross-compiler hosted on i386-linux.
+-----
 
-3. A native mipsel-linux compiler.
-
-4. A native mips64el-linux compiler.
-
-5. There may be others, but I will not tell you. ;-)
-
- All compilers include all frontends, that is for Ada, C, C++, Fortran, 
-Java and Objective-C.  Note the mips64el-linux toolchains include local 
-changes that make them produce (n)64 binaries by default and libraries are 
-only (n)64.  The native mips64el-linux environment is still limited, but 
-usable.
-
- As a part of the transition to newer GCC glibc has been also updated to a 
-more recent version, which is now 2.3.5.  Unfortunately this version has 
-binary incompatibilities with 2.2.x, which for mipsel-linux affects rpm, 
-coreutils and tar, making their old binaries unusable.  Also all static 
-libraries need to be rebuilt.
-
- Packages are available at the usual location, i.e.: 
-"ftp://ftp3.ds.pg.gda.pl/people/macro/".
-
-  Maciej
+Index: linux/arch/mips/Kconfig
+===================================================================
+--- linux.orig/arch/mips/Kconfig	2005-06-15 14:33:22.754953832 +0900
++++ linux/arch/mips/Kconfig	2005-06-15 14:56:23.659024504 +0900
+@@ -657,6 +657,7 @@
+ source "arch/mips/sgi-ip27/Kconfig"
+ source "arch/mips/sibyte/Kconfig"
+ source "arch/mips/tx4927/Kconfig"
++source "arch/mips/tx4938/Kconfig"
+ source "arch/mips/vr41xx/Kconfig"
+ 
+ endmenu
+Index: linux/arch/mips/tx4938/Kconfig
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ linux/arch/mips/tx4938/Kconfig	2005-06-15 15:29:03.284116208 +0900
+@@ -0,0 +1,23 @@
++comment "Multiplex Pin Select"
++choice
++	prompt "PIO[58:61]"
++	default TOSHIBA_RBTX4938_MPLEX_PIO58_61
++
++config TOSHIBA_RBTX4938_MPLEX_PIO58_61
++	bool "PIO"
++config TOSHIBA_RBTX4938_MPLEX_NAND
++	bool "NAND"
++config TOSHIBA_RBTX4938_MPLEX_ATA
++	bool "ATA"
++
++endchoice
++
++config TX4938_NAND_BOOT
++	depends on EXPERIMENTAL && TOSHIBA_RBTX4938_MPLEX_NAND
++	bool "NAND Boot Support (EXPERIMENTAL)"
++	help
++	  This is only for Toshiba RBTX4938 reference board, which has NAND IPL.
++	  Select this option if you need to use NAND boot.
++
++
++
+Index: linux/arch/mips/tx4938/toshiba_rbtx4938/prom.c
+===================================================================
+--- linux.orig/arch/mips/tx4938/toshiba_rbtx4938/prom.c	2005-06-15 14:33:22.759953072 +0900
++++ linux/arch/mips/tx4938/toshiba_rbtx4938/prom.c	2005-06-15 15:31:25.357517768 +0900
+@@ -45,9 +45,9 @@
+ {
+ 	extern int tx4938_get_mem_size(void);
+ 	int msize;
+-
++#ifndef CONFIG_TX4938_NAND_BOOT
+ 	prom_init_cmdline();
+-
++#endif
+ 	mips_machgroup = MACH_GROUP_TOSHIBA;
+ 	mips_machtype = MACH_TOSHIBA_RBTX4938;
+ 

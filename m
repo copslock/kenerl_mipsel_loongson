@@ -1,94 +1,122 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jun 2005 07:49:17 +0100 (BST)
-Received: from sonicwall.montavista.co.jp ([IPv6:::ffff:202.232.97.131]:62233
-	"EHLO yuubin.montavista.co.jp") by linux-mips.org with ESMTP
-	id <S8224863AbVFOGtA>; Wed, 15 Jun 2005 07:49:00 +0100
-Received: from localhost.localdomain (oreo.jp.mvista.com [10.200.16.31])
-	by yuubin.montavista.co.jp (8.12.5/8.12.5) with SMTP id j5F6mrS5008043;
-	Wed, 15 Jun 2005 15:48:54 +0900
-Date:	Wed, 15 Jun 2005 15:50:27 +0900
-From:	Hiroshi DOYU <Hiroshi_DOYU@montavista.co.jp>
-To:	ralf@linux-mips.org
-Cc:	linux-mips@linux-mips.org, mlachwani@mvista.com
-Subject: [PATCH 1/1] MIPS 2.6 : NAND on TX4938(RBHMA4500)
-Message-Id: <20050615155027.24c7049e.Hiroshi_DOYU@montavista.co.jp>
-X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jun 2005 14:46:48 +0100 (BST)
+Received: from imap.gmx.net ([IPv6:::ffff:213.165.64.20]:10957 "HELO
+	mail.gmx.net") by linux-mips.org with SMTP id <S8225950AbVFONqb>;
+	Wed, 15 Jun 2005 14:46:31 +0100
+Received: (qmail invoked by alias); 15 Jun 2005 13:46:22 -0000
+Received: from p54B09D19.dip0.t-ipconnect.de (EHLO nancy.sattler.local) [84.176.157.25]
+  by mail.gmx.net (mp028) with SMTP; 15 Jun 2005 15:46:22 +0200
+X-Authenticated: #1474915
+Received: from localhost (localhost [127.0.0.1])
+	by nancy.sattler.local (Postfix) with ESMTP
+	id D7EA327518; Wed, 15 Jun 2005 15:46:22 +0200 (CEST)
+Received: from nancy.sattler.local ([127.0.0.1])
+	by localhost (nancy [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+	id 07475-01; Wed, 15 Jun 2005 15:46:10 +0200 (CEST)
+Received: by nancy.sattler.local (Postfix, from userid 9682)
+	id 19C6B2751B; Wed, 15 Jun 2005 15:46:07 +0200 (CEST)
+Date:	Wed, 15 Jun 2005 15:46:07 +0200
+From:	Thomas Sattler <tsattler@gmx.de>
+To:	linux-mips@linux-mips.org
+Subject: no power on USB on linux 2.6?
+Message-ID: <20050615134607.GA19510@nancy.sattler.local>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <Hiroshi_DOYU@montavista.co.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Virus-Scanned: by amavisd-new-20030616-p10 (Debian) at sattler.local
+X-Y-GMX-Trusted: 0
+Return-Path: <tsattler@gmx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8092
+X-archive-position: 8093
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Hiroshi_DOYU@montavista.co.jp
+X-original-sender: tsattler@gmx.de
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+Hi there ...
 
-This patch just enables NAND support on TX4938(RBHMA4500).
-Please review it.
+My name is Thomas I'm trying to use an USB-headset on a meshcube, a MIPS
+based embedded device (http://meshcube.org/meshwiki/). If I plug in the
+headset while running 2.4.27 a led on the headset turns on. If I do the
+same with 2.6.12-rc6 (latest MIPS CVS) nothing happens. I also tried an
+optical USB-mouse with the same result. All these tests are done with
+Debian GNU/Linux Sarge 3.1 on NFS-root.
 
-	Hiroshi DOYU
+My kernelconfig is:
+  $ sed '/^#/d;/USB/!d' .config
+  CONFIG_SND_USB_AUDIO=m
+  CONFIG_USB=y
+  CONFIG_USB_DEBUG=y
+  CONFIG_USB_DEVICEFS=y
+  CONFIG_USB_ARCH_HAS_HCD=y
+  CONFIG_USB_ARCH_HAS_OHCI=y
+  CONFIG_USB_EHCI_HCD=m
+  CONFIG_USB_OHCI_HCD=y
+  CONFIG_USB_HID=y
+  CONFIG_USB_HIDINPUT=y
 
------
+kernel boot messages are:
+  usbcore: registered new driver usbfs
+  usbcore: registered new driver hub
+    [...]
+  au1xxx-ohci au1xxx-ohci.0: Au1xxx OHCI
+  au1xxx-ohci au1xxx-ohci.0: new USB bus registered, assigned bus number 1
+  au1xxx-ohci au1xxx-ohci.0: irq 26, io mem 0x10100000
+  usb usb1: Product: Au1xxx OHCI
+  usb usb1: Manufacturer: Linux 2.6.12-rc6 ohci_hcd
+  usb usb1: SerialNumber: Au1xxx
+  hub 1-0:1.0: USB hub found
+  hub 1-0:1.0: 2 ports detected
+  USB Universal Host Controller Interface driver v2.2
+  sl811: driver sl811-hcd, 19 May 2005
 
-Index: linux/arch/mips/Kconfig
-===================================================================
---- linux.orig/arch/mips/Kconfig	2005-06-15 14:33:22.754953832 +0900
-+++ linux/arch/mips/Kconfig	2005-06-15 14:56:23.659024504 +0900
-@@ -657,6 +657,7 @@
- source "arch/mips/sgi-ip27/Kconfig"
- source "arch/mips/sibyte/Kconfig"
- source "arch/mips/tx4927/Kconfig"
-+source "arch/mips/tx4938/Kconfig"
- source "arch/mips/vr41xx/Kconfig"
- 
- endmenu
-Index: linux/arch/mips/tx4938/Kconfig
-===================================================================
---- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ linux/arch/mips/tx4938/Kconfig	2005-06-15 15:29:03.284116208 +0900
-@@ -0,0 +1,23 @@
-+comment "Multiplex Pin Select"
-+choice
-+	prompt "PIO[58:61]"
-+	default TOSHIBA_RBTX4938_MPLEX_PIO58_61
-+
-+config TOSHIBA_RBTX4938_MPLEX_PIO58_61
-+	bool "PIO"
-+config TOSHIBA_RBTX4938_MPLEX_NAND
-+	bool "NAND"
-+config TOSHIBA_RBTX4938_MPLEX_ATA
-+	bool "ATA"
-+
-+endchoice
-+
-+config TX4938_NAND_BOOT
-+	depends on EXPERIMENTAL && TOSHIBA_RBTX4938_MPLEX_NAND
-+	bool "NAND Boot Support (EXPERIMENTAL)"
-+	help
-+	  This is only for Toshiba RBTX4938 reference board, which has NAND IPL.
-+	  Select this option if you need to use NAND boot.
-+
-+
-+
-Index: linux/arch/mips/tx4938/toshiba_rbtx4938/prom.c
-===================================================================
---- linux.orig/arch/mips/tx4938/toshiba_rbtx4938/prom.c	2005-06-15 14:33:22.759953072 +0900
-+++ linux/arch/mips/tx4938/toshiba_rbtx4938/prom.c	2005-06-15 15:31:25.357517768 +0900
-@@ -45,9 +45,9 @@
- {
- 	extern int tx4938_get_mem_size(void);
- 	int msize;
--
-+#ifndef CONFIG_TX4938_NAND_BOOT
- 	prom_init_cmdline();
--
-+#endif
- 	mips_machgroup = MACH_GROUP_TOSHIBA;
- 	mips_machtype = MACH_TOSHIBA_RBTX4938;
- 
+FYI 2.4.27 messages:
+  usb.c: registered new driver usbdevfs
+  usb.c: registered new driver hub
+  host/usb-ohci.c: USB OHCI at membase 0xb0100000, IRQ 26
+  host/usb-ohci.c: usb-builtin, non-PCI OHCI
+  usb.c: new USB bus registered, assigned bus number 1
+  hub.c: USB hub found
+  hub.c: 2 ports detected
+
+hotplug (initscripts) report:
+  Starting hotplug subsystem:
+     pci     
+     pci      [success]
+     usb     
+     usb      [success]
+     isapnp  
+     isapnp   [success]
+     ide     
+     ide      [success]
+     input   
+     input    [success]
+     scsi    
+     scsi     [success]
+  done.
+
+the proc-filesystem tells:
+  $ cat /proc/bus/usb/devices
+  T:  Bus=01 Lev=00 Prnt=00 Port=00 Cnt=00 Dev#=  1 Spd=12  MxCh= 2
+  B:  Alloc=  0/900 us ( 0%), #Int=  0, #Iso=  0
+  D:  Ver= 1.10 Cls=09(hub  ) Sub=00 Prot=00 MxPS= 8 #Cfgs=  1
+  P:  Vendor=0000 ProdID=0000 Rev= 2.06
+  S:  Manufacturer=Linux 2.6.11 ohci_hcd
+  S:  Product=Au1xxx OHCI
+  S:  SerialNumber=au1xxx
+  C:* #Ifs= 1 Cfg#= 1 Atr=c0 MxPwr=  0mA
+  I:  If#= 0 Alt= 0 #EPs= 1 Cls=09(hub  ) Sub=00 Prot=00 Driver=hub
+  E:  Ad=81(I) Atr=03(Int.) MxPS=   2 Ivl=255ms
+
+As far as I can see USB drivers are working correctly, hardware is
+detected but the USB is not working. Any hints?
+
+TIA
+Thomas
+
+-- 
+Please keep mailinglists in english as they are meant to be
+read in the whole world. -- Feel free to send PM in german.

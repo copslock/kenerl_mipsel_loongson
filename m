@@ -1,50 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Jun 2005 17:07:08 +0100 (BST)
-Received: from mail.alphastar.de ([IPv6:::ffff:194.59.236.179]:41999 "EHLO
-	mail.alphastar.de") by linux-mips.org with ESMTP
-	id <S8225233AbVFQQGt>; Fri, 17 Jun 2005 17:06:49 +0100
-Received: from Snailmail (217.249.197.192)
-          by mail.alphastar.de with MERCUR Mailserver (v4.02.28 MTIxLTIxODAtNjY2OA==)
-          for <linux-mips@linux-mips.org>; Fri, 17 Jun 2005 18:04:22 +0200
-Received: from Opal.Peter (pf@Opal.Peter [192.168.1.1])
-	by SNaIlmail.Peter (8.12.6/8.12.6/Sendmail/Linux 2.0.32) with ESMTP id j5HG609J000549
-	for <linux-mips@linux-mips.org>; Fri, 17 Jun 2005 18:06:01 +0200
-Received: from localhost (pf@localhost)
-	by Opal.Peter (8.9.3/8.9.3/Sendmail/Linux 2.2.5-15) with ESMTP id SAA00798
-	for <linux-mips@linux-mips.org>; Fri, 17 Jun 2005 18:05:47 +0200
-Date:	Fri, 17 Jun 2005 18:05:47 +0200 (CEST)
-From:	peter fuerst <pf@net.alphadv.de>
-To:	linux-mips@linux-mips.org
-Subject: Updated Indigo2 IP28 patches.
-Message-ID: <Pine.LNX.4.21.0506171746001.786-100000@Opal.Peter>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Reply-To: pf@net.alphadv.de
-Return-Path: <pf@net.alphadv.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 18 Jun 2005 23:57:01 +0100 (BST)
+Received: from orb.pobox.com ([IPv6:::ffff:207.8.226.5]:18412 "EHLO
+	orb.pobox.com") by linux-mips.org with ESMTP id <S8225260AbVFRW4p>;
+	Sat, 18 Jun 2005 23:56:45 +0100
+Received: from orb (localhost [127.0.0.1])
+	by orb.pobox.com (Postfix) with ESMTP id CD3451FB3
+	for <linux-mips@linux-mips.org>; Sat, 18 Jun 2005 18:56:33 -0400 (EDT)
+Received: from troglodyte.asianpear (c-24-21-141-200.hsd1.or.comcast.net [24.21.141.200])
+	(using SSLv3 with cipher RC4-MD5 (128/128 bits))
+	(No client certificate requested)
+	by orb.sasl.smtp.pobox.com (Postfix) with ESMTP id 84BAD87
+	for <linux-mips@linux-mips.org>; Sat, 18 Jun 2005 18:56:33 -0400 (EDT)
+Subject: xxs1500 hangs on CF wifi card insertion
+From:	Kevin Turner <kevin.m.turner@pobox.com>
+To:	linux-mips <linux-mips@linux-mips.org>
+Content-Type: text/plain
+Date:	Sat, 18 Jun 2005 15:57:17 -0700
+Message-Id: <1119135438.1513.259.camel@troglodyte.asianpear>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.2.2 
+Content-Transfer-Encoding: 7bit
+Return-Path: <kevin.m.turner@pobox.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8103
+X-archive-position: 8104
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pf@net.alphadv.de
+X-original-sender: kevin.m.turner@pobox.com
 Precedence: bulk
 X-list: linux-mips
 
+running linux-mips.org linux_2_4 CVS on an xxs1500, compiled with gcc
+3.4.3 with Pete's 64bit_pcmcia.patch and the corresponding patch to
+pcmcia-cs's copies of those include files.
+
+When I insert my sandisk connectplus wifi card, the hostap drivers load
+and start saying:
+
+kernel: wifi0: Interrupt, but dev not OK
+kernel: NET: 3067338 messages suppressed.
+
+and the system is unresponsive until I eject the card.
+
+With CONFIG_PM enabled, it seems to log somewhat fewer "Interrupt, but
+dev not OK" messages but has a lot of 
+
+huge offset 12c992, last_pc0 47e3e1 last_match20 47e3e1 pc0 5aad73
+huge offset 12ca53, last_pc0 47e3e1 last_match20 47e3e1 pc0 5aae34
+
+messages with continuously growing values.
 
 
-Hello !
+here's the log prior to when it hangs:
 
-There are updated patches for SGI Indigo2 IP28 available at
-"http://home.alphastar.de/fuerst/download.html":
+cardmgr[247]: socket 0: SanDisk ConnectPlus w/ Memory
+kernel: hostap_crypt: registered algorithm 'NULL'
+kernel: hostap_cs: 0.3.7 - 2005-02-12 (Jouni Malinen <jkmaline@cc.hut.fi>)
+kernel: hostap_cs: setting Vcc=33 (constant)
+kernel: hostap_cs: CS_EVENT_CARD_INSERTION
+kernel: hostap_cs: ignoring Vcc=33 (from config)
+kernel: Checking CFTABLE_ENTRY 0x01 (default 0x01)
+kernel: IO window settings: cfg->io.nwin=1 dflt.io.nwin=1
+kernel: io->flags = 0x0047, io.base=0x0000, len=128
+kernel: hostap_cs: Registered netdevice wifi0
 
-1) An extended bus error handler, which allows to avoid the too many
-   cache-barriers (introduced with the last compiler-patch) before
-   critical load instructions.
 
-2) Stanislaw Skowronek's ImpactSR-graphics driver (many thanks...) could
-   be adapted to IP28 Impact-graphics.
+Any suggestions?
 
-kind regards
+Thanks,
 
-pf
+ - Kevin
+
+-- 
+The moon is waxing gibbous, 83.5% illuminated, 10.8 days old.

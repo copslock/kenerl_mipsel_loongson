@@ -1,52 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Jun 2005 11:28:05 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:56589 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225234AbVFTK1r>; Mon, 20 Jun 2005 11:27:47 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id C3451F5992
-	for <linux-mips@linux-mips.org>; Mon, 20 Jun 2005 12:27:35 +0200 (CEST)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 15883-09 for <linux-mips@linux-mips.org>;
- Mon, 20 Jun 2005 12:27:35 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 71233F598F
-	for <linux-mips@linux-mips.org>; Mon, 20 Jun 2005 12:27:35 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j5KARTCj011265
-	for <linux-mips@linux-mips.org>; Mon, 20 Jun 2005 12:27:29 +0200
-Date:	Mon, 20 Jun 2005 11:27:34 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	linux-mips@linux-mips.org
-Subject: Re: CVS Update@linux-mips.org: linux
-In-Reply-To: <20050618135450Z8225248-1340+9141@linux-mips.org>
-Message-ID: <Pine.LNX.4.61L.0506201123030.30272@blysk.ds.pg.gda.pl>
-References: <20050618135450Z8225248-1340+9141@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Jun 2005 12:34:17 +0100 (BST)
+Received: from kleinhenz.com ([IPv6:::ffff:213.239.205.196]:13784 "EHLO
+	kleinhenz.com") by linux-mips.org with ESMTP id <S8225331AbVFTLdu>;
+	Mon, 20 Jun 2005 12:33:50 +0100
+Received: from [192.168.115.33] (p549972E0.dip.t-dialin.net [84.153.114.224])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(Client CN "Simon Richter", Issuer "Kleinhenz Elektronik CA" (verified OK))
+	by kleinhenz.com (Postfix) with ESMTP id 74A684A8003;
+	Mon, 20 Jun 2005 13:33:48 +0200 (CEST)
+Message-ID: <42B6A990.2040001@debian.org>
+Date:	Mon, 20 Jun 2005 13:33:36 +0200
+From:	Simon Richter <sjr@debian.org>
+User-Agent: Mozilla Thunderbird 1.0.2 (Windows/20050317)
+X-Accept-Language: de-DE, de, en-us, en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.85.1/946/Sun Jun 19 10:41:16 2005 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+To:	debian-mips@lists.debian.org, linux-mips@linux-mips.org
+Subject: anyone want a DecStation?
+X-Enigmail-Version: 0.92.0.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+ protocol="application/pgp-signature";
+ boundary="------------enigFE2C75CD1E52AB6FAA918177"
+Return-Path: <sjr@debian.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8105
+X-archive-position: 8106
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: sjr@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 18 Jun 2005 ralf@linux-mips.org wrote:
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--------------enigFE2C75CD1E52AB6FAA918177
+Content-Type: text/plain; charset=ISO-8859-15
+Content-Transfer-Encoding: 7bit
 
-> Modified files:
-> 	arch/mips/configs: decstation_defconfig 
-> 
-> Log message:
-> 	Grrr..  Update the bloody thing when you change the kconfig files.
+Hi,
 
- Who cares at this point, anyway?... ;-)
+as a non-stereotypical geek I no longer live in my parents' basement,
+however a bunch of my DecStations still do, and my parents have asked me
+to move them out.
 
-  Maciej
+I have a lot of stuff that I'm willing to give into caring hands, as it
+is highly unlikely that I will do anything with them soonish:
+
+ - around 3 or 4 DS5000/125, with some luck maybe a /250.
+ - bunch of PMAG-A and PMAG-D plus cabling
+ - 6 Maxines
+ - 2 storage extension boxen
+ - 6 DEC Monitors, one broken (doesn't get sync correctly)
+ - lots of puck mice and 401 keyboards
+ - lots of AUI cabling
+
+I'd be willing to bring stuff to LinuxTag on Saturday. If anyone wants
+something, please reply and I will put in in the car.
+
+   Simon
+
+PS: I'm also going to bring two VAXstation II, from which one working
+one can be built IMO. If you have a VAX and need spare parts, be there
+on Saturday and we'll try to get one working so it is clear which parts
+are spare.
+
+--------------enigFE2C75CD1E52AB6FAA918177
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.1 (MingW32)
+Comment: Using GnuPG with Thunderbird - http://enigmail.mozdev.org
+
+iQCVAwUBQraplVYr4CN7gCINAQL1FAQAj/5XWZgu2lX9Lg2CTPMtu/D/MBMeJZ7z
+e79UlCn9qnEK1QpTcC0UasAFxw9cK72aW+qHvjEfjL3LCpihQIenaYpoo2SMXpnE
+Vnj7GjX7Em5s0XgVr7263x29CixyaA8RQggW9040voGdKcA22hBbartNV7ajC8TA
+Yq6sWP+qGUc=
+=y4OY
+-----END PGP SIGNATURE-----
+
+--------------enigFE2C75CD1E52AB6FAA918177--

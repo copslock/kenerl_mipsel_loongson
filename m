@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Jun 2005 22:51:55 +0100 (BST)
-Received: from coderock.org ([IPv6:::ffff:193.77.147.115]:4760 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Jun 2005 22:52:53 +0100 (BST)
+Received: from coderock.org ([IPv6:::ffff:193.77.147.115]:6296 "EHLO
 	trashy.coderock.org") by linux-mips.org with ESMTP
-	id <S8225385AbVFTVun>; Mon, 20 Jun 2005 22:50:43 +0100
+	id <S8225386AbVFTVut>; Mon, 20 Jun 2005 22:50:49 +0100
 Received: by trashy.coderock.org (Postfix, from userid 780)
-	id EC6731EDCD; Mon, 20 Jun 2005 23:50:41 +0200 (CEST)
+	id 616031EDCD; Mon, 20 Jun 2005 23:50:48 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by trashy.coderock.org (Postfix) with ESMTP id 298A61EDC7;
-	Mon, 20 Jun 2005 23:50:40 +0200 (CEST)
+	by trashy.coderock.org (Postfix) with ESMTP id 686AE1ED15;
+	Mon, 20 Jun 2005 23:50:46 +0200 (CEST)
 Received: from nd47.coderock.org (localhost [127.0.0.1])
-	by trashy.coderock.org (Postfix) with ESMTP id 79AD01EDBE;
-	Mon, 20 Jun 2005 23:49:53 +0200 (CEST)
+	by trashy.coderock.org (Postfix) with ESMTP id 938C21ED19;
+	Mon, 20 Jun 2005 23:49:54 +0200 (CEST)
 Received: (from domen@localhost)
-	by nd47.coderock.org (8.13.3/8.13.3/Submit) id j5KLnrKg021582;
-	Mon, 20 Jun 2005 23:49:53 +0200
-Message-Id: <20050620214952.761755000@nd47.coderock.org>
-Date:	Mon, 20 Jun 2005 23:49:53 +0200
+	by nd47.coderock.org (8.13.3/8.13.3/Submit) id j5KLnsRs021626;
+	Mon, 20 Jun 2005 23:49:54 +0200
+Message-Id: <20050620214953.952800000@nd47.coderock.org>
+Date:	Mon, 20 Jun 2005 23:49:54 +0200
 From:	domen@coderock.org
 To:	ralf@linux-mips.org
 Cc:	linux-mips@linux-mips.org, domen@coderock.org
-Subject: [patch 2/8] delete arch/mips/pmc-sierra/yosemite/ht-irq.c
-Content-Disposition: inline; filename=remove_file-arch_mips_pmc_sierra_yosemite_ht_irq.c.patch
+Subject: [patch 3/8] delete include/asm-mips/gfx.h
+Content-Disposition: inline; filename=remove_file-include_asm_mips_gfx.h.patch
 Return-Path: <domen@nd47.coderock.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8108
+X-archive-position: 8109
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -39,66 +39,68 @@ Remove nowhere referenced file. (egrep "filename\." didn't find anything)
 
 Signed-off-by: Domen Puncer <domen@coderock.org>
 ---
- ht-irq.c |   53 -----------------------------------------------------
- 1 files changed, 53 deletions(-)
+ gfx.h |   55 -------------------------------------------------------
+ 1 files changed, 55 deletions(-)
 
-Index: quilt/arch/mips/pmc-sierra/yosemite/ht-irq.c
+Index: quilt/include/asm-mips/gfx.h
 ===================================================================
---- quilt.orig/arch/mips/pmc-sierra/yosemite/ht-irq.c
+--- quilt.orig/include/asm-mips/gfx.h
 +++ /dev/null
-@@ -1,53 +0,0 @@
+@@ -1,55 +0,0 @@
 -/*
-- * Copyright 2003 PMC-Sierra
-- * Author: Manish Lachwani (lachwani@pmc-sierra.com)
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
 - *
-- * This program is free software; you can redistribute  it and/or modify it
-- * under  the terms of  the GNU General  Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-- * option) any later version.
+- * This is the user-visible SGI GFX interface.
 - *
-- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
-- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
-- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
-- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
-- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
-- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
-- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- * This must be used verbatim into the GNU libc.  It does not include
+- * any kernel-only bits on it.
 - *
-- *  You should have received a copy of the  GNU General Public License along
-- *  with this program; if not, write  to the Free Software Foundation, Inc.,
-- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- * miguel@nuclecu.unam.mx
 - */
+-#ifndef _ASM_GFX_H
+-#define _ASM_GFX_H
 -
--#include <linux/types.h>
--#include <linux/pci.h>
--#include <linux/kernel.h>
--#include <linux/version.h>
--#include <linux/init.h>
--#include <asm/pci.h>
+-/* The iocls, yes, they do not make sense, but such is life */
+-#define GFX_BASE             100
+-#define GFX_GETNUM_BOARDS    (GFX_BASE + 1)
+-#define GFX_GETBOARD_INFO    (GFX_BASE + 2)
+-#define GFX_ATTACH_BOARD     (GFX_BASE + 3)
+-#define GFX_DETACH_BOARD     (GFX_BASE + 4)
+-#define GFX_IS_MANAGED       (GFX_BASE + 5)
 -
--/*
-- * HT Bus fixup for the Titan
-- * XXX IRQ values need to change based on the board layout
-- */
--void __init titan_ht_pcibios_fixup_bus(struct pci_bus *bus)
--{
--        struct pci_bus *current_bus = bus;
--        struct pci_dev *devices;
--        struct list_head *devices_link;
+-#define GFX_MAPALL           (GFX_BASE + 10)
+-#define GFX_LABEL            (GFX_BASE + 11)
 -
--	list_for_each(devices_link, &(current_bus->devices)) {
--                devices = pci_dev_b(devices_link);
--                if (devices == NULL)
--                        continue;
--	}
+-#define GFX_INFO_NAME_SIZE  16
+-#define GFX_INFO_LABEL_SIZE 16
 -
--	/*
--	 * PLX and SPKT related changes go here
--	 */
+-struct gfx_info {
+-	char name  [GFX_INFO_NAME_SIZE];  /* board name */
+-	char label [GFX_INFO_LABEL_SIZE]; /* label name */
+-	unsigned short int xpmax, ypmax;  /* screen resolution */
+-	unsigned int lenght;	          /* size of a complete gfx_info for this board */
+-};
 -
--}
+-struct gfx_getboardinfo_args {
+-	unsigned int board;     /* board number.  starting from zero */
+-	void *buf;              /* pointer to gfx_info */
+-	unsigned int len;       /* buffer size of buf */
+-};
+-
+-struct gfx_attach_board_args {
+-	unsigned int board;	/* board number, starting from zero */
+-	void        *vaddr;	/* address where the board registers should be mapped */
+-};
+-
+-#ifdef __KERNEL__
+-/* umap.c */
+-extern void remove_mapping (struct vm_area_struct *vma, struct task_struct *, unsigned long, unsigned long);
+-extern void *vmalloc_uncached (unsigned long size);
+-extern int vmap_page_range (struct vm_area_struct *vma, unsigned long from, unsigned long size, unsigned long vaddr);
+-#endif
+-
+-#endif /* _ASM_GFX_H */
 
 --

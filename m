@@ -1,30 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Jun 2005 22:53:54 +0100 (BST)
-Received: from coderock.org ([IPv6:::ffff:193.77.147.115]:9624 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Jun 2005 22:54:43 +0100 (BST)
+Received: from coderock.org ([IPv6:::ffff:193.77.147.115]:11416 "EHLO
 	trashy.coderock.org") by linux-mips.org with ESMTP
-	id <S8225393AbVFTVvB>; Mon, 20 Jun 2005 22:51:01 +0100
+	id <S8225395AbVFTVvI>; Mon, 20 Jun 2005 22:51:08 +0100
 Received: by trashy.coderock.org (Postfix, from userid 780)
-	id 40C991EDCC; Mon, 20 Jun 2005 23:50:59 +0200 (CEST)
+	id EF5041EDD2; Mon, 20 Jun 2005 23:51:06 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by trashy.coderock.org (Postfix) with ESMTP id F127D1EDCD;
-	Mon, 20 Jun 2005 23:50:57 +0200 (CEST)
+	by trashy.coderock.org (Postfix) with ESMTP id CB7F51EDCC;
+	Mon, 20 Jun 2005 23:51:04 +0200 (CEST)
 Received: from nd47.coderock.org (localhost [127.0.0.1])
-	by trashy.coderock.org (Postfix) with ESMTP id 87C7A1EDC0;
-	Mon, 20 Jun 2005 23:49:56 +0200 (CEST)
+	by trashy.coderock.org (Postfix) with ESMTP id 235FC1EDC5;
+	Mon, 20 Jun 2005 23:49:59 +0200 (CEST)
 Received: (from domen@localhost)
-	by nd47.coderock.org (8.13.3/8.13.3/Submit) id j5KLnuUW021714;
-	Mon, 20 Jun 2005 23:49:56 +0200
-Message-Id: <20050620214956.047366000@nd47.coderock.org>
-Date:	Mon, 20 Jun 2005 23:49:56 +0200
+	by nd47.coderock.org (8.13.3/8.13.3/Submit) id j5KLnwrt021803;
+	Mon, 20 Jun 2005 23:49:58 +0200
+Message-Id: <20050620214958.810995000@nd47.coderock.org>
+Date:	Mon, 20 Jun 2005 23:49:58 +0200
 From:	domen@coderock.org
 To:	ralf@linux-mips.org
-Cc:	linux-mips@linux-mips.org, domen@coderock.org
-Subject: [patch 5/8] delete include/asm-mips/mipsprom.h
-Content-Disposition: inline; filename=remove_file-include_asm_mips_mipsprom.h.patch
+Cc:	linux-mips@linux-mips.org, Nishanth Aravamudan <nacc@us.ibm.com>,
+	domen@coderock.org
+Subject: [patch 7/8] mips/bcm1250_tbprof: remove interruptible_sleep_on() usage
+Content-Disposition: inline; filename=int_sleep_on-arch_mips_sibyte_sb1250_bcm1250_tbprof.patch
 Return-Path: <domen@nd47.coderock.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8110
+X-archive-position: 8111
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,94 +33,68 @@ X-original-sender: domen@coderock.org
 Precedence: bulk
 X-list: linux-mips
 
+From: Nishanth Aravamudan <nacc@us.ibm.com>
 
 
 
-Remove nowhere referenced file. (egrep "filename\." didn't find anything)
+Remove deprecated interruptible_sleep_on() function call
+and replace with direct wait-queue usage.
 
+Signed-off-by: Nishanth Aravamudan <nacc@us.ibm.com>
 Signed-off-by: Domen Puncer <domen@coderock.org>
 ---
- mipsprom.h |   74 -------------------------------------------------------------
- 1 files changed, 74 deletions(-)
+ bcm1250_tbprof.c |   11 +++++++++--
+ 1 files changed, 9 insertions(+), 2 deletions(-)
 
-Index: quilt/include/asm-mips/mipsprom.h
+Index: quilt/arch/mips/sibyte/sb1250/bcm1250_tbprof.c
 ===================================================================
---- quilt.orig/include/asm-mips/mipsprom.h
-+++ /dev/null
-@@ -1,74 +0,0 @@
--#ifndef __ASM_MIPS_PROM_H
--#define __ASM_MIPS_PROM_H
--
--#define PROM_RESET		0
--#define PROM_EXEC		1
--#define PROM_RESTART		2
--#define PROM_REINIT		3
--#define PROM_REBOOT		4
--#define PROM_AUTOBOOT		5
--#define PROM_OPEN		6
--#define PROM_READ		7
--#define PROM_WRITE		8
--#define PROM_IOCTL		9
--#define PROM_CLOSE		10
--#define PROM_GETCHAR		11
--#define PROM_PUTCHAR		12
--#define PROM_SHOWCHAR		13	/* XXX */
--#define PROM_GETS		14	/* XXX */
--#define PROM_PUTS		15	/* XXX */
--#define PROM_PRINTF		16	/* XXX */
--
--/* What are these for? */
--#define PROM_INITPROTO		17	/* XXX */
--#define PROM_PROTOENABLE	18	/* XXX */
--#define PROM_PROTODISABLE	19	/* XXX */
--#define PROM_GETPKT		20	/* XXX */
--#define PROM_PUTPKT		21	/* XXX */
--
--/* More PROM shit.  Probably has to do with VME RMW cycles??? */
--#define PROM_ORW_RMW		22	/* XXX */
--#define PROM_ORH_RMW		23	/* XXX */
--#define PROM_ORB_RMW		24	/* XXX */
--#define PROM_ANDW_RMW		25	/* XXX */
--#define PROM_ANDH_RMW		26	/* XXX */
--#define PROM_ANDB_RMW		27	/* XXX */
--
--/* Cache handling stuff */
--#define PROM_FLUSHCACHE		28	/* XXX */
--#define PROM_CLEARCACHE		29	/* XXX */
--
--/* Libc alike stuff */
--#define PROM_SETJMP		30	/* XXX */
--#define PROM_LONGJMP		31	/* XXX */
--#define PROM_BEVUTLB		32	/* XXX */
--#define PROM_GETENV		33	/* XXX */
--#define PROM_SETENV		34	/* XXX */
--#define PROM_ATOB		35	/* XXX */
--#define PROM_STRCMP		36	/* XXX */
--#define PROM_STRLEN		37	/* XXX */
--#define PROM_STRCPY		38	/* XXX */
--#define PROM_STRCAT		39	/* XXX */
--
--/* Misc stuff */
--#define PROM_PARSER		40	/* XXX */
--#define PROM_RANGE		41	/* XXX */
--#define PROM_ARGVIZE		42	/* XXX */
--#define PROM_HELP		43	/* XXX */
--
--/* Entry points for some PROM commands */
--#define PROM_DUMPCMD		44	/* XXX */
--#define PROM_SETENVCMD		45	/* XXX */
--#define PROM_UNSETENVCMD	46	/* XXX */
--#define PROM_PRINTENVCMD	47	/* XXX */
--#define PROM_BEVEXCEPT		48	/* XXX */
--#define PROM_ENABLECMD		49	/* XXX */
--#define PROM_DISABLECMD		50	/* XXX */
--
--#define PROM_CLEARNOFAULT	51	/* XXX */
--#define PROM_NOTIMPLEMENT	52	/* XXX */
--
--#define PROM_NV_GET		53	/* XXX */
--#define PROM_NV_SET		54	/* XXX */
--
--#endif /* __ASM_MIPS_PROM_H */
+--- quilt.orig/arch/mips/sibyte/sb1250/bcm1250_tbprof.c
++++ quilt/arch/mips/sibyte/sb1250/bcm1250_tbprof.c
+@@ -28,6 +28,7 @@
+ #include <linux/fs.h>
+ #include <linux/errno.h>
+ #include <linux/reboot.h>
++#include <linux/wait.h>
+ #include <asm/uaccess.h>
+ #include <asm/io.h>
+ #include <asm/sibyte/sb1250.h>
+@@ -231,6 +232,7 @@ int sbprof_zbprof_start(struct file *fil
+ 
+ int sbprof_zbprof_stop(void)
+ {
++	DEFINE_WAIT(wait);
+ 	DBG(printk(DEVNAME ": stopping\n"));
+ 
+ 	if (sbp.tb_enable) {
+@@ -240,7 +242,9 @@ int sbprof_zbprof_stop(void)
+ 		   this sleep happens. */
+ 		if (sbp.tb_armed) {
+ 			DBG(printk(DEVNAME ": wait for disarm\n"));
+-			interruptible_sleep_on(&sbp.tb_sync);
++			prepare_to_wait(&sbp.tb_sync, &wait, TASK_INTERRUPTIBLE);
++			schedule();
++			finish_wait(&sbp.tb_sync, &wait);
+ 			DBG(printk(DEVNAME ": disarm complete\n"));
+ 		}
+ 		free_irq(K_INT_TRACE_FREEZE, &sbp);
+@@ -339,6 +343,7 @@ static int sbprof_tb_ioctl(struct inode 
+ 			   unsigned long arg)
+ {
+ 	int error = 0;
++	DEFINE_WAIT(wait);
+ 
+ 	switch (command) {
+ 	case SBPROF_ZBSTART:
+@@ -348,7 +353,9 @@ static int sbprof_tb_ioctl(struct inode 
+ 		error = sbprof_zbprof_stop();
+ 		break;
+ 	case SBPROF_ZBWAITFULL:
+-		interruptible_sleep_on(&sbp.tb_read);
++		prepare_to_wait(&sbp.tb_read, &wait, TASK_INTERRUPTIBLE);
++		schedule();
++		finish_wait(&sbp.tb_read, &wait);
+ 		/* XXXKW check if interrupted? */
+ 		return put_user(TB_FULL, (int *) arg);
+ 	default:
 
 --

@@ -1,44 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jun 2005 19:00:04 +0100 (BST)
-Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:24332 "EHLO
-	bacchus.net.dhis.org") by linux-mips.org with ESMTP
-	id <S8225312AbVFUR7n>; Tue, 21 Jun 2005 18:59:43 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.1/8.13.1) with ESMTP id j5LHxbST024133;
-	Tue, 21 Jun 2005 18:59:37 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.1/8.13.1/Submit) id j5LHxaTe024132;
-	Tue, 21 Jun 2005 18:59:36 +0100
-Date:	Tue, 21 Jun 2005 18:59:36 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	maxim@mox.ru
-Cc:	linux-mips@linux-mips.org
-Subject: Re: strace n64 support
-Message-ID: <20050621175936.GN6461@linux-mips.org>
-References: <6097c4905062110482288b0a8@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jun 2005 23:59:30 +0100 (BST)
+Received: from wproxy.gmail.com ([IPv6:::ffff:64.233.184.194]:11716 "EHLO
+	wproxy.gmail.com") by linux-mips.org with ESMTP id <S8224913AbVFUW7N> convert rfc822-to-8bit;
+	Tue, 21 Jun 2005 23:59:13 +0100
+Received: by wproxy.gmail.com with SMTP id 57so3196wri
+        for <linux-mips@linux-mips.org>; Tue, 21 Jun 2005 15:57:59 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=sbzyWzfqJnl8SRGwxjALrojGVJIeK2bJ6J3v899E/A2LrTSl5d1ddol/q8mxjmOZNaC4lL/3Zw3Ds6W3tSKztDFQya2m8ziZ09D7g7RNjzTBeBpyNVpfRItujzFFHuSntTGQTTMabgyjUS1fK3ThUk9utSLkTfg8f4QjZy40XUo=
+Received: by 10.54.76.6 with SMTP id y6mr66545wra;
+        Tue, 21 Jun 2005 15:57:59 -0700 (PDT)
+Received: by 10.54.71.11 with HTTP; Tue, 21 Jun 2005 15:57:59 -0700 (PDT)
+Message-ID: <2db32b720506211557673163e2@mail.gmail.com>
+Date:	Tue, 21 Jun 2005 15:57:59 -0700
+From:	rolf liu <rolfliu@gmail.com>
+Reply-To: rolf liu <rolfliu@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: Error duing compiling 2.4.29 using SDE for Db1550
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
 Content-Disposition: inline
-In-Reply-To: <6097c4905062110482288b0a8@mail.gmail.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <ralf@linux-mips.org>
+Return-Path: <rolfliu@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8124
+X-archive-position: 8125
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: rolfliu@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Jun 21, 2005 at 09:48:55PM +0400, Maxim Osipov wrote:
+The error is:
 
-> I was looking at strace-4.5.12 and noticed, that
-> linux/mips/syscallent.h has syscall numbers only for o32. Are n32 and
-> n64 supported? Google doesn't help ;(
+##pci_fixup.c:80: parse error before `prid'
+pci_fixup.c:80: `__res' undeclared (first use in this function)
+pci_fixup.c:80: (Each undeclared identifier is reported only once
+pci_fixup.c:80: for each function it appears in.)
+pci_fixup.c: At top level:
+pci_fixup.c:80: parse error before `)'
+pci_fixup.c:83: parse error before string constant
+pci_fixup.c:83: warning: type defaults to `int' in declaration of `printk'
+pci_fixup.c:83: warning: function declaration isn't a prototype
+pci_fixup.c:83: warning: data definition has no type or storage class
+pci_fixup.c:85: parse error before string constant
+pci_fixup.c:85: warning: type defaults to `int' in declaration of `printk'
+pci_fixup.c:85: warning: function declaration isn't a prototype
+pci_fixup.c:85: warning: data definition has no type or storage class
+pci_fixup.c:134: warning: `fixup_resource' defined but not used
+make[1]: *** [pci_fixup.o] Error 1
+make[1]: Leaving directory `/home/rolf/linux/arch/mips/au1000/common'
+make: *** [_dir_arch/mips/au1000/common] Error 2
+#
 
-Strace is currently somewhat broken anyway.  I'm looking into getting it
-going, so thanks for letting me know.
+I can't find where __res is used in pci_fixup.c. Any suggestions?
 
-  Ralf
+Thanks

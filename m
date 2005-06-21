@@ -1,66 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jun 2005 12:48:59 +0100 (BST)
-Received: from mf2.realtek.com.tw ([IPv6:::ffff:220.128.56.22]:47368 "EHLO
-	mf2.realtek.com.tw") by linux-mips.org with ESMTP
-	id <S8225005AbVFULsZ>; Tue, 21 Jun 2005 12:48:25 +0100
-Received: from msx.realtek.com.tw (unverified [172.21.1.77]) by mf2.realtek.com.tw
- (Clearswift SMTPRS 5.1.4) with ESMTP id <T71acdc3256dc803816a04@mf2.realtek.com.tw>;
- Tue, 21 Jun 2005 19:50:16 +0800
-Received: from rtpdii3098 ([172.21.98.16])
-          by msx.realtek.com.tw (Lotus Domino Release 6.5.1)
-          with ESMTP id 2005062119504287-8526 ;
-          Tue, 21 Jun 2005 19:50:42 +0800 
-Message-ID: <002401c57657$1eecb9b0$106215ac@realtek.com.tw>
-From:	"colin" <colin@realtek.com.tw>
-To:	"Steven J. Hill" <sjhill@realitydiluted.com>,
-	<linux-mips@linux-mips.org>
-References: <42B7F2AB.7030805@realitydiluted.com>
-Subject: Re: The most stable version of 2.6
-Date:	Tue, 21 Jun 2005 19:48:20 +0800
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jun 2005 13:18:22 +0100 (BST)
+Received: from web25801.mail.ukl.yahoo.com ([IPv6:::ffff:217.12.10.186]:42585
+	"HELO web25801.mail.ukl.yahoo.com") by linux-mips.org with SMTP
+	id <S8225195AbVFUMRw>; Tue, 21 Jun 2005 13:17:52 +0100
+Received: (qmail 13644 invoked by uid 60001); 21 Jun 2005 12:17:44 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.fr;
+  h=Message-ID:Received:Date:From:Subject:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding;
+  b=Bi+kktNfYbNDyRytf9kD9wELZgGu0iBl1jp1OoigQO+sW0FHYkzo1PO/88QQ2H/g1alnjhXJETA8Sh9q0eN8pAppUs9/2y/jJzDSQEhv5IGaxsDmi/oluRmZK4YrTZ3IlCOGofGf0PnVITUdgXFM1LbRfF/5wfsQGrgWFQhLapU=  ;
+Message-ID: <20050621121744.13642.qmail@web25801.mail.ukl.yahoo.com>
+Received: from [217.167.142.149] by web25801.mail.ukl.yahoo.com via HTTP; Tue, 21 Jun 2005 14:17:44 CEST
+Date:	Tue, 21 Jun 2005 14:17:44 +0200 (CEST)
+From:	moreau francis <francis_moreau2000@yahoo.fr>
+Subject: Re: Using a hal lib in Linux.
+To:	jbglaw@lug-owl.de
+Cc:	linux-mips@linux-mips.org
 MIME-Version: 1.0
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1478
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1478
-X-MIMETrack: Itemize by SMTP Server on msx/Realtek(Release 6.5.1|January 28, 2004) at
- 2005/06/21 =?Bog5?B?pFWkyCAwNzo1MDo0Mw==?=,
-	Serialize by Router on msx/Realtek(Release 6.5.1|January 28, 2004) at 2005/06/21
- =?Bog5?B?pFWkyCAwNzo1MDo0NA==?=,
-	Serialize complete at 2005/06/21 =?Bog5?B?pFWkyCAwNzo1MDo0NA==?=
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Return-Path: <colin@realtek.com.tw>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <francis_moreau2000@yahoo.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8119
+X-archive-position: 8120
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: colin@realtek.com.tw
+X-original-sender: francis_moreau2000@yahoo.fr
 Precedence: bulk
 X-list: linux-mips
 
+Jan-Benedict Glaw wrote:
 
-Hi Steve,
-We are using our own SOC with 4ke core.
+>On Tue, 2005-06-21 11:14:28 +0200, moreau francis
+<francis_moreau2000@yahoo.fr> wrote:
+>
+>>I've got a mips board provided with a library that deals with hardware
+>>management.
+>>This library have been compiled with "sde-lite" gcc. I'm thinking of using
+this
+>>lib into my linux drivers to speed up developement process. Has anyone made
+>>kernel
+>>modifications (specially in Makefiles) in order to link such hal lib into
+>>kernel
+>>code ?
+>
+>
+>Well, usually consensus is to avoid HAL layers or libraries at about any
+>price because they typically add speed penalties and binary-only code,
+>which are both unacceptable.
+>
 
-This will be a commercial product, and it must be very stable... :-)
+Totally agree with you ! But I was wondering if it was possible for a first
+implementation. I will try to rewrite drivers to avoid HAL layers once
+everything will be set up. I'm just trying to get something working very
+quickly, and the hardware seems to be a very unusual one...but once again I
+totally agree with you.
 
-Regards,
-Colin
+Cheers,
 
-
-
-
------ Original Message ----- 
-From: "Steven J. Hill" <sjhill@realitydiluted.com>
-To: <colin@realtek.com.tw>; <linux-mips@linux-mips.org>
-Sent: Tuesday, June 21, 2005 6:57 PM
-Subject: Re: The most stable version of 2.6
+     Francis
 
 
-> It would help if you could tell us which type of processor and
-> board you are using.
-> 
-> -Steve
+
+
+	
+
+	
+		
+___________________________________________________________________________ 
+Appel audio GRATUIT partout dans le monde avec le nouveau Yahoo! Messenger 
+Téléchargez cette version sur http://fr.messenger.yahoo.com

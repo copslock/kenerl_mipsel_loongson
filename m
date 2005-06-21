@@ -1,50 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jun 2005 07:56:34 +0100 (BST)
-Received: from mf2.realtek.com.tw ([IPv6:::ffff:220.128.56.22]:60425 "EHLO
-	mf2.realtek.com.tw") by linux-mips.org with ESMTP
-	id <S8224904AbVFUG4P>; Tue, 21 Jun 2005 07:56:15 +0100
-Received: from msx.realtek.com.tw (unverified [172.21.1.77]) by mf2.realtek.com.tw
- (Content Technologies SMTPRS 4.3.14) with ESMTP id <T71abd0b51adc803816600@mf2.realtek.com.tw> for <linux-mips@linux-mips.org>;
- Tue, 21 Jun 2005 14:58:06 +0800
-Received: from rtpdii3098 ([172.21.98.16])
-          by msx.realtek.com.tw (Lotus Domino Release 6.5.1)
-          with ESMTP id 2005062114583166-5074 ;
-          Tue, 21 Jun 2005 14:58:31 +0800 
-Message-ID: <006201c5762e$4d7f2ac0$106215ac@realtek.com.tw>
-From:	"colin" <colin@realtek.com.tw>
-To:	<linux-mips@linux-mips.org>
-Subject: The most stable version of 2.6
-Date:	Tue, 21 Jun 2005 14:56:09 +0800
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jun 2005 10:15:00 +0100 (BST)
+Received: from web25806.mail.ukl.yahoo.com ([IPv6:::ffff:217.12.10.191]:60004
+	"HELO web25806.mail.ukl.yahoo.com") by linux-mips.org with SMTP
+	id <S8224976AbVFUJOg>; Tue, 21 Jun 2005 10:14:36 +0100
+Received: (qmail 55714 invoked by uid 60001); 21 Jun 2005 09:14:29 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.fr;
+  h=Message-ID:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
+  b=yibFwH+p+xnej1oYGpDT1Vek2vpRIU3Ofcsy5hd3AYwZiPn81DRdiyICyNI1ajEFNACXtZLvEH/TyIy9HQmxVAIv3hMFl8YjnchpeYdHcb8WyhPZSTqZyPZZG/FVBoIPqR24ozQLbWf3qSADvb7yUuVsR1+EJeae+QBC63C2iZo=  ;
+Message-ID: <20050621091429.55712.qmail@web25806.mail.ukl.yahoo.com>
+Received: from [217.167.142.149] by web25806.mail.ukl.yahoo.com via HTTP; Tue, 21 Jun 2005 11:14:28 CEST
+Date:	Tue, 21 Jun 2005 11:14:28 +0200 (CEST)
+From:	moreau francis <francis_moreau2000@yahoo.fr>
+Subject: Using a hal lib in Linux.
+To:	linux-mips@linux-mips.org
 MIME-Version: 1.0
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1478
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1478
-X-MIMETrack: Itemize by SMTP Server on msx/Realtek(Release 6.5.1|January 28, 2004) at
- 2005/06/21 =?Bog5?B?pFWkyCAwMjo1ODozMQ==?=,
-	Serialize by Router on msx/Realtek(Release 6.5.1|January 28, 2004) at 2005/06/21
- =?Bog5?B?pFWkyCAwMjo1ODozMw==?=,
-	Serialize complete at 2005/06/21 =?Bog5?B?pFWkyCAwMjo1ODozMw==?=
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain;
-	charset="big5"
-Return-Path: <colin@realtek.com.tw>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <francis_moreau2000@yahoo.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8115
+X-archive-position: 8116
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: colin@realtek.com.tw
+X-original-sender: francis_moreau2000@yahoo.fr
 Precedence: bulk
 X-list: linux-mips
 
+Hi all,
 
-Hi there,
-We want to run linux on our mips board.
-Stability is an important issue. For so many linux kernel versions, which
-one is good for us to work on?
-What's the difference between 2.6.11 & 2.6.12?
+I've got a mips board provided with a library that deals with hardware
+management.
+This library have been compiled with "sde-lite" gcc. I'm thinking of using this
+lib into my linux drivers to speed up developement process. Has anyone made
+kernel
+modifications (specially in Makefiles) in order to link such hal lib into
+kernel
+code ?
 
-Regards,
-Colin
+Thanks
+
+       Francis
+
+
+	
+
+	
+		
+___________________________________________________________________________ 
+Appel audio GRATUIT partout dans le monde avec le nouveau Yahoo! Messenger 
+Téléchargez cette version sur http://fr.messenger.yahoo.com

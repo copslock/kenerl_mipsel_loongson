@@ -1,85 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jun 2005 12:07:48 +0100 (BST)
-Received: from lug-owl.de ([IPv6:::ffff:195.71.106.12]:15794 "EHLO lug-owl.de")
-	by linux-mips.org with ESMTP id <S8225005AbVFULHb>;
-	Tue, 21 Jun 2005 12:07:31 +0100
-Received: by lug-owl.de (Postfix, from userid 1001)
-	id 7E3E5F002E; Tue, 21 Jun 2005 13:07:29 +0200 (CEST)
-Date:	Tue, 21 Jun 2005 13:07:29 +0200
-From:	Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To:	linux-mips@linux-mips.org
-Subject: Re: Using a hal lib in Linux.
-Message-ID: <20050621110729.GP4498@lug-owl.de>
-Mail-Followup-To: linux-mips@linux-mips.org
-References: <20050621091429.55712.qmail@web25806.mail.ukl.yahoo.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="xexMVKTdXPhpRiVT"
-Content-Disposition: inline
-In-Reply-To: <20050621091429.55712.qmail@web25806.mail.ukl.yahoo.com>
-X-Operating-System: Linux mail 2.6.11.10lug-owl 
-X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
-X-gpg-key: wwwkeys.de.pgp.net
-X-Echelon-Enable: howto poison arsenous mail psychological biological nuclear warfare test the bombastical terror of flooding the spy listeners explosion sex drugs and rock'n'roll
-X-TKUeV: howto poison arsenous mail psychological biological nuclear warfare test the bombastical terror of flooding the spy listeners explosion sex drugs and rock'n'roll
-User-Agent: Mutt/1.5.9i
-Return-Path: <jbglaw@lug-owl.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jun 2005 12:48:59 +0100 (BST)
+Received: from mf2.realtek.com.tw ([IPv6:::ffff:220.128.56.22]:47368 "EHLO
+	mf2.realtek.com.tw") by linux-mips.org with ESMTP
+	id <S8225005AbVFULsZ>; Tue, 21 Jun 2005 12:48:25 +0100
+Received: from msx.realtek.com.tw (unverified [172.21.1.77]) by mf2.realtek.com.tw
+ (Clearswift SMTPRS 5.1.4) with ESMTP id <T71acdc3256dc803816a04@mf2.realtek.com.tw>;
+ Tue, 21 Jun 2005 19:50:16 +0800
+Received: from rtpdii3098 ([172.21.98.16])
+          by msx.realtek.com.tw (Lotus Domino Release 6.5.1)
+          with ESMTP id 2005062119504287-8526 ;
+          Tue, 21 Jun 2005 19:50:42 +0800 
+Message-ID: <002401c57657$1eecb9b0$106215ac@realtek.com.tw>
+From:	"colin" <colin@realtek.com.tw>
+To:	"Steven J. Hill" <sjhill@realitydiluted.com>,
+	<linux-mips@linux-mips.org>
+References: <42B7F2AB.7030805@realitydiluted.com>
+Subject: Re: The most stable version of 2.6
+Date:	Tue, 21 Jun 2005 19:48:20 +0800
+MIME-Version: 1.0
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2800.1478
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1478
+X-MIMETrack: Itemize by SMTP Server on msx/Realtek(Release 6.5.1|January 28, 2004) at
+ 2005/06/21 =?Bog5?B?pFWkyCAwNzo1MDo0Mw==?=,
+	Serialize by Router on msx/Realtek(Release 6.5.1|January 28, 2004) at 2005/06/21
+ =?Bog5?B?pFWkyCAwNzo1MDo0NA==?=,
+	Serialize complete at 2005/06/21 =?Bog5?B?pFWkyCAwNzo1MDo0NA==?=
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Return-Path: <colin@realtek.com.tw>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8118
+X-archive-position: 8119
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jbglaw@lug-owl.de
+X-original-sender: colin@realtek.com.tw
 Precedence: bulk
 X-list: linux-mips
 
 
---xexMVKTdXPhpRiVT
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi Steve,
+We are using our own SOC with 4ke core.
 
-On Tue, 2005-06-21 11:14:28 +0200, moreau francis <francis_moreau2000@yahoo=
-=2Efr> wrote:
-> I've got a mips board provided with a library that deals with hardware
-> management.
-> This library have been compiled with "sde-lite" gcc. I'm thinking of usin=
-g this
-> lib into my linux drivers to speed up developement process. Has anyone ma=
-de
-> kernel
-> modifications (specially in Makefiles) in order to link such hal lib into
-> kernel
-> code ?
+This will be a commercial product, and it must be very stable... :-)
 
-Well, usually consensus is to avoid HAL layers or libraries at about any
-price because they typically add speed penalties and binary-only code,
-which are both unacceptable.
+Regards,
+Colin
 
-MfG, JBG
 
---=20
-Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481             =
-_ O _
-"Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg  =
-_ _ O
- fuer einen Freien Staat voll Freier B=C3=BCrger" | im Internet! |   im Ira=
-k!   O O O
-ret =3D do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM | TCPA)=
-);
 
---xexMVKTdXPhpRiVT
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.1 (GNU/Linux)
+----- Original Message ----- 
+From: "Steven J. Hill" <sjhill@realitydiluted.com>
+To: <colin@realtek.com.tw>; <linux-mips@linux-mips.org>
+Sent: Tuesday, June 21, 2005 6:57 PM
+Subject: Re: The most stable version of 2.6
 
-iD8DBQFCt/TxHb1edYOZ4bsRAvSrAJ4jVk/hGx9B7wOQipk6ecg6BfcFRwCfdHLJ
-Rn1xZ8OD8THaaDgjsmtqNwQ=
-=7Oa3
------END PGP SIGNATURE-----
 
---xexMVKTdXPhpRiVT--
+> It would help if you could tell us which type of processor and
+> board you are using.
+> 
+> -Steve

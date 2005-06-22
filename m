@@ -1,59 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jun 2005 00:26:07 +0100 (BST)
-Received: from straum.hexapodia.org ([IPv6:::ffff:64.81.70.185]:27430 "EHLO
-	straum.hexapodia.org") by linux-mips.org with ESMTP
-	id <S8225426AbVFVXZv>; Thu, 23 Jun 2005 00:25:51 +0100
-Received: by straum.hexapodia.org (Postfix, from userid 22448)
-	id 1F7E029C; Wed, 22 Jun 2005 16:24:47 -0700 (PDT)
-Date:	Wed, 22 Jun 2005 16:24:46 -0700
-From:	Andy Isaacson <adi@hexapodia.org>
-To:	Dave Johnson <djohnson+linuxmips@sw.starentnetworks.com>
-Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH] various sibyte 2.6.x bugfixes
-Message-ID: <20050622232446.GA3141@hexapodia.org>
-References: <17081.32401.574987.337795@cortez.sw.starentnetworks.com> <Pine.LNX.4.61L.0506221616020.4849@blysk.ds.pg.gda.pl> <17081.42083.756755.92799@cortez.sw.starentnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jun 2005 00:49:32 +0100 (BST)
+Received: from wproxy.gmail.com ([IPv6:::ffff:64.233.184.206]:51769 "EHLO
+	wproxy.gmail.com") by linux-mips.org with ESMTP id <S8225334AbVFVXtP> convert rfc822-to-8bit;
+	Thu, 23 Jun 2005 00:49:15 +0100
+Received: by wproxy.gmail.com with SMTP id 57so564186wri
+        for <linux-mips@linux-mips.org>; Wed, 22 Jun 2005 16:48:10 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=E4cZ+TEKIeTeg/e15A4qP/6gX/l7Q/UHC8qOvXx8rRiD1GqDhL4ftgUiPXs9XKsK+LkJuprzx0ZQQGrQ+VdUpEomYEzI9ik8DeOJ7e09BfCp1kp1EQP7cTuvoRyrb3rLhFSW7NCA9AhnCChacbzD1n1FPDkbv9IdrPlNxcpahzY=
+Received: by 10.54.15.71 with SMTP id 71mr775821wro;
+        Wed, 22 Jun 2005 16:48:10 -0700 (PDT)
+Received: by 10.54.71.11 with HTTP; Wed, 22 Jun 2005 16:48:10 -0700 (PDT)
+Message-ID: <2db32b720506221648eed011b@mail.gmail.com>
+Date:	Wed, 22 Jun 2005 16:48:10 -0700
+From:	rolf liu <rolfliu@gmail.com>
+Reply-To: rolf liu <rolfliu@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: booting error on db1550 for kernel 2.4.31
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
 Content-Disposition: inline
-In-Reply-To: <17081.42083.756755.92799@cortez.sw.starentnetworks.com>
-User-Agent: Mutt/1.4.2i
-X-PGP-Fingerprint: 48 01 21 E2 D4 E4 68 D1  B8 DF 39 B2 AF A3 16 B9
-X-PGP-Key-URL: http://web.hexapodia.org/~adi/pgp.txt
-X-Domestic-Surveillance: money launder bomb tax evasion
-Return-Path: <adi@hexapodia.org>
+Return-Path: <rolfliu@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8145
+X-archive-position: 8146
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: adi@hexapodia.org
+X-original-sender: rolfliu@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Great minds think alike...
+I compiled the kernel 2.4.31 using sde tools. Download linux to db1550
+through yamon. but the kernel can't find the NFS root. I tried the NFS
+system from other linux box, and the NFS is ok. Who met this same
+problem?
 
-On Wed, Jun 22, 2005 at 01:48:19PM -0400, Dave Johnson wrote:
-> Now that I look at it more that check isn't needed at all.
-> 
-> zero bits wont make it past irq_affinity_write_proc() so that's not
-> needed.
-> 
-> multiple bits are valid (it's also the default) so just using the
-> first bit that is set should be fine.
+Looking up port of RPC 100003/2 on 10.200.0.198
+RPC: sendmsg returned error 128
+portmap: RPC call returned error 128
+Root-NFS: Unable to get nfsd port number from server, using default
+Looking up port of RPC 100005/1 on 10.200.0.198
+RPC: sendmsg returned error 128
+portmap: RPC call returned error 128
+Root-NFS: Unable to get mountd port number from server, using default
+RPC: sendmsg returned error 128
+mount: RPC call returned error 128
+Root-NFS: Server returned error -128 while mounting /nfsroot/mipsel
+VFS: Unable to mount root fs via NFS, trying floppy.
+kmod: failed to exec /sbin/modprobe -s -k block-major-2, errno = 2
+VFS: Cannot open root device "" or 02:00
+Please append a correct "root=" boot option
+Kernel panic: VFS: Unable to mount root fs on 02:00 
 
-Multiple bits are valid at the API, but the current implementation of
-sb1250_set_affinity can only handle setting affinity to a single CPU, so
-the test should remain.  Unless I'm missing something, which is entirely
-possible.
-
->  	/* Convert logical CPU to physical CPU */
-> -	cpu = cpu_logical_map(i);
-> +	cpu = cpu_logical_map(first_cpu(mask));
-
-Ah, but that's not right, is it?  If I as the admin say "please bind
-IRQs to CPUs 0 and 1" I'll be annoyed to have them all hitting 0.  And
-with the BCM1480 it's no longer an academic question.
-
--andy
+Thanks for the suggestion

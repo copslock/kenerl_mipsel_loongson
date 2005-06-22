@@ -1,72 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Jun 2005 16:25:28 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:30985 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225216AbVFVPZM>; Wed, 22 Jun 2005 16:25:12 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 8A3B7F596C; Wed, 22 Jun 2005 17:24:01 +0200 (CEST)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 03500-06; Wed, 22 Jun 2005 17:24:01 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 4BE0CE1C9D; Wed, 22 Jun 2005 17:24:01 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j5MFNpbE020652;
-	Wed, 22 Jun 2005 17:23:51 +0200
-Date:	Wed, 22 Jun 2005 16:23:59 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	djohnson+linuxmips@sw.starentnetworks.com
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] various sibyte 2.6.x bugfixes
-In-Reply-To: <17081.32401.574987.337795@cortez.sw.starentnetworks.com>
-Message-ID: <Pine.LNX.4.61L.0506221616020.4849@blysk.ds.pg.gda.pl>
-References: <17081.32401.574987.337795@cortez.sw.starentnetworks.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.85.1/951/Wed Jun 22 15:28:13 2005 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Jun 2005 17:23:24 +0100 (BST)
+Received: from mba.ocn.ne.jp ([IPv6:::ffff:210.190.142.172]:38877 "HELO
+	smtp.mba.ocn.ne.jp") by linux-mips.org with SMTP
+	id <S8225398AbVFVQXC>; Wed, 22 Jun 2005 17:23:02 +0100
+Received: from localhost (p6103-ipad204funabasi.chiba.ocn.ne.jp [222.146.93.103])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 09C478418; Thu, 23 Jun 2005 01:21:55 +0900 (JST)
+Date:	Thu, 23 Jun 2005 01:26:29 +0900 (JST)
+Message-Id: <20050623.012629.41198930.anemo@mba.ocn.ne.jp>
+To:	macro@linux-mips.org
+Cc:	kumba@gentoo.org, linux-mips@linux-mips.org
+Subject: Re: .set mips2 breaks 64bit kernel
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <Pine.LNX.4.61L.0506221403420.4849@blysk.ds.pg.gda.pl>
+References: <Pine.LNX.4.61L.0506221330240.4849@blysk.ds.pg.gda.pl>
+	<42B95FB2.1090604@gentoo.org>
+	<Pine.LNX.4.61L.0506221403420.4849@blysk.ds.pg.gda.pl>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8136
+X-archive-position: 8137
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 22 Jun 2005 djohnson+linuxmips@sw.starentnetworks.com wrote:
+>>>>> On Wed, 22 Jun 2005 14:30:41 +0100 (BST), "Maciej W. Rozycki" <macro@linux-mips.org> said:
 
-> -	if (mask) {
-> -		printk("attempted to set irq affinity for irq %d to multiple CPUs\n", irq);
-> +	if ((i == NR_CPUS) || (next_cpu(i, mask) != NR_CPUS)) {
-> +		printk("attempted to set irq affinity for irq %d to zero/multiple CPUs\n", irq);
+macro> But I think there is one possiblity of a problem -- obsolete
+macro> versions of GCC may rely on gas expanding "ll" and "sc" as
+macro> macros, i.e. substitute a name of a symbol rather than a valid
+macro> machine-level address expression (e.g. "0($reg)" or
+macro> "%lo(sym)($reg)") for memory constraints.  Well, by using "m"
+macro> right now we sort of permit it to.
 
- This printk() should be split into two lines.
+Yes, this is my case.
 
->  	d->sbdma_dscrtable = (sbdmadscr_t *) 
-> -		kmalloc(d->sbdma_maxdescr*sizeof(sbdmadscr_t), GFP_KERNEL);
-> +		kmalloc(d->sbdma_maxdescr*sizeof(sbdmadscr_t)+SMP_CACHE_BYTES, GFP_KERNEL);
+A line in net/key/af_key.c:pfkey_create()
 
- Formatting!
+	atomic_inc(&pfkey_socks_nr);
 
-> +	/*
-> +	 * The descriptor table must be aligned to at least 16 bytes or the
-> +	 * MAC will corrupt it. Align it to 32 bytes.
-> +	 */
+was translated to:
 
- Why 32 bytes then?  Too much memory left?
+		.set	mips2					
+1:	ll	$3, pfkey_socks_nr		# atomic_add		
+	addu	$3, 1					
+	sc	$3, pfkey_socks_nr					
+	beqz	$3, 1b					
+	.set	mips0					
 
-> +	if ((unsigned long)d->sbdma_dscrtable & (SMP_CACHE_BYTES-1)) {
-> +		(unsigned long)d->sbdma_dscrtable += SMP_CACHE_BYTES - ((unsigned long)d->sbdma_dscrtable & (SMP_CACHE_BYTES-1));
-> +	}
+Then gas expands the 'll' to LUI and LL (no high 32bit).
 
- Hmm, there's that generic ALIGN() macro -- you should use it...  
-Besides, casts as lvalues are not allowed anymore (and they are hideous 
-anyway).
+I'm using gcc 3.4.4 and binutils 2.16.1.  Not so brand new but not so
+obsolete (I hope :-))
 
-  Maciej
+---
+Atsushi Nemoto

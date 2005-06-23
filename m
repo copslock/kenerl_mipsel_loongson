@@ -1,58 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jun 2005 15:26:30 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:42508 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225534AbVFWO0O>; Thu, 23 Jun 2005 15:26:14 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 9EB55E1C9C; Thu, 23 Jun 2005 16:25:06 +0200 (CEST)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 10476-10; Thu, 23 Jun 2005 16:25:06 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id F40C2E1C8F; Thu, 23 Jun 2005 16:25:05 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j5NEP9Nj027198;
-	Thu, 23 Jun 2005 16:25:09 +0200
-Date:	Thu, 23 Jun 2005 15:25:17 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	moreau francis <francis_moreau2000@yahoo.fr>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: CONFIG_HZ for mips
-In-Reply-To: <20050623134825.73797.qmail@web25807.mail.ukl.yahoo.com>
-Message-ID: <Pine.LNX.4.61L.0506231457200.17155@blysk.ds.pg.gda.pl>
-References: <20050623134825.73797.qmail@web25807.mail.ukl.yahoo.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.85.1/954/Wed Jun 22 21:15:13 2005 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jun 2005 15:50:51 +0100 (BST)
+Received: from straum.hexapodia.org ([IPv6:::ffff:64.81.70.185]:22430 "EHLO
+	straum.hexapodia.org") by linux-mips.org with ESMTP
+	id <S8225534AbVFWOu2>; Thu, 23 Jun 2005 15:50:28 +0100
+Received: by straum.hexapodia.org (Postfix, from userid 22448)
+	id 3B107297; Thu, 23 Jun 2005 07:49:27 -0700 (PDT)
+Date:	Thu, 23 Jun 2005 07:49:27 -0700
+From:	Andy Isaacson <adi@hexapodia.org>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	Andrew Isaacson <adi@broadcom.com>, linux-mips@linux-mips.org
+Subject: Re: [patch 4/5] SiByte fixes for 2.6.12
+Message-ID: <20050623144926.GA10216@hexapodia.org>
+References: <20050622230151.GA17970@broadcom.com> <Pine.LNX.4.61L.0506231208120.17155@blysk.ds.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.61L.0506231208120.17155@blysk.ds.pg.gda.pl>
+User-Agent: Mutt/1.4.2i
+X-PGP-Fingerprint: 48 01 21 E2 D4 E4 68 D1  B8 DF 39 B2 AF A3 16 B9
+X-PGP-Key-URL: http://web.hexapodia.org/~adi/pgp.txt
+X-Domestic-Surveillance: money launder bomb tax evasion
+Return-Path: <adi@hexapodia.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8154
+X-archive-position: 8155
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: adi@hexapodia.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 23 Jun 2005, moreau francis wrote:
-
-> A patch is being integrated into the kernel in order to be able to tune HZ
-> value while configuring the kernel. The values can be 100, 250, 1000 and
-> default value has been moved to 250. The patch is for i386 arch.
+On Thu, Jun 23, 2005 at 12:08:39PM +0100, Maciej W. Rozycki wrote:
+> On Wed, 22 Jun 2005, Andrew Isaacson wrote:
+> > If the CPU Options get out of sync with the CONFIG_CPU_ options,
+> > cpu_cache_init() can end up being a noop.  Stop with a useful message
+> > in that case rather than running on without cache functions.
 > 
-> Why not doing the same on mips arch ?
+>  Wouldn't a build-time error be a better option?
 
- Well, you are welcomed to submit a patch.  Except our situation a bit 
-more complicated as some platforms these values and may need something 
-like 128, 256 or 1024 instead.  This should be properly taken care of.
+The code looks like it's structured to be able to be compiled with
+support for multiple CPUs, say, r4k and SB1; using #error would seem to
+prevent that.
 
-> BTW why the default value on mips is 1000 ?
+With the code as currently structured, you don't know it's going to be a
+noop until runtime comes along and cpu_has_4ktlb is true...
 
- Perhaps we have too much processing power by default.
-
-  Maciej
+-andy

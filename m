@@ -1,50 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jun 2005 12:09:55 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:34823 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225477AbVFWLJd>; Thu, 23 Jun 2005 12:09:33 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 8F7ABE1CC2; Thu, 23 Jun 2005 13:08:31 +0200 (CEST)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 13881-07; Thu, 23 Jun 2005 13:08:31 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 47B74E1CC1; Thu, 23 Jun 2005 13:08:31 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j5NB8Xqn018057;
-	Thu, 23 Jun 2005 13:08:33 +0200
-Date:	Thu, 23 Jun 2005 12:08:39 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Andrew Isaacson <adi@broadcom.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [patch 4/5] SiByte fixes for 2.6.12
-In-Reply-To: <20050622230151.GA17970@broadcom.com>
-Message-ID: <Pine.LNX.4.61L.0506231208120.17155@blysk.ds.pg.gda.pl>
-References: <20050622230151.GA17970@broadcom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jun 2005 14:49:48 +0100 (BST)
+Received: from web25807.mail.ukl.yahoo.com ([IPv6:::ffff:217.12.10.192]:53636
+	"HELO web25807.mail.ukl.yahoo.com") by linux-mips.org with SMTP
+	id <S8225531AbVFWNt3>; Thu, 23 Jun 2005 14:49:29 +0100
+Received: (qmail 73799 invoked by uid 60001); 23 Jun 2005 13:48:25 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.fr;
+  h=Message-ID:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
+  b=KpB6YPCN68QcMIZIlLs5B2Ns8tAunwiFR3OOassj/Qmu7mwgwpCoKWrndVKEyUvnFTokx4LwN1fiRRk6T8W+pvwRlJrrQtd4MnDVL+VQpETjd4uXFnKTHst4Eo8hh8RrbcK4KPdDM7JK/aewYn9MMCxo2pvuo2OsMMlQsJfhygE=  ;
+Message-ID: <20050623134825.73797.qmail@web25807.mail.ukl.yahoo.com>
+Received: from [217.167.142.149] by web25807.mail.ukl.yahoo.com via HTTP; Thu, 23 Jun 2005 15:48:25 CEST
+Date:	Thu, 23 Jun 2005 15:48:25 +0200 (CEST)
+From:	moreau francis <francis_moreau2000@yahoo.fr>
+Subject: CONFIG_HZ for mips
+To:	linux-mips@linux-mips.org
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.85.1/954/Wed Jun 22 21:15:13 2005 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <francis_moreau2000@yahoo.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8152
+X-archive-position: 8153
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: francis_moreau2000@yahoo.fr
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 22 Jun 2005, Andrew Isaacson wrote:
+Hi,
 
-> If the CPU Options get out of sync with the CONFIG_CPU_ options,
-> cpu_cache_init() can end up being a noop.  Stop with a useful message
-> in that case rather than running on without cache functions.
+A patch is being integrated into the kernel in order to be able to tune HZ
+value while configuring the kernel. The values can be 100, 250, 1000 and
+default value has been moved to 250. The patch is for i386 arch.
 
- Wouldn't a build-time error be a better option?
+Why not doing the same on mips arch ?
+BTW why the default value on mips is 1000 ?
 
-  Maciej
+thanks
+
+        Francis
+
+
+	
+
+	
+		
+___________________________________________________________________________ 
+Appel audio GRATUIT partout dans le monde avec le nouveau Yahoo! Messenger 
+Téléchargez cette version sur http://fr.messenger.yahoo.com

@@ -1,70 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jun 2005 08:21:42 +0100 (BST)
-Received: from hosting-bess-43.66.rev.fr.colt.net ([IPv6:::ffff:213.41.66.43]:37862
-	"EHLO smtp.acscom.fr") by linux-mips.org with ESMTP
-	id <S8225472AbVFWHVZ>; Thu, 23 Jun 2005 08:21:25 +0100
-Received: from [192.168.38.26] (cyber25-3.paris.imaginet.fr [195.68.3.25])
-	by smtp.acscom.fr (Postfix) with SMTP id 75FD1564C4
-	for <linux-mips@linux-mips.org>; Thu, 23 Jun 2005 09:24:08 +0200 (CEST)
-Message-ID: <42BA62AA.9040602@cypou.net>
-Date:	Thu, 23 Jun 2005 09:20:10 +0200
-From:	Cyprien Laplace <cyprien@cypou.net>
-User-Agent: Mozilla Thunderbird 0.8 (X11/20040923)
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jun 2005 12:03:20 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:19722 "EHLO
+	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225477AbVFWLDB>; Thu, 23 Jun 2005 12:03:01 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id DC3AFE1CC1; Thu, 23 Jun 2005 13:01:54 +0200 (CEST)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 00672-10; Thu, 23 Jun 2005 13:01:54 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id A38FFE1C8F; Thu, 23 Jun 2005 13:01:54 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j5NB1pEw017567;
+	Thu, 23 Jun 2005 13:01:56 +0200
+Date:	Thu, 23 Jun 2005 12:01:57 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Andrew Isaacson <adi@broadcom.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [patch 1/5] SiByte fixes for 2.6.12
+In-Reply-To: <20050622230042.GA17919@broadcom.com>
+Message-ID: <Pine.LNX.4.61L.0506231153080.17155@blysk.ds.pg.gda.pl>
+References: <20050622230042.GA17919@broadcom.com>
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: Re: booting error on db1550 for kernel 2.4.31
-References: <2db32b720506221648eed011b@mail.gmail.com>
-In-Reply-To: <2db32b720506221648eed011b@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-IPACS-MailScanner-Information: Please contact the ISP for more information
-X-IPACS-MailScanner: Found to be clean
-X-IPACS-MailScanner-SpamCheck: 
-X-IPACS-MailScanner-From: cyprien@cypou.net
-Return-Path: <cyprien@cypou.net>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.85.1/954/Wed Jun 22 21:15:13 2005 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8149
+X-archive-position: 8150
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cyprien@cypou.net
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-rolf liu wrote:
+On Wed, 22 Jun 2005, Andrew Isaacson wrote:
 
->I compiled the kernel 2.4.31 using sde tools. Download linux to db1550
->through yamon. but the kernel can't find the NFS root. I tried the NFS
->system from other linux box, and the NFS is ok. Who met this same
->problem?
->
->Looking up port of RPC 100003/2 on 10.200.0.198
->RPC: sendmsg returned error 128
->portmap: RPC call returned error 128
->Root-NFS: Unable to get nfsd port number from server, using default
->Looking up port of RPC 100005/1 on 10.200.0.198
->RPC: sendmsg returned error 128
->portmap: RPC call returned error 128
->Root-NFS: Unable to get mountd port number from server, using default
->RPC: sendmsg returned error 128
->mount: RPC call returned error 128
->Root-NFS: Server returned error -128 while mounting /nfsroot/mipsel
->VFS: Unable to mount root fs via NFS, trying floppy.
->kmod: failed to exec /sbin/modprobe -s -k block-major-2, errno = 2
->VFS: Cannot open root device "" or 02:00
->Please append a correct "root=" boot option
->Kernel panic: VFS: Unable to mount root fs on 02:00 
->
->Thanks for the suggestion
->
->  
->
-What cmdline did you give to the kernel ?
-Had it an IP address ?
-Can you tcpdump your local ethernet traffic ? Is there any correct ARP 
-traffic ?
+> SB1 does not use the R4K TLB code.
 
-Regards,
-Cyp
+ Well, the flag is not really to specify whether the common code is to be 
+used or not.  It's about whether the TLB is like that of the R4k.  
+Actually it's always been a mystery for me why the common code cannot be 
+used for the SB1, but perhaps there is something specific that I could 
+only discover in that "SB-1 Core User Manual" that I yet have to see, 
+sigh...
+
+ Of course if your TLB is indeed different from that of the R4k, then you 
+shouldn't be setting cp0.config.mt to 1 in the first place...
+
+  Maciej

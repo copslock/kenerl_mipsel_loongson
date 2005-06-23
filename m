@@ -1,64 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jun 2005 23:25:21 +0100 (BST)
-Received: from wproxy.gmail.com ([IPv6:::ffff:64.233.184.193]:10180 "EHLO
-	wproxy.gmail.com") by linux-mips.org with ESMTP id <S8225558AbVFWWZF> convert rfc822-to-8bit;
-	Thu, 23 Jun 2005 23:25:05 +0100
-Received: by wproxy.gmail.com with SMTP id 57so1087469wri
-        for <linux-mips@linux-mips.org>; Thu, 23 Jun 2005 15:24:08 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:reply-to:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=lSbK7kRpSm+qLGHuBD97/heRD3kBLXU/ujEg7eOe7MDCgmkypHSERdFs0dvmk3+TlPYItewE4AaNzO6nxTzf8MB6KhDQTtuck6+9zF3p5EUslGIBDUJTtBXIvUOf9arj13U1kDC31I0mfdgdG6lVmWlm66IKwbrHdEZ0z8al5DQ=
-Received: by 10.54.67.3 with SMTP id p3mr1455475wra;
-        Thu, 23 Jun 2005 15:24:08 -0700 (PDT)
-Received: by 10.54.71.11 with HTTP; Thu, 23 Jun 2005 15:24:08 -0700 (PDT)
-Message-ID: <2db32b7205062315248d000bb@mail.gmail.com>
-Date:	Thu, 23 Jun 2005 15:24:08 -0700
-From:	rolf liu <rolfliu@gmail.com>
-Reply-To: rolf liu <rolfliu@gmail.com>
-To:	Nigel Stephens <nigel@mips.com>
-Subject: Re: which 2.6 kernel can be run on db1550?
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jun 2005 23:28:23 +0100 (BST)
+Received: from straum.hexapodia.org ([IPv6:::ffff:64.81.70.185]:58174 "EHLO
+	straum.hexapodia.org") by linux-mips.org with ESMTP
+	id <S8225558AbVFWW2H>; Thu, 23 Jun 2005 23:28:07 +0100
+Received: by straum.hexapodia.org (Postfix, from userid 22448)
+	id 63B242AE; Thu, 23 Jun 2005 15:27:09 -0700 (PDT)
+Date:	Thu, 23 Jun 2005 15:27:09 -0700
+From:	Andy Isaacson <adi@hexapodia.org>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
 Cc:	linux-mips@linux-mips.org
-In-Reply-To: <42BB33C6.7010707@mips.com>
+Subject: Re: [patch 4/5] SiByte fixes for 2.6.12
+Message-ID: <20050623222709.GC26427@hexapodia.org>
+References: <20050622230151.GA17970@broadcom.com> <Pine.LNX.4.61L.0506231208120.17155@blysk.ds.pg.gda.pl> <20050623144926.GA10216@hexapodia.org> <Pine.LNX.4.61L.0506231601270.17155@blysk.ds.pg.gda.pl>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-References: <2db32b72050623133731f7b098@mail.gmail.com>
-	 <ecb4efd1050623144816f7f528@mail.gmail.com>
-	 <2db32b72050623150411886bbd@mail.gmail.com>
-	 <42BB33C6.7010707@mips.com>
-Return-Path: <rolfliu@gmail.com>
+In-Reply-To: <Pine.LNX.4.61L.0506231601270.17155@blysk.ds.pg.gda.pl>
+User-Agent: Mutt/1.4.2i
+X-PGP-Fingerprint: 48 01 21 E2 D4 E4 68 D1  B8 DF 39 B2 AF A3 16 B9
+X-PGP-Key-URL: http://web.hexapodia.org/~adi/pgp.txt
+X-Domestic-Surveillance: money launder bomb tax evasion
+Return-Path: <adi@hexapodia.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8167
+X-archive-position: 8168
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rolfliu@gmail.com
+X-original-sender: adi@hexapodia.org
 Precedence: bulk
 X-list: linux-mips
 
-I used SED to compile 2.4.31. It seems fine. but got no success on 2.6.*
+On Thu, Jun 23, 2005 at 04:11:51PM +0100, Maciej W. Rozycki wrote:
+> On Thu, 23 Jun 2005, Andy Isaacson wrote:
+> > The code looks like it's structured to be able to be compiled with
+> > support for multiple CPUs, say, r4k and SB1; using #error would seem to
+> > prevent that.
+> > 
+> > With the code as currently structured, you don't know it's going to be a
+> > noop until runtime comes along and cpu_has_4ktlb is true...
+> 
+>  Well, I've had a look at the code and it's such a mess.  Obviously 
+> calling ld_mmu_r4xx0() (or any of the other variants) should not be 
+> compiled conditionally and more specific cases, i.e. based on PRId values 
+> should take precedence.  I'll see if I can make it better.
 
+I certainly won't argue with a cleanup of arch/mips/mm/cache.c, that
+code has annoyed me from first laying eyes on it...
 
-
-On 6/23/05, Nigel Stephens <nigel@mips.com> wrote:
-> 
-> 
-> rolf liu wrote:
-> 
-> >Thanks very much for the information.
-> >
-> >SDE is the toolchain from mips, which is based on gcc 2.96.
-> >
-> >
-> >
-> 
-> Just a quick warning that you should not be using the "SDE lite" package
-> to build a Linux kernel. For that you need the Linux configuration of
-> the toolchain, which is described here
-> http://www.linux-mips.org/wiki/Toolchains#MIPS_SDE
-> 
-> 
->
+-andy

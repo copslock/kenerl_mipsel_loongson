@@ -1,67 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Jun 2005 00:27:47 +0100 (BST)
-Received: from straum.hexapodia.org ([IPv6:::ffff:64.81.70.185]:59162 "EHLO
-	straum.hexapodia.org") by linux-mips.org with ESMTP
-	id <S8225560AbVFWX1c>; Fri, 24 Jun 2005 00:27:32 +0100
-Received: by straum.hexapodia.org (Postfix, from userid 22448)
-	id 651AC2AE; Thu, 23 Jun 2005 16:26:33 -0700 (PDT)
-Date:	Thu, 23 Jun 2005 16:26:33 -0700
-From:	Andy Isaacson <adi@hexapodia.org>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	Andrew Isaacson <adi@broadcom.com>, linux-mips@linux-mips.org
-Subject: Re: [patch 1/5] SiByte fixes for 2.6.12
-Message-ID: <20050623232633.GD26427@hexapodia.org>
-References: <20050622230042.GA17919@broadcom.com> <Pine.LNX.4.61L.0506231153080.17155@blysk.ds.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Jun 2005 00:33:44 +0100 (BST)
+Received: from wproxy.gmail.com ([IPv6:::ffff:64.233.184.195]:61494 "EHLO
+	wproxy.gmail.com") by linux-mips.org with ESMTP id <S8225560AbVFWXd0> convert rfc822-to-8bit;
+	Fri, 24 Jun 2005 00:33:26 +0100
+Received: by wproxy.gmail.com with SMTP id 57so1107862wri
+        for <linux-mips@linux-mips.org>; Thu, 23 Jun 2005 16:32:29 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=pLgPRUbqi3doreKUV91AuzIKwxW/3ApEcpsN58BQZ4kHJLqF/APucN6rOk0IR+NijaWy7vcK7g/qQwnEB9E/PH102TGP7CFzgsPkkFA+40vaBQbOd8c8/ylvUNO8ldAxIT5zisOCOMM/QS8Uwg0cYM+wMuW1oWOa9JCfbYUzM8g=
+Received: by 10.54.36.64 with SMTP id j64mr1485554wrj;
+        Thu, 23 Jun 2005 16:32:29 -0700 (PDT)
+Received: by 10.54.71.11 with HTTP; Thu, 23 Jun 2005 16:32:29 -0700 (PDT)
+Message-ID: <2db32b72050623163268d54ecf@mail.gmail.com>
+Date:	Thu, 23 Jun 2005 16:32:29 -0700
+From:	rolf liu <rolfliu@gmail.com>
+Reply-To: rolf liu <rolfliu@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: how to bring up the second ether on db1550?
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
 Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.61L.0506231153080.17155@blysk.ds.pg.gda.pl>
-User-Agent: Mutt/1.4.2i
-X-PGP-Fingerprint: 48 01 21 E2 D4 E4 68 D1  B8 DF 39 B2 AF A3 16 B9
-X-PGP-Key-URL: http://web.hexapodia.org/~adi/pgp.txt
-X-Domestic-Surveillance: money launder bomb tax evasion
-Return-Path: <adi@hexapodia.org>
+Return-Path: <rolfliu@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8169
+X-archive-position: 8170
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: adi@hexapodia.org
+X-original-sender: rolfliu@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jun 23, 2005 at 12:01:57PM +0100, Maciej W. Rozycki wrote:
-> On Wed, 22 Jun 2005, Andrew Isaacson wrote:
-> > SB1 does not use the R4K TLB code.
-> 
->  Well, the flag is not really to specify whether the common code is to be 
-> used or not.  It's about whether the TLB is like that of the R4k.  
-> Actually it's always been a mystery for me why the common code cannot be 
-> used for the SB1, but perhaps there is something specific that I could 
-> only discover in that "SB-1 Core User Manual" that I yet have to see, 
-> sigh...
-> 
->  Of course if your TLB is indeed different from that of the R4k, then you 
-> shouldn't be setting cp0.config.mt to 1 in the first place...
+LInux 2.4.31 is running on the db1550, but only with 1 ether
+interface, eth0. the eth1 does not seem working. Any idea to bring it
+up?
 
-So I don't know everything that went on during the SB1 MIPS port, but
-what I see at this point makes at least some sense to me.  The SB1 has
-some fancy features that are used in c-sb1.c and thereabouts (the DMA
-pageops, and avoiding work by using the coherency guarantees, among
-others).
-
-While it is worthwhile to abstract that code out some more (and I
-consider it a long-term goal to share as much code as possible with the
-generic r4k/mips32/mips64 code), it works as is and it's not obvious
-what small simplifications should be taken at this point.  (Or at least,
-I'm not smart enough to see what obvious small simplifications should be
-done.)  So for the time being I'm in favor of doing what's needed to
-keep the support from bit-rotting.  I'll keep an eye on whatever
-cleanups you end up doing and keep them up to date with our internal
-tree...
-
-That said, I'm open to suggestions as to what I should do in the short
-term to get the right results.
-
--andy
+thanks

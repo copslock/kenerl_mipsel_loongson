@@ -1,46 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jun 2005 22:00:18 +0100 (BST)
-Received: from wproxy.gmail.com ([IPv6:::ffff:64.233.184.194]:3357 "EHLO
-	wproxy.gmail.com") by linux-mips.org with ESMTP id <S8225552AbVFWVAA> convert rfc822-to-8bit;
-	Thu, 23 Jun 2005 22:00:00 +0100
-Received: by wproxy.gmail.com with SMTP id 57so1054688wri
-        for <linux-mips@linux-mips.org>; Thu, 23 Jun 2005 13:58:58 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jun 2005 22:50:00 +0100 (BST)
+Received: from wproxy.gmail.com ([IPv6:::ffff:64.233.184.206]:59003 "EHLO
+	wproxy.gmail.com") by linux-mips.org with ESMTP id <S8225552AbVFWVto> convert rfc822-to-8bit;
+	Thu, 23 Jun 2005 22:49:44 +0100
+Received: by wproxy.gmail.com with SMTP id 57so1074815wri
+        for <linux-mips@linux-mips.org>; Thu, 23 Jun 2005 14:48:47 -0700 (PDT)
 DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
         s=beta; d=gmail.com;
-        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=ppXBda/KwQysQ/ZQHL8hL00alzUJz03rzzNCvjgpGQcbRCJ5IWRciVaMBlsNOzd9NPOxBXeOqXj/oCLdNznsnKuztnu+rl7VCWKJfb3Gj/HFlO023BFzSn8Iopsvr+2Z+ugtKtvJ/Z/NRBWRVlG1lL3nEJvei+JYyFZ3zuHFgDg=
-Received: by 10.54.31.70 with SMTP id e70mr1413928wre;
-        Thu, 23 Jun 2005 13:58:58 -0700 (PDT)
-Received: by 10.54.71.11 with HTTP; Thu, 23 Jun 2005 13:58:58 -0700 (PDT)
-Message-ID: <2db32b72050623135829f8c4e3@mail.gmail.com>
-Date:	Thu, 23 Jun 2005 13:58:58 -0700
-From:	rolf liu <rolfliu@gmail.com>
-Reply-To: rolf liu <rolfliu@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: keep getting "exec: Permission denied" at booting
+        h=received:message-id:date:from:reply-to:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=JtfpXtvIuNb1gs/7I+ezYsE70uyDBzfIxDp+0ppY5BUBKkdQsPl54yFo1c/kx4edOH3AlpWLqo3vb9CHkpLt3NT0LTqrZBwYGE2G980smsGshv9M160m7KoVAJD/7xxmWSpOLISTQqlaIsm1JrMUd9gnoCZeykb9l5idSehJsXw=
+Received: by 10.54.24.34 with SMTP id 34mr1239956wrx;
+        Thu, 23 Jun 2005 14:48:46 -0700 (PDT)
+Received: by 10.54.41.29 with HTTP; Thu, 23 Jun 2005 14:48:46 -0700 (PDT)
+Message-ID: <ecb4efd1050623144816f7f528@mail.gmail.com>
+Date:	Thu, 23 Jun 2005 17:48:46 -0400
+From:	Clem Taylor <clem.taylor@gmail.com>
+Reply-To: Clem Taylor <clem.taylor@gmail.com>
+To:	rolf liu <rolfliu@gmail.com>
+Subject: Re: which 2.6 kernel can be run on db1550?
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <2db32b72050623133731f7b098@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 8BIT
 Content-Disposition: inline
-Return-Path: <rolfliu@gmail.com>
+References: <2db32b72050623133731f7b098@mail.gmail.com>
+Return-Path: <clem.taylor@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8162
+X-archive-position: 8163
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rolfliu@gmail.com
+X-original-sender: clem.taylor@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-I am running 2.4.31 on ab1550. When the start-up comes at the network
-config, ifup tries to bring up the ethernet interface. Then there
-comes tons of "exec: Permission denied" message. the box just stop
-there.
+On 6/23/05, rolf liu <rolfliu@gmail.com> wrote:
+> I just compiled 2.4.31 and run that on db1550. It works through a NFS
+> root file system. I am thinking of running of 2.6 on db1550. 
 
-I am running through the NFS root filesystem got from redhat, possibly
-7.1. pretty old. Is there a newer NFS available?
+I haven't switched over to 2.6.12, but I'm running 2.6.11 (checked out
+from linux-mips on 2005.03.18) on a Au1550 based board. When I was
+porting to my hardware, the default kernel worked just fine on the
+DBAu1550. I'm using gcc 3.4.3 and 2.15.94.0.2.2 bintools.
 
-Any suggestion?
+> Which one can be compiled by SDE and run this box?
 
-thanks
+I'm not sure what SDE is. I used buildroot to compile my toolchain and
+make my root image.
+
+> I tried 2.6.12 and tried 2.6.12-rc6, but got no luck. They just don't compile.
+
+I haven't had a chance to try 2.6.12 yet.
+
+                                --Clem

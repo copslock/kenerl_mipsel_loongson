@@ -1,57 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jun 2005 22:50:00 +0100 (BST)
-Received: from wproxy.gmail.com ([IPv6:::ffff:64.233.184.206]:59003 "EHLO
-	wproxy.gmail.com") by linux-mips.org with ESMTP id <S8225552AbVFWVto> convert rfc822-to-8bit;
-	Thu, 23 Jun 2005 22:49:44 +0100
-Received: by wproxy.gmail.com with SMTP id 57so1074815wri
-        for <linux-mips@linux-mips.org>; Thu, 23 Jun 2005 14:48:47 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:reply-to:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=JtfpXtvIuNb1gs/7I+ezYsE70uyDBzfIxDp+0ppY5BUBKkdQsPl54yFo1c/kx4edOH3AlpWLqo3vb9CHkpLt3NT0LTqrZBwYGE2G980smsGshv9M160m7KoVAJD/7xxmWSpOLISTQqlaIsm1JrMUd9gnoCZeykb9l5idSehJsXw=
-Received: by 10.54.24.34 with SMTP id 34mr1239956wrx;
-        Thu, 23 Jun 2005 14:48:46 -0700 (PDT)
-Received: by 10.54.41.29 with HTTP; Thu, 23 Jun 2005 14:48:46 -0700 (PDT)
-Message-ID: <ecb4efd1050623144816f7f528@mail.gmail.com>
-Date:	Thu, 23 Jun 2005 17:48:46 -0400
-From:	Clem Taylor <clem.taylor@gmail.com>
-Reply-To: Clem Taylor <clem.taylor@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jun 2005 22:53:16 +0100 (BST)
+Received: from 209-232-97-206.ded.pacbell.net ([IPv6:::ffff:209.232.97.206]:9970
+	"EHLO dns0.mips.com") by linux-mips.org with ESMTP
+	id <S8225552AbVFWVw7>; Thu, 23 Jun 2005 22:52:59 +0100
+Received: from mercury.mips.com (sbcns-dmz [209.232.97.193])
+	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id j5NLprY4020058;
+	Thu, 23 Jun 2005 14:51:53 -0700 (PDT)
+Received: from [192.168.236.16] (grendel [192.168.236.16])
+	by mercury.mips.com (8.12.9/8.12.11) with ESMTP id j5NLppjp015854;
+	Thu, 23 Jun 2005 14:51:51 -0700 (PDT)
+Message-ID: <42BB2FF1.8000902@mips.com>
+Date:	Thu, 23 Jun 2005 23:56:01 +0200
+From:	"Kevin D. Kissell" <kevink@mips.com>
+User-Agent: Mozilla Thunderbird 0.9 (X11/20041103)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
 To:	rolf liu <rolfliu@gmail.com>
-Subject: Re: which 2.6 kernel can be run on db1550?
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <2db32b72050623133731f7b098@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-References: <2db32b72050623133731f7b098@mail.gmail.com>
-Return-Path: <clem.taylor@gmail.com>
+CC:	linux-mips@linux-mips.org
+Subject: Re: keep getting "exec: Permission denied" at booting
+References: <2db32b72050623135829f8c4e3@mail.gmail.com>
+In-Reply-To: <2db32b72050623135829f8c4e3@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.39
+Return-Path: <kevink@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8163
+X-archive-position: 8164
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: clem.taylor@gmail.com
+X-original-sender: kevink@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-On 6/23/05, rolf liu <rolfliu@gmail.com> wrote:
-> I just compiled 2.4.31 and run that on db1550. It works through a NFS
-> root file system. I am thinking of running of 2.6 on db1550. 
+rolf liu wrote:
+> I am running 2.4.31 on ab1550. When the start-up comes at the network
+> config, ifup tries to bring up the ethernet interface. Then there
+> comes tons of "exec: Permission denied" message. the box just stop
+> there.
+> 
+> I am running through the NFS root filesystem got from redhat, possibly
+> 7.1. pretty old. Is there a newer NFS available?
+> 
+> Any suggestion?
 
-I haven't switched over to 2.6.12, but I'm running 2.6.11 (checked out
-from linux-mips on 2005.03.18) on a Au1550 based board. When I was
-porting to my hardware, the default kernel worked just fine on the
-DBAu1550. I'm using gcc 3.4.3 and 2.15.94.0.2.2 bintools.
+Check the options you're using to export the NFS root on the server.
+For example, I note that I've got the no_root_squash and anongid=0
+options set for the MIPS Linux boot area on my Linux PC - but it's
+been a couple of years since I've actually used it, and I don't recall
+where that came from.
 
-> Which one can be compiled by SDE and run this box?
+		Regards,
 
-I'm not sure what SDE is. I used buildroot to compile my toolchain and
-make my root image.
-
-> I tried 2.6.12 and tried 2.6.12-rc6, but got no luck. They just don't compile.
-
-I haven't had a chance to try 2.6.12 yet.
-
-                                --Clem
+		Kevin K.

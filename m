@@ -1,60 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Jun 2005 13:13:38 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:21253 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225550AbVFXMNX>; Fri, 24 Jun 2005 13:13:23 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id DBD6CF596B; Fri, 24 Jun 2005 14:12:27 +0200 (CEST)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 26708-06; Fri, 24 Jun 2005 14:12:27 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 8AB73E1CA6; Fri, 24 Jun 2005 14:12:27 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j5OCATsZ000593;
-	Fri, 24 Jun 2005 14:10:29 +0200
-Date:	Fri, 24 Jun 2005 13:10:36 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Jun 2005 15:05:18 +0100 (BST)
+Received: from embeddededge.com ([IPv6:::ffff:209.113.146.155]:40462 "EHLO
+	penguin.netx4.com") by linux-mips.org with ESMTP
+	id <S8225474AbVFXOFB>; Fri, 24 Jun 2005 15:05:01 +0100
+Received: from [192.168.2.27] (h69-21-252-132.69-21.unk.tds.net [69.21.252.132])
+	by penguin.netx4.com (8.12.8/8.12.9) with ESMTP id j5ODqMws013586;
+	Fri, 24 Jun 2005 09:52:23 -0400
+In-Reply-To: <20050624072541.95080.qmail@web25801.mail.ukl.yahoo.com>
+References: <20050624072541.95080.qmail@web25801.mail.ukl.yahoo.com>
+Mime-Version: 1.0 (Apple Message framework v622)
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Message-Id: <414d5d874e0b9705dc71bd95e0e019ba@embeddedalley.com>
+Content-Transfer-Encoding: 7bit
+Cc:	Ulrich Eckhardt <eckhardt@satorlaser.com>,
+	linux-mips@linux-mips.org
+From:	Dan Malek <dan@embeddedalley.com>
+Subject: Re: which 2.6 kernel can be run on db1550?
+Date:	Fri, 24 Jun 2005 10:04:01 -0400
 To:	moreau francis <francis_moreau2000@yahoo.fr>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: CONFIG_HZ for mips
-In-Reply-To: <20050624072214.42175.qmail@web25802.mail.ukl.yahoo.com>
-Message-ID: <Pine.LNX.4.61L.0506241306300.28452@blysk.ds.pg.gda.pl>
-References: <20050624072214.42175.qmail@web25802.mail.ukl.yahoo.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.85.1/955/Thu Jun 23 23:08:42 2005 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+X-Mailer: Apple Mail (2.622)
+Return-Path: <dan@embeddedalley.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8176
+X-archive-position: 8177
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: dan@embeddedalley.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 24 Jun 2005, moreau francis wrote:
 
-> hmm, each time I sent a patch, it goes into /dev/null. So I believe that is
-> because of my poor programming skills, I prefer the job done by someone
-> skiller than me ;)
+On Jun 24, 2005, at 3:25 AM, moreau francis wrote:
 
- Then you need to find someone who is interested in writing that stuff for 
-you.  Frankly I can't recall any patch addressing HZ from you, but perhaps 
-I haven't watched carefully enough.
+> although 2.6.12 tag doens't exist and HEAD doens't compile (I checked 
+> it
+> yesterday)...
 
-> I grep for HZ in mips arch and can find only 100, 128 and 1000 values.
+I just checked out the top of the linux-mips tree, which is 2.6.12.
+It compiles and runs fine on the Db1500.  I'm now doing the same
+for the Pb1550, but I don't suspect any problems because I have
+been using it for quite some time.  It looks like it is time to update
+the default configuration files, but accepting the default answer for
+any new options seems to work fine.
 
- These are values that are currently in use.
+I am using gcc-3.3.3 or 3.4.1, and some 2.15 version of binutils.
+Using your MIPS SDE tools is going to be a problem because
+they are not up to date with what the source code requires.
 
-> What is the difference between 100 and 128 ?
+Thanks.
 
- -28
 
-  Maciej
+	-- Dan

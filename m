@@ -1,80 +1,194 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Jun 2005 16:43:03 +0100 (BST)
-Received: from zproxy.gmail.com ([IPv6:::ffff:64.233.162.204]:35424 "EHLO
-	zproxy.gmail.com") by linux-mips.org with ESMTP id <S8225474AbVFXPmq> convert rfc822-to-8bit;
-	Fri, 24 Jun 2005 16:42:46 +0100
-Received: by zproxy.gmail.com with SMTP id 13so191164nzp
-        for <linux-mips@linux-mips.org>; Fri, 24 Jun 2005 08:41:48 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:reply-to:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=iWU2KgEztMWE3O5zi89zJ7GW74ThQhn7JVdX+PbQi7yJQxA0+tZXGT48h9qTjY/Gc20oHABOI9tQnVezTUyN85ZQxhJ1yFQbPu1rg5YBfoueSsuIHc+TmjUqzZH1A1eY5JGH5O7wGudlHSX8qN4WbNE7O7OuShc9p5hM5ysm4QI=
-Received: by 10.36.222.5 with SMTP id u5mr1092076nzg;
-        Fri, 24 Jun 2005 08:41:48 -0700 (PDT)
-Received: by 10.36.68.6 with HTTP; Fri, 24 Jun 2005 08:41:48 -0700 (PDT)
-Message-ID: <6097c4905062408414be88eb5@mail.gmail.com>
-Date:	Fri, 24 Jun 2005 19:41:48 +0400
-From:	Maxim Osipov <maxim.osipov@gmail.com>
-Reply-To: maxim@mox.ru
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Jun 2005 23:15:58 +0100 (BST)
+Received: from ntfw.echelon.com ([IPv6:::ffff:205.229.50.10]:22156 "EHLO
+	[205.229.50.10]") by linux-mips.org with ESMTP id <S8225526AbVFXWPn>;
+	Fri, 24 Jun 2005 23:15:43 +0100
+Received: from miles.echelon.com by [205.229.50.10]
+          via smtpd (for mail.linux-mips.org [62.254.210.162]) with ESMTP; Fri, 24 Jun 2005 15:14:53 -0700
+Received: by miles.echelon.echcorp.com with Internet Mail Service (5.5.2653.19)
+	id <NRBDGHVL>; Fri, 24 Jun 2005 15:14:50 -0700
+Message-ID: <5375D9FB1CC3994D9DCBC47C344EEB5905FA4350@miles.echelon.echcorp.com>
+From:	Prashant Viswanathan <vprashant@echelon.com>
 To:	linux-mips@linux-mips.org
-Subject: Fwd: mips64 gdb problem
-In-Reply-To: <20050624141030.GB16942@nevyn.them.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-References: <6097c490506240642317a9836@mail.gmail.com>
-	 <20050624141030.GB16942@nevyn.them.org>
-Return-Path: <maxim.osipov@gmail.com>
+Subject: glibc based toolchain for mips
+Date:	Fri, 24 Jun 2005 15:14:49 -0700
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C5790A.2311A8EB"
+Return-Path: <vprashant@echelon.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8178
+X-archive-position: 8179
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: maxim.osipov@gmail.com
+X-original-sender: vprashant@echelon.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+This message is in MIME format. Since your mail reader does not understand
+this format, some or all of this message may not be legible.
 
-I wonder, is there some way to get debuger working on N64 target?
+------_=_NextPart_001_01C5790A.2311A8EB
+Content-Type: text/plain
 
-Thanks,
-Maxim
+Hi,
+ 
+Is it possible to get a free/open glibc based toolchain for MIPS? Buildroot
+and ucLibc based toolchain seems to work well, but I really need a glibc
+based toolchain. Though I can use the SDE from MIPS technologies to build
+the kernel, I can't seem to use it as a toolchain to compile my own
+applications.
+ 
+Thanks
+Prashant
 
----------- Forwarded message ----------
-From: Daniel Jacobowitz <drow@false.org>
-Date: Jun 24, 2005 6:10 PM
-Subject: Re: mips64 gdb problem
-To: maxim@mox.ru
-Cc: gdb@sources.redhat.com
+------_=_NextPart_001_01C5790A.2311A8EB
+Content-Type: text/html
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:o=3D"urn:schemas-microsoft-com:office:office" =
+xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns=3D"http://www.w3.org/TR/REC-html40">
+
+<head>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Dus-ascii">
 
 
-On Fri, Jun 24, 2005 at 05:42:25PM +0400, Maxim Osipov wrote:
-> Hello,
->
-> I have a problem trying to debug 64-bit mips binary with gdb-6.3. It
-> fails with the following message:
->
-> /home # gdb 64test
-> GNU gdb 6.3
-> Copyright 2004 Free Software Foundation, Inc.
-> GDB is free software, covered by the GNU General Public License, and you are
-> welcome to change it and/or distribute copies of it under certain conditions.
-> Type "show copying" to see the conditions.
-> There is absolutely no warranty for GDB.  Type "show warranty" for details.
-> This GDB was configured as "mips64-linux-gnu"...
-> ../../gdb-6.3/gdb/dwarf2-frame.c:1411: internal-error:
-> decode_frame_entry_1: Assertion `fde->cie != NULL' failed.
-> A problem internal to GDB has been detected,
-> further debugging may prove unreliable.
-> Quit this debugging session? (y or n)
+<meta name=3DProgId content=3DWord.Document>
+<meta name=3DGenerator content=3D"Microsoft Word 10">
+<meta name=3DOriginator content=3D"Microsoft Word 10">
+<link rel=3DFile-List href=3D"cid:filelist.xml@01C578CF.EB2EE690">
+<!--[if gte mso 9]><xml>
+ <o:OfficeDocumentSettings>
+  <o:DoNotRelyOnCSS/>
+ </o:OfficeDocumentSettings>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:SpellingState>Clean</w:SpellingState>
+  <w:GrammarState>Clean</w:GrammarState>
+  <w:DocumentKind>DocumentEmail</w:DocumentKind>
+  <w:EnvelopeVis/>
+  <w:Compatibility>
+   <w:BreakWrappedTables/>
+   <w:SnapToGridInCell/>
+   <w:WrapTextWithPunct/>
+   <w:UseAsianBreakRules/>
+  </w:Compatibility>
+  <w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+span.EmailStyle17
+	{mso-style-type:personal-compose;
+	mso-style-noshow:yes;
+	mso-ansi-font-size:10.0pt;
+	mso-bidi-font-size:10.0pt;
+	font-family:Arial;
+	mso-ascii-font-family:Arial;
+	mso-hansi-font-family:Arial;
+	mso-bidi-font-family:Arial;
+	color:windowtext;}
+span.SpellE
+	{mso-style-name:"";
+	mso-spl-e:yes;}
+span.GramE
+	{mso-style-name:"";
+	mso-gram-e:yes;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+<!--[if gte mso 10]>
+<style>
+ /* Style Definitions */=20
+ table.MsoNormalTable
+	{mso-style-name:"Table Normal";
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-noshow:yes;
+	mso-style-parent:"";
+	mso-padding-alt:0in 5.4pt 0in 5.4pt;
+	mso-para-margin:0in;
+	mso-para-margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";}
+</style>
+<![endif]-->
+</head>
 
-GCC generates a wacky 64-bit format, otherwise only used on IRIX.  I
-think this is a bug in GCC.  GDB could be adapted to generally sort of
-cope with it, but not completely - there's some ambiguity.
+<body lang=3DEN-US link=3Dblue vlink=3Dpurple =
+style=3D'tab-interval:.5in'>
 
---
-Daniel Jacobowitz
-CodeSourcery, LLC
+<div class=3DSection1>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Hi,<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Is it possible to get a free/open <span =
+class=3DSpellE>glibc</span>
+based <span class=3DSpellE>toolchain</span> for MIPS? <span =
+class=3DSpellE>Buildroot</span>
+and <span class=3DSpellE>ucLibc</span> based <span =
+class=3DSpellE>toolchain</span>
+seems to work well, but I really need a <span =
+class=3DSpellE>glibc</span> based <span
+class=3DSpellE>toolchain</span>. Though I can use the SDE from MIPS =
+technologies
+to build the kernel, I can't seem to use it as a <span =
+class=3DSpellE>toolchain</span>
+to compile my own applications.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Thanks<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Prashant<o:p></o:p></span></font></p>
+
+</div>
+
+</body>
+
+</html>
+
+------_=_NextPart_001_01C5790A.2311A8EB--

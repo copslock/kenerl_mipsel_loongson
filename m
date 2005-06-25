@@ -1,53 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Jun 2005 04:29:11 +0100 (BST)
-Received: from sccrmhc14.comcast.net ([IPv6:::ffff:204.127.202.59]:47542 "EHLO
-	sccrmhc14.comcast.net") by linux-mips.org with ESMTP
-	id <S8225576AbVFYD2y>; Sat, 25 Jun 2005 04:28:54 +0100
-Received: from [192.168.1.4] (pcp0011842295pcs.waldrf01.md.comcast.net[69.251.97.45])
-          by comcast.net (sccrmhc14) with ESMTP
-          id <20050625032800014004f1pse>; Sat, 25 Jun 2005 03:28:00 +0000
-Message-ID: <42BCD015.5030803@gentoo.org>
-Date:	Fri, 24 Jun 2005 23:31:33 -0400
-From:	Kumba <kumba@gentoo.org>
-User-Agent: Mozilla Thunderbird 1.0.2 (Windows/20050317)
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Jun 2005 06:52:50 +0100 (BST)
+Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:53768 "EHLO
+	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8225719AbVFYFwa>;
+	Sat, 25 Jun 2005 06:52:30 +0100
+Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
+	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
+	id 1Dm3rU-00083h-00; Sat, 25 Jun 2005 07:09:52 +0100
+Received: from olympia.mips.com ([192.168.192.128] helo=boris)
+	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1Dm3ZW-00024w-00; Sat, 25 Jun 2005 06:51:18 +0100
+From:	Dominic Sweetman <dom@mips.com>
 MIME-Version: 1.0
-To:	Prashant Viswanathan <vprashant@echelon.com>
-CC:	linux-mips@linux-mips.org
-Subject: Re: glibc based toolchain for mips
-References: <5375D9FB1CC3994D9DCBC47C344EEB5905FA4351@miles.echelon.echcorp.com>
-In-Reply-To: <5375D9FB1CC3994D9DCBC47C344EEB5905FA4351@miles.echelon.echcorp.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <kumba@gentoo.org>
+Message-ID: <17084.61658.662352.432937@mips.com>
+Date:	Sat, 25 Jun 2005 06:51:22 +0100
+To:	madprops@gmx.net
+Cc:	linux-mips@linux-mips.org
+Subject: Re: tlb magic
+In-Reply-To: <18788.1118764826@www21.gmx.net>
+References: <17069.62407.584863.185198@mips.com>
+	<18788.1118764826@www21.gmx.net>
+X-Mailer: VM 7.17 under 21.4 (patch 15) "Security Through Obscurity" XEmacs Lucid
+X-MTUK-Scanner:	Found to be clean
+X-MTUK-SpamCheck: not spam (whitelisted), SpamAssassin (score=-4.838,
+	required 4, AWL, BAYES_00)
+Return-Path: <dom@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8190
+X-archive-position: 8191
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: dom@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-Prashant Viswanathan wrote:
+
+Long ago...
+
+> yes, I'm reading "See MIPS Run". So thanks for the online support that comes
+> with it. Now, if I got it correctly, the exception routing described in
+> section 6.7 uses per-process mappings for kseg2, i.e. that e.g. the first
+> 2MB of (each) kseg2 are used  as page table of the corresponding process and
+> maybe another few kb for process related stuff. Provided the page tables are
+> continuously at the same address ( e.g. KSEG2_BASE ) a change of ASID in
+> EntryHi would indeed make a change of the kseg2 pointer in Context
+> unnecessary ( it always points to KSEG2_BASE ). The mapping of kseg2 would
+> automatically change as the global bit is set to zero. 
+
+Yes.  I think I recall that the first BSD4.3 ports for MIPS had a
+fixed-virtual address per-process structure which was extended to
+include the L2 page table.
+
+> Using the standard page table approach I would now need an additional page
+> table for each process in order to map those 2+x MB in kseg2 which I could
+> put in kseg0/1 or in kseg2 with 'wired' TLB entries.
 > 
-> Thanks. But what I am really looking for is to cross-compile on a Linux i386
-> host. I think the SDE from MIPS can be customized to do this. But I am not
-> sure on how to proceed. Perhaps somebody can point me in the right
-> direction...
+> If that's the way to go - why is it only used in early BSD ports of like
+> 1987 ? Are there any troubles with it or have other mechanisms turned out to
+> be better for any reason ?
 
-If you have an x86 box running Gentoo, there's the `sys-devel/crossdev` package 
-for generating a wide variety of cross-compilers.  If you're running another 
-distribution, you'll want to check out Dan Kegel's `crosstool` package at: 
-http://kegel.com/crosstool/
+It's rather a lot of assumptions to build into architecture-dependent
+code, not very flexible, not very SMP-friendly, and in other ways not
+as scalable as one would like.
 
+Current Linux systems accept more computation in the TLB miss
+handler in order to use largely portable data structures for keeping
+page tables.  You can always push at that trade-off...
 
---Kumba
-
--- 
-Gentoo/MIPS Team Lead
-Gentoo Foundation Board of Trustees
-
-"Such is oft the course of deeds that move the wheels of the world: small hands 
-do them because they must, while the eyes of the great are elsewhere."  --Elrond
+--
+Dominic Sweetman
+MIPS Technologies

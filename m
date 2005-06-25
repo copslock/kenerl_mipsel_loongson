@@ -1,74 +1,115 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Jun 2005 06:52:50 +0100 (BST)
-Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:53768 "EHLO
-	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8225719AbVFYFwa>;
-	Sat, 25 Jun 2005 06:52:30 +0100
-Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
-	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
-	id 1Dm3rU-00083h-00; Sat, 25 Jun 2005 07:09:52 +0100
-Received: from olympia.mips.com ([192.168.192.128] helo=boris)
-	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
-	id 1Dm3ZW-00024w-00; Sat, 25 Jun 2005 06:51:18 +0100
-From:	Dominic Sweetman <dom@mips.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-ID: <17084.61658.662352.432937@mips.com>
-Date:	Sat, 25 Jun 2005 06:51:22 +0100
-To:	madprops@gmx.net
-Cc:	linux-mips@linux-mips.org
-Subject: Re: tlb magic
-In-Reply-To: <18788.1118764826@www21.gmx.net>
-References: <17069.62407.584863.185198@mips.com>
-	<18788.1118764826@www21.gmx.net>
-X-Mailer: VM 7.17 under 21.4 (patch 15) "Security Through Obscurity" XEmacs Lucid
-X-MTUK-Scanner:	Found to be clean
-X-MTUK-SpamCheck: not spam (whitelisted), SpamAssassin (score=-4.838,
-	required 4, AWL, BAYES_00)
-Return-Path: <dom@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Jun 2005 14:20:58 +0100 (BST)
+Received: from hydra.gt.owl.de ([IPv6:::ffff:195.71.99.218]:30127 "EHLO
+	hydra.gt.owl.de") by linux-mips.org with ESMTP id <S8225352AbVFYNUg>;
+	Sat, 25 Jun 2005 14:20:36 +0100
+Received: by hydra.gt.owl.de (Postfix, from userid 104)
+	id 5CD8B199471; Sat, 25 Jun 2005 15:19:48 +0200 (CEST)
+Received: by paradigm.rfc822.org (Postfix, from userid 1000)
+	id 9D24C138010; Sat, 25 Jun 2005 15:19:39 +0200 (CEST)
+Date:	Sat, 25 Jun 2005 15:19:38 +0200
+From:	Florian Lohoff <flo@rfc822.org>
+To:	linux-mips@linux-mips.org
+Subject: [patch] blast_scache nop for sc cpus without scache
+Message-ID: <20050625131938.GA7669@paradigm.rfc822.org>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="DocE+STaALJfprDB"
+Content-Disposition: inline
+Organization: rfc822 - pure communication
+X-SpiderMe: mh-200506251430@listme.rfc822.org
+User-Agent: Mutt/1.5.9i
+Return-Path: <flo@rfc822.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8191
+X-archive-position: 8192
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dom@mips.com
+X-original-sender: flo@rfc822.org
 Precedence: bulk
 X-list: linux-mips
 
 
-Long ago...
+--DocE+STaALJfprDB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> yes, I'm reading "See MIPS Run". So thanks for the online support that comes
-> with it. Now, if I got it correctly, the exception routing described in
-> section 6.7 uses per-process mappings for kseg2, i.e. that e.g. the first
-> 2MB of (each) kseg2 are used  as page table of the corresponding process and
-> maybe another few kb for process related stuff. Provided the page tables are
-> continuously at the same address ( e.g. KSEG2_BASE ) a change of ASID in
-> EntryHi would indeed make a change of the kseg2 pointer in Context
-> unnecessary ( it always points to KSEG2_BASE ). The mapping of kseg2 would
-> automatically change as the global bit is set to zero. 
 
-Yes.  I think I recall that the first BSD4.3 ports for MIPS had a
-fixed-virtual address per-process structure which was extended to
-include the L2 page table.
+Index: arch/mips/mm/c-r4k.c
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+RCS file: /scratch/local/linux-mips-cvs/linux/arch/mips/mm/c-r4k.c,v
+retrieving revision 1.108
+diff -u -p -r1.108 c-r4k.c
+--- arch/mips/mm/c-r4k.c	25 Apr 2005 16:36:23 -0000	1.108
++++ arch/mips/mm/c-r4k.c	25 Jun 2005 13:15:55 -0000
+@@ -225,6 +225,8 @@ static inline void r4k_blast_icache_setu
+=20
+ static void (* r4k_blast_scache_page)(unsigned long addr);
+=20
++static void blast_scache_page_nop(unsigned long page) {}
++
+ static inline void r4k_blast_scache_page_setup(void)
+ {
+ 	unsigned long sc_lsize =3D cpu_scache_line_size();
+@@ -237,10 +239,14 @@ static inline void r4k_blast_scache_page
+ 		r4k_blast_scache_page =3D blast_scache64_page;
+ 	else if (sc_lsize =3D=3D 128)
+ 		r4k_blast_scache_page =3D blast_scache128_page;
++	else
++		r4k_blast_scache_page =3D blast_scache_page_nop;
+ }
+=20
+ static void (* r4k_blast_scache_page_indexed)(unsigned long addr);
+=20
++static void blast_scache_page_indexed_nop(unsigned long page) {}
++
+ static inline void r4k_blast_scache_page_indexed_setup(void)
+ {
+ 	unsigned long sc_lsize =3D cpu_scache_line_size();
+@@ -253,10 +259,14 @@ static inline void r4k_blast_scache_page
+ 		r4k_blast_scache_page_indexed =3D blast_scache64_page_indexed;
+ 	else if (sc_lsize =3D=3D 128)
+ 		r4k_blast_scache_page_indexed =3D blast_scache128_page_indexed;
++	else=20
++		r4k_blast_scache_page_indexed =3D blast_scache_page_indexed_nop;
+ }
+=20
+ static void (* r4k_blast_scache)(void);
+=20
++static void blast_scache_nop(void ) {}
++
+ static inline void r4k_blast_scache_setup(void)
+ {
+ 	unsigned long sc_lsize =3D cpu_scache_line_size();
+@@ -269,6 +279,8 @@ static inline void r4k_blast_scache_setu
+ 		r4k_blast_scache =3D blast_scache64;
+ 	else if (sc_lsize =3D=3D 128)
+ 		r4k_blast_scache =3D blast_scache128;
++	else=20
++		r4k_blast_scache =3D blast_scache_nop;
+ }
+=20
+ /*
 
-> Using the standard page table approach I would now need an additional page
-> table for each process in order to map those 2+x MB in kseg2 which I could
-> put in kseg0/1 or in kseg2 with 'wired' TLB entries.
-> 
-> If that's the way to go - why is it only used in early BSD ports of like
-> 1987 ? Are there any troubles with it or have other mechanisms turned out to
-> be better for any reason ?
+--=20
+Florian Lohoff                  flo@rfc822.org             +49-171-2280134
+                        Heisenberg may have been here.
 
-It's rather a lot of assumptions to build into architecture-dependent
-code, not very flexible, not very SMP-friendly, and in other ways not
-as scalable as one would like.
+--DocE+STaALJfprDB
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
 
-Current Linux systems accept more computation in the TLB miss
-handler in order to use largely portable data structures for keeping
-page tables.  You can always push at that trade-off...
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.4 (GNU/Linux)
 
---
-Dominic Sweetman
-MIPS Technologies
+iD8DBQFCvVnqUaz2rXW+gJcRAhf3AJ9qmjaRrUmzsq6XDO8A9dIzoTOUqwCfWIYq
+lVp9oldmagksirSH9vfZNG4=
+=OVQO
+-----END PGP SIGNATURE-----
+
+--DocE+STaALJfprDB--

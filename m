@@ -1,64 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jun 2005 16:31:46 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:35858 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225976AbVF0PbZ>; Mon, 27 Jun 2005 16:31:25 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id BB84CE1C8D; Mon, 27 Jun 2005 17:30:47 +0200 (CEST)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 27347-10; Mon, 27 Jun 2005 17:30:47 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 66B70E1C8A; Mon, 27 Jun 2005 17:30:47 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j5RFUpIv025119;
-	Mon, 27 Jun 2005 17:30:51 +0200
-Date:	Mon, 27 Jun 2005 16:31:00 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Florian Lohoff <flo@rfc822.org>, linux-mips@linux-mips.org
-Subject: Re: [patch] blast_scache nop for sc cpus without scache
-In-Reply-To: <20050627143633.GD28082@linux-mips.org>
-Message-ID: <Pine.LNX.4.61L.0506271616240.23903@blysk.ds.pg.gda.pl>
-References: <20050625131938.GA7669@paradigm.rfc822.org> <20050625160316.GP6953@linux-mips.org>
- <20050625175048.GA25276@alpha.franken.de> <Pine.LNX.4.61L.0506271309500.15406@blysk.ds.pg.gda.pl>
- <20050627143633.GD28082@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jun 2005 17:47:38 +0100 (BST)
+Received: from moutng.kundenserver.de ([IPv6:::ffff:212.227.126.183]:23232
+	"EHLO moutng.kundenserver.de") by linux-mips.org with ESMTP
+	id <S8225981AbVF0QrX>; Mon, 27 Jun 2005 17:47:23 +0100
+Received: from p54A2A924.dip0.t-ipconnect.de [84.162.169.36] (helo=[192.168.178.44])
+	by mrelayeu.kundenserver.de with ESMTP (Nemesis),
+	id 0ML2Dk-1Dmwkz3khq-0006ka; Mon, 27 Jun 2005 18:46:49 +0200
+Message-ID: <42C02DB5.9010206@cantastic.de>
+Date:	Mon, 27 Jun 2005 18:47:49 +0200
+From:	=?ISO-8859-15?Q?Ralf_R=F6sch?= <linux@cantastic.de>
+User-Agent: Mozilla Thunderbird 1.0.2 (Windows/20050317)
+X-Accept-Language: de-DE, de, en-us, en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.85.1/958/Mon Jun 27 00:22:01 2005 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+To:	linux-mips@linux-mips.org
+Subject: [PATCH]  tx4927_setup.c Get rid of early_init ...
+Content-Type: text/plain; charset=ISO-8859-15; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: kundenserver.de abuse@kundenserver.de login:fe0074b40cafaf3a4e4a4699a3836908
+Return-Path: <linux@cantastic.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8208
+X-archive-position: 8209
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: linux@cantastic.de
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 27 Jun 2005, Ralf Baechle wrote:
+This patch leaves the TX4927 board without an board setup handler
+and the linker ends with an unknown plat_setup() error.
+I would propose the following patch:
 
-> What matters isn't the presence of a second level cache but the actual
-> properties.  The old code was relying almost exclusively on the precense
-> of an S-cache, so had to be very liberal in it's assumption about that
-> cache's properties.  Performancewise that sucked, badly.
+Index: arch/mips/tx4927/common/tx4927_setup.c
+===================================================================
+RCS file: /home/cvs/linux/arch/mips/tx4927/common/tx4927_setup.c,v
+retrieving revision 1.8
+diff -u -r1.8 tx4927_setup.c
+--- arch/mips/tx4927/common/tx4927_setup.c      21 Jun 2005 13:56:32 -00001.8
++++ arch/mips/tx4927/common/tx4927_setup.c      27 Jun 2005 16:43:39 -0000
+@@ -64,7 +64,7 @@
+ }
 
- Well, I do think the defaults for these "features to be overridden" 
-should be liberal about accepting what's available.  That is they should 
-never take anything for granted.  Performance doesn't matter.  Code has to 
-be correct.  It's up to a platform maintainer to tune it if desired and 
-possible.
 
- And if we go back in time for c-r4k.c far enough, then we'll see these 
-setup_scache_funcs() and setup_noscache_funcs() functions we used to have 
-for proper handling of set-ups both with and without secondary caches.  
-There could have been bugs, certainly, but at least the framework was in 
-place.
+-static void __init tx4927_setup(void)
++void __init plat_setup(void)
+ {
+        board_time_init = tx4927_time_init;
+        board_timer_setup = tx4927_timer_setup;
 
-  Maciej
+--
+  Ralf

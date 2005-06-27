@@ -1,73 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jun 2005 11:08:49 +0100 (BST)
-Received: from moutng.kundenserver.de ([IPv6:::ffff:212.227.126.171]:37825
-	"EHLO moutng.kundenserver.de") by linux-mips.org with ESMTP
-	id <S8225940AbVF0KIe>; Mon, 27 Jun 2005 11:08:34 +0100
-Received: from pD95289E9.dip0.t-ipconnect.de [217.82.137.233] (helo=gaspode.madsworld.lan)
-	by mrelayeu.kundenserver.de with ESMTP (Nemesis),
-	id 0MKwh2-1DmqX10Bf3-0003Gk; Mon, 27 Jun 2005 12:07:59 +0200
-Received: from mad by gaspode.madsworld.lan with local (Exim 4.50)
-	id 1DmqX0-0007Cc-45
-	for linux-mips@linux-mips.org; Mon, 27 Jun 2005 12:07:58 +0200
-Date:	Mon, 27 Jun 2005 12:07:58 +0200
-From:	Markus Dahms <mad@automagically.de>
-To:	linux-mips@linux-mips.org
-Subject: 2.6 on IP22 (Indy)
-Message-ID: <20050627100757.GA27679@gaspode.automagically.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.9i
-X-Provags-ID: kundenserver.de abuse@kundenserver.de login:896705dcda322f33ae3752a7fdb3dc09
-Return-Path: <mad@automagically.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jun 2005 13:05:15 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:65298 "EHLO
+	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225951AbVF0ME6>; Mon, 27 Jun 2005 13:04:58 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 485E6E1C95; Mon, 27 Jun 2005 14:04:14 +0200 (CEST)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 18474-10; Mon, 27 Jun 2005 14:04:14 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id EC0BFE1C7C; Mon, 27 Jun 2005 14:04:13 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j5RC4Arh014265;
+	Mon, 27 Jun 2005 14:04:10 +0200
+Date:	Mon, 27 Jun 2005 13:04:17 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Dominic Sweetman <dom@mips.com>, madprops@gmx.net,
+	linux-mips@linux-mips.org
+Subject: Re: tlb magic
+In-Reply-To: <20050625144154.GO6953@linux-mips.org>
+Message-ID: <Pine.LNX.4.61L.0506271302210.15406@blysk.ds.pg.gda.pl>
+References: <17069.62407.584863.185198@mips.com> <18788.1118764826@www21.gmx.net>
+ <17084.61658.662352.432937@mips.com> <20050625144154.GO6953@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.85.1/958/Mon Jun 27 00:22:01 2005 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8201
+X-archive-position: 8202
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mad@automagically.de
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi there,
+On Sat, 25 Jun 2005, Ralf Baechle wrote:
 
-I'm trying to run a current 2.6 kernel (LinuxMIPS CVS) on my
-Indy(s). It should be a 64-bit kernel (just for fun, but I tried
-32-bit, too). From the mailing list archives some time ago (about
-half a year) I learned that there are known problems.
+> The most useful useful trick of all will be increasing the pagesize to
+> grow beyond the small pagesize of 4k - for expected significant
+> performance benefits because the the TLB reach will increase but also
+> virtual aliases will go away on about anything but R4000SC returning us
+> to the promised lands of simplicity of cache managment :-)
 
-My experiments: Indy with R4600PC (133MHz) boots to userspace
+ But that we have already done, haven't we? ;-)
 
-| ...
-| EXT3-fs: mounted filesystem with ordered data mode.
-| atkbd.c: keyboard reset failed on hpc3ps2/serio0
-| VFS: Mounted root (ext3 filesystem) readonly.
-| Freeing unused kernel memory: 204k freed
-| INIT: version 2.86 booting
-
-and dies then :(. The same machine, but with a R4000PC (100MHz)
-processor module doesn't even come so far:
-
-| arcsboot: ARCS Linux ext2fs loader 0.3.8.6
-|
-| Loading 2.6.12-64 from scsi(0)disk(2)rdisk(0)partition(0)
-| Allocated 0x38 bytes for segments
-| Loading 64-bit executable
-| Loading program segment 1 at 0x88004000, offset=0x0 4000, size = \
-| 0x0 3c4086
-| 3c0000      (cache: 95.3%)Zeroing memory at 0x883c8086, size = \
-| 0x42f9a
-| Starting ELF64 kernel
-
-no more action at this point....
-
-Are there chances to get the machine working with a current kernel
-(2.4.x works fine :), is there work going on?
-
-Thanks anyway,
-
-        Markus
-
---
-Yip yip yip yip yap yap yip *BANG* --- NO TERRIER
+  Maciej

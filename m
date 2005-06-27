@@ -1,29 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jun 2005 13:05:15 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:65298 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jun 2005 13:46:23 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:6160 "EHLO
 	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225951AbVF0ME6>; Mon, 27 Jun 2005 13:04:58 +0100
+	id <S8225399AbVF0MqH>; Mon, 27 Jun 2005 13:46:07 +0100
 Received: from localhost (localhost [127.0.0.1])
 	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 485E6E1C95; Mon, 27 Jun 2005 14:04:14 +0200 (CEST)
+	id 44027E1CAC; Mon, 27 Jun 2005 14:45:30 +0200 (CEST)
 Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
  by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 18474-10; Mon, 27 Jun 2005 14:04:14 +0200 (CEST)
+ id 26842-01; Mon, 27 Jun 2005 14:45:30 +0200 (CEST)
 Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
 	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id EC0BFE1C7C; Mon, 27 Jun 2005 14:04:13 +0200 (CEST)
+	id A52BCE1C95; Mon, 27 Jun 2005 14:45:29 +0200 (CEST)
 Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j5RC4Arh014265;
-	Mon, 27 Jun 2005 14:04:10 +0200
-Date:	Mon, 27 Jun 2005 13:04:17 +0100 (BST)
+	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j5RCjWua016775;
+	Mon, 27 Jun 2005 14:45:32 +0200
+Date:	Mon, 27 Jun 2005 13:45:39 +0100 (BST)
 From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Dominic Sweetman <dom@mips.com>, madprops@gmx.net,
-	linux-mips@linux-mips.org
-Subject: Re: tlb magic
-In-Reply-To: <20050625144154.GO6953@linux-mips.org>
-Message-ID: <Pine.LNX.4.61L.0506271302210.15406@blysk.ds.pg.gda.pl>
-References: <17069.62407.584863.185198@mips.com> <18788.1118764826@www21.gmx.net>
- <17084.61658.662352.432937@mips.com> <20050625144154.GO6953@linux-mips.org>
+To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc:	Ralf Baechle <ralf@linux-mips.org>,
+	Florian Lohoff <flo@rfc822.org>, linux-mips@linux-mips.org
+Subject: Re: [patch] blast_scache nop for sc cpus without scache
+In-Reply-To: <20050625175048.GA25276@alpha.franken.de>
+Message-ID: <Pine.LNX.4.61L.0506271309500.15406@blysk.ds.pg.gda.pl>
+References: <20050625131938.GA7669@paradigm.rfc822.org> <20050625160316.GP6953@linux-mips.org>
+ <20050625175048.GA25276@alpha.franken.de>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 X-Virus-Scanned: ClamAV 0.85.1/958/Mon Jun 27 00:22:01 2005 on piorun.ds.pg.gda.pl
@@ -33,7 +33,7 @@ Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8202
+X-archive-position: 8203
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,14 +41,27 @@ X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 25 Jun 2005, Ralf Baechle wrote:
+On Sat, 25 Jun 2005, Thomas Bogendoerfer wrote:
 
-> The most useful useful trick of all will be increasing the pagesize to
-> grow beyond the small pagesize of 4k - for expected significant
-> performance benefits because the the TLB reach will increase but also
-> virtual aliases will go away on about anything but R4000SC returning us
-> to the promised lands of simplicity of cache managment :-)
+> > > Subject: [patch] blast_scache nop for sc cpus without scache
+> > 
+> > Interesting.  Which system needs this patch?
+> 
+> RM400; looks like the secondary cache on the cpu module isn't normally
+> attached, but like the board caches on den Indy. CONF_SC isn't set
+> in cp0 config, but the cpu is an R4400SC -> crash in r4k_scache_blast*.
 
- But that we have already done, haven't we? ;-)
+ Are you sure CONF_SC isn't set?  That would be weird, it's one of the 
+boot-mode settings so it would be hard to get it wrong.  What's printed 
+upon bootstrap about caches?
+
+ Anyway these days we apparently ignore the result of the S-cache probe 
+and the sc_present variable.  The only values that determine whether an 
+S-cache is present or not are: cpu_has_dc_aliases, cpu_has_ic_fills_f_dc 
+and cpu_has_subset_pcaches which you need to get right for your 
+configuration -- I guess cpu_has_dc_aliases == 0, cpu_has_ic_fills_f_dc == 
+1 and cpu_has_subset_pcaches == 0 should be right to fulfil your needs 
+(but it may break elsewhere).  Have I heard: "serious brain damage" from 
+you?  Well, I couldn't agree more...
 
   Maciej

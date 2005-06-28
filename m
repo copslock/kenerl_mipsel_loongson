@@ -1,42 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Jun 2005 01:07:21 +0100 (BST)
-Received: from wproxy.gmail.com ([IPv6:::ffff:64.233.184.207]:5928 "EHLO
-	wproxy.gmail.com") by linux-mips.org with ESMTP id <S8226002AbVF1AG7> convert rfc822-to-8bit;
-	Tue, 28 Jun 2005 01:06:59 +0100
-Received: by wproxy.gmail.com with SMTP id 57so505629wri
-        for <linux-mips@linux-mips.org>; Mon, 27 Jun 2005 17:06:27 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=gHoR65qtv36MWq6msF0pagijKyL4NcnQkbKYzB1mgbr28wg0jzX4JnlvUj99tC1M/6zpNnh3ZQibxvw3t31AWbStnca3ti8Tc36N/FILEA7ruxxIJ8ijk+YsRO2VG1mSe8pSwiRZxKjKoIaqVIEOOmIT4S96KLB7Kc7wWVKkMbs=
-Received: by 10.54.145.8 with SMTP id s8mr3809490wrd;
-        Mon, 27 Jun 2005 17:06:27 -0700 (PDT)
-Received: by 10.54.71.11 with HTTP; Mon, 27 Jun 2005 17:06:27 -0700 (PDT)
-Message-ID: <2db32b720506271706201a66fb@mail.gmail.com>
-Date:	Mon, 27 Jun 2005 17:06:27 -0700
-From:	rolf liu <rolfliu@gmail.com>
-Reply-To: rolf liu <rolfliu@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: can't find interrupt number under /proc/interrupts for the pci multi-port on db1550
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-Return-Path: <rolfliu@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Jun 2005 04:08:01 +0100 (BST)
+Received: from 64-30-195-78.dsl.linkline.com ([IPv6:::ffff:64.30.195.78]:22183
+	"EHLO jg555.com") by linux-mips.org with ESMTP id <S8226015AbVF1DHm>;
+	Tue, 28 Jun 2005 04:07:42 +0100
+Received: from [172.16.0.55] ([::ffff:172.16.0.55])
+  (AUTH: PLAIN root, TLS: TLSv1/SSLv3,256bits,AES256-SHA)
+  by jg555.com with esmtp; Mon, 27 Jun 2005 20:07:10 -0700
+  id 0000846A.42C0BEDE.000061F8
+Message-ID: <42C0BE3D.9080809@jg555.com>
+Date:	Mon, 27 Jun 2005 20:04:29 -0700
+From:	Jim Gifford <maillist@jg555.com>
+User-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	Prashant Viswanathan <vprashant@echelon.com>
+CC:	linux-mips@linux-mips.org
+Subject: Re: crosstool (glibc based toolchain for MIPS)
+References: <5375D9FB1CC3994D9DCBC47C344EEB5905FA4356@miles.echelon.echcorp.com>
+In-Reply-To: <5375D9FB1CC3994D9DCBC47C344EEB5905FA4356@miles.echelon.echcorp.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <maillist@jg555.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8215
+X-archive-position: 8216
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rolfliu@gmail.com
+X-original-sender: maillist@jg555.com
 Precedence: bulk
 X-list: linux-mips
 
-I am running 2.4.31 on db1550 with a pci multi-port board. the kernel
-starts up ok. but after start-up, I can't find the corresponding
-interrupt number for this board, which is irq 2. I can find the device
-under /proc/devices and /proc/tty/driver, etc. So I am now sure if it
-is working ok. Is there good (simple) method to test this serial port?
+I'm part of the LinuxfromScratch community, we are currently putting 
+together a book on a sudo cross-compile build method, we have it working 
+with the latest binutils, glibc, and gcc 3.4.4.
 
-thanks
+http://documents.jg555.com/cross-lfs
+
+The only we have left to do is to use the linux-mips.org version of 
+linux, that's the only change planned for the mips and mips64 builds
+
+-- 
+----
+Jim Gifford
+maillist@jg555.com

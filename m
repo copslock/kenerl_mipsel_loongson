@@ -1,56 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Jun 2005 18:05:15 +0100 (BST)
-Received: from moutng.kundenserver.de ([IPv6:::ffff:212.227.126.186]:16892
-	"EHLO moutng.kundenserver.de") by linux-mips.org with ESMTP
-	id <S8226061AbVF1REy>; Tue, 28 Jun 2005 18:04:54 +0100
-Received: from pD9528876.dip0.t-ipconnect.de [217.82.136.118] (helo=gaspode.madsworld.lan)
-	by mrelayeu.kundenserver.de with ESMTP (Nemesis),
-	id 0MKwh2-1DnJVb1EnZ-0002qx; Tue, 28 Jun 2005 19:04:27 +0200
-Received: from mad by gaspode.madsworld.lan with local (Exim 4.50)
-	id 1DnJVa-0001Mg-0j; Tue, 28 Jun 2005 19:04:26 +0200
-Date:	Tue, 28 Jun 2005 19:04:25 +0200
-From:	Markus Dahms <mad@automagically.de>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Jun 2005 18:55:39 +0100 (BST)
+Received: from [IPv6:::ffff:81.2.110.250] ([IPv6:::ffff:81.2.110.250]:31708
+	"EHLO lxorguk.ukuu.org.uk") by linux-mips.org with ESMTP
+	id <S8226064AbVF1RzX>; Tue, 28 Jun 2005 18:55:23 +0100
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by lxorguk.ukuu.org.uk (8.12.11/8.12.11) with ESMTP id j5SHqQ1v001236;
+	Tue, 28 Jun 2005 18:52:27 +0100
+Received: (from alan@localhost)
+	by localhost.localdomain (8.12.11/8.12.11/Submit) id j5SHqQgr001235;
+	Tue, 28 Jun 2005 18:52:26 +0100
+X-Authentication-Warning: localhost.localdomain: alan set sender to alan@lxorguk.ukuu.org.uk using -f
+Subject: Re: can't find interrupt number under /proc/interrupts for the pci
+	multi-port on db1550
+From:	Alan Cox <alan@lxorguk.ukuu.org.uk>
+To:	rolf liu <rolfliu@gmail.com>
 Cc:	linux-mips@linux-mips.org
-Subject: Re: 2.6 on IP22 (Indy)
-Message-ID: <20050628170425.GA5189@gaspode.automagically.de>
-References: <20050627100757.GA27679@gaspode.automagically.de> <Pine.LNX.4.61L.0506271401280.15406@blysk.ds.pg.gda.pl> <20050627141842.GA28236@gaspode.automagically.de> <Pine.LNX.4.61L.0506271632380.23903@blysk.ds.pg.gda.pl> <20050628062107.GA8665@gaspode.automagically.de> <Pine.LNX.4.61L.0506280918380.13758@blysk.ds.pg.gda.pl> <20050628102013.GA10442@gaspode.automagically.de> <Pine.LNX.4.61L.0506281204190.13758@blysk.ds.pg.gda.pl>
+In-Reply-To: <2db32b720506280930a5de769@mail.gmail.com>
+References: <2db32b720506271706201a66fb@mail.gmail.com>
+	 <1119966279.32381.7.camel@localhost.localdomain>
+	 <2db32b720506280930a5de769@mail.gmail.com>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Message-Id: <1119981143.32369.26.camel@localhost.localdomain>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.61L.0506281204190.13758@blysk.ds.pg.gda.pl>
-User-Agent: Mutt/1.5.9i
-X-Provags-ID: kundenserver.de abuse@kundenserver.de login:896705dcda322f33ae3752a7fdb3dc09
-Return-Path: <mad@automagically.de>
+X-Mailer: Ximian Evolution 1.4.6 (1.4.6-2) 
+Date:	Tue, 28 Jun 2005 18:52:25 +0100
+Return-Path: <alan@lxorguk.ukuu.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8234
+X-archive-position: 8235
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mad@automagically.de
+X-original-sender: alan@lxorguk.ukuu.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-Hello Maciej,
+On Maw, 2005-06-28 at 17:30, rolf liu wrote:
+> but the number of interrupts for that driver is always 0, which seems
+> not OK. I am wondering if such interrupt is routed to somewhere else? 
 
->> [R4600 tlbex.c patch]
->> This doesn't seem to be enough.
-> Well, there can be something else.  But to be sure I haven't missed 
-> anything in these TLB handlers, could you please generate the dumps I 
-> mentioned yesterday and send them to me?  You need to uncomment the 
-> definition of DEBUG_TLB at the top of arch/mips/mm/tlbex.c for that.
+I'd expect it to stay zero unless characters were received or events
+occurred. Something like
 
-I think I found the trick. Just following the hint that the R4600
-is similar to the R5000 I added CPU_R4600 to build_tlb_probe_entry().
+   (echo "Hello world"; cat ) <> /dev/ttywhatever
 
-After that I got a prompt :-). Everything worked fine so far...
+ought to cause interrupts 
 
-The next problem appeared on shutdown, where I got a kernel panic
-(as the R4000 does with the 32-bit kernel, too) - something related
-too the UART/serial console I suspect. As it's not on serial output
-I need to find a way to get it without pencil and paper ;).
-
-If you have further things to try, just send patches :)
-
-Markus
+[That bit of script writes Hello world to the serial port and then
+copies anything from it back to it until you hit ^C]

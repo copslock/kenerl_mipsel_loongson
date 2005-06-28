@@ -1,67 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Jun 2005 07:21:53 +0100 (BST)
-Received: from moutng.kundenserver.de ([IPv6:::ffff:212.227.126.187]:45513
-	"EHLO moutng.kundenserver.de") by linux-mips.org with ESMTP
-	id <S8226020AbVF1GVh>; Tue, 28 Jun 2005 07:21:37 +0100
-Received: from pD952841F.dip0.t-ipconnect.de [217.82.132.31] (helo=gaspode.madsworld.lan)
-	by mrelayeu.kundenserver.de with ESMTP (Nemesis),
-	id 0ML2Dk-1Dn9T12Qd0-0002XT; Tue, 28 Jun 2005 08:21:07 +0200
-Received: from mad by gaspode.madsworld.lan with local (Exim 4.50)
-	id 1Dn9T1-0002HI-LO; Tue, 28 Jun 2005 08:21:07 +0200
-Date:	Tue, 28 Jun 2005 08:21:07 +0200
-From:	Markus Dahms <mad@automagically.de>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: 2.6 on IP22 (Indy)
-Message-ID: <20050628062107.GA8665@gaspode.automagically.de>
-References: <20050627100757.GA27679@gaspode.automagically.de> <Pine.LNX.4.61L.0506271401280.15406@blysk.ds.pg.gda.pl> <20050627141842.GA28236@gaspode.automagically.de> <Pine.LNX.4.61L.0506271632380.23903@blysk.ds.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Jun 2005 09:08:07 +0100 (BST)
+Received: from x93.infopact.nl ([IPv6:::ffff:212.29.160.93]:17312 "EHLO
+	x93.infopact.nl") by linux-mips.org with ESMTP id <S8226025AbVF1IHq>;
+	Tue, 28 Jun 2005 09:07:46 +0100
+Received: from 63-66-dsl.ipact.nl (63-66-dsl.ipact.nl [84.35.66.63])
+	by x93.infopact.nl (8.12.10/8.12.10) with ESMTP id j5S87Aa3018109;
+	Tue, 28 Jun 2005 10:07:10 +0200
+From:	Steven Bosscher <stevenb@suse.de>
+To:	gcc-patches@gcc.gnu.org
+Subject: Re: -march=r10000 Support for MIPS Targets (Old 3.4.x Patch; requires porting, assistance requested)
+Date:	Tue, 28 Jun 2005 10:07:12 +0200
+User-Agent: KMail/1.7.1
+Cc:	Kumba <kumba@gentoo.org>,
+	Linux MIPS List <linux-mips@linux-mips.org>
+References: <42C0D94F.3030809@gentoo.org>
+In-Reply-To: <42C0D94F.3030809@gentoo.org>
+Organization: SUSE Labs
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.61L.0506271632380.23903@blysk.ds.pg.gda.pl>
-User-Agent: Mutt/1.5.9i
-X-Provags-ID: kundenserver.de abuse@kundenserver.de login:896705dcda322f33ae3752a7fdb3dc09
-Return-Path: <mad@automagically.de>
+Message-Id: <200506281007.12754.stevenb@suse.de>
+X-CanItPRO-Stream: NoScan
+X-Canit-Stats-ID: 8575107 - 6f8658aa76f3
+X-Scanned-By: CanIt (www . roaringpenguin . com) on 212.29.160.93
+Return-Path: <stevenb@suse.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8218
+X-archive-position: 8219
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mad@automagically.de
+X-original-sender: stevenb@suse.de
 Precedence: bulk
 X-list: linux-mips
 
-Hello again,
+On Tuesday 28 June 2005 06:59, Kumba wrote:
+> If at all possible I'd like to see it make it into gcc at some point in
+> time, not necessarily gcc-4.1, as the patch as it currently stands needs
+> someone to do the work of porting it to fit into 4.x,  
 
->> For the R4000 there are two other things I could try: console on newport
->> instead of serial port and a 32-bit kernel, which I only tried on the
->> R4600.
->  Well, I don't know what newport is, but if it's capable of providing 
-> output that early, it'll do.
+Looks like all the arith->shift attribute changes from the patch you
+posted are already in mainline, so all you really need to add r10000
+support is a pipeline model.  All the MIPSen were converted from the
+old pipeline description (i.e. "define_function_unit") to the new one
+(i.e. "define_insn_reservation" and friends) in a big patch posted
+last year: http://gcc.gnu.org/ml/gcc-patches/2004-07/msg01065.html.
+Maybe you can find in the trhead surrounding that message some ideas
+on how to convert your r10000 pipeline model.
 
-Newport is the most common graphics option for the Indy and there exists
-a console driver for it. Luckily it outputs some more stuff than the
-serial console:
+HTH,
 
-| CPU revision is: 00000430
-| FPU revision is: 00000500
-| ...
-| Checking for the multiply/shift bug... yes, workaround... no.
-| kernel panic - not syncing: Reliable operation impossible!
-| Configure for R4000 to enable the workaround.
-
-I configured the kernel for R4X00. There are a few references to
-CONFIG_CPU_R4000 in the source which doesn't seem to be a config
-option anymore, but I couldn't find a workaround somewhere...
-
->> I'll also try the said patch (you're referring to "blast_scache nop ...",
->> do you?).
-> Precisely.
-
-doesn't change anything, neither for R4000PC nor for R4600PC.
-
-Markus
-
--- 
-Reactor error - core dumped!
+Gr.
+Steven

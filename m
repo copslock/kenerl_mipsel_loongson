@@ -1,46 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Jun 2005 14:08:12 +0100 (BST)
-Received: from lennier.cc.vt.edu ([IPv6:::ffff:198.82.162.213]:24004 "EHLO
-	lennier.cc.vt.edu") by linux-mips.org with ESMTP
-	id <S8226047AbVF1NH4>; Tue, 28 Jun 2005 14:07:56 +0100
-Received: from vivi.cc.vt.edu (IDENT:mirapoint@[10.1.1.12])
-	by lennier.cc.vt.edu (8.12.11/8.12.11) with ESMTP id j5SD4PrU017517;
-	Tue, 28 Jun 2005 09:06:46 -0400
-Received: from [192.168.1.2] (68-232-96-93.chvlva.adelphia.net [68.232.96.93])
-	by vivi.cc.vt.edu (MOS 3.6.4-CR)
-	with ESMTP id DMW15908 (AUTH spbecker);
-	Tue, 28 Jun 2005 09:03:35 -0400 (EDT)
-Message-ID: <42C14AA7.7090005@gentoo.org>
-Date:	Tue, 28 Jun 2005 09:03:35 -0400
-From:	"Stephen P. Becker" <geoman@gentoo.org>
-User-Agent: Mozilla Thunderbird 1.0.2 (X11/20050625)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-CC:	Markus Dahms <mad@automagically.de>, linux-mips@linux-mips.org
-Subject: Re: 2.6 on IP22 (Indy)
-References: <20050627100757.GA27679@gaspode.automagically.de> <Pine.LNX.4.61L.0506271401280.15406@blysk.ds.pg.gda.pl> <20050627141842.GA28236@gaspode.automagically.de> <Pine.LNX.4.61L.0506271632380.23903@blysk.ds.pg.gda.pl> <20050628062107.GA8665@gaspode.automagically.de> <Pine.LNX.4.61L.0506280918380.13758@blysk.ds.pg.gda.pl> <20050628102013.GA10442@gaspode.automagically.de> <42C14151.5050209@gentoo.org> <Pine.LNX.4.61L.0506281339080.13758@blysk.ds.pg.gda.pl>
-In-Reply-To: <Pine.LNX.4.61L.0506281339080.13758@blysk.ds.pg.gda.pl>
-Content-Type: text/plain; charset=ISO-8859-1
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Jun 2005 14:48:11 +0100 (BST)
+Received: from clock-tower.bc.nu ([IPv6:::ffff:81.2.110.250]:54999 "EHLO
+	lxorguk.ukuu.org.uk") by linux-mips.org with ESMTP
+	id <S8226047AbVF1Nro>; Tue, 28 Jun 2005 14:47:44 +0100
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by lxorguk.ukuu.org.uk (8.12.11/8.12.11) with ESMTP id j5SDifku000534;
+	Tue, 28 Jun 2005 14:44:41 +0100
+Received: (from alan@localhost)
+	by localhost.localdomain (8.12.11/8.12.11/Submit) id j5SDifcq000533;
+	Tue, 28 Jun 2005 14:44:41 +0100
+X-Authentication-Warning: localhost.localdomain: alan set sender to alan@lxorguk.ukuu.org.uk using -f
+Subject: Re: can't find interrupt number under /proc/interrupts for the pci
+	multi-port on db1550
+From:	Alan Cox <alan@lxorguk.ukuu.org.uk>
+To:	rolf liu <rolfliu@gmail.com>
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <2db32b720506271706201a66fb@mail.gmail.com>
+References: <2db32b720506271706201a66fb@mail.gmail.com>
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-Return-Path: <geoman@gentoo.org>
+Message-Id: <1119966279.32381.7.camel@localhost.localdomain>
+Mime-Version: 1.0
+X-Mailer: Ximian Evolution 1.4.6 (1.4.6-2) 
+Date:	Tue, 28 Jun 2005 14:44:39 +0100
+Return-Path: <alan@lxorguk.ukuu.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8229
+X-archive-position: 8230
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geoman@gentoo.org
+X-original-sender: alan@lxorguk.ukuu.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-> It's either not 2.6.11 or it must be something platform-specific (here 
-> meaning the specific CPU model and/or system type) as 2.6.12-rc1 as of the 
-> end of March seems to be rock-solid running 64-bit on the BCM1250.  Or 
-> perhaps SMP works and only UP does not. ;-)
-> 
+On Maw, 2005-06-28 at 01:06, rolf liu wrote:
+> I am running 2.4.31 on db1550 with a pci multi-port board. the kernel
+> starts up ok. but after start-up, I can't find the corresponding
+> interrupt number for this board, which is irq 2. I can find the device
+> under /proc/devices and /proc/tty/driver, etc. So I am now sure if it
+> is working ok. Is there good (simple) method to test this serial port?
 
-Yeah, it is ip22 specific.  I have been running 64-bit ip32 kernels
-(R5000) from the same checkouts with no problems.
+Do something like
 
--Steve
+	cat /dev/ttySwhatever
+
+then look at the IRQ list. The interrupt will only be allocated while
+the port is in use.

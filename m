@@ -1,48 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Jun 2005 01:15:39 +0100 (BST)
-Received: from swordfish.cs.caltech.edu ([IPv6:::ffff:131.215.44.124]:50881
-	"EHLO swordfish.cs.caltech.edu") by linux-mips.org with ESMTP
-	id <S8225551AbVF2APW>; Wed, 29 Jun 2005 01:15:22 +0100
-Received: from orchestra.cs.caltech.edu (orchestra.cs.caltech.edu [131.215.44.20])
-	by swordfish.cs.caltech.edu (Postfix) with ESMTP
-	id BA3FCDF329; Tue, 28 Jun 2005 17:14:56 -0700 (PDT)
-Received: by orchestra.cs.caltech.edu (Postfix, from userid 20310)
-	id BE4BC1880C5; Tue, 28 Jun 2005 17:14:52 -0700 (PDT)
-Date:	Tue, 28 Jun 2005 17:14:52 -0700
-From:	Noah Misch <noah@cs.caltech.edu>
-To:	Andy Shepard <vox_soli@yahoo.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Linux on SGI Challenge L R10000 (IP25)
-Message-ID: <20050629001452.GA15356@orchestra.cs.caltech.edu>
-Mail-Followup-To: Andy Shepard <vox_soli@yahoo.com>,
-	linux-mips@linux-mips.org
-References: <20050628220412.79755.qmail@web31615.mail.mud.yahoo.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Jun 2005 09:49:24 +0100 (BST)
+Received: from zproxy.gmail.com ([IPv6:::ffff:64.233.162.204]:53409 "EHLO
+	zproxy.gmail.com") by linux-mips.org with ESMTP id <S8225983AbVF2ItI> convert rfc822-to-8bit;
+	Wed, 29 Jun 2005 09:49:08 +0100
+Received: by zproxy.gmail.com with SMTP id 4so431291nzn
+        for <linux-mips@linux-mips.org>; Wed, 29 Jun 2005 01:48:40 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=Wvf0a8pMZsdBx5AQkyJVdgU+s+LnL33MfFsDwV6Z9foeVRo8UOEXbgkOhwngHDMmShPD8my4S+S2N7A4cLoOLvPilWVEtdV9Z7C8xjJ2eHibYac/KEWgYidG8+MuCwWSyAnaAe1xMDNUIhlIW7V2T4qBV/mXxMPhI0WE7AmJT+4=
+Received: by 10.36.56.16 with SMTP id e16mr6396238nza;
+        Wed, 29 Jun 2005 01:48:40 -0700 (PDT)
+Received: by 10.36.220.43 with HTTP; Wed, 29 Jun 2005 01:48:40 -0700 (PDT)
+Message-ID: <1943a413050629014858a124f7@mail.gmail.com>
+Date:	Wed, 29 Jun 2005 14:18:40 +0530
+From:	Krishna B S <bskris@gmail.com>
+Reply-To: Krishna B S <bskris@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: Popular MIPS4Kc boards?
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
 Content-Disposition: inline
-In-Reply-To: <20050628220412.79755.qmail@web31615.mail.mud.yahoo.com>
-User-Agent: Mutt/1.5.5.1i
-Return-Path: <noah@cs.caltech.edu>
+Return-Path: <bskris@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8239
+X-archive-position: 8241
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: noah@cs.caltech.edu
+X-original-sender: bskris@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Jun 28, 2005 at 03:04:12PM -0700, Andy Shepard wrote:
-> Greetings.  I happen to own one of these machines (12x R10000) and I'm
-> interested in doing a port for it.  Does anyone out there have any
-> hardware information about this machine?
+Hi All,
 
-The SGI owner's guide has some high-level information:
-http://www.sgi.com/products/legacy/pdf/challenge_owners_guide.pdf
+I have to develop toolchains for various MIPS boards my company
+develops. All the boards consist of MIPS 4KC.
 
-/usr/include/sys/EVEREST/* from IRIX offer technical facts.
+I would like to know from you what is the most popular board used by
+the community with this kind of processor. I know, its tough to get a
+clear answer.
 
-I have an R4400 Challenge (IP19), which is architecturally similar.  Hacking
-Linux to boot and run simple userspace from initramfs was trivial, but I do not
-yet have drivers for any of the peripheral hardware.
+But, my intention is to first port my toolchain/kernel for this
+popular board so that I can get your support, in case I encounter any
+problems. Having confirmed the working of the toolchain for this
+board, I would port it to my company's boards.
+
+(The popular board in the community would be my reference board for
+development.)
+
+Kindly give your valuable comments.
+
+Regards,
+Krishna

@@ -1,71 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Jun 2005 11:09:11 +0100 (BST)
-Received: from zproxy.gmail.com ([IPv6:::ffff:64.233.162.204]:7616 "EHLO
-	zproxy.gmail.com") by linux-mips.org with ESMTP id <S8225722AbVF3KIy> convert rfc822-to-8bit;
-	Thu, 30 Jun 2005 11:08:54 +0100
-Received: by zproxy.gmail.com with SMTP id 13so54529nzn
-        for <linux-mips@linux-mips.org>; Thu, 30 Jun 2005 03:08:32 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:reply-to:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=LHppA6lBCQk0aiBSwYteWlojxGxOyFegQHYFgB3+COLeCaF9PpDCUafCQGGP72dqbNINsMDQXwmqs/3SL7HP7EU54mALUUKNsAb5SZX78Z9ALL7n+JFmsDUl1qmRSJOIn+c3393mow5b46kBVS/mCMGWp/lwIJc2t1MzJu2DEBw=
-Received: by 10.36.58.15 with SMTP id g15mr185067nza;
-        Thu, 30 Jun 2005 03:08:32 -0700 (PDT)
-Received: by 10.36.68.6 with HTTP; Thu, 30 Jun 2005 03:08:32 -0700 (PDT)
-Message-ID: <6097c49050630030859b061c5@mail.gmail.com>
-Date:	Thu, 30 Jun 2005 14:08:32 +0400
-From:	Maxim Osipov <maxim.osipov@gmail.com>
-Reply-To: maxim@mox.ru
-To:	Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: Popular MIPS4Kc boards?
-Cc:	Krishna B S <bskris@gmail.com>, linux-mips@linux-mips.org
-In-Reply-To: <20050630091056.GA2935@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Jun 2005 11:11:10 +0100 (BST)
+Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:58903 "EHLO
+	bacchus.net.dhis.org") by linux-mips.org with ESMTP
+	id <S8225722AbVF3KKy>; Thu, 30 Jun 2005 11:10:54 +0100
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j5UA75BP007516;
+	Thu, 30 Jun 2005 11:07:05 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j5UA75k6007515;
+	Thu, 30 Jun 2005 11:07:05 +0100
+Date:	Thu, 30 Jun 2005 11:07:05 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	rolf liu <rolfliu@gmail.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: can't find interrupt number under /proc/interrupts for the pci multi-port on db1550
+Message-ID: <20050630100705.GD2935@linux-mips.org>
+References: <2db32b720506271706201a66fb@mail.gmail.com> <20050628211559.GA2879@linux-mips.org> <2db32b72050629152010dab81d@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-References: <1943a413050629014858a124f7@mail.gmail.com>
-	 <20050630091056.GA2935@linux-mips.org>
-Return-Path: <maxim.osipov@gmail.com>
+In-Reply-To: <2db32b72050629152010dab81d@mail.gmail.com>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8257
+X-archive-position: 8258
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: maxim.osipov@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-And if we talk about fan project, are there any MIPS64 based devices on market?
+On Wed, Jun 29, 2005 at 03:20:56PM -0700, rolf liu wrote:
 
-Maxim
+> What is the function of serial_timer? it is just sitting there,
+> generating timeout, periodically. Just to make sure the interrupt
+> routine will be called periodically?
 
-On 6/30/05, Ralf Baechle <ralf@linux-mips.org> wrote:
-> On Wed, Jun 29, 2005 at 02:18:40PM +0530, Krishna B S wrote:
-> 
-> > I have to develop toolchains for various MIPS boards my company
-> > develops. All the boards consist of MIPS 4KC.
-> >
-> > I would like to know from you what is the most popular board used by
-> > the community with this kind of processor. I know, its tough to get a
-> > clear answer.
-> >
-> > But, my intention is to first port my toolchain/kernel for this
-> > popular board so that I can get your support, in case I encounter any
-> > problems. Having confirmed the working of the toolchain for this
-> > board, I would port it to my company's boards.
-> >
-> > (The popular board in the community would be my reference board for
-> > development.)
-> 
-> The price tag is juicy but for serious development with a 4Kc I'd
-> recommend a MIPS Malta.  Forcing consumer hardware into submission may
-> be a fun project for a spare time hacker but in general isn't a very
-> productive process for somebody who needs to finish a job soon or needs
-> to additional hardware such as PCI cards, logic analyzer, additional
-> memory, other CPU types etc.
-> 
->   Ralf
-> 
->
+It's for interrupt-less ports.
+
+  Ralf

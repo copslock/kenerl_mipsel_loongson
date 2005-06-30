@@ -1,48 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Jun 2005 18:46:11 +0100 (BST)
-Received: from sccrmhc12.comcast.net ([IPv6:::ffff:204.127.202.56]:5067 "EHLO
-	sccrmhc12.comcast.net") by linux-mips.org with ESMTP
-	id <S8226101AbVF3Rp4>; Thu, 30 Jun 2005 18:45:56 +0100
-Received: from ba3pi (pcp0010731669pcs.howard01.md.comcast.net[69.243.71.130])
-          by comcast.net (sccrmhc12) with SMTP
-          id <2005063017453701200hgqnpe>; Thu, 30 Jun 2005 17:45:37 +0000
-From:	"Bryan Althouse" <bryan.althouse@3phoenix.com>
-To:	"'Linux/MIPS Development'" <linux-mips@linux-mips.org>
-Subject: top and SMP
-Date:	Thu, 30 Jun 2005 13:45:36 -0400
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Jun 2005 19:24:03 +0100 (BST)
+Received: from adsl-67-116-42-147.dsl.sntc01.pacbell.net ([IPv6:::ffff:67.116.42.147]:3865
+	"EHLO avtrex.com") by linux-mips.org with ESMTP id <S8226101AbVF3SXp>;
+	Thu, 30 Jun 2005 19:23:45 +0100
+Received: from [192.168.7.26] ([192.168.7.3]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 30 Jun 2005 11:24:55 -0700
+Message-ID: <42C438A1.7050904@avtrex.com>
+Date:	Thu, 30 Jun 2005 11:23:29 -0700
+From:	David Daney <ddaney@avtrex.com>
+User-Agent: Mozilla Thunderbird 1.0.2-6 (X11/20050513)
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
+To:	Michael Stickel <michael@cubic.org>
+CC:	linux-mips@linux-mips.org
+Subject: Re: Problems with Intel e100 driver on new MIPS port, was: Advice
+ needed WRT very slow nfs in new port...
+References: <42C34C4D.9020902@avtrex.com>	<20050629.195743.48512936.imp@bsdimp.com>	<42C359F8.4060000@avtrex.com> <20050629.204246.102671266.imp@bsdimp.com> <42C39066.2060406@cubic.org>
+In-Reply-To: <42C39066.2060406@cubic.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Office Outlook, Build 11.0.6353
-X-MIMEOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
-Thread-index: AcV9m4WMcIhOHh14S1iIWDy5SwxYEg==
-Message-Id: <20050630174556Z8226101-3678+737@linux-mips.org>
-Return-Path: <bryan.althouse@3phoenix.com>
+X-OriginalArrivalTime: 30 Jun 2005 18:24:55.0765 (UTC) FILETIME=[03D87050:01C57DA1]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8269
+X-archive-position: 8270
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bryan.althouse@3phoenix.com
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-I have tried to get top to display processor utilization on a per CPU basis,
-but to no avail.  Does anyone know how to get top to properly display
-statistics for a SMP system?  Better yet, does anyone know of a better
-utility than top?  
+Michael Stickel wrote:
+> M. Warner Losh wrote:
+> 
+>> In message: <42C359F8.4060000@avtrex.com>
+>>            David Daney <ddaney@avtrex.com> writes:
+>> : M. Warner Losh wrote:
+>> : > In message: <42C34C4D.9020902@avtrex.com>
+>> : >             David Daney <ddaney@avtrex.com> writes:
+>> : > : Does anyone have any idea what would cause 1000mS delay?
+>> : > : > That's remarkably close to 1s.  This often indicates that the 
+>> transmit
+>> : > of your next packet is causing the receive buffer to empty.  This is
+>> : > usually due to blocked interrupts, or a failure to enable interrupts.
+>> : > : : But I observe ever increasing counts for the device in 
+>> /proc/interrupts. :   So the interrupts are working somewhat.
+>>
+>> Are you sure that you've routed the interrupts correctly?  Maybe those
+>> interrupts are 'really' for a different device....
+>>  
+>>
+> Add some debugging to the interrupt routine of the e100 and see what 
+> happens.
 
-The man file for top says that it will display a separate column for each
-CPU detected.  I only ever get one column.  I think both processors of my
-RM9224 are working, because a "cat /proc/cpuinfo" lists information on
-processor 0 and also for processor 1.
+The interrupt routine is getting called each time a packet is received.
 
-I am writing a multi-threaded radar processing application.  It would be
-very nice to verify that the threads were being shared between the 2
-processors.  I would like to use a utility like top to help me optimize my
-code to properly utilize both processors.
+It looks like packets are not being transmitted until the interrupt for 
+the the received packet is received.
 
-Thanks!
-Bryan  
+If I ping the board at different intervals the round trip time is always 
+almost exactly equal to the ping interval.  So if I ping every 50mS the 
+round trip time is 50mS, ping every 200mS gives a RTT of 200mS, etc.
+
+Any more ideas?
+
+I am thinking that perhaps the CPU write-back-queue is interfearing with 
+writes to the NIC's registers.  Perhaps I will try to disable it.
+
+David Daney.

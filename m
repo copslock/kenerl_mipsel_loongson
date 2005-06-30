@@ -1,91 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Jun 2005 20:10:14 +0100 (BST)
-Received: from lennier.cc.vt.edu ([IPv6:::ffff:198.82.162.213]:49354 "EHLO
-	lennier.cc.vt.edu") by linux-mips.org with ESMTP
-	id <S8226101AbVF3TJ4>; Thu, 30 Jun 2005 20:09:56 +0100
-Received: from dagger.cc.vt.edu (IDENT:mirapoint@[10.1.1.11])
-	by lennier.cc.vt.edu (8.12.11/8.12.11) with ESMTP id j5UJ8qS5023139;
-	Thu, 30 Jun 2005 15:09:02 -0400
-Received: from [128.173.184.73] (gs4073.geos.vt.edu [128.173.184.73])
-	by dagger.cc.vt.edu (MOS 3.6.4-CR)
-	with ESMTP id DOQ23270;
-	Thu, 30 Jun 2005 15:08:45 -0400 (EDT)
-Message-ID: <42C44336.1080401@gentoo.org>
-Date:	Thu, 30 Jun 2005 15:08:38 -0400
-From:	"Stephen P. Becker" <geoman@gentoo.org>
-User-Agent: Mozilla Thunderbird 1.0.2 (X11/20050624)
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Jun 2005 20:17:16 +0100 (BST)
+Received: from anchor-post-35.mail.demon.net ([IPv6:::ffff:194.217.242.85]:57874
+	"EHLO anchor-post-35.mail.demon.net") by linux-mips.org with ESMTP
+	id <S8226101AbVF3TQ4>; Thu, 30 Jun 2005 20:16:56 +0100
+Received: from pr-webmail-1.demon.net ([194.159.244.51] helo=pr-webmail-1.mail.demon.net)
+	by anchor-post-35.mail.demon.net with esmtp (Exim 4.42)
+	id 1Do4Si-000LPs-HS; Thu, 30 Jun 2005 19:12:36 +0000
+Received: from localhost ([127.0.0.1] helo=web.mail.demon.net)
+	by pr-webmail-1.mail.demon.net with smtp (Exim 4.42)
+	id 1Do4Wg-0005bB-2V; Thu, 30 Jun 2005 20:16:42 +0100
+Received: from skylon.demon.co.uk ([81.104.197.162])
+	by web.mail.demon.net with http; Thu, 30 Jun 2005 20:16:42 +0100
+From:	jrc@skylon.demon.co.uk
+To:	maxim@mox.ru, ralf@linux-mips.org
+Cc:	"Krishna B S" <bskris@gmail.com>, linux-mips@linux-mips.org
+In-Reply-To: <6097c49050630030859b061c5@mail.gmail.com>
+Subject: Re: Popular MIPS4Kc boards?
+Date:	Thu, 30 Jun 2005 20:16:42 +0100
+User-Agent: Demon-WebMail/2.0
 MIME-Version: 1.0
-To:	Bryan Althouse <bryan.althouse@3phoenix.com>
-CC:	"'Linux/MIPS Development'" <linux-mips@linux-mips.org>
-Subject: Re: Seg fault when compiled with -mabi=64 and -lpthread
-References: <20050630173409Z8226102-3678+735@linux-mips.org>
-In-Reply-To: <20050630173409Z8226102-3678+735@linux-mips.org>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 8bit
-Return-Path: <geoman@gentoo.org>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Message-Id: <20050630191656Z8226101-3678+743@linux-mips.org>
+Return-Path: <jrc@skylon.demon.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8272
+X-archive-position: 8273
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geoman@gentoo.org
+X-original-sender: jrc@skylon.demon.co.uk
 Precedence: bulk
 X-list: linux-mips
 
-Bryan Althouse wrote:
-> I have a problem when linking a 64 bit application with libpthread.  I
-> appears to link fine, but it will seg fault when I execute it.  I wrote
-> an empty C program called empty.c:
-> 
->  
-> 
-> int main (void)
-> 
-> { 
-> 
->     return 0;
-> 
-> }
-> 
->  
-> 
-> I cross compile it with:
-> 
-> /opt/redhat/mips64linux-031001/H-i686-pc-linux-gnulibc2.2/bin/mips64-linux-gnu-gcc
-> –mabi=64 empty.c –o empty –lpthread
-> 
-> The executable will seg fault.  If I remove the –lpthread, it is fine. 
-> Also, if I change the 64 to 32, it is fine.
-> 
->  
-> 
-> Maybe I have a bad libpthread in /lib64?  If I type “file
-> /lib64/libpthread-0.10.so” I get: “ELF 64-bit MSB shared object, mips-3
-> MIPS R3000_BE, version 1, not stripped”.  Looks fine to me.  Should I
-> cross compile and replace libpthread?  If so, where can I find the source?
-> 
+maxim.osipov@gmail.com wrote:
+> And if we talk about fan project, are there any MIPS64 based devices
+> on market?
 
-Wow, so I'm not just smoking crack.  I ran into essentially the same
-exact problem with my n32 userland while trying to build glib (not
-glibc).  The configure script kept dying while trying to determine if
-libpthread was available.  Looking at the config.log, I noticed that the
-conftest code was causing a segfault.  Furthermore, this causes a kernel
-oops (you should check your kernel logs for an oops).
+A possibility for a MIPS64 based device might be the recently announced
+Broadcom BCM97398 IPTV set-top box reference design platform:
 
-I isolated the conftest code, and it is available at:
-http://beerandrocks.net:8080/~spbecker/oops/
+    http://tinyurl.com/bm44b
 
-In that directory is also a statically linked big endian n32 executable,
-as well as dumps of oops messages that I was able to reproduce 100% of
-the time on both ip32 and ip22 systems.  If anyone is in an
-experimenting mood, try to run that executable on a mips64 box (with n32
-binary support enabled obviously) and see what happens.  The interesting
-thing about this problem is that it only happens with recent kernels.  I
-can't speak for 2.6.11 since I haven't tested it yet, but the oops only
-occurred while running 2.6.12 from cvs HEAD.  When running my 2.6.10
-build that has been on my indy for some time, the conftest code runs
-fine without any segfault, and there is no kernel oops.
+This contains a BCM7038 with a 300 MHz R5Kf together with enough
+peripherals to make it interesting: 2 x UART; 2 x SATA; 2 x USB 2.0;
+10/100 Ethernet.  If produced in quantity and available it would
+probably be more affordable than low volume evaluation boards.
 
--Steve
+What I would like to see is a multicore (multithreading?) MIPS64 chip
+attached by HyperTransport to a PC chipset (eg. Via KN800A) on a small
+form factor board (mini-itx; micro-atx; micro-btx).  An ideal plaything
+for the kernel hacker and a useful resource for academic teaching and
+research - a modern version of the UNSW U4600 ...

@@ -1,159 +1,92 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Jun 2005 17:43:49 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:48655 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8226093AbVF3Qna>; Thu, 30 Jun 2005 17:43:30 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 38A45E1CC5; Thu, 30 Jun 2005 18:43:11 +0200 (CEST)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 26975-05; Thu, 30 Jun 2005 18:43:11 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id F4053E1C84; Thu, 30 Jun 2005 18:43:10 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j5UGhCCH019320;
-	Thu, 30 Jun 2005 18:43:15 +0200
-Date:	Thu, 30 Jun 2005 17:43:21 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Andy Isaacson <adi@hexapodia.org>,
-	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [patch 3/5] SiByte fixes for 2.6.12
-In-Reply-To: <20050623194826.GA23653@hexapodia.org>
-Message-ID: <Pine.LNX.4.61L.0506301712410.28331@blysk.ds.pg.gda.pl>
-References: <20050622230137.GA17954@broadcom.com>
- <Pine.LNX.4.61L.0506231202130.17155@blysk.ds.pg.gda.pl>
- <20050623194826.GA23653@hexapodia.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Jun 2005 18:20:41 +0100 (BST)
+Received: from smtpa1.aruba.it ([IPv6:::ffff:62.149.128.206]:20372 "HELO
+	smtpa2.aruba.it") by linux-mips.org with SMTP id <S8226093AbVF3RUW>;
+	Thu, 30 Jun 2005 18:20:22 +0100
+Received: (qmail 25932 invoked by uid 89); 30 Jun 2005 17:19:59 -0000
+Received: by simscan 1.1.0 ppid: 25923, pid: 25927, t: 0.1530s
+         scanners: clamav: 0.80/m:29/d:680
+Received: from unknown (HELO ?192.168.32.1?) (fabrizio@fazzino.it@82.57.243.132)
+  by smtp2.aruba.it with SMTP; 30 Jun 2005 17:19:59 -0000
+Message-ID: <42C429C3.2090905@fazzino.it>
+Date:	Thu, 30 Jun 2005 19:20:03 +0200
+From:	Fabrizio Fazzino <fabrizio@fazzino.it>
+User-Agent: Mozilla Thunderbird 1.0.2 (Windows/20050317)
+X-Accept-Language: it, it-it, en-us, en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.85.1/960/Wed Jun 29 06:31:06 2005 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+To:	linux-mips@linux-mips.org
+Subject: Re: Assembly macro with parameters
+References: <425573AD.9010702@fazzino.it> <20050407182549.GA24235@linux-mips.org> <4256B5BE.8070708@fazzino.it> <20050408165717.GA8157@nevyn.them.org>
+In-Reply-To: <20050408165717.GA8157@nevyn.them.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <fabrizio@fazzino.it>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8265
+X-archive-position: 8266
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: fabrizio@fazzino.it
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 23 Jun 2005, Andy Isaacson wrote:
+After three months I still have the same problem...
 
-> >  Is it really the case?  Perhaps it doesn't know the symbolic name of the 
-> > register which has only been added recently.  Replacing it with $31 should 
-> > fix the problem, but your patch is obviously correct regardless.
+Suppose I want to generate my own opcode, let's say 0xC4000000,
+inside a C program. Suppose this value is NOT a constant in
+the macro I want to write since it will contain three
+variable fields for the rd,rs,rt registers, so I need to calculate
+the opcode at least at compilation time (at runtime is NOT
+required).
+
+Daniel suggested using .word and writing the function by hand,
+but which is the syntax I have to use?
+
+#define myopcode(rs,rt,rd) { \
+   int opcode_number = 0xC4000000 | (rs<<21) | (rt<<16) | (rd<<11); \
+   char opcode_string[20]; \
+   sprintf(opcode_string, ".word 0x%X", opcode_number); \
+   asm(opcode_string); \
+}
+
+This doesn't work since "argument of 'asm' is not a constant string"...
+Furthermore I do NOT have the possibility to link the string library
+so I should find another solution.
+
+Is there any common solution to write an instruction "completely
+by hand" ?
+
+Many thanks in advance,
+
+	Fabrizio Fazzino
+
+
+
+Daniel Jacobowitz wrote:
+> On Fri, Apr 08, 2005 at 06:47:58PM +0200, Fabrizio Fazzino wrote:
 > 
-> Yeah, you're right, my old gas just doesn't know $ra.  s/ra/31/g works
-> as well.
+>>Ralf Baechle wrote:
+>>
+>>>Fabrizio Fazzino wrote:
+>>>
+>>>>It works, but I need a way to set the values of the parameters
+>>>>at runtime; so I've tried the following macro:
+>>>>
+>>>>	#define fzmin(rd, rs, rt) asm("lwc1 $rt, rd<<11($rs)");
+>>>
+>>>Which will leave the assembler entirely unimpressed ;-)
+>>
+>>I thought that the compiler was able to substitute also the
+>>values inside strings... Is there any way to force it to do so?
+> 
+> You should probably be using .word then, and generating the instruction
+> completely by hand.
+> 
 
- Here's my proposal to fix run_uncached() -- it works correctly for me for 
-both 32-bit and 64-bit builds (current code crashes for me for 64 bits, 
-because as a result of the bad calculation a jump outside any valid 
-address space is attempted).  I've inspected generated machine code to 
-make sure it's correct as well.
 
- Unfortunately with this code GCC spits out a few bogus warnings for 
-32-bit builds (this is supposed to be a "non-bug" of the compiler -- see 
-"http://gcc.gnu.org/bugzilla/show_bug.cgi?id=12963" for details).  I'm not 
-sure struggling hard to get rid of these warnings, possibly complicating 
-code, is worth the hassle; GCC should be fixed instead.
-
- Unless there are objections I'd like to apply this patch.
-
-  Maciej
-
-patch-mips-2.6.12-20050620-run_uncached-8
-diff -up --recursive --new-file linux-mips-2.6.12-20050620.macro/arch/mips/lib/uncached.c linux-mips-2.6.12-20050620/arch/mips/lib/uncached.c
---- linux-mips-2.6.12-20050620.macro/arch/mips/lib/uncached.c	2005-04-25 16:36:23.000000000 +0000
-+++ linux-mips-2.6.12-20050620/arch/mips/lib/uncached.c	2005-06-23 18:24:58.000000000 +0000
-@@ -4,31 +4,71 @@
-  * for more details.
-  *
-  * Copyright (C) 2005 Thiemo Seufer
-+ * Copyright (C) 2005  MIPS Technologies, Inc.  All rights reserved.
-+ *	Author: Maciej W. Rozycki <macro@mips.com>
-  */
-+
- #include <linux/init.h>
- 
- #include <asm/addrspace.h>
-+#include <asm/bug.h>
-+
-+#ifndef CKSEG2
-+#define CKSEG2 CKSSEG
-+#endif
-+#ifndef TO_PHYS_MASK
-+#define TO_PHYS_MASK -1
-+#endif
- 
- /*
-- * FUNC is executed in the uncached segment CKSEG1. This works only if
-- * both code and stack live in CKSEG0. The stack handling works because
-- * we don't handle stack arguments or more complex return values, so we
-- * can avoid to share the same stack area between cached and uncached
-- * mode.
-+ * FUNC is executed in one of the uncached segments, depending on its
-+ * original address as follows:
-+ *
-+ * 1. If the original address is in CKSEG0 or CKSEG1, then the uncached
-+ *    segment used is CKSEG1.
-+ * 2. If the original address is in XKPHYS, then the uncached segment
-+ *    used is XKPHYS(2).
-+ * 3. Otherwise it's a bug.
-+ *
-+ * The same remapping is done with the stack pointer.  Stack handling
-+ * works because we don't handle stack arguments or more complex return
-+ * values, so we can avoid sharing the same stack area between a cached
-+ * and the uncached mode.
-  */
- unsigned long __init run_uncached(void *func)
- {
--	register unsigned long sp __asm__("$sp");
--	register unsigned long ret __asm__("$2");
--	unsigned long usp = sp - CAC_BASE + UNCAC_BASE;
--	unsigned long ufunc = func - CAC_BASE + UNCAC_BASE;
-+	register long sp __asm__("$sp");
-+	register long ret __asm__("$2");
-+	long lfunc = (long)func, ufunc;
-+	long usp;
-+
-+	if (sp >= (long)CKSEG0 && sp < (long)CKSEG2)
-+		usp = CKSEG1ADDR(sp);
-+	else if ((long long)sp >= (long long)PHYS_TO_XKPHYS(0LL, 0) &&
-+		 (long long)sp < (long long)PHYS_TO_XKPHYS(8LL, 0))
-+		usp = PHYS_TO_XKPHYS((long long)K_CALG_UNCACHED,
-+				     XKPHYS_TO_PHYS((long long)sp));
-+	else {
-+		BUG();
-+		usp = sp;
-+	}
-+	if (lfunc >= (long)CKSEG0 && lfunc < (long)CKSEG2)
-+		ufunc = CKSEG1ADDR(lfunc);
-+	else if ((long long)lfunc >= (long long)PHYS_TO_XKPHYS(0LL, 0) &&
-+		 (long long)lfunc < (long long)PHYS_TO_XKPHYS(8LL, 0))
-+		ufunc = PHYS_TO_XKPHYS((long long)K_CALG_UNCACHED,
-+				       XKPHYS_TO_PHYS((long long)lfunc));
-+	else {
-+		BUG();
-+		ufunc = lfunc;
-+	}
- 
- 	__asm__ __volatile__ (
--		"	move $16, $sp\n"
--		"	move $sp, %1\n"
--		"	jalr $ra, %2\n"
--		"	move $sp, $16"
--		: "=&r" (ret)
-+		"	move	$16, $sp\n"
-+		"	move	$sp, %1\n"
-+		"	jalr	%2\n"
-+		"	move	$sp, $16"
-+		: "=r" (ret)
- 		: "r" (usp), "r" (ufunc)
- 		: "$16", "$31");
- 
+-- 
+============================================
+    Fabrizio Fazzino - fabrizio@fazzino.it
+      Fazzino.IT - http://www.fazzino.it
+============================================

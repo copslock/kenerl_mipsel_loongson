@@ -1,74 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Jul 2005 15:58:16 +0100 (BST)
-Received: from lennier.cc.vt.edu ([IPv6:::ffff:198.82.162.213]:11213 "EHLO
-	lennier.cc.vt.edu") by linux-mips.org with ESMTP
-	id <S8226150AbVGAO54>; Fri, 1 Jul 2005 15:57:56 +0100
-Received: from dagger.cc.vt.edu (IDENT:mirapoint@[10.1.1.11])
-	by lennier.cc.vt.edu (8.12.11/8.12.11) with ESMTP id j61EuVpO006465;
-	Fri, 1 Jul 2005 10:56:41 -0400
-Received: from [128.173.184.73] (gs4073.geos.vt.edu [128.173.184.73])
-	by dagger.cc.vt.edu (MOS 3.6.4-CR)
-	with ESMTP id DOU46020;
-	Fri, 1 Jul 2005 10:56:24 -0400 (EDT)
-Message-ID: <42C55991.70109@gentoo.org>
-Date:	Fri, 01 Jul 2005 10:56:17 -0400
-From:	"Stephen P. Becker" <geoman@gentoo.org>
-User-Agent: Mozilla Thunderbird 1.0.2 (X11/20050624)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Jul 2005 16:07:45 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:61190 "EHLO
+	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8226156AbVGAPHZ>; Fri, 1 Jul 2005 16:07:25 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id BE155F59AB; Fri,  1 Jul 2005 17:07:13 +0200 (CEST)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 06978-06; Fri,  1 Jul 2005 17:07:13 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 8EB33F599C; Fri,  1 Jul 2005 17:07:13 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j61F47tZ007207;
+	Fri, 1 Jul 2005 17:07:10 +0200
+Date:	Fri, 1 Jul 2005 16:04:15 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
 To:	Daniel Jacobowitz <dan@debian.org>
-CC:	Ralf Baechle <ralf@linux-mips.org>,
+Cc:	"Stephen P. Becker" <geoman@gentoo.org>,
+	Ralf Baechle <ralf@linux-mips.org>,
 	Bryan Althouse <bryan.althouse@3phoenix.com>,
 	"'Linux/MIPS Development'" <linux-mips@linux-mips.org>
 Subject: Re: Seg fault when compiled with -mabi=64 and -lpthread
-References: <20050630173409Z8226102-3678+735@linux-mips.org> <20050630202111.GC3245@linux-mips.org> <20050630210357.GA23456@nevyn.them.org> <42C46D85.9050104@gentoo.org> <20050701035105.GA9601@nevyn.them.org>
-In-Reply-To: <20050701035105.GA9601@nevyn.them.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <geoman@gentoo.org>
+In-Reply-To: <20050701144640.GA30720@nevyn.them.org>
+Message-ID: <Pine.LNX.4.61L.0507011602540.30138@blysk.ds.pg.gda.pl>
+References: <20050630173409Z8226102-3678+735@linux-mips.org>
+ <20050630202111.GC3245@linux-mips.org> <20050630210357.GA23456@nevyn.them.org>
+ <42C46D85.9050104@gentoo.org> <20050701035105.GA9601@nevyn.them.org>
+ <Pine.LNX.4.61L.0507010940280.30138@blysk.ds.pg.gda.pl>
+ <20050701133910.GA24716@nevyn.them.org> <Pine.LNX.4.61L.0507011450180.30138@blysk.ds.pg.gda.pl>
+ <20050701144640.GA30720@nevyn.them.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.85.1/963/Fri Jul  1 15:27:29 2005 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8305
+X-archive-position: 8306
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geoman@gentoo.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
->>Hmm, well with respect to my problem, I'm using a pretty recent
->>toolchain, with gcc 3.4.4, binutils-2.16.1, glibc-2.3.5, and headers
->>from a linux-mips 2.6.11 snapshot.  Interestingly, I tried to reproduce
->>Bryan's segfault, but could not.  That code ran without error when I
->>linked with libpthread.  Any thoughts?
-> 
-> 
-> I don't think glibc 2.3.5 worked for mips64.  But I haven't checked it
-> in a long time.  Try CVS HEAD of glibc instead.
-> 
-> Other than that, you're on your own - building glibc is extremely error
-> prone.
-> 
+On Fri, 1 Jul 2005, Daniel Jacobowitz wrote:
 
-I'm sure it can be error prone, but that isn't the problem here at all.
-  My n32 glibc 2.3.5 compiled and seems to work just fine, and I was
-able to compile an entire userland around it that has no (other)
-problems so far as I can tell.  By this, I mean "emerge system" in
-Gentoo terms, which is a pretty good test of whether the toolchain works
-or not.  Furthermore, other programs that are linked against libpthread
-run without causing a segfault and oops.  I'm talking about glib, as in
-the glib that used to be part of GTK+ before it was split out some time
-ago.
+> Sure - send them to me, or better yet, put them in bugzilla and make
+> sure you copy me.  I can't promise you timely response just now because
+> I'm about twelve feet under on this current project at work, but I'll
+> do everything I can.
 
-The segfault with kernel oops that I can't get around occurs while
-glib's configure script is checking for libpthread.  Specifically, it
-links http://beerandrocks.net:8080/~spbecker/oops/conftest.c against
-libpthread and then runs it.
+ OK, one is already there as bug #933 and I'll add the rest.
 
-I've somewhat convinced myself this is either a kernel and/or a header
-problem.  It seems I'm only able to reproduce this problem when trying
-to compile and run that code while running 2.6.12 from cvs.  As I
-previously mentioned, I tested the offending code on a kernel I compiled
-from a 2.6.10 snapshot some time ago, and it ran with no segfault or oops.
+> We're going to have automated MIPS regression testing sometime this
+> year, too.
 
--Steve
+ Oh, that would be most welcome.
+
+  Maciej

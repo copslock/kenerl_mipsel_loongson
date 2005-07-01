@@ -1,68 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Jul 2005 18:17:36 +0100 (BST)
-Received: from lennier.cc.vt.edu ([IPv6:::ffff:198.82.162.213]:8924 "EHLO
-	lennier.cc.vt.edu") by linux-mips.org with ESMTP
-	id <S8226168AbVGARRU>; Fri, 1 Jul 2005 18:17:20 +0100
-Received: from vivi.cc.vt.edu (IDENT:mirapoint@[10.1.1.12])
-	by lennier.cc.vt.edu (8.12.11/8.12.11) with ESMTP id j61HG0Qx017070;
-	Fri, 1 Jul 2005 13:16:10 -0400
-Received: from [128.173.184.73] (gs4073.geos.vt.edu [128.173.184.73])
-	by vivi.cc.vt.edu (MOS 3.6.4-CR)
-	with ESMTP id DNQ77670;
-	Fri, 1 Jul 2005 13:15:45 -0400 (EDT)
-Message-ID: <42C57A2E.4070702@gentoo.org>
-Date:	Fri, 01 Jul 2005 13:15:26 -0400
-From:	"Stephen P. Becker" <geoman@gentoo.org>
-User-Agent: Mozilla Thunderbird 1.0.2 (X11/20050624)
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Jul 2005 18:26:56 +0100 (BST)
+Received: from sccrmhc14.comcast.net ([IPv6:::ffff:204.127.202.59]:28602 "EHLO
+	sccrmhc14.comcast.net") by linux-mips.org with ESMTP
+	id <S8226172AbVGAR0l>; Fri, 1 Jul 2005 18:26:41 +0100
+Received: from ba3pi (pcp0010731669pcs.howard01.md.comcast.net[69.243.71.130])
+          by comcast.net (sccrmhc14) with SMTP
+          id <20050701172627014004e4jhe>; Fri, 1 Jul 2005 17:26:28 +0000
+From:	"Bryan Althouse" <bryan.althouse@3phoenix.com>
+To:	"'Maciej W. Rozycki'" <macro@linux-mips.org>
+Cc:	"'Linux/MIPS Development'" <linux-mips@linux-mips.org>
+Subject: RE: top and SMP
+Date:	Fri, 1 Jul 2005 13:26:25 -0400
 MIME-Version: 1.0
-To:	Daniel Jacobowitz <dan@debian.org>
-CC:	Ralf Baechle <ralf@linux-mips.org>,
-	Bryan Althouse <bryan.althouse@3phoenix.com>,
-	"'Linux/MIPS Development'" <linux-mips@linux-mips.org>
-Subject: Re: Seg fault when compiled with -mabi=64 and -lpthread
-References: <20050630173409Z8226102-3678+735@linux-mips.org> <20050630202111.GC3245@linux-mips.org> <20050630210357.GA23456@nevyn.them.org> <42C46D85.9050104@gentoo.org> <20050701035105.GA9601@nevyn.them.org> <42C55991.70109@gentoo.org> <20050701170258.GA22405@nevyn.them.org>
-In-Reply-To: <20050701170258.GA22405@nevyn.them.org>
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: text/plain;
+	charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-Return-Path: <geoman@gentoo.org>
+X-Mailer: Microsoft Office Outlook, Build 11.0.6353
+In-Reply-To: <Pine.LNX.4.61L.0507010950310.30138@blysk.ds.pg.gda.pl>
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
+Thread-Index: AcV+GjopURKKgsNTSVGITQNgbOGu6wARoEGw
+Message-Id: <20050701172641Z8226172-3678+842@linux-mips.org>
+Return-Path: <bryan.althouse@3phoenix.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8316
+X-archive-position: 8317
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geoman@gentoo.org
+X-original-sender: bryan.althouse@3phoenix.com
 Precedence: bulk
 X-list: linux-mips
 
-Daniel Jacobowitz wrote:
-> On Fri, Jul 01, 2005 at 10:56:17AM -0400, Stephen P. Becker wrote:
-> 
->>The segfault with kernel oops that I can't get around occurs while
->>glib's configure script is checking for libpthread.  Specifically, it
->>links http://beerandrocks.net:8080/~spbecker/oops/conftest.c against
->>libpthread and then runs it.
-> 
-> 
-> If that oopses, your famed emerge testing hasn't run any threaded
-> programs, my friend :-)
+Maciej,
 
-What do you mean by "famed" emerge testing?  In any case, that is what I
-am in the process of doing (testing).  This userland I am working with
-is in no way an official Gentoo install. :)  At some point in the
-future, we will probably make official n32 install stages available to
-the general users, after we work all the bugs out...this just happens to
-be one of those bugs.
+Looks like I am running procps version 2.0.7.  The latest is 3.2.5, so I am
+a bit out of date.  I would like to upgrade, but I am having trouble cross
+compiling the latest.  I get this error:
+	Proc/libproc-3.2.5.so: undefined reference to '__ctype_b'
+For other reasons, I need to upgrade my toolchain.  Hopefully I'll have
+better luck cross compiling procps afterwards.
 
-> Could be kernel, could be library, could be both.
+Bryan
 
-Well, since you say that glibc 2.3.5 probably isn't up to par for
-mips64, I'll see if I can get cvs HEAD going in a chroot and see if that
-fixes the problem.
+-----Original Message-----
+From: macro@blysk.ds.pg.gda.pl [mailto:macro@blysk.ds.pg.gda.pl] On Behalf
+Of Maciej W. Rozycki
+Sent: Friday, July 01, 2005 4:53 AM
+To: Bryan Althouse
+Cc: 'Linux/MIPS Development'
+Subject: Re: top and SMP
 
-> Must be at least kernel because the kernel should never oops.
+On Thu, 30 Jun 2005, Bryan Althouse wrote:
 
-Agreed.
+> I have tried to get top to display processor utilization on a per CPU
+basis,
+> but to no avail.  Does anyone know how to get top to properly display
+> statistics for a SMP system?  Better yet, does anyone know of a better
+> utility than top?  
 
--Steve
+ Do you have a recent version of procps?
+
+  Maciej

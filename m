@@ -1,55 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Jul 2005 10:39:18 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:28690 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8226135AbVGAJjB>; Fri, 1 Jul 2005 10:39:01 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 33A4EF5977; Fri,  1 Jul 2005 11:38:49 +0200 (CEST)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 15473-09; Fri,  1 Jul 2005 11:38:49 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id E39DAE1C8A; Fri,  1 Jul 2005 11:38:48 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j619cp2b011209;
-	Fri, 1 Jul 2005 11:38:51 +0200
-Date:	Fri, 1 Jul 2005 10:38:55 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:	David Daney <ddaney@avtrex.com>,
-	Michael Stickel <michael@cubic.org>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: RE: Problems with Intel e100 driver on new MIPS port, was: Advice
- needed WRT very slow nfs in new port...
-In-Reply-To: <Pine.LNX.4.62.0507011059420.5245@numbat.sonytel.be>
-Message-ID: <Pine.LNX.4.61L.0507011036110.30138@blysk.ds.pg.gda.pl>
-References: <01049E563C8ECC43AD6B53A5AF419B38098BD1@avtrex-server2.hq2.avtrex.com>
- <Pine.LNX.4.61L.0507010953420.30138@blysk.ds.pg.gda.pl>
- <Pine.LNX.4.62.0507011059420.5245@numbat.sonytel.be>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.85.1/962/Fri Jul  1 07:19:05 2005 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Jul 2005 12:46:14 +0100 (BST)
+Received: from deliver-1.mx.triera.net ([IPv6:::ffff:213.161.0.31]:49899 "HELO
+	deliver-1.mx.triera.net") by linux-mips.org with SMTP
+	id <S8226142AbVGALp6>; Fri, 1 Jul 2005 12:45:58 +0100
+Received: from localhost (in-3.mx.triera.net [213.161.0.27])
+	by deliver-1.mx.triera.net (Postfix) with ESMTP id 8B72DC050
+	for <linux-mips@linux-mips.org>; Fri,  1 Jul 2005 13:45:42 +0200 (CEST)
+Received: from smtp.triera.net (smtp.triera.net [213.161.0.30])
+	by in-3.mx.triera.net (Postfix) with SMTP id 6EA3F1BC079
+	for <linux-mips@linux-mips.org>; Fri,  1 Jul 2005 13:45:44 +0200 (CEST)
+Received: from orionlinux.starfleet.com (cmb58-52.dial-up.arnes.si [153.5.49.52])
+	by smtp.triera.net (Postfix) with ESMTP id 69AE31A18AE
+	for <linux-mips@linux-mips.org>; Fri,  1 Jul 2005 13:45:45 +0200 (CEST)
+Subject: DB1200
+From:	Matej Kupljen <matej.kupljen@ultra.si>
+To:	Linux/MIPS Development <linux-mips@linux-mips.org>
+Content-Type: text/plain
+Organization: Ultra d.o.o.
+Date:	Fri, 01 Jul 2005 13:45:46 +0200
+Message-Id: <1120218346.10628.18.camel@orionlinux.starfleet.com>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.2.1.1 
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: Triera AV Service
+Return-Path: <matej.kupljen@ultra.si>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8295
+X-archive-position: 8296
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: matej.kupljen@ultra.si
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 1 Jul 2005, Geert Uytterhoeven wrote:
+Hi all,
 
-> The e100 is a quite popular card, so I'd expect it to be in use on many
-> platforms.
+I am using DB1200 from AMD and have checked this mailing list
+and "the rest of the Internet" for information about
+Linux and MAE on this board.
 
- Is it?  I've thought manufacturers only mount these chips on motherboards 
-as otherwise nobody would buy them. ;-)  Oh well...
+It seems there are only few users of this board and there
+is a lot of work to be done. I am willing to do it, but
+would just like some directions, hints, ... of other
+users.
 
-  Maciej
+I tried contacting AMD, but until now did not receive any
+answer. I tested MAE with their binary images (thank to
+Ruslan V.Pisarev) and it works. My main concern is MAE 
+(probably this is the main concern for all users
+using AU1200, otherwise they wouldn't use it).
+
+What should be done?
+Wait for AMD to release the source of the drivers and 
+maiplayer, if ever? And probably for 2.4 kernel only :-(
+Write new drivers? What would the design be?
+I think the best way to use the MAE would be trough 
+MPlayer (or xine, ...), like using Dxr3 card or H+, which
+is MPEG2 acceleartion card.
+
+Any suggestions?
+
+Thanks and BR,
+Matej

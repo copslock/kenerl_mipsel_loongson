@@ -1,63 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Jul 2005 18:26:56 +0100 (BST)
-Received: from sccrmhc14.comcast.net ([IPv6:::ffff:204.127.202.59]:28602 "EHLO
-	sccrmhc14.comcast.net") by linux-mips.org with ESMTP
-	id <S8226172AbVGAR0l>; Fri, 1 Jul 2005 18:26:41 +0100
-Received: from ba3pi (pcp0010731669pcs.howard01.md.comcast.net[69.243.71.130])
-          by comcast.net (sccrmhc14) with SMTP
-          id <20050701172627014004e4jhe>; Fri, 1 Jul 2005 17:26:28 +0000
-From:	"Bryan Althouse" <bryan.althouse@3phoenix.com>
-To:	"'Maciej W. Rozycki'" <macro@linux-mips.org>
-Cc:	"'Linux/MIPS Development'" <linux-mips@linux-mips.org>
-Subject: RE: top and SMP
-Date:	Fri, 1 Jul 2005 13:26:25 -0400
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="US-ASCII"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Jul 2005 20:56:16 +0100 (BST)
+Received: from clock-tower.bc.nu ([IPv6:::ffff:81.2.110.250]:29577 "EHLO
+	lxorguk.ukuu.org.uk") by linux-mips.org with ESMTP
+	id <S8226173AbVGATz7>; Fri, 1 Jul 2005 20:55:59 +0100
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by lxorguk.ukuu.org.uk (8.12.11/8.12.11) with ESMTP id j61JrGjG016309;
+	Fri, 1 Jul 2005 20:53:17 +0100
+Received: (from alan@localhost)
+	by localhost.localdomain (8.12.11/8.12.11/Submit) id j61JrGSg016308;
+	Fri, 1 Jul 2005 20:53:16 +0100
+X-Authentication-Warning: localhost.localdomain: alan set sender to alan@lxorguk.ukuu.org.uk using -f
+Subject: Re: RFH:  What are the semantics of writeb() and friends?
+From:	Alan Cox <alan@lxorguk.ukuu.org.uk>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	David Daney <ddaney@avtrex.com>, linux-mips@linux-mips.org
+In-Reply-To: <Pine.LNX.4.61L.0507011513320.30138@blysk.ds.pg.gda.pl>
+References: <01049E563C8ECC43AD6B53A5AF419B38098BD2@avtrex-server2.hq2.avtrex.com>
+	 <Pine.LNX.4.61L.0507011002520.30138@blysk.ds.pg.gda.pl>
+	 <1120218385.12446.16.camel@localhost.localdomain>
+	 <Pine.LNX.4.61L.0507011303190.30138@blysk.ds.pg.gda.pl>
+	 <1120224708.12446.26.camel@localhost.localdomain>
+	 <Pine.LNX.4.61L.0507011513320.30138@blysk.ds.pg.gda.pl>
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Office Outlook, Build 11.0.6353
-In-Reply-To: <Pine.LNX.4.61L.0507010950310.30138@blysk.ds.pg.gda.pl>
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
-Thread-Index: AcV+GjopURKKgsNTSVGITQNgbOGu6wARoEGw
-Message-Id: <20050701172641Z8226172-3678+842@linux-mips.org>
-Return-Path: <bryan.althouse@3phoenix.com>
+Message-Id: <1120247593.12462.38.camel@localhost.localdomain>
+Mime-Version: 1.0
+X-Mailer: Ximian Evolution 1.4.6 (1.4.6-2) 
+Date:	Fri, 01 Jul 2005 20:53:15 +0100
+Return-Path: <alan@lxorguk.ukuu.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8317
+X-archive-position: 8318
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bryan.althouse@3phoenix.com
+X-original-sender: alan@lxorguk.ukuu.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-Maciej,
+On Gwe, 2005-07-01 at 15:43, Maciej W. Rozycki wrote:
+>  But that mentions compiler only, not CPU ordering!  I understand the BIU 
+> of the issuing CPU and any external hardware is still permitted to 
+> merge/reorder these accesses unless separated by wmb()/rmb()/mb() as 
 
-Looks like I am running procps version 2.0.7.  The latest is 3.2.5, so I am
-a bit out of date.  I would like to upgrade, but I am having trouble cross
-compiling the latest.  I get this error:
-	Proc/libproc-3.2.5.so: undefined reference to '__ctype_b'
-For other reasons, I need to upgrade my toolchain.  Hopefully I'll have
-better luck cross compiling procps afterwards.
+I think the practical situation is that this implies ordering to the bus
+interface. It might be interesting to ask the powerpc people their
+experience but looking at most PCI drivers they assume this and it would
+be expensive not to do so on x86.
 
-Bryan
+>  We have that iob() macro/call as well, so that you can push cycles out of 
+> the CPU domain immediately as well, which is equivalent to:
 
------Original Message-----
-From: macro@blysk.ds.pg.gda.pl [mailto:macro@blysk.ds.pg.gda.pl] On Behalf
-Of Maciej W. Rozycki
-Sent: Friday, July 01, 2005 4:53 AM
-To: Bryan Althouse
-Cc: 'Linux/MIPS Development'
-Subject: Re: top and SMP
+> 	mb(); 
+> 	make_host_complete_writes();
 
-On Thu, 30 Jun 2005, Bryan Althouse wrote:
+My feeling is the default readb etc are __readb + mb + make_hos...
+>  So far I've been able to get away with that iob() function, but if the 
+> bus and buffering hierarchy gets even more complicated, there may be more 
+> barriers like this needed.
 
-> I have tried to get top to display processor utilization on a per CPU
-basis,
-> but to no avail.  Does anyone know how to get top to properly display
-> statistics for a SMP system?  Better yet, does anyone know of a better
-> utility than top?  
-
- Do you have a recent version of procps?
-
-  Maciej
+Agreed - and we now have the device model so we can actually do that by
+passing a device pointer.

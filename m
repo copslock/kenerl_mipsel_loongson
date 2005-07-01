@@ -1,70 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Jul 2005 09:00:41 +0100 (BST)
-Received: from web25802.mail.ukl.yahoo.com ([IPv6:::ffff:217.12.10.187]:24144
-	"HELO web25802.mail.ukl.yahoo.com") by linux-mips.org with SMTP
-	id <S8226122AbVGAIAW>; Fri, 1 Jul 2005 09:00:22 +0100
-Received: (qmail 54752 invoked by uid 60001); 1 Jul 2005 08:00:03 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.fr;
-  h=Message-ID:Received:Date:From:Subject:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding;
-  b=JC/Xwq1cJIQExT1x80z3wyl1kJYQSrmCJhr2/JvbHt3UDf5LvJL63ZK27PwCEWOcMuV8hxSzCmg/iMLMoKS3ldMZyVX0YA6o5sac1iWfQBck7cQXcrahD0Bf6GTwpkUXWOokjzSMTJ76yDUDYPgD58f4Y/t5B1evIODmuHH4jVw=  ;
-Message-ID: <20050701080003.54738.qmail@web25802.mail.ukl.yahoo.com>
-Received: from [217.167.142.149] by web25802.mail.ukl.yahoo.com via HTTP; Fri, 01 Jul 2005 10:00:02 CEST
-Date:	Fri, 1 Jul 2005 10:00:02 +0200 (CEST)
-From:	moreau francis <francis_moreau2000@yahoo.fr>
-Subject: Re: I built a mipsel-linux toolchain, but it doesn't work
-To:	David Daney <ddaney@avtrex.com>
-Cc:	zhan rongkai <zhanrk@gmail.com>, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Jul 2005 09:38:55 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:29453 "EHLO
+	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8226127AbVGAIik>; Fri, 1 Jul 2005 09:38:40 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 41EDDE1C8A; Fri,  1 Jul 2005 10:38:27 +0200 (CEST)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 07433-05; Fri,  1 Jul 2005 10:38:27 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 1A9C3E1C78; Fri,  1 Jul 2005 10:38:27 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j618cS6l008448;
+	Fri, 1 Jul 2005 10:38:29 +0200
+Date:	Fri, 1 Jul 2005 09:38:31 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Fabrizio Fazzino <fabrizio@fazzino.it>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Assembly macro with parameters
+In-Reply-To: <42C429C3.2090905@fazzino.it>
+Message-ID: <Pine.LNX.4.61L.0507010927130.30138@blysk.ds.pg.gda.pl>
+References: <425573AD.9010702@fazzino.it> <20050407182549.GA24235@linux-mips.org>
+ <4256B5BE.8070708@fazzino.it> <20050408165717.GA8157@nevyn.them.org>
+ <42C429C3.2090905@fazzino.it>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Return-Path: <francis_moreau2000@yahoo.fr>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.85.1/962/Fri Jul  1 07:19:05 2005 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8288
+X-archive-position: 8289
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: francis_moreau2000@yahoo.fr
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-David Daney wrote:
+On Thu, 30 Jun 2005, Fabrizio Fazzino wrote:
 
-> zhan rongkai wrote:
->
->> Hi folks,
->>
->> At last night, I built a mipsel-linux cross-toolchain according to the
->> following steps:
->>
->> 1) The list of GNU Toolchain source packages
->> =======================================================
->>
->> * binutils: binutils-2.16.1.tar.gz
->> *      gcc: gcc-3.4.4.tar.gz
->> *    Linux: Linux-2.6.12.tar.bz2 (from www.kernel.org)
->> *   uClibc: uClibc-0.9.27.tar.gz
->> *      gdb: gdb-6.3.tar.gz
->>
->
-> IIRC gcc does not currently work out-of-the-box with uClibc.  If you are
-> using uClibc, your best bet is probably to use the Buildroot system that 
-> can be found at the uClibc web site.
->
+> Daniel suggested using .word and writing the function by hand,
+> but which is the syntax I have to use?
+> 
+> #define myopcode(rs,rt,rd) { \
+> int opcode_number = 0xC4000000 | (rs<<21) | (rt<<16) | (rd<<11); \
+> char opcode_string[20]; \
+> sprintf(opcode_string, ".word 0x%X", opcode_number); \
+> asm(opcode_string); \
+> }
 
-Could you develop please ? What kind of config/hack does Buildroot to be able
-to use GCC with uClibc ?
+ This is untested, but it should be a reasonable starting point:
 
-thanks
+#define myopcode(rs,rt,rd) do { \
+	int opcode_number = 0xC4000000 | (rs<<21) | (rt<<16) | (rd<<11); \
+	asm(".word %0" : : "i" (opcode_number)); \
+} while (0)
 
-              Francis
+But you may want to add code to tell GCC that these registers are used and 
+how, because otherwise you may have little use of your macro.  You'll 
+probably have to investigate the explicit register variable GCC feature 
+and cpp stringification.  It should be straightforward though rather 
+boring, so I'm leaving it as an exercise.
 
-
-	
-
-	
-		
-___________________________________________________________________________ 
-Appel audio GRATUIT partout dans le monde avec le nouveau Yahoo! Messenger 
-Téléchargez cette version sur http://fr.messenger.yahoo.com
+  Maciej

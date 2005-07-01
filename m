@@ -1,40 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Jul 2005 16:48:39 +0100 (BST)
-Received: from adsl-67-116-42-147.dsl.sntc01.pacbell.net ([IPv6:::ffff:67.116.42.147]:19210
-	"EHLO avtrex.com") by linux-mips.org with ESMTP id <S8226159AbVGAPsK>;
-	Fri, 1 Jul 2005 16:48:10 +0100
-Received: from [192.168.7.26] ([192.168.7.3]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Fri, 1 Jul 2005 08:49:24 -0700
-Message-ID: <42C565AC.4060300@avtrex.com>
-Date:	Fri, 01 Jul 2005 08:47:56 -0700
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Mozilla Thunderbird 1.0.2-6 (X11/20050513)
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Jul 2005 16:54:37 +0100 (BST)
+Received: from eth13.com-link.com ([IPv6:::ffff:208.242.241.164]:34528 "EHLO
+	real.realitydiluted.com") by linux-mips.org with ESMTP
+	id <S8226162AbVGAPyQ>; Fri, 1 Jul 2005 16:54:16 +0100
+Received: from sjhill by real.realitydiluted.com with local (Exim 4.50 #1 (Debian))
+	id 1DoMu9-0007J0-62; Fri, 01 Jul 2005 09:54:09 -0500
+Subject: Re: Seg fault when compiled with -mabi=64 and -lpthread
+In-Reply-To: <20050701150938Z8226157-3678+821@linux-mips.org>
+To:	Bryan Althouse <bryan.althouse@3phoenix.com>
+Date:	Fri, 1 Jul 2005 09:54:09 -0500 (CDT)
+CC:	"'Daniel Jacobowitz'" <dan@debian.org>,
+	"'Stephen P. Becker'" <geoman@gentoo.org>,
+	macro@blysk.ds.pg.gda.pl,
+	"'Linux/MIPS Development'" <linux-mips@linux-mips.org>
+X-Mailer: ELM [version 2.4ME+ PL100 (25)]
 MIME-Version: 1.0
-To:	moreau francis <francis_moreau2000@yahoo.fr>
-CC:	zhan rongkai <zhanrk@gmail.com>, linux-mips@linux-mips.org
-Subject: Re: I built a mipsel-linux toolchain, but it doesn't work
-References: <20050701080003.54738.qmail@web25802.mail.ukl.yahoo.com>
-In-Reply-To: <20050701080003.54738.qmail@web25802.mail.ukl.yahoo.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 01 Jul 2005 15:49:24.0046 (UTC) FILETIME=[741EDEE0:01C57E54]
-Return-Path: <ddaney@avtrex.com>
+Content-Type: text/plain; charset=US-ASCII
+Message-Id: <E1DoMu9-0007J0-62@real.realitydiluted.com>
+From:	sjhill@realitydiluted.com
+Return-Path: <sjhill@realitydiluted.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8310
+X-archive-position: 8311
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: sjhill@realitydiluted.com
 Precedence: bulk
 X-list: linux-mips
 
-moreau francis wrote:
-> Could you develop please ? What kind of config/hack does Buildroot to be able
-> to use GCC with uClibc ?
+> Looks like I should upgrade glibc, and possibly gcc.  When you say that I
+> should try CVS HEAD of glibc, I'm not sure what you mean.  I have looked in
+> the linux-mips.org CVS and the closest thing I can find is libc, and it
+> looks really old.  I have also found a glibc CVS at
+> :pserver:anoncvs@sources.redhat.com:/cvs/glibc.  If I get libc from here is
+> this the "CVS HEAD"?  
 > 
+> Should I get GCC from the generic GCC site, or should get it from the
+> linux-mips CVS?  
+> 
+> I apologize for the simple questions.  I have not built a tool chain before.
+> I've been using the one supplied by PMC-Sierra.  Will I need to patch any of
+> these sources for MIPs?
+> 
+Also, stay away from the HEAD of GCC CVS. GCC-4.1.0 compilers cannot
+build Linux kernels.
 
-It is quite complicated, but you can find a summary on this web page:
-
-http://www.google.com/search?q=uclibc+buildroot
+-Steve

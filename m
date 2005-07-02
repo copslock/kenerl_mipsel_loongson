@@ -1,41 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Jul 2005 01:56:59 +0100 (BST)
-Received: from wproxy.gmail.com ([IPv6:::ffff:64.233.184.207]:58358 "EHLO
-	wproxy.gmail.com") by linux-mips.org with ESMTP id <S8226180AbVGBA4k> convert rfc822-to-8bit;
-	Sat, 2 Jul 2005 01:56:40 +0100
-Received: by wproxy.gmail.com with SMTP id 70so455861wra
-        for <linux-mips@linux-mips.org>; Fri, 01 Jul 2005 17:56:29 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:reply-to:to:subject:cc:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=B0N2GBjnEg0XtYEP8PrBOk5VtMikHzBPnKw4HoQWc97h14O4gK6MRYQuGfGe+u+UxOjS84scOpyIQRWaSF2qMGH3Xp6vZFqcrmPNkzFOnFYJ06nwMuVJtX8UArk+e9bz4lucuKq6DVxQXWx4tia7o/lrZ6Yg5StLjgPWxEPQj3Y=
-Received: by 10.54.101.2 with SMTP id y2mr2093100wrb;
-        Fri, 01 Jul 2005 17:56:29 -0700 (PDT)
-Received: by 10.54.71.11 with HTTP; Fri, 1 Jul 2005 17:56:29 -0700 (PDT)
-Message-ID: <2db32b720507011756247735d6@mail.gmail.com>
-Date:	Fri, 1 Jul 2005 17:56:29 -0700
-From:	rolf liu <rolfliu@gmail.com>
-Reply-To: rolf liu <rolfliu@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: possible serial driver fixup for au1x00 in 2.6?
-Cc:	rolfliu@gmail.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Jul 2005 02:06:41 +0100 (BST)
+Received: from smtp001.bizmail.yahoo.com ([IPv6:::ffff:216.136.172.125]:14683
+	"HELO smtp001.bizmail.yahoo.com") by linux-mips.org with SMTP
+	id <S8226180AbVGBBGZ>; Sat, 2 Jul 2005 02:06:25 +0100
+Received: (qmail 23007 invoked from network); 2 Jul 2005 01:06:19 -0000
+Received: from unknown (HELO ?192.168.1.101?) (ppopov@embeddedalley.com@71.128.175.242 with plain)
+  by smtp001.bizmail.yahoo.com with SMTP; 2 Jul 2005 01:06:18 -0000
+Subject: Re: possible serial driver fixup for au1x00 in 2.6?
+From:	Pete Popov <ppopov@embeddedalley.com>
+Reply-To: ppopov@embeddedalley.com
+To:	rolf liu <rolfliu@gmail.com>
+Cc:	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
+In-Reply-To: <2db32b720507011756247735d6@mail.gmail.com>
+References: <2db32b720507011756247735d6@mail.gmail.com>
+Content-Type: text/plain
+Organization: Embedded Alley Solutions, Inc
+Date:	Fri, 01 Jul 2005 18:06:23 -0700
+Message-Id: <1120266383.5987.46.camel@localhost.localdomain>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-Return-Path: <rolfliu@gmail.com>
+X-Mailer: Evolution 2.0.4 (2.0.4-4) 
+Content-Transfer-Encoding: 7bit
+Return-Path: <ppopov@embeddedalley.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8328
+X-archive-position: 8329
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rolfliu@gmail.com
+X-original-sender: ppopov@embeddedalley.com
 Precedence: bulk
 X-list: linux-mips
 
-Basically, au1x00_uart.c is doing the same thing as 8250.c. If I want
-to add extra serial port support by 8250.c. There could be some
-problem. Any idea?
+On Fri, 2005-07-01 at 17:56 -0700, rolf liu wrote:
+> Basically, au1x00_uart.c is doing the same thing as 8250.c. 
 
-Correct me if I am wrong
+Basically.
+
+> If I want
+> to add extra serial port support by 8250.c. There could be some
+> problem. Any idea?
+
+Don't know, haven't tried it. In general, the au1x00 serial driver needs
+to be rewritten.
+
+Pete

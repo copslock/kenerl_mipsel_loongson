@@ -1,54 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Jul 2005 16:54:33 +0100 (BST)
-Received: from mba.ocn.ne.jp ([IPv6:::ffff:210.190.142.172]:6910 "HELO
-	smtp.mba.ocn.ne.jp") by linux-mips.org with SMTP
-	id <S8226095AbVGBPyP>; Sat, 2 Jul 2005 16:54:15 +0100
-Received: from localhost (p8134-ipad01funabasi.chiba.ocn.ne.jp [61.207.82.134])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id BE32B108E; Sun,  3 Jul 2005 00:54:11 +0900 (JST)
-Date:	Sun, 03 Jul 2005 00:59:21 +0900 (JST)
-Message-Id: <20050703.005921.25910131.anemo@mba.ocn.ne.jp>
-To:	djohnson+linuxmips@sw.starentnetworks.com
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: preempt_schedule_irq missing from mfinfo[]?
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <17093.19241.353160.946039@cortez.sw.starentnetworks.com>
-References: <17092.5345.75666.403044@cortez.sw.starentnetworks.com>
-	<20050701.114358.21591461.nemoto@toshiba-tops.co.jp>
-	<17093.19241.353160.946039@cortez.sw.starentnetworks.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Jul 2005 21:40:25 +0100 (BST)
+Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:15767 "EHLO
+	witte.sonytel.be") by linux-mips.org with ESMTP id <S8226105AbVGBUkH>;
+	Sat, 2 Jul 2005 21:40:07 +0100
+Received: from numbat.sonytel.be (mail.sonytel.be [43.221.60.197])
+	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id j62Ke2pr017362;
+	Sat, 2 Jul 2005 22:40:03 +0200 (MEST)
+Date:	Sat, 2 Jul 2005 22:39:54 +0200 (CEST)
+From:	Geert Uytterhoeven <geert@linux-m68k.org>
+To:	Bryan Althouse <bryan.althouse@3phoenix.com>
+cc:	"'Maciej W. Rozycki'" <macro@linux-mips.org>,
+	"'Linux/MIPS Development'" <linux-mips@linux-mips.org>
+Subject: RE: top and SMP
+In-Reply-To: <20050701172641Z8226172-3678+842@linux-mips.org>
+Message-ID: <Pine.LNX.4.62.0507022238060.19703@numbat.sonytel.be>
+References: <20050701172641Z8226172-3678+842@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8332
+X-archive-position: 8333
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Fri, 1 Jul 2005 09:54:49 -0400, Dave Johnson <djohnson+linuxmips@sw.starentnetworks.com> said:
+On Fri, 1 Jul 2005, Bryan Althouse wrote:
+> Looks like I am running procps version 2.0.7.  The latest is 3.2.5, so I am
+> a bit out of date.  I would like to upgrade, but I am having trouble cross
+> compiling the latest.  I get this error:
+> 	Proc/libproc-3.2.5.so: undefined reference to '__ctype_b'
 
-dave> That'll do it.  My patch wasn't enough.  I added some sanity
-dave> checks to get_wchan and it hit one while running overnight.
+Is the version of glibc your cross-toolchain links against the same as the
+version of glibc on the target?
 
-dave> The task being examined transitioned from !TASK_RUNNING to
-dave> TASK_RUNNING while it was being examined. Doh!
+Last time I saw that one was when trying to run `old' (i.e. dynamically linked
+against an older glibc) binaries on a system with a new glibc.
 
-dave> Definately not SMP/preempt safe as written today.
+Gr{oetje,eeting}s,
 
-Perhaps you can make it SMP/preempt safe by doing stack_page test in
-the unwinding loop as done on i386, etc.
+						Geert
 
-But anyway I think just calling thread_saved_pc is enough.
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-Ralf, how do you think about this?
-
----
-Atsushi Nemoto
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

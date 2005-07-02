@@ -1,46 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Jul 2005 02:06:41 +0100 (BST)
-Received: from smtp001.bizmail.yahoo.com ([IPv6:::ffff:216.136.172.125]:14683
-	"HELO smtp001.bizmail.yahoo.com") by linux-mips.org with SMTP
-	id <S8226180AbVGBBGZ>; Sat, 2 Jul 2005 02:06:25 +0100
-Received: (qmail 23007 invoked from network); 2 Jul 2005 01:06:19 -0000
-Received: from unknown (HELO ?192.168.1.101?) (ppopov@embeddedalley.com@71.128.175.242 with plain)
-  by smtp001.bizmail.yahoo.com with SMTP; 2 Jul 2005 01:06:18 -0000
-Subject: Re: possible serial driver fixup for au1x00 in 2.6?
-From:	Pete Popov <ppopov@embeddedalley.com>
-Reply-To: ppopov@embeddedalley.com
-To:	rolf liu <rolfliu@gmail.com>
-Cc:	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
-In-Reply-To: <2db32b720507011756247735d6@mail.gmail.com>
-References: <2db32b720507011756247735d6@mail.gmail.com>
-Content-Type: text/plain
-Organization: Embedded Alley Solutions, Inc
-Date:	Fri, 01 Jul 2005 18:06:23 -0700
-Message-Id: <1120266383.5987.46.camel@localhost.localdomain>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.0.4 (2.0.4-4) 
-Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@embeddedalley.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Jul 2005 09:41:26 +0100 (BST)
+Received: from go4.ext.ti.com ([IPv6:::ffff:192.91.75.132]:6793 "EHLO
+	go4.ext.ti.com") by linux-mips.org with ESMTP id <S8226202AbVGBIlB> convert rfc822-to-8bit;
+	Sat, 2 Jul 2005 09:41:01 +0100
+Received: from dlep31.itg.ti.com ([157.170.139.161])
+	by go4.ext.ti.com (8.13.1/8.13.1) with ESMTP id j628eqYT017585;
+	Sat, 2 Jul 2005 03:40:52 -0500 (CDT)
+Received: from dlep90.itg.ti.com (localhost [127.0.0.1])
+	by dlep31.itg.ti.com (8.12.11/8.12.11) with ESMTP id j628ep54020885;
+	Sat, 2 Jul 2005 03:40:51 -0500 (CDT)
+Received: from dbde01.ent.ti.com (localhost [127.0.0.1])
+	by dlep90.itg.ti.com (8.12.11/8.12.11) with ESMTP id j628enhB006633;
+	Sat, 2 Jul 2005 03:40:50 -0500 (CDT)
+X-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: RE: I built a mipsel-linux toolchain, but it doesn't work
+Date:	Sat, 2 Jul 2005 14:10:48 +0530
+Message-ID: <A8A67F242940E246A515077CF9ECACC157F3F6@dbde01.ent.ti.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: I built a mipsel-linux toolchain, but it doesn't work
+Thread-Index: AcV+ViWjSXBS2K9XQPWdR9qPsq6FCwAi2j7w
+From:	"Singh, Ajay" <ajaysingh@ti.com>
+To:	<sjhill@realitydiluted.com>, "David Daney" <ddaney@avtrex.com>
+Cc:	"moreau francis" <francis_moreau2000@yahoo.fr>,
+	"zhan rongkai" <zhanrk@gmail.com>, <linux-mips@linux-mips.org>
+Return-Path: <ajaysingh@ti.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8329
+X-archive-position: 8330
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@embeddedalley.com
+X-original-sender: ajaysingh@ti.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 2005-07-01 at 17:56 -0700, rolf liu wrote:
-> Basically, au1x00_uart.c is doing the same thing as 8250.c. 
+We are using uClibc-0.9.27 for MIPS target. Can you point out the issues
+with uClibc-0.9.27 ??
 
-Basically.
+~Ajay.
 
-> If I want
-> to add extra serial port support by 8250.c. There could be some
-> problem. Any idea?
+-----Original Message-----
+From: linux-mips-bounce@linux-mips.org
+[mailto:linux-mips-bounce@linux-mips.org] On Behalf Of
+sjhill@realitydiluted.com
+Sent: Friday, July 01, 2005 8:30 PM
+To: David Daney
+Cc: moreau francis; zhan rongkai; linux-mips@linux-mips.org
+Subject: Re: I built a mipsel-linux toolchain, but it doesn't work
 
-Don't know, haven't tried it. In general, the au1x00 serial driver needs
-to be rewritten.
+> moreau francis wrote:
+> > Could you develop please ? What kind of config/hack does Buildroot 
+> > to be able to use GCC with uClibc ?
+> > 
+> 
+> It is quite complicated, but you can find a summary on this web page:
+> 
+> http://www.google.com/search?q=uclibc+buildroot
+> 
+Here is the page for it:
 
-Pete
+   http://buildroot.uclibc.org/
+
+The mipsel target is supported and will build for your needs. Do not use
+uClibc-0.9.27 when you configure your buildroot system. Use the latest
+uClibc snapshot. There are issues with uClibc-0.9.27 with MIPS targets.
+
+-Steve

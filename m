@@ -1,74 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Jul 2005 09:41:26 +0100 (BST)
-Received: from go4.ext.ti.com ([IPv6:::ffff:192.91.75.132]:6793 "EHLO
-	go4.ext.ti.com") by linux-mips.org with ESMTP id <S8226202AbVGBIlB> convert rfc822-to-8bit;
-	Sat, 2 Jul 2005 09:41:01 +0100
-Received: from dlep31.itg.ti.com ([157.170.139.161])
-	by go4.ext.ti.com (8.13.1/8.13.1) with ESMTP id j628eqYT017585;
-	Sat, 2 Jul 2005 03:40:52 -0500 (CDT)
-Received: from dlep90.itg.ti.com (localhost [127.0.0.1])
-	by dlep31.itg.ti.com (8.12.11/8.12.11) with ESMTP id j628ep54020885;
-	Sat, 2 Jul 2005 03:40:51 -0500 (CDT)
-Received: from dbde01.ent.ti.com (localhost [127.0.0.1])
-	by dlep90.itg.ti.com (8.12.11/8.12.11) with ESMTP id j628enhB006633;
-	Sat, 2 Jul 2005 03:40:50 -0500 (CDT)
-X-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0
-Content-class: urn:content-classes:message
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: RE: I built a mipsel-linux toolchain, but it doesn't work
-Date:	Sat, 2 Jul 2005 14:10:48 +0530
-Message-ID: <A8A67F242940E246A515077CF9ECACC157F3F6@dbde01.ent.ti.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: I built a mipsel-linux toolchain, but it doesn't work
-Thread-Index: AcV+ViWjSXBS2K9XQPWdR9qPsq6FCwAi2j7w
-From:	"Singh, Ajay" <ajaysingh@ti.com>
-To:	<sjhill@realitydiluted.com>, "David Daney" <ddaney@avtrex.com>
-Cc:	"moreau francis" <francis_moreau2000@yahoo.fr>,
-	"zhan rongkai" <zhanrk@gmail.com>, <linux-mips@linux-mips.org>
-Return-Path: <ajaysingh@ti.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Jul 2005 16:41:31 +0100 (BST)
+Received: from mailout03.sul.t-online.com ([IPv6:::ffff:194.25.134.81]:53900
+	"EHLO mailout03.sul.t-online.com") by linux-mips.org with ESMTP
+	id <S8226095AbVGBPlP>; Sat, 2 Jul 2005 16:41:15 +0100
+Received: from fwd23.aul.t-online.de 
+	by mailout03.sul.t-online.com with smtp 
+	id 1Dok7E-0000Ie-03; Sat, 02 Jul 2005 17:41:12 +0200
+Received: from denx.de (VmKhU8ZdoehGzbfi5dIs+YOgFa6QQN-SE7Edrfjyk0P42GPJCXQEZJ@[84.150.110.36]) by fwd23.sul.t-online.de
+	with esmtp id 1Dok6x-0wDy3U0; Sat, 2 Jul 2005 17:40:55 +0200
+Received: from atlas.denx.de (atlas.denx.de [10.0.0.14])
+	by denx.de (Postfix) with ESMTP
+	id 5EE49428A7; Sat,  2 Jul 2005 17:40:54 +0200 (MEST)
+Received: from atlas.denx.de (localhost.localdomain [127.0.0.1])
+	by atlas.denx.de (Postfix) with ESMTP id A2728353A36;
+	Sat,  2 Jul 2005 17:39:45 +0200 (MEST)
+To:	rolf liu <rolfliu@gmail.com>
+Cc:	linux-mips@linux-mips.org
+From:	Wolfgang Denk <wd@denx.de>
+Subject: Re: glibc based toolchain for mips 
+Mime-version: 1.0
+Content-type: text/plain; charset=ISO-8859-1
+Content-transfer-encoding: 8bit
+In-reply-to: Your message of "Fri, 01 Jul 2005 16:09:26 PDT."
+             <2db32b7205070116091240fcf4@mail.gmail.com> 
+Date:	Sat, 02 Jul 2005 17:39:45 +0200
+Message-Id: <20050702153945.A2728353A36@atlas.denx.de>
+X-ID:	VmKhU8ZdoehGzbfi5dIs+YOgFa6QQN-SE7Edrfjyk0P42GPJCXQEZJ@t-dialin.net
+X-TOI-MSGID: bf739ed4-0012-4d2a-8f97-a5a66c633c7c
+Return-Path: <wd@denx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8330
+X-archive-position: 8331
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ajaysingh@ti.com
+X-original-sender: wd@denx.de
 Precedence: bulk
 X-list: linux-mips
 
-We are using uClibc-0.9.27 for MIPS target. Can you point out the issues
-with uClibc-0.9.27 ??
-
-~Ajay.
-
------Original Message-----
-From: linux-mips-bounce@linux-mips.org
-[mailto:linux-mips-bounce@linux-mips.org] On Behalf Of
-sjhill@realitydiluted.com
-Sent: Friday, July 01, 2005 8:30 PM
-To: David Daney
-Cc: moreau francis; zhan rongkai; linux-mips@linux-mips.org
-Subject: Re: I built a mipsel-linux toolchain, but it doesn't work
-
-> moreau francis wrote:
-> > Could you develop please ? What kind of config/hack does Buildroot 
-> > to be able to use GCC with uClibc ?
-> > 
+In message <2db32b7205070116091240fcf4@mail.gmail.com> you wrote:
 > 
-> It is quite complicated, but you can find a summary on this web page:
-> 
-> http://www.google.com/search?q=uclibc+buildroot
-> 
-Here is the page for it:
+> The files in /opt/eldk/mips_4KCle are in little endian mips, for sure.=20
+> What I want is a cross-development tools for i386-to-mipsel, including
+> the corss gcc, binutils, other libs. I couldn't find such tools :(
 
-   http://buildroot.uclibc.org/
+Please read the documentation. You  will  find  these  tools  in  the
+/opt/eldk/bin resp. /opt/eldk/usr/bin directories.
 
-The mipsel target is supported and will build for your needs. Do not use
-uClibc-0.9.27 when you configure your buildroot system. Use the latest
-uClibc snapshot. There are issues with uClibc-0.9.27 with MIPS targets.
+The README.html (or the DULG at http://www.denx.de/twiki/bin/view/DULG/Manual)
+documents in detail what needs to be done to install and use the tools.
 
--Steve
+Best regards,
+
+Wolfgang Denk
+
+-- 
+Software Engineering:  Embedded and Realtime Systems,  Embedded Linux
+Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email: wd@denx.de
+The sight of death frightens them [Earthers].
+	-- Kras the Klingon, "Friday's Child", stardate 3497.2

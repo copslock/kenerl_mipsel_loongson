@@ -1,58 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jul 2005 17:53:41 +0100 (BST)
-Received: from mercurio.srv.dsi.unimi.it ([IPv6:::ffff:159.149.130.201]:64688
-	"EHLO mercurio.srv.dsi.unimi.it") by linux-mips.org with ESMTP
-	id <S8226262AbVGEQxV>; Tue, 5 Jul 2005 17:53:21 +0100
-Received: from thetys.sm.dsi.unimi.it (tethys.sm.dsi.unimi.it [159.149.132.22])
-	by mercurio.srv.dsi.unimi.it (8.13.3/8.13.3) with ESMTP id j65GrVG3000640;
-	Tue, 5 Jul 2005 18:53:31 +0200
-From:	Arianna Arona <arianna@dsi.unimi.it>
-To:	"Ilya A. Volynets-Evenbakh" <ilya@total-knowledge.com>
-Subject: Re: 2.6.12 does not read MAC address
-Date:	Tue, 5 Jul 2005 18:54:21 +0200
-User-Agent: KMail/1.5.4
-Cc:	linux-mips@linux-mips.org
-References: <200507051643.09070.arianna@dsi.unimi.it> <42CA9FF3.8060504@total-knowledge.com>
-In-Reply-To: <42CA9FF3.8060504@total-knowledge.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jul 2005 20:40:52 +0100 (BST)
+Received: from wproxy.gmail.com ([IPv6:::ffff:64.233.184.205]:50524 "EHLO
+	wproxy.gmail.com") by linux-mips.org with ESMTP id <S8226288AbVGETkh> convert rfc822-to-8bit;
+	Tue, 5 Jul 2005 20:40:37 +0100
+Received: by wproxy.gmail.com with SMTP id i25so963563wra
+        for <linux-mips@linux-mips.org>; Tue, 05 Jul 2005 12:40:54 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:reply-to:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=lLpxi9VtoBbJkKxgdzsnNmwTYS1X0TuCbPTdwm8PRQOmLz9P3Y26bgm06+5QdVg6YjfQ7Hz/IzM8VWRvxovLghlEsptekPjL2z9Cri3vLs5uGTKAGtJuIt8J0LXtsqhBl1iNZqiUhy4cvZyOACHi9J5CTSRpE8y00ZJD1H/KeK0=
+Received: by 10.54.115.4 with SMTP id n4mr4873663wrc;
+        Tue, 05 Jul 2005 12:40:54 -0700 (PDT)
+Received: by 10.54.71.11 with HTTP; Tue, 5 Jul 2005 12:40:54 -0700 (PDT)
+Message-ID: <2db32b72050705124078a48aed@mail.gmail.com>
+Date:	Tue, 5 Jul 2005 12:40:54 -0700
+From:	rolf liu <rolfliu@gmail.com>
+Reply-To: rolf liu <rolfliu@gmail.com>
+To:	ppopov@embeddedalley.com
+Subject: Re: possible serial driver fixup for au1x00 in 2.6?
+Cc:	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+In-Reply-To: <1120266383.5987.46.camel@localhost.localdomain>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
 Content-Disposition: inline
-Message-Id: <200507051854.21868.arianna@dsi.unimi.it>
-X-DSI-MailScanner-Information: Please contact the staff for more information
-X-DSI-MailScanner: Found to be clean
-X-MailScanner-From: arianna@dsi.unimi.it
-Return-Path: <arianna@dsi.unimi.it>
+References: <2db32b720507011756247735d6@mail.gmail.com>
+	 <1120266383.5987.46.camel@localhost.localdomain>
+Return-Path: <rolfliu@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8351
+X-archive-position: 8352
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arianna@dsi.unimi.it
+X-original-sender: rolfliu@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tuesday 05 July 2005 16:57, Ilya A. Volynets-Evenbakh wrote:
+Pete,
+To try if 8250.c can work under db1550/linux 2.6.12, I turn off the
+au1x00_uart.c config and just compiled in the 8250 support. When I
+boot the kernel, nothing comes up through the console, which should be
+provided by 8250 support, by 8250_early.c?
+
+Any idea?
+
+On 7/1/05, Pete Popov <ppopov@embeddedalley.com> wrote:
+> On Fri, 2005-07-01 at 17:56 -0700, rolf liu wrote:
+> > Basically, au1x00_uart.c is doing the same thing as 8250.c.
+> 
+> Basically.
+> 
+> > If I want
+> > to add extra serial port support by 8250.c. There could be some
+> > problem. Any idea?
+> 
+> Don't know, haven't tried it. In general, the au1x00 serial driver needs
+> to be rewritten.
+> 
+> Pete
+> 
 >
-> No you are wrong. Forcing MAC address works just fine. At least it does
-> so here.
-> You just have to force it to correct value (i.e. the one origin was
-> using when it was sending bootp/tftp packets.
-
-I've forced it using: ifconfig eth0 hw ether 08:00:69:0d:16:00,
-where 08:00:69:0d:16:00 is MAC address.
-After that ifconfig command has right values, but no bits are transmitted.
-The one I've used is the right way?
-
-A.
-
-
-
--- 
-Arianna Arona
-Servizi Informatici
-Dipartimento di Scienze dell'Informazione
-Via Comelico 39
-20135 Milano

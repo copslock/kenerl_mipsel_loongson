@@ -1,67 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Jul 2005 16:37:57 +0100 (BST)
-Received: from alpha.total-knowledge.com ([IPv6:::ffff:205.217.158.170]:50894
-	"EHLO alpha.total-knowledge.com") by linux-mips.org with ESMTP
-	id <S8226097AbVGDPg6>; Mon, 4 Jul 2005 16:36:58 +0100
-Received: (qmail 5716 invoked from network); 4 Jul 2005 08:37:02 -0700
-Received: from c-24-6-216-150.hsd1.ca.comcast.net (HELO ?192.168.0.238?) (24.6.216.150)
-  by alpha.total-knowledge.com with SMTP; 4 Jul 2005 08:37:02 -0700
-Message-ID: <42C957A4.9090303@total-knowledge.com>
-Date:	Mon, 04 Jul 2005 08:37:08 -0700
-From:	"Ilya A. Volynets-Evenbakh" <ilya@total-knowledge.com>
-Organization: Total Knowledge
-User-Agent: Mozilla Thunderbird 1.0.2 (X11/20050620)
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jul 2005 12:05:33 +0100 (BST)
+Received: from mercurio.srv.dsi.unimi.it ([IPv6:::ffff:159.149.130.201]:10207
+	"EHLO mercurio.srv.dsi.unimi.it") by linux-mips.org with ESMTP
+	id <S8226240AbVGELFN>; Tue, 5 Jul 2005 12:05:13 +0100
+Received: from thetys.sm.dsi.unimi.it (tethys.sm.dsi.unimi.it [159.149.132.22])
+	by mercurio.srv.dsi.unimi.it (8.13.3/8.13.3) with ESMTP id j65B5OKR019783
+	for <linux-mips@linux-mips.org>; Tue, 5 Jul 2005 13:05:24 +0200
+From:	Arianna Arona <arianna@dsi.unimi.it>
+To:	linux-mips@linux-mips.org
+Subject: IOC3 and kernel panic
+Date:	Tue, 5 Jul 2005 13:06:15 +0200
+User-Agent: KMail/1.5.4
 MIME-Version: 1.0
-To:	Arianna Arona <arianna@dsi.unimi.it>
-CC:	linux-mips@linux-mips.org
-Subject: Re: IOC3 not working on SGI O2K
-References: <200507041444.00289.arianna@dsi.unimi.it>
-In-Reply-To: <200507041444.00289.arianna@dsi.unimi.it>
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: text/plain;
+  charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Return-Path: <ilya@total-knowledge.com>
+Content-Disposition: inline
+Message-Id: <200507051306.15102.arianna@dsi.unimi.it>
+X-DSI-MailScanner-Information: Please contact the staff for more information
+X-DSI-MailScanner: Found to be clean
+X-MailScanner-From: arianna@dsi.unimi.it
+Return-Path: <arianna@dsi.unimi.it>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8345
+X-archive-position: 8346
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ilya@total-knowledge.com
+X-original-sender: arianna@dsi.unimi.it
 Precedence: bulk
 X-list: linux-mips
 
-I have uploaded my latest kernel to the website.
-Try it.
+I have some news.
 
-    Ilya.
+executing:
+# ifconfgi eth0 down
+#ifconfig eth0 up
 
-Arianna Arona wrote:
+I have:
 
->Hi everybody,
->
->I have a SGI O2K, and I'm trying to install linux.
->I've downloaded vmlinux.ip27-20040428 from 
->http://www.total-knowledge.com/progs/mips/kernels/ and it boots and mount a 
->local root file system.
->IOC3 ethernet card doesn't work.
->
->Here are boot logs:
->[.....]
->[33] 0:1 0; <6> eth%d: link down 0000000004e00791
->[.....]
->[63] 0:1 0; 725e700004e00791
->Found DS1981U NIC registration number 07:e0:04:70:5e, CRC 72.
->Ethernet address is 08:00:69:0d:16:00
->eth0: link down
->eth0: using PHY 0, vendor 0x2000, model 0, rev 3.
->eth0: IOC3 SSRAm has 128Kbytes.
->
->
->IOC3 is on a board with 2 consoles and a SCSI port.
->Could be this the problem? Is there any solution?
->
->Thank you very much,
->Arianna
->  
->
+kernel panic - not syncing: could not identify cpu/level for irq 2
+
+boot params were: bootp(): root=/dev/sdb1 nosmp
+
+A.
+
+-- 
+Arianna Arona
+Servizi Informatici
+Dipartimento di Scienze dell'Informazione
+Via Comelico 39
+20135 Milano

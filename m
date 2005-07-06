@@ -1,113 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jul 2005 08:12:03 +0100 (BST)
-Received: from smtp007.bizmail.sc5.yahoo.com ([IPv6:::ffff:66.163.170.10]:50105
-	"HELO smtp007.bizmail.sc5.yahoo.com") by linux-mips.org with SMTP
-	id <S8226314AbVGFHLr>; Wed, 6 Jul 2005 08:11:47 +0100
-Received: (qmail 99454 invoked from network); 6 Jul 2005 07:12:07 -0000
-Received: from unknown (HELO ?192.168.1.107?) (ppopov@embeddedalley.com@63.194.214.47 with plain)
-  by smtp007.bizmail.sc5.yahoo.com with SMTP; 6 Jul 2005 07:12:07 -0000
-Subject: Re: booting error on db1550 using linux 2.6.12 from linux-mips.org
-From:	Pete Popov <ppopov@embeddedalley.com>
-Reply-To: ppopov@embeddedalley.com
-To:	rolf liu <rolfliu@gmail.com>
-Cc:	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-In-Reply-To: <2db32b7205070508504b675dd6@mail.gmail.com>
-References: <2db32b7205070114172483d2dd@mail.gmail.com>
-	 <1120253048.5987.16.camel@localhost.localdomain>
-	 <2db32b72050701153566c83bb6@mail.gmail.com>
-	 <1120257851.5987.37.camel@localhost.localdomain>
-	 <2db32b7205070508504b675dd6@mail.gmail.com>
-Content-Type: text/plain
-Organization: Embedded Alley Solutions, Inc
-Date:	Wed, 06 Jul 2005 00:12:14 -0700
-Message-Id: <1120633934.5724.29.camel@localhost.localdomain>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jul 2005 09:40:28 +0100 (BST)
+Received: from rproxy.gmail.com ([IPv6:::ffff:64.233.170.206]:9439 "EHLO
+	rproxy.gmail.com") by linux-mips.org with ESMTP id <S8226317AbVGFIkK> convert rfc822-to-8bit;
+	Wed, 6 Jul 2005 09:40:10 +0100
+Received: by rproxy.gmail.com with SMTP id y7so1104456rne
+        for <linux-mips@linux-mips.org>; Wed, 06 Jul 2005 01:40:32 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:reply-to:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=tYMHqrRptDDxaNoN0gotQ0DeJzgbO0MQfwgpCH4BFhU7czL5bSy2GaKwTUi6NcAzijnjOCkykfl8Xw6cKNSpzZ5CHZAhhCAS6kc3atEDTIRPNi2q0CO5HCGHKYyqeTIGUAc9r7jpVfvNs7+KzJvDDxHCKW3BduZJTIw1qsI8cW4=
+Received: by 10.38.181.12 with SMTP id d12mr4802088rnf;
+        Wed, 06 Jul 2005 01:40:32 -0700 (PDT)
+Received: by 10.38.104.78 with HTTP; Wed, 6 Jul 2005 01:40:32 -0700 (PDT)
+Message-ID: <dbce930205070601407c8ce6a4@mail.gmail.com>
+Date:	Wed, 6 Jul 2005 04:40:32 -0400
+From:	David Cummings <real.psyence@gmail.com>
+Reply-To: David Cummings <real.psyence@gmail.com>
+To:	linux-mips@linux-mips.org,
+	"Ilya A. Volynets-Evenbakh" <ilya@total-knowledge.com>
+Subject: Re: broken ip27 kernel
+In-Reply-To: <dbce930205070523316dd9954b@mail.gmail.com>
 Mime-Version: 1.0
-X-Mailer: Evolution 2.0.4 (2.0.4-4) 
-Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@embeddedalley.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+References: <dbce930205070518422c21be21@mail.gmail.com>
+	 <42CB5908.7030005@total-knowledge.com>
+	 <dbce930205070523316dd9954b@mail.gmail.com>
+Return-Path: <real.psyence@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8363
+X-archive-position: 8364
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@embeddedalley.com
+X-original-sender: real.psyence@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 2005-07-05 at 08:50 -0700, rolf liu wrote:
-> Pete,
-> I tried to make HPT working on db1550 for linux 2.6.12 cvs head. If I
-> didn't force it to use 372 timing, it just hangs up after it detect
-> the drive. If I used the 372 timing using the 2.4 trick, the kernel
-> just crashed. Any clue?
+Ok, the patch difficulty was my fault. With latest cvs source and the
+20050703.diff applied, I can build a kernel, arcload and arcs itself
+can both load said kernel, but I receive no output on the console. If
+I drop out to a MSC console, it is in one of either POD MSC Dex or Unc
+depending on kernel(and time perhaps?). I feel like I am missing
+something, like console support or something. Thanks again...
 
-Other than the call trace you can see below, no, no clues. I would have
-to spend some time debugging it and if it ever becomes a priority, I
-will.
+On 7/6/05, David Cummings <real.psyence@gmail.com> wrote:
+> I can boot your kernel, Ilya, just fine. I'd really like it to be able
+> to boot from sda1, so my config takes out nfsroot. I am using the
+> newest checkout from cvs, but I am having trouble applying your diff.
+> Either the Makefile and others have changed dramatically, or I am
+> using an incorrect command to patch. Thanks for any info,
+> -Dave
+> 
+> On 7/6/05, Ilya A. Volynets-Evenbakh <ilya@total-knowledge.com> wrote:
+> > http://www.total-knowledge.com/progs/mips/kernels
+> > contains compiled kernel as of few days ago, as well as diff I used.
+> > It runs just fin on my Origin2000 and was reported to run on O200 as well.
+> >
+> > David Cummings wrote:
+> >
+> > >Hello all,
+> > >   I have recently compiled kernel from cvs-source that will load from
+> > >arcload, but after "Entering Kernel" the machine hangs and the MSC
+> > >appears to be in a POD dex mode. I would  like to know if anyone is
+> > >familiar with this and if it's just a patch I'm missing or something.
+> > >Thanks
+> > >-Dave
+> > >
+> > >
+> >
+> > --
+> > Ilya A. Volynets-Evenbakh
+> > Total Knowledge. CTO
+> > http://www.total-knowledge.com
+> >
+> >
+> 
+> 
+> --
+> The way that can be named is not the Way.
+> 
 
-Pete
 
-> Thanks
-> 
-> Uniform Multi-Platform E-IDE driver Revision: 7.00alpha2
-> ide: Assuming 33MHz system bus speed for PIO modes; override with idebus=xx
-> HPT371: IDE controller at PCI slot 0000:00:0b.0
-> PCI: Enabling device 0000:00:0b.0 (0000 -> 0003)
-> HPT371: chipset revision 2
-> hpt: HPT372N detected, using 372N timing.
-> FREQ: 73 PLL: 35
-> HPT371: 100% native mode on irq 5
-> hpt: no known IDE timings, disabling DMA.
-> hpt: no known IDE timings, disabling DMA.
-> hdg: IBM-DTTA-350840, ATA DISK drive
-> CPU 0 Unable to handle kernel paging request at virtual address
-> 00000000, epc == 8029fb20, ra == 8029fc0c
-> Oops in arch/mips/mm/fault.c::do_page_fault, line 167[#1]:
-> Cpu 0
-> $ 0   : 00000000 1000fc00 00000000 00000000
-> $ 4   : 0000000c 00000000 00010000 18010017
-> $ 8   : 00000000 0000fc00 00000000 803a6000
-> $12   : 803ace64 fffffffb ffffffff 0000140d
-> $16   : 00000048 00000055 30070000 00000001
-> $20   : 804a1800 0000000c 8043a678 8043a5f8
-> $24   : 00000000 802a747c                  
-> $28   : 811de000 811dfe40 1000fc01 8029fc0c
-> Hi    : 0000018a
-> Lo    : 3d6edc00
-> epc   : 8029fb20 pci_bus_clock_list+0x0/0x38     Not tainted
-> ra    : 8029fc0c hpt372_tune_chipset+0xb4/0x138
-> Status: 1000fc03    KERNEL EXL IE 
-> Cause : 00800008
-> BadVA : 00000000
-> PrId  : 03030200
-> Modules linked in:
-> Process swapper (pid: 1, threadinfo=811de000, task=80456bf0)
-> Stack : 804a1800 00000005 8029f62c 80456bf0 00000000 00000000 804a1800 0000000c
->         8043a678 00000001 00000000 803b0000 00000005 8029fcf8 8043a678 8043a5e8
->         00000000 00000001 00000000 803b0000 00000005 8043a5f8 8043a678 8043a5e8
->         00000000 00000001 00000000 803b0000 00000005 802abd0c 00000005 8043a5f8
->         b0400074 b040006c 00000001 811dff30 00000000 00000000 00000000 8043a5e8
->         ...
-> Call Trace:
->  [<8029f62c>] hpt_minimum_revision+0x2c/0xec
->  [<8029fcf8>] hpt3xx_tune_chipset+0x68/0x2e8
->  [<802abd0c>] probe_hwif+0x8a4/0x910
->  [<802ace2c>] probe_hwif_init_with_fixup+0x1c/0xcc
->  [<802af8bc>] ide_setup_pci_device+0xa8/0xcc
->  [<8024f09c>] idr_get_new+0x18/0x4c
->  [<80422e38>] ide_scan_pcidev+0x84/0xc4
->  [<801c5464>] proc_register+0x48/0x16c
->  [<80422eb0>] ide_scan_pcibus+0x38/0xf8
->  [<801c5874>] proc_mkdir_mode+0x54/0x80
->  [<80422d98>] ide_init+0x68/0x84
->  [<80422d7c>] ide_init+0x4c/0x84
->  [<801004f8>] init+0x9c/0x264
->  [<80105e20>] kernel_thread_helper+0x10/0x18
->  [<80105e10>] kernel_thread_helper+0x0/0x18
-> 
-> 
-> Code: 02002821  080a7e5f  a3a20013 <90a20000> 10400008  308400ff 
-> 00401821  10640007  00000000
-> Kernel panic - not syncing: Attempted to kill init!
-> 
+-- 
+The way that can be named is not the Way.

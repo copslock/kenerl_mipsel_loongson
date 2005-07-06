@@ -1,73 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jul 2005 07:31:41 +0100 (BST)
-Received: from rproxy.gmail.com ([IPv6:::ffff:64.233.170.197]:6268 "EHLO
-	rproxy.gmail.com") by linux-mips.org with ESMTP id <S8226312AbVGFGbY> convert rfc822-to-8bit;
-	Wed, 6 Jul 2005 07:31:24 +0100
-Received: by rproxy.gmail.com with SMTP id y7so1090381rne
-        for <linux-mips@linux-mips.org>; Tue, 05 Jul 2005 23:31:44 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:reply-to:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=DqTdwFuJGZ1DzAOdxejkgpzWTKKnvigZ1/Lnp9HQ9JnOOxQdbEoccjEHiFjbSq6xZY6Ucq8t3w5m7Axewyad4HJrCYMP0CbVe+7bp+epi3Ye3IQHaSJHSzk5tOaTAQpEAwVT5QRJbzEsgXXw6YnvlezVi04dsvWjV3Pcbtcweek=
-Received: by 10.38.89.66 with SMTP id m66mr4778361rnb;
-        Tue, 05 Jul 2005 23:31:44 -0700 (PDT)
-Received: by 10.38.104.78 with HTTP; Tue, 5 Jul 2005 23:31:44 -0700 (PDT)
-Message-ID: <dbce930205070523316dd9954b@mail.gmail.com>
-Date:	Wed, 6 Jul 2005 02:31:44 -0400
-From:	David Cummings <real.psyence@gmail.com>
-Reply-To: David Cummings <real.psyence@gmail.com>
-To:	"Ilya A. Volynets-Evenbakh" <ilya@total-knowledge.com>
-Subject: Re: broken ip27 kernel
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <42CB5908.7030005@total-knowledge.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jul 2005 08:10:06 +0100 (BST)
+Received: from smtp008.bizmail.sc5.yahoo.com ([IPv6:::ffff:66.163.170.74]:15192
+	"HELO smtp008.bizmail.sc5.yahoo.com") by linux-mips.org with SMTP
+	id <S8226314AbVGFHJu>; Wed, 6 Jul 2005 08:09:50 +0100
+Received: (qmail 18351 invoked from network); 6 Jul 2005 07:10:10 -0000
+Received: from unknown (HELO ?192.168.1.107?) (ppopov@embeddedalley.com@63.194.214.47 with plain)
+  by smtp008.bizmail.sc5.yahoo.com with SMTP; 6 Jul 2005 07:10:10 -0000
+Subject: Re: possible serial driver fixup for au1x00 in 2.6?
+From:	Pete Popov <ppopov@embeddedalley.com>
+Reply-To: ppopov@embeddedalley.com
+To:	rolf liu <rolfliu@gmail.com>
+Cc:	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+In-Reply-To: <2db32b72050705124078a48aed@mail.gmail.com>
+References: <2db32b720507011756247735d6@mail.gmail.com>
+	 <1120266383.5987.46.camel@localhost.localdomain>
+	 <2db32b72050705124078a48aed@mail.gmail.com>
+Content-Type: text/plain
+Organization: Embedded Alley Solutions, Inc
+Date:	Wed, 06 Jul 2005 00:10:17 -0700
+Message-Id: <1120633817.5724.26.camel@localhost.localdomain>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-References: <dbce930205070518422c21be21@mail.gmail.com>
-	 <42CB5908.7030005@total-knowledge.com>
-Return-Path: <real.psyence@gmail.com>
+X-Mailer: Evolution 2.0.4 (2.0.4-4) 
+Content-Transfer-Encoding: 7bit
+Return-Path: <ppopov@embeddedalley.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8361
+X-archive-position: 8362
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: real.psyence@gmail.com
+X-original-sender: ppopov@embeddedalley.com
 Precedence: bulk
 X-list: linux-mips
 
-I can boot your kernel, Ilya, just fine. I'd really like it to be able
-to boot from sda1, so my config takes out nfsroot. I am using the
-newest checkout from cvs, but I am having trouble applying your diff.
-Either the Makefile and others have changed dramatically, or I am
-using an incorrect command to patch. Thanks for any info,
--Dave
+On Tue, 2005-07-05 at 12:40 -0700, rolf liu wrote:
+> Pete,
+> To try if 8250.c can work under db1550/linux 2.6.12, I turn off the
+> au1x00_uart.c config and just compiled in the 8250 support. When I
+> boot the kernel, nothing comes up through the console, which should be
+> provided by 8250 support, by 8250_early.c?
+> 
+> Any idea?
 
-On 7/6/05, Ilya A. Volynets-Evenbakh <ilya@total-knowledge.com> wrote:
-> http://www.total-knowledge.com/progs/mips/kernels
-> contains compiled kernel as of few days ago, as well as diff I used.
-> It runs just fin on my Origin2000 and was reported to run on O200 as well.
+Yes. The 8250.c won't work with the au1x uart. I know I said in a
+previous email that the 8250 "basically" does the same thing as the au1x
+uart driver, but if the 8250 worked with the Au1x SoCs, why would we
+even have the au1x serial driver in place?
+
+Pete
+
 > 
-> David Cummings wrote:
-> 
-> >Hello all,
-> >   I have recently compiled kernel from cvs-source that will load from
-> >arcload, but after "Entering Kernel" the machine hangs and the MSC
-> >appears to be in a POD dex mode. I would  like to know if anyone is
-> >familiar with this and if it's just a patch I'm missing or something.
-> >Thanks
-> >-Dave
+> On 7/1/05, Pete Popov <ppopov@embeddedalley.com> wrote:
+> > On Fri, 2005-07-01 at 17:56 -0700, rolf liu wrote:
+> > > Basically, au1x00_uart.c is doing the same thing as 8250.c.
+> > 
+> > Basically.
+> > 
+> > > If I want
+> > > to add extra serial port support by 8250.c. There could be some
+> > > problem. Any idea?
+> > 
+> > Don't know, haven't tried it. In general, the au1x00 serial driver needs
+> > to be rewritten.
+> > 
+> > Pete
+> > 
 > >
-> >
 > 
-> --
-> Ilya A. Volynets-Evenbakh
-> Total Knowledge. CTO
-> http://www.total-knowledge.com
-> 
-> 
-
-
--- 
-The way that can be named is not the Way.

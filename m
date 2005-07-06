@@ -1,50 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jul 2005 10:14:21 +0100 (BST)
-Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:36872 "EHLO
-	bacchus.net.dhis.org") by linux-mips.org with ESMTP
-	id <S8226322AbVGFJOG>; Wed, 6 Jul 2005 10:14:06 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j669ENtp008163;
-	Wed, 6 Jul 2005 10:14:23 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j669EN1x008162;
-	Wed, 6 Jul 2005 10:14:23 +0100
-Date:	Wed, 6 Jul 2005 10:14:23 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
-	djohnson+linuxmips@sw.starentnetworks.com,
-	linux-mips@linux-mips.org
-Subject: Re: preempt_schedule_irq missing from mfinfo[]?
-Message-ID: <20050706091423.GD3226@linux-mips.org>
-References: <17093.19241.353160.946039@cortez.sw.starentnetworks.com> <20050703.005921.25910131.anemo@mba.ocn.ne.jp> <20050705200308.GE18772@linux-mips.org> <20050706.122912.71087098.nemoto@toshiba-tops.co.jp> <Pine.LNX.4.61L.0507060952500.9536@blysk.ds.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jul 2005 13:47:10 +0100 (BST)
+Received: from mercurio.srv.dsi.unimi.it ([IPv6:::ffff:159.149.130.201]:58600
+	"EHLO mercurio.srv.dsi.unimi.it") by linux-mips.org with ESMTP
+	id <S8226326AbVGFMqw>; Wed, 6 Jul 2005 13:46:52 +0100
+Received: from thetys.sm.dsi.unimi.it (tethys.sm.dsi.unimi.it [159.149.132.22])
+	by mercurio.srv.dsi.unimi.it (8.13.3/8.13.3) with ESMTP id j66ClCwG023749
+	for <linux-mips@linux-mips.org>; Wed, 6 Jul 2005 14:47:12 +0200
+From:	Arianna Arona <arianna@dsi.unimi.it>
+To:	linux-mips@linux-mips.org
+Subject: 2.6.12 DOES read MAC address
+Date:	Wed, 6 Jul 2005 14:48:02 +0200
+User-Agent: KMail/1.5.4
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.61L.0507060952500.9536@blysk.ds.pg.gda.pl>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Message-Id: <200507061448.02561.arianna@dsi.unimi.it>
+X-DSI-MailScanner-Information: Please contact the staff for more information
+X-DSI-MailScanner: Found to be clean
+X-MailScanner-From: arianna@dsi.unimi.it
+Return-Path: <arianna@dsi.unimi.it>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8367
+X-archive-position: 8368
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: arianna@dsi.unimi.it
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Jul 06, 2005 at 09:58:50AM +0100, Maciej W. Rozycki wrote:
 
-> > Yes, but many sleeping/scheduling (such as schedule_timeout(),
-> > __down(), etc.)  are compiled without -fno-omit-frame-pointer, so
-> > you can not find the caller of such functions anyway.
-> 
->  Of course you can -- __builtin_return_address().  It should be enough for 
-> `ps' to fetch useful data from "System.map", shouldn't it?
+I've compiled the kernel myself and now it reads MAC address at boot time.
+Problem solved? NO. Ethernet card does not trasmit any packets on the net.
 
-__builtin_return_address() is what those function could use themselves.
-In this case it's about another piece of code unwinding the stackframe
-until we hit a caller address that is not a scheduling function.
+I have a question: how is your ethernet card? Mine is a card with network, 2 
+consoles and a SCSI port in it. Could be this the problem?
 
-  Ralf
+Cheers,
+A.
+
+-- 
+Arianna Arona
+Servizi Informatici
+Dipartimento di Scienze dell'Informazione
+Via Comelico 39
+20135 Milano

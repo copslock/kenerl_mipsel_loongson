@@ -1,63 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jul 2005 04:29:18 +0100 (BST)
-Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:42245
-	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
-	id <S8226306AbVGFD3C>; Wed, 6 Jul 2005 04:29:02 +0100
-Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 6 Jul 2005 03:29:20 UT
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id B6B721F2F9;
-	Wed,  6 Jul 2005 12:29:13 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id A32C21F261;
-	Wed,  6 Jul 2005 12:29:13 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id j663TCoj038386;
-	Wed, 6 Jul 2005 12:29:13 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Wed, 06 Jul 2005 12:29:12 +0900 (JST)
-Message-Id: <20050706.122912.71087098.nemoto@toshiba-tops.co.jp>
-To:	ralf@linux-mips.org
-Cc:	anemo@mba.ocn.ne.jp, djohnson+linuxmips@sw.starentnetworks.com,
-	linux-mips@linux-mips.org
-Subject: Re: preempt_schedule_irq missing from mfinfo[]?
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20050705200308.GE18772@linux-mips.org>
-References: <17093.19241.353160.946039@cortez.sw.starentnetworks.com>
-	<20050703.005921.25910131.anemo@mba.ocn.ne.jp>
-	<20050705200308.GE18772@linux-mips.org>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jul 2005 05:07:36 +0100 (BST)
+Received: from alpha.total-knowledge.com ([IPv6:::ffff:205.217.158.170]:51155
+	"EHLO alpha.total-knowledge.com") by linux-mips.org with ESMTP
+	id <S8226306AbVGFEHQ>; Wed, 6 Jul 2005 05:07:16 +0100
+Received: (qmail 10673 invoked from network); 5 Jul 2005 21:07:31 -0700
+Received: from c-24-6-216-150.hsd1.ca.comcast.net (HELO ?192.168.0.238?) (24.6.216.150)
+  by alpha.total-knowledge.com with SMTP; 5 Jul 2005 21:07:31 -0700
+Message-ID: <42CB5908.7030005@total-knowledge.com>
+Date:	Tue, 05 Jul 2005 21:07:36 -0700
+From:	"Ilya A. Volynets-Evenbakh" <ilya@total-knowledge.com>
+Organization: Total Knowledge
+User-Agent: Mozilla Thunderbird 1.0.2 (X11/20050620)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	David Cummings <real.psyence@gmail.com>
+CC:	linux-mips@linux-mips.org
+Subject: Re: broken ip27 kernel
+References: <dbce930205070518422c21be21@mail.gmail.com>
+In-Reply-To: <dbce930205070518422c21be21@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Return-Path: <ilya@total-knowledge.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8359
+X-archive-position: 8360
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ilya@total-knowledge.com
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Tue, 5 Jul 2005 21:03:09 +0100, Ralf Baechle DL5RB <ralf@linux-mips.org> said:
-ralf> If the WCHAN column of ps axl is supposed to be any useful we
-ralf> need to unwind the stack until we find the caller of the
-ralf> sleeping or scheduling function.  Very useful for debugging.
+http://www.total-knowledge.com/progs/mips/kernels
+contains compiled kernel as of few days ago, as well as diff I used.
+It runs just fin on my Origin2000 and was reported to run on O200 as well.
 
-Yes, but many sleeping/scheduling (such as schedule_timeout(),
-__down(), etc.)  are compiled without -fno-omit-frame-pointer, so
-you can not find the caller of such functions anyway.
+David Cummings wrote:
 
-And some sleeping/scheduling functions which are compiled with
--fno-omit-frame-pointer are static or deprecated (sleep_on(), etc.)
+>Hello all,
+>   I have recently compiled kernel from cvs-source that will load from
+>arcload, but after "Entering Kernel" the machine hangs and the MSC
+>appears to be in a POD dex mode. I would  like to know if anyone is
+>familiar with this and if it's just a patch I'm missing or something.
+>Thanks
+>-Dave
+>  
+>
 
-You can find the caller of "schedule()" even with simple
-thread_saved_pc().  I think it is enough so I do not think it is worth
-to fix (and maintain) current minfo[].
-
----
-Atsushi Nemoto
+-- 
+Ilya A. Volynets-Evenbakh
+Total Knowledge. CTO
+http://www.total-knowledge.com

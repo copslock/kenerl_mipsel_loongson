@@ -1,58 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jul 2005 17:42:17 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:777 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8226315AbVGGQmB>; Thu, 7 Jul 2005 17:42:01 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 3E02DE1C99; Thu,  7 Jul 2005 18:42:26 +0200 (CEST)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 26624-04; Thu,  7 Jul 2005 18:42:26 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 0D77BE1C91; Thu,  7 Jul 2005 18:42:26 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j67GgUSm012951;
-	Thu, 7 Jul 2005 18:42:30 +0200
-Date:	Thu, 7 Jul 2005 17:42:39 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Ralf Baechle DL5RB <ralf@linux-mips.org>
-Cc:	Thiemo Seufer <ths@networkno.de>, linux-mips@linux-mips.org
-Subject: Re: CVS Update@linux-mips.org: linux
-In-Reply-To: <20050707162959.GQ2822@linux-mips.org>
-Message-ID: <Pine.LNX.4.61L.0507071741320.3205@blysk.ds.pg.gda.pl>
-References: <20050707091937Z8226163-3678+1737@linux-mips.org>
- <Pine.LNX.4.61L.0507071227170.3205@blysk.ds.pg.gda.pl> <20050707121235.GV1645@hattusa.textio>
- <Pine.LNX.4.61L.0507071314010.3205@blysk.ds.pg.gda.pl> <20050707122226.GW1645@hattusa.textio>
- <Pine.LNX.4.61L.0507071356450.3205@blysk.ds.pg.gda.pl> <20050707162959.GQ2822@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.85.1/971/Thu Jul  7 12:08:01 2005 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jul 2005 18:12:37 +0100 (BST)
+Received: from [IPv6:::ffff:81.2.110.250] ([IPv6:::ffff:81.2.110.250]:45486
+	"EHLO lxorguk.ukuu.org.uk") by linux-mips.org with ESMTP
+	id <S8226309AbVGGRMW>; Thu, 7 Jul 2005 18:12:22 +0100
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by lxorguk.ukuu.org.uk (8.12.11/8.12.11) with ESMTP id j67HA3sI000325;
+	Thu, 7 Jul 2005 18:10:03 +0100
+Received: (from alan@localhost)
+	by localhost.localdomain (8.12.11/8.12.11/Submit) id j67HA2N9000323;
+	Thu, 7 Jul 2005 18:10:02 +0100
+X-Authentication-Warning: localhost.localdomain: alan set sender to alan@lxorguk.ukuu.org.uk using -f
+Subject: Re: booting error on db1550 using linux 2.6.12 from linux-mips.org
+From:	Alan Cox <alan@lxorguk.ukuu.org.uk>
+To:	rolf liu <rolfliu@gmail.com>
+Cc:	ppopov@embeddedalley.com,
+	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+In-Reply-To: <2db32b7205070508504b675dd6@mail.gmail.com>
+References: <2db32b7205070114172483d2dd@mail.gmail.com>
+	 <1120253048.5987.16.camel@localhost.localdomain>
+	 <2db32b72050701153566c83bb6@mail.gmail.com>
+	 <1120257851.5987.37.camel@localhost.localdomain>
+	 <2db32b7205070508504b675dd6@mail.gmail.com>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Message-Id: <1120756200.317.14.camel@localhost.localdomain>
+Mime-Version: 1.0
+X-Mailer: Ximian Evolution 1.4.6 (1.4.6-2) 
+Date:	Thu, 07 Jul 2005 18:10:01 +0100
+Return-Path: <alan@lxorguk.ukuu.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8390
+X-archive-position: 8391
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: alan@lxorguk.ukuu.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 7 Jul 2005, Ralf Baechle DL5RB wrote:
+On Maw, 2005-07-05 at 16:50, rolf liu wrote:
+> Pete,
+> I tried to make HPT working on db1550 for linux 2.6.12 cvs head. If I
+> didn't force it to use 372 timing, it just hangs up after it detect
+> the drive. If I used the 372 timing using the 2.4 trick, the kernel
+> just crashed. Any clue?
 
-> >  And they are actually used to implement these "-EL" and "-EB" options.  
-> > Frankly I find "-mel" and "-meb" more consistent with the others as "-m*" 
-> > generally imply target-specific options.
-> 
-> -EB / -EL are traditionally the options that all MIPS compilers including
-> non-gcc compilers, seem to support.
-
- That's probably why they are there in GCC at all, but they are rather 
-inconsistent with the rest of GCC options and we rely on GCC for builds 
-anyway, so who cares?
-
-  Maciej
+Fix has been in the -ac tree for ages. Its finally gotten to Linus for
+2.6.13 tree so pull it out of there.

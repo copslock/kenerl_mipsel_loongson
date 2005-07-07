@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jul 2005 19:05:34 +0100 (BST)
-Received: from wproxy.gmail.com ([IPv6:::ffff:64.233.184.196]:46510 "EHLO
-	wproxy.gmail.com") by linux-mips.org with ESMTP id <S8226321AbVGGSFP> convert rfc822-to-8bit;
-	Thu, 7 Jul 2005 19:05:15 +0100
-Received: by wproxy.gmail.com with SMTP id i27so255438wra
-        for <linux-mips@linux-mips.org>; Thu, 07 Jul 2005 11:05:39 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jul 2005 19:42:00 +0100 (BST)
+Received: from wproxy.gmail.com ([IPv6:::ffff:64.233.184.193]:62402 "EHLO
+	wproxy.gmail.com") by linux-mips.org with ESMTP id <S8226313AbVGGSlp> convert rfc822-to-8bit;
+	Thu, 7 Jul 2005 19:41:45 +0100
+Received: by wproxy.gmail.com with SMTP id 70so264767wra
+        for <linux-mips@linux-mips.org>; Thu, 07 Jul 2005 11:42:15 -0700 (PDT)
 DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
         s=beta; d=gmail.com;
         h=received:message-id:date:from:reply-to:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=s/ag3U34RClZV7/KX4pAtApBVZJVEz0dmSI0UKzSWQNBze56qIjiLmdRs5HrNYmRMivAzqxz7IDwKZUKSdf1KhFtjWR8PevvtfS7krt/TxHADg1i5i7pri2ZlFku+UmQKd3RAm+7QdRmIZKaA/EKTqSdv4AgWXHOpxDN6r6TEUQ=
-Received: by 10.54.141.1 with SMTP id o1mr950355wrd;
-        Thu, 07 Jul 2005 11:05:38 -0700 (PDT)
-Received: by 10.54.71.11 with HTTP; Thu, 7 Jul 2005 11:05:38 -0700 (PDT)
-Message-ID: <2db32b7205070711052c90e024@mail.gmail.com>
-Date:	Thu, 7 Jul 2005 11:05:38 -0700
+        b=mQpyRjRoqtaOOiHxDp2ep0/lV0OZohVmhg3BdbMJI+RTnRnzSHo8tkmUCdxsqoV+PirIKkaVWCBxYW7Ae6bLgo/hUyjXnA+OwEXw5yhCZKAr+qfprWcyviMhSepdMnZxWvaxJ8V2ZoPD8JABl7ldD26H8vnciP/Z1tUQJ+sJlJ0=
+Received: by 10.54.33.65 with SMTP id g65mr988463wrg;
+        Thu, 07 Jul 2005 11:42:14 -0700 (PDT)
+Received: by 10.54.71.11 with HTTP; Thu, 7 Jul 2005 11:42:14 -0700 (PDT)
+Message-ID: <2db32b7205070711424c119780@mail.gmail.com>
+Date:	Thu, 7 Jul 2005 11:42:14 -0700
 From:	rolf liu <rolfliu@gmail.com>
 Reply-To: rolf liu <rolfliu@gmail.com>
 To:	Alan Cox <alan@lxorguk.ukuu.org.uk>
@@ -34,7 +34,7 @@ Return-Path: <rolfliu@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8393
+X-archive-position: 8394
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,14 +42,14 @@ X-original-sender: rolfliu@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Compiling error for the -ac patch on 2.6.11.
+Alan,
+Tried your patch on db1550 and linux 2.6.12. It still doesn't work. 
+During the boot-up, the kernel will hang up right after it prints out:
 
-There is no "ide_dma_start" in struct "ide_hwif_t", while the patch
-tries to assign
-"hwif->ide_dma_start = ...". Possibly could changed to "hwif->dma_start = ..." ?
+>>hdg: max request size: 128 KiB
 
-thanks
 
+Any suggestion?
 
 
 On 7/7/05, Alan Cox <alan@lxorguk.ukuu.org.uk> wrote:

@@ -1,61 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jul 2005 00:12:29 +0100 (BST)
-Received: from wproxy.gmail.com ([IPv6:::ffff:64.233.184.193]:54599 "EHLO
-	wproxy.gmail.com") by linux-mips.org with ESMTP id <S8226160AbVGFXMO> convert rfc822-to-8bit;
-	Thu, 7 Jul 2005 00:12:14 +0100
-Received: by wproxy.gmail.com with SMTP id 71so69108wri
-        for <linux-mips@linux-mips.org>; Wed, 06 Jul 2005 16:12:39 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=r8yJSaVLsZXTc6SpW/saA7djCgG7m2zHhFuIVZLka1zBFXyuHF1w/K8qK0WOltRI2Gv9KBaQCJ1JyjI3b4wG67VkH+tjHJRJb00B9b/Ox6up7v+Deh1PMrJxx6R3RXHAfwlFvhRWnRYGiBNR5iSqhrMLWV7/HmljWUrjcFDzsJc=
-Received: by 10.54.16.77 with SMTP id 77mr130694wrp;
-        Wed, 06 Jul 2005 16:12:39 -0700 (PDT)
-Received: by 10.54.71.11 with HTTP; Wed, 6 Jul 2005 16:12:39 -0700 (PDT)
-Message-ID: <2db32b7205070616124fa47ef3@mail.gmail.com>
-Date:	Wed, 6 Jul 2005 16:12:39 -0700
-From:	rolf liu <rolfliu@gmail.com>
-Reply-To: rolf liu <rolfliu@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: compiling error of linux 2.6.12 recent cvs head for db1550 using defconfig
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jul 2005 01:07:51 +0100 (BST)
+Received: from smtp008.bizmail.sc5.yahoo.com ([IPv6:::ffff:66.163.170.74]:58712
+	"HELO smtp008.bizmail.sc5.yahoo.com") by linux-mips.org with SMTP
+	id <S8226160AbVGGAHg>; Thu, 7 Jul 2005 01:07:36 +0100
+Received: (qmail 25007 invoked from network); 7 Jul 2005 00:08:00 -0000
+Received: from unknown (HELO ?192.168.1.107?) (ppopov@embeddedalley.com@63.194.214.47 with plain)
+  by smtp008.bizmail.sc5.yahoo.com with SMTP; 7 Jul 2005 00:07:59 -0000
+Subject: Re: compiling error of linux 2.6.12 recent cvs head for db1550
+	using defconfig
+From:	Pete Popov <ppopov@embeddedalley.com>
+Reply-To: ppopov@embeddedalley.com
+To:	rolf liu <rolfliu@gmail.com>
+Cc:	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
+In-Reply-To: <2db32b7205070616124fa47ef3@mail.gmail.com>
+References: <2db32b7205070616124fa47ef3@mail.gmail.com>
+Content-Type: text/plain
+Organization: Embedded Alley Solutions, Inc
+Date:	Wed, 06 Jul 2005 17:08:06 -0700
+Message-Id: <1120694886.5724.134.camel@localhost.localdomain>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-Return-Path: <rolfliu@gmail.com>
+X-Mailer: Evolution 2.0.4 (2.0.4-4) 
+Content-Transfer-Encoding: 7bit
+Return-Path: <ppopov@embeddedalley.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8378
+X-archive-position: 8379
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rolfliu@gmail.com
+X-original-sender: ppopov@embeddedalley.com
 Precedence: bulk
 X-list: linux-mips
 
-I use gcc 3.4.4 to compile the recent 2.6.12, got the following errors:
 
-  CC      arch/mips/au1000/common/setup.o
-In file included from include/asm/io.h:29,
-                 from include/asm/mach-au1x00/au1000.h:43,
-                 from arch/mips/au1000/common/setup.c:42:
-include/asm-mips/mach-au1x00/ioremap.h:25: warning: static declaration
-of 'fixup_bigphys_addr' follows non-static declaration
-include/asm/pgtable.h:363: warning: 'fixup_bigphys_addr' declared
-inline after being called
-include/asm/pgtable.h:363: warning: previous declaration of
-'fixup_bigphys_addr' was here
-include/asm-mips/mach-au1x00/ioremap.h: In function `fixup_bigphys_addr':
-include/asm-mips/mach-au1x00/ioremap.h:26: warning: implicit
-declaration of function `__fixup_bigphys_addr'
-arch/mips/au1000/common/setup.c: At top level:
-arch/mips/au1000/common/setup.c:159: error: conflicting types for
-'__fixup_bigphys_addr'
-include/asm-mips/mach-au1x00/ioremap.h:26: error: previous implicit
-declaration of '__fixup_bigphys_addr' was here
-make[1]: *** [arch/mips/au1000/common/setup.o] Error 1
-make: *** [arch/mips/au1000/common] Error 2
+On Wed, 2005-07-06 at 16:12 -0700, rolf liu wrote:
+> I use gcc 3.4.4 to compile the recent 2.6.12, got the following errors:
+> 
+>   CC      arch/mips/au1000/common/setup.o
+> In file included from include/asm/io.h:29,
+>                  from include/asm/mach-au1x00/au1000.h:43,
+>                  from arch/mips/au1000/common/setup.c:42:
+> include/asm-mips/mach-au1x00/ioremap.h:25: warning: static declaration
+> of 'fixup_bigphys_addr' follows non-static declaration
+> include/asm/pgtable.h:363: warning: 'fixup_bigphys_addr' declared
+> inline after being called
+> include/asm/pgtable.h:363: warning: previous declaration of
+> 'fixup_bigphys_addr' was here
+> include/asm-mips/mach-au1x00/ioremap.h: In function `fixup_bigphys_addr':
+> include/asm-mips/mach-au1x00/ioremap.h:26: warning: implicit
+> declaration of function `__fixup_bigphys_addr'
+> arch/mips/au1000/common/setup.c: At top level:
+> arch/mips/au1000/common/setup.c:159: error: conflicting types for
+> '__fixup_bigphys_addr'
+> include/asm-mips/mach-au1x00/ioremap.h:26: error: previous implicit
+> declaration of '__fixup_bigphys_addr' was here
+> make[1]: *** [arch/mips/au1000/common/setup.o] Error 1
+> make: *** [arch/mips/au1000/common] Error 2
+> 
+> Not sure if it is just compiler's problem
 
-Not sure if it is just compiler's problem
+No, it's not. Looks like Maciej's patch on Thursday broke the above. 
 
-thanks
+Maciej, I assume you built a kernel for one of the Au1x boards before
+you applied the patch ;)?
+
+Pete

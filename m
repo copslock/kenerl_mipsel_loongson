@@ -1,56 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jul 2005 14:50:56 +0100 (BST)
-Received: from mx02.qsc.de ([IPv6:::ffff:213.148.130.14]:18880 "EHLO
-	mx02.qsc.de") by linux-mips.org with ESMTP id <S8226309AbVGGNul>;
-	Thu, 7 Jul 2005 14:50:41 +0100
-Received: from port-195-158-170-192.dynamic.qsc.de ([195.158.170.192] helo=hattusa.textio)
-	by mx02.qsc.de with esmtp (Exim 3.35 #1)
-	id 1DqWmQ-0003Uy-00; Thu, 07 Jul 2005 15:51:06 +0200
-Received: from ths by hattusa.textio with local (Exim 4.51)
-	id 1DqWmQ-0007we-4J; Thu, 07 Jul 2005 15:51:06 +0200
-Date:	Thu, 7 Jul 2005 15:51:06 +0200
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: CVS Update@linux-mips.org: linux
-Message-ID: <20050707135105.GX1645@hattusa.textio>
-References: <20050707091937Z8226163-3678+1737@linux-mips.org> <Pine.LNX.4.61L.0507071227170.3205@blysk.ds.pg.gda.pl> <20050707121235.GV1645@hattusa.textio> <Pine.LNX.4.61L.0507071314010.3205@blysk.ds.pg.gda.pl> <20050707122226.GW1645@hattusa.textio> <Pine.LNX.4.61L.0507071356450.3205@blysk.ds.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jul 2005 16:44:00 +0100 (BST)
+Received: from wproxy.gmail.com ([IPv6:::ffff:64.233.184.203]:22137 "EHLO
+	wproxy.gmail.com") by linux-mips.org with ESMTP id <S8226263AbVGGPnl> convert rfc822-to-8bit;
+	Thu, 7 Jul 2005 16:43:41 +0100
+Received: by wproxy.gmail.com with SMTP id 50so224766wri
+        for <linux-mips@linux-mips.org>; Thu, 07 Jul 2005 08:44:03 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=pv0z/ZjADZLtbhS8V6xr8SBkXHzfZzG9Qkb9BcvS+FJIC39oAR/BtP+Wyl6G0Hmssw/tjxbIMNVywoenYv3DN9nofCj9ipqZLVCpnYV0BfoJ7q1wQ8wQ77Bq0JkpRIXdof91lfnCH0rMafG83j/1fCbe3I5oPP9qQs5ZrcjqeD8=
+Received: by 10.54.30.4 with SMTP id d4mr865493wrd;
+        Thu, 07 Jul 2005 08:44:03 -0700 (PDT)
+Received: by 10.54.71.11 with HTTP; Thu, 7 Jul 2005 08:44:03 -0700 (PDT)
+Message-ID: <2db32b7205070708447d967304@mail.gmail.com>
+Date:	Thu, 7 Jul 2005 08:44:03 -0700
+From:	rolf liu <rolfliu@gmail.com>
+Reply-To: rolf liu <rolfliu@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: Do I need to deal with pcmcia-cs package for linux 2.6.12 mips?
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
 Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.61L.0507071356450.3205@blysk.ds.pg.gda.pl>
-User-Agent: Mutt/1.5.9i
-From:	Thiemo Seufer <ths@networkno.de>
-Return-Path: <ths@networkno.de>
+Return-Path: <rolfliu@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8387
+X-archive-position: 8388
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: rolfliu@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Maciej W. Rozycki wrote:
-> On Thu, 7 Jul 2005, Thiemo Seufer wrote:
-> 
-> > > They are not in the info pages, but that should probably be considered an 
-> > > accidental omission.  Is using something that's documented but doesn't 
-> > > work, to the contrary, any better?
-> > 
-> > Probably not. It's just that I've never seen actual use of -mel/-meb yet.
-> 
->  Good -- it means you haven't been watching over my shoulder. ;-)  I've 
-> used them several times for big-endian builds with my toolchain, which, as 
-> you may be aware, has been exclusively little-endian so far.
-> 
->  And they are actually used to implement these "-EL" and "-EB" options.  
-> Frankly I find "-mel" and "-meb" more consistent with the others as "-m*" 
-> generally imply target-specific options.
+I am trying to compile the pcmcia support for db1550 based on linux
+2.6.12 mips cvs head. My questions is if I need to deal with the extra
+pcmcia-cs package from pcmcia-cs.sourceforge.net, or I just need to
+choose the pcmcia support from `make menuconfig`?
 
-Other gcc targets use IIRC -BE and -LE. It might be worthwile to document
--mel/-meb better, use them generally in gcc, and then mark the uppercase
-options as deprecated.
-
-
-Thiemo
+thanks

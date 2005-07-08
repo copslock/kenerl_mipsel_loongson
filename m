@@ -1,59 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Jul 2005 14:55:02 +0100 (BST)
-Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:37131 "EHLO
-	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8226355AbVGHNyq>;
-	Fri, 8 Jul 2005 14:54:46 +0100
-Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
-	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
-	id 1DqtbD-0008GS-00; Fri, 08 Jul 2005 15:13:03 +0100
-Received: from kenton.mips.com ([192.168.192.199])
-	by olympia.mips.com with smtp (Exim 3.36 #1 (Debian))
-	id 1DqtJf-0000RF-00; Fri, 08 Jul 2005 14:54:55 +0100
-Date:	Fri, 8 Jul 2005 14:54:54 +0100
-From:	Laurence Darby <ldarby@mips.com>
-To:	Alex Gonzalez <linux-mips@packetvision.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Jul 2005 14:55:51 +0100 (BST)
+Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:5907 "EHLO
+	bacchus.net.dhis.org") by linux-mips.org with ESMTP
+	id <S8226358AbVGHNzV>; Fri, 8 Jul 2005 14:55:21 +0100
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j68Dtqt7007446;
+	Fri, 8 Jul 2005 14:55:52 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j68Dtq6M007445;
+	Fri, 8 Jul 2005 14:55:52 +0100
+Date:	Fri, 8 Jul 2005 14:55:52 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
 Cc:	linux-mips@linux-mips.org
-Subject: Re: Benchmarking RM9000
-Message-Id: <20050708145454.7d5f9c74.ldarby@mips.com>
-In-Reply-To: <1120825549.28569.949.camel@euskadi.packetvision>
-References: <20050708091711Z8226352-3678+1954@linux-mips.org>
-	<20050708120238.GA2816@linux-mips.org>
-	<1120825549.28569.949.camel@euskadi.packetvision>
-X-Mailer: Sylpheed version 2.0.0beta2 (GTK+ 2.6.4; i686-pc-linux-gnu)
+Subject: Re: CVS Update@linux-mips.org: linux
+Message-ID: <20050708135551.GD2816@linux-mips.org>
+References: <20050708091711Z8226352-3678+1954@linux-mips.org> <20050708120238.GA2816@linux-mips.org> <Pine.LNX.4.61L.0507081309530.25104@blysk.ds.pg.gda.pl>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-MTUK-Scanner:	Found to be clean
-X-MTUK-SpamCheck: not spam (whitelisted), SpamAssassin (score=-4.878,
-	required 4, AWL, BAYES_00)
-Return-Path: <ldarby@mips.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.61L.0507081309530.25104@blysk.ds.pg.gda.pl>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8408
+X-archive-position: 8409
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ldarby@mips.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Alex Gonzalez wrote:
+On Fri, Jul 08, 2005 at 01:12:55PM +0100, Maciej W. Rozycki wrote:
 
-> Hi,
+> > > 	Protect noat assembly with .set push/pop and make it somewhat readable.
+> > 
+> > It doesn't need protction.
 > 
-> I am doing some basic benchmarking tests on our RM9000 based platform,
-> running on just one of the two cores (non-smp kernel).
+>  Are you absolutely sure future versions of GCC won't default to ".set 
+> noat" for inline asm?  I am not; in fact the opposite is not unlikely.
 
-<snip>
+Indeed - but everybody is free to shoot himself into the foot.  With
+uzis even.  Does that make it a good idea?
 
-> TEST                : Iterations/sec.  : Old Index   : New Index
->                     :                  : Pentium 90* : AMD K6/233*
-> --------------------:------------------:-------------:------------>
-> NUMERIC SORT        :          360.48  :       9.24  :       3.04
-
-
-I'd expect a K6 to be able to do more Iterations per second than a
-Pentium 90, not fewer. 
-
-
-Laurence
+  Ralf

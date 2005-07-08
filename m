@@ -1,53 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Jul 2005 13:12:34 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:20753 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8226340AbVGHMMP>; Fri, 8 Jul 2005 13:12:15 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 4E045E1CAE; Fri,  8 Jul 2005 14:12:45 +0200 (CEST)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 11750-05; Fri,  8 Jul 2005 14:12:45 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 14512E1CA8; Fri,  8 Jul 2005 14:12:45 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j68CCmP8028558;
-	Fri, 8 Jul 2005 14:12:48 +0200
-Date:	Fri, 8 Jul 2005 13:12:55 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: CVS Update@linux-mips.org: linux
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Jul 2005 13:24:03 +0100 (BST)
+Received: from mra04.ex.eclipse.net.uk ([IPv6:::ffff:212.104.129.139]:35976
+	"EHLO mra04.ex.eclipse.net.uk") by linux-mips.org with ESMTP
+	id <S8226359AbVGHMXj>; Fri, 8 Jul 2005 13:23:39 +0100
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mra04.ex.eclipse.net.uk (Postfix) with ESMTP id 0B161133FDF
+	for <linux-mips@linux-mips.org>; Fri,  8 Jul 2005 13:24:13 +0100 (BST)
+Received: from mra04.ex.eclipse.net.uk ([127.0.0.1])
+ by localhost (mra04.ex.eclipse.net.uk [127.0.0.1]) (amavisd-new, port 10024)
+ with LMTP id 26987-01-94 for <linux-mips@linux-mips.org>;
+ Fri,  8 Jul 2005 13:24:11 +0100 (BST)
+Received: from euskadi.packetvision (unknown [82.152.104.245])
+	by mra04.ex.eclipse.net.uk (Postfix) with ESMTP id CB9A5133ADB
+	for <linux-mips@linux-mips.org>; Fri,  8 Jul 2005 13:24:03 +0100 (BST)
+Subject: Benchmarking RM9000
+From:	Alex Gonzalez <linux-mips@packetvision.com>
+To:	linux-mips@linux-mips.org
 In-Reply-To: <20050708120238.GA2816@linux-mips.org>
-Message-ID: <Pine.LNX.4.61L.0507081309530.25104@blysk.ds.pg.gda.pl>
 References: <20050708091711Z8226352-3678+1954@linux-mips.org>
- <20050708120238.GA2816@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.85.1/971/Thu Jul  7 12:08:01 2005 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+	 <20050708120238.GA2816@linux-mips.org>
+Content-Type: text/plain
+Message-Id: <1120825549.28569.949.camel@euskadi.packetvision>
+Mime-Version: 1.0
+X-Mailer: Ximian Evolution 1.4.5 (1.4.5-9) 
+Date:	Fri, 08 Jul 2005 13:25:49 +0100
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: by Eclipse VIRUSshield at eclipse.net.uk
+Return-Path: <linux-mips@packetvision.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8404
+X-archive-position: 8405
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: linux-mips@packetvision.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 8 Jul 2005, Ralf Baechle wrote:
+Hi,
 
-> > Log message:
-> > 	Protect noat assembly with .set push/pop and make it somewhat readable.
-> 
-> It doesn't need protction.
+I am doing some basic benchmarking tests on our RM9000 based platform,
+running on just one of the two cores (non-smp kernel).
 
- Are you absolutely sure future versions of GCC won't default to ".set 
-noat" for inline asm?  I am not; in fact the opposite is not unlikely.
+I would be very interesting in seeing some comparative data as we seem
+to experience some performance problems.
 
-  Maciej
+Even if no data is available, any comments on this results will also be
+appreciated.
+
+Thanks,
+Alex
+
+----------------------------------------------------
+
+BYTEmark* Native Mode Benchmark ver. 2 (10/95)
+Index-split by Andrew D. Balsa (11/97)
+Linux/Unix* port by Uwe F. Mayer (12/96,11/97)
+                                                                                                                                                       
+TEST                : Iterations/sec.  : Old Index   : New Index
+                    :                  : Pentium 90* : AMD K6/233*
+--------------------:------------------:-------------:------------
+NUMERIC SORT        :          360.48  :       9.24  :       3.04
+STRING SORT         :           31.23  :      13.95  :       2.16
+BITFIELD            :      8.4132e+07  :      14.43  :       3.01
+FP EMULATION        :          32.921  :      15.80  :       3.65
+FOURIER             :            3383  :       3.85  :       2.16
+ASSIGNMENT          :          4.2422  :      16.14  :       4.19
+IDEA                :          1543.3  :      23.60  :       7.01
+HUFFMAN             :          382.56  :      10.61  :       3.39
+NEURAL NET          :          3.7153  :       5.97  :       2.51
+LU DECOMPOSITION    :          209.28  :      10.84  :       7.83
+==========================ORIGINAL BYTEMARK RESULTS==========================
+INTEGER INDEX       : 14.242
+FLOATING-POINT INDEX: 6.291
+Baseline (MSDOS*)   : Pentium* 90, 256 KB L2-cache, Watcom* compiler 10.0
+==============================LINUX DATA BELOW===============================
+CPU                 :
+L2 Cache            :
+OS                  : Linux 2.6.12-rc3
+C compiler          : gcc version 3.3.5
+libc                : libc-2.3.5.so
+MEMORY INDEX        : 3.010
+INTEGER INDEX       : 4.026
+FLOATING-POINT INDEX: 3.489
+Baseline (LINUX)    : AMD K6/233*, 512 KB L2-cache, gcc 2.7.2.3, libc-5.4.38
+* Trademarks are property of their respective holder.

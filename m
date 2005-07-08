@@ -1,87 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Jul 2005 13:24:03 +0100 (BST)
-Received: from mra04.ex.eclipse.net.uk ([IPv6:::ffff:212.104.129.139]:35976
-	"EHLO mra04.ex.eclipse.net.uk") by linux-mips.org with ESMTP
-	id <S8226359AbVGHMXj>; Fri, 8 Jul 2005 13:23:39 +0100
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mra04.ex.eclipse.net.uk (Postfix) with ESMTP id 0B161133FDF
-	for <linux-mips@linux-mips.org>; Fri,  8 Jul 2005 13:24:13 +0100 (BST)
-Received: from mra04.ex.eclipse.net.uk ([127.0.0.1])
- by localhost (mra04.ex.eclipse.net.uk [127.0.0.1]) (amavisd-new, port 10024)
- with LMTP id 26987-01-94 for <linux-mips@linux-mips.org>;
- Fri,  8 Jul 2005 13:24:11 +0100 (BST)
-Received: from euskadi.packetvision (unknown [82.152.104.245])
-	by mra04.ex.eclipse.net.uk (Postfix) with ESMTP id CB9A5133ADB
-	for <linux-mips@linux-mips.org>; Fri,  8 Jul 2005 13:24:03 +0100 (BST)
-Subject: Benchmarking RM9000
-From:	Alex Gonzalez <linux-mips@packetvision.com>
-To:	linux-mips@linux-mips.org
-In-Reply-To: <20050708120238.GA2816@linux-mips.org>
-References: <20050708091711Z8226352-3678+1954@linux-mips.org>
-	 <20050708120238.GA2816@linux-mips.org>
-Content-Type: text/plain
-Message-Id: <1120825549.28569.949.camel@euskadi.packetvision>
-Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.4.5 (1.4.5-9) 
-Date:	Fri, 08 Jul 2005 13:25:49 +0100
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: by Eclipse VIRUSshield at eclipse.net.uk
-Return-Path: <linux-mips@packetvision.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Jul 2005 14:42:28 +0100 (BST)
+Received: from admin.voldemort.codesourcery.com ([IPv6:::ffff:65.74.133.9]:65223
+	"EHLO mail.codesourcery.com") by linux-mips.org with ESMTP
+	id <S8226361AbVGHNmK>; Fri, 8 Jul 2005 14:42:10 +0100
+Received: (qmail 20726 invoked by uid 1010); 8 Jul 2005 13:42:42 -0000
+From:	Richard Sandiford <richard@codesourcery.com>
+To:	Ralf Baechle DL5RB <ralf@linux-mips.org>
+Mail-Followup-To: Ralf Baechle DL5RB <ralf@linux-mips.org>,"Maciej W. Rozycki" <macro@linux-mips.org>,  Thiemo Seufer <ths@networkno.de>,  linux-mips@linux-mips.org, richard@codesourcery.com
+Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
+	Thiemo Seufer <ths@networkno.de>, linux-mips@linux-mips.org
+Subject: Re: CVS Update@linux-mips.org: linux
+References: <20050707091937Z8226163-3678+1737@linux-mips.org>
+	<Pine.LNX.4.61L.0507071227170.3205@blysk.ds.pg.gda.pl>
+	<20050707121235.GV1645@hattusa.textio>
+	<Pine.LNX.4.61L.0507071314010.3205@blysk.ds.pg.gda.pl>
+	<20050707122226.GW1645@hattusa.textio>
+	<Pine.LNX.4.61L.0507071356450.3205@blysk.ds.pg.gda.pl>
+	<20050707162959.GQ2822@linux-mips.org>
+Date:	Fri, 08 Jul 2005 14:42:38 +0100
+In-Reply-To: <20050707162959.GQ2822@linux-mips.org> (Ralf Baechle DL5RB's
+	message of "Thu, 7 Jul 2005 17:29:59 +0100")
+Message-ID: <87zmsx4do1.fsf@talisman.home>
+User-Agent: Gnus/5.110003 (No Gnus v0.3) Emacs/21.4 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <richard@codesourcery.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8405
+X-archive-position: 8406
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux-mips@packetvision.com
+X-original-sender: richard@codesourcery.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+Ralf Baechle DL5RB <ralf@linux-mips.org> writes:
+> -EB / -EL are traditionally the options that all MIPS compilers including
+> non-gcc compilers, seem to support.
 
-I am doing some basic benchmarking tests on our RM9000 based platform,
-running on just one of the two cores (non-smp kernel).
+Right.  I've always thought of them as the canonical options for gcc
+as well.  I think the only reason internal compilers like cc1 have
+-mel and -meb is because gcc's target options system has traditionally
+required every target option to begin with "-m".  (That's no longer
+a restriction in 4.1 FWIW.)
 
-I would be very interesting in seeing some comparative data as we seem
-to experience some performance problems.
+So contrary to what was said upthread, I've always treated
+the omission of these options from invoke.texi as deliberate.
+They're really internal compiler flags rather than user flags.
+You should use -EL and -EB instead.
 
-Even if no data is available, any comments on this results will also be
-appreciated.
-
-Thanks,
-Alex
-
-----------------------------------------------------
-
-BYTEmark* Native Mode Benchmark ver. 2 (10/95)
-Index-split by Andrew D. Balsa (11/97)
-Linux/Unix* port by Uwe F. Mayer (12/96,11/97)
-                                                                                                                                                       
-TEST                : Iterations/sec.  : Old Index   : New Index
-                    :                  : Pentium 90* : AMD K6/233*
---------------------:------------------:-------------:------------
-NUMERIC SORT        :          360.48  :       9.24  :       3.04
-STRING SORT         :           31.23  :      13.95  :       2.16
-BITFIELD            :      8.4132e+07  :      14.43  :       3.01
-FP EMULATION        :          32.921  :      15.80  :       3.65
-FOURIER             :            3383  :       3.85  :       2.16
-ASSIGNMENT          :          4.2422  :      16.14  :       4.19
-IDEA                :          1543.3  :      23.60  :       7.01
-HUFFMAN             :          382.56  :      10.61  :       3.39
-NEURAL NET          :          3.7153  :       5.97  :       2.51
-LU DECOMPOSITION    :          209.28  :      10.84  :       7.83
-==========================ORIGINAL BYTEMARK RESULTS==========================
-INTEGER INDEX       : 14.242
-FLOATING-POINT INDEX: 6.291
-Baseline (MSDOS*)   : Pentium* 90, 256 KB L2-cache, Watcom* compiler 10.0
-==============================LINUX DATA BELOW===============================
-CPU                 :
-L2 Cache            :
-OS                  : Linux 2.6.12-rc3
-C compiler          : gcc version 3.3.5
-libc                : libc-2.3.5.so
-MEMORY INDEX        : 3.010
-INTEGER INDEX       : 4.026
-FLOATING-POINT INDEX: 3.489
-Baseline (LINUX)    : AMD K6/233*, 512 KB L2-cache, gcc 2.7.2.3, libc-5.4.38
-* Trademarks are property of their respective holder.
+Richard

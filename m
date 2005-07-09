@@ -1,87 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 Jul 2005 01:11:52 +0100 (BST)
-Received: from e2.ny.us.ibm.com ([IPv6:::ffff:32.97.182.142]:38036 "EHLO
-	e2.ny.us.ibm.com") by linux-mips.org with ESMTP id <S8226366AbVGIAL0>;
-	Sat, 9 Jul 2005 01:11:26 +0100
-Received: from d01relay04.pok.ibm.com (d01relay04.pok.ibm.com [9.56.227.236])
-	by e2.ny.us.ibm.com (8.12.11/8.12.11) with ESMTP id j690BnHp013337;
-	Fri, 8 Jul 2005 20:11:49 -0400
-Received: from d01av03.pok.ibm.com (d01av03.pok.ibm.com [9.56.224.217])
-	by d01relay04.pok.ibm.com (8.12.10/NCO/VERS6.7) with ESMTP id j690BnCf223990;
-	Fri, 8 Jul 2005 20:11:49 -0400
-Received: from d01av03.pok.ibm.com (loopback [127.0.0.1])
-	by d01av03.pok.ibm.com (8.12.11/8.13.3) with ESMTP id j690Bce1012258;
-	Fri, 8 Jul 2005 20:11:38 -0400
-Received: from joust (joust.beaverton.ibm.com [9.47.17.68])
-	by d01av03.pok.ibm.com (8.12.11/8.12.11) with ESMTP id j690BceE012080;
-	Fri, 8 Jul 2005 20:11:38 -0400
-Received: by joust (Postfix, from userid 1000)
-	id 28D554F916; Fri,  8 Jul 2005 17:11:27 -0700 (PDT)
-Date:	Fri, 8 Jul 2005 17:11:27 -0700
-From:	Nishanth Aravamudan <nacc@us.ibm.com>
-To:	ralf@linux-mips.org
-Cc:	linux-mips@linux-mips.org,
-	Kernel-Janitors <kernel-janitors@lists.osdl.org>
-Subject: [PATCH 7/14] mips: replace timespectojiffies() with timespec_to_jiffies()
-Message-ID: <20050709001127.GM2596@us.ibm.com>
-References: <20050709000324.GD2596@us.ibm.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20050709000324.GD2596@us.ibm.com>
-X-Operating-System: Linux 2.6.13-rc2 (i686)
-User-Agent: Mutt/1.5.9i
-Return-Path: <nacc@us.ibm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 Jul 2005 08:21:52 +0100 (BST)
+Received: from smtpa1.aruba.it ([IPv6:::ffff:62.149.128.206]:30701 "HELO
+	smtpa2.aruba.it") by linux-mips.org with SMTP id <S8226376AbVGIHVf>;
+	Sat, 9 Jul 2005 08:21:35 +0100
+Received: (qmail 21245 invoked by uid 89); 9 Jul 2005 07:22:08 -0000
+Received: by simscan 1.1.0 ppid: 21236, pid: 21241, t: 0.1636s
+         scanners: clamav: 0.80/m:29/d:680
+Received: from unknown (HELO ?192.168.32.1?) (fabrizio@fazzino.it@82.57.252.179)
+  by smtp2.aruba.it with SMTP; 9 Jul 2005 07:22:08 -0000
+Message-ID: <42CF7B20.5010101@fazzino.it>
+Date:	Sat, 09 Jul 2005 09:22:08 +0200
+From:	Fabrizio Fazzino <fabrizio@fazzino.it>
+User-Agent: Mozilla Thunderbird 1.0.2 (Windows/20050317)
+X-Accept-Language: it, it-it, en-us, en
+MIME-Version: 1.0
+To:	linux-mips@linux-mips.org
+Subject: Re: Assembly macro with parameters
+References: <425573AD.9010702@fazzino.it> <20050407182549.GA24235@linux-mips.org> <4256B5BE.8070708@fazzino.it> <20050408165717.GA8157@nevyn.them.org> <42C429C3.2090905@fazzino.it> <Pine.LNX.4.61L.0507010927130.30138@blysk.ds.pg.gda.pl> <42C7BE64.7020102@fazzino.it> <Pine.LNX.4.61L.0507041306440.32001@blysk.ds.pg.gda.pl>
+In-Reply-To: <Pine.LNX.4.61L.0507041306440.32001@blysk.ds.pg.gda.pl>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <fabrizio@fazzino.it>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8417
+X-archive-position: 8418
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nacc@us.ibm.com
+X-original-sender: fabrizio@fazzino.it
 Precedence: bulk
 X-list: linux-mips
 
-From: Nishanth Aravamudan <nacc@us.ibm.com>
+Maciej W. Rozycki wrote:
+> Fabrizio Fazzino wrote:
+> 
+>>By the way, is there any quick way of writing a setreg(reg_num,reg_val)
+>>C macro to set the value of a register?
 
-Description: Replace custom timespectojiffies() function with generic
-standard one.
+Hi guys,
+just to let you know that I solved my problem this way:
 
-Signed-off-by: Nishanth Aravamudan <nacc@us.ibm.com>
+    // Set a register to the desired value
+    #define setreg(regnum,value) asm("move $" #regnum ", %0" : : "r"(value) : "$" #regnum)
 
----
+    // Move the content of a register to the desired variable
+    #define reg2var(regnum,var) asm("sw $" #regnum ", %0" : "=m"(*var) : : "memory")
 
- irixsig.c |   14 +-------------
- 1 files changed, 1 insertion(+), 13 deletions(-)
+>  BTW, how about adding support for opcodes you are interested in to 
+> binutils instead?  It would make interfacing them to GCC much easier.
 
-diff -urp 2.6.13-rc2-kj/arch/mips/kernel/irixsig.c 2.6.13-rc2-kj-dev/arch/mips/kernel/irixsig.c
---- 2.6.13-rc2-kj/arch/mips/kernel/irixsig.c	2005-07-06 07:57:02.000000000 -0700
-+++ 2.6.13-rc2-kj-dev/arch/mips/kernel/irixsig.c	2005-07-06 13:30:34.000000000 -0700
-@@ -441,18 +441,6 @@ struct irix5_siginfo {
- 	} stuff;
- };
- 
--static inline unsigned long timespectojiffies(struct timespec *value)
--{
--	unsigned long sec = (unsigned) value->tv_sec;
--	long nsec = value->tv_nsec;
--
--	if (sec > (LONG_MAX / HZ))
--		return LONG_MAX;
--	nsec += 1000000000L / HZ - 1;
--	nsec /= 1000000000L / HZ;
--	return HZ * sec + nsec;
--}
--
- asmlinkage int irix_sigpoll_sys(unsigned long *set, struct irix5_siginfo *info,
- 				struct timespec *tp)
- {
-@@ -490,7 +478,7 @@ asmlinkage int irix_sigpoll_sys(unsigned
- 			error = -EINVAL;
- 			goto out;
- 		}
--		expire = timespectojiffies(tp)+(tp->tv_sec||tp->tv_nsec);
-+		expire = timespec_to_jiffies(tp)+(tp->tv_sec||tp->tv_nsec);
- 	}
- 
- 	while(1) {
+The CPU I'm working on will never "exist"... I'm just simulating it
+as VHDL code, so I just needed a quick-and-dirty way of generating
+inside my very short test programs the new opcodes added as an extension.
+
+Thanks to all for your precious support!
+
+Cheers and regards,
+
+         Fabrizio
+
+
+-- 
+============================================
+    Fabrizio Fazzino - fabrizio@fazzino.it
+      Fazzino.IT - http://www.fazzino.it
+============================================

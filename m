@@ -1,84 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Jul 2005 23:20:33 +0100 (BST)
-Received: from wproxy.gmail.com ([IPv6:::ffff:64.233.184.202]:43385 "EHLO
-	wproxy.gmail.com") by linux-mips.org with ESMTP id <S8226366AbVGHWUP> convert rfc822-to-8bit;
-	Fri, 8 Jul 2005 23:20:15 +0100
-Received: by wproxy.gmail.com with SMTP id i21so521302wra
-        for <linux-mips@linux-mips.org>; Fri, 08 Jul 2005 15:20:52 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=QzzpZt5IbHAzNN3gAtX8k7Ci3ZbvGSL4YNrB6h5NG3bwaRsP79yNruGiLONCZ4UcWGYa8TEP8s8jaHbhk0UHVX7kTLy7J2KmSKLIL4DLixJ5E6oX3l5lciJ/aGdogJrdTpQcOAcOBGg2/TNjDPYX26rQ8p7ipNJe5hEngG9oIWw=
-Received: by 10.54.73.15 with SMTP id v15mr2117957wra;
-        Fri, 08 Jul 2005 15:20:13 -0700 (PDT)
-Received: by 10.54.71.11 with HTTP; Fri, 8 Jul 2005 15:20:13 -0700 (PDT)
-Message-ID: <2db32b7205070815202bc409f0@mail.gmail.com>
-Date:	Fri, 8 Jul 2005 15:20:13 -0700
-From:	rolf liu <rolfliu@gmail.com>
-Reply-To: rolf liu <rolfliu@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: glibc 2.3.5 cross building error
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 Jul 2005 01:11:52 +0100 (BST)
+Received: from e2.ny.us.ibm.com ([IPv6:::ffff:32.97.182.142]:38036 "EHLO
+	e2.ny.us.ibm.com") by linux-mips.org with ESMTP id <S8226366AbVGIAL0>;
+	Sat, 9 Jul 2005 01:11:26 +0100
+Received: from d01relay04.pok.ibm.com (d01relay04.pok.ibm.com [9.56.227.236])
+	by e2.ny.us.ibm.com (8.12.11/8.12.11) with ESMTP id j690BnHp013337;
+	Fri, 8 Jul 2005 20:11:49 -0400
+Received: from d01av03.pok.ibm.com (d01av03.pok.ibm.com [9.56.224.217])
+	by d01relay04.pok.ibm.com (8.12.10/NCO/VERS6.7) with ESMTP id j690BnCf223990;
+	Fri, 8 Jul 2005 20:11:49 -0400
+Received: from d01av03.pok.ibm.com (loopback [127.0.0.1])
+	by d01av03.pok.ibm.com (8.12.11/8.13.3) with ESMTP id j690Bce1012258;
+	Fri, 8 Jul 2005 20:11:38 -0400
+Received: from joust (joust.beaverton.ibm.com [9.47.17.68])
+	by d01av03.pok.ibm.com (8.12.11/8.12.11) with ESMTP id j690BceE012080;
+	Fri, 8 Jul 2005 20:11:38 -0400
+Received: by joust (Postfix, from userid 1000)
+	id 28D554F916; Fri,  8 Jul 2005 17:11:27 -0700 (PDT)
+Date:	Fri, 8 Jul 2005 17:11:27 -0700
+From:	Nishanth Aravamudan <nacc@us.ibm.com>
+To:	ralf@linux-mips.org
+Cc:	linux-mips@linux-mips.org,
+	Kernel-Janitors <kernel-janitors@lists.osdl.org>
+Subject: [PATCH 7/14] mips: replace timespectojiffies() with timespec_to_jiffies()
+Message-ID: <20050709001127.GM2596@us.ibm.com>
+References: <20050709000324.GD2596@us.ibm.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Return-Path: <rolfliu@gmail.com>
+In-Reply-To: <20050709000324.GD2596@us.ibm.com>
+X-Operating-System: Linux 2.6.13-rc2 (i686)
+User-Agent: Mutt/1.5.9i
+Return-Path: <nacc@us.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8416
+X-archive-position: 8417
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rolfliu@gmail.com
+X-original-sender: nacc@us.ibm.com
 Precedence: bulk
 X-list: linux-mips
 
-I am trying to cross-compile glibc 2.3.5 with linuxthread. And got the
-following errors.
-It seems the linker is complaining it can't find the definition of
-"__fork_block". But it is really defined in "fork.c", which is at the
-same directory as register-atfork.c.
+From: Nishanth Aravamudan <nacc@us.ibm.com>
 
-Thanks
+Description: Replace custom timespectojiffies() function with generic
+standard one.
 
-******************
-mipsel-unknown-linux-gnu-gcc -mabi=32   -shared -static-libgcc -Wl,-O1
- -Wl,-z,defs -Wl,-dynamic-linker=/home/rolf/toolchain/lib/ld.so.1 
--B/home/rolf/toolchain/glibc-build/csu/ 
--Wl,--version-script=/home/rolf/toolchain/glibc-build/libc.map
--Wl,-soname=libc.so.6  -nostdlib -nostartfiles -e __libc_main
--L/home/rolf/toolchain/glibc-build
--L/home/rolf/toolchain/glibc-build/math
--L/home/rolf/toolchain/glibc-build/elf
--L/home/rolf/toolchain/glibc-build/dlfcn
--L/home/rolf/toolchain/glibc-build/nss
--L/home/rolf/toolchain/glibc-build/nis
--L/home/rolf/toolchain/glibc-build/rt
--L/home/rolf/toolchain/glibc-build/resolv
--L/home/rolf/toolchain/glibc-build/crypt
--L/home/rolf/toolchain/glibc-build/linuxthreads
--Wl,-rpath-link=/home/rolf/toolchain/glibc-build:/home/rolf/toolchain/glibc-build/math:/home/rolf/toolchain/glibc-build/elf:/home/rolf/toolchain/glibc-build/dlfcn:/home/rolf/toolchain/glibc-build/nss:/home/rolf/toolchain/glibc-build/nis:/home/rolf/toolchain/glibc-build/rt:/home/rolf/toolchain/glibc-build/resolv:/home/rolf/toolchain/glibc-build/crypt:/home/rolf/toolchain/glibc-build/linuxthreads
--o /home/rolf/toolchain/glibc-build/libc.so -T
-/home/rolf/toolchain/glibc-build/shlib.lds
-/home/rolf/toolchain/glibc-build/csu/abi-note.o
-/home/rolf/toolchain/glibc-build/elf/soinit.os
-/home/rolf/toolchain/glibc-build/libc_pic.os
-/home/rolf/toolchain/glibc-build/elf/sofini.os
-/home/rolf/toolchain/glibc-build/elf/interp.os
-/home/rolf/toolchain/glibc-build/elf/ld.so -lgcc
-/home/rolf/toolchain/glibc-build/libc_pic.os: In function `list_add_tail':
-../linuxthreads/sysdeps/pthread/list.h:59: undefined reference to `__fork_block'
-../linuxthreads/sysdeps/pthread/list.h:59: undefined reference to `__fork_block'
-../linuxthreads/sysdeps/pthread/list.h:59: undefined reference to `__fork_block'
-/home/rolf/toolchain/glibc-build/libc_pic.os: In function
-`*__GI___register_atfork':
-../linuxthreads/sysdeps/unix/sysv/linux/register-atfork.c:84:
-undefined reference to `__fork_block'
-../linuxthreads/sysdeps/unix/sysv/linux/register-atfork.c:73:
-undefined reference to `__fork_block'
-/home/rolf/toolchain/glibc-build/libc_pic.os:../linuxthreads/sysdeps/unix/sysv/linux/unregister-atfork.c:35:
-more undefined references to `__fork_block' follow
-collect2: ld returned 1 exit status
-make[1]: *** [/home/rolf/toolchain/glibc-build/libc.so] Error 1
-make[1]: Leaving directory `/home/rolf/toolchain/glibc-2.3.5'
-make: *** [all] Error 2
+Signed-off-by: Nishanth Aravamudan <nacc@us.ibm.com>
+
+---
+
+ irixsig.c |   14 +-------------
+ 1 files changed, 1 insertion(+), 13 deletions(-)
+
+diff -urp 2.6.13-rc2-kj/arch/mips/kernel/irixsig.c 2.6.13-rc2-kj-dev/arch/mips/kernel/irixsig.c
+--- 2.6.13-rc2-kj/arch/mips/kernel/irixsig.c	2005-07-06 07:57:02.000000000 -0700
++++ 2.6.13-rc2-kj-dev/arch/mips/kernel/irixsig.c	2005-07-06 13:30:34.000000000 -0700
+@@ -441,18 +441,6 @@ struct irix5_siginfo {
+ 	} stuff;
+ };
+ 
+-static inline unsigned long timespectojiffies(struct timespec *value)
+-{
+-	unsigned long sec = (unsigned) value->tv_sec;
+-	long nsec = value->tv_nsec;
+-
+-	if (sec > (LONG_MAX / HZ))
+-		return LONG_MAX;
+-	nsec += 1000000000L / HZ - 1;
+-	nsec /= 1000000000L / HZ;
+-	return HZ * sec + nsec;
+-}
+-
+ asmlinkage int irix_sigpoll_sys(unsigned long *set, struct irix5_siginfo *info,
+ 				struct timespec *tp)
+ {
+@@ -490,7 +478,7 @@ asmlinkage int irix_sigpoll_sys(unsigned
+ 			error = -EINVAL;
+ 			goto out;
+ 		}
+-		expire = timespectojiffies(tp)+(tp->tv_sec||tp->tv_nsec);
++		expire = timespec_to_jiffies(tp)+(tp->tv_sec||tp->tv_nsec);
+ 	}
+ 
+ 	while(1) {

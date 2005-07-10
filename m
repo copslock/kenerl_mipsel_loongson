@@ -1,62 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 10 Jul 2005 07:13:31 +0100 (BST)
-Received: from athena.et.put.poznan.pl ([IPv6:::ffff:150.254.29.137]:46747
-	"EHLO athena.et.put.poznan.pl") by linux-mips.org with ESMTP
-	id <S8226229AbVGJGNP>; Sun, 10 Jul 2005 07:13:15 +0100
-Received: from athena (athena.et.put.poznan.pl [150.254.29.137])
-	by athena.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id j6A6DwT27493;
-	Sun, 10 Jul 2005 08:13:58 +0200 (MET DST)
-Received: from helios.et.put.poznan.pl ([150.254.29.65])
-	by athena.et.put.poznan.pl (MailMonitor for SMTP v1.2.2 ) ;
-	Sun, 10 Jul 2005 08:13:57 +0200 (MET DST)
-Received: from localhost (sskowron@localhost)
-	by helios.et.put.poznan.pl (8.11.6+Sun/8.11.6) with ESMTP id j6A6Dvx07147;
-	Sun, 10 Jul 2005 08:13:57 +0200 (MET DST)
-X-Authentication-Warning: helios.et.put.poznan.pl: sskowron owned process doing -bs
-Date:	Sun, 10 Jul 2005 08:13:56 +0200 (MET DST)
-From:	Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>
-To:	Thiemo Seufer <ths@networkno.de>
-cc:	linux-mips@linux-mips.org
-Subject: Re: Origin 200 Status
-In-Reply-To: <20050709205406.GF1586@hattusa.textio>
-Message-ID: <Pine.GSO.4.10.10507100808410.6614-100000@helios.et.put.poznan.pl>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <sskowron@ET.PUT.Poznan.PL>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 10 Jul 2005 20:34:49 +0100 (BST)
+Received: from ns1.suse.de ([IPv6:::ffff:195.135.220.2]:56722 "EHLO
+	mx1.suse.de") by linux-mips.org with ESMTP id <S8226431AbVGJTe2>;
+	Sun, 10 Jul 2005 20:34:28 +0100
+Received: from Relay1.suse.de (mail2.suse.de [195.135.221.8])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mx1.suse.de (Postfix) with ESMTP id 0BFBFEDFA;
+	Sun, 10 Jul 2005 21:35:13 +0200 (CEST)
+Date:	Sun, 10 Jul 2005 19:35:12 +0000
+From:	Olaf Hering <olh@suse.de>
+To:	Andrew Morton <akpm@osdl.org>, linux-kernel@vger.kernel.org
+Cc:	linux-mips@linux-mips.org
+Subject: [PATCH 4/82] remove linux/version.h include from arch/mips
+Message-ID:  <20050710193512.4.TqwKKi2359.2247.olh@nectarine.suse.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+X-DOS:	I got your 640K Real Mode Right Here Buddy!
+X-Homeland-Security: You are not supposed to read this line! You are a terrorist!
+User-Agent: Mutt und vi sind doch schneller als Notes (und GroupWise)
+In-Reply-To: <20050710193508.0.PmFpst2252.2247.olh@nectarine.suse.de>  
+Return-Path: <olh@suse.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8423
+X-archive-position: 8424
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sskowron@ET.PUT.Poznan.PL
+X-original-sender: olh@suse.de
 Precedence: bulk
 X-list: linux-mips
 
-> [4294678.019000] IOC3 part: [], serial: [] => class IP27 BaseIO
 
-This is not really weird, the IOC3 on the IP27 board has no NICs. We'd
-have to trace the BRIDGE NICs or even HUB NICs to get the serials, so I
-decided that it's an overkill. Although it will be required for reliably
-detecting MENET (which has a serial# NIC on the BRIDGE).
+changing CONFIG_LOCALVERSION rebuilds too much, for no appearent reason.
 
-> [4294678.020000] ioc3_probe : request_irq fails for IRQ 0x4
+Signed-off-by: Olaf Hering <olh@suse.de>
 
-This is weird. This means the keyboard will not be operational, and I wish
-somebody (Ralf) looks into this. The IOC3 on IP27 BaseIO is a dual-slot
-device (takes two IRQs, the INTA and INTA+2).
+arch/mips/pmc-sierra/yosemite/atmel_read_eeprom.h |    1 -
+arch/mips/pmc-sierra/yosemite/ht-irq.c            |    1 -
+arch/mips/pmc-sierra/yosemite/ht.c                |    1 -
+3 files changed, 3 deletions(-)
 
-> [4294678.020000]  ttyS0 at IOC3 0x8620178 (irq = 0) is a 16550A
-> [4294678.027000] ttyS1 at IOC3 0x8620170 (irq = 0) is a 16550A
+Index: linux-2.6.13-rc2-mm1/arch/mips/pmc-sierra/yosemite/atmel_read_eeprom.h
+===================================================================
+--- linux-2.6.13-rc2-mm1.orig/arch/mips/pmc-sierra/yosemite/atmel_read_eeprom.h
++++ linux-2.6.13-rc2-mm1/arch/mips/pmc-sierra/yosemite/atmel_read_eeprom.h
+@@ -34,7 +34,6 @@
+#include <linux/pci.h>
+#include <linux/kernel.h>
+#include <linux/slab.h>
+-#include <linux/version.h>
+#include <asm/pci.h>
+#include <asm/io.h>
+#include <linux/init.h>
+Index: linux-2.6.13-rc2-mm1/arch/mips/pmc-sierra/yosemite/ht-irq.c
+===================================================================
+--- linux-2.6.13-rc2-mm1.orig/arch/mips/pmc-sierra/yosemite/ht-irq.c
++++ linux-2.6.13-rc2-mm1/arch/mips/pmc-sierra/yosemite/ht-irq.c
+@@ -26,7 +26,6 @@
+#include <linux/types.h>
+#include <linux/pci.h>
+#include <linux/kernel.h>
+-#include <linux/version.h>
+#include <linux/init.h>
+#include <asm/pci.h>
 
-Serial ports will not use IRQs on IP27 unless somebody does dynirqs for
-this arch. Nevertheless, if you pass 0 to register_serial() it will use
-polling. Note that this is exactly the way IP27 always handled the serial
-ports in ioc3-eth.c, so shed no tears :)
-
-> [4294678.033000] Ethernet address is 08:00:69:0d:52:e7.
-
-Good news this works. Anyone with Origin 2000 that had problems with MAC
-NICs care to test?
-
-Stanislaw
+Index: linux-2.6.13-rc2-mm1/arch/mips/pmc-sierra/yosemite/ht.c
+===================================================================
+--- linux-2.6.13-rc2-mm1.orig/arch/mips/pmc-sierra/yosemite/ht.c
++++ linux-2.6.13-rc2-mm1/arch/mips/pmc-sierra/yosemite/ht.c
+@@ -28,7 +28,6 @@
+#include <linux/pci.h>
+#include <linux/kernel.h>
+#include <linux/slab.h>
+-#include <linux/version.h>
+#include <asm/pci.h>
+#include <asm/io.h>

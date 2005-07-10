@@ -1,79 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 10 Jul 2005 20:34:49 +0100 (BST)
-Received: from ns1.suse.de ([IPv6:::ffff:195.135.220.2]:56722 "EHLO
-	mx1.suse.de") by linux-mips.org with ESMTP id <S8226431AbVGJTe2>;
-	Sun, 10 Jul 2005 20:34:28 +0100
-Received: from Relay1.suse.de (mail2.suse.de [195.135.221.8])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mx1.suse.de (Postfix) with ESMTP id 0BFBFEDFA;
-	Sun, 10 Jul 2005 21:35:13 +0200 (CEST)
-Date:	Sun, 10 Jul 2005 19:35:12 +0000
-From:	Olaf Hering <olh@suse.de>
-To:	Andrew Morton <akpm@osdl.org>, linux-kernel@vger.kernel.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Jul 2005 08:52:00 +0100 (BST)
+Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:18185 "EHLO
+	bacchus.net.dhis.org") by linux-mips.org with ESMTP
+	id <S8226444AbVGKHvl>; Mon, 11 Jul 2005 08:51:41 +0100
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j6B7qTMj002065;
+	Mon, 11 Jul 2005 08:52:30 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j6ANEKqT020991;
+	Mon, 11 Jul 2005 00:14:20 +0100
+Date:	Mon, 11 Jul 2005 00:14:19 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Alex Gonzalez <linux-mips@packetvision.com>
 Cc:	linux-mips@linux-mips.org
-Subject: [PATCH 4/82] remove linux/version.h include from arch/mips
-Message-ID:  <20050710193512.4.TqwKKi2359.2247.olh@nectarine.suse.de>
+Subject: Re: Benchmarking RM9000
+Message-ID: <20050710231419.GA28518@linux-mips.org>
+References: <20050708091711Z8226352-3678+1954@linux-mips.org> <20050708120238.GA2816@linux-mips.org> <1120825549.28569.949.camel@euskadi.packetvision> <20050708130131.GC2816@linux-mips.org> <1120833749.28569.965.camel@euskadi.packetvision>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-DOS:	I got your 640K Real Mode Right Here Buddy!
-X-Homeland-Security: You are not supposed to read this line! You are a terrorist!
-User-Agent: Mutt und vi sind doch schneller als Notes (und GroupWise)
-In-Reply-To: <20050710193508.0.PmFpst2252.2247.olh@nectarine.suse.de>  
-Return-Path: <olh@suse.de>
+In-Reply-To: <1120833749.28569.965.camel@euskadi.packetvision>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8424
+X-archive-position: 8425
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: olh@suse.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Fri, Jul 08, 2005 at 03:42:29PM +0100, Alex Gonzalez wrote:
 
-changing CONFIG_LOCALVERSION rebuilds too much, for no appearent reason.
+> The performance of our video application is well below our expectations.
+> We are still doing some profiling work on it, but we are also looking at
+> other possibilities.
+> 
+> What other benchmarking tool would you recommend?
+> 
+> Currently it's a NFS mounted system, but even if we could use a block
+> device the access speed wouldn't be more than 1.5 Mbps, so that is a
+> limitation for the benchmark.
 
-Signed-off-by: Olaf Hering <olh@suse.de>
+As a shot into the dark ...
 
-arch/mips/pmc-sierra/yosemite/atmel_read_eeprom.h |    1 -
-arch/mips/pmc-sierra/yosemite/ht-irq.c            |    1 -
-arch/mips/pmc-sierra/yosemite/ht.c                |    1 -
-3 files changed, 3 deletions(-)
+Make sure you exploit the RM9000's write-gathering capabilities when
+writing into the frame buffer.  If the frame buffer happens to be on
+a PCI device you're probably performing uncached writes which will
+slow down the thing to a crawl.
 
-Index: linux-2.6.13-rc2-mm1/arch/mips/pmc-sierra/yosemite/atmel_read_eeprom.h
-===================================================================
---- linux-2.6.13-rc2-mm1.orig/arch/mips/pmc-sierra/yosemite/atmel_read_eeprom.h
-+++ linux-2.6.13-rc2-mm1/arch/mips/pmc-sierra/yosemite/atmel_read_eeprom.h
-@@ -34,7 +34,6 @@
-#include <linux/pci.h>
-#include <linux/kernel.h>
-#include <linux/slab.h>
--#include <linux/version.h>
-#include <asm/pci.h>
-#include <asm/io.h>
-#include <linux/init.h>
-Index: linux-2.6.13-rc2-mm1/arch/mips/pmc-sierra/yosemite/ht-irq.c
-===================================================================
---- linux-2.6.13-rc2-mm1.orig/arch/mips/pmc-sierra/yosemite/ht-irq.c
-+++ linux-2.6.13-rc2-mm1/arch/mips/pmc-sierra/yosemite/ht-irq.c
-@@ -26,7 +26,6 @@
-#include <linux/types.h>
-#include <linux/pci.h>
-#include <linux/kernel.h>
--#include <linux/version.h>
-#include <linux/init.h>
-#include <asm/pci.h>
-
-Index: linux-2.6.13-rc2-mm1/arch/mips/pmc-sierra/yosemite/ht.c
-===================================================================
---- linux-2.6.13-rc2-mm1.orig/arch/mips/pmc-sierra/yosemite/ht.c
-+++ linux-2.6.13-rc2-mm1/arch/mips/pmc-sierra/yosemite/ht.c
-@@ -28,7 +28,6 @@
-#include <linux/pci.h>
-#include <linux/kernel.h>
-#include <linux/slab.h>
--#include <linux/version.h>
-#include <asm/pci.h>
-#include <asm/io.h>
+  Ralf

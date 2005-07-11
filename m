@@ -1,43 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Jul 2005 15:11:33 +0100 (BST)
-Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:39702 "EHLO
-	bacchus.net.dhis.org") by linux-mips.org with ESMTP
-	id <S8226451AbVGKOLR>; Mon, 11 Jul 2005 15:11:17 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j6BEC6Ag003431;
-	Mon, 11 Jul 2005 15:12:06 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j6BEC51s003430;
-	Mon, 11 Jul 2005 15:12:05 +0100
-Date:	Mon, 11 Jul 2005 15:12:05 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Nishanth Aravamudan <nacc@us.ibm.com>
-Cc:	linux-mips@linux-mips.org,
-	Kernel-Janitors <kernel-janitors@lists.osdl.org>
-Subject: Re: [PATCH 7/14] mips: replace timespectojiffies() with timespec_to_jiffies()
-Message-ID: <20050711141205.GV2765@linux-mips.org>
-References: <20050709000324.GD2596@us.ibm.com> <20050709001127.GM2596@us.ibm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Jul 2005 16:00:36 +0100 (BST)
+Received: from mo00.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:32714 "EHLO
+	mo00.iij4u.or.jp") by linux-mips.org with ESMTP id <S8226453AbVGKPAT>;
+	Mon, 11 Jul 2005 16:00:19 +0100
+Received: MO(mo00)id j6BF1B6W016168; Tue, 12 Jul 2005 00:01:11 +0900 (JST)
+Received: MDO(mdo01) id j6BF1AlN022593; Tue, 12 Jul 2005 00:01:11 +0900 (JST)
+Received: from stratos (h086.p498.iij4u.or.jp [210.149.242.86])
+	by mbox.iij4u.or.jp (4U-MR/mbox00) id j6BF1ACk022334
+	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NOT);
+	Tue, 12 Jul 2005 00:01:10 +0900 (JST)
+Date:	Tue, 12 Jul 2005 00:01:08 +0900
+From:	Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH 2.6] vr41xx: remove obsolete config in
+ arch/mips/vr41xx/Kconfig
+Message-Id: <20050712000108.6f7781d7.yuasa@hh.iij4u.or.jp>
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20050709001127.GM2596@us.ibm.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8431
+X-archive-position: 8432
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Jul 08, 2005 at 05:11:27PM -0700, Nishanth Aravamudan wrote:
+Hi Ralf,
 
-> Description: Replace custom timespectojiffies() function with generic
-> standard one.
+This patch has removed a obsolete config in arch/mips/vr41xx/Kconfig.
+Please apply this patch.
 
-Applied.  Thanks,
+Signed-off-by: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
 
-  Ralf
+diff -urN -X dontdiff a-orig/arch/mips/vr41xx/Kconfig a/arch/mips/vr41xx/Kconfig
+--- a-orig/arch/mips/vr41xx/Kconfig	2005-03-19 06:53:56.000000000 +0900
++++ a/arch/mips/vr41xx/Kconfig	2005-07-11 23:50:58.561618112 +0900
+@@ -94,12 +94,6 @@
+ 	tristate "Add General-purpose I/O unit support of NEC VR4100 series"
+ 	depends on MACH_VR41XX
+ 
+-config VRC4171
+-	tristate "Add NEC VRC4171 companion chip support"
+-	depends on MACH_VR41XX && ISA
+-	help
+-	  The NEC VRC4171/4171A is a companion chip for NEC VR4111/VR4121.
+-
+ config VRC4173
+ 	tristate "Add NEC VRC4173 companion chip support"
+ 	depends on MACH_VR41XX && PCI_VR41XX

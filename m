@@ -1,51 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Jul 2005 19:57:20 +0100 (BST)
-Received: from wproxy.gmail.com ([IPv6:::ffff:64.233.184.193]:57604 "EHLO
-	wproxy.gmail.com") by linux-mips.org with ESMTP id <S8226534AbVGKS5E> convert rfc822-to-8bit;
-	Mon, 11 Jul 2005 19:57:04 +0100
-Received: by wproxy.gmail.com with SMTP id i32so892442wra
-        for <linux-mips@linux-mips.org>; Mon, 11 Jul 2005 11:57:57 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=OUdwODkjc9h5bqgSiXb+ctoYn4OEWDRcWetokhuqnboft00qOarlKHf4yxZTL0zLg5V6g4ukyfP/ggnCgAM83gRkfYXzIecizKl2KwDCUY074cqNCRppv9OHJHSCEFptnUe6TwtRY6334hIsSd6btN7JyNanCY+dfN98MABkx/w=
-Received: by 10.54.26.9 with SMTP id 9mr4254840wrz;
-        Mon, 11 Jul 2005 11:57:31 -0700 (PDT)
-Received: by 10.54.71.11 with HTTP; Mon, 11 Jul 2005 11:57:31 -0700 (PDT)
-Message-ID: <2db32b7205071111574ed8c4da@mail.gmail.com>
-Date:	Mon, 11 Jul 2005 11:57:31 -0700
-From:	rolf liu <rolfliu@gmail.com>
-Reply-To: rolf liu <rolfliu@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Jul 2005 20:25:07 +0100 (BST)
+Received: from mx02.qsc.de ([IPv6:::ffff:213.148.130.14]:50607 "EHLO
+	mx02.qsc.de") by linux-mips.org with ESMTP id <S8226554AbVGKTYu>;
+	Mon, 11 Jul 2005 20:24:50 +0100
+Received: from port-195-158-170-192.dynamic.qsc.de ([195.158.170.192] helo=hattusa.textio)
+	by mx02.qsc.de with esmtp (Exim 3.35 #1)
+	id 1Ds3uO-0007UB-00
+	for linux-mips@linux-mips.org; Mon, 11 Jul 2005 21:25:40 +0200
+Received: from ths by hattusa.textio with local (Exim 4.52)
+	id 1Ds3uO-0004yZ-AT
+	for linux-mips@linux-mips.org; Mon, 11 Jul 2005 21:25:40 +0200
+Date:	Mon, 11 Jul 2005 21:25:40 +0200
 To:	linux-mips@linux-mips.org
-Subject: Help needed on db1550 for pcmcia support
+Subject: Re: CVS Update@linux-mips.org: linux
+Message-ID: <20050711192540.GN1586@hattusa.textio>
+References: <20050711170613Z8226486-3678+2546@linux-mips.org> <20050711173104.GM2765@linux-mips.org> <Pine.LNX.4.61L.0507111840580.22410@blysk.ds.pg.gda.pl> <20050711175337.GN2765@linux-mips.org> <Pine.LNX.4.61L.0507111903270.22410@blysk.ds.pg.gda.pl>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Return-Path: <rolfliu@gmail.com>
+In-Reply-To: <Pine.LNX.4.61L.0507111903270.22410@blysk.ds.pg.gda.pl>
+User-Agent: Mutt/1.5.9i
+From:	Thiemo Seufer <ths@networkno.de>
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8448
+X-archive-position: 8449
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rolfliu@gmail.com
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-I compiled linux 2.6.12-mipscvs with the pcmcia support and got the three files:
+Maciej W. Rozycki wrote:
+> On Mon, 11 Jul 2005, Ralf Baechle wrote:
+> 
+> > If there's a mistake that people can do they will rarely miss that
+> > opportunity.  Desperate users tend to move modules from their
+> > distribution into a kernel built from CVS or change kernel config options
+> > and somehow manage to keep a few modules built with the old options etc.
+> 
+>  Hmm...
+> 
+> > It's no fun receiving bug reports only to later figure out it was just
+> > a silly pilot error, so for anything that's going to the net I really
+> > keep that option on.
+> 
+>  Well, I receive virtually zero bug reports for the DECstation.  The code 
+> must be perfect. ;-)
 
-pcmcia_core.ko, pcmcia.ko, and au1x00_ss.ko.
+I hope to change that with a 2.6 DECstation kernel for Debian. :-)
 
-I use "insmod pcmcia_core.ko; insmod pcmcia.ko; insmod au1x00_ss.ko"
-to install the three modules.
 
-Because I want to use the Compact Flash through the PCMCIA, I compiled
-ide_cs.ko and use "insmod ide_cs.ko" to install it.
-
-When I type "lspci -v", there is no information about the pcmcia.
-Also, cardctl showed "open_sock(): no such device".
-
-I googled around the wedsite, got no luck for this problem.
-
-thanks
+Thiemo

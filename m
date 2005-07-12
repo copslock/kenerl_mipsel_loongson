@@ -1,70 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Jul 2005 09:28:07 +0100 (BST)
-Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:64285
-	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
-	id <S8226402AbVGLI1u>; Tue, 12 Jul 2005 09:27:50 +0100
-Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 12 Jul 2005 08:28:49 UT
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 3E3181F489;
-	Tue, 12 Jul 2005 17:28:43 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 28CA71F487;
-	Tue, 12 Jul 2005 17:28:43 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id j6C8Sgoj068449;
-	Tue, 12 Jul 2005 17:28:42 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Tue, 12 Jul 2005 17:28:42 +0900 (JST)
-Message-Id: <20050712.172842.79300034.nemoto@toshiba-tops.co.jp>
-To:	ralf@linux-mips.org
-Cc:	djohnson+linuxmips@sw.starentnetworks.com,
-	linux-mips@linux-mips.org
-Subject: Re: preempt_schedule_irq missing from mfinfo[]?
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20050706090138.GC3226@linux-mips.org>
-References: <20050705200308.GE18772@linux-mips.org>
-	<20050706.122912.71087098.nemoto@toshiba-tops.co.jp>
-	<20050706090138.GC3226@linux-mips.org>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Jul 2005 09:39:42 +0100 (BST)
+Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:5251 "EHLO
+	witte.sonytel.be") by linux-mips.org with ESMTP id <S8226402AbVGLIj1>;
+	Tue, 12 Jul 2005 09:39:27 +0100
+Received: from numbat.sonytel.be (mail.sonytel.be [43.221.60.197])
+	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id j6C8eKpr028539;
+	Tue, 12 Jul 2005 10:40:20 +0200 (MEST)
+Date:	Tue, 12 Jul 2005 10:40:16 +0200 (CEST)
+From:	Geert Uytterhoeven <geert@linux-m68k.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+cc:	Stanislaw Skowronek <sskowron@ET.PUT.Poznan.PL>,
+	Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: Re: Origin 200 Status
+In-Reply-To: <20050712072255.GA3350@linux-mips.org>
+Message-ID: <Pine.LNX.4.62.0507121039340.4187@numbat.sonytel.be>
+References: <20050711223512.GA2808@linux-mips.org>
+ <Pine.GSO.4.10.10507120918170.27888-100000@helios.et.put.poznan.pl>
+ <20050712072255.GA3350@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8455
+X-archive-position: 8456
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Wed, 6 Jul 2005 10:01:38 +0100, Ralf Baechle <ralf@linux-mips.org> said:
->> You can find the caller of "schedule()" even with simple
->> thread_saved_pc().  I think it is enough so I do not think it is
->> worth to fix (and maintain) current minfo[].
+On Tue, 12 Jul 2005, Ralf Baechle wrote:
+> On Tue, Jul 12, 2005 at 09:20:39AM +0200, Stanislaw Skowronek wrote:
+> > > I was speaking of IP27, obviously.
+> > 
+> > I was explaining that not every IOC3 will have a Serial# NIC :)
+> 
+> Well, in a paragraph mentioning IP27 ...
+> 
+> > > I could do - but the plane ticket to plug the keyboard is on you ;-)
+> > 
+> > I'm going to visit Bayern this month anyway :)))
+> 
+> Wrong airport then :)
 
-ralf> The alternative would be to finally bite the bullet and add a
-ralf> wchan field to thread_struct and initialize it in all the
-ralf> sleeping functions.
+You misunderstood: he's going to pick you up in his private jet, to fly to your
+keyboard connector...
 
-ralf> The IA-64 people have something like a DWARF-based frame
-ralf> unwinder but that just seems to heavy.
+Gr{oetje,eeting}s,
 
-Another alternative would be:
+						Geert
 
-1.  Using KALLSYMS feature in kernel to obtain an address in
-__sched/__lock function.  This might solve static function (and
-maintainance) issue.
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-2.  Unwinding stack based on "addiu sp,sp,-NN" instruction in prologue
-of the function.  This might solve omit-frame-pointer issue.
-
-Anybody try? :-)
-
----
-Atsushi Nemoto
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

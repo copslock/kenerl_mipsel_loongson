@@ -1,61 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Jul 2005 16:55:56 +0100 (BST)
-Received: from embeddededge.com ([IPv6:::ffff:209.113.146.155]:8205 "EHLO
-	penguin.netx4.com") by linux-mips.org with ESMTP
-	id <S8226647AbVGLPzj>; Tue, 12 Jul 2005 16:55:39 +0100
-Received: from [192.168.1.109] (adsl-71-128-175-242.dsl.pltn13.pacbell.net [71.128.175.242])
-	by penguin.netx4.com (8.12.8/8.12.9) with ESMTP id j6CFgvmN015581;
-	Tue, 12 Jul 2005 11:42:58 -0400
-In-Reply-To: <20050712142202.GB9234@gundam.enneenne.com>
-References: <20050712142202.GB9234@gundam.enneenne.com>
-Mime-Version: 1.0 (Apple Message framework v622)
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Message-Id: <8aee3747cc5c0d3ed94deb5b256bab94@embeddedalley.com>
-Content-Transfer-Encoding: 7bit
-Cc:	linux-mips@linux-mips.org
-From:	Dan Malek <dan@embeddedalley.com>
-Subject: Re: power management status for au1100
-Date:	Tue, 12 Jul 2005 08:56:31 -0700
-To:	Rodolfo Giometti <giometti@linux.it>
-X-Mailer: Apple Mail (2.622)
-Return-Path: <dan@embeddedalley.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Jul 2005 18:22:10 +0100 (BST)
+Received: from 209-232-97-206.ded.pacbell.net ([IPv6:::ffff:209.232.97.206]:44247
+	"EHLO dns0.mips.com") by linux-mips.org with ESMTP
+	id <S8226641AbVGLRVw> convert rfc822-to-8bit; Tue, 12 Jul 2005 18:21:52 +0100
+Received: from mercury.mips.com (sbcns-dmz [209.232.97.193])
+	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id j6CHMh47013930;
+	Tue, 12 Jul 2005 10:22:43 -0700 (PDT)
+Received: from exchange.MIPS.COM (exchange [192.168.20.29])
+	by mercury.mips.com (8.12.9/8.12.11) with ESMTP id j6CHMgjp000873;
+	Tue, 12 Jul 2005 10:22:42 -0700 (PDT)
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Subject: RE: Looking for a MIPS64 device
+X-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0
+Date:	Tue, 12 Jul 2005 10:22:43 -0700
+Message-ID: <3CB54817FDF733459B230DD27C690CEC010491B9@Exchange.MIPS.COM>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Looking for a MIPS64 device
+Thread-Index: AcWG6xpMjhUXKa/7R7iH2UwV9mIrGgAGw2nQ
+From:	"Mitchell, Earl" <earlm@mips.com>
+To:	"Stanislaw Skowronek" <sskowron@et.put.poznan.pl>,
+	<linux-mips@linux-mips.org>
+X-Scanned-By: MIMEDefang 2.39
+Return-Path: <earlm@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8463
+X-archive-position: 8464
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@embeddedalley.com
+X-original-sender: earlm@mips.com
 Precedence: bulk
 X-list: linux-mips
 
 
-On Jul 12, 2005, at 7:22 AM, Rodolfo Giometti wrote:
+You can try vendors on this page ...
 
-> I'm just looking at linux support for power management on au1100 CPU
-> and I found that there are a lot of problems on enabling it... it
-> seems that current support cames from 2.4 series.
+http://www.mips.com/content/Ecosystem/Chips/ProductCatalog/chipSelector?do=1&mips64=on&vendorId=*&freq=0
 
-I provided most of the recent generic updates for the Au1xxx power
-management in the 2.4.  It's quite a challenge since you also need
-hardware support for external peripheral control (which should be
-in the drivers) and a cooperating boot rom for deep sleep.
-
-> Is anybody dealing with it? I'd like to cooperate in order to have a
-> functional support.
-
-I'm sure there are some custom derivatives of this around.  I'm
-not actively working on it since I don't have a project that requires
-the features.  I don't really have the time to do so, either :-)
-
-The one thing to keep in mind is we probably shouldn't promote
-any of the variable processor frequency, as Alchemy has warned
-they don't qualify parts at anything but their stated operating values.
-You can run the processors at different frequencies, but this can
-require different external components to support it, not something
-we should be dynamically changing for a particular system design.
-
-Thanks.
+-earlm
 
 
-	-- Dan
+> -----Original Message-----
+> From: linux-mips-bounce@linux-mips.org
+> [mailto:linux-mips-bounce@linux-mips.org]On Behalf Of Stanislaw
+> Skowronek
+> Sent: Tuesday, July 12, 2005 7:06 AM
+> To: linux-mips@linux-mips.org
+> Subject: Looking for a MIPS64 device
+> 
+> 
+> %hi16(all),
+> 
+> I'm looking for a MIPS64 device with FPU, and 40-bit physical address
+> space. I need I/O coherency (this is important!). I'd be glad if the
+> performance was good, but I'm not really bent on it.
+> 
+> This is for a research project in reconfigurable computing. I'd prefer
+> MIPS devices because they are elegant (the other choice is 
+> probably either
+> PowerPC or x86_64, which is really scary) and 
+> power-efficient. The project
+> is partially supported by Xilinx Inc.
+> 
+> I tried contacting Broadcom, when the project was conducted 
+> at the Poznan
+> University of Technology (my employer), however no contact 
+> was established
+> (not even a "go away, you're ugly"). Same went for PMC-Sierra.
+> 
+> Do you know of any MIPS64 device with FPU (and MMU, but it 
+> goes without
+> saying) that can be purchased in small quantities for a 
+> project like this?
+> 
+> Cheers,
+> 
+> Stanislaw Skowronek
+> 
+> 
+> 
+> 

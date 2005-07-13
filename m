@@ -1,74 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jul 2005 01:25:03 +0100 (BST)
-Received: from wproxy.gmail.com ([IPv6:::ffff:64.233.184.203]:23105 "EHLO
-	wproxy.gmail.com") by linux-mips.org with ESMTP id <S8226667AbVGMAYs> convert rfc822-to-8bit;
-	Wed, 13 Jul 2005 01:24:48 +0100
-Received: by wproxy.gmail.com with SMTP id i36so59999wra
-        for <linux-mips@linux-mips.org>; Tue, 12 Jul 2005 17:25:46 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=qrl4TWR1DRwUTqjh4UxvKhTPrgDSFoTZ8G4RlRYX1PJytB114KQBu6SEkFpNTEQahLEw79mnnO+Z5KUrEtpSZa2gC8N1e6tmw43CCRU7IAeRXh1/iGuBz4EnorYW9TJbhvTosGl6D7laOxdP6yXtX6Uan1HoArhMXDj4ZJoYkt0=
-Received: by 10.54.106.13 with SMTP id e13mr136832wrc;
-        Tue, 12 Jul 2005 17:25:46 -0700 (PDT)
-Received: by 10.54.41.29 with HTTP; Tue, 12 Jul 2005 17:25:46 -0700 (PDT)
-Message-ID: <ecb4efd105071217254e68b9e2@mail.gmail.com>
-Date:	Tue, 12 Jul 2005 20:25:46 -0400
-From:	Clem Taylor <clem.taylor@gmail.com>
-Reply-To: Clem Taylor <clem.taylor@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: reboot gets stuck in a TLB exception on Au1550 based board
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-Return-Path: <clem.taylor@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jul 2005 01:46:05 +0100 (BST)
+Received: from embeddededge.com ([IPv6:::ffff:209.113.146.155]:16142 "EHLO
+	penguin.netx4.com") by linux-mips.org with ESMTP
+	id <S8226667AbVGMApt>; Wed, 13 Jul 2005 01:45:49 +0100
+Received: from [192.168.1.109] (adsl-71-128-175-242.dsl.pltn13.pacbell.net [71.128.175.242])
+	by penguin.netx4.com (8.12.8/8.12.9) with ESMTP id j6D0X7mN016492;
+	Tue, 12 Jul 2005 20:33:08 -0400
+In-Reply-To: <ecb4efd105071217254e68b9e2@mail.gmail.com>
+References: <ecb4efd105071217254e68b9e2@mail.gmail.com>
+Mime-Version: 1.0 (Apple Message framework v622)
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Message-Id: <b5f7ad7b7c6ca0a1a80a3b8cb41a964c@embeddedalley.com>
+Content-Transfer-Encoding: 7bit
+Cc:	linux-mips@linux-mips.org
+From:	Dan Malek <dan@embeddedalley.com>
+Subject: Re: reboot gets stuck in a TLB exception on Au1550 based board
+Date:	Tue, 12 Jul 2005 17:46:44 -0700
+To:	Clem Taylor <clem.taylor@gmail.com>
+X-Mailer: Apple Mail (2.622)
+Return-Path: <dan@embeddedalley.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8469
+X-archive-position: 8470
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: clem.taylor@gmail.com
+X-original-sender: dan@embeddedalley.com
 Precedence: bulk
 X-list: linux-mips
 
-I was wondering if anyone else has a problem with reboot not working
-on a Au1550? When I issue a reboot, the kernel prints "** Resetting
-Integrated Peripherals", but the system doesn't reboot.
 
-My BDI shows that the PC it is in the exception handling in the early
-part of the yamon startup code. After taking the exception, if I say
-'go 0xBFC00000', then the Au boots up just fine. The PC ends up at
-0xbfc00424 which is an jump to self in the exception handling code in
-yamon:
+On Jul 12, 2005, at 5:25 PM, Clem Taylor wrote:
 
-.org 0x400
-        /* 0xBFC00400 Catch other exceptions, except EJTAG debug */
-        /* Check for interrupt */
-        MFC0(   k0, C0_CAUSE )
-        and     k0, C0_CAUSE_CODE_MSK
-        srl     k0, C0_CAUSE_CODE_SHF
-        subu    k0, C0_CAUSE_CODE_INT
-        beq     k0, zero, interrupt
-        nop
-        /* Not an interrupt */
-1:
-        b       1b             <=- PC ends up here after reboot.
-        nop
+> I was wondering if anyone else has a problem with reboot not working
+> on a Au1550?
 
-k0 (reg 26) == 2, which I think is a TLB load or instruction fetch exception.
+What kernel and what version of YAMON?
 
-One difference between the stock db1x00 code and my code is that
-arch/mips/au1000/db1x00/board_setup.c:board_reset() does a write to
-the BCSR.SYSTEM_CONTROL[SW_RST]. I don't have the FPGA on my hardware,
-but it looks like the code is wrong anyway, because the BCSR is at
-0xAF000000 on the db1550, not 0xAE000000. If I take my kernel/root
-image and run it on the dbau1550 board, reboot works (but in that case
-it is running a different version of yamon).
+I just happened to have a shell prompt on the Au1550 with 2.4.31
+and YAMON ROM Monitor, Revision 02.24DB1550.
 
-I was wondering if anyone might have a clue what is going on or some
-suggestions on what I can do to continue debugging this?
+Reboot worked just fine, got me back to the YAMON prompt and
+booted Linux.
 
-                               Thanks,
-                               Clem
+>  When I issue a reboot, the kernel prints "** Resetting
+> Integrated Peripherals", but the system doesn't reboot.
+
+Do you know what peripherals may have been running
+when you did the reboot?  I was using an NFS root file system
+and had AC97 audio running.
+
+> My BDI shows ....
+
+What happens if you don't have the BDI connected?  Often,
+boot roms step on debugger set up that the BDI does, causing
+confusion on both parties.
+
+> One difference between the stock db1x00 code and my code ....
+
+Oh, now you tell me :-)  Custom hardware and different code,
+I wonder why it doesn't work? :-)
+
+It seems that if the hardware, YAMON, and Linux are all compatible,
+there isn't any trouble.  Yes, I was using the Db1550.
+
+> I was wondering if anyone might have a clue what is going on or some
+> suggestions on what I can do to continue debugging this?
+
+Only you know what is different, so you may want to look in those
+places first.
+
+Have fun!
+
+	-- Dan

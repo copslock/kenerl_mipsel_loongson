@@ -1,69 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jul 2005 05:40:53 +0100 (BST)
-Received: from zproxy.gmail.com ([IPv6:::ffff:64.233.162.193]:25936 "EHLO
-	zproxy.gmail.com") by linux-mips.org with ESMTP id <S8226533AbVGMEk2> convert rfc822-to-8bit;
-	Wed, 13 Jul 2005 05:40:28 +0100
-Received: by zproxy.gmail.com with SMTP id 12so58174nzp
-        for <linux-mips@linux-mips.org>; Tue, 12 Jul 2005 21:41:27 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jul 2005 07:39:47 +0100 (BST)
+Received: from zproxy.gmail.com ([IPv6:::ffff:64.233.162.199]:33739 "EHLO
+	zproxy.gmail.com") by linux-mips.org with ESMTP id <S8226671AbVGMGjb> convert rfc822-to-8bit;
+	Wed, 13 Jul 2005 07:39:31 +0100
+Received: by zproxy.gmail.com with SMTP id n29so67339nzf
+        for <linux-mips@linux-mips.org>; Tue, 12 Jul 2005 23:40:31 -0700 (PDT)
 DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
         s=beta; d=gmail.com;
         h=received:message-id:date:from:reply-to:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=E4PgcbvG5rhW3jdczoklVsBS1BtLfGiPQEZ1xmLegJoHQ72NkW4DbYHMQD9IcfrHnGnOwYcpy3OBSOlRc2LJ5rBe2BM7L8ACPP15T2Hx//VJhNAd04eaYLaPqBgHqxvF5CfB94aA473bVTt98eiHQUdyzAtG/6wo6g3Ay03biNc=
-Received: by 10.36.157.15 with SMTP id f15mr552760nze;
-        Tue, 12 Jul 2005 21:41:27 -0700 (PDT)
-Received: by 10.36.68.6 with HTTP; Tue, 12 Jul 2005 21:41:27 -0700 (PDT)
-Message-ID: <6097c4905071221414a929ed2@mail.gmail.com>
-Date:	Wed, 13 Jul 2005 08:41:27 +0400
-From:	Maxim Osipov <maxim.osipov@gmail.com>
-Reply-To: maxim@mox.ru
-To:	Bryan Althouse <bryan.althouse@3phoenix.com>
-Subject: Re: mips64 crosstool
-Cc:	Linux/MIPS Development <linux-mips@linux-mips.org>
-In-Reply-To: <20050712181447Z8226651-3678+2808@linux-mips.org>
+        b=Q31+cmtjkL/nbvRq2iu/Iqz6FoHT+Od9UABSjBbE+JSvvJG2hy9hrOFH1lwVtO6JohOvW3tzk0T5PkP1jtvht+Fh0SgNM//EJaj8IWklO8Z52k86493wN9GICqJxAP0wxJWIHePBsq4E/E52BRLOwRK723G1Quu9q2tLdmsBhvs=
+Received: by 10.36.222.26 with SMTP id u26mr634305nzg;
+        Tue, 12 Jul 2005 23:40:31 -0700 (PDT)
+Received: by 10.36.57.12 with HTTP; Tue, 12 Jul 2005 23:40:31 -0700 (PDT)
+Message-ID: <4955666b05071223405849abf6@mail.gmail.com>
+Date:	Wed, 13 Jul 2005 15:40:31 +0900
+From:	Yoichi Yuasa <yyuasa@gmail.com>
+Reply-To: Yoichi Yuasa <yyuasa@gmail.com>
+To:	IHOLLO <ihollo@tom.com>
+Subject: Re: ADM5120: linux-2.4.31-adm.diff.bz2 does not support PCI bus?
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <42D47A74.9070709@tom.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 8BIT
 Content-Disposition: inline
-References: <20050712181447Z8226651-3678+2808@linux-mips.org>
-Return-Path: <maxim.osipov@gmail.com>
+References: <42D47A74.9070709@tom.com>
+Return-Path: <yyuasa@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8473
+X-archive-position: 8474
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: maxim.osipov@gmail.com
+X-original-sender: yyuasa@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-When I was looking at crosstool, it had problems with miltiarch
-support for mips. If you want to produce mips64 only tools, you'll
-need patches from Maciej which are not there also. And take a look
-into build matrix :)
+Hi,
 
-Conclusion - mips is not very well supported in crosstool.
+2005/7/13, IHOLLO <ihollo@tom.com>:
+> Hi,
+> 
+> I am now working on a board with ADM5120 processor and want a kernel
+> newer than 2.4.18, so I tried the linux-2.4.31-adm.diff.bz2 patch
+> against vanilla 2.4.31 (http://www.linux-mips.org/wiki/ADMtek#Linux_2.4)
+> but failed to compile it with PCI Bus support (It compiles OK without
+> CONFIG_PCI). The compile error looks like this:
 
-BR,
-Maxim
+Did you turn on New PCI bus code(CONFIG_PCI_NEW)?
 
-On 7/12/05, Bryan Althouse <bryan.althouse@3phoenix.com> wrote:
-> 
-> Is anyone using crosstool to produce a 64 bit mips compiler?
-> 
-> I need to produce a gcc that will accept the -mabi=64 option. I have been
-> able to generate a 32bit gcc with crosstool, using
-> TARGET=mips-unknown-linux-gnu.  Must I change this to
-> TARGET=mips64-unkown-linux-gnu to create a 64bit compiler?  I have tried
-> this, but crosstool will fail.  It appears as if -mabi=n32 is passed to the
-> native gcc during the build-glibc-headers step.  This of course causes the
-> native gcc to give up.
-> 
-> Are there any patches for mips64 tool chain build?
-> 
-> Thanks to all.
-> Bryan
-> 
-> 
-> 
-> 
->
+Yoichi

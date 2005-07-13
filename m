@@ -1,75 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jul 2005 10:34:36 +0100 (BST)
-Received: from smtpr1.tom.com ([IPv6:::ffff:202.108.255.195]:15845 "HELO
-	tom.com") by linux-mips.org with SMTP id <S8226470AbVGMJeI>;
-	Wed, 13 Jul 2005 10:34:08 +0100
-Received: from [192.168.10.105] (unknown [218.94.38.156])
-	by bjapp5 (Coremail) with SMTP id iMBgikXg1EJPACac.1
-	for <yyuasa@gmail.com>; Wed, 13 Jul 2005 17:35:05 +0800 (CST)
-X-Originating-IP: [218.94.38.156]
-Message-ID: <42D4E053.6020708@tom.com>
-Date:	Wed, 13 Jul 2005 17:35:15 +0800
-From:	IHOLLO <ihollo@tom.com>
-User-Agent: Mozilla Thunderbird 1.0.2 (Windows/20050317)
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jul 2005 17:02:34 +0100 (BST)
+Received: from smtp-out.hotpop.com ([IPv6:::ffff:38.113.3.61]:55682 "EHLO
+	smtp-out.hotpop.com") by linux-mips.org with ESMTP
+	id <S8226533AbVGMQCP> convert rfc822-to-8bit; Wed, 13 Jul 2005 17:02:15 +0100
+Received: from hotpop.com (kubrick.hotpop.com [38.113.3.103])
+	by smtp-out.hotpop.com (Postfix) with SMTP id DDD5113E8C3D
+	for <linux-mips@linux-mips.org>; Wed, 13 Jul 2005 16:03:11 +0000 (UTC)
+Received: from cavan (unknown [62.253.252.7])
+	by smtp-2.hotpop.com (Postfix) with ESMTP id 3378A13E8BFB
+	for <linux-mips@linux-mips.org>; Wed, 13 Jul 2005 16:03:05 +0000 (UTC)
+Date:	Wed, 13 Jul 2005 16:00:00 +0000
+From:	jaypee@hotpop.com
+Subject: Au1550 ethernet throughput low
+To:	linux-mips <linux-mips@linux-mips.org>
+X-Mailer: Balsa 2.3.3
+Message-Id: <1121270402l.7656l.3l@cavan>
 MIME-Version: 1.0
-To:	Yoichi Yuasa <yyuasa@gmail.com>
-CC:	linux-mips@linux-mips.org
-Subject: ADM5120: MIPS-I or MIPS32? WAS(Re: ADM5120: linux-2.4.31-adm.diff.bz2
- does not support PCI bus?)
-References: <42D47A74.9070709@tom.com> <4955666b05071223405849abf6@mail.gmail.com>
-In-Reply-To: <4955666b05071223405849abf6@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ihollo@tom.com>
+Content-Type: text/plain; charset=us-ascii; DelSp=Yes; Format=Flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8BIT
+X-HotPOP: -----------------------------------------------
+                   Sent By HotPOP.com FREE Email
+             Get your FREE POP email at www.HotPOP.com
+          -----------------------------------------------
+Return-Path: <jaypee@hotpop.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8476
+X-archive-position: 8478
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ihollo@tom.com
+X-original-sender: jaypee@hotpop.com
 Precedence: bulk
 X-list: linux-mips
 
-Thanks Yoichi, that is exactly what you suggested, turn on New PCI bus 
-code(CONFIG_PCI_NEW) then the kernel can be compiled  now.
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
 
-Here is another question: What CPU type should I choose to compile 
-applications for ADM5120? the spec says it is MIPS32, but I can not run 
-MIPS32 applications on my board while MIPS-I executable works just fine.
+Hi all,
+I've got a au1550 board based largely on the pb1550. The ethernet  
+throughput is ~66Mbps using the 2.6 kernel. This also consumes a
+lot of cpu cycles to send.
 
-#file busybox (works fine. compiled as mips-I)
-busybox: ELF 32-bit LSB MIPS-I executable, MIPS, version 1 (SYSV), 
-dynamically linked (uses shared libs), stripped
+We have older designs using au1000 and mvista 2.4 kernel that achieve  
+full line rate throughput without using a lot of the cpu.
 
-#file busybox (can not execute this program. compiled as mips32)
-busybox: ELF 32-bit LSB executable, MIPS, version 1 (SYSV), dynamically 
-linked (uses shared libs), stripped
+Can someone with a pb/db1550 and linux 2.6 do a quick test to verify
+that is is not a 2.6 kernel problem, and is a problem with our HW/SW.
 
+If anyone can do the same with a 2.4 kernel too that would be great.
 
-Yoichi Yuasa wrote:
+Thanks,
+JP
 
->Hi,
->
->2005/7/13, IHOLLO <ihollo@tom.com>:
->  
->
->>Hi,
->>
->>I am now working on a board with ADM5120 processor and want a kernel
->>newer than 2.4.18, so I tried the linux-2.4.31-adm.diff.bz2 patch
->>against vanilla 2.4.31 (http://www.linux-mips.org/wiki/ADMtek#Linux_2.4)
->>but failed to compile it with PCI Bus support (It compiles OK without
->>CONFIG_PCI). The compile error looks like this:
->>    
->>
->
->Did you turn on New PCI bus code(CONFIG_PCI_NEW)?
->
->Yoichi
->
->
->
->  
->
+- -- 
+mailto:jaypee@hotpop.com
+http://www.jaypee.org.uk
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.1 (GNU/Linux)
+
+iD8DBQFC1TqCZDxnKy3oOpYRAhwaAKCoY/3lEX/DksOEq42FfxlsF2rjEgCeNI0G
+/72t16fNrA4XvX+KVumsNDw=
+=yoD8
+-----END PGP SIGNATURE-----

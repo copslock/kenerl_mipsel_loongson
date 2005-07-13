@@ -1,75 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jul 2005 01:46:05 +0100 (BST)
-Received: from embeddededge.com ([IPv6:::ffff:209.113.146.155]:16142 "EHLO
-	penguin.netx4.com") by linux-mips.org with ESMTP
-	id <S8226667AbVGMApt>; Wed, 13 Jul 2005 01:45:49 +0100
-Received: from [192.168.1.109] (adsl-71-128-175-242.dsl.pltn13.pacbell.net [71.128.175.242])
-	by penguin.netx4.com (8.12.8/8.12.9) with ESMTP id j6D0X7mN016492;
-	Tue, 12 Jul 2005 20:33:08 -0400
-In-Reply-To: <ecb4efd105071217254e68b9e2@mail.gmail.com>
-References: <ecb4efd105071217254e68b9e2@mail.gmail.com>
-Mime-Version: 1.0 (Apple Message framework v622)
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Message-Id: <b5f7ad7b7c6ca0a1a80a3b8cb41a964c@embeddedalley.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jul 2005 03:19:42 +0100 (BST)
+Received: from smtpr6.tom.com ([IPv6:::ffff:202.108.252.136]:54610 "HELO
+	tom.com") by linux-mips.org with SMTP id <S8226522AbVGMCTU>;
+	Wed, 13 Jul 2005 03:19:20 +0100
+Received: from [192.168.10.105] (unknown [218.94.38.156])
+	by bjapp14 (Coremail) with SMTP id GACKXGN61EJXACac.1
+	for <linux-mips@linux-mips.org>; Wed, 13 Jul 2005 10:20:21 +0800 (CST)
+X-Originating-IP: [218.94.38.156]
+Message-ID: <42D47A74.9070709@tom.com>
+Date:	Wed, 13 Jul 2005 10:20:36 +0800
+From:	IHOLLO <ihollo@tom.com>
+User-Agent: Mozilla Thunderbird 1.0.2 (Windows/20050317)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	linux-mips@linux-mips.org
+Subject: ADM5120: linux-2.4.31-adm.diff.bz2 does not support PCI bus?
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc:	linux-mips@linux-mips.org
-From:	Dan Malek <dan@embeddedalley.com>
-Subject: Re: reboot gets stuck in a TLB exception on Au1550 based board
-Date:	Tue, 12 Jul 2005 17:46:44 -0700
-To:	Clem Taylor <clem.taylor@gmail.com>
-X-Mailer: Apple Mail (2.622)
-Return-Path: <dan@embeddedalley.com>
+Return-Path: <ihollo@tom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8470
+X-archive-position: 8471
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@embeddedalley.com
+X-original-sender: ihollo@tom.com
 Precedence: bulk
 X-list: linux-mips
 
+Hi,
 
-On Jul 12, 2005, at 5:25 PM, Clem Taylor wrote:
+I am now working on a board with ADM5120 processor and want a kernel 
+newer than 2.4.18, so I tried the linux-2.4.31-adm.diff.bz2 patch 
+against vanilla 2.4.31 (http://www.linux-mips.org/wiki/ADMtek#Linux_2.4) 
+but failed to compile it with PCI Bus support (It compiles OK without 
+CONFIG_PCI). The compile error looks like this:
 
-> I was wondering if anyone else has a problem with reboot not working
-> on a Au1550?
+......
+/opt/xyz/buildfarm/build_mipsel/staging_dir/bin/mipsel-linux-uclibc-ld 
+-m elf32ltsmip -G 0 -static -n -T arch/mips/ld.script 
+arch/mips/kernel/head.o arch/mips/kernel/init_task.o init/main.o 
+init/version.o init/do_mounts.o \
+        --start-group \
+        arch/mips/kernel/kernel.o arch/mips/mm/mm.o kernel/kernel.o 
+mm/mm.o fs/fs.o ipc/ipc.o arch/mips/math-emu/fpu_emulator.o 
+arch/mips/pci/pci-core.o \
+         drivers/char/char.o drivers/block/block.o drivers/misc/misc.o 
+drivers/net/net.o drivers/pci/driver.o drivers/mtd/mtdlink.o 
+drivers/media/media.o \
+        net/network.o \
+        arch/mips/lib/lib.a /opt/xyz/linux-2.4/linux-2.4.31/lib/lib.a 
+arch/mips/am5120/am5120.o \
+        --end-group \
+        -o vmlinux
+drivers/pci/driver.o(.text+0x2218): In function `pci_fixup_device':
+: undefined reference to `pcibios_fixups'
+drivers/pci/driver.o(.text+0x222c): In function `pci_fixup_device':
+: undefined reference to `pcibios_fixups'
+drivers/pci/driver.o(.text.init+0x6d4): In function `pci_do_scan_bus':
+: undefined reference to `pcibios_fixup_bus'
+drivers/pci/driver.o(.text.init+0x6d4): In function `pci_do_scan_bus':
+: relocation truncated to fit: R_MIPS_26 against `pcibios_fixup_bus'
+drivers/pci/driver.o(.text.init+0xa98): In function `pci_init':
+: undefined reference to `pcibios_init'
+drivers/pci/driver.o(.text.init+0xa98): In function `pci_init':
+: relocation truncated to fit: R_MIPS_26 against `pcibios_init'
+make: *** [vmlinux] Error 1
 
-What kernel and what version of YAMON?
+Is PCI Bus supported by this patch? Or, is there any new kernel 
+availible for ADM5120?
 
-I just happened to have a shell prompt on the Au1550 with 2.4.31
-and YAMON ROM Monitor, Revision 02.24DB1550.
+Thanks very much.
 
-Reboot worked just fine, got me back to the YAMON prompt and
-booted Linux.
-
->  When I issue a reboot, the kernel prints "** Resetting
-> Integrated Peripherals", but the system doesn't reboot.
-
-Do you know what peripherals may have been running
-when you did the reboot?  I was using an NFS root file system
-and had AC97 audio running.
-
-> My BDI shows ....
-
-What happens if you don't have the BDI connected?  Often,
-boot roms step on debugger set up that the BDI does, causing
-confusion on both parties.
-
-> One difference between the stock db1x00 code and my code ....
-
-Oh, now you tell me :-)  Custom hardware and different code,
-I wonder why it doesn't work? :-)
-
-It seems that if the hardware, YAMON, and Linux are all compatible,
-there isn't any trouble.  Yes, I was using the Db1550.
-
-> I was wondering if anyone might have a clue what is going on or some
-> suggestions on what I can do to continue debugging this?
-
-Only you know what is different, so you may want to look in those
-places first.
-
-Have fun!
-
-	-- Dan
+Zhuang Yuyao

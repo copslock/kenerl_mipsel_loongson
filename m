@@ -1,51 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jul 2005 03:24:03 +0100 (BST)
-Received: from wproxy.gmail.com ([IPv6:::ffff:64.233.184.199]:35832 "EHLO
-	wproxy.gmail.com") by linux-mips.org with ESMTP id <S8226517AbVGMCXs> convert rfc822-to-8bit;
-	Wed, 13 Jul 2005 03:23:48 +0100
-Received: by wproxy.gmail.com with SMTP id i22so69534wra
-        for <linux-mips@linux-mips.org>; Tue, 12 Jul 2005 19:24:51 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jul 2005 05:40:53 +0100 (BST)
+Received: from zproxy.gmail.com ([IPv6:::ffff:64.233.162.193]:25936 "EHLO
+	zproxy.gmail.com") by linux-mips.org with ESMTP id <S8226533AbVGMEk2> convert rfc822-to-8bit;
+	Wed, 13 Jul 2005 05:40:28 +0100
+Received: by zproxy.gmail.com with SMTP id 12so58174nzp
+        for <linux-mips@linux-mips.org>; Tue, 12 Jul 2005 21:41:27 -0700 (PDT)
 DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
         s=beta; d=gmail.com;
-        h=received:message-id:date:from:reply-to:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=SYbinsB8Rj9t9jVSNK60FJdJe1U1o+Z4FKxQ00RMCninOHfpB7Ckhmu9eQ7gACz/thajvvy7pA9OeNRpmxgrKPdBKU5/fO3o4cL1S1W9m7SKKFmny3+sM/ubPSO3Z4Pdv/QI14cGnK4wiGCXmkH23gNXav3pWLy7uSuzlr4zpOw=
-Received: by 10.54.115.3 with SMTP id n3mr157587wrc;
-        Tue, 12 Jul 2005 19:24:51 -0700 (PDT)
-Received: by 10.54.41.29 with HTTP; Tue, 12 Jul 2005 19:24:51 -0700 (PDT)
-Message-ID: <ecb4efd1050712192448e247b1@mail.gmail.com>
-Date:	Tue, 12 Jul 2005 22:24:51 -0400
-From:	Clem Taylor <clem.taylor@gmail.com>
-Reply-To: Clem Taylor <clem.taylor@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: Re: reboot gets stuck in a TLB exception on Au1550 based board [resolved but not explained]
-In-Reply-To: <ecb4efd105071217254e68b9e2@mail.gmail.com>
+        h=received:message-id:date:from:reply-to:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=E4PgcbvG5rhW3jdczoklVsBS1BtLfGiPQEZ1xmLegJoHQ72NkW4DbYHMQD9IcfrHnGnOwYcpy3OBSOlRc2LJ5rBe2BM7L8ACPP15T2Hx//VJhNAd04eaYLaPqBgHqxvF5CfB94aA473bVTt98eiHQUdyzAtG/6wo6g3Ay03biNc=
+Received: by 10.36.157.15 with SMTP id f15mr552760nze;
+        Tue, 12 Jul 2005 21:41:27 -0700 (PDT)
+Received: by 10.36.68.6 with HTTP; Tue, 12 Jul 2005 21:41:27 -0700 (PDT)
+Message-ID: <6097c4905071221414a929ed2@mail.gmail.com>
+Date:	Wed, 13 Jul 2005 08:41:27 +0400
+From:	Maxim Osipov <maxim.osipov@gmail.com>
+Reply-To: maxim@mox.ru
+To:	Bryan Althouse <bryan.althouse@3phoenix.com>
+Subject: Re: mips64 crosstool
+Cc:	Linux/MIPS Development <linux-mips@linux-mips.org>
+In-Reply-To: <20050712181447Z8226651-3678+2808@linux-mips.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 8BIT
 Content-Disposition: inline
-References: <ecb4efd105071217254e68b9e2@mail.gmail.com>
-Return-Path: <clem.taylor@gmail.com>
+References: <20050712181447Z8226651-3678+2808@linux-mips.org>
+Return-Path: <maxim.osipov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8472
+X-archive-position: 8473
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: clem.taylor@gmail.com
+X-original-sender: maxim.osipov@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On 7/12/05, Clem Taylor <clem.taylor@gmail.com> wrote:
-> I was wondering if anyone else has a problem with reboot not working
-> on a Au1550? When I issue a reboot, the kernel prints "** Resetting
-> Integrated Peripherals", but the system doesn't reboot.
+When I was looking at crosstool, it had problems with miltiarch
+support for mips. If you want to produce mips64 only tools, you'll
+need patches from Maciej which are not there also. And take a look
+into build matrix :)
 
-It seems that my problem was related to turning off sys_auxpll, which
-is the clock source for the PCI bus. If I just comment out the write
-to sys_auxpll in au1000_restart() then the reboot seems to work just
-fine. I'm not sure why disabling the PCI clock would cause yamon to
-take a TLB fault... I guess I need to hook up the analyzer and see
-what happens to the PCI devices when the PCI clock goes away.
+Conclusion - mips is not very well supported in crosstool.
 
-                      Thanks for the suggestions,
-                      Clem
+BR,
+Maxim
+
+On 7/12/05, Bryan Althouse <bryan.althouse@3phoenix.com> wrote:
+> 
+> Is anyone using crosstool to produce a 64 bit mips compiler?
+> 
+> I need to produce a gcc that will accept the -mabi=64 option. I have been
+> able to generate a 32bit gcc with crosstool, using
+> TARGET=mips-unknown-linux-gnu.  Must I change this to
+> TARGET=mips64-unkown-linux-gnu to create a 64bit compiler?  I have tried
+> this, but crosstool will fail.  It appears as if -mabi=n32 is passed to the
+> native gcc during the build-glibc-headers step.  This of course causes the
+> native gcc to give up.
+> 
+> Are there any patches for mips64 tool chain build?
+> 
+> Thanks to all.
+> Bryan
+> 
+> 
+> 
+> 
+>

@@ -1,67 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jul 2005 01:17:37 +0100 (BST)
-Received: from smtp001.bizmail.yahoo.com ([IPv6:::ffff:216.136.172.125]:62302
-	"HELO smtp001.bizmail.yahoo.com") by linux-mips.org with SMTP
-	id <S8226704AbVGNARS>; Thu, 14 Jul 2005 01:17:18 +0100
-Received: (qmail 21400 invoked from network); 14 Jul 2005 00:18:26 -0000
-Received: from unknown (HELO ?192.168.1.101?) (ppopov@embeddedalley.com@71.128.175.242 with plain)
-  by smtp001.bizmail.yahoo.com with SMTP; 14 Jul 2005 00:18:26 -0000
-Subject: Re: compiling error of linux 2.6.12 recent cvs head for db1550
-	using defconfig
-From:	Pete Popov <ppopov@embeddedalley.com>
-Reply-To: ppopov@embeddedalley.com
-To:	rolf liu <rolfliu@gmail.com>
-Cc:	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
-In-Reply-To: <2db32b7205070616124fa47ef3@mail.gmail.com>
-References: <2db32b7205070616124fa47ef3@mail.gmail.com>
-Content-Type: text/plain
-Organization: Embedded Alley Solutions, Inc
-Date:	Wed, 13 Jul 2005 17:18:35 -0700
-Message-Id: <1121300315.4797.318.camel@localhost.localdomain>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.0.4 (2.0.4-4) 
-Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@embeddedalley.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jul 2005 06:03:07 +0100 (BST)
+Received: from go4.ext.ti.com ([IPv6:::ffff:192.91.75.132]:27839 "EHLO
+	go4.ext.ti.com") by linux-mips.org with ESMTP id <S8226704AbVGNFCs> convert rfc822-to-8bit;
+	Thu, 14 Jul 2005 06:02:48 +0100
+Received: from dlep30.itg.ti.com ([157.170.139.157])
+	by go4.ext.ti.com (8.13.1/8.13.1) with ESMTP id j6E53rIx001362;
+	Thu, 14 Jul 2005 00:03:53 -0500 (CDT)
+Received: from dlep90.itg.ti.com (localhost [127.0.0.1])
+	by dlep30.itg.ti.com (8.12.11/8.12.11) with ESMTP id j6E53q3W022523;
+	Thu, 14 Jul 2005 00:03:53 -0500 (CDT)
+Received: from dbde01.ent.ti.com (localhost [127.0.0.1])
+	by dlep90.itg.ti.com (8.12.11/8.12.11) with ESMTP id j6E53gWF013130;
+	Thu, 14 Jul 2005 00:03:52 -0500 (CDT)
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+X-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0
+Subject: RE: Au1550 ethernet throughput low
+Date:	Thu, 14 Jul 2005 10:32:22 +0530
+Message-ID: <A8A67F242940E246A515077CF9ECACC16B16C4@dbde01.ent.ti.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Au1550 ethernet throughput low
+Thread-Index: AcWHxJN7otZhA6qjRj+as9e/GuOp8AAbHDbg
+From:	"Singh, Ajay" <ajaysingh@ti.com>
+To:	<jaypee@hotpop.com>, "linux-mips" <linux-mips@linux-mips.org>
+Return-Path: <ajaysingh@ti.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8479
+X-archive-position: 8480
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@embeddedalley.com
+X-original-sender: ajaysingh@ti.com
 Precedence: bulk
 X-list: linux-mips
 
+Is your driver on Linux 2.6 NAPI enabled ? And is CONFIG_PREEMPT=y?
 
-Try again, I just fixed it and one other compile error in 2.6.13-rc3.
+-----Original Message-----
+From: linux-mips-bounce@linux-mips.org
+[mailto:linux-mips-bounce@linux-mips.org] On Behalf Of jaypee@hotpop.com
+Sent: Wednesday, July 13, 2005 9:30 PM
+To: linux-mips
+Subject: Au1550 ethernet throughput low
 
-Pete
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
 
-On Wed, 2005-07-06 at 16:12 -0700, rolf liu wrote:
-> I use gcc 3.4.4 to compile the recent 2.6.12, got the following errors:
-> 
->   CC      arch/mips/au1000/common/setup.o
-> In file included from include/asm/io.h:29,
->                  from include/asm/mach-au1x00/au1000.h:43,
->                  from arch/mips/au1000/common/setup.c:42:
-> include/asm-mips/mach-au1x00/ioremap.h:25: warning: static declaration
-> of 'fixup_bigphys_addr' follows non-static declaration
-> include/asm/pgtable.h:363: warning: 'fixup_bigphys_addr' declared
-> inline after being called
-> include/asm/pgtable.h:363: warning: previous declaration of
-> 'fixup_bigphys_addr' was here
-> include/asm-mips/mach-au1x00/ioremap.h: In function `fixup_bigphys_addr':
-> include/asm-mips/mach-au1x00/ioremap.h:26: warning: implicit
-> declaration of function `__fixup_bigphys_addr'
-> arch/mips/au1000/common/setup.c: At top level:
-> arch/mips/au1000/common/setup.c:159: error: conflicting types for
-> '__fixup_bigphys_addr'
-> include/asm-mips/mach-au1x00/ioremap.h:26: error: previous implicit
-> declaration of '__fixup_bigphys_addr' was here
-> make[1]: *** [arch/mips/au1000/common/setup.o] Error 1
-> make: *** [arch/mips/au1000/common] Error 2
-> 
-> Not sure if it is just compiler's problem
-> 
-> thanks
-> 
+Hi all,
+I've got a au1550 board based largely on the pb1550. The ethernet
+throughput is ~66Mbps using the 2.6 kernel. This also consumes a lot of
+cpu cycles to send.
+
+We have older designs using au1000 and mvista 2.4 kernel that achieve
+full line rate throughput without using a lot of the cpu.
+
+Can someone with a pb/db1550 and linux 2.6 do a quick test to verify
+that is is not a 2.6 kernel problem, and is a problem with our HW/SW.
+
+If anyone can do the same with a 2.4 kernel too that would be great.
+
+Thanks,
+JP
+
+- --
+mailto:jaypee@hotpop.com
+http://www.jaypee.org.uk
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.1 (GNU/Linux)
+
+iD8DBQFC1TqCZDxnKy3oOpYRAhwaAKCoY/3lEX/DksOEq42FfxlsF2rjEgCeNI0G
+/72t16fNrA4XvX+KVumsNDw=
+=yoD8
+-----END PGP SIGNATURE-----

@@ -1,78 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jul 2005 06:03:07 +0100 (BST)
-Received: from go4.ext.ti.com ([IPv6:::ffff:192.91.75.132]:27839 "EHLO
-	go4.ext.ti.com") by linux-mips.org with ESMTP id <S8226704AbVGNFCs> convert rfc822-to-8bit;
-	Thu, 14 Jul 2005 06:02:48 +0100
-Received: from dlep30.itg.ti.com ([157.170.139.157])
-	by go4.ext.ti.com (8.13.1/8.13.1) with ESMTP id j6E53rIx001362;
-	Thu, 14 Jul 2005 00:03:53 -0500 (CDT)
-Received: from dlep90.itg.ti.com (localhost [127.0.0.1])
-	by dlep30.itg.ti.com (8.12.11/8.12.11) with ESMTP id j6E53q3W022523;
-	Thu, 14 Jul 2005 00:03:53 -0500 (CDT)
-Received: from dbde01.ent.ti.com (localhost [127.0.0.1])
-	by dlep90.itg.ti.com (8.12.11/8.12.11) with ESMTP id j6E53gWF013130;
-	Thu, 14 Jul 2005 00:03:52 -0500 (CDT)
-Content-class: urn:content-classes:message
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-X-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0
-Subject: RE: Au1550 ethernet throughput low
-Date:	Thu, 14 Jul 2005 10:32:22 +0530
-Message-ID: <A8A67F242940E246A515077CF9ECACC16B16C4@dbde01.ent.ti.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: Au1550 ethernet throughput low
-Thread-Index: AcWHxJN7otZhA6qjRj+as9e/GuOp8AAbHDbg
-From:	"Singh, Ajay" <ajaysingh@ti.com>
-To:	<jaypee@hotpop.com>, "linux-mips" <linux-mips@linux-mips.org>
-Return-Path: <ajaysingh@ti.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jul 2005 13:49:21 +0100 (BST)
+Received: from deliver-1.mx.triera.net ([IPv6:::ffff:213.161.0.31]:34500 "HELO
+	deliver-1.mx.triera.net") by linux-mips.org with SMTP
+	id <S8226719AbVGNMtD>; Thu, 14 Jul 2005 13:49:03 +0100
+Received: from localhost (in-2.mx.triera.net [213.161.0.26])
+	by deliver-1.mx.triera.net (Postfix) with ESMTP id AC995C04D;
+	Thu, 14 Jul 2005 14:49:58 +0200 (CEST)
+Received: from smtp.triera.net (smtp.triera.net [213.161.0.30])
+	by in-2.mx.triera.net (Postfix) with SMTP id 0A6941BC08D;
+	Thu, 14 Jul 2005 14:50:01 +0200 (CEST)
+Received: from orionlinux.starfleet.com (cmb58-52.dial-up.arnes.si [153.5.49.52])
+	by smtp.triera.net (Postfix) with ESMTP id 117DF1A18AD;
+	Thu, 14 Jul 2005 14:50:00 +0200 (CEST)
+Subject: Re: Au1550 ethernet throughput low
+From:	Matej Kupljen <matej.kupljen@ultra.si>
+To:	jaypee@hotpop.com
+Cc:	linux-mips <linux-mips@linux-mips.org>
+In-Reply-To: <1121270402l.7656l.3l@cavan>
+References: <1121270402l.7656l.3l@cavan>
+Content-Type: text/plain
+Organization: Ultra d.o.o.
+Date:	Thu, 14 Jul 2005 17:02:26 +0200
+Message-Id: <1121353347.10582.3.camel@orionlinux.starfleet.com>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.2.1.1 
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: Triera AV Service
+Return-Path: <matej.kupljen@ultra.si>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8480
+X-archive-position: 8481
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ajaysingh@ti.com
+X-original-sender: matej.kupljen@ultra.si
 Precedence: bulk
 X-list: linux-mips
 
-Is your driver on Linux 2.6 NAPI enabled ? And is CONFIG_PREEMPT=y?
+Hi
 
------Original Message-----
-From: linux-mips-bounce@linux-mips.org
-[mailto:linux-mips-bounce@linux-mips.org] On Behalf Of jaypee@hotpop.com
-Sent: Wednesday, July 13, 2005 9:30 PM
-To: linux-mips
-Subject: Au1550 ethernet throughput low
+> I've got a au1550 board based largely on the pb1550. The ethernet  
+> throughput is ~66Mbps using the 2.6 kernel. This also consumes a
+> lot of cpu cycles to send.
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA1
+I get low throughput with DB1200 also, although I did not measure
+it (yet). I noticed very slow NFS mounted rootfs and I get a lot of:
+NFS server not responding, still trying
+NFS server O.K.
+(Something like that, I do not have the board here right now).
 
-Hi all,
-I've got a au1550 board based largely on the pb1550. The ethernet
-throughput is ~66Mbps using the 2.6 kernel. This also consumes a lot of
-cpu cycles to send.
+AMD supplies smc9111 driver in smc9111.c/h. Should I use
+this driver or is smc9x.c/h better?
 
-We have older designs using au1000 and mvista 2.4 kernel that achieve
-full line rate throughput without using a lot of the cpu.
-
-Can someone with a pb/db1550 and linux 2.6 do a quick test to verify
-that is is not a 2.6 kernel problem, and is a problem with our HW/SW.
-
-If anyone can do the same with a 2.4 kernel too that would be great.
-
-Thanks,
-JP
-
-- --
-mailto:jaypee@hotpop.com
-http://www.jaypee.org.uk
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.1 (GNU/Linux)
-
-iD8DBQFC1TqCZDxnKy3oOpYRAhwaAKCoY/3lEX/DksOEq42FfxlsF2rjEgCeNI0G
-/72t16fNrA4XvX+KVumsNDw=
-=yoD8
------END PGP SIGNATURE-----
+BR,
+Matej

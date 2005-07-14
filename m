@@ -1,56 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jul 2005 13:49:21 +0100 (BST)
-Received: from deliver-1.mx.triera.net ([IPv6:::ffff:213.161.0.31]:34500 "HELO
-	deliver-1.mx.triera.net") by linux-mips.org with SMTP
-	id <S8226719AbVGNMtD>; Thu, 14 Jul 2005 13:49:03 +0100
-Received: from localhost (in-2.mx.triera.net [213.161.0.26])
-	by deliver-1.mx.triera.net (Postfix) with ESMTP id AC995C04D;
-	Thu, 14 Jul 2005 14:49:58 +0200 (CEST)
-Received: from smtp.triera.net (smtp.triera.net [213.161.0.30])
-	by in-2.mx.triera.net (Postfix) with SMTP id 0A6941BC08D;
-	Thu, 14 Jul 2005 14:50:01 +0200 (CEST)
-Received: from orionlinux.starfleet.com (cmb58-52.dial-up.arnes.si [153.5.49.52])
-	by smtp.triera.net (Postfix) with ESMTP id 117DF1A18AD;
-	Thu, 14 Jul 2005 14:50:00 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jul 2005 15:40:38 +0100 (BST)
+Received: from smtp-out.hotpop.com ([IPv6:::ffff:38.113.3.61]:28845 "EHLO
+	smtp-out.hotpop.com") by linux-mips.org with ESMTP
+	id <S8226372AbVGNOkT> convert rfc822-to-8bit; Thu, 14 Jul 2005 15:40:19 +0100
+Received: from hotpop.com (kubrick.hotpop.com [38.113.3.103])
+	by smtp-out.hotpop.com (Postfix) with SMTP id 2EE961416454
+	for <linux-mips@linux-mips.org>; Thu, 14 Jul 2005 14:41:17 +0000 (UTC)
+Received: from cavan (unknown [62.253.252.7])
+	by smtp-1.hotpop.com (Postfix) with ESMTP id DD8941A0234
+	for <linux-mips@linux-mips.org>; Thu, 14 Jul 2005 13:52:54 +0000 (UTC)
+Date:	Thu, 14 Jul 2005 13:52:36 +0000
+From:	jaypee@hotpop.com
 Subject: Re: Au1550 ethernet throughput low
-From:	Matej Kupljen <matej.kupljen@ultra.si>
-To:	jaypee@hotpop.com
-Cc:	linux-mips <linux-mips@linux-mips.org>
-In-Reply-To: <1121270402l.7656l.3l@cavan>
-References: <1121270402l.7656l.3l@cavan>
-Content-Type: text/plain
-Organization: Ultra d.o.o.
-Date:	Thu, 14 Jul 2005 17:02:26 +0200
-Message-Id: <1121353347.10582.3.camel@orionlinux.starfleet.com>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.2.1.1 
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: Triera AV Service
-Return-Path: <matej.kupljen@ultra.si>
+To:	linux-mips <linux-mips@linux-mips.org>
+References: <A8A67F242940E246A515077CF9ECACC16B16C4@dbde01.ent.ti.com>
+In-Reply-To: <A8A67F242940E246A515077CF9ECACC16B16C4@dbde01.ent.ti.com>
+	(from ajaysingh@ti.com on Thu Jul 14 06:02:22 2005)
+X-Mailer: Balsa 2.3.3
+Message-Id: <1121349173l.5178l.0l@cavan>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; DelSp=Yes; Format=Flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8BIT
+X-HotPOP: -----------------------------------------------
+                   Sent By HotPOP.com FREE Email
+             Get your FREE POP email at www.HotPOP.com
+          -----------------------------------------------
+Return-Path: <jaypee@hotpop.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8481
+X-archive-position: 8482
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matej.kupljen@ultra.si
+X-original-sender: jaypee@hotpop.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
 
-> I've got a au1550 board based largely on the pb1550. The ethernet  
-> throughput is ~66Mbps using the 2.6 kernel. This also consumes a
-> lot of cpu cycles to send.
 
-I get low throughput with DB1200 also, although I did not measure
-it (yet). I noticed very slow NFS mounted rootfs and I get a lot of:
-NFS server not responding, still trying
-NFS server O.K.
-(Something like that, I do not have the board here right now).
+On 14/07/05 06:02:22, Singh, Ajay wrote:
+> Is your driver on Linux 2.6 NAPI enabled ? And is CONFIG_PREEMPT=y?
 
-AMD supplies smc9111 driver in smc9111.c/h. Should I use
-this driver or is smc9x.c/h better?
+Turning preempt on made no difference, maybe a little worse.
 
-BR,
-Matej
+I put a scope on the TX enable line and it is high for ~100us and low  
+~50us. With the 2.4 kernel on au1000 it is high all the time.
+
+This to me suggest there is some thing wrong in the au1000_eth driver/
+interrupt handling/ packet scheduling in 2.6 as it is not keeping the  
+DMA buffers full.
+
+
+- -- 
+mailto:jaypee@hotpop.com
+http://www.jaypee.org.uk
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.1 (GNU/Linux)
+
+iD8DBQFC1m41ZDxnKy3oOpYRAhooAJ9W7J8ZpXywqW0jPxc0b8hI3iS/DwCfZzWM
+6lp6Z7cHYwW3WWW87SJrZPI=
+=1No0
+-----END PGP SIGNATURE-----

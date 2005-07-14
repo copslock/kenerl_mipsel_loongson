@@ -1,41 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jul 2005 16:32:11 +0100 (BST)
-Received: from wproxy.gmail.com ([IPv6:::ffff:64.233.184.194]:54878 "EHLO
-	wproxy.gmail.com") by linux-mips.org with ESMTP id <S8226686AbVGNPb4> convert rfc822-to-8bit;
-	Thu, 14 Jul 2005 16:31:56 +0100
-Received: by wproxy.gmail.com with SMTP id i36so445200wra
-        for <linux-mips@linux-mips.org>; Thu, 14 Jul 2005 08:33:01 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:reply-to:to:subject:cc:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=NGmPp9BVCNUFJv9QQaX3tRMEbAlltM8hLN4aqpiED+XnlmTKql6ZhCpZdNE1fpLP0MvYdcG3CDJeeiRk1WHdrlSLR+G/7lk0c9kK/ZDSmjrEjxNMmH3nRHQnPTCp41xw5uN8/wUiQSZG3pVWBsLlAZWDSb7+HuXNggWNo8skgXA=
-Received: by 10.54.33.62 with SMTP id g62mr789838wrg;
-        Thu, 14 Jul 2005 08:32:17 -0700 (PDT)
-Received: by 10.54.71.11 with HTTP; Thu, 14 Jul 2005 08:32:17 -0700 (PDT)
-Message-ID: <2db32b7205071408327b005e4e@mail.gmail.com>
-Date:	Thu, 14 Jul 2005 08:32:17 -0700
-From:	rolf liu <rolfliu@gmail.com>
-Reply-To: rolf liu <rolfliu@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jul 2005 16:34:11 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:58378 "EHLO
+	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8226686AbVGNPdv>; Thu, 14 Jul 2005 16:33:51 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 3093AE1CBE
+	for <linux-mips@linux-mips.org>; Thu, 14 Jul 2005 17:34:53 +0200 (CEST)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 03335-08 for <linux-mips@linux-mips.org>;
+ Thu, 14 Jul 2005 17:34:53 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id EDC8FE1CBC
+	for <linux-mips@linux-mips.org>; Thu, 14 Jul 2005 17:34:52 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j6EFYuR3001123
+	for <linux-mips@linux-mips.org>; Thu, 14 Jul 2005 17:34:56 +0200
+Date:	Thu, 14 Jul 2005 16:35:05 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
 To:	linux-mips@linux-mips.org
-Subject: What is the current USB support status on DB1550?
-Cc:	rolf liu <rolfliu@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-Return-Path: <rolfliu@gmail.com>
+Subject: Re: CVS Update@linux-mips.org: linux
+In-Reply-To: <20050714001711Z8226701-3678+2977@linux-mips.org>
+Message-ID: <Pine.LNX.4.61L.0507141120450.31857@blysk.ds.pg.gda.pl>
+References: <20050714001711Z8226701-3678+2977@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.85.1/978/Thu Jul 14 13:37:27 2005 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8484
+X-archive-position: 8485
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rolfliu@gmail.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Are both usb host and usb gadget support as well? And the On the Go feature?
+On Thu, 14 Jul 2005 ppopov@linux-mips.org wrote:
 
-Thanks 
+> Modified files:
+> 	include/asm-mips: pgtable.h 
+> 	include/asm-mips/mach-au1x00: ioremap.h 
+> 
+> Log message:
+> 	Fix the fixup_bigphys_addr compile problem.
 
-rolf
+ Hmm, I think you should include <ioremap.h> instead as that's the header 
+and not <asm/io.h> that provides the necessary bit for <asm/pgtable.h>.
+
+  Maciej

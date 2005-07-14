@@ -1,54 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jul 2005 16:34:11 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:58378 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8226686AbVGNPdv>; Thu, 14 Jul 2005 16:33:51 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 3093AE1CBE
-	for <linux-mips@linux-mips.org>; Thu, 14 Jul 2005 17:34:53 +0200 (CEST)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 03335-08 for <linux-mips@linux-mips.org>;
- Thu, 14 Jul 2005 17:34:53 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id EDC8FE1CBC
-	for <linux-mips@linux-mips.org>; Thu, 14 Jul 2005 17:34:52 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j6EFYuR3001123
-	for <linux-mips@linux-mips.org>; Thu, 14 Jul 2005 17:34:56 +0200
-Date:	Thu, 14 Jul 2005 16:35:05 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	linux-mips@linux-mips.org
-Subject: Re: CVS Update@linux-mips.org: linux
-In-Reply-To: <20050714001711Z8226701-3678+2977@linux-mips.org>
-Message-ID: <Pine.LNX.4.61L.0507141120450.31857@blysk.ds.pg.gda.pl>
-References: <20050714001711Z8226701-3678+2977@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.85.1/978/Thu Jul 14 13:37:27 2005 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jul 2005 16:49:01 +0100 (BST)
+Received: from smtp008.bizmail.sc5.yahoo.com ([IPv6:::ffff:66.163.170.74]:14263
+	"HELO smtp008.bizmail.sc5.yahoo.com") by linux-mips.org with SMTP
+	id <S8226686AbVGNPso>; Thu, 14 Jul 2005 16:48:44 +0100
+Received: (qmail 89899 invoked from network); 14 Jul 2005 15:49:46 -0000
+Received: from unknown (HELO ?192.168.1.101?) (ppopov@embeddedalley.com@71.128.175.242 with plain)
+  by smtp008.bizmail.sc5.yahoo.com with SMTP; 14 Jul 2005 15:49:46 -0000
+Subject: Re: What is the current USB support status on DB1550?
+From:	Pete Popov <ppopov@embeddedalley.com>
+Reply-To: ppopov@embeddedalley.com
+To:	rolf liu <rolfliu@gmail.com>
+Cc:	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
+In-Reply-To: <2db32b7205071408327b005e4e@mail.gmail.com>
+References: <2db32b7205071408327b005e4e@mail.gmail.com>
+Content-Type: text/plain
+Organization: Embedded Alley Solutions, Inc
+Date:	Thu, 14 Jul 2005 08:49:52 -0700
+Message-Id: <1121356192.4797.362.camel@localhost.localdomain>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.0.4 (2.0.4-4) 
+Content-Transfer-Encoding: 7bit
+Return-Path: <ppopov@embeddedalley.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8485
+X-archive-position: 8486
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: ppopov@embeddedalley.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 14 Jul 2005 ppopov@linux-mips.org wrote:
+On Thu, 2005-07-14 at 08:32 -0700, rolf liu wrote:
+> Are both usb host and usb gadget support as well? And the On the Go feature?
 
-> Modified files:
-> 	include/asm-mips: pgtable.h 
-> 	include/asm-mips/mach-au1x00: ioremap.h 
-> 
-> Log message:
-> 	Fix the fixup_bigphys_addr compile problem.
+Host only. We couldn't make gadget work due to interrupt latency
+requirements by the HW that couldn't be reliably achieved with Linux.
+But gadget does work on the Au1200.
 
- Hmm, I think you should include <ioremap.h> instead as that's the header 
-and not <asm/io.h> that provides the necessary bit for <asm/pgtable.h>.
-
-  Maciej
+Pete

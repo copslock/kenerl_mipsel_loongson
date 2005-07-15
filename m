@@ -1,74 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jul 2005 11:59:32 +0100 (BST)
-Received: from moutng.kundenserver.de ([IPv6:::ffff:212.227.126.183]:16834
-	"EHLO moutng.kundenserver.de") by linux-mips.org with ESMTP
-	id <S8226652AbVGOK7N>; Fri, 15 Jul 2005 11:59:13 +0100
-Received: from pD95299FB.dip0.t-ipconnect.de [217.82.153.251] (helo=gaspode.madsworld.lan)
-	by mrelayeu.kundenserver.de with ESMTP (Nemesis),
-	id 0MKxQS-1DtNvg3WSE-00066d; Fri, 15 Jul 2005 13:00:28 +0200
-Received: from mad by gaspode.madsworld.lan with local (Exim 4.50)
-	id 1DtNvZ-00046Z-Qy; Fri, 15 Jul 2005 13:00:21 +0200
-Date:	Fri, 15 Jul 2005 13:00:21 +0200
-From:	Markus Dahms <mad@automagically.de>
-To:	Mikael Nousiainen <turja@mbnet.fi>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: New VINO video drivers for Indy
-Message-ID: <20050715110021.GA15740@gaspode.automagically.de>
-References: <42D4BF49.4040907@mbnet.fi>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <42D4BF49.4040907@mbnet.fi>
-User-Agent: Mutt/1.5.9i
-X-Provags-ID: kundenserver.de abuse@kundenserver.de login:896705dcda322f33ae3752a7fdb3dc09
-Return-Path: <mad@automagically.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jul 2005 13:26:34 +0100 (BST)
+Received: from web33712.mail.mud.yahoo.com ([IPv6:::ffff:68.142.201.209]:37041
+	"HELO web33712.mail.mud.yahoo.com") by linux-mips.org with SMTP
+	id <S8226652AbVGOM0N>; Fri, 15 Jul 2005 13:26:13 +0100
+Received: (qmail 60447 invoked by uid 60001); 15 Jul 2005 12:27:23 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  h=Message-ID:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
+  b=b92fbGV9oXgi9aeVElgErdeRpFCr02JR3s19tncUqrmoOVhPI7djtdpEJVQd4bB/TCE9/NPgrDGpKfj2uEGAopg8PGx1adnmTkOZuBNzf8VnAxam9uSwbi5VG4QdkbgB60193EK7f2f8L6LhdyqpNS2kmWLfPS9hlYMvLXST2MI=  ;
+Message-ID: <20050715122723.60445.qmail@web33712.mail.mud.yahoo.com>
+Received: from [212.108.17.165] by web33712.mail.mud.yahoo.com via HTTP; Fri, 15 Jul 2005 13:27:22 BST
+Date:	Fri, 15 Jul 2005 13:27:22 +0100 (BST)
+From:	Martin Nichols <bootsy_4mt@yahoo.com>
+Subject: U-Boot on DbAu1100
+To:	linux-mips@linux-mips.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <bootsy_4mt@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8499
+X-archive-position: 8500
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mad@automagically.de
+X-original-sender: bootsy_4mt@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello Mikael,
+Hi,
 
-> I've released new drivers for SGI Indy's VINO video input (for 2.6 kernels).
+Has anyone got U-Boot 1.1.2 working little endian on
+the DbAu1100 board. If so what toolchain version did
+you use to build it?
 
-That's what I've already waited for. Slowly 2.6.x should get usable for
-SGI machines :).
+Thanks and regards,
 
-> Please test the driver and report the results so that bugs
-> (yes, I can promise there are lots of them :) can be squashed.
+Martin.
 
-I only get a bla[nc]k image using the patched camsource or xawtv from
-from Debian Sarge with my IndyCam[1] :(. With the old driver for
-2.4.x I got some more results (striped, but at least an image...).
-I hope you could give me some hints where to start debugging...
 
-| SGI VINO driver version 0.0.1
-| VINO with chip ID 11, revision 0 found
-| Philips SAA7191 driver version 0.0.1
-| SAA7191 initialized
-| SGI IndyCam driver version 0.0.1
-| IndyCam v1.0 detected
-| IndyCam initialized
-
-What I noticed, too:
-
-* you should really include a directory in your package, I (most people?)
-  did 'cd src/; tar zxvf vino-0.0.1.tar.gz' and screwed up my source
-  directory a bit.
-* (not so important) I cross-compile all kernel-related stuff. Although
-  'make -C $MIPSKERNELDIR SUBDIRS=`pwd`' is not as difficult, there
-  COULD be support for cross-compiling in the Makefile.
-
-Markus
-
-[1] yes, I opened the cover ;). channel was correct, too.
-
-> 
-> 
-> 
-> 
+	
+	
+		
+___________________________________________________________ 
+Yahoo! Messenger - NEW crystal clear PC to PC calling worldwide with voicemail http://uk.messenger.yahoo.com

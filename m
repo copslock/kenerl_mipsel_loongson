@@ -1,62 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jul 2005 10:18:21 +0100 (BST)
-Received: from grey.subnet.at ([IPv6:::ffff:193.170.141.20]:58897 "EHLO
-	grey.subnet.at") by linux-mips.org with ESMTP id <S8226646AbVGOJR4>;
-	Fri, 15 Jul 2005 10:17:56 +0100
-Received: from ip6-localhost ([193.170.141.4]) by grey.subnet.at ; Fri, 15 Jul 2005 11:19:07 +0200
-From:	Bruno Randolf <bruno.randolf@4g-systems.biz>
-To:	jaypee@hotpop.com
-Subject: Re: Au1550 ethernet throughput low
-Date:	Fri, 15 Jul 2005 11:17:44 +0200
-User-Agent: KMail/1.8.1
-Cc:	Clem Taylor <clem.taylor@gmail.com>,
-	linux-mips <linux-mips@linux-mips.org>
-References: <1121270402l.7656l.3l@cavan> <ecb4efd1050714171318ce81aa@mail.gmail.com> <1121415711l.5178l.3l@cavan>
-In-Reply-To: <1121415711l.5178l.3l@cavan>
-Organization: 4G Systems
-MIME-Version: 1.0
-Content-Type: multipart/signed;
-  boundary="nextPart2206017.K2ni6TNPXm";
-  protocol="application/pgp-signature";
-  micalg=pgp-sha1
-Content-Transfer-Encoding: 7bit
-Message-Id: <200507151117.49012.bruno.randolf@4g-systems.biz>
-Return-Path: <bruno.randolf@4g-systems.biz>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jul 2005 11:59:32 +0100 (BST)
+Received: from moutng.kundenserver.de ([IPv6:::ffff:212.227.126.183]:16834
+	"EHLO moutng.kundenserver.de") by linux-mips.org with ESMTP
+	id <S8226652AbVGOK7N>; Fri, 15 Jul 2005 11:59:13 +0100
+Received: from pD95299FB.dip0.t-ipconnect.de [217.82.153.251] (helo=gaspode.madsworld.lan)
+	by mrelayeu.kundenserver.de with ESMTP (Nemesis),
+	id 0MKxQS-1DtNvg3WSE-00066d; Fri, 15 Jul 2005 13:00:28 +0200
+Received: from mad by gaspode.madsworld.lan with local (Exim 4.50)
+	id 1DtNvZ-00046Z-Qy; Fri, 15 Jul 2005 13:00:21 +0200
+Date:	Fri, 15 Jul 2005 13:00:21 +0200
+From:	Markus Dahms <mad@automagically.de>
+To:	Mikael Nousiainen <turja@mbnet.fi>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: New VINO video drivers for Indy
+Message-ID: <20050715110021.GA15740@gaspode.automagically.de>
+References: <42D4BF49.4040907@mbnet.fi>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <42D4BF49.4040907@mbnet.fi>
+User-Agent: Mutt/1.5.9i
+X-Provags-ID: kundenserver.de abuse@kundenserver.de login:896705dcda322f33ae3752a7fdb3dc09
+Return-Path: <mad@automagically.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8498
+X-archive-position: 8499
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bruno.randolf@4g-systems.biz
+X-original-sender: mad@automagically.de
 Precedence: bulk
 X-list: linux-mips
 
---nextPart2206017.K2ni6TNPXm
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+Hello Mikael,
 
-On Friday 15 July 2005 10:21, jaypee@hotpop.com wrote:
-> Yours is using ~30% cpu to send 100Mbps.
-> Mine is using 100% to send 66Mbps.
+> I've released new drivers for SGI Indy's VINO video input (for 2.6 kernels).
 
-i remember that ethernet thruput dropped from nearly 100Mbps to about=20
-60-70Mbps on our Au1500 based board, when we enabled CONFIG_NONCOHERENT_IO.=
-=2E.
+That's what I've already waited for. Slowly 2.6.x should get usable for
+SGI machines :).
 
-bruno
+> Please test the driver and report the results so that bugs
+> (yes, I can promise there are lots of them :) can be squashed.
 
---nextPart2206017.K2ni6TNPXm
-Content-Type: application/pgp-signature
+I only get a bla[nc]k image using the patched camsource or xawtv from
+from Debian Sarge with my IndyCam[1] :(. With the old driver for
+2.4.x I got some more results (striped, but at least an image...).
+I hope you could give me some hints where to start debugging...
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.1 (GNU/Linux)
+| SGI VINO driver version 0.0.1
+| VINO with chip ID 11, revision 0 found
+| Philips SAA7191 driver version 0.0.1
+| SAA7191 initialized
+| SGI IndyCam driver version 0.0.1
+| IndyCam v1.0 detected
+| IndyCam initialized
 
-iD8DBQBC1388fg2jtUL97G4RAiD2AKCvT11QQLax1XXT5olChEol3raS1QCfU8WT
-AjB/tuW/zyzA28M9LA+ovEQ=
-=F5l0
------END PGP SIGNATURE-----
+What I noticed, too:
 
---nextPart2206017.K2ni6TNPXm--
+* you should really include a directory in your package, I (most people?)
+  did 'cd src/; tar zxvf vino-0.0.1.tar.gz' and screwed up my source
+  directory a bit.
+* (not so important) I cross-compile all kernel-related stuff. Although
+  'make -C $MIPSKERNELDIR SUBDIRS=`pwd`' is not as difficult, there
+  COULD be support for cross-compiling in the Makefile.
+
+Markus
+
+[1] yes, I opened the cover ;). channel was correct, too.
+
+> 
+> 
+> 
+> 

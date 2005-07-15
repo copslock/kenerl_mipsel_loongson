@@ -1,46 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jul 2005 13:26:34 +0100 (BST)
-Received: from web33712.mail.mud.yahoo.com ([IPv6:::ffff:68.142.201.209]:37041
-	"HELO web33712.mail.mud.yahoo.com") by linux-mips.org with SMTP
-	id <S8226652AbVGOM0N>; Fri, 15 Jul 2005 13:26:13 +0100
-Received: (qmail 60447 invoked by uid 60001); 15 Jul 2005 12:27:23 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.com;
-  h=Message-ID:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
-  b=b92fbGV9oXgi9aeVElgErdeRpFCr02JR3s19tncUqrmoOVhPI7djtdpEJVQd4bB/TCE9/NPgrDGpKfj2uEGAopg8PGx1adnmTkOZuBNzf8VnAxam9uSwbi5VG4QdkbgB60193EK7f2f8L6LhdyqpNS2kmWLfPS9hlYMvLXST2MI=  ;
-Message-ID: <20050715122723.60445.qmail@web33712.mail.mud.yahoo.com>
-Received: from [212.108.17.165] by web33712.mail.mud.yahoo.com via HTTP; Fri, 15 Jul 2005 13:27:22 BST
-Date:	Fri, 15 Jul 2005 13:27:22 +0100 (BST)
-From:	Martin Nichols <bootsy_4mt@yahoo.com>
-Subject: U-Boot on DbAu1100
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jul 2005 15:27:38 +0100 (BST)
+Received: from chello084010225018.chello.pl ([IPv6:::ffff:84.10.225.18]:64522
+	"HELO chello084010225018.chello.pl") by linux-mips.org with SMTP
+	id <S8226683AbVGOO1U>; Fri, 15 Jul 2005 15:27:20 +0100
+Received: from [191.203.143.72] (port=4399 helo=[sideband])
+    by chello084010225018.chello.pl with esmtp 
+    id 97970013threader109071
+    for linux-mips@linux-mips.org; Fri, 15 Jul 2005 16:29:44 +0200
+Mime-Version: 1.0 (Apple Message framework v728)
+Content-Transfer-Encoding: 7bit
+Message-Id: <370529554.58507119875@chello084010225018.chello.pl>
+Content-Type: text/plain; charset=US-ASCII; format=flowed
 To:	linux-mips@linux-mips.org
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Return-Path: <bootsy_4mt@yahoo.com>
+From:	Pauline <Frances@mylaeus.ch>
+Subject: Back To Happy And Healthy Life . . .
+Date:	Fri, 15 Jul 2005 16:29:43 +0200
+X-Mailer: Apple Mail (2.728)
+Return-Path: <Frances@mylaeus.ch>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8500
+X-archive-position: 8501
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bootsy_4mt@yahoo.com
+X-original-sender: Frances@mylaeus.ch
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
-
-Has anyone got U-Boot 1.1.2 working little endian on
-the DbAu1100 board. If so what toolchain version did
-you use to build it?
-
-Thanks and regards,
-
-Martin.
+Want to make women adore you? Click here.
+http://bgfky.n28gro5gkfnd96n.sottedbbfhm.com
 
 
-	
-	
-		
-___________________________________________________________ 
-Yahoo! Messenger - NEW crystal clear PC to PC calling worldwide with voicemail http://uk.messenger.yahoo.com
+
+The discipline of desire is the background of character.    
+If you are not criticized, you may not be doing much.  
+A poet more than thirty years old is simply an overgrown child. 

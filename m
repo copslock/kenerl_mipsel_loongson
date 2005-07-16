@@ -1,75 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Jul 2005 08:54:46 +0100 (BST)
-Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:31996 "EHLO
-	witte.sonytel.be") by linux-mips.org with ESMTP id <S8226438AbVGPHy3>;
-	Sat, 16 Jul 2005 08:54:29 +0100
-Received: from numbat.sonytel.be (mail.sonytel.be [43.221.60.197])
-	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id j6G7tnpr002968;
-	Sat, 16 Jul 2005 09:55:49 +0200 (MEST)
-Date:	Sat, 16 Jul 2005 09:55:41 +0200 (CEST)
-From:	Geert Uytterhoeven <geert@linux-m68k.org>
-To:	Linux/MIPS Development <linux-mips@linux-mips.org>
-cc:	Yoichi Yuasa <yuasa@hh.iij4u.or.jp>, Andrew Morton <akpm@osdl.org>
-Subject: [Linux-fbdev-devel] Re: 2.6.13-rc3-mm1 (fwd)
-Message-ID: <Pine.LNX.4.62.0507160954510.4553@numbat.sonytel.be>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <geert@linux-m68k.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Jul 2005 12:26:42 +0100 (BST)
+Received: from moutng.kundenserver.de ([IPv6:::ffff:212.227.126.188]:43759
+	"EHLO moutng.kundenserver.de") by linux-mips.org with ESMTP
+	id <S8226776AbVGPL01>; Sat, 16 Jul 2005 12:26:27 +0100
+Received: from pD95281BF.dip0.t-ipconnect.de [217.82.129.191] (helo=gaspode.madsworld.lan)
+	by mrelayeu.kundenserver.de with ESMTP (Nemesis),
+	id 0MKwh2-1Dtkpj473w-0001wU; Sat, 16 Jul 2005 13:27:51 +0200
+Received: from mad by gaspode.madsworld.lan with local (Exim 4.50)
+	id 1Dtkpe-0003TA-3H
+	for linux-mips@linux-mips.org; Sat, 16 Jul 2005 13:27:46 +0200
+Date:	Sat, 16 Jul 2005 13:27:46 +0200
+From:	Markus Dahms <mad@automagically.de>
+To:	linux-mips@linux-mips.org
+Subject: Re: New VINO video drivers for Indy
+Message-ID: <20050716112745.GA12716@gaspode.automagically.de>
+References: <42D4BF49.4040907@mbnet.fi> <20050715110021.GA15740@gaspode.automagically.de> <42D83063.3060505@mbnet.fi>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <42D83063.3060505@mbnet.fi>
+User-Agent: Mutt/1.5.9i
+X-Provags-ID: kundenserver.de abuse@kundenserver.de login:896705dcda322f33ae3752a7fdb3dc09
+Return-Path: <mad@automagically.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8512
+X-archive-position: 8513
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: mad@automagically.de
 Precedence: bulk
 X-list: linux-mips
 
+Hello again,
 
-Guess this is where it really belongs...
+>> I only get a bla[nc]k image ...
+> That's strange. There might be some problems with IndyCam initialization 
+> (register values),
+> but usually you should be able to get at least a very dark picture.
+> Removing and reinstalling the module (indycam.ko) reinitializes the
+> camera so you can try that. IndyCam seems to use some very odd logic
+> to decide how bright the picture should be.
+> Try bringing some very bright light sources near the camera ?
 
----------- Forwarded message ----------
-Date: Fri, 15 Jul 2005 16:23:49 -0700
-From: Andrew Morton <akpm@osdl.org>
-Reply-To: linux-fbdev-devel@lists.sourceforge.net
-To: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-Cc: yuasa@hh.iij4u.or.jp, linux-kernel@vger.kernel.org,
-    linux-fbdev-devel@lists.sourceforge.net,
-    Antonino A. Daplas <adaplas@hotpop.com>
-Subject: [Linux-fbdev-devel] Re: 2.6.13-rc3-mm1
+For some reason it's working now. It's not significantly brighter, I
+just checked the camera with kernel 2.4.x before booting 2.6.12.
+If I can reproduce the failure I'll write it.
+The picture has the same "quality" as with the other driver except
+there _are_ fewer horizontal lines (they appear mostly on fast-moving
+pictures).
 
-Yoichi Yuasa <yuasa@hh.iij4u.or.jp> wrote:
->
-> Hi Andrew
-> 
-> I got the following error.
-> 
-> make ARCH=mips oldconfig
-> scripts/kconfig/conf -o arch/mips/Kconfig
-> drivers/video/Kconfig:7:warning: type of 'FB' redefined from 'boolean' to 'tristate'
-> 
-> file drivers/char/speakup/Kconfig already scanned?
-> make[1]: *** [oldconfig] Error 1
-> make: *** [oldconfig] Error 2
-> 
-
-Well arch/mips/Kconfig is defining CONFIG_FB as bool and
-drivers/video/Kconfig was changed a while ago to define it as tristate.  I
-assume this failure also happens in linus's current tree.  
-
-It seems odd that mips is privately duplicating the generic code's
-definition.  Maybe that needs to be taken out of there.
-
-I'll cc the fbdev guys - could someone please come up with fix?  It's a
-showstopper for the MIPS architecture.
-
-
--------------------------------------------------------
-SF.Net email is sponsored by: Discover Easy Linux Migration Strategies
-from IBM. Find simple to follow Roadmaps, straightforward articles,
-informative Webcasts and more! Get everything you need to get up to
-speed, fast. http://ads.osdn.com/?ad_id=7477&alloc_id=16492&op=click
-_______________________________________________
-Linux-fbdev-devel mailing list
-Linux-fbdev-devel@lists.sourceforge.net
-https://lists.sourceforge.net/lists/listinfo/linux-fbdev-devel
+Markus

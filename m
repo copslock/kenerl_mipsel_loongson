@@ -1,90 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Jul 2005 08:22:49 +0100 (BST)
-Received: from ns.innomedia.soft.net ([IPv6:::ffff:164.164.79.130]:26858 "EHLO
-	gateway.innomedia.soft.net") by linux-mips.org with ESMTP
-	id <S8226438AbVGPHWa>; Sat, 16 Jul 2005 08:22:30 +0100
-Received: from [192.168.52.8] ([192.168.52.8])
-	(authenticated bits=0)
-	by gateway.innomedia.soft.net (8.12.11/8.12.11) with ESMTP id j6G7NqAY023599
-	for <linux-mips@linux-mips.org>; Sat, 16 Jul 2005 12:53:52 +0530
-Message-ID: <42D8B608.4020600@innomedia.soft.net>
-Date:	Sat, 16 Jul 2005 12:53:52 +0530
-From:	kanhu <kanhu@innomedia.soft.net>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.6) Gecko/20050328 Fedora/1.7.6-1.2.5
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Jul 2005 08:54:46 +0100 (BST)
+Received: from witte.sonytel.be ([IPv6:::ffff:80.88.33.193]:31996 "EHLO
+	witte.sonytel.be") by linux-mips.org with ESMTP id <S8226438AbVGPHy3>;
+	Sat, 16 Jul 2005 08:54:29 +0100
+Received: from numbat.sonytel.be (mail.sonytel.be [43.221.60.197])
+	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id j6G7tnpr002968;
+	Sat, 16 Jul 2005 09:55:49 +0200 (MEST)
+Date:	Sat, 16 Jul 2005 09:55:41 +0200 (CEST)
+From:	Geert Uytterhoeven <geert@linux-m68k.org>
+To:	Linux/MIPS Development <linux-mips@linux-mips.org>
+cc:	Yoichi Yuasa <yuasa@hh.iij4u.or.jp>, Andrew Morton <akpm@osdl.org>
+Subject: [Linux-fbdev-devel] Re: 2.6.13-rc3-mm1 (fwd)
+Message-ID: <Pine.LNX.4.62.0507160954510.4553@numbat.sonytel.be>
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: Problem with loadable module
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: ClamAV 0.80/970/Wed Jul  6 21:30:45 2005
-	clamav-milter version 0.80j
-	on 127.0.0.1
-X-Virus-Status:	Clean
-Return-Path: <kanhu@innomedia.soft.net>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8511
+X-archive-position: 8512
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kanhu@innomedia.soft.net
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi all,
 
-I am using uClinux(uClinux-dist-20030305) on ARCH=mipsnommu and the 
-CROSS_COMPILE=mipseb-linux- .I have installed the toolchain 
-mipseb-linux-3.2.2-0.8.0.i386.rpm
-I have written a simple loadable hello module and compiled it, It has 
-been compiled successfully and when I try to load it by
+Guess this is where it really belongs...
 
-/>insmod /lib/modules/hello
- It gives the following  error
-======================
-Using /lib/modules/hello
-insmod: unresolved symbol _gp_disp
-pid 25: failed 256
- =======================
-What might be the problem ?
+---------- Forwarded message ----------
+Date: Fri, 15 Jul 2005 16:23:49 -0700
+From: Andrew Morton <akpm@osdl.org>
+Reply-To: linux-fbdev-devel@lists.sourceforge.net
+To: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+Cc: yuasa@hh.iij4u.or.jp, linux-kernel@vger.kernel.org,
+    linux-fbdev-devel@lists.sourceforge.net,
+    Antonino A. Daplas <adaplas@hotpop.com>
+Subject: [Linux-fbdev-devel] Re: 2.6.13-rc3-mm1
 
-My Makefile looks like this
-============================
-TARGET = hello
-OBJS =  hello.o
-                                                                        
-                                                 
-CFLAGS = -DMODULE -D__KERNEL__ -Wl,-elf2flt -Dlinux -D__linux__ -Dunix 
--D__uClinux__ -DEMBED -DLINUX
-CFLAGS += -I../../linux-2.4.x/include -I../../linux-2.4.x/include/linux
-CFLAGS += -Wall -Wstrict-prototypes -Wno-trigraphs -O2 
--fno-strict-aliasing -fno-common
-CFLAGS += -fno-common -pipe -fno-builtin -D__linux__ -DNO_MM
-CFLAGS += -nostdinc -msoft-float
-CFLAGS += 
--I/opt/uClinux/toolchain/mipseb/3.2.2/lib/gcc-lib/mipseb-linux/3.2.2/include
-CFLAGS += -DNDEBUG
-                                                                        
-                                                 
-all: $(TARGET)
-                                                                        
-                                                 
-$(TARGET): $(OBJS)
-        $(LD) -r $(OBJS) -o $(TARGET)
-                                                                        
-                                                 
-romfs:
-        $(ROMFSINST) /lib/modules/$(TARGET)
-                                                                        
-                                                 
-clean:
-        -rm -f $(TARGET) *.elf *.gdb *.o
-=======================================
+Yoichi Yuasa <yuasa@hh.iij4u.or.jp> wrote:
+>
+> Hi Andrew
+> 
+> I got the following error.
+> 
+> make ARCH=mips oldconfig
+> scripts/kconfig/conf -o arch/mips/Kconfig
+> drivers/video/Kconfig:7:warning: type of 'FB' redefined from 'boolean' to 'tristate'
+> 
+> file drivers/char/speakup/Kconfig already scanned?
+> make[1]: *** [oldconfig] Error 1
+> make: *** [oldconfig] Error 2
+> 
 
-Any idea to proceed with is welcome.
+Well arch/mips/Kconfig is defining CONFIG_FB as bool and
+drivers/video/Kconfig was changed a while ago to define it as tristate.  I
+assume this failure also happens in linus's current tree.  
+
+It seems odd that mips is privately duplicating the generic code's
+definition.  Maybe that needs to be taken out of there.
+
+I'll cc the fbdev guys - could someone please come up with fix?  It's a
+showstopper for the MIPS architecture.
 
 
-
-With Thanks & Regards
-          Kanhu
+-------------------------------------------------------
+SF.Net email is sponsored by: Discover Easy Linux Migration Strategies
+from IBM. Find simple to follow Roadmaps, straightforward articles,
+informative Webcasts and more! Get everything you need to get up to
+speed, fast. http://ads.osdn.com/?ad_id=7477&alloc_id=16492&op=click
+_______________________________________________
+Linux-fbdev-devel mailing list
+Linux-fbdev-devel@lists.sourceforge.net
+https://lists.sourceforge.net/lists/listinfo/linux-fbdev-devel

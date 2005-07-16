@@ -1,117 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Jul 2005 16:18:50 +0100 (BST)
-Received: from 81-174-11-161.f5.ngi.it ([IPv6:::ffff:81.174.11.161]:60078 "EHLO
-	zaigor.enneenne.com") by linux-mips.org with ESMTP
-	id <S8226777AbVGPPS2>; Sat, 16 Jul 2005 16:18:28 +0100
-Received: from giometti by zaigor.enneenne.com with local (Exim 3.36 #1 (Debian))
-	id 1DtoSE-00067i-00; Sat, 16 Jul 2005 17:19:50 +0200
-Date:	Sat, 16 Jul 2005 17:19:50 +0200
-From:	Rodolfo Giometti <giometti@linux.it>
-To:	Dan Malek <dan@embeddededge.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: power management status for au1100
-Message-ID: <20050716151950.GF26127@enneenne.com>
-References: <20050712142202.GB9234@gundam.enneenne.com> <20050712181013.GC9234@gundam.enneenne.com> <a2882b70a3d6c0f32728086e0c63764c@embeddededge.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Jul 2005 16:41:42 +0100 (BST)
+Received: from smtp001.bizmail.yahoo.com ([IPv6:::ffff:216.136.172.125]:7801
+	"HELO smtp001.bizmail.yahoo.com") by linux-mips.org with SMTP
+	id <S8226777AbVGPPlY>; Sat, 16 Jul 2005 16:41:24 +0100
+Received: (qmail 92730 invoked from network); 16 Jul 2005 15:42:49 -0000
+Received: from unknown (HELO ?192.168.1.107?) (ppopov@embeddedalley.com@63.194.214.47 with plain)
+  by smtp001.bizmail.yahoo.com with SMTP; 16 Jul 2005 15:42:49 -0000
+Subject: Re: Support for (au1100) 64-bit physical address space broken on
+	2.6.12?
+From:	Pete Popov <ppopov@embeddedalley.com>
+Reply-To: ppopov@embeddedalley.com
+To:	Rodolfo Giometti <giometti@linux.it>
+Cc:	linux-mips <linux-mips@linux-mips.org>
+In-Reply-To: <20050716124205.GA26127@enneenne.com>
+References: <20050716124205.GA26127@enneenne.com>
+Content-Type: text/plain
+Organization: Embedded Alley Solutions, Inc
+Date:	Sat, 16 Jul 2005 08:42:55 -0700
+Message-Id: <1121528575.27121.3.camel@localhost.localdomain>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="jaTU8Y2VLE5tlY1O"
-Content-Disposition: inline
-In-Reply-To: <a2882b70a3d6c0f32728086e0c63764c@embeddededge.com>
-Organization: Programmi e soluzioni GNU/Linux
-X-PGP-Key: gpg --keyserver keyserver.penguin.de --recv-keys D25A5633
-User-Agent: Mutt/1.5.6+20040722i
-Return-Path: <giometti@enneenne.com>
+X-Mailer: Evolution 2.0.4 (2.0.4-4) 
+Content-Transfer-Encoding: 7bit
+Return-Path: <ppopov@embeddedalley.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8518
+X-archive-position: 8519
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: giometti@linux.it
+X-original-sender: ppopov@embeddedalley.com
 Precedence: bulk
 X-list: linux-mips
 
+On Sat, 2005-07-16 at 14:42 +0200, Rodolfo Giometti wrote:
+> Hello,
+> 
+> switching from linux-mips 2.6.12-rc3 to 2.6.12 I notice that the
+> following patch has been applied:
+> 
+>    http://www.linux-mips.org/archives/linux-mips/2005-06/msg00207.html
+> 
+> But, on my system, recompiling the source I noticed that compilation
+> stops with errors. Even downloading a clean version of source code
+> from linux-mips's CVS and choosing, for instance, the board DB1100, I
+> got the same result.
+> 
+> The problem is that the above patch works well if the 64-bit physical
+> address space support is disabled, but, if enabled, it breaks
+> compilation stage.
 
---jaTU8Y2VLE5tlY1O
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I fixed this is the latest tree a couple of days ago.
 
-Looking function mips_timer_interrupt() (which is the normal timer
-interrupt when PM is not enabled) I noticed that it has called from
-file =ABarch/mips/au1000/common/int-handler.S=BB as follow:
+Pete
 
-	...
-        .text
-        .set    macro
-        .set    noat
-        .align  5
-
-NESTED(au1000_IRQ, PT_SIZE, sp)
-        SAVE_ALL
-        CLI                             # Important: mark KERNEL mode !
-
-        mfc0    t0,CP0_CAUSE            # get pending interrupts
-        mfc0    t1,CP0_STATUS           # get enabled interrupts
-        and     t0,t1                   # isolate allowed ones
-
-        andi    t0,0xff00               # isolate pending bits
-        beqz    t0, 3f                  # spurious interrupt
-
-        andi    a0, t0, CAUSEF_IP7
-        beq     a0, zero, 1f
-        move    a0, sp
-        jal     mips_timer_interrupt
-        j       ret_from_irq
-	...
-
-Looking at =ABCLI=BB implementation into =ABinclude/asm/stackframe.h=BB:
-
-   /*
-    * Move to kernel mode and disable interrupts.
-    * Set cp0 enable bit as sign that we're running on the kernel stack
-    */
-		   .macro  CLI
-		   mfc0    t0, CP0_STATUS
-		   li      t1, ST0_CU0 | 0x1f
-		   or      t0, t1
-		   xori    t0, 0x1f
-		   mtc0    t0, CP0_STATUS
-		   irq_disable_hazard
-		   .endm
-
-I see that the CLI macro ensures that mips_timer_interrupt() will be
-executed into =ABkernel mode=BB.
-
-What do you think about that? Can it cause the error =ABBreak
-instruction in kernel code in arch/mips/kernel/traps.c::do_bp, line
-629[#1]:=BB?
-
-If so, can someone help me in fixing such bug? I'm not a MIPS assembly
-master! ;-p
-
-Ciao,
-
-Rodolfo
-
---=20
-
-GNU/Linux Solutions                  e-mail:    giometti@linux.it
-Linux Device Driver                             giometti@enneenne.com
-Embedded Systems                     home page: giometti.enneenne.com
-UNIX programming                     phone:     +39 349 2432127
-
---jaTU8Y2VLE5tlY1O
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.4 (GNU/Linux)
-
-iD8DBQFC2SWWQaTCYNJaVjMRAg/LAJ4ybFGl3NYmbruQhihgQNDw6v+yyACfcw9G
-Fnw2qiWTNcnuhHeIqWr1zQY=
-=RmQV
------END PGP SIGNATURE-----
-
---jaTU8Y2VLE5tlY1O--
+> Here what I get after getting source form CVS and doing the commands:
+> 
+>    # make pb1100_defconfig   (this board turn on CONFIG_64BIT_PHYS_ADDR option)
+>    # make
+>    ...
+>    include/asm-mips/mach-au1x00/ioremap.h:25: warning: static declaration of 'fixup_bigphys_addr' follows non-static declaration
+>    include/asm/pgtable.h:363: warning: 'fixup_bigphys_addr' declared inline after being called
+>    include/asm/pgtable.h:363: warning: previous declaration of 'fixup_bigphys_addr' was here
+>    include/asm-mips/mach-au1x00/ioremap.h: In function `fixup_bigphys_addr':
+>    include/asm-mips/mach-au1x00/ioremap.h:26: warning: implicit declaration of function `__fixup_bigphys_addr'
+>    arch/mips/au1000/common/setup.c: At top level:
+>    arch/mips/au1000/common/setup.c:159: error: conflicting types for '__fixup_bigphys_addr'
+>    include/asm-mips/mach-au1x00/ioremap.h:26: error: previous implicit declaration of '__fixup_bigphys_addr' was here
+>    arch/mips/au1000/common/setup.c: In function `__fixup_bigphys_addr':
+>    ...
+> 
+> After a little job I implemented the attached patch
+> (patch-64BIT_PHYS_ADDR) that works on my system on both settings
+> (CONFIG_64BIT_PHYS_ADDR on or off).
+> 
+> I don't know if it can resolve the above problem for others CPUs (I
+> tested it on au1100) but, at least, on this processor the PCMCIA
+> support now is functional. :)
+> 
+> I also suggest to apply the second patch (patch-PCMCIA_Kconfig) who
+> simply auto enable 64 bit support when choosing PCMCIA support.
+> 
+> Ciao,
+> 
+> Rodolfo
+> 

@@ -1,86 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Jul 2005 16:41:42 +0100 (BST)
-Received: from smtp001.bizmail.yahoo.com ([IPv6:::ffff:216.136.172.125]:7801
-	"HELO smtp001.bizmail.yahoo.com") by linux-mips.org with SMTP
-	id <S8226777AbVGPPlY>; Sat, 16 Jul 2005 16:41:24 +0100
-Received: (qmail 92730 invoked from network); 16 Jul 2005 15:42:49 -0000
-Received: from unknown (HELO ?192.168.1.107?) (ppopov@embeddedalley.com@63.194.214.47 with plain)
-  by smtp001.bizmail.yahoo.com with SMTP; 16 Jul 2005 15:42:49 -0000
-Subject: Re: Support for (au1100) 64-bit physical address space broken on
-	2.6.12?
-From:	Pete Popov <ppopov@embeddedalley.com>
-Reply-To: ppopov@embeddedalley.com
-To:	Rodolfo Giometti <giometti@linux.it>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Jul 2005 11:57:43 +0100 (BST)
+Received: from 81-174-11-161.f5.ngi.it ([IPv6:::ffff:81.174.11.161]:24296 "EHLO
+	zaigor.enneenne.com") by linux-mips.org with ESMTP
+	id <S8226742AbVGQK52>; Sun, 17 Jul 2005 11:57:28 +0100
+Received: from giometti by zaigor.enneenne.com with local (Exim 3.36 #1 (Debian))
+	id 1Du6rF-0005kS-00; Sun, 17 Jul 2005 12:58:53 +0200
+Date:	Sun, 17 Jul 2005 12:58:53 +0200
+From:	Rodolfo Giometti <giometti@linux.it>
+To:	Pete Popov <ppopov@embeddedalley.com>
 Cc:	linux-mips <linux-mips@linux-mips.org>
-In-Reply-To: <20050716124205.GA26127@enneenne.com>
-References: <20050716124205.GA26127@enneenne.com>
-Content-Type: text/plain
-Organization: Embedded Alley Solutions, Inc
-Date:	Sat, 16 Jul 2005 08:42:55 -0700
-Message-Id: <1121528575.27121.3.camel@localhost.localdomain>
+Subject: Re: Support for (au1100) 64-bit physical address space broken on 2.6.12?
+Message-ID: <20050717105853.GA21844@enneenne.com>
+References: <20050716124205.GA26127@enneenne.com> <1121528575.27121.3.camel@localhost.localdomain>
 Mime-Version: 1.0
-X-Mailer: Evolution 2.0.4 (2.0.4-4) 
-Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@embeddedalley.com>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="SLDf9lqlvOQaIe6s"
+Content-Disposition: inline
+In-Reply-To: <1121528575.27121.3.camel@localhost.localdomain>
+Organization: Programmi e soluzioni GNU/Linux
+X-PGP-Key: gpg --keyserver keyserver.penguin.de --recv-keys D25A5633
+User-Agent: Mutt/1.5.6+20040722i
+Return-Path: <giometti@enneenne.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8519
+X-archive-position: 8520
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@embeddedalley.com
+X-original-sender: giometti@linux.it
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 2005-07-16 at 14:42 +0200, Rodolfo Giometti wrote:
-> Hello,
-> 
-> switching from linux-mips 2.6.12-rc3 to 2.6.12 I notice that the
-> following patch has been applied:
-> 
->    http://www.linux-mips.org/archives/linux-mips/2005-06/msg00207.html
-> 
-> But, on my system, recompiling the source I noticed that compilation
-> stops with errors. Even downloading a clean version of source code
-> from linux-mips's CVS and choosing, for instance, the board DB1100, I
-> got the same result.
-> 
-> The problem is that the above patch works well if the 64-bit physical
-> address space support is disabled, but, if enabled, it breaks
-> compilation stage.
 
-I fixed this is the latest tree a couple of days ago.
+--SLDf9lqlvOQaIe6s
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Pete
+On Sat, Jul 16, 2005 at 08:42:55AM -0700, Pete Popov wrote:
+> I fixed this is the latest tree a couple of days ago.
 
-> Here what I get after getting source form CVS and doing the commands:
-> 
->    # make pb1100_defconfig   (this board turn on CONFIG_64BIT_PHYS_ADDR option)
->    # make
->    ...
->    include/asm-mips/mach-au1x00/ioremap.h:25: warning: static declaration of 'fixup_bigphys_addr' follows non-static declaration
->    include/asm/pgtable.h:363: warning: 'fixup_bigphys_addr' declared inline after being called
->    include/asm/pgtable.h:363: warning: previous declaration of 'fixup_bigphys_addr' was here
->    include/asm-mips/mach-au1x00/ioremap.h: In function `fixup_bigphys_addr':
->    include/asm-mips/mach-au1x00/ioremap.h:26: warning: implicit declaration of function `__fixup_bigphys_addr'
->    arch/mips/au1000/common/setup.c: At top level:
->    arch/mips/au1000/common/setup.c:159: error: conflicting types for '__fixup_bigphys_addr'
->    include/asm-mips/mach-au1x00/ioremap.h:26: error: previous implicit declaration of '__fixup_bigphys_addr' was here
->    arch/mips/au1000/common/setup.c: In function `__fixup_bigphys_addr':
->    ...
-> 
-> After a little job I implemented the attached patch
-> (patch-64BIT_PHYS_ADDR) that works on my system on both settings
-> (CONFIG_64BIT_PHYS_ADDR on or off).
-> 
-> I don't know if it can resolve the above problem for others CPUs (I
-> tested it on au1100) but, at least, on this processor the PCMCIA
-> support now is functional. :)
-> 
-> I also suggest to apply the second patch (patch-PCMCIA_Kconfig) who
-> simply auto enable 64 bit support when choosing PCMCIA support.
-> 
-> Ciao,
-> 
-> Rodolfo
-> 
+Great! :)
+
+Did you already publish it? I checked the linux-mips CVS before
+sending my patches but I saw nothing about it. :-o
+
+Where can I get your patch in order to compare the two solutions?
+
+Thanks,
+
+Rodolfo
+
+--=20
+
+GNU/Linux Solutions                  e-mail:    giometti@linux.it
+Linux Device Driver                             giometti@enneenne.com
+Embedded Systems                     home page: giometti.enneenne.com
+UNIX programming                     phone:     +39 349 2432127
+
+--SLDf9lqlvOQaIe6s
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.4 (GNU/Linux)
+
+iD8DBQFC2jntQaTCYNJaVjMRAj0MAJ0THPhdWL9Oq65ShR2CziY1NWUPdACcDGU8
+roLud22sCYOlVPvj2RsAmbY=
+=WGCQ
+-----END PGP SIGNATURE-----
+
+--SLDf9lqlvOQaIe6s--

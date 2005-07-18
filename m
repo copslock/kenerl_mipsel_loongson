@@ -1,55 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jul 2005 15:26:42 +0100 (BST)
-Received: from laf31-5-82-235-130-100.fbx.proxad.net ([IPv6:::ffff:82.235.130.100]:40422
-	"EHLO lexbox.fr") by linux-mips.org with ESMTP id <S8226827AbVGRO0Z> convert rfc822-to-8bit;
-	Mon, 18 Jul 2005 15:26:25 +0100
-Subject: undefined symbol '__divdi3' & '__moddi3' on linux kernel 2.6.10  (toolchain Linuxi386/Mips32)
-Date:	Mon, 18 Jul 2005 16:25:45 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jul 2005 15:42:44 +0100 (BST)
+Received: from mail.mazunetworks.com ([IPv6:::ffff:4.19.249.111]:32184 "EHLO
+	mail.mazunetworks.com") by linux-mips.org with ESMTP
+	id <S8226827AbVGROm3>; Mon, 18 Jul 2005 15:42:29 +0100
+Received: from [172.31.1.134] ([172.31.1.134])
+	by mail.mazunetworks.com (8.12.11/8.12.11) with ESMTP id j6IEVXNX019481;
+	Mon, 18 Jul 2005 10:31:33 -0400
+Message-ID: <42DBC030.7020600@mazunetworks.com>
+Date:	Mon, 18 Jul 2005 10:44:00 -0400
+From:	David Chau <dchau@mazunetworks.com>
+User-Agent: Mozilla Thunderbird 1.0.2-1.3.3 (X11/20050513)
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Message-ID: <17AB476A04B7C842887E0EB1F268111E01551B@xpserver.intra.lexbox.org>
-Content-class: urn:content-classes:message
-X-MS-Has-Attach: 
-X-MimeOLE: Produced By Microsoft Exchange V6.5.6944.0
-X-MS-TNEF-Correlator: 
-Thread-Topic: undefined symbol '__divdi3' & '__moddi3' on linux kernel 2.6.10  (toolchain Linuxi386/Mips32)
-thread-index: AcWLpJW1Crzv+XqMRBKcfve/GxMtrQ==
-From:	"David Sanchez" <david.sanchez@lexbox.fr>
-To:	<linux-mips@linux-mips.org>
-Return-Path: <david.sanchez@lexbox.fr>
+To:	Dan Malek <dan@embeddedalley.com>
+CC:	linux-mips@linux-mips.org
+Subject: Re: Why is mmap()ed reserved memory so slow?
+References: <42D836F8.8030209@mazunetworks.com> <dc678ee4c98d1fc3eb2cb1960b759f05@embeddedalley.com>
+In-Reply-To: <dc678ee4c98d1fc3eb2cb1960b759f05@embeddedalley.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <dchau@mazunetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8528
+X-archive-position: 8529
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david.sanchez@lexbox.fr
+X-original-sender: dchau@mazunetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+Dan Malek wrote:
 
-I'm a newby on Linux/Mips more my English is very poor so sorry...
-But I have a big problem (for me):
+> How about a little more info, like what kernel are you using and what are
+> the parameters you are sending to mmap()?
 
-I want to cross-compile my linux kernel 2.6.10 on my PC i386 for mips32
-(alchemy AU1550) CPU.
-I developed a module that contains some operations on types loff_t (i.e
-long long) such as div and mod. The code is in a foo.c file.
+Linux (none) 2.4.31 #412 SMP Fri Jul 15 16:26:05 EDT 2005 mips unknown
+(unmodified kernel from linux-mips.org).
+It's running on the SB1 on a Broadcom 1250 board.
 
-I successfully built a cross toolchain using:
-The bin utils (Bintuils-2.15), the glibc headers (glibc-2.3.5) and the
-gcc core (gcc-3.4.4).
+I mmap() with:
+int mem_fd = open("/dev/mem", O_RDWR);
+void* mem_base =
+    mmap(NULL, DRIVER_MEM_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED,
+         mem_fd, DRIVER_MEM_PHYS_BASE);
+Where driver_mem_phys_base = 253M, and driver_mem_size=1M.
 
-The compilation of the kernel works but unfortunately the link generates
-two error messages on the file foo.c:
-Undefined reference to '__divdi3'
-Undefined reference to '__moddi3'
+> The better way to approach this is to place an mmap() function in the
+> associated driver that works in conjunction with the application to gain
+> shared access as you expect.  This also closes a hole where an errant
+> application could write into unexpected places through /dev/mem.
 
-What I'm doing wrong ? 
-Why the gcc doesn't embed the symbol implementation ? 
-And so where can I found an implementation ? 
 
-Thanks for all your help
+Could you point me to an example of this so I can figure out how to do it?
+
+Thanks,
+David

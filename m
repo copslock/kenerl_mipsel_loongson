@@ -1,51 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jul 2005 18:18:11 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:59396 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8226838AbVGRRRz>; Mon, 18 Jul 2005 18:17:55 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 9E85DE1C9F; Mon, 18 Jul 2005 19:19:30 +0200 (CEST)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 07033-05; Mon, 18 Jul 2005 19:19:30 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 602FDE1C96; Mon, 18 Jul 2005 19:19:30 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j6IHJX2J011857;
-	Mon, 18 Jul 2005 19:19:34 +0200
-Date:	Mon, 18 Jul 2005 18:19:43 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Andy Isaacson <adi@hexapodia.org>,
-	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [patch 3/5] SiByte fixes for 2.6.12
-In-Reply-To: <Pine.LNX.4.61L.0506301712410.28331@blysk.ds.pg.gda.pl>
-Message-ID: <Pine.LNX.4.61L.0507141744040.31857@blysk.ds.pg.gda.pl>
-References: <20050622230137.GA17954@broadcom.com>
- <Pine.LNX.4.61L.0506231202130.17155@blysk.ds.pg.gda.pl>
- <20050623194826.GA23653@hexapodia.org> <Pine.LNX.4.61L.0506301712410.28331@blysk.ds.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jul 2005 18:24:42 +0100 (BST)
+Received: from smtp-out.hotpop.com ([IPv6:::ffff:38.113.3.61]:5320 "EHLO
+	smtp-out.hotpop.com") by linux-mips.org with ESMTP
+	id <S8226838AbVGRRYY> convert rfc822-to-8bit; Mon, 18 Jul 2005 18:24:24 +0100
+Received: from hotpop.com (kubrick.hotpop.com [38.113.3.103])
+	by smtp-out.hotpop.com (Postfix) with SMTP id 7CAAE1454656
+	for <linux-mips@linux-mips.org>; Mon, 18 Jul 2005 17:25:52 +0000 (UTC)
+Received: from cavan (unknown [62.253.252.7])
+	by smtp-2.hotpop.com (Postfix) with ESMTP
+	id A751A145439B; Mon, 18 Jul 2005 17:25:50 +0000 (UTC)
+Date:	Mon, 18 Jul 2005 17:25:50 +0000
+From:	jaypee@hotpop.com
+Subject: Re: Au1550 ethernet throughput low
+To:	Clem Taylor <clem.taylor@gmail.com>, linux-mips@linux-mips.org
+References: <1121270402l.7656l.3l@cavan>
+	<ecb4efd1050714171318ce81aa@mail.gmail.com> <1121415711l.5178l.3l@cavan>
+	<200507151117.49012.bruno.randolf@4g-systems.biz>
+	<1121680641l.13805l.1l@cavan> <ecb4efd105071809082628bb27@mail.gmail.com>
+In-Reply-To: <ecb4efd105071809082628bb27@mail.gmail.com> (from
+	clem.taylor@gmail.com on Mon Jul 18 17:08:20 2005)
+X-Mailer: Balsa 2.3.3
+Message-Id: <1121707552l.13805l.10l@cavan>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.85.1/982/Sun Jul 17 14:45:12 2005 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii; DelSp=Yes; Format=Flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8BIT
+X-HotPOP: -----------------------------------------------
+                   Sent By HotPOP.com FREE Email
+             Get your FREE POP email at www.HotPOP.com
+          -----------------------------------------------
+Return-Path: <jaypee@hotpop.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8534
+X-archive-position: 8535
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: jaypee@hotpop.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 30 Jun 2005, Maciej W. Rozycki wrote:
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
 
->  Unless there are objections I'd like to apply this patch.
 
- Thus it's now in.
+On 18/07/05 17:08:20, Clem Taylor wrote:
+> 
+> Here's what I'm using... This is for the development kernel, I haven't
+> created the release kernel config yet. Our board is called 'aquila' as
+> referred to in the config file.
+> 
+>                         --Clem
+> 
 
-  Maciej
+Thanks Clem,
+
+I've fixed it. I turn off kernel debugging and it works a treat.
+Doh! So easy.
+
+Thank you everyone for your posts.
+This was sending me round the bend.
+
+- -- 
+mailto:jaypee@hotpop.com
+http://www.jaypee.org.uk
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.1 (GNU/Linux)
+
+iD8DBQFC2+YgZDxnKy3oOpYRAgM6AJ9HsvTNfyu1yUCFurAyWVUW2YRmjQCfag3c
+eBMrNLBWaIzIE+ARD8GClFQ=
+=413X
+-----END PGP SIGNATURE-----

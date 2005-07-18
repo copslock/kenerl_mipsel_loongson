@@ -1,58 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jul 2005 15:42:44 +0100 (BST)
-Received: from mail.mazunetworks.com ([IPv6:::ffff:4.19.249.111]:32184 "EHLO
-	mail.mazunetworks.com") by linux-mips.org with ESMTP
-	id <S8226827AbVGROm3>; Mon, 18 Jul 2005 15:42:29 +0100
-Received: from [172.31.1.134] ([172.31.1.134])
-	by mail.mazunetworks.com (8.12.11/8.12.11) with ESMTP id j6IEVXNX019481;
-	Mon, 18 Jul 2005 10:31:33 -0400
-Message-ID: <42DBC030.7020600@mazunetworks.com>
-Date:	Mon, 18 Jul 2005 10:44:00 -0400
-From:	David Chau <dchau@mazunetworks.com>
-User-Agent: Mozilla Thunderbird 1.0.2-1.3.3 (X11/20050513)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jul 2005 16:49:17 +0100 (BST)
+Received: from 64-30-195-78.dsl.linkline.com ([IPv6:::ffff:64.30.195.78]:37000
+	"EHLO jg555.com") by linux-mips.org with ESMTP id <S8226831AbVGRPs6>;
+	Mon, 18 Jul 2005 16:48:58 +0100
+Received: from [172.16.0.55] ([::ffff:172.16.0.55])
+  (AUTH: PLAIN root, TLS: TLSv1/SSLv3,256bits,AES256-SHA)
+  by jg555.com with esmtp; Mon, 18 Jul 2005 08:50:35 -0700
+  id 00234001.42DBCFCB.0000771B
+Message-ID: <42DBCFB0.4070703@jg555.com>
+Date:	Mon, 18 Jul 2005 08:50:08 -0700
+From:	Jim Gifford <maillist@jg555.com>
+User-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)
 X-Accept-Language: en-us, en
 MIME-Version: 1.0
-To:	Dan Malek <dan@embeddedalley.com>
-CC:	linux-mips@linux-mips.org
-Subject: Re: Why is mmap()ed reserved memory so slow?
-References: <42D836F8.8030209@mazunetworks.com> <dc678ee4c98d1fc3eb2cb1960b759f05@embeddedalley.com>
-In-Reply-To: <dc678ee4c98d1fc3eb2cb1960b759f05@embeddedalley.com>
+To:	Linux MIPS List <linux-mips@linux-mips.org>
+Subject: glibc syscall patch
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <dchau@mazunetworks.com>
+Return-Path: <maillist@jg555.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8529
+X-archive-position: 8530
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dchau@mazunetworks.com
+X-original-sender: maillist@jg555.com
 Precedence: bulk
 X-list: linux-mips
 
-Dan Malek wrote:
+Just an FYI, the current glibc patch to fix the creation of syscall.h is 
+being help up. For those parties interested take a look at the bugzilla.
 
-> How about a little more info, like what kernel are you using and what are
-> the parameters you are sending to mmap()?
+http://sources.redhat.com/bugzilla/show_bug.cgi?id=758
 
-Linux (none) 2.4.31 #412 SMP Fri Jul 15 16:26:05 EDT 2005 mips unknown
-(unmodified kernel from linux-mips.org).
-It's running on the SB1 on a Broadcom 1250 board.
-
-I mmap() with:
-int mem_fd = open("/dev/mem", O_RDWR);
-void* mem_base =
-    mmap(NULL, DRIVER_MEM_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED,
-         mem_fd, DRIVER_MEM_PHYS_BASE);
-Where driver_mem_phys_base = 253M, and driver_mem_size=1M.
-
-> The better way to approach this is to place an mmap() function in the
-> associated driver that works in conjunction with the application to gain
-> shared access as you expect.  This also closes a hole where an errant
-> application could write into unexpected places through /dev/mem.
-
-
-Could you point me to an example of this so I can figure out how to do it?
-
-Thanks,
-David
+-- 
+----
+Jim Gifford
+maillist@jg555.com

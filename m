@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jul 2005 11:04:42 +0100 (BST)
-Received: from [IPv6:::ffff:218.94.38.154] ([IPv6:::ffff:218.94.38.154]:58255
-	"EHLO xianan.com.cn") by linux-mips.org with ESMTP
-	id <S8226818AbVGRKES>; Mon, 18 Jul 2005 11:04:18 +0100
-Received: from [192.168.10.105] ([127.0.0.1]:36833)
-	by xianan.com.cn with [XMail 1.21 ESMTP Server]
-	id <SCED> for <linux-mips@linux-mips.org> from <zhuangyy@xianan.com.cn>;
-	Mon, 18 Jul 2005 18:03:07 +0800
-Message-ID: <42DB7E87.5000402@xianan.com.cn>
-Date:	Mon, 18 Jul 2005 18:03:51 +0800
-From:	ZHUANG YUYAO <zhuangyy@xianan.com.cn>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jul 2005 11:09:00 +0100 (BST)
+Received: from smtpr3.tom.com ([IPv6:::ffff:202.108.255.198]:16962 "HELO
+	tom.com") by linux-mips.org with SMTP id <S8226818AbVGRKIf>;
+	Mon, 18 Jul 2005 11:08:35 +0100
+Received: from [192.168.10.105] (unknown [218.94.38.154])
+	by bjapp4 (Coremail) with SMTP id HkCp9Zl+20JIACaa.1
+	for <linux-mips@linux-mips.org>; Mon, 18 Jul 2005 18:04:29 +0800 (CST)
+X-Originating-IP: [218.94.38.154]
+Message-ID: <42DB7E98.2050800@tom.com>
+Date:	Mon, 18 Jul 2005 18:04:08 +0800
+From:	Zhuang Yuyao <ihollo@tom.com>
 User-Agent: Mozilla Thunderbird 1.0.2 (Windows/20050317)
 X-Accept-Language: en-us, en
 MIME-Version: 1.0
@@ -18,21 +18,21 @@ Subject: ADM5120 kernel 2.6 porting
 References: <200507122057.j6CKqmI7021129@mailbox8.ucsd.edu> <42D52E2D.6020305@amsat.org>
 In-Reply-To: <42D52E2D.6020305@amsat.org>
 Content-Type: multipart/mixed;
- boundary="------------040600060507070308060705"
-Return-Path: <zhuangyy@xianan.com.cn>
+ boundary="------------040802060704070003070002"
+Return-Path: <ihollo@tom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8524
+X-archive-position: 8525
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zhuangyy@xianan.com.cn
+X-original-sender: ihollo@tom.com
 Precedence: bulk
 X-list: linux-mips
 
 This is a multi-part message in MIME format.
---------------040600060507070308060705
+--------------040802060704070003070002
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
 
@@ -41,6 +41,7 @@ Hi, Jeroen
 I've made two patches to setup.c and pci-adm5120.c which are included in
 your 050329 patch against linuxmips CVS
 (http://sharon.esrac.ele.tue.nl/users/pe1rxq/linux-adm/linux-adm-20050329.diff 
+
 
 BTW. this patch is against linuxmips CVS date 2005-03-29 instead of
 revision 2.6.12-rc1.)
@@ -52,7 +53,7 @@ linux-adm-20050329.diff. I've tested it with linuxmips CVS revision
 
 USB support is disabled in my kernel .config because I still do not know
 how to get rid of these following compile errors:
-   CC      drivers/usb/host/adm5120-hcd.o
+    CC      drivers/usb/host/adm5120-hcd.o
 drivers/usb/host/adm5120-hcd.c: In function `adm5120hcd_probe':
 drivers/usb/host/adm5120-hcd.c:706: warning: implicit declaration of
 function `usb_register_bus'
@@ -71,10 +72,11 @@ Looks like USB_STATE_RUNNING no longer exists in new kernel sources.
 
 
 Zhuang Yuyao
-     2005-07-18
+      2005-07-18
 
 
---------------040600060507070308060705
+
+--------------040802060704070003070002
 Content-Type: text/plain;
  name="pci-adm5120.patch"
 Content-Transfer-Encoding: 7bit
@@ -91,7 +93,8 @@ Content-Disposition: inline;
 +arch_initcall(adm5120_pci_setup);
 
 
---------------040600060507070308060705
+
+--------------040802060704070003070002
 Content-Type: text/plain;
  name="adm5120.setup.c.patch"
 Content-Transfer-Encoding: 7bit
@@ -124,7 +127,8 @@ Content-Disposition: inline;
  	return "ADM5120 Board";
 
 
---------------040600060507070308060705
+
+--------------040802060704070003070002
 Content-Type: text/plain;
  name="config.save"
 Content-Transfer-Encoding: 7bit
@@ -1042,4 +1046,5 @@ CONFIG_GENERIC_HARDIRQS=y
 CONFIG_GENERIC_IRQ_PROBE=y
 
 
---------------040600060507070308060705--
+
+--------------040802060704070003070002--

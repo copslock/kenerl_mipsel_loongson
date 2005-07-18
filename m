@@ -1,72 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jul 2005 08:53:17 +0100 (BST)
-Received: from 81-174-11-161.f5.ngi.it ([IPv6:::ffff:81.174.11.161]:50365 "EHLO
-	zaigor.enneenne.com") by linux-mips.org with ESMTP
-	id <S8226813AbVGRHxD>; Mon, 18 Jul 2005 08:53:03 +0100
-Received: from giometti by zaigor.enneenne.com with local (Exim 3.36 #1 (Debian))
-	id 1DuQSS-0007kx-00; Mon, 18 Jul 2005 09:54:36 +0200
-Date:	Mon, 18 Jul 2005 09:54:35 +0200
-From:	Rodolfo Giometti <giometti@linux.it>
-To:	Pete Popov <ppopov@embeddedalley.com>
-Cc:	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: Support for (au1100) 64-bit physical address space broken on 2.6.12?
-Message-ID: <20050718075435.GB21844@enneenne.com>
-References: <20050716124205.GA26127@enneenne.com> <1121528575.27121.3.camel@localhost.localdomain> <20050717105853.GA21844@enneenne.com> <1121617324.27121.36.camel@localhost.localdomain>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="IrhDeMKUP4DT/M7F"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jul 2005 10:56:17 +0100 (BST)
+Received: from smtp-out.hotpop.com ([IPv6:::ffff:38.113.3.61]:7564 "EHLO
+	smtp-out.hotpop.com") by linux-mips.org with ESMTP
+	id <S8226818AbVGRJ4A> convert rfc822-to-8bit; Mon, 18 Jul 2005 10:56:00 +0100
+Received: from hotpop.com (kubrick.hotpop.com [38.113.3.103])
+	by smtp-out.hotpop.com (Postfix) with SMTP id 4CBF81446DEE
+	for <linux-mips@linux-mips.org>; Mon, 18 Jul 2005 09:57:24 +0000 (UTC)
+Received: from cavan (unknown [62.253.252.7])
+	by smtp-2.hotpop.com (Postfix) with ESMTP
+	id 65EA91449ED2; Mon, 18 Jul 2005 09:57:18 +0000 (UTC)
+Date:	Mon, 18 Jul 2005 09:57:13 +0000
+From:	jaypee@hotpop.com
+Subject: Re: Au1550 ethernet throughput low
+To:	Bruno Randolf <bruno.randolf@4g-systems.biz>
+Cc:	Clem Taylor <clem.taylor@gmail.com>,
+	linux-mips <linux-mips@linux-mips.org>
+References: <1121270402l.7656l.3l@cavan>
+	<ecb4efd1050714171318ce81aa@mail.gmail.com> <1121415711l.5178l.3l@cavan>
+	<200507151117.49012.bruno.randolf@4g-systems.biz>
+In-Reply-To: <200507151117.49012.bruno.randolf@4g-systems.biz> (from
+	bruno.randolf@4g-systems.biz on Fri Jul 15 10:17:44 2005)
+X-Mailer: Balsa 2.3.3
+Message-Id: <1121680641l.13805l.1l@cavan>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; DelSp=Yes; Format=Flowed
 Content-Disposition: inline
-In-Reply-To: <1121617324.27121.36.camel@localhost.localdomain>
-Organization: Programmi e soluzioni GNU/Linux
-X-PGP-Key: gpg --keyserver keyserver.penguin.de --recv-keys D25A5633
-User-Agent: Mutt/1.5.6+20040722i
-Return-Path: <giometti@enneenne.com>
+Content-Transfer-Encoding: 8BIT
+X-HotPOP: -----------------------------------------------
+                   Sent By HotPOP.com FREE Email
+             Get your FREE POP email at www.HotPOP.com
+          -----------------------------------------------
+Return-Path: <jaypee@hotpop.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8522
+X-archive-position: 8523
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: giometti@linux.it
+X-original-sender: jaypee@hotpop.com
 Precedence: bulk
 X-list: linux-mips
 
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
 
---IrhDeMKUP4DT/M7F
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 15/07/05 10:17:44, Bruno Randolf wrote:
+> On Friday 15 July 2005 10:21, jaypee@hotpop.com wrote:
+> > Yours is using ~30% cpu to send 100Mbps.
+> > Mine is using 100% to send 66Mbps.
+> 
+> i remember that ethernet thruput dropped from nearly 100Mbps to about
+> 60-70Mbps on our Au1500 based board, when we enabled
+> CONFIG_NONCOHERENT_IO...
 
-On Sun, Jul 17, 2005 at 09:22:04AM -0700, Pete Popov wrote:
-> Just do a cvs update in your directory and you'll get the patch.
+Thanks Bruno but I can't find that config option to select.
+I did find CONFIG_
+Changing from CONFIG_DMA_NONCOHERENT to CONFIG_DMA_COHERENT  make no  
+difference, although I can see that if the kernel invalidates the cache
+line for each packet on send there would be a performance hit.
 
-Mmm... I just did as you suggest but I got nothing... ok, maybe it's a
-my problem.
+Clem can you send me your .config to see if I can figure out why your  
+setup works?
 
-I'll take a better look to the on line CVS. :)
+> 
+> bruno
+> 
 
-Ciao,
-
-Rodolfo
-
---=20
-
-GNU/Linux Solutions                  e-mail:    giometti@linux.it
-Linux Device Driver                             giometti@enneenne.com
-Embedded Systems                     home page: giometti.enneenne.com
-UNIX programming                     phone:     +39 349 2432127
-
---IrhDeMKUP4DT/M7F
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
+- -- 
+mailto:jaypee@hotpop.com
+http://www.jaypee.org.uk
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.4 (GNU/Linux)
+Version: GnuPG v1.4.1 (GNU/Linux)
 
-iD8DBQFC22A7QaTCYNJaVjMRAuEEAJ9tMNXsoRFowkJQ/DH1NA4ynVoHFgCfQPlT
-Ez8XijVtKXrLeW70HotXoyw=
-=EP3O
+iD8DBQFC230BZDxnKy3oOpYRAjq2AJ49DO0KrqGmWcS1N1dHHLe2lOlEhgCeNyqw
+aTRA+DA6FyMNakcLBt5oV88=
+=TR4O
 -----END PGP SIGNATURE-----
-
---IrhDeMKUP4DT/M7F--

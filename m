@@ -1,55 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jul 2005 17:04:01 +0100 (BST)
-Received: from [IPv6:::ffff:62.253.252.7] ([IPv6:::ffff:62.253.252.7]:18596
-	"EHLO exterity.co.uk") by linux-mips.org with ESMTP
-	id <S8226887AbVGSQDn> convert rfc822-to-8bit; Tue, 19 Jul 2005 17:03:43 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jul 2005 17:26:30 +0100 (BST)
+Received: from web25801.mail.ukl.yahoo.com ([IPv6:::ffff:217.12.10.186]:2643
+	"HELO web25801.mail.ukl.yahoo.com") by linux-mips.org with SMTP
+	id <S8226889AbVGSQ0L>; Tue, 19 Jul 2005 17:26:11 +0100
+Received: (qmail 58118 invoked by uid 60001); 19 Jul 2005 16:27:51 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.fr;
+  h=Message-ID:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
+  b=g8P2tZD3G/H9RLoYGrKa/ULrjnj6uzRPJ3y/ukBf8St8ChGR+A26mpAw7ABgNpMmzHAVwzY1jtGr3k9aQSCoYVE3mXvAmbPSqW6lh3H/owrx7FgM5dpV9cTJoUER3tFvbplNXi8p9zCL3dNEDoTgvL3q4rnjH8Y39cnKP2aRyoI=  ;
+Message-ID: <20050719162751.58116.qmail@web25801.mail.ukl.yahoo.com>
+Received: from [217.167.142.149] by web25801.mail.ukl.yahoo.com via HTTP; Tue, 19 Jul 2005 18:27:51 CEST
+Date:	Tue, 19 Jul 2005 18:27:51 +0200 (CEST)
+From:	moreau francis <francis_moreau2000@yahoo.fr>
+Subject: wrong tags in cvs.
+To:	linux-mips@linux-mips.org
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: SNR calculation in stv0299 driver
-Content-class: urn:content-classes:message
-X-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0
-Date:	Tue, 19 Jul 2005 17:08:10 +0100
-Message-ID: <CEA5455795C8AA44AA1E18EF32379B210BA979@exterity-serv1.Exterity.local>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: SNR calculation in stv0299 driver
-Thread-Index: AcWMfA7+zUQuRUwsRJCe8P1oYSmlsg==
-From:	"Gill Robles-Thome" <gill.robles@exterity.co.uk>
-To:	<linux-mips@linux-mips.org>
-Return-Path: <gill.robles@exterity.co.uk>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <francis_moreau2000@yahoo.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8555
+X-archive-position: 8556
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gill.robles@exterity.co.uk
+X-original-sender: francis_moreau2000@yahoo.fr
 Precedence: bulk
 X-list: linux-mips
 
-Hi -
+Hi,
 
-Can anyone explain the algorithm used to calculate the SNR for the
-stv0299 driver? Ie
+It seems that files issued with the merge with linux 2.6.13-rcX have been
+incorrectly tagged with linux_2_6_12-rcX tags.
+
+thanks,
+
+        Francis
 
 
-	case FE_READ_SNR:
-	{
-		s32 snr = 0xffff - ((stv0299_readreg (i2c, 0x24) << 8)
-				   | stv0299_readreg (i2c, 0x25));
-		snr = 3 * (snr - 0xa100);
-		*((u16*) arg) = (snr > 0xffff) ? 0xffff :
-				(snr < 0) ? 0 : snr;
-		break;
-	}
- 
+	
 
-I don't understand where the 0xa100 value comes from, or why the result
-is them multiplied by 3!  Registers 0x24 and 0x25 are apparently "Noise
-Indicator" registers, but the stv0299 specification doesn't explain very
-well how these registers should be used.
-
-Thanks for your help,
-Gill
+	
+		
+___________________________________________________________________________ 
+Appel audio GRATUIT partout dans le monde avec le nouveau Yahoo! Messenger 
+Téléchargez cette version sur http://fr.messenger.yahoo.com

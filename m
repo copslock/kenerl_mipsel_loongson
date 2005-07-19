@@ -1,47 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jul 2005 17:26:30 +0100 (BST)
-Received: from web25801.mail.ukl.yahoo.com ([IPv6:::ffff:217.12.10.186]:2643
-	"HELO web25801.mail.ukl.yahoo.com") by linux-mips.org with SMTP
-	id <S8226889AbVGSQ0L>; Tue, 19 Jul 2005 17:26:11 +0100
-Received: (qmail 58118 invoked by uid 60001); 19 Jul 2005 16:27:51 -0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jul 2005 17:29:23 +0100 (BST)
+Received: from zproxy.gmail.com ([IPv6:::ffff:64.233.162.203]:22414 "EHLO
+	zproxy.gmail.com") by linux-mips.org with ESMTP id <S8226889AbVGSQ3I> convert rfc822-to-8bit;
+	Tue, 19 Jul 2005 17:29:08 +0100
+Received: by zproxy.gmail.com with SMTP id n1so1190583nzf
+        for <linux-mips@linux-mips.org>; Tue, 19 Jul 2005 09:30:47 -0700 (PDT)
 DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.fr;
-  h=Message-ID:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
-  b=g8P2tZD3G/H9RLoYGrKa/ULrjnj6uzRPJ3y/ukBf8St8ChGR+A26mpAw7ABgNpMmzHAVwzY1jtGr3k9aQSCoYVE3mXvAmbPSqW6lh3H/owrx7FgM5dpV9cTJoUER3tFvbplNXi8p9zCL3dNEDoTgvL3q4rnjH8Y39cnKP2aRyoI=  ;
-Message-ID: <20050719162751.58116.qmail@web25801.mail.ukl.yahoo.com>
-Received: from [217.167.142.149] by web25801.mail.ukl.yahoo.com via HTTP; Tue, 19 Jul 2005 18:27:51 CEST
-Date:	Tue, 19 Jul 2005 18:27:51 +0200 (CEST)
-From:	moreau francis <francis_moreau2000@yahoo.fr>
-Subject: wrong tags in cvs.
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=naMJeIiUZAmYXUd+/7mKtj1PSe5G6hAIOdZnZfKH9mFWdGDJDBTUCFMqjgQGSPHyg37jfHpjSp37lHjWQMzY+t8TnQFIf483G/nBeTtziv4c/XP6EbptP86kgsZlRc0l4So/yznhgWCXYlPjzTl6evUOF6Jnq9wN9laqhVRKlcU=
+Received: by 10.36.105.13 with SMTP id d13mr1000563nzc;
+        Tue, 19 Jul 2005 09:30:21 -0700 (PDT)
+Received: by 10.36.47.11 with HTTP; Tue, 19 Jul 2005 09:30:20 -0700 (PDT)
+Message-ID: <f07e6e05071909301c212ab4@mail.gmail.com>
+Date:	Tue, 19 Jul 2005 22:00:20 +0530
+From:	Kishore K <hellokishore@gmail.com>
+Reply-To: Kishore K <hellokishore@gmail.com>
 To:	linux-mips@linux-mips.org
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Return-Path: <francis_moreau2000@yahoo.fr>
+Subject: bal instruction in gcc 3.x
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+Return-Path: <hellokishore@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8556
+X-archive-position: 8557
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: francis_moreau2000@yahoo.fr
+X-original-sender: hellokishore@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+We are facing a problem when U-boot is compiled with gcc 3.x
 
-It seems that files issued with the merge with linux 2.6.13-rcX have been
-incorrectly tagged with linux_2_6_12-rcX tags.
+U-boot  uses the following instruction in one of the files.
 
-thanks,
+bal jump_to_symbol
 
-        Francis
+This code gets compiled without any problem with gcc2. However, if I
+compile the code
+with gcc3, it exits with the error "Cannot branch to unknown symbol".
+
+What should we do to circumvent this problem ?
+
+I replaced 
+
+bal jump_to_symbol 
+
+by
+
+la t9, jump_to_symbol
+jalr t9
+
+Then code gets compiled properly without any problem. Please let me
+know, whether this
+is correct way of fixing the problem. I am newbie to MIPS assembly
+language. Why this
+change is required with gcc 3.x compiler ?
 
 
-	
-
-	
-		
-___________________________________________________________________________ 
-Appel audio GRATUIT partout dans le monde avec le nouveau Yahoo! Messenger 
-Téléchargez cette version sur http://fr.messenger.yahoo.com
+TIA,
+--kishore

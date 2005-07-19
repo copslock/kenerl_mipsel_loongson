@@ -1,65 +1,114 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jul 2005 17:29:23 +0100 (BST)
-Received: from zproxy.gmail.com ([IPv6:::ffff:64.233.162.203]:22414 "EHLO
-	zproxy.gmail.com") by linux-mips.org with ESMTP id <S8226889AbVGSQ3I> convert rfc822-to-8bit;
-	Tue, 19 Jul 2005 17:29:08 +0100
-Received: by zproxy.gmail.com with SMTP id n1so1190583nzf
-        for <linux-mips@linux-mips.org>; Tue, 19 Jul 2005 09:30:47 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=naMJeIiUZAmYXUd+/7mKtj1PSe5G6hAIOdZnZfKH9mFWdGDJDBTUCFMqjgQGSPHyg37jfHpjSp37lHjWQMzY+t8TnQFIf483G/nBeTtziv4c/XP6EbptP86kgsZlRc0l4So/yznhgWCXYlPjzTl6evUOF6Jnq9wN9laqhVRKlcU=
-Received: by 10.36.105.13 with SMTP id d13mr1000563nzc;
-        Tue, 19 Jul 2005 09:30:21 -0700 (PDT)
-Received: by 10.36.47.11 with HTTP; Tue, 19 Jul 2005 09:30:20 -0700 (PDT)
-Message-ID: <f07e6e05071909301c212ab4@mail.gmail.com>
-Date:	Tue, 19 Jul 2005 22:00:20 +0530
-From:	Kishore K <hellokishore@gmail.com>
-Reply-To: Kishore K <hellokishore@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: bal instruction in gcc 3.x
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-Return-Path: <hellokishore@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jul 2005 17:39:10 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:1289 "EHLO
+	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8226889AbVGSQiy>; Tue, 19 Jul 2005 17:38:54 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id ED406E1CBD; Tue, 19 Jul 2005 18:40:34 +0200 (CEST)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 15248-04; Tue, 19 Jul 2005 18:40:34 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id B7954E1CB9; Tue, 19 Jul 2005 18:40:34 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j6JGedLa030778;
+	Tue, 19 Jul 2005 18:40:39 +0200
+Date:	Tue, 19 Jul 2005 17:40:48 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Jan-Benedict Glaw <jbglaw@lug-owl.de>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Updating RTC with date command
+In-Reply-To: <20050719152008.GG20065@lug-owl.de>
+Message-ID: <Pine.LNX.4.61L.0507191645510.10363@blysk.ds.pg.gda.pl>
+References: <CBD77117272E1249BFDC21E33D555FDC06018D@dbde01.ent.ti.com>
+ <20050719143110.GD3108@linux-mips.org> <20050719144230.GE20065@lug-owl.de>
+ <Pine.LNX.4.61L.0507191555360.10363@blysk.ds.pg.gda.pl> <20050719152008.GG20065@lug-owl.de>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.85.1/984/Tue Jul 19 11:16:09 2005 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8557
+X-archive-position: 8558
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hellokishore@gmail.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-We are facing a problem when U-boot is compiled with gcc 3.x
+On Tue, 19 Jul 2005, Jan-Benedict Glaw wrote:
 
-U-boot  uses the following instruction in one of the files.
+> >  Well, `hwclock' should normally be used to update the RTC every time 
+> > after a manual system clock update.
+> 
+> Which of course should only be done once. Ever :)
 
-bal jump_to_symbol
+ Well, depending on whether the system is networked or not.  If it is, 
+it's not needed at all as you fetch the initial setting over NTP, too.  If 
+it's not, then unfortunately it's needed every time you notice the clock 
+has skewed too much.
 
-This code gets compiled without any problem with gcc2. However, if I
-compile the code
-with gcc3, it exits with the error "Cannot branch to unknown symbol".
+> >  Note that ntpd only updates minutes and seconds and then only if the 
+> > difference is small -- to account for the existence of time zones and a 
+> > system-specific relation between the time recoreded by the system and one 
+> > handled by the RTC.  Also the feature is broken by design -- ntpd 
+> > shouldn't do that at all in principle and in practice it leads to the 
+> > system time being corrupted on some machines using an RTC interrupt for 
+> > the system timer tick.
+> 
+> Aren't we expected to keep UTC time inside the HW clock? So there's no
 
-What should we do to circumvent this problem ?
+ It's a good idea, but whether it's feasible or not is unfortunately 
+system-specific.
 
-I replaced 
+> problem with timezones.  Also, if your timer interrupt source it that
+> broken that ntpd cannot track it, then you're having more servere
+> problems...
 
-bal jump_to_symbol 
+ Huh?  The time source is correct if let to run freely, but modifying the 
+time stored in RTC may disturb it.  This is e.g. the case with the 
+Motorola MC146818 and its clones which are rather common chips -- any 
+system using their periodic interrupt for the system clock tick suffers 
+from this problem.
 
-by
+> > > distributions seem to also update the HW clock at system shutdown time.
+> > 
+> >  Which is where it should really happen.
+> 
+> I disagree. IFF there's a known good time, it's acceptable to write it
+> into a backing HW clock. In case there isn't (any longer), it's probably
+> better to not write to the HW clock at all. Probably it's contents is
+> better than a wrongly manually adjusted local date setting...
 
-la t9, jump_to_symbol
-jalr t9
+ Something has to preserve the clock across reboots and power-offs.  
+Which of the sources is to be trusted more is a matter of a local policy 
+and neither the kernel nor tools should force any particular one.
 
-Then code gets compiled properly without any problem. Please let me
-know, whether this
-is correct way of fixing the problem. I am newbie to MIPS assembly
-language. Why this
-change is required with gcc 3.x compiler ?
+> I do trust ntpd, but do I trust someone who looks at it's watch?
 
+ Well, I do trust myself ultimately...
 
-TIA,
---kishore
+> > > So the correct solution to your problem is to either shutdown once
+> > > (workaround) or keep ntpd running (the solution[tm]).
+> > 
+> >  I think you've got the figures reversed (well, it's useful to have ntpd 
+> > running, but it should not fiddle with the RTC).
+> 
+> Well, I stated my oppinion. Maybe ntpd shouldn't set the clock (or make
+> the kernel set it internally), but for sure I don't want the HW clock
+> being set by hand (except very first power-up of the system) and by no
+> means if local time came up from a manual process.
+
+ If ntpd has been running with a good reference it must have disciplined 
+the system clock, so it should have a smaller drift than the RTC.  So it 
+should be safe to store the former into the latter at a shutdown (but 
+that's a policy).  Otherwise nothing can be told about both clocks and the 
+system's administrator should decide.  In the end I think the decision 
+should be left up to the administrator in all cases.
+
+  Maciej

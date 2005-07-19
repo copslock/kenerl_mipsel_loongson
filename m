@@ -1,160 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jul 2005 21:13:15 +0100 (BST)
-Received: from web30312.mail.mud.yahoo.com ([IPv6:::ffff:68.142.201.230]:47990
-	"HELO web30312.mail.mud.yahoo.com") by linux-mips.org with SMTP
-	id <S8226846AbVGRUMz>; Mon, 18 Jul 2005 21:12:55 +0100
-Received: (qmail 82567 invoked by uid 60001); 18 Jul 2005 20:14:29 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.com;
-  h=Message-ID:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
-  b=riu4F9OdGAziNtIxucR+RC2zE/TUcK29IKdphzY/aTT63+kiwBy5nf0wLZaduzK8z3DXhE6NzlVMyjXokEvdaW0IRhGJhzkrxhuXs2i2urIqUYkLRj4Ixuz0ussSzzzDx4wUrj11Ljsd6VCqwLW83Unr2/SMuZ/XloAkwp01Dqg=  ;
-Message-ID: <20050718201429.82565.qmail@web30312.mail.mud.yahoo.com>
-Received: from [62.253.64.19] by web30312.mail.mud.yahoo.com via HTTP; Mon, 18 Jul 2005 21:14:28 BST
-Date:	Mon, 18 Jul 2005 21:14:28 +0100 (BST)
-From:	Mark Underwood <basicmark@yahoo.com>
-Subject: Linux 2.6.11.5 on R3912 problems
-To:	LKML <linux-kernel@vger.kernel.org>,
-	'Linux/MIPS Development' <linux-mips@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Return-Path: <basicmark@yahoo.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jul 2005 02:01:01 +0100 (BST)
+Received: from embeddededge.com ([IPv6:::ffff:209.113.146.155]:1292 "EHLO
+	penguin.netx4.com") by linux-mips.org with ESMTP
+	id <S8226852AbVGSBAp>; Tue, 19 Jul 2005 02:00:45 +0100
+Received: from [192.168.253.28] (tibook.embeddededge.com [192.168.253.28])
+	by penguin.netx4.com (8.12.8/8.12.9) with ESMTP id j6J0m3mN007940;
+	Mon, 18 Jul 2005 20:48:04 -0400
+In-Reply-To: <20050718173052.GC28995@enneenne.com>
+References: <20050712142202.GB9234@gundam.enneenne.com> <20050712181013.GC9234@gundam.enneenne.com> <a2882b70a3d6c0f32728086e0c63764c@embeddededge.com> <20050718173052.GC28995@enneenne.com>
+Mime-Version: 1.0 (Apple Message framework v622)
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Message-Id: <1f5157240f623e21b61131958e19042d@embeddedalley.com>
+Content-Transfer-Encoding: 7bit
+Cc:	linux-mips@linux-mips.org
+From:	Dan Malek <dan@embeddedalley.com>
+Subject: Re: Power Management for au1100 fixed! :)
+Date:	Mon, 18 Jul 2005 21:02:28 -0400
+To:	Rodolfo Giometti <giometti@linux.it>
+X-Mailer: Apple Mail (2.622)
+Return-Path: <dan@embeddedalley.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8539
+X-archive-position: 8540
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: basicmark@yahoo.com
+X-original-sender: dan@embeddedalley.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
 
-I have now been trying to get Linux 2.6.11.5 (built
-with gcc 3.3.3 and binutils 2.15.91.0.2) up and
-running on my Helio PDA, a MIPS R3912 based ASSP (the
-emulator to be exact) and have been stuck at the last
-step for a while now :-(. 
+On Jul 18, 2005, at 1:30 PM, Rodolfo Giometti wrote:
 
-The kernel runs up fine, the problem starts when init
-is started. Bellow is my kernel log up to freeing
-init.
+> Ok, Fixed! :)
 
-Uncompressing
-Linux............................................
-done, booting the kernel.
-done decompressing kernel.
-e_entry: 8016b000, e_ehsize: 52, e_phentsize 32,
-e_phnum 2,
-e_shentsize 40, e_shnum 25
-copying 0x10c320 bytes from file offset 0x80 to
-address 0x80040000
-zeroing from 8014c320 to to 8014c320, 0x0 bytes
-copying 0x36084 bytes from file offset 0x10e000 to
-address 0x8014e000
-zeroing from 80184084 to to 80198b58, 0x14ad4 bytes
-done loading kernel, about to jump in!
-mips_machgroup 0x00000017, mips_machtype 0x00000000
-arcs_cmdline: root=1f01 console=ttyS0,115200n8
-Linux version 2.6.11.5 (mark@stargate) (gcc version
-3.3.3) #297 Mon Jul 18 20:19
-:39 UTC 2005
-V nasty hack. The Emulator doesn't report which subset
-of the TX39 family it bel
-ongs to :,-(. I hope the hardware does!
-Forcing cpu type to CPU_TX3912
-CPU revision is: 00002200
-Determined physical RAM map:
- memory: 00267000 @ 00199000 (usable)
- memory: 00400000 @ 02000000 (usable)
- memory: 00200000 @ 9fc00000 (ROM data)
-Built 1 zonelists
-Kernel command line: root=1f01 console=ttyS0,115200n8
-Primary instruction cache 1kB, linesize 16 bytes
-Primary data cache 1kB, linesize 4 bytes
-Synthesized TLB handler (17 instructions).
-Synthesized TLB load handler fastpath (37
-instructions).
-Synthesized TLB store handler fastpath (37
-instructions).
-Synthesized TLB modify handler fastpath (29
-instructions).
-PID hash table entries: 256 (order: 8, 4096 bytes)
-r39xx_set_termios
-Dentry cache hash table entries: 8192 (order: 3, 32768
-bytes)
-Inode-cache hash table entries: 4096 (order: 2, 16384
-bytes)
-Memory: 6168k/6556k available (981k kernel code, 348k
-reserved, 212k data, 104k
-init, 0k highmem)
-Mount-cache hash table entries: 512 (order: 0, 4096
-bytes)
-Checking for 'wait' instruction...  unavailable.
-cpu_wait = 0x0
-Linux NoNET1.0 for Linux 2.6
-schedule = 0x801327f8. ret = 0
-Can't analyze prologue code at 80133ea0
-schedule_timeout = 0x80133ea0. ret = -1
-sleep_on = 0x8013395c. ret = 0
-sleep_on_timeout = 0x80133a54. ret = 0
-wait_for_completion = 0x80133148. ret = 0
-Serial: r39xx internal UART driver $
-r39xx_config_port
-r39xx_request_port
-ttyS0 at MMIO 0x0r39xx_type
- (irq = 74) is a R39XX
-io scheduler noop registered
-io scheduler anticipatory registered
-io scheduler deadline registered
-io scheduler cfq registered
-RAMDISK driver initialized: 16 RAM disks of 4096K size
-1024 blocksize
-loop: loaded (max 8 devices)
-Helio Boot ROM: 0x00200000 at 0x9fc00000
-helio_mtd_map.virt 0x9fc00000
-Helio Boot ROM: probing for ROM
-Creating 2 MTD partitions on "Helio Boot ROM":
-0x00000000-0x00097eec : "Bootloader + Kernel"
-mtd: Giving out device 0 to Bootloader + Kernel
-0x00097eec-0x0013deec : "cramfs Filesystem"
-mtd: Giving out device 1 to cramfs Filesystem
-block2mtd: version $Revision: 1.23 $
-VFS: Mounted root (cramfs filesystem) readonly.
-Freeing unused kernel memory: 104k freed
+Thanks.
 
-I have had to write a UART driver so I thought the
-problem might be with that so I put lots of debug in
-tty layer, serial_core and my driver to see what was
-going on. After doing this and changing the interrupt
-handler (int-handler.S) I saw the echo that I had put
-in my inittab.
-So I started to remove debug and found it stopped
-working. The strange thing is that it stops before it
-gets as far as sending the echo from inittab.
-If I don’t have enough debug the kernel stops just
-before printing out:
+> Here you can see the patch. Please note that I also fixed some type
+> mismatches and some comments.
 
-Algorithmics/MIPS FPU Emulator v1.5
+Looks good.  I asked Pete to push it in.
 
-When I connect to the emulator with GDB and look at
-the registers I find the CPU is still running and is
-in cpu_idle.
-I wondered if it might be a timer/task scheduler
-related problem but as it gets passed the bogomips
-calculation the timer must be working.
-
-Any help would be great as I have been stuck here for
-a while.
-
-Many Thanks,
-
-Mark
-
-
-
-		
-___________________________________________________________ 
-How much free photo storage do you get? Store your holiday 
-snaps for FREE with Yahoo! Photos http://uk.photos.yahoo.com
+	-- Dan

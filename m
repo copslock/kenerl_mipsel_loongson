@@ -1,67 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jul 2005 10:41:27 +0100 (BST)
-Received: from laf31-5-82-235-130-100.fbx.proxad.net ([IPv6:::ffff:82.235.130.100]:62961
-	"EHLO lexbox.fr") by linux-mips.org with ESMTP id <S8226859AbVGSJlI> convert rfc822-to-8bit;
-	Tue, 19 Jul 2005 10:41:08 +0100
-Subject: RE: undefined symbol '__divdi3' & '__moddi3' on linux kernel 2.6.10  (toolchain Linuxi386/Mips32)
-Date:	Tue, 19 Jul 2005 11:40:32 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jul 2005 11:02:43 +0100 (BST)
+Received: from go4.ext.ti.com ([IPv6:::ffff:192.91.75.132]:4817 "EHLO
+	go4.ext.ti.com") by linux-mips.org with ESMTP id <S8226859AbVGSKCV> convert rfc822-to-8bit;
+	Tue, 19 Jul 2005 11:02:21 +0100
+Received: from dlep52.itg.ti.com ([157.170.170.57])
+	by go4.ext.ti.com (8.13.1/8.13.1) with ESMTP id j6JA44mg023968
+	for <linux-mips@linux-mips.org>; Tue, 19 Jul 2005 05:04:04 -0500 (CDT)
+Received: from dlep90.itg.ti.com (localhost [127.0.0.1])
+	by dlep52.itg.ti.com (8.12.11/8.12.11) with ESMTP id j6JA43dn011191
+	for <linux-mips@linux-mips.org>; Tue, 19 Jul 2005 05:04:04 -0500 (CDT)
+Received: from dbde01.ent.ti.com (localhost [127.0.0.1])
+	by dlep90.itg.ti.com (8.12.11/8.12.11) with ESMTP id j6JA42cE028059
+	for <linux-mips@linux-mips.org>; Tue, 19 Jul 2005 05:04:03 -0500 (CDT)
+X-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
 Content-Type: text/plain;
-	charset="iso-8859-1"
+	charset="us-ascii"
 Content-Transfer-Encoding: 8BIT
-Message-ID: <17AB476A04B7C842887E0EB1F268111E015520@xpserver.intra.lexbox.org>
+Subject: Updating RTC with date command
+Date:	Tue, 19 Jul 2005 15:34:01 +0530
+Message-ID: <CBD77117272E1249BFDC21E33D555FDC06018D@dbde01.ent.ti.com>
 X-MS-Has-Attach: 
-Content-class: urn:content-classes:message
 X-MS-TNEF-Correlator: 
-X-MimeOLE: Produced By Microsoft Exchange V6.5.6944.0
-Thread-Topic: undefined symbol '__divdi3' & '__moddi3' on linux kernel 2.6.10  (toolchain Linuxi386/Mips32)
-thread-index: AcWLpJW1Crzv+XqMRBKcfve/GxMtrQAoPf+g
-From:	"David Sanchez" <david.sanchez@lexbox.fr>
-To:	"David Sanchez" <david.sanchez@lexbox.fr>
-Cc:	<linux-mips@linux-mips.org>
-Return-Path: <david.sanchez@lexbox.fr>
+Thread-Topic: Updating RTC with date command
+Thread-Index: AcWMSPfolCjiFsEMTcyVqhslHFL+aA==
+From:	"Nori, Soma Sekhar" <nsekhar@ti.com>
+To:	<linux-mips@linux-mips.org>
+Return-Path: <nsekhar@ti.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8543
+X-archive-position: 8544
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david.sanchez@lexbox.fr
+X-original-sender: nsekhar@ti.com
 Precedence: bulk
 X-list: linux-mips
 
 
-As you can see I'm a real newby so I take a long time to find the macro do_div() in the linux kernel. This macro does all I want and using it will avoid gcc to emits the symbols '__divdi3' and '__moddi3'...
-
-Thanks
-
------Message d'origine-----
-De : linux-mips-bounce@linux-mips.org [mailto:linux-mips-bounce@linux-mips.org] De la part de David Sanchez
-Envoyé : lundi 18 juillet 2005 16:30
-À : linux-mips@linux-mips.org
-Objet : undefined symbol '__divdi3' & '__moddi3' on linux kernel 2.6.10 (toolchain Linuxi386/Mips32)
-
 Hi,
 
-I'm a newby on Linux/Mips more my English is very poor so sorry...
-But I have a big problem (for me):
+I am trying to add RTC (ds1338) support to 2.6.10 mips kernel
+running on my 4kec board.
 
-I want to cross-compile my linux kernel 2.6.10 on my PC i386 for mips32
-(alchemy AU1550) CPU.
-I developed a module that contains some operations on types loff_t (i.e
-long long) such as div and mod. The code is in a foo.c file.
+I have populated the rtc_{get|set}_time and rtc_set_mmss pointers 
+and the date command shows the time correctly (as read from the RTC).
 
-I successfully built a cross toolchain using:
-The bin utils (Bintuils-2.15), the glibc headers (glibc-2.3.5) and the
-gcc core (gcc-3.4.4).
+However, when I try to update the time using date -s <time string> 
+the RTC does not get updated. (shows the old time when I boot-up again)
 
-The compilation of the kernel works but unfortunately the link generates
-two error messages on the file foo.c:
-Undefined reference to '__divdi3'
-Undefined reference to '__moddi3'
+In arch\mips\kernel\time.c the timer_interrupt calls rtc_set_mmss,
+but that call is made only when STA_UNSYNC is _not_ set in time_status
+variable. do_settimeofday/sys_stime _set_ this flag so the timer 
+interrupt does not call rtc_set_mmss. 	
 
-What I'm doing wrong ? 
-Why the gcc doesn't embed the symbol implementation ? 
-And so where can I found an implementation ? 
+In all, I could not figure out any other invocation of rtc_set_time or 
+rtc_set_mmss which could be setting the time in my case.
 
-Thanks for all your help
+Can somebody please help me understand how the RTC is supposed to be
+updated after user changes the time using the date command?
+
+Thanks,
+Sekhar Nori

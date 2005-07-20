@@ -1,38 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Jul 2005 18:11:12 +0100 (BST)
-Received: from wproxy.gmail.com ([IPv6:::ffff:64.233.184.195]:20509 "EHLO
-	wproxy.gmail.com") by linux-mips.org with ESMTP id <S8224973AbVGTRKz> convert rfc822-to-8bit;
-	Wed, 20 Jul 2005 18:10:55 +0100
-Received: by wproxy.gmail.com with SMTP id i22so1500305wra
-        for <linux-mips@linux-mips.org>; Wed, 20 Jul 2005 10:12:41 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Jul 2005 21:03:48 +0100 (BST)
+Received: from web52708.mail.yahoo.com ([IPv6:::ffff:206.190.48.231]:46267
+	"HELO web52708.mail.yahoo.com") by linux-mips.org with SMTP
+	id <S8224976AbVGTUDa>; Wed, 20 Jul 2005 21:03:30 +0100
+Received: (qmail 85208 invoked by uid 60001); 20 Jul 2005 20:05:16 -0000
 DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=VjoVmT8gfheyJ7WyaLmKKSeBcDE0aiHa71QCsaW5hMk+A8x8wibk/ZK6UGct962upvGx162zh6QMf8WNAhOwXfsLbR4x7EOXuUstt5VcvO7eiGP+SG/eGELqwfadPr/OM4mQIImBYqzwWU/GduC3tGWojuutOpdpxUQlUJFIlwQ=
-Received: by 10.54.5.61 with SMTP id 61mr162316wre;
-        Wed, 20 Jul 2005 10:12:05 -0700 (PDT)
-Received: by 10.54.71.11 with HTTP; Wed, 20 Jul 2005 10:12:04 -0700 (PDT)
-Message-ID: <2db32b720507201012712e5cd1@mail.gmail.com>
-Date:	Wed, 20 Jul 2005 10:12:04 -0700
-From:	rolf liu <rolfliu@gmail.com>
-Reply-To: rolf liu <rolfliu@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: Is there some work done on db1550 for the security engine?
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-Return-Path: <rolfliu@gmail.com>
+  s=s1024; d=yahoo.com;
+  h=Message-ID:Received:Date:From:Subject:To:Cc:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding;
+  b=ZnFjyxE+IRUdbqh755z7e4WU6nVRgzqjHkaodvdHFZSGIqm3k+o0Wlmnzx5TcTWqGwIVMfRspwhauE61d6ojY2xGKKeAdD/dbHnYU5rUOPu/ObSJt0G4zq6HHJhye9/YhhB7SmPw35R5IIvI7xG8Dbo6sbrY30me45YMncv6Qt8=  ;
+Message-ID: <20050720200516.85206.qmail@web52708.mail.yahoo.com>
+Received: from [206.86.133.214] by web52708.mail.yahoo.com via HTTP; Wed, 20 Jul 2005 13:05:16 PDT
+Date:	Wed, 20 Jul 2005 13:05:16 -0700 (PDT)
+From:	Michael Anburaj <embeddedeng@yahoo.com>
+Subject: Re: 4kc machine check
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	linux-mips@linux-mips.org, embeddedeng@yahoo.com
+In-Reply-To: <Pine.LNX.4.61L.0507191301220.10363@blysk.ds.pg.gda.pl>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <embeddedeng@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8582
+X-archive-position: 8583
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rolfliu@gmail.com
+X-original-sender: embeddedeng@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-Is there any driver availble to use the security engine inside au1550?
+Maciej,
 
-thanks
+Thanks a lot, it now works... I have problems with the
+root-filesystem now.
+
+Thanks,
+-Mike.
+
+--- "Maciej W. Rozycki" <macro@linux-mips.org> wrote:
+
+> On Mon, 18 Jul 2005, Michael Anburaj wrote:
+> 
+> > I am seeing what Greg Weeks saw and emailed couple
+> of months back.
+> [...]
+> > Please help me!
+> 
+>  There was a patch send then, wasn't there?
+> 
+>   Maciej
+> 
+
+
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around 
+http://mail.yahoo.com 

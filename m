@@ -1,72 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Jul 2005 05:23:55 +0100 (BST)
-Received: from zproxy.gmail.com ([IPv6:::ffff:64.233.162.205]:43890 "EHLO
-	zproxy.gmail.com") by linux-mips.org with ESMTP id <S8224774AbVGTEXg> convert rfc822-to-8bit;
-	Wed, 20 Jul 2005 05:23:36 +0100
-Received: by zproxy.gmail.com with SMTP id r28so1329355nza
-        for <linux-mips@linux-mips.org>; Tue, 19 Jul 2005 21:25:18 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:reply-to:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=E4NMp+dIZnedw0pU3XNEr2nMiwet2QEQ2m0p0bXxPxi3uZsn1irc1vkxnrGi8EK3wZr1pqM0sWsRchWsCYZTsO66+Ppaq6pbd9VRgrZ6vpEJUpaCwVNF6fMlQ74YaWojWacX85OKtXzRfjrmsKyDzVeoTWh/Q2/0Z3DPUy8xtE4=
-Received: by 10.36.105.13 with SMTP id d13mr1487256nzc;
-        Tue, 19 Jul 2005 21:24:52 -0700 (PDT)
-Received: by 10.36.160.10 with HTTP; Tue, 19 Jul 2005 21:24:51 -0700 (PDT)
-Message-ID: <6097c490507192124647cd9b3@mail.gmail.com>
-Date:	Wed, 20 Jul 2005 04:24:51 +0000
-From:	Maxim Osipov <maxim.osipov@gmail.com>
-Reply-To: maxim@mox.ru
-To:	Daniel Jacobowitz <dan@debian.org>
-Subject: Re: remote debugging: "Reply contains invalid hex digit 59"
-Cc:	Bryan Althouse <bryan.althouse@3phoenix.com>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-In-Reply-To: <20050719143911.GA3684@nevyn.them.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-References: <20050719135122Z8226926-3678+3493@linux-mips.org>
-	 <20050719143911.GA3684@nevyn.them.org>
-Return-Path: <maxim.osipov@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Jul 2005 09:57:54 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:40967 "EHLO
+	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8224901AbVGTI5g>; Wed, 20 Jul 2005 09:57:36 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id BF0E8F5945; Wed, 20 Jul 2005 10:59:22 +0200 (CEST)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 06956-04; Wed, 20 Jul 2005 10:59:22 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 86F2FE1D10; Wed, 20 Jul 2005 10:59:22 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j6K8xNTa006721;
+	Wed, 20 Jul 2005 10:59:23 +0200
+Date:	Wed, 20 Jul 2005 09:59:27 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Pete Popov <ppopov@embeddedalley.com>
+Cc:	Kishore K <hellokishore@gmail.com>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
+Subject: Re: bal instruction in gcc 3.x
+In-Reply-To: <1121802786.7285.88.camel@localhost.localdomain>
+Message-ID: <Pine.LNX.4.61L.0507200955390.30702@blysk.ds.pg.gda.pl>
+References: <f07e6e05071909301c212ab4@mail.gmail.com>  <20050719164427.GB8758@linux-mips.org>
+  <f07e6e05071910194bab9b16@mail.gmail.com> <1121802786.7285.88.camel@localhost.localdomain>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.85.1/984/Tue Jul 19 11:16:09 2005 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8570
+X-archive-position: 8571
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: maxim.osipov@gmail.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Daniel,
+On Tue, 19 Jul 2005, Pete Popov wrote:
 
-At the time when I was looking into this problem, I was unable to find
-any patches. Could you please point me to one?
+> Try the attached patch instead.
 
-BR,
-Maxim
+ Apart from other changes why not simply s/bal/jal/?  Your proposed code 
+is bad if ever to be built to a 64-bit object.
 
-On 7/19/05, Daniel Jacobowitz <dan@debian.org> wrote:
-> On Tue, Jul 19, 2005 at 09:52:57AM -0400, Bryan Althouse wrote:
-> >
-> > Is anyone doing remote debugging for mips?
-> >
-> > I start the gdbserver on mips with:
-> >     gdbserver 192.168.2.39:2222 ./hello_loop
-> > This produces:
-> >     Process ./hello_loop created; pid = 158
-> >
-> > On my PC, I type:
-> >     ddd --debugger mips64-linux-gnu-gdb hello_loop
-> >     (at gdb prompt) target remote 192.168.2.55:2222
-> 
-> Gdbserver doesn't have MIPS64 support merged.  Assuming you're using
-> MIPS64, as suggested by the above, then it won't work.
-> 
-> There are patches floating around, but I haven't had time...
-> 
-> --
-> Daniel Jacobowitz
-> CodeSourcery, LLC
-> 
->
+  Maciej

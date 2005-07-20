@@ -1,67 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Jul 2005 02:44:00 +0100 (BST)
-Received: from mx02.qsc.de ([IPv6:::ffff:213.148.130.14]:8378 "EHLO
-	mx02.qsc.de") by linux-mips.org with ESMTP id <S8226915AbVGTBnn>;
-	Wed, 20 Jul 2005 02:43:43 +0100
-Received: from port-195-158-170-19.dynamic.qsc.de ([195.158.170.19] helo=hattusa.textio)
-	by mx02.qsc.de with esmtp (Exim 3.35 #1)
-	id 1Dv3eI-0003dA-00; Wed, 20 Jul 2005 03:45:26 +0200
-Received: from ths by hattusa.textio with local (Exim 4.52)
-	id 1Dv3eH-0005Nc-Ij; Wed, 20 Jul 2005 03:45:25 +0200
-Date:	Wed, 20 Jul 2005 03:45:25 +0200
-To:	Markus Dahms <mad@automagically.de>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: 2.6 on IP22 (Indy)
-Message-ID: <20050720014525.GI2071@hattusa.textio>
-References: <Pine.LNX.4.61L.0506271401280.15406@blysk.ds.pg.gda.pl> <20050627141842.GA28236@gaspode.automagically.de> <Pine.LNX.4.61L.0506271632380.23903@blysk.ds.pg.gda.pl> <20050628062107.GA8665@gaspode.automagically.de> <Pine.LNX.4.61L.0506280918380.13758@blysk.ds.pg.gda.pl> <20050628102013.GA10442@gaspode.automagically.de> <Pine.LNX.4.61L.0506281204190.13758@blysk.ds.pg.gda.pl> <20050628170425.GA5189@gaspode.automagically.de> <Pine.LNX.4.61L.0506291747550.31188@blysk.ds.pg.gda.pl> <20050719182102.GA3727@gaspode.automagically.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Jul 2005 05:23:55 +0100 (BST)
+Received: from zproxy.gmail.com ([IPv6:::ffff:64.233.162.205]:43890 "EHLO
+	zproxy.gmail.com") by linux-mips.org with ESMTP id <S8224774AbVGTEXg> convert rfc822-to-8bit;
+	Wed, 20 Jul 2005 05:23:36 +0100
+Received: by zproxy.gmail.com with SMTP id r28so1329355nza
+        for <linux-mips@linux-mips.org>; Tue, 19 Jul 2005 21:25:18 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:reply-to:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=E4NMp+dIZnedw0pU3XNEr2nMiwet2QEQ2m0p0bXxPxi3uZsn1irc1vkxnrGi8EK3wZr1pqM0sWsRchWsCYZTsO66+Ppaq6pbd9VRgrZ6vpEJUpaCwVNF6fMlQ74YaWojWacX85OKtXzRfjrmsKyDzVeoTWh/Q2/0Z3DPUy8xtE4=
+Received: by 10.36.105.13 with SMTP id d13mr1487256nzc;
+        Tue, 19 Jul 2005 21:24:52 -0700 (PDT)
+Received: by 10.36.160.10 with HTTP; Tue, 19 Jul 2005 21:24:51 -0700 (PDT)
+Message-ID: <6097c490507192124647cd9b3@mail.gmail.com>
+Date:	Wed, 20 Jul 2005 04:24:51 +0000
+From:	Maxim Osipov <maxim.osipov@gmail.com>
+Reply-To: maxim@mox.ru
+To:	Daniel Jacobowitz <dan@debian.org>
+Subject: Re: remote debugging: "Reply contains invalid hex digit 59"
+Cc:	Bryan Althouse <bryan.althouse@3phoenix.com>,
+	Linux/MIPS Development <linux-mips@linux-mips.org>
+In-Reply-To: <20050719143911.GA3684@nevyn.them.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
 Content-Disposition: inline
-In-Reply-To: <20050719182102.GA3727@gaspode.automagically.de>
-User-Agent: Mutt/1.5.9i
-From:	Thiemo Seufer <ths@networkno.de>
-Return-Path: <ths@networkno.de>
+References: <20050719135122Z8226926-3678+3493@linux-mips.org>
+	 <20050719143911.GA3684@nevyn.them.org>
+Return-Path: <maxim.osipov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8569
+X-archive-position: 8570
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: maxim.osipov@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Markus Dahms wrote:
-> Hello Maciej,
-> 
-> [R4600PC problems]
-> > Well, they are not meant to be errata-compatible. ;-)  I haven't been 
-> > able to locate any reference for tlbp being problematic on the R4600, in 
-> > particular not in the chip errata document, and the old handlers used to 
-> > have a nop before that instruction unconditionally (perhaps just in case 
-> > ;-) ), so the problem was covered.  If it fixes the problem for you, then 
-> > it should probably be applied, too.
-> 
-> I just built a 64-bit kernel from clean CVS and had to apply the patch
-> below again to get it to userspace. Maybe it just hides the real error
-> but at least "it works for me" [tm].
-> Please apply to CVS if there are no objections.
-> 
-> Markus
-> 
-> --- a/arch/mips/mm/tlbex.c    2005-07-19 20:12:32.000000000 +0200
-> +++ b/arch/mips/mm/tlbex.c    2005-07-19 20:10:29.000000000 +0200
-> @@ -779,6 +779,7 @@
->  static __init void __attribute__((unused)) build_tlb_probe_entry(u32 **p)
->  {
->     switch (current_cpu_data.cputype) {
-> +   case CPU_R4600:
->     case CPU_R5000:
->     case CPU_R5000A:
->     case CPU_NEVADA:
+Daniel,
 
-FWIW, this patch makes no difference for my Indy with R4600 v2.0, it still
-hangs, usually while or shortly after mounting filesystems.
+At the time when I was looking into this problem, I was unable to find
+any patches. Could you please point me to one?
 
+BR,
+Maxim
 
-Thiemo
+On 7/19/05, Daniel Jacobowitz <dan@debian.org> wrote:
+> On Tue, Jul 19, 2005 at 09:52:57AM -0400, Bryan Althouse wrote:
+> >
+> > Is anyone doing remote debugging for mips?
+> >
+> > I start the gdbserver on mips with:
+> >     gdbserver 192.168.2.39:2222 ./hello_loop
+> > This produces:
+> >     Process ./hello_loop created; pid = 158
+> >
+> > On my PC, I type:
+> >     ddd --debugger mips64-linux-gnu-gdb hello_loop
+> >     (at gdb prompt) target remote 192.168.2.55:2222
+> 
+> Gdbserver doesn't have MIPS64 support merged.  Assuming you're using
+> MIPS64, as suggested by the above, then it won't work.
+> 
+> There are patches floating around, but I haven't had time...
+> 
+> --
+> Daniel Jacobowitz
+> CodeSourcery, LLC
+> 
+>

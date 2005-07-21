@@ -1,45 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Jul 2005 19:19:17 +0100 (BST)
-Received: from mail.gmx.de ([IPv6:::ffff:213.165.64.20]:44733 "HELO
-	mail.gmx.net") by linux-mips.org with SMTP id <S8225225AbVGUSTC>;
-	Thu, 21 Jul 2005 19:19:02 +0100
-Received: (qmail invoked by alias); 21 Jul 2005 18:20:55 -0000
-Received: from d075225.adsl.hansenet.de (EHLO [192.168.0.1]) [80.171.75.225]
-  by mail.gmx.net (mp029) with SMTP; 21 Jul 2005 20:20:55 +0200
-X-Authenticated: #947741
-Message-ID: <42DFE794.70001@gmx.net>
-Date:	Thu, 21 Jul 2005 20:21:08 +0200
-From:	TheNop <TheNop@gmx.net>
-User-Agent: Mozilla Thunderbird 1.0.2 (Windows/20050317)
-X-Accept-Language: de-DE, de, en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Jul 2005 21:01:21 +0100 (BST)
+Received: from mail.piper-net.de ([IPv6:::ffff:83.218.32.228]:60323 "EHLO
+	netcenter.web.piper-net.de") by linux-mips.org with ESMTP
+	id <S8225233AbVGUUBF>; Thu, 21 Jul 2005 21:01:05 +0100
+Received: from pcneu.dvsoft.de ([10.1.218.26])
+	by netcenter.web.piper-net.de (8.11.6/8.11.2) with ESMTP id j6LK3Fl11152
+	for <linux-mips@linux-mips.org>; Thu, 21 Jul 2005 22:03:16 +0200
+X-Piper-Net-HM:	pcneu.dvsoft.de [10.1.218.26]
+From:	Dirk Vornheder <dirk.vornheder@piper-home.de>
+To:	linux-mips <linux-mips@linux-mips.org>
+Subject: need help to install linux on RM200
+Date:	Thu, 21 Jul 2005 22:02:57 +0200
+User-Agent: KMail/1.8.1
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: Problems with virtual terminal
-Content-Type: text/plain; charset=ISO-8859-15; format=flowed
+Content-Type: text/plain;
+  charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-X-Y-GMX-Trusted: 0
-Return-Path: <TheNop@gmx.net>
+Content-Disposition: inline
+Message-Id: <200507212202.57569.dirk.vornheder@piper-home.de>
+Return-Path: <dirk.vornheder@piper-home.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8590
+X-archive-position: 8591
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: TheNop@gmx.net
+X-original-sender: dirk.vornheder@piper-home.de
 Precedence: bulk
 X-list: linux-mips
 
-Hi all,
+Hi !
 
-I want to use virtual terminal to get tty support for using Xorg on a fb 
-device.
-I' m using linux-mips 2.6.12-rc4.
-When I enable the virtual terminal option in the kernel config the 
-kernel hangs directly after boot. The console parameter is set to ttyS0, 
-so I expect some output on the serial port, but nothing happens.
+How can i install linux on a RM200 ?
 
-Is there someone using virtual terminals?
-Any ideas what went wrong with vt?
-
-Beste regards
-TheNop
+Dirk

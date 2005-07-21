@@ -1,74 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Jul 2005 09:35:11 +0100 (BST)
-Received: from tirpitz.iat.sfu.ca ([IPv6:::ffff:209.87.56.17]:5836 "EHLO
-	tirpitz.iat.sfu.ca") by linux-mips.org with ESMTP
-	id <S8225074AbVGUIex>; Thu, 21 Jul 2005 09:34:53 +0100
-Received: (qmail 2443 invoked from network); 21 Jul 2005 01:36:42 -0700
-Received: from s01060050da688d47.vc.shawcable.net (HELO curie.orbis-terrarum.net) (24.80.100.253)
-  by tirpitz.iat.sfu.ca with SMTP; 21 Jul 2005 01:36:42 -0700
-Received: (qmail 28628 invoked by uid 10000); 21 Jul 2005 01:36:40 -0700
-Date:	Thu, 21 Jul 2005 01:36:40 -0700
-From:	"Robin H. Johnson" <robbat2@gentoo.org>
-To:	linux-mips@linux-mips.org
-Cc:	rolf liu <rolfliu@gmail.com>
-Subject: Re: Is there some work done on db1550 for the security engine?
-Message-ID: <20050721083640.GA26677@curie-int.orbis-terrarum.net>
-Mail-Followup-To: linux-mips@linux-mips.org, rolf liu <rolfliu@gmail.com>
-References: <2db32b720507201012712e5cd1@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="3MwIy2ne0vdjdPXF"
-Content-Disposition: inline
-In-Reply-To: <2db32b720507201012712e5cd1@mail.gmail.com>
-User-Agent: Mutt/1.5.8i
-Return-Path: <robbat2@orbis-terrarum.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Jul 2005 15:01:08 +0100 (BST)
+Received: from web34008.mail.mud.yahoo.com ([IPv6:::ffff:66.163.178.89]:54401
+	"HELO web34008.mail.mud.yahoo.com") by linux-mips.org with SMTP
+	id <S8225210AbVGUOAp>; Thu, 21 Jul 2005 15:00:45 +0100
+Received: (qmail 65929 invoked by uid 60001); 21 Jul 2005 14:02:36 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  h=Message-ID:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
+  b=tfn5tlOoB55j/v56gs8tYuYAQlYaxSrokzC53RjVlsVHTNkpppk0/Q9m91jIpSJNYb0vKTO7WUWq31XTAGBesMdyzqLmbjNeDRbZn78s3t3VVEdBv2NMm+xr/Zo+FT4KMkPvM+5LrVvt12ZoKEnNezBYCRb2JrO+EHGsySGC7ho=  ;
+Message-ID: <20050721140236.65927.qmail@web34008.mail.mud.yahoo.com>
+Received: from [202.149.57.130] by web34008.mail.mud.yahoo.com via HTTP; Thu, 21 Jul 2005 07:02:36 PDT
+Date:	Thu, 21 Jul 2005 07:02:36 -0700 (PDT)
+From:	mojoe thinks <mojoe_thinks@yahoo.com>
+Subject: trying to mmap part of the system memory (RAM)
+To:	linux-mips@linux-mips.org, mojoe_thinks@yahoo.com
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="0-655388557-1121954556=:65925"
+Content-Transfer-Encoding: 8bit
+Return-Path: <mojoe_thinks@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8585
+X-archive-position: 8587
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robbat2@gentoo.org
+X-original-sender: mojoe_thinks@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
+--0-655388557-1121954556=:65925
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 
---3MwIy2ne0vdjdPXF
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi,
+ 
+I've been trying to impliment mmap() fucntionality in my driver code. The intent is to reserve a piece of memory as buffer (about 2M) and map this area to the user space that calls this driver.
+ 
+In the book Linux Device Driver by Rubini says that if we limit the use of system memory by the kernel, ie. tell the kernel to use less than the available amount of kernel space using command line option, we could in effect reuse the remaining memory by using the ioremap() system call.
+ 
+I am working on MIPS RM5200 core (32 bit external Sys/Ad bus), the total availabe RAM size on the system is 64M, I have specified in the PMON boot code 32M size for use. So when the system boots up i can see that around 28M space is available using the free command.
+Now when i use the ioremap() system call, it returns me an address, which i presume to be the virtual address. When i try to use this address driectly or with writeb()/readb() system call, the whole system just reboots. 
+Can any one please tell if i am doing the right thing.. is there an lternate to ioremap() which would actually work? How do i get hold of the unused RAM space?
+ 
+The address range that i'm using is 0xA2000000 as there is a direct mapping of memory in kseg1 address space for MIPS
+ 
+I would be delighted to hear from anybody with a possible sol. :-)
+ 
+Thanking in advance..
+Prem
 
-On Wed, Jul 20, 2005 at 10:12:04AM -0700, rolf liu wrote:
-> Is there any driver availble to use the security engine inside au1550?
-Not in the tree, or that I've seen floating around yet. Pete might know
-if there is one available somewhere else.
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around 
+http://mail.yahoo.com 
+--0-655388557-1121954556=:65925
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 
-Failing that, (and this is an idea I've been toying with for a while)
-why not strike a deal with somebody here to write it for you: you can
-provide the hardware, and they can write it, for some reasonable
-compensation.
-
-Lack of hardware to test on is probably the biggest stumbling block to
-supporting it presently.
-
---=20
-Robin Hugh Johnson
-E-Mail     : robbat2@orbis-terrarum.net
-Home Page  : http://www.orbis-terrarum.net/?l=3Dpeople.robbat2
-ICQ#       : 30269588 or 41961639
-GnuPG FP   : 11AC BA4F 4778 E3F6 E4ED  F38E B27B 944E 3488 4E85
-
---3MwIy2ne0vdjdPXF
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.1-ecc0.1.6 (GNU/Linux)
-Comment: Robbat2 @ Orbis-Terrarum Networks
-
-iD8DBQFC316YPpIsIjIzwiwRApC6AJ4ggH8LGVH/sNOzVJatPa2YYeu13gCfaOkl
-Fq9xkNiORrC85hSuoQtUAh8=
-=CJI+
------END PGP SIGNATURE-----
-
---3MwIy2ne0vdjdPXF--
+<DIV>Hi,</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>I've been trying to impliment mmap() fucntionality in my driver code. The intent is to reserve a piece of memory as buffer (about 2M) and map this area to the user space that calls this driver.</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>In the book Linux Device Driver by Rubini says that if we limit the use of system memory by the kernel, ie. tell the kernel to use less than the available amount of kernel space&nbsp;using command line option, we could in effect reuse the remaining memory by using the ioremap() system call.</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>I am working on MIPS RM5200 core (32 bit external Sys/Ad bus), the total availabe RAM size on the system is 64M, I have specified in the PMON boot code 32M size for use. So when the system boots up i can see that around 28M space is available using the free command.</DIV>
+<DIV>Now when i use the ioremap() system call, it returns me an address, which i presume to be the virtual address. When i try to use this address driectly or with writeb()/readb() system call, the whole system just reboots. </DIV>
+<DIV>Can any one please&nbsp;tell if i am doing the right thing.. is there&nbsp;an lternate to ioremap() which would actually work? How do i get hold of the unused RAM space?</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>The address range that i'm using is 0xA2000000 as there is a direct mapping of memory in kseg1 address space for MIPS</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>I would be delighted to hear from anybody with a possible sol. :-)</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>Thanking in advance..</DIV>
+<DIV>Prem</DIV><p>__________________________________________________<br>Do You Yahoo!?<br>Tired of spam?  Yahoo! Mail has the best spam protection around <br>http://mail.yahoo.com 
+--0-655388557-1121954556=:65925--

@@ -1,36 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Jul 2005 21:01:21 +0100 (BST)
-Received: from mail.piper-net.de ([IPv6:::ffff:83.218.32.228]:60323 "EHLO
-	netcenter.web.piper-net.de") by linux-mips.org with ESMTP
-	id <S8225233AbVGUUBF>; Thu, 21 Jul 2005 21:01:05 +0100
-Received: from pcneu.dvsoft.de ([10.1.218.26])
-	by netcenter.web.piper-net.de (8.11.6/8.11.2) with ESMTP id j6LK3Fl11152
-	for <linux-mips@linux-mips.org>; Thu, 21 Jul 2005 22:03:16 +0200
-X-Piper-Net-HM:	pcneu.dvsoft.de [10.1.218.26]
-From:	Dirk Vornheder <dirk.vornheder@piper-home.de>
-To:	linux-mips <linux-mips@linux-mips.org>
-Subject: need help to install linux on RM200
-Date:	Thu, 21 Jul 2005 22:02:57 +0200
-User-Agent: KMail/1.8.1
-MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Jul 2005 05:29:31 +0100 (BST)
+Received: from [IPv6:::ffff:216.208.38.107] ([IPv6:::ffff:216.208.38.107]:60311
+	"EHLO OTTLS.pngxnet.com") by linux-mips.org with ESMTP
+	id <S8225245AbVGVE3K>; Fri, 22 Jul 2005 05:29:10 +0100
+Received: from bacchus.net.dhis.org ([10.255.255.134])
+	by OTTLS.pngxnet.com (8.12.4/8.12.4) with ESMTP id j6M4V5nA009137
+	for <linux-mips@linux-mips.org>; Fri, 22 Jul 2005 00:31:05 -0400
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j6M4UwQE004296;
+	Fri, 22 Jul 2005 00:30:59 -0400
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j6M4Uv68004293;
+	Fri, 22 Jul 2005 00:30:57 -0400
+Date:	Fri, 22 Jul 2005 00:30:57 -0400
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	linux-mips@linux-mips.org,
+	Thiemo Seufer <ica2_ts@csv.ica.uni-stuttgart.de>
+Subject: Re: CVS Update@linux-mips.org: linux
+Message-ID: <20050722043057.GA3803@linux-mips.org>
+References: <20050721153359Z8225218-3678+3745@linux-mips.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Message-Id: <200507212202.57569.dirk.vornheder@piper-home.de>
-Return-Path: <dirk.vornheder@piper-home.de>
+In-Reply-To: <20050721153359Z8225218-3678+3745@linux-mips.org>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8591
+X-archive-position: 8592
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dirk.vornheder@piper-home.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi !
+On Thu, Jul 21, 2005 at 04:33:53PM +0100, ths@linux-mips.org wrote:
 
-How can i install linux on a RM200 ?
+> Modified files:
+> 	arch/mips/kernel: binfmt_elfo32.c 
+> 	include/asm-mips: elf.h 
+> 
+> Log message:
+> 	Fix ELF defines: EF_* is a field, E_* a distinct flag therein.
 
-Dirk
+Remarkably bad idea after the old definitions are already being used since
+over a decade.
+
+Btw, I don't recall approving that patch ...
+
+  Ralf

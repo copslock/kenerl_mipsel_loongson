@@ -1,102 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Jul 2005 16:33:12 +0100 (BST)
-Received: from 81-174-11-161.f5.ngi.it ([IPv6:::ffff:81.174.11.161]:62160 "EHLO
-	zaigor.enneenne.com") by linux-mips.org with ESMTP
-	id <S8225313AbVGVPc5>; Fri, 22 Jul 2005 16:32:57 +0100
-Received: from giometti by zaigor.enneenne.com with local (Exim 3.36 #1 (Debian))
-	id 1DvzY5-0006Nt-00; Fri, 22 Jul 2005 17:34:53 +0200
-Date:	Fri, 22 Jul 2005 17:34:53 +0200
-From:	Rodolfo Giometti <giometti@linux.it>
-To:	Clark Williams <williams@redhat.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Battery status
-Message-ID: <20050722153453.GI21044@enneenne.com>
-References: <20050722142205.GE21044@enneenne.com> <1122044036.10743.5.camel@riff> <20050722151402.GG21044@enneenne.com> <1122045924.10743.16.camel@riff>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Jul 2005 17:45:04 +0100 (BST)
+Received: from mo00.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:61178 "EHLO
+	mo00.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225337AbVGVQoq>;
+	Fri, 22 Jul 2005 17:44:46 +0100
+Received: MO(mo00)id j6MGkmiT022534; Sat, 23 Jul 2005 01:46:48 +0900 (JST)
+Received: MDO(mdo00) id j6MGklSb022387; Sat, 23 Jul 2005 01:46:48 +0900 (JST)
+Received: from stratos (h009.p499.iij4u.or.jp [210.149.243.9])
+	by mbox.iij4u.or.jp (4U-MR/mbox01) id j6MGkkS2017872
+	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NOT);
+	Sat, 23 Jul 2005 01:46:47 +0900 (JST)
+Date:	Sat, 23 Jul 2005 01:46:44 +0900
+From:	Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH 2.6] vr41xx: add plat_setup
+Message-Id: <20050723014644.6baa61a7.yuasa@hh.iij4u.or.jp>
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="UdiMmEj9EzJj2jSc"
-Content-Disposition: inline
-In-Reply-To: <1122045924.10743.16.camel@riff>
-Organization: Programmi e soluzioni GNU/Linux
-X-PGP-Key: gpg --keyserver keyserver.penguin.de --recv-keys D25A5633
-User-Agent: Mutt/1.5.6+20040722i
-Return-Path: <giometti@enneenne.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8613
+X-archive-position: 8614
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: giometti@linux.it
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
+Hi Ralf,
 
---UdiMmEj9EzJj2jSc
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This patch has added to plat_setup for vr41xx.
+Please apply this patch.
 
-On Fri, Jul 22, 2005 at 10:25:24AM -0500, Clark Williams wrote:
-> /me goes and actually *looks* at the acpi driver(s)
+Yoichi
 
-Ok. I see! :)
+Signed-off-by: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
 
-> I would recommend writing a completely separate driver that just
-> provides the hook(s) to get to battery and any other info you want to
-> provide. I did it on another platform (can't seem to find that code
-> though) mainly to use the /proc/acpi/event interface and receive button
-> presses and things like that. Something like a fake-acpi.c that various
-> platform folks could use to translate their events into the acpi
-> interface.=20
-
-Yes, just file =ABarch/arm/kernel/apm.c=BB does regarding APM.
-
-> That's kinda hokey now that I actually wrote it down and looked at it.
-> Maybe what we need to do is put together a framework somewhat like the
-> way acpi presents state information, but not called acpi (wouldn't want
-> someone thinking that we'd ported the acpi interpreter to MIPS :). I'm
-> not even sure if it should go into /proc or /sys.=20
->=20
-> I just liked the fact that the event interface and the status interfaces
-> were presented in somewhat logical fashion to user space, such that a
-> shell script could be used to gather information or manipulate the state
-> (e.g. 'echo 3 >/proc/acpi/sleep' to suspend to RAM).=20
-
-Yes.
-
-> Gah. Sorry, you were asking for an answer and I turned this into a
-> design discussion. My opinion: if you're in a hurry, write a simple
-
-Nonono. It's very interesting what you are saying!
-
-> driver that presents a /proc interface to get to battery information.=20
-
-Ok. Currently I have some time to spend on it... do you have any
-suggestions about I can start developing it in the good way? :)
-
-Thanks a lot,
-
-Rodolfo
-
---=20
-
-GNU/Linux Solutions                  e-mail:    giometti@linux.it
-Linux Device Driver                             giometti@enneenne.com
-Embedded Systems                     home page: giometti.enneenne.com
-UNIX programming                     phone:     +39 349 2432127
-
---UdiMmEj9EzJj2jSc
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.4 (GNU/Linux)
-
-iD8DBQFC4RIdQaTCYNJaVjMRAs6pAKDORdvneM34oP0EQ9p9wtWYTeHqDgCfb0z0
-9UxDnKMiAdnuuLvuyVy9ivU=
-=WeCQ
------END PGP SIGNATURE-----
-
---UdiMmEj9EzJj2jSc--
+diff -urN -X dontdiff a-orig/arch/mips/vr41xx/common/init.c a/arch/mips/vr41xx/common/init.c
+--- a-orig/arch/mips/vr41xx/common/init.c	2005-04-19 01:07:37.000000000 +0900
++++ a/arch/mips/vr41xx/common/init.c	2005-07-23 01:36:05.000000000 +0900
+@@ -58,6 +58,14 @@
+ 	board_timer_setup = setup_timer_irq;
+ }
+ 
++void __init plat_setup(void)
++{
++	vr41xx_calculate_clock_frequency();
++
++	timer_init();
++	iomem_resource_init();
++}
++
+ void __init prom_init(void)
+ {
+ 	int argc, i;
+@@ -71,12 +79,6 @@
+ 		if (i < (argc - 1))
+ 			strcat(arcs_cmdline, " ");
+ 	}
+-
+-	vr41xx_calculate_clock_frequency();
+-
+-	timer_init();
+-
+-	iomem_resource_init();
+ }
+ 
+ unsigned long __init prom_free_prom_memory (void)

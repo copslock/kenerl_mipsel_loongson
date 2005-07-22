@@ -1,78 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Jul 2005 14:08:05 +0100 (BST)
-Received: from web33915.mail.mud.yahoo.com ([IPv6:::ffff:66.163.178.79]:64671
-	"HELO web33915.mail.mud.yahoo.com") by linux-mips.org with SMTP
-	id <S8225286AbVGVNHr>; Fri, 22 Jul 2005 14:07:47 +0100
-Received: (qmail 41955 invoked by uid 60001); 22 Jul 2005 13:09:43 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.com;
-  h=Message-ID:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
-  b=oXsSviun9XHtYdfVJBCLXMmv/5SWtNRj5wpG97waJmyjIOBAeY8xOZI15cJ1lG+mQxQHoDBJZkBvo04Q1cIbrvbSRed/8ztApLdA0zugHznxwoCMDOccXkt4osagHD1FHgT2m0RTSnKzNZEyHWaBK8LK81q0UNvE9exyWYCOVq8=  ;
-Message-ID: <20050722130943.41953.qmail@web33915.mail.mud.yahoo.com>
-Received: from [202.149.57.130] by web33915.mail.mud.yahoo.com via HTTP; Fri, 22 Jul 2005 06:09:43 PDT
-Date:	Fri, 22 Jul 2005 06:09:43 -0700 (PDT)
-From:	prem kumar <prem_1803@yahoo.com>
-Subject: trying to mmap part of the system memory (RAM)
-To:	linux-mips@linux-mips.org, prem_1803@yahoo.com
-MIME-Version: 1.0
-Content-Type: multipart/alternative; boundary="0-1679934713-1122037783=:39632"
-Content-Transfer-Encoding: 8bit
-Return-Path: <prem_1803@yahoo.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Jul 2005 14:12:34 +0100 (BST)
+Received: from [IPv6:::ffff:216.208.38.107] ([IPv6:::ffff:216.208.38.107]:25730
+	"EHLO OTTLS.pngxnet.com") by linux-mips.org with ESMTP
+	id <S8225282AbVGVNMT>; Fri, 22 Jul 2005 14:12:19 +0100
+Received: from bacchus.net.dhis.org ([10.255.255.134])
+	by OTTLS.pngxnet.com (8.12.4/8.12.4) with ESMTP id j6MDEIBM004270
+	for <linux-mips@linux-mips.org>; Fri, 22 Jul 2005 09:14:18 -0400
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j6MDEI1Y029782;
+	Fri, 22 Jul 2005 09:14:18 -0400
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j6MDEHMn029781;
+	Fri, 22 Jul 2005 09:14:17 -0400
+Date:	Fri, 22 Jul 2005 09:14:17 -0400
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Alex Gonzalez <linux-mips@packetvision.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Going over 512M of memory
+Message-ID: <20050722131417.GA29581@linux-mips.org>
+References: <20050721153359Z8225218-3678+3745@linux-mips.org> <20050722043057.GA3803@linux-mips.org> <1122023087.30605.3.camel@euskadi.packetvision>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1122023087.30605.3.camel@euskadi.packetvision>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8599
+X-archive-position: 8600
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: prem_1803@yahoo.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
---0-1679934713-1122037783=:39632
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
+On Fri, Jul 22, 2005 at 10:04:47AM +0100, Alex Gonzalez wrote:
 
-Hi All,
- 
-I've been trying to impliment mmap() fucntionality in my driver code. The intent is to reserve a piece of memory as buffer (about 2M) and map this area to the user space that calls this driver.
- 
-In the book Linux Device Driver by Rubini says that if we limit the use of system memory by the kernel, ie. tell the kernel to use less than the available amount of kernel space using command line option, we could in effect reuse the remaining memory by using the ioremap() system call.
- 
-I am working on MIPS RM5200 core (32 bit external Sys/Ad bus), the total availabe RAM size on the system is 64M, I have specified in the PMON boot code 32M size for use. So when the system boots up i can see that around 28M space is available using the free command.
-Now when i use the ioremap() system call, it returns me an address, which i presume to be the virtual address. When i try to use this address driectly or with writeb()/readb() system call, the whole system just reboots. 
-Can any one please tell if i am doing the right thing.. is there an lternate to ioremap() which would actually work? How do i get hold of the unused RAM space?
- 
-The address range that i'm using is 0xA2000000 as there is a direct mapping of memory in kseg1 address space for MIPS
- 
-I would be delighted to hear from anybody with a possible sol. :-)
- 
-Thanking in advance..
-Prem
+> Our target experienced a kernel panic at startup when trying to access
+> memory above 512MB.
+> 
+> Reading the list archives I found this thread with a proposed patch:
+> 
+> http://www.linux-mips.org/archives/linux-mips/2005-02/msg00115.html
+> 
+> After applying the patch our target boots OK and appears to be able to
+> access the whole memory range without problems.
+> 
+> Any idea why this patch didn't make it to the repository? Is it safe?
 
+It is - but according to Ibrahim's posting that you're pointing to it
+didn't solve his problem.
 
-__________________________________________________
-Do You Yahoo!?
-Tired of spam?  Yahoo! Mail has the best spam protection around 
-http://mail.yahoo.com 
---0-1679934713-1122037783=:39632
-Content-Type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
+What CPU are you using, btw?
 
-<DIV>
-<DIV>Hi All,</DIV>
-<DIV>&nbsp;</DIV>
-<DIV>I've been trying to impliment mmap() fucntionality in my driver code. The intent is to reserve a piece of memory as buffer (about 2M) and map this area to the user space that calls this driver.</DIV>
-<DIV>&nbsp;</DIV>
-<DIV>In the book Linux Device Driver by Rubini says that if we limit the use of system memory by the kernel, ie. tell the kernel to use less than the available amount of kernel space&nbsp;using command line option, we could in effect reuse the remaining memory by using the ioremap() system call.</DIV>
-<DIV>&nbsp;</DIV>
-<DIV>I am working on MIPS RM5200 core (32 bit external Sys/Ad bus), the total availabe RAM size on the system is 64M, I have specified in the PMON boot code 32M size for use. So when the system boots up i can see that around 28M space is available using the free command.</DIV>
-<DIV>Now when i use the ioremap() system call, it returns me an address, which i presume to be the virtual address. When i try to use this address driectly or with writeb()/readb() system call, the whole system just reboots. </DIV>
-<DIV>Can any one please&nbsp;tell if i am doing the right thing.. is there&nbsp;an lternate to ioremap() which would actually work? How do i get hold of the unused RAM space?</DIV>
-<DIV>&nbsp;</DIV>
-<DIV>The address range that i'm using is 0xA2000000 as there is a direct mapping of memory in kseg1 address space for MIPS</DIV>
-<DIV>&nbsp;</DIV>
-<DIV>I would be delighted to hear from anybody with a possible sol. :-)</DIV>
-<DIV>&nbsp;</DIV>
-<DIV>Thanking in advance..</DIV>
-<DIV>Prem</DIV></DIV><p>__________________________________________________<br>Do You Yahoo!?<br>Tired of spam?  Yahoo! Mail has the best spam protection around <br>http://mail.yahoo.com 
---0-1679934713-1122037783=:39632--
+  Ralf

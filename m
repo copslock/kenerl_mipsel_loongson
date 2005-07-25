@@ -1,97 +1,103 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Jul 2005 18:37:07 +0100 (BST)
-Received: from 81-174-11-161.f5.ngi.it ([IPv6:::ffff:81.174.11.161]:4802 "EHLO
-	zaigor.enneenne.com") by linux-mips.org with ESMTP
-	id <S8225334AbVGXRgs>; Sun, 24 Jul 2005 18:36:48 +0100
-Received: from giometti by zaigor.enneenne.com with local (Exim 3.36 #1 (Debian))
-	id 1DwkRM-0003I0-00
-	for <linux-mips@linux-mips.org>; Sun, 24 Jul 2005 19:39:04 +0200
-Date:	Sun, 24 Jul 2005 19:39:04 +0200
-From:	Rodolfo Giometti <giometti@linux.it>
-To:	linux-mips@linux-mips.org
-Subject: Invalid ticks per second on PM support
-Message-ID: <20050724173904.GC26487@enneenne.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Organization: Programmi e soluzioni GNU/Linux
-X-PGP-Key: gpg --keyserver keyserver.penguin.de --recv-keys D25A5633
-User-Agent: Mutt/1.5.6+20040722i
-Return-Path: <giometti@enneenne.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jul 2005 08:42:02 +0100 (BST)
+Received: from mail-out.m-online.net ([IPv6:::ffff:212.18.0.9]:59541 "EHLO
+	mail-out.m-online.net") by linux-mips.org with ESMTP
+	id <S8225439AbVGYHlj>; Mon, 25 Jul 2005 08:41:39 +0100
+Received: from mail.m-online.net (svr20.m-online.net [192.168.3.148])
+	by mail-out.m-online.net (Postfix) with ESMTP id 3F8FBF64D;
+	Mon, 25 Jul 2005 09:43:57 +0200 (CEST)
+Received: from schenk.isar.de (host-82-135-47-202.customer.m-online.net [82.135.47.202])
+	by mail.m-online.net (Postfix) with ESMTP id 2F11DCA115;
+	Mon, 25 Jul 2005 09:43:57 +0200 (CEST)
+Received: from gwhaus.rt.schenk (gwhaus.rt.schenk [172.22.0.4])
+	by schenk.isar.de (8.11.6/8.11.6/SuSE Linux 0.5) with ESMTP id j6P7huG19875;
+	Mon, 25 Jul 2005 09:43:56 +0200
+Received: from [172.22.10.24] (pcimr4.rt.schenk [172.22.10.24])
+	by gwhaus.rt.schenk (Postfix) with ESMTP id 691B97C0CE;
+	Mon, 25 Jul 2005 09:43:56 +0200 (CEST)
+Message-ID: <42E4983C.5030804@rtschenk.de>
+Date:	Mon, 25 Jul 2005 09:43:56 +0200
+From:	Rojhalat Ibrahim <imr@rtschenk.de>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7) Gecko/20040617
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	Alex Gonzalez <linux-mips@packetvision.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Going over 512M of memory
+References: <20050721153359Z8225218-3678+3745@linux-mips.org>	 <20050722043057.GA3803@linux-mips.org>	 <1122023087.30605.3.camel@euskadi.packetvision>	 <20050722131417.GA29581@linux-mips.org> <1122039139.30605.21.camel@euskadi.packetvision>
+In-Reply-To: <1122039139.30605.21.camel@euskadi.packetvision>
+X-Enigmail-Version: 0.84.1.0
+X-Enigmail-Supports: pgp-inline, pgp-mime
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <imr@rtschenk.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8630
+X-archive-position: 8631
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: giometti@linux.it
+X-original-sender: imr@rtschenk.de
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+Hi,
 
-When I sent my patch to fix PM support
-«http://www.linux-mips.org/archives/linux-mips/2005-07/msg00255.html»
-I modified function counter0_irq() as follow:
+I am not sure what patch you are actually talking about.
+In the mentioned thread there were several. Did you only apply
+the last one or all of them, i.e. did you also apply
+the patches that keep flushing the caches?
+Because those are really only a workaround and not a
+solution to the root cause of the problem.
 
-	  #ifdef CONFIG_PM
-	 -void counter0_irq(int irq, void *dev_id, struct pt_regs *regs)
-	 +irqreturn_t counter0_irq(int irq, void *dev_id, struct pt_regs *regs)
-	  {
-		 unsigned long pc0;
-		 int time_elapsed;
-		 static int jiffie_drift = 0;
-	  
-	 -	 kstat.irqs[0][irq]++;
-		 if (au_readl(SYS_COUNTER_CNTRL) & SYS_CNTRL_M20) {
+Rojhalat Ibrahim
 
-I removed line «kstat.irqs[0][irq]++;» since I supposed that counter
-is managed by __do_IRQ(), but now I notice that without such line
-reading from /proc/interrups I get:
 
-   hostname:~# while sleep 1 ; do grep 17: /proc/interrupts ; done
-    17:      31710  Au1000 Rise Edge  Au1xxx TOY                                   
-    17:      32236  Au1000 Rise Edge  Au1xxx TOY                                   
-    17:      32762  Au1000 Rise Edge  Au1xxx TOY                                   
-    17:      33288  Au1000 Rise Edge  Au1xxx TOY                                   
-    17:      33814  Au1000 Rise Edge  Au1xxx TOY                                   
-    17:      34340  Au1000 Rise Edge  Au1xxx TOY                                   
-    17:      34866  Au1000 Rise Edge  Au1xxx TOY                                   
-    17:      35392  Au1000 Rise Edge  Au1xxx TOY                                   
-
-Where you can see that I have 500 ticks per second...
-
-Applying this patch:
-
-Index: arch/mips/au1000/common/time.c
-===================================================================
-RCS file: /home/develop/cvs_private/linux-mips-exadron/arch/mips/au1000/common/time.c,v
-retrieving revision 1.2
-diff -u -r1.2 time.c
---- a/arch/mips/au1000/common/time.c	18 Jul 2005 17:16:57 -0000	1.2
-+++ b/arch/mips/au1000/common/time.c	24 Jul 2005 14:31:32 -0000
-@@ -125,6 +125,8 @@
- 	int time_elapsed;
- 	static int jiffie_drift = 0;
- 
-+	kstat_this_cpu.irqs[irq]++;
-+
- 	if (au_readl(SYS_COUNTER_CNTRL) & SYS_CNTRL_M20) {
- 		/* should never happen! */
- 		printk(KERN_WARNING "counter 0 w status error\n");
-
-Everything works well... but I'm a little puzzled about it.
-
-Can someone of you (guru) explain it? :-p
-
-Thanks,
-
-Rodolfo
-
--- 
-
-GNU/Linux Solutions                  e-mail:    giometti@linux.it
-Linux Device Driver                             giometti@enneenne.com
-Embedded Systems                     home page: giometti.enneenne.com
-UNIX programming                     phone:     +39 349 2432127
+Alex Gonzalez wrote:
+> It's a RM9020.
+> 
+> Quoting Ibrahim's,
+> 
+> "With a slightly extended patch it actually works. But afterwards
+> I get a lot of Illegal instructions and Segmentation faults, where
+> there shouldn't be any. Below is the patch I used."
+> 
+> And after you post an improved patch, he says,
+> 
+> "I presume CKSEG is CKSEG0 in the above patch. With that it works
+> about the same as before. So do you have any clue what the problem
+> behind all that really is? Furthermore I still have all those
+> "Illegal instruction" and "Segmentation fault" messages that
+> shouldn't be there."
+> 
+> The illegal instructions and segmentation faults turned to be the cpu_has_64bit_gp_regs setting. So I presume it worked for him.
+> 
+> In our case, it seems to work completely OK. I am running a complete memory test over the whole 1G to be completely sure (with memtester), and I'll report the result back.
+> 
+> Thanks,
+> Alex
+> 
+> 
+> On Fri, 2005-07-22 at 14:14, Ralf Baechle wrote:
+> 
+>>On Fri, Jul 22, 2005 at 10:04:47AM +0100, Alex Gonzalez wrote:
+>>
+>>
+>>>Our target experienced a kernel panic at startup when trying to access
+>>>memory above 512MB.
+>>>
+>>>Reading the list archives I found this thread with a proposed patch:
+>>>
+>>>http://www.linux-mips.org/archives/linux-mips/2005-02/msg00115.html
+>>>
+>>>After applying the patch our target boots OK and appears to be able to
+>>>access the whole memory range without problems.
+>>>
+>>>Any idea why this patch didn't make it to the repository? Is it safe?
+>>
+>>It is - but according to Ibrahim's posting that you're pointing to it
+>>didn't solve his problem.
+>>
+>>What CPU are you using, btw?
+>>
+>>  Ralf

@@ -1,53 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jul 2005 12:58:09 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:18950 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225479AbVGYL5w>; Mon, 25 Jul 2005 12:57:52 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 582A2E1D10; Mon, 25 Jul 2005 14:00:10 +0200 (CEST)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 04648-08; Mon, 25 Jul 2005 14:00:10 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 05439E1CAC; Mon, 25 Jul 2005 14:00:10 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j6PC0Bf3003354;
-	Mon, 25 Jul 2005 14:00:12 +0200
-Date:	Mon, 25 Jul 2005 13:00:17 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Clark Williams <williams@redhat.com>
-Cc:	Ralf Baechle <ralf@linux-mips.org>,
-	Rodolfo Giometti <giometti@linux.it>, linux-mips@linux-mips.org
-Subject: Re: Battery status
-In-Reply-To: <1122070078.10743.35.camel@riff>
-Message-ID: <Pine.LNX.4.61L.0507251240120.29763@blysk.ds.pg.gda.pl>
-References: <20050722142205.GE21044@enneenne.com>  <1122044036.10743.5.camel@riff>
- <20050722191732.GB3770@linux-mips.org>  <1122066616.10743.33.camel@riff> 
- <20050722212357.GE3770@linux-mips.org> <1122070078.10743.35.camel@riff>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jul 2005 21:38:01 +0100 (BST)
+Received: from sccrmhc14.comcast.net ([IPv6:::ffff:204.127.202.59]:2016 "EHLO
+	sccrmhc14.comcast.net") by linux-mips.org with ESMTP
+	id <S8225534AbVGYUhn>; Mon, 25 Jul 2005 21:37:43 +0100
+Received: from ba3pi (pcp0010731669pcs.howard01.md.comcast.net[69.243.71.130])
+          by comcast.net (sccrmhc14) with SMTP
+          id <2005072520400001400k7lr1e>; Mon, 25 Jul 2005 20:40:00 +0000
+From:	"Bryan Althouse" <bryan.althouse@3phoenix.com>
+To:	"'Maxim Osipov'" <maxim.osipov@gmail.com>
+Cc:	<linux-mips@linux-mips.org>
+Subject: re: Fwd: mips64 gdb problem
+Date:	Mon, 25 Jul 2005 16:39:56 -0400
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.85.1/991/Mon Jul 25 10:55:11 2005 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Office Outlook, Build 11.0.6353
+Thread-Index: AcWRWQRmktoYciWyTb6SVMJu7q0Pug==
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
+Message-Id: <20050725203743Z8225534-3678+4331@linux-mips.org>
+Return-Path: <bryan.althouse@3phoenix.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8635
+X-archive-position: 8636
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: bryan.althouse@3phoenix.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 22 Jul 2005, Clark Williams wrote:
+I'm butting heads with this problem also.  I get the error below when
+running mips64-unknown-linux-gdb on a 64 bit mips binary.  Has anyone come
+up with a work around?
 
-> > Okay.  I was assuming of somebody says ACPI he must mean ACPI ...
-> 
-> Heh. You and David Woodhouse both go nuclear when someone says ACPI :)
+Thanks,
+Bryan
 
- Please add me to the list, too. ;-)
+>Hello,
+>I wonder, is there some way to get debuger working on N64 target?
+>Thanks,
+>Maxim
 
-  Maciej
+>>On Fri, Jun 24, 2005 at 05:42:25PM +0400, Maxim Osipov wrote:
+>> Hello,
+>>
+>> I have a problem trying to debug 64-bit mips binary with gdb-6.3. It
+>> fails with the following message:
+>>
+>> /home # gdb 64test
+>> GNU gdb 6.3
+>> Copyright 2004 Free Software Foundation, Inc.
+>> GDB is free software, covered by the GNU General Public License, and you
+are
+>> welcome to change it and/or distribute copies of it under certain
+conditions.
+>> Type "show copying" to see the conditions.
+>> There is absolutely no warranty for GDB.  Type "show warranty" for
+details.
+>> This GDB was configured as "mips64-linux-gnu"...
+>> ../../gdb-6.3/gdb/dwarf2-frame.c:1411: internal-error:
+>> decode_frame_entry_1: Assertion `fde->cie != NULL' failed.

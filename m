@@ -1,68 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jul 2005 20:04:30 +0100 (BST)
-Received: from localhost.localdomain ([IPv6:::ffff:127.0.0.1]:28132 "EHLO
-	bacchus.net.dhis.org") by linux-mips.org with ESMTP
-	id <S8225750AbVGZTEN>; Tue, 26 Jul 2005 20:04:13 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j6QJ6ide013267;
-	Tue, 26 Jul 2005 15:06:44 -0400
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j6QJ6hlM013266;
-	Tue, 26 Jul 2005 15:06:43 -0400
-Date:	Tue, 26 Jul 2005 15:06:43 -0400
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Hiroshi DOYU <Hiroshi_DOYU@montavista.co.jp>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: how to access structured registers correctly
-Message-ID: <20050726190643.GD7088@linux-mips.org>
-References: <20050726182531.6341586f.Hiroshi_DOYU@montavista.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jul 2005 20:26:25 +0100 (BST)
+Received: from rproxy.gmail.com ([IPv6:::ffff:64.233.170.203]:8546 "EHLO
+	rproxy.gmail.com") by linux-mips.org with ESMTP id <S8225750AbVGZT0K> convert rfc822-to-8bit;
+	Tue, 26 Jul 2005 20:26:10 +0100
+Received: by rproxy.gmail.com with SMTP id c16so23957rne
+        for <linux-mips@linux-mips.org>; Tue, 26 Jul 2005 12:28:35 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=nh2TBhs49c58NNKiHDh6+Yu17jLXllVkR/lqJh37k4Zm6PTz27wchwNWkB8DOMSKxB6kaIgL8IT/kueJRuuCqECNwAnRkwxqBqdIoCBIagw4B5GpjAe/iShgCqwLCAfOyfoiUNatkWeJF5Q+uURmMS8MEFsKNe6xnbqWGUluT0c=
+Received: by 10.38.9.1 with SMTP id 1mr61911rni;
+        Tue, 26 Jul 2005 12:28:35 -0700 (PDT)
+Received: by 10.39.1.62 with HTTP; Tue, 26 Jul 2005 12:28:35 -0700 (PDT)
+Message-ID: <dbce930205072612285bd70e1b@mail.gmail.com>
+Date:	Tue, 26 Jul 2005 15:28:35 -0400
+From:	David Cummings <real.psyence@gmail.com>
+Reply-To: David Cummings <real.psyence@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: o32 glibc-2.3.5
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
 Content-Disposition: inline
-In-Reply-To: <20050726182531.6341586f.Hiroshi_DOYU@montavista.co.jp>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Return-Path: <real.psyence@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8642
+X-archive-position: 8643
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: real.psyence@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Jul 26, 2005 at 06:25:31PM +0900, Hiroshi DOYU wrote:
-> Date:	Tue, 26 Jul 2005 18:25:31 +0900
-> From:	Hiroshi DOYU <Hiroshi_DOYU@montavista.co.jp>
-> To:	linux-mips@linux-mips.org
-> Subject: how to access structured registers correctly
-> Content-Type: text/plain; charset=US-ASCII
-> 
-> Hello experts,
-> 
-> I am wondering how to access registers correctly by usging structured 
-> register definitions in TX4938 particularly.
-> 
-> Some time ago, Linus told "volatile" on a data structure as described 
-> below,
-> 
-> 	http://www.ussg.iu.edu/hypermail/linux/kernel/0401.0/1387.html
-> 
-> 
-> In tx4938, every register access is done by using "volatile" like below.
-
-Linus is right, volatile is a dangerous thing.  If you want to write
-portable code there's a bunch of things that are not being taken care of
-by plain C - even though in my opinion foo->somereg = 42 is more
-readable than writel(somereg, 42).  Among the things the pointer to
-volatile struct method doesn't catch are endianess conversion that might
-be necessary on some systems, write merging, dealing with write buffers
-or completly insane methods of attaching the bus such as the infamous
-ISA / EISA cage that's attached to the host system through a USB
-interface.
-
-Now, how does that affect your TX4928 code?  Probably not terribly much
-because you're using a SOC so the configuration of the system is fixed.
-
-  Ralf
+hi, 
+  Trying to compile glibc-2.3.5 for o32 patched with syscall, I get an
+error for socket.S, socket/recv.o. This is the exact same error
+mentioned on this list last month. In that thread there was reference
+to a patch by Richard sandiford. This is with gcc-3.4.4. If anyone
+knows where I can find said patch, and if that'll fix my problem, I'd
+greatly appreciate it. I've been looking in glibc's bugzilla but can't
+find the right bug. Thanks!
+-Dave
+-- 
+The way that can be named is not the Way.

@@ -1,89 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jul 2005 10:20:29 +0100 (BST)
-Received: from sonicwall.montavista.co.jp ([IPv6:::ffff:202.232.97.131]:49132
-	"EHLO yuubin.montavista.co.jp") by linux-mips.org with ESMTP
-	id <S8225601AbVGZJUN>; Tue, 26 Jul 2005 10:20:13 +0100
-Received: from localhost.localdomain (oreo.jp.mvista.com [10.200.16.31])
-	by yuubin.montavista.co.jp (8.12.5/8.12.5) with SMTP id j6Q9MdS5030888
-	for <linux-mips@linux-mips.org>; Tue, 26 Jul 2005 18:22:39 +0900
-Date:	Tue, 26 Jul 2005 18:25:31 +0900
-From:	Hiroshi DOYU <Hiroshi_DOYU@montavista.co.jp>
-To:	linux-mips@linux-mips.org
-Subject: how to access structured registers correctly
-Message-Id: <20050726182531.6341586f.Hiroshi_DOYU@montavista.co.jp>
-X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <Hiroshi_DOYU@montavista.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jul 2005 12:09:49 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:3076 "EHLO
+	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225719AbVGZLJc>; Tue, 26 Jul 2005 12:09:32 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 5A5A8F5943; Tue, 26 Jul 2005 13:11:56 +0200 (CEST)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 21268-02; Tue, 26 Jul 2005 13:11:56 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 21C8FE1C91; Tue, 26 Jul 2005 13:11:56 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j6QBBwa2028962;
+	Tue, 26 Jul 2005 13:11:58 +0200
+Date:	Tue, 26 Jul 2005 12:12:04 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Thiemo Seufer <ths@networkno.de>, linux-mips@linux-mips.org
+Subject: Re: CVS Update@linux-mips.org: linux
+In-Reply-To: <20050722140045.GA30896@linux-mips.org>
+Message-ID: <Pine.LNX.4.61L.0507261205310.2177@blysk.ds.pg.gda.pl>
+References: <20050721153359Z8225218-3678+3745@linux-mips.org>
+ <20050722043057.GA3803@linux-mips.org> <20050722121030.GD1692@hattusa.textio>
+ <20050722130655.GD3803@linux-mips.org> <Pine.LNX.4.61L.0507221417340.7324@blysk.ds.pg.gda.pl>
+ <20050722140045.GA30896@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.85.1/993/Tue Jul 26 09:28:36 2005 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8639
+X-archive-position: 8640
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Hiroshi_DOYU@montavista.co.jp
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello experts,
+On Fri, 22 Jul 2005, Ralf Baechle wrote:
 
-I am wondering how to access registers correctly by usging structured 
-register definitions in TX4938 particularly.
+> Which makes me wonder why glibc has the E_ definitions.  Other operating
+> systems that I looked up don't.
 
-Some time ago, Linus told "volatile" on a data structure as described 
-below,
+ Well, we can scan old change logs and then throw darts at a likeness of 
+the offender. ;-)  Oh -- and we could ask the person, too.
 
-	http://www.ussg.iu.edu/hypermail/linux/kernel/0401.0/1387.html
-
-
-In tx4938, every register access is done by using "volatile" like below.
-
- 
-    include/asm-mips/tx4938/tx4938.h:
-    
-       313  struct tx4938_ccfg_reg {
-       314          volatile unsigned long long ccfg;
-                    ^^^^^^^^
-       315          volatile unsigned long long crir;
-       316          volatile unsigned long long pcfg;
-       317          volatile unsigned long long tear;
-
-    
-    arch/mips/tx4938/toshiba_rbtx4938/setup.c:
-    
-       410  int __init tx4938_pciclk66_setup(void)
-       411  {
-       412          int pciclk;
-       413  
-       414          /* Assert M66EN */
-       415          tx4938_ccfgptr->ccfg |= TX4938_CCFG_PCI66;
-                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-
-In order to remove "volatile" on data structure and fix the above situation, I gues, 
-some functions are provided in header files:
-
-	1. "reg_rd08(r)" family
-	2. "TX4938_RD08(r)" family
-	3. "readb(r)" family
-
-Could you tell me which is suitable for this situation?
-
-For exmaple, if #"2" is applied, the code would become like below:
-
-    arch/mips/tx4938/toshiba_rbtx4938/setup.c:
-
-       433  int __init tx4938_pciclk66_setup(void)
-       434  {
-       435          int pciclk;
-       436          unsigned long long v;
-       437          /* Assert M66EN */
-       438          v = TX4938_RD64(&tx4938_ccfgptr->ccfg);
-       439          TX4938_WR64(&tx4938_ccfgptr->ccfg, v | TX4938_CCFG_PCI66);
-                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-
-Any information would be appreciated.
-
-	Hiroshi DOYU
+  Maciej

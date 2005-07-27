@@ -1,57 +1,212 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Jul 2005 09:42:56 +0100 (BST)
-Received: from go4.ext.ti.com ([IPv6:::ffff:192.91.75.132]:9962 "EHLO
-	go4.ext.ti.com") by linux-mips.org with ESMTP id <S8225771AbVG0Iml> convert rfc822-to-8bit;
-	Wed, 27 Jul 2005 09:42:41 +0100
-Received: from dlep31.itg.ti.com ([157.170.139.161])
-	by go4.ext.ti.com (8.13.1/8.13.1) with ESMTP id j6R8j9PF025001
-	for <linux-mips@linux-mips.org>; Wed, 27 Jul 2005 03:45:09 -0500 (CDT)
-Received: from dlep90.itg.ti.com (localhost [127.0.0.1])
-	by dlep31.itg.ti.com (8.12.11/8.12.11) with ESMTP id j6R8j9Xg008402
-	for <linux-mips@linux-mips.org>; Wed, 27 Jul 2005 03:45:09 -0500 (CDT)
-Received: from dbde01.ent.ti.com (localhost [127.0.0.1])
-	by dlep90.itg.ti.com (8.12.11/8.12.11) with ESMTP id j6R8j5i6012666
-	for <linux-mips@linux-mips.org>; Wed, 27 Jul 2005 03:45:08 -0500 (CDT)
-X-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Jul 2005 09:51:57 +0100 (BST)
+Received: from dsl-KK-026.199.95.61.touchtelindia.net ([IPv6:::ffff:61.95.199.26]:25740
+	"EHLO trishul.procsys.com") by linux-mips.org with ESMTP
+	id <S8225771AbVG0Ivk>; Wed, 27 Jul 2005 09:51:40 +0100
+Received: from procsys.com ([192.168.1.128])
+	by trishul.procsys.com (8.12.10/8.12.10) with ESMTP id j6R8qLj8006710
+	for <linux-mips@linux-mips.org>; Wed, 27 Jul 2005 14:22:35 +0530
+Message-ID: <42E74A70.86937FAC@procsys.com>
+Date:	Wed, 27 Jul 2005 14:18:48 +0530
+From:	priya <priya@procsys.com>
+X-Mailer: Mozilla 4.7 [en] (WinNT; I)
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: xtime drift issue
-Date:	Wed, 27 Jul 2005 14:15:05 +0530
-Message-ID: <CBD77117272E1249BFDC21E33D555FDC0601A7@dbde01.ent.ti.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: xtime drift issue
-Thread-Index: AcWSh3xGMMv1tp93Q+KoMn/o8LU7nw==
-From:	"Nori, Soma Sekhar" <nsekhar@ti.com>
-To:	<linux-mips@linux-mips.org>
-Return-Path: <nsekhar@ti.com>
+To:	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: dma timer expires
+Content-Type: multipart/mixed;
+ boundary="------------22E0458B5C70E0AFA893312E"
+X-ProcSys-Com-Anti-Virus-Mail-Filter-Virus-Found: no
+Return-Path: <priya@procsys.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8645
+X-archive-position: 8646
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nsekhar@ti.com
+X-original-sender: priya@procsys.com
 Precedence: bulk
 X-list: linux-mips
 
+This is a multi-part message in MIME format.
+--------------22E0458B5C70E0AFA893312E
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-Hi All,
+Hi,
+We are using the MIPS custom board based
+on RM5231A MIPS
+processor and IT8172 companion chip. The
+kernel version we are using is
+2.4.25.
+When we connect the maxtor hard disk we
+are able to do continuous data
+access, as in playing a movie. But when
+we connect a samsung or seagate
+drive we get the dma timer expiry error
+with the dma staus reg value =
+0x61 when the partition check is made
+initially.
 
-I am running linux 2.6.10 (kernel.org) on my MIPS 4kec board.
+Another observation is that the
+multicount value when we boot the Maxtor
 
-On bootup, I use "hwclock -s" to sync the system time to the RTC.
-Thereafter, the RTC keeps pace, but "date" starts losing time pretty
-rapidly (~13 seconds per minute).
+is 16 (i guess this is default value)
+where us when we use samsung or
+seagate drives it is set to 0.
 
-There is no interrupt from my RTC and hence updating xtime in RTC
-ISR is not possible.
+I have also attached the log below.
 
-Is it normal for date to lose time at such a rapid pace?
-If yes, what is the prefered way to keep pace (without using NTP)?
+Can you please tell me the reason why
+the dma is timing out?
 
-Thanks,
-Sekhar Nori.
+regards
+priya
+
+--
+Such is oft the course of deeds that
+move the wheels of the world: small
+hands do them because they must, while
+the eyes of the great are elsewhere.
+     --Elrond
+
+
+--------------22E0458B5C70E0AFA893312E
+Content-Type: application/x-unknown-content-type-txtfile;
+ name="idepb.log"
+Content-Transfer-Encoding: base64
+Content-Disposition: inline;
+ filename="idepb.log"
+
+RG93bmxvYWQgc3VjY2VlZGVkOiB0b3RhbCAweDIzZTQ5NCBieXRlcywgZW50cnkgMHg4MDJm
+ODA0MApQTU9OPiBnCklURSBib2FyZCBydW5uaW5nLi4uCnRpbWVyX3NldHVwCgoweDAwMDAw
+MDgwCm1lbXNpemUgdW5rbm93bjogc2V0dGluZyB0byAzMk1CCk1lbW9yeSBzaXplOiAzMk1C
+Cgogc2V0dGluZyB0aGUgTUMgYW5kIFNEVFlQRSAuLi4tIHByaXlhQ1BVIHJldmlzaW9uIGlz
+OiAwMDAwMjgzMQpGUFUgcmV2aXNpb24gaXM6IDAwMDAyODMwClByaW1hcnkgaW5zdHJ1Y3Rp
+b24gY2FjaGUgMzJrQiwgcGh5c2ljYWxseSB0YWdnZWQsIDItd2F5LCBsaW5lc2l6ZSAzMiBi
+eXRlcy4KUHJpbWFyeSBkYXRhIGNhY2hlIDMya0IgMi13YXksIGxpbmVzaXplIDMyIGJ5dGVz
+LgpMaW51eCB2ZXJzaW9uIDIuNC4yNSAocm9vdEByZHZkMikgKGdjYyB2ZXJzaW9uIDMuMi4z
+KSAjMzMwIFR1ZSBKdWwgMTIgMTg6NDM6MjQgSVNUIDIwMDUKCiBwcml5YSAtIHNlYXJjaCA4
+NzEyIC0gSWQxIC0gMHg4NwogcHJpeWEgLSBzZWFyY2ggODcxMiAtIElkMiAtIDB4MTJGb3Vu
+ZCBJVDg3MTIgU3VwZXIgSU8KCiAqKiogcHJpeWEgbWlwcyBiYXNlIC0gMHhhMDAwMDAwMCoq
+KgogKioqIHByaXlhIHByaW50aW5nIHRoZSBnbG9iYWwgY29uZmlnIHJlZ2lzdGVyIHN0YXJ0
+KioqCiBpbmRleCBhbGwgLSAweDcgLSAweDEKIGluZGV4IGFsbCAtIDB4MjAgLSAweGZmZmZm
+Zjg3CiBpbmRleCBhbGwgLSAweDIxIC0gMHgxMgogaW5kZXggYWxsIC0gMHgyMiAtIDB4NAog
+aW5kZXggYWxsIC0gMHgyMyAtIDB4MAogaW5kZXggYWxsIC0gMHgyNCAtIDB4MAogaW5kZXgg
+MHg3IC0gMHgyNSAtIDB4MAogaW5kZXggMHg3IC0gMHgyNiAtIDB4MAogaW5kZXggMHg3IC0g
+MHgyNyAtIDB4MAogaW5kZXggMHg3IC0gMHgyOCAtIDB4MAogaW5kZXggMHg3IC0gMHgyOSAt
+IDB4MAogaW5kZXggMHg3IC0gMHgyYSAtIDB4MAogaW5kZXggYWxsIC0gMHgyYiAtIDB4MAog
+aW5kZXggMHg3IC0gMHgyYyAtIDB4MAogaW5kZXggMHhmNCAtIDB4MmUgLSAweDAKIGluZGV4
+IDB4ZjQgLSAweDJmIC0gMHgwCiAqKiogcHJpeWEgcHJpbnRpbmcgdGhlIGdsb2JhbCBjb25m
+aWcgcmVnaXN0ZXIgZW5kIAoqKioKICoqKiBwcml5YSBwcmludGluZyB0aGUgcGFybGxlbCBw
+b3J0IHJlZ2lzdGVyCiAqKiogcHJpeWEgcHJpbnRpbmcgdGhlIHBhcmxsZWwgcG9ydCByZWdp
+c3RlciBvdmVyIC4uLi5EZXRlcm1pbmVkIHBoeXNpY2FsIFJBTSBtYXA6CiBtZW1vcnk6IDAy
+MDAwMDAwIEAgMDAwMDAwMDAgKHVzYWJsZSkKT24gbm9kZSAwIHRvdGFscGFnZXM6IDgxOTIK
+em9uZSgwKTogODE5MiBwYWdlcy4Kem9uZSgxKTogMCBwYWdlcy4Kem9uZSgyKTogMCBwYWdl
+cy4KS2VybmVsIGNvbW1hbmQgbGluZTogIHJvb3Q9L2Rldi9oZGExIGNvbnNvbGU9dHR5UzAs
+MTE1MjAwbjggbm9pbml0cmQgaXA9Ym9vdHAKY2FsY3VsYXRpbmcgcjRrb2ZmLi4uIDAwMWU2
+ZmZhKDE5OTQ3NDYpCkNQVSBmcmVxdWVuY3kgMzk4Ljk1IE1IegpVc2luZyAxOTkuNDc1IE1I
+eiBoaWdoIHByZWNpc2lvbiB0aW1lci4KQ29uc29sZTogY29sb3VyIGR1bW15IGRldmljZSA4
+MHgyNQpDYWxpYnJhdGluZyBkZWxheSBsb29wLi4uIDM5OC4xMyBCb2dvTUlQUwpNZW1vcnk6
+IDI4ODg4ay8zMjc2OGsgYXZhaWxhYmxlICgyMDAzayBrZXJuZWwgY29kZSwgMzg4MGsgcmVz
+ZXJ2ZWQsIDEyNGsgZGF0YSwgMTYwayBpbml0LCAwayBoaWdobWVtKQpEZW50cnkgY2FjaGUg
+aGFzaCB0YWJsZSBlbnRyaWVzOiA0MDk2IChvcmRlcjogMywgMzI3NjggYnl0ZXMpCklub2Rl
+IGNhY2hlIGhhc2ggdGFibGUgZW50cmllczogMjA0OCAob3JkZXI6IDIsIDE2Mzg0IGJ5dGVz
+KQpNb3VudCBjYWNoZSBoYXNoIHRhYmxlIGVudHJpZXM6IDUxMiAob3JkZXI6IDAsIDQwOTYg
+Ynl0ZXMpCkJ1ZmZlciBjYWNoZSBoYXNoIHRhYmxlIGVudHJpZXM6IDEwMjQgKG9yZGVyOiAw
+LCA0MDk2IGJ5dGVzKQpQYWdlLWNhY2hlIGhhc2ggdGFibGUgZW50cmllczogODE5MiAob3Jk
+ZXI6IDMsIDMyNzY4IGJ5dGVzKQpDaGVja2luZyBmb3IgJ3dhaXQnIGluc3RydWN0aW9uLi4u
+ICBhdmFpbGFibGUuClBPU0lYIGNvbmZvcm1hbmNlIHRlc3RpbmcgYnkgVU5JRklYCkF1dG9j
+b25maWcgUENJIGNoYW5uZWwgMHg4MDM0MDk4NApTY2FubmluZyBidXMgMDAsIEkvTyAweDE0
+MDE4MDAwOjB4MTgwMDAwMDAsIE1lbSAweDEwMTAxMDAwOjB4MTQwMDAwMDAKMDA6MTAuMCBD
+bGFzcyAwMjAwOiAxMGVjOjgxMzkgKHJldiAxMCkKICAgICAgICBJL08gYXQgMHgxNDAxODAw
+MCBbc2l6ZT0weDEwMF0KICAgICAgICBNZW0gYXQgMHgxMDEwMTAwMCBbc2l6ZT0weDEwMF0K
+MDA6MTIuMCBDbGFzcyAwNDgwOiAxOTM5OjEwMDAgKHJldiAwMSkKICAgICAgICBJL08gYXQg
+MHgxNDAxODEwMCBbc2l6ZT0weDQwXQogICAgICAgIE1lbSBhdCAweDEwMTAxMTAwIFtzaXpl
+PTB4NDBdCiAgICAgICAgTWVtIGF0IDB4MTAxMTAwMDAgW3NpemU9MHgxMDAwMF0KTGludXgg
+TkVUNC4wIGZvciBMaW51eCAyLjQKQmFzZWQgdXBvbiBTd2Fuc2VhIFVuaXZlcnNpdHkgQ29t
+cHV0ZXIgU29jaWV0eSBORVQzLjAzOQpJbml0aWFsaXppbmcgUlQgbmV0bGluayBzb2NrZXQK
+U3RhcnRpbmcga3N3YXBkCkpvdXJuYWxsZWQgQmxvY2sgRGV2aWNlIGRyaXZlciBsb2FkZWQK
+ZGV2ZnM6IHYxLjEyYyAoMjAwMjA4MTgpIFJpY2hhcmQgR29vY2ggKHJnb29jaEBhdG5mLmNz
+aXJvLmF1KQpkZXZmczogZGV2ZnNfZGVidWc6IDB4MApkZXZmczogYm9vdF9vcHRpb25zOiAw
+eDEKaW5pdGlhbGl6ZV9rYmQ6IEtleWJvYXJkIHJlc2V0IGZhaWxlZCwgbm8gQUNLCkRldGVj
+dGVkIFBTLzIgTW91c2UgUG9ydC4KcHR5OiAyNTYgVW5peDk4IHB0eXMgY29uZmlndXJlZApr
+ZXlib2FyZDogVGltZW91dCAtIEFUIGtleWJvYXJkIG5vdCBwcmVzZW50PyhlZCkKa2V5Ym9h
+cmQ6IFRpbWVvdXQgLSBBVCBrZXlib2FyZCBub3QgcHJlc2VudD8oZjQpClNlcmlhbCBkcml2
+ZXIgdmVyc2lvbiA1LjA1YyAoMjAwMS0wNy0wOCkgd2l0aCBNQU5ZX1BPUlRTIFNIQVJFX0lS
+USBTRVJJQUxfUENJIGVuYWJsZWQKdHR5UzAwIGF0IDB4MTQwMTE4MDAgKGlycSA9IDIzKSBp
+cyBhIDE2NTUwQQp0dHlTMDEgYXQgMHgxNDAwMDNmOCAoaXJxID0gNCkgaXMgYSAxNjU1MEEK
+dHR5UzAyIGF0IDB4MTQwMDAyZjggKGlycSA9IDUpIGlzIGEgMTY1NTBBCnR0eVMwMyBhdCAw
+eDE0MDEyMDAwIChpcnEgPSAyNCkgaXMgYSAxNjU1MEEKdHR5UzA0IGF0IDB4MTQwMTI4MDAg
+KGlycSA9IDI1KSBpcyBhIDE2NTUwQQprbW9kOiBmYWlsZWQgdG8gZXhlYyAvc2Jpbi9tb2Rw
+cm9iZSAtcyAtayBwYXJwb3J0X2xvd2xldmVsLCBlcnJubyA9IDIKCiBwcml5YSBscF9jb3Vu
+dCAtIDA8Nj5scDogZHJpdmVyIGxvYWRlZCBidXQgbm8gZGV2aWNlcyBmb3VuZApydGM6IEkv
+TyByZXNvdXJjZSA3MCBpcyBub3QgZnJlZS4KR2VuZXJpYyBNSVBTIFJUQyBEcml2ZXIgdjEu
+MApsb29wOiBsb2FkZWQgKG1heCA4IGRldmljZXMpCmRtZmU6IERhdmljb20gRE05eHh4IG5l
+dCBkcml2ZXIsIHZlcnNpb24gMS4zNi40ICgyMDAyLTAxLTE3KQo4MTM5dG9vIEZhc3QgRXRo
+ZXJuZXQgZHJpdmVyIDAuOS4yNgpldGgwOiBSZWFsVGVrIFJUTDgxMzkgYXQgMHhiMDEwMTAw
+MCwgMDA6MTA6MTI6MDE6MDA6ODMsIElSUSAzOApVbmlmb3JtIE11bHRpLVBsYXRmb3JtIEUt
+SURFIGRyaXZlciBSZXZpc2lvbjogNy4wMGJldGE0LTIuNAppZGU6IEFzc3VtaW5nIDMzTUh6
+IHN5c3RlbSBidXMgc3BlZWQgZm9yIFBJTyBtb2Rlczsgb3ZlcnJpZGUgd2l0aCBpZGVidXM9
+eHgKSVQ4MTcyRzogSURFIGNvbnRyb2xsZXIgYXQgUENJIHNsb3QgMDA6MDEuNQpJVDgxNzJH
+OiBjaGlwc2V0IHJldmlzaW9uIDEKSVQ4MTcyRzogbm90IDEwMCUgbmF0aXZlIG1vZGU6IHdp
+bGwgcHJvYmUgaXJxcyBsYXRlcgogICAgaWRlMDogQk0tRE1BIGF0IDB4MTQwMTc4MDAtMHgx
+NDAxNzgwNywgQklPUyBzZXR0aW5nczogaGRhOkRNQSwgaGRiOkRNQQpJVDgxNzJHOiBJREUg
+Y29udHJvbGxlciBhdCBQQ0kgc2xvdCAwMDowMS43ClBDSTogVW5hYmxlIHRvIHJlc2VydmUg
+SS9PIHJlZ2lvbiAjNToxMEAxNDAxNzgwMCBmb3IgZGV2aWNlIDAwOjAxLjcKSVQ4MTcyRzog
+MTAwJSBuYXRpdmUgbW9kZSBvbiBpcnEgMzQKSVQ4MTcyRzogcG9ydCAweDE0MDE3OWYwIGFs
+cmVhZHkgY2xhaW1lZCBieSBpZGUwCklUODE3Mkc6IG5laXRoZXIgSURFIHBvcnQgZW5hYmxl
+ZCAoQklPUykKaGRhOiBTQU1TVU5HIE1QMDMwMkgsIEFUQSBESVNLIGRyaXZlCmJsazogcXVl
+dWUgODAzNjNmZjAsIEkvTyBsaW1pdCA0MDk1TWIgKG1hc2sgMHhmZmZmZmZmZikKaWRlMTog
+cG9ydHMgYWxyZWFkeSBpbiB1c2UsIHNraXBwaW5nIHByb2JlCmlkZTI6IHBvcnRzIGFscmVh
+ZHkgaW4gdXNlLCBza2lwcGluZyBwcm9iZQppZGUzOiBwb3J0cyBhbHJlYWR5IGluIHVzZSwg
+c2tpcHBpbmcgcHJvYmUKaWRlNDogcG9ydHMgYWxyZWFkeSBpbiB1c2UsIHNraXBwaW5nIHBy
+b2JlCmlkZTU6IHBvcnRzIGFscmVhZHkgaW4gdXNlLCBza2lwcGluZyBwcm9iZQppZGUwIGF0
+IDB4MTQwMTc5ZjAtMHgxNDAxNzlmNywweDE0MDE3YmY2IG9uIGlycSAzNApoZGE6IGF0dGFj
+aGVkIGlkZS1kaXNrIGRyaXZlci4KaGRhOiBob3N0IHByb3RlY3RlZCBhcmVhID0+IDEKaGRh
+OiA1ODcxMTk2OCBzZWN0b3JzICgzMDA2MSBNQikgdy84MTkyS2lCIENhY2hlLCBDSFM9MzY1
+NC8yNTUvNjMsIFVETUEoMzMpClBhcnRpdGlvbiBjaGVjazoKIC9kZXYvaWRlL2hvc3QwL2J1
+czAvdGFyZ2V0MC9sdW4wOjw0PmhkYTogZG1hX3RpbWVyX2V4cGlyeTogZG1hIHN0YXR1cyA9
+PSAweDYxCmhkYTogZXJyb3Igd2FpdGluZyBmb3IgRE1BCmhkYTogZG1hIHRpbWVvdXQgcmV0
+cnk6IHN0YXR1cz0weDU4IHsgRHJpdmVSZWFkeSBTZWVrQ29tcGxldGUgRGF0YVJlcXVlc3Qg
+fQoKaGRhOiBzdGF0dXMgdGltZW91dDogc3RhdHVzPTB4ZDAgeyBCdXN5IH0KCmhkYTogZHJp
+dmUgbm90IHJlYWR5IGZvciBjb21tYW5kCmlkZTA6IHJlc2V0OiBzdWNjZXNzCiBwMQpJVDgx
+NzIgYXVkaW86IHZlcnNpb24gdjAuNSB0aW1lIDE4OjQxOjAzIEp1bCAgOCAyMDA1CklUODE3
+MiBhdWRpbzogSU8gYXQgMHgxNDAxNzAwMCwgSVJRIDMyClBDSTogRW5hYmxpbmcgZGV2aWNl
+IDAwOjAxLjAgKDAwMDAgLT4gMDAwMSkKSVQ4MTcyIGF1ZGlvOiBkaXNhYmxpbmcgUy9QRElG
+IG91dHB1dAphYzk3X2NvZGVjOiBBQzk3IEF1ZGlvIGNvZGVjLCBpZDogQURTNzIgKEFuYWxv
+ZyBEZXZpY2VzIEFEMTg4MUEpCnBoeXNtYXAgZmxhc2ggZGV2aWNlOiA0MDAwMDAwIGF0IDgw
+MDAwMDAKQ0ZJOiBGb3VuZCBubyBQaHlzaWNhbGx5IG1hcHBlZCBmbGFzaCBkZXZpY2UgYXQg
+bG9jYXRpb24gemVybwpTZWFyY2ggZm9yIGlkOigwMCA5MCkgaW50ZXJsZWF2ZSgxKSB0eXBl
+KDIpClNlYXJjaCBmb3IgaWQ6KDAwIDkwKSBpbnRlcmxlYXZlKDEpIHR5cGUoMikKU2VhcmNo
+IGZvciBpZDooOTAgMDApIGludGVybGVhdmUoMSkgdHlwZSgyKQpTZWFyY2ggZm9yIGlkOigw
+MCA5MCkgaW50ZXJsZWF2ZSgyKSB0eXBlKDEpClNlYXJjaCBmb3IgaWQ6KDAwIDkwKSBpbnRl
+cmxlYXZlKDIpIHR5cGUoMSkKU2VhcmNoIGZvciBpZDooOTAgMDApIGludGVybGVhdmUoMikg
+dHlwZSgxKQpTZWFyY2ggZm9yIGlkOig5MDkwIDkwOTApIGludGVybGVhdmUoMikgdHlwZSgy
+KQpTZWFyY2ggZm9yIGlkOig5MDkwIDkwOTApIGludGVybGVhdmUoMikgdHlwZSgyKQpTZWFy
+Y2ggZm9yIGlkOig5MDkwIDkwOTApIGludGVybGVhdmUoMikgdHlwZSgyKQpKRURFQzogRm91
+bmQgbm8gUGh5c2ljYWxseSBtYXBwZWQgZmxhc2ggZGV2aWNlIGF0IGxvY2F0aW9uIHplcm8K
+a21vZDogZmFpbGVkIHRvIGV4ZWMgL3NiaW4vbW9kcHJvYmUgLXMgLWsgbWFwX3JvbSwgZXJy
+bm8gPSAyCnVzYi5jOiByZWdpc3RlcmVkIG5ldyBkcml2ZXIgdXNiZGV2ZnMKdXNiLmM6IHJl
+Z2lzdGVyZWQgbmV3IGRyaXZlciBodWIKaG9zdC91c2Itb2hjaS5jOiBVU0IgT0hDSSBhdCBt
+ZW1iYXNlIDB4YjAxMDAwMDAsIElSUSAzNQpob3N0L3VzYi1vaGNpLmM6IHVzYi0wMDowMS4z
+LCBQQ0kgZGV2aWNlIDEyODM6MTIzNAp1c2IuYzogbmV3IFVTQiBidXMgcmVnaXN0ZXJlZCwg
+YXNzaWduZWQgYnVzIG51bWJlciAxClByb2R1Y3Q6IFVTQiBPSENJIFJvb3QgSHViClNlcmlh
+bE51bWJlcjogYjAxMDAwMDAKaHViLmM6IFVTQiBodWIgZm91bmQKaHViLmM6IDIgcG9ydHMg
+ZGV0ZWN0ZWQKdXNiLmM6IHJlZ2lzdGVyZWQgbmV3IGRyaXZlciBoaWRkZXYKdXNiLmM6IHJl
+Z2lzdGVyZWQgbmV3IGRyaXZlciBoaWQKaGlkLWNvcmUuYzogdjEuOC4xIEFuZHJlYXMgR2Fs
+LCBWb2p0ZWNoIFBhdmxpayA8dm9qdGVjaEBzdXNlLmN6PgpoaWQtY29yZS5jOiBVU0IgSElE
+IHN1cHBvcnQgZHJpdmVycwptaWNlOiBQUy8yIG1vdXNlIGRldmljZSBjb21tb24gZm9yIGFs
+bCBtaWNlCk5FVDQ6IExpbnV4IFRDUC9JUCAxLjAgZm9yIE5FVDQuMApJUCBQcm90b2NvbHM6
+IElDTVAsIFVEUCwgVENQCklQOiByb3V0aW5nIGNhY2hlIGhhc2ggdGFibGUgb2YgNTEyIGJ1
+Y2tldHMsIDRLYnl0ZXMKVENQOiBIYXNoIHRhYmxlcyBjb25maWd1cmVkIChlc3RhYmxpc2hl
+ZCAyMDQ4IGJpbmQgNDA5NikKZXRoMDogbGluayB1cCwgMTAwTWJwcywgZnVsbC1kdXBsZXgs
+IGxwYSAweDQxRTEKU2VuZGluZyBCT09UUCByZXF1ZXN0cyAuIE9LCklQLUNvbmZpZzogR290
+IEJPT1RQIGFuc3dlciBmcm9tIDE5Mi4xNjguMS4yMzMsIG15IGFkZHJlc3MgaXMgMTkyLjE2
+OC4xLjIwMgpJUC1Db25maWc6IENvbXBsZXRlOgogICAgICBkZXZpY2U9ZXRoMCwgYWRkcj0x
+OTIuMTY4LjEuMjAyLCBtYXNrPTI1NS4yNTUuMjU1LjAsIGd3PTE5Mi4xNjguMS41LAogICAg
+IGhvc3Q9MTkyLjE2OC4xLjIwMiwgZG9tYWluPSwgbmlzLWRvbWFpbj0obm9uZSksCiAgICAg
+Ym9vdHNlcnZlcj0xOTIuMTY4LjEuMjMzLCByb290c2VydmVyPTE5Mi4xNjguMS4yMzMsIHJv
+b3RwYXRoPS9vcHQvaGFyZGhhdC10Yy90YXJnZXQKTkVUNDogVW5peCBkb21haW4gc29ja2V0
+cyAxLjAvU01QIGZvciBMaW51eCBORVQ0LjAuCg==
+--------------22E0458B5C70E0AFA893312E--

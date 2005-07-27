@@ -1,65 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Jul 2005 15:42:07 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:56582 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225456AbVG0Olw>; Wed, 27 Jul 2005 15:41:52 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 8FD0DF597F; Wed, 27 Jul 2005 16:44:22 +0200 (CEST)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 18057-03; Wed, 27 Jul 2005 16:44:22 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 620D8E1C64; Wed, 27 Jul 2005 16:44:22 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j6REiPer028088;
-	Wed, 27 Jul 2005 16:44:25 +0200
-Date:	Wed, 27 Jul 2005 15:44:34 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	David Cummings <real.psyence@gmail.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: o32 glibc-2.3.5
-In-Reply-To: <dbce93020507270655d4a1c6@mail.gmail.com>
-Message-ID: <Pine.LNX.4.61L.0507271523550.13819@blysk.ds.pg.gda.pl>
-References: <dbce930205072612285bd70e1b@mail.gmail.com> 
- <Pine.LNX.4.61L.0507271059110.13819@blysk.ds.pg.gda.pl>
- <dbce93020507270655d4a1c6@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Jul 2005 16:31:01 +0100 (BST)
+Received: from [IPv6:::ffff:213.189.19.80] ([IPv6:::ffff:213.189.19.80]:21511
+	"EHLO mail.kpsws.com") by linux-mips.org with ESMTP
+	id <S8225539AbVG0Pal>; Wed, 27 Jul 2005 16:30:41 +0100
+Received: (qmail 27051 invoked by uid 89); 27 Jul 2005 15:33:06 -0000
+Received: from unknown (HELO mail.kpsws.com) (127.0.0.1)
+  by localhost with SMTP; 27 Jul 2005 15:33:06 -0000
+Received: from 194.171.252.100
+        (SquirrelMail authenticated user pulsar@kpsws.com)
+        by mail.kpsws.com with HTTP;
+        Wed, 27 Jul 2005 17:33:06 +0200 (CEST)
+Message-ID: <57480.194.171.252.100.1122478386.squirrel@mail.kpsws.com>
+In-Reply-To: <20050725213607Z8225534-3678+4335@linux-mips.org>
+References: <20050725213607Z8225534-3678+4335@linux-mips.org>
+Date:	Wed, 27 Jul 2005 17:33:06 +0200 (CEST)
+Subject: Re: CVS Update@linux-mips.org: linux
+From:	"Niels Sterrenburg" <pulsar@kpsws.com>
+To:	linux-mips@linux-mips.org
+Reply-To: pulsar@kpsws.com
+User-Agent: SquirrelMail/1.4.0
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.85.1/994/Wed Jul 27 10:28:09 2005 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain;charset=iso-8859-1
+X-Priority: 3
+Importance: Normal
+Return-Path: <pulsar@kpsws.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8649
+X-archive-position: 8650
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: pulsar@kpsws.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 27 Jul 2005, David Cummings wrote:
+Hi Ralf and or others,
 
-> Alright, thanks. I had found that, but it didn't seem to apply to the
-> problem with socket, as that had already been applied when the socket
-> happened. I'm also now having a problem with n32 which is similar if
+Do you detect and fix these trailing whitespaces with a script ?
+If so can you tell me where I can find it (or send it)?
 
- socket.S shouldn't be needed as recv.o is expected to be built as a stub 
-based on syscalls.list.  Have you regenerated the configure script 
-corresponding to the changed configure.in template?
+Thanks in advance,
 
-> not the same as the one Rolf had not too long ago. Something about a
-> __fork_block not being found. Anyplace else I should look? Thanks,
+Niels Sterrenburg
 
- Check if the symbol is defined where it's expected to.
-
- Source and binary RPM packages of glibc 2.3.5 built for o32 and (n)64 are 
-available at my site; built with GCC 4.0.0 which is even pickier than 
-3.4.4.  Availability of binary packages means successful builds are 
-possibile.  Figuring out how is left as an exercise for the reader; source 
-packages are provided as an aid to that.
-
-  Maciej
+>
+> CVSROOT:	/home/cvs
+> Module name:	linux
+> Changes by:	ralf@ftp.linux-mips.org	05/07/25 22:36:00
+>
+> Modified files:
+> 	include/asm-mips/mach-generic: kernel-entry-init.h
+> 	include/asm-mips/mach-ip27: kernel-entry-init.h
+> 	include/asm-mips/mach-pnx8550: glb.h kernel-entry-init.h nand.h
+> 	                               pci.h usb.h
+> 	arch/mips/au1000/common: irq.c
+> 	arch/mips/pci  : ops-pnx8550.c
+> 	arch/mips/philips/pnx8550/common: gdb_hook.c int.c pci.c proc.c
+> 	                                  prom.c setup.c
+> 	arch/mips/philips/pnx8550/jbs: board_setup.c init.c
+>
+> Log message:
+> 	Fixup the trailing whitespace mess.
+>
+>
+>

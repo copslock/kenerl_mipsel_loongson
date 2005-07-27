@@ -1,80 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Jul 2005 08:29:28 +0100 (BST)
-Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:39438 "EHLO
-	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8225803AbVG0H3J>;
-	Wed, 27 Jul 2005 08:29:09 +0100
-Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
-	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
-	id 1Dxgek-0000RB-00; Wed, 27 Jul 2005 08:48:46 +0100
-Received: from olympia.mips.com ([192.168.192.128] helo=boris)
-	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
-	id 1DxgNk-0007Bl-00; Wed, 27 Jul 2005 08:31:12 +0100
-From:	Dominic Sweetman <dom@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Jul 2005 09:42:56 +0100 (BST)
+Received: from go4.ext.ti.com ([IPv6:::ffff:192.91.75.132]:9962 "EHLO
+	go4.ext.ti.com") by linux-mips.org with ESMTP id <S8225771AbVG0Iml> convert rfc822-to-8bit;
+	Wed, 27 Jul 2005 09:42:41 +0100
+Received: from dlep31.itg.ti.com ([157.170.139.161])
+	by go4.ext.ti.com (8.13.1/8.13.1) with ESMTP id j6R8j9PF025001
+	for <linux-mips@linux-mips.org>; Wed, 27 Jul 2005 03:45:09 -0500 (CDT)
+Received: from dlep90.itg.ti.com (localhost [127.0.0.1])
+	by dlep31.itg.ti.com (8.12.11/8.12.11) with ESMTP id j6R8j9Xg008402
+	for <linux-mips@linux-mips.org>; Wed, 27 Jul 2005 03:45:09 -0500 (CDT)
+Received: from dbde01.ent.ti.com (localhost [127.0.0.1])
+	by dlep90.itg.ti.com (8.12.11/8.12.11) with ESMTP id j6R8j5i6012666
+	for <linux-mips@linux-mips.org>; Wed, 27 Jul 2005 03:45:08 -0500 (CDT)
+X-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-ID: <17127.14246.112209.239338@mips.com>
-Date:	Wed, 27 Jul 2005 08:28:38 +0100
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Hiroshi DOYU <Hiroshi_DOYU@montavista.co.jp>,
-	linux-mips@linux-mips.org
-Subject: Re: how to access structured registers correctly
-In-Reply-To: <20050726190643.GD7088@linux-mips.org>
-References: <20050726182531.6341586f.Hiroshi_DOYU@montavista.co.jp>
-	<20050726190643.GD7088@linux-mips.org>
-X-Mailer: VM 7.17 under 21.4 (patch 15) "Security Through Obscurity" XEmacs Lucid
-X-MTUK-Scanner:	Found to be clean
-X-MTUK-SpamCheck: not spam (whitelisted), SpamAssassin (score=-4.839,
-	required 4, AWL, BAYES_00)
-Return-Path: <dom@mips.com>
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: xtime drift issue
+Date:	Wed, 27 Jul 2005 14:15:05 +0530
+Message-ID: <CBD77117272E1249BFDC21E33D555FDC0601A7@dbde01.ent.ti.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: xtime drift issue
+Thread-Index: AcWSh3xGMMv1tp93Q+KoMn/o8LU7nw==
+From:	"Nori, Soma Sekhar" <nsekhar@ti.com>
+To:	<linux-mips@linux-mips.org>
+Return-Path: <nsekhar@ti.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8644
+X-archive-position: 8645
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dom@mips.com
+X-original-sender: nsekhar@ti.com
 Precedence: bulk
 X-list: linux-mips
 
 
-Ralf Baechle (ralf@linux-mips.org) writes:
+Hi All,
 
-> > In tx4938, every register access is done by using "volatile" like below.
-> 
-> Linus is right, volatile is a dangerous thing.  If you want to write
-> portable code there's a bunch of things that are not being taken care of
-> by plain C - even though in my opinion foo->somereg = 42 is more
-> readable than writel(somereg, 42).  Among the things the pointer to
-> volatile struct method doesn't catch are endianess conversion that might
-> be necessary on some systems, write merging, dealing with write buffers
-> or completly insane methods of attaching the bus such as the infamous
-> ISA / EISA cage that's attached to the host system through a USB
-> interface.
+I am running linux 2.6.10 (kernel.org) on my MIPS 4kec board.
 
-Yes, this is far outside the compiler's reach.
+On bootup, I use "hwclock -s" to sync the system time to the RTC.
+Thereafter, the RTC keeps pace, but "date" starts losing time pretty
+rapidly (~13 seconds per minute).
 
-All of which suggests that it would make sense to define a standard function
-which:
+There is no interrupt from my RTC and hence updating xtime in RTC
+ISR is not possible.
 
-o will produce just one fixed-width write cycle to the destination;
+Is it normal for date to lose time at such a rapid pace?
+If yes, what is the prefered way to keep pace (without using NTP)?
 
-o will deliver the data ordered so that the MSB of the C value is on
-  the "most significant" bit of the device's data bus, usually the
-  highest numbered bit (this doesn't solve all device endianess
-  issues, but it gives you a well-defined place to start solving them);
-
-o has a variant which returns only after some indication that the
-  data was delivered;
-
-The implementation of this function can then conceal the details of
-the CPU and interconnect.
-
-Such a function should probably not be called "writel()" because that
-sounds like "write long", and "long" is not a fixed-size data type,
-which undermines the promises above...  Tediously, you probably need
-"writei32()", "writei16()", "writei8()"...
-
---
-Dominic Sweetman
-MIPS Technologies
+Thanks,
+Sekhar Nori.

@@ -1,112 +1,109 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Jul 2005 13:57:40 +0100 (BST)
-Received: from sonicwall.montavista.co.jp ([IPv6:::ffff:202.232.97.131]:40227
-	"EHLO yuubin.montavista.co.jp") by linux-mips.org with ESMTP
-	id <S8224986AbVG2M5Y>; Fri, 29 Jul 2005 13:57:24 +0100
-Received: from localhost.localdomain (oreo.jp.mvista.com [10.200.16.31])
-	by yuubin.montavista.co.jp (8.12.5/8.12.5) with SMTP id j6TD06S5007006;
-	Fri, 29 Jul 2005 22:00:07 +0900
-Date:	Fri, 29 Jul 2005 22:03:03 +0900
-From:	Hiroshi DOYU <Hiroshi_DOYU@montavista.co.jp>
-To:	ralf@linux-mips.org
-Cc:	linux-mips@linux-mips.org, mlachwani@mvista.com
-Subject: [PATCH 1/1] TX4938: small fix for Toshiba RBHMA4500(TX4938)
-Message-Id: <20050729220303.0145ae70.Hiroshi_DOYU@montavista.co.jp>
-X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Jul 2005 21:19:01 +0100 (BST)
+Received: from pasta.sw.starentnetworks.com ([IPv6:::ffff:12.33.234.10]:6340
+	"EHLO pasta.sw.starentnetworks.com") by linux-mips.org with ESMTP
+	id <S8225787AbVG2USl>; Fri, 29 Jul 2005 21:18:41 +0100
+Received: from cortez.sw.starentnetworks.com (cortez.sw.starentnetworks.com [12.33.233.12])
+	by pasta.sw.starentnetworks.com (Postfix) with ESMTP id 8331F149713
+	for <linux-mips@linux-mips.org>; Fri, 29 Jul 2005 16:21:19 -0400 (EDT)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <Hiroshi_DOYU@montavista.co.jp>
+Message-ID: <17130.36799.356429.894451@cortez.sw.starentnetworks.com>
+Date:	Fri, 29 Jul 2005 16:21:19 -0400
+From:	Dave Johnson <djohnson+linuxmips@sw.starentnetworks.com>
+To:	linux-mips@linux-mips.org
+Subject: [PATCH] memory leak in sys_sendmsg()/sys_recvmsg() with MSG_CMSG_COMPAT
+X-Mailer: VM 7.07 under 21.4 (patch 6) "Common Lisp" XEmacs Lucid
+Return-Path: <djohnson@sw.starentnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8661
+X-archive-position: 8662
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Hiroshi_DOYU@montavista.co.jp
+X-original-sender: djohnson+linuxmips@sw.starentnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
 
-This patch is against latest cvs.
-Could you review it?
+sendmsg()/recvmsg() syscalls from o32/n32 apps to a 64bit kernel will
+cause a kernel memory leak if iov_len > UIO_FASTIOV for each syscall!
 
-	Hiroshi DOYU
+This is because both sys_sendmsg() and verify_compat_iovec() kmalloc a
+new iovec structure.  Only the one from sys_sendmsg() is free'ed.
 
-----
-- Added Big endian suport in Kconfig.
-- global variable zeroed initialization was handled correctly.
-- A customized private function was replaced by a common
-  utility function, "fls()".
+I wrote a simple test program to confirm this after identifying the
+problem:
 
-Signed-off-by: Hiroshi DOYU <hdoyu@mvista.com>
+http://davej.org/programs/testsendmsg.c
 
- Kconfig                         |    1 +
- tx4938/toshiba_rbtx4938/irq.c   |   15 +--------------
- tx4938/toshiba_rbtx4938/setup.c |    6 +++---
- 3 files changed, 5 insertions(+), 17 deletions(-)
 
-Index: mipslinux/arch/mips/Kconfig
-===================================================================
---- mipslinux.orig/arch/mips/Kconfig
-+++ mipslinux/arch/mips/Kconfig
-@@ -669,6 +669,7 @@
- 	select SWAP_IO_SPACE
- 	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
-+	select SYS_SUPPORTS_BIG_ENDIAN
- 	select TOSHIBA_BOARDS
- 	help
- 	  This Toshiba board is based on the TX4938 processor. Say Y here to
-Index: mipslinux/arch/mips/tx4938/toshiba_rbtx4938/setup.c
-===================================================================
---- mipslinux.orig/arch/mips/tx4938/toshiba_rbtx4938/setup.c
-+++ mipslinux/arch/mips/tx4938/toshiba_rbtx4938/setup.c
-@@ -50,10 +50,10 @@
+Running it shows the leak in the slab:
+
+$ grep '^size-256 ' /proc/slabinfo
+size-256           55972  55972    280   14    1 : tunables   32   16    8 : slabdata   3998   3998      0 : globalstat   58914  55972  4001    3    0    0   46    0 : cpustat 3806737   4480 3755027    240
+$ ./testsendmsg
+iterations=100 vec_size=16 block_size=256
+$ grep '^size-256 ' /proc/slabinfo
+size-256           56168  56168    280   14    1 : tunables   32   16    8 : slabdata   4012   4012      0 : globalstat   59110  56168  4015    3    0    0   46    0 : cpustat 3853259   4494 3801362    240
+$ ./testsendmsg
+iterations=100 vec_size=16 block_size=256
+$ grep '^size-256 ' /proc/slabinfo
+size-256           56378  56378    280   14    1 : tunables   32   16    8 : slabdata   4027   4027      0 : globalstat   59320  56378  4030    3    0    0   46    0 : cpustat 3853910   4509 3801828    240
+$ ./testsendmsg
+iterations=100 vec_size=16 block_size=256
+$ grep '^size-256 ' /proc/slabinfo
+size-256           56574  56574    280   14    1 : tunables   32   16    8 : slabdata   4041   4041      0 : globalstat   59516  56574  4044    3    0    0   46    0 : cpustat 3854888   4523 3802620    240
+$ ./testsendmsg
+iterations=100 vec_size=16 block_size=256
+$ grep '^size-256 ' /proc/slabinfo
+size-256           56756  56756    280   14    1 : tunables   32   16    8 : slabdata   4054   4054      0 : globalstat   59698  56756  4057    3    0    0   46    0 : cpustat 3856397   4536 3803942    240
+$ ./testsendmsg
+iterations=100 vec_size=16 block_size=256
+$ grep '^size-256 ' /proc/slabinfo
+size-256           56966  56966    280   14    1 : tunables   32   16    8 : slabdata   4069   4069      0 : globalstat   59908  56966  4072    3    0    0   46    0 : cpustat 3858528   4551 3805888    240
+$ ./testsendmsg
+iterations=100 vec_size=16 block_size=256
+$ grep '^size-256 ' /proc/slabinfo
+size-256           57176  57176    280   14    1 : tunables   32   16    8 : slabdata   4084   4084      0 : globalstat   60118  57176  4087    3    0    0   46    0 : cpustat 3863987   4566 3811162    240
+$ ./testsendmsg
+iterations=100 vec_size=16 block_size=256
+$ grep '^size-256 ' /proc/slabinfo
+size-256           57358  57358    280   14    1 : tunables   32   16    8 : slabdata   4097   4097      0 : globalstat   60300  57358  4100    3    0    0   46    0 : cpustat 3864397   4579 3811385    240
+
+
+Note that the below fix will break solaris_sendmsg()/solaris_recvmsg()
+as it also calls verify_compat_iovec() but expects it to malloc
+internally.
+
+-- 
+Dave Johnson
+Starent Networks
+
+=========================
+
+diff -Nru a/net/compat.c b/net/compat.c
+--- a/net/compat.c	2005-07-29 16:12:39 -04:00
++++ b/net/compat.c	2005-07-29 16:12:39 -04:00
+@@ -91,20 +91,11 @@
+ 	} else
+ 		kern_msg->msg_name = NULL;
  
- unsigned long rbtx4938_ce_base[8];
- unsigned long rbtx4938_ce_size[8];
--int txboard_pci66_mode = 0;
-+int txboard_pci66_mode;
-+static int tx4938_pcic_trdyto;	/* default: disabled */
-+static int tx4938_pcic_retryto;	/* default: disabled */
- static int tx4938_ccfg_toeon = 1;
--static int tx4938_pcic_trdyto = 0;	/* default: disabled */
--static int tx4938_pcic_retryto = 0;	/* default: disabled */
- 
- struct tx4938_pcic_reg *pcicptrs[4] = {
-        tx4938_pcicptr  /* default setting for TX4938 */
-Index: mipslinux/arch/mips/tx4938/toshiba_rbtx4938/irq.c
-===================================================================
---- mipslinux.orig/arch/mips/tx4938/toshiba_rbtx4938/irq.c
-+++ mipslinux/arch/mips/tx4938/toshiba_rbtx4938/irq.c
-@@ -114,19 +114,6 @@
- #define TOSHIBA_RBTX4938_IOC_INTR_ENAB 0xb7f02000
- #define TOSHIBA_RBTX4938_IOC_INTR_STAT 0xb7f0200a
- 
--u8
--last_bit2num(u8 num)
--{
--	u8 i = ((sizeof(num)*8)-1);
+-	if(kern_msg->msg_iovlen > UIO_FASTIOV) {
+-		kern_iov = kmalloc(kern_msg->msg_iovlen * sizeof(struct iovec),
+-				   GFP_KERNEL);
+-		if(!kern_iov)
+-			return -ENOMEM;
+-	}
 -
--	do {
--		if (num & (1<<i))
--			break;
--	} while ( --i );
--
--	return i;
--}
--
- int
- toshiba_rbtx4938_irq_nested(int sw_irq)
- {
-@@ -135,7 +122,7 @@
- 	level3 = reg_rd08(TOSHIBA_RBTX4938_IOC_INTR_STAT) & 0xff;
- 	if (level3) {
-                 /* must use last_bit2num so onboard ATA has priority */
--		sw_irq = TOSHIBA_RBTX4938_IRQ_IOC_BEG + last_bit2num(level3);
-+		sw_irq = TOSHIBA_RBTX4938_IRQ_IOC_BEG + fls(level3) - 1;
- 	}
+ 	tot_len = iov_from_user_compat_to_kern(kern_iov,
+ 					  (struct compat_iovec __user *)kern_msg->msg_iov,
+ 					  kern_msg->msg_iovlen);
+ 	if(tot_len >= 0)
+ 		kern_msg->msg_iov = kern_iov;
+-	else if(kern_msg->msg_iovlen > UIO_FASTIOV)
+-		kfree(kern_iov);
  
- 	wbflush();
+ 	return tot_len;
+ }

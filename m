@@ -1,46 +1,112 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Jul 2005 19:44:36 +0100 (BST)
-Received: from localhost.localdomain ([IPv6:::ffff:127.0.0.1]:61920 "EHLO
-	bacchus.net.dhis.org") by linux-mips.org with ESMTP
-	id <S8225950AbVG1SoV>; Thu, 28 Jul 2005 19:44:21 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j6SDlm8c004071;
-	Thu, 28 Jul 2005 09:47:48 -0400
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j6SDkmXx004043;
-	Thu, 28 Jul 2005 09:46:48 -0400
-Date:	Thu, 28 Jul 2005 09:46:48 -0400
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Niels Sterrenburg <pulsar@kpsws.com>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: CVS Update@linux-mips.org: linux
-Message-ID: <20050728134648.GC3031@linux-mips.org>
-References: <20050725213607Z8225534-3678+4335@linux-mips.org> <57480.194.171.252.100.1122478386.squirrel@mail.kpsws.com> <20050727172427.GB3626@linux-mips.org> <Pine.LNX.4.61L.0507271858050.13819@blysk.ds.pg.gda.pl> <20050727192816.GF3626@linux-mips.org> <Pine.LNX.4.62.0507280935040.24391@numbat.sonytel.be> <Pine.LNX.4.61L.0507281109510.26113@blysk.ds.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Jul 2005 13:57:40 +0100 (BST)
+Received: from sonicwall.montavista.co.jp ([IPv6:::ffff:202.232.97.131]:40227
+	"EHLO yuubin.montavista.co.jp") by linux-mips.org with ESMTP
+	id <S8224986AbVG2M5Y>; Fri, 29 Jul 2005 13:57:24 +0100
+Received: from localhost.localdomain (oreo.jp.mvista.com [10.200.16.31])
+	by yuubin.montavista.co.jp (8.12.5/8.12.5) with SMTP id j6TD06S5007006;
+	Fri, 29 Jul 2005 22:00:07 +0900
+Date:	Fri, 29 Jul 2005 22:03:03 +0900
+From:	Hiroshi DOYU <Hiroshi_DOYU@montavista.co.jp>
+To:	ralf@linux-mips.org
+Cc:	linux-mips@linux-mips.org, mlachwani@mvista.com
+Subject: [PATCH 1/1] TX4938: small fix for Toshiba RBHMA4500(TX4938)
+Message-Id: <20050729220303.0145ae70.Hiroshi_DOYU@montavista.co.jp>
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.61L.0507281109510.26113@blysk.ds.pg.gda.pl>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <Hiroshi_DOYU@montavista.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8660
+X-archive-position: 8661
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: Hiroshi_DOYU@montavista.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jul 28, 2005 at 11:13:53AM +0100, Maciej W. Rozycki wrote:
+Hello,
 
-> > Maciej meant spaces followed by tabs that do not end a line, e.g.
-> 
->  Indeed.
+This patch is against latest cvs.
+Could you review it?
 
-Oh, I quite intensionally left those alone for now.  And if needed there's
-always unexpand(1).
+	Hiroshi DOYU
 
-  Ralf
+----
+- Added Big endian suport in Kconfig.
+- global variable zeroed initialization was handled correctly.
+- A customized private function was replaced by a common
+  utility function, "fls()".
+
+Signed-off-by: Hiroshi DOYU <hdoyu@mvista.com>
+
+ Kconfig                         |    1 +
+ tx4938/toshiba_rbtx4938/irq.c   |   15 +--------------
+ tx4938/toshiba_rbtx4938/setup.c |    6 +++---
+ 3 files changed, 5 insertions(+), 17 deletions(-)
+
+Index: mipslinux/arch/mips/Kconfig
+===================================================================
+--- mipslinux.orig/arch/mips/Kconfig
++++ mipslinux/arch/mips/Kconfig
+@@ -669,6 +669,7 @@
+ 	select SWAP_IO_SPACE
+ 	select SYS_SUPPORTS_32BIT_KERNEL
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
++	select SYS_SUPPORTS_BIG_ENDIAN
+ 	select TOSHIBA_BOARDS
+ 	help
+ 	  This Toshiba board is based on the TX4938 processor. Say Y here to
+Index: mipslinux/arch/mips/tx4938/toshiba_rbtx4938/setup.c
+===================================================================
+--- mipslinux.orig/arch/mips/tx4938/toshiba_rbtx4938/setup.c
++++ mipslinux/arch/mips/tx4938/toshiba_rbtx4938/setup.c
+@@ -50,10 +50,10 @@
+ 
+ unsigned long rbtx4938_ce_base[8];
+ unsigned long rbtx4938_ce_size[8];
+-int txboard_pci66_mode = 0;
++int txboard_pci66_mode;
++static int tx4938_pcic_trdyto;	/* default: disabled */
++static int tx4938_pcic_retryto;	/* default: disabled */
+ static int tx4938_ccfg_toeon = 1;
+-static int tx4938_pcic_trdyto = 0;	/* default: disabled */
+-static int tx4938_pcic_retryto = 0;	/* default: disabled */
+ 
+ struct tx4938_pcic_reg *pcicptrs[4] = {
+        tx4938_pcicptr  /* default setting for TX4938 */
+Index: mipslinux/arch/mips/tx4938/toshiba_rbtx4938/irq.c
+===================================================================
+--- mipslinux.orig/arch/mips/tx4938/toshiba_rbtx4938/irq.c
++++ mipslinux/arch/mips/tx4938/toshiba_rbtx4938/irq.c
+@@ -114,19 +114,6 @@
+ #define TOSHIBA_RBTX4938_IOC_INTR_ENAB 0xb7f02000
+ #define TOSHIBA_RBTX4938_IOC_INTR_STAT 0xb7f0200a
+ 
+-u8
+-last_bit2num(u8 num)
+-{
+-	u8 i = ((sizeof(num)*8)-1);
+-
+-	do {
+-		if (num & (1<<i))
+-			break;
+-	} while ( --i );
+-
+-	return i;
+-}
+-
+ int
+ toshiba_rbtx4938_irq_nested(int sw_irq)
+ {
+@@ -135,7 +122,7 @@
+ 	level3 = reg_rd08(TOSHIBA_RBTX4938_IOC_INTR_STAT) & 0xff;
+ 	if (level3) {
+                 /* must use last_bit2num so onboard ATA has priority */
+-		sw_irq = TOSHIBA_RBTX4938_IRQ_IOC_BEG + last_bit2num(level3);
++		sw_irq = TOSHIBA_RBTX4938_IRQ_IOC_BEG + fls(level3) - 1;
+ 	}
+ 
+ 	wbflush();

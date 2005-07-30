@@ -1,109 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Jul 2005 21:19:01 +0100 (BST)
-Received: from pasta.sw.starentnetworks.com ([IPv6:::ffff:12.33.234.10]:6340
-	"EHLO pasta.sw.starentnetworks.com") by linux-mips.org with ESMTP
-	id <S8225787AbVG2USl>; Fri, 29 Jul 2005 21:18:41 +0100
-Received: from cortez.sw.starentnetworks.com (cortez.sw.starentnetworks.com [12.33.233.12])
-	by pasta.sw.starentnetworks.com (Postfix) with ESMTP id 8331F149713
-	for <linux-mips@linux-mips.org>; Fri, 29 Jul 2005 16:21:19 -0400 (EDT)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Jul 2005 05:02:30 +0100 (BST)
+Received: from mo00.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:1533 "EHLO
+	mo00.iij4u.or.jp") by linux-mips.org with ESMTP id <S8224895AbVG3ECO>;
+	Sat, 30 Jul 2005 05:02:14 +0100
+Received: MO(mo00)id j6U452tC016141; Sat, 30 Jul 2005 13:05:02 +0900 (JST)
+Received: MDO(mdo01) id j6U451vK014910; Sat, 30 Jul 2005 13:05:01 +0900 (JST)
+Received: from stratos (h009.p499.iij4u.or.jp [210.149.243.9])
+	by mbox.iij4u.or.jp (4U-MR/mbox01) id j6U450WD023875
+	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NOT);
+	Sat, 30 Jul 2005 13:05:01 +0900 (JST)
+Date:	Sat, 30 Jul 2005 13:04:52 +0900
+From:	Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH 2.6] vr41xx: remove obsolete GIU function call
+Message-Id: <20050730130452.1b064d36.yuasa@hh.iij4u.or.jp>
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-ID: <17130.36799.356429.894451@cortez.sw.starentnetworks.com>
-Date:	Fri, 29 Jul 2005 16:21:19 -0400
-From:	Dave Johnson <djohnson+linuxmips@sw.starentnetworks.com>
-To:	linux-mips@linux-mips.org
-Subject: [PATCH] memory leak in sys_sendmsg()/sys_recvmsg() with MSG_CMSG_COMPAT
-X-Mailer: VM 7.07 under 21.4 (patch 6) "Common Lisp" XEmacs Lucid
-Return-Path: <djohnson@sw.starentnetworks.com>
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8662
+X-archive-position: 8663
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: djohnson+linuxmips@sw.starentnetworks.com
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
+Hi Ralf,
 
-sendmsg()/recvmsg() syscalls from o32/n32 apps to a 64bit kernel will
-cause a kernel memory leak if iov_len > UIO_FASTIOV for each syscall!
+This patch has removed obsolete GIU function call for vr41xx.
+Please apply this patch.
 
-This is because both sys_sendmsg() and verify_compat_iovec() kmalloc a
-new iovec structure.  Only the one from sys_sendmsg() is free'ed.
+Yoichi
 
-I wrote a simple test program to confirm this after identifying the
-problem:
+Signed-off-by: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
 
-http://davej.org/programs/testsendmsg.c
-
-
-Running it shows the leak in the slab:
-
-$ grep '^size-256 ' /proc/slabinfo
-size-256           55972  55972    280   14    1 : tunables   32   16    8 : slabdata   3998   3998      0 : globalstat   58914  55972  4001    3    0    0   46    0 : cpustat 3806737   4480 3755027    240
-$ ./testsendmsg
-iterations=100 vec_size=16 block_size=256
-$ grep '^size-256 ' /proc/slabinfo
-size-256           56168  56168    280   14    1 : tunables   32   16    8 : slabdata   4012   4012      0 : globalstat   59110  56168  4015    3    0    0   46    0 : cpustat 3853259   4494 3801362    240
-$ ./testsendmsg
-iterations=100 vec_size=16 block_size=256
-$ grep '^size-256 ' /proc/slabinfo
-size-256           56378  56378    280   14    1 : tunables   32   16    8 : slabdata   4027   4027      0 : globalstat   59320  56378  4030    3    0    0   46    0 : cpustat 3853910   4509 3801828    240
-$ ./testsendmsg
-iterations=100 vec_size=16 block_size=256
-$ grep '^size-256 ' /proc/slabinfo
-size-256           56574  56574    280   14    1 : tunables   32   16    8 : slabdata   4041   4041      0 : globalstat   59516  56574  4044    3    0    0   46    0 : cpustat 3854888   4523 3802620    240
-$ ./testsendmsg
-iterations=100 vec_size=16 block_size=256
-$ grep '^size-256 ' /proc/slabinfo
-size-256           56756  56756    280   14    1 : tunables   32   16    8 : slabdata   4054   4054      0 : globalstat   59698  56756  4057    3    0    0   46    0 : cpustat 3856397   4536 3803942    240
-$ ./testsendmsg
-iterations=100 vec_size=16 block_size=256
-$ grep '^size-256 ' /proc/slabinfo
-size-256           56966  56966    280   14    1 : tunables   32   16    8 : slabdata   4069   4069      0 : globalstat   59908  56966  4072    3    0    0   46    0 : cpustat 3858528   4551 3805888    240
-$ ./testsendmsg
-iterations=100 vec_size=16 block_size=256
-$ grep '^size-256 ' /proc/slabinfo
-size-256           57176  57176    280   14    1 : tunables   32   16    8 : slabdata   4084   4084      0 : globalstat   60118  57176  4087    3    0    0   46    0 : cpustat 3863987   4566 3811162    240
-$ ./testsendmsg
-iterations=100 vec_size=16 block_size=256
-$ grep '^size-256 ' /proc/slabinfo
-size-256           57358  57358    280   14    1 : tunables   32   16    8 : slabdata   4097   4097      0 : globalstat   60300  57358  4100    3    0    0   46    0 : cpustat 3864397   4579 3811385    240
-
-
-Note that the below fix will break solaris_sendmsg()/solaris_recvmsg()
-as it also calls verify_compat_iovec() but expects it to malloc
-internally.
-
--- 
-Dave Johnson
-Starent Networks
-
-=========================
-
-diff -Nru a/net/compat.c b/net/compat.c
---- a/net/compat.c	2005-07-29 16:12:39 -04:00
-+++ b/net/compat.c	2005-07-29 16:12:39 -04:00
-@@ -91,20 +91,11 @@
- 	} else
- 		kern_msg->msg_name = NULL;
+diff -urN -X dontdiff a-orig/arch/mips/pci/fixup-tb0219.c a/arch/mips/pci/fixup-tb0219.c
+--- a-orig/arch/mips/pci/fixup-tb0219.c	2004-11-01 01:07:33.000000000 +0900
++++ a/arch/mips/pci/fixup-tb0219.c	2005-07-30 12:15:08.000000000 +0900
+@@ -2,7 +2,7 @@
+  *  fixup-tb0219.c, The TANBAC TB0219 specific PCI fixups.
+  *
+  *  Copyright (C) 2003  Megasolution Inc. <matsu@megasolution.jp>
+- *  Copyright (C) 2004  Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
++ *  Copyright (C) 2004-2005  Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+  *
+  *  This program is free software; you can redistribute it and/or modify
+  *  it under the terms of the GNU General Public License as published by
+@@ -29,27 +29,12 @@
  
--	if(kern_msg->msg_iovlen > UIO_FASTIOV) {
--		kern_iov = kmalloc(kern_msg->msg_iovlen * sizeof(struct iovec),
--				   GFP_KERNEL);
--		if(!kern_iov)
--			return -ENOMEM;
--	}
--
- 	tot_len = iov_from_user_compat_to_kern(kern_iov,
- 					  (struct compat_iovec __user *)kern_msg->msg_iov,
- 					  kern_msg->msg_iovlen);
- 	if(tot_len >= 0)
- 		kern_msg->msg_iov = kern_iov;
--	else if(kern_msg->msg_iovlen > UIO_FASTIOV)
--		kfree(kern_iov);
- 
- 	return tot_len;
- }
+ 	switch (slot) {
+ 	case 12:
+-		vr41xx_set_irq_trigger(TB0219_PCI_SLOT1_PIN,
+-				       TRIGGER_LEVEL,
+-				       SIGNAL_THROUGH);
+-		vr41xx_set_irq_level(TB0219_PCI_SLOT1_PIN,
+-				     LEVEL_LOW);
+ 		irq = TB0219_PCI_SLOT1_IRQ;
+ 		break;
+ 	case 13:
+-		vr41xx_set_irq_trigger(TB0219_PCI_SLOT2_PIN,
+-				       TRIGGER_LEVEL,
+-				       SIGNAL_THROUGH);
+-		vr41xx_set_irq_level(TB0219_PCI_SLOT2_PIN,
+-				     LEVEL_LOW);
+ 		irq = TB0219_PCI_SLOT2_IRQ;
+ 		break;
+ 	case 14:
+-		vr41xx_set_irq_trigger(TB0219_PCI_SLOT3_PIN,
+-				       TRIGGER_LEVEL,
+-				       SIGNAL_THROUGH);
+-		vr41xx_set_irq_level(TB0219_PCI_SLOT3_PIN,
+-				     LEVEL_LOW);
+ 		irq = TB0219_PCI_SLOT3_IRQ;
+ 		break;
+ 	default:

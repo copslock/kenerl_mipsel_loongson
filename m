@@ -1,59 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Jul 2005 07:47:39 +0100 (BST)
-Received: from sonicwall.montavista.co.jp ([IPv6:::ffff:202.232.97.131]:37444
-	"EHLO yuubin.montavista.co.jp") by linux-mips.org with ESMTP
-	id <S8224836AbVG3GrX>; Sat, 30 Jul 2005 07:47:23 +0100
-Received: from localhost.localdomain (oreo.jp.mvista.com [10.200.16.31])
-	by yuubin.montavista.co.jp (8.12.5/8.12.5) with SMTP id j6U6oCS5015425;
-	Sat, 30 Jul 2005 15:50:13 +0900
-Date:	Sat, 30 Jul 2005 15:53:10 +0900
-From:	Hiroshi DOYU <Hiroshi_DOYU@montavista.co.jp>
-To:	ralf@linux-mips.org
-Cc:	linux-mips@linux-mips.org, mlachwani@mvista.com
-Subject: [PATCH 1/1] TX4938: Bugfix for PCI 66MHz of Toshiba
- RBHMA4500(TX4938)
-Message-Id: <20050730155310.76cf960d.Hiroshi_DOYU@montavista.co.jp>
-X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 Jul 2005 19:44:34 +0100 (BST)
+Received: from fep17.inet.fi ([IPv6:::ffff:194.251.242.242]:39357 "EHLO
+	fep17.inet.fi") by linux-mips.org with ESMTP id <S8225273AbVGaSoT>;
+	Sun, 31 Jul 2005 19:44:19 +0100
+Received: from [127.0.0.1] ([80.223.109.59]) by fep17.inet.fi with ESMTP
+          id <20050731184720.YEYC5344.fep17.inet.fi@[127.0.0.1]>;
+          Sun, 31 Jul 2005 21:47:20 +0300
+Message-ID: <42ED1CBE.4060901@mbnet.fi>
+Date:	Sun, 31 Jul 2005 21:47:26 +0300
+From:	Mikael Nousiainen <turja@mbnet.fi>
+User-Agent: Mozilla Thunderbird 1.0.2 (Windows/20050317)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	Markus Dahms <mad@automagically.de>
+CC:	linux-mips@linux-mips.org
+Subject: Re: New VINO video drivers for Indy
+References: <42D4BF49.4040907@mbnet.fi> <20050715110021.GA15740@gaspode.automagically.de> <42D83063.3060505@mbnet.fi> <20050716112745.GA12716@gaspode.automagically.de>
+In-Reply-To: <20050716112745.GA12716@gaspode.automagically.de>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <Hiroshi_DOYU@montavista.co.jp>
+Return-Path: <turja@mbnet.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8664
+X-archive-position: 8666
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Hiroshi_DOYU@montavista.co.jp
+X-original-sender: turja@mbnet.fi
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+Markus Dahms wrote:
 
-This patch is against latest cvs.
-Could you review it?
+>Hello again,
+>
+>  
+>
+>>>I only get a bla[nc]k image ...
+>>>      
+>>>
+>>That's strange. There might be some problems with IndyCam initialization 
+>>(register values),
+>>but usually you should be able to get at least a very dark picture.
+>>Removing and reinstalling the module (indycam.ko) reinitializes the
+>>camera so you can try that. IndyCam seems to use some very odd logic
+>>to decide how bright the picture should be.
+>>Try bringing some very bright light sources near the camera ?
+>>    
+>>
+>
+>For some reason it's working now. It's not significantly brighter, I
+>just checked the camera with kernel 2.4.x before booting 2.6.12.
+>If I can reproduce the failure I'll write it.
+>The picture has the same "quality" as with the other driver except
+>there _are_ fewer horizontal lines (they appear mostly on fast-moving
+>pictures).
+>  
+>
+Ok, nice to know that you got it working...
 
-	Hiroshi DOYU
+Could you provide a sample image ?
 
-----
-Bugfix for handling PCI 66MHz correctly
+The image is an interlaced image and it's constructed by joining two 
+consencutive frames, so that's what
+can cause some "distortion" in the image with fast-moving objects.
 
-Signed-off-by: Hiroshi DOYU <hdoyu@mvista.com>
+The horizontal lines I'm talking about don't have anything to do with 
+the content of the image,
+they just appear and disappear. The black lines always start from the 
+left edge of the picture
+and it seems that the pixels from the start of the lines get somehow 
+moved forwards to the center of the
+same line of the image. (eww, this is difficult to explain :)
 
- setup.c |    3 ++-
- 1 files changed, 2 insertions(+), 1 deletion(-)
-
-Index: mipslinux/arch/mips/tx4938/toshiba_rbtx4938/setup.c
-===================================================================
---- mipslinux.orig/arch/mips/tx4938/toshiba_rbtx4938/setup.c
-+++ mipslinux/arch/mips/tx4938/toshiba_rbtx4938/setup.c
-@@ -411,7 +411,8 @@
- 	tx4938_ccfgptr->ccfg |= TX4938_CCFG_PCI66;
- 	/* Double PCICLK (if possible) */
- 	if (tx4938_ccfgptr->pcfg & TX4938_PCFG_PCICLKEN_ALL) {
--		unsigned int pcidivmode = 0;
-+		unsigned int pcidivmode =
-+			tx4938_ccfgptr->ccfg & TX4938_CCFG_PCIDIVMODE_MASK;
- 		switch (pcidivmode) {
- 		case TX4938_CCFG_PCIDIVMODE_8:
- 		case TX4938_CCFG_PCIDIVMODE_4:
+Mikael

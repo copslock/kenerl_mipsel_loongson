@@ -1,41 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Aug 2005 18:13:30 +0100 (BST)
-Received: from wproxy.gmail.com ([IPv6:::ffff:64.233.184.192]:55859 "EHLO
-	wproxy.gmail.com") by linux-mips.org with ESMTP id <S8225307AbVHARNP> convert rfc822-to-8bit;
-	Mon, 1 Aug 2005 18:13:15 +0100
-Received: by wproxy.gmail.com with SMTP id i22so1166761wra
-        for <linux-mips@linux-mips.org>; Mon, 01 Aug 2005 10:16:15 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:reply-to:to:subject:cc:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=X8ISKrYJuhKMQqS1O2zu5FmGusFYRhV1BqG/cmfyu+gf4vmv/SORUBzeTr1oi03cXPBJVSc/nWIcAaEMD35gJASCswLqW+UvIrtQFUXmr94tlwi+h07MIX9LGNTK5pqh5b4F9C5ZeyLvenvJ1X8CnGq6y8ZI9T5h8vMfvzY+yL4=
-Received: by 10.54.52.27 with SMTP id z27mr3014215wrz;
-        Mon, 01 Aug 2005 10:16:15 -0700 (PDT)
-Received: by 10.54.71.11 with HTTP; Mon, 1 Aug 2005 10:16:15 -0700 (PDT)
-Message-ID: <2db32b720508011016537604a@mail.gmail.com>
-Date:	Mon, 1 Aug 2005 10:16:15 -0700
-From:	rolf liu <rolfliu@gmail.com>
-Reply-To: rolf liu <rolfliu@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: Kernel complaining, "eth0: Too much work in interrupt, status 8401"
-Cc:	rolf liu <rolfliu@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-Return-Path: <rolfliu@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Aug 2005 19:40:00 +0100 (BST)
+Received: from fep18.inet.fi ([IPv6:::ffff:194.251.242.243]:60307 "EHLO
+	fep18.inet.fi") by linux-mips.org with ESMTP id <S8225976AbVHASjg>;
+	Mon, 1 Aug 2005 19:39:36 +0100
+Received: from [127.0.0.1] ([80.223.109.59]) by fep18.inet.fi with ESMTP
+          id <20050801184239.QBRN14797.fep18.inet.fi@[127.0.0.1]>;
+          Mon, 1 Aug 2005 21:42:39 +0300
+Message-ID: <42EE6D23.4010800@mbnet.fi>
+Date:	Mon, 01 Aug 2005 21:42:43 +0300
+From:	Mikael Nousiainen <turja@mbnet.fi>
+User-Agent: Mozilla Thunderbird 1.0.2 (Windows/20050317)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	Markus Dahms <mad@automagically.de>
+CC:	linux-mips@linux-mips.org
+Subject: Re: New VINO video drivers for Indy
+References: <42D4BF49.4040907@mbnet.fi> <20050715110021.GA15740@gaspode.automagically.de> <42D83063.3060505@mbnet.fi> <20050716112745.GA12716@gaspode.automagically.de> <42ED1CBE.4060901@mbnet.fi> <20050801084441.GA5227@gaspode.automagically.de>
+In-Reply-To: <20050801084441.GA5227@gaspode.automagically.de>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <turja@mbnet.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8679
+X-archive-position: 8680
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rolfliu@gmail.com
+X-original-sender: turja@mbnet.fi
 Precedence: bulk
 X-list: linux-mips
 
-I am running linux 2.6.12 on db1550. It seems there are no many
-network traffic except a few ssh sessions. Now kernel often complains
-"eth0: Too much work in interrupt, status 8401".
+Markus Dahms wrote:
 
-thanks
+>Mikael Nousiainen wrote:
+>
+>  
+>
+>>Could you provide a sample image ?
+>>    
+>>
+>
+>http://automagically.de/images/p_indycam_01.jpg
+>http://automagically.de/images/p_indycam_02.jpg
+>  
+>
+Everything seems to be ok with these...
+
+>And (it was hard enough to capture) one with some lines on it:
+>
+>http://automagically.de/images/p_indycam_03.jpg
+>  
+>
+The image is fuzzy because the camera has moved just after the first 
+field for the image
+has been captured, before capturing the second field (every other line).
+
+The two black lines in the center of the image are the real problem as I 
+have no
+idea what causes them to appear. As you can easily check, the "missing 
+content" is found
+from the beginning of the same line.
+
+>These pictures where taken with daylight, some of the colors are a bit
+>strange[1] (I'll try it artificial light in the evening).
+>
+>Markus
+>
+>[1] the cyan looking highlighter on the first picture should really be
+>    green ;).
+>
+>  
+>
+Yep, I've noticed same kind of behaviour with my indycam as it does not 
+reproduce
+blue colors correctly (blue is very weak always).
+I've also heard that the camera is designed to be used in fluorescent 
+light so
+problems with colors seem to be a nice "feature" of the camera... :)
+
+Thanks for the samples.
+
+>
+>
+>  
+>

@@ -1,86 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Aug 2005 19:40:00 +0100 (BST)
-Received: from fep18.inet.fi ([IPv6:::ffff:194.251.242.243]:60307 "EHLO
-	fep18.inet.fi") by linux-mips.org with ESMTP id <S8225976AbVHASjg>;
-	Mon, 1 Aug 2005 19:39:36 +0100
-Received: from [127.0.0.1] ([80.223.109.59]) by fep18.inet.fi with ESMTP
-          id <20050801184239.QBRN14797.fep18.inet.fi@[127.0.0.1]>;
-          Mon, 1 Aug 2005 21:42:39 +0300
-Message-ID: <42EE6D23.4010800@mbnet.fi>
-Date:	Mon, 01 Aug 2005 21:42:43 +0300
-From:	Mikael Nousiainen <turja@mbnet.fi>
-User-Agent: Mozilla Thunderbird 1.0.2 (Windows/20050317)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Aug 2005 20:06:11 +0100 (BST)
+Received: from [IPv6:::ffff:67.115.118.5] ([IPv6:::ffff:67.115.118.5]:3855
+	"EHLO us0exb05.us.sonicwall.com") by linux-mips.org with ESMTP
+	id <S8225929AbVHATFw>; Mon, 1 Aug 2005 20:05:52 +0100
+Received: from us0exb02.us.sonicwall.com ([10.50.128.202]) by us0exb05.us.sonicwall.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Mon, 1 Aug 2005 12:08:52 -0700
+Received: from [10.0.15.99] ([10.0.15.99]) by us0exb02.us.sonicwall.com with Microsoft SMTPSVC(5.0.2195.6713);
+	 Mon, 1 Aug 2005 12:08:51 -0700
+Message-ID: <42EE7343.9020209@total-knowledge.com>
+Date:	Mon, 01 Aug 2005 12:08:51 -0700
+From:	"Ilya A. Volynets-Evenbakh" <ilya@total-knowledge.com>
+Organization: Total Knowledge
+User-Agent: Mozilla Thunderbird 1.0.6 (X11/20050723)
 X-Accept-Language: en-us, en
 MIME-Version: 1.0
-To:	Markus Dahms <mad@automagically.de>
-CC:	linux-mips@linux-mips.org
-Subject: Re: New VINO video drivers for Indy
-References: <42D4BF49.4040907@mbnet.fi> <20050715110021.GA15740@gaspode.automagically.de> <42D83063.3060505@mbnet.fi> <20050716112745.GA12716@gaspode.automagically.de> <42ED1CBE.4060901@mbnet.fi> <20050801084441.GA5227@gaspode.automagically.de>
-In-Reply-To: <20050801084441.GA5227@gaspode.automagically.de>
+To:	ppopov@embeddedalley.com
+CC:	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
+Subject: Re: Au1000 PCMCIA I/O space?
+References: <42EDBE3B.3010503@total-knowledge.com> <1122877889.5014.319.camel@localhost.localdomain>
+In-Reply-To: <1122877889.5014.319.camel@localhost.localdomain>
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <turja@mbnet.fi>
+X-OriginalArrivalTime: 01 Aug 2005 19:08:51.0755 (UTC) FILETIME=[743C97B0:01C596CC]
+Return-Path: <ilya@total-knowledge.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8680
+X-archive-position: 8681
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: turja@mbnet.fi
+X-original-sender: ilya@total-knowledge.com
 Precedence: bulk
 X-list: linux-mips
 
-Markus Dahms wrote:
+Hmm, I see. I'm not really using PCMCIA driver - I just have
+IDE interface hanging off of PCMCIA controller of Au1000, so
+I had to do something similar to drivers/ide/mips/swarm.c.
+Thus since I can pass addresses directly to ioremap, I'm OK
+anyways.
 
->Mikael Nousiainen wrote:
->
+
+Pete Popov wrote:
+
+>On Sun, 2005-07-31 at 23:16 -0700, Ilya A. Volynets-Evenbakh wrote:
 >  
 >
->>Could you provide a sample image ?
+>>Is there any particular reason why Au1000 PCMCIA IO space is not 
+>>included in 36-bit address fixup?
+>>Attached patch fixes it for me, but I'm wondering if there is valid 
+>>reason not to do that.
 >>    
 >>
 >
->http://automagically.de/images/p_indycam_01.jpg
->http://automagically.de/images/p_indycam_02.jpg
->  
+>Because it's ioremapped by the au1x pcmcia driver and the driver passes 
+>the virt address to the pcmcia stack. If this isn't working for you, 
+>something else is broken.  You only need the fixup when you can't call 
+>ioremap with the entire 36 bit phys address. For example, the attribute and
+>common memory space are ioremapped by the "pcmcia stack" in the kernel,
+>not the low level socket driver over which we have control. Thus, to
+>work around the fact that you can't easily change the entire pcmcia
+>stack, you do the fixup thing. 
 >
-Everything seems to be ok with these...
-
->And (it was hard enough to capture) one with some lines on it:
+>Unless the pcmcia stack changed, the driver should work as is.
 >
->http://automagically.de/images/p_indycam_03.jpg
->  
->
-The image is fuzzy because the camera has moved just after the first 
-field for the image
-has been captured, before capturing the second field (every other line).
-
-The two black lines in the center of the image are the real problem as I 
-have no
-idea what causes them to appear. As you can easily check, the "missing 
-content" is found
-from the beginning of the same line.
-
->These pictures where taken with daylight, some of the colors are a bit
->strange[1] (I'll try it artificial light in the evening).
->
->Markus
->
->[1] the cyan looking highlighter on the first picture should really be
->    green ;).
+>Pete
 >
 >  
 >
-Yep, I've noticed same kind of behaviour with my indycam as it does not 
-reproduce
-blue colors correctly (blue is very weak always).
-I've also heard that the camera is designed to be used in fluorescent 
-light so
-problems with colors seem to be a nice "feature" of the camera... :)
 
-Thanks for the samples.
-
->
->
->  
->
+-- 
+Ilya A. Volynets-Evenbakh
+Total Knowledge. CTO
+http://www.total-knowledge.com

@@ -1,76 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 Jul 2005 19:44:34 +0100 (BST)
-Received: from fep17.inet.fi ([IPv6:::ffff:194.251.242.242]:39357 "EHLO
-	fep17.inet.fi") by linux-mips.org with ESMTP id <S8225273AbVGaSoT>;
-	Sun, 31 Jul 2005 19:44:19 +0100
-Received: from [127.0.0.1] ([80.223.109.59]) by fep17.inet.fi with ESMTP
-          id <20050731184720.YEYC5344.fep17.inet.fi@[127.0.0.1]>;
-          Sun, 31 Jul 2005 21:47:20 +0300
-Message-ID: <42ED1CBE.4060901@mbnet.fi>
-Date:	Sun, 31 Jul 2005 21:47:26 +0300
-From:	Mikael Nousiainen <turja@mbnet.fi>
-User-Agent: Mozilla Thunderbird 1.0.2 (Windows/20050317)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Aug 2005 07:07:54 +0100 (BST)
+Received: from alpha.total-knowledge.com ([IPv6:::ffff:205.217.158.170]:18139
+	"EHLO alpha.total-knowledge.com") by linux-mips.org with ESMTP
+	id <S8224832AbVHAGHg>; Mon, 1 Aug 2005 07:07:36 +0100
+Received: (qmail 14373 invoked from network); 31 Jul 2005 23:10:37 -0700
+Received: from c-24-6-216-150.hsd1.ca.comcast.net (HELO ?192.168.0.238?) (24.6.216.150)
+  by alpha.total-knowledge.com with SMTP; 31 Jul 2005 23:10:37 -0700
+Message-ID: <42EDBCDD.6000301@total-knowledge.com>
+Date:	Sun, 31 Jul 2005 23:10:37 -0700
+From:	"Ilya A. Volynets-Evenbakh" <ilya@total-knowledge.com>
+Organization: Total Knowledge
+User-Agent: Mozilla Thunderbird 1.0.6 (X11/20050723)
 X-Accept-Language: en-us, en
 MIME-Version: 1.0
-To:	Markus Dahms <mad@automagically.de>
-CC:	linux-mips@linux-mips.org
-Subject: Re: New VINO video drivers for Indy
-References: <42D4BF49.4040907@mbnet.fi> <20050715110021.GA15740@gaspode.automagically.de> <42D83063.3060505@mbnet.fi> <20050716112745.GA12716@gaspode.automagically.de>
-In-Reply-To: <20050716112745.GA12716@gaspode.automagically.de>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <turja@mbnet.fi>
+To:	linux-mips@linux-mips.org
+Subject: [PATCH] Au1000 Compile fix
+Content-Type: multipart/mixed;
+ boundary="------------090709020608060104020508"
+Return-Path: <ilya@total-knowledge.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8666
+X-archive-position: 8667
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: turja@mbnet.fi
+X-original-sender: ilya@total-knowledge.com
 Precedence: bulk
 X-list: linux-mips
 
-Markus Dahms wrote:
+This is a multi-part message in MIME format.
+--------------090709020608060104020508
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 
->Hello again,
->
->  
->
->>>I only get a bla[nc]k image ...
->>>      
->>>
->>That's strange. There might be some problems with IndyCam initialization 
->>(register values),
->>but usually you should be able to get at least a very dark picture.
->>Removing and reinstalling the module (indycam.ko) reinitializes the
->>camera so you can try that. IndyCam seems to use some very odd logic
->>to decide how bright the picture should be.
->>Try bringing some very bright light sources near the camera ?
->>    
->>
->
->For some reason it's working now. It's not significantly brighter, I
->just checked the camera with kernel 2.4.x before booting 2.6.12.
->If I can reproduce the failure I'll write it.
->The picture has the same "quality" as with the other driver except
->there _are_ fewer horizontal lines (they appear mostly on fast-moving
->pictures).
->  
->
-Ok, nice to know that you got it working...
+Attached patch fixes compile Au1000 with CONFIG_64BIT_PHYS_ADDR enabled
+when gcc-3.4.x is used
 
-Could you provide a sample image ?
+-- 
+Ilya A. Volynets-Evenbakh
+Total Knowledge. CTO
+http://www.total-knowledge.com
 
-The image is an interlaced image and it's constructed by joining two 
-consencutive frames, so that's what
-can cause some "distortion" in the image with fast-moving objects.
 
-The horizontal lines I'm talking about don't have anything to do with 
-the content of the image,
-they just appear and disappear. The black lines always start from the 
-left edge of the picture
-and it seems that the pixels from the start of the lines get somehow 
-moved forwards to the center of the
-same line of the image. (eww, this is difficult to explain :)
+--------------090709020608060104020508
+Content-Type: text/x-patch;
+ name="ioremap.h.diff"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="ioremap.h.diff"
 
-Mikael
+Index: include/asm-mips/mach-au1x00/ioremap.h
+===================================================================
+RCS file: /home/cvs/linux/include/asm-mips/mach-au1x00/ioremap.h,v
+retrieving revision 1.2
+diff -u -r1.2 ioremap.h
+--- include/asm-mips/mach-au1x00/ioremap.h	14 Jul 2005 00:17:06 -0000	1.2
++++ include/asm-mips/mach-au1x00/ioremap.h	1 Aug 2005 04:19:04 -0000
+@@ -12,7 +12,7 @@
+ #include <linux/types.h>
+ 
+ #ifdef CONFIG_64BIT_PHYS_ADDR
+-extern inline phys_t __fixup_bigphys_addr(phys_t, phys_t);
++extern phys_t __fixup_bigphys_addr(phys_t, phys_t);
+ #else
+ static inline phys_t __fixup_bigphys_addr(phys_t phys_addr, phys_t size)
+ {
+
+--------------090709020608060104020508--

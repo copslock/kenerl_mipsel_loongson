@@ -1,52 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Aug 2005 09:41:57 +0100 (BST)
-Received: from moutng.kundenserver.de ([IPv6:::ffff:212.227.126.187]:27382
-	"EHLO moutng.kundenserver.de") by linux-mips.org with ESMTP
-	id <S8225223AbVHAIlm>; Mon, 1 Aug 2005 09:41:42 +0100
-Received: from pD9529032.dip0.t-ipconnect.de [217.82.144.50] (helo=gaspode.madsworld.lan)
-	by mrelayeu.kundenserver.de with ESMTP (Nemesis),
-	id 0ML2Dk-1DzVug1Fxn-0002ze; Mon, 01 Aug 2005 10:44:46 +0200
-Received: from mad by gaspode.madsworld.lan with local (Exim 4.52)
-	id 1DzVub-0001Ob-VB; Mon, 01 Aug 2005 10:44:42 +0200
-Date:	Mon, 1 Aug 2005 10:44:41 +0200
-From:	Markus Dahms <mad@automagically.de>
-To:	Mikael Nousiainen <turja@mbnet.fi>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: New VINO video drivers for Indy
-Message-ID: <20050801084441.GA5227@gaspode.automagically.de>
-References: <42D4BF49.4040907@mbnet.fi> <20050715110021.GA15740@gaspode.automagically.de> <42D83063.3060505@mbnet.fi> <20050716112745.GA12716@gaspode.automagically.de> <42ED1CBE.4060901@mbnet.fi>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Aug 2005 11:06:23 +0100 (BST)
+Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:48140 "EHLO
+	bacchus.net.dhis.org") by linux-mips.org with ESMTP
+	id <S8224988AbVHAKGI>; Mon, 1 Aug 2005 11:06:08 +0100
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j71A99kf008933;
+	Mon, 1 Aug 2005 11:09:09 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j71A97Od008932;
+	Mon, 1 Aug 2005 11:09:07 +0100
+Date:	Mon, 1 Aug 2005 11:09:07 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Hiroshi DOYU <Hiroshi_DOYU@montavista.co.jp>
+Cc:	linux-mips@linux-mips.org, mlachwani@mvista.com
+Subject: Re: [PATCH 1/1] TX4938: Bugfix for PCI 66MHz of Toshiba RBHMA4500(TX4938)
+Message-ID: <20050801100907.GA4205@linux-mips.org>
+References: <20050730155310.76cf960d.Hiroshi_DOYU@montavista.co.jp>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <42ED1CBE.4060901@mbnet.fi>
-User-Agent: Mutt/1.5.9i
-X-Provags-ID: kundenserver.de abuse@kundenserver.de login:896705dcda322f33ae3752a7fdb3dc09
-Return-Path: <mad@automagically.de>
+In-Reply-To: <20050730155310.76cf960d.Hiroshi_DOYU@montavista.co.jp>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8671
+X-archive-position: 8672
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mad@automagically.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Mikael Nousiainen wrote:
+On Sat, Jul 30, 2005 at 03:53:10PM +0900, Hiroshi DOYU wrote:
 
-> Could you provide a sample image ?
+> This patch is against latest cvs.
+> Could you review it?
 
-http://automagically.de/images/p_indycam_01.jpg
-http://automagically.de/images/p_indycam_02.jpg
+Applied,
 
-And (it was hard enough to capture) one with some lines on it:
-
-http://automagically.de/images/p_indycam_03.jpg
-
-These pictures where taken with daylight, some of the colors are a bit
-strange[1] (I'll try it artificial light in the evening).
-
-Markus
-
-[1] the cyan looking highlighter on the first picture should really be
-    green ;).
+  Ralf

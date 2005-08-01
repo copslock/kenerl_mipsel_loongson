@@ -1,51 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Aug 2005 07:28:46 +0100 (BST)
-Received: from smtp003.bizmail.yahoo.com ([IPv6:::ffff:216.136.130.195]:14721
-	"HELO smtp003.bizmail.yahoo.com") by linux-mips.org with SMTP
-	id <S8224832AbVHAG21>; Mon, 1 Aug 2005 07:28:27 +0100
-Received: (qmail 73002 invoked from network); 1 Aug 2005 06:31:30 -0000
-Received: from unknown (HELO ?192.168.1.126?) (ppopov@embeddedalley.com@63.194.214.47 with plain)
-  by smtp003.bizmail.yahoo.com with SMTP; 1 Aug 2005 06:31:29 -0000
-Subject: Re: Au1000 PCMCIA I/O space?
-From:	Pete Popov <ppopov@embeddedalley.com>
-Reply-To: ppopov@embeddedalley.com
-To:	"Ilya A. Volynets-Evenbakh" <ilya@total-knowledge.com>
-Cc:	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
-In-Reply-To: <42EDBE3B.3010503@total-knowledge.com>
-References: <42EDBE3B.3010503@total-knowledge.com>
-Content-Type: text/plain
-Organization: Embedded Alley Solutions, Inc
-Date:	Sun, 31 Jul 2005 23:31:29 -0700
-Message-Id: <1122877889.5014.319.camel@localhost.localdomain>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Aug 2005 09:18:08 +0100 (BST)
+Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:33301 "EHLO
+	bacchus.net.dhis.org") by linux-mips.org with ESMTP
+	id <S8225011AbVHAIRs>; Mon, 1 Aug 2005 09:17:48 +0100
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j718Kq4P001901;
+	Mon, 1 Aug 2005 09:20:52 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j717pOMh002088;
+	Mon, 1 Aug 2005 08:51:24 +0100
+Date:	Mon, 1 Aug 2005 08:51:24 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Dominic Sweetman <dom@mips.com>
+Cc:	Hiroshi DOYU <Hiroshi_DOYU@montavista.co.jp>,
+	linux-mips@linux-mips.org
+Subject: Re: how to access structured registers correctly
+Message-ID: <20050801075124.GA1972@linux-mips.org>
+References: <20050726182531.6341586f.Hiroshi_DOYU@montavista.co.jp> <20050726190643.GD7088@linux-mips.org> <17127.14246.112209.239338@mips.com>
 Mime-Version: 1.0
-X-Mailer: Evolution 2.0.4 (2.0.4-4) 
-Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@embeddedalley.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <17127.14246.112209.239338@mips.com>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8669
+X-archive-position: 8670
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@embeddedalley.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, 2005-07-31 at 23:16 -0700, Ilya A. Volynets-Evenbakh wrote:
-> Is there any particular reason why Au1000 PCMCIA IO space is not 
-> included in 36-bit address fixup?
-> Attached patch fixes it for me, but I'm wondering if there is valid 
-> reason not to do that.
+On Wed, Jul 27, 2005 at 08:28:38AM +0100, Dominic Sweetman wrote:
 
-Because it's ioremapped by the au1x pcmcia driver and the driver passes 
-the virt address to the pcmcia stack. If this isn't working for you, 
-something else is broken.  You only need the fixup when you can't call 
-ioremap with the entire 36 bit phys address. For example, the attribute and
-common memory space are ioremapped by the "pcmcia stack" in the kernel,
-not the low level socket driver over which we have control. Thus, to
-work around the fact that you can't easily change the entire pcmcia
-stack, you do the fixup thing. 
+> > > In tx4938, every register access is done by using "volatile" like below.
+> > 
+> > Linus is right, volatile is a dangerous thing.  If you want to write
+> > portable code there's a bunch of things that are not being taken care of
+> > by plain C - even though in my opinion foo->somereg = 42 is more
+> > readable than writel(somereg, 42).  Among the things the pointer to
+> > volatile struct method doesn't catch are endianess conversion that might
+> > be necessary on some systems, write merging, dealing with write buffers
+> > or completly insane methods of attaching the bus such as the infamous
+> > ISA / EISA cage that's attached to the host system through a USB
+> > interface.
+> 
+> Yes, this is far outside the compiler's reach.
+> 
+> All of which suggests that it would make sense to define a standard function
+> which:
+> 
+> o will produce just one fixed-width write cycle to the destination;
+> 
+> o will deliver the data ordered so that the MSB of the C value is on
+>   the "most significant" bit of the device's data bus, usually the
+>   highest numbered bit (this doesn't solve all device endianess
+>   issues, but it gives you a well-defined place to start solving them);
+> 
+> o has a variant which returns only after some indication that the
+>   data was delivered;
+> 
+> The implementation of this function can then conceal the details of
+> the CPU and interconnect.
+> 
+> Such a function should probably not be called "writel()" because that
+> sounds like "write long", and "long" is not a fixed-size data type,
+> which undermines the promises above...  Tediously, you probably need
+> "writei32()", "writei16()", "writei8()"...
 
-Unless the pcmcia stack changed, the driver should work as is.
+Linux has a long tradition of grossly missnaming things, so readw reads
+16-bit words, readl reads 32-bit words and readq 64-bit words, that is
+each of them operates on just half the quantity a MIPS programmer would
+expect. Same for writew, writel and writeq.  Blame the Intel guys for it ;-)
 
-Pete
+Ranting about grossly missnaming things, the DMA API calls coherent what
+MIPS calls non-coherent and vice versa.  I'll stop now, birds are
+whistling way to nice behind The Fruit Farm for me to write a good rant
+today ;-)
+
+There are ioread8, ioread16, ioread32, iowrite8, iowrite16, iowrite32
+already except they're primarily used with I/O busses such as PCI but
+that's not really an issue.
+
+   Ralf

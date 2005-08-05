@@ -1,64 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Aug 2005 14:47:49 +0100 (BST)
-Received: from mba.ocn.ne.jp ([IPv6:::ffff:210.190.142.172]:2550 "HELO
-	smtp.mba.ocn.ne.jp") by linux-mips.org with SMTP
-	id <S8225609AbVHENra>; Fri, 5 Aug 2005 14:47:30 +0100
-Received: from localhost (p4173-ipad204funabasi.chiba.ocn.ne.jp [222.146.91.173])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 101B8859B; Fri,  5 Aug 2005 22:51:00 +0900 (JST)
-Date:	Fri, 05 Aug 2005 22:58:05 +0900 (JST)
-Message-Id: <20050805.225805.25908929.anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: include/asm-mips/pci.h fix
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Aug 2005 15:17:17 +0100 (BST)
+Received: from mail.spb.artcoms.ru ([IPv6:::ffff:82.114.120.253]:31372 "EHLO
+	mrelay.spb.artcoms.ru") by linux-mips.org with ESMTP
+	id <S8225750AbVHEORC>; Fri, 5 Aug 2005 15:17:02 +0100
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mrelay.spb.artcoms.ru (Postfix) with ESMTP
+	id A3F0B132F3; Fri,  5 Aug 2005 18:20:34 +0400 (MSD)
+Received: from mrelay.spb.artcoms.ru ([127.0.0.1])
+ by localhost (megera.artcoms.ru [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 09127-08; Fri,  5 Aug 2005 18:20:34 +0400 (MSD)
+Received: from ALEC (unknown [192.168.249.108])
+	by mrelay.spb.artcoms.ru (Postfix) with SMTP
+	id 8609B132EF; Fri,  5 Aug 2005 18:20:34 +0400 (MSD)
+Message-ID: <013601c599c9$1fe2ca40$6cf9a8c0@ALEC>
+Reply-To: "Alexander Voropay" <alec@artcoms.ru>
+From:	"Alexander Voropay" <alec@artcoms.ru>
+To:	"inpreet" <singh.inpreet@netsity.com>, <linux-mips@linux-mips.org>
+References: <01a901c599a4$2f855280$3c67a8c0@netsity.com>
+Subject: Re: Ramdisk issue please help!!!
+Date:	Fri, 5 Aug 2005 18:22:31 +0400
+Organization: Art Communications
+MIME-Version: 1.0
+Content-Type: text/plain;
+	format=flowed;
+	charset="ISO-8859-1";
+	reply-type=original
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.2180
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
+X-Virus-Scanned: by amavisd-new at spb.artcoms.ru
+Return-Path: <alec@artcoms.ru>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8695
+X-archive-position: 8696
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: alec@artcoms.ru
 Precedence: bulk
 X-list: linux-mips
 
-Currently pci_unmap_addr(), etc. are always defined as nop.  It should
-be defined when pci_unmap_single is not a nop.  Here is a patch.
+"inpreet" <singh.inpreet@netsity.com> wrote:
 
-diff -ur linux-mips/include/asm-mips/pci.h linux/include/asm-mips/pci.h
---- linux-mips/include/asm-mips/pci.h	2005-07-26 22:14:07.000000000 +0900
-+++ linux/include/asm-mips/pci.h	2005-08-05 22:33:14.000000000 +0900
-@@ -94,7 +94,7 @@
-  */
- extern unsigned int PCI_DMA_BUS_IS_PHYS;
- 
--#ifdef CONFIG_MAPPED_DMA_IO
-+#ifndef CONFIG_DMA_COHERENT
- 
- /* pci_unmap_{single,page} is not a nop, thus... */
- #define DECLARE_PCI_UNMAP_ADDR(ADDR_NAME)	dma_addr_t ADDR_NAME;
-@@ -104,7 +104,7 @@
- #define pci_unmap_len(PTR, LEN_NAME)		((PTR)->LEN_NAME)
- #define pci_unmap_len_set(PTR, LEN_NAME, VAL)	(((PTR)->LEN_NAME) = (VAL))
- 
--#else /* CONFIG_MAPPED_DMA_IO  */
-+#else /* CONFIG_DMA_COHERENT  */
- 
- /* pci_unmap_{page,single} is a nop so... */
- #define DECLARE_PCI_UNMAP_ADDR(ADDR_NAME)
-@@ -114,7 +114,7 @@
- #define pci_unmap_len(PTR, LEN_NAME)		(0)
- #define pci_unmap_len_set(PTR, LEN_NAME, VAL)	do { } while (0)
- 
--#endif /* CONFIG_MAPPED_DMA_IO  */
-+#endif /* CONFIG_DMA_COHERENT  */
- 
- /* This is always fine. */
- #define pci_dac_dma_supported(pci_dev, mask)	(1)
+>I am trying to build ramdisk image and launch bootsplash image at boot time. 
+>Steps I followed:
+>1. get splash image initrd.splash using splash binary.
+...
+>8. results in initrd.gz
+>
+>Now while compiling kernel image I am embedding initrd.gz into it. Here is what I am doing
+
+ You don't need nothing special for *embedded *, not external "MIPS initrd" on a 2.4 kernels.
+It works just fine from the CVS.
+
+1) Prepare your "ramdisk.img" with EXT2FS/other FS
+2) gzip it.
+3) Put this "ramdisk.gz" into the  arch/mips/ramdisk/
+4) Enable in the configfile :
+
+CONFIG_BLK_DEV_RAM=y
+CONFIG_BLK_DEV_INITRD=y
+
+CONFIG_EMBEDDED_RAMDISK=y
+CONFIG_EMBEDDED_RAMDISK_IMAGE="ramdisk.gz"
+
+5) make . Kernel build system will find this image automagically.
+
+6) Run this kernel (vmlinux) without a "root=" parameter.
+
+There is example of my kernel bootlog:
+
+...
+Determined physical RAM map:
+ memory: 01800000 @ 00000000 (usable)
+Initial ramdisk at: 0x801b1000 (593920 bytes)
+...
+RAMDISK driver initialized: 16 RAM disks of 4096K size 1024 blocksize
+...
+RAMDISK: Compressed image found at block 0
+Freeing initrd memory: 580k freed
+VFS: Mounted root (ext2 filesystem) readonly.
+...
+
+root FS is mouned now as /dev/ram0
+
+--
+-=AV=-

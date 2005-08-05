@@ -1,90 +1,139 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Aug 2005 15:17:17 +0100 (BST)
-Received: from mail.spb.artcoms.ru ([IPv6:::ffff:82.114.120.253]:31372 "EHLO
-	mrelay.spb.artcoms.ru") by linux-mips.org with ESMTP
-	id <S8225750AbVHEORC>; Fri, 5 Aug 2005 15:17:02 +0100
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mrelay.spb.artcoms.ru (Postfix) with ESMTP
-	id A3F0B132F3; Fri,  5 Aug 2005 18:20:34 +0400 (MSD)
-Received: from mrelay.spb.artcoms.ru ([127.0.0.1])
- by localhost (megera.artcoms.ru [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 09127-08; Fri,  5 Aug 2005 18:20:34 +0400 (MSD)
-Received: from ALEC (unknown [192.168.249.108])
-	by mrelay.spb.artcoms.ru (Postfix) with SMTP
-	id 8609B132EF; Fri,  5 Aug 2005 18:20:34 +0400 (MSD)
-Message-ID: <013601c599c9$1fe2ca40$6cf9a8c0@ALEC>
-Reply-To: "Alexander Voropay" <alec@artcoms.ru>
-From:	"Alexander Voropay" <alec@artcoms.ru>
-To:	"inpreet" <singh.inpreet@netsity.com>, <linux-mips@linux-mips.org>
-References: <01a901c599a4$2f855280$3c67a8c0@netsity.com>
-Subject: Re: Ramdisk issue please help!!!
-Date:	Fri, 5 Aug 2005 18:22:31 +0400
-Organization: Art Communications
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Aug 2005 20:35:24 +0100 (BST)
+Received: from outmx002.isp.belgacom.be ([IPv6:::ffff:195.238.3.52]:20176 "EHLO
+	outmx002.isp.belgacom.be") by linux-mips.org with ESMTP
+	id <S8225281AbVHETfG>; Fri, 5 Aug 2005 20:35:06 +0100
+Received: from outmx002.isp.belgacom.be (localhost [127.0.0.1])
+        by outmx002.isp.belgacom.be (8.12.11/8.12.11/Skynet-OUT-2.22) with ESMTP id j75JcdFr020253
+        for <linux-mips@linux-mips.org>; Fri, 5 Aug 2005 21:38:39 +0200
+        (envelope-from <tnt@246tNt.com>)
+Received: from ayanami.246tNt.com (64-90.244.81.adsl.skynet.be [81.244.90.64])
+        by outmx002.isp.belgacom.be (8.12.11/8.12.11/Skynet-OUT-2.22) with ESMTP id j75JcaZr020244
+        for <linux-mips@linux-mips.org>; Fri, 5 Aug 2005 21:38:37 +0200
+        (envelope-from <tnt@246tNt.com>)
+Received: from [10.0.0.245] (246tNt-laptop.lan.ayanami.246tNt.com [10.0.0.245])
+	by ayanami.246tNt.com (Postfix) with ESMTP id 793EE1CAC0D
+	for <linux-mips@linux-mips.org>; Fri,  5 Aug 2005 21:38:29 +0200 (CEST)
+Message-ID: <42F3C05E.7060002@246tNt.com>
+Date:	Fri, 05 Aug 2005 21:39:10 +0200
+From:	Sylvain Munaut <tnt@246tNt.com>
+User-Agent: Mozilla Thunderbird 1.0.2 (X11/20050610)
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: text/plain;
-	format=flowed;
-	charset="ISO-8859-1";
-	reply-type=original
+To:	linux-mips@linux-mips.org
+Subject: AMD Au1100 problems (USB & Ethernet)
+X-Enigmail-Version: 0.90.0.0
+X-Enigmail-Supports: pgp-inline, pgp-mime
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.2180
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
-X-Virus-Scanned: by amavisd-new at spb.artcoms.ru
-Return-Path: <alec@artcoms.ru>
+Return-Path: <tnt@246tNt.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8696
+X-archive-position: 8697
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alec@artcoms.ru
+X-original-sender: tnt@246tNt.com
 Precedence: bulk
 X-list: linux-mips
 
-"inpreet" <singh.inpreet@netsity.com> wrote:
+Hello,
 
->I am trying to build ramdisk image and launch bootsplash image at boot time. 
->Steps I followed:
->1. get splash image initrd.splash using splash binary.
-...
->8. results in initrd.gz
->
->Now while compiling kernel image I am embedding initrd.gz into it. Here is what I am doing
+I've been trying to adapt linux ( the HEAD CVS version ) to a
+custom board based around a Au1100. To be more precise, the board
+use a "cpu module" (CSB650 from Cogent
+http://www.cogcomp.com/csb_csb650.htm ) that's placed on a custom PCB.
 
- You don't need nothing special for *embedded *, not external "MIPS initrd" on a 2.4 kernels.
-It works just fine from the CVS.
 
-1) Prepare your "ramdisk.img" with EXT2FS/other FS
-2) gzip it.
-3) Put this "ramdisk.gz" into the  arch/mips/ramdisk/
-4) Enable in the configfile :
+I've compiled and booted a kernel sucessfully, I see the message on the
+serial console. It's in Big Endian mode since the boot loaded on the
+card is big endian only and I could manage to get it to switch to little
+endian ...
 
-CONFIG_BLK_DEV_RAM=y
-CONFIG_BLK_DEV_INITRD=y
+Now, let's go on with the problems :
 
-CONFIG_EMBEDDED_RAMDISK=y
-CONFIG_EMBEDDED_RAMDISK_IMAGE="ramdisk.gz"
+ * About USB. First time I tried, it just hung but I quicly found out
+that it was because I didn't route the 48Mhz clock to USB module. After
+that, I had to slightly adapt the ohci bus glue to enable the OHCI big
+endian mode. After that, when a USB stick is inserted, it gets detected,
+I can mount it and read small files. But when I try to read bigger files
+( just 1 or 2 MB ), I get stuff like :
 
-5) make . Kernel build system will find this image automagically.
+[4294743.146000] usb 1-1: reset full speed USB device using au1xxx-ohci
+and address 2
 
-6) Run this kernel (vmlinux) without a "root=" parameter.
+[4294743.618000] usb 1-1: reset full speed USB device using au1xxx-ohci
+and address 2
 
-There is example of my kernel bootlog:
+[4294743.891000] usb 1-1: reset full speed USB device using au1xxx-ohci
+and address 2
 
-...
-Determined physical RAM map:
- memory: 01800000 @ 00000000 (usable)
-Initial ramdisk at: 0x801b1000 (593920 bytes)
-...
-RAMDISK driver initialized: 16 RAM disks of 4096K size 1024 blocksize
-...
-RAMDISK: Compressed image found at block 0
-Freeing initrd memory: 580k freed
-VFS: Mounted root (ext2 filesystem) readonly.
-...
+[4294744.151000] usb 1-1: reset full speed USB device using au1xxx-ohci
+and address 2
 
-root FS is mouned now as /dev/ram0
+[4294744.328000] au1xxx-ohci au1xxx-ohci.0: bad entry       4b
 
---
--=AV=-
+
+[4294744.346000] au1xxx-ohci au1xxx-ohci.0: bad entry ac450000
+
+
+[4294744.363000] au1xxx-ohci au1xxx-ohci.0: bad entry 8f820014
+
+
+[4294744.381000] au1xxx-ohci au1xxx-ohci.0: bad entry 38210001
+
+
+[4294744.495000] hub 1-0:1.0: port 1 disabled by hub (EMI?),
+re-enabling...
+
+[4294744.515000] usb 1-1: USB disconnect, address 2
+
+
+[4294745.532000] au1xxx-ohci au1xxx-ohci.0: IRQ INTR_SF lossage
+
+
+[4294745.532000] usb 1-1: sg_complete, unlink --> -19
+
+
+[4294745.532000] usb 1-1: sg_complete, unlink --> -19
+
+
+
+
+Which means absolutly nothing to me ;( Has anyone got a clue ?
+I can't say for sure it's not hardware but the cpu module is used by
+others and on the base board, it's just a couple of differential pair
+with 90ohm differential impedance, nothing more ...
+
+
+ * About ethernet : It works, I have a network access. However I have
+two kind of errors. On the RX side, I get quite a lot of "rx miss"
+errors (when au1x00_eth debug is on). About 5% of packets are dropped.
+That's not _too_ much of a problem as log as it doesn't increase. But
+what can that be due too ?
+
+A more annoying problem is that I get a lot of :
+[  506.397000] NETDEV WATCHDOG: eth0: transmit timed out
+
+
+[  506.412000] eth0: au1000_tx_timeout: dev=8048b400
+
+theses are quite comment when  I transmitt a lot
+                         and they completly ruin the transmission
+(_real_ slow !).
+
+Heres is some stats from ifconfig :
+
+          RX packets:50496 errors:76 dropped:76 overruns:0 frame:0
+
+
+          TX packets:49573 errors:47 dropped:0 overruns:0 carrier:74
+
+
+
+
+
+Any insight / suggestion is appreciated, I'm getting desperate ;)
+
+
+	Sylvain

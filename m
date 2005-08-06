@@ -1,83 +1,101 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 06 Aug 2005 11:38:59 +0100 (BST)
-Received: from outmx021.isp.belgacom.be ([IPv6:::ffff:195.238.2.202]:11917
-	"EHLO outmx021.isp.belgacom.be") by linux-mips.org with ESMTP
-	id <S8224971AbVHFKim>; Sat, 6 Aug 2005 11:38:42 +0100
-Received: from outmx021.isp.belgacom.be (localhost [127.0.0.1])
-        by outmx021.isp.belgacom.be (8.12.11/8.12.11/Skynet-OUT-2.22) with ESMTP id j76AgInG032257
-        for <linux-mips@linux-mips.org>; Sat, 6 Aug 2005 12:42:18 +0200
-        (envelope-from <tnt@246tNt.com>)
-Received: from ayanami.246tNt.com (82-135.245.81.adsl.skynet.be [81.245.135.82])
-        by outmx021.isp.belgacom.be (8.12.11/8.12.11/Skynet-OUT-2.22) with ESMTP id j76AgFP9032224
-        for <linux-mips@linux-mips.org>; Sat, 6 Aug 2005 12:42:15 +0200
-        (envelope-from <tnt@246tNt.com>)
-Received: from [10.0.0.245] (246tNt-laptop.lan.ayanami.246tNt.com [10.0.0.245])
-	by ayanami.246tNt.com (Postfix) with ESMTP id AA7EC1CAC5D
-	for <linux-mips@linux-mips.org>; Sat,  6 Aug 2005 12:42:07 +0200 (CEST)
-Message-ID: <42F4942A.7060006@246tNt.com>
-Date:	Sat, 06 Aug 2005 12:42:50 +0200
-From:	Sylvain Munaut <tnt@246tNt.com>
-User-Agent: Mozilla Thunderbird 1.0.2 (X11/20050610)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 06 Aug 2005 13:48:34 +0100 (BST)
+Received: from 202-47-55-78.adsl.gil.com.au ([IPv6:::ffff:202.47.55.78]:17347
+	"EHLO longlandclan.hopto.org") by linux-mips.org with ESMTP
+	id <S8224990AbVHFMsM>; Sat, 6 Aug 2005 13:48:12 +0100
+Received: (qmail 5740 invoked by uid 210); 6 Aug 2005 22:51:41 +1000
+Received: from 10.0.0.251 by www (envelope-from <redhatter@gentoo.org>, uid 201) with qmail-scanner-1.25st 
+ (spamassassin: 3.0.2. perlscan: 1.25st.  
+ Clear:RC:1(10.0.0.251):. 
+ Processed in 0.110896 secs); 06 Aug 2005 12:51:41 -0000
+Received: from beast.redhatters.home (HELO ?10.0.0.251?) (10.0.0.251)
+  by 192.168.5.1 with SMTP; 6 Aug 2005 22:51:41 +1000
+Message-ID: <42F4B25B.6040708@gentoo.org>
+Date:	Sat, 06 Aug 2005 22:51:39 +1000
+From:	Stuart Longland <redhatter@gentoo.org>
+Organization: Gentoo Foundation
+User-Agent: Mozilla Thunderbird 1.0.2 (X11/20050317)
 X-Accept-Language: en-us, en
 MIME-Version: 1.0
 To:	linux-mips@linux-mips.org
-Subject: Re: AMD Au1100 problems (USB & Ethernet)
-References: <42F3C05E.7060002@246tNt.com>	 <1123271252.19992.189.camel@localhost.localdomain>	 <6.2.0.14.2.20050805155414.044a0f00@mail.cogcomp.com>	 <1123272640.19992.199.camel@localhost.localdomain>	 <42F3D4B7.6040905@246tNt.com> <1123276474.23193.6.camel@localhost.localdomain>
-In-Reply-To: <1123276474.23193.6.camel@localhost.localdomain>
-X-Enigmail-Version: 0.90.0.0
-X-Enigmail-Supports: pgp-inline, pgp-mime
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <tnt@246tNt.com>
+CC:	cobalt@colonel-panic.org
+Subject: netconsole support on Cobalt systems... Anyone tried it?
+X-Enigmail-Version: 0.91.0.0
+OpenPGP: id=63264AB9;
+	url=http://dev.gentoo.org/~redhatter/gpgkey.asc
+Content-Type: multipart/signed; micalg=pgp-sha1;
+ protocol="application/pgp-signature";
+ boundary="------------enigEDB531620BB9790F172F6628"
+Return-Path: <redhatter@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8702
+X-archive-position: 8703
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tnt@246tNt.com
+X-original-sender: redhatter@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-Pete Popov wrote:
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--------------enigEDB531620BB9790F172F6628
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
->>The RX errors are reported as "rx miss" (RX_MISSED_FRAME set) which is
->>described as "Internal FIFO overrun". Maybe those are just OK and it's
->>just that it can't wistand full 100Mbps (the module is connected on a
->>10/100/1000 switch and the server is gigabit).
-> 
-> No, I don't think that's normal.
+Hi All,
 
-Maybe it has something to do with initialisation that I don't do
-properly. The bootloader is uMon, not YaMon so maybe something is
-execpted to be setup that I don't know of.
+I've been tinkering with my Qube2 tonight, seeing if I can get
+netconsole running.  I'd like to get this running for two reasons:
 
+(1) I've only got one null-modem cable, which usually is plugged into my
+Indigo2 Impact -- I'd like to leave it where it is if possible.
+(2) I'd like to improve support for the Qube 2700, which lacks such
+interfaces.
 
->>The TX errors are time-out, how can I find more details about that ?
-> 
-> 
-> If possible, eliminate the gig switch by replacing it with a small
-> 10/100 switch. If the problems go away, then that's a big clue.
+I've looked around on the web, but haven't found a great deal of
+material that explains how one uses it.  The best resource thus far has
+been the linux/documentation/network/netconsole.txt file, as well as a
+crash dump[1] from an AMD64, which shows netconsole in action.
 
-I don't habe a 10/100 switch but I tried on a 10/100 Hub and the results
-are quite the same. I just have a few "rx runt" error more that are due
-to the hub.
+I tried booting with `netconsole=9877@10.0.0.1/eth0,9876@10.0.0.254/` on
+the kernel command line, without success.  The system continues to
+boot[2], but only outputting to the serial console.
 
-> Take a look at what the bcm phy is auto-negotiating and make sure it
-> matches what the switch thinks it has negotiated. Although, the tx
-> timeouts should have nothing to do with mismatched auto negotiation...
-> but I see there are a bunch of "carrier" errors.
+Has anyone here, tried using netconsole on Cobalt hardware?  Has anybody
+played with netconsole on _any_ hardware?
 
-Phy reports 100Mbps half duplex with the hub and 100Mbps full duplex
-with the switch, which looks correct.
+Regards,
+-- 
+ ____                   _             Stuart Longland (a.k.a Redhatter)
+/  _ \   ___    ___  __| |__  __   __ Gentoo Linux/MIPS Cobalt and Docs
+- (_) \ /   \  ;   \(__   __)/  \ /  \                        Developer
+ \    //  O _| / /\ \  | |  | /\ | /\ |
+ /   / \   /__| /  \ \ | |  | \/ | \/ |
+(___/   \____/|_;  |_| \_/   \__/ \__/ http://dev.gentoo.org/~redhatter
 
-btw, It seems that after a timeout error, the au1000_timer isn't
-restored correctly ( I put a printk in it and before the errors, it
-prints every sec, and never after ).
+Footnotes,
+1. http://mjt.nysv.org/kernelbugfest/netconsole_panic_2.6.12.2
 
-> You of course tried a different cable, just in case?
+2. I was using my WinCE/MIPS-based[3] PDA, which happens to have a
+crippled version of "HyperTerminal".  Unfortunately, it lacks any
+ability to capture the text... but otherwise, turns my PDA into a very
+convenient portable VT100. :-)
 
-Sure, with 3 differents cables in fact.
+3. I'd like to get Linux working on this thing sometime... see my next
+post, which I'll write in a moment. :-)
 
+--------------enigEDB531620BB9790F172F6628
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
 
-	Sylvain
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.4 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://enigmail.mozdev.org
+
+iD8DBQFC9LJeuarJ1mMmSrkRAsIMAJsH1IcRr1Yqlj3mT/RP4mzoSQyXOQCfWOCI
+ZF0olppPJaN2qmIX7Zr+xt0=
+=Wswj
+-----END PGP SIGNATURE-----
+
+--------------enigEDB531620BB9790F172F6628--

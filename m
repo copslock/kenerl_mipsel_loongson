@@ -1,35 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 06 Aug 2005 13:48:34 +0100 (BST)
-Received: from 202-47-55-78.adsl.gil.com.au ([IPv6:::ffff:202.47.55.78]:17347
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 06 Aug 2005 14:04:37 +0100 (BST)
+Received: from 202-47-55-78.adsl.gil.com.au ([IPv6:::ffff:202.47.55.78]:59321
 	"EHLO longlandclan.hopto.org") by linux-mips.org with ESMTP
-	id <S8224990AbVHFMsM>; Sat, 6 Aug 2005 13:48:12 +0100
-Received: (qmail 5740 invoked by uid 210); 6 Aug 2005 22:51:41 +1000
+	id <S8224990AbVHFNET>; Sat, 6 Aug 2005 14:04:19 +0100
+Received: (qmail 5979 invoked by uid 210); 6 Aug 2005 23:07:29 +1000
 Received: from 10.0.0.251 by www (envelope-from <redhatter@gentoo.org>, uid 201) with qmail-scanner-1.25st 
  (spamassassin: 3.0.2. perlscan: 1.25st.  
  Clear:RC:1(10.0.0.251):. 
- Processed in 0.110896 secs); 06 Aug 2005 12:51:41 -0000
+ Processed in 0.09711 secs); 06 Aug 2005 13:07:29 -0000
 Received: from beast.redhatters.home (HELO ?10.0.0.251?) (10.0.0.251)
-  by 192.168.5.1 with SMTP; 6 Aug 2005 22:51:41 +1000
-Message-ID: <42F4B25B.6040708@gentoo.org>
-Date:	Sat, 06 Aug 2005 22:51:39 +1000
+  by 192.168.5.1 with SMTP; 6 Aug 2005 23:07:29 +1000
+Message-ID: <42F4B60F.3070402@gentoo.org>
+Date:	Sat, 06 Aug 2005 23:07:27 +1000
 From:	Stuart Longland <redhatter@gentoo.org>
 Organization: Gentoo Foundation
 User-Agent: Mozilla Thunderbird 1.0.2 (X11/20050317)
 X-Accept-Language: en-us, en
 MIME-Version: 1.0
 To:	linux-mips@linux-mips.org
-CC:	cobalt@colonel-panic.org
-Subject: netconsole support on Cobalt systems... Anyone tried it?
+Subject: Linux on the Sharp Mobilion PRO PV5000A?
 X-Enigmail-Version: 0.91.0.0
 OpenPGP: id=63264AB9;
 	url=http://dev.gentoo.org/~redhatter/gpgkey.asc
 Content-Type: multipart/signed; micalg=pgp-sha1;
  protocol="application/pgp-signature";
- boundary="------------enigEDB531620BB9790F172F6628"
+ boundary="------------enigDEF8329372B3149AE5FA879A"
 Return-Path: <redhatter@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8703
+X-archive-position: 8704
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -38,31 +37,30 @@ Precedence: bulk
 X-list: linux-mips
 
 This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---------------enigEDB531620BB9790F172F6628
+--------------enigDEF8329372B3149AE5FA879A
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 Hi All,
 
-I've been tinkering with my Qube2 tonight, seeing if I can get
-netconsole running.  I'd like to get this running for two reasons:
+I've recently acquired a new toy, a Sharp PDA.  From what I've read on
+the NetBSD/hpcmips website, and other places, it's based around a
+Toshiba TX3922 129MHz CPU and has 32MB RAM.
 
-(1) I've only got one null-modem cable, which usually is plugged into my
-Indigo2 Impact -- I'd like to leave it where it is if possible.
-(2) I'd like to improve support for the Qube 2700, which lacks such
-interfaces.
+I've done some research, and it looks like this machine may, be a cousin
+of the Philips Velo.  I'm yet to pull mine apart (which I'll have to do
+at some point, to fix a dickey power socket), so I can't be sure what
+hardware mine has.
 
-I've looked around on the web, but haven't found a great deal of
-material that explains how one uses it.  The best resource thus far has
-been the linux/documentation/network/netconsole.txt file, as well as a
-crash dump[1] from an AMD64, which shows netconsole in action.
+Anyway, what I was going to ask, is has anyone tried Linux or NetBSD on
+this system?  If someone's already started work on porting, then I'd
+like to assist where I can, no point in two of us duplicating efforts :-).
 
-I tried booting with `netconsole=9877@10.0.0.1/eth0,9876@10.0.0.254/` on
-the kernel command line, without success.  The system continues to
-boot[2], but only outputting to the serial console.
-
-Has anyone here, tried using netconsole on Cobalt hardware?  Has anybody
-played with netconsole on _any_ hardware?
+I've put some stuff up on the wiki[1], about what I know on the device.
+ I'll possibly look into getting some sort of WinCE/MIPS dev environment
+set up, so that I can compile apps to explore the hardware on the
+device, but I'd be interested to hear if anyone has attempted a port to
+such a device.
 
 Regards,
 -- 
@@ -73,18 +71,10 @@ Regards,
  /   / \   /__| /  \ \ | |  | \/ | \/ |
 (___/   \____/|_;  |_| \_/   \__/ \__/ http://dev.gentoo.org/~redhatter
 
-Footnotes,
-1. http://mjt.nysv.org/kernelbugfest/netconsole_panic_2.6.12.2
+Footnotes:
+1. http://www.linux-mips.org/wiki/Sharp_Mobilion_Pro_PV5000A
 
-2. I was using my WinCE/MIPS-based[3] PDA, which happens to have a
-crippled version of "HyperTerminal".  Unfortunately, it lacks any
-ability to capture the text... but otherwise, turns my PDA into a very
-convenient portable VT100. :-)
-
-3. I'd like to get Linux working on this thing sometime... see my next
-post, which I'll write in a moment. :-)
-
---------------enigEDB531620BB9790F172F6628
+--------------enigDEF8329372B3149AE5FA879A
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: OpenPGP digital signature
 Content-Disposition: attachment; filename="signature.asc"
@@ -93,9 +83,9 @@ Content-Disposition: attachment; filename="signature.asc"
 Version: GnuPG v1.2.4 (GNU/Linux)
 Comment: Using GnuPG with Thunderbird - http://enigmail.mozdev.org
 
-iD8DBQFC9LJeuarJ1mMmSrkRAsIMAJsH1IcRr1Yqlj3mT/RP4mzoSQyXOQCfWOCI
-ZF0olppPJaN2qmIX7Zr+xt0=
-=Wswj
+iD8DBQFC9LYSuarJ1mMmSrkRAkOjAJ0Vp+awWHAmV75aZpZQ9MFtyPsaOwCdHuP8
+aa0ecOUawY94GebDaihfrwY=
+=JCMH
 -----END PGP SIGNATURE-----
 
---------------enigEDB531620BB9790F172F6628--
+--------------enigDEF8329372B3149AE5FA879A--

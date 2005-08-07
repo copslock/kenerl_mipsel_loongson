@@ -1,97 +1,122 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 07 Aug 2005 13:40:01 +0100 (BST)
-Received: from 202-47-55-78.adsl.gil.com.au ([IPv6:::ffff:202.47.55.78]:61569
-	"EHLO longlandclan.hopto.org") by linux-mips.org with ESMTP
-	id <S8224943AbVHGMjm>; Sun, 7 Aug 2005 13:39:42 +0100
-Received: (qmail 21500 invoked by uid 210); 7 Aug 2005 22:43:15 +1000
-Received: from 10.0.0.251 by www (envelope-from <redhatter@gentoo.org>, uid 201) with qmail-scanner-1.25st 
- (spamassassin: 3.0.2. perlscan: 1.25st.  
- Clear:RC:1(10.0.0.251):. 
- Processed in 0.097349 secs); 07 Aug 2005 12:43:15 -0000
-Received: from beast.redhatters.home (HELO ?10.0.0.251?) (10.0.0.251)
-  by 192.168.5.1 with SMTP; 7 Aug 2005 22:43:15 +1000
-Message-ID: <42F601E1.1050707@gentoo.org>
-Date:	Sun, 07 Aug 2005 22:43:13 +1000
-From:	Stuart Longland <redhatter@gentoo.org>
-Organization: Gentoo Foundation
-User-Agent: Mozilla Thunderbird 1.0.2 (X11/20050317)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: Re: Linux on the Sharp Mobilion PRO PV5000A?
-References: <42F4B60F.3070402@gentoo.org> <20050806225911.5cc0ed63.yuasa@hh.iij4u.or.jp> <20050807103123.GC25175@deprecation.cyrius.com>
-In-Reply-To: <20050807103123.GC25175@deprecation.cyrius.com>
-X-Enigmail-Version: 0.91.0.0
-OpenPGP: id=63264AB9;
-	url=http://dev.gentoo.org/~redhatter/gpgkey.asc
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="------------enigFACCFBDCC86888B9C1991756"
-Return-Path: <redhatter@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 07 Aug 2005 16:39:39 +0100 (BST)
+Received: from mailout.stusta.mhn.de ([IPv6:::ffff:141.84.69.5]:27908 "HELO
+	mailout.stusta.mhn.de") by linux-mips.org with SMTP
+	id <S8224972AbVHGPjW>; Sun, 7 Aug 2005 16:39:22 +0100
+Received: (qmail 23315 invoked from network); 7 Aug 2005 15:43:01 -0000
+Received: from r063144.stusta.swh.mhn.de (10.150.63.144)
+  by mailout.stusta.mhn.de with SMTP; 7 Aug 2005 15:43:01 -0000
+Received: by r063144.stusta.swh.mhn.de (Postfix, from userid 1000)
+	id DB0C5BB57D; Sun,  7 Aug 2005 17:43:00 +0200 (CEST)
+Date:	Sun, 7 Aug 2005 17:43:00 +0200
+From:	Adrian Bunk <bunk@stusta.de>
+To:	Andrew Morton <akpm@osdl.org>, Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: [-mm patch] more vr4181 removal
+Message-ID: <20050807154300.GC3513@stusta.de>
+References: <20050807014214.45968af3.akpm@osdl.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20050807014214.45968af3.akpm@osdl.org>
+User-Agent: Mutt/1.5.9i
+Return-Path: <bunk@stusta.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8707
+X-archive-position: 8708
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: redhatter@gentoo.org
+X-original-sender: bunk@stusta.de
 Precedence: bulk
 X-list: linux-mips
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---------------enigFACCFBDCC86888B9C1991756
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+On Sun, Aug 07, 2005 at 01:42:14AM -0700, Andrew Morton wrote:
+>...
+> Changes since 2.6.13-rc4-mm1:
+>...
+> +mips-remove-vr4181-support.patch
+>...
+>  MIPS stuff
+>...
 
-Martin Michlmayr wrote:
-> * Yoichi Yuasa <yuasa@hh.iij4u.or.jp> [2005-08-06 22:59]:
-> 
->>This is old information about TX3922.
->>
->>http://www.sikigami.com/~fuku/linux-telios/index-en.html
->>
->>I don't know that Telios and PV5000A are the same.
-> 
-> 
-> I'm fairly sure they aren't.  If I remember correctly, the companion
-> chip PLUM2 was only used in the Telios.
 
-Well... I actually pulled mine apart tonight.
-http://www.linux-mips.org/wiki/Sharp_Mobilion_Pro_PV5000A#A_look_inside
 
-My primary objective was to fix a wobbly power socket... but I also took
-the time to take snaps of the board & its chips.  In putting the unit
-back together again though, it seems I now have some spare screws...
-oddly enough, WinCE seems to boot & run ever so slightly faster.
+Signed-off-by: Adrian Bunk <bunk@stusta.de>
 
-You could say I've made it more efficient by removing parts -- but I
-don't think screws count :-)
+---
 
-I'll have to google some of the ICs... I actually thought this would be
-using the Philips Poseidon SoC, but no, there's not a single chip with
-"Philips" written on it anywhere.  It's mostly Toshiba circuitry -- one
-will be responsible for I/O, I know that much. :-)
+ arch/mips/Kconfig            |   12 +-----------
+ arch/mips/Makefile           |    7 -------
+ arch/mips/kernel/cpu-probe.c |    6 ------
+ 3 files changed, 1 insertion(+), 24 deletions(-)
 
--- 
- ____                   _             Stuart Longland (a.k.a Redhatter)
-/  _ \   ___    ___  __| |__  __   __ Gentoo Linux/MIPS Cobalt and Docs
-- (_) \ /   \  ;   \(__   __)/  \ /  \                        Developer
- \    //  O _| / /\ \  | |  | /\ | /\ |
- /   / \   /__| /  \ \ | |  | \/ | \/ |
-(___/   \____/|_;  |_| \_/   \__/ \__/ http://dev.gentoo.org/~redhatter
-
---------------enigFACCFBDCC86888B9C1991756
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.4 (GNU/Linux)
-Comment: Using GnuPG with Thunderbird - http://enigmail.mozdev.org
-
-iD8DBQFC9gHluarJ1mMmSrkRAvTQAJ4jf9U4QSuUKIpz/4AohQibgRld+QCfRaON
-x7YFVg9Qt+hLa9R8Ajnbpfo=
-=aY8F
------END PGP SIGNATURE-----
-
---------------enigFACCFBDCC86888B9C1991756--
+--- linux-2.6.13-rc5-mm1-full/arch/mips/Kconfig.old	2005-08-07 17:31:12.000000000 +0200
++++ linux-2.6.13-rc5-mm1-full/arch/mips/Kconfig	2005-08-07 17:32:04.000000000 +0200
+@@ -445,11 +445,6 @@
+ 	depends on DDB5477
+ 	default 0
+ 
+-config NEC_OSPREY
+-	bool "Support for NEC Osprey board"
+-	select DMA_NONCOHERENT
+-	select IRQ_CPU
+-
+ config SGI_IP22
+ 	bool "Support for SGI IP22 (Indy/Indigo2)"
+ 	select ARC
+@@ -974,7 +969,7 @@
+ 
+ config CPU_LITTLE_ENDIAN
+ 	bool "Generate little endian code"
+-	default y if ACER_PICA_61 || CASIO_E55 || DDB5074 || DDB5476 || DDB5477 || MACH_DECSTATION || IBM_WORKPAD || LASAT || MIPS_COBALT || MIPS_ITE8172 || MIPS_IVR || SOC_AU1X00 || NEC_OSPREY || OLIVETTI_M700 || SNI_RM200_PCI || VICTOR_MPC30X || ZAO_CAPCELLA
++	default y if ACER_PICA_61 || CASIO_E55 || DDB5074 || DDB5476 || DDB5477 || MACH_DECSTATION || IBM_WORKPAD || LASAT || MIPS_COBALT || MIPS_ITE8172 || MIPS_IVR || SOC_AU1X00 || OLIVETTI_M700 || SNI_RM200_PCI || VICTOR_MPC30X || ZAO_CAPCELLA
+ 	default n if MIPS_EV64120 || MIPS_EV96100 || MOMENCO_OCELOT || MOMENCO_OCELOT_G || SGI_IP22 || SGI_IP27 || SGI_IP32 || TOSHIBA_JMR3927
+ 	help
+ 	  Some MIPS machines can be configured for either little or big endian
+@@ -1091,11 +1086,6 @@
+ config HAVE_STD_PC_SERIAL_PORT
+ 	bool
+ 
+-config VR4181
+-	bool
+-	depends on NEC_OSPREY
+-	default y
+-
+ config ARC_CONSOLE
+ 	bool "ARC console support"
+ 	depends on SGI_IP22 || SNI_RM200_PCI
+--- linux-2.6.13-rc5-mm1-full/arch/mips/Makefile.old	2005-08-07 17:32:19.000000000 +0200
++++ linux-2.6.13-rc5-mm1-full/arch/mips/Makefile	2005-08-07 17:32:30.000000000 +0200
+@@ -469,13 +469,6 @@
+ load-$(CONFIG_LASAT)		+= 0xffffffff80000000
+ 
+ #
+-# NEC Osprey (vr4181) board
+-#
+-core-$(CONFIG_NEC_OSPREY)	+= arch/mips/vr4181/common/ \
+-				   arch/mips/vr4181/osprey/
+-load-$(CONFIG_NEC_OSPREY)	+= 0xffffffff80002000
+-
+-#
+ # Common VR41xx
+ #
+ core-$(CONFIG_MACH_VR41XX)	+= arch/mips/vr41xx/common/
+--- linux-2.6.13-rc5-mm1-full/arch/mips/kernel/cpu-probe.c.old	2005-08-07 17:32:45.000000000 +0200
++++ linux-2.6.13-rc5-mm1-full/arch/mips/kernel/cpu-probe.c	2005-08-07 17:33:46.000000000 +0200
+@@ -229,15 +229,9 @@
+ 		break;
+ 	case PRID_IMP_VR41XX:
+ 		switch (c->processor_id & 0xf0) {
+-#ifndef CONFIG_VR4181
+ 		case PRID_REV_VR4111:
+ 			c->cputype = CPU_VR4111;
+ 			break;
+-#else
+-		case PRID_REV_VR4181:
+-			c->cputype = CPU_VR4181;
+-			break;
+-#endif
+ 		case PRID_REV_VR4121:
+ 			c->cputype = CPU_VR4121;
+ 			break;

@@ -1,67 +1,196 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 07 Aug 2005 18:09:59 +0100 (BST)
-Received: from mailout05.sul.t-online.com ([IPv6:::ffff:194.25.134.82]:17347
-	"EHLO mailout05.sul.t-online.com") by linux-mips.org with ESMTP
-	id <S8224983AbVHGRJo>; Sun, 7 Aug 2005 18:09:44 +0100
-Received: from fwd28.aul.t-online.de 
-	by mailout05.sul.t-online.com with smtp 
-	id 1E1oiF-00073j-03; Sun, 07 Aug 2005 19:13:27 +0200
-Received: from denx.de (S+QIpEZ1Zei9WXFka6c1DcE7YtrnAp1lXqMepafn5HkSC55aahdi8M@[84.150.87.222]) by fwd28.sul.t-online.de
-	with esmtp id 1E1oiB-1SBDQu0; Sun, 7 Aug 2005 19:13:23 +0200
-Received: from atlas.denx.de (atlas.denx.de [10.0.0.14])
-	by denx.de (Postfix) with ESMTP
-	id 789DA42A8A; Sun,  7 Aug 2005 19:13:22 +0200 (MEST)
-Received: from atlas.denx.de (localhost.localdomain [127.0.0.1])
-	by atlas.denx.de (Postfix) with ESMTP id 2AC0C353BF9;
-	Sun,  7 Aug 2005 19:13:22 +0200 (MEST)
-To:	Stuart Longland <redhatter@gentoo.org>
-Cc:	linux-mips@linux-mips.org, cobalt@colonel-panic.org
-From:	Wolfgang Denk <wd@denx.de>
-Subject: Re: netconsole support on Cobalt systems... Anyone tried it? 
-Mime-version: 1.0
-Content-type: text/plain; charset=ISO-8859-1
-Content-transfer-encoding: 8bit
-In-reply-to: Your message of "Sat, 06 Aug 2005 22:51:39 +1000."
-             <42F4B25B.6040708@gentoo.org> 
-Date:	Sun, 07 Aug 2005 19:13:22 +0200
-Message-Id: <20050807171322.2AC0C353BF9@atlas.denx.de>
-X-ID:	S+QIpEZ1Zei9WXFka6c1DcE7YtrnAp1lXqMepafn5HkSC55aahdi8M@t-dialin.net
-X-TOI-MSGID: a9f11f48-fe08-41c9-9ab4-c75fd7f66770
-Return-Path: <wd@denx.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Aug 2005 23:43:52 +0100 (BST)
+Received: from web30311.mail.mud.yahoo.com ([IPv6:::ffff:68.142.201.229]:6531
+	"HELO web30311.mail.mud.yahoo.com") by linux-mips.org with SMTP
+	id <S8225197AbVHHWnc>; Mon, 8 Aug 2005 23:43:32 +0100
+Received: (qmail 25828 invoked by uid 60001); 8 Aug 2005 22:47:19 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  h=Message-ID:Received:Date:From:Subject:To:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding;
+  b=IQ0TpBYAehWf8m5sOYQRPlubBNjg4NrBo4K2bCNQWTbxRG7sMZkYaD3moUH2KI5bfSQ95xd6ZfBeKx9tNDvjPkwJ21Ltfr83XOQAn8DCM6iuZJ4i5LbZjoDXSufoO9ln0SQwoFK6JmuSz3AkpP2hJNnNKe+mgPeUR9o0KtObGA8=  ;
+Message-ID: <20050808224719.25826.qmail@web30311.mail.mud.yahoo.com>
+Received: from [62.253.64.19] by web30311.mail.mud.yahoo.com via HTTP; Mon, 08 Aug 2005 23:47:19 BST
+Date:	Mon, 8 Aug 2005 23:47:19 +0100 (BST)
+From:	Mark Underwood <basicmark@yahoo.com>
+Subject: Re: Linux 2.6.11.5 on R3912 problems
+To:	Mark Underwood <basicmark@yahoo.com>,
+	LKML <linux-kernel@vger.kernel.org>,
+	'Linux/MIPS Development' <linux-mips@linux-mips.org>
+In-Reply-To: <20050718201429.82565.qmail@web30312.mail.mud.yahoo.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <basicmark@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8710
+X-archive-position: 8711
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wd@denx.de
+X-original-sender: basicmark@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-In message <42F4B25B.6040708@gentoo.org> you wrote:
+OK. Fixed this one myself :-), I had misunderstood the
+MIPS timer stuff and thus the kernel wasn't
+scheduling.
+
+Mark
+
+--- Mark Underwood <basicmark@yahoo.com> wrote:
+
+> Hi,
+> 
+> I have now been trying to get Linux 2.6.11.5 (built
+> with gcc 3.3.3 and binutils 2.15.91.0.2) up and
+> running on my Helio PDA, a MIPS R3912 based ASSP
+> (the
+> emulator to be exact) and have been stuck at the
+> last
+> step for a while now :-(. 
+> 
+> The kernel runs up fine, the problem starts when
+> init
+> is started. Bellow is my kernel log up to freeing
+> init.
+> 
+> Uncompressing
+> Linux............................................
+> done, booting the kernel.
+> done decompressing kernel.
+> e_entry: 8016b000, e_ehsize: 52, e_phentsize 32,
+> e_phnum 2,
+> e_shentsize 40, e_shnum 25
+> copying 0x10c320 bytes from file offset 0x80 to
+> address 0x80040000
+> zeroing from 8014c320 to to 8014c320, 0x0 bytes
+> copying 0x36084 bytes from file offset 0x10e000 to
+> address 0x8014e000
+> zeroing from 80184084 to to 80198b58, 0x14ad4 bytes
+> done loading kernel, about to jump in!
+> mips_machgroup 0x00000017, mips_machtype 0x00000000
+> arcs_cmdline: root=1f01 console=ttyS0,115200n8
+> Linux version 2.6.11.5 (mark@stargate) (gcc version
+> 3.3.3) #297 Mon Jul 18 20:19
+> :39 UTC 2005
+> V nasty hack. The Emulator doesn't report which
+> subset
+> of the TX39 family it bel
+> ongs to :,-(. I hope the hardware does!
+> Forcing cpu type to CPU_TX3912
+> CPU revision is: 00002200
+> Determined physical RAM map:
+>  memory: 00267000 @ 00199000 (usable)
+>  memory: 00400000 @ 02000000 (usable)
+>  memory: 00200000 @ 9fc00000 (ROM data)
+> Built 1 zonelists
+> Kernel command line: root=1f01
+> console=ttyS0,115200n8
+> Primary instruction cache 1kB, linesize 16 bytes
+> Primary data cache 1kB, linesize 4 bytes
+> Synthesized TLB handler (17 instructions).
+> Synthesized TLB load handler fastpath (37
+> instructions).
+> Synthesized TLB store handler fastpath (37
+> instructions).
+> Synthesized TLB modify handler fastpath (29
+> instructions).
+> PID hash table entries: 256 (order: 8, 4096 bytes)
+> r39xx_set_termios
+> Dentry cache hash table entries: 8192 (order: 3,
+> 32768
+> bytes)
+> Inode-cache hash table entries: 4096 (order: 2,
+> 16384
+> bytes)
+> Memory: 6168k/6556k available (981k kernel code,
+> 348k
+> reserved, 212k data, 104k
+> init, 0k highmem)
+> Mount-cache hash table entries: 512 (order: 0, 4096
+> bytes)
+> Checking for 'wait' instruction...  unavailable.
+> cpu_wait = 0x0
+> Linux NoNET1.0 for Linux 2.6
+> schedule = 0x801327f8. ret = 0
+> Can't analyze prologue code at 80133ea0
+> schedule_timeout = 0x80133ea0. ret = -1
+> sleep_on = 0x8013395c. ret = 0
+> sleep_on_timeout = 0x80133a54. ret = 0
+> wait_for_completion = 0x80133148. ret = 0
+> Serial: r39xx internal UART driver $
+> r39xx_config_port
+> r39xx_request_port
+> ttyS0 at MMIO 0x0r39xx_type
+>  (irq = 74) is a R39XX
+> io scheduler noop registered
+> io scheduler anticipatory registered
+> io scheduler deadline registered
+> io scheduler cfq registered
+> RAMDISK driver initialized: 16 RAM disks of 4096K
+> size
+> 1024 blocksize
+> loop: loaded (max 8 devices)
+> Helio Boot ROM: 0x00200000 at 0x9fc00000
+> helio_mtd_map.virt 0x9fc00000
+> Helio Boot ROM: probing for ROM
+> Creating 2 MTD partitions on "Helio Boot ROM":
+> 0x00000000-0x00097eec : "Bootloader + Kernel"
+> mtd: Giving out device 0 to Bootloader + Kernel
+> 0x00097eec-0x0013deec : "cramfs Filesystem"
+> mtd: Giving out device 1 to cramfs Filesystem
+> block2mtd: version $Revision: 1.23 $
+> VFS: Mounted root (cramfs filesystem) readonly.
+> Freeing unused kernel memory: 104k freed
+> 
+> I have had to write a UART driver so I thought the
+> problem might be with that so I put lots of debug in
+> tty layer, serial_core and my driver to see what was
+> going on. After doing this and changing the
+> interrupt
+> handler (int-handler.S) I saw the echo that I had
+> put
+> in my inittab.
+> So I started to remove debug and found it stopped
+> working. The strange thing is that it stops before
+> it
+> gets as far as sending the echo from inittab.
+> If I don’t have enough debug the kernel stops just
+> before printing out:
+> 
+> Algorithmics/MIPS FPU Emulator v1.5
+> 
+> When I connect to the emulator with GDB and look at
+> the registers I find the CPU is still running and is
+> in cpu_idle.
+> I wondered if it might be a timer/task scheduler
+> related problem but as it gets passed the bogomips
+> calculation the timer must be working.
+> 
+> Any help would be great as I have been stuck here
+> for
+> a while.
+> 
+> Many Thanks,
+> 
+> Mark
+> 
+> 
+> 
+> 		
 >
-> I've been tinkering with my Qube2 tonight, seeing if I can get
-> netconsole running.  I'd like to get this running for two reasons:
-...
-> I've looked around on the web, but haven't found a great deal of
-> material that explains how one uses it.  The best resource thus far has
+___________________________________________________________
+> 
+> How much free photo storage do you get? Store your
+> holiday 
+> snaps for FREE with Yahoo! Photos
+> http://uk.photos.yahoo.com
+> 
+> 
 
-See "doc/README.NetConsole" in the U-Boot source tree  (ok,  this  is
-more  about  U-Boot's implementation but it also contains a few hints
-about the Linux part).
 
-> Has anyone here, tried using netconsole on Cobalt hardware?  Has anybody
-> played with netconsole on _any_ hardware?
 
-We use netconsole  for  Linux  in  several  projects  (all  PowerPC),
-usually in combination with netconsole in U-Boot.
-
-Best regards,
-
-Wolfgang Denk
-
--- 
-Software Engineering:  Embedded and Realtime Systems,  Embedded Linux
-Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email: wd@denx.de
-The rule on staying alive as a program manager is to give 'em a  num-
-ber or give 'em a date, but never give 'em both at once.
+		
+___________________________________________________________ 
+How much free photo storage do you get? Store your holiday 
+snaps for FREE with Yahoo! Photos http://uk.photos.yahoo.com

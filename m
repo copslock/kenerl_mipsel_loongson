@@ -1,196 +1,129 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Aug 2005 23:43:52 +0100 (BST)
-Received: from web30311.mail.mud.yahoo.com ([IPv6:::ffff:68.142.201.229]:6531
-	"HELO web30311.mail.mud.yahoo.com") by linux-mips.org with SMTP
-	id <S8225197AbVHHWnc>; Mon, 8 Aug 2005 23:43:32 +0100
-Received: (qmail 25828 invoked by uid 60001); 8 Aug 2005 22:47:19 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.com;
-  h=Message-ID:Received:Date:From:Subject:To:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding;
-  b=IQ0TpBYAehWf8m5sOYQRPlubBNjg4NrBo4K2bCNQWTbxRG7sMZkYaD3moUH2KI5bfSQ95xd6ZfBeKx9tNDvjPkwJ21Ltfr83XOQAn8DCM6iuZJ4i5LbZjoDXSufoO9ln0SQwoFK6JmuSz3AkpP2hJNnNKe+mgPeUR9o0KtObGA8=  ;
-Message-ID: <20050808224719.25826.qmail@web30311.mail.mud.yahoo.com>
-Received: from [62.253.64.19] by web30311.mail.mud.yahoo.com via HTTP; Mon, 08 Aug 2005 23:47:19 BST
-Date:	Mon, 8 Aug 2005 23:47:19 +0100 (BST)
-From:	Mark Underwood <basicmark@yahoo.com>
-Subject: Re: Linux 2.6.11.5 on R3912 problems
-To:	Mark Underwood <basicmark@yahoo.com>,
-	LKML <linux-kernel@vger.kernel.org>,
-	'Linux/MIPS Development' <linux-mips@linux-mips.org>
-In-Reply-To: <20050718201429.82565.qmail@web30312.mail.mud.yahoo.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Return-Path: <basicmark@yahoo.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Aug 2005 16:05:32 +0100 (BST)
+Received: from mo00.iij4u.or.jp ([IPv6:::ffff:210.130.0.19]:6655 "EHLO
+	mo00.iij4u.or.jp") by linux-mips.org with ESMTP id <S8225201AbVHIPFN>;
+	Tue, 9 Aug 2005 16:05:13 +0100
+Received: MO(mo00)id j79F92ZZ026512; Wed, 10 Aug 2005 00:09:02 +0900 (JST)
+Received: MDO(mdo00) id j79F92iQ027005; Wed, 10 Aug 2005 00:09:02 +0900 (JST)
+Received: from stratos (h009.p499.iij4u.or.jp [210.149.243.9])
+	by mbox.iij4u.or.jp (4U-MR/mbox01) id j79F90AK007159
+	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NOT);
+	Wed, 10 Aug 2005 00:09:01 +0900 (JST)
+Date:	Wed, 10 Aug 2005 00:08:59 +0900
+From:	Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH 2.6][1/2] vr41xx: combine TB0225 with TB0229
+Message-Id: <20050810000859.7458588b.yuasa@hh.iij4u.or.jp>
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8711
+X-archive-position: 8712
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: basicmark@yahoo.com
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
-OK. Fixed this one myself :-), I had misunderstood the
-MIPS timer stuff and thus the kernel wasn't
-scheduling.
+Hi Ralf,
 
-Mark
+This patch has combined TB0225 with TB0229 in arch/mips/vr41xx/Kconfig.
+Please apply this patch.
 
---- Mark Underwood <basicmark@yahoo.com> wrote:
+Yoichi
 
-> Hi,
-> 
-> I have now been trying to get Linux 2.6.11.5 (built
-> with gcc 3.3.3 and binutils 2.15.91.0.2) up and
-> running on my Helio PDA, a MIPS R3912 based ASSP
-> (the
-> emulator to be exact) and have been stuck at the
-> last
-> step for a while now :-(. 
-> 
-> The kernel runs up fine, the problem starts when
-> init
-> is started. Bellow is my kernel log up to freeing
-> init.
-> 
-> Uncompressing
-> Linux............................................
-> done, booting the kernel.
-> done decompressing kernel.
-> e_entry: 8016b000, e_ehsize: 52, e_phentsize 32,
-> e_phnum 2,
-> e_shentsize 40, e_shnum 25
-> copying 0x10c320 bytes from file offset 0x80 to
-> address 0x80040000
-> zeroing from 8014c320 to to 8014c320, 0x0 bytes
-> copying 0x36084 bytes from file offset 0x10e000 to
-> address 0x8014e000
-> zeroing from 80184084 to to 80198b58, 0x14ad4 bytes
-> done loading kernel, about to jump in!
-> mips_machgroup 0x00000017, mips_machtype 0x00000000
-> arcs_cmdline: root=1f01 console=ttyS0,115200n8
-> Linux version 2.6.11.5 (mark@stargate) (gcc version
-> 3.3.3) #297 Mon Jul 18 20:19
-> :39 UTC 2005
-> V nasty hack. The Emulator doesn't report which
-> subset
-> of the TX39 family it bel
-> ongs to :,-(. I hope the hardware does!
-> Forcing cpu type to CPU_TX3912
-> CPU revision is: 00002200
-> Determined physical RAM map:
->  memory: 00267000 @ 00199000 (usable)
->  memory: 00400000 @ 02000000 (usable)
->  memory: 00200000 @ 9fc00000 (ROM data)
-> Built 1 zonelists
-> Kernel command line: root=1f01
-> console=ttyS0,115200n8
-> Primary instruction cache 1kB, linesize 16 bytes
-> Primary data cache 1kB, linesize 4 bytes
-> Synthesized TLB handler (17 instructions).
-> Synthesized TLB load handler fastpath (37
-> instructions).
-> Synthesized TLB store handler fastpath (37
-> instructions).
-> Synthesized TLB modify handler fastpath (29
-> instructions).
-> PID hash table entries: 256 (order: 8, 4096 bytes)
-> r39xx_set_termios
-> Dentry cache hash table entries: 8192 (order: 3,
-> 32768
-> bytes)
-> Inode-cache hash table entries: 4096 (order: 2,
-> 16384
-> bytes)
-> Memory: 6168k/6556k available (981k kernel code,
-> 348k
-> reserved, 212k data, 104k
-> init, 0k highmem)
-> Mount-cache hash table entries: 512 (order: 0, 4096
-> bytes)
-> Checking for 'wait' instruction...  unavailable.
-> cpu_wait = 0x0
-> Linux NoNET1.0 for Linux 2.6
-> schedule = 0x801327f8. ret = 0
-> Can't analyze prologue code at 80133ea0
-> schedule_timeout = 0x80133ea0. ret = -1
-> sleep_on = 0x8013395c. ret = 0
-> sleep_on_timeout = 0x80133a54. ret = 0
-> wait_for_completion = 0x80133148. ret = 0
-> Serial: r39xx internal UART driver $
-> r39xx_config_port
-> r39xx_request_port
-> ttyS0 at MMIO 0x0r39xx_type
->  (irq = 74) is a R39XX
-> io scheduler noop registered
-> io scheduler anticipatory registered
-> io scheduler deadline registered
-> io scheduler cfq registered
-> RAMDISK driver initialized: 16 RAM disks of 4096K
-> size
-> 1024 blocksize
-> loop: loaded (max 8 devices)
-> Helio Boot ROM: 0x00200000 at 0x9fc00000
-> helio_mtd_map.virt 0x9fc00000
-> Helio Boot ROM: probing for ROM
-> Creating 2 MTD partitions on "Helio Boot ROM":
-> 0x00000000-0x00097eec : "Bootloader + Kernel"
-> mtd: Giving out device 0 to Bootloader + Kernel
-> 0x00097eec-0x0013deec : "cramfs Filesystem"
-> mtd: Giving out device 1 to cramfs Filesystem
-> block2mtd: version $Revision: 1.23 $
-> VFS: Mounted root (cramfs filesystem) readonly.
-> Freeing unused kernel memory: 104k freed
-> 
-> I have had to write a UART driver so I thought the
-> problem might be with that so I put lots of debug in
-> tty layer, serial_core and my driver to see what was
-> going on. After doing this and changing the
-> interrupt
-> handler (int-handler.S) I saw the echo that I had
-> put
-> in my inittab.
-> So I started to remove debug and found it stopped
-> working. The strange thing is that it stops before
-> it
-> gets as far as sending the echo from inittab.
-> If I don’t have enough debug the kernel stops just
-> before printing out:
-> 
-> Algorithmics/MIPS FPU Emulator v1.5
-> 
-> When I connect to the emulator with GDB and look at
-> the registers I find the CPU is still running and is
-> in cpu_idle.
-> I wondered if it might be a timer/task scheduler
-> related problem but as it gets passed the bogomips
-> calculation the timer must be working.
-> 
-> Any help would be great as I have been stuck here
-> for
-> a while.
-> 
-> Many Thanks,
-> 
-> Mark
-> 
-> 
-> 
-> 		
->
-___________________________________________________________
-> 
-> How much free photo storage do you get? Store your
-> holiday 
-> snaps for FREE with Yahoo! Photos
-> http://uk.photos.yahoo.com
-> 
-> 
+Signed-off-by: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
 
-
-
-		
-___________________________________________________________ 
-How much free photo storage do you get? Store your holiday 
-snaps for FREE with Yahoo! Photos http://uk.photos.yahoo.com
+diff -urN -X dontdiff a-orig/arch/mips/Makefile a/arch/mips/Makefile
+--- a-orig/arch/mips/Makefile	2005-07-30 01:10:26.000000000 +0900
++++ a/arch/mips/Makefile	2005-08-09 23:35:48.000000000 +0900
+@@ -554,14 +554,9 @@
+ load-$(CONFIG_CASIO_E55)	+= 0xffffffff80004000
+ 
+ #
+-# TANBAC TB0226 Mbase (VR4131)
++# TANBAC TB0225 VR4131 Multi-chip module/TB0229 VR4131DIMM (VR4131)
+ #
+-load-$(CONFIG_TANBAC_TB0226)	+= 0xffffffff80000000
+-
+-#
+-# TANBAC TB0229 VR4131DIMM (VR4131)
+-#
+-load-$(CONFIG_TANBAC_TB0229)	+= 0xffffffff80000000
++load-$(CONFIG_TANBAC_TB022X)	+= 0xffffffff80000000
+ 
+ #
+ # Common Philips PNX8550
+diff -urN -X dontdiff a-orig/arch/mips/vr41xx/Kconfig a/arch/mips/vr41xx/Kconfig
+--- a-orig/arch/mips/vr41xx/Kconfig	2005-07-16 04:16:55.000000000 +0900
++++ a/arch/mips/vr41xx/Kconfig	2005-08-09 23:58:10.000000000 +0900
+@@ -38,8 +38,8 @@
+ 	select SYS_SUPPORTS_64BIT_KERNEL if EXPERIMENTAL
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+ 
+-config TANBAC_TB0226
+-	bool "Support for TANBAC TB0226 (Mbase)"
++config TANBAC_TB022X
++	bool "Support for TANBAC TB0225 (VR4131 multichip module) and TB0229 (VR4131DIMM)"
+ 	depends on MACH_VR41XX
+ 	select DMA_NONCOHERENT
+ 	select HW_HAS_PCI
+@@ -48,22 +48,19 @@
+ 	select SYS_SUPPORTS_64BIT_KERNEL if EXPERIMENTAL
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+ 	help
+-	  The TANBAC TB0226 (Mbase) is a MIPS-based platform manufactured by
+-	  TANBAC.  Please refer to <http://www.tanbac.co.jp/> about Mbase.
++	  The TANBAC TB0225 (VR4131 multichip module) and TB0229 (VR4131DIMM)
++	  are MIPS-based platforms manufactured by TANBAC.
++	  Please refer to <http://www.tanbac.co.jp/> about
++	  VR4131 Multi-chip module and VR4131DIMM.
+ 
+-config TANBAC_TB0229
+-	bool "Support for TANBAC TB0229 (VR4131DIMM)"
+-	depends on MACH_VR41XX
+-	select DMA_NONCOHERENT
+-	select HW_HAS_PCI
+-	select IRQ_CPU
+-	select SYS_SUPPORTS_32BIT_KERNEL
+-	select SYS_SUPPORTS_64BIT_KERNEL if EXPERIMENTAL
+-	select SYS_SUPPORTS_LITTLE_ENDIAN
++config TANBAC_TB0226
++	bool "Support for TANBAC TB0226 (Mbase)"
++	depends on TANBAC_TB022X
++	select PCI
++	select PCI_VR41XX
+ 	help
+-	  The TANBAC TB0229 (VR4131DIMM) is a MIPS-based platform manufactured
+-	  by TANBAC.  Please refer to <http://www.tanbac.co.jp/> about
+-	  VR4131DIMM.
++	  The TANBAC TB0226 (Mbase) is a MIPS-based platform manufactured by
++	  TANBAC.  Please refer to <http://www.tanbac.co.jp/> about Mbase.
+ 
+ config VICTOR_MPC30X
+ 	bool "Support for Victor MP-C303/304"
+diff -urN -X dontdiff a-orig/drivers/char/Kconfig a/drivers/char/Kconfig
+--- a-orig/drivers/char/Kconfig	2005-08-03 19:23:09.000000000 +0900
++++ a/drivers/char/Kconfig	2005-08-09 23:37:29.000000000 +0900
+@@ -886,8 +886,14 @@
+ 	  module will be called sonypi.
+ 
+ config TANBAC_TB0219
+-	tristate "TANBAC TB0219 base board support"
+-	depends TANBAC_TB0229
++	tristate "TANBAC TB0219 (VR4131DIMM-EK) Evaluation board support"
++	depends TANBAC_TB022X
++	select PCI
++	select PCI_VR41XX
++	help
++	  The TANBAC TB0219 (VR4131DIMM-EK) is a Evaluation board for VR4131DIMM
++	  manufactured by TANBAC.
++	  Please refer to <http://www.tanbac.co.jp/> about VR4131DIMM-EK.
+ 
+ 
+ menu "Ftape, the floppy tape device driver"

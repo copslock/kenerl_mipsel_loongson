@@ -1,57 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Aug 2005 18:56:16 +0100 (BST)
-Received: from mail.timesys.com ([IPv6:::ffff:65.117.135.102]:2937 "EHLO
-	exchange.timesys.com") by linux-mips.org with ESMTP
-	id <S8225253AbVHJRz7>; Wed, 10 Aug 2005 18:55:59 +0100
-Received: from [192.168.2.27] ([192.168.2.27]) by exchange.timesys.com with Microsoft SMTPSVC(5.0.2195.6713);
-	 Wed, 10 Aug 2005 13:49:54 -0400
-Message-ID: <42FA40A2.6010400@timesys.com>
-Date:	Wed, 10 Aug 2005 14:00:02 -0400
-From:	Greg Weeks <greg.weeks@timesys.com>
-User-Agent: Mozilla Thunderbird 1.0.6 (X11/20050716)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-CC:	linux-mips@linux-mips.org
-Subject: Re: 24K malta
-References: <42FA03D4.5060400@timesys.com>
-In-Reply-To: <42FA03D4.5060400@timesys.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 10 Aug 2005 17:49:54.0515 (UTC) FILETIME=[EA56E230:01C59DD3]
-To:	unlisted-recipients:; (no To-header on input)
-Return-Path: <greg.weeks@timesys.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Aug 2005 20:14:10 +0100 (BST)
+Received: from rproxy.gmail.com ([IPv6:::ffff:64.233.170.194]:38779 "EHLO
+	rproxy.gmail.com") by linux-mips.org with ESMTP id <S8225252AbVHJTNt> convert rfc822-to-8bit;
+	Wed, 10 Aug 2005 20:13:49 +0100
+Received: by rproxy.gmail.com with SMTP id c16so159622rne
+        for <linux-mips@linux-mips.org>; Wed, 10 Aug 2005 12:17:53 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=b56+78VZUaDzbjwvD/KnC4DQMLxXBnos68dgjm95G+kqtX4ep1tOgu1eOV7Bgbq9To0M+0mGNNLbJ9ldiPj4zLUSQscJipsOsOwxieVTViMdYMb4BpT0MvDkcL50fr9Rgj4TVtOw9QMbZUCBdtbt6J3KEH9S5EjA2EvUxIAHm5o=
+Received: by 10.38.207.73 with SMTP id e73mr342367rng;
+        Wed, 10 Aug 2005 12:17:53 -0700 (PDT)
+Received: by 10.39.1.62 with HTTP; Wed, 10 Aug 2005 12:17:53 -0700 (PDT)
+Message-ID: <dbce9302050810121728becc46@mail.gmail.com>
+Date:	Wed, 10 Aug 2005 15:17:53 -0400
+From:	David Cummings <real.psyence@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: shmem
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+Return-Path: <real.psyence@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8727
+X-archive-position: 8732
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: greg.weeks@timesys.com
+X-original-sender: real.psyence@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Greg Weeks wrote:
+Hey, 
+    I've run into a couple of programs that either when configuring or
+running cannot allocate shared memory, or detect that it is available.
+Is there an easy way to test whether or not it's available? should it
+be mounted in a special way? Thanks for any info, my info is below.
+kernel config:
+http://davec.churchofthedollar.com/BigTom.config
+output of mount:
+   /dev/sda1 on / type ext3 (rw,noatime)
+   proc on /proc type proc (rw)
+   sysfs on /sys type sysfs (rw)
+   udev on /dev type tmpfs (rw,nosuid)
+   devpts on /dev/pts type devpts (rw)
+   /dev/sda2 on /var type reiserfs (rw,noatime,notail)
+   /dev/sda3 on /usr type reiserfs (rw,noatime)
+   /dev/sda4 on /home type reiserfs (rw,noatime)
+   shm on /dev/shm type tmpfs (rw,noexec,nosuid,nodev)
 
-> I'm seeing something strange on a 24K malta and I'm wondering if 
-> anyone else has ran into something like it.
->
-> This is a 2.6.12 based kernel. I've not had a chance to try the 
-> current CVS yet. The last time I checked the current CVS didn't boot 
-> as is on a 4Kc malta so I've not been keeping current with CVS.
->
-> When I try a simple
->
-> strace ls
->
-> I either hang or seg fault on a 24Kc or 24Kec processor, but a 4Kc or 
-> 4Kec works. If I turn off the cache on the 24K it works as well. 
-> Without cache it's unbearably slow of course. This is the same exact 
-> build of the kernel and root file system for all boards.
-
-The memcpy prefetch bug is still there for malta, so I had to build 
-another kernel. This is with a CVS sync from this morning.
-
-The first strace ls works now, but the second time I do it it hangs. 
-Kill -9 frees it up and the board isn't hanging.
-
-Greg Weeks
+Thanks very much, 
+-Dave
+-- 
+The way that can be named is not the Way.

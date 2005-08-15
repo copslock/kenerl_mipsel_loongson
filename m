@@ -1,42 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Aug 2005 17:58:28 +0100 (BST)
-Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:54540 "EHLO
-	bacchus.net.dhis.org") by linux-mips.org with ESMTP
-	id <S8225329AbVHLQ6O>; Fri, 12 Aug 2005 17:58:14 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j7CH2NPv032301;
-	Fri, 12 Aug 2005 18:02:23 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j7CH2Nm7032300;
-	Fri, 12 Aug 2005 18:02:23 +0100
-Date:	Fri, 12 Aug 2005 18:02:23 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-Cc:	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 2.6][2/2] vr41xx: update GIU function call for TB0226
-Message-ID: <20050812170223.GA30247@linux-mips.org>
-References: <20050810001155.1d65f9e8.yuasa@hh.iij4u.or.jp>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20050810001155.1d65f9e8.yuasa@hh.iij4u.or.jp>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Aug 2005 03:51:59 +0100 (BST)
+Received: from mf2.realtek.com.tw ([IPv6:::ffff:220.128.56.22]:28944 "EHLO
+	mf2.realtek.com.tw") by linux-mips.org with ESMTP
+	id <S8225760AbVHOCvk>; Mon, 15 Aug 2005 03:51:40 +0100
+Received: from msx.realtek.com.tw (unverified [172.21.1.77]) by mf2.realtek.com.tw
+ (Clearswift SMTPRS 5.1.4) with ESMTP id <T72c632d8addc80381610fc@mf2.realtek.com.tw> for <linux-mips@linux-mips.org>;
+ Mon, 15 Aug 2005 10:58:12 +0800
+Received: from rtpdii3098 ([172.21.98.16])
+          by msx.realtek.com.tw (Lotus Domino Release 6.5.3)
+          with ESMTP id 2005081510560561-11568 ;
+          Mon, 15 Aug 2005 10:56:05 +0800 
+Message-ID: <006c01c5a144$e12c92d0$106215ac@realtek.com.tw>
+From:	"colin" <colin@realtek.com.tw>
+To:	<linux-mips@linux-mips.org>
+Subject: Pthread problem in pthread_create() in uClibc
+Date:	Mon, 15 Aug 2005 10:56:05 +0800
+MIME-Version: 1.0
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2800.1506
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1506
+X-MIMETrack: Itemize by SMTP Server on msx/Realtek(Release 6.5.3|September 14, 2004) at
+ 2005/08/15 =?Bog5?B?pFekyCAxMDo1NjowNQ==?=,
+	Serialize by Router on msx/Realtek(Release 6.5.3|September 14, 2004) at
+ 2005/08/15 =?Bog5?B?pFekyCAxMDo1NjowNw==?=,
+	Serialize complete at 2005/08/15 =?Bog5?B?pFekyCAxMDo1NjowNw==?=
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain;
+	charset="big5"
+Return-Path: <colin@realtek.com.tw>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8746
+X-archive-position: 8747
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: colin@realtek.com.tw
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Aug 10, 2005 at 12:11:55AM +0900, Yoichi Yuasa wrote:
 
-> This patch has updated vr41xx GIU function call for TB0226.
-> Please apply this patch.
+Hi there,
+We have encountered a pthread problem in pthread_create().
+Our system is "MIPS Linux kernel 2.6.11 with uClibc 0.9.27". We need to know
+if the problem is in Linux kernel or in uClibc.
 
-Thanks, applied.
+When calling pthread_create(), it will fail at the line "suspend(self);".
+I found that many people have encounter the same problem, but I havn't seen
+any solution.
+    http://www.uclibc.org/lists/uclibc/2003-April/006031.html
+    http://www.uclibc.org/lists/uclibc/2004-June/009271.html
+    http://www.uclibc.org/lists/uclibc/2003-July/006570.html
 
-  Ralf
+Here is the error message when I use gdbserver to debug it:
+    "Cannot access memory at address 0x411104"
+
+There is no this problem in "X86 Linux kernel 2.6.11 with uClibc 0.9.27".
+Therefore, we need to know if this problem is because of that the MIPS Linux
+kernel has some different thread behaviors from X86 Linux Kernel?
+
+Regards,
+Colin

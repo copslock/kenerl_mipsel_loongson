@@ -1,108 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Aug 2005 19:10:21 +0100 (BST)
-Received: from e5.ny.us.ibm.com ([IPv6:::ffff:32.97.182.145]:7637 "EHLO
-	e5.ny.us.ibm.com") by linux-mips.org with ESMTP id <S8225256AbVHOSJ7>;
-	Mon, 15 Aug 2005 19:09:59 +0100
-Received: from d01relay02.pok.ibm.com (d01relay02.pok.ibm.com [9.56.227.234])
-	by e5.ny.us.ibm.com (8.12.11/8.12.11) with ESMTP id j7FIEUME028482;
-	Mon, 15 Aug 2005 14:14:30 -0400
-Received: from d01av04.pok.ibm.com (d01av04.pok.ibm.com [9.56.224.64])
-	by d01relay02.pok.ibm.com (8.12.10/NCO/VERS6.7) with ESMTP id j7FIEUos259450;
-	Mon, 15 Aug 2005 14:14:30 -0400
-Received: from d01av04.pok.ibm.com (loopback [127.0.0.1])
-	by d01av04.pok.ibm.com (8.12.11/8.13.3) with ESMTP id j7FIEU3l010809;
-	Mon, 15 Aug 2005 14:14:30 -0400
-Received: from joust (dyn9047017070.beaverton.ibm.com [9.47.17.70] (may be forged))
-	by d01av04.pok.ibm.com (8.12.11/8.12.11) with ESMTP id j7FIEUAa010777;
-	Mon, 15 Aug 2005 14:14:30 -0400
-Received: by joust (Postfix, from userid 1000)
-	id 4D91D4F8AA; Mon, 15 Aug 2005 11:14:29 -0700 (PDT)
-Date:	Mon, 15 Aug 2005 11:14:29 -0700
-From:	Nishanth Aravamudan <nacc@us.ibm.com>
-To:	ralf@linux-mips.org
-Cc:	akpm@osdl.org, linux-mips@linux-mips.org
-Subject: [-mm PATCH 11/32] mips: fix-up schedule_timeout() usage
-Message-ID: <20050815181429.GN2854@us.ibm.com>
-References: <20050815180514.GC2854@us.ibm.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20050815180514.GC2854@us.ibm.com>
-X-Operating-System: Linux 2.6.12 (i686)
-User-Agent: Mutt/1.5.9i
-Return-Path: <nacc@us.ibm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Aug 2005 07:54:23 +0100 (BST)
+Received: from forward-dummy3.hsphere.cc ([IPv6:::ffff:216.157.144.3]:22485
+	"HELO forward.hsphere.cc") by linux-mips.org with SMTP
+	id <S8225254AbVHPGyE>; Tue, 16 Aug 2005 07:54:04 +0100
+Received: (qmail 53377 invoked from network); 16 Aug 2005 06:58:54 -0000
+Received: from mail3.hsphere.cc (216.157.145.23)
+  by forward.hsphere.cc with SMTP; 16 Aug 2005 06:58:54 -0000
+Received: (qmail 10578 invoked by uid 399); 16 Aug 2005 06:58:41 -0000
+Received: from unknown (HELO ?192.168.0.5?) (safiudeen@vsolve.org@220.247.243.183)
+  by mail3.hsphere.cc with SMTP; 16 Aug 2005 06:58:40 -0000
+Message-ID: <43019107.20902@vsolve.org>
+Date:	Tue, 16 Aug 2005 13:08:55 +0600
+From:	safiudeen <safiudeen@vsolve.org>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.2) Gecko/20040805 Netscape/7.2
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	linux-mips@linux-mips.org
+Subject: Au1100 static bus interface..
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <safiudeen@vsolve.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8750
+X-archive-position: 8751
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nacc@us.ibm.com
+X-original-sender: safiudeen@vsolve.org
 Precedence: bulk
 X-list: linux-mips
 
-Description: Use schedule_timeout_interruptible() instead of
-set_current_state()/schedule_timeout() to reduce kernel size. Also,
-replace custom timespectojiffies() function with globally availabe
-timespec_to_jiffies().
+Hello,
+I am trying to interface TLC16C550C(externel UART chip) for DB1100 
+(using it's daughter card connector for IO interfcae).
+After we configure the static bus controller for requred chip select, we 
+use au_readl,au_writel port I/O functions.When the TLC16C550 is present, 
+it the test read/write look like working, but even when TLC16C550C is 
+not connected, read/write operations look like working.I think we have 
+to configure the I/O base address properly.
+Following are the configureation of static buss controller uased for 
+this test.
 
-Signed-off-by: Nishanth Aravamudan <nacc@us.ibm.com>
+CPU Chip enable-2 ( Daugter card  chip select is generated using au1100 
+ce2(LOW),addr-28(HIGH),addr27(HIGH), and addr26(LOW) )
+Therefore we selected the following  base address
+ physical base address 0xD 1800 0000   ( D - for DTY encoding for I/O 
+device)
 
----
+Chip select controll registers setting as follows
 
- arch/mips/kernel/irixsig.c |   17 ++---------------
- arch/mips/kernel/sysirix.c |    3 +--
- 2 files changed, 3 insertions(+), 17 deletions(-)
+ first 3 bit of mem_setcfg2 ( 0xB4001020 ) was set to 001 (DTY encoding)
+mem_staddr2 (0xB4001028) was set to 0x11803FFF
 
-diff -urpN 2.6.13-rc5-mm1/arch/mips/kernel/irixsig.c 2.6.13-rc5-mm1-dev/arch/mips/kernel/irixsig.c
---- 2.6.13-rc5-mm1/arch/mips/kernel/irixsig.c	2005-08-07 09:57:44.000000000 -0700
-+++ 2.6.13-rc5-mm1-dev/arch/mips/kernel/irixsig.c	2005-08-11 15:43:36.000000000 -0700
-@@ -441,18 +441,6 @@ struct irix5_siginfo {
- 	} stuff;
- };
- 
--static inline unsigned long timespectojiffies(struct timespec *value)
--{
--	unsigned long sec = (unsigned) value->tv_sec;
--	long nsec = value->tv_nsec;
--
--	if (sec > (LONG_MAX / HZ))
--		return LONG_MAX;
--	nsec += 1000000000L / HZ - 1;
--	nsec /= 1000000000L / HZ;
--	return HZ * sec + nsec;
--}
--
- asmlinkage int irix_sigpoll_sys(unsigned long *set, struct irix5_siginfo *info,
- 				struct timespec *tp)
- {
-@@ -490,14 +478,13 @@ asmlinkage int irix_sigpoll_sys(unsigned
- 			error = -EINVAL;
- 			goto out;
- 		}
--		expire = timespectojiffies(tp)+(tp->tv_sec||tp->tv_nsec);
-+		expire = timespec_to_jiffies(tp) + (tp->tv_sec||tp->tv_nsec);
- 	}
- 
- 	while(1) {
- 		long tmp = 0;
- 
--		current->state = TASK_INTERRUPTIBLE;
--		expire = schedule_timeout(expire);
-+		expire = schedule_timeout_interruptible(expire);
- 
- 		for (i=0; i<=4; i++)
- 			tmp |= (current->pending.signal.sig[i] & kset.sig[i]);
-diff -urpN 2.6.13-rc5-mm1/arch/mips/kernel/sysirix.c 2.6.13-rc5-mm1-dev/arch/mips/kernel/sysirix.c
---- 2.6.13-rc5-mm1/arch/mips/kernel/sysirix.c	2005-08-07 09:57:22.000000000 -0700
-+++ 2.6.13-rc5-mm1-dev/arch/mips/kernel/sysirix.c	2005-08-11 15:46:57.000000000 -0700
-@@ -1035,8 +1029,7 @@ bad:
- 
- asmlinkage int irix_sginap(int ticks)
- {
--	current->state = TASK_INTERRUPTIBLE;
--	schedule_timeout(ticks);
-+	schedule_timeout_interruptible(ticks);
- 	return 0;
- }
- 
+vitual base address was obtained using ioremap function as follows
+   
+    base_addrs=(u32)ioremap(0xD18000000,0x1000); to get 32 bit address
+
+when do read/write opreation on base_addr, it generate requred chip 
+select (Daughter card CS) .But  even the TLC16C550C is not connected , 
+read/write operation works as the TLC16C550 is connected. what I guis is 
+address wrongly maped or some wrong in chip slect configarations.
+
+If anyone has done interfacing externel peripheral to au1100 static bus 
+controller please help me in this regards
+Thanx
+Safiudeen. TS

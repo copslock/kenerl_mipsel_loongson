@@ -1,69 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Aug 2005 07:08:34 +0100 (BST)
-Received: from mms1.broadcom.com ([IPv6:::ffff:216.31.210.17]:51727 "EHLO
-	MMS1.broadcom.com") by linux-mips.org with ESMTP
-	id <S8224790AbVHQGIG>; Wed, 17 Aug 2005 07:08:06 +0100
-Received: from 10.10.64.121 by MMS1.broadcom.com with SMTP (Broadcom
- SMTP Relay (Email Firewall v6.1.0)); Tue, 16 Aug 2005 23:12:28 -0700
-X-Server-Uuid: 146C3151-C1DE-4F71-9D02-C3BE503878DD
-Received: from mail-irva-8.broadcom.com ([10.10.64.221]) by
- mail-irva-1.broadcom.com (Post.Office MTA v3.5.3 release 223 ID#
- 0-72233U7200L2200S0V35) with ESMTP id com for
- <linux-mips@linux-mips.org>; Tue, 16 Aug 2005 23:12:33 -0700
-Received: from mon-irva-10.broadcom.com (mon-irva-10.broadcom.com
- [10.10.64.171]) by mail-irva-8.broadcom.com (MOS 3.5.6-GR) with ESMTP
- id BPG37336; Tue, 16 Aug 2005 23:12:33 -0700 (PDT)
-Received: from mail-sj1-5.sj.broadcom.com (mail-sj1-5.sj.broadcom.com
- [10.16.128.236]) by mon-irva-10.broadcom.com (8.9.1/8.9.1) with ESMTP
- id XAA15801 for <linux-mips@linux-mips.org>; Tue, 16 Aug 2005 23:12:33
- -0700 (PDT)
-Received: from localhost.localdomain (ldt-sj3-054 [10.21.3.41]) by
- mail-sj1-5.sj.broadcom.com (8.12.9/8.12.9/SSF) with ESMTP id
- j7H6CWov007705 for <linux-mips@linux-mips.org>; Tue, 16 Aug 2005
- 23:12:32 -0700 (PDT)
-Received: (from adi@localhost) by localhost.localdomain (8.11.6/8.9.3)
- id j7H6CW716499 for linux-mips@linux-mips.org; Tue, 16 Aug 2005
- 23:12:32 -0700
-Date:	Tue, 16 Aug 2005 23:12:32 -0700
-From:	"Andrew Isaacson" <adi@broadcom.com>
-To:	linux-mips@linux-mips.org
-Subject: [PATCH] fix pfn_pte for 64BIT_PHYS_ADDR
-Message-ID: <20050817061232.GN24444@broadcom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Aug 2005 10:57:53 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:16650 "EHLO
+	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8224982AbVHQJ5e>; Wed, 17 Aug 2005 10:57:34 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 61E2BE1C69; Wed, 17 Aug 2005 12:02:17 +0200 (CEST)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 16612-10; Wed, 17 Aug 2005 12:02:17 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id EA191E1C63; Wed, 17 Aug 2005 12:02:16 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j7HA2IeU022419;
+	Wed, 17 Aug 2005 12:02:19 +0200
+Date:	Wed, 17 Aug 2005 11:02:23 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Andrew Isaacson <adi@broadcom.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] casts in TLB macros
+In-Reply-To: <20050817030608.GM24444@broadcom.com>
+Message-ID: <Pine.LNX.4.61L.0508171053150.10940@blysk.ds.pg.gda.pl>
+References: <20050817030608.GM24444@broadcom.com>
 MIME-Version: 1.0
-User-Agent: Mutt/1.4.2.1i
-X-WSS-ID: 6F1C0AC626C3649460-01-01
-Content-Type: text/plain;
- charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: 7bit
-Return-Path: <adi@broadcom.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.85.1/1027/Wed Aug 17 01:44:00 2005 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8757
+X-archive-position: 8758
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: adi@broadcom.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On CONFIG_64BIT_PHYS_ADDR, pfn always fits in 'unsigned long', but
-pfn<<PAGE_SHIFT sometimes extends beyond.  The pte is big enough to hold
-'long long', but the shift in pfn_pte() needs to do its calculation with
-enough bits to hold the result.
+On Tue, 16 Aug 2005, Andrew Isaacson wrote:
 
-Signed-off-by: Andrew Isaacson <adi@broadcom.com>
+> @@ -748,7 +748,7 @@
+>  do {									\
+>  	__asm__ __volatile__(						\
+>  		"ctc0\t%z0, " #register "\n\t"				\
+> -		: : "Jr" ((unsigned int)value));			\
+> +		: : "Jr" (unsigned int)(value));			\
+>  } while (0)
+>  
+>  /*
 
-Index: lmo-1480/include/asm-mips/pgtable-32.h
-===================================================================
---- lmo-1480.orig/include/asm-mips/pgtable-32.h	2005-08-16 23:00:19.000000000 -0700
-+++ lmo-1480/include/asm-mips/pgtable-32.h	2005-08-16 23:01:39.000000000 -0700
-@@ -137,7 +137,7 @@
- #define pfn_pte(pfn, prot)	__pte(((pfn) << (PAGE_SHIFT + 2)) | pgprot_val(prot))
- #else
- #define pte_pfn(x)		((unsigned long)((x).pte >> PAGE_SHIFT))
--#define pfn_pte(pfn, prot)	__pte(((pfn) << PAGE_SHIFT) | pgprot_val(prot))
-+#define pfn_pte(pfn, prot)	__pte(((unsigned long long)(pfn) << PAGE_SHIFT) | pgprot_val(prot))
- #endif
- #endif /* defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_CPU_MIPS32_R1) */
- 
+ I'm surprised it works, but please don't drop the outer brackets in asm 
+operands anyway.  Otherwise it's an obvious fix, thanks.
+
+  Maciej

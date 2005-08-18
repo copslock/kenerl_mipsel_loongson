@@ -1,121 +1,211 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Aug 2005 20:38:43 +0100 (BST)
-Received: from static-151-204-232-50.bos.east.verizon.net ([IPv6:::ffff:151.204.232.50]:35754
-	"EHLO mail2.sicortex.com") by linux-mips.org with ESMTP
-	id <S8226059AbVHQTi1>; Wed, 17 Aug 2005 20:38:27 +0100
-Received: from gs104.sicortex.com (gs104.sicortex.com [10.0.1.104])
-	by mail2.sicortex.com (Postfix) with ESMTP id E8A6B1BF33F;
-	Wed, 17 Aug 2005 15:43:09 -0400 (EDT)
-From:	Joshua Wise <Joshua.Wise@sicortex.com>
-Organization: SiCortex
-To:	linux-mips@linux-mips.org
-Subject: synchronize_rcu() hangs in simulated mips environment
-Date:	Wed, 17 Aug 2005 15:43:09 -0400
-User-Agent: KMail/1.8.1
-Cc:	Aaron Brooks <aaron.brooks@sicortex.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200508171543.09295.Joshua.Wise@sicortex.com>
-Return-Path: <Joshua.Wise@sicortex.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Aug 2005 09:50:18 +0100 (BST)
+Received: from RT-soft-1.Moscow.itn.ru ([IPv6:::ffff:80.240.96.90]:36967 "EHLO
+	buildserver.ru.mvista.com") by linux-mips.org with ESMTP
+	id <S8225207AbVHRItz>; Thu, 18 Aug 2005 09:49:55 +0100
+Received: from 192.168.1.133 ([10.150.0.9])
+	by buildserver.ru.mvista.com (8.11.6/8.11.6) with ESMTP id j7I8sit19225;
+	Thu, 18 Aug 2005 13:54:45 +0500
+Subject: a patch for generic MIPS RTC
+From:	Sergey Podstavin <spodstavin@ru.mvista.com>
+Reply-To: spodstavin@ru.mvista.com
+To:	linux-mips <linux-mips@linux-mips.org>
+Cc:	Ralf Baechle <ralf@linux-mips.org>
+Content-Type: multipart/mixed; boundary="=-jWNDXCryGAwurHmkZsnW"
+Organization: MontaVista
+Date:	Thu, 18 Aug 2005 12:54:50 +0400
+Message-Id: <1124355290.5441.45.camel@localhost.localdomain>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.0.2 (2.0.2-3) 
+Return-Path: <spodstavin@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8765
+X-archive-position: 8766
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Joshua.Wise@sicortex.com
+X-original-sender: spodstavin@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi all,
 
-I'm again bringing up the network on my simulator, and I've found that if I 
-run with more than one CPU in my simulation (if I have CONFIG_SMP enabled), 
-synchronize_rcu() just hangs, as I never get a cpu_quiet() call.
+--=-jWNDXCryGAwurHmkZsnW
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-I've attached boot log chunks from various parts of boot time to the bottom of 
-this mail. I'm curious as to whether the fault is in my emulator, or in the 
-kernel, or in my additions to the kernel... On IRC, Ralf initially suggested 
-that it could be an emulator fault, but I'm not sure where such a fault would 
-be.
+Hi!
 
-Thanks,
-joshua
+genrtc doesn't work as a module because functions for module defined in
+wrong place. Most architectures define these functions in <asm/rtc.h>,
+so make MIPS follow their example.
+It makes the generic MIPS RTC working as a module for MIPS.
 
-Here is how a good boot looks:
-lan-lan.c 0.01: Joshua Wise <Joshua.Wise@SiCortex.com>
-emu0: lan-lan found at 0xef0000000.
-emu0: loaded successfully
-NET: Registered protocol family 2
-Sock_register done
-Base protocols done
-Socketside stuff done
-inet_register_protosw(80343aa0)
-spinlock: inetsw lock
-got it
-list done
-spin unlock
-synchronize net
-net synch:
-Synchronizing RCU...
-Calling...
-Waiting...
-CPU quiet: 0
-Awake
-Done!
-net synch done
-ok
-inet_register_protosw(80343ad0)
-spinlock: inetsw lock
-got it
-list done
+Best wishes,
+Sergey Podstavin
 
-However, a failing boot looks like this:
-Starting CPU #1...
-CPU revision is: 00018101
-FPU revision is: 00038110
-Primary instruction cache 32kB, physically tagged, 2-way, linesize 32 bytes.
-Primary data cache 32kB, 2-way, linesize 32 bytes.
-Synthesized TLB refill handler (36 instructions).
-CPU frequency 8.00 MHz
-CPU #1 init complete.
-Brought up 2 CPUs
-checking if image is initramfs...it isn't (bad gzip magic numbers); looks like 
-an initrd
-Freeing initrd memory: 4096k freed
-NET: Registered protocol family 16
-CPU quiet: 0
-rtc: IRQ 8 is not free.
-i8042.c: i8042 controller self test timeout.
-Trying to free nonexistent resource <00000060-0000006f>
-Serial: 8250/16550 driver $Revision: 1.90 $ 4 ports, IRQ sharing disabled
-ttyS0 at MMIO 0x0 (irq = 2) is a 16450
-ttyS1 at I/O 0x2f8 (irq = 3) is a 16450
-ttyS2 at I/O 0x3e8 (irq = 4) is a 16450
-io scheduler noop registered
-io scheduler anticipatory registered
-io scheduler deadline registered
-io scheduler cfq registered
-RAMDISK driver initialized: 16 RAM disks of 18432K size 1024 blocksize
-loop: loaded (max 8 devices)
-lan-lan.c 0.01: Joshua Wise <Joshua.Wise@SiCortex.com>
-emu0: lan-lan found at 0xef0000000.
-emu0: loaded successfully
-NET: Registered protocol family 2
-Sock_register done
-Base protocols done
-Socketside stuff done
-inet_register_protosw(80343aa0)
-spinlock: inetsw lock
-got it
-list done
-spin unlock
-synchronize net
-net synch:
-Synchronizing RCU...
-Calling...
-Waiting...
-<hang>
+--=-jWNDXCryGAwurHmkZsnW
+Content-Disposition: attachment; filename=fix_genrtc_as_a_module.patch
+Content-Type: text/x-patch; name=fix_genrtc_as_a_module.patch; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Source: MontaVista Software, Inc. Sergey Podstavin <spodstavin@ru.mvista.com>
+Type: Defect Fix
+Disposition: submit to linux-mips@linux-mips.org
+Description:
+    genrtc doesn't work as a module because functions for module defined in wrong place.	
+Most architectures define these functions in <asm/rtc.h>, so make MIPS follow their example.
+
+Signed-off-by: Tom Rini <trini@kernel.crashing.org>
+Signed-off-by: Sergey Podstavin <spodstavin@ru.mvista.com>
+
+Index: linux/arch/mips/kernel/genrtc.c
+===================================================================
+--- linux.orig/arch/mips/kernel/genrtc.c
++++ linux/arch/mips/kernel/genrtc.c
+@@ -1,64 +1 @@
+-/*
+- * A glue layer that provides RTC read/write to drivers/char/genrtc.c driver
+- * based on MIPS internal RTC routines.  It does take care locking
+- * issues so that we are SMP/Preemption safe.
+- *
+- * Copyright (C) 2004 MontaVista Software Inc.
+- * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
+- *
+- * Please read the COPYING file for all license details.
+- */
+-
+-#include <linux/spinlock.h>
+-
+-#include <asm/rtc.h>
+-#include <asm/time.h>
+-
+-static DEFINE_SPINLOCK(mips_rtc_lock);
+-
+-unsigned int get_rtc_time(struct rtc_time *time)
+-{
+-	unsigned long nowtime;
+-
+-	spin_lock(&mips_rtc_lock);
+-	nowtime = rtc_get_time();
+-	to_tm(nowtime, time);
+-	time->tm_year -= 1900;
+-	spin_unlock(&mips_rtc_lock);
+-
+-	return RTC_24H;
+-}
+-
+-int set_rtc_time(struct rtc_time *time)
+-{
+-	unsigned long nowtime;
+-	int ret;
+-
+-	spin_lock(&mips_rtc_lock);
+-	nowtime = mktime(time->tm_year+1900, time->tm_mon+1,
+-			time->tm_mday, time->tm_hour, time->tm_min,
+-			time->tm_sec);
+-	ret = rtc_set_time(nowtime);
+-	spin_unlock(&mips_rtc_lock);
+-
+-	return ret;
+-}
+-
+-unsigned int get_rtc_ss(void)
+-{
+-	struct rtc_time h;
+-
+-	get_rtc_time(&h);
+-	return h.tm_sec;
+-}
+-
+-int get_rtc_pll(struct rtc_pll_info *pll)
+-{
+-	return -EINVAL;
+-}
+-
+-int set_rtc_pll(struct rtc_pll_info *pll)
+-{
+-	return -EINVAL;
+-}
+ 
+Index: linux/arch/mips/kernel/Makefile
+===================================================================
+--- linux.orig/arch/mips/kernel/Makefile
++++ linux/arch/mips/kernel/Makefile
+@@ -57,8 +57,6 @@
+ 
+ obj-$(CONFIG_64BIT)		+= cpu-bugs64.o
+ 
+-obj-$(CONFIG_GEN_RTC)		+= genrtc.o
+-
+ CFLAGS_cpu-bugs64.o	= $(shell if $(CC) $(CFLAGS) -Wa,-mdaddi -c -o /dev/null -xc /dev/null >/dev/null 2>&1; then echo "-DHAVE_AS_SET_DADDI"; fi)
+ CFLAGS_ioctl32.o	+= -Ifs/
+ 
+Index: linux/include/asm-mips/rtc.h
+===================================================================
+--- linux.orig/include/asm-mips/rtc.h
++++ linux/include/asm-mips/rtc.h
+@@ -14,7 +14,9 @@
+ 
+ #ifdef __KERNEL__
+ 
++#include <linux/spinlock.h>
+ #include <linux/rtc.h>
++#include <asm/time.h>
+ 
+ #define RTC_PIE 0x40            /* periodic interrupt enable */
+ #define RTC_AIE 0x20            /* alarm interrupt enable */
+@@ -33,5 +35,52 @@
+ int get_rtc_pll(struct rtc_pll_info *pll);
+ int set_rtc_pll(struct rtc_pll_info *pll);
+ 
++static DEFINE_SPINLOCK(mips_rtc_lock);
++
++static inline unsigned int get_rtc_time(struct rtc_time *time)
++{
++	unsigned long nowtime;
++
++	spin_lock(&mips_rtc_lock);
++	nowtime = rtc_get_time();
++	to_tm(nowtime, time);
++	time->tm_year -= 1900;
++	spin_unlock(&mips_rtc_lock);
++
++	return RTC_24H;
++}
++
++static inline int set_rtc_time(struct rtc_time *time)
++{
++	unsigned long nowtime;
++	int ret;
++
++	spin_lock(&mips_rtc_lock);
++	nowtime = mktime(time->tm_year+1900, time->tm_mon+1,
++			time->tm_mday, time->tm_hour, time->tm_min,
++			time->tm_sec);
++	ret = rtc_set_time(nowtime);
++	spin_unlock(&mips_rtc_lock);
++
++	return ret;
++}
++
++static inline unsigned int get_rtc_ss(void)
++{
++	struct rtc_time h;
++
++	get_rtc_time(&h);
++	return h.tm_sec;
++}
++
++static inline int get_rtc_pll(struct rtc_pll_info *pll)
++{
++	return -EINVAL;
++}
++
++static inline int set_rtc_pll(struct rtc_pll_info *pll)
++{
++	return -EINVAL;
++}
+ #endif
+ #endif
+
+--=-jWNDXCryGAwurHmkZsnW--

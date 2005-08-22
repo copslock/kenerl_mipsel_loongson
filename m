@@ -1,59 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Aug 2005 12:44:48 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:32531 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225357AbVHVLo2>; Mon, 22 Aug 2005 12:44:28 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 656BEE1C99; Mon, 22 Aug 2005 13:49:43 +0200 (CEST)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 13737-06; Mon, 22 Aug 2005 13:49:43 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 2BBC4E1C82; Mon, 22 Aug 2005 13:49:43 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j7MBnkbf027909;
-	Mon, 22 Aug 2005 13:49:46 +0200
-Date:	Mon, 22 Aug 2005 12:49:52 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: CVS Update@linux-mips.org: linux
-In-Reply-To: <20050822102610.GB3780@linux-mips.org>
-Message-ID: <Pine.LNX.4.61L.0508221242540.26914@blysk.ds.pg.gda.pl>
-References: <20050820142723Z8225252-3678+7060@linux-mips.org>
- <Pine.LNX.4.61L.0508221013180.26914@blysk.ds.pg.gda.pl>
- <20050822102610.GB3780@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Aug 2005 13:07:15 +0100 (BST)
+Received: from ns2.suse.de ([IPv6:::ffff:195.135.220.15]:63118 "EHLO
+	mx2.suse.de") by linux-mips.org with ESMTP id <S8225357AbVHVMG6>;
+	Mon, 22 Aug 2005 13:06:58 +0100
+Received: from Relay1.suse.de (mail2.suse.de [195.135.221.8])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mx2.suse.de (Postfix) with ESMTP id 655C01D3BC
+	for <linux-mips@linux-mips.org>; Mon, 22 Aug 2005 14:12:06 +0200 (CEST)
+Received: from g209.suse.de (g209.suse.de [10.10.103.209])
+	by Relay1.suse.de (Postfix) with ESMTP id 5D5EBA4B7
+	for <linux-mips@linux-mips.org>; Mon, 22 Aug 2005 14:12:06 +0200 (CEST)
+From:	Adrian Schroeter <adrian@suse.de>
+Organization: SuSE AG
+To:	linux-mips@linux-mips.org
+Subject: Free 20" SGI monitors with W3 connectors
+Date:	Mon, 22 Aug 2005 14:12:05 +0200
+User-Agent: KMail/1.8.2
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV version 0.85.1, clamav-milter version 0.85 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Message-Id: <200508221412.05607.adrian@suse.de>
+Return-Path: <adrian@suse.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8781
+X-archive-position: 8782
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: adrian@suse.de
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 22 Aug 2005, Ralf Baechle wrote:
+Hi,
 
-> >  Well, since they use a different controller structure and different 
-> > functions, the user-visible name should be different too, shouldn't it?  
-> > To be original ;-) -- how about "MIPS-MT"?
-> 
-> Thought about but then it's still hammering at the same old bits which
-> now just have received a different use.
+I do have 2 SGI monitors 20" with W3 connector (the standard monitors for 
+Indy / Indigo2) sitting in my room and taking their room :)
 
- Using another structure is enough for justification -- it's a different 
-"controller".  Similarly the two variations of interrupts handled in 
-arch/mips/dec/ioasic-irq.c are almost the same (the difference is even 
-smaller than here), but using separate structures made me use different 
-names.
+Everyone who want to have them AND comes to Nuernberg/Germany to get them is 
+welcome. I will NOT send them. But you may ask, if I do appear near your 
+hometown in Germany in the next month ;)
 
-  Maciej
+The monitors will get hurt heavily otherwise, please rescue them ...
+
+bye
+adrian
+-- 
+
+Adrian Schroeter
+SuSE AG,  Maxfeldstr. 5, 90409 Nuernberg, Germany
+email: adrian@suse.de

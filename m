@@ -1,84 +1,127 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Aug 2005 18:03:46 +0100 (BST)
-Received: from grey.subnet.at ([IPv6:::ffff:193.170.141.20]:2565 "EHLO
-	grey.subnet.at") by linux-mips.org with ESMTP id <S8225411AbVHXRDZ>;
-	Wed, 24 Aug 2005 18:03:25 +0100
-Received: from ip6-localhost ([193.170.141.4]) by grey.subnet.at ; Wed, 24 Aug 2005 19:08:54 +0200
-From:	Bruno Randolf <bruno.randolf@4g-systems.biz>
-To:	linux-mips@linux-mips.org
-Subject: au1000 pci_ops clear errors
-Date:	Wed, 24 Aug 2005 19:05:44 +0200
-User-Agent: KMail/1.8.1
-Organization: 4G Systems
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Aug 2005 18:41:00 +0100 (BST)
+Received: from mms2.broadcom.com ([IPv6:::ffff:216.31.210.18]:46094 "EHLO
+	MMS2.broadcom.com") by linux-mips.org with ESMTP
+	id <S8225421AbVHXRko>; Wed, 24 Aug 2005 18:40:44 +0100
+Received: from 10.10.64.121 by MMS2.broadcom.com with SMTP (Broadcom
+ SMTP Relay (Email Firewall v6.1.0)); Wed, 24 Aug 2005 10:45:52 -0700
+X-Server-Uuid: 1F20ACF3-9CAF-44F7-AB47-F294E2D5B4EA
+Received: from mail-irva-8.broadcom.com ([10.10.64.221]) by
+ mail-irva-1.broadcom.com (Post.Office MTA v3.5.3 release 223 ID#
+ 0-72233U7200L2200S0V35) with ESMTP id com for
+ <linux-mips@linux-mips.org>; Wed, 24 Aug 2005 10:45:50 -0700
+Received: from mon-irva-10.broadcom.com (mon-irva-10.broadcom.com
+ [10.10.64.171]) by mail-irva-8.broadcom.com (MOS 3.5.6-GR) with ESMTP
+ id BQQ54061; Wed, 24 Aug 2005 10:45:18 -0700 (PDT)
+Received: from nt-sjca-0740.brcm.ad.broadcom.com (
+ nt-sjca-0740.sj.broadcom.com [10.16.192.49]) by
+ mon-irva-10.broadcom.com (8.9.1/8.9.1) with ESMTP id KAA16998 for
+ <linux-mips@linux-mips.org>; Wed, 24 Aug 2005 10:45:17 -0700 (PDT)
+Received: from NT-SJCA-0750.brcm.ad.broadcom.com ([10.16.192.220]) by
+ nt-sjca-0740.brcm.ad.broadcom.com with Microsoft SMTPSVC(6.0.3790.211);
+ Wed, 24 Aug 2005 10:45:17 -0700
+Received: from [127.0.0.1] ([10.27.253.8]) by
+ NT-SJCA-0750.brcm.ad.broadcom.com with Microsoft SMTPSVC(6.0.3790.211);
+ Wed, 24 Aug 2005 10:45:16 -0700
+Message-ID: <430CB229.1000405@broadcom.com>
+Date:	Wed, 24 Aug 2005 10:45:13 -0700
+From:	"Mark Mason" <mason@broadcom.com>
+User-Agent: Mozilla Thunderbird 1.0.2 (Windows/20050317)
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: multipart/signed;
-  boundary="nextPart4374168.4qLdzKYEyK";
-  protocol="application/pgp-signature";
-  micalg=pgp-sha1
-Content-Transfer-Encoding: 7bit
-Message-Id: <200508241905.48376.bruno.randolf@4g-systems.biz>
-X-Rcpt-To: <linux-mips@linux-mips.org>
-Return-Path: <bruno.randolf@4g-systems.biz>
+To:	linux-mips@linux-mips.org
+Subject: Patch to arch/mips/sibyte/sb1250/irq.c
+X-OriginalArrivalTime: 24 Aug 2005 17:45:17.0210 (UTC)
+ FILETIME=[96D5FFA0:01C5A8D3]
+X-WSS-ID: 6F126DDA1NK1432906-01-01
+Content-Type: multipart/mixed;
+ boundary=------------090000050301070100020606
+Return-Path: <mark.e.mason@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8797
+X-archive-position: 8798
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bruno.randolf@4g-systems.biz
+X-original-sender: mason@broadcom.com
 Precedence: bulk
 X-list: linux-mips
 
---nextPart4374168.4qLdzKYEyK
+This is a multi-part message in MIME format.
+--------------090000050301070100020606
 Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+ charset=iso-8859-1;
+ format=flowed
+Content-Transfer-Encoding: 7bit
 
-hello!
+Hello all,
 
-what do you think about the following patch to clear PCI errors in config=20
-accesses on the au1000 CPUs? if an error like "parity error" occurred and t=
-he=20
-error is not cleared, all following config accesses will be reported as=20
-errors (0xffffffff) too.
+Attached is a patch to the sb1250 version of irq.c to fix compilation 
+warnings (and make the code more correct).
 
-the diff is against 2.4.27 but the same thing is missing in 2.6 as well, i=
-=20
-believe.
+Change sb1250_set_affinity() to use the proper datatype and access 
+macros for the cpu mask.
 
-greetings,
-bruno
+Thanks,
+Mark
 
-=2D-- linux/arch/mips/au1000/common/pci_ops.c.orig        2005-08-24=20
-17:36:25.000000000 +0200
-+++ linux/arch/mips/au1000/common/pci_ops.c     2005-08-24 17:37:38.0000000=
-00=20
-+0200
-@@ -259,7 +259,11 @@
-                *data =3D 0xffffffff;
-                error =3D -1;
-        } else if ((status >> 28) & 0xf) {
-=2D               DBG("PCI ERR detected: status %x\n", status);
-+               DBG("PCI ERR detected: device %d, status %x\n", device,=20
-((status >> 28) & 0xf));
-+
-+               /* clear errors */
-+               au_writel(status & 0xf000ffff, Au1500_PCI_STATCMD);
-+
-                *data =3D 0xffffffff;
-                error =3D -1;
-        }
 
---nextPart4374168.4qLdzKYEyK
-Content-Type: application/pgp-signature
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.1 (GNU/Linux)
+--------------090000050301070100020606
+Content-Type: text/plain;
+ name=irq-patch
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename=irq-patch
 
-iD8DBQBDDKjsfg2jtUL97G4RApjqAJ48rMR+Cb7LP1v4AgYt3J92+9u7zwCgoi0z
-M2UdauI0GT+aRwOc/Iq+1rQ=
-=JMtW
------END PGP SIGNATURE-----
+Index: arch/mips/sibyte/sb1250/irq.c
+===================================================================
+RCS file: /home/cvs/linux/arch/mips/sibyte/sb1250/irq.c,v
+retrieving revision 1.34
+diff -u -p -r1.34 irq.c
+--- arch/mips/sibyte/sb1250/irq.c	11 Jul 2005 10:03:30 -0000	1.34
++++ arch/mips/sibyte/sb1250/irq.c	24 Aug 2005 17:33:33 -0000
+@@ -53,7 +53,7 @@ static void disable_sb1250_irq(unsigned 
+ static unsigned int startup_sb1250_irq(unsigned int irq);
+ static void ack_sb1250_irq(unsigned int irq);
+ #ifdef CONFIG_SMP
+-static void sb1250_set_affinity(unsigned int irq, unsigned long mask);
++static void sb1250_set_affinity(unsigned int irq, cpumask_t mask);
+ #endif
+ 
+ #ifdef CONFIG_SIBYTE_HAS_LDT
+@@ -117,26 +117,19 @@ void sb1250_unmask_irq(int cpu, int irq)
+ }
+ 
+ #ifdef CONFIG_SMP
+-static void sb1250_set_affinity(unsigned int irq, unsigned long mask)
++static void sb1250_set_affinity(unsigned int irq, cpumask_t mask)
+ {
+-	int i = 0, old_cpu, cpu, int_on;
++	int i = 0, old_cpu, cpu, int_on, weight;
+ 	u64 cur_ints;
+ 	irq_desc_t *desc = irq_desc + irq;
+ 	unsigned long flags;
+ 
+-	while (mask) {
+-		if (mask & 1) {
+-			mask >>= 1;
+-			break;
+-		}
+-		mask >>= 1;
+-		i++;
+-	}
+-
+-	if (mask) {
++	weight = cpus_weight(mask);
++	if (weight > 1) {
+ 		printk("attempted to set irq affinity for irq %d to multiple CPUs\n", irq);
+ 		return;
+-	}
++	} else if (weight != 0)
++		i = first_cpu(mask);
+ 
+ 	/* Convert logical CPU to physical CPU */
+ 	cpu = cpu_logical_map(i);
 
---nextPart4374168.4qLdzKYEyK--
+--------------090000050301070100020606--

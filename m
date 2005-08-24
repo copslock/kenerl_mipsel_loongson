@@ -1,81 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Aug 2005 16:22:23 +0100 (BST)
-Received: from mba.ocn.ne.jp ([IPv6:::ffff:210.190.142.172]:63982 "HELO
-	smtp.mba.ocn.ne.jp") by linux-mips.org with SMTP
-	id <S8225256AbVHXPWH>; Wed, 24 Aug 2005 16:22:07 +0100
-Received: from localhost (p8216-ipad209funabasi.chiba.ocn.ne.jp [58.88.119.216])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id ECD2C2362; Thu, 25 Aug 2005 00:27:36 +0900 (JST)
-Date:	Thu, 25 Aug 2005 00:35:48 +0900 (JST)
-Message-Id: <20050825.003548.41199755.anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: 64bit unaligned access on 32bit kernel
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Aug 2005 17:49:26 +0100 (BST)
+Received: from de01egw02.freescale.net ([IPv6:::ffff:192.88.165.103]:36333
+	"EHLO de01egw02.freescale.net") by linux-mips.org with ESMTP
+	id <S8225288AbVHXQtF>; Wed, 24 Aug 2005 17:49:05 +0100
+Received: from de01smr01.am.mot.com (de01smr01.freescale.net [10.208.0.31])
+	by de01egw02.freescale.net (8.12.11/de01egw02) with ESMTP id j7OGx4Zt022303;
+	Wed, 24 Aug 2005 09:59:05 -0700 (MST)
+Received: from postal.somerset.sps.mot.com ([163.12.132.5])
+	by de01smr01.am.mot.com (8.13.1/8.13.0) with ESMTP id j7OH1UuB013925;
+	Wed, 24 Aug 2005 12:01:31 -0500 (CDT)
+Received: from nylon.am.freescale.net (nylon.sps.mot.com [10.82.19.8])
+	by postal.somerset.sps.mot.com (8.11.0/8.11.0) with ESMTP id j7OGsTD05090;
+	Wed, 24 Aug 2005 11:54:29 -0500 (CDT)
+Received: from nylon.am.freescale.net (localhost.localdomain [127.0.0.1])
+	by nylon.am.freescale.net (8.12.11/8.11.0) with ESMTP id j7OGsTBW024012;
+	Wed, 24 Aug 2005 11:54:29 -0500
+Received: from localhost (galak@localhost)
+	by nylon.am.freescale.net (8.12.11/8.12.11/Submit) with ESMTP id j7OGsRPe024009;
+	Wed, 24 Aug 2005 11:54:28 -0500
+X-Authentication-Warning: nylon.am.freescale.net: galak owned process doing -bs
+Date:	Wed, 24 Aug 2005 11:54:27 -0500 (CDT)
+From:	Kumar Gala <galak@freescale.com>
+X-X-Sender: galak@nylon.am.freescale.net
+To:	linux-kernel@vger.kernel.org
+cc:	Andrew Morton <akpm@osdl.org>, ralf@linux-mips.org,
+	linux-mips@linux-mips.org
+Subject: [PATCH 06/15] mips: remove use of asm/segment.h
+In-Reply-To: <Pine.LNX.4.61.0508241139100.23956@nylon.am.freescale.net>
+Message-ID: <Pine.LNX.4.61.0508241153260.23956@nylon.am.freescale.net>
+References: <Pine.LNX.4.61.0508241139100.23956@nylon.am.freescale.net>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <galak@freescale.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8794
+X-archive-position: 8795
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: galak@freescale.com
 Precedence: bulk
 X-list: linux-mips
 
-MIPS kernel has been using asm-generic/unaligned.h since 2.6.12-rc2.
-But the generic unaligned.h is not suitable for 32bit kernel because
-it uses 'unsigned long' for 64bit values.
+Removed MIPS architecture specific users of asm/segment.h and
+asm-mips/segment.h itself
 
-How about this fix?
+Signed-off-by: Kumar Gala <kumar.gala@freescale.com>
 
-diff -u linux-mips/include/asm-generic/unaligned.h linux/include/asm-generic/unaligned.h
---- linux-mips/include/asm-generic/unaligned.h	2005-05-28 00:40:52.000000000 +0900
-+++ linux/include/asm-generic/unaligned.h	2005-08-25 00:26:14.359013720 +0900
-@@ -18,7 +18,7 @@
- #define get_unaligned(ptr) \
- 	((__typeof__(*(ptr)))__get_unaligned((ptr), sizeof(*(ptr))))
- #define put_unaligned(x,ptr) \
--	__put_unaligned((unsigned long)(x), (ptr), sizeof(*(ptr)))
-+	__put_unaligned((__u64)(x), (ptr), sizeof(*(ptr)))
+---
+commit 8f20e153d5d5c3efd95835e814fae7b3ccbfcd08
+tree 17e9ae88b3fe1762302179a4ea08e61360805a29
+parent 503a812c1f9cef08e6f96b2b2cf1f32bbfef2bc6
+author Kumar K. Gala <kumar.gala@freescale.com> Wed, 24 Aug 2005 10:59:09 -0500
+committer Kumar K. Gala <kumar.gala@freescale.com> Wed, 24 Aug 2005 10:59:09 -0500
+
+ arch/mips/au1000/db1x00/mirage_ts.c |    1 -
+ include/asm-mips/segment.h          |    6 ------
+ 2 files changed, 0 insertions(+), 7 deletions(-)
+
+diff --git a/arch/mips/au1000/db1x00/mirage_ts.c b/arch/mips/au1000/db1x00/mirage_ts.c
+--- a/arch/mips/au1000/db1x00/mirage_ts.c
++++ b/arch/mips/au1000/db1x00/mirage_ts.c
+@@ -44,7 +44,6 @@
+ #include <linux/smp_lock.h>
+ #include <linux/wait.h>
  
- /*
-  * This function doesn't actually exist.  The idea is that when
-@@ -36,19 +36,19 @@
-  * Elemental unaligned loads 
-  */
- 
--static inline unsigned long __uldq(const __u64 *addr)
-+static inline __u64 __uldq(const __u64 *addr)
- {
- 	const struct __una_u64 *ptr = (const struct __una_u64 *) addr;
- 	return ptr->x;
- }
- 
--static inline unsigned long __uldl(const __u32 *addr)
-+static inline __u64 __uldl(const __u32 *addr)
- {
- 	const struct __una_u32 *ptr = (const struct __una_u32 *) addr;
- 	return ptr->x;
- }
- 
--static inline unsigned long __uldw(const __u16 *addr)
-+static inline __u64 __uldw(const __u16 *addr)
- {
- 	const struct __una_u16 *ptr = (const struct __una_u16 *) addr;
- 	return ptr->x;
-@@ -78,7 +78,7 @@
- 
- #define __get_unaligned(ptr, size) ({		\
- 	const void *__gu_p = ptr;		\
--	unsigned long val;			\
-+	__u64 val;				\
- 	switch (size) {				\
- 	case 1:					\
- 		val = *(const __u8 *)__gu_p;	\
+-#include <asm/segment.h>
+ #include <asm/irq.h>
+ #include <asm/uaccess.h>
+ #include <asm/delay.h>
+diff --git a/include/asm-mips/segment.h b/include/asm-mips/segment.h
+deleted file mode 100644
+--- a/include/asm-mips/segment.h
++++ /dev/null
+@@ -1,6 +0,0 @@
+-#ifndef _ASM_SEGMENT_H
+-#define _ASM_SEGMENT_H
+-
+-/* Only here because we have some old header files that expect it.. */
+-
+-#endif /* _ASM_SEGMENT_H */

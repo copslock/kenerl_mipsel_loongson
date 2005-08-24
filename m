@@ -1,83 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Aug 2005 16:19:43 +0100 (BST)
-Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:61212 "EHLO
-	bacchus.net.dhis.org") by linux-mips.org with ESMTP
-	id <S8225256AbVHXPT1>; Wed, 24 Aug 2005 16:19:27 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j7OFOjkg011953;
-	Wed, 24 Aug 2005 16:24:45 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j7OFOjbo011952;
-	Wed, 24 Aug 2005 16:24:45 +0100
-Date:	Wed, 24 Aug 2005 16:24:44 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Bryan Althouse <bryan.althouse@3phoenix.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: custom ide driver causes "Badness in smp_call_function"
-Message-ID: <20050824152444.GE2783@linux-mips.org>
-References: <20050823140159Z8225393-3678+7283@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Aug 2005 16:22:23 +0100 (BST)
+Received: from mba.ocn.ne.jp ([IPv6:::ffff:210.190.142.172]:63982 "HELO
+	smtp.mba.ocn.ne.jp") by linux-mips.org with SMTP
+	id <S8225256AbVHXPWH>; Wed, 24 Aug 2005 16:22:07 +0100
+Received: from localhost (p8216-ipad209funabasi.chiba.ocn.ne.jp [58.88.119.216])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id ECD2C2362; Thu, 25 Aug 2005 00:27:36 +0900 (JST)
+Date:	Thu, 25 Aug 2005 00:35:48 +0900 (JST)
+Message-Id: <20050825.003548.41199755.anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: 64bit unaligned access on 32bit kernel
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20050823140159Z8225393-3678+7283@linux-mips.org>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8793
+X-archive-position: 8794
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Aug 23, 2005 at 10:07:02AM -0400, Bryan Althouse wrote:
+MIPS kernel has been using asm-generic/unaligned.h since 2.6.12-rc2.
+But the generic unaligned.h is not suitable for 32bit kernel because
+it uses 'unsigned long' for 64bit values.
 
-> I have added a compact flash disk onto the local bus of an rm9224 mips
-> processor.  We are using an FPGA as an IDE host adaptor.  Our driver works
-> great when the kernel is compiled for a single processor.  But if SMP
-> support is enabled, the kernel dies with: 
->             .
-> Uniform Multi-Platform E-IDE driver Revision: 7.00alpha2
-> Ide:  Assuming 50MHz system bus speed for PIO modes; override with
-> idebuss=xx
-> Badness in smp_call_function at arch/mips/kernel/smp.c:149
+How about this fix?
 
-That's just a rather drastically looking warning, btw.
-
-> Call Trace:
->  [<ffffffff8010aff8>] smp_call_function+0x1f8/0x200
->  [<ffffffff8032adb0>] schedule+0x950/0xa08
->  [<ffffffff8010b9f8>] local_rm9k_perfcounter_irq_startup+0x0/0x68
->  [<ffffffff8010baa8>] rm9k_perfcounter_irq_startup+0x48/0x68
->  [<ffffffff801658b8>] probe_irq_on+0x2b8/0x2e8
->  [<ffffffff80146c00>] del_singleshot_timer_sync+0x38/0x50
->  [<ffffffff8028e510>] try_to_identify+0x180/0x190
->  [<ffffffff80147d88>] process_timeout+0x0/0x8
->  [<ffffffff8028e66c>] do_probe+0x14c/0x338
->  [<ffffffff8028e57c>] do_probe+0x5c/0x338
->  [<ffffffff8028ec40>] wait_hwif_ready+0x178/0x180
->  [<ffffffff8028f230>] probe_hwif+0x508/0x6e8
->  [<ffffffff8028eec8>] probe_hwif+0x1a0/0x6e8
->  [<ffffffff8028f42c>] probe_hwif_init_with_fixup+0x1c/0xe8
->  [<ffffffff8029435c>] ide_3P_init+0xb4/0x118
->  [<ffffffff80294324>] ide_3P_init+0x7c/0x118
->  [<ffffffff8023d100>] idr_get_new+0x18/0x50
-> etc. 
-> 
-> Does anyone know what sort of bug could cause problems with SMP, but would
-> work fine otherwise?  I could supply my driver code if anyone is interested.
-> Thanks!
-
-Your driver is probably fine.  The problem is that doing PIO may result in
-cache aliases and that requires a cache flush.  Normally that's not
-terribly hard to do - but in your case an SMP cacheflush is needed which
-in turn requires smp_call_function to be used and that one again may
-deadlock if called with interrupts disabled.  See also
-include/asm-mips/mach-generic/ide.h.
-
-So until we have a better implementation I suggest try to avoid the use
-of ide_inb() etc. with interrupts disabled.
-
-  Ralf
+diff -u linux-mips/include/asm-generic/unaligned.h linux/include/asm-generic/unaligned.h
+--- linux-mips/include/asm-generic/unaligned.h	2005-05-28 00:40:52.000000000 +0900
++++ linux/include/asm-generic/unaligned.h	2005-08-25 00:26:14.359013720 +0900
+@@ -18,7 +18,7 @@
+ #define get_unaligned(ptr) \
+ 	((__typeof__(*(ptr)))__get_unaligned((ptr), sizeof(*(ptr))))
+ #define put_unaligned(x,ptr) \
+-	__put_unaligned((unsigned long)(x), (ptr), sizeof(*(ptr)))
++	__put_unaligned((__u64)(x), (ptr), sizeof(*(ptr)))
+ 
+ /*
+  * This function doesn't actually exist.  The idea is that when
+@@ -36,19 +36,19 @@
+  * Elemental unaligned loads 
+  */
+ 
+-static inline unsigned long __uldq(const __u64 *addr)
++static inline __u64 __uldq(const __u64 *addr)
+ {
+ 	const struct __una_u64 *ptr = (const struct __una_u64 *) addr;
+ 	return ptr->x;
+ }
+ 
+-static inline unsigned long __uldl(const __u32 *addr)
++static inline __u64 __uldl(const __u32 *addr)
+ {
+ 	const struct __una_u32 *ptr = (const struct __una_u32 *) addr;
+ 	return ptr->x;
+ }
+ 
+-static inline unsigned long __uldw(const __u16 *addr)
++static inline __u64 __uldw(const __u16 *addr)
+ {
+ 	const struct __una_u16 *ptr = (const struct __una_u16 *) addr;
+ 	return ptr->x;
+@@ -78,7 +78,7 @@
+ 
+ #define __get_unaligned(ptr, size) ({		\
+ 	const void *__gu_p = ptr;		\
+-	unsigned long val;			\
++	__u64 val;				\
+ 	switch (size) {				\
+ 	case 1:					\
+ 		val = *(const __u8 *)__gu_p;	\

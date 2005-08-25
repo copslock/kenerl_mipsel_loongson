@@ -1,70 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Aug 2005 16:37:49 +0100 (BST)
-Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:31517 "EHLO
-	bacchus.net.dhis.org") by linux-mips.org with ESMTP
-	id <S8225298AbVHYPh2>; Thu, 25 Aug 2005 16:37:28 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j7PFgnBe009413;
-	Thu, 25 Aug 2005 16:42:49 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j7PFgnco009412;
-	Thu, 25 Aug 2005 16:42:49 +0100
-Date:	Thu, 25 Aug 2005 16:42:49 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Bryan Althouse <bryan.althouse@3phoenix.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: custom ide driver causes "Badness in smp_call_function"
-Message-ID: <20050825154249.GC2731@linux-mips.org>
-References: <20050824152444.GE2783@linux-mips.org> <20050825152131Z8225298-3678+7482@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Aug 2005 16:54:49 +0100 (BST)
+Received: from MAIL.13thfloor.at ([IPv6:::ffff:212.16.62.50]:12489 "EHLO
+	mail.13thfloor.at") by linux-mips.org with ESMTP
+	id <S8225439AbVHYPyd>; Thu, 25 Aug 2005 16:54:33 +0100
+Received: by mail.13thfloor.at (Postfix, from userid 1001)
+	id A4DB13FC3F; Thu, 25 Aug 2005 18:00:07 +0200 (CEST)
+Date:	Thu, 25 Aug 2005 18:00:07 +0200
+From:	Herbert Poetzl <herbert@13thfloor.at>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Kishore K <hellokishore@gmail.com>,
+	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: Re: Preemption patch for 2.4.26 - mips
+Message-ID: <20050825160007.GA24413@MAIL.13thfloor.at>
+References: <f07e6e050825065756c3ac27@mail.gmail.com> <20050825153219.GB2731@linux-mips.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20050825152131Z8225298-3678+7482@linux-mips.org>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20050825153219.GB2731@linux-mips.org>
+User-Agent: Mutt/1.5.6i
+Return-Path: <herbert@13thfloor.at>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8805
+X-archive-position: 8806
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: herbert@13thfloor.at
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Aug 25, 2005 at 11:26:58AM -0400, Bryan Althouse wrote:
-> From:	"Bryan Althouse" <bryan.althouse@3phoenix.com>
-> To:	"'Ralf Baechle'" <ralf@linux-mips.org>
-> Cc:	<linux-mips@linux-mips.org>
-> Subject: RE: custom ide driver causes "Badness in smp_call_function"
-> Date:	Thu, 25 Aug 2005 11:26:58 -0400
-> Content-Type: text/plain;
-> 	charset="us-ascii"
+On Thu, Aug 25, 2005 at 04:32:19PM +0100, Ralf Baechle wrote:
+> On Thu, Aug 25, 2005 at 07:57:48PM +0600, Kishore K wrote:
 > 
-> Ralf,
+> > When I try to compile 2.4.26 kernel with the pre-emption patch from
+> > (http://www.kernel.org/pub/linux/kernel/people/rml/preempt-kernel/v2.4/)
+> > for malta board based on MIPS 4kc, compilation fails with the
+> > following error.
 > 
-> Thank you for your help.  
-> I'm doing MMIO, not PIO, but it looks like your assessment is still valid.
+> Straight Kernel.org kernels don't work for MIPS 
 
-... which still is programmed io ...
+any reason why that is so?
+is it planned to make at least 2.6.x work for MIPS?
+does it make sense to help there?
 
-> I've been searching for places where ide MMIO is performed with interrupts
-> disabled.  I got excited when I found these lines in probe_hwif() of
-> ide-probe.c:
-> 
->    irqd = hwif->irq;
->    if (irqd)
->         disable_irq(hwif->irq);
-> 
-> I was not initializing hwif->irq in my driver, so probably the interrupts
-> were being disabled here, and subsequent lines were causing the SMP badness.
-> I added the line "hwif->irq = 0" to my driver.  Interrupts are no longer
-> disabled here, but still I get the SMP badness.  I'll keep looking for other
-> places where the interrupts might be disabled.  
-> 
-> Does anyone know if the mips/swarm.c driver has this problem with SMP?
-> Thanks!
+TIA,
+Herbert
 
-No, SB1 has sane caches.
+> nor do the mentioned patches.
 
-  Ralf
+> 
+>   Ralf

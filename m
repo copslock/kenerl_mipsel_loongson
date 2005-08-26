@@ -1,50 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Aug 2005 15:42:41 +0100 (BST)
-Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:16392 "EHLO
-	bacchus.net.dhis.org") by linux-mips.org with ESMTP
-	id <S8224974AbVHZOmW>; Fri, 26 Aug 2005 15:42:22 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j7QEm0oY011825;
-	Fri, 26 Aug 2005 15:48:00 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j7QEm0rJ011824;
-	Fri, 26 Aug 2005 15:48:00 +0100
-Date:	Fri, 26 Aug 2005 15:47:59 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Kishore K <hellokishore@gmail.com>
-Cc:	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: Re: Preemption patch for 2.4.26 - mips
-Message-ID: <20050826144759.GA2712@linux-mips.org>
-References: <f07e6e050825065756c3ac27@mail.gmail.com> <20050825153219.GB2731@linux-mips.org> <f07e6e0508260717428bbdd0@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f07e6e0508260717428bbdd0@mail.gmail.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Aug 2005 15:53:18 +0100 (BST)
+Received: from rwcrmhc14.comcast.net ([IPv6:::ffff:204.127.198.54]:33190 "EHLO
+	rwcrmhc12.comcast.net") by linux-mips.org with ESMTP
+	id <S8224974AbVHZOxD>; Fri, 26 Aug 2005 15:53:03 +0100
+Received: from ba3pi (pcp0010731669pcs.howard01.md.comcast.net[69.243.71.130])
+          by comcast.net (rwcrmhc14) with SMTP
+          id <2005082614584001400hfrvde>; Fri, 26 Aug 2005 14:58:41 +0000
+From:	"Bryan Althouse" <bryan.althouse@3phoenix.com>
+To:	"'Ralf Baechle'" <ralf@linux-mips.org>
+Cc:	<linux-mips@linux-mips.org>
+Subject: RE: custom ide driver causes "Badness in smp_call_function"
+Date:	Fri, 26 Aug 2005 10:58:40 -0400
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Office Outlook, Build 11.0.6353
+Thread-Index: AcWqR/nIHNFE/tghSraa2RLTN9Py/gABmxaA
+In-Reply-To: <20050826141047.GA8777@linux-mips.org>
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
+Message-Id: <20050826145303Z8224974-3678+7581@linux-mips.org>
+Return-Path: <bryan.althouse@3phoenix.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8816
+X-archive-position: 8817
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: bryan.althouse@3phoenix.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Aug 26, 2005 at 08:17:43PM +0600, Kishore K wrote:
+Ralf,
 
-> On 8/25/05, Ralf Baechle <ralf@linux-mips.org> wrote:
-> > Straight Kernel.org kernels don't work for MIPS nor do the mentioned
-> > patches.
-> > 
-> I could bring up the malta board with vanilla linux kernels (2.4.25 -
-> 2.4.31) from kernel.org. Just curious to know, what extra features we
-> get from linux-mips kernels?
+The patch doesn't seem to make any difference. :(
 
-Generally the MIPS code in kernel.org is simply lagging far behind
-linux-mips.org and is not tested at all on MIPS.  There are also various
-bits in 2.4 that were necessary for some platforms but which for the one
-or other reason won't wasn't merged.
-
-  Ralf
+Bryan 

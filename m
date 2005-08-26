@@ -1,38 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Aug 2005 15:53:18 +0100 (BST)
-Received: from rwcrmhc14.comcast.net ([IPv6:::ffff:204.127.198.54]:33190 "EHLO
-	rwcrmhc12.comcast.net") by linux-mips.org with ESMTP
-	id <S8224974AbVHZOxD>; Fri, 26 Aug 2005 15:53:03 +0100
-Received: from ba3pi (pcp0010731669pcs.howard01.md.comcast.net[69.243.71.130])
-          by comcast.net (rwcrmhc14) with SMTP
-          id <2005082614584001400hfrvde>; Fri, 26 Aug 2005 14:58:41 +0000
-From:	"Bryan Althouse" <bryan.althouse@3phoenix.com>
-To:	"'Ralf Baechle'" <ralf@linux-mips.org>
-Cc:	<linux-mips@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Aug 2005 16:13:24 +0100 (BST)
+Received: from clock-tower.bc.nu ([IPv6:::ffff:81.2.110.250]:48055 "EHLO
+	lxorguk.ukuu.org.uk") by linux-mips.org with ESMTP
+	id <S8224974AbVHZPNG>; Fri, 26 Aug 2005 16:13:06 +0100
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by lxorguk.ukuu.org.uk (8.13.4/8.13.4) with ESMTP id j7QFlX6Q007340;
+	Fri, 26 Aug 2005 16:47:34 +0100
+Received: (from alan@localhost)
+	by localhost.localdomain (8.13.4/8.13.4/Submit) id j7QFlXad007339;
+	Fri, 26 Aug 2005 16:47:33 +0100
+X-Authentication-Warning: localhost.localdomain: alan set sender to alan@lxorguk.ukuu.org.uk using -f
 Subject: RE: custom ide driver causes "Badness in smp_call_function"
-Date:	Fri, 26 Aug 2005 10:58:40 -0400
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
+From:	Alan Cox <alan@lxorguk.ukuu.org.uk>
+To:	Bryan Althouse <bryan.althouse@3phoenix.com>
+Cc:	linux-mips@linux-mips.org, "'Ralf Baechle'" <ralf@linux-mips.org>
+In-Reply-To: <20050826145303Z8224974-3678+7581@linux-mips.org>
+References: <20050826145303Z8224974-3678+7581@linux-mips.org>
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Office Outlook, Build 11.0.6353
-Thread-Index: AcWqR/nIHNFE/tghSraa2RLTN9Py/gABmxaA
-In-Reply-To: <20050826141047.GA8777@linux-mips.org>
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
-Message-Id: <20050826145303Z8224974-3678+7581@linux-mips.org>
-Return-Path: <bryan.althouse@3phoenix.com>
+Date:	Fri, 26 Aug 2005 16:47:24 +0100
+Message-Id: <1125071244.7298.2.camel@localhost.localdomain>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.2.2 (2.2.2-5) 
+Return-Path: <alan@lxorguk.ukuu.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8817
+X-archive-position: 8818
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bryan.althouse@3phoenix.com
+X-original-sender: alan@lxorguk.ukuu.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-Ralf,
+On Gwe, 2005-08-26 at 10:58 -0400, Bryan Althouse wrote: 
+> Ralf,
+> 
+> The patch doesn't seem to make any difference. :(
 
-The patch doesn't seem to make any difference. :(
+Assuming your hardware is sane another approach might be to force
+drive->unmask = 1. That will mean that PIO mode is running with
+interrupts enabled which should avoid the problem.
 
-Bryan 
+Add a .fixup handler to your driver (assuming you are using a recent
+2.6.x) and in the handler do something like this:
+
++void ide_unmask_interrupts(ide_hwif_t *hwif)
++{
++       int i;
++       for (i = 0; i < 2; i++) {
++               ide_drive_t *drive = &hwif->drives[i];
++               if(drive->present)
++                       drive->unmask = 1;
++       }
++}
+
+hopefully that will be early enough.

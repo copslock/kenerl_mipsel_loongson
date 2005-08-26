@@ -1,29 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Aug 2005 19:00:26 +0100 (BST)
-Received: from rwcrmhc11.comcast.net ([IPv6:::ffff:204.127.198.35]:30854 "EHLO
-	rwcrmhc11.comcast.net") by linux-mips.org with ESMTP
-	id <S8224984AbVHZSAI>; Fri, 26 Aug 2005 19:00:08 +0100
-Received: from ba3pi (pcp0010731669pcs.howard01.md.comcast.net[69.243.71.130])
-          by comcast.net (rwcrmhc11) with SMTP
-          id <200508261805440130060joce>; Fri, 26 Aug 2005 18:05:44 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Aug 2005 19:12:20 +0100 (BST)
+Received: from laf31-5-82-235-130-100.fbx.proxad.net ([IPv6:::ffff:82.235.130.100]:23548
+	"EHLO lexbox.fr") by linux-mips.org with ESMTP id <S8224984AbVHZSMB>;
+	Fri, 26 Aug 2005 19:12:01 +0100
+Received: from mail pickup service by lexbox.fr with Microsoft SMTPSVC;
+	 Fri, 26 Aug 2005 20:16:10 +0200
 From:	"Bryan Althouse" <bryan.althouse@3phoenix.com>
 Cc:	<linux-mips@linux-mips.org>
 Subject: RE: custom ide driver causes "Badness in smp_call_function"
-Date:	Fri, 26 Aug 2005 14:05:43 -0400
+Message-ID: <000501c5aa6a$3beadc30$0300a8c0@intra.lexbox.org>
+Date:	Fri, 26 Aug 2005 20:16:09 +0200
 MIME-Version: 1.0
 Content-Type: text/plain;
 	charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 X-Mailer: Microsoft Office Outlook, Build 11.0.6353
-Thread-Index: AcWqUXV7nhNPHZleS2iU5erhy9yRrQAFfx5g
+thread-index: AcWqUXV7nhNPHZleS2iU5erhy9yRrQAFfx5g
 In-Reply-To: <1125071244.7298.2.camel@localhost.localdomain>
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
-Message-Id: <20050826180008Z8224984-3678+7604@linux-mips.org>
-To:	unlisted-recipients:; (no To-header on input)
-Return-Path: <bryan.althouse@3phoenix.com>
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.3790.181
+To:	<unlisted-recipients:>,
+	<no To-header on input>,
+	"IMB Recipient 1" <mspop3connector.david.sanchez@lexbox.fr>
+X-archive-position: 8827
+X-ecartis-version: Ecartis v1.0.0
+Content-Class: urn:content-classes:message
+Importance: normal
+Priority: normal
+X-original-sender: bryan.althouse@3phoenix.com
+Precedence: bulk
+X-list:	linux-mips
+X-OriginalArrivalTime: 26 Aug 2005 18:16:10.0343 (UTC) FILETIME=[3C372770:01C5AA6A]
+Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8827
+X-archive-position: 8828
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

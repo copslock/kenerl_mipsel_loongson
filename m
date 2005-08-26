@@ -1,56 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Aug 2005 16:37:44 +0100 (BST)
-Received: from adsl-67-116-42-147.dsl.sntc01.pacbell.net ([IPv6:::ffff:67.116.42.147]:23066
-	"EHLO avtrex.com") by linux-mips.org with ESMTP id <S8224974AbVHZPhU>;
-	Fri, 26 Aug 2005 16:37:20 +0100
-Received: from [192.168.7.26] ([192.168.7.3]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Fri, 26 Aug 2005 08:43:01 -0700
-Message-ID: <430F3885.4010901@avtrex.com>
-Date:	Fri, 26 Aug 2005 08:43:01 -0700
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Mozilla Thunderbird 1.0.6-1.1.fc3 (X11/20050720)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	Krishna B S <bskris@gmail.com>
-CC:	linux-mips@linux-mips.org
-Subject: Re: Selection of 2.4.31 from CVS?
-References: <1943a41305082605013432e6f8@mail.gmail.com>
-In-Reply-To: <1943a41305082605013432e6f8@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Aug 2005 16:42:16 +0100 (BST)
+Received: from embeddededge.com ([IPv6:::ffff:209.113.146.155]:41744 "EHLO
+	penguin.netx4.com") by linux-mips.org with ESMTP
+	id <S8224974AbVHZPl5>; Fri, 26 Aug 2005 16:41:57 +0100
+Received: from [192.168.253.28] (tibook.embeddededge.com [192.168.253.28])
+	by penguin.netx4.com (8.12.8/8.12.9) with ESMTP id j7QFT7KW020449;
+	Fri, 26 Aug 2005 11:29:07 -0400
+In-Reply-To: <1125069898.14435.1215.camel@localhost.localdomain>
+References: <1125006681.14435.1065.camel@localhost.localdomain> <Pine.LNX.4.61L.0508261340460.9561@blysk.ds.pg.gda.pl> <1125069898.14435.1215.camel@localhost.localdomain>
+Mime-Version: 1.0 (Apple Message framework v622)
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Message-Id: <0cc66f0b0b5afa994744547699f687bf@embeddededge.com>
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 26 Aug 2005 15:43:01.0520 (UTC) FILETIME=[D7400900:01C5AA54]
-Return-Path: <ddaney@avtrex.com>
+Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
+	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
+From:	Dan Malek <dan@embeddededge.com>
+Subject: Re: patch / rfc
+Date:	Fri, 26 Aug 2005 11:47:36 -0400
+To:	ppopov@embeddedalley.com
+X-Mailer: Apple Mail (2.622)
+Return-Path: <dan@embeddededge.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8820
+X-archive-position: 8821
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: dan@embeddededge.com
 Precedence: bulk
 X-list: linux-mips
 
-I always use the 'linux_2_4' tag.  It is the HEAD of the 2.4.x kernels. 
-  Since 2.4.x has been in deep maintenance mode for quite some time now, 
-it is likely that the head of the branch is the best available.
 
-David Daney.
+On Aug 26, 2005, at 11:24 AM, Pete Popov wrote:
 
+>> void (*plat_setup_late)(void);
+>> [...]
+>> 	if (plat_setup_late)
+>> 		plat_setup_late()
+>>
+>> or something like that.
+>
+> Sure, we can do that.
 
-Krishna B S wrote:
-> Hi All,
-> 
-> I am looking for building a toolchain based on Linux-MIPS kernel for a
-> MIPS 4Kc board. When I look at CVS Weekly Snapshots
-> (http://www.longlandclan.hopto.org/~stuartl/mips-linux/sources/), I
-> find many versions of 2.4.31 for use.
-> 
-> Which one should I consider for my usage? Is there any thumb rule for
-> selecting a stable version of 2.4.31 from the CVS? Which CVS tag
-> should I use for 2.4.31?
-> 
-> Please help.
-> 
-> Regards,
-> Krishna
-> 
+If you do this, I suggest using another PowerPC-ism.  They
+have a ppc_md data structure that is filled with indirect function
+pointers to machine dependent functions.  We could create
+a mips_md that does this same thing.  The reason I like this
+is it collects all machine dependent information in a single
+place, so it's easy to see what functions/data are available
+and what you may need to do.  It's also clear when used
+that anything in this structure is a machine/board dependent
+function.  In the proper places, you then do what is shown above:
+
+	if (mips_md.plat_setup_late)
+		mips_md.plat_setup_late();
+
+Your earliest machine dependent set up can then fill this in
+based upon board options, or you can statically set it up if
+you need it even earlier and change it later.
+
+Thanks.
+
+	-- Dan

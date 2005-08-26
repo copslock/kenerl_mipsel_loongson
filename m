@@ -1,115 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Aug 2005 16:19:55 +0100 (BST)
-Received: from smtp101.biz.mail.mud.yahoo.com ([IPv6:::ffff:68.142.200.236]:41348
-	"HELO smtp101.biz.mail.mud.yahoo.com") by linux-mips.org with SMTP
-	id <S8224980AbVHZPTb>; Fri, 26 Aug 2005 16:19:31 +0100
-Received: (qmail 78643 invoked from network); 26 Aug 2005 15:25:03 -0000
-Received: from unknown (HELO ?192.168.1.101?) (ppopov@embeddedalley.com@63.194.214.47 with plain)
-  by smtp101.biz.mail.mud.yahoo.com with SMTP; 26 Aug 2005 15:25:03 -0000
-Subject: Re: patch / rfc
-From:	Pete Popov <ppopov@embeddedalley.com>
-Reply-To: ppopov@embeddedalley.com
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
-In-Reply-To: <Pine.LNX.4.61L.0508261340460.9561@blysk.ds.pg.gda.pl>
-References: <1125006681.14435.1065.camel@localhost.localdomain>
-	 <Pine.LNX.4.61L.0508261340460.9561@blysk.ds.pg.gda.pl>
-Content-Type: text/plain
-Organization: Embedded Alley Solutions, Inc
-Date:	Fri, 26 Aug 2005 08:24:57 -0700
-Message-Id: <1125069898.14435.1215.camel@localhost.localdomain>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.0.4 (2.0.4-4) 
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Aug 2005 16:37:44 +0100 (BST)
+Received: from adsl-67-116-42-147.dsl.sntc01.pacbell.net ([IPv6:::ffff:67.116.42.147]:23066
+	"EHLO avtrex.com") by linux-mips.org with ESMTP id <S8224974AbVHZPhU>;
+	Fri, 26 Aug 2005 16:37:20 +0100
+Received: from [192.168.7.26] ([192.168.7.3]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Fri, 26 Aug 2005 08:43:01 -0700
+Message-ID: <430F3885.4010901@avtrex.com>
+Date:	Fri, 26 Aug 2005 08:43:01 -0700
+From:	David Daney <ddaney@avtrex.com>
+User-Agent: Mozilla Thunderbird 1.0.6-1.1.fc3 (X11/20050720)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	Krishna B S <bskris@gmail.com>
+CC:	linux-mips@linux-mips.org
+Subject: Re: Selection of 2.4.31 from CVS?
+References: <1943a41305082605013432e6f8@mail.gmail.com>
+In-Reply-To: <1943a41305082605013432e6f8@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@embeddedalley.com>
+X-OriginalArrivalTime: 26 Aug 2005 15:43:01.0520 (UTC) FILETIME=[D7400900:01C5AA54]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8819
+X-archive-position: 8820
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@embeddedalley.com
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 2005-08-26 at 14:10 +0100, Maciej W. Rozycki wrote:
-> On Thu, 25 Aug 2005, Pete Popov wrote:
+I always use the 'linux_2_4' tag.  It is the HEAD of the 2.4.x kernels. 
+  Since 2.4.x has been in deep maintenance mode for quite some time now, 
+it is likely that the head of the branch is the best available.
+
+David Daney.
+
+
+Krishna B S wrote:
+> Hi All,
 > 
-> > This is an experimental (though tested) patch for early ioremap support
-> > on mips, before mem_init runs. Something like this is only needed on
-> > certain SoCs that have all of their I/O on high addresses such that they
-> > can't me ioremapped through kseg1.
+> I am looking for building a toolchain based on Linux-MIPS kernel for a
+> MIPS 4Kc board. When I look at CVS Weekly Snapshots
+> (http://www.longlandclan.hopto.org/~stuartl/mips-linux/sources/), I
+> find many versions of 2.4.31 for use.
 > 
->  Hmm, wouldn't a temporary large page and a wired TLB entry be an easier 
-> solution?  
-
-Yes, you can do that. It's just not as nice and the problem is that you
-either have to remember these wired mappings, flush them later, and
-properly ioremap them, or forever use up a few tlbs.
-
-> Somebody designing these SoCs must have taken such an approach 
-> into account when deciding to put I/O devices outside the space that's 
-> directly accessible through unmapped spaces, so I'd expect them all to be 
-> reachable in a single page of the largest size supported by a given 
-> implementation.  
-
-They may or may not be reachable with a single tlb. I've twice now seen
-new SoCs with a huge I/O address range. There may or may not be a good
-reason for this but we are not always hired early enough to change the
-design.
-
-> Especially as not all software is expected to implement 
-> fully-featured page management.  This entry would of course be no longer 
-> available after the final paging setup (TLBs tend to be too small for 
-> entries to be wasted).
-
-Right.
-
-> > I think the CONFIG_64 stuff needs to removed since we don't need it. The
-> > patch was tested on a MIPS32 CPU only. Some of the significant changes:
+> Which one should I consider for my usage? Is there any thumb rule for
+> selecting a stable version of 2.4.31 from the CVS? Which CVS tag
+> should I use for 2.4.31?
 > 
->  Well, MIPS64 has XPHYS, so there is no need for going through paging for 
-> ioremap() at all.
-
-Right. I can easily change that.
-
-> > - trap_init() became early_trap_init() since too much stuff happens
-> > there that is needed to support early ioremap. The old trap_init() is
-> > now empty.
+> Please help.
 > 
->  That just provides a strong suggestion considering an alternative 
-> approach, such as one proposed above is not a bad idea -- this changes the 
-> order subsystems are initialized for the MIPS platform, which makes it 
-> different from all the others and therefore problematic.
-
-Well, yes and no. On PowerPC, they do all this ahead of trap_init so
-their trap_init is empty as well. Looking at the code, I just don't see
-any reason why we can't do that init earlier.
-
-> > - added plat_setup_late() call. All ports would need to add that call,
-> > or at least a placeholder. Early ioremap is possible only at that point.
-> > However, most of the code in each plat_setup() can be moved to
-> > plat_setup_late()
+> Regards,
+> Krishna
 > 
->  Which means it should rather be a function pointer initialized somewhere 
-> earlier, possibly in plat_setup() and then:
-> 
-> static void __init null_plat_setup_late(void) { }
-> void (*plat_setup_late)(void) __initdata = null_plat_setup_late;
-> [...]
-> 	plat_setup_late()
-> 
-> or:
-> 
-> void (*plat_setup_late)(void);
-> [...]
-> 	if (plat_setup_late)
-> 		plat_setup_late()
-> 
-> or something like that.
-
-Sure, we can do that.
-
-Thanks,
-
-Pete

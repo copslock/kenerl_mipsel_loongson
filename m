@@ -1,89 +1,95 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Aug 2005 19:12:20 +0100 (BST)
-Received: from laf31-5-82-235-130-100.fbx.proxad.net ([IPv6:::ffff:82.235.130.100]:23548
-	"EHLO lexbox.fr") by linux-mips.org with ESMTP id <S8224984AbVHZSMB>;
-	Fri, 26 Aug 2005 19:12:01 +0100
-Received: from mail pickup service by lexbox.fr with Microsoft SMTPSVC;
-	 Fri, 26 Aug 2005 20:16:10 +0200
-From:	"Bryan Althouse" <bryan.althouse@3phoenix.com>
-Cc:	<linux-mips@linux-mips.org>
-Subject: RE: custom ide driver causes "Badness in smp_call_function"
-Message-ID: <000501c5aa6a$3beadc30$0300a8c0@intra.lexbox.org>
-Date:	Fri, 26 Aug 2005 20:16:09 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Aug 2005 14:31:58 +0100 (BST)
+Received: from 202-47-55-78.adsl.gil.com.au ([IPv6:::ffff:202.47.55.78]:45246
+	"EHLO longlandclan.hopto.org") by linux-mips.org with ESMTP
+	id <S8225006AbVH0Nbk>; Sat, 27 Aug 2005 14:31:40 +0100
+Received: (qmail 11495 invoked by uid 210); 27 Aug 2005 23:37:19 +1000
+Received: from 10.0.0.251 by www (envelope-from <redhatter@gentoo.org>, uid 201) with qmail-scanner-1.25st 
+ (spamassassin: 3.0.2. perlscan: 1.25st.  
+ Clear:RC:1(10.0.0.251):. 
+ Processed in 0.205289 secs); 27 Aug 2005 13:37:19 -0000
+Received: from beast.redhatters.home (HELO ?10.0.0.251?) (10.0.0.251)
+  by 192.168.5.1 with SMTP; 27 Aug 2005 23:37:19 +1000
+Message-ID: <43106C91.4070002@gentoo.org>
+Date:	Sat, 27 Aug 2005 23:37:21 +1000
+From:	Stuart Longland <redhatter@gentoo.org>
+Organization: Gentoo Foundation
+User-Agent: Mozilla Thunderbird 1.0.6 (X11/20050716)
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Office Outlook, Build 11.0.6353
-thread-index: AcWqUXV7nhNPHZleS2iU5erhy9yRrQAFfx5g
-In-Reply-To: <1125071244.7298.2.camel@localhost.localdomain>
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.3790.181
-To:	<unlisted-recipients:>,
-	<no To-header on input>,
-	"IMB Recipient 1" <mspop3connector.david.sanchez@lexbox.fr>
-X-archive-position: 8827
-X-ecartis-version: Ecartis v1.0.0
-Content-Class: urn:content-classes:message
-Importance: normal
-Priority: normal
-X-original-sender: bryan.althouse@3phoenix.com
-Precedence: bulk
-X-list:	linux-mips
-X-OriginalArrivalTime: 26 Aug 2005 18:16:10.0343 (UTC) FILETIME=[3C372770:01C5AA6A]
-Return-Path: <linux-mips-bounce@linux-mips.org>
+To:	Krishna B S <bskris@gmail.com>
+CC:	linux-mips@linux-mips.org
+Subject: Re: Selection of 2.4.31 from CVS?
+References: <1943a41305082605013432e6f8@mail.gmail.com>
+In-Reply-To: <1943a41305082605013432e6f8@mail.gmail.com>
+X-Enigmail-Version: 0.91.0.0
+OpenPGP: id=63264AB9;
+	url=http://dev.gentoo.org/~redhatter/gpgkey.asc
+Content-Type: multipart/signed; micalg=pgp-sha1;
+ protocol="application/pgp-signature";
+ boundary="------------enig83B0CE9E4A31CE94170490E4"
+Return-Path: <redhatter@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8828
+X-archive-position: 8829
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bryan.althouse@3phoenix.com
+X-original-sender: redhatter@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-Alan,
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--------------enig83B0CE9E4A31CE94170490E4
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Thanks for your suggestion.
-I'm not sure how to write a .fixup handler.  I did some Googling, but got
-nowhere.  I looked through drivers/ide to see what drive->unmask was doing.
-I found this in ide-io.c:
-     if (drive->unmask)
-          local_irq_enable();
-And this in ide-taskfile.c:
-     if (!drive->unmask)
-          local_irq_disable();
-I modified both of these files so that execution would be as if unmask = 1.
-This resulted in no change of behavior.
-
-Bryan  
-
------Original Message-----
-From: Alan Cox [mailto:alan@lxorguk.ukuu.org.uk] 
-Sent: Friday, August 26, 2005 11:47 AM
-To: Bryan Althouse
-Cc: linux-mips@linux-mips.org; 'Ralf Baechle'
-Subject: RE: custom ide driver causes "Badness in smp_call_function"
-
-On Gwe, 2005-08-26 at 10:58 -0400, Bryan Althouse wrote: 
-> Ralf,
+Krishna B S wrote:
+> Hi All,
 > 
-> The patch doesn't seem to make any difference. :(
+> I am looking for building a toolchain based on Linux-MIPS kernel for a
+> MIPS 4Kc board. When I look at CVS Weekly Snapshots
+> (http://www.longlandclan.hopto.org/~stuartl/mips-linux/sources/), I
+> find many versions of 2.4.31 for use.
+> 
+> Which one should I consider for my usage? Is there any thumb rule for
+> selecting a stable version of 2.4.31 from the CVS? Which CVS tag
+> should I use for 2.4.31?
 
-Assuming your hardware is sane another approach might be to force
-drive->unmask = 1. That will mean that PIO mode is running with
-interrupts enabled which should avoid the problem.
+These are all just created on a weekly basis via a cron job on my
+server.  Unless there have been CVS commits in the meantime to the
+kernel 2.4 branch, then they should be practically identical.
 
-Add a .fixup handler to your driver (assuming you are using a recent
-2.6.x) and in the handler do something like this:
+My script is too dumb to realise this, however, and so creates a new
+tarball of 2.4.31 each week regardless.  One of these days I'll probably
+start pruning out the stale versions there, but for the moment, there's
+plenty of space.
 
-+void ide_unmask_interrupts(ide_hwif_t *hwif)
-+{
-+       int i;
-+       for (i = 0; i < 2; i++) {
-+               ide_drive_t *drive = &hwif->drives[i];
-+               if(drive->present)
-+                       drive->unmask = 1;
-+       }
-+}
+I should also point out, that server is hosted on my ADSL connection, so
+you won't get wonderful download speeds.  If you can, using rsync or CVS
+direct to ftp.linux-mips.org is preferrable over downloading off this
+server.  ;-)
 
-hopefully that will be early enough.
+-- 
+ ____                   _             Stuart Longland (a.k.a Redhatter)
+/  _ \   ___    ___  __| |__  __   __ Gentoo Linux/MIPS Cobalt and Docs
+- (_) \ /   \  ;   \(__   __)/  \ /  \                        Developer
+ \    //  O _| / /\ \  | |  | /\ | /\ |
+ /   / \   /__| /  \ \ | |  | \/ | \/ |
+(___/   \____/|_;  |_| \_/   \__/ \__/ http://dev.gentoo.org/~redhatter
+
+--------------enig83B0CE9E4A31CE94170490E4
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.4 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://enigmail.mozdev.org
+
+iD8DBQFDEGyUuarJ1mMmSrkRAjHrAJ9sqKn3j6KBbKhMr6TfK5C0B7QlQgCggAvG
+nJfysdqVV2DFNqHb/LE2BnY=
+=kGK3
+-----END PGP SIGNATURE-----
+
+--------------enig83B0CE9E4A31CE94170490E4--

@@ -1,46 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Aug 2005 15:48:05 +0100 (BST)
-Received: from mba.ocn.ne.jp ([IPv6:::ffff:210.190.142.172]:46287 "HELO
-	smtp.mba.ocn.ne.jp") by linux-mips.org with SMTP
-	id <S8225006AbVH0Orq>; Sat, 27 Aug 2005 15:47:46 +0100
-Received: from localhost (p7002-ipad11funabasi.chiba.ocn.ne.jp [219.162.42.2])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id D050D8549; Sat, 27 Aug 2005 23:53:34 +0900 (JST)
-Date:	Sat, 27 Aug 2005 23:54:07 +0900 (JST)
-Message-Id: <20050827.235407.126142848.anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: Re: 64bit unaligned access on 32bit kernel
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20050827.225740.07645519.anemo@mba.ocn.ne.jp>
-References: <20050825.003548.41199755.anemo@mba.ocn.ne.jp>
-	<20050827.225740.07645519.anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Aug 2005 16:40:08 +0100 (BST)
+Received: from nevyn.them.org ([IPv6:::ffff:66.93.172.17]:21962 "EHLO
+	nevyn.them.org") by linux-mips.org with ESMTP id <S8225197AbVH1Pjs>;
+	Sun, 28 Aug 2005 16:39:48 +0100
+Received: from drow by nevyn.them.org with local (Exim 4.52)
+	id 1E9PLf-0006su-GT; Sun, 28 Aug 2005 11:45:31 -0400
+Date:	Sun, 28 Aug 2005 11:45:31 -0400
+From:	Daniel Jacobowitz <dan@debian.org>
+To:	Dave Johnson <djohnson+linuxmips@sw.starentnetworks.com>
+Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: gdb gets confused with o32 core files, WANT_COMPAT_REG_H needed?
+Message-ID: <20050828154530.GA26423@nevyn.them.org>
+References: <17162.16068.212165.340275@cortez.sw.starentnetworks.com>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <17162.16068.212165.340275@cortez.sw.starentnetworks.com>
+User-Agent: Mutt/1.5.8i
+Return-Path: <drow@nevyn.them.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8831
+X-archive-position: 8832
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Thu, 25 Aug 2005 00:35:48 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> said:
+On Mon, Aug 22, 2005 at 05:08:20PM -0400, Dave Johnson wrote:
+> 
+> I've been trying to fix core file support for 64bit kernel with o32
+> userspace (working against 2.6.12 cvs tag).
+> 
+> After applying the patch posted on 13 Feb 2005 from Daniel Jacobowitz
+> to fix binfmt_elfo32.c (any reason this didn't make it into CVS?),
+> I still ran into trouble with gdb not understanding the NT_PRSTATUS
+> header in the core file.
+> 
+> While Dan's fix makes the kernel use elf32 definitions, gdb was still
+> getting confused by pr_reg contained in the core file.
+> 
+> Dan's definition of ELF_CORE_COPY_REGS in binfmt_elfo32.c is copying
+> the registers using EF_R0 as 0 not 6 producing results into offset 0
+> through 37 not 6 through 43 as gdb expects for 32bit core files.
+> 
+> Below patch (applied after Dan's patch) writes the registers at offset
+> 6 making gdb much happier.
 
-anemo> MIPS kernel has been using asm-generic/unaligned.h since
-anemo> 2.6.12-rc2.  But the generic unaligned.h is not suitable for
-anemo> 32bit kernel because it uses 'unsigned long' for 64bit values.
+FYI, this has all been rearranged since - it did this correctly at the
+time.  I don't know why the patch was dropped.
 
-Since This is not MIPS specific, I report it to a bugzilla on kernel.org.
 
-http://bugzilla.kernel.org/show_bug.cgi?id=5138
-
----
-Atsushi Nemoto
+-- 
+Daniel Jacobowitz
+CodeSourcery, LLC

@@ -1,57 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Aug 2005 16:40:08 +0100 (BST)
-Received: from nevyn.them.org ([IPv6:::ffff:66.93.172.17]:21962 "EHLO
-	nevyn.them.org") by linux-mips.org with ESMTP id <S8225197AbVH1Pjs>;
-	Sun, 28 Aug 2005 16:39:48 +0100
-Received: from drow by nevyn.them.org with local (Exim 4.52)
-	id 1E9PLf-0006su-GT; Sun, 28 Aug 2005 11:45:31 -0400
-Date:	Sun, 28 Aug 2005 11:45:31 -0400
-From:	Daniel Jacobowitz <dan@debian.org>
-To:	Dave Johnson <djohnson+linuxmips@sw.starentnetworks.com>
-Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: gdb gets confused with o32 core files, WANT_COMPAT_REG_H needed?
-Message-ID: <20050828154530.GA26423@nevyn.them.org>
-References: <17162.16068.212165.340275@cortez.sw.starentnetworks.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <17162.16068.212165.340275@cortez.sw.starentnetworks.com>
-User-Agent: Mutt/1.5.8i
-Return-Path: <drow@nevyn.them.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Aug 2005 06:05:15 +0100 (BST)
+Received: from eth13.com-link.com ([IPv6:::ffff:208.242.241.164]:14517 "EHLO
+	real.realitydiluted.com") by linux-mips.org with ESMTP
+	id <S8225003AbVH3FFA>; Tue, 30 Aug 2005 06:05:00 +0100
+Received: from localhost ([127.0.0.1])
+	by real.realitydiluted.com with esmtp (Exim 4.50 #1 (Debian))
+	id 1E9xT0-0002TS-Pl; Mon, 29 Aug 2005 23:11:22 -0500
+Message-ID: <4313EA65.7090306@realitydiluted.com>
+Date:	Tue, 30 Aug 2005 00:11:01 -0500
+From:	"Steven J. Hill" <sjhill@realitydiluted.com>
+User-Agent: Debian Thunderbird 1.0.6 (X11/20050802)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	uclibc@uclibc.org, linux-mips@linux-mips.org
+Subject: NPTL uClibc status update...
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sjhill@realitydiluted.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8832
+X-archive-position: 8833
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@debian.org
+X-original-sender: sjhill@realitydiluted.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Aug 22, 2005 at 05:08:20PM -0400, Dave Johnson wrote:
-> 
-> I've been trying to fix core file support for 64bit kernel with o32
-> userspace (working against 2.6.12 cvs tag).
-> 
-> After applying the patch posted on 13 Feb 2005 from Daniel Jacobowitz
-> to fix binfmt_elfo32.c (any reason this didn't make it into CVS?),
-> I still ran into trouble with gdb not understanding the NT_PRSTATUS
-> header in the core file.
-> 
-> While Dan's fix makes the kernel use elf32 definitions, gdb was still
-> getting confused by pr_reg contained in the core file.
-> 
-> Dan's definition of ELF_CORE_COPY_REGS in binfmt_elfo32.c is copying
-> the registers using EF_R0 as 0 not 6 producing results into offset 0
-> through 37 not 6 through 43 as gdb expects for 32bit core files.
-> 
-> Below patch (applied after Dan's patch) writes the registers at offset
-> 6 making gdb much happier.
+Greetings.
 
-FYI, this has all been rearranged since - it did this correctly at the
-time.  I don't know why the patch was dropped.
+Now that I have all my work up to date and checked in, I thought I would
+give a brief status of NPTL. With the latest from 'uClibc-nptl' branch,
+binutils-2.16.1 and gcc-4.1.0-20050604 a complete NPTL toolchain can be
+built. This toolchain can also compile an entire buildroot. Granted, the
+binaries will not run, but this means that the new NPTL libraries are
+properly exporting all the symbols necessary for applications to build
+and weak symbols interactions are doing what they should.
 
+I am currently now building static test programs from glibc for uClibc to
+get TLS binaries for MIPS working. Don't expect a lot of activity in the
+upcoming days as I will be debugging all the problems with TLS on MIPS.
+Thanks for your patience.
 
--- 
-Daniel Jacobowitz
-CodeSourcery, LLC
+-Steve

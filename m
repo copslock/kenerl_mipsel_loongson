@@ -1,45 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Aug 2005 06:05:15 +0100 (BST)
-Received: from eth13.com-link.com ([IPv6:::ffff:208.242.241.164]:14517 "EHLO
-	real.realitydiluted.com") by linux-mips.org with ESMTP
-	id <S8225003AbVH3FFA>; Tue, 30 Aug 2005 06:05:00 +0100
-Received: from localhost ([127.0.0.1])
-	by real.realitydiluted.com with esmtp (Exim 4.50 #1 (Debian))
-	id 1E9xT0-0002TS-Pl; Mon, 29 Aug 2005 23:11:22 -0500
-Message-ID: <4313EA65.7090306@realitydiluted.com>
-Date:	Tue, 30 Aug 2005 00:11:01 -0500
-From:	"Steven J. Hill" <sjhill@realitydiluted.com>
-User-Agent: Debian Thunderbird 1.0.6 (X11/20050802)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	uclibc@uclibc.org, linux-mips@linux-mips.org
-Subject: NPTL uClibc status update...
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sjhill@realitydiluted.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Aug 2005 11:35:18 +0100 (BST)
+Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:34070 "EHLO
+	bacchus.net.dhis.org") by linux-mips.org with ESMTP
+	id <S8225224AbVH3Ke5>; Tue, 30 Aug 2005 11:34:57 +0100
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j7UAew9s004916;
+	Tue, 30 Aug 2005 11:40:58 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j7UAeuDp004915;
+	Tue, 30 Aug 2005 11:40:56 +0100
+Date:	Tue, 30 Aug 2005 11:40:56 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Andrew Morton <akpm@osdl.org>, Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org
+Subject: [PATCH] 64bit unaligned access on 32bit kernel
+Message-ID: <20050830104056.GA4710@linux-mips.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8833
+X-archive-position: 8834
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sjhill@realitydiluted.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Greetings.
+I've rewriten Atushi's fix for the 64-bit put_unaligned on 32-bit systems
+bug to generate more efficient code.
 
-Now that I have all my work up to date and checked in, I thought I would
-give a brief status of NPTL. With the latest from 'uClibc-nptl' branch,
-binutils-2.16.1 and gcc-4.1.0-20050604 a complete NPTL toolchain can be
-built. This toolchain can also compile an entire buildroot. Granted, the
-binaries will not run, but this means that the new NPTL libraries are
-properly exporting all the symbols necessary for applications to build
-and weak symbols interactions are doing what they should.
+This case has buzilla URL http://bugzilla.kernel.org/show_bug.cgi?id=5138.
 
-I am currently now building static test programs from glibc for uClibc to
-get TLS binaries for MIPS working. Don't expect a lot of activity in the
-upcoming days as I will be debugging all the problems with TLS on MIPS.
-Thanks for your patience.
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 
--Steve
+diff -u -r1.3 unaligned.h
+--- suckage/include/asm-generic/unaligned.h 19 May 2005 12:08:41 -0000
++++ suckage/include/asm-generic/unaligned.h 30 Aug 2005 10:28:23 -0000
+@@ -16,9 +16,9 @@
+  * The main single-value unaligned transfer routines.
+  */
+ #define get_unaligned(ptr) \
+-	((__typeof__(*(ptr)))__get_unaligned((ptr), sizeof(*(ptr))))
++	__get_unaligned((ptr), sizeof(*(ptr)))
+ #define put_unaligned(x,ptr) \
+-	__put_unaligned((unsigned long)(x), (ptr), sizeof(*(ptr)))
++	__put_unaligned((__u64)(x), (ptr), sizeof(*(ptr)))
+ 
+ /*
+  * This function doesn't actually exist.  The idea is that when
+@@ -36,19 +36,19 @@
+  * Elemental unaligned loads 
+  */
+ 
+-static inline unsigned long __uldq(const __u64 *addr)
++static inline __u64 __uldq(const __u64 *addr)
+ {
+ 	const struct __una_u64 *ptr = (const struct __una_u64 *) addr;
+ 	return ptr->x;
+ }
+ 
+-static inline unsigned long __uldl(const __u32 *addr)
++static inline __u32 __uldl(const __u32 *addr)
+ {
+ 	const struct __una_u32 *ptr = (const struct __una_u32 *) addr;
+ 	return ptr->x;
+ }
+ 
+-static inline unsigned long __uldw(const __u16 *addr)
++static inline __u16 __uldw(const __u16 *addr)
+ {
+ 	const struct __una_u16 *ptr = (const struct __una_u16 *) addr;
+ 	return ptr->x;
+@@ -78,7 +78,7 @@
+ 
+ #define __get_unaligned(ptr, size) ({		\
+ 	const void *__gu_p = ptr;		\
+-	unsigned long val;			\
++	__typeof__(*(ptr)) val;			\
+ 	switch (size) {				\
+ 	case 1:					\
+ 		val = *(const __u8 *)__gu_p;	\

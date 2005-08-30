@@ -1,50 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Aug 2005 17:36:44 +0100 (BST)
-Received: from mba.ocn.ne.jp ([IPv6:::ffff:210.190.142.172]:41180 "HELO
-	smtp.mba.ocn.ne.jp") by linux-mips.org with SMTP
-	id <S8225321AbVH3Qfr>; Tue, 30 Aug 2005 17:35:47 +0100
-Received: from localhost (p2237-ipad27funabasi.chiba.ocn.ne.jp [220.107.193.237])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 5810584DA; Wed, 31 Aug 2005 01:41:53 +0900 (JST)
-Date:	Wed, 31 Aug 2005 01:42:36 +0900 (JST)
-Message-Id: <20050831.014236.122253682.anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: pcibios_bus_to_resource prototype.
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Aug 2005 17:46:26 +0100 (BST)
+Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:50706 "EHLO
+	bacchus.net.dhis.org") by linux-mips.org with ESMTP
+	id <S8225329AbVH3QqI>; Tue, 30 Aug 2005 17:46:08 +0100
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j7UGqDAG017218;
+	Tue, 30 Aug 2005 17:52:13 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j7UGqDHL017217;
+	Tue, 30 Aug 2005 17:52:13 +0100
+Date:	Tue, 30 Aug 2005 17:52:13 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: pcibios_bus_to_resource prototype.
+Message-ID: <20050830165213.GF2605@linux-mips.org>
+References: <20050831.014236.122253682.anemo@mba.ocn.ne.jp>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20050831.014236.122253682.anemo@mba.ocn.ne.jp>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8835
+X-archive-position: 8836
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-MIPS lacks pcibios_bus_to_resource prototype which is new on 2.6.13.
+On Wed, Aug 31, 2005 at 01:42:36AM +0900, Atsushi Nemoto wrote:
 
-Index: include/asm-mips/pci.h
-===================================================================
-RCS file: /home/cvs/linux/include/asm-mips/pci.h,v
-retrieving revision 1.63
-diff -u -r1.63 pci.h
---- include/asm-mips/pci.h	15 Aug 2005 15:16:56 -0000	1.63
-+++ include/asm-mips/pci.h	30 Aug 2005 16:31:55 -0000
-@@ -143,6 +143,9 @@
- extern void pcibios_resource_to_bus(struct pci_dev *dev,
- 	struct pci_bus_region *region, struct resource *res);
- 
-+extern void pcibios_bus_to_resource(struct pci_dev *dev, struct resource *res,
-+				    struct pci_bus_region *region);
-+
- #ifdef CONFIG_PCI_DOMAINS
- 
- #define pci_domain_nr(bus) ((struct pci_controller *)(bus)->sysdata)->index
+> MIPS lacks pcibios_bus_to_resource prototype which is new on 2.6.13.
+
+Applied.  Thanks,
+
+  Ralf

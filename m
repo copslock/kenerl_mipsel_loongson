@@ -1,41 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Aug 2005 17:46:26 +0100 (BST)
-Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:50706 "EHLO
-	bacchus.net.dhis.org") by linux-mips.org with ESMTP
-	id <S8225329AbVH3QqI>; Tue, 30 Aug 2005 17:46:08 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j7UGqDAG017218;
-	Tue, 30 Aug 2005 17:52:13 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j7UGqDHL017217;
-	Tue, 30 Aug 2005 17:52:13 +0100
-Date:	Tue, 30 Aug 2005 17:52:13 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: pcibios_bus_to_resource prototype.
-Message-ID: <20050830165213.GF2605@linux-mips.org>
-References: <20050831.014236.122253682.anemo@mba.ocn.ne.jp>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20050831.014236.122253682.anemo@mba.ocn.ne.jp>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Aug 2005 14:20:28 +0100 (BST)
+Received: from fep16.inet.fi ([IPv6:::ffff:194.251.242.241]:10459 "EHLO
+	fep16.inet.fi") by linux-mips.org with ESMTP id <S8225326AbVHaNUG>;
+	Wed, 31 Aug 2005 14:20:06 +0100
+Received: from [127.0.0.1] ([80.223.109.59]) by fep16.inet.fi with ESMTP
+          id <20050831132618.OBUA26717.fep16.inet.fi@[127.0.0.1]>
+          for <linux-mips@linux-mips.org>; Wed, 31 Aug 2005 16:26:18 +0300
+Message-ID: <4315B006.8090508@mbnet.fi>
+Date:	Wed, 31 Aug 2005 16:26:30 +0300
+From:	Mikael Nousiainen <turja@mbnet.fi>
+User-Agent: Mozilla Thunderbird 1.0.2 (Windows/20050317)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	linux-mips@linux-mips.org
+Subject: SGI Indy VINO video driver version 0.0.5
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <turja@mbnet.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8836
+X-archive-position: 8837
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: turja@mbnet.fi
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Aug 31, 2005 at 01:42:36AM +0900, Atsushi Nemoto wrote:
+A new version of the VINO drivers has been released (again... :)
+This is probably the final version of the driver as almost everything 
+that's needed is now implemented.
 
-> MIPS lacks pcibios_bus_to_resource prototype which is new on 2.6.13.
+I've also made a nice test application for viewing captured video.
 
-Applied.  Thanks,
+http://www.mbnet.fi/~turja/vino/
 
-  Ralf
+
+Mikael Nousiainen

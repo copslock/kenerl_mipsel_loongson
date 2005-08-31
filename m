@@ -1,30 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Aug 2005 16:49:32 +0100 (BST)
-Received: from mx01.qsc.de ([IPv6:::ffff:213.148.129.14]:52438 "EHLO
-	mx01.qsc.de") by linux-mips.org with ESMTP id <S8225326AbVHaPtP>;
-	Wed, 31 Aug 2005 16:49:15 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Aug 2005 17:04:54 +0100 (BST)
+Received: from mx01.qsc.de ([IPv6:::ffff:213.148.129.14]:2268 "EHLO
+	mx01.qsc.de") by linux-mips.org with ESMTP id <S8225554AbVHaQEe>;
+	Wed, 31 Aug 2005 17:04:34 +0100
 Received: from port-195-158-167-225.dynamic.qsc.de ([195.158.167.225] helo=hattusa.textio)
 	by mx01.qsc.de with esmtp (Exim 3.35 #1)
-	id 1EAUvt-0007JX-00; Wed, 31 Aug 2005 17:55:25 +0200
+	id 1EAVAj-00004z-00; Wed, 31 Aug 2005 18:10:45 +0200
 Received: from ths by hattusa.textio with local (Exim 4.52)
-	id 1EAUvu-0005WE-Ht; Wed, 31 Aug 2005 17:55:26 +0200
-Date:	Wed, 31 Aug 2005 17:55:26 +0200
+	id 1EAVAl-0005jG-2D; Wed, 31 Aug 2005 18:10:47 +0200
+Date:	Wed, 31 Aug 2005 18:10:47 +0200
 To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	"Stephen P. Becker" <geoman@gentoo.org>,
-	'Linux/MIPS Development' <linux-mips@linux-mips.org>
+Cc:	linux-mips@linux-mips.org
 Subject: Re: compiling kernel 2.6.13
-Message-ID: <20050831155526.GW21717@hattusa.textio>
-References: <200508311459.47273.djd20@kent.ac.uk> <20050831150256.GC3377@linux-mips.org> <4315CD1C.80203@gentoo.org> <20050831153509.GF3377@linux-mips.org>
+Message-ID: <20050831161046.GY21717@hattusa.textio>
+References: <200508311459.47273.djd20@kent.ac.uk> <20050831151223.GV21717@hattusa.textio> <20050831152537.GE3377@linux-mips.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20050831153509.GF3377@linux-mips.org>
+In-Reply-To: <20050831152537.GE3377@linux-mips.org>
 User-Agent: Mutt/1.5.10i
 From:	Thiemo Seufer <ths@networkno.de>
 Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8844
+X-archive-position: 8845
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,21 +32,17 @@ Precedence: bulk
 X-list: linux-mips
 
 Ralf Baechle wrote:
-> On Wed, Aug 31, 2005 at 11:30:36AM -0400, Stephen P. Becker wrote:
+> On Wed, Aug 31, 2005 at 05:12:23PM +0200, Thiemo Seufer wrote:
 > 
-> > >Daring.  Hardly anybody is using EISA on that machine and even less so on
-> > >64-bit, expect to find bugs.
-> > 
-> > Furthermore, 64-bit kernels are somewhat broken on ip22 right now. 
-> > Something is wrong with memory allocation, and it really screws a lot of 
-> > things up.  Off the top of my head, you won't be able to turn on swap, 
-> > mount a ricerfs partition, or dd large blocks from /dev/zero.  You would 
-> > be much better of sticking with 32-bit at this time.
+> > You could try the patch in http://people.debian.org/~ths/foo/ip22-eisa.diff
+> > which fixes that problem. I don't have the hardware to test it, and so far
+> > nobody else cared to tell me if works.
 > 
-> But that seems an IP22-specific problem.
+> At least it looks like an improvment and since it's probably save to
+> consider the current IP22 EISA code as broken I wouldn't mind if you want
+> to check this one in ...
 
-I _think_ it hits every 64bit kernel which uses mappings in CKSEG0.
-Do you know a system where this works?
+Committed.
 
 
 Thiemo

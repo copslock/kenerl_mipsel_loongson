@@ -1,48 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Aug 2005 16:24:48 +0100 (BST)
-Received: from lennier.cc.vt.edu ([IPv6:::ffff:198.82.162.213]:41448 "EHLO
-	lennier.cc.vt.edu") by linux-mips.org with ESMTP
-	id <S8225326AbVHaPY2>; Wed, 31 Aug 2005 16:24:28 +0100
-Received: from zidane.cc.vt.edu (IDENT:mirapoint@evil-zidane.cc.vt.edu [10.1.1.13])
-	by lennier.cc.vt.edu (8.12.11/8.12.11) with ESMTP id j7VFUdb1016285
-	for <linux-mips@linux-mips.org>; Wed, 31 Aug 2005 11:30:39 -0400
-Received: from [128.173.184.73] (gs4073.geos.vt.edu [128.173.184.73])
-	by zidane.cc.vt.edu (MOS 3.6.4-CR)
-	with ESMTP id DYB20572;
-	Wed, 31 Aug 2005 11:30:37 -0400 (EDT)
-Message-ID: <4315CD1C.80203@gentoo.org>
-Date:	Wed, 31 Aug 2005 11:30:36 -0400
-From:	"Stephen P. Becker" <geoman@gentoo.org>
-User-Agent: Mozilla Thunderbird 1.0.6 (X11/20050807)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	"'Linux/MIPS Development'" <linux-mips@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Aug 2005 16:29:21 +0100 (BST)
+Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:63518 "EHLO
+	bacchus.net.dhis.org") by linux-mips.org with ESMTP
+	id <S8225326AbVHaP3B>; Wed, 31 Aug 2005 16:29:01 +0100
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j7VFZAgM008235;
+	Wed, 31 Aug 2005 16:35:10 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j7VFZAHk008234;
+	Wed, 31 Aug 2005 16:35:10 +0100
+Date:	Wed, 31 Aug 2005 16:35:10 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	"Stephen P. Becker" <geoman@gentoo.org>
+Cc:	"'Linux/MIPS Development'" <linux-mips@linux-mips.org>
 Subject: Re: compiling kernel 2.6.13
-References: <200508311459.47273.djd20@kent.ac.uk> <20050831150256.GC3377@linux-mips.org>
-In-Reply-To: <20050831150256.GC3377@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <geoman@gentoo.org>
+Message-ID: <20050831153509.GF3377@linux-mips.org>
+References: <200508311459.47273.djd20@kent.ac.uk> <20050831150256.GC3377@linux-mips.org> <4315CD1C.80203@gentoo.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4315CD1C.80203@gentoo.org>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8842
+X-archive-position: 8843
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geoman@gentoo.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
->>eisa support is enabled and i'm compiling a 64 bit kernel.
-> 
-> 
-> Daring.  Hardly anybody is using EISA on that machine and even less so on
-> 64-bit, expect to find bugs.
+On Wed, Aug 31, 2005 at 11:30:36AM -0400, Stephen P. Becker wrote:
 
-Furthermore, 64-bit kernels are somewhat broken on ip22 right now. 
-Something is wrong with memory allocation, and it really screws a lot of 
-things up.  Off the top of my head, you won't be able to turn on swap, 
-mount a ricerfs partition, or dd large blocks from /dev/zero.  You would 
-be much better of sticking with 32-bit at this time.
+> >Daring.  Hardly anybody is using EISA on that machine and even less so on
+> >64-bit, expect to find bugs.
+> 
+> Furthermore, 64-bit kernels are somewhat broken on ip22 right now. 
+> Something is wrong with memory allocation, and it really screws a lot of 
+> things up.  Off the top of my head, you won't be able to turn on swap, 
+> mount a ricerfs partition, or dd large blocks from /dev/zero.  You would 
+> be much better of sticking with 32-bit at this time.
 
--Steve
+But that seems an IP22-specific problem.
+
+  Ralf

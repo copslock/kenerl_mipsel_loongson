@@ -1,78 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Sep 2005 17:10:40 +0100 (BST)
-Received: from rwcrmhc14.comcast.net ([IPv6:::ffff:204.127.198.54]:40396 "EHLO
-	rwcrmhc12.comcast.net") by linux-mips.org with ESMTP
-	id <S8225398AbVIAQKX>; Thu, 1 Sep 2005 17:10:23 +0100
-Received: from ba3pi (wsip-70-184-242-86.dc.dc.cox.net[70.184.242.86])
-          by comcast.net (rwcrmhc14) with SMTP
-          id <2005090116163801400e9lt7e>; Thu, 1 Sep 2005 16:16:39 +0000
-From:	"Bryan Althouse" <bryan.althouse@3phoenix.com>
-To:	"'Ralf Baechle'" <ralf@linux-mips.org>
-Cc:	<linux-mips@linux-mips.org>
-Subject: RE: custom ide driver causes "Badness in smp_call_function"
-Date:	Thu, 1 Sep 2005 12:15:31 -0400
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Office Outlook, Build 11.0.6353
-Thread-Index: AcWqR/nIHNFE/tghSraa2RLTN9Py/gEUAOVw
-In-Reply-To: <20050826141047.GA8777@linux-mips.org>
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
-Message-Id: <20050901161023Z8225398-3678+8096@linux-mips.org>
-Return-Path: <bryan.althouse@3phoenix.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Sep 2005 17:46:43 +0100 (BST)
+Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:6670 "EHLO
+	bacchus.net.dhis.org") by linux-mips.org with ESMTP
+	id <S8225398AbVIAQq1>; Thu, 1 Sep 2005 17:46:27 +0100
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j81GqakJ017648;
+	Thu, 1 Sep 2005 17:52:36 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j81GqZiN017647;
+	Thu, 1 Sep 2005 17:52:35 +0100
+Date:	Thu, 1 Sep 2005 17:52:35 +0100
+From:	Ralf Baechle DL5RB <ralf@linux-mips.org>
+To:	Bryan Althouse <bryan.althouse@3phoenix.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: custom ide driver causes "Badness in smp_call_function"
+Message-ID: <20050901165235.GI2876@linux-mips.org>
+References: <20050826141047.GA8777@linux-mips.org> <20050901161023Z8225398-3678+8096@linux-mips.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20050901161023Z8225398-3678+8096@linux-mips.org>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8858
+X-archive-position: 8859
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bryan.althouse@3phoenix.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Ralf,
+On Thu, Sep 01, 2005 at 12:15:31PM -0400, Bryan Althouse wrote:
 
-I've done more testing with your patch.  When I use it with my non-SMP
-kernel, disk access will cause a panic with a cache error message.  Is this
-patch only intended for SMP, or is this a legitimate problem?
+> I've done more testing with your patch.  When I use it with my non-SMP
+> kernel, disk access will cause a panic with a cache error message.  Is this
+> patch only intended for SMP, or is this a legitimate problem?
 
-Bryan
+There is a real problem but it only hits on SMP.
 
+(The implementation is a hack though, it makes assumptions about the IDE
+code's internal workings)
 
-Index: include/asm-mips/mach-generic/ide.h
-===================================================================
-RCS file: /home/cvs/linux/include/asm-mips/mach-generic/ide.h,v
-retrieving revision 1.9
-diff -u -r1.9 ide.h
---- include/asm-mips/mach-generic/ide.h	19 Apr 2005 12:26:59 -0000	1.9
-+++ include/asm-mips/mach-generic/ide.h	26 Aug 2005 14:04:38 -0000
-@@ -19,6 +19,7 @@
- #include <linux/pci.h>
- #include <linux/stddef.h>
- #include <asm/processor.h>
-+#include <asm/cacheflush.h>
- 
- #ifndef MAX_HWIFS
- # ifdef CONFIG_BLK_DEV_IDEPCI
-@@ -105,12 +106,14 @@
- 
- /* MIPS port and memory-mapped I/O string operations.  */
- 
--static inline void __ide_flush_dcache_range(unsigned long addr, unsigned
-long size)
-+static inline void __ide_flush_dcache_range(unsigned long addr,
-+	unsigned long size)
- {
--	if (cpu_has_dc_aliases) {
--		unsigned long end = addr + size;
--		for (; addr < end; addr += PAGE_SIZE)
--			flush_dcache_page(virt_to_page(addr));
-+	unsigned long end = addr + size;
-+
-+	while (addr < end) {
-+		SetPageDcacheDirty(virt_to_page(addr));
-+		addr += PAGE_SIZE;
- 	}
- }
- 
+  Ralf

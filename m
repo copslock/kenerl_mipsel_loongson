@@ -1,87 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Sep 2005 07:58:58 +0100 (BST)
-Received: from deliver-1.mx.triera.net ([IPv6:::ffff:213.161.0.31]:15271 "HELO
-	deliver-1.mx.triera.net") by linux-mips.org with SMTP
-	id <S8225393AbVIAG6k>; Thu, 1 Sep 2005 07:58:40 +0100
-Received: from localhost (in-2.mx.triera.net [213.161.0.26])
-	by deliver-1.mx.triera.net (Postfix) with ESMTP id F2E48C019
-	for <linux-mips@linux-mips.org>; Thu,  1 Sep 2005 09:04:45 +0200 (CEST)
-Received: from smtp.triera.net (smtp.triera.net [213.161.0.30])
-	by in-2.mx.triera.net (Postfix) with SMTP id EEB571BC07B
-	for <linux-mips@linux-mips.org>; Thu,  1 Sep 2005 09:04:46 +0200 (CEST)
-Received: from [172.18.1.53] (unknown [213.161.20.168])
-	by smtp.triera.net (Postfix) with ESMTP id A2A7C1A18AD
-	for <linux-mips@linux-mips.org>; Thu,  1 Sep 2005 09:04:46 +0200 (CEST)
-Subject: DBAU1200 network performacne
-From:	Matej Kupljen <matej.kupljen@ultra.si>
-To:	linux-mips@linux-mips.org
-Content-Type: text/plain
-Date:	Thu, 01 Sep 2005 09:03:11 +0200
-Message-Id: <1125558191.6063.17.camel@localhost.localdomain>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Sep 2005 09:27:42 +0100 (BST)
+Received: from mx01.qsc.de ([IPv6:::ffff:213.148.129.14]:19915 "EHLO
+	mx01.qsc.de") by linux-mips.org with ESMTP id <S8225327AbVIAI1X>;
+	Thu, 1 Sep 2005 09:27:23 +0100
+Received: from port-195-158-167-225.dynamic.qsc.de ([195.158.167.225] helo=hattusa.textio)
+	by mx01.qsc.de with esmtp (Exim 3.35 #1)
+	id 1EAkVo-0002tP-00; Thu, 01 Sep 2005 10:33:32 +0200
+Received: from ths by hattusa.textio with local (Exim 4.52)
+	id 1EAkVq-00019E-2F; Thu, 01 Sep 2005 10:33:34 +0200
+Date:	Thu, 1 Sep 2005 10:33:34 +0200
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	ralf@linux-mips.org, geoman@gentoo.org, linux-mips@linux-mips.org
+Subject: Re: compiling kernel 2.6.13
+Message-ID: <20050901083333.GB26161@hattusa.textio>
+References: <4315CD1C.80203@gentoo.org> <20050831153509.GF3377@linux-mips.org> <20050831155526.GW21717@hattusa.textio> <20050901.012247.36920050.anemo@mba.ocn.ne.jp>
 Mime-Version: 1.0
-X-Mailer: Evolution 2.2.2 
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: Triera AV Service
-Return-Path: <matej.kupljen@ultra.si>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20050901.012247.36920050.anemo@mba.ocn.ne.jp>
+User-Agent: Mutt/1.5.10i
+From:	Thiemo Seufer <ths@networkno.de>
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8852
+X-archive-position: 8853
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matej.kupljen@ultra.si
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-Hi
+Atsushi Nemoto wrote:
+> >>>>> On Wed, 31 Aug 2005 17:55:26 +0200, Thiemo Seufer <ths@networkno.de> said:
+> >> But that seems an IP22-specific problem.
+> 
+> ths> I _think_ it hits every 64bit kernel which uses mappings in
+> ths> CKSEG0.  Do you know a system where this works?
+> 
+> Though I do not have IP22, I think this line in mach-ip22/space.h is
+> inappropriate.
+> 
+> #define MAP_BASE		0xffffffffc0000000
+> 
+> It will make VMALLOC_END in pgtabe-64.h overflow.
+> 
+> #define VMALLOC_START		MAP_BASE
+> #define VMALLOC_END	\
+> 	(VMALLOC_START + PTRS_PER_PGD * PTRS_PER_PMD * PTRS_PER_PTE * PAGE_SIZE)
+> 
+> Shoule we use 0xc000000000000000 as MAP_BASE for IP22 ?
 
-I am working on DBAu1200 platform and I am testing network
-performance with the smc91111 driver from AMD and smc91x
-driver, which should be preferred (right?).
-
-Tests are done on kernel 2.6.11-rc5 with the netperf,
-running netserver on target and netperf on host.
-If I run netserver on host and netperf on target, I get:
-------------------------------------------------------------------------
-recv_response: partial response received: 0 bytes
-
-What does that mean?
-
-OK, the results:
-
-1) With the smc91111 I get:
-------------------------------------------------------------------------
-TCP STREAM TEST from 0.0.0.0 (0.0.0.0) port 0 AF_INET to xxx.xxx.xxx.xxx
-(xxx.xxx.xxx.xxx) port 0 AF_INET
-Recv   Send    Send                          
-Socket Socket  Message  Elapsed              
-Size   Size    Size     Time     Throughput  
-bytes  bytes   bytes    secs.    10^6bits/sec  
-
- 43689  16384  16384    30.02      20.95   
+Thanks, this helped!
 
 
-2) With the smc91x I get:
-------------------------------------------------------------------------
-TCP STREAM TEST from 0.0.0.0 (0.0.0.0) port 0 AF_INET to xxx.xxx.xxx.xxx
-(xxx.xxx.xxx.xxx) port 0 AF_INET
-Recv   Send    Send                          
-Socket Socket  Message  Elapsed              
-Size   Size    Size     Time     Throughput  
-bytes  bytes   bytes    secs.    10^6bits/sec  
-
- 43689  16384  16384    30.01      27.61   
-
-
-Is this expected trough-put?
-Can somebody else test it, please?
-
-Oh, when using smc91x I get:
-eth0: link down
-Sending BOOTP requests .<6>eth0: link up, 100Mbps, full-duplex, lpa
-0x4DE1
-
-So, link should be 100Mbps.
-
-BR,
-Matej
+Thiemo

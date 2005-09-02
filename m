@@ -1,56 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Sep 2005 13:41:24 +0100 (BST)
-Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:43782
-	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
-	id <S8225325AbVIBMlB>; Fri, 2 Sep 2005 13:41:01 +0100
-Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 2 Sep 2005 12:49:03 UT
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id B27D61FE03;
-	Fri,  2 Sep 2005 21:48:59 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 9E5D41797B;
-	Fri,  2 Sep 2005 21:48:59 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id j82Cmxoj003054;
-	Fri, 2 Sep 2005 21:48:59 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Fri, 02 Sep 2005 21:48:59 +0900 (JST)
-Message-Id: <20050902.214859.122594668.nemoto@toshiba-tops.co.jp>
-To:	ralf@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Sep 2005 14:23:48 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:58632 "EHLO
+	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225348AbVIBNXc>; Fri, 2 Sep 2005 14:23:32 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 8A77DE1C8E; Fri,  2 Sep 2005 15:29:55 +0200 (CEST)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 10539-07; Fri,  2 Sep 2005 15:29:55 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 54F91E1C7B; Fri,  2 Sep 2005 15:29:55 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j82DTwIt004015;
+	Fri, 2 Sep 2005 15:29:58 +0200
+Date:	Fri, 2 Sep 2005 14:30:06 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Thiemo Seufer <ths@networkno.de>
 Cc:	linux-mips@linux-mips.org
-Subject: Re: custom ide driver causes "Badness in smp_call_function"
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20050826141047.GA8777@linux-mips.org>
-References: <20050825154249.GC2731@linux-mips.org>
-	<20050825211218Z8225471-3678+7505@linux-mips.org>
-	<20050826141047.GA8777@linux-mips.org>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Subject: Re: CVS Update@linux-mips.org: linux
+In-Reply-To: <20050902120125.GC4751@hattusa.textio>
+Message-ID: <Pine.LNX.4.61L.0509021428340.19580@blysk.ds.pg.gda.pl>
+References: <20050902095417Z8224772-3678+8160@linux-mips.org>
+ <Pine.LNX.4.61L.0509021231390.19580@blysk.ds.pg.gda.pl>
+ <20050902120125.GC4751@hattusa.textio>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.85.1/1053/Fri Sep  2 09:01:53 2005 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8864
+X-archive-position: 8865
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Fri, 26 Aug 2005 15:10:47 +0100, Ralf Baechle <ralf@linux-mips.org> said:
-ralf> Try this patch below and let me know.  I would also like to ask
-ralf> those people who used to suffer from aliases with IDE PIO to try
-ralf> this patch.
+On Fri, 2 Sep 2005, Thiemo Seufer wrote:
 
-I'm using CPU which suffer from dcache aliasing.
-I tried this patch for IDE PIO and it seems work fine too.
+> Hm, I made it the same as is used in pg-r4k.c without looking up
+> the meaning of the high bits.
 
-Maybe Cobalt user can try it.  Anyone?  :-)
+ You have picked up the wrong variation. ;-)  Thanks for fixing up.
 
----
-Atsushi Nemoto
+  Maciej

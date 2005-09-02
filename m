@@ -1,51 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Sep 2005 12:55:18 +0100 (BST)
-Received: from mx02.qsc.de ([IPv6:::ffff:213.148.130.14]:34213 "EHLO
-	mx02.qsc.de") by linux-mips.org with ESMTP id <S8224772AbVIBLzB>;
-	Fri, 2 Sep 2005 12:55:01 +0100
-Received: from port-195-158-167-225.dynamic.qsc.de ([195.158.167.225] helo=hattusa.textio)
-	by mx02.qsc.de with esmtp (Exim 3.35 #1)
-	id 1EBAEV-000675-00
-	for linux-mips@linux-mips.org; Fri, 02 Sep 2005 14:01:23 +0200
-Received: from ths by hattusa.textio with local (Exim 4.52)
-	id 1EBAEX-0007wi-9n
-	for linux-mips@linux-mips.org; Fri, 02 Sep 2005 14:01:25 +0200
-Date:	Fri, 2 Sep 2005 14:01:25 +0200
-To:	linux-mips@linux-mips.org
-Subject: Re: CVS Update@linux-mips.org: linux
-Message-ID: <20050902120125.GC4751@hattusa.textio>
-References: <20050902095417Z8224772-3678+8160@linux-mips.org> <Pine.LNX.4.61L.0509021231390.19580@blysk.ds.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Sep 2005 13:41:24 +0100 (BST)
+Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:43782
+	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
+	id <S8225325AbVIBMlB>; Fri, 2 Sep 2005 13:41:01 +0100
+Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 2 Sep 2005 12:49:03 UT
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id B27D61FE03;
+	Fri,  2 Sep 2005 21:48:59 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 9E5D41797B;
+	Fri,  2 Sep 2005 21:48:59 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id j82Cmxoj003054;
+	Fri, 2 Sep 2005 21:48:59 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Fri, 02 Sep 2005 21:48:59 +0900 (JST)
+Message-Id: <20050902.214859.122594668.nemoto@toshiba-tops.co.jp>
+To:	ralf@linux-mips.org
+Cc:	linux-mips@linux-mips.org
+Subject: Re: custom ide driver causes "Badness in smp_call_function"
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20050826141047.GA8777@linux-mips.org>
+References: <20050825154249.GC2731@linux-mips.org>
+	<20050825211218Z8225471-3678+7505@linux-mips.org>
+	<20050826141047.GA8777@linux-mips.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.61L.0509021231390.19580@blysk.ds.pg.gda.pl>
-User-Agent: Mutt/1.5.10i
-From:	Thiemo Seufer <ths@networkno.de>
-Return-Path: <ths@networkno.de>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8863
+X-archive-position: 8864
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Maciej W. Rozycki wrote:
-> On Fri, 2 Sep 2005 ths@linux-mips.org wrote:
-> 
-> > Modified files:
-> > 	arch/mips/mm   : c-r4k.c 
-> > 
-> > Log message:
-> > 	Fix r4600 revision bitmask.
-> 
->  This change is broken.  The new masked out value may match a 
-> MIPS32/MIPS64 architecture CPU.  What was wrong with the old mask?
+>>>>> On Fri, 26 Aug 2005 15:10:47 +0100, Ralf Baechle <ralf@linux-mips.org> said:
+ralf> Try this patch below and let me know.  I would also like to ask
+ralf> those people who used to suffer from aliases with IDE PIO to try
+ralf> this patch.
 
-Hm, I made it the same as is used in pg-r4k.c without looking up
-the meaning of the high bits.
+I'm using CPU which suffer from dcache aliasing.
+I tried this patch for IDE PIO and it seems work fine too.
 
+Maybe Cobalt user can try it.  Anyone?  :-)
 
-Thiemo
+---
+Atsushi Nemoto

@@ -1,69 +1,119 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Sep 2005 16:18:57 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:10764 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225201AbVIEPSl>; Mon, 5 Sep 2005 16:18:41 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id D036CE1C91; Mon,  5 Sep 2005 17:25:23 +0200 (CEST)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 08046-04; Mon,  5 Sep 2005 17:25:23 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 7931DE1CB5; Mon,  5 Sep 2005 17:25:23 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j85FPN0f018677;
-	Mon, 5 Sep 2005 17:25:23 +0200
-Date:	Mon, 5 Sep 2005 16:25:32 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	spodstavin@ru.mvista.com, linux-mips@linux-mips.org,
-	ralf@linux-mips.org
-Subject: Re: a patch for generic MIPS RTC
-In-Reply-To: <20050905.224534.25910293.anemo@mba.ocn.ne.jp>
-Message-ID: <Pine.LNX.4.61L.0509051620020.29615@blysk.ds.pg.gda.pl>
-References: <1124355290.5441.45.camel@localhost.localdomain>
- <20050905.135422.112260934.nemoto@toshiba-tops.co.jp>
- <Pine.LNX.4.61L.0509051204140.29615@blysk.ds.pg.gda.pl>
- <20050905.224534.25910293.anemo@mba.ocn.ne.jp>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.85.1/1063/Mon Sep  5 13:16:34 2005 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Sep 2005 22:30:54 +0100 (BST)
+Received: from luonnotar.infodrom.org ([IPv6:::ffff:195.124.48.78]:42251 "EHLO
+	luonnotar.infodrom.org") by linux-mips.org with ESMTP
+	id <S8225210AbVIEVah>; Mon, 5 Sep 2005 22:30:37 +0100
+Received: by luonnotar.infodrom.org (Postfix, from userid 10)
+	id AD1F5366B79; Mon,  5 Sep 2005 23:37:27 +0200 (CEST)
+Received: at Infodrom Oldenburg (/\##/\ Smail-3.2.0.102 1998-Aug-2 #2)
+	from infodrom.org by finlandia.Infodrom.North.DE
+	via smail from stdin
+	id <m1ECOca-000ofLC@finlandia.Infodrom.North.DE>
+	for linux-mips@linux-mips.org; Mon, 5 Sep 2005 23:35:20 +0200 (CEST) 
+Date:	Mon, 5 Sep 2005 23:35:20 +0200
+From:	Martin Schulze <joey@infodrom.org>
+To:	Linux for m68k <linux-m68k@lists.linux-m68k.org>,
+	Linux for MIPS <linux-mips@linux-mips.org>,
+	Linux for PA-RISC <parisc-linux@lists.parisc-linux.org>,
+	Linux for Powerpc <linuxppc-dev@lists.linuxppc.org>
+Subject: Invitation to the Oldenburg Linux Developers Meeting
+Message-ID: <20050905213519.GR27161@finlandia.infodrom.north.de>
+Reply-To: Martin Schulze <joey@infodrom.org>
+Mail-Followup-To: Martin Schulze <joey@infodrom.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+User-Agent: Mutt/1.5.9i
+Return-Path: <joey@infodrom.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8877
+X-archive-position: 8878
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: joey@infodrom.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 5 Sep 2005, Atsushi Nemoto wrote:
+Dear developers,
 
-> macro>  That's how other architectures do this, see e.g.
-> macro> "arch/alpha/kernel/time.c".  Why should we be different, even
-> macro> for now?
-> 
-> Please elaborate more ?  Do you mean we should implement default
-> rtc_set_mmss() and take the rtc_lock in it ?  Or do you mean we should
-> take rtc_lock in each board-dependent rtc_set_time/rtc_set_time ?  
+there will be another Linux developers meeting taking place in
+Oldenburg at the last weekend in September this year.  Like last year,
+we will be able to start on Wednesday and work until Sunday.  So
+diligent people can work up to four days in Oldenburg.
 
- I'm not sure all chips actually require it.  Certainly the null function 
-does not, so that spinlock would incur an unnecessary overhead.  Therefore 
-yes, it should be board- or chip-dependent.
 
-> macro> Also the call is named rtc_set_mmss() for an unknown reason
-> macro> while all the others have set_rtc_mmss().
-> 
-> IIRC, you are (one of) the godfather of the function, aren't you?  :-)
+Executive summary:
 
- Hmm, I must have got influenced by rtc_set_time()...  Perhaps it wasn't 
-that bad after all and it's all the others that should be fixed instead. 
-;-)
+URL:   http://meeting.ffis.de/Oldenburg2005/
+What:  Oldenburg Linux Developers Meeting #A
+Who:   Every developer interested in Linux on non-i386 platforms
+       Every developer interested in developing the debian-installer
+       Every developer interested in Debian-Java
+When:  September, 21st to 25th (Wednesday noon to Sunday afternoon)
+Where: University of Oldenburg, science building in Oldenburg Wechloy
+Orga:  ffis e.V., Martin 'Joey' Schulze
+Bonus: Regular rooms again, at least partially
 
-  Maciej
+
+The goal of this developers meeting is to provide developers a means
+to work in common on the non-i386 Linux ports and related topics and
+to further the exchange of ideas and discussion about these ports.
+However, Debian developers and Debian Java people have asked whether
+they can piggy-back a meeting at the same location as well.
+
+We will have dedicated working and sleeping rooms in the university.
+We are allowed to use the shower facility of the sports department
+nearby where we can sleep as well this year.
+
+We will have dinner together in a restaurant in the evening.  I'll put
+a plan will be on the web soon.  If you prefer to stay at the
+university and not go out having a dinner, please let me know in time
+as this affects restaurant space requirements.
+
+We will have a never-ending breakfast in one of the working rooms.
+I'll get rolls each morning and try to ensure that there will be
+enough butter, cheese, sausages, jam, Nutella and stuff.  I will also
+take care of non-alcoholic fluids.
+
+Beside machines, equipment and documentation you'll need to take with
+you a sleeping bag, maybe a camping mat or cot, towels, shower stuff,
+personal toilett accessories, maybe medicine, clothes.  A mug, plate
+and cutlery are optional but helpful.  Don't forget enough power
+chords, extenders and network cables.
+
+You'll find routing information on the website mentioned above.
+
+If you would like to attend the meeting, please send back the
+following form, so that I can calculate space, power and food.
+
+----8<--------8<--------8<--------8<--------8<--------8<--------8<----
+Name ................:
+
+Date of arrival .....: ( ) Wednesday, Sep, 21st
+                       ( ) Thursday, Sep, 22nd
+                       ( ) Friday, Sep, 23rd 
+                       ( ) Saturday, Sep, 24th
+
+Date of departure ...: ( ) Friday, Sep. 23rd
+                       ( ) Saturday, Sep. 24th
+                       ( ) Sunday, Sep. 25th
+
+___ usable seats in my car, once arrived (only if you come by car)
+(four usable seets --> one driver, three guests)
+
+Special requirements for food: ______________________
+(Vegetarian should be covered with 10% of all, vegan people will need
+special attention)
+----8<--------8<--------8<--------8<--------8<--------8<--------8<----
+
+If you have any further questions, please don't hesitate to ask me.
+
+Kind regards,
+
+	Joey
+
+-- 
+Whenever you meet yourself you're in a time loop or in front of a mirror.
+
+Please always Cc to me when replying to me on the lists.

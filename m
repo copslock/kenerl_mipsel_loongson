@@ -1,53 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Sep 2005 09:34:32 +0100 (BST)
-Received: from deliver-1.mx.triera.net ([IPv6:::ffff:213.161.0.31]:42438 "HELO
-	deliver-1.mx.triera.net") by linux-mips.org with SMTP
-	id <S8224974AbVIEIeM>; Mon, 5 Sep 2005 09:34:12 +0100
-Received: from localhost (in-3.mx.triera.net [213.161.0.27])
-	by deliver-1.mx.triera.net (Postfix) with ESMTP id 69996C028;
-	Mon,  5 Sep 2005 10:40:51 +0200 (CEST)
-Received: from smtp.triera.net (smtp.triera.net [213.161.0.30])
-	by in-3.mx.triera.net (Postfix) with SMTP id E437D1BC089;
-	Mon,  5 Sep 2005 10:40:52 +0200 (CEST)
-Received: from [172.18.1.53] (unknown [213.161.20.162])
-	by smtp.triera.net (Postfix) with ESMTP id 9CA8C1A18B4;
-	Mon,  5 Sep 2005 10:40:53 +0200 (CEST)
-Subject: Re: possible serial driver fixup for au1x00 in 2.6?
-From:	Matej Kupljen <matej.kupljen@ultra.si>
-To:	rolf liu <rolfliu@gmail.com>
-Cc:	ppopov@embeddedalley.com,
-	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-In-Reply-To: <2db32b7205070609215b750fea@mail.gmail.com>
-References: <2db32b720507011756247735d6@mail.gmail.com>
-	 <1120266383.5987.46.camel@localhost.localdomain>
-	 <2db32b72050705124078a48aed@mail.gmail.com>
-	 <1120633817.5724.26.camel@localhost.localdomain>
-	 <2db32b7205070609215b750fea@mail.gmail.com>
-Content-Type: text/plain
-Date:	Mon, 05 Sep 2005 10:40:54 +0200
-Message-Id: <1125909654.19482.4.camel@localhost.localdomain>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.2.2 
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Sep 2005 09:54:00 +0100 (BST)
+Received: from post-23.mail.nl.demon.net ([IPv6:::ffff:194.159.73.193]:47331
+	"EHLO post-23.mail.nl.demon.net") by linux-mips.org with ESMTP
+	id <S8224976AbVIEIxm>; Mon, 5 Sep 2005 09:53:42 +0100
+Received: from dare-holding.demon.nl ([212.238.232.25]:57035 helo=mouse.matrix.dare.nl)
+	by post-23.mail.nl.demon.net with esmtp (Exim 4.51)
+	id 1ECCq2-000CmJ-Ic
+	for linux-mips@linux-mips.org; Mon, 05 Sep 2005 09:00:26 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by mouse.matrix.dare.nl (Postfix) with ESMTP id C6A95E6311
+	for <linux-mips@linux-mips.org>; Mon,  5 Sep 2005 11:00:38 +0200 (CEST)
+Received: from mouse.matrix.dare.nl ([127.0.0.1])
+	by localhost (mouse [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+	id 18457-04 for <linux-mips@linux-mips.org>;
+	Mon, 5 Sep 2005 11:00:38 +0200 (CEST)
+Received: from [192.168.10.120] (id6220_10.matrix.dare.nl [192.168.10.120])
+	by mouse.matrix.dare.nl (Postfix) with ESMTP id ECC22E6305
+	for <linux-mips@linux-mips.org>; Mon,  5 Sep 2005 11:00:37 +0200 (CEST)
+Message-ID: <431C0891.1070908@dare.nl>
+Date:	Mon, 05 Sep 2005 10:57:53 +0200
+From:	Robert Bon <robo@dare.nl>
+User-Agent: Debian Thunderbird 1.0.2 (X11/20050602)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	linux-mips@linux-mips.org
+Subject: Howto Boot from Flash with the Alchemy AU1100
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: Triera AV Service
-Return-Path: <matej.kupljen@ultra.si>
+X-Virus-Scanned: at dare.nl
+Return-Path: <robo@dare.nl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8872
+X-archive-position: 8873
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matej.kupljen@ultra.si
+X-original-sender: robo@dare.nl
 Precedence: bulk
 X-list: linux-mips
 
-Hi
+Hello,
 
-> I just give 8250.c a dirty hack, letting it just manage the additional
-> serial ports. So there are two serial driver in the system at the same
-> time :(  Sound funny.
+We are running linux kernel 2.6.12 on a AMD-Alchemy DB1100 evaluation 
+board, with processor AU1100.
 
-Can we see the hack, please ? :-)
+De kernel file is a Srecord which is programmed (with the bootloader 
+YAMON load command) in to RAM, starting at address 0x80100000.
+We want to store in the onboard flash.
 
-BR,
-Matej
+How can we do this?
+
+Thanks Robert.

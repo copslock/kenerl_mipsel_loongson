@@ -1,87 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Sep 2005 12:35:10 +0100 (BST)
-Received: from smtp010.tiscali.dk ([IPv6:::ffff:212.54.64.103]:51646 "EHLO
-	smtp010.tiscali.dk") by linux-mips.org with ESMTP
-	id <S8224982AbVIELeu> convert rfc822-to-8bit; Mon, 5 Sep 2005 12:34:50 +0100
-Received: from jorg ([62.79.30.245])
-	by smtp010.tiscali.dk (8.12.10/8.12.10) with ESMTP id j85BfYnW009084
-	for <linux-mips@linux-mips.org>; Mon, 5 Sep 2005 13:41:34 +0200 (MEST)
-From:	=?iso-8859-1?Q?J=F8rg_Ulrich_Hansen?= <jh@hansen-telecom.dk>
-To:	<linux-mips@linux-mips.org>
-Subject: Re: Howto Boot from Flash with the Alchemy AU1100
-Date:	Mon, 5 Sep 2005 13:41:34 +0200
-Message-ID: <!~!UENERkVCMDkAAQACAAAAAAAAAAAAAAAAABgAAAAAAAAAb4ajDk58bkCNi0V1ZTQFHIKAAAAQAAAAS0TGHpU5zUWTXqf0fsiG9AEAAAAA@hansen-telecom.dk>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-X-Mailer: Microsoft Office Outlook, Build 11.0.6353
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1506
-Thread-Index: AcWyDsR7yEipV1BPSZWRu+EDn8ApGw==
-Return-Path: <jh@hansen-telecom.dk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Sep 2005 14:38:03 +0100 (BST)
+Received: from mba.ocn.ne.jp ([IPv6:::ffff:210.190.142.172]:55751 "HELO
+	smtp.mba.ocn.ne.jp") by linux-mips.org with SMTP
+	id <S8225196AbVIENhp>; Mon, 5 Sep 2005 14:37:45 +0100
+Received: from localhost (p2231-ipad28funabasi.chiba.ocn.ne.jp [220.107.201.231])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 7F7737C75; Mon,  5 Sep 2005 22:44:29 +0900 (JST)
+Date:	Mon, 05 Sep 2005 22:45:34 +0900 (JST)
+Message-Id: <20050905.224534.25910293.anemo@mba.ocn.ne.jp>
+To:	macro@linux-mips.org
+Cc:	spodstavin@ru.mvista.com, linux-mips@linux-mips.org,
+	ralf@linux-mips.org
+Subject: Re: a patch for generic MIPS RTC
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <Pine.LNX.4.61L.0509051204140.29615@blysk.ds.pg.gda.pl>
+References: <1124355290.5441.45.camel@localhost.localdomain>
+	<20050905.135422.112260934.nemoto@toshiba-tops.co.jp>
+	<Pine.LNX.4.61L.0509051204140.29615@blysk.ds.pg.gda.pl>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8875
+X-archive-position: 8876
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jh@hansen-telecom.dk
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
+>>>>> On Mon, 5 Sep 2005 12:08:34 +0100 (BST), "Maciej W. Rozycki" <macro@linux-mips.org> said:
 
-Start linux from flash at startup
-The boot loader can be set up to automatically start Linux at power up.
+macro>  That's how other architectures do this, see e.g.
+macro> "arch/alpha/kernel/time.c".  Why should we be different, even
+macro> for now?
 
-Do the following:
-To load kernel image into RAM on mb1100 type:
-load
+Please elaborate more ?  Do you mean we should implement default
+rtc_set_mmss() and take the rtc_lock in it ?  Or do you mean we should
+take rtc_lock in each board-dependent rtc_set_time/rtc_set_time ?  
 
-Then the image has to be copied to FLASH.
-Erase block in FLASH:
-erase bfd00000 2c0000
+macro> Also the call is named rtc_set_mmss() for an unknown reason
+macro> while all the others have set_rtc_mmss().
 
-Copy image from RAM to FLASH:
-copy a0100000 bfd00000 2c0000
+IIRC, you are (one of) the godfather of the function, aren't you?  :-)
 
-When YAMON starts up it will process the start command, so that has to be
-set up.
-The kernel_entry address is not fixed so the start address has to be set up
-for each new kernel
-image. The start address can be read from the srec image file or it is
-printed on the screen after
-the load image command.
-
-To set the start command:
-set start 'copy bfd00000 a0100000 2c0000; go a032b018 \
-root=/dev/mtdblock0 rootfstype=jffs2'
-
-
-Start Linux with root file system mounted as jffs2
-In a real world the root file system will normally be located in the FLASH
-memory as a jffs2
-partition. 
-We will now copy a jffs2 image with the root file system to the FLASH.
-
-From YAMON prompt do following:
-Fill 16 MB of RAM with FF:
-fill a1000000 1000000 ff
-Load image into RAM:
-load tftp://192.168.21.33/rootfs.srec
-Erase 16MB in FLASH:
-erase be000000 1000000
-Copy 4MB from RAM to FLASH
-copy a1000000 be000000 400000
-If the image is bigger than 4MB please copy the appropriate size.
-
-Now it should be ready to press reset.
-
-If it prints a lot of text Linux starts correctly
-If it prints ‘kernel panic’ in the end then it failed to mount the root file
-system
-
-This is based on a CPU module mb1100 that is similar to db1100.
-More information about au1100 running Linux can be found at
-http://www.mechatronicbrick.dk
-
-Kind regards Jorg
+---
+Atsushi Nemoto

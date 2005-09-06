@@ -1,47 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Sep 2005 18:46:42 +0100 (BST)
-Received: from wproxy.gmail.com ([IPv6:::ffff:64.233.184.201]:43648 "EHLO
-	wproxy.gmail.com") by linux-mips.org with ESMTP id <S8225744AbVIFRqZ> convert rfc822-to-8bit;
-	Tue, 6 Sep 2005 18:46:25 +0100
-Received: by wproxy.gmail.com with SMTP id i32so883580wra
-        for <linux-mips@linux-mips.org>; Tue, 06 Sep 2005 10:53:13 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=h6cNjHGvnz+4NuoPAdR03n//9YhH5zW4ThwjMHaTKoDcJuRgF7BU0FqeKaCjmZIcBeb9vepE+IA1Hbpu/yYVJde00L/QMjiEc/ZM7Bz7vulPXvBQ9trUM5Symr2C0Scflmoe4/4Dr9+vvhWIULwuoFA4PfO5qlvF7y06CW+t5Yw=
-Received: by 10.54.36.9 with SMTP id j9mr4492932wrj;
-        Tue, 06 Sep 2005 10:53:13 -0700 (PDT)
-Received: by 10.54.41.29 with HTTP; Tue, 6 Sep 2005 10:53:13 -0700 (PDT)
-Message-ID: <ecb4efd1050906105332061e5a@mail.gmail.com>
-Date:	Tue, 6 Sep 2005 13:53:13 -0400
-From:	Clem Taylor <clem.taylor@gmail.com>
-Reply-To: clem.taylor@gmail.com
-To:	linux-mips <linux-mips@linux-mips.org>
-Subject: Problems with CONFIG_CC_OPTIMIZE_FOR_SIZE?
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Sep 2005 19:35:00 +0100 (BST)
+Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:40727 "EHLO
+	bacchus.net.dhis.org") by linux-mips.org with ESMTP
+	id <S8225744AbVIFSef>; Tue, 6 Sep 2005 19:34:35 +0100
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j86IfNUi001612;
+	Tue, 6 Sep 2005 18:41:24 GMT
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j86IfLll001611;
+	Tue, 6 Sep 2005 19:41:21 +0100
+Date:	Tue, 6 Sep 2005 19:41:19 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: unkillable process due to setup_frame() failure
+Message-ID: <20050906184118.GC3102@linux-mips.org>
+References: <20050907.014234.108739386.anemo@mba.ocn.ne.jp>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Return-Path: <clem.taylor@gmail.com>
+In-Reply-To: <20050907.014234.108739386.anemo@mba.ocn.ne.jp>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8881
+X-archive-position: 8882
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: clem.taylor@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Wed, Sep 07, 2005 at 01:42:34AM +0900, Atsushi Nemoto wrote:
 
-I recently configured my MIPS (Au1550) kernel to use
-CONFIG_CC_OPTIMIZE_FOR_SIZE to match the way the rest of the system is
-built and discovered that with this option enabled /sbin/reboot
-stopped working, the system just hangs after printing 'Resetting
-Integrated Peripherals'. I'm using gcc 3.4.4. I haven't noticed any
-other problems (but I've only done minimal testing) and I was
-wondering if anyone else is using CONFIG_CC_OPTIMIZE_FOR_SIZE?
+> 1.  The "break" instruction raises a exception.
+> 2.  The exception handler queues SIGTRAP(5).
+> 3.  dequeue_signal() dequeue a signal with LOWEST number (i.e. SIGTRAP).
+> 4.  setup_frame() fails due to bad stack pointer and queues SIGSEGV(11).
+> 5.  returns to user process (pc unchanged).
+> 6.  goto 1. (forever)
+> 
+> So, the process can not be kill by SIGKILL.  In 2.6.12, 'sigkill
+> priority fix' was applied to __dequeue_signal(), but it does not help
+> while the SIGTRAP is queued to tsk->pending but SIGKILL (by kill
+> command) is queued to tsk->signal->shared_pending.
 
-                            Thanks,
-                            Clem
+The behaviour of not advancing the EPC beyond the faulting instruction is
+part of the problem - but I believe that was the usual behaviour for
+MIPS UNIXoid operating systems.
+
+  Ralf

@@ -1,58 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Sep 2005 10:07:39 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:4879 "EHLO
-	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
-	id <S8225239AbVIGJHU>; Wed, 7 Sep 2005 10:07:20 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id D6062F5982; Wed,  7 Sep 2005 11:14:14 +0200 (CEST)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 21160-07; Wed,  7 Sep 2005 11:14:14 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 5A0D3F5980; Wed,  7 Sep 2005 11:14:14 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j879ECgU028397;
-	Wed, 7 Sep 2005 11:14:12 +0200
-Date:	Wed, 7 Sep 2005 10:14:16 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
-Subject: Re: unkillable process due to setup_frame() failure
-In-Reply-To: <20050906184118.GC3102@linux-mips.org>
-Message-ID: <Pine.LNX.4.61L.0509071011560.4591@blysk.ds.pg.gda.pl>
-References: <20050907.014234.108739386.anemo@mba.ocn.ne.jp>
- <20050906184118.GC3102@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.85.1/1067/Wed Sep  7 02:53:51 2005 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Sep 2005 14:03:09 +0100 (BST)
+Received: from deliver-1.mx.triera.net ([IPv6:::ffff:213.161.0.31]:28583 "HELO
+	deliver-1.mx.triera.net") by linux-mips.org with SMTP
+	id <S8225250AbVIGNCx>; Wed, 7 Sep 2005 14:02:53 +0100
+Received: from localhost (in-2.mx.triera.net [213.161.0.26])
+	by deliver-1.mx.triera.net (Postfix) with ESMTP id 0A30DC0AB
+	for <linux-mips@linux-mips.org>; Wed,  7 Sep 2005 15:09:43 +0200 (CEST)
+Received: from smtp.triera.net (smtp.triera.net [213.161.0.30])
+	by in-2.mx.triera.net (Postfix) with SMTP id C65E41BC07B
+	for <linux-mips@linux-mips.org>; Wed,  7 Sep 2005 15:09:45 +0200 (CEST)
+Received: from [172.18.1.53] (unknown [213.161.20.162])
+	by smtp.triera.net (Postfix) with ESMTP id 9BBBC1A18AD
+	for <linux-mips@linux-mips.org>; Wed,  7 Sep 2005 15:09:46 +0200 (CEST)
+Subject: MIPS SF toolchain
+From:	Matej Kupljen <matej.kupljen@ultra.si>
+To:	linux-mips@linux-mips.org
+Content-Type: text/plain
+Date:	Wed, 07 Sep 2005 15:09:44 +0200
+Message-Id: <1126098584.12696.19.camel@localhost.localdomain>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.2.2 
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: Triera AV Service
+Return-Path: <matej.kupljen@ultra.si>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8884
+X-archive-position: 8885
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: matej.kupljen@ultra.si
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 6 Sep 2005, Ralf Baechle wrote:
+Hi
 
-> > So, the process can not be kill by SIGKILL.  In 2.6.12, 'sigkill
-> > priority fix' was applied to __dequeue_signal(), but it does not help
-> > while the SIGTRAP is queued to tsk->pending but SIGKILL (by kill
-> > command) is queued to tsk->signal->shared_pending.
-> 
-> The behaviour of not advancing the EPC beyond the faulting instruction is
-> part of the problem - but I believe that was the usual behaviour for
-> MIPS UNIXoid operating systems.
+Can somebody tell me, what is the right way to make a soft float
+toolchain. I tried with crosstool with different flags for configure
+and gcc, but the resulting binaries still contains the FP instructions, 
+like swc1.
 
- Well, SIGKILL should always work and frankly I can't see a reason to 
-return back to user space in the affected context in the first place.  
-What's left in EPC shouldn't matter.
+I used --with-float=soft and --nfp for gcc configure,
+--without-fp for glibc configure, and compiled glibc
+with -msoft-float flag.
 
-  Maciej
+Am I missing something, or am I using the wrong flags?
+
+GCC: 3.3.5
+GLIBC: 2.3.5
+BINUTILS: 2.15
+
+BR,
+Matej

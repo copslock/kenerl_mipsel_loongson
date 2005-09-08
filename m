@@ -1,67 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Sep 2005 14:55:27 +0100 (BST)
-Received: from relay01.pair.com ([IPv6:::ffff:209.68.5.15]:56081 "HELO
-	relay01.pair.com") by linux-mips.org with SMTP id <S8225273AbVIHNzF>;
-	Thu, 8 Sep 2005 14:55:05 +0100
-Received: (qmail 885 invoked from network); 8 Sep 2005 14:02:08 -0000
-Received: from unknown (HELO ?192.168.123.1?) (unknown)
-  by unknown with SMTP; 8 Sep 2005 14:02:08 -0000
-X-pair-Authenticated: 24.126.76.52
-Message-ID: <43204123.8000204@kegel.com>
-Date:	Thu, 08 Sep 2005 06:48:19 -0700
-From:	Dan Kegel <dank@kegel.com>
-User-Agent: Mozilla/4.0 (compatible;MSIE 5.5; Windows 98)
-X-Accept-Language: en, de-de
-MIME-Version: 1.0
-To:	Matej Kupljen <matej.kupljen@ultra.si>
-CC:	David Daney <ddaney@avtrex.com>, crossgcc@sources.redhat.com,
-	linux-mips@linux-mips.org
-Subject: Re: MIPS SF toolchain
-References: <1126098584.12696.19.camel@localhost.localdomain>	 <431F0850.8090804@avtrex.com>	 <1126168866.25388.11.camel@orionlinux.starfleet.com>	 <1126179199.25389.20.camel@orionlinux.starfleet.com> <1126182122.25393.27.camel@orionlinux.starfleet.com>
-In-Reply-To: <1126182122.25393.27.camel@orionlinux.starfleet.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <dank@kegel.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Sep 2005 14:58:57 +0100 (BST)
+Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:9227 "EHLO
+	bacchus.net.dhis.org") by linux-mips.org with ESMTP
+	id <S8225273AbVIHN6l>; Thu, 8 Sep 2005 14:58:41 +0100
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j88E5F3o017201;
+	Thu, 8 Sep 2005 15:05:15 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j88E5EaM017200;
+	Thu, 8 Sep 2005 15:05:14 +0100
+Date:	Thu, 8 Sep 2005 15:05:13 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	vasanth <vasanth@aelixsystems.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: unresolved symbol
+Message-ID: <20050908140513.GD3608@linux-mips.org>
+References: <005201c5b47d$20a0d4d0$3c00a8c0@vasanth>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <005201c5b47d$20a0d4d0$3c00a8c0@vasanth>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8901
+X-archive-position: 8902
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dank@kegel.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Matej Kupljen wrote:
-> I think I found the problem.
+On Thu, Sep 08, 2005 at 07:26:17PM +0530, vasanth wrote:
+
+> I am getting the folowing error message when i do insmod .
+> insmod: unresolved symbol __udelay
+> insmod: unresolved symbol atomic_add
+> insmod: unresolved symbol atomic_sub
 > 
-> ....
-> 
-> This code is written in  sysdeps/mips/setjmp_aux.c in 
-> inline assembly.  ...
-> 
-> This code is written in sysdeps/mips/__longjmp.c in 
-> inline assembly.
-> 
-> Because I am using sf, there is no need to store those
-> registers, or is it?
-> Can I just #ifdef this code if compiled for sf?
+> I complied the driver code for mips processor using the folowing command
+> mips-linux-gcc -G O -mno-abicalls -fno-pic -pipe -mtune=4kc -mips32 -c lcddriver.c -I/mykernel/include
+> It is compiling without any error . 
 
-Other architectures do things like this, e.g.
+Use -O2.  In fact use _exactly_ the same options as for the kernel build
+itself.
 
-sysdeps/powerpc/powerpc32/__longjmp-common.S:#ifdef __NO_VMX__
-
-so I don't see why not.
-
-In fact, I had to do something similar once to make life
-possible for ppc405.  See
-
-http://kegel.com/xgcc3/glibc-ppc-nofpu.patch3
-
-(Hmm, wonder if something like that ever made it in to
-mainline glibc.)
-
-- Dan
-
--- 
-Trying to get a job as a c++ developer?  See http://kegel.com/academy/getting-hired.html
+  Ralf

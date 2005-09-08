@@ -1,48 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Sep 2005 16:26:50 +0100 (BST)
-Received: from nevyn.them.org ([IPv6:::ffff:66.93.172.17]:16283 "EHLO
-	nevyn.them.org") by linux-mips.org with ESMTP id <S8225304AbVIHP0d>;
-	Thu, 8 Sep 2005 16:26:33 +0100
-Received: from drow by nevyn.them.org with local (Exim 4.52)
-	id 1EDOPB-0005PQ-OF; Thu, 08 Sep 2005 11:33:37 -0400
-Date:	Thu, 8 Sep 2005 11:33:37 -0400
-From:	Daniel Jacobowitz <dan@debian.org>
-To:	vasanth <vasanth@aelixsystems.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: unresolved symbol
-Message-ID: <20050908153337.GA20775@nevyn.them.org>
-References: <005201c5b47d$20a0d4d0$3c00a8c0@vasanth>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <005201c5b47d$20a0d4d0$3c00a8c0@vasanth>
-User-Agent: Mutt/1.5.8i
-Return-Path: <drow@nevyn.them.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Sep 2005 18:27:39 +0100 (BST)
+Received: from 216-239-45-4.google.com ([IPv6:::ffff:216.239.45.4]:11195 "EHLO
+	216-239-45-4.google.com") by linux-mips.org with ESMTP
+	id <S8225304AbVIHR1W>; Thu, 8 Sep 2005 18:27:22 +0100
+Received: from [172.29.52.41] (dank.smo.corp.google.com [172.29.52.41])
+	by vegeta.corp.google.com with ESMTP id j88HXriU026558;
+	Thu, 8 Sep 2005 10:33:53 -0700
+Message-ID: <43207601.7020000@kegel.com>
+Date:	Thu, 08 Sep 2005 10:33:53 -0700
+From:	Daniel Kegel <dank@kegel.com>
+User-Agent: Mozilla Thunderbird 1.0 (X11/20050207)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	gcc@gcc.gnu.org, Jonathan Day <imipak@yahoo.com>
+CC:	linux-mips@linux-mips.org, crossgcc <crossgcc@sources.redhat.com>
+Subject: Re: Question regarding compiling a toolchain for a Broadcom SB1
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <dank@kegel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8904
+X-archive-position: 8905
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@debian.org
+X-original-sender: dank@kegel.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Sep 08, 2005 at 07:26:17PM +0530, vasanth wrote:
-> Hi,
-> 
-> I am getting the folowing error message when i do insmod .
-> insmod: unresolved symbol __udelay
-> insmod: unresolved symbol atomic_add
-> insmod: unresolved symbol atomic_sub
-> 
-> I complied the driver code for mips processor using the folowing command
-> mips-linux-gcc -G O -mno-abicalls -fno-pic -pipe -mtune=4kc -mips32 -c lcddriver.c -I/mykernel/include
-> It is compiling without any error . 
-> Can anybody know how to solve this problem.?
+Jonathan Day <imipak at yahoo dot com> wrote:
+> Crosstool, for example, only supports 32-bit MIPS -
+> and even then the build matrix is a pretty shade of
+> red for the most part.
 
-Turn on optimization.
+[ The build matrix: http://kegel.com/crosstool/current/buildlogs/ ]
 
--- 
-Daniel Jacobowitz
-CodeSourcery, LLC
+There are quite a few combinations that build for 32-bit mips with crosstool, e.g.
+  mips-gcc-3.2.3-glibc-2.2.5
+  mips-gcc-3.2.3-glibc-2.3.2
+  mips-gcc-3.3.6-glibc-2.2.5
+  mips-gcc-3.3.6-glibc-2.3.5
+  mips-gcc-3.4.4-glibc-2.3.2-hdrs-2.6.11.2
+  mips-gcc-3.4.4-glibc-2.3.5-hdrs-2.6.11.2
+  mips-gcc-4.1-20050702-glibc-2.3.2-hdrs-2.6.11.2
+  mips-gcc-4.1-20050709-glibc-2.3.2-hdrs-2.6.11.2
+so the situation isn't that dire.
+
+For the record, I would be more than happy to add mips64 support to crosstool.
+http://www.linux-mips.org/archives/linux-mips/2005-07/msg00189.html
+http://documents.jg555.com/cross-lfs/mips64-64/cross-tools/glibc.html
+http://documents.jg555.com/cross-lfs/mips64-64/cross-tools/gcc-final.html
+mentions some patches that might be needed.
+I haven't had time to chase them down and add them to crosstool,
+but if anybody else felt like it, I'd gladly accept the patches.
+I'm sure a lot of mips64 users would be very happy.
+- Dan

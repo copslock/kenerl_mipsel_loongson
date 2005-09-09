@@ -1,111 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Sep 2005 22:05:42 +0100 (BST)
-Received: from web31502.mail.mud.yahoo.com ([IPv6:::ffff:68.142.198.131]:58811
-	"HELO web31502.mail.mud.yahoo.com") by linux-mips.org with SMTP
-	id <S8225329AbVIHVFV>; Thu, 8 Sep 2005 22:05:21 +0100
-Received: (qmail 86770 invoked by uid 60001); 8 Sep 2005 21:11:27 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.com;
-  h=Message-ID:Received:Date:From:Subject:To:Cc:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding;
-  b=zt1rjVqh9MZpv+iz+iBrfRHlONHP9H9BZhA/KNkpMMpfCMPeWGanZ/hwuLMWGn2ojkNf8Z8F+54sEVG9cbQhaQGZweDtsNQN1NSTqM5A839hV5c9XDVfv+jyMrmtjVPoqERU1FZN41sX5bRyL3Kq2C2nuCSrYGXVVM36G+sOirE=  ;
-Message-ID: <20050908211127.86768.qmail@web31502.mail.mud.yahoo.com>
-Received: from [208.187.37.98] by web31502.mail.mud.yahoo.com via HTTP; Thu, 08 Sep 2005 14:11:26 PDT
-Date:	Thu, 8 Sep 2005 14:11:26 -0700 (PDT)
-From:	Jonathan Day <imipak@yahoo.com>
-Subject: Re: Question regarding compiling a toolchain for a Broadcom SB1
-To:	Daniel Kegel <dank@kegel.com>, gcc@gcc.gnu.org
-Cc:	linux-mips@linux-mips.org, crossgcc <crossgcc@sources.redhat.com>
-In-Reply-To: <43207601.7020000@kegel.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Sep 2005 05:49:18 +0100 (BST)
+Received: from mail.soc-soft.com ([IPv6:::ffff:202.56.254.199]:54534 "EHLO
+	IGateway.soc-soft.com") by linux-mips.org with ESMTP
+	id <S8224771AbVIIEs5> convert rfc822-to-8bit; Fri, 9 Sep 2005 05:48:57 +0100
+Received: from keys.soc-soft.com ([192.168.4.44]) by IGateway.soc-soft.com with InterScan VirusWall; Fri, 09 Sep 2005 10:25:58 +0530
+Received: from soc-mail.soc-soft.com ([192.168.4.25])
+  by keys.soc-soft.com (PGP Universal service);
+  Fri, 09 Sep 2005 10:25:58 +0530
+X-PGP-Universal: processed;
+	by keys.soc-soft.com on Fri, 09 Sep 2005 10:25:58 +0530
+content-class: urn:content-classes:message
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Return-Path: <imipak@yahoo.com>
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6249.0
+Subject: scheduling with irqs disabled: init
+Date:	Fri, 9 Sep 2005 10:25:55 +0530
+Message-ID: <4BF47D56A0DD2346A1B8D622C5C5902CD345ED@soc-mail.soc-soft.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: scheduling with irqs disabled: init
+Thread-Index: AcW09tD3uRIN0t9zQK+xtIPZXLXMnwAAoeAw
+From:	<Vadivelan@soc-soft.com>
+To:	<linux-mips@linux-mips.org>
+Return-Path: <Vadivelan@soc-soft.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8906
+X-archive-position: 8908
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: imipak@yahoo.com
+X-original-sender: Vadivelan@soc-soft.com
 Precedence: bulk
 X-list: linux-mips
 
-Here's the web link to all of the patches needed by
-the Linux From Scratch group.
 
-http://documents.jg555.com/cross-lfs/mips64-64/materials/patches.html
+hi,
+	I'm porting MVL4.0 kernel on to a mips board. I've been getting
+a call trace as follows.
 
-I'm doing a build from the binutils, gcc and glibc
-from CVS, for an initial run. Results so far:
+BUG: scheduling with irqs disabled: init/0x00000000/1
+caller is schedule_timeout+0x84/0xe8
+Call Trace:
+ [<8030a0a8>] schedule_timeout+0x84/0xe8
+ [<803090b8>] schedule+0x114/0x160
+ [<803090b0>] schedule+0x10c/0x160
+ [<8030a0a8>] schedule_timeout+0x84/0xe8
+ [<80132610>] process_timeout+0x0/0x8
+ [<80132c0c>] msleep_interruptible+0x4c/0x70
+ [<802300a8>] gs_wait_tx_flushed+0x1fc/0x3b0
+ [<8022fc44>] gs_write+0x25c/0x264
+ [<802310cc>] gs_close+0x260/0x394
+ [<80216364>] tty_fasync+0x8c/0x134
+ [<80216b00>] release_dev+0x6f4/0xa08
+ [<8021dddc>] write_chan+0x420/0x48c
+ [<8012107c>] __wake_up+0x44/0x80
+ [<80120f58>] default_wake_function+0x0/0x28
+ [<8017a734>] get_empty_filp+0x64/0x13c
+ [<80215234>] tty_ldisc_deref+0xcc/0x110
+ [<80215b28>] tty_write+0x2bc/0x454
+ [<80216e24>] tty_release+0x10/0x20
+ [<80179988>] vfs_write+0xac/0x114
+ [<8017aacc>] __fput+0x298/0x2d0
+ [<8018e9b8>] getname+0x28/0xfc
+ [<80178d2c>] filp_close+0x54/0xb4
+ [<80178d24>] filp_close+0x4c/0xb4
+ [<8010bc64>] stack_done+0x20/0x3c
 
-Binutils patches cleanly, using the patch on file. It
-seems to build fine, when patched, but until all
-stages are complete, there's no easy way to verify
-that.
+I'm totally unaware of the bug. Can anyone help me fix it?
 
-GCC won't take the Posix patch and some of the other
-patches need massaging, but there doesn't seem to be
-any major problems. HOWEVER, this does say that you'd
-best stick with the intended version (GCC 4.0.1) for
-your build scripts.
+Thanking u in advance,
 
-Glibc will take the 64-bit fixes but all other patches
-are rejected. It failed on the forced unwinding test,
-when configuring. According to the LFS docs, NPTL is
-broken for MIPS64, but I don't know if that is still
-the case. I decided to backtrack to the glibc that
-works, according to the LFS, and have classed the
-status of Glibc for MIPS64 as uncertain.
-
-
---- Daniel Kegel <dank@kegel.com> wrote:
-
-> Jonathan Day <imipak at yahoo dot com> wrote:
-> > Crosstool, for example, only supports 32-bit MIPS
-> -
-> > and even then the build matrix is a pretty sh
-ade
-> of
-> > red for the most part.
-> 
-> [ The build matrix:
-> http://kegel.com/crosstool/current/buildlogs/ ]
-> 
-> There are quite a few combinations that build for
-> 32-bit mips with crosstool, e.g.
->   mips-gcc-3.2.3-glibc-2.2.5
->   mips-gcc-3.2.3-glibc-2.3.2
->   mips-gcc-3.3.6-glibc-2.2.5
->   mips-gcc-3.3.6-glibc-2.3.5
->   mips-gcc-3.4.4-glibc-2.3.2-hdrs-2.6.11.2
->   mips-gcc-3.4.4-glibc-2.3.5-hdrs-2.6.11.2
->   mips-gcc-4.1-20050702-glibc-2.3.2-hdrs-2.6.11.2
->   mips-gcc-4.1-20050709-glibc-2.3.2-hdrs-2.6.11.2
-> so the situation isn't that dire.
-> 
-> For the record, I would be more than happy to add
-> mips64 support to crosstool.
->
-http://www.linux-mips.org/archives/linux-mips/2005-07/msg00189.html
->
-http://documents.jg555.com/cross-lfs/mips64-64/cross-tools/glibc.html
->
-http://documents.jg555.com/cross-lfs/mips64-64/cross-tools/gcc-final.html
-> mentions some patches that might be needed.
-> I haven't had time to chase them down and add them
-> to crosstool,
-> but if anybody else felt like it, I'd gladly accept
-> the patches.
-> I'm sure a lot of mips64 users would be very happy.
-> - Dan
-> 
-> 
-> 
+vadi.
 
 
-
-	
-		
-______________________________________________________
-Click here to donate to the Hurricane Katrina relief effort.
-http://store.yahoo.com/redcross-donate3/
+The information contained in this e-mail message and in any annexure is
+confidential to the  recipient and may contain privileged information. If you are not
+the intended recipient, please notify the sender and delete the message along with
+any annexure. You should not disclose, copy or otherwise use the information contained
+in the message or any annexure. Any views expressed in this e-mail are those of the
+individual sender except where the sender specifically states them to be the views of
+SoCrates Software India Pvt Ltd., Bangalore.

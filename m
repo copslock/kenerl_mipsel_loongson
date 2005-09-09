@@ -1,84 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Sep 2005 05:49:18 +0100 (BST)
-Received: from mail.soc-soft.com ([IPv6:::ffff:202.56.254.199]:54534 "EHLO
-	IGateway.soc-soft.com") by linux-mips.org with ESMTP
-	id <S8224771AbVIIEs5> convert rfc822-to-8bit; Fri, 9 Sep 2005 05:48:57 +0100
-Received: from keys.soc-soft.com ([192.168.4.44]) by IGateway.soc-soft.com with InterScan VirusWall; Fri, 09 Sep 2005 10:25:58 +0530
-Received: from soc-mail.soc-soft.com ([192.168.4.25])
-  by keys.soc-soft.com (PGP Universal service);
-  Fri, 09 Sep 2005 10:25:58 +0530
-X-PGP-Universal: processed;
-	by keys.soc-soft.com on Fri, 09 Sep 2005 10:25:58 +0530
-content-class: urn:content-classes:message
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-X-MimeOLE: Produced By Microsoft Exchange V6.0.6249.0
-Subject: scheduling with irqs disabled: init
-Date:	Fri, 9 Sep 2005 10:25:55 +0530
-Message-ID: <4BF47D56A0DD2346A1B8D622C5C5902CD345ED@soc-mail.soc-soft.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: scheduling with irqs disabled: init
-Thread-Index: AcW09tD3uRIN0t9zQK+xtIPZXLXMnwAAoeAw
-From:	<Vadivelan@soc-soft.com>
-To:	<linux-mips@linux-mips.org>
-Return-Path: <Vadivelan@soc-soft.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Sep 2005 07:41:48 +0100 (BST)
+Received: from deliver-1.mx.triera.net ([IPv6:::ffff:213.161.0.31]:55692 "HELO
+	deliver-1.mx.triera.net") by linux-mips.org with SMTP
+	id <S8224951AbVIIGl2>; Fri, 9 Sep 2005 07:41:28 +0100
+Received: from localhost (in-1.mx.triera.net [213.161.0.25])
+	by deliver-1.mx.triera.net (Postfix) with ESMTP id 202C2C035;
+	Fri,  9 Sep 2005 08:48:33 +0200 (CEST)
+Received: from smtp.triera.net (smtp.triera.net [213.161.0.30])
+	by in-1.mx.triera.net (Postfix) with SMTP id 527131BC07E;
+	Fri,  9 Sep 2005 08:48:34 +0200 (CEST)
+Received: from [172.18.1.53] (unknown [213.161.20.162])
+	by smtp.triera.net (Postfix) with ESMTP id B3B631A18A7;
+	Fri,  9 Sep 2005 08:48:33 +0200 (CEST)
+Subject: Re: MIPS SF toolchain
+From:	Matej Kupljen <matej.kupljen@ultra.si>
+To:	David Daney <ddaney@avtrex.com>
+Cc:	crossgcc@sources.redhat.com, linux-mips@linux-mips.org
+In-Reply-To: <432058C1.80106@avtrex.com>
+References: <1126098584.12696.19.camel@localhost.localdomain>
+	 <431F0850.8090804@avtrex.com>
+	 <1126168866.25388.11.camel@orionlinux.starfleet.com>
+	 <1126179199.25389.20.camel@orionlinux.starfleet.com>
+	 <1126182122.25393.27.camel@orionlinux.starfleet.com>
+	 <432058C1.80106@avtrex.com>
+Content-Type: text/plain
+Date:	Fri, 09 Sep 2005 08:48:22 +0200
+Message-Id: <1126248502.20058.5.camel@localhost.localdomain>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.2.2 
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: Triera AV Service
+Return-Path: <matej.kupljen@ultra.si>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8908
+X-archive-position: 8909
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Vadivelan@soc-soft.com
+X-original-sender: matej.kupljen@ultra.si
 Precedence: bulk
 X-list: linux-mips
 
+Hi
 
-hi,
-	I'm porting MVL4.0 kernel on to a mips board. I've been getting
-a call trace as follows.
+> > Can I just #ifdef this code if compiled for sf?
+> > 
+> 
+> I do have some patches for glibc to get rid of these in a soft float 
+> build.  
 
-BUG: scheduling with irqs disabled: init/0x00000000/1
-caller is schedule_timeout+0x84/0xe8
-Call Trace:
- [<8030a0a8>] schedule_timeout+0x84/0xe8
- [<803090b8>] schedule+0x114/0x160
- [<803090b0>] schedule+0x10c/0x160
- [<8030a0a8>] schedule_timeout+0x84/0xe8
- [<80132610>] process_timeout+0x0/0x8
- [<80132c0c>] msleep_interruptible+0x4c/0x70
- [<802300a8>] gs_wait_tx_flushed+0x1fc/0x3b0
- [<8022fc44>] gs_write+0x25c/0x264
- [<802310cc>] gs_close+0x260/0x394
- [<80216364>] tty_fasync+0x8c/0x134
- [<80216b00>] release_dev+0x6f4/0xa08
- [<8021dddc>] write_chan+0x420/0x48c
- [<8012107c>] __wake_up+0x44/0x80
- [<80120f58>] default_wake_function+0x0/0x28
- [<8017a734>] get_empty_filp+0x64/0x13c
- [<80215234>] tty_ldisc_deref+0xcc/0x110
- [<80215b28>] tty_write+0x2bc/0x454
- [<80216e24>] tty_release+0x10/0x20
- [<80179988>] vfs_write+0xac/0x114
- [<8017aacc>] __fput+0x298/0x2d0
- [<8018e9b8>] getname+0x28/0xfc
- [<80178d2c>] filp_close+0x54/0xb4
- [<80178d24>] filp_close+0x4c/0xb4
- [<8010bc64>] stack_done+0x20/0x3c
+Can I see these patches, please?
+(What is the #define for the FP?)
 
-I'm totally unaware of the bug. Can anyone help me fix it?
+> However as Ralf Baechle said in the other message, the kernel FP 
+> emulator works and is not that large of an overhead.
 
-Thanking u in advance,
+I also removed the FP Emulator in the kernel, just to be sure that
+no SF ins are executed (I can send the patch to the list, but I know
+there has already been discussion about this).
 
-vadi.
+IMHO, if we say that we have a SF toolchain then there MUST NOT
+BE any SF ins, otherwise we have a "semi soft float" toolchain.
+Don't you agree?
 
-
-The information contained in this e-mail message and in any annexure is
-confidential to the  recipient and may contain privileged information. If you are not
-the intended recipient, please notify the sender and delete the message along with
-any annexure. You should not disclose, copy or otherwise use the information contained
-in the message or any annexure. Any views expressed in this e-mail are those of the
-individual sender except where the sender specifically states them to be the views of
-SoCrates Software India Pvt Ltd., Bangalore.
+BR,
+Matej

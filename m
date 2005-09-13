@@ -1,52 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Sep 2005 08:36:43 +0100 (BST)
-Received: from deliver-1.mx.triera.net ([IPv6:::ffff:213.161.0.31]:42668 "HELO
-	deliver-1.mx.triera.net") by linux-mips.org with SMTP
-	id <S8225009AbVIMHgL>; Tue, 13 Sep 2005 08:36:11 +0100
-Received: from localhost (in-1.mx.triera.net [213.161.0.25])
-	by deliver-1.mx.triera.net (Postfix) with ESMTP id 423ECC021;
-	Tue, 13 Sep 2005 09:36:06 +0200 (CEST)
-Received: from smtp.triera.net (smtp.triera.net [213.161.0.30])
-	by in-1.mx.triera.net (Postfix) with SMTP id ECDCC1BC07E;
-	Tue, 13 Sep 2005 09:36:07 +0200 (CEST)
-Received: from [172.18.1.53] (unknown [213.161.20.162])
-	by smtp.triera.net (Postfix) with ESMTP id 27E9C1A18B0;
-	Tue, 13 Sep 2005 09:36:08 +0200 (CEST)
-Subject: Re: deletion of boards
-From:	Matej Kupljen <matej.kupljen@ultra.si>
-To:	ppopov@embeddedalley.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Sep 2005 13:25:16 +0100 (BST)
+Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:21011 "EHLO
+	bacchus.net.dhis.org") by linux-mips.org with ESMTP
+	id <S8225272AbVIMMY4>; Tue, 13 Sep 2005 13:24:56 +0100
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j8DCOgUh009720;
+	Tue, 13 Sep 2005 13:24:42 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j8DCOeX7009719;
+	Tue, 13 Sep 2005 13:24:40 +0100
+Date:	Tue, 13 Sep 2005 13:24:40 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Pete Popov <ppopov@embeddedalley.com>
 Cc:	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
-In-Reply-To: <1126596370.11755.97.camel@localhost.localdomain>
+Subject: Re: deletion of boards
+Message-ID: <20050913122440.GA3224@linux-mips.org>
 References: <1126575034.11755.85.camel@localhost.localdomain>
-	 <1126596134.28382.7.camel@localhost.localdomain>
-	 <1126596370.11755.97.camel@localhost.localdomain>
-Content-Type: text/plain
-Date:	Tue, 13 Sep 2005 09:35:37 +0200
-Message-Id: <1126596937.28382.11.camel@localhost.localdomain>
 Mime-Version: 1.0
-X-Mailer: Evolution 2.2.2 
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: Triera AV Service
-Return-Path: <matej.kupljen@ultra.si>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1126575034.11755.85.camel@localhost.localdomain>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8921
+X-archive-position: 8922
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matej.kupljen@ultra.si
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi
+On Mon, Sep 12, 2005 at 06:30:34PM -0700, Pete Popov wrote:
 
-> Pb1200 would stay. Actually, the support isn't in 2.6 yet but I'll be
-> working on that soon.
+> The AMD Pb1000, Pb1100, Pb1500, and Hydrogen3 boards are not up to date
+> in 2.6 and seem to be of very little interest to anyone. Any objections
+> if I remove them to reduce the clutter?
 
-Great news!
+The inflation of evaluation boards is generally some sort of problem; in
+many cases they are on the market only for a very short time before they're
+replaced - we're talking about a time frame of like 6 months or so.  That
+means the time that a Linux port is actually of interest if often just
+as short.  Which means, we have quite a few candidates for deletion.
 
-Do you get any support from AMD?
-Any plans to support MAE?
-
-BR,
-Matej
+  Ralf

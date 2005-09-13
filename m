@@ -1,48 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Sep 2005 13:42:17 +0100 (BST)
-Received: from eth13.com-link.com ([IPv6:::ffff:208.242.241.164]:10417 "EHLO
-	real.realitydiluted.com") by linux-mips.org with ESMTP
-	id <S8225223AbVIMMmC>; Tue, 13 Sep 2005 13:42:02 +0100
-Received: from sjhill by real.realitydiluted.com with local (Exim 4.50 #1 (Debian))
-	id 1EF9Az-0004Si-Q4; Tue, 13 Sep 2005 06:42:13 -0500
-Subject: Re: deletion of boards
-In-Reply-To: <20050913122440.GA3224@linux-mips.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Date:	Tue, 13 Sep 2005 06:42:13 -0500 (CDT)
-CC:	Pete Popov <ppopov@embeddedalley.com>,
-	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
-X-Mailer: ELM [version 2.4ME+ PL100 (25)]
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset=US-ASCII
-Message-Id: <E1EF9Az-0004Si-Q4@real.realitydiluted.com>
-From:	sjhill@realitydiluted.com
-Return-Path: <sjhill@realitydiluted.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Sep 2005 13:46:05 +0100 (BST)
+Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:22047 "EHLO
+	bacchus.net.dhis.org") by linux-mips.org with ESMTP
+	id <S8225223AbVIMMpu>; Tue, 13 Sep 2005 13:45:50 +0100
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j8DCjid3010413
+	for <linux-mips@linux-mips.org>; Tue, 13 Sep 2005 13:45:44 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j8DCjiXe010412
+	for linux-mips@linux-mips.org; Tue, 13 Sep 2005 13:45:44 +0100
+Date:	Tue, 13 Sep 2005 13:45:44 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	linux-mips@linux-mips.org
+Subject: Git
+Message-ID: <20050913124544.GC3224@linux-mips.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8923
+X-archive-position: 8924
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sjhill@realitydiluted.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-> > The AMD Pb1000, Pb1100, Pb1500, and Hydrogen3 boards are not up to date
-> > in 2.6 and seem to be of very little interest to anyone. Any objections
-> > if I remove them to reduce the clutter?
-> 
-> The inflation of evaluation boards is generally some sort of problem; in
-> many cases they are on the market only for a very short time before they're
-> replaced - we're talking about a time frame of like 6 months or so.  That
-> means the time that a Linux port is actually of interest if often just
-> as short.  Which means, we have quite a few candidates for deletion.
-> 
-I would agree with this. Could I make a small suggestion? How about for
-boards that are going to be removed, someone at least tries to build a
-kernel for it, if it works then tag CVS as such for that board. If not,
-blow it away. This allows someone who possibly has an interest later on
-to at least be able to pull the last known working snapshot for their
-board. Just a thought.
+As a heads up, I've started playing with GIT as the replacement of CVS.
+For information on the status of that conversion please see
 
--Steve
+  http://www.linux-mips.org/wiki/Git
+
+The converted repositories are accessible at via rsync at
+
+  rsync://ftp.linux-mips.org/git
+
+And there gitweb, a web frontend to replace cvsweb available at:
+
+  http://www.linux-mips.org/wiki/git
+
+Browse around, let me know if you find anything that doesn't work as you
+want it to.
+
+For those with write permission into CVS, for now continue using CVS
+as always.  For now the conversion is still only for testing and
+figuring out all the kinks.
+
+  Ralf

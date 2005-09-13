@@ -1,21 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Sep 2005 14:31:48 +0100 (BST)
-Received: from lug-owl.de ([IPv6:::ffff:195.71.106.12]:21122 "EHLO lug-owl.de")
-	by linux-mips.org with ESMTP id <S8225458AbVIMNbc>;
-	Tue, 13 Sep 2005 14:31:32 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Sep 2005 14:34:56 +0100 (BST)
+Received: from lug-owl.de ([IPv6:::ffff:195.71.106.12]:23426 "EHLO lug-owl.de")
+	by linux-mips.org with ESMTP id <S8225463AbVIMNek>;
+	Tue, 13 Sep 2005 14:34:40 +0100
 Received: by lug-owl.de (Postfix, from userid 1001)
-	id C968EF004C; Tue, 13 Sep 2005 15:31:26 +0200 (CEST)
-Date:	Tue, 13 Sep 2005 15:31:26 +0200
+	id DE74AF0033; Tue, 13 Sep 2005 15:34:36 +0200 (CEST)
+Date:	Tue, 13 Sep 2005 15:34:36 +0200
 From:	Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To:	linux-mips@linux-mips.org
+To:	sjhill@realitydiluted.com
+Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
 Subject: Re: Git
-Message-ID: <20050913133126.GO23161@lug-owl.de>
-Mail-Followup-To: linux-mips@linux-mips.org
-References: <20050913124544.GC3224@linux-mips.org>
+Message-ID: <20050913133436.GP23161@lug-owl.de>
+Mail-Followup-To: sjhill@realitydiluted.com,
+	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+References: <20050913124544.GC3224@linux-mips.org> <E1EF9gl-0004U5-Rz@real.realitydiluted.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="HrsILUyxNtiOryfc"
+	protocol="application/pgp-signature"; boundary="CVXKxAdNG2kQIXaJ"
 Content-Disposition: inline
-In-Reply-To: <20050913124544.GC3224@linux-mips.org>
+In-Reply-To: <E1EF9gl-0004U5-Rz@real.realitydiluted.com>
 X-Operating-System: Linux mail 2.6.12.3lug-owl 
 X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
 X-gpg-key: wwwkeys.de.pgp.net
@@ -26,7 +28,7 @@ Return-Path: <jbglaw@lug-owl.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8927
+X-archive-position: 8928
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,21 +37,30 @@ Precedence: bulk
 X-list: linux-mips
 
 
---HrsILUyxNtiOryfc
+--CVXKxAdNG2kQIXaJ
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 2005-09-13 13:45:44 +0100, Ralf Baechle <ralf@linux-mips.org> wrote:
-> As a heads up, I've started playing with GIT as the replacement of CVS.
-> For information on the status of that conversion please see
->=20
->   http://www.linux-mips.org/wiki/Git
+On Tue, 2005-09-13 07:15:03 -0500, sjhill@realitydiluted.com <sjhill@realit=
+ydiluted.com> wrote:
+> > As a heads up, I've started playing with GIT as the replacement of CVS.
+> > For information on the status of that conversion please see
+> >=20
+> I assume the reason for choosing GIT was because the main line kernel
+> uses the same source management tool. No chance of using Subversion I
+> guess.
 
-Which docs did you use to get yourself started? I'm also on the way
-getting familiar with GIT, doing my very first steps. It would be nice
-if we'd present what we know in Oldenburg (I already offered to do so,
-Joey planed it for Saturday).
+Is SVN already distributed? In the past, the non-distributed reality
+of CVS is what bought me a lot of trouble. And SVN isn't really
+designed for distribution, is it?
+
+I for one see SVN as a CVS rewrite with some design flaws fixed, but
+it's for sure not what I actually want to use.
+
+So I'm currently learning to use GIT. It's a bit strange when you
+start using it (because usually I interact with git itself as well as
+with eg. cogito), but I slowly get used to it :-)
 
 MfG, JBG
 
@@ -63,7 +74,7 @@ m Irak!   O O O
 ret =3D do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM | TCPA)=
 );
 
---HrsILUyxNtiOryfc
+--CVXKxAdNG2kQIXaJ
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 Content-Disposition: inline
@@ -71,9 +82,9 @@ Content-Disposition: inline
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.1 (GNU/Linux)
 
-iD8DBQFDJtSuHb1edYOZ4bsRAubrAJ91uV+z/JyVdebtmpimR7OqFetwhQCfQZYo
-abowGeuDVZiSlraT17T77fc=
-=OMXn
+iD8DBQFDJtVsHb1edYOZ4bsRAqRAAKCEG3cxPHrtDrD25cmVxh05DB91TACfXtvp
+Hbmcbr6/Sk+X52YHBFA3mJE=
+=1KcS
 -----END PGP SIGNATURE-----
 
---HrsILUyxNtiOryfc--
+--CVXKxAdNG2kQIXaJ--

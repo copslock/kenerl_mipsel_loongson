@@ -1,74 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Sep 2005 02:47:58 +0100 (BST)
-Received: from topsns.toshiba-tops.co.jp ([IPv6:::ffff:202.230.225.5]:31267
-	"HELO topsns.toshiba-tops.co.jp") by linux-mips.org with SMTP
-	id <S8225319AbVIMBrl>; Tue, 13 Sep 2005 02:47:41 +0100
-Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 13 Sep 2005 01:49:14 UT
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id CEAAA1F63F
-	for <linux-mips@linux-mips.org>; Tue, 13 Sep 2005 10:49:11 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (gw-chiba7.toshiba-tops.co.jp [172.17.244.27])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id C308A1F63C
-	for <linux-mips@linux-mips.org>; Tue, 13 Sep 2005 10:49:11 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id j8D1nBoj047382
-	for <linux-mips@linux-mips.org>; Tue, 13 Sep 2005 10:49:11 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Tue, 13 Sep 2005 10:49:11 +0900 (JST)
-Message-Id: <20050913.104911.75185617.nemoto@toshiba-tops.co.jp>
-To:	linux-mips@linux-mips.org
-Subject: potential problem in au1000_generic.c
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Sep 2005 08:14:29 +0100 (BST)
+Received: from mxout.hispeed.ch ([IPv6:::ffff:62.2.95.247]:49562 "EHLO
+	smtp.hispeed.ch") by linux-mips.org with ESMTP id <S8224988AbVIMHOJ>;
+	Tue, 13 Sep 2005 08:14:09 +0100
+Received: from xbox.hb9jnx.ampr.org (84-73-56-159.dclient.hispeed.ch [84.73.56.159])
+	(authenticated bits=0)
+	by smtp.hispeed.ch (8.12.6/8.12.6/tornado-1.0) with ESMTP id j8D7E4Cu015829
+	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=FAIL);
+	Tue, 13 Sep 2005 09:14:05 +0200
+Received: from [192.168.1.5] (48.49.62.81.cust.bluewin.ch [81.62.49.48])
+	(authenticated bits=0)
+	by xbox.hb9jnx.ampr.org (8.13.4/8.13.4) with ESMTP id j8D7E2q4020976
+	(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NO);
+	Tue, 13 Sep 2005 09:14:03 +0200
+Subject: Re: deletion of boards
+From:	Thomas Sailer <t.sailer@alumni.ethz.ch>
+To:	ppopov@embeddedalley.com
+Cc:	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
+In-Reply-To: <1126575034.11755.85.camel@localhost.localdomain>
+References: <1126575034.11755.85.camel@localhost.localdomain>
+Content-Type: text/plain
+Organization: e-vision, inc.
+Date:	Tue, 13 Sep 2005 09:14:02 +0200
+Message-Id: <1126595642.5107.46.camel@playstation2.hb9jnx.ampr.org>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+X-Mailer: Evolution 2.2.3 (2.2.3-2.fc4) 
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+X-Virus-Scanned: ClamAV version 0.86.2, clamav-milter version 0.86 on smtp-02.tornado.cablecom.ch
+X-Virus-Scanned: ClamAV version 0.86.2, clamav-milter version 0.86 on xbox.hb9jnx
+X-Virus-Status:	Clean
+X-DCC-spamcheck-01.tornado.cablecom.ch-Metrics:	smtp-02.tornado.cablecom.ch 32700; Body=2
+	Fuz1=2 Fuz2=2
+Return-Path: <t.sailer@alumni.ethz.ch>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8917
+X-archive-position: 8918
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: t.sailer@alumni.ethz.ch
 Precedence: bulk
 X-list: linux-mips
 
-I found a potential probelm in au1x00_pcmcia_socket_probe().
+On Mon, 2005-09-12 at 18:30 -0700, Pete Popov wrote:
+> The AMD Pb1000, Pb1100, Pb1500, and Hydrogen3 boards are not up to date
+> in 2.6 and seem to be of very little interest to anyone. Any objections
+> if I remove them to reduce the clutter?
 
-This function roughly looks like:
+Yes. The Pb1000 mostly worked for me 3 months ago with 2.6, and I'm
+interested in using it sometime in the near future...
 
-int au1x00_pcmcia_socket_probe(struct device *dev, struct pcmcia_low_level *ops, int first, int nr)
-{
-...
-	for (i = 0; i < nr; i++) {
-		struct au1000_pcmcia_socket *skt = PCMCIA_SOCKET(i);
-...
-		ret = pcmcia_register_socket(&skt->socket);
-		if (ret)
-			goto out_err;
-...
-	}
-...
-	return 0;
-
-	do {
-		struct au1000_pcmcia_socket *skt = PCMCIA_SOCKET(i);
-...
-out_err:
-...
-		ops->hw_shutdown(skt);
-		i--;
-	} while (i > 0);
-...
-}
-
-The 'out_err' path seems broken since 'skt' in for-loop and
-do-while-loop are another variable.  The local variable 'skt' should
-be declared outside those loop.
-
----
-Atsushi Nemoto
+Tom

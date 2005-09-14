@@ -1,44 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Sep 2005 20:41:17 +0100 (BST)
-Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:43025 "EHLO
-	bacchus.net.dhis.org") by linux-mips.org with ESMTP
-	id <S8224982AbVINTlC>; Wed, 14 Sep 2005 20:41:02 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j8EJeg4A010849;
-	Wed, 14 Sep 2005 20:40:42 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j8EJecXV010820;
-	Wed, 14 Sep 2005 20:40:39 +0100
-Date:	Wed, 14 Sep 2005 20:40:38 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Alexey Dobriyan <adobriyan@gmail.com>
-Cc:	Scott Feldman <sfeldma@pobox.com>, netdev@vger.kernel.org,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH] gt96100: stop using pci_find_device()
-Message-ID: <20050914194038.GP3224@linux-mips.org>
-References: <20050914185136.GE19491@mipter.zuzino.mipt.ru>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Sep 2005 20:49:33 +0100 (BST)
+Received: from zproxy.gmail.com ([IPv6:::ffff:64.233.162.204]:58345 "EHLO
+	zproxy.gmail.com") by linux-mips.org with ESMTP id <S8224982AbVINTtP>;
+	Wed, 14 Sep 2005 20:49:15 +0100
+Received: by zproxy.gmail.com with SMTP id j2so22975nzf
+        for <linux-mips@linux-mips.org>; Wed, 14 Sep 2005 12:49:09 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:date:from:to:cc:subject:message-id:mime-version:content-type:content-disposition:user-agent;
+        b=Clp8IQqkEGtCyCBxyqQSeGudr+Zgif+du2oYs0d5pXqniammiJp+Bz1HjU9PyHfZ30+Gmt1ufthstiahsZGdv0Cfp56wq96G+PE4yRVLMMpT6gWSnxG+SqiaWTzwQLorh6e6BM+VrWwIz3mbs6TOcF0T8jus4+YiCESSAqVCt4I=
+Received: by 10.36.96.5 with SMTP id t5mr1962925nzb;
+        Wed, 14 Sep 2005 12:49:02 -0700 (PDT)
+Received: from gmail.com ( [217.10.38.130])
+        by mx.gmail.com with ESMTP id 10sm151704nzo.2005.09.14.12.48.55;
+        Wed, 14 Sep 2005 12:48:58 -0700 (PDT)
+Received: by gmail.com (nbSMTP-1.00) for uid 1000
+	(using TLSv1/SSLv3 with cipher DES-CBC3-SHA (168/168 bits))
+	adobriyan@gmail.com; Wed, 14 Sep 2005 23:59:16 +0400 (MSD)
+Date:	Wed, 14 Sep 2005 23:59:11 +0400
+From:	Alexey Dobriyan <adobriyan@gmail.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org, Domen Puncer <domen@coderock.org>
+Subject: [PATCH] Remove arch/mips/arc/salone.c
+Message-ID: <20050914195911.GH19491@mipter.zuzino.mipt.ru>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20050914185136.GE19491@mipter.zuzino.mipt.ru>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+User-Agent: Mutt/1.5.8i
+Return-Path: <adobriyan@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8955
+X-archive-position: 8956
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: adobriyan@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Sep 14, 2005 at 10:51:37PM +0400, Alexey Dobriyan wrote:
+From: Domen Puncer <domen@coderock.org>
 
-> Replace pci_find_device with pci_get_device/pci_dev_put to plug race
-> with pci_find_device.
+Remove nowhere referenced file (grep salone -r . didn't find anything).
 
-The system is a little odd; the race condition probably doens't exist on
-this particular chipset.
+Signed-off-by: Domen Puncer <domen@coderock.org>
+Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
+---
 
-  Ralf
+ arch/mips/arc/salone.c |   24 ------------------------
+ 1 files changed, 24 deletions(-)
+
+--- a/arch/mips/arc/salone.c	2005-09-14 19:05:26.000000000 +0400
++++ /dev/null	1970-01-01 00:00:00.000000000 +0000
+@@ -1,24 +0,0 @@
+-/*
+- * Routines to load into memory and execute stand-along program images using
+- * ARCS PROM firmware.
+- *
+- * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)
+- */
+-#include <linux/init.h>
+-#include <asm/sgialib.h>
+-
+-LONG __init ArcLoad(CHAR *Path, ULONG TopAddr, ULONG *ExecAddr, ULONG *LowAddr)
+-{
+-	return ARC_CALL4(load, Path, TopAddr, ExecAddr, LowAddr);
+-}
+-
+-LONG __init ArcInvoke(ULONG ExecAddr, ULONG StackAddr, ULONG Argc, CHAR *Argv[],
+-	CHAR *Envp[])
+-{
+-	return ARC_CALL5(invoke, ExecAddr, StackAddr, Argc, Argv, Envp);
+-}
+-
+-LONG __init ArcExecute(CHAR *Path, LONG Argc, CHAR *Argv[], CHAR *Envp[])
+-{
+-	return ARC_CALL4(exec, Path, Argc, Argv, Envp);
+-}

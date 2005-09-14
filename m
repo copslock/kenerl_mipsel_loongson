@@ -1,107 +1,91 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Sep 2005 12:47:09 +0100 (BST)
-Received: from lug-owl.de ([IPv6:::ffff:195.71.106.12]:2516 "EHLO lug-owl.de")
-	by linux-mips.org with ESMTP id <S8224978AbVINLqv>;
-	Wed, 14 Sep 2005 12:46:51 +0100
-Received: by lug-owl.de (Postfix, from userid 1001)
-	id 61150F0070; Wed, 14 Sep 2005 13:46:50 +0200 (CEST)
-Date:	Wed, 14 Sep 2005 13:46:50 +0200
-From:	Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To:	Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:	Linux/MIPS Development <linux-mips@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Sep 2005 13:38:13 +0100 (BST)
+Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:4637 "EHLO
+	bacchus.net.dhis.org") by linux-mips.org with ESMTP
+	id <S8225007AbVINMh4>; Wed, 14 Sep 2005 13:37:56 +0100
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j8ECboTI022364
+	for <linux-mips@linux-mips.org>; Wed, 14 Sep 2005 13:37:50 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j8ECboIh022363
+	for linux-mips@linux-mips.org; Wed, 14 Sep 2005 13:37:50 +0100
+Date:	Wed, 14 Sep 2005 13:37:50 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	linux-mips@linux-mips.org
 Subject: Re: Git
-Message-ID: <20050914114650.GF23161@lug-owl.de>
-Mail-Followup-To: Geert Uytterhoeven <geert@linux-m68k.org>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-References: <20050913124544.GC3224@linux-mips.org> <20050913133126.GO23161@lug-owl.de> <20050913152038.GE3224@linux-mips.org> <20050914095858.GD23161@lug-owl.de> <Pine.LNX.4.62.0509141322540.1923@numbat.sonytel.be>
+Message-ID: <20050914123750.GL3224@linux-mips.org>
+References: <20050913124544.GC3224@linux-mips.org> <20050913133126.GO23161@lug-owl.de> <20050913152038.GE3224@linux-mips.org> <20050914095858.GD23161@lug-owl.de>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="r6fxLKBTHCmC166Z"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.62.0509141322540.1923@numbat.sonytel.be>
-X-Operating-System: Linux mail 2.6.12.3lug-owl 
-X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
-X-gpg-key: wwwkeys.de.pgp.net
-X-Echelon-Enable: howto poison arsenous mail psychological biological nuclear warfare test the bombastical terror of flooding the spy listeners explosion sex drugs and rock'n'roll
-X-TKUeV: howto poison arsenous mail psychological biological nuclear warfare test the bombastical terror of flooding the spy listeners explosion sex drugs and rock'n'roll
-User-Agent: Mutt/1.5.9i
-Return-Path: <jbglaw@lug-owl.de>
+In-Reply-To: <20050914095858.GD23161@lug-owl.de>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8940
+X-archive-position: 8941
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jbglaw@lug-owl.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Wed, Sep 14, 2005 at 11:58:58AM +0200, Jan-Benedict Glaw wrote:
 
---r6fxLKBTHCmC166Z
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> To:	linux-mips@linux-mips.org
 
-On Wed, 2005-09-14 13:23:22 +0200, Geert Uytterhoeven <geert@linux-m68k.org=
-> wrote:
-> On Wed, 14 Sep 2005, Jan-Benedict Glaw wrote:
-> > On Tue, 2005-09-13 16:20:38 +0100, Ralf Baechle <ralf@linux-mips.org> w=
-rote:
-> > > On Tue, Sep 13, 2005 at 03:31:26PM +0200, Jan-Benedict Glaw wrote:
-> > > > I'm also on the way
-> > > > getting familiar with GIT, doing my very first steps. It would be n=
-ice
-> > > > if we'd present what we know in Oldenburg (I already offered to do =
-so,
-> > > > Joey planed it for Saturday).
-> > >=20
-> > > Sounds like a plan.  And maybe present some of the other alternatives
-> > > to CVS as well?
-> >=20
-> > I'm not sure if it's worth it. Linus decided against all other SCMs. I
-> > did use (for small test projects) monotone, darcs and arch. (I think
-> > all other alternatives aren't.)
->=20
-> Have you tried mercurial?
+If you actually expect finite time answer, don't delete the cc list ...
 
-Nope. I've only used it's web frontend on http://www.kernel.org/hg/ .
+> monotone
+> 	Is quite nice'n'easy to use for CVS users, you'll have quite a
+> 	fast start. The network sync protocol can be a bit lengthy at
+> 	a time, but it works. It's acceptable in speed, but not
+> 	exactly "fast". Written in C, code can easily be read and
+> 	hacked.
 
-Mercurial's author claims that it scales even better than git, esp. on
-its network transfer. However, I'm not aware how it scales there right
-now, since git got its "packs" implemented.
+Git has taken some ideas from Monotone.
 
-> > To get fixes/port updates/subsystem updates upstream to Linus, GIT is
-> > the way[tm] to go, so we'd try to get familiar with it.
->=20
-> Still using plain patches and email...
+> darcs
+> 	Is easy to use, too, and quite some helpful. Network
+> 	operations are a bit slower than those of monotone, but the
+> 	real point is that it's merging algorithms are awfully slow.
+> 	Also, it's written in Haskell (and getting a working compiler
+> 	isn't exactly trivial), so the code is hard to read (for a C
+> 	person), mostly because Haskell's concept are so different
+> 	(it's a function programming language, after all.)
 
-=2E..which is a nice and actually working scheme, too. At least, it
-doesn't require to learn working with a new SCM :-P  Though I think
-it's a good idea.
+In my tests at the beginning of the year darcs's performance was
+undescribably low.  The speedup factor needed to make it useful for any
+large project probably cannot be described in a floating point number.
 
-MfG, JBG
+> arch
+> 	Arch can do almost everything; it's network sync protocol is
+> 	quite fast (can use several transports and will make use of
+> 	caches). However, it's not exactly easy to use because of it's
+> 	thousands of commands and it's project name conventions are,
+> 	um, ugly. It has very good merging capabilities, but it's
+> 	heavy use of local caches forces you to have loads of free HDD
+> 	space.
 
---=20
-Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481             =
-_ O _
-"Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg  =
-_ _ O
- f=C3=BCr einen Freien Staat voll Freier B=C3=BCrger"  | im Internet! |   i=
-m Irak!   O O O
-ret =3D do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM | TCPA)=
-);
+Git is a huge diskspace consumer also unless repositories are converted.
+For example, the Linux kernel repository from CVS did inflate itself to
+over 4GB and over 340,000 files.  After packing I got that down to like
+170MB.  Not bad compared to the some 770MB of RCS files it's using
+currently and < 11s checkout from git can't be wrong either ;-)
 
---r6fxLKBTHCmC166Z
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
+> SVN
+> 	Not distributed, easy to use.  Though there's a different
+> 	frontend with distribution capabilities. Personally, SVN feels
+> 	like CVS with it's major conceptual problems fixed.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.1 (GNU/Linux)
+And plenty of reports about database corruption that are not terribly old
+so I'd feel uneasy to keep the crown jewels there.
 
-iD8DBQFDKA2qHb1edYOZ4bsRAsv6AJ42sSLsP/2n9JA8FZZGU3AQp+vqrACfYe4H
-YJZ9W8LyyJoBACge88TLmP8=
-=P9RP
------END PGP SIGNATURE-----
+> To get fixes/port updates/subsystem updates upstream to Linus, GIT is
+> the way[tm] to go, so we'd try to get familiar with it.
 
---r6fxLKBTHCmC166Z--
+The other accepted currency of the trade are still simple patches, see
+http://www.linux-mips.org/wiki/The_perfect_patch.
+
+  Ralf

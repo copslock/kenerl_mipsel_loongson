@@ -1,86 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Sep 2005 14:08:46 +0100 (BST)
-Received: from [IPv6:::ffff:85.21.88.6] ([IPv6:::ffff:85.21.88.6]:3348 "EHLO
-	buildserver.ru.mvista.com") by linux-mips.org with ESMTP
-	id <S8225204AbVINNIY>; Wed, 14 Sep 2005 14:08:24 +0100
-Received: from [192.168.12.17] ([10.149.0.1])
-	by buildserver.ru.mvista.com (8.11.6/8.11.6) with ESMTP id j8ED8Mt22013;
-	Wed, 14 Sep 2005 18:08:22 +0500
-Message-ID: <432820C6.2050906@ru.mvista.com>
-Date:	Wed, 14 Sep 2005 17:08:22 +0400
-From:	"Vladimir A. Barinov" <vbarinov@ru.mvista.com>
-User-Agent: Mozilla Thunderbird 1.0 (X11/20041206)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-CC:	Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH]  Fix module insertion fail for TX4927/TX4938 platforms
-References: <20050913124544.GC3224@linux-mips.org>	<20050913133126.GO23161@lug-owl.de>	<20050913152038.GE3224@linux-mips.org> <17191.61757.80884.8289@mips.com> <43281DC3.8010602@ru.mvista.com> <43281F6E.3010807@ru.mvista.com> <43281FE6.4070102@ru.mvista.com>
-In-Reply-To: <43281FE6.4070102@ru.mvista.com>
-Content-Type: multipart/mixed;
- boundary="------------080609060704000107050501"
-Return-Path: <vbarinov@ru.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Sep 2005 16:17:50 +0100 (BST)
+Received: from lug-owl.de ([IPv6:::ffff:195.71.106.12]:56537 "EHLO lug-owl.de")
+	by linux-mips.org with ESMTP id <S8225288AbVINPRd>;
+	Wed, 14 Sep 2005 16:17:33 +0100
+Received: by lug-owl.de (Postfix, from userid 1001)
+	id 26C56F0070; Wed, 14 Sep 2005 17:17:28 +0200 (CEST)
+Date:	Wed, 14 Sep 2005 17:17:28 +0200
+From:	Jan-Benedict Glaw <jbglaw@lug-owl.de>
+To:	"Vladimir A. Barinov" <vbarinov@ru.mvista.com>
+Cc:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH] Ethernet for TX4927(37) platform
+Message-ID: <20050914151728.GI23161@lug-owl.de>
+Mail-Followup-To: "Vladimir A. Barinov" <vbarinov@ru.mvista.com>,
+	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+References: <20050913124544.GC3224@linux-mips.org> <20050913133126.GO23161@lug-owl.de> <20050913152038.GE3224@linux-mips.org> <17191.61757.80884.8289@mips.com> <43281DC3.8010602@ru.mvista.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="8TMLq6GPUuN4DysL"
+Content-Disposition: inline
+In-Reply-To: <43281DC3.8010602@ru.mvista.com>
+X-Operating-System: Linux mail 2.6.12.3lug-owl 
+X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
+X-gpg-key: wwwkeys.de.pgp.net
+X-Echelon-Enable: howto poison arsenous mail psychological biological nuclear warfare test the bombastical terror of flooding the spy listeners explosion sex drugs and rock'n'roll
+X-TKUeV: howto poison arsenous mail psychological biological nuclear warfare test the bombastical terror of flooding the spy listeners explosion sex drugs and rock'n'roll
+User-Agent: Mutt/1.5.9i
+Return-Path: <jbglaw@lug-owl.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8946
+X-archive-position: 8947
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vbarinov@ru.mvista.com
+X-original-sender: jbglaw@lug-owl.de
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
---------------080609060704000107050501
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
 
-Hello All!
+--8TMLq6GPUuN4DysL
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This patch fixes module insertion fail for TX4927/TX4938 platforms for 
-several drivers:
-*** Warning: "__wbflush" [fs/reiserfs/reiserfs.ko] undefined!
-*** Warning: "__wbflush" [fs/jbd/jbd.ko] undefined!
-*** Warning: "__wbflush" [drivers/usb/gadget/net2280.ko] undefined!
-*** Warning: "__wbflush" [drivers/usb/gadget/g_serial.ko] undefined!
-*** Warning: "__wbflush" [drivers/net/ppp_generic.ko] undefined!
+On Wed, 2005-09-14 16:55:31 +0400, Vladimir A. Barinov <vbarinov@ru.mvista.=
+com> wrote:
+> Hello All!
+>=20
+> This as a patch to add ethernet support for TX4927 platform.
+> Does it makes sence to push it in?
 
-Does it makes sence to push it in?
+Whenever you want to start a new thread of discussion, please do so
+and don't simply press 'Reply' on some unrelated email and change the
+subject line. Your patches don't correspond to the GIT discossen, so
+please keep out out of it.
 
-Regards,
-Vladimir
+Thanks, JBG
 
+--=20
+Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481             =
+_ O _
+"Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg  =
+_ _ O
+ f=C3=BCr einen Freien Staat voll Freier B=C3=BCrger"  | im Internet! |   i=
+m Irak!   O O O
+ret =3D do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM | TCPA)=
+);
 
---------------080609060704000107050501
-Content-Type: text/plain;
- name="pro_mips_tx4927_modules_fix.patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="pro_mips_tx4927_modules_fix.patch"
+--8TMLq6GPUuN4DysL
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
 
-Signed-off-by: Vladimir Barinov <vbarinov@ru.mvista.com>
-Description:
-	Fix module insertion fail on TX4927/TX4938 platforms
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.1 (GNU/Linux)
 
-Index: linux-2.6.10/arch/mips/tx4927/common/tx4927_setup.c
-===================================================================
---- linux-2.6.10.orig/arch/mips/tx4927/common/tx4927_setup.c
-+++ linux-2.6.10/arch/mips/tx4927/common/tx4927_setup.c
-@@ -231,3 +231,5 @@ void pk0(void)
- 	printk("k0=[0x%08x]\n", val);
- }
- #endif
-+
-+EXPORT_SYMBOL(__wbflush);
-Index: linux-2.6.10/arch/mips/tx4938/common/setup.c
-===================================================================
---- linux-2.6.10.orig/arch/mips/tx4938/common/setup.c
-+++ linux-2.6.10/arch/mips/tx4938/common/setup.c
-@@ -89,3 +89,5 @@ void __init tx4938_timer_setup(struct ir
- 	write_c0_compare(count);
- 	c2 = read_c0_count();
- }
-+
-+EXPORT_SYMBOL(__wbflush);
+iD8DBQFDKD8HHb1edYOZ4bsRAt/OAJ9pMBQk4Nah0D5ueMzVNhElaiub5gCeMHUj
+z//Edqhr5TcdAJbDOcB0sb8=
+=x/hd
+-----END PGP SIGNATURE-----
 
---------------080609060704000107050501--
+--8TMLq6GPUuN4DysL--

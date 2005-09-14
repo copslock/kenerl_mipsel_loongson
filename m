@@ -1,63 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Sep 2005 20:51:20 +0100 (BST)
-Received: from smtp103.biz.mail.mud.yahoo.com ([IPv6:::ffff:68.142.200.238]:19300
-	"HELO smtp103.biz.mail.mud.yahoo.com") by linux-mips.org with SMTP
-	id <S8225525AbVIMTvC>; Tue, 13 Sep 2005 20:51:02 +0100
-Received: (qmail 79553 invoked from network); 13 Sep 2005 19:50:55 -0000
-Received: from unknown (HELO ?192.168.1.111?) (ppopov@embeddedalley.com@71.128.175.242 with plain)
-  by smtp103.biz.mail.mud.yahoo.com with SMTP; 13 Sep 2005 19:50:54 -0000
-Subject: Re: deletion of boards
-From:	Pete Popov <ppopov@embeddedalley.com>
-Reply-To: ppopov@embeddedalley.com
-To:	Sylvain Munaut <tnt@246tNt.com>
-Cc:	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
-In-Reply-To: <43272A02.7030603@246tNt.com>
-References: <1126575034.11755.85.camel@localhost.localdomain>
-	 <43272A02.7030603@246tNt.com>
-Content-Type: text/plain
-Organization: Embedded Alley Solutions, Inc
-Date:	Tue, 13 Sep 2005 12:51:04 -0700
-Message-Id: <1126641064.11755.166.camel@localhost.localdomain>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.0.4 (2.0.4-4) 
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Sep 2005 10:46:10 +0100 (BST)
+Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:3085 "EHLO
+	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8224974AbVINJpx>;
+	Wed, 14 Sep 2005 10:45:53 +0100
+Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
+	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
+	id 1EFToL-0002pz-00; Wed, 14 Sep 2005 10:44:13 +0100
+Received: from olympia.mips.com ([192.168.192.128] helo=boris)
+	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1EFTpZ-0001tN-00; Wed, 14 Sep 2005 10:45:30 +0100
+From:	Dominic Sweetman <dom@mips.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@embeddedalley.com>
+Message-ID: <17191.61757.80884.8289@mips.com>
+Date:	Wed, 14 Sep 2005 10:45:33 +0100
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Git
+In-Reply-To: <20050913152038.GE3224@linux-mips.org>
+References: <20050913124544.GC3224@linux-mips.org>
+	<20050913133126.GO23161@lug-owl.de>
+	<20050913152038.GE3224@linux-mips.org>
+X-Mailer: VM 7.17 under 21.4 (patch 15) "Security Through Obscurity" XEmacs Lucid
+X-MTUK-Scanner:	Found to be clean
+X-MTUK-SpamCheck: not spam (whitelisted), SpamAssassin (score=-4.811,
+	required 4, AWL, BAYES_00)
+Return-Path: <dom@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8934
+X-archive-position: 8935
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@embeddedalley.com
+X-original-sender: dom@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 2005-09-13 at 21:35 +0200, Sylvain Munaut wrote:
-> Pete Popov wrote:
-> > The AMD Pb1000, Pb1100, Pb1500, and Hydrogen3 boards are not up to date
-> > in 2.6 and seem to be of very little interest to anyone. Any objections
-> > if I remove them to reduce the clutter?
-> > 
-> > Pete
-> > 
-> > 
-> 
-> Theses files were of some help when bringing up new board based on thos
-> processors.
 
-Why not use the Db1x equivalent? If you have an au1000 based board, you
-should probably base your port on the db1000 board, not the pb1000
-anyway.
+Since I didn't understand it, I did some digging around.  I recorded
+what I figured out so far (which may, of course, be deeply wrong) in a
+wiki page
 
-I didn't get a clear answer on whether it's ok to remove those boards
-but I guess that's normal. The problem with keeping boards around that
-very few people are interested in is that no one maintains them, the
-code is broken, and quite honestly I think it creates confusion for
-developers that have a custom board based on, let's say, the Au1500.
-Unless that developer knows that the pb1000 code is broken, how would he
-know to base his code on the db1000 instead of the pb1000? If the
-support for these boards is broken now, it will only get worst. Anytime
-someone makes mods to supported boards, it's bound to break something in
-the already unsupported ones and make that code even more unusable.
+  http://www.linux-mips.org/wiki/WhatIsGit
 
-Pete
+Unless and until someone else comes up with a link to something better
+like this - which I appreciate quite likely exists somewhere - perhaps
+this will get amended by others and become useful.
+
+--
+Dominic Sweetman

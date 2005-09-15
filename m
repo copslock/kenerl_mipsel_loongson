@@ -1,131 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Sep 2005 23:59:40 +0100 (BST)
-Received: from father.pmc-sierra.com ([IPv6:::ffff:216.241.224.13]:18397 "HELO
-	father.pmc-sierra.bc.ca") by linux-mips.org with SMTP
-	id <S8224992AbVINW7V>; Wed, 14 Sep 2005 23:59:21 +0100
-Received: (qmail 306 invoked by uid 101); 14 Sep 2005 22:59:14 -0000
-Received: from unknown (HELO ogmios.pmc-sierra.bc.ca) (216.241.226.59)
-  by father.pmc-sierra.com with SMTP; 14 Sep 2005 22:59:14 -0000
-Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
-	by ogmios.pmc-sierra.bc.ca (8.13.3/8.12.7) with ESMTP id j8EMxA45007683
-	for <linux-mips@linux-mips.org>; Wed, 14 Sep 2005 15:59:14 -0700
-Received: by bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca with Internet Mail Service (5.5.2656.59)
-	id <RMQMT5N0>; Wed, 14 Sep 2005 15:59:18 -0700
-Message-ID: <5C1FD43E5F1B824E83985A74F396286E5E9475@bby1exm08.pmc_nt.nt.pmc-sierra.bc.ca>
-From:	Don Hiatt <Don_Hiatt@pmc-sierra.com>
-To:	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
-Cc:	Don Hiatt <Don_Hiatt@pmc-sierra.com>
-Subject: Trival shell script crashes under 2.4.25
-Date:	Wed, 14 Sep 2005 16:00:40 -0700
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2656.59)
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Return-Path: <Don_Hiatt@pmc-sierra.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Sep 2005 17:16:31 +0100 (BST)
+Received: from mba.ocn.ne.jp ([IPv6:::ffff:210.190.142.172]:25583 "HELO
+	smtp.mba.ocn.ne.jp") by linux-mips.org with SMTP
+	id <S8225326AbVIOQQC>; Thu, 15 Sep 2005 17:16:02 +0100
+Received: from localhost (p4183-ipad27funabasi.chiba.ocn.ne.jp [220.107.195.183])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id A4B2F85C1; Fri, 16 Sep 2005 01:15:57 +0900 (JST)
+Date:	Fri, 16 Sep 2005 01:17:38 +0900 (JST)
+Message-Id: <20050916.011738.41198368.anemo@mba.ocn.ne.jp>
+To:	ralf@linux-mips.org
+Cc:	macro@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: unkillable process due to setup_frame() failure
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20050907.234413.108737010.anemo@mba.ocn.ne.jp>
+References: <Pine.LNX.4.61L.0509071011560.4591@blysk.ds.pg.gda.pl>
+	<20050907134717.GA3493@linux-mips.org>
+	<20050907.234413.108737010.anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8959
+X-archive-position: 8960
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Don_Hiatt@pmc-sierra.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+>>>>> On Wed, 07 Sep 2005 23:44:13 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> said:
 
-  Sorry if this is the wrong list to post to; if it is, could you
-please suggest an alternative? :)
+anemo> So my "which is preferred" question was inappropriate.  I had
+anemo> to ask "#1 or #2 or both or other ?"
 
-  Below you will find a very simple shell script that crashes under
-2.4.25 running on a RM9000 (PMC rm7935) with busybox 1.0. This script
-just demonstrates the actual problem but I do not believe it is 
-isolated to busybox. In fact I wrote a simple program that just does
-this:
-	* for(;;)
-		* fork()
-			* mmap file "foo"
-			* compare "foo" to an array image
-		* waitpid()
+In 2.6.14-rc1, another fix is done in arch/i386/kernel/entry.S.
+It also fixes a race condition in signal delivery.
 
-and it will run for a while and then SEGFAULT at various times. According
-to GDB the stack is corrupted and looking at the PC it does seem bogus
-(0x2acf2e50). 
+>    [PATCH] i386: Don't miss pending signals returning to user mode after signal processing
+>    
+>    Signed-off-by: Roland McGrath <roland@redhat.com>
 
-  The program crashes after a random amount of time but generally no more
-that a minute or so. I can speed up the process if I ping-flood the target.
+Let's follow.
 
-  Now what is really wierd is that if I run the program under gdbserver
-it doesn't crash (or at least has not in the last 1/2 hour). Does gdbserver
-change the execution context differently that gdb??
+--- linux-mips/arch/mips/kernel/entry.S	2005-03-04 22:17:29.000000000 +0900
++++ linux/arch/mips/kernel/entry.S	2005-09-16 01:04:52.365022536 +0900
+@@ -105,7 +105,7 @@
+ 	move	a0, sp
+ 	li	a1, 0
+ 	jal	do_notify_resume	# a2 already loaded
+-	j	restore_all
++	j	resume_userspace
+ 
+ FEXPORT(syscall_exit_work_partial)
+ 	SAVE_STATIC
 
-  Any suggestions would be greatly appreciated. :)
-
-Cheers,
-
-don
-
-
-# cat die.sh 
-#!/bin/sh
-while :
-do
-  echo 1
-done
-
-
-*** RUN #1 ***
-1
-1
-....
-./die.sh: 5: echo: Bad address
-
-*** RUN # 2 ***
-1
-1
-1
-..
-Segmentation fault
-
-*** GDB (6.3) DUMP ***
-...
-----------
-fork()
-P(16814) : C(17343) : Count (468)
-
-Program received signal SIGSEGV, Segmentation fault.
-0x2acf2e50 in ?? ()
-(gdb) .
-(gdb) bt
-#0  0x2acf2e50 in ?? ()
-warning: GDB can't find the start of the function at 0x2acf2e50.
-
-    GDB is unable to find the start of the function at 0x2acf2e50
-and thus can't determine the size of that function's stack frame.
-This means that GDB may be unable to access that stack frame, or
-the frames below it.
-    This problem is most likely caused by an invalid program counter or
-stack pointer.
-    However, if you think GDB should simply search farther back
-from 0x2acf2e50 for code which looks like the beginning of a
-function, you can increase the range of the search using the `set
-heuristic-fence-post' command.
-#1  0x2acf2e50 in ?? ()
-warning: GDB can't find the start of the function at 0x2acf2e50.
-Previous frame identical to this frame (corrupt stack?)
-(gdb)
-
-
-*** CPU INFO ***
-~ # cat /proc/cpuinfo 
-system type             : ITE QED-4N-S01B
-processor               : 0
-cpu model               : RM9000 V2.2  FPU V2.0
-BogoMIPS                : 897.84
-wait instruction        : no
-microsecond timers      : yes
-tlb_entries             : 64
-extra interrupt vector  : no
-hardware watchpoint     : no
-VCED exceptions         : not available
-VCEI exceptions         : not available
+---
+Atsushi Nemoto

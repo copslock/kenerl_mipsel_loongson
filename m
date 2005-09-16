@@ -1,95 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Sep 2005 17:07:00 +0100 (BST)
-Received: from mother.pmc-sierra.com ([IPv6:::ffff:216.241.224.12]:64192 "HELO
-	mother.pmc-sierra.bc.ca") by linux-mips.org with SMTP
-	id <S8225291AbVIPQGn>; Fri, 16 Sep 2005 17:06:43 +0100
-Received: (qmail 20732 invoked by uid 101); 16 Sep 2005 16:06:30 -0000
-Received: from unknown (HELO ogyruan.pmc-sierra.bc.ca) (216.241.226.236)
-  by mother.pmc-sierra.com with SMTP; 16 Sep 2005 16:06:30 -0000
-Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
-	by ogyruan.pmc-sierra.bc.ca (8.13.3/8.12.7) with ESMTP id j8GG6U90013797
-	for <linux-mips@linux-mips.org>; Fri, 16 Sep 2005 09:06:30 -0700
-Received: by bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca with Internet Mail Service (5.5.2656.59)
-	id <RMQMVDXK>; Fri, 16 Sep 2005 09:06:37 -0700
-Message-ID: <5C1FD43E5F1B824E83985A74F396286E5E9486@bby1exm08.pmc_nt.nt.pmc-sierra.bc.ca>
-From:	Don Hiatt <Don_Hiatt@pmc-sierra.com>
-To:	linux-mips@linux-mips.org
-Subject: RE: Location of MIPS KDB Patch? 
-Date:	Fri, 16 Sep 2005 09:07:49 -0700
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Sep 2005 19:54:09 +0100 (BST)
+Received: from eth13.com-link.com ([IPv6:::ffff:208.242.241.164]:8110 "EHLO
+	real.realitydiluted.com") by linux-mips.org with ESMTP
+	id <S8225428AbVIPSxu>; Fri, 16 Sep 2005 19:53:50 +0100
+Received: from sjhill by real.realitydiluted.com with local (Exim 4.52 #1 (Debian))
+	id 1EGKPJ-0005Pf-1K; Fri, 16 Sep 2005 12:53:53 -0500
+Subject: Re: Location of MIPS KDB Patch?
+In-Reply-To: <5C1FD43E5F1B824E83985A74F396286E5E9486@bby1exm08.pmc_nt.nt.pmc-sierra.bc.ca>
+To:	Don Hiatt <Don_Hiatt@pmc-sierra.com>
+Date:	Fri, 16 Sep 2005 12:53:52 -0500 (CDT)
+CC:	linux-mips@linux-mips.org
+X-Mailer: ELM [version 2.4ME+ PL100 (25)]
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2656.59)
-Content-Type: text/plain
-Return-Path: <Don_Hiatt@pmc-sierra.com>
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
+Message-Id: <E1EGKPJ-0005Pf-1K@real.realitydiluted.com>
+From:	sjhill@realitydiluted.com
+Return-Path: <sjhill@realitydiluted.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8971
+X-archive-position: 8972
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Don_Hiatt@pmc-sierra.com
+X-original-sender: sjhill@realitydiluted.com
 Precedence: bulk
 X-list: linux-mips
 
-I know it is bad etiquette to reply to your own message, but... :)
-
-I just got an email from Sergey and he was referring to KGDB. So
-the mystery remains, has anyone already ported KDB? And if not, is
-it worth it when compared to KGDB (I haven't used either)?
-
-Cheers,
-
-don
-
-
------Original Message-----
-From: Don Hiatt 
-Sent: Friday, September 16, 2005 8:39 AM
-To: linux-mips@linux-mips.org
-Subject: Location of MIPS KDB Patch? 
-
-
-
-Howdy,
-
- I've included the response (hope Keith doesn't mind) I got about
-the MIPS patch for KDB. Is there in fact a MIPS patch for KDB? According
-to Sergey there is:
-
-(http://www.linux-mips.org/archives/linux-mips/2005-08/msg00117.html)
->It works fine, I'm using it on NEC VR5701
-
->Best wishes,
->Sergey Podstavin.
-
-On Mon, 2005-08-22 at 18:00 -0700, Knittel, Brian wrote:
-> There are a couple of references to KDB in the archive, but nothing recent. 
-> What is the state of KDB on MIPS?
->  
-> Thanks,
-> --Brian
+> I just got an email from Sergey and he was referring to KGDB. So
+> the mystery remains, has anyone already ported KDB? And if not, is
+> it worth it when compared to KGDB (I haven't used either)?
 > 
-> 
+Use printk or a hardware debugger. Software kernel debuggers almost
+never work and they're always buggy. The guys who did KGDB for MIPS
+did a great job, but it looks like it's hard to keep that code up
+to date and working with kernel changes and newer versions of gdb.
+At least that's been my experience. In-kernel debuggers is like
+saying "Physician heal thyself." or asking yourself to be objective.
 
-Cheers,
-
-don
-
-
------Original Message-----
-From: Keith Owens [mailto:kaos@sgi.com]
-Sent: Thursday, September 15, 2005 5:01 PM
-To: Don Hiatt
-Cc: 'kdb@oss.sgi.com'
-Subject: Re: Location of MIPS KDB Patch? 
-
-
-On Thu, 15 Sep 2005 09:57:19 -0700, 
-Don Hiatt <Don_Hiatt@pmc-sierra.com> wrote:
->  I was wondering where I could find the MIPS specific patch for
->KDB for 2.4.25? I've found the common-portions on the FTP site but
->seem to be missing the MIPS part. Sorry if this is detailed somewhere
->which I have likely overlooked. ;)
-
-KDB has never been supported on MIPS.  Over the years several people
-with MIPS hardware have said that they would have a go at it, but
-nobody ever sent any patches.
+-Steve

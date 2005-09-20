@@ -1,75 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Sep 2005 10:10:17 +0100 (BST)
-Received: from alg145.algor.co.uk ([IPv6:::ffff:62.254.210.145]:54285 "EHLO
-	dmz.algor.co.uk") by linux-mips.org with ESMTP id <S8225283AbVITJKB>;
-	Tue, 20 Sep 2005 10:10:01 +0100
-Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
-	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
-	id 1EHe6l-00081J-00; Tue, 20 Sep 2005 10:08:11 +0100
-Received: from olympia.mips.com ([192.168.192.128] helo=boris)
-	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
-	id 1EHe7r-0001Xd-00; Tue, 20 Sep 2005 10:09:19 +0100
-From:	Dominic Sweetman <dom@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Sep 2005 10:14:28 +0100 (BST)
+Received: from smtpr2.tom.com ([IPv6:::ffff:202.108.255.197]:20719 "HELO
+	tom.com") by linux-mips.org with SMTP id <S8225198AbVITJOK>;
+	Tue, 20 Sep 2005 10:14:10 +0100
+Received: from [192.168.10.105] (unknown [218.94.38.156])
+	by bjapp3 (Coremail) with SMTP id PAAxZN_SL0MeACac.1
+	for <linux-mips@linux-mips.org>; Tue, 20 Sep 2005 17:14:09 +0800 (CST)
+X-Originating-IP: [218.94.38.156]
+Message-ID: <432FD2DF.1070506@tom.com>
+Date:	Tue, 20 Sep 2005 17:14:07 +0800
+From:	Zhuang Yuyao <ihollo@tom.com>
+User-Agent: Mozilla Thunderbird 1.0.6 (Windows/20050716)
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-ID: <17199.53696.27856.801284@mips.com>
-Date:	Tue, 20 Sep 2005 10:09:20 +0100
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	Thiemo Seufer <ths@networkno.de>, linux-mips@linux-mips.org
-Subject: Re: Performance bug in c-r4k.c cache handling code
-In-Reply-To: <Pine.LNX.4.61L.0509191733180.5551@blysk.ds.pg.gda.pl>
-References: <20050919154056.GG3386@hattusa.textio>
-	<Pine.LNX.4.61L.0509191733180.5551@blysk.ds.pg.gda.pl>
-X-Mailer: VM 7.17 under 21.4 (patch 15) "Security Through Obscurity" XEmacs Lucid
-X-MTUK-Scanner:	Found to be clean
-X-MTUK-SpamCheck: not spam (whitelisted), SpamAssassin (score=-4.826,
-	required 4, AWL, BAYES_00)
-Return-Path: <dom@mips.com>
+To:	linux-mips@linux-mips.org
+Subject: [A little bit offtopic] AU1550 board ODM
+Content-Type: text/plain; charset=gb2312
+Content-Transfer-Encoding: 8bit
+Return-Path: <ihollo@tom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8986
+X-archive-position: 8987
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dom@mips.com
+X-original-sender: ihollo@tom.com
 Precedence: bulk
 X-list: linux-mips
 
+(3 times I tried to send this mail, but it does not appear in the list,
+If the content of this mail violates the policy of this maillist, please
+let me know and I'd apologize)
 
-> > I found an performance bug in c-r4k.c:r4k_dma_cache_inv, where a
-> > Hit_Writeback_Inv instead of Hit_Invalidate is done.
+Hi,
 
-The MIPS64 spec (which is really all there is to set standards in this
-area) regards Hit_Invalidate as optional.  So it would be nice not to
-use it.  CPUs have no standard "configuration" register you can read
-to establish which cacheops work, so to identify capable CPUs you must
-use a table of CPU attributes indexed by the CPU ID, which encourages
-the crime of building software which can't possibly run on a new CPU...
+We (a Chinese company) are looking for a board design based on AMD
+au1550.  We would like to pay $2500~$5000 (in US dollar) for a board
+design which fits our requirements.
 
-So long as the buffer is in fact clean, then in most implementations a
-Hit_Writeback_Invalidate will be just as efficient.
+Some brief requirements:
+1) 6 10/100Mbit ethernet ports, any one of them should be able to
+configured to have its own IP address. (sorry for bad english, I mean
+some thing like this (http://www.linux-mips.org/wiki/ADM5120_switch));
+2) at least 1 mini-pci slot, 2 is preferred;
+3) RAM (DDR) can be configured to 64M, 128M and 256M
+4) Flash (NAND): 64M
+5) IDE connection (including power) for 2.5inch notebook hard disk.
+6) Bootloader and Safenet encryption engine support. (OS: linux 2.6.x)
+7) 4-layers PCB is preferred.
 
-Moreover, CPUs always "post" writes to some extent, so a small
-percentage of dirty lines can be handled without any great overhead.
-So a significant advantage can only occur when the buffer you want to
-invalidate (prior to DMA-in) was fairly recently densely written by
-the CPU; and this is only safe when all that data can be guaranteed to
-now be of no importance to anyone.
+Desired hardware and files:
+1) Schematics file for this board
+2) BOM from the board
+3) PADS layout files
+4) PCB gerber files
+5) 2 Prototype boards
 
-Randomly and retrospectively discarding writes could generate some
-very interesting bugs, or (indeed) usually hide some very interesting
-bugs.  It's the kind of thing one would lik to avoid!
+Desired Software:
+1) Bootloader source code, (the original Yamon and the patches)
+2) A demo kernel and root file system (Linux 2.6.x, uClibc) for this
+board.
 
-I suppose where DMA data subsequently gets decorated by the CPU then
-handed on to some other layer, then the buffer is freed...?
+If anyone is interested in this, please contact me with the email
+address provided below. An ODM contract will be signed after all the
+details are discussed and settled. In case you are worried about the
+credit of us, I will contact AMD office in Shanghai and make AMD the
+supervisor/broker for this case.
 
-> FYI, for R4k DECstations the need to flush the cache for newly allocated 
-> skbs reduces throughput of FDDI reception by about a half (!), down from 
-> about 90Mbps (that's for the /260)...
+Thanks in advance.
 
-How did you measure the high throughput?  Have you got a
-machine with DMA-coherency you can turn on and off?
-
---
-Dominic
+　　　　　　　　Zhuang Yuyao
+　　　　　　　　ihollo@tom.com
+　　　　　　　　　　2005-09-18

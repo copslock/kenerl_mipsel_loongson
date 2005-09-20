@@ -1,39 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Sep 2005 13:23:07 +0100 (BST)
-Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:52509 "EHLO
-	bacchus.net.dhis.org") by linux-mips.org with ESMTP
-	id <S8225410AbVITMWu>; Tue, 20 Sep 2005 13:22:50 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j8KCMi3p008283;
-	Tue, 20 Sep 2005 13:22:44 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j8KCMhEf008282;
-	Tue, 20 Sep 2005 13:22:43 +0100
-Date:	Tue, 20 Sep 2005 13:22:43 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Sep 2005 13:37:47 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:776 "EHLO
+	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225410AbVITMhc>; Tue, 20 Sep 2005 13:37:32 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id BE557F596C; Tue, 20 Sep 2005 14:37:27 +0200 (CEST)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 28365-02; Tue, 20 Sep 2005 14:37:27 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 4C415F5969; Tue, 20 Sep 2005 14:37:27 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j8KCbQ0f006073;
+	Tue, 20 Sep 2005 14:37:26 +0200
+Date:	Tue, 20 Sep 2005 13:37:33 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
 To:	Dominic Sweetman <dom@mips.com>
-Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	Thiemo Seufer <ths@networkno.de>, linux-mips@linux-mips.org
+Cc:	Thiemo Seufer <ths@networkno.de>, linux-mips@linux-mips.org
 Subject: Re: Performance bug in c-r4k.c cache handling code
-Message-ID: <20050920122243.GE3159@linux-mips.org>
-References: <20050919154056.GG3386@hattusa.textio> <Pine.LNX.4.61L.0509191733180.5551@blysk.ds.pg.gda.pl> <17199.53696.27856.801284@mips.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 In-Reply-To: <17199.53696.27856.801284@mips.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Message-ID: <Pine.LNX.4.61L.0509201017220.23494@blysk.ds.pg.gda.pl>
+References: <20050919154056.GG3386@hattusa.textio>
+ <Pine.LNX.4.61L.0509191733180.5551@blysk.ds.pg.gda.pl> <17199.53696.27856.801284@mips.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.85.1/1090/Mon Sep 19 23:29:31 2005 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8993
+X-archive-position: 8994
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Sep 20, 2005 at 10:09:20AM +0100, Dominic Sweetman wrote:
+On Tue, 20 Sep 2005, Dominic Sweetman wrote:
 
 > > > I found an performance bug in c-r4k.c:r4k_dma_cache_inv, where a
 > > > Hit_Writeback_Inv instead of Hit_Invalidate is done.
@@ -44,56 +51,44 @@ On Tue, Sep 20, 2005 at 10:09:20AM +0100, Dominic Sweetman wrote:
 > to establish which cacheops work, so to identify capable CPUs you must
 > use a table of CPU attributes indexed by the CPU ID, which encourages
 > the crime of building software which can't possibly run on a new CPU...
-> 
+
+ Or just using the safe fallback -- that shouldn't be a problem (these 
+functions are called indirectly).  Besides new CPUs more often than not 
+require changes to kernel-level software anyway.
+
 > So long as the buffer is in fact clean, then in most implementations a
 > Hit_Writeback_Invalidate will be just as efficient.
 
-This are R4700 numbers, the only I was able to find in a quick search.
+ I hope so, but who knows what's wired there in all those old systems?...
 
-  Hit_Invalidate_D		 7 cycles for a cache miss
-				 9 cycles for a cache hit
-  Hit_Writeback_Invalidate_D	 7 cycles for a cache miss
-				12 cycles for a cache hit if the cache line
-				   is clean.
-				14 cycles for a cache hit if the cache line
-				   is dirty (Writeback).
-  Hit_Writeback_D		 7 cycles for a cache miss
-				10 cycles for a cache hit if the cache line
-				   is clean
-				14 cycles for a cache hit if the cache line
-				   is dirty (Writeback).
-
-> Moreover, CPUs always "post" writes to some extent, so a small
-> percentage of dirty lines can be handled without any great overhead.
-> So a significant advantage can only occur when the buffer you want to
-> invalidate (prior to DMA-in) was fairly recently densely written by
-> the CPU; and this is only safe when all that data can be guaranteed to
-> now be of no importance to anyone.
-
-Linux has a well-defined ABI that DMA drivers are supposed to use; the
-functions of this ABI that perform cache flushes also take a DMA
-direction argument based on which the implementation can deciede on what
-the best flush function for a particular case will be.
-
-> Randomly and retrospectively discarding writes could generate some
-> very interesting bugs, or (indeed) usually hide some very interesting
-> bugs.  It's the kind of thing one would lik to avoid!
-> 
 > I suppose where DMA data subsequently gets decorated by the CPU then
 > handed on to some other layer, then the buffer is freed...?
-> 
+
+ I don't think the buffer is modified, so cache lines should remain clean. 
+For the usual case of IP data is used exactly once for copy_and_csum() 
+(more or less) which moves it to another buffer.
+
 > > FYI, for R4k DECstations the need to flush the cache for newly allocated 
 > > skbs reduces throughput of FDDI reception by about a half (!), down from 
 > > about 90Mbps (that's for the /260)...
-
-Software coherency will result in many server / client type operations
-approximate worst case as none of the data will reside in caches.  Routers
-are going to be somewhat better off - as long as they don't peek to deep
-into the packets, that is.
-
+> 
 > How did you measure the high throughput?  Have you got a
 > machine with DMA-coherency you can turn on and off?
 
-Afaik AMD Alchemy processors have configurable coherency.
+ I just disabled invalidations. ;-)  Yes, that resulted in some corrupt 
+data, but it was good enough to do benchmarking.  That was an R4400 with 
+1MB of S-cache.
 
-  Ralf
+ Eventually I should benchmark both invalidation variations against each 
+other with the system in question and see if it makes any difference.  
+Ironically this is where the write-back cache of the R4k gives loss rather 
+than gain as compared to the write-through cache of the R3k (the system 
+supports daughtercards with either CPU, so useful comparison is possible) 
+as for the former I have to invalidate cache spanning the whole 
+newly-allocated buffer, i.e. ~4.5kB, while for the latter I may invalidate 
+only the area actually used, once a frame has been received, its length is 
+known and quite often much smaller than the maximum (especially if it's 
+been routed from a network that has a smaller frame length limit, like 
+Ethernet).
+
+  Maciej

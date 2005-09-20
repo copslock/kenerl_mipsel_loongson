@@ -1,74 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Sep 2005 10:14:28 +0100 (BST)
-Received: from smtpr2.tom.com ([IPv6:::ffff:202.108.255.197]:20719 "HELO
-	tom.com") by linux-mips.org with SMTP id <S8225198AbVITJOK>;
-	Tue, 20 Sep 2005 10:14:10 +0100
-Received: from [192.168.10.105] (unknown [218.94.38.156])
-	by bjapp3 (Coremail) with SMTP id PAAxZN_SL0MeACac.1
-	for <linux-mips@linux-mips.org>; Tue, 20 Sep 2005 17:14:09 +0800 (CST)
-X-Originating-IP: [218.94.38.156]
-Message-ID: <432FD2DF.1070506@tom.com>
-Date:	Tue, 20 Sep 2005 17:14:07 +0800
-From:	Zhuang Yuyao <ihollo@tom.com>
-User-Agent: Mozilla Thunderbird 1.0.6 (Windows/20050716)
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Sep 2005 11:43:43 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([IPv6:::ffff:153.19.208.7]:48142 "EHLO
+	pollux.ds.pg.gda.pl") by linux-mips.org with ESMTP
+	id <S8225198AbVITKn1>; Tue, 20 Sep 2005 11:43:27 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 48991F596A; Tue, 20 Sep 2005 12:43:23 +0200 (CEST)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 27059-02; Tue, 20 Sep 2005 12:43:23 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id C0557F5969; Tue, 20 Sep 2005 12:43:22 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j8KAhL1q001223;
+	Tue, 20 Sep 2005 12:43:22 +0200
+Date:	Tue, 20 Sep 2005 11:43:27 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Daniel Jacobowitz <dan@debian.org>
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH] Fix TCP/UDP checksums on the Broadcom SB-1
+In-Reply-To: <20050920032818.GA7199@nevyn.them.org>
+Message-ID: <Pine.LNX.4.61L.0509201140160.23494@blysk.ds.pg.gda.pl>
+References: <20050920032818.GA7199@nevyn.them.org>
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: [A little bit offtopic] AU1550 board ODM
-Content-Type: text/plain; charset=gb2312
-Content-Transfer-Encoding: 8bit
-Return-Path: <ihollo@tom.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.85.1/1090/Mon Sep 19 23:29:31 2005 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 8987
+X-archive-position: 8988
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ihollo@tom.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-(3 times I tried to send this mail, but it does not appear in the list,
-If the content of this mail violates the policy of this maillist, please
-let me know and I'd apologize)
+On Mon, 19 Sep 2005, Daniel Jacobowitz wrote:
 
-Hi,
+> This caused incorrect checksums in some UDP packets for NFS root.  The
+> problem was mild when using a 10.0.1.x IP address, but severe when
+> using 192.168.1.x.
 
-We (a Chinese company) are looking for a board design based on AMD
-au1550.  We would like to pay $2500~$5000 (in US dollar) for a board
-design which fits our requirements.
+ Ah!  So *that* is the reason for the absolutely abysmal NFS performance 
+of the SWARM with 2.6!  I have had no time to track it down -- thanks a 
+lot!
 
-Some brief requirements:
-1) 6 10/100Mbit ethernet ports, any one of them should be able to
-configured to have its own IP address. (sorry for bad english, I mean
-some thing like this (http://www.linux-mips.org/wiki/ADM5120_switch));
-2) at least 1 mini-pci slot, 2 is preferred;
-3) RAM (DDR) can be configured to 64M, 128M and 256M
-4) Flash (NAND): 64M
-5) IDE connection (including power) for 2.5inch notebook hard disk.
-6) Bootloader and Safenet encryption engine support. (OS: linux 2.6.x)
-7) 4-layers PCB is preferred.
-
-Desired hardware and files:
-1) Schematics file for this board
-2) BOM from the board
-3) PADS layout files
-4) PCB gerber files
-5) 2 Prototype boards
-
-Desired Software:
-1) Bootloader source code, (the original Yamon and the patches)
-2) A demo kernel and root file system (Linux 2.6.x, uClibc) for this
-board.
-
-If anyone is interested in this, please contact me with the email
-address provided below. An ODM contract will be signed after all the
-details are discussed and settled. In case you are worried about the
-credit of us, I will contact AMD office in Shanghai and make AMD the
-supervisor/broker for this case.
-
-Thanks in advance.
-
-　　　　　　　　Zhuang Yuyao
-　　　　　　　　ihollo@tom.com
-　　　　　　　　　　2005-09-18
+  Maciej

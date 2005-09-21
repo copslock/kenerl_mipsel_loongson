@@ -1,46 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Sep 2005 17:10:17 +0100 (BST)
-Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:47119 "EHLO
-	bacchus.net.dhis.org") by linux-mips.org with ESMTP
-	id <S8225472AbVIUQKA>; Wed, 21 Sep 2005 17:10:00 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j8LG9rgI015841;
-	Wed, 21 Sep 2005 17:09:53 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j8LG9nGH015840;
-	Wed, 21 Sep 2005 17:09:49 +0100
-Date:	Wed, 21 Sep 2005 17:09:49 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: sparse for mips
-Message-ID: <20050921160949.GA6150@linux-mips.org>
-References: <20050922.004327.74753021.anemo@mba.ocn.ne.jp>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20050922.004327.74753021.anemo@mba.ocn.ne.jp>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Sep 2005 18:25:02 +0100 (BST)
+Received: from web31503.mail.mud.yahoo.com ([IPv6:::ffff:68.142.198.132]:37482
+	"HELO web31503.mail.mud.yahoo.com") by linux-mips.org with SMTP
+	id <S8225552AbVIURYn>; Wed, 21 Sep 2005 18:24:43 +0100
+Received: (qmail 82845 invoked by uid 60001); 21 Sep 2005 17:24:36 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  h=Message-ID:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
+  b=Qn9JcmBx6YYmK+5v3Iifb4Qf2VXkBZ8xzHO69XDbrsOd+HHCedWWV/FrkxPp98EvSc40QrcKr4u17DC/0wA8MGncFpFPu9/g/8+mlDbTH8AswwtFPRgq1j2ecV3yl5lJk8aCUhlY2yuRMVRoK3qHy4N6pcdf17TdHZhIr3Yqcig=  ;
+Message-ID: <20050921172436.82843.qmail@web31503.mail.mud.yahoo.com>
+Received: from [208.187.37.98] by web31503.mail.mud.yahoo.com via HTTP; Wed, 21 Sep 2005 10:24:35 PDT
+Date:	Wed, 21 Sep 2005 10:24:35 -0700 (PDT)
+From:	Jonathan Day <imipak@yahoo.com>
+Subject: Building the kernel for a Broadcom SB1
+To:	linux-mips@linux-mips.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <imipak@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9014
+X-archive-position: 9015
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: imipak@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Sep 22, 2005 at 12:43:27AM +0900, Atsushi Nemoto wrote:
+Hi,
 
-> It seems sparse can not handle '-G 0' option correctly.  I'm using
-> this snapshot:
-> 
-> http://www.codemonkey.org.uk/projects/git-snapshots/sparse/sparse-2005-09-21.tar.gz
-> 
-> Is there any trick to run sparse on mips?
+Things've been interesting here, of late. I've got the
+toolchain to compile natively 64-bit code (with
+considerable effort and the instructions from Linux
+From Scratch) and I have a working Linux 2.6.12-rc2
+kernel with the SB1 patches from the linux-mips
+mailing lists.
 
-Sparse used to work fine for MIPS out of the box, so this is a new bug.
+So far, so good. Tried compiling the 2.6.14-rc1
+kernel, forward-porting all the changes that hadn't
+been merged in. the kernel locks in the initial boot
+sequence, after a couple of printf's.
 
-  Ralf
+Are there any kernel patches for the Broadcom/SiByte
+processors that are specific to the 2.6.13-* or
+2.6.14-*, or any options that are definitely producing
+Bad Code on these kernels but not earlier?
+
+
+
+		
+__________________________________ 
+Yahoo! Mail - PC Magazine Editors' Choice 2005 
+http://mail.yahoo.com

@@ -1,45 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Sep 2005 16:45:18 +0100 (BST)
-Received: from mba.ocn.ne.jp ([IPv6:::ffff:210.190.142.172]:7126 "HELO
-	smtp.mba.ocn.ne.jp") by linux-mips.org with SMTP
-	id <S8225417AbVIUPo6>; Wed, 21 Sep 2005 16:44:58 +0100
-Received: from localhost (p8015-ipad210funabasi.chiba.ocn.ne.jp [58.88.127.15])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP id 7F1258522
-	for <linux-mips@linux-mips.org>; Thu, 22 Sep 2005 00:44:53 +0900 (JST)
-Date:	Thu, 22 Sep 2005 00:43:27 +0900 (JST)
-Message-Id: <20050922.004327.74753021.anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Subject: sparse for mips
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Sep 2005 17:10:17 +0100 (BST)
+Received: from extgw-uk.mips.com ([IPv6:::ffff:62.254.210.129]:47119 "EHLO
+	bacchus.net.dhis.org") by linux-mips.org with ESMTP
+	id <S8225472AbVIUQKA>; Wed, 21 Sep 2005 17:10:00 +0100
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j8LG9rgI015841;
+	Wed, 21 Sep 2005 17:09:53 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j8LG9nGH015840;
+	Wed, 21 Sep 2005 17:09:49 +0100
+Date:	Wed, 21 Sep 2005 17:09:49 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: sparse for mips
+Message-ID: <20050921160949.GA6150@linux-mips.org>
+References: <20050922.004327.74753021.anemo@mba.ocn.ne.jp>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20050922.004327.74753021.anemo@mba.ocn.ne.jp>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9013
+X-archive-position: 9014
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi.  I got following error on make C=1
+On Thu, Sep 22, 2005 at 12:43:27AM +0900, Atsushi Nemoto wrote:
 
-  CHECK   /home/anemo/linux/scripts/mod/empty.c
-No such file: 0
+> It seems sparse can not handle '-G 0' option correctly.  I'm using
+> this snapshot:
+> 
+> http://www.codemonkey.org.uk/projects/git-snapshots/sparse/sparse-2005-09-21.tar.gz
+> 
+> Is there any trick to run sparse on mips?
 
-It seems sparse can not handle '-G 0' option correctly.  I'm using
-this snapshot:
+Sparse used to work fine for MIPS out of the box, so this is a new bug.
 
-http://www.codemonkey.org.uk/projects/git-snapshots/sparse/sparse-2005-09-21.tar.gz
-
-Is there any trick to run sparse on mips?
-
-Thank you.
----
-Atsushi Nemoto
+  Ralf

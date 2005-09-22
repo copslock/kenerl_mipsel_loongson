@@ -1,107 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Sep 2005 03:04:15 +0100 (BST)
-Received: from web32102.mail.mud.yahoo.com ([IPv6:::ffff:68.142.207.116]:36543
-	"HELO web32102.mail.mud.yahoo.com") by linux-mips.org with SMTP
-	id <S8225617AbVIVCD4>; Thu, 22 Sep 2005 03:03:56 +0100
-Received: (qmail 77345 invoked by uid 60001); 22 Sep 2005 02:03:49 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.com;
-  h=Message-ID:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
-  b=HHKINGEIzbfF4trZ81x+QyzmOg7BzpaUrrox1alri9SD02nNWHl6EqhjkAFvj8ir827vcK4DckF5/qmDPEr27AuHT44Iqv+7SgJ91avx7DOx/oBAhOm1CBStuaWxx8eMCq8keT+MyA6HFYcT9iDrqQgP0mpsjgN3ZmOykfDudvM=  ;
-Message-ID: <20050922020349.77343.qmail@web32102.mail.mud.yahoo.com>
-Received: from [66.236.104.214] by web32102.mail.mud.yahoo.com via HTTP; Wed, 21 Sep 2005 19:03:49 PDT
-Date:	Wed, 21 Sep 2005 19:03:49 -0700 (PDT)
-From:	Vinay Venkataraghavan <raghavanvinay@yahoo.com>
-Subject: Kernel panic problem
-To:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Sep 2005 06:12:56 +0100 (BST)
+Received: from 64-30-195-78.dsl.linkline.com ([IPv6:::ffff:64.30.195.78]:57770
+	"EHLO jg555.com") by linux-mips.org with ESMTP id <S8224774AbVIVFMf>;
+	Thu, 22 Sep 2005 06:12:35 +0100
+Received: from [172.16.0.55] ([::ffff:172.16.0.55])
+  (AUTH: PLAIN root, TLS: TLSv1/SSLv3,256bits,AES256-SHA)
+  by jg555.com with esmtp; Wed, 21 Sep 2005 22:12:31 -0700
+  id 0009871F.43323D3F.00007CDC
+Message-ID: <43323D35.9030905@jg555.com>
+Date:	Wed, 21 Sep 2005 22:12:21 -0700
+From:	Jim Gifford <maillist@jg555.com>
+User-Agent: Mozilla Thunderbird 1.0.6 (Windows/20050716)
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Return-Path: <raghavanvinay@yahoo.com>
+To:	Linux MIPS List <linux-mips@linux-mips.org>
+Subject: MIPS64 NPTL Status
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <maillist@jg555.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9016
+X-archive-position: 9017
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: raghavanvinay@yahoo.com
+X-original-sender: maillist@jg555.com
 Precedence: bulk
 X-list: linux-mips
 
+Looking through the latest glibc snapshot they have removed linuxthreads 
+and moved it to ports. I know Daniel has been working on getting NPTL to 
+work on MIPS32, which it does. Thank you Daniel. I know from emails I 
+read around linux-mips.org he was going to work on MIPS64 NPTL, just 
+curious to the status.
 
-Hey guys,
+For the record the current glibc snapshot will not build at all under 
+MIPS64. Here is the error message I have received, still working on 
+getting it to build properly
 
+In file included from ../sysdeps/mips/libc-tls.c:20:
+../sysdeps/generic/libc-tls.c: In function '__libc_setup_tls':
+../sysdeps/generic/libc-tls.c:191: warning: implicit declaration of 
+function 'INTERNAL_SYSCALL_DECL'
+../sysdeps/generic/libc-tls.c:191: error: 'err' undeclared (first use in 
+this function)
+../sysdeps/generic/libc-tls.c:191: error: (Each undeclared identifier is 
+reported only once
+../sysdeps/generic/libc-tls.c:191: error: for each function it appears in.)
+../sysdeps/generic/libc-tls.c:191: warning: implicit declaration of 
+function 'INTERNAL_SYSCALL'
+../sysdeps/generic/libc-tls.c:191: error: 'set_thread_area' undeclared 
+(first use in this function)
+../sysdeps/generic/libc-tls.c:191: warning: implicit declaration of 
+function 'INTERNAL_SYSCALL_ERROR_P'
+make[2]: *** [/mnt/lfs-mips64/build/glibc-cross-64bit/csu/libc-tls.o] 
+Error 1
+make[2]: Leaving directory `/mnt/lfs-mips64/build/glibc-20050919/csu'
 
-I am getting the following error running Linux on a
-MIPS platform.
-
-Its basically a kernel panic errror. The error message
-is as below.
-
-Any help/pointers would be of great help. 
-Thanks
-Vinay
-
-
-Got mcheck at c0043938
-
-Cpu 0
-
-$ 0   : 00000000 1000e801 c0050000 00000000
-
-$ 4   : 00000093 810b1000 8034bec8 b8038030
-
-$ 8   : 00004000 00000000 1000e800 80dea000
-
-$12   : 00ff0000 ff000000 00000025 c1100000
-
-$16   : 81aebee8 00000000 00000001 00000000
-
-$20   : 8034bec8 00000093 00000010 00000010
-
-$24   : 00000001 00000003                  
-
-$28   : 8034a000 8034be40 fffffffc 80144588
-
-Hi    : 00000000
-
-Lo    : 00000000
-
-epc   : c0043938 linux_layer_isr+0xc/0x28 [n2_drv]    
-Tainted: P     
-
-ra    : 80144588 handle_IRQ_event+0x78/0xfc
-
-Status: 1020e803    KERNEL EXL IE 
-
-Cause : 00800060
-
-PrId  : 0001800a
-
- 
-
-Index:  0 pgmask=4kb va=c0046000 asid=45
-
-                        [pa=01ee0000 c=3 d=1 v=1 g=1]
-
-                        [pa=01ee1000 c=3 d=1 v=1 g=1]
-
- 
-
-Index:  8 pgmask=4kb va=c004a000 asid=45
-
-                        [pa=01ee4000 c=3 d=1 v=1 g=1]
-
-                        [pa=00000000 c=0 d=0 v=0 g=1]
-
- 
-
-Kernel panic - not syncing: Caught Machine Check
-exception - caused by multiple matching entries in the
-TLB.
- 
-
-__________________________________________________
-Do You Yahoo!?
-Tired of spam?  Yahoo! Mail has the best spam protection around 
-http://mail.yahoo.com 
+-- 
+----
+Jim Gifford
+maillist@jg555.com

@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Sep 2005 22:30:40 +0100 (BST)
-Received: from nevyn.them.org ([66.93.172.17]:15006 "EHLO nevyn.them.org")
-	by ftp.linux-mips.org with ESMTP id S8133359AbVIVVaW (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 22 Sep 2005 22:30:22 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Sep 2005 22:32:29 +0100 (BST)
+Received: from nevyn.them.org ([66.93.172.17]:17822 "EHLO nevyn.them.org")
+	by ftp.linux-mips.org with ESMTP id S8133359AbVIVVcM (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 22 Sep 2005 22:32:12 +0100
 Received: from drow by nevyn.them.org with local (Exim 4.52)
-	id 1EIYe4-0004BP-Hc; Thu, 22 Sep 2005 17:30:20 -0400
-Date:	Thu, 22 Sep 2005 17:30:20 -0400
+	id 1EIYfp-0004CG-AA; Thu, 22 Sep 2005 17:32:09 -0400
+Date:	Thu, 22 Sep 2005 17:32:09 -0400
 From:	Daniel Jacobowitz <dan@debian.org>
-To:	Jim Gifford <maillist@jg555.com>
-Cc:	Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: MIPS64 NPTL Status
-Message-ID: <20050922213020.GA15905@nevyn.them.org>
-References: <43323D35.9030905@jg555.com>
+To:	Jonathan Day <imipak@yahoo.com>
+Cc:	Andy Isaacson <adi@hexapodia.org>, linux-mips@linux-mips.org
+Subject: Re: Building the kernel for a Broadcom SB1
+Message-ID: <20050922213209.GB15905@nevyn.them.org>
+References: <20050922072259.GC6920@hexapodia.org> <20050922172250.6756.qmail@web31513.mail.mud.yahoo.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <43323D35.9030905@jg555.com>
+In-Reply-To: <20050922172250.6756.qmail@web31513.mail.mud.yahoo.com>
 User-Agent: Mutt/1.5.8i
 Return-Path: <drow@nevyn.them.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9027
+X-archive-position: 9028
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -28,32 +28,20 @@ X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Sep 21, 2005 at 10:12:21PM -0700, Jim Gifford wrote:
-> Looking through the latest glibc snapshot they have removed linuxthreads 
-> and moved it to ports. I know Daniel has been working on getting NPTL to 
-> work on MIPS32, which it does. Thank you Daniel. I know from emails I 
-> read around linux-mips.org he was going to work on MIPS64 NPTL, just 
-> curious to the status.
-> 
-> For the record the current glibc snapshot will not build at all under 
-> MIPS64. Here is the error message I have received, still working on 
-> getting it to build properly
+On Thu, Sep 22, 2005 at 10:22:50AM -0700, Jonathan Day wrote:
+> Loading: 0xffffffff80100000/2903912
+> 0xffffffff803c4f68/305896 Entry at
+> 0xffffffff80396000
+> Closing network.
+> Starting program at 0xffffffff80396000
+> Broadcom SiByte BCM1250 B2 @ 800 MHz (SB1 rev 2)
+> Board type: SiByte BCM91250E (Sentosa)
 
-Hi Jim,
+[*hang* here]
 
-I've got complete patches to do this.  I thought I'd already submitted
-them, but I found out yesterday morning that I hadn't... simply an
-accident.  I've posted my complete set of glibc patches here:
-
-http://return.false.org/~drow/mips/glibc-2005-09-22-HEAD-MIPS64-NPTL.tar.gz
-
-As of this morning, they work for me, using GCC HEAD and binutils HEAD.
-Rather more work is required for GDB (see my earlier post today and the
-last patch in the above tarball).
-
-There are some test failures.  IIRC, at least one of them is a GCC
-unwinder bug that I haven't dug out the fix for yet from my archives.
-I'm going to try to get all of this merged soon.
+Andy's patches should fix this; I grabbed them from Thiemo's
+experimental Debian packages a couple of days ago and they brought my
+Sentosa up again.
 
 -- 
 Daniel Jacobowitz

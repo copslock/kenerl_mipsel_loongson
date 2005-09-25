@@ -1,137 +1,103 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 25 Sep 2005 15:10:52 +0100 (BST)
-Received: from NAT.office.mind.be ([62.166.230.82]:21960 "EHLO
-	NAT.office.mind.be") by ftp.linux-mips.org with ESMTP
-	id S8133466AbVIYOKe (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 25 Sep 2005 15:10:34 +0100
-Received: (qmail 28198 invoked from network); 25 Sep 2005 14:10:32 -0000
-Received: from localhost (HELO codecarver) ([127.0.0.1])
-          (envelope-sender <p2@debian.org>)
-          by localhost (qmail-ldap-1.03) with SMTP
-          for <linux-mips@linux-mips.org>; 25 Sep 2005 14:10:32 -0000
-Received: from p2 by codecarver with local (Exim 3.36 #1 (Debian))
-	id 1EJWp0-0006oz-00
-	for <linux-mips@linux-mips.org>; Sun, 25 Sep 2005 15:45:38 +0200
-Date:	Sun, 25 Sep 2005 15:45:38 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 25 Sep 2005 16:19:37 +0100 (BST)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:35807 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S8133472AbVIYPTU (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 25 Sep 2005 16:19:20 +0100
+Received: from localhost (p6250-ipad30funabasi.chiba.ocn.ne.jp [221.184.81.250])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 3AD2C4E9E; Mon, 26 Sep 2005 00:19:17 +0900 (JST)
+Date:	Mon, 26 Sep 2005 00:17:53 +0900 (JST)
+Message-Id: <20050926.001753.74752084.anemo@mba.ocn.ne.jp>
 To:	linux-mips@linux-mips.org
-Subject: Re: Bus error on sb1250
-Message-ID: <20050925134538.GA25829@codecarver>
-Mail-Followup-To: peter.de.schrijver@mind.be, linux-mips@linux-mips.org
-References: <20050924215710.GA6310@codecarver>
+Cc:	ralf@linux-mips.org
+Subject: add __iomem to ioremap
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="CblX+4bnyfN0pR09"
-Content-Disposition: inline
-In-Reply-To: <20050924215710.GA6310@codecarver>
-X-Answer: 42
-X-Operating-system: Debian GNU/Linux
-X-Message-Flag:	Get yourself a real email client. http://www.mutt.org/
-X-mate:	Mate, man gewoehnt sich an alles
-User-Agent: Mutt/1.5.6+20040907i
-From:	Peter 'p2' De Schrijver <p2@debian.org>
-Return-Path: <p2@debian.org>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9035
+X-archive-position: 9036
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: p2@debian.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
+Some function like iounmap, read[bwlq], etc. have been using __iomem
+attribute, but ioremap does not use it.  Here is a patch to add
+__iomem to ioremap family.  This would kill some sparse warnings.
 
---CblX+4bnyfN0pR09
-Content-Type: multipart/mixed; boundary="K8nIJk4ghYZn606h"
-Content-Disposition: inline
 
-
---K8nIJk4ghYZn606h
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi,
-
-On Sat, Sep 24, 2005 at 11:57:10PM +0200, Peter 'p2' De Schrijver wrote:
-> Hi,
->=20
-> I'm seeing some strange bus errors when trying to get the Fore
-> ForeRunner PCA-200EPC card to work on the sibyte swarm. The driver polls
-> a register on this card for status information. This triggers a bus
-> error once in a while. This happens regardless if the card is attached
-> to the PCI bus of the sb1250 or to the PCI bus behind the Alliance HT -
-> PCI bridge.=20
->=20
-
-Thanks to Maciej, I found the problem. The device apparently does not
-always react in time for the sb1250 PCI host. Changing TrdyTimeout to
-0xff fixes the problem for the 32bit PCI slots. I need to find the
-equivalent register on the SP1011 bridge to fix the problem for the
-64bit PCI slots. Patch attached.
-
-Cheers,
-
-Peter (p2).
-
---
-goa is a state of mind
-
---K8nIJk4ghYZn606h
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename=patch-pci
-Content-Transfer-Encoding: quoted-printable
-
---- linux/include/linux/pci_ids.h	2005-09-15 10:56:21.000000000 +0200
-+++ linux-my/include/linux/pci_ids.h	2005-09-25 15:10:53.000000000 +0200
-@@ -2192,6 +2192,7 @@
- #define PCI_DEVICE_ID_FARSITE_TE1C      0x1612
-=20
- #define PCI_VENDOR_ID_SIBYTE		0x166d
-+#define PCI_DEVICE_ID_BCM1250_PCI	0x0001
- #define PCI_DEVICE_ID_BCM1250_HT	0x0002
-=20
- #define PCI_VENDOR_ID_NETCELL		0x169c
---- linux/arch/mips/pci/fixup-sb1250.c	2004-12-18 23:28:20.000000000 +0100
-+++ linux-my/arch/mips/pci/fixup-sb1250.c	2005-09-25 15:25:02.000000000 +02=
-00
-@@ -20,5 +20,22 @@
+diff -ur /home/cvs/linux-mips/include/asm-mips/io.h linux/include/asm-mips/io.h
+--- linux-mips/include/asm-mips/io.h	2005-09-25 00:12:39.000000000 +0900
++++ linux/include/asm-mips/io.h	2005-09-25 23:08:18.930898136 +0900
+@@ -203,10 +203,10 @@
+  */
+ #define page_to_phys(page)	((dma_addr_t)page_to_pfn(page) << PAGE_SHIFT)
+ 
+-extern void * __ioremap(phys_t offset, phys_t size, unsigned long flags);
++extern void __iomem * __ioremap(phys_t offset, phys_t size, unsigned long flags);
+ extern void __iounmap(volatile void __iomem *addr);
+ 
+-static inline void * __ioremap_mode(phys_t offset, unsigned long size,
++static inline void __iomem * __ioremap_mode(phys_t offset, unsigned long size,
+ 	unsigned long flags)
  {
- 	dev->class =3D PCI_CLASS_BRIDGE_PCI << 8;
+ #define __IS_LOW512(addr) (!((phys_t)(addr) & (phys_t) ~0x1fffffffULL))
+@@ -220,7 +220,7 @@
+ 		 */
+ 		if (flags == _CACHE_UNCACHED)
+ 			base = (u64) IO_BASE;
+-		return (void *) (unsigned long) (base + offset);
++		return (void __iomem *) (unsigned long) (base + offset);
+ 	} else if (__builtin_constant_p(offset) &&
+ 		   __builtin_constant_p(size) && __builtin_constant_p(flags)) {
+ 		phys_t phys_addr, last_addr;
+@@ -238,7 +238,7 @@
+ 		 */
+ 		if (__IS_LOW512(phys_addr) && __IS_LOW512(last_addr) &&
+ 		    flags == _CACHE_UNCACHED)
+-			return (void *)CKSEG1ADDR(phys_addr);
++			return (void __iomem *)CKSEG1ADDR(phys_addr);
+ 
+ 	}
+ 
+diff -ur linux-mips/arch/mips/mm/ioremap.c linux/arch/mips/mm/ioremap.c
+--- linux-mips/arch/mips/mm/ioremap.c	2005-07-03 01:09:48.000000000 +0900
++++ linux/arch/mips/mm/ioremap.c	2005-09-25 23:09:24.944862488 +0900
+@@ -117,7 +117,7 @@
+ 
+ #define IS_LOW512(addr) (!((phys_t)(addr) & (phys_t) ~0x1fffffffULL))
+ 
+-void * __ioremap(phys_t phys_addr, phys_t size, unsigned long flags)
++void __iomem * __ioremap(phys_t phys_addr, phys_t size, unsigned long flags)
+ {
+ 	struct vm_struct * area;
+ 	unsigned long offset;
+@@ -137,7 +137,7 @@
+ 	 */
+ 	if (IS_LOW512(phys_addr) && IS_LOW512(last_addr) &&
+ 	    flags == _CACHE_UNCACHED)
+-		return (void *) CKSEG1ADDR(phys_addr);
++		return (void __iomem *) CKSEG1ADDR(phys_addr);
+ 
+ 	/*
+ 	 * Don't allow anybody to remap normal RAM that we're using..
+@@ -173,7 +173,7 @@
+ 		return NULL;
+ 	}
+ 
+-	return (void *) (offset + (char *)addr);
++	return (void __iomem *) (offset + (char *)addr);
  }
-+
-+/*
-+ * Set PCI Trdy timeout to 0xff clock cycles
-+ */
-+static void __init quirk_sb1250_pci(struct pci_dev *dev)
-+{
-+	u32 pci_timeout;
-+
-+	pci_read_config_dword(dev, 0x40, &pci_timeout);
-+	pci_timeout|=3D0xff;
-+	pci_write_config_dword(dev,0x40,pci_timeout);
-+}
-+
- DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_SIBYTE, PCI_DEVICE_ID_BCM1250_HT,
- 			quirk_sb1250_ht);
-+
-+DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_SIBYTE, PCI_DEVICE_ID_BCM1250_PCI,
-+			quirk_sb1250_pci);
-+
+ 
+ #define IS_KSEG1(addr) (((unsigned long)(addr) & ~0x1fffffffUL) == CKSEG1)
 
---K8nIJk4ghYZn606h--
-
---CblX+4bnyfN0pR09
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.5 (GNU/Linux)
-
-iD8DBQFDNqoBKLKVw/RurbsRAhUnAKCEqDbZG71FcEKFAmcKIbzGqF7lAACbB+3+
-RvIBYfIm+mTtzWsOI0yHF0Q=
-=tIJ3
------END PGP SIGNATURE-----
-
---CblX+4bnyfN0pR09--
+---
+Atsushi Nemoto

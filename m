@@ -1,51 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Sep 2005 10:39:47 +0100 (BST)
-Received: from extgw-uk.mips.com ([62.254.210.129]:48908 "EHLO
-	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S8133567AbVI0Jj2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 27 Sep 2005 10:39:28 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j8R9dMND004087;
-	Tue, 27 Sep 2005 11:39:22 +0200
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j8R9dMVi004086;
-	Tue, 27 Sep 2005 11:39:22 +0200
-Date:	Tue, 27 Sep 2005 11:39:22 +0200
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Florian DELIZY <florian.delizy@sagem.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: linux-mips Vs kernel.org
-Message-ID: <20050927093922.GA3793@linux-mips.org>
-References: <OFDDFCB8DC.1BFCCB3E-ONC1257089.002AE830-C1257089.002B3D8D@sagem.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Sep 2005 14:10:18 +0100 (BST)
+Received: from nevyn.them.org ([66.93.172.17]:20440 "EHLO nevyn.them.org")
+	by ftp.linux-mips.org with ESMTP id S8134019AbVI0NJy (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 27 Sep 2005 14:09:54 +0100
+Received: from drow by nevyn.them.org with local (Exim 4.52)
+	id 1EKFDT-0000EI-T4; Tue, 27 Sep 2005 09:09:51 -0400
+Date:	Tue, 27 Sep 2005 09:09:51 -0400
+From:	Daniel Jacobowitz <dan@debian.org>
+To:	Jim Gifford <maillist@jg555.com>
+Cc:	Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Re: MIPS64 NPTL Status
+Message-ID: <20050927130951.GA867@nevyn.them.org>
+References: <43323D35.9030905@jg555.com> <20050922213020.GA15905@nevyn.them.org> <43333001.3080703@jg555.com> <4338111C.6040401@jg555.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <OFDDFCB8DC.1BFCCB3E-ONC1257089.002AE830-C1257089.002B3D8D@sagem.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <4338111C.6040401@jg555.com>
+User-Agent: Mutt/1.5.8i
+Return-Path: <drow@nevyn.them.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9051
+X-archive-position: 9052
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Sep 27, 2005 at 09:52:01AM +0200, Florian DELIZY wrote:
+On Mon, Sep 26, 2005 at 08:17:48AM -0700, Jim Gifford wrote:
+> Daniel,
+>    Got passed the first issue, but the second one came around when 
+> trying to get NPTL to compile with N32. Here's what I got. The code does 
+> compile under pure 64 bit no problems.
 
-> We currently working with the 2.6.12 kernel, and wondering which from 
-> linux-mips or kernel.org version we should use,
-> in a more general manner, what are the differences between linux-mips and 
-> kernel.org kernel source code, is one the
-> mirror of the other, or is there one that frequently merge with the other 
-> ?
+I must have sent you an outdated patch.  Remove the mips-specific
+sys/ptrace.h header and use the generic one.
 
-At this stage the kernel.org tree is quite unusable for MIPS.
 
-As others have already said, I'm about to dump CVS from linux-mips.org.
-You can still access the CVS archive, just don't expect any updates to
-it anymore.
-
-  Ralf
+-- 
+Daniel Jacobowitz
+CodeSourcery, LLC

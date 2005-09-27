@@ -1,74 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Sep 2005 16:18:36 +0100 (BST)
-Received: from 64-30-195-78.dsl.linkline.com ([64.30.195.78]:33720 "EHLO
-	jg555.com") by ftp.linux-mips.org with ESMTP id S8133514AbVIZPSR convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 26 Sep 2005 16:18:17 +0100
-Received: from [172.16.0.55] ([::ffff:172.16.0.55])
-  (AUTH: PLAIN root, TLS: TLSv1/SSLv3,256bits,AES256-SHA)
-  by jg555.com with esmtp; Mon, 26 Sep 2005 08:18:14 -0700
-  id 00008476.43381136.00004C1D
-Message-ID: <4338111C.6040401@jg555.com>
-Date:	Mon, 26 Sep 2005 08:17:48 -0700
-From:	Jim Gifford <maillist@jg555.com>
-User-Agent: Mozilla Thunderbird 1.0.6 (Windows/20050716)
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Sep 2005 08:52:34 +0100 (BST)
+Received: from ns1.sagem.com ([62.160.59.65]:6269 "EHLO mx1.sagem.com")
+	by ftp.linux-mips.org with ESMTP id S8133568AbVI0HwT (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 27 Sep 2005 08:52:19 +0100
+To:	linux-mips@linux-mips.org
+Subject: linux-mips Vs kernel.org
 MIME-Version: 1.0
-To:	Daniel Jacobowitz <dan@debian.org>
-CC:	Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: MIPS64 NPTL Status
-References: <43323D35.9030905@jg555.com> <20050922213020.GA15905@nevyn.them.org> <43333001.3080703@jg555.com>
-In-Reply-To: <43333001.3080703@jg555.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 8BIT
-Return-Path: <maillist@jg555.com>
+Message-ID: <OFDDFCB8DC.1BFCCB3E-ONC1257089.002AE830-C1257089.002B3D8D@sagem.com>
+From:	Florian DELIZY <florian.delizy@sagem.com>
+Date:	Tue, 27 Sep 2005 09:52:01 +0200
+Content-Type: multipart/alternative; boundary="=_alternative 002B3D8CC1257089_="
+Return-Path: <florian.delizy@sagem.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9043
+X-archive-position: 9044
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: maillist@jg555.com
+X-original-sender: florian.delizy@sagem.com
 Precedence: bulk
 X-list: linux-mips
 
-Daniel,
-    Got passed the first issue, but the second one came around when 
-trying to get NPTL to compile with N32. Here's what I got. The code does 
-compile under pure 64 bit no problems.
+Message en plusieurs parties au format MIME
+--=_alternative 002B3D8CC1257089_=
+Content-Type: text/plain; charset="us-ascii"
 
-mips64el-unknown-linux-gnu-gcc -mel -march=r5000 -mtune=r5000 -mabi=n32 ../sysdeps/unix/sysv/linux/ptrace.c -c -std=gnu99 -O2 -Wall -Winline -Wstrict-prototypes -Wwrite-strings -g      -I../include -I. -I/mnt/lfs-mips64/build/glibc-cross-n32/misc -I.. -I../libio -I../nptl -I/mnt/lfs-mips64/build/glibc-cross-n32 -I../sysdeps/mips/elf -I../libidn/sysdeps/unix -I../nptl/sysdeps/unix/sysv/linux/mips/mips64 -I../nptl/sysdeps/unix/sysv/linux/mips -I../nptl/sysdeps/unix/sysv/linux -I../nptl/sysdeps/pthread -I../sysdeps/pthread -I../nptl/sysdeps/unix/sysv -I../nptl/sysdeps/unix -I../nptl/sysdeps/mips -I../nptl/sysdeps/generic -I../sysdeps/unix/sysv/linux/mips/mips64/n32 -I../sysdeps/unix/sysv/linux/mips/mips64 -I../sysdeps/unix/sysv/linux/mips -I../sysdeps/unix/sysv/linux -I../sysdeps/gnu -I../sysdeps/unix/common -I../sysdeps/unix/mman -I../sysdeps/unix/inet -I../sysdeps/unix/sysv -I../sysdeps/unix/mips/mips64/n32 -I../sysdeps/unix/mips/mips64 -I../sysdeps/unix/mips -I../sysdeps/unix -I../sysdeps/posix -I../sysdeps/mips/mips64/n32 -I../sysdeps/ieee754/ldbl-128 -I../sysdeps/mips/mips64 -I../sysdeps/ieee754/flt-32 -I../sysdeps/ieee754/dbl-64 -I../sysdeps/mips -I../sysdeps/wordsize-32 -I../sysdeps/mips/fpu -I../sysdeps/ieee754 -I../sysdeps/generic/elf -I../sysdeps/generic -nostdinc -isystem /home/lfs-mips64/cross-tools/bin/../lib/gcc/mips64el-unknown-linux-gnu/4.0.1/include -isystem /tools/include -D_LIBC_REENTRANT -D_LIBC_REENTRANT -include ../include/libc-symbols.h  -DPIC     -o /mnt/lfs-mips64/build/glibc-cross-n32/misc/ptrace.o -MD -MP -MF /mnt/lfs-mips64/build/glibc-cross-n32/misc/ptrace.o.dt -MT /mnt/lfs-mips64/build/glibc-cross-n32/misc/ptrace.o
-../sysdeps/unix/sysv/linux/ptrace.c:31: error: conflicting types for 'ptrace'
-../sysdeps/unix/sysv/linux/mips/sys/ptrace.h:129: error: previous declaration of 'ptrace' was here
-../sysdeps/unix/sysv/linux/ptrace.c: In function 'ptrace':
-../sysdeps/unix/sysv/linux/ptrace.c:104: warning: cast from pointer to integer of different size
-../sysdeps/unix/sysv/linux/ptrace.c:104: warning: cast from pointer to integer of different size
-make[2]: *** [/mnt/lfs-mips64/build/glibc-cross-n32/misc/ptrace.o] Error 1
-make[2]: Leaving directory `/mnt/lfs-mips64/build/glibc-20050919/misc'
-make[1]: *** [misc/subdir_lib] Error 2
-make[1]: Leaving directory `/mnt/lfs-mips64/build/glibc-20050919'
-make: *** [all] Error 2
+Hello,
 
+We currently working with the 2.6.12 kernel, and wondering which from 
+linux-mips or kernel.org version we should use,
+in a more general manner, what are the differences between linux-mips and 
+kernel.org kernel source code, is one the
+mirror of the other, or is there one that frequently merge with the other 
+?
 
-Line 127 - ptrace.h
-#if _MIPS_SIM == _ABIN32
-__extension__ extern long long int ptrace
-  (enum __ptrace_request __request, ...) __THROW;
-#else
-extern long int ptrace (enum __ptrace_request __request, ...) __THROW;
-#endif
+Regards
 
-Line 31 - ptrace.c
-
-long int
-ptrace (enum __ptrace_request request, ...)
-{
-  long int res, ret;
+Florian Delizy
+--=_alternative 002B3D8CC1257089_=
+Content-Type: text/html; charset="us-ascii"
 
 
-
-
--- 
-----
-Jim Gifford
-maillist@jg555.com
+<br><font size=2 face="sans-serif">Hello,</font>
+<br>
+<br><font size=2 face="sans-serif">We currently working with the 2.6.12 kernel, and wondering which from linux-mips or kernel.org version we should use,</font>
+<br><font size=2 face="sans-serif">in a more general manner, what are the differences between linux-mips and kernel.org kernel source code, is one the</font>
+<br><font size=2 face="sans-serif">mirror of the other, or is there one that frequently merge with the other ?</font>
+<br>
+<br><font size=2 face="sans-serif">Regards</font>
+<br>
+<br><font size=2 face="sans-serif">Florian Delizy</font>
+--=_alternative 002B3D8CC1257089_=--

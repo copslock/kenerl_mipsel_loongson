@@ -1,174 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Sep 2005 10:06:50 +0100 (BST)
-Received: from ns2.sagem.com ([62.160.59.241]:35188 "EHLO mx2.sagem.com")
-	by ftp.linux-mips.org with ESMTP id S8133566AbVI0JGd (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 27 Sep 2005 10:06:33 +0100
-To:	Jan-Benedict Glaw <jbglaw@lug-owl.de>
-Cc:	linux-mips@linux-mips.org
-Subject: =?ISO-8859-1?Q?R=E9f=2E_=3A_Re=3A_linux-mips_Vs_kernel=2Eorg?=
-MIME-Version: 1.0
-Message-ID: <OF09624E56.0EE9A8E5-ONC1257089.0031D0AF-C1257089.00320CF1@sagem.com>
-From:	Florian DELIZY <florian.delizy@sagem.com>
-Date:	Tue, 27 Sep 2005 11:06:25 +0200
-Content-Type: multipart/mixed; boundary="=_mixed 00320CF0C1257089_="
-Return-Path: <florian.delizy@sagem.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Sep 2005 10:12:15 +0100 (BST)
+Received: from lug-owl.de ([195.71.106.12]:28122 "EHLO lug-owl.de")
+	by ftp.linux-mips.org with ESMTP id S8133566AbVI0JMA (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 27 Sep 2005 10:12:00 +0100
+Received: by lug-owl.de (Postfix, from userid 1001)
+	id 099E7F0054; Tue, 27 Sep 2005 11:12:00 +0200 (CEST)
+Date:	Tue, 27 Sep 2005 11:11:59 +0200
+From:	Jan-Benedict Glaw <jbglaw@lug-owl.de>
+To:	linux-mips@linux-mips.org
+Subject: Re: =?utf-8?Q?R=C3=A9f?=
+	=?utf-8?Q?=2E?= : Re: linux-mips Vs kernel.org
+Message-ID: <20050927091159.GB5743@lug-owl.de>
+Mail-Followup-To: linux-mips@linux-mips.org
+References: <OF09624E56.0EE9A8E5-ONC1257089.0031D0AF-C1257089.00320CF1@sagem.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="jPJw4wSVUvI9Tm/b"
+Content-Disposition: inline
+In-Reply-To: <OF09624E56.0EE9A8E5-ONC1257089.0031D0AF-C1257089.00320CF1@sagem.com>
+X-Operating-System: Linux mail 2.6.12.3lug-owl 
+X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
+X-gpg-key: wwwkeys.de.pgp.net
+X-Echelon-Enable: howto poison arsenous mail psychological biological nuclear warfare test the bombastical terror of flooding the spy listeners explosion sex drugs and rock'n'roll
+X-TKUeV: howto poison arsenous mail psychological biological nuclear warfare test the bombastical terror of flooding the spy listeners explosion sex drugs and rock'n'roll
+User-Agent: Mutt/1.5.9i
+Return-Path: <jbglaw@lug-owl.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9048
+X-archive-position: 9049
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian.delizy@sagem.com
+X-original-sender: jbglaw@lug-owl.de
 Precedence: bulk
 X-list: linux-mips
 
---=_mixed 00320CF0C1257089_=
-Content-Type: multipart/alternative; boundary="=_alternative 00320CF0C1257089_="
 
-
---=_alternative 00320CF0C1257089_=
-Content-Type: text/plain; charset="iso-8859-1"
+--jPJw4wSVUvI9Tm/b
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Is that meaning that kernel.org source code is merged into linux-mips.org=20
-repository,=20
-or that linux-mips.org code is merged into the kernel.org source=20
-repository ?
-
-
-
-
-
-
-Jan-Benedict Glaw <jbglaw@lug-owl.de>
-
-Envoy=E9 par : linux-mips-bounce@linux-mips.org
-27/09/2005 10:12
-Remis le : 27/09/2005 10:13
-
+On Tue, 2005-09-27 11:06:25 +0200, Florian DELIZY <florian.delizy@sagem.com=
+> wrote:
+> Is that meaning that kernel.org source code is merged into linux-mips.org=
 =20
-        Pour :  linux-mips@linux-mips.org
-        cc :    (ccc : Florian DELIZY/EXT/SAGEM)
-        Objet : Re: linux-mips Vs kernel.org
+> repository,=20
 
+Yes. Regularly.
 
+> or that linux-mips.org code is merged into the kernel.org source=20
+> repository ?
 
-On Tue, 2005-09-27 09:52:01 +0200, Florian DELIZY=20
-<florian.delizy@sagem.com> wrote:
-> We currently working with the 2.6.12 kernel, and wondering which from
-> linux-mips or kernel.org version we should use,
-> in a more general manner, what are the differences between linux-mips=20
-and
-> kernel.org kernel source code, is one the
-> mirror of the other, or is there one that frequently merge with the=20
-other
-
-Use the linux-mips.org tree to do any work.
-
-To find out about the differences, just download a kernel.org kernel
-and run a 'diff -Nurp' against what you find on linux-mips.org.
-
-Up to now, merges happened every now-and-then, but not on a very
-regular basis. However, there's hope for more timely merges since Ralf
-is on the way to move the souce base over to GIT, which should ease
-further merges...
+Yes. From time to time.
 
 MfG, JBG
 
---
-Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481 =5F O =5F
-"Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg=20
-=5F =5F O
-f=FCr einen Freien Staat voll Freier B=FCrger"  | im Internet! |   im Irak!=
- O=20
-O O
-ret =3D do=5Factions((curr | FREE=5FSPEECH) & ~(NEW=5FCOPYRIGHT=5FLAW | DRM=
- |=20
-TCPA));
+--=20
+Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481             =
+_ O _
+"Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg  =
+_ _ O
+ f=C3=BCr einen Freien Staat voll Freier B=C3=BCrger"  | im Internet! |   i=
+m Irak!   O O O
+ret =3D do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM | TCPA)=
+);
 
+--jPJw4wSVUvI9Tm/b
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
 
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.1 (GNU/Linux)
 
---=_alternative 00320CF0C1257089_=
-Content-Type: text/html; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+iD8DBQFDOQzfHb1edYOZ4bsRAtFwAJ0VQHTUWDQP+iAAFFy26Sp+8r+WoQCgh5Ti
+WI5hXtbGMlYF7tBQ3Ov8B6k=
+=i9RF
+-----END PGP SIGNATURE-----
 
-
-<br><font size=3D2 face=3D"sans-serif">Is that meaning that kernel.org sour=
-ce code is merged into linux-mips.org repository, </font>
-<br><font size=3D2 face=3D"sans-serif">or that linux-mips.org code is merge=
-d into the kernel.org source repository ?</font>
-<br>
-<br>
-<br>
-<br>
-<br>
-<table width=3D100%>
-<tr valign=3Dtop>
-<td>
-<td><font size=3D1 face=3D"sans-serif"><b>Jan-Benedict Glaw &lt;jbglaw@lug-=
-owl.de&gt;</b></font>
-<br>
-<br><font size=3D1 face=3D"sans-serif">Envoy=E9 par : linux-mips-bounce@lin=
-ux-mips.org</font>
-<p><font size=3D1 face=3D"sans-serif">27/09/2005 10:12</font>
-<br><font size=3D1 face=3D"sans-serif">Remis le : 27/09/2005 10:13</font>
-<br>
-<td><font size=3D1 face=3D"Arial">&nbsp; &nbsp; &nbsp; &nbsp; </font>
-<br><font size=3D1 face=3D"sans-serif">&nbsp; &nbsp; &nbsp; &nbsp; Pour : &=
-nbsp; &nbsp; &nbsp; &nbsp;linux-mips@linux-mips.org</font>
-<br><font size=3D1 face=3D"sans-serif">&nbsp; &nbsp; &nbsp; &nbsp; cc : &nb=
-sp; &nbsp; &nbsp; &nbsp;(ccc : Florian DELIZY/EXT/SAGEM)</font>
-<br><font size=3D1 face=3D"sans-serif">&nbsp; &nbsp; &nbsp; &nbsp; Objet : =
-&nbsp; &nbsp; &nbsp; &nbsp;Re: linux-mips Vs kernel.org</font>
-<br></table>
-<br>
-<br>
-<br><font size=3D2><tt>On Tue, 2005-09-27 09:52:01 +0200, Florian DELIZY &l=
-t;florian.delizy@sagem.com&gt; wrote:<br>
-&gt; We currently working with the 2.6.12 kernel, and wondering which from<=
-br>
-&gt; linux-mips or kernel.org version we should use,<br>
-&gt; in a more general manner, what are the differences between linux-mips =
-and<br>
-&gt; kernel.org kernel source code, is one the<br>
-&gt; mirror of the other, or is there one that frequently merge with the ot=
-her<br>
-</tt></font>
-<br><font size=3D2><tt>Use the linux-mips.org tree to do any work.<br>
-</tt></font>
-<br><font size=3D2><tt>To find out about the differences, just download a k=
-ernel.org kernel<br>
-and run a 'diff -Nurp' against what you find on linux-mips.org.<br>
-</tt></font>
-<br><font size=3D2><tt>Up to now, merges happened every now-and-then, but n=
-ot on a very<br>
-regular basis. However, there's hope for more timely merges since Ralf<br>
-is on the way to move the souce base over to GIT, which should ease<br>
-further merges...<br>
-</tt></font>
-<br><font size=3D2><tt>MfG, JBG<br>
-</tt></font>
-<br><font size=3D2><tt>--<br>
-Jan-Benedict Glaw &nbsp; &nbsp; &nbsp; jbglaw@lug-owl.de &nbsp; &nbsp;. +49=
--172-7608481 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; =5F O =5F<br>
-&quot;Eine Freie Meinung in &nbsp;einem Freien Kopf &nbsp; &nbsp;| Gegen Ze=
-nsur | Gegen Krieg &nbsp;=5F =5F O</tt></font>
-<br><font size=3D2><tt>f=FCr einen Freien Staat voll Freier B=FCrger&quot; =
-&nbsp;| im Internet! | &nbsp; im Irak! &nbsp; O O O<br>
-ret =3D do=5Factions((curr | FREE=5FSPEECH) &amp; ~(NEW=5FCOPYRIGHT=5FLAW |=
- DRM | TCPA));</tt></font>
-<br>
-<br>
-<br>
---=_alternative 00320CF0C1257089_=--
---=_mixed 00320CF0C1257089_=
-Content-Type: application/octet-stream; name="signature.asc"
-Content-Disposition: attachment; filename="signature.asc"
-Content-Transfer-Encoding: base64
-
-LS0tLS1CRUdJTiBQR1AgU0lHTkFUVVJFLS0tLS0NClZlcnNpb246IEdudVBHIHYxLjQuMSAoR05V
-L0xpbnV4KQ0KDQppRDhEQlFGRE9QN3ZIYjFlZFlPWjRic1JBbXB0QUowYkhGS2Z6Z05IcWZiYjhw
-S3VIYXZQTzlkU1VBQ2ZTLzNyDQppbHJsTG5kUk9UeHZDcEVQMi8yaDk1QT0NCj0yTXpLDQotLS0t
-LUVORCBQR1AgU0lHTkFUVVJFLS0tLS0NCg0K
-
---=_mixed 00320CF0C1257089_=--
+--jPJw4wSVUvI9Tm/b--

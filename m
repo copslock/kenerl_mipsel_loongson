@@ -1,53 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Sep 2005 16:54:56 +0100 (BST)
-Received: from mo00.iij4u.or.jp ([210.130.0.19]:246 "EHLO mo00.iij4u.or.jp")
-	by ftp.linux-mips.org with ESMTP id S8134227AbVI0Pyk (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 27 Sep 2005 16:54:40 +0100
-Received: MO(mo00) for <linux-mips@linux-mips.org> id j8RFsYxW019230; Wed, 28 Sep 2005 00:54:34 +0900 (JST)
-Received: MDO(mdo00) id j8RFsX3T018902; Wed, 28 Sep 2005 00:54:33 +0900 (JST)
-Received: from stratos (h195.p501.iij4u.or.jp [210.149.245.195])
-	by mbox.iij4u.or.jp (4U-MR/mbox01) id j8RFsWT6002806
-	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NOT)
-	for <linux-mips@linux-mips.org>; Wed, 28 Sep 2005 00:54:33 +0900 (JST)
-Date:	Wed, 28 Sep 2005 00:54:32 +0900
-From:	Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-To:	linux-mips@linux-mips.org
-Subject: Re: linux-mips Vs kernel.org
-Message-Id: <20050928005432.7d45b2f9.yuasa@hh.iij4u.or.jp>
-In-Reply-To: <20050927093922.GA3793@linux-mips.org>
-References: <OFDDFCB8DC.1BFCCB3E-ONC1257089.002AE830-C1257089.002B3D8D@sagem.com>
-	<20050927093922.GA3793@linux-mips.org>
-X-Mailer: Sylpheed version 1.0.5 (GTK+ 1.2.10; i486-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Sep 2005 18:21:48 +0100 (BST)
+Received: from bay101-dav7.bay101.hotmail.com ([64.4.56.79]:47440 "EHLO
+	hotmail.com") by ftp.linux-mips.org with ESMTP id S8133750AbVI0RVc
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 27 Sep 2005 18:21:32 +0100
+Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
+	 Tue, 27 Sep 2005 10:18:16 -0700
+Message-ID: <BAY101-DAV76EF721B0CFCE85875AC3D28A0@phx.gbl>
+Received: from 81.159.219.80 by BAY101-DAV7.phx.gbl with DAV;
+	Tue, 27 Sep 2005 17:18:16 +0000
+X-Originating-IP: [81.159.219.80]
+X-Originating-Email: [oski2001@hotmail.com]
+X-Sender: oski2001@hotmail.com
+From:	"oski" <oski2001@hotmail.com>
+To:	<linux-mips@linux-mips.org>
+Subject: Compiling a kernel for ibm z50
+Date:	Tue, 27 Sep 2005 18:19:51 +0100
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-Return-Path: <yuasa@hh.iij4u.or.jp>
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2800.1409
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1409
+X-OriginalArrivalTime: 27 Sep 2005 17:18:16.0668 (UTC) FILETIME=[72F669C0:01C5C387]
+Return-Path: <oski2001@hotmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9053
+X-archive-position: 9054
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuasa@hh.iij4u.or.jp
+X-original-sender: oski2001@hotmail.com
 Precedence: bulk
 X-list: linux-mips
 
+
+
 Hi,
 
-On Tue, 27 Sep 2005 11:39:22 +0200
-Ralf Baechle <ralf@linux-mips.org> wrote:
+I am a newbie trying to compile a kernel for my z50 and up to now failed.
 
-> On Tue, Sep 27, 2005 at 09:52:01AM +0200, Florian DELIZY wrote:
-> 
-> > We currently working with the 2.6.12 kernel, and wondering which from 
-> > linux-mips or kernel.org version we should use,
-> > in a more general manner, what are the differences between linux-mips and 
-> > kernel.org kernel source code, is one the
-> > mirror of the other, or is there one that frequently merge with the other 
-> > ?
-> 
-> At this stage the kernel.org tree is quite unusable for MIPS.
+This is my set up:
+-An old Pentium II box with Redhat 8
+-Downloaded linux-2.6.13.mipscvs-20050904 from www.longlandclan...and bzip2
+and tar into /usr/src.
+-Installed the mipsel crosscompiler from MIPS SDE
+-After make config, when trying to make dep, I get a warning: make dep is
+unnecessary now.
+-Doing a ls arch/mips/boot I get a file called "compressed" with only a
+folder called "CVS" .
+ Questions:
+1.Can somebody tell me what I am doing wrong?
+2.Give me some advise on the proper way to crosscompile?
+3.Has somebody a compiled kernel (and root) that will be willing to share
+with me, to boot using hpcboot?
 
-I have no problem kernel.org GIT with VR41xx.
+Many thanks
 
-Yoichi
+oski

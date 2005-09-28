@@ -1,66 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Sep 2005 20:47:17 +0100 (BST)
-Received: from mail.glaze.se ([212.209.188.162]:31504 "HELO rocket.glaze.se")
-	by ftp.linux-mips.org with SMTP id S8134392AbVI0Tqz (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 27 Sep 2005 20:46:55 +0100
-Received: from IBMJP (unknown [10.42.1.6])
-	by rocket.glaze.se (Postfix) with ESMTP id BB914376451
-	for <linux-mips@linux-mips.org>; Tue, 27 Sep 2005 21:46:45 +0200 (CEST)
-From:	"Jan Pedersen" <jan.pedersen@glaze.dk>
-To:	<linux-mips@linux-mips.org>
-Subject: [patch] cfi: removed warning message on expected behaivor
-Date:	Tue, 27 Sep 2005 21:45:53 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Sep 2005 08:29:21 +0100 (BST)
+Received: from paris5.amen.fr ([62.193.203.10]:34059 "EHLO paris5.amen.fr")
+	by ftp.linux-mips.org with ESMTP id S8134126AbVI1H3E (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 28 Sep 2005 08:29:04 +0100
+Received: from firewall (46.237.98-84.rev.gaoland.net [84.98.237.46])
+	by paris5.amen.fr (8.10.2/8.10.2) with ESMTP id j8S7T3v17392
+	for <linux-mips@linux-mips.org>; Wed, 28 Sep 2005 09:29:03 +0200
+Message-ID: <433A45BD.80408@avilinks.com>
+Date:	Wed, 28 Sep 2005 09:26:53 +0200
+From:	Yoann Allain <yallain@avilinks.com>
+Organization: Avilinks
+User-Agent: Mozilla Thunderbird 1.0 (X11/20041206)
+X-Accept-Language: fr, en
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
+To:	linux-mips@linux-mips.org
+Subject: Compiling a 2.6 kernel for Mips
+References: <BAY101-DAV76EF721B0CFCE85875AC3D28A0@phx.gbl>
+In-Reply-To: <BAY101-DAV76EF721B0CFCE85875AC3D28A0@phx.gbl>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Priority: 5 (Lowest)
-X-MSMail-Priority: Low
-X-Mailer: Microsoft Office Outlook, Build 11.0.6353
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
-Thread-Index: AcXDnBGyK+lQCz6NQgKmvZ2YSgbPWg==
-Importance: Low
-Message-Id: <20050927194645.BB914376451@rocket.glaze.se>
-Return-Path: <jan.pedersen@glaze.dk>
+Return-Path: <yallain@avilinks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9058
+X-archive-position: 9059
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jan.pedersen@glaze.dk
+X-original-sender: yallain@avilinks.com
 Precedence: bulk
 X-list: linux-mips
 
-When an erase operation is in progress, the DQ5 (data bit 5 / exceeded
-timing limit) pin on the flash chips may raise just before operation
-complete is detected. This is expected behaivor because when the erase is
-complete, DQ5 switches from 'exceeded timing limit' to 'data bit 5' which
-therefore might be read as '1' just before operation complete is detected.
-This fix is well tested.
+Hi,
 
-Signed-off-by: Jan Pedersen <jp@jp-embedded.com>
----
-diff -Naur linux-2.4.31.org/drivers/mtd/chips/cfi_cmdset_0002.c
-linux-2.4.31/drivers/mtd/chips/cfi_cmdset_0002.c
---- linux-2.4.31.org/drivers/mtd/chips/cfi_cmdset_0002.c	2004-11-17
-06:54:21.000000000 -0500
-+++ linux-2.4.31/drivers/mtd/chips/cfi_cmdset_0002.c	2005-08-22
-12:14:17.000000000 -0400
-@@ -950,12 +950,8 @@
- 		    oldstatus   = cfi_read( map, adr );
- 		    status      = cfi_read( map, adr );
- 		    
--		    if( ( oldstatus & 0x00FF ) == ( status & 0x00FF ) )
-+		    if( ( oldstatus & 0x00FF ) != ( status & 0x00FF ) )
- 		    {
--                printk( "Warning: DQ5 raised while erase operation was in
-progress, but erase completed OK\n" ); 		    
--		    } 			
--			else
--            {
- 			    /* DQ5 is active so we can do a reset and stop
-the erase */
- 				cfi_write(map, CMD(0xF0), chip->start);
-                 printk( KERN_WARNING "Internal flash device timeout occured
-or write operation was performed while flash was erasing\n" );
+I am no more a newbie but I still need some help to build kernels :
+I am working on the Wintegra Evaluation Board (WEB777) and I used the 
+2.4 kernel Wintegra gave me with the patch for that board.
+I tried to adapt the patch for the 2.6 kernel but it doesn't work. I 
+traced the kernel to find it crashed very early before displaying anything.
+In fact the host processor makes an address and tries to read it but 
+this makes an exception :
+
+* Exception 0x02 (user) : TLB (load or instruction fetch) *
+* in address: 80101ea8
+ClockDiv2+0xe38:
+[80101ea8] 8c820000 lw          r2,0x0000(r4)
+
+
+r0(zero): 00000000 r1(AT)  : 1000fc00 r2(v0)  : 0000001c r3(v1)  : 80360000
+r4(a0)  : 0000001c r5(a1)  : 803919f0 r6(a2)  : 0000000d r7(a3)  : 8038df8c
+
+
+I think this is a problem of host processor misconfiguration, but don't 
+find out exactly what it is... To make the address in R4, the processor 
+reads some zeroes where in 2.4 kernel, it doesn't and the address read 
+in 2.4 is something like 0xbf010f1c.
+I don't know if this can help but here are the few functions before crash:
+
+kernel_entry
+    J start_kernel
+             cpu_probe() (WEB777 patch)
+             prom_init() (WEB777 patch)
+                   setup_prom_printf() (WEB777 patch)
+                   wds_prom_printf() (WEB777 patch)
+                            putPromChar() (WEB777 patch)
+                            --> CRASH
+
+
+Thanks a lot for your precious advices
+
+Yoann

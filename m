@@ -1,51 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Sep 2005 19:37:58 +0100 (BST)
-Received: from alg138.algor.co.uk ([62.254.210.138]:64676 "EHLO
-	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S8133576AbVI1Shn (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 28 Sep 2005 19:37:43 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j8SIbWQA018887;
-	Wed, 28 Sep 2005 20:37:32 +0200
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j8SIbVEU018886;
-	Wed, 28 Sep 2005 19:37:31 +0100
-Date:	Wed, 28 Sep 2005 19:37:31 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	oski <oski2001@hotmail.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Compiling a kernel for ibm z50
-Message-ID: <20050928183731.GA18480@linux-mips.org>
-References: <BAY101-DAV76EF721B0CFCE85875AC3D28A0@phx.gbl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <BAY101-DAV76EF721B0CFCE85875AC3D28A0@phx.gbl>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Sep 2005 21:53:06 +0100 (BST)
+Received: from a1.ldhosting.net ([72.29.96.10]:34234 "EHLO astro.ldhosting.net")
+	by ftp.linux-mips.org with ESMTP id S8133594AbVI1Uwu (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 28 Sep 2005 21:52:50 +0100
+Received: from [172.25.13.122] (adsl-69-149-118-47.dsl.austtx.swbell.net [69.149.118.47])
+	by astro.ldhosting.net (Postfix) with ESMTP id 9D3411000C5
+	for <linux-mips@linux-mips.org>; Wed, 28 Sep 2005 15:52:43 -0500 (CDT)
+Message-ID: <433B0299.8080507@smoothsmoothie.com>
+Date:	Wed, 28 Sep 2005 15:52:41 -0500
+From:	Jay Monkman <jtm@smoothsmoothie.com>
+User-Agent: Debian Thunderbird 1.0.2 (X11/20050817)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	linux-mips@linux-mips.org
+Subject: USB on AU1550
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Return-Path: <jtm@smoothsmoothie.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9067
+X-archive-position: 9068
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: jtm@smoothsmoothie.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Sep 27, 2005 at 06:19:51PM +0100, oski wrote:
+I'm trying to get USB working on my AU1550 board, and I'm getting an error I
+don't understand. I've searched the web and the mailing list archives, but
+haven't found anything relevant.
 
-> This is my set up:
-> -An old Pentium II box with Redhat 8
-> -Downloaded linux-2.6.13.mipscvs-20050904 from www.longlandclan...and bzip2
-> and tar into /usr/src.
-> -Installed the mipsel crosscompiler from MIPS SDE
-> -After make config, when trying to make dep, I get a warning: make dep is
-> unnecessary now.
-> -Doing a ls arch/mips/boot I get a file called "compressed" with only a
-> folder called "CVS" .
+I'm using 2.6.12, in big-endian mode.
 
-That's because who made that tarball didn't know his way around CVS enough
-to supply a -P option.  Nothing to worry, just extra clutter.
+After the kernel comes up, I plug in a USB flash drive and get this on the console:
+    au1xxx-ohci au1xxx-ohci.0: GetStatus roothub.portstatus [1] = 0x00010101 CSC
+PPS CCS
+    hub 1-0:1.0: port 2, status 0101, change 0001, 12 Mb/s
+    hub 1-0:1.0: debounce: port 2: total 100ms stable 100ms status 0x101
+    au1xxx-ohci au1xxx-ohci.0: GetStatus roothub.portstatus [1] = 0x00100103
+PRSC PPS PES CCS
+    usb 1-2: new full speed USB device using au1xxx-ohci and address 2
+    au1xxx-ohci au1xxx-ohci.0: Unlink after no-IRQ?  Controller is probably
+using the wrong IRQ.
 
-  Ralf
+
+This is the comment in the code before that printk():
+	/* IRQ setup can easily be broken so that USB controllers
+	 * never get completion IRQs ... maybe even the ones we need to
+	 * finish unlinking the initial failed usb_set_address()
+	 * or device descriptor fetch.
+	 */
+	if (!hcd->saw_irq && hcd->self.root_hub != urb->dev) {
+		dev_warn (hcd->self.controller, "Unlink after no-IRQ?  "
+			"Controller is probably using the wrong IRQ."
+			"\n");
+		hcd->saw_irq = 1;
+	}
+
+When I get here in the code, hcd->saw_irq is 0, and it looks like this function
+(hcd_unlink_urb()) is getting called from run_timer_softirq(), so I guess I'm
+not getting the interrupt. However, immediately after returning, usb_hcd_irq()
+does get called. As far as I can tell, the interrupt gets serviced as soon as
+hcd_unlink_urb returns.
+
+It looks like the timer function causing this is timeout_kill(), initialized in
+usb_start_wait_urb() which has this comment:
+	// Starts urb and waits for completion or timeout
+	// note that this call is NOT interruptible, while
+	// many device driver i/o requests should be interruptible
+
+
+
+Can anyone point me in the right direction to get this working?
+
+Thanks.

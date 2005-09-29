@@ -1,123 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Sep 2005 13:11:32 +0100 (BST)
-Received: from paris5.amen.fr ([62.193.203.10]:30471 "EHLO paris5.amen.fr")
-	by ftp.linux-mips.org with ESMTP id S8133635AbVI2MLO (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 29 Sep 2005 13:11:14 +0100
-Received: from firewall (LAubervilliers-151-13-113-26.w217-128.abo.wanadoo.fr [217.128.183.26])
-	by paris5.amen.fr (8.10.2/8.10.2) with ESMTP id j8TCAoq23724;
-	Thu, 29 Sep 2005 14:11:00 +0200
-Message-ID: <433BD945.8030803@avilinks.com>
-Date:	Thu, 29 Sep 2005 14:08:37 +0200
-From:	Yoann Allain <yallain@avilinks.com>
-Organization: Avilinks
-User-Agent: Mozilla Thunderbird 1.0 (X11/20041206)
-X-Accept-Language: fr, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Sep 2005 13:53:18 +0100 (BST)
+Received: from web35402.mail.mud.yahoo.com ([66.163.179.111]:38491 "HELO
+	web35402.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S8133635AbVI2Mw6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 29 Sep 2005 13:52:58 +0100
+Received: (qmail 46025 invoked by uid 60001); 29 Sep 2005 12:52:51 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.co.in;
+  h=Message-ID:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
+  b=lzoFpo66A0CqAwmKFL10T8T3o09kcdp1fIPF7ztPjARGT2wEIBn+HmQLHn1b/fqkCB59F8fjoumTvRd2+7ROR6RyLjUnaMbBo39+C5Odji00yGagMKxU4cTS1Fs1Fp61PISxKrHxSpJ1WuT+od4GoTQZZSR7aUEp/kYv2ZxcaI8=  ;
+Message-ID: <20050929125251.46023.qmail@web35402.mail.mud.yahoo.com>
+Received: from [147.243.216.4] by web35402.mail.mud.yahoo.com via HTTP; Thu, 29 Sep 2005 13:52:51 BST
+Date:	Thu, 29 Sep 2005 13:52:51 +0100 (BST)
+From:	Arravind babu <aravindforl@yahoo.co.in>
+Subject: Problem in detecting RAM size by bootloader
+To:	linux-mips@linux-mips.org
 MIME-Version: 1.0
-To:	Brett Foster <fosterb@uoguelph.ca>
-CC:	linux-mips@linux-mips.org
-Subject: Re: =?ISO-8859-1?Q?R=E9f=2E_=3A_Compiling_a_2=2E6_kern?=
- =?ISO-8859-1?Q?el_for_Mips?=
-References: <OF6AB06D9F.A4F86C60-ONC125708A.003730C5-C125708A.00479A09@sagem.com> <433A9CD9.6040906@avilinks.com> <433B87CE.1060509@uoguelph.ca>
-In-Reply-To: <433B87CE.1060509@uoguelph.ca>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
 Content-Transfer-Encoding: 8bit
-Return-Path: <yallain@avilinks.com>
+Return-Path: <aravindforl@yahoo.co.in>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9078
+X-archive-position: 9079
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yallain@avilinks.com
+X-original-sender: aravindforl@yahoo.co.in
 Precedence: bulk
 X-list: linux-mips
 
-Thank you for your advices! I found the solution: A serial port data 
-structure for my card was defined BUT not used in 
-include/asm-mips/serial.h to define SERIAL_PORT_DFNS so that the 
-structure was emtpy. Now my kernel prints output and goes a little 
-further. It doesn't fully work but for first I'll try to fix it on my own...
+Hi all,
 
-Thank you all again for your advices...
 
-@+ Yoann
 
-Brett Foster a écrit :
+         We are using PMON bootloader on MIPS based
+board.Earlier we have 64MB of RAM.Now we upgraded to
+128MB RAM.But bootloader is not detecting as 128MB.It
+is giving 64MB only.Where i have to look to resolve
+this issue?
 
-> Yoann Allain wrote:
->
->> Here is the function putPromChar in which I have the problem:
->>
->> 80101e70 <putPromChar>:
->> 80101e70:       3c028039        lui     $v0,0x8039
->> 80101e74:       244519f0        addiu   $a1,$v0,6640
->> 80101e78:       8ca30014        lw      $v1,20($a1)
->> 80101e7c:       00042600        sll     $a0,$a0,24
->> 80101e80:       27bdfff0        addiu   $sp,$sp,-16
->> 80101e84:       00043603        sra     $a2,$a0,24
->> 80101e88:       10600012        beqz    $v1,80101ed4 <putPromChar+0x64>
->> 80101e8c:       00001025        move    $v0,$zero
->> 80101e90:       8ca20004        lw      $v0,4($a1)
->> 80101e94:       3c038036        lui     $v1,0x8036
->> 80101e98:       8c64c9a0        lw      $a0,-13920($v1)
->> 80101e9c:       2442001c        addiu   $v0,$v0,28
->> 80101ea0:       00822021        addu    $a0,$a0,$v0
->> 80101ea4:       00000000        nop
->> 80101ea8:       8c820000        lw      $v0,0($a0)
->> 80101eac:       30420020        andi    $v0,$v0,0x20
->> 80101eb0:       1040fffd        beqz    $v0,80101ea8 <putPromChar+0x38>
->> 80101eb4:       3c028039        lui     $v0,0x8039
->> 80101eb8:       8c4319f4        lw      $v1,6644($v0)
->> 80101ebc:       3c048036        lui     $a0,0x8036
->> 80101ec0:       8c82c9a0        lw      $v0,-13920($a0)
->> 80101ec4:       24630004        addiu   $v1,$v1,4
->> 80101ec8:       00431021        addu    $v0,$v0,$v1
->> 80101ecc:       ac460000        sw      $a2,0($v0)
->> 80101ed0:       24020001        li      $v0,1
->> 80101ed4:       03e00008        jr      $ra
->> 80101ed8:       27bd0010        addiu   $sp,$sp,16
->> 80101edc:       00000000        nop
->>
->> with WinMon (bootloader) I get this (this is perhaps more readable...):
->>
->> [80101e70] 3c028039 lui         r2,0x8039        putPromChar
->> [80101e74] 244519f0 addiu       r5,r2,0x19f0
->> [80101e78] 8ca30014 lw          r3,0x0014(r5)
->> [80101e7c] 00042600 sll         r4,r4,24
->> [80101e80] 27bdfff0 addiu       r29,r29,0xfff0
->> [80101e84] 00043603 sra         r6,r4,24
->> [80101e88] 10600012 beq         r3,r0,0x0012
->> [80101e90] 8ca20004 lw          r2,0x0004(r5)           --> in 2.6 it 
->> reads 0 at address r5 + 0x4  [80101e94] 3c038036 lui         r3,0x8036
->> [80101e98] 8c64c9a0 lw          r4,0xc9a0(r3)        --> in 2.6 it 
->> reads 0 at adress r3 + 0xc9a0
->> [80101e9c] 2442001c addiu       r2,r2,0x001c
->> [80101ea0] 00822021 addu        r4,r4,r2        ==> in 2.4 it returns 
->> bf010f1c in r4
->> [80101ea8] 8c820000 lw          r2,0x0000(r4)
->>
->> * Exception 0x02 (user) : TLB (load or instruction fetch) *
->> * in address: 80101ea8
->> ClockDiv2+0xe38:
->> [80101ea8] 8c820000 lw          r2,0x0000(r4)
->>
->>
->> r0(zero): 00000000 r1(AT)  : 1000fc00 r2(v0)  : 0000001c r3(v1)  : 
->> 80360000
->> r4(a0)  : 0000001c r5(a1)  : 803919f0 r6(a2)  : 0000000d r7(a3)  : 
->> 8038df8c
->>
->> I hope this will help and many thanks for your help!
->>
->> Yoann
->
->
-> I traced through some of put character function this morning... I 
-> didn't finish, but I thought it looked like some data structure wasn't 
-> initialized. Perhaps you can figure out exactly what line the bad load 
-> belongs to in the C source, and see what structure that is. -- If 
-> there is a data structure -- I could just be crazy. ;)
->
-> Brett
->
->
+
+Thanks in advance,
+Aravind.
+
+
+		
+__________________________________________________________ 
+Yahoo! India Matrimony: Find your partner now. Go to http://yahoo.shaadi.com

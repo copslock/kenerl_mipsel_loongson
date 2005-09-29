@@ -1,377 +1,124 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Sep 2005 23:11:37 +0100 (BST)
-Received: from nevyn.them.org ([66.93.172.17]:34983 "EHLO nevyn.them.org")
-	by ftp.linux-mips.org with ESMTP id S8133602AbVI1WLR (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 28 Sep 2005 23:11:17 +0100
-Received: from drow by nevyn.them.org with local (Exim 4.52)
-	id 1EKk8x-000624-FY; Wed, 28 Sep 2005 18:11:15 -0400
-Date:	Wed, 28 Sep 2005 18:11:15 -0400
-From:	Daniel Jacobowitz <dan@debian.org>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH] Revise MIPS64 ptrace interface
-Message-ID: <20050928221115.GA22817@nevyn.them.org>
-References: <20050922182601.GA10829@nevyn.them.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20050922182601.GA10829@nevyn.them.org>
-User-Agent: Mutt/1.5.8i
-Return-Path: <drow@nevyn.them.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Sep 2005 07:21:34 +0100 (BST)
+Received: from mailhub.cs.uoguelph.ca ([131.104.96.75]:60804 "EHLO
+	mailhub.cs.uoguelph.ca") by ftp.linux-mips.org with ESMTP
+	id S8133627AbVI2GVO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 29 Sep 2005 07:21:14 +0100
+Received: from batman.cs.uoguelph.ca (batman.cs.uoguelph.ca [131.104.93.48])
+	by mailhub.cs.uoguelph.ca (8.13.1/8.13.1) with ESMTP id j8T6L39j013960;
+	Thu, 29 Sep 2005 02:21:03 -0400
+Received: from beddie.cis.uoguelph.ca (marvin.cis.uoguelph.ca [131.104.48.131])
+	by batman.cs.uoguelph.ca (8.13.4/8.13.4) with ESMTP id j8T6L105020718
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 29 Sep 2005 02:21:01 -0400
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by beddie.cis.uoguelph.ca (Postfix) with ESMTP id C26BD42404;
+	Thu, 29 Sep 2005 02:20:54 -0400 (EDT)
+Received: from beddie.cis.uoguelph.ca ([127.0.0.1])
+	by localhost (beddie [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 03755-10; Thu, 29 Sep 2005 02:20:53 -0400 (EDT)
+Received: from [192.168.0.103] (CPE001217cc2ab6-CM001371143eca.cpe.net.cable.rogers.com [70.30.137.118])
+	by beddie.cis.uoguelph.ca (Postfix) with ESMTP id A2327423EE;
+	Thu, 29 Sep 2005 02:20:53 -0400 (EDT)
+Message-ID: <433B87CE.1060509@uoguelph.ca>
+Date:	Thu, 29 Sep 2005 02:21:02 -0400
+From:	Brett Foster <fosterb@uoguelph.ca>
+User-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	Yoann Allain <yallain@avilinks.com>
+CC:	linux-mips@linux-mips.org
+Subject: Re: =?ISO-8859-1?Q?R=E9f=2E_=3A_Compiling_a_2=2E6_kern?=
+ =?ISO-8859-1?Q?el_for_Mips?=
+References: <OF6AB06D9F.A4F86C60-ONC125708A.003730C5-C125708A.00479A09@sagem.com> <433A9CD9.6040906@avilinks.com>
+In-Reply-To: <433A9CD9.6040906@avilinks.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: by amavisd-new-20030616-p10 (Debian) at cs-club.org
+X-Scanned-By: MIMEDefang 2.52 on 131.104.96.75
+X-Scanned-By: MIMEDefang 2.52 on 131.104.93.48
+Return-Path: <fosterb@uoguelph.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9069
+X-archive-position: 9070
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@debian.org
+X-original-sender: fosterb@uoguelph.ca
 Precedence: bulk
 X-list: linux-mips
 
-Change the N32 debugging ABI to something more sane, and add support
-for o32 and n32 debuggers to trace n64 programs.
+Yoann Allain wrote:
 
-Signed-off-by: Daniel Jacobowitz <dan@codesourcery.com>
----
+> Here is the function putPromChar in which I have the problem:
+>
+> 80101e70 <putPromChar>:
+> 80101e70:       3c028039        lui     $v0,0x8039
+> 80101e74:       244519f0        addiu   $a1,$v0,6640
+> 80101e78:       8ca30014        lw      $v1,20($a1)
+> 80101e7c:       00042600        sll     $a0,$a0,24
+> 80101e80:       27bdfff0        addiu   $sp,$sp,-16
+> 80101e84:       00043603        sra     $a2,$a0,24
+> 80101e88:       10600012        beqz    $v1,80101ed4 <putPromChar+0x64>
+> 80101e8c:       00001025        move    $v0,$zero
+> 80101e90:       8ca20004        lw      $v0,4($a1)
+> 80101e94:       3c038036        lui     $v1,0x8036
+> 80101e98:       8c64c9a0        lw      $a0,-13920($v1)
+> 80101e9c:       2442001c        addiu   $v0,$v0,28
+> 80101ea0:       00822021        addu    $a0,$a0,$v0
+> 80101ea4:       00000000        nop
+> 80101ea8:       8c820000        lw      $v0,0($a0)
+> 80101eac:       30420020        andi    $v0,$v0,0x20
+> 80101eb0:       1040fffd        beqz    $v0,80101ea8 <putPromChar+0x38>
+> 80101eb4:       3c028039        lui     $v0,0x8039
+> 80101eb8:       8c4319f4        lw      $v1,6644($v0)
+> 80101ebc:       3c048036        lui     $a0,0x8036
+> 80101ec0:       8c82c9a0        lw      $v0,-13920($a0)
+> 80101ec4:       24630004        addiu   $v1,$v1,4
+> 80101ec8:       00431021        addu    $v0,$v0,$v1
+> 80101ecc:       ac460000        sw      $a2,0($v0)
+> 80101ed0:       24020001        li      $v0,1
+> 80101ed4:       03e00008        jr      $ra
+> 80101ed8:       27bd0010        addiu   $sp,$sp,16
+> 80101edc:       00000000        nop
+>
+> with WinMon (bootloader) I get this (this is perhaps more readable...):
+>
+> [80101e70] 3c028039 lui         r2,0x8039        putPromChar
+> [80101e74] 244519f0 addiu       r5,r2,0x19f0
+> [80101e78] 8ca30014 lw          r3,0x0014(r5)
+> [80101e7c] 00042600 sll         r4,r4,24
+> [80101e80] 27bdfff0 addiu       r29,r29,0xfff0
+> [80101e84] 00043603 sra         r6,r4,24
+> [80101e88] 10600012 beq         r3,r0,0x0012
+> [80101e90] 8ca20004 lw          r2,0x0004(r5)           --> in 2.6 it 
+> reads 0 at address r5 + 0x4  [80101e94] 3c038036 lui         r3,0x8036
+> [80101e98] 8c64c9a0 lw          r4,0xc9a0(r3)        --> in 2.6 it 
+> reads 0 at adress r3 + 0xc9a0
+> [80101e9c] 2442001c addiu       r2,r2,0x001c
+> [80101ea0] 00822021 addu        r4,r4,r2        ==> in 2.4 it returns 
+> bf010f1c in r4
+> [80101ea8] 8c820000 lw          r2,0x0000(r4)
+>
+> * Exception 0x02 (user) : TLB (load or instruction fetch) *
+> * in address: 80101ea8
+> ClockDiv2+0xe38:
+> [80101ea8] 8c820000 lw          r2,0x0000(r4)
+>
+>
+> r0(zero): 00000000 r1(AT)  : 1000fc00 r2(v0)  : 0000001c r3(v1)  : 
+> 80360000
+> r4(a0)  : 0000001c r5(a1)  : 803919f0 r6(a2)  : 0000000d r7(a3)  : 
+> 8038df8c
+>
+> I hope this will help and many thanks for your help!
+>
+> Yoann
 
-I've now tested everything except the actual _3264 operations, which
-were copied from PPC anyway and I have reasonable faith in.  So here's
-a final patch.  If this seems reasonable to everyone, I'd like for it
-to be merged, and then I can submit the glibc and gdb bits.
+I traced through some of put character function this morning... I didn't 
+finish, but I thought it looked like some data structure wasn't 
+initialized. Perhaps you can figure out exactly what line the bad load 
+belongs to in the C source, and see what structure that is. -- If there 
+is a data structure -- I could just be crazy. ;)
 
-The patch itself is below.  If you want to test it, at
-http://return.false.org/~drow/mips/ you can find:
-
-  gdb-2005-09-28-HEAD-MIPS64-DEBUG.tar.gz
-  glibc-2005-09-28-HEAD-MIPS64-NPTL.tar.gz
-  linux-2005-09-28-sentosa-n32-ptrace.tar.gz
-
-These are patches against linux-mips.org HEAD, glibc HEAD, and gdb HEAD
-(all last week) that allow n32 and n64 debugging.  For n64 debugging
-you'll need to remove .debug_frame/.eh_frame first since I haven't
-looked at those bits of GDB / GCC yet.
-
-Index: linux/arch/mips/kernel/ptrace32.c
-===================================================================
---- linux.orig/arch/mips/kernel/ptrace32.c	2005-09-21 14:48:02.000000000 -0400
-+++ linux/arch/mips/kernel/ptrace32.c	2005-09-28 15:18:29.000000000 -0400
-@@ -35,6 +35,12 @@
- #include <asm/uaccess.h>
- #include <asm/bootinfo.h>
- 
-+int ptrace_getregs (struct task_struct *child, __s64 __user *data);
-+int ptrace_setregs (struct task_struct *child, __s64 __user *data);
-+
-+int ptrace_getfpregs (struct task_struct *child, __u32 __user *data);
-+int ptrace_setfpregs (struct task_struct *child, __u32 __user *data);
-+
- /*
-  * Tracing a 32-bit process with a 64-bit strace and vice versa will not
-  * work.  I don't know how to fix this.
-@@ -99,6 +105,35 @@ asmlinkage int sys32_ptrace(int request,
- 		break;
- 	}
- 
-+	/*
-+	 * Read 4 bytes of the other process' storage
-+	 *  data is a pointer specifying where the user wants the
-+	 *	4 bytes copied into
-+	 *  addr is a pointer in the user's storage that contains an 8 byte
-+	 *	address in the other process of the 4 bytes that is to be read
-+	 * (this is run in a 32-bit process looking at a 64-bit process)
-+	 * when I and D space are separate, these will need to be fixed.
-+	 */
-+	case PTRACE_PEEKTEXT_3264:
-+	case PTRACE_PEEKDATA_3264: {
-+		u32 tmp;
-+		int copied;
-+		u32 __user * addrOthers;
-+
-+		ret = -EIO;
-+
-+		/* Get the addr in the other process that we want to read */
-+		if (get_user(addrOthers, (u32 __user * __user *) (unsigned long) addr) != 0)
-+			break;
-+
-+		copied = access_process_vm(child, (u64)addrOthers, &tmp,
-+				sizeof(tmp), 0);
-+		if (copied != sizeof(tmp))
-+			break;
-+		ret = put_user(tmp, (u32 __user *) (unsigned long) data);
-+		break;
-+	}
-+
- 	/* Read the word at location addr in the USER area. */
- 	case PTRACE_PEEKUSR: {
- 		struct pt_regs *regs;
-@@ -202,6 +237,31 @@ asmlinkage int sys32_ptrace(int request,
- 		ret = -EIO;
- 		break;
- 
-+	/*
-+	 * Write 4 bytes into the other process' storage
-+	 *  data is the 4 bytes that the user wants written
-+	 *  addr is a pointer in the user's storage that contains an
-+	 *	8 byte address in the other process where the 4 bytes
-+	 *	that is to be written
-+	 * (this is run in a 32-bit process looking at a 64-bit process)
-+	 * when I and D space are separate, these will need to be fixed.
-+	 */
-+	case PTRACE_POKETEXT_3264:
-+	case PTRACE_POKEDATA_3264: {
-+		u32 __user * addrOthers;
-+
-+		/* Get the addr in the other process that we want to write into */
-+		ret = -EIO;
-+		if (get_user(addrOthers, (u32 __user * __user *) (unsigned long) addr) != 0)
-+			break;
-+		ret = 0;
-+		if (access_process_vm(child, (u64)addrOthers, &data,
-+					sizeof(data), 1) == sizeof(data))
-+			break;
-+		ret = -EIO;
-+		break;
-+	}
-+
- 	case PTRACE_POKEUSR: {
- 		struct pt_regs *regs;
- 		ret = 0;
-@@ -276,6 +336,22 @@ asmlinkage int sys32_ptrace(int request,
- 		break;
- 		}
- 
-+	case PTRACE_GETREGS:
-+		ret = ptrace_getregs (child, (__u64 __user *) (__u64) data);
-+		break;
-+
-+	case PTRACE_SETREGS:
-+		ret = ptrace_setregs (child, (__u64 __user *) (__u64) data);
-+		break;
-+
-+	case PTRACE_GETFPREGS:
-+		ret = ptrace_getfpregs (child, (__u32 __user *) (__u64) data);
-+		break;
-+
-+	case PTRACE_SETFPREGS:
-+		ret = ptrace_setfpregs (child, (__u32 __user *) (__u64) data);
-+		break;
-+
- 	case PTRACE_SYSCALL: /* continue and stop at next (return from) syscall */
- 	case PTRACE_CONT: { /* restart after signal. */
- 		ret = -EIO;
-@@ -320,6 +396,11 @@ asmlinkage int sys32_ptrace(int request,
- 			       (unsigned int __user *) (unsigned long) data);
- 		break;
- 
-+	case PTRACE_GET_THREAD_AREA_3264:
-+		ret = put_user(child->thread_info->tp_value,
-+				(unsigned long __user *) (unsigned long) data);
-+		break;
-+
- 	default:
- 		ret = ptrace_request(child, request, addr, data);
- 		break;
-Index: linux/include/asm-mips/ptrace.h
-===================================================================
---- linux.orig/include/asm-mips/ptrace.h	2005-09-21 14:48:02.000000000 -0400
-+++ linux/include/asm-mips/ptrace.h	2005-09-28 15:15:14.000000000 -0400
-@@ -48,10 +48,10 @@ struct pt_regs {
- };
- 
- /* Arbitrarily choose the same ptrace numbers as used by the Sparc code. */
--/* #define PTRACE_GETREGS		12 */
--/* #define PTRACE_SETREGS		13 */
--/* #define PTRACE_GETFPREGS		14 */
--/* #define PTRACE_SETFPREGS		15 */
-+#define PTRACE_GETREGS		12
-+#define PTRACE_SETREGS		13
-+#define PTRACE_GETFPREGS		14
-+#define PTRACE_SETFPREGS		15
- /* #define PTRACE_GETFPXREGS		18 */
- /* #define PTRACE_SETFPXREGS		19 */
- 
-@@ -60,6 +60,13 @@ struct pt_regs {
- #define PTRACE_GET_THREAD_AREA	25
- #define PTRACE_SET_THREAD_AREA	26
- 
-+/* Calls to trace a 64bit program from a 32bit program.  */
-+#define PTRACE_PEEKTEXT_3264	0xc0
-+#define PTRACE_PEEKDATA_3264	0xc1
-+#define PTRACE_POKETEXT_3264	0xc2
-+#define PTRACE_POKEDATA_3264	0xc3
-+#define PTRACE_GET_THREAD_AREA_3264	0xc4
-+
- #ifdef __KERNEL__
- 
- #include <linux/linkage.h>
-Index: linux/arch/mips/kernel/scall64-n32.S
-===================================================================
---- linux.orig/arch/mips/kernel/scall64-n32.S	2005-09-21 09:34:45.000000000 -0400
-+++ linux/arch/mips/kernel/scall64-n32.S	2005-09-22 14:04:19.000000000 -0400
-@@ -216,7 +216,7 @@ EXPORT(sysn32_call_table)
- 	PTR	compat_sys_getrusage
- 	PTR	sys32_sysinfo
- 	PTR	compat_sys_times
--	PTR	sys_ptrace
-+	PTR	sys32_ptrace
- 	PTR	sys_getuid			/* 6100 */
- 	PTR	sys_syslog
- 	PTR	sys_getgid
-Index: linux/arch/mips/kernel/ptrace.c
-===================================================================
---- linux.orig/arch/mips/kernel/ptrace.c	2005-09-22 14:11:07.000000000 -0400
-+++ linux/arch/mips/kernel/ptrace.c	2005-09-28 15:17:23.000000000 -0400
-@@ -38,6 +38,7 @@
- #include <asm/system.h>
- #include <asm/uaccess.h>
- #include <asm/bootinfo.h>
-+#include <asm/reg.h>
- 
- /*
-  * Called by kernel/ptrace.c when detaching..
-@@ -49,6 +50,118 @@ void ptrace_disable(struct task_struct *
- 	/* Nothing to do.. */
- }
- 
-+/*
-+ * Read a general register set.  We always use the 64-bit format, even
-+ * for 32-bit kernels and for 32-bit processes on a 64-bit kernel.
-+ * Registers are sign extended to fill the available space.
-+ */
-+int ptrace_getregs (struct task_struct *child, __s64 __user *data)
-+{
-+	struct pt_regs *regs;
-+	int i;
-+
-+	if (!access_ok(VERIFY_WRITE, data, 38 * 8))
-+		return -EIO;
-+
-+	regs = (struct pt_regs *) ((unsigned long) child->thread_info +
-+	       THREAD_SIZE - 32 - sizeof(struct pt_regs));
-+
-+	for (i = 0; i < 32; i++)
-+		__put_user (regs->regs[i], data + i);
-+	__put_user (regs->lo, data + EF_LO - EF_R0);
-+	__put_user (regs->hi, data + EF_HI - EF_R0);
-+	__put_user (regs->cp0_epc, data + EF_CP0_EPC - EF_R0);
-+	__put_user (regs->cp0_badvaddr, data + EF_CP0_BADVADDR - EF_R0);
-+	__put_user (regs->cp0_status, data + EF_CP0_STATUS - EF_R0);
-+	__put_user (regs->cp0_cause, data + EF_CP0_CAUSE - EF_R0);
-+
-+	return 0;
-+}
-+
-+/*
-+ * Write a general register set.  As for PTRACE_GETREGS, we always use
-+ * the 64-bit format.  On a 32-bit kernel only the lower order half
-+ * (according to endianness) will be used.
-+ */
-+int ptrace_setregs (struct task_struct *child, __s64 __user *data)
-+{
-+	struct pt_regs *regs;
-+	int i;
-+
-+	if (!access_ok(VERIFY_READ, data, 38 * 8))
-+		return -EIO;
-+
-+	regs = (struct pt_regs *) ((unsigned long) child->thread_info +
-+	       THREAD_SIZE - 32 - sizeof(struct pt_regs));
-+
-+	for (i = 0; i < 32; i++)
-+		__get_user (regs->regs[i], data + i);
-+	__get_user (regs->lo, data + EF_LO - EF_R0);
-+	__get_user (regs->hi, data + EF_HI - EF_R0);
-+	__get_user (regs->cp0_epc, data + EF_CP0_EPC - EF_R0);
-+
-+	/* badvaddr, status, and cause may not be written.  */
-+
-+	return 0;
-+}
-+
-+int ptrace_getfpregs (struct task_struct *child, __u32 __user *data)
-+{
-+	int i;
-+
-+	if (!access_ok(VERIFY_WRITE, data, 33 * 8))
-+		return -EIO;
-+
-+	if (tsk_used_math(child)) {
-+		fpureg_t *fregs = get_fpu_regs(child);
-+		for (i = 0; i < 32; i++)
-+			__put_user (fregs[i], i + (__u64 __user *) data);
-+	} else {
-+		for (i = 0; i < 32; i++)
-+			__put_user ((__u64) -1, i + (__u64 __user *) data);
-+	}
-+
-+	if (cpu_has_fpu) {
-+		unsigned int flags, tmp;
-+
-+		__put_user (child->thread.fpu.hard.fcr31, data + 64);
-+
-+		flags = read_c0_status();
-+		__enable_fpu();
-+		__asm__ __volatile__("cfc1\t%0,$0" : "=r" (tmp));
-+		write_c0_status(flags);
-+		__put_user (tmp, data + 65);
-+	} else {
-+		__put_user (child->thread.fpu.soft.fcr31, data + 64);
-+		__put_user ((__u32) 0, data + 65);
-+	}
-+
-+	return 0;
-+}
-+
-+int ptrace_setfpregs (struct task_struct *child, __u32 __user *data)
-+{
-+	fpureg_t *fregs;
-+	int i;
-+
-+	if (!access_ok(VERIFY_READ, data, 33 * 8))
-+		return -EIO;
-+
-+	fregs = get_fpu_regs(child);
-+
-+	for (i = 0; i < 32; i++)
-+		__get_user (fregs[i], i + (__u64 __user *) data);
-+
-+	if (cpu_has_fpu)
-+		__get_user (child->thread.fpu.hard.fcr31, data + 64);
-+	else
-+		__get_user (child->thread.fpu.soft.fcr31, data + 64);
-+
-+	/* FIR may not be written.  */
-+
-+	return 0;
-+}
-+
- asmlinkage int sys_ptrace(long request, long pid, long addr, long data)
- {
- 	struct task_struct *child;
-@@ -300,6 +413,22 @@ asmlinkage int sys_ptrace(long request, 
- 		break;
- 		}
- 
-+	case PTRACE_GETREGS:
-+		ret = ptrace_getregs (child, (__u64 __user *) data);
-+		break;
-+
-+	case PTRACE_SETREGS:
-+		ret = ptrace_setregs (child, (__u64 __user *) data);
-+		break;
-+
-+	case PTRACE_GETFPREGS:
-+		ret = ptrace_getfpregs (child, (__u32 __user *) data);
-+		break;
-+
-+	case PTRACE_SETFPREGS:
-+		ret = ptrace_setfpregs (child, (__u32 __user *) data);
-+		break;
-+
- 	case PTRACE_SYSCALL: /* continue and stop at next (return from) syscall */
- 	case PTRACE_CONT: { /* restart after signal. */
- 		ret = -EIO;
-
--- 
-Daniel Jacobowitz
-CodeSourcery, LLC
+Brett

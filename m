@@ -1,73 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Sep 2005 12:18:05 +0100 (BST)
-Received: from deliver-1.mx.triera.net ([213.161.0.31]:38375 "HELO
-	deliver-1.mx.triera.net") by ftp.linux-mips.org with SMTP
-	id S8133635AbVI2LRt (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 29 Sep 2005 12:17:49 +0100
-Received: from localhost (in-2.mx.triera.net [213.161.0.26])
-	by deliver-1.mx.triera.net (Postfix) with ESMTP id C3CBDC063;
-	Thu, 29 Sep 2005 13:17:22 +0200 (CEST)
-Received: from smtp.triera.net (smtp.triera.net [213.161.0.30])
-	by in-2.mx.triera.net (Postfix) with SMTP id F01231BC081;
-	Thu, 29 Sep 2005 13:17:24 +0200 (CEST)
-Received: from [172.18.1.53] (unknown [213.161.20.162])
-	by smtp.triera.net (Postfix) with ESMTP id 4D7C71A18B1;
-	Thu, 29 Sep 2005 13:17:25 +0200 (CEST)
-Subject: RE: Floating point performance
-From:	Matej Kupljen <matej.kupljen@ultra.si>
-To:	Ulrich Eckhardt <Eckhardt@satorlaser.com>
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <6EC3F44BE5E6B742BE3EBC3465525944096814@emea-exchange3.emea.dps.local>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Sep 2005 12:31:48 +0100 (BST)
+Received: from mail.timesys.com ([65.117.135.102]:43490 "EHLO
+	exchange.timesys.com") by ftp.linux-mips.org with ESMTP
+	id S8133635AbVI2Lb2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 29 Sep 2005 12:31:28 +0100
+Received: from [192.168.2.27] ([192.168.2.27]) by exchange.timesys.com with Microsoft SMTPSVC(5.0.2195.6713);
+	 Thu, 29 Sep 2005 07:29:14 -0400
+Message-ID: <433BD08E.1020402@timesys.com>
+Date:	Thu, 29 Sep 2005 07:31:26 -0400
+From:	Greg Weeks <greg.weeks@timesys.com>
+User-Agent: Mozilla Thunderbird 1.0.6 (X11/20050716)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	linux-mips@linux-mips.org
+Subject: Re: Floating point performance
 References: <6EC3F44BE5E6B742BE3EBC3465525944096814@emea-exchange3.emea.dps.local>
-Content-Type: text/plain
-Date:	Thu, 29 Sep 2005 13:16:40 +0200
-Message-Id: <1127992600.10179.19.camel@localhost.localdomain>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.2.3 
+In-Reply-To: <6EC3F44BE5E6B742BE3EBC3465525944096814@emea-exchange3.emea.dps.local>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: Triera AV Service
-Return-Path: <matej.kupljen@ultra.si>
+X-OriginalArrivalTime: 29 Sep 2005 11:29:14.0406 (UTC) FILETIME=[053A5460:01C5C4E9]
+Return-Path: <greg.weeks@timesys.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9073
+X-archive-position: 9074
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matej.kupljen@ultra.si
+X-original-sender: greg.weeks@timesys.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi
+Ulrich Eckhardt wrote:
 
-> > I've built soft float toolchain (with crosstool) and then build
-> > MPlayer with it. The performance is very low. I cannot even play the
-> > mp3 file with MPlayer on DBAU1200 with 400MHz CPU!
-> [...]
-> > Any other suggestions?
-> 
-> I'm not sure what you are doing, but if you only want to play music, 
-> I'd use Ogg Vorbis instead, which has a decoder that only uses integer 
-> arithmetic for exactly the case of FPU-less machines and the Au1200. 
-> I could also imagine an MP3 decoder written for integer only being 
-> written somewhere, but I don't know anything about it.
+>(Sorry if this mail is garbled, I'm forced to use a sub-par client)
+>
+>Matej Kupljen wrote:
+>  
+>
+>>I've built soft float toolchain (with crosstool) and then build
+>>MPlayer with it. The performance is very low. I cannot even play the
+>>mp3 file with MPlayer on DBAU1200 with 400MHz CPU!
+>>    
+>>
+>[...]
+>  
+>
+>>Any other suggestions?
+>>    
+>>
+>
+>I'm not sure what you are doing, but if you only want to play music, I'd use Ogg Vorbis instead, which has a decoder that only uses integer arithmetic for exactly the case of FPU-less machines and the Au1200. I could also imagine an MP3 decoder written for integer only being written somewhere, but I don't know anything about it.
+>  
+>
+mpg123 had a version of the libs for OS-9 that used integer ops only. It 
+was in contributions and not the mainline and I don't know how difficult 
+it would be to get it running on Linux. It's a dead project now anyway.
 
-Yes, I can use madplay (libmad) for music only, which uses int
-arithmetics (also special version for MIPS).
-
-But I also want to play video and currently I am testing this with
-MPlayer (maybe I'll add support for MAE, sometime in the future).
-Then I found out, that MPlayer can use libmad for MP3 and it
-works great know.
-
-Now I'll try to write XV driver for MAE backend so I'll have
-HW accelerated Color Space Conversion (form YV12->RGB) and
-Scaling. 
-
-I thought that SF *should* be relatively fast, because I have
-experience with it on ARM, where Nicolas Pitre wrote amazing 
-SF support for the glibc.
-How can we speed-up SF on MIPS? 
-Does anybody have some suggestions?
-
-BR,
-Matej
+Greg Weeks

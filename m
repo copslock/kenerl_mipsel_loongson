@@ -1,49 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Sep 2005 13:53:18 +0100 (BST)
-Received: from web35402.mail.mud.yahoo.com ([66.163.179.111]:38491 "HELO
-	web35402.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S8133635AbVI2Mw6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 29 Sep 2005 13:52:58 +0100
-Received: (qmail 46025 invoked by uid 60001); 29 Sep 2005 12:52:51 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.co.in;
-  h=Message-ID:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
-  b=lzoFpo66A0CqAwmKFL10T8T3o09kcdp1fIPF7ztPjARGT2wEIBn+HmQLHn1b/fqkCB59F8fjoumTvRd2+7ROR6RyLjUnaMbBo39+C5Odji00yGagMKxU4cTS1Fs1Fp61PISxKrHxSpJ1WuT+od4GoTQZZSR7aUEp/kYv2ZxcaI8=  ;
-Message-ID: <20050929125251.46023.qmail@web35402.mail.mud.yahoo.com>
-Received: from [147.243.216.4] by web35402.mail.mud.yahoo.com via HTTP; Thu, 29 Sep 2005 13:52:51 BST
-Date:	Thu, 29 Sep 2005 13:52:51 +0100 (BST)
-From:	Arravind babu <aravindforl@yahoo.co.in>
-Subject: Problem in detecting RAM size by bootloader
-To:	linux-mips@linux-mips.org
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Return-Path: <aravindforl@yahoo.co.in>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Sep 2005 14:31:46 +0100 (BST)
+Received: from nevyn.them.org ([66.93.172.17]:32747 "EHLO nevyn.them.org")
+	by ftp.linux-mips.org with ESMTP id S8133437AbVI2Nba (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 29 Sep 2005 14:31:30 +0100
+Received: from drow by nevyn.them.org with local (Exim 4.52)
+	id 1EKyVR-0001s8-D1; Thu, 29 Sep 2005 09:31:25 -0400
+Date:	Thu, 29 Sep 2005 09:31:25 -0400
+From:	Daniel Jacobowitz <dan@debian.org>
+To:	Nigel Stephens <nigel@mips.com>
+Cc:	Matej Kupljen <matej.kupljen@ultra.si>,
+	Ulrich Eckhardt <Eckhardt@satorlaser.com>,
+	linux-mips@linux-mips.org
+Subject: Re: Floating point performance
+Message-ID: <20050929133124.GA7135@nevyn.them.org>
+References: <6EC3F44BE5E6B742BE3EBC3465525944096814@emea-exchange3.emea.dps.local> <1127992600.10179.19.camel@localhost.localdomain> <433BD1AA.9060404@mips.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <433BD1AA.9060404@mips.com>
+User-Agent: Mutt/1.5.8i
+Return-Path: <drow@nevyn.them.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9079
+X-archive-position: 9080
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aravindforl@yahoo.co.in
+X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi all,
+On Thu, Sep 29, 2005 at 12:36:10PM +0100, Nigel Stephens wrote:
+> 
+> 
+> Matej Kupljen wrote:
+> 
+> >I thought that SF *should* be relatively fast, because I have
+> >experience with it on ARM, where Nicolas Pitre wrote amazing 
+> >SF support for the glibc.
+> >How can we speed-up SF on MIPS? 
+> >Does anybody have some suggestions?
+> > 
+> >
+> 
+> Maybe someone should volunteer to port Nicolas's "amazing SF support" 
+> from ARM to MIPS. Hint hint.
 
+Unless you've got a spare ASE lying around with conditional execution
+and a barrel shifter, I don't think this is in the cards.
 
+Which isn't to say that someone couldn't write a good MIPS-specific
+implementation, if they were a sufficiently good FP guru.  But
+my feeling is that ARM is more prone than MIPS to clever tricks that
+are hard for a compiler to generate.
 
-         We are using PMON bootloader on MIPS based
-board.Earlier we have 64MB of RAM.Now we upgraded to
-128MB RAM.But bootloader is not detecting as 128MB.It
-is giving 64MB only.Where i have to look to resolve
-this issue?
-
-
-Thanks in advance,
-Aravind.
-
-
-		
-__________________________________________________________ 
-Yahoo! India Matrimony: Find your partner now. Go to http://yahoo.shaadi.com
+-- 
+Daniel Jacobowitz
+CodeSourcery, LLC

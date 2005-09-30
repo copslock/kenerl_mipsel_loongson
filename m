@@ -1,60 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Sep 2005 17:10:20 +0100 (BST)
-Received: from extgw-uk.mips.com ([62.254.210.129]:59409 "EHLO
-	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S3465585AbVI3QKB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 30 Sep 2005 17:10:01 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j8UG9rCQ014050;
-	Fri, 30 Sep 2005 17:09:53 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j8UG9qfL014049;
-	Fri, 30 Sep 2005 17:09:52 +0100
-Date:	Fri, 30 Sep 2005 17:09:52 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Franck <vagabon.xyz@gmail.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] minor fix in asm-mips/module.h
-Message-ID: <20050930160952.GB13616@linux-mips.org>
-References: <cda58cb8050926000665f843dc@mail.gmail.com> <20050926115539.GB3175@linux-mips.org> <cda58cb805092605057f7cad7d@mail.gmail.com> <20050929234542.GB3983@linux-mips.org> <cda58cb80509300536q42e9ddd4q@mail.gmail.com> <20050930130928.GA3083@linux-mips.org> <cda58cb80509300844v5181d6fey@mail.gmail.com>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Sep 2005 20:47:19 +0100 (BST)
+Received: from alg145.algor.co.uk ([62.254.210.145]:61199 "EHLO
+	dmz.algor.co.uk") by ftp.linux-mips.org with ESMTP id S3465590AbVI3TrB
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 30 Sep 2005 20:47:01 +0100
+Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
+	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
+	id 1ELQoL-0003Jm-00; Fri, 30 Sep 2005 20:44:49 +0100
+Received: from olympia.mips.com ([192.168.192.128] helo=boris)
+	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1ELQqC-0002BW-00; Fri, 30 Sep 2005 20:46:44 +0100
+From:	Dominic Sweetman <dom@mips.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cda58cb80509300844v5181d6fey@mail.gmail.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Transfer-Encoding: 7bit
+Message-ID: <17213.38447.42728.297338@mips.com>
+Date:	Fri, 30 Sep 2005 20:46:55 +0100
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Daniel Jacobowitz <dan@debian.org>, linux-mips@linux-mips.org
+Subject: Re: RFC: Revise n32 ptrace interface
+In-Reply-To: <20050930000550.GE3983@linux-mips.org>
+References: <20050922182601.GA10829@nevyn.them.org>
+	<20050930000550.GE3983@linux-mips.org>
+X-Mailer: VM 7.17 under 21.4 (patch 15) "Security Through Obscurity" XEmacs Lucid
+X-MTUK-Scanner:	Found to be clean
+X-MTUK-SpamCheck: not spam (whitelisted), SpamAssassin (score=-4.846,
+	required 4, AWL, BAYES_00)
+Return-Path: <dom@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9102
+X-archive-position: 9103
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: dom@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Sep 30, 2005 at 05:44:01PM +0200, Franck wrote:
 
-> > > 2005/9/30, Ralf Baechle <ralf@linux-mips.org>:
-> > > > There are no CONFIG_CPU_4KSC and CONFIG_CPU_4KSD configuration options.
-> > > > Did you really create this patch against the linux module of the CVS
-> > > > repository or was it a different tree?
-> > > >
-> > >
-> > > The patch was created against linux-mips CVS repository. I added 4KSC
-> > > and 4KSD support in this tree. I thougth seeing reference of 4KSC
-> > > somewhere. Anyway, if you don't want to include them in your tree
-> > > that's ok.
-> >
-> > It's just that references to CONFIG_* symbols that are being defined
-> > nowhere don't make sense.  If however you want to contribute improved
-> > support for these processors, by all means I'm certainly going to appreciate
-> > a patch!
-> >
-> 
-> I'm surprised you're interested in added support for 4KSC and 4KSD
-> cpu...Anyway I could send a trivial patch to you if so.
+Ralf Baechle (ralf@linux-mips.org) writes:
 
-Yes, some people do strange things with Linux :-)
+> I quite deliberately did omit DSP support from 64-bit ptrace(2); there
+> is currently no MIPS64 processor with DSP support that I know of.
 
-  Ralf
+This is true so far. 
+
+But assuming that 64-bit processing becomes increasingly interesting
+(which seems certain) and that some kind of DSP support with extra
+registers remains attractive (which seems fairly likely)... well, I'd
+have said that any 64-bit MIPS CPU configured from now on is quite
+likely to have extra DSP registers.
+
+So while "you aren't going to need it" for a while, anyone thinking of
+doing a non-compatible change to ptrace might want to reserve some
+space for these registers.
+
+--
+Dominic

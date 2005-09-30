@@ -1,80 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Sep 2005 12:48:42 +0100 (BST)
-Received: from gw.icm.edu.pl ([212.87.0.39]:55990 "EHLO atol.icm.edu.pl")
-	by ftp.linux-mips.org with ESMTP id S3465570AbVI3LsW (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 30 Sep 2005 12:48:22 +0100
-Received: from fs.icm.edu.pl (fs.icm.edu.pl [192.168.1.165])
-	by atol.icm.edu.pl (8.13.1/8.13.1/rzm-5.1/icm) with ESMTP id j8UBmIbm020204
-	for <linux-mips@linux-mips.org>; Fri, 30 Sep 2005 13:48:18 +0200
-Received: from ws-gradcol1.icm.edu.pl (ws-gradcol1.icm.edu.pl [192.168.1.26])
-	by fs.icm.edu.pl (8.13.3/8.13.2/rzm-5.0hub/icm) with ESMTP id j8UBmIxj015749
-	for <linux-mips@linux-mips.org>; Fri, 30 Sep 2005 13:48:18 +0200 (CEST)
-Received: by ws-gradcol1.icm.edu.pl (Postfix, from userid 5242)
-	id 065D1920DA; Fri, 30 Sep 2005 13:48:17 +0200 (CEST)
-Date:	Fri, 30 Sep 2005 13:48:16 +0200
-From:	"Dominik 'Rathann' Mierzejewski" <D.Mierzejewski@icm.edu.pl>
-To:	linux-mips@linux-mips.org
-Subject: Re: Floating point performance
-Message-ID: <20050930114816.GB13730@ws-gradcol1.icm.edu.pl>
-Mail-Followup-To: linux-mips@linux-mips.org
-References: <6EC3F44BE5E6B742BE3EBC3465525944096814@emea-exchange3.emea.dps.local> <1127992600.10179.19.camel@localhost.localdomain>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Sep 2005 13:36:28 +0100 (BST)
+Received: from zproxy.gmail.com ([64.233.162.203]:41666 "EHLO zproxy.gmail.com")
+	by ftp.linux-mips.org with ESMTP id S3465570AbVI3MgI convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 30 Sep 2005 13:36:08 +0100
+Received: by zproxy.gmail.com with SMTP id j2so458644nzf
+        for <linux-mips@linux-mips.org>; Fri, 30 Sep 2005 05:36:02 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:reply-to:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=BbSQQa42LqM9mCY7TueEmSZ69KPJvQiiTz4gFg+0uXL2Z+MAnST4N7PXw7UXj2ilaf+S5lGB3eOJVsdB0loVpGCY1uziQJnhHE37cxRJU/+dg3E6TwPHJLI06qN3F3poNY+hEcGOX/f/oBW3ja1yF5b4bvEPPU1utP1aqx1jo+4=
+Received: by 10.37.18.42 with SMTP id v42mr1412730nzi;
+        Fri, 30 Sep 2005 05:36:02 -0700 (PDT)
+Received: by 10.36.49.3 with HTTP; Fri, 30 Sep 2005 05:36:01 -0700 (PDT)
+Message-ID: <cda58cb80509300536q42e9ddd4q@mail.gmail.com>
+Date:	Fri, 30 Sep 2005 14:36:01 +0200
+From:	Franck <vagabon.xyz@gmail.com>
+Reply-To: Franck <vagabon.xyz@gmail.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH] minor fix in asm-mips/module.h
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <20050929234542.GB3983@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
 Content-Disposition: inline
-In-Reply-To: <1127992600.10179.19.camel@localhost.localdomain>
-User-Agent: Mutt/1.5.9i
-X-Rcpt-To: <linux-mips@linux-mips.org>
-X-Classes: vf: <linux-mips@linux-mips.org>, vh: , sf: <linux-mips@linux-mips.org>, sh:  (MDrzm)
-X-Filtry: w sprawie filtracji wirusow i spamu pisz do: spam@icm.edu.pl
-X-Scanned-By: MIMEDefang 2.51 on 192.168.1.242
-Return-Path: <D.Mierzejewski@icm.edu.pl>
+References: <cda58cb8050926000665f843dc@mail.gmail.com>
+	 <20050926115539.GB3175@linux-mips.org>
+	 <cda58cb805092605057f7cad7d@mail.gmail.com>
+	 <20050929234542.GB3983@linux-mips.org>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9094
+X-archive-position: 9095
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: D.Mierzejewski@icm.edu.pl
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Sep 29, 2005 at 01:16:40PM +0200, Matej Kupljen wrote:
-> Hi
-> 
-> > > I've built soft float toolchain (with crosstool) and then build
-> > > MPlayer with it. The performance is very low. I cannot even play the
-> > > mp3 file with MPlayer on DBAU1200 with 400MHz CPU!
-> > [...]
-> > > Any other suggestions?
-> > 
-> > I'm not sure what you are doing, but if you only want to play music, 
-> > I'd use Ogg Vorbis instead, which has a decoder that only uses integer 
-> > arithmetic for exactly the case of FPU-less machines and the Au1200. 
-> > I could also imagine an MP3 decoder written for integer only being 
-> > written somewhere, but I don't know anything about it.
-> 
-> Yes, I can use madplay (libmad) for music only, which uses int
-> arithmetics (also special version for MIPS).
-> 
-> But I also want to play video and currently I am testing this with
-> MPlayer (maybe I'll add support for MAE, sometime in the future).
-> Then I found out, that MPlayer can use libmad for MP3 and it
-> works great know.
-> 
-> Now I'll try to write XV driver for MAE backend so I'll have
-> HW accelerated Color Space Conversion (form YV12->RGB) and
-> Scaling. 
+Hi Ralf,
 
-If you're interested in video playback using MPlayer, you may
-want to port the assembly parts of its code to MIPS. We (MPlayer
-developers) would be grateful if you could contribute your code
-back to MPlayer. I'm sure that you can get assistance from our
-coders if you have any problems and questions about the code.
+2005/9/30, Ralf Baechle <ralf@linux-mips.org>:
+> There are no CONFIG_CPU_4KSC and CONFIG_CPU_4KSD configuration options.
+> Did you really create this patch against the linux module of the CVS
+> repository or was it a different tree?
+>
 
-Regards,
-R.
+The patch was created against linux-mips CVS repository. I added 4KSC
+and 4KSD support in this tree. I thougth seeing reference of 4KSC
+somewhere. Anyway, if you don't want to include them in your tree
+that's ok.
 
--- 
-Dominik 'Rathann' Mierzejewski <rathann*at*icm.edu.pl>
-Interdisciplinary Centre for Mathematical and Computational Modelling
-Warsaw University  |  http://www.icm.edu.pl  |  tel. +48 (22) 5540810
+Thanks
+--
+               Franck

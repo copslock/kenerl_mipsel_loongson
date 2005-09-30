@@ -1,31 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Sep 2005 11:44:28 +0100 (BST)
-Received: from extgw-uk.mips.com ([62.254.210.129]:44308 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Sep 2005 11:45:22 +0100 (BST)
+Received: from extgw-uk.mips.com ([62.254.210.129]:39947 "EHLO
 	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S3465568AbVI3Kmc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 30 Sep 2005 11:42:32 +0100
+	id S3465569AbVI3Kmf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 30 Sep 2005 11:42:35 +0100
 Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j8UAgLuc005536;
-	Fri, 30 Sep 2005 11:42:21 +0100
+	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j8UAgLuk005536;
+	Fri, 30 Sep 2005 11:42:27 +0100
 Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j8U8dAW2024366;
-	Fri, 30 Sep 2005 09:39:10 +0100
-Date:	Fri, 30 Sep 2005 09:39:10 +0100
+	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j8U0Dnq7004716;
+	Fri, 30 Sep 2005 01:13:49 +0100
+Date:	Fri, 30 Sep 2005 01:13:49 +0100
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	oski <oski2001@hotmail.com>
+To:	Daniel Jacobowitz <dan@debian.org>
 Cc:	linux-mips@linux-mips.org
-Subject: Re: Compiling a kernel for ibm z50
-Message-ID: <20050930083910.GI3983@linux-mips.org>
-References: <BAY101-DAV76EF721B0CFCE85875AC3D28A0@phx.gbl> <20050928183731.GA18480@linux-mips.org> <BAY101-DAV183674DFDB1AD65FC8FF36D28C0@phx.gbl>
+Subject: Re: [PATCH] Revise MIPS64 ptrace interface
+Message-ID: <20050930001349.GF3983@linux-mips.org>
+References: <20050922182601.GA10829@nevyn.them.org> <20050928221115.GA22817@nevyn.them.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <BAY101-DAV183674DFDB1AD65FC8FF36D28C0@phx.gbl>
+In-Reply-To: <20050928221115.GA22817@nevyn.them.org>
 User-Agent: Mutt/1.4.2.1i
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9087
+X-archive-position: 9088
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,26 +33,21 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Sep 29, 2005 at 01:21:43PM +0100, oski wrote:
+On Wed, Sep 28, 2005 at 06:11:15PM -0400, Daniel Jacobowitz wrote:
 
-> After config I run make and got an error.
-> The last few lines are
-> LD    init/built-in.o
-> LD    .tmp_vmlinux1
-> drivers/built-in.o: in function 'pnp_check_dma':
-> : undefined reference to :'request_dma'
-> drivers/built-in.o: in function 'pnp_check_dma':
-> : relocation truncated to fit: R_MIPS_26 against 'request_dma'
-> drivers/built-in.o: In function 'pnp_check_dma':
-> : undefined reference to 'free_dma'
-> drivers/built-in.o: In function 'pnp_check_dma':
-> : relocation truncated to fit: R_MIPS_26 against 'free_dma'
-> make: *** [.tmp_vmlinux1] Error 1
+> Change the N32 debugging ABI to something more sane, and add support
+> for o32 and n32 debuggers to trace n64 programs.
 > 
-> Any suggestions how can I solve this error problem and progressing in
-> building the kernel?
+> Signed-off-by: Daniel Jacobowitz <dan@codesourcery.com>
+> ---
+> 
+> I've now tested everything except the actual _3264 operations, which
+> were copied from PPC anyway and I have reasonable faith in.  So here's
+> a final patch.  If this seems reasonable to everyone, I'd like for it
+> to be merged, and then I can submit the glibc and gdb bits.
 
-Disable CONFIG_PNP; I don't think that option makes sense on a Z50 but
-Yoichi may want to correct me here.
+I haven't heared any objections and I guess for an interface like ptrace
+such a somewhat trigger happy change is still ok, so I've applied your
+patch.
 
   Ralf

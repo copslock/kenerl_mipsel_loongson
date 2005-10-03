@@ -1,45 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Oct 2005 11:41:15 +0100 (BST)
-Received: from extgw-uk.mips.com ([62.254.210.129]:23065 "EHLO
-	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S8133451AbVJCKkz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 3 Oct 2005 11:40:55 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j93AenFS009984;
-	Mon, 3 Oct 2005 11:40:49 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j93Ael1O009983;
-	Mon, 3 Oct 2005 11:40:47 +0100
-Date:	Mon, 3 Oct 2005 11:40:47 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] Fix some sparse warnings
-Message-ID: <20051003104047.GB2624@linux-mips.org>
-References: <20051003.011637.41198806.anemo@mba.ocn.ne.jp>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20051003.011637.41198806.anemo@mba.ocn.ne.jp>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Oct 2005 12:56:35 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:54790 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S3465607AbVJCL4R (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 3 Oct 2005 12:56:17 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 5255BF59AE; Mon,  3 Oct 2005 13:56:12 +0200 (CEST)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 18870-03; Mon,  3 Oct 2005 13:56:12 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 1EF7FF5991; Mon,  3 Oct 2005 13:56:12 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j93BuD6B013495;
+	Mon, 3 Oct 2005 13:56:13 +0200
+Date:	Mon, 3 Oct 2005 12:56:20 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Andrew Isaacson <adi@broadcom.com>, linux-mips@linux-mips.org
+Subject: Re: [patch 1/5] SiByte fixes for 2.6.12
+In-Reply-To: <20051001092807.GD14463@linux-mips.org>
+Message-ID: <Pine.LNX.4.61L.0510031239260.8056@blysk.ds.pg.gda.pl>
+References: <20050622230042.GA17919@broadcom.com>
+ <Pine.LNX.4.61L.0506231153080.17155@blysk.ds.pg.gda.pl>
+ <20051001092807.GD14463@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.86.2/1107/Sun Oct  2 10:09:39 2005 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9118
+X-archive-position: 9119
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Oct 03, 2005 at 01:16:37AM +0900, Atsushi Nemoto wrote:
+On Sat, 1 Oct 2005, Ralf Baechle wrote:
 
-> Make memcpy_fromio etc. more sparse-friendly.
-> Remove duplicate __user annotation from __copy_to_user.
+> >  Of course if your TLB is indeed different from that of the R4k, then you 
+> > shouldn't be setting cp0.config.mt to 1 in the first place...
 > 
-> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+> The reason was primarily the tiny bit of extra performance because the
+> SB1 doesn't need the hazard handling overhead.  Also tlb-sb1 has a few
 
-Thanks, applied.
+ That's hardly a justification for duplicating all the code; I've thought 
+the reason was actually historical -- hadn't it been simply written 
+separately initially and never got merged properly afterwards?
 
-  Ralf
+> changes that are needed to initialize a TLB in undefined state after
+> powerup.  That was needed to run Linux on firmware-less SB1 cores.
+
+ But that's true about the power-up state of the TLB on any MIPS CPU, 
+isn't it?
+
+  Maciej

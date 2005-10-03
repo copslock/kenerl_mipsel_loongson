@@ -1,56 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Oct 2005 14:35:19 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:32274 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S3465651AbVJCNfA (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 3 Oct 2005 14:35:00 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 45D4EF5991; Mon,  3 Oct 2005 15:34:55 +0200 (CEST)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 24570-04; Mon,  3 Oct 2005 15:34:55 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id D27A8F597F; Mon,  3 Oct 2005 15:34:54 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j93DYvVE018436;
-	Mon, 3 Oct 2005 15:34:57 +0200
-Date:	Mon, 3 Oct 2005 14:35:04 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Daniel Jacobowitz <dan@debian.org>
-Cc:	Ralf Baechle <ralf@linux-mips.org>,
-	Andrew Isaacson <adi@broadcom.com>, linux-mips@linux-mips.org
-Subject: Re: [patch 1/5] SiByte fixes for 2.6.12
-In-Reply-To: <20051003131551.GA19075@nevyn.them.org>
-Message-ID: <Pine.LNX.4.61L.0510031432410.8056@blysk.ds.pg.gda.pl>
-References: <20050622230042.GA17919@broadcom.com>
- <Pine.LNX.4.61L.0506231153080.17155@blysk.ds.pg.gda.pl>
- <20051001092807.GD14463@linux-mips.org> <20051003131551.GA19075@nevyn.them.org>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.86.2/1107/Sun Oct  2 10:09:39 2005 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Oct 2005 14:37:23 +0100 (BST)
+Received: from extgw-uk.mips.com ([62.254.210.129]:19732 "EHLO
+	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
+	id S3465652AbVJCNhB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 3 Oct 2005 14:37:01 +0100
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j93DarfV020332;
+	Mon, 3 Oct 2005 14:36:53 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j93Daqqt020331;
+	Mon, 3 Oct 2005 14:36:52 +0100
+Date:	Mon, 3 Oct 2005 14:36:52 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: linux-mips Vs kernel.org
+Message-ID: <20051003133652.GI2624@linux-mips.org>
+References: <OFDDFCB8DC.1BFCCB3E-ONC1257089.002AE830-C1257089.002B3D8D@sagem.com> <20050927093922.GA3793@linux-mips.org> <20050928005432.7d45b2f9.yuasa@hh.iij4u.or.jp>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20050928005432.7d45b2f9.yuasa@hh.iij4u.or.jp>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9123
+X-archive-position: 9124
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 3 Oct 2005, Daniel Jacobowitz wrote:
+On Wed, Sep 28, 2005 at 12:54:32AM +0900, Yoichi Yuasa wrote:
 
-> FYI, all I have is a piece of hard evidence: this patch was the
-> difference between not booting and booting for a Sentosa with CFE. 
-> Which isn't firmwareless and isn't a tiny bit of extra performance
-> issue.
+> > > We currently working with the 2.6.12 kernel, and wondering which from 
+> > > linux-mips or kernel.org version we should use,
+> > > in a more general manner, what are the differences between linux-mips and 
+> > > kernel.org kernel source code, is one the
+> > > mirror of the other, or is there one that frequently merge with the other 
+> > > ?
+> > 
+> > At this stage the kernel.org tree is quite unusable for MIPS.
+> 
+> I have no problem kernel.org GIT with VR41xx.
 
- Actually workarounds have been floating around for some time. ;-)  But 
-I'm glad this has now been fixed properly.
+See RFC 1925, section 2 (3):
 
-  Maciej
+With sufficient thrust, pigs fly just fine. However, this is not
+necessarily a good idea. It is hard to be sure where they are going to
+land, and it could be dangerous sitting under them as they fly overhead.
+
+  Ralf

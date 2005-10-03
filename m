@@ -1,64 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Oct 2005 14:24:57 +0100 (BST)
-Received: from extgw-uk.mips.com ([62.254.210.129]:20997 "EHLO
-	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S3465651AbVJCNYl (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 3 Oct 2005 14:24:41 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j93DOAcg019890;
-	Mon, 3 Oct 2005 14:24:10 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j93DO889019889;
-	Mon, 3 Oct 2005 14:24:08 +0100
-Date:	Mon, 3 Oct 2005 14:24:08 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Oct 2005 14:35:19 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:32274 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S3465651AbVJCNfA (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 3 Oct 2005 14:35:00 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 45D4EF5991; Mon,  3 Oct 2005 15:34:55 +0200 (CEST)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 24570-04; Mon,  3 Oct 2005 15:34:55 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id D27A8F597F; Mon,  3 Oct 2005 15:34:54 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j93DYvVE018436;
+	Mon, 3 Oct 2005 15:34:57 +0200
+Date:	Mon, 3 Oct 2005 14:35:04 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
 To:	Daniel Jacobowitz <dan@debian.org>
-Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
+Cc:	Ralf Baechle <ralf@linux-mips.org>,
 	Andrew Isaacson <adi@broadcom.com>, linux-mips@linux-mips.org
 Subject: Re: [patch 1/5] SiByte fixes for 2.6.12
-Message-ID: <20051003132408.GG2624@linux-mips.org>
-References: <20050622230042.GA17919@broadcom.com> <Pine.LNX.4.61L.0506231153080.17155@blysk.ds.pg.gda.pl> <20051001092807.GD14463@linux-mips.org> <20051003131551.GA19075@nevyn.them.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 In-Reply-To: <20051003131551.GA19075@nevyn.them.org>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Message-ID: <Pine.LNX.4.61L.0510031432410.8056@blysk.ds.pg.gda.pl>
+References: <20050622230042.GA17919@broadcom.com>
+ <Pine.LNX.4.61L.0506231153080.17155@blysk.ds.pg.gda.pl>
+ <20051001092807.GD14463@linux-mips.org> <20051003131551.GA19075@nevyn.them.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.86.2/1107/Sun Oct  2 10:09:39 2005 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9122
+X-archive-position: 9123
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Oct 03, 2005 at 09:15:52AM -0400, Daniel Jacobowitz wrote:
+On Mon, 3 Oct 2005, Daniel Jacobowitz wrote:
 
-> > >  Well, the flag is not really to specify whether the common code is to be 
-> > > used or not.  It's about whether the TLB is like that of the R4k.  
-> > > Actually it's always been a mystery for me why the common code cannot be 
-> > > used for the SB1, but perhaps there is something specific that I could 
-> > > only discover in that "SB-1 Core User Manual" that I yet have to see, 
-> > > sigh...
-> > > 
-> > >  Of course if your TLB is indeed different from that of the R4k, then you 
-> > > shouldn't be setting cp0.config.mt to 1 in the first place...
-> > 
-> > The reason was primarily the tiny bit of extra performance because the
-> > SB1 doesn't need the hazard handling overhead.  Also tlb-sb1 has a few
-> > changes that are needed to initialize a TLB in undefined state after
-> > powerup.  That was needed to run Linux on firmware-less SB1 cores.
-> 
 > FYI, all I have is a piece of hard evidence: this patch was the
 > difference between not booting and booting for a Sentosa with CFE. 
 > Which isn't firmwareless and isn't a tiny bit of extra performance
 > issue.
-> 
-> I'll try to give CVS HEAD a shot this week sometime.
 
-Just as reminder for everybody - CVS is dead and frozen, the action is
-playing on git now ...
+ Actually workarounds have been floating around for some time. ;-)  But 
+I'm glad this has now been fixed properly.
 
-  Ralf
+  Maciej

@@ -1,51 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Oct 2005 15:17:43 +0100 (BST)
-Received: from extgw-uk.mips.com ([62.254.210.129]:18450 "EHLO
-	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S8133473AbVJDOR1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 4 Oct 2005 15:17:27 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j94EHKvj014452;
-	Tue, 4 Oct 2005 15:17:20 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j94EHKas014451;
-	Tue, 4 Oct 2005 15:17:20 +0100
-Date:	Tue, 4 Oct 2005 15:17:20 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Franck <vagabon.xyz@gmail.com>
-Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Oct 2005 16:11:25 +0100 (BST)
+Received: from zproxy.gmail.com ([64.233.162.205]:64899 "EHLO zproxy.gmail.com")
+	by ftp.linux-mips.org with ESMTP id S8133466AbVJDPK6 convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 4 Oct 2005 16:10:58 +0100
+Received: by zproxy.gmail.com with SMTP id j2so184197nzf
+        for <linux-mips@linux-mips.org>; Tue, 04 Oct 2005 08:10:52 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:reply-to:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=azPCltp/P86HLYt955oXYKpYS2gMtU3tF3sn5UsK/rB0kubopNBGCI090+g1X89ADFw5/OjED87zcx+8nv1wHCu7xJtqw2+JTaT6noTT2zXjXi43bLtZnBOvCFEly0B/lnjnuF97Qm6tt2GufutVReg2WxtTRQradnkVYk91Z00=
+Received: by 10.37.18.46 with SMTP id v46mr305945nzi;
+        Tue, 04 Oct 2005 08:10:52 -0700 (PDT)
+Received: by 10.36.49.3 with HTTP; Tue, 4 Oct 2005 08:10:52 -0700 (PDT)
+Message-ID: <cda58cb80510040810y286b06bcx@mail.gmail.com>
+Date:	Tue, 4 Oct 2005 17:10:52 +0200
+From:	Franck <vagabon.xyz@gmail.com>
+Reply-To: Franck <vagabon.xyz@gmail.com>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
 Subject: Re: [PATCH] Add support for 4KS cpu.
-Message-ID: <20051004141720.GD2725@linux-mips.org>
-References: <cda58cb80510040149p690397afo@mail.gmail.com> <Pine.LNX.4.61L.0510041219500.10696@blysk.ds.pg.gda.pl> <cda58cb80510040610k1a7f430fn@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+In-Reply-To: <Pine.LNX.4.61L.0510041430120.10696@blysk.ds.pg.gda.pl>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
 Content-Disposition: inline
-In-Reply-To: <cda58cb80510040610k1a7f430fn@mail.gmail.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+References: <cda58cb80510040149p690397afo@mail.gmail.com>
+	 <Pine.LNX.4.61L.0510041219500.10696@blysk.ds.pg.gda.pl>
+	 <cda58cb80510040610k1a7f430fn@mail.gmail.com>
+	 <Pine.LNX.4.61L.0510041430120.10696@blysk.ds.pg.gda.pl>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9135
+X-archive-position: 9136
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Oct 04, 2005 at 03:10:28PM +0200, Franck wrote:
+2005/10/4, Maciej W. Rozycki <macro@linux-mips.org>:
+>  See my other comment in this thread.  As to the SmartMIPS/crypto
+> instructions -- unless they are going to be emitted by GCC for the kernel
+> build (which I seriously doubt), there is no point in enabling them.
+>
 
-> > > This patch adds support for both 4ksc and 4ksd cpus. These cpu are
-> > > mainly used in embedded system such as smartcard or point of sell
-> > > devices as they provide some extra security features.
-> >
-> >  Please send patches inline.
-> 
-> I can see it inlined...what email viewer are you using ?
+some assembly code could...
 
-The primary reason is that patches will be quoted and commented in email
-just like text.  The attachment handling in most mail clients makes this
-unnecessarily painful.
+> > algorithms. And have some extra bits in TLB to protect pages from
+> > being execute for example. These are the main differences that I can
+>
+>  Now that may be of potential interest of the kernel, but again, that's in
+> principle probably not specific to these processors,
+>
 
-  Ralf
+hmm, I'm not an expert in MIPS cpu as you guys, so can you give me an
+example of others processors that have such TLB features ?
+
+> > remember. Big fat warning: I sent all support I have done for these
+> > cpu, _not_ more, _not_ less. I agree it's almost nothing but it's a
+> > start...
+>
+>  Well, it's probably a bit too early for inclusion, but it's certainly not
+> for a review.  By sending changes here for discussion early you may avoid
+> a lot of hassle later when you may discover a major update is required for
+> them to be accepted.  Good luck!
+
+Actually Ralf asked for it in a previous thread.
+
+Thanks
+--
+               Franck

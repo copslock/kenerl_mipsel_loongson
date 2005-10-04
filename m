@@ -1,79 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Oct 2005 14:10:52 +0100 (BST)
-Received: from zproxy.gmail.com ([64.233.162.205]:51419 "EHLO zproxy.gmail.com")
-	by ftp.linux-mips.org with ESMTP id S8133472AbVJDNKf convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 4 Oct 2005 14:10:35 +0100
-Received: by zproxy.gmail.com with SMTP id j2so162845nzf
-        for <linux-mips@linux-mips.org>; Tue, 04 Oct 2005 06:10:29 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:reply-to:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=NjtO6zC9RRvKLp69D0QSG+uwYuPchrTdI4etYzQ0Zg6a/OQEcUxiCrWE+bq6vigIBAvvbgjR6DoILyE8Ch8f2vRQa4Lb2oY6eGDrtgT7f61lsfom2nioqTYd9GVGiQkHFMwI7BxaYpo4JGP29UucgF2M+VId6nIXJaGyxoGQsvI=
-Received: by 10.36.97.9 with SMTP id u9mr200135nzb;
-        Tue, 04 Oct 2005 06:10:28 -0700 (PDT)
-Received: by 10.36.49.3 with HTTP; Tue, 4 Oct 2005 06:10:28 -0700 (PDT)
-Message-ID: <cda58cb80510040610k1a7f430fn@mail.gmail.com>
-Date:	Tue, 4 Oct 2005 15:10:28 +0200
-From:	Franck <vagabon.xyz@gmail.com>
-Reply-To: Franck <vagabon.xyz@gmail.com>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Oct 2005 14:29:48 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:54536 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S8133463AbVJDN3d (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 4 Oct 2005 14:29:33 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id DF498F59BA; Tue,  4 Oct 2005 15:29:27 +0200 (CEST)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 31526-05; Tue,  4 Oct 2005 15:29:27 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id A8404E1CA1; Tue,  4 Oct 2005 15:29:27 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j94DTVAF003188;
+	Tue, 4 Oct 2005 15:29:31 +0200
+Date:	Tue, 4 Oct 2005 14:29:38 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	"Kevin D. Kissell" <kevink@mips.com>
+Cc:	Franck <vagabon.xyz@gmail.com>, Ralf Baechle <ralf@linux-mips.org>,
+	linux-mips@linux-mips.org
 Subject: Re: [PATCH] Add support for 4KS cpu.
-Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-In-Reply-To: <Pine.LNX.4.61L.0510041219500.10696@blysk.ds.pg.gda.pl>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
+In-Reply-To: <434277D5.1090603@mips.com>
+Message-ID: <Pine.LNX.4.61L.0510041358300.10696@blysk.ds.pg.gda.pl>
 References: <cda58cb80510040149p690397afo@mail.gmail.com>
-	 <Pine.LNX.4.61L.0510041219500.10696@blysk.ds.pg.gda.pl>
-Return-Path: <vagabon.xyz@gmail.com>
+ <Pine.LNX.4.61L.0510041219500.10696@blysk.ds.pg.gda.pl> <434277D5.1090603@mips.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.86.2/1109/Tue Oct  4 00:06:28 2005 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9130
+X-archive-position: 9131
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-2005/10/4, Maciej W. Rozycki <macro@linux-mips.org>:
-> On Tue, 4 Oct 2005, Franck wrote:
->
-> > This patch adds support for both 4ksc and 4ksd cpus. These cpu are
-> > mainly used in embedded system such as smartcard or point of sell
-> > devices as they provide some extra security features.
->
->  Please send patches inline.
+On Tue, 4 Oct 2005, Kevin D. Kissell wrote:
 
-I can see it inlined...what email viewer are you using ?
+> FWIW, the 4KSc is a strict superset of the 4Kc (anticipating
+> *some* of the Release 2 features, but not requiring them to be
+> used) and the 4KSd is a strict superset of the 4KE.  I would
+> not recommend configuring CPU_MIPS32_R2 for the 4KSc.
 
->
->  Apart from the change to "arch/mips/kernel/cpu-probe.c", which is useful,
-> what's the benefit of the changes?  Specifically how is selecting e.g.
-> "CPU_4KSC" meant to be different from "CPU_MIPS32_R2"?  Do you want to
-> make GCC tune your code according to a specific's CPU pipeline
-> description?  If so, then it should probably be done a bit differently and
-> there is actually no need to differentiate between specific members of the
-> 4K family.
->
+ Well, the patch asked GCC to use the instruction set of the "4kec" CPU 
+for both (and also the "mips32r2" ISA, but that's overridden by the 
+former), so it must have been incorrect in the first place -- I have only 
+referred to this.
 
-True, but we may have some differences in future. For example, they
-both implements smart mips instructions. See options passed to GCC in
-mips Makefile, they're different from CPU_MIPS32_R2 ones. They also
-have a couple of instructions very useful for cryptographic
-algorithms. And have some extra bits in TLB to protect pages from
-being execute for example. These are the main differences that I can
-remember. Big fat warning: I sent all support I have done for these
-cpu, _not_ more, _not_ less. I agree it's almost nothing but it's a
-start...
+> They also have some physical security and cryptography accelleration
+> features, some of which use extended CPU state that would
+> require some kernel context management support if anyone wanted
+> to actually use them in Linux applications. The real point of
+> having a CPU_4KSC config flag would be to enable building-in
+> such support.
 
-> > Signed-off-by: Franck <vagabon.xyz@gmail.com>
->
+ This would make sense, but I'm afraid the proposal was far from that... 
 
-Ok I'll change it.
-
-Thanks
---
-               Franck
+  Maciej

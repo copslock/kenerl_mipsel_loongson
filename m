@@ -1,80 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Oct 2005 14:54:36 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:8206 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S3458576AbVJDNyN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 4 Oct 2005 14:54:13 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id EBC7EF5A24; Tue,  4 Oct 2005 15:54:08 +0200 (CEST)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 08045-10; Tue,  4 Oct 2005 15:54:08 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id ABAF6F5A22; Tue,  4 Oct 2005 15:54:08 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j94DsCKg004509;
-	Tue, 4 Oct 2005 15:54:12 +0200
-Date:	Tue, 4 Oct 2005 14:54:20 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Oct 2005 15:07:22 +0100 (BST)
+Received: from extgw-uk.mips.com ([62.254.210.129]:7446 "EHLO
+	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
+	id S8133473AbVJDOHD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 4 Oct 2005 15:07:03 +0100
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j94E6tdP014120;
+	Tue, 4 Oct 2005 15:06:55 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j94E6s3v014112;
+	Tue, 4 Oct 2005 15:06:54 +0100
+Date:	Tue, 4 Oct 2005 15:06:54 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
 To:	Franck <vagabon.xyz@gmail.com>
-Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Cc:	linux-mips@linux-mips.org
 Subject: Re: [PATCH] Add support for 4KS cpu.
-In-Reply-To: <cda58cb80510040610k1a7f430fn@mail.gmail.com>
-Message-ID: <Pine.LNX.4.61L.0510041430120.10696@blysk.ds.pg.gda.pl>
-References: <cda58cb80510040149p690397afo@mail.gmail.com> 
- <Pine.LNX.4.61L.0510041219500.10696@blysk.ds.pg.gda.pl>
- <cda58cb80510040610k1a7f430fn@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.86.2/1109/Tue Oct  4 00:06:28 2005 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+Message-ID: <20051004140654.GC2725@linux-mips.org>
+References: <cda58cb80510040149p690397afo@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cda58cb80510040149p690397afo@mail.gmail.com>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9133
+X-archive-position: 9134
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 4 Oct 2005, Franck wrote:
+On Tue, Oct 04, 2005 at 10:49:44AM +0200, Franck wrote:
 
-> >  Please send patches inline.
-> 
-> I can see it inlined...what email viewer are you using ?
+> This patch adds support for both 4ksc and 4ksd cpus. These cpu are
+> mainly used in embedded system such as smartcard or point of sell
+> devices as they provide some extra security features.
 
- Well, inlined means straight in the body rather than as a MIME attachment 
--- even if you use "Content-Disposition: inline", it's still one.
+So I've applied the cpu-probe.c part.
 
-> True, but we may have some differences in future. For example, they
-> both implements smart mips instructions. See options passed to GCC in
-> mips Makefile, they're different from CPU_MIPS32_R2 ones. They also
-> have a couple of instructions very useful for cryptographic
+Thanks,
 
- See my other comment in this thread.  As to the SmartMIPS/crypto 
-instructions -- unless they are going to be emitted by GCC for the kernel 
-build (which I seriously doubt), there is no point in enabling them.
-
-> algorithms. And have some extra bits in TLB to protect pages from
-> being execute for example. These are the main differences that I can
-
- Now that may be of potential interest of the kernel, but again, that's in 
-principle probably not specific to these processors, so that should be a 
-separate option; if possible one selected at the run time only (hint, 
-hint!).
-
-> remember. Big fat warning: I sent all support I have done for these
-> cpu, _not_ more, _not_ less. I agree it's almost nothing but it's a
-> start...
-
- Well, it's probably a bit too early for inclusion, but it's certainly not 
-for a review.  By sending changes here for discussion early you may avoid 
-a lot of hassle later when you may discover a major update is required for 
-them to be accepted.  Good luck!
-
-  Maciej
+  Ralf

@@ -1,58 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Oct 2005 14:23:01 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:24079 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S3465667AbVJENWq (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 5 Oct 2005 14:22:46 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id D2752F596E; Wed,  5 Oct 2005 15:22:41 +0200 (CEST)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 21731-02; Wed,  5 Oct 2005 15:22:41 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
-	id 988DBE1D01; Wed,  5 Oct 2005 15:22:41 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j95DMhVJ003740;
-	Wed, 5 Oct 2005 15:22:43 +0200
-Date:	Wed, 5 Oct 2005 14:22:51 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Franck <vagabon.xyz@gmail.com>
-Cc:	"Kevin D. Kissell" <kevink@mips.com>,
-	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] Add support for 4KS cpu.
-In-Reply-To: <cda58cb80510042355r66d6b4b7k@mail.gmail.com>
-Message-ID: <Pine.LNX.4.61L.0510051112390.13762@blysk.ds.pg.gda.pl>
-References: <cda58cb80510040149p690397afo@mail.gmail.com> 
- <Pine.LNX.4.61L.0510041219500.10696@blysk.ds.pg.gda.pl>  <434277D5.1090603@mips.com>
-  <Pine.LNX.4.61L.0510041358300.10696@blysk.ds.pg.gda.pl>  <434289A7.50007@mips.com>
-  <cda58cb80510040818v6d93fe53w@mail.gmail.com> 
- <Pine.LNX.4.61L.0510041651150.10696@blysk.ds.pg.gda.pl> 
- <cda58cb80510041033h2a67f072s@mail.gmail.com> <cda58cb80510042355r66d6b4b7k@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Oct 2005 16:48:24 +0100 (BST)
+Received: from adsl-67-116-42-147.dsl.sntc01.pacbell.net ([67.116.42.147]:29968
+	"EHLO avtrex.com") by ftp.linux-mips.org with ESMTP
+	id S3465672AbVJEPsF (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 5 Oct 2005 16:48:05 +0100
+Received: from [192.168.7.26] ([192.168.7.3]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Wed, 5 Oct 2005 08:48:02 -0700
+Message-ID: <4343F5B2.3020509@avtrex.com>
+Date:	Wed, 05 Oct 2005 08:48:02 -0700
+From:	David Daney <ddaney@avtrex.com>
+User-Agent: Mozilla Thunderbird 1.0.7-1.1.fc3 (X11/20050929)
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.86.2/1112/Wed Oct  5 11:04:38 2005 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+CC:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] fix warning in tlbex.c for CONFIG_32BIT
+References: <4343586E.4030703@avtrex.com> <20051005105336.GH2699@linux-mips.org>
+In-Reply-To: <20051005105336.GH2699@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 05 Oct 2005 15:48:02.0848 (UTC) FILETIME=[2B610A00:01C5C9C4]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9150
+X-archive-position: 9151
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 5 Oct 2005, Franck wrote:
+Ralf Baechle wrote:
+> On Tue, Oct 04, 2005 at 09:37:02PM -0700, David Daney wrote:
+> 
+>>Date:	Tue, 04 Oct 2005 21:37:02 -0700
+>>From:	David Daney <ddaney@avtrex.com>
+>>To:	linux-mips@linux-mips.org
+>>Subject: [PATCH] fix warning in tlbex.c for CONFIG_32BIT
+>>Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+> 
+>                                                 ^^^^^^^^^^^^^
+> 
+> Applied - BUT: your mailer garbles patches ...
+> 
 
-> Actually it would be better to let smartmips options in case we use
-> fallback options:
+Some people on this list are quite adamant that patches be in-line.
 
- In which case the toolchain is not going to support the "-msmartmips" 
-option anyway...  Perhaps you should just use the same options throughout 
-as there is probably no sensible set of legacy options to fall back to.  
+I was trying to see how my mailer (Thunderbird) handled this.  Obviously 
+  (in hindsight) it screws things up.
 
-  Maciej
+Sending as an attachment works well except some mailers (Not 
+Thunderbird) cannot quote attached patches with out jumping through hoops.
+
+I don't really want to change the mailer that I am using, so I am in a 
+bit of a bind WRT submitting patches here.
+
+FWIW other mailing lists (binutils, gcc) don't seem to have the same 
+trouble with attached patches.
+
+David Daney

@@ -1,74 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Oct 2005 14:21:27 +0100 (BST)
-Received: from zproxy.gmail.com ([64.233.162.199]:52012 "EHLO zproxy.gmail.com")
-	by ftp.linux-mips.org with ESMTP id S3465666AbVJENVK convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 5 Oct 2005 14:21:10 +0100
-Received: by zproxy.gmail.com with SMTP id j2so95318nzf
-        for <linux-mips@linux-mips.org>; Wed, 05 Oct 2005 06:20:59 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:reply-to:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=WTCNu1jze6HvHhxT1/om2R18JfKQ2CdOQX3kunIVPlgUYFW1+q+v/d/tixasiwIMfXsSTUnMBk7f1BU04PXVjaZdetDX/hxOaYTeDGOx8BxsnalBuaIjDu/x1ghQ8wk5whX2evUqP1ZySf6jM4fnAUSOepW0BLUH+uJ20aqowHs=
-Received: by 10.36.252.78 with SMTP id z78mr520494nzh;
-        Wed, 05 Oct 2005 06:20:59 -0700 (PDT)
-Received: by 10.36.49.3 with HTTP; Wed, 5 Oct 2005 06:20:59 -0700 (PDT)
-Message-ID: <cda58cb80510050620m693040e0o@mail.gmail.com>
-Date:	Wed, 5 Oct 2005 15:20:59 +0200
-From:	Franck <vagabon.xyz@gmail.com>
-Reply-To: Franck <vagabon.xyz@gmail.com>
-To:	"Kevin D. Kissell" <kevink@mips.com>
-Subject: Re: [PATCH] Add support for 4KS cpu.
-Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Oct 2005 14:23:01 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:24079 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S3465667AbVJENWq (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 5 Oct 2005 14:22:46 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id D2752F596E; Wed,  5 Oct 2005 15:22:41 +0200 (CEST)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 21731-02; Wed,  5 Oct 2005 15:22:41 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 988DBE1D01; Wed,  5 Oct 2005 15:22:41 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j95DMhVJ003740;
+	Wed, 5 Oct 2005 15:22:43 +0200
+Date:	Wed, 5 Oct 2005 14:22:51 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Franck <vagabon.xyz@gmail.com>
+Cc:	"Kevin D. Kissell" <kevink@mips.com>,
 	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-In-Reply-To: <4343A0FE.9080808@mips.com>
+Subject: Re: [PATCH] Add support for 4KS cpu.
+In-Reply-To: <cda58cb80510042355r66d6b4b7k@mail.gmail.com>
+Message-ID: <Pine.LNX.4.61L.0510051112390.13762@blysk.ds.pg.gda.pl>
+References: <cda58cb80510040149p690397afo@mail.gmail.com> 
+ <Pine.LNX.4.61L.0510041219500.10696@blysk.ds.pg.gda.pl>  <434277D5.1090603@mips.com>
+  <Pine.LNX.4.61L.0510041358300.10696@blysk.ds.pg.gda.pl>  <434289A7.50007@mips.com>
+  <cda58cb80510040818v6d93fe53w@mail.gmail.com> 
+ <Pine.LNX.4.61L.0510041651150.10696@blysk.ds.pg.gda.pl> 
+ <cda58cb80510041033h2a67f072s@mail.gmail.com> <cda58cb80510042355r66d6b4b7k@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-References: <cda58cb80510040149p690397afo@mail.gmail.com>
-	 <Pine.LNX.4.61L.0510041219500.10696@blysk.ds.pg.gda.pl>
-	 <434277D5.1090603@mips.com>
-	 <cda58cb80510050000r1baea5c7k@mail.gmail.com>
-	 <4343A0FE.9080808@mips.com>
-Return-Path: <vagabon.xyz@gmail.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.86.2/1112/Wed Oct  5 11:04:38 2005 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9149
+X-archive-position: 9150
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-2005/10/5, Kevin D. Kissell <kevink@mips.com>:
-> I'm personally not a big believer in security-through-obscurity,
-> but there are those, both inside and outside MIPS, who felt that
-> the security of SmartMIPS cores would be enhanced if we didn't
-> give away all of the details.  As a consequence, we put off
-> publishing the nitty-gritty details of SmartMIPS for quite a while.
-> I note that we now have the programmers' manual on-line at www.mips.com,
-> so I guess I'm implicitly cleared to discuss it in at least that level
-> of detail.
->
+On Wed, 5 Oct 2005, Franck wrote:
 
-well, I agree with you on "security-through-obscurity" point. From
-outside, I feel like MIPS has a lot of things to _hide_ athough that's
-not a good feeling for security systems. Anyways...
+> Actually it would be better to let smartmips options in case we use
+> fallback options:
 
-> A key element of SmartMIPS that allows for a ~2x speedup for
-> crypto codes that rely on extended precision math (RSA, ECC)
-> is the combination of an extension to the Hi/Lo accumulator
-> (called "ACX") with a special extract-and-reduce instruction
-> ("MFLHXU").  If one wants to use that in Linux - or at least,
-> if one wants to allow more than one thread to be able to use
-> it at a time - one needs to save/restore ACX on the kernel
-> stackframe, along with Hi and Lo.
->
+ In which case the toolchain is not going to support the "-msmartmips" 
+option anyway...  Perhaps you should just use the same options throughout 
+as there is probably no sensible set of legacy options to fall back to.  
 
-Correct. I must at least add this in the patch. I'll do it soon.
-
-Thanks for enlight this.
---
-               Franck
+  Maciej

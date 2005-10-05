@@ -1,80 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Oct 2005 10:45:45 +0100 (BST)
-Received: from 209-232-97-206.ded.pacbell.net ([209.232.97.206]:19706 "EHLO
-	dns0.mips.com") by ftp.linux-mips.org with ESMTP id S3465565AbVJEJp0
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 5 Oct 2005 10:45:26 +0100
-Received: from mercury.mips.com (sbcns-dmz [209.232.97.193])
-	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id j959jFgs004784;
-	Wed, 5 Oct 2005 02:45:15 -0700 (PDT)
-Received: from [192.168.236.16] (grendel [192.168.236.16])
-	by mercury.mips.com (8.12.9/8.12.11) with ESMTP id j959jD17024114;
-	Wed, 5 Oct 2005 02:45:14 -0700 (PDT)
-Message-ID: <4343A0FE.9080808@mips.com>
-Date:	Wed, 05 Oct 2005 11:46:38 +0200
-From:	"Kevin D. Kissell" <kevink@mips.com>
-User-Agent: Mozilla Thunderbird 1.0.6 (X11/20050716)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	Franck <vagabon.xyz@gmail.com>
-CC:	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] Add support for 4KS cpu.
-References: <cda58cb80510040149p690397afo@mail.gmail.com>	 <Pine.LNX.4.61L.0510041219500.10696@blysk.ds.pg.gda.pl>	 <434277D5.1090603@mips.com> <cda58cb80510050000r1baea5c7k@mail.gmail.com>
-In-Reply-To: <cda58cb80510050000r1baea5c7k@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.39
-Return-Path: <kevink@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Oct 2005 11:44:59 +0100 (BST)
+Received: from extgw-uk.mips.com ([62.254.210.129]:29210 "EHLO
+	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
+	id S3465659AbVJEKoo (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 5 Oct 2005 11:44:44 +0100
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j95AicIq009380;
+	Wed, 5 Oct 2005 11:44:38 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j95AicYx009379;
+	Wed, 5 Oct 2005 11:44:38 +0100
+Date:	Wed, 5 Oct 2005 11:44:38 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	David Daney <ddaney@avtrex.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Where is op_model_mipsxx.c ?
+Message-ID: <20051005104437.GG2699@linux-mips.org>
+References: <4343525A.6080605@avtrex.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4343525A.6080605@avtrex.com>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9146
+X-archive-position: 9147
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@mips.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Franck wrote:
-> 2005/10/4, Kevin D. Kissell <kevink@mips.com>:
+On Tue, Oct 04, 2005 at 09:11:06PM -0700, David Daney wrote:
+
+> I noticed this in the Makefile for the OProfile directory for mips:
 > 
->>They also have some physical security and cryptography accelleration
->>features, some of which use extended CPU state that would
->>require some kernel context management support if anyone wanted
->>to actually use them in Linux applications. The real point of
->>having a CPU_4KSC config flag would be to enable building-in
->>such support.
->>
-> what is extended CPU state that you're talking about ?
-
-That would be telling.  ;o)   Seriously, see below.
-
->>I'm being a teeny bit vague about this, because I'm not 100%
->>certain that all the details of "SmartMIPS" have been published.
->>
+> oprofile-$(CONFIG_CPU_MIPS32_R1)                += op_model_mipsxx.o
 > 
-> hmm, does that mean that smart mips extension couldn't be supported in
-> Linux in case that this extension have not been published ?
+> The file op_model_mipsxx.c does not seem to exist.  Which implies to me 
+> that someone was working on making it work for MIPS32, but didn't quite 
+> finish.
+> 
+> I want to start hacking on OProfile for a MIPS32 based system and 
+> thought it might make a nice starting point.
+> 
+> If the missing file exists would its author mind making it available to me?
 
-I'm personally not a big believer in security-through-obscurity,
-but there are those, both inside and outside MIPS, who felt that
-the security of SmartMIPS cores would be enhanced if we didn't
-give away all of the details.  As a consequence, we put off
-publishing the nitty-gritty details of SmartMIPS for quite a while.
-I note that we now have the programmers' manual on-line at www.mips.com,
-so I guess I'm implicitly cleared to discuss it in at least that level
-of detail.
+I've got oprofile support for MIPS32 / MIPS64 style counters in the queue.
+It still needs some debugging to become actually useful but anyway, I'm
+going to check those patches into git in a few minutes.
 
-A key element of SmartMIPS that allows for a ~2x speedup for
-crypto codes that rely on extended precision math (RSA, ECC)
-is the combination of an extension to the Hi/Lo accumulator
-(called "ACX") with a special extract-and-reduce instruction
-("MFLHXU").  If one wants to use that in Linux - or at least,
-if one wants to allow more than one thread to be able to use
-it at a time - one needs to save/restore ACX on the kernel
-stackframe, along with Hi and Lo.
-
-		Regards,
-
-		Kevin K.
+  Ralf

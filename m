@@ -1,29 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Oct 2005 16:48:24 +0100 (BST)
-Received: from adsl-67-116-42-147.dsl.sntc01.pacbell.net ([67.116.42.147]:29968
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Oct 2005 17:40:18 +0100 (BST)
+Received: from adsl-67-116-42-147.dsl.sntc01.pacbell.net ([67.116.42.147]:6688
 	"EHLO avtrex.com") by ftp.linux-mips.org with ESMTP
-	id S3465672AbVJEPsF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 5 Oct 2005 16:48:05 +0100
+	id S3465669AbVJEQjx (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 5 Oct 2005 17:39:53 +0100
 Received: from [192.168.7.26] ([192.168.7.3]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Wed, 5 Oct 2005 08:48:02 -0700
-Message-ID: <4343F5B2.3020509@avtrex.com>
-Date:	Wed, 05 Oct 2005 08:48:02 -0700
+	 Wed, 5 Oct 2005 09:39:51 -0700
+Message-ID: <434401D6.3050602@avtrex.com>
+Date:	Wed, 05 Oct 2005 09:39:50 -0700
 From:	David Daney <ddaney@avtrex.com>
 User-Agent: Mozilla Thunderbird 1.0.7-1.1.fc3 (X11/20050929)
 X-Accept-Language: en-us, en
 MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] fix warning in tlbex.c for CONFIG_32BIT
-References: <4343586E.4030703@avtrex.com> <20051005105336.GH2699@linux-mips.org>
-In-Reply-To: <20051005105336.GH2699@linux-mips.org>
+To:	linux-mips@linux-mips.org
+CC:	Dominic Sweetman <dom@mips.com>
+Subject: The NUBI ...
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 05 Oct 2005 15:48:02.0848 (UTC) FILETIME=[2B610A00:01C5C9C4]
+X-OriginalArrivalTime: 05 Oct 2005 16:39:51.0100 (UTC) FILETIME=[680AA7C0:01C5C9CB]
 Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9151
+X-archive-position: 9152
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -31,32 +29,14 @@ X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
-> On Tue, Oct 04, 2005 at 09:37:02PM -0700, David Daney wrote:
-> 
->>Date:	Tue, 04 Oct 2005 21:37:02 -0700
->>From:	David Daney <ddaney@avtrex.com>
->>To:	linux-mips@linux-mips.org
->>Subject: [PATCH] fix warning in tlbex.c for CONFIG_32BIT
->>Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-> 
->                                                 ^^^^^^^^^^^^^
-> 
-> Applied - BUT: your mailer garbles patches ...
-> 
+I see that there are now some interesting pages in the Wiki about the NUBI:
 
-Some people on this list are quite adamant that patches be in-line.
+http://www.linux-mips.org/wiki/NUBI
 
-I was trying to see how my mailer (Thunderbird) handled this.  Obviously 
-  (in hindsight) it screws things up.
+Unfortunately there is no good way to navigate to them from the home page.
 
-Sending as an attachment works well except some mailers (Not 
-Thunderbird) cannot quote attached patches with out jumping through hoops.
+You can follow the links to see a preliminary version of the 
+specification, but I see no indication about how one would go about 
+commenting on it.
 
-I don't really want to change the mailer that I am using, so I am in a 
-bit of a bind WRT submitting patches here.
-
-FWIW other mailing lists (binutils, gcc) don't seem to have the same 
-trouble with attached patches.
-
-David Daney
+David Daney.

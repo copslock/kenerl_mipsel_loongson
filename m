@@ -1,42 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Oct 2005 11:22:35 +0100 (BST)
-Received: from [210.212.208.205] ([210.212.208.205]:51072 "EHLO
-	pdns.sankhya.co.in") by ftp.linux-mips.org with ESMTP
-	id S8133538AbVJFKWO (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 6 Oct 2005 11:22:14 +0100
-Received: from sankhya.com (sankhya-external [192.168.1.2])
-	by pdns.sankhya.co.in (8.12.11/8.12.10) with ESMTP id j96AOFx1017978
-	for <linux-mips@linux-mips.org>; Thu, 6 Oct 2005 15:54:17 +0530
-Received: from sankhya.com (localhost [127.0.0.1])
-	by sankhya.com (8.12.8/8.12.5) with ESMTP id j96ArSeb005998
-	for <linux-mips@linux-mips.org>; Thu, 6 Oct 2005 16:23:28 +0530
-Received: from localhost (swamim@localhost)
-	by sankhya.com (8.12.8/8.12.5/Submit) with ESMTP id j96ArOXc005990
-	for <linux-mips@linux-mips.org>; Thu, 6 Oct 2005 16:23:28 +0530
-Date:	Thu, 6 Oct 2005 16:23:24 +0530 (IST)
-From:	M Ranga Swami Reddy <swamim@sankhya.com>
-To:	linux-mips@linux-mips.org
-Subject: kernel build and test info for mips malta board
-Message-ID: <Pine.LNX.4.44.0510061619470.11818-100000@linux42.sankhya.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <swamim@sankhya.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Oct 2005 16:33:32 +0100 (BST)
+Received: from smtp102.biz.mail.mud.yahoo.com ([68.142.200.237]:15009 "HELO
+	smtp102.biz.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S8133541AbVJFPdO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 6 Oct 2005 16:33:14 +0100
+Received: (qmail 61886 invoked from network); 6 Oct 2005 15:33:06 -0000
+Received: from unknown (HELO ?192.168.1.101?) (ppopov@embeddedalley.com@63.194.214.47 with plain)
+  by smtp102.biz.mail.mud.yahoo.com with SMTP; 6 Oct 2005 15:33:06 -0000
+Subject: Re: au1x00 usb device status
+From:	Pete Popov <ppopov@embeddedalley.com>
+Reply-To: ppopov@embeddedalley.com
+To:	Rodolfo Giometti <giometti@linux.it>
+Cc:	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
+In-Reply-To: <20051006073345.GB17583@gundam.enneenne.com>
+References: <20051006073345.GB17583@gundam.enneenne.com>
+Content-Type: text/plain
+Organization: Embedded Alley Solutions, Inc
+Date:	Thu, 06 Oct 2005 08:32:52 -0700
+Message-Id: <1128612772.9971.34.camel@localhost.localdomain>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.0.4 (2.0.4-4) 
+Content-Transfer-Encoding: 7bit
+Return-Path: <ppopov@embeddedalley.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9159
+X-archive-position: 9160
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: swamim@sankhya.com
+X-original-sender: ppopov@embeddedalley.com
 Precedence: bulk
 X-list: linux-mips
 
+On Thu, 2005-10-06 at 09:33 +0200, Rodolfo Giometti wrote:
+> I'm trying to enable usb device support on an au1x00 based board, but
+> I notice that such support is still not ported to 2.6 nor to usb
+> gadget.
 
-Hello,
+USB Host should be working fine. USB Gadget on the Au1000,1100,1500,1550
+just won't happen due to hw limitations. USB host and gadget on the 1200
+are on hold at the moment. I'll let you know if that moves forward. We
+already split out the pci bus dependencies from the echi driver and sent
+David the patches. They'll be going upstream soon. Adding ehci host
+support for the 1200 will be much easier then.
 
-What is the latest kernel version tested with MIPS MALTA board? 
-
-Your reply highly appreciated.
-
-Many Thanks,
-Swami
+Pete

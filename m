@@ -1,64 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Oct 2005 19:05:20 +0100 (BST)
-Received: from zproxy.gmail.com ([64.233.162.198]:46020 "EHLO zproxy.gmail.com")
-	by ftp.linux-mips.org with ESMTP id S3465679AbVJESFE convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 5 Oct 2005 19:05:04 +0100
-Received: by zproxy.gmail.com with SMTP id q3so155346nzb
-        for <linux-mips@linux-mips.org>; Wed, 05 Oct 2005 11:04:56 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Oct 2005 07:54:14 +0100 (BST)
+Received: from web8604.mail.in.yahoo.com ([202.43.219.79]:29600 "HELO
+	web8604.mail.in.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S8133531AbVJFGx5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 6 Oct 2005 07:53:57 +0100
+Received: (qmail 6980 invoked by uid 60001); 6 Oct 2005 06:53:32 -0000
 DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:reply-to:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=sHCtSOUbx2HgjLHJZ1SZ3ghj4c6kJfw3UUE2zeCV52xHdWUVAmbUy5ZYoTVEsvca7AOFUm70XXxgVBV/j8sLdN0UrKTus/OFzRyluKFWB+s9zZDDCsKX1ho0KALeXHExEiyE7FSST1RYgn0ki70PkRVZITsLZic8CKQZ5kJQbDE=
-Received: by 10.36.49.12 with SMTP id w12mr851105nzw;
-        Wed, 05 Oct 2005 11:04:56 -0700 (PDT)
-Received: by 10.36.49.3 with HTTP; Wed, 5 Oct 2005 11:04:56 -0700 (PDT)
-Message-ID: <cda58cb80510051104p6c40b140w@mail.gmail.com>
-Date:	Wed, 5 Oct 2005 20:04:56 +0200
-From:	Franck <vagabon.xyz@gmail.com>
-Reply-To: Franck <vagabon.xyz@gmail.com>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Subject: Re: [PATCH] Add support for 4KS cpu.
-Cc:	"Kevin D. Kissell" <kevink@mips.com>,
-	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-In-Reply-To: <Pine.LNX.4.61L.0510051112390.13762@blysk.ds.pg.gda.pl>
+  s=s1024; d=yahoo.co.in;
+  h=Message-ID:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
+  b=eVsnq4XcUIF0n3vlFv4DM0+0ICK2c26nh7/9And7ACYVOsxJBRaTGjbJP8veO4LivIHuOA+t6BTLpl825XXQb0bpa7nBVnN8mJONfDYR4PclnOKSDy10dz/8Ax2y+yGXFy41/hZrdv3H5VN0lT0dGpoyyvgBbGYO+16QZARoUyg=  ;
+Message-ID: <20051006065332.6978.qmail@web8604.mail.in.yahoo.com>
+Received: from [147.243.216.4] by web8604.mail.in.yahoo.com via HTTP; Thu, 06 Oct 2005 07:53:32 BST
+Date:	Thu, 6 Oct 2005 07:53:32 +0100 (BST)
+From:	Arravind babu <aravindforl@yahoo.co.in>
+Subject: Basic question w.r.t bootloader
+To:	linux-mips@linux-mips.org
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-References: <cda58cb80510040149p690397afo@mail.gmail.com>
-	 <Pine.LNX.4.61L.0510041219500.10696@blysk.ds.pg.gda.pl>
-	 <434277D5.1090603@mips.com>
-	 <Pine.LNX.4.61L.0510041358300.10696@blysk.ds.pg.gda.pl>
-	 <434289A7.50007@mips.com>
-	 <cda58cb80510040818v6d93fe53w@mail.gmail.com>
-	 <Pine.LNX.4.61L.0510041651150.10696@blysk.ds.pg.gda.pl>
-	 <cda58cb80510041033h2a67f072s@mail.gmail.com>
-	 <cda58cb80510042355r66d6b4b7k@mail.gmail.com>
-	 <Pine.LNX.4.61L.0510051112390.13762@blysk.ds.pg.gda.pl>
-Return-Path: <vagabon.xyz@gmail.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <aravindforl@yahoo.co.in>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9155
+X-archive-position: 9156
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: aravindforl@yahoo.co.in
 Precedence: bulk
 X-list: linux-mips
 
-2005/10/5, Maciej W. Rozycki <macro@linux-mips.org>:
-> On Wed, 5 Oct 2005, Franck wrote:
->
-> > Actually it would be better to let smartmips options in case we use
-> > fallback options:
->
->  In which case the toolchain is not going to support the "-msmartmips"
-> option anyway...
+Hi all,
 
-toolchain could support smartmips extension without supporting 4ksd
-specific instructions...
 
-Thanks
---
-               Franck
+       Generally how bootloader/bootflash code detects
+the size of RAM on the board? Is it hardcoded some
+where in the bootflash code or is it detected using
+memory chips ?
+
+
+
+Thanks in advance,
+
+Aravind.
+
+
+		
+__________________________________________________________ 
+Yahoo! India Matrimony: Find your partner now. Go to http://yahoo.shaadi.com

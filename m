@@ -1,67 +1,100 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Oct 2005 18:24:31 +0100 (BST)
-Received: from t111.niisi.ras.ru ([193.232.173.111]:42929 "EHLO
-	t111.niisi.ras.ru") by ftp.linux-mips.org with ESMTP
-	id S8133550AbVJFRYH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 6 Oct 2005 18:24:07 +0100
-Received: from t111.niisi.ras.ru (localhost [127.0.0.1])
-	by t111.niisi.ras.ru (8.13.4/8.12.11) with ESMTP id j96HO6UB032192
-	for <linux-mips@linux-mips.org>; Thu, 6 Oct 2005 21:24:06 +0400
-Received: (from uucp@localhost)
-	by t111.niisi.ras.ru (8.13.4/8.13.4/Submit) with UUCP id j96HO6QF032189
-	for linux-mips@linux-mips.org; Thu, 6 Oct 2005 21:24:06 +0400
-Received: from [192.168.173.2] (t34 [193.232.173.34])
-	by aa19.niisi.msk.ru (8.12.8/8.12.8) with ESMTP id j96HNp3t021489
-	for <linux-mips@linux-mips.org>; Thu, 6 Oct 2005 21:23:51 +0400
-Message-ID: <43455D2D.1010901@niisi.msk.ru>
-Date:	Thu, 06 Oct 2005 21:21:49 +0400
-From:	"Gleb O. Raiko" <raiko@niisi.msk.ru>
-Organization: NIISI RAN
-User-Agent: Mozilla Thunderbird 1.0.7 (Windows/20050923)
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Oct 2005 18:59:44 +0100 (BST)
+Received: from 209-232-97-206.ded.pacbell.net ([209.232.97.206]:52097 "EHLO
+	dns0.mips.com") by ftp.linux-mips.org with ESMTP id S8133554AbVJFR70 convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 6 Oct 2005 18:59:26 +0100
+Received: from mercury.mips.com (sbcns-dmz [209.232.97.193])
+	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id j96HxItW012648;
+	Thu, 6 Oct 2005 10:59:18 -0700 (PDT)
+Received: from exchange.MIPS.COM (exchange [192.168.20.29])
+	by mercury.mips.com (8.12.9/8.12.11) with ESMTP id j96HxH17003741;
+	Thu, 6 Oct 2005 10:59:17 -0700 (PDT)
+X-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: Bug in the syscall tracing code
-Content-Type: text/plain; charset=KOI8-R; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <raiko@niisi.msk.ru>
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Subject: RE: Basic question w.r.t bootloader 
+Date:	Thu, 6 Oct 2005 10:59:16 -0700
+Message-ID: <3CB54817FDF733459B230DD27C690CEC010493E5@Exchange.MIPS.COM>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Basic question w.r.t bootloader 
+Thread-Index: AcXKR9IIYLZO+At/QcS2ik0hx9cfSwAVkVaA
+From:	"Mitchell, Earl" <earlm@mips.com>
+To:	"Arravind babu" <aravindforl@yahoo.co.in>
+Cc:	<linux-mips@linux-mips.org>
+X-Scanned-By: MIMEDefang 2.39
+Return-Path: <earlm@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9165
+X-archive-position: 9166
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: raiko@niisi.msk.ru
+X-original-sender: earlm@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
 
-The story continues. The last fix of the syscall tracing code was wrong, 
-unfortunately. (The bug was a user could invoke any function in the 
-kernel. The fix was not to use t2 as pointer to a syscall, s0 was chosen 
-for it.) The problem we discovered is a few syscalls do SAVE_STATIC 
-(those declared as save_static_function), so s0 (which holds pointer to 
-the syscall at the time the syscall is invoked) is saved on the stack 
-overwriting a value saved from the process being traced. No wonder, s0 
-that restored on syscall exit differs from s0 saved on syscall enter.
 
-See, arch/mips/kernel/scall32-o32.S, syscall_trace_entry, for example. 
-The rest of ABIs are the same.
+If its a DRAM DIMM module then SW reads info
+about that RAM via the SPD interface.
+SPD = Serial Presence Detect 
+This is typically an I2C interface so
+SW can bit bang it. 
 
-There are several ways to fix this:
+SPD provides more info than just size.
+For example on some systems you need to
+know the RAS/CAS params and various
+wait state settings in order to program your
+memory controller for optimal performance. 
+This is how PCs are able to configure themselves 
+to work with standard modules. For more info
+checkout this site ...
 
-1. Make syscall handling code to be close to other arches. I mean, check 
-for the trace flag first, then parse arguments and invoke a syscall.
+http://www.pcguide.com/art/sdram.htm
 
-2. Remove save_static_functions and do SAVE_STATIC early for several 
-syscalls (yes, one big switch or its asm equivalent).
+For SRAMs the HW guys usually provide
+some set of registers for SW to read 
+info its needs like size. And sometimes
+they don't so you have to use address
+probing tricks as Wolfgang described. 
 
-3. Store t2 in pt_regs (it means we have to expand this structure).
+-earlm
 
-4. I know there should be yet another way.
 
-Any ideas ?
-
-Regards,
-Gleb.
+> -----Original Message-----
+> From: linux-mips-bounce@linux-mips.org
+> [mailto:linux-mips-bounce@linux-mips.org]On Behalf Of Wolfgang Denk
+> Sent: Thursday, October 06, 2005 12:29 AM
+> To: Arravind babu
+> Cc: linux-mips@linux-mips.org
+> Subject: Re: Basic question w.r.t bootloader 
+> 
+> 
+> In message 
+> <20051006065332.6978.qmail@web8604.mail.in.yahoo.com> you wrote:
+> > 
+> >        Generally how bootloader/bootflash code detects
+> > the size of RAM on the board? Is it hardcoded some
+> > where in the bootflash code or is it detected using
+> > memory chips ?
+> 
+> One method is to probe addresses (at N, 2*N, 4*N etc. starting with a
+> resonable value of N like 1 MB) until probing fails. See for  example
+> common/memsize.c in the U-Boot sources.
+> 
+> Best regards,
+> 
+> Wolfgang Denk
+> 
+> -- 
+> Software Engineering:  Embedded and Realtime Systems,  Embedded Linux
+> Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email: wd@denx.de
+> The IQ of the group is the lowest IQ of a member of the group divided
+> by the number of people in the group.
+> 
+> 

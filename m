@@ -1,81 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Oct 2005 16:45:38 +0100 (BST)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:47066 "EHLO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with ESMTP id S8133547AbVJFPpR (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 6 Oct 2005 16:45:17 +0100
-Received: from localhost (p6235-ipad201funabasi.chiba.ocn.ne.jp [222.146.69.235])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP id 532848A98;
-	Fri,  7 Oct 2005 00:45:15 +0900 (JST)
-Date:	Fri, 07 Oct 2005 00:43:59 +0900 (JST)
-Message-Id: <20051007.004359.25909892.anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH] protect CU1 bit manipulation from preempt
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Oct 2005 16:47:28 +0100 (BST)
+Received: from 81-174-11-161.f5.ngi.it ([81.174.11.161]:3225 "EHLO
+	gundam.enneenne.com") by ftp.linux-mips.org with ESMTP
+	id S8133547AbVJFPrJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 6 Oct 2005 16:47:09 +0100
+Received: from giometti by gundam.enneenne.com with local (Exim 3.36 #1 (Debian))
+	id 1ENXxW-0006d4-00; Thu, 06 Oct 2005 17:47:02 +0200
+Date:	Thu, 6 Oct 2005 17:47:02 +0200
+From:	Rodolfo Giometti <giometti@linux.it>
+To:	Pete Popov <ppopov@embeddedalley.com>
+Cc:	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
+Subject: Re: au1x00 usb device status
+Message-ID: <20051006154702.GA11086@gundam.enneenne.com>
+References: <20051006073345.GB17583@gundam.enneenne.com> <1128612772.9971.34.camel@localhost.localdomain>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="6c2NcOVqGQ03X4Wi"
+Content-Disposition: inline
+In-Reply-To: <1128612772.9971.34.camel@localhost.localdomain>
+Organization: Programmi e soluzioni GNU/Linux
+X-PGP-Key: gpg --keyserver keyserver.penguin.de --recv-keys D25A5633
+User-Agent: Mutt/1.5.5.1+cvs20040105i
+Return-Path: <giometti@enneenne.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9161
+X-archive-position: 9162
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: giometti@linux.it
 Precedence: bulk
 X-list: linux-mips
 
-The ptrace temporarily enable CP1 without fpu-ownership.  These
-regions should be protected from preempt.
 
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+--6c2NcOVqGQ03X4Wi
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/arch/mips/kernel/ptrace.c b/arch/mips/kernel/ptrace.c
---- a/arch/mips/kernel/ptrace.c
-+++ b/arch/mips/kernel/ptrace.c
-@@ -126,10 +126,12 @@ int ptrace_getfpregs (struct task_struct
- 
- 		__put_user (child->thread.fpu.hard.fcr31, data + 64);
- 
-+		preempt_disable();
- 		flags = read_c0_status();
- 		__enable_fpu();
- 		__asm__ __volatile__("cfc1\t%0,$0" : "=r" (tmp));
- 		write_c0_status(flags);
-+		preempt_enable();
- 		__put_user (tmp, data + 65);
- 	} else {
- 		__put_user (child->thread.fpu.soft.fcr31, data + 64);
-@@ -284,10 +286,12 @@ asmlinkage int sys_ptrace(long request, 
- 			if (!cpu_has_fpu)
- 				break;
- 
-+			preempt_disable();
- 			flags = read_c0_status();
- 			__enable_fpu();
- 			__asm__ __volatile__("cfc1\t%0,$0": "=r" (tmp));
- 			write_c0_status(flags);
-+			preempt_enable();
- 			break;
- 		}
- 		case DSP_BASE ... DSP_BASE + 5: {
-diff --git a/arch/mips/kernel/ptrace32.c b/arch/mips/kernel/ptrace32.c
---- a/arch/mips/kernel/ptrace32.c
-+++ b/arch/mips/kernel/ptrace32.c
-@@ -191,10 +191,12 @@ asmlinkage int sys32_ptrace(int request,
- 			if (!cpu_has_fpu)
- 				break;
- 
-+			preempt_disable();
- 			flags = read_c0_status();
- 			__enable_fpu();
- 			__asm__ __volatile__("cfc1\t%0,$0": "=r" (tmp));
- 			write_c0_status(flags);
-+			preempt_enable();
- 			break;
- 		}
- 		case DSP_BASE ... DSP_BASE + 5:
+On Thu, Oct 06, 2005 at 08:32:52AM -0700, Pete Popov wrote:
+> USB Host should be working fine. USB Gadget on the Au1000,1100,1500,1550
+> just won't happen due to hw limitations. USB host and gadget on the 1200
+
+Thanks for your answer!
+
+Can you please explain to me (in brief :) which hw limitations are you
+talking about? Do you mean that usb device support in Linux cannot be
+implemented, or just that this can be done but with some restriction?
+
+Thanks for your help,
+
+Rodolfo
+
+--=20
+
+GNU/Linux Solutions                  e-mail:    giometti@linux.it
+Linux Device Driver                             giometti@enneenne.com
+Embedded Systems                     home page: giometti.enneenne.com
+UNIX programming                     phone:     +39 349 2432127
+
+--6c2NcOVqGQ03X4Wi
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.4 (GNU/Linux)
+
+iD8DBQFDRUb2QaTCYNJaVjMRAsZiAJ9oqksI9ASCkVwErXgFzeR+hAm6YgCgsHiw
+jNYFtD7mVWmAmgAMFNA5re4=
+=Dt0k
+-----END PGP SIGNATURE-----
+
+--6c2NcOVqGQ03X4Wi--

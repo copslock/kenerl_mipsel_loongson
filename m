@@ -1,66 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Oct 2005 09:39:06 +0100 (BST)
-Received: from alg145.algor.co.uk ([62.254.210.145]:63244 "EHLO
-	dmz.algor.co.uk") by ftp.linux-mips.org with ESMTP id S8133560AbVJGIiu
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 7 Oct 2005 09:38:50 +0100
-Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
-	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
-	id 1ENni8-00012U-00; Fri, 07 Oct 2005 09:36:12 +0100
-Received: from wapping.algor.co.uk ([172.20.192.98])
-	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
-	id 1ENnkE-0000oc-00; Fri, 07 Oct 2005 09:38:22 +0100
-Message-ID: <43463403.8080407@mips.com>
-Date:	Fri, 07 Oct 2005 09:38:27 +0100
-From:	Nigel Stephens <nigel@mips.com>
-Organization: MIPS Technologies
-User-Agent: Debian Thunderbird 1.0.2 (X11/20050817)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Oct 2005 13:48:24 +0100 (BST)
+Received: from t111.niisi.ras.ru ([193.232.173.111]:46251 "EHLO
+	t111.niisi.ras.ru") by ftp.linux-mips.org with ESMTP
+	id S8133570AbVJGMsI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 7 Oct 2005 13:48:08 +0100
+Received: from t111.niisi.ras.ru (localhost [127.0.0.1])
+	by t111.niisi.ras.ru (8.13.4/8.12.11) with ESMTP id j97Cm62L004920
+	for <linux-mips@linux-mips.org>; Fri, 7 Oct 2005 16:48:07 +0400
+Received: (from uucp@localhost)
+	by t111.niisi.ras.ru (8.13.4/8.13.4/Submit) with UUCP id j97Cm6I9004916
+	for linux-mips@linux-mips.org; Fri, 7 Oct 2005 16:48:06 +0400
+Received: from [192.168.173.2] (t34 [193.232.173.34])
+	by aa19.niisi.msk.ru (8.12.8/8.12.8) with ESMTP id j97Cl03t008378;
+	Fri, 7 Oct 2005 16:47:00 +0400
+Message-ID: <43466DCB.7070103@niisi.msk.ru>
+Date:	Fri, 07 Oct 2005 16:44:59 +0400
+From:	"Gleb O. Raiko" <raiko@niisi.msk.ru>
+Organization: NIISI RAN
+User-Agent: Mozilla Thunderbird 1.0.7 (Windows/20050923)
 X-Accept-Language: en-us, en
 MIME-Version: 1.0
-To:	colin <colin@realtek.com.tw>
+To:	"Gleb O. Raiko" <raiko@niisi.msk.ru>
 CC:	linux-mips@linux-mips.org
-Subject: Re: gcc of SDE6 cannot compile C++ applications
-References: <002701c5cb08$c9682630$106215ac@realtek.com.tw>
-In-Reply-To: <002701c5cb08$c9682630$106215ac@realtek.com.tw>
-Content-Type: text/plain; charset=Big5
+Subject: Re: Bug in the syscall tracing code
+References: <43455D2D.1010901@niisi.msk.ru>
+In-Reply-To: <43455D2D.1010901@niisi.msk.ru>
+Content-Type: text/plain; charset=KOI8-R; format=flowed
 Content-Transfer-Encoding: 7bit
-X-MTUK-Scanner:	Found to be clean
-X-MTUK-SpamCheck: not spam (whitelisted), SpamAssassin (score=-3.766,
-	required 4, AWL, BAYES_00, XENO_CONTENT)
-Return-Path: <nigel@mips.com>
+Return-Path: <raiko@niisi.msk.ru>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9179
+X-archive-position: 9180
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nigel@mips.com
+X-original-sender: raiko@niisi.msk.ru
 Precedence: bulk
 X-list: linux-mips
 
+Hello,
 
+> 4. I know there should be yet another way.
 
-colin wrote:
+The way is to load a saved register in the delay slot of jalr. The saved 
+register shall not be s0, of course, because it's saved by the first 
+instruction in save_static_function. So the proposed patch is
 
->Hi there,
->I upgrade my SDE from 5 to 6.
->Before upgrading, we can compile C++ applications. After doing that, C++
->cannot be compiled by the gcc of SDE6.
->The warning message is like this:
->    mipsel-linux-gcc: main.cpp: C++ compiler not installed on this system
->
->I found that MIPS offers C++ compiler running on MIPS.
->Does MIPS want us to compile C++ on MIPS, not on X86?
->  
->
+arch/mips/kernel/scall32-o32.S:
 
-I recommend that you contact sde@mips.com with questions about SDE. The
-linux-mips community probably isn't very interested in these issues ;-(
+syscall_trace_entry:
+         SAVE_STATIC
+-	move	s0, t2
++	move	s1, t2
+         move    a0, sp
+         li      a1, 0
+         jal     do_syscall_trace
 
-As to your question: the SDE cross-compiler is intended only for
-cross-compiling kernels, and not applications, so we don't currently
-build the C++ compiler for x86 (until Linus does a rewrite in C++, I
-suppose). So yes, the current expectation is that you would compile
-applications, including C++, on a MIPS platform.
+         lw      a0, PT_R4(sp)           # Restore argument registers
+         lw      a1, PT_R5(sp)
+         lw      a2, PT_R6(sp)
+         lw      a3, PT_R7(sp)
+-        jalr	s0
++	.set push
++	.set noreorder
++	jalr	s1
++	 lw	s1, PT_R17(sp)
++	.set pop
 
-Nigel
+The rest of ABIs shall be implemented in the same way.
+
+Regards,
+Gleb.

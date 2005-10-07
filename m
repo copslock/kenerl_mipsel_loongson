@@ -1,78 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Oct 2005 16:44:25 +0100 (BST)
-Received: from extgw-uk.mips.com ([62.254.210.129]:37391 "EHLO
-	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S8133556AbVJGPoI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 7 Oct 2005 16:44:08 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j97Fi0nW023829;
-	Fri, 7 Oct 2005 16:44:01 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j97Fi0MM023828;
-	Fri, 7 Oct 2005 16:44:00 +0100
-Date:	Fri, 7 Oct 2005 16:44:00 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Kyle Unice <unixe@comcast.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Oct 2005 16:48:27 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:21519 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S8133557AbVJGPsL (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 7 Oct 2005 16:48:11 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 4CC65F5996; Fri,  7 Oct 2005 17:48:05 +0200 (CEST)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 14302-03; Fri,  7 Oct 2005 17:48:05 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP
+	id 0B158E1C9B; Fri,  7 Oct 2005 17:48:05 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id j97Fm8XV017429;
+	Fri, 7 Oct 2005 17:48:09 +0200
+Date:	Fri, 7 Oct 2005 16:48:17 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	linux-mips@linux-mips.org
 Subject: Re: Cygwin Cross-compile of linux release
-Message-ID: <20051007154400.GF2616@linux-mips.org>
-References: <001901c5cb54$8dfc70f0$0400a8c0@buzz>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <001901c5cb54$8dfc70f0$0400a8c0@buzz>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20051007154400.GF2616@linux-mips.org>
+Message-ID: <Pine.LNX.4.61L.0510071647570.11243@blysk.ds.pg.gda.pl>
+References: <001901c5cb54$8dfc70f0$0400a8c0@buzz> <20051007154400.GF2616@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.87/1120/Fri Oct  7 13:06:49 2005 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9185
+X-archive-position: 9186
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Oct 07, 2005 at 09:34:05AM -0600, Kyle Unice wrote:
+On Fri, 7 Oct 2005, Ralf Baechle wrote:
 
-> I checked out the source for mips linux and tried cross-compiling this on
-> cygwin.  
-> This is the result:
->   HOSTCC  scripts/mod/modpost.o
->   HOSTCC  scripts/mod/sumversion.o
-> scripts/mod/sumversion.c: In function `md4_final_ascii':
-> scripts/mod/sumversion.c:221: warning: unsigned int format, long unsigned
-> int ar
-> g (arg 4)
-> scripts/mod/sumversion.c:221: warning: unsigned int format, long unsigned
-> int ar
-> g (arg 5)
-> scripts/mod/sumversion.c:221: warning: unsigned int format, long unsigned
-> int ar
-> g (arg 6)
-> scripts/mod/sumversion.c:221: warning: unsigned int format, long unsigned
-> int ar
-> g (arg 7)
->   HOSTLD  scripts/mod/modpost
->   HOSTCC  scripts/kallsyms
-> scripts/kallsyms.c: In function `compress_symbols':
-> scripts/kallsyms.c:366: warning: implicit declaration of function `memmem'
-> scripts/kallsyms.c:366: warning: assignment makes pointer from integer
-> without a
->  cast
-> scripts/kallsyms.c:385: warning: assignment makes pointer from integer
-> without a
->  cast
-> /cygdrive/c/DOCUME~1/KYLE~1.BUZ/LOCALS~1/Temp/ccLMGC3l.o:kallsyms.c:(.text+0
-> x6cb
-> ): undefined reference to `_memmem'
-> /cygdrive/c/DOCUME~1/KYLE~1.BUZ/LOCALS~1/Temp/ccLMGC3l.o:kallsyms.c:(.text+0
-> x72d
-> ): undefined reference to `_memmem'
+> Honestly, get rid of Cygwin.  You'll be glad you did, the birds will
+> fly, the butterflies will be singing ...
 
-_memmem must be some symbol of the Cygwin libraries.
+ And most importantly pigs will do neither!
 
-Honestly, get rid of Cygwin.  You'll be glad you did, the birds will
-fly, the butterflies will be singing ...
-
-  Ralf
+  Maciej

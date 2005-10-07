@@ -1,55 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Oct 2005 07:32:20 +0100 (BST)
-Received: from mf2.realtek.com.tw ([220.128.56.22]:24079 "EHLO
-	mf2.realtek.com.tw") by ftp.linux-mips.org with ESMTP
-	id S8133569AbVJGGcD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 7 Oct 2005 07:32:03 +0100
-Received: from msx.realtek.com.tw (unverified [172.21.1.77]) by mf2.realtek.com.tw
- (Clearswift SMTPRS 5.1.4) with ESMTP id <T73d7e97391dc803816180c@mf2.realtek.com.tw> for <linux-mips@linux-mips.org>;
- Fri, 7 Oct 2005 14:33:59 +0800
-Received: from rtpdii3098 ([172.21.98.16])
-          by msx.realtek.com.tw (Lotus Domino Release 6.5.3)
-          with ESMTP id 2005100714314478-331927 ;
-          Fri, 7 Oct 2005 14:31:44 +0800 
-Message-ID: <002701c5cb08$c9682630$106215ac@realtek.com.tw>
-From:	"colin" <colin@realtek.com.tw>
-To:	<linux-mips@linux-mips.org>
-Subject: gcc of SDE6 cannot compile C++ applications
-Date:	Fri, 7 Oct 2005 14:31:44 +0800
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Oct 2005 08:48:48 +0100 (BST)
+Received: from t111.niisi.ras.ru ([193.232.173.111]:36816 "EHLO
+	t111.niisi.ras.ru") by ftp.linux-mips.org with ESMTP
+	id S8133556AbVJGHsP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 7 Oct 2005 08:48:15 +0100
+Received: from t111.niisi.ras.ru (localhost [127.0.0.1])
+	by t111.niisi.ras.ru (8.13.4/8.12.11) with ESMTP id j977m5Ti008827;
+	Fri, 7 Oct 2005 11:48:08 +0400
+Received: (from uucp@localhost)
+	by t111.niisi.ras.ru (8.13.4/8.13.4/Submit) with UUCP id j977m5Hn008824;
+	Fri, 7 Oct 2005 11:48:05 +0400
+Received: from [192.168.173.2] (t34 [193.232.173.34])
+	by aa19.niisi.msk.ru (8.12.8/8.12.8) with ESMTP id j977je3t031962;
+	Fri, 7 Oct 2005 11:45:40 +0400
+Message-ID: <4346272B.4010100@niisi.msk.ru>
+Date:	Fri, 07 Oct 2005 11:43:39 +0400
+From:	"Gleb O. Raiko" <raiko@niisi.msk.ru>
+Organization: NIISI RAN
+User-Agent: Mozilla Thunderbird 1.0.7 (Windows/20050923)
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1506
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1506
-X-MIMETrack: Itemize by SMTP Server on msx/Realtek(Release 6.5.3|September 14, 2004) at
- 2005/10/07 =?Bog5?B?pFWkyCAwMjozMTo0NQ==?=,
-	Serialize by Router on msx/Realtek(Release 6.5.3|September 14, 2004) at
- 2005/10/07 =?Bog5?B?pFWkyCAwMjozMTo0NQ==?=,
-	Serialize complete at 2005/10/07 =?Bog5?B?pFWkyCAwMjozMTo0NQ==?=
+To:	Thiemo Seufer <ths@networkno.de>
+CC:	linux-mips@linux-mips.org
+Subject: Re: Bug in the syscall tracing code
+References: <43455D2D.1010901@niisi.msk.ru> <20051006205308.GB31717@hattusa.textio>
+In-Reply-To: <20051006205308.GB31717@hattusa.textio>
+Content-Type: text/plain; charset=KOI8-R; format=flowed
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain;
-	charset="big5"
-Return-Path: <colin@realtek.com.tw>
+Return-Path: <raiko@niisi.msk.ru>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9175
+X-archive-position: 9176
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: colin@realtek.com.tw
+X-original-sender: raiko@niisi.msk.ru
 Precedence: bulk
 X-list: linux-mips
 
+Thiemo Seufer wrote:
+> - Use the k1 slot instead of s0 to save the function pointer.
 
-Hi there,
-I upgrade my SDE from 5 to 6.
-Before upgrading, we can compile C++ applications. After doing that, C++
-cannot be compiled by the gcc of SDE6.
-The warning message is like this:
-    mipsel-linux-gcc: main.cpp: C++ compiler not installed on this system
-
-I found that MIPS offers C++ compiler running on MIPS.
-Does MIPS want us to compile C++ on MIPS, not on X86?
+Unfortunately, k0, k1 cannot be used. We shall withstand 
+do_syscall_trace. It implies going to the user mode and back.
 
 Regards,
-Colin
+Gleb.

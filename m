@@ -1,53 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Oct 2005 08:54:25 +0100 (BST)
-Received: from t111.niisi.ras.ru ([193.232.173.111]:29890 "EHLO
-	t111.niisi.ras.ru") by ftp.linux-mips.org with ESMTP
-	id S8133556AbVJGHyH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 7 Oct 2005 08:54:07 +0100
-Received: from t111.niisi.ras.ru (localhost [127.0.0.1])
-	by t111.niisi.ras.ru (8.13.4/8.12.11) with ESMTP id j977s4kM009745;
-	Fri, 7 Oct 2005 11:54:04 +0400
-Received: (from uucp@localhost)
-	by t111.niisi.ras.ru (8.13.4/8.13.4/Submit) with UUCP id j977s4Ox009742;
-	Fri, 7 Oct 2005 11:54:04 +0400
-Received: from [192.168.173.2] (t34 [193.232.173.34])
-	by aa19.niisi.msk.ru (8.12.8/8.12.8) with ESMTP id j977qi3t032161;
-	Fri, 7 Oct 2005 11:52:44 +0400
-Message-ID: <434628D3.9050307@niisi.msk.ru>
-Date:	Fri, 07 Oct 2005 11:50:43 +0400
-From:	"Gleb O. Raiko" <raiko@niisi.msk.ru>
-Organization: NIISI RAN
-User-Agent: Mozilla Thunderbird 1.0.7 (Windows/20050923)
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Oct 2005 09:22:12 +0100 (BST)
+Received: from mf2.realtek.com.tw ([220.128.56.22]:26895 "EHLO
+	mf2.realtek.com.tw") by ftp.linux-mips.org with ESMTP
+	id S8133560AbVJGIVw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 7 Oct 2005 09:21:52 +0100
+Received: from msx.realtek.com.tw (unverified [172.21.1.77]) by mf2.realtek.com.tw
+ (Clearswift SMTPRS 5.1.4) with ESMTP id <T73d84dedfadc803816180c@mf2.realtek.com.tw> for <linux-mips@linux-mips.org>;
+ Fri, 7 Oct 2005 16:23:44 +0800
+Received: from rtpdii3098 ([172.21.98.16])
+          by msx.realtek.com.tw (Lotus Domino Release 6.5.3)
+          with ESMTP id 2005100716212942-333928 ;
+          Fri, 7 Oct 2005 16:21:29 +0800 
+Message-ID: <005a01c5cb18$1e2df870$106215ac@realtek.com.tw>
+From:	"colin" <colin@realtek.com.tw>
+To:	<linux-mips@linux-mips.org>
+Subject: Is CONFIG_CPU_MIPS32_R2 workable?
+Date:	Fri, 7 Oct 2005 16:21:29 +0800
 MIME-Version: 1.0
-To:	David Daney <ddaney@avtrex.com>
-CC:	Thiemo Seufer <ths@networkno.de>, linux-mips@linux-mips.org
-Subject: Re: Bug in the syscall tracing code
-References: <43455D2D.1010901@niisi.msk.ru> <20051006205308.GB31717@hattusa.textio> <43459374.5080802@avtrex.com>
-In-Reply-To: <43459374.5080802@avtrex.com>
-Content-Type: text/plain; charset=KOI8-R; format=flowed
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2800.1506
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1506
+X-MIMETrack: Itemize by SMTP Server on msx/Realtek(Release 6.5.3|September 14, 2004) at
+ 2005/10/07 =?Bog5?B?pFWkyCAwNDoyMToyOQ==?=,
+	Serialize by Router on msx/Realtek(Release 6.5.3|September 14, 2004) at
+ 2005/10/07 =?Bog5?B?pFWkyCAwNDoyMTozMA==?=,
+	Serialize complete at 2005/10/07 =?Bog5?B?pFWkyCAwNDoyMTozMA==?=
 Content-Transfer-Encoding: 7bit
-Return-Path: <raiko@niisi.msk.ru>
+Content-Type: text/plain;
+	charset="big5"
+Return-Path: <colin@realtek.com.tw>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9177
+X-archive-position: 9178
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: raiko@niisi.msk.ru
+X-original-sender: colin@realtek.com.tw
 Precedence: bulk
 X-list: linux-mips
 
-David Daney wrote:
-> That is the conclusion I came to in:
-> 
-> http://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-mips&i=4207C3E0.7070405%40avtrex.com 
 
-Saving in the PT_SCRATCH area (pad0 in C) was a solution for 2.4. 
-Unfortunately, syscall arguments are stored there (and that's why pad0 
-exists in pt_regs after all). So, using PT_SCRATCH as a temporary 
-storage for t2 will break tracing syscalls with more than 4 args for o32 
-ABI.
+Hi all,
+Has anyone successfully run 2.6.13 with this option on?
+I backported this option to 2.6.12, and failed running on our platform.
 
 Regards,
-Gleb.
+Colin

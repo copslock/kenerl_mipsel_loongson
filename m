@@ -1,80 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Oct 2005 14:52:51 +0100 (BST)
-Received: from sccrmhc14.comcast.net ([63.240.76.49]:64486 "EHLO
-	sccrmhc14.comcast.net") by ftp.linux-mips.org with ESMTP
-	id S8133616AbVJHNwf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 8 Oct 2005 14:52:35 +0100
-Received: from buzz (c-67-171-115-157.hsd1.ut.comcast.net[67.171.115.157])
-          by comcast.net (sccrmhc14) with SMTP
-          id <2005100813522701400ok6bde>; Sat, 8 Oct 2005 13:52:27 +0000
-From:	"Kyle Unice" <unixe@comcast.net>
-To:	"'Ilya A. Volynets-Evenbakh'" <ilya@total-knowledge.com>,
-	"'David Daney'" <ddaney@avtrex.com>
-Cc:	<ppopov@embeddedalley.com>, "'Brett Foster'" <fosterb@uoguelph.ca>,
-	<linux-mips@linux-mips.org>
-Subject: RE: Cross-compiling Linux problem
-Date:	Sat, 8 Oct 2005 07:52:24 -0600
-Message-ID: <003c01c5cc0f$83a19e30$0400a8c0@buzz>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 09 Oct 2005 14:41:30 +0100 (BST)
+Received: from mp1-smtp-3.eutelia.it ([62.94.10.163]:8870 "EHLO
+	smtp.eutelia.it") by ftp.linux-mips.org with ESMTP id S8133653AbVJINlI
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 9 Oct 2005 14:41:08 +0100
+Received: from voyager (ip-96-162.sn2.eutelia.it [83.211.96.162])
+	by smtp.eutelia.it (Eutelia) with ESMTP id 53D0517F749
+	for <linux-mips@linux-mips.org>; Sun,  9 Oct 2005 15:41:07 +0200 (CEST)
+Received: by voyager (Postfix, from userid 1000)
+	id E09331A5E6A; Sun,  9 Oct 2005 15:41:06 +0200 (CEST)
+Date:	Sun, 9 Oct 2005 15:41:06 +0200
+From:	Carlo Perassi <carlo@linux.it>
+To:	linux-mips@linux-mips.org
+Subject: rfc about an uncommented string
+Message-ID: <20051009134106.GB9091@voyager>
+Reply-To: carlo@linux.it
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook, Build 10.0.6626
-Importance: Normal
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
-In-Reply-To: <4346FD34.8000100@total-knowledge.com>
-Return-Path: <unixe@comcast.net>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.11
+Return-Path: <carlo@linux.it>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9201
+X-archive-position: 9203
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: unixe@comcast.net
+X-original-sender: carlo@linux.it
 Precedence: bulk
 X-list: linux-mips
 
-It appears that the function __fixup_bigphys_addr is not inline anymore but 
-A callable function.  I removed the "inline " qualifier from the extern
-declaration in
-Ioremap.h (if CONFIG_64BIT_PHYS_ADDR is declared) and linux built ok.
-Kyle 
+Hi.
+As suggested (*) by Arthur Othieno on the kernel-janitors mailing list,
+I bounce here this email for collecting comments.
+The old email refers to 2.6.13-rc6 but the code is still the same on
+2.6.14-rc3.
+Thank you.
 
------Original Message-----
-From: Ilya A. Volynets-Evenbakh [mailto:ilya@total-knowledge.com] 
-Sent: Friday, October 07, 2005 4:57 PM
-To: David Daney
-Cc: Kyle Unice; ppopov@embeddedalley.com; 'Brett Foster';
-linux-mips@linux-mips.org
-Subject: Re: Cross-compiling Linux problem
+Hi.
 
-CVS is not where development happens, but it is still updated, according 
-to Ralf.
+I'd like to collect some comments about the following code
+segment I found in
+linux-2.6.13-rc6/arch/mips/ite-boards/generic/it8172_setup.c
+(the "^^^" sequence is not mine, it's in the code)
 
-David Daney wrote:
+#ifdef CONFIG_SERIO_I8042
+/*
+ * According to the ITE Special BIOS Note for waking up the
+ * keyboard controller...
+ */
+static int init_8712_keyboard(void)
+{
+	unsigned int cmd_port = 0x14000064;
+	unsigned int data_port = 0x14000060;
+	                         ^^^^^^^^^^^
+	Somebody here doesn't grok the concept of io ports.
 
-> Kyle Unice wrote:
->
->> I am using gcc-3.4.4 and the cvs checkout of linux-mips.org tree.
->> Kyle
->
->
-> Not withstanding Maciej's comment about the real problem being the 
-> broken header file, I give you a quote from 
-> http://www.linux-mips.org/wiki/Git : "At this time only the linux.git 
-> repository is in production use.... all other archives are only 
-> historical."
->
-> You might consider getting your code from the git repository as the 
-> CVS repository is no longer being maintained.
->
-> David Daney
->
->
+(*)
+http://lists.osdl.org/pipermail/kernel-janitors/2005-August/004704.html
+http://lists.osdl.org/pipermail/kernel-janitors/2005-August/004705.html
+http://lists.osdl.org/pipermail/kernel-janitors/2005-August/004707.html
+http://lists.osdl.org/pipermail/kernel-janitors/2005-October/004955.html
 
 -- 
-Ilya A. Volynets-Evenbakh
-Total Knowledge. CTO
-http://www.total-knowledge.com
+Carlo Perassi - http://www.linux.it/~carlo/

@@ -1,33 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Oct 2005 14:30:22 +0100 (BST)
-Received: from extgw-uk.mips.com ([62.254.210.129]:23565 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Oct 2005 13:00:12 +0100 (BST)
+Received: from extgw-uk.mips.com ([62.254.210.129]:35334 "EHLO
 	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S8133455AbVJLN34 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 12 Oct 2005 14:29:56 +0100
+	id S3458542AbVJML75 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 13 Oct 2005 12:59:57 +0100
 Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j9CDTesQ010098;
-	Wed, 12 Oct 2005 14:29:41 +0100
+	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j9DBxjPn005185;
+	Thu, 13 Oct 2005 12:59:45 +0100
 Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j9CDTaKu010097;
-	Wed, 12 Oct 2005 14:29:36 +0100
-Date:	Wed, 12 Oct 2005 14:29:36 +0100
+	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j9DBwAt5005092;
+	Thu, 13 Oct 2005 12:58:10 +0100
+Date:	Thu, 13 Oct 2005 12:58:09 +0100
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"D.J.Dimmich" <djd20@kent.ac.uk>
-Cc:	"Ilya A. Volynets-Evenbakh" <ilya@total-knowledge.com>,
-	Don Hiatt <Don_Hiatt@pmc-sierra.com>,
-	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
-Subject: Re: git, rsync, and firewalls...
-Message-ID: <20051012132935.GB6955@linux-mips.org>
-References: <5C1FD43E5F1B824E83985A74F396286E5E9528@bby1exm08.pmc_nt.nt.pmc-sierra.bc.ca> <434C0D3E.7010408@total-knowledge.com> <Pine.GSO.4.58.0510112147360.23481@myrtle.ukc.ac.uk>
+To:	Kyle Unice <unixe@comcast.net>
+Cc:	"'Ilya A. Volynets-Evenbakh'" <ilya@total-knowledge.com>,
+	"'David Daney'" <ddaney@avtrex.com>, ppopov@embeddedalley.com,
+	"'Brett Foster'" <fosterb@uoguelph.ca>, linux-mips@linux-mips.org
+Subject: Re: Cross-compiling Linux problem
+Message-ID: <20051013115809.GA2654@linux-mips.org>
+References: <4346FD34.8000100@total-knowledge.com> <003c01c5cc0f$83a19e30$0400a8c0@buzz>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Pine.GSO.4.58.0510112147360.23481@myrtle.ukc.ac.uk>
+In-Reply-To: <003c01c5cc0f$83a19e30$0400a8c0@buzz>
 User-Agent: Mutt/1.4.2.1i
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9217
+X-archive-position: 9218
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,21 +35,13 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Oct 11, 2005 at 09:49:30PM +0100, D.J.Dimmich wrote:
+On Sat, Oct 08, 2005 at 07:52:24AM -0600, Kyle Unice wrote:
 
-> Cannot obtain needed blob 658dc2bb726238c6eb05edf3eb2d35050c8beb1d
-> while processing commit 0000000000000000000000000000000000000000.
-> error: cannot map sha1 file 658dc2bb726238c6eb05edf3eb2d35050c8beb1d
-> cg-pull: objects pull failed
-> cg-init: pull failed
-> 
-> cg (cogito) are wrapper scripts around git...  Something's no good...  the
-> rsync method bombs out at 97% - just hangs....
+> It appears that the function __fixup_bigphys_addr is not inline anymore but 
+> A callable function.  I removed the "inline " qualifier from the extern
+> declaration in
+> Ioremap.h (if CONFIG_64BIT_PHYS_ADDR is declared) and linux built ok.
 
-I've seen rsync hanging like this frequently when certain types of
-firewall configurations were involved.  The #1 troublemaker have been
-certain older Cisco PIX versions but there are others.
-
-Anyway, cloning via http works fine, I've just verified that.
+Thanks for noting; fixed that in git.
 
   Ralf

@@ -1,66 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Oct 2005 12:11:23 +0100 (BST)
-Received: from extgw-uk.mips.com ([62.254.210.129]:17684 "EHLO
-	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S8133494AbVJNLLD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 14 Oct 2005 12:11:03 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j9EBAx2H003957;
-	Fri, 14 Oct 2005 12:10:59 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j9EBAwAw003956;
-	Fri, 14 Oct 2005 12:10:58 +0100
-Date:	Fri, 14 Oct 2005 12:10:58 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Florian Lohoff <flo@rfc822.org>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Tftp problems with ARC firmware
-Message-ID: <20051014111058.GA2608@linux-mips.org>
-References: <20051013193225.GA3137@linux-mips.org> <20051013220936.GA15668@paradigm.rfc822.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Oct 2005 14:31:36 +0100 (BST)
+Received: from wproxy.gmail.com ([64.233.184.194]:8375 "EHLO wproxy.gmail.com")
+	by ftp.linux-mips.org with ESMTP id S8133505AbVJNNbT convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 14 Oct 2005 14:31:19 +0100
+Received: by wproxy.gmail.com with SMTP id i7so280621wra
+        for <linux-mips@linux-mips.org>; Fri, 14 Oct 2005 06:31:17 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=ciT5bu0zvXpbKzA2AG8Itgn8Yn27RcHKXpOgM5o/HH22VH6ke1NiXDbTIZiXqFn1e3F5TduzYTQzURPkMaAkG34uSrkVMh8fkBisd6VtwfSFKW/HLk0F3XTl6zQzLt8WFVVMauJI5u20FniILHwkdK2IyY5kZuOkD+ivK5RQiZs=
+Received: by 10.54.89.7 with SMTP id m7mr962559wrb;
+        Fri, 14 Oct 2005 06:31:17 -0700 (PDT)
+Received: by 10.54.79.15 with HTTP; Fri, 14 Oct 2005 06:31:17 -0700 (PDT)
+Message-ID: <8a58e1120510140631yd33f85dg3e3e9c993555726@mail.gmail.com>
+Date:	Fri, 14 Oct 2005 19:01:17 +0530
+From:	Ivy green <ivy.mips@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: Linux on BCM7038 ?.
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
 Content-Disposition: inline
-In-Reply-To: <20051013220936.GA15668@paradigm.rfc822.org>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Return-Path: <ivy.mips@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9225
+X-archive-position: 9226
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ivy.mips@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Oct 14, 2005 at 12:09:36AM +0200, Florian Lohoff wrote:
+Hi folks,
 
-> >   echo 1 > /proc/sys/net/ipv4/ip_no_pmtu_disc
-> >   echo 4096 32767 > /proc/sys/net/ipv4/ip_local_port_range
-> > 
-> > at a new version of tftp-hpa which solves the PMTU problem by disabling it
-> > only for the tftp client and introduces a new -R begin:end option which
-> > allows to limit the port number range.  The changes are about to become
-> > available in the tftp-hpa git repository at
-> > http://www.kernel.org/pub/scm/network/tftp/tftp-hpa.git; see also
-> > http://www.linux-mips.org/wiki/ARC#tftp-hpa.  Please send test reports to
-> > syslinux@zytor.com and linux-mips@linux-mips.org.
-> 
-> I made a patch against tftpd-hpa for disabling path MTU discovery - Its
-> in the Debian BTS: 
-> 
-> http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=316616
-> 
-> It should already be merged upstream. User "-F" to disable PMTUd.
+              I am very newbie to MIPS Architecure.  I would like to
+use Linux on BCM7038.
 
-Never made it to HPA - HPA wrote the patches for these two bugs himself
-yesterday when I mentioned the problem to him.  His patches are different
-in the he disables PMTU discovery entirely - it's not useful for TFTP.
-And your patch doesn't work around the other firmware bug which requires
-restricting the port range.  We had to get rid of the currently recommended
-workaround - it seriously restricts the IP stack; cripples is probably
-the right expression for busy servers.
+              Is there any Patches already available to apply on
+kernel (>= 2.4.29) ?.
 
-Patch rotting in the Debian bugtracking system seems to become a classic ;-)
 
-  Ralf
+Thanks
+Ivy

@@ -1,30 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Oct 2005 11:51:36 +0100 (BST)
-Received: from extgw-uk.mips.com ([62.254.210.129]:4105 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Oct 2005 12:11:23 +0100 (BST)
+Received: from extgw-uk.mips.com ([62.254.210.129]:17684 "EHLO
 	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S8133494AbVJNKvS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 14 Oct 2005 11:51:18 +0100
+	id S8133494AbVJNLLD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 14 Oct 2005 12:11:03 +0100
 Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j9EAp9iA001842;
-	Fri, 14 Oct 2005 11:51:09 +0100
+	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j9EBAx2H003957;
+	Fri, 14 Oct 2005 12:10:59 +0100
 Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j9DMtLSp006759;
-	Thu, 13 Oct 2005 23:55:21 +0100
-Date:	Thu, 13 Oct 2005 23:55:21 +0100
+	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j9EBAwAw003956;
+	Fri, 14 Oct 2005 12:10:58 +0100
+Date:	Fri, 14 Oct 2005 12:10:58 +0100
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	David Daney <ddaney@avtrex.com>, linux-mips@linux-mips.org
-Subject: Re: OProfile cannot be loaded as module...
-Message-ID: <20051013225520.GA3234@linux-mips.org>
-References: <43470BCF.1070709@avtrex.com>
+To:	Florian Lohoff <flo@rfc822.org>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Tftp problems with ARC firmware
+Message-ID: <20051014111058.GA2608@linux-mips.org>
+References: <20051013193225.GA3137@linux-mips.org> <20051013220936.GA15668@paradigm.rfc822.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <43470BCF.1070709@avtrex.com>
+In-Reply-To: <20051013220936.GA15668@paradigm.rfc822.org>
 User-Agent: Mutt/1.4.2.1i
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9224
+X-archive-position: 9225
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,24 +33,34 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Oct 07, 2005 at 04:59:11PM -0700, David Daney wrote:
+On Fri, Oct 14, 2005 at 12:09:36AM +0200, Florian Lohoff wrote:
 
-> arch/mips/oprofile/common.c defines several symbols (op_model_mipsxx and 
-> op_model_rm9000) with __attribute__((weak)).  It then assumes that ELF 
-> linking conventions will prevail and there will be no problems if they 
-> are undefined.
+> >   echo 1 > /proc/sys/net/ipv4/ip_no_pmtu_disc
+> >   echo 4096 32767 > /proc/sys/net/ipv4/ip_local_port_range
+> > 
+> > at a new version of tftp-hpa which solves the PMTU problem by disabling it
+> > only for the tftp client and introduces a new -R begin:end option which
+> > allows to limit the port number range.  The changes are about to become
+> > available in the tftp-hpa git repository at
+> > http://www.kernel.org/pub/scm/network/tftp/tftp-hpa.git; see also
+> > http://www.linux-mips.org/wiki/ARC#tftp-hpa.  Please send test reports to
+> > syslinux@zytor.com and linux-mips@linux-mips.org.
 > 
-> The problem is if you try to load oprofile as a module.  The kernel 
-> module linker evidentially does not understand weak symbols and refuses 
-> to load the module because they are undefined.
+> I made a patch against tftpd-hpa for disabling path MTU discovery - Its
+> in the Debian BTS: 
+> 
+> http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=316616
+> 
+> It should already be merged upstream. User "-F" to disable PMTUd.
 
-Actually it contains code to handle weak symbols so this is a bit
-surprising not last because STB_WEAK handling happen in the generic
-module loader code and is being used by other architectures as well.
+Never made it to HPA - HPA wrote the patches for these two bugs himself
+yesterday when I mentioned the problem to him.  His patches are different
+in the he disables PMTU discovery entirely - it's not useful for TFTP.
+And your patch doesn't work around the other firmware bug which requires
+restricting the port range.  We had to get rid of the currently recommended
+workaround - it seriously restricts the IP stack; cripples is probably
+the right expression for busy servers.
 
-So if there's a problem with the module loader I'd prefer to solve that
-instead of starting to kludge around it.
-
-What compiler exactly are you using btw?
+Patch rotting in the Debian bugtracking system seems to become a classic ;-)
 
   Ralf

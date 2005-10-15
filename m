@@ -1,72 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 Oct 2005 06:13:53 +0100 (BST)
-Received: from 202-47-55-78.adsl.gil.com.au ([202.47.55.78]:42986 "EHLO
-	longlandclan.hopto.org") by ftp.linux-mips.org with ESMTP
-	id S8133499AbVJOFNe (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 15 Oct 2005 06:13:34 +0100
-Received: (qmail 17547 invoked from network); 15 Oct 2005 15:13:21 +1000
-Received: from beast.redhatters.home (HELO ?10.0.0.251?) (10.0.0.251)
-  by 192.168.5.1 with SMTP; 15 Oct 2005 15:13:21 +1000
-Message-ID: <43508FF5.7030306@gentoo.org>
-Date:	Sat, 15 Oct 2005 15:13:25 +1000
-From:	Stuart Longland <redhatter@gentoo.org>
-Organization: Gentoo Foundation
-User-Agent: Mozilla Thunderbird 1.0.6 (X11/20050716)
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 Oct 2005 09:33:31 +0100 (BST)
+Received: from wproxy.gmail.com ([64.233.184.201]:61668 "EHLO wproxy.gmail.com")
+	by ftp.linux-mips.org with ESMTP id S8133519AbVJOIdQ convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 15 Oct 2005 09:33:16 +0100
+Received: by wproxy.gmail.com with SMTP id i7so354042wra
+        for <linux-mips@linux-mips.org>; Sat, 15 Oct 2005 01:33:13 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=d6VxmD0MkbmSFQo+G829DRJvwM2T1wPJfAuZtbE3Bh26ngXZPLVbaItfQ1iHd/REGGu9oUxuMfOhELM95MeSJNSk527Ja35m7YRCm91mXqNIKPyHA47gV+8nPuYZmgEYrVIbZh2Ej9Ar5u0g/N8Dcv4WlqSqjrYGzebcR3KPbZU=
+Received: by 10.54.80.8 with SMTP id d8mr1290511wrb;
+        Sat, 15 Oct 2005 01:33:13 -0700 (PDT)
+Received: by 10.54.132.12 with HTTP; Sat, 15 Oct 2005 01:33:13 -0700 (PDT)
+Message-ID: <c24555040510150133x7d42afe6x9526b6eecc216b5f@mail.gmail.com>
+Date:	Sat, 15 Oct 2005 14:03:13 +0530
+From:	Shuveb Hussain <shuveb@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: mem_in? and mem_out? functions
 MIME-Version: 1.0
-To:	Ivy green <ivy.mips@gmail.com>
-CC:	linux-mips@linux-mips.org
-Subject: Re: Linux on BCM7038 ?.
-References: <8a58e1120510140631yd33f85dg3e3e9c993555726@mail.gmail.com>
-In-Reply-To: <8a58e1120510140631yd33f85dg3e3e9c993555726@mail.gmail.com>
-X-Enigmail-Version: 0.91.0.0
-OpenPGP: id=63264AB9;
-	url=http://dev.gentoo.org/~redhatter/gpgkey.asc
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="------------enig5E6FA871DBEE477DB6DA88C7"
-Return-Path: <redhatter@gentoo.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+Return-Path: <shuveb@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9228
+X-archive-position: 9229
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: redhatter@gentoo.org
+X-original-sender: shuveb@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---------------enig5E6FA871DBEE477DB6DA88C7
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Hi,
+I am compiling the source from git. There are definitions of macros in
+include/asm/io.h for the following:
 
-Ivy green wrote:
-> Hi folks,
->   Is there any Patches already available to apply on
-> kernel (>= 2.4.29) ?.
+mem_inb
+mem_outb
+mem_inl
+mem_outl
+...
+...
 
-kernel 2.4.29 from kernel.org?? Or kernel 2.4.29 from Linux/MIPS.org?
+The issue is that the driver :
+drivers/char/ipmi/  - have redeclared these macros as functions
+statically, in the file - ipmi_si_intf.c
 
-There's a difference... a _big_ difference.
--- 
-Stuart Longland (aka Redhatter)              .'''.
-Gentoo Linux/MIPS Cobalt and Docs Developer  '.'` :
-. . . . . . . . . . . . . . . . . . . . . .   .'.'
-http://dev.gentoo.org/~redhatter             :.'
+I do not know if this driver is used on MIPS at all, but it does get
+into the way of proper compilation. If compilation of the IPMI driver
+in any form is disabled (by default it gets compiled as a module),
+then the compilation goes on smoothly.
 
---------------enig5E6FA871DBEE477DB6DA88C7
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
+I changed the names of these functions slightly and made other
+modifications as to compile properly and now everything is OK, but I
+do not know if this is the best way to do it, though it works for me
+now.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.4 (GNU/Linux)
-Comment: Using GnuPG with Thunderbird - http://enigmail.mozdev.org
+What is the best solution for this issue?
 
-iD8DBQFDUI/4uarJ1mMmSrkRAkU/AJ9D8st5VtUpVh329IgdVRsvTzJTowCeIjR/
-qHjumfXhvelRE5epR6NAVTc=
-=dV4f
------END PGP SIGNATURE-----
-
---------------enig5E6FA871DBEE477DB6DA88C7--
+--shuveb

@@ -1,63 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 Oct 2005 09:33:31 +0100 (BST)
-Received: from wproxy.gmail.com ([64.233.184.201]:61668 "EHLO wproxy.gmail.com")
-	by ftp.linux-mips.org with ESMTP id S8133519AbVJOIdQ convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 15 Oct 2005 09:33:16 +0100
-Received: by wproxy.gmail.com with SMTP id i7so354042wra
-        for <linux-mips@linux-mips.org>; Sat, 15 Oct 2005 01:33:13 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=d6VxmD0MkbmSFQo+G829DRJvwM2T1wPJfAuZtbE3Bh26ngXZPLVbaItfQ1iHd/REGGu9oUxuMfOhELM95MeSJNSk527Ja35m7YRCm91mXqNIKPyHA47gV+8nPuYZmgEYrVIbZh2Ej9Ar5u0g/N8Dcv4WlqSqjrYGzebcR3KPbZU=
-Received: by 10.54.80.8 with SMTP id d8mr1290511wrb;
-        Sat, 15 Oct 2005 01:33:13 -0700 (PDT)
-Received: by 10.54.132.12 with HTTP; Sat, 15 Oct 2005 01:33:13 -0700 (PDT)
-Message-ID: <c24555040510150133x7d42afe6x9526b6eecc216b5f@mail.gmail.com>
-Date:	Sat, 15 Oct 2005 14:03:13 +0530
-From:	Shuveb Hussain <shuveb@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 Oct 2005 10:20:23 +0100 (BST)
+Received: from optima.cs.arizona.edu ([192.12.69.5]:16652 "EHLO
+	optima.cs.arizona.edu") by ftp.linux-mips.org with ESMTP
+	id S8133522AbVJOJUH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 15 Oct 2005 10:20:07 +0100
+Received: from lectura.CS.Arizona.EDU (lectura.cs.arizona.edu [192.12.69.186])
+	by optima.cs.arizona.edu (8.13.4/8.13.4) with ESMTP id j9F9JwTP075865
+	for <linux-mips@linux-mips.org>; Sat, 15 Oct 2005 02:19:58 -0700 (MST)
+	(envelope-from bprasad@CS.Arizona.EDU)
+Date:	Sat, 15 Oct 2005 02:19:58 -0700 (MST)
+From:	Prasad Venkata Boddupalli <bprasad@CS.Arizona.EDU>
 To:	linux-mips@linux-mips.org
-Subject: mem_in? and mem_out? functions
+Subject: Reg Hardware context and Signal Handlers 
+Message-ID: <Pine.GSO.4.58.0510150154450.19178@lectura.CS.Arizona.EDU>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-Return-Path: <shuveb@gmail.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <bprasad@CS.Arizona.EDU>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9229
+X-archive-position: 9230
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: shuveb@gmail.com
+X-original-sender: bprasad@CS.Arizona.EDU
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
-I am compiling the source from git. There are definitions of macros in
-include/asm/io.h for the following:
+I am reading the program counter value from the hardware context passed as
+the third argument to the signal handler. It doesn't seem to the same
+value being set in setup_sigcontext() function in
+arch/mips/kernel/signal.c.
 
-mem_inb
-mem_outb
-mem_inl
-mem_outl
-...
-...
+I am using kernel version 2.6.6-rc3 and,
 
-The issue is that the driver :
-drivers/char/ipmi/  - have redeclared these macros as functions
-statically, in the file - ipmi_si_intf.c
+I printed out the PC twice, once in the kernel (signal.c)
 
-I do not know if this driver is used on MIPS at all, but it does get
-into the way of proper compilation. If compilation of the IPMI driver
-in any form is disabled (by default it gets compiled as a module),
-then the compilation goes on smoothly.
+#include <asm/ucontext.h>
+setup_rt_frame(struct k_sigaction * ka, struct pt_regs *regs, ...) {
+    ...
 
-I changed the names of these functions slightly and made other
-modifications as to compile properly and now everything is OK, but I
-do not know if this is the best way to do it, though it works for me
-now.
+    regs->regs[ 5] = (unsigned long) &frame->rs_info;
+    regs->regs[ 6] = (unsigned long) &frame->rs_uc;
 
-What is the best solution for this issue?
+    printk("SIG deliver pc=0x%llx\n",
+          ((((struct ucontext *)regs->regs[6])->uc_mcontext).sc_pc));
 
---shuveb
+    regs->regs[29] = (unsigned long) frame;
+    ...
+
+    force_sig(SIGSEGV, current)
+}
+
+Then I get the value 0x414830 repeatedly.
+
+I print the same in my signal handler as
+
+
+#include <asm/ucontext.h>
+void dispatch_timer(int signal, siginfo_t * si, void *context) {
+    ...
+
+    printf ("pc value: 0x%llx\n",
+        ((struct ucontext *)context)->uc_mcontext).sc_pc);
+
+    ...
+}
+
+and I see a different value '0x7ff8000000000000'.
+
+The values (addresses) of the third argument 'context' in my signal
+handler is the same (as it must be) as 'regs->regs[6]' assigned just above
+the print statement in setup_rt_frame().
+
+I saw a few comments in the file sys/ucontext.h that read
+
+/* Don't rely on this, the interface is currently messed up and may need
+to be broken to be fixed.  */
+
+So, I am not sure if those comments still hold good. I am anyway including
+the header asm/ucontext.h and 'struct ucontext' seems to be different in
+the two header files.
+
+Does this problem sound familiar or am I screwing up something ?
+
+regards,
+Prasad.

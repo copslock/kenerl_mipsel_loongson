@@ -1,57 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Oct 2005 17:07:43 +0100 (BST)
-Received: from extgw-uk.mips.com ([62.254.210.129]:64524 "EHLO
-	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S8133583AbVJQQHR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 17 Oct 2005 17:07:17 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j9HG79UJ017173;
-	Mon, 17 Oct 2005 17:07:09 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j9HG79su017172;
-	Mon, 17 Oct 2005 17:07:09 +0100
-Date:	Mon, 17 Oct 2005 17:07:08 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	kernel coder <lhrkernelcoder@gmail.com>
-Cc:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Oct 2005 17:33:46 +0100 (BST)
+Received: from smtp101.biz.mail.re2.yahoo.com ([68.142.229.215]:8557 "HELO
+	smtp101.biz.mail.re2.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S8133579AbVJQQd2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 17 Oct 2005 17:33:28 +0100
+Received: (qmail 47260 invoked from network); 17 Oct 2005 16:32:47 -0000
+Received: from unknown (HELO ?192.168.2.27?) (dan@embeddedalley.com@69.21.252.132 with plain)
+  by smtp101.biz.mail.re2.yahoo.com with SMTP; 17 Oct 2005 16:32:46 -0000
+In-Reply-To: <00b201c5d32e$2de780b0$0302a8c0@Ulysses>
+References: <f69849430510170429t2735ed0fo3caa862c1dfea83a@mail.gmail.com> <43539ADF.6040504@gentoo.org> <00b201c5d32e$2de780b0$0302a8c0@Ulysses>
+Mime-Version: 1.0 (Apple Message framework v623)
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Message-Id: <3888b5a785ca8313b05d10eec9871fe6@embeddedalley.com>
+Content-Transfer-Encoding: 7bit
+Cc:	"kernel coder" <lhrkernelcoder@gmail.com>,
+	<linux-mips@linux-mips.org>,
+	"Stuart Longland" <redhatter@gentoo.org>
+From:	Dan Malek <dan@embeddedalley.com>
 Subject: Re: How to improve performance of 2.6 kernel
-Message-ID: <20051017160708.GA8613@linux-mips.org>
-References: <f69849430510170429t2735ed0fo3caa862c1dfea83a@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f69849430510170429t2735ed0fo3caa862c1dfea83a@mail.gmail.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Date:	Mon, 17 Oct 2005 12:38:34 -0400
+To:	"Kevin D. Kissell" <KevinK@mips.com>
+X-Mailer: Apple Mail (2.623)
+Return-Path: <dan@embeddedalley.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9243
+X-archive-position: 9244
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: dan@embeddedalley.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Oct 17, 2005 at 04:29:44AM -0700, kernel coder wrote:
 
-> I have just ported linux kernel 2.6.10 for MIPS4Kc-core board.Before
-> porting 2.6 kernel ,2.4.20 was running on this board. When I took
-> benchmarks for both the kernels for comparison, I found out that
-> linux-2.4.20 was giving much better results than linux-2.6.10. The
-> specs for the board are as follows:
-> 
-> --------------------------------------------------------------
-> 133MHz MIPS4kc
+On Oct 17, 2005, at 11:19 AM, Kevin D. Kissell wrote:
 
-How many TLB entries does your 4Kc have?  2.6 is hitting the TLB harder
-and system that have small TLBs tend to suffer from that at the bottom
-line even though all the other benefits of 2.6.
+> If this can't be explained by a configuration error, we have a real
+> problem here, but if that's the case, I'm surprised no one has raised
+> a red flag earlier.
 
-It would be interesting to see lmbench numbers for the system configurations
-you've tested.  Lmbench is a well defined workload that's proven useful
-in isolating such issues.
+It has been discussed on other processor architecture lists.
+It's been hard to justify the move from 2.4 to 2.6 on resource
+challenged embedded systems, which unfortunately make up the
+majority of systems running Linux.  There are various processor
+specific modifications (mostly around VM, MMU, and cache
+management) being attempted to bring the performance level
+back up to 2.4.  If these were back ported to 2.4, I suspect the
+performance difference would be even greater.
 
-Thanks,
+Of course, the speed and resources of workstations masks
+the problems, so most developers don't "feel" the system is
+any different. There isn't interest in the detailed performance
+measurements we have to do on embedded systems when
+we do an upgrade and realize it doesn't meet the performance
+goals.  This is usually just written off with the "....  well, you have
+new features .." statement, but somehow it doesn't add up.
 
-  Ralf
+There isn't any magic configuration option or quick fix.  You
+have to take the time to dig into the details of a specific
+performance issue and then try to optimize anything you can
+to improve the situation.
+
+Thanks.
+
+	-- Dan

@@ -1,51 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Oct 2005 19:40:02 +0100 (BST)
-Received: from mail.alphastar.de ([194.59.236.179]:54290 "EHLO
-	mail.alphastar.de") by ftp.linux-mips.org with ESMTP
-	id S8133593AbVJQSjn (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 17 Oct 2005 19:39:43 +0100
-Received: from SNaIlmail.Peter (217.249.192.202)
-          by mail.alphastar.de with MERCUR Mailserver (v4.02.28 MTIxLTIxODAtNjY2OA==)
-          for <linux-mips@linux-mips.org>; Mon, 17 Oct 2005 20:36:31 +0200
-Received: from Opal.Peter (Opal.Peter [192.168.1.1])
-	by SNaIlmail.Peter (8.12.6/8.12.6/Sendmail/Linux 2.0.32) with ESMTP id j9HIRUkt000920
-	for <linux-mips@linux-mips.org>; Mon, 17 Oct 2005 20:27:31 +0200
-Received: from Opal.Peter (localhost [127.0.0.1])
-	by Opal.Peter (8.12.11.Beta0/8.12.11.Beta0/Sendmail/Linux 2.4.24-1-386) with ESMTP id j9HIIITE002405
-	for <linux-mips@linux-mips.org>; Mon, 17 Oct 2005 20:18:18 +0200
-Received: from localhost (pf@localhost)
-	by Opal.Peter (8.12.11.Beta0/8.12.11.Beta0/Debian-1) with ESMTP id j9HIIH9i002401
-	for <linux-mips@linux-mips.org>; Mon, 17 Oct 2005 20:18:17 +0200
-Date:	Mon, 17 Oct 2005 20:18:17 +0200 (CEST)
-From:	peter fuerst <pf@net.alphadv.de>
-To:	linux-mips@linux-mips.org
-Subject: IP28 patches
-Message-ID: <Pine.LNX.4.21.0510172008340.2374-100000@Opal.Peter>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Oct 2005 20:26:37 +0100 (BST)
+Received: from lennier.cc.vt.edu ([198.82.162.213]:1766 "EHLO
+	lennier.cc.vt.edu") by ftp.linux-mips.org with ESMTP
+	id S8133588AbVJQT0V (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 17 Oct 2005 20:26:21 +0100
+Received: from vivi.cc.vt.edu (IDENT:mirapoint@evil-vivi.cc.vt.edu [10.1.1.12])
+	by lennier.cc.vt.edu (8.12.11/8.12.11) with ESMTP id j9HJQFMQ001520;
+	Mon, 17 Oct 2005 15:26:15 -0400
+Received: from [128.173.184.73] (gs4073.geos.vt.edu [128.173.184.73])
+	by vivi.cc.vt.edu (MOS 3.6.4-CR)
+	with ESMTP id EIQ95102;
+	Mon, 17 Oct 2005 15:26:13 -0400 (EDT)
+Message-ID: <4353FAD2.2030901@gentoo.org>
+Date:	Mon, 17 Oct 2005 15:26:10 -0400
+From:	"Stephen P. Becker" <geoman@gentoo.org>
+User-Agent: Mozilla Thunderbird 1.0.7 (X11/20051004)
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Reply-To: pf@net.alphadv.de
-Return-Path: <pf@net.alphadv.de>
+To:	pf@net.alphadv.de
+CC:	linux-mips@linux-mips.org
+Subject: Re: IP28 patches
+References: <Pine.LNX.4.21.0510172008340.2374-100000@Opal.Peter>
+In-Reply-To: <Pine.LNX.4.21.0510172008340.2374-100000@Opal.Peter>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <geoman@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9245
+X-archive-position: 9246
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pf@net.alphadv.de
+X-original-sender: geoman@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
+> There are also sources for the Impact driver for the IP28-Xserver, now
+> with DMA.
 
-Hello !
+I'm curious, is your Impact driver for ip28 still different from Stan's 
+driver for ip30?  In terms of distro support and merging things 
+upstream, they either need to be merged, or they need to be completely 
+separate drivers with different names (e.g. impact vs. impactsr or 
+something like that).
 
-
-IP28-patches for the 2.6.14 kernel can now be found in the usual place:
-
-http://home.alphastar.de/fuerst/download.html
-
-There are also sources for the Impact driver for the IP28-Xserver, now
-with DMA.
-
-kind regards
-
-pf
+-Steve

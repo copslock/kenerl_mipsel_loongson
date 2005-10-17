@@ -1,66 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Oct 2005 17:33:46 +0100 (BST)
-Received: from smtp101.biz.mail.re2.yahoo.com ([68.142.229.215]:8557 "HELO
-	smtp101.biz.mail.re2.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S8133579AbVJQQd2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 17 Oct 2005 17:33:28 +0100
-Received: (qmail 47260 invoked from network); 17 Oct 2005 16:32:47 -0000
-Received: from unknown (HELO ?192.168.2.27?) (dan@embeddedalley.com@69.21.252.132 with plain)
-  by smtp101.biz.mail.re2.yahoo.com with SMTP; 17 Oct 2005 16:32:46 -0000
-In-Reply-To: <00b201c5d32e$2de780b0$0302a8c0@Ulysses>
-References: <f69849430510170429t2735ed0fo3caa862c1dfea83a@mail.gmail.com> <43539ADF.6040504@gentoo.org> <00b201c5d32e$2de780b0$0302a8c0@Ulysses>
-Mime-Version: 1.0 (Apple Message framework v623)
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Message-Id: <3888b5a785ca8313b05d10eec9871fe6@embeddedalley.com>
-Content-Transfer-Encoding: 7bit
-Cc:	"kernel coder" <lhrkernelcoder@gmail.com>,
-	<linux-mips@linux-mips.org>,
-	"Stuart Longland" <redhatter@gentoo.org>
-From:	Dan Malek <dan@embeddedalley.com>
-Subject: Re: How to improve performance of 2.6 kernel
-Date:	Mon, 17 Oct 2005 12:38:34 -0400
-To:	"Kevin D. Kissell" <KevinK@mips.com>
-X-Mailer: Apple Mail (2.623)
-Return-Path: <dan@embeddedalley.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Oct 2005 19:40:02 +0100 (BST)
+Received: from mail.alphastar.de ([194.59.236.179]:54290 "EHLO
+	mail.alphastar.de") by ftp.linux-mips.org with ESMTP
+	id S8133593AbVJQSjn (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 17 Oct 2005 19:39:43 +0100
+Received: from SNaIlmail.Peter (217.249.192.202)
+          by mail.alphastar.de with MERCUR Mailserver (v4.02.28 MTIxLTIxODAtNjY2OA==)
+          for <linux-mips@linux-mips.org>; Mon, 17 Oct 2005 20:36:31 +0200
+Received: from Opal.Peter (Opal.Peter [192.168.1.1])
+	by SNaIlmail.Peter (8.12.6/8.12.6/Sendmail/Linux 2.0.32) with ESMTP id j9HIRUkt000920
+	for <linux-mips@linux-mips.org>; Mon, 17 Oct 2005 20:27:31 +0200
+Received: from Opal.Peter (localhost [127.0.0.1])
+	by Opal.Peter (8.12.11.Beta0/8.12.11.Beta0/Sendmail/Linux 2.4.24-1-386) with ESMTP id j9HIIITE002405
+	for <linux-mips@linux-mips.org>; Mon, 17 Oct 2005 20:18:18 +0200
+Received: from localhost (pf@localhost)
+	by Opal.Peter (8.12.11.Beta0/8.12.11.Beta0/Debian-1) with ESMTP id j9HIIH9i002401
+	for <linux-mips@linux-mips.org>; Mon, 17 Oct 2005 20:18:17 +0200
+Date:	Mon, 17 Oct 2005 20:18:17 +0200 (CEST)
+From:	peter fuerst <pf@net.alphadv.de>
+To:	linux-mips@linux-mips.org
+Subject: IP28 patches
+Message-ID: <Pine.LNX.4.21.0510172008340.2374-100000@Opal.Peter>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Reply-To: pf@net.alphadv.de
+Return-Path: <pf@net.alphadv.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9244
+X-archive-position: 9245
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@embeddedalley.com
+X-original-sender: pf@net.alphadv.de
 Precedence: bulk
 X-list: linux-mips
 
 
-On Oct 17, 2005, at 11:19 AM, Kevin D. Kissell wrote:
+Hello !
 
-> If this can't be explained by a configuration error, we have a real
-> problem here, but if that's the case, I'm surprised no one has raised
-> a red flag earlier.
 
-It has been discussed on other processor architecture lists.
-It's been hard to justify the move from 2.4 to 2.6 on resource
-challenged embedded systems, which unfortunately make up the
-majority of systems running Linux.  There are various processor
-specific modifications (mostly around VM, MMU, and cache
-management) being attempted to bring the performance level
-back up to 2.4.  If these were back ported to 2.4, I suspect the
-performance difference would be even greater.
+IP28-patches for the 2.6.14 kernel can now be found in the usual place:
 
-Of course, the speed and resources of workstations masks
-the problems, so most developers don't "feel" the system is
-any different. There isn't interest in the detailed performance
-measurements we have to do on embedded systems when
-we do an upgrade and realize it doesn't meet the performance
-goals.  This is usually just written off with the "....  well, you have
-new features .." statement, but somehow it doesn't add up.
+http://home.alphastar.de/fuerst/download.html
 
-There isn't any magic configuration option or quick fix.  You
-have to take the time to dig into the details of a specific
-performance issue and then try to optimize anything you can
-to improve the situation.
+There are also sources for the Impact driver for the IP28-Xserver, now
+with DMA.
 
-Thanks.
+kind regards
 
-	-- Dan
+pf

@@ -1,46 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Oct 2005 17:00:59 +0100 (BST)
-Received: from qproxy.gmail.com ([72.14.204.204]:11040 "EHLO qproxy.gmail.com")
-	by ftp.linux-mips.org with ESMTP id S8133614AbVJRQAm convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 18 Oct 2005 17:00:42 +0100
-Received: by qproxy.gmail.com with SMTP id q12so10157qba
-        for <linux-mips@linux-mips.org>; Tue, 18 Oct 2005 09:00:40 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=qqrxIyLIg7twgI750ynLR5UiuG+Xn5HWjJrbzPmT/mYbIP9layOlYIxm372DKWs0Tr9A+YIF8VHWvxgdgDkZIEib8bslCUCs3eMdCA0bkWCbEJBllEF1cLIaRhFPZErjc/duhhER0pW5jGaLD6U5TBL26AdCF/YXymR/NSBRpE8=
-Received: by 10.65.98.20 with SMTP id a20mr3144830qbm;
-        Tue, 18 Oct 2005 09:00:40 -0700 (PDT)
-Received: by 10.65.97.8 with HTTP; Tue, 18 Oct 2005 09:00:40 -0700 (PDT)
-Message-ID: <a59861030510180900s6041e21u@mail.gmail.com>
-Date:	Tue, 18 Oct 2005 18:00:40 +0200
-From:	Ivan Korzakow <ivan.korzakow@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: power management on mips
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Oct 2005 17:39:13 +0100 (BST)
+Received: from extgw-uk.mips.com ([62.254.210.129]:18202 "EHLO
+	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
+	id S8133621AbVJRQi5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 18 Oct 2005 17:38:57 +0100
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j9IGcnh0022741;
+	Tue, 18 Oct 2005 17:38:49 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j9IGcmBC022725;
+	Tue, 18 Oct 2005 17:38:48 +0100
+Date:	Tue, 18 Oct 2005 17:38:48 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	David Daney <ddaney@avtrex.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: OProfile cannot be loaded as module...
+Message-ID: <20051018163848.GJ2656@linux-mips.org>
+References: <43470BCF.1070709@avtrex.com> <20051013225520.GA3234@linux-mips.org> <43540609.4000105@avtrex.com> <20051018110355.GB2656@linux-mips.org> <435518CC.3060403@avtrex.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Return-Path: <ivan.korzakow@gmail.com>
+In-Reply-To: <435518CC.3060403@avtrex.com>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9252
+X-archive-position: 9253
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ivan.korzakow@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi list,
+On Tue, Oct 18, 2005 at 08:46:20AM -0700, David Daney wrote:
 
-Does anyone knows what power management features are there for mips ?
-I know for example that ACPI have been porting to arm. Anything
-equivalent for mips ? Is it possible to do some power management under
-Linux if ACPI or APM is not ported to mips ? And if yes, what would be
-the work to do ?
+> Given your 'yes' and 'no' answers, the behavior of a module could depend 
+> on the order in which the modules are loaded, as they can be linked 
+> differently depending on which modules are already present.
+> 
+> That doesn't seem like a good way of doing things.
+> 
+> If if were up to me (and I know that it is not), I would disallow 
+> linking of weak symbols at module load time altogether.
 
-Thanks in advance,
+The semantics were choosen by Rusty who maintains the generic part of the
+module loader.  Ensuring the right load order is the job of depmod
+and modprobe.
 
-Ivan
+  Ralf

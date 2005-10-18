@@ -1,51 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Oct 2005 17:39:13 +0100 (BST)
-Received: from extgw-uk.mips.com ([62.254.210.129]:18202 "EHLO
-	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S8133621AbVJRQi5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 18 Oct 2005 17:38:57 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j9IGcnh0022741;
-	Tue, 18 Oct 2005 17:38:49 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j9IGcmBC022725;
-	Tue, 18 Oct 2005 17:38:48 +0100
-Date:	Tue, 18 Oct 2005 17:38:48 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	David Daney <ddaney@avtrex.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: OProfile cannot be loaded as module...
-Message-ID: <20051018163848.GJ2656@linux-mips.org>
-References: <43470BCF.1070709@avtrex.com> <20051013225520.GA3234@linux-mips.org> <43540609.4000105@avtrex.com> <20051018110355.GB2656@linux-mips.org> <435518CC.3060403@avtrex.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <435518CC.3060403@avtrex.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Oct 2005 17:50:58 +0100 (BST)
+Received: from eth13.com-link.com ([208.242.241.164]:61102 "EHLO
+	real.realitydiluted.com") by ftp.linux-mips.org with ESMTP
+	id S8133622AbVJRQun (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 18 Oct 2005 17:50:43 +0100
+Received: from sjhill by real.realitydiluted.com with local (Exim 4.52 #1 (Debian))
+	id 1ERtjv-000353-Lg; Tue, 18 Oct 2005 10:50:59 -0500
+Subject: Re: power management on mips
+In-Reply-To: <a59861030510180900s6041e21u@mail.gmail.com>
+To:	Ivan Korzakow <ivan.korzakow@gmail.com>
+Date:	Tue, 18 Oct 2005 10:50:59 -0500 (CDT)
+CC:	linux-mips@linux-mips.org
+X-Mailer: ELM [version 2.4ME+ PL100 (25)]
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
+Message-Id: <E1ERtjv-000353-Lg@real.realitydiluted.com>
+From:	sjhill@realitydiluted.com
+Return-Path: <sjhill@realitydiluted.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9253
+X-archive-position: 9254
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: sjhill@realitydiluted.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Oct 18, 2005 at 08:46:20AM -0700, David Daney wrote:
-
-> Given your 'yes' and 'no' answers, the behavior of a module could depend 
-> on the order in which the modules are loaded, as they can be linked 
-> differently depending on which modules are already present.
+> Does anyone knows what power management features are there for mips ?
+> I know for example that ACPI have been porting to arm. Anything
+> equivalent for mips ? Is it possible to do some power management under
+> Linux if ACPI or APM is not ported to mips ? And if yes, what would be
+> the work to do ?
 > 
-> That doesn't seem like a good way of doing things.
-> 
-> If if were up to me (and I know that it is not), I would disallow 
-> linking of weak symbols at module load time altogether.
+I have a sudden urge to vomit all over you, maybe because you said
+ACPI and MIPS in the same sentence. ACPI is pretty x86-centric. I
+doubt it will ever make its way into MIPS. Dan Malek or others may
+have comments on various PM schemes used in MIPS. I am surprised
+that ARM adopted it, but there's a reason I no longer do ARM kernel
+development. ACPI is also a lot of code adding size to your kernel
+as well as additional applications. Not really great if your are
+doing an embedded system.
 
-The semantics were choosen by Rusty who maintains the generic part of the
-module loader.  Ensuring the right load order is the job of depmod
-and modprobe.
-
-  Ralf
+-Steve

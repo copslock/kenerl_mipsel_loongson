@@ -1,78 +1,149 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Oct 2005 17:13:50 +0100 (BST)
-Received: from adsl-67-116-42-147.dsl.sntc01.pacbell.net ([67.116.42.147]:46611
-	"EHLO avtrex.com") by ftp.linux-mips.org with ESMTP
-	id S3465659AbVJSQNb (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 19 Oct 2005 17:13:31 +0100
-Received: from [192.168.7.26] ([192.168.7.3]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Wed, 19 Oct 2005 09:13:28 -0700
-Message-ID: <435670A8.9000402@avtrex.com>
-Date:	Wed, 19 Oct 2005 09:13:28 -0700
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Mozilla Thunderbird 1.0.7-1.1.fc3 (X11/20050929)
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Oct 2005 18:01:38 +0100 (BST)
+Received: from web32614.mail.mud.yahoo.com ([68.142.207.241]:57481 "HELO
+	web32614.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S3465662AbVJSRBO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 19 Oct 2005 18:01:14 +0100
+Received: (qmail 85130 invoked by uid 60001); 19 Oct 2005 17:01:07 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com.mx;
+  h=Message-ID:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
+  b=XO8i4tuUpFWn20DmB1Hc8la4kcQgRZTYGuwYgGMJ57xry5ozbprmIKvmiEX/hG5rRzucTxWFdqaEKPTGl+BRvD2QKECUzoshdaxzOA3ggLoL1oikUhq+m2tqdCsQWNOzg9HjpOwv6fuzIJRsFolaihKVlqHIwDVrKrw8qjDtibY=  ;
+Message-ID: <20051019170107.85128.qmail@web32614.mail.mud.yahoo.com>
+Received: from [148.216.38.67] by web32614.mail.mud.yahoo.com via HTTP; Wed, 19 Oct 2005 12:01:07 CDT
+Date:	Wed, 19 Oct 2005 12:01:07 -0500 (CDT)
+From:	abraxas abraxas <abraxas_dragon@yahoo.com.mx>
+Subject: problem about ISO C++...
+To:	linux-mips@linux-mips.org
 MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	MIPS Linux List <linux-mips@linux-mips.org>
-Subject: Re: [Patch] Fix lookup_dcookie for MIPS o32
-References: <17236.6951.865559.479107@dl2.hq2.avtrex.com> <20051018115155.GD2656@linux-mips.org> <43551D21.3010500@avtrex.com> <20051018202654.GB2659@linux-mips.org>
-In-Reply-To: <20051018202654.GB2659@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 19 Oct 2005 16:13:28.0768 (UTC) FILETIME=[0AAE7400:01C5D4C8]
-Return-Path: <ddaney@avtrex.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <abraxas_dragon@yahoo.com.mx>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9275
+X-archive-position: 9276
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: abraxas_dragon@yahoo.com.mx
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
-> On Tue, Oct 18, 2005 at 09:04:49AM -0700, David Daney wrote:
-> 
-> 
->>The CPU has performance counters, but they cannot trigger interrupts, so 
->>I am just using it in 'timer' mode right now.  I am wondering what would 
->>happen if I added all counter samples at each clock tick.  That is 
->>something I might try when I have a little free time.
-> 
-> 
-> Now that's truly a strange processor - what CPU are you using?
-> 
+Hi...
 
-ATI Xilleon X226-A12.  According to my data sheet, there are ten 
-counters, but you can only use six at a time.  They are external to the 
-4KEc core, and the only operations you can do to them are enable/disable 
-counting, reset to zero and read the current values.
+I have next problem. I have a PC (Petium IV) with
+Debian 3.1 OS. I installed a cross-compiler for MIPS
+architecture, the versión is 3.4.4, all instalation
+was perferct. But when I try compile a code, to throw
+some errores: 
+-----------------------------------------
+../include/ecc.h:7: error: `GF2E' does not name a type
+../include/ecc.h:9: error: `GF2E' does not name a type
+../include/ecc.h:11: error: expected `,' or `...'
+before '&' token
+../include/ecc.h:11: error: ISO C++ forbids
+declaration of `GF2E' with no type
+.
+.
+.
+../include/ecc.h:21: error: `GF2E' does not name a
+type
+../include/ecc.h:30: error: `GF2X' has not been
+declared
+../include/ecc.h:31: error: ISO C++ forbids
+declaration of `Phi' with no type
+../include/ecc.h:33: error: `GF2E' has not been
+declared
+../include/ecc.h:33: error: `GF2E' has not been
+declared
+../include/ecc.h:34: error: ISO C++ forbids
+declaration of `A' with no type
+../include/ecc.h:34: error: ISO C++ forbids
+declaration of `B' with no type
+.
+.
+.
+--------------------------------------------
 
-The counters count:
-I cache hit/miss
-D cache hit/miss
-TLB hit/miss
-JTLB hit/miss
-Write merging/not merging
+Here this a content of file ecc.h:
+::::::::::::::::::::::::::::::::::::::::::::::::::
+#include <NTL/GF2XFactoring.h>
+#include <NTL/GF2E.h>
+#include <NTL/ZZ.h>
 
-Perhaps I should not worry about them.  Probably hooking up one of the 
-high resolution timers would yield more useful profiling information.
+// Elliptic curve parameters
+
+GF2E ec_A();
+
+GF2E ec_B();
+
+void ec_init(const GF2E& A, const GF2E& B);
+
+void ec_init(GF2X Phi, long a, long b);
 
 
-> 
->>I had one other problem with my cross built bash where the signal 
->>numbering of the build host was being used instead of the numbering for 
->>the target.  Once I fixed bash and the lookup_dcookie system call, it 
->>seems to work flawlessly.
-> 
-> 
-> That bug is getting a classic.  I've fixed it in ash also - ages ago ...
-> 
-> I usually try to escape from the horrors of crosscompiling by using a
-> decent GHz MIPS system.
-> 
+// Elliptic curve point
+class ec_point {
+public:
 
-Yeah, In a perfect world I would have such a beast.
+        unsigned infinity;
+        GF2E x,y;
 
-David Daney
+        ec_point() { infinity=0; x=y=0L;}
+
+        ~ec_point() {}
+
+        ec_point& operator=(const ec_point& P)
+                { infinity=P.infinity; x=P.x; y=P.y;
+return *this; }
+
+        static void init(GF2X Phi, long a, long b)
+                { ec_init(Phi,a,b); }
+
+        static void init(GF2E A, GF2E B)
+                { ec_init(A,B); }
+
+};
+
+
+// Comparison
+
+inline unsigned IsOnEC(const ec_point& P)
+{
+        return
+(P.infinity||(P.y*(P.y+P.x))==(P.x*P.x*(P.x+ec_A())+ec_B()));
+}
+
+inline unsigned IsInfinity(const ec_point& P)
+{
+  return (P.infinity);
+};
+
+inline unsigned operator==(const ec_point& P, const
+ec_point& Q)
+{
+  return ((P.infinity==Q.infinity)||(P.x==Q.x &&
+P.y==Q.y));
+};
+.
+.
+.
+:::::::::::::::::::::::::::::::::::::::::::::::::::
+
+What me more disconcerts me is the error:
+error: ISO C++ forbids declaration of <...> with no
+type.
+
+Someone have any idea, why is it error?
+
+Thank you for advanced.
+
+Greeting!!!
+
+
+	
+	
+		
+___________________________________________________________ 
+Do You Yahoo!? 
+La mejor conexión a Internet y <b >2GB</b> extra a tu correo por $100 al mes. http://net.yahoo.com.mx 

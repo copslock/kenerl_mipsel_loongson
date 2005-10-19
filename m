@@ -1,53 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Oct 2005 16:58:26 +0100 (BST)
-Received: from extgw-uk.mips.com ([62.254.210.129]:792 "EHLO
-	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S3465656AbVJSP6F (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 19 Oct 2005 16:58:05 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j9JFw0EU018007;
-	Wed, 19 Oct 2005 16:58:00 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j9JFvxUr018006;
-	Wed, 19 Oct 2005 16:57:59 +0100
-Date:	Wed, 19 Oct 2005 16:57:59 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Fix zero length sys_cacheflush
-Message-ID: <20051019155759.GJ2616@linux-mips.org>
-References: <20051019.195714.89066462.nemoto@toshiba-tops.co.jp> <20051019132902.GE2616@linux-mips.org> <20051019.232222.59465169.anemo@mba.ocn.ne.jp>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20051019.232222.59465169.anemo@mba.ocn.ne.jp>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Oct 2005 17:13:50 +0100 (BST)
+Received: from adsl-67-116-42-147.dsl.sntc01.pacbell.net ([67.116.42.147]:46611
+	"EHLO avtrex.com") by ftp.linux-mips.org with ESMTP
+	id S3465659AbVJSQNb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 19 Oct 2005 17:13:31 +0100
+Received: from [192.168.7.26] ([192.168.7.3]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Wed, 19 Oct 2005 09:13:28 -0700
+Message-ID: <435670A8.9000402@avtrex.com>
+Date:	Wed, 19 Oct 2005 09:13:28 -0700
+From:	David Daney <ddaney@avtrex.com>
+User-Agent: Mozilla Thunderbird 1.0.7-1.1.fc3 (X11/20050929)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	Ralf Baechle <ralf@linux-mips.org>
+CC:	MIPS Linux List <linux-mips@linux-mips.org>
+Subject: Re: [Patch] Fix lookup_dcookie for MIPS o32
+References: <17236.6951.865559.479107@dl2.hq2.avtrex.com> <20051018115155.GD2656@linux-mips.org> <43551D21.3010500@avtrex.com> <20051018202654.GB2659@linux-mips.org>
+In-Reply-To: <20051018202654.GB2659@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 19 Oct 2005 16:13:28.0768 (UTC) FILETIME=[0AAE7400:01C5D4C8]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9274
+X-archive-position: 9275
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Oct 19, 2005 at 11:22:22PM +0900, Atsushi Nemoto wrote:
-
-> BTW, sparse complains for this "unsigned long __user addr".
+Ralf Baechle wrote:
+> On Tue, Oct 18, 2005 at 09:04:49AM -0700, David Daney wrote:
 > 
-> asmlinkage int sys_cacheflush(unsigned long __user addr,
-> 	unsigned long bytes, unsigned int cache)
 > 
-> /work/git/linux-mips/arch/mips/mm/cache.c:59:7: warning: dereference of noderef expression
+>>The CPU has performance counters, but they cannot trigger interrupts, so 
+>>I am just using it in 'timer' mode right now.  I am wondering what would 
+>>happen if I added all counter samples at each clock tick.  That is 
+>>something I might try when I have a little free time.
 > 
-> I suppose the "unsigned long __user addr" means that the "addr"
-> variable itself is an userspace object.  So its usage is wrong, isn't
-> it?
+> 
+> Now that's truly a strange processor - what CPU are you using?
+> 
 
-It didn't complain about this use in the past.  Anyway, time to do another
-pass with sparse over the code; sparse developers have invented alot of new
-creative warnings ;-)
+ATI Xilleon X226-A12.  According to my data sheet, there are ten 
+counters, but you can only use six at a time.  They are external to the 
+4KEc core, and the only operations you can do to them are enable/disable 
+counting, reset to zero and read the current values.
 
-  Ralf
+The counters count:
+I cache hit/miss
+D cache hit/miss
+TLB hit/miss
+JTLB hit/miss
+Write merging/not merging
+
+Perhaps I should not worry about them.  Probably hooking up one of the 
+high resolution timers would yield more useful profiling information.
+
+
+> 
+>>I had one other problem with my cross built bash where the signal 
+>>numbering of the build host was being used instead of the numbering for 
+>>the target.  Once I fixed bash and the lookup_dcookie system call, it 
+>>seems to work flawlessly.
+> 
+> 
+> That bug is getting a classic.  I've fixed it in ash also - ages ago ...
+> 
+> I usually try to escape from the horrors of crosscompiling by using a
+> decent GHz MIPS system.
+> 
+
+Yeah, In a perfect world I would have such a beast.
+
+David Daney

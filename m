@@ -1,79 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Oct 2005 16:49:21 +0100 (BST)
-Received: from mx02.qsc.de ([213.148.130.14]:21406 "EHLO mx02.qsc.de")
-	by ftp.linux-mips.org with ESMTP id S3465650AbVJSPtF (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 19 Oct 2005 16:49:05 +0100
-Received: from port-195-158-177-190.dynamic.qsc.de ([195.158.177.190] helo=hattusa.textio)
-	by mx02.qsc.de with esmtp (Exim 3.35 #1)
-	id 1ESGBI-0002a1-00; Wed, 19 Oct 2005 17:48:44 +0200
-Received: from ths by hattusa.textio with local (Exim 4.54)
-	id 1ESGBH-0007ij-Ug; Wed, 19 Oct 2005 17:48:43 +0200
-Date:	Wed, 19 Oct 2005 17:48:43 +0200
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	David Daney <ddaney@avtrex.com>,
-	oprofile-list@lists.sourceforge.net, linux-mips@linux-mips.org
-Subject: Re: [Patch] Fix lookup_dcookie for MIPS o32
-Message-ID: <20051019154843.GF5721@hattusa.textio>
-References: <17236.6951.865559.479107@dl2.hq2.avtrex.com> <20051018114526.GC2656@linux-mips.org>
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Oct 2005 16:54:21 +0100 (BST)
+Received: from extgw-uk.mips.com ([62.254.210.129]:38414 "EHLO
+	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
+	id S3465650AbVJSPyG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 19 Oct 2005 16:54:06 +0100
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j9JFrvS8017847;
+	Wed, 19 Oct 2005 16:53:57 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j9JFrvjc017845;
+	Wed, 19 Oct 2005 16:53:57 +0100
+Date:	Wed, 19 Oct 2005 16:53:57 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	kernel coder <lhrkernelcoder@gmail.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Fwd: How to improve performance of 2.6 kernel
+Message-ID: <20051019155357.GH2616@linux-mips.org>
+References: <f69849430510170429t2735ed0fo3caa862c1dfea83a@mail.gmail.com> <43539ADF.6040504@gentoo.org> <00b201c5d32e$2de780b0$0302a8c0@Ulysses> <3888b5a785ca8313b05d10eec9871fe6@embeddedalley.com> <f69849430510182255m59d62726h7a4b9c96e1a7f07c@mail.gmail.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20051018114526.GC2656@linux-mips.org>
-User-Agent: Mutt/1.5.11
-From:	Thiemo Seufer <ths@networkno.de>
-Return-Path: <ths@networkno.de>
+In-Reply-To: <f69849430510182255m59d62726h7a4b9c96e1a7f07c@mail.gmail.com>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9271
+X-archive-position: 9272
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
-> On Mon, Oct 17, 2005 at 02:44:07PM -0700, David Daney wrote:
-> 
-> > This patch fixes the lookup_dcookie for the MIPS o32 ABI.  Although I
-> > only tested with little-endian, the big-endian case needed fixing as
-> > well but is untested (but what are the chances that this is not the
-> > correct fix?).
-> > 
-> > This is the only patch I needed to get the user space oprofile
-> > programs to work for mipsel-linux.
-> > 
-> > I am CCing the linux-mips list as this may be of interest there as well.
-> 
-> Good catch.
-> 
-> > 2005-10-17  David Daney  <ddaney@avtrex.com>
-> > 
-> > 	* daemon/opd_cookie.c (lookup_dcookie): Handle MIPS o32 for both big
-> > 	and little endian.
-> > 
-> > Index: oprofile/daemon/opd_cookie.c
-> > ===================================================================
-> > RCS file: /cvsroot/oprofile/oprofile/daemon/opd_cookie.c,v
-> > retrieving revision 1.19
-> > diff -p -a -u -r1.19 opd_cookie.c
-> > --- oprofile/daemon/opd_cookie.c	26 May 2005 00:00:02 -0000	1.19
-> > +++ oprofile/daemon/opd_cookie.c	17 Oct 2005 21:29:13 -0000
-> > @@ -60,12 +60,21 @@
-> >  #endif /* __NR_lookup_dcookie */
-> >  
-> >  #if (defined(__powerpc__) && !defined(__powerpc64__)) || defined(__hppa__)\
-> > -	|| (defined(__s390__) && !defined(__s390x__))
-> > +	|| (defined(__s390__) && !defined(__s390x__)) \
-> > +	|| (defined(__mips__) && (_MIPS_SIM == _MIPS_SIM_ABI32) \
-> > +	    && defined(_MIPSEB))
-> 
-> Small nit - please use __MIPSEB__ rsp. __MIPSEL__; I think there are
-> some compilers floating around that don't define the single underscore
-> variant.
+On Wed, Oct 19, 2005 at 10:55:01AM +0500, kernel coder wrote:
 
-AFAIR it's the other way, some compilers fail to define __MIPSEB__ and/or
-__MIPSEB but all have _MIPSEB.
+> I did lmbench benchmarks tests... and the results i got were pretty
+> weird.. I am attaching the jpegs :) of the graphs i made in MS Excel.
 
+We're happy with cold, raw ASCII numbers :)
 
-Thiemo
+> Btw, I have implemented NAPI in both 2.4.20 and 2.6.10. I ported the
+> code to linux-2.6 in order to increase the board's efficiency but I'm
+> quite dissapointed with the results so far :(.
+
+NAPI is doing it's job which is keeping a system responsive under extreme
+loads very well.  The pre-NAPI behaviour was simply locking up thus making
+systems easily DOS-able.  NAPI is not meant to improve latency; it isn't
+meant but frequently mistaken to.
+
+  Ralf

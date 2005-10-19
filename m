@@ -1,61 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Oct 2005 08:33:49 +0100 (BST)
-Received: from web16914.mail.tpe.yahoo.com ([202.43.201.188]:11958 "HELO
-	web16914.mail.tpe.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S3465562AbVJSHdc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 19 Oct 2005 08:33:32 +0100
-Received: (qmail 88029 invoked by uid 60001); 19 Oct 2005 07:33:23 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.com.tw;
-  h=Message-ID:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
-  b=nocz1QdJLY1k/p9QuOx3KEzz50sUK9y9SWqEEonwdRKeBVyNflc+qLBf8O/anNUv2ZT9TqGsJFqZJZgijd90Dfu03Bp06gSA6Mw6GLAuYk9YTtnRGl3UTz7pfSm+bnkAbfegapZMnO5J+XX0ZFd4REpT/sI4yGYJkYRPIZnovPw=  ;
-Message-ID: <20051019073323.88027.qmail@web16914.mail.tpe.yahoo.com>
-Received: from [203.126.245.198] by web16914.mail.tpe.yahoo.com via HTTP; Wed, 19 Oct 2005 15:33:23 CST
-Date:	Wed, 19 Oct 2005 15:33:23 +0800 (CST)
-From:	hmc0116 <hmc0116@yahoo.com.tw>
-Subject: Malta on Linux 2.6.14_rc1
-To:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Oct 2005 10:08:23 +0100 (BST)
+Received: from witte.sonytel.be ([80.88.33.193]:21246 "EHLO witte.sonytel.be")
+	by ftp.linux-mips.org with ESMTP id S3465568AbVJSJIB (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 19 Oct 2005 10:08:01 +0100
+Received: from numbat.sonytel.be (mail.sonytel.be [43.221.60.197])
+	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id j9J97tva023500;
+	Wed, 19 Oct 2005 11:07:55 +0200 (MEST)
+Date:	Wed, 19 Oct 2005 11:07:55 +0200 (CEST)
+From:	Geert Uytterhoeven <geert@linux-m68k.org>
+To:	John Levon <levon@movementarian.org>
+cc:	David Daney <ddaney@avtrex.com>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	oprofile-list@lists.sourceforge.net,
+	Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: Re: [Patch] Fix lookup_dcookie for MIPS o32
+In-Reply-To: <20051018233653.GA1044@trollied.org>
+Message-ID: <Pine.LNX.4.62.0510191107420.25580@numbat.sonytel.be>
+References: <17236.6951.865559.479107@dl2.hq2.avtrex.com>
+ <20051018114526.GC2656@linux-mips.org> <20051018232442.GA29235@trollied.org>
+ <435586D8.4040407@avtrex.com> <20051018233653.GA1044@trollied.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=big5
-Content-Transfer-Encoding: 8bit
-Return-Path: <hmc0116@yahoo.com.tw>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9264
+X-archive-position: 9265
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hmc0116@yahoo.com.tw
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-Dear All,
+On Wed, 19 Oct 2005, John Levon wrote:
+> On Tue, Oct 18, 2005 at 04:35:52PM -0700, David Daney wrote:
+> > I just did a cvs update and see no change.  Perhaps I misunderstand. 
+> > Would you like me to make and test a patch?  I could...
+> 
+> anoncvs takes a while to update I think.
 
-I try to compile kernel 2.5.14 for Malta board. (It
-includes a 4Kc CPU). I find that when I enable PCI,
-and it will crash.
-I serach from linux-mips and find that 
+AFAIK, it's no longer updated. Use git.
 
-A long standing bug in the kernel's memcpy is
-prefetching beyond the source and destination areas.
-That's usually harmless unless the prefetched
-addresses are outside of any RAM area. In this case
-the Malta board will signal a bus error exception
-which will result in a kernel crash. The issue was
-being discussed
-(http://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-mips&i=3DC7CB8B.E2C1D4E5%40mips.com)
-on the linux-mips mailing list. The workaround is to
-disable the use of prefetch instructions by disabling
-the CONFIG_HAS_PREFETCH instruction or alternativly
-making sure the last page of each memory area isn't
-being used. Other boards are likely to be affected
-also.
+Gr{oetje,eeting}s,
 
-----------------
+						Geert
 
-I disable CONFIG_CPU_HAS_PREFETCH . But I can not
-boot.
-I check th EPC. The boot fails in mips_pci_init.
-What should I do to boot malta with PCI suppirt ???
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-___________________________________________________  最新版 Yahoo!奇摩即時通訊 7.0 beta，免費網路電話任你打！  http://messenger.yahoo.com.tw/beta.html
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

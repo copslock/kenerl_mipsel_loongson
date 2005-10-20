@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Oct 2005 07:03:37 +0100 (BST)
-Received: from adsl-67-116-42-147.dsl.sntc01.pacbell.net ([67.116.42.147]:61206
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Oct 2005 07:07:03 +0100 (BST)
+Received: from adsl-67-116-42-147.dsl.sntc01.pacbell.net ([67.116.42.147]:43546
 	"EHLO avtrex.com") by ftp.linux-mips.org with ESMTP
-	id S8133374AbVJTGDT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 20 Oct 2005 07:03:19 +0100
+	id S8133382AbVJTGGq (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 20 Oct 2005 07:06:46 +0100
 Received: from dl2.hq2.avtrex.com (dl2.hq2.avtrex.com [127.0.0.1])
-	by avtrex.com (8.13.1/8.13.1) with ESMTP id j9K63G6Z001289;
-	Wed, 19 Oct 2005 23:03:16 -0700
+	by avtrex.com (8.13.1/8.13.1) with ESMTP id j9K66i1T001295;
+	Wed, 19 Oct 2005 23:06:44 -0700
 Received: (from daney@localhost)
-	by dl2.hq2.avtrex.com (8.13.1/8.13.1/Submit) id j9K63Gum001286;
-	Wed, 19 Oct 2005 23:03:16 -0700
+	by dl2.hq2.avtrex.com (8.13.1/8.13.1/Submit) id j9K66iPo001292;
+	Wed, 19 Oct 2005 23:06:44 -0700
 From:	David Daney <ddaney@avtrex.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Message-ID: <17239.13092.785385.20266@dl2.hq2.avtrex.com>
-Date:	Wed, 19 Oct 2005 23:03:16 -0700
+Message-ID: <17239.13300.410843.465349@dl2.hq2.avtrex.com>
+Date:	Wed, 19 Oct 2005 23:06:44 -0700
 To:	linux-mips@linux-mips.org
 CC:	linux-kernel@vger.kernel.org
-Subject: Patch: ATI Xilleon port 3/11 serial/8250 Set UART_CAP_FIFO in early_serial_setup
+Subject: Patch: ATI Xilleon port 4/11 Xilleon PCI IDs
 X-Mailer: VM 7.19 under Emacs 21.3.1
 Reply-To: ddaney@avtrex.com
 Return-Path: <daney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9283
+X-archive-position: 9284
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,7 +32,7 @@ X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-This is the third part of my Xilleon port.
+This is the fourth part of my Xilleon port.
 
 I am sending the full set of patches to linux-mips@linux-mips.org
 which is archived at: http://www.linux-mips.org/archives/
@@ -40,39 +40,52 @@ which is archived at: http://www.linux-mips.org/archives/
 Only the patches that touch generic parts of the kernel are coming
 here.
 
-The Xilleon's (32bit MIPS SOC) serial ports do not work right if the
-fifo is not enabled.  This prevented early serial support from
-working.
-
-The fix is to set UART_CAP_FIFO in early_serial_setup iff the hardware
-says it supports it.
+This patch adds some PCI ids for ATI's Xilleon family of SOCs.
 
 Patch against 2.6.14-rc2 from linux-mips.org
 
 Signed-off-by: David Daney <ddaney@avtrex.com>
 
-Set UART_CAP_FIFO in early_serial_setup() if the port has that
-capability.  Needed by xilleon port.
+Add xilleon PCI ids.
 
 ---
-commit e65836c84865cbcf3abc445984bacc583624e347
-tree 9c198c5858e4c8c500327e7947c69921355dea9b
-parent 2a66e82b3d2b02aca88cc2f60286fba0c114139d
-author David Daney <daney@dl2.hq2.avtrex.com> Tue, 04 Oct 2005 14:02:44 -0700
-committer David Daney <daney@dl2.hq2.avtrex.com> Tue, 04 Oct 2005 14:02:44 -0700
+commit 43a5e067ae126cee417017e8c69dfde18b82e670
+tree 4251b31b2be06f724ecf0ff3f63805f09d3bffca
+parent d559c11c9fecd8ec2a952982083e3a1fe118ab09
+author David Daney <daney@dl2.hq2.avtrex.com> Tue, 04 Oct 2005 13:41:55 -0700
+committer David Daney <daney@dl2.hq2.avtrex.com> Tue, 04 Oct 2005 13:41:55 -0700
 
- drivers/serial/8250.c |    2 ++
- 1 files changed, 2 insertions(+), 0 deletions(-)
+ include/linux/pci_ids.h |   21 +++++++++++++++++++++
+ 1 files changed, 21 insertions(+), 0 deletions(-)
 
-diff --git a/drivers/serial/8250.c b/drivers/serial/8250.c
---- a/drivers/serial/8250.c
-+++ b/drivers/serial/8250.c
-@@ -2283,6 +2283,8 @@ int __init early_serial_setup(struct uar
- 	serial8250_isa_init_ports();
- 	serial8250_ports[port->line].port	= *port;
- 	serial8250_ports[port->line].port.ops	= &serial8250_pops;
-+        if (uart_config[port->type].flags & UART_CAP_FIFO)
-+            serial8250_ports[port->line].capabilities |= UART_CAP_FIFO;
- 	return 0;
- }
+diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
+--- a/include/linux/pci_ids.h
++++ b/include/linux/pci_ids.h
+@@ -370,6 +370,27 @@
+ #define PCI_DEVICE_ID_ATI_IXP400_IDE	0x4376
+ #define PCI_DEVICE_ID_ATI_IXP400_SATA   0x4379
  
++/* Xilleon X210 chip */
++#define PCI_DEVICE_ID_ATI_X210_HBIU	0x4860
++#define PCI_DEVICE_ID_ATI_X210_IDE	0x4861
++#define PCI_DEVICE_ID_ATI_X210_USB	0x4862
++#define PCI_DEVICE_ID_ATI_X210_DAIO	0x4863
++#define PCI_DEVICE_ID_ATI_X210_MODEM	0x4864
++
++/* Xilleon X226 chip */
++#define PCI_DEVICE_ID_ATI_X226_HBIU	0x4865
++#define PCI_DEVICE_ID_ATI_X226_IDE	0x4866
++#define PCI_DEVICE_ID_ATI_X226_USB	0x4867
++#define PCI_DEVICE_ID_ATI_X226_DAIO	0x4868
++#define PCI_DEVICE_ID_ATI_X226_MODEM	0x4869
++
++/* Xilleon X225 chip */
++#define PCI_DEVICE_ID_ATI_X225_HBIU	0x4855
++#define PCI_DEVICE_ID_ATI_X225_IDE	0x4856
++#define PCI_DEVICE_ID_ATI_X225_USB	0x4857
++#define PCI_DEVICE_ID_ATI_X225_DAIO	0x4858
++#define PCI_DEVICE_ID_ATI_X225_MODEM	0x4859
++
+ #define PCI_VENDOR_ID_VLSI		0x1004
+ #define PCI_DEVICE_ID_VLSI_82C592	0x0005
+ #define PCI_DEVICE_ID_VLSI_82C593	0x0006

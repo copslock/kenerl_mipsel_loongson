@@ -1,63 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Oct 2005 17:18:49 +0100 (BST)
-Received: from adsl-67-116-42-147.dsl.sntc01.pacbell.net ([67.116.42.147]:527
-	"EHLO avtrex.com") by ftp.linux-mips.org with ESMTP
-	id S3465718AbVJTQSc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 20 Oct 2005 17:18:32 +0100
-Received: from [192.168.7.26] ([192.168.7.3]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Thu, 20 Oct 2005 09:18:27 -0700
-Message-ID: <4357C352.2060308@avtrex.com>
-Date:	Thu, 20 Oct 2005 09:18:26 -0700
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Mozilla Thunderbird 1.0.7-1.1.fc3 (X11/20050929)
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Oct 2005 20:01:20 +0100 (BST)
+Received: from xproxy.gmail.com ([66.249.82.194]:57398 "EHLO xproxy.gmail.com")
+	by ftp.linux-mips.org with ESMTP id S3465726AbVJTTBE convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 20 Oct 2005 20:01:04 +0100
+Received: by xproxy.gmail.com with SMTP id h31so293455wxd
+        for <linux-mips@linux-mips.org>; Thu, 20 Oct 2005 12:01:01 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=rQjkUR1C8CIuRGHSwxxNmsmjE+p/vruO5Ccdo8UQMj2+olrADALRUOP4usbfq1Mg9AlRAEAIwAEALorA7TinyvbYMXKH2O56nZklECwzvGUFzhhdpVRppUlec6A+AqpYaY2bX+cWmoqfQAjqSBlkzj9AjZnbOojfhXuB+/idsSc=
+Received: by 10.70.102.12 with SMTP id z12mr1173459wxb;
+        Thu, 20 Oct 2005 12:01:01 -0700 (PDT)
+Received: by 10.70.105.6 with HTTP; Thu, 20 Oct 2005 12:01:01 -0700 (PDT)
+Message-ID: <4807377b0510201201i685efd46qf4c548da34b996cb@mail.gmail.com>
+Date:	Thu, 20 Oct 2005 12:01:01 -0700
+From:	Jesse Brandeburg <jesse.brandeburg@gmail.com>
+To:	ddaney@avtrex.com
+Subject: Re: Patch: ATI Xilleon port 2/11 net/e100 Memory barriers and write flushing
+Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+In-Reply-To: <17239.12568.110253.404667@dl2.hq2.avtrex.com>
 MIME-Version: 1.0
-To:	Geert Uytterhoeven <geert@linux-m68k.org>
-CC:	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: Patch: ATI Xilleon port 11/11 default config for xilleon STW
- 5X226.
-References: <17239.48636.650235.544443@dl2.hq2.avtrex.com> <Pine.LNX.4.62.0510201805240.12888@numbat.sonytel.be>
-In-Reply-To: <Pine.LNX.4.62.0510201805240.12888@numbat.sonytel.be>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 20 Oct 2005 16:18:27.0160 (UTC) FILETIME=[E6F33580:01C5D591]
-Return-Path: <ddaney@avtrex.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+References: <17239.12568.110253.404667@dl2.hq2.avtrex.com>
+Return-Path: <jesse.brandeburg@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9313
+X-archive-position: 9314
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: jesse.brandeburg@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Geert Uytterhoeven wrote:
-> On Thu, 20 Oct 2005, David Daney wrote:
-> 
->>+#
->>+# Graphics support
->>+#
->>+# CONFIG_FB is not set
-> 
-> 
-> Ooh, no frame buffer device? ;-)
-> 
+On 10/19/05, David Daney <ddaney@avtrex.com> wrote:
+> @@ -584,6 +584,7 @@ static inline void e100_write_flush(stru
+>  {
+>         /* Flush previous PCI writes through intermediate bridges
+>          * by doing a benign read */
+> +       wmb();
+>         (void)readb(&nic->csr->scb.status);
+>  }
 
-Sorry.  At one time I think a frame buffer device may have existed for 
-the Xilleon, but I have never built or used it.
+I find it odd that this is needed, the readb is meant to flush all
+posted writes on the pci bus, if your bus is conforming to pci
+specifications, this must succeed.  wmb is for host side (processor
+memory) writes to complete, and since we're usually only try to force
+a writeX command to execute immediately with the readb (otherwise lazy
+writes work okay) we shouldn't need a wmb *here*.  not to say it might
+not be missing somewhere else.
 
-I should note that the support I posted to the list does not contain any 
-of the media drivers for the Xilleon.  It can decode and display 2 
-simultaneous HD MPEG streams and quite a bit of other things as well. 
-However the media drivers are only available from ATI under NDA.
 
-The Xilleon is used in products like the Roku Photobridge (with which I 
-have no affiliation) which is somewhat hackable:
+> @@ -807,9 +808,13 @@ static inline int e100_exec_cmd(struct n
+>                 goto err_unlock;
+>         }
+>
+> -       if(unlikely(cmd != cuc_resume))
+> +       wmb();
+> +       if(unlikely(cmd != cuc_resume)) {
+>                 writel(dma_addr, &nic->csr->scb.gen_ptr);
+> +               e100_write_flush(nic);
+> +       }
+>         writeb(cmd, &nic->csr->scb.cmd_lo);
+> +       e100_write_flush(nic);
 
-http://rokulabs.com/products/photobridge/index.php
+wouldn't the last e100_write_flush be all that is needed?  e100 only
+needs them to come in order, they don't need to be flushed one at a
+time.
 
-It is also used in many HD televisions and PVR type products produced by 
-  many name brand CE vendors.
+I can see how this change might be needed in a true write posting environment.
 
-David Daney
+jesse

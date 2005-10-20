@@ -1,48 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Oct 2005 17:06:16 +0100 (BST)
-Received: from witte.sonytel.be ([80.88.33.193]:12974 "EHLO witte.sonytel.be")
-	by ftp.linux-mips.org with ESMTP id S3465716AbVJTQF4 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 20 Oct 2005 17:05:56 +0100
-Received: from numbat.sonytel.be (mail.sonytel.be [43.221.60.197])
-	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id j9KG5sva018619;
-	Thu, 20 Oct 2005 18:05:54 +0200 (MEST)
-Date:	Thu, 20 Oct 2005 18:05:53 +0200 (CEST)
-From:	Geert Uytterhoeven <geert@linux-m68k.org>
-To:	David Daney <ddaney@avtrex.com>
-cc:	Linux/MIPS Development <linux-mips@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Oct 2005 17:18:49 +0100 (BST)
+Received: from adsl-67-116-42-147.dsl.sntc01.pacbell.net ([67.116.42.147]:527
+	"EHLO avtrex.com") by ftp.linux-mips.org with ESMTP
+	id S3465718AbVJTQSc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 20 Oct 2005 17:18:32 +0100
+Received: from [192.168.7.26] ([192.168.7.3]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 20 Oct 2005 09:18:27 -0700
+Message-ID: <4357C352.2060308@avtrex.com>
+Date:	Thu, 20 Oct 2005 09:18:26 -0700
+From:	David Daney <ddaney@avtrex.com>
+User-Agent: Mozilla Thunderbird 1.0.7-1.1.fc3 (X11/20050929)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	Geert Uytterhoeven <geert@linux-m68k.org>
+CC:	Linux/MIPS Development <linux-mips@linux-mips.org>
 Subject: Re: Patch: ATI Xilleon port 11/11 default config for xilleon STW
  5X226.
-In-Reply-To: <17239.48636.650235.544443@dl2.hq2.avtrex.com>
-Message-ID: <Pine.LNX.4.62.0510201805240.12888@numbat.sonytel.be>
-References: <17239.48636.650235.544443@dl2.hq2.avtrex.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <geert@linux-m68k.org>
+References: <17239.48636.650235.544443@dl2.hq2.avtrex.com> <Pine.LNX.4.62.0510201805240.12888@numbat.sonytel.be>
+In-Reply-To: <Pine.LNX.4.62.0510201805240.12888@numbat.sonytel.be>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 20 Oct 2005 16:18:27.0160 (UTC) FILETIME=[E6F33580:01C5D591]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9312
+X-archive-position: 9313
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 20 Oct 2005, David Daney wrote:
-> +#
-> +# Graphics support
-> +#
-> +# CONFIG_FB is not set
+Geert Uytterhoeven wrote:
+> On Thu, 20 Oct 2005, David Daney wrote:
+> 
+>>+#
+>>+# Graphics support
+>>+#
+>>+# CONFIG_FB is not set
+> 
+> 
+> Ooh, no frame buffer device? ;-)
+> 
 
-Ooh, no frame buffer device? ;-)
+Sorry.  At one time I think a frame buffer device may have existed for 
+the Xilleon, but I have never built or used it.
 
-Gr{oetje,eeting}s,
+I should note that the support I posted to the list does not contain any 
+of the media drivers for the Xilleon.  It can decode and display 2 
+simultaneous HD MPEG streams and quite a bit of other things as well. 
+However the media drivers are only available from ATI under NDA.
 
-						Geert
+The Xilleon is used in products like the Roku Photobridge (with which I 
+have no affiliation) which is somewhat hackable:
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+http://rokulabs.com/products/photobridge/index.php
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+It is also used in many HD televisions and PVR type products produced by 
+  many name brand CE vendors.
+
+David Daney

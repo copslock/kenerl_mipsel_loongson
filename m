@@ -1,76 +1,119 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Oct 2005 20:01:20 +0100 (BST)
-Received: from xproxy.gmail.com ([66.249.82.194]:57398 "EHLO xproxy.gmail.com")
-	by ftp.linux-mips.org with ESMTP id S3465726AbVJTTBE convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 20 Oct 2005 20:01:04 +0100
-Received: by xproxy.gmail.com with SMTP id h31so293455wxd
-        for <linux-mips@linux-mips.org>; Thu, 20 Oct 2005 12:01:01 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=rQjkUR1C8CIuRGHSwxxNmsmjE+p/vruO5Ccdo8UQMj2+olrADALRUOP4usbfq1Mg9AlRAEAIwAEALorA7TinyvbYMXKH2O56nZklECwzvGUFzhhdpVRppUlec6A+AqpYaY2bX+cWmoqfQAjqSBlkzj9AjZnbOojfhXuB+/idsSc=
-Received: by 10.70.102.12 with SMTP id z12mr1173459wxb;
-        Thu, 20 Oct 2005 12:01:01 -0700 (PDT)
-Received: by 10.70.105.6 with HTTP; Thu, 20 Oct 2005 12:01:01 -0700 (PDT)
-Message-ID: <4807377b0510201201i685efd46qf4c548da34b996cb@mail.gmail.com>
-Date:	Thu, 20 Oct 2005 12:01:01 -0700
-From:	Jesse Brandeburg <jesse.brandeburg@gmail.com>
-To:	ddaney@avtrex.com
-Subject: Re: Patch: ATI Xilleon port 2/11 net/e100 Memory barriers and write flushing
-Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-In-Reply-To: <17239.12568.110253.404667@dl2.hq2.avtrex.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Oct 2005 20:59:25 +0100 (BST)
+Received: from [85.21.88.2] ([85.21.88.2]:63107 "HELO mail.dev.rtsoft.ru")
+	by ftp.linux-mips.org with SMTP id S3465726AbVJTT7I (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 20 Oct 2005 20:59:08 +0100
+Received: (qmail 23032 invoked from network); 20 Oct 2005 19:59:00 -0000
+Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
+  by mail.dev.rtsoft.ru with SMTP; 20 Oct 2005 19:59:00 -0000
+Message-ID: <4357F774.9010208@ru.mvista.com>
+Date:	Fri, 21 Oct 2005 00:00:52 +0400
+From:	Sergei Shtylylov <sshtylyov@ru.mvista.com>
+Organization: RTSoft, Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-References: <17239.12568.110253.404667@dl2.hq2.avtrex.com>
-Return-Path: <jesse.brandeburg@gmail.com>
+To:	Linux MIPS Development <linux-mips@linux-mips.org>
+CC:	Manish Lachwani <mlachwani@mvista.com>
+Subject: Misc. AMD DBAu1550 fixes
+Content-Type: multipart/mixed;
+ boundary="------------000304060304090002040701"
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9314
+X-archive-position: 9315
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jesse.brandeburg@gmail.com
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On 10/19/05, David Daney <ddaney@avtrex.com> wrote:
-> @@ -584,6 +584,7 @@ static inline void e100_write_flush(stru
->  {
->         /* Flush previous PCI writes through intermediate bridges
->          * by doing a benign read */
-> +       wmb();
->         (void)readb(&nic->csr->scb.status);
->  }
+This is a multi-part message in MIME format.
+--------------000304060304090002040701
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 
-I find it odd that this is needed, the readb is meant to flush all
-posted writes on the pci bus, if your bus is conforming to pci
-specifications, this must succeed.  wmb is for host side (processor
-memory) writes to complete, and since we're usually only try to force
-a writeX command to execute immediately with the readb (otherwise lazy
-writes work okay) we shouldn't need a wmb *here*.  not to say it might
-not be missing somewhere else.
+Hello.
+
+     Here's a couple of DBAu1550 fixes: the first one fixes BCSR accesses in
+the board setup/reset code (the registers are actually 16-bit, and their
+addresses are different between DBAu1550 and other DBAu1xx0 boards), the
+second one just selects the proper machine type for DBAu1550.
+
+WBR, Sergei
 
 
-> @@ -807,9 +808,13 @@ static inline int e100_exec_cmd(struct n
->                 goto err_unlock;
->         }
->
-> -       if(unlikely(cmd != cuc_resume))
-> +       wmb();
-> +       if(unlikely(cmd != cuc_resume)) {
->                 writel(dma_addr, &nic->csr->scb.gen_ptr);
-> +               e100_write_flush(nic);
-> +       }
->         writeb(cmd, &nic->csr->scb.cmd_lo);
-> +       e100_write_flush(nic);
 
-wouldn't the last e100_write_flush be all that is needed?  e100 only
-needs them to come in order, they don't need to be flushed one at a
-time.
 
-I can see how this change might be needed in a true write posting environment.
+--------------000304060304090002040701
+Content-Type: text/plain;
+ name="db1550-bcsr-fix.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="db1550-bcsr-fix.patch"
 
-jesse
+Index: linux/arch/mips/au1000/db1x00/board_setup.c
+===================================================================
+--- linux.orig/arch/mips/au1000/db1x00/board_setup.c
++++ linux/arch/mips/au1000/db1x00/board_setup.c
+@@ -45,13 +45,12 @@
+ #include <asm/mach-au1x00/au1000.h>
+ #include <asm/mach-db1x00/db1x00.h>
+ 
+-/* not correct for db1550 */
+-static BCSR * const bcsr = (BCSR *)0xAE000000;
++static BCSR * const bcsr = (BCSR *)BCSR_KSEG1_ADDR;
+ 
+ void board_reset (void)
+ {
+ 	/* Hit BCSR.SYSTEM_CONTROL[SW_RST] */
+-	au_writel(0x00000000, 0xAE00001C);
++	bcsr->swreset = 0x0000);
+ }
+ 
+ void __init board_setup(void)
+@@ -75,7 +75,7 @@ void __init board_setup(void)
+ 	bcsr->resets |= BCSR_RESETS_IRDA_MODE_OFF;
+ 	au_sync();
+ #endif
+-	au_writel(0, 0xAE000010); /* turn off pcmcia power */
++	bcsr->pcmcia = 0x0000; /* turn off PCMCIA power */
+ 
+ #ifdef CONFIG_MIPS_MIRAGE
+ 	/* enable GPIO[31:0] inputs */
+
+
+
+
+
+--------------000304060304090002040701
+Content-Type: text/plain;
+ name="db1550-platform.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="db1550-platform.patch"
+
+Index: linux/arch/mips/au1000/db1x00/init.c
+===================================================================
+--- linux.orig/arch/mips/au1000/db1x00/init.c
++++ linux/arch/mips/au1000/db1x00/init.c
+@@ -61,7 +61,11 @@ void __init prom_init(void)
+ 	prom_envp = (char **) fw_arg2;
+ 
+ 	mips_machgroup = MACH_GROUP_ALCHEMY;
+-	mips_machtype = MACH_DB1000;	/* set the platform # */
++#ifdef CONFIG_MIPS_DB1550
++	mips_machtype = MACH_DB1550;
++#else
++ 	mips_machtype = MACH_DB1000;	/* set the platform # */
++#endif
+ 
+ 	prom_init_cmdline();
+ 
+
+
+
+
+
+--------------000304060304090002040701--

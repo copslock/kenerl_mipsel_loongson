@@ -1,65 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Oct 2005 21:44:48 +0100 (BST)
-Received: from xproxy.gmail.com ([66.249.82.196]:23439 "EHLO xproxy.gmail.com")
-	by ftp.linux-mips.org with ESMTP id S3465680AbVJSUod (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 19 Oct 2005 21:44:33 +0100
-Received: by xproxy.gmail.com with SMTP id h31so127709wxd
-        for <linux-mips@linux-mips.org>; Wed, 19 Oct 2005 13:44:31 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:mime-version:content-type;
-        b=OlnzEn6rTQfPiq5aloisE4jHffVJBgHwRYiHrzkREGPa4qG8unULBdHtxsAwX5fFOUTBaMwMgPR/qm1DlHHXEpFmNsoTrU7dlEHcagsq3cXlY9wyr2B5J7zFpni5nSM9g8mNYj+a6w+EnGWXGOrhOYktOJAwhgSGh3f0qpAqCyY=
-Received: by 10.70.28.8 with SMTP id b8mr530056wxb;
-        Wed, 19 Oct 2005 13:44:31 -0700 (PDT)
-Received: by 10.70.92.3 with HTTP; Wed, 19 Oct 2005 13:44:31 -0700 (PDT)
-Message-ID: <13d7fd6b0510191344g350f2debj807a09cac32fbfa3@mail.gmail.com>
-Date:	Wed, 19 Oct 2005 15:44:31 -0500
-From:	Dmitry Schwartsman <chorgy@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Oct 2005 04:58:04 +0100 (BST)
+Received: from bay111-f35.bay111.hotmail.com ([64.4.17.45]:38971 "EHLO
+	hotmail.com") by ftp.linux-mips.org with ESMTP id S8126552AbVJTD51
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 20 Oct 2005 04:57:27 +0100
+Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
+	 Wed, 19 Oct 2005 20:57:25 -0700
+Message-ID: <BAY111-F357972DF6651E82147BFCBA2730@phx.gbl>
+Received: from 64.4.17.200 by by111fd.bay111.hotmail.msn.com with HTTP;
+	Thu, 20 Oct 2005 03:57:25 GMT
+X-Originating-IP: [211.161.62.73]
+X-Originating-Email: [flyingmyheart@hotmail.com]
+X-Sender: flyingmyheart@hotmail.com
+From:	=?gb2312?B?cm9sbWF4IMW1wvUg0M+66s6w?= <flyingmyheart@hotmail.com>
 To:	linux-mips@linux-mips.org
-Subject: KProbes
-MIME-Version: 1.0
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_10558_4359904.1129754671811"
-Return-Path: <chorgy@gmail.com>
+Subject: amd au1200 nand flash problem
+Date:	Thu, 20 Oct 2005 11:57:25 +0800
+Mime-Version: 1.0
+Content-Type: text/plain; charset=gb2312; format=flowed
+X-OriginalArrivalTime: 20 Oct 2005 03:57:25.0358 (UTC) FILETIME=[61A6A0E0:01C5D52A]
+Return-Path: <flyingmyheart@hotmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9278
+X-archive-position: 9279
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chorgy@gmail.com
+X-original-sender: flyingmyheart@hotmail.com
 Precedence: bulk
 X-list: linux-mips
 
-------=_Part_10558_4359904.1129754671811
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+hi
 
-I'm interested to know if there is any known work to bring KProbes support
-to MIPS?
+    My amd au1200 develop board`s nand flash has some problems, can not 
+read any data from it,why?
 
-I'm working on implementing KProbes and I just want to avoid duplicate
-effort if somebody is already working on this.
+rolmax(诺迈)邢宏伟
 
-And if there are somebody who is working on MIPS KProbes let me, I would
-like to get your code so far and assist in anyway that I can.
-
-Thanks.
-
---
-chorgy
-
-------=_Part_10558_4359904.1129754671811
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
-
-<br>I'm interested to know if there is any known work to bring KProbes supp=
-ort to MIPS?<br><br>I'm working on implementing KProbes and I just want to =
-avoid duplicate effort if somebody is already working on this.<br><br>And i=
-f there are somebody who is working on MIPS KProbes let me, I would like to=
- get your code so far and assist in anyway that I can.
-<br><br>Thanks.<br><br>--<br>chorgy<br><br>
-
-------=_Part_10558_4359904.1129754671811--
+_________________________________________________________________
+与联机的朋友进行交流，请使用 MSN Messenger:  http://messenger.msn.com/cn  

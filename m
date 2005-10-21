@@ -1,59 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Oct 2005 23:23:44 +0100 (BST)
-Received: from baldrick.bootc.net ([83.142.228.48]:21680 "EHLO
-	baldrick.bootc.net") by ftp.linux-mips.org with ESMTP
-	id S3465735AbVJTWXX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 20 Oct 2005 23:23:23 +0100
-Received: from [192.168.1.3] (cpc4-hudd6-3-1-cust172.hudd.cable.ntl.com [82.21.103.172])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by baldrick.bootc.net (Postfix) with ESMTP id 185621400C00
-	for <linux-mips@linux-mips.org>; Thu, 20 Oct 2005 23:23:19 +0100 (BST)
-Message-ID: <435818D5.7080807@bootc.net>
-Date:	Thu, 20 Oct 2005 23:23:17 +0100
-From:	Chris Boot <bootc@bootc.net>
-User-Agent: Mozilla Thunderbird 1.0.7 (X11/20051014)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: [Slightly-OT] VR4110 core
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: by amavisd-new-20030616-p10 (Debian) at bootc.plus.com
-Return-Path: <bootc@bootc.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Oct 2005 01:56:51 +0100 (BST)
+Received: from mail.kroah.org ([69.55.234.183]:4561 "EHLO perch.kroah.org")
+	by ftp.linux-mips.org with ESMTP id S8133377AbVJUA4e (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 21 Oct 2005 01:56:34 +0100
+Received: from [192.168.0.10] (c-24-22-115-24.hsd1.or.comcast.net [24.22.115.24])
+	(authenticated)
+	by perch.kroah.org (8.11.6/8.11.6) with ESMTP id j9L0uVw07015;
+	Thu, 20 Oct 2005 17:56:31 -0700
+Received: from greg by echidna.kroah.org with local (masqmail 0.2.19)
+ id 1ESkp7-4nU-00; Thu, 20 Oct 2005 17:31:53 -0700
+Date:	Thu, 20 Oct 2005 17:31:53 -0700
+From:	Greg KH <greg@kroah.com>
+To:	David Daney <ddaney@avtrex.com>
+Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: Patch: ATI Xilleon port 4/11 Xilleon PCI IDs
+Message-ID: <20051021003152.GC18404@kroah.com>
+References: <17239.13300.410843.465349@dl2.hq2.avtrex.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <17239.13300.410843.465349@dl2.hq2.avtrex.com>
+User-Agent: Mutt/1.5.11
+Return-Path: <greg@kroah.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9316
+X-archive-position: 9317
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bootc@bootc.net
+X-original-sender: greg@kroah.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi All,
+On Wed, Oct 19, 2005 at 11:06:44PM -0700, David Daney wrote:
+> This is the fourth part of my Xilleon port.
+> 
+> I am sending the full set of patches to linux-mips@linux-mips.org
+> which is archived at: http://www.linux-mips.org/archives/
+> 
+> Only the patches that touch generic parts of the kernel are coming
+> here.
+> 
+> This patch adds some PCI ids for ATI's Xilleon family of SOCs.
 
-I'm in my final year doing a BSc Computing Science degree in the UK, and 
-for my project/dissertation I've chosen to attempt to get Linux to run 
-on an old Sky Digibox (PACE 2500N) set-top-box. So far my research has 
-revealed the CPU has is a NEC VR4110 core with lots of MPEG and graphics 
-processing stuff tacked on. The board itself is quite interesting, with 
-a PC-Card slot, audio out, 2x SCART, RF-out, modem, and serial connection.
+Does your driver need all of these ids?  If not, please only include the
+ones needed, we are removing all of the unused ids, as we don't need to
+keep a file with all possible pci ids in the kernel tree.
 
-I was just wondering if anyone had any suggestions regarding what kernel 
-to use (it seems as though the best would be 2.4, is this correct?), or 
-any knowledge whatsoever of similar chips and especially how to 
-bootstrap, etc...
+thanks,
 
-I'm currently reading Sweetman's "See MIPS Run" which is a great book, 
-but I'm curious as to how much the chip differs from what's documented 
-therein. NEC seem to have lost the documentation about this chip, so 
-they're no help...
-
-Many thanks,
-Chris
-
--- 
-Chris Boot
-bootc@bootc.net
-http://www.bootc.net/
+greg k-h

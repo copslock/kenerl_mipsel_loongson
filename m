@@ -1,50 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Oct 2005 09:00:09 +0100 (BST)
-Received: from witte.sonytel.be ([80.88.33.193]:21674 "EHLO witte.sonytel.be")
-	by ftp.linux-mips.org with ESMTP id S8133422AbVJUH7x (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 21 Oct 2005 08:59:53 +0100
-Received: from numbat.sonytel.be (mail.sonytel.be [43.221.60.197])
-	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id j9L7xqva012738;
-	Fri, 21 Oct 2005 09:59:52 +0200 (MEST)
-Date:	Fri, 21 Oct 2005 09:59:51 +0200 (CEST)
-From:	Geert Uytterhoeven <geert@linux-m68k.org>
-To:	Chris Boot <bootc@bootc.net>
-cc:	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: [Slightly-OT] VR4110 core
-In-Reply-To: <435818D5.7080807@bootc.net>
-Message-ID: <Pine.LNX.4.62.0510210958520.32398@numbat.sonytel.be>
-References: <435818D5.7080807@bootc.net>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <geert@linux-m68k.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Oct 2005 09:11:21 +0100 (BST)
+Received: from topsns.toshiba-tops.co.jp ([202.230.225.5]:25364 "HELO
+	topsns.toshiba-tops.co.jp") by ftp.linux-mips.org with SMTP
+	id S8133422AbVJUILF (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 21 Oct 2005 09:11:05 +0100
+Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 21 Oct 2005 08:12:12 UT
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id CCC6D1FF0A;
+	Fri, 21 Oct 2005 17:12:08 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id C0FC11FEF8;
+	Fri, 21 Oct 2005 17:12:08 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id j9L8C8hO010005;
+	Fri, 21 Oct 2005 17:12:08 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Fri, 21 Oct 2005 17:12:08 +0900 (JST)
+Message-Id: <20051021.171208.55510690.nemoto@toshiba-tops.co.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] Call flush_icache_range for handle_tlb[lsm]
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9318
+X-archive-position: 9319
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 20 Oct 2005, Chris Boot wrote:
-> I'm in my final year doing a BSc Computing Science degree in the UK, and for
-> my project/dissertation I've chosen to attempt to get Linux to run on an old
-> Sky Digibox (PACE 2500N) set-top-box. So far my research has revealed the CPU
-> has is a NEC VR4110 core with lots of MPEG and graphics processing stuff
-         ^^^^^^^^^^^^^^^^^
-> tacked on. The board itself is quite interesting, with a PC-Card slot, audio
-> out, 2x SCART, RF-out, modem, and serial connection.
+Call flush_icache_range for handle_tlb[lsm].  These flushing were
+removed by 452cafe60d0605e9af0c33bbef4f9443776461ea.  This patch add
+them again in safe place.
 
-Do you know which SoC is actually used? Perhaps a NEC EMMA or EMMA2?
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -1149,6 +1149,7 @@ static inline void signal32_init(void)
+ 
+ extern void cpu_cache_init(void);
+ extern void tlb_init(void);
++extern void flush_tlb_handlers(void);
+ 
+ void __init per_cpu_trap_init(void)
+ {
+@@ -1356,4 +1357,5 @@ void __init trap_init(void)
+ #endif
+ 
+ 	flush_icache_range(ebase, ebase + 0x400);
++	flush_tlb_handlers();
+ }
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -1804,3 +1804,13 @@ void __init build_tlb_refill_handler(voi
+ 		}
+ 	}
+ }
++
++void __init flush_tlb_handlers(void)
++{
++	flush_icache_range((unsigned long)handle_tlbl,
++			   (unsigned long)handle_tlbl + sizeof(handle_tlbl));
++	flush_icache_range((unsigned long)handle_tlbs,
++			   (unsigned long)handle_tlbs + sizeof(handle_tlbs));
++	flush_icache_range((unsigned long)handle_tlbm,
++			   (unsigned long)handle_tlbm + sizeof(handle_tlbm));
++}

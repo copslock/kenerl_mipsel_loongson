@@ -1,55 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Oct 2005 17:04:54 +0100 (BST)
-Received: from smtp103.biz.mail.mud.yahoo.com ([68.142.200.238]:62136 "HELO
-	smtp103.biz.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S8133534AbVJUQEh (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 21 Oct 2005 17:04:37 +0100
-Received: (qmail 55908 invoked from network); 21 Oct 2005 16:04:24 -0000
-Received: from unknown (HELO ?192.168.1.102?) (ppopov@embeddedalley.com@63.194.214.47 with plain)
-  by smtp103.biz.mail.mud.yahoo.com with SMTP; 21 Oct 2005 16:04:24 -0000
-Subject: Re: FW: Re: au1x00 usb device status
-From:	Pete Popov <ppopov@embeddedalley.com>
-Reply-To: ppopov@embeddedalley.com
-To:	"Hamilton, Ian" <Ian.Hamilton@xerox.com>
-Cc:	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
-In-Reply-To: <DAF42D2FFC65A146BAB240719E4AD214C212BF@gbrwgceumf02.eu.xerox.net>
-References: <DAF42D2FFC65A146BAB240719E4AD214C212BF@gbrwgceumf02.eu.xerox.net>
-Content-Type: text/plain
-Organization: Embedded Alley Solutions, Inc
-Date:	Fri, 21 Oct 2005 09:04:27 -0700
-Message-Id: <1129910667.4596.11.camel@localhost.localdomain>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.0.4 (2.0.4-4) 
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Oct 2005 18:04:13 +0100 (BST)
+Received: from adsl-67-116-42-147.dsl.sntc01.pacbell.net ([67.116.42.147]:45579
+	"EHLO avtrex.com") by ftp.linux-mips.org with ESMTP
+	id S8133546AbVJURDj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 21 Oct 2005 18:03:39 +0100
+Received: from [192.168.7.26] ([192.168.7.3]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Fri, 21 Oct 2005 10:03:37 -0700
+Message-ID: <43591F69.60203@avtrex.com>
+Date:	Fri, 21 Oct 2005 10:03:37 -0700
+From:	David Daney <ddaney@avtrex.com>
+User-Agent: Mozilla Thunderbird 1.0.7-1.1.fc3 (X11/20050929)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>
+CC:	linux-mips@linux-mips.org, linux-ide@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: Patch: ATI Xilleon port 10/11 Xilleon IDE controller support
+References: <17239.48184.340986.463557@dl2.hq2.avtrex.com> <58cb370e0510210858k7fccc00fqd6fccffed441aae3@mail.gmail.com>
+In-Reply-To: <58cb370e0510210858k7fccc00fqd6fccffed441aae3@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@embeddedalley.com>
+X-OriginalArrivalTime: 21 Oct 2005 17:03:37.0946 (UTC) FILETIME=[611E13A0:01C5D661]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9332
+X-archive-position: 9333
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@embeddedalley.com
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 2005-10-21 at 14:17 +0100, Hamilton, Ian wrote:
-> Hi Pete and Rodolfo.
+Bartlomiej Zolnierkiewicz wrote:
+> Hi,
 > 
-> I also need to get the device USB port working on an au1100 board.
+> Patch basically looks fine but needs some extra work.
+> Detailed comments below...
 > 
-> We have code running under a 2.4 kernel working on this board, and I'm
-> currently porting the code to a 2.6 kernel.
+> On 10/20/05, David Daney <ddaney@avtrex.com> wrote:
 > 
-> The USB device port seems to work OK for us with the 2.4 kernel.
-> 
-> 
-> Pete,
-> 
-> Is there a full description of the timing problem somewhere on the web?
-> In particular, how quickly does the interrupt need to be serviced?
+>>This is the tenth part of my Xilleon port.
+>>
+>>I am sending the full set of patches to linux-mips@linux-mips.org
+>>which is archived at: http://www.linux-mips.org/archives/
+>>
+>>Only the patches that touch generic parts of the kernel are coming
+>>here.
+>>
+>>This patch adds the Xilleon's IDE driver.
+>>
+>>Patch against 2.6.14-rc2 from linux-mips.org
+>>
+>>Signed-off-by: David Daney <ddaney@avtrex.com>
+>>
 
-Dan knows more about it but I see he replied already. We had problems
-getting gadget to work. Seemed like we were close but couldn't get it to
-work reliably.
+Thanks for reviewing this.  I am working on addressing the issues you 
+raised.
 
-Pete
+David Daney.

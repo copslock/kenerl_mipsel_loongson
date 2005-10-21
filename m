@@ -1,61 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Oct 2005 18:04:13 +0100 (BST)
-Received: from adsl-67-116-42-147.dsl.sntc01.pacbell.net ([67.116.42.147]:45579
-	"EHLO avtrex.com") by ftp.linux-mips.org with ESMTP
-	id S8133546AbVJURDj (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 21 Oct 2005 18:03:39 +0100
-Received: from [192.168.7.26] ([192.168.7.3]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Fri, 21 Oct 2005 10:03:37 -0700
-Message-ID: <43591F69.60203@avtrex.com>
-Date:	Fri, 21 Oct 2005 10:03:37 -0700
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Mozilla Thunderbird 1.0.7-1.1.fc3 (X11/20050929)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>
-CC:	linux-mips@linux-mips.org, linux-ide@vger.kernel.org,
-	linux-kernel@vger.kernel.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Oct 2005 19:06:41 +0100 (BST)
+Received: from clock-tower.bc.nu ([81.2.110.250]:52679 "EHLO
+	lxorguk.ukuu.org.uk") by ftp.linux-mips.org with ESMTP
+	id S8133549AbVJUSGY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 21 Oct 2005 19:06:24 +0100
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by lxorguk.ukuu.org.uk (8.13.4/8.13.4) with ESMTP id j9LIZ9RH004241;
+	Fri, 21 Oct 2005 19:35:09 +0100
+Received: (from alan@localhost)
+	by localhost.localdomain (8.13.4/8.13.4/Submit) id j9LIZ6la004239;
+	Fri, 21 Oct 2005 19:35:06 +0100
+X-Authentication-Warning: localhost.localdomain: alan set sender to alan@lxorguk.ukuu.org.uk using -f
 Subject: Re: Patch: ATI Xilleon port 10/11 Xilleon IDE controller support
-References: <17239.48184.340986.463557@dl2.hq2.avtrex.com> <58cb370e0510210858k7fccc00fqd6fccffed441aae3@mail.gmail.com>
-In-Reply-To: <58cb370e0510210858k7fccc00fqd6fccffed441aae3@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+From:	Alan Cox <alan@lxorguk.ukuu.org.uk>
+To:	ddaney@avtrex.com
+Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+In-Reply-To: <17239.48184.340986.463557@dl2.hq2.avtrex.com>
+References: <17239.48184.340986.463557@dl2.hq2.avtrex.com>
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 21 Oct 2005 17:03:37.0946 (UTC) FILETIME=[611E13A0:01C5D661]
-Return-Path: <ddaney@avtrex.com>
+Date:	Fri, 21 Oct 2005 19:35:05 +0100
+Message-Id: <1129919705.3542.17.camel@localhost.localdomain>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.2.3 (2.2.3-2.fc4) 
+Return-Path: <alan@lxorguk.ukuu.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9333
+X-archive-position: 9334
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: alan@lxorguk.ukuu.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-Bartlomiej Zolnierkiewicz wrote:
-> Hi,
-> 
-> Patch basically looks fine but needs some extra work.
-> Detailed comments below...
-> 
-> On 10/20/05, David Daney <ddaney@avtrex.com> wrote:
-> 
->>This is the tenth part of my Xilleon port.
->>
->>I am sending the full set of patches to linux-mips@linux-mips.org
->>which is archived at: http://www.linux-mips.org/archives/
->>
->>Only the patches that touch generic parts of the kernel are coming
->>here.
->>
->>This patch adds the Xilleon's IDE driver.
->>
->>Patch against 2.6.14-rc2 from linux-mips.org
->>
->>Signed-off-by: David Daney <ddaney@avtrex.com>
->>
+On Iau, 2005-10-20 at 08:48 -0700, David Daney wrote:
 
-Thanks for reviewing this.  I am working on addressing the issues you 
-raised.
+> +int xilleon_ide_proc;
+> +
+> +static struct pci_dev *bmide_dev;
+> +
+> +/* #define DEBUG 1 */
+> +
+> +#if defined(CONFIG_PROC_FS)
+> +static u8 xilleon_proc = 0;
 
-David Daney.
+The proc interfaces have been dropped so this chunk can all go away
+
+> +
+> +/**
+> + *	xilleon_ide_get_info		-	generate xilleon /proc file 
+> + *	@buffer: buffer for data
+> + *	@addr: set to start of data to use
+> + *	@offset: current file offset
+> + *	@count: size of read

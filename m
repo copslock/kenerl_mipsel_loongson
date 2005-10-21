@@ -1,88 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Oct 2005 14:29:10 +0100 (BST)
-Received: from 81-174-11-161.f5.ngi.it ([81.174.11.161]:16816 "EHLO
-	zaigor.enneenne.com") by ftp.linux-mips.org with ESMTP
-	id S8133444AbVJUN2y (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 21 Oct 2005 14:28:54 +0100
-Received: from giometti by zaigor.enneenne.com with local (Exim 3.36 #1 (Debian))
-	id 1ESwx3-000657-00
-	for <linux-mips@linux-mips.org>; Fri, 21 Oct 2005 15:28:53 +0200
-Resent-From: giometti@enneenne.com
-Resent-Date: Fri, 21 Oct 2005 15:28:53 +0200
-Resent-Message-ID: <20051021132853.GA23374@enneenne.com>
-Resent-To: linux-mips@linux-mips.org
-Date:	Fri, 21 Oct 2005 15:26:50 +0200
-From:	Rodolfo Giometti <giometti@linux.it>
-To:	"Hamilton, Ian" <Ian.Hamilton@xerox.com>
-Cc:	ppopov@embeddedalley.com, linnux-mips@linux-mips.org
-Subject: Re: au1x00 usb device status
-Message-ID: <20051021132650.GC26890@enneenne.com>
-References: <DAF42D2FFC65A146BAB240719E4AD214C212B7@gbrwgceumf02.eu.xerox.net>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="E0GIYtSzp7Op5bZW"
-Content-Disposition: inline
-In-Reply-To: <DAF42D2FFC65A146BAB240719E4AD214C212B7@gbrwgceumf02.eu.xerox.net>
-Organization: Programmi e soluzioni GNU/Linux
-X-PGP-Key: gpg --keyserver keyserver.penguin.de --recv-keys D25A5633
-User-Agent: Mutt/1.5.6+20040722i
-Return-Path: <giometti@enneenne.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Oct 2005 14:37:13 +0100 (BST)
+Received: from witte.sonytel.be ([80.88.33.193]:18164 "EHLO witte.sonytel.be")
+	by ftp.linux-mips.org with ESMTP id S3465580AbVJUNg5 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 21 Oct 2005 14:36:57 +0100
+Received: from numbat.sonytel.be (mail.sonytel.be [43.221.60.197])
+	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id j9LDauva026306;
+	Fri, 21 Oct 2005 15:36:56 +0200 (MEST)
+Date:	Fri, 21 Oct 2005 15:36:56 +0200 (CEST)
+From:	Geert Uytterhoeven <geert@linux-m68k.org>
+To:	Chris Boot <bootc@bootc.net>
+cc:	Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: Re: [Slightly-OT] VR4110 core
+In-Reply-To: <4358EA41.4090001@bootc.net>
+Message-ID: <Pine.LNX.4.62.0510211536380.32398@numbat.sonytel.be>
+References: <435818D5.7080807@bootc.net> <Pine.LNX.4.62.0510210958520.32398@numbat.sonytel.be>
+ <4358EA41.4090001@bootc.net>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9324
+X-archive-position: 9325
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: giometti@enneenne.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
+On Fri, 21 Oct 2005, Chris Boot wrote:
+> Geert Uytterhoeven wrote:
+> > On Thu, 20 Oct 2005, Chris Boot wrote:
+> > > I'm in my final year doing a BSc Computing Science degree in the UK, and
+> > > for
+> > > my project/dissertation I've chosen to attempt to get Linux to run on an
+> > > old
+> > > Sky Digibox (PACE 2500N) set-top-box. So far my research has revealed the
+> > > CPU
+> > > has is a NEC VR4110 core with lots of MPEG and graphics processing stuff
+> > 
+> >          ^^^^^^^^^^^^^^^^^
+> > 
+> > > tacked on. The board itself is quite interesting, with a PC-Card slot,
+> > > audio
+> > > out, 2x SCART, RF-out, modem, and serial connection.
+> > 
+> > 
+> > Do you know which SoC is actually used? Perhaps a NEC EMMA or EMMA2?
+> 
+> Hmm, glancing at the "Product Letter" I have, it does mention "Enhanced
+> Multi-Media Architecture" so I'm guessing its an EMMA SoC indeed.
 
---E0GIYtSzp7Op5bZW
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Do you have to part number?
 
-On Fri, Oct 21, 2005 at 02:12:17PM +0100, Hamilton, Ian wrote:
-> We have code running under a 2.4 kernel working on this board, and I'm
-> currently porting the code to a 2.6 kernel.
->=20
-> The USB device port seems to work OK for us with the 2.4 kernel.
+Gr{oetje,eeting}s,
 
-Are you implemented any Gadget support? Or are you just using the
-tty/raw emulation?
+						Geert
 
-> Rodolfo,
->=20
-> Have you done any more work on this, or are you giving it up as a lost
-> cause?
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-For the moment I sespended the developing in order to better
-understand the timing problem, but I can restart immediately if some
-new good news will came. :)
-
-Ciao,
-
-Rodolfo
-
---=20
-
-GNU/Linux Solutions                  e-mail:    giometti@linux.it
-Linux Device Driver                             giometti@enneenne.com
-Embedded Systems                     home page: giometti.enneenne.com
-UNIX programming                     phone:     +39 349 2432127
-
---E0GIYtSzp7Op5bZW
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.4 (GNU/Linux)
-
-iD8DBQFDWOyaQaTCYNJaVjMRAknlAKCMwsQnqeJziXVdWdH3eY74ZmQuWwCeOvuL
-jrj6sSzN0VbE/Yw4eCFiDK0=
-=fb0s
------END PGP SIGNATURE-----
-
---E0GIYtSzp7Op5bZW--
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

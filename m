@@ -1,65 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Oct 2005 14:37:13 +0100 (BST)
-Received: from witte.sonytel.be ([80.88.33.193]:18164 "EHLO witte.sonytel.be")
-	by ftp.linux-mips.org with ESMTP id S3465580AbVJUNg5 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 21 Oct 2005 14:36:57 +0100
-Received: from numbat.sonytel.be (mail.sonytel.be [43.221.60.197])
-	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id j9LDauva026306;
-	Fri, 21 Oct 2005 15:36:56 +0200 (MEST)
-Date:	Fri, 21 Oct 2005 15:36:56 +0200 (CEST)
-From:	Geert Uytterhoeven <geert@linux-m68k.org>
-To:	Chris Boot <bootc@bootc.net>
-cc:	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: [Slightly-OT] VR4110 core
-In-Reply-To: <4358EA41.4090001@bootc.net>
-Message-ID: <Pine.LNX.4.62.0510211536380.32398@numbat.sonytel.be>
-References: <435818D5.7080807@bootc.net> <Pine.LNX.4.62.0510210958520.32398@numbat.sonytel.be>
- <4358EA41.4090001@bootc.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Oct 2005 15:03:23 +0100 (BST)
+Received: from wbmler1.mail.xerox.com ([13.13.138.216]:18375 "EHLO
+	wbmler1.mail.xerox.com") by ftp.linux-mips.org with ESMTP
+	id S3465587AbVJUODG convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 21 Oct 2005 15:03:06 +0100
+Received: from wbmlir2.mail.xerox.com (wbmlir2.mail.xerox.com [13.131.8.222])
+	by wbmler1.mail.xerox.com (8.13.4/8.13.1) with ESMTP id j9LE33m3020807
+	for <linux-mips@linux-mips.org>; Fri, 21 Oct 2005 10:03:03 -0400
+Received: from wbmlir2.mail.xerox.com (localhost [127.0.0.1])
+	by wbmlir2.mail.xerox.com (8.13.4/8.13.1) with ESMTP id j9LE2NjN027828
+	for <linux-mips@linux-mips.org>; Fri, 21 Oct 2005 10:02:23 -0400
+Received: from usa7061gw02.na.xerox.net (usa7061gw02.na.xerox.net [13.151.32.4])
+	by wbmlir2.mail.xerox.com (8.13.4/8.13.1) with ESMTP id j9LE1sCs027456
+	for <linux-mips@linux-mips.org>; Fri, 21 Oct 2005 10:02:23 -0400
+Received: from usa0300bh01.na.xerox.net ([13.129.0.48]) by usa7061gw02.na.xerox.net with Microsoft SMTPSVC(6.0.3790.211);
+	 Fri, 21 Oct 2005 07:02:17 -0700
+Received: from gbrmiteubh01.eu.xerox.net ([13.223.7.13]) by usa0300bh01.na.xerox.net with Microsoft SMTPSVC(6.0.3790.211);
+	 Fri, 21 Oct 2005 10:02:10 -0400
+Received: from gbrwgceumf02.eu.xerox.net ([13.200.0.54]) by gbrmiteubh01.eu.xerox.net with Microsoft SMTPSVC(6.0.3790.211);
+	 Fri, 21 Oct 2005 15:01:37 +0100
+X-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <geert@linux-m68k.org>
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: RE: au1x00 usb device status
+Date:	Fri, 21 Oct 2005 15:01:35 +0100
+Message-ID: <DAF42D2FFC65A146BAB240719E4AD214C212F3@gbrwgceumf02.eu.xerox.net>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: RE: au1x00 usb device status
+Thread-Index: AcXWR/KSp4fbaApYRVCYVBrb6SSgvQ==
+From:	"Hamilton, Ian" <Ian.Hamilton@xerox.com>
+Cc:	<linux-mips@linux-mips.org>
+X-OriginalArrivalTime: 21 Oct 2005 14:01:37.0557 (UTC) FILETIME=[F40EF450:01C5D647]
+To:	unlisted-recipients:; (no To-header on input)
+Return-Path: <Ian.Hamilton@xerox.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9325
+X-archive-position: 9326
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: Ian.Hamilton@xerox.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 21 Oct 2005, Chris Boot wrote:
-> Geert Uytterhoeven wrote:
-> > On Thu, 20 Oct 2005, Chris Boot wrote:
-> > > I'm in my final year doing a BSc Computing Science degree in the UK, and
-> > > for
-> > > my project/dissertation I've chosen to attempt to get Linux to run on an
-> > > old
-> > > Sky Digibox (PACE 2500N) set-top-box. So far my research has revealed the
-> > > CPU
-> > > has is a NEC VR4110 core with lots of MPEG and graphics processing stuff
-> > 
-> >          ^^^^^^^^^^^^^^^^^
-> > 
-> > > tacked on. The board itself is quite interesting, with a PC-Card slot,
-> > > audio
-> > > out, 2x SCART, RF-out, modem, and serial connection.
-> > 
-> > 
-> > Do you know which SoC is actually used? Perhaps a NEC EMMA or EMMA2?
-> 
-> Hmm, glancing at the "Product Letter" I have, it does mention "Enhanced
-> Multi-Media Architecture" so I'm guessing its an EMMA SoC indeed.
+Hi Rodolfo.
 
-Do you have to part number?
+> Are you implemented any Gadget support? Or are you just using the
+> tty/raw emulation?
 
-Gr{oetje,eeting}s,
+I'm a USB novice, so I'm not sure about this yet. The USB device port is
+used
+as a communication port to another board, so I guess a tty/raw emulation
+would be appropriate, but I don't yet know how it was implemented on the
+2.4
+kernel. I'm still trying to understand the code.
 
-						Geert
+I was hoping it would be a straight copy from 2.4 to 2.6, but clearly it
+isn't :-(
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Still, it is an opportunity to learn about USB :-)
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+Cheers,
+Ian.

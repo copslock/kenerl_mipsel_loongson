@@ -1,76 +1,113 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Oct 2005 18:23:09 +0100 (BST)
-Received: from 209-232-97-206.ded.pacbell.net ([209.232.97.206]:40412 "EHLO
-	dns0.mips.com") by ftp.linux-mips.org with ESMTP id S8133470AbVJVRWw
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 22 Oct 2005 18:22:52 +0100
-Received: from mercury.mips.com (sbcns-dmz [209.232.97.193])
-	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id j9MHMRje017616;
-	Sat, 22 Oct 2005 10:22:27 -0700 (PDT)
-Received: from [192.168.236.16] (grendel [192.168.236.16])
-	by mercury.mips.com (8.12.9/8.12.11) with ESMTP id j9MHMP17007474;
-	Sat, 22 Oct 2005 10:22:26 -0700 (PDT)
-Message-ID: <435A759F.5010601@mips.com>
-Date:	Sat, 22 Oct 2005 19:23:43 +0200
-From:	"Kevin D. Kissell" <kevink@mips.com>
-User-Agent: Mozilla Thunderbird 1.0.6 (X11/20050716)
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Oct 2005 21:21:52 +0100 (BST)
+Received: from [85.21.88.2] ([85.21.88.2]:5333 "HELO mail.dev.rtsoft.ru")
+	by ftp.linux-mips.org with SMTP id S8133481AbVJVUVa (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 22 Oct 2005 21:21:30 +0100
+Received: (qmail 23300 invoked from network); 22 Oct 2005 20:21:23 -0000
+Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
+  by mail.dev.rtsoft.ru with SMTP; 22 Oct 2005 20:21:23 -0000
+Message-ID: <435A9FB2.3070303@ru.mvista.com>
+Date:	Sun, 23 Oct 2005 00:23:14 +0400
+From:	Sergei Shtylylov <sshtylyov@ru.mvista.com>
+Organization: RTSoft, Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-To:	Geert Uytterhoeven <geert@linux-m68k.org>
-CC:	Chris Boot <bootc@bootc.net>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: [Slightly-OT] VR4110 core
-References: <435818D5.7080807@bootc.net> <Pine.LNX.4.62.0510210958520.32398@numbat.sonytel.be> <4358EA41.4090001@bootc.net> <Pine.LNX.4.62.0510211536380.32398@numbat.sonytel.be> <4358F910.2020204@bootc.net> <Pine.LNX.4.62.0510212038220.9129@numbat.sonytel.be> <435A51A8.9030602@bootc.net> <Pine.LNX.4.62.0510221857510.16077@numbat.sonytel.be>
-In-Reply-To: <Pine.LNX.4.62.0510221857510.16077@numbat.sonytel.be>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.39
-Return-Path: <kevink@mips.com>
+To:	Linux MIPS Development <linux-mips@linux-mips.org>
+CC:	Manish Lachwani <mlachwani@mvista.com>
+Subject: Re: Misc. AMD DBAu1550 fixes
+References: <4357F774.9010208@ru.mvista.com>
+In-Reply-To: <4357F774.9010208@ru.mvista.com>
+Content-Type: multipart/mixed;
+ boundary="------------050706090906060006000301"
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9341
+X-archive-position: 9342
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@mips.com
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Geert Uytterhoeven wrote:
-> On Sat, 22 Oct 2005, Chris Boot wrote:
-> 
->>Geert Uytterhoeven wrote:
->>
->>>On Fri, 21 Oct 2005, Chris Boot wrote:
->>>
->>>>Geert Uytterhoeven wrote:
->>>>
->>>>>On Fri, 21 Oct 2005, Chris Boot wrote:
->>>>>
->>>>>>Hmm, glancing at the "Product Letter" I have, it does mention
->>>>>>"Enhanced
->>>>>>Multi-Media Architecture" so I'm guessing its an EMMA SoC indeed.
->>>>>
->>>>>Do you have to part number?
->>>>
->>>>Did I not send one?! It must have been late...
->>>>
->>>>It's a uPD61032, marked D61032GL on the chip. The exact markings are:
->>>>NEC JAPAN
->>>>D61032GL
->>>>9949EK019
->>>
->>>That's indeed the EMMA.
->>
->>Now we know what it is...where do I find the docs?
-> 
-> 
-> I'm afraid it's available under NDA from NEC only :-(
+This is a multi-part message in MIME format.
+--------------050706090906060006000301
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Note, however, that the group that develops EMMA chips is based
-in the UK.  If you contact them and ask nicely, there's at least
-a chance that they could provide some documentation for student
-work.
-		Regards,
+Hello, I wrote:
 
-		Kevin K.
+>     Here's a couple of DBAu1550 fixes: the first one fixes BCSR accesses in
+> the board setup/reset code (the registers are actually 16-bit, and their
+> addresses are different between DBAu1550 and other DBAu1xx0 boards), the
+
+    Here's an updated BCSR patch. Stupid typo. :-/
+
+> second one just selects the proper machine type for DBAu1550.
+
+   It was somewhat incomplete, more #ifdef's are needed to set the proper 
+machine types for DB1100/DB1500...
+
+> ------------------------------------------------------------------------
+> 
+> Index: linux/arch/mips/au1000/db1x00/board_setup.c
+> ===================================================================
+> --- linux.orig/arch/mips/au1000/db1x00/board_setup.c
+> +++ linux/arch/mips/au1000/db1x00/board_setup.c
+> @@ -45,13 +45,12 @@
+>  #include <asm/mach-au1x00/au1000.h>
+>  #include <asm/mach-db1x00/db1x00.h>
+>  
+> -/* not correct for db1550 */
+> -static BCSR * const bcsr = (BCSR *)0xAE000000;
+> +static BCSR * const bcsr = (BCSR *)BCSR_KSEG1_ADDR;
+>  
+>  void board_reset (void)
+>  {
+>  	/* Hit BCSR.SYSTEM_CONTROL[SW_RST] */
+> -	au_writel(0x00000000, 0xAE00001C);
+> +	bcsr->swreset = 0x0000);
+
+   My bad. Really don't know how this paren got there. :-/
+
+WBR, Sergei
+
+--------------050706090906060006000301
+Content-Type: text/plain;
+ name="db1550-bcsr-fix.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="db1550-bcsr-fix.patch"
+
+Index: linux/arch/mips/au1000/db1x00/board_setup.c
+===================================================================
+--- linux.orig/arch/mips/au1000/db1x00/board_setup.c
++++ linux/arch/mips/au1000/db1x00/board_setup.c
+@@ -45,13 +45,12 @@
+ #include <asm/mach-au1x00/au1000.h>
+ #include <asm/mach-db1x00/db1x00.h>
+ 
+-/* not correct for db1550 */
+-static BCSR * const bcsr = (BCSR *)0xAE000000;
++static BCSR * const bcsr = (BCSR *)BCSR_KSEG1_ADDR;
+ 
+ void board_reset (void)
+ {
+ 	/* Hit BCSR.SYSTEM_CONTROL[SW_RST] */
+-	au_writel(0x00000000, 0xAE00001C);
++	bcsr->swreset = 0x0000;
+ }
+ 
+ void __init board_setup(void)
+@@ -75,7 +75,7 @@ void __init board_setup(void)
+ 	bcsr->resets |= BCSR_RESETS_IRDA_MODE_OFF;
+ 	au_sync();
+ #endif
+-	au_writel(0, 0xAE000010); /* turn off pcmcia power */
++	bcsr->pcmcia = 0x0000; /* turn off PCMCIA power */
+ 
+ #ifdef CONFIG_MIPS_MIRAGE
+ 	/* enable GPIO[31:0] inputs */
+
+--------------050706090906060006000301--

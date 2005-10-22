@@ -1,80 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Oct 2005 15:50:45 +0100 (BST)
-Received: from baldrick.bootc.net ([83.142.228.48]:17802 "EHLO
-	baldrick.bootc.net") by ftp.linux-mips.org with ESMTP
-	id S3465618AbVJVOu2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 22 Oct 2005 15:50:28 +0100
-Received: from [192.168.1.3] (cpc4-hudd6-3-1-cust172.hudd.cable.ntl.com [82.21.103.172])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by baldrick.bootc.net (Postfix) with ESMTP id 0EF0C1400C00;
-	Sat, 22 Oct 2005 15:50:18 +0100 (BST)
-Message-ID: <435A51A8.9030602@bootc.net>
-Date:	Sat, 22 Oct 2005 15:50:16 +0100
-From:	Chris Boot <bootc@bootc.net>
-User-Agent: Mozilla Thunderbird 1.0.7 (X11/20051014)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:	Linux/MIPS Development <linux-mips@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Oct 2005 17:58:50 +0100 (BST)
+Received: from witte.sonytel.be ([80.88.33.193]:15555 "EHLO witte.sonytel.be")
+	by ftp.linux-mips.org with ESMTP id S8127232AbVJVQ6d (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 22 Oct 2005 17:58:33 +0100
+Received: from numbat.sonytel.be (mail.sonytel.be [43.221.60.197])
+	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id j9MGwTva006883;
+	Sat, 22 Oct 2005 18:58:30 +0200 (MEST)
+Date:	Sat, 22 Oct 2005 18:58:29 +0200 (CEST)
+From:	Geert Uytterhoeven <geert@linux-m68k.org>
+To:	Chris Boot <bootc@bootc.net>
+cc:	Linux/MIPS Development <linux-mips@linux-mips.org>
 Subject: Re: [Slightly-OT] VR4110 core
-References: <435818D5.7080807@bootc.net> <Pine.LNX.4.62.0510210958520.32398@numbat.sonytel.be> <4358EA41.4090001@bootc.net> <Pine.LNX.4.62.0510211536380.32398@numbat.sonytel.be> <4358F910.2020204@bootc.net> <Pine.LNX.4.62.0510212038220.9129@numbat.sonytel.be>
-In-Reply-To: <Pine.LNX.4.62.0510212038220.9129@numbat.sonytel.be>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: by amavisd-new-20030616-p10 (Debian) at bootc.plus.com
-Return-Path: <bootc@bootc.net>
+In-Reply-To: <435A51A8.9030602@bootc.net>
+Message-ID: <Pine.LNX.4.62.0510221857510.16077@numbat.sonytel.be>
+References: <435818D5.7080807@bootc.net> <Pine.LNX.4.62.0510210958520.32398@numbat.sonytel.be>
+ <4358EA41.4090001@bootc.net> <Pine.LNX.4.62.0510211536380.32398@numbat.sonytel.be>
+ <4358F910.2020204@bootc.net> <Pine.LNX.4.62.0510212038220.9129@numbat.sonytel.be>
+ <435A51A8.9030602@bootc.net>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9339
+X-archive-position: 9340
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bootc@bootc.net
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-Geert Uytterhoeven wrote:
-> On Fri, 21 Oct 2005, Chris Boot wrote:
+On Sat, 22 Oct 2005, Chris Boot wrote:
+> Geert Uytterhoeven wrote:
+> > On Fri, 21 Oct 2005, Chris Boot wrote:
+> > > Geert Uytterhoeven wrote:
+> > > > On Fri, 21 Oct 2005, Chris Boot wrote:
+> > > > > Hmm, glancing at the "Product Letter" I have, it does mention
+> > > > > "Enhanced
+> > > > > Multi-Media Architecture" so I'm guessing its an EMMA SoC indeed.
+> > > > 
+> > > > Do you have to part number?
+> > > 
+> > > Did I not send one?! It must have been late...
+> > > 
+> > > It's a uPD61032, marked D61032GL on the chip. The exact markings are:
+> > > NEC JAPAN
+> > > D61032GL
+> > > 9949EK019
+> > 
+> > That's indeed the EMMA.
 > 
->>Geert Uytterhoeven wrote:
->>
->>>On Fri, 21 Oct 2005, Chris Boot wrote:
->>>
->>>>Hmm, glancing at the "Product Letter" I have, it does mention "Enhanced
->>>>Multi-Media Architecture" so I'm guessing its an EMMA SoC indeed.
->>>
->>>Do you have to part number?
->>
->>Did I not send one?! It must have been late...
->>
->>It's a uPD61032, marked D61032GL on the chip. The exact markings are:
->>NEC JAPAN
->>D61032GL
->>9949EK019
-> 
-> 
-> That's indeed the EMMA.
+> Now we know what it is...where do I find the docs?
 
-Now we know what it is...where do I find the docs?
+I'm afraid it's available under NDA from NEC only :-(
 
->>There's a couple of 2MB SDRAM chips just next to the CPU (both from different
->>manufacturers, and with different pinouts, interestingly enough), 2 Amtel 2MB
-> 
-> 
-> IIRC, there's a separate 2 MiB SDRAM for MPEG decoding.
+Gr{oetje,eeting}s,
 
-That would explain it, I guess. What that means is I have all of 2MB to 
-play with then :-(
+						Geert
 
-> Gr{oetje,eeting}s,
-> 
-> 						Geert
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-Cheers,
-Chris
-
--- 
-Chris Boot
-bootc@bootc.net
-http://www.bootc.net/
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

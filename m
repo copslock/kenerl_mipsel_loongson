@@ -1,55 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Oct 2005 14:29:40 +0100 (BST)
-Received: from extgw-uk.mips.com ([62.254.210.129]:38919 "EHLO
-	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S3465602AbVJVN3V (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 22 Oct 2005 14:29:21 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j9MDTCof005509;
-	Sat, 22 Oct 2005 14:29:12 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j9MDT9wO005494;
-	Sat, 22 Oct 2005 14:29:09 +0100
-Date:	Sat, 22 Oct 2005 14:29:09 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"Steven J. Hill" <sjhill@realitydiluted.com>
-Cc:	Aaditya Rai <arai@atheros.com>, linux-mips@linux-mips.org
-Subject: Re: mips 2.4 vs 2.6 stability.
-Message-ID: <20051022132909.GA2610@linux-mips.org>
-References: <43598DFE.8040100@atheros.com> <4359AEAD.8010604@realitydiluted.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4359AEAD.8010604@realitydiluted.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Oct 2005 15:50:45 +0100 (BST)
+Received: from baldrick.bootc.net ([83.142.228.48]:17802 "EHLO
+	baldrick.bootc.net") by ftp.linux-mips.org with ESMTP
+	id S3465618AbVJVOu2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 22 Oct 2005 15:50:28 +0100
+Received: from [192.168.1.3] (cpc4-hudd6-3-1-cust172.hudd.cable.ntl.com [82.21.103.172])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by baldrick.bootc.net (Postfix) with ESMTP id 0EF0C1400C00;
+	Sat, 22 Oct 2005 15:50:18 +0100 (BST)
+Message-ID: <435A51A8.9030602@bootc.net>
+Date:	Sat, 22 Oct 2005 15:50:16 +0100
+From:	Chris Boot <bootc@bootc.net>
+User-Agent: Mozilla Thunderbird 1.0.7 (X11/20051014)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:	Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: Re: [Slightly-OT] VR4110 core
+References: <435818D5.7080807@bootc.net> <Pine.LNX.4.62.0510210958520.32398@numbat.sonytel.be> <4358EA41.4090001@bootc.net> <Pine.LNX.4.62.0510211536380.32398@numbat.sonytel.be> <4358F910.2020204@bootc.net> <Pine.LNX.4.62.0510212038220.9129@numbat.sonytel.be>
+In-Reply-To: <Pine.LNX.4.62.0510212038220.9129@numbat.sonytel.be>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: by amavisd-new-20030616-p10 (Debian) at bootc.plus.com
+Return-Path: <bootc@bootc.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9338
+X-archive-position: 9339
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: bootc@bootc.net
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Oct 21, 2005 at 10:14:53PM -0500, Steven J. Hill wrote:
+Geert Uytterhoeven wrote:
+> On Fri, 21 Oct 2005, Chris Boot wrote:
+> 
+>>Geert Uytterhoeven wrote:
+>>
+>>>On Fri, 21 Oct 2005, Chris Boot wrote:
+>>>
+>>>>Hmm, glancing at the "Product Letter" I have, it does mention "Enhanced
+>>>>Multi-Media Architecture" so I'm guessing its an EMMA SoC indeed.
+>>>
+>>>Do you have to part number?
+>>
+>>Did I not send one?! It must have been late...
+>>
+>>It's a uPD61032, marked D61032GL on the chip. The exact markings are:
+>>NEC JAPAN
+>>D61032GL
+>>9949EK019
+> 
+> 
+> That's indeed the EMMA.
 
-> Aaditya Rai wrote:
-> >Hi everyone, I've searched the list for an answer and gotten, "there's 
-> >no stable release; check out from cvs" ;-)
-> >I'm trying to figure out if there are stability issues with mips port of 
-> >2.6? Specifically for 24K? Is mips-2.4 generally considered to be more 
-> >stable?
-> >
-> Use 2.6 if you are working with 24K. Yes, it is stable that's why we are
-> using 2.6 and not 2.5 because the even numbers are stable releases. *sigh*
-> Geesh, kids these days.
+Now we know what it is...where do I find the docs?
 
-That's the theory.  In practice 2.4 does hardly receive any attention
-anymore; these days the 2.4 branch is mostly following Marcelo's updates
-but that's about it.  That's equivalent to saying bitrot is creeping into
-2.4's direction and whatever issues there are with 2.6 will be resolved
-much more aggressivly than in 2.4.
+>>There's a couple of 2MB SDRAM chips just next to the CPU (both from different
+>>manufacturers, and with different pinouts, interestingly enough), 2 Amtel 2MB
+> 
+> 
+> IIRC, there's a separate 2 MiB SDRAM for MPEG decoding.
 
-  Ralf
+That would explain it, I guess. What that means is I have all of 2MB to 
+play with then :-(
+
+> Gr{oetje,eeting}s,
+> 
+> 						Geert
+
+Cheers,
+Chris
+
+-- 
+Chris Boot
+bootc@bootc.net
+http://www.bootc.net/

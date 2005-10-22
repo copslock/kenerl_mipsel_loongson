@@ -1,63 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Oct 2005 19:43:03 +0100 (BST)
-Received: from witte.sonytel.be ([80.88.33.193]:42158 "EHLO witte.sonytel.be")
-	by ftp.linux-mips.org with ESMTP id S3465688AbVJUSmn (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 21 Oct 2005 19:42:43 +0100
-Received: from numbat.sonytel.be (mail.sonytel.be [43.221.60.197])
-	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id j9LIggva006496;
-	Fri, 21 Oct 2005 20:42:42 +0200 (MEST)
-Date:	Fri, 21 Oct 2005 20:42:42 +0200 (CEST)
-From:	Geert Uytterhoeven <geert@linux-m68k.org>
-To:	Chris Boot <bootc@bootc.net>
-cc:	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: [Slightly-OT] VR4110 core
-In-Reply-To: <4358F910.2020204@bootc.net>
-Message-ID: <Pine.LNX.4.62.0510212038220.9129@numbat.sonytel.be>
-References: <435818D5.7080807@bootc.net> <Pine.LNX.4.62.0510210958520.32398@numbat.sonytel.be>
- <4358EA41.4090001@bootc.net> <Pine.LNX.4.62.0510211536380.32398@numbat.sonytel.be>
- <4358F910.2020204@bootc.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Oct 2005 01:55:47 +0100 (BST)
+Received: from [12.36.123.8] ([12.36.123.8]:44956 "EHLO
+	voltage-out.atheros.com") by ftp.linux-mips.org with ESMTP
+	id S3465722AbVJVAza (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 22 Oct 2005 01:55:30 +0100
+Received: from atheros.com (mail.users.atheros.com [10.10.11.2])
+	by voltage-out.atheros.com (8.13.1/8.13.1) with ESMTP id j9M1kwX4002023
+	for <linux-mips@linux-mips.org>; Fri, 21 Oct 2005 18:46:58 -0700
+Received: from [10.10.17.182] (account arai HELO [10.10.17.182])
+  by atheros.com (CommuniGate Pro SMTP 4.2.4)
+  with ESMTP id 29926976 for linux-mips@linux-mips.org; Fri, 21 Oct 2005 17:55:28 -0700
+Message-ID: <43598DFE.8040100@atheros.com>
+Date:	Fri, 21 Oct 2005 17:55:26 -0700
+From:	Aaditya Rai <arai@atheros.com>
+User-Agent: Mozilla Thunderbird 0.8 (X11/20040913)
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <geert@linux-m68k.org>
+To:	linux-mips@linux-mips.org
+Subject: mips 2.4 vs 2.6 stability.
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <arai@atheros.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9335
+X-archive-position: 9336
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: arai@atheros.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 21 Oct 2005, Chris Boot wrote:
-> Geert Uytterhoeven wrote:
-> > On Fri, 21 Oct 2005, Chris Boot wrote:
-> > > Hmm, glancing at the "Product Letter" I have, it does mention "Enhanced
-> > > Multi-Media Architecture" so I'm guessing its an EMMA SoC indeed.
-> > 
-> > Do you have to part number?
-> 
-> Did I not send one?! It must have been late...
-> 
-> It's a uPD61032, marked D61032GL on the chip. The exact markings are:
-> NEC JAPAN
-> D61032GL
-> 9949EK019
+Hi everyone, I've searched the list for an answer and gotten, "there's 
+no stable release; check out from cvs" ;-)
+I'm trying to figure out if there are stability issues with mips port of 
+2.6? Specifically for 24K? Is mips-2.4 generally considered to be more 
+stable?
 
-That's indeed the EMMA.
-
-> There's a couple of 2MB SDRAM chips just next to the CPU (both from different
-> manufacturers, and with different pinouts, interestingly enough), 2 Amtel 2MB
-
-IIRC, there's a separate 2 MiB SDRAM for MPEG decoding.
-
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+thanks!

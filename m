@@ -1,40 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Oct 2005 01:55:47 +0100 (BST)
-Received: from [12.36.123.8] ([12.36.123.8]:44956 "EHLO
-	voltage-out.atheros.com") by ftp.linux-mips.org with ESMTP
-	id S3465722AbVJVAza (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 22 Oct 2005 01:55:30 +0100
-Received: from atheros.com (mail.users.atheros.com [10.10.11.2])
-	by voltage-out.atheros.com (8.13.1/8.13.1) with ESMTP id j9M1kwX4002023
-	for <linux-mips@linux-mips.org>; Fri, 21 Oct 2005 18:46:58 -0700
-Received: from [10.10.17.182] (account arai HELO [10.10.17.182])
-  by atheros.com (CommuniGate Pro SMTP 4.2.4)
-  with ESMTP id 29926976 for linux-mips@linux-mips.org; Fri, 21 Oct 2005 17:55:28 -0700
-Message-ID: <43598DFE.8040100@atheros.com>
-Date:	Fri, 21 Oct 2005 17:55:26 -0700
-From:	Aaditya Rai <arai@atheros.com>
-User-Agent: Mozilla Thunderbird 0.8 (X11/20040913)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Oct 2005 04:15:30 +0100 (BST)
+Received: from eth13.com-link.com ([208.242.241.164]:50658 "EHLO
+	real.realitydiluted.com") by ftp.linux-mips.org with ESMTP
+	id S8133445AbVJVDO5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 22 Oct 2005 04:14:57 +0100
+Received: from localhost ([127.0.0.1])
+	by real.realitydiluted.com with esmtp (Exim 4.52 #1 (Debian))
+	id 1ET8ug-0006gb-Un; Fri, 21 Oct 2005 21:15:15 -0500
+Message-ID: <4359AEAD.8010604@realitydiluted.com>
+Date:	Fri, 21 Oct 2005 22:14:53 -0500
+From:	"Steven J. Hill" <sjhill@realitydiluted.com>
+User-Agent: Debian Thunderbird 1.0.6 (X11/20050802)
 X-Accept-Language: en-us, en
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: mips 2.4 vs 2.6 stability.
+To:	Aaditya Rai <arai@atheros.com>
+CC:	linux-mips@linux-mips.org
+Subject: Re: mips 2.4 vs 2.6 stability.
+References: <43598DFE.8040100@atheros.com>
+In-Reply-To: <43598DFE.8040100@atheros.com>
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <arai@atheros.com>
+Return-Path: <sjhill@realitydiluted.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9336
+X-archive-position: 9337
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arai@atheros.com
+X-original-sender: sjhill@realitydiluted.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi everyone, I've searched the list for an answer and gotten, "there's 
-no stable release; check out from cvs" ;-)
-I'm trying to figure out if there are stability issues with mips port of 
-2.6? Specifically for 24K? Is mips-2.4 generally considered to be more 
-stable?
+Aaditya Rai wrote:
+> Hi everyone, I've searched the list for an answer and gotten, "there's 
+> no stable release; check out from cvs" ;-)
+> I'm trying to figure out if there are stability issues with mips port of 
+> 2.6? Specifically for 24K? Is mips-2.4 generally considered to be more 
+> stable?
+>
+Use 2.6 if you are working with 24K. Yes, it is stable that's why we are
+using 2.6 and not 2.5 because the even numbers are stable releases. *sigh*
+Geesh, kids these days.
 
-thanks!
+-Steve

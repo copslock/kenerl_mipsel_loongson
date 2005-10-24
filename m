@@ -1,78 +1,100 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 23 Oct 2005 01:21:26 +0100 (BST)
-Received: from smtp1-g19.free.fr ([212.27.42.27]:59291 "EHLO smtp1-g19.free.fr")
-	by ftp.linux-mips.org with ESMTP id S3465746AbVJWAVE (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 23 Oct 2005 01:21:04 +0100
-Received: from groumpf (str90-1-82-238-123-182.fbx.proxad.net [82.238.123.182])
-	by smtp1-g19.free.fr (Postfix) with ESMTP id 34AF75E019;
-	Sun, 23 Oct 2005 02:21:00 +0200 (CEST)
-Received: from jekyll ([192.168.1.1])
-	by groumpf with esmtp (Exim 4.50)
-	id 1ETTbg-000168-5T; Sun, 23 Oct 2005 02:21:00 +0200
-Received: from arnaud by jekyll with local (Exim 4.50)
-	id 1ETTbf-0004nP-Sb; Sun, 23 Oct 2005 02:20:59 +0200
-To:	linux-mips@linux-mips.org, linux-parport@lists.infradead.org
-Cc:	linux-kernel@vger.kernel.org
-Subject: [PATCH] Parallel port support for SGI O2
-From:	Arnaud Giersch <arnaud.giersch@free.fr>
-X-Face:	&yL?ZRfSIk3zaRm*dlb3R4f.8RM"~b/h|\wI]>pL)}]l$H>.Q3Qd3[<h!`K6mI=+cWpg-El
- B(FEm\EEdLdS{2l7,8\!RQ5aL0ZXlzzPKLxV/OQfrg/<t!FG>i.K[5isyT&2oBNdnvk`~y}vwPYL;R
- y)NYo"]T8NlX{nmIUEi\a$hozWm#0GCT'e'{5f@Rl"[g|I8<{By=R8R>bDe>W7)S0-8:b;ZKo~9K?'
- wq!G,MQ\eSt8g`)jeITEuig89NGmN^%1j>!*F8~kW(yfF7W[:bl>RT[`w3x-C
-Date:	Sun, 23 Oct 2005 02:20:59 +0200
-Message-ID: <871x2d3wyc.fsf@groumpf.homeip.net>
-User-Agent: Gnus/5.1007 (Gnus v5.10.7) XEmacs/21.4 (Jumbo Shrimp, linux)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Oct 2005 10:42:34 +0100 (BST)
+Received: from wvmler3.mail.xerox.com ([13.8.138.218]:18352 "EHLO
+	wvmler3.mail.xerox.com") by ftp.linux-mips.org with ESMTP
+	id S3465639AbVJXJmG convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 24 Oct 2005 10:42:06 +0100
+Received: from wvmlir1.mail.xerox.com (wvmlir1.mail.xerox.com [13.147.8.221])
+	by wvmler3.mail.xerox.com (8.13.4/8.13.1) with ESMTP id j9O9g11k026437;
+	Mon, 24 Oct 2005 02:42:04 -0700
+Received: from wvmlir1.mail.xerox.com (localhost [127.0.0.1])
+	by wvmlir1.mail.xerox.com (8.13.4/8.13.1) with ESMTP id j9O9f8wx017064;
+	Mon, 24 Oct 2005 02:41:08 -0700
+Received: from usa7061gw02.na.xerox.net (usa7061gw02.na.xerox.net [13.151.32.4])
+	by wvmlir1.mail.xerox.com (8.13.4/8.13.1) with ESMTP id j9O9emGD016893;
+	Mon, 24 Oct 2005 02:41:04 -0700
+Received: from usa7061bh01.na.xerox.net ([13.151.33.5]) by usa7061gw02.na.xerox.net with Microsoft SMTPSVC(6.0.3790.211);
+	 Mon, 24 Oct 2005 02:40:55 -0700
+Received: from gbrmiteubh01.eu.xerox.net ([13.223.7.13]) by usa7061bh01.na.xerox.net with Microsoft SMTPSVC(6.0.3790.211);
+	 Mon, 24 Oct 2005 02:40:55 -0700
+Received: from gbrwgceumf02.eu.xerox.net ([13.200.0.54]) by gbrmiteubh01.eu.xerox.net with Microsoft SMTPSVC(6.0.3790.211);
+	 Mon, 24 Oct 2005 10:40:41 +0100
+X-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <arnaud.giersch@free.fr>
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: RE: au1x00 usb device status
+Date:	Mon, 24 Oct 2005 10:40:37 +0100
+Message-ID: <DAF42D2FFC65A146BAB240719E4AD214C21486@gbrwgceumf02.eu.xerox.net>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: au1x00 usb device status
+Thread-Index: AcXWVMQyPe7uhDGcQgWYMoSNVdHwmACJvGdg
+From:	"Hamilton, Ian" <Ian.Hamilton@xerox.com>
+To:	"Dan Malek" <dan@embeddedalley.com>
+Cc:	<linux-mips@linux-mips.org>
+X-OriginalArrivalTime: 24 Oct 2005 09:40:41.0173 (UTC) FILETIME=[FF5D9850:01C5D87E]
+Return-Path: <Ian.Hamilton@xerox.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9343
+X-archive-position: 9344
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnaud.giersch@free.fr
+X-original-sender: Ian.Hamilton@xerox.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+Thanks Dan, that's very helpful.
 
-I wrote a low-level parallel port driver for the built-in port on SGI
-O2 (a.k.a. IP32).
+I haven't seen anything in the drivers/usb/gadget directory which
+looks like an au1100 driver, so if you could send me any code you
+have, I'd be grateful :-)
 
-The parallel port is driven by a standard ECP chipset, with
-memory-mapped I/O registers.  That's why it was not possible to use
-the parport_pc module which assumes port-mapped I/O registers.
+Cheers,
+Ian.
 
-What works:
-    * Basic modes are supported: PCSPP, PS2.
-    * Compatibility mode with FIFO support is present.
-    * FIFO can be driven with or without interrupts.
+-----Original Message-----
+From: Dan Malek [mailto:dan@embeddedalley.com] 
+Sent: 21 October 2005 16:36
+To: Hamilton, Ian
+Cc: 'linux-mips@linux-mips.org' MIPS
+Subject: Re: au1x00 usb device status
 
-What does not work: 
-    * DMA support is not implemented (lack of documentation). If you
-      have any information, please tell me.
-    * EPP and ECP modes are not implemented (lack of interest). I
-      currently do not own any peripheral supporting this extended
-      modes. It should not be too difficult to do.
 
-All tests were done with an HP LaserJet 5MP connected to a R5000 SGI
-O2.
+On Oct 21, 2005, at 9:17 AM, Hamilton, Ian wrote:
 
-The module is named parport_ip32.  The patch is not included in this
-mail because it is not very small (2383 lines, 73 Kb).  It is however
-avalaible from:
+> Is there a full description of the timing problem somewhere on the
+web?
+> In particular, how quickly does the interrupt need to be serviced?
 
-  http://arnaud.giersch.free.fr/parport_ip32/parport_ip32-latest.patch.gz
+There are two major challenges (and many minor ones).
+The major challenges are timing related.  First, the USB status
+is not cumulative, if you can't service the interrupt within the
+latency of the next status change, you lose. The second challenge
+is the management of the data flow.  You need to turn around
+DMA buffers very quickly, as the FIFO is small.  If you happen
+to DMA a power of 2 size that matches what you just told the FIFOs,
+you then have to also do a zero length DMA to properly terminate
+the transfer on the USB.  To reduce the latency of DMA processing,
+I was considering not using the general DMA functions, but
+rather implementing custom versions of the DMA functions in
+the USB driver.  This will reduce the latency window, but not
+eliminate it.  Oh yeah, there is also an "old" and "new" version
+of this peripheral in the Au1100.  The new one tried to address
+some of the problems, and it helped a little.  If you code to
+the "old" interface, I believe it will work on all silicon (with
+challenges), but if you detect the new silicon it's a little easier
+to meet the latency requirements.  However, I could always
+find too many cases where the interrupt latency of Linux
+just caused us to miss interrupts and lose the USB state.
+The Gadget interface is really nice, but the additional
+indirection of the software layers makes the problems
+even more challenging.
 
-The patch is against the latest Linux/MIPS kernel (2.6.14-rc2 as of
-today).  If you prefer that I post it on a mailing list, please just
-tell me where, and how (inlined, or gzip'ed attached file).
+Good Luck.  I've been there and don't care to visit again.
 
-Further informations are available on:
 
-  http://arnaud.giersch.free.fr/parport_ip32.html
-
-Regards,
-
-        Arnaud Giersch
+	-- Dan

@@ -1,46 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Oct 2005 15:37:14 +0100 (BST)
-Received: from extgw-uk.mips.com ([62.254.210.129]:52762 "EHLO
-	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S3465796AbVJXOg5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 24 Oct 2005 15:36:57 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j9OEaqIO014354;
-	Mon, 24 Oct 2005 15:36:52 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j9OEaoR6014353;
-	Mon, 24 Oct 2005 15:36:50 +0100
-Date:	Mon, 24 Oct 2005 15:36:50 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] add __user tag to csum_partial_copy_from_user
-Message-ID: <20051024143650.GG2605@linux-mips.org>
-References: <20051024.231953.25910234.anemo@mba.ocn.ne.jp>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20051024.231953.25910234.anemo@mba.ocn.ne.jp>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Oct 2005 23:11:25 +0100 (BST)
+Received: from smtp3-g19.free.fr ([212.27.42.29]:43414 "EHLO smtp3-g19.free.fr")
+	by ftp.linux-mips.org with ESMTP id S8133519AbVJXWLD (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 24 Oct 2005 23:11:03 +0100
+Received: from groumpf (str90-1-82-238-123-182.fbx.proxad.net [82.238.123.182])
+	by smtp3-g19.free.fr (Postfix) with ESMTP id AB95B3744A;
+	Tue, 25 Oct 2005 00:10:58 +0200 (CEST)
+Received: from jekyll ([192.168.1.1])
+	by groumpf with esmtp (Exim 4.50)
+	id 1EUAWw-00011b-03; Tue, 25 Oct 2005 00:10:58 +0200
+Received: from arnaud by jekyll with local (Exim 4.50)
+	id 1EUAWv-0007sU-UC; Tue, 25 Oct 2005 00:10:57 +0200
+To:	linux-mips@linux-mips.org
+Cc:	linux-parport@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Parallel port support for SGI O2
+References: <871x2d3wyc.fsf@groumpf.homeip.net>
+From:	Arnaud Giersch <arnaud.giersch@free.fr>
+X-Face:	&yL?ZRfSIk3zaRm*dlb3R4f.8RM"~b/h|\wI]>pL)}]l$H>.Q3Qd3[<h!`K6mI=+cWpg-El
+ B(FEm\EEdLdS{2l7,8\!RQ5aL0ZXlzzPKLxV/OQfrg/<t!FG>i.K[5isyT&2oBNdnvk`~y}vwPYL;R
+ y)NYo"]T8NlX{nmIUEi\a$hozWm#0GCT'e'{5f@Rl"[g|I8<{By=R8R>bDe>W7)S0-8:b;ZKo~9K?'
+ wq!G,MQ\eSt8g`)jeITEuig89NGmN^%1j>!*F8~kW(yfF7W[:bl>RT[`w3x-C
+Date:	Tue, 25 Oct 2005 00:10:57 +0200
+In-Reply-To: <871x2d3wyc.fsf@groumpf.homeip.net> (Arnaud Giersch's message
+ of "Sun, 23 Oct 2005 02:20:59 +0200")
+Message-ID: <873bmq36ry.fsf@groumpf.homeip.net>
+User-Agent: Gnus/5.1007 (Gnus v5.10.7) XEmacs/21.4 (Jumbo Shrimp, linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <arnaud.giersch@free.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9347
+X-archive-position: 9348
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: arnaud.giersch@free.fr
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Oct 24, 2005 at 11:19:53PM +0900, Atsushi Nemoto wrote:
+Dimanche le 23 octobre 2005, vers 02:20:59 (CEST), j'ai écrit:
 
-> Add __user tag to csum_partial_copy_from_user to fix some sparse
-> warnings.
+> I wrote a low-level parallel port driver for the built-in port on SGI
+> O2 (a.k.a. IP32).
+[...]
+>   http://arnaud.giersch.free.fr/parport_ip32/parport_ip32-latest.patch.gz
+>   http://arnaud.giersch.free.fr/parport_ip32.html
 
-Applied.
+I uploaded a new version which fixes some bugs in FIFO transfer mode.
 
-I did some sparse fixing over the weekend as well, going to push that
-now.
-
-  Ralf
+        Arnaud

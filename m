@@ -1,52 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Oct 2005 23:11:25 +0100 (BST)
-Received: from smtp3-g19.free.fr ([212.27.42.29]:43414 "EHLO smtp3-g19.free.fr")
-	by ftp.linux-mips.org with ESMTP id S8133519AbVJXWLD (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 24 Oct 2005 23:11:03 +0100
-Received: from groumpf (str90-1-82-238-123-182.fbx.proxad.net [82.238.123.182])
-	by smtp3-g19.free.fr (Postfix) with ESMTP id AB95B3744A;
-	Tue, 25 Oct 2005 00:10:58 +0200 (CEST)
-Received: from jekyll ([192.168.1.1])
-	by groumpf with esmtp (Exim 4.50)
-	id 1EUAWw-00011b-03; Tue, 25 Oct 2005 00:10:58 +0200
-Received: from arnaud by jekyll with local (Exim 4.50)
-	id 1EUAWv-0007sU-UC; Tue, 25 Oct 2005 00:10:57 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Oct 2005 07:13:12 +0100 (BST)
+Received: from wproxy.gmail.com ([64.233.184.204]:35374 "EHLO wproxy.gmail.com")
+	by ftp.linux-mips.org with ESMTP id S8133414AbVJYGMq convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 25 Oct 2005 07:12:46 +0100
+Received: by wproxy.gmail.com with SMTP id i6so8457wra
+        for <linux-mips@linux-mips.org>; Mon, 24 Oct 2005 23:12:45 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=mEmKwYPVAEKVYpBQo41KeSj2bK9OEjulHiVcfqVCKP64zp+H3tfiseKMVsZ6eB59BPTjJMcdCxnUaiQd2mvalSO3UD/Oy4mGCgWULjLT7lpImxK69Vvhckm0PEhXY2Zd/1l15iFnoMt/giTmHZHhNEwGTYWLNdsJ14ElVVxkf/g=
+Received: by 10.54.34.7 with SMTP id h7mr98636wrh;
+        Mon, 24 Oct 2005 23:12:45 -0700 (PDT)
+Received: by 10.54.133.2 with HTTP; Mon, 24 Oct 2005 23:12:45 -0700 (PDT)
+Message-ID: <f69849430510242312j5e943bbcj4d1b50e0b236662a@mail.gmail.com>
+Date:	Mon, 24 Oct 2005 23:12:45 -0700
+From:	kernel coder <lhrkernelcoder@gmail.com>
 To:	linux-mips@linux-mips.org
-Cc:	linux-parport@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Parallel port support for SGI O2
-References: <871x2d3wyc.fsf@groumpf.homeip.net>
-From:	Arnaud Giersch <arnaud.giersch@free.fr>
-X-Face:	&yL?ZRfSIk3zaRm*dlb3R4f.8RM"~b/h|\wI]>pL)}]l$H>.Q3Qd3[<h!`K6mI=+cWpg-El
- B(FEm\EEdLdS{2l7,8\!RQ5aL0ZXlzzPKLxV/OQfrg/<t!FG>i.K[5isyT&2oBNdnvk`~y}vwPYL;R
- y)NYo"]T8NlX{nmIUEi\a$hozWm#0GCT'e'{5f@Rl"[g|I8<{By=R8R>bDe>W7)S0-8:b;ZKo~9K?'
- wq!G,MQ\eSt8g`)jeITEuig89NGmN^%1j>!*F8~kW(yfF7W[:bl>RT[`w3x-C
-Date:	Tue, 25 Oct 2005 00:10:57 +0200
-In-Reply-To: <871x2d3wyc.fsf@groumpf.homeip.net> (Arnaud Giersch's message
- of "Sun, 23 Oct 2005 02:20:59 +0200")
-Message-ID: <873bmq36ry.fsf@groumpf.homeip.net>
-User-Agent: Gnus/5.1007 (Gnus v5.10.7) XEmacs/21.4 (Jumbo Shrimp, linux)
+Subject: Problem in "copy_to_user"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Return-Path: <arnaud.giersch@free.fr>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+Return-Path: <lhrkernelcoder@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9348
+X-archive-position: 9349
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnaud.giersch@free.fr
+X-original-sender: lhrkernelcoder@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Dimanche le 23 octobre 2005, vers 02:20:59 (CEST), j'ai écrit:
+hi,
+   i'm trying to run oprofile on 2.6 kernel running on mips board.But
+when oprofile makes a system call to "sys_lookup_dcookie" function to
+find the file path of a particular sample,the function "copy_to_user"
+fails and no byte of path is copied to user sapce.
 
-> I wrote a low-level parallel port driver for the built-in port on SGI
-> O2 (a.k.a. IP32).
-[...]
->   http://arnaud.giersch.free.fr/parport_ip32/parport_ip32-latest.patch.gz
->   http://arnaud.giersch.free.fr/parport_ip32.html
+I checked all combinations for source buffer like using array instead
+of pointer but no success.
+Please suggest me what might be the cause of failure.
 
-I uploaded a new version which fixes some bugs in FIFO transfer mode.
-
-        Arnaud
+regards,
+kernelcoder

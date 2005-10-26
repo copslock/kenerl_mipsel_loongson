@@ -1,80 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Oct 2005 10:24:02 +0100 (BST)
-Received: from p549F5CB2.dip.t-dialin.net ([84.159.92.178]:63403 "EHLO
-	p549F5CB2.dip.t-dialin.net") by ftp.linux-mips.org with ESMTP
-	id S8133633AbVJZJWz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 26 Oct 2005 10:22:55 +0100
-Received: from deliver-1.mx.triera.net ([IPv6:::ffff:213.161.0.31]:47536 "HELO
-	deliver-1.mx.triera.net") by linux-mips.net with SMTP
-	id <S872531AbVJZGnY>; Wed, 26 Oct 2005 08:43:24 +0200
-Received: from localhost (in-1.mx.triera.net [213.161.0.25])
-	by deliver-1.mx.triera.net (Postfix) with ESMTP id C56ECC02A
-	for <linux-mips@linux-mips.org>; Wed, 26 Oct 2005 08:43:19 +0200 (CEST)
-Received: from smtp.triera.net (smtp.triera.net [213.161.0.30])
-	by in-1.mx.triera.net (Postfix) with SMTP id B5DAC1BC09E
-	for <linux-mips@linux-mips.org>; Wed, 26 Oct 2005 08:43:19 +0200 (CEST)
-Received: from [172.18.1.53] (unknown [213.161.20.162])
-	by smtp.triera.net (Postfix) with ESMTP id E16751A18B0
-	for <linux-mips@linux-mips.org>; Wed, 26 Oct 2005 08:43:18 +0200 (CEST)
-Subject: Simple patch for dbau1200
-From:	Matej Kupljen <matej.kupljen@ultra.si>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Oct 2005 10:34:26 +0100 (BST)
+Received: from wproxy.gmail.com ([64.233.184.199]:57963 "EHLO wproxy.gmail.com")
+	by ftp.linux-mips.org with ESMTP id S8133443AbVJZJeH convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 26 Oct 2005 10:34:07 +0100
+Received: by wproxy.gmail.com with SMTP id i6so47293wra
+        for <linux-mips@linux-mips.org>; Wed, 26 Oct 2005 02:34:07 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=sNMv9SKtXvh1M1sQcN1+Fyj2sSjpvMk0gtpgiWzSEcOuVNfTiFFW1UUVqmyGt/zTnGhoS3Wf0d24NSHAxX9KZupGeVgwfCXjc2zvwcbahF/+bSWQc8aBeVtCOWDN6QbJCdZChpCBXRRCEcxnsrsC911aM2MiBxd1A4RJ6XljFRk=
+Received: by 10.54.128.2 with SMTP id a2mr289298wrd;
+        Wed, 26 Oct 2005 02:34:07 -0700 (PDT)
+Received: by 10.54.133.2 with HTTP; Wed, 26 Oct 2005 02:34:07 -0700 (PDT)
+Message-ID: <f69849430510260234p7370d51ahdbf6b80603fc7066@mail.gmail.com>
+Date:	Wed, 26 Oct 2005 02:34:07 -0700
+From:	kernel coder <lhrkernelcoder@gmail.com>
 To:	linux-mips@linux-mips.org
-Content-Type: multipart/mixed; boundary="=-EuiEFHkvV2jDcYlAojFZ"
-Date:	Wed, 26 Oct 2005 08:43:11 +0200
-Message-Id: <1130308991.4656.8.camel@localhost.localdomain>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.2.3 
-X-Virus-Scanned: Triera AV Service
-Return-Path: <matej.kupljen@ultra.si>
+Subject: Porting oprofile to 2.4.32 kernel
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+Return-Path: <lhrkernelcoder@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9357
+X-archive-position: 9358
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matej.kupljen@ultra.si
+X-original-sender: lhrkernelcoder@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
+hi,
+   i'm trying to port oprofile on 2.4.32 kernel running on MIPS
+board.From where can i  get the patch for other boards so that i can
+make a head start by using that patch as a guide.
 
---=-EuiEFHkvV2jDcYlAojFZ
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-
-Hi
-
-This is simple patch, to get the correct text
-output from :
-
-# cat /proc/cpuinfo
-
-for the DBAU1200 board.
-
-BR,
-Matej
-
---=-EuiEFHkvV2jDcYlAojFZ
-Content-Disposition: attachment; filename=db1200-cpuinfo.patch
-Content-Type: text/x-patch; name=db1200-cpuinfo.patch; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-
-Simple patch to get correct board name from /proc/cpuinfo.
-
-Signed-off-by: Matej Kupljen <matej.kupljen@ultra.si>
-
---- linux-latest/arch/mips/au1000/pb1200/init.c	2005-10-24 13:36:24.000000000 +0200
-+++ linux-20051025-dbau1200/arch/mips/au1000/pb1200/init.c	2005-10-26 08:22:58.215114088 +0200
-@@ -43,7 +43,11 @@ extern char *prom_getenv(char *envname);
- 
- const char *get_system_type(void)
- {
-+#ifdef CONFIG_MIPS_DB1200
-+	return "Alchemy Db1200";
-+#else
- 	return "Alchemy Pb1200";
-+#endif
- }
- 
- void __init prom_init(void)
-
---=-EuiEFHkvV2jDcYlAojFZ--
+lhrkernelcoder

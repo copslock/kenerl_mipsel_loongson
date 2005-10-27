@@ -1,53 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Oct 2005 11:29:30 +0100 (BST)
-Received: from extgw-uk.mips.com ([62.254.210.129]:64789 "EHLO
-	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S8133569AbVJ0K3N (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 27 Oct 2005 11:29:13 +0100
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j9RATDxi019415;
-	Thu, 27 Oct 2005 11:29:14 +0100
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j9RATD8L019414;
-	Thu, 27 Oct 2005 11:29:13 +0100
-Date:	Thu, 27 Oct 2005 11:29:12 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Chris Boot <bootc@bootc.net>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Execute-in-Place (XIP)
-Message-ID: <20051027102912.GB17645@linux-mips.org>
-References: <18E0376E-A524-42EE-A5ED-BDF9A0668DE6@bootc.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Oct 2005 16:59:54 +0100 (BST)
+Received: from mo01.iij4u.or.jp ([210.130.0.20]:36841 "EHLO mo01.iij4u.or.jp")
+	by ftp.linux-mips.org with ESMTP id S8133582AbVJ0P7g (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 27 Oct 2005 16:59:36 +0100
+Received: MO(mo01)id j9RFxecv001389; Fri, 28 Oct 2005 00:59:40 +0900 (JST)
+Received: MDO(mdo01) id j9RFxegI005503; Fri, 28 Oct 2005 00:59:40 +0900 (JST)
+Received: from stratos (h195.p501.iij4u.or.jp [210.149.245.195])
+	by mbox.iij4u.or.jp (4U-MR/mbox00) id j9RFxds3023222
+	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NOT);
+	Fri, 28 Oct 2005 00:59:39 +0900 (JST)
+Date:	Fri, 28 Oct 2005 00:59:37 +0900
+From:	Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH] vr41xx: add plat_setup to -mm queue
+Message-Id: <20051028005937.02cb1007.yuasa@hh.iij4u.or.jp>
+X-Mailer: Sylpheed version 1.0.5 (GTK+ 1.2.10; i486-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <18E0376E-A524-42EE-A5ED-BDF9A0668DE6@bootc.net>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9364
+X-archive-position: 9365
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Oct 27, 2005 at 10:02:40AM +0100, Chris Boot wrote:
+Hi Ralf,
 
-> Due to the puny amounts of RAM (2MB) on my board, I'm going to have  
-> to use XIP so that RAM isn't being taken up by kernel code. I was  
-> looking around for MIPS XIP patches and all I could find was in the  
-> linux-vr tree which seems, well, dead.
+Please add this patch to -mm queue.
+This has already been included in linux-mips.git. 
 
-The linux-vr tree is kept online for people to dig out the goodies which
-may be left in there :-)
+Yoichi
 
-> Does anyone know of any more  
-> recent patches or should I undertake the work of porting the patch to  
-> a more recent 2.4 kernel?
+Signed-off-by: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
 
-I guess you'll have to do that.  The alternative would be to port the
-2.6 ARM XIP_KERNEL implementation.
-
-  Ralf
+diff -Npru -X dontdiff mm1-orig/arch/mips/vr41xx/common/init.c mm1/arch/mips/vr41xx/common/init.c
+--- mm1-orig/arch/mips/vr41xx/common/init.c	2005-10-20 15:23:05.000000000 +0900
++++ mm1/arch/mips/vr41xx/common/init.c	2005-10-27 23:26:40.000000000 +0900
+@@ -58,6 +58,14 @@ static void __init timer_init(void)
+ 	board_timer_setup = setup_timer_irq;
+ }
+ 
++void __init plat_setup(void)
++{
++	vr41xx_calculate_clock_frequency();
++
++	timer_init();
++	iomem_resource_init();
++}
++
+ void __init prom_init(void)
+ {
+ 	int argc, i;
+@@ -71,12 +79,6 @@ void __init prom_init(void)
+ 		if (i < (argc - 1))
+ 			strcat(arcs_cmdline, " ");
+ 	}
+-
+-	vr41xx_calculate_clock_frequency();
+-
+-	timer_init();
+-
+-	iomem_resource_init();
+ }
+ 
+ unsigned long __init prom_free_prom_memory (void)

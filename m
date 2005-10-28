@@ -1,114 +1,103 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Oct 2005 12:49:24 +0100 (BST)
-Received: from [213.161.0.31] ([213.161.0.31]:55476 "HELO
-	deliver-1.mx.triera.net") by ftp.linux-mips.org with SMTP
-	id S8133612AbVJ1LtF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 28 Oct 2005 12:49:05 +0100
-Received: from localhost (in-2.mx.triera.net [213.161.0.26])
-	by deliver-1.mx.triera.net (Postfix) with ESMTP id 56B7EC015
-	for <linux-mips@linux-mips.org>; Fri, 28 Oct 2005 13:48:19 +0200 (CEST)
-Received: from smtp.triera.net (smtp.triera.net [213.161.0.30])
-	by in-2.mx.triera.net (Postfix) with SMTP id 2A51D1BC07E
-	for <linux-mips@linux-mips.org>; Fri, 28 Oct 2005 13:48:22 +0200 (CEST)
-Received: from [172.18.1.53] (unknown [213.161.20.162])
-	by smtp.triera.net (Postfix) with ESMTP id B23D31A18B2
-	for <linux-mips@linux-mips.org>; Fri, 28 Oct 2005 13:48:22 +0200 (CEST)
-Subject: AU1200 fb patch
-From:	Matej Kupljen <matej.kupljen@ultra.si>
-To:	linux-mips@linux-mips.org
-Content-Type: multipart/mixed; boundary="=-xjP9W/KF3+PAG8uzmEPe"
-Date:	Fri, 28 Oct 2005 13:48:04 +0200
-Message-Id: <1130500084.4785.10.camel@localhost.localdomain>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.2.3 
-X-Virus-Scanned: Triera AV Service
-Return-Path: <matej.kupljen@ultra.si>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Oct 2005 13:11:39 +0100 (BST)
+Received: from p549F7AB8.dip.t-dialin.net ([84.159.122.184]:43192 "EHLO
+	p549F7AB8.dip.t-dialin.net") by ftp.linux-mips.org with ESMTP
+	id S8133644AbVJ1MLJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 28 Oct 2005 13:11:09 +0100
+Received: from nwd2mail2.analog.com ([IPv6:::ffff:137.71.25.51]:7627 "EHLO
+	nwd2mail2.analog.com") by linux-mips.net with ESMTP
+	id <S869099AbVJ1MKq>; Fri, 28 Oct 2005 14:10:46 +0200
+Received: from nwd2mhb2.analog.com (nwd2mhb2.analog.com [137.71.6.12])
+	by nwd2mail2.analog.com (8.12.10/8.12.10) with ESMTP id j9SC9pGH028694;
+	Fri, 28 Oct 2005 08:09:51 -0400
+Received: from lilac.hdcindia.analog.com ([10.121.13.31])
+	by nwd2mhb2.analog.com (8.9.3 (PHNE_28810+JAGae91741)/8.9.3) with ESMTP id IAA21114;
+	Fri, 28 Oct 2005 08:09:51 -0400 (EDT)
+Received: from SEdaraL01 ([10.121.13.96])
+	by lilac.hdcindia.analog.com (8.12.10+Sun/8.12.10) with ESMTP id j9SC40rn029674;
+	Fri, 28 Oct 2005 17:34:00 +0530 (IST)
+Message-Id: <200510281204.j9SC40rn029674@lilac.hdcindia.analog.com>
+From:	"Sathesh Babu Edara" <satheshbabu.edara@analog.com>
+To:	<linux-mips@linux-mips.org>, <linux-cvs-patches@linux-mips.org>
+Subject: Linux-2.6.12 code base for linux-mips
+Date:	Fri, 28 Oct 2005 17:39:44 +0530
+MIME-Version: 1.0
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_000_000F_01C5DBE6.95723CA0"
+X-Mailer: Microsoft Office Outlook, Build 11.0.6353
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
+Thread-Index: AcXbuHujrU0WX9asRUCJ7F0TDA6Wmg==
+X-MS-TNEF-Correlator: 00000000420CE639EFDBA24D85D0A6DA9A989B2884D92D00
+X-Scanned-By: MIMEDefang 2.49 on 137.71.25.51
+Return-Path: <satheshbabu.edara@analog.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9372
+X-archive-position: 9373
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matej.kupljen@ultra.si
+X-original-sender: satheshbabu.edara@analog.com
 Precedence: bulk
 X-list: linux-mips
 
+This is a multi-part message in MIME format.
 
---=-xjP9W/KF3+PAG8uzmEPe
-Content-Type: text/plain
+------=_NextPart_000_000F_01C5DBE6.95723CA0
+Content-Type: text/plain;
+	charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Hi
+Hi ,	
 
-This patch fixes compilation error for au1200fb.c to replace
-io_remap_page_range with the io_remap_pfn_range.
-Also it adds new panel setting.
+	I would like to know the linux-mips version corresponding to the
+linux-2.6.12 kernel taken from kernel.org.
 
-BR,
-Matej
+	I am referring to the below site to download the linux-2.6.12 mips
+version.
+	http://www.longlandclan.hopto.org/~stuartl/mips-linux/sources/
 
---=-xjP9W/KF3+PAG8uzmEPe
-Content-Disposition: attachment; filename=linux-2.6.14-rc2-prime_view-PM070WX1.patch
-Content-Type: text/x-patch; name=linux-2.6.14-rc2-prime_view-PM070WX1.patch; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+	But I found there are so many files with linux-2.6.12 name so can
+you please let me know the name of the official release version
+corresponding to linux-2.6.12.
 
-This patch:
-- Adds new panel setting for Prime View PM070WX1
-- Replaces io_remap_page_range with the io_remap_pfn_range
+	What is the kernel code base version or date that has been used for
+porting linux-2.6.12 from kernel.org onto linux-mips.
 
-Signed-off-by: Matej Kupljen <matej.kupljen@ultra.si>
+Regards,
+Sathesh
 
-diff --git a/drivers/video/au1200fb.c b/drivers/video/au1200fb.c
---- a/drivers/video/au1200fb.c
-+++ b/drivers/video/au1200fb.c
-@@ -651,6 +651,39 @@ static struct panel_settings known_lcd_p
- 		856, 856,
- 		480, 480,
- 	},
-+	[9] = { /* Prime View PM070WX1 800x480 TFT */
-+		.name = "PrimeView_PM070WX1",
-+		.monspecs = {
-+			.modedb = NULL,
-+			.modedb_len = 0,
-+			.hfmin = 30000,	
-+			.hfmax = 70000, 
-+			.vfmin = 60, 
-+			.vfmax = 60, 
-+			.dclkmin = 6000000, 
-+			.dclkmax = 28000000, 
-+			.input = FB_DISP_RGB,
-+		},
-+		.mode_screen		= LCD_SCREEN_SX_N(800) | 
-+			LCD_SCREEN_SY_N(480),
-+		.mode_horztiming	= LCD_HORZTIMING_HND2_N(43) | 
-+			LCD_HORZTIMING_HND1_N(43) | LCD_HORZTIMING_HPW_N(114),
-+		.mode_verttiming	= LCD_VERTTIMING_VND2_N(20) | 
-+			LCD_VERTTIMING_VND1_N(21) | LCD_VERTTIMING_VPW_N(4),
-+		.mode_clkcontrol	= 0x00020001, /* /4=24Mhz */
-+		.mode_pwmdiv		= 0x8000063f,
-+		.mode_pwmhi		= 0x03400000,
-+		.mode_outmask	= 0x00fcfcfc,
-+		.mode_fifoctrl	= 0x2f2f2f2f,
-+		.mode_toyclksrc	= 0x00000004, /* AUXPLL directly */
-+		.mode_backlight	= 0x00000000,
-+		.mode_auxpll		= 8, /* 96MHz AUXPLL */
-+		.device_init		= board_au1200fb_panel_init,
-+		.device_shutdown	= board_au1200fb_panel_shutdown,
-+		800, 800,
-+		480, 480,
-+	},
-+
- };
- 
- #define NUM_PANELS (sizeof(known_lcd_panels) / sizeof(struct panel_settings))
-@@ -1276,7 +1309,7 @@ int au1200fb_fb_mmap(struct fb_info *fbi
- 
- 	vma->vm_flags |= VM_IO;
-     
--	if (io_remap_page_range(vma, vma->vm_start, off,
-+	if (io_remap_pfn_range(vma, vma->vm_start, vma->vm_pgoff,
- 				vma->vm_end - vma->vm_start,
- 				vma->vm_page_prot)) {
- 		return -EAGAIN;
+------=_NextPart_000_000F_01C5DBE6.95723CA0
+Content-Type: application/ms-tnef;
+	name="winmail.dat"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+	filename="winmail.dat"
 
---=-xjP9W/KF3+PAG8uzmEPe--
+eJ8+IiwMAQaQCAAEAAAAAAABAAEAAQeQBgAIAAAA5AQAAAAAAADoAAEIgAcAGAAAAElQTS5NaWNy
+b3NvZnQgTWFpbC5Ob3RlADEIAQOQBgBQBQAAHgAAAAsAAgABAAAAAwAmAAAAAAAeAHAAAQAAACYA
+AABMaW51eC0yLjYuMTIgY29kZSBiYXNlIGZvciBsaW51eC1taXBzAAAAAgFxAAEAAAAWAAAAAcXb
+uHujrU0WX9asRUCJ7F0TDA6WmgAACwABDgAAAAACAQoOAQAAABgAAAAAAAAAQgzmOe/bok2F0Kba
+mpibKMKAAAADABQOAQAAAAIBCRABAAAAagIAAGYCAADKAwAATFpGdZXQ7nYDAAoAcmNwZzEyNRYy
+APgLYG4OEDAzM08B9wKkA+MCAGNoCsBzsGV0MCAHEwKAfQqA2QjIIDsJbw4wNQKAEfJOKgmwCfAE
+kGF0BbFSDQ3gaAmAAdAgNS41IDAuOTkuAdAwOUkCgFx2CJB3awuAZDo0DGBjAFALAwu1IEj4aSAs
+DIMKsQqECoEBkRAgSSB3CGBsZCAgbGlrZSAU8CBrNG5vB+B0FWAaYW512HgtbQUgBCB2BJAAkE0C
+ICAFoQlwc3ACIGQNC4BnGrIbSDIuNi73DiAa4ASRZQMgAZAakAOgywNSHsUuBbBnLhjvGfB2YR/Q
+CXBmBJAFEB1oYlcfEBsRAJB0GqNkGxBufQkAYRpQHc8b6iCWAZF7PwHxCJAaQBRSDvAdQXN0AHtI
+WVBFUkxJEE5LIGgCQHA6L3QvdylQLgkADyAPAWSiYw8BLmhvBTBvIFIUL34oEHUKwHRsL6Ub4i0b
+gy9zCGFjB5C8LyAR0AHxGkAREGwoIPsMYAlQYwBAKN8p7yr/LAr3LZEBQC3QMBHQEdALpyC+3EJ1
+BUAZ8AIQdRcQGzK/CXAhwDUxLEAlgABweR+Q3wMQB5ED8BtAHfxuIdA1gypjA5F5CGAgC1BlYX8R
+IBpgETAlgBqgGvc3o2/uZhszOmAnMGMHMSHxOLTPHD8dRh4KIJ8gVxDwBUD/BAAbMx7VBaABACMA
+O6oFsf5kFOAaoT9iEPAEICMQH3H+dREgGlACEAXAHRAAIB1Sfx4LH606UAIwPVYb4j47UvRlZwsR
+cxiQILMGEBtBLHNoPkQR4QBJkAAAAwDeP59OAAADAAlZAwAAAAsAAoAIIAYAAAAAAMAAAAAAAABG
+AAAAAAOFAAAAAAAAAwAEgAggBgAAAAAAwAAAAAAAAEYAAAAAEIUAAAAAAAADAByACCAGAAAAAADA
+AAAAAAAARgAAAAABhQAAAAAAAAsAQ4AIIAYAAAAAAMAAAAAAAABGAAAAAIKFAAAAAAAACwBEgAgg
+BgAAAAAAwAAAAAAAAEYAAAAADoUAAAAAAAADAEaACCAGAAAAAADAAAAAAAAARgAAAAAYhQAAAAAA
+AAsAR4AIIAYAAAAAAMAAAAAAAABGAAAAAAaFAAAAAAAACwAfDgEAAAACAfgPAQAAABAAAABCDOY5
+79uiTYXQptqamJsoAgH6DwEAAAAQAAAAQgzmOe/bok2F0KbampibKAMA/g8FAAAAAwANNP0/AwAD
+AA80/T8DAAIBFDQBAAAAEAAAAE5JVEH5v7gBAKoAN9luAAACAX8AAQAAADEAAAAwMDAwMDAwMDQy
+MENFNjM5RUZEQkEyNEQ4NUQwQTZEQTlBOTg5QjI4ODREOTJEMDAAAAAAAwAGEEHffNEDAAcQwgEA
+AAMAEBAAAAAAAwAREAAAAAAeAAgQAQAAAGUAAABISSxJV09VTERMSUtFVE9LTk9XVEhFTElOVVgt
+TUlQU1ZFUlNJT05DT1JSRVNQT05ESU5HVE9USEVMSU5VWC0yNjEyS0VSTkVMVEFLRU5GUk9NS0VS
+TkVMT1JHSUFNUkVGRVJSAAAAAHY9
+
+------=_NextPart_000_000F_01C5DBE6.95723CA0--

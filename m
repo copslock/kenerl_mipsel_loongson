@@ -1,82 +1,114 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Oct 2005 11:49:10 +0100 (BST)
-Received: from imsantv21.netvigator.com ([210.87.250.86]:37780 "EHLO
-	imsantv21.netvigator.com") by ftp.linux-mips.org with ESMTP
-	id S8133606AbVJ1Ksx (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 28 Oct 2005 11:48:53 +0100
-Received: from imsantv44.netvigator.com (imsantv21 [127.0.0.1])
-	by imsantv21.netvigator.com (8.13.1/8.13.1) with ESMTP id j9SAmtW6004319
-	for <linux-mips@linux-mips.org>; Fri, 28 Oct 2005 18:48:59 +0800
-Received: from LOUISLAI (ipvpn008225.netvigator.com [203.198.58.225])
-	by imsantv44.netvigator.com (8.13.1/8.13.1) with SMTP id j9SAmraf011883;
-	Fri, 28 Oct 2005 18:48:53 +0800
-From:	"Louis Lai" <louis.lai@entone.com>
-To:	"Yoann Allain" <yallain@avilinks.com>
-Cc:	<linuxconsole-dev@lists.sourceforge.net>,
-	<linux-mips@linux-mips.org>
-Subject: RE: missing /dev/tty0
-Date:	Fri, 28 Oct 2005 18:43:31 +0800
-Message-ID: <HAENJFHIMADGCOMALOKKIEEMCBAA.louis.lai@entone.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 8bit
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
-Importance: Normal
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1478
-In-Reply-To: <4361FCEF.30707@avilinks.com>
-Return-Path: <louis.lai@entone.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Oct 2005 12:49:24 +0100 (BST)
+Received: from [213.161.0.31] ([213.161.0.31]:55476 "HELO
+	deliver-1.mx.triera.net") by ftp.linux-mips.org with SMTP
+	id S8133612AbVJ1LtF (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 28 Oct 2005 12:49:05 +0100
+Received: from localhost (in-2.mx.triera.net [213.161.0.26])
+	by deliver-1.mx.triera.net (Postfix) with ESMTP id 56B7EC015
+	for <linux-mips@linux-mips.org>; Fri, 28 Oct 2005 13:48:19 +0200 (CEST)
+Received: from smtp.triera.net (smtp.triera.net [213.161.0.30])
+	by in-2.mx.triera.net (Postfix) with SMTP id 2A51D1BC07E
+	for <linux-mips@linux-mips.org>; Fri, 28 Oct 2005 13:48:22 +0200 (CEST)
+Received: from [172.18.1.53] (unknown [213.161.20.162])
+	by smtp.triera.net (Postfix) with ESMTP id B23D31A18B2
+	for <linux-mips@linux-mips.org>; Fri, 28 Oct 2005 13:48:22 +0200 (CEST)
+Subject: AU1200 fb patch
+From:	Matej Kupljen <matej.kupljen@ultra.si>
+To:	linux-mips@linux-mips.org
+Content-Type: multipart/mixed; boundary="=-xjP9W/KF3+PAG8uzmEPe"
+Date:	Fri, 28 Oct 2005 13:48:04 +0200
+Message-Id: <1130500084.4785.10.camel@localhost.localdomain>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.2.3 
+X-Virus-Scanned: Triera AV Service
+Return-Path: <matej.kupljen@ultra.si>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9371
+X-archive-position: 9372
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: louis.lai@entone.com
+X-original-sender: matej.kupljen@ultra.si
 Precedence: bulk
 X-list: linux-mips
 
-Hi Yoann,
 
-Thanks for your reply!!
-i can create the device file but i still not able to open it.
-When i open /dev/tty0, i got "No such device".
-Any ideas??
+--=-xjP9W/KF3+PAG8uzmEPe
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-Thanks again,
-Louis
+Hi
 
------Original Message-----
-From: Yoann Allain [mailto:yallain@avilinks.com]
-Sent: Friday, October 28, 2005 6:27 PM
-To: Louis Lai
-Cc: linuxconsole-dev@lists.sourceforge.net; linux-mips@linux-mips.org
-Subject: Re: missing /dev/tty0
+This patch fixes compilation error for au1200fb.c to replace
+io_remap_page_range with the io_remap_pfn_range.
+Also it adds new panel setting.
 
+BR,
+Matej
 
-Louis Lai a écrit :
+--=-xjP9W/KF3+PAG8uzmEPe
+Content-Disposition: attachment; filename=linux-2.6.14-rc2-prime_view-PM070WX1.patch
+Content-Type: text/x-patch; name=linux-2.6.14-rc2-prime_view-PM070WX1.patch; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
->Hi all,
->
->I am using a 2.4.30 kernel for my MIPS embedded processor. The kernel can
->start up properly but the tty0 doesn't exist under /dev. I have already
->enable the virtual console during kernel configuration. is it something
->configure not properly for the kernel?? Anyone can help??
->
->Thanks in advance,
->Louis
->
->
->
-Hi Louis,
+This patch:
+- Adds new panel setting for Prime View PM070WX1
+- Replaces io_remap_page_range with the io_remap_pfn_range
 
-The problem is that you didn't create the special file /dev/tty0. Create
-it with the mknod command :
-# mknod /dev/tty0 c 4 0
-Then put the good rights, for example:
-# chmod 640 /dev/tty0
-That should do it...
+Signed-off-by: Matej Kupljen <matej.kupljen@ultra.si>
 
-    Yoann
+diff --git a/drivers/video/au1200fb.c b/drivers/video/au1200fb.c
+--- a/drivers/video/au1200fb.c
++++ b/drivers/video/au1200fb.c
+@@ -651,6 +651,39 @@ static struct panel_settings known_lcd_p
+ 		856, 856,
+ 		480, 480,
+ 	},
++	[9] = { /* Prime View PM070WX1 800x480 TFT */
++		.name = "PrimeView_PM070WX1",
++		.monspecs = {
++			.modedb = NULL,
++			.modedb_len = 0,
++			.hfmin = 30000,	
++			.hfmax = 70000, 
++			.vfmin = 60, 
++			.vfmax = 60, 
++			.dclkmin = 6000000, 
++			.dclkmax = 28000000, 
++			.input = FB_DISP_RGB,
++		},
++		.mode_screen		= LCD_SCREEN_SX_N(800) | 
++			LCD_SCREEN_SY_N(480),
++		.mode_horztiming	= LCD_HORZTIMING_HND2_N(43) | 
++			LCD_HORZTIMING_HND1_N(43) | LCD_HORZTIMING_HPW_N(114),
++		.mode_verttiming	= LCD_VERTTIMING_VND2_N(20) | 
++			LCD_VERTTIMING_VND1_N(21) | LCD_VERTTIMING_VPW_N(4),
++		.mode_clkcontrol	= 0x00020001, /* /4=24Mhz */
++		.mode_pwmdiv		= 0x8000063f,
++		.mode_pwmhi		= 0x03400000,
++		.mode_outmask	= 0x00fcfcfc,
++		.mode_fifoctrl	= 0x2f2f2f2f,
++		.mode_toyclksrc	= 0x00000004, /* AUXPLL directly */
++		.mode_backlight	= 0x00000000,
++		.mode_auxpll		= 8, /* 96MHz AUXPLL */
++		.device_init		= board_au1200fb_panel_init,
++		.device_shutdown	= board_au1200fb_panel_shutdown,
++		800, 800,
++		480, 480,
++	},
++
+ };
+ 
+ #define NUM_PANELS (sizeof(known_lcd_panels) / sizeof(struct panel_settings))
+@@ -1276,7 +1309,7 @@ int au1200fb_fb_mmap(struct fb_info *fbi
+ 
+ 	vma->vm_flags |= VM_IO;
+     
+-	if (io_remap_page_range(vma, vma->vm_start, off,
++	if (io_remap_pfn_range(vma, vma->vm_start, vma->vm_pgoff,
+ 				vma->vm_end - vma->vm_start,
+ 				vma->vm_page_prot)) {
+ 		return -EAGAIN;
+
+--=-xjP9W/KF3+PAG8uzmEPe--

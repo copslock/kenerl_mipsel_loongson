@@ -1,87 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 29 Oct 2005 06:34:57 +0100 (BST)
-Received: from 202-47-55-78.adsl.gil.com.au ([202.47.55.78]:54208 "EHLO
-	longlandclan.hopto.org") by ftp.linux-mips.org with ESMTP
-	id S8133360AbVJ2Fea (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 29 Oct 2005 06:34:30 +0100
-Received: (qmail 32388 invoked from network); 29 Oct 2005 15:34:39 +1000
-Received: from beast.redhatters.home (HELO ?10.0.0.251?) (10.0.0.251)
-  by 192.168.5.1 with SMTP; 29 Oct 2005 15:34:39 +1000
-Message-ID: <436309A6.1080301@gentoo.org>
-Date:	Sat, 29 Oct 2005 15:33:26 +1000
-From:	Stuart Longland <redhatter@gentoo.org>
-Organization: Gentoo Foundation
-User-Agent: Mozilla Thunderbird 1.0.7 (X11/20050923)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 29 Oct 2005 11:14:57 +0100 (BST)
+Received: from extgw-uk.mips.com ([62.254.210.129]:35870 "EHLO
+	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
+	id S8133382AbVJ2KOj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 29 Oct 2005 11:14:39 +0100
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id j9TAEkhG021170;
+	Sat, 29 Oct 2005 11:14:46 +0100
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id j9TAEjIG021169;
+	Sat, 29 Oct 2005 11:14:45 +0100
+Date:	Sat, 29 Oct 2005 11:14:45 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
 To:	Sathesh Babu Edara <satheshbabu.edara@analog.com>
-CC:	linux-mips@linux-mips.org
+Cc:	linux-mips@linux-mips.org
 Subject: Re: Linux-2.6.12 code base for linux-mips
+Message-ID: <20051029101445.GC2935@linux-mips.org>
 References: <200510281204.j9SC40rn029674@lilac.hdcindia.analog.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <200510281204.j9SC40rn029674@lilac.hdcindia.analog.com>
-X-Enigmail-Version: 0.93.0.0
-OpenPGP: id=63264AB9;
-	url=http://dev.gentoo.org/~redhatter/gpgkey.asc
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="------------enigBBBAA11C57E70F0CE85FED76"
-Return-Path: <redhatter@gentoo.org>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9381
+X-archive-position: 9382
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: redhatter@gentoo.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---------------enigBBBAA11C57E70F0CE85FED76
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+On Fri, Oct 28, 2005 at 05:39:44PM +0530, Sathesh Babu Edara wrote:
 
-Sathesh Babu Edara wrote:
+> To:	<linux-mips@linux-mips.org>, <linux-cvs-patches@linux-mips.org>
+
+linux-cvs-patches does not allow _any_ kind of postings.
+
+> 	I would like to know the linux-mips version corresponding to the
+> linux-2.6.12 kernel taken from kernel.org.
+> 
 > 	I am referring to the below site to download the linux-2.6.12 mips
 > version.
 > 	http://www.longlandclan.hopto.org/~stuartl/mips-linux/sources/
-
-You might be better off using git from now on. :-)  I provided that
-snapshot service so that those who are firewalled-off from CVS & rsync
-can still obtain snapshots of the Linux/MIPS kernel.
-
-Since git can (and does) run over both HTTP and RSYNC, my mirror has
-somewhat been made redundant.
-
-There's some notes on doing exactly this on the wiki. :-)
-
+> 
 > 	But I found there are so many files with linux-2.6.12 name so can
 > you please let me know the name of the official release version
 > corresponding to linux-2.6.12.
+> 
+> 	What is the kernel code base version or date that has been used for
+> porting linux-2.6.12 from kernel.org onto linux-mips.
 
-Probably the first snapshotted 2.6.12 would be the closest to the
-upstream kernel 2.6.12.  But seriously, I'd go for the latest 2.6.12
-release, as this will have fixes not present at the previous merge with
-kernel.org.
+Checkout the linux-2.6.12 tag from the git archive.
 
--- 
-Stuart Longland (aka Redhatter)              .'''.
-Gentoo Linux/MIPS Cobalt and Docs Developer  '.'` :
-. . . . . . . . . . . . . . . . . . . . . .   .'.'
-http://dev.gentoo.org/~redhatter             :.'
-
---------------enigBBBAA11C57E70F0CE85FED76
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.1 (GNU/Linux)
-Comment: Using GnuPG with Thunderbird - http://enigmail.mozdev.org
-
-iD8DBQFDYwmquarJ1mMmSrkRArD0AJ9OhdtaG7bWWquWk8P1aTAGFAI/sgCfWqsL
-LJaelOEvrq/HpfqR8WxOU4I=
-=Q5XG
------END PGP SIGNATURE-----
-
---------------enigBBBAA11C57E70F0CE85FED76--
+  Ralf

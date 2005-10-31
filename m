@@ -1,98 +1,95 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Oct 2005 18:09:43 +0000 (GMT)
-Received: from alpha.total-knowledge.com ([205.217.158.170]:40143 "EHLO
-	total-knowledge.com") by ftp.linux-mips.org with ESMTP
-	id S8133734AbVJaSJZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 31 Oct 2005 18:09:25 +0000
-Received: (qmail 7932 invoked from network); 31 Oct 2005 10:02:10 -0800
-Received: from unknown (HELO ?10.50.163.242?) (ilya@209.157.142.204)
-  by alpha.total-knowledge.com with ESMTPA; 31 Oct 2005 10:02:10 -0800
-Message-ID: <43665DED.9030302@total-knowledge.com>
-Date:	Mon, 31 Oct 2005 10:09:49 -0800
-From:	"Ilya A. Volynets-Evenbakh" <ilya@total-knowledge.com>
-Organization: Total Knowledge
-User-Agent: Mozilla Thunderbird 1.0.7 (X11/20051015)
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Oct 2005 21:04:38 +0000 (GMT)
+Received: from [85.21.88.2] ([85.21.88.2]:38845 "HELO mail.dev.rtsoft.ru")
+	by ftp.linux-mips.org with SMTP id S8133749AbVJaVEU (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 31 Oct 2005 21:04:20 +0000
+Received: (qmail 18455 invoked from network); 31 Oct 2005 21:04:48 -0000
+Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
+  by mail.dev.rtsoft.ru with SMTP; 31 Oct 2005 21:04:48 -0000
+Message-ID: <4366875B.7050400@ru.mvista.com>
+Date:	Tue, 01 Nov 2005 00:06:35 +0300
+From:	Sergei Shtylylov <sshtylyov@ru.mvista.com>
+Organization: MostaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-To:	Sathesh Babu Edara <satheshbabu.edara@analog.com>
-CC:	'Linux MIPS List' <linux-mips@linux-mips.org>,
-	'Ralf Baechle' <ralf@linux-mips.org>
-Subject: Re: Git Repo
-References: <200510311739.j9VHdGrn007977@lilac.hdcindia.analog.com>
-In-Reply-To: <200510311739.j9VHdGrn007977@lilac.hdcindia.analog.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <ilya@total-knowledge.com>
+To:	Linux MIPS Development <linux-mips@linux-mips.org>
+CC:	Manish Lachwani <mlachwani@mvista.com>,
+	Pete Popov <ppopov@embeddedalley.com>
+Subject: [PATCH] Set proper machine type for DB1xx0 boards
+References: <4357F774.9010208@ru.mvista.com> <435A9FB2.3070303@ru.mvista.com>
+In-Reply-To: <435A9FB2.3070303@ru.mvista.com>
+Content-Type: multipart/mixed;
+ boundary="------------010901040200060807020102"
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9398
+X-archive-position: 9399
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ilya@total-knowledge.com
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-You are behind firewall that does not allow rsync access.
-Use http://www.linux-mips.org/pub/scm/linux.git instead.
+This is a multi-part message in MIME format.
+--------------010901040200060807020102
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Sathesh Babu Edara wrote:
+Hello, I wrote:
 
-> Thank you.
->  I installed git-snapshot-20051025 on Linux PC to checkout linux from git
->and  executed following command
-># rsync://ftp.linux-mips.org/git 
-> and I get following message
->   -bash: rsync://ftp.linux-mips.org/git: No such file or directory.
->
->I tried the following command also
-># git clone rsync://ftp.linux-mips.org/git/linux.git linux.git
-> and get following message
->------------------------------------
->defaulting to local storage area
->warning: templates not found /home/sathesh/share/git-core/templates/
->rsync: failed to connect to ftp.linux-mips.org: Connection timed out
->rsync error: error in socket IO (code 10) at clientserver.c(83)
->----------------------------------------
->
->Can you suggest me what could be the problem?. Am I missed anything?.
->
->Thanks in advance.
->
->Regards,
->Sathesh
->
->-----Original Message-----
->From: Ralf Baechle [mailto:ralf@linux-mips.org] 
->Sent: Monday, October 31, 2005 8:13 PM
->To: Sathesh Babu Edara
->Cc: 'Linux MIPS List'
->Subject: Re: Git Repo
->
->On Mon, Oct 31, 2005 at 11:54:24AM +0530, Sathesh Babu Edara wrote:
->
->  
->
->>   I too get same error message.I am new to GIT.I want to checkout
->>linux-2.6.12 tag from the git archive.Can some one help me what 
->>commands I should use to checkout.I am trying to connect GIT  repo via 
->>gitweb from my Windows-XP system.
->>    
->>
->
->Gitweb is for browsing repositories only, not for checking out.
->
->If you actually want to checkout from git I suggest you start by installing
->Linux; there apparently is a Cygwin port but I expect it to be rather slow
->and you may hit more interesting problems with Cygwin.
->
->  Ralf
->
->
->  
->
+>>     Here's a couple of DBAu1550 fixes: the first one fixes BCSR 
+>> accesses in
+>> the board setup/reset code (the registers are actually 16-bit, and their
+>> addresses are different between DBAu1550 and other DBAu1xx0 boards), the
 
--- 
-Ilya A. Volynets-Evenbakh
-Total Knowledge. CTO
-http://www.total-knowledge.com
+>    Here's an updated BCSR patch. Stupid typo. :-/
+
+>> second one just selects the proper machine type for DBAu1550.
+
+>   It was somewhat incomplete, more #ifdef's are needed to set the proper 
+> machine types for DB1100/DB1500...
+
+      So, here's an update...
+
+WBR, Sergei
+
+
+--------------010901040200060807020102
+Content-Type: text/plain;
+ name="DBAu1xx0-platform.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="DBAu1xx0-platform.patch"
+
+Index: arch/mips/au1000/db1x00/init.c
+===================================================================
+RCS file: /home/cvs/linux/arch/mips/au1000/db1x00/init.c,v
+retrieving revision 1.6
+diff -a -u -p -r1.6 init.c
+--- arch/mips/au1000/db1x00/init.c	11 Jul 2005 10:03:24 -0000	1.6
++++ arch/mips/au1000/db1x00/init.c	31 Oct 2005 21:01:26 -0000
+@@ -61,7 +61,17 @@ void __init prom_init(void)
+ 	prom_envp = (char **) fw_arg2;
+ 
+ 	mips_machgroup = MACH_GROUP_ALCHEMY;
+-	mips_machtype = MACH_DB1000;	/* set the platform # */
++
++	/* Set the platform # */
++#if	defined (CONFIG_MIPS_DB1550)
++	mips_machtype = MACH_DB1550;
++#elif	defined (CONFIG_MIPS_DB1500)
++	mips_machtype = MACH_DB1500;
++#elif	defined (CONFIG_MIPS_DB1100)
++	mips_machtype = MACH_DB1100;
++#else
++	mips_machtype = MACH_DB1000;
++#endif
+ 
+ 	prom_init_cmdline();
+ 
+
+
+
+--------------010901040200060807020102--

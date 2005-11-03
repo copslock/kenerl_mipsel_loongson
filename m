@@ -1,32 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Nov 2005 16:32:44 +0000 (GMT)
-Received: from extgw-uk.mips.com ([62.254.210.129]:28431 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Nov 2005 17:59:20 +0000 (GMT)
+Received: from extgw-uk.mips.com ([62.254.210.129]:34843 "EHLO
 	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S8133860AbVKCQc1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 3 Nov 2005 16:32:27 +0000
+	id S8133864AbVKCR7D (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 3 Nov 2005 17:59:03 +0000
 Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id jA3GXBVM026798;
-	Thu, 3 Nov 2005 16:33:11 GMT
+	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id jA3Hxlh0030322;
+	Thu, 3 Nov 2005 17:59:47 GMT
 Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id jA3GX6Jt026786;
-	Thu, 3 Nov 2005 16:33:06 GMT
-Date:	Thu, 3 Nov 2005 16:33:06 +0000
+	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id jA3HxkIV030321;
+	Thu, 3 Nov 2005 17:59:46 GMT
+Date:	Thu, 3 Nov 2005 17:59:46 +0000
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Stuart Anderson <anderson@netsweng.com>
-Cc:	David Daney <ddaney@avtrex.com>, crossgcc@sources.redhat.com,
-	MIPS Linux List <linux-mips@linux-mips.org>
-Subject: Re: linux kernel building for mips malta target board
-Message-ID: <20051103163306.GC3149@linux-mips.org>
-References: <E1EXLJV-0005R4-K3@real.realitydiluted.com> <43695DB4.7060708@avtrex.com> <Pine.LNX.4.61.0511022000410.3511@trantor.stuart.netsweng.com> <436965B7.3000606@avtrex.com> <Pine.LNX.4.61.0511022057140.3511@trantor.stuart.netsweng.com>
+To:	Clem Taylor <clem.taylor@gmail.com>
+Cc:	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: 2.6.14 on Au1550 panics in free_hot_cold_page from init
+Message-ID: <20051103175945.GA7461@linux-mips.org>
+References: <ecb4efd10511021735m24778203rb3e816a0d9a62833@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.61.0511022057140.3511@trantor.stuart.netsweng.com>
+In-Reply-To: <ecb4efd10511021735m24778203rb3e816a0d9a62833@mail.gmail.com>
 User-Agent: Mutt/1.4.2.1i
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9419
+X-archive-position: 9420
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,20 +33,23 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-> I shamed myself into sitting down and doing this. 8-)
-> 
-> The attached patch seems to work, or at least doesn't seem to cause
-> things to blow up. An o32 userspace on a 64-bit kernel comes up
-> multi-user and can build a kernel, and run a quick subset of LTP.
-> 
-> There was a comment on IRC that there was a register allocation issue which
-> lead to the current code. I'm not sure of the exact details, but I _think_
-> this change ends up being equivilent to the code it replaces.
+On Wed, Nov 02, 2005 at 08:35:25PM -0500, Clem Taylor wrote:
 
-It's correct - but triggers plenty of extra warnings and you forgot about
-get_user() which has the same kind of issue.  Also you don't have the
-guarantee that <linux/types.h> has been included, so in order to avoid a
-yet another header file dependency I changed s8, s16 etc. to char, short,
-int, long long.  Working on it but as usual uaccess.h is quite a quiz.
+> I was wondering if anyone has gotten 2.6.14 to run on an Au1550. I had
+> 2.6.14-rc2 mostly working (except for jffs2 writes) and was previously
+> using 2.6.13 (had a jffs2 sync problem on reboot) and 2.6.11 (seems
+> okay).
+> 
+> I tried out a linux-mips-git tree from this afternoon
+> (6e47ab8b0ad1ca7bddbc086e2ce7736632c18df4). 2.6.14 is panicing right
+> after the 'Freeing unused kernel memory' with:
+
+What you're running is actually post-linux 2.6.14 already, with a few
+megs of finest breakage of Linus merged in.  I suggest you try
+what's tagged as linux-2.6.14 instead.
+
+I'm currently aggressivly following Linus and so the repository is gets
+all the good and bad stuff from kernel.org in undilluted form on the
+master branch.
 
   Ralf

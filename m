@@ -1,68 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Nov 2005 12:58:59 +0000 (GMT)
-Received: from extgw-uk.mips.com ([62.254.210.129]:51733 "EHLO
-	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S8133844AbVKCM6m (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 3 Nov 2005 12:58:42 +0000
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id jA3CxRMu009675;
-	Thu, 3 Nov 2005 12:59:27 GMT
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id jA3CxQfB009674;
-	Thu, 3 Nov 2005 12:59:26 GMT
-Date:	Thu, 3 Nov 2005 12:59:26 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org,
-	"Maciej W. Rozycki" <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Nov 2005 13:14:59 +0000 (GMT)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:4879 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S8133850AbVKCNOk (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 3 Nov 2005 13:14:40 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 838FAE1C91;
+	Thu,  3 Nov 2005 14:15:24 +0100 (CET)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 30479-06; Thu,  3 Nov 2005 14:15:24 +0100 (CET)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 325B4E1C67;
+	Thu,  3 Nov 2005 14:15:23 +0100 (CET)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id jA3DFGXY025647;
+	Thu, 3 Nov 2005 14:15:16 +0100
+Date:	Thu, 3 Nov 2005 13:15:32 +0000 (GMT)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
 Subject: Re: [PATCH] use rtc_lock to protect RTC operations
-Message-ID: <20051103125926.GB3149@linux-mips.org>
+In-Reply-To: <20051103125926.GB3149@linux-mips.org>
+Message-ID: <Pine.LNX.4.55.0511031305280.24109@blysk.ds.pg.gda.pl>
 References: <20051103.010115.07642880.anemo@mba.ocn.ne.jp>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20051103.010115.07642880.anemo@mba.ocn.ne.jp>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+ <20051103125926.GB3149@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.87/1160/Wed Nov  2 17:26:43 2005 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9414
+X-archive-position: 9415
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Nov 03, 2005 at 01:01:15AM +0900, Atsushi Nemoto wrote:
+On Thu, 3 Nov 2005, Ralf Baechle wrote:
 
-> Many RTC routines are not protected each other.  There are potential
-> race, for example, ntp-update and /dev/rtc.  This patch fixes them
-> using rtc_lock.
-> 
-> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+> Unlike on PC CMOS_READ on a DEC is a single read operation, so atomic
+> and so doesn't need to be protected.  I'd have to check the datasheet
+> for any other reason why it might need locking though, so I apply your
+> patch for now and leave this to Maciej for later optimization.
 
-> --- a/arch/mips/dec/time.c
-> +++ b/arch/mips/dec/time.c
-> @@ -37,10 +37,25 @@
->  #include <asm/dec/machtype.h>
->  
->  
-> +/*
-> + * Returns true if a clock update is in progress
-> + */
-> +static inline unsigned char dec_rtc_is_updating(void)
-> +{
-> +	unsigned char uip;
-> +	unsigned long flags;
-> +
-> +	spin_lock_irqsave(&rtc_lock, flags);
-> +	uip = (CMOS_READ(RTC_FREQ_SELECT) & RTC_UIP);
-> +	spin_unlock_irqrestore(&rtc_lock, flags);
+ You are correct -- unless you need to perform multiple RTC access cycles
+uninterrupted in a row, a lock is not needed.  Single accesses are
+executed as single cycles on the system bus, with some glue logic attached
+to the RTC chip converting them into pairs of chip accesses consisting of
+an index register write and the actual data cycle.  Even the exact latency
+of the whole operation is specified for some system models. ;-)
 
-Unlike on PC CMOS_READ on a DEC is a single read operation, so atomic
-and so doesn't need to be protected.  I'd have to check the datasheet
-for any other reason why it might need locking though, so I apply your
-patch for now and leave this to Maciej for later optimization.
+ Welcome to a clean design!
 
-  Ralf
+  Maciej

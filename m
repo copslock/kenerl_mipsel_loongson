@@ -1,76 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Nov 2005 22:52:45 +0000 (GMT)
-Received: from caramon.arm.linux.org.uk ([212.18.232.186]:33548 "EHLO
-	caramon.arm.linux.org.uk") by ftp.linux-mips.org with ESMTP
-	id S8133830AbVKBWwY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 2 Nov 2005 22:52:24 +0000
-Received: from flint.arm.linux.org.uk ([2002:d412:e8ba:1:201:2ff:fe14:8fad])
-	by caramon.arm.linux.org.uk with esmtpsa (TLSv1:DES-CBC3-SHA:168)
-	(Exim 4.52)
-	id 1EXRTX-0005p6-O9; Wed, 02 Nov 2005 22:53:00 +0000
-Received: from rmk by flint.arm.linux.org.uk with local (Exim 4.52)
-	id 1EXRTV-0008G6-PP; Wed, 02 Nov 2005 22:52:57 +0000
-Date:	Wed, 2 Nov 2005 22:52:57 +0000
-From:	Russell King <rmk+lkml@arm.linux.org.uk>
-To:	Andy Isaacson <adi@hexapodia.org>
-Cc:	Pavel Machek <pavel@suse.cz>,
-	Richard Purdie <richard@openedhand.com>,
-	LKML <linux-kernel@vger.kernel.org>, Greg KH <gregkh@suse.de>,
-	linux-mips@linux-mips.org
-Subject: Re: [RFC] The driver model, I2C and gpio provision on Sharp SL-C1000 (Akita)
-Message-ID: <20051102225257.GE4778@flint.arm.linux.org.uk>
-Mail-Followup-To: Andy Isaacson <adi@hexapodia.org>,
-	Pavel Machek <pavel@suse.cz>,
-	Richard Purdie <richard@openedhand.com>,
-	LKML <linux-kernel@vger.kernel.org>, Greg KH <gregkh@suse.de>,
-	linux-mips@linux-mips.org
-References: <20051029190819.GB657@openzaurus.ucw.cz> <20051102194453.GF26542@hexapodia.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20051102194453.GF26542@hexapodia.org>
-User-Agent: Mutt/1.4.1i
-Return-Path: <rmk+linux-mips=linux-mips.org@arm.linux.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Nov 2005 00:45:14 +0000 (GMT)
+Received: from adsl-67-116-42-147.dsl.sntc01.pacbell.net ([67.116.42.147]:32545
+	"EHLO avtrex.com") by ftp.linux-mips.org with ESMTP
+	id S8133833AbVKCAo4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 3 Nov 2005 00:44:56 +0000
+Received: from [192.168.7.26] ([192.168.7.3]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Wed, 2 Nov 2005 16:45:40 -0800
+Message-ID: <43695DB4.7060708@avtrex.com>
+Date:	Wed, 02 Nov 2005 16:45:40 -0800
+From:	David Daney <ddaney@avtrex.com>
+User-Agent: Mozilla Thunderbird 1.0.7-1.1.fc3 (X11/20050929)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	sjhill@realitydiluted.com
+CC:	crossgcc@sources.redhat.com,
+	MIPS Linux List <linux-mips@linux-mips.org>
+Subject: Re: linux kernel building for mips malta target board
+References: <E1EXLJV-0005R4-K3@real.realitydiluted.com>
+In-Reply-To: <E1EXLJV-0005R4-K3@real.realitydiluted.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 8bit
+X-OriginalArrivalTime: 03 Nov 2005 00:45:40.0843 (UTC) FILETIME=[EA3573B0:01C5E00F]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9407
+X-archive-position: 9408
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rmk+lkml@arm.linux.org.uk
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Nov 02, 2005 at 11:44:53AM -0800, Andy Isaacson wrote:
-> On Sat, Oct 29, 2005 at 09:08:19PM +0200, Pavel Machek wrote:
-> > > I2C drivers appear relatively late in the boot procedure and changing
-> > > that isn't practical. I therefore ended up writing akita-ioexp which
-> > 
-> > It seems that making i2c init early is only sane choice. I realize PC people
-> > will hate it... but apart from that, why is it impractical?
+sjhill@realitydiluted.com wrote:
+>>>I would like to build latest kernel (ie kernel 2.6.13) for mips malta
+>>>board. Can any one advise me the cross-compiler tools version to be 
+>>>used for building the linux kernel.
+>>>
+>>
+>>I use both gcc-3.3.1 and gcc-3.4.3 to build 2.6.x mips linux kernels.  I 
+>>think for the 2.6.13 kernel any of the latest released versions of 
+>>3.3.x, 3.4.x, or 4.0.x would work.  Use the latest binutils (2.16.91 
+>>20050817 is what I am using).
+>>
 > 
-> FWIW, I have also run into this "I need I2C early in boot, but it's not
-> inited until late" on SiByte (arch/mips/sibyte/{sb1250,bcm1480}/setup.c).  
-> For the time being in the linux-mips tree we simply have two drivers
-> talking to the I2C interface - sibyte/swarm/rtc_* and i2c-sibyte.c,
-> and they are currently lacking even any trivial locking.  We haven't
-> seen any problems yet but that's due to limited exercise - the default
-> config doesn't hook up any drivers for the other chips on I2C.
+> Also, make sure to NOT use any of the 4.1 GCC stuff with Linux/MIPS
+> kernels. I am still tracking down errors with it.
 > 
-> How do other arches that have I2C RTCs deal with this problem?  Or is
-> there something wrong with how arch/mips/kernel/time.c:time_init deals
-> with the rtc?
 
-On ARM, where we have I2C RTCs, I tend to leave xtime well alone in
-time_init and just setup the timer.  When i2c is initialised, and
-the bus and RTC have been detected, I set the time from them at
-that point.
+Is this the problem you are seeing?:
+In file included from include/linux/nfs_fs.h:15,
+                  from init/do_mounts.c:12:
+include/linux/pagemap.h: In function ‘fault_in_pages_readable’:
+include/linux/pagemap.h:236: error: read-only variable ‘__gu_val’ used 
+as ‘asm’ output
+include/linux/pagemap.h:236: error: read-only variable ‘__gu_val’ used 
+as ‘asm’ output
+include/linux/pagemap.h:236: error: read-only variable ‘__gu_val’ used 
+as ‘asm’ output
+include/linux/pagemap.h:236: error: read-only variable ‘__gu_val’ used 
+as ‘asm’ output
 
-I haven't seen any problems with this approach.  In fact, I'd
-rather time_init() just setup the timer, and we set the time of
-day later during the kernels initialisation.
+The compiler behavior has changed since 4.0.1, but I think the new 
+behavior is correct.  I am blaming the __get_user macro in 
+include/asm-mips/uaccess.h.  It should be possible to fix it there.  The 
+alternative is to hack up include/linux/pagemap.h.
 
--- 
-Russell King
- Linux kernel    2.6 ARM Linux   - http://www.arm.linux.org.uk/
- maintainer of:  2.6 Serial core
+David Daney

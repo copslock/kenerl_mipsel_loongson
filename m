@@ -1,94 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Nov 2005 14:01:27 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:44227 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S8133476AbVKEOBB (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 5 Nov 2005 14:01:01 +0000
-Received: from localhost (p5048-ipad205funabasi.chiba.ocn.ne.jp [222.146.100.48])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 7E5F9AAE8; Sat,  5 Nov 2005 23:01:57 +0900 (JST)
-Date:	Sat, 05 Nov 2005 23:00:58 +0900 (JST)
-Message-Id: <20051105.230058.25910302.anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH] Fix return type of setup_frame variants
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Nov 2005 18:56:19 +0000 (GMT)
+Received: from Jg555.com ([64.30.195.78]:39078 "EHLO jg555.com")
+	by ftp.linux-mips.org with ESMTP id S8133614AbVKES4B (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 5 Nov 2005 18:56:01 +0000
+Received: from [172.16.0.55] ([::ffff:172.16.0.55])
+  (AUTH: PLAIN root, TLS: TLSv1/SSLv3,256bits,AES256-SHA)
+  by jg555.com with esmtp; Sat, 05 Nov 2005 10:56:50 -0800
+  id 0028C43E.436D0072.000049D8
+Message-ID: <436D0061.5070100@jg555.com>
+Date:	Sat, 05 Nov 2005 10:56:33 -0800
+From:	Jim Gifford <maillist@jg555.com>
+User-Agent: Mozilla Thunderbird 1.0.7 (Windows/20050923)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	Linux MIPS List <linux-mips@linux-mips.org>
+Subject: MIPS - 64bit woes
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Return-Path: <maillist@jg555.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9426
+X-archive-position: 9427
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: maillist@jg555.com
 Precedence: bulk
 X-list: linux-mips
 
-Since 2.6.13-rc1, setup_frame and its variants return int.  But there
-are some remaining bits.
+I've been working on getting the RaQ2 to work with the current 2.6.14 
+kernel, but no luck at all. The last success I had was with 2.6.12.x 
+series.
 
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+I'm looking for ideas, patches or whatever to get this working again. I 
+know it has to do with the kernel using 32bit addressing instead of 64 
+bit, but have no clue where to start.
 
-diff --git a/arch/mips/kernel/signal.c b/arch/mips/kernel/signal.c
---- a/arch/mips/kernel/signal.c
-+++ b/arch/mips/kernel/signal.c
-@@ -384,9 +384,6 @@ give_sigsegv:
- 	return 0;
- }
- 
--extern void setup_rt_frame_n32(struct k_sigaction * ka,
--	struct pt_regs *regs, int signr, sigset_t *set, siginfo_t *info);
--
- static inline int handle_signal(unsigned long sig, siginfo_t *info,
- 	struct k_sigaction *ka, sigset_t *oldset, struct pt_regs *regs)
- {
-diff --git a/arch/mips/kernel/signal32.c b/arch/mips/kernel/signal32.c
---- a/arch/mips/kernel/signal32.c
-+++ b/arch/mips/kernel/signal32.c
-@@ -647,8 +647,8 @@ static inline void *get_sigframe(struct 
- 	return (void *)((sp - frame_size) & ALMASK);
- }
- 
--void setup_frame_32(struct k_sigaction * ka, struct pt_regs *regs,
--			       int signr, sigset_t *set)
-+int setup_frame_32(struct k_sigaction * ka, struct pt_regs *regs,
-+	int signr, sigset_t *set)
- {
- 	struct sigframe *frame;
- 	int err = 0;
-@@ -694,13 +694,15 @@ void setup_frame_32(struct k_sigaction *
- 	       current->comm, current->pid,
- 	       frame, regs->cp0_epc, frame->sf_code);
- #endif
--        return;
-+	return 1;
- 
- give_sigsegv:
- 	force_sigsegv(signr, current);
-+	return 0;
- }
- 
--void setup_rt_frame_32(struct k_sigaction * ka, struct pt_regs *regs, int signr,	sigset_t *set, siginfo_t *info)
-+int setup_rt_frame_32(struct k_sigaction * ka, struct pt_regs *regs,
-+	int signr, sigset_t *set, siginfo_t *info)
- {
- 	struct rt_sigframe32 *frame;
- 	int err = 0;
-@@ -763,10 +765,11 @@ void setup_rt_frame_32(struct k_sigactio
- 	       current->comm, current->pid,
- 	       frame, regs->cp0_epc, frame->rs_code);
- #endif
--	return;
-+	return 1;
- 
- give_sigsegv:
- 	force_sigsegv(signr, current);
-+	return 0;
- }
- 
- static inline int handle_signal(unsigned long sig, siginfo_t *info,
+Here is what I get when I attempt to boot it.
+
+ > nfs 172.16.0.1 /nfsroot boot/vmlinux-2.6.14.gz
+nfs: mounted "/nfsroot"
+nfs: lookup "boot"
+nfs: lookup "vmlinux-2.6.14.gz"
+nfs: mode <0100755>
+1349KB loaded (899KB/sec)
+001512e8 1381096t
+nfs: unmounted "/nfsroot"
+ > execute root=/dev/nfs nfsroot=172.16.0.1:/nfsroot 
+console=ttyS0,115200 ip=dhcp
+elf64: 00080000 - 003b901f (ffffffff.80357000) (ffffffff.80000000)
+elf64: ffffffff.80080000 (80080000) 3170438t + 208794t
+net: interface down
+
+Thanx for all your assistance.
+
+-- 
+----
+Jim Gifford
+maillist@jg555.com

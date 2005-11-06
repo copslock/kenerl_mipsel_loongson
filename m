@@ -1,52 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 Nov 2005 14:58:33 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:34007 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S8133649AbVKFO6Q (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 6 Nov 2005 14:58:16 +0000
-Received: from localhost (p6072-ipad209funabasi.chiba.ocn.ne.jp [58.88.117.72])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id D69AEA7EC; Sun,  6 Nov 2005 23:59:19 +0900 (JST)
-Date:	Sun, 06 Nov 2005 23:58:21 +0900 (JST)
-Message-Id: <20051106.235821.108306460.anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 Nov 2005 15:22:32 +0000 (GMT)
+Received: from web35615.mail.mud.yahoo.com ([66.163.179.154]:1461 "HELO
+	web35615.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S8133649AbVKFPWO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 6 Nov 2005 15:22:14 +0000
+Received: (qmail 10452 invoked by uid 60001); 6 Nov 2005 15:23:14 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  h=Message-ID:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
+  b=YiojVKN+N37EOy3JSHMNIbD38zTEmWZCxYbYrgyMoW2pHRq/cTECZMweWam5Z+Y5Es96H5urlLgzbAxUpMyVoN5qn2EWTKdQkruzj39fOOlWmkRsE9SzTzBHonn9pJ/WGH9Uj3VJp2xpCDcs/vv2i85qGwIJQP56z4XB0xS+5cU=  ;
+Message-ID: <20051106152314.10450.qmail@web35615.mail.mud.yahoo.com>
+Received: from [66.218.47.204] by web35615.mail.mud.yahoo.com via HTTP; Sun, 06 Nov 2005 07:23:14 PST
+Date:	Sun, 6 Nov 2005 07:23:14 -0800 (PST)
+From:	Andre <armcc2000@yahoo.com>
+Subject: 2.6.14-git9 cobalt build fails
 To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH] Redefine outs[wl] for ide_outs[wl].
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <armcc2000@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9429
+X-archive-position: 9430
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: armcc2000@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-Add missing bits to fix D-cache aliasing problem in the PIO IDE driver.
+Not sure if the cobalt support that's just gone into the mainstream
+kernel is even supposed to compile yet... but it doesn't ;-) I tried
+2.6.14 + git9 patch from kernel.org.
 
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Note that default config was tweaked slightly (to enable IDE DMA and
+a network driver).
 
-diff --git a/include/asm-mips/mach-generic/ide.h b/include/asm-mips/mach-generic/ide.h
-index 9610069..550979a 100644
---- a/include/asm-mips/mach-generic/ide.h
-+++ b/include/asm-mips/mach-generic/ide.h
-@@ -168,8 +168,12 @@ static inline void __ide_mm_outsl(void _
- /* ide_insw calls insw, not __ide_insw.  Why? */
- #undef insw
- #undef insl
-+#undef outsw
-+#undef outsl
- #define insw(port, addr, count) __ide_insw(port, addr, count)
- #define insl(port, addr, count) __ide_insl(port, addr, count)
-+#define outsw(port, addr, count) __ide_outsw(port, addr, count)
-+#define outsl(port, addr, count) __ide_outsl(port, addr, count)
- 
- #endif /* __KERNEL__ */
- 
+  ...
+  CC      arch/mips/pci/pci.o
+  CC      arch/mips/pci/ops-gt64111.o
+  CC      arch/mips/pci/fixup-cobalt.o
+arch/mips/pci/fixup-cobalt.c:35: error:
+`PCI_DEVICE_ID_MARVELL_GT64111' undeclared here (not in a function)
+arch/mips/pci/fixup-cobalt.c:35: error: initializer element is not
+constant
+arch/mips/pci/fixup-cobalt.c:35: error: (near initialization for
+`__pci_fixup_PCI_VENDOR_ID_MARVELLPCI_DEVICE_ID_MARVELL_GT64111qube_raq_galileo_early_fixup.device')
+arch/mips/pci/fixup-cobalt.c:116: error: initializer element is not
+constant
+arch/mips/pci/fixup-cobalt.c:116: error: (near initialization for
+`__pci_fixup_PCI_VENDOR_ID_MARVELLPCI_DEVICE_ID_MARVELL_GT64111qube_raq_galileo_fixup.device')
+arch/mips/pci/fixup-cobalt.c:58: error:
+__pci_fixup_PCI_VENDOR_ID_VIAPCI_DEVICE_ID_VIA_82C586_1qube_raq_via_bmIDE_fixup
+causes a section type conflict
+make[1]: *** [arch/mips/pci/fixup-cobalt.o] Error 1
+make: *** [arch/mips/pci] Error 2
+root@qube2:/usr/src/linux-2.6.14# 
+
+
+
+
+		
+__________________________________ 
+Yahoo! FareChase: Search multiple travel sites in one click.
+http://farechase.yahoo.com

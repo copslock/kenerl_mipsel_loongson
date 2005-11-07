@@ -1,52 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Nov 2005 18:04:43 +0000 (GMT)
-Received: from bay101-dav18.bay101.hotmail.com ([64.4.56.90]:40226 "EHLO
-	hotmail.com") by ftp.linux-mips.org with ESMTP id S8135602AbVKGSEZ
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 7 Nov 2005 18:04:25 +0000
-Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
-	 Mon, 7 Nov 2005 10:05:37 -0800
-Message-ID: <BAY101-DAV18ABC35208B50E0535A360D2650@phx.gbl>
-Received: from 81.159.218.61 by BAY101-DAV18.phx.gbl with DAV;
-	Mon, 07 Nov 2005 18:05:37 +0000
-X-Originating-IP: [81.159.218.61]
-X-Originating-Email: [oski2001@hotmail.com]
-X-Sender: oski2001@hotmail.com
-From:	"oski" <oski2001@hotmail.com>
-To:	<linux-mips@linux-mips.org>
-Subject: Compiling a kernel for ibm z50
-Date:	Mon, 7 Nov 2005 18:07:42 -0000
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1409
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1409
-X-OriginalArrivalTime: 07 Nov 2005 18:05:37.0228 (UTC) FILETIME=[DB0138C0:01C5E3C5]
-Return-Path: <oski2001@hotmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Nov 2005 19:30:29 +0000 (GMT)
+Received: from extgw-uk.mips.com ([62.254.210.129]:5907 "EHLO
+	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
+	id S8133815AbVKGTaL (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 7 Nov 2005 19:30:11 +0000
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id jA7JVJDM016853;
+	Mon, 7 Nov 2005 19:31:19 GMT
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id jA7JVIrs016852;
+	Mon, 7 Nov 2005 19:31:18 GMT
+Date:	Mon, 7 Nov 2005 19:31:18 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] Redefine outs[wl] for ide_outs[wl].
+Message-ID: <20051107193118.GC2915@linux-mips.org>
+References: <20051106.235821.108306460.anemo@mba.ocn.ne.jp>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20051106.235821.108306460.anemo@mba.ocn.ne.jp>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9435
+X-archive-position: 9436
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: oski2001@hotmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
-I am still having problems when compiling thfe kernel.
-I get an Error and the last lines are:
-init/do_mounts.o: In function "mount_root"
-do_mounts.c: (.text.init+0x7e8): undefined reference to "ip_auto_config"
-do_mounts.c: (.text.init+0x7e8): relocation truncated to fit:R_MIPS_26
-against "ip_auto_config"
-make: *** (vmlinux) Error 1
+On Sun, Nov 06, 2005 at 11:58:21PM +0900, Atsushi Nemoto wrote:
 
-Any suggestions?
+> Add missing bits to fix D-cache aliasing problem in the PIO IDE driver.
+> 
+> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 
-Many tks
+Thanks, applied
 
-oski
+  Ralf

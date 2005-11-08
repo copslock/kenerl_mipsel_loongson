@@ -1,49 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Nov 2005 11:00:40 +0000 (GMT)
-Received: from extgw-uk.mips.com ([62.254.210.129]:20230 "EHLO
-	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S8135810AbVKHLAX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 8 Nov 2005 11:00:23 +0000
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id jA8B1Ym1006339;
-	Tue, 8 Nov 2005 11:01:34 GMT
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id jA8B1YKc006338;
-	Tue, 8 Nov 2005 11:01:34 GMT
-Date:	Tue, 8 Nov 2005 11:01:34 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Franck <vagabon.xyz@gmail.com>
-Cc:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Nov 2005 17:24:10 +0000 (GMT)
+Received: from zproxy.gmail.com ([64.233.162.199]:46408 "EHLO zproxy.gmail.com")
+	by ftp.linux-mips.org with ESMTP id S8133862AbVKHRXu convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 8 Nov 2005 17:23:50 +0000
+Received: by zproxy.gmail.com with SMTP id l8so583758nzf
+        for <linux-mips@linux-mips.org>; Tue, 08 Nov 2005 09:25:08 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=fAx893bhQvt/PieCkwBJQn6Go5+kb/nbs7Q5tFN2jFJysqDpDne2NMWZdzif0Xt2xZ3JZyBzWJFN0ix2tFmSyrAADqIlQwleG6waBQFHaulyUl2qwDTkXb/9zclz+tbW4LlT52RoH9AbSnznHwwGV8WnMIfEpcq4P4eFJd/JQcM=
+Received: by 10.36.101.3 with SMTP id y3mr2509087nzb;
+        Tue, 08 Nov 2005 09:25:08 -0800 (PST)
+Received: by 10.36.47.8 with HTTP; Tue, 8 Nov 2005 09:25:06 -0800 (PST)
+Message-ID: <cda58cb80511080925l2d441604i@mail.gmail.com>
+Date:	Tue, 8 Nov 2005 18:25:06 +0100
+From:	Franck <vagabon.xyz@gmail.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
 Subject: Re: git and tags...
-Message-ID: <20051108110134.GA2689@linux-mips.org>
-References: <cda58cb80511080249w7d902821n@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <20051108110134.GA2689@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
 Content-Disposition: inline
-In-Reply-To: <cda58cb80511080249w7d902821n@mail.gmail.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+References: <cda58cb80511080249w7d902821n@mail.gmail.com>
+	 <20051108110134.GA2689@linux-mips.org>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9446
+X-archive-position: 9447
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Nov 08, 2005 at 11:49:48AM +0100, Franck wrote:
+2005/11/8, Ralf Baechle <ralf@linux-mips.org>:
+> On Tue, Nov 08, 2005 at 11:49:48AM +0100, Franck wrote:
+>
+> > I'm trying to retrieve a linux kernel by tag using git. Let's say for
+> > example I want my working tree to be a linux 2.6.12 copy from git
+> > repository. How can I do that ?
+> >
+> > I tried these commands but it seems that there's no tag in git repository
+> >
+> > git clone rsync://ftp.linux-mips.org/git/linux.git linux.git
+> > git pull http://www.linux-mips.org/pub/scm/linux.git tag linux_2_6_12
+>
+> ls .git/refs/tags to see the tag names.
+>
 
-> I'm trying to retrieve a linux kernel by tag using git. Let's say for
-> example I want my working tree to be a linux 2.6.12 copy from git
-> repository. How can I do that ?
-> 
-> I tried these commands but it seems that there's no tag in git repository
-> 
-> git clone rsync://ftp.linux-mips.org/git/linux.git linux.git
-> git pull http://www.linux-mips.org/pub/scm/linux.git tag linux_2_6_12
+OK, so tags have been renamed into "linux-2.6.x". Why not using the
+same mainline name convention (v2.6.x) ?
 
-ls .git/refs/tags to see the tag names.  
+I have another question (which is the first one in my previous email),
+how can I make my working tree a kernel version 2.6.9 for example ?
 
-  Ralf
+And the last question related to mips git repository, why does kernel
+v2.2, v2.4, v2.6 are in the same repository ? Why not seperate
+different major version of the kernel in a seperate repository ?
+
+Thanks
+--
+               Franck

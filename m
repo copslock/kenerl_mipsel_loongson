@@ -1,54 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Nov 2005 00:50:58 +0000 (GMT)
-Received: from rwcrmhc14.comcast.net ([204.127.198.54]:45795 "EHLO
-	rwcrmhc12.comcast.net") by ftp.linux-mips.org with ESMTP
-	id S8133832AbVKHAul (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 8 Nov 2005 00:50:41 +0000
-Received: from [192.168.1.15] (pcp04414054pcs.nrockv01.md.comcast.net[69.140.185.48])
-          by comcast.net (rwcrmhc14) with ESMTP
-          id <20051108005124014006gp59e>; Tue, 8 Nov 2005 00:51:24 +0000
-Message-ID: <436FF689.3010308@gentoo.org>
-Date:	Mon, 07 Nov 2005 19:51:21 -0500
-From:	Kumba <kumba@gentoo.org>
-User-Agent: Thunderbird 1.4.1 (Windows/20051006)
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Nov 2005 01:40:51 +0000 (GMT)
+Received: from grayson.netsweng.com ([207.235.77.11]:52968 "EHLO
+	grayson.netsweng.com") by ftp.linux-mips.org with ESMTP
+	id S8135590AbVKHBk1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 8 Nov 2005 01:40:27 +0000
+Received: from amavis by grayson.netsweng.com with scanned-ok (Exim 3.36 #1 (Debian))
+	id 1EZIUV-0003LC-00
+	for <linux-mips@linux-mips.org>; Mon, 07 Nov 2005 20:41:39 -0500
+Received: from grayson.netsweng.com ([127.0.0.1])
+	by localhost (grayson [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 12653-03 for <linux-mips@linux-mips.org>;
+	Mon, 7 Nov 2005 20:41:30 -0500 (EST)
+Received: from h168.98.28.71.ip.alltel.net ([71.28.98.168] helo=trantor.stuart.netsweng.com)
+	by grayson.netsweng.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1EZIUM-0003L0-00
+	for <linux-mips@linux-mips.org>; Mon, 07 Nov 2005 20:41:30 -0500
+Date:	Mon, 7 Nov 2005 20:41:28 -0500 (EST)
+From:	Stuart Anderson <anderson@netsweng.com>
+X-X-Sender: anderson@trantor.stuart.netsweng.com
 To:	Linux MIPS List <linux-mips@linux-mips.org>
 Subject: Re: MIPS - 64bit woes
-References: <436D0061.5070100@jg555.com> <Pine.LNX.4.55.0511071143210.28165@blysk.ds.pg.gda.pl>
-In-Reply-To: <Pine.LNX.4.55.0511071143210.28165@blysk.ds.pg.gda.pl>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <kumba@gentoo.org>
+In-Reply-To: <436FD396.9080807@jg555.com>
+Message-ID: <Pine.LNX.4.61.0511072036340.3511@trantor.stuart.netsweng.com>
+References: <436D0061.5070100@jg555.com> <436D3DF7.5000002@gentoo.org>
+ <436FD396.9080807@jg555.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII; format=flowed
+X-Virus-Scanned: by amavisd-new-20030616-p10 (Debian) at netsweng.com
+Return-Path: <anderson@netsweng.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9442
+X-archive-position: 9443
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: anderson@netsweng.com
 Precedence: bulk
 X-list: linux-mips
 
-Maciej W. Rozycki wrote:
-> 
->  It must be platform-specific -- I haven't checked 2.6.14, but 64-bit
-> 2.6.13 is good enough to boot into multi-user with the SWARM.
+On Mon, 7 Nov 2005, Jim Gifford wrote:
 
-2.6.13.4 works on all systems I can test (O2, Octane, Origin*, Indy, I2 Impact), 
-but for me, it appears 2.6.14 dies very early in kernel initialization on both 
-Octane and Origin.  I have yet to try another, like O2, but I'm going to do that 
-shortly in the hopes O2 may initialize an output device and give me an idea of 
-what's going on.
+> I've talked to a few others, who are having similar issues also Kumba, I made 
+> a diff of 2.6.12 and 2.6.14, trying to figure out what's causing this. Looks 
+> like some major rewrites have occured in some areas.
 
-* 2.6.13.4 Works on Origin, but can't allocate PCI resources for the scsi 
-properly.  2.6.12.5 is what works best for this system.
+I have a 2.6.14-rc1 kernel that works great, and when I tried
+2.6.14-rc2, it would have up on boot. In my case, I'm using NFS root,
+and the networking would just go away when the system got busy. This
+would cause the nfsroot to hang, and then any process that touched a file
+would hang. It sort of felt like interrupts stopped working, but I was
+not able to verify that. It seems that a serial console continued to
+work, so it doesn't seem like all interrupts stopped working.
 
+I have backported nearly all of the relevent arch/mips files to my
+2.6.14-rc1 tree, and everything is still happy, so I'm inclined to think
+it might not be something inside arch/mips.
 
---Kumba
+I've stared at the diffs between rc1 and rc2 until I'm corss-eyed, but nothing
+has jumped out at me as being obviously broken.
 
--- 
-Gentoo/MIPS Team Lead
-Gentoo Foundation Board of Trustees
+                                 Stuart
 
-"Such is oft the course of deeds that move the wheels of the world: small hands 
-do them because they must, while the eyes of the great are elsewhere."  --Elrond
+Stuart R. Anderson                               anderson@netsweng.com
+Network & Software Engineering                   http://www.netsweng.com/
+1024D/37A79149:                                  0791 D3B8 9A4C 2CDC A31F
+                                                  BD03 0A62 E534 37A7 9149

@@ -1,104 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Nov 2005 23:26:48 +0000 (GMT)
-Received: from mail21.bluewin.ch ([195.186.18.66]:23458 "EHLO
-	mail21.bluewin.ch") by ftp.linux-mips.org with ESMTP
-	id S8135891AbVKHX0a (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 8 Nov 2005 23:26:30 +0000
-Received: from localhost.localdomain (83.79.73.183) by mail21.bluewin.ch (Bluewin 7.2.068.1)
-        id 435F9851002C7BDE; Tue, 8 Nov 2005 23:27:43 +0000
-Received: by localhost.localdomain (Postfix, from userid 1000)
-	id 9C3CAFE93; Tue,  8 Nov 2005 18:27:36 -0500 (EST)
-Date:	Tue, 8 Nov 2005 18:27:36 -0500
-To:	Alexey Dobriyan <adobriyan@gmail.com>
-Cc:	Ralf Baechle <ralf@linux-mips.org>,
-	Domen Puncer <domen@coderock.org>, linux-mips@linux-mips.org,
-	Andrew Morton <akpm@osdl.org>
-Subject: Re: [PATCH] Remove arch/mips/pmc-sierra/yosemite/ht-irq.c
-Message-ID: <20051108232736.GA20359@krypton>
-References: <20051108180413.GG7631@mipter.zuzino.mipt.ru>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20051108180413.GG7631@mipter.zuzino.mipt.ru>
-User-Agent: Mutt/1.5.9i
-From:	a.othieno@bluewin.ch (Arthur Othieno)
-Return-Path: <a.othieno@bluewin.ch>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Nov 2005 08:50:38 +0000 (GMT)
+Received: from Jg555.com ([64.30.195.78]:57015 "EHLO jg555.com")
+	by ftp.linux-mips.org with ESMTP id S3467015AbVKIIuU (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 9 Nov 2005 08:50:20 +0000
+Received: from [172.16.0.55] ([::ffff:172.16.0.55])
+  (AUTH: PLAIN root, TLS: TLSv1/SSLv3,256bits,AES256-SHA)
+  by jg555.com with esmtp; Wed, 09 Nov 2005 00:51:40 -0800
+  id 002AC014.4371B89C.0000205F
+Message-ID: <4371B87A.9040101@jg555.com>
+Date:	Wed, 09 Nov 2005 00:51:06 -0800
+From:	Jim Gifford <maillist@jg555.com>
+User-Agent: Mozilla Thunderbird 1.0.7 (Windows/20050923)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	ralf@linux-mips.org
+CC:	Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Re: MIPS - 64bit woes
+References: <436D0061.5070100@jg555.com> <Pine.LNX.4.55.0511071143210.28165@blysk.ds.pg.gda.pl>
+In-Reply-To: <Pine.LNX.4.55.0511071143210.28165@blysk.ds.pg.gda.pl>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <maillist@jg555.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9454
+X-archive-position: 9455
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: a.othieno@bluewin.ch
+X-original-sender: maillist@jg555.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Nov 08, 2005 at 09:04:13PM +0300, Alexey Dobriyan wrote:
-> From: Domen Puncer <domen@coderock.org>
-> 
-> Remove nowhere referenced file ("grep ht-irq -r ." didn't find anything).
+Here is what I did to track down the errors.
 
-And arch/mips/pmc-sierra/yosemite/ht.c, apparently..
+I created a diff between the last working kernel 2.6.12 and the current 
+kernel. Started with cpu-probe.c, that to me seemed the logical choice.
 
-> Signed-off-by: Domen Puncer <domen@coderock.org>
-> Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
-> 
-> Index: linux-kj/arch/mips/pmc-sierra/yosemite/ht-irq.c
-> ===================================================================
-> --- linux-kj.orig/arch/mips/pmc-sierra/yosemite/ht-irq.c	2005-11-08 20:46:25.000000000 +0300
-> +++ /dev/null	1970-01-01 00:00:00.000000000 +0000
-> @@ -1,52 +0,0 @@
-> -/*
-> - * Copyright 2003 PMC-Sierra
-> - * Author: Manish Lachwani (lachwani@pmc-sierra.com)
-> - *
-> - * This program is free software; you can redistribute  it and/or modify it
-> - * under  the terms of  the GNU General  Public License as published by the
-> - * Free Software Foundation;  either version 2 of the  License, or (at your
-> - * option) any later version.
-> - *
-> - *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
-> - *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
-> - *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
-> - *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
-> - *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-> - *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
-> - *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-> - *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
-> - *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-> - *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-> - *
-> - *  You should have received a copy of the  GNU General Public License along
-> - *  with this program; if not, write  to the Free Software Foundation, Inc.,
-> - *  675 Mass Ave, Cambridge, MA 02139, USA.
-> - */
-> -
-> -#include <linux/types.h>
-> -#include <linux/pci.h>
-> -#include <linux/kernel.h>
-> -#include <linux/init.h>
-> -#include <asm/pci.h>
-> -
-> -/*
-> - * HT Bus fixup for the Titan
-> - * XXX IRQ values need to change based on the board layout
-> - */
-> -void __init titan_ht_pcibios_fixup_bus(struct pci_bus *bus)
-> -{
-> -        struct pci_bus *current_bus = bus;
-> -        struct pci_dev *devices;
-> -        struct list_head *devices_link;
-> -
-> -	list_for_each(devices_link, &(current_bus->devices)) {
-> -                devices = pci_dev_b(devices_link);
-> -                if (devices == NULL)
-> -                        continue;
-> -	}
-> -
-> -	/*
-> -	 * PLX and SPKT related changes go here
-> -	 */
-> -
-> -}
+After patching the rest of files needed to support the patch in 
+cpu-probe.c, I was finally able to produce a kernel under 2.6.12 with 
+the same problem.
 
-arch/mips/pmc-sierra/yosemite/ht.c:418:        titan_ht_pcibios_fixup_bus(c);
+The files that I ported from 2.6.14 to 2.6.12 are the following
+cpu-probe.c
+cpu.h
+mipsregs.h
+cache.c
+cpu-features.h
+
+Here is a link to the patches I used http://ftp.jg555.com/errors
+
+Looking at mipsregs.h, something doesn't look right for a 64 bit system. 
+But I'm not the expert.
+
+Here are my findings, I hope someone out there has an idea.
+
+-- 
+----
+Jim Gifford
+maillist@jg555.com

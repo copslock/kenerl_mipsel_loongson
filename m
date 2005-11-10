@@ -1,47 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Nov 2005 14:18:56 +0000 (GMT)
-Received: from extgw-uk.mips.com ([62.254.210.129]:36383 "EHLO
-	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S3458461AbVKJOSf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 10 Nov 2005 14:18:35 +0000
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id jAAEK1tE023085;
-	Thu, 10 Nov 2005 14:20:01 GMT
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id jAAEJvIf023084;
-	Thu, 10 Nov 2005 14:19:57 GMT
-Date:	Thu, 10 Nov 2005 14:19:57 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-Cc:	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] add GT64111 PCI ID
-Message-ID: <20051110141956.GL2735@linux-mips.org>
-References: <20051110224236.68937a9a.yuasa@hh.iij4u.or.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Nov 2005 14:51:33 +0000 (GMT)
+Received: from deliver-1.mx.triera.net ([213.161.0.31]:1249 "HELO
+	deliver-1.mx.triera.net") by ftp.linux-mips.org with SMTP
+	id S3458490AbVKJOvQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 10 Nov 2005 14:51:16 +0000
+Received: from localhost (in-1.mx.triera.net [213.161.0.25])
+	by deliver-1.mx.triera.net (Postfix) with ESMTP id 491CCC048
+	for <linux-mips@linux-mips.org>; Thu, 10 Nov 2005 15:52:38 +0100 (CET)
+Received: from smtp.triera.net (smtp.triera.net [213.161.0.30])
+	by in-1.mx.triera.net (Postfix) with SMTP id 23EA11BC08B
+	for <linux-mips@linux-mips.org>; Thu, 10 Nov 2005 15:52:42 +0100 (CET)
+Received: from [172.18.1.53] (unknown [213.161.20.162])
+	by smtp.triera.net (Postfix) with ESMTP id 494921A18A5
+	for <linux-mips@linux-mips.org>; Thu, 10 Nov 2005 15:52:42 +0100 (CET)
+Subject: smc91x support
+From:	Matej Kupljen <matej.kupljen@ultra.si>
+To:	linux-mips@linux-mips.org
+Content-Type: text/plain
+Date:	Thu, 10 Nov 2005 15:52:11 +0100
+Message-Id: <1131634331.18165.30.camel@localhost.localdomain>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20051110224236.68937a9a.yuasa@hh.iij4u.or.jp>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+X-Mailer: Evolution 2.2.3 
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: Triera AV Service
+Return-Path: <matej.kupljen@ultra.si>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9463
+X-archive-position: 9464
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: matej.kupljen@ultra.si
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Nov 10, 2005 at 10:42:36PM +0900, Yoichi Yuasa wrote:
+Hi
 
-> Hi Ralf,
-> 
-> Cobalt needs GT641111 PCI ID.
-> Please apply.
+On 21st september Peter Popov modified:
+arch/mips/au1000/common/platform.c
 
-Thanks, applied.
+With the log message:
+smc91x platform support; requires patch to smc91x.h which was sent
+        upstream.
 
-And that's not the only PCI ID which recently got axed ...
+Any news about this?
+What is the patch required for smc91x.h?
 
-  Ralf
+I also added support for smc91x.h to enable it on the DBAU1200,
+but as I wrote in another mail, I get bad performance.
+I enabled the debug mode and I now I see that I get a lot of 
+overruns, like:
+...
+[4294761.172000] eth0: RX overrun (EPH_ST 0x0001)
+[4294761.190000] eth0: RX overrun (EPH_ST 0x0001)
+[4294761.198000] eth0: RX overrun (EPH_ST 0x0001)
+...
+
+Is there any solution to this?
+Maybe to use DDMA?
+
+BR,
+Matej

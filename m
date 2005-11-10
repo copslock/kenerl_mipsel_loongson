@@ -1,39 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Nov 2005 17:21:48 +0000 (GMT)
-Received: from Jg555.com ([64.30.195.78]:32697 "EHLO jg555.com")
-	by ftp.linux-mips.org with ESMTP id S8134055AbVKIRVb (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 9 Nov 2005 17:21:31 +0000
-Received: from [172.16.0.55] ([::ffff:172.16.0.55])
-  (AUTH: PLAIN root, TLS: TLSv1/SSLv3,256bits,AES256-SHA)
-  by jg555.com with esmtp; Wed, 09 Nov 2005 09:22:54 -0800
-  id 002AC014.4372306E.00005FF7
-Message-ID: <4372304A.9080608@jg555.com>
-Date:	Wed, 09 Nov 2005 09:22:18 -0800
-From:	Jim Gifford <maillist@jg555.com>
-User-Agent: Mozilla Thunderbird 1.0.7 (Windows/20050923)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	Kumba <kumba@gentoo.org>
-CC:	Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: MIPS - 64bit woes
-References: <436D0061.5070100@jg555.com> <Pine.LNX.4.55.0511071143210.28165@blysk.ds.pg.gda.pl> <4371B87A.9040101@jg555.com> <4371FB46.1000805@gentoo.org>
-In-Reply-To: <4371FB46.1000805@gentoo.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Nov 2005 13:41:32 +0000 (GMT)
+Received: from mo01.iij4u.or.jp ([210.130.0.20]:37342 "EHLO mo01.iij4u.or.jp")
+	by ftp.linux-mips.org with ESMTP id S3457885AbVKJNlN (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 10 Nov 2005 13:41:13 +0000
+Received: MO(mo01)id jAADgd0f005664; Thu, 10 Nov 2005 22:42:39 +0900 (JST)
+Received: MDO(mdo00) id jAADgctM002449; Thu, 10 Nov 2005 22:42:39 +0900 (JST)
+Received: from stratos (h057.p117.iij4u.or.jp [210.130.117.57])
+	by mbox.iij4u.or.jp (4U-MR/mbox01) id jAADgbwi000760
+	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NOT);
+	Thu, 10 Nov 2005 22:42:38 +0900 (JST)
+Date:	Thu, 10 Nov 2005 22:42:36 +0900
+From:	Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yuasa@hh.iij4u.or.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH] add GT64111 PCI ID
+Message-Id: <20051110224236.68937a9a.yuasa@hh.iij4u.or.jp>
+X-Mailer: Sylpheed version 1.0.5 (GTK+ 1.2.10; i486-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <maillist@jg555.com>
+Return-Path: <yuasa@hh.iij4u.or.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9460
+X-archive-position: 9461
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: maillist@jg555.com
+X-original-sender: yuasa@hh.iij4u.or.jp
 Precedence: bulk
 X-list: linux-mips
 
-Does look like it. I just checked the latest
+Hi Ralf,
 
--- 
-----
-Jim Gifford
-maillist@jg555.com
+Cobalt needs GT641111 PCI ID.
+Please apply.
+
+Yoichi
+
+Signed-off-by: Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+
+diff -Npru -X dontdiff a/include/linux/pci_ids.h b/include/linux/pci_ids.h
+--- a/include/linux/pci_ids.h	2005-11-10 22:02:04.000000000 +0900
++++ b/include/linux/pci_ids.h	2005-11-10 22:11:51.000000000 +0900
+@@ -1393,6 +1393,7 @@
+ #define PCI_SUBDEVICE_ID_KEYSPAN_SX2	0x5334
+ 
+ #define PCI_VENDOR_ID_MARVELL		0x11ab
++#define PCI_DEVICE_ID_MARVELL_GT64111	0x4146
+ #define PCI_DEVICE_ID_MARVELL_GT64260	0x6430
+ #define PCI_DEVICE_ID_MARVELL_MV64360	0x6460
+ #define PCI_DEVICE_ID_MARVELL_MV64460	0x6480

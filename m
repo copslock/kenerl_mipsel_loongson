@@ -1,80 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Nov 2005 14:02:54 +0000 (GMT)
-Received: from mo01.iij4u.or.jp ([210.130.0.20]:13026 "EHLO mo01.iij4u.or.jp")
-	by ftp.linux-mips.org with ESMTP id S3458217AbVKJOCg (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 10 Nov 2005 14:02:36 +0000
-Received: MO(mo01)id jAAE43d7008599; Thu, 10 Nov 2005 23:04:03 +0900 (JST)
-Received: MDO(mdo01) id jAAE42E4014330; Thu, 10 Nov 2005 23:04:02 +0900 (JST)
-Received: from stratos (h057.p117.iij4u.or.jp [210.130.117.57])
-	by mbox.iij4u.or.jp (4U-MR/mbox00) id jAAE41Q0005306
-	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NOT);
-	Thu, 10 Nov 2005 23:04:01 +0900 (JST)
-Date:	Thu, 10 Nov 2005 23:04:00 +0900
-From:	Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-To:	"oski" <oski2001@hotmail.com>
-Cc:	yuasa@hh.iij4u.or.jp, linux-mips@linux-mips.org
-Subject: Re: Compiling a kernel for ibm z50
-Message-Id: <20051110230400.18ec5e37.yuasa@hh.iij4u.or.jp>
-In-Reply-To: <BAY101-DAV23A6C8A228DAC9FF185F3D2650@phx.gbl>
-References: <BAY101-DAV18ABC35208B50E0535A360D2650@phx.gbl>
-	<20051108073105.468cd5f4.yuasa@hh.iij4u.or.jp>
-	<BAY101-DAV23A6C8A228DAC9FF185F3D2650@phx.gbl>
-X-Mailer: Sylpheed version 1.0.5 (GTK+ 1.2.10; i486-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Nov 2005 14:18:56 +0000 (GMT)
+Received: from extgw-uk.mips.com ([62.254.210.129]:36383 "EHLO
+	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
+	id S3458461AbVKJOSf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 10 Nov 2005 14:18:35 +0000
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id jAAEK1tE023085;
+	Thu, 10 Nov 2005 14:20:01 GMT
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id jAAEJvIf023084;
+	Thu, 10 Nov 2005 14:19:57 GMT
+Date:	Thu, 10 Nov 2005 14:19:57 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
+Cc:	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] add GT64111 PCI ID
+Message-ID: <20051110141956.GL2735@linux-mips.org>
+References: <20051110224236.68937a9a.yuasa@hh.iij4u.or.jp>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yuasa@hh.iij4u.or.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20051110224236.68937a9a.yuasa@hh.iij4u.or.jp>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9462
+X-archive-position: 9463
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuasa@hh.iij4u.or.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Thu, Nov 10, 2005 at 10:42:36PM +0900, Yoichi Yuasa wrote:
 
-The latest MIPS v2.4 kernel has no problem.
-Please try the latest one.
+> Hi Ralf,
+> 
+> Cobalt needs GT641111 PCI ID.
+> Please apply.
 
-On Mon, 7 Nov 2005 22:53:33 -0000
-"oski" <oski2001@hotmail.com> wrote:
+Thanks, applied.
 
-> Hi,
-> 
-> I am using linux-2.4.30-mipscvs-20050515.
-> 
-> oski
-> 
-> ----- Original Message ----- 
-> From: "Yoichi Yuasa" <yuasa@hh.iij4u.or.jp>
-> To: "oski" <oski2001@hotmail.com>
-> Cc: <linux-mips@linux-mips.org>
-> Sent: Monday, November 07, 2005 10:31 PM
-> Subject: Re: Compiling a kernel for ibm z50
-> 
-> 
-> > Hi,
-> >
-> > On Mon, 7 Nov 2005 18:07:42 -0000
-> > "oski" <oski2001@hotmail.com> wrote:
-> >
-> > > Hi,
-> > > I am still having problems when compiling thfe kernel.
-> > > I get an Error and the last lines are:
-> > > init/do_mounts.o: In function "mount_root"
-> > > do_mounts.c: (.text.init+0x7e8): undefined reference to "ip_auto_config"
-> > > do_mounts.c: (.text.init+0x7e8): relocation truncated to fit:R_MIPS_26
-> > > against "ip_auto_config"
-> > > make: *** (vmlinux) Error 1
-> > >
-> > > Any suggestions?
-> >
-> > Which kernel version do you use?
-> >
-> > Yoichi
-> >
-> >
-> 
+And that's not the only PCI ID which recently got axed ...
+
+  Ralf

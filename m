@@ -1,50 +1,290 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Nov 2005 16:01:46 +0000 (GMT)
-Received: from extgw-uk.mips.com ([62.254.210.129]:30986 "EHLO
-	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S8133595AbVKNQB2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 14 Nov 2005 16:01:28 +0000
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id jAEG3EZ9005249;
-	Mon, 14 Nov 2005 16:03:14 GMT
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id jAEG3D2r005247;
-	Mon, 14 Nov 2005 16:03:13 GMT
-Date:	Mon, 14 Nov 2005 16:03:13 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Dominique Quatravaux <dom@kilimandjaro.dyndns.org>
-Cc:	Arnaud Giersch <arnaud.giersch@free.fr>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] Export IP32 mace symbol
-Message-ID: <20051114160313.GJ2793@linux-mips.org>
-References: <E1Eb4ws-000071-0L@jekyll> <20051113181620.GA7958@linux-mips.org> <43784B04.2090507@kilimandjaro.dyndns.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Nov 2005 16:16:49 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:9455 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S8133595AbVKNQQ0 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 14 Nov 2005 16:16:26 +0000
+Received: from localhost (p7025-ipad206funabasi.chiba.ocn.ne.jp [222.145.81.25])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id C3751A5E1; Tue, 15 Nov 2005 01:18:14 +0900 (JST)
+Date:	Tue, 15 Nov 2005 01:17:21 +0900 (JST)
+Message-Id: <20051115.011721.25910359.anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] rewrite get_wchan and its helper functions
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <43784B04.2090507@kilimandjaro.dyndns.org>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9488
+X-archive-position: 9489
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Nov 14, 2005 at 09:29:56AM +0100, Dominique Quatravaux wrote:
+Implement get_wchan and frame_info_init using kallsyms_lookup.  This
+fixes problem with static sched/lock functions and mfinfo[]
+maintenance issue.  If CONFIG_KALLSYMS disabled, get_wchan just
+returns thread_saved_pc value.
 
-> Ralf Baechle a écrit :
-> 
-> >All 5 patches applied.
-> >  
-> >
-> So it looks like crime.c pays, after all?
-> 
-> M. Ralf with the mace symbol, in the code depot? :-)
+Also unwind stackframe based on "addiu sp,-imm" analysis instead of
+frame pointer.  This fixes problem with functions compiled without
+-fomit-frame-pointer.
 
-Reminds me of Batman his opponent, the pinguin ;-)
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 
-  Ralf
+diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+index dd72577..dafd661 100644
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -24,6 +24,7 @@
+ #include <linux/a.out.h>
+ #include <linux/init.h>
+ #include <linux/completion.h>
++#include <linux/kallsyms.h>
+ 
+ #include <asm/abi.h>
+ #include <asm/bootinfo.h>
+@@ -273,46 +274,19 @@ long kernel_thread(int (*fn)(void *), vo
+ 
+ static struct mips_frame_info {
+ 	void *func;
+-	int omit_fp;	/* compiled without fno-omit-frame-pointer */
+-	int frame_offset;
++	unsigned long func_size;
++	int frame_size;
+ 	int pc_offset;
+-} schedule_frame, mfinfo[] = {
+-	{ schedule, 0 },	/* must be first */
+-	/* arch/mips/kernel/semaphore.c */
+-	{ __down, 1 },
+-	{ __down_interruptible, 1 },
+-	/* kernel/sched.c */
+-#ifdef CONFIG_PREEMPT
+-	{ preempt_schedule, 0 },
+-#endif
+-	{ wait_for_completion, 0 },
+-	{ interruptible_sleep_on, 0 },
+-	{ interruptible_sleep_on_timeout, 0 },
+-	{ sleep_on, 0 },
+-	{ sleep_on_timeout, 0 },
+-	{ yield, 0 },
+-	{ io_schedule, 0 },
+-	{ io_schedule_timeout, 0 },
+-#if defined(CONFIG_SMP) && defined(CONFIG_PREEMPT)
+-	{ __preempt_spin_lock, 0 },
+-	{ __preempt_write_lock, 0 },
+-#endif
+-	/* kernel/timer.c */
+-	{ schedule_timeout, 1 },
+-/*	{ nanosleep_restart, 1 }, */
+-	/* lib/rwsem-spinlock.c */
+-	{ __down_read, 1 },
+-	{ __down_write, 1 },
+-};
++} *schedule_frame, mfinfo[64];
++static int mfinfo_num;
+ 
+-static int mips_frame_info_initialized;
+ static int __init get_frame_info(struct mips_frame_info *info)
+ {
+ 	int i;
+ 	void *func = info->func;
+ 	union mips_instruction *ip = (union mips_instruction *)func;
+ 	info->pc_offset = -1;
+-	info->frame_offset = info->omit_fp ? 0 : -1;
++	info->frame_size = 0;
+ 	for (i = 0; i < 128; i++, ip++) {
+ 		/* if jal, jalr, jr, stop. */
+ 		if (ip->j_format.opcode == jal_op ||
+@@ -321,6 +295,23 @@ static int __init get_frame_info(struct 
+ 		      ip->r_format.func == jr_op)))
+ 			break;
+ 
++		if (info->func_size && i >= info->func_size / 4)
++			break;
++		if (
++#ifdef CONFIG_32BIT
++		    ip->i_format.opcode == addiu_op &&
++#endif
++#ifdef CONFIG_64BIT
++		    ip->i_format.opcode == daddiu_op &&
++#endif
++		    ip->i_format.rs == 29 &&
++		    ip->i_format.rt == 29) {
++			/* addiu/daddiu sp,sp,-imm */
++			if (info->frame_size)
++				continue;
++			info->frame_size = - ip->i_format.simmediate;
++		}
++
+ 		if (
+ #ifdef CONFIG_32BIT
+ 		    ip->i_format.opcode == sw_op &&
+@@ -328,31 +319,20 @@ static int __init get_frame_info(struct 
+ #ifdef CONFIG_64BIT
+ 		    ip->i_format.opcode == sd_op &&
+ #endif
+-		    ip->i_format.rs == 29)
+-		{
++		    ip->i_format.rs == 29 &&
++		    ip->i_format.rt == 31) {
+ 			/* sw / sd $ra, offset($sp) */
+-			if (ip->i_format.rt == 31) {
+-				if (info->pc_offset != -1)
+-					continue;
+-				info->pc_offset =
+-					ip->i_format.simmediate / sizeof(long);
+-			}
+-			/* sw / sd $s8, offset($sp) */
+-			if (ip->i_format.rt == 30) {
+-//#if 0	/* gcc 3.4 does aggressive optimization... */
+-				if (info->frame_offset != -1)
+-					continue;
+-//#endif
+-				info->frame_offset =
+-					ip->i_format.simmediate / sizeof(long);
+-			}
++			if (info->pc_offset != -1)
++				continue;
++			info->pc_offset =
++				ip->i_format.simmediate / sizeof(long);
+ 		}
+ 	}
+-	if (info->pc_offset == -1 || info->frame_offset == -1) {
+-		printk("Can't analyze prologue code at %p\n", func);
++	if (info->pc_offset == -1 || info->frame_size == 0) {
++		if (func == schedule)
++			printk("Can't analyze prologue code at %p\n", func);
+ 		info->pc_offset = -1;
+-		info->frame_offset = -1;
+-		return -1;
++		info->frame_size = 0;
+ 	}
+ 
+ 	return 0;
+@@ -360,25 +340,36 @@ static int __init get_frame_info(struct 
+ 
+ static int __init frame_info_init(void)
+ {
+-	int i, found;
+-	for (i = 0; i < ARRAY_SIZE(mfinfo); i++)
+-		if (get_frame_info(&mfinfo[i]))
+-			return -1;
+-	schedule_frame = mfinfo[0];
+-	/* bubble sort */
+-	do {
+-		struct mips_frame_info tmp;
+-		found = 0;
+-		for (i = 1; i < ARRAY_SIZE(mfinfo); i++) {
+-			if (mfinfo[i-1].func > mfinfo[i].func) {
+-				tmp = mfinfo[i];
+-				mfinfo[i] = mfinfo[i-1];
+-				mfinfo[i-1] = tmp;
+-				found = 1;
+-			}
+-		}
+-	} while (found);
+-	mips_frame_info_initialized = 1;
++	int i;
++#ifdef CONFIG_KALLSYMS
++	char *modname;
++	char namebuf[KSYM_NAME_LEN + 1];
++	unsigned long start, size, ofs;
++	extern char __sched_text_start[], __sched_text_end[];
++	extern char __lock_text_start[], __lock_text_end[];
++
++	start = (unsigned long)__sched_text_start;
++	for (i = 0; i < ARRAY_SIZE(mfinfo); i++) {
++		if (start == (unsigned long)schedule)
++			schedule_frame = &mfinfo[i];
++		if (!kallsyms_lookup(start, &size, &ofs, &modname, namebuf))
++			break;
++		mfinfo[i].func = (void *)(start + ofs);
++		mfinfo[i].func_size = size;
++		start += size - ofs;
++		if (start >= (unsigned long)__lock_text_end)
++			break;
++		if (start == (unsigned long)__sched_text_end)
++			start = (unsigned long)__lock_text_start;
++	}
++#else
++	mfinfo[0].func = schedule;
++	schedule_frame = &mfinfo[0];
++#endif
++	for (i = 0; i < ARRAY_SIZE(mfinfo) && mfinfo[i].func; i++)
++		get_frame_info(&mfinfo[i]);
++	
++	mfinfo_num = i;
+ 	return 0;
+ }
+ 
+@@ -395,47 +386,52 @@ unsigned long thread_saved_pc(struct tas
+ 	if (t->reg31 == (unsigned long) ret_from_fork)
+ 		return t->reg31;
+ 
+-	if (schedule_frame.pc_offset < 0)
++	if (!schedule_frame || schedule_frame->pc_offset < 0)
+ 		return 0;
+-	return ((unsigned long *)t->reg29)[schedule_frame.pc_offset];
++	return ((unsigned long *)t->reg29)[schedule_frame->pc_offset];
+ }
+ 
+ /* get_wchan - a maintenance nightmare^W^Wpain in the ass ...  */
+ unsigned long get_wchan(struct task_struct *p)
+ {
+ 	unsigned long stack_page;
+-	unsigned long frame, pc;
++	unsigned long pc;
++#ifdef CONFIG_KALLSYMS
++	unsigned long frame;
++#endif
+ 
+ 	if (!p || p == current || p->state == TASK_RUNNING)
+ 		return 0;
+ 
+ 	stack_page = (unsigned long)p->thread_info;
+-	if (!stack_page || !mips_frame_info_initialized)
++	if (!stack_page || !mfinfo_num)
+ 		return 0;
+ 
+ 	pc = thread_saved_pc(p);
++#ifdef CONFIG_KALLSYMS
+ 	if (!in_sched_functions(pc))
+ 		return pc;
+ 
+-	frame = ((unsigned long *)p->thread.reg30)[schedule_frame.frame_offset];
++	frame = p->thread.reg29 + schedule_frame->frame_size;
+ 	do {
+ 		int i;
+ 
+ 		if (frame < stack_page || frame > stack_page + THREAD_SIZE - 32)
+ 			return 0;
+ 
+-		for (i = ARRAY_SIZE(mfinfo) - 1; i >= 0; i--) {
++		for (i = mfinfo_num - 1; i >= 0; i--) {
+ 			if (pc >= (unsigned long) mfinfo[i].func)
+ 				break;
+ 		}
+ 		if (i < 0)
+ 			break;
+ 
+-		if (mfinfo[i].omit_fp)
+-			break;
+ 		pc = ((unsigned long *)frame)[mfinfo[i].pc_offset];
+-		frame = ((unsigned long *)frame)[mfinfo[i].frame_offset];
++		if (!mfinfo[i].frame_size)
++			break;
++		frame += mfinfo[i].frame_size;
+ 	} while (in_sched_functions(pc));
++#endif
+ 
+ 	return pc;
+ }

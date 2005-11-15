@@ -1,45 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Nov 2005 15:18:00 +0000 (GMT)
-Received: from Jg555.com ([64.30.195.78]:38100 "EHLO jg555.com")
-	by ftp.linux-mips.org with ESMTP id S8133540AbVKOPRn (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 15 Nov 2005 15:17:43 +0000
-Received: from [172.16.0.55] ([::ffff:172.16.0.55])
-  (AUTH: PLAIN root, TLS: TLSv1/SSLv3,256bits,AES256-SHA)
-  by jg555.com with esmtp; Tue, 15 Nov 2005 07:19:39 -0800
-  id 0028C449.4379FC8B.000024D6
-Message-ID: <4379FBF4.1040505@jg555.com>
-Date:	Tue, 15 Nov 2005 07:17:08 -0800
-From:	Jim Gifford <maillist@jg555.com>
-User-Agent: Mozilla Thunderbird 1.0.7 (Windows/20050923)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	Jim Gifford <maillist@jg555.com>
-CC:	Kumba <kumba@gentoo.org>,
-	Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: MIPS - 64bit woes
-References: <436D0061.5070100@jg555.com> <Pine.LNX.4.55.0511071143210.28165@blysk.ds.pg.gda.pl> <4371B87A.9040101@jg555.com> <4371FB46.1000805@gentoo.org> <4372304A.9080608@jg555.com>
-In-Reply-To: <4372304A.9080608@jg555.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <maillist@jg555.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Nov 2005 15:23:08 +0000 (GMT)
+Received: from extgw-uk.mips.com ([62.254.210.129]:44568 "EHLO
+	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
+	id S8133555AbVKOPWt (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 15 Nov 2005 15:22:49 +0000
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id jAFFOfH5023992;
+	Tue, 15 Nov 2005 15:24:41 GMT
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id jAFFOc8b023991;
+	Tue, 15 Nov 2005 15:24:38 GMT
+Date:	Tue, 15 Nov 2005 15:24:37 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Pete Popov <ppopov@embeddedalley.com>
+Cc:	Sergei Shtylylov <sshtylyov@ru.mvista.com>,
+	Linux MIPS Development <linux-mips@linux-mips.org>
+Subject: Re: [Fwd: mtd/drivers/mtd/nand au1550nd.c,1.13,1.14]
+Message-ID: <20051115152437.GA15733@linux-mips.org>
+References: <43779854.5040307@ru.mvista.com> <1131911400.11644.84.camel@localhost.localdomain>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1131911400.11644.84.camel@localhost.localdomain>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9493
+X-archive-position: 9494
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: maillist@jg555.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-I've isolated the problem to 2.6.13-rc3. What I've done is built every 
-kernel from 2.6.13-rc1 till it failed.
+On Sun, Nov 13, 2005 at 11:49:59AM -0800, Pete Popov wrote:
 
-Also, Ralf, when I tried using git to pull those out of the git repo, 
-they were missing files, had to use the cvs, not sure if you can verify 
-it. I tried 2.6.13-rc1 and 2.6.13-rc2.
+> On Sun, 2005-11-13 at 22:47 +0300, Sergei Shtylylov wrote:
+> > Hello.
+> > 
+> >     Thought it's worth forwarding this here...
+> 
+> Just FYI, the patch is in the mtd tree only right now. It will get to
+> linux-mips when Ralf does a pull.
 
--- 
-----
-Jim Gifford
-maillist@jg555.com
+(This is less a direct comment to you posting than a general advice to
+people about what's going on in the git archive ...)
+
+On the master (that is 2.6) branch I'm doing that about once a day.
+
+This also means people are living dangerous if checking out the head of
+the master branch.  Who doesn't want to participate in debugging all this
+mess is probably better or to checkout one of the tagged releases.
+
+Also not that Linus only change the version number in the Makefile when
+he does a release.  That means for example until he releases 2.6.14-rc1
+the Makefile will still say 2.6.14 - even though the diff may be huge,
+well above 150,000 lines in this case.
+
+  Ralf

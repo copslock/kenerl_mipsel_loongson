@@ -1,46 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Nov 2005 14:10:42 +0000 (GMT)
-Received: from [210.212.208.205] ([210.212.208.205]:3201 "EHLO
-	pdns.sankhya.co.in") by ftp.linux-mips.org with ESMTP
-	id S8133548AbVKOOKY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 15 Nov 2005 14:10:24 +0000
-Received: from sankhya.com (sankhya-external [192.168.1.2])
-	by pdns.sankhya.co.in (8.12.11/8.12.10) with ESMTP id jAFEAulE032644
-	for <linux-mips@linux-mips.org>; Tue, 15 Nov 2005 19:40:58 +0530
-Received: from sankhya.com (localhost [127.0.0.1])
-	by sankhya.com (8.12.8/8.12.5) with ESMTP id jAFEmiUn014770
-	for <linux-mips@linux-mips.org>; Tue, 15 Nov 2005 20:18:44 +0530
-Received: from localhost (swamim@localhost)
-	by sankhya.com (8.12.8/8.12.5/Submit) with ESMTP id jAFEmRM8014752
-	for <linux-mips@linux-mips.org>; Tue, 15 Nov 2005 20:18:28 +0530
-Date:	Tue, 15 Nov 2005 20:18:26 +0530 (IST)
-From:	M Ranga Swami Reddy <swamim@sankhya.com>
-Reply-To: swamim@sankhya.com
-To:	linux-mips@linux-mips.org
-Subject: linux 2.6.14 (MIPS CVS) kernel build and testing
-Message-ID: <Pine.LNX.4.44.0511152015310.17499-100000@linux42.sankhya.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Nov 2005 15:18:00 +0000 (GMT)
+Received: from Jg555.com ([64.30.195.78]:38100 "EHLO jg555.com")
+	by ftp.linux-mips.org with ESMTP id S8133540AbVKOPRn (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 15 Nov 2005 15:17:43 +0000
+Received: from [172.16.0.55] ([::ffff:172.16.0.55])
+  (AUTH: PLAIN root, TLS: TLSv1/SSLv3,256bits,AES256-SHA)
+  by jg555.com with esmtp; Tue, 15 Nov 2005 07:19:39 -0800
+  id 0028C449.4379FC8B.000024D6
+Message-ID: <4379FBF4.1040505@jg555.com>
+Date:	Tue, 15 Nov 2005 07:17:08 -0800
+From:	Jim Gifford <maillist@jg555.com>
+User-Agent: Mozilla Thunderbird 1.0.7 (Windows/20050923)
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <swamim@sankhya.com>
+To:	Jim Gifford <maillist@jg555.com>
+CC:	Kumba <kumba@gentoo.org>,
+	Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Re: MIPS - 64bit woes
+References: <436D0061.5070100@jg555.com> <Pine.LNX.4.55.0511071143210.28165@blysk.ds.pg.gda.pl> <4371B87A.9040101@jg555.com> <4371FB46.1000805@gentoo.org> <4372304A.9080608@jg555.com>
+In-Reply-To: <4372304A.9080608@jg555.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <maillist@jg555.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9492
+X-archive-position: 9493
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: swamim@sankhya.com
+X-original-sender: maillist@jg555.com
 Precedence: bulk
 X-list: linux-mips
 
+I've isolated the problem to 2.6.13-rc3. What I've done is built every 
+kernel from 2.6.13-rc1 till it failed.
 
+Also, Ralf, when I tried using git to pull those out of the git repo, 
+they were missing files, had to use the cvs, not sure if you can verify 
+it. I tried 2.6.13-rc1 and 2.6.13-rc2.
 
-Hi All,
-
-Any one build and test the linux 2.6.14 kernel with mips malta board?
-Any good documentation available to build and boot the mips malta board
-with latest kernel sources?
-
-Thanks in advance.
-
-Regards,
-Swami
+-- 
+----
+Jim Gifford
+maillist@jg555.com

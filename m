@@ -1,52 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Nov 2005 15:48:50 +0000 (GMT)
-Received: from rtsoft2.corbina.net ([85.21.88.2]:5570 "HELO mail.dev.rtsoft.ru")
-	by ftp.linux-mips.org with SMTP id S8133574AbVKOPsd (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 15 Nov 2005 15:48:33 +0000
-Received: (qmail 10043 invoked from network); 15 Nov 2005 15:50:27 -0000
-Received: from unknown (HELO ?192.168.1.248?) (192.168.1.248)
-  by mail.dev.rtsoft.ru with SMTP; 15 Nov 2005 15:50:27 -0000
-Message-ID: <437A043B.6040604@ru.mvista.com>
-Date:	Tue, 15 Nov 2005 18:52:27 +0300
-From:	Sergei Shtylylov <sshtylyov@ru.mvista.com>
-Organization: MostaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
-To:	Linux MIPS Development <linux-mips@linux-mips.org>
-CC:	Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: JMR3927
-References: <20051114114615.GA6186@linux-mips.org>
-In-Reply-To: <20051114114615.GA6186@linux-mips.org>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Nov 2005 15:51:49 +0000 (GMT)
+Received: from extgw-uk.mips.com ([62.254.210.129]:12813 "EHLO
+	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
+	id S8133563AbVKOPvc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 15 Nov 2005 15:51:32 +0000
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id jAFFrPOC025333;
+	Tue, 15 Nov 2005 15:53:26 GMT
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id jAFFrPb0025332;
+	Tue, 15 Nov 2005 15:53:25 GMT
+Date:	Tue, 15 Nov 2005 15:53:25 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	David Daney <ddaney@avtrex.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] Fix build in ide-dma.c
+Message-ID: <20051115155325.GC15733@linux-mips.org>
+References: <17273.5861.51238.726136@dl2.hq2.avtrex.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <17273.5861.51238.726136@dl2.hq2.avtrex.com>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9495
+X-archive-position: 9496
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+On Mon, Nov 14, 2005 at 02:59:49PM -0800, David Daney wrote:
 
-Ralf Baechle wrote:
+> When in_drive_list was renamed to ide_in_drive_list, several
+> occurrences were missed.  This patch allows me to build.
 
-> Does anybody still care about the JMR3927 board?
+Thanks, applied.
 
-    At least there's no 2.6 release planned for this board by Montavista.
+The ide-dma stuff is part of the work on polishing the remaining drivers
+for merging to kernel.org.  I hope I can get rid of that kind of stuff
+soon ...
 
->  The board code is pretty
-> badly broken.   It's also currently the only user of the TX3927 in the tree.
-
-   I saw you were busy with TX3927 maintenance recently... Looks like this is 
-another chance to remind you of my old patch:
-
-http://www.linux-mips.org/archives/linux-mips/2004-10/msg00300.html
-
->   Ralf
-
-WBR, Sergei
+  Ralf

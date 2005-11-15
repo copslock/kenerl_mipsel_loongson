@@ -1,66 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Nov 2005 23:03:29 +0000 (GMT)
-Received: from adsl-67-116-42-147.dsl.sntc01.pacbell.net ([67.116.42.147]:17440
-	"EHLO avtrex.com") by ftp.linux-mips.org with ESMTP
-	id S3466982AbVKNXDM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 14 Nov 2005 23:03:12 +0000
-Received: from [192.168.7.26] ([192.168.7.3]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Mon, 14 Nov 2005 15:05:06 -0800
-Message-ID: <43791822.3050600@avtrex.com>
-Date:	Mon, 14 Nov 2005 15:05:06 -0800
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Mozilla Thunderbird 1.0.7-1.1.fc3 (X11/20050929)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Nov 2005 14:10:42 +0000 (GMT)
+Received: from [210.212.208.205] ([210.212.208.205]:3201 "EHLO
+	pdns.sankhya.co.in") by ftp.linux-mips.org with ESMTP
+	id S8133548AbVKOOKY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 15 Nov 2005 14:10:24 +0000
+Received: from sankhya.com (sankhya-external [192.168.1.2])
+	by pdns.sankhya.co.in (8.12.11/8.12.10) with ESMTP id jAFEAulE032644
+	for <linux-mips@linux-mips.org>; Tue, 15 Nov 2005 19:40:58 +0530
+Received: from sankhya.com (localhost [127.0.0.1])
+	by sankhya.com (8.12.8/8.12.5) with ESMTP id jAFEmiUn014770
+	for <linux-mips@linux-mips.org>; Tue, 15 Nov 2005 20:18:44 +0530
+Received: from localhost (swamim@localhost)
+	by sankhya.com (8.12.8/8.12.5/Submit) with ESMTP id jAFEmRM8014752
+	for <linux-mips@linux-mips.org>; Tue, 15 Nov 2005 20:18:28 +0530
+Date:	Tue, 15 Nov 2005 20:18:26 +0530 (IST)
+From:	M Ranga Swami Reddy <swamim@sankhya.com>
+Reply-To: swamim@sankhya.com
 To:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] Fix build in ide-dma.c
-References: <17273.5861.51238.726136@dl2.hq2.avtrex.com>
-In-Reply-To: <17273.5861.51238.726136@dl2.hq2.avtrex.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 14 Nov 2005 23:05:06.0260 (UTC) FILETIME=[DA462940:01C5E96F]
-Return-Path: <ddaney@avtrex.com>
+Subject: linux 2.6.14 (MIPS CVS) kernel build and testing
+Message-ID: <Pine.LNX.4.44.0511152015310.17499-100000@linux42.sankhya.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <swamim@sankhya.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9491
+X-archive-position: 9492
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: swamim@sankhya.com
 Precedence: bulk
 X-list: linux-mips
 
-David Daney wrote:
-> When in_drive_list was renamed to ide_in_drive_list, several
-> occurrences were missed.  This patch allows me to build.
-> 
-> David Daney
-> 
 
-I guess I should probably add:
 
-Signed-off-by: David Daney <ddaney@avtrex.com>
+Hi All,
 
-> 
-> diff --git a/drivers/ide/ide-dma.c b/drivers/ide/ide-dma.c
-> --- a/drivers/ide/ide-dma.c
-> +++ b/drivers/ide/ide-dma.c
-> @@ -665,7 +665,7 @@ int __ide_dma_bad_drive (ide_drive_t *dr
->  {
->  	struct hd_driveid *id = drive->id;
->  
-> -	int blacklist = in_drive_list(id, drive_blacklist);
-> +	int blacklist = ide_in_drive_list(id, drive_blacklist);
->  	if (blacklist) {
->  		printk(KERN_WARNING "%s: Disabling (U)DMA for %s (blacklisted)\n",
->  				    drive->name, id->model);
-> @@ -679,7 +679,7 @@ EXPORT_SYMBOL(__ide_dma_bad_drive);
->  int __ide_dma_good_drive (ide_drive_t *drive)
->  {
->  	struct hd_driveid *id = drive->id;
-> -	return in_drive_list(id, drive_whitelist);
-> +	return ide_in_drive_list(id, drive_whitelist);
->  }
->  
->  EXPORT_SYMBOL(__ide_dma_good_drive);
-> 
+Any one build and test the linux 2.6.14 kernel with mips malta board?
+Any good documentation available to build and boot the mips malta board
+with latest kernel sources?
+
+Thanks in advance.
+
+Regards,
+Swami

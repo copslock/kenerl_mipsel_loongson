@@ -1,32 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Nov 2005 14:05:37 +0000 (GMT)
-Received: from extgw-uk.mips.com ([62.254.210.129]:14354 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Nov 2005 14:30:29 +0000 (GMT)
+Received: from extgw-uk.mips.com ([62.254.210.129]:62238 "EHLO
 	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S8134047AbVKPOFT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 16 Nov 2005 14:05:19 +0000
+	id S8134061AbVKPOaL (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 16 Nov 2005 14:30:11 +0000
 Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id jAGE7Jr7010563;
-	Wed, 16 Nov 2005 14:07:19 GMT
+	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id jAGEWBmj011538;
+	Wed, 16 Nov 2005 14:32:11 GMT
 Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id jAGE7I7r010562;
-	Wed, 16 Nov 2005 14:07:18 GMT
-Date:	Wed, 16 Nov 2005 14:07:18 +0000
+	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id jAGEWBSj011537;
+	Wed, 16 Nov 2005 14:32:11 GMT
+Date:	Wed, 16 Nov 2005 14:32:11 +0000
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Manish Lachwani <m_lachwani@yahoo.com>
-Cc:	Nguyen Thanh Binh <n_tbinh@yahoo.com>,
-	"Kevin D. Kissell" <kevink@mips.com>, linux-mips@linux-mips.org
-Subject: Re: Calibrating delay loop... crashes
-Message-ID: <20051116140718.GD3229@linux-mips.org>
-References: <20051116021026.90086.qmail@web30710.mail.mud.yahoo.com> <20051116022439.44081.qmail@web30904.mail.mud.yahoo.com>
+To:	Jonathan Day <imipak@yahoo.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Problems with Linux kernel on Broadcom SB1
+Message-ID: <20051116143211.GE3229@linux-mips.org>
+References: <20051115204828.31990.qmail@web31501.mail.mud.yahoo.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20051116022439.44081.qmail@web30904.mail.mud.yahoo.com>
+In-Reply-To: <20051115204828.31990.qmail@web31501.mail.mud.yahoo.com>
 User-Agent: Mutt/1.4.2.1i
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9510
+X-archive-position: 9511
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,18 +33,16 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Nov 15, 2005 at 06:24:39PM -0800, Manish Lachwani wrote:
+On Tue, Nov 15, 2005 at 12:48:28PM -0800, Jonathan Day wrote:
 
-> There is a porting guide at:
+> Trying to build the Linux kernel currently in the git
+> archive on a Broadcom SB1 (specifically, the 1250 dual
+> processor system).
 > 
-> http://linux.junsun.net/porting-howto/
-> 
-> which is quite useful. Read the "System time and
-> timer" section. It describes to some extent
-> implementing timer services.
+> I've not been able to get any of the page sizes other
+> than the 4K pages to work at all - it stops at boot,
 
-Except it being outdated, totally 2.4 centric and having been superseeded
-by the version that's now in the www.linux-mips.org wiki since almost a
-year.
+This option is marked experimental.  So you choose to experiment and you
+saw the pyrotechnics fly ;-)
 
   Ralf

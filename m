@@ -1,105 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Nov 2005 02:23:02 +0000 (GMT)
-Received: from web30904.mail.mud.yahoo.com ([68.142.200.157]:50527 "HELO
-	web30904.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S8134011AbVKPCWo (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 16 Nov 2005 02:22:44 +0000
-Received: (qmail 44083 invoked by uid 60001); 16 Nov 2005 02:24:39 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.com;
-  h=Message-ID:Received:Date:From:Subject:To:Cc:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding;
-  b=P7vFvkPNXgY+QP5vTIfYAYmSsgMUfS8NxN1fW5Og6AGWbLW9i8P+HK2lSg42egnMZmuGtEIr3U6/Ul7JGcxz/DfUgmSGQU9HW9PPqVdV6aXjbDYQXsARwv1ieT0fJe/ve7b8qyPD0RViRa+B+t06xPf3YLKnBRzwB/tSX1XaRR0=  ;
-Message-ID: <20051116022439.44081.qmail@web30904.mail.mud.yahoo.com>
-Received: from [12.44.186.158] by web30904.mail.mud.yahoo.com via HTTP; Tue, 15 Nov 2005 18:24:39 PST
-Date:	Tue, 15 Nov 2005 18:24:39 -0800 (PST)
-From:	Manish Lachwani <m_lachwani@yahoo.com>
-Subject: Re: Calibrating delay loop... crashes
-To:	Nguyen Thanh Binh <n_tbinh@yahoo.com>,
-	"Kevin D. Kissell" <kevink@mips.com>
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <20051116021026.90086.qmail@web30710.mail.mud.yahoo.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Nov 2005 07:59:00 +0000 (GMT)
+Received: from mf2.realtek.com.tw ([220.128.56.22]:63246 "EHLO
+	mf2.realtek.com.tw") by ftp.linux-mips.org with ESMTP
+	id S8134094AbVKPH6h (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 16 Nov 2005 07:58:37 +0000
+Received: from msx.realtek.com.tw (unverified [172.21.1.77]) by mf2.realtek.com.tw
+ (Clearswift SMTPRS 5.1.7) with ESMTP id <T74a638fbcfdc80381613b4@mf2.realtek.com.tw> for <linux-mips@linux-mips.org>;
+ Wed, 16 Nov 2005 16:02:38 +0800
+Received: from rtpdii3098 ([172.21.98.16])
+          by msx.realtek.com.tw (Lotus Domino Release 6.5.3)
+          with ESMTP id 2005111616001636-969673 ;
+          Wed, 16 Nov 2005 16:00:16 +0800 
+Message-ID: <006c01c5ea83$c7cec780$106215ac@realtek.com.tw>
+From:	"colin" <colin@realtek.com.tw>
+To:	<linux-mips@linux-mips.org>
+Subject: Does oProfile support 4KE now?
+Date:	Wed, 16 Nov 2005 16:00:16 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Return-Path: <m_lachwani@yahoo.com>
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2800.1506
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1506
+X-MIMETrack: Itemize by SMTP Server on msx/Realtek(Release 6.5.3|September 14, 2004) at
+ 2005/11/16 =?Bog5?B?pFWkyCAwNDowMDoxNg==?=,
+	Serialize by Router on msx/Realtek(Release 6.5.3|September 14, 2004) at
+ 2005/11/16 =?Bog5?B?pFWkyCAwNDowMDoxNw==?=,
+	Serialize complete at 2005/11/16 =?Bog5?B?pFWkyCAwNDowMDoxNw==?=
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain;
+	charset="big5"
+Return-Path: <colin@realtek.com.tw>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9506
+X-archive-position: 9507
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: m_lachwani@yahoo.com
+X-original-sender: colin@realtek.com.tw
 Precedence: bulk
 X-list: linux-mips
 
-Hi !
 
-There is a porting guide at:
+Hello,
+From the CVS of oProfile
+http://cvs.sourceforge.net/viewcvs.py/oprofile/oprofile/events/mips/, I
+donot see 4KE in it.
+Does this mean that we cannot use oProfile to profile 4KE right now?
 
-http://linux.junsun.net/porting-howto/
-
-which is quite useful. Read the "System time and
-timer" section. It describes to some extent
-implementing timer services.
-
-Thanks
-Manish Lachwani
-
-
-
---- Nguyen Thanh Binh <n_tbinh@yahoo.com> wrote:
-
-> Hi Kevin,
-> 
-> > > When booting Monta Vista Linux on Memec board
-> > > (Virtex-4 FX12 LC), it crashed after printing
-> the
-> > > following message:
-> > > 
-> > >     "Calibrating delay loop..."
-> > > 
-> > > By looking at the source code, I found that in
-> the
-> > > init/main.c the problem came from the
-> > calibrate_delay
-> > > function: jiffies was not incremented (jiffies
-> was
-> > > always equal to 0).
-> > > 
-> > > Have anyone get the similar problem or any
-> > experience
-> > > to fix it?
-> > 
-> > I take it that by "crashed", you mean it hung?  If
-> > so,
-> > it sounds like you aren't getting any timer
-> > interrupts.
-> 
-> You are right. Because jiffies was not incremented
-> so
-> the below code segment in function calibrate_delay
-> in
-> file init/mian.c hung:
-> 
->    ticks = jiffies;
->    while (ticks == jiffies) ;
-> 
-> As I am a newbie, I did not find how to fix it.
-> 
-> Thank you for any help.
-> 
-> Binh Nguyen
-> 
-> Nguy&#7877;n Thanh Bình
-> 
-> 
-> 		
->
-___________________________________________________________
-> 
-> How much free photo storage do you get? Store your
-> holiday 
-> snaps for FREE with Yahoo! Photos
-> http://uk.photos.yahoo.com
-> 
-> 
+Regards,
+Colin

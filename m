@@ -1,90 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Nov 2005 21:35:39 +0000 (GMT)
-Received: from adsl-67-116-42-147.dsl.sntc01.pacbell.net ([67.116.42.147]:34078
-	"EHLO avtrex.com") by ftp.linux-mips.org with ESMTP
-	id S8133603AbVKOVfW (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 15 Nov 2005 21:35:22 +0000
-Received: from [192.168.7.26] ([192.168.7.3]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Tue, 15 Nov 2005 13:37:21 -0800
-Message-ID: <437A5511.8020806@avtrex.com>
-Date:	Tue, 15 Nov 2005 13:37:21 -0800
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Mozilla Thunderbird 1.0.7-1.1.fc3 (X11/20050929)
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Nov 2005 01:34:57 +0000 (GMT)
+Received: from web30711.mail.mud.yahoo.com ([68.142.201.249]:50309 "HELO
+	web30711.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S8134014AbVKPBej (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 16 Nov 2005 01:34:39 +0000
+Received: (qmail 74658 invoked by uid 60001); 16 Nov 2005 01:36:34 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  h=Message-ID:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
+  b=lpQ3Rf9XP6iGvdwyQTkPSP6L8pwW1GhJ7NiF78SPMzGv+pArN8f8sScUJAM9e2XkFadBibgJcDDfTG9TQmf8LQCbdQHdcxQdlOkWLX3ac21J8FlI9TQJBtxZCAI1yzs5SViSnzot37eYXnDvA6rngLK+Tf9FwRhNX0c/PX1a7Vs=  ;
+Message-ID: <20051116013634.74656.qmail@web30711.mail.mud.yahoo.com>
+Received: from [203.190.168.9] by web30711.mail.mud.yahoo.com via HTTP; Wed, 16 Nov 2005 01:36:34 GMT
+Date:	Wed, 16 Nov 2005 01:36:34 +0000 (GMT)
+From:	Nguyen Thanh Binh <n_tbinh@yahoo.com>
+Subject: Calibrating delay loop... crashes
+To:	linux-mips@linux-mips.org
 MIME-Version: 1.0
-To:	Jonathan Day <imipak@yahoo.com>
-CC:	linux-mips@linux-mips.org
-Subject: Re: Another problem with compiling Linux kernel
-References: <20051115213005.79456.qmail@web31513.mail.mud.yahoo.com>
-In-Reply-To: <20051115213005.79456.qmail@web31513.mail.mud.yahoo.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 15 Nov 2005 21:37:21.0922 (UTC) FILETIME=[C2E5AE20:01C5EA2C]
-Return-Path: <ddaney@avtrex.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <n_tbinh@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9501
+X-archive-position: 9502
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: n_tbinh@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-Jonathan Day wrote:
-> Hi again,
-> 
-> Using GCC 4.0.0 on the Broadcom SB1 MIPS64 board, the
-> compilation crashes at the final link phase with the
-> following errors:
-> 
-.
-.
-> `.exit.text' referenced in section `.pdr.20' of
-> net/built-in.o: defined in discarded section
-> `.exit.text' of net/built-in.o
-> 
+Hello all,
 
-I know nothing about this one.
+When booting Monta Vista Linux on Memec board
+(Virtex-4 FX12 LC), it crashed after printing the
+following message:
 
-> My first thought was "ah, might be because I'm using
-> an old GCC, so I'll try something more recent and see
-> what happens". When trying GCC 4.1.0 (snapshot from
-> 20051017), I get the following error:
-> 
-> In file included from include/linux/nfs_fs.h:15,
->                  from init/do_mounts.c:12:
-> include/linux/pagemap.h: In function
-> 'fault_in_pages_readable':
-> include/linux/pagemap.h:237: error: read-only variable
-> '__gu_val' used as 'asm' output
-> include/linux/pagemap.h:237: error: read-only variable
-> '__gu_val' used as 'asm' output
-> include/linux/pagemap.h:237: error: read-only variable
-> '__gu_val' used as 'asm' output
-> include/linux/pagemap.h:237: error: read-only variable
-> '__gu_val' used as 'asm' output
-> include/linux/pagemap.h:243: error: read-only variable
-> '__gu_val' used as 'asm' output
-> include/linux/pagemap.h:243: error: read-only variable
-> '__gu_val' used as 'asm' output
-> include/linux/pagemap.h:243: error: read-only variable
-> '__gu_val' used as 'asm' output
-> include/linux/pagemap.h:243: error: read-only variable
-> '__gu_val' used as 'asm' output
-> make[1]: *** [init/do_mounts.o] Error 1
-> make: *** [init] Error 2
-> 
-> This one may be a compiler bug (experimental GCCs are,
-> well, experimental!) but it makes it somewhat harder
-> to know if the later issue is resolved by using a
-> different toolchain.
-> 
+    "Calibrating delay loop..."
 
-This is not a GCC bug, but a change in GCC behavior.  One patch was 
-posted here:
+By looking at the source code, I found that in the
+init/main.c the problem came from the calibrate_delay
+function: jiffies was not incremented (jiffies was
+always equal to 0).
 
-http://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-mips&i=Pine.LNX.4.61.0511022057140.3511%40trantor.stuart.netsweng.com
+Have anyone get the similar problem or any experience
+to fix it?
 
-I don't know if the change made it into the linux-mips git repository or 
-not.
+Thank you.
+
+Binh Nguyen
+
+
+
+		
+___________________________________________________________ 
+To help you stay safe and secure online, we've developed the all new Yahoo! Security Centre. http://uk.security.yahoo.com

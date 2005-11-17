@@ -1,81 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Nov 2005 18:40:20 +0000 (GMT)
-Received: from extgw-uk.mips.com ([62.254.210.129]:3858 "EHLO
-	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S8134075AbVKPSkB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 16 Nov 2005 18:40:01 +0000
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id jAGIg2Ui022985;
-	Wed, 16 Nov 2005 18:42:02 GMT
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id jAGIg1Yo022984;
-	Wed, 16 Nov 2005 18:42:01 GMT
-Date:	Wed, 16 Nov 2005 18:42:01 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Nov 2005 02:18:52 +0000 (GMT)
+Received: from topsns.toshiba-tops.co.jp ([202.230.225.5]:54797 "HELO
+	topsns.toshiba-tops.co.jp") by ftp.linux-mips.org with SMTP
+	id S8134110AbVKQCSe (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 17 Nov 2005 02:18:34 +0000
+Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 17 Nov 2005 02:21:50 UT
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 9A9AC20044;
+	Thu, 17 Nov 2005 11:21:45 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 8F3951F4C5;
+	Thu, 17 Nov 2005 11:21:45 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id jAH2LjhO047110;
+	Thu, 17 Nov 2005 11:21:45 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Thu, 17 Nov 2005 11:21:45 +0900 (JST)
+Message-Id: <20051117.112144.108306652.nemoto@toshiba-tops.co.jp>
+To:	ralf@linux-mips.org
 Cc:	linux-mips@linux-mips.org
 Subject: Re: cpu_idle and cpu_wait
-Message-ID: <20051116184201.GJ3229@linux-mips.org>
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20051116184201.GJ3229@linux-mips.org>
 References: <20051117.011906.25910026.anemo@mba.ocn.ne.jp>
+	<20051116184201.GJ3229@linux-mips.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20051117.011906.25910026.anemo@mba.ocn.ne.jp>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9516
+X-archive-position: 9517
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Nov 17, 2005 at 01:19:06AM +0900, Atsushi Nemoto wrote:
+>>>>> On Wed, 16 Nov 2005 18:42:01 +0000, Ralf Baechle <ralf@linux-mips.org> said:
+>> The CPU can surely exit from the WAIT instruction by interrupt even
+>> if interrupts disabled?
 
-> Looking at recent change in cpu_idle(), I find an another potential
-> problem with cpu_wait (WAIT instruction).
-> 
->     48	ATTRIB_NORET void cpu_idle(void)
->     49	{
->     50		/* endless idle loop with no priority at all */
->     51		while (1) {
->     52			while (!need_resched())
->     53				if (cpu_wait)
->     54					(*cpu_wait)();
->     55			preempt_enable_no_resched();
->     56			schedule();
->     57			preempt_disable();
->     58		}
->     59	}
-> 
-> If an interrupt raised on line 53 and the interrupt handler woke a
-> sleeping thread up, the thread becomes runnable and current thread
-> (idle thread) is marked as NEED_RESCHED.
-> 
-> Since preemption is disabled, the interrupt handler just return to
-> current thread (idle thread) without rescheduling.  The idle thread
-> then call cpu_wait() and execute WAIT instruction (or something
-> similer).  The CPU will stops until next interrupt.  Then the idle
-> task checks need_resched() and finally calls schedule().  Therefore,
-> wakeup-resume latency will be nearly one TICK on worst case!
+ralf> That's implementation dependent behaviour, unfortunately.
 
-Pleassure.
+I checked some MIPS32/MIPS64 datasheets and found that's really
+inplementation-dependent.  The answer is YES on (perhaps) all MIPS4K?
+processors but NO on 20Kc, 24K ...
 
-> If this analysis was correct, how to fix this?
-> 
-> Removing above preempt_enable_no_resched/preempt_disable pair would
-> fix it for preemptive kernel, but no point for non-preemptive kernel.
-> Replacing them with local_irq_enable/local_irq_disable would fix it
-> for both kernel, but there is an question:
+And I checked x86 implemetation and found that HLT or MWAIT
+instruction also must be used with interrupts enabled.  So IIUC it
+seems x86 have same latency problem too.
 
-Somebody sneaking those lines into kernel.org ...
-
-> 	The CPU can surely exit from the WAIT instruction by interrupt
-> 	even if interrupts disabled?
-
-That's implementation dependent behaviour, unfortunately.
-
-  Ralf
+---
+Atsushi Nemoto

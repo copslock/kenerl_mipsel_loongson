@@ -1,51 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Nov 2005 08:49:51 +0000 (GMT)
-Received: from 209-232-97-206.ded.pacbell.net ([209.232.97.206]:50428 "EHLO
-	dns0.mips.com") by ftp.linux-mips.org with ESMTP id S8134445AbVKVIte
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Nov 2005 11:19:13 +0000 (GMT)
+Received: from alg145.algor.co.uk ([62.254.210.145]:48134 "EHLO
+	dmz.algor.co.uk") by ftp.linux-mips.org with ESMTP id S3466282AbVKVLS4
 	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 22 Nov 2005 08:49:34 +0000
-Received: from mercury.mips.com (sbcns-dmz [209.232.97.193])
-	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id jAM8q2sO013138;
-	Tue, 22 Nov 2005 00:52:03 -0800 (PST)
-Received: from [192.168.236.16] (grendel [192.168.236.16])
-	by mercury.mips.com (8.12.9/8.12.11) with ESMTP id jAM8q316020211;
-	Tue, 22 Nov 2005 00:52:04 -0800 (PST)
-Message-ID: <4382DC76.60506@mips.com>
-Date:	Tue, 22 Nov 2005 09:53:10 +0100
-From:	"Kevin D. Kissell" <kevink@mips.com>
-User-Agent: Mozilla Thunderbird 1.0.6 (X11/20050716)
+	Tue, 22 Nov 2005 11:18:56 +0000
+Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
+	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
+	id 1EeW9T-0007k7-00; Tue, 22 Nov 2005 11:17:31 +0000
+Received: from highbury.mips.com ([192.168.192.236])
+	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1EeWD3-0000yF-00; Tue, 22 Nov 2005 11:21:13 +0000
+Message-ID: <4382FF29.2020605@mips.com>
+Date:	Tue, 22 Nov 2005 11:21:13 +0000
+From:	Nigel Stephens <nigel@mips.com>
+Organization: MIPS Technologies
+User-Agent: Debian Thunderbird 1.0.2 (X11/20050817)
 X-Accept-Language: en-us, en
 MIME-Version: 1.0
-To:	"Knittel, Brian" <Brian.Knittel@powertv.com>
-CC:	linux-mips@linux-mips.org
+To:	"Kevin D. Kissell" <kevink@mips.com>
+CC:	"Knittel, Brian" <Brian.Knittel@powertv.com>,
+	linux-mips@linux-mips.org
 Subject: Re: Saving arguments on the stack
-References: <762C0A863A7674478671627FEAF5848105AF92D2@hqmail01.powertv.com>
-In-Reply-To: <762C0A863A7674478671627FEAF5848105AF92D2@hqmail01.powertv.com>
+References: <762C0A863A7674478671627FEAF5848105AF92D2@hqmail01.powertv.com> <4382DC76.60506@mips.com>
+In-Reply-To: <4382DC76.60506@mips.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.39
-Return-Path: <kevink@mips.com>
+X-MTUK-Scanner:	Found to be clean
+X-MTUK-SpamCheck: not spam (whitelisted), SpamAssassin (score=-4.712,
+	required 4, AWL, BAYES_00)
+Return-Path: <nigel@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9528
+X-archive-position: 9529
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@mips.com
+X-original-sender: nigel@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-Knittel, Brian wrote:
-> Hi,
-> 
-> I'd like to force the compiler to store arguments on the stack with otherwise optimized code.
-> 
-> I found a refernce in the archives (form 2001) for using -0 (no optimization). Has anyone found another way to do this?
 
-If I recall correctly, if you specify -g to enable debugger support,
-the subroutine prologues store the arguments into their stack slots,
-even if a higher level of optimization is otherwise specified.
 
-		Regards,
+Kevin D. Kissell wrote:
 
-		Kevin K.
+> Knittel, Brian wrote:
+>
+>> Hi,
+>>
+>> I'd like to force the compiler to store arguments on the stack with 
+>> otherwise optimized code.
+>>
+>> I found a refernce in the archives (form 2001) for using -0 (no 
+>> optimization). Has anyone found another way to do this?
+>
+>
+> If I recall correctly, if you specify -g to enable debugger support,
+> the subroutine prologues store the arguments into their stack slots,
+> even if a higher level of optimization is otherwise specified.
+
+
+'Fraid not: the -g option only adds debug info to the object file, it 
+shouldn't alter the generated code. Using -O0 will certainly store 
+everything on the stack, but it also won't be "with otherwise optimized 
+code".
+
+
+Nigel

@@ -1,52 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Nov 2005 12:39:05 +0000 (GMT)
-Received: from alg145.algor.co.uk ([62.254.210.145]:64013 "EHLO
-	dmz.algor.co.uk") by ftp.linux-mips.org with ESMTP id S3466290AbVKVMir
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 22 Nov 2005 12:38:47 +0000
-Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
-	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
-	id 1EeXOn-0004H3-00; Tue, 22 Nov 2005 12:37:25 +0000
-Received: from gladsmuir.algor.co.uk ([172.20.192.66] helo=gladsmuir)
-	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
-	id 1EeXSQ-0003FB-00; Tue, 22 Nov 2005 12:41:11 +0000
-From:	Dominic Sweetman <dom@mips.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-ID: <17283.4578.898036.622893@gargle.gargle.HOWL>
-Date:	Tue, 22 Nov 2005 12:41:06 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Nov 2005 14:00:55 +0000 (GMT)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:6662 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S3466297AbVKVOAg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 22 Nov 2005 14:00:36 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 70D06E1CB0;
+	Tue, 22 Nov 2005 15:03:12 +0100 (CET)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 13067-03; Tue, 22 Nov 2005 15:03:12 +0100 (CET)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 2A9B8E1C61;
+	Tue, 22 Nov 2005 15:03:12 +0100 (CET)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id jAME3AG6020761;
+	Tue, 22 Nov 2005 15:03:12 +0100
+Date:	Tue, 22 Nov 2005 14:03:12 +0000 (GMT)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
 To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	"Knittel, Brian" <Brian.Knittel@powertv.com>,
+Cc:	Nigel Stephens <nigel@mips.com>,
+	"Kevin D. Kissell" <kevink@mips.com>,
+	"Knittel, Brian" <Brian.Knittel@powertv.com>,
 	linux-mips@linux-mips.org
 Subject: Re: Saving arguments on the stack
-In-Reply-To: <20051122113801.GC2706@linux-mips.org>
+In-Reply-To: <20051122122703.GD2706@linux-mips.org>
+Message-ID: <Pine.LNX.4.55.0511221359070.4241@blysk.ds.pg.gda.pl>
 References: <762C0A863A7674478671627FEAF5848105AF92D2@hqmail01.powertv.com>
-	<20051122113801.GC2706@linux-mips.org>
-X-Mailer: VM 7.17 under 21.4 (patch 15) "Security Through Obscurity" XEmacs Lucid
-X-MTUK-Scanner:	Found to be clean
-X-MTUK-SpamCheck: not spam (whitelisted), SpamAssassin (score=-4.848,
-	required 4, AWL, BAYES_00)
-Return-Path: <dom@mips.com>
+ <4382DC76.60506@mips.com> <4382FF29.2020605@mips.com> <20051122112417.GB2706@linux-mips.org>
+ <Pine.LNX.4.64N.0511221128150.14593@blysk.ds.pg.gda.pl>
+ <20051122122703.GD2706@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.87.1/1183/Tue Nov 22 10:19:57 2005 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9534
+X-archive-position: 9535
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dom@mips.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Tue, 22 Nov 2005, Ralf Baechle wrote:
 
-Brian,
+> There were functions in the network stack that intensionally were
+> declared extern inline to make sure the compiler won't be able to outline
+> that function unnoticed.  I just grepped for it and can't find it
+> anymore, must be a relativly recent improvment.
+> 
+> We also rely on the compiler eleminating calls to certain functions
+> entirely, for example to __xchg_called_with_bad_pointer().
 
-> > I'd like to force the compiler to store arguments on the stack
-> > with otherwise optimized code.
+ Well, that's exactly what "__attribute__((always_inline))" does -- either
+inline or fail; the latter AFAIK only happening if the function's body is
+unavailable to the current compilation unit.  That happens regardless of 
+any optimization settings.
 
-Sounds like you're out of luck.  Perhaps you'd do better to go one
-step back and explain what you're trying to do?
-
---
-Dominic Sweetman
-MIPS Technologies
+  Maciej

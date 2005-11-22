@@ -1,52 +1,91 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Nov 2005 18:21:52 +0000 (GMT)
-Received: from mask.powertv.com ([12.146.136.163]:45461 "EHLO
-	hqmail01.powertv.com") by ftp.linux-mips.org with ESMTP
-	id S8134455AbVKVSVf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 22 Nov 2005 18:21:35 +0000
-X-MimeOLE: Produced By Microsoft Exchange V6.0.6603.0
-content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Nov 2005 20:52:25 +0000 (GMT)
+Received: from amdext4.amd.com ([163.181.251.6]:27817 "EHLO amdext4.amd.com")
+	by ftp.linux-mips.org with ESMTP id S8134136AbVKVUwG (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 22 Nov 2005 20:52:06 +0000
+Received: from SAUSGW02.amd.com (sausgw02.amd.com [163.181.250.22])
+	by amdext4.amd.com (8.12.11/8.12.11/AMD) with ESMTP id jAMKsg6l026186;
+	Tue, 22 Nov 2005 14:54:43 -0600
+Received: from 163.181.250.1 by SAUSGW02.amd.com with ESMTP (AMD SMTP
+ Relay (Email Firewall v6.1.0)); Tue, 22 Nov 2005 14:54:27 -0600
+X-Server-Uuid: 5FC0E2DF-CD44-48CD-883A-0ED95B391E89
+Received: from ldcmail.amd.com (ldcmail.amd.com [147.5.200.40]) by
+ amdint2.amd.com (8.12.8/8.12.8/AMD) with ESMTP id jAMKsQeP021677; Tue,
+ 22 Nov 2005 14:54:26 -0600 (CST)
+Received: from cosmic.amd.com (cosmic.amd.com [147.5.201.206]) by
+ ldcmail.amd.com (Postfix) with ESMTP id 923D31FF4; Tue, 22 Nov 2005
+ 13:54:26 -0700 (MST)
+Received: from cosmic.amd.com (localhost [127.0.0.1]) by cosmic.amd.com
+ (8.13.4/8.13.4) with ESMTP id jAMKxc1c004512; Tue, 22 Nov 2005 13:59:38
+ -0700
+Received: (from jcrouse@localhost) by cosmic.amd.com (
+ 8.13.4/8.13.4/Submit) id jAMKxcSk004511; Tue, 22 Nov 2005 13:59:38
+ -0700
+Date:	Tue, 22 Nov 2005 13:59:38 -0700
+From:	"Jordan Crouse" <jordan.crouse@amd.com>
+To:	linux-mips@linux-mips.org
+cc:	ralf@linux-mips.org
+Subject: [PATCH] Retain the write-only OD from being clobbered
+Message-ID: <20051122205938.GR18119@cosmic.amd.com>
 MIME-Version: 1.0
+User-Agent: Mutt/1.5.11
+X-WSS-ID: 6F9D5A091M8573332-01-01
 Content-Type: text/plain;
-	charset="UTF-8"
-Content-Transfer-Encoding: base64
-Subject: RE: Saving arguments on the stack
-Date:	Tue, 22 Nov 2005 10:24:09 -0800
-Message-ID: <762C0A863A7674478671627FEAF5848105AF92D5@hqmail01.powertv.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: Saving arguments on the stack
-Thread-Index: AcXvYhBLECiZIEeYTnaG4w7B0/PbpwALpxeA
-From:	"Knittel, Brian" <Brian.Knittel@powertv.com>
-To:	<linux-mips@linux-mips.org>
-Cc:	"Dominic Sweetman" <dom@mips.com>
-Return-Path: <Brian.Knittel@powertv.com>
+ charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: 7bit
+Return-Path: <jcrouse@cosmic.amd.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9536
+X-archive-position: 9537
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Brian.Knittel@powertv.com
+X-original-sender: jordan.crouse@amd.com
 Precedence: bulk
 X-list: linux-mips
 
-V2UnZCBsaWtlIHRvIGFkZCBhcmd1bWVudHMgdG8gdGhlIGJhY2t0cmFjZSBpbiBPb3BzIG1lc3Nh
-Z2VzIHRvIG1ha2UgZGVidWdnaW5nIGZyb20gdGhlc2UgcmVwb3J0cyBtb3JlIGVmZmljaWVudC4g
-SXQgaXMgcGFydGljdWxhcmx5IHVzZWZ1bCBmb3IgZGV0ZXJtaW5pbmcgd2hlcmUgdGhlIHByb2Js
-ZW0gd2FzIGdlbmVyYXRlZCwgcGFydGljdWxhcmx5IHdoZW4gYmFkIHBvaW50ZXJzIGFyZSBwYXNz
-ZWQgaW4uIFRoaXMgaXMgZm9yIHByb2R1Y3Rpb24gZW1iZWRkZWQgZGV2aWNlcyB3aXRoIG9wdGlt
-aXplZCBjb2RlIGFuZCB3aGljaCByZWJvb3QgaW1tZWRpYXRlbHkgYWZ0ZXIgc3RvcmluZyBvciBz
-ZW5kaW5nIHRoZSBPb3BzIG1lc3NhZ2UuIFBlcmZvcm1hbmNlIGlzIGFuIGlzc3VlLCBidXQgdGhl
-IG92ZXJoZWFkIG9mIHN0b3JpbmcgdGhlIGFyZ3VtZW50cyBvbiB0aGUgc3RhY2sgaXMgbGlrZWx5
-IHdvcnRoIHRoZSBhZGRlZCBkZWJ1ZyBpbmZvLg0KIA0KVGhhbmtzLA0KLS1Ccmlhbg0KDQoJLS0t
-LS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0gDQoJRnJvbTogRG9taW5pYyBTd2VldG1hbiBbbWFpbHRv
-OmRvbUBtaXBzLmNvbV0gDQoJU2VudDogVHVlIDExLzIyLzIwMDUgNDo0MSBBTSANCglUbzogUmFs
-ZiBCYWVjaGxlIA0KCUNjOiBLbml0dGVsLCBCcmlhbjsgbGludXgtbWlwc0BsaW51eC1taXBzLm9y
-ZyANCglTdWJqZWN0OiBSZTogU2F2aW5nIGFyZ3VtZW50cyBvbiB0aGUgc3RhY2sNCgkNCgkNCg0K
-DQoJQnJpYW4sDQoJDQoJPiA+IEknZCBsaWtlIHRvIGZvcmNlIHRoZSBjb21waWxlciB0byBzdG9y
-ZSBhcmd1bWVudHMgb24gdGhlIHN0YWNrDQoJPiA+IHdpdGggb3RoZXJ3aXNlIG9wdGltaXplZCBj
-b2RlLg0KCQ0KCVNvdW5kcyBsaWtlIHlvdSdyZSBvdXQgb2YgbHVjay4gIFBlcmhhcHMgeW91J2Qg
-ZG8gYmV0dGVyIHRvIGdvIG9uZQ0KCXN0ZXAgYmFjayBhbmQgZXhwbGFpbiB3aGF0IHlvdSdyZSB0
-cnlpbmcgdG8gZG8/DQoJDQoJLS0NCglEb21pbmljIFN3ZWV0bWFuDQoJTUlQUyBUZWNobm9sb2dp
-ZXMNCgkNCgkNCg0K
+First of several patches forwarded to me by Sergei Shtylyov.  Ralf,
+these should be good to go for the tree.
+
+Retain the write-only OD bit from being clobbered by coherency_setup()
+
+Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Acked-by: Jordan Crouse <jordan.crouse@amd.com>
+---
+
+ arch/mips/mm/c-r4k.c |   14 ++++++++++++++
+ 1 files changed, 14 insertions(+), 0 deletions(-)
+
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index 38223b4..044c468 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -29,6 +29,10 @@
+ #include <asm/war.h>
+ #include <asm/cacheflush.h> /* for run_uncached() */
+ 
++#ifdef CONFIG_SOC_AU1X00
++#include <au1000.h>
++#endif
++
+ /*
+  * Must die.
+  */
+@@ -1203,6 +1207,16 @@ static inline void coherency_setup(void)
+ {
+ 	change_c0_config(CONF_CM_CMASK, CONF_CM_DEFAULT);
+ 
++#ifdef CONFIG_SOC_AU1X00
++	/*
++	 * c0_config.od (bit 19) is write only (and reads as 0) on many early
++	 * revs of AMD Au1x00 SOCs. It disables the bus transaction overlapping 
++	 * and needs to be set to correct the various errata. So if it has been
++	 * set by the board setup code we must leave it set...
++	 */
++	if (cur_cpu_spec[0]->cpu_od)
++		set_c0_config(1 << 19);
++#endif
+ 	/*
+ 	 * c0_status.cu=0 specifies that updates by the sc instruction use
+ 	 * the coherency mode specified by the TLB; 1 means cachable

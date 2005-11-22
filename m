@@ -1,37 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Nov 2005 02:57:09 +0000 (GMT)
-Received: from mask.powertv.com ([12.146.136.163]:59074 "EHLO
-	hqmail01.powertv.com") by ftp.linux-mips.org with ESMTP
-	id S8134241AbVKVC4u (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 22 Nov 2005 02:56:50 +0000
-X-MimeOLE: Produced By Microsoft Exchange V6.0.6603.0
-content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Nov 2005 08:49:51 +0000 (GMT)
+Received: from 209-232-97-206.ded.pacbell.net ([209.232.97.206]:50428 "EHLO
+	dns0.mips.com") by ftp.linux-mips.org with ESMTP id S8134445AbVKVIte
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 22 Nov 2005 08:49:34 +0000
+Received: from mercury.mips.com (sbcns-dmz [209.232.97.193])
+	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id jAM8q2sO013138;
+	Tue, 22 Nov 2005 00:52:03 -0800 (PST)
+Received: from [192.168.236.16] (grendel [192.168.236.16])
+	by mercury.mips.com (8.12.9/8.12.11) with ESMTP id jAM8q316020211;
+	Tue, 22 Nov 2005 00:52:04 -0800 (PST)
+Message-ID: <4382DC76.60506@mips.com>
+Date:	Tue, 22 Nov 2005 09:53:10 +0100
+From:	"Kevin D. Kissell" <kevink@mips.com>
+User-Agent: Mozilla Thunderbird 1.0.6 (X11/20050716)
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="UTF-8"
-Content-Transfer-Encoding: base64
-Subject: Saving arguments on the stack
-Date:	Mon, 21 Nov 2005 18:59:20 -0800
-Message-ID: <762C0A863A7674478671627FEAF5848105AF92D2@hqmail01.powertv.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: What is the state of  KDB on MIPS?
-Thread-Index: AcWnfgzdE/lW8rVCT/m95+wNPa/iERHkkdY5
-From:	"Knittel, Brian" <Brian.Knittel@powertv.com>
-To:	<linux-mips@linux-mips.org>
-Return-Path: <Brian.Knittel@powertv.com>
+To:	"Knittel, Brian" <Brian.Knittel@powertv.com>
+CC:	linux-mips@linux-mips.org
+Subject: Re: Saving arguments on the stack
+References: <762C0A863A7674478671627FEAF5848105AF92D2@hqmail01.powertv.com>
+In-Reply-To: <762C0A863A7674478671627FEAF5848105AF92D2@hqmail01.powertv.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.39
+Return-Path: <kevink@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9527
+X-archive-position: 9528
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Brian.Knittel@powertv.com
+X-original-sender: kevink@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-SGksDQoNCkknZCBsaWtlIHRvIGZvcmNlIHRoZSBjb21waWxlciB0byBzdG9yZSBhcmd1bWVudHMg
-b24gdGhlIHN0YWNrIHdpdGggb3RoZXJ3aXNlIG9wdGltaXplZCBjb2RlLg0KDQpJIGZvdW5kIGEg
-cmVmZXJuY2UgaW4gdGhlIGFyY2hpdmVzIChmb3JtIDIwMDEpIGZvciB1c2luZyAtMCAobm8gb3B0
-aW1pemF0aW9uKS4gSGFzIGFueW9uZSBmb3VuZCBhbm90aGVyIHdheSB0byBkbyB0aGlzPw0KDQpU
-aGFua3MsDQoNCi0tQnJpYW4NCg0K
+Knittel, Brian wrote:
+> Hi,
+> 
+> I'd like to force the compiler to store arguments on the stack with otherwise optimized code.
+> 
+> I found a refernce in the archives (form 2001) for using -0 (no optimization). Has anyone found another way to do this?
+
+If I recall correctly, if you specify -g to enable debugger support,
+the subroutine prologues store the arguments into their stack slots,
+even if a higher level of optimization is otherwise specified.
+
+		Regards,
+
+		Kevin K.

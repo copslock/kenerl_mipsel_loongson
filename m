@@ -1,48 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Nov 2005 14:39:34 +0000 (GMT)
-Received: from smtp102.biz.mail.re2.yahoo.com ([68.142.229.216]:50261 "HELO
-	smtp102.biz.mail.re2.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S8133593AbVKWOjP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 23 Nov 2005 14:39:15 +0000
-Received: (qmail 14724 invoked from network); 23 Nov 2005 14:39:07 -0000
-Received: from unknown (HELO ?192.168.2.27?) (dan@embeddedalley.com@69.21.252.132 with plain)
-  by smtp102.biz.mail.re2.yahoo.com with SMTP; 23 Nov 2005 14:39:07 -0000
-In-Reply-To: <1132727497.10318.8.camel@orionlinux.starfleet.com>
-References: <20051122221526.GZ18119@cosmic.amd.com> <6dabaec28e238ccc915f20f51ee28327@embeddedalley.com> <1132727497.10318.8.camel@orionlinux.starfleet.com>
-Mime-Version: 1.0 (Apple Message framework v623)
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Message-Id: <aad32419b3afb5957fd65d175469893f@embeddedalley.com>
-Content-Transfer-Encoding: 7bit
-Cc:	Jordan Crouse <jordan.crouse@amd.com>, linux-mips@linux-mips.org,
-	ralf@linux-mips.org
-From:	Dan Malek <dan@embeddedalley.com>
-Subject: Re: [PATCH] Fix board type in db1x00
-Date:	Wed, 23 Nov 2005 09:39:15 -0500
-To:	Matej Kupljen <matej.kupljen@ultra.si>
-X-Mailer: Apple Mail (2.623)
-Return-Path: <dan@embeddedalley.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Nov 2005 18:34:08 +0000 (GMT)
+Received: from mask.powertv.com ([12.146.136.163]:15997 "EHLO
+	hqmail01.powertv.com") by ftp.linux-mips.org with ESMTP
+	id S3466586AbVKWSdv (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 23 Nov 2005 18:33:51 +0000
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6603.0
+content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="UTF-8"
+Content-Transfer-Encoding: base64
+Subject: RE: Saving arguments on the stack
+Date:	Wed, 23 Nov 2005 10:36:31 -0800
+Message-ID: <762C0A863A7674478671627FEAF5848105AF92D7@hqmail01.powertv.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Saving arguments on the stack
+Thread-Index: AcXwE/B0diNaHx97QjigLmJi1z4CvAAR57vG
+From:	"Knittel, Brian" <Brian.Knittel@powertv.com>
+To:	"Ralf Baechle" <ralf@linux-mips.org>
+Cc:	<linux-mips@linux-mips.org>, "Dominic Sweetman" <dom@mips.com>
+Return-Path: <Brian.Knittel@powertv.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9549
+X-archive-position: 9550
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@embeddedalley.com
+X-original-sender: Brian.Knittel@powertv.com
 Precedence: bulk
 X-list: linux-mips
 
-
-On Nov 23, 2005, at 1:31 AM, Matej Kupljen wrote:
-
-> And please, don't forget about DB1200 board also.
-> I already sent some minor patches, but they didn't
-> get in :(
-
-They didn't get lost.  Pete and I knew there would
-be things coming from AMD, there are several
-other patches that have been posted.  We just
-need to merge it all together.
-
-Thanks.
-
-	-- Dan
+SGkgUmFsZiwNCiANCkkndmUgd29ya2VkIG91dCB0aGUgYmFja3RyYWNlLiBDaGFuZ2luZyB0aGUg
+Y29tcGlsZXIgaXMgcHJvYmFibHkgbm90IGFuIG9wdGlvbi4gT25lIGNvbGxlYWd1ZSBoYXMgc3Vn
+Z2VzdGVkIHRoYXQgd2l0aCBzeXN0ZW1zIHdpdGggcmVhc29uYWJsZSBzaXplIGNhY2hlcywgbm90
+IHNhdmluZyB0aGUgYXJndW1lbnRzIG9uIHRoZSBzdGFjayBkb2VzIG5vdCBwcm92aWRlIHNpZ25p
+ZmljYW50IHBlcmZvcm1hbmNlIGltcHJvdmVtZW50LiBJJ20gc3VyZSB0aGF0IGRlcGVuZHMgdXBv
+biB3aGF0IHlvdSBhcmUgZG9pbmcsIGJ1dCBJIHN1c3BlY3QgaGUgaXMgcmlnaHQgZm9yIHRoZSBt
+b3N0IHBhcnQuIA0KIA0KQ29tbWVudHMsIGFueW9uZT8NCiANClRoYW5rcywNCi0tQnJpYW4NCg0K
+CS0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tIA0KCUZyb206IFJhbGYgQmFlY2hsZSBbbWFpbHRv
+OnJhbGZAbGludXgtbWlwcy5vcmddIA0KCVNlbnQ6IFdlZCAxMS8yMy8yMDA1IDE6NTQgQU0gDQoJ
+VG86IEtuaXR0ZWwsIEJyaWFuIA0KCUNjOiBsaW51eC1taXBzQGxpbnV4LW1pcHMub3JnOyBEb21p
+bmljIFN3ZWV0bWFuIA0KCVN1YmplY3Q6IFJlOiBTYXZpbmcgYXJndW1lbnRzIG9uIHRoZSBzdGFj
+aw0KCQ0KCQ0KDQoJT24gVHVlLCBOb3YgMjIsIDIwMDUgYXQgMTA6MjQ6MDlBTSAtMDgwMCwgS25p
+dHRlbCwgQnJpYW4gd3JvdGU6DQoJDQoJPiBXZSdkIGxpa2UgdG8gYWRkIGFyZ3VtZW50cyB0byB0
+aGUgYmFja3RyYWNlIGluIE9vcHMgbWVzc2FnZXMgdG8gbWFrZQ0KCT4gZGVidWdnaW5nIGZyb20g
+dGhlc2UgcmVwb3J0cyBtb3JlIGVmZmljaWVudC4gSXQgaXMgcGFydGljdWxhcmx5IHVzZWZ1bA0K
+CT4gZm9yIGRldGVybWluaW5nIHdoZXJlIHRoZSBwcm9ibGVtIHdhcyBnZW5lcmF0ZWQsIHBhcnRp
+Y3VsYXJseSB3aGVuIGJhZA0KCT4gcG9pbnRlcnMgYXJlIHBhc3NlZCBpbi4gVGhpcyBpcyBmb3Ig
+cHJvZHVjdGlvbiBlbWJlZGRlZCBkZXZpY2VzIHdpdGgNCgk+IG9wdGltaXplZCBjb2RlIGFuZCB3
+aGljaCByZWJvb3QgaW1tZWRpYXRlbHkgYWZ0ZXIgc3RvcmluZyBvciBzZW5kaW5nIHRoZQ0KCT4g
+T29wcyBtZXNzYWdlLiBQZXJmb3JtYW5jZSBpcyBhbiBpc3N1ZSwgYnV0IHRoZSBvdmVyaGVhZCBv
+ZiBzdG9yaW5nIHRoZQ0KCT4gYXJndW1lbnRzIG9uIHRoZSBzdGFjayBpcyBsaWtlbHkgd29ydGgg
+dGhlIGFkZGVkIGRlYnVnIGluZm8uDQoJDQoJSW4gdGhpcyBjYXNlIHlvdSB3b3VsZCBwcm9iYWJs
+eSBoYXZlIHRvIG1vZGlmeSB0aGUgY29tcGlsZXIgdG8gc2F2ZSBhbGwNCglhcmd1bWVudHMuICBB
+bm90aGVyIGlzc3VlIGlzIGFjdHVhbGx5IGZpbmRpbmcgdGhlIHN0YWNrZnJhbWUuICBGb3IgYQ0K
+CWRlYnVnZ2VyIHVzaW5nIGRlYnVnIGluZm9ybWF0aW9uIHRoaXMgaXMgcG9zc2libGUgYnV0IHNo
+b3J0IG9mIHRoYXQgaXQncw0KCWhhcmQgb24gTUlQUyB0byBwcm9kdWNlIGEgbWVhbmluZ2Z1bCBi
+YWNrdHJhY2UuICBPciBoYXZpbmcgc29tZXRoaW5nDQoJYXMgY29tcGxpY2F0ZSBhcyBvbiBpYTY0
+IC4uLg0KCQ0KCSAgUmFsZg0KCQ0KDQo=

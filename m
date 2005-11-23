@@ -1,60 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Nov 2005 03:25:09 +0000 (GMT)
-Received: from wmail06.netvigator.com ([218.102.48.220]:5927 "EHLO
-	wmail05dat.netvigator.com") by ftp.linux-mips.org with ESMTP
-	id S8134462AbVKWDYv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 23 Nov 2005 03:24:51 +0000
-Received: from cohut.net ([203.218.199.245]) by wmail05dat.netvigator.com
-          (InterMail vM.6.01.05.02 201-2131-123-102-20050715) with ESMTP
-          id <20051123032723.LTVY722.wmail05dat.netvigator.com@cohut.net>
-          for <linux-mips@linux-mips.org>; Wed, 23 Nov 2005 11:27:23 +0800
-Received: from cohut.net (localhost.localdomain [127.0.0.1])
-	by cohut.net (8.13.4/8.13.4) with ESMTP id jAN3RI3G031734
-	for <linux-mips@linux-mips.org>; Wed, 23 Nov 2005 11:27:18 +0800
-Received: (from fung@localhost)
-	by cohut.net (8.13.4/8.13.1/Submit) id jAN3RIIO031731
-	for linux-mips@linux-mips.org; Wed, 23 Nov 2005 11:27:18 +0800
-Date:	Wed, 23 Nov 2005 11:27:13 +0800
-From:	Co Ngai Fung <fung@cohut.net>
-To:	linux-mips@linux-mips.org
-Subject: Timer interrupt handler problem
-Message-ID: <20051123032713.GA31683@pig.cohut.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Nov 2005 06:29:33 +0000 (GMT)
+Received: from deliver-1.mx.triera.net ([213.161.0.31]:50571 "HELO
+	deliver-1.mx.triera.net") by ftp.linux-mips.org with SMTP
+	id S8133476AbVKWG3G (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 23 Nov 2005 06:29:06 +0000
+Received: from localhost (in-3.mx.triera.net [213.161.0.27])
+	by deliver-1.mx.triera.net (Postfix) with ESMTP id 4405BC058;
+	Wed, 23 Nov 2005 07:31:44 +0100 (CET)
+Received: from smtp.triera.net (smtp.triera.net [213.161.0.30])
+	by in-3.mx.triera.net (Postfix) with SMTP id AB6091BC08D;
+	Wed, 23 Nov 2005 07:31:45 +0100 (CET)
+Received: from orionlinux.starfleet.com (cmb58-52.dial-up.arnes.si [153.5.49.52])
+	by smtp.triera.net (Postfix) with ESMTP id 101B51A18AB;
+	Wed, 23 Nov 2005 07:31:41 +0100 (CET)
+Subject: Re: [PATCH] Fix board type in db1x00
+From:	Matej Kupljen <matej.kupljen@ultra.si>
+To:	Dan Malek <dan@embeddedalley.com>
+Cc:	Jordan Crouse <jordan.crouse@amd.com>, linux-mips@linux-mips.org,
+	ralf@linux-mips.org
+In-Reply-To: <6dabaec28e238ccc915f20f51ee28327@embeddedalley.com>
+References: <20051122221526.GZ18119@cosmic.amd.com>
+	 <6dabaec28e238ccc915f20f51ee28327@embeddedalley.com>
+Content-Type: text/plain
+Organization: Ultra d.o.o.
+Date:	Wed, 23 Nov 2005 07:31:37 +0100
+Message-Id: <1132727497.10318.8.camel@orionlinux.starfleet.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <fung@cohut.net>
+X-Mailer: Evolution 2.2.3 
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: Triera AV Service
+Return-Path: <matej.kupljen@ultra.si>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9546
+X-archive-position: 9547
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fung@cohut.net
+X-original-sender: matej.kupljen@ultra.si
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+Hi
 
-I want to use the timer16, I can control the timer with the
-timer16_ctl(), but the prolem is that when the timer countdown
-to zero, I can't use the interrupt handler to get this event,
-i have the following code for setup the interrupt handler.
+> > +	/* Set the platform # */
+> > +#if	defined (CONFIG_MIPS_DB1550)
+> > +	mips_machtype = MACH_DB1550;
+> > +#elif	defined (CONFIG_MIPS_DB1500)
+> > +	mips_machtype = MACH_DB1500;
+> > +#elif	defined (CONFIG_MIPS_DB1100)
+> > +	mips_machtype = MACH_DB1100;
+> > +#else
+> > +	mips_machtype = MACH_DB1000;
+> > +#endif
+> 
+> Can't we just do something like
+> 	#define MACH_ALCHEMY_TYPE  xxxxx
+> 
+> in the include files and not have this mess in the
+> actual code?  Then, all we have to do here is:
+> 
+> 	mips_machtype = MACH_ALCHEMY_TYPE;
 
-	request_irq(SYS_TIMER_0_IRQ, timer_timeout_intr,
-        SA_INTERRUPT, "AC49X timer", NULL);
+I prefer Dan's suggestion, if it counts.
 
-where the AC49X_SYS_TIMER_0_IRQ is 5, and timer_timeout_intr()
-is just a function to printk a line out.
-I want to know is just that simple to call request_irq() to
-have the interrupt handler be called when the interrupt is issued?
+And please, don't forget about DB1200 board also.
+I already sent some minor patches, but they didn't
+get in :(
 
-Thanks!
-Co Ngai Fung
-
--- 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-living is easy with eyes closed,
-misunderstanding all you see.
-- strawberry fields forever
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+BR,
+Matej

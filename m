@@ -1,52 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Nov 2005 09:52:14 +0000 (GMT)
-Received: from extgw-uk.mips.com ([62.254.210.129]:48666 "EHLO
-	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S8133577AbVKWJv4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 23 Nov 2005 09:51:56 +0000
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id jAN9saDn004806;
-	Wed, 23 Nov 2005 09:54:36 GMT
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id jAN9sZN6004805;
-	Wed, 23 Nov 2005 09:54:35 GMT
-Date:	Wed, 23 Nov 2005 09:54:35 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"Knittel, Brian" <Brian.Knittel@powertv.com>
-Cc:	linux-mips@linux-mips.org, Dominic Sweetman <dom@mips.com>
-Subject: Re: Saving arguments on the stack
-Message-ID: <20051123095435.GB2699@linux-mips.org>
-References: <762C0A863A7674478671627FEAF5848105AF92D5@hqmail01.powertv.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <762C0A863A7674478671627FEAF5848105AF92D5@hqmail01.powertv.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Nov 2005 14:39:34 +0000 (GMT)
+Received: from smtp102.biz.mail.re2.yahoo.com ([68.142.229.216]:50261 "HELO
+	smtp102.biz.mail.re2.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S8133593AbVKWOjP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 23 Nov 2005 14:39:15 +0000
+Received: (qmail 14724 invoked from network); 23 Nov 2005 14:39:07 -0000
+Received: from unknown (HELO ?192.168.2.27?) (dan@embeddedalley.com@69.21.252.132 with plain)
+  by smtp102.biz.mail.re2.yahoo.com with SMTP; 23 Nov 2005 14:39:07 -0000
+In-Reply-To: <1132727497.10318.8.camel@orionlinux.starfleet.com>
+References: <20051122221526.GZ18119@cosmic.amd.com> <6dabaec28e238ccc915f20f51ee28327@embeddedalley.com> <1132727497.10318.8.camel@orionlinux.starfleet.com>
+Mime-Version: 1.0 (Apple Message framework v623)
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Message-Id: <aad32419b3afb5957fd65d175469893f@embeddedalley.com>
+Content-Transfer-Encoding: 7bit
+Cc:	Jordan Crouse <jordan.crouse@amd.com>, linux-mips@linux-mips.org,
+	ralf@linux-mips.org
+From:	Dan Malek <dan@embeddedalley.com>
+Subject: Re: [PATCH] Fix board type in db1x00
+Date:	Wed, 23 Nov 2005 09:39:15 -0500
+To:	Matej Kupljen <matej.kupljen@ultra.si>
+X-Mailer: Apple Mail (2.623)
+Return-Path: <dan@embeddedalley.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9548
+X-archive-position: 9549
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: dan@embeddedalley.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Nov 22, 2005 at 10:24:09AM -0800, Knittel, Brian wrote:
 
-> We'd like to add arguments to the backtrace in Oops messages to make
-> debugging from these reports more efficient. It is particularly useful
-> for determining where the problem was generated, particularly when bad
-> pointers are passed in. This is for production embedded devices with
-> optimized code and which reboot immediately after storing or sending the
-> Oops message. Performance is an issue, but the overhead of storing the
-> arguments on the stack is likely worth the added debug info.
+On Nov 23, 2005, at 1:31 AM, Matej Kupljen wrote:
 
-In this case you would probably have to modify the compiler to save all
-arguments.  Another issue is actually finding the stackframe.  For a
-debugger using debug information this is possible but short of that it's
-hard on MIPS to produce a meaningful backtrace.  Or having something
-as complicate as on ia64 ...
+> And please, don't forget about DB1200 board also.
+> I already sent some minor patches, but they didn't
+> get in :(
 
-  Ralf
+They didn't get lost.  Pete and I knew there would
+be things coming from AMD, there are several
+other patches that have been posted.  We just
+need to merge it all together.
+
+Thanks.
+
+	-- Dan

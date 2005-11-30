@@ -1,49 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Nov 2005 11:28:19 +0000 (GMT)
-Received: from extgw-uk.mips.com ([62.254.210.129]:11526 "EHLO
-	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S8133833AbVK3L2C (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 30 Nov 2005 11:28:02 +0000
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id jAUBSM5E004564;
-	Wed, 30 Nov 2005 11:28:22 GMT
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id jAUBSLRJ004563;
-	Wed, 30 Nov 2005 11:28:21 GMT
-Date:	Wed, 30 Nov 2005 11:28:21 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Matej Kupljen <matej.kupljen@ultra.si>
-Cc:	linux-mips@linux-mips.org, Jordan Crouse <jordan.crouse@amd.com>
-Subject: Re: MIPS no FP patch
-Message-ID: <20051130112821.GB2694@linux-mips.org>
-References: <1133348852.24526.31.camel@localhost.localdomain>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1133348852.24526.31.camel@localhost.localdomain>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Nov 2005 13:19:36 +0000 (GMT)
+Received: from laf31-5-82-235-130-100.fbx.proxad.net ([82.235.130.100]:27630
+	"EHLO lexbox.fr") by ftp.linux-mips.org with ESMTP id S8133842AbVK3NTN convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 30 Nov 2005 13:19:13 +0000
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: RE: DbAu1550 copy file corruption
+X-MimeOLE: Produced By Microsoft Exchange V6.5.6944.0
+Date:	Wed, 30 Nov 2005 14:18:58 +0100
+Message-ID: <17AB476A04B7C842887E0EB1F268111E027197@xpserver.intra.lexbox.org>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: DbAu1550 copy file corruption
+thread-index: AcX1lsl8tmWJBo5gSmGMP3cNVuA5+wAGXqEA
+From:	"David Sanchez" <david.sanchez@lexbox.fr>
+To:	<linux-mips@linux-mips.org>
+Return-Path: <david.sanchez@lexbox.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9565
+X-archive-position: 9566
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: david.sanchez@lexbox.fr
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Nov 30, 2005 at 12:07:32PM +0100, Matej Kupljen wrote:
+Hi,
 
-> This is a patch that makes FP emulation in kernel an option.
-> I used this when I was looking why there are still some
-> FP instruction in glibc, even though it was configured with
-> --withot-fp. This seemed the best way to ensure this.
-> 
-> It is for the 2.6.14-rc2, but I think there is only a minimal
-> work to use it on latest kernel.
+I forgot to mention that I'm making my test on a ext2 filesystem...
 
-We used to have this option but I eventually got rid of it because people
-just don't grok that they must enable it in precense of an FPU.
+More can somebody launch the test on another Alchemy board ? Dbau1500,
+Dbau1200, etc...
 
-  Ralf
+Thanks

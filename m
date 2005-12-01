@@ -1,46 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Dec 2005 03:51:59 +0000 (GMT)
-Received: from ylpvm12-ext.prodigy.net ([207.115.57.43]:48609 "EHLO
-	ylpvm12.prodigy.net") by ftp.linux-mips.org with ESMTP
-	id S8133917AbVLADvk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 1 Dec 2005 03:51:40 +0000
-Received: from ylpvm01.prodigy.net (ylpvm01-int.prodigy.net [207.115.5.207])
-	by ylpvm12.prodigy.net (8.12.10 outbound/8.12.10) with ESMTP id jB13tTv4030788;
-	Wed, 30 Nov 2005 22:55:30 -0500
-X-ORBL:	[70.132.51.62]
-Received: from stupidest.org ([70.132.51.62])
-	by ylpvm01.prodigy.net (8.13.4 dk-milter linux/8.13.4) with ESMTP id jB13xGZv028324;
-	Wed, 30 Nov 2005 22:59:17 -0500
-Received: by taniwha.stupidest.org (Postfix, from userid 38689)
-	id 2CE0B4FE060; Wed, 30 Nov 2005 19:55:07 -0800 (PST)
-Date:	Wed, 30 Nov 2005 19:55:07 -0800
-From:	Chris Wedgwood <cw@f00f.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Matej Kupljen <matej.kupljen@ultra.si>, linux-mips@linux-mips.org,
-	Jordan Crouse <jordan.crouse@amd.com>
-Subject: Re: MIPS no FP patch
-Message-ID: <20051201035507.GA32133@taniwha.stupidest.org>
-References: <1133348852.24526.31.camel@localhost.localdomain> <20051130112821.GB2694@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Dec 2005 13:10:40 +0000 (GMT)
+Received: from laf31-5-82-235-130-100.fbx.proxad.net ([82.235.130.100]:4086
+	"EHLO lexbox.fr") by ftp.linux-mips.org with ESMTP id S8133932AbVLANKW convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 1 Dec 2005 13:10:22 +0000
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20051130112821.GB2694@linux-mips.org>
-Return-Path: <cw@f00f.org>
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Subject: RE: DbAu1550 copy file corruption
+X-MimeOLE: Produced By Microsoft Exchange V6.5.6944.0
+Date:	Thu, 1 Dec 2005 14:10:12 +0100
+Message-ID: <17AB476A04B7C842887E0EB1F268111E0271AB@xpserver.intra.lexbox.org>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: DbAu1550 copy file corruption
+thread-index: AcX11en5L2oG8EKjREunsxH0TidH0QAj0nAg
+From:	"David Sanchez" <david.sanchez@lexbox.fr>
+To:	"Sergei Shtylylov" <sshtylyov@ru.mvista.com>,
+	<linux-mips@linux-mips.org>
+Return-Path: <david.sanchez@lexbox.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9571
+X-archive-position: 9572
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cw@f00f.org
+X-original-sender: david.sanchez@lexbox.fr
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Nov 30, 2005 at 11:28:21AM +0000, Ralf Baechle wrote:
+Hi,
 
-> We used to have this option but I eventually got rid of it because
-> people just don't grok that they must enable it in precense of an
-> FPU.
+As all my pci sata controllers operate up to 66Mhz, I add a divider to the pci clock in the board_setup.c of the au1550 to obtain 32 Mhz pci clock. But the problem still appear... (More the bus is slow, less the problem appear: maybe because it is a timing issue ?)
 
-For cores that have FPUs you could have Kconfig "select" it
-automatically.
+I try the HPT371B (which works for us). I try several PCI sata controllers (Promise PDC20779, PDC 20579, SiliconImage Sil3112, etc...). More I try the drivers provided by Promise instead of the libata. But the problem still appear...
+
+Sergei, is the PCI clock frequency issue only for the HPT371N or even for PCI sata controller ? Do you mean that all the users of the dbau1550 needs to set the PCI clock to 32Mhz?
+Have you try my script on your board? 
+
+Thanks.
+
+David
+
+-----Message d'origine-----
+De : Sergei Shtylylov [mailto:sshtylyov@ru.mvista.com] 
+Envoyé : mercredi 30 novembre 2005 18:46
+À : Dan Malek
+Cc : David Sanchez
+Objet : Re: DbAu1550 copy file corruption
+
+Hello.
+
+Dan Malek wrote:
+
+> Have you tested this on an NFS partition?  Does
+> the on-board HPT371 work?  I know the latter two
+> used to work, but I don't remember testing a 2.6.10
+> kernel, I've been using newer ones.
+
+   Do you mean HPT371N? It shouldn't work (and does not work for us) since the 
+current driver has severe clocking problems with anything but HPT370/374 on a 
+66 MHz PCI. So with the default 64 MHz Au1550 PCI clock the driver just locks 
+up; it can only work if you plug in a 33 MHz PCI card to get Au1550 PCI 
+clocked at 32 MHz. I was in the process of fixing this but this work is 
+currently preempted by more urgent stuff... :-(
+
+WBR, Sergei

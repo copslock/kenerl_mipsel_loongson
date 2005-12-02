@@ -1,117 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Dec 2005 15:04:12 +0000 (GMT)
-Received: from [62.154.208.154] ([62.154.208.154]:63899 "EHLO
-	firewall1.addi-data.de") by ftp.linux-mips.org with ESMTP
-	id S8134039AbVLAPDp convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 1 Dec 2005 15:03:45 +0000
-Received: from [172.16.2.26] (helo=security01.addi-data.intra)
-	by firewall1.addi-data.de with esmtp (Exim 4.43)
-	id 1Ehq1a-0006oU-9I
-	for linux-mips@linux-mips.org; Thu, 01 Dec 2005 16:07:07 +0100
-Received: from security1.addi-data.de (exchange01.addi-data.intra) by 
-    security01.addi-data.intra (Clearswift SMTPRS 5.0.9) with ESMTP id 
-    <T74f37c7607ac10021ac30@security01.addi-data.intra> for 
-    <linux-mips@linux-mips.org>; Thu, 1 Dec 2005 16:07:06 +0100
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Dec 2005 07:09:20 +0000 (GMT)
+Received: from wproxy.gmail.com ([64.233.184.203]:58473 "EHLO wproxy.gmail.com")
+	by ftp.linux-mips.org with ESMTP id S8133536AbVLBHJB convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 2 Dec 2005 07:09:01 +0000
+Received: by wproxy.gmail.com with SMTP id i11so6275wra
+        for <linux-mips@linux-mips.org>; Thu, 01 Dec 2005 23:12:35 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=d0ntXKGDNs96c1K3P3C3NbsChfQz9FhL2+3NW+RihgoBL3X85Tqg/7QsSpWSsBG1CtdsnmalRj65+M2kFyanWNh5miud16Rz9WPT3s/wFF9dkbe+4m8/CvAiqGsQAM07Gt0cS5JJqCCoC6kfS/QP+VPXEXzKswbqINhglA3Afdo=
+Received: by 10.54.63.18 with SMTP id l18mr167495wra;
+        Thu, 01 Dec 2005 23:12:35 -0800 (PST)
+Received: by 10.54.129.5 with HTTP; Thu, 1 Dec 2005 23:12:35 -0800 (PST)
+Message-ID: <50c9a2250512012312u47bbe09eh9e4f6b8edb0d0d9d@mail.gmail.com>
+Date:	Fri, 2 Dec 2005 15:12:35 +0800
+From:	zhuzhenhua <zzh.hust@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: where to set the BEV to normal of status in kernel source?
 MIME-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 8BIT
-Subject: get an usleep() with less than 20ms on 2.4.27
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Date:	Thu, 1 Dec 2005 16:07:05 +0100
-Message-ID: <DD0BA80209AFF04091B518EA708D0A0B2F67DF@exchange01.addi-data.intra>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: get an usleep() with less than 20ms on 2.4.27
-Thread-Index: AcX2epQlVpuToN9OS3CENEPXxjXM+QADR/4g
-From:	"Conil.Christophe" <Conil.Christophe@addi-data.com>
-To:	<linux-mips@linux-mips.org>
-Return-Path: <conil.christophe@addi-data.com>
+Content-Disposition: inline
+Return-Path: <zzh.hust@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9573
+X-archive-position: 9574
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Conil.Christophe@addi-data.com
+X-original-sender: zzh.hust@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
-
-I'm using a 2.4.27 Kernel on MIPS.
-
-I'm actually programming a USR-Space software which needs high-precision sleep() functions. Actually, by using them, I can't get a sleep time lower than 20 ms. (even with a usleep(1) which should sleep for 1 microsecond) I thought it may came from the Linux default scheduler, so I increased its resolution by modifying HZ and CLOCKS_PER_SEC (I set them to 1000 instead of 100) in the /linux/include/asm-mips/param.h file. I'm now having a minimum usleep time of 2ms, which is better, but still not perfect (since I need at least 1ms) If I continue increasing these 2 values, my kernel doesn't compile because of /linux/include/linux/timex.h. 
-
-Do you have a clue what could I do to have a non-active (without a while) sleeping time fewer than 2ms? (A sleeping time of 0.5 ms would be perfect)
-
-Please excuse my newbieness if I said something not relevant... 
-
-Thank you very much,
-
-Christophe CONIL
+i don't find it in load_mmu(), who can point out for me?
+thanks!
+is that must be set in bootloader?
 
 
-Content of /linux/include/linux/timex.h
---------------------------------------------------------------------------------
-#if HZ >= 12 && HZ < 24
-# define SHIFT_HZ 4
-[...]
-#elif HZ >= 768 && HZ < 1536
-# define SHIFT_HZ 10
-#else
-# error You lose. <
-#endif
---------------------------------------------------------------------------------
+Best regards
 
 
-Content of /linux/include/asm-mips/param.h
---------------------------------------------------------------------------------
-#ifndef _ASM_PARAM_H
-#define _ASM_PARAM_H
-
-#ifndef HZ
-
-#ifdef __KERNEL__
-
-/* Safeguard against user stupidity  */
-#ifdef _SYS_PARAM_H
-#error Do not include <asm/param.h> with __KERNEL__ defined!
-#endif
-
-#include <linux/config.h>
-
-/* This is the internal value of HZ, that is the rate at which the jiffies
-   counter is increasing.  This value is independent from the external value
-   and can be changed in order to suit the hardware and application
-   requirements.  */
-#  define HZ 1000 /* CC : Previous value was 100 */
-#  define hz_to_std(a) (a)
-
-#else /* defined(__KERNEL__)  */
-
-/* This is the external value of HZ as seen by user programs.  Don't change
-   unless you know what you're doing - changing breaks binary compatibility.  */
-#define HZ 100 
-
-#endif /* defined(__KERNEL__)  */
-#endif /* defined(HZ)  */
-
-[...]
-
-#ifdef __KERNEL__
-# define CLOCKS_PER_SEC     1000     /* frequency at which times() counts */ /* CC : Previous value was 100 */
-#endif
-
-#endif /* _ASM_PARAM_H */
---------------------------------------------------------------------------------
-
-**********************************************************************
-This email and any files transmitted with it are confidential and
-intended solely for the use of the individual or entity to whom they
-are addressed. If you have received this email in error please notify
-the system manager.
-
-This footnote confirms that this email message has been scanned for 
-the presence of computer viruses.
-**********************************************************************
+zhuzhenhua

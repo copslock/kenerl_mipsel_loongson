@@ -1,63 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Dec 2005 09:29:52 +0000 (GMT)
-Received: from web32906.mail.mud.yahoo.com ([68.142.206.53]:50832 "HELO
-	web32906.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S8133600AbVLEJ30 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 5 Dec 2005 09:29:26 +0000
-Received: (qmail 36426 invoked by uid 60001); 5 Dec 2005 09:28:55 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.com;
-  h=Message-ID:Received:Date:From:Subject:To:Cc:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding;
-  b=5cP+BWazWuSF6ZB4Xd/h+KgcADANXMgaS9uy2VOd0eWmzLULr1JLW8eYD8DGJkGQHOGVpCcTbQmYzgQiWcmyEeVSGY1WtQWGaZPUkOr+BirsNiCJ2v/IhL/RZqzSm5s8pH6+DzY1CCZ8uqJvSe+P/fpbMqomUEIs/NbgkSpM7Co=  ;
-Message-ID: <20051205092855.36424.qmail@web32906.mail.mud.yahoo.com>
-Received: from [203.145.155.11] by web32906.mail.mud.yahoo.com via HTTP; Mon, 05 Dec 2005 01:28:55 PST
-Date:	Mon, 5 Dec 2005 01:28:55 -0800 (PST)
-From:	Komal Shah <komal_shah802003@yahoo.com>
-Subject: Re: [PATCH] ALCHEMY:  Alchemy Camera Interface (CIM) driver
-To:	Jordan Crouse <jordan.crouse@amd.com>, linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-In-Reply-To: <20051202190635.GI28227@cosmic.amd.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Dec 2005 11:35:13 +0000 (GMT)
+Received: from rtsoft2.corbina.net ([85.21.88.2]:25239 "HELO
+	mail.dev.rtsoft.ru") by ftp.linux-mips.org with SMTP
+	id S8133648AbVLELeS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 5 Dec 2005 11:34:18 +0000
+Received: (qmail 16327 invoked from network); 5 Dec 2005 11:33:45 -0000
+Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
+  by mail.dev.rtsoft.ru with SMTP; 5 Dec 2005 11:33:45 -0000
+Message-ID: <43942625.2070609@ru.mvista.com>
+Date:	Mon, 05 Dec 2005 14:36:05 +0300
+From:	Sergei Shtylylov <sshtylyov@ru.mvista.com>
+Organization: MostaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Return-Path: <komal_shah802003@yahoo.com>
+To:	David Sanchez <david.sanchez@lexbox.fr>,
+	Linux MIPS Development <linux-mips@linux-mips.org>
+Subject: Re: Au1550 system bus masters issue
+References: <17AB476A04B7C842887E0EB1F268111E0271B7@xpserver.intra.lexbox.org>
+In-Reply-To: <17AB476A04B7C842887E0EB1F268111E0271B7@xpserver.intra.lexbox.org>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9592
+X-archive-position: 9593
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: komal_shah802003@yahoo.com
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
---- Jordan Crouse <jordan.crouse@amd.com> wrote:
+Hello.
 
-and values
-> */
-> +} CAMERA;
-> +
-> +
-> +
-> +static CAMERA au1xxx_cameras[] = {
-> +	/* Omnivision OV9640 Camera 1280x960 Mode (SXGA) in "Pass Thru
-> Mode"
-> +	   1.3 MP at 15 Fps
-> +	*/
+David Sanchez wrote:
 
-There is already nice way to separate sensor interface from the camera
-core and ov9640 camera sensor driver is available at OMAP tree.
+> I notice the following issue in the specification update (v31420) of the
+> au1550:
+> 
+> "System bus masters (USB host, PCI, MAC0, MAC1, DDMA) may receive stale
+> data.
+> 
+> Description
+> -----------
+> System bus masters (USB host controller, PCI controller, MAC0, MAC1,
+> DDMA controller), when performing
+> coherent reads, may incorrectly receive stale data from memory instead
+> of valid modified data from the Au1
+> data cache. If the request for data arrives within a 3-clock window
+> prior to the cache line castout to memory,
+> the cache snoop response is incorrect and stale data is retrieved from
+> memory instead of the correct data from
+> the cache. The cache line castout then completes, and memory is updated.
+> Cache/memory data is not corrupted, but the specific bus read in not
+> valid.
+> 
+> Affected Step
+> -------------
+> AA
+> 
+> Workaround
+> ----------
+> Do not enable cacheable master reads if the core modifies data in cache.
+> 
+> Status
+> ------
+> Not Fixed"
+> 
+> Does somebody known if the linux kernel 2.6.10 integrates this
+> workaround ?
 
-Could you please look at that and see if that can be re-used?
-http://source.mvista.com/git/gitweb.cgi?p=linux-omap-2.6.git;a=blob;h=c7691d19356f9c5d8cb724a924e8bdebaed7fc65;hb=279a7045accc927dbb2b1d41691424c4d345489c;f=drivers/media/video/omap/sensor_ov9640.c
+    Mainly as CONFIG_DMA_NONCOHERENT defined. USB OHCI and PCI still have
+coherency enabled but as the cache hits prone to errata shouldn't happen due 
+to the CONFIG_DMA_NONCOHERENT, it's probably not a problem (enabling coherency 
+in Ethernet driver however makes the kernel non-bootable. USB host controller 
+(and probably not only it, I'm too lazy to re-check ;-) is still prone to 
+other errata on stepping AB though, see this thread:
 
+http://www.linux-mips.org/archives/linux-mips/2005-11/msg00137.html
 
----Komal Shah
-http://komalshah.blogspot.com/
+I'm gonna rework the patch and resubmit.
 
+> Thanks
 
-		
-__________________________________________ 
-Yahoo! DSL – Something to write home about. 
-Just $16.99/mo. or less. 
-dsl.yahoo.com 
+WBR, Sergei

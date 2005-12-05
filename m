@@ -1,55 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Dec 2005 05:43:08 +0000 (GMT)
-Received: from topsns.toshiba-tops.co.jp ([202.230.225.5]:6950 "HELO
-	topsns.toshiba-tops.co.jp") by ftp.linux-mips.org with SMTP
-	id S8133441AbVLEFml (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 5 Dec 2005 05:42:41 +0000
-Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for mail.linux-mips.org [62.254.210.162]) with SMTP; 5 Dec 2005 05:43:23 UT
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id D80851F70C;
-	Mon,  5 Dec 2005 14:43:19 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id C36BA1F1AB;
-	Mon,  5 Dec 2005 14:43:19 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id jB55hJ4D035220;
-	Mon, 5 Dec 2005 14:43:19 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Mon, 05 Dec 2005 14:43:19 +0900 (JST)
-Message-Id: <20051205.144319.126575575.nemoto@toshiba-tops.co.jp>
-To:	maillist@jg555.com
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Cobalt IDE Patch
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <4393CE3B.20303@jg555.com>
-References: <4393CE3B.20303@jg555.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Dec 2005 08:23:19 +0000 (GMT)
+Received: from laf31-5-82-235-130-100.fbx.proxad.net ([82.235.130.100]:47077
+	"EHLO lexbox.fr") by ftp.linux-mips.org with ESMTP id S8133575AbVLEIW7 convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 5 Dec 2005 08:22:59 +0000
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: Au1550 system bus masters issue
+X-MimeOLE: Produced By Microsoft Exchange V6.5.6944.0
+Date:	Mon, 5 Dec 2005 09:18:50 +0100
+Message-ID: <17AB476A04B7C842887E0EB1F268111E0271B7@xpserver.intra.lexbox.org>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Au1550 system bus masters issue
+thread-index: AcX5dIW+i6XFajUZSkKtR8AR8cRveQ==
+From:	"David Sanchez" <david.sanchez@lexbox.fr>
+To:	<linux-mips@linux-mips.org>
+Return-Path: <david.sanchez@lexbox.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9589
+X-archive-position: 9590
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: david.sanchez@lexbox.fr
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Sun, 04 Dec 2005 21:20:59 -0800, Jim Gifford <maillist@jg555.com> said:
-jim> This is Peter Horton's IDE patch for the Cobalt. From the notes
-jim> in Peter's file.
+Hi,
 
-I suppose this patch is not required anymore since current
-asm-mips/mach-generic/ide.h takes care of dcache aliases.
+I notice the following issue in the specification update (v31420) of the
+au1550:
 
-If Cobalt's IDE did not work with with the generic ide.h, it should be
-fixed instead of adding one more ide.h.
+"System bus masters (USB host, PCI, MAC0, MAC1, DDMA) may receive stale
+data.
 
----
-Atsushi Nemoto
+Description
+-----------
+System bus masters (USB host controller, PCI controller, MAC0, MAC1,
+DDMA controller), when performing
+coherent reads, may incorrectly receive stale data from memory instead
+of valid modified data from the Au1
+data cache. If the request for data arrives within a 3-clock window
+prior to the cache line castout to memory,
+the cache snoop response is incorrect and stale data is retrieved from
+memory instead of the correct data from
+the cache. The cache line castout then completes, and memory is updated.
+Cache/memory data is not corrupted, but the specific bus read in not
+valid.
+
+Affected Step
+-------------
+AA
+
+Workaround
+----------
+Do not enable cacheable master reads if the core modifies data in cache.
+
+Status
+------
+Not Fixed"
+
+Does somebody known if the linux kernel 2.6.10 integrates this
+workaround ?
+
+Thanks

@@ -1,73 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Dec 2005 15:07:34 +0000 (GMT)
-Received: from amdext3.amd.com ([139.95.251.6]:12012 "EHLO amdext3.amd.com")
-	by ftp.linux-mips.org with ESMTP id S8133659AbVLEPG0 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 5 Dec 2005 15:06:26 +0000
-Received: from SSVLGW02.amd.com (ssvlgw02.amd.com [139.95.250.170])
-	by amdext3.amd.com (8.12.11/8.12.11/AMD) with ESMTP id jB5F5vxY018804;
-	Mon, 5 Dec 2005 07:05:57 -0800
-Received: from 139.95.250.1 by SSVLGW01.amd.com with ESMTP (AMD SMTP
- Relay (Email Firewall v6.1.0)); Mon, 05 Dec 2005 07:04:48 -0800
-X-Server-Uuid: 89466532-923C-4A88-82C1-66ACAA0041DF
-Received: from ldcmail.amd.com (ldcmail.amd.com [147.5.200.40]) by
- amdint.amd.com (8.12.8/8.12.8/AMD) with ESMTP id jB5F4hQe007486; Mon, 5
- Dec 2005 07:04:43 -0800 (PST)
-Received: from cosmic.amd.com (cosmic.amd.com [147.5.201.206]) by
- ldcmail.amd.com (Postfix) with ESMTP id 5EFC02026; Mon, 5 Dec 2005
- 08:04:43 -0700 (MST)
-Received: from cosmic.amd.com (localhost [127.0.0.1]) by cosmic.amd.com
- (8.13.4/8.13.4) with ESMTP id jB5FDEtV014945; Mon, 5 Dec 2005 08:13:14
- -0700
-Received: (from jcrouse@localhost) by cosmic.amd.com (
- 8.13.4/8.13.4/Submit) id jB5FDE0E014944; Mon, 5 Dec 2005 08:13:14 -0700
-Date:	Mon, 5 Dec 2005 08:13:14 -0700
-From:	"Jordan Crouse" <jordan.crouse@amd.com>
-To:	"Komal Shah" <komal_shah802003@yahoo.com>
-cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: ALCHEMY: SPI driver for Au1200
-Message-ID: <20051205151314.GR28227@cosmic.amd.com>
-References: <20051202190223.GG28227@cosmic.amd.com>
- <20051205114233.54232.qmail@web32903.mail.mud.yahoo.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Dec 2005 15:15:52 +0000 (GMT)
+Received: from laf31-5-82-235-130-100.fbx.proxad.net ([82.235.130.100]:9715
+	"EHLO lexbox.fr") by ftp.linux-mips.org with ESMTP id S8133603AbVLEPPc convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 5 Dec 2005 15:15:32 +0000
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-In-Reply-To: <20051205114233.54232.qmail@web32903.mail.mud.yahoo.com>
-User-Agent: Mutt/1.5.11
-X-WSS-ID: 6F8A889A1K82504283-01-01
 Content-Type: text/plain;
- charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: 7bit
-Return-Path: <jcrouse@cosmic.amd.com>
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Subject: RE: Au1550 system bus masters issue
+X-MimeOLE: Produced By Microsoft Exchange V6.5.6944.0
+Date:	Mon, 5 Dec 2005 16:11:25 +0100
+Message-ID: <17AB476A04B7C842887E0EB1F268111E0271C6@xpserver.intra.lexbox.org>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Au1550 system bus masters issue
+thread-index: AcX5k3gaJ/PHEpjwQI2K4a3cr63YYAAGYZbw
+From:	"David Sanchez" <david.sanchez@lexbox.fr>
+To:	"Sergei Shtylylov" <sshtylyov@ru.mvista.com>,
+	<linux-mips@linux-mips.org>
+Return-Path: <david.sanchez@lexbox.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9602
+X-archive-position: 9603
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jordan.crouse@amd.com
+X-original-sender: david.sanchez@lexbox.fr
 Precedence: bulk
 X-list: linux-mips
 
-On 05/12/05 03:42 -0800, Komal Shah wrote:
-> --- Jordan Crouse <jordan.crouse@amd.com> wrote:
+Hi,
+
+This question is for all the users of the AMD alchemy db1550:
+What is the frequency you use for the triplet (CPU core / System bus / SDRAM bus)?
+
+Since the version 2.25 of YAMON the freq is based on the rotary switch S4:
+HEX Rotary Switch S4 (# = CPU_CORE / SYS_BUS / SDRAM_BUS  in MHz):
+
+ 0 = 192/ 96/ 96 , 1 = 336/168/168 , 2 = 396/198/ 99 , 3 = 396/198/198
+ 4 = 492/123/123 , 5 = 492/164/164 , 6 = 492/246/123
+
+Thanks,
+
+David SANCHEZ
+
+-----Message d'origine-----
+De : Sergei Shtylylov [mailto:sshtylyov@ru.mvista.com] 
+Envoyé : lundi 5 décembre 2005 13:00
+À : David Sanchez; Linux MIPS Development
+Objet : Re: Au1550 system bus masters issue
+
+Hello.
+
+Sergei Shtylylov wrote:
+
+> coherency in Ethernet driver however makes the kernel non-bootable. USB 
+> host controller (and probably not only it, I'm too lazy to re-check ;-) 
+> is still prone to other errata on stepping AB though, see this thread:
 > 
-> > A SPI driver for the Au1200 processor.  Sending now so it 
-> > can be queued for the post 2.6.15 rush.
+> http://www.linux-mips.org/archives/linux-mips/2005-11/msg00137.html
 > 
-> Good. As there is long discussion going on which SPI framework to
-> accept in mainline, I would suggest you to implement the same master
-> controller and protocol driver using either David Brownell's framework
-> (right now in 2.6.15-rc3-mm1) or Dmitry/Wool framework.
+> I'm gonna rework the patch and resubmit.
 
-Since the issue is very much in doubt, I would prefer to wait until a winner
-has emerged before rewriting the driver again.  If the argument resolves
-itself before 2.6.16, then all is good.  But if its going to drag out another
-6 months, then I would prefer to have this in the mips tree at least, so that
-its available to folks who need it.
+    Oops, I was talking of Au1500 step AB, Au1550 doesn't have CONFIG.OD bit 
+errata...
 
-Jordan
-
--- 
-Jordan Crouse
-Senior Linux Engineer
-AMD - Personal Connectivity Solutions Group
-<www.amd.com/embeddedprocessors>
+WBR, Sergei

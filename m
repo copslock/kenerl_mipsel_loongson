@@ -1,87 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Dec 2005 11:35:13 +0000 (GMT)
-Received: from rtsoft2.corbina.net ([85.21.88.2]:25239 "HELO
-	mail.dev.rtsoft.ru") by ftp.linux-mips.org with SMTP
-	id S8133648AbVLELeS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 5 Dec 2005 11:34:18 +0000
-Received: (qmail 16327 invoked from network); 5 Dec 2005 11:33:45 -0000
-Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
-  by mail.dev.rtsoft.ru with SMTP; 5 Dec 2005 11:33:45 -0000
-Message-ID: <43942625.2070609@ru.mvista.com>
-Date:	Mon, 05 Dec 2005 14:36:05 +0300
-From:	Sergei Shtylylov <sshtylyov@ru.mvista.com>
-Organization: MostaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Dec 2005 11:43:45 +0000 (GMT)
+Received: from web32903.mail.mud.yahoo.com ([68.142.206.50]:35961 "HELO
+	web32903.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S8133657AbVLELnE (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 5 Dec 2005 11:43:04 +0000
+Received: (qmail 54234 invoked by uid 60001); 5 Dec 2005 11:42:33 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  h=Message-ID:Received:Date:From:Subject:To:Cc:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding;
+  b=QO75+iR0ZcxS06nZe4vpa1UG2a8ncaQpDUUMJ9rpRb8Y5eUEm2jDmk8++/ifabJcxDC226lzNW6Ual/b+m3mH1AzFuk2xju9fsHnh0D4pCkSWD10nLxONGRD002TLpM2ZgAacQ0rp0fDqLpTbS5qkuvMWHFOCrA1Ehg1uaEempY=  ;
+Message-ID: <20051205114233.54232.qmail@web32903.mail.mud.yahoo.com>
+Received: from [203.145.155.11] by web32903.mail.mud.yahoo.com via HTTP; Mon, 05 Dec 2005 03:42:33 PST
+Date:	Mon, 5 Dec 2005 03:42:33 -0800 (PST)
+From:	Komal Shah <komal_shah802003@yahoo.com>
+Subject: Re: [PATCH] ALCHEMY: SPI driver for Au1200
+To:	Jordan Crouse <jordan.crouse@amd.com>, linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+In-Reply-To: <20051202190223.GG28227@cosmic.amd.com>
 MIME-Version: 1.0
-To:	David Sanchez <david.sanchez@lexbox.fr>,
-	Linux MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: Au1550 system bus masters issue
-References: <17AB476A04B7C842887E0EB1F268111E0271B7@xpserver.intra.lexbox.org>
-In-Reply-To: <17AB476A04B7C842887E0EB1F268111E0271B7@xpserver.intra.lexbox.org>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <komal_shah802003@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9593
+X-archive-position: 9594
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: komal_shah802003@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+--- Jordan Crouse <jordan.crouse@amd.com> wrote:
 
-David Sanchez wrote:
+> A SPI driver for the Au1200 processor.  Sending now so it 
+> can be queued for the post 2.6.15 rush.
 
-> I notice the following issue in the specification update (v31420) of the
-> au1550:
-> 
-> "System bus masters (USB host, PCI, MAC0, MAC1, DDMA) may receive stale
-> data.
-> 
-> Description
-> -----------
-> System bus masters (USB host controller, PCI controller, MAC0, MAC1,
-> DDMA controller), when performing
-> coherent reads, may incorrectly receive stale data from memory instead
-> of valid modified data from the Au1
-> data cache. If the request for data arrives within a 3-clock window
-> prior to the cache line castout to memory,
-> the cache snoop response is incorrect and stale data is retrieved from
-> memory instead of the correct data from
-> the cache. The cache line castout then completes, and memory is updated.
-> Cache/memory data is not corrupted, but the specific bus read in not
-> valid.
-> 
-> Affected Step
-> -------------
-> AA
-> 
-> Workaround
-> ----------
-> Do not enable cacheable master reads if the core modifies data in cache.
-> 
-> Status
-> ------
-> Not Fixed"
-> 
-> Does somebody known if the linux kernel 2.6.10 integrates this
-> workaround ?
+Good. As there is long discussion going on which SPI framework to
+accept in mainline, I would suggest you to implement the same master
+controller and protocol driver using either David Brownell's framework
+(right now in 2.6.15-rc3-mm1) or Dmitry/Wool framework.
 
-    Mainly as CONFIG_DMA_NONCOHERENT defined. USB OHCI and PCI still have
-coherency enabled but as the cache hits prone to errata shouldn't happen due 
-to the CONFIG_DMA_NONCOHERENT, it's probably not a problem (enabling coherency 
-in Ethernet driver however makes the kernel non-bootable. USB host controller 
-(and probably not only it, I'm too lazy to re-check ;-) is still prone to 
-other errata on stepping AB though, see this thread:
 
-http://www.linux-mips.org/archives/linux-mips/2005-11/msg00137.html
+---Komal Shah
+http://komalshah.blogspot.com/
 
-I'm gonna rework the patch and resubmit.
 
-> Thanks
-
-WBR, Sergei
+		
+__________________________________ 
+Start your day with Yahoo! - Make it your home page! 
+http://www.yahoo.com/r/hs

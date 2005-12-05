@@ -1,79 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Dec 2005 08:51:08 +0000 (GMT)
-Received: from deliver-1.mx.triera.net ([213.161.0.31]:65480 "HELO
-	deliver-1.mx.triera.net") by ftp.linux-mips.org with SMTP
-	id S8133600AbVLEIup (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 5 Dec 2005 08:50:45 +0000
-Received: from localhost (in-2.mx.triera.net [213.161.0.26])
-	by deliver-1.mx.triera.net (Postfix) with ESMTP id 6267DC018;
-	Mon,  5 Dec 2005 09:50:14 +0100 (CET)
-Received: from smtp.triera.net (smtp.triera.net [213.161.0.30])
-	by in-2.mx.triera.net (Postfix) with SMTP id 2FFF81BC08A;
-	Mon,  5 Dec 2005 09:50:16 +0100 (CET)
-Received: from [172.18.1.53] (unknown [213.161.20.162])
-	by smtp.triera.net (Postfix) with ESMTP id 319021A18A7;
-	Mon,  5 Dec 2005 09:50:16 +0100 (CET)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Dec 2005 09:29:52 +0000 (GMT)
+Received: from web32906.mail.mud.yahoo.com ([68.142.206.53]:50832 "HELO
+	web32906.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S8133600AbVLEJ30 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 5 Dec 2005 09:29:26 +0000
+Received: (qmail 36426 invoked by uid 60001); 5 Dec 2005 09:28:55 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  h=Message-ID:Received:Date:From:Subject:To:Cc:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding;
+  b=5cP+BWazWuSF6ZB4Xd/h+KgcADANXMgaS9uy2VOd0eWmzLULr1JLW8eYD8DGJkGQHOGVpCcTbQmYzgQiWcmyEeVSGY1WtQWGaZPUkOr+BirsNiCJ2v/IhL/RZqzSm5s8pH6+DzY1CCZ8uqJvSe+P/fpbMqomUEIs/NbgkSpM7Co=  ;
+Message-ID: <20051205092855.36424.qmail@web32906.mail.mud.yahoo.com>
+Received: from [203.145.155.11] by web32906.mail.mud.yahoo.com via HTTP; Mon, 05 Dec 2005 01:28:55 PST
+Date:	Mon, 5 Dec 2005 01:28:55 -0800 (PST)
+From:	Komal Shah <komal_shah802003@yahoo.com>
 Subject: Re: [PATCH] ALCHEMY:  Alchemy Camera Interface (CIM) driver
-From:	Matej Kupljen <matej.kupljen@ultra.si>
-To:	Jordan Crouse <jordan.crouse@amd.com>
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
+To:	Jordan Crouse <jordan.crouse@amd.com>, linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
 In-Reply-To: <20051202190635.GI28227@cosmic.amd.com>
-References: <20051202190635.GI28227@cosmic.amd.com>
-Content-Type: text/plain
-Date:	Mon, 05 Dec 2005 09:49:27 +0100
-Message-Id: <1133772567.2377.11.camel@localhost.localdomain>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.2.3 
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: Triera AV Service
-Return-Path: <matej.kupljen@ultra.si>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <komal_shah802003@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9591
+X-archive-position: 9592
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matej.kupljen@ultra.si
+X-original-sender: komal_shah802003@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi
+--- Jordan Crouse <jordan.crouse@amd.com> wrote:
 
-> A driver for the AU1200 Camera Interface (CIM).  
-
-Great news!
-
-> I'm sending up right now, so comments and flames are definately
-> welcome.
-
-Wouldn't it be wise to support V4L2?
-This way, many existing application could use AU1200s camera interface.
-
-
-> +int __init
-> +au1xxxcim_init(void)
-> +{
-> +	int retval, error;
-> +	unsigned long page;
-> +	CAMERA_RUNTIME *cam_init;
-> +	CAMERA *cim_ptr;
+and values
+> */
+> +} CAMERA;
 > +
-> +	cam_init = &cam_base;
-> +	cam_init->cmos_camera = OrigCimArryPtr + prev_mode;
-> +	cim_ptr = cam_init->cmos_camera;
 > +
-> +	/*Allocating memory for MMAP */
-> +	mem_buf = (unsigned long *)Camera_mem_alloc(2 * MAX_FRAME_SIZE);
-> +	if (mem_buf == NULL) {
-> +		printk(KERN_ERR "MMAP unable to allocate memory \n");
-> +	}
+> +
+> +static CAMERA au1xxx_cameras[] = {
+> +	/* Omnivision OV9640 Camera 1280x960 Mode (SXGA) in "Pass Thru
+> Mode"
+> +	   1.3 MP at 15 Fps
+> +	*/
 
-IMHO this is a waste of memory, because if the user is going to use
-the camera in 320x240 mode and this allocates memory for the biggest
-size. Wouldn't it be better to set some default configuration and
-allocate memory for this? Later if the user changes the mode those
-pages are freed and new (for requested size) are allocated.
-Or even allocate memory AFTER the configuration has been set?
+There is already nice way to separate sensor interface from the camera
+core and ov9640 camera sensor driver is available at OMAP tree.
 
-BR,
-Matej
+Could you please look at that and see if that can be re-used?
+http://source.mvista.com/git/gitweb.cgi?p=linux-omap-2.6.git;a=blob;h=c7691d19356f9c5d8cb724a924e8bdebaed7fc65;hb=279a7045accc927dbb2b1d41691424c4d345489c;f=drivers/media/video/omap/sensor_ov9640.c
+
+
+---Komal Shah
+http://komalshah.blogspot.com/
+
+
+		
+__________________________________________ 
+Yahoo! DSL – Something to write home about. 
+Just $16.99/mo. or less. 
+dsl.yahoo.com 

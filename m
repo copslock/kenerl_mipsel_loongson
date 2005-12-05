@@ -1,52 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Dec 2005 11:43:45 +0000 (GMT)
-Received: from web32903.mail.mud.yahoo.com ([68.142.206.50]:35961 "HELO
-	web32903.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S8133657AbVLELnE (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 5 Dec 2005 11:43:04 +0000
-Received: (qmail 54234 invoked by uid 60001); 5 Dec 2005 11:42:33 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.com;
-  h=Message-ID:Received:Date:From:Subject:To:Cc:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding;
-  b=QO75+iR0ZcxS06nZe4vpa1UG2a8ncaQpDUUMJ9rpRb8Y5eUEm2jDmk8++/ifabJcxDC226lzNW6Ual/b+m3mH1AzFuk2xju9fsHnh0D4pCkSWD10nLxONGRD002TLpM2ZgAacQ0rp0fDqLpTbS5qkuvMWHFOCrA1Ehg1uaEempY=  ;
-Message-ID: <20051205114233.54232.qmail@web32903.mail.mud.yahoo.com>
-Received: from [203.145.155.11] by web32903.mail.mud.yahoo.com via HTTP; Mon, 05 Dec 2005 03:42:33 PST
-Date:	Mon, 5 Dec 2005 03:42:33 -0800 (PST)
-From:	Komal Shah <komal_shah802003@yahoo.com>
-Subject: Re: [PATCH] ALCHEMY: SPI driver for Au1200
-To:	Jordan Crouse <jordan.crouse@amd.com>, linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-In-Reply-To: <20051202190223.GG28227@cosmic.amd.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Return-Path: <komal_shah802003@yahoo.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Dec 2005 11:46:43 +0000 (GMT)
+Received: from extgw-uk.mips.com ([62.254.210.129]:54809 "EHLO
+	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
+	id S8133713AbVLELqC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 5 Dec 2005 11:46:02 +0000
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id jB5Bix8S007381;
+	Mon, 5 Dec 2005 11:44:59 GMT
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id jB5BivKY007380;
+	Mon, 5 Dec 2005 11:44:57 GMT
+Date:	Mon, 5 Dec 2005 11:44:56 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Jim Gifford <maillist@jg555.com>
+Cc:	Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Re: Tulip RaQ2 64 Bit Fix
+Message-ID: <20051205114456.GA2728@linux-mips.org>
+References: <4393CD9F.3090305@jg555.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4393CD9F.3090305@jg555.com>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9594
+X-archive-position: 9595
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: komal_shah802003@yahoo.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
---- Jordan Crouse <jordan.crouse@amd.com> wrote:
+On Sun, Dec 04, 2005 at 09:18:23PM -0800, Jim Gifford wrote:
 
-> A SPI driver for the Au1200 processor.  Sending now so it 
-> can be queued for the post 2.6.15 rush.
+> The attached patch allows the tulip driver to work with the RaQ2's 
+> network adapter. Without the patch under a 64 bit build, it will never 
+> negotiate and will drop packets. This driver is part of Linux Parisc, by 
+> Grant Grundler. It's currently in -mm, but Jeff Garzick will not apply 
+> it to the main tree.
 
-Good. As there is long discussion going on which SPI framework to
-accept in mainline, I would suggest you to implement the same master
-controller and protocol driver using either David Brownell's framework
-(right now in 2.6.15-rc3-mm1) or Dmitry/Wool framework.
+Why?
 
-
----Komal Shah
-http://komalshah.blogspot.com/
-
-
-		
-__________________________________ 
-Start your day with Yahoo! - Make it your home page! 
-http://www.yahoo.com/r/hs
+  Ralf

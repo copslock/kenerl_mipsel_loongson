@@ -1,70 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Dec 2005 08:23:19 +0000 (GMT)
-Received: from laf31-5-82-235-130-100.fbx.proxad.net ([82.235.130.100]:47077
-	"EHLO lexbox.fr") by ftp.linux-mips.org with ESMTP id S8133575AbVLEIW7 convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 5 Dec 2005 08:22:59 +0000
-Content-class: urn:content-classes:message
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: Au1550 system bus masters issue
-X-MimeOLE: Produced By Microsoft Exchange V6.5.6944.0
-Date:	Mon, 5 Dec 2005 09:18:50 +0100
-Message-ID: <17AB476A04B7C842887E0EB1F268111E0271B7@xpserver.intra.lexbox.org>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: Au1550 system bus masters issue
-thread-index: AcX5dIW+i6XFajUZSkKtR8AR8cRveQ==
-From:	"David Sanchez" <david.sanchez@lexbox.fr>
-To:	<linux-mips@linux-mips.org>
-Return-Path: <david.sanchez@lexbox.fr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Dec 2005 08:51:08 +0000 (GMT)
+Received: from deliver-1.mx.triera.net ([213.161.0.31]:65480 "HELO
+	deliver-1.mx.triera.net") by ftp.linux-mips.org with SMTP
+	id S8133600AbVLEIup (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 5 Dec 2005 08:50:45 +0000
+Received: from localhost (in-2.mx.triera.net [213.161.0.26])
+	by deliver-1.mx.triera.net (Postfix) with ESMTP id 6267DC018;
+	Mon,  5 Dec 2005 09:50:14 +0100 (CET)
+Received: from smtp.triera.net (smtp.triera.net [213.161.0.30])
+	by in-2.mx.triera.net (Postfix) with SMTP id 2FFF81BC08A;
+	Mon,  5 Dec 2005 09:50:16 +0100 (CET)
+Received: from [172.18.1.53] (unknown [213.161.20.162])
+	by smtp.triera.net (Postfix) with ESMTP id 319021A18A7;
+	Mon,  5 Dec 2005 09:50:16 +0100 (CET)
+Subject: Re: [PATCH] ALCHEMY:  Alchemy Camera Interface (CIM) driver
+From:	Matej Kupljen <matej.kupljen@ultra.si>
+To:	Jordan Crouse <jordan.crouse@amd.com>
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
+In-Reply-To: <20051202190635.GI28227@cosmic.amd.com>
+References: <20051202190635.GI28227@cosmic.amd.com>
+Content-Type: text/plain
+Date:	Mon, 05 Dec 2005 09:49:27 +0100
+Message-Id: <1133772567.2377.11.camel@localhost.localdomain>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.2.3 
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: Triera AV Service
+Return-Path: <matej.kupljen@ultra.si>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9590
+X-archive-position: 9591
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david.sanchez@lexbox.fr
+X-original-sender: matej.kupljen@ultra.si
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+Hi
 
-I notice the following issue in the specification update (v31420) of the
-au1550:
+> A driver for the AU1200 Camera Interface (CIM).  
 
-"System bus masters (USB host, PCI, MAC0, MAC1, DDMA) may receive stale
-data.
+Great news!
 
-Description
------------
-System bus masters (USB host controller, PCI controller, MAC0, MAC1,
-DDMA controller), when performing
-coherent reads, may incorrectly receive stale data from memory instead
-of valid modified data from the Au1
-data cache. If the request for data arrives within a 3-clock window
-prior to the cache line castout to memory,
-the cache snoop response is incorrect and stale data is retrieved from
-memory instead of the correct data from
-the cache. The cache line castout then completes, and memory is updated.
-Cache/memory data is not corrupted, but the specific bus read in not
-valid.
+> I'm sending up right now, so comments and flames are definately
+> welcome.
 
-Affected Step
--------------
-AA
+Wouldn't it be wise to support V4L2?
+This way, many existing application could use AU1200s camera interface.
 
-Workaround
-----------
-Do not enable cacheable master reads if the core modifies data in cache.
 
-Status
-------
-Not Fixed"
+> +int __init
+> +au1xxxcim_init(void)
+> +{
+> +	int retval, error;
+> +	unsigned long page;
+> +	CAMERA_RUNTIME *cam_init;
+> +	CAMERA *cim_ptr;
+> +
+> +	cam_init = &cam_base;
+> +	cam_init->cmos_camera = OrigCimArryPtr + prev_mode;
+> +	cim_ptr = cam_init->cmos_camera;
+> +
+> +	/*Allocating memory for MMAP */
+> +	mem_buf = (unsigned long *)Camera_mem_alloc(2 * MAX_FRAME_SIZE);
+> +	if (mem_buf == NULL) {
+> +		printk(KERN_ERR "MMAP unable to allocate memory \n");
+> +	}
 
-Does somebody known if the linux kernel 2.6.10 integrates this
-workaround ?
+IMHO this is a waste of memory, because if the user is going to use
+the camera in 320x240 mode and this allocates memory for the biggest
+size. Wouldn't it be better to set some default configuration and
+allocate memory for this? Later if the user changes the mode those
+pages are freed and new (for requested size) are allocated.
+Or even allocate memory AFTER the configuration has been set?
 
-Thanks
+BR,
+Matej

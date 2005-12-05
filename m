@@ -1,93 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Dec 2005 14:58:57 +0000 (GMT)
-Received: from amdext3.amd.com ([139.95.251.6]:44777 "EHLO amdext3.amd.com")
-	by ftp.linux-mips.org with ESMTP id S8133644AbVLEO63 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 5 Dec 2005 14:58:29 +0000
-Received: from SSVLGW01.amd.com (ssvlgw01.amd.com [139.95.250.169])
-	by amdext3.amd.com (8.12.11/8.12.11/AMD) with ESMTP id jB5Evx2s015007;
-	Mon, 5 Dec 2005 06:58:00 -0800
-Received: from 139.95.250.1 by SSVLGW01.amd.com with ESMTP (AMD SMTP
- Relay (Email Firewall v6.1.0)); Mon, 05 Dec 2005 06:57:49 -0800
-X-Server-Uuid: 89466532-923C-4A88-82C1-66ACAA0041DF
-Received: from ldcmail.amd.com (ldcmail.amd.com [147.5.200.40]) by
- amdint.amd.com (8.12.8/8.12.8/AMD) with ESMTP id jB5EvlQe005905; Mon, 5
- Dec 2005 06:57:47 -0800 (PST)
-Received: from cosmic.amd.com (cosmic.amd.com [147.5.201.206]) by
- ldcmail.amd.com (Postfix) with ESMTP id E683B2026; Mon, 5 Dec 2005
- 07:57:46 -0700 (MST)
-Received: from cosmic.amd.com (localhost [127.0.0.1]) by cosmic.amd.com
- (8.13.4/8.13.4) with ESMTP id jB5F6IHi014896; Mon, 5 Dec 2005 08:06:18
- -0700
-Received: (from jcrouse@localhost) by cosmic.amd.com (
- 8.13.4/8.13.4/Submit) id jB5F6Iu0014895; Mon, 5 Dec 2005 08:06:18 -0700
-Date:	Mon, 5 Dec 2005 08:06:18 -0700
-From:	"Jordan Crouse" <jordan.crouse@amd.com>
-To:	"Matej Kupljen" <matej.kupljen@ultra.si>
-cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: ALCHEMY:  Alchemy Camera Interface (CIM) driver
-Message-ID: <20051205150617.GQ28227@cosmic.amd.com>
-References: <20051202190635.GI28227@cosmic.amd.com>
- <1133772567.2377.11.camel@localhost.localdomain>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Dec 2005 15:06:37 +0000 (GMT)
+Received: from smtp200.mail.sc5.yahoo.com ([216.136.130.125]:40371 "HELO
+	smtp200.mail.sc5.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S8133653AbVLEPGF (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 5 Dec 2005 15:06:05 +0000
+Received: (qmail 24445 invoked from network); 5 Dec 2005 15:05:18 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com.br;
+  h=Received:Message-ID:Date:From:User-Agent:X-Accept-Language:MIME-Version:To:Subject:X-Enigmail-Version:OpenPGP:Content-Type;
+  b=LnKRmMsqGMVVKZWUJ/9rHww9p/AF3dKMrHNypgY2pu3Vu/iVUcpRXt1TqfpGOx43kD9zWPrQOZDx6MMRYZLB1aANh6QrGfNXogG8vk8oXftmzgWBMtBRk5vamtY16311Uf3quyzU/iBFRZF1esBQx8cMLogedO5FA79BBksVf2I=  ;
+Received: from unknown (HELO ?192.168.0.3?) (leonardosilv@200.139.137.68 with plain)
+  by smtp200.mail.sc5.yahoo.com with SMTP; 5 Dec 2005 15:05:10 -0000
+Message-ID: <4394570E.7040702@yahoo.com.br>
+Date:	Mon, 05 Dec 2005 13:04:46 -0200
+From:	Leonardo Silva Amaral <leonardosilv@yahoo.com.br>
+User-Agent: Mozilla Thunderbird 1.0.7 (X11/20051017)
+X-Accept-Language: pt-br, pt
 MIME-Version: 1.0
-In-Reply-To: <1133772567.2377.11.camel@localhost.localdomain>
-User-Agent: Mutt/1.5.11
-X-WSS-ID: 6F8A8AE71K82502146-01-01
-Content-Type: text/plain;
- charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: 7bit
-Return-Path: <jcrouse@cosmic.amd.com>
+To:	linux-mips@linux-mips.org
+Subject: Linux on handheld
+X-Enigmail-Version: 0.93.0.0
+OpenPGP: id=C6E3CB51
+Content-Type: multipart/signed; micalg=pgp-sha1;
+ protocol="application/pgp-signature";
+ boundary="------------enigF4AD2E00495DEF16EC58AE41"
+Return-Path: <leonardosilv@yahoo.com.br>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9600
+X-archive-position: 9601
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jordan.crouse@amd.com
+X-original-sender: leonardosilv@yahoo.com.br
 Precedence: bulk
 X-list: linux-mips
 
-On 05/12/05 09:49 +0100, Matej Kupljen wrote:
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--------------enigF4AD2E00495DEF16EC58AE41
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
 
-> Wouldn't it be wise to support V4L2?
-> This way, many existing application could use AU1200s camera interface.
+Hello!
 
-Thats possible, but for now this solution has been reasonable enough for
-us to send it upstream.  I'm sure that somebody more familiar with V4L2 could
-make short work of adapting it to the existing infrastructure.
- 
-> > +int __init
-> > +au1xxxcim_init(void)
-> > +{
-> > +	int retval, error;
-> > +	unsigned long page;
-> > +	CAMERA_RUNTIME *cam_init;
-> > +	CAMERA *cim_ptr;
-> > +
-> > +	cam_init = &cam_base;
-> > +	cam_init->cmos_camera = OrigCimArryPtr + prev_mode;
-> > +	cim_ptr = cam_init->cmos_camera;
-> > +
-> > +	/*Allocating memory for MMAP */
-> > +	mem_buf = (unsigned long *)Camera_mem_alloc(2 * MAX_FRAME_SIZE);
-> > +	if (mem_buf == NULL) {
-> > +		printk(KERN_ERR "MMAP unable to allocate memory \n");
-> > +	}
-> 
-> IMHO this is a waste of memory, because if the user is going to use
-> the camera in 320x240 mode and this allocates memory for the biggest
-> size. Wouldn't it be better to set some default configuration and
-> allocate memory for this? Later if the user changes the mode those
-> pages are freed and new (for requested size) are allocated.
-> Or even allocate memory AFTER the configuration has been set?
+I Want to run linux on my handheld NEC700, but using linux from
+linux-mips.org and from kernel.org i give problems on compilation.
 
-I agree, that could be handled better.
+Thet does matter, linux-mips, give a parse error on vmlinux.ld. Some
+onde have fixed it?
 
-Thanks,
+Thanks
 
-Jordan
--- 
-Jordan Crouse
-Senior Linux Engineer
-AMD - Personal Connectivity Solutions Group
-<www.amd.com/embeddedprocessors>
+------------------------------------------------------------
+   .,p**"*=b.
+  ?P"  .__ `*b
+|P  .d?'`&, 9|  Leonardo Silva Amaral
+M:  |}   |- H'  MSN: leleobhzdiscovery@hotmail.com
+&|  `#?_._oH'   JABBER: leleobhz@astolfonet.no-ip.org
+`H.   "`"`'     Site: http://blogdoleleo.no-ip.org
+  `#?.          Mail: leonardosilv@yahoo.com.br
+    `^~.
+------------------------------------------------------------
+
+
+--------------enigF4AD2E00495DEF16EC58AE41
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.2 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://enigmail.mozdev.org
+
+iD8DBQFDlFcWNpwRGcbjy1ERAv4cAKCtyVK52slKM8tX03BmS4xzZ07H3wCfSCLc
+Srtn5q+GdHM0dF7b8oWf+Ho=
+=Knh8
+-----END PGP SIGNATURE-----
+
+--------------enigF4AD2E00495DEF16EC58AE41--
+
+	
+
+	
+		
+_______________________________________________________ 
+Yahoo! doce lar. Faça do Yahoo! sua homepage. 
+http://br.yahoo.com/homepageset.html 

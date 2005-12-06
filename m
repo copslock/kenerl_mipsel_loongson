@@ -1,45 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Dec 2005 12:06:45 +0000 (GMT)
-Received: from wproxy.gmail.com ([64.233.184.192]:9660 "EHLO wproxy.gmail.com")
-	by ftp.linux-mips.org with ESMTP id S8133453AbVLFMGZ convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 6 Dec 2005 12:06:25 +0000
-Received: by wproxy.gmail.com with SMTP id i14so345923wra
-        for <linux-mips@linux-mips.org>; Tue, 06 Dec 2005 04:06:06 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=bjrjNwd0cG3eDCDtBC8Jh2ZYZo3yVmfUd1WimlYOZB8GW2hhuuUsRslJLGkN71puDe0IDjJG/dxvz7grGw7zGk8rKVbFUE2KMxbiTBN3++yRH9ByBStd7plN5rEU2/pNi9OmHES9bAljYhrGMQeILib9IAPuo1csG6DN4dNw/v0=
-Received: by 10.54.154.17 with SMTP id b17mr1674047wre;
-        Tue, 06 Dec 2005 04:06:06 -0800 (PST)
-Received: by 10.54.146.1 with HTTP; Tue, 6 Dec 2005 04:06:06 -0800 (PST)
-Message-ID: <f69849430512060406x7f30a2f6k2c64f6cef383c175@mail.gmail.com>
-Date:	Tue, 6 Dec 2005 04:06:06 -0800
-From:	kernel coder <lhrkernelcoder@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: zero copy
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Dec 2005 15:54:32 +0000 (GMT)
+Received: from fed1rmmtao09.cox.net ([68.230.241.30]:1429 "EHLO
+	fed1rmmtao09.cox.net") by ftp.linux-mips.org with ESMTP
+	id S8133511AbVLFPyM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 6 Dec 2005 15:54:12 +0000
+Received: from liberty.homelinux.org ([70.190.160.125])
+          by fed1rmmtao09.cox.net
+          (InterMail vM.6.01.05.02 201-2131-123-102-20050715) with ESMTP
+          id <20051206155349.FECG25099.fed1rmmtao09.cox.net@liberty.homelinux.org>;
+          Tue, 6 Dec 2005 10:53:49 -0500
+Received: (from mmporter@localhost)
+	by liberty.homelinux.org (8.9.3/8.9.3/Debian 8.9.3-21) id IAA06907;
+	Tue, 6 Dec 2005 08:53:47 -0700
+Date:	Tue, 6 Dec 2005 08:53:47 -0700
+From:	Matt Porter <mporter@kernel.crashing.org>
+To:	kernel coder <lhrkernelcoder@gmail.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: zero copy
+Message-ID: <20051206085347.A32501@cox.net>
+References: <f69849430512060406x7f30a2f6k2c64f6cef383c175@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Return-Path: <lhrkernelcoder@gmail.com>
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <f69849430512060406x7f30a2f6k2c64f6cef383c175@mail.gmail.com>; from lhrkernelcoder@gmail.com on Tue, Dec 06, 2005 at 04:06:06AM -0800
+Return-Path: <mmporter@cox.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9609
+X-archive-position: 9610
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lhrkernelcoder@gmail.com
+X-original-sender: mporter@kernel.crashing.org
 Precedence: bulk
 X-list: linux-mips
 
-hi,
-    i'm trying to track the code flow of sendfile system call.Mine
-ethernet card doesn't have scatter gather and checksum calculation
-features.So stack should be making a copy of data.
+On Tue, Dec 06, 2005 at 04:06:06AM -0800, kernel coder wrote:
+> hi,
+>     i'm trying to track the code flow of sendfile system call.Mine
+> ethernet card doesn't have scatter gather and checksum calculation
+> features.So stack should be making a copy of data.
+> 
+> Please tell me where in sendfile code flow,check for scatter gather
+> and cecksum features is made so that stack can decide whether to copy
+> data from user space or not.
 
-Please tell me where in sendfile code flow,check for scatter gather
-and cecksum features is made so that stack can decide whether to copy
-data from user space or not.
+Is your grep really that broken? :)
 
-lhrkernelcoder
+net/ipv4/tcp.c:tcp_sendpage() is where you find the check and
+fallback to sendmsg if you follow it through.
+
+-Matt

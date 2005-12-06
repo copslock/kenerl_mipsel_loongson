@@ -1,53 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Dec 2005 15:54:32 +0000 (GMT)
-Received: from fed1rmmtao09.cox.net ([68.230.241.30]:1429 "EHLO
-	fed1rmmtao09.cox.net") by ftp.linux-mips.org with ESMTP
-	id S8133511AbVLFPyM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 6 Dec 2005 15:54:12 +0000
-Received: from liberty.homelinux.org ([70.190.160.125])
-          by fed1rmmtao09.cox.net
-          (InterMail vM.6.01.05.02 201-2131-123-102-20050715) with ESMTP
-          id <20051206155349.FECG25099.fed1rmmtao09.cox.net@liberty.homelinux.org>;
-          Tue, 6 Dec 2005 10:53:49 -0500
-Received: (from mmporter@localhost)
-	by liberty.homelinux.org (8.9.3/8.9.3/Debian 8.9.3-21) id IAA06907;
-	Tue, 6 Dec 2005 08:53:47 -0700
-Date:	Tue, 6 Dec 2005 08:53:47 -0700
-From:	Matt Porter <mporter@kernel.crashing.org>
-To:	kernel coder <lhrkernelcoder@gmail.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: zero copy
-Message-ID: <20051206085347.A32501@cox.net>
-References: <f69849430512060406x7f30a2f6k2c64f6cef383c175@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.2.5i
-In-Reply-To: <f69849430512060406x7f30a2f6k2c64f6cef383c175@mail.gmail.com>; from lhrkernelcoder@gmail.com on Tue, Dec 06, 2005 at 04:06:06AM -0800
-Return-Path: <mmporter@cox.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Dec 2005 17:55:16 +0000 (GMT)
+Received: from rtsoft3.corbina.net ([85.21.88.6]:12343 "EHLO
+	buildserver.ru.mvista.com") by ftp.linux-mips.org with ESMTP
+	id S8133676AbVLFRy4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 6 Dec 2005 17:54:56 +0000
+Received: from [192.168.12.17] ([10.149.0.1])
+	by buildserver.ru.mvista.com (8.11.6/8.11.6) with ESMTP id jB6Hsat18141;
+	Tue, 6 Dec 2005 21:54:36 +0400
+Message-ID: <4395D05C.9060408@ru.mvista.com>
+Date:	Tue, 06 Dec 2005 20:54:36 +0300
+From:	"Vladimir A. Barinov" <vbarinov@ru.mvista.com>
+User-Agent: Mozilla Thunderbird 1.0.2-6 (X11/20050513)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	ralf@linux-mips.org
+CC:	linux-mips@linux-mips.org, ppopov@embeddedalley.com
+Subject: [PATCH] Philips PNX8550 ip3106 driver deadlock fix
+Content-Type: multipart/mixed;
+ boundary="------------060108000006010507080008"
+Return-Path: <vbarinov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9610
+X-archive-position: 9611
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mporter@kernel.crashing.org
+X-original-sender: vbarinov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Dec 06, 2005 at 04:06:06AM -0800, kernel coder wrote:
-> hi,
->     i'm trying to track the code flow of sendfile system call.Mine
-> ethernet card doesn't have scatter gather and checksum calculation
-> features.So stack should be making a copy of data.
-> 
-> Please tell me where in sendfile code flow,check for scatter gather
-> and cecksum features is made so that stack can decide whether to copy
-> data from user space or not.
+This is a multi-part message in MIME format.
+--------------060108000006010507080008
+Content-Type: text/plain; charset=KOI8-R; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Is your grep really that broken? :)
+Hello Ralf,
 
-net/ipv4/tcp.c:tcp_sendpage() is where you find the check and
-fallback to sendmsg if you follow it through.
+This is a patch that fixes spin_lock deadlock in serial ip3106 driver.
+The spin_lock_irq(&port->lock,flags) is already called in generic driver 
+serial_core.c before
+port->ops->start_tx().
+So the second call of spin_lock_irq(&port->lock, flags) leads to 
+deadlock. This could be verified in PREEMPT_DESCTOP case when
+these options are enabled:
+CONFIG_DEBUG_PREEMPT=y
+CONFIG_DEBUG_SPINLOCK=y
 
--Matt
+Vladimir
+
+
+--------------060108000006010507080008
+Content-Type: text/plain;
+ name="ip3106_uart.diff"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="ip3106_uart.diff"
+
+--- linux-2.6.15/drivers/serial/ip3106_uart.c	2005-12-02 16:37:59.000000000 +0300
++++ linux-2.6.15/drivers/serial/ip3106_uart.c	2005-12-06 20:40:15.000000000 +0300
+@@ -149,19 +149,14 @@ static void ip3106_stop_tx(struct uart_p
+ static void ip3106_start_tx(struct uart_port *port, unsigned int tty_start)
+ {
+ 	struct ip3106_port *sport = (struct ip3106_port *)port;
+-	unsigned long flags;
+ 	u32 ien;
+ 
+-	spin_lock_irqsave(&sport->port.lock, flags);
+-
+ 	/* Clear all pending TX intr */
+ 	serial_out(sport, IP3106_ICLR, IP3106_UART_INT_ALLTX);
+ 
+ 	/* Enable TX intr */
+ 	ien = serial_in(sport, IP3106_IEN);
+ 	serial_out(sport, IP3106_IEN, ien | IP3106_UART_INT_ALLTX);
+-
+-	spin_unlock_irqrestore(&sport->port.lock, flags);
+ }
+ 
+ /*
+
+--------------060108000006010507080008--

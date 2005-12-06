@@ -1,62 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Dec 2005 18:03:45 +0000 (GMT)
-Received: from rtsoft3.corbina.net ([85.21.88.6]:18231 "EHLO
-	buildserver.ru.mvista.com") by ftp.linux-mips.org with ESMTP
-	id S8133676AbVLFSDT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 6 Dec 2005 18:03:19 +0000
-Received: from [192.168.12.17] ([10.149.0.1])
-	by buildserver.ru.mvista.com (8.11.6/8.11.6) with ESMTP id jB6I30t18507;
-	Tue, 6 Dec 2005 22:03:01 +0400
-Message-ID: <4395D254.9060203@ru.mvista.com>
-Date:	Tue, 06 Dec 2005 21:03:00 +0300
-From:	"Vladimir A. Barinov" <vbarinov@ru.mvista.com>
-User-Agent: Mozilla Thunderbird 1.0.2-6 (X11/20050513)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	linux-mips@linux-mips.org, ppopov@embeddedalley.com
-Subject: Re: [PATCH] Philips PNX8550 ip3106 driver deadlock fix
-References: <4395D05C.9060408@ru.mvista.com> <20051206180035.GG2698@linux-mips.org>
-In-Reply-To: <20051206180035.GG2698@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <vbarinov@ru.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Dec 2005 18:05:36 +0000 (GMT)
+Received: from extgw-uk.mips.com ([62.254.210.129]:60173 "EHLO
+	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
+	id S8133725AbVLFSFS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 6 Dec 2005 18:05:18 +0000
+Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id jB6I4sQg031836;
+	Tue, 6 Dec 2005 18:04:54 GMT
+Received: (from ralf@localhost)
+	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id jB6I4sAR031835;
+	Tue, 6 Dec 2005 18:04:54 GMT
+Date:	Tue, 6 Dec 2005 18:04:54 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	"Vladimir A. Barinov" <vbarinov@ru.mvista.com>
+Cc:	linux-mips@linux-mips.org, ppopov@embeddedalley.com
+Subject: Re: [PATCH] Philips PNX8550 command line patch
+Message-ID: <20051206180454.GH2698@linux-mips.org>
+References: <4395D226.9070807@ru.mvista.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4395D226.9070807@ru.mvista.com>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9615
+X-archive-position: 9616
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vbarinov@ru.mvista.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
+On Tue, Dec 06, 2005 at 09:02:14PM +0300, Vladimir A. Barinov wrote:
 
->On Tue, Dec 06, 2005 at 08:54:36PM +0300, Vladimir A. Barinov wrote:
->
->  
->
->>This is a patch that fixes spin_lock deadlock in serial ip3106 driver.
->>The spin_lock_irq(&port->lock,flags) is already called in generic driver 
->>serial_core.c before
->>port->ops->start_tx().
->>So the second call of spin_lock_irq(&port->lock, flags) leads to 
->>deadlock. This could be verified in PREEMPT_DESCTOP case when
->>these options are enabled:
->>CONFIG_DEBUG_PREEMPT=y
->>CONFIG_DEBUG_SPINLOCK=y
->>    
->>
->
->Serial drivers are maintained by rmk+serial@arm.linux.org.uk, please send
->to him.
->  
->
-Ok, thank you.
+> This patch makes passing command line from bootloader for Philips 
+> PNX8550 platform.
+> Does it makes sense to commit this patch?
 
->  Ralf
->
->
->  
->
+Looks ok at a quick glance.  I'll wait a bit so Pete has a chance to
+comment.
+
+  Ralf

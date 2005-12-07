@@ -1,72 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Dec 2005 11:13:47 +0000 (GMT)
-Received: from krt.tmd.ns.ac.yu ([147.91.177.65]:16267 "EHLO krt.neobee.net")
-	by ftp.linux-mips.org with ESMTP id S8133413AbVLGLL0 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 7 Dec 2005 11:11:26 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by krt.neobee.net (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id jB7CSfuI003385
-	for <linux-mips@linux-mips.org>; Wed, 7 Dec 2005 13:28:41 +0100
-Received: from krt.neobee.net ([127.0.0.1])
- by localhost (krt.neobee.net [127.0.0.1]) (amavisd-new, port 10024) with LMTP
- id 03262-01 for <linux-mips@linux-mips.org>;
- Wed,  7 Dec 2005 13:28:41 +0100 (CET)
-Received: from had ([192.168.0.89])
-	by krt.neobee.net (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id jB7CSdti003380
-	for <linux-mips@linux-mips.org>; Wed, 7 Dec 2005 13:28:40 +0100
-Reply-To: <Mile.Davidovic@micronasnit.com>
-From:	"Mile Davidovic" <Mile.Davidovic@micronasnit.com>
-To:	<linux-mips@linux-mips.org>
-Subject: List symbols from object files
-Date:	Wed, 7 Dec 2005 12:11:04 +0100
-Organization: MicronasNIT
-Message-ID: <001701c5fb1e$ea5e33c0$5900a8c0@niit.micronasnit.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Dec 2005 17:46:34 +0000 (GMT)
+Received: from web86306.mail.ukl.yahoo.com ([217.12.12.65]:26015 "HELO
+	web86306.mail.ukl.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S8133530AbVLGRqQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 7 Dec 2005 17:46:16 +0000
+Received: (qmail 32142 invoked by uid 60001); 7 Dec 2005 17:45:59 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=talk21.com;
+  h=Message-ID:Received:Date:From:Subject:To:Cc:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding;
+  b=f8w8oUgJ1MajttCnuZg+zwt+IDANK9gKrn6VMmPuS8CAINAfP6yRf7peqX4SZ0VSpMw4L90BCx9eg3C1ZIPcaPe4Mc/DHS8fTFs2VqDTnf5xdTRkX3PihJyZk9z3K8CaVEhLVMr/kNurE7KoltvUYgT3V/AYH144yAk+dxJLyxY=  ;
+Message-ID: <20051207174559.32140.qmail@web86306.mail.ukl.yahoo.com>
+Received: from [132.146.82.240] by web86306.mail.ukl.yahoo.com via HTTP; Wed, 07 Dec 2005 17:45:59 GMT
+Date:	Wed, 7 Dec 2005 17:45:59 +0000 (GMT)
+From:	Scott Ashcroft <scott.ashcroft@talk21.com>
+Subject: Re: pci_iomap issues?
+To:	Mark Mason <mason@broadcom.com>
+Cc:	Scott Ashcroft <scott.ashcroft@talk21.com>,
+	linux-mips@linux-mips.org
+In-Reply-To: <43961DC1.80405@broadcom.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Office Outlook 11
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2670
-Thread-Index: AcX7HugZYIpsBZpnQ+ClTHjv6CrQ5Q==
-X-Virus-Scanned: by amavisd-new at krt.neobee.net
-Return-Path: <Mile.Davidovic@micronasnit.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <scott.ashcroft@talk21.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9624
+X-archive-position: 9625
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Mile.Davidovic@micronasnit.com
+X-original-sender: scott.ashcroft@talk21.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello all
 
-I am not shure that this question is for this list, if I made mistake, I am
-so sorry.
-My question is about usage of mips-linux-nm on Linux kernel with debugging
-information. 
+--- Mark Mason <mason@broadcom.com> wrote:
+> 
+> Any system based on BCM1480s could have multiple pci
+> busses (one PCI-X
+> directly, and additional busses through HT/PCI-X
+> bridges).  For the
+> BCM91480B board, we had to turn on PCI_DOMAINS to
+> get this to work
+> correctly.
 
-mips-linux-nm -la vmlinux does not show line number information.
-Is this expected bahavioure or I am missing something?
+I understand that there are machines with multiple PCI
+busses out there but comparing the ppc64 code with the
+proposed mips patches I don't see much difference.
+Are the ppc64 people just breaking multiple PCI bus
+machines, did something happen in the generic PCI code
+which fixed the issue or is there just a difference I
+can't see?
 
-This is part of my .config file:
-CONFIG_DEBUG_KERNEL=y
-# CONFIG_MAGIC_SYSRQ is not set
-CONFIG_LOG_BUF_SHIFT=14
-# CONFIG_SCHEDSTATS is not set
-# CONFIG_DEBUG_SLAB is not set
-CONFIG_DEBUG_PREEMPT=y
-# CONFIG_DEBUG_SPINLOCK is not set
-# CONFIG_DEBUG_SPINLOCK_SLEEP is not set
-# CONFIG_DEBUG_KOBJECT is not set
-CONFIG_DEBUG_INFO=y
-# CONFIG_DEBUG_FS is not set
-CONFIG_CROSSCOMPILE=y
-CONFIG_CMDLINE=""
-# CONFIG_DEBUG_STACK_USAGE is not set
-# CONFIG_KGDB is not set
-CONFIG_RUNTIME_DEBUG=y
-# CONFIG_MIPS_UNCACHED is not set
-
-
-Best regards Mile
+Cheers,
+Scott

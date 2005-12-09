@@ -1,83 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Dec 2005 14:41:44 +0000 (GMT)
-Received: from 202-47-55-78.adsl.gil.com.au ([202.47.55.78]:27839 "EHLO
-	longlandclan.hopto.org") by ftp.linux-mips.org with ESMTP
-	id S3458514AbVLIOlZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 9 Dec 2005 14:41:25 +0000
-Received: (qmail 15609 invoked from network); 10 Dec 2005 00:40:28 +1000
-Received: from unknown (HELO ?10.0.0.251?) (10.0.0.251)
-  by 192.168.5.1 with SMTP; 10 Dec 2005 00:40:28 +1000
-Message-ID: <4399972C.5060604@gentoo.org>
-Date:	Sat, 10 Dec 2005 00:39:40 +1000
-From:	Stuart Longland <redhatter@gentoo.org>
-Organization: Gentoo Foundation
-User-Agent: Mozilla Thunderbird 1.0.7 (X11/20051029)
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Dec 2005 18:08:58 +0000 (GMT)
+Received: from rtsoft2.corbina.net ([85.21.88.2]:21426 "HELO
+	mail.dev.rtsoft.ru") by ftp.linux-mips.org with SMTP
+	id S3458525AbVLISIk (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 9 Dec 2005 18:08:40 +0000
+Received: (qmail 4219 invoked from network); 9 Dec 2005 18:08:31 -0000
+Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
+  by mail.dev.rtsoft.ru with SMTP; 9 Dec 2005 18:08:31 -0000
+Message-ID: <4399C8AB.4080403@ru.mvista.com>
+Date:	Fri, 09 Dec 2005 21:10:51 +0300
+From:	Sergei Shtylylov <sshtylyov@ru.mvista.com>
+Organization: MostaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: SGI IP28 Kernels... anyone had any luck lately?
-X-Enigmail-Version: 0.93.0.0
-OpenPGP: id=63264AB9;
-	url=http://dev.gentoo.org/~redhatter/gpgkey.asc
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="------------enigD35CB61B2F0F50F9AE9323E8"
-Return-Path: <redhatter@gentoo.org>
+To:	Linux MIPS <linux-mips@linux-mips.org>
+CC:	Manish Lachwani <mlachwani@mvista.com>,
+	Konstantin Baidarov <kbaidarov@ru.mvista.com>
+Subject: [PATCH] SiMotion VoyagerGX framebuffer: blue stripped background
+Content-Type: multipart/mixed;
+ boundary="------------050205090103050403070109"
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9642
+X-archive-position: 9643
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: redhatter@gentoo.org
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---------------enigD35CB61B2F0F50F9AE9323E8
-Content-Type: text/plain; charset=UTF-8
+This is a multi-part message in MIME format.
+--------------050205090103050403070109
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
 
-Hi all,
-	I'm not sure what's causing this error, could very well be PEBKAC, but
-anyways.
+Hello.
 
-	I've been striking issues getting kernels for my IP28 to compile.  So
-far, I've tried both the 2.6.14 and 2.6.14-rc2 tags, the IP28 patches[1]
-apply successfully, but the subsequent compile fails with these
-messages: http://pastebin.com/455158
+    This driver was using an incorrect typecast when setting pseudopalette,
+hence were the blue strips on the black char background. As this driver
+happens to be maintaned by Linux/MIPS, here's the patch (I've also noticed a
+typo in the head comment, hence comes another hunk)...
 
-	Incidentally, the tarball you download containing the patches,
-apparently has a README and .config file included.  Well, there's
-symlinks to the files, but it seems the actual files themselves got
-missed in the archive.  I used the /proc/config.gz from my currently
-running kernel (2.6.12-rc2, also works with 2.6.13.4).
+WBR, Sergei
 
-	I was hoping to try out Impact support, in console and X, as well as
-HAL2 support (which was b0rked last time I tried it).
+Signed-off-by: Konstantin Baydarov <kbaidarov@ru.mvista.com>
+Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
 
-	Has anyone had any luck, and if so, any ideas what I'm doing wrong?
-Regards,
--- 
-Stuart Longland (aka Redhatter)              .'''.
-Gentoo Linux/MIPS Cobalt and Docs Developer  '.'` :
-. . . . . . . . . . . . . . . . . . . . . .   .'.'
-http://dev.gentoo.org/~redhatter             :.'
 
-1. http://home.alphastar.de/fuerst/download.html
 
---------------enigD35CB61B2F0F50F9AE9323E8
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.1 (GNU/Linux)
-Comment: Using GnuPG with Thunderbird - http://enigmail.mozdev.org
+--------------050205090103050403070109
+Content-Type: text/plain;
+ name="VoyagerGX-blue-strips.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="VoyagerGX-blue-strips.patch"
 
-iD8DBQFDmZcvuarJ1mMmSrkRAk0xAJ0T0Gc0tpbHi/E8CpE/2y0t6x1Y1wCdHZUA
-33NwUeaST0CvGjSTEnJXEvM=
-=nWMF
------END PGP SIGNATURE-----
+diff --git a/drivers/video/smivgxfb.c b/drivers/video/smivgxfb.c
+index d5755c5..c521069 100644
+--- a/drivers/video/smivgxfb.c
++++ b/drivers/video/smivgxfb.c
+@@ -1,5 +1,5 @@
+ /***************************************************************************
+- *  Silicon Motion VoyaagerGX framebuffer driver
++ *  Silicon Motion VoyagerGX framebuffer driver
+  *
+  * 	ported to 2.6 by Embedded Alley Solutions, Inc
+  * 	Copyright (C) 2005 Embedded Alley Solutions, Inc
+@@ -162,7 +162,7 @@ smi_setcolreg(unsigned regno, unsigned r
+ 	if (regno > 255)
+ 		return 1;
+ 
+-	((u16 *)(info->pseudo_palette))[regno] =
++	((u32 *)(info->pseudo_palette))[regno] =
+ 		    ((red & 0xf800) >> 0) |
+ 		    ((green & 0xfc00) >> 5) |
+ 		    ((blue & 0xf800) >> 11);
 
---------------enigD35CB61B2F0F50F9AE9323E8--
+
+
+
+--------------050205090103050403070109--

@@ -1,85 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Dec 2005 21:23:58 +0000 (GMT)
-Received: from lennier.cc.vt.edu ([198.82.162.213]:27556 "EHLO
-	lennier.cc.vt.edu") by ftp.linux-mips.org with ESMTP
-	id S3458540AbVLIVXk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 9 Dec 2005 21:23:40 +0000
-Received: from dagger.cc.vt.edu (IDENT:mirapoint@evil-dagger.cc.vt.edu [10.1.1.11])
-	by lennier.cc.vt.edu (8.12.11/8.12.11) with ESMTP id jB9LNYXr013970;
-	Fri, 9 Dec 2005 16:23:34 -0500
-Received: from [128.173.184.73] (gs4073.geos.vt.edu [128.173.184.73])
-	by dagger.cc.vt.edu (MOS 3.6.4-CR)
-	with ESMTP id EUJ28926;
-	Fri, 9 Dec 2005 16:23:25 -0500 (EST)
-Message-ID: <4399F5C3.1050706@gentoo.org>
-Date:	Fri, 09 Dec 2005 16:23:15 -0500
-From:	"Stephen P. Becker" <geoman@gentoo.org>
-User-Agent: Mozilla Thunderbird 1.0.7 (X11/20051208)
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Dec 2005 23:20:51 +0000 (GMT)
+Received: from smtp106.sbc.mail.mud.yahoo.com ([68.142.198.205]:23178 "HELO
+	smtp106.sbc.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S3458549AbVLIXUd (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 9 Dec 2005 23:20:33 +0000
+Received: (qmail 98849 invoked from network); 9 Dec 2005 23:20:28 -0000
+Received: from unknown (HELO ?10.0.0.130?) (david-b@pacbell.net@69.226.248.13 with plain)
+  by smtp106.sbc.mail.mud.yahoo.com with SMTP; 9 Dec 2005 23:20:27 -0000
+From:	David Brownell <david-b@pacbell.net>
+To:	"Vladimir A. Barinov" <vbarinov@ru.mvista.com>
+Subject: Re: [PATCH] Philips PNX8550 USB Host driver compile fix
+Date:	Fri, 9 Dec 2005 15:20:26 -0800
+User-Agent: KMail/1.7.1
+Cc:	Peter Popov <ppopov@embeddedalley.com>, linux-mips@linux-mips.org,
+	ralf@linux-mips.org, linux-usb-devel@lists.sourceforge.net
+References: <20051206193522.2582.qmail@web411.biz.mail.mud.yahoo.com> <439864A6.9070104@ru.mvista.com>
+In-Reply-To: <439864A6.9070104@ru.mvista.com>
 MIME-Version: 1.0
-To:	Michael Joosten <michael.joosten@c-lab.de>
-CC:	linux-mips@linux-mips.org
-Subject: Re: SGI O2: working framebuffer/X11 modes?
-References: <4399CD04.2781@c-lab.de> <4399D209.1060301@gentoo.org> <4399E92C.6000709@c-lab.de>
-In-Reply-To: <4399E92C.6000709@c-lab.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain;
+  charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Return-Path: <geoman@gentoo.org>
+Content-Disposition: inline
+Message-Id: <200512091520.26719.david-b@pacbell.net>
+Return-Path: <david-b@pacbell.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9649
+X-archive-position: 9650
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geoman@gentoo.org
+X-original-sender: david-b@pacbell.net
 Precedence: bulk
 X-list: linux-mips
 
-> As just today another old O2 materialized on the trash heap around here, 
-> I actually might try my luck - but it's a R10K O2, IP32.
+On Thursday 08 December 2005 8:51 am, Vladimir A. Barinov wrote:
+> Hello Ralf, David,
+> 
+> Could you please advise.
+> What is the right solution in the situation when USB PCI and on-chip USB 
+> used in the situation when we want ohci-hcd to be a module?
+> 
+> Vladimir
+> 
+> Peter Popov wrote:
+> 
+> >I suppose the right solution is to be able to use the
+> >on-chip usb controller as well as an external pci
+> >controller. I don't think anyone will do that though.
 
-No luck there, as r10k ip32 still has the cache coherency problem, and 
-won't run linux.
-
-
-> The sgivwfb driver uses by default 8MB at the highest end of phys 
-> memory, and increasing it to 16MB hasn't harmed yet.
-
-The gbefb driver won't even let you choose more than 8mb, and I think 
-2mb is the default.
-
-
-> Well, I don't have a 1600sw, and there are some internal patches in the 
-> visws mailing list of Florian Boor who added a I2C self configuration to 
-> the driver, such that entereing the monitor type by kernel cmd line 
-> argument is not necessary anymore.
-
-It would be nice to know if these help out on mips, and if so, they 
-should probably be contributed to the linux-mips tree.  I wish I had a 
-1600sw with which to tinker.
+I'm not sure why they wouldn't.  Full speed controllers
+have limited bandwidth, people sometimes want more than
+one just to get enough bandwidth to do whatever it is
+they need USB to help with.
 
 
-> ...different depths produce funny results. Haven't tried 8bit, but 24 is 
-> definitely broken. You can still see something, but barely. So, we can 
-> probably deduce that the other-than-15bit modes were never actually 
-> tested by the original author (some intern then a SGI?).
+> >>The current ohci-hcd driver is a little defective.
+> >>It's unable to use usb-ohci as modules in the case
+> >>when PCI and on-chip USB are enabled.
+> >>It just will not be compiled since there are two
+> >>calls if module_init in ohci-hcd.
 
-There was actually a patch for Xfree by the original author of the 
-sgio2fb driver (Vivien, aka glaurung, wasn't it?) which allowed X to run 
-properly in 16bpp.  However, this patch was lost in a hard drive crash 
-if I recall.
+I think it'd be reasonable to expect that the two
+options be (a) PCI version and/or (b) some SOC version.
+Since I've never heard of a discrete OHCI part, I'll
+suspect the posibillity of having several of them on
+some external parallel bus is low...
 
+Suggesting that what's needed is more at the level of
+having the module_init code call a pair of #definable
+routnes -- call them 'register_platform_ohci()' and
+'register_pci_ohci() -- to handle either or both cases.
 
-> Recent info 
-> about the chances to get some hardware docs about the VisWS from SGI 
-> were simply turned down by the astonishing fact that they really dumped 
-> the whole product line: hardware, contracts, subcontractors (developed 
-> the gfx drivers for Win NT) and even documentation. Speak about a deed 
-> (x86 graphics workstations) so awful that nobody at SGI wanted be 
-> remembered about it ?
+Then #ifndef register_platform_ohci, #define it as NOP;
+likewise for the PCI version.  And for the unregisters.
 
-There are at least a couple of folks on this mailing list who I'm pretty 
-sure know more about the specifics of this hardware.  The only question 
-is, are they allowed to talk to you about it?
+I'd certainly OK merging that; it'd be general enough
+to work on non-PNX hardware too.
 
--Steve
+- Dave

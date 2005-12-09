@@ -1,85 +1,106 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Dec 2005 18:08:58 +0000 (GMT)
-Received: from rtsoft2.corbina.net ([85.21.88.2]:21426 "HELO
-	mail.dev.rtsoft.ru") by ftp.linux-mips.org with SMTP
-	id S3458525AbVLISIk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 9 Dec 2005 18:08:40 +0000
-Received: (qmail 4219 invoked from network); 9 Dec 2005 18:08:31 -0000
-Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
-  by mail.dev.rtsoft.ru with SMTP; 9 Dec 2005 18:08:31 -0000
-Message-ID: <4399C8AB.4080403@ru.mvista.com>
-Date:	Fri, 09 Dec 2005 21:10:51 +0300
-From:	Sergei Shtylylov <sshtylyov@ru.mvista.com>
-Organization: MostaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Dec 2005 18:25:03 +0000 (GMT)
+Received: from mail.alphastar.de ([194.59.236.179]:38927 "EHLO
+	mail.alphastar.de") by ftp.linux-mips.org with ESMTP
+	id S3458520AbVLISYn (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 9 Dec 2005 18:24:43 +0000
+Received: from Snailmail (217.249.204.171)
+          by mail.alphastar.de with MERCUR Mailserver (v4.02.28 MTIxLTIxODAtNjY2OA==)
+          for <linux-mips@linux-mips.org>; Fri, 9 Dec 2005 19:21:37 +0100
+Received: from Opal.Peter (Opal.Peter [192.168.1.1])
+	by SNaIlmail.Peter (8.12.6/8.12.6/Sendmail/Linux 2.0.32) with ESMTP id jB9IMPbf002565;
+	Fri, 9 Dec 2005 19:22:26 +0100
+Received: from Opal.Peter (localhost [127.0.0.1])
+	by Opal.Peter (8.12.11.Beta0/8.12.11.Beta0/Sendmail/Linux 2.4.24-1-386) with ESMTP id jB9IMHp2001605;
+	Fri, 9 Dec 2005 19:22:17 +0100
+Received: from localhost (pf@localhost)
+	by Opal.Peter (8.12.11.Beta0/8.12.11.Beta0/Debian-1) with ESMTP id jB9IMGH4001601;
+	Fri, 9 Dec 2005 19:22:16 +0100
+Date:	Fri, 9 Dec 2005 18:22:14 +0100 (CET)
+From:	peter fuerst <pf@net.alphadv.de>
+To:	linux-mips@linux-mips.org
+cc:	Stuart Longland <redhatter@gentoo.org>
+Subject: Re: SGI IP28 Kernels... anyone had any luck lately?
+In-Reply-To: <4399972C.5060604@gentoo.org>
+Message-ID: <Pine.LNX.4.21.0512091803080.1379-100000@Opal.Peter>
 MIME-Version: 1.0
-To:	Linux MIPS <linux-mips@linux-mips.org>
-CC:	Manish Lachwani <mlachwani@mvista.com>,
-	Konstantin Baidarov <kbaidarov@ru.mvista.com>
-Subject: [PATCH] SiMotion VoyagerGX framebuffer: blue stripped background
-Content-Type: multipart/mixed;
- boundary="------------050205090103050403070109"
-Return-Path: <sshtylyov@ru.mvista.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+ReSent-Date: Fri, 9 Dec 2005 19:21:52 +0100 (CET)
+ReSent-From: peter fuerst <pf@net.alphadv.de>
+ReSent-To: Stuart Longland <redhatter@gentoo.org>,
+	   linux-mips@linux-mips.org
+ReSent-Subject:	Re: SGI IP28 Kernels... anyone had any luck lately?
+ReSent-Message-ID: <Pine.LNX.4.21.0512091921520.1600@Opal.Peter>
+Reply-To: pf@net.alphadv.de
+Return-Path: <pf@net.alphadv.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9643
+X-archive-position: 9644
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: pf@net.alphadv.de
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
---------------050205090103050403070109
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-
-Hello.
-
-    This driver was using an incorrect typecast when setting pseudopalette,
-hence were the blue strips on the black char background. As this driver
-happens to be maintaned by Linux/MIPS, here's the patch (I've also noticed a
-typo in the head comment, hence comes another hunk)...
-
-WBR, Sergei
-
-Signed-off-by: Konstantin Baydarov <kbaidarov@ru.mvista.com>
-Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
 
 
+Hi all,
 
+sorry, obviously forgot to "tar" with the "-h" option.  The kernel patch-set
+is now repackaged with README and .config (same location).  I wonder, why no
+one noticed their missing since Oct 17...
+For exactness' sake: the patches are based on linux-2.6.14-rc2-mipscvs-20050925
+Maybe .config will enable compiling, the error-messages seem to point
+to a misconfiguration, since the compiler didn't touch any of the patched
+files yet.
 
---------------050205090103050403070109
-Content-Type: text/plain;
- name="VoyagerGX-blue-strips.patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="VoyagerGX-blue-strips.patch"
+There's still a problem with the Xserver: often, when starting up the Xserver
+first after a cold boot, it likes to hang (in a loop, waiting for "dmabusy"
+to settle down, either in the kernel-driver or the Xserver itself, when
+re-mmapping the dma-buffer). Usually, after a reset the Xserver works okay.
+I couldn't find a solution for this yet, but otherwise (;-) i easily (can) use
+the machine for regular work (no more hangs after the Xserver started up once).
 
-diff --git a/drivers/video/smivgxfb.c b/drivers/video/smivgxfb.c
-index d5755c5..c521069 100644
---- a/drivers/video/smivgxfb.c
-+++ b/drivers/video/smivgxfb.c
-@@ -1,5 +1,5 @@
- /***************************************************************************
-- *  Silicon Motion VoyaagerGX framebuffer driver
-+ *  Silicon Motion VoyagerGX framebuffer driver
-  *
-  * 	ported to 2.6 by Embedded Alley Solutions, Inc
-  * 	Copyright (C) 2005 Embedded Alley Solutions, Inc
-@@ -162,7 +162,7 @@ smi_setcolreg(unsigned regno, unsigned r
- 	if (regno > 255)
- 		return 1;
- 
--	((u16 *)(info->pseudo_palette))[regno] =
-+	((u32 *)(info->pseudo_palette))[regno] =
- 		    ((red & 0xf800) >> 0) |
- 		    ((green & 0xfc00) >> 5) |
- 		    ((blue & 0xf800) >> 11);
+kind regards
+
+pf
 
 
 
+On Sat, 10 Dec 2005, Stuart Longland wrote:
 
---------------050205090103050403070109--
+> Date: Sat, 10 Dec 2005 00:39:40 +1000
+> From: Stuart Longland <redhatter@gentoo.org>
+> Reply-To: linux-mips-bounce@linux-mips.org
+> To: linux-mips@linux-mips.org
+> Subject: SGI IP28 Kernels... anyone had any luck lately?
+> 
+> Hi all,
+> 	I'm not sure what's causing this error, could very well be PEBKAC, but
+> anyways.
+> 
+> 	I've been striking issues getting kernels for my IP28 to compile.  So
+> far, I've tried both the 2.6.14 and 2.6.14-rc2 tags, the IP28 patches[1]
+> apply successfully, but the subsequent compile fails with these
+> messages: http://pastebin.com/455158
+> 
+> 	Incidentally, the tarball you download containing the patches,
+> apparently has a README and .config file included.  Well, there's
+> symlinks to the files, but it seems the actual files themselves got
+> missed in the archive.  I used the /proc/config.gz from my currently
+> running kernel (2.6.12-rc2, also works with 2.6.13.4).
+> 
+> 	I was hoping to try out Impact support, in console and X, as well as
+> HAL2 support (which was b0rked last time I tried it).
+> 
+> 	Has anyone had any luck, and if so, any ideas what I'm doing wrong?
+> Regards,
+> -- 
+> Stuart Longland (aka Redhatter)              .'''.
+> Gentoo Linux/MIPS Cobalt and Docs Developer  '.'` :
+> . . . . . . . . . . . . . . . . . . . . . .   .'.'
+> http://dev.gentoo.org/~redhatter             :.'
+> 
+> 1. http://home.alphastar.de/fuerst/download.html
+> 

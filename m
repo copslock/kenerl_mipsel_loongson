@@ -1,81 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Feb 2006 19:40:04 +0000 (GMT)
-Received: from allen.werkleitz.de ([80.190.251.108]:4039 "EHLO
-	allen.werkleitz.de") by ftp.linux-mips.org with ESMTP
-	id S3458570AbWBATjq (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 1 Feb 2006 19:39:46 +0000
-Received: from p54be9954.dip0.t-ipconnect.de ([84.190.153.84] helo=void.local)
-	by allen.werkleitz.de with esmtpsa (TLS-1.0:DHE_RSA_3DES_EDE_CBC_SHA1:24)
-	(Exim 4.60)
-	(envelope-from <js@linuxtv.org>)
-	id 1F4NuF-0007hI-U9; Wed, 01 Feb 2006 20:44:49 +0100
-Received: from js by void.local with local (Exim 3.35 #1 (Debian))
-	id 1F4NuF-0005oL-00; Wed, 01 Feb 2006 20:44:43 +0100
-Date:	Wed, 1 Feb 2006 20:44:43 +0100
-From:	Johannes Stezenbach <js@linuxtv.org>
-To:	Daniel Jacobowitz <dan@debian.org>
-Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	linux-mips@linux-mips.org
-Message-ID: <20060201194443.GB21871@linuxtv.org>
-Mail-Followup-To: Johannes Stezenbach <js@linuxtv.org>,
-	Daniel Jacobowitz <dan@debian.org>,
-	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	linux-mips@linux-mips.org
-References: <20060131171508.GB6341@linuxtv.org> <Pine.LNX.4.64N.0601311724340.31371@blysk.ds.pg.gda.pl> <20060201164423.GA4891@nevyn.them.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2006 02:33:29 +0000 (GMT)
+Received: from webmail.ict.ac.cn ([159.226.39.7]:52698 "HELO ict.ac.cn")
+	by ftp.linux-mips.org with SMTP id S3465640AbWBBCdG (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 2 Feb 2006 02:33:06 +0000
+Received: (qmail 539 invoked by uid 507); 2 Feb 2006 02:03:38 -0000
+Received: from unknown (HELO ?210.77.15.252?) (fxzhang@210.77.15.72)
+  by ict.ac.cn with SMTP; 2 Feb 2006 02:03:38 -0000
+Message-ID: <439B9104.6000605@ict.ac.cn>
+Date:	Sun, 11 Dec 2005 10:37:56 +0800
+From:	Fuxin Zhang <fxzhang@ict.ac.cn>
+User-Agent: Thunderbird 1.5 (Windows/20051201)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20060201164423.GA4891@nevyn.them.org>
-User-Agent: Mutt/1.5.11
-X-SA-Exim-Connect-IP: 84.190.153.84
-Subject: Re: gdb vs. gdbserver with -mips3 / 32bitmode userspace
-X-SA-Exim-Version: 4.2 (built Thu, 03 Mar 2005 10:44:12 +0100)
-X-SA-Exim-Scanned: Yes (on allen.werkleitz.de)
-Return-Path: <js@linuxtv.org>
+To:	Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: linker script for non-4k page size
+X-Enigmail-Version: 0.93.0.0
+Content-Type: text/plain; charset=GB18030
+Content-Transfer-Encoding: 7bit
+Return-Path: <fxzhang@ict.ac.cn>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10291
+X-archive-position: 10292
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: js@linuxtv.org
+X-original-sender: fxzhang@ict.ac.cn
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Feb 01, 2006, Daniel Jacobowitz wrote:
-> All of this code is flat-out wrong, as far as I'm concerned.  I have a
-> project underway which will fix it, as a nice side effect.
-> 
-> GDB is trying to do something confusing, but admirable, here.  When
-> you're running on a 64-bit system the full 64 bits are always there:
-> even if the binary only uses half of them (is this true in Linux?  I
-> don't remember if the relevant control bits get fudged, it's been a
-> while; it's definitely true on some other systems).  Thus it's possible
-> for a bogus instruction to corrupt the top half of a register, leading
-> to otherwise inexplicable problems.
-> 
-> So if the remote stub knows about 64-bit registers, it should report
-> them to GDB, and GDB should accept and display them, and still handle
-> 32-bit frames.  If the remote stub doesn't, then there's no option but
-> to report the 32-bit registers.
-> 
-> Really, GDB ought to (and soon will I hope) autodetect which ones were
-> sent.
-
-If I understand this correctly, gdbserver should check the
-register size supported by the OS, and communicate this to gdb?
-
-I'm using a Linux kernel with CONFIG_32BIT, and if I understand
-the ptrace interface correctly, the registers as seen through
-ptrace are 32bit then, even though the CPU has 64bit registers.
-
-(I have no idea if the cp0 status suggested by others in this
-thread reflect CONFIG_32BIT vs. CONFIG_64BIT on Linux.)
-
-
-Anyway, is a better workaround _now_ for gdb-6.[34] than the patch
-to mips_register_type()?
-
-
-Thanks,
-Johannes
+hi,
+  I come across a problem when trying to use 16k page size for 2.6.14
+linux/mips kernel: arch/mips/kernel/vmlinux.lds.S align some sections
+with hardcoded ". = ALIGN(4096)".
+  This will lead to problem if non-4k page size is used. For example,
+if the .init section is put at a page 4k-aligned but not 16k-aligned,
+free_initmem will free more spaces than it should do, and strange
+problems will occur.
+  Should we change to alignment according to CONFIG_PAGE_SIZE_XX? or
+just set it to largest possible value(this may cause size increasement?)
